@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import brl.Graphics
 
 Import brl.d3d7max2d
@@ -36,7 +36,7 @@ Function ClipImageToViewport(image:TImage, imagex:Float, imagey:Float, ViewportX
 	Local w:Int = ImageWidth(image)
 	Local h:Int = ImageHeight(image)
 
-	If imagex+w>=ViewportX And imagex-w<ViewportX+ViewportW and..
+	If imagex+w>=ViewportX And imagex-w<ViewportX+ViewportW And..
 		imagey+h>=ViewportY And imagey-h<ViewportY+ViewportH Then
 		'Clip left and top
 		Local startx#=ViewportX-imagex
@@ -227,7 +227,7 @@ Type ImageFragment
     ' ----------------------------------
     ' constructor
     ' ----------------------------------
-    Function create:ImageFragment(pmap:TPixmap,x:Float,y:Float,w:Float,h:Float)
+    Function Create:ImageFragment(pmap:TPixmap,x:Float,y:Float,w:Float,h:Float)
 
         Local frag:ImageFragment = New ImageFragment
         frag.img = LoadImage(PixmapWindow(pmap,x,y,w,h),0)'|FILTEREDIMAGE)
@@ -279,17 +279,17 @@ Type TBigImage
 	End Function
 
 	Function CreateFromPixmap:TBigImage(i:TPixmap)
-	  Return TBigImage.create(i)
+	  Return TBigImage.Create(i)
 	End Function
 
-	Function create:TBigImage(p:TPixmap)
+	Function Create:TBigImage(p:TPixmap)
 
         Local bi:TBigImage = New TBigImage
         bi.pixmap = p
         bi.width = p.width
         bi.height = p.height
         bi.fragments = CreateList()
-        bi.load()
+        bi.Load()
 		bi.PixFormat = p.format
 		bi.pixmap = Null
         Return bi
@@ -406,7 +406,7 @@ about:
 The module must be initialised before use. This ensures usage of the correct render pipeline. If the render device is changed then you must
 re initialise the module.
 End Rem
-	Function Initialise:int()
+	Function Initialise:Int()
 	?Win32
 		If _max2dDriver.ToString() = "DirectX7"
 			DX = True
@@ -479,7 +479,7 @@ End Rem
 '#################################################################################
 ?Win32
 	Function CreateFrame:TD3D7ImageFrame(Driver:TD3D7Max2DDriver, width:Int, Height:Int, flags:Int)
-		Function Pow2Size(n:Int)
+		Function Pow2Size:Int(n:Int)
 			Local t:Int = 1
 			While t<n
 				t:*2
@@ -490,7 +490,7 @@ End Rem
 		Local swidth:Int = Pow2Size(width)
 		Local sheight:Int = Pow2Size(Height)
 		Local desc:DDSURFACEDESC2 = New DDSURFACEDESC2
-		Local res
+		Local res:Int
 
 		desc.dwSize=SizeOf(desc)
 		desc.dwFlags=DDSD_WIDTH|DDSD_HEIGHT|DDSD_CAPS|DDSD_PIXELFORMAT
@@ -547,7 +547,7 @@ about:
 	<tr><td><b>FlipY:Byte</td><td>Flip the Viewport on the Y Axis, OpenGL only. Automatically done by the Texture Renderer.</td></tr>
  </table>
 End Rem
-	Function ViewportSet:int(X:Int=0,Y:Int=0,Width:Int,Height:Int,FlipY:Byte=False)
+	Function ViewportSet:Int(X:Int=0,Y:Int=0,Width:Int,Height:Int,FlipY:Byte=False)
 	?Win32
 		If DX = 1
 			Local viewport:D3DVIEWPORT7=New D3DVIEWPORT7
@@ -598,7 +598,7 @@ about:
 	<tr><td><b>Viewport:Byte</td><td>True (default) to Automatically resize the viewport to the image size</td></tr>
  </table>
 End Rem
-	Function TextureRender_Begin:int(Image1:TImage,Viewport:Byte=True)
+	Function TextureRender_Begin:Int(Image1:TImage,Viewport:Byte=True)
 	SetScale Float(GraphicsWidth())/Float(ImageWidth(image1)),Float(GraphicsHeight())/Float(ImageHeight(image1))
 
 
@@ -662,7 +662,7 @@ End Rem
 
 '#################################################################################
 ?win32
-	Function SetMipMap:int(Image:TImage,Level:Int)
+	Function SetMipMap:Int(Image:TImage,Level:Int)
 		If DX = 1
 			Local DXFrame:TD3D7ImageFrame = TD3D7ImageFrame (image.frame(0))
 
@@ -677,7 +677,7 @@ End Rem
 
 			src = DXFrame.Surface
 
-			Local res = src.GetAttachedSurface(caps2,Varptr dest)
+			Local res:Int = src.GetAttachedSurface(caps2,Varptr dest)
 
 			If res<>DD_OK
 				tRenderERROR = tRTTError(res)
@@ -710,7 +710,7 @@ End Rem
 	End Function
 ?
 
-		Function Pow2Size:int(n:Int)
+		Function Pow2Size:Int(n:Int)
 			Local t:Int = 1
 			While t<n
 				t:*2
@@ -720,7 +720,7 @@ End Rem
 
 	'End the Texture Render Process
 	'This Must be called when you have finished rendering To the Texture
-	Function TextureRender_End:int()
+	Function TextureRender_End:Int()
 	SetScale 1.0, 1.0
 	?Win32
 		If dx = 1
@@ -744,7 +744,7 @@ End Rem
 	End Function
 
 	'Begin the Normal BackBuffer Rendering Process
-	Function BackBufferRender_Begin:int()
+	Function BackBufferRender_Begin:Int()
 	?Win32
 		If DX = 1 Then
 			D3D7GraphicsDriver().Direct3DDevice7().SetRenderTarget(backbuffer,0)
@@ -764,7 +764,7 @@ End Rem
 	End Function
 
 	'This Must be called when you have finished rendering to the BackBuffer and Before the Flip Command.
-	Function BackBufferRender_End:int()
+	Function BackBufferRender_End:Int()
 	?Win32
 		If DX = 1
 			D3D7GraphicsDriver().Direct3DDevice7().EndScene()
@@ -869,7 +869,7 @@ Function CopyImage:TImage(src:TImage)
 End Function
 
 'colorizes an TImage (may be an AnimImage when given cell_width and height)
-Function ColorizeTImage:TImage(_image:TImage, r:Int,g:Int,b:Int, cell_width:Int=0,cell_height:Int=0,first_cell:Int=0,cell_count:Int=1, flag:Int=0, loadAnimated:int = 1)
+Function ColorizeTImage:TImage(_image:TImage, r:Int,g:Int,b:Int, cell_width:Int=0,cell_height:Int=0,first_cell:Int=0,cell_count:Int=1, flag:Int=0, loadAnimated:Int = 1)
 	If _image <> Null
 		Local d:Int = r
 		r = b;b = d

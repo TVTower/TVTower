@@ -1,4 +1,4 @@
-﻿'This application was editet with BLIde http://www.blide.org
+'This application was editet with BLIde http://www.blide.org
 'Application: TVGigant
 'Author:
 'Description: Loads all needed Files (checked) and returns them to variables
@@ -25,7 +25,7 @@ Import "basefunctions_resourcemanager.bmx"
 'Import "functions_file.bmx"
 
 SuperStrict
-Global VersionDate:string = LoadText("incbin::source/version.txt")
+Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global versionstring:String = "version of " + VersionDate
 Global copyrightstring:String = "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
@@ -71,7 +71,7 @@ Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,ce
 	SetAlpha 1.0
 	DrawImage(gfx_loading_bar, 0, WIDTH/2 -56  + 32, 1)
 
-	LoaderWidth = max(filecount * pixelperfile, LoaderWidth+1)
+	LoaderWidth = Max(filecount * pixelperfile, LoaderWidth+1)
 	DrawSubImageRect(gfx_loading_bar,0,WIDTH/2 -56 +32, LoaderWidth, gfx_loading_bar.Height, 0, 0, LoaderWidth, gfx_loading_bar.Height, 0, 0, 0)
 
 	SetAlpha 0.3
@@ -129,7 +129,7 @@ Function PrintVidMem(usage:String)
 	If directx = 1
 		Local mycaps:DDCAPS_DX7 = New DDCAPS_DX7
 		mycaps.dwCaps = DDSCAPS_VIDEOMEMORY'|LOCALVIDMEM|NONLOCALVIDMEM|SYSTEMMEMORY
-		D3D7GraphicsDriver().DirectDraw7().GetAvailableVidMem(MyCaps, VarPtr totalmem, VarPtr freemem)
+		D3D7GraphicsDriver().DirectDraw7().GetAvailableVidMem(MyCaps, Varptr totalmem, Varptr freemem)
 		If UsedMemAtStart = 0 Then UsedMemAtStart = totalmem - freemem
 		Print ("VidMem: " + Int((totalmem - freemem - UsedMemAtStart) / 1024) + "kb  - Zuwachs:" + (Int((totalmem - freemem - UsedMemAtStart) - LastMem) / 1024) + "kb - geladen:" + usage)
 		LastMem = Int(totalmem - freemem - UsedMemAtStart)
@@ -175,8 +175,8 @@ Global colordepth:Int = 16
 '#End Region
 
 Local g:TGraphics
-GLOBAL WIDTH:Int=800,HEIGHT:Int=600
-local d:Int=colordepth*fullscreen,hertz2:Int=60
+Global WIDTH:Int=800,HEIGHT:Int=600
+Local d:Int=colordepth*fullscreen,hertz2:Int=60
 Local MyFlag:Int = 0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
 Try
 ?Win32
@@ -190,11 +190,9 @@ Try
 	g = Graphics(WIDTH, HEIGHT, d, hertz2, MyFlag)
 	If g = Null
 		Throw "Graphics initiation error! The game will try to open in windowed DirectX 7 mode."
-		Catch a$
-		Notify(a$)
 		SetGraphicsDriver D3D7Max2DDriver()
 		g = Graphics(WIDTH, HEIGHT, 0, hertz2)
-	endif
+	EndIf
 ?
 ?Linux
 	SetGraphicsDriver GLMax2DDriver()
@@ -274,89 +272,89 @@ Type TXmlLoader
 		Next
 	End Method
 
-	Method GetImageFlags:int(childNode:xmlNode)
-		local flags:int = 0
-		local flagsstring:string = ""
+	Method GetImageFlags:Int(childNode:xmlNode)
+		Local flags:Int = 0
+		Local flagsstring:String = ""
 		If childNode.FindChild("flags", 0, 0) <> Null
-			flagsstring = string(childNode.FindChild("flags", 0, 0).Value)
-			local flagsarray:string[] = flagsstring.split(",")
-			For local flag:string = EachIn flagsarray
-				flag = upper(flag.trim())
-				if flag = "MASKEDIMAGE" then flags = flags | MASKEDIMAGE
-				if flag = "DYNAMICIMAGE" then flags = flags | DYNAMICIMAGE
-				if flag = "FILTEREDIMAGE" then flags = flags | FILTEREDIMAGE
+			flagsstring = String(childNode.FindChild("flags", 0, 0).Value)
+			Local flagsarray:String[] = flagsstring.split(",")
+			For Local flag:String = EachIn flagsarray
+				flag = Upper(flag.Trim())
+				If flag = "MASKEDIMAGE" Then flags = flags | MASKEDIMAGE
+				If flag = "DYNAMICIMAGE" Then flags = flags | DYNAMICIMAGE
+				If flag = "FILTEREDIMAGE" Then flags = flags | FILTEREDIMAGE
 			Next
-		else
+		Else
 			flags = 0
-		endif
-		return flags
+		EndIf
+		Return flags
 	End Method
 
 	Method LoadImageResource(childNode:xmlNode)
-		Local _name:String = lower(childNode.Attribute("name", 0).Value)
+		Local _name:String = Lower(childNode.Attribute("name", 0).Value)
 		Local _type:String = Upper(childNode.FindChild("type", 0, 0).Value)
 		Local _frames:Int = 0
 		Local _cellwidth:Int = 0
 		Local _cellheight:Int = 0
 		Local _url:String = childNode.FindChild("url", 0, 0).Value
-		local _img:TImage = null
-		local _flags:int = self.GetImageFlags(childNode)
+		Local _img:TImage = Null
+		Local _flags:Int = Self.GetImageFlags(childNode)
 		If childNode.FindChild("cellwidth", 0, 0) <> Null Then _cellwidth = Int(childNode.FindChild("cellwidth", 0, 0).Value)
 		If childNode.FindChild("cellheight", 0, 0) <> Null Then _cellheight = Int(childNode.FindChild("cellheight", 0, 0).Value)
 		If childNode.FindChild("frames", 0, 0) <> Null Then _frames = Int(childNode.FindChild("frames", 0, 0).Value)
 
 
 		'direct load or threaded possible?
-		local directLoadNeeded:int = true ' <-- threaded load
-		If childNode.FindChild("scripts") <> Null then directLoadNeeded = true
-		If childNode.FindChild("colorize") <> Null then directLoadNeeded = true
+		Local directLoadNeeded:Int = True ' <-- threaded load
+		If childNode.FindChild("scripts") <> Null Then directLoadNeeded = True
+		If childNode.FindChild("colorize") <> Null Then directLoadNeeded = True
 
 		'create helper, so load-function has all needed data
-		local LoadAssetHelper:TGW_Sprites = TGW_Sprites.Create(null, _name, 0,0, 0, 0, _frames, -1, _cellwidth, _cellheight)
+		Local LoadAssetHelper:TGW_Sprites = TGW_Sprites.Create(Null, _name, 0,0, 0, 0, _frames, -1, _cellwidth, _cellheight)
 		LoadAssetHelper._flags = _flags
 
 		'referencing another sprite? (same base)
-		if _url.StartsWith("[")
-			_url = Mid(_url, 2, len(_url)-2)
-			local referenceAsset:TGW_Sprites = Assets.GetSprite(_url)
+		If _url.StartsWith("[")
+			_url = Mid(_url, 2, Len(_url)-2)
+			Local referenceAsset:TGW_Sprites = Assets.GetSprite(_url)
 			LoadAssetHelper.setUrl(_url)
 			Assets.Add(_name, TGW_Sprites.LoadFromAsset(LoadAssetHelper))
-			self.parseScripts(childNode, _img)
+			Self.parseScripts(childNode, _img)
 		'original image, has to get loaded
-		else
+		Else
 			LoadAssetHelper.setUrl(_url)
 
-			if directLoadNeeded then
+			If directLoadNeeded Then
 				'print "LoadImageResource: "+_name + " | DIRECT type = "+_type
 				'add as single sprite so it is reachable through "GetSprite" too
-				local sprite:TGW_Sprites = TGW_Sprites.LoadFromAsset(LoadAssetHelper)
+				Local sprite:TGW_Sprites = TGW_Sprites.LoadFromAsset(LoadAssetHelper)
 				Assets.Add(_name, sprite)
-				self.parseScripts(childNode, sprite.GetImage())
-			else
+				Self.parseScripts(childNode, sprite.GetImage())
+			Else
 				'print "LoadImageResource: "+_name + " | THREAD type = "+_type
 				Assets.AddToLoadAsset(_name, LoadAssetHelper)
 				'TExtendedPixmap.Create(_name, _url, _cellwidth, _cellheight, _frames, _type)
-			endif
-		endif
+			EndIf
+		EndIf
 
 
 	End Method
 
-	Method parseScripts(childNode:xmlNode, data:object)
+	Method parseScripts(childNode:xmlNode, data:Object)
 		PrintDebug("XmlLoader.LoadImageResource:", "found image scripts", DEBUG_LOADING)
 		Local scripts:xmlNode = childNode.FindChild("scripts")
-		if scripts <> null AND scripts.ChildList <> null
+		If scripts <> Null And scripts.ChildList <> Null
 			For Local script:xmlNode = EachIn scripts.ChildList
 				Local scriptDo:String= String(script.Attribute("do",0).Value)
 				If scriptDo = "ColorizeCopy"
-					Local _dest:String	= lower(String(script.Attribute("dest").Value))
+					Local _dest:String	= Lower(String(script.Attribute("dest").Value))
 					Local _r:Int		= Int(script.Attribute("r").Value)
 					Local _g:Int		= Int(script.Attribute("g").Value)
 					Local _b:Int		= Int(script.Attribute("b").Value)
 
 
 					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And TImage(data) <> Null
-						print "COLORIZE " + _dest + " <-- param should be asset not timage"
+						Print "COLORIZE " + _dest + " <-- param should be asset not timage"
 						Assets.AddImageAsSprite(_dest, ColorizeTImage(TImage(data), _r, _g, _b))
 					EndIf
 				EndIf
@@ -373,14 +371,14 @@ Type TXmlLoader
 				EndIf
 
 			Next
-		endif
+		EndIf
 	End Method
 
 	Method LoadSpritePackResource(childNode:xmlNode)
-		Local _name:String = lower(String(childNode.Attribute("name", 0).Value))
+		Local _name:String = Lower(String(childNode.Attribute("name", 0).Value))
 		Local _url:String = childNode.FindChild("url", 0, 0).Value
-		local _flags:int = self.GetImageFlags(childNode)
-print _name + " " + _flags
+		Local _flags:Int = Self.GetImageFlags(childNode)
+Print _name + " " + _flags
 		Local _image:TImage = CheckLoadImage(_url, _flags)
 		Local spritePack:TGW_SpritePack = TGW_SpritePack.Create(_image, _name)
 		'add spritepack to asset
@@ -390,7 +388,7 @@ print _name + " " + _flags
 		If childNode.FindChild("children") <> Null
 			Local children:xmlNode = childNode.FindChild("children")
 			For Local child:xmlNode = EachIn children.ChildList
-				Local childName:String	= lower(String(child.Attribute("name", 0).Value))
+				Local childName:String	= Lower(String(child.Attribute("name", 0).Value))
 				Local childX:Int		= Int(child.Attribute("x", 0).Value)
 				Local childY:Int		= Int(child.Attribute("y", 0).Value)
 				Local childW:Int		= Int(child.Attribute("w", 0).Value)
@@ -409,7 +407,7 @@ print _name + " " + _flags
 				EndIf
 			Next
 		EndIf
-		self.parseScripts(childNode, spritepack)
+		Self.parseScripts(childNode, spritepack)
 		'Self.Values.Insert(_name, TAsset.CreateBaseAsset(spritePack, "SPRITEPACK"))
 
 	End Method
@@ -494,7 +492,7 @@ Global gfx_datasheets_series:TBigImage		= TBigImage.createFromImage(CheckLoadIma
 Global gfx_datasheets_contract:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_werbeblatt.png"))
 Global gfx_news_pp_btn:TImage 				= CheckLoadImage("grafiken/news/newsplanung_button.png", -1, 47, 32, 0, 6)
 Global gfx_news_btn:TImage 					= CheckLoadImage("grafiken/news/button.png", -1, 41, 42, 0, 10)
-Global gfx_news_sheet_base:Timage			= CheckLoadImage("grafiken/news/newsplanung_news.png",0)
+Global gfx_news_sheet_base:TImage			= CheckLoadImage("grafiken/news/newsplanung_news.png",0)
 Global gfx_news_sheet:TImage				= TImage.Create(ImageWidth(gfx_news_sheet_base), ImageHeight(gfx_news_sheet_base) * 5, 1, 0, 255, 0, 255)
 Local tmppix:TPixmap = LockImage(gfx_news_sheet, 0)
 DrawOnPixmap(ColorizeTImage(gfx_news_sheet_base, 205, 170, 50) , 0, tmppix, 0, 0)

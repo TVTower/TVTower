@@ -1,4 +1,4 @@
-ï»¿'Application: TVGigant/TVTower
+'Application: TVGigant/TVTower
 'Author: Ronny Otto
 
 SuperStrict
@@ -39,12 +39,12 @@ Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(580, 30
 Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(520, 30)
 Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(650, 30)
 
-print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
+Print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
 Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, gfx_news_pp_btn, 0, 1, 0, "Newsplanner", 0)
 Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, gfx_news_pp_btn, 0, 1, 0, "Newsplanner", 3)
 
 Local tmpPix:TPixmap = LockImage(Assets.GetSprite("gfx_building").parent.image)
-print "grosse bilder automatisch auf 'bigimage' umstellen"
+Print "grosse bilder automatisch auf 'bigimage' umstellen"
 Global gfx_building_skyscraper:TBigImage = TBigImage.CreateFromPixmap(tmpPix)
 UnlockImage(Assets.GetSprite("gfx_building").parent.image)
 
@@ -64,13 +64,13 @@ TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
 Global App:TApp = TApp.Create(100, 1, WIDTH, HEIGHT) 'create with 60fps for physics and graphics
 
 Type TApp
-	field Timer:TDeltaTimer
-	field limitFrames:int = 0
-	field height:int = 600
-	field width:int = 800
+	Field Timer:TDeltaTimer
+	Field limitFrames:Int = 0
+	Field height:Int = 600
+	Field width:Int = 800
 
-	Function Create:TApp(physicsFps:int = 60, limitFrames:int = 0, width:int = 800, height:int = 600)
-		local obj:TApp = new TApp
+	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0, width:Int = 800, height:Int = 600)
+		Local obj:TApp = New TApp
 		obj.width = width
 		obj.height = height
 		'create timer
@@ -79,7 +79,7 @@ Type TApp
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
 
-		return obj
+		Return obj
 	End Function
 End Type
 
@@ -95,7 +95,7 @@ Type TGame
 	Field minutesOfDayGone:Float	= 0.0				'time of day in game, unformatted
 	Field lastMinutesOfDayGone:Float= 0.0				'time last update was done
 	Field timeSinceBegin:Float 							'time in game, not reset every day
-	Field year:int=2006, day:int=1, minute:Int=0, hour:int=0 'date in game
+	Field year:Int=2006, day:Int=1, minute:Int=0, hour:Int=0 'date in game
 
 	Field cursorstate:Int		 	= 0 				'which cursor has to be shown? 0=normal 1=dragging
 	Field playerID:Int 				= 1					'playerID of player who sits in front of the screen
@@ -229,25 +229,25 @@ Type TGame
 						TError.DrawNewError("Lade Programme...")
 						TProgramme.LoadAll()
 					Case "ALLCONTRACTS"
-						TError.DrawNewError("Lade WerbevertrÃ¤ge...")
+						TError.DrawNewError("Lade Werbeverträge...")
 					'TContract.LoadAll()
 					Case "ALLNEWS"
 						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade WerbevertrÃ¤geblÃ¶cke...")
+						TError.DrawNewError("Lade Werbeverträgeblöcke...")
 					'TContractBlocks.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade ProgrammblÃ¶cke...")
+						TError.DrawNewError("Lade Programmblöcke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade WerbeblÃ¶cke...")
+						TError.DrawNewError("Lade Werbeblöcke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade NewsblÃ¶cke...")
+						TError.DrawNewError("Lade Newsblöcke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade FilmhÃ¤ndlerblÃ¶cke...")
+						TError.DrawNewError("Lade Filmhändlerblöcke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -279,7 +279,7 @@ Type TGame
 								Localization.GetString("WEEK_LONG_WEDNESDAY"),	Localization.GetString("WEEK_LONG_THURSDAY"),..
 								Localization.GetString("WEEK_LONG_FRIDAY"),		Localization.GetString("WEEK_LONG_SATURDAY"),..
 								Localization.GetString("WEEK_LONG_SUNDAY") ]
-		If Not List Then List = new TList
+		If Not List Then List = New TList
 		List.AddLast(Game)
 		List.Sort()
 		Return Game
@@ -351,15 +351,15 @@ Type TGame
 		EndIf
 	End Method
 
-	Method getNextHour:int()
-		if self.hour+1 > 24 then return self.hour+1 - 24
-		return self.hour + 1
+	Method getNextHour:Int()
+		If Self.hour+1 > 24 Then Return Self.hour+1 - 24
+		Return Self.hour + 1
 	End Method
 
 	'Summary: Updates Time, Costs, States ...
-	Method Update(deltaTime:float=1.0)
-		self.minutesOfDayGone :+ (Float(speed) / 10.0)
-		self.timeSinceBegin	:+ (Float(speed) / 10.0)
+	Method Update(deltaTime:Float=1.0)
+		Self.minutesOfDayGone :+ (Float(speed) / 10.0)
+		Self.timeSinceBegin	:+ (Float(speed) / 10.0)
 
 		If (Game.networkgame And Game.playerID = 1) Or (Not Game.networkgame)
 			If NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
@@ -367,28 +367,28 @@ Type TGame
 
 		'if speed to high - potential skip of minutes, so "fetch them"
 		'sets minute / hour / day
-		local missedMinutes:int = floor( self.minutesOfDayGone - self.lastMinutesOfDayGone)
-		if missedMinutes > 0
-			For local i:int = 1 to missedMinutes
-				self.minute = floor ( self.lastMinutesOfDayGone + i ) mod 60 '0 to 59
-				EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", self.minute))
+		Local missedMinutes:Int = Floor( Self.minutesOfDayGone - Self.lastMinutesOfDayGone)
+		If missedMinutes > 0
+			For Local i:Int = 1 To missedMinutes
+				Self.minute = Floor ( Self.lastMinutesOfDayGone + i ) Mod 60 '0 to 59
+				EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", Self.minute))
 
 				'hour
-				if self.minute = 0
-					self.hour = floor( (self.lastMinutesOfDayGone + i) / 60) mod 24 '0 after midnight
-					EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", self.hour))
-				endif
+				If Self.minute = 0
+					Self.hour = Floor( (Self.lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
+					EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", Self.hour))
+				EndIf
 
 				'day
-				if self.hour = 0 and self.minute = 0
-					self.minutesOfDayGone 	= 0			'reset minutes of day
-					self.day				:+1			'increase current day
-					self.daytoplan 			= self.day 	'weg, wenn doch nicht automatisch wechseln
-					EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", self.day))
-				endif
+				If Self.hour = 0 And Self.minute = 0
+					Self.minutesOfDayGone 	= 0			'reset minutes of day
+					Self.day				:+1			'increase current day
+					Self.daytoplan 			= Self.day 	'weg, wenn doch nicht automatisch wechseln
+					EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", Self.day))
+				EndIf
 			Next
-			self.lastMinutesOfDayGone = self.minutesOfDayGone
-		endif
+			Self.lastMinutesOfDayGone = Self.minutesOfDayGone
+		EndIf
 	End Method
 
 	'Summary: returns day of the week including gameday
@@ -404,11 +404,11 @@ Type TGame
 
 	'Summary: returns formatted value of actual gametime
 	Method GetFormattedTime:String()
-		local strHours:string = self.hour
-		local strMinutes:string = self.minute
+		Local strHours:String = Self.hour
+		Local strMinutes:String = Self.minute
 
-		if self.hour < 10 then strHours = "0"+strHours
-		if self.minute < 10 then strMinutes = "0"+strMinutes
+		If Self.hour < 10 Then strHours = "0"+strHours
+		If Self.minute < 10 Then strMinutes = "0"+strMinutes
 		Return strHours+":"+strMinutes
 	End Method
 
@@ -423,19 +423,19 @@ Type TGame
 	End Method
 
 	Method GetActualDay:Int(_time:Int = 0)
-		If _time = 0 Then return self.day
+		If _time = 0 Then Return Self.day
 		_time = Ceil(_time / (24 * 60)) + 1
 		Return Int(_time)
 	End Method
 
 	Method GetActualMinute:Int(_time:Int = 0)
-		If _time = 0 Then return self.minute
+		If _time = 0 Then Return Self.minute
 		_time:-((Game.day - 1) * 24 * 60)
 		Return Int(_time) Mod 60
 	End Method
 
 	Method GetActualHour:Int(_time:Int = 0)
-		If _time = 0 Then return self.hour
+		If _time = 0 Then Return Self.hour
 		_time:-(Game.day - 1) * 24 * 60
 		Return Int(Floor(_time / 60))
 	End Method
@@ -496,7 +496,7 @@ Type TPlayer
 			.Player[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetFigure(FigureID)
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI fÃ¼r Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI für Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/test.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
@@ -608,7 +608,7 @@ Type TPlayer
 		UpdateFigureBase(figurebase)
 		Print "RecolorFigure r:" + color.colR + " g" + color.colG + " b" + color.colB
 		'overwrite asset
-		Assets.AddImageAsSprite( "gfx_building_sign"+string(playerID), ColorizeTImage(Assets.GetImage("gfx_building_sign_base"), color.colR, color.colG, color.colB) )
+		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetImage("gfx_building_sign_base"), color.colR, color.colG, color.colB) )
 	End Method
 
 	'nothing up to now
@@ -1347,13 +1347,13 @@ Type TElevator
 	End Method
 
 	Method CloseDoor()
-		self.spriteDoor.setCurrentAnimation("closedoor", true)
+		Self.spriteDoor.setCurrentAnimation("closedoor", True)
 		open = 3
 		If Game.networkgame Then If Network.IsConnected Then If Game.playerID = 1 Then Network.SendElevatorSynchronize()
 	End Method
 
 	Method OpenDoor()
-		self.spriteDoor.setCurrentAnimation("opendoor", true)
+		Self.spriteDoor.setCurrentAnimation("opendoor", True)
 		open = 2 'wird geoeffnet
 		If passenger >= 0
 			Local Figure:TFigures = TFigures.GetFigure(passenger)
@@ -1385,16 +1385,16 @@ Type TElevator
 		EndIf
 		'
 		For Local i:Int = 0 To 13
-			locy = Parent.y + Building.GetFloorY(i) - self.spriteDoor.image.height
+			locy = Parent.y + Building.GetFloorY(i) - Self.spriteDoor.image.height
 '			locy = Parent.y + Building.GetFloorY(i) - image_closed.h
 			If locy < 410 And locy > - 50
-				self.spriteDoor.Draw(Parent.x + Pos.x, locy, "closed")
+				Self.spriteDoor.Draw(Parent.x + Pos.x, locy, "closed")
 			EndIf
 		Next
 	End Method
 
 
-	Method Update(deltaTime:float=1.0)
+	Method Update(deltaTime:Float=1.0)
 		'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
 		'until the function returns the new one, instead of positioning it directly on the floorground
 		If Abs(Building.GetFloorY(Building.GetFloor(Parent.y + Pos.y + Image_inner.h - 1)) - (Pos.y + Image_inner.h)) <= 1
@@ -1411,7 +1411,7 @@ Type TElevator
 				spriteDoor.setCurrentAnimation("open")
 				open = 1 'open
 			EndIf
-		endif
+		EndIf
 		If spriteDoor.getCurrentAnimationName() = "closedoor"
 			open = 3 'closing
 			If spriteDoor.getCurrentAnimation().isFinished()
@@ -1468,7 +1468,7 @@ Type TElevator
 				'				If onFloor > toFloor Then Pos.y:+Min(((Building.GetFloorY(tofloor) - Image_inner.h) - Pos.y), deltaTime * speed) ;upwards = 0
 				'				If onFloor < toFloor Then Pos.y:-Min(((Building.GetFloorY(tofloor) - Image_inner.h) - Pos.y), deltaTime * speed) ;upwards = 1
 				upwards = onfloor < toFloor
-				If not upwards
+				If Not upwards
 					Pos.y	= Min(Pos.y + deltaTime * speed, Building.GetFloorY(toFloor) - image_inner.h)
 				Else
 					Pos.y	= Max(Pos.y - deltaTime * speed, Building.GetFloorY(toFloor) - image_inner.h)
@@ -1500,7 +1500,7 @@ Type TElevator
 		EndIf
 
 		For Local i:Int = 0 To 13
-			locy = Parent.y + Building.GetFloorY(i) - self.spriteDoor.image.height - 8
+			locy = Parent.y + Building.GetFloorY(i) - Self.spriteDoor.image.height - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
 				DrawRect(Parent.x+Pos.x-4 + 10 + (onFloor)*2, locy + 3, 2,2)
@@ -1611,7 +1611,7 @@ Type TBuilding
 		Return Building
 	End Function
 
-	Method Update(deltaTime:float=1.0)
+	Method Update(deltaTime:Float=1.0)
 		y = Clamp(y, - 637, 88)
 		UpdateBackground(deltaTime)
 	End Method
@@ -1641,7 +1641,7 @@ Type TBuilding
 		EndIf
 	End Method
 
-	Method Draw(tweenValue:float=1.0)
+	Method Draw(tweenValue:Float=1.0)
 		'		SetViewport(10,10,780,383)
 		DrawBackground(tweenValue)
 		If Building.GetFloor(Player[Game.playerID].Figure.pos.y) <= 4
@@ -1675,7 +1675,7 @@ Type TBuilding
 		SetViewport(0, 0, App.width, App.height)
 	End Method
 
-	Method UpdateBackground(deltaTime:float=1.0)
+	Method UpdateBackground(deltaTime:Float=1.0)
 		ActHour = Game.GetActualHour()
 		DezimalTime = Float(Game.GetActualHour()) + Float(Game.GetActualMinute())*10/6/100
 		If 9 <= ActHour And Acthour < 18 Then TimeColor = 1
@@ -1766,7 +1766,7 @@ Type TBuilding
 	End Method
 
 	'Summary: Draws background of the mainscreen (stars, buildings, moon...)
-	Method DrawBackground(tweenValue:float=1.0)
+	Method DrawBackground(tweenValue:Float=1.0)
 		Local BuildingHeight:Int = gfx_building_skyscraper.Height + 56
 		SetBlend MASKBLEND
 		DezimalTime = Float(Game.GetActualHour()) + Float(Game.GetActualMinute())*10/6/100
@@ -2292,7 +2292,7 @@ Global MenuPreviewPicTimer:Int = 0
 Global MenuPreviewPicTime:Int = 4000
 Global MenuPreviewPic:TGW_Sprites = Null
 Function Menu_Main_Draw()
-	if rand(0,10) = 10 then GCCollect()
+	If Rand(0,10) = 10 Then GCCollect()
 	SetColor 190,220,240
 	SetAlpha 0.5
 	DrawRect(0,0,App.width,App.Height)
@@ -2354,9 +2354,9 @@ Function Menu_GameSettings_Draw()
 	' Local ChangesAllowed:Byte[4]
 	If Not Game.networkgame
 		GameSettingsBG.value = Localization.GetString("MENU_SOLO_GAME")
-		GameSettings_Chat._visible = false
+		GameSettings_Chat._visible = False
 	Else
-		GameSettings_Chat._visible = true
+		GameSettings_Chat._visible = True
 		If Not Game.onlinegame Then
 			GameSettingsBG.value = Localization.GetString("MENU_NETWORKGAME")
 		Else
@@ -2535,7 +2535,7 @@ Type TBetty
 End Type
 
 Game.gamestate = 1
-Function UpdateMenu(deltaTime:float=1.0)
+Function UpdateMenu(deltaTime:Float=1.0)
 	'	App.Timer.Update(0)
 
 	If Game.networkgame Then Network.UpdateUDP
@@ -2545,14 +2545,14 @@ Function UpdateMenu(deltaTime:float=1.0)
 		Menu_NetworkLobby()
 	ElseIf (Game.gamestate = 3 Or Game.gamestate = 4 Or Game.gamestate = 5)
 		Menu_GameSettings()
-	Endif
-	If KEYMANAGER.IsHit(KEY_ESCAPE) then ExitGame = 1
-	If AppTerminate() then ExitGame = 1
+	EndIf
+	If KEYMANAGER.IsHit(KEY_ESCAPE) Then ExitGame = 1
+	If AppTerminate() Then ExitGame = 1
 End Function
 
 Global LogoTargetY:Float = 20
 Global LogoCurrY:Float = 100
-Function DrawMenu(tweenValue:float=1.0)
+Function DrawMenu(tweenValue:Float=1.0)
 	Cls
 	SetColor 255,255,255
 	gfx_startscreen.render(0, 0)
@@ -2647,16 +2647,16 @@ Function Init_All()
 	Init_SetRoomNames()	'setzt Raumnamen entsprechend Spieler/Sendernamen
 	Init_CreateRoomTooltips()  'erstellt Raum-Tooltips und somit auch Raumplaner-Schilder
 	PrintDebug ("  TRooms.DrawDoorsOnBackground()", "drawing door-prites on the building-sprite", DEBUG_START)
-	print "init_doors"
+	Print "init_doors"
 	TRooms.DrawDoorsOnBackground() 		'draws the door-sprites on the building-sprite
 	PrintDebug ("  Building.DrawItemsToBackground()", "drawing plants and lights on the building-sprite", DEBUG_START)
-	print "init_back"
+	Print "init_back"
 	Building.DrawItemsToBackground()  	'draws plants and lights which are behind the figures
 	PrintDebug ("Init_All()", "complete", DEBUG_START)
 End Function
 
 'ingame update
-Function UpdateMain(deltaTime:float = 1.0)
+Function UpdateMain(deltaTime:Float = 1.0)
 	TError.UpdateErrors()
 	Game.cursorstate = 0
 	If Player[Game.playerID].Figure.inRoom <> Null Then Player[Game.playerID].Figure.inRoom.Update(0)
@@ -2748,12 +2748,12 @@ Function UpdateMain(deltaTime:float = 1.0)
 End Function
 
 'inGame
-Function DrawMain(tweenValue:float=1.0)
+Function DrawMain(tweenValue:Float=1.0)
 	If Player[Game.playerID].Figure.inRoom = Null
 		TProfiler.Enter("DrawBuilding")
 		SetColor Int(190 * Building.timecolor), Int(215 * Building.timecolor), Int(230 * Building.timecolor)
 		DrawRect(20, 10, 140, 373)
-		If Building.y > 10 then DrawRect(150, 10, 500, 200)
+		If Building.y > 10 Then DrawRect(150, 10, 500, 200)
 		DrawRect(650, 10, 130, 373)
 		SetColor 255, 255, 255
 		Building.Draw()									'player is not in a room so draw building
@@ -2808,9 +2808,9 @@ End Function
 'events
 '__________________________________________
 Type TEventOnTime Extends TEventBase
-	Field time:int = 0
+	Field time:Int = 0
 
-	Function Create:TEventOnTime(trigger:string="", time:int)
+	Function Create:TEventOnTime(trigger:String="", time:Int)
 		Local evt:TEventOnTime = New TEventOnTime
 		'evt._startTime = EventManager.getTicks() 'now
 		evt._trigger	= trigger
@@ -2821,47 +2821,47 @@ Type TEventOnTime Extends TEventBase
 End Type
 
 Type TEventListenerPlayer Extends TEventListenerBase
-	field Player:TPlayer
+	Field Player:TPlayer
 
 	Function Create:TEventListenerPlayer(player:TPlayer)
-		local obj:TEventListenerPlayer = new TEventListenerPlayer
+		Local obj:TEventListenerPlayer = New TEventListenerPlayer
 		obj.player = player
-		return obj
+		Return obj
 	End Function
 
-	method OnEvent(triggerEvent:TEventBase)
-		local evt:TEventOnTime = TEventOnTime(triggerEvent)
-		if evt<>null
-			if evt._trigger = "game.onminute" then self.Player.PlayerKI.CallOnMinute()
-			if evt._trigger = "game.onday" then self.Player.PlayerKI.CallOnDayBegins()
-		endif
-	End method
+	Method OnEvent(triggerEvent:TEventBase)
+		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
+		If evt<>Null
+			If evt._trigger = "game.onminute" Then Self.Player.PlayerKI.CallOnMinute()
+			If evt._trigger = "game.onday" Then Self.Player.PlayerKI.CallOnDayBegins()
+		EndIf
+	End Method
 End Type
 
 Type TEventListenerOnMinute Extends TEventListenerBase
 
 	Function Create:TEventListenerOnMinute()
-		local obj:TEventListenerOnMinute = new TEventListenerOnMinute
-		return obj
+		Local obj:TEventListenerOnMinute = New TEventListenerOnMinute
+		Return obj
 	End Function
 
 
 	Method OnEvent(triggerEvent:TEventBase)
-		local evt:TEventOnTime = TEventOnTime(triggerEvent)
-		if evt<>null
+		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
+		If evt<>Null
 			'things happening x:05
-			local minute:int = evt.time mod 60
-			local hour:int = floor(evt.time / 60)
-			local dirty:int = 0
-			if minute = 5 then TPlayer.ComputeAudience(); dirty = true
-			if minute = 55 then TPlayer.ComputeAds(); dirty = true
-			if minute = 0
+			Local minute:Int = evt.time Mod 60
+			Local hour:Int = Floor(evt.time / 60)
+			Local dirty:Int = 0
+			If minute = 5 Then TPlayer.ComputeAudience(); dirty = True
+			If minute = 55 Then TPlayer.ComputeAds(); dirty = True
+			If minute = 0
 				If hour+1 < 6 And hour+1 > 1 Then game.maxAudiencePercentage = Float(RandRange(5, 15)) / 100
 				If hour+1 >= 6 And hour+1 < 18 Then game.maxAudiencePercentage = Float(RandRange(10, 10 + hour+1)) / 100
 				If hour+1 >= 18 Or hour+1 <= 1 Then game.maxAudiencePercentage = Float(RandRange(15, 20 + hour+1)) / 100
 				TPlayer.ComputeNewsAudience()
-				dirty = true
- 			endif
+				dirty = True
+ 			EndIf
 			Interface.BottomImgDirty = dirty
 		EndIf
 	End Method
@@ -2870,13 +2870,13 @@ End Type
 Type TEventListenerOnDay Extends TEventListenerBase
 
 	Function Create:TEventListenerOnDay()
-		local obj:TEventListenerOnDay = new TEventListenerOnDay
-		return obj
+		Local obj:TEventListenerOnDay = New TEventListenerOnDay
+		Return obj
 	End Function
 
-	method OnEvent(triggerEvent:TEventBase)
-		local evt:TEventOnTime = TEventOnTime(triggerEvent)
-		if evt<>null
+	Method OnEvent(triggerEvent:TEventBase)
+		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
+		If evt<>Null
 			'Neuer Award faellig?
 			If Betty.GetAwardEnding() < Game.day - 1
 				Betty.GetLastAwardWinner()
@@ -2885,13 +2885,13 @@ Type TEventListenerOnDay Extends TEventListenerBase
 
 			For Local i:Int = 0 To TProgramme.ProgList.Count()-1
 				Local Programme:TProgramme = TProgramme(TProgramme.ProgList.ValueAtIndex(i))
-				If Programme <> Null then Programme.RefreshTopicality()
+				If Programme <> Null Then Programme.RefreshTopicality()
 			Next
 			TPlayer.ComputeContractPenalties()
 			TPlayer.ComputeDailyCosts()
 			TAuctionProgrammeBlocks.ProgrammeToPlayer() 'won auctions moved to programmecollection of player
 			'if new day, not start day
-			if evt.time > 0
+			If evt.time > 0
 				TRooms.ResetRoomSigns()
 				TNewsBlock.List.sort()
 				For Local NewsBlock:TNewsBlock = EachIn TNewsBlock.List
@@ -2900,22 +2900,22 @@ Type TEventListenerOnDay Extends TEventListenerBase
 						TNewsBlock.List.remove(NewsBlock)
 					EndIf
 				Next
-			endif
+			EndIf
 
-		endif
-	End method
+		EndIf
+	End Method
 End Type
 
 Type TEventListenerOnAppUpdate Extends TEventListenerBase
 
 	Function Create:TEventListenerOnAppUpdate()
-		return new TEventListenerOnAppUpdate
+		Return New TEventListenerOnAppUpdate
 	End Function
 
 
 	Method OnEvent(triggerEvent:TEventBase)
-		local evt:TEventSimple = TEventSimple(triggerEvent)
-		if evt<>null
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt<>Null
 			KEYMANAGER.changeStatus()
 
 			If Game.gamestate = 0
@@ -2923,7 +2923,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			Else
 				UpdateMenu(App.Timer.getDeltaTime())
 			EndIf
-			if rand(0,20) = 20 then GCCollect()
+			If Rand(0,20) = 20 Then GCCollect()
 
 			MOUSEMANAGER.changeStatus(Game.error)
 		EndIf
@@ -2933,20 +2933,20 @@ End Type
 Type TEventListenerOnAppDraw Extends TEventListenerBase
 
 	Function Create:TEventListenerOnAppDraw()
-		return new TEventListenerOnAppDraw
+		Return New TEventListenerOnAppDraw
 	End Function
 
 
 	Method OnEvent(triggerEvent:TEventBase)
-		local evt:TEventSimple = TEventSimple(triggerEvent)
-		if evt<>null
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt<>Null
 			If Game.gamestate = 0
 				DrawMain()
 			Else
 				DrawMenu()
 			EndIf
-			DrawText("FPS:"+App.Timer.fps + " UPS:" + int(App.Timer.ups), 150,0)
-			DrawText("deltaTime "+int(1000*App.Timer.loopTime)+"ms", 250,0)
+			DrawText("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
+			DrawText("deltaTime "+Int(1000*App.Timer.loopTime)+"ms", 250,0)
 			If PrepareScreenshot = 1 Then PrepareScreenshot:+1;DrawImage(gfx_startscreen_logosmall, App.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
 			'GUIManager.Draw("InGame")
 			Flip App.limitFrames
@@ -2959,11 +2959,11 @@ End Type
 
 '__________________________________________
 'events
-for local i:int = 1 to 4
+For Local i:Int = 1 To 4
 	If Player[i].figure.isAI()
 		EventManager.registerListener( "Game.OnMinute",	TEventListenerPlayer.Create(Player[i]) )
 		EventManager.registerListener( "Game.OnDay", 	TEventListenerPlayer.Create(Player[i]) )
-	endif
+	EndIf
 Next
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
 
@@ -2977,7 +2977,7 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 	Repeat
 		If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game
-
+If App.Timer = Null Then Print "app Timer is null"
 		App.Timer.loop()
 
 	Until AppTerminate() Or ExitGame = 1
