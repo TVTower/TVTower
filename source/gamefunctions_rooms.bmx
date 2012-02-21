@@ -1458,32 +1458,33 @@ Type TRoomSigns Extends TBlock
 		Next
   End Function
 
-    Function GetRoomPosFromXY(_x:Int, _y:Int)
-      Local _width:Int = ImageWidth(gfx_elevator_sign[1])
-      Local _height:Int = ImageHeight(gfx_elevator_sign[1])
-      Local clickedroom:TRooms = Null
-    	Print "GetRoomPosFromXY : search room"
-	  For Local room:TRoomSigns = EachIn TRoomSigns.List
- 	    If room.Pos.x >= 0
-	      Local signfloor:Int = (13 - Ceil((MouseY() -41) / 23))
-	      Local xpos:Int = 0
-	      If room.Pos.x = 26 Then xpos = 1
-	      If room.Pos.x = 208 Then xpos = 2
-	      If room.Pos.x = 417 Then xpos = 3
-	      If room.Pos.x = 599 Then xpos = 4
-          If functions.IsIn(_x, _y, room.Pos.x, room.Pos.y, _width, _height)
-		  	Local _figure:TFigures = Player[Game.playerID].Figure
-            clickedroom = TRooms.GetRoomFromMapPos(xpos, signfloor)
-            _figure.ChangeTarget(clickedroom.Pos.x, Building.y + Building.GetFloorY(clickedroom.Pos.y))
-     		TRooms.GetClickedRoom(_figure)
-     		_figure.fromRoom = Null
-            Mousemanager.resetKey(1)
-			Print "GetRoomPosFromXY : found room"
-			Exit
-          EndIf
-	  	EndIf
-	  Next
-			Print "GetRoomPosFromXY : DIDNT found room"
+    Function GetRoomPosFromXY:int(_x:Int, _y:Int)
+		Local _width:Int = Assets.GetSprite("gfx_elevator_sign_bg").w
+		Local _height:Int = Assets.GetSprite("gfx_elevator_sign_bg").h
+		Local clickedroom:TRooms = Null
+		Print "GetRoomPosFromXY : search room"
+
+		For Local room:TRoomSigns = EachIn TRoomSigns.List
+			If room.Pos.x >= 0
+				Local signfloor:Int = (13 - Ceil((MouseY() -41) / 23))
+				Local xpos:Int = 0
+				If room.Pos.x = 26 Then xpos = 1
+				If room.Pos.x = 208 Then xpos = 2
+				If room.Pos.x = 417 Then xpos = 3
+				If room.Pos.x = 599 Then xpos = 4
+				If functions.IsIn(_x, _y, room.Pos.x, room.Pos.y, _width, _height)
+					Local _figure:TFigures = Player[Game.playerID].Figure
+					clickedroom = TRooms.GetRoomFromMapPos(xpos, signfloor)
+					_figure.ChangeTarget(clickedroom.Pos.x, Building.y + Building.GetFloorY(clickedroom.Pos.y))
+					TRooms.GetClickedRoom(_figure)
+					_figure.fromRoom = Null
+					Mousemanager.resetKey(1)
+					return 1
+				EndIf
+			EndIf
+		Next
+		Print "GetRoomPosFromXY : DIDNT found room"
+		return 0
     End Function
 
 End Type

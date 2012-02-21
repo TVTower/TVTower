@@ -1313,22 +1313,16 @@ Type TElevator
 	End Function
 
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
-		If ElevatorCallIsDuplicate(floornumber, who) Then Print "duplicate elevator call";Return 0	'if duplicate - don't add
+		If ElevatorCallIsDuplicate(floornumber, who) Then Print "duplicate elevator call by ID "+who;Return 0	'if duplicate - don't add
 		Local FloorRoute:TFloorRoute = TFloorRoute.Create(floornumber,call,who)
 		If First Or Not call
 			FloorRouteList.AddFirst(floorroute)
 			Self.toFloor = Self.GetFloorRoute()
 		Else
-			If FloorRouteList.IsEmpty()
-				FloorRouteList.AddLast(floorroute)
-			Else
-				If TFloorRoute(FloorRouteList.Last()).who <> who And TFloorRoute(FloorRouteList.Last()).floornumber <> floornumber
-					FloorRouteList.AddLast(floorroute)
-				Else
-					FloorRouteList.RemoveLast()
-					FloorRouteList.AddLast(floorroute)
-				EndIf
+			If not FloorRouteList.IsEmpty() AND (TFloorRoute(FloorRouteList.Last()).who = who OR TFloorRoute(FloorRouteList.Last()).floornumber = floornumber)
+				FloorRouteList.RemoveLast()
 			EndIf
+			FloorRouteList.AddLast(floorroute)
 		EndIf
 		If Not fromNetwork Then If Game.networkgame Then If Network.IsConnected Then Print "send route to net";Network.SendElevatorRouteChange(floornumber, call, who, First)
 	End Method
@@ -2973,6 +2967,11 @@ Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 
 Global DelayPossible:Int = 0
 Global Init_Complete:Int = 0
+
+'Init EventManager
+'could also be done during update ("if not initDone...")
+EventManager.Init()
+
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 100)
 	Repeat
