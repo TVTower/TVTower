@@ -2813,7 +2813,7 @@ Type TEventOnTime Extends TEventBase
 	Function Create:TEventOnTime(trigger:String="", time:Int)
 		Local evt:TEventOnTime = New TEventOnTime
 		'evt._startTime = EventManager.getTicks() 'now
-		evt._trigger	= trigger
+		evt._trigger	= lower(trigger)
 		'special data:
 		evt.time		= time
 		Return evt
@@ -2832,6 +2832,7 @@ Type TEventListenerPlayer Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
+
 			If evt._trigger = "game.onminute" Then Self.Player.PlayerKI.CallOnMinute()
 			If evt._trigger = "game.onday" Then Self.Player.PlayerKI.CallOnDayBegins()
 		EndIf
@@ -2977,8 +2978,12 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 	Repeat
 		If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game
-If App.Timer = Null Then Print "app Timer is null"
+
 		App.Timer.loop()
+
+		'process events not directly triggered
+		'process "onMinute" etc.
+		EventManager.update()
 
 	Until AppTerminate() Or ExitGame = 1
 	If Game.networkgame Then If Network.IsConnected = True Then Network.NetDisconnect ' Disconnect

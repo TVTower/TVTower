@@ -1,0 +1,14 @@
+
+#compiler optimisation
+#setccopt optimization -O3
+
+# specific architecture
+#setwin32ccopt arch -march=pentium3
+
+#setmacx86ccopt arch -march=nocona
+#setmacx86ccopt math -msse3
+
+# skipping modules
+skipmod brl.mod
+skipmod pub.mod
+#skipmodwin32 bah.cegui

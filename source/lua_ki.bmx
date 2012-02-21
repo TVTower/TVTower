@@ -49,14 +49,6 @@ Type TNewLuaEngine
 
 	Method LoadScript:Int(scriptFile:String)
 		' Run the script so it can set things up
-rem
-		If FileSize(scriptFile) < 0
-			RuntimeError("File "+scriptFile+" not found.")
-			Return False
-		Else
-			Print scriptFile+" found."
-		End If
-endrem
 	    If luaL_dofile(Self.LuaState(),scriptFile)
 			Local error:String = lua_tostring(Self.LuaState(), -1 )
 			Print error
@@ -131,41 +123,6 @@ OnEnd(killLua)
 Global LuaFunctions:TLuaFunctions = New TLuaFunctions
 NewLuaEngine.RegisterFunction("PrintOut",Test)
 NewLuaEngine.LoadScript("test.lua")
-endrem
-
-
-rem
-' Returns the rotation of one or more sprites (angle in degrees)
-' e.g., angle = SpritePosition(sprite)
-Function lSpriteRotation:Int( L:Byte Ptr )
-	Local sprites:int = lua_gettop(L)
-	For Local stackidx:Int = 1 To sprites
-		If lua_islightuserdata( L, stackidx ) Then
-			Local handle:Int = Int(lua_touserdata( L, stackidx ))
-			Local sprite:TSprite = TSprite(HandleToObject(handle))
-			Assert sprite Else "Attempt to get position of object that is not a sprite"
-
-			lua_pushnumber( L, sprite.rotation )
-		EndIf
-	Next
-
-	Return sprites
-End Function
-
-
-' Sets the rotation of a single sprite (angle in degrees)
-' function SetSpriteRotation(sprite, angle)
-Function lSetSpriteRotation:Int( L:Byte Ptr )
-	Local sprite:TSprite
-	Local handle:Int
-
-	handle = Int(lua_touserdata( L, 1 ))
-	sprite = TSprite(HandletoObject(handle))
-
-	sprite.rotation = lua_tonumber( L, 2 )
-
-	Return 0
-End Function
 endrem
 
 
@@ -348,6 +305,7 @@ Type KI
 	    activeKI = Self
 		Local args:Object[1]
 		args[0] = "5.0"
+		'print "KI call on Minute"
 		Self.LuaEngine.CallLuaFunction("OnMinute", args)
 	'	Self.PrintErrors()
 	End Method
@@ -1202,8 +1160,8 @@ Type KI_EventManager
 		Local ki:KI = getKIByPlayerId(playerId)
 		If ki = Null Then
 			Return
-		End If
-	'	ki.CallOnMinute()
+		EndIf
+		ki.CallOnMinute()
 	End Function
 
 	Function onReachRoom(playerId:Byte, roomId:Byte)

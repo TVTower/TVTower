@@ -129,7 +129,7 @@ Type TEventSimple extends TEventBase
 
 	Function Create:TEventSimple(trigger:string, data:object)
 		local obj:TEventSimple = new TEventSimple
-		obj._trigger	= trigger
+		obj._trigger	= lower(trigger)
 		obj._data	 	= data
 		return obj
 	End Function
