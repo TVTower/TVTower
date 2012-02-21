@@ -1320,52 +1320,56 @@ Type TRoomSigns Extends TBlock
 	'draw the Block inclusive text
     'zeichnet den Block inklusive Text
     Method Draw()
-      SetColor 255,255,255;dragable=1  'normal
+		SetColor 255,255,255;dragable=1  'normal
 
-      If dragged = 1
-    	If TRoomSigns.AdditionallyDragged > 0 Then SetAlpha 1- 1/TRoomSigns.AdditionallyDragged * 0.25
-     	image_dragged.Draw(Pos.x,Pos.y)
-	    If imagewithtext <> Null
-	      SetViewport(Pos.x+2,Pos.y+2, image_dragged.w-7,image_dragged.h-7)
-		  imagewithtext.Draw(Pos.x,Pos.y)
-		  SetViewport(0,0,800,600)
+		If dragged = 1
+			If TRoomSigns.AdditionallyDragged > 0 Then SetAlpha 1- 1/TRoomSigns.AdditionallyDragged * 0.25
+			if image_dragged <> null
+				image_dragged.Draw(Pos.x,Pos.y)
+				If imagewithtext <> Null
+					SetViewport(Pos.x+2,Pos.y+2, image_dragged.w-7,image_dragged.h-7)
+					imagewithtext.Draw(Pos.x,Pos.y)
+					SetViewport(0,0,800,600)
+				EndIf
+			endif
+		Else
+			If imagewithtext <> Null
+			  imagewithtext.Draw(Pos.x,Pos.y)
+			Else
+				if image <> null
+					image.Draw(Pos.x,Pos.y)
+					Local colr:Int = 255
+					Local colg:Int = 255
+					Local colb:Int = 255
+					If colr > 255 Then colr = 255
+					If colg > 255 Then colg = 255
+					If colb > 255 Then colb = 255
+					SetImageFont Font10
+					SetAlpha 1.0;functions.BlockText(title, Pos.x+23,Pos.y+4,150,20,0,Font10,0,0,0,1)
+					SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,0,0,0,1)
+					Local TxtWidth:Int = TextWidth(title)+4
+					If TxtWidth > image.w-23-5 Then TxtWidth = image.w-23-5
+					Local pixmap:TPixmap = GrabPixmap(Pos.x+23-2,Pos.y+4-2,TxtWidth,TextHeight(title)+3)
+					pixmap = ConvertPixmap(pixmap, PF_RGB888)
+					blurPixmap(pixmap, 0.5)
+					pixmap = ConvertPixmap(pixmap, PF_RGB888)
+					DrawPixmap(pixmap, Pos.x+21,Pos.y+2)
+				  If owner > 0 And owner <=4
+					SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,colr,colg,colb,1)
+				  Else
+					SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,250,250,250,1)
+				  EndIf
+				endif
+			EndIf
+			If imagewithtext = Null AND image <> null
+				local newimgwithtext:Timage = TImage.Create(image.w, image.h -1,1,0,255,0,255)
+				newimgwithtext.pixmaps[0].format = PF_RGB888
+				newimgwithtext.pixmaps[0] = GrabPixmap(Pos.x,Pos.y,image.w,image.h-1)
+				newimgwithtext.pixmaps[0] = ConvertPixmap(newimgwithtext.pixmaps[0], PF_RGB888)
+				imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
+			EndIf
 		EndIf
-      Else
-	    If imagewithtext <> Null
-	      imagewithtext.Draw(Pos.x,Pos.y)
-	    Else
-       	  image.Draw(Pos.x,Pos.y)
-	        Local colr:Int = 255
-	        Local colg:Int = 255
-	        Local colb:Int = 255
-		    If colr > 255 Then colr = 255
-		    If colg > 255 Then colg = 255
-		    If colb > 255 Then colb = 255
-			SetImageFont Font10
-			SetAlpha 1.0;functions.BlockText(title, Pos.x+23,Pos.y+4,150,20,0,Font10,0,0,0,1)
-			SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,0,0,0,1)
-			Local TxtWidth:Int = TextWidth(title)+4
-			If TxtWidth > image.w-23-5 Then TxtWidth = image.w-23-5
-	        Local pixmap:TPixmap = GrabPixmap(Pos.x+23-2,Pos.y+4-2,TxtWidth,TextHeight(title)+3)
-			pixmap = ConvertPixmap(pixmap, PF_RGB888)
-            blurPixmap(pixmap, 0.5)
-			pixmap = ConvertPixmap(pixmap, PF_RGB888)
-			DrawPixmap(pixmap, Pos.x+21,Pos.y+2)
-          If owner > 0 And owner <=4
-			SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,colr,colg,colb,1)
-          Else
-	        SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,250,250,250,1)
-          EndIf
-	    EndIf
-	    If imagewithtext = Null
-			local newimgwithtext:Timage = TImage.Create(image.w, image.h -1,1,0,255,0,255)
-			newimgwithtext.pixmaps[0].format = PF_RGB888
-			newimgwithtext.pixmaps[0] = GrabPixmap(Pos.x,Pos.y,image.w,image.h-1)
-			newimgwithtext.pixmaps[0] = ConvertPixmap(newimgwithtext.pixmaps[0], PF_RGB888)
-			imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
-	    End If
-      EndIf
-      SetAlpha 1
+		SetAlpha 1
     End Method
 
 
@@ -1444,14 +1448,14 @@ Type TRoomSigns Extends TBlock
 		ReverseList TRoomSigns.list 'reorder: first are not dragged obj
   End Function
 
-  Function DrawAll()
-    SortList TRoomSigns.List
-    For Local locObject:TRoomSigns = EachIn TRoomSigns.List
-      Assets.GetSprite("elevator_sign_bg").Draw(locObject.OrigPos.x + 20, locObject.OrigPos.y + 6)
-     Next
-     For Local locObject:TRoomSigns = EachIn TRoomSigns.List
-      	locObject.Draw()
-     Next
+	Function DrawAll()
+		SortList TRoomSigns.List
+		For Local locObject:TRoomSigns = EachIn TRoomSigns.List
+			Assets.GetSprite("gfx_elevator_sign_bg").Draw(locObject.OrigPos.x + 20, locObject.OrigPos.y + 6)
+		Next
+		For Local locObject:TRoomSigns = EachIn TRoomSigns.List
+			locObject.Draw()
+		Next
   End Function
 
     Function GetRoomPosFromXY(_x:Int, _y:Int)
