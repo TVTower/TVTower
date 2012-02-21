@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<game>
+	<settings>
+		<version>1</version>
+		<username>Testspieler</username>
+		<channelname>Testchannel</channelname>
+		<language>de</language>
+		<onlineport>4544</onlineport>
+		<database>res/database.xml</database>
+		<defaultgamename>Testspielers Spiel</defaultgamename>
+		<fullscreen>0</fullscreen>
+		<fallbacklocalip>192.168.0.17</fallbacklocalip>
+		<directx>0</directx>
+		<colordepth>16</colordepth>
+	</settings>
+</game>

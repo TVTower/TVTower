@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<resource name="gfx_building_sign_base">
+			<type>image</type>
+			<url>grafiken/hochhaus/raum_schild.png</url>
+		</resource>
+		<resource name="gfx_hochhauspack">
+			<type>SpritePack</type>
+ 			<url>grafiken/hochhaus/hochhauspack.png</url>
+			<children>
+				<child name="gfx_building_Dach" 			x="0" 	y="296" w="507"	h="51"	id="0" />
+				<child name="gfx_building_Eingang" 			x="0" 	y="397" w="166"	h="77"	id="1" />
+				<child name="gfx_building_Zaun" 			x="166" y="397" w="126"	h="51"	id="2" />
+				<child name="gfx_building_Fahrstuhl_Rahmen" 			x="292"	y="397" w="52"	h="58"	id="3" />
+				<child name="gfx_building_Fahrstuhl_Geschlossen" 	x="344" y="397" w="52"	h="58"	id="4" />
+				<child name="gfx_building_Fahrstuhl_Innen" 			x="396" y="397" w="40"	h="55"	id="5" />
+				<child name="gfx_building_Fahrstuhl_oeffnend"		x="0" 	y="347"	w="320"	h="50"	frames="8"	id="111" />
+
+
+				<child name="gfx_building_BG_Ebene1L"		x="253" y="0" 	w="127"	h="157"	id="6" />
+				<child name="gfx_building_BG_Ebene1R"		x="380" y="188" w="49"	h="95"	id="7" />
+				<child name="gfx_building_BG_Ebene2L"		x="380" y="0" 	w="127"	h="228"	id="8" />
+				<child name="gfx_building_BG_Ebene2R"		x="253" y="157" w="123"	h="139"	id="9" />
+				<child name="gfx_building_BG_Ebene3L"		x="0" 	y="0" 	w="127"	h="228"	id="10" />
+				<child name="gfx_building_BG_Ebene3R"		x="127" y="0" 	w="126"	h="221"	id="11" />
+
+				<child name="gfx_building_Pflanze1"		x="320" y="347"	w="24"	h="50"	id="12" />
+				<child name="gfx_building_Pflanze1a"		x="344" y="347"	w="24"	h="50"	id="13" />
+				<child name="gfx_building_Pflanze1b"		x="368" y="347"	w="24"	h="50"	id="14" />
+				<child name="gfx_building_Pflanze2"		x="129" y="480"	w="43"	h="32"	id="15" />
+				<child name="gfx_building_Pflanze2a"		x="172" y="448"	w="43"	h="32"	id="16" />
+				<child name="gfx_building_Pflanze2b"		x="172" y="480"	w="43"	h="32"	id="17" />
+				<child name="gfx_building_Pflanze3"		x="0"	y="480"	w="43"	h="32"	id="18" />
+				<child name="gfx_building_Pflanze3a"		x="43"	y="480"	w="43"	h="32"	id="19" />
+				<child name="gfx_building_Pflanze3b"		x="86"	y="480"	w="43"	h="32"	id="20" />
+				<child name="gfx_building_Pflanze4"		x="392" y="347"	w="38"	h="41"	id="21" />
+				<child name="gfx_building_Pflanze4a"		x="430" y="347"	w="38"	h="32"	id="22" />
+				<child name="gfx_building_Pflanze4b"		x="468" y="347"	w="38"	h="32"	id="23" />
+				<child name="gfx_building_Pflanze5"		x="443" y="424"	w="32"	h="37"	id="24" />
+				<child name="gfx_building_Pflanze5a"		x="475" y="424"	w="32"	h="37"	id="25" />
+				<child name="gfx_building_Pflanze5b"		x="475" y="461"	w="32"	h="37"	id="26" />
+				<child name="gfx_building_Pflanze6"		x="436" y="390"	w="25"	h="34"	id="27" />
+				<child name="gfx_building_Pflanze6a"		x="461" y="390"	w="25"	h="34"	id="28" />
+				<child name="gfx_building_Pflanze6b"		x="486" y="390"	w="25"	h="34"	id="29" />
+
+				<child name="gfx_building_Wandlampe"		x="430" y="189"	w="60"	h="54"	id="30" />
+				<child name="gfx_building_Tueren"		x="215" y="458"	w="228"	h="54"	frames="6"	id="31" />
+
+				<child name="gfx_building_ufo"	x="0" y="228" w="207"	h="13"	f="9"	id="32" />
+				<child name="gfx_building_ufo2"	x="0" y="241" w="207"	h="40"	f="9"	id="33" />
+
+			</children>
+			<scripts>
+				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1a"	r="200"		g="200"		b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1b"	r="250"		g="250"		b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2a"	r="200"		g="200"		b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2b"	r="250"		g="250"		b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3a"	r="200"		g="200"		b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3b"	r="250"		g="250"		b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4a"	r="100"		g="200"		b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4b"	r="250"		g="250"		b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5a"	r="100"		g="200"		b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5b"	r="250"		g="250"		b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6a"	r="100"		g="200"		b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6b"	r="250"		g="250"		b="250" />
+			</scripts>
+		</resource>
+
+	</resources>
+</tvt>

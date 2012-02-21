@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<resource name="gfx_gui_rect">
+			<type>SpritePack</type>
+ 			<url>grafiken/gui/rahmenpack2.png</url>
+			<children>
+				<child name="gfx_gui_rect_TopLeft" 		x="0" 	y="0" 	w="35" 	h="35" />
+				<child name="gfx_gui_rect_TopRight" 	x="94" 	y="0" 	w="35" 	h="35" />
+				<child name="gfx_gui_rect_BottomLeft" 	x="0" 	y="94" 	w="35" 	h="35" />
+				<child name="gfx_gui_rect_BottomRight" 	x="94" 	y="94" 	w="35" 	h="35" />
+
+				<child name="gfx_gui_rect_BorderLeft" 	x="0" 	y="35" 	w="35" 	h="50" />
+				<child name="gfx_gui_rect_BorderTop" 	x="35" 	y="0" 	w="50" 	h="35" />
+				<child name="gfx_gui_rect_BorderRight" 	x="94" 	y="35" 	w="35" 	h="50" />
+				<child name="gfx_gui_rect_BorderBottom" x="35" 	y="94" 	w="50" 	h="35" />
+
+				<child name="gfx_gui_rect_Back" 		x="35" 	y="35" 	w="50" 	h="50" />
+			</children>
+		</resource>
+		<resource name="gfx_gui">
+			<type>SpritePack</type>
+ 			<url>grafiken/gui/gui2011.png</url>
+ 			<filter>FILTEREDIMAGE,MIPMAPPED</filter>
+			<children>
+				<child name="gfx_gui_ok_off" 			x="0" 	y="0" 	w="32" 	h="32" />
+				<child name="gfx_gui_ok_off.hover" 		x="32" 	y="0" 	w="32" 	h="32" />
+				<child name="gfx_gui_ok_off.active" 	x="64" 	y="0" 	w="32" 	h="32" />
+				<child name="gfx_gui_ok_on" 			x="96" 	y="0" 	w="32" 	h="32" />
+				<child name="gfx_gui_ok_on.hover" 		x="128" y="0" 	w="32" 	h="32" />
+				<child name="gfx_gui_ok_on.active" 		x="160" y="0" 	w="32" 	h="32" />
+
+				<child name="gfx_gui_button.L" 			x="0" 	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.M" 			x="32" 	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.R" 			x="64" 	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.hover.L"	x="96" 	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.hover.M"	x="128"	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.hover.R"	x="160"	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.active.L"	x="192"	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.active.M"	x="224"	y="96" 	w="32" 	h="48" />
+				<child name="gfx_gui_button.active.R"	x="256"	y="96" 	w="32" 	h="48" />
+
+				<child name="gfx_gui_input.L" 			x="0" 	y="304" 	w="32" 	h="48" />
+				<child name="gfx_gui_input.M" 			x="32" 	y="304" 	w="16" 	h="48" />
+				<child name="gfx_gui_input.R" 			x="48" 	y="304" 	w="48" 	h="48" />
+				<child name="gfx_gui_input.hover.L"		x="96" 	y="304" 	w="32" 	h="48" />
+				<child name="gfx_gui_input.hover.M"		x="128"	y="304" 	w="16" 	h="48" />
+				<child name="gfx_gui_input.hover.R"		x="144"	y="304" 	w="48" 	h="48" />
+				<child name="gfx_gui_input.active.L"	x="192"	y="304" 	w="32" 	h="48" />
+				<child name="gfx_gui_input.active.M"	x="224"	y="304" 	w="16" 	h="48" />
+				<child name="gfx_gui_input.active.R"	x="240"	y="304" 	w="48" 	h="48" />
+
+				<child name="gfx_gui_overlay_tvchannel"	x="0"	y="352" 	w="32" 	h="32" />
+				<child name="gfx_gui_overlay_player"	x="32"	y="352" 	w="32" 	h="32" />
+				<child name="gfx_gui_overlay_disc"		x="64"	y="352" 	w="32" 	h="32" />
+
+
+				<child name="gfx_gui_box_context.TL"		x="288"	y="0" 	w="32" 	h="48" />
+				<child name="gfx_gui_box_context.TM"		x="320"	y="0" 	w="32" 	h="48" />
+				<child name="gfx_gui_box_context.TR"		x="384"	y="0" 	w="32" 	h="48" />
+				<child name="gfx_gui_box_context.ML"		x="288"	y="48" 	w="32" 	h="32" />
+				<child name="gfx_gui_box_context.MM"		x="320"	y="48" 	w="32" 	h="32" />
+				<child name="gfx_gui_box_context.MR"		x="384"	y="48" 	w="32" 	h="32" />
+				<child name="gfx_gui_box_context.BL"		x="288"	y="112" w="32" 	h="32" />
+				<child name="gfx_gui_box_context.BM"		x="320"	y="112" w="32" 	h="32" />
+				<child name="gfx_gui_box_context.BR"		x="384"	y="112" w="32" 	h="32" />
+				<child name="gfx_gui_box_context.SL"		x="288"	y="80" w="32" 	h="16" />
+				<child name="gfx_gui_box_context.SM"		x="320"	y="80" w="32" 	h="16" />
+				<child name="gfx_gui_box_context.SR"		x="384"	y="80" w="32" 	h="16" />
+
+				<child name="gfx_gui_arrow_right"			x="0" 	y="240" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_right.hover"		x="32" 	y="240" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_right.active"	x="64" 	y="240" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_left"			x="96" 	y="240" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_left.hover"		x="128"	y="240" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_left.active"		x="160"	y="240" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_down"			x="0" 	y="272" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_down.hover"		x="32" 	y="272" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_down.active"		x="64" 	y="272" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_up"				x="96" 	y="272" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_up.hover"		x="128"	y="272" 	w="32" 	h="32" />
+				<child name="gfx_gui_arrow_up.active"		x="160"	y="272" 	w="32" 	h="32" />
+
+
+			</children>
+		</resource>
+
+	</resources>
+</tvt>

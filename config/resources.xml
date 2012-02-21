@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<resource name="resource_rooms">
+			<type>xml</type>
+			<url>config/rooms.xml</url>
+		</resource>
+		<resource name="resource_interface">
+			<type>xml</type>
+			<url>config/interface.xml</url>
+		</resource>
+		<resource name="resource_gui">
+			<type>xml</type>
+			<url>config/gui.xml</url>
+		</resource>
+		<resource name="resource_gfx_dialog">
+			<type>xml</type>
+			<url>config/gfx_dialog.xml</url>
+		</resource>
+		<resource name="resource_gfx_officepack">
+			<type>xml</type>
+			<url>config/gfx_officepack.xml</url>
+		</resource>
+		<resource name="resource_gfx_building">
+			<type>xml</type>
+			<url>config/gfx_hochhauspack.xml</url>
+		</resource>
+		<resource name="resource_gfx">
+			<type>xml</type>
+			<url>config/gfx.xml</url>
+		</resource>
+		<resource name="resource_figures">
+			<type>xml</type>
+			<url>config/figures.xml</url>
+		</resource>
+	</resources>
+</tvt>

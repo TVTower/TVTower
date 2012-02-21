@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<resource name="stationmap_antenna">
+			<type>image</type>
+ 			<url>grafiken/senderkarte/antenne3.png</url>
+			<scripts>
+				<script	do="ColorizeCopy"	dest="stationmap_antenna0"	r="255"	g="255"	b="255" />
+				<script	do="ColorizeCopy"	dest="stationmap_antenna1"	r="100"	g="20"	b="20" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna2"	r="20"	g="100"	b="20" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna3"	r="50"	g="50"	b="100" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna4"	r="100"	g="100"	b="0" />
+			</scripts>
+		</resource>
+		<resource name="gfx_building_sign_base">
+			<type>image</type>
+ 			<url>grafiken/hochhaus/raum_schild.png</url>
+			<scripts>
+				<script	do="ColorizeCopy"	dest="gfx_building_sign0"	r="200"	g="200"	b="200" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign1"	r="80"	g="20"	b="20" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign2"	r="20"	g="100"	b="20" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign3"	r="50"	g="50"	b="100" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign4"	r="100"	g="100"	b="0" />
+			</scripts>
+		</resource>
+		<resource name="building_clouds">
+			<type>image</type>
+ 			<url>grafiken/hochhaus/wolken.png</url>
+		</resource>
+		<resource name="gfx_BG_moon">
+			<type>image</type>
+ 			<url>grafiken/hochhaus/himmel_mondphasen2.png</url>
+		</resource>
+		<resource name="gfx_room_betty_picture1">
+			<type>image</type>
+ 			<url>grafiken/betty/bild1.png</url>
+		</resource>
+		<resource name="gfx_datasheets_bar">
+			<type>image</type>
+ 			<url>grafiken/datenblaetter/tv_balken.png</url>
+		</resource>
+		<resource name="gfx_errorbox">
+			<type>image</type>
+ 			<url>grafiken/errorbox.png</url>
+		</resource>
+		<resource name="gfx_tooltip_header">
+			<type>image</type>
+ 			<url>grafiken/gui/tooltip.png</url>
+		</resource>
+
+		<resource name="gfx_building_standlight" usage="is unused atm">
+			<type>image</type>
+ 			<url>grafiken/hochhaus/hochhaus_standlampe.png</url>
+		</resource>
+
+		<resource name="gfx_building">
+			<type>image</type>
+ 			<url>grafiken/hochhaus/hochhaus.png</url>
+ 			<flags>MASKEDIMAGE,DYNAMICIMAGE</flags>
+		</resource>
+
+		<resource name="gfx_elevator_sign_bg">
+			<type>image</type>
+ 			<url>grafiken/hinweistafel/gfx_tafel_halterung.png</url>
+		</resource>
+		<resource name="gfx_elevator_sign_base">
+			<type>image</type>
+ 			<url>grafiken/hinweistafel/gfx_tafel_weiss.png</url>
+		</resource>
+		<resource name="gfx_elevator_sign_dragged_base">
+			<type>image</type>
+ 			<url>grafiken/hinweistafel/gfx_tafel_weiss_dragged.png</url>
+		</resource>
+	</resources>
+</tvt>

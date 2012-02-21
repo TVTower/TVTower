@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<resource name="gfx_officepack">
+			<type>SpritePack</type>
+ 			<url>grafiken/buero/officepack.png</url>
+			<children>
+				<child name="genres" 						x="0" 	y="0" 	w="139" h="348" />
+				<child name="episodes" 						x="0" 	y="348"	w="107" h="135" />
+				<child name="btn_options"					x="318"	y="351"	w="98"	h="56" />
+				<child name="btn_programme"					x="423"	y="416"	w="98"	h="56" />
+				<child name="btn_financials"				x="839"	y="230"	w="98"	h="56" />
+				<child name="btn_image"						x="604"	y="320"	w="98"	h="56" />
+				<child name="btn_news"						x="318"	y="407"	w="98"	h="56" />
+				<child name="btn_ads"						x="702"	y="320"	w="98"	h="56" />
+				<child name="pp_cassettes_movies"			x="687"	y="107"	w="159"	h="18" />
+				<child name="pp_cassettes_episodes"			x="878"	y="109"	w="97"	h="11" />
+				<child name="pp_cassettes_series"			x="604"	y="376"	w="159"	h="18" />
+				<child name="pp_menu_werbung"				x="839"	y="287"	w="185"	h="210" />
+				<child name="pp_adblock1"					x="341"	y="267"	w="75"	h="30" />
+				<child name="pp_adblock1_dragged"			x="339"	y="161"	w="80"	h="35" />
+				<child name="pp_programmeblock1"			x="604"	y="290"	w="195"	h="30" />
+				<child name="pp_programmeblock1_dragged"	x="750"	y="193"	w="200"	h="35" />
+				<child name="pp_programmeblock2"			x="604"	y="230"	w="195"	h="60" />
+				<child name="pp_programmeblock2_dragged"	x="750"	y="128"	w="200"	h="65" />
+				<child name="audiencenews_barren"			x="129"	y="348"	w="9"	h="100" />
+				<child name="audience_barren"				x="950"	y="128"	w="15"	h="100" />
+
+				<child name="gfx_officepack_topo_sachsen"				x="139"	y="351"	w="179"	h="74" />
+				<child name="gfx_officepack_topo_niedersachsen"		x="423"	y="0"	w="264"	h="128" />
+				<child name="gfx_officepack_topo_schleswigholstein"	x="423"	y="337"	w="143"	h="79" />
+				<child name="gfx_officepack_topo_meckpom"				x="139"	y="267"	w="202"	h="84" />
+				<child name="gfx_officepack_topo_nrw"					x="139"	y="161"	w="200"	h="106" />
+				<child name="gfx_officepack_topo_brandenburg"			x="687"	y="0"	w="191"	h="107" />
+				<child name="gfx_officepack_topo_sachsenanhalt"		x="604"	y="128"	w="146"	h="102"/>
+				<child name="gfx_officepack_topo_hessen"				x="878"	y="0"	w="142"	h="109" />
+				<child name="gfx_officepack_topo_thueringen"			x="139"	y="425"	w="155"	h="72" />
+				<child name="gfx_officepack_topo_rheinlandpfalz"		x="423"	y="239"	w="137"	h="98" />
+				<child name="gfx_officepack_topo_saarland"				x="0"	y="483"	w="62"	h="29" />
+				<child name="gfx_officepack_topo_bayern"				x="139"	y="0"	w="284"	h="161" />
+				<child name="gfx_officepack_topo_bawue"				x="423"	y="128"	w="181"	h="111" />
+				<child name="gfx_officepack_topo_berlin"				x="799"	y="450"	w="33"	h="20" />
+				<child name="gfx_officepack_topo_hamburg"				x="566"	y="337"	w="38"	h="19" />
+				<child name="gfx_officepack_topo_bremen"				x="521"	y="416"	w="26"	h="17" />
+
+
+			</children>
+		</resource>
+	</resources>
+</tvt>

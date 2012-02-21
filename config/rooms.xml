@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<resource name="rooms_pplanning">
+			<type>image</type>
+ 			<url>grafiken/buero/pplanung.png</url>
+		</resource>
+		<resource name="rooms_financials">
+			<type>image</type>
+ 			<url>grafiken/buero/finanzen.png</url>
+		</resource>
+		<resource name="rooms_image">
+			<type>image</type>
+ 			<url>grafiken/buero/image.png</url>
+		</resource>
+		<resource name="rooms_stationmap">
+			<type>image</type>
+ 			<url>grafiken/senderkarte/raum_karte.png</url>
+		</resource>
+		<resource name="rooms_bureau">
+			<type>image</type>
+ 			<url>grafiken/buero/raum_buero.png</url>
+		</resource>
+		<resource name="rooms_chief">
+			<type>image</type>
+ 			<url>grafiken/chef/raum_chef.png</url>
+		</resource>
+		<resource name="rooms_news">
+			<type>image</type>
+ 			<url>grafiken/news/raum_news.png</url>
+		</resource>
+		<resource name="rooms_newsplanning">
+			<type>image</type>
+ 			<url>grafiken/news/newsplanung.png</url>
+		</resource>
+		<resource name="rooms_archive">
+			<type>image</type>
+ 			<url>grafiken/archiv/raum_archiv.png</url>
+		</resource>
+		<resource name="rooms_adagency">
+			<type>image</type>
+ 			<url>grafiken/werbeagentur/raum_werbeagentur.png</url>
+		</resource>
+		<resource name="rooms_movieagency">
+			<type>image</type>
+ 			<url>grafiken/filmverleiher/raum_filmverleiher.png</url>
+		</resource>
+		<resource name="rooms_elevator">
+			<type>image</type>
+ 			<url>grafiken/hinweistafel/raum_hinweistafel.png</url>
+		</resource>
+		<resource name="rooms_credits">
+			<type>image</type>
+ 			<url>grafiken/hochhaus/raum_credits.png</url>
+		</resource>
+		<resource name="rooms_betty">
+			<type>image</type>
+ 			<url>grafiken/betty/raum_betty.png</url>
+		</resource>
+		<resource name="rooms_supermarket">
+			<type>image</type>
+ 			<url>grafiken/supermarkt/raum_supermarkt.png</url>
+		</resource>
+		<resource name="rooms_studio">
+			<type>image</type>
+ 			<url>grafiken/studio/raum_studio.png</url>
+		</resource>
+		<resource name="rooms_safe">
+			<type>image</type>
+ 			<url>grafiken/buero/raum_speichernladen.png</url>
+		</resource>
+	</resources>
+	<rooms>
+
+		<room name="archive" owner="1" image="rooms_archive">
+			<tooltip 1="ROOM_ARCHIVE_OF" />
+			<door x="4" y="2" type="3" />
+		</room>
+		<room name="archive" owner="2" image="rooms_archive">
+			<tooltip 1="ROOM_ARCHIVE_OF" />
+			<door x="4" y="5" type="3" />
+		</room>
+		<room name="archive" owner="3" image="rooms_archive">
+			<tooltip 1="ROOM_ARCHIVE_OF" />
+			<door x="4" y="8" type="3" />
+		</room>
+		<room name="archive" owner="4" image="rooms_archive">
+			<tooltip 1="ROOM_ARCHIVE_OF" />
+			<door x="4" y="11" type="3" />
+		</room>
+
+		<room name="news" owner="1" image="rooms_news">
+			<tooltip 1="ROOM_NEWSSTUDIO_OF" />
+			<door x="2" y="2" type="3" />
+		</room>
+		<room name="news" owner="2" image="rooms_news">
+			<tooltip 1="ROOM_NEWSSTUDIO_OF" />
+			<door x="2" y="5" type="3" />
+		</room>
+		<room name="news" owner="3" image="rooms_news">
+			<tooltip 1="ROOM_NEWSSTUDIO_OF" />
+			<door x="2" y="8" type="3" />
+		</room>
+		<room name="news" owner="4" image="rooms_news">
+			<tooltip 1="ROOM_NEWSSTUDIO_OF" />
+			<door x="2" y="11" type="3" />
+		</room>
+
+		<room name="chief" owner="1" image="rooms_chief">
+			<tooltip 1="ROOM_CHIEF_OF" />
+			<door x="3" y="2" type="4" />
+		</room>
+		<room name="chief" owner="2" image="rooms_chief">
+			<tooltip 1="ROOM_CHIEF_OF" />
+			<door x="3" y="5" type="4" />
+		</room>
+		<room name="chief" owner="3" image="rooms_chief">
+			<tooltip 1="ROOM_CHIEF_OF" />
+			<door x="3" y="8" type="4" />
+		</room>
+		<room name="chief" owner="4" image="rooms_chief">
+			<tooltip 1="ROOM_CHIEF_OF" />
+			<door x="3" y="11" type="4" />
+		</room>
+
+		<room name="office" owner="1" image="rooms_bureau">
+			<tooltip 1="ROOM_BUREAU_OF" />
+			<door x="1" y="2" type="1" />
+		</room>
+		<room name="office" owner="2" image="rooms_bureau">
+			<tooltip 1="ROOM_BUREAU_OF" />
+			<door x="1" y="5" type="1" />
+		</room>
+		<room name="office" owner="3" image="rooms_bureau">
+			<tooltip 1="ROOM_BUREAU_OF" />
+			<door x="1" y="8" type="1" />
+		</room>
+		<room name="office" owner="4" image="rooms_bureau">
+			<tooltip 1="ROOM_BUREAU_OF" />
+			<door x="1" y="11" type="1" />
+		</room>
+
+		<room name="studiosize1" owner="1" image="rooms_studio">
+			<tooltip 1="ROOM_STUDIO_OF" />
+			<door x="2" y="1" type="1" />
+		</room>
+		<room name="studiosize1" owner="2" image="rooms_studio">
+			<tooltip 1="ROOM_STUDIO_OF" />
+			<door x="2" y="4" type="1" />
+		</room>
+		<room name="studiosize1" owner="3" image="rooms_studio">
+			<tooltip 1="ROOM_STUDIO_OF" />
+			<door x="2" y="7" type="1" />
+		</room>
+		<room name="studiosize1" owner="4" image="rooms_studio">
+			<tooltip 1="ROOM_STUDIO_OF" />
+			<door x="2" y="10" type="1" />
+		</room>
+
+		<room name="frduban" owner="-1" image="rooms_supermarket">
+			<tooltip 1="ROOM_FRDUBAN" />
+			<door x="3" y="12" type="4" />
+		</room>
+		<room name="vrduban" owner="-1" image="rooms_supermarket">
+			<tooltip 1="ROOM_VRDUBAN" />
+			<door x="3" y="7" type="3" />
+		</room>
+		<room name="gunsagency" owner="-1" image="rooms_supermarket">
+			<tooltip 1="ROOM_GUNSAGENCY" />
+			<door x="4" y="9" type="3" />
+		</room>
+		<room name="tobaccolobby" owner="-1" image="rooms_supermarket">
+			<tooltip 1="ROOM_TOBACCOLOBBY" 2="ROOM_TOBACCOLOBBY_OWNER" />
+			<door x="2" y="6" type="4" />
+		</room>
+		<room name="notobacco" owner="-1" image="rooms_supermarket">
+			<tooltip 1="ROOM_NOTOBACCO" 2="ROOM_NOTOBACCO_OWNER" />
+			<door x="3" y="6" type="3" />
+		</room>
+		<room name="peacebrothers" owner="-1" image="rooms_supermarket">
+			<tooltip 1="ROOM_PEACEBROTHERS" 2="ROOM_PEACEBROTHERS_SUB" />
+			<door x="3" y="10" type="3" />
+		</room>
+		<room name="scriptagency" owner="0" image="rooms_supermarket">
+			<tooltip 1="ROOM_SCRIPT_OFFICE" 2="ROOM_SCRIPT_OFFICE_OWNER" />
+			<door x="3" y="4" type="3" />
+		</room>
+		<room name="roomagency" owner="0" image="rooms_supermarket">
+			<tooltip 1="ROOM_ROOMAGENCY" 2="ROOM_ROOMAGENCY_OWNER" />
+			<door x="2" y="9" type="2" />
+		</room>
+
+	</rooms>
+</tvt>

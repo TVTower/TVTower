@@ -1,0 +1,114 @@
+import brl.blitz
+import brl.graphics
+import brl.pngloader
+import brl.freetypefont
+import brl.threads
+import brl.max2d
+import brl.retro
+import "basefunctions.bmx"
+import "basefunctions_image.bmx"
+import "basefunctions_resourcemanager.bmx"
+CheckLoadImage:brl.max2d.TImage(path:Object,flag%=-1,cellWidth%=-1,cellHeight%=-1,firstCell%=-1,cellCount%=-1)="bb_CheckLoadImage"
+DYNAMICALLY_LOAD_IMAGES@=1
+PrintVidMem%(usage$)="bb_PrintVidMem"
+TXmlLoader^brl.blitz.Object{
+.currentFile:xmlDocument&
+.Values:brl.map.TMap&
+-New%()="_bb_TXmlLoader_New"
++Create:TXmlLoader()="_bb_TXmlLoader_Create"
+-Parse%(url$)="_bb_TXmlLoader_Parse"
+-LoadChild:brl.map.TMap(childNode:xmlNode)="_bb_TXmlLoader_LoadChild"
+-LoadXmlResource%(childNode:xmlNode)="_bb_TXmlLoader_LoadXmlResource"
+-GetImageFlags%(childNode:xmlNode)="_bb_TXmlLoader_GetImageFlags"
+-LoadImageResource%(childNode:xmlNode)="_bb_TXmlLoader_LoadImageResource"
+-parseScripts%(childNode:xmlNode,data:Object)="_bb_TXmlLoader_parseScripts"
+-LoadSpritePackResource%(childNode:xmlNode)="_bb_TXmlLoader_LoadSpritePackResource"
+-LoadResource%(childNode:xmlNode)="_bb_TXmlLoader_LoadResource"
+-LoadResources%(childNode:xmlNode)="_bb_TXmlLoader_LoadResources"
+-GetValue$(node:xmlNode,child$=$"",attribute$,defaultvalue$=$"")="_bb_TXmlLoader_GetValue"
+-LoadRooms%(childNode:xmlNode)="_bb_TXmlLoader_LoadRooms"
+}="bb_TXmlLoader"
+VersionDate$&=mem:p("bb_VersionDate")
+versionstring$&=mem:p("bb_versionstring")
+copyrightstring$&=mem:p("bb_copyrightstring")
+filestotal%&=mem("bb_filestotal")
+pixelperfile#&=mem:f("bb_pixelperfile")
+filecount%&=mem("bb_filecount")
+filesperscreen%&=mem("bb_filesperscreen")
+LoadImageError%&=mem("bb_LoadImageError")
+LoadImageText$&=mem:p("bb_LoadImageText")
+gfx_startscreen:TBigImage&=mem:p("bb_gfx_startscreen")
+gfx_startscreen_logo:brl.max2d.TImage&=mem:p("bb_gfx_startscreen_logo")
+gfx_startscreen_logosmall:brl.max2d.TImage&=mem:p("bb_gfx_startscreen_logosmall")
+gfx_loading_bar:brl.max2d.TImage&=mem:p("bb_gfx_loading_bar")
+LogoFadeInFirstCall%&=mem("bb_LogoFadeInFirstCall")
+LoaderWidth%&=mem("bb_LoaderWidth")
+LastMem%&=mem("bb_LastMem")
+totalmem%&=mem("bb_totalmem")
+freemem%&=mem("bb_freemem")
+UsedMemAtStart%&=mem("bb_UsedMemAtStart")
+DX9StartMemory%&=mem("bb_DX9StartMemory")
+fullscreen%&=mem("bb_fullscreen")
+directx%&=mem("bb_directx")
+colordepth%&=mem("bb_colordepth")
+WIDTH%&=mem("bb_WIDTH")
+HEIGHT%&=mem("bb_HEIGHT")
+particle_image:brl.max2d.TImage&=mem:p("bb_particle_image")
+XmlLoader:TXmlLoader&=mem:p("bb_XmlLoader")
+gfx_building_tooltips:brl.max2d.TImage&=mem:p("bb_gfx_building_tooltips")
+gfx_building_textballons:brl.max2d.TImage&=mem:p("bb_gfx_building_textballons")
+gfx_interface_topbottom:TBigImage&=mem:p("bb_gfx_interface_topbottom")
+gfx_datasheets_movie:TBigImage&=mem:p("bb_gfx_datasheets_movie")
+gfx_datasheets_series:TBigImage&=mem:p("bb_gfx_datasheets_series")
+gfx_datasheets_contract:TBigImage&=mem:p("bb_gfx_datasheets_contract")
+gfx_news_pp_btn:brl.max2d.TImage&=mem:p("bb_gfx_news_pp_btn")
+gfx_news_btn:brl.max2d.TImage&=mem:p("bb_gfx_news_btn")
+gfx_news_sheet_base:brl.max2d.Timage&=mem:p("bb_gfx_news_sheet_base")
+gfx_news_sheet:brl.max2d.TImage&=mem:p("bb_gfx_news_sheet")
+gfx_financials_barren_base:brl.max2d.TImage&=mem:p("bb_gfx_financials_barren_base")
+stationmap_land_sachsen:brl.max2d.TImage&=mem:p("bb_stationmap_land_sachsen")
+stationmap_land_niedersachsen:brl.max2d.TImage&=mem:p("bb_stationmap_land_niedersachsen")
+stationmap_land_schleswigholstein:brl.max2d.TImage&=mem:p("bb_stationmap_land_schleswigholstein")
+stationmap_land_meckpom:brl.max2d.TImage&=mem:p("bb_stationmap_land_meckpom")
+stationmap_land_nrw:brl.max2d.TImage&=mem:p("bb_stationmap_land_nrw")
+stationmap_land_brandenburg:brl.max2d.TImage&=mem:p("bb_stationmap_land_brandenburg")
+stationmap_land_sachsenanhalt:brl.max2d.TImage&=mem:p("bb_stationmap_land_sachsenanhalt")
+stationmap_land_hessen:brl.max2d.TImage&=mem:p("bb_stationmap_land_hessen")
+stationmap_land_thueringen:brl.max2d.TImage&=mem:p("bb_stationmap_land_thueringen")
+stationmap_land_rheinlandpfalz:brl.max2d.TImage&=mem:p("bb_stationmap_land_rheinlandpfalz")
+stationmap_land_saarland:brl.max2d.TImage&=mem:p("bb_stationmap_land_saarland")
+stationmap_land_bayern:brl.max2d.TImage&=mem:p("bb_stationmap_land_bayern")
+stationmap_land_bawue:brl.max2d.TImage&=mem:p("bb_stationmap_land_bawue")
+stationmap_land_berlin:brl.max2d.TImage&=mem:p("bb_stationmap_land_berlin")
+stationmap_land_hamburg:brl.max2d.TImage&=mem:p("bb_stationmap_land_hamburg")
+stationmap_land_bremen:brl.max2d.TImage&=mem:p("bb_stationmap_land_bremen")
+gfx_mousecursor:brl.max2d.TImage&=mem:p("bb_gfx_mousecursor")
+FontManager:TGW_FontManager&=mem:p("bb_FontManager")
+Font9:brl.max2d.TImageFont&=mem:p("bb_Font9")
+Font10:brl.max2d.TImageFont&=mem:p("bb_Font10")
+Font11:brl.max2d.TImageFont&=mem:p("bb_Font11")
+Font12:brl.max2d.TImageFont&=mem:p("bb_Font12")
+Font14:brl.max2d.TImageFont&=mem:p("bb_Font14")
+Font15bold:brl.max2d.TImageFont&=mem:p("bb_Font15bold")
+Font10bold:brl.max2d.TImageFont&=mem:p("bb_Font10bold")
+Font11bold:brl.max2d.TImageFont&=mem:p("bb_Font11bold")
+Font12bold:brl.max2d.TImageFont&=mem:p("bb_Font12bold")
+Font13:brl.max2d.TImageFont&=mem:p("bb_Font13")
+Font13Bold:brl.max2d.TImageFont&=mem:p("bb_Font13Bold")
+Font11italic:brl.max2d.TImageFont&=mem:p("bb_Font11italic")
+Font16italic:brl.max2d.TImageFont&=mem:p("bb_Font16italic")
+Font24italic:brl.max2d.TImageFont&=mem:p("bb_Font24italic")
+Font_tapes:brl.max2d.TImageFont&=mem:p("bb_Font_tapes")
+gfx_figures_hausmeister:brl.max2d.TImage&=mem:p("bb_gfx_figures_hausmeister")
+stationmap_mainpix:brl.pixmap.TPixmap&=mem:p("bb_stationmap_mainpix")
+gfx_collisionpixel:brl.max2d.TImage&=mem:p("bb_gfx_collisionpixel")
+gfx_button_blue:brl.max2d.TImage&=mem:p("bb_gfx_button_blue")
+gfx_contract_base:brl.max2d.TImage&=mem:p("bb_gfx_contract_base")
+gfx_contract_img:brl.max2d.TImage&=mem:p("bb_gfx_contract_img")
+gfx_contract:TGW_Spritepack&=mem:p("bb_gfx_contract")
+gfx_movie:brl.max2d.TImage&=mem:p("bb_gfx_movie")
+gfx_auctionmovie:brl.max2d.TImage&=mem:p("bb_gfx_auctionmovie")
+gfx_suitcase:brl.max2d.TImage&=mem:p("bb_gfx_suitcase")
+gfx_suitcase_glow:brl.max2d.TImage&=mem:p("bb_gfx_suitcase_glow")
+gfx_gimmick_rooms_movieagency:brl.max2d.TImage&=mem:p("bb_gfx_gimmick_rooms_movieagency")
+gfx_hint_rooms_movieagency:brl.max2d.TImage&=mem:p("bb_gfx_hint_rooms_movieagency")
