@@ -108,22 +108,7 @@ rem
 
 endrem
 End Type
-rem
-Function killLua()
-	NewLuaEngine.KillLuaState()
-End Function
 
-Function Test(param:Byte Ptr)
-	Print String.FromCString(lua_tostring(NewLuaEngine.LuaState(), -1))
-End Function
-
-Global NewLuaEngine:TNewLuaEngine = New TNewLuaEngine
-' Kill Lua state once the program ends
-OnEnd(killLua)
-Global LuaFunctions:TLuaFunctions = New TLuaFunctions
-NewLuaEngine.RegisterFunction("PrintOut",Test)
-NewLuaEngine.LoadScript("test.lua")
-endrem
 
 
 Type TLuaEngine
@@ -277,8 +262,8 @@ Type KI
 
 
 		Local i:Int = 0
-			addScriptConstant("ROOM_ARCHIVE_PLAYER" + i, TRooms.GetRoom("archive", i).uniqueID)
 		For i = 1 To 4
+			addScriptConstant("ROOM_ARCHIVE_PLAYER" + i, TRooms.GetRoom("archive", i).uniqueID)
 			addScriptConstant("ROOM_NEWSAGENCY_PLAYER" + i, TRooms.GetRoom("news", i).uniqueID)
 			addScriptConstant("ROOM_BOSS_PLAYER" + i, TRooms.GetRoom("chief", i).uniqueID)
 			addScriptConstant("ROOM_OFFICE_PLAYER" + i, TRooms.GetRoom("office", i).uniqueID)
@@ -420,21 +405,20 @@ Type TLuaFunctions
 			Local KIcommand:Int = 0
 			If PlayerID = 1
 				If ChatText.Length > 4
-				If Left(ChatText, 1) = "/"
-					KIcommand = 1
-					Local KIPlayerID:Int = Int(Mid(chattext, 2,1))
-					If Player[KIPlayerID] <> Null
-						If Player[KIplayerID].Figure.IsAI()
-							Local chatvalue:String = Right(chattext, chattext.Length - 3)
-							Print chatvalue
-							Player[KIplayerID].PlayerKI.CallOnChat(chatvalue)
-						End If
+					If Left(ChatText, 1) = "/"
+						KIcommand = 1
+						Local KIPlayerID:Int = Int(Mid(chattext, 2,1))
+						If Player[KIPlayerID] <> Null
+							If Player[KIplayerID].Figure.IsAI()
+								Local chatvalue:String = Right(chattext, chattext.Length - 3)
+								Print chatvalue
+								Player[KIplayerID].PlayerKI.CallOnChat(chatvalue)
+							EndIf
+						EndIf
 					EndIf
-				End If
 				EndIf
-			End If
-
-		End If
+			EndIf
+		EndIf
 		Return 1
 	EndMethod
 
@@ -1026,7 +1010,7 @@ Type TLuaFunctions
 				For Local Block:TContractBlocks = EachIn TContractBlocks.List
 					If Block.owner <> PlayerID
 						ret:+1
-					End If
+					EndIf
 				Next
 				Return ret
 			EndIf
@@ -1051,7 +1035,7 @@ Type TLuaFunctions
 					Else
 						Return - 3
 					EndIf
-				End If
+				EndIf
 			EndIf
 		EndIf
 		Return - 1
@@ -1070,7 +1054,7 @@ Type TLuaFunctions
 				For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
 					If Block.owner <> PlayerID
 						ret:+1
-					End If
+					EndIf
 				Next
 				Return ret
 			EndIf
@@ -1094,8 +1078,8 @@ Type TLuaFunctions
 						Return Block.Programme.pid
 					Else
 						Return - 3
-					End If
-				End If
+					EndIf
+				EndIf
 			EndIf
 		EndIf
 		Return - 1
@@ -1115,7 +1099,7 @@ Type TLuaFunctions
 						If ret = 1 Then Block.Pos.y = 241
 						Return 1
 						Exit
-					End If
+					EndIf
 				Next
 				Return - 2
 			EndIf
@@ -1147,7 +1131,7 @@ Type KI_EventManager
 			If ki.playerId = playerId Then
 				PrintDebug("KI_EventManager.getKIByPlayerId()", "Spieler mit " + KI.playerId + " gefunden", DEBUG_LUA)
 				Return KI
-			End If
+			EndIf
 		Next
 
 		PrintDebug("KI_EventManager.getKIByPlayerId()", "FEHLER: Spieler mit PlayerID " + playerId + " nicht gefunden", DEBUG_LUA)
@@ -1166,41 +1150,31 @@ Type KI_EventManager
 
 	Function onMinute(playerId:Byte)
 		Local ki:KI = getKIByPlayerId(playerId)
-		If ki = Null Then
-			Return
-		EndIf
+		If ki = Null Then Return
 		ki.CallOnMinute()
 	End Function
 
 	Function onReachRoom(playerId:Byte, roomId:Byte)
 	    Local ki:KI = getKIByPlayerId(playerId)
-		If ki = Null Then
-			Return
-		End If
+		If ki = Null Then Return
 		'ki.CallOnReachRoom(roomId)
 	End Function
 
 	Function onLeaveRoom(playerId:Byte, roomId:Byte)
 		Local ki:KI = getKIByPlayerId(playerId)
-		If ki = Null Then
-			Return
-		End If
+		If ki = Null Then Return
 		'ki.CallOnLeaveRoom()
 	End Function
 
 	Function onDayBegins(playerId:Byte)
 		Local ki:KI = getKIByPlayerId(playerId)
-		If ki = Null Then
-			Return
-		End If
+		If ki = Null Then Return
 		'ki.CallOnDayBegins()
 	End Function
 
 	Method onMoneyChanged(playerId:Byte)
 		Local ki:KI = getKIByPlayerId(playerId)
-		If ki = Null Then
-			Return
-		End If
+		If ki = Null Then Return
 		'ki.CallOnMoneyChanged()
 	End Method
 End Type
