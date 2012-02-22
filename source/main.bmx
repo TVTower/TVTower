@@ -2449,7 +2449,7 @@ Function Menu_GameSettings_Draw()
 			Player[Game.playerID].networkstate=1
 			Game.gamestate =0
 		EndIf
-	End If
+	EndIf
 End Function
 
 Global Betty:TBetty = New TBetty

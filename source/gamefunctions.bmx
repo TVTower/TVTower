@@ -1179,10 +1179,9 @@ Type TInterface
 
 	'draws the interface
 	Method Draw(tweenValue:float=1.0)
-	    SetViewport(0, 0, 800, 600)
 		gfx_interface_topbottom.renderInViewPort(0, - 217, 0, 0, 800, 20)
 		Assets.GetSprite("gfx_interface_leftright").DrawClipped(0, 20, 0, 20, 27, 363, 0, 0)
-		'SetBlend SOLIDBLEND
+		SetBlend SOLIDBLEND
 		Assets.GetSprite("gfx_interface_leftright").DrawClipped(780 - 27, 20, 780, 20, 20, 363, 0, 0)
 
 		If BottomImgDirty
