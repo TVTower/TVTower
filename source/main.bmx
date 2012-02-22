@@ -561,10 +561,10 @@ Type TPlayer
 		Player.Figure.ParentPlayer = Player
 		If controlledByID = 0 And Game.playerID = 1 Then
 			If TPlayer.globalID = 3
-				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
+				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/alt/test_base.lua")
 			Else
-				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test.lua")
-			End If
+				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
+			EndIf
 		EndIf
 		For Local i:Int = 0 To 6
 			Player.finances[i] = TFinancials.Create(Player.playerID, 550000, 250000)

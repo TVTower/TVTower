@@ -51,7 +51,8 @@ Type TNewLuaEngine
 		' Run the script so it can set things up
 	    If luaL_dofile(Self.LuaState(),scriptFile)
 			Local error:String = lua_tostring(Self.LuaState(), -1 )
-			Print error
+			Print "LUA ERROR"
+			print error
 			lua_pop( Self.LuaState(), 1 )
 			RuntimeError(error)
 			Return False
