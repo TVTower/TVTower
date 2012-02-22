@@ -201,6 +201,7 @@ Type KI
 	End Method
 
 	Method reloadScript()
+		print "Reloaded LUA AI for player "+self.playerId
 		scriptAsString = fileToString(scriptName)
 		'initScriptFunctions()
 		initScriptVariables()

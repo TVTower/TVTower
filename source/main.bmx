@@ -2978,6 +2978,18 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game
 
+		If KEYMANAGER.Ishit(Key_F1)
+			if Player[1].figure.isAI() then Player[1].PlayerKI.reloadScript()
+		endif
+		If KEYMANAGER.Ishit(Key_F2)
+			if Player[2].figure.isAI() then Player[2].PlayerKI.reloadScript()
+		endif
+		If KEYMANAGER.Ishit(Key_F3)
+			if Player[3].figure.isAI() then Player[3].PlayerKI.reloadScript()
+		endif
+		If KEYMANAGER.Ishit(Key_F4)
+			if Player[4].figure.isAI() then Player[4].PlayerKI.reloadScript()
+		endif
 		App.Timer.loop()
 
 		'process events not directly triggered
