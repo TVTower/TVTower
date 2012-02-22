@@ -1,9 +1,9 @@
-'This application was editet with BLIde http://www.blide.org
-'Application: TVGigant
-'Author:
+'Application: TVTower
+'Author: Ronny Otto
 'Description: Loads all needed Files (checked) and returns them to variables
 '
-'Strict
+SuperStrict
+
 Import brl.Graphics
 ?Win32
 Import brl.D3D9Max2D
@@ -24,7 +24,7 @@ Import "basefunctions_image.bmx"
 Import "basefunctions_resourcemanager.bmx"
 'Import "functions_file.bmx"
 
-SuperStrict
+
 Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global versionstring:String = "version of " + VersionDate
 Global copyrightstring:String = "by Ronny Otto, gamezworld.de"
@@ -223,257 +223,6 @@ Next
 GrabImage(particle_image,0,0) ; Cls
 SetAlpha 1.0
 
-Type TXmlLoader
-	Field currentFile:xmlDocument
-	Field Values:TMap = CreateMap()
-
-
-	Function Create:TXmlLoader()
-		Local obj:TXmlLoader = New TXmlLoader
-		Return obj
-	End Function
-
-
-	Method Parse(url:String)
-		PrintDebug("XmlLoader.Parse:", url, DEBUG_LOADING)
-		'Local root:xmlNode
-		Self.currentFile = xmlDocument.Create(url)
-		If Self.currentFile = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
-		For Local child:xmlNode = EachIn Self.currentFile.Root().ChildList
-			Select child.Name
-				Case "resources"	Self.LoadResources(child)
-				Case "rooms"		Self.LoadRooms(child)
-			End Select
-		Next
-	End Method
-
-
-	Method LoadChild:TMap(childNode:xmlNode)
-		Local optionsMap:TMap = CreateMap()
-		For Local childOptions:xmlNode = EachIn childNode.ChildList
-			If childOptions.HasChildren()
-				optionsMap.Insert((Lower(childOptions.Name) + "_" + Lower(childoptions.Attribute("name", 0).value)), Self.LoadChild(childOptions))
-			Else
-				optionsMap.Insert((Lower(childOptions.Name) + "_" + Lower(childoptions.Attribute("name", 0).value)), childOptions.Value)
-			EndIf
-		Next
-		Return optionsMap
-	End Method
-
-
-	Method LoadXmlResource(childNode:xmlNode)
-		Local _url:String = childNode.FindChild("url", 0, 0).Value
-		Local childXML:TXmlLoader = TXmlLoader.Create()
-		childXML.Parse(_url)
-		For Local obj:Object = EachIn MapKeys(childXML.Values)
-			PrintDebug("XmlLoader.LoadXmlResource:", "loading object: " + String(obj), DEBUG_LOADING)
-			'print "XmlLoader.LoadXmlResource:"+string(obj)+ " - "+_url
-			Self.Values.Insert(obj, childXML.Values.ValueForKey(obj))
-		Next
-	End Method
-
-	Method GetImageFlags:Int(childNode:xmlNode)
-		Local flags:Int = 0
-		Local flagsstring:String = ""
-		If childNode.FindChild("flags", 0, 0) <> Null
-			flagsstring = String(childNode.FindChild("flags", 0, 0).Value)
-			Local flagsarray:String[] = flagsstring.split(",")
-			For Local flag:String = EachIn flagsarray
-				flag = Upper(flag.Trim())
-				If flag = "MASKEDIMAGE" Then flags = flags | MASKEDIMAGE
-				If flag = "DYNAMICIMAGE" Then flags = flags | DYNAMICIMAGE
-				If flag = "FILTEREDIMAGE" Then flags = flags | FILTEREDIMAGE
-			Next
-		Else
-			flags = 0
-		EndIf
-		Return flags
-	End Method
-
-	Method LoadImageResource(childNode:xmlNode)
-		Local _name:String = Lower(childNode.Attribute("name", 0).Value)
-		Local _type:String = Upper(childNode.FindChild("type", 0, 0).Value)
-		Local _frames:Int = 0
-		Local _cellwidth:Int = 0
-		Local _cellheight:Int = 0
-		Local _url:String = childNode.FindChild("url", 0, 0).Value
-		Local _img:TImage = Null
-		Local _flags:Int = Self.GetImageFlags(childNode)
-		If childNode.FindChild("cellwidth", 0, 0) <> Null Then _cellwidth = Int(childNode.FindChild("cellwidth", 0, 0).Value)
-		If childNode.FindChild("cellheight", 0, 0) <> Null Then _cellheight = Int(childNode.FindChild("cellheight", 0, 0).Value)
-		If childNode.FindChild("frames", 0, 0) <> Null Then _frames = Int(childNode.FindChild("frames", 0, 0).Value)
-
-
-		'direct load or threaded possible?
-		Local directLoadNeeded:Int = True ' <-- threaded load
-		If childNode.FindChild("scripts") <> Null Then directLoadNeeded = True
-		If childNode.FindChild("colorize") <> Null Then directLoadNeeded = True
-
-		'create helper, so load-function has all needed data
-		Local LoadAssetHelper:TGW_Sprites = TGW_Sprites.Create(Null, _name, 0,0, 0, 0, _frames, -1, _cellwidth, _cellheight)
-		LoadAssetHelper._flags = _flags
-
-		'referencing another sprite? (same base)
-		If _url.StartsWith("[")
-			_url = Mid(_url, 2, Len(_url)-2)
-			Local referenceAsset:TGW_Sprites = Assets.GetSprite(_url)
-			LoadAssetHelper.setUrl(_url)
-			Assets.Add(_name, TGW_Sprites.LoadFromAsset(LoadAssetHelper))
-			Self.parseScripts(childNode, _img)
-		'original image, has to get loaded
-		Else
-			LoadAssetHelper.setUrl(_url)
-
-			If directLoadNeeded Then
-				'print "LoadImageResource: "+_name + " | DIRECT type = "+_type
-				'add as single sprite so it is reachable through "GetSprite" too
-				Local sprite:TGW_Sprites = TGW_Sprites.LoadFromAsset(LoadAssetHelper)
-				Assets.Add(_name, sprite)
-				Self.parseScripts(childNode, sprite.GetImage())
-			Else
-				'print "LoadImageResource: "+_name + " | THREAD type = "+_type
-				Assets.AddToLoadAsset(_name, LoadAssetHelper)
-				'TExtendedPixmap.Create(_name, _url, _cellwidth, _cellheight, _frames, _type)
-			EndIf
-		EndIf
-
-
-	End Method
-
-	Method parseScripts(childNode:xmlNode, data:Object)
-		PrintDebug("XmlLoader.LoadImageResource:", "found image scripts", DEBUG_LOADING)
-		Local scripts:xmlNode = childNode.FindChild("scripts")
-		If scripts <> Null And scripts.ChildList <> Null
-			For Local script:xmlNode = EachIn scripts.ChildList
-				Local scriptDo:String= String(script.Attribute("do",0).Value)
-				If scriptDo = "ColorizeCopy"
-					Local _dest:String	= Lower(String(script.Attribute("dest").Value))
-					Local _r:Int		= Int(script.Attribute("r").Value)
-					Local _g:Int		= Int(script.Attribute("g").Value)
-					Local _b:Int		= Int(script.Attribute("b").Value)
-
-
-					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And TImage(data) <> Null
-						Print "COLORIZE " + _dest + " <-- param should be asset not timage"
-						Assets.AddImageAsSprite(_dest, ColorizeTImage(TImage(data), _r, _g, _b))
-					EndIf
-				EndIf
-
-				If scriptDo = "CopySprite"
-					Local _src:String	= String(script.Attribute("src").Value)
-					Local _dest:String	= String(script.Attribute("dest").Value)
-					Local _r:Int		= Int(script.Attribute("r").Value)
-					Local _g:Int		= Int(script.Attribute("g").Value)
-					Local _b:Int		= Int(script.Attribute("b").Value)
-					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
-						TGW_Spritepack(data).CopySprite(_src, _dest, _r, _g, _b)
-					EndIf
-				EndIf
-
-			Next
-		EndIf
-	End Method
-
-	Method LoadSpritePackResource(childNode:xmlNode)
-		Local _name:String = Lower(String(childNode.Attribute("name", 0).Value))
-		Local _url:String = childNode.FindChild("url", 0, 0).Value
-		Local _flags:Int = Self.GetImageFlags(childNode)
-Print _name + " " + _flags
-		Local _image:TImage = CheckLoadImage(_url, _flags)
-		Local spritePack:TGW_SpritePack = TGW_SpritePack.Create(_image, _name)
-		'add spritepack to asset
-		Assets.Add(_name, spritePack)
-
-		'sprites
-		If childNode.FindChild("children") <> Null
-			Local children:xmlNode = childNode.FindChild("children")
-			For Local child:xmlNode = EachIn children.ChildList
-				Local childName:String	= Lower(String(child.Attribute("name", 0).Value))
-				Local childX:Int		= Int(child.Attribute("x", 0).Value)
-				Local childY:Int		= Int(child.Attribute("y", 0).Value)
-				Local childW:Int		= Int(child.Attribute("w", 0).Value)
-				Local childH:Int		= Int(child.Attribute("h", 0).Value)
-				Local childID:Int		= -1
-				Local childFrames:Int	= 1
-				If child.HasAttribute("id", 0) Then childID	= Int(child.Attribute("id", 0).Value)
-				If child.HasAttribute("frames", 0) Then childFrames	= Int(child.Attribute("frames", 0).Value)
-				If child.HasAttribute("f", 0) Then childFrames	= Int(child.Attribute("f", 0).Value)
-
-				If childName<> "" And childW > 0 And childH > 0
-					'create sprite and add it to assets
-					Assets.Add(childName, spritePack.AddSprite(childName, childX, childY, childW, childH, childFrames, childID) )
-
-					'Self.Values.Insert(childName, TAsset.CreateBaseAsset(spritePack.GetSprite(childName), "SPRITE"))
-				EndIf
-			Next
-		EndIf
-		Self.parseScripts(childNode, spritepack)
-		'Self.Values.Insert(_name, TAsset.CreateBaseAsset(spritePack, "SPRITEPACK"))
-
-	End Method
-
-	Method LoadResource(childNode:xmlNode)
-		Local _type:String = Upper(childNode.FindChild("type", 0, 0).Value)
-		Select _type
-			Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
-			Case "XML"					Self.LoadXmlResource(childNode)
-			Case "SPRITEPACK"			Self.LoadSpritePackResource(childNode)
-		End Select
-	End Method
-
-
-	Method LoadResources(childNode:xmlNode)
-		'for every single resource
-		For Local child:xmlNode = EachIn childNode.ChildList
-			Self.LoadResource(child)
-		Next
-	End Method
-
-
-	Method GetValue:String(node:xmlNode, child:String = "", attribute:String, defaultvalue:String = "")
-		Local result:String = defaultvalue
-		Local usenode:xmlNode = node
-		If child <> ""
-			usenode = node.FindChild(child, 0, 0)
-			If usenode = Null Then usenode = node
-		EndIf
-		If usenode.FindChild(attribute, 0, 0) <> Null
-			If usenode.FindChild(attribute, 0, 0).Value <> Null Then Return usenode.FindChild(attribute, 0, 0).value
-		Else If usenode.Attribute(attribute, 0) <> Null Then Return usenode.Attribute(attribute, 0).value
-		Else Return result
-		End If
-	End Method
-
-
-	Method LoadRooms(childNode:xmlNode)
-		'for every single room
-		Local values_room:TMap = TMap(Self.values.ValueForKey("rooms"))
-		If values_room = Null Then values_room = CreateMap() ;
-
-		For Local child:xmlNode = EachIn childNode.ChildList
-			Local room:TMap = CreateMap()
-			Local owner:Int = Int(Self.GetValue(child, "", "owner", "-1"))
-			Local name:String = Self.GetValue(child, "", "name", "unknown")
-			room.Insert("name",		Name + String(owner))
-			room.Insert("owner",	String(owner))
-			room.Insert("roomname", name)
-			room.Insert("image", 	Self.GetValue(child, "", "image", "rooms_archive"))
-			room.Insert("tooltip", 	Self.GetValue(child, "tooltip", "1", ""))
-			room.Insert("tooltip2", Self.GetValue(child, "tooltip", "2", ""))
-			room.Insert("x", 		Self.GetValue(child, "door", "x", "0"))
-			room.Insert("y", 		Self.GetValue(child, "door", "y", "0"))
-			room.Insert("doortype", Self.GetValue(child, "door", "type", "-1"))
-			values_room.Insert(Name + owner, TAsset.CreateBaseAsset(room, "ROOMDATA"))
-			PrintDebug("XmlLoader.LoadRooms:", "inserted room: " + Name, DEBUG_LOADING)
-			'print "rooms: "+Name + owner
-		Next
-		Assets.Add("rooms", TAsset.CreateBaseAsset(values_room, "TMAP"))
-		'Self.values.Insert("rooms", TAsset.Create(values_room, "ROOMS"))
-
-	End Method
-End Type
-
-
 Global XmlLoader:TXmlLoader = TXmlLoader.Create()
 XmlLoader.Parse("config/resources.xml")
 Assets.AddSet(XmlLoader.Values) 'copy XML-values
@@ -586,9 +335,9 @@ For Local i:Int = 0 To 9
 Next
 'gfx_contract_base = Null 'ram sparen
 
-
+rem
 Global gfx_movie:TImage 		= CheckLoadImage("grafiken/filmverleiher/film_huellen.png", 0, 15,70,0,10)
-Global gfx_auctionmovie:TImage	= CheckLoadImage("grafiken/filmverleiher/film_auktionsfilm.png", 0)
+'Global gfx_auctionmovie:TImage	= CheckLoadImage("grafiken/filmverleiher/film_auktionsfilm.png", 0)
 
 gfx_movie.pixmaps[0] = ColorizePixmap(gfx_movie, 0, 100, 30, 130)
 gfx_movie.pixmaps[1] = ColorizePixmap(gfx_movie,1,120,100, 20)
@@ -600,12 +349,11 @@ gfx_movie.pixmaps[6] = ColorizePixmap(gfx_movie,6,180,180, 20)
 gfx_movie.pixmaps[7] = ColorizePixmap(gfx_movie,7,130, 50,100)
 gfx_movie.pixmaps[8] = ColorizePixmap(gfx_movie,8,230,120, 80)
 gfx_movie.pixmaps[9] = ColorizePixmap(gfx_movie,9,230,220, 40)
+endrem
 
-Global gfx_suitcase:TImage         		= CheckLoadImage("grafiken/koffer_alpha.png")
-Global gfx_suitcase_glow:TImage         = CheckLoadImage("grafiken/koffer_alpha_glow.png")
 SetMaskColor 255, 0, 255
 SetBlend ALPHABLEND
-Global gfx_gimmick_rooms_movieagency:TImage = (CheckLoadImage("grafiken/filmverleiher/raum_filmverleiher_gimmick.png"))
-Global gfx_hint_rooms_movieagency:TImage = (CheckLoadImage("grafiken/filmverleiher/raum_filmverleiher_glow.png"))
+'Global gfx_gimmick_rooms_movieagency:TImage = (CheckLoadImage("grafiken/filmverleiher/raum_filmverleiher_gimmick.png"))
+'Global gfx_hint_rooms_movieagency:TImage = (CheckLoadImage("grafiken/filmverleiher/raum_filmverleiher_glow.png"))
 SetMaskColor 0, 0, 0
 PrintDebug ("files.bmx", filecount + " Dateien per 'checked loading' eingelesen", DEBUG_LOADING)

@@ -1066,10 +1066,10 @@ Function CreateDropZones:Int()
 		DragAndDrop.slot = i
 		DragAndDrop.typ = "archiveprogrammeblock"
 		DragAndDrop.used = 0
-		DragAndDrop.rectx = 57+ImageWidth(gfx_movie)*i
+		DragAndDrop.rectx = 57+Assets.GetSprite("gfx_movie0").w*i
 		DragAndDrop.recty = 297
-		DragAndDrop.rectw = ImageWidth(gfx_movie)
-		DragAndDrop.recth = ImageHeight(gfx_movie)
+		DragAndDrop.rectw = Assets.GetSprite("gfx_movie0").w
+		DragAndDrop.recth = Assets.GetSprite("gfx_movie0").h
 		If Not TArchiveProgrammeBlocks.DragAndDropList Then TArchiveProgrammeBlocks.DragAndDropList = CreateList()
 		TArchiveProgrammeBlocks.DragAndDropList.AddLast(DragAndDrop)
 		SortList TArchiveProgrammeBlocks.DragAndDropList
@@ -2847,17 +2847,16 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			'things happening x:05
 			Local minute:Int = evt.time Mod 60
 			Local hour:Int = Floor(evt.time / 60)
-			Local dirty:Int = 0
-			If minute = 5 Then TPlayer.ComputeAudience(); dirty = True
-			If minute = 55 Then TPlayer.ComputeAds(); dirty = True
+
+			If minute = 5 Then TPlayer.ComputeAudience()
+			If minute = 55 Then TPlayer.ComputeAds()
 			If minute = 0
 				If hour+1 < 6 And hour+1 > 1 Then game.maxAudiencePercentage = Float(RandRange(5, 15)) / 100
 				If hour+1 >= 6 And hour+1 < 18 Then game.maxAudiencePercentage = Float(RandRange(10, 10 + hour+1)) / 100
 				If hour+1 >= 18 Or hour+1 <= 1 Then game.maxAudiencePercentage = Float(RandRange(15, 20 + hour+1)) / 100
 				TPlayer.ComputeNewsAudience()
-				dirty = True
  			EndIf
-			Interface.BottomImgDirty = dirty
+ 			if minute = 5 or minute = 55 or minute=0 then Interface.BottomImgDirty = true
 		EndIf
 	End Method
 End Type
@@ -2961,6 +2960,7 @@ For Local i:Int = 1 To 4
 	EndIf
 Next
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
+EventManager.registerListener( "Game.OnMinute",	TEventListenerOnMinute.Create() )
 
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
@@ -2971,7 +2971,6 @@ Global Init_Complete:Int = 0
 'Init EventManager
 'could also be done during update ("if not initDone...")
 EventManager.Init()
-
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 100)
 	Repeat

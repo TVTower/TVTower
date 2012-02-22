@@ -62,7 +62,7 @@ Type TDeltaTimer
 		'draw gets tweenvalue (0..1)
 		self.timesDrawn :+1
 		EventManager.triggerEvent( "App.onDraw", TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
-		Delay(1)
+	'	Delay(1)
 	End Method
 
 	'tween value = oldposition*tween + (1-tween)*newPosition

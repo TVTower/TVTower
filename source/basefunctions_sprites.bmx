@@ -115,8 +115,6 @@ Type TGW_SpritePack extends TRenderable
 		End If
 		If spriteobj <> Null
 			DrawImageArea(Self.image, x, y, spriteobj.Pos.x + Max(0, animframe) * spriteobj.framew, spriteobj.Pos.y, spriteobj.framew, spriteobj.h, 0)
-			'already done in drawimagearea
-			'DrawSubImageRect(Self.image, x, y, spriteobj.framew, spriteobj.frameh, spriteobj.Pos.x + Max(0, animframe) * spriteobj.framew, spriteobj.Pos.y, spriteobj.framew, spriteobj.h, 0, 0, 0)
 		EndIf
 	End Method
 
@@ -131,6 +129,18 @@ Type TGW_SpritePack extends TRenderable
 			Next
 		End If
 		If spriteobj <> Null Then ClipImageToViewport(Self.image, x - spriteobj.pos.x, y - spriteobj.pos.y, vx, vy, vw, vh, 0, 0)
+	End Method
+
+	Method ColorizeSprite(spriteName:String, colR:Int,colG:Int,colB:Int)
+		'to access pos and dimension
+		Local tmpSprite:TGW_Sprites = Self.GetSprite(spriteName)
+		'store backup (we clean it before pasting colorized output
+		local tmpImg:TImage = ColorizeTImage(Self.GetSpriteImage(spriteName), colR, colG, colB)
+		Local tmppix:TPixmap = LockImage(Self.image, 0)
+			tmppix.Window(tmpSprite.Pos.x, tmpSprite.pos.y, tmpSprite.w, tmpSprite.h).ClearPixels(0)
+			DrawOnPixmap(tmpImg, 0, tmppix, tmpSprite.pos.x, tmpSprite.pos.y)
+		UnlockImage(Self.image, 0)
+		GCCollect() '<- FIX!
 	End Method
 
 	Method CopySprite(spriteNameSrc:String, spriteNameDest:String, colR:Int,colG:Int,colB:Int)
@@ -163,7 +173,7 @@ End Type
 
 
 Type TGW_Sprites extends TRenderable
-	Field spritename:String = ""
+	Field spriteName:String = ""
 	Field w:Float
 	Field h:Float
 	Field framew:Int
@@ -232,6 +242,11 @@ Type TGW_Sprites extends TRenderable
 		Else
 			Return TImage.Load(DestPixmap, 0, 255, 0, 255)
 		End If
+	End Method
+
+	'let spritePack colorize the sprite
+	Method Colorize(colR:Int,colG:Int,colB:Int)
+		self.parent.ColorizeSprite(self.spriteName, colR,colG,colB)
 	End Method
 
 	Method GetColorizedImage:TImage(r:int, g:int, b:int)
