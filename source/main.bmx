@@ -2547,7 +2547,8 @@ End Function
 Global LogoTargetY:Float = 20
 Global LogoCurrY:Float = 100
 Function DrawMenu(tweenValue:Float=1.0)
-	Cls
+'no cls needed - we render a background
+'	Cls
 	SetColor 255,255,255
 	gfx_startscreen.render(0, 0)
 

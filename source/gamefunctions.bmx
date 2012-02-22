@@ -538,49 +538,33 @@ Type TTooltip extends TRenderable
 End Type
 
 
-  Function DrawDialog(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TImageFont = Null)
-	Local dx:Float, dy:Float
-	Local DialogSprite:TGW_Sprites = gfx_Rect.GetSprite(DialogStart)
-	SetViewport(x, y, width, Height)
-	If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + Height / 2 - DialogSprite.h / 2 + DialogStartMove;width:-48
-	If DialogStart = "StartRightDown" Then dx = x + width - 12;dy = y + Height / 2 - DialogSprite.h / 2 + DialogStartMove;width:-48
-	If DialogStart = "StartDownRight" Then dx = x + width / 2 - DialogSprite.w / 2 + DialogStartMove;dy = y + Height - 12;Height:-53
-	If DialogStart = "StartDownLeft" Then dx = x + width / 2 - DialogSprite.w / 2 + DialogStartMove;dy = y + Height - 12;Height:-53
+	Function DrawDialog(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TImageFont = Null)
+		Local dx:Float, dy:Float
+		Local DialogSprite:TGW_Sprites = gfx_Rect.GetSprite(DialogStart)
+		If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + (Height - DialogSprite.h)/2 + DialogStartMove;width:-48
+		If DialogStart = "StartRightDown" Then dx = x + width - 12;dy = y + (Height - DialogSprite.h)/2 + DialogStartMove;width:-48
+		If DialogStart = "StartDownRight" Then dx = x + (width - DialogSprite.w)/2 + DialogStartMove;dy = y + Height - 12;Height:-53
+		If DialogStart = "StartDownLeft" Then dx = x + (width - DialogSprite.w)/2 + DialogStartMove;dy = y + Height - 12;Height:-53
 
-'    SetViewport(x, y, width, Height)
-	gfx_Rect.GetSprite("TopLeft").Draw(x, y)
-	gfx_Rect.GetSprite("TopRight").Draw(x + width - gfx_Rect.GetSprite("TopRight").w, y)
-	gfx_Rect.GetSprite("BottomLeft").Draw(x, y + Height - gfx_Rect.GetSprite("BottomLeft").h)
-	gfx_Rect.GetSprite("BottomRight").Draw(x + width - gfx_Rect.GetSprite("TopRight").w, y + Height - gfx_Rect.GetSprite("BottomLeft").h)
+		DrawGFXRect(gfx_Rect,x,y,width,height,"") ' "" = no nameBase
 
-    gfx_Rect.GetSprite("BorderLeft").TileDraw(x, y + gfx_Rect.GetSprite("TopLeft").h, gfx_Rect.GetSprite("BorderLeft").w, Height - gfx_Rect.GetSprite("BottomLeft").h - gfx_Rect.GetSprite("TopLeft").h)
-    gfx_Rect.GetSprite("BorderRight").TileDraw(x + width - gfx_Rect.GetSprite("BorderRight").w, y + gfx_Rect.GetSprite("TopLeft").h, gfx_Rect.GetSprite("BorderRight").w, Height - gfx_Rect.GetSprite("BottomRight").h - gfx_Rect.GetSprite("TopRight").h)
-    gfx_Rect.GetSprite("BorderTop").TileDraw(x + gfx_Rect.GetSprite("TopLeft").w, y, width - gfx_Rect.GetSprite("TopLeft").w - gfx_Rect.GetSprite("TopRight").w, gfx_Rect.GetSprite("BorderTop").h)
-    gfx_Rect.GetSprite("BorderBottom").TileDraw(x + gfx_Rect.GetSprite("BottomLeft").w, y + Height - gfx_Rect.GetSprite("BorderBottom").h, width - gfx_Rect.GetSprite("BottomLeft").w - gfx_Rect.GetSprite("BottomRight").w, gfx_Rect.GetSprite("BorderBottom").h)
-    gfx_Rect.GetSprite("Back").TileDraw(x + gfx_Rect.GetSprite("TopLeft").w, y + gfx_Rect.GetSprite("TopLeft").h, width - gfx_Rect.GetSprite("TopLeft").w - gfx_Rect.GetSprite("TopRight").w, Height - gfx_Rect.GetSprite("TopLeft").h - gfx_Rect.GetSprite("BottomLeft").h)
+		DialogSprite.Draw(dx, dy)
+		If DialogText <> "" then TFunctions.BlockText(DialogText, x + 10, y + 10, width - 16, Height - 16, 0, DialogFont, 0, 0, 0)
+	End Function
 
+	'draws a rounded rectangle (blue border) with alphashadow
+	Function DrawGFXRect(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:string="gfx_gui_rect_")
+		gfx_Rect.GetSprite(nameBase+"TopLeft").Draw(x, y)
+		gfx_Rect.GetSprite(nameBase+"TopRight").Draw(x + width, y,-1,0,1)
+		gfx_Rect.GetSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1,1)
+		gfx_Rect.GetSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, 1,1)
 
-    SetViewport(0, 0, 800, 600)
-	DialogSprite.Draw(dx, dy)
-	If DialogText <> ""
-		TFunctions.BlockText(DialogText, x + 10, y + 10, width - 16, Height - 16, 0, DialogFont, 0, 0, 0)
-	End If
-  End Function
-
-  'draws a rounded rectangle (blue border) with alphashadow
-  Function DrawGFXRect(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int)
-	gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").Draw(x, y)
-	gfx_Rect.GetSprite("gfx_gui_rect_TopRight").Draw(x + width - gfx_Rect.GetSprite("gfx_gui_rect_TopRight").w, y)
-	gfx_Rect.GetSprite("gfx_gui_rect_BottomLeft").Draw(x, y + Height - gfx_Rect.GetSprite("gfx_gui_rect_BottomLeft").h)
-	gfx_Rect.GetSprite("gfx_gui_rect_BottomRight").Draw(x + width - gfx_Rect.GetSprite("gfx_gui_rect_TopRight").w, y + Height - gfx_Rect.GetSprite("gfx_gui_rect_BottomLeft").h)
-
-    gfx_Rect.GetSprite("gfx_gui_rect_BorderLeft").TileDraw(x, y + gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").h, gfx_Rect.GetSprite("gfx_gui_rect_BorderLeft").w, Height - gfx_Rect.GetSprite("gfx_gui_rect_BottomLeft").h - gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").h)
-    gfx_Rect.GetSprite("gfx_gui_rect_BorderRight").TileDraw(x + width - gfx_Rect.GetSprite("gfx_gui_rect_BorderRight").w, y + gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").h, gfx_Rect.GetSprite("gfx_gui_rect_BorderRight").w, Height - gfx_Rect.GetSprite("gfx_gui_rect_BottomRight").h - gfx_Rect.GetSprite("gfx_gui_rect_TopRight").h)
-    gfx_Rect.GetSprite("gfx_gui_rect_BorderTop").TileDraw(x + gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").w, y, width - gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").w - gfx_Rect.GetSprite("gfx_gui_rect_TopRight").w, gfx_Rect.GetSprite("gfx_gui_rect_BorderTop").h)
-    gfx_Rect.GetSprite("gfx_gui_rect_BorderBottom").TileDraw(x + gfx_Rect.GetSprite("gfx_gui_rect_BottomLeft").w, y + Height - gfx_Rect.GetSprite("gfx_gui_rect_BorderBottom").h, width - gfx_Rect.GetSprite("gfx_gui_rect_BottomLeft").w - gfx_Rect.GetSprite("gfx_gui_rect_BottomRight").w, gfx_Rect.GetSprite("gfx_gui_rect_BorderBottom").h)
-    gfx_Rect.GetSprite("gfx_gui_rect_Back").TileDraw(x + gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").w, y + gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").h, width - gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").w - gfx_Rect.GetSprite("gfx_gui_rect_TopRight").w, Height - gfx_Rect.GetSprite("gfx_gui_rect_TopLeft").h - gfx_Rect.GetSprite("gfx_gui_rect_BottomLeft").h)
-    SetViewport(0, 0, App.width, App.height)
-  End Function
+		gfx_Rect.GetSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, gfx_Rect.GetSprite(nameBase+"BorderLeft").w, Height - gfx_Rect.GetSprite(nameBase+"BottomLeft").h - gfx_Rect.GetSprite(nameBase+"TopLeft").h)
+		gfx_Rect.GetSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.GetSprite(nameBase+"BorderRight").w, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, gfx_Rect.GetSprite(nameBase+"BorderRight").w, Height - gfx_Rect.GetSprite(nameBase+"BottomRight").h - gfx_Rect.GetSprite(nameBase+"TopRight").h)
+		gfx_Rect.GetSprite(nameBase+"BorderTop").TileDraw(x + gfx_Rect.GetSprite(nameBase+"TopLeft").w, y, width - gfx_Rect.GetSprite(nameBase+"TopLeft").w - gfx_Rect.GetSprite(nameBase+"TopRight").w, gfx_Rect.GetSprite(nameBase+"BorderTop").h)
+		gfx_Rect.GetSprite(nameBase+"BorderBottom").TileDraw(x + gfx_Rect.GetSprite(nameBase+"BottomLeft").w, y + Height - gfx_Rect.GetSprite(nameBase+"BorderBottom").h, width - gfx_Rect.GetSprite(nameBase+"BottomLeft").w - gfx_Rect.GetSprite(nameBase+"BottomRight").w, gfx_Rect.GetSprite(nameBase+"BorderBottom").h)
+		gfx_Rect.GetSprite(nameBase+"Back").TileDraw(x + gfx_Rect.GetSprite(nameBase+"TopLeft").w, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, width - gfx_Rect.GetSprite(nameBase+"TopLeft").w - gfx_Rect.GetSprite(nameBase+"TopRight").w, Height - gfx_Rect.GetSprite(nameBase+"TopLeft").h - gfx_Rect.GetSprite(nameBase+"BottomLeft").h)
+	End Function
 
 Type TBlock
   Field dragable:Int = 1 {saveload = "normalExt"}

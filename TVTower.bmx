@@ -16,16 +16,7 @@ Incbin "source/version.txt"
 
 'done
 rem
-
-- Koffer-Grafiken zu einer Grafik zusammengefuehrt, per XML und von
-  Koffer-Timage auf Asset umgestellt
-- Filmverleiher-Grafiken in eine Grafik gepackt und per XML geladen
-- TGW_SpritePack.colorizeSprite(spritename, r,g,b) hinzugefuegt
-- TGW_Sprites.colorize(r,g,b) hinzugefuegt (referenziert SpritePack)
-- gfx.xml - laedt nun auch Filmverleiher-Filmhuellen und faerbt diese ein
-- OnMinuteEventListener hoert nun auf OnMinute (und aktualisiert Zuschauerzahlen)
-
-endrem
+cendrem
 
 ' 2012:
 ' gamefunctions - tstation - farben der ovale anpassen auf tplayercolor
