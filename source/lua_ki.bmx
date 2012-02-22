@@ -276,8 +276,8 @@ Type KI
 
 
 		Local i:Int = 0
-		For i = 1 To 4
 			addScriptConstant("ROOM_ARCHIVE_PLAYER" + i, TRooms.GetRoom("archive", i).uniqueID)
+		For i = 1 To 4
 			addScriptConstant("ROOM_NEWSAGENCY_PLAYER" + i, TRooms.GetRoom("news", i).uniqueID)
 			addScriptConstant("ROOM_BOSS_PLAYER" + i, TRooms.GetRoom("chief", i).uniqueID)
 			addScriptConstant("ROOM_OFFICE_PLAYER" + i, TRooms.GetRoom("office", i).uniqueID)
@@ -391,6 +391,8 @@ endrem
 End Type
 
 Type TLuaFunctions
+	field MOVIE_GENRE_ACTION:int = 100
+
 	Function Lua_GetString:String(luaState:Byte Ptr)
 	 Return String.FromCString(lua_tostring(luaState, -1))
 	End Function
@@ -404,6 +406,11 @@ Type TLuaFunctions
 		Print text
 		Return 1
 	EndMethod
+
+	Method GetRoom:int(roomName:string, playerID:int)
+		local room:TRooms = TRooms.GetRoom(roomName, playerID, 0) '0 = not strict
+		if room <> null then return room.uniqueID else return -1
+	End Method
 
 	Method SendToChat:Int(ChatText:String)
 		Local PlayerID:Int = activeKI.playerId

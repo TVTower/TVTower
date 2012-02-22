@@ -392,9 +392,9 @@ Type TRooms
       Return Null
 	End Function
 
-	Function GetRoom:TRooms(desc:String, owner:Int)
+	Function GetRoom:TRooms(desc:String, owner:Int, strictOwner:int = 1)
       For Local room:TRooms= EachIn TRooms.RoomList
-        If room.name = desc and room.owner = owner Then Return room
+        If room.name = desc and (room.owner = owner OR (strictOwner = 0 AND owner <=0 AND room.owner <=0)) Then Return room
       Next
       Return Null
 	End Function
