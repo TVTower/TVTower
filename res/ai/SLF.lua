@@ -1,42 +1,50 @@
 -- ============================
 -- === Simple Lua Framework ===
 -- ============================
--- Autor: Manuel Vögele (STARS_crazy@gmx.de)
+-- Autor: Manuel VÃ¶gele (STARS_crazy@gmx.de)
 
 -- ##### HISTORY #####
+-- 22.02.2012 Manuel
+-- Auf den neusten Stand gebracht
+-- CHA: Die Id ist raus
 -- 13.12.2007 Manuel
--- NEW: SLFDataObject eingefügt
+-- NEW: SLFDataObject eingefÃ¼gt
 -- 12.12.2007 Manuel
 -- +++++ Library erstellt +++++
 
 -- ##### KONSTANTEN #####
 NL = "\n"
-APP_VERSION = "--[[NOVersion]]--" -- Kann überschrieben werden
+APP_VERSION = "--[[NOVersion]]--" -- Kann Ã¼berschrieben werden
 
 -- ##### GLOBALS #####
-globalIDCounter = 0     --TODO: Counter könnte eine Zahlengrenze sprengen (zu prüfen)
+--globalIDCounter = 0     --TODO: Counter kÃ¶nnte eine Zahlengrenze sprengen (zu prÃ¼fen)
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-SLFObject = {Id = 0}
+--SLFObject = {Id = 0}
+SLFObject = {}
 
 function SLFObject:new(o)
-	o = o or {}   -- Erstellt das Objekt, wenn keiens Vorhanden
+	o = o or {}   -- Erstellt das Objekt, wenn keines Vorhanden
 	setmetatable(o, self)
 	self.__index = self
-	globalIDCounter = globalIDCounter + 1
-	self.Id = globalIDCounter
+	--globalIDCounter = globalIDCounter + 1
+	--self.Id = globalIDCounter
 	self:initialize()
 	return o
 end
 
 function SLFObject:initialize()
-	--kann überschrieben werden, ist im Standard aber leer.
+	--kann Ã¼berschrieben werden, ist im Standard aber leer.
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 SLFDataObject = SLFObject:new()
+
+function SLFDataObject:typename()
+	return "SLFDataObject" --Hier muss der "Klassen"-Name zurÃ¼ckgeliefert werden
+end
 
 function SLFDataObject:load(loadcache)
 	o = {}   -- Erstellt das Objekt, wenn keiens Vorhanden
@@ -45,10 +53,6 @@ function SLFDataObject:load(loadcache)
 	LoadCacheCounter = LoadCacheCounter + 1
 	loadcache[LoadCacheCounter] = self
 	return o
-end
-
-function SLFDataObject:typename()
-	return "SLFDataObject" --Hier muss der "Klassen"-Name zurückgeliefert werden
 end
 
 function SLFDataObject:resume()
@@ -78,10 +82,10 @@ function SLFManager:load(pStoreData)
 	LoadCache = {}
 	LoadCacheCounter = 0
 
-	loadstring(SLFManager.StoreData)()	-- Führt das Skript aus
+	loadstring(SLFManager.StoreData)()	-- Fï¿½hrt das Skript aus
 
 	for k,v in pairs(LoadCache) do
-		v:resume()	-- Ruft für alle Tables "resume" auf
+		v:resume()	-- Ruft fï¿½r alle Tables "resume" auf
 	end
 end
 

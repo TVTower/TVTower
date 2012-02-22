@@ -497,7 +497,7 @@ Type TPlayer
 		Player.Figure = TFigures.GetFigure(FigureID)
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
 			PrintDebug("TPlayer.Load()", "Lade AI für Spieler" + Player.playerID, DEBUG_SAVELOAD)
-			Player.playerKI = KI.Create(Player.playerID, "res/ai/test.lua")
+			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
 		Player.UpdateFigureBase(Player.figurebase)
@@ -1319,7 +1319,7 @@ Type TElevator
 			FloorRouteList.AddFirst(floorroute)
 			Self.toFloor = Self.GetFloorRoute()
 		Else
-			If not FloorRouteList.IsEmpty() AND (TFloorRoute(FloorRouteList.Last()).who = who OR TFloorRoute(FloorRouteList.Last()).floornumber = floornumber)
+			If Not FloorRouteList.IsEmpty() And (TFloorRoute(FloorRouteList.Last()).who = who Or TFloorRoute(FloorRouteList.Last()).floornumber = floornumber)
 				FloorRouteList.RemoveLast()
 			EndIf
 			FloorRouteList.AddLast(floorroute)
@@ -2808,7 +2808,7 @@ Type TEventOnTime Extends TEventBase
 	Function Create:TEventOnTime(trigger:String="", time:Int)
 		Local evt:TEventOnTime = New TEventOnTime
 		'evt._startTime = EventManager.getTicks() 'now
-		evt._trigger	= lower(trigger)
+		evt._trigger	= Lower(trigger)
 		'special data:
 		evt.time		= time
 		Return evt
@@ -2857,7 +2857,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 				If hour+1 >= 18 Or hour+1 <= 1 Then game.maxAudiencePercentage = Float(RandRange(15, 20 + hour+1)) / 100
 				TPlayer.ComputeNewsAudience()
  			EndIf
- 			if minute = 5 or minute = 55 or minute=0 then Interface.BottomImgDirty = true
+ 			If minute = 5 Or minute = 55 Or minute=0 Then Interface.BottomImgDirty = True
 		EndIf
 	End Method
 End Type
@@ -2979,17 +2979,17 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game
 
 		If KEYMANAGER.Ishit(Key_F1)
-			if Player[1].figure.isAI() then Player[1].PlayerKI.reloadScript()
-		endif
+			If Player[1].figure.isAI() Then Player[1].PlayerKI.reloadScript()
+		EndIf
 		If KEYMANAGER.Ishit(Key_F2)
-			if Player[2].figure.isAI() then Player[2].PlayerKI.reloadScript()
-		endif
+			If Player[2].figure.isAI() Then Player[2].PlayerKI.reloadScript()
+		EndIf
 		If KEYMANAGER.Ishit(Key_F3)
-			if Player[3].figure.isAI() then Player[3].PlayerKI.reloadScript()
-		endif
+			If Player[3].figure.isAI() Then Player[3].PlayerKI.reloadScript()
+		EndIf
 		If KEYMANAGER.Ishit(Key_F4)
-			if Player[4].figure.isAI() then Player[4].PlayerKI.reloadScript()
-		endif
+			If Player[4].figure.isAI() Then Player[4].PlayerKI.reloadScript()
+		EndIf
 		App.Timer.loop()
 
 		'process events not directly triggered
