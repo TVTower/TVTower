@@ -82,10 +82,10 @@ function SLFManager:load(pStoreData)
 	LoadCache = {}
 	LoadCacheCounter = 0
 
-	loadstring(SLFManager.StoreData)()	-- F�hrt das Skript aus
+	loadstring(SLFManager.StoreData)()	-- F?hrt das Skript aus
 
 	for k,v in pairs(LoadCache) do
-		v:resume()	-- Ruft f�r alle Tables "resume" auf
+		v:resume()	-- Ruft f?r alle Tables "resume" auf
 	end
 end
 

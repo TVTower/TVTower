@@ -12,7 +12,7 @@
 -- +++++ Library erstellt +++++
 
 -- ##### INCLUDES #####
-dofile("SLF.lua")
+dofile("res\\ai\\SLF.lua")
 
 -- ##### KONSTANTEN #####
 TASK_STATUS_OPEN	= "T_open"
@@ -26,7 +26,6 @@ JOB_STATUS_RUN		= "J_run"
 JOB_STATUS_DONE		= "J_done"
 
 -- ##### KONSTANTEN #####
-globalKIPlayer = nil
 
 -- ##### KLASSEN #####
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -46,10 +45,8 @@ function AIPlayer:typename()
 	return "KIPlayer"
 end
 
-function AIPlayer:initialize()
-	globalKIPlayer = self;
-
-	math.randomseed(GetMillisecs())
+function AIPlayer:initialize()	
+	math.randomseed(TVT.GetMillisecs())
 	
 	self:initializePlayer()
 
@@ -84,7 +81,8 @@ end
 function AIPlayer:BeginNewTask()
 	self.CurrentTask = self:SelectTask()
 	self.CurrentTask.sStatus = TASK_STATUS_OPEN
-	self.CurrentTask:Start()
+	self.CurrentTask:Activate()
+	self.CurrentTask:StartNextJob()
 end
 
 function AIPlayer:SelectTask()
@@ -108,34 +106,42 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
--- Ein Task repr�sentiert eine zu erledigende KI-Aufgabe die sich �blicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
+-- Ein Task repräsentiert eine zu erledigende KI-Aufgabe die sich üblicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
 AITask = KIDataObjekt:new{
-	Id = "";
-	Status = TASK_STATUS_OPEN;
-	CurrentJob = nil;
-	BasePriority = 0;
-	CurrentPriority = 0;
-	SituationPriority = 0;
-	LastDone = 0;
-	StartTask = 0;
-	TickCounter = 0;
-	TargetRoom = 0
+	Status = TASK_STATUS_OPEN; -- Der Status der Aufgabe
+	CurrentJob = nil; -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
+	BasePriority = 0; -- Grundlegende Priorität der Aufgabe	
+	SituationPriority = 0; -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert
+	CurrentPriority = 0; -- Berechnet: Aktuelle Priorität dieser Aufgabe
+	LastDone = 0; -- Zeit, wann der Task zuletzt abgeschlossen wurde
+	StartTask = 0; -- Zeit, wann der Task zuletzt gestartet wurde
+	TickCounter = 0; -- Gibt die Anzahl der Ticks an seit dem der Task läuft
+	TargetRoom = -1; -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
+	CurrentBudget = 0; -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
+	BudgetWholeDay = 0; -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
+	BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
 }
 
 function AITask:typename()
 	return "AITask"
 end
 
+function AITask:Activate()
+	debugMsg("Implementiere mich... " .. type(self))
+end
+
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgew�hlt wurde (NICHT �BERSCHREIBEN!)
 function AITask:StartNextJob()
-	if GetPlayerRoom() ~= self.TargetRoom then --sorgt daf�r, dass der Spieler in den richtigen Raum geht!
+	local roomNumber = TVT.GetPlayerRoom()
+	debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
+	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt daf�r, dass der Spieler in den richtigen Raum geht!
 		self.Status = TASK_STATUS_PREPARE
 		self.CurrentJob = self:getGotoJob()		
 	else
 		self.Status = TASK_STATUS_RUN
-		self.StartTask = GetTime()
-		self.TickCounter = 0;
-		self:CurrentJob = self:GetNextJobInTargetRoom()
+		self.StartTask = TVT.GetTime()
+		self.TickCounter = 0;		
+		self.CurrentJob = self:GetNextJobInTargetRoom()
 	end
 	
 	self.CurrentJob:Start()
@@ -161,11 +167,12 @@ function AITask:Tick()
 end
 
 function AITask:GetNextJobInTargetRoom()
-	error("Muss noch implementiert werden")
+	return self:getGotoJob()
+	--error("Muss noch implementiert werden")
 end
 
 function AITask:getGotoJob()
-	local aJob = KIJobGoToRoom:new()
+	local aJob = AIJobGoToRoom:new()
 	aJob.TargetRoom = self.TargetRoom
 	return aJob
 end
@@ -173,7 +180,7 @@ end
 function AITask:RecalcPriority()
 	local Ran1 = math.random(4)
 	local Ran2 = math.random(4)
-	local TimeDiff = GetTime() - self.LastDone
+	local TimeDiff = TVT.GetTime() - self.LastDone
 	self.CurrentPriority = self.SituationPriority + (self.BasePriority * (8+Ran1)) + (TimeDiff / 10 * (self.BasePriority - 2 + Ran2))
 end
 
@@ -181,7 +188,7 @@ function AITask:SetDone()
 	debugMsg("Done!")
 	self.sStatus = TASK_STATUS_DONE
 	self.SituationPriority = 0
-	self.LastDone = GetTime()
+	self.LastDone = TVT.GetTime()
 end
 
 function AITask:OnReachRoom()
@@ -193,7 +200,7 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-KIJob = KIDataObjekt:new{
+AIJob = KIDataObjekt:new{
 	Id = "";
 	Status = JOB_STATUS_NEW;
 	StartJob = 0;
@@ -201,61 +208,69 @@ KIJob = KIDataObjekt:new{
 	StartParams = nil;
 }
 
-function KIJob:typename()
-	return "KIJob"
+function AIJob:typename()
+	return "AIJob"
 end
 
-function KIJob:Start(pParams)
+function AIJob:Start(pParams)
+	debugMsg("Start1/2")
 	self.StartParams = pParams
-	self.StartJob = GetTime()
-	self.LastCheck = GetTime()
+	self.StartJob = TVT.GetTime()
+	self.LastCheck = TVT.GetTime()
 	self:Prepare()
+	debugMsg("Start2/2")
 end
 
-function KIJob:Prepare(pParams)
+function AIJob:Prepare(pParams)
 	debugMsg("Implementiere mich: " .. type(self))
 end
 
-function KIJob:Tick()
+function AIJob:Tick()
 	--Kann �berschrieben werden
 end
 
-function KIJob:ReDoCheck(pWait)
-	if ((self.LastCheck + pWait) < GetTime()) then
+function AIJob:ReDoCheck(pWait)
+	if ((self.LastCheck + pWait) < TVT.GetTime()) then
 		debugMsg("ReDoCheck")
 		self.Status = JOB_STATUS_REDO
-		self.LastCheck = GetTime()
+		self.LastCheck = TVT.GetTime()
 		self:Prepare(self.StartParams)
 	end
 end
 
-function KIJob:OnReachRoom()
+function AIJob:OnReachRoom()
 	--Kann �berschrieben werden
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-KIJobGoToRoom = KIJob:new{
+AIJobGoToRoom = AIJob:new{
 	TargetRoom = 0
 }
 
-function KIJobGoToRoom:typename()
-	return "KIJobGoToRoom"
+function AIJobGoToRoom:typename()
+	return "AIJobGoToRoom"
 end
 
-function KIJobGoToRoom:OnReachRoom()
+function AIJobGoToRoom:OnReachRoom()
 	self.sStatus = JOB_STATUS_DONE
 end
 
-function KIJobGoToRoom:Prepare(pParams)
-	if ((self.sStatus == JOB_STATUS_NEW) or (self.sStatus == JOB_STATUS_REDO)) then
-		debugMsg("GotoRoom: " .. self.TargetRoom)
-		DoGoToRoom(self.TargetRoom)
+function AIJobGoToRoom:Prepare(pParams)
+	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
+		TVT.DoGoToRoom(self.TargetRoom)
 		self.sStatus = JOB_STATUS_RUN
 	end
 end
 
-function KIJobGoToRoom:Tick()
+function AIJobGoToRoom:Tick()
 	self:ReDoCheck(10)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+function debugMsg(pMessage)
+	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
+		TVT.PrintOut(TVT.ME .. ": " .. pMessage)
+		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
+	end
+end

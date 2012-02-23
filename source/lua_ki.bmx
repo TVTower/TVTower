@@ -1,4 +1,4 @@
-ï»¿'**************************************************************************************************
+'**************************************************************************************************
 ' This program was written with BLIde
 ' Application:
 ' Author:
@@ -52,7 +52,7 @@ Type TNewLuaEngine
 	    If luaL_dofile(Self.LuaState(),scriptFile)
 			Local error:String = lua_tostring(Self.LuaState(), -1 )
 			Print "LUA ERROR"
-			print error
+			Print error
 			lua_pop( Self.LuaState(), 1 )
 			RuntimeError(error)
 			Return False
@@ -64,7 +64,7 @@ Type TNewLuaEngine
 
 	Method CallFunction:Int(functionName:String)
 		Local result:Int = 0
-		print "LUA: CallFunction: "+functionName
+		Print "LUA: CallFunction: "+functionName
 		lua_getglobal( Self.LuaState(), functionName )
 		If lua_type( Self.LuaState(), -1 ) = LUA_TFUNCTION Then
 			If lua_pcall( Self.LuaState(), 0, 1, 0 ) Then
@@ -86,7 +86,7 @@ Type TNewLuaEngine
 		file.Close()
 	End Method
 
-rem
+Rem
 	Method RegisterType:Int(L:Byte Ptr)
 		Local _objects:Int = luaL_optint( L, 1, 1 )
 		For Local i:Int = 1 To _objects
@@ -187,7 +187,7 @@ Type KI
 	End Method
 
 	Method reloadScript()
-		print "Reloaded LUA AI for player "+self.playerId
+		Print "Reloaded LUA AI for player "+Self.playerId
 		scriptAsString = fileToString(scriptName)
 		'initScriptFunctions()
 		initScriptVariables()
@@ -198,11 +198,13 @@ Type KI
 
 
 	Method initScriptVariables()
-		Global LuaFunctions:TLuaFunctions = New TLuaFunctions
+		Global LuaFunctions:TLuaFunctions = TLuaFunctions.Create(playerid)
 		Self.LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
-
+		
 		scriptConstants = ""
-		addScriptConstant("PLAYER1", 1)
+
+Rem	
+	addScriptConstant("PLAYER1", 1)
 		addScriptConstant("PLAYER2", 2)
 		addScriptConstant("PLAYER3", 3)
 		addScriptConstant("PLAYER4", 4)
@@ -270,6 +272,7 @@ Type KI
 			addScriptConstant("ROOM_OFFICE_PLAYER" + i, TRooms.GetRoom("office", i).uniqueID)
 			addScriptConstant("ROOM_STUDIOSIZE_PLAYER" + i, TRooms.GetRoom("studiosize1", i).uniqueID)
 		Next
+EndRem
 	End Method
 
 	Method CallOnLoad(savedluascript:String="")
@@ -356,7 +359,7 @@ Type KI
 		Local file:TStream = OpenStream(filename, True, False)
 		Return file.ReadString(file.Size())
 		file.Close()
-rem
+Rem
 		Local file:TStream = ReadFile(filename)
 		Local line:String
 		Local ret:String
@@ -368,7 +371,7 @@ rem
 
 		file.Close()
 		Return ret
-endrem
+EndRem
 	End Method
 
 	Method addScriptConstant(name$, value$)
@@ -378,15 +381,150 @@ endrem
 End Type
 
 Type TLuaFunctions
-	field MOVIE_GENRE_ACTION:int = 100
+	Field PLAYER1:Int = 1
+	Field PLAYER2:Int = 2
+	Field PLAYER3:Int = 3
+	Field PLAYER4:Int = 4
+	Field ME:Int 'Wird initialisiert
+
+	Field MAXMOVIES:Int = 50
+	Field MAXMOVIESPARGENRE:Int = 8
+	Field MAXSPOTS:Int 'Wird initialisiert
+
+	Field MOVIE_GENRE_ACTION:Int = 0
+	Field MOVIE_GENRE_THRILLER:Int = 1
+	Field MOVIE_GENRE_SCIFI:Int = 2
+	Field MOVIE_GENRE_COMEDY:Int = 3
+	Field MOVIE_GENRE_HORROR:Int = 4
+	Field MOVIE_GENRE_LOVE:Int = 5
+	Field MOVIE_GENRE_EROTIC:Int = 6
+	Field MOVIE_GENRE_WESTERN:Int = 7
+	Field MOVIE_GENRE_LIVE:Int = 8
+	Field MOVIE_GENRE_KIDS:Int = 9
+	Field MOVIE_GENRE_CARTOON:Int = 10
+	Field MOVIE_GENRE_MUSIC:Int = 11
+	Field MOVIE_GENRE_SPORT:Int = 12
+	Field MOVIE_GENRE_CULTURE:Int = 13
+	Field MOVIE_GENRE_FANTASY:Int = 14
+	Field MOVIE_GENRE_YELLOWPRESS:Int = 15
+	Field MOVIE_GENRE_NEWS:Int = 16
+	Field MOVIE_GENRE_SHOW:Int = 17
+	Field MOVIE_GENRE_MONUMENTAL:Int = 18
+
+	Field NEWS_GENRE_TECHNICS:Int = 3
+	Field NEWS_GENRE_POLITICS:Int = 0
+	Field NEWS_GENRE_SHOWBIZ:Int = 1
+	Field NEWS_GENRE_SPORT:Int = 2
+	Field NEWS_GENRE_CURRENTS:Int = 4
+
+	'Die Räume werden alle initialisiert
+	Field ROOM_TOWER:Int = 0
+	Field ROOM_MOVIEAGENCY:Int
+	Field ROOM_ADAGENCY:Int
+	Field ROOM_ROOMBOARD:Int
+	Field ROOM_PORTER:Int
+	Field ROOM_BETTY:Int
+	Field ROOM_SUPERMARKET:Int
+	Field ROOM_ROOMAGENCY:Int
+	Field ROOM_PEACEBROTHERS:Int
+	Field ROOM_SCRIPTAGENCY:Int
+	Field ROOM_NOTOBACCO:Int
+	Field ROOM_TOBACCOLOBBY:Int
+	Field ROOM_GUNSAGENCY:Int
+	Field ROOM_VRDUBAN:Int
+	Field ROOM_FRDUBAN:Int
+
+	Field ROOM_OFFICE_PLAYER_ME:Int
+	Field ROOM_STUDIOSIZE1_PLAYER_ME:Int
+	Field ROOM_BOSS_PLAYER_ME:Int
+	Field ROOM_NEWSAGENCY_PLAYER_ME:Int
+	Field ROOM_ARCHIVE_PLAYER_ME:Int
+
+	Field ROOM_ARCHIVE_PLAYER1:Int
+	Field ROOM_NEWSAGENCY_PLAYER1:Int
+	Field ROOM_BOSS_PLAYER1:Int
+	Field ROOM_OFFICE_PLAYER1:Int
+	Field ROOM_STUDIOSIZE_PLAYER1:Int	
+	
+	Field ROOM_ARCHIVE_PLAYER2:Int
+	Field ROOM_NEWSAGENCY_PLAYER2:Int
+	Field ROOM_BOSS_PLAYER2:Int
+	Field ROOM_OFFICE_PLAYER2:Int
+	Field ROOM_STUDIOSIZE_PLAYER2:Int	
+
+	Field ROOM_ARCHIVE_PLAYER3:Int
+	Field ROOM_NEWSAGENCY_PLAYER3:Int
+	Field ROOM_BOSS_PLAYER3:Int
+	Field ROOM_OFFICE_PLAYER3:Int
+	Field ROOM_STUDIOSIZE_PLAYER3:Int	
+	
+	Field ROOM_ARCHIVE_PLAYER4:Int
+	Field ROOM_NEWSAGENCY_PLAYER4:Int
+	Field ROOM_BOSS_PLAYER4:Int
+	Field ROOM_OFFICE_PLAYER4:Int
+	Field ROOM_STUDIOSIZE_PLAYER4:Int	
+	
+	Function Create:TLuaFunctions(pPlayerId:Int)
+		Local ret:TLuaFunctions = New TLuaFunctions
+		
+		ret.ME = pPlayerId
+		ret.MAXSPOTS = Game.maxContractsAllowed
+		
+		ret.ROOM_MOVIEAGENCY = TRooms.GetRoom("movieagency", 0).uniqueID
+		ret.ROOM_ADAGENCY = TRooms.GetRoom("adagency", 0).uniqueID
+		ret.ROOM_ROOMBOARD = TRooms.GetRoom("roomboard", - 1).uniqueID
+		ret.ROOM_PORTER = TRooms.GetRoom("porter", - 1).uniqueID
+		ret.ROOM_BETTY = TRooms.GetRoom("betty", 0).uniqueID
+		ret.ROOM_SUPERMARKET = TRooms.GetRoom("supermarket", 0).uniqueID
+		ret.ROOM_ROOMAGENCY = TRooms.GetRoom("roomagency", 0).uniqueID
+		ret.ROOM_PEACEBROTHERS = TRooms.GetRoom("peacebrothers", - 1).uniqueID
+		ret.ROOM_SCRIPTAGENCY = TRooms.GetRoom("scriptagency", 0).uniqueID
+		ret.ROOM_NOTOBACCO = TRooms.GetRoom("notobacco", - 1).uniqueID
+		ret.ROOM_TOBACCOLOBBY = TRooms.GetRoom("tobaccolobby", - 1).uniqueID
+		ret.ROOM_GUNSAGENCY = TRooms.GetRoom("gunsagency", - 1).uniqueID
+		ret.ROOM_VRDUBAN = TRooms.GetRoom("vrduban", - 1).uniqueID
+		ret.ROOM_FRDUBAN = TRooms.GetRoom("frduban", - 1).uniqueID
+		
+		ret.ROOM_OFFICE_PLAYER_ME = TRooms.GetRoom("office", pPlayerId).uniqueID
+		ret.ROOM_STUDIOSIZE1_PLAYER_ME = TRooms.GetRoom("studiosize1", pPlayerId).uniqueID
+		ret.ROOM_BOSS_PLAYER_ME = TRooms.GetRoom("chief", pPlayerId).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER_ME = TRooms.GetRoom("news", pPlayerId).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER_ME = TRooms.GetRoom("archive", pPlayerId).uniqueID
+
+		ret.ROOM_ARCHIVE_PLAYER1 = TRooms.GetRoom("archive", 1).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER1 = TRooms.GetRoom("news", 1).uniqueID
+		ret.ROOM_BOSS_PLAYER1 = TRooms.GetRoom("chief", 1).uniqueID
+		ret.ROOM_OFFICE_PLAYER1 = TRooms.GetRoom("office", 1).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER1 = TRooms.GetRoom("studiosize1", 1).uniqueID
+		
+		ret.ROOM_ARCHIVE_PLAYER2 = TRooms.GetRoom("archive", 2).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER2 = TRooms.GetRoom("news", 2).uniqueID
+		ret.ROOM_BOSS_PLAYER2 = TRooms.GetRoom("chief", 2).uniqueID
+		ret.ROOM_OFFICE_PLAYER2 = TRooms.GetRoom("office", 2).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER2 = TRooms.GetRoom("studiosize1", 2).uniqueID
+
+		ret.ROOM_ARCHIVE_PLAYER3 = TRooms.GetRoom("archive", 3).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER3 = TRooms.GetRoom("news", 3).uniqueID
+		ret.ROOM_BOSS_PLAYER3 = TRooms.GetRoom("chief", 3).uniqueID
+		ret.ROOM_OFFICE_PLAYER3 = TRooms.GetRoom("office", 3).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER3 = TRooms.GetRoom("studiosize1", 3).uniqueID
+
+		ret.ROOM_ARCHIVE_PLAYER4 = TRooms.GetRoom("archive", 4).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER4 = TRooms.GetRoom("news", 4).uniqueID
+		ret.ROOM_BOSS_PLAYER4 = TRooms.GetRoom("chief", 4).uniqueID
+		ret.ROOM_OFFICE_PLAYER4 = TRooms.GetRoom("office", 4).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER4 = TRooms.GetRoom("studiosize1", 4).uniqueID
+		
+		Return ret
+	End Function		
 
 	Function Lua_GetString:String(luaState:Byte Ptr)
-	 Return String.FromCString(lua_tostring(luaState, -1))
+		Return String.FromCString(lua_tostring(luaState, -1))
 	End Function
 
 	'getInt ist nicht moeglich, da Lua "number" zurueckgibt, was standardmaessig dem Double entspricht
 	Function Lua_GetDouble:Double(luaState:Byte Ptr)
-	 Return lua_toNumber(luaState, -1)
+		Return lua_tonumber(luaState, -1)
 	End Function
 
 	Method PrintOut:Int(text:String)
@@ -394,9 +532,9 @@ Type TLuaFunctions
 		Return 1
 	EndMethod
 
-	Method GetRoom:int(roomName:string, playerID:int)
-		local room:TRooms = TRooms.GetRoom(roomName, playerID, 0) '0 = not strict
-		if room <> null then return room.uniqueID else return -1
+	Method GetRoom:Int(roomName:String, playerID:Int)
+		Local room:TRooms = TRooms.GetRoom(roomName, playerID, 0) '0 = not strict
+		If room <> Null Then Return room.uniqueID Else Return -1
 	End Method
 
 	Method SendToChat:Int(ChatText:String)
@@ -866,7 +1004,7 @@ Type TLuaFunctions
 					If playerId <> owner
 						Return - 1
 					Else
-						If ObjectID = 0 'Film bei Day,hour lÃ¶schen
+						If ObjectID = 0 'Film bei Day,hour löschen
 							If day = Game.day And hour = Game.GetActualHour() And Game.GetActualMinute() > 5
 								Return - 2
 							Else
@@ -913,7 +1051,7 @@ Type TLuaFunctions
 					If playerId <> owner
 						Return - 1
 					Else
-						If ObjectID = 0 'Film bei Day,hour lÃ¶schen
+						If ObjectID = 0 'Film bei Day,hour löschen
 							If day = Game.day And hour = Game.GetActualHour()
 								Return - 2
 							Else

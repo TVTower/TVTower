@@ -560,10 +560,10 @@ Type TPlayer
 		Player.Figure = TFigures.Create(FigureName, imageOrSprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayer = Player
 		If controlledByID = 0 And Game.playerID = 1 Then
-			If TPlayer.globalID = 3
-				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/alt/test_base.lua")
-			Else
+			If TPlayer.globalID = 2
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
+			Else
+				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/alt/test_base.lua")			
 			EndIf
 		EndIf
 		For Local i:Int = 0 To 6
