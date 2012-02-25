@@ -5,6 +5,7 @@
 SuperStrict
 
 Import brl.Graphics
+Import "bufferedglmax2d.bmx"
 ?Win32
 Import brl.D3D9Max2D
 Import brl.D3D7Max2D
@@ -195,7 +196,8 @@ Try
 	EndIf
 ?
 ?Linux
-	SetGraphicsDriver GLMax2DDriver()
+	'SetGraphicsDriver GLMax2DDriver()
+	SetGraphicsDriver BufferedGLMax2DDriver()
 	g = Graphics(WIDTH, HEIGHT, d, hertz2, MyFlag)
 	If g = Null Then Throw "Graphics initiation error! no DirectX available."
 ?
@@ -220,6 +222,8 @@ For Local i:Int = 1 To 16 / 2
 	alpha:* 0.55
 	SetAlpha alpha
 Next
+'image bounds
+'particle_image = LoadImage(GrabPixmap(0,0,16,16))
 GrabImage(particle_image,0,0) ; Cls
 SetAlpha 1.0
 
@@ -229,7 +233,6 @@ Assets.AddSet(XmlLoader.Values) 'copy XML-values
 
 '=== Building ======================
 '--- Elevator / Items -----
-
 Global gfx_building_tooltips:TImage 		= CheckLoadImage("grafiken/hochhaus/tooltips.png", -1, 20, 20, 0, 7)
 Global gfx_building_textballons:TImage		= CheckLoadImage("grafiken/hochhaus/textballons.png",-1, 23,12,0,6)
 '===================================
@@ -243,6 +246,7 @@ Global gfx_news_pp_btn:TImage 				= CheckLoadImage("grafiken/news/newsplanung_bu
 Global gfx_news_btn:TImage 					= CheckLoadImage("grafiken/news/button.png", -1, 41, 42, 0, 10)
 Global gfx_news_sheet_base:TImage			= CheckLoadImage("grafiken/news/newsplanung_news.png",0)
 Global gfx_news_sheet:TImage				= TImage.Create(ImageWidth(gfx_news_sheet_base), ImageHeight(gfx_news_sheet_base) * 5, 1, 0, 255, 0, 255)
+
 Local tmppix:TPixmap = LockImage(gfx_news_sheet, 0)
 DrawOnPixmap(ColorizeTImage(gfx_news_sheet_base, 205, 170, 50) , 0, tmppix, 0, 0)
 DrawOnPixmap(ColorizeTImage(gfx_news_sheet_base, 50, 140, 205) , 0, tmppix, 0, ImageHeight(gfx_news_sheet_base) * 1)
@@ -273,31 +277,13 @@ Global stationmap_land_bremen:TImage		= Assets.GetSprite("gfx_officepack_topo_br
 Global gfx_mousecursor:TImage       = CheckLoadImage("grafiken/interface/cursor.png", 0, 32,32,0,3) 'normal mousecursor
 
 '=== fonts =========================
-Local vera:String = "res/fonts/Vera.ttf"
-Local veraBd:String = "res/fonts/VeraBd.ttf"
-
 Global FontManager:TGW_FontManager	= TGW_FontManager.Create()
 FontManager.DefaultFont	= FontManager.AddFont("Default", "res/fonts/Vera.ttf", 11, SMOOTHFONT)
+FontManager.baseFont = FontManager.DefaultFont.ffont
 FontManager.AddFont("Default", "res/fonts/VeraBd.ttf", 11, SMOOTHFONT + BOLDFONT)
 FontManager.AddFont("Default", "res/fonts/VeraIt.ttf", 11, SMOOTHFONT + ITALICFONT)
+SetImageFont(LoadTrueTypeFont("res/fonts/Vera.ttf", 11,SMOOTHFONT))
 
-
-Global Font9:TImageFont			= LoadImageFont(vera, 9, SMOOTHFONT)
-Global Font10:TImageFont		= LoadImageFont(vera, 10)
-Global Font11:TImageFont		= LoadImageFont(vera, 11, SMOOTHFONT)
-Global Font12:TImageFont		= LoadImageFont(vera, 12, SMOOTHFONT)
-Global Font14:TImageFont		= LoadImageFont(vera, 14, SMOOTHFONT)
-Global Font15bold:TImageFont	= LoadImageFont(veraBd, 15, SMOOTHFONT + BOLDFONT)
-Global Font10bold:TImageFont	= LoadImageFont(veraBd,	10,SMOOTHFONT + BOLDFONT)
-Global Font11bold:TImageFont	= LoadImageFont(veraBd,	11,SMOOTHFONT + BOLDFONT)
-Global Font12bold:TImageFont	= LoadImageFont(veraBd,	12,SMOOTHFONT + BOLDFONT)
-Global Font13:TImageFont		= LoadImageFont("res/fonts/VeraIt.ttf",	13,SMOOTHFONT + ITALICFONT)
-Global Font13Bold:TImageFont	= LoadImageFont(veraBd,	13,SMOOTHFONT + BOLDFONT)
-Global Font11italic:TImageFont	= LoadImageFont("res/fonts/VeraIt.ttf",	11,SMOOTHFONT + ITALICFONT)
-Global Font16italic:TImageFont	= LoadImageFont("res/fonts/VeraIt.ttf",	16,SMOOTHFONT + ITALICFONT + BOLDFONT)
-Global Font24italic:TImageFont	= LoadImageFont("res/fonts/VeraIt.ttf",	24,SMOOTHFONT + ITALICFONT + BOLDFONT)
-Global Font_tapes:TImageFont	= LoadImageFont("res/fonts/04B_03B_.TTF",	 8)
-'===================================
 PrintVidMem("Fonts")
 
 Global gfx_figures_hausmeister:TImage = CheckLoadImage("grafiken/hochhaus/spielfigur_hausmeister.png", 0, 51, 44, 0, 15)
@@ -357,3 +343,4 @@ SetBlend ALPHABLEND
 'Global gfx_hint_rooms_movieagency:TImage = (CheckLoadImage("grafiken/filmverleiher/raum_filmverleiher_glow.png"))
 SetMaskColor 0, 0, 0
 PrintDebug ("files.bmx", filecount + " Dateien per 'checked loading' eingelesen", DEBUG_LOADING)
+print "finished loading"

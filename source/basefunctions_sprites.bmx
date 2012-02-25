@@ -4,6 +4,7 @@ superstrict
 Import BRL.Max2D
 Import BRL.Random
 Import brl.reflection
+Import brl.FreeTypeFont
 'Import "basefunctions.bmx"
 Import "basefunctions_xml.bmx"
 Import "basefunctions_loadsave.bmx"
@@ -30,6 +31,385 @@ Type TRenderable extends TAsset
 '	field renderParams:object[]
 
 '	Method DrawInPipeline() abstract
+End Type
+
+
+
+
+' - max2d/max2d.bmx -> loadimagefont
+' - max2d/imagefont.bmx TImageFont.Load ->
+Function LoadTrueTypeFont:TImageFont( url:Object,size:int,style:int )
+	Local src:TFont = TFreeTypeFont.Load( String( url ), size, style )
+	If Not src Return null
+
+	Local font:TImageFont=New TImageFont
+	font._src_font=src
+	font._glyphs=New TImageGlyph[src.CountGlyphs()]
+	If style & SMOOTHFONT font._imageFlags=FILTEREDIMAGE|MIPMAPPEDIMAGE
+
+	Return font
+End Function
+
+
+Type TSpriteAtlas
+	field elements:TMap = CreateMap()
+	field w:int, h:int
+	field packer:TSpritePacker = New TSpritePacker
+
+	Function Create:TSpriteAtlas(w:int, h:int)
+		local obj:TSpriteAtlas = new TSpriteAtlas
+		obj.w = w
+		obj.h = h
+		obj.packer.setRect(0,0,w,h)
+		return obj
+	End Function
+
+	Method AddElement(name:string, w:int, h:int)
+		Local freeArea:TSpritePacker = null
+
+		while freeArea = null
+			freeArea = self.packer.pack(w,h)
+			if freeArea = Null
+				self.IncreaseSize()
+				self.Repack()
+			endif
+		Wend
+		Self.elements.Insert(name, TBox.Create( freeArea.x, freeArea.y, w, h ) )
+	End Method
+
+	Method Repack()
+		local newElements:TMap = CopyMap(self.elements)
+		self.packer = new TSpritePacker
+		self.packer.setRect(0,0,self.w,self.h)
+
+		ClearMap(self.elements)
+
+		for local name:string = eachin newElements.Keys()
+			local box:TBox = TBox(newElements.ValueForKey(name))
+			self.AddElement(name, box.w, box.h)
+		next
+	End Method
+
+	Method Draw(x:int=0, y:int=0)
+		setColor 255,100,100
+		DrawRect(x,y,self.w, self.h)
+		setColor 50,100,200
+		For local box:TBox = eachin self.elements.Values()
+			DrawRect(box.x+1, box.y+1, box.w-2, box.h-2)
+		Next
+	End Method
+
+	Method IncreaseSize(w:int = 0, h:int = 0)
+		if w = 0 AND h = 0
+			if self.h < self.w then self.h = self.nextPow2(self.h) else self.w = self.nextPow2(self.w)
+		else
+			if w<>0 then self.w = w
+			if h<>0 then self.h = h
+		endif
+		self.packer.setRect(0, 0, self.w, self.h)
+	End Method
+
+	Method nextPow2:int(currentValue:int=0)
+		local newValue:int = 1
+		while newValue <= currentValue
+			newValue :* 2
+		wend
+		'print "nextPow2: got:"+currentValue + " new:"+newValue
+		return newValue
+	EndMethod
+End Type
+
+Type TSpritePacker
+	Field childNode1:TSpritePacker
+	Field childNode2:TSpritePacker
+
+	Field x:Int,y:Int,w:Int,h:Int
+	Field occupied:Int = False
+
+	Method toString:String()
+		Return "rect : "+x+" "+y+" "+w+" "+h
+	End Method
+
+	Method setRect(x:Int,y:Int,w:Int,h:Int)
+		Self.x = x
+		Self.y = y
+		Self.w = w
+		Self.h = h
+	End Method
+
+	' recursively split area until it fits the desired size
+	Method pack:TSpritePacker(width:Int,height:Int)
+
+    	If (childNode1 = Null And childNode2 = Null) 'If we are a leaf node
+
+        	If occupied Or width > w Or height > h Return Null
+
+        	If width = w And height = h
+				occupied = True
+				Return Self
+			Else
+				splitArea(width,height)
+   		     	Return childNode1.pack(width,height)
+			EndIf
+
+		Else
+		    ' Try inserting into first child
+        	Local newNode:TSpritePacker = childNode1.pack(width,height)
+        	If newNode <> Null Return newNode
+
+        	'no room, insert into second
+        	Return childNode2.pack(width,height)
+		EndIf
+	End Method
+
+	Method splitArea(width:Int,height:Int)
+		childNode1 = New TSpritePacker
+        childNode2 = New TSpritePacker
+
+        ' decide which way to split
+        Local dw:Int = w - width
+        Local dh:Int = h - height
+
+        If dw > dh Then ' split vertically
+            childNode1.setRect(x,y,width,h)
+            childNode2.setRect(x+width,y,dw,h)
+		Else ' split horizontally
+            childNode1.setRect(x,y,w,height)
+            childNode2.setRect(x,y+height,w,dh)
+		EndIf
+
+	End Method
+
+End Type
+
+Type TBox
+	Field x:Int,y:Int,w:Int,h:Int
+
+	function Create:TBox(x:int,y:int,w:int,h:int)
+		local obj:TBox = new TBox
+		obj.x = x
+		obj.y = y
+		obj.w = w
+		obj.h = h
+		return obj
+	End Function
+
+	Method Compare:Int(o:Object)
+		Local box:TBox = TBox(o)
+		If box.h*box.w < h*w Return -1
+		If box.h*box.w > h*w Return 1
+		Return 0
+	End Method
+End Type
+
+' -------------------------------------
+
+
+Type TBitmapFontChar
+	field box:TBox
+	Field charWidth:float
+	Field img:TImage
+
+	Function Create:TBitmapFontChar(img:TImage, x:int,y:int,w:Int, h:int, charWidth:float)
+		Local obj:TBitmapFontChar = New TBitmapFontChar
+		obj.img = img
+		obj.box = TBox.Create(x,y,w,h)
+		obj.charWidth = charWidth
+		Return obj
+	End Function
+End Type
+
+Type TBitmapFont
+	Field chars			:TBitmapFontChar[256]
+	Field charsSprites	:TGW_Sprites[256]
+	field spriteSet		:TGW_SpritePack
+	Field MaxSigns		:Int=256
+	Field gfx			:TMax2dGraphics
+	Field uniqueID		:string =""
+	Field displaceY		:float=100.0
+
+	Function Create:TBitmapFont(url:String,size:Int, style:Int)
+		Local obj:TBitmapFont = New TBitmapFont
+
+		Local imgFont:TImageFont = LoadTrueTypeFont(url,size, style)
+		If imgfont=Null Return Null
+
+		local oldFont:TImageFont = getImageFont()
+		SetImageFont(imgfont)
+
+		obj.uniqueID = url+"_"+size+"_"+style
+
+		obj.gfx = tmax2dgraphics.Current()
+
+		'create spriteset
+		obj.spriteSet = TGW_SpritePack.Create(null, obj.uniqueID+"_charmap")
+
+
+		local charmap:TSpriteAtlas = TSpriteAtlas.Create(64,64)
+		local spacer:int = 1
+		For Local i:Int = 0 Until obj.MaxSigns
+			Local n:Int = imgFont.CharToGlyph(i)
+			If n < 0 then Continue
+			Local glyph:TImageGlyph = imgFont.LoadGlyph(n)
+			If glyph
+				'base displacement calculated with A-Z (space between TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
+				if i >= 65 AND i < 95 then obj.displaceY = Min(obj.displaceY, glyph._y)
+				obj.chars[i] = TBitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance)
+				charmap.AddElement(i,glyph._w+spacer,glyph._h+spacer ) 'add box of char and package atlas
+			else
+				obj.chars[i] = null
+			endif
+		Next
+		print obj.displaceY
+		'now we have final dimension of image
+		'create 8bit alpha'd image (grayscale with alpha ...)
+		local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, PF_A8) ; pix.ClearPixels(0)
+		'loop through atlax boxes and add chars
+		For local charKey:string = eachin charmap.elements.Keys()
+			local box:TBox = TBox(charmap.elements.ValueForKey(charKey))
+			local charCode:int = int(charKey)
+			'draw char image on charmap
+			if obj.chars[charCode] <> null AND obj.chars[charCode].img <> null
+				local charPix:TPixmap = LockImage(obj.chars[charCode].img)
+				If charPix.format <> 2 Then charPix.convert(PF_A8) 'make sure the pixmaps are 8bit alpha-format
+				DrawPixmapOnPixmap(charPix, pix, box.x,box.y)
+				UnlockImage(obj.chars[charCode].img)
+				' es fehlt noch charWidth - extraTyp?
+
+				obj.charsSprites[charCode] = TGW_Sprites.Create(obj.spriteSet, charKey, box.x, box.y, box.w, box.h, 0, charCode)
+			else
+				obj.charsSprites[charCode] = null
+			endif
+		Next
+		'set image to sprite pack
+		obj.spriteSet.image = LoadImage(pix)
+
+		SetImageFont(oldFont)
+		Return obj
+	End Function
+
+	Method AddChar:TBitmapFontChar(charCode:int, img:timage, x:int, y:int, w:int, h:int, charWidth:float)
+		'paint on pixmap
+		self.spriteSet.CopyImageOnSpritePackImage(img, null, x,y)
+		DrawImage(self.spriteSet.image, 0,0)
+		Flip 0
+		Delay(2)
+		self.chars[charCode] = TBitmapFontChar.Create(img, x,y,w,h, charWidth)
+	End Method
+
+	Method getWidth:Float(text:String)
+		Local width:Int = 0
+		For Local i:Int = 0 Until text.length
+			If text[i] < Self.MaxSigns Then width :+ self.chars[text[i]].charWidth * gfx.tform_ix
+		Next
+		Return width
+	End Method
+
+	Method getHeight:Float(text:String)
+		Local height:Int = 0
+
+		For Local i:Int = 0 Until text.length
+			If text[i] < Self.MaxSigns
+				Local bm:TBitmapFontChar = self.chars[ text[i] ]
+'				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
+				if text[i] > 32 then height = MAX(height, bm.box.h)
+'				x :+ bm.charWidth * gfx.tform_ix
+			EndIf
+		Next
+		Return height
+	End Method
+
+	Method getBlockHeight:Float(text:String, w:Float, h:Float)
+		Return Self.getHeight(text)
+	End Method
+
+	Method drawBlock(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, doDraw:Int = 1)
+		Self.draw(text,x,y)
+	End Method
+
+
+	Method draw(text:String,x:Float,y:Float)
+		For Local i:Int = 0 Until text.length
+			If text[i] < Self.MaxSigns
+				Local bm:TBitmapFontChar = self.chars[ text[i] ]
+				Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
+				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
+'				Local ty:Float = bm.box.y * gfx.tform_jy
+				'drawable ? (> 32)
+				if text[i] > 32 then self.charsSprites[ text[i] ].Draw(x+tx,y+ty - self.displaceY)
+				x :+ bm.charWidth * gfx.tform_ix
+			EndIf
+		Next
+	End Method
+
+	Method drawfixed(text:String,x:Float,y:Float)
+		For Local i:Int = 0 Until text.length
+			If text[i]-32 < Self.MaxSigns Then
+				Local bm:TBitmapFontChar = self.chars[text[i]-32]
+				Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
+				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
+				self.charsSprites[text[i]-32].Draw(x+tx,y+ty)
+				x :+ bm.charWidth
+			EndIf
+		Next
+	End Method
+
+End Type
+
+
+Type TGW_FontManager
+	Field DefaultFont:TGW_Font
+	Field baseFont:TBitmapFont
+	Field List:TList = CreateList()
+
+	Function Create:TGW_FontManager()
+		Local tmpObj:TGW_FontManager = New TGW_FontManager
+		tmpObj.List = CreateList()
+		Return tmpObj
+	End Function
+
+'	Method GW_GetFont:TImageFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
+	Method GetFont:TBitmapFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
+		If _FName = "Default" And _FSize = -1 And _FStyle = -1 Then Return DefaultFont.FFont
+		If _FSize = -1 Then _FSize = DefaultFont.FSize
+		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle Else _FStyle :+ SMOOTHFONT
+
+		Local defaultFontFile:String = DefaultFont.FFile
+		For Local Font:TGW_Font = EachIn Self.List
+			If Font.FName = _FName And Font.FStyle = _FStyle Then defaultFontFile = Font.FFile
+			If Font.FName = _FName And Font.FSize = _FSize And Font.FStyle = _FStyle Then Return Font.FFont
+		Next
+		Return AddFont(_FName, defaultFontFile, _FSize, _FStyle).FFont
+	End Method
+
+	Method AddFont:TGW_Font(_FName:String, _FFile:String, _FSize:Int, _FStyle:Int)
+		If _FSize = -1 Then _FSize = DefaultFont.FSize
+		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle
+		If _FFile = "" Then _FFile = DefaultFont.FFile
+
+		Local Font:TGW_Font = TGW_Font.Create(_FName, _FFile, _FSize, _FStyle)
+		Self.List.AddLast(Font)
+		Return Font
+	End Method
+End Type
+
+Type TGW_Font
+	Field FName:String
+	Field FFile:String
+	Field FSize:Int
+	Field FStyle:Int
+	'Field FFont:TImageFont
+	Field FFont:TBitmapFont
+
+	Function Create:TGW_Font(_FName:String, _FFile:String, _FSize:Int, _FStyle:Int)
+		Local tmpObj:TGW_Font = New TGW_Font
+		tmpObj.FName = _FName
+		tmpObj.FFile = _FFile
+		tmpObj.FSize = _FSize
+		tmpObj.FStyle = _FStyle
+		tmpObj.FFont = TBitmapFont.Create(_FFile, _FSize, SMOOTHFONT + _FStyle)
+		Return tmpObj
+	End Function
 End Type
 
 
@@ -158,14 +538,21 @@ Type TGW_SpritePack extends TRenderable
 		local imgHeight:int = 0
 		local srcPix:TPixmap = null
 		if TImage(src)<> null then srcPix = LockImage(TImage(src), 0) else srcPix = TPixmap(src)
-		if dest = null then tmppix = LockImage(self.image,0) else tmppix = TPixmap(dest)
-			'resize needed ? position+dimension extends original size
-			if tmppix.width < (srcPix.width + destX) OR ImageHeight(self.image) < (srcPix.height + destY)
-				ResizePixmap(tmppix, srcPix.width + destX, srcPix.height + destY)
-				print "CopyImageOnSpritePackImage: resize"
-			endif
-			DrawPixmapOnPixmap(srcPix, tmppix, destX, destY)
-		if dest = null then UnlockImage(Self.image, 0)
+		if srcPix = null
+			print "CopyImageOnSpritePackImage : srcPix is null"
+		else
+			if dest = null then tmppix = LockImage(self.image,0) else tmppix = TPixmap(dest)
+				'resize needed ? position+dimension extends original size
+				if tmppix.width < (srcPix.width + destX) OR ImageHeight(self.image) < (srcPix.height + destY)
+					ResizePixmap(tmppix, srcPix.width + destX, srcPix.height + destY)
+					print "CopyImageOnSpritePackImage: resize"
+				endif
+		'		print srcPix.format + " sollte:" +PF_RGBA8888
+				If srcPix.format <> PF_RGBA8888 Then srcPix.convert(PF_RGBA8888) 'make sure the pixmaps are 32 bit format
+		'		If tmppix.format <> PF_RGBA8888 Then tmppix.convert(PF_RGBA8888) 'make sure the pixmaps are 32 bit format
+				DrawPixmapOnPixmap(srcPix, tmppix, destX, destY)
+			if dest = null then UnlockImage(Self.image, 0)
+		endif
 		if TImage(src)<> null then UnlockImage(TImage(src))
 		GCCollect() '<- FIX!
 	End Method
@@ -182,7 +569,7 @@ Type TGW_Sprites extends TRenderable
 	Field SpriteID:Int = -1
 	Field parent:TGW_SpritePack
 
-	Function Create:TGW_Sprites(spritepack:TGW_SpritePack, spritename:String, posx:Float, posy:Float, w:Int, h:Int, animcount:Int = 0, SpriteID:Int = -1, spritew:Int = 0, spriteh:Int = 0)
+	Function Create:TGW_Sprites(spritepack:TGW_SpritePack=null, spritename:String, posx:Float, posy:Float, w:Int, h:Int, animcount:Int = 0, SpriteID:Int = -1, spritew:Int = 0, spriteh:Int = 0)
 		Local Obj:TGW_Sprites = New TGW_Sprites
 		Obj.spritename	= spritename
 		Obj.parent		= spritepack
@@ -206,7 +593,6 @@ Type TGW_Sprites extends TRenderable
 		Obj.setName(spritename)
 		Obj.setUrl("NONE")
 		Obj.setType("SPRITE")
-
 		Return Obj
 	End Function
 

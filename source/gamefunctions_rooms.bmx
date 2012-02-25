@@ -482,55 +482,55 @@ End Function
 
 
 Function Room_Financials_Compute(_room:TRooms)
-'  Local x:Int=0
-'  Local y:Int=0
-  Local showday:Int = TFinancials.GetDayArray(Game.day)
-  Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
-  Game.cursorstate = 0
-  functions.BlockText(Localization.GetString("FINANCES_OVERVIEW") , 55, 233, 330, 20, 0, Font13, 50, 50, 50)
-  functions.BlockText(Localization.GetString("FINANCES_COSTS")       ,55,27,330,20,0,Font13,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_INCOME")      ,415,27,330,20,0,Font13,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_MONEY_BEFORE"),415,127,330,20,0,Font13,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_MONEY_AFTER") ,415,191,330,20,0,Font13,50,50,50)
+	Local showday:Int = TFinancials.GetDayArray(Game.day)
+	Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+	Game.cursorstate = 0
+	local font13:TBitmapFont = FontManager.GetFont("Default", 13)
+	local font12:TBitmapFont = FontManager.GetFont("Default", 12)
+	font13.drawBlock(Localization.GetString("FINANCES_OVERVIEW") , 55, 233, 330, 20, 0, 50, 50, 50)
+	font13.drawBlock(Localization.GetString("FINANCES_COSTS")       ,55,27,330,20,0,50,50,50)
+	font13.drawBlock(Localization.GetString("FINANCES_INCOME")      ,415,27,330,20,0,50,50,50)
+	font13.drawBlock(Localization.GetString("FINANCES_MONEY_BEFORE"),415,127,330,20,0,50,50,50)
+	font13.drawBlock(Localization.GetString("FINANCES_MONEY_AFTER") ,415,191,330,20,0,50,50,50)
 
-  functions.BlockText(Localization.GetString("FINANCES_SOLD_MOVIES") ,415, 45,330,20,0,Font12,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_AD_INCOME")   ,415, 59,330,20,0,Font12,120,120,120)
-  functions.BlockText(Localization.GetString("FINANCES_MISC_INCOME") ,415, 73,330,20,0,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].sold_movies, 640, 45, 93, 20, 2, Font12, 50, 50, 50)
-  functions.BlockText(Player[_room.owner].finances[showday].sold_ads       ,640, 59,93,20,2,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].sold_misc      ,640, 73,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].sold_total     ,638, 94,93,20,2,Font13,30,30,30)
+	font12.drawBlock(Localization.GetString("FINANCES_SOLD_MOVIES") ,415, 45,330,20,0,50,50,50)
+	font12.drawBlock(Localization.GetString("FINANCES_AD_INCOME")   ,415, 59,330,20,0,120,120,120)
+	font12.drawBlock(Localization.GetString("FINANCES_MISC_INCOME") ,415, 73,330,20,0,,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].sold_movies, 640, 45, 93, 20, 2, 50, 50, 50)
+	font12.drawBlock(Player[_room.owner].finances[showday].sold_ads       ,640, 59,93,20,2,120,120,120)
+	font12.drawBlock(Player[_room.owner].finances[showday].sold_misc      ,640, 73,93,20,2,50,50,50)
+	font13.drawBlock(Player[_room.owner].finances[showday].sold_total     ,638, 94,93,20,2,30,30,30)
 
-  functions.BlockText(Player[_room.owner].finances[showday].revenue_before ,638,127,93,20,2,Font13,30,30,30)
-  functions.BlockText(" + "+Localization.GetString("FINANCES_INCOME")     ,415,145,93,20,0,Font12,50,50,50)
-  functions.BlockText(" - "+Localization.GetString("FINANCES_COSTS")     ,415,159,93,20,0,Font12,120,120,120)
-  functions.BlockText(" - "+Localization.GetString("FINANCES_INTEREST")  ,415,173,93,20,0,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].sold_total   ,638,145,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_total   ,638,159,93,20,2,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].revenue_interest,638,173,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].money        ,638,191,93,20,2,Font13,30,30,30)
+	font13.drawBlock(Player[_room.owner].finances[showday].revenue_before ,638,127,93,20,2,30,30,30)
+	font12.drawBlock(" + "+Localization.GetString("FINANCES_INCOME")     ,415,145,93,20,0,50,50,50)
+	font12.drawBlock(" - "+Localization.GetString("FINANCES_COSTS")     ,415,159,93,20,0,120,120,120)
+	font12.drawBlock(" - "+Localization.GetString("FINANCES_INTEREST")  ,415,173,93,20,0,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].sold_total   ,638,145,93,20,2,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_total   ,638,159,93,20,2,120,120,120)
+	font12.drawBlock(Player[_room.owner].finances[showday].revenue_interest,638,173,93,20,2,50,50,50)
+	font13.drawBlock(Player[_room.owner].finances[showday].money        ,638,191,93,20,2,30,30,30)
 
-  functions.BlockText(Localization.GetString("FINANCES_BOUGHT_MOVIES")   ,55, 45,330,20,0,Font12,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_BOUGHT_STATIONS") ,55, 59,330,20,0,Font12,120,120,120)
-  functions.BlockText(Localization.GetString("FINANCES_SCRIPTS")         ,55, 73,330,20,0,Font12,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_ACTORS_STAGES")   ,55, 87,330,20,0,Font12,120,120,120)
-  functions.BlockText(Localization.GetString("FINANCES_PENALTIES")       ,55,101,330,20,0,Font12,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_STUDIO_RENT")     ,55,115,330,20,0,Font12,120,120,120)
-  functions.BlockText(Localization.GetString("FINANCES_NEWS")            ,55,129,330,20,0,Font12,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_NEWSAGENCIES")    ,55,143,330,20,0,Font12,120,120,120)
-  functions.BlockText(Localization.GetString("FINANCES_STATION_COSTS")   ,55,157,330,20,0,Font12,50,50,50)
-  functions.BlockText(Localization.GetString("FINANCES_MISC_COSTS")     ,55,171,330,20,0,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_movies          ,280, 45,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_stations        ,280, 59,93,20,2,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_scripts         ,280, 73,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_productionstuff ,280, 87,93,20,2,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_penalty         ,280,101,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_rent            ,280,115,93,20,2,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_news            ,280,129,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_newsagencies    ,280,143,93,20,2,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_stationfees     ,280,157,93,20,2,Font12,50,50,50)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_misc            ,280,171,93,20,2,Font12,120,120,120)
-  functions.BlockText(Player[_room.owner].finances[showday].paid_total           ,278,192,93,20,2,Font13,30,30,30)
+	font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_MOVIES")   ,55, 45,330,20,0,50,50,50)
+	font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_STATIONS") ,55, 59,330,20,0,120,120,120)
+	font12.drawBlock(Localization.GetString("FINANCES_SCRIPTS")         ,55, 73,330,20,0,50,50,50)
+	font12.drawBlock(Localization.GetString("FINANCES_ACTORS_STAGES")   ,55, 87,330,20,0,120,120,120)
+	font12.drawBlock(Localization.GetString("FINANCES_PENALTIES")       ,55,101,330,20,0,50,50,50)
+	font12.drawBlock(Localization.GetString("FINANCES_STUDIO_RENT")     ,55,115,330,20,0,120,120,120)
+	font12.drawBlock(Localization.GetString("FINANCES_NEWS")            ,55,129,330,20,0,50,50,50)
+	font12.drawBlock(Localization.GetString("FINANCES_NEWSAGENCIES")    ,55,143,330,20,0,120,120,120)
+	font12.drawBlock(Localization.GetString("FINANCES_STATION_COSTS")   ,55,157,330,20,0,50,50,50)
+	font12.drawBlock(Localization.GetString("FINANCES_MISC_COSTS")     ,55,171,330,20,0,120,120,120)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_movies          ,280, 45,93,20,2,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_stations        ,280, 59,93,20,2,120,120,120)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_scripts         ,280, 73,93,20,2,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_productionstuff ,280, 87,93,20,2,120,120,120)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_penalty         ,280,101,93,20,2,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_rent            ,280,115,93,20,2,120,120,120)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_news            ,280,129,93,20,2,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_newsagencies    ,280,143,93,20,2,120,120,120)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_stationfees     ,280,157,93,20,2,50,50,50)
+	font12.drawBlock(Player[_room.owner].finances[showday].paid_misc            ,280,171,93,20,2,120,120,120)
+	font13.drawBlock(Player[_room.owner].finances[showday].paid_total           ,278,192,93,20,2,30,30,30)
 
 
   Local maxvalue:Int=0
@@ -553,23 +553,22 @@ Function Room_Financials_Compute(_room:TRooms)
 		For Local locObject:TPlayer = EachIn TPlayer.List
 			barrenheight = 0
 			If maxvalue > 0 Then barrenheight = Floor((Float(locobject.finances[day].money) / Float(maxvalue)) * 100)
-			SetViewport(450 - + 65 * (day) + (locObject.playerID) * 9, 265, 21, 100)
+'			SetViewport(450 - + 65 * (day) + (locObject.playerID) * 9, 265, 21, 100)
 			DrawImage(gfx_financials_barren[locObject.playerID], 450 - 65 * (day) + (locObject.playerID) * 9, 365 - barrenheight)
 		Next
 	Next
-  SetViewport(0, 0, 800, 600)
-  functions.BlockText(functions.convertValue(maxvalue,2,0)       ,478 , 264,100,20,2,Font12,180,180,180)
-  functions.BlockText(functions.convertValue(Int(maxvalue/2),2,0),478 , 314,100,20,2,Font12,180,180,180)
-  DrawText(_room.owner, 20,20)
+	font12.drawBlock(functions.convertValue(maxvalue,2,0)       ,478 , 264,100,20,2,180,180,180)
+	font12.drawBlock(functions.convertValue(Int(maxvalue/2),2,0),478 , 314,100,20,2,180,180,180)
+	FontManager.baseFont.draw("owner:"+_room.owner, 20,20)
 End Function
 
 Function Room_Image_Compute(_room:TRooms)
 	If TRooms.doadraw 'draw it
 		Game.cursorstate = 0
-		functions.BlockText(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, Font13, 50, 50, 50)
+		FontManager.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
 
-		functions.BlockText(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, Font12, 50, 50, 50)
-		functions.BlockText(functions.convertPercent(100.0 * Player[_room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, Font12, 50, 50, 50)
+		FontManager.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
+		FontManager.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Player[_room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	Else
 		Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
 	EndIf
@@ -602,25 +601,25 @@ Function Room_Elevator_Compute(_room:TRooms)
 End Function
 
 Function Room_RoomBoard_Compute(_room:TRooms)
-  If TRooms.doadraw 'draw it
-    player[game.playerid].figure.fromroom =Null
-    TRoomSigns.DrawAll()
-    DrawText(_room.owner, 20,20)
-    DrawText(building.Elevator.waitAtFloorTimer - MilliSecs(), 20,40)
-  Else
- ' MouseManager.changeStatus()
-    Game.cursorstate = 0
-    player[game.playerid].figure.fromroom =Null
-    TRoomSigns.UpdateAll(True)
-    If MouseManager.IsDown(1) Then MouseManager.resetKey(1)
-  EndIf
+	if TRooms.doadraw 'draw it
+		player[game.playerid].figure.fromroom =Null
+		TRoomSigns.DrawAll()
+		FontManager.basefont.draw("owner:"+_room.owner, 20,20)
+		FontManager.basefont.draw(building.Elevator.waitAtFloorTimer - MilliSecs(), 20,40)
+	Else
+		' MouseManager.changeStatus()
+		Game.cursorstate = 0
+		player[game.playerid].figure.fromroom =Null
+		TRoomSigns.UpdateAll(True)
+		If MouseManager.IsDown(1) Then MouseManager.resetKey(1)
+	EndIf
 End Function
 
 Function Room_AdAgency_Compute(_room:TRooms)
-  If TRooms.doadraw 'draw it
-	Assets.GetSprite("gfx_suitcase").Draw(540, 70)
- ' Local locContractX:Int =550
-  TContractBlocks.DrawAll(True)
+	if TRooms.doadraw 'draw it
+		Assets.GetSprite("gfx_suitcase").Draw(540, 70)
+		' Local locContractX:Int =550
+		TContractBlocks.DrawAll(True)
         For Local LocObject:TContractBlocks= EachIn TContractBlocks.List
       	  If locobject.owner <=0 Or locobject.owner=Game.playerID And..
       	     functions.IsIn(MouseX(), MouseY(), LocObject.Pos.x, locobject.Pos.y, locobject.width, locobject.height)
@@ -632,12 +631,12 @@ Function Room_AdAgency_Compute(_room:TRooms)
 			  Else
 			    If LocObject.dragged Then Game.cursorstate = 2 Else Game.cursorstate = 1
                 LocObject.contract.ShowSheet(480,185);Exit
-			  End If
+			  EndIf
             EndIf
           EndIf
         Next
-    DrawText(_room.owner, 20,20)
-  Else
+		FontManager.basefont.draw("owner:"+_room.owner, 20,20)
+	Else
     player[game.playerid].figure.fromroom =Null
     Game.cursorstate = 0
     TContractBlocks.UpdateAll(True)
@@ -658,8 +657,8 @@ Global AuctionToolTip:TTooltip
 		Assets.GetSprite("gfx_suitcase").Draw(530, 240)
 	endif
     SetAlpha 0.5
-    functions.BlockText("Filme", 640, 28, 110,25, 1, Font12, 50,50,50)
-    functions.BlockText("Serien", 640, 139, 110,25, 1, Font12, 50,50,50)
+    FontManager.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
+    FontManager.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
     SetAlpha 1.0
 	TMovieAgencyBlocks.DrawAll(True)
     If AuctionToolTip <> Null  Then AuctionToolTip.Draw()
@@ -706,8 +705,8 @@ Global AuctionRect:TImage
   If TRooms.doadraw 'draw it
 	Assets.GetSprite("gfx_suitcase").Draw(530, 240)
     SetAlpha 0.5
-    functions.BlockText("Filme", 640, 28, 110,25, 1, Font12, 50,50,50)
-    functions.BlockText("Serien", 640, 139, 110,25, 1, Font12, 50,50,50)
+    FontManager.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
+    FontManager.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
     SetAlpha 1.0
 	TMovieAgencyBlocks.DrawAll(True)
 	SetAlpha 0.5;SetColor 0,0,0
@@ -715,7 +714,7 @@ Global AuctionRect:TImage
 	SetAlpha 1.0;SetColor 255,255,255
 	If AuctionRect = Null
   	  DrawGFXRect(Assets.GetSpritePack("gui_rect"), 125, 60, 550, 290)
-	  DrawText("Zum Bieten auf Film oder Serie klicken",145,315)
+	  FontManager.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
       AuctionRect= TImage.Create(550,290,1,0,255,0,255)
 	  AuctionRect.pixmaps[0] = GrabPixmap(125,60,550,290)
     Else
@@ -741,18 +740,17 @@ Function Room_Betty_Compute(_room:TRooms)
 		Local picY:Int = 240
 		Local picX:Int = 410 + i * (sprite.w + 5)
 		sprite.Draw( picX, picY )
-		SetViewport(picX + 2, picY + 8, 26, 28)
+'		SetViewport(picX + 2, picY + 8, 26, 28)
 		SetAlpha 0.4
 		SetColor Player[i].color.colB, Player[i].color.colG, Player[i].color.colR
 		DrawRect(picX + 2, picY + 8, 26, 28)
 		SetColor 255, 255, 255
 		SetAlpha 1.0
 		Player[i].Figure.Sprite.Draw(picX + Int(sprite.w / 2) - Int(Player[i].Figure.Sprite.framew / 2), picY + sprite.h - 30, 8)
-		SetViewport(0, 0, 800, 600)
+'		SetViewport(0, 0, 800, 600)
 	Next
     Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
-    DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, Font14)
-  Else
+    DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, FontManager.GetFont("Default",14))
   EndIf
 
 End Function
@@ -929,11 +927,11 @@ End Function
 
 'StationMap-GUIcomponents
 Local button:TGUIButton
-button = TGUIButton.Create(610, 110, 155,,, , "Neue Station", "STATIONMAP", Font12bold)
+button = TGUIButton.Create(610, 110, 155,,, , "Neue Station", "STATIONMAP")
 button.SetClickFunc(OnClick_StationMapNew)
 button.SetUpdateFunc(OnUpdate_StationMapBuy)
 button.SetTextalign("CENTER")
-button = TGUIButton.Create(610, 345, 155,,, , "Station verkaufen", "STATIONMAP", Font12bold)
+button = TGUIButton.Create(610, 345, 155,,, , "Station verkaufen", "STATIONMAP")
 button.SetClickFunc(OnClick_StationMapSell)
 button.SetUpdateFunc(OnUpdate_StationMapSell)
 button.disable()
@@ -1007,7 +1005,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 		If Not DrawnOnProgrammePlannerBG
 			local pixImage:Timage = Assets.GetSprite("rooms_pplanning").parent.image
 			Local Pix:TPixmap = LockImage(pixImage)
-			SetImageFont(font11)
+			'SetImageFont(font11)
 			For Local i:Int = 0 To 11
 				DrawTextOnPixmap((i + 12) + ":00", 356, 25 + i * 30, Pix, True)
 				If i >= 10
@@ -1136,7 +1134,9 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
     If Game.daytoplan = Game.day Then SetColor 0,100,0
     If Game.daytoplan < Game.day Then SetColor 100,100,0
     If Game.daytoplan > Game.day Then SetColor 0,0,0
-    functions.BlockText(Game.GetFormattedDay(Game.daytoplan), 691, 17, 100, 15, 0, Font10)
+    FontManager.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(Game.daytoplan), 691, 17, 100, 15, 0)
+
+
     SetColor 255,255,255
     If _room.owner = Game.playerID
       If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw(1)
@@ -1348,9 +1348,8 @@ Type TRoomSigns Extends TBlock
 					If colr > 255 Then colr = 255
 					If colg > 255 Then colg = 255
 					If colb > 255 Then colb = 255
-					SetImageFont Font10
-					SetAlpha 1.0;functions.BlockText(title, Pos.x+23,Pos.y+4,150,20,0,Font10,0,0,0,1)
-					SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,0,0,0,1)
+					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+23,Pos.y+4,150,20,0,0,0,0,1)
+					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,0,0,0,1)
 					Local TxtWidth:Int = TextWidth(title)+4
 					If TxtWidth > image.w-23-5 Then TxtWidth = image.w-23-5
 					Local pixmap:TPixmap = GrabPixmap(Pos.x+23-2,Pos.y+4-2,TxtWidth,TextHeight(title)+3)
@@ -1359,9 +1358,9 @@ Type TRoomSigns Extends TBlock
 					pixmap = ConvertPixmap(pixmap, PF_RGB888)
 					DrawPixmap(pixmap, Pos.x+21,Pos.y+2)
 				  If owner > 0 And owner <=4
-					SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,colr,colg,colb,1)
+					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,colr,colg,colb,1)
 				  Else
-					SetAlpha 1.0;functions.BlockText(title, Pos.x+22,Pos.y+3,150,20,0,Font10,250,250,250,1)
+					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,250,250,250,1)
 				  EndIf
 				endif
 			EndIf

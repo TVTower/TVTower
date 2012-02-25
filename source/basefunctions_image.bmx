@@ -121,13 +121,16 @@ Function DrawPixmapOnPixmap(Source:TPixmap,Pixmap:TPixmap, x:Int, y:Int)
 				Local destR:Int = ARGB_Red(destpixel)
 				Local destG:Int = ARGB_Green(destpixel)
 				Local destB:Int = ARGB_Blue(destpixel)
+				Local destA:Int = ARGB_Alpha(destpixel)
 				Local SourceR:Int = ARGB_Red(Sourcepixel)
 				Local SourceG:Int = ARGB_Green(Sourcepixel)
 				Local SourceB:Int = ARGB_Blue(Sourcepixel)
 				sourceR = Int( Float(sourceA/255.0)*sourceR) + Int(Float((255-sourceA)/255.0)*destR)
 				sourceG = Int( Float(sourceA/255.0)*sourceG) + Int(Float((255-sourceA)/255.0)*destG)
 				sourceB = Int( Float(sourceA/255.0)*sourceB) + Int(Float((255-sourceA)/255.0)*destB)
-				sourcepixel = ARGB_Color(255, sourceR, sourceG, sourceB)
+				'also mix alpha
+				sourceA = SourceA + DestA
+				sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
 			EndIf
 			If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)
 		  EndIf

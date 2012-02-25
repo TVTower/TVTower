@@ -3,7 +3,7 @@ Import brl.pngloader
 Import "basefunctions_zip.bmx"
 Import "basefunctions_lists.bmx" 'ilist + tobjectlist - faster than tlist for bigger amounts of data
 Import "basefunctions_localization.bmx"
-Import "basefunctions_text.bmx"
+'Import "basefunctions_text.bmx"
 Import "basefunctions_keymanager.bmx"	'holds pressed Keys and Mousebuttons for one mainloop instead of resetting it like MouseHit()
 Import brl.reflection
 Import "basefunctions_loadsave.bmx"

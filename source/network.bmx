@@ -1471,7 +1471,7 @@ Type TTVGNetwork
 	  SetColor 100,100,100
 	  DrawRect(200,200,400,200)
 	  SetColor 255,255,255
-      functions.BlockText("Trenne die Verbindung zum Host...", 200,200,400,200,1,font16italic, 200,150,150)
+	  FontManager.GetFont("Default",16, ITALICFONT).drawBlock("Trenne die Verbindung zum Host...", 200,200,400,200,1,200,150,150)
       While stream.RecvMsg() ' Neues UDP-Paket erhalten
         RecvID = ReadInt(stream)
 	    Local data:Int   = ReadByte(stream)

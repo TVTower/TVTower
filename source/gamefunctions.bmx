@@ -63,18 +63,17 @@ Type TgfxProgrammelist extends TPlannerList
 	Method DrawTapes:Int(genre:Int, createProgrammeblock:Int=1)
 		Local locx:Int = Pos.x - gfxmovies.w + 25
 		Local locy:Int = Pos.y+7 -19
-		Local oldfont:TImageFont = GetImageFont()
 
+		local font:TBitmapFont = FontManager.GetFont("Font10")
 		For Local movie:TProgramme = EachIn Player[Game.playerID].ProgrammeCollection.List 'all programmes of one player
 			If movie.genre = genre
-				SetImageFont Font10
 				locy :+ 19
 				If movie.isMovie
 					gfxtape.Draw(locx, locy)
 				else
 					gfxtapeseries.Draw(locx, locy)
 				endif
-				functions.BlockText(movie.title, locx + 13, locy + 1, 139, 16, 0, Font10, 0, 0, 0, True)
+				font.DrawBlock(movie.title, locx + 13, locy + 1, 139, 16, 0, 0, 0, 0, True)
 				If functions.isin(MouseX(), MouseY(), locx, locy, gfxtape.w, gfxtape.h)
 					SetAlpha 0.2;
 					If movie.isMovie
@@ -83,12 +82,10 @@ Type TgfxProgrammelist extends TPlannerList
 						DrawRect(locx, locy, gfxtapeseries.w, gfxtapeseries.h)
 					endif
 					SetAlpha 1.0
-					SetImageFont oldfont
 					If Not MOUSEMANAGER.IsHit(1) then movie.ShowSheet(30,20)
 				EndIf
 			EndIf
 		Next
-		SetImageFont oldfont
 	End Method
 
 	Method UpdateTapes:Int(genre:Int, createProgrammeblock:Int=1)
@@ -122,18 +119,16 @@ Type TgfxProgrammelist extends TPlannerList
 	Method DrawEpisodeTapes:Int(series:TProgramme, createProgrammeblock:Int=1)
 		Local locx:Int = Pos.x - gfxepisodes.w + 8
 		Local locy:Int = Pos.y + 5 + gfxmovies.h - 4 -12 '-4 as displacement for displaced the background
-		Local oldfont:TImageFont
-		oldfont = GetImageFont()
+		local font:TBitmapFont = FontManager.GetFont("FontTapes")
+
 		For Local i:Int = 0 To series.episodelist.Count()-1
 			Local episode:TProgramme = TProgramme(series.episodeList.ValueAtIndex(i))   'all programmes of one player
 			'	  Local episode:TProgramme = TProgramme(series.episodeList.Items[i]) 'all programmes of one player
 			If episode <> Null
-				SetImageFont Font_tapes
 				locy :+ 12
 				gfxtapeepisodes.Draw(locx, locy)
-				functions.BlockText("(" + episode.episodeNumber + "/" + series.episodecount + ") " + episode.title, locx + 10, locy + 1, 85, 12, 0, Font_tapes, 0, 0, 0, True)
+				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodecount + ") " + episode.title, locx + 10, locy + 1, 85, 12, 0, 0, 0, 0, True)
 				If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
-					SetImageFont oldfont
 					Game.cursorstate = 1
 					SetAlpha 0.2;DrawRect(locx, locy, gfxtapeepisodes.w, gfxtapeepisodes.h) ;SetAlpha 1.0
 					If Not MOUSEMANAGER.IsHit(1)
@@ -142,7 +137,6 @@ Type TgfxProgrammelist extends TPlannerList
 				EndIf
 			EndIf
 		Next
-		SetImageFont oldfont
 	End Method
 
 	Method UpdateEpisodeTapes:Int(series:TProgramme, createProgrammeblock:Int=1)
@@ -216,16 +210,15 @@ Type TgfxContractlist extends TPlannerList
 		local boxHeight:int			= gfxtape.h + 2
 		Local locx:Int 				= Pos.x - gfxcontracts.w + 10
 		Local locy:Int 				= Pos.y+7 - boxHeight
-		Local oldfont:TImageFont	= GetImageFont()
-		SetImageFont Font10
+		local font:TBitmapFont 		= FontManager.GetFont("Default", 10)
 		For Local contract:TContract = EachIn Player[Game.playerID].ProgrammeCollection.ContractList 'all contracts of one player
 			locy :+ boxHeight
 			gfxtape.Draw(locx, locy)
-			functions.BlockText(contract.title, locx + 13,locy + 3, 139,16,0, Font10,0,0,0,True)
+
+			font.drawBlock(contract.title, locx + 13,locy + 3, 139,16,0,0,0,0,True)
 			If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtape.w, gfxtape.h)
 				Game.cursorstate = 1
 				SetAlpha 0.2;DrawRect(locx, locy, gfxtape.w, gfxtape.h) ;SetAlpha 1.0
-				SetImageFont oldfont
 				If MOUSEMANAGER.IsHit(1)
 					TAdBlock.CreateDragged(contract)
 					self.SetOpen(0)
@@ -235,7 +228,6 @@ Type TgfxContractlist extends TPlannerList
 				EndIf
 			EndIf
 		Next
-		SetImageFont oldfont
 	End Method
 
 	Method Update()
@@ -393,8 +385,10 @@ Type TTooltip extends TRenderable
 
   Global TooltipHeader:TGW_Sprites
   Global ToolTipIcons:TImage
-  Global UseFontBold:TImageFont
-  Global UseFont:TImageFont
+'  Global UseFontBold:TImageFont
+'  Global UseFont:TImageFont
+  Global UseFontBold:TBitmapFont
+  Global UseFont:TBitmapFont
   Global List:TList = CreateList()
 
   Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 1000)
@@ -429,16 +423,9 @@ Type TTooltip extends TRenderable
   End Method
 
 	Method GetWidth:Int()
-		Local oldfont:TImageFont = GetImageFont()
-		if TTooltip.UseFontBold = Null Then TTooltip.UseFontBold = oldfont
-		if TTooltip.UseFont = Null Then TTooltip.UseFont = oldfont
-		Local txtwidth:Int = width
-		SetImageFont TTooltip.UseFontBold
-		txtwidth = TextWidth(title)+6
+		local txtWidth:int = self.useFontBold.getWidth(title)+6
 		If tooltipimage >=0 Then txtwidth:+ ImageWidth(TTooltip.ToolTipIcons)+ 2
-		SetImageFont TTooltip.UseFont
-		If txtwidth < TextWidth(text)+6 Then txtwidth = TextWidth(text)+6
-		SetImageFont oldfont
+		If txtwidth < self.useFont.getWidth(text)+6 Then txtwidth = self.useFont.getWidth(text)+6
 		Return txtwidth
 	End Method
 
@@ -458,28 +445,20 @@ Type TTooltip extends TRenderable
 		EndIf
 		If Self.DirtyImage = True Or Self.Image = Null
 		   ' Print "updating Tooltip: " + title
-			Local oldfont:TImageFont = GetImageFont()
-			If TTooltip.UseFontBold = Null Then TTooltip.UseFontBold = oldfont
-			If TTooltip.UseFont = Null Then TTooltip.UseFont = oldfont
 			Local txtwidth:Int = width
 			Local txtheight:Int = Height
 			Local txtheight2:Int = Height
 			txtheight = Self.TooltipHeader.h
 
 			If width = 0
-				SetImageFont TTooltip.UseFontBold
-				txtwidth = TextWidth(title)+6
+				txtwidth = self.UseFontBold.getWidth(title)+6
 				If tooltipimage >=0 Then txtwidth:+ ImageWidth(TTooltip.ToolTipIcons)+ 2
-				SetImageFont TTooltip.UseFont
-				If txtwidth < TextWidth(text)+6 Then txtwidth = TextWidth(text)+6
+				If txtwidth < self.UseFont.getWidth(text)+6 Then txtwidth = self.UseFont.getWidth(text)+6
 			EndIf
-			SetImageFont TTooltip.UseFontBold
 
 			txtheight2 = txtheight
-			SetImageFont TTooltip.UseFont
-			If Len(text)>1 Then txtheight2 = txtheight+ TextHeight(text)+5
+			If Len(text)>1 Then txtheight2 = txtheight+ self.UseFont.getHeight(text)+5
 			If Height <> 0 And Height > txtheight2 Then txtheight2 = Height
-'			If tooltipimage >= 0 Then txtheight2 = ImageHeight(TTooltip.ToolTipIcons) + 2
 			If tooltipimage >= 0 Then txtheight2 = Self.TooltipHeader.h +2
 
 			self.DrawShadow(txtwidth,txtHeight2)
@@ -490,7 +469,6 @@ Type TTooltip extends TRenderable
 			SetColor 255,255,255
 			DrawRect(x+1,y+1,txtwidth-2,txtheight2-2)
 
-			SetImageFont TTooltip.UseFontBold
 			If TitleBGtype = 0 Then SetColor 250,250,250
 			If TitleBGtype = 1 Then SetColor 200,250,200
 			If TitleBGtype = 2 Then SetColor 250,150,150
@@ -509,10 +487,9 @@ Type TTooltip extends TRenderable
 				DrawText(title, x+3+displaceX,y+5)
 			SetAlpha Float(100*lifetime / startlifetime) / 100.0
 			SetColor 50,50,50
-			DrawText(title, x+3+displaceX,y+4)
-			SetImageFont TTooltip.UseFont
+			self.UseFontBold.Draw(title, x+3+displaceX,y+4)
 			SetColor 90,90,90
-			If text <> "" Then DrawText text, x+3,y+2+Self.TooltipHeader.h
+			If text <> "" Then self.Usefont.Draw(text, x+3,y+2+Self.TooltipHeader.h)
 
 			If x > 20 And y > 10 And x + txtwidth < 760 And y + txtheight2 < 800 '383 'And lifetime = startlifetime
 				Image = TImage.Create(txtwidth, txtheight2, 1, 0, 255, 0, 255)
@@ -525,7 +502,6 @@ Type TTooltip extends TRenderable
 			oldTitle = title
 			SetColor 255, 255, 255
 			SetAlpha 1.0
-			SetImageFont oldfont
 		Else 'not dirty
 			self.DrawShadow(ImageWidth(image),ImageHeight(image))
 
@@ -538,7 +514,7 @@ Type TTooltip extends TRenderable
 End Type
 
 
-	Function DrawDialog(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TImageFont = Null)
+	Function DrawDialog(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TBitmapFont = Null)
 		Local dx:Float, dy:Float
 		Local DialogSprite:TGW_Sprites = gfx_Rect.GetSprite(DialogStart)
 		If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + (Height - DialogSprite.h)/2 + DialogStartMove;width:-48
@@ -549,7 +525,7 @@ End Type
 		DrawGFXRect(gfx_Rect,x,y,width,height,"") ' "" = no nameBase
 
 		DialogSprite.Draw(dx, dy)
-		If DialogText <> "" then TFunctions.BlockText(DialogText, x + 10, y + 10, width - 16, Height - 16, 0, DialogFont, 0, 0, 0)
+		If DialogText <> "" then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 16, Height - 16, 0, 0, 0, 0)
 	End Function
 
 	'draws a rounded rectangle (blue border) with alphashadow
@@ -735,8 +711,8 @@ Type TError
     Local x:Int = 400-Assets.GetSprite("gfx_errorbox").w/2 +6
     Local y:Int = 200-Assets.GetSprite("gfx_errorbox").h/2 +6
 	Assets.GetSprite("gfx_errorbox").Draw(x,y)
-    functions.BlockText(title, x + 12 + 6, y + 15, Assets.GetSprite("gfx_errorbox").w - 60, 40, 0, FontManager.GW_GetFont("Default", 15, BOLDFONT), 150, 50, 50)
-    functions.BlockText(message, x+12+6,y+50,Assets.GetSprite("gfx_errorbox").w-40, Assets.GetSprite("gfx_errorbox").h-60,0,FontManager.GW_GetFont("Default", 12),50,50,50)
+	FontManager.GetFont("Default", 15, BOLDFONT).DrawBlock(title, x + 12 + 6, y + 15, Assets.GetSprite("gfx_errorbox").w - 60, 40, 0, 150, 50, 50)
+	FontManager.GetFont("Default", 12).DrawBlock(message, x+12+6,y+50,Assets.GetSprite("gfx_errorbox").w-40, Assets.GetSprite("gfx_errorbox").h-60,0,50,50,50)
   End Method
 End Type
 
@@ -760,7 +736,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 '		If functions.IsIn(MouseX(), MouseY(), x, y, TextWidth(_text), TextHeight(_text))
-		If functions.IsIn(MouseX(), MouseY(), x, y, w, functions.BlockText(Self._text, x, y, w, h,, Font14,,, ,, 0))
+		If functions.IsIn(MouseX(), MouseY(), x, y, w, FontManager.baseFont.getBlockHeight(Self._text, w, h))
 			If clicked
 				If _func <> Null Then _func(Self._funcparam)
 				Return _leadsTo
@@ -772,11 +748,10 @@ Type TDialogueAnswer
 
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
 '		If functions.IsIn(MouseX(), MouseY(), x, y, TextWidth(_text), TextHeight(_text))
-		If functions.IsIn(MouseX(), MouseY(), x, y, w, functions.BlockText(Self._text, x, y, w, h,, Font14,,, ,, 0))
-			functions.BlockText(Self._text, x, y, w, h,, Font14, 200, 100, 100)
+		If functions.IsIn(MouseX(), MouseY(), x, y, w, FontManager.getFont("Default", 14).getBlockHeight(Self._text, w, h))
+			FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h,, 200, 100, 100)
 		Else
-			functions.BlockText(Self._text, x, y, w, h,, Font14)
-	'		DrawText(_text, x, y)
+			FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h)
 		EndIf
 	End Method
 End Type
@@ -798,26 +773,26 @@ Type TDialogueTexts
 	End Method
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
-		Local ydisplace:Float = functions.BlockText(Self._text, x, y, w, h,, Font14)
+		Local ydisplace:Float = FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h)
 		ydisplace:+15 'displace answers a bit
 
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			Local returnValue:Int = answer.Update(x + 9, y + ydisplace, w - 9, h, clicked)
 			If returnValue <> - 1 Then _goTo = returnValue
-			ydisplace:+TextHeight(answer._text) + 5
+			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 5
 		Next
 		Return _goTo
 	End Method
 
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		Local ydisplace:Float = functions.BlockText(Self._text, x, y, w, h,, Font14)
+		Local ydisplace:Float = FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h)
 		ydisplace:+15 'displace answers a bit
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			DrawOval(x, y + ydisplace + 4, 6, 6)
 			answer.Draw(x + 9, y + ydisplace, w - 9, h)
-			ydisplace:+TextHeight(answer._text) + 5
+			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 5
 		Next
 	End Method
 End Type
@@ -856,7 +831,7 @@ Type TDialogue
 
 	Method Draw()
 		SetColor 255, 255, 255
-	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), _x, _y, _w, _h, "StartLeftDown", 0, "", Font14)
+	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), _x, _y, _w, _h, "StartLeftDown", 0, "", FontManager.getFont("Default", 14))
 		SetColor 0, 0, 0
 		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(_x + 10, _y + 10, _w - 40, _h)
 		SetColor 255, 255, 255
@@ -878,7 +853,7 @@ Type TButton
     Field fontr:Int = 100
     Field fontg:Int = 100
     Field fontb:Int = 100
-    Global UseFont:TImageFont
+    Global UseFont:TBitmapFont
     Global List:TList
 
     Method IsIn:Int(_x:Int, _y:Int)
@@ -900,14 +875,14 @@ Type TButton
   		  If image = Null And sprite <> Null
 		  	sprite.Draw(x + 1, y + 1)
 		  EndIf
-		  functions.BlockText(Caption, x + 1, y + 41, 100, 20, 1, TButton.UseFont, fontr - 50, fontg - 50, fontb - 50)
+			self.usefont.drawBlock(Caption, x + 1, y + 41, 100, 20, 1, fontr - 50, fontg - 50, fontb - 50)
     	Else
 		  If image <> Null
 	    	DrawImage(image, x, y)
 		  Else If sprite <> Null
 		  	sprite.Draw(x, y)
 		  EndIf
-    	  functions.BlockText(Caption, x,y+40, 100,20,1,TButton.UseFont, fontr,fontg,fontb)
+    	  self.usefont.drawBlock(Caption, x,y+40, 100,20,1, fontr,fontg,fontb)
     	EndIf
         If Clicked <> 0 Then SetColor(255,255,255)
     End Method
@@ -926,13 +901,10 @@ Type TPPbuttons Extends TButton
 	  Local Button:TPPbuttons=New TPPbuttons
 	  Button.x = x
 	  Button.y = y
-'	  Button.w = ImageWidth(image)
-'	  Button.h = ImageHeight(image)
 	  Button.w = sprite.w
 	  Button.h = sprite.h
 	  Button.Sprite = sprite
 	  Button.Caption = _caption
-'	  Button.image = image
   	  Button.enabled = 1
   	  Button.id = id
   	  Button.Clicked = 0
@@ -1231,21 +1203,21 @@ Type TInterface
 						SetBlend MASKBLEND
 						Assets.GetSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
 						SetColor 255, 255, 255
-		    	    End If
-				End If
+		    	    EndIf
+				EndIf
 			EndIf 'showchannel <>0
 
 	  		SetBlend MASKBLEND
 	     	Assets.GetSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
 			SetAlpha 0.25
-		    functions.BlockText(Player[Game.playerID].GetFormattedMoney() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, Font13Bold, 200,230,200)
-			functions.BlockText(Player[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, Font13Bold, 200,200,230)
-		 	functions.BlockText((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, Font11bold, 180,180,180)
+			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedMoney() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200)
+			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230)
+		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180)
 			SetAlpha 0.9
-			functions.BlockText(Player[Game.playerID].GetFormattedMoney() + "  ", 376, 426 - 383 + NoDX9moveY, 103, 25, 2, Font13Bold, 50, 80, 50)
-			functions.BlockText(Player[Game.playerID].GetFormattedAudience() + "  ", 376, 468 - 383 + NoDX9moveY, 103, 25, 2, Font13Bold, 50, 50, 80)
-		 	functions.BlockText((Game.day) + ". Tag", 365, 554 - 383 + NoDX9moveY, 120, 25, 1, Font11bold, 50, 50, 50)
+			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedMoney() + "  ", 376, 426 - 383 + NoDX9moveY, 103, 25, 2, 50, 80, 50)
+			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedAudience() + "  ", 376, 468 - 383 + NoDX9moveY, 103, 25, 2, 50, 50, 80)
+		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 365, 554 - 383 + NoDX9moveY, 120, 25, 1, 50, 50, 50)
 			If directx <> 2 And 1 = 2
 				tRender.TextureRender_End()
 			EndIf
@@ -1266,9 +1238,9 @@ Type TInterface
 			SetAlpha 1.0
 		EndIf
 		SetAlpha 0.25
-		functions.BlockText(Game.GetFormattedTime() + " Uhr", 366, 542, 120, 25, 1, Font13Bold, 180, 180, 180)
+		FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime() + " Uhr", 366, 542, 120, 25, 1, 180, 180, 180)
 		SetAlpha 0.9
-		functions.BlockText(Game.GetFormattedTime()+ " Uhr", 365,541,120,25,1, Font13Bold,40,40,40)
+		FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime()+ " Uhr", 365,541,120,25,1, 40,40,40)
 		SetAlpha 1.0
    		ActualProgramToolTip.Draw()
 	    ActualAudienceToolTip.Draw()
@@ -1667,19 +1639,19 @@ Type TStationMap
 
     If action = 1 Then
   	  SetColor(0, 0, 0)
-	  DrawText(bundesland, 595, 35)
-  	  DrawText("Reichweite: ", 595, 52) ;functions.BlockText(functions.convertValue(String(summe), 2, 0), 660, 52, 102, 20, 2, Font11)
-  	  DrawText("Zuwachs: ", 595, 69) ;functions.BlockText(functions.convertValue(String(LastCalculatedAudienceIncrease - LastCalculatedAudienceSum), 2, 0), 660, 69, 102, 20, 2, Font11)
-  	  DrawText("Preis: ", 595, 86) ; functions.BlockText(functions.convertValue(TStation.GetPrice(summe), 2, 0), 660, 86, 102, 20, 2, Font11bold)
+  	  FontManager.baseFont.Draw(bundesland, 595, 35)
+  	  FontManager.baseFont.Draw("Reichweite: ", 595, 52) ;FontManager.baseFont.DrawBlock(functions.convertValue(String(summe), 2, 0), 660, 52, 102, 20, 2)
+  	  FontManager.baseFont.Draw("Zuwachs: ", 595, 69) ;FontManager.baseFont.DrawBlock(functions.convertValue(String(LastCalculatedAudienceIncrease - LastCalculatedAudienceSum), 2, 0), 660, 69, 102, 20, 2)
+  	  FontManager.baseFont.Draw("Preis: ", 595, 86) ; FontManager.GetFont("Default", 11, BOLDFONT).DrawBlock(functions.convertValue(TStation.GetPrice(summe), 2, 0), 660, 86, 102, 20, 2)
   	  SetColor(180, 180, 255)
-	  DrawText(bundesland, 594, 34)
+	  FontManager.baseFont.Draw(bundesland, 594, 34)
  	  SetColor(255,255,255)
  	EndIf
 
 	If Self.sellStation[Game.playerID] <> Null
 		SetColor(0, 0, 0)
-		DrawText("Reichweite: ", 595, 197) ;functions.BlockText(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2, Font11)
-		DrawText("Preis: ", 595, 214) ; functions.BlockText(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2, Font11bold)
+		FontManager.baseFont.Draw("Reichweite: ", 595, 197) ;FontManager.baseFont.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2)
+		FontManager.baseFont.Draw("Preis: ", 595, 214) ; FontManager.GetFont("Default", 11, BOLDFONT).DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
 		SetColor(255, 255, 255)
 	EndIf
   End Method

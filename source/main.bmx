@@ -17,7 +17,7 @@ Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Butto
 Import "basefunctions_events.bmx"				'event handler
 Import "basefunctions_deltatimer.bmx"
 GUIManager.globalScale = 0.75
-GUIManager.defaultFont	= FontManager.GW_GetFont("Default", 12)
+GUIManager.defaultFont	= FontManager.GetFont("Default", 12)
 
 
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -55,9 +55,9 @@ Global NewsAgency:TNewsAgency = New TNewsAgency
 
 SeedRand(103452)
 
-TButton.UseFont 		= FontManager.GW_GetFont("Default", 12, 0)
-TTooltip.UseFontBold	= FontManager.GW_GetFont("Default", 11, BOLDFONT)
-TTooltip.UseFont 		= FontManager.GW_GetFont("Default", 11, 0)
+TButton.UseFont 		= FontManager.GetFont("Default", 12, 0)
+TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
+TTooltip.UseFont 		= FontManager.GetFont("Default", 11, 0)
 TTooltip.ToolTipIcons	= gfx_building_tooltips
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
 
@@ -563,7 +563,7 @@ Type TPlayer
 			If TPlayer.globalID = 2
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 			Else
-				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/alt/test_base.lua")			
+				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/alt/test_base.lua")
 			EndIf
 		EndIf
 		For Local i:Int = 0 To 6
@@ -1515,9 +1515,9 @@ Type TElevator
 		Local routepos:Int = 0
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
 			If floorroute.call = 0
-				DrawText(FloorRoute.floornumber + " 'senden' " + TFigures.GetFigure(FloorRoute.who).Name, 650, 50 + routepos * 15)
+				FontManager.basefont.draw(FloorRoute.floornumber + " 'senden' " + TFigures.GetFigure(FloorRoute.who).Name, 650, 50 + routepos * 15)
 			Else
-				DrawText(FloorRoute.floornumber + " 'holen' " + TFigures.GetFigure(FloorRoute.who).Name, 650, 50 + routepos * 15)
+				FontManager.basefont.draw(FloorRoute.floornumber + " 'holen' " + TFigures.GetFigure(FloorRoute.who).Name, 650, 50 + routepos * 15)
 			EndIf
 			routepos:+1
 		Next
@@ -1951,28 +1951,28 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
-Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_SOLO_GAME"), "MainMenu", FontManager.GW_GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(600, 348, 120, 0, 1, 1, Localization.GetString("MENU_NETWORKGAME"), "MainMenu", FontManager.GW_GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(600, 396, 120, 0, 1, 1, Localization.GetString("MENU_ONLINEGAME"), "MainMenu", FontManager.GW_GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_SOLO_GAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(600, 348, 120, 0, 1, 1, Localization.GetString("MENU_NETWORKGAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(600, 396, 120, 0, 1, 1, Localization.GetString("MENU_ONLINEGAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
 
-Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_JOIN"), "NetGameLobby", FontManager.GW_GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(600, 345, 120, 0, 1, 1, Localization.GetString("MENU_CREATE_GAME"), "NetGameLobby", FontManager.GW_GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(600, 390, 120, 0, 1, 1, Localization.GetString("MENU_BACK"), "NetGameLobby", FontManager.GW_GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_JOIN"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(600, 345, 120, 0, 1, 1, Localization.GetString("MENU_CREATE_GAME"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(600, 390, 120, 0, 1, 1, Localization.GetString("MENU_BACK"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
 Global NetgameLobby_gamelist:TGUIList		= TGUIList.Create(25 + 3, 300, 440, 175, 1, 100, "NetGameLobby")
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
 NetgameLobby_gamelist.GUIbackground = Null
 
-Global GameSettingsBG:TGUIBackgroundBox = TGUIBackgroundBox.Create(20, 20, 760, 260, 00, "Spieleinstellung", "GameSettings", FontManager.GW_GetFont("Default", 16, BOLDFONT))
+Global GameSettingsBG:TGUIBackgroundBox = TGUIBackgroundBox.Create(20, 20, 760, 260, 00, "Spieleinstellung", "GameSettings", FontManager.GetFont("Default", 16, BOLDFONT))
 
 Global GameSettingsOkButton_Announce:TGUIOkButton = TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings")
 Global GameSettingsGameTitle:TGuiInput = TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
-Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_START_GAME"), "GameSettings", FontManager.GW_GetFont("Default", 11, BOLDFONT))
-Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(600, 345, 120, 0, 1, 1, Localization.GetString("MENU_BACK"), "GameSettings", FontManager.GW_GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_START_GAME"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(600, 345, 120, 0, 1, 1, Localization.GetString("MENU_BACK"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
 Global GameSettings_Chat:TGUIChat = TGuiChat.Create(20 + 3, 300, 450, 250, 1, 200, "GameSettings")
 Global InGame_Chat:TGUIChat = TGuiChat.Create(10 + 3, 5, 360, 250, 1, 200, "InGame")
 GameSettings_Chat._UpdateFunc_	= UpdateChat_GameSettings
 InGame_Chat._UpdateFunc_ 		= UpdateChat_InGame
-GUIManager.DefaultFont = FontManager.GW_GetFont("Default", 12, BOLDFONT)
+GUIManager.DefaultFont = FontManager.GetFont("Default", 12, BOLDFONT)
 
 GameSettings_Chat.GUIInput.TextDisplaceX = 5
 GameSettings_Chat.GUIInput.TextDisplaceY = 2
@@ -1983,7 +1983,7 @@ InGame_Chat.fadeout = True
 InGame_Chat.GUIInput.pos.setXY( 290, 385)
 InGame_Chat.GuiInput.width = gfx_GuiPack.GetSprite("Chat_IngameOverlay").w
 InGame_Chat.GUIInput.InputImage = gfx_GuiPack.GetSprite("Chat_IngameOverlay")
-InGame_Chat.Font = FontManager.GW_GetFont("Default", 10)
+InGame_Chat.useFont = FontManager.GetFont("Default", 10)
 
 InGame_Chat.guichatgfx= 0
 InGame_Chat.colR= 255; InGame_Chat.colG= 255; InGame_Chat.colB= 255
@@ -2061,9 +2061,9 @@ Network.ONLINEPORT = Game.userport
 
 For Local i:Int = 0 To 7
 	If i < 4
-		MenuPlayerNames[i]	= TGUIinput.Create(50 + 190 * i, 65, 130, 1, Player[i + 1].Name, 16, "GameSettings", FontManager.GW_GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
+		MenuPlayerNames[i]	= TGUIinput.Create(50 + 190 * i, 65, 130, 1, Player[i + 1].Name, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
 		MenuPlayerNames[i].TextDisplaceX = 3
-		MenuChannelNames[i]	= TGUIinput.Create(50 + 190 * i, 180, 130, 1, Player[i + 1].channelname, 16, "GameSettings", FontManager.GW_GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
+		MenuChannelNames[i]	= TGUIinput.Create(50 + 190 * i, 180, 130, 1, Player[i + 1].channelname, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
 		MenuChannelNames[i].TextDisplaceX = 3
 	End If
 	If i Mod 2 = 0
@@ -2100,7 +2100,6 @@ StationMap.AddStation(310, 260, 4, Player[4].maxaudience)
 
 HideMouse()
 SetColor 255,255,255
-SetImageFont FontManager.GW_GetFont("Default", 11)
 
 For Local i:Int = 0 To 9
 	TContractBlocks.Create(TContract.GetRandomContract(), i, 0)
@@ -2328,11 +2327,11 @@ Function Menu_NetworkLobby_Draw()
 	SetColor 255,255,255
 	GUIManager.Draw("NetGameLobby")
 	If Not Game.onlinegame Then
-		SetAlpha 0.3;functions.BlockText(Localization.GetString("MENU_NETWORKGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, Font16italic,  0, 0,  0)
-		SetAlpha 1.0;functions.BlockText(Localization.GetString("MENU_NETWORKGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, Font16italic, 20,20,150)
+		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_NETWORKGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
+		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_NETWORKGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
 	Else
-		SetAlpha 0.3;functions.BlockText(Localization.GetString("MENU_ONLINEGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, Font16italic,  0, 0,  0)
-		SetAlpha 1.0;functions.BlockText(Localization.GetString("MENU_ONLINEGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, Font16italic, 20,20,150)
+		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_ONLINEGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
+		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_ONLINEGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
 	EndIf
 	If Game.cursorstate = 0 DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
 	If Game.cursorstate = 1 DrawImage(gfx_mousecursor, MouseX()-10, MouseY()-10,1)
@@ -2402,8 +2401,8 @@ Function Menu_GameSettings_Draw()
 		DrawRect 200,200,400,200
 		SetAlpha 1.0
 		SetColor 0,0,0
-		DrawText("Synchronisiere Startbedingungen...", 220,220)
-		DrawText("Starte Netzwerkspiel...", 220,240)
+		FontManager.basefont.draw("Synchronisiere Startbedingungen...", 220,220)
+		FontManager.basefont.draw("Starte Netzwerkspiel...", 220,240)
 		If Game.playerID = 1 Then
 			For Local playerids:Int = 1 To 4
 				SeedRnd(MilliSecs()*Rand(5))
@@ -2431,13 +2430,13 @@ Function Menu_GameSettings_Draw()
 		DrawRect 200,200,400,200
 		SetAlpha 1.0
 		SetColor 0,0,0
-		DrawText("Synchronisiere Startbedingungen...", 220,220)
-		DrawText("Starte Netzwerkspiel...", 220,240)
-		DrawText("Player 1..."+Player[1].networkstate+" MovieListCount"+Player[1].ProgrammeCollection.MovieList.Count(), 220,260)
-		DrawText("Player 2..."+Player[2].networkstate+" MovieListCount"+Player[2].ProgrammeCollection.MovieList.Count(), 220,280)
-		DrawText("Player 3..."+Player[3].networkstate+" MovieListCount"+Player[3].ProgrammeCollection.MovieList.Count(), 220,300)
-		DrawText("Player 4..."+Player[4].networkstate+" MovieListCount"+Player[4].ProgrammeCollection.MovieList.Count(), 220,320)
-		If Not Game.networkgameready = 1 Then DrawText("not ready!!", 220,360)
+		FontManager.basefont.draw("Synchronisiere Startbedingungen...", 220,220)
+		FontManager.basefont.draw("Starte Netzwerkspiel...", 220,240)
+		FontManager.basefont.draw("Player 1..."+Player[1].networkstate+" MovieListCount"+Player[1].ProgrammeCollection.MovieList.Count(), 220,260)
+		FontManager.basefont.draw("Player 2..."+Player[2].networkstate+" MovieListCount"+Player[2].ProgrammeCollection.MovieList.Count(), 220,280)
+		FontManager.basefont.draw("Player 3..."+Player[3].networkstate+" MovieListCount"+Player[3].ProgrammeCollection.MovieList.Count(), 220,300)
+		FontManager.basefont.draw("Player 4..."+Player[4].networkstate+" MovieListCount"+Player[4].ProgrammeCollection.MovieList.Count(), 220,320)
+		If Not Game.networkgameready = 1 Then FontManager.basefont.draw("not ready!!", 220,360)
 		Flip
 		Network.UpdateUDP()
 		Until Game.networkgameready = 1
@@ -2531,7 +2530,6 @@ End Type
 Game.gamestate = 1
 Function UpdateMenu(deltaTime:Float=1.0)
 	'	App.Timer.Update(0)
-
 	If Game.networkgame Then Network.UpdateUDP
 	If Game.gamestate = 1
 		Menu_Main()
@@ -2560,12 +2558,10 @@ Function DrawMenu(tweenValue:Float=1.0)
 		DrawImage(gfx_startscreen_logosmall, 540, 480)
 	EndIf
 	SetColor 0, 0, 0
-	DrawText (Game.playerID, 10, 2)
-
 
 	SetColor 255,255,255
-	functions.BlockText(versionstring, 10,575, 500,20,0,Font11italic,75,75,140)
-	functions.BlockText(copyrightstring, 10,585, 500,20,0,Font11italic,60,60,120)
+	FontManager.GetFont("Default",11, ITALICFONT).drawBlock(versionstring, 10,575, 500,20,0,75,75,140)
+	FontManager.GetFont("Default",11, ITALICFONT).drawBlock(copyrightstring, 10,585, 500,20,0,60,60,120)
 	If Game.gamestate = 1 Then Menu_Main_Draw()..
 	ElseIf Game.gamestate = 2 Then Menu_NetworkLobby_Draw()..
 	ElseIf (Game.gamestate = 3 Or Game.gamestate = 4 Or Game.gamestate = 5) Then Menu_GameSettings_Draw()
@@ -2574,7 +2570,6 @@ End Function
 Function Init_Creation()
 	Local lastblocks:Int = 0
 	'Local lastprogramme:TProgrammeBlock = New TProgrammeBlock
-
 	For Local i:Int = 0 To 5
 		TMovieAgencyBlocks.Create(TProgramme.GetRandomSerie(),20+i,0)
 	Next
@@ -2593,9 +2588,10 @@ Function Init_Creation()
 		Next
 		TFigures.GetFigure(figure_HausmeisterID).updatefunc_ = TFigures.UpdateHausmeister
 	EndIf
-
 	'creation of blocks for players rooms
 	lastblocks = 0
+	print "create blocks"
+
 	For Local playerids:Int = 1 To 4
 		TAdBlock.Create("1.", 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 0 * Assets.GetSprite("pp_adblock1").h, playerids, 1)
 		TAdBlock.Create("2.", 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 1 * Assets.GetSprite("pp_adblock1").h, playerids, 2)
@@ -2607,6 +2603,7 @@ Function Init_Creation()
 		lastblocks :+ lastprogramme.blocks
 		lastprogramme = TProgrammeBlock.Create("3.", 67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 3)
 	Next
+	print "create blocks .. done"
 
 End Function
 
@@ -2642,13 +2639,12 @@ Function Init_All()
 	Init_SetRoomNames()	'setzt Raumnamen entsprechend Spieler/Sendernamen
 	Init_CreateRoomTooltips()  'erstellt Raum-Tooltips und somit auch Raumplaner-Schilder
 	PrintDebug ("  TRooms.DrawDoorsOnBackground()", "drawing door-prites on the building-sprite", DEBUG_START)
-	Print "init_doors"
 	TRooms.DrawDoorsOnBackground() 		'draws the door-sprites on the building-sprite
 	PrintDebug ("  Building.DrawItemsToBackground()", "drawing plants and lights on the building-sprite", DEBUG_START)
-	Print "init_back"
 	Building.DrawItemsToBackground()  	'draws plants and lights which are behind the figures
 	PrintDebug ("Init_All()", "complete", DEBUG_START)
 End Function
+
 
 'ingame update
 Function UpdateMain(deltaTime:Float = 1.0)
@@ -2763,15 +2759,15 @@ Function DrawMain(tweenValue:Float=1.0)
 	Fader.Draw()
 	Interface.Draw()
 
-	DrawText ("Netstate:" + Player[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, - 2)
+	FontManager.baseFont.draw( "Netstate:" + Player[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, - 2)
 
 	If Game.DebugInfos
 		SetColor 0,0,0
 		DrawRect(10,15,100,100)
 		SetColor 255, 255, 255
-		If directx = 1 Then DrawText ("Mode: DirectX 7", 15, 50)
-		If directx = 0 Then DrawText ("Mode: OpenGL", 15,50)
-		If directx = 2 Then DrawText ("Mode: DirectX 9", 15,50)
+		If directx = 1 Then FontManager.baseFont.draw("Mode: DirectX 7", 15, 50)
+		If directx = 0 Then FontManager.baseFont.draw("Mode: OpenGL", 15,50)
+		If directx = 2 Then FontManager.baseFont.draw("Mode: DirectX 9", 15,50)
 
 		If Game.networkgame
 			GUIManager.Draw("InGame") 'draw ingamechat
@@ -2780,20 +2776,20 @@ Function DrawMain(tweenValue:Float=1.0)
 			DrawRect(660, 483,115,120)
 			SetAlpha 1.0
 			SetColor 255,255,255
-			DrawText(Network.stream.UDPSpeedString(), 662,490)
+			FontManager.basefont.draw(Network.stream.UDPSpeedString(), 662,490)
 			For Local i:Int = 0 To 3
 				If Player[i + 1].Figure.inRoom <> Null
-					DrawText("Player " + (i + 1) + ": " + Player[i + 1].Figure.inRoom.Name, 662, 510 + i * 11)
+					FontManager.basefont.draw("Player " + (i + 1) + ": " + Player[i + 1].Figure.inRoom.Name, 662, 510 + i * 11)
 				Else
 					If Player[i + 1].Figure.IsInElevator()
-						DrawText("Player " + (i + 1) + ": InElevator", 662, 510 + i * 11)
+						FontManager.basefont.draw("Player " + (i + 1) + ": InElevator", 662, 510 + i * 11)
 					Else If Player[i + 1].Figure.IsAtElevator()
-						DrawText("Player " + (i + 1) + ":			AtElevator", 662, 510 + i * 11)
+						FontManager.basefont.draw("Player " + (i + 1) + ":			AtElevator", 662, 510 + i * 11)
 					Else
-						DrawText("Player " + (i + 1) + ": Building", 662, 510 + i * 11)
+						FontManager.basefont.draw("Player " + (i + 1) + ": Building", 662, 510 + i * 11)
 					EndIf
 				EndIf
-				DrawText("Ping "+(i+1)+": "+Network.MyPing[i]+"ms", 672,555+i*11)
+				FontManager.basefont.draw("Ping "+(i+1)+": "+Network.MyPing[i]+"ms", 672,555+i*11)
 			Next
 		EndIf
 	EndIf
@@ -2912,7 +2908,6 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
 			KEYMANAGER.changeStatus()
-
 			If Game.gamestate = 0
 				UpdateMain(App.Timer.getDeltaTime())
 			Else
@@ -2940,8 +2935,8 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			Else
 				DrawMenu()
 			EndIf
-			DrawText("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
-			DrawText("deltaTime "+Int(1000*App.Timer.loopTime)+"ms", 250,0)
+			FontManager.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
+			FontManager.baseFont.Draw("deltaTime "+Int(1000*App.Timer.loopTime)+"ms", 250,0)
 			If PrepareScreenshot = 1 Then PrepareScreenshot:+1;DrawImage(gfx_startscreen_logosmall, App.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
 			'GUIManager.Draw("InGame")
 			Flip App.limitFrames
@@ -2972,6 +2967,9 @@ Global Init_Complete:Int = 0
 'Init EventManager
 'could also be done during update ("if not initDone...")
 EventManager.Init()
+'print "loading delay"
+'Delay(2000) '- loading img
+
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 100)
 	Repeat
@@ -2994,7 +2992,7 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 
 		'process events not directly triggered
 		'process "onMinute" etc.
-		EventManager.update()
+		'EventManager.update()
 
 	Until AppTerminate() Or ExitGame = 1
 	If Game.networkgame Then If Network.IsConnected = True Then Network.NetDisconnect ' Disconnect

@@ -1,4 +1,5 @@
 ' resource manager
+SuperStrict
 
 Import BRL.Max2D
 Import BRL.Random
@@ -36,7 +37,7 @@ Type TAssetManager
 '			if obj.getType() = "IMAGE" then loadedObject = TAssetManager.ConvertImageToSprite( LoadImage( obj.getUrl() ), obj.getName() )
 			if obj.getType() = "SPRITE" then loadedObject = TAsset(TGW_Sprites.LoadFromAsset(obj) )
 			if obj.getType() = "IMAGE" then loadedObject = TAsset(TGW_Sprites.LoadFromAsset(obj) )
-
+loadedObject.setLoaded(true)
 			'add to map of loaded objects
 			?Threaded
 				LockMutex(TAssetManager.AssetsLoadedLock)
@@ -370,7 +371,13 @@ Type TXmlLoader
 							Print "parseScripts: COLORIZE  <-- param should be asset not timage"
 							self.loadWarning :+1
 						endif
-						Assets.AddImageAsSprite(_dest, ColorizeTImage(TImage(data), _r, _g, _b))
+
+						local img:Timage = ColorizeTImage(TImage(data),_r, _g, _b)
+						if img <> null
+							Assets.AddImageAsSprite(_dest, img)
+						else
+							print "WARNING: "+_dest+" could not be created"
+						endif
 					EndIf
 				EndIf
 
@@ -390,7 +397,7 @@ Type TXmlLoader
 		Local _url:String = childNode.FindChild("url", 0, 0).Value
 		Local _flags:Int = Self.GetImageFlags(childNode)
 		'Print "LoadSpritePackResource: "+_name + " " + _flags + " ["+url+"]"
-		Local _image:TImage = LoadImage(_url, flags) 'CheckLoadImage(_url, _flags)
+		Local _image:TImage = LoadImage(_url, _flags) 'CheckLoadImage(_url, _flags)
 		Local spritePack:TGW_SpritePack = TGW_SpritePack.Create(_image, _name)
 		'add spritepack to asset
 		Assets.Add(_name, spritePack)
@@ -600,7 +607,7 @@ Type TResourceManager
 					TResourceManager.loaderVars.Insert("text", String(obj.GetUrl()))
 					TResourceManager.loaderVars.Insert("total", String(total))
 				UnlockMutex TResourceManager.loaderVarsMutex
-				Delay 1
+				'Delay 1
 			Next
 		UnlockMutex TResourceManager.unloadedMutex
 	End Function

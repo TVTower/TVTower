@@ -19,7 +19,7 @@ Type TEventManager
 		Assert _ticks = -1, "TEventManager: preparing to start event manager while already started"
 		self._events.Sort()		'sort by age
 		self._ticks = 0 		'begin
-		print "Initi EventManager"
+		print "TEventManager.Init()"
 	End Method
 
 	Method isStarted:Int()
