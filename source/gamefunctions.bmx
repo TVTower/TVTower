@@ -1210,14 +1210,9 @@ Type TInterface
 	  		SetBlend MASKBLEND
 	     	Assets.GetSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
-			SetAlpha 0.25
-			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedMoney() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200)
-			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230)
-		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180)
-			SetAlpha 0.9
-			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedMoney() + "  ", 376, 426 - 383 + NoDX9moveY, 103, 25, 2, 50, 80, 50)
-			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedAudience() + "  ", 376, 468 - 383 + NoDX9moveY, 103, 25, 2, 50, 50, 80)
-		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 365, 554 - 383 + NoDX9moveY, 120, 25, 1, 50, 50, 50)
+			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedMoney() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
+			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
+		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 			If directx <> 2 And 1 = 2
 				tRender.TextureRender_End()
 			EndIf

@@ -323,10 +323,35 @@ Type TBitmapFont
 		Return Self.getHeight(text)
 	End Method
 
-	Method drawBlock(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, doDraw:Int = 1)
-		Self.draw(text,x,y)
+	Method drawBlock(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0)
+		Self.drawStyled(text,x,y, cR, cG, cB, style)
 	End Method
 
+	Method drawStyled(text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0)
+		local oldR:int, oldG:int, oldB:int
+		GetColor(oldR, oldG, oldB)
+
+		'emboss
+		if style = 1
+			local oldA:float = getAlpha()
+			SetAlpha 0.6*oldA
+			SetColor 250,250,250
+			self.draw(text, x,y+1)
+			SetAlpha oldA
+		'shadow
+		else if style = 2
+			local oldA:float = getAlpha()
+			SetAlpha 0.6*oldA
+			SetColor 0,0,0
+			self.draw(text, x+1,y+1)
+			SetAlpha oldA
+		endif
+
+		SetColor cr,cg,cb
+		self.draw(text,x,y)
+
+		SetColor( oldR, oldG, oldB )
+	End Method
 
 	Method draw(text:String,x:Float,y:Float)
 		For Local i:Int = 0 Until text.length
