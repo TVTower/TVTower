@@ -976,15 +976,8 @@ Type TNewsbuttons Extends TButton
 
 	Function DrawAll(tweenValue:float=1.0)
 		For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
-			If Button.owner = Player[Game.playerID].figure.inRoom.owner
-				If Button.Clicked <> 0
-					Assets.getSprite(Button.spriteBaseName+"_clicked").Draw(Button.x, Button.y)
-				Else
-					Assets.getSprite(Button.spriteBaseName).Draw(Button.x, Button.y)
-				EndIf
-			endif
+			If Button.owner = Player[Game.playerID].figure.inRoom.owner then Button.Draw(tweenValue)
     	Next
-    	setAlpha 1.0
 		'tooltips - later drawn to avoid z-order problems
 		For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
 			If Button.owner = Player[Game.playerID].figure.inRoom.owner
@@ -1041,25 +1034,24 @@ Type TNewsbuttons Extends TButton
     Method OnClick()
 	  self.clickstate:+1
 	  If clickstate > 3 Then clickstate =0
-		print "onClick " + self.clickstate
 	  Player[Game.playerID].newsabonnements[genre] = clickstate
 	  If Game.networkgame Then If Network.IsConnected Then Network.SendNewsSubscriptionLevel(Game.playerID, genre, clickstate)
 	  Mousemanager.resetKey(1)
     End Method
 
     Method Draw(tweenValue:float=1.0)
-        If clickstate > 0
+        If self.clicked > 0
 			Assets.getSprite(self.spriteBaseName+"_clicked").draw(x,y)
-		  SetColor 0,0,0
-		  SetAlpha 0.4
-		  For Local i:Int = 0 To clickstate-1
-    	    DrawRect(x+8+i*10, y+ Assets.getSprite(self.spriteBaseName+"_clicked").h -7, 7,4)
-    	  Next
-		  SetColor 255,255,255
-		  SetAlpha 1.0
     	Else
 			Assets.getSprite(self.spriteBaseName).draw(x,y)
-    	EndIf
+		endif
+		SetColor 0,0,0
+		SetAlpha 0.4
+		For Local i:Int = 0 To clickstate-1
+			DrawRect(x+8+i*10, y+ Assets.getSprite(self.spriteBaseName).h -7, 7,4)
+		Next
+		SetColor 255,255,255
+		SetAlpha 1.0
     End Method
 End Type 'GenreButtons im Nachrichtenstudio
 
@@ -1139,9 +1131,12 @@ Type TInterface
 		'channel selection (tvscreen on interface)
 		If MOUSEMANAGER.IsHit(1)
 			For Local i:Int = 0 To 4
-				If functions.IsIn(MouseX(), MouseY(), 75 + i * 33, 171 + 383, 33, 41) Then ShowChannel = i;BottomImgDirty = True
+				If functions.IsIn(MouseX(), MouseY(), 75 + i * 33, 171 + 383, 33, 41)
+					ShowChannel = i
+					BottomImgDirty = True
+				endif
 			Next
-		End If
+		EndIf
 
 		'noise on interface-tvscreen
 		ChangeNoiseTimer :+ deltaTime
