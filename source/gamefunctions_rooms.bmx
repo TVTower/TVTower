@@ -61,20 +61,20 @@ Type TRooms
 	End Function
 
     Function GetClickedRoom:TRooms(Figure:TFigures)
-		Local elevatorx:Int = Building.x + Building.Elevator.Pos.x + Figure.xToElevator
+		Local elevatorx:Int = Building.pos.x + Building.Elevator.Pos.x + Figure.xToElevator
 		Local figurex:Int = Figure.oldtargetx + Figure.FrameWidth
-		Local figurey:Int = Building.y + Building.GetFloorY(Figure.clickedToFloor) - 5
+		Local figurey:Int = Building.pos.y + Building.GetFloorY(Figure.clickedToFloor) - 5
 		For Local localroom:TRooms = EachIn RoomList
 			If localroom.doortype >= 0
 				If localroom.name = "roomboard" Then localroom.doorwidth = 59 'localroom.x = 527; localroom.doorwidth=59
-				If functions.IsIn(figurex, figurey, localroom.Pos.x, Building.y + Building.GetFloorY(localroom.pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, localroom.doorwidth, 54)
+				If functions.IsIn(figurex, figurey, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, localroom.doorwidth, 54)
 					If Figure.toRoom <> localroom Then Figure.SetRoom(localroom)
 					Return localroom
 				EndIf
 				'if localroom.name = "roomboard" Then localroom.x = 557
 			EndIf
 			If localroom.name = "elevator"
-				If functions.IsIn(figurex, figurey, elevatorx - 20, Building.y + Building.GetFloorY(localroom.Pos.y) - 58, 52, 58)
+				If functions.IsIn(figurex, figurey, elevatorx - 20, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - 58, 52, 58)
 					If Figure.toRoom <> localroom Then Figure.SetRoom(localroom)
 					localroom.Pos.x = elevatorx
 					Return localroom
@@ -102,20 +102,20 @@ Type TRooms
 			If localroom <> Null
 				If localroom.tooltip <> Null
 					If localroom.tooltip.enabled
-						localroom.tooltip.y = Building.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
+						localroom.tooltip.pos.y = Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
 						localroom.tooltip.Update(deltaTime)
 					EndIf
 				EndIf
 
 
-				If foundtooltip = 0 And Player[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), localroom.Pos.x, Building.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, localroom.doorwidth, 54)
+				If foundtooltip = 0 And Player[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, localroom.doorwidth, 54)
 					If localroom.tooltip = Null
 						localroom.tooltip = TTooltip.Create(localroom.desc, localroom.descTwo, 100, 140, 0, 0)
 					else
 						localroom.tooltip.lifetime = localroom.tooltip.startlifetime
 					endif
-					localroom.tooltip.y = Building.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
-					localroom.tooltip.x = localroom.Pos.x + localroom.doorwidth/2 - localroom.tooltip.GetWidth()/2
+					localroom.tooltip.pos.y = Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
+					localroom.tooltip.pos.x = localroom.Pos.x + localroom.doorwidth/2 - localroom.tooltip.GetWidth()/2
 					localroom.tooltip.enabled = 1
 					If localroom.name = "chief" Then localroom.tooltip.tooltipimage = 2
 					If localroom.name = "news" Then localroom.tooltip.tooltipimage = 4
@@ -144,9 +144,9 @@ Type TRooms
             If localroom.doortype >= 0 And localroom.Pos.x > 0
               If localroom.doortype > 5 Then localroom.doortype=5
               If localroom.name <> "roomboard" And localroom.name <> "credits" And localroom.name <> "porter"
-				DrawOnPixmap(Assets.GetSprite("gfx_building_Tueren").GetFrameImage(localroom.doortype), 0, Pix, localroom.Pos.x - Building.x - 127, Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)
+				DrawOnPixmap(Assets.GetSprite("gfx_building_Tueren").GetFrameImage(localroom.doortype), 0, Pix, localroom.Pos.x - Building.pos.x - 127, Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)
 				If localroom.owner < 5 And localroom.owner >=0
-					DrawOnPixmap(Assets.GetSprite("gfx_building_sign"+localroom.owner).parent.image , 0, Pix, localroom.Pos.x - Building.x - 127 + 2 + Assets.GetSprite("gfx_building_Tueren").framew, Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)
+					DrawOnPixmap(Assets.GetSprite("gfx_building_sign"+localroom.owner).parent.image , 0, Pix, localroom.Pos.x - Building.pos.x - 127 + 2 + Assets.GetSprite("gfx_building_Tueren").framew, Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)
 				EndIf
            EndIf
             EndIf
@@ -167,8 +167,8 @@ Type TRooms
 					If localroom.doortype >= 5 And localroom.name <> "roomboard" And localroom.name <> "credits" And localroom.name <> "porter"
 '						localroom.doortype = 5
 						If localroom.doortype = 5 Then If localroom.DoorOpenTimer + 500 < MilliSecs() Then localroom.CloseDoor()
-						Assets.GetSprite("gfx_building_Tueren").Draw(localroom.Pos.x, Building.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").frameh, localroom.doortype)
-						'DrawText(localroom.name+" - " + localroom.doortype, localroom.Pos.x, Building.y + Building.GetFloorY(localroom.Pos.y)- Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").frameh + 10)
+						Assets.GetSprite("gfx_building_Tueren").Draw(localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").frameh, localroom.doortype)
+						'DrawText(localroom.name+" - " + localroom.doortype, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y)- Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").frameh + 10)
 					EndIf
 				EndIf
 			EndIf
@@ -407,10 +407,10 @@ Function Room_News_Compute(_room:TRooms)
 
 	if not TRooms.doadraw 'draw it
 		player[game.playerid].figure.fromroom =Null
-'		TNewsbuttons.UpdateAll()
+		TNewsbuttons.UpdateAll(App.timer.getDeltaTime())
 		Game.cursorstate = 0
 		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
-			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufuegen und entfernen", 180, 100, 0, 0)
+			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0, 1010)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.lifetime = PlannerToolTip.startlifetime
 			Game.cursorstate = 1
@@ -419,7 +419,7 @@ Function Room_News_Compute(_room:TRooms)
 		If PlannerToolTip <> Null  Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 	else
 		If PlannerToolTip <> Null  Then PlannerToolTip.Draw(App.Timer.getDeltaTime())
-		DrawText(_room.owner, 20,20)
+		TNewsbuttons.DrawAll(App.timer.getTween())
     EndIf
 End Function
 
@@ -993,27 +993,34 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 	Local State:Int=0
 	Local othertime:Int = 0
 	If TRooms.doadraw 'draw it
+
 		If Not DrawnOnProgrammePlannerBG
 			local pixImage:Timage = Assets.GetSprite("rooms_pplanning").parent.image
 			Local Pix:TPixmap = LockImage(pixImage)
 			'SetImageFont(font11)
+
 			For Local i:Int = 0 To 11
-				DrawTextOnPixmap((i + 12) + ":00", 356, 25 + i * 30, Pix, True)
-				If i >= 10
-					DrawTextOnPixmap(i + ":00", 29, 25 + i * 30, Pix, True)
-				Else
-					DrawTextOnPixmap("0" + i + ":00", 29, 25 + i * 30, Pix, True)
-				EndIf
+				'left side
+				FontManager.baseFont.drawOnPixmap( (i + 12) + ":00", 356, 25 + i * 30, 255,255,255, Pix, True )
+				'right side
+				local text:string = i + ":00"
+				If i < 10 then text = "0" + text
+				FontManager.baseFont.drawOnPixmap(text, 29, 25 + i * 30, 255,255,255, Pix, True)
 			Next
 			_room.background = Assets.GetSprite("rooms_pplanning")
 			TRooms.ActiveBackground = Assets.GetSprite("rooms_pplanning")
 			DrawnOnProgrammePlannerBG = True
 			UnlockImage(pixImage)
 		End If
+
 		TProfiler.Enter("ProgrammePlanner:DRAW")
-		'Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
-		For Local i : Byte = 0 To 11
-			'State = 1        'rem: in all cases a state is declared
+		'draw blocks
+		For Local i : Byte = 0 To 23
+			local rightSide:int = floor(i / 11) '0-11 = 0,12-23 = 1
+			local slotPos:int = i
+			if rightSide then slotPos :- 12
+
+			'for programmeblocks
 			If Game.day > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
 			If Game.day = Game.daytoplan
 				othertime = Int(Floor((Game.minutesOfDayGone-5) / 60))
@@ -1032,11 +1039,13 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 					SetColor 180, 160, 50  'running
 				EndIf
 				SetAlpha 0.5
-				Assets.GetSprite("pp_programmeblock1").Draw(67, 17 + i * 30)
-				SetAlpha 1.0
+				Assets.GetSprite("pp_programmeblock1").Draw(67 + rightSide*327, 17 + slotPos * 30)
 			EndIf
-		    If Game.day = Game.daytoplan
-				othertime = Int(Floor((Game.minutesOfDayGone-55) / 60))
+
+			'for adblocks
+			If Game.day > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
+			If Game.day = Game.daytoplan
+				othertime = Int(Floor((Game.minutesOfDayGone - 55) / 60))
 				If i > othertime
 					State = 0  'normal
 				Else If i = othertime
@@ -1045,6 +1054,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 					State = 1  'runned
 				EndIf
 			EndIf
+
 			If State <> 0 And State <> 4 '0=normal, 4=old day
 				If State = 1
 					SetColor 195, 105, 105  'runned - red, if a programme is set, the programme will overlay it
@@ -1052,158 +1062,116 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 					SetColor 180, 160, 50  'running
 				EndIf
 				SetAlpha 0.5
-				Assets.GetSprite("pp_adblock1").Draw(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + i * 30)
-				SetAlpha 1.0
+				Assets.GetSprite("pp_adblock1").Draw(67 + rightSide*327 + Assets.GetSprite("pp_programmeblock1").w, 17 + slotPos * 30)
 			EndIf
-			SetColor 255, 255, 255  'normal
 		Next
-	    For Local i:Byte = 0 To 11
-			State = 1
-			If Game.day > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
-			If Game.day = Game.daytoplan
-				othertime = Int(Floor((Game.minutesOfDayGone-5) / 60))
-				If i+12 > othertime
-					State = 0  'normal
-				Else If i+12 = othertime
-					State = 2  'running
-				Else If i+12 < (Int(Floor((Game.minutesOfDayGone+5) / 60)))
-					State = 1  'runned
-				EndIf
-			EndIf
-			If State <> 0 And State <> 4 '0=normal, 4=old day
-				If State = 1
-					SetColor 195, 105, 105  'runned - red, if a programme is set, the programme will overlay it
-				Else If State = 2
-					SetColor 180, 160, 50  'running
-				EndIf
-				SetAlpha 0.5
-			 	Assets.GetSprite("pp_programmeblock1").Draw(394, 17 + i * 30)
-				SetAlpha 1.0
-			EndIf
-			If Game.day > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
-			If Game.day = Game.daytoplan
-				othertime = Int(Floor((Game.minutesOfDayGone - 55) / 60))
-				If i+12 > othertime
-					State = 0  'normal
-				Else If i+12 = othertime
-					State = 2  'running
-				Else If i+12 < (Int(Floor((Game.minutesOfDayGone) / 60)))
-					State = 1  'runned
-				EndIf
-			EndIf
-			If State <> 0 And State <> 4 '0=normal, 4=old day
-				If State = 1
-					SetColor 195, 105, 105  'runned - red, if a programme is set, the programme will overlay it
-				Else If State = 2
-					SetColor 180, 160, 50  'running
-				EndIf
-				SetAlpha 0.5
-				Assets.GetSprite("pp_adblock1").Draw(394 + Assets.GetSprite("pp_programmeblock1").w, 17 + i * 30)
-				SetAlpha 1.0
-			EndIf
-			SetColor 255, 255, 255  'normal
-		Next
-     TPPbuttons.DrawAll()
-    If TProgrammeBlock.AdditionallyDragged > 0
-      TAdBlock.DrawAll(_room.owner)
-      SetColor 255,255,255  'normal
-      TProgrammeBlock.DrawAll(_room.owner)
-    Else
-      TProgrammeBlock.DrawAll(_room.owner)
-      SetColor 255,255,255  'normal
-      TAdBlock.DrawAll(_room.owner)
-    End If
+		SetAlpha 1.0
+		SetColor 255, 255, 255  'normal
 
-    'overlay old days
-    If Game.day > Game.daytoplan
-      SetColor 100,100,100
-      SetAlpha 0.5
-      DrawRect(27,17,637,360)
-      SetColor 255,255,255
-      SetAlpha 1.0
-    EndIf
-    If Game.daytoplan = Game.day Then SetColor 0,100,0
-    If Game.daytoplan < Game.day Then SetColor 100,100,0
-    If Game.daytoplan > Game.day Then SetColor 0,0,0
-    FontManager.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(Game.daytoplan), 691, 17, 100, 15, 0)
+		TPPbuttons.DrawAll()
+rem
 
+		If TProgrammeBlock.AdditionallyDragged > 0
+			TAdBlock.DrawAll(_room.owner)
+			SetColor 255,255,255  'normal
+			TProgrammeBlock.DrawAll(_room.owner)
+		Else
+			TProgrammeBlock.DrawAll(_room.owner)
+			SetColor 255,255,255  'normal
+			TAdBlock.DrawAll(_room.owner)
+		EndIf
+endrem
 
-    SetColor 255,255,255
-    If _room.owner = Game.playerID
-      If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw(1)
-      If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
-      If PPprogrammeList.GetOpen() = 0 And PPcontractList.GetOpen() = 0
-        For Local ProgrammeBlock:TProgrammeBlock = EachIn TProgrammeBlock.List
-      	  If _room.owner = ProgrammeBlock.owner And..
-      	     ProgrammeBlock.Programme.senddate = Game.daytoplan And..
-			 functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.blocks)
-   		    If Programmeblock.Programme.senddate > Game.day Or..
-			   Programmeblock.Programme.senddate = game.day And Programmeblock.Programme.sendtime > game.GetActualHour()
-			  Game.cursorstate = 1
-			EndIf
-            If ProgrammeBlock.ParentProgramme <> Null
-				If MouseX() < 390
-					ProgrammeBlock.Programme.ShowEpisodeSheet(358,20,ProgrammeBlock.ParentProgramme);Exit
-				Else
-			  		ProgrammeBlock.Programme.ShowEpisodeSheet(30,20, ProgrammeBlock.ParentProgramme);Exit
-				EndIf
-            Else
-				If MouseX() < 390
-					ProgrammeBlock.Programme.ShowSheet(358,20);Exit
-				Else
-					ProgrammeBlock.Programme.ShowSheet(30,20);Exit
-				EndIf
-            EndIf
-          EndIf
-        Next
-        For Local AdBlock:TAdBlock = EachIn TAdBlock.List
-      	  If _room.owner = AdBlock.owner And..
-      	     AdBlock.senddate = Game.daytoplan And..
-			 functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.width, AdBlock.Height)
-			  Game.cursorstate = 1
-				If MouseX() < 400 then AdBlock.ShowSheet(358,20);Exit
-              If MouseX() > 400 Then AdBlock.ShowSheet(30,20);Exit
-          EndIf
-        Next
-      EndIf 'if no programmeList is open
-    EndIf
-	SetColor 255,255,255
-	TProfiler.Leave("ProgrammePlanner:DRAW")
-  Else
-TProfiler.Enter("ProgrammePlanner:UPDATE")
-'    MouseManager.ChangeStatus()
-    Game.cursorstate = 0
-    Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
-    If functions.IsIn(MouseX(), MouseY(), 759,17,14,15)
-      Game.cursorstate = 1
-      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;Game.daytoplan :+ 1
-    EndIf
-    If functions.IsIn(MouseX(), MouseY(), 670,17,14,15)
-      Game.cursorstate = 1
-      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;Game.daytoplan :- 1
-      If Game.daytoplan <= 1 Then Game.daytoplan = 1
-    EndIf
-    TPPbuttons.UpdateAll()
+		'overlay old days
+		If Game.day > Game.daytoplan
+			SetColor 100,100,100
+			SetAlpha 0.5
+			DrawRect(27,17,637,360)
+			SetColor 255,255,255
+			SetAlpha 1.0
+		EndIf
 
-    If TProgrammeBlock.AdditionallyDragged > 0
-      TAdBlock.UpdateAll(_room.owner)
-      SetColor 255,255,255  'normal
-      TProgrammeBlock.UpdateAll(_room.owner)
-    Else
-      TProgrammeBlock.UpdateAll(_room.owner)
-      SetColor 255,255,255  'normal
-      TAdBlock.UpdateAll(_room.owner)
-    End If
+		If Game.daytoplan = Game.day Then SetColor 0,100,0
+		If Game.daytoplan < Game.day Then SetColor 100,100,0
+		If Game.daytoplan > Game.day Then SetColor 0,0,0
+		FontManager.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(Game.daytoplan), 691, 17, 100, 15, 0)
 
-    If _room.owner = Game.playerID
-      If TProgrammeBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
-      If TADblock.AdditionallyDragged > 0 Then Game.cursorstate=2
-      PPprogrammeList.Update()
-      PPcontractList.Update()
-    EndIf
-   ' MouseManager.resetKey(1)
-	TProfiler.Leave("ProgrammePlanner:DRAW")
-  EndIf
+		SetColor 255,255,255
+		If _room.owner = Game.playerID
+			If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw(1)
+			If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
+			If PPprogrammeList.GetOpen() = 0 And PPcontractList.GetOpen() = 0
+				For Local ProgrammeBlock:TProgrammeBlock = EachIn TProgrammeBlock.List
+					If _room.owner = ProgrammeBlock.owner And..
+					   ProgrammeBlock.Programme.senddate = Game.daytoplan And..
+					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.blocks)
+						If Programmeblock.Programme.senddate > Game.day Or..
+						   Programmeblock.Programme.senddate = game.day And Programmeblock.Programme.sendtime > game.GetActualHour()
+							Game.cursorstate = 1
+						EndIf
+						local showOnRightSide:int = 0
+						if MouseX() < 390 then showOnrightSide = 1
+						If ProgrammeBlock.ParentProgramme <> Null
+							ProgrammeBlock.Programme.ShowEpisodeSheet(30+328*showOnRightSide,20,ProgrammeBlock.ParentProgramme)
+							Exit
+						Else
+							ProgrammeBlock.Programme.ShowSheet(30+328*showOnRightside,20)
+							Exit
+						EndIf
+					EndIf
+				Next
+				For Local AdBlock:TAdBlock = EachIn TAdBlock.List
+					If _room.owner = AdBlock.owner And..
+					   AdBlock.senddate = Game.daytoplan And..
+					   functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.width, AdBlock.Height)
+						Game.cursorstate = 1
+						If MouseX() <= 400 then AdBlock.ShowSheet(358,20);Exit else AdBlock.ShowSheet(30,20);Exit
+					EndIf
+				Next
+			EndIf 'if no programmeList is open
+		EndIf
+		SetColor 255,255,255
+		TProfiler.Leave("ProgrammePlanner:DRAW")
+	Else
+		TProfiler.Enter("ProgrammePlanner:UPDATE")
+		Game.cursorstate = 0
+		Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+		If functions.IsIn(MouseX(), MouseY(), 759,17,14,15)
+			Game.cursorstate = 1
+			If MOUSEMANAGER.IsHit(1)
+				MOUSEMANAGER.resetKey(1)
+				Game.cursorstate = 0
+				Game.daytoplan :+ 1
+			endif
+		EndIf
+		If functions.IsIn(MouseX(), MouseY(), 670,17,14,15)
+			Game.cursorstate = 1
+			If MOUSEMANAGER.IsHit(1)
+				MOUSEMANAGER.resetKey(1)
+				Game.cursorstate = 0
+				Game.daytoplan :- 1
+			endif
+			If Game.daytoplan <= 1 Then Game.daytoplan = 1
+		EndIf
+		TPPbuttons.UpdateAll()
+
+		If TProgrammeBlock.AdditionallyDragged > 0
+			TAdBlock.UpdateAll(_room.owner)
+			SetColor 255,255,255  'normal
+			TProgrammeBlock.UpdateAll(_room.owner)
+		Else
+			TProgrammeBlock.UpdateAll(_room.owner)
+			SetColor 255,255,255  'normal
+			TAdBlock.UpdateAll(_room.owner)
+		EndIf
+
+		If _room.owner = Game.playerID
+			If TProgrammeBlock.AdditionallyDragged > 0 OR TADblock.AdditionallyDragged > 0 Then Game.cursorstate=2
+			PPprogrammeList.Update()
+			PPcontractList.Update()
+		EndIf
+		TProfiler.Leave("ProgrammePlanner:DRAW")
+	EndIf
 End Function
 
 'Archive: handling of players programmearchive - for selling it later, ...
@@ -1322,9 +1290,9 @@ Type TRoomSigns Extends TBlock
 			if image_dragged <> null
 				image_dragged.Draw(Pos.x,Pos.y)
 				If imagewithtext <> Null
-					SetViewport(Pos.x+2,Pos.y+2, image_dragged.w-7,image_dragged.h-7)
+'					SetViewport(Pos.x+2,Pos.y+2, image_dragged.w-7,image_dragged.h-7)
 					imagewithtext.Draw(Pos.x,Pos.y)
-					SetViewport(0,0,800,600)
+'					SetViewport(0,0,800,600)
 				EndIf
 			endif
 		Else
@@ -1469,7 +1437,7 @@ Type TRoomSigns Extends TBlock
 				If functions.IsIn(_x, _y, room.Pos.x, room.Pos.y, _width, _height)
 					Local _figure:TFigures = Player[Game.playerID].Figure
 					clickedroom = TRooms.GetRoomFromMapPos(xpos, signfloor)
-					_figure.ChangeTarget(clickedroom.Pos.x, Building.y + Building.GetFloorY(clickedroom.Pos.y))
+					_figure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
 					TRooms.GetClickedRoom(_figure)
 					_figure.fromRoom = Null
 					Mousemanager.resetKey(1)

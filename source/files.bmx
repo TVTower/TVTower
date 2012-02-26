@@ -242,9 +242,10 @@ Global gfx_interface_topbottom:TBigImage	= TBigImage.createFromImage(CheckLoadIm
 Global gfx_datasheets_movie:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_filmblatt.png"))
 Global gfx_datasheets_series:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_serienblatt.png"))
 Global gfx_datasheets_contract:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_werbeblatt.png"))
-Global gfx_news_pp_btn:TImage 				= CheckLoadImage("grafiken/news/newsplanung_button.png", -1, 47, 32, 0, 6)
-Global gfx_news_btn:TImage 					= CheckLoadImage("grafiken/news/button.png", -1, 41, 42, 0, 10)
 rem
+
+'Global gfx_news_pp_btn:TImage 				= CheckLoadImage("grafiken/news/newsplanung_button.png", -1, 47, 32, 0, 6)
+'Global gfx_news_btn:TImage 					= CheckLoadImage("grafiken/news/button.png", -1, 41, 42, 0, 10)
 Global gfx_news_sheet_base:TImage			= CheckLoadImage("grafiken/news/newsplanung_news.png",0)
 Global gfx_news_sheet:TImage				= TImage.Create(ImageWidth(gfx_news_sheet_base), ImageHeight(gfx_news_sheet_base) * 5, 1, 0, 255, 0, 255)
 

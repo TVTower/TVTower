@@ -287,7 +287,7 @@ Type TXmlLoader
 	End Method
 
 	Method getAttribute:string(node:xmlNode, fieldname:string, defaultValue:string="")
-		if node.HasAttribute(fieldname, 0)
+		if node.HasAttribute(fieldname, false)
 			return node.Attribute(fieldname).Value
 		else
 			return defaultValue

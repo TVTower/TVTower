@@ -40,8 +40,8 @@ Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(520, 30)
 Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(650, 30)
 
 Print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
-Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, gfx_news_pp_btn, 0, 1, 0, "Newsplanner", 0)
-Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, gfx_news_pp_btn, 0, 1, 0, "Newsplanner", 3)
+Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, 0, "Newsplanner", 0)
+Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, 0, "Newsplanner", 3)
 
 Local tmpPix:TPixmap = LockImage(Assets.GetSprite("gfx_building").parent.image)
 Print "grosse bilder automatisch auf 'bigimage' umstellen"
@@ -1364,11 +1364,11 @@ Type TElevator
 
 		'elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(Parent.x + 127 + 233, Max(parent.y, 10) , 44, 373)
+		DrawRect(Parent.pos.x + 127 + 233, Max(parent.pos.y, 10) , 44, 373)
 		SetColor 255, 255, 255
 
 		'elevatorbg
-		Image_inner.Draw(Parent.x + Pos.x, Parent.y + Pos.y + 4)
+		Image_inner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 4)
 		'figures in elevator
 		If passengerFigure = Null
 			For Local Figure:TFigures = EachIn TFigures.List
@@ -1379,10 +1379,9 @@ Type TElevator
 		EndIf
 		'
 		For Local i:Int = 0 To 13
-			locy = Parent.y + Building.GetFloorY(i) - Self.spriteDoor.image.height
-'			locy = Parent.y + Building.GetFloorY(i) - image_closed.h
+			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.image.height
 			If locy < 410 And locy > - 50
-				Self.spriteDoor.Draw(Parent.x + Pos.x, locy, "closed")
+				Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
 			EndIf
 		Next
 	End Method
@@ -1391,8 +1390,8 @@ Type TElevator
 	Method Update(deltaTime:Float=1.0)
 		'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
 		'until the function returns the new one, instead of positioning it directly on the floorground
-		If Abs(Building.GetFloorY(Building.GetFloor(Parent.y + Pos.y + Image_inner.h - 1)) - (Pos.y + Image_inner.h)) <= 1
-			onFloor = Building.GetFloor(Parent.y + Pos.y + Image_inner.h - 1)
+		If Abs(Building.GetFloorY(Building.GetFloor(Parent.pos.y + Pos.y + Image_inner.h - 1)) - (Pos.y + Image_inner.h)) <= 1
+			onFloor = Building.GetFloor(Parent.pos.y + Pos.y + Image_inner.h - 1)
 		EndIf
 
 		If spriteDoor.getCurrentAnimationName() = "opendoor"
@@ -1482,32 +1481,32 @@ Type TElevator
 
 		'check wether elevator has to move to somewhere but doors aren't closed, if so, start closing-animation
 		If (onFloor <> toFloor And open <> 0)Or(onFloor = toFloor)
-			Local locy:Int = Parent.y + Parent.GetFloorY(onFloor) - image_inner.h + 5
-			Image_inner.DrawClipped(Parent.x + 131 + 230, locy - 3, Parent.x + 131 + 230, locy, 40, 50,0,0)
+			Local locy:Int = Parent.pos.y + Parent.GetFloorY(onFloor) - image_inner.h + 5
+			Image_inner.DrawClipped(Parent.pos.x + 131 + 230, locy - 3, Parent.pos.x + 131 + 230, locy, 40, 50,0,0)
 		EndIf
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.IsOnFloor() Then Figure.Draw() ;Figure.alreadydrawn = 0 'not alreadydrawn for openinganimation
 		Next
 
 		If (onFloor <> toFloor And open <> 0) Or (onFloor = toFloor)
-			spriteDoor.Draw(Parent.x + 131 + 230, Parent.y + Parent.GetFloorY(onFloor) - 50)
+			spriteDoor.Draw(Parent.pos.x + 131 + 230, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)
 		EndIf
 
 		For Local i:Int = 0 To 13
-			locy = Parent.y + Building.GetFloorY(i) - Self.spriteDoor.image.height - 8
+			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.image.height - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
-				DrawRect(Parent.x+Pos.x-4 + 10 + (onFloor)*2, locy + 3, 2,2)
+				DrawRect(Parent.pos.x+Pos.x-4 + 10 + (onFloor)*2, locy + 3, 2,2)
 				SetColor 255,255,255
 			EndIf
 		Next
 
 		'elevator sign - indicator
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			locy = Parent.y + Building.GetFloorY(floorroute.floornumber) - Image_inner.h + 23
+			locy = Parent.pos.y + Building.GetFloorY(floorroute.floornumber) - Image_inner.h + 23
 			'elevator is called to this floor					'elevator will stop there (destination)
 			If	 floorroute.call Then SetColor 200,220,20 	Else SetColor 100,220,20
-			DrawRect(Parent.x + Pos.x + 44, locy, 3,3)
+			DrawRect(Parent.pos.x + Pos.x + 44, locy, 3,3)
 			SetColor 255,255,255
 		Next
 		SetBlend ALPHABLEND
@@ -1533,15 +1532,17 @@ End Type
 Include "gamefunctions_figures.bmx"
 
 'Summary: Type of building, area around it and doors,...
-Type TBuilding
-	Field x:Int						= 20
+Type TBuilding extends TRenderable
+	Field pos:TPosition = TPosition.Create(20,0)
 	Field borderright:Int 			= 127 + 40 + 429
 	Field borderleft:Int			= 127 + 40
-	Field y:Int = 0
 	Field skycolor:Float = 0
 	Field ufo_normal:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo").GetImage(), 0, 100, 1, 9, 100)
 	Field ufo_beaming:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo2").GetImage(), 0, 100, 0, 9, 100)
 	Field Elevator:TElevator
+
+	Field children:TRenderableChildrenManager
+
 
 	Field Moon_curKubSplineX:appKubSpline =New appKubSpline
 	Field Moon_curKubSplineY:appKubSpline =New appKubSpline
@@ -1578,7 +1579,8 @@ Type TBuilding
 
 	Function Create:TBuilding()
 		Local Building:TBuilding = New TBuilding
-		Building.y = 0 - gfx_building_skyscraper.Height + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
+		Building.children = TRenderableChildrenManager.Create(Building)
+		Building.pos.y = 0 - gfx_building_skyscraper.Height + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
 
 		Building.Elevator = TElevator.Create(Building)
 		Building.Moon_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-50, -50, 400, 850, 850])
@@ -1606,8 +1608,9 @@ Type TBuilding
 	End Function
 
 	Method Update(deltaTime:Float=1.0)
-		y = Clamp(y, - 637, 88)
+		pos.y = Clamp(pos.y, - 637, 88)
 		UpdateBackground(deltaTime)
+		self.children.update(deltaTime)
 	End Method
 
 	Method DrawItemsToBackground:Int()
@@ -1640,33 +1643,33 @@ Type TBuilding
 		DrawBackground(tweenValue)
 		If Building.GetFloor(Player[Game.playerID].Figure.pos.y) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
-			Assets.GetSprite("gfx_building_Eingang").Draw(x, y + 1024 - Assets.GetSprite("gfx_building_Eingang").h - 3)
-			Assets.GetSprite("gfx_building_Zaun").Draw(x + 127 + 507, y + 1024 - Assets.GetSprite("gfx_building_Zaun").h - 3)
+			Assets.GetSprite("gfx_building_Eingang").Draw(pos.x, pos.y + 1024 - Assets.GetSprite("gfx_building_Eingang").h - 3)
+			Assets.GetSprite("gfx_building_Zaun").Draw(pos.x + 127 + 507, pos.y + 1024 - Assets.GetSprite("gfx_building_Zaun").h - 3)
 		Else If Building.GetFloor(Player[Game.playerID].Figure.pos.y) >= 8
 			SetColor 255, 255, 255
-			Assets.GetSprite("gfx_building_Dach").Draw(x + 127, y - Assets.GetSprite("gfx_building_Dach").h)
+			Assets.GetSprite("gfx_building_Dach").Draw(pos.x + 127, pos.y - Assets.GetSprite("gfx_building_Dach").h)
 		EndIf
 		SetBlend MASKBLEND
 		elevator.DrawFloorDoors()
-		gfx_building_skyscraper.renderInViewPort(x + 127, y, 10, 10, 780, 383)
+		gfx_building_skyscraper.renderInViewPort(pos.x + 127, pos.y, 10, 10, 780, 383)
 		SetBlend ALPHABLEND
 		Elevator.Draw()
 
 		SetBlend MASKBLEND
-		Assets.GetSprite("gfx_building_Pflanze1").Draw(x + borderright - 130, y + GetFloorY(9), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze1").Draw(x + borderleft + 150, y + GetFloorY(13), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze2").Draw(x + borderright - 110, y + GetFloorY(9), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze2").Draw(x + borderleft + 150, y + GetFloorY(6), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze6").Draw(x + borderright - 85, y + GetFloorY(8), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze3a").Draw(x + borderleft + 60, y + GetFloorY(1), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze3a").Draw(x + borderleft + 60, y + GetFloorY(12), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze3b").Draw(x + borderleft + 150, y + GetFloorY(12), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze1").Draw(x + borderright - 70, y + GetFloorY(3), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze2").Draw(x + borderright - 75, y + GetFloorY(12), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 130, pos.y + GetFloorY(9), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(13), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 110, pos.y + GetFloorY(9), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(6), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze6").Draw(pos.x + borderright - 85, pos.y + GetFloorY(8), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(1), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(12), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(12), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 70, pos.y + GetFloorY(3), - 1, 1)
+		Assets.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 75, pos.y + GetFloorY(12), - 1, 1)
 		SetBlend ALPHABLEND
 		TRooms.DrawDoorToolTips()
 
-		SetViewport(0, 0, App.width, App.height)
+'		self.children.draw(tweenValue)
 	End Method
 
 	Method UpdateBackground(deltaTime:Float=1.0)
@@ -1720,7 +1723,7 @@ Type TBuilding
 				EndIf
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
 					ufo_beaming.pos.x = 65
-					ufo_beaming.pos.y = -15 + 105 + 0.25 * (y + gfx_building_skyscraper.Height - Assets.GetSprite("gfx_building_BG_Ebene3L").h)
+					ufo_beaming.pos.y = -15 + 105 + 0.25 * (pos.y + gfx_building_skyscraper.Height - Assets.GetSprite("gfx_building_BG_Ebene3L").h)
 					ufo_beaming.Update()
 					If ufo_beaming.getCurrentAnimation().getCurrentFramePos() <> 6
 						ufo_pixelPerSecond = 0
@@ -1745,7 +1748,7 @@ Type TBuilding
 		For Local i:Int = 0 To Building.CloudCount-1
 			oldclouddx = Clouds[i].dx
 			Clouds[i].dx:*Float(Game.speed)
-			Clouds[i].Update(- 10000, - 80 + y + Clouds[i].y)
+			Clouds[i].Update(- 10000, - 80 + pos.y + Clouds[i].y)
 			Clouds[i].dx = oldclouddx
 		Next
 	End Method
@@ -1772,10 +1775,10 @@ Type TBuilding
 			DezimalTime:+3
 			If DezimalTime > 24 Then DezimalTime:-24
 			SetBlend ALPHABLEND
-			Assets.GetSprite("gfx_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.day Mod 12)
+			Assets.GetSprite("gfx_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), pos.y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.day Mod 12)
 			SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
 			For Local i:Int = 0 To Building.CloudCount - 1
-				Clouds[i].Draw(- 10000, - 80 + y + Clouds[i].y)
+				Clouds[i].Draw(- 10000, - 80 + pos.y + Clouds[i].y)
 			Next
 		EndIf
 
@@ -1788,7 +1791,7 @@ Type TBuilding
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
 					ufo_beaming.Draw()
 				Else
-					Assets.GetSprite("gfx_building_ufo").DrawInViewPort(ufo_curKubSplineX.ValueInt(ufo_tPos), - 330 - 15 + 105 + 0.25 * (y + gfx_building_skyscraper.Height - Assets.GetSprite("gfx_building_BG_Ebene3L").h) + ufo_curKubSplineY.ValueInt(ufo_tPos), 0, ufo_normal.GetCurrentFrame())
+					Assets.GetSprite("gfx_building_ufo").DrawInViewPort(ufo_curKubSplineX.ValueInt(ufo_tPos), - 330 - 15 + 105 + 0.25 * (pos.y + gfx_building_skyscraper.Height - Assets.GetSprite("gfx_building_BG_Ebene3L").h) + ufo_curKubSplineY.ValueInt(ufo_tPos), 0, ufo_normal.GetCurrentFrame())
 				EndIf
 			EndIf
 		EndIf
@@ -1796,14 +1799,14 @@ Type TBuilding
 		SetBlend MASKBLEND
 
 		SetColor Int(225 * timecolor) + 30, Int(225 * timecolor) + 30, Int(225 * timecolor) + 30
-		Assets.GetSprite("gfx_building_BG_Ebene3L").Draw(x, 105 + 0.25 * (y + 5 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene3L").h), - 1, 0)
-		Assets.GetSprite("gfx_building_BG_Ebene3R").Draw(x + 634, 105 + 0.25 * (y + 5 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene3R").h), - 1, 0)
+		Assets.GetSprite("gfx_building_BG_Ebene3L").Draw(pos.x, 105 + 0.25 * (pos.y + 5 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene3L").h), - 1, 0)
+		Assets.GetSprite("gfx_building_BG_Ebene3R").Draw(pos.x + 634, 105 + 0.25 * (pos.y + 5 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene3R").h), - 1, 0)
 		SetColor Int(215 * timecolor) + 40, Int(215 * timecolor) + 40, Int(215 * timecolor) + 40
-		Assets.GetSprite("gfx_building_BG_Ebene2L").Draw(x, 120 + 0.35 * (y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene2L").h), - 1, 0)
-		Assets.GetSprite("gfx_building_BG_Ebene2R").Draw(x + 636, 120 + 0.35 * (y + 60 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene2R").h), - 1, 0)
+		Assets.GetSprite("gfx_building_BG_Ebene2L").Draw(pos.x, 120 + 0.35 * (pos.y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene2L").h), - 1, 0)
+		Assets.GetSprite("gfx_building_BG_Ebene2R").Draw(pos.x + 636, 120 + 0.35 * (pos.y + 60 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene2R").h), - 1, 0)
 		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
-		Assets.GetSprite("gfx_building_BG_Ebene1L").Draw(x, 45 + 0.80 * (y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene1L").h), - 1, 0)
-		Assets.GetSprite("gfx_building_BG_Ebene1R").Draw(x + 634, 45 + 0.80 * (y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene1R").h), - 1, 0)
+		Assets.GetSprite("gfx_building_BG_Ebene1L").Draw(pos.x, 45 + 0.80 * (pos.y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene1L").h), - 1, 0)
+		Assets.GetSprite("gfx_building_BG_Ebene1R").Draw(pos.x + 634, 45 + 0.80 * (pos.y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene1R").h), - 1, 0)
 
 		'	SetAlpha 1.0
 		SetColor 255, 255, 255
@@ -1811,7 +1814,7 @@ Type TBuilding
 	End Method
 
 	Method CenterToFloor:Int(floornumber:Int)
-		y = ((13 - (floornumber)) * 73) - 115
+		pos.y = ((13 - (floornumber)) * 73) - 115
 	End Method
 
 	'Summary: returns y which has to be added to building.y, so its the difference
@@ -1820,7 +1823,7 @@ Type TBuilding
 	End Method
 
 	Method GetFloor:Int(_y:Int)
-		Return Clamp(13 - Ceil((_y - y) / 73),0,13)
+		Return Clamp(13 - Ceil((_y - pos.y) / 73),0,13)
 		'		Local locfloor:Int = 13 - Ceil((_y - y) / 73)
 		'		If locfloor < 0 Then locfloor = 0
 		'		If locfloor > 13 Then locfloor = 13
@@ -2724,7 +2727,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	EndIf
 	'	If Player[Game.playerID].Figure.inRoom = Null Then Building.y = 115 + 73 - Player[Game.playerID].Figure.y  'working for player as center
 	'66 = 13th floor height, 2 floors normal = 2*73, 50 = roof
-	If Player[Game.playerID].Figure.inRoom = Null Then Building.y = 1 * 66 + 2 * 73 + 50 - Player[Game.playerID].Figure.pos.y  'working for player as center
+	If Player[Game.playerID].Figure.inRoom = Null Then Building.pos.y = 1 * 66 + 2 * 73 + 50 - Player[Game.playerID].Figure.pos.y  'working for player as center
 	Fader.Update(deltaTime)
 
 	Game.Update(deltaTime)
@@ -2744,7 +2747,7 @@ Function DrawMain(tweenValue:Float=1.0)
 		TProfiler.Enter("DrawBuilding")
 		SetColor Int(190 * Building.timecolor), Int(215 * Building.timecolor), Int(230 * Building.timecolor)
 		DrawRect(20, 10, 140, 373)
-		If Building.y > 10 Then DrawRect(150, 10, 500, 200)
+		If Building.pos.y > 10 Then DrawRect(150, 10, 500, 200)
 		DrawRect(650, 10, 130, 373)
 		SetColor 255, 255, 255
 		Building.Draw()									'player is not in a room so draw building

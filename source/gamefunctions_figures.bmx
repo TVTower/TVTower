@@ -159,14 +159,14 @@ Type TFigures
 						Figure.LastSpecialTime=0
 					EndIf
 					'Print "Bote: war in Raum -> neues Ziel gesucht"
-					Figure.ChangeTarget(room.Pos.x + 13, Building.y + Building.GetFloorY(room.Pos.y) - figure.frameheight)
+					Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.frameheight)
 				EndIf
 			EndIf
 		End If
 		If figure.inRoom = Null and figure.clickedToRoom = Null and figure.dx = 0 and not (Figure.IsAtElevator() or Figure.IsInElevator()) 'not moving but not in/at elevator
 			Local room:TRooms = TRooms.GetRandomReachableRoom()
 			'Print "Bote: steht rum -> neues Ziel gesucht"
-			Figure.ChangeTarget(room.Pos.x + 13, Building.y + Building.GetFloorY(room.Pos.y) - figure.frameheight)
+			Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.frameheight)
 		End If
 	End Function
 
@@ -175,7 +175,7 @@ Type TFigures
 		If figure.WaitTime < MilliSecs()
 			figure.WaitTime = MilliSecs() + 15000
 			'Print "zu lange auf fahrstuhl gewartet"
-			Figure.ChangeTarget(Rand(150, 580), Building.y + Building.GetFloorY(figure.onfloor) - figure.frameheight)
+			Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.frameheight)
 		EndIf
 		If Int(Figure.pos.x) = Int(Figure.targetx) And Not Figure.IsInElevator() And figure.onFloor = figure.toFloor
 			Local zufall:Int = Rand(0, 100)
@@ -190,10 +190,10 @@ Type TFigures
 				If zufall > 85 And Not figure.IsAtElevator()
 					Local sendToFloor:Int = figure.onFloor + 1
 					If figure.onFloor >= 13 Then sendToFloor = 0
-					Figure.ChangeTarget(zufallx, Building.y + Building.GetFloorY(sendToFloor) - figure.frameheight)
+					Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.frameheight)
 					figure.WaitTime = MilliSecs() + 15000
 				Else If zufall <= 85 And Not figure.isAtElevator()
-					Figure.ChangeTarget(zufallx, Building.y + Building.GetFloorY(figure.onfloor) - figure.frameheight)
+					Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.frameheight)
 				EndIf
 			EndIf
 		EndIf
@@ -259,15 +259,15 @@ Type TFigures
      If Figure.pos.y = Self.pos.y And Figure <> Self
        If Abs(Figure.pos.x - Self.pos.x) < 50
 	    If figure.id <= 3 And Self.id <= 3
-         If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 5 + framewidth, Building.y + Self.pos.y - 8, 0)
-         If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18,Building.y + Self.pos.y-8, 3)
+         If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 5 + framewidth, Building.pos.y + Self.pos.y - 8, 0)
+         If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18,Building.pos.y + Self.pos.y-8, 3)
 		Else
 		 If Self.id = figure_HausmeisterID
-           If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 13 + framewidth, Building.y + Self.pos.y - 8, 1)
-           If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18+13,Building.y + Self.pos.y-8, 4)
+           If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 13 + framewidth, Building.pos.y + Self.pos.y - 8, 1)
+           If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18+13,Building.pos.y + Self.pos.y-8, 4)
 		 Else
-           If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 5 + framewidth, Building.y + Self.pos.y - 8, 1)
-           If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 18, Building.y + Self.pos.y - 8, 4)
+           If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 5 + framewidth, Building.pos.y + Self.pos.y - 8, 1)
+           If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 18, Building.pos.y + Self.pos.y - 8, 4)
 		 EndIf
 		EndIf
        EndIf
@@ -323,7 +323,7 @@ Type TFigures
 				Exit
 			EndIf
 		Next
- 		If room <> Null Then Self.ChangeTarget(room.Pos.x + 5, Building.y + Building.getfloorY(room.Pos.y) - 5)
+ 		If room <> Null Then Self.ChangeTarget(room.Pos.x + 5, Building.pos.y + Building.getfloorY(room.Pos.y) - 5)
 	End Method
 
 	Function GetFigure:TFigures(id:Int)
@@ -368,7 +368,7 @@ Type TFigures
  End Method
 
  Method IsAtElevator:Byte()
-   If Int(pos.x) = Int(Building.x + Building.Elevator.Pos.x + xToElevator - FrameWidth) Then Return True
+   If Int(pos.x) = Int(Building.pos.x + Building.Elevator.Pos.x + xToElevator - FrameWidth) Then Return True
    Return False
  End Method
 
@@ -423,7 +423,7 @@ Type TFigures
 		'if player is not in elevator
 		If Self.id <> Building.Elevator.passenger
   			If 0 >= Building.GetFloor(_y) <= 13
-				Local StandAtElevatorX:Int = Building.x + Building.Elevator.Pos.x + xToElevator - framewidth
+				Local StandAtElevatorX:Int = Building.pos.x + Building.Elevator.Pos.x + xToElevator - framewidth
 				clickedToRoom = Null
 				targetx = x - frameWidth
 				oldtargetx = targetx
@@ -471,7 +471,7 @@ Type TFigures
 			Local figureDoorDifference:Int = 17
 			If clickedToRoom.name = "elevator" Then FigureDoorDifference = 0
 			If Self.ControlledByID >= 0 and Self.id <> figure_HausmeisterID 'in multiplayer to be checked if its the player or not
-				If inRoom = Null And functions.IsIn(pos.x + framewidth, Building.y + Building.GetFloorY(toFloor) - 5, localroom.Pos.x + FigureDoorDifference, Building.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, 4, 54)
+				If inRoom = Null And functions.IsIn(pos.x + framewidth, Building.pos.y + Building.GetFloorY(toFloor) - 5, localroom.Pos.x + FigureDoorDifference, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, 4, 54)
 			        'Print "standing in front of clickedroom"
 					AnimPos = 10
 					If localroom.doortype >= 0 and localroom.doortype <> 5 and inRoom <> localroom
@@ -504,8 +504,8 @@ Type TFigures
 	          		SendElevator()
 		        EndIf
 			EndIf
-			If calledElevator And Int(pos.x) <> Building.x + Building.Elevator.Pos.x + xToElevator - FrameWidth
-		        If Ceil(pos.x + 2) <> Building.x + Building.Elevator.Pos.x + xToElevator - FrameWidth
+			If calledElevator And Int(pos.x) <> Building.pos.x + Building.Elevator.Pos.x + xToElevator - FrameWidth
+		        If Ceil(pos.x + 2) <> Building.pos.x + Building.Elevator.Pos.x + xToElevator - FrameWidth
 					calledElevator = False
 				EndIf
 			EndIf
@@ -551,16 +551,16 @@ Type TFigures
 				If Not ShadowDisabled
 					SetColor 0, 0, 0
 					SetAlpha 0.1
-					Sprite.DrawClipped(myx + shadowX, Building.y + myy + 2, myx + shadowX, Building.y + myy, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
+					Sprite.DrawClipped(myx + shadowX, Building.pos.y + myy + 2, myx + shadowX, Building.pos.y + myy, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
 					SetAlpha 0.2
 					ShadowX = 2
-					Sprite.DrawClipped(myx + shadowX, Building.y + myy + 2, myx + shadowX, Building.y + myy, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
+					Sprite.DrawClipped(myx + shadowX, Building.pos.y + myy + 2, myx + shadowX, Building.pos.y + myy, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
 					SetAlpha 1.0
 					SetColor 255, 255, 255
 				EndIf
-				Sprite.Draw(myx, Building.y + myy, AnimPos)
+				Sprite.Draw(myx, Building.pos.y + myy, AnimPos)
 			Else
-				DrawImageInViewPort(image, myx, Building.y + myy + frameheight, 0, AnimPos)
+				DrawImageInViewPort(image, myx, Building.pos.y + myy + frameheight, 0, AnimPos)
 			EndIf
 		EndIf
 		Self.GetPeopleOnSameFloor()

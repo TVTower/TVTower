@@ -1026,7 +1026,7 @@ Type TTVGNetwork
 
      If Player[ RemotePlayerID ].Figure.inElevator
 	   Building.Elevator.passenger = Player[ RemotePlayerID ].Figure.id
-	   Player[ RemotePlayerID ].Figure.pos.x =  Int(Building.x + Building.Elevator.Pos.x + Player[ RemotePlayerID ].Figure.xToElevator - Int(Player[ RemotePlayerID ].Figure.FrameWidth/2) - 3)
+	   Player[ RemotePlayerID ].Figure.pos.x =  Int(Building.pos.x + Building.Elevator.Pos.x + Player[ RemotePlayerID ].Figure.xToElevator - Int(Player[ RemotePlayerID ].Figure.FrameWidth/2) - 3)
 	 EndIf
 
 	 Local RoomID:Int = ReadInt(stream)

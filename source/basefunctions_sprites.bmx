@@ -28,11 +28,47 @@ End Type
 
 Type TRenderable extends TAsset
 	field pos:TPosition = TPosition.Create(0,0)
-'	field renderParams:object[]
 
-'	Method DrawInPipeline() abstract
 End Type
 
+'children get parent linked
+Type TRenderableChild extends TRenderable
+	field parent:TRenderable
+
+	Method Update(deltaTime:float=1.0) abstract
+	Method Draw(tweenValue:float=1.0) abstract
+End Type
+
+'manages children
+Type TRenderableChildrenManager extends TrenderableChild
+	field list:TList = CreateList()
+
+	Function Create:TRenderableChildrenManager(parent:TRenderable)
+		local obj:TRenderableChildrenManager = new TRenderableChildrenManager
+		obj.parent = parent
+		return obj
+	end Function
+
+	Method Attach(child:TRenderableChild)
+		self.list.addLast(child)
+	End Method
+
+	Method Detach(child:TRenderableChild)
+		self.list.remove(child)
+	endMethod
+
+	Method Update(deltaTime:float=1.0)
+		For local obj:TRenderableChild = eachin self.list
+			obj.update(deltaTime)
+		Next
+	End Method
+
+	Method Draw(tweenValue:float=1.0)
+		For local obj:TRenderableChild = eachin self.list
+			obj.draw(tweenValue)
+		Next
+	End Method
+End Type
 
 
 
@@ -323,6 +359,33 @@ Type TBitmapFont
 		Return Self.getHeight(text)
 	End Method
 
+	Method drawOnPixmap(Text:String, x:Int, y:Int, cR:Int=0, cG:Int=0, cB:Int=0, Pixmap:TPixmap, blur:Byte=0)
+		local oldR:int, oldG:int, oldB:int
+		GetColor(oldR, oldG, oldB)
+
+		If blur
+			SetColor(50,50,50)
+			self.draw(Text,x-1,y-1)
+			self.draw(Text,x+1,y+1)
+			SetColor cr,cg,cb
+		Else
+			self.draw(Text,x,y)
+		EndIf
+			Local TxtWidth:Int   = self.getWidth(Text)
+			Local Source:TPixmap = GrabPixmap(x-2,y-2,TxtWidth+4,self.getHeight(Text)+4)
+			Source = ConvertPixmap(Source, PF_RGB888)
+		If blur
+			blurPixmap(Source, 0.5)
+			Source = ConvertPixmap(Source, PF_RGB888)
+			DrawPixmap(Source, x-2,y-2)
+			self.draw(Text,x,y)
+			Source = GrabPixmap(x-2,y-2,TxtWidth+4,self.getHeight(Text)+4)
+			Source = ConvertPixmap(Source, PF_RGB888)
+		EndIf
+		DrawPixmapOnPixmap(Source, Pixmap,x-20,y-10)
+		SetColor( oldR, oldG, oldB )
+	End Method
+
 	Method drawBlock(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0)
 		Self.drawStyled(text,x,y, cR, cG, cB, style)
 	End Method
@@ -523,7 +586,7 @@ Type TGW_SpritePack extends TRenderable
 		EndIf
 	End Method
 
-	Method Draw()
+	Method Draw(tweenValue:float=1.0)
 		DrawImage(self.image, self.pos.x, self.pos.y)
 	End Method
 
@@ -741,7 +804,7 @@ Type TGW_Sprites extends TRenderable
 		Wend
 	End Method
 
-	Method Update()
+	Method Update(deltaTime:float=1.0)
 	End Method
 
 	Method Draw(x:Float, y:Float, theframe:Int = -1, valign:Int = 0, align:int=0, scale:float=1.0)

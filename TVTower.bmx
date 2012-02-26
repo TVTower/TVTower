@@ -15,8 +15,6 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 Rem
 'done
-- TTooltip - header wird nun y-"zentriert" auf Headerbereich dargestellt
-- TProgrammePlan.RefreshProgrammePlan - PlayerID von Parameterliste gestrichen
 ' 2012:
 ' gamefunctions_tvprogramme - basisklassen zusammenfassen
 ' gamefunctions - tstation - farben der ovale anpassen auf tplayercolor

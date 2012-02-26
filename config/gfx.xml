@@ -28,6 +28,34 @@
 				<child name="gfx_suitcase_glow"	x="0" y="120"	w="220"	h="120"	/>
 			</children>
 		</resource>
+		<resource name="gfx_news_pp">
+			<type>SpritePack</type>
+ 			<url>grafiken/news/newsplanung_button.png</url>
+			<children>
+				<child name="gfx_news_pp_btn_up" 				x="0"	y="0"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_up_clicked" 		x="47"	y="0"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_up_disabled" 		x="94"	y="0"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_down" 				x="0"	y="32"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_down_clicked" 		x="47"	y="32"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_down_disabled"		x="94"	y="32"	w="47"	h="32"	/>
+			</children>
+		</resource>
+		<resource name="gfx_news_btn_pack">
+			<type>SpritePack</type>
+ 			<url>grafiken/news/button.png</url>
+			<children>
+				<child name="gfx_news_btn0" 			x="0"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn1" 			x="41"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn2" 			x="82"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn3" 			x="123"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn4" 			x="164"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn0_clicked"		x="0"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn1_clicked"		x="41"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn2_clicked"		x="82"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn3_clicked"		x="123"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn4_clicked"		x="164"	y="42"	w="41"	h="42"	/>
+			</children>
+		</resource>
 		<resource name="stationmap_antenna">
 			<type>image</type>
  			<url>grafiken/senderkarte/antenne3.png</url>

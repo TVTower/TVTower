@@ -200,10 +200,10 @@ Type KI
 	Method initScriptVariables()
 		Global LuaFunctions:TLuaFunctions = TLuaFunctions.Create(playerid)
 		Self.LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
-		
+
 		scriptConstants = ""
 
-Rem	
+Rem
 	addScriptConstant("PLAYER1", 1)
 		addScriptConstant("PLAYER2", 2)
 		addScriptConstant("PLAYER3", 3)
@@ -444,32 +444,32 @@ Type TLuaFunctions
 	Field ROOM_NEWSAGENCY_PLAYER1:Int
 	Field ROOM_BOSS_PLAYER1:Int
 	Field ROOM_OFFICE_PLAYER1:Int
-	Field ROOM_STUDIOSIZE_PLAYER1:Int	
-	
+	Field ROOM_STUDIOSIZE_PLAYER1:Int
+
 	Field ROOM_ARCHIVE_PLAYER2:Int
 	Field ROOM_NEWSAGENCY_PLAYER2:Int
 	Field ROOM_BOSS_PLAYER2:Int
 	Field ROOM_OFFICE_PLAYER2:Int
-	Field ROOM_STUDIOSIZE_PLAYER2:Int	
+	Field ROOM_STUDIOSIZE_PLAYER2:Int
 
 	Field ROOM_ARCHIVE_PLAYER3:Int
 	Field ROOM_NEWSAGENCY_PLAYER3:Int
 	Field ROOM_BOSS_PLAYER3:Int
 	Field ROOM_OFFICE_PLAYER3:Int
-	Field ROOM_STUDIOSIZE_PLAYER3:Int	
-	
+	Field ROOM_STUDIOSIZE_PLAYER3:Int
+
 	Field ROOM_ARCHIVE_PLAYER4:Int
 	Field ROOM_NEWSAGENCY_PLAYER4:Int
 	Field ROOM_BOSS_PLAYER4:Int
 	Field ROOM_OFFICE_PLAYER4:Int
-	Field ROOM_STUDIOSIZE_PLAYER4:Int	
-	
+	Field ROOM_STUDIOSIZE_PLAYER4:Int
+
 	Function Create:TLuaFunctions(pPlayerId:Int)
 		Local ret:TLuaFunctions = New TLuaFunctions
-		
+
 		ret.ME = pPlayerId
 		ret.MAXSPOTS = Game.maxContractsAllowed
-		
+
 		ret.ROOM_MOVIEAGENCY = TRooms.GetRoom("movieagency", 0).uniqueID
 		ret.ROOM_ADAGENCY = TRooms.GetRoom("adagency", 0).uniqueID
 		ret.ROOM_ROOMBOARD = TRooms.GetRoom("roomboard", - 1).uniqueID
@@ -484,7 +484,7 @@ Type TLuaFunctions
 		ret.ROOM_GUNSAGENCY = TRooms.GetRoom("gunsagency", - 1).uniqueID
 		ret.ROOM_VRDUBAN = TRooms.GetRoom("vrduban", - 1).uniqueID
 		ret.ROOM_FRDUBAN = TRooms.GetRoom("frduban", - 1).uniqueID
-		
+
 		ret.ROOM_OFFICE_PLAYER_ME = TRooms.GetRoom("office", pPlayerId).uniqueID
 		ret.ROOM_STUDIOSIZE1_PLAYER_ME = TRooms.GetRoom("studiosize1", pPlayerId).uniqueID
 		ret.ROOM_BOSS_PLAYER_ME = TRooms.GetRoom("chief", pPlayerId).uniqueID
@@ -496,7 +496,7 @@ Type TLuaFunctions
 		ret.ROOM_BOSS_PLAYER1 = TRooms.GetRoom("chief", 1).uniqueID
 		ret.ROOM_OFFICE_PLAYER1 = TRooms.GetRoom("office", 1).uniqueID
 		ret.ROOM_STUDIOSIZE_PLAYER1 = TRooms.GetRoom("studiosize1", 1).uniqueID
-		
+
 		ret.ROOM_ARCHIVE_PLAYER2 = TRooms.GetRoom("archive", 2).uniqueID
 		ret.ROOM_NEWSAGENCY_PLAYER2 = TRooms.GetRoom("news", 2).uniqueID
 		ret.ROOM_BOSS_PLAYER2 = TRooms.GetRoom("chief", 2).uniqueID
@@ -514,9 +514,9 @@ Type TLuaFunctions
 		ret.ROOM_BOSS_PLAYER4 = TRooms.GetRoom("chief", 4).uniqueID
 		ret.ROOM_OFFICE_PLAYER4 = TRooms.GetRoom("office", 4).uniqueID
 		ret.ROOM_STUDIOSIZE_PLAYER4 = TRooms.GetRoom("studiosize1", 4).uniqueID
-		
+
 		Return ret
-	End Function		
+	End Function
 
 	Function Lua_GetString:String(luaState:Byte Ptr)
 		Return String.FromCString(lua_tostring(luaState, -1))
@@ -580,7 +580,7 @@ Type TLuaFunctions
 
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
 		If Player[PlayerID] <> Null
-		  Player[PlayerID].figure.changeTarget(newTargetX, Building.y + Building.GetFloorY(Player[PlayerID].figure.onfloor))
+		  Player[PlayerID].figure.changeTarget(newTargetX, Building.pos.y + Building.GetFloorY(Player[PlayerID].figure.onfloor))
 		Else
 			Return - 1
 		EndIf

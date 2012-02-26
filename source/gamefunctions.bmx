@@ -333,8 +333,7 @@ Type TAudienceQuotes
 	  Sheet.title = title
 	  Sheet.text = Localization.GetString("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" ("+(audiencepercentage/10)+"%)"
 	  Sheet.enabled = 1
-	  Sheet.x = x
-	  Sheet.y = y
+	  Sheet.pos.setXY(x,y)
 	  Sheet.width = 0
 	  Sheet.height = 0
 	  Sheet.lifetime = 10
@@ -367,14 +366,13 @@ Type TAudienceQuotes
 End Type
 
 'tooltips containing headline and text, updated and drawn by Tinterface
-Type TTooltip extends TRenderable
+'extends TRenderableChild - could get attached to sprites
+Type TTooltip extends TRenderableChild
   Field lifetime:float = 0.1
-  Field startlifetime:float = 0.1
+  Field startlifetime:float = 1.0
   Field title:String
   Field text:String
   Field oldtitle:String
-  Field x:Int
-  Field y:Int
   Field width:Int
   Field height:Int
   Field Image:TImage = Null
@@ -385,42 +383,40 @@ Type TTooltip extends TRenderable
 
   Global TooltipHeader:TGW_Sprites
   Global ToolTipIcons:TImage
-'  Global UseFontBold:TImageFont
-'  Global UseFont:TImageFont
+
   Global UseFontBold:TBitmapFont
   Global UseFont:TBitmapFont
   Global List:TList = CreateList()
 
-  Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 1000)
-	Local tooltip:TTooltip = New TTooltip
-    tooltip.title = title
-	tooltip.oldtitle = title
-    tooltip.text  = text
-    tooltip.x     = x
-    tooltip.tooltipimage = -1
-    tooltip.y     = y
-    tooltip.width = width
-    tooltip.height= height
-    tooltip.lifetime		= float(lifetime) / 1000.0
-    tooltip.startlifetime	= float(lifetime) / 1000.0
-    If not List Then List	= CreateList()
- 	List.AddLast(tooltip)
-    SortList List
-	'Print "Tooltip created:" + title + "ListCount: " + List.Count()
+	Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 1000)
+		Local tooltip:TTooltip = New TTooltip
+		tooltip.title		= title
+		tooltip.oldtitle	= title
+		tooltip.text		= text
+		tooltip.pos.setXY(x,y)
+		tooltip.tooltipimage = -1
+		tooltip.width = width
+		tooltip.height= height
+		tooltip.lifetime		= float(lifetime) / 1000.0
+		tooltip.startlifetime	= float(lifetime) / 1000.0
+		If not List Then List	= CreateList()
+		List.AddLast(tooltip)
+		SortList List
+		'Print "Tooltip created:" + title + "ListCount: " + List.Count()
 
-    Return tooltip
-  End Function
+		Return tooltip
+	End Function
 
-  Method Update:Int(deltaTime:float=1.0)
-    lifetime :- deltaTime
-    if lifetime < 1.0 then lifetime = lifetime * 0.8 'speed up fade
-    If lifetime <= 0 And enabled
-		Self.Image = Null
-		Self.enabled = False
-		'Print "removed Tooltip:" + Self.title + "ListCount:" + List.Count()
-		List.remove(Self)
-    EndIf
-  End Method
+	Method Update:Int(deltaTime:float=1.0)
+'		print "update "+self.lifetime + " " + deltatime
+		lifetime :- deltaTime
+		if lifetime < 1.0 then lifetime :* 0.8 'speed up fade
+		If lifetime <= 0 ' And enabled 'enabled - as pause sign?
+			Self.Image		= Null
+			Self.enabled	= False
+			self.List.remove(Self)
+		EndIf
+	End Method
 
 	Method GetWidth:Int()
 		local txtWidth:int = self.useFontBold.getWidth(title)+6
@@ -432,79 +428,81 @@ Type TTooltip extends TRenderable
 	Method DrawShadow(_width:float, _height:float)
 		SetColor 0, 0, 0
 		SetAlpha (Float(100*lifetime / startlifetime) / 100.0)-0.8
-		DrawRect(self.x+2,self.y+2,_width,_height)
+		DrawRect(self.pos.x+2,self.pos.y+2,_width,_height)
 
 		SetAlpha (Float(100*lifetime / startlifetime) / 100.0)-0.5
-		DrawRect(self.x+1,self.y+1,_width,_height)
+		DrawRect(self.pos.x+1,self.pos.y+1,_width,_height)
 	End Method
 
 	Method Draw:Int(tweenValue:float=1.0)
 		If Not enabled Then Return 0
-		If Title <> oldTitle
-			Self.DirtyImage = True
-		EndIf
-		If Self.DirtyImage = True Or Self.Image = Null
-		   ' Print "updating Tooltip: " + title
-			Local txtwidth:Int = width
-			Local txtheight:Int = Height
-			Local txtheight2:Int = Height
-			txtheight = Self.TooltipHeader.h
 
-			If width = 0
-				txtwidth = self.UseFontBold.getWidth(title)+6
-				If tooltipimage >=0 Then txtwidth:+ ImageWidth(TTooltip.ToolTipIcons)+ 2
-				If txtwidth < self.UseFont.getWidth(text)+6 Then txtwidth = self.UseFont.getWidth(text)+6
+		If Title <> oldTitle then self.DirtyImage = True
+
+		If Self.DirtyImage = True Or Self.Image = Null
+			Local boxWidth:Int		= self.width
+			Local boxHeight:Int		= Self.height
+
+			'auto width calculation
+			If width <= 0
+				'width from title + spacing
+				boxWidth = self.UseFontBold.getWidth(title)+6
+				'add icon to width
+				If tooltipimage >=0 Then boxWidth:+ ImageWidth(TTooltip.ToolTipIcons)+ 2
+				'compare with tex
+				boxWidth = max(self.UseFont.getWidth(text)+6, boxWidth)
+				boxWidth :+ 4 'extra spacing
 			EndIf
 
-			txtheight2 = txtheight
-			If Len(text)>1 Then txtheight2 = txtheight+ self.UseFont.getHeight(text)+5
-			If Height <> 0 And Height > txtheight2 Then txtheight2 = Height
-			If tooltipimage >= 0 Then txtheight2 = Self.TooltipHeader.h +2
-
-			self.DrawShadow(txtwidth,txtHeight2)
+			'auto height calculation
+			if height <= 0
+				boxHeight = Self.TooltipHeader.h
+				If Len(text)>1 Then boxHeight :+ (self.UseFont.getHeight(text)+8)
+				If tooltipimage >= 0 Then boxHeight :+ 2
+			endif
+			self.DrawShadow(boxWidth,boxHeight)
 
 			SetAlpha Float(100*lifetime / startlifetime) / 100.0
-			DrawRect(self.x,self.y,txtwidth, txtheight2)
+			DrawRect(self.pos.x,self.pos.y, boxWidth,boxHeight)
 
 			SetColor 255,255,255
-			DrawRect(x+1,y+1,txtwidth-2,txtheight2-2)
+			DrawRect(self.pos.x+1,self.pos.y+1,boxWidth-2,boxHeight-2)
 
 			If TitleBGtype = 0 Then SetColor 250,250,250
 			If TitleBGtype = 1 Then SetColor 200,250,200
 			If TitleBGtype = 2 Then SetColor 250,150,150
 			If TitleBGtype = 3 Then SetColor 200,200,250
 
-			Self.TooltipHeader.TileDraw(x+1,y+1, txtwidth-2, Self.TooltipHeader.h)
+			Self.TooltipHeader.TileDraw(self.pos.x+1,self.pos.y+1, boxWidth-2, Self.TooltipHeader.h)
 			SetColor 255,255,255
 			local displaceX:float = 0.0
 			If tooltipimage >=0
-				DrawImage(TTooltip.ToolTipIcons,x+1,y+1, tooltipimage)
+				DrawImage(TTooltip.ToolTipIcons,self.pos.x+1,self.pos.y+1, tooltipimage)
 				displaceX = ImageWidth(TTooltip.ToolTipIcons)
 			endif
 
 			SetAlpha Float(100*lifetime / startlifetime) / 100.0
-			self.useFontBold.drawStyled(title, x+3+displaceX, y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("abc")/2 , 50,50,50, 1)
-
+			'caption
+			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("abc")/2 , 50,50,50, 1)
 			SetColor 90,90,90
-			If text <> "" Then self.Usefont.Draw(text, x+3,y+2+Self.TooltipHeader.h)
-
-			If x > 20 And y > 10 And x + txtwidth < 760 And y + txtheight2 < 800 '383 'And lifetime = startlifetime
-				Image = TImage.Create(txtwidth, txtheight2, 1, 0, 255, 0, 255)
-				image.pixmaps[0] = GrabPixmap(x, y, txtwidth, txtheight2)
+			'text
+			If text <> "" Then self.Usefont.Draw(text, self.pos.x+5,self.pos.y+Self.TooltipHeader.h + 4)
+			If self.pos.x > 20 And self.pos.y > 10 And self.pos.x + boxWidth < 760 And self.pos.y + boxHeight < 800 '383 'And lifetime = startlifetime
+				Image = TImage.Create(boxWidth, boxHeight, 1, 0, 255, 0, 255)
+				image.pixmaps[0] = GrabPixmap(self.pos.x, self.pos.y, boxWidth, boxHeight)
 				DirtyImage = False
 			Else
-				If x < 20 Then x = 21
-				If x + txtwidth < 760 Then x = 759 - txtwidth
+				self.pos.x = Max(21,self.pos.x)
+				If self.pos.x + boxWidth < 760 Then self.pos.x = 759 - boxWidth
 			EndIf
 			oldTitle = title
 			SetColor 255, 255, 255
 			SetAlpha 1.0
 		Else 'not dirty
 			self.DrawShadow(ImageWidth(image),ImageHeight(image))
-
 			SetAlpha Float(100.0  * lifetime / startlifetime) / 100
 			SetColor 255,255,255
-			DrawImage(image, x, y)
+			DrawImage(image, self.pos.x, self.pos.y)
 			SetAlpha 1.0
 		EndIf
 	End Method
@@ -849,7 +847,6 @@ Type TButton
     Field w:Int = 0
     Field h:Int = 0
     Field id:Int = 0
-    Field image:TImage
 	Field Sprite:TGW_Sprites
     Field Caption:String = ""
     Field enabled:Int = 1
@@ -861,36 +858,28 @@ Type TButton
     Global List:TList
 
     Method IsIn:Int(_x:Int, _y:Int)
-      If _x >= x and _x <= x + w and _y >= y and _y <= y + h
-        Return 1
-      Else
-        Return 0
-      EndIf
+		If _x >= x and _x <= x + w and _y >= y and _y <= y + h
+			Return 1
+		Else
+			Return 0
+		EndIf
     End Method
 
-    Method OnClick() Abstract
+'    Method OnClick() Abstract
 
     Method Draw(tweenValue:float=1.0)
+		local font:TBitmapFont = FontManager.getFont("Default", 10, BOLDFONT)
+		local textWidth:int = font.getWidth(Caption)
         If Clicked <> 0
-          SetColor(220, 220, 220)
-		  If image <> Null And sprite = Null
-	    	DrawImage(image, x + 1, y + 1)
-		  EndIf
-  		  If image = Null And sprite <> Null
-		  	sprite.Draw(x + 1, y + 1)
-		  EndIf
-			self.usefont.drawBlock(Caption, x + 1, y + 41, 100, 20, 1, fontr - 50, fontg - 50, fontb - 50)
+			SetColor(220, 220, 220)
+			sprite.Draw(x + 1, y + 1)
+			font.drawStyled(Caption, x + w/2 - textWidth/2 +1, y + 43, fontr - 50, fontg - 50, fontb - 50, 1)
     	Else
-		  If image <> Null
-	    	DrawImage(image, x, y)
-		  Else If sprite <> Null
 		  	sprite.Draw(x, y)
-		  EndIf
-    	  self.usefont.drawBlock(Caption, x,y+40, 100,20,1, fontr,fontg,fontb)
+			font.drawStyled(Caption, x + w/2 - textWidth/2, y + 42, fontr, fontg, fontb, 1)
     	EndIf
-        If Clicked <> 0 Then SetColor(255,255,255)
-    End Method
-
+        If Clicked <> 0 then SetColor(255,255,255)
+	End Method
 End Type
 
 
@@ -900,22 +889,21 @@ End Type
 Type TPPbuttons Extends TButton
     Global List:TList
 
-
-    Function Create:TPPbuttons(sprite:TGW_Sprites, _caption:String = "", x:Int, y:Int, id:Int, own:Int = 0)
-	  Local Button:TPPbuttons=New TPPbuttons
-	  Button.x = x
-	  Button.y = y
-	  Button.w = sprite.w
-	  Button.h = sprite.h
-	  Button.Sprite = sprite
-	  Button.Caption = _caption
-  	  Button.enabled = 1
-  	  Button.id = id
-  	  Button.Clicked = 0
-  	  If Not List Then List = CreateList()
- 	  List.AddLast(Button)
- 	  SortList List
- 	  If Own = 1 Return Button
+    Function Create:TPPbuttons(sprite:TGW_Sprites, _caption:String = "", x:Int, y:Int, id:Int)
+		Local Button:TPPbuttons=New TPPbuttons
+		Button.x = x
+		Button.y = y
+		Button.w = sprite.w
+		Button.h = sprite.h
+		Button.Sprite = sprite
+		Button.Caption = _caption
+		Button.enabled = 1
+		Button.id = id
+		Button.Clicked = 0
+		If Not List Then List = CreateList()
+		List.AddLast(Button)
+		SortList List
+		Return Button
     EndFunction
 
     Function DrawAll()
@@ -951,28 +939,28 @@ End Type 'Buttons in ProgrammePlanner
 
 Type TNewsbuttons Extends TButton
     Global List:TList
-'    Field image2:TImage
     Field frameNr:Int =0
     Field genre:Int = 0
 	Field owner:Int = 0
 	Field clickstate:Int =0
 	Field tooltip:TTooltip
+	field spriteBaseName:string = ""
 
     Function Create:TNewsbuttons(frameNr:Int=0,genre:Int=0,_caption:String="", owner:Int=0, x:Int, y:Int, id:Int)
 	  Local Button:TNewsbuttons=New TNewsbuttons
-	  Button.x = x
-	  Button.y = y
-	  Button.w = ImageWidth(gfx_news_btn)
-	  Button.h = ImageHeight(gfx_news_btn)
-	  Button.genre = genre
-	  Button.owner = owner
-	  Button.frameNr = frameNr
-	  Button.Caption = _caption
-	  Button.image = gfx_news_btn
-'	  Button.image2 = gfx_news_btn
-  	  Button.enabled = 1
+		genre = min(max(0,genre), 4)
+	  Button.x			= x
+	  Button.y			= y
+	  Button.spriteBaseName = "gfx_news_btn"+genre
+	  Button.w			= Assets.getSprite("gfx_news_btn"+genre).w
+	  Button.h			= Assets.getSprite("gfx_news_btn"+genre).h
+	  Button.genre		= genre
+	  Button.owner		= owner
+	  Button.frameNr	= frameNr
+	  Button.Caption	= _caption
+  	  Button.enabled	= 1
   	  Button.id = id
-  	  Button.Clicked = 0
+  	  Button.Clicked	= 0
   	  If Not List Then List = CreateList()
  	  List.AddLast(Button)
  	  SortList List
@@ -986,39 +974,74 @@ Type TNewsbuttons Extends TButton
 	  Return Null
 	End Function
 
+	Function DrawAll(tweenValue:float=1.0)
+		For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
+			If Button.owner = Player[Game.playerID].figure.inRoom.owner
+				If Button.Clicked <> 0
+					Assets.getSprite(Button.spriteBaseName+"_clicked").Draw(Button.x, Button.y)
+				Else
+					Assets.getSprite(Button.spriteBaseName).Draw(Button.x, Button.y)
+				EndIf
+			endif
+    	Next
+    	setAlpha 1.0
+		'tooltips - later drawn to avoid z-order problems
+		For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
+			If Button.owner = Player[Game.playerID].figure.inRoom.owner
+				if Button.tooltip <> null then Button.tooltip.Draw(tweenValue)
+			endif
+		Next
+	End Function
+
     Function UpdateAll(deltaTime:float=1.0)
-    	For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
-		 If Button.owner = Player[Game.playerID].figure.inRoom.owner
-    	    If Button.IsIn(MouseX(), MouseY()) And MOUSEMANAGER.IsDown(1) Then Button.Clicked =1 Else If Button.Clicked=1 Then Button.OnClick();Button.Clicked = 0
-		    If functions.IsIn(MouseX(), MouseY(), Button.x,Button.y,Button.w,Button.h)
- 			  If Button.tooltip = Null Then Button.tooltip = TTooltip.Create(Button.Caption, "", Button.x, Button.y - 20, 0, 0)
-   			  Button.tooltip.enabled = 1
-   			  Button.tooltip.lifetime = Button.tooltip.startlifetime
-            EndIf
-     		Button.Draw()
-		 EndIf
-    	Next
-      	For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
-          If Button.tooltip<> Null And Button.owner = Game.playerID Then
-            If Button.clickstate=0
-              Button.tooltip.title = Button.Caption+" - "+Localization.GetString("NEWSSTUDIO_NOT_SUBSCRIBED")
-              Button.tooltip.text = Localization.GetString("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ (Button.clickstate+1)*10000+"€"
-            Else
-              Button.tooltip.title = Button.Caption+" - "+Localization.GetString("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+Button.clickstate
-              If Button.clickstate=3
-                Button.tooltip.text = Localization.GetString("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0€"
-              Else
-                Button.tooltip.text = Localization.GetString("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ (Button.clickstate+1)*10000+ "€"
-              EndIf
-            EndIf
-            Button.tooltip.Update(deltaTime)
-          EndIf
-    	Next
+		For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
+			If Button.owner = Game.playerID
+
+				If Button.IsIn(MouseX(), MouseY())
+					if MOUSEMANAGER.IsDown(1)
+						if Button.clicked = 0
+							print "set clicked"
+							Button.Clicked =1
+						endif
+					Else if Button.clicked = 1
+						print "on click"
+						Button.OnClick()
+						Button.Clicked = 0
+					endif
+
+					If Button.tooltip = Null
+						'Min(21) - left<=20 moves tooltip to right side
+						Button.tooltip = TTooltip.Create(Button.Caption, "", Max(21,Button.x), Button.y - 20,0,0,1010)
+					else
+						Button.tooltip.enabled = 1
+						Button.tooltip.lifetime = Button.tooltip.startlifetime
+					endif
+				else
+					Button.clicked = 0
+				EndIf
+			EndIf
+			If Button.tooltip<> Null
+				If Button.clickstate=0
+					Button.tooltip.title = Button.Caption+" - "+Localization.GetString("NEWSSTUDIO_NOT_SUBSCRIBED")
+					Button.tooltip.text = Localization.GetString("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ (Button.clickstate+1)*10000+"€"
+				Else
+					Button.tooltip.title = Button.Caption+" - "+Localization.GetString("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+Button.clickstate
+					If Button.clickstate=3
+						Button.tooltip.text = Localization.GetString("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0€"
+					Else
+						Button.tooltip.text = Localization.GetString("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ (Button.clickstate+1)*10000+ "€"
+					EndIf
+				EndIf
+				Button.tooltip.Update(deltaTime)
+			EndIf
+		Next
+		'tooltips
     End Function
 
     Method OnClick()
-	  clickstate:+1
+	  self.clickstate:+1
 	  If clickstate > 3 Then clickstate =0
+		print "onClick " + self.clickstate
 	  Player[Game.playerID].newsabonnements[genre] = clickstate
 	  If Game.networkgame Then If Network.IsConnected Then Network.SendNewsSubscriptionLevel(Game.playerID, genre, clickstate)
 	  Mousemanager.resetKey(1)
@@ -1026,20 +1049,17 @@ Type TNewsbuttons Extends TButton
 
     Method Draw(tweenValue:float=1.0)
         If clickstate > 0
-    	  DrawImage(image,x,y, frameNr+5)
+			Assets.getSprite(self.spriteBaseName+"_clicked").draw(x,y)
 		  SetColor 0,0,0
 		  SetAlpha 0.4
 		  For Local i:Int = 0 To clickstate-1
-    	    DrawRect(x+8+i*10, y+ImageHeight(image)-7, 7,4)
+    	    DrawRect(x+8+i*10, y+ Assets.getSprite(self.spriteBaseName+"_clicked").h -7, 7,4)
     	  Next
 		  SetColor 255,255,255
 		  SetAlpha 1.0
     	Else
-    	  DrawImage(image,x,y,frameNr)
+			Assets.getSprite(self.spriteBaseName).draw(x,y)
     	EndIf
-    	for local Button:TNewsbuttons = eachin TNewsbuttons.list
-			Button.Draw(tweenValue)
-    	Next
     End Method
 End Type 'GenreButtons im Nachrichtenstudio
 
@@ -1070,8 +1090,8 @@ Type TInterface
 		Local Interface:TInterface = New TInterface
 		Interface.ActualNoise			= Assets.GetSprite("gfx_interface_TVprogram_noise1")
 		Interface.ActualProgram			= Assets.GetSprite("gfx_interface_TVprogram_none")
-		Interface.ActualProgramToolTip	= TTooltip.Create("", "", 40, 395, 0, 20)
-		Interface.ActualAudienceToolTip	= TTooltip.Create("", "", 385, 450, 0, 20)
+		Interface.ActualProgramToolTip	= TTooltip.Create("", "", 40, 395)
+		Interface.ActualAudienceToolTip	= TTooltip.Create("", "", 385, 450)
 		If Not InterfaceList Then InterfaceList = CreateList()
 		InterfaceList.AddLast(Interface)
 		SortList InterfaceList
