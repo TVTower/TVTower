@@ -131,7 +131,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 
 	Field _view_x%=0
 	Field _view_y%=0
-	Field _view_w%=-1
+	Field _view_w%=-1-1
 	Field _view_h%=-1
 
 	Method Reset()

@@ -644,8 +644,9 @@ Function Room_AdAgency_Compute(_room:TRooms)
 End Function
 
 Global Room_MovieAgency_GimmickTimer:Int = 0
+
 Function Room_MovieAgency_Compute(_room:TRooms)
-Global AuctionToolTip:TTooltip
+	Global AuctionToolTip:TTooltip
   If TRooms.doadraw 'draw it
 	If TMovieAgencyBlocks.HoldingType <> 0 Then Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
 	If Room_MovieAgency_GimmickTimer > MilliSecs()
@@ -701,7 +702,7 @@ End Function
 
 
 Function Room_MovieAuction_Compute(_room:TRooms)
-Global AuctionRect:TImage
+	Global AuctionRect:TImage
   If TRooms.doadraw 'draw it
 	Assets.GetSprite("gfx_suitcase").Draw(530, 240)
     SetAlpha 0.5
@@ -712,19 +713,9 @@ Global AuctionRect:TImage
 	SetAlpha 0.5;SetColor 0,0,0
 	DrawRect(20,10,760,373)
 	SetAlpha 1.0;SetColor 255,255,255
-	If AuctionRect = Null
-  	  DrawGFXRect(Assets.GetSpritePack("gui_rect"), 125, 60, 550, 290)
-	  FontManager.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
-      AuctionRect= TImage.Create(550,290,1,0,255,0,255)
-	  AuctionRect.pixmaps[0] = GrabPixmap(125,60,550,290)
-    Else
-	  DrawImage(AuctionRect, 125,60)
-	End If
-TAuctionProgrammeBlocks.DrawAll(0)
-'	DrawImage(gfx_auctionmovie,140,75    );DrawImage(gfx_auctionmovie,140+260,75    )
-'	DrawImage(gfx_auctionmovie,140,75+ 60);DrawImage(gfx_auctionmovie,140+260,75+ 60)
-'	DrawImage(gfx_auctionmovie,140,75+120);DrawImage(gfx_auctionmovie,140+260,75+120)
-'	DrawImage(gfx_auctionmovie,140,75+180);DrawImage(gfx_auctionmovie,140+260,75+180)
+	DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 120, 60, 555, 290)
+	FontManager.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
+	TAuctionProgrammeBlocks.DrawAll(0)
   Else
     Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("movieagency", 0)
     Game.cursorstate = 0

@@ -17,6 +17,7 @@ Rem
 'done
 
 ' 2012:
+' gamefunctions_tvprogramme - basisklassen zusammenfassen
 ' gamefunctions - tstation - farben der ovale anpassen auf tplayercolor
 
 EndRem
