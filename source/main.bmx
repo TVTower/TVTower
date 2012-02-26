@@ -572,7 +572,7 @@ Type TPlayer
 			Player.finances[i].revenue_after  = 550000
 		Next
 		Player.ProgrammeCollection = New TPlayerProgrammeCollection
-		Player.ProgrammePlan = TPlayerProgrammePlan.Create()
+		Player.ProgrammePlan = TPlayerProgrammePlan.Create(Player)
 
 		Player.Figure.Sprite = Assets.GetSpritePack("figures").GetSpriteByID(0)
 		Player.Figure.Sprite = Assets.GetSpritePack("figures").GetSprite("Player" + Player.playerID)
@@ -741,7 +741,7 @@ Type TPlayer
 					If OrigProgramme <> Null And Not recompute
 						OrigProgramme.topicality = OrigProgramme.topicality - Int(OrigProgramme.topicality / 2)
 						OrigProgramme.ComputePrice()
-						Player.ProgrammeCollection.TopicalityToProgrammeClones(OrigProgramme, Player.ProgrammePlan.ProgList)
+						Player.ProgrammeCollection.TopicalityToProgrammeClones(OrigProgramme, Player.ProgrammePlan.Programmes)
 					EndIf
 				EndIf
 			EndIf
@@ -1094,9 +1094,9 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
 		DragAndDrop.rectx = 35
-		DragAndDrop.recty = 22 + i * ImageHeight(gfx_news_sheet) / 5 '[0])
-		DragAndDrop.rectw = ImageWidth(gfx_news_sheet) '[0])
-		DragAndDrop.recth = ImageHeight(gfx_news_sheet) / 5'[0])
+		DragAndDrop.recty = 22 + i * Assets.getSprite("gfx_news_sheet0").h
+		DragAndDrop.rectw = Assets.getSprite("gfx_news_sheet0").w
+		DragAndDrop.recth = Assets.getSprite("gfx_news_sheet0").h
 		If Not TNewsBlock.DragAndDropList Then TNewsBlock.DragAndDropList = CreateList()
 		TNewsBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TNewsBlock.DragAndDropList
@@ -1106,9 +1106,9 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i+4
 		DragAndDrop.rectx = 445
-		DragAndDrop.recty = 106 + i * ImageHeight(gfx_news_sheet) / 5 '[0])
-		DragAndDrop.rectw = ImageWidth(gfx_news_sheet) '[0])
-		DragAndDrop.recth = ImageHeight(gfx_news_sheet) / 5'[0])
+		DragAndDrop.recty = 106 + i * Assets.getSprite("gfx_news_sheet0").w
+		DragAndDrop.rectw = Assets.getSprite("gfx_news_sheet0").w
+		DragAndDrop.recth = Assets.getSprite("gfx_news_sheet0").h
 		If Not TNewsBlock.DragAndDropList Then TNewsBlock.DragAndDropList = CreateList()
 		TNewsBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TNewsBlock.DragAndDropList
@@ -2627,7 +2627,7 @@ Function Init_Colorization()
 		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
 		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
 		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
-		Player[i].ProgrammePlan.refreshprogrammeplan(i,Game.day)
+		Player[i].ProgrammePlan.refreshprogrammeplan(Game.day)
 	Next
 End Function
 

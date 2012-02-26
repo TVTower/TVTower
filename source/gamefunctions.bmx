@@ -481,13 +481,10 @@ Type TTooltip extends TRenderable
 				DrawImage(TTooltip.ToolTipIcons,x+1,y+1, tooltipimage)
 				displaceX = ImageWidth(TTooltip.ToolTipIcons)
 			endif
-			'embossed effect
-				SetAlpha Float(100*lifetime / startlifetime) / 100.0 * 0.75
-				SetColor 255,255,255
-				DrawText(title, x+3+displaceX,y+5)
+
 			SetAlpha Float(100*lifetime / startlifetime) / 100.0
-			SetColor 50,50,50
-			self.UseFontBold.Draw(title, x+3+displaceX,y+4)
+			self.useFontBold.drawStyled(title, x+3+displaceX, y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("abc")/2 , 50,50,50, 1)
+
 			SetColor 90,90,90
 			If text <> "" Then self.Usefont.Draw(text, x+3,y+2+Self.TooltipHeader.h)
 
@@ -541,6 +538,13 @@ End Type
 		gfx_Rect.GetSprite(nameBase+"BorderBottom").TileDraw(x + gfx_Rect.GetSprite(nameBase+"BottomLeft").w, y + Height - gfx_Rect.GetSprite(nameBase+"BorderBottom").h, width - gfx_Rect.GetSprite(nameBase+"BottomLeft").w - gfx_Rect.GetSprite(nameBase+"BottomRight").w, gfx_Rect.GetSprite(nameBase+"BorderBottom").h)
 		gfx_Rect.GetSprite(nameBase+"Back").TileDraw(x + gfx_Rect.GetSprite(nameBase+"TopLeft").w, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, width - gfx_Rect.GetSprite(nameBase+"TopLeft").w - gfx_Rect.GetSprite(nameBase+"TopRight").w, Height - gfx_Rect.GetSprite(nameBase+"TopLeft").h - gfx_Rect.GetSprite(nameBase+"BottomLeft").h)
 	End Function
+
+Type TBlockGraphical extends TBlock
+	Field imageBaseName:string
+	Field imageDraggedBaseName:string
+	Field image:TGW_Sprites
+	Field image_dragged:TGW_Sprites
+End Type
 
 Type TBlock
   Field dragable:Int = 1 {saveload = "normalExt"}

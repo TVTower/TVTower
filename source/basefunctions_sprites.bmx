@@ -334,14 +334,14 @@ Type TBitmapFont
 		'emboss
 		if style = 1
 			local oldA:float = getAlpha()
-			SetAlpha 0.6*oldA
+			SetAlpha float(0.75*oldA)
 			SetColor 250,250,250
 			self.draw(text, x,y+1)
 			SetAlpha oldA
 		'shadow
 		else if style = 2
 			local oldA:float = getAlpha()
-			SetAlpha 0.6*oldA
+			SetAlpha 0.75*oldA
 			SetColor 0,0,0
 			self.draw(text, x+1,y+1)
 			SetAlpha oldA

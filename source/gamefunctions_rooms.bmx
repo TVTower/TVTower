@@ -407,7 +407,7 @@ Function Room_News_Compute(_room:TRooms)
 
 	if not TRooms.doadraw 'draw it
 		player[game.playerid].figure.fromroom =Null
-		TNewsbuttons.UpdateAll()
+'		TNewsbuttons.UpdateAll()
 		Game.cursorstate = 0
 		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
 			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufuegen und entfernen", 180, 100, 0, 0)
@@ -415,8 +415,8 @@ Function Room_News_Compute(_room:TRooms)
 			PlannerToolTip.lifetime = PlannerToolTip.startlifetime
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;player[game.playerID].figure.inRoom = TRooms.GetRoom("newsplanner", _room.owner)
-			If PlannerToolTip <> Null  Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 		endif
+		If PlannerToolTip <> Null  Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 	else
 		If PlannerToolTip <> Null  Then PlannerToolTip.Draw(App.Timer.getDeltaTime())
 		DrawText(_room.owner, 20,20)

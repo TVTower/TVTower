@@ -468,20 +468,7 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		' - need to subtract y and height
 		glReadPixels(x, _r_height - y - height, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pix.pixels)
 		pix = YFlipPixmap(pix)
-rem
-		Local pix:TPixmap = TPixmap.Create(_r_width, _r_height, PF_RGBA8888, 4)
-		glReadPixels(0, 0, _r_height, _r_height, GL_RGBA, GL_UNSIGNED_BYTE, pix.pixels)
-		For Local px:Int = 0 Until pix.width
-			For Local uy:Int = 0 Until pix.height/2
-				Local upper:Int, lower:Int
-				Local ly% = pix.height-uy
-				upper = pix.ReadPixel(px, uy)
-				lower = pix.ReadPixel(px, ly)
-				pix.WritePixel(px, uy, lower)
-				pix.WritePixel(px, ly, upper)
-			Next
-		Next
-endrem
+
 		Return pix
 	End Method
 

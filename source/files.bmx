@@ -244,6 +244,7 @@ Global gfx_datasheets_series:TBigImage		= TBigImage.createFromImage(CheckLoadIma
 Global gfx_datasheets_contract:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_werbeblatt.png"))
 Global gfx_news_pp_btn:TImage 				= CheckLoadImage("grafiken/news/newsplanung_button.png", -1, 47, 32, 0, 6)
 Global gfx_news_btn:TImage 					= CheckLoadImage("grafiken/news/button.png", -1, 41, 42, 0, 10)
+rem
 Global gfx_news_sheet_base:TImage			= CheckLoadImage("grafiken/news/newsplanung_news.png",0)
 Global gfx_news_sheet:TImage				= TImage.Create(ImageWidth(gfx_news_sheet_base), ImageHeight(gfx_news_sheet_base) * 5, 1, 0, 255, 0, 255)
 
@@ -254,7 +255,7 @@ DrawOnPixmap(ColorizeTImage(gfx_news_sheet_base, 220, 30, 30) , 0, tmppix, 0, Im
 DrawOnPixmap(ColorizeTImage(gfx_news_sheet_base, 170, 30, 220) , 0, tmppix, 0, ImageHeight(gfx_news_sheet_base) * 3)
 DrawOnPixmap(ColorizeTImage(gfx_news_sheet_base, 60, 160, 60) , 0, tmppix, 0, ImageHeight(gfx_news_sheet_base) * 4)
 UnlockImage(gfx_news_sheet, 0)
-
+endrem
 Global gfx_financials_barren_base:TImage = LoadImage("grafiken/buero/finanzen_balken.png", 0)
 
 Global stationmap_land_sachsen:TImage		= Assets.GetSprite("gfx_officepack_topo_sachsen").GetImage()
@@ -298,6 +299,7 @@ Global gfx_button_blue:TImage = LoadImage(ColorizeImage("grafiken/button.png",75
 
 Global gfx_contract_base:TImage = CheckLoadImage("grafiken/werbeagentur/werbung_vertraege.png", 0)
 Global gfx_contract_img:TImage	= TImage.Create(ImageWidth(gfx_contract_base) * 10, ImageHeight(gfx_contract_base), 1, 0, 255, 0, 255)
+local tmppix:TPixmap
 tmppix = LockImage(gfx_contract_img, 0)
 tmppix.ClearPixels(0)
 	DrawOnPixmap(gfx_contract_base, 0, tmppix, 0, 0)

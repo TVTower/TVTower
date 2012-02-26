@@ -719,19 +719,19 @@ Type TTVGNetwork
 	  newsblock.owner = RemotePlayerID
       newsblock.Pos.SetXY(x, y)
 	  newsblock.StartPos.SetXY(startrectx, startrecty)
-'      Player[ remotePlayerID ].ProgrammePlan.RefreshNewsPlan(remoteplayerID)
+'      Player[ remotePlayerID ].ProgrammePlan.RefreshNewsPlan()
       If add=1 Then
 	    Print "news add newsblock:"+newsblock.news.title+" to player "+remotePlayerID+"/"+newsblock.owner+" on sendslot"+sendslot
-		Player[ remotePlayerID ].ProgrammePlan.AddNews(newsblock.news, remotePlayerID, sendslot)
+		Player[ remotePlayerID ].ProgrammePlan.AddNews(newsblock.news, sendslot)
 		If Not newsblock.paid Then newsblock.Pay();
       EndIf
       If add=0 Then
 	    Print "remove newsblock:"+newsblock.news.title+" from player "+remotePlayerID+"/"+newsblock.owner+" on sendslot"+sendslot
-		Player[ remotePlayerID ].ProgrammePlan.RemoveNews(newsblock.news, remotePlayerID)
+		Player[ remotePlayerID ].ProgrammePlan.RemoveNews( newsblock.news )
       EndIf
 	  If add=2 Then
 	    Print "deleted newsblock:"+newsblock.news.title+" from player "+remotePlayerID+"/"+newsblock.owner+" on sendslot"+sendslot
-		Player[ remotePlayerID ].ProgrammePlan.RemoveNews(newsblock.news, remotePlayerID)
+		Player[ remotePlayerID ].ProgrammePlan.RemoveNews( newsblock.news )
 		If newsblock.owner = remotePlayerID Then ListRemove TNewsBlock.List,(NewsBlock)
       EndIf
 	EndIf
@@ -751,7 +751,7 @@ Type TTVGNetwork
     Local newsID:Int = ReadInt(stream)
 	Local news:TNews = TNews.GetNews(newsID)
     If news <> Null
-	  Player[ RemotePlayerID ].ProgrammeCollection.AddNews(news, RemotePlayerID)
+	  Player[ RemotePlayerID ].ProgrammeCollection.AddNews(news)
       TNewsBlock.Create("",0,-100, RemotePlayerID , 60*(3-Player[ RemotePlayerID ].newsabonnements[news.genre]), news)
       Print "net: added news (id:"+newsID+") to Player:"+RemotePlayerID
 	Else
@@ -781,9 +781,9 @@ Type TTVGNetwork
           TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, RemoteplayerID)
 		EndIf
 	    'remove from Plan (Archive - ProgrammeToSuitcase)
-	    If typ = 1 Then Print "remove all instances";Player[ RemotePlayerID ].ProgrammePlan.RemoveAllProgrammeInstances(programme,  RemotePlayerID )
+	    If typ = 1 Then Print "remove all instances";Player[ RemotePlayerID ].ProgrammePlan.RemoveAllProgrammeInstances(programme )
         'remove from Collection (Archive - RemoveProgramme)
-		If typ = 3 Then Print "remove from collection";Player[ RemotePlayerID ].ProgrammeCollection.RemoveProgramme(programme, RemotePlayerID)
+		If typ = 3 Then Print "remove from collection";Player[ RemotePlayerID ].ProgrammeCollection.RemoveProgramme( programme )
     EndIf
  End Method
 
@@ -889,9 +889,9 @@ Type TTVGNetwork
 	AdBlock.Pos.SetXY(x, y)
 	AdBlock.StartPos.SetXY(startrectx, startrecty)
     'Print "NET: set adblock on new position: "+adblock.Title
-    Player[ remotePlayerID ].ProgrammePlan.RefreshAdPlan(remoteplayerID, senddate)
+    Player[ remotePlayerID ].ProgrammePlan.RefreshAdPlan(senddate)
     If add
-      Player[ RemotePlayerID ].ProgrammePlan.AddContract(adblock.contract, RemotePlayerID)
+      Player[ RemotePlayerID ].ProgrammePlan.AddContract(adblock.contract)
       'Print "NET: ADDED adblock:"+Adblock.Title+" to Player:"+RemotePlayerID
     Else
       Player[ RemotePlayerID ].ProgrammePlan.RemoveContract(adblock.contract)
@@ -928,7 +928,7 @@ Type TTVGNetwork
     programmeBlock.programme.sendtime = sendtime
 	ProgrammeBlock.Pos.SetXY(x, y)
 	ProgrammeBlock.StartPos.SetXY(startrectx, startrecty)
-    Player[remotePlayerID].ProgrammePlan.RefreshProgrammePlan(remoteplayerID, senddate)
+    Player[remotePlayerID].ProgrammePlan.RefreshProgrammePlan(senddate)
     If add
       'Player[ RemotePlayerID ].ProgrammePlan.AddProgramme(Programmeblock.programme)
       'Print "NET: ADDED programme:"+Programmeblock.programme.Title+" to Player:"+RemotePlayerID
@@ -981,7 +981,7 @@ Type TTVGNetwork
     Local contractID:Int
     For Local i:Int = 0 To ContractCount-1
       contractID:Int = ReadInt(stream)
-      Player[ RemotePlayerID ].ProgrammeCollection.AddContract(TContract.getContract(contractID), RemotePlayerID)
+      Player[ RemotePlayerID ].ProgrammeCollection.AddContract(TContract.getContract(contractID))
 	Next
     Print "net: added contract (id:"+contractID+") to Player:"+RemotePlayerID
   End Method
