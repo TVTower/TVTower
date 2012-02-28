@@ -429,7 +429,6 @@ Type TFigures
 				oldtargetx = targetx
 			    If Building.GetFloor(_y) = onFloor Then toFloor = onFloor Else targetx = StandAtElevatorX
 				clickedToFloor = Building.GetFloor(_y)
-				print self.name + " clicked "+clickedToFloor + " y"+_y
 				Local tmpclickedToRoom:TRooms = TRooms.GetClickedRoom(TFigures(Self))
 				If tmpclickedtoroom <> Null
 					clickedToRoom = tmpclickedtoroom

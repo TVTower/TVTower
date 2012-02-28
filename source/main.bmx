@@ -1824,10 +1824,6 @@ Type TBuilding extends TRenderable
 
 	Method GetFloor:Int(_y:Int)
 		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13)
-		'		Local locfloor:Int = 13 - Ceil((_y - y) / 73)
-		'		If locfloor < 0 Then locfloor = 0
-		'		If locfloor > 13 Then locfloor = 13
-		'		Return locfloor
 	End Method
 End Type
 
@@ -2727,7 +2723,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	EndIf
 	'	If Player[Game.playerID].Figure.inRoom = Null Then Building.y = 115 + 73 - Player[Game.playerID].Figure.y  'working for player as center
 	'66 = 13th floor height, 2 floors normal = 2*73, 50 = roof
-	If Player[Game.playerID].Figure.inRoom = Null Then Building.pos.y = 1 * 66 + 2 * 73 + 50 - Player[Game.playerID].Figure.pos.y  'working for player as center
+	If Player[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Player[Game.playerID].Figure.pos.y  'working for player as center
 	Fader.Update(deltaTime)
 
 	Game.Update(deltaTime)
