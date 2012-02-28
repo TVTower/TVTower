@@ -60,7 +60,6 @@ TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
 TTooltip.UseFont 		= FontManager.GetFont("Default", 11, 0)
 TTooltip.ToolTipIcons	= gfx_building_tooltips
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
-
 Global App:TApp = TApp.Create(100, 1, WIDTH, HEIGHT) 'create with 60fps for physics and graphics
 
 Type TApp
@@ -608,7 +607,7 @@ Type TPlayer
 		UpdateFigureBase(figurebase)
 		Print "RecolorFigure r:" + color.colR + " g" + color.colG + " b" + color.colB
 		'overwrite asset
-		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetImage("gfx_building_sign_base"), color.colR, color.colG, color.colB) )
+		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetSprite("gfx_building_sign_base").getImage(), color.colR, color.colG, color.colB) )
 	End Method
 
 	'nothing up to now
@@ -1919,11 +1918,10 @@ TPlayerColor.Create(125, 143, 147, 0) ; TPlayerColor.Create(255, 125, 255, 0)
 'create playerfigures in figures-image
 'Local tmpFigure:TImage = Assets.GetSpritePack("figures").GetSpriteImage("", 0)
 Global Player:TPlayer[5]
-
 Player[1] = TPlayer.Create(Game.username, Game.userchannelname, Assets.GetSpritePack("figures").GetSpriteByID(0), 500, 1, 70, 247, 50, 50, 1, "Player 1")
 Player[2] = TPlayer.Create("Alfie", "SunTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 450, 3, 70, 245, 220, 0, 0, "Player 2")
 Player[3] = TPlayer.Create("Seidi", "FunTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 250, 8, 70, 40, 210, 0, 0, "Player 3")
-Player[4] = TPlayer.Create("Sandra", "FatTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 480, 13, 70, 0, 110, 245, 0, "Player 4")
+Player[4] = TPlayer.Create("Sandra", "RatTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 480, 13, 70, 0, 110, 245, 0, "Player 4")
 
 Global tempfigur:TFigures = TFigures.Create("Hausmeister", gfx_figures_hausmeister, 210, 2,60,0)
 tempfigur.FrameWidth = 12;tempfigur.targetx = 550
@@ -1971,6 +1969,7 @@ Global GameSettings_Chat:TGUIChat = TGuiChat.Create(20 + 3, 300, 450, 250, 1, 20
 Global InGame_Chat:TGUIChat = TGuiChat.Create(10 + 3, 5, 360, 250, 1, 200, "InGame")
 GameSettings_Chat._UpdateFunc_	= UpdateChat_GameSettings
 InGame_Chat._UpdateFunc_ 		= UpdateChat_InGame
+
 GUIManager.DefaultFont = FontManager.GetFont("Default", 12, BOLDFONT)
 
 GameSettings_Chat.GUIInput.TextDisplaceX = 5
@@ -1989,7 +1988,6 @@ InGame_Chat.colR= 255; InGame_Chat.colG= 255; InGame_Chat.colB= 255
 InGame_Chat.GuiInput.colR = 255; InGame_Chat.GuiInput.colG = 255; InGame_Chat.GuiInput.colB = 255
 '#End Region
 '#End Region
-
 
 Function UpdateChat_GameSettings();		UpdateChat(GameSettings_Chat);		End Function
 Function UpdateChat_InGame();			UpdateChat(InGame_Chat);			End Function
@@ -2057,7 +2055,6 @@ NetgameLobby_gamelist.SetDoubleClickFunc(NetGameLobbyDoubleClick)
 Global Network:TTVGNetwork = TTVGNetwork.Create(game.userfallbackip)
 Network.ONLINEPORT = Game.userport
 
-
 For Local i:Int = 0 To 7
 	If i < 4
 		MenuPlayerNames[i]	= TGUIinput.Create(50 + 190 * i, 65, 130, 1, Player[i + 1].Name, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
@@ -2090,7 +2087,6 @@ TPPbuttons.Create(Assets.GetSprite("btn_news"), Localization.GetString("PLANNER_
 
 CreateDropZones()
 Global Database:TDatabase = TDatabase.Create(); Database.Load(Game.userdb) 'load all movies, news, series and ad-contracts
-
 
 StationMap.AddStation(310, 260, 1, Player[1].maxaudience)
 StationMap.AddStation(310, 260, 2, Player[2].maxaudience)
@@ -2822,7 +2818,6 @@ Type TEventListenerPlayer Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
-
 			If evt._trigger = "game.onminute" Then Self.Player.PlayerKI.CallOnMinute()
 			If evt._trigger = "game.onday" Then Self.Player.PlayerKI.CallOnDayBegins()
 		EndIf
@@ -2966,8 +2961,6 @@ Global Init_Complete:Int = 0
 'Init EventManager
 'could also be done during update ("if not initDone...")
 EventManager.Init()
-'print "loading delay"
-'Delay(2000) '- loading img
 
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 100)
@@ -2975,23 +2968,16 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game
 
-		If KEYMANAGER.Ishit(Key_F1)
-			If Player[1].figure.isAI() Then Player[1].PlayerKI.reloadScript()
-		EndIf
-		If KEYMANAGER.Ishit(Key_F2)
-			If Player[2].figure.isAI() Then Player[2].PlayerKI.reloadScript()
-		EndIf
-		If KEYMANAGER.Ishit(Key_F3)
-			If Player[3].figure.isAI() Then Player[3].PlayerKI.reloadScript()
-		EndIf
-		If KEYMANAGER.Ishit(Key_F4)
-			If Player[4].figure.isAI() Then Player[4].PlayerKI.reloadScript()
-		EndIf
+		If KEYMANAGER.Ishit(Key_F1) AND Player[1].figure.isAI() Then Player[1].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F2) AND Player[2].figure.isAI() Then Player[2].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F3) AND Player[3].figure.isAI() Then Player[3].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F4) AND Player[4].figure.isAI() Then Player[4].PlayerKI.reloadScript()
+
 		App.Timer.loop()
 
 		'process events not directly triggered
 		'process "onMinute" etc.
-		'EventManager.update()
+		EventManager.update()
 
 	Until AppTerminate() Or ExitGame = 1
 	If Game.networkgame Then If Network.IsConnected = True Then Network.NetDisconnect ' Disconnect

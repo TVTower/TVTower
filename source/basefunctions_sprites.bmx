@@ -296,7 +296,7 @@ Type TBitmapFont
 				obj.chars[i] = null
 			endif
 		Next
-		print obj.displaceY
+
 		'now we have final dimension of image
 		'create 8bit alpha'd image (grayscale with alpha ...)
 		local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, PF_A8) ; pix.ClearPixels(0)

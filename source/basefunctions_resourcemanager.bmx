@@ -79,14 +79,14 @@ loadedObject.setLoaded(true)
 	End Function
 
 	Method AddSet(content:TMap)
-		Local key:Object
+		Local key:string
 		For key = EachIn content.keys()
 			local obj:object = content.ValueForKey(key)
 			local objType:string = "UNKNOWN"
 			if TAsset(obj)<> null
-				self.Add( lower(string(key)), TAsset(obj), TAsset(obj)._type)
+				self.Add( lower(key), TAsset(obj), TAsset(obj)._type)
 			else
-				self.Add( lower(string(key)), TAsset.CreateBaseAsset(obj, objType), objType )
+				self.Add( lower(key), TAsset.CreateBaseAsset(obj, objType), objType )
 			endif
 		Next
 	End Method
@@ -121,7 +121,7 @@ loadedObject.setLoaded(true)
 			endif
 			asset = self.ConvertImageToSprite(TImage(asset._object), assetName, -1)
 		endif
-		'if asset._type <> "SPRITE" then print "ASSETMANAGER: Add TAsset '"+lower(string(assetName))+"' [" + asset._type+"]"#
+		'if asset._type <> "SPRITE" then print "ASSETMANAGER: Add TAsset '"+lower(string(assetName))+"' [" + asset._type+"]"
 		Self.content.Insert(assetName, asset)
 	End Method
 

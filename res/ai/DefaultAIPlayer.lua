@@ -1,6 +1,8 @@
 -- ##### INCLUDES #####
-dofile("res\\ai\\AIEngine.lua")
-dofile("res\\ai\\TaskMoviePurchase.lua")
+-- use slash for directories - windows accepts it, linux needs it
+-- or maybe package.config:sub(1,1)
+dofile("res/ai/AIEngine.lua")
+dofile("res/ai/TaskMoviePurchase.lua")
 
 -- ##### GLOBALS #####
 globalPlayer = nil

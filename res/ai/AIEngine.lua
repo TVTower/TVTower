@@ -12,7 +12,7 @@
 -- +++++ Library erstellt +++++
 
 -- ##### INCLUDES #####
-dofile("res\\ai\\SLF.lua")
+dofile("res/ai/SLF.lua")
 
 -- ##### KONSTANTEN #####
 TASK_STATUS_OPEN	= "T_open"
@@ -45,9 +45,9 @@ function AIPlayer:typename()
 	return "KIPlayer"
 end
 
-function AIPlayer:initialize()	
+function AIPlayer:initialize()
 	math.randomseed(TVT.GetMillisecs())
-	
+
 	self:initializePlayer()
 
 	self.TaskList = {}
@@ -66,7 +66,7 @@ function AIPlayer:ValidateRound()
 	--Zum �berschreiben
 end
 
-function AIPlayer:Tick()	
+function AIPlayer:Tick()
 	if self.CurrentTask == nil then
 		self:BeginNewTask()
 	else
@@ -110,7 +110,7 @@ end
 AITask = KIDataObjekt:new{
 	Status = TASK_STATUS_OPEN; -- Der Status der Aufgabe
 	CurrentJob = nil; -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
-	BasePriority = 0; -- Grundlegende Priorität der Aufgabe	
+	BasePriority = 0; -- Grundlegende Priorität der Aufgabe
 	SituationPriority = 0; -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert
 	CurrentPriority = 0; -- Berechnet: Aktuelle Priorität dieser Aufgabe
 	LastDone = 0; -- Zeit, wann der Task zuletzt abgeschlossen wurde
@@ -136,14 +136,14 @@ function AITask:StartNextJob()
 	debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
 	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt daf�r, dass der Spieler in den richtigen Raum geht!
 		self.Status = TASK_STATUS_PREPARE
-		self.CurrentJob = self:getGotoJob()		
+		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
 		self.StartTask = TVT.GetTime()
-		self.TickCounter = 0;		
+		self.TickCounter = 0;
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 	end
-	
+
 	self.CurrentJob:Start()
 end
 
@@ -152,7 +152,7 @@ function AITask:Tick()
 		self.TickCounter = self.TickCounter + 1
 	end
 
-	if (self.CurrentJob == nil) then		
+	if (self.CurrentJob == nil) then
 		self:StartNextJob() --Von vorne anfangen
 	else
 		if self.CurrentJob.Status == JOB_STATUS_DONE then
@@ -192,7 +192,7 @@ function AITask:SetDone()
 end
 
 function AITask:OnReachRoom()
-	if (self.CurrentJob ~= nil) then		
+	if (self.CurrentJob ~= nil) then
 		self:OnReachRoom()
 	end
 end

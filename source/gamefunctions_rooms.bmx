@@ -1238,11 +1238,11 @@ Type TRoomSigns Extends TBlock
 	  LocObject.owner = owner
 	  If owner <0 Then owner = 0
 
- 	  Locobject.image = Assets.GetSprite("gfx_elevator_sign"+owner)
- 	  Locobject.image_dragged = Assets.GetSprite("gfx_elevator_sign_dragged"+owner)
- 	  LocObject.width  = LocObject.image.w
- 	  LocObject.Height = LocObject.image.h - 1
- 	  LocObject.title = text
+ 	  Locobject.image			= Assets.GetSprite("gfx_elevator_sign"+owner)
+ 	  Locobject.image_dragged	= Assets.GetSprite("gfx_elevator_sign_dragged"+owner)
+ 	  LocObject.width			= LocObject.image.w
+ 	  LocObject.Height			= LocObject.image.h - 1
+ 	  LocObject.title			= text
  	  If not List Then List = CreateList()
  	  List.AddLast(LocObject)
  	  SortList List
@@ -1271,12 +1271,8 @@ Type TRoomSigns Extends TBlock
     End Method
 
     Method GetSlotOfBlock:Int()
-    	If Pos.x = 589
-    	  Return 12+(Int(Floor(StartPos.y - 17) / 30))
-    	EndIf
-    	If Pos.x = 262
-    	  Return 1*(Int(Floor(StartPos.y - 17) / 30))
-    	EndIf
+    	If Pos.x = 589 then Return 12+(Int(Floor(StartPos.y - 17) / 30))
+    	If Pos.x = 262 then Return 1*(Int(Floor(StartPos.y - 17) / 30))
     	Return -1
     End Method
 
@@ -1289,15 +1285,11 @@ Type TRoomSigns Extends TBlock
 			If TRoomSigns.AdditionallyDragged > 0 Then SetAlpha 1- 1/TRoomSigns.AdditionallyDragged * 0.25
 			if image_dragged <> null
 				image_dragged.Draw(Pos.x,Pos.y)
-				If imagewithtext <> Null
-'					SetViewport(Pos.x+2,Pos.y+2, image_dragged.w-7,image_dragged.h-7)
-					imagewithtext.Draw(Pos.x,Pos.y)
-'					SetViewport(0,0,800,600)
-				EndIf
+				If imagewithtext <> Null then imagewithtext.Draw(Pos.x,Pos.y)
 			endif
 		Else
 			If imagewithtext <> Null
-			  imagewithtext.Draw(Pos.x,Pos.y)
+				imagewithtext.Draw(Pos.x,Pos.y)
 			Else
 				if image <> null
 					image.Draw(Pos.x,Pos.y)
@@ -1309,18 +1301,18 @@ Type TRoomSigns Extends TBlock
 					If colb > 255 Then colb = 255
 					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+23,Pos.y+4,150,20,0,0,0,0,1)
 					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,0,0,0,1)
-					Local TxtWidth:Int = TextWidth(title)+4
-					If TxtWidth > image.w-23-5 Then TxtWidth = image.w-23-5
+					Local TxtWidth:Int = Min(TextWidth(title)+4, image.w-23-5)
 					Local pixmap:TPixmap = GrabPixmap(Pos.x+23-2,Pos.y+4-2,TxtWidth,TextHeight(title)+3)
 					pixmap = ConvertPixmap(pixmap, PF_RGB888)
 					blurPixmap(pixmap, 0.5)
 					pixmap = ConvertPixmap(pixmap, PF_RGB888)
-					DrawPixmap(pixmap, Pos.x+21,Pos.y+2)
-				  If owner > 0 And owner <=4
-					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,colr,colg,colb,1)
-				  Else
-					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,250,250,250,1)
-				  EndIf
+					DrawImage(LoadImage(pixmap), Pos.x+21,Pos.y+2)
+
+					If owner > 0 And owner <=4
+						SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,colr,colg,colb,1)
+					Else
+						SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,250,250,250,1)
+					EndIf
 				endif
 			EndIf
 			If imagewithtext = Null AND image <> null

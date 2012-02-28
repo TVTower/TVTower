@@ -456,6 +456,8 @@ Type TBufferedGLMax2DDriver Extends TMax2DDriver
 		_buffer.Render()
 		_buffer.Reset()
 		glRasterPos2i(x, y)
+		'as we flipped during grab
+		pixmap = YFlipPixmap(pixmap)
 		glDrawPixels(pixmap.width, pixmap.height, GLFormatForPixmap(pixmap), GL_UNSIGNED_BYTE, pixmap.pixels)
 	End Method
 

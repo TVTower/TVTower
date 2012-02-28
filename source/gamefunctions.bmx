@@ -1478,12 +1478,11 @@ Type TStationMap
     Return _StationMap
   End Function
 
-  Method AddStation(x:Int, y:Int, playerid:Int, valuetorefresh:Int Var)
-  	Local reach:Int = Self.CalculateAudienceIncrease(playerid, x, y)
-  	StationList.AddLast(TStation.Create(x, y, reach, TStation.GetPrice(reach), playerid))
-  	valuetorefresh = CalculateAudienceSum(playerid)
-	Print "Player " + playerid + ": " + valuetorefresh
-  End Method
+	Method AddStation(x:Int, y:Int, playerid:Int, valuetorefresh:Int Var)
+		Local reach:Int = Self.CalculateAudienceIncrease(playerid, x, y)
+		StationList.AddLast(TStation.Create(x, y, reach, TStation.GetPrice(reach), playerid))
+		valuetorefresh = CalculateAudienceSum(playerid)
+	End Method
 
     Method Buy(x:Float, y:Float, playerid:Int = 1)
 		If Player[playerid].finances[TFinancials.GetDayArray(Game.day)].PayStation(TStation.GetPrice(summe))

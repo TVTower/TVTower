@@ -5,113 +5,6 @@
 ' License:
 '**************************************************************************************************
 
-Type TNewLuaEngine
-	Function Create:TNewLuaEngine()
-		Local obj:TNewLuaEngine = New TNewLuaEngine
-		' Create the Lua state
-		' Load base, math, table, and os libraries
-		Return obj
-	End Function
-
-	Function LuaState:Byte Ptr()
-		Global _luaState:Byte Ptr
-		If Not _luaState
-			_luaState=luaL_newstate()
-'			luaL_openlibs _luaState
-			luaopen_base(_luaState)
-			luaopen_math(_luaState)
-			luaopen_table(_luaState)
-			luaopen_os(_luaState)
-		EndIf
-		Return _luaState
-	End Function
-
-	Method KillLuaState()
-		If Self.LuaState() Then
-			lua_close(Self.LuaState())
-			'_luaState = Null
-		EndIf
-	End Method
-
-	Method RegisterFunction:Int(functionName:String, _func:Byte Ptr)
-		lua_register( Self.LuaState(), functionName, _func)
-	End Method
-
-	Method RegisterConstantInt(variableName:String, _variable:Int)
-		lua_pushinteger( Self.LuaState(), _variable)
-		lua_setglobal( Self.LuaState(), variableName )
-	End Method
-
-	Method RegisterConstantFloat(variableName:String, _variable:Double)
-		lua_pushnumber( Self.LuaState(), _variable)
-		lua_setglobal( Self.LuaState(), variableName )
-	End Method
-
-	Method LoadScript:Int(scriptFile:String)
-		' Run the script so it can set things up
-	    If luaL_dofile(Self.LuaState(),scriptFile)
-			Local error:String = lua_tostring(Self.LuaState(), -1 )
-			Print "LUA ERROR"
-			Print error
-			lua_pop( Self.LuaState(), 1 )
-			RuntimeError(error)
-			Return False
-		Else
-			Print "loaded "+scriptFile
-			Return True
-		EndIf
-	End Method
-
-	Method CallFunction:Int(functionName:String)
-		Local result:Int = 0
-		Print "LUA: CallFunction: "+functionName
-		lua_getglobal( Self.LuaState(), functionName )
-		If lua_type( Self.LuaState(), -1 ) = LUA_TFUNCTION Then
-			If lua_pcall( Self.LuaState(), 0, 1, 0 ) Then
-				Local error:String = lua_tostring( Self.LuaState(), -1 )
-				lua_pop( Self.LuaState(), 1 )
-				RuntimeError(error)
-			Else
-				' Get the result
-				result = lua_toboolean( Self.LuaState(), -1 )
-			EndIf
-		EndIf
-		lua_pop( Self.LuaState(), 1 )
-		Return result
-	End Method
-
-	Method fileToString:String(filename:String)
-		Local file:TStream = OpenStream(filename, True, False)
-		Return file.ReadString(file.Size())
-		file.Close()
-	End Method
-
-Rem
-	Method RegisterType:Int(L:Byte Ptr)
-		Local _objects:Int = luaL_optint( L, 1, 1 )
-		For Local i:Int = 1 To _objects
-			' Push the handle as a light userdata
-			lua_pushlightuserdata( L, Byte Ptr(HandleFromObject(New TTYPE)) )
-		Next
-		Return _objects
-	End Method
-
-	Method ReleaseType:Int(L:Byte Ptr)
-		For Local stackidx:Int = 1 To lua_gettop(L)
-			If lua_islightuserdata( L, stackidx ) Then
-				Local handle:Int = Int(lua_touserdata( L, stackidx ))
-				Assert TTYpe(HandleToObject(handle)) Else "Attempt to release handle for object that is not a TType"
-				Release handle
-			EndIf
-		Next
-		Return 0
-	End Method
-
-endrem
-End Type
-
-
-
 Type TLuaEngine
 	Field _LuaClass:TLuaClass
 	Field _LuaInstance:TLuaObject
@@ -142,10 +35,6 @@ End Type
 'SuperStrict
 Global activeKI:KI = Null
 
-'Function getScriptEnv:TLuaScriptEngine()
-'	Return activeKI.scriptEnv
-'End Function
-
 Function getLuaEngine:TLuaEngine()
 	Return activeKI.LuaEngine
 End Function
@@ -154,20 +43,24 @@ Type KI
 	Field playerId:Byte
 	Field LuaEngine:TLuaEngine
 	Field scriptName:String
-	Field scriptAsString:String
+	Field scriptAsString:String = ""
 	Field scriptConstants:String
 	Field MyLuaState:Byte Ptr
 	Field inRoom:Byte
 	Field LastErrorNumber:Int = 0
 
+	field LuaFunctions:TLuaFunctions
+
 
 	Function Create:KI(pId:Byte, script:String)
 		Local loadtime:Int = MilliSecs()
 		Local ret:KI = New KI
-		ret.playerId = pId
-'		ret.MyLuaState = lual_newstate()
-		ret.LuaEngine = TLuaEngine.Create()
-		ret.scriptName = script
+		ret.playerId		= pId
+		ret.LuaFunctions	= TLuaFunctions.Create(pId)		'own functions for player
+		ret.LuaEngine		= TLuaEngine.Create()			'register engine and functions
+		ret.LuaEngine.RegisterBlitzmaxObject(ret.LuaFunctions, "TVT")
+
+		ret.scriptName		= script
 		ret.reloadScript()
 		KI_EventManager.registerKI(ret)
 		Print "Player " + pId + ": AI loaded in " + Float(MilliSecs() - loadtime) + "ms"
@@ -187,92 +80,11 @@ Type KI
 	End Method
 
 	Method reloadScript()
-		Print "Reloaded LUA AI for player "+Self.playerId
-		scriptAsString = fileToString(scriptName)
-		'initScriptFunctions()
-		initScriptVariables()
+		if self.scriptAsString <> "" then Print "Reloaded LUA AI for player "+Self.playerId
+		self.scriptAsString = fileToString(scriptName)
+
 		Local str:String = scriptConstants + Chr:String(10) + Chr:String(13) + scriptAsString
-		Self.LuaEngine.LoadSource(str)
-	End Method
-
-
-
-	Method initScriptVariables()
-		Global LuaFunctions:TLuaFunctions = TLuaFunctions.Create(playerid)
-		Self.LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
-
-		scriptConstants = ""
-
-Rem
-	addScriptConstant("PLAYER1", 1)
-		addScriptConstant("PLAYER2", 2)
-		addScriptConstant("PLAYER3", 3)
-		addScriptConstant("PLAYER4", 4)
-		addScriptConstant("ME", playerid)
-
-		addScriptConstant("MAXMOVIES", 50)
-		addScriptConstant("MAXMOVIESPARGENRE", 8)
-		addScriptConstant("MAXSPOTS", Game.maxContractsAllowed)
-
-
-		addScriptConstant("MOVIE_GENRE_ACTION", 0)
-		addScriptConstant("MOVIE_GENRE_THRILLER", 1)
-		addScriptConstant("MOVIE_GENRE_SCIFI", 2)
-		addScriptConstant("MOVIE_GENRE_COMEDY", 3)
-		addScriptConstant("MOVIE_GENRE_HORROR", 4)
-		addScriptConstant("MOVIE_GENRE_LOVE", 5)
-		addScriptConstant("MOVIE_GENRE_EROTIC", 6)
-		addScriptConstant("MOVIE_GENRE_WESTERN", 7)
-		addScriptConstant("MOVIE_GENRE_LIVE", 8)
-		addScriptConstant("MOVIE_GENRE_KIDS", 9)
-		addScriptConstant("MOVIE_GENRE_CARTOON", 10)
-		addScriptConstant("MOVIE_GENRE_MUSIC", 11)
-		addScriptConstant("MOVIE_GENRE_SPORT", 12)
-		addScriptConstant("MOVIE_GENRE_CULTURE", 13)
-		addScriptConstant("MOVIE_GENRE_FANTASY", 14)
-		addScriptConstant("MOVIE_GENRE_YELLOWPRESS", 15)
-		addScriptConstant("MOVIE_GENRE_NEWS", 16)
-		addScriptConstant("MOVIE_GENRE_SHOW", 17)
-		addScriptConstant("MOVIE_GENRE_MONUMENTAL", 18)
-
-		addScriptConstant("NEWS_GENRE_TECHNICS", 3)
-		addScriptConstant("NEWS_GENRE_POLITICS", 0)
-		addScriptConstant("NEWS_GENRE_SHOWBIZ", 1)
-		addScriptConstant("NEWS_GENRE_SPORT", 2)
-		addScriptConstant("NEWS_GENRE_CURRENTS", 4)
-
-		addScriptConstant("ROOM_TOWER", 0)
-		addScriptConstant("ROOM_MOVIEAGENCY", TRooms.GetRoom("movieagency", 0).uniqueID)
-		addScriptConstant("ROOM_ADAGENCY", TRooms.GetRoom("adagency", 0).uniqueID)
-		addScriptConstant("ROOM_ROOMBOARD", TRooms.GetRoom("roomboard", - 1).uniqueID)
-		addScriptConstant("ROOM_PORTER", TRooms.GetRoom("porter", - 1).uniqueID)
-		addScriptConstant("ROOM_BETTY", TRooms.GetRoom("betty", 0).uniqueID)
-		addScriptConstant("ROOM_SUPERMARKET", TRooms.GetRoom("supermarket", 0).uniqueID)
-		addScriptConstant("ROOM_ROOMAGENCY", TRooms.GetRoom("roomagency", 0).uniqueID)
-		addScriptConstant("ROOM_PEACEBROTHERS", TRooms.GetRoom("peacebrothers", - 1).uniqueID)
-		addScriptConstant("ROOM_SCRIPTAGENCY", TRooms.GetRoom("scriptagency", 0).uniqueID)
-		addScriptConstant("ROOM_NOTOBACCO", TRooms.GetRoom("notobacco", - 1).uniqueID)
-		addScriptConstant("ROOM_TOBACCOLOBBY", TRooms.GetRoom("tobaccolobby", - 1).uniqueID)
-		addScriptConstant("ROOM_GUNSAGENCY", TRooms.GetRoom("gunsagency", - 1).uniqueID)
-		addScriptConstant("ROOM_VRDUBAN", TRooms.GetRoom("vrduban", - 1).uniqueID)
-		addScriptConstant("ROOM_FRDUBAN", TRooms.GetRoom("frduban", - 1).uniqueID)
-
-		addScriptConstant("ROOM_OFFICE_PLAYER_ME", TRooms.GetRoom("office", playerid).uniqueID)
-		addScriptConstant("ROOM_STUDIOSIZE1_PLAYER_ME", TRooms.GetRoom("studiosize1", playerid).uniqueID)
-		addScriptConstant("ROOM_BOSS_PLAYER_ME", TRooms.GetRoom("chief", playerid).uniqueID)
-		addScriptConstant("ROOM_NEWSAGENCY_PLAYER_ME", TRooms.GetRoom("news", playerid).uniqueID)
-		addScriptConstant("ROOM_ARCHIVE_PLAYER_ME", TRooms.GetRoom("archive", playerid).uniqueID)
-
-
-		Local i:Int = 0
-		For i = 1 To 4
-			addScriptConstant("ROOM_ARCHIVE_PLAYER" + i, TRooms.GetRoom("archive", i).uniqueID)
-			addScriptConstant("ROOM_NEWSAGENCY_PLAYER" + i, TRooms.GetRoom("news", i).uniqueID)
-			addScriptConstant("ROOM_BOSS_PLAYER" + i, TRooms.GetRoom("chief", i).uniqueID)
-			addScriptConstant("ROOM_OFFICE_PLAYER" + i, TRooms.GetRoom("office", i).uniqueID)
-			addScriptConstant("ROOM_STUDIOSIZE_PLAYER" + i, TRooms.GetRoom("studiosize1", i).uniqueID)
-		Next
-EndRem
+		Self.LuaEngine.LoadSource(scriptAsString)
 	End Method
 
 	Method CallOnLoad(savedluascript:String="")
