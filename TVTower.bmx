@@ -18,5 +18,23 @@ Rem
 ' 2012:
 ' gamefunctions_tvprogramme - basisklassen zusammenfassen
 ' gamefunctions - tstation - farben der ovale anpassen auf tplayercolor
+Filmauktionen:
+	Filminformationen anzeigen
+
+Live-Events:
+	(Fussball, Formel1, Konzerte, ...) fehlen noch
+
+Quiz/Call-In
+	- Werbung: Werbebloecke die prozentual von der Zuschauerzahl
+	  Einkuenfte erzielen
+	- Sendungen: Komplette Stundensendungen die geringe Einnahmen
+	  erzielen
+
+
+Eigenproduktionen:
+	Filme - die auch bspweise in den Wiederverkauf
+	gelangen koennen. Hier sollte evtl der "Kino"-Wert
+	erst nach der Erstausstrahlung definiert werden
+
 
 EndRem

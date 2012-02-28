@@ -1823,7 +1823,7 @@ Type TBuilding extends TRenderable
 	End Method
 
 	Method GetFloor:Int(_y:Int)
-		Return Clamp(13 - Ceil((_y - pos.y) / 73),0,13)
+		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13)
 		'		Local locfloor:Int = 13 - Ceil((_y - y) / 73)
 		'		If locfloor < 0 Then locfloor = 0
 		'		If locfloor > 13 Then locfloor = 13

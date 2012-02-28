@@ -1060,7 +1060,7 @@ Type Tparticle
 		Field vel:Float
 		Field angle:Float
 		Field image:TImage
-		Field life:Int
+		Field life:float
 		Field is_alive:Int
 		Field alpha:Float
 		Field scale:Float
@@ -1068,41 +1068,33 @@ Type Tparticle
 
 
 		Method Spawn(px:Float,py:Float,pvel:Float,plife:Float,pscale:Float,pangle:Float,pxrange:Float,pyrange:Float)
-			is_alive = True
-			x = Rnd(px-(pxrange/2),px+(pxrange/2))
-			y = Rnd(py-(pyrange/2),py+(pyrange/2))
+			is_alive	= True
+			x			= Rnd(px-(pxrange/2),px+(pxrange/2))
+			y			= Rnd(py-(pyrange/2),py+(pyrange/2))
+			vel			= pvel
+			xrange		= pxrange
+			yrange		= pyrange
 
-
-			vel = pvel
-			xrange = pxrange
-			yrange = pyrange
-
-			life = plife
-
-			scale = pscale
-
-			angle = pangle
-
-			alpha = Rnd(1.0,3.0)
-			pred = Rnd(50,105)
-			'pgreen = Rnd(0,255)
-			'pblue = Rnd(0,255)
-			pgreen = pred
-			pblue = pred
-
+			life		= plife / 1000.0
+			scale		= pscale
+			angle		= pangle
+			alpha		= Rnd(1.5,3.5)
+			pred		= Rnd(50,105)
+			pgreen		= pred
+			pblue		= Min(255,pred + 10)
 		End Method
 
-		Method Update()
-			life:-1
-			If life <0 Then is_alive = False
-			If is_alive = True
+		Method Update(deltaTime:float = 1.0)
+			life:-deltaTime
+			If life <0 then is_alive = False
+			if is_alive = True
 				'pcount:+1
 				vel:* 0.99 '1.02 '0.98
-				x=x+(vel*Cos(angle-90))
-				y=y-(vel*Sin(angle-90))
-				alpha:*.98
-				If y < 330 Then 	scale:*1.03
-				If y > 330 Then 	scale:*1.01
+				x:+(vel*Cos(angle-90))*deltaTime
+				y:-(vel*Sin(angle-90))*deltaTime
+				alpha:*0.99*(1.0-deltaTime)
+				If y < 330 Then 	scale:*1.03*(1.0-deltaTime)
+				If y > 330 Then 	scale:*1.01*(1.0-deltaTime)
 				angle:*0.999
 				pred:* 1.005
 			EndIf

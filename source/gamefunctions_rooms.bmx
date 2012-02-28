@@ -61,17 +61,16 @@ Type TRooms
 	End Function
 
     Function GetClickedRoom:TRooms(Figure:TFigures)
-		Local elevatorx:Int = Building.pos.x + Building.Elevator.Pos.x + Figure.xToElevator
-		Local figurex:Int = Figure.oldtargetx + Figure.FrameWidth
-		Local figurey:Int = Building.pos.y + Building.GetFloorY(Figure.clickedToFloor) - 5
+		Local elevatorx:Int	= Building.pos.x + Building.Elevator.Pos.x + Figure.xToElevator
+		Local figurex:Int	= Figure.oldtargetx + Figure.FrameWidth
+		Local figurey:Int	= Building.pos.y + Building.GetFloorY(Figure.clickedToFloor) - 5
 		For Local localroom:TRooms = EachIn RoomList
 			If localroom.doortype >= 0
-				If localroom.name = "roomboard" Then localroom.doorwidth = 59 'localroom.x = 527; localroom.doorwidth=59
+				If localroom.name = "roomboard" Then localroom.doorwidth = 59
 				If functions.IsIn(figurex, figurey, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, localroom.doorwidth, 54)
 					If Figure.toRoom <> localroom Then Figure.SetRoom(localroom)
 					Return localroom
 				EndIf
-				'if localroom.name = "roomboard" Then localroom.x = 557
 			EndIf
 			If localroom.name = "elevator"
 				If functions.IsIn(figurex, figurey, elevatorx - 20, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - 58, 52, 58)
@@ -393,10 +392,10 @@ Type TRooms
 	End Function
 
 	Function GetRoom:TRooms(desc:String, owner:Int, strictOwner:int = 1)
-      For Local room:TRooms= EachIn TRooms.RoomList
-        If room.name = desc and (room.owner = owner OR (strictOwner = 0 AND owner <=0 AND room.owner <=0)) Then Return room
-      Next
-      Return Null
+		For Local room:TRooms= EachIn TRooms.RoomList
+			If room.name = desc and (room.owner = owner OR (strictOwner = 0 AND owner <=0 AND room.owner <=0)) Then Return room
+		Next
+		Return Null
 	End Function
 End Type
 
@@ -747,15 +746,16 @@ Function Room_Betty_Compute(_room:TRooms)
 End Function
 
 Function Room_Chief_Compute(_room:TRooms)
-  If TRooms.doadraw 'draw it
-    player[game.playerid].figure.fromroom =Null
-	For Local i:Int = 1 To plength-1
-		part_array[i].Draw()
-	Next
-	For Local dialog:TDialogue = EachIn _room.Dialogues
-		dialog.Draw()
-	Next
+	If TRooms.doadraw 'draw it
+		player[game.playerid].figure.fromroom =Null
+		For Local i:Int = 1 To plength-1
+			part_array[i].Draw()
+		Next
+		For Local dialog:TDialogue = EachIn _room.Dialogues
+			dialog.Draw()
+		Next
   Else
+rem
 	If _room.Dialogues.Count() <= 0
 		Local ChefDialoge:TDialogueTexts[5]
 		ChefDialoge[0] = TDialogueTexts.Create("Was ist " + Player[Game.playerID].name + "?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!")
@@ -792,20 +792,20 @@ Function Room_Chief_Compute(_room:TRooms)
 		ChefDialog.AddText(Chefdialoge[3])
 		_room.Dialogues.AddLast(ChefDialog)
 	EndIf
-
+endrem
 	Local spawnx:Int = 68
 	Local spawny:Int = 333 '700
-	Local pp:Int = 0
+	Local pp:Int = 100
 	Local i:Int =0
 
 	spawn_delay:-1
-	If spawn_delay<0 'And MouseDown (1)
+	If spawn_delay<0
 	   spawn_delay=5
 		For pp = 1 To 64
 			For i = 1 To plength-1
 				If part_array[i].is_alive = False
-					Local pvel:Float = Rnd (pp/30,pp/15)
-					Local life:Int = Rnd (50,75)
+					Local pvel:Float = Rnd (1,pp+10)
+					Local life:Int = Rnd (250,775)
 					Local sc:Float = Rnd (0.3,1.1)
 					Local ang:Float = Rnd(176, 184)
 					Local xrange:Int = 10
@@ -818,7 +818,7 @@ Function Room_Chief_Compute(_room:TRooms)
 		Next
 	EndIf
 	For i = 1 To plength-1
-		part_array[i].Update()
+		part_array[i].Update(App.timer.getDeltaTime())
 	Next
 	For Local dialog:TDialogue = EachIn _room.Dialogues
 		If dialog.Update(MOUSEMANAGER.IsHit(1)) = 0 Then _room.LeaveAnimated(0) ; _room.Dialogues.Remove(dialog)
@@ -1452,7 +1452,7 @@ Type TRoomSigns Extends TBlock
 End Type
 
 
-Global part_array:Tparticle[500]
+Global part_array:Tparticle[200]
 Global spawn_delay:Int = 15
 Global pcount:Int
 Global part_counter:Int
@@ -1461,7 +1461,7 @@ Global plength:Int = Len part_array
 For Local i:Int = 1 To plength-1
 	part_array[i] = New Tparticle
 	part_array[i].image = particle_image
-	part_array[i].life = Rnd(800,1000)
+	part_array[i].life = Rnd(100,1000)
 	part_array[i].scale = 1.0 '1.0 '0.3 '1.0
 	part_array[i].is_alive =False
 	part_array[i].alpha = 1
