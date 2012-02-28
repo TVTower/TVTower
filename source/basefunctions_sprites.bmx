@@ -327,9 +327,6 @@ Type TBitmapFont
 	Method AddChar:TBitmapFontChar(charCode:int, img:timage, x:int, y:int, w:int, h:int, charWidth:float)
 		'paint on pixmap
 		self.spriteSet.CopyImageOnSpritePackImage(img, null, x,y)
-		DrawImage(self.spriteSet.image, 0,0)
-		Flip 0
-		Delay(2)
 		self.chars[charCode] = TBitmapFontChar.Create(img, x,y,w,h, charWidth)
 	End Method
 
@@ -711,11 +708,12 @@ Type TGW_Sprites extends TRenderable
 		Local DestPixmap:TPixmap = LockImage(self.parent.image, 0, False, True).Window(self.Pos.x, self.Pos.y, self.w, self.h)
 		UnlockImage(self.parent.image)
 		GCCollect() '<- FIX!
+		SetMaskColor(255,0,255)
 		If self.animcount >1 And loadAnimated
-			Return TImage.LoadAnim(DestPixmap, self.framew, self.frameh, 0, self.animcount, 0, 255, 0, 255)
+			Return LoadAnimImage(DestPixmap, self.framew, self.frameh, 0, self.animcount)
 		Else
-			Return TImage.Load(DestPixmap, 0, 255, 0, 255)
-		End If
+			Return LoadImage(DestPixmap)
+		EndIf
 	End Method
 
 	'let spritePack colorize the sprite

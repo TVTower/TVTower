@@ -2722,7 +2722,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 		EndIf
 	EndIf
 	'	If Player[Game.playerID].Figure.inRoom = Null Then Building.y = 115 + 73 - Player[Game.playerID].Figure.y  'working for player as center
-	'66 = 13th floor height, 2 floors normal = 2*73, 50 = roof
+	'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
 	If Player[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Player[Game.playerID].Figure.pos.y  'working for player as center
 	Fader.Update(deltaTime)
 
