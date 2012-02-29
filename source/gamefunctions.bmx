@@ -36,6 +36,8 @@ Type TgfxProgrammelist extends TPlannerList
 	Method Draw:Int(createProgrammeblock:Int=1)
 		if not enabled then return 0
 
+		If self.openState >=3 Then gfxepisodes.Draw(Pos.x - gfxepisodes.w, Pos.y + gfxmovies.h - 4)
+
 		If self.openState >=2
 			gfxmovies.Draw(Pos.x - gfxmovies.w + 14, Pos.y)
 			If currentgenre >= 0 	Then DrawTapes(currentgenre, createProgrammeblock)
@@ -44,20 +46,26 @@ Type TgfxProgrammelist extends TPlannerList
 		If self.openState >=1
 			gfxgenres.Draw(Pos.x, Pos.y)
 			For local genres:int = 0 To 17 		'18 genres
-				FontManager.baseFont.drawBlock (TProgramme.GetGenre(genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + 18 * (genres + 1) - 1, 104, 16, 0)
 			Next
-			SetAlpha 0.6; SetColor 0, 255, 0
 			For local genres:int = 0 To 17 		'18 genres
 				Local genrecount:Int = TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List)
+
+
 				If genrecount > 0
+					SetAlpha 1.0; SetColor 0, 0, 0
+					FontManager.baseFont.drawBlock (TProgramme.GetGenre(genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
+					SetAlpha 0.6; SetColor 0, 255, 0
 					For Local i:Int = 0 To genrecount - 1
-						DrawLine(Pos.x + 111 + i * 2, Pos.y + 18 + 18 * (Genres) - 1, Pos.x + 111 + i * 2, Pos.y + 32 + 18 * (Genres) - 1)
+						DrawLine(Pos.x + 111 + i * 2, Pos.y + 20 + 18 * (Genres) - 1, Pos.x + 111 + i * 2, Pos.y + 34 + 18 * (Genres) - 1)
 					Next
+				else
+					SetAlpha 0.3; SetColor 0, 0, 0
+					FontManager.baseFont.drawBlock (TProgramme.GetGenre(genres), Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
 				EndIf
 			Next
-			SetAlpha 1.0SetColor 255, 255, 255
+			SetAlpha 1.0
+			SetColor 255, 255, 255
 		EndIf
-		If self.openState >=3 Then gfxepisodes.Draw(Pos.x - gfxepisodes.w, Pos.y + gfxmovies.h - 4)
 	End Method
 
 	Method DrawTapes:Int(genre:Int, createProgrammeblock:Int=1)
@@ -73,7 +81,7 @@ Type TgfxProgrammelist extends TPlannerList
 				else
 					gfxtapeseries.Draw(locx, locy)
 				endif
-				font.DrawBlock(movie.title, locx + 13, locy + 1, 139, 16, 0, 0, 0, 0, True)
+				font.DrawBlock(movie.title, locx + 13, locy + 5, 139, 16, 0, 0, 0, 0, True)
 				If functions.isin(MouseX(), MouseY(), locx, locy, gfxtape.w, gfxtape.h)
 					SetAlpha 0.2;
 					If movie.isMovie
@@ -119,21 +127,19 @@ Type TgfxProgrammelist extends TPlannerList
 	Method DrawEpisodeTapes:Int(series:TProgramme, createProgrammeblock:Int=1)
 		Local locx:Int = Pos.x - gfxepisodes.w + 8
 		Local locy:Int = Pos.y + 5 + gfxmovies.h - 4 -12 '-4 as displacement for displaced the background
-		local font:TBitmapFont = FontManager.GetFont("FontTapes")
+		local font:TBitmapFont = FontManager.GetFont("Default", 8)
 
 		For Local i:Int = 0 To series.episodelist.Count()-1
 			Local episode:TProgramme = TProgramme(series.episodeList.ValueAtIndex(i))   'all programmes of one player
-			'	  Local episode:TProgramme = TProgramme(series.episodeList.Items[i]) 'all programmes of one player
 			If episode <> Null
 				locy :+ 12
+				SetAlpha 1.0
 				gfxtapeepisodes.Draw(locx, locy)
-				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodecount + ") " + episode.title, locx + 10, locy + 1, 85, 12, 0, 0, 0, 0, True)
+				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodecount + ") " + episode.title, locx + 10, locy + 3, 85, 12, 0, 0, 0, 0, True)
 				If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
 					Game.cursorstate = 1
 					SetAlpha 0.2;DrawRect(locx, locy, gfxtapeepisodes.w, gfxtapeepisodes.h) ;SetAlpha 1.0
-					If Not MOUSEMANAGER.IsHit(1)
-						episode.ShowEpisodeSheet(30,20, series)
-					EndIf
+					If Not MOUSEMANAGER.IsHit(1) then episode.ShowSheet(30,20, -1, series)
 				EndIf
 			EndIf
 		Next
@@ -144,17 +150,14 @@ Type TgfxProgrammelist extends TPlannerList
 		Local tapecount:Int = 0
 		Local locx:Int = Pos.x - gfxepisodes.w + 8
 		Local locy:Int = Pos.y + 5 + gfxmovies.h - 4 -12 '-4 as displacement for displaced the background
-		For Local i:Int = 0 To series.episodelist.Count()-1
-			Local episode:TProgramme = TProgramme(series.episodeList.ValueAtIndex(i))	'all programmes of one player
+		For local episode:TProgramme = eachin  series.episodelist
 			If episode <> Null
 				locy :+ 12
 				tapecount :+ 1
-				If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
-					If MOUSEMANAGER.IsHit(1)
-						TProgrammeBlock.CreateDragged(episode, series)
-						SetOpen(0)
-						MOUSEMANAGER.resetKey(1)
-					EndIf
+				If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
+					TProgrammeBlock.CreateDragged(episode, series)
+					SetOpen(0)
+					MOUSEMANAGER.resetKey(1)
 				EndIf
 			EndIf
 		Next

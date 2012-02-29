@@ -2565,8 +2565,12 @@ Function Init_Creation()
 		For Local playerids:Int = 1 To 4
 			For Local i:Int = 0 To 5
 				SeedRnd(MilliSecs())
-				Player[playerids].ProgrammeCollection.AddMovie(TProgramme.GetRandomMovie(playerids), playerids)
+				Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie(playerids), playerids)
 			Next
+			'give 1 series to each player
+			local prog:TProgramme = TProgramme.GetRandomSerie(playerids)
+			if prog <> null then print prog.isMovie + " " +prog.title
+			Player[playerids].ProgrammeCollection.AddProgramme(prog, playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)

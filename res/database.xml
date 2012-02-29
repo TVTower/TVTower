@@ -4057,6 +4057,92 @@
 </movies>
 <series>
 	<serie>
+		<title>Aus dem Leben gegriffen</title>
+		<description>Brisantes von der Mittelschicht. Reality-Doku-Soap-Format der Billigklasse.</description>
+		<actors>Laiendarsteller</actors>
+		<director>Amateure</director>
+		<country>D</country>
+		<year>2009</year>
+		<genre>15</genre>
+		<blocks>1</blocks>
+		<fsk18>0</fsk18>
+		<price>30</price>
+		<review>2</review>
+		<speed>100</speed>
+		<outcome>10</outcome>
+		<livehour>0</livehour>
+		<maxepisodes>5</maxepisodes>
+		<episode>
+			<title>Der Malocher</title>
+			<description>Er ist fleißiger Klempner und dauernd auf Achse doch dann erfährt Jörgs Frau, bei wem er alles Rohre verlegt.</description>
+			<year>2009</year>
+			<episodenr>1</episodenr>
+		</episode>
+		<episode>
+			<title>Nachbars Nebenberuf</title>
+			<year>2009</year>
+			<episodenr>2</episodenr>
+		</episode>
+		<episode>
+			<title>Frivole Liebschaften</title>
+			<year>2009</year>
+			<episodenr>3</episodenr>
+		</episode>
+		<episode>
+			<title>Ohne Schulabschluss</title>
+			<year>2009</year>
+			<episodenr>4</episodenr>
+		</episode>
+		<episode>
+			<title>Der fiese Chef</title>
+			<year>2009</year>
+			<episodenr>5</episodenr>
+		</episode>
+	</serie>
+	<serie>
+		<title>Alltägliches</title>
+		<description>Gescriptete Erlebnisse die eventuell so hätten geschehen können.</description>
+		<actors>Laiendarsteller</actors>
+		<director>Amateure</director>
+		<country>D</country>
+		<year>2010</year>
+		<genre>15</genre>
+		<blocks>1</blocks>
+		<fsk18>0</fsk18>
+		<price>20</price>
+		<review>4</review>
+		<speed>70</speed>
+		<outcome>10</outcome>
+		<livehour>0</livehour>
+		<maxepisodes>5</maxepisodes>
+		<episode>
+			<title>Der Drogenkurier</title>
+			<description>Hans G. ist gelernter Maurer doch des Nachts fährt er Touren für den fiesen Achim J. Als seine Frau davon erfährt will sie die Scheidung, bis sie erfährt warum ihr Mann dies tut...</description>
+			<year>2009</year>
+			<episodenr>1</episodenr>
+		</episode>
+		<episode>
+			<title>Der Hausdrache</title>
+			<year>2009</year>
+			<episodenr>2</episodenr>
+		</episode>
+		<episode>
+			<title>Die Samendiebin</title>
+			<year>2010</year>
+			<episodenr>3</episodenr>
+		</episode>
+		<episode>
+			<title>Die Kellerknacker</title>
+			<year>2010</year>
+			<episodenr>4</episodenr>
+		</episode>
+		<episode>
+			<title>Nackte Tatsachen</title>
+			<year>2010</year>
+			<episodenr>5</episodenr>
+		</episode>
+	</serie>
+	<serie>
 		<title>Robota Cup: Prime Directives</title>
 		<description>Robota Cup tut noch immer seinen Dienst in Delta City, dem ehemaligen Detroit. Er muß sich Gegnern wie Bone Machine oder seinem eigenen Doppelgänger stellen.</description>
 		<actors>XXX,XXX,XXX,XXX,XXX</actors>
@@ -4234,7 +4320,7 @@
 		<maxepisodes>4</maxepisodes>
 		<episode>
 			<title>Die Patty Glansen Show</title>
-			<description>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.Bieten die beiden genügend Stoff für eine spannende Runde?</description>
+			<description>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales. Bieten die beiden genügend Stoff für eine spannende Runde?</description>
 			<review>156</review>
 			<speed>108</speed>
 			<outcome>60</outcome>

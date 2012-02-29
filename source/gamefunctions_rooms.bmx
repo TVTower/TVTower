@@ -1096,13 +1096,8 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 						EndIf
 						local showOnRightSide:int = 0
 						if MouseX() < 390 then showOnrightSide = 1
-						If ProgrammeBlock.ParentProgramme <> Null
-							ProgrammeBlock.Programme.ShowEpisodeSheet(30+328*showOnRightSide,20,ProgrammeBlock.ParentProgramme)
-							Exit
-						Else
-							ProgrammeBlock.Programme.ShowSheet(30+328*showOnRightside,20)
-							Exit
-						EndIf
+						ProgrammeBlock.Programme.ShowSheet(30+328*showOnRightside,20,-1, ProgrammeBlock.ParentProgramme)
+						Exit
 					EndIf
 				Next
 				For Local AdBlock:TAdBlock = EachIn TAdBlock.List
