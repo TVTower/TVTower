@@ -481,84 +481,83 @@ End Function
 
 
 Function Room_Financials_Compute(_room:TRooms)
-	Local showday:Int = TFinancials.GetDayArray(Game.day)
-	Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
-	Game.cursorstate = 0
-	local font13:TBitmapFont = FontManager.GetFont("Default", 13)
-	local font12:TBitmapFont = FontManager.GetFont("Default", 12)
-	font13.drawBlock(Localization.GetString("FINANCES_OVERVIEW") , 55, 233, 330, 20, 0, 50, 50, 50)
-	font13.drawBlock(Localization.GetString("FINANCES_COSTS")       ,55,27,330,20,0,50,50,50)
-	font13.drawBlock(Localization.GetString("FINANCES_INCOME")      ,415,27,330,20,0,50,50,50)
-	font13.drawBlock(Localization.GetString("FINANCES_MONEY_BEFORE"),415,127,330,20,0,50,50,50)
-	font13.drawBlock(Localization.GetString("FINANCES_MONEY_AFTER") ,415,191,330,20,0,50,50,50)
+	If TRooms.doadraw 'draw it
+		Local showday:Int = TFinancials.GetDayArray(Game.day)
+		Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+		Game.cursorstate = 0
+		local font13:TBitmapFont = FontManager.GetFont("Default", 14, BOLDFONT)
+		local font12:TBitmapFont = FontManager.GetFont("Default", 11)
 
-	font12.drawBlock(Localization.GetString("FINANCES_SOLD_MOVIES") ,415, 45,330,20,0,50,50,50)
-	font12.drawBlock(Localization.GetString("FINANCES_AD_INCOME")   ,415, 59,330,20,0,120,120,120)
-	font12.drawBlock(Localization.GetString("FINANCES_MISC_INCOME") ,415, 73,330,20,0,,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].sold_movies, 640, 45, 93, 20, 2, 50, 50, 50)
-	font12.drawBlock(Player[_room.owner].finances[showday].sold_ads       ,640, 59,93,20,2,120,120,120)
-	font12.drawBlock(Player[_room.owner].finances[showday].sold_misc      ,640, 73,93,20,2,50,50,50)
-	font13.drawBlock(Player[_room.owner].finances[showday].sold_total     ,638, 94,93,20,2,30,30,30)
+		local finances:TFinancials = Player[_room.owner].finances[showday]
+		local line:int = 14
+		font13.drawBlock(Localization.GetString("FINANCES_OVERVIEW") 	,55, 236,330,20, 0,50,50,50)
+		font13.drawBlock(Localization.GetString("FINANCES_COSTS")       ,55,  30,330,20, 0,50,50,50)
+		font13.drawBlock(Localization.GetString("FINANCES_INCOME")      ,415, 30,330,20, 0,50,50,50)
+		font13.drawBlock(Localization.GetString("FINANCES_MONEY_BEFORE"),415,130,330,20, 0,50,50,50)
+		font13.drawBlock(Localization.GetString("FINANCES_MONEY_AFTER") ,415,194,330,20, 0,50,50,50)
 
-	font13.drawBlock(Player[_room.owner].finances[showday].revenue_before ,638,127,93,20,2,30,30,30)
-	font12.drawBlock(" + "+Localization.GetString("FINANCES_INCOME")     ,415,145,93,20,0,50,50,50)
-	font12.drawBlock(" - "+Localization.GetString("FINANCES_COSTS")     ,415,159,93,20,0,120,120,120)
-	font12.drawBlock(" - "+Localization.GetString("FINANCES_INTEREST")  ,415,173,93,20,0,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].sold_total   ,638,145,93,20,2,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_total   ,638,159,93,20,2,120,120,120)
-	font12.drawBlock(Player[_room.owner].finances[showday].revenue_interest,638,173,93,20,2,50,50,50)
-	font13.drawBlock(Player[_room.owner].finances[showday].money        ,638,191,93,20,2,30,30,30)
+		font12.drawBlock(Localization.GetString("FINANCES_SOLD_MOVIES") ,415, 49+line*0,330,20,0, 50, 50, 50)
+		font12.drawBlock(Localization.GetString("FINANCES_AD_INCOME")   ,415, 49+line*1,330,20,0,120,120,120)
+		font12.drawBlock(Localization.GetString("FINANCES_MISC_INCOME") ,415, 49+line*2,330,20,0, 50, 50, 50)
+		font12.drawBlock(finances.sold_movies							,640, 49+line*0, 95,20,2, 50, 50, 50)
+		font12.drawBlock(finances.sold_ads       						,640, 49+line*1, 95,20,2,120,120,120)
+		font12.drawBlock(finances.sold_misc 							,640, 49+line*2, 95,20,2, 50, 50, 50)
+		font13.drawBlock(finances.sold_total							,640, 96, 92,20,2, 30, 30, 30)
 
-	font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_MOVIES")   ,55, 45,330,20,0,50,50,50)
-	font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_STATIONS") ,55, 59,330,20,0,120,120,120)
-	font12.drawBlock(Localization.GetString("FINANCES_SCRIPTS")         ,55, 73,330,20,0,50,50,50)
-	font12.drawBlock(Localization.GetString("FINANCES_ACTORS_STAGES")   ,55, 87,330,20,0,120,120,120)
-	font12.drawBlock(Localization.GetString("FINANCES_PENALTIES")       ,55,101,330,20,0,50,50,50)
-	font12.drawBlock(Localization.GetString("FINANCES_STUDIO_RENT")     ,55,115,330,20,0,120,120,120)
-	font12.drawBlock(Localization.GetString("FINANCES_NEWS")            ,55,129,330,20,0,50,50,50)
-	font12.drawBlock(Localization.GetString("FINANCES_NEWSAGENCIES")    ,55,143,330,20,0,120,120,120)
-	font12.drawBlock(Localization.GetString("FINANCES_STATION_COSTS")   ,55,157,330,20,0,50,50,50)
-	font12.drawBlock(Localization.GetString("FINANCES_MISC_COSTS")     ,55,171,330,20,0,120,120,120)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_movies          ,280, 45,93,20,2,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_stations        ,280, 59,93,20,2,120,120,120)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_scripts         ,280, 73,93,20,2,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_productionstuff ,280, 87,93,20,2,120,120,120)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_penalty         ,280,101,93,20,2,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_rent            ,280,115,93,20,2,120,120,120)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_news            ,280,129,93,20,2,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_newsagencies    ,280,143,93,20,2,120,120,120)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_stationfees     ,280,157,93,20,2,50,50,50)
-	font12.drawBlock(Player[_room.owner].finances[showday].paid_misc            ,280,171,93,20,2,120,120,120)
-	font13.drawBlock(Player[_room.owner].finances[showday].paid_total           ,278,192,93,20,2,30,30,30)
+		font13.drawBlock(finances.revenue_before 						,640,130,92,20,2,30,30,30)
+		font12.drawBlock(" + "+Localization.GetString("FINANCES_INCOME"),415,148+line*0,93,20,0,50,50,50)
+		font12.drawBlock(" - "+Localization.GetString("FINANCES_COSTS")	,415,148+line*1,93,20,0,120,120,120)
+		font12.drawBlock(" - "+Localization.GetString("FINANCES_INTEREST"),415,148+line*2,93,20,0,50,50,50)
+		font12.drawBlock(finances.sold_total							,640,148+line*0,93,20,2,50,50,50)
+		font12.drawBlock(finances.paid_total							,640,148+line*1,93,20,2,120,120,120)
+		font12.drawBlock(finances.revenue_interest						,640,148+line*2,93,20,2,50,50,50)
+		font13.drawBlock(finances.money									,640,194,92,20,2,30,30,30)
+
+		font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_MOVIES")   ,55, 49+line*0,330,20,0,50,50,50)
+		font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_STATIONS") ,55, 49+line*1,330,20,0,120,120,120)
+		font12.drawBlock(Localization.GetString("FINANCES_SCRIPTS")         ,55, 49+line*2,330,20,0,50,50,50)
+		font12.drawBlock(Localization.GetString("FINANCES_ACTORS_STAGES")   ,55, 49+line*3,330,20,0,120,120,120)
+		font12.drawBlock(Localization.GetString("FINANCES_PENALTIES")       ,55, 49+line*4,330,20,0,50,50,50)
+		font12.drawBlock(Localization.GetString("FINANCES_STUDIO_RENT")     ,55, 49+line*5,330,20,0,120,120,120)
+		font12.drawBlock(Localization.GetString("FINANCES_NEWS")            ,55, 49+line*6,330,20,0,50,50,50)
+		font12.drawBlock(Localization.GetString("FINANCES_NEWSAGENCIES")    ,55, 49+line*7,330,20,0,120,120,120)
+		font12.drawBlock(Localization.GetString("FINANCES_STATION_COSTS")   ,55, 49+line*8,330,20,0,50,50,50)
+		font12.drawBlock(Localization.GetString("FINANCES_MISC_COSTS")     	,55, 49+line*9,330,20,0,120,120,120)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_movies          ,280, 49+line*0,93,20,2,50,50,50)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_stations        ,280, 49+line*1,93,20,2,120,120,120)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_scripts         ,280, 49+line*2,93,20,2,50,50,50)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_productionstuff ,280, 49+line*3,93,20,2,120,120,120)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_penalty         ,280, 49+line*4,93,20,2,50,50,50)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_rent            ,280, 49+line*5,93,20,2,120,120,120)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_news            ,280, 49+line*6,93,20,2,50,50,50)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_newsagencies    ,280, 49+line*7,93,20,2,120,120,120)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_stationfees     ,280, 49+line*8,93,20,2,50,50,50)
+		font12.drawBlock(Player[_room.owner].finances[showday].paid_misc            ,280, 49+line*9,93,20,2,120,120,120)
+		font13.drawBlock(Player[_room.owner].finances[showday].paid_total           ,280,194,92,20,2,30,30,30)
 
 
-  Local maxvalue:Int=0
-  Local day:Int=0
-  Local barrenheight:Float=0
-  maxvalue=0
-  day=0
-	For day:Int = 0 To 6
-		For Local locObject:TPlayer = EachIn TPlayer.List
-			If maxvalue < locObject.finances[6 - day].money Then maxvalue = locobject.finances[6 - day].money
+		Local maxvalue:float=0.0
+		Local barrenheight:Float=0
+		For local day:Int = 0 To 6
+			For Local locObject:TPlayer = EachIn TPlayer.List
+				maxValue = max(maxValue, locObject.finances[6 - day].money)
+			Next
 		Next
-	Next
-	day=0
-	SetColor 200, 200, 200
-	DrawLine(53,265,578,265)
-	DrawLine(53,315,578,315)
-	SetColor 255, 255, 255
-	TPlayer.List.Sort(False)
-	For day:Int = 0 To 6
-		For Local locObject:TPlayer = EachIn TPlayer.List
-			barrenheight = 0
-			If maxvalue > 0 Then barrenheight = Floor((Float(locobject.finances[day].money) / Float(maxvalue)) * 100)
-'			SetViewport(450 - + 65 * (day) + (locObject.playerID) * 9, 265, 21, 100)
-			DrawImage(gfx_financials_barren[locObject.playerID], 450 - 65 * (day) + (locObject.playerID) * 9, 365 - barrenheight)
+		SetColor 200, 200, 200
+		DrawLine(53,265,578,265)
+		DrawLine(53,315,578,315)
+		SetColor 255, 255, 255
+		TPlayer.List.Sort(False)
+		For local day:Int = 0 To 6
+			For Local locObject:TPlayer = EachIn TPlayer.List
+				barrenheight = 0 + (maxvalue > 0) * Floor((Float(locobject.finances[day].money) / maxvalue) * 100)
+				Assets.getSprite("gfx_financials_barren"+locObject.playerID).drawClipped(450 - 65 * (day) + (locObject.playerID) * 9, 365 - barrenheight, 450 - + 65 * (day) + (locObject.playerID) * 9, 265, 21, 100)
+			Next
 		Next
-	Next
-	font12.drawBlock(functions.convertValue(maxvalue,2,0)       ,478 , 264,100,20,2,180,180,180)
-	font12.drawBlock(functions.convertValue(Int(maxvalue/2),2,0),478 , 314,100,20,2,180,180,180)
-	FontManager.baseFont.draw("owner:"+_room.owner, 20,20)
+		'coord descriptor
+		font12.drawBlock(functions.convertValue(maxvalue,2,0)       ,478 , 265,100,20,2,180,180,180)
+		font12.drawBlock(functions.convertValue(Int(maxvalue/2),2,0),478 , 315,100,20,2,180,180,180)
+	endif
 End Function
 
 Function Room_Image_Compute(_room:TRooms)
@@ -735,7 +734,9 @@ Function Room_Betty_Compute(_room:TRooms)
 		DrawRect(picX + 2, picY + 8, 26, 28)
 		SetColor 255, 255, 255
 		SetAlpha 1.0
-		Player[i].Figure.Sprite.Draw(picX + Int(sprite.w / 2) - Int(Player[i].Figure.Sprite.framew / 2), picY + sprite.h - 30, 8)
+		local x:float = picX + Int(sprite.w / 2) - Int(Player[i].Figure.Sprite.framew / 2)
+		local y:float = picY + sprite.h - 30
+		Player[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 	Next
 	Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
 	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, FontManager.GetFont("Default",14))
