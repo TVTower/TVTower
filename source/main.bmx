@@ -1971,6 +1971,7 @@ InGame_Chat.nobackground		= True
 InGame_Chat.fadeout				= True
 InGame_Chat.GUIInput.pos.setXY( 290, 385)
 InGame_Chat.GuiInput.width		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").w
+InGame_Chat.GuiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").w - 20
 InGame_Chat.GUIInput.InputImage	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
 InGame_Chat.useFont				= FontManager.GetFont("Default", 11)
 InGame_Chat.guichatgfx			= 0
@@ -1984,16 +1985,16 @@ Function UpdateChat_GameSettings();		UpdateChat(GameSettings_Chat);		End Functio
 Function UpdateChat_InGame();			UpdateChat(InGame_Chat);			End Function
 
 Function UpdateChat(UseChat:TGuiChat)
-	If Usechat.EnterPressed >=1
-		Usechat.EnterPressed = 0
+	If Usechat.EnterPressed = 2
 		If Usechat.GUIInput.Value$ <> ""
 			Usechat.AddEntry("",Usechat.GUIInput.Value$, Game.playerID,"", "", MilliSecs())
 			If Game.networkgame If Network.isConnected Then Network.SendChatMessage(Usechat.GUIInput.Value$)
 			'NetPlayer.SendNetMessage(UDPClientIP, NetworkPlayername$, "CHAT", GUIChat_NWGL_Chat.GUIInput.value$)
 			Usechat.GUIInput.Value$ = ""
-			GUIManager.setActive(0)
 			Network.ChatSpamTime = MilliSecs() + 500
+			GUIManager.setActive(0)
 		EndIf
+'		if GUIManager.isActive(Usechat.GUIInput.uid) then GUIManager.setActive(0)
 	EndIf
 	If Usechat.TeamNames[1] = ""
 		For Local i:Int = 0 To 4
@@ -2101,19 +2102,17 @@ Function Menu_Main()
 	If MainMenuButton_Network.GetClicks() > 0 Then
 		Game.gamestate  = 2
 		Game.onlinegame = 0
-		Network.stream = New TUDPStream
-		If Not Network.Stream.Init() Then Throw("Can't create socket")
-		Network.stream.SetLocalPort(Network.GetMyPort())
-		Game.networkgame = 1
 	EndIf
 	If MainMenuButton_Online.GetClicks() > 0 Then
 		Game.gamestate = 2
 		Game.onlinegame = 1
+	EndIf
+	if game.gamestate = 2
 		Network.stream = New TUDPStream
 		If Not Network.Stream.Init() Then Throw("Can't create socket")
 		Network.stream.SetLocalPort(Network.GetMyPort())
 		Game.networkgame = 1
-	EndIf
+	endif
 End Function
 
 Function Menu_NetworkLobby()
@@ -2642,7 +2641,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	'	If Game.networkgame
 	'		If KEYWRAPPER.pressedKey(KEY_ENTER) And GUIManager.getActive() <> InGame_Chat.GUIINPUT.uId And Network.ChatSpamTime < MilliSecs()
 	If KEYMANAGER.IsHit(KEY_ENTER)
-		If GUIManager.getActive() <> InGame_Chat.GUIINPUT.uId
+		If not GUIManager.isActive(InGame_Chat.GUIINPUT.uId)
 			If Network.ChatSpamTime < MilliSecs()
 				GUIManager.setActive( InGame_Chat.GUIInput.uId )
 			Else
@@ -2955,7 +2954,7 @@ Global Init_Complete:Int = 0
 EventManager.Init()
 
 If ExitGame <> 1 And Not AppTerminate()'not exit game
-	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 100)
+	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
 	Repeat
 		If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game

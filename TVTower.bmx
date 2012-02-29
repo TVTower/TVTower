@@ -9,7 +9,6 @@ SuperStrict
 '
 
 Framework brl.glmax2d
-'Import axe.luascript
 Import "source/main.bmx"
 
 Incbin "source/version.txt"
