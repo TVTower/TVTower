@@ -14,9 +14,6 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 Rem
 'done
-- zwei neue Serien in die Datenbank integriert
-- ProgrammMenu im Planer: Anzahl-Anzeige verbessert (Ausbleichen und Position)
-- ein wenig die Programmblockfunktionen zusammengefasst (Datasheet-Anzeigen)
 
 ' 2012:
 ' gamefunctions_tvprogramme - basisklassen zusammenfassen

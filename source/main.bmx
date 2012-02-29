@@ -1097,7 +1097,7 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i+4
 		DragAndDrop.rectx = 445
-		DragAndDrop.recty = 106 + i * Assets.getSprite("gfx_news_sheet0").w
+		DragAndDrop.recty = 106 + i * Assets.getSprite("gfx_news_sheet0").h
 		DragAndDrop.rectw = Assets.getSprite("gfx_news_sheet0").w
 		DragAndDrop.recth = Assets.getSprite("gfx_news_sheet0").h
 		If Not TNewsBlock.DragAndDropList Then TNewsBlock.DragAndDropList = CreateList()
@@ -2569,7 +2569,6 @@ Function Init_Creation()
 			Next
 			'give 1 series to each player
 			local prog:TProgramme = TProgramme.GetRandomSerie(playerids)
-			if prog <> null then print prog.isMovie + " " +prog.title
 			Player[playerids].ProgrammeCollection.AddProgramme(prog, playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
@@ -2577,9 +2576,15 @@ Function Init_Creation()
 		Next
 		TFigures.GetFigure(figure_HausmeisterID).updatefunc_ = TFigures.UpdateHausmeister
 	EndIf
+			'abonnement for each newsgroup = 1
+	For Local playerids:Int = 1 To 4
+		for local i:int = 0 to 4
+			Player[playerids].newsabonnements[i] = 1
+		next
+	Next
+
 	'creation of blocks for players rooms
 	lastblocks = 0
-	print "create blocks"
 
 	For Local playerids:Int = 1 To 4
 		TAdBlock.Create("1.", 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 0 * Assets.GetSprite("pp_adblock1").h, playerids, 1)
@@ -2592,8 +2597,6 @@ Function Init_Creation()
 		lastblocks :+ lastprogramme.blocks
 		lastprogramme = TProgrammeBlock.Create("3.", 67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 3)
 	Next
-	print "create blocks .. done"
-
 End Function
 
 Function Init_Colorization()
@@ -2968,6 +2971,7 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		If KEYMANAGER.Ishit(Key_F3) AND Player[3].figure.isAI() Then Player[3].PlayerKI.reloadScript()
 		If KEYMANAGER.Ishit(Key_F4) AND Player[4].figure.isAI() Then Player[4].PlayerKI.reloadScript()
 
+		If KEYMANAGER.Ishit(Key_F5) then NewsAgency.AnnounceNewNews()
 		App.Timer.loop()
 
 		'process events not directly triggered

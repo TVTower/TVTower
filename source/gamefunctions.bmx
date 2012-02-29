@@ -545,6 +545,8 @@ Type TBlockGraphical extends TBlock
 	Field imageDraggedBaseName:string
 	Field image:TGW_Sprites
 	Field image_dragged:TGW_Sprites
+
+    Global AdditionallyDragged:Int	= 0
 End Type
 
 Type TBlock
@@ -991,12 +993,8 @@ Type TNewsbuttons Extends TButton
 
 				If Button.IsIn(MouseX(), MouseY())
 					if MOUSEMANAGER.IsDown(1)
-						if Button.clicked = 0
-							print "set clicked"
-							Button.Clicked =1
-						endif
+						if Button.clicked = 0 then Button.Clicked =1
 					Else if Button.clicked = 1
-						print "on click"
 						Button.OnClick()
 						Button.Clicked = 0
 					endif
@@ -1031,11 +1029,10 @@ Type TNewsbuttons Extends TButton
     End Function
 
     Method OnClick()
-	  self.clickstate:+1
-	  If clickstate > 3 Then clickstate =0
-	  Player[Game.playerID].newsabonnements[genre] = clickstate
-	  If Game.networkgame Then If Network.IsConnected Then Network.SendNewsSubscriptionLevel(Game.playerID, genre, clickstate)
-	  Mousemanager.resetKey(1)
+		If self.clickstate >= 3 Then self.clickstate=0 else	self.clickstate:+1
+		Player[Game.playerID].newsabonnements[genre] = clickstate
+		If Game.networkgame Then If Network.IsConnected Then Network.SendNewsSubscriptionLevel(Game.playerID, genre, clickstate)
+		Mousemanager.resetKey(1)
     End Method
 
     Method Draw(tweenValue:float=1.0)
@@ -1046,7 +1043,7 @@ Type TNewsbuttons Extends TButton
 		endif
 		SetColor 0,0,0
 		SetAlpha 0.4
-		For Local i:Int = 0 To clickstate-1
+		For Local i:Int = 0 To Player[Game.playerID].newsabonnements[genre]-1
 			DrawRect(x+8+i*10, y+ Assets.getSprite(self.spriteBaseName).h -7, 7,4)
 		Next
 		SetColor 255,255,255

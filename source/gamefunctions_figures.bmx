@@ -296,11 +296,11 @@ Type TFigures
 		'If Self = Player[Game.playerID].Figure
 		If ParentPlayer <> Null And controlledByID = 0
 			If Player[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
-					Print "LeaveRoom:"+Player[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
-					If Player[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
-						 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
-						 Print "movieagency left: programmes bought"
-					EndIf
+				'Print "LeaveRoom:"+Player[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
+				If Player[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
+					 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
+					 'Print "movieagency left: programmes bought"
+				EndIf
 			EndIf
 			ParentPlayer.PlayerKI.CallOnLeaveRoom()
 		EndIf

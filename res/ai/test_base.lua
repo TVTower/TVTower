@@ -36,7 +36,7 @@ function OnMinute(number)
     chattext = math.random(1,9)
 		--SendToChat( "Quote erwartet: " .. GetEvaluatedAudienceQuote(10025, 22) )
 
-    if (chatnumber >= 300) and (chatnumber <= 320) then
+    if (chatnumber >= 300) and (chatnumber <= 305) then
 	    if chattext == 1 then TVT.SendToChat("Ich mach Euch alle fertig. Hehe!!") end
 	    if chattext == 2 then TVT.SendToChat("Man seid Ihr ein paar Looser!!") end
 	    if chattext == 3 then TVT.SendToChat("Ene mene muh und raus bist DU!!") end

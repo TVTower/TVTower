@@ -370,7 +370,6 @@ Type TBitmapFont
 	End Method
 
 	Method drawBlock:float(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1)
-		'Function BlockText:Int(txt:String, x:Float, y:Float, width:Float, height:Float, align:Int = 0, _font:TImageFont = Null, colR:Int = 0, colG:Int = 0, colB:Int = 0, NoLineBreak:Byte = 0, doDraw:Int = 1)
 		Local charcount:Int		= 0
 		Local deletedchars:Int	= 0
 		Local charpos:Int		= 0
