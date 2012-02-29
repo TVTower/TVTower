@@ -331,29 +331,15 @@ Type TBitmapFont
 	End Method
 
 	Method getWidth:Float(text:String)
-		Local width:Int = 0
-		For Local i:Int = 0 Until text.length
-			If text[i] < Self.MaxSigns Then width :+ self.chars[text[i]].charWidth * gfx.tform_ix
-		Next
-		Return width
+		return float(string( self.draw(text,0,0,0,0) ))
 	End Method
 
 	Method getHeight:Float(text:String)
-		Local height:Int = 0
-
-		For Local i:Int = 0 Until text.length
-			If text[i] < Self.MaxSigns
-				Local bm:TBitmapFontChar = self.chars[ text[i] ]
-'				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
-				if text[i] > 32 then height = MAX(height, bm.box.h)
-'				x :+ bm.charWidth * gfx.tform_ix
-			EndIf
-		Next
-		Return height
+		return float(string( self.draw(text,0,0,1,0) ))
 	End Method
 
 	Method getBlockHeight:Float(text:String, w:Float, h:Float)
-		Return Self.getHeight(text)
+		Return self.getHeight(text)
 	End Method
 
 	Method drawOnPixmap(Text:String, x:Int, y:Int, cR:Int=0, cG:Int=0, cB:Int=0, Pixmap:TPixmap, blur:Byte=0)
@@ -374,7 +360,7 @@ Type TBitmapFont
 		If blur
 			blurPixmap(Source, 0.5)
 			Source = ConvertPixmap(Source, PF_RGB888)
-			DrawPixmap(Source, x-2,y-2)
+			DrawImage(LoadImage(Source), x-2,y-2)
 			self.draw(Text,x,y)
 			Source = GrabPixmap(x-2,y-2,TxtWidth+4,self.getHeight(Text)+4)
 			Source = ConvertPixmap(Source, PF_RGB888)
@@ -383,48 +369,167 @@ Type TBitmapFont
 		SetColor( oldR, oldG, oldB )
 	End Method
 
-	Method drawBlock(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0)
-		Self.drawStyled(text,x,y, cR, cG, cB, style)
+	Method drawBlock:float(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1)
+		'Function BlockText:Int(txt:String, x:Float, y:Float, width:Float, height:Float, align:Int = 0, _font:TImageFont = Null, colR:Int = 0, colG:Int = 0, colB:Int = 0, NoLineBreak:Byte = 0, doDraw:Int = 1)
+		Local charcount:Int		= 0
+		Local deletedchars:Int	= 0
+		Local charpos:Int		= 0
+		Local linetxt:String	= text
+		Local spaceAvaiable:Float = h
+		Local alignedx:Int		= 0
+		Local usedHeight:Int	= 0
+		local oldColor:TColor	= TColor.Create()
+
+		If doDraw then oldcolor.get(); SetColor(cR,cG,cB)
+
+		If NoLineBreak = False
+			Repeat
+				charcount = 0
+				'line to wide for box - shorten it
+				while self.getWidth(linetxt) >= w
+					'if cant get shortened: CharCount = 0 -> line deleted
+					For charpos = 0 To Len(linetxt) - 1
+						If linetxt[charpos] = Asc(" ") Then CharCount = charpos
+						If linetxt[charpos] = Asc("-") Then CharCount = charpos - 1
+						If linetxt[charpos] = Asc(Chr(13)) Then CharCount = charpos;charpos = Len(Linetxt) - 1
+					Next
+					linetxt = linetxt[..CharCount]
+				Wend
+
+				'place (truncated) line
+				local drawLine:string = linetxt
+
+				'no space left, we have finally to truncate and delete rest...
+				If 2 * self.getHeight(linetxt) > SpaceAvaiable And linetxt <> text[deletedchars..]
+					drawLine = linetxt[..Len(linetxt) - 3] + " ..."
+					charcount = 0
+				EndIf
+
+				If doDraw
+					If align = 0 Then alignedx = x
+					If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
+					If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
+					self.drawStyled(drawLine, alignedx, y + h - spaceAvaiable, cR, cG, cB, style)
+				endif
+
+				spaceAvaiable :- self.getHeight(linetxt)
+				deletedchars :+ (charcount+1)
+				linetxt = text[Deletedchars..]
+			Until charcount = 0
+			usedheight = h - spaceAvaiable
+		Else 'no linebreak allowed
+			If self.getWidth(linetxt) >= w
+				charcount = Len(linetxt)-1
+				While self.getWidth(linetxt) >= w
+					linetxt = linetxt[..charcount]
+					charcount:-1
+				Wend
+				If align = 0 Then alignedx = x
+				If align = 1 Then alignedx = x+(w - self.getWidth(linetxt$))/2
+				If align = 2 Then alignedx = x+(w - self.getWidth(linetxt$))
+				spaceAvaiable = spaceAvaiable - self.getHeight(linetxt$[..Len(linetxt$)-2]+"..")
+				If doDraw Then self.drawStyled(linetxt[..Len(linetxt) - 2] + "..", alignedx, y, cR, cG, cB, style)
+			Else
+				If align = 0 Then alignedx = x
+				If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
+				If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
+				spaceAvaiable :- self.getHeight(linetxt)
+				If doDraw Then self.drawStyled(linetxt, alignedx, y, cR, cG, cB, style)
+			EndIf
+			usedheight = self.getHeight(linetxt)
+		EndIf
+
+		If doDraw then oldColor.set()
+		Return usedheight
 	End Method
 
-	Method drawStyled(text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0)
+	Method drawStyled:object(text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0, returnType:int=0, doDraw:int=1, special:float=0.0)
+		local height:float = 0.0
+		local width:float = 0.0
 		local oldR:int, oldG:int, oldB:int
 		GetColor(oldR, oldG, oldB)
 
 		'emboss
 		if style = 1
-			local oldA:float = getAlpha()
-			SetAlpha float(0.75*oldA)
-			SetColor 250,250,250
-			self.draw(text, x,y+1)
-			SetAlpha oldA
+			height:+ 1
+			if doDraw
+				local oldA:float = getAlpha()
+				SetAlpha float(0.75*oldA)
+				SetColor 250,250,250
+				self.draw(text, x,y+1)
+				SetAlpha oldA
+			endif
 		'shadow
 		else if style = 2
-			local oldA:float = getAlpha()
-			SetAlpha 0.75*oldA
-			SetColor 0,0,0
-			self.draw(text, x+1,y+1)
-			SetAlpha oldA
+			height:+ 1
+			width:+1
+			if doDraw
+				local oldA:float = getAlpha()
+				if special <> 0.0 then SetAlpha special*oldA else SetAlpha 0.5*oldA
+				SetColor 0,0,0
+				self.draw(text, x+1,y+1)
+				SetAlpha oldA
+			endif
 		endif
 
 		SetColor cr,cg,cb
-		self.draw(text,x,y)
+		local result:object = self.draw(text,x,y, returnType, doDraw)
+
 
 		SetColor( oldR, oldG, oldB )
+		return result
 	End Method
 
-	Method draw(text:String,x:Float,y:Float)
-		For Local i:Int = 0 Until text.length
-			If text[i] < Self.MaxSigns
-				Local bm:TBitmapFontChar = self.chars[ text[i] ]
-				Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
-				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
-'				Local ty:Float = bm.box.y * gfx.tform_jy
-				'drawable ? (> 32)
-				if text[i] > 32 then self.charsSprites[ text[i] ].Draw(x+tx,y+ty - self.displaceY)
-				x :+ bm.charWidth * gfx.tform_ix
-			EndIf
+
+	Method drawWithBG:object(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:int=0)
+		Local OldAlpha:Float = GetAlpha()
+		Local color:TColor = TColor.Create()
+		color.get()
+		SetAlpha bgAlpha
+		SetColor bgCol, bgCol, bgCol
+		local dimension:TPosition = TPosition( self.drawStyled(value,0,0, 0,0,0, style,2,0) )
+		DrawRect(x, y, dimension.x, dimension.y)
+		SetAlpha OldAlpha
+		color.set()
+		return self.drawStyled(value, x, y, color.r,color.g,color.b, style)
+	End Method
+
+
+	Method draw:object(text:String,x:Float,y:Float, returnType:int=1, doDraw:int = 1)
+		local width:float = 0.0
+		local height:float = 0.0
+		local textLines:string[]	= text.split(chr(13))
+		local currentLine:int = 0
+
+		For text:string = eachin textLines
+			currentLine:+1
+
+			local lineHeight:int = 0
+			local lineWidth:int = 0
+			For Local i:Int = 0 Until text.length
+				If text[i] < Self.MaxSigns
+					Local bm:TBitmapFontChar = self.chars[ text[i] ]
+					if bm <> null
+						Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
+						Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
+
+						'drawable ? (> 32)
+						if text[i] > 32
+							lineHeight = MAX(lineHeight, bm.box.h)
+							if doDraw then self.charsSprites[ text[i] ].Draw(x+lineWidth+tx,y+height+ty - self.displaceY)
+						endif
+						lineWidth :+ bm.charWidth * gfx.tform_ix
+					endif
+				EndIf
+			Next
+			width = max(width, lineWidth)
+			height:+lineHeight
+			'except first line (maybe only one line) - add extra spacing between lines
+			if currentLine > 0 then height:+ ceil(lineHeight*0.3)
 		Next
+		if returnType = 0 then return string(width)
+		if returnType = 1 then return string(height)
+		return TPosition.Create(width, height)
 	End Method
 
 	Method drawfixed(text:String,x:Float,y:Float)
@@ -445,6 +550,7 @@ End Type
 Type TGW_FontManager
 	Field DefaultFont:TGW_Font
 	Field baseFont:TBitmapFont
+	Field baseFontBold:TBitmapFont
 	Field List:TList = CreateList()
 
 	Function Create:TGW_FontManager()
@@ -548,6 +654,7 @@ Type TGW_SpritePack extends TRenderable
 		For Local i:Int = 0 To Self.sprites.Count() - 1
 			If lower(TGW_Sprites(Self.sprites.ValueAtIndex(i)).spritename) = lower(spritename) Then Return TGW_Sprites(Self.sprites.ValueAtIndex(i))
 		Next
+		print "GetSprite: "+spritename+" not found"
 		Return TGW_Sprites(Self.sprites.ValueAtIndex(0))
 	End Method
 
@@ -734,6 +841,9 @@ Type TGW_Sprites extends TRenderable
 	End Method
 
 	Method DrawClipped(imagex:Float, imagey:Float, ViewportX:Float, ViewPortY:Float, ViewPortW:Float, ViewPortH:Float, offsetx:Float = 0, offsety:Float = 0, theframe:Int = 0)
+		if ViewPortW < 0 then ViewPortW = self.w
+		if ViewPortH < 0 then ViewPortH = self.h
+
 		If imagex+framew>=ViewportX And imagex-framew<ViewportX+ViewportW And imagey+frameh>=ViewportY And imagey-frameh<ViewportY+ViewportH Then
 			Local startx#	= Max(0,ViewportX-imagex)
 			Local starty#	= Max(0,ViewportY-imagey)

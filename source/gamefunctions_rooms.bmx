@@ -67,7 +67,7 @@ Type TRooms
 		For Local localroom:TRooms = EachIn RoomList
 			If localroom.doortype >= 0
 				If localroom.name = "roomboard" Then localroom.doorwidth = 59
-				If functions.IsIn(figurex, figurey, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, localroom.doorwidth, 54)
+				If functions.IsIn(figurex, figurey, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.pos.y) - Assets.GetSprite("gfx_building_Tueren").h, localroom.doorwidth, 54)
 					If Figure.toRoom <> localroom Then Figure.SetRoom(localroom)
 					Return localroom
 				EndIf
@@ -107,7 +107,7 @@ Type TRooms
 				EndIf
 
 
-				If foundtooltip = 0 And Player[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, localroom.doorwidth, 54)
+				If foundtooltip = 0 And Player[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, localroom.doorwidth, 54)
 					If localroom.tooltip = Null
 						localroom.tooltip = TTooltip.Create(localroom.desc, localroom.descTwo, 100, 140, 0, 0)
 					else
@@ -167,7 +167,7 @@ Type TRooms
 '						localroom.doortype = 5
 						If localroom.doortype = 5 Then If localroom.DoorOpenTimer + 500 < MilliSecs() Then localroom.CloseDoor()
 						Assets.GetSprite("gfx_building_Tueren").Draw(localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").frameh, localroom.doortype)
-						'DrawText(localroom.name+" - " + localroom.doortype, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y)- Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").frameh + 10)
+						'DrawText(localroom.name+" - " + localroom.doortype, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y)- Assets.GetSprite("gfx_building_Tueren").frameh + 10)
 					EndIf
 				EndIf
 			EndIf
@@ -730,17 +730,15 @@ Function Room_Betty_Compute(_room:TRooms)
 		Local picY:Int = 240
 		Local picX:Int = 410 + i * (sprite.w + 5)
 		sprite.Draw( picX, picY )
-'		SetViewport(picX + 2, picY + 8, 26, 28)
 		SetAlpha 0.4
 		SetColor Player[i].color.colB, Player[i].color.colG, Player[i].color.colR
 		DrawRect(picX + 2, picY + 8, 26, 28)
 		SetColor 255, 255, 255
 		SetAlpha 1.0
 		Player[i].Figure.Sprite.Draw(picX + Int(sprite.w / 2) - Int(Player[i].Figure.Sprite.framew / 2), picY + sprite.h - 30, 8)
-'		SetViewport(0, 0, 800, 600)
 	Next
-    Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
-    DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, FontManager.GetFont("Default",14))
+	Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
+	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, FontManager.GetFont("Default",14))
   EndIf
 
 End Function
@@ -755,7 +753,7 @@ Function Room_Chief_Compute(_room:TRooms)
 			dialog.Draw()
 		Next
   Else
-rem
+
 	If _room.Dialogues.Count() <= 0
 		Local ChefDialoge:TDialogueTexts[5]
 		ChefDialoge[0] = TDialogueTexts.Create("Was ist " + Player[Game.playerID].name + "?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!")
@@ -792,39 +790,27 @@ rem
 		ChefDialog.AddText(Chefdialoge[3])
 		_room.Dialogues.AddLast(ChefDialog)
 	EndIf
-endrem
-	Local spawnx:Int = 68
-	Local spawny:Int = 333 '700
-	Local pp:Int = 100
-	Local i:Int =0
 
 	spawn_delay:-1
 	If spawn_delay<0
-	   spawn_delay=5
-		For pp = 1 To 64
-			For i = 1 To plength-1
+		spawn_delay=5
+		For local pp:int = 1 To 64
+			For local i:int = 1 To plength-1
 				If part_array[i].is_alive = False
-					Local pvel:Float = Rnd (1,pp+10)
-					Local life:Int = Rnd (250,775)
-					Local sc:Float = Rnd (0.3,1.1)
-					Local ang:Float = Rnd(176, 184)
-					Local xrange:Int = 10
-					Local yrange:Int = 15
-					part_array[i].Spawn(spawnx,spawny,pvel,life,sc,ang,xrange,yrange)
-'					spawn_delay = 0
+					part_array[i].Spawn(68,333,Rnd (1,pp+10),Rnd (250,775),Rnd (0.3,1.1),Rnd(176, 184),10,15)
 					Exit
 				EndIf
 			Next
 		Next
 	EndIf
-	For i = 1 To plength-1
+	For local i:int = 1 To plength-1
 		part_array[i].Update(App.timer.getDeltaTime())
 	Next
 	For Local dialog:TDialogue = EachIn _room.Dialogues
 		If dialog.Update(MOUSEMANAGER.IsHit(1)) = 0 Then _room.LeaveAnimated(0) ; _room.Dialogues.Remove(dialog)
 	Next
   EndIf
-  rem
+rem
   Local ChefText:String
   ChefText = "Was ist?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!"
   If Betty.LastAwardWinner <> Game.playerID And Betty.LastAwardWinner <> 0
@@ -834,7 +820,7 @@ endrem
 	EndIf
   EndIf
   functions.DrawDialog(Assets.GetSpritePack("gfx_dialog"), 350, 60, 450, 120, "StartLeftDown", 0, ChefText, Font14)
- endrem
+endrem
 End Function
 
 Function OnClick_StationMapSell(sender:Object)
@@ -941,7 +927,7 @@ Function Room_StationMap_Compute(_room:TRooms)
 	Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
     StationMap.Draw()
 	GUIManager.Draw("STATIONMAP")
-	functions.BlockText("zeige Spieler:", 480, 15, 100, 20, 2)
+	FontManager.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
 	For Local i:Int = 0 To 3
 		SetColor 100, 100, 100
 		DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 15, 18)
@@ -1011,10 +997,10 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 			TRooms.ActiveBackground = Assets.GetSprite("rooms_pplanning")
 			DrawnOnProgrammePlannerBG = True
 			UnlockImage(pixImage)
-		End If
+		EndIf
 
 		TProfiler.Enter("ProgrammePlanner:DRAW")
-		'draw blocks
+		'draw blocks (backgrounds)
 		For Local i : Byte = 0 To 23
 			local rightSide:int = floor(i / 11) '0-11 = 0,12-23 = 1
 			local slotPos:int = i
@@ -1023,7 +1009,6 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 			'for programmeblocks
 			If Game.day > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
 			If Game.day = Game.daytoplan
-				othertime = Int(Floor((Game.minutesOfDayGone-5) / 60))
 				If i > othertime
 					State = 0  'normal
 				Else If i = othertime
@@ -1069,7 +1054,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 		SetColor 255, 255, 255  'normal
 
 		TPPbuttons.DrawAll()
-rem
+
 
 		If TProgrammeBlock.AdditionallyDragged > 0
 			TAdBlock.DrawAll(_room.owner)
@@ -1080,7 +1065,7 @@ rem
 			SetColor 255,255,255  'normal
 			TAdBlock.DrawAll(_room.owner)
 		EndIf
-endrem
+
 
 		'overlay old days
 		If Game.day > Game.daytoplan

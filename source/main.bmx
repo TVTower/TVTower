@@ -16,23 +16,19 @@ Import "files.bmx"								'Load images, configs,... (imports functions.bmx)
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_events.bmx"				'event handler
 Import "basefunctions_deltatimer.bmx"
-GUIManager.globalScale = 0.75
+GUIManager.globalScale	= 0.75
 GUIManager.defaultFont	= FontManager.GetFont("Default", 12)
-
-
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 												'		- base class For buttons And extension newsbutton
 												'		- stationmap-handling, -creation ...
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
-
 Include "lua_ki.bmx"							'LUA connection
 
 'Initialise Render-To-Texture
 tRender.Initialise()
 
 Global Fader:TFader	= New TFader
-Global PrepareScreenshot:Int = 0
 
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(580, 30)
@@ -42,11 +38,6 @@ Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(650, 30)
 Print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
 Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, 0, "Newsplanner", 0)
 Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, 0, "Newsplanner", 3)
-
-Local tmpPix:TPixmap = LockImage(Assets.GetSprite("gfx_building").parent.image)
-Print "grosse bilder automatisch auf 'bigimage' umstellen"
-Global gfx_building_skyscraper:TBigImage = TBigImage.CreateFromPixmap(tmpPix)
-UnlockImage(Assets.GetSprite("gfx_building").parent.image)
 
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 				= 0 			'=1 and the game will exit
@@ -67,6 +58,7 @@ Type TApp
 	Field limitFrames:Int = 0
 	Field height:Int = 600
 	Field width:Int = 800
+	field prepareScreenshot:Int = 0
 
 	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0, width:Int = 800, height:Int = 600)
 		Local obj:TApp = New TApp
@@ -1579,7 +1571,7 @@ Type TBuilding extends TRenderable
 	Function Create:TBuilding()
 		Local Building:TBuilding = New TBuilding
 		Building.children = TRenderableChildrenManager.Create(Building)
-		Building.pos.y = 0 - gfx_building_skyscraper.Height + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
+		Building.pos.y = 0 - Assets.GetSprite("gfx_building").h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
 
 		Building.Elevator = TElevator.Create(Building)
 		Building.Moon_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-50, -50, 400, 850, 850])
@@ -1650,7 +1642,7 @@ Type TBuilding extends TRenderable
 		EndIf
 		SetBlend MASKBLEND
 		elevator.DrawFloorDoors()
-		gfx_building_skyscraper.renderInViewPort(pos.x + 127, pos.y, 10, 10, 780, 383)
+		Assets.GetSprite("gfx_building").draw(pos.x + 127, pos.y)
 		SetBlend ALPHABLEND
 		Elevator.Draw()
 
@@ -1722,7 +1714,7 @@ Type TBuilding extends TRenderable
 				EndIf
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
 					ufo_beaming.pos.x = 65
-					ufo_beaming.pos.y = -15 + 105 + 0.25 * (pos.y + gfx_building_skyscraper.Height - Assets.GetSprite("gfx_building_BG_Ebene3L").h)
+					ufo_beaming.pos.y = -15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h)
 					ufo_beaming.Update()
 					If ufo_beaming.getCurrentAnimation().getCurrentFramePos() <> 6
 						ufo_pixelPerSecond = 0
@@ -1763,7 +1755,7 @@ Type TBuilding extends TRenderable
 
 	'Summary: Draws background of the mainscreen (stars, buildings, moon...)
 	Method DrawBackground(tweenValue:Float=1.0)
-		Local BuildingHeight:Int = gfx_building_skyscraper.Height + 56
+		Local BuildingHeight:Int = Assets.GetSprite("gfx_building").h + 56
 		SetBlend MASKBLEND
 		DezimalTime = Float(Game.GetActualHour()) + Float(Game.GetActualMinute())*10/6/100
 		If DezimalTime > 18 Or DezimalTime < 7
@@ -1790,7 +1782,7 @@ Type TBuilding extends TRenderable
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
 					ufo_beaming.Draw()
 				Else
-					Assets.GetSprite("gfx_building_ufo").DrawInViewPort(ufo_curKubSplineX.ValueInt(ufo_tPos), - 330 - 15 + 105 + 0.25 * (pos.y + gfx_building_skyscraper.Height - Assets.GetSprite("gfx_building_BG_Ebene3L").h) + ufo_curKubSplineY.ValueInt(ufo_tPos), 0, ufo_normal.GetCurrentFrame())
+					Assets.GetSprite("gfx_building_ufo").DrawInViewPort(ufo_curKubSplineX.ValueInt(ufo_tPos), - 330 - 15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h) + ufo_curKubSplineY.ValueInt(ufo_tPos), 0, ufo_normal.GetCurrentFrame())
 				EndIf
 			EndIf
 		EndIf
@@ -1966,26 +1958,25 @@ Global GameSettingsGameTitle:TGuiInput = TGUIinput.Create(50, 230, 320, 1, Game.
 Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_START_GAME"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
 Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(600, 345, 120, 0, 1, 1, Localization.GetString("MENU_BACK"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
 Global GameSettings_Chat:TGUIChat = TGuiChat.Create(20 + 3, 300, 450, 250, 1, 200, "GameSettings")
-Global InGame_Chat:TGUIChat = TGuiChat.Create(10 + 3, 5, 360, 250, 1, 200, "InGame")
+Global InGame_Chat:TGUIChat = TGuiChat.Create(20, 10, 250, 200, 1, 200, "InGame")
 GameSettings_Chat._UpdateFunc_	= UpdateChat_GameSettings
 InGame_Chat._UpdateFunc_ 		= UpdateChat_InGame
 
 GUIManager.DefaultFont = FontManager.GetFont("Default", 12, BOLDFONT)
 
-GameSettings_Chat.GUIInput.TextDisplaceX = 5
-GameSettings_Chat.GUIInput.TextDisplaceY = 2
+GameSettings_Chat.GUIInput.TextDisplacement.setXY(5,2)
 '#Region  :configuring "InGame_Chat"-object
-InGame_Chat.clickable= 0
-InGame_Chat.nobackground = True
-InGame_Chat.fadeout = True
+InGame_Chat.clickable			= 0
+InGame_Chat.nobackground		= True
+InGame_Chat.fadeout				= True
 InGame_Chat.GUIInput.pos.setXY( 290, 385)
-InGame_Chat.GuiInput.width = gfx_GuiPack.GetSprite("Chat_IngameOverlay").w
-InGame_Chat.GUIInput.InputImage = gfx_GuiPack.GetSprite("Chat_IngameOverlay")
-InGame_Chat.useFont = FontManager.GetFont("Default", 10)
+InGame_Chat.GuiInput.width		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").w
+InGame_Chat.GUIInput.InputImage	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
+InGame_Chat.useFont				= FontManager.GetFont("Default", 11)
+InGame_Chat.guichatgfx			= 0
 
-InGame_Chat.guichatgfx= 0
 InGame_Chat.colR= 255; InGame_Chat.colG= 255; InGame_Chat.colB= 255
-InGame_Chat.GuiInput.colR = 255; InGame_Chat.GuiInput.colG = 255; InGame_Chat.GuiInput.colB = 255
+InGame_Chat.GuiInput.color.adjust(255,255,255, true)
 '#End Region
 '#End Region
 
@@ -2058,9 +2049,9 @@ Network.ONLINEPORT = Game.userport
 For Local i:Int = 0 To 7
 	If i < 4
 		MenuPlayerNames[i]	= TGUIinput.Create(50 + 190 * i, 65, 130, 1, Player[i + 1].Name, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
-		MenuPlayerNames[i].TextDisplaceX = 3
+		MenuPlayerNames[i].TextDisplacement.setX(3)
 		MenuChannelNames[i]	= TGUIinput.Create(50 + 190 * i, 180, 130, 1, Player[i + 1].channelname, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
-		MenuChannelNames[i].TextDisplaceX = 3
+		MenuChannelNames[i].TextDisplacement.setX(3)
 	End If
 	If i Mod 2 = 0
 		MenuFigureArrows[i] = TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,0,1,0,"GameSettings", 0)
@@ -2136,7 +2127,7 @@ Function Menu_NetworkLobby()
 			While Not Eof(Onlinestream) Or timeout
 				If timeouttimer < MilliSecs() Then timeout = True
 				Local responsestring:String = ReadLine(Onlinestream)
-				Local responseArray:String[] = StringSplit(responsestring, "|")
+				Local responseArray:String[] = responsestring.split("|")
 				If responseArray <> Null
 					Network.OnlineIP = responseArray[0]
 					Network.intOnlineIP = TNetwork.IntIP(Network.OnlineIP)
@@ -2155,7 +2146,7 @@ Function Menu_NetworkLobby()
 				While Not Eof(Onlinestream) Or timeout
 					If timeouttimer < MilliSecs() Then timeout = True
 					Local responsestring:String = ReadLine(Onlinestream)
-					Local responseArray:String[] = StringSplit(responsestring, "|")
+					Local responseArray:String[] = responsestring.split("|")
 					If responseArray <> Null
 						NetgameLobby_gamelist.addUniqueEntry(Network.URLDecode(responseArray[0]), Network.URLDecode(responseArray[0])+"  (Spieler: "+responseArray[1]+" von 4)","",responseArray[2],Short(responseArray[3]),0, "ONLINEHOSTGAME")
 						Print "added "+responseArray[0]
@@ -2729,7 +2720,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	TFigures.UpdateAll(deltaTime)
 
 	If KEYMANAGER.IsHit(KEY_ESCAPE) Then ExitGame = 1
-	If KEYMANAGER.IsHit(KEY_F12) Then PrepareScreenshot = 1
+	If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
 	If Game.networkgame Then If Network.IsConnected Then Network.UpdateUDP
 End Function
 
@@ -2754,7 +2745,7 @@ Function DrawMain(tweenValue:Float=1.0)
 	Fader.Draw()
 	Interface.Draw()
 
-	FontManager.baseFont.draw( "Netstate:" + Player[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, - 2)
+	FontManager.baseFont.draw( "Netstate:" + Player[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, 0)
 
 	If Game.DebugInfos
 		SetColor 0,0,0
@@ -2930,11 +2921,12 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 				DrawMenu()
 			EndIf
 			FontManager.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
-			FontManager.baseFont.Draw("deltaTime "+Int(1000*App.Timer.loopTime)+"ms", 250,0)
-			If PrepareScreenshot = 1 Then PrepareScreenshot:+1;DrawImage(gfx_startscreen_logosmall, App.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
-			'GUIManager.Draw("InGame")
+			FontManager.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
+			If App.prepareScreenshot = 1 then DrawImage(gfx_startscreen_logosmall, App.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
+
 			Flip App.limitFrames
-			If PrepareScreenshot = 2 Then PrepareScreenshot = 0;SaveScreenshot()
+
+			If App.prepareScreenshot = 1 then SaveScreenshot();App.prepareScreenshot = 0
 		EndIf
 	End Method
 End Type

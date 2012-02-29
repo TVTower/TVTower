@@ -282,8 +282,11 @@ Global gfx_mousecursor:TImage       = CheckLoadImage("grafiken/interface/cursor.
 Global FontManager:TGW_FontManager	= TGW_FontManager.Create()
 FontManager.DefaultFont	= FontManager.AddFont("Default", "res/fonts/Vera.ttf", 11, SMOOTHFONT)
 FontManager.baseFont = FontManager.DefaultFont.ffont
-FontManager.AddFont("Default", "res/fonts/VeraBd.ttf", 11, SMOOTHFONT + BOLDFONT)
+FontManager.AddFont("Default", "res/fonts/VeraBd.ttf", 12, SMOOTHFONT + BOLDFONT)
 FontManager.AddFont("Default", "res/fonts/VeraIt.ttf", 11, SMOOTHFONT + ITALICFONT)
+FontManager.baseFontBold = FontManager.getFont("Default", 11, BOLDFONT)
+
+
 SetImageFont(LoadTrueTypeFont("res/fonts/Vera.ttf", 11,SMOOTHFONT))
 
 PrintVidMem("Fonts")

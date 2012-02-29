@@ -471,7 +471,7 @@ Type TFigures
 			Local figureDoorDifference:Int = 17
 			If clickedToRoom.name = "elevator" Then FigureDoorDifference = 0
 			If Self.ControlledByID >= 0 and Self.id <> figure_HausmeisterID 'in multiplayer to be checked if its the player or not
-				If inRoom = Null And functions.IsIn(pos.x + framewidth, Building.pos.y + Building.GetFloorY(toFloor) - 5, localroom.Pos.x + FigureDoorDifference, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSpritePack("gfx_hochhauspack").GetSprite("Tueren").h, 4, 54)
+				If inRoom = Null And functions.IsIn(pos.x + framewidth, Building.pos.y + Building.GetFloorY(toFloor) - 5, localroom.Pos.x + FigureDoorDifference, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, 4, 54)
 			        'Print "standing in front of clickedroom"
 					AnimPos = 10
 					If localroom.doortype >= 0 and localroom.doortype <> 5 and inRoom <> localroom

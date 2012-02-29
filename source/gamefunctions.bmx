@@ -44,7 +44,7 @@ Type TgfxProgrammelist extends TPlannerList
 		If self.openState >=1
 			gfxgenres.Draw(Pos.x, Pos.y)
 			For local genres:int = 0 To 17 		'18 genres
-				functions.BlockText (TProgramme.GetGenre(genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + 18 * (genres + 1) - 1, 104, 16, 0)
+				FontManager.baseFont.drawBlock (TProgramme.GetGenre(genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + 18 * (genres + 1) - 1, 104, 16, 0)
 			Next
 			SetAlpha 0.6; SetColor 0, 255, 0
 			For local genres:int = 0 To 17 		'18 genres
@@ -483,10 +483,10 @@ Type TTooltip extends TRenderableChild
 
 			SetAlpha Float(100*lifetime / startlifetime) / 100.0
 			'caption
-			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("abc")/2 , 50,50,50, 1)
+			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("ABC")/2 , 50,50,50, 2,0, 1, 0.1)
 			SetColor 90,90,90
 			'text
-			If text <> "" Then self.Usefont.Draw(text, self.pos.x+5,self.pos.y+Self.TooltipHeader.h + 4)
+			If text <> "" Then self.Usefont.Draw(text, self.pos.x+5,self.pos.y+Self.TooltipHeader.h + 7)
 			If self.pos.x > 20 And self.pos.y > 10 And self.pos.x + boxWidth < 760 And self.pos.y + boxHeight < 800 '383 'And lifetime = startlifetime
 				Image = TImage.Create(boxWidth, boxHeight, 1, 0, 255, 0, 255)
 				image.pixmaps[0] = GrabPixmap(self.pos.x, self.pos.y, boxWidth, boxHeight)
@@ -633,7 +633,7 @@ Type TFader
 			DrawRect(20,195+(20-Self.fadecount)*19,380-(20-Self.fadecount)*19,190-(20-Self.fadecount)*19)
 			DrawRect(400+(20-Self.fadecount)*19,195+(20-Self.fadecount)*19,380-(20-Self.fadecount)*19,190-(20-Self.fadecount)*19)
 			SetColor 255,255,255;SetAlpha 1
-		End If
+		EndIf
 	End Method
 End Type
 
@@ -726,6 +726,7 @@ Type TDialogueAnswer
 	Field _func:String(param:Int)
 	Field _funcparam:Int = 0
 
+	field _highlighted:int = 0
 
 	Function Create:TDialogueAnswer (text:String, leadsTo:Int = 0, _func:String(param:Int) = Null, _funcparam:Int = 0)
 		Local obj:TDialogueAnswer = New TDialogueAnswer
@@ -737,8 +738,9 @@ Type TDialogueAnswer
 	End Function
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
-'		If functions.IsIn(MouseX(), MouseY(), x, y, TextWidth(_text), TextHeight(_text))
+		self._highlighted = 0
 		If functions.IsIn(MouseX(), MouseY(), x, y, w, FontManager.baseFont.getBlockHeight(Self._text, w, h))
+			self._highlighted = 1
 			If clicked
 				If _func <> Null Then _func(Self._funcparam)
 				Return _leadsTo
@@ -747,14 +749,8 @@ Type TDialogueAnswer
 		Return - 1
 	End Method
 
-
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
-'		If functions.IsIn(MouseX(), MouseY(), x, y, TextWidth(_text), TextHeight(_text))
-		If functions.IsIn(MouseX(), MouseY(), x, y, w, FontManager.getFont("Default", 14).getBlockHeight(Self._text, w, h))
-			FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h,, 200, 100, 100)
-		Else
-			FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h)
-		EndIf
+		FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h,, 200*self._highlighted, 100*self._highlighted, 100*self._highlighted)
 	End Method
 End Type
 
@@ -835,7 +831,7 @@ Type TDialogue
 		SetColor 255, 255, 255
 	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), _x, _y, _w, _h, "StartLeftDown", 0, "", FontManager.getFont("Default", 14))
 		SetColor 0, 0, 0
-		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(_x + 10, _y + 10, _w - 40, _h)
+		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(_x + 10, _y + 10, _w - 60, _h)
 		SetColor 255, 255, 255
 	End Method
 End Type

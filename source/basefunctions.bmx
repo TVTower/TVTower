@@ -340,42 +340,6 @@ TProfiler.Enter("SortFast")
   TPRofiler.Leave("SortFast")
 End Function
 
-Function StringSplit:String[] (text:String, Separator:String, MaxLength:Int = 0)
-   If Separator = "" Then Return Null
-   If text      = "" Then Return Null
-
-   Local SeparatorCount:Int = 0
-   Local TextPosition  :Int = 1
-   Local LoopCounter   :Int
-   Local Occurrence    :Int
-
-   While Instr(text, Separator, TextPosition)
-     TextPosition   =  Instr(text, Separator, TextPosition) + 1
-     SeparatorCount :+ 1
-   Wend
-
-   If (MaxLength = 0) Or (MaxLength >= SeparatorCount) Then MaxLength = SeparatorCount
-
-   Local Array:String[] = New String[MaxLength+1]
-
-   If MaxLength <> SeparatorCount Then MaxLength :- 1
-
-   For LoopCounter = 0 To MaxLength
-     Occurrence = Instr(text, Separator)
-     If Occurrence > 0 Then
-       Array[LoopCounter] = Left(text, Occurrence-1)
-       text               = Mid(text, Occurrence+Separator.length)
-     Else
-       Array[LoopCounter] = text
-       text               = ""
-     EndIf
-   Next
-
-   If text <> "" Then Array[LoopCounter] = text
-
-   Return Array
-End Function
-
 Function SaveScreenshot()
 
 	Local filename:String, padded:String
@@ -611,102 +575,6 @@ Type TFunctions
 		Local values:String[] = value.split(".")
 		If values[1] <> Null Then Return values[0] + "." + Left(String(Ceil(Float(values[1]))), nachkomma) Else Return values[0]
 	End Function
-
-  Function DrawTextWithBG(value:String, x:Int, y:Int, bgAlpha:Float = 0.5, bgCol:Int = 0)
-  	Local OldAlpha:Float = GetAlpha()
-	Local colR:Int, colG:Int, colB:Int
-	GetColor(colR, colG, colB)
-  	SetAlpha bgAlpha
-	SetColor bgCol, bgCol, bgCol
-	DrawRect(x, y, TextWidth(value), TextHeight(value))
-	SetAlpha OldAlpha
-	SetColor colR, colG, colB
-  	DrawText(value, x, y)
-  End Function
-
-  'returns used height
-Function BlockText:Int(txt:String, x:Float, y:Float, width:Float, height:Float, align:Int = 0, _font:TImageFont = Null, colR:Int = 0, colG:Int = 0, colB:Int = 0, NoLineBreak:Byte = 0, doDraw:Int = 1)
-Local charcount:Int = 0
-Local deletedchars:Int = 0
-Local charpos   : Int = 0
-Local linetxt   : String
-Local spaceAvaiable:Float = 0
-Local oldcolr:Int = 0
-Local oldcolg:Int = 0
-Local oldcolb:Int = 0
-Local alignedx:Int = 0
-Local oldfont:TImageFont
-Local usedHeight:Int = 0
-  If _font = Null Then _font = GetImageFont()
-
-  oldfont = GetImageFont()
-  SetImageFont(_font)
-  If doDraw
-	  GetColor(oldcolr, oldcolg, oldcolb)
-	  SetColor(colR,colG,colB)
-  EndIf
-  spaceAvaiable = height
-
-  linetxt$ = txt$
- If NoLineBreak = False
-  Repeat
-    charcount = 0
-	If TextWidth(linetxt$) >= width
-	While TextWidth(linetxt$) >= width
-      For charpos = 0 To Len(linetxt) - 1
-		If linetxt[charpos] = Asc(" ") Then CharCount = charpos
-		If linetxt[charpos] = Asc("-") Then CharCount = charpos - 1
-		If linetxt[charpos] = Asc(Chr(13)) Then CharCount = charpos;charpos = Len(Linetxt) - 1
-	  Next
-	  linetxt = linetxt[..CharCount]
-	Wend
-	EndIf
-    If 2 * TextHeight(linetxt) > SpaceAvaiable And linetxt <> txt[deletedchars..]
-      If align = 0 Then alignedx = x
-      If align = 1 Then alignedx = x + (width - TextWidth(linetxt[..Len(linetxt) - 3] ) / 2)
-      If align = 2 Then alignedx = x + width - TextWidth(linetxt[..Len(linetxt) - 3] )
-      If doDraw Then DrawText(linetxt[..Len(linetxt) - 3] + " ...", alignedx, y + Height - spaceAvaiable)
-      charcount = 0
-    Else
-      If TextHeight(linetxt) < SpaceAvaiable
-        If align = 0 Then alignedx = x
-        If align = 1 Then alignedx = x + (width - TextWidth(linetxt)) / 2
-        If align = 2 Then alignedx = x + width - TextWidth(linetxt)
-        If doDraw Then DrawText(linetxt, alignedx, y + Height - spaceAvaiable)
-      EndIf
-    EndIf
-    spaceAvaiable = spaceAvaiable - TextHeight(linetxt)
-    deletedchars :+ (charcount+1)
-    linetxt = txt[Deletedchars..]
-  Until charcount = 0
-  usedheight = Height - spaceAvaiable
- Else 'no linebreak allowed
-   If TextWidth(linetxt$) >= width
-     charcount = Len(linetxt$)-1
- 	 While TextWidth(linetxt$) >= width
-	   linetxt$ = linetxt$[..charcount]
-	   charcount:-1
-	 Wend
-     If align = 0 Then alignedx = x
-     If align = 1 Then alignedx = x+(width-TextWidth(linetxt$))/2
-     If align = 2 Then alignedx = x+width-TextWidth(linetxt$)
-     spaceAvaiable = spaceAvaiable - TextHeight(linetxt$[..Len(linetxt$)-2]+"..")
-     If doDraw Then DrawText(linetxt:String[..Len(linetxt:String) - 2] + "..", alignedx, y)
-   Else
-     If align = 0 Then alignedx = x
-     If align = 1 Then alignedx = x + (width - TextWidth(linetxt)) / 2
-     If align = 2 Then alignedx = x + width - TextWidth(linetxt)
-     spaceAvaiable = spaceAvaiable - TextHeight(linetxt)
-     If doDraw Then DrawText(linetxt, alignedx, y)
-   EndIf
-   usedheight = TextHeight(linetxt)
- EndIf
-  If doDraw
-	  SetColor(oldcolr, oldcolg, oldcolb)
-  EndIf
-  SetImageFont(oldfont)
-  Return usedheight
-End Function
 End Type
 Global functions:TFunctions = New TFunctions
 
@@ -824,6 +692,37 @@ Type TDragAndDrop
 
 End Type
 
+Type TColor
+	Field r:int=0, g:int=0, b:int=0
+
+	Function Create:TColor(r:int=0,g:int=0,b:int=0)
+		local obj:TColor = new TColor
+		obj.r = r
+		obj.g = g
+		obj.b = b
+		return obj
+	End Function
+
+	Method adjust(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)
+		if overwrite
+			self.r = r
+			self.g = g
+			self.b = b
+		else
+			self.r :+r
+			self.g :+g
+			self.b :+b
+		endif
+	End Method
+
+	Method set()
+		SetColor(self.r, self.g, self.b)
+	End Method
+
+	Method get()
+		GetColor(self.r, self.g, self.b)
+	End Method
+End Type
 
 Type TPlayerColor
    Field colR:Int = 0
@@ -867,7 +766,7 @@ Type TPlayerColor
 
 
    Method MySetColor()
-   	SetColor (colR, colG, colB)
+		SetColor (colR, colG, colB)
    End Method
 
 End Type
