@@ -10,6 +10,7 @@ Import "basefunctions_loadsave.bmx"
 Import "basefunctions_xml.bmx"
 
 'Import bah.libxml
+Import "external/libxml/libxml.bmx"
 
 
 'Mersenne: Random numbers
@@ -23,6 +24,69 @@ Extern "c"
   Function RandRange:Int(lo:int,hi:int)
 End Extern
 '------------------------
+
+Type TXmlHelper
+	field filename:string =""
+	field file:TxmlDoc
+	field root:TxmlNode
+	field currentNode:TxmlNode
+
+	Function Create:TXmlHelper(filename:string)
+		local obj:TXmlHelper = new TXmlHelper
+		obj.filename	= filename
+		obj.file		= TxmlDoc.parseFile(filename)
+		obj.root		= obj.file.getRootElement()
+		return obj
+	End Function
+
+	Method SetNode(newCurrentNode:TxmlNode)
+		self.currentNode = newCurrentNode
+	End Method
+
+	Method FindRootChild:TxmlNode(nodeName:string)
+		local children:TList = root.getChildren()
+		For local child:TxmlNode = eachin children
+			if child.getName() = nodeName then return child
+		Next
+		return null
+	End Method
+
+	Method FindChild:TxmlNode(nodeName:string)
+		local children:TList = currentNode.getChildren()
+		For local child:TxmlNode = eachin children
+			if child.getName() = nodeName then return child
+		Next
+		return null
+	End Method
+
+	Method FindValue:string(fieldName:string, defaultValue:string)
+		fieldName = fieldName.ToLower()
+
+		'given node has attribute (<episode number="1">)
+		If currentNode.getAttribute(fieldName) <> null
+			Return currentNode.getAttribute(fieldName)
+		endif
+
+		'children
+		local children:TList = currentNode.getChildren()
+
+		For local subNode:TxmlNode = EachIn children
+			If subNode.getName().ToLower() = fieldName then return subNode.getContent()
+			If subNode.getAttribute(fieldName) <> null then Return subNode.getAttribute(fieldName)
+		Next
+		return defaultValue
+	EndMethod
+
+	Method FindValueInt:int(fieldName:string, defaultValue:int)
+		return int( self.FindValue(fieldName, string(defaultValue)) )
+	End Method
+
+End Type
+
+
+
+
+
 
 
 Const DEBUG_ALL:Byte = 128
@@ -435,18 +499,15 @@ Type TProfiler
 
 		Local fi:TStream = WriteFile( file )
 
-			WriteLine fi,"Aurora Profiler Log V1.0"
+			WriteLine fi,"Profiler"
 			For Local c:TCall = EachIn calls
 
-				WriteLine fi,"---------------------------------------------------------------------"
+				WriteLine fi,"-----------------------------------------------------------"
 				Local totTime:int=0
 				For Local t:TLength = EachIn c.times
 					totTime:+t.time
 				Next
 				WriteLine fi, "Function:" + LSet:String(C.name, 30) + " Calls:" + c.calls + " Total:" + String(Float(tottime) / Float(1000)) + "s Avg:" + String((Float(TotTime) / Float(c.calls)) / Float(1000)) + "s"
-'				WriteLine fi,"Function:"+C.name+" Calls:"+c.calls+" Total:"+TotTime+" Avg:"+Float(TotTime)/Float(c.calls)
-'				WriteLine fi,"Total (Seconds):"+String( Float(tottime)/Float(1000) )
-'				WriteLine fi,"Avg (Seconds):"+String( (Float(TotTime)/Float(c.calls) ) / Float(1000) )
 			Next
 
 
