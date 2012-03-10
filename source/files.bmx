@@ -26,18 +26,17 @@ Import "basefunctions_resourcemanager.bmx"
 'Import "functions_file.bmx"
 
 
-Global VersionDate:String = LoadText("incbin::source/version.txt")
-Global versionstring:String = "version of " + VersionDate
-Global copyrightstring:String = "by Ronny Otto, gamezworld.de"
+Global VersionDate:String		= LoadText("incbin::source/version.txt")
+Global versionstring:String		= "version of " + VersionDate
+Global copyrightstring:String	= "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
-Global filestotal:Int = 76
-Global pixelperfile:Float = 660 / Float(filestotal)
-Global filecount:Int =0
-Global filesperscreen:Int= 30
-
-Global LoadImageError:Int = 0
-Global LoadImageText :String = ""
+Global filestotal:Int		= 76
+Global pixelperfile:Float	= 660 / Float(filestotal)
+Global filecount:Int		= 0
+Global filesperscreen:Int	= 30
+Global LoadImageError:Int	= 0
+Global LoadImageText:String	= ""
 
 
 Global gfx_startscreen:TBigImage		= TBigImage.CreateFromImage(LoadImage("grafiken/start_bg.png"))
@@ -68,12 +67,12 @@ Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,ce
 	gfx_startscreen.render(0, 0)
 	If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
 	SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
-	DrawImage(gfx_startscreen_logo, WIDTH/2 - ImageWidth(gfx_startscreen_logo) / 2, 100)
+	DrawImage(gfx_startscreen_logo, Settings.width/2 - ImageWidth(gfx_startscreen_logo) / 2, 100)
 	SetAlpha 1.0
-	DrawImage(gfx_loading_bar, 0, WIDTH/2 -56  + 32, 1)
+	DrawImage(gfx_loading_bar, 0, Settings.width/2 -56  + 32, 1)
 
 	LoaderWidth = Max(filecount * pixelperfile, LoaderWidth+1)
-	DrawSubImageRect(gfx_loading_bar,0,WIDTH/2 -56 +32, LoaderWidth, gfx_loading_bar.Height, 0, 0, LoaderWidth, gfx_loading_bar.Height, 0, 0, 0)
+	DrawSubImageRect(gfx_loading_bar,0,Settings.width/2 -56 +32, LoaderWidth, gfx_loading_bar.Height, 0, 0, LoaderWidth, gfx_loading_bar.Height, 0, 0, 0)
 
 	SetAlpha 0.3
 	SetColor 0,0,0
@@ -116,14 +115,12 @@ Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,ce
 	EndIf
 End Function
 
-
-
 Const DYNAMICALLY_LOAD_IMAGES:Byte = 1
 
-Global LastMem:Int	= 0
-Global totalmem:Int	= 0
-Global freemem:Int	= 0
-Global UsedMemAtStart:Int = 0
+Global LastMem:Int			= 0
+Global totalmem:Int			= 0
+Global freemem:Int			= 0
+Global UsedMemAtStart:Int	= 0
 
 Function PrintVidMem(usage:String)
 ?win32
@@ -138,76 +135,50 @@ Function PrintVidMem(usage:String)
 ?
 End Function
 
-Global DX9StartMemory:Int = 0
-Global fullscreen:Int = 0
-Global directx:Int = 0
-Global colordepth:Int = 16
+Global DX9StartMemory:Int	= 0
+
+Global Settings:TApplicationSettings = TApplicationSettings.Create()
 '#Region Read Screenmode
-	  Local root:xmlNode
-      Local XMLFile:xmlDocument = xmlDocument.Create("config/settings.xml")
- 	  If XMLFile <> Null Then PrintDebug ("files.bmx", "settings.xml zur Ueberpruefung zwecks Vollbildeinstellung geladen", DEBUG_LOADING)
-      root = XMLFile.root().FindChild("settings")
-	  If root = Null Then Throw "root not found"
-	  If root.Name = "settings" Then
-		If root.FindChild("fullscreen") <> Null
-          fullscreen     = Int(root.FindChild("fullscreen").Value)
-		Else
-	 	  PrintDebug ("files.bmx", "settings.xml fehlt 'fullscreen', setze Defaultwert: 0", DEBUG_LOADING)
-		  fullscreen = 0
-		EndIf
-		If root.FindChild("directx") <> Null
-          directx     = Int(root.FindChild("directx").value)
-		Else
-	 	  PrintDebug ("files.bmx", "settings.xml fehlt 'directx', setze Defaultwert: 0 (OpenGL)", DEBUG_LOADING)
-		  directx = 0
-		EndIf
-		If root.FindChild("colordepth") <> Null
-          colordepth = Int(root.FindChild("colordepth").value)
-		  If colordepth <> 16 And colordepth <> 32 Then
-			PrintDebug ("files.bmx", "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16", DEBUG_LOADING)
-		  	colordepth = 16
-		  EndIf
-		Else
-			PrintDebug ("files.bmx", "settings.xml fehlt 'colordepth', setze Defaultwert: 16", DEBUG_LOADING)
-		  colordepth = 16
-		EndIf
-      EndIf
-'	 EndIf
+	local xml:TXmlHelper = TXmlHelper.Create("config/settings.xml")
+	xml.setNode( xml.FindRootChild("settings") )
+	if xml.currentNode = null OR xml.currentNode.getName() <> "settings"
+		print "settings.xml fehlt der settings-Bereich"
+	Endif
+	Settings.fullscreen	= xml.FindValueInt("fullscreen", Settings.fullscreen, "settings.xml fehlt 'fullscreen', setze Defaultwert: "+Settings.fullscreen)
+	Settings.directx	= xml.FindValueInt("directx", Settings.directx, "settings.xml fehlt 'directx', setze Defaultwert: "+Settings.directx+" (OpenGL)")
+	Settings.colordepth	= xml.FindValueInt("colordepth", Settings.colordepth, "settings.xml fehlt 'colordepth', setze Defaultwert: "+Settings.colordepth)
+	If Settings.colordepth <> 16 And Settings.colordepth <> 32
+		print "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16"
+		Settings.colordepth = 16
+	EndIf
 '#End Region
 
 Local g:TGraphics
-Global WIDTH:Int=800,HEIGHT:Int=600
-Local d:Int=colordepth*fullscreen,hertz2:Int=60
-Local MyFlag:Int = 0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
 Try
 ?Win32
-	If directx = 1
-		SetGraphicsDriver D3D7Max2DDriver()
-	Else If directx = 2
-		SetGraphicsDriver D3D9Max2DDriver()
-	Else If directx = 0
-		SetGraphicsDriver GLMax2DDriver()
-	EndIf
-	g = Graphics(WIDTH, HEIGHT, d, hertz2, MyFlag)
+	Select Settings.directx
+		case  1	SetGraphicsDriver D3D7Max2DDriver()
+		case  2	SetGraphicsDriver D3D9Max2DDriver()
+		case -1 SetGraphicsDriver GLMax2DDriver()
+		default SetGraphicsDriver BufferedGLMax2DDriver()
+	EndSelect
+	g = Graphics(Settings.width, Settings.height Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
 	If g = Null
 		Throw "Graphics initiation error! The game will try to open in windowed DirectX 7 mode."
 		SetGraphicsDriver D3D7Max2DDriver()
-		g = Graphics(WIDTH, HEIGHT, 0, hertz2)
+		g = Graphics(Settings.width, Settings.height, 0, Settings.Hertz)
 	EndIf
 ?
-?Linux
-	'SetGraphicsDriver GLMax2DDriver()
-	SetGraphicsDriver BufferedGLMax2DDriver()
-	g = Graphics(WIDTH, HEIGHT, d, hertz2, MyFlag)
-	If g = Null Then Throw "Graphics initiation error! no DirectX available."
-?
-?MacOs
-	SetGraphicsDriver GLMax2DDriver()
-	g = Graphics(WIDTH, HEIGHT, d, hertz2, MyFlag)
-	If g = Null Then Throw "Graphics initiation error! no DirectX available."
+?not Win32
+	If Settings.directx = -1
+		SetGraphicsDriver GLMax2DDriver()
+	Else
+		SetGraphicsDriver BufferedGLMax2DDriver()
+	endif
+	g = Graphics(Settings.width, Settings.height, Settings.colordepth*Settings.fullscreen, Settings.hertz, Settings.Flag)
+	If g = Null Then Throw "Graphics initiation error! no OpenGL available."
 ?
 EndTry
-
 
 
 SetBlend ALPHABLEND     'without it alphachannels are worth nothing
@@ -242,7 +213,7 @@ Global gfx_interface_topbottom:TBigImage	= TBigImage.createFromImage(CheckLoadIm
 Global gfx_datasheets_movie:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_filmblatt.png"))
 Global gfx_datasheets_series:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_serienblatt.png"))
 Global gfx_datasheets_contract:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_werbeblatt.png"))
-Global gfx_financials_barren_base:TImage = LoadImage("grafiken/buero/finanzen_balken.png", 0)
+Global gfx_financials_barren_base:TImage	= LoadImage("grafiken/buero/finanzen_balken.png", 0)
 
 Global stationmap_land_sachsen:TImage		= Assets.GetSprite("gfx_officepack_topo_sachsen").GetImage()
 Global stationmap_land_niedersachsen:TImage	= Assets.GetSprite("gfx_officepack_topo_niedersachsen").GetImage()
@@ -261,7 +232,7 @@ Global stationmap_land_berlin:TImage		= Assets.GetSprite("gfx_officepack_topo_be
 Global stationmap_land_hamburg:TImage		= Assets.GetSprite("gfx_officepack_topo_hamburg").GetImage()
 Global stationmap_land_bremen:TImage		= Assets.GetSprite("gfx_officepack_topo_bremen").GetImage()
 
-Global gfx_mousecursor:TImage       = CheckLoadImage("grafiken/interface/cursor.png", 0, 32,32,0,3) 'normal mousecursor
+Global gfx_mousecursor:TImage       		= CheckLoadImage("grafiken/interface/cursor.png", 0, 32,32,0,3) 'normal mousecursor
 
 '=== fonts =========================
 Global FontManager:TGW_FontManager	= TGW_FontManager.Create()
@@ -273,8 +244,6 @@ FontManager.baseFontBold = FontManager.getFont("Default", 11, BOLDFONT)
 
 SetImageFont(LoadTrueTypeFont("res/fonts/Vera.ttf", 11,SMOOTHFONT))
 
-PrintVidMem("Fonts")
-
 Global gfx_figures_hausmeister:TImage = CheckLoadImage("grafiken/hochhaus/spielfigur_hausmeister.png", 0, 51, 44, 0, 15)
 
 
@@ -282,10 +251,9 @@ Global gfx_figures_hausmeister:TImage = CheckLoadImage("grafiken/hochhaus/spielf
 Global stationmap_mainpix:TPixmap 			= LoadPixmap("grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png")
 Global gfx_collisionpixel:TImage 		    = CheckLoadImage("grafiken/senderkarte/collisionpixel.png")
 '===================================
+rem
 
-Global gfx_button_blue:TImage = LoadImage(ColorizeImage("grafiken/button.png",75,90,100), 0)
-
-Global gfx_contract_base:TImage = CheckLoadImage("grafiken/werbeagentur/werbung_vertraege.png", 0)
+Global gfx_contract_base:TImage	= CheckLoadImage("grafiken/werbeagentur/werbung_vertraege.png", 0)
 Global gfx_contract_img:TImage	= TImage.Create(ImageWidth(gfx_contract_base) * 10, ImageHeight(gfx_contract_base), 1, 0, 255, 0, 255)
 local tmppix:TPixmap
 tmppix = LockImage(gfx_contract_img, 0)
@@ -309,23 +277,7 @@ For Local i:Int = 0 To 9
 	gfx_contract.AddSprite("ContractDragged" + i, 21 * i, 0, 21, 60)
 	gfx_contract.AddSprite("Contract" + i, 21 * i, 60, 17, 68)
 Next
-'gfx_contract_base = Null 'ram sparen
-
-rem
-Global gfx_movie:TImage 		= CheckLoadImage("grafiken/filmverleiher/film_huellen.png", 0, 15,70,0,10)
-'Global gfx_auctionmovie:TImage	= CheckLoadImage("grafiken/filmverleiher/film_auktionsfilm.png", 0)
-
-gfx_movie.pixmaps[0] = ColorizePixmap(gfx_movie, 0, 100, 30, 130)
-gfx_movie.pixmaps[1] = ColorizePixmap(gfx_movie,1,120,100, 20)
-gfx_movie.pixmaps[2] = ColorizePixmap(gfx_movie,2,150, 50,100)
-gfx_movie.pixmaps[3] = ColorizePixmap(gfx_movie,3,100,150,200)
-gfx_movie.pixmaps[4] = ColorizePixmap(gfx_movie,4,130,200, 80)
-gfx_movie.pixmaps[5] = ColorizePixmap(gfx_movie,5,210, 25,220)
-gfx_movie.pixmaps[6] = ColorizePixmap(gfx_movie,6,180,180, 20)
-gfx_movie.pixmaps[7] = ColorizePixmap(gfx_movie,7,130, 50,100)
-gfx_movie.pixmaps[8] = ColorizePixmap(gfx_movie,8,230,120, 80)
-gfx_movie.pixmaps[9] = ColorizePixmap(gfx_movie,9,230,220, 40)
-endrem
+endRem
 
 SetMaskColor 255, 0, 255
 SetBlend ALPHABLEND

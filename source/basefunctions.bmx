@@ -25,6 +25,22 @@ Extern "c"
 End Extern
 '------------------------
 
+Type TApplicationSettings
+	field fullscreen:int	= 0
+	field directx:int		= 0
+	field colordepth:int	= 16
+	field width:int			= 800
+	field height:int		= 600
+	field hertz:int			= 60
+	field flag:Int			= 0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
+
+	Function Create:TApplicationSettings()
+		local obj:TApplicationSettings = new TApplicationSettings
+		return obj
+	End Function
+End Type
+
+
 Type TXmlHelper
 	field filename:string =""
 	field file:TxmlDoc
@@ -59,7 +75,7 @@ Type TXmlHelper
 		return null
 	End Method
 
-	Method FindValue:string(fieldName:string, defaultValue:string)
+	Method FindValue:string(fieldName:string, defaultValue:string, logString:string="")
 		fieldName = fieldName.ToLower()
 
 		'given node has attribute (<episode number="1">)
@@ -74,11 +90,14 @@ Type TXmlHelper
 			If subNode.getName().ToLower() = fieldName then return subNode.getContent()
 			If subNode.getAttribute(fieldName) <> null then Return subNode.getAttribute(fieldName)
 		Next
+
+		if logString <> "" then print logString
+
 		return defaultValue
 	EndMethod
 
-	Method FindValueInt:int(fieldName:string, defaultValue:int)
-		return int( self.FindValue(fieldName, string(defaultValue)) )
+	Method FindValueInt:int(fieldName:string, defaultValue:int, logString:string="")
+		return int( self.FindValue(fieldName, string(defaultValue), logString) )
 	End Method
 
 End Type

@@ -388,6 +388,19 @@ Type TXmlLoader
 					EndIf
 				EndIf
 
+				If scriptDo = "AddCopySprite"
+					Local _src:String	= String(script.Attribute("src").Value)
+					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
+						Local _x:Int		= Int( getAttribute(script, "x", TGW_Spritepack(data).getSprite(_src).pos.x) )
+						Local _y:Int		= Int( getAttribute(script, "y", TGW_Spritepack(data).getSprite(_src).pos.y) )
+						Local _w:Int		= Int( getAttribute(script, "w", TGW_Spritepack(data).getSprite(_src).w) )
+						Local _h:Int		= Int( getAttribute(script, "h", TGW_Spritepack(data).getSprite(_src).h) )
+						Local _frames:Int	= Int( getAttribute(script, "frames", TGW_Spritepack(data).getSprite(_src).animcount) )
+						Assets.Add(_dest, TGW_Spritepack(data).AddCopySprite(_src, _dest, _x, _y, _w, _h, _frames, _r, _g, _b))
+					EndIf
+				EndIf
+
+
 			Next
 		EndIf
 	End Method

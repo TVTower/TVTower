@@ -97,6 +97,18 @@ AD_TILL_TOMORROW  = till tomorrow!
 AD_STILL_X_DAYS= still %1 days
 AD_TIME        = time
 
+AD_GENRE_NONE	= "All"
+AD_GENRE_1		= "Children"
+AD_GENRE_2		= "Teenagers"
+AD_GENRE_3		= "House wifes"
+AD_GENRE_4		= "Employees"
+AD_GENRE_5		= "Unemployed"
+AD_GENRE_6		= "Manager"
+AD_GENRE_7		= "Retired citizens"
+AD_GENRE_8		= "Women"
+AD_GENRE_9		= "Men"
+
+
 MOVIE_DIRECTOR  = director
 MOVIE_ACTORS    = actors
 MOVIE_SPEED     = speed
@@ -125,6 +137,8 @@ MOVIE_GENRE_15= yellow press
 MOVIE_GENRE_16= news
 MOVIE_GENRE_17= show
 MOVIE_GENRE_18= monumental
+MOVIE_GENRE_19= fillers
+MOVIE_GENRE_20= paid programing
 
 FINANCES_OVERVIEW     = financial overview
 FINANCES_COSTS        = costs

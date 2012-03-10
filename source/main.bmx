@@ -52,19 +52,17 @@ TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
 TTooltip.UseFont 		= FontManager.GetFont("Default", 11, 0)
 TTooltip.ToolTipIcons	= gfx_building_tooltips
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
-Global App:TApp = TApp.Create(100, 1, WIDTH, HEIGHT) 'create with 60fps for physics and graphics
+Global App:TApp = TApp.Create(100, 1) 'create with 60fps for physics and graphics
 
 Type TApp
 	Field Timer:TDeltaTimer
 	Field limitFrames:Int = 0
-	Field height:Int = 600
-	Field width:Int = 800
+	Field settings:TApplicationSettings
 	field prepareScreenshot:Int = 0
 
-	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0, width:Int = 800, height:Int = 600)
+	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0)
 		Local obj:TApp = New TApp
-		obj.width = width
-		obj.height = height
+		obj.settings = Settings 'global
 		'create timer
 		obj.timer = TDeltaTimer.Create(physicsFps)
 		'listen to App-timer
@@ -263,14 +261,14 @@ Type TGame
 		Game.day 			= 1
 		Game.minute 		= 0
 		Game.title			= "unknown"
-		Game.daynames		= [	Localization.GetString("WEEK_SHORT_MONDAY"), 	Localization.GetString("WEEK_SHORT_TUESDAY"),..
-								Localization.GetString("WEEK_SHORT_WEDNESDAY"), Localization.GetString("WEEK_SHORT_THURSDAY"),..
-								Localization.GetString("WEEK_SHORT_FRIDAY"),	Localization.GetString("WEEK_SHORT_SATURDAY"),..
-								Localization.GetString("WEEK_SHORT_SUNDAY") ]
-		Game.daynames_long	= [	Localization.GetString("WEEK_LONG_MONDAY"),		Localization.GetString("WEEK_LONG_TUESDAY"),..
-								Localization.GetString("WEEK_LONG_WEDNESDAY"),	Localization.GetString("WEEK_LONG_THURSDAY"),..
-								Localization.GetString("WEEK_LONG_FRIDAY"),		Localization.GetString("WEEK_LONG_SATURDAY"),..
-								Localization.GetString("WEEK_LONG_SUNDAY") ]
+		Game.daynames		= [	GetLocale("WEEK_SHORT_MONDAY"),		GetLocale("WEEK_SHORT_TUESDAY"),..
+								GetLocale("WEEK_SHORT_WEDNESDAY"),	GetLocale("WEEK_SHORT_THURSDAY"),..
+								GetLocale("WEEK_SHORT_FRIDAY"),		GetLocale("WEEK_SHORT_SATURDAY"),..
+								GetLocale("WEEK_SHORT_SUNDAY") ]
+		Game.daynames_long	= [	GetLocale("WEEK_LONG_MONDAY"),		GetLocale("WEEK_LONG_TUESDAY"),..
+								GetLocale("WEEK_LONG_WEDNESDAY"),	GetLocale("WEEK_LONG_THURSDAY"),..
+								GetLocale("WEEK_LONG_FRIDAY"),		GetLocale("WEEK_LONG_SATURDAY"),..
+								GetLocale("WEEK_LONG_SUNDAY") ]
 		If Not List Then List = New TList
 		List.AddLast(Game)
 		List.Sort()
@@ -386,7 +384,7 @@ Type TGame
 	'Summary: returns day of the week including gameday
 	Method GetFormattedDay:String(_day:Int = -5)
 		If _day <= 0 Then _day = 1
-		Return _day+"."+Localization.GetString("DAY")+" ("+daynames[((_day-1) Mod 7)]+")"
+		Return _day+"."+GetLocale("DAY")+" ("+daynames[((_day-1) Mod 7)]+")"
 	End Method
 
 	Method GetFormattedDayLong:String(_day:Int = -5)
@@ -726,7 +724,7 @@ Type TPlayer
 						quote.audiencepercentage = Int(Floor(Player.audience * 1000 / Player.maxaudience))
 					End If
 				Else
-					TAudienceQuotes.Create(Programme.title + " (" + Localization.GetString("BLOCK") + " " + (1 + Game.GetActualHour() - Programme.sendtime) + "/" + Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetActualHour(), Game.GetActualMinute(), Game.day, Player.playerID)
+					TAudienceQuotes.Create(Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetActualHour() - Programme.sendtime) + "/" + Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetActualHour(), Game.GetActualMinute(), Game.day, Player.playerID)
 				End If
 				If Programme.sendtime + Programme.blocks <= Game.getNextHour()
 					Local OrigProgramme:TProgramme = Player.ProgrammeCollection.GetOriginalProgramme(Programme)
@@ -1072,10 +1070,10 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
 		DragAndDrop.used = 0
-		DragAndDrop.rectx = 550 + gfx_contract.GetSprite("Contract0").w * i
+		DragAndDrop.rectx = 550 + Assets.GetSprite("gfx_contracts_base").w * i
 		DragAndDrop.recty = 87
-		DragAndDrop.rectw = gfx_contract.GetSprite("Contract0").w - 1
-		DragAndDrop.recth = gfx_contract.GetSprite("Contract0").h
+		DragAndDrop.rectw = Assets.GetSprite("gfx_contracts_base").w - 1
+		DragAndDrop.recth = Assets.GetSprite("gfx_contracts_base").h
 		If Not TContractBlocks.DragAndDropList Then TContractBlocks.DragAndDropList = CreateList()
 		TContractBlocks.DragAndDropList.AddLast(DragAndDrop)
 		SortList TContractBlocks.DragAndDropList
@@ -1941,13 +1939,13 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
-Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_SOLO_GAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(600, 348, 120, 0, 1, 1, Localization.GetString("MENU_NETWORKGAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(600, 396, 120, 0, 1, 1, Localization.GetString("MENU_ONLINEGAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(600, 300, 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(600, 348, 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(600, 396, 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", FontManager.GetFont("Default", 11, BOLDFONT))
 
-Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_JOIN"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(600, 345, 120, 0, 1, 1, Localization.GetString("MENU_CREATE_GAME"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(600, 390, 120, 0, 1, 1, Localization.GetString("MENU_BACK"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(600, 300, 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(600, 345, 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(600, 390, 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", FontManager.GetFont("Default", 11, BOLDFONT))
 Global NetgameLobby_gamelist:TGUIList		= TGUIList.Create(25 + 3, 300, 440, 175, 1, 100, "NetGameLobby")
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
 NetgameLobby_gamelist.GUIbackground = Null
@@ -1956,8 +1954,8 @@ Global GameSettingsBG:TGUIBackgroundBox = TGUIBackgroundBox.Create(20, 20, 760, 
 
 Global GameSettingsOkButton_Announce:TGUIOkButton = TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings")
 Global GameSettingsGameTitle:TGuiInput = TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
-Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(600, 300, 120, 0, 1, 1, Localization.GetString("MENU_START_GAME"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
-Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(600, 345, 120, 0, 1, 1, Localization.GetString("MENU_BACK"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(600, 300, 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(600, 345, 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", FontManager.GetFont("Default", 11, BOLDFONT))
 Global GameSettings_Chat:TGUIChat = TGuiChat.Create(20 + 3, 300, 450, 250, 1, 200, "GameSettings")
 Global InGame_Chat:TGUIChat = TGuiChat.Create(20, 10, 250, 200, 1, 200, "InGame")
 GameSettings_Chat._UpdateFunc_	= UpdateChat_GameSettings
@@ -2064,18 +2062,18 @@ Next
 
 '#Region : Button (News and ProgrammePlanner)-Creation
 For Local i:Int = 0 To 4
-	TNewsbuttons.Create(0,3, Localization.GetString("NEWS_TECHNICS_MEDIA"), i, 20,194,0)
-	TNewsbuttons.Create(1,0, Localization.GetString("NEWS_POLITICS_ECONOMY"), i, 69,194,1)
-	TNewsbuttons.Create(2,1, Localization.GetString("NEWS_SHOWBIZ"), i, 20,247,2)
-	TNewsbuttons.Create(3,2, Localization.GetString("NEWS_SPORT"), i, 69,247,3)
-	TNewsbuttons.Create(4,4, Localization.GetString("NEWS_CURRENTAFFAIRS"),i, 118,247,4)
+	TNewsbuttons.Create(0,3, GetLocale("NEWS_TECHNICS_MEDIA"), i, 20,194,0)
+	TNewsbuttons.Create(1,0, GetLocale("NEWS_POLITICS_ECONOMY"), i, 69,194,1)
+	TNewsbuttons.Create(2,1, GetLocale("NEWS_SHOWBIZ"), i, 20,247,2)
+	TNewsbuttons.Create(3,2, GetLocale("NEWS_SPORT"), i, 69,247,3)
+	TNewsbuttons.Create(4,4, GetLocale("NEWS_CURRENTAFFAIRS"),i, 118,247,4)
 Next
-TPPbuttons.Create(Assets.GetSprite("btn_options"), Localization.GetString("PLANNER_OPTIONS"), 672, 40 + 2 * 56, 2)
-TPPbuttons.Create(Assets.GetSprite("btn_programme"), Localization.GetString("PLANNER_PROGRAMME"), 672, 40 + 1 * 56, 1)
-TPPbuttons.Create(Assets.GetSprite("btn_ads"), Localization.GetString("PLANNER_ADS"), 672, 40 + 0 * 56, 0)
-TPPbuttons.Create(Assets.GetSprite("btn_financials"), Localization.GetString("PLANNER_FINANCES"), 672, 40 + 3 * 56, 3)
-TPPbuttons.Create(Assets.GetSprite("btn_image"), Localization.GetString("PLANNER_IMAGE"), 672, 40 + 4 * 56, 4)
-TPPbuttons.Create(Assets.GetSprite("btn_news"), Localization.GetString("PLANNER_MESSAGES"), 672, 40 + 5 * 56, 5)
+TPPbuttons.Create(Assets.GetSprite("btn_options"), GetLocale("PLANNER_OPTIONS"), 672, 40 + 2 * 56, 2)
+TPPbuttons.Create(Assets.GetSprite("btn_programme"), GetLocale("PLANNER_PROGRAMME"), 672, 40 + 1 * 56, 1)
+TPPbuttons.Create(Assets.GetSprite("btn_ads"), GetLocale("PLANNER_ADS"), 672, 40 + 0 * 56, 0)
+TPPbuttons.Create(Assets.GetSprite("btn_financials"), GetLocale("PLANNER_FINANCES"), 672, 40 + 3 * 56, 3)
+TPPbuttons.Create(Assets.GetSprite("btn_image"), GetLocale("PLANNER_IMAGE"), 672, 40 + 4 * 56, 4)
+TPPbuttons.Create(Assets.GetSprite("btn_news"), GetLocale("PLANNER_MESSAGES"), 672, 40 + 5 * 56, 5)
 '#End Region
 
 CreateDropZones()
@@ -2274,7 +2272,7 @@ Function Menu_Main_Draw()
 	If Rand(0,10) = 10 Then GCCollect()
 	SetColor 190,220,240
 	SetAlpha 0.5
-	DrawRect(0,0,App.width,App.Height)
+	DrawRect(0,0,App.settings.width,App.settings.Height)
 	SetAlpha 1.0
 	SetColor 255, 255, 255
 
@@ -2308,16 +2306,16 @@ End Function
 Function Menu_NetworkLobby_Draw()
 	SetColor 190,220,240
 	SetAlpha 0.5
-	DrawRect(0,0,App.width,App.height)
+	DrawRect(0,0,App.settings.width,App.settings.height)
 	SetAlpha 1.0
 	SetColor 255,255,255
 	GUIManager.Draw("NetGameLobby")
 	If Not Game.onlinegame Then
-		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_NETWORKGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
-		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_NETWORKGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
+		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_NETWORKGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
+		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_NETWORKGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
 	Else
-		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_ONLINEGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
-		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(Localization.GetString("MENU_ONLINEGAME")+": "+Localization.GetString("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
+		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_ONLINEGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
+		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_ONLINEGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
 	EndIf
 	If Game.cursorstate = 0 DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
 	If Game.cursorstate = 1 DrawImage(gfx_mousecursor, MouseX()-10, MouseY()-10,1)
@@ -2326,20 +2324,20 @@ End Function
 Function Menu_GameSettings_Draw()
 	SetColor 190,220,240
 	SetAlpha 0.5
-	DrawRect(0,0,App.width,App.height)
+	DrawRect(0,0,App.settings.width,App.settings.height)
 	SetAlpha 1.0
 	SetColor 255,255,255
 
 	' Local ChangesAllowed:Byte[4]
 	If Not Game.networkgame
-		GameSettingsBG.value = Localization.GetString("MENU_SOLO_GAME")
+		GameSettingsBG.value = GetLocale("MENU_SOLO_GAME")
 		GameSettings_Chat._visible = False
 	Else
 		GameSettings_Chat._visible = True
 		If Not Game.onlinegame Then
-			GameSettingsBG.value = Localization.GetString("MENU_NETWORKGAME")
+			GameSettingsBG.value = GetLocale("MENU_NETWORKGAME")
 		Else
-			GameSettingsBG.value = Localization.GetString("MENU_ONLINEGAME")
+			GameSettingsBG.value = GetLocale("MENU_ONLINEGAME")
 		EndIf
 	EndIf
 	GUIManager.Draw("GameSettings",0, 0,9)
@@ -2758,9 +2756,10 @@ Function DrawMain(tweenValue:Float=1.0)
 		SetColor 0,0,0
 		DrawRect(10,15,100,100)
 		SetColor 255, 255, 255
-		If directx = 1 Then FontManager.baseFont.draw("Mode: DirectX 7", 15, 50)
-		If directx = 0 Then FontManager.baseFont.draw("Mode: OpenGL", 15,50)
-		If directx = 2 Then FontManager.baseFont.draw("Mode: DirectX 9", 15,50)
+		If App.settings.directx = -1 Then FontManager.baseFont.draw("Mode: OpenGL", 15,50)
+		If App.settings.directx = 0  Then FontManager.baseFont.draw("Mode: BufferedOpenGL", 15,50)
+		If App.settings.directx = 1  Then FontManager.baseFont.draw("Mode: DirectX 7", 15, 50)
+		If App.settings.directx = 2  Then FontManager.baseFont.draw("Mode: DirectX 9", 15,50)
 
 		If Game.networkgame
 			GUIManager.Draw("InGame") 'draw ingamechat
@@ -2929,7 +2928,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			EndIf
 			FontManager.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
 			FontManager.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
-			If App.prepareScreenshot = 1 then DrawImage(gfx_startscreen_logosmall, App.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
+			If App.prepareScreenshot = 1 then DrawImage(gfx_startscreen_logosmall, App.settings.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
 
 			Flip App.limitFrames
 

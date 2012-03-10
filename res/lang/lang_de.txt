@@ -97,6 +97,17 @@ AD_TILL_TOMORROW  = bis Morgen!
 AD_STILL_X_DAYS= noch %1 Tage
 AD_TIME        = Zeit
 
+AD_GENRE_NONE	= "Alle"
+AD_GENRE_1		= "Kinder"
+AD_GENRE_2		= "Jugendliche"
+AD_GENRE_3		= "Hausfrauen"
+AD_GENRE_4		= "Arbeitnehmer"
+AD_GENRE_5		= "Arbeitslose"
+AD_GENRE_6		= "Manager"
+AD_GENRE_7		= "Rentner"
+AD_GENRE_8		= "Frauen"
+AD_GENRE_9		= "Männer"
+
 MOVIE_DIRECTOR  = Regisseur
 MOVIE_ACTORS    = Darsteller
 MOVIE_SPEED     = Tempo
@@ -125,9 +136,12 @@ MOVIE_GENRE_15= Tratsch
 MOVIE_GENRE_16= Nachrichten
 MOVIE_GENRE_17= Show
 MOVIE_GENRE_18= Monumental
+MOVIE_GENRE_19= Lückenfüller
+MOVIE_GENRE_20= Dauerwerbesendung
+
 
 ERROR_NOT_ENOUGH_MONEY      = Nicht genügend Geld!
-ERROR_NOT_ENOUGH_MONEY_TEXT = Du besitzt nicht genügend finanzielle Mittel um diese Aktion durchzuführen. 
+ERROR_NOT_ENOUGH_MONEY_TEXT = Du besitzt nicht genügend finanzielle Mittel um diese Aktion durchzuführen.
 
 FINANCES_OVERVIEW     = Finanzüberblick
 FINANCES_COSTS        = Ausgaben
@@ -151,8 +165,8 @@ FINANCES_STATION_COSTS= Sendergebühren
 FINANCES_MISC_COSTS   = Sonstige Kosten
 
 IMAGE_REACH		= Reichweite
-IMAGE_SHARETOTAL	= Marktanteil Total 
-IMAGE_SHAREWITHPLAYER   = Marktanteil zu %PLAYERNAME% 
+IMAGE_SHARETOTAL	= Marktanteil Total
+IMAGE_SHAREWITHPLAYER   = Marktanteil zu %PLAYERNAME%
 
 NEWSSTUDIO_NOT_SUBSCRIBED = nicht abonniert
 NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL = Genre abonnieren Level

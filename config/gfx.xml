@@ -137,5 +137,37 @@
 			<type>image</type>
  			<url>grafiken/hinweistafel/gfx_tafel_weiss_dragged.png</url>
 		</resource>
+
+		<resource name="gfx_contracts_pack">
+			<type>SpritePack</type>
+ 			<url>grafiken/werbeagentur/werbung_vertraege.png</url>
+			<children>
+				<child name="gfx_contracts_base"			x="0"	y="60"	w="21"	h="68"	id="0" />
+				<child name="gfx_contracts_base_dragged"	x="0"	y="0"	w="21"	h="60"	id="1" />
+				<child name="gfx_contracts_0"				x="0"	y="60"	w="21"	h="68"	id="0" />
+				<child name="gfx_contracts_0_dragged"		x="0"	y="0"	w="21"	h="60"	id="1" />
+			</children>
+			<scripts>
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_1"		x="21"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_2"		x="42"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_3"		x="63"		r="100"		g="100"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_4"		x="84"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_5"		x="105"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_6"		x="126"		r="150"		g="150"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_7"		x="147"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_8"		x="168"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_9"		x="189"		r="90"		g="90"		b="150" />
+
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_1_dragged"	x="21"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_2_dragged"	x="42"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_3_dragged"	x="63"		r="100"		g="100"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_4_dragged"	x="84"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_5_dragged"	x="105"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_6_dragged"	x="126"		r="150"		g="150"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_7_dragged"	x="147"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_8_dragged"	x="168"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_9_dragged"	x="189"		r="90"		g="90"		b="150" />
+			</scripts>
+		</resource>
 	</resources>
 </tvt>

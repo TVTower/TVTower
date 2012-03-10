@@ -1174,7 +1174,7 @@ Type TInterface
 		If BottomImgDirty
 			Local NoDX9moveY:Int = 383
 			'RTT ausgeschalten mit 1=2
-			If directx <> 2 And 1 = 2
+			If App.settings.directx <> 2 And 1 = 2
 				NoDX9moveY = 0
 				BottomImgDirty = False
 				If gfx_bottomRTT = Null Then gfx_bottomRTT = tRender.Create(800, 600, 0 | FILTEREDIMAGE)
@@ -1228,11 +1228,11 @@ Type TInterface
 			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedMoney() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
 			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Player[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
 		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
-			If directx <> 2 And 1 = 2
+			If App.settings.directx <> 2 And 1 = 2
 				tRender.TextureRender_End()
 			EndIf
 		EndIf 'bottomimg is dirty
-		If directx <> 2 And 1 = 2
+		If App.settings.directx <> 2 And 1 = 2
 			tRender.BackBufferRender_Begin()
 			ClipImageToViewport(gfx_bottomRTT, 0, 383, 0, 383, 800, 217)
 			tRender.BackBufferRender_End()

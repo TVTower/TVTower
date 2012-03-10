@@ -524,7 +524,7 @@ Type TBitmapFont
 			width = max(width, lineWidth)
 			height:+lineHeight
 			'except first line (maybe only one line) - add extra spacing between lines
-			if currentLine > 0 then height:+ ceil(lineHeight*0.3)
+			if currentLine > 0 then height:+ ceil(lineHeight*0.4)
 		Next
 		if returnType = 0 then return string(width)
 		if returnType = 1 then return string(height)
@@ -721,6 +721,16 @@ Type TGW_SpritePack extends TRenderable
 			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), colR, colG, colB), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
 		UnlockImage(Self.image, 0)
 		GCCollect() '<- FIX!
+	End Method
+
+	Method AddCopySprite:TGW_Sprites(spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, colR:Int,colG:Int,colB:Int)
+		local tmpSpriteDest:TGW_Sprites = self.AddSprite(spriteNameDest,posx, posy, w, h, animcount)
+		Local tmppix:TPixmap = LockImage(Self.image, 0)
+			tmppix.Window(tmpSpriteDest.Pos.x, tmpSpriteDest.pos.y, tmpSpriteDest.w, tmpSpriteDest.h).ClearPixels(0)
+			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), colR, colG, colB), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
+		UnlockImage(Self.image, 0)
+		GCCollect() '<- FIX!
+		return tmpSpriteDest
 	End Method
 
 	Method CopyImageOnSpritePackImage(src:object, dest:object = null, destX:float, destY:float)
