@@ -596,7 +596,6 @@ Type TPlayer
 		color		= PlayerColor
 		color.used	= playerID
 		UpdateFigureBase(figurebase)
-		Print "RecolorFigure r:" + color.colR + " g" + color.colG + " b" + color.colB
 		'overwrite asset
 		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetSprite("gfx_building_sign_base").getImage(), color.colR, color.colG, color.colB) )
 	End Method
@@ -1829,12 +1828,12 @@ Type TNewsAgency
 		Local news:TNews
 		For Local parentnews:TNews = EachIn LastNewsList
 			If parentnews.happenedday < Game.day
-				If parentnews.parentNews <> Null
-					If parentnews.episode < parentnews.parentNews.episodecount
+				If parentnews.parent <> Null
+					If parentnews.episode < parentnews.parent.episodecount
 						news = TNews.GetNextInNewsChain(parentnews)
 					EndIf
 				End If
-				If parentnews.episodecount > 0 And parentnews.parentNews = Null
+				If parentnews.episodecount > 0 And parentnews.parent = Null
 					news = TNews.GetNextInNewsChain(parentnews, True) 'true = is the parent
 				EndIf
 				LastNewsList.Remove(parentnews)
@@ -2591,9 +2590,9 @@ Function Init_Creation()
 		TAdBlock.Create("3.", 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 2 * Assets.GetSprite("pp_adblock1").h, playerids, 3)
 		Local lastprogramme:TProgrammeBlock
 		lastprogramme = TProgrammeBlock.Create("1.", 67, 17 + 0 * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 1)
-		lastblocks :+ lastprogramme.blocks
+		lastblocks :+ lastprogramme.programme.blocks
 		lastprogramme = TProgrammeBlock.Create("2.", 67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 2)
-		lastblocks :+ lastprogramme.blocks
+		lastblocks :+ lastprogramme.programme.blocks
 		lastprogramme = TProgrammeBlock.Create("3.", 67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 3)
 	Next
 End Function

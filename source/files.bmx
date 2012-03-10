@@ -31,7 +31,7 @@ Global versionstring:String		= "version of " + VersionDate
 Global copyrightstring:String	= "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
-Global filestotal:Int		= 76
+Global filestotal:Int		= 16
 Global pixelperfile:Float	= 660 / Float(filestotal)
 Global filecount:Int		= 0
 Global filesperscreen:Int	= 30
@@ -251,38 +251,6 @@ Global gfx_figures_hausmeister:TImage = CheckLoadImage("grafiken/hochhaus/spielf
 Global stationmap_mainpix:TPixmap 			= LoadPixmap("grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png")
 Global gfx_collisionpixel:TImage 		    = CheckLoadImage("grafiken/senderkarte/collisionpixel.png")
 '===================================
-rem
 
-Global gfx_contract_base:TImage	= CheckLoadImage("grafiken/werbeagentur/werbung_vertraege.png", 0)
-Global gfx_contract_img:TImage	= TImage.Create(ImageWidth(gfx_contract_base) * 10, ImageHeight(gfx_contract_base), 1, 0, 255, 0, 255)
-local tmppix:TPixmap
-tmppix = LockImage(gfx_contract_img, 0)
-tmppix.ClearPixels(0)
-	DrawOnPixmap(gfx_contract_base, 0, tmppix, 0, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 200, 60, 40) , 0, tmppix, ImageWidth(gfx_contract_base) * 1, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 40, 200, 40) , 0, tmppix, ImageWidth(gfx_contract_base) * 2, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 100, 100, 200) , 0, tmppix, ImageWidth(gfx_contract_base) * 3, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 20, 140, 180) , 0, tmppix, ImageWidth(gfx_contract_base) * 4, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 40, 200, 40) , 0, tmppix, ImageWidth(gfx_contract_base) * 5, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 100, 100, 200) , 0, tmppix, ImageWidth(gfx_contract_base) * 6, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 20, 140, 180) , 0, tmppix, ImageWidth(gfx_contract_base) * 7, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 40, 200, 40) , 0, tmppix, ImageWidth(gfx_contract_base) * 8, 0)
-	DrawOnPixmap(ColorizeTImage(gfx_contract_base, 100, 100, 200) , 0, tmppix, ImageWidth(gfx_contract_base) * 9, 0)
-UnlockImage(gfx_contract_img, 0)
-
-Global gfx_contract:TGW_Spritepack = TGW_Spritepack.Create(gfx_contract_img, "gfx_contract_img_pack")
-	gfx_contract.AddSprite("ContractDragged-1", 21 * 0, 0, 21, 60)
-	gfx_contract.AddSprite("Contract-1", 21 * 0, 60, 17, 68)
-For Local i:Int = 0 To 9
-	gfx_contract.AddSprite("ContractDragged" + i, 21 * i, 0, 21, 60)
-	gfx_contract.AddSprite("Contract" + i, 21 * i, 60, 17, 68)
-Next
-endRem
-
-SetMaskColor 255, 0, 255
 SetBlend ALPHABLEND
-'Global gfx_gimmick_rooms_movieagency:TImage = (CheckLoadImage("grafiken/filmverleiher/raum_filmverleiher_gimmick.png"))
-'Global gfx_hint_rooms_movieagency:TImage = (CheckLoadImage("grafiken/filmverleiher/raum_filmverleiher_glow.png"))
 SetMaskColor 0, 0, 0
-PrintDebug ("files.bmx", filecount + " Dateien per 'checked loading' eingelesen", DEBUG_LOADING)
-print "finished loading"

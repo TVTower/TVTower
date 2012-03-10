@@ -53,14 +53,14 @@ Type TgfxProgrammelist extends TPlannerList
 
 				If genrecount > 0
 					SetAlpha 1.0; SetColor 0, 0, 0
-					FontManager.baseFont.drawBlock (TProgramme.GetGenre(genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
+					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
 					SetAlpha 0.6; SetColor 0, 255, 0
 					For Local i:Int = 0 To genrecount - 1
 						DrawLine(Pos.x + 111 + i * 2, Pos.y + 20 + 18 * (Genres) - 1, Pos.x + 111 + i * 2, Pos.y + 34 + 18 * (Genres) - 1)
 					Next
 				else
 					SetAlpha 0.3; SetColor 0, 0, 0
-					FontManager.baseFont.drawBlock (TProgramme.GetGenre(genres), Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
+					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
 				EndIf
 			Next
 			SetAlpha 1.0

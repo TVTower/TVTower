@@ -390,7 +390,7 @@ Type TTVGNetwork
 	   WriteInt stream, programme.length
 	   For Local i:Int = 0 To programme.length-1
          WriteByte stream, programme[i].isMovie
-         WriteInt stream, programme[i].pid
+         WriteInt stream, programme[i].id
        Next
 	   SendReliableUDP(i, 250, -1, "SendProgramme")
      EndIf
@@ -409,7 +409,7 @@ Type TTVGNetwork
        WriteInt stream, newid
        WriteInt stream, slot
        WriteByte stream, programme.isMovie
-       WriteInt stream, programme.pid
+       WriteInt stream, programme.id
        SendReliableUDP(i, 250, 10, "SendMovieAgencyChange")
 	   Print "send newID"+newID
      EndIf
@@ -430,8 +430,8 @@ Type TTVGNetwork
 				Local tmpBlock:TMovieAgencyBlocks[3]
 				For Local locObject:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
 			      If locobject.Programme <> Null
-				    If locobject.Programme.pid = ProgrammeID tmpBlock[0] = locObject
-				    If locobject.Programme.pid = newID tmpBlock[1] = locObject
+				    If locobject.Programme.id = ProgrammeID then tmpBlock[0] = locObject
+				    If locobject.Programme.id = newID then tmpBlock[1] = locObject
 				  EndIf
 			    Next
 				'Print "had to switch ID"+ProgrammeID+ " with ID"+newID+"/"+tmpBlock[1].programme.id
@@ -441,7 +441,7 @@ Type TTVGNetwork
 		Case NET_BUY
 				For Local locObject:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
 			      If locobject.Programme <> Null
-				    If locobject.Programme.pid = ProgrammeID
+				    If locobject.Programme.id = ProgrammeID
 					  If     isMovie Then Player[ RemotePlayerID ].ProgrammeCollection.AddMovie(TProgramme.GetMovie(ProgrammeID))
     				  If Not isMovie Then Player[ RemotePlayerID ].ProgrammeCollection.AddSerie(TProgramme.GetSeries(ProgrammeID))
 					  locObject.Programme = TProgramme.GetProgramme(newID)
@@ -451,7 +451,7 @@ Type TTVGNetwork
 		Case NET_BID
 				For Local locObj:TAuctionProgrammeBlocks  = EachIn TAuctionProgrammeBlocks.List
 			      If locobj.Programme <> Null
-				    If locobj.Programme.pid = ProgrammeID
+				    If locobj.Programme.id = ProgrammeID
 					  locObj.SetBid(RemotePlayerID, newID) 'newID = nextBid
 					EndIf
 				  EndIf
@@ -507,13 +507,13 @@ Type TTVGNetwork
        WriteInt stream,  programmeBlock.StartPos.y
        WriteInt Stream, programmeBlock.programme.sendtime
        WriteInt Stream, programmeBlock.programme.senddate
-       WriteInt Stream, programmeblock.uniqueID
+       WriteInt Stream, programmeblock.id
        If programmeblock.ParentProgramme = Null Then
          WriteInt Stream, -1
        Else
-         WriteInt stream, programmeblock.ParentProgramme.pid
+         WriteInt stream, programmeblock.ParentProgramme.id
        EndIf
-       WriteInt stream, programmeblock.Programme.pid
+       WriteInt stream, programmeblock.Programme.id
        SendUDP(i)
      EndIf
    Next
@@ -639,7 +639,7 @@ Type TTVGNetwork
        WriteByte stream, NET_PROGRAMMECOLLECTION_CHANGE
  	   WriteMyIP()
        WriteByte stream, playerID
-       WriteInt stream, programme.pid
+       WriteInt stream, programme.id
        If     programme.isMovie Then WriteByte stream, 1
        If Not programme.isMovie Then WriteByte stream, 0
        WriteByte stream, typ
@@ -765,8 +765,8 @@ Type TTVGNetwork
     Local isMovie:Byte = ReadByte(stream)
     Local typ:Byte = ReadByte(stream)
     Local programme:TProgramme = Null
-    If     isMovie Then programme = TMovie.GetMovie(programmeID)
-    If Not isMovie Then programme = TSeries.GetSeries(programmeID)
+    If     isMovie Then programme = TProgramme.GetMovie(programmeID)
+    If Not isMovie Then programme = TProgramme.GetSeries(programmeID)
 	If programme <> Null
         If typ = 2
  		  If isMovie

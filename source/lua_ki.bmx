@@ -527,7 +527,7 @@ Type TLuaFunctions
 		Local tmpObj:TProgramme = TProgramme.GetProgramme(serieId)
 		If tmpObj <> Null Then tmpObj = TProgramme.GetEpisode(tmpObj, episode)
 	    If tmpObj <> Null
-			Return tmpObj.pid
+			Return tmpObj.id
 		Else
 			Return - 1
 		EndIf
@@ -675,11 +675,7 @@ Type TLuaFunctions
 			Else
 				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
 				Local Programme:TProgramme = Player[owner].ProgrammePlan.GetActualProgramme(hour, day)
-				If Programme <> Null
-					Return Programme.pid
-				Else
-					Return 0
-				EndIf
+				If Programme <> Null then Return Programme.id Else Return 0
 			EndIf
 		Else
 			Return - 1
@@ -1025,11 +1021,7 @@ Type TLuaFunctions
 					Return - 2
 				Else
 					Local Block:TMovieAgencyBlocks = TMovieAgencyBlocks(TMovieAgencyBlocks.List.ValueAtIndex(ArrayID))
-					If Block <> Null
-						Return Block.Programme.pid
-					Else
-						Return - 3
-					EndIf
+					If Block <> Null then Return Block.Programme.id Else Return - 3
 				EndIf
 			EndIf
 		EndIf
@@ -1045,7 +1037,7 @@ Type TLuaFunctions
 				Return - 1
 			Else
 				For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
-					If Block.Programme.pid = ObjektID
+					If Block.Programme.id = ObjektID
 						ret = Block.Buy(PlayerID)
 						If ret = 1 Then Block.Pos.y = 241
 						Return 1

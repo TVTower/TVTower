@@ -1090,7 +1090,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 				For Local ProgrammeBlock:TProgrammeBlock = EachIn TProgrammeBlock.List
 					If _room.owner = ProgrammeBlock.owner And..
 					   ProgrammeBlock.Programme.senddate = Game.daytoplan And..
-					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.blocks)
+					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.programme.blocks)
 						If Programmeblock.Programme.senddate > Game.day Or..
 						   Programmeblock.Programme.senddate = game.day And Programmeblock.Programme.sendtime > game.GetActualHour()
 							Game.cursorstate = 1
