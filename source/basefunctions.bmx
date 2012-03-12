@@ -699,39 +699,7 @@ Type TDragAndDrop
   Field h:Int = 0
   Field typ:String = ""
   Field slot:Int = 0
-  Field used:Int = 0
   Global List:TList = CreateList()
-
-    'set a dnd-target as unused (empty)
-    'setze ein DND-Ziel als unbenutzt (frei)
-    Method SetDragAndDropTargetUnused:Int()
-      If Self <> Null
-	    Self.used = 0
-	    Return 1
-	  EndIf
-   	  Return 0
- 	End Method
-
-    'set a dnd-target as used (full)
-    'setze ein DND-Ziel als benutzt (belegt)
-    Method SetDragAndDropTargetUsed:Int()
- 	  If Self <> Null
-	    Self.used = 1
-	    Return 1
-	  EndIf
-	  Return 0
- 	End Method
-
-	'set a dnd-target as used (full)
-    'setze ein DND-Ziel als benutzt (belegt)
-    Function SetDragAndDropTargetState:Int(state:int, List:TList, _pos:TPosition)
-	  Local P:TDragAndDrop = FindDragAndDropObject(list, _pos)
- 	  If p <> Null
-	    p.used = state
-	    Return 1
-	  EndIf
-	  Return 0
- 	End Function
 
  	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TPosition)
  	  For Local P:TDragAndDrop = EachIn List
@@ -747,7 +715,6 @@ Type TDragAndDrop
 		DragAndDrop.w = w
 		DragAndDrop.h = h
 		DragAndDrop.typ = _typ
-		DragAndDrop.used = 0
 		List.AddLast(DragAndDrop)
 		SortList List
 		Return DragAndDrop
@@ -758,24 +725,13 @@ Type TDragAndDrop
     End Method
 
     Method CanDrop:Int(x:Int, y:Int, _Typ:String="")
-		return (IsIn(pos.x,pos.y) = 1 And typ=_Typ) 'used =0
+		return (IsIn(x,y) = 1 And typ=_Typ)
     End Method
 
     Method Drop:Int(x:Int, y:Int, _typ:String="")
-		used = IsIn(x,y) And typ=_typ 'used =0
+		local used:int = IsIn(x,y) And typ=_typ
         Return used
     End Method
-
-	Method DrawMe()
-		SetAlpha 0.8
-			If used
-				SetColor 250,100,100
-			Else
-				SetColor 100,100,100
-			EndIf
-			DrawRect(pos.x,pos.y,w,h)
-		SetAlpha 1.0
-	End Method
 End Type
 
 Type TColor

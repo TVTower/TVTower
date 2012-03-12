@@ -442,8 +442,7 @@ Type TTVGNetwork
 				For Local locObject:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
 			      If locobject.Programme <> Null
 				    If locobject.Programme.id = ProgrammeID
-					  If     isMovie Then Player[ RemotePlayerID ].ProgrammeCollection.AddMovie(TProgramme.GetMovie(ProgrammeID))
-    				  If Not isMovie Then Player[ RemotePlayerID ].ProgrammeCollection.AddSerie(TProgramme.GetSeries(ProgrammeID))
+					  Player[ RemotePlayerID ].ProgrammeCollection.AddProgramme(TProgramme.GetProgramme(ProgrammeID))
 					  locObject.Programme = TProgramme.GetProgramme(newID)
 					EndIf
 				  EndIf
@@ -746,11 +745,7 @@ Type TTVGNetwork
     If Not isMovie Then programme = TProgramme.GetSeries(programmeID)
 	If programme <> Null
         If typ = 2
- 		  If isMovie
-            Player[ RemotePlayerID ].ProgrammeCollection.AddMovie(Programme,RemoteplayerID)
-	      Else
-            Player[ RemotePlayerID ].ProgrammeCollection.AddSerie(Programme,RemoteplayerID)
-	      EndIf
+			Player[ RemotePlayerID ].ProgrammeCollection.AddProgramme(Programme,RemoteplayerID)
           TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, RemoteplayerID)
 		EndIf
 		If typ = 0
@@ -967,8 +962,7 @@ Type TTVGNetwork
     For Local i:Int = 0 To ProgrammeCount-1
 	  IsMovie:Byte = ReadByte(stream)
       ProgrammeID:Int = ReadInt(stream)
-      If isMovie Then Player[ RemotePlayerID ].ProgrammeCollection.AddMovie(TProgramme.GetMovie(ProgrammeID))
-      If Not isMovie Then Player[ RemotePlayerID ].ProgrammeCollection.AddSerie(TProgramme.GetSeries(ProgrammeID))
+      Player[ RemotePlayerID ].ProgrammeCollection.AddProgramme(TProgramme.GetProgramme(ProgrammeID))
     Next
 	Print "got "+ProgrammeCount+" programmes for player:"+RemotePlayerID
 	'Print "NET: added programme with ID:"+ProgrammeID+" to Player "+RemotePlayerID

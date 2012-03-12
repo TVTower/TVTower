@@ -1051,7 +1051,6 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
 		DragAndDrop.typ = "archiveprogrammeblock"
-		DragAndDrop.used = 0
 		DragAndDrop.pos.setXY(57+Assets.GetSprite("gfx_movie0").w*i, 297)
 		DragAndDrop.w = Assets.GetSprite("gfx_movie0").w
 		DragAndDrop.h = Assets.GetSprite("gfx_movie0").h
@@ -1064,7 +1063,6 @@ Function CreateDropZones:Int()
 	For i = 0 To Game.maxContractsAllowed-1
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
-		DragAndDrop.used = 0
 		DragAndDrop.pos.setXY(550 + Assets.GetSprite("gfx_contracts_base").w * i, 87)
 		DragAndDrop.w = Assets.GetSprite("gfx_contracts_base").w - 1
 		DragAndDrop.h = Assets.GetSprite("gfx_contracts_base").h

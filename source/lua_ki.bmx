@@ -771,7 +771,7 @@ Type TLuaFunctions
 				Local contractobj:TContract = Player[owner].ProgrammeCollection.GetContract(contractID)
 				Local obj:TAdBlock = TAdBlock.GetBlockByContract(contractobj)
 				If obj <> Null
-					Return obj.GetSuccessfullSentContractCount()
+					Return obj.GetSuccessfulSentContractCount()
 				Else
 					Return - 2
 				EndIf

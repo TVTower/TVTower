@@ -615,7 +615,7 @@ End Function
 
 Function Room_AdAgency_Compute(_room:TRooms)
 	if TRooms.doadraw 'draw it
-		Assets.GetSprite("gfx_suitcase").Draw(540, 70)
+		Assets.GetSprite("gfx_suitcase").Draw(530, 55)
 		' Local locContractX:Int =550
 		TContractBlocks.DrawAll(True)
         For Local LocObject:TContractBlocks= EachIn TContractBlocks.List
@@ -646,15 +646,17 @@ Global Room_MovieAgency_GimmickTimer:Int = 0
 Function Room_MovieAgency_Compute(_room:TRooms)
 	Global AuctionToolTip:TTooltip
   If TRooms.doadraw 'draw it
-	If TMovieAgencyBlocks.HoldingType <> 0 Then Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+	Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
 	If Room_MovieAgency_GimmickTimer > MilliSecs()
 	  Assets.GetSprite("gfx_gimmick_rooms_movieagency").Draw(20,10)
 	EndIf
-    If TMovieAgencyBlocks.HoldingType = 2
-		Assets.GetSprite("gfx_suitcase_glow").Draw(530, 240)
-	else
-		Assets.GetSprite("gfx_suitcase").Draw(530, 240)
-	endif
+
+	local glow:string = ""
+	For Local LocObject:TMovieAgencyBlocks= EachIn TMovieAgencyBlocks.List
+		If locobject.owner <=0 and locobject.dragged then glow = "_glow"; exit
+	Next
+	Assets.GetSprite("gfx_suitcase"+glow).Draw(530, 240)
+
     SetAlpha 0.5
     FontManager.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
     FontManager.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
