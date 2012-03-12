@@ -951,25 +951,15 @@ Function Room_NewsPlanner_Compute(_room:TRooms)
     SetColor 255,255,255
     If game.networkgame Then If network.isHost Then DrawText ( (Game.timeSinceBegin - NewsAgency.NextEventTime), 50,12)
 	GUIManager.Draw("Newsplanner")
-    TNewsBlock.DrawAll(_room.owner)
+    Player[_room.owner].ProgrammePlan.DrawAllNewsBlocks()
   Else
     Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("news", _room.owner)
     Game.cursorstate = 0
     If Btn_newsplanner_up.GetClicks() >= 1 Then TNewsBlock.DecLeftListPosition()
     If Btn_newsplanner_down.GetClicks() >= 1 Then TNewsBlock.IncLeftListPosition()
-        For Local NewsBlock:TNewsBlock= EachIn TNewsBlock.List
-		  If Newsblock.dragged = 1 Then
-			Game.cursorstate=2
-			Exit
-		  Else If _room.owner = NewsBlock.owner And..
-		     Newsblock.dragged = 0 And..
-			 functions.IsIn(MouseX(),MouseY(), NewsBlock.StartPos.x, NewsBlock.StartPos.y, NewsBlock.width, NewsBlock.Height)
-   			Game.cursorstate = 1
-          EndIf
-		Next
     If TNewsBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
 	GUIManager.Update("Newsplanner")
-    TNewsBlock.UpdateAll(_room.owner)
+    Player[_room.owner].ProgrammePlan.UpdateAllNewsBlocks()
   endif
 End Function
 

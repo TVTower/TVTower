@@ -739,21 +739,19 @@ Type TPlayer
 
 	'computes newsshow-audience
 	Function ComputeNewsAudience()
-		Local news:TNews
+		Local newsBlock:TNewsBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Player.audience = 0
 			Local audience:Int = 0
 			For Local i:Int = 1 To 3
-				news = Player.ProgrammePlan.getActualNews(i)
-				If news <> Null And Player.maxaudience <> 0
-					audience :+ Floor(Player.maxaudience * News.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
+				newsBlock = Player.ProgrammePlan.getActualNewsBlock(i)
+				If newsBlock <> Null And Player.maxaudience <> 0
+					audience :+ Floor(Player.maxaudience * NewsBlock.news.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 					If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
 				EndIf
 			Next
 			Player.audience= Ceil(audience / 3)
 			TAudienceQuotes.Create("News: "+ Game.GetActualHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetActualHour(),Game.GetActualMinute(),Game.day, Player.playerID)
-			'If Player.playerID = 1 Print "Newsaudience: "+audience
-			news = Null
 		Next
 	End Function
 
@@ -1839,7 +1837,6 @@ Type TNewsAgency
 	Method AddNews:Int(news:TNews)
 		For Local i:Int = 1 To 4
 			If Player[i].newsabonnements[news.genre] > 0
-				Player[i].ProgrammeCollection.AddNews(news)
 				TNewsBlock.Create("",0,-100, i, 60*(3-Player[i].newsabonnements[news.genre]), news)
 				If Game.networkgame Then If Network.IsConnected Then Network.SendNews(i, news)
 			EndIf
@@ -2864,12 +2861,12 @@ Type TEventListenerOnDay Extends TEventListenerBase
 			'if new day, not start day
 			If evt.time > 0
 				TRooms.ResetRoomSigns()
-				TNewsBlock.List.sort()
-				For Local NewsBlock:TNewsBlock = EachIn TNewsBlock.List
-					If Game.day - Newsblock.news.happenedday >= 2
-						Player[Newsblock.owner].ProgrammePlan.RemoveNews(NewsBlock.news)
-						TNewsBlock.List.remove(NewsBlock)
-					EndIf
+				for local i:int = 1 to 4
+					For Local NewsBlock:TNewsBlock = EachIn Player[i].ProgrammePlan.NewsBlocks
+						If Game.day - Newsblock.news.happenedday >= 2
+							Player[Newsblock.owner].ProgrammePlan.RemoveNewsBlock(NewsBlock)
+						EndIf
+					Next
 				Next
 			EndIf
 

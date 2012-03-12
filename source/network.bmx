@@ -671,23 +671,22 @@ Type TTVGNetwork
   End Method
 
   'add = 1 - added, add = 0 - removed
-  Method SendPlanNewsChange(playerID:Int, newsBlock:TNewsBlock, add:Byte=1)
+  Method SendPlanNewsChange(playerID:Int, newsBlock:TNewsBlock, remove:int=0)
    For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i],Port[i])
        WriteInt stream, SendID
        WriteByte stream, NET_PLAN_NEWSCHANGE
  	   WriteMyIP()
        WriteByte stream, playerID
-       WriteByte Stream, add
+       WriteInt stream,  remove
        WriteInt stream,  newsBlock.Pos.x
        WriteInt stream,  newsBlock.Pos.y
        WriteInt stream,  newsBlock.startPos.x
        WriteInt stream,  newsBlock.startPos.y
-       WriteInt stream,  newsBlock.uniqueID
+       WriteInt stream,  newsBlock.id
        WriteInt stream,  newsBlock.paid
        WriteInt stream,  newsBlock.news.id
        WriteInt stream, newsBlock.sendslot
-	   WriteInt stream, newsblock.news.sendposition
        SendReliableUDP(i, 250, -1, "SendPlanNewsChange")
      EndIf
    Next
@@ -695,7 +694,7 @@ Type TTVGNetwork
 
   Method GotPacket_Plan_NewsChange(_IP:Int, _Port:Short)
     Local RemotePlayerID:Int = ReadByte(Stream)
-    Local add:Byte = ReadByte(Stream)
+    Local remove:Int = ReadInt(Stream)
     Local x:Int = ReadInt(Stream)
     Local y:Int = ReadInt(Stream)
     Local startrectx:Int = ReadInt(Stream)
@@ -704,30 +703,15 @@ Type TTVGNetwork
     Local paid:Int = ReadInt(stream)
     Local newsID:Int = ReadInt(stream)
     Local sendslot:Int = ReadInt(stream)
-    Local newssendposition:Int = ReadInt(stream)
 
-	Local newsblock:TNewsblock = TNewSBlock.getBlock(newsblockID)
+	Local newsblock:TNewsblock = Player[RemotePlayerID].ProgrammePlan.getNewsBlock(newsblockID)
     If newsblock <> Null Then
-      newsblock.news.sendposition = newssendposition
-      newsblock.sendslot = sendslot
-	  newsblock.owner = RemotePlayerID
-      newsblock.Pos.SetXY(x, y)
-	  newsblock.StartPos.SetXY(startrectx, startrecty)
-'      Player[ remotePlayerID ].ProgrammePlan.RefreshNewsPlan()
-      If add=1 Then
-	    Print "news add newsblock:"+newsblock.news.title+" to player "+remotePlayerID+"/"+newsblock.owner+" on sendslot"+sendslot
-		Player[ remotePlayerID ].ProgrammePlan.AddNews(newsblock.news, sendslot)
-		If Not newsblock.paid Then newsblock.Pay();
-      EndIf
-      If add=0 Then
-	    Print "remove newsblock:"+newsblock.news.title+" from player "+remotePlayerID+"/"+newsblock.owner+" on sendslot"+sendslot
-		Player[ remotePlayerID ].ProgrammePlan.RemoveNews( newsblock.news )
-      EndIf
-	  If add=2 Then
-	    Print "deleted newsblock:"+newsblock.news.title+" from player "+remotePlayerID+"/"+newsblock.owner+" on sendslot"+sendslot
-		Player[ remotePlayerID ].ProgrammePlan.RemoveNews( newsblock.news )
-		If newsblock.owner = remotePlayerID Then ListRemove TNewsBlock.List,(NewsBlock)
-      EndIf
+		if remove then Player[RemotePlayerID].ProgrammePlan.removeNewsBlock(newsBlock)
+		If Not newsblock.paid Then newsblock.Pay()
+		newsblock.sendslot = sendslot
+		newsblock.owner = RemotePlayerID
+		newsblock.Pos.SetXY(x, y)
+		newsblock.StartPos.SetXY(startrectx, startrecty)
 	EndIf
  End Method
 
@@ -745,7 +729,6 @@ Type TTVGNetwork
     Local newsID:Int = ReadInt(stream)
 	Local news:TNews = TNews.GetNews(newsID)
     If news <> Null
-	  Player[ RemotePlayerID ].ProgrammeCollection.AddNews(news)
       TNewsBlock.Create("",0,-100, RemotePlayerID , 60*(3-Player[ RemotePlayerID ].newsabonnements[news.genre]), news)
       Print "net: added news (id:"+newsID+") to Player:"+RemotePlayerID
 	Else
