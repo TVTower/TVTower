@@ -1057,12 +1057,12 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 		TPPbuttons.DrawAll()
 
 
-		If TProgrammeBlock.AdditionallyDragged > 0
+		If Player[_room.owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks > 0
 			TAdBlock.DrawAll(_room.owner)
 			SetColor 255,255,255  'normal
-			TProgrammeBlock.DrawAll(_room.owner)
+			Player[_room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
 		Else
-			TProgrammeBlock.DrawAll(_room.owner)
+			Player[_room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
 			SetColor 255,255,255  'normal
 			TAdBlock.DrawAll(_room.owner)
 		EndIf
@@ -1087,17 +1087,15 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 			If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw(1)
 			If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
 			If PPprogrammeList.GetOpen() = 0 And PPcontractList.GetOpen() = 0
-				For Local ProgrammeBlock:TProgrammeBlock = EachIn TProgrammeBlock.List
-					If _room.owner = ProgrammeBlock.owner And..
-					   ProgrammeBlock.Programme.senddate = Game.daytoplan And..
+				For Local ProgrammeBlock:TProgrammeBlock = EachIn Player[_room.owner].ProgrammePlan.ProgrammeBlocks
+					If ProgrammeBlock.sendHour >= Game.daytoplan*24 AND ProgrammeBlock.sendHour <= Game.daytoplan*24+24 And..
 					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.programme.blocks)
-						If Programmeblock.Programme.senddate > Game.day Or..
-						   Programmeblock.Programme.senddate = game.day And Programmeblock.Programme.sendtime > game.GetActualHour()
+						If Programmeblock.sendHour > game.day*24 + game.GetActualHour()
 							Game.cursorstate = 1
 						EndIf
 						local showOnRightSide:int = 0
 						if MouseX() < 390 then showOnrightSide = 1
-						ProgrammeBlock.Programme.ShowSheet(30+328*showOnRightside,20,-1, ProgrammeBlock.ParentProgramme)
+						ProgrammeBlock.Programme.ShowSheet(30+328*showOnRightside,20,-1, ProgrammeBlock.programme.parent)
 						Exit
 					EndIf
 				Next
@@ -1136,15 +1134,8 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 		EndIf
 		TPPbuttons.UpdateAll()
 
-		If TProgrammeBlock.AdditionallyDragged > 0
-			TAdBlock.UpdateAll(_room.owner)
-			SetColor 255,255,255  'normal
-			TProgrammeBlock.UpdateAll(_room.owner)
-		Else
-			TProgrammeBlock.UpdateAll(_room.owner)
-			SetColor 255,255,255  'normal
-			TAdBlock.UpdateAll(_room.owner)
-		EndIf
+		TAdBlock.UpdateAll(_room.owner)
+		Player[_room.owner].ProgrammePlan.UpdateAllProgrammeBlocks()
 
 		If _room.owner = Game.playerID
 			If TProgrammeBlock.AdditionallyDragged > 0 OR TADblock.AdditionallyDragged > 0 Then Game.cursorstate=2
@@ -1229,10 +1220,9 @@ Type TRoomSigns Extends TBlock
  	  SortList List
         Local DragAndDrop:TDragAndDrop = New TDragAndDrop
  	    DragAndDrop.slot = CountList(List) - 1
- 	    DragAndDrop.rectx = x
- 	    DragAndDrop.recty = y
- 	    DragAndDrop.rectw = LocObject.image.w
- 	    DragAndDrop.recth = LocObject.image.h-1
+ 	    DragAndDrop.pos.setXY(x,y)
+ 	    DragAndDrop.w = LocObject.image.w
+ 	    DragAndDrop.h = LocObject.image.h-1
    	    If Not TRoomSigns.DragAndDropList Then TRoomSigns.DragAndDropList = CreateList()
         TRoomSigns.DragAndDropList.AddLast(DragAndDrop)
  	    SortList TRoomSigns.DragAndDropList

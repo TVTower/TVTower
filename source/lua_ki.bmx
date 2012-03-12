@@ -816,7 +816,7 @@ Type TLuaFunctions
 							If day = Game.day And hour = Game.GetActualHour() And Game.GetActualMinute() > 5
 								Return - 2
 							Else
-								Local Obj:TProgrammeBlock = TProgrammeBlock.GetActualProgrammeBlock(playerID, hour, day)
+								Local Obj:TProgrammeBlock = Player[playerID].ProgrammePlan.GetActualProgrammeBlock(hour, day)
 								If Obj <> Null
 									Obj.DeleteBlock()
 									Return 1
@@ -828,12 +828,10 @@ Type TLuaFunctions
 							Local Obj:TProgramme = Player[playerID].ProgrammeCollection.GetProgramme(ObjectID)
 							If Obj <> Null
 								If Player[playerID].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
-									Obj = Player[playerID].ProgrammePlan.CloneProgramme(Obj)
-									Obj.senddate = day
-									Obj.sendtime = hour
-									Local objBlock:TProgrammeBlock = TProgrammeBlock.CreateDragged(obj, Null, playerId)
+									Local objBlock:TProgrammeBlock = TProgrammeBlock.CreateDragged(obj, playerId)
+									objBlock.sendHour = day*24 + hour
 									objBlock.dragged = 0
-									ObjBlock.SetBaseCoords(ObjBlock.GetBlockX(hour), ObjBlock.GetBlockY(hour))
+									ObjBlock.SetBasePos(ObjBlock.GetSlotXY(hour))
 									Return 1
 								EndIf
 							EndIf

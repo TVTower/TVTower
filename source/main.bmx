@@ -100,7 +100,7 @@ Type TGame
 	Field networkgameready:Int 		= 0 				'is the network game ready - all options set? 0=false
 	Field onlinegame:Int 			= 0 				'playing over internet? 0=false
 	Field title:String 				= "MyGame"			'title of the game
-	Field daytoplan:Int 			= day 				'which day has to be shown in programmeplanner
+	Field daytoplan:Int 			= 1					'which day has to be shown in programmeplanner
 	Field daynames:String[] {sl = "no"}					'array of abbreviated (short) daynames
 	Field daynames_long:String[] {sl = "no"}			'array of daynames (long version)
 	Field fullscreen:Int = 0 {sl = "no"}				'playing fullscreen? 0=false
@@ -709,32 +709,31 @@ Type TPlayer
 	'computes audience depending on ComputeAudienceQuote and if the time is the same
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = 0)
-		Local Programme:TProgramme
+		Local block:TProgrammeBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
-			Programme = Player.ProgrammePlan.GetActualProgramme()
+			block = Player.ProgrammePlan.GetActualProgrammeBlock()
+			if block = null then print "no block"
+			if block.programme = null then print "no block.programme"
 			Player.audience = 0
-			If Programme <> Null And Player.maxaudience <> 0
-				Player.audience = Floor(Player.maxaudience * Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
+			If block <> null and block.Programme <> Null And Player.maxaudience <> 0
+				Player.audience = Floor(Player.maxaudience * block.Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
 				If recompute
 					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.day, Game.GetActualHour(), Game.GetActualMinute())
 					If quote <> Null
 						quote.audience = Player.audience
 						quote.audiencepercentage = Int(Floor(Player.audience * 1000 / Player.maxaudience))
-					End If
+					EndIf
 				Else
-					TAudienceQuotes.Create(Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetActualHour() - Programme.sendtime) + "/" + Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetActualHour(), Game.GetActualMinute(), Game.day, Player.playerID)
-				End If
-				If Programme.sendtime + Programme.blocks <= Game.getNextHour()
-					Local OrigProgramme:TProgramme = Player.ProgrammeCollection.GetOriginalProgramme(Programme)
-					If OrigProgramme <> Null And Not recompute
-						OrigProgramme.topicality = OrigProgramme.topicality - Int(OrigProgramme.topicality / 2)
-						OrigProgramme.ComputePrice()
-						Player.ProgrammeCollection.TopicalityToProgrammeClones(OrigProgramme, Player.ProgrammePlan.Programmes)
+					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetActualHour() - (block.sendhour - game.day*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetActualHour(), Game.GetActualMinute(), Game.day, Player.playerID)
+				EndIf
+				If block.sendHour - (game.day*24) + block.Programme.blocks <= Game.getNextHour()
+					If Not recompute
+						block.Programme.topicality = block.Programme.topicality - Int(block.Programme.topicality / 2)
+						block.Programme.ComputePrice()
 					EndIf
 				EndIf
 			EndIf
-			Programme = Null
 		Next
 	End Function
 
@@ -1055,10 +1054,9 @@ Function CreateDropZones:Int()
 		DragAndDrop.slot = i
 		DragAndDrop.typ = "archiveprogrammeblock"
 		DragAndDrop.used = 0
-		DragAndDrop.rectx = 57+Assets.GetSprite("gfx_movie0").w*i
-		DragAndDrop.recty = 297
-		DragAndDrop.rectw = Assets.GetSprite("gfx_movie0").w
-		DragAndDrop.recth = Assets.GetSprite("gfx_movie0").h
+		DragAndDrop.pos.setXY(57+Assets.GetSprite("gfx_movie0").w*i, 297)
+		DragAndDrop.w = Assets.GetSprite("gfx_movie0").w
+		DragAndDrop.h = Assets.GetSprite("gfx_movie0").h
 		If Not TArchiveProgrammeBlocks.DragAndDropList Then TArchiveProgrammeBlocks.DragAndDropList = CreateList()
 		TArchiveProgrammeBlocks.DragAndDropList.AddLast(DragAndDrop)
 		SortList TArchiveProgrammeBlocks.DragAndDropList
@@ -1069,10 +1067,9 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
 		DragAndDrop.used = 0
-		DragAndDrop.rectx = 550 + Assets.GetSprite("gfx_contracts_base").w * i
-		DragAndDrop.recty = 87
-		DragAndDrop.rectw = Assets.GetSprite("gfx_contracts_base").w - 1
-		DragAndDrop.recth = Assets.GetSprite("gfx_contracts_base").h
+		DragAndDrop.pos.setXY(550 + Assets.GetSprite("gfx_contracts_base").w * i, 87)
+		DragAndDrop.w = Assets.GetSprite("gfx_contracts_base").w - 1
+		DragAndDrop.h = Assets.GetSprite("gfx_contracts_base").h
 		If Not TContractBlocks.DragAndDropList Then TContractBlocks.DragAndDropList = CreateList()
 		TContractBlocks.DragAndDropList.AddLast(DragAndDrop)
 		SortList TContractBlocks.DragAndDropList
@@ -1082,10 +1079,9 @@ Function CreateDropZones:Int()
 	For i = 0 To 3
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
-		DragAndDrop.rectx = 35
-		DragAndDrop.recty = 22 + i * Assets.getSprite("gfx_news_sheet0").h
-		DragAndDrop.rectw = Assets.getSprite("gfx_news_sheet0").w
-		DragAndDrop.recth = Assets.getSprite("gfx_news_sheet0").h
+		DragAndDrop.pos.setXY(35, 22 + i * Assets.getSprite("gfx_news_sheet0").h)
+		DragAndDrop.w = Assets.getSprite("gfx_news_sheet0").w
+		DragAndDrop.h = Assets.getSprite("gfx_news_sheet0").h
 		If Not TNewsBlock.DragAndDropList Then TNewsBlock.DragAndDropList = CreateList()
 		TNewsBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TNewsBlock.DragAndDropList
@@ -1094,10 +1090,9 @@ Function CreateDropZones:Int()
 	For i = 0 To 2
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i+4
-		DragAndDrop.rectx = 445
-		DragAndDrop.recty = 106 + i * Assets.getSprite("gfx_news_sheet0").h
-		DragAndDrop.rectw = Assets.getSprite("gfx_news_sheet0").w
-		DragAndDrop.recth = Assets.getSprite("gfx_news_sheet0").h
+		DragAndDrop.pos.setXY( 445, 106 + i * Assets.getSprite("gfx_news_sheet0").h )
+		DragAndDrop.w = Assets.getSprite("gfx_news_sheet0").w
+		DragAndDrop.h = Assets.getSprite("gfx_news_sheet0").h
 		If Not TNewsBlock.DragAndDropList Then TNewsBlock.DragAndDropList = CreateList()
 		TNewsBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TNewsBlock.DragAndDropList
@@ -1108,10 +1103,9 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
 		DragAndDrop.typ = "adblock"
-		DragAndDrop.rectx = 394 + Assets.GetSprite("pp_programmeblock1").w
-		DragAndDrop.recty = 17 + i * Assets.GetSprite("pp_adblock1").h
-		DragAndDrop.rectw = Assets.GetSprite("pp_adblock1").w
-		DragAndDrop.recth = Assets.GetSprite("pp_adblock1").h
+		DragAndDrop.pos.setXY( 394 + Assets.GetSprite("pp_programmeblock1").w, 17 + i * Assets.GetSprite("pp_adblock1").h)
+		DragAndDrop.w = Assets.GetSprite("pp_adblock1").w
+		DragAndDrop.h = Assets.GetSprite("pp_adblock1").h
 		If Not TAdBlock.DragAndDropList Then TAdBlock.DragAndDropList = CreateList()
 		TAdBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TAdBlock.DragAndDropList
@@ -1121,10 +1115,9 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i+11
 		DragAndDrop.typ = "adblock"
-		DragAndDrop.rectx = 67 + Assets.GetSprite("pp_programmeblock1").w
-		DragAndDrop.recty = 17 + i * Assets.GetSprite("pp_adblock1").h
-		DragAndDrop.rectw = Assets.GetSprite("pp_adblock1").w
-		DragAndDrop.recth = Assets.GetSprite("pp_adblock1").h
+		DragAndDrop.pos.setXY( 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + i * Assets.GetSprite("pp_adblock1").h )
+		DragAndDrop.w = Assets.GetSprite("pp_adblock1").w
+		DragAndDrop.h = Assets.GetSprite("pp_adblock1").h
 		If Not TAdBlock.DragAndDropList Then TAdBlock.DragAndDropList = CreateList()
 		TAdBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TAdBlock.DragAndDropList
@@ -1134,10 +1127,9 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
 		DragAndDrop.typ = "programmeblock"
-		DragAndDrop.rectx = 394
-		DragAndDrop.recty = 17 + i * Assets.GetSprite("pp_programmeblock1").h
-		DragAndDrop.rectw = Assets.GetSprite("pp_programmeblock1").w
-		DragAndDrop.recth = Assets.GetSprite("pp_programmeblock1").h
+		DragAndDrop.pos.setXY( 394, 17 + i * Assets.GetSprite("pp_programmeblock1").h )
+		DragAndDrop.w = Assets.GetSprite("pp_programmeblock1").w
+		DragAndDrop.h = Assets.GetSprite("pp_programmeblock1").h
 		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
 		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TProgrammeBlock.DragAndDropList
@@ -1147,10 +1139,9 @@ Function CreateDropZones:Int()
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i+11
 		DragAndDrop.typ = "programmeblock"
-		DragAndDrop.rectx = 67
-		DragAndDrop.recty = 17 + i * Assets.GetSprite("pp_programmeblock1").h
-		DragAndDrop.rectw = Assets.GetSprite("pp_programmeblock1").w
-		DragAndDrop.recth = Assets.GetSprite("pp_programmeblock1").h
+		DragAndDrop.pos.setXY( 67, 17 + i * Assets.GetSprite("pp_programmeblock1").h )
+		DragAndDrop.w = Assets.GetSprite("pp_programmeblock1").w
+		DragAndDrop.h = Assets.GetSprite("pp_programmeblock1").h
 		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
 		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TProgrammeBlock.DragAndDropList
@@ -2585,15 +2576,15 @@ Function Init_Creation()
 	lastblocks = 0
 
 	For Local playerids:Int = 1 To 4
-		TAdBlock.Create("1.", 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 0 * Assets.GetSprite("pp_adblock1").h, playerids, 1)
-		TAdBlock.Create("2.", 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 1 * Assets.GetSprite("pp_adblock1").h, playerids, 2)
-		TAdBlock.Create("3.", 67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 2 * Assets.GetSprite("pp_adblock1").h, playerids, 3)
+		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 0 * Assets.GetSprite("pp_adblock1").h, playerids, 1)
+		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 1 * Assets.GetSprite("pp_adblock1").h, playerids, 2)
+		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 2 * Assets.GetSprite("pp_adblock1").h, playerids, 3)
 		Local lastprogramme:TProgrammeBlock
-		lastprogramme = TProgrammeBlock.Create("1.", 67, 17 + 0 * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 1)
+		lastprogramme = TProgrammeBlock.Create(67, 17 + 0 * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 1)
 		lastblocks :+ lastprogramme.programme.blocks
-		lastprogramme = TProgrammeBlock.Create("2.", 67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 2)
+		lastprogramme = TProgrammeBlock.Create(67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 2)
 		lastblocks :+ lastprogramme.programme.blocks
-		lastprogramme = TProgrammeBlock.Create("3.", 67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 3)
+		lastprogramme = TProgrammeBlock.Create(67, 17 + lastblocks * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 3)
 	Next
 End Function
 
@@ -2617,7 +2608,6 @@ Function Init_Colorization()
 		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
 		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
 		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
-		Player[i].ProgrammePlan.refreshprogrammeplan(Game.day)
 	Next
 End Function
 

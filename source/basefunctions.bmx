@@ -242,6 +242,10 @@ Type TPosition
 		Return tmpObj
 	End Function
 
+	Function CreateFromPos:TPosition(pos:TPosition)
+		return TPosition.Create(pos.x,pos.y)
+	End Function
+
 	Method SetX(_x:Float)
 		Self.x = _x
 	End Method
@@ -253,6 +257,10 @@ Type TPosition
 	Method SetXY(_x:Float, _y:Float)
 		Self.SetX(_x)
 		Self.SetY(_y)
+	End Method
+
+	Method isSame:int(otherPos:TPosition)
+		return self.x = otherPos.x AND self.y = otherPos.y
 	End Method
 
 	Method SetPos(otherPos:TPosition)
@@ -582,6 +590,32 @@ End Type
 
 'collection of useful functions
 Type TFunctions
+	Function MouseIn:int(x:float,y:float,w:float,h:float)
+		return TFunctions.IsIn(MouseX(), MouseY(), x,y,w,h)
+	End Function
+
+	Function DoMeet:int(startA:float, endA:float, startB:float, endB:float)
+rem
+		local tmp:float = 0
+		'sort
+		tmp		= Max(startA, endA)
+		startA	= Min(startA, endA)
+		enda	= tmp
+
+		tmp		= Max(startB, endB)
+		startB	= Min(startB, endB)
+		endB	= tmp
+
+		'DoMeet - 4 possibilities - but only 2 for not meeting
+		' |--A--| .--B--.    or   .--B--. |--A--|
+		'needs ordered start->end
+'		return ( (startA < startB and endA < endB) or (startA > startB and endA > endB) )
+endrem
+		'DoMeet - 4 possibilities - but only 2 for not meeting
+		' |--A--| .--B--.    or   .--B--. |--A--|
+		return  not (Max(startA,endA) < Min(startB,endB) or Min(startA,endA) > Max(startB, endB) )
+	End function
+
 	Function IsIn:Int(x:Float, y:Float, rectx:Float, recty:Float, rectw:Float, recth:Float)
 		If x >= rectx And x<=rectx+rectw And..
 		   y >= recty And y<=recty+recth
@@ -660,14 +694,13 @@ Global functions:TFunctions = New TFunctions
 
 
 Type TDragAndDrop
-  Field rectx:Int = 0
-  Field recty:Int = 0
-  Field rectw:Int = 0
-  Field recth:Int = 0
+	field pos:TPosition = TPosition.Create(0,0)
+  Field w:Int = 0
+  Field h:Int = 0
   Field typ:String = ""
   Field slot:Int = 0
   Field used:Int = 0
-  Global List:TList
+  Global List:TList = CreateList()
 
     'set a dnd-target as unused (empty)
     'setze ein DND-Ziel als unbenutzt (frei)
@@ -691,85 +724,58 @@ Type TDragAndDrop
 
 	'set a dnd-target as used (full)
     'setze ein DND-Ziel als benutzt (belegt)
-    Function FindAndSetDragAndDropTargetUsed:Int(List:TList, _x:Int, _y:Int)
-	  Local P:TDragAndDrop = FindDragAndDropObject(list, _x, _y)
+    Function SetDragAndDropTargetState:Int(state:int, List:TList, _pos:TPosition)
+	  Local P:TDragAndDrop = FindDragAndDropObject(list, _pos)
  	  If p <> Null
-	    p.used = 1
+	    p.used = state
 	    Return 1
 	  EndIf
 	  Return 0
  	End Function
 
-	'set a dnd-target as unused (empty)
-    'setze ein DND-Ziel als unbenutzt (unbelegt)
-    Function FindAndSetDragAndDropTargetUnUsed:Int(List:TList, _x:Int, _y:Int)
-	  Local P:TDragAndDrop = FindDragAndDropObject(list, _x, _y)
- 	  If p <> Null
-	    p.used = 0
-	    Return 1
-	  EndIf
-	  Return 0
- 	End Function
-
- 	Function FindDragAndDropObject:TDragAndDrop(List:TList, _x:Int, _y:Int)
+ 	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TPosition)
  	  For Local P:TDragAndDrop = EachIn List
-		If P.rectx = _x And P.recty = _y Then Return P
+		If P.pos.x = _pos.x And P.pos.y = _pos.y Then Return P
 	  Next
 	  Return Null
  	End Function
 
 
-  Function Create:TDragAndDrop(x:Int, y:Int, w:Int, h:Int, _typ:String="")
-    Local DragAndDrop:TDragAndDrop=New TDragAndDrop
-    DragAndDrop.rectx = x
-    DragAndDrop.recty = y
-    DragAndDrop.rectw = w
-    DragAndDrop.recth = h
-    DragAndDrop.typ = _typ
-    DragAndDrop.used = 0
-    If Not List Then List = CreateList()
-    List.AddLast(DragAndDrop)
-    SortList List
-    Return DragAndDrop
-  EndFunction
+	Function Create:TDragAndDrop(x:Int, y:Int, w:Int, h:Int, _typ:String="")
+		Local DragAndDrop:TDragAndDrop=New TDragAndDrop
+		DragAndDrop.pos.SetXY(x,y)
+		DragAndDrop.w = w
+		DragAndDrop.h = h
+		DragAndDrop.typ = _typ
+		DragAndDrop.used = 0
+		List.AddLast(DragAndDrop)
+		SortList List
+		Return DragAndDrop
+	EndFunction
 
     Method IsIn:Int(x:Int, y:Int)
-      If x >= rectx And x <= rectx + rectw And y >= recty And y <= recty + recth
-        Return 1
-      Else
-        Return 0
-      EndIf
+		return (x >= pos.x And x <= pos.x + w And y >= pos.y And y <= pos.y + h)
     End Method
 
     Method CanDrop:Int(x:Int, y:Int, _Typ:String="")
-      If IsIn(x,y) = 1 And typ=_Typ 'used =0
-      	 Return 1
-      Else
-         Return 0
-      End If
+		return (IsIn(pos.x,pos.y) = 1 And typ=_Typ) 'used =0
     End Method
 
     Method Drop:Int(x:Int, y:Int, _typ:String="")
-      If IsIn(x,y) = 1 And typ=_typ 'used =0
-      	 used = 1
-      	 Return 1
-      Else
-      	 used = 0
-         Return 0
-      End If
+		used = IsIn(x,y) And typ=_typ 'used =0
+        Return used
     End Method
 
 	Method DrawMe()
-        SetAlpha 0.8
+		SetAlpha 0.8
 			If used
-			  SetColor 250,100,100
+				SetColor 250,100,100
 			Else
-			  SetColor 100,100,100
+				SetColor 100,100,100
 			EndIf
-			DrawRect(rectx,recty,rectw,recth)
+			DrawRect(pos.x,pos.y,w,h)
 		SetAlpha 1.0
 	End Method
-
 End Type
 
 Type TColor

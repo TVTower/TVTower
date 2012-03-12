@@ -505,14 +505,8 @@ Type TTVGNetwork
        WriteInt stream,  programmeBlock.Pos.y
        WriteInt stream,  programmeBlock.StartPos.x
        WriteInt stream,  programmeBlock.StartPos.y
-       WriteInt Stream, programmeBlock.programme.sendtime
-       WriteInt Stream, programmeBlock.programme.senddate
+       WriteInt Stream, programmeBlock.sendhour
        WriteInt Stream, programmeblock.id
-       If programmeblock.ParentProgramme = Null Then
-         WriteInt Stream, -1
-       Else
-         WriteInt stream, programmeblock.ParentProgramme.id
-       EndIf
        WriteInt stream, programmeblock.Programme.id
        SendUDP(i)
      EndIf
@@ -554,10 +548,10 @@ Type TTVGNetwork
        WriteInt stream,  adblock.StartPos.y
        WriteInt Stream, adblock.senddate
        WriteInt Stream, adblock.senddate
-       WriteInt Stream, adblock.uniqueID
+       WriteInt Stream, adblock.id
        WriteInt Stream, adblock.contract.id
        SendUDP(i)
-       Print "send change: adblock"+adblock.uniqueID
+       Print "send change: adblock"+adblock.id
      EndIf
    Next
   End Method
@@ -781,9 +775,9 @@ Type TTVGNetwork
           TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, RemoteplayerID)
 		EndIf
 	    'remove from Plan (Archive - ProgrammeToSuitcase)
-	    If typ = 1 Then Print "remove all instances";Player[ RemotePlayerID ].ProgrammePlan.RemoveAllProgrammeInstances(programme )
+	    If typ = 1 Then Player[ RemotePlayerID ].ProgrammePlan.RemoveProgramme(programme)
         'remove from Collection (Archive - RemoveProgramme)
-		If typ = 3 Then Print "remove from collection";Player[ RemotePlayerID ].ProgrammeCollection.RemoveProgramme( programme )
+		If typ = 3 Then Player[ RemotePlayerID ].ProgrammeCollection.RemoveProgramme( programme )
     EndIf
  End Method
 
@@ -876,7 +870,6 @@ Type TTVGNetwork
       If contract <> Null Then
         Adblock = TAdblock.CreateDragged(Contract,RemotePlayerID)
         'Print "NET: CREATED NEW Adblock: "+contract.Title
-        adblock.Title = contract.Title
         Adblock.dragged = 0
       Else
         Print "ERROR: NET: AdChange: contract not found"
@@ -906,12 +899,11 @@ Type TTVGNetwork
     Local y:Int = ReadInt(Stream)
     Local startrectx:Int = ReadInt(Stream)
     Local startrecty:Int = ReadInt(Stream)
-    Local sendtime:Int = ReadInt(Stream)
-    Local senddate:Int = ReadInt(Stream)
+    Local sendhour:Int = ReadInt(Stream)
     Local programmeblockID:Int = ReadInt(Stream)
     Local ParentProgrammeID:Int = ReadInt(Stream)
     Local ProgrammeID:Int = ReadInt(Stream)
-    Local programmeblock:TProgrammeBlock = TProgrammeBlock.GetBlock(programmeBlockID)
+    Local programmeblock:TProgrammeBlock = Player[RemotePlayerID].ProgrammePlan.GetProgrammeBlock(programmeBlockID)
     If programmeblock = Null Then
       Local ParentProgramme:TProgramme = Null
       Local Programme:TProgramme = Null
@@ -920,15 +912,13 @@ Type TTVGNetwork
       Programme = TProgramme.GetProgramme(programmeID)
       If Programme = Null Then Print "programme not found"
 	  Print "got new programme:"+programme.title
-	  programmeBlock = TProgrammeBlock.CreateDragged(programme, parentprogramme, RemotePlayerID)
+	  programmeBlock = TProgrammeBlock.CreateDragged(programme, RemotePlayerID)
       'Print "NET: ADDED NEW programme"
       ProgrammeBlock.dragged = 0
     EndIf
-    programmeBlock.programme.senddate = senddate
-    programmeBlock.programme.sendtime = sendtime
+    programmeBlock.sendhour = sendhour
 	ProgrammeBlock.Pos.SetXY(x, y)
 	ProgrammeBlock.StartPos.SetXY(startrectx, startrecty)
-    Player[remotePlayerID].ProgrammePlan.RefreshProgrammePlan(senddate)
     If add
       'Player[ RemotePlayerID ].ProgrammePlan.AddProgramme(Programmeblock.programme)
       'Print "NET: ADDED programme:"+Programmeblock.programme.Title+" to Player:"+RemotePlayerID

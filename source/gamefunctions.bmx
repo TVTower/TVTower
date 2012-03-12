@@ -155,7 +155,7 @@ Type TgfxProgrammelist extends TPlannerList
 				locy :+ 12
 				tapecount :+ 1
 				If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
-					TProgrammeBlock.CreateDragged(episode, series)
+					TProgrammeBlock.CreateDragged(episode)
 					SetOpen(0)
 					MOUSEMANAGER.resetKey(1)
 				EndIf
@@ -587,6 +587,10 @@ Type TBlock
       If _y<>1000		 Then Self.pos.SetY(_y)
       If _startx <> 1000 Then Self.StartPos.setX(_startx)
       If _starty <> 1000 Then Self.StartPos.SetY(_starty)
+	End Method
+
+	Method SetBasePos(_pos:TPosition = null)
+		if _pos <> null then self.pos.setPos(_pos); self.StartPos.setPos(_pos)
 	End Method
 
 	Method SetBaseCoords(_x:Int = 1000, _y:Int = 1000)
@@ -1100,13 +1104,12 @@ Type TInterface
 					ActualProgramText					= Localization.GetString("BROADCASTING_OUTAGE")
 				EndIf
 			Else
-				Local Programme:TProgramme = Player[ShowChannel].ProgrammePlan.GetActualProgramme()
+				Local block:TProgrammeBlock = Player[ShowChannel].ProgrammePlan.GetActualProgrammeBlock()
 				Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_none")
-				If Programme <> Null
-					Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_" + Programme.genre, "gfx_interface_TVprogram_none")
-					'If Assets.GetSprite("gfx_interface_TVprogram_" + Programme.genre) <> Null Then Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_" + Programme.genre)
+				If block <> Null
+					Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
 					ActualProgramToolTip.TitleBGtype	= 0
-					ActualProgramText					= Programme.title + " ("+Localization.GetString("BLOCK")+" "+(1+Game.GetActualHour()-Programme.sendtime)+"/"+Programme.blocks+")"
+					ActualProgramText					= block.Programme.title + " ("+Localization.GetString("BLOCK")+" "+(1+Game.GetActualHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
 				Else
 					ActualProgramToolTip.TitleBGtype	= 2
 					ActualProgramText 					= Localization.GetString("BROADCASTING_OUTAGE")
