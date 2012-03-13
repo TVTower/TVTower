@@ -68,9 +68,10 @@ Type TXmlHelper
 	End Method
 
 	Method FindChild:TxmlNode(nodeName:string)
+		nodeName = nodeName.ToLower()
 		local children:TList = currentNode.getChildren()
 		For local child:TxmlNode = eachin children
-			if child.getName() = nodeName then return child
+			if child.getName().ToLower() = nodeName then return child
 		Next
 		return null
 	End Method

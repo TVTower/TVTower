@@ -2062,7 +2062,7 @@ Hervorragend inszenierter Gangster-Film</description>
 		</movie>
 		<movie>
 			<title>Haben und Nichthaben</title>
-			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat. 
+			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat.
 Bogart und Bacall verliebten sich während der Dreharbeiten</description>
 			<data  actors="Humphrey Bogart, Walter Brennan, Lauren Bacall" director="Howard Hawks" country="USA" year="1944" genre="5"  blocks="2" time="0" price="200" critics="108" speed="96" outcome="156" />
 		</movie>
@@ -4869,8 +4869,8 @@ Hochdramatisch</description>
 		</serie>
 		<serie>
 			<title>Raumschiff Enterprise</title>
-			<description>Viele Lichtjahre von der Erde entfernt, 
-dringt die Enterprise in Galaxien vor, 
+			<description>Viele Lichtjahre von der Erde entfernt,
+dringt die Enterprise in Galaxien vor,
 die nie ein Mensch zuvor gesehen hat.
 Gene Roddenberry erschuf mit Star Trek einen bis heute anhaltenden Kult</description>
 			<data  actors="William Shatner, Leonard Nimoy, DeForest Kelley" director="Div." country="USA" year="1966" genre="2"  blocks="1" time="0" price="100" critics="108" speed="144" outcome="144" />
@@ -5988,272 +5988,272 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 		<ad>
 			<title>Aeroswift</title>
 			<description>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</description>
-			<data minAudience="100" repetitions="6" profit="100"  penalty="100" targetgroup="4" duration="3" />
+			<data minaudience="100" repetitions="6" profit="100"  penalty="100" targetgroup="4" duration="3" />
 		</ad>
 		<ad>
 			<title>Althans</title>
 			<description>Qualität seit 1861.
 Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</description>
-			<data minAudience="175" repetitions="4" profit="150"  penalty="100" targetgroup="4" duration="2" />
+			<data minaudience="175" repetitions="4" profit="150"  penalty="100" targetgroup="4" duration="2" />
 		</ad>
 		<ad>
 			<title>Aunt Lizzy´s</title>
 			<description>Kirsch-Sirup aus Bio-Anbau. Von Tante Lizzy selbst abgefüllt.</description>
-			<data minAudience="0" repetitions="5" profit="50"  penalty="50" targetgroup="3" duration="2" />
+			<data minaudience="0" repetitions="5" profit="50"  penalty="50" targetgroup="3" duration="2" />
 		</ad>
 		<ad>
 			<title>Berliner Pilsener</title>
 			<description>Berlin, du bist so wunderbar</description>
-			<data minAudience="175" repetitions="5" profit="200"  penalty="100" targetgroup="-1" duration="6" />
+			<data minaudience="175" repetitions="5" profit="200"  penalty="100" targetgroup="-1" duration="6" />
 		</ad>
 		<ad>
 			<title>Big Kahuna Burger</title>
 			<description>Mmmmhmmm - das IST ein leckerer Burger. Wenn Du auf Burger stehst, mußt Du die probieren!</description>
-			<data minAudience="125" repetitions="2" profit="150"  penalty="200" targetgroup="7" duration="2" />
+			<data minaudience="125" repetitions="2" profit="150"  penalty="200" targetgroup="7" duration="2" />
 		</ad>
 		<ad>
 			<title>Bikeshop</title>
 			<description>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</description>
-			<data minAudience="25" repetitions="2" profit="50"  penalty="0" targetgroup="2" duration="2" />
+			<data minaudience="25" repetitions="2" profit="50"  penalty="0" targetgroup="2" duration="2" />
 		</ad>
 		<ad>
 			<title>Bundi</title>
 			<description>Hier gibt's Schnäppchen en masse. Der sympathische Krempelmarkt um die Ecke.</description>
-			<data minAudience="0" repetitions="0" profit="15"  penalty="20" targetgroup="0" duration="2" />
+			<data minaudience="0" repetitions="0" profit="15"  penalty="20" targetgroup="0" duration="2" />
 		</ad>
 		<ad>
 			<title>Copyshop Raub</title>
 			<description>Raub-Kopien sehen fast so gut aus wie die Originale. Wir verkaufen auch Permanentmarker!</description>
-			<data minAudience="0" repetitions="0" profit="20"  penalty="10" targetgroup="0" duration="3" />
+			<data minaudience="0" repetitions="0" profit="20"  penalty="10" targetgroup="0" duration="3" />
 		</ad>
 		<ad>
 			<title>Dr. Papper</title>
 			<description>Nicht nur Furrest Gomp trinkt leidenschaftlich Dr. Papper.</description>
-			<data minAudience="75" repetitions="4" profit="150"  penalty="100" targetgroup="2" duration="6" />
+			<data minaudience="75" repetitions="4" profit="150"  penalty="100" targetgroup="2" duration="6" />
 		</ad>
 		<ad>
 			<title>Dubantours</title>
 			<description>Reisen sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt sie hin.</description>
-			<data minAudience="25" repetitions="5" profit="50"  penalty="50" targetgroup="4" duration="3" />
+			<data minaudience="25" repetitions="5" profit="50"  penalty="50" targetgroup="4" duration="3" />
 		</ad>
 		<ad>
 			<title>ESCAL</title>
 			<description>Computerschrott ab 50 Eurocent das Kilo. Jetzt auch moderne S/W-Monitore im Angebot.</description>
-			<data minAudience="75" repetitions="2" profit="50"  penalty="50" targetgroup="-1" duration="3" />
+			<data minaudience="75" repetitions="2" profit="50"  penalty="50" targetgroup="-1" duration="3" />
 		</ad>
 		<ad>
 			<title>Fahrschule Fürst</title>
 			<description>Sicher und souverän zum Führerschein
 In Tempelhof und Steglitz</description>
-			<data minAudience="25" repetitions="2" profit="50"  penalty="50" targetgroup="2" duration="3" />
+			<data minaudience="25" repetitions="2" profit="50"  penalty="50" targetgroup="2" duration="3" />
 		</ad>
 		<ad>
 			<title>Fort</title>
 			<description>Der neue Fort ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</description>
-			<data minAudience="150" repetitions="5" profit="150"  penalty="150" targetgroup="-1" duration="3" />
+			<data minaudience="150" repetitions="5" profit="150"  penalty="150" targetgroup="-1" duration="3" />
 		</ad>
 		<ad>
 			<title>GameStation 2</title>
 			<description>The fourth place.
 Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
-			<data minAudience="225" repetitions="6" profit="250"  penalty="200" targetgroup="2" duration="4" />
+			<data minaudience="225" repetitions="6" profit="250"  penalty="200" targetgroup="2" duration="4" />
 		</ad>
 		<ad>
 			<title>Gillettine</title>
 			<description>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Geischtshaut eines echten Kerls - für das Beste im Mann.</description>
-			<data minAudience="150" repetitions="4" profit="150"  penalty="100" targetgroup="9" duration="4" />
+			<data minaudience="150" repetitions="4" profit="150"  penalty="100" targetgroup="9" duration="4" />
 		</ad>
 		<ad>
 			<title>Gold per Post</title>
 			<description>Hau dem Opa die Zähne aus, ab heute gibt es Geld gegen Gold. Achtung: Gelb ist nicht gleich Gold!</description>
-			<data minAudience="0" repetitions="0" profit="25"  penalty="100" targetgroup="5" duration="5" />
+			<data minaudience="0" repetitions="0" profit="25"  penalty="100" targetgroup="5" duration="5" />
 		</ad>
 		<ad>
 			<title>Guld Körn</title>
 			<description>Das Honigmonster präsentiert sein Leibgericht</description>
-			<data minAudience="200" repetitions="1" profit="150"  penalty="200" targetgroup="1" duration="0" />
+			<data minaudience="200" repetitions="1" profit="150"  penalty="200" targetgroup="1" duration="0" />
 		</ad>
 		<ad>
 			<title>Hanz Tomato Ketchup</title>
 			<description>Das Ketchup für diejenigen, die ihre Pommes nicht in Mayonnaise ersäufen. Auch geeignet für Buletten, Wurst und Hühnchen.</description>
-			<data minAudience="100" repetitions="2" profit="100"  penalty="50" targetgroup="-1" duration="3" />
+			<data minaudience="100" repetitions="2" profit="100"  penalty="50" targetgroup="-1" duration="3" />
 		</ad>
 		<ad>
 			<title>Je Ne Reviens Pas</title>
 			<description>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</description>
-			<data minAudience="175" repetitions="3" profit="150"  penalty="200" targetgroup="8" duration="2" />
+			<data minaudience="175" repetitions="3" profit="150"  penalty="200" targetgroup="8" duration="2" />
 		</ad>
 		<ad>
 			<title>Jesse Wasser- und Wärmedienst</title>
 			<description>Wir sorgen für ihre Sanitäranlagen. Schon ab 10 € - ohne Scheiß!</description>
-			<data minAudience="25" repetitions="2" profit="50"  penalty="50" targetgroup="4" duration="0" />
+			<data minaudience="25" repetitions="2" profit="50"  penalty="50" targetgroup="4" duration="0" />
 		</ad>
 		<ad>
 			<title>KittyFood</title>
 			<description>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</description>
-			<data minAudience="50" repetitions="2" profit="150"  penalty="50" targetgroup="3" duration="1" />
+			<data minaudience="50" repetitions="2" profit="150"  penalty="50" targetgroup="3" duration="1" />
 		</ad>
 		<ad>
 			<title>La Baguette</title>
 			<description>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</description>
-			<data minAudience="175" repetitions="1" profit="150"  penalty="100" targetgroup="3" duration="2" />
+			<data minaudience="175" repetitions="1" profit="150"  penalty="100" targetgroup="3" duration="2" />
 		</ad>
 		<ad>
 			<title>Laimi</title>
 			<description>Schon längst zum Schulkameraden geworden: Die Patronen, die den Füller füllen.</description>
-			<data minAudience="25" repetitions="1" profit="50"  penalty="50" targetgroup="2" duration="1" />
+			<data minaudience="25" repetitions="1" profit="50"  penalty="50" targetgroup="2" duration="1" />
 		</ad>
 		<ad>
 			<title>Lemor</title>
 			<description>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
 Ich fühl mich wohl mit Lemor</description>
-			<data minAudience="125" repetitions="4" profit="150"  penalty="100" targetgroup="3" duration="5" />
+			<data minaudience="125" repetitions="4" profit="150"  penalty="100" targetgroup="3" duration="5" />
 		</ad>
 		<ad>
 			<title>Märzedes</title>
 			<description>Der neueste Luxus-Schlitten aus dem Hause Märzedes: Ästethisch einwandfreies Design, robust, klassisch.</description>
-			<data minAudience="225" repetitions="6" profit="250"  penalty="200" targetgroup="6" duration="2" />
+			<data minaudience="225" repetitions="6" profit="250"  penalty="200" targetgroup="6" duration="2" />
 		</ad>
 		<ad>
 			<title>MasterCard</title>
 			<description>MacGyver als Werbeträger für die MasterCard: R. D. Anderson noch einmal in seiner Paraderolle - unbezahlbar</description>
-			<data minAudience="225" repetitions="1" profit="250"  penalty="200" targetgroup="7" duration="0" />
+			<data minaudience="225" repetitions="1" profit="250"  penalty="200" targetgroup="7" duration="0" />
 		</ad>
 		<ad>
 			<title>MinutePass</title>
 			<description>Richard Dean Anderson präsentiert für die Telecom USA in zwei Spots eine nützliche Telephonkarte.</description>
-			<data minAudience="150" repetitions="2" profit="100"  penalty="50" targetgroup="-1" duration="0" />
+			<data minaudience="150" repetitions="2" profit="100"  penalty="50" targetgroup="-1" duration="0" />
 		</ad>
 		<ad>
 			<title>Mödie-Markt</title>
 			<description>Wir sind Blöd. Wir schmeissen unsere Ware zu Spottpreisen raus. Also ab in den nächsten Mödie-Markt</description>
-			<data minAudience="100" repetitions="3" profit="100"  penalty="150" targetgroup="4" duration="3" />
+			<data minaudience="100" repetitions="3" profit="100"  penalty="150" targetgroup="4" duration="3" />
 		</ad>
 		<ad>
 			<title>Mors</title>
 			<description>Der unvergleichliche Schokoriegel mit dem hinreißenden Geschmack</description>
-			<data minAudience="125" repetitions="3" profit="100"  penalty="50" targetgroup="2" duration="5" />
+			<data minaudience="125" repetitions="3" profit="100"  penalty="50" targetgroup="2" duration="5" />
 		</ad>
 		<ad>
 			<title>Mr. Ploper</title>
 			<description>Neun Jahre zuvor in den USA eingeführt, kommt Mr. Ploper 1967 nach Deutschland und etabliert sich als der beliebteste Haushaltsreiniger</description>
-			<data minAudience="150" repetitions="5" profit="150"  penalty="150" targetgroup="3" duration="5" />
+			<data minaudience="150" repetitions="5" profit="150"  penalty="150" targetgroup="3" duration="5" />
 		</ad>
 		<ad>
 			<title>Novea</title>
 			<description>Pflegeprodukte rund um die Haut. Salben/Crèmes, Badezusatz, Deodorants uvm.</description>
-			<data minAudience="75" repetitions="5" profit="100"  penalty="50" targetgroup="-1" duration="7" />
+			<data minaudience="75" repetitions="5" profit="100"  penalty="50" targetgroup="-1" duration="7" />
 		</ad>
 		<ad>
 			<title>Okea</title>
 			<description>Regale, Tische, Stühle, Schränke etc. - das haben wir zu bieten.
 Habt Ihr das zu bieten? Alter Schwede!</description>
-			<data minAudience="125" repetitions="5" profit="200"  penalty="150" targetgroup="-1" duration="2" />
+			<data minaudience="125" repetitions="5" profit="200"  penalty="150" targetgroup="-1" duration="2" />
 		</ad>
 		<ad>
 			<title>Oranchina</title>
 			<description>Das Fruchtsaftgetränk in der weltberühmten bauchigen Flasche. Teuer, aber so gut wie immer richtig.</description>
-			<data minAudience="200" repetitions="5" profit="250"  penalty="200" targetgroup="4" duration="4" />
+			<data minaudience="200" repetitions="5" profit="250"  penalty="200" targetgroup="4" duration="4" />
 		</ad>
 		<ad>
 			<title>Pipsi Cola</title>
 			<description>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</description>
-			<data minAudience="175" repetitions="3" profit="200"  penalty="200" targetgroup="2" duration="2" />
+			<data minaudience="175" repetitions="3" profit="200"  penalty="200" targetgroup="2" duration="2" />
 		</ad>
 		<ad>
 			<title>Polstermöbel Dobrawa</title>
 			<description>Polsterwerkstatt Dobrawa seit 1933</description>
-			<data minAudience="25" repetitions="1" profit="50"  penalty="100" targetgroup="4" duration="1" />
+			<data minaudience="25" repetitions="1" profit="50"  penalty="100" targetgroup="4" duration="1" />
 		</ad>
 		<ad>
 			<title>Pustbank</title>
 			<description>Eröffnen Sie ein Konto bei der Pustbank.
 Der Vorteil: Kein Porto für Überweisungsträger</description>
-			<data minAudience="50" repetitions="3" profit="100"  penalty="150" targetgroup="4" duration="1" />
+			<data minaudience="50" repetitions="3" profit="100"  penalty="150" targetgroup="4" duration="1" />
 		</ad>
 		<ad>
 			<title>Rabensburger</title>
 			<description>Puzzeln, spielen, Spaß haben. Rabensburger empfiehlt Neuheiten und Klassiker aus seinem Sortiment.</description>
-			<data minAudience="50" repetitions="3" profit="100"  penalty="50" targetgroup="1" duration="5" />
+			<data minaudience="50" repetitions="3" profit="100"  penalty="50" targetgroup="1" duration="5" />
 		</ad>
 		<ad>
 			<title>Ravell</title>
 			<description>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravell führt es.</description>
-			<data minAudience="50" repetitions="3" profit="50"  penalty="50" targetgroup="9" duration="3" />
+			<data minaudience="50" repetitions="3" profit="50"  penalty="50" targetgroup="9" duration="3" />
 		</ad>
 		<ad>
 			<title>Reisebüro TeurI</title>
 			<description>Schnäppchenpreise für exklusive Rucksack-Touren. Proviant und Pflaster nicht im Preis enthalten.</description>
-			<data minAudience="175" repetitions="2" profit="50"  penalty="0" targetgroup="4" duration="2" />
+			<data minaudience="175" repetitions="2" profit="50"  penalty="0" targetgroup="4" duration="2" />
 		</ad>
 		<ad>
 			<title>Ringtone Fuzzy</title>
 			<description>Räm Bäm Bäääm - Bestell Dir jetzt Deinen Klingelton im Sparabo.</description>
-			<data minAudience="0" repetitions="0" profit="15"  penalty="30" targetgroup="2" duration="5" />
+			<data minaudience="0" repetitions="0" profit="15"  penalty="30" targetgroup="2" duration="5" />
 		</ad>
 		<ad>
 			<title>Saratti</title>
 			<description>Der Saratti-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</description>
-			<data minAudience="75" repetitions="3" profit="100"  penalty="150" targetgroup="-1" duration="4" />
+			<data minaudience="75" repetitions="3" profit="100"  penalty="150" targetgroup="-1" duration="4" />
 		</ad>
 		<ad>
 			<title>Snuckers</title>
 			<description>Der leckere Riegel mit dem hohen Erdnußanteil.
 Daran hat man zu kauen.</description>
-			<data minAudience="100" repetitions="3" profit="100"  penalty="150" targetgroup="2" duration="3" />
+			<data minaudience="100" repetitions="3" profit="100"  penalty="150" targetgroup="2" duration="3" />
 		</ad>
 		<ad>
 			<title>Speck</title>
 			<description>Speck-Seife steht seit Jahrzenten für Qualität und saubere Hände.</description>
-			<data minAudience="50" repetitions="2" profit="100"  penalty="150" targetgroup="3" duration="3" />
+			<data minaudience="50" repetitions="2" profit="100"  penalty="150" targetgroup="3" duration="3" />
 		</ad>
 		<ad>
 			<title>Sunny</title>
 			<description>Der Hersteller für High-Tech flächendeckend.
 It's a sunny</description>
-			<data minAudience="225" repetitions="4" profit="250"  penalty="250" targetgroup="9" duration="5" />
+			<data minaudience="225" repetitions="4" profit="250"  penalty="250" targetgroup="9" duration="5" />
 		</ad>
 		<ad>
 			<title>Sylters</title>
 			<description>Ein reines Wasser muß durch einen tiefen Stein</description>
-			<data minAudience="150" repetitions="3" profit="200"  penalty="200" targetgroup="4" duration="4" />
+			<data minaudience="150" repetitions="3" profit="200"  penalty="200" targetgroup="4" duration="4" />
 		</ad>
 		<ad>
 			<title>ToughWhip</title>
 			<description>Ein Wischtuch für Küche UND WC. Jetzt mit lustigen Tiermotiven.</description>
-			<data minAudience="0" repetitions="3" profit="50"  penalty="50" targetgroup="3" duration="2" />
+			<data minaudience="0" repetitions="3" profit="50"  penalty="50" targetgroup="3" duration="2" />
 		</ad>
 		<ad>
 			<title>Tublerone</title>
 			<description>Na und?
 Tublerone - Schokolade mit Charakter.</description>
-			<data minAudience="125" repetitions="2" profit="100"  penalty="100" targetgroup="-1" duration="1" />
+			<data minaudience="125" repetitions="2" profit="100"  penalty="100" targetgroup="-1" duration="1" />
 		</ad>
 		<ad>
 			<title>Ulbricht Umzüge</title>
 			<description>Ausziehen! Ausziehen! Ausziehen!!!
 Aber nur mit Ulbricht Umzüge!</description>
-			<data minAudience="7" repetitions="0" profit="50"  penalty="50" targetgroup="4" duration="2" />
+			<data minaudience="7" repetitions="0" profit="50"  penalty="50" targetgroup="4" duration="2" />
 		</ad>
 		<ad>
 			<title>Vitalon Super Supau</title>
 			<description>Die "Vitalon Foods Company" aus Taiwan läßt Richard Dean Anderson als MacGyver für ihren Sports Drink werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Motorboot.</description>
-			<data minAudience="175" repetitions="4" profit="200"  penalty="150" targetgroup="7" duration="3" />
+			<data minaudience="175" repetitions="4" profit="200"  penalty="150" targetgroup="7" duration="3" />
 		</ad>
 		<ad>
 			<title>wasch das</title>
 			<description>Deo, Duschmittel, Badezusatz: Körperpflege in vielen Variationen.</description>
-			<data minAudience="25" repetitions="2" profit="50"  penalty="0" targetgroup="-1" duration="0" />
+			<data minaudience="25" repetitions="2" profit="50"  penalty="0" targetgroup="-1" duration="0" />
 		</ad>
 		<ad>
 			<title>Wodka Jelzin</title>
 			<description>Des Wodkas reine Seele</description>
-			<data minAudience="50" repetitions="4" profit="100"  penalty="150" targetgroup="9" duration="2" />
+			<data minaudience="50" repetitions="4" profit="100"  penalty="150" targetgroup="9" duration="2" />
 		</ad>
 		<ad>
 			<title>Zaturn</title>
 			<description>Geiz sei geil, so die Botschaft dieser Werbung.</description>
-			<data minAudience="150" repetitions="4" profit="150"  penalty="200" targetgroup="-1" duration="2" />
+			<data minaudience="150" repetitions="4" profit="150"  penalty="200" targetgroup="-1" duration="2" />
 		</ad>
 	</allads>
 	<time value="384.65ms" />
