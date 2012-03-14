@@ -428,7 +428,7 @@ Type TLuaFunctions
 	Method getPlayerCredit:Int()
 		Local PlayerID:Int = activeKI.playerId
 		If Player[PlayerID] <> Null
-			Return Player[PlayerID].finances[TFinancials.GetDayArray(Game.day)].credit
+			Return Player[PlayerID].finances[Game.getWeekday()].credit
 		Else
 			Return 0
 		EndIf
@@ -437,7 +437,7 @@ Type TLuaFunctions
 	Method getPlayerMoney:Int()
 		Local PlayerID:Int = activeKI.playerId
 		If Player[PlayerID] <> Null
-			Return Player[PlayerID].finances[TFinancials.GetDayArray(game.day)].money
+			Return Player[PlayerID].finances[Game.getWeekday()].money
 		Else
 			Return 0
 		EndIf

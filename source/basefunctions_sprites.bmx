@@ -256,10 +256,11 @@ Type TBitmapFontChar
 End Type
 
 Type TBitmapFont
-	Field chars			:TBitmapFontChar[256]
-	Field charsSprites	:TGW_Sprites[256]
+	Field chars:TMap	= CreateMap()
+	Field charsSprites:Tmap=CreateMap()
 	field spriteSet		:TGW_SpritePack
 	Field MaxSigns		:Int=256
+	Field ExtraChars	:string="€"
 	Field gfx			:TMax2dGraphics
 	Field uniqueID		:string =""
 	Field displaceY		:float=100.0
@@ -290,10 +291,16 @@ Type TBitmapFont
 			If glyph
 				'base displacement calculated with A-Z (space between TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
 				if i >= 65 AND i < 95 then obj.displaceY = Min(obj.displaceY, glyph._y)
-				obj.chars[i] = TBitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance)
+				obj.chars.insert(string(i), TBitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
 				charmap.AddElement(i,glyph._w+spacer,glyph._h+spacer ) 'add box of char and package atlas
-			else
-				obj.chars[i] = null
+			endif
+		Next
+		For Local charNum:Int = 0 Until obj.ExtraChars.length
+			Local n:Int = imgFont.CharToGlyph( obj.ExtraChars[charNum] )
+			Local glyph:TImageGlyph = imgFont.LoadGlyph(n)
+			If glyph
+				obj.chars.insert(string(obj.ExtraChars[charNum]) , TBitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
+				charmap.AddElement(obj.ExtraChars[charNum] ,glyph._w+spacer,glyph._h+spacer ) 'add box of char and package atlas
 			endif
 		Next
 
@@ -303,18 +310,16 @@ Type TBitmapFont
 		'loop through atlax boxes and add chars
 		For local charKey:string = eachin charmap.elements.Keys()
 			local box:TBox = TBox(charmap.elements.ValueForKey(charKey))
-			local charCode:int = int(charKey)
 			'draw char image on charmap
-			if obj.chars[charCode] <> null AND obj.chars[charCode].img <> null
-				local charPix:TPixmap = LockImage(obj.chars[charCode].img)
+			if obj.chars.ValueForKey(charKey) <> null AND TBitmapFontChar(obj.chars.ValueForKey(charKey)).img <> null
+				'print "adding "+charKey + " = "+chr(int(charKey))
+				local charPix:TPixmap = LockImage(TBitmapFontChar(obj.chars.ValueForKey(charKey)).img)
 				If charPix.format <> 2 Then charPix.convert(PF_A8) 'make sure the pixmaps are 8bit alpha-format
 				DrawPixmapOnPixmap(charPix, pix, box.x,box.y)
-				UnlockImage(obj.chars[charCode].img)
+				UnlockImage(TBitmapFontChar(obj.chars.ValueForKey(charKey)).img)
 				' es fehlt noch charWidth - extraTyp?
 
-				obj.charsSprites[charCode] = TGW_Sprites.Create(obj.spriteSet, charKey, box.x, box.y, box.w, box.h, 0, charCode)
-			else
-				obj.charsSprites[charCode] = null
+				obj.charsSprites.insert(charKey, TGW_Sprites.Create(obj.spriteSet, charKey, box.x, box.y, box.w, box.h, 0, int(charKey)))
 			endif
 		Next
 		'set image to sprite pack
@@ -327,7 +332,7 @@ Type TBitmapFont
 	Method AddChar:TBitmapFontChar(charCode:int, img:timage, x:int, y:int, w:int, h:int, charWidth:float)
 		'paint on pixmap
 		self.spriteSet.CopyImageOnSpritePackImage(img, null, x,y)
-		self.chars[charCode] = TBitmapFontChar.Create(img, x,y,w,h, charWidth)
+		self.chars.insert(string(charCode), TBitmapFontChar.Create(img, x,y,w,h, charWidth))
 	End Method
 
 	Method getWidth:Float(text:String)
@@ -506,19 +511,19 @@ Type TBitmapFont
 			local lineHeight:int = 0
 			local lineWidth:int = 0
 			For Local i:Int = 0 Until text.length
-				If text[i] < Self.MaxSigns
-					Local bm:TBitmapFontChar = self.chars[ text[i] ]
-					if bm <> null
-						Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
-						Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
-
-						'drawable ? (> 32)
-						if text[i] > 32
-							lineHeight = MAX(lineHeight, bm.box.h)
-							if doDraw then self.charsSprites[ text[i] ].Draw(x+lineWidth+tx,y+height+ty - self.displaceY)
+				Local bm:TBitmapFontChar = TBitmapFontChar( self.chars.ValueForKey(string(text[i])) )
+				if bm <> null
+					Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
+					Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
+					'drawable ? (> 32)
+					if text[i] > 32
+						lineHeight = MAX(lineHeight, bm.box.h)
+						if doDraw
+							local sprite:TGW_Sprites = TGW_Sprites(self.charsSprites.ValueForKey(string(text[i])))
+							if sprite <> null then sprite.Draw(x+lineWidth+tx,y+height+ty - self.displaceY)
 						endif
-						lineWidth :+ bm.charWidth * gfx.tform_ix
 					endif
+					lineWidth :+ bm.charWidth * gfx.tform_ix
 				EndIf
 			Next
 			width = max(width, lineWidth)
@@ -533,13 +538,14 @@ Type TBitmapFont
 
 	Method drawfixed(text:String,x:Float,y:Float)
 		For Local i:Int = 0 Until text.length
-			If text[i]-32 < Self.MaxSigns Then
-				Local bm:TBitmapFontChar = self.chars[text[i]-32]
+			Local bm:TBitmapFontChar = TBitmapFontChar(self.chars.ValueForKey(string(text[i]-32)))
+			if bm <> null
 				Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
 				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
-				self.charsSprites[text[i]-32].Draw(x+tx,y+ty)
+				local sprite:TGW_Sprites = TGW_Sprites(self.charsSprites.ValueForKey(string(text[i]-32)))
+				if sprite <> null then sprite.Draw(x+tx,y+ty)
 				x :+ bm.charWidth
-			EndIf
+			endif
 		Next
 	End Method
 

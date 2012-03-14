@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="10.03.2012 17:51" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="14.03.2012 16:55" />
 	<allmovies>
 		<movie>
 			<title>...denn sie wissen nicht, was sie tun</title>
@@ -908,6 +908,11 @@ Edgar-Wallace mit Gert Fröbe</description>
 			<data  actors="Klaus-Jürgen Wussow, Gert Fröbe, Karin Dor, Eddi Arent, Wolfgang Völz" director="Jürgen Roland" country="D" year="1961" genre="1"  blocks="2" time="20" price="50" critics="72" speed="144" outcome="120" />
 		</movie>
 		<movie>
+			<title>Der Hammer fällt LIVE</title>
+			<description>Nur im Fernsehen und nirgends sonst werden diese Ramschartikel an Ahnungslose versteigert.</description>
+			<data  country="BEL" year="2011" genre="20"  blocks="2" price="20" critics="10" speed="6" outcome="0" />
+		</movie>
+		<movie>
 			<title>Der Hauptmann von Köpenick</title>
 			<description>Heinz Rühmann als entlassener Berliner Häftling, der, weil ihm für die Zukunft Steine in den Weg gelegt sind, eine Uniform ersteht und das Köpenicker Rathaus bezieht</description>
 			<data  actors="Heinz Rühmann, Martin Held, Walter Giller, Wolfgang Neuss, Bum Krüger" director="Helmut Käutner" country="D" year="1956" genre="3"  blocks="2" time="0" price="100" critics="132" speed="120" outcome="132" />
@@ -1274,6 +1279,11 @@ Horrorklassiker</description>
 			<title>Die Gnadenlosen</title>
 			<description>Ironischer Kriminalfilm, in dessen Mittelpunkt ein Gefangener steht, der nach seiner Entlassung um sein erarbeitetes Geld fürchten muß</description>
 			<data  actors="James Stewart, George Kennedy, Anne Baxter, Kurt Russell, Robert Donner" director="Andrew V. McLaglen" country="USA" year="1971" genre="1"  blocks="2" time="20" price="100" critics="108" speed="84" outcome="108" />
+		</movie>
+		<movie>
+			<title>Die große Verarsche-Show</title>
+			<description>Hier treten Männer gegen Frauen an. Das Geschlecht mit den meisten Anrufen gewinnt.</description>
+			<data  country="D" year="2000" genre="20"  blocks="2" price="15" critics="15" speed="20" outcome="0" />
 		</movie>
 		<movie>
 			<title>Die größte Geschichte aller Zeiten</title>
@@ -2062,7 +2072,7 @@ Hervorragend inszenierter Gangster-Film</description>
 		</movie>
 		<movie>
 			<title>Haben und Nichthaben</title>
-			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat.
+			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat. 
 Bogart und Bacall verliebten sich während der Dreharbeiten</description>
 			<data  actors="Humphrey Bogart, Walter Brennan, Lauren Bacall" director="Howard Hawks" country="USA" year="1944" genre="5"  blocks="2" time="0" price="200" critics="108" speed="96" outcome="156" />
 		</movie>
@@ -3725,6 +3735,11 @@ Beinahe exakte Kopie von Teil 1</description>
 			<data  actors="Samy Naceri, Frédéric Diefenthal, Marion Cotillard" director="Gérard Krawczyk" country="F" year="2000" genre="0"  blocks="2" time="0" price="200" critics="24" speed="168" outcome="84" />
 		</movie>
 		<movie>
+			<title>TED am Morgen</title>
+			<description>Der Tele Dialog am Morgen befragt Zuschauer zu brisanten Themen. Meinungsbildend und Gewinnbringend.</description>
+			<data  director="Heiner Trubbl" country="D" year="2001" genre="20"  blocks="1" time="9" price="30" critics="30" speed="10" outcome="0" />
+		</movie>
+		<movie>
 			<title>Tequila Sunrise - Eine gefährliche Mischung</title>
 			<description>Die Auseinandersetzung zwischen zwei alten Schulfreunden, inzwischen Drogenhändler und Drogenfahnder, eskaliert, als noch dazu eine Frau zwischen ihnen steht.</description>
 			<data  actors="Kurt Russell, Mel Gibson, Michelle Pfeiffer, J.T. Walsh" director="Robert Towne" country="USA" year="1989" genre="1"  blocks="2" time="20" price="100" critics="108" speed="84" outcome="144" />
@@ -4544,6 +4559,26 @@ Sehenswert auch wegen der Gaststars</description>
 			</episode>
 		</serie>
 		<serie>
+			<title>Die Hellseher</title>
+			<description>Mariusz und Beatrix verwirren mit verschwommenen Ausdeutungen von Zukunft und Vergangenheit ihrer Anrufer.</description>
+			<data  actors="Mariusz Plauz, Beatrix Plauz" country="D" year="1999" genre="20"  blocks="2" price="20" critics="5" speed="5" outcome="0" />
+			<episode number="1">
+				<title>Vaters Geist</title>
+				<description>Zwar kommt der Anruf aus der Regie, dennoch erreicht Mariusz angeblich den verstorbenen Vater</description>
+				<data  genre="20" 	price="16"	critics="5"	speed="5" />
+			</episode>
+			<episode number="2">
+				<title>Rudi der Pudel</title>
+				<description>Marlene aus Berlin möchte wissen, ob der entlaufene Pudel Rudi je wieder nach Hause kommen wird. </description>
+				<data  genre="20" 	price="15"	critics="5"	speed="5" />
+			</episode>
+			<episode number="3">
+				<title>Transmediale Olympiade</title>
+				<description>Mariusz und Beatrix versuchen in dieser Ausgabe so vielen Anrufern wie möglich zu helfen - deren Themen müssen variieren.</description>
+				<data  genre="20" 	price="27"	critics="11"	speed="8" />
+			</episode>
+		</serie>
+		<serie>
 			<title>Die Patty Glansen Show</title>
 			<description>Nach Ihrem Erfolg (bei den Kritikern) versucht sich Patty Glansen nun auf dem großen Parkett der TV-Unterhaltung. Spannende Gespräche, interessante Berichte. Eine Show von Senioren, für Senioren.</description>
 			<data  actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1997" genre="17"  blocks="2" price="100" critics="132" speed="72" outcome="48" />
@@ -4613,6 +4648,31 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 			</episode>
 		</serie>
 		<serie>
+			<title>Ein Päuschen zum Gewinn</title>
+			<description>Schnelle Raterunden für debile Anrufer. Gestellt werden Fragen zu aktuell erschienen Schundromanen.</description>
+			<data  actors="Matthias Pfeife" director="Detlef Droschke" country="D" year="2009" genre="20"  blocks="1" price="15" critics="5" speed="20" outcome="0" />
+			<episode number="1">
+				<title>Leichte Gewinne</title>
+				<description>Um ein Stammpublikum einzurichten werden in der ersten Folge die Lösungen gleich mit eingeblendet.</description>
+				<data  genre="20" 	price="15"	critics="5"	speed="20" />
+			</episode>
+			<episode number="2">
+				<title>Harte Brocken</title>
+				<description>Der Moderator suggeriert schwere Fragen, dabei sind es die gleichen wie in der Premierensendung.</description>
+				<data  genre="20" 	price="15"	critics="5"	speed="20" />
+			</episode>
+			<episode number="3">
+				<title>Genie gesucht</title>
+				<description>In der diesigen Ausgabe sollen die Anrufer die Frage nach dem Sinn des Lebens beantworten. Gewinnern spendiert die Sendung eine Reise zum Mond.</description>
+				<data  genre="20" 	price="15"	critics="5"	speed="20" />
+			</episode>
+			<episode number="4">
+				<title>Dürft ich Fragen?</title>
+				<description>Der Moderator stellt unangenehme Fragen die alle Anrufer über sich ergehen lassen müssen um zu gewinnen.</description>
+				<data  genre="20" 	price="17"	critics="8"	speed="23" />
+			</episode>
+		</serie>
+		<serie>
 			<title>Fußball-Weltmeisterschaft Italien 1990</title>
 			<description>Die XIV. WM war geprägt von legendären Spielern, Toren und Szenen. Gezeigt werden Achtel-, Viertel-, Halbfinale und Finale.</description>
 			<data  actors="-" director="-" country="I" year="1990" genre="12"  blocks="2" time="20" price="100" critics="84" speed="192" outcome="204" />
@@ -4630,6 +4690,31 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 				<title>Brasilien - Argentinien 0:1</title>
 				<description></description>
 				<data  actors="Jorginho, Claudio Caniggia" director="-" country="I" year="1990" genre="0"  blocks="1"	time="20" />
+			</episode>
+		</serie>
+		<serie>
+			<title>Hot Quiz</title>
+			<description>Die Moderatorin macht sich nackig und die Anrufer arm. Brüste gegen Geld, wie im echten Leben.</description>
+			<data  country="D" year="2005" genre="20"  blocks="2" xrated="3" price="30" critics="5" speed="35" outcome="0" />
+			<episode number="1">
+				<title>Daniela</title>
+				<description>Heute moderiert Daniela die Sendung. Kniffelige, nahezu unlösbare Aufgaben werden gestellt. Richtige Lösungen sorgen für einen Strip von Daniela.</description>
+				<data  genre="20"  xrated="3"	price="30"	critics="5"	speed="35" />
+			</episode>
+			<episode number="2">
+				<title>Sabine</title>
+				<description>Heute moderiert Sabine, früher Björn, die Sendung. Ihr Höschen behält Sie aber an.</description>
+				<data  genre="20"  xrated="3"	price="25"	critics="5"	speed="30" />
+			</episode>
+			<episode number="3">
+				<title>Mandy</title>
+				<description>Mandy ist ein echtes Cowgirl, die Quizfragen allerdings zum Mäusemelken.</description>
+				<data  genre="20"  xrated="3"	price="30"	critics="10"	speed="35" />
+			</episode>
+			<episode number="4">
+				<title>Peggy</title>
+				<description>Peggy kommt vom Lande und alle Fragen drehen sich um die dicksten Kartoffeln der Bäuerin.</description>
+				<data  genre="20"  xrated="3"	price="25"	critics="5"	speed="35" />
 			</episode>
 		</serie>
 		<serie>
@@ -4869,8 +4954,8 @@ Hochdramatisch</description>
 		</serie>
 		<serie>
 			<title>Raumschiff Enterprise</title>
-			<description>Viele Lichtjahre von der Erde entfernt,
-dringt die Enterprise in Galaxien vor,
+			<description>Viele Lichtjahre von der Erde entfernt, 
+dringt die Enterprise in Galaxien vor, 
 die nie ein Mensch zuvor gesehen hat.
 Gene Roddenberry erschuf mit Star Trek einen bis heute anhaltenden Kult</description>
 			<data  actors="William Shatner, Leonard Nimoy, DeForest Kelley" director="Div." country="USA" year="1966" genre="2"  blocks="1" time="0" price="100" critics="108" speed="144" outcome="144" />
@@ -5017,6 +5102,31 @@ Stephen Hawking spielt sich selbst beim Kartenspiel mit Newton, Einstein und Dat
 				<title>Rolf Krall besucht... seine Mutter</title>
 				<description>Zum Abschluss der Serie besucht Rolf Krall seine eigene Mutter, kitzelt ein paar urige Rezepte aus ihr heraus und plaudert über intime Details des immer populärer werdenden Moderators.</description>
 				<data  actors="Rolf Krall" director="Dietmar Hübsch" country="D" year="1992" genre="13"  blocks="1"	price="50"	critics="120"	speed="168"	outcome="108" />
+			</episode>
+		</serie>
+		<serie>
+			<title>Ronny hilft...</title>
+			<description>Der ehemalige Programmierer Ronny Otto versucht Anrufern bei deren Problemen zu helfen - live am Telefon.</description>
+			<data  actors="Ronny Otto" country="D" year="2011" genre="19"  blocks="4" price="31" critics="16" speed="10" outcome="0" />
+			<episode number="1">
+				<title>Marios Wohnzimmer</title>
+				<description>Mario benötigt Einrichtungstipps für die neue Wohnung. Ronny und sein Team stehen beratend zur Seite.</description>
+				<data  genre="19" 	price="28"	critics="16"	speed="10" />
+			</episode>
+			<episode number="2">
+				<title>Sandros Handyvertrag</title>
+				<description>Sandro aus Wernigerode hat sich einen Handyvertrag für 1000 Euro im Monat aufschwatzen lassen. Ronny hilft...</description>
+				<data  genre="19" 	price="29"	critics="15"	speed="12" />
+			</episode>
+			<episode number="3">
+				<title>Ok, OP...</title>
+				<description>Die Brustimplantate von Isolde aus Regensburg müssen erneuert werden. Ronny gibt ihr telefonisch Tipps zur Größe.</description>
+				<data  genre="19" 	price="27"	critics="16"	speed="10" />
+			</episode>
+			<episode number="4">
+				<title>...sich selbst</title>
+				<description>Das schier unglaubliche geschieht in dieser Ausgabe: Ronny telefoniert mit sich selbst und gibt Tipps als Showmaster.</description>
+				<data  genre="19" 	price="15"	critics="16"	speed="21" />
 			</episode>
 		</serie>
 		<serie>
@@ -6256,5 +6366,5 @@ Aber nur mit Ulbricht Umzüge!</description>
 			<data minaudience="150" repetitions="4" profit="150"  penalty="200" targetgroup="-1" duration="2" />
 		</ad>
 	</allads>
-	<time value="384.65ms" />
+	<time value="580.68ms" />
 </tvgdb>

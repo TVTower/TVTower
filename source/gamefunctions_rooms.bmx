@@ -482,7 +482,7 @@ End Function
 
 Function Room_Financials_Compute(_room:TRooms)
 	If TRooms.doadraw 'draw it
-		Local showday:Int = TFinancials.GetDayArray(Game.day)
+		Local showday:Int = Game.getWeekday()
 		Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
 		Game.cursorstate = 0
 		local font13:TBitmapFont = FontManager.GetFont("Default", 14, BOLDFONT)
@@ -502,6 +502,7 @@ Function Room_Financials_Compute(_room:TRooms)
 		font12.drawBlock(finances.sold_movies							,640, 49+line*0, 95,20,2, 50, 50, 50)
 		font12.drawBlock(finances.sold_ads       						,640, 49+line*1, 95,20,2,120,120,120)
 		font12.drawBlock(finances.sold_misc 							,640, 49+line*2, 95,20,2, 50, 50, 50)
+		font12.drawBlock(finances.callerRevenue							,640, 49+line*3, 95,20,2, 50, 50, 50)
 		font13.drawBlock(finances.sold_total							,640, 96, 92,20,2, 30, 30, 30)
 
 		font13.drawBlock(finances.revenue_before 						,640,130,92,20,2,30,30,30)

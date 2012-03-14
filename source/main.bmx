@@ -386,8 +386,14 @@ Type TGame
 		return _day+"."+GetLocale("DAY")+" ("+self.GetDayName( Max(0,_day-1) Mod 7, 0)+ ")"
 	End Method
 
-	Method GetFormattedDayLong:String(_day:Int = -5)
+	Method GetFormattedDayLong:String(_day:Int = -1)
+		if _day < 0 then _day = self.day
 		return self.GetDayName( Max(0,_day-1) Mod 7, 1)
+	End Method
+
+	Method GetWeekday:int(_day:int = -1)
+		if _day < 0 then _day = self.day
+		return Max(0,_day-1) Mod 7
 	End Method
 
 	'Summary: returns formatted value of actual gametime
@@ -559,7 +565,7 @@ Type TPlayer
 			Player.finances[i].revenue_before = 550000
 			Player.finances[i].revenue_after  = 550000
 		Next
-		Player.ProgrammeCollection = New TPlayerProgrammeCollection
+		Player.ProgrammeCollection = TPlayerProgrammeCollection.Create(Player)
 		Player.ProgrammePlan = TPlayerProgrammePlan.Create(Player)
 
 		Player.Figure.Sprite = Assets.GetSpritePack("figures").GetSpriteByID(0)
@@ -628,8 +634,8 @@ Type TPlayer
 
 	'increases Credit
 	Method SetCredit(amount:Int)
-		Self.finances[TFinancials.GetDayArray(Game.day)].money:+amount
-		Self.finances[TFinancials.GetDayArray(Game.day)].credit:+amount
+		Self.finances[Game.getWeekday()].money:+amount
+		Self.finances[Game.getWeekday()].credit:+amount
 		Self.CreditCurrent:+amount
 	End Method
 
@@ -638,14 +644,14 @@ Type TPlayer
 		Local playerID:Int = 1
 		For Local Player:TPlayer = EachIn TPlayer.List
 			'stationfees
-			Player.finances[TFinancials.GetDayArray(Game.day)].PayStationFees(StationMap.CalculateStationCosts(playerID))
+			Player.finances[Game.getWeekday()].PayStationFees(StationMap.CalculateStationCosts(playerID))
 
 			'newsagencyfees
 			Local newsagencyfees:Int =0
 			For Local i:Int = 0 To 5
 				newsagencyfees:+ Player.newsabonnements[i]*10000 'baseprice for an subscriptionlevel
 			Next
-			Player.finances[TFinancials.GetDayArray(Game.day)].PayNewsAgencies((newsagencyfees/2))
+			Player.finances[Game.getWeekday()].PayNewsAgencies((newsagencyfees/2))
 
 			playerID :+1
 		Next
@@ -671,7 +677,7 @@ Type TPlayer
 				EndIf
 				If Player.audience > Adblock.contract.calculatedMinAudience And Adblock.contract.spotnumber >= Adblock.contract.spotcount
 					Adblock.contract.botched = 2
-					Player.finances[TFinancials.GetDayArray(Game.day)].SellAds(Adblock.contract.calculatedProfit)
+					Player.finances[Game.getWeekday()].SellAds(Adblock.contract.calculatedProfit)
 					AdBlock.RemoveOverheadAdblocks() 'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
 					'Print "should remove contract:"+adblock.contract.title
 					TContractBlocks.RemoveContractFromSuitcase(Adblock.contract)
@@ -690,7 +696,7 @@ Type TPlayer
 				If contract <> Null
 					If (contract.daystofinish-(Game.day - contract.daysigned)) <= 0
 						If LastContract = Null Or LastContract.title <> contract.title
-							Player.finances[TFinancials.GetDayArray(Game.day)].PayPenalty(contract.calculatedPenalty)
+							Player.finances[Game.getWeekday()].PayPenalty(contract.calculatedPenalty)
 							'Print Player.name+" paid a penalty of "+contract.calculatedPenalty+" for contract:"+contract.title
 						EndIf
 						LastContract = contract
@@ -710,10 +716,11 @@ Type TPlayer
 		Local block:TProgrammeBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
 			block = Player.ProgrammePlan.GetActualProgrammeBlock()
-			if block = null then print "no block"
-			if block.programme = null then print "no block.programme"
 			Player.audience = 0
-			If block <> null and block.Programme <> Null And Player.maxaudience <> 0
+
+			if block = null OR block.programme = null
+				print "no block/block.programme"
+			elseif Player.maxaudience <> 0
 				Player.audience = Floor(Player.maxaudience * block.Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
 				If recompute
@@ -761,16 +768,16 @@ Type TPlayer
 	'returns formatted value of actual money
 	'gibt einen formatierten Wert des aktuellen Geldvermoegens zurueck
 	Method GetFormattedMoney:String()
-		Return functions.convertValue(String(Self.finances[TFinancials.GetDayArray(Game.day)].money), 2, 0)
+		Return functions.convertValue(String(Self.finances[Game.getWeekday()].money), 2, 0)
 	End Method
 
 	Method GetRawMoney:Int()
-		Return Self.finances[TFinancials.GetDayArray(Game.day)].money
+		Return Self.finances[Game.getWeekday()].money
 	End Method
 
 	'returns formatted value of actual credit
 	Method GetFormattedCredit:String()
-		Return functions.convertValue(String(Self.finances[TFinancials.GetDayArray(Game.day)].credit), 2, 0)
+		Return functions.convertValue(String(Self.finances[Game.getWeekday()].credit), 2, 0)
 	End Method
 
 	'returns formatted value of actual audience
@@ -804,6 +811,7 @@ Type TFinancials
 
 	Field sold_movies:Int 			= 0
 	Field sold_ads:Int 				= 0
+	Field callerRevenue:Int			= 0
 	Field sold_misc:Int				= 0
 	Field sold_total:Int = 0
 	Field sold_stations:Int = 0
@@ -878,7 +886,7 @@ Type TFinancials
 	End Function
 
 	'returns the the position in the array the actual game-day fits to
-	Function GetDayArray:Int(day:Int)
+	Function GetDayOfWeek:Int(day:Int)
 		Return ((day-1) Mod 7)
 	End Function
 
@@ -907,6 +915,13 @@ Type TFinancials
 		sold_ads	:+_money
 		sold_total	:+_money
 		money		:+_money
+		ChangeMoney(_money)
+	End Method
+
+	'refreshs stats about earned money from sending ad powered shows or call-in
+	Method earnCallerRevenue(_money:Int)
+		self.callerRevenue	:+_money
+		self.sold_total		:+_money
 		ChangeMoney(_money)
 	End Method
 
@@ -2376,7 +2391,12 @@ Function Menu_GameSettings_Draw()
 				Local ProgrammeArray:TProgramme[]
 				For Local j:Int = 0 To Game.startMovieAmount-1
 					ProgrammeArray=ProgrammeArray[..ProgrammeArray.length+1]
-					ProgrammeArray[j] = TProgramme.GetRandomMovie(playerids)
+					if j = 0
+						'1 teleshopping/quiz-programme
+						ProgrammeArray[j] = TProgramme.GetRandomProgrammeByGenre(20)
+					else
+						ProgrammeArray[j] = TProgramme.GetRandomMovie(playerids)
+					endif
 					Print "send programme:"+ProgrammeArray[j].title
 				Next
 				Network.SendProgramme(playerids, ProgrammeArray)
@@ -2547,11 +2567,16 @@ Function Init_Creation()
 		For Local playerids:Int = 1 To 4
 			For Local i:Int = 0 To 5
 				SeedRnd(MilliSecs())
-				Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie(playerids), playerids)
+				if i = 0
+					'1 teleshopping/quiz-programme
+					Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
+				else
+					Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie())
+				endif
 			Next
 			'give 1 series to each player
 			local prog:TProgramme = TProgramme.GetRandomSerie(playerids)
-			Player[playerids].ProgrammeCollection.AddProgramme(prog, playerids)
+			Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie(playerids))
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
@@ -2818,9 +2843,22 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			Local minute:Int = evt.time Mod 60
 			Local hour:Int = Floor(evt.time / 60)
 
-			If minute = 5 Then TPlayer.ComputeAudience()
-			If minute = 55 Then TPlayer.ComputeAds()
-			If minute = 0
+			'begin of a programme
+			If minute = 5
+				TPlayer.ComputeAudience()
+			'call-in shows/quiz - generate income
+			elseIf minute = 54
+				for local player:TPlayer = eachin TPlayer.list
+					local block:TProgrammeBlock = player.ProgrammePlan.GetActualProgrammeBlock()
+					if block<>null and block.programme.genre = GENRE_CALLINSHOW
+						local revenue:int = player.audience * rnd(0.05, 0.2)
+						player.finances[Game.getWeekday()].earnCallerRevenue(revenue)
+					endif
+				Next
+			'ads
+			elseIf minute = 55
+				TPlayer.ComputeAds()
+			elseIf minute = 0
 				If hour+1 < 6 And hour+1 > 1 Then game.maxAudiencePercentage = Float(RandRange(5, 15)) / 100
 				If hour+1 >= 6 And hour+1 < 18 Then game.maxAudiencePercentage = Float(RandRange(10, 10 + hour+1)) / 100
 				If hour+1 >= 18 Or hour+1 <= 1 Then game.maxAudiencePercentage = Float(RandRange(15, 20 + hour+1)) / 100

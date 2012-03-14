@@ -13,10 +13,10 @@ Import "source/main.bmx"
 
 Incbin "source/version.txt"
 Rem
+
 'done
 
 ' 2012:
-' gamefunctions_tvprogramme - basisklassen zusammenfassen
 ' gamefunctions - tstation - farben der ovale anpassen auf tplayercolor
 Filmauktionen:
 	Filminformationen anzeigen
@@ -28,7 +28,7 @@ Quiz/Call-In
 	- Werbung: Werbebloecke die prozentual von der Zuschauerzahl
 	  Einkuenfte erzielen
 	- Sendungen: Komplette Stundensendungen die geringe Einnahmen
-	  erzielen
+	  erzielen -> erledigt
 
 
 Eigenproduktionen:

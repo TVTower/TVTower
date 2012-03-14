@@ -139,6 +139,7 @@ MOVIE_GENRE_17= show
 MOVIE_GENRE_18= monumental
 MOVIE_GENRE_19= fillers
 MOVIE_GENRE_20= paid programing
+MOVIE_CALLINSHOW= You earn 0.5-2% of audience in €.
 
 FINANCES_OVERVIEW     = financial overview
 FINANCES_COSTS        = costs

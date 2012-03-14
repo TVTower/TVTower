@@ -745,11 +745,11 @@ Type TTVGNetwork
     If Not isMovie Then programme = TProgramme.GetSeries(programmeID)
 	If programme <> Null
         If typ = 2
-			Player[ RemotePlayerID ].ProgrammeCollection.AddProgramme(Programme,RemoteplayerID)
+			Player[ RemotePlayerID ].ProgrammeCollection.AddProgramme(Programme)
           TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, RemoteplayerID)
 		EndIf
 		If typ = 0
- 	      Player[ RemotePlayerID ].finances[TFinancials.GetDayArray(Game.day)].SellMovie(Programme.ComputePrice())
+ 	      Player[ RemotePlayerID ].finances[Game.getWeekday()].SellMovie(Programme.ComputePrice())
           TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, RemoteplayerID)
 		EndIf
 	    'remove from Plan (Archive - ProgrammeToSuitcase)
@@ -823,7 +823,7 @@ Type TTVGNetwork
     Local newaudience:Int = ReadInt(Stream)
     If add
       Local station:TStation = TStation.Create(x,y,reach,price,remoteplayerID)
-      Player[remoteplayerID].finances[TFinancials.GetDayArray(Game.day)].PayStation(price)
+      Player[remoteplayerID].finances[Game.getWeekday()].PayStation(price)
       'Player[remoteplayerID].maxaudience = newaudience
       Player[remoteplayerID].maxaudience = StationMap.CalculateAudienceSum(remoteplayerID)
       StationMap.StationList.AddLast(station)

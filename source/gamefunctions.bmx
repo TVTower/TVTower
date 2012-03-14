@@ -340,10 +340,10 @@ Type TAudienceQuotes
 
   Method ShowSheet(x:Int, y:Int)
 	If Sheet = Null
-	  Sheet = TTooltip.Create(title, Localization.GetString("AUDIENCE_RATING") + ": " + functions.convertValue(String(audience), 2, 0) + " (" + audiencepercentage + "%)", x, y, 200, 20)
+	  Sheet = TTooltip.Create(title, getLocale("AUDIENCE_RATING") + ": " + functions.convertValue(String(audience), 2, 0) + " (" + audiencepercentage + "%)", x, y, 200, 20)
     Else
 	  Sheet.title = title
-	  Sheet.text = Localization.GetString("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" ("+(audiencepercentage/10)+"%)"
+	  Sheet.text = getLocale("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" ("+(audiencepercentage/10)+"%)"
 	  Sheet.enabled = 1
 	  Sheet.pos.setXY(x,y)
 	  Sheet.width = 0
@@ -675,7 +675,7 @@ Type TError
   End Function
 
   Function CreateNotEnoughMoneyError()
-    TError.Create(Localization.GetString("ERROR_NOT_ENOUGH_MONEY"),Localization.GetString("ERROR_NOT_ENOUGH_MONEY_TEXT"))
+    TError.Create(getLocale("ERROR_NOT_ENOUGH_MONEY"),getLocale("ERROR_NOT_ENOUGH_MONEY_TEXT"))
   End Function
 
   Function DrawErrors()
@@ -1025,14 +1025,14 @@ Type TNewsbuttons Extends TButton
 			EndIf
 			If Button.tooltip<> Null
 				If Button.clickstate=0
-					Button.tooltip.title = Button.Caption+" - "+Localization.GetString("NEWSSTUDIO_NOT_SUBSCRIBED")
-					Button.tooltip.text = Localization.GetString("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ (Button.clickstate+1)*10000+"€"
+					Button.tooltip.title = Button.Caption+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
+					Button.tooltip.text = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ (Button.clickstate+1)*10000+"€"
 				Else
-					Button.tooltip.title = Button.Caption+" - "+Localization.GetString("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+Button.clickstate
+					Button.tooltip.title = Button.Caption+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+Button.clickstate
 					If Button.clickstate=3
-						Button.tooltip.text = Localization.GetString("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0€"
+						Button.tooltip.text = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0€"
 					Else
-						Button.tooltip.text = Localization.GetString("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ (Button.clickstate+1)*10000+ "€"
+						Button.tooltip.text = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ (Button.clickstate+1)*10000+ "€"
 					EndIf
 				EndIf
 				Button.tooltip.Update(deltaTime)
@@ -1107,10 +1107,10 @@ Type TInterface
 				Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_ads")
 			    If contract <> Null
 					ActualProgramToolTip.TitleBGtype 	= 1
-					ActualProgramText 					= Localization.GetString("ADVERTISMENT")+": "+contract.title
+					ActualProgramText 					= getLocale("ADVERTISMENT")+": "+contract.title
 				Else
 					ActualProgramToolTip.TitleBGtype	= 2
-					ActualProgramText					= Localization.GetString("BROADCASTING_OUTAGE")
+					ActualProgramText					= getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			Else
 				Local block:TProgrammeBlock = Player[ShowChannel].ProgrammePlan.GetActualProgrammeBlock()
@@ -1118,20 +1118,24 @@ Type TInterface
 				If block <> Null
 					Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
 					ActualProgramToolTip.TitleBGtype	= 0
-					ActualProgramText					= block.Programme.title + " ("+Localization.GetString("BLOCK")+" "+(1+Game.GetActualHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
+					if block.programme.parent <> null
+						ActualProgramText					= block.programme.parent.title + ": "+ block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetActualHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
+					else
+						ActualProgramText					= block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetActualHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
+					endif
 				Else
 					ActualProgramToolTip.TitleBGtype	= 2
-					ActualProgramText 					= Localization.GetString("BROADCASTING_OUTAGE")
+					ActualProgramText 					= getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			EndIf
 			If Game.minute <= 5
 				Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_news")
 				ActualProgramToolTip.TitleBGtype	= 3
-				ActualProgramText 					= Localization.GetString("NEWS")
+				ActualProgramText 					= getLocale("NEWS")
 			EndIf
 		Else
 			ActualProgramToolTip.TitleBGtype	= 3
-			ActualProgramText 					= Localization.GetString("TV_OFF")
+			ActualProgramText 					= getLocale("TV_OFF")
 		EndIf 'showchannel <>0
 		If ActualProgramToolTip.enabled Then ActualProgramToolTip.Update(deltaTime)
 		If ActualAudienceToolTip.enabled Then ActualAudienceToolTip.Update(deltaTime)
@@ -1161,16 +1165,16 @@ Type TInterface
 		If functions.IsIn(MouseX(),MouseY(),20,385,280,200)
 			ActualProgramToolTip.title 		= ActualProgramText
 			If ShowChannel <> 0
-				ActualProgramToolTip.text	= Localization.GetString("AUDIENCE_RATING")+": "+Player[ShowChannel].GetFormattedAudience()+ "("+Player[ShowChannel].GetAudiencePercentage()+"%)"
+				ActualProgramToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Player[ShowChannel].GetFormattedAudience()+ "("+Player[ShowChannel].GetAudiencePercentage()+"%)"
 			Else
-				ActualProgramToolTip.text	= Localization.GetString("TV_TURN_IT_ON")
+				ActualProgramToolTip.text	= getLocale("TV_TURN_IT_ON")
 			EndIf
 			ActualProgramToolTip.enabled 	= 1
 			ActualProgramToolTip.lifetime	= ActualProgramToolTip.startlifetime
 	    EndIf
 		If functions.IsIn(MouseX(),MouseY(),385,468,108,30)
-			ActualAudienceToolTip.title 	= Localization.GetString("AUDIENCE_RATING")+": "+Player[Game.playerID].GetFormattedAudience()+ " ("+Player[Game.playerID].GetAudiencePercentage()+"%)"
-			ActualAudienceToolTip.text  	= Localization.GetString("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Player[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
+			ActualAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Player[Game.playerID].GetFormattedAudience()+ " ("+Player[Game.playerID].GetAudiencePercentage()+"%)"
+			ActualAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Player[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			ActualAudienceToolTip.enabled 	= 1
 			ActualAudienceToolTip.lifetime 	= ActualAudienceToolTip.startlifetime
 		EndIf
@@ -1493,7 +1497,7 @@ Type TStationMap
 	End Method
 
     Method Buy(x:Float, y:Float, playerid:Int = 1)
-		If Player[playerid].finances[TFinancials.GetDayArray(Game.day)].PayStation(TStation.GetPrice(summe))
+		If Player[playerid].finances[Game.getWeekday()].PayStation(TStation.GetPrice(summe))
 			Local station:TStation = TStation.Create(LastStationX, LastStationY, summe, TStation.GetPrice(summe), playerid)
 			StationList.AddLast(station)
 			Print "Player" + playerid + " kauft Station für " + station.price + " Euro (" + station.reach + " Einwohner)"
@@ -1507,7 +1511,7 @@ Type TStationMap
 
 
 	Method Sell(station:TStation)
-		If Player[station.owner].finances[TFinancials.GetDayArray(Game.day)].SellStation(Floor(station.price * 0.75))
+		If Player[station.owner].finances[Game.getWeekday()].SellStation(Floor(station.price * 0.75))
 			StationList.Remove(station)
 	        Print "Player" + station.owner + " verkauft Station für " + TStation.GetPrice(Floor(station.price * 0.75)) + " Euro (" + station.reach + " Einwohner)"
 			Player[station.owner].maxaudience = CalculateAudienceSum(station.owner) 'auf entsprechenden Player umstellen
