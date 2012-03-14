@@ -928,14 +928,14 @@ Type TTVGNetwork
        Print "NET: send startcommand"
      EndIf
    Else
-     If Player[1].ProgrammeCollection.movielist.count() >= Game.start_MovieAmount And..
-        Player[2].ProgrammeCollection.movielist.count() >= Game.start_MovieAmount And..
-        Player[3].ProgrammeCollection.movielist.count() >= Game.start_MovieAmount And..
-        Player[4].ProgrammeCollection.movielist.count() >= Game.start_MovieAmount And..
-        Player[1].ProgrammeCollection.contractlist.count() >= Game.start_AdAmount And..
-        Player[2].ProgrammeCollection.contractlist.count() >= Game.start_AdAmount And..
-        Player[3].ProgrammeCollection.contractlist.count() >= Game.start_AdAmount And..
-        Player[4].ProgrammeCollection.contractlist.count() >= Game.start_AdAmount Then
+     If Player[1].ProgrammeCollection.movielist.count() >= Game.startMovieAmount And..
+        Player[2].ProgrammeCollection.movielist.count() >= Game.startMovieAmount And..
+        Player[3].ProgrammeCollection.movielist.count() >= Game.startMovieAmount And..
+        Player[4].ProgrammeCollection.movielist.count() >= Game.startMovieAmount And..
+        Player[1].ProgrammeCollection.contractlist.count() >= Game.startAdAmount And..
+        Player[2].ProgrammeCollection.contractlist.count() >= Game.startAdAmount And..
+        Player[3].ProgrammeCollection.contractlist.count() >= Game.startAdAmount And..
+        Player[4].ProgrammeCollection.contractlist.count() >= Game.startAdAmount Then
         Player[ Game.playerID ].networkstate = 1
         SendGameReady(Game.playerID, 0)
      EndIf

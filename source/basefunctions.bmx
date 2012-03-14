@@ -11,6 +11,7 @@ Import "basefunctions_xml.bmx"
 
 'Import bah.libxml
 Import "external/libxml/libxml.bmx"
+Import "external/persistence.mod/persistence.bmx"
 
 
 'Mersenne: Random numbers

@@ -517,7 +517,7 @@ Type TLuaFunctions
 	Method MovieSequels:Int(movieId:Int = -1)
 		Local tmpObj:TProgramme = TProgramme.GetProgramme(movieId)
 	    If tmpObj <> Null
-			Return tmpObj.episodecount
+			Return tmpObj.episodeList.count()
 		Else
 			Return - 1
 		EndIf

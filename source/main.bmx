@@ -32,9 +32,9 @@ tRender.Initialise()
 Global Fader:TFader	= New TFader
 
 
-Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(580, 30)
-Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(520, 30)
-Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(650, 30)
+Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
+Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21)
+Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(645, 16)
 
 Print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
 Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, 0, "Newsplanner", 0)
@@ -77,40 +77,42 @@ End Type
 Type TGame
 	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...
 
-	Field debugmode:Byte			= 0 {sl = "no"}		'0=no debug messages; 1=some debugmessages
-	Field DebugInfos:Byte			= 0 {sl = "no"}
-	Field speed:Float				= 0.1 				'Speed of the game
-	Field oldspeed:Float			= 0.1 				'Speed of the game
-	Field DoorOpenTime:Int			= 100 {sl = "no"}	'time how long a door will be shown open until figure enters
-	Field minutesOfDayGone:Float	= 0.0				'time of day in game, unformatted
-	Field lastMinutesOfDayGone:Float= 0.0				'time last update was done
-	Field timeSinceBegin:Float 							'time in game, not reset every day
+	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
+	Field maxContractsAllowed:Int 		= 8		{nosave}	'how many contracts a player can possess
+	Field maxMoviesInSuitcaseAllowed:Int= 12	{nosave}	'how many movies can be carried in suitcase
+	Field startMovieAmount:Int 			= 5		{nosave}	'how many movies does a player get on a new game
+	Field startAdAmount:Int				= 3		{nosave}	'how many contracts a player gets on a new game
+	Field debugmode:Byte				= 0		{nosave}	'0=no debug messages; 1=some debugmessages
+	Field DebugInfos:Byte				= 0		{nosave}
+
+	Field daynames:String[]						{nosave}	'array of abbreviated (short) daynames
+	Field daynamesLong:String[] 				{nosave}	'array of daynames (long version)
+	Field DoorOpenTime:Int				= 100	{nosave}	'time how long a door will be shown open until figure enters
+
+	Field username:String				= ""	{nosave}	'username of the player ->set in config
+	Field userport:Short				= 4444	{nosave}	'userport of the player ->set in config
+	Field userchannelname:String		= ""	{nosave}	'channelname the player uses ->set in config
+	Field userlanguage:String			= "de"	{nosave}	'language the player uses ->set in config
+	Field userdb:String					= ""	{nosave}
+	Field userfallbackip:String			= "" 	{nosave}
+
+	Field speed:Float				= 0.1 					'Speed of the game
+	Field oldspeed:Float			= 0.1 					'Speed of the game
+	Field minutesOfDayGone:Float	= 0.0					'time of day in game, unformatted
+	Field lastMinutesOfDayGone:Float= 0.0					'time last update was done
+	Field timeSinceBegin:Float 								'time in game, not reset every day
 	Field year:Int=2006, day:Int=1, minute:Int=0, hour:Int=0 'date in game
 
-	Field cursorstate:Int		 	= 0 				'which cursor has to be shown? 0=normal 1=dragging
-	Field playerID:Int 				= 1					'playerID of player who sits in front of the screen
-	Field start_MovieAmount:Int 	= 5 {sl = "no"}		'how many movies does a player get on a new game
-	Field start_AdAmount:Int		= 3 {sl = "no"}		'how many contracts a player gets on a new game
-	Field error:Int 				= 0 				'is there a error (errorbox) floating around?
-	Field maxAudiencePercentage:Float 	= 0.3 			'how many 0.0-1.0 (100%) audience is maximum reachable
-	Field maxContractsAllowed:Int 		= 10			'how many contracts a player can possess
-	Field maxMoviesInSuitcaseAllowed:Int= 12			'how many movies can be carried in suitcase
-	Field gamestate:Int 			= 0					'0 = Mainmenu, 1=Running, ...
-	Field networkgame:Int 			= 0 				'are we playing a network game? 0=false
-	Field networkgameready:Int 		= 0 				'is the network game ready - all options set? 0=false
-	Field onlinegame:Int 			= 0 				'playing over internet? 0=false
-	Field title:String 				= "MyGame"			'title of the game
-	Field daytoplan:Int 			= 1					'which day has to be shown in programmeplanner
-	Field daynames:String[] {sl = "no"}					'array of abbreviated (short) daynames
-	Field daynames_long:String[] {sl = "no"}			'array of daynames (long version)
-	Field fullscreen:Int = 0 {sl = "no"}				'playing fullscreen? 0=false
-	Field username:String = "Ano Nymus" {sl = "no"}		'username of the player
-	Field userport:Short = 4444 {sl = "no"}				'userport of the player
-	Field userchannelname:String = "SunTV" {sl = "no"}	'channelname the player uses
-	Field userlanguage:String = "de" {sl = "no"}		'language the player uses
-	Field userdb:String = "res/database.xml" {sl = "no"}
-	Field userfallbackip:String = "" {sl = "no"}
-	Global List:TList {sl = "no"}						'list of all games, mainly only one
+	Field title:String 				= "MyGame"				'title of the game
+	Field daytoplan:Int 			= 1						'which day has to be shown in programmeplanner
+
+	Field cursorstate:Int		 	= 0 					'which cursor has to be shown? 0=normal 1=dragging
+	Field playerID:Int 				= 1						'playerID of player who sits in front of the screen
+	Field error:Int 				= 0 					'is there a error (errorbox) floating around?
+	Field gamestate:Int 			= 0						'0 = Mainmenu, 1=Running, ...
+	Field networkgame:Int 			= 0 					'are we playing a network game? 0=false, 1=true, 2
+	Field networkgameready:Int 		= 0 					'is the network game ready - all options set? 0=false
+	Field onlinegame:Int 			= 0 					'playing over internet? 0=false
 
 	'Summary: saves the GameObject to a XMLstream
 	Function REMOVE_Save:Int()
@@ -261,19 +263,24 @@ Type TGame
 		Game.day 			= 1
 		Game.minute 		= 0
 		Game.title			= "unknown"
-		Game.daynames		= [	GetLocale("WEEK_SHORT_MONDAY"),		GetLocale("WEEK_SHORT_TUESDAY"),..
-								GetLocale("WEEK_SHORT_WEDNESDAY"),	GetLocale("WEEK_SHORT_THURSDAY"),..
-								GetLocale("WEEK_SHORT_FRIDAY"),		GetLocale("WEEK_SHORT_SATURDAY"),..
-								GetLocale("WEEK_SHORT_SUNDAY") ]
-		Game.daynames_long	= [	GetLocale("WEEK_LONG_MONDAY"),		GetLocale("WEEK_LONG_TUESDAY"),..
-								GetLocale("WEEK_LONG_WEDNESDAY"),	GetLocale("WEEK_LONG_THURSDAY"),..
-								GetLocale("WEEK_LONG_FRIDAY"),		GetLocale("WEEK_LONG_SATURDAY"),..
-								GetLocale("WEEK_LONG_SUNDAY") ]
-		If Not List Then List = New TList
-		List.AddLast(Game)
-		List.Sort()
 		Return Game
 	End Function
+
+	Method GetDayName:string(day:int, longVersion:int=0)
+		local versionString:string = "SHORT"
+		if longVersion = 1 then versionString = "LONG"
+
+		select day
+			case 0	return GetLocale("WEEK_"+versionString+"_MONDAY")
+			case 1	return GetLocale("WEEK_"+versionString+"_TUESDAY")
+			case 2	return GetLocale("WEEK_"+versionString+"_WEDNESDAY")
+			case 3	return GetLocale("WEEK_"+versionString+"_THURSDAY")
+			case 4	return GetLocale("WEEK_"+versionString+"_FRIDAY")
+			case 5	return GetLocale("WEEK_"+versionString+"_SATURDAY")
+			case 6	return GetLocale("WEEK_"+versionString+"_SUNDAY")
+			default	return "not a day"
+		endSelect
+	End Method
 
 	'Summary: load the config-file and set variables depending on it
 	Method LoadConfig:Byte(configfile:String="config/settings.xml")
@@ -323,13 +330,6 @@ Type TGame
 			Else
 				PrintDebug ("TGame.LoadConfig()", "settings.xml - 'defaultgamename' fehlt, setze Defaultwert: 'MyGame'", DEBUG_LOADING)
 				Self.title = "MyGame"
-			EndIf
-
-			If root.FindChild("fullscreen") <> Null
-				Self.fullscreen	 = Int(root.FindChild("fullscreen").Value)
-			Else
-				PrintDebug ("TGame.LoadConfig()", "settings.xml - 'fullscreen' fehlt, setze Defaultwert: '0' (Fenster)", DEBUG_LOADING)
-				Self.fullscreen = 0
 			EndIf
 
 			If root.FindChild("fallbacklocalip") <> Null
@@ -383,13 +383,11 @@ Type TGame
 
 	'Summary: returns day of the week including gameday
 	Method GetFormattedDay:String(_day:Int = -5)
-		If _day <= 0 Then _day = 1
-		Return _day+"."+GetLocale("DAY")+" ("+daynames[((_day-1) Mod 7)]+")"
+		return _day+"."+GetLocale("DAY")+" ("+self.GetDayName( Max(0,_day-1) Mod 7, 0)+ ")"
 	End Method
 
 	Method GetFormattedDayLong:String(_day:Int = -5)
-		If _day <= 0 Then _day = 1
-		Return daynames_long[((_day-1) Mod 7)]
+		return self.GetDayName( Max(0,_day-1) Mod 7, 1)
 	End Method
 
 	'Summary: returns formatted value of actual gametime
@@ -2376,14 +2374,14 @@ Function Menu_GameSettings_Draw()
 			For Local playerids:Int = 1 To 4
 				SeedRnd(MilliSecs()*Rand(5))
 				Local ProgrammeArray:TProgramme[]
-				For Local j:Int = 0 To Game.start_MovieAmount-1
+				For Local j:Int = 0 To Game.startMovieAmount-1
 					ProgrammeArray=ProgrammeArray[..ProgrammeArray.length+1]
 					ProgrammeArray[j] = TProgramme.GetRandomMovie(playerids)
 					Print "send programme:"+ProgrammeArray[j].title
 				Next
 				Network.SendProgramme(playerids, ProgrammeArray)
 				Local ContractArray:TContract[]
-				For Local j:Int = 0 To Game.start_AdAmount-1
+				For Local j:Int = 0 To Game.startAdAmount-1
 					ContractArray=ContractArray[..ContractArray.length+1]
 					ContractArray[j] = TContract.GetRandomContract()
 					Print "send contract:"+ContractArray[j].title

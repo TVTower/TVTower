@@ -12,25 +12,25 @@ End Type
 
 'the programmelist shown in the programmeplaner
 Type TgfxProgrammelist extends TPlannerList
-	Field gfxgenres:TGW_Sprites
 	Field gfxmovies:TGW_Sprites
 	Field gfxtape:TGW_Sprites
 	Field gfxtapeseries:TGW_Sprites
 	Field gfxtapeepisodes:TGW_Sprites
 	Field gfxepisodes:TGW_Sprites
+	Field maxGenres:int = 1
 
 	Field currentseries:TProgramme	= Null
 
-	Function Create:TgfxProgrammelist(x:Int, y:Int)
-		Local NewObject:TgfxProgrammelist =New TgfxProgrammelist
-		NewObject.gfxgenres			= Assets.GetSprite("genres")
-		NewObject.gfxmovies			= Assets.GetSprite("pp_menu_werbung")   'Assets.GetSprite("") '  = gfxmovies
-		NewObject.gfxtape			= Assets.GetSprite("pp_cassettes_movies")
-		NewObject.gfxtapeseries		= Assets.GetSprite("pp_cassettes_series")
-		NewObject.gfxtapeepisodes	= Assets.GetSprite("pp_cassettes_episodes")
-		NewObject.gfxepisodes		= Assets.GetSprite("episodes")
-		NewObject.Pos.SetXY(x, y)
-		Return NewObject
+	Function Create:TgfxProgrammelist(x:Int, y:Int, maxGenres:int)
+		Local Obj:TgfxProgrammelist =New TgfxProgrammelist
+		Obj.gfxmovies		= Assets.GetSprite("pp_menu_werbung")   'Assets.GetSprite("") '  = gfxmovies
+		Obj.gfxtape			= Assets.GetSprite("pp_cassettes_movies")
+		Obj.gfxtapeseries	= Assets.GetSprite("pp_cassettes_series")
+		Obj.gfxtapeepisodes	= Assets.GetSprite("pp_cassettes_episodes")
+		Obj.gfxepisodes		= Assets.GetSprite("episodes")
+		Obj.Pos.SetXY(x, y)
+		Obj.maxGenres = maxGenres
+		Return Obj
 	End Function
 
 	Method Draw:Int(createProgrammeblock:Int=1)
@@ -44,27 +44,36 @@ Type TgfxProgrammelist extends TPlannerList
 			If currentSeries<> Null	Then DrawEpisodeTapes(currentseries, createProgrammeblock)
 		EndIf
 		If self.openState >=1
-			gfxgenres.Draw(Pos.x, Pos.y)
-			For local genres:int = 0 To 17 		'18 genres
-			Next
-			For local genres:int = 0 To 17 		'18 genres
+			local currY:float = Pos.y
+			Assets.GetSprite("genres_top").draw(Pos.x,currY)
+			currY:+Assets.GetSprite("genres_top").h
+
+'			gfxgenres.Draw(Pos.x, Pos.y)
+			For local genres:int = 0 To self.maxGenres-1 		'21 genres
+				local lineHeight:int =0
+				local entryNum:string = (genres mod 2)
+				if genres = 0 then entryNum = "First"
+				Assets.GetSprite("genres_entry"+entryNum).draw(Pos.x,currY)
+				lineHeight = Assets.GetSprite("genres_entry"+entryNum).h
+
 				Local genrecount:Int = TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List)
 
-
 				If genrecount > 0
-					SetAlpha 1.0; SetColor 0, 0, 0
-					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
+					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Player[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
 					SetAlpha 0.6; SetColor 0, 255, 0
-					For Local i:Int = 0 To genrecount - 1
-						DrawLine(Pos.x + 111 + i * 2, Pos.y + 20 + 18 * (Genres) - 1, Pos.x + 111 + i * 2, Pos.y + 34 + 18 * (Genres) - 1)
+					'takes 20% of fps...
+					For Local i:Int = 0 To genrecount -1
+						DrawLine(Pos.x + 121 + i * 2, Pos.y + 4 + lineHeight*genres - 1, Pos.x + 121 + i * 2, Pos.y + 17 + lineHeight*genres - 1)
 					Next
 				else
 					SetAlpha 0.3; SetColor 0, 0, 0
-					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + 18 * (genres + 1) +3, 104, 16, 0)
+					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
 				EndIf
+				SetAlpha 1.0
+				SetColor 255, 255, 255
+				currY:+ lineHeight
 			Next
-			SetAlpha 1.0
-			SetColor 255, 255, 255
+			Assets.GetSprite("genres_bottom").draw(Pos.x,currY)
 		EndIf
 	End Method
 
@@ -135,7 +144,7 @@ Type TgfxProgrammelist extends TPlannerList
 				locy :+ 12
 				SetAlpha 1.0
 				gfxtapeepisodes.Draw(locx, locy)
-				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodecount + ") " + episode.title, locx + 10, locy + 3, 85, 12, 0, 0, 0, 0, True)
+				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodeList.count() + ") " + episode.title, locx + 10, locy + 3, 85, 12, 0, 0, 0, 0, True)
 				If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
 					Game.cursorstate = 1
 					SetAlpha 0.2;DrawRect(locx, locy, gfxtapeepisodes.w, gfxtapeepisodes.h) ;SetAlpha 1.0
@@ -169,9 +178,9 @@ Type TgfxProgrammelist extends TPlannerList
 				SetOpen(0)
 				MOUSEMANAGER.resetKey(2)
 			EndIf
-			If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseX(),MouseY(), Pos.x,Pos.y, gfxgenres.w, gfxgenres.h)
+			If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseX(),MouseY(), Pos.x,Pos.y, Assets.GetSprite("genres_entry0").w, Assets.GetSprite("genres_entry0").h*self.MaxGenres)
 				SetOpen(2)
-				currentgenre = Floor((MouseY() - Pos.y - 16) / 18)
+				currentgenre = Floor((MouseY() - Pos.y - 1) / Assets.GetSprite("genres_entry0").h)
 			EndIf
 
 			If self.openState >=2

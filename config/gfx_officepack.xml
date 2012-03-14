@@ -5,6 +5,12 @@
 			<type>SpritePack</type>
  			<url>grafiken/buero/officepack.png</url>
 			<children>
+				<child name="genres_top"					x="604" 	y="400" 	w="149" h="1" />
+				<child name="genres_entryFirst"				x="604" 	y="401" 	w="149" h="17" />
+				<child name="genres_entry1"					x="604" 	y="418" 	w="149" h="17" />
+				<child name="genres_entry0"					x="604" 	y="435" 	w="149" h="17" />
+				<child name="genres_bottom"					x="604" 	y="452" 	w="149" h="7" />
+
 				<child name="genres" 						x="0" 	y="0" 	w="139" h="348" />
 				<child name="episodes" 						x="0" 	y="348"	w="107" h="135" />
 				<child name="btn_options"					x="318"	y="351"	w="98"	h="56" />
