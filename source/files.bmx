@@ -5,7 +5,7 @@
 SuperStrict
 
 Import brl.Graphics
-Import "bufferedglmax2d.bmx"
+Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?Win32
 Import brl.D3D9Max2D
 Import brl.D3D7Max2D
