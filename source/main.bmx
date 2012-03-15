@@ -52,7 +52,7 @@ TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
 TTooltip.UseFont 		= FontManager.GetFont("Default", 11, 0)
 TTooltip.ToolTipIcons	= gfx_building_tooltips
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
-Global App:TApp = TApp.Create(100, 1) 'create with 60fps for physics and graphics
+Global App:TApp = TApp.Create(60, 1) 'create with 60fps for physics and graphics
 
 Type TApp
 	Field Timer:TDeltaTimer
@@ -172,7 +172,7 @@ Type TGame
 		TMovieAgencyBlocks.SaveAll();		TError.DrawErrors();Flip 0  'XML
 		TArchiveProgrammeBlocks.SaveAll();	TError.DrawErrors();Flip 0  'XML
 		Building.Elevator.Save();			TError.DrawErrors();Flip 0  'XML
-		Delay(50)
+		'Delay(50)
 		LoadSaveFile.xmlWrite("ENDSAVEGAME", "CHECKSUM")
 		'LoadSaveFile.file.setCompressMode(9)
 		LoadSaveFile.xmlSave("savegame.zip", True)
@@ -545,19 +545,19 @@ Type TPlayer
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
-	Function Create:TPlayer(Name:String, channelname:String = "", ImageOrSprite:Object, x:Int, onFloor:Int = 13, dx:Int, pcolr:Int, pcolg:Int, pcolb:Int, ControlledByID:Int = 1, FigureName:String = "")
+	Function Create:TPlayer(Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, pcolr:Int, pcolg:Int, pcolb:Int, ControlledByID:Int = 1, FigureName:String = "")
 		Local Player:TPlayer = New TPlayer
 		Player.Name = Name
 		Player.playerID = globalID
 		Player.color = TPlayerColor.Create(pcolr,pcolg,pcolb, TPlayer.globalID)
 		Player.channelname = channelname
-		Player.Figure = TFigures.Create(FigureName, imageOrSprite, x, onFloor, dx, ControlledByID)
+		Player.Figure = TFigures.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayer = Player
 		If controlledByID = 0 And Game.playerID = 1 Then
 			If TPlayer.globalID = 2
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 			Else
-				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/alt/test_base.lua")
+				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
 			EndIf
 		EndIf
 		For Local i:Int = 0 To 6
@@ -568,8 +568,7 @@ Type TPlayer
 		Player.ProgrammeCollection = TPlayerProgrammeCollection.Create(Player)
 		Player.ProgrammePlan = TPlayerProgrammePlan.Create(Player)
 
-		Player.Figure.Sprite = Assets.GetSpritePack("figures").GetSpriteByID(0)
-		Player.Figure.Sprite = Assets.GetSpritePack("figures").GetSprite("Player" + Player.playerID)
+		Player.Figure.Sprite = Assets.GetSprite("Player" + Player.playerID)
 		Player.RecolorFigure(Player.color.GetUnusedColor(globalID))
 		Player.UpdateFigureBase(0)
 		If Not List Then List = CreateList()
@@ -1226,7 +1225,6 @@ Type TElevator
 	Field EgoMode:Int = 1   								'EgoMode: 	If I have the elevator, the elevator will only stop
 	'			at my destination and not if someone waits between
 	'			both floors and could be taken with me.
-	Global List:TList = CreateList()
 
 	Method ElevatorCallIsDuplicate:Int(floornumber:Int, who:Int)
 		For Local DupeRoute:TFloorRoute = EachIn FloorRouteList
@@ -1285,19 +1283,15 @@ Type TElevator
 
 	Function Create:TElevator(Parent:TBuilding)
 		Local localObject:TElevator=New TElevator
-		localObject.spriteDoor				= TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend").GetImage(), 0, 0, 0, 8, 150)
+		localObject.spriteDoor	= TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 0, 0, 0, 0, 8, 150)
 		localObject.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
 		localObject.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
 		localObject.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
 		localObject.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
 		localObject.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
-
-'		localObject.animation_opening				= TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend").GetImage(), 0, 0, 0, 8, 70)
-		localObject.Image_inner						= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
-		localObject.Parent							= Parent
+		localObject.Image_inner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
+		localObject.Parent		= Parent
 		localObject.Pos.SetY(Parent.GetFloorY(localObject.onFloor) - localobject.Image_inner.h)
-		List.AddLast(localObject)
-		SortList List
 		Return localObject
 	End Function
 
@@ -1342,7 +1336,7 @@ Type TElevator
 			Local Figure:TFigures = TFigures.GetFigure(passenger)
 			If Figure <> Null
 				Figure.onFloor	= onFloor
-				Figure.pos.setY( Building.GetFloorY(onFloor) - Figure.frameheight )
+				Figure.pos.setY( Building.GetFloorY(onFloor) - Figure.sprite.h )
 			EndIf
 		End If
 		'If Game.networkgame Then If Network.IsConnected Then If Game.playerID = 1 Then Network.SendElevatorSynchronize()
@@ -1368,7 +1362,7 @@ Type TElevator
 		EndIf
 		'
 		For Local i:Int = 0 To 13
-			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.image.height
+			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h
 			If locy < 410 And locy > - 50
 				Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
 			EndIf
@@ -1417,7 +1411,7 @@ Type TElevator
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.IsInElevator()
 				If open=0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
-					Figure.pos.setY ( Building.Elevator.Pos.y + Image_inner.h - Figure.frameheight )
+					Figure.pos.setY ( Building.Elevator.Pos.y + Image_inner.h - Figure.sprite.h )
 				EndIf
 				Exit 'only one figure in elevator possible
 			EndIf
@@ -1433,7 +1427,7 @@ Type TElevator
 					For Local Figure:TFigures = EachIn TFigures.List
 						If Figure.IsInElevator() And Figure.toFloor = toFloor
 							Figure.onFloor = Building.Elevator.onFloor
-							Figure.pos.setY( Building.GetFloorY(Figure.onFloor) - Figure.frameheight )
+							Figure.pos.setY( Building.GetFloorY(Figure.onFloor) - Figure.sprite.h )
 							Exit 'only one figure in elevator possible
 						EndIf
 					Next
@@ -1473,6 +1467,7 @@ Type TElevator
 			Local locy:Int = Parent.pos.y + Parent.GetFloorY(onFloor) - image_inner.h + 5
 			Image_inner.DrawClipped(Parent.pos.x + 131 + 230, locy - 3, Parent.pos.x + 131 + 230, locy, 40, 50,0,0)
 		EndIf
+
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.IsOnFloor() Then Figure.Draw() ;Figure.alreadydrawn = 0 'not alreadydrawn for openinganimation
 		Next
@@ -1482,7 +1477,7 @@ Type TElevator
 		EndIf
 
 		For Local i:Int = 0 To 13
-			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.image.height - 8
+			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
 				DrawRect(Parent.pos.x+Pos.x-4 + 10 + (onFloor)*2, locy + 3, 2,2)
@@ -1498,8 +1493,8 @@ Type TElevator
 			DrawRect(Parent.pos.x + Pos.x + 44, locy, 3,3)
 			SetColor 255,255,255
 		Next
-		SetBlend ALPHABLEND
 
+		SetBlend ALPHABLEND
 		Local routepos:Int = 0
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
 			If floorroute.call = 0
@@ -1509,8 +1504,6 @@ Type TElevator
 			EndIf
 			routepos:+1
 		Next
-
-
 		For Local Figure:TFigures = EachIn TFigures.List
 			If (Not Figure.IsInElevator()) And Not Figure.alreadydrawn Then Figure.Draw()
 		Next
@@ -1526,12 +1519,9 @@ Type TBuilding extends TRenderable
 	Field borderright:Int 			= 127 + 40 + 429
 	Field borderleft:Int			= 127 + 40
 	Field skycolor:Float = 0
-	Field ufo_normal:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo").GetImage(), 0, 100, 1, 9, 100)
-	Field ufo_beaming:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo2").GetImage(), 0, 100, 0, 9, 100)
+	Field ufo_normal:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo"), 0, 100, 0,0, 9, 100)
+	Field ufo_beaming:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo2"), 0, 100, 0,0, 9, 100)
 	Field Elevator:TElevator
-
-	Field children:TRenderableChildrenManager
-
 
 	Field Moon_curKubSplineX:appKubSpline =New appKubSpline
 	Field Moon_curKubSplineY:appKubSpline =New appKubSpline
@@ -1552,33 +1542,49 @@ Type TBuilding extends TRenderable
 	Field ufo_newDataT:Int[], ufo_newDataX:Int[], ufo_newDataY:Int[]
 	Field ufo_constSpeed:Int 			= False
 	Field ufo_pixelPerSecond:Float	= 25
-	Field Clouds:TSprites[3]
-	Field CloudCount:Int = 3
+	Field Clouds:TAnimSprites[5]
+	Field CloudCount:Int = 5
 	Field TimeColor:Double
 	Field DezimalTime:Float
 	Field ActHour:Int
 	Field ItemsDrawnToBackground:Byte = 0
-	'  Field BGbuildings:TImage
-	'  Field BGbuildingsDirty:Byte = 1
+	field gfx_bgBuildings:TGW_Sprites[6]
+	field gfx_building:TGW_Sprites
+	field gfx_buildingEntrance:TGW_Sprites
+	field gfx_buildingRoof:TGW_Sprites
+	field gfx_buildingWall:TGW_Sprites
+
 	Global StarsX:Int[60]
 	Global StarsY:Int[60]
 	Global StarsC:Int[60]
-	Global CloudPack:TSpritesPack = TSpritesPack.Create()
 	Global List:TList = CreateList()
 
 	Function Create:TBuilding()
 		Local Building:TBuilding = New TBuilding
-		Building.children = TRenderableChildrenManager.Create(Building)
-		Building.pos.y = 0 - Assets.GetSprite("gfx_building").h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
+		Building.gfx_building	= Assets.GetSprite("gfx_building")
+		Building.pos.y			= 0 - Building.gfx_building.h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
+		Building.Elevator		= TElevator.Create(Building)
 
-		Building.Elevator = TElevator.Create(Building)
 		Building.Moon_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-50, -50, 400, 850, 850])
 		Building.Moon_curKubSplineY.GetDataInt([1, 2, 3, 4, 5], [650, 200, 20 , 200, 650])
 		Building.ufo_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-150, 200+Rand(400), 200+Rand(200), 65, -50])
 		Building.ufo_curKubSplineY.GetDataInt([1, 2, 3, 4, 5], [-50+Rand(200), 100+Rand(200) , 200+Rand(300), 330,150])
 		For Local i:Int = 0 To Building.CloudCount-1
-			Building.Clouds[i] = TSprites.Create(CloudPack, Assets.GetSprite("building_clouds").parent.image, "", "clouds", - 400 * i + (i + 1) * Rand(200), - 30 + Rand(30), 2 + Rand(0, 5), 512 + Rand(50), Rand(0, 1))
+			Building.Clouds[i] = TAnimSprites.Create(Assets.GetSprite("building_clouds"), - 200 * i + (i + 1) * Rand(400), - 30 + Rand(30), 2 + Rand(0, 6),0,1,0)
 		Next
+
+		'background buildings
+		Building.gfx_bgBuildings[0] = Assets.GetSprite("gfx_building_BG_Ebene3L")
+		Building.gfx_bgBuildings[1] = Assets.GetSprite("gfx_building_BG_Ebene3R")
+		Building.gfx_bgBuildings[2] = Assets.GetSprite("gfx_building_BG_Ebene2L")
+		Building.gfx_bgBuildings[3] = Assets.GetSprite("gfx_building_BG_Ebene2R")
+		Building.gfx_bgBuildings[4] = Assets.GetSprite("gfx_building_BG_Ebene1L")
+		Building.gfx_bgBuildings[5] = Assets.GetSprite("gfx_building_BG_Ebene1R")
+
+		'building assets
+		Building.gfx_buildingEntrance	= Assets.GetSprite("gfx_building_Eingang")
+		Building.gfx_buildingWall		= Assets.GetSprite("gfx_building_Zaun")
+		Building.gfx_buildingRoof		= Assets.GetSprite("gfx_building_Dach")
 
 		For Local j:Int = 0 To 29
 			StarsX[j] = 10+Rand(150)
@@ -1599,7 +1605,6 @@ Type TBuilding extends TRenderable
 	Method Update(deltaTime:Float=1.0)
 		pos.y = Clamp(pos.y, - 637, 88)
 		UpdateBackground(deltaTime)
-		self.children.update(deltaTime)
 	End Method
 
 	Method DrawItemsToBackground:Int()
@@ -1608,7 +1613,7 @@ Type TBuilding extends TRenderable
 		Local locy0:Int		= GetFloorY(0)
 		Local locy12:Int	= GetFloorY(12)
 		If Not ItemsDrawnToBackground
-			Local Pix:TPixmap = LockImage(Assets.GetSprite("gfx_building").parent.image)
+			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
 			'	  Local Pix:TPixmap = gfx_building_skyscraper.RestorePixmap()
 
 			DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze4").GetImage(), 0, Pix, 127 + borderleft + 40, locy12 - Assets.GetSprite("gfx_building_Pflanze4").h)
@@ -1621,47 +1626,50 @@ Type TBuilding extends TRenderable
 			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 506 - 145 - Assets.GetSprite("gfx_building_Wandlampe").w, locy13 - Assets.GetSprite("gfx_building_Wandlampe").h)
 			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 145, locy3 - Assets.GetSprite("gfx_building_Wandlampe").h)
 			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 506 - 145 - Assets.GetSprite("gfx_building_Wandlampe").w, locy3 - Assets.GetSprite("gfx_building_Wandlampe").h)
-			UnlockImage(Assets.GetSprite("gfx_building").parent.image)
+			UnlockImage(gfx_building.parent.image)
 			Pix = Null
 			ItemsDrawnToBackground = True
 		EndIf
 	End Method
 
 	Method Draw(tweenValue:Float=1.0)
-		'		SetViewport(10,10,780,383)
+		TProfiler.Enter("Draw-Building-Background")
 		DrawBackground(tweenValue)
+		TProfiler.Leave("Draw-Building-Background")
+
 		If Building.GetFloor(Player[Game.playerID].Figure.pos.y) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
-			Assets.GetSprite("gfx_building_Eingang").Draw(pos.x, pos.y + 1024 - Assets.GetSprite("gfx_building_Eingang").h - 3)
-			Assets.GetSprite("gfx_building_Zaun").Draw(pos.x + 127 + 507, pos.y + 1024 - Assets.GetSprite("gfx_building_Zaun").h - 3)
+			Building.gfx_buildingEntrance.Draw(pos.x, pos.y + 1024 - Building.gfx_buildingEntrance.h - 3)
+			Building.gfx_buildingWall.Draw(pos.x + 127 + 507, pos.y + 1024 - Building.gfx_buildingWall.h - 3)
 		Else If Building.GetFloor(Player[Game.playerID].Figure.pos.y) >= 8
 			SetColor 255, 255, 255
-			Assets.GetSprite("gfx_building_Dach").Draw(pos.x + 127, pos.y - Assets.GetSprite("gfx_building_Dach").h)
+			Building.gfx_buildingRoof.Draw(pos.x + 127, pos.y - Building.gfx_buildingRoof.h)
 		EndIf
 		SetBlend MASKBLEND
 		elevator.DrawFloorDoors()
+
 		Assets.GetSprite("gfx_building").draw(pos.x + 127, pos.y)
+
 		SetBlend ALPHABLEND
 		Elevator.Draw()
 
 		SetBlend MASKBLEND
-		Assets.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 130, pos.y + GetFloorY(9), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(13), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 110, pos.y + GetFloorY(9), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(6), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze6").Draw(pos.x + borderright - 85, pos.y + GetFloorY(8), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(1), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(12), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(12), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 70, pos.y + GetFloorY(3), - 1, 1)
-		Assets.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 75, pos.y + GetFloorY(12), - 1, 1)
+		local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 130, pos.y + GetFloorY(9), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(13), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 110, pos.y + GetFloorY(9), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(6), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze6").Draw(pos.x + borderright - 85, pos.y + GetFloorY(8), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(1), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(12), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(12), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 70, pos.y + GetFloorY(3), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 75, pos.y + GetFloorY(12), - 1, 1)
 		SetBlend ALPHABLEND
 		TRooms.DrawDoorToolTips()
-
-'		self.children.draw(tweenValue)
 	End Method
 
-	Method UpdateBackground(deltaTime:Float=1.0)
+	Method UpdateBackground(deltaTime:Float)
 		ActHour = Game.GetActualHour()
 		DezimalTime = Float(Game.GetActualHour()) + Float(Game.GetActualMinute())*10/6/100
 		If 9 <= ActHour And Acthour < 18 Then TimeColor = 1
@@ -1713,7 +1721,7 @@ Type TBuilding extends TRenderable
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
 					ufo_beaming.pos.x = 65
 					ufo_beaming.pos.y = -15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h)
-					ufo_beaming.Update()
+					ufo_beaming.Update(deltatime)
 					If ufo_beaming.getCurrentAnimation().getCurrentFramePos() <> 6
 						ufo_pixelPerSecond = 0
 					Else
@@ -1732,44 +1740,39 @@ Type TBuilding extends TRenderable
 				'end compute and draw Ufo
 			EndIf
 		EndIf
-		'backgroundlayer: neighbour-buildings
-		Local oldclouddx:Float = 0.0
 		For Local i:Int = 0 To Building.CloudCount-1
-			oldclouddx = Clouds[i].dx
-			Clouds[i].dx:*Float(Game.speed)
-			Clouds[i].Update(- 10000, - 80 + pos.y + Clouds[i].y)
-			Clouds[i].dx = oldclouddx
-		Next
-	End Method
-
-	Method DrawStars(rndvalue:Int=0)
-		Local minute:Float = Game.GetActualMinute()
-		For Local i:Int = 0 To 59
-			If i Mod 6 = 0 And minute Mod 2 = 0 Then StarsC[i] = Rand(StarsC[i] )
-			SetColor StarsC[i] , StarsC[i] , StarsC[i]
-			Plot(StarsX[i] , StarsY[i] )
+			Clouds[i].Update(deltaTime)
 		Next
 	End Method
 
 	'Summary: Draws background of the mainscreen (stars, buildings, moon...)
 	Method DrawBackground(tweenValue:Float=1.0)
-		Local BuildingHeight:Int = Assets.GetSprite("gfx_building").h + 56
+		Local BuildingHeight:Int = gfx_building.h + 56
 		SetBlend MASKBLEND
 		DezimalTime = Float(Game.GetActualHour()) + Float(Game.GetActualMinute())*10/6/100
 		If DezimalTime > 18 Or DezimalTime < 7
 			If DezimalTime > 18 And DezimalTime < 19 Then SetAlpha (19 - Dezimaltime)
 			If DezimalTime > 6 And DezimalTime < 8 Then SetAlpha (4 - Dezimaltime / 2)
-			DrawStars()
+
+			'stars
+			Local minute:Float = Game.GetActualMinute()
+			For Local i:Int = 0 To 59
+				If i Mod 6 = 0 And minute Mod 2 = 0 then StarsC[i] = Rand( StarsC[i] )
+				SetColor StarsC[i] , StarsC[i] , StarsC[i]
+				Plot(StarsX[i] , StarsY[i] )
+			Next
+
 			SetColor 255, 255, 255
 			DezimalTime:+3
 			If DezimalTime > 24 Then DezimalTime:-24
 			SetBlend ALPHABLEND
 			Assets.GetSprite("gfx_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), pos.y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.day Mod 12)
-			SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
-			For Local i:Int = 0 To Building.CloudCount - 1
-				Clouds[i].Draw(- 10000, - 80 + pos.y + Clouds[i].y)
-			Next
 		EndIf
+		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
+
+		For Local i:Int = 0 To Building.CloudCount - 1
+			Clouds[i].Draw(null, Clouds[i].pos.Y + 0.2*pos.y) 'parallax
+		Next
 
 		If DezimalTime > 18 Or DezimalTime < 7
 			SetBlend MASKBLEND
@@ -1788,16 +1791,17 @@ Type TBuilding extends TRenderable
 		SetBlend MASKBLEND
 
 		SetColor Int(225 * timecolor) + 30, Int(225 * timecolor) + 30, Int(225 * timecolor) + 30
-		Assets.GetSprite("gfx_building_BG_Ebene3L").Draw(pos.x, 105 + 0.25 * (pos.y + 5 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene3L").h), - 1, 0)
-		Assets.GetSprite("gfx_building_BG_Ebene3R").Draw(pos.x + 634, 105 + 0.25 * (pos.y + 5 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene3R").h), - 1, 0)
-		SetColor Int(215 * timecolor) + 40, Int(215 * timecolor) + 40, Int(215 * timecolor) + 40
-		Assets.GetSprite("gfx_building_BG_Ebene2L").Draw(pos.x, 120 + 0.35 * (pos.y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene2L").h), - 1, 0)
-		Assets.GetSprite("gfx_building_BG_Ebene2R").Draw(pos.x + 636, 120 + 0.35 * (pos.y + 60 + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene2R").h), - 1, 0)
-		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
-		Assets.GetSprite("gfx_building_BG_Ebene1L").Draw(pos.x, 45 + 0.80 * (pos.y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene1L").h), - 1, 0)
-		Assets.GetSprite("gfx_building_BG_Ebene1R").Draw(pos.x + 634, 45 + 0.80 * (pos.y + BuildingHeight - Assets.GetSprite("gfx_building_BG_Ebene1R").h), - 1, 0)
+		gfx_bgBuildings[0].Draw(pos.x		, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[0].h), - 1, 0)
+		gfx_bgBuildings[1].Draw(pos.x + 634	, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[1].h), - 1, 0)
 
-		'	SetAlpha 1.0
+		SetColor Int(215 * timecolor) + 40, Int(215 * timecolor) + 40, Int(215 * timecolor) + 40
+		gfx_bgBuildings[2].Draw(pos.x		, 120 + 0.35 * (pos.y 		+ BuildingHeight - gfx_bgBuildings[2].h), - 1, 0)
+		gfx_bgBuildings[3].Draw(pos.x + 636	, 120 + 0.35 * (pos.y + 60	+ BuildingHeight - gfx_bgBuildings[3].h), - 1, 0)
+
+		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
+		gfx_bgBuildings[4].Draw(pos.x		, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[4].h), - 1, 0)
+		gfx_bgBuildings[5].Draw(pos.x + 634	, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[5].h), - 1, 0)
+
 		SetColor 255, 255, 255
 		SetBlend ALPHABLEND
 	End Method
@@ -1912,8 +1916,9 @@ Player[2] = TPlayer.Create("Alfie", "SunTV", Assets.GetSpritePack("figures").Get
 Player[3] = TPlayer.Create("Seidi", "FunTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 250, 8, 70, 40, 210, 0, 0, "Player 3")
 Player[4] = TPlayer.Create("Sandra", "RatTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 480, 13, 70, 0, 110, 245, 0, "Player 4")
 
-Global tempfigur:TFigures = TFigures.Create("Hausmeister", gfx_figures_hausmeister, 210, 2,60,0)
-tempfigur.FrameWidth = 12;tempfigur.targetx = 550
+Global tempfigur:TFigures = TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
+tempfigur.FrameWidth	= 12 'overwriting
+tempfigur.targetx		= 550
 tempfigur.updatefunc_ = TFigures.UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
 
@@ -2739,23 +2744,25 @@ End Function
 'inGame
 Function DrawMain(tweenValue:Float=1.0)
 	If Player[Game.playerID].Figure.inRoom = Null
-		TProfiler.Enter("DrawBuilding")
+		TProfiler.Enter("Draw-Building")
 		SetColor Int(190 * Building.timecolor), Int(215 * Building.timecolor), Int(230 * Building.timecolor)
 		DrawRect(20, 10, 140, 373)
 		If Building.pos.y > 10 Then DrawRect(150, 10, 500, 200)
 		DrawRect(650, 10, 130, 373)
 		SetColor 255, 255, 255
 		Building.Draw()									'player is not in a room so draw building
-		TProfiler.Leave("DrawBuilding")
+		TProfiler.Leave("Draw-Building")
 	Else
-		TProfiler.Enter("DrawRoom")
+		TProfiler.Enter("Draw-Room")
 		Player[Game.playerID].Figure.inRoom.Draw()		'draw the room
 		Player[Game.playerID].Figure.inRoom.Update(1) 	'update room-actions
-		TProfiler.Leave("DrawRoom")
+		TProfiler.Leave("Draw-Room")
 	EndIf
 
 	Fader.Draw()
+	TProfiler.Enter("Draw-Interface")
 	Interface.Draw()
+	TProfiler.Leave("Draw-Interface")
 
 	FontManager.baseFont.draw( "Netstate:" + Player[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, 0)
 
@@ -2940,7 +2947,9 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
+
 		If evt<>Null
+			TProfiler.Enter("Draw")
 			If Game.gamestate = 0
 				DrawMain()
 			Else
@@ -2950,9 +2959,12 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			FontManager.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
 			If App.prepareScreenshot = 1 then DrawImage(gfx_startscreen_logosmall, App.settings.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
 
-			Flip App.limitFrames
+			TProfiler.Enter("Draw-Flip")
+				Flip App.limitFrames
+			TProfiler.Leave("Draw-Flip")
 
 			If App.prepareScreenshot = 1 then SaveScreenshot();App.prepareScreenshot = 0
+			TProfiler.Leave("Draw")
 		EndIf
 	End Method
 End Type
@@ -3001,5 +3013,12 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 	Until AppTerminate() Or ExitGame = 1
 	If Game.networkgame Then If Network.IsConnected = True Then Network.NetDisconnect ' Disconnect
 EndIf 'not exit game
+
+OnEnd( EndHook )
+Function EndHook()
+	Print "Dumping profile information -> Profiler.txt ."
+	TProfiler.DumpLog("Profiler.txt")
+
+End Function
 
 Include "network.bmx"

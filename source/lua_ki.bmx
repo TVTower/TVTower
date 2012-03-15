@@ -81,7 +81,7 @@ Type KI
 
 	Method reloadScript()
 		if self.scriptAsString <> "" then Print "Reloaded LUA AI for player "+Self.playerId
-		self.scriptAsString = fileToString(scriptName)
+		self.scriptAsString = LoadText(scriptName)
 
 		Local str:String = scriptConstants + Chr:String(10) + Chr:String(13) + scriptAsString
 		Self.LuaEngine.LoadSource(scriptAsString)
@@ -166,26 +166,13 @@ Type KI
 		    Print "Script " + scriptName + " enthaelt die Funktion OnMoneyChanged nicht"
 		End Try
 	End Method
-
+rem
 	Method fileToString:String(filename:String)
 		Local file:TStream = OpenStream(filename, True, False)
 		Return file.ReadString(file.Size())
 		file.Close()
-Rem
-		Local file:TStream = ReadFile(filename)
-		Local line:String
-		Local ret:String
-
-		While Not Eof(file)
-        	line = ReadLine(file)
-			ret = ret + line + Chr$(10) + Chr$(13)
-    	Wend
-
-		file.Close()
-		Return ret
-EndRem
 	End Method
-
+endrem
 	Method addScriptConstant(name$, value$)
 		scriptConstants = scriptConstants + Chr:String(10) + Chr:String(13) + name + " = " + value
 		'

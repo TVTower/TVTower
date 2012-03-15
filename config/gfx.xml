@@ -91,11 +91,16 @@
 		</resource>
 		<resource name="building_clouds">
 			<type>image</type>
+ 			<flags>FILTEREDIMAGE</flags>
  			<url>grafiken/hochhaus/wolken.png</url>
 		</resource>
-		<resource name="gfx_BG_moon">
-			<type>image</type>
+		<resource name="gfx_BG_moonPack">
+			<type>SpritePack</type>
+ 			<flags>FILTEREDIMAGE</flags>
  			<url>grafiken/hochhaus/himmel_mondphasen2.png</url>
+			<children>
+				<child name="gfx_BG_moon"		x="0" 	y="0"	w="480"	h="40"	frames="12" />
+			</children>
 		</resource>
 		<resource name="gfx_room_betty_picture1">
 			<type>image</type>
@@ -122,7 +127,7 @@
 		<resource name="gfx_building">
 			<type>image</type>
  			<url>grafiken/hochhaus/hochhaus.png</url>
- 			<flags>MASKEDIMAGE,DYNAMICIMAGE</flags>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
 		</resource>
 
 		<resource name="gfx_elevator_sign_bg">

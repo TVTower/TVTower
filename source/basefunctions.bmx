@@ -477,13 +477,9 @@ Function RequestFromUrl:String(myurl:String)
 End Function
 
 
-
-Type TLength
-	Field time:Int
-End Type
-
 Type TCall
-
+	Field depth:int = 0
+	Field parent:TCall = null
 	Field name:String
 	Field start:Int
 	Field Times:TList
@@ -494,10 +490,9 @@ Type TCall
 
 End Type
 
-TLogFile.Strings = CreateList()
 Type TLogFile
 	Global activated:Byte = 1
-	Global Strings:TList
+	Global Strings:TList = CreateList()
 
 	Function DumpLog(file:String, doPrint:Int = 1)
 		If TLogFile.Strings = Null Then TLogFile.Strings = CreateList()
@@ -506,9 +501,7 @@ Type TLogFile
 
 			WriteLine fi, "TVT Log V1.0"
 			For Local MyText:String = EachIn Strings
-				If doPrint = 1
-					Print MyText
-				EndIf
+				If doPrint = 1 then Print MyText
 				WriteLine fi, MyText
 			Next
 		CloseFile fi
@@ -519,74 +512,100 @@ Type TLogFile
 	End Function
 End Type
 
-tprofiler.calls = CreateList()
 Type TProfiler
 	Global activated:Byte = 1
-	Global calls:TList
+	Global calls:TMap = CreateMap()
+	Global lastCall:TCall = null
 
 	Function DumpLog( file:String )
 
 		Local fi:TStream = WriteFile( file )
 
-			WriteLine fi,"Profiler"
-			For Local c:TCall = EachIn calls
-
-				WriteLine fi,"-----------------------------------------------------------"
+			WriteLine fi,".-----------------------------------------------------------------------------."
+			WriteLine fi,"| AppProfiler |                                                               |"
+			WriteLine fi,"|-----------------------------------------------------------------------------|"
+			For Local c:TCall = EachIn calls.Values()
 				Local totTime:int=0
-				For Local t:TLength = EachIn c.times
-					totTime:+t.time
+				For Local time:string = EachIn c.times
+					totTime:+int(time)
 				Next
-				WriteLine fi, "Function:" + LSet:String(C.name, 30) + " Calls:" + c.calls + " Total:" + String(Float(tottime) / Float(1000)) + "s Avg:" + String((Float(TotTime) / Float(c.calls)) / Float(1000)) + "s"
+				local funcName:string = C.Name
+				local depth:int = 0
+				while Instr(funcName, "-") > 0
+					funcName = Mid(funcName, Instr(funcName, "-")+1)
+					depth:+1
+				Wend
+				c.depth = max(c.depth, depth)
+
+				if c.depth > 0
+					funcName = "'-"+funcName
+					if c.depth >=2
+						for local i:int = 0 to c.depth-2
+							funcName = "  "+funcName
+						Next
+					endif
+				endif
+				local AvgTime:string = String( floor(int(1000.0*(Float(TotTime) / Float(c.calls)))) / 1000.0 )
+				WriteLine fi, "| " + LSet(funcName, 24) + "  Calls: " + RSet(c.calls, 8) + "  Total: " + LSet(String(Float(tottime) / Float(1000)),8)+"s" + "  Avg:" + LSet(AvgTime,8)+"ms"+ " |"
 			Next
+			WriteLine fi,"'-----------------------------------------------------------------------------'"
+
+			WriteLine fi,""
+			WriteLine fi,".-----------------------------------------------------------------------------."
+			WriteLine fi,"| AppLog      |                                                               |"
+			WriteLine fi,"|-----------------------------------------------------------------------------|"
+			For Local MyText:String = EachIn TLogFile.Strings
+				if len(MyText)<=75
+					WriteLine fi, "| "+LSet(MyText, 75)+" |"
+				else
+					WriteLine fi, "| "+MyText
+				endif
+			Next
+			WriteLine fi,"'-----------------------------------------------------------------------------'"
+
 
 
 		CloseFile fi
 
 	End Function
 
-	Function Enter(func:String)
-	If TProfiler.activated
-
-		For Local call:tcall = EachIn calls
-
-			If call.name = func
-
-				call.start = MilliSecs()
-				call.calls:+1
-				Return
-
+	Function Enter:int(func:String)
+		If TProfiler.activated
+			Local call:tcall = null
+			call = TCall(calls.ValueForKey(func))
+			if call <> null
+				call.start	= MilliSecs()
+				call.calls	:+1
+				Return true
 			EndIf
 
-		Next
+			call = New TCall
 
-		Local call:TCall = New TCall
-		Print "added new call:"+func
-		calls.addlast( call )
-		call.calls = 1
-		call.name = func
-		call.start = MilliSecs()
-	EndIf
+			if TProfiler.LastCall <> null then call.depth = TProfiler.LastCall.depth +1
+			'Print "Profiler: added new call:"+func + " depth:"+ call.depth
+			call.parent	= TProfiler.LastCall
+			call.calls	= 1
+			call.name	= func
+			call.start	= MilliSecs()
+			calls.insert(func, call)
+			TProfiler.LastCall = call
+		EndIf
 	End Function
 
-	Function Leave( func:String )
-	If TProfiler.activated
-		For Local call:TCall = EachIn calls
-
-			If call.name = func
-
-				Local l:TLength = New tlength
-				l.time = MilliSecs()-call.start
-				call.times.addlast( l )
-				Return
-
-			End If
-
-		Next
-
-'		RuntimeError "Unknown function"
-	EndIf
+	Function Leave:int( func:String )
+		If TProfiler.activated
+			Local call:TCall = TCall(calls.ValueForKey(func))
+			If call <> null
+				Local l:int = MilliSecs()-call.start
+				call.times.addlast( string(l) )
+				if call.parent <> null
+					TProfiler.LastCall = call.parent
+				endif
+				Return true
+			EndIf
+		EndIf
+		return false
 	End Function
-
 End Type
 
 

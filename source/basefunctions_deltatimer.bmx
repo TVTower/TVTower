@@ -46,7 +46,7 @@ Type TDeltaTimer
 		endif
 
 		'fill time available for this loop
-		if self.loopTime > 0.25 then self.loopTime = 0.25	'min 4 updates per seconds 1/4
+		self.loopTime = Min(0.25, self.loopTime)	'min 4 updates per seconds 1/4
 		self.accumulator :+ self.loopTime
 
 		'update gets deltatime - fraction of a second (speed = pixels per second)
@@ -62,7 +62,7 @@ Type TDeltaTimer
 		'draw gets tweenvalue (0..1)
 		self.timesDrawn :+1
 		EventManager.triggerEvent( "App.onDraw", TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
-	'	Delay(1)
+		'Delay(1)
 	End Method
 
 	'tween value = oldposition*tween + (1-tween)*newPosition

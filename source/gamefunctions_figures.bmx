@@ -18,14 +18,12 @@ Type TFigures
  Field clickedToFloor:Int = -1
  Field xToElevator:Float= 18	'difference to building.elevator.x
  Field Visible:Int		= 1
- Field image:TImage	{sl = "no"}
  Field Sprite:TGW_Sprites {sl = "no"}
-										 Field FrameWidth:Int	= 11
-										 Field frameheight:Int
-										 Field AnimPos:Int		= 0
+	Field FrameWidth:Int	= 11
+	Field AnimPos:Int		= 0
  Field NextTwinkerTimer:Int = 0
  Field NextAnimTimer:Int = 0 {sl = "no"}
- Field NextAnimTime:Int = 120 {sl = "no"}
+ Field NextAnimTime:Int = 130 {sl = "no"}
  Field specialTime:Int = 0
  Field LastSpecialTime:Int = 0
  Field WaitTime:Int = 0
@@ -103,11 +101,11 @@ Type TFigures
 		If Self.targetx < Floor(Self.pos.x) Then Self.dx = -(Abs(Self.initialdx))
 		If Self.targetx > Floor(Self.pos.x) Then Self.dx = (Abs(Self.initialdx))
  		If Abs( Floor(Self.targetx)-Floor(Self.pos.x) ) < Abs(deltaTime*Self.dx) Then Self.dx = 0;Self.pos.setX(Self.targetx)
-		If Self.pos.y + Self.frameheight < Building.GetFloorY(13) Then Self.pos.setY( Building.GetFloorY(13) - Self.frameheight )
-    	If Self.pos.y + Self.frameheight > Building.GetFloorY(0) Then Self.pos.setY( Building.GetFloorY(0) - Self.frameheight )
+		If Self.pos.y + Self.sprite.h < Building.GetFloorY(13) Then Self.pos.setY( Building.GetFloorY(13) - Self.sprite.h )
+    	If Self.pos.y + Self.sprite.h > Building.GetFloorY(0) Then Self.pos.setY( Building.GetFloorY(0) - Self.sprite.h )
 		If not Self.IsInElevator() 'And isOnFloor())
-			Self.pos.x	:+ deltaTime * Float(Self.dx)
-			If Not Self.IsOnFloor() Then Self.pos.setY( Building.GetFloorY(Self.onFloor) - Self.frameheight )
+			Self.pos.x	:+ deltaTime * Self.dx
+			If Not Self.IsOnFloor() Then Self.pos.setY( Building.GetFloorY(Self.onFloor) - Self.sprite.h )
 		Else
 			Self.dx = 0.0
 		EndIf
@@ -115,7 +113,8 @@ Type TFigures
 
 	Method FigureAnimation(deltaTime:float=1.0)
 	    If MilliSecs()- NextAnimTimer >= 0
-			If AnimPos < 8 Then AnimPos = AnimPos + 1
+			AnimPos = Min(8, AnimPos+1)
+
 	      	NextAnimTimer = MilliSecs() + NextAnimTime
 	  		If dx = 0
 	      		If onFloor <> clickedToFloor and  not IsInElevator() and IsAtElevator()
@@ -159,14 +158,14 @@ Type TFigures
 						Figure.LastSpecialTime=0
 					EndIf
 					'Print "Bote: war in Raum -> neues Ziel gesucht"
-					Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.frameheight)
+					Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 				EndIf
 			EndIf
 		End If
 		If figure.inRoom = Null and figure.clickedToRoom = Null and figure.dx = 0 and not (Figure.IsAtElevator() or Figure.IsInElevator()) 'not moving but not in/at elevator
 			Local room:TRooms = TRooms.GetRandomReachableRoom()
 			'Print "Bote: steht rum -> neues Ziel gesucht"
-			Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.frameheight)
+			Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 		End If
 	End Function
 
@@ -175,7 +174,7 @@ Type TFigures
 		If figure.WaitTime < MilliSecs()
 			figure.WaitTime = MilliSecs() + 15000
 			'Print "zu lange auf fahrstuhl gewartet"
-			Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.frameheight)
+			Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.sprite.h)
 		EndIf
 		If Int(Figure.pos.x) = Int(Figure.targetx) And Not Figure.IsInElevator() And figure.onFloor = figure.toFloor
 			Local zufall:Int = Rand(0, 100)
@@ -190,10 +189,10 @@ Type TFigures
 				If zufall > 85 And Not figure.IsAtElevator()
 					Local sendToFloor:Int = figure.onFloor + 1
 					If figure.onFloor >= 13 Then sendToFloor = 0
-					Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.frameheight)
+					Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.sprite.h)
 					figure.WaitTime = MilliSecs() + 15000
 				Else If zufall <= 85 And Not figure.isAtElevator()
-					Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.frameheight)
+					Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.sprite.h)
 				EndIf
 			EndIf
 		EndIf
@@ -333,7 +332,7 @@ Type TFigures
 		Return Null
 	End Function
 
- Function Create:TFigures(FigureName:String, imageOrSprite:Object, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
+ Function Create:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
 	  Local Figure:TFigures=New TFigures
 	  Figure.name = Figurename
 	  Figure.pos.setX(x)
@@ -342,16 +341,9 @@ Type TFigures
 	  Figure.id = LastID+1
 	  LastID = LastID + 1
 	  Figure.initialdx = dx
-	  If TImage(imageOrSprite) <> Null
-	  	Figure.image = TImage(imageOrSprite)
-		Figure.frameheight = ImageHeight(Figure.image)
-	  EndIf
-	  If TGW_Sprites(imageOrSprite) <> Null
-	  	Figure.Sprite = TGW_Sprites(imageOrSprite)
-		Figure.frameheight = Figure.Sprite.h
-	  EndIf
-  	  Figure.pos.setY( Building.GetFloorY(onFloor) - Figure.frameheight )
-'	  Figure.image = image
+		Figure.Sprite = sprite
+		Figure.framewidth = Figure.sprite.framew
+  	  Figure.pos.setY( Building.GetFloorY(onFloor) - Figure.sprite.h )
 	  Figure.NextAnimTimer = MilliSecs() + Figure.NextAnimTime
 	  Figure.onFloor = onFloor
 	  Figure.toFloor = onFloor
@@ -363,7 +355,7 @@ Type TFigures
  End Function
 
  Method IsOnFloor:Byte()
-  If pos.y = (Building.GetFloorY(onFloor) - frameheight) Then Return True
+  If pos.y = (Building.GetFloorY(onFloor) - self.sprite.h) Then Return True
   Return False
  End Method
 
@@ -451,7 +443,7 @@ Type TFigures
 		EndIf
 	End Method
 
-	Method Update(deltaTime:float=1.0)
+	Method Update(deltaTime:float)
 		If updatefunc_ <> Null
 			updatefunc_(ListLink, deltaTime)
 		Else
@@ -510,7 +502,7 @@ Type TFigures
 				EndIf
 			EndIf
 			If IsInElevator() and Building.Elevator.Open = 1 and onFloor = toFloor and toFloor = Building.Elevator.toFloor
-				If frameheight + Int(pos.y) = Int(Building.GetFloorY(toFloor))
+				If self.sprite.h + Int(pos.y) = Int(Building.GetFloorY(toFloor))
 					targetx = oldtargetx
 					Building.Elevator.passenger = -1
 					TRooms.GetClickedRoom(Player[Game.playerID].Figure)
@@ -519,39 +511,37 @@ Type TFigures
 	    EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
-		If self.pos.y + self.frameheight < Building.GetFloorY(13) Then self.pos.setY( Building.GetFloorY(13) - self.frameheight )
-		If self.pos.y + self.frameheight > Building.GetFloorY(0) Then self.pos.setY( Building.GetFloorY(0) - self.frameheight )
+		If self.pos.y + self.sprite.h < Building.GetFloorY(13) Then self.pos.setY( Building.GetFloorY(13) - self.sprite.h )
+		If self.pos.y + self.sprite.h > Building.GetFloorY(0) Then self.pos.setY( Building.GetFloorY(0) - self.sprite.h )
 	End Method
 
-	Function UpdateAll(deltaTime:float=1.0)
+	Function UpdateAll(deltaTime:float)
 		For Local Figure:TFigures = EachIn TFigures.List
 			Figure.Update(deltaTime)
 		Next
 	End Function
-
+rem
 	Method GetDrawPosX:float()
-'		return self.lastDrawnPos.x * (1-App.Timer.getTween()) + ( App.Timer.getTween() ) * self.pos.x
 		return self.lastDrawnPos.x + App.Timer.getTween() * (self.pos.x - self.lastDrawnPos.x)
 	End Method
 
 	Method GetDrawPosY:float()
-		'return self.lastDrawnPos.y * (1-App.Timer.getTween()) + ( App.Timer.getTween() ) * self.pos.y
 		return self.lastDrawnPos.y + App.Timer.getTween() * (self.pos.y - self.lastDrawnPos.y)
 	End Method
-
+endrem
 	Method Draw()
-		Local ShadowDisabled:Int = 1
+		Local ShadowDisabled:Int = 0
 		Local ShadowX:Int = 3
 		If Visible And (inRoom = Null Or inRoom.name = "elevator")
 			'if self.lastDrawnPos.x = 0.0 AND self.lastDrawnPos.y = 0.0 then self.lastDrawnPos.setPos(self.pos)
-			Local myy:Float = self.pos.y ' self.GetDrawPosY()
-			Local myx:Float = self.pos.x ' self.GetDrawPosX()
+			Local myy:Float = self.pos.y
+			Local myx:Float = self.pos.x
 
 			If Sprite <> Null
 				If Not ShadowDisabled
 					SetColor 0, 0, 0
-					SetAlpha 0.1
-					Sprite.DrawClipped(myx + shadowX, Building.pos.y + myy + 2, myx + shadowX, Building.pos.y + myy, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
+'					SetAlpha 0.1
+'					Sprite.DrawClipped(myx + shadowX, Building.pos.y + myy + 2, myx + shadowX, Building.pos.y + myy, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
 					SetAlpha 0.2
 					ShadowX = 2
 					Sprite.DrawClipped(myx + shadowX, Building.pos.y + myy + 2, myx + shadowX, Building.pos.y + myy, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
@@ -559,8 +549,6 @@ Type TFigures
 					SetColor 255, 255, 255
 				EndIf
 				Sprite.Draw(myx, Building.pos.y + myy, AnimPos)
-			Else
-				DrawImageInViewPort(image, myx, Building.pos.y + myy + frameheight, 0, AnimPos)
 			EndIf
 		EndIf
 		Self.GetPeopleOnSameFloor()

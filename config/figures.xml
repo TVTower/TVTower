@@ -4,7 +4,7 @@
 		<resource name="figures">
 			<type>SpritePack</type>
  			<url>grafiken/hochhaus/figuren.png</url>
- 			<flags>FILTEREDIMAGE</flags>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
 			<children>
 				<child name="Man1"					x="0"	y="0"	w="253"	h="44"	f="11"	id="0" />
 				<child name="Man2"					x="0"	y="44"	w="253"	h="44"	f="11"	id="1" />
@@ -29,6 +29,14 @@
 				<child name="Player2"				x="256"	y="396"	w="253"	h="44"	f="11"	id="19" />
 				<child name="Player3"				x="0"	y="440"	w="253"	h="44"	f="11"	id="20" />
 				<child name="Player4"				x="256"	y="440"	w="253"	h="44"	f="11"	id="21" />
+			</children>
+		</resource>
+		<resource name="figure_HausmeisterPack">
+			<type>SpritePack</type>
+ 			<url>grafiken/hochhaus/spielfigur_hausmeister.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
+			<children>
+				<child name="figure_Hausmeister"	x="0"	y="0"	w="765"	h="44"	f="15"	id="0" />
 			</children>
 		</resource>
 	</resources>

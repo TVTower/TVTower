@@ -20,10 +20,6 @@
 '
 SuperStrict
 
-Rem
-bbdoc: Persistence
-about: An object-persistence framework.
-End Rem
 'Module BaH.Persistence
 
 'ModuleInfo "Version: 1.00"

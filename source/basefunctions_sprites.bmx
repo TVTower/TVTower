@@ -943,181 +943,6 @@ Type TGW_Sprites extends TRenderable
 
 End Type
 
-Type TSpritesPack
-	Field List:TList = CreateList()
-	Field LastSpriteID:Int = 0
-
-	Function Create:TSpritesPack()
-		Local Obj:TSpritesPack = New TSpritesPack
-		Obj.List = CreateList()
-		Return Obj
-	End Function
-rem
-asdsad
-endrem
-	Method GetSprite:TSprites(spritename:String = "")
-		spritename = lower(spritename)
-		For Local i:Int = 0 To Self.list.Count() - 1
-			If lower(TSprites(Self.list.ValueAtIndex(i)).spritename) = spritename Then Return TSprites(Self.list.ValueAtIndex(i))
-		Next
-'		Print spritename + " nicht gefunden"
-'		Print "--------------"
-'		For Local i:Int = 0 To Self.list.Count() - 1
-'			If TSprites(Self.list.ValueAtIndex(i)).spritename <> "0" Then Print Upper(TSprites(Self.list.ValueAtIndex(i)).spritename)
-'		Next
-'		Print "--------------"
-'		Throw "error"
-
-		Return TSprites(Self.list.ValueAtIndex(0))
-		'Return Null
-	End Method
-
-	Method FindDuplicate:Object(spritepath:String)
-		If spritepath = "" Then Return Null
-		For Local i:Int = 0 To Self.list.Count() - 1
-			If Upper(TSprites(Self.list.ValueAtIndex(i)).spritepath) = Upper(spritepath) Then Print "duplicate";Return TSprites(Self.list.ValueAtIndex(i)).image
-		Next
-		Return Null
-	End Method
-
-	Method AddSprite:TSprites(image:TImage, spritepath:String = "", spritename:String = " ", x:Float, y:Float, dx:Float, dy:Float, returnToStart:Int, useframe:Int = 0, SpriteID:Int = -1, addtolist:Int = 1, textx:Float = 0.0, texty:Float = 0.0)
-		If image = Null Then Print "Error: AddSprite: " + spritename + " path:" + spritepath
-		Local sID:Int = SpriteID
-		Local tmpObj:TSprites
-		If SpriteID < 0 Then LastSpriteID:+1;SpriteID = LastSpriteID;
-		tmpObj = TSprites.Create(Self, image, spritepath, Upper(spritename), x, y, dx, dy, returntostart, 0, 0, 1, useframe, SpriteID, textx, texty)
-		If addtolist Then Self.list.AddLast(tmpObj)
-		Return tmpObj
-	End Method
-
-	Method AddAnimSprite:TSprites(image:TImage, spritepath:String = "", spritename:String = " ", x:Float, y:Float, dx:Float, dy:Float, returnToStart:Int, frameW:Int = 0, frameH:Int = 0, frames:Int = 1, SpriteID:Int = -1, addtolist:Int = 1, textx:Float = 0.0, texty:Float = 0.0)
-		If image = Null Then Print "Error: AddAnimSprite: " + spritename + " path:" + spritepath
-		Local sID:Int = SpriteID
-		Local tmpObj:TSprites
-		If SpriteID < 0 Then LastSpriteID:+1;SpriteID = LastSpriteID;
-		tmpObj = TSprites.Create(Self, image, spritepath, Upper(spritename), x, y, dx, dy, returntostart, frameW, frameH, frames, 0, SpriteID, textx, texty)
-		If addtolist Then Self.list.AddLast(tmpObj)
-		Return tmpObj
-	End Method
-
-	Method AddBigSprite:TSprites(image:TImage, spritepath:String = "", spritename:String = " ", x:Float, y:Float, dx:Float, dy:Float, returnToStart:Int, frameW:Int = 0, frameH:Int = 0, frames:Int = 1, SpriteID:Int = -1, addtolist:Int = 1, textx:Float = 0.0, texty:Float = 0.0)
-		Local sID:Int = SpriteID
-		Local tmpObj:TSprites
-		If SpriteID < 0 Then LastSpriteID:+1;SpriteID = LastSpriteID
-		tmpObj = TSprites.CreateBigImage(Self, image, spritepath, Upper(spritename), x, y, dx, dy, returntostart, frameW, frameH, frames, 0, SpriteID, textx, texty)
-		If addtolist Then Self.list.AddLast(tmpObj)
-		Return tmpObj
-	End Method
-
-End Type
-
-Type TSprites
-	Field spritename:String
-	Field spritepath:String = ""
-	Field textx:Float = 0.0, texty:Float = 0.0
-	Field x:Float = 0.0, y:Float = 0.0
-	Field dy:Float = 0.0,dx:Float = 0.0
-	Field image:Object
-	Field height:Int = 0
-	Field returnToStart:Int
-	Field visible:Int = 1
-	Field frameW:Int = 0, frameH:Int = 0, frames:Int = 1
-	Field useframe:Int = 0
-	Field SpriteID:Int = 0
-
-	Function CreateBigImage:TSprites(SpritePack:TSpritesPack, image:TImage, spritepath:String, spritename:String, x:Float, y:Float, dx:Float, dy:Float, returnToStart:Int, frameW:Int = 0, frameH:Int = 0, frames:Int = 1, useframe:Int = 0, SpriteID:Int = -1, textx:Float = 0.0, texty:Float = 0.0)
-		Local Sprite:TSprites = New TSprites
-		sprite.spritename = spritename
-		sprite.spritepath = spritepath
-		sprite.textx = textx
-		sprite.texty = texty
-		Sprite.frameW = frameW;If frameW = 0 Then frameW = ImageWidth(image)
-		Sprite.frameH = frameH;If frameH = 0 Then frameH = ImageHeight(image)
-		Sprite.frames = frames
-		Sprite.x = x
-		Sprite.y = y
-		Sprite.dx = dx
-		Sprite.dy = dy
-		Sprite.SpriteID = SpriteID
-		Sprite.height = ImageHeight(image)
-		Sprite.returnToStart = returnToStart
-		Sprite.image = TBigImage.CreateFromImage(image)
-		sprite.useframe = useframe
-		If Not SpritePack.List Then SpritePack.List = CreateList()
-		SpritePack.List.AddLast(Sprite)
-		'	  SortList List
-		Return Sprite
-	End Function
-
-	Function Create:TSprites(SpritePack:TSpritesPack, image:TImage, spritepath:String = "", spritename:String = " ", x:Float, y:Float, dx:Float, dy:Float, returnToStart:Int, frameW:Int = 0, frameH:Int = 0, frames:Int = 1, useframe:Int = 0, SpriteID:Int = -1, textx:Float = 0.0, texty:Float = 0.0)
-		Local Sprite:TSprites = New TSprites
-		sprite.spritename = spritename
-		sprite.spritepath = spritepath
-		sprite.textx = textx
-		sprite.texty = texty
-		Sprite.frameW = frameW;If frameW = 0 Then Sprite.frameW = ImageWidth(image)
-		Sprite.frameH = frameH;If frameH = 0 Then Sprite.frameH = ImageHeight(image)
-		Sprite.frames = frames
-		Sprite.x = x
-		Sprite.y = y
-		Sprite.dx = dx
-		Sprite.dy = dy
-		Sprite.SpriteID = SpriteID
-		Sprite.height = ImageHeight(image)
-		Sprite.returnToStart = returnToStart
-		Sprite.image = image
-		sprite.useframe = useframe
-		If Not SpritePack.List Then SpritePack.List = CreateList()
-		SpritePack.List.AddLast(Sprite)
-		'	  SortList List
-		Return Sprite
-	End Function
-
-	Method DrawXadded(addx:Float = 0.0, useframe:Int = -1)
-		Self.Draw(Self.x + addx, Self.y, useframe)
-	End Method
-
-	Method Draw(_x:Int = -1, _y:Int = -1, _useframe:Int = -1, texttodraw:String = "", font:TImageFont = Null)
-		If _useframe = -1 Then _useframe = useframe
-		If _x = -1 And _y = -1 Then _x = Self.x;_y = Self.y
-		If visible
-			If TImage(image)
-				If _y + ImageHeight(TImage(image)) > 0 And _y < 600
-					DrawImage(TImage(image), _x, _y, _useframe)
-				EndIf
-			Else If TBigImage(image)
-				TBigImage(image).render(_x, _y, 1.0)
-			EndIf
-		EndIf
-		If texttodraw <> ""
-			if font <> Null then SetImageFont font
-			DrawText(texttodraw, _x + textx, _y + texty)
-		End If
-	End Method
-
- Method UpdateWithReturn(_x:Float = -10000, _y:Float = -10000)
- 	x:+dx
- 	If _x = -10000 Then _x = x
-    If _y = -10000 Then _y = y
-    If returnToStart > 0 And x-returntostart>800 Then x = -returnToStart -Rand(50); dx=4+Rand(0,5)
- End Method
-
- Method Update(_x:Float = -10000, _y:Float = -10000)
- 	x:+dx
- 	If _x = -10000 Then _x = x
-    If _y = -10000 Then _y = y
-    If returnToStart > 0 And x-returntostart>800 Then x = -returnToStart -Rand(50); dx=4+Rand(0,5)
- End Method
-
- Method UpdateAndDraw(_x:Int=-10000, _y:Int = -10000)
- 	x:+dx
- 	If _x = -10000 Then _x = x
-    If _y = -10000 Then _y = y
-    Draw(_x,_y)
-    If returnToStart > 0 And x-returntostart>800 Then x = -returnToStart -Rand(50); dx=4+Rand(0,5)
- End Method
-End Type
-
 Type TAnimation
 	field repeatTimes:int		= 0		'how many times animation should repeat until finished
 	field currentFrame:int		= 0		'frame of sprite/image
@@ -1168,7 +993,6 @@ Type TAnimation
 		EndIf
 	End Method
 
-	'''''''''''''' animation sollte "sprite" besitzen - dadurch kann man "geschlossene tuer", "oeffnen" und "schliessen" in ein objekt packen
 	Method Reset()
 		self.setCurrentFramePos(0)
 	End Method
@@ -1221,20 +1045,19 @@ End Type
 
 'base of animated sprites... contains timers and so on, supports reversed animations
 Type TAnimSprites
-	Global List:TList = CreateList()
-	Field pos:TPosition	= TPosition.Create(0,0)
- Field dx:Int 			= 0
- Field image:TImage
- Field returnToStart:Int= 0
- Field visible:Int 		= 1
- Field AnimationSets:TMap	 	= CreateMap()
- Field currentAnimation:string	= "default"
+	Field pos:TPosition				= TPosition.Create(0,0)
+	Field vel:TPosition				= TPosition.Create(0,0)
+	Field sprite:TGW_Sprites
+	Field returnToStart:Int			= 0
+	Field visible:Int 				= 1
+	Field AnimationSets:TMap	 	= CreateMap()
+	Field currentAnimation:string	= "default"
 
-	Function Create:TAnimSprites(image:TImage, x:Int, y:Int, dx:Int, AnimCount:Int = 1, animTime:Int)
+	Function Create:TAnimSprites(sprite:TGW_Sprites, x:Int, y:Int, dx:Int, dy:int = 0, AnimCount:Int = 1, animTime:Int)
 		Local AnimSprites:TAnimSprites=New TAnimSprites
 		AnimSprites.pos.setXY(x, y)
-		AnimSprites.dx = dx
-		AnimSprites.image = image
+		AnimSprites.vel.setXY(dx,dy)
+		AnimSprites.sprite = sprite
 
 		local framesArray:int[][2]
 		framesArray	= framesArray[..AnimCount] 'extend
@@ -1245,8 +1068,6 @@ Type TAnimSprites
 		Next
 		AnimSprites.insertAnimation( "default", TAnimation.Create(framesArray,0,0) )
 
-		List.AddLast(AnimSprites)
-		SortList List
 		Return AnimSprites
 	End Function
 
@@ -1259,12 +1080,6 @@ Type TAnimSprites
 		self.currentAnimation = lower(animationName)
 		self.getCurrentAnimation().Reset()
 		if startAnimation then self.getCurrentAnimation().Playback()
-
-'		local frameset:string = "frames:"
-'		for local i:int = 0 to self.getCurrentAnimation().getFrameCount()-1
-'			frameset = frameset + self.getCurrentAnimation().frames[i] + ", "
-'		Next
-'		print frameset
 	End Method
 
 	Method getCurrentAnimation:TAnimation()
@@ -1289,21 +1104,22 @@ Type TAnimSprites
 		return self.getCurrentAnimation().getCurrentFrame()
 	End Method
 
-	Method Draw(_x:Int=-10000, _y:Int = -10000, overwriteAnimation:string="")
+	Method Draw(_x:float=-10000.0, _y:float = -10000, overwriteAnimation:string="")
 		If visible
-			If _x = -10000 Then _x = pos.x
+			If _x = -10000 OR _x = null Then _x = pos.x
 			If _y = -10000 Then _y = pos.y
 			if overwriteAnimation <> ""
-				DrawImage(image, _x,_y, self.getAnimation(overwriteAnimation).getCurrentFrame() )
+				sprite.Draw(_x,_y, self.getAnimation(overwriteAnimation).getCurrentFrame() )
 			else
-				DrawImage(image, _x,_y, self.getCurrentAnimation().getCurrentFrame() )
+				sprite.Draw(_x,_y, self.getCurrentAnimation().getCurrentFrame() )
 			endif
 		EndIf
 	End Method
 
-	Method Update(deltaTime:float=1.0)
+	Method Update(deltaTime:float)
 		self.getCurrentAnimation().Update(deltaTime)
-		self.pos.x :+ deltaTime * dx
+		self.pos.x :+ deltaTime * self.vel.x
+		self.pos.y :+ deltaTime * self.vel.y
 	End Method
 
 	Method UpdateWithReturn(deltaTime:float=1.0)
