@@ -340,10 +340,10 @@ Type TAudienceQuotes
 
   Method ShowSheet(x:Int, y:Int)
 	If Sheet = Null
-	  Sheet = TTooltip.Create(title, getLocale("AUDIENCE_RATING") + ": " + functions.convertValue(String(audience), 2, 0) + " (" + audiencepercentage + "%)", x, y, 200, 20)
+	  Sheet = TTooltip.Create(title, getLocale("AUDIENCE_RATING") + ": " + functions.convertValue(String(audience), 2, 0) + " (MA: " + audiencepercentage + "%)", x, y, 200, 20)
     Else
 	  Sheet.title = title
-	  Sheet.text = getLocale("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" ("+(audiencepercentage/10)+"%)"
+	  Sheet.text = getLocale("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" (MA: "+(audiencepercentage/10)+"%)"
 	  Sheet.enabled = 1
 	  Sheet.pos.setXY(x,y)
 	  Sheet.width = 0
@@ -495,7 +495,7 @@ Type TTooltip extends TRenderableChild
 
 			SetAlpha Float(100*lifetime / startlifetime) / 100.0
 			'caption
-			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("ABC")/2 , 50,50,50, 2,0, 1, 0.1)
+			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("ABC")/2 +2 , 50,50,50, 2,0, 1, 0.1)
 			SetColor 90,90,90
 			'text
 			If text <> "" Then self.Usefont.Draw(text, self.pos.x+5,self.pos.y+Self.TooltipHeader.h + 7)
@@ -1155,7 +1155,7 @@ Type TInterface
 		If functions.IsIn(MouseX(),MouseY(),20,385,280,200)
 			ActualProgramToolTip.title 		= ActualProgramText
 			If ShowChannel <> 0
-				ActualProgramToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Player[ShowChannel].GetFormattedAudience()+ "("+Player[ShowChannel].GetAudiencePercentage()+"%)"
+				ActualProgramToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Player[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Player[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
 			Else
 				ActualProgramToolTip.text	= getLocale("TV_TURN_IT_ON")
 			EndIf
@@ -1163,7 +1163,7 @@ Type TInterface
 			ActualProgramToolTip.lifetime	= ActualProgramToolTip.startlifetime
 	    EndIf
 		If functions.IsIn(MouseX(),MouseY(),385,468,108,30)
-			ActualAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Player[Game.playerID].GetFormattedAudience()+ " ("+Player[Game.playerID].GetAudiencePercentage()+"%)"
+			ActualAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Player[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Player[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
 			ActualAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Player[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			ActualAudienceToolTip.enabled 	= 1
 			ActualAudienceToolTip.lifetime 	= ActualAudienceToolTip.startlifetime
@@ -1305,7 +1305,7 @@ Type TStation
 	End Method
 
 	Function calculatePrice:Int(summe:Int)
-		Return Max(15000, Int(Ceil(summe / 10000)) * 25000)
+		return Max( 25000, Int(Ceil(summe / 10000)) * 25000 )
 	End Function
 
 	Function Load:TStation(pnode:xmlNode)
@@ -1380,7 +1380,7 @@ Type TStationMap
 
 	Field sellStation:TStation[5]
 	Field buyStation:TStation[5]
-	Field ShowStations:Int[5]
+	Field filter_ShowStations:Int[5]
 	Field StationShare:Int[4, 3]
 
     field baseStationSprite:TGW_Sprites
@@ -1604,7 +1604,7 @@ Type TStationMap
 
 	Method DrawStations()
 		For Local _Station:TStation = EachIn StationList
-			If Self.ShowStations[_Station.owner] Then _Station.Draw()
+			If Self.filter_ShowStations[_Station.owner] Then _Station.Draw()
 		Next
 		If LastStation.pos.X <> 0 and LastStation.pos.Y <> 0
 			SetAlpha 0.2

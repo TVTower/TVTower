@@ -706,6 +706,7 @@ endrem
     End Function
 
 	Function convertPercent:String(value:String, nachkomma:Int)
+		if float(value) = 0 then return "0"
 		Local values:String[] = value.split(".")
 		If values[1] <> Null Then Return values[0] + "." + Left(String(Ceil(Float(values[1]))), nachkomma) Else Return values[0]
 	End Function

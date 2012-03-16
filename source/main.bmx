@@ -341,6 +341,41 @@ Type TGame
 		EndIf
 	End Method
 
+	Method calculateMaxAudiencePercentage:float(forHour:int= -1)
+		if forHour <= 0 then forHour = self.hour
+
+		'based on weekday (thursday) in march 2011 - maybe add weekend
+		select hour
+			case 0	game.maxAudiencePercentage = 11.40 + Float(RandRange( -6, 6))/ 100.0 'Germany ~9 Mio
+			case 1	game.maxAudiencePercentage =  6.50 + Float(RandRange( -4, 4))/ 100.0 'Germany ~5 Mio
+			case 2	game.maxAudiencePercentage =  3.80 + Float(RandRange( -3, 3))/ 100.0
+			case 3	game.maxAudiencePercentage =  3.60 + Float(RandRange( -3, 3))/ 100.0
+			case 4	game.maxAudiencePercentage =  2.25 + Float(RandRange( -2, 2))/ 100.0
+			case 5	game.maxAudiencePercentage =  3.45 + Float(RandRange( -2, 2))/ 100.0 'workers awake
+			case 6	game.maxAudiencePercentage =  3.25 + Float(RandRange( -2, 2))/ 100.0 'some go to work
+			case 7	game.maxAudiencePercentage =  4.45 + Float(RandRange( -3, 3))/ 100.0 'more awake
+			case 8	game.maxAudiencePercentage =  5.05 + Float(RandRange( -4, 4))/ 100.0
+			case 9	game.maxAudiencePercentage =  5.60 + Float(RandRange( -4, 4))/ 100.0
+			case 10	game.maxAudiencePercentage =  5.85 + Float(RandRange( -4, 4))/ 100.0
+			case 11	game.maxAudiencePercentage =  6.70 + Float(RandRange( -4, 4))/ 100.0
+			case 12	game.maxAudiencePercentage =  7.85 + Float(RandRange( -4, 4))/ 100.0
+			case 13	game.maxAudiencePercentage =  9.10 + Float(RandRange( -5, 5))/ 100.0
+			case 14	game.maxAudiencePercentage = 10.20 + Float(RandRange( -5, 5))/ 100.0
+			case 15	game.maxAudiencePercentage = 10.90 + Float(RandRange( -5, 5))/ 100.0
+			case 16	game.maxAudiencePercentage = 11.45 + Float(RandRange( -6, 6))/ 100.0
+			case 17	game.maxAudiencePercentage = 14.10 + Float(RandRange( -7, 7))/ 100.0 'people come home
+			case 18	game.maxAudiencePercentage = 22.95 + Float(RandRange( -8, 8))/ 100.0 'meal + worker coming home
+			case 19	game.maxAudiencePercentage = 33.45 + Float(RandRange(-10,10))/ 100.0
+			case 20	game.maxAudiencePercentage = 38.70 + Float(RandRange(-15,15))/ 100.0
+			case 21	game.maxAudiencePercentage = 37.60 + Float(RandRange(-15,15))/ 100.0
+			case 22	game.maxAudiencePercentage = 28.60 + Float(RandRange( -9, 9))/ 100.0 'bed time starts
+			case 23	game.maxAudiencePercentage = 18.80 + Float(RandRange( -7, 7))/ 100.0
+		endSelect
+		game.maxAudiencePercentage :/ 100.0
+
+		return game.maxAudiencePercentage
+	End Method
+
 	Method getNextHour:Int()
 		If Self.hour+1 > 24 Then Return Self.hour+1 - 24
 		Return Self.hour + 1
@@ -610,12 +645,21 @@ Type TPlayer
 	End Method
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetAudiencePercentage:Int()
+	Method GetAudiencePercentage:float()
 		If maxaudience > 0
 			Return Floor((audience * 100) / maxaudience)
 		EndIf
-		Return 0
+		Return 0.0
 	End Method
+
+	'calculates and returns the percentage of the players audience depending on the maxaudience
+	Method GetRelativeAudiencePercentage:float()
+		If game.maxAudiencePercentage > 0
+			Return float(GetAudiencePercentage() / game.maxAudiencePercentage)
+		EndIf
+		Return 0.0
+	End Method
+
 
 	'returns value chief will give as credit
 	Method GetCreditAvaiable:Int()
@@ -2677,10 +2721,6 @@ Function UpdateMain(deltaTime:Float = 1.0)
 			If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
 		EndIf
 		If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
-		If KEYMANAGER.IsHit(KEY_6) Game.speed = 20.0
-		If KEYMANAGER.IsHit(KEY_7) Game.speed = 0.5
-		If KEYMANAGER.IsHit(KEY_8) Game.speed = 1.5
-		If KEYMANAGER.IsHit(KEY_9) Game.speed = 3.0
 		If KEYMANAGER.IsHit(KEY_W) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
 		If KEYMANAGER.IsHit(KEY_A) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("archive", Game.playerID)
 		If KEYMANAGER.IsHit(KEY_B) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("betty", 0)
@@ -2689,7 +2729,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 		If KEYMANAGER.IsHit(KEY_C) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("chief", Game.playerID)
 		If KEYMANAGER.IsHit(KEY_N) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("news", Game.playerID)
 		If KEYMANAGER.IsHit(KEY_R) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("roomboard", -1)
-		If KEYMANAGER.IsHit(KEY_D) TProfiler.activated = 1 - TProfiler.activated
+		If KEYMANAGER.IsHit(KEY_D) Player[Game.playerID].maxaudience = Stationmap.einwohner
 		If KEYMANAGER.IsHit(KEY_S)
 			Game.oldspeed = Game.speed
 			Game.speed = 0
@@ -2704,12 +2744,6 @@ Function UpdateMain(deltaTime:Float = 1.0)
 			Game.LoadGame("savegame.zip")
 			LoadError.link.Remove()
 		EndIf
-		If KEYMANAGER.IsHit(KEY_P)
-			'Local Room:TRooms = TRooms.GetRoomFromID(30)
-			Local Room:TRooms = TRooms.GetRoom("news", 1)
-			If Room <> Null Then Player[1].Figure.SendToRoom(Room) ;Print "send to room:" + room.Name + " floor"+room.Pos.y + " owner:" + room.owner
-
-		End If
 		If KEYMANAGER.IsDown(KEY_UP) Game.speed:+0.05
 		If KEYMANAGER.IsDown(KEY_DOWN) Game.speed:-0.05;If Game.speed < 0 Then Game.speed = 0
 	EndIf
@@ -2865,9 +2899,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			elseIf minute = 55
 				TPlayer.ComputeAds()
 			elseIf minute = 0
-				If hour+1 < 6 And hour+1 > 1 Then game.maxAudiencePercentage = Float(RandRange(5, 15)) / 100
-				If hour+1 >= 6 And hour+1 < 18 Then game.maxAudiencePercentage = Float(RandRange(10, 10 + hour+1)) / 100
-				If hour+1 >= 18 Or hour+1 <= 1 Then game.maxAudiencePercentage = Float(RandRange(15, 20 + hour+1)) / 100
+				Game.calculateMaxAudiencePercentage(hour)
 				TPlayer.ComputeNewsAudience()
  			EndIf
  			If minute = 5 Or minute = 55 Or minute=0 Then Interface.BottomImgDirty = True

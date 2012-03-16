@@ -902,7 +902,7 @@ End Function
 Function OnUpdate_StationMapFilters(sender:Object)
 	Local obj:TGUIOkbutton = TGUIOkbutton(sender)
 	If obj <> Null
-		StationMap.ShowStations[Int(obj.value)] = obj.crossed
+		StationMap.filter_ShowStations[Int(obj.value)] = obj.crossed
 	End If
 End Function
 
