@@ -199,9 +199,9 @@ Type TRooms
 	'leave with Open/close-animation (black)
 	Method LeaveAnimated:Int(dontleave:Int)
         If Self.name = "roomboard" Then If TRoomSigns.AdditionallyDragged > 0 Then dontleave = True
-        If Self.name = "adagency"    Then Print "contractstoplayer";TContractBlocks.ContractsToPlayer(Game.playerID)
+        If Self.name = "adagency"    Then Print "contractstoplayer";TContractBlock.ContractsToPlayer(Game.playerID)
         If Self.name = "movieagency" Then TMovieAgencyBlocks.ProgrammeToPlayer(Game.playerID)
-        If Self.name = "archive" Then TArchiveProgrammeBlocks.ProgrammeToSuitcase(Game.playerID)
+        If Self.name = "archive" Then TArchiveProgrammeBlock.ProgrammeToSuitcase(Game.playerID)
         If Not dontleave Then
 			If doortype >= 0
 				Fader.Enable() 'room fading
@@ -618,8 +618,8 @@ Function Room_AdAgency_Compute(_room:TRooms)
 	if TRooms.doadraw 'draw it
 		Assets.GetSprite("gfx_suitcase").Draw(530, 55)
 		' Local locContractX:Int =550
-		TContractBlocks.DrawAll(True)
-        For Local LocObject:TContractBlocks= EachIn TContractBlocks.List
+		TContractBlock.DrawAll(True)
+        For Local LocObject:TContractBlock= EachIn TContractBlock.List
       	  If locobject.owner <=0 Or locobject.owner=Game.playerID And..
       	     functions.IsIn(MouseX(), MouseY(), LocObject.Pos.x, locobject.Pos.y, locobject.width, locobject.height)
             If LocObject.contract <> Null
@@ -638,7 +638,7 @@ Function Room_AdAgency_Compute(_room:TRooms)
 	Else
     player[game.playerid].figure.fromroom =Null
     Game.cursorstate = 0
-    TContractBlocks.UpdateAll(True)
+    TContractBlock.UpdateAll(True)
   EndIf
 End Function
 
@@ -1144,10 +1144,10 @@ Function Room_Archive_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
 	Assets.GetSprite("gfx_suitcase").Draw(40, 270)
     If _room.owner = Game.playerID
-      TArchiveProgrammeBlocks.DrawAll(_room.owner)
+      TArchiveProgrammeBlock.DrawAll(_room.owner)
       ArchiveprogrammeList.Draw(False)
     EndIf
-    For Local LocObject:TArchiveProgrammeBlocks= EachIn TArchiveProgrammeBlocks.List
+    For Local LocObject:TArchiveProgrammeBlock= EachIn TArchiveProgrammeBlock.List
       If locobject.owner <=0 Or locobject.owner=Game.playerID And..
          functions.IsIn(MouseX(), MouseY(), LocObject.Pos.x, locobject.Pos.y, locobject.width, locobject.height)
         If LocObject.Programme <> Null
@@ -1173,7 +1173,7 @@ Function Room_Archive_Compute(_room:TRooms)
     EndIf
 
     If _room.owner = Game.playerID
-      TArchiveProgrammeBlocks.UpdateAll(_room.owner)
+      TArchiveProgrammeBlock.UpdateAll(_room.owner)
       ArchiveprogrammeList.Update(False)
     EndIf
   EndIf

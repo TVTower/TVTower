@@ -939,7 +939,7 @@ Type TLuaFunctions
 			If Player[PlayerID].Figure.inRoom.name <> "adagency"
 				Return - 1
 			Else
-				For Local Block:TContractBlocks = EachIn TContractBlocks.List
+				For Local Block:TContractBlock = EachIn TContractBlock.List
 					If Block.owner <> PlayerID
 						ret:+1
 					EndIf
@@ -958,10 +958,10 @@ Type TLuaFunctions
 			If Player[playerId].Figure.inRoom.Name <> "adagency"
 				Return - 1
 			Else
-				If ArrayID >= TContractBlocks.List.Count() Or ArrayID < 0
+				If ArrayID >= TContractBlock.List.Count() Or ArrayID < 0
 					Return - 2
 				Else
-					Local Block:TContractBlocks = TContractBlocks(TContractBlocks.List.ValueAtIndex(ArrayID))
+					Local Block:TContractBlock = TContractBlock(TContractBlock.List.ValueAtIndex(ArrayID))
 					If Block <> Null
 						Return Block.contract.id
 					Else

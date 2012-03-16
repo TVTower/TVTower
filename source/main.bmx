@@ -165,12 +165,12 @@ Type TGame
 		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
 		TContract.SaveAll();	  			TError.DrawErrors();Flip 0  'XML
 		TNews.SaveAll();	  				TError.DrawErrors();Flip 0  'XML
-		TContractBlocks.SaveAll();			TError.DrawErrors();Flip 0  'XML
+		TContractBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TProgrammeBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TAdBlock.SaveAll();					TError.DrawErrors();Flip 0  'XML
 		TNewsBlock.SaveAll();				TError.DrawErrors();Flip 0  'XML
 		TMovieAgencyBlocks.SaveAll();		TError.DrawErrors();Flip 0  'XML
-		TArchiveProgrammeBlocks.SaveAll();	TError.DrawErrors();Flip 0  'XML
+		TArchiveProgrammeBlock.SaveAll();	TError.DrawErrors();Flip 0  'XML
 		Building.Elevator.Save();			TError.DrawErrors();Flip 0  'XML
 		'Delay(50)
 		LoadSaveFile.xmlWrite("ENDSAVEGAME", "CHECKSUM")
@@ -228,7 +228,7 @@ Type TGame
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
 						TError.DrawNewError("Lade Werbeverträgeblöcke...")
-					'TContractBlocks.LoadAll()
+					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
 						TError.DrawNewError("Lade Programmblöcke...")
 					'TProgrammeBlock.LoadAll()
@@ -723,7 +723,7 @@ Type TPlayer
 					Player.finances[Game.getWeekday()].SellAds(Adblock.contract.calculatedProfit)
 					AdBlock.RemoveOverheadAdblocks() 'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
 					'Print "should remove contract:"+adblock.contract.title
-					TContractBlocks.RemoveContractFromSuitcase(Adblock.contract)
+					TContractBlock.RemoveContractFromSuitcase(Adblock.contract)
 					Player.ProgrammeCollection.RemoveOriginalContract(Adblock.contract)
 				EndIf
 			EndIf
@@ -1110,9 +1110,9 @@ Function CreateDropZones:Int()
 		DragAndDrop.pos.setXY(57+Assets.GetSprite("gfx_movie0").w*i, 297)
 		DragAndDrop.w = Assets.GetSprite("gfx_movie0").w
 		DragAndDrop.h = Assets.GetSprite("gfx_movie0").h
-		If Not TArchiveProgrammeBlocks.DragAndDropList Then TArchiveProgrammeBlocks.DragAndDropList = CreateList()
-		TArchiveProgrammeBlocks.DragAndDropList.AddLast(DragAndDrop)
-		SortList TArchiveProgrammeBlocks.DragAndDropList
+		If Not TArchiveProgrammeBlock.DragAndDropList Then TArchiveProgrammeBlock.DragAndDropList = CreateList()
+		TArchiveProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
+		SortList TArchiveProgrammeBlock.DragAndDropList
 	Next
 
 	'AdAgency: Contract DND-zones
@@ -1122,9 +1122,9 @@ Function CreateDropZones:Int()
 		DragAndDrop.pos.setXY(550 + Assets.GetSprite("gfx_contracts_base").w * i, 87)
 		DragAndDrop.w = Assets.GetSprite("gfx_contracts_base").w - 1
 		DragAndDrop.h = Assets.GetSprite("gfx_contracts_base").h
-		If Not TContractBlocks.DragAndDropList Then TContractBlocks.DragAndDropList = CreateList()
-		TContractBlocks.DragAndDropList.AddLast(DragAndDrop)
-		SortList TContractBlocks.DragAndDropList
+		If Not TContractBlock.DragAndDropList Then TContractBlock.DragAndDropList = CreateList()
+		TContractBlock.DragAndDropList.AddLast(DragAndDrop)
+		SortList TContractBlock.DragAndDropList
 	Next
 
 	'left newsagency slots
@@ -2135,7 +2135,7 @@ HideMouse()
 SetColor 255,255,255
 
 For Local i:Int = 0 To 9
-	TContractBlocks.Create(TContract.GetRandomContract(), i, 0)
+	TContractBlock.Create(TContract.GetRandomContract(), i, 0)
 	TMovieAgencyBlocks.Create(TProgramme.GetRandomMovie(),i,0)
 	If i > 0 And i < 9 Then TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithMinPrice(200000),i)
 Next

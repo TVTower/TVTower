@@ -124,7 +124,7 @@ Type TgfxProgrammelist extends TPlannerList
 						EndIf
 						MOUSEMANAGER.resetKey(1)
 					Else
-						TArchiveProgrammeBlocks.CreateDragged(movie, Game.playerID)
+						TArchiveProgrammeBlock.CreateDragged(movie, Game.playerID)
 						SetOpen(0)
 					EndIf
 					Exit 'exit for local movie
@@ -612,6 +612,12 @@ Type TBlock
 		Return False
 	End Method
 
+	Function SortDragged:int(o1:object, o2:object)
+		Local s1:TBlock = TBlock(o1)
+		Local s2:TBlock = TBlock(o2)
+		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
+		Return (s1.dragged * 100)-(s2.dragged * 100)
+	End Function
 End Type
 
 
