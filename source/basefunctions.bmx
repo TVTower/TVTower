@@ -353,7 +353,6 @@ Try
 	Local blue:Int = ARGB_Blue(argb)
 	                                                        '250
 	If (red = green) And (red = blue) And(alpha <> 0) And(red < 250) Then Return green
-'	If (red = green) And (red = blue) And(alpha <> 0) And(red <> 0) Then Return green
 	Return 0
 Catch a$
 	Print "abgefangen: "+a$

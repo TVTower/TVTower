@@ -91,7 +91,7 @@ Type TgfxProgrammelist extends TPlannerList
 					gfxtapeseries.Draw(locx, locy)
 				endif
 				font.DrawBlock(movie.title, locx + 13, locy + 5, 139, 16, 0, 0, 0, 0, True)
-				If functions.isin(MouseX(), MouseY(), locx, locy, gfxtape.w, gfxtape.h)
+				If functions.MouseIn( locx, locy, gfxtape.w, gfxtape.h)
 					SetAlpha 0.2;
 					If movie.isMovie
 						DrawRect(locx, locy, gfxtape.w, gfxtape.h)
@@ -112,7 +112,7 @@ Type TgfxProgrammelist extends TPlannerList
 		For Local movie:TProgramme = EachIn Player[Game.playerID].ProgrammeCollection.List 'all programmes of one player
 			If movie.genre = genre
 				locy :+ 19
-				If MOUSEMANAGER.IsHit(1) AND functions.isin(MouseX(), MouseY(), locx, locy, gfxtape.w, gfxtape.h)
+				If MOUSEMANAGER.IsHit(1) AND functions.MouseIn( locx, locy, gfxtape.w, gfxtape.h)
 					Game.cursorstate = 1
 					If createProgrammeblock
 						If movie.isMovie Then
@@ -656,83 +656,73 @@ Type TFader
 End Type
 
 Type TError
-  Field title:String
-  Field message:String
-  Field id:Int
-  Field link:TLink
-  Global List:TList = CreateList()
-  Global LastID:Int=0
+	Field title:String
+	Field message:String
+	Field id:Int
+	Field link:TLink
+	field pos:TPosition
+	Global List:TList = CreateList()
+	Global LastID:Int=0
+	global sprite:TGW_Sprites
 
-  Function Create:TError(title:String, message:String)
-     Local error:TError =  New TError
-     error.title = title
-     error.message = message
-     error.id = LastID
-     LastID :+1
-     error.link = List.AddLast(error)
-     Game.error:+1
-     Return error
-  End Function
+	Function Create:TError(title:String, message:String)
+		Local obj:TError =  New TError
+		obj.title	= title
+		obj.message	= message
+		obj.id		= LastID
+		LastID :+1
+		if obj.sprite = null then obj.sprite = Assets.GetSprite("gfx_errorbox")
+		obj.pos		= TPosition.Create(400-obj.sprite.w/2 +6, 200-obj.sprite.h/2 +6)
+		obj.link	= List.AddLast(obj)
+		Game.error:+1
+		Return obj
+	End Function
 
-  Function CreateNotEnoughMoneyError()
-    TError.Create(getLocale("ERROR_NOT_ENOUGH_MONEY"),getLocale("ERROR_NOT_ENOUGH_MONEY_TEXT"))
-  End Function
+	Function CreateNotEnoughMoneyError()
+		TError.Create(getLocale("ERROR_NOT_ENOUGH_MONEY"),getLocale("ERROR_NOT_ENOUGH_MONEY_TEXT"))
+	End Function
 
-  Function DrawErrors()
-   If Game.error > 0
-    If List = Null
-	  List = CreateList()
-    Else
-  	  Local error:TError
-	  If List.Count()>0 Then error= TError(List.Last())
-      If error <> Null Then error.drawError()
-	EndIf
-   EndIf
-  End Function
+	Function DrawErrors()
+		If Game.error > 0
+			Local error:TError = TError(List.Last())
+			If error <> Null Then error.draw()
+		EndIf
+	End Function
 
-  Function UpdateErrors()
-   If Game.error > 0
-    If List = Null
-	  List = CreateList()
-    Else
-  	  Local error:TError
-	  If List.Count()>0 Then error= TError(List.Last())
-      If error <> Null Then error.UpdateError()
-	EndIf
-   EndIf
-  End Function
+	Function UpdateErrors()
+		If Game.error > 0
+			Local error:TError = TError(List.Last())
+			If error <> Null Then error.Update()
+		EndIf
+	End Function
 
-  Method UpdateError()
-    If Mousemanager.IsHit(1)
-	  If functions.IsIn(MouseX(),MouseY(), 400-Assets.GetSprite("gfx_errorbox").w/2 +6,200-Assets.GetSprite("gfx_errorbox").h/2 +6, Assets.GetSprite("gfx_errorbox").w, Assets.GetSprite("gfx_errorbox").h)
-        link.Remove()
-	    Game.error :-1
-	    MouseManager.resetKey(1)
-      Else
-	    MouseManager.resetKey(1)
-	  EndIf
-	EndIf
-    MouseManager.resetKey(2)
-  End Method
+	Method Update()
+		MouseManager.resetKey(2) 'no right clicking allowed as long as "error notice is active"
+		If Mousemanager.IsHit(1)
+			If functions.MouseIn(pos.x,pos.y, sprite.w, sprite.h)
+				link.Remove()
+				Game.error :-1
+				MouseManager.resetKey(1) 'clicked to remove error
+			EndIf
+		EndIf
+	End Method
 
-  Function DrawNewError(str:String="unknown error")
+	Function DrawNewError(str:String="unknown error")
 		TError(TError.List.Last()).message = str
 		TError.DrawErrors()
 		Flip 0
-  End Function
+	End Function
 
-  Method DrawError()
-    SetAlpha 0.5
-    SetColor 0,0,0
-	DrawRect(20,10,760, 373)
-	SetAlpha 1.0
-	Game.cursorstate = 0
-	SetColor 255,255,255
-    Local x:Int = 400-Assets.GetSprite("gfx_errorbox").w/2 +6
-    Local y:Int = 200-Assets.GetSprite("gfx_errorbox").h/2 +6
-	Assets.GetSprite("gfx_errorbox").Draw(x,y)
-	FontManager.GetFont("Default", 15, BOLDFONT).DrawBlock(title, x + 12 + 6, y + 15, Assets.GetSprite("gfx_errorbox").w - 60, 40, 0, 150, 50, 50)
-	FontManager.GetFont("Default", 12).DrawBlock(message, x+12+6,y+50,Assets.GetSprite("gfx_errorbox").w-40, Assets.GetSprite("gfx_errorbox").h-60,0,50,50,50)
+	Method Draw()
+		SetAlpha 0.5
+		SetColor 0,0,0
+		DrawRect(20,10,760, 373)
+		SetAlpha 1.0
+		Game.cursorstate = 0
+		SetColor 255,255,255
+		sprite.Draw(pos.x,pos.y)
+		FontManager.GetFont("Default", 15, BOLDFONT).DrawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.w - 60, 40, 0, 150, 50, 50)
+		FontManager.GetFont("Default", 12).DrawBlock(message, pos.x+12+6,pos.y+50,sprite.w-40, sprite.h-60,0,50,50,50)
   End Method
 End Type
 
@@ -757,7 +747,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		self._highlighted = 0
-		If functions.IsIn(MouseX(), MouseY(), x, y, w, FontManager.baseFont.getBlockHeight(Self._text, w, h))
+		If functions.MouseIn( x, y, w, FontManager.baseFont.getBlockHeight(Self._text, w, h))
 			self._highlighted = 1
 			If clicked
 				If _func <> Null Then _func(Self._funcparam)
@@ -1143,7 +1133,7 @@ Type TInterface
 		'channel selection (tvscreen on interface)
 		If MOUSEMANAGER.IsHit(1)
 			For Local i:Int = 0 To 4
-				If functions.IsIn(MouseX(), MouseY(), 75 + i * 33, 171 + 383, 33, 41)
+				If functions.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
 					ShowChannel = i
 					BottomImgDirty = True
 				endif
@@ -1275,43 +1265,51 @@ End Type
 
 '----stations
 'Stationmap
-''provides the option to buy new stations
-''functions are calculation of audiencesums and drawing of stations
-
-
+'provides the option to buy new stations
+'functions are calculation of audiencesums and drawing of stations
 
 Type TStation
- Field x:Int
- Field y:Int
- Field reach:Int=0
- Field price:Int
- Field owner:Int = 0
- Field id:Int = 0
- Global _lastID:Int = 0
+	field pos:TPosition
+	Field reach:Int=0
+	Field price:Int
+	Field owner:Int = 0
+	Field id:Int = 0
+	Global lastID:Int = 0
 
 
- Function Create:TStation(x:Int,y:Int, reach:Int, price:Int, owner:Int)
- 	Local _Station:TStation = New TStation
- 	_Station.x = x
- 	_Station.y = y
- 	_Station.reach = reach
- 	_Station.price = price
- 	_Station.owner = owner
-	_Station.id = _Station.GetNewID()
-	Return _Station
- End Function
+	Function Create:TStation(x:Int,y:Int, reach:Int, price:Int, owner:Int)
+		Local obj:TStation = New TStation
+		obj.pos = TPosition.Create(x,y)
+		obj.reach = reach
+		obj.price = price
+		obj.owner = owner
+		obj.id = obj.GetNewID()
+		Return obj
+	End Function
 
 	Method GetNewID:Int()
-	 	Self._lastID:+1
-		Return Self._lastID
+		Self.lastID:+1
+		Return Self.lastID
 	End Method
 
-	Function GetPrice:Int(summe:Int)
+	Method Reset()
+		self.reach = 0
+		self.pos.SetXY(-1,-1)
+		self.owner = -1
+		self.price = 0
+	End Method
+
+	Method getPrice:int()
+		self.price = self.calculatePrice(self.reach)
+		return self.price
+	End Method
+
+	Function calculatePrice:Int(summe:Int)
 		Return Max(15000, Int(Ceil(summe / 10000)) * 25000)
 	End Function
 
-  Function Load:TStation(pnode:xmlNode)
-	Local station:TStation= New TStation
+	Function Load:TStation(pnode:xmlNode)
+		Local station:TStation= New TStation
 		Local NODE:xmlNode = pnode.FirstChild()
 		While NODE <> Null
 			Local nodevalue:String = ""
@@ -1342,53 +1340,53 @@ Type TStation
 		Local radius:Int = StationMap.radius
 		SetAlpha 0.3
 		Select owner
-			Case 1 SetColor 200, 40, 40;antennaNr = "stationmap_antenna1"
-			Case 2 SetColor 40, 200, 40;antennaNr = "stationmap_antenna2"
-			Case 3 SetColor 100, 100, 200;antennaNr = "stationmap_antenna3"
-			Case 4 SetColor 200, 200, 0 ;antennaNr = "stationmap_antenna4"
-			Default SetColor 255, 255, 255;antennaNr = "stationmap_antenna"
+			Case 1,2,3,4	Player[owner].color.MySetColor()
+							antennaNr = "stationmap_antenna"+owner
+			Default			SetColor 255, 255, 255
+							antennaNr = "stationmap_antenna0"
 		End Select
-		DrawOval(x - radius + 20, y - radius + 10, 2 * radius, 2 * radius)
+		DrawOval(pos.x - radius + 20, pos.y - radius + 10, 2 * radius, 2 * radius)
 		SetColor 255,255,255
 		SetAlpha 1.0
-		Assets.GetSprite(antennaNr).Draw(x + 20 - Assets.GetSprite(antennaNr).w / 2, y + 10 + radius - Assets.GetSprite(antennaNr).h - 2)
+		Assets.GetSprite(antennaNr).Draw(pos.x + 20, pos.y + 10 + radius - Assets.GetSprite(antennaNr).h - 2, -1,0,0.5)
 	End Method
 
 
 End Type
 
 Type TStationPoint
-	Field x:Int, y:Int, color:Int
+	field pos:TPosition
+	field color:Int
+
 	Function Create:TStationPoint(x:Int, y:Int, color:Int)
 		Local obj:TStationPoint = New TStationPoint
-		obj.x = x
-		obj.y = y
+		obj.pos = TPosition.Create(x,y)
 		obj.color = color
 		Return obj
 	End Function
 End Type
 
 Type TStationMap
-	Field StationList:TList=CreateList()
-	Field radius:Int = 15 {saveload = "normal"}
-	Field owner:TPlayer {saveload = "extra"}
-	Field einwohner:Int = 0 {saveload = "normal"}
-	Field LastStationX:Int = 0 {saveload = "normal"}
-	Field LastStationY:Int = 0 {saveload = "normal"}
-	Field summe:Int = 0 {saveload = "normal"}
-	Field action:Int = 0 {saveload = "normal"}		'2= station buying (another click on the map buys the station)
-						  							'1= searching a station
-	Field pixmaparray:Int[stationmap_mainpix.width + 20, stationmap_mainpix.height + 20]
+	Field StationList:TList	= CreateList()
+	Field radius:Int		= 15		{saveload = "normal"}
+	Field einwohner:Int		= 0			{saveload = "normal"}
+	Field LastStation:TStation			{saveload = "normal"}
+	Field LastCalculatedAudienceIncrease:int = -1
+	Field action:Int		= 0			{saveload = "normal"}	'2= station buying (another click on the map buys the station)
+																'1= searching a station
+	Field populationmap:Int[stationmap_mainpix.width + 20, stationmap_mainpix.height + 20]
 	Field bundesland:String = "" {saveload = "normal"}	'mouse over state
-	Global List:TList = CreateList()
-	Global LastCalculatedAudienceSum:Int = -10 {saveload = "normal"}
-	Global LastCalculatedAudienceIncrease:Int = 0 {saveload = "normal"}
 	Field outsideLand:Int = 0
 
 	Field sellStation:TStation[5]
 	Field buyStation:TStation[5]
 	Field ShowStations:Int[5]
 	Field StationShare:Int[4, 3]
+
+    field baseStationSprite:TGW_Sprites
+
+	Global List:TList = CreateList()
+
 
 	Function Load:TStationmap(pnode:xmlNode)
 		Local StationMap:TStationMap = New TStationMap
@@ -1403,15 +1401,6 @@ Type TStationMap
 				EndIf
 			Next
 			Select NODE.name
-				Case "OWNERPLAYERID"
-								Local owner:Int = Int(nodevalue)
-								If owner >= 0
-									If Player[owner] <> Null Then
-										StationMap.owner = Player[owner]
-									Else
-										StationMap.owner = Null
-									EndIf
-								EndIf
 				Case "STATION"
 							    Local station:TStation = TStation.Load(NODE)
 		    					If station <> Null Then PrintDebug("TStationmap.load()", "Station zur Stationmap hinzugefuegt", DEBUG_SAVELOAD) ;StationMap.StationList.AddLast(station)
@@ -1435,14 +1424,10 @@ Type TStationMap
 		LoadSaveFile.xmlBeginNode("ALLSTATIONMAPS")
 			For Local StationMap:TStationMap = EachIn TStationMap.List
 				LoadSaveFile.xmlBeginNode("STATIONMAP")
-'					LoadSaveFile.xmlWrite("LASTCALCULATEDAUDIENCESUM", TStationMap.LastCalculatedAudienceSum)
-'					LoadSaveFile.xmlWrite("LASTCALCULATEDAUDIENCEINCREASE", TStationMap.LastCalculatedAudienceIncrease)
 		 			Local typ:TTypeId = TTypeId.ForObject(StationMap)
 					For Local t:TField = EachIn typ.EnumFields()
 						If t.MetaData("saveload") = "normal" Then LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(StationMap)))
 					Next
-					Local OwnerPlayerID:Int = -1;If StationMap.owner <> Null Then OwnerPlayerID = StationMap.owner.playerID
-					LoadSaveFile.xmlWrite("OWNERPLAYERID", OwnerPlayerID)
 					For Local station:TStation = EachIn StationMap.StationList
 						If station <> Null Then station.Save()
 					Next
@@ -1451,47 +1436,48 @@ Type TStationMap
 		LoadSaveFile.xmlCloseNode()
 	End Function
 
-  Function Create:TStationMap()
-	Local _StationMap:TStationMap=New TStationMap
+	Function Create:TStationMap()
+		Local obj:TStationMap=New TStationMap
+		local start:int = Millisecs()
+		local i:int, j:int
 
-	'read all inhabitants of the map
-	DebugLog MilliSecs()
-	For Local i:Int = 0 To stationmap_mainpix.width-1
-	  For Local j:Int = 0 To stationmap_mainpix.height-1
-	    _StationMap.pixmaparray[i, j] = ReadPixel(stationmap_mainpix, i, j)
-		Local r:Int = ARGB_Red(_StationMap.pixmaparray[i, j])
-		Local g:Int = ARGB_Green(_StationMap.pixmaparray[i,j])
-		Local b:Int = ARGB_Blue(_StationMap.pixmaparray[i,j])
-		Local helligkeit:Int = (r+g+b) / 3
-		If helligkeit >= 245 helligkeit = 255
-		helligkeit = 255 - helligkeit
-		If helligkeit > 200 Then helligkeit:*6.5
-		_StationMap.einwohner:+9.5 * (helligkeit)
-	  Next
-	Next
-	DebugLog "StationMap: alle Pixel eingelesen - Einwohner:" + _StationMap.einwohner
-    If not List Then List = CreateList()
- 	List.AddLast(_StationMap)
-    SortList List
-    Return _StationMap
-  End Function
+		'read all inhabitants of the map
+		For i = 0 To stationmap_mainpix.width-1
+			For j = 0 To stationmap_mainpix.height-1
+				obj.populationmap[i, j] = obj.getPopulationForBrightness( ARGB_RED(stationmap_mainpix.ReadPixel(i, j)) )
+				obj.einwohner:+ obj.populationmap[i, j]
+			Next
+		Next
+		Print "StationMap: alle Pixel eingelesen - Einwohner:" + obj.einwohner + " zeit: "+(Millisecs()-start)+"ms"
+
+		obj.baseStationSprite	=  Assets.GetSprite("stationmap_antenna0")
+		obj.LastStation			= TStation.Create(-1,-1, 0, 0, -1)
+
+		List.AddLast(obj)
+		SortList List
+		Return obj
+	End Function
 
 	Method AddStation(x:Int, y:Int, playerid:Int, valuetorefresh:Int Var)
 		Local reach:Int = Self.CalculateAudienceIncrease(playerid, x, y)
-		StationList.AddLast(TStation.Create(x, y, reach, TStation.GetPrice(reach), playerid))
+
+		print "StationMap: added station to "+playerID+" reach:"+reach
+		StationList.AddLast(TStation.Create(x, y, reach, TStation.calculatePrice(reach), playerid))
 		valuetorefresh = CalculateAudienceSum(playerid)
 	End Method
 
     Method Buy(x:Float, y:Float, playerid:Int = 1)
-		If Player[playerid].finances[Game.getWeekday()].PayStation(TStation.GetPrice(summe))
-			Local station:TStation = TStation.Create(LastStationX, LastStationY, summe, TStation.GetPrice(summe), playerid)
+		If Player[playerid].finances[Game.getWeekday()].PayStation(self.LastStation.getPrice() )
+			Local station:TStation = TStation.Create(LastStation.pos.x,LastStation.pos.y, self.LastStation.reach, self.LastStation.getPrice(), playerid)
 			StationList.AddLast(station)
 			Print "Player" + playerid + " kauft Station für " + station.price + " Euro (" + station.reach + " Einwohner)"
-			Player[playerid].maxaudience = CalculateAudienceSum(Game.playerID) 'auf entsprechenden Player umstellen
+			Player[playerid].maxaudience = CalculateAudienceSum(playerid)
+			'events ...
 			'network
 			if game.networkgame Then if Network.IsConnected Then Network.SendStationChange(game.playerid, station, Player[game.playerID].maxaudience,1)
-			summe = 0
+			self.LastStation.Reset()
 			Self.buyStation[playerid] = Null
+			print "bought"
 		EndIf
     End Method
 
@@ -1499,11 +1485,12 @@ Type TStationMap
 	Method Sell(station:TStation)
 		If Player[station.owner].finances[Game.getWeekday()].SellStation(Floor(station.price * 0.75))
 			StationList.Remove(station)
-	        Print "Player" + station.owner + " verkauft Station für " + TStation.GetPrice(Floor(station.price * 0.75)) + " Euro (" + station.reach + " Einwohner)"
+	        Print "Player" + station.owner + " verkauft Station für " + (station.price * 0.75) + " Euro (" + station.reach + " Einwohner)"
 			Player[station.owner].maxaudience = CalculateAudienceSum(station.owner) 'auf entsprechenden Player umstellen
+			'events ...
 			'network
 			If Game.networkgame Then If Network.IsConnected Then Network.SendStationChange(station.owner, station, Player[station.owner].maxaudience, 0)
-			summe = 0
+			LastStation.reset()
 			'when station is sold, audience will decrease, atm buy =/= increase ;D
 			Player[station.owner].ComputeAudience(1)
 		EndIf
@@ -1523,99 +1510,95 @@ Type TStationMap
 		If action = 4 'sell finished?
 			If Self.sellStation[Game.playerID] <> Null Then Self.Sell(Self.sellStation[Game.playerID])
 			action = 0
-		End If
+		EndIf
+
 		'buying stations
-		If action = 1 'searching
-			Local newsumme:Int = 0
-			Local posX:Int, posY:Int
+		'1. searching
+		If action = 1
+			Local pos:TPosition = TPosition.Create(0,0)
 			If MOUSEMANAGER.MousePosChanged
-				posX = MouseX()
-				posY = MouseY()
-				newsumme = Self.CalculateStationRange(posX, posY, radius, 20, 10, PixmapWidth(stationmap_mainpix), PixmapHeight(stationmap_mainpix))
+				pos.setXY( MouseX() -20, MouseY() -10)
+
+				lastStation.reach = Self.CalculateStationRange(pos.X, pos.Y)
+				If lastStation.reach > 0
+					Self.outsideLand = False 'no antennagraphic in foreign countries
+					LastCalculatedAudienceIncrease = CalculateAudienceIncrease(Game.playerid, pos.X, pos.Y)
+				else
+					pos.setXY( LastStation.pos.X + 20, LastStation.pos.Y + 10)
+					Self.outsideLand = True
+					LastStation.reach = Self.CalculateStationRange(pos.X, pos.Y)
+				EndIf
 			Else
-				posX = LastStationX + 20
-				posY = LastStationY + 10
+				pos.setXY( LastStation.pos.X + 20, LastStation.pos.Y + 10)
 			EndIf
-			If newsumme > 0
-				Self.outsideLand = False 'no antennagraphic in foreign countries
-				summe = newsumme
-				LastCalculatedAudienceIncrease = CalculateAudienceIncrease(Game.playerid, posX - 20, posY - 10)
-			EndIf
-			If summe = 0
-				posX = LastStationX + 20
-				posY = LastStationY + 10
-				Self.outsideLand = True
-				summe = Self.CalculateStationRange(posX, posY, radius, 20, 10, PixmapWidth(stationmap_mainpix), PixmapHeight(stationmap_mainpix))
-'				LastCalculatedAudienceIncrease = CalculateAudienceIncrease(Game.playerid, posX - 20, posY - 10)
-			End If
-		End If
-		If action = 2 And LastStationX <> 0 And LastStationX <> 0
-			If MOUSEMANAGER.MousePosChanged Then summe = Self.CalculateStationRange(LastStationX + 20, LastStationY + 10, radius, 20, 10, PixmapWidth(stationmap_mainpix), PixmapHeight(stationmap_mainpix))
-			Buy(LastStationX, LastStationY, Game.playerID)
-			LastStationX = 0
-			LastStationY = 0
+		endif
+		'2. actually buy it
+		If action = 2 And LastStation.pos.X <> 0 And LastStation.pos.y <> 0
+			If MOUSEMANAGER.MousePosChanged Then LastStation.reach = Self.CalculateStationRange(LastStation.pos.X + 20, LastStation.pos.Y + 10)
+			Buy(LastStation.pos.X, LastStation.pos.Y, Game.playerID)
+			LastStation.Reset()
 			action = 0
 		EndIf
 
-	ResetCollisions(3)
-	If functions.IsIn(MouseX(), MouseY(), 207, 91, Assets.GetSprite("gfx_officepack_topo_bremen").w, Assets.GetSprite("gfx_officepack_topo_bremen").h)
-		CollideImage(stationmap_land_bremen, 207, 91, 0, 0, 1, stationmap_land_bremen)
-	Else If functions.IsIn(MouseX(), MouseY(), 452, 118, Assets.GetSprite("gfx_officepack_topo_berlin").w, Assets.GetSprite("gfx_officepack_topo_berlin").h)
-		CollideImage(stationmap_land_berlin, 452, 118, 0, 0, 1, stationmap_land_berlin)
-	Else If functions.IsIn(MouseX(), MouseY(), 270, 69, Assets.GetSprite("gfx_officepack_topo_hamburg").w, Assets.GetSprite("gfx_officepack_topo_hamburg").h)
-		CollideImage(stationmap_land_hamburg, 270, 69, 0, 0, 1, stationmap_land_hamburg)
-	Else If functions.IsIn(MouseX(), MouseY(), 129, 258, Assets.GetSprite("gfx_officepack_topo_bawue").w, Assets.GetSprite("gfx_officepack_topo_bawue").h)
-		CollideImage(stationmap_land_bawue, 129, 258, 0, 0, 1, stationmap_land_bawue)
-	Else If functions.IsIn(MouseX(), MouseY(), 223, 221, Assets.GetSprite("gfx_officepack_topo_bayern").w, Assets.GetSprite("gfx_officepack_topo_bayern").h)
-		CollideImage(stationmap_land_bayern, 223, 221, 0, 0, 1, stationmap_land_bayern)
-	Else If functions.IsIn(MouseX(), MouseY(), 69, 263, Assets.GetSprite("gfx_officepack_topo_saarland").w, Assets.GetSprite("gfx_officepack_topo_saarland").h)
-		CollideImage(stationmap_land_saarland, 69, 263, 0, 0, 1, stationmap_land_saarland)
-	Else If functions.IsIn(MouseX(), MouseY(), 59, 203, Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz").w, Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz").h)
-		CollideImage(stationmap_land_rheinlandpfalz, 59, 203, 0, 0, 1, stationmap_land_rheinlandpfalz)
-	Else If functions.IsIn(MouseX(), MouseY(), 155, 169, Assets.GetSprite("gfx_officepack_topo_hessen").w, Assets.GetSprite("gfx_officepack_topo_hessen").h)
-		CollideImage(stationmap_land_hessen, 155, 169, 0, 0, 1, stationmap_land_hessen)
-	Else If functions.IsIn(MouseX(), MouseY(), 276, 169, Assets.GetSprite("gfx_officepack_topo_thueringen").w, Assets.GetSprite("gfx_officepack_topo_thueringen").h)
-		CollideImage(stationmap_land_thueringen, 276, 169, 0, 0, 1, stationmap_land_thueringen)
-	Else If functions.IsIn(MouseX(), MouseY(), 388, 167, Assets.GetSprite("gfx_officepack_topo_sachsen").w, Assets.GetSprite("gfx_officepack_topo_sachsen").h)
-		CollideImage(stationmap_land_sachsen, 388, 167, 0, 0, 1, stationmap_land_sachsen)
-	Else If functions.IsIn(MouseX(), MouseY(), 314, 103, Assets.GetSprite("gfx_officepack_topo_sachsenanhalt").w, Assets.GetSprite("gfx_officepack_topo_sachsenanhalt").h)
-		CollideImage(stationmap_land_sachsenanhalt, 314, 103, 0, 0, 1, stationmap_land_sachsenanhalt)
-	Else If functions.IsIn(MouseX(), MouseY(), 104, 61, Assets.GetSprite("gfx_officepack_topo_niedersachsen").w, Assets.GetSprite("gfx_officepack_topo_niedersachsen").h)
-		CollideImage(stationmap_land_niedersachsen, 104, 61, 0, 0, 1, stationmap_land_niedersachsen)
-	Else If functions.IsIn(MouseX(), MouseY(), 213, 12, Assets.GetSprite("gfx_officepack_topo_schleswigholstein").w, Assets.GetSprite("gfx_officepack_topo_schleswigholstein").h)
-		CollideImage(stationmap_land_schleswigholstein, 213, 12, 0, 0, 1, stationmap_land_schleswigholstein)
-	Else If functions.IsIn(MouseX(), MouseY(), 359, 78, Assets.GetSprite("gfx_officepack_topo_brandenburg").w, Assets.GetSprite("gfx_officepack_topo_brandenburg").h)
-		CollideImage(stationmap_land_brandenburg, 359, 78, 0, 0, 1, stationmap_land_brandenburg)
-	Else If functions.IsIn(MouseX(), MouseY(), 55, 127, Assets.GetSprite("gfx_officepack_topo_nrw").w, Assets.GetSprite("gfx_officepack_topo_nrw").h)
-		CollideImage(stationmap_land_nrw, 55, 127, 0, 0, 1, stationmap_land_nrw)
-	Else If functions.IsIn(MouseX(), MouseY(), 318, 21, Assets.GetSprite("gfx_officepack_topo_meckpom").w, Assets.GetSprite("gfx_officepack_topo_meckpom").h)
-		CollideImage(stationmap_land_meckpom, 318, 21, 0, 0, 1, stationmap_land_meckpom)
-	EndIf
-    If action = 1 'placing a new station
-      Local Collision_Layer:Int=1
-	  Local p:Object[]=CollideImage(gfx_collisionpixel,MouseX(),MouseY(),0,Collision_Layer,0)
-	  Bundesland = ""
-  	  For Local i:TImage=EachIn p
-	    Select i
-	    Case stationmap_land_bremen				bundesland="Bremen"
-	    Case stationmap_land_berlin		  		bundesland="Berlin"
-	    Case stationmap_land_hamburg			bundesland="Hamburg"
-	    Case stationmap_land_bawue				bundesland="Baden-Wuerttemberg"
-	    Case stationmap_land_bayern				bundesland="Bayern"
-	    Case stationmap_land_saarland			bundesland="Saarland"
-	    Case stationmap_land_rheinlandpfalz		bundesland="Rheinland-Pfalz"
-	    Case stationmap_land_hessen				bundesland="Hessen"
-	    Case stationmap_land_thueringen			bundesland="Thueringen"
-	    Case stationmap_land_sachsen			bundesland="Sachsen"
-	    Case stationmap_land_sachsenanhalt		bundesland="Sachsen-Anhalt"
-	    Case stationmap_land_niedersachsen		bundesland="Niedersachsen"
-	    Case stationmap_land_schleswigholstein	bundesland="Schleswig-Holstein"
-	    Case stationmap_land_brandenburg bundesland = "Brandenburg"
-	    Case stationmap_land_nrw				bundesland="Nordrheinwestfahlen"
-	    Case stationmap_land_meckpom			bundesland="Mecklenburg Vorpommern"
-	    End Select
-	  Next
-	EndIf
+		ResetCollisions(3)
+		If functions.MouseIn(207, 91, Assets.GetSprite("gfx_officepack_topo_bremen").w, Assets.GetSprite("gfx_officepack_topo_bremen").h)
+			CollideImage(stationmap_land_bremen, 207, 91, 0, 0, 1, stationmap_land_bremen)
+		Else If functions.MouseIn( 452, 118, Assets.GetSprite("gfx_officepack_topo_berlin").w, Assets.GetSprite("gfx_officepack_topo_berlin").h)
+			CollideImage(stationmap_land_berlin, 452, 118, 0, 0, 1, stationmap_land_berlin)
+		Else If functions.MouseIn( 270, 69, Assets.GetSprite("gfx_officepack_topo_hamburg").w, Assets.GetSprite("gfx_officepack_topo_hamburg").h)
+			CollideImage(stationmap_land_hamburg, 270, 69, 0, 0, 1, stationmap_land_hamburg)
+		Else If functions.MouseIn( 129, 258, Assets.GetSprite("gfx_officepack_topo_bawue").w, Assets.GetSprite("gfx_officepack_topo_bawue").h)
+			CollideImage(stationmap_land_bawue, 129, 258, 0, 0, 1, stationmap_land_bawue)
+		Else If functions.MouseIn( 223, 221, Assets.GetSprite("gfx_officepack_topo_bayern").w, Assets.GetSprite("gfx_officepack_topo_bayern").h)
+			CollideImage(stationmap_land_bayern, 223, 221, 0, 0, 1, stationmap_land_bayern)
+		Else If functions.MouseIn( 69, 263, Assets.GetSprite("gfx_officepack_topo_saarland").w, Assets.GetSprite("gfx_officepack_topo_saarland").h)
+			CollideImage(stationmap_land_saarland, 69, 263, 0, 0, 1, stationmap_land_saarland)
+		Else If functions.MouseIn( 59, 203, Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz").w, Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz").h)
+			CollideImage(stationmap_land_rheinlandpfalz, 59, 203, 0, 0, 1, stationmap_land_rheinlandpfalz)
+		Else If functions.MouseIn( 155, 169, Assets.GetSprite("gfx_officepack_topo_hessen").w, Assets.GetSprite("gfx_officepack_topo_hessen").h)
+			CollideImage(stationmap_land_hessen, 155, 169, 0, 0, 1, stationmap_land_hessen)
+		Else If functions.MouseIn( 276, 169, Assets.GetSprite("gfx_officepack_topo_thueringen").w, Assets.GetSprite("gfx_officepack_topo_thueringen").h)
+			CollideImage(stationmap_land_thueringen, 276, 169, 0, 0, 1, stationmap_land_thueringen)
+		Else If functions.MouseIn( 388, 167, Assets.GetSprite("gfx_officepack_topo_sachsen").w, Assets.GetSprite("gfx_officepack_topo_sachsen").h)
+			CollideImage(stationmap_land_sachsen, 388, 167, 0, 0, 1, stationmap_land_sachsen)
+		Else If functions.MouseIn( 314, 103, Assets.GetSprite("gfx_officepack_topo_sachsenanhalt").w, Assets.GetSprite("gfx_officepack_topo_sachsenanhalt").h)
+			CollideImage(stationmap_land_sachsenanhalt, 314, 103, 0, 0, 1, stationmap_land_sachsenanhalt)
+		Else If functions.MouseIn( 104, 61, Assets.GetSprite("gfx_officepack_topo_niedersachsen").w, Assets.GetSprite("gfx_officepack_topo_niedersachsen").h)
+			CollideImage(stationmap_land_niedersachsen, 104, 61, 0, 0, 1, stationmap_land_niedersachsen)
+		Else If functions.MouseIn( 213, 12, Assets.GetSprite("gfx_officepack_topo_schleswigholstein").w, Assets.GetSprite("gfx_officepack_topo_schleswigholstein").h)
+			CollideImage(stationmap_land_schleswigholstein, 213, 12, 0, 0, 1, stationmap_land_schleswigholstein)
+		Else If functions.MouseIn( 359, 78, Assets.GetSprite("gfx_officepack_topo_brandenburg").w, Assets.GetSprite("gfx_officepack_topo_brandenburg").h)
+			CollideImage(stationmap_land_brandenburg, 359, 78, 0, 0, 1, stationmap_land_brandenburg)
+		Else If functions.MouseIn( 55, 127, Assets.GetSprite("gfx_officepack_topo_nrw").w, Assets.GetSprite("gfx_officepack_topo_nrw").h)
+			CollideImage(stationmap_land_nrw, 55, 127, 0, 0, 1, stationmap_land_nrw)
+		Else If functions.MouseIn( 318, 21, Assets.GetSprite("gfx_officepack_topo_meckpom").w, Assets.GetSprite("gfx_officepack_topo_meckpom").h)
+			CollideImage(stationmap_land_meckpom, 318, 21, 0, 0, 1, stationmap_land_meckpom)
+		EndIf
+		If action = 1 'placing a new station
+		  Local Collision_Layer:Int=1
+		  Local p:Object[]=CollideRect(MouseX(),MouseY(),1,1,Collision_Layer,0)
+		  Bundesland = "Unbekannt"
+		  For Local i:TImage=EachIn p
+			Select i
+				Case stationmap_land_bremen				bundesland="Bremen"
+				Case stationmap_land_berlin		  		bundesland="Berlin"
+				Case stationmap_land_hamburg			bundesland="Hamburg"
+				Case stationmap_land_bawue				bundesland="Baden-Wuerttemberg"
+				Case stationmap_land_bayern				bundesland="Bayern"
+				Case stationmap_land_saarland			bundesland="Saarland"
+				Case stationmap_land_rheinlandpfalz		bundesland="Rheinland-Pfalz"
+				Case stationmap_land_hessen				bundesland="Hessen"
+				Case stationmap_land_thueringen			bundesland="Thueringen"
+				Case stationmap_land_sachsen			bundesland="Sachsen"
+				Case stationmap_land_sachsenanhalt		bundesland="Sachsen-Anhalt"
+				Case stationmap_land_niedersachsen		bundesland="Niedersachsen"
+				Case stationmap_land_schleswigholstein	bundesland="Schleswig-Holstein"
+				Case stationmap_land_brandenburg		bundesland = "Brandenburg"
+				Case stationmap_land_nrw				bundesland="Nordrheinwestfahlen"
+				Case stationmap_land_meckpom			bundesland="Mecklenburg Vorpommern"
+			EndSelect
+		  Next
+		EndIf
 
   End Method
 
@@ -1623,55 +1606,69 @@ Type TStationMap
 		For Local _Station:TStation = EachIn StationList
 			If Self.ShowStations[_Station.owner] Then _Station.Draw()
 		Next
-		If LastStationX <> 0 and LastStationY <> 0
-			SetAlpha 0.3
+		If LastStation.pos.X <> 0 and LastStation.pos.Y <> 0
+			SetAlpha 0.2
 			SetColor 0,0,0 'replace with a playercolor
-			DrawOval(  LastStationX+20- radius +1, LastStationY+10-radius,2*radius,2*radius +1)
+			DrawOval(  LastStation.pos.X+20- radius +1, LastStation.pos.Y+10-radius,2*radius,2*radius +1)
 			SetAlpha 0.5
 			SetColor 255,255,255 'replace with a playercolor
-			DrawOval(  LastStationX+20- radius, LastStationY+10-radius,2*radius,2*radius )
+			DrawOval(  LastStation.pos.X+20- radius, LastStation.pos.Y+10-radius,2*radius,2*radius )
 			SetAlpha 0.9
-			DrawImage(Assets.GetImage("stationmap_antenna"), LastStationX+20-radius+ (2*radius - ImageWidth(Assets.GetImage("stationmap_antenna")))/2,LastStationY+10+radius-ImageHeight(Assets.GetImage("stationmap_antenna"))-2)
+			baseStationSprite.draw(LastStation.pos.X+20,LastStation.pos.Y+10+radius-baseStationSprite.h-2, -1,0,0.5)
 			SetAlpha 1.0
 		EndIf
 	End Method
 
-  Method Draw()
-	SetColor 255,255,255
-	DrawStations()
-    If action = 1 And Not Self.outsideLand 'placing a new station
-  	  SetAlpha 0.5
-	  DrawOval( MouseX()- radius,MouseY()-radius,2*radius,2*radius )
-	  DrawImage( gfx_collisionpixel,MouseX(),MouseY())
-      SetAlpha 0.9
-	  DrawImage(Assets.GetImage("stationmap_antenna"),(2*radius - ImageWidth(Assets.GetImage("stationmap_antenna")))/2 + MouseX()-radius,MouseY()+radius-ImageHeight(Assets.GetImage("stationmap_antenna"))-2)
-	  SetAlpha 1.0
-    EndIf
+	Method Draw()
+		SetColor 255,255,255
+		DrawStations()
+		If action = 1 And Not Self.outsideLand 'placing a new station
+			SetAlpha 0.5
+			DrawOval( MouseX()- radius,MouseY()-radius,2*radius,2*radius )
+			SetAlpha 0.9
+			baseStationSprite.draw(MouseX(), MouseY() +radius -baseStationSprite.h-2, -1,0,0.5)
+			SetAlpha 1.0
+		EndIf
+		local font:TBitmapFont = FontManager.baseFont
+		If action = 1
+			SetColor(0, 0, 0)
+			font.Draw(bundesland, 595, 35)
+			font.Draw("Reichweite: ", 595, 52)
+				font.DrawBlock(functions.convertValue(String(self.LastStation.reach), 2, 0), 660, 52, 102, 20, 0.5)
+			font.Draw("Zuwachs: ", 595, 69)
+				font.DrawBlock(functions.convertValue(String(LastCalculatedAudienceIncrease), 2, 0), 660, 69, 102, 20, 2)
+			font.Draw("Preis: ", 595, 86)
+				FontManager.baseFontBold.DrawBlock(functions.convertValue(self.LastStation.GetPrice(), 2, 0), 660, 86, 102, 20, 2)
+			SetColor(180, 180, 255)
+			font.Draw(bundesland, 594, 34)
+			SetColor(255,255,255)
+		EndIf
 
-    If action = 1 Then
-  	  SetColor(0, 0, 0)
-  	  FontManager.baseFont.Draw(bundesland, 595, 35)
-  	  FontManager.baseFont.Draw("Reichweite: ", 595, 52) ;FontManager.baseFont.DrawBlock(functions.convertValue(String(summe), 2, 0), 660, 52, 102, 20, 2)
-  	  FontManager.baseFont.Draw("Zuwachs: ", 595, 69) ;FontManager.baseFont.DrawBlock(functions.convertValue(String(LastCalculatedAudienceIncrease - LastCalculatedAudienceSum), 2, 0), 660, 69, 102, 20, 2)
-  	  FontManager.baseFont.Draw("Preis: ", 595, 86) ; FontManager.GetFont("Default", 11, BOLDFONT).DrawBlock(functions.convertValue(TStation.GetPrice(summe), 2, 0), 660, 86, 102, 20, 2)
-  	  SetColor(180, 180, 255)
-	  FontManager.baseFont.Draw(bundesland, 594, 34)
- 	  SetColor(255,255,255)
- 	EndIf
-
-	If Self.sellStation[Game.playerID] <> Null
-		SetColor(0, 0, 0)
-		FontManager.baseFont.Draw("Reichweite: ", 595, 197) ;FontManager.baseFont.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2)
-		FontManager.baseFont.Draw("Preis: ", 595, 214) ; FontManager.GetFont("Default", 11, BOLDFONT).DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
-		SetColor(255, 255, 255)
-	EndIf
+		If Self.sellStation[Game.playerID] <> Null
+			SetColor(0, 0, 0)
+			font.Draw("Reichweite: ", 595, 197)
+				font.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2)
+			font.Draw("Preis: ", 595, 214)
+				FontManager.baseFontBold.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
+			SetColor(255, 255, 255)
+		EndIf
   End Method
 
 	'summary: returns calculated distance between 2 points
-	Method calculateDistance:Double(x1:Int, y1:Int, x2:Int, y2:Int)
-	  	Local DiffX:Float = Abs(x1 - x2)
-	  	Local DiffY:Float = Abs(y1 - y2)
-		Return Sqr((DiffX * DiffX) + (DiffY * DiffY))
+	Method calculateDistance:Double(x1:Int, x2:Int)
+		Return Sqr((x1*x1) + (x2*x2))
+	End Method
+
+	Method getPopulationForBrightness:int(value:int)
+		value = Max(5, 255-value)
+		value = (value*value)/255 '2 times so low values are getting much lower
+		value = (value*value)/255
+
+		If value > 110 Then value :* 2.0
+		If value > 140 Then value :* 1.9
+		If value > 180 Then value :* 1.3
+		If value > 220 Then value :* 1.1	'population in big cities
+		return 26.0 * value					'population in general
 	End Method
 
 	Method CalculateShareNOTFINISHED:Int(playerA:Int, playerB:Int)
@@ -1684,19 +1681,19 @@ Type TStationMap
 		'add Stations of both players to their corresponding map
 		For Local _Station:TStation = EachIn StationList
 			If _Station.owner = playerA Or _Station.owner = playerB
-				For posX = _Station.x - radius To _Station.x + radius
-					For posY = _Station.y - radius To _Station.y + radius
+				For posX = _Station.pos.x - radius To _Station.pos.x + radius
+					For posY = _Station.pos.y - radius To _Station.pos.y + radius
 						' noch innerhalb des Kreises?
-						If Sqr((posX - _Station.x) ^ 2 + (posY - _Station.y) ^ 2) <= radius
+						If Sqr((posX - _Station.pos.x) ^ 2 + (posY - _Station.pos.y) ^ 2) <= radius
 							If _Station.owner = playerA
 								pointsA.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 255, 255, 255)))
 							Else
 								pointsB.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 255, 255, 255)))
 							EndIf
-						End If
+						EndIf
 					Next
 				Next
-			End If
+			EndIf
 		Next
 		'combine both maps
 		For Local point:String = EachIn pointsA.Keys()
@@ -1710,24 +1707,34 @@ Type TStationMap
 		Local r:Int
 		Local g:Int
 		Local b:Int
-		Local helligkeit:Int
+
+		'einmal "blaue farbe" einmal "rote" farbe nutzen
 
 		For Local point:TStationPoint = EachIn points.Values()
 			If ARGB_Red(point.color) = 0 And ARGB_Blue(point.color) = 255
-				pixel = pixmaparray[point.x, point.y]
-				r = ARGB_Red(pixel)
-				g = ARGB_Green(pixel)
-				b = ARGB_Blue(pixel)
-
-				helligkeit = (r + g + b) / 3
-				If helligkeit >= 245 Then helligkeit = 255
-				helligkeit = 255 - helligkeit
-				If helligkeit > 200 Then helligkeit = helligkeit * 6.5
-				returnvalue:+9.5 * (helligkeit)
+				returnvalue:+ populationmap[point.pos.x, point.pos.y]
 			EndIf
 		Next
-	'	Print (MilliSecs() - start) + "ms"
 		Return returnvalue
+	End Method
+
+	Method _FillPoints(map:TMap var, x:int, y:int, color:int)
+		local posX:int=0
+		local posY:int=0
+		x = Max(0,x)
+		y = Max(0,y)
+'print "given: x"+x+" y"+y
+'print "for posX = "+Max(x - radius,radius)+" To "+Min(x + radius, stationmap_mainpix.width-radius)
+'print "	For posY = "+Max(y - radius,radius)+" To "+Min(y + radius, stationmap_mainpix.height-radius)
+		' innerhalb des Bildes?
+		For posX = Max(x - radius,radius) To Min(x + radius, stationmap_mainpix.width-radius)
+			For posY = Max(y - radius,radius) To Min(y + radius, stationmap_mainpix.height-radius)
+				' noch innerhalb des Kreises?
+				If self.calculateDistance( posX - x, posY - y ) <= radius
+					map.Insert(String((posX) + "," + (posY)), TStationPoint.Create((posX) , (posY), color ))
+				EndIf
+			Next
+		Next
 	End Method
 
 	Method CalculateAudienceIncrease:Int(owner:Int = 0, _x:Int, _y:Int)
@@ -1738,59 +1745,23 @@ Type TStationMap
 
 		'add "new" station which may be bought
 		If _x = 0 And _y = 0 Then _x = MouseX() - 20; _y = MouseY() - 10
-	    For posX =  _x - radius To _x + radius
-			For posY = _y - radius To _y + radius
-				' noch innerhalb des Bildes?
-				If posX >= x And posX < x + stationmap_mainpix.width And posY >= y And posY < y + stationmap_mainpix.height Then
-					' noch innerhalb des Kreises?
-					If Sqr((posX - _x) ^ 2 + (posY - _y) ^ 2) <= radius
-						points.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 0, 255, 255)))
-					End If
-				End If
-			Next
-		Next
+		self._FillPoints(Points, _x,_y, ARGB_Color(255, 0, 255, 255))
 
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
 		For Local _Station:TStation = EachIn StationList
 			If _Station.owner = owner
-				If _x > _station.x - 2 * radius And _x < _station.x + 2 * radius And _y > _station.y - 2 * radius And _y < _station.y + 2 * radius
-					For posX = _Station.x - radius To _Station.x + radius
-						For posY = _Station.y - radius To _Station.y + radius
-							' noch innerhalb des Bildes?
-							If posX >= x And posX < x + stationmap_mainpix.width And posY >= y And posY < y + stationmap_mainpix.height Then
-								' noch innerhalb des Kreises?
-								If Sqr((posX - _Station.x) ^ 2 + (posY - _Station.y) ^ 2) <= radius
-									points.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 255, 255, 255)))
-								End If
-							End If
-						Next
-					Next
+				If functions.IsIn(_x,_y, _station.pos.x - 2*radius, _station.pos.y - 2 * radius, 4*radius, 4*radius)
+					self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
 				EndIf
-			End If
+			EndIf
 		Next
-
-		Local pixel:Int
-		Local r:Int
-		Local g:Int
-		Local b:Int
-		Local helligkeit:Int
 
 		For Local point:TStationPoint = EachIn points.Values()
 			If ARGB_Red(point.color) = 0 And ARGB_Blue(point.color) = 255
-				pixel = pixmaparray[point.x, point.y]
-				r = ARGB_Red(pixel)
-				g = ARGB_Green(pixel)
-				b = ARGB_Blue(pixel)
-
-				helligkeit = (r + g + b) / 3
-				If helligkeit >= 245 Then helligkeit = 255
-				helligkeit = 255 - helligkeit
-				If helligkeit > 200 Then helligkeit = helligkeit * 6.5
-				returnvalue:+9.5 * (helligkeit)
+				returnvalue:+ populationmap[point.pos.x, point.pos.y]
 			EndIf
 		Next
-	'	Print (MilliSecs() - start) + "ms"
 		Return returnvalue
 	End Method
 
@@ -1801,71 +1772,31 @@ Type TStationMap
         Local x:Int = 0, y:Int = 0, posX:Int = 0, posY:Int = 0
 		For Local _Station:TStation = EachIn StationList
 			If _Station.owner = owner
-				For posX = _Station.x - radius To _Station.x + radius
-					For posY = _Station.y - radius To _Station.y + radius
-						' noch innerhalb des Bildes?
-						If posX >= x And posX < x + stationmap_mainpix.width And posY >= y And posY < y + stationmap_mainpix.height
-							'noch innerhalb des Kreises?
-					  		If Sqr((posX - _Station.x) ^ 2 + (posY - _Station.y) ^ 2) <= radius
-								points.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 255, 255, 255)))
-							End If
-						End If
-					Next
-				Next
-			End If
+				self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
+			EndIf
 		Next
-		Local pixel:Int
-		Local r:Int
-		Local g:Int
-		Local b:Int
-		Local helligkeit:Int
 		Local returnvalue:Int = 0
 
 		For Local point:TStationPoint = EachIn points.Values()
 			If ARGB_Red(point.color) = 255 And ARGB_Blue(point.color) = 255
-				pixel = pixmaparray[point.x, point.y]
-				r = ARGB_Red(pixel)
-				g = ARGB_Green(pixel)
-				b = ARGB_Blue(pixel)
-
-				helligkeit = (r + g + b) / 3
-				If helligkeit >= 245 Then helligkeit = 255
-				helligkeit = 255 - helligkeit
-				If helligkeit > 200 Then helligkeit = helligkeit * 6.5
-				returnvalue:+9.5 * (helligkeit)
+				returnvalue:+ populationmap[point.pos.x, point.pos.y]
 			EndIf
 		Next
-	'	Print (MilliSecs() - start) + "ms für CalculateAudienceSum"
 		Return returnvalue
 	End Method
 
 	'summary: returns a stations maximum audience reach
-	Method CalculateStationRange:Int(mausX:Int, mausY:Int, radius:Int, x:Int, y:Int, width:Int, height:Int)
-		Local r:Int, g:Int, b:Int
-		Local helligkeit:Int
+	Method CalculateStationRange:Int(x:Int, y:Int)
 		Local posX:Int, posY:Int
-		Local pixel:Int
 		Local returnValue:Int = 0
 		' für die aktuelle Koordinate die summe berechnen
-		For posX = mausX - radius To mausX + radius
-			For posY = mausY - radius To mausY + radius
-			' noch innerhalb des Bildes?
-				If posX >= x and posX < width and posY >= y and posY < Height
-					' noch innerhalb des Kreises?
-					If Sqr((posX - mausX) ^ 2 + (posY - mausY) ^ 2) <= radius
-						If posX < width and posY < Height
-						    pixel = StationMap.pixmaparray[posX - x, posY - y]
-						    r = ARGB_Red(pixel)
-						    g = ARGB_Green(pixel)
-						    b = ARGB_Blue(pixel)
-						    helligkeit = (r+g+b) / 3
-						    If helligkeit >= 245 Then helligkeit = 255
-						    helligkeit = 255 - helligkeit
-						    If helligkeit > 200 Then helligkeit:*6.5
-						    returnValue:+9.5 * (helligkeit)
-						EndIf
-					End If
-				End If
+		' min/max = immer innerhalb des Bildes
+		For posX = Max(x - radius,radius) To Min(x + radius, stationmap_mainpix.width-radius)
+			For posY = Max(y - radius,radius) To Min(y + radius, stationmap_mainpix.height-radius)
+				' noch innerhalb des Kreises?
+				If self.calculateDistance( posX - x, posY - y ) <= radius
+					returnvalue:+ populationmap[posX, posY]
+				EndIf
 			Next
 		Next
 		Return returnValue

@@ -81,7 +81,7 @@ Function LoadTrueTypeFont:TImageFont( url:Object,size:int,style:int )
 	Local font:TImageFont=New TImageFont
 	font._src_font=src
 	font._glyphs=New TImageGlyph[src.CountGlyphs()]
-	If style & SMOOTHFONT font._imageFlags=FILTEREDIMAGE|MIPMAPPEDIMAGE
+	If style & SMOOTHFONT then font._imageFlags=FILTEREDIMAGE|MIPMAPPEDIMAGE
 
 	Return font
 End Function
@@ -315,7 +315,7 @@ Type TBitmapFont
 				'print "adding "+charKey + " = "+chr(int(charKey))
 				local charPix:TPixmap = LockImage(TBitmapFontChar(obj.chars.ValueForKey(charKey)).img)
 				If charPix.format <> 2 Then charPix.convert(PF_A8) 'make sure the pixmaps are 8bit alpha-format
-				DrawPixmapOnPixmap(charPix, pix, box.x,box.y)
+				self.DrawCharPixmapOnPixmap(charPix, pix, box.x,box.y, size, style)
 				UnlockImage(TBitmapFontChar(obj.chars.ValueForKey(charKey)).img)
 				' es fehlt noch charWidth - extraTyp?
 
@@ -327,6 +327,42 @@ Type TBitmapFont
 
 		SetImageFont(oldFont)
 		Return obj
+	End Function
+
+	Function DrawCharPixmapOnPixmap(Source:TPixmap,Pixmap:TPixmap, x:Int, y:Int, fontSize:int, fontStyle:int =0)
+		  For Local i:Int = 0 To Source.width-1
+			For Local j:Int = 0 To Source.height-1
+			  If x+1 < pixmap.width And y+j < pixmap.height
+				Local sourcepixel:Int = ReadPixel(Source, i,j)
+				Local destpixel:Int = ReadPixel(pixmap, x+i,y+j)
+	'			Local destA:Int = ARGB_Alpha(destpixel)
+				Local sourceA:Int = ARGB_Alpha(sourcepixel)
+				If sourceA <> -1 Then
+					If sourceA< -1 Then sourceA = -sourceA
+					Local destR:Int = ARGB_Red(destpixel)
+					Local destG:Int = ARGB_Green(destpixel)
+					Local destB:Int = ARGB_Blue(destpixel)
+					Local destA:Int = ARGB_Alpha(destpixel)
+					Local SourceR:Int = ARGB_Red(Sourcepixel)
+					Local SourceG:Int = ARGB_Green(Sourcepixel)
+					Local SourceB:Int = ARGB_Blue(Sourcepixel)
+					sourceR = Int( Float(sourceA/255.0)*sourceR) + Int(Float((255-sourceA)/255.0)*destR)
+					sourceG = Int( Float(sourceA/255.0)*sourceG) + Int(Float((255-sourceA)/255.0)*destG)
+					sourceB = Int( Float(sourceA/255.0)*sourceB) + Int(Float((255-sourceA)/255.0)*destB)
+					'also mix alpha
+					if (not fontStyle & BOLDFONT) OR fontSize >= 10
+						sourceA = 0.6*(SourceA*SourceA)/255 + 0.4*SourceA
+					endif
+'					else
+'						if sourceA >=200 then sourceA = 0.4*(SourceA*SourceA)/255 + 0.6*SourceA
+'						if sourceA < 200 then sourceA = 0.5*(SourceA*SourceA)/255 + 0.5*SourceA
+'					endif
+					sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
+				EndIf
+				If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)
+			  EndIf
+			Next
+		  Next
 	End Function
 
 	Method AddChar:TBitmapFontChar(charCode:int, img:timage, x:int, y:int, w:int, h:int, charWidth:float)
@@ -394,7 +430,7 @@ Type TBitmapFont
 					'if cant get shortened: CharCount = 0 -> line deleted
 					For charpos = 0 To Len(linetxt) - 1
 						If linetxt[charpos] = Asc(" ") Then CharCount = charpos
-						If linetxt[charpos] = Asc("-") Then CharCount = charpos - 1
+						If linetxt[charpos] = Asc("-") Then CharCount = charpos' - 1
 						If linetxt[charpos] = Asc(Chr(13)) Then CharCount = charpos;charpos = Len(Linetxt) - 1
 					Next
 					linetxt = linetxt[..CharCount]
@@ -568,7 +604,7 @@ Type TGW_FontManager
 	Method GetFont:TBitmapFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
 		If _FName = "Default" And _FSize = -1 And _FStyle = -1 Then Return DefaultFont.FFont
 		If _FSize = -1 Then _FSize = DefaultFont.FSize
-		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle Else _FStyle :+ SMOOTHFONT
+		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle Else _FStyle = _FStyle | SMOOTHFONT
 
 		Local defaultFontFile:String = DefaultFont.FFile
 		For Local Font:TGW_Font = EachIn Self.List
@@ -603,7 +639,7 @@ Type TGW_Font
 		tmpObj.FFile = _FFile
 		tmpObj.FSize = _FSize
 		tmpObj.FStyle = _FStyle
-		tmpObj.FFont = TBitmapFont.Create(_FFile, _FSize, SMOOTHFONT + _FStyle)
+		tmpObj.FFont = TBitmapFont.Create(_FFile, _FSize, _FStyle | SMOOTHFONT)
 		Return tmpObj
 	End Function
 End Type
@@ -930,7 +966,7 @@ Type TGW_Sprites extends TRenderable
 	Method Update(deltaTime:float=1.0)
 	End Method
 
-	Method Draw(x:Float, y:Float, theframe:Int = -1, valign:Int = 0, align:int=0, scale:float=1.0)
+	Method Draw(x:Float, y:Float, theframe:Int = -1, valign:float = 0.0, align:float=0.0, scale:float=1.0)
 		If theframe = -1 Or framew = 0
 			DrawImageArea(parent.image, x - align*w*scale , y - valign * h * scale, pos.x, pos.y, w, h, 0)
 		Else

@@ -129,7 +129,7 @@ Function DrawPixmapOnPixmap(Source:TPixmap,Pixmap:TPixmap, x:Int, y:Int)
 				sourceG = Int( Float(sourceA/255.0)*sourceG) + Int(Float((255-sourceA)/255.0)*destG)
 				sourceB = Int( Float(sourceA/255.0)*sourceB) + Int(Float((255-sourceA)/255.0)*destB)
 				'also mix alpha
-				sourceA = SourceA + DestA
+				sourceA = SourceA + ((255-sourceA)/255) * destA
 				sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
 			EndIf
 			If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)

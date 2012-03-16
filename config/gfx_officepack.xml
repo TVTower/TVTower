@@ -29,6 +29,7 @@
 				<child name="pp_programmeblock1_dragged"	x="750"	y="193"	w="200"	h="35" />
 				<child name="pp_programmeblock2"			x="604"	y="230"	w="195"	h="60" />
 				<child name="pp_programmeblock2_dragged"	x="750"	y="128"	w="200"	h="65" />
+				<child name="gfx_officepack_financials_barren"		x="107"	y="348"	w="22"	h="100" />
 				<child name="gfx_officepack_audiencenews_barren"	x="129"	y="348"	w="9"	h="100" />
 				<child name="gfx_officepack_audience_barren"		x="950"	y="128"	w="15"	h="100" />
 

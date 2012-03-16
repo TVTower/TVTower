@@ -864,15 +864,15 @@ End Function
 Function OnUpdate_StationMapBuy(sender:Object)
 	Local button:TGUIButton = TGUIButton(sender)
 	If button <> Null
-	  	If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseX() < 570
-	  	  If (StationMap.LastStationX = (MouseX() - 20)) And (StationMap.LastStationY = (MouseY() - 10))
-	  	    OnClick_StationMapBuy(button)
-	      Else
-	        StationMap.LastStationX = MouseX() - 20
-	  	    StationMap.LastStationY = MouseY() - 10
-	  	  EndIf
-		  MouseManager.resetKey(1)
-		  If StationMap.action > 1 Then Print "autohit";OnClick_StationMapBuy(sender)
+		If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseX() < 570
+			local ClickPos:TPosition = TPosition.Create( MouseX() - 20, MouseY() - 10 )
+			If StationMap.LastStation.pos.isSame( ClickPos )
+				OnClick_StationMapBuy(button)
+			Else
+				StationMap.LastStation.pos.setPos(clickPos)
+			EndIf
+			MouseManager.resetKey(1)
+			If StationMap.action > 1 Then OnClick_StationMapBuy(sender)
 	  	EndIf
 	EndIf
 End Function

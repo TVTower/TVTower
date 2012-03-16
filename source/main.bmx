@@ -2613,8 +2613,7 @@ End Function
 
 Function Init_Colorization()
 	'colorize the images
-
-	Assets.AddImageAsSprite("gfx_financials_barren0", ColorizeTImage(gfx_financials_barren_base, 200, 200, 200) )
+	Assets.AddImageAsSprite("gfx_financials_barren0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(200, 200, 200) )
 	Assets.AddImageAsSprite("gfx_building_sign0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(200,200,200) )
 	Assets.AddImageAsSprite("gfx_elevator_sign0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(200,200,200) )
 	Assets.AddImageAsSprite("gfx_elevator_sign_dragged0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(200, 200, 200) )
@@ -2625,7 +2624,7 @@ Function Init_Colorization()
 	For Local i:Int = 1 To 4
 		Player[i].Name					= MenuPlayerNames[i-1].Value
 		Player[i].channelname			= MenuChannelNames[i-1].Value
-		Assets.AddImageAsSprite("gfx_financials_barren"+i, ColorizeTImage(gfx_financials_barren_base,Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
+		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
 		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
 		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
 		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )

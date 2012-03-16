@@ -23,7 +23,6 @@ Import "basefunctions.bmx"
 Import "basefunctions_xml.bmx"
 Import "basefunctions_image.bmx"
 Import "basefunctions_resourcemanager.bmx"
-'Import "functions_file.bmx"
 
 
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
@@ -183,6 +182,7 @@ EndTry
 
 SetBlend ALPHABLEND     'without it alphachannels are worth nothing
 PrintDebug ("files.bmx", "Lade Grafiken", DEBUG_LOADING)
+
 Global particle_image:TImage = CreateImage(16, 16)
 Local alpha:Float = 1.0
 Local grau:Int = Rnd(30,80)
@@ -193,9 +193,8 @@ For Local i:Int = 1 To 16 / 2
 	alpha:* 0.55
 	SetAlpha alpha
 Next
-'image bounds
-'particle_image = LoadImage(GrabPixmap(0,0,16,16))
-GrabImage(particle_image,0,0) ; Cls
+GrabImage(particle_image,0,0)
+Cls
 SetAlpha 1.0
 
 Global XmlLoader:TXmlLoader = TXmlLoader.Create()
@@ -213,8 +212,8 @@ Global gfx_interface_topbottom:TBigImage	= TBigImage.createFromImage(CheckLoadIm
 Global gfx_datasheets_movie:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_filmblatt.png"))
 Global gfx_datasheets_series:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_serienblatt.png"))
 Global gfx_datasheets_contract:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_werbeblatt.png"))
-Global gfx_financials_barren_base:TImage	= LoadImage("grafiken/buero/finanzen_balken.png", 0)
 
+'=== StationMap ====================
 Global stationmap_land_sachsen:TImage		= Assets.GetSprite("gfx_officepack_topo_sachsen").GetImage()
 Global stationmap_land_niedersachsen:TImage	= Assets.GetSprite("gfx_officepack_topo_niedersachsen").GetImage()
 Global stationmap_land_schleswigholstein:TImage = Assets.GetSprite("gfx_officepack_topo_schleswigholstein").GetImage()
@@ -232,6 +231,9 @@ Global stationmap_land_berlin:TImage		= Assets.GetSprite("gfx_officepack_topo_be
 Global stationmap_land_hamburg:TImage		= Assets.GetSprite("gfx_officepack_topo_hamburg").GetImage()
 Global stationmap_land_bremen:TImage		= Assets.GetSprite("gfx_officepack_topo_bremen").GetImage()
 
+Global stationmap_mainpix:TPixmap 			= LoadPixmap("grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png")
+'===================================
+
 Global gfx_mousecursor:TImage       		= CheckLoadImage("grafiken/interface/cursor.png", 0, 32,32,0,3) 'normal mousecursor
 
 '=== fonts =========================
@@ -244,13 +246,6 @@ FontManager.baseFontBold = FontManager.getFont("Default", 11, BOLDFONT)
 
 SetImageFont(LoadTrueTypeFont("res/fonts/Vera.ttf", 11,SMOOTHFONT))
 
-Global gfx_figures_hausmeister:TImage = CheckLoadImage("grafiken/hochhaus/spielfigur_hausmeister.png", 0, 51, 44, 0, 15)
-
-
-'=== StationMap ====================
-Global stationmap_mainpix:TPixmap 			= LoadPixmap("grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png")
-Global gfx_collisionpixel:TImage 		    = CheckLoadImage("grafiken/senderkarte/collisionpixel.png")
-'===================================
 
 SetBlend ALPHABLEND
 SetMaskColor 0, 0, 0

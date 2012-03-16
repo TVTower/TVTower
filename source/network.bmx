@@ -564,8 +564,8 @@ Type TTVGNetwork
  	   WriteMyIP()
        WriteByte Stream, playerID
        WriteByte Stream, add
-       WriteInt Stream,  station.x
-       WriteInt Stream,  station.y
+       WriteInt Stream,  station.pos.x
+       WriteInt Stream,  station.pos.y
        WriteInt Stream,  station.reach
        WriteInt Stream,  station.price
        WriteInt Stream,  newaudience
