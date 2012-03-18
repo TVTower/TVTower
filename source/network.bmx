@@ -333,8 +333,7 @@ Type TTVGNetwork
        WriteFloat stream, Player[MyID].Figure.pos.y
        WriteInt stream, Player[MyID].Figure.dx
        WriteInt Stream, Player[MyID].Figure.AnimPos
-       WriteInt Stream, Player[MyID].Figure.targetx
-       WriteInt Stream, Player[MyID].Figure.oldtargetx
+       WriteInt Stream, Player[MyID].Figure.target.x
        WriteInt Stream, Player[MyID].Figure.toFloor
        WriteInt Stream, Player[MyID].Figure.onFloor
        WriteInt Stream, Player[MyID].Figure.calledElevator
@@ -360,8 +359,7 @@ Type TTVGNetwork
 	         WriteInt stream, Player[j+1].Figure.pos.y
 	         WriteInt stream, Player[j+1].Figure.dx
 	         WriteInt stream, Player[j+1].Figure.AnimPos
-	         WriteInt stream, Player[j+1].Figure.targetx
-	         WriteInt stream, Player[j+1].Figure.oldtargetx
+	         WriteInt stream, Player[j+1].Figure.target.x
 	         WriteInt stream, Player[j+1].Figure.toFloor
 	         WriteInt stream, Player[j+1].Figure.onFloor
 	         WriteInt stream, Player[j+1].Figure.calledElevator
@@ -977,8 +975,7 @@ Type TTVGNetwork
 
 	 Player[ RemotePlayerID ].Figure.dx              = ReadInt(stream)
      Player[ RemotePlayerID ].Figure.AnimPos         = ReadInt(Stream)
-     Player[ RemotePlayerID ].Figure.targetx         = ReadInt(stream)
-     Player[ RemotePlayerID ].Figure.oldtargetx      = ReadInt(Stream)
+     Player[ RemotePlayerID ].Figure.target.x         = ReadInt(stream)
      Player[ RemotePlayerID ].Figure.toFloor         = ReadInt(Stream)
      Player[ RemotePlayerID ].Figure.onFloor         = ReadInt(Stream)
      Player[ RemotePlayerID ].Figure.calledElevator  = ReadInt(Stream)
@@ -993,7 +990,7 @@ Type TTVGNetwork
 
      If Player[ RemotePlayerID ].Figure.inElevator
 	   Building.Elevator.passenger = Player[ RemotePlayerID ].Figure.id
-	   Player[ RemotePlayerID ].Figure.pos.x =  Int(Building.pos.x + Building.Elevator.Pos.x + Player[ RemotePlayerID ].Figure.xToElevator - Int(Player[ RemotePlayerID ].Figure.FrameWidth/2) - 3)
+	   Player[ RemotePlayerID ].Figure.pos.x =  Int(Building.Elevator.GetDoorCenter() - Int(Player[ RemotePlayerID ].Figure.FrameWidth/2) - 3)
 	 EndIf
 
 	 Local RoomID:Int = ReadInt(stream)

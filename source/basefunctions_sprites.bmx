@@ -11,6 +11,13 @@ Import "basefunctions_loadsave.bmx"
 Import "basefunctions_image.bmx"
 Import "basefunctions_asset.bmx"
 
+CONST VALIGN_TOP:float		= 1
+CONST VALIGN_CENTER:float	= 0.5
+CONST VALIGN_BOTTOM:float	= 0
+CONST ALIGN_LEFT:float		= 1
+CONST ALIGN_CENTER:float	= 0.5
+CONST ALIGN_RIGHT:float		= 0
+
 Type TRenderManager
 	field list:TList = CreateList()
 

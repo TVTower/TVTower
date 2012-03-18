@@ -4,23 +4,23 @@ Type TRooms
     Field background:TGW_Sprites       	'background, the image containing the whole room
 	Field name:String            		'name of the room, eg. "archive" for archive room
     Field desc:String					'description, eg. "Bettys bureau" (used for tooltip)
-    Field descTwo:String=""				'description, eg. "name of the owner" (used for tooltip)
-    Field DoorOpenTimer:Int	= 0
+    Field descTwo:String		=""		'description, eg. "name of the owner" (used for tooltip)
+    Field DoorOpenTimer:Int		= 0
+	Field DoorOpenTime:int		= 250
 	Field Pos:TPosition					'x of the rooms door in the building, y as floornumber
-    Field xpos:Int			= 0
-    Field doortype:Int		=-1
-    Field doorwidth:Int		= 38
-    Field originaldoortype:Int= -1
+    Field xpos:Int				= 0
+    Field doortype:Int			=-1
+    Field doorwidth:Int			= 38
     Field RoomSign:TRoomSigns
-    Field owner:Int			=-1			'to draw the logo/symbol of the owner
+    Field owner:Int				=-1		'to draw the logo/symbol of the owner
     Field tooltip:TTooltip
-    Field uniqueID:Int		= 1
+    Field uniqueID:Int			= 1
 	Field FadeAnimationActive:Int = 0
-	Field RoomBoardX:Int	= 0
+	Field RoomBoardX:Int		= 0
     Global ActiveRoom:TRooms			'which room is activated at the moment
     Global RoomList:TList				'global list of rooms
-    Global LastID:Int		= 1
-	Global doadraw:Int		= 0
+    Global LastID:Int			= 1
+	Global doadraw:Int			= 0
 	Global DoorsDrawnToBackground:Int = 0   'doors drawn to Pixmap of background
     Global ActiveBackground:TGW_Sprites
 	Global ActiveBackgroundID:Int = 0
@@ -45,13 +45,14 @@ Type TRooms
 
     Method CloseDoor()
 		DoorOpenTimer = 0
-		doortype = originaldoortype
     End Method
 
+	Method getDoorType:int()
+		if DoorOpenTimer = 0 then return self.doortype else return 5
+	End Method
+
     Method OpenDoor()
-		DoorOpenTimer = MilliSecs()+500
-		originaldoortype = doortype
-		doortype = 5
+		DoorOpenTimer = MilliSecs()+DoorOpenTime
     End Method
 
 	Function CloseAllDoors()
@@ -59,29 +60,6 @@ Type TRooms
 			room.CloseDoor()
 		Next
 	End Function
-
-    Function GetClickedRoom:TRooms(Figure:TFigures)
-		Local elevatorx:Int	= Building.pos.x + Building.Elevator.Pos.x + Figure.xToElevator
-		Local figurex:Int	= Figure.oldtargetx + Figure.FrameWidth
-		Local figurey:Int	= Building.pos.y + Building.GetFloorY(Figure.clickedToFloor) - 5
-		For Local localroom:TRooms = EachIn RoomList
-			If localroom.doortype >= 0
-				If localroom.name = "roomboard" Then localroom.doorwidth = 59
-				If functions.IsIn(figurex, figurey, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.pos.y) - Assets.GetSprite("gfx_building_Tueren").h, localroom.doorwidth, 54)
-					If Figure.toRoom <> localroom Then Figure.SetRoom(localroom)
-					Return localroom
-				EndIf
-			EndIf
-			If localroom.name = "elevator"
-				If functions.IsIn(figurex, figurey, elevatorx - 20, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - 58, 52, 58)
-					If Figure.toRoom <> localroom Then Figure.SetRoom(localroom)
-					localroom.Pos.x = elevatorx
-					Return localroom
-				EndIf
-			End If
-		Next
-		Return Null
-    End Function
 
     Function DrawDoorToolTips:Int()
 		If RoomList = Null Then Print "RoomList missing"
@@ -160,14 +138,13 @@ Type TRooms
 
 	Function DrawDoors:Int()
 		If RoomList = Null Then Print "RoomList missing"
-		For Local localroom:TRooms = EachIn RoomList
-			If localroom <> Null
-				If localroom.doortype >= 0 And localroom.name <> "" And localroom.Pos.x > 0
-					If localroom.doortype >= 5 And localroom.name <> "roomboard" And localroom.name <> "credits" And localroom.name <> "porter"
-'						localroom.doortype = 5
-						If localroom.doortype = 5 Then If localroom.DoorOpenTimer + 500 < MilliSecs() Then localroom.CloseDoor()
-						Assets.GetSprite("gfx_building_Tueren").Draw(localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").frameh, localroom.doortype)
-						'DrawText(localroom.name+" - " + localroom.doortype, localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y)- Assets.GetSprite("gfx_building_Tueren").frameh + 10)
+		For Local room:TRooms = EachIn RoomList
+			If room <> Null
+				If room.doortype >= 0 And room.name <> "" And room.Pos.x > 0
+					If room.getDoorType() >= 5 And room.name <> "roomboard" And room.name <> "credits" And room.name <> "porter"
+						If room.getDoorType() = 5 AND room.DoorOpenTimer + 500 < MilliSecs() Then room.CloseDoor()
+						'valign = 1 -> subtract sprite height
+						Assets.GetSprite("gfx_building_Tueren").Draw(room.Pos.x, Building.pos.y + Building.GetFloorY(room.Pos.y), room.getDoorType(), VALIGN_TOP)
 					EndIf
 				EndIf
 			EndIf
@@ -178,23 +155,19 @@ Type TRooms
     'draw Room
     'Raum zeichnen
     Method Draw()
-      SetBlend SOLIDBLEND
-      If background = Null
-	  	Print "ERROR: room.draw() - background missing"
-      Else
-	  	If ActiveBackground = Null
-			ActiveBackground = self.background
-			ActiveBackgroundID = Self.uniqueID
-		Else If ActiveBackgroundID <> Self.uniqueID
-			ActiveBackground = Self.background
-			ActiveBackgroundID = Self.uniqueID
+		SetBlend SOLIDBLEND
+		If background = Null
+			Print "ERROR: room.draw() - background missing"
+		Else
+			If ActiveBackground = Null OR ActiveBackgroundID <> Self.uniqueID
+				ActiveBackground = Self.background
+				ActiveBackgroundID = Self.uniqueID
+			EndIf
+			ActiveBackground.Draw(20,10)
 		EndIf
-		ActiveBackground.Draw(20,10)
-	  EndIf
-
-	  SetBlend ALPHABLEND
-      ActiveRoom = Self
-    End Method
+		SetBlend ALPHABLEND
+		ActiveRoom = Self
+	End Method
 
 	'leave with Open/close-animation (black)
 	Method LeaveAnimated:Int(dontleave:Int)
@@ -203,7 +176,7 @@ Type TRooms
         If Self.name = "movieagency" Then TMovieAgencyBlocks.ProgrammeToPlayer(Game.playerID)
         If Self.name = "archive" Then TArchiveProgrammeBlock.ProgrammeToSuitcase(Game.playerID)
         If Not dontleave Then
-			If doortype >= 0
+			If GetDoorType() >= 0
 				Fader.Enable() 'room fading
 				OpenDoor()
 				FadeAnimationActive = True
@@ -277,39 +250,39 @@ Type TRooms
 
     'create room and use preloaded image
     'Raum erstellen und bereits geladenes Bild nutzen
+    'x = 1-4
+    'y = floor
 	Function Create:TRooms(background:TGW_Sprites, name:String = "unknown", desc:String = "unknown", descTwo:String = "", x:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
-	  Local tmproom:TRooms = New TRooms
-	  tmproom.background = background
-	  tmproom.name       = name
-	  tmproom.desc = desc
-	  tmproom.descTwo = descTwo
-	  tmproom.owner      = owner
-	  tmproom.doorwidth = Assets.GetSprite("gfx_building_Tueren").framew
-	  tmproom.uniqueID   = TRooms.LastID + 1
-	  TRooms.LastID:+1
-	  tmproom.xpos = x
-	  tmproom.Pos = TPosition.Create()
-	  If x <=4 Then
-	    If x = 0 Then tmproom.Pos.x = -10
-	    If x = 1 Then tmproom.Pos.x = 206
-	    If x = 2 Then tmproom.Pos.x = 293
-	    If x = 3 Then tmproom.Pos.x = 469
-	    If x = 4 Then tmproom.Pos.x = 557
-	  EndIf
-	  tmproom.RoomBoardX = x
-	  tmproom.Pos.y = y
-'	  tmproom.y = Building.GetFloorY(y)- ImageHeight(gfx_building_doors)
-	  tmproom.doortype = doortype
-	  tmproom.originaldoortype = doortype
+		Local obj:TRooms	= New TRooms
+		obj.background 	= background
+		obj.name		= name
+		obj.desc		= desc
+		obj.descTwo		= descTwo
+		obj.owner		= owner
+		obj.doorwidth	= Assets.GetSprite("gfx_building_Tueren").framew
+		obj.uniqueID	= TRooms.LastID + 1
+		obj.LastID:+1
+		obj.xpos		= x
+		obj.Pos			= TPosition.Create()
+		If x <=4
+			If x = 0 Then obj.Pos.x = -10
+			If x = 1 Then obj.Pos.x = 206
+			If x = 2 Then obj.Pos.x = 293
+			If x = 3 Then obj.Pos.x = 469
+			If x = 4 Then obj.Pos.x = 557
+		EndIf
+		obj.RoomBoardX = x
+		obj.Pos.y = y
+		obj.doortype = doortype
 
-	  If not RoomList Then RoomList = CreateList()
-	  RoomList.AddLast(tmproom)
-	  SortList RoomList
+		If not RoomList Then RoomList = CreateList()
+		RoomList.AddLast(obj)
+		SortList RoomList
 
 		If createATooltip
-			tmpRoom.CreateTooltip(x)
+			obj.CreateTooltip(x)
 		EndIf
-		Return tmproom
+		Return obj
 	End Function
 
 	Method CreateTooltip(myx:Int = 0)
@@ -343,7 +316,6 @@ Type TRooms
 	  tmproom.Pos.SetXY(x, y)
 
 	  tmproom.doortype = doortype
-	  tmproom.originaldoortype = doortype
 
 	  If not RoomList Then RoomList = CreateList()
 	  RoomList.AddLast(tmproom)
@@ -356,6 +328,22 @@ Type TRooms
 
 	  Return tmproom
 	End Function
+
+    Function GetTargetRoom:TRooms(x:int, y:int)
+		For Local room:TRooms = EachIn TRooms.RoomList
+			If room.doortype >= 0
+				If room.name = "roomboard" Then room.doorwidth = 59
+				If functions.IsIn(x, y, room.Pos.x, Building.pos.y + Building.GetFloorY(room.pos.y) - Assets.GetSprite("gfx_building_Tueren").h, room.doorwidth, 54)
+					Return room
+				EndIf
+			EndIf
+			If room.name = "elevator" AND functions.IsIn(x, y, Building.pos.x + Building.Elevator.pos.x, Building.pos.y + Building.GetFloorY(room.Pos.y) - 58, Building.Elevator.spriteDoor.sprite.framew, 58)
+				room.Pos.x = Building.Elevator.GetDoorCenter()
+				Return room
+			EndIf
+		Next
+		Return Null
+    End Function
 
 	Function GetRoomFromID:TRooms(ID:Int)
 		For Local room:TRooms = EachIn TRooms.RoomList
@@ -1382,6 +1370,7 @@ Type TRoomSigns Extends TBlock
 		Local clickedroom:TRooms = Null
 		Print "GetRoomPosFromXY : search room"
 
+
 		For Local room:TRoomSigns = EachIn TRoomSigns.List
 			If room.Pos.x >= 0
 				Local signfloor:Int = (13 - Ceil((MouseY() -41) / 23))
@@ -1393,15 +1382,19 @@ Type TRoomSigns Extends TBlock
 				If functions.IsIn(_x, _y, room.Pos.x, room.Pos.y, _width, _height)
 					Local _figure:TFigures = Player[Game.playerID].Figure
 					clickedroom = TRooms.GetRoomFromMapPos(xpos, signfloor)
+					print clickedroom.name
 					_figure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
-					TRooms.GetClickedRoom(_figure)
-					_figure.fromRoom = Null
+
+	'ron				Local figurex:Int	= _figure.oldtargetx + _figure.FrameWidth /2
+	'ron				Local figurey:Int	= Building.pos.y + Building.GetFloorY(_figure.clickedToFloor) - 5
+	'ron				_figure.SetToRoom( TRooms.GetTargetroom(figurex, figurey) )
+	'ron				_figure.fromRoom = Null
 					Mousemanager.resetKey(1)
 					return 1
 				EndIf
 			EndIf
 		Next
-		Print "GetRoomPosFromXY : DIDNT found room"
+		Print "GetRoomPosFromXY : no room found"
 		return 0
     End Function
 

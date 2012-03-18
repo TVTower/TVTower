@@ -470,6 +470,7 @@ Type TGame
 	End Method
 End Type
 
+
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer
 	Field Name:String 						{saveload = "normal"}		'playername
@@ -646,8 +647,8 @@ Type TPlayer
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetAudiencePercentage:float()
-		If maxaudience > 0
-			Return Floor((audience * 100) / maxaudience)
+		If maxaudience > 0 and audience > 0
+			Return float(audience * 100) / float(maxaudience)
 		EndIf
 		Return 0.0
 	End Method
@@ -762,7 +763,7 @@ Type TPlayer
 			Player.audience = 0
 
 			if block = null OR block.programme = null
-				print "no block/block.programme"
+				print "no block/block.programme for player "+player.playerID
 			elseif Player.maxaudience <> 0
 				Player.audience = Floor(Player.maxaudience * block.Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
@@ -1254,8 +1255,9 @@ Type TElevator
 	Field PlanTime:Int			= 4000
 	Field waitAtFloorTimer:Int	= 0
 	Field waitAtFloorTime:Int = 650 								'wait 650ms until moving to destination
+	Field waitAtFloorTimeForRoomboard:Int = 5000 								'wait 650ms until moving to destination
 	Field spriteDoor:TAnimSprites
-	Field Image_inner:TGW_Sprites
+	Field spriteInner:TGW_Sprites
 	Field passenger:Int			=-1
 	Field passengerFigure:TFigures = Null
 	Field onFloor:Int 			= 0
@@ -1326,17 +1328,17 @@ Type TElevator
 	End Method
 
 	Function Create:TElevator(Parent:TBuilding)
-		Local localObject:TElevator=New TElevator
-		localObject.spriteDoor	= TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 0, 0, 0, 0, 8, 150)
-		localObject.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
-		localObject.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
-		localObject.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
-		localObject.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
-		localObject.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
-		localObject.Image_inner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
-		localObject.Parent		= Parent
-		localObject.Pos.SetY(Parent.GetFloorY(localObject.onFloor) - localobject.Image_inner.h)
-		Return localObject
+		Local obj:TElevator=New TElevator
+		obj.spriteDoor	= TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 0, 0, 0, 0, 8, 150)
+		obj.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
+		obj.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
+		obj.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
+		obj.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
+		obj.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
+		obj.spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
+		obj.Parent		= Parent
+		obj.Pos.SetY(Parent.GetFloorY(obj.onFloor) - obj.spriteInner.h)
+		Return obj
 	End Function
 
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
@@ -1363,10 +1365,6 @@ Type TElevator
 		Return -1
 	End Method
 
-	Method moveTo(_tofloor:Int)
-		toFloor = Clamp(_tofloor,0,13)
-	End Method
-
 	Method CloseDoor()
 		Self.spriteDoor.setCurrentAnimation("closedoor", True)
 		open = 3
@@ -1386,16 +1384,24 @@ Type TElevator
 		'If Game.networkgame Then If Network.IsConnected Then If Game.playerID = 1 Then Network.SendElevatorSynchronize()
 	End Method
 
+	Method GetDoorCenter:int()
+		return parent.pos.x + Pos.x + self.spriteDoor.sprite.framew/2
+	End Method
+
+	Method IsInFrontOfDoor:int(x:int, y:int=-1)
+		return x = GetDoorCenter()
+	End Method
+
 	Method DrawFloorDoors()
 		Local locy:Int = 0
 
 		'elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(Parent.pos.x + 127 + 233, Max(parent.pos.y, 10) , 44, 373)
+		DrawRect(Parent.pos.x + 360, Max(parent.pos.y, 10) , 44, 373)
 		SetColor 255, 255, 255
 
 		'elevatorbg
-		Image_inner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 4)
+		spriteInner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 4)
 		'figures in elevator
 		If passengerFigure = Null
 			For Local Figure:TFigures = EachIn TFigures.List
@@ -1407,9 +1413,7 @@ Type TElevator
 		'
 		For Local i:Int = 0 To 13
 			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h
-			If locy < 410 And locy > - 50
-				Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
-			EndIf
+			If locy < 410 And locy > - 50 then Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
 		Next
 	End Method
 
@@ -1417,8 +1421,8 @@ Type TElevator
 	Method Update(deltaTime:Float=1.0)
 		'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
 		'until the function returns the new one, instead of positioning it directly on the floorground
-		If Abs(Building.GetFloorY(Building.GetFloor(Parent.pos.y + Pos.y + Image_inner.h - 1)) - (Pos.y + Image_inner.h)) <= 1
-			onFloor = Building.GetFloor(Parent.pos.y + Pos.y + Image_inner.h - 1)
+		If Abs(Building.GetFloorY(Building.GetFloor(Parent.pos.y + Pos.y + spriteInner.h - 1)) - (Pos.y + spriteInner.h)) <= 1
+			onFloor = Building.GetFloor(Parent.pos.y + Pos.y + spriteInner.h - 1)
 		EndIf
 
 		If spriteDoor.getCurrentAnimationName() = "opendoor"
@@ -1444,18 +1448,22 @@ Type TElevator
 		'check wether elevator has to move to somewhere but doors aren't closed - if so, start closing-animation
 		If (onFloor <> toFloor And open <> 0) And open <> 3 And waitAtFloorTimer <= MilliSecs() Then CloseDoor
 		If (onFloor = toFloor) And open = 0 Then OpenDoor;waitAtFloorTimer = MilliSecs() + waitAtFloorTime
-		If open And waitAtFloortimer + 5000 <= MilliSecs() And waitAtFloorTimer <> 0
+
+		'figure wants to select room within elevator
+		If open And waitAtFloortimer + waitAtFloorTimeForRoomboard <= MilliSecs() And waitAtFloorTimer <> 0
 			If passenger <> - 1
 				TFigures.GetFigure(passenger).inElevator = False
 				passengerFigure = Null
 				Print "Schmeisse Figur " + TFigures.GetFigure(passenger).Name + " aus dem Fahrstuhl (" + (MilliSecs() - waitatfloortimer) + ")"
 				passenger = -1
 			EndIf
-		End If
+		EndIf
+
+		'move figure who is in elevator
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.IsInElevator()
 				If open=0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
-					Figure.pos.setY ( Building.Elevator.Pos.y + Image_inner.h - Figure.sprite.h )
+					Figure.pos.setY ( Building.Elevator.Pos.y + spriteInner.h - Figure.sprite.h )
 				EndIf
 				Exit 'only one figure in elevator possible
 			EndIf
@@ -1463,38 +1471,33 @@ Type TElevator
 
 		spriteDoor.Update(deltaTime)
 
-		If (onFloor <> toFloor And open <> 0) Or(onFloor = toFloor)
+		'move figure in elevator
+		If (onFloor <> toFloor And open <> 0) Or (onFloor = toFloor)
 			Local tmpFloor:Int 		= GetFloorRoute()
-			For Local i:Int = 0 To 13
-				If 13-i = onFloor
-					'					spriteDoor.Update()
-					For Local Figure:TFigures = EachIn TFigures.List
-						If Figure.IsInElevator() And Figure.toFloor = toFloor
-							Figure.onFloor = Building.Elevator.onFloor
-							Figure.pos.setY( Building.GetFloorY(Figure.onFloor) - Figure.sprite.h )
-							Exit 'only one figure in elevator possible
-						EndIf
-					Next
-					If waitAtFloorTimer <= MilliSecs() And toFloor = onFloor
-						If tmpfloor = onFloor	Then waitAtFloorTimer = MilliSecs() + waitAtFloorTime
-						If tmpFloor = -1		Then toFloor = toFloor Else toFloor = tmpfloor
-					EndIf
+			For Local Figure:TFigures = EachIn TFigures.List
+				If Figure.IsInElevator() And Figure.toRoom <> null and Figure.toRoom.pos.y = toFloor
+					Figure.onFloor = Building.Elevator.onFloor
+					Figure.pos.setY( Building.GetFloorY(Figure.onFloor) - Figure.sprite.h )
+					Exit 'only one figure in elevator possible
 				EndIf
 			Next
+			If waitAtFloorTimer <= MilliSecs() And toFloor = onFloor
+				If tmpfloor = onFloor	Then waitAtFloorTimer = MilliSecs() + waitAtFloorTime
+				If tmpFloor <> -1		then toFloor = tmpfloor
+			EndIf
 		EndIf
 
+		'move elevator
 		If onFloor <> toFloor
 			If open = 0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
-				'				If onFloor > toFloor Then Pos.y:+Min(((Building.GetFloorY(tofloor) - Image_inner.h) - Pos.y), deltaTime * speed) ;upwards = 0
-				'				If onFloor < toFloor Then Pos.y:-Min(((Building.GetFloorY(tofloor) - Image_inner.h) - Pos.y), deltaTime * speed) ;upwards = 1
 				upwards = onfloor < toFloor
 				If Not upwards
-					Pos.y	= Min(Pos.y + deltaTime * speed, Building.GetFloorY(toFloor) - image_inner.h)
+					Pos.y	= Min(Pos.y + deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
 				Else
-					Pos.y	= Max(Pos.y - deltaTime * speed, Building.GetFloorY(toFloor) - image_inner.h)
+					Pos.y	= Max(Pos.y - deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
 				EndIf
-				If Pos.y + Image_inner.h < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(0) - Image_inner.h
-				If Pos.y + Image_inner.h > Building.GetFloorY(0) Then Pos.y = Building.GetFloorY(0) - Image_inner.h
+				If Pos.y + spriteInner.h < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(13) - spriteInner.h
+				If Pos.y + spriteInner.h > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.h
 			EndIf
 		EndIf
 		TRooms.UpdateDoorToolTips(deltaTime)
@@ -1508,8 +1511,8 @@ Type TElevator
 
 		'check wether elevator has to move to somewhere but doors aren't closed, if so, start closing-animation
 		If (onFloor <> toFloor And open <> 0)Or(onFloor = toFloor)
-			Local locy:Int = Parent.pos.y + Parent.GetFloorY(onFloor) - image_inner.h + 5
-			Image_inner.DrawClipped(Parent.pos.x + 131 + 230, locy - 3, Parent.pos.x + 131 + 230, locy, 40, 50,0,0)
+			Local locy:Int = Parent.pos.y + Parent.GetFloorY(onFloor) - spriteInner.h + 5
+			spriteInner.DrawClipped(Parent.pos.x + pos.x, locy - 3, Parent.pos.x + 131 + 230, locy, 40, 50,0,0)
 		EndIf
 
 		For Local Figure:TFigures = EachIn TFigures.List
@@ -1517,7 +1520,7 @@ Type TElevator
 		Next
 
 		If (onFloor <> toFloor And open <> 0) Or (onFloor = toFloor)
-			spriteDoor.Draw(Parent.pos.x + 131 + 230, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)
+			spriteDoor.Draw(Parent.pos.x + pos.x, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)
 		EndIf
 
 		For Local i:Int = 0 To 13
@@ -1531,7 +1534,7 @@ Type TElevator
 
 		'elevator sign - indicator
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			locy = Parent.pos.y + Building.GetFloorY(floorroute.floornumber) - Image_inner.h + 23
+			locy = Parent.pos.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.h + 23
 			'elevator is called to this floor					'elevator will stop there (destination)
 			If	 floorroute.call Then SetColor 200,220,20 	Else SetColor 100,220,20
 			DrawRect(Parent.pos.x + Pos.x + 44, locy, 3,3)
@@ -1933,7 +1936,126 @@ Type TNewsAgency
 	End Method
 End Type
 
-'Include "stationmap.bmx"			'stationmap-handling, -creation ...
+
+
+Function UpdateBote:Int(ListLink:TLink, deltaTime:float=1.0) 'SpecialTime = 1 if letter in hand
+	Local Figure:TFigures = TFigures(ListLink.value())
+	Figure.FigureMovement(deltaTime)
+	Figure.FigureAnimation(deltaTime)
+	If figure.inRoom <> Null
+		If figure.specialTime = 0
+			figure.specialTime = MilliSecs()+2000+Rand(50)*100
+		Else
+			If figure.specialTime < MilliSecs()
+				Figure.specialTime = 0
+				Local room:TRooms
+				Repeat
+					room = TRooms.GetRandomReachableRoom()
+				Until room <> Figure.inRoom
+				If Figure.LastSpecialTime = 0
+					Figure.LastSpecialTime=1
+					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
+				Else
+					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
+					Figure.LastSpecialTime=0
+				EndIf
+				'Print "Bote: war in Raum -> neues Ziel gesucht"
+				Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
+			EndIf
+		EndIf
+	End If
+	If figure.inRoom = Null and figure.clickedToRoom = Null and figure.dx = 0 and not (Figure.IsAtElevator() or Figure.IsInElevator()) 'not moving but not in/at elevator
+		Local room:TRooms = TRooms.GetRandomReachableRoom()
+		'Print "Bote: steht rum -> neues Ziel gesucht"
+		Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
+	End If
+End Function
+
+Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:float=1.0)
+	Local Figure:TFigures = TFigures(ListLink.value())
+	If figure.WaitTime < MilliSecs()
+		figure.WaitTime = MilliSecs() + 15000
+		'Print "zu lange auf fahrstuhl gewartet"
+		Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.sprite.h)
+	EndIf
+	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And figure.onFloor = Building.GetFloor(figure.target.y)
+		Local zufall:Int = Rand(0, 100)
+		Local zufallx:Int = Rand(150, 580)
+		If figure.LastSpecialTime < MilliSecs()
+			figure.LastSpecialTime = MilliSecs() + 1500
+			'no left-right-left-right movement for just some pixels
+			Repeat
+				zufallx = Rand(150, 580)
+			Until Abs(figure.pos.x - zufallx) > 15
+
+			If zufall > 85 And Not figure.IsAtElevator()
+				Local sendToFloor:Int = figure.onFloor + 1
+				If figure.onFloor >= 13 Then sendToFloor = 0
+				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.sprite.h)
+				figure.WaitTime = MilliSecs() + 15000
+			Else If zufall <= 85 And Not figure.isAtElevator()
+				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.sprite.h)
+			EndIf
+		EndIf
+	EndIf
+	Figure.FigureMovement(deltaTime)
+
+	If MilliSecs() - Figure.NextAnimTimer >= 0
+		If Figure.AnimPos < 8 Or Figure.AnimPos > 10 Then Figure.AnimPos = Figure.AnimPos + 1
+		Figure.NextAnimTimer = MilliSecs() + Figure.NextAnimTime
+		If Figure.dx = 0
+			If Figure.onFloor <> Building.GetFloor(figure.target.y) And Not Figure.IsInElevator() And Figure.IsAtElevator()
+				Figure.AnimPos = 10
+			Else
+				If MilliSecs() - Figure.NextTwinkerTimer > 0
+					Figure.AnimPos = 9
+					Figure.NextTwinkerTimer = MilliSecs() + Rand(1000) + 1500
+				Else
+					Figure.AnimPos = 8
+				EndIf
+			EndIf
+		EndIf
+	EndIf
+	If Floor(Figure.pos.x) <= 200 Then Figure.pos.setX(200);Figure.target.setX(200)
+	If Floor(Figure.pos.x) >= 579 Then Figure.pos.setX(579);Figure.target.setX(579)
+
+	If Figure.specialTime < MilliSecs()
+		If Figure.dx > 0 Then If Figure.AnimPos > 3
+			Figure.NextAnimTime = Figure.BackupAnimTime
+			Figure.AnimPos = 0
+			If Rand(0,40) > 30 Then Figure.specialTime = MilliSecs()+Rand(1000,3000);Figure.AnimPos = 11
+		EndIf
+		If Figure.dx < 0 Then If Figure.AnimPos > 7
+			Figure.NextAnimTime = Figure.BackupAnimTime
+			Figure.AnimPos = 3
+			If Rand(0,40) > 30 Then Figure.specialTime = MilliSecs()+Rand(1000,3000);Figure.AnimPos = 13
+		EndIf
+	End If
+	If Figure.dx > 0
+		If Figure.AnimPos >= 11
+			Figure.NextAnimTime = 300
+			Figure.pos.x		:-deltaTime * Figure.dx
+			If Figure.specialTime < MilliSecs()
+				Figure.NextAnimTime = Figure.BackupAnimTime
+				Figure.AnimPos = 0
+			EndIf
+			If Figure.AnimPos >= 13 Then Figure.AnimPos = 11
+		EndIf
+	Else If Figure.dx < 0
+		If Figure.AnimPos >= 13
+			Figure.NextAnimTime = 300
+			Figure.pos.x		:- deltaTime * Figure.dx
+			If Figure.specialTime < MilliSecs()
+				Figure.NextAnimTime = Figure.BackupAnimTime
+				Figure.AnimPos = 4
+			EndIf
+			If Figure.AnimPos >= 15 Or Figure.AnimPos = 0 Then Figure.AnimPos = 13
+		EndIf
+		If (Figure.AnimPos > 7 And Figure.AnimPos < 13) Or Figure.AnimPos < 4 Then Figure.AnimPos = 4
+	EndIf
+End Function
+
+
 
 '#Region: Globals, Player-Creation
 Global StationMap:TStationMap	= TStationMap.Create()
@@ -1962,17 +2084,19 @@ Player[4] = TPlayer.Create("Sandra", "RatTV", Assets.GetSpritePack("figures").Ge
 
 Global tempfigur:TFigures = TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
 tempfigur.FrameWidth	= 12 'overwriting
-tempfigur.targetx		= 550
-tempfigur.updatefunc_ = TFigures.UpdateHausmeister
+tempfigur.target.setX(550)
+tempfigur.updatefunc_ = UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
 
 tempfigur = TFigures.Create("Bote1", Assets.GetSpritePack("figures").GetSprite("BoteLeer"), 210, 3, 65, 0)
-tempfigur.FrameWidth = 12;tempfigur.targetx = 550
-tempfigur.updatefunc_	= TFigures.UpdateBote
+tempfigur.FrameWidth = 12
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
 Global figure_Bote1ID:Int = tempfigur.id
 tempfigur				= TFigures.Create("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 8,-65,0)
-tempfigur.FrameWidth = 12;tempfigur.targetx = 550
-tempfigur.updatefunc_	= TFigures.UpdateBote
+tempfigur.FrameWidth = 12
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
 Global figure_Bote2ID:Int = tempfigur.id
 tempfigur = Null
 
@@ -2630,7 +2754,7 @@ Function Init_Creation()
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 		Next
-		TFigures.GetFigure(figure_HausmeisterID).updatefunc_ = TFigures.UpdateHausmeister
+		TFigures.GetFigure(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
 	EndIf
 			'abonnement for each newsgroup = 1
 	For Local playerids:Int = 1 To 4
@@ -2753,12 +2877,10 @@ Function UpdateMain(deltaTime:Float = 1.0)
 		If MOUSEMANAGER.IsDown(1)
 			If functions.IsIn(MouseX(), MouseY(), 20, 10, 760, 373)
 				Player[Game.playerID].Figure.ChangeTarget(MouseX(), MouseY())
-				TRooms.GetClickedRoom(Player[Game.playerID].Figure)
 			EndIf
 			MOUSEMANAGER.resetKey(1)
 		EndIf
 	EndIf
-	'	If Player[Game.playerID].Figure.inRoom = Null Then Building.y = 115 + 73 - Player[Game.playerID].Figure.y  'working for player as center
 	'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
 	If Player[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Player[Game.playerID].Figure.pos.y  'working for player as center
 	Fader.Update(deltaTime)

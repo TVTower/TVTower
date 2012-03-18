@@ -372,14 +372,14 @@ Type TLuaFunctions
 
 	Method GetPlayerTargetPosX:Int(PlayerID:Int = Null)
 		If Player[PlayerID] <> Null
-		  Return(Floor(Player[PlayerID].figure.targetx))
+			Return(Floor(Player[PlayerID].figure.target.x))
 		EndIf
 		Return - 1
 	End Method
 
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
 		If Player[PlayerID] <> Null
-		  Player[PlayerID].figure.changeTarget(newTargetX, Building.pos.y + Building.GetFloorY(Player[PlayerID].figure.onfloor))
+		  Player[PlayerID].figure.changeTarget(newTargetX,null)
 		Else
 			Return - 1
 		EndIf
