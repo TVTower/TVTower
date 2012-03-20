@@ -2268,9 +2268,6 @@ Function Menu_Main()
 		Network.stream = New TUDPStream
 		If Not Network.Stream.Init() Then Throw("Network: Can't create socket")
 		Network.stream.SetLocalPort(Network.GetMyPort())
-		print Network.stream.getLocalIP()
-		print TNetwork.DottedIP(Network.stream.getLocalIP())
-
 		Game.networkgame = 1
 	EndIf
 End Function

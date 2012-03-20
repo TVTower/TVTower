@@ -345,7 +345,7 @@ Type TTVGNetwork
 	Field AnnounceTime:Int       							' Main Announcement Timer
 	Field SendID%, RecvID%, lastRecv:Int[52] 				' Packet IDs and Duplicate checking Array
 	Field MyID:Int 					= -1					' which playernumber is mine? - so which line of the iparray and so on
-	Field IP:int[4], Port:Short[4] 							' Client IP and Port
+	Field IP:int[4], Port:Int[4] 							' Client IP and Port
 	Field debugmode:Byte			= True					' Toggles the display of debug messages
 	Field bSentFull:Byte         							' Full update boolean
 	Field n:NetObj, netList:TList = New TList	 			' Packet Object and List
@@ -535,7 +535,7 @@ Type TTVGNetwork
 	EndIf
   End Function
 
-  Method IsNoComputerNorMe:Byte(_IP:Int, _Port:Short)
+  Method IsNoComputerNorMe:Byte(_IP:Int, _Port:int)
     If _IP = Null Or _IP = 0 Then Return False 'it a computerplayer
     If IP[ Game.playerID-1 ] = _IP And Port[ Game.playerID-1 ] = _Port Then Return False 'it's me ;D
 	Return True
@@ -544,10 +544,10 @@ Type TTVGNetwork
   Method WriteMyIP()
     If Not Game.onlinegame
       WriteInt stream, intLocalIP
-  	  WriteShort stream, HOSTPORT
+  	  WriteInt stream, HOSTPORT
 	Else
       WriteInt stream, intOnlineIP
-  	  WriteShort stream, ONLINEPORT
+  	  WriteInt stream, ONLINEPORT
 	EndIf
   End Method
 
@@ -561,7 +561,7 @@ Type TTVGNetwork
 	Return intLocalIP
   End Method
 
-  Method GetMyPort:Short()
+  Method GetMyPort:Int()
 	If Game.onlinegame Then Return ONLINEPORT
 	Return LOCALPORT
   End Method
@@ -591,13 +591,13 @@ Type TTVGNetwork
        WriteByte stream, NET_PLAYERIPS
 	   WriteMyIP()
        WriteInt Stream, IP[0]
-       WriteShort Stream, Port[0]
+       WriteInt Stream, Port[0]
        WriteInt Stream, IP[1]
-       WriteShort Stream, Port[1]
+       WriteInt Stream, Port[1]
        WriteInt Stream, IP[2]
-       WriteShort Stream, Port[2]
+       WriteInt Stream, Port[2]
        WriteInt Stream, IP[3]
-       WriteShort Stream, Port[3]
+       WriteInt Stream, Port[3]
        SendUDP(i)
    '    SendID:+1
      EndIf
@@ -779,7 +779,7 @@ Type TTVGNetwork
    Next
   End Method
 
-  Method GotPacket_SendMovieAgencyChange(_IP:Int, _Port:Short)
+  Method GotPacket_SendMovieAgencyChange(_IP:Int, _Port:int)
     Local RemotePlayerID:Int 	= ReadByte(stream)
 	Local methodtype:Byte 		= ReadByte(stream)
 	Local newid:Int 			= ReadInt (stream)
@@ -1063,7 +1063,7 @@ Type TTVGNetwork
    Next
   End Method
 
-  Method GotPacket_Plan_NewsChange(_IP:Int, _Port:Short)
+  Method GotPacket_Plan_NewsChange(_IP:Int, _Port:Int)
     Local RemotePlayerID:Int = ReadByte(Stream)
     Local remove:Int = ReadInt(Stream)
     Local x:Int = ReadInt(Stream)
@@ -1086,7 +1086,7 @@ Type TTVGNetwork
 	EndIf
  End Method
 
-  Method GotPacket_NewsSubscriptionLevel(_IP:Int, _Port:Short)
+  Method GotPacket_NewsSubscriptionLevel(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(stream)
     Local genre:Int = ReadByte(stream)
     Local level:Int = ReadByte(stream)
@@ -1095,7 +1095,7 @@ Type TTVGNetwork
   End Method
 
 
-  Method GotPacket_SendNews(_IP:Int, _Port:Short)
+  Method GotPacket_SendNews(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(stream)
     Local newsID:Int = ReadInt(stream)
 	Local news:TNews = TNews.GetNews(newsID)
@@ -1107,7 +1107,7 @@ Type TTVGNetwork
 	EndIf
   End Method
 
-  Method GotPacket_ProgrammeCollectionChange(_IP:Int, _Port:Short)
+  Method GotPacket_ProgrammeCollectionChange(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(Stream)
     Local programmeID:Int = ReadInt(stream)
     Local isMovie:Byte = ReadByte(stream)
@@ -1131,7 +1131,7 @@ Type TTVGNetwork
     EndIf
  End Method
 
-  Method GotPacket_ElevatorRouteChange(_IP:Int, _Port:Short)
+  Method GotPacket_ElevatorRouteChange(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(Stream)
     Local call:Int = ReadInt(Stream)
     Local floornumber:Int = ReadInt(Stream)
@@ -1142,7 +1142,7 @@ Type TTVGNetwork
     If First Then Building.Elevator.passenger = Player[ RemotePlayerID ].figure
   End Method
 
-  Method GotPacket_ElevatorSynchronize(_IP:Int, _Port:Short)
+  Method GotPacket_ElevatorSynchronize(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(Stream)
 	Local Sendtime:Float = ReadFloat(stream)
     Building.Elevator.upwards = ReadInt(stream)
@@ -1180,7 +1180,7 @@ Type TTVGNetwork
     'Print "----END synchronizing elevator"
   End Method
 
-  Method GotPacket_StationChange(_IP:Int, _Port:Short)
+  Method GotPacket_StationChange(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(Stream)
     Local add:Byte = ReadByte(Stream)
     Local x:Int = ReadInt(Stream)
@@ -1198,7 +1198,7 @@ Type TTVGNetwork
     EndIf
  End Method
 
-  Method GotPacket_Plan_AdChange(_IP:Int, _Port:Short)
+  Method GotPacket_Plan_AdChange(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(Stream)
     Local add:Byte = ReadByte(Stream)
     Local x:Int = ReadInt(Stream)
@@ -1237,7 +1237,7 @@ Type TTVGNetwork
     EndIf
  End Method
 
-  Method GotPacket_Plan_ProgrammeChange(_IP:Int, _Port:Short)
+  Method GotPacket_Plan_ProgrammeChange(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(Stream)
     Local add:Byte = ReadByte(Stream)
     Local x:Int = ReadInt(Stream)
@@ -1274,7 +1274,7 @@ Type TTVGNetwork
     EndIf
  End Method
 
-  Method GotPacket_GameReady(_IP:Int, _Port:Short)
+  Method GotPacket_GameReady(_IP:Int, _Port:int)
    Local RemotePlayerID:Int = ReadByte(Stream)
  '  Game.networkgameready = 1
    Game.gamestate = 4
@@ -1310,7 +1310,7 @@ Type TTVGNetwork
   End Method
 
 
-  Method GotPacket_SendContract(_IP:Int, _Port:Short)
+  Method GotPacket_SendContract(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(Stream)
 	Local ContractCount:Int = ReadInt(stream)
     Local contractID:Int
@@ -1321,7 +1321,7 @@ Type TTVGNetwork
     Print "net: added contract (id:"+contractID+") to Player:"+RemotePlayerID
   End Method
 
-  Method GotPacket_SendProgramme(_IP:Int, _Port:Short)
+  Method GotPacket_SendProgramme(_IP:Int, _Port:int)
     Local RemotePlayerID:Int = ReadByte(stream)
 	Local ProgrammeCount:Int = ReadInt(stream)
     Local IsMovie:Byte
@@ -1336,7 +1336,7 @@ Type TTVGNetwork
     'Print "--->Programme:"+TProgramme.GetMovie(ProgrammeID).Title
   End Method
 
-  Method GotPacket_PlayerPosition(_IP:Int, _Port:Short)
+  Method GotPacket_PlayerPosition(_IP:Int, _Port:int)
      Local RemotePlayerID:Int = ReadByte(Stream)
      If Player[ RemotePlayerID] = Null Then Print "Player "+RemotePlayerID+" not found"
      Local x:Float = ReadFloat(stream)
@@ -1385,7 +1385,7 @@ Type TTVGNetwork
      EndIf
   End Method
 
-  Method GotPacket_PlayerDetails(_IP:Int, _Port:Short)
+  Method GotPacket_PlayerDetails(_IP:Int, _Port:int)
      Local RemotePlayerID:Int = ReadByte(Stream)
      Local tmplen:Int
      tmplen = ReadInt(Stream);Local playername:String = ReadString(Stream, tmplen)
@@ -1411,10 +1411,10 @@ Type TTVGNetwork
 	'if debugmode Print "NET: got PlayerDetails"
   End Method
 
-	Method GotPacket_PlayerIPs(_IP:Int, _Port:Short)
+	Method GotPacket_PlayerIPs(_IP:Int, _Port:int)
 		For Local i:Int = 0 To 3
 			IP[ i ]   = ReadInt(Stream)
-			Port[ i ] = ReadShort(Stream)
+			Port[ i ] = ReadInt(Stream)
 			If IP[ i ] <> Null
 				Player[i+1].Figure.ControlledByID= i+1
 			else
@@ -1424,7 +1424,7 @@ Type TTVGNetwork
 		'if debugmode Print "NET: got synchronize PlayerIP-packet"
 	End Method
 
-	Method GotPacket_Join(_IP:Int, _Port:Short)
+	Method GotPacket_Join(_IP:Int, _Port:int)
 		Print "got join from "+TNetwork.DottedIP(_IP)+":"+_Port
 		'it's the user acting as server knocking on the door
 	If Not IsConnected And isHost Then
@@ -1441,21 +1441,21 @@ Type TTVGNetwork
       WriteByte Stream, NET_SETSLOT
       WriteMyIP()
       WriteInt Stream, _IP
-      WriteShort Stream, _Port
+      WriteInt Stream, _Port
       WriteByte Stream, GetFreeSlot()
 	  SendReliableUDPtoIP(_IP, _Port,  150, -1, "SetSlot (Got Join)")
     EndIf
   End Method
 
-	Method GotPacket_AnnounceGame(_IP:Int, _Port:Short)
-		'Local teamamount:Int	= ReadByte(Stream)
-		'Local titlelength:Byte	= ReadByte(stream)
-		'Local title:String		= ReadString(stream, titlelength)
+	Method GotPacket_AnnounceGame(_IP:Int, _Port:int)
+		Local teamamount:Int	= ReadByte(Stream)
+		Local titlelength:Byte	= ReadByte(stream)
+		Local title:String		= ReadString(stream, titlelength)
 		print "got announcement from" + _IP
 		'If _ip <> intLocalIP then NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+teamamount+" von 4)","",TNetwork.DottedIP(_ip),_Port,0, "HOSTGAME")
 	End Method
 
-  Method GotPacket_ChatMessage(_IP:Int, _Port:Short)
+  Method GotPacket_ChatMessage(_IP:Int, _Port:int)
     If _IP <> intLocalIP Then
      Local RemotePlayerID:Int = ReadInt(Stream)
      Local ChatMessageLen:Int = ReadInt(Stream)
@@ -1470,9 +1470,9 @@ Type TTVGNetwork
     EndIf
   End Method
 
-  Method GotPacket_SetSlot(_IP:Int, _Port:Short)
+  Method GotPacket_SetSlot(_IP:Int, _Port:int)
              Local aimedIP:Int = ReadInt(Stream)
-             Local aimedPort:Int = ReadShort(Stream)
+             Local aimedPort:Int = ReadInt(Stream)
    			 Local slot:Byte   = ReadByte(Stream)
              ip[slot-1] = aimedIP
              Port[slot-1] = aimedPort
@@ -1563,17 +1563,17 @@ Type TTVGNetwork
 
 		Local bMsgIsNew:Int
 		While stream.RecvAvail() ' Then
-			print "Pakete warten"
 			stream.RecvMsg()
 			RecvID = ReadInt(Stream)
 			Local data:Int   		= ReadByte(Stream)
 			Local reliablePacket:Int= ReadInt(stream)
 			Local _IP:Int     		= ReadInt(stream)
-			Local _Port:Int   		= ReadShort(stream)
-			If Not Game.onlinegame
-				_IP:Int     = stream.GetMsgIP()
-				_Port:Int   = stream.GetMsgPort()
-			EndIf
+			Local _Port:Int   		= ReadInt(stream)
+			print "Pakete warten " + data + " " + RecvID + " IP:"+_IP + " " + TNetwork.DottedIP(_IP)
+'			If Not Game.onlinegame
+'				_IP:Int     = stream.GetMsgIP()
+'				_Port:Int   = stream.GetMsgPort()
+'			EndIf
 
 	    Select data
 			Case NET_JOIN					GotPacket_Join(_IP,_Port)				' JOIN PACKET
@@ -1655,7 +1655,7 @@ Type TTVGNetwork
 
 
 	'IsMsgNew gibt zurueck, ob das UDP-Paket ein Duplikat oder ein Altes ist
-	Method IsMsgNew:Byte(id:Int, data:Int = 0, _IP:Int, _Port:Short)
+	Method IsMsgNew:Byte(id:Int, data:Int = 0, _IP:Int, _Port:int)
 		For Local i:Int = 50 To 0 Step -1
 			lastRecv[i + 1] = lastRecv[ i ]
 		Next
@@ -1691,7 +1691,7 @@ Type TTVGNetwork
 	End Method
 
 	'NetAck sends ACKnowledge packet to client
-	Method NetAck(RecvID:Int, _IP:Int, _Port:Short)
+	Method NetAck(RecvID:Int, _IP:Int, _Port:int)
 		WriteInt Stream, SendID
 		WriteInt Stream, not NET_PACKET_RELIABLE
 		WriteByte stream, NET_ACK
@@ -1719,7 +1719,7 @@ Type TTVGNetwork
 	SendID:+1	         ' Increment send counter
   End Method
 
-  Method SendReliableUDPtoIP(_IP:Int, _Port:Short,retrytime:Int = 200, MaxRetry:Int = -1, desc:String="")
+  Method SendReliableUDPtoIP(_IP:Int, _Port:int,retrytime:Int = 200, MaxRetry:Int = -1, desc:String="")
     BackupStream(MyBank)
     TReliableUDP.Create(SendID, _IP, _Port, MyBank, retrytime, MaxRetry, desc)
     stream.SendUDPMsg _IP, _Port
@@ -1762,7 +1762,7 @@ Type TTVGNetwork
         RecvID = ReadInt(stream)
 	    Local data:Int   = ReadByte(stream)
   	    Local _IP:Int     = ReadInt(stream)
- 	    Local _Port:Int   = ReadShort(stream)
+ 	    Local _Port:Int   = ReadInt(stream)
 	    If Not Game.onlinegame
 	      _IP:Int     = stream.GetMsgIP()
  	      _Port:Int   = stream.GetMsgPort()
@@ -1806,12 +1806,12 @@ Type TReliableUDP
   Field MaxRetry:Int = -1 'indefinite if under 0
   Field content:TBank
   Field targetIP:Int
-  Field targetPort:Short
+  Field targetPort:Int
   Field retrytime:Int = 200
   Global LastID:Int =0
   Global List:TList = CreateList()
 
-  Function Create:TReliableUDP(SendID:Int, IP:Int, Port:Short, content:TBank, retrytime:Int=200, MaxRetry:Int = -1, desc:String="")
+  Function Create:TReliableUDP(SendID:Int, IP:Int, Port:Int, content:TBank, retrytime:Int=200, MaxRetry:Int = -1, desc:String="")
     Local ReliableUDP:TReliableUDP = New TReliableUDP
 
     ReliableUDP.SendID    = SendID
@@ -1831,7 +1831,7 @@ Type TReliableUDP
 
   'we got an ACK-packet, now find the corresponding and delete it...
   '-> we made our reliable udp-packet being received ;D
-  Function GotAckPacket:Int(SendID:Int, fromIP:Int, fromPort:Short)
+  Function GotAckPacket:Int(SendID:Int, fromIP:Int, fromPort:Int)
   	For Local ReliableUDP:TReliableUDP = EachIn TReliableUDP.List
      If ReliableUDP.SendID = SendID And ReliableUDP.targetIP = fromIP And ReliableUDP.targetPort = fromPort
        If ReliableUDP.Retry >=3 Then Print "UDP: recv ACK and deleted:"+ReliableUDP.SendID+" for:"+TNetwork.DottedIP(fromIP)
@@ -1860,7 +1860,7 @@ Type TReliableUDP
   	Next
   End Function
 
-  Function DeletePacketsForIP(_IP:Int, _Port:Short)
+  Function DeletePacketsForIP(_IP:Int, _Port:int)
   	For Local ReliableUDP:TReliableUDP = EachIn TReliableUDP.List
 	  If ReliableUDP.targetIP = _IP And ReliableUDP.targetPort = _Port
 		TReliableUDP.List.Remove(ReliableUDP)
