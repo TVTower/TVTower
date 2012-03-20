@@ -1425,8 +1425,8 @@ Type TTVGNetwork
 		Local teamamount:Int	= ReadByte(Stream)
 		Local titlelength:Byte	= ReadByte(stream)
 		Local title:String		= ReadString(stream, titlelength)
-		print "got announcement"
-		If _ip <> intLocalIP then NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+teamamount+" von 4)","",TNetwork.DottedIP(_ip),_Port,0, "HOSTGAME")
+		print "got announcement " + title
+		'If _ip <> intLocalIP then NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+teamamount+" von 4)","",TNetwork.DottedIP(_ip),_Port,0, "HOSTGAME")
 	End Method
 
   Method GotPacket_ChatMessage(_IP:Int, _Port:Short)
@@ -1495,7 +1495,7 @@ Type TTVGNetwork
   End Method
 
 	Method UpdateUDP(fromNotConnectedPlayer:Int = 0)
-		If 1=1 OR IsConnected Or fromNotConnectedPlayer ' Updates
+		If IsConnected Or fromNotConnectedPlayer ' Updates
 
 			'Aller 1500ms einen Status rueberschicken (unbestaetigt)
 			If isHost And MilliSecs() >= MainSyncTime+ 1500*self.GetSyncSpeedFactor()

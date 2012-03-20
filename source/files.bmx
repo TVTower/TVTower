@@ -161,12 +161,8 @@ Try
 		Case  1	SetGraphicsDriver D3D7Max2DDriver()
 		Case  2	SetGraphicsDriver D3D9Max2DDriver()
 		Case -1 SetGraphicsDriver GLMax2DDriver()
-		?Linux
-		Default SetGraphicsDriver BufferedGLMax2DDriver()
-		?
-		?Not Linux
+'		Default SetGraphicsDriver BufferedGLMax2DDriver()
 		Default SetGraphicsDriver GLMax2DDriver()
-		?	
 	EndSelect
 	g = Graphics(Settings.width, Settings.height, Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
 	If g = Null
