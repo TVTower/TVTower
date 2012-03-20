@@ -558,11 +558,9 @@ Type TUDPStream Extends TNetStream
 		If Self.Socket = INVALID_SOCKET_ Then Return 0
 
 		Read = Self.Socket
-		If selectex_(1, Varptr(Read), 0, Null, 0, Null, Self.RecvTimeout) <> 1 ..
-		   Then Return 0
+		If selectex_(1, Varptr(Read), 0, Null, 0, Null, Self.RecvTimeout) <> 1 then Return 0
 
-		If ioctl_(Self.Socket, FIONREAD, Varptr(Size)) = SOCKET_ERROR_ ..
-		   Then Return 0
+		If ioctl_(Self.Socket, FIONREAD, Varptr(Size)) = SOCKET_ERROR_ then Return 0
 
 		If Size <= 0 Then Return 0
 

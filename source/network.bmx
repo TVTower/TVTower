@@ -355,9 +355,9 @@ Type TTVGNetwork
 	Field OnlineIP:String				= ""                ' ip for internet
 	Field intOnlineIP:Int				= 0					' int version of ip for internet
 	Field ChatSpamTime:Int				= 0					' // Networking Constants
-	Global HOSTPORT:Byte				= 4544              ' * IMPORTANT * This UDP port must not be blocked by
-	Global ONLINEPORT:Byte				= 4544            	' a router or firewall, or CreateUDPStream will fail
-	Global LOCALPORT:Byte				= 4544
+	Global HOSTPORT:int					= 4544              ' * IMPORTANT * This UDP port must not be blocked by
+	Global ONLINEPORT:int				= 4544            	' a router or firewall, or CreateUDPStream will fail
+	Global LOCALPORT:int				= 4544
 	Global NET_ACK:Byte					= 1					' ALL: ACKnowledge
 	Global NET_JOIN:Byte				= 2					' ALL: Join Attempt
 	Global NET_PING:Byte				= 3					' Ping
@@ -499,6 +499,27 @@ Type TTVGNetwork
 		Return -1
 	End Method
 
+
+  Function GetBroadcastIPs:String[](ip:String)
+	If Len(ip$)>6
+		ip$=ip$
+		Local lastperiod:Int=1
+		Local period:Int =0
+		For Local t:Int=1 To 3				    '; 4 Zahlengruppen, aber die letzte muss weg
+			period=Instr(ip,".",lastperiod)
+			lastperiod=period+1
+		Next
+		local ip:string = Left(ip,period)
+		local ips:string[254]
+		for local i:int = 1 to 254 '255 is broadcast itself
+			ips[i-1] = ip+i
+		Next
+		return ips
+	Else
+		Return null
+	EndIf
+  End Function
+
   Function GetBroadcastIP:String(ip:String)
 	If Len(ip$)>6
 		ip$=ip$
@@ -597,15 +618,20 @@ Type TTVGNetwork
 		If Game.gamestate = 0 then return 'no announcement when already in game
 		If Not Game.onlinegame
 			Print "NET: announcing a LAN game to " +GetBroadcastIP(localIP)
-			WriteInt   stream, SendID
-			WriteByte  stream, not NET_PACKET_RELIABLE
-			WriteByte  stream, NET_ANNOUNCEGAME
-			WriteMyIP()
-			WriteByte  stream, (GetFreeSlot()-1)
-			WriteByte  stream, Len(Game.title)
-			WriteString stream, Game.title
+			local ips:string[] = GetBroadcastIPs(localIP)
+			if ips = null then print "no ips";return
+			for local i:int = 1 to len(ips)-1
+				WriteInt   stream, SendID
+				WriteByte  stream, not NET_PACKET_RELIABLE
+				WriteByte  stream, NET_ANNOUNCEGAME
+				WriteMyIP()
+				WriteByte  stream, (GetFreeSlot()-1)
+				WriteByte  stream, Len(Game.title)
+				WriteString stream, Game.title
+				stream.SendUDPMsg TNetwork.IntIP(ips[i]), Network.HOSTPORT
+			Next
 '			stream.SendUDPMsg TNetwork.IntIP(GetBroadcastIP(localIP)), Network.HOSTPORT
-			stream.SendUDPMsg intLocalIP, Network.HOSTPORT
+'			stream.SendUDPMsg intLocalIP, Network.HOSTPORT
 			SendID:+1
 		Else
 			Print "NET: announcing a ONLINE game "
@@ -1257,7 +1283,7 @@ Type TTVGNetwork
       Player[ i + 1 ].networkstate = 1
      EndIf
    Next
-   Print RemotePlayerID
+   Print "got game ready from "+RemotePlayerID
    Player[ RemotePlayerID ].networkstate = 1 'ready
 
    Print "NET: got GameReadyFlag from Player:"+Player[ RemotePlayerID ].name + " ("+RemotePlayerID+")"
@@ -1422,10 +1448,10 @@ Type TTVGNetwork
   End Method
 
 	Method GotPacket_AnnounceGame(_IP:Int, _Port:Short)
-		Local teamamount:Int	= ReadByte(Stream)
-		Local titlelength:Byte	= ReadByte(stream)
-		Local title:String		= ReadString(stream, titlelength)
-		print "got announcement " + title
+		'Local teamamount:Int	= ReadByte(Stream)
+		'Local titlelength:Byte	= ReadByte(stream)
+		'Local title:String		= ReadString(stream, titlelength)
+		print "got announcement from" + _IP
 		'If _ip <> intLocalIP then NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+teamamount+" von 4)","",TNetwork.DottedIP(_ip),_Port,0, "HOSTGAME")
 	End Method
 
@@ -1537,10 +1563,10 @@ Type TTVGNetwork
 
 		Local bMsgIsNew:Int
 		While stream.RecvAvail() ' Then
+			print "Pakete warten"
 			stream.RecvMsg()
 			RecvID = ReadInt(Stream)
 			Local data:Int   		= ReadByte(Stream)
-			print data
 			Local reliablePacket:Int= ReadInt(stream)
 			Local _IP:Int     		= ReadInt(stream)
 			Local _Port:Int   		= ReadShort(stream)
