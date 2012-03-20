@@ -17,7 +17,7 @@ Import "files.bmx"								'Load images, configs,... (imports functions.bmx)
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_events.bmx"				'event handler
 Import "basefunctions_deltatimer.bmx"
-Import "gamefunctions_network.bmx"
+'Import "gamefunctions_network.bmx"
 GUIManager.globalScale	= 0.75
 GUIManager.defaultFont	= FontManager.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -59,7 +59,7 @@ Type TApp
 	Field Timer:TDeltaTimer
 	Field limitFrames:Int = 0
 	Field settings:TApplicationSettings
-	field prepareScreenshot:Int = 0
+	Field prepareScreenshot:Int = 0
 
 	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0)
 		Local obj:TApp = New TApp
@@ -112,7 +112,7 @@ Type TGame
 	Field error:Int 				= 0 					'is there a error (errorbox) floating around?
 	Field gamestate:Int 			= 0						'0 = Mainmenu, 1=Running, ...
 
-	field network:TNetworkConnection=null
+	'Field network:TNetworkConnection=Null
 
 	'--networkgame auf "isNetworkGame()" umbauen
 	Field networkgame:Int 			= 0 					'are we playing a network game? 0=false, 1=true, 2
@@ -271,20 +271,20 @@ Type TGame
 		Return Game
 	End Function
 
-	Method GetDayName:string(day:int, longVersion:int=0)
-		local versionString:string = "SHORT"
-		if longVersion = 1 then versionString = "LONG"
+	Method GetDayName:String(day:Int, longVersion:Int=0)
+		Local versionString:String = "SHORT"
+		If longVersion = 1 Then versionString = "LONG"
 
-		select day
-			case 0	return GetLocale("WEEK_"+versionString+"_MONDAY")
-			case 1	return GetLocale("WEEK_"+versionString+"_TUESDAY")
-			case 2	return GetLocale("WEEK_"+versionString+"_WEDNESDAY")
-			case 3	return GetLocale("WEEK_"+versionString+"_THURSDAY")
-			case 4	return GetLocale("WEEK_"+versionString+"_FRIDAY")
-			case 5	return GetLocale("WEEK_"+versionString+"_SATURDAY")
-			case 6	return GetLocale("WEEK_"+versionString+"_SUNDAY")
-			default	return "not a day"
-		endSelect
+		Select day
+			Case 0	Return GetLocale("WEEK_"+versionString+"_MONDAY")
+			Case 1	Return GetLocale("WEEK_"+versionString+"_TUESDAY")
+			Case 2	Return GetLocale("WEEK_"+versionString+"_WEDNESDAY")
+			Case 3	Return GetLocale("WEEK_"+versionString+"_THURSDAY")
+			Case 4	Return GetLocale("WEEK_"+versionString+"_FRIDAY")
+			Case 5	Return GetLocale("WEEK_"+versionString+"_SATURDAY")
+			Case 6	Return GetLocale("WEEK_"+versionString+"_SUNDAY")
+			Default	Return "not a day"
+		EndSelect
 	End Method
 
 	'Summary: load the config-file and set variables depending on it
@@ -346,39 +346,39 @@ Type TGame
 		EndIf
 	End Method
 
-	Method calculateMaxAudiencePercentage:float(forHour:int= -1)
-		if forHour <= 0 then forHour = self.hour
+	Method calculateMaxAudiencePercentage:Float(forHour:Int= -1)
+		If forHour <= 0 Then forHour = Self.hour
 
 		'based on weekday (thursday) in march 2011 - maybe add weekend
-		select hour
-			case 0	game.maxAudiencePercentage = 11.40 + Float(RandRange( -6, 6))/ 100.0 'Germany ~9 Mio
-			case 1	game.maxAudiencePercentage =  6.50 + Float(RandRange( -4, 4))/ 100.0 'Germany ~5 Mio
-			case 2	game.maxAudiencePercentage =  3.80 + Float(RandRange( -3, 3))/ 100.0
-			case 3	game.maxAudiencePercentage =  3.60 + Float(RandRange( -3, 3))/ 100.0
-			case 4	game.maxAudiencePercentage =  2.25 + Float(RandRange( -2, 2))/ 100.0
-			case 5	game.maxAudiencePercentage =  3.45 + Float(RandRange( -2, 2))/ 100.0 'workers awake
-			case 6	game.maxAudiencePercentage =  3.25 + Float(RandRange( -2, 2))/ 100.0 'some go to work
-			case 7	game.maxAudiencePercentage =  4.45 + Float(RandRange( -3, 3))/ 100.0 'more awake
-			case 8	game.maxAudiencePercentage =  5.05 + Float(RandRange( -4, 4))/ 100.0
-			case 9	game.maxAudiencePercentage =  5.60 + Float(RandRange( -4, 4))/ 100.0
-			case 10	game.maxAudiencePercentage =  5.85 + Float(RandRange( -4, 4))/ 100.0
-			case 11	game.maxAudiencePercentage =  6.70 + Float(RandRange( -4, 4))/ 100.0
-			case 12	game.maxAudiencePercentage =  7.85 + Float(RandRange( -4, 4))/ 100.0
-			case 13	game.maxAudiencePercentage =  9.10 + Float(RandRange( -5, 5))/ 100.0
-			case 14	game.maxAudiencePercentage = 10.20 + Float(RandRange( -5, 5))/ 100.0
-			case 15	game.maxAudiencePercentage = 10.90 + Float(RandRange( -5, 5))/ 100.0
-			case 16	game.maxAudiencePercentage = 11.45 + Float(RandRange( -6, 6))/ 100.0
-			case 17	game.maxAudiencePercentage = 14.10 + Float(RandRange( -7, 7))/ 100.0 'people come home
-			case 18	game.maxAudiencePercentage = 22.95 + Float(RandRange( -8, 8))/ 100.0 'meal + worker coming home
-			case 19	game.maxAudiencePercentage = 33.45 + Float(RandRange(-10,10))/ 100.0
-			case 20	game.maxAudiencePercentage = 38.70 + Float(RandRange(-15,15))/ 100.0
-			case 21	game.maxAudiencePercentage = 37.60 + Float(RandRange(-15,15))/ 100.0
-			case 22	game.maxAudiencePercentage = 28.60 + Float(RandRange( -9, 9))/ 100.0 'bed time starts
-			case 23	game.maxAudiencePercentage = 18.80 + Float(RandRange( -7, 7))/ 100.0
-		endSelect
+		Select hour
+			Case 0	game.maxAudiencePercentage = 11.40 + Float(RandRange( -6, 6))/ 100.0 'Germany ~9 Mio
+			Case 1	game.maxAudiencePercentage =  6.50 + Float(RandRange( -4, 4))/ 100.0 'Germany ~5 Mio
+			Case 2	game.maxAudiencePercentage =  3.80 + Float(RandRange( -3, 3))/ 100.0
+			Case 3	game.maxAudiencePercentage =  3.60 + Float(RandRange( -3, 3))/ 100.0
+			Case 4	game.maxAudiencePercentage =  2.25 + Float(RandRange( -2, 2))/ 100.0
+			Case 5	game.maxAudiencePercentage =  3.45 + Float(RandRange( -2, 2))/ 100.0 'workers awake
+			Case 6	game.maxAudiencePercentage =  3.25 + Float(RandRange( -2, 2))/ 100.0 'some go to work
+			Case 7	game.maxAudiencePercentage =  4.45 + Float(RandRange( -3, 3))/ 100.0 'more awake
+			Case 8	game.maxAudiencePercentage =  5.05 + Float(RandRange( -4, 4))/ 100.0
+			Case 9	game.maxAudiencePercentage =  5.60 + Float(RandRange( -4, 4))/ 100.0
+			Case 10	game.maxAudiencePercentage =  5.85 + Float(RandRange( -4, 4))/ 100.0
+			Case 11	game.maxAudiencePercentage =  6.70 + Float(RandRange( -4, 4))/ 100.0
+			Case 12	game.maxAudiencePercentage =  7.85 + Float(RandRange( -4, 4))/ 100.0
+			Case 13	game.maxAudiencePercentage =  9.10 + Float(RandRange( -5, 5))/ 100.0
+			Case 14	game.maxAudiencePercentage = 10.20 + Float(RandRange( -5, 5))/ 100.0
+			Case 15	game.maxAudiencePercentage = 10.90 + Float(RandRange( -5, 5))/ 100.0
+			Case 16	game.maxAudiencePercentage = 11.45 + Float(RandRange( -6, 6))/ 100.0
+			Case 17	game.maxAudiencePercentage = 14.10 + Float(RandRange( -7, 7))/ 100.0 'people come home
+			Case 18	game.maxAudiencePercentage = 22.95 + Float(RandRange( -8, 8))/ 100.0 'meal + worker coming home
+			Case 19	game.maxAudiencePercentage = 33.45 + Float(RandRange(-10,10))/ 100.0
+			Case 20	game.maxAudiencePercentage = 38.70 + Float(RandRange(-15,15))/ 100.0
+			Case 21	game.maxAudiencePercentage = 37.60 + Float(RandRange(-15,15))/ 100.0
+			Case 22	game.maxAudiencePercentage = 28.60 + Float(RandRange( -9, 9))/ 100.0 'bed time starts
+			Case 23	game.maxAudiencePercentage = 18.80 + Float(RandRange( -7, 7))/ 100.0
+		EndSelect
 		game.maxAudiencePercentage :/ 100.0
 
-		return game.maxAudiencePercentage
+		Return game.maxAudiencePercentage
 	End Method
 
 	Method getNextHour:Int()
@@ -386,8 +386,8 @@ Type TGame
 		Return Self.hour + 1
 	End Method
 
-	Method IsGameLeader:int()
-		return (Game.networkgame And Game.playerID = 1) Or (Not Game.networkgame)
+	Method IsGameLeader:Int()
+		Return (Game.networkgame And Game.playerID = 1) Or (Not Game.networkgame)
 	End Method
 
 	'Summary: Updates Time, Costs, States ...
@@ -396,7 +396,7 @@ Type TGame
 		Self.timeSinceBegin	:+ (Float(speed) / 10.0)
 
 		'time for news ?
-		If IsGameLeader() AND NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
+		If IsGameLeader() And NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
 
 		'if speed to high - potential skip of minutes, so "fetch them"
 		'sets minute / hour / day
@@ -426,17 +426,17 @@ Type TGame
 
 	'Summary: returns day of the week including gameday
 	Method GetFormattedDay:String(_day:Int = -5)
-		return _day+"."+GetLocale("DAY")+" ("+self.GetDayName( Max(0,_day-1) Mod 7, 0)+ ")"
+		Return _day+"."+GetLocale("DAY")+" ("+Self.GetDayName( Max(0,_day-1) Mod 7, 0)+ ")"
 	End Method
 
 	Method GetFormattedDayLong:String(_day:Int = -1)
-		if _day < 0 then _day = self.day
-		return self.GetDayName( Max(0,_day-1) Mod 7, 1)
+		If _day < 0 Then _day = Self.day
+		Return Self.GetDayName( Max(0,_day-1) Mod 7, 1)
 	End Method
 
-	Method GetWeekday:int(_day:int = -1)
-		if _day < 0 then _day = self.day
-		return Max(0,_day-1) Mod 7
+	Method GetWeekday:Int(_day:Int = -1)
+		If _day < 0 Then _day = Self.day
+		Return Max(0,_day-1) Mod 7
 	End Method
 
 	'Summary: returns formatted value of actual gametime
@@ -656,17 +656,17 @@ Type TPlayer
 	End Method
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetAudiencePercentage:float()
-		If maxaudience > 0 and audience > 0
-			Return float(audience * 100) / float(maxaudience)
+	Method GetAudiencePercentage:Float()
+		If maxaudience > 0 And audience > 0
+			Return Float(audience * 100) / Float(maxaudience)
 		EndIf
 		Return 0.0
 	End Method
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetRelativeAudiencePercentage:float()
+	Method GetRelativeAudiencePercentage:Float()
 		If game.maxAudiencePercentage > 0
-			Return float(GetAudiencePercentage() / game.maxAudiencePercentage)
+			Return Float(GetAudiencePercentage() / game.maxAudiencePercentage)
 		EndIf
 		Return 0.0
 	End Method
@@ -772,9 +772,9 @@ Type TPlayer
 			block = Player.ProgrammePlan.GetActualProgrammeBlock()
 			Player.audience = 0
 
-			if block = null OR block.programme = null
-				print "no block/block.programme for player "+player.playerID
-			elseif Player.maxaudience <> 0
+			If block = Null Or block.programme = Null
+				Print "no block/block.programme for player "+player.playerID
+			ElseIf Player.maxaudience <> 0
 				Player.audience = Floor(Player.maxaudience * block.Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
 				If recompute
@@ -974,8 +974,8 @@ Type TFinancials
 
 	'refreshs stats about earned money from sending ad powered shows or call-in
 	Method earnCallerRevenue(_money:Int)
-		self.callerRevenue	:+_money
-		self.sold_total		:+_money
+		Self.callerRevenue	:+_money
+		Self.sold_total		:+_money
 		ChangeMoney(_money)
 	End Method
 
@@ -1363,17 +1363,17 @@ Type TElevator
 			EndIf
 			FloorRouteList.AddLast(floorroute)
 		EndIf
-		If Not fromNetwork and Game.networkgame Then Print "send route to net";Network.SendElevatorRouteChange(floornumber, call, who, First)
+		If Not fromNetwork And Game.networkgame Then Print "send route to net";Network.SendElevatorRouteChange(floornumber, call, who, First)
 	End Method
 
 	Method GetFloorRoute:Int()
 		If Not FloorRouteList.IsEmpty()
 			Local tmpfloor:TFloorRoute = TFloorRoute(FloorRouteList.First())
 			If onFloor = tmpfloor.floornumber
-				local fig:TFigures = TFigures.getFigure(tmpfloor.who)
-				if fig <> null and not fig.isAtElevator() then fig.calledElevator = false
+				Local fig:TFigures = TFigures.getFigure(tmpfloor.who)
+				If fig <> Null And Not fig.isAtElevator() Then fig.calledElevator = False
 				FloorRouteList.RemoveFirst
-			endif
+			EndIf
 			Return tmpfloor.floornumber
 		EndIf
 		Return -1
@@ -1382,22 +1382,22 @@ Type TElevator
 	Method CloseDoor()
 		Self.spriteDoor.setCurrentAnimation("closedoor", True)
 		open = 3
-		If Game.networkgame and Game.playerID = 1 Then Network.SendElevatorSynchronize()
+		If Game.networkgame And Game.playerID = 1 Then Network.SendElevatorSynchronize()
 	End Method
 
 	Method OpenDoor()
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
 		open = 2 'wird geoeffnet
-		If passenger <> null then passenger.pos.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
+		If passenger <> Null Then passenger.pos.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
 		'If Game.networkgame and Game.playerID = 1 Then Network.SendElevatorSynchronize()
 	End Method
 
-	Method GetDoorCenter:int()
-		return parent.pos.x + Pos.x + self.spriteDoor.sprite.framew/2
+	Method GetDoorCenter:Int()
+		Return parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
 	End Method
 
-	Method IsInFrontOfDoor:int(x:int, y:int=-1)
-		return x = GetDoorCenter()
+	Method IsInFrontOfDoor:Int(x:Int, y:Int=-1)
+		Return x = GetDoorCenter()
 	End Method
 
 	Method DrawFloorDoors()
@@ -1411,12 +1411,12 @@ Type TElevator
 		'elevatorbg
 		spriteInner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 4)
 		'figures in elevator
-		If passenger <> null then passenger.Draw();passenger.alreadydrawn = 1
+		If passenger <> Null Then passenger.Draw();passenger.alreadydrawn = 1
 
 
 		For Local i:Int = 0 To 13
 			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h
-			If locy < 410 And locy > - 50 AND i <> onFloor then  Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
+			If locy < 410 And locy > - 50 And i <> onFloor Then  Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
 		Next
 	End Method
 
@@ -1431,9 +1431,9 @@ Type TElevator
 		If spriteDoor.getCurrentAnimationName() = "opendoor"
 			open = 2 'opening
 			If spriteDoor.getCurrentAnimation().isFinished()
-				If open = 2 And passenger <> null
-					print "reset passenger"
-					passenger.calledElevator= false
+				If open = 2 And passenger <> Null
+					Print "reset passenger"
+					passenger.calledElevator= False
 					passenger.inElevator	= False
 					passenger				= Null
 				EndIf
@@ -1469,7 +1469,7 @@ Type TElevator
 			Local tmpFloor:Int 		= GetFloorRoute()
 			If waitAtFloorTimer <= MilliSecs() And toFloor = onFloor
 				If tmpfloor = onFloor	Then waitAtFloorTimer = MilliSecs() + waitAtFloorTime
-				If tmpFloor <> -1		then toFloor = tmpfloor
+				If tmpFloor <> -1		Then toFloor = tmpfloor
 			EndIf
 		EndIf
 
@@ -1539,7 +1539,7 @@ End Type
 Include "gamefunctions_figures.bmx"
 
 'Summary: Type of building, area around it and doors,...
-Type TBuilding extends TRenderable
+Type TBuilding Extends TRenderable
 	Field pos:TPosition = TPosition.Create(20,0)
 	Field borderright:Int 			= 127 + 40 + 429
 	Field borderleft:Int			= 127 + 40
@@ -1573,11 +1573,11 @@ Type TBuilding extends TRenderable
 	Field DezimalTime:Float
 	Field ActHour:Int
 	Field ItemsDrawnToBackground:Byte = 0
-	field gfx_bgBuildings:TGW_Sprites[6]
-	field gfx_building:TGW_Sprites
-	field gfx_buildingEntrance:TGW_Sprites
-	field gfx_buildingRoof:TGW_Sprites
-	field gfx_buildingWall:TGW_Sprites
+	Field gfx_bgBuildings:TGW_Sprites[6]
+	Field gfx_building:TGW_Sprites
+	Field gfx_buildingEntrance:TGW_Sprites
+	Field gfx_buildingRoof:TGW_Sprites
+	Field gfx_buildingWall:TGW_Sprites
 
 	Global StarsX:Int[60]
 	Global StarsY:Int[60]
@@ -1679,12 +1679,12 @@ Type TBuilding extends TRenderable
 		Elevator.Draw()
 
 		For Local Figure:TFigures = EachIn TFigures.List
-			If not Figure.alreadydrawn Then Figure.Draw()
+			If Not Figure.alreadydrawn Then Figure.Draw()
 		Next
 
 
 		SetBlend MASKBLEND
-		local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
+		Local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
 		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 130, pos.y + GetFloorY(9), - 1, 1)
 		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(13), - 1, 1)
 		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 110, pos.y + GetFloorY(9), - 1, 1)
@@ -1787,7 +1787,7 @@ Type TBuilding extends TRenderable
 			'stars
 			Local minute:Float = Game.GetActualMinute()
 			For Local i:Int = 0 To 59
-				If i Mod 6 = 0 And minute Mod 2 = 0 then StarsC[i] = Rand( StarsC[i] )
+				If i Mod 6 = 0 And minute Mod 2 = 0 Then StarsC[i] = Rand( StarsC[i] )
 				SetColor StarsC[i] , StarsC[i] , StarsC[i]
 				Plot(StarsX[i] , StarsY[i] )
 			Next
@@ -1801,7 +1801,7 @@ Type TBuilding extends TRenderable
 		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
 
 		For Local i:Int = 0 To Building.CloudCount - 1
-			Clouds[i].Draw(null, Clouds[i].pos.Y + 0.2*pos.y) 'parallax
+			Clouds[i].Draw(Null, Clouds[i].pos.Y + 0.2*pos.y) 'parallax
 		Next
 
 		If DezimalTime > 18 Or DezimalTime < 7
@@ -1921,7 +1921,7 @@ End Type
 
 
 
-Function UpdateBote:Int(ListLink:TLink, deltaTime:float=1.0) 'SpecialTime = 1 if letter in hand
+Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if letter in hand
 	Local Figure:TFigures = TFigures(ListLink.value())
 	Figure.FigureMovement(deltaTime)
 	Figure.FigureAnimation(deltaTime)
@@ -1947,14 +1947,14 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:float=1.0) 'SpecialTime = 1 if
 			EndIf
 		EndIf
 	End If
-	If figure.inRoom = Null and figure.clickedToRoom = Null and figure.dx = 0 and not (Figure.IsAtElevator() or Figure.IsInElevator()) 'not moving but not in/at elevator
+	If figure.inRoom = Null And figure.clickedToRoom = Null And figure.dx = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
 		Local room:TRooms = TRooms.GetRandomReachableRoom()
 		'Print "Bote: steht rum -> neues Ziel gesucht"
 		Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 	End If
 End Function
 
-Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:float=1.0)
+Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 	Local Figure:TFigures = TFigures(ListLink.value())
 	If figure.WaitTime < MilliSecs()
 		figure.WaitTime = MilliSecs() + 15000
@@ -2130,7 +2130,7 @@ InGame_Chat.useFont				= FontManager.GetFont("Default", 11)
 InGame_Chat.guichatgfx			= 0
 
 InGame_Chat.colR= 255; InGame_Chat.colG= 255; InGame_Chat.colB= 255
-InGame_Chat.GuiInput.color.adjust(255,255,255, true)
+InGame_Chat.GuiInput.color.adjust(255,255,255, True)
 '#End Region
 '#End Region
 
@@ -2141,7 +2141,7 @@ Function UpdateChat(UseChat:TGuiChat)
 	If Usechat.EnterPressed = 2
 		If Usechat.GUIInput.Value$ <> ""
 			Usechat.AddEntry("",Usechat.GUIInput.Value$, Game.playerID,"", "", MilliSecs())
-			If Game.networkgame then Network.SendChatMessage(Usechat.GUIInput.Value$)
+			If Game.networkgame Then Network.SendChatMessage(Usechat.GUIInput.Value$)
 			'NetPlayer.SendNetMessage(UDPClientIP, NetworkPlayername$, "CHAT", GUIChat_NWGL_Chat.GUIInput.value$)
 			Usechat.GUIInput.Value$ = ""
 			Network.ChatSpamTime = MilliSecs() + 500
@@ -2261,7 +2261,7 @@ Function Menu_Main()
 		Game.onlinegame = 1
 	EndIf
 	'multiplayer
-	if game.gamestate = 2
+	If game.gamestate = 2
 '		Game.network = new TNetworkConnection
 '		Game.network.ListenToLan()
 
@@ -2269,7 +2269,7 @@ Function Menu_Main()
 		If Not Network.Stream.Init() Then Throw("Network: Can't create socket")
 		Network.stream.SetLocalPort(Network.GetMyPort())
 		Game.networkgame = 1
-	endif
+	EndIf
 End Function
 
 Function Menu_NetworkLobby()
@@ -2321,7 +2321,7 @@ Function Menu_NetworkLobby()
 		Network.IP[0]	= Network.GetMyIP()
 		Network.Port[0]	= Network.GetMyPort()
 		Network.MyID	= 1
-		print "create networkgame"
+		Print "create networkgame"
 	EndIf
 	If NetgameLobbyButton_Join.GetClicks() > 0 Then
 		'Game.gamestate = 3
@@ -2551,12 +2551,12 @@ Function Menu_GameSettings_Draw()
 				Local ProgrammeArray:TProgramme[]
 				For Local j:Int = 0 To Game.startMovieAmount-1
 					ProgrammeArray=ProgrammeArray[..ProgrammeArray.length+1]
-					if j = 0
+					If j = 0
 						'1 teleshopping/quiz-programme
 						ProgrammeArray[j] = TProgramme.GetRandomProgrammeByGenre(20)
-					else
+					Else
 						ProgrammeArray[j] = TProgramme.GetRandomMovie(playerids)
-					endif
+					EndIf
 					Print "send programme:"+ProgrammeArray[j].title
 				Next
 				Network.SendProgramme(playerids, ProgrammeArray)
@@ -2727,15 +2727,15 @@ Function Init_Creation()
 		For Local playerids:Int = 1 To 4
 			For Local i:Int = 0 To 5
 				SeedRnd(MilliSecs())
-				if i = 0
+				If i = 0
 					'1 teleshopping/quiz-programme
 					Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
-				else
+				Else
 					Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie())
-				endif
+				EndIf
 			Next
 			'give 1 series to each player
-			local prog:TProgramme = TProgramme.GetRandomSerie(playerids)
+			Local prog:TProgramme = TProgramme.GetRandomSerie(playerids)
 			Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie(playerids))
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
@@ -2745,9 +2745,9 @@ Function Init_Creation()
 	EndIf
 			'abonnement for each newsgroup = 1
 	For Local playerids:Int = 1 To 4
-		for local i:int = 0 to 4
+		For Local i:Int = 0 To 4
 			Player[playerids].newsabonnements[i] = 1
-		next
+		Next
 	Next
 
 	'creation of blocks for players rooms
@@ -2813,7 +2813,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	'	If Game.networkgame
 	'		If KEYWRAPPER.pressedKey(KEY_ENTER) And GUIManager.getActive() <> InGame_Chat.GUIINPUT.uId And Network.ChatSpamTime < MilliSecs()
 	If KEYMANAGER.IsHit(KEY_ENTER)
-		If not GUIManager.isActive(InGame_Chat.GUIINPUT.uId)
+		If Not GUIManager.isActive(InGame_Chat.GUIINPUT.uId)
 			If Network.ChatSpamTime < MilliSecs()
 				GUIManager.setActive( InGame_Chat.GUIInput.uId )
 			Else
@@ -2996,18 +2996,18 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			If minute = 5
 				TPlayer.ComputeAudience()
 			'call-in shows/quiz - generate income
-			elseIf minute = 54
-				for local player:TPlayer = eachin TPlayer.list
-					local block:TProgrammeBlock = player.ProgrammePlan.GetActualProgrammeBlock()
-					if block<>null and block.programme.genre = GENRE_CALLINSHOW
-						local revenue:int = player.audience * rnd(0.05, 0.2)
+			ElseIf minute = 54
+				For Local player:TPlayer = EachIn TPlayer.list
+					Local block:TProgrammeBlock = player.ProgrammePlan.GetActualProgrammeBlock()
+					If block<>Null And block.programme.genre = GENRE_CALLINSHOW
+						Local revenue:Int = player.audience * Rnd(0.05, 0.2)
 						player.finances[Game.getWeekday()].earnCallerRevenue(revenue)
-					endif
+					EndIf
 				Next
 			'ads
-			elseIf minute = 55
+			ElseIf minute = 55
 				TPlayer.ComputeAds()
-			elseIf minute = 0
+			ElseIf minute = 0
 				Game.calculateMaxAudiencePercentage(hour)
 				TPlayer.ComputeNewsAudience()
  			EndIf
@@ -3042,7 +3042,7 @@ Type TEventListenerOnDay Extends TEventListenerBase
 			'if new day, not start day
 			If evt.time > 0
 				TRooms.ResetRoomSigns()
-				for local i:int = 1 to 4
+				For Local i:Int = 1 To 4
 					For Local NewsBlock:TNewsBlock = EachIn Player[i].ProgrammePlan.NewsBlocks
 						If Game.day - Newsblock.news.happenedday >= 2
 							Player[Newsblock.owner].ProgrammePlan.RemoveNewsBlock(NewsBlock)
@@ -3097,13 +3097,13 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			EndIf
 			FontManager.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
 			FontManager.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
-			If App.prepareScreenshot = 1 then DrawImage(gfx_startscreen_logosmall, App.settings.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
+			If App.prepareScreenshot = 1 Then DrawImage(gfx_startscreen_logosmall, App.settings.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
 
 			TProfiler.Enter("Draw-Flip")
 				Flip App.limitFrames
 			TProfiler.Leave("Draw-Flip")
 
-			If App.prepareScreenshot = 1 then SaveScreenshot();App.prepareScreenshot = 0
+			If App.prepareScreenshot = 1 Then SaveScreenshot();App.prepareScreenshot = 0
 			TProfiler.Leave("Draw")
 		EndIf
 	End Method
@@ -3138,12 +3138,12 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game
 
-		If KEYMANAGER.Ishit(Key_F1) AND Player[1].figure.isAI() Then Player[1].PlayerKI.reloadScript()
-		If KEYMANAGER.Ishit(Key_F2) AND Player[2].figure.isAI() Then Player[2].PlayerKI.reloadScript()
-		If KEYMANAGER.Ishit(Key_F3) AND Player[3].figure.isAI() Then Player[3].PlayerKI.reloadScript()
-		If KEYMANAGER.Ishit(Key_F4) AND Player[4].figure.isAI() Then Player[4].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F1) And Player[1].figure.isAI() Then Player[1].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F2) And Player[2].figure.isAI() Then Player[2].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F3) And Player[3].figure.isAI() Then Player[3].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F4) And Player[4].figure.isAI() Then Player[4].PlayerKI.reloadScript()
 
-		If KEYMANAGER.Ishit(Key_F5) then NewsAgency.AnnounceNewNews()
+		If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
 		App.Timer.loop()
 
 		'process events not directly triggered

@@ -5,7 +5,9 @@
 SuperStrict
 
 Import brl.Graphics
+?Linux
 Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
+?
 ?Win32
 Import brl.D3D9Max2D
 Import brl.D3D7Max2D
@@ -123,7 +125,7 @@ Global UsedMemAtStart:Int	= 0
 
 Function PrintVidMem(usage:String)
 ?win32
-	If directx = 1
+	If settings.directx = 1
 		Local mycaps:DDCAPS_DX7 = New DDCAPS_DX7
 		mycaps.dwCaps = DDSCAPS_VIDEOMEMORY'|LOCALVIDMEM|NONLOCALVIDMEM|SYSTEMMEMORY
 		D3D7GraphicsDriver().DirectDraw7().GetAvailableVidMem(MyCaps, Varptr totalmem, Varptr freemem)
@@ -138,16 +140,16 @@ Global DX9StartMemory:Int	= 0
 
 Global Settings:TApplicationSettings = TApplicationSettings.Create()
 '#Region Read Screenmode
-	local xml:TXmlHelper = TXmlHelper.Create("config/settings.xml")
+	Local xml:TXmlHelper = TXmlHelper.Create("config/settings.xml")
 	xml.setNode( xml.FindRootChild("settings") )
-	if xml.currentNode = null OR xml.currentNode.getName() <> "settings"
-		print "settings.xml fehlt der settings-Bereich"
-	Endif
+	If xml.currentNode = Null Or xml.currentNode.getName() <> "settings"
+		Print "settings.xml fehlt der settings-Bereich"
+	EndIf
 	Settings.fullscreen	= xml.FindValueInt("fullscreen", Settings.fullscreen, "settings.xml fehlt 'fullscreen', setze Defaultwert: "+Settings.fullscreen)
 	Settings.directx	= xml.FindValueInt("directx", Settings.directx, "settings.xml fehlt 'directx', setze Defaultwert: "+Settings.directx+" (OpenGL)")
 	Settings.colordepth	= xml.FindValueInt("colordepth", Settings.colordepth, "settings.xml fehlt 'colordepth', setze Defaultwert: "+Settings.colordepth)
 	If Settings.colordepth <> 16 And Settings.colordepth <> 32
-		print "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16"
+		Print "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16"
 		Settings.colordepth = 16
 	EndIf
 '#End Region
@@ -156,24 +158,29 @@ Local g:TGraphics
 Try
 ?Win32
 	Select Settings.directx
-		case  1	SetGraphicsDriver D3D7Max2DDriver()
-		case  2	SetGraphicsDriver D3D9Max2DDriver()
-		case -1 SetGraphicsDriver GLMax2DDriver()
-		default SetGraphicsDriver BufferedGLMax2DDriver()
+		Case  1	SetGraphicsDriver D3D7Max2DDriver()
+		Case  2	SetGraphicsDriver D3D9Max2DDriver()
+		Case -1 SetGraphicsDriver GLMax2DDriver()
+		?Linux
+		Default SetGraphicsDriver BufferedGLMax2DDriver()
+		?
+		?Not Linux
+		Default SetGraphicsDriver GLMax2DDriver()
+		?	
 	EndSelect
-	g = Graphics(Settings.width, Settings.height Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
+	g = Graphics(Settings.width, Settings.height, Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
 	If g = Null
 		Throw "Graphics initiation error! The game will try to open in windowed DirectX 7 mode."
 		SetGraphicsDriver D3D7Max2DDriver()
 		g = Graphics(Settings.width, Settings.height, 0, Settings.Hertz)
 	EndIf
 ?
-?not Win32
+?Not Win32
 	If Settings.directx = -1
 		SetGraphicsDriver GLMax2DDriver()
 	Else
 		SetGraphicsDriver BufferedGLMax2DDriver()
-	endif
+	EndIf
 	g = Graphics(Settings.width, Settings.height, Settings.colordepth*Settings.fullscreen, Settings.hertz, Settings.Flag)
 	If g = Null Then Throw "Graphics initiation error! no OpenGL available."
 ?
