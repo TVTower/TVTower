@@ -461,7 +461,7 @@ Type TLuaFunctions
 	Method getPlayerFloor:Int()
 		Local PlayerID:Int = activeKI.playerId
 		If Player[PlayerID] <> Null
-			Return Player[PlayerID].figure.onFloor
+			return Player[PlayerID].figure.GetFloor()
 		Else
 			Return 0
 		EndIf

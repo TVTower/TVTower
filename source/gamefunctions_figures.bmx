@@ -6,9 +6,7 @@ Type TFigures
 	Field initialdx:Float	= 0.0
 	field target:TPosition	= TPosition.Create(-1,-1)
 
-	Field toFloor:Int		= 13
-	Field onFloor:Int		= 13
-	Field clickedToFloor:Int = -1
+'	Field clickedToFloor:Int = -1
 	Field toRoom:TRooms		= Null			{sl = "no"}
 	Field fromRoom:TRooms	= Null			{sl = "no"}
 	Field clickedToRoom:TRooms = Null		{sl = "no"}
@@ -97,6 +95,43 @@ Type TFigures
 		return Building.getFloor(Building.pos.y + target.y) <> Building.getFloor(Building.pos.y + pos.y)
 	End Method
 
+	Method GetFloor:int(_pos:TPosition = null)
+		if _pos = null then _pos = self.pos
+		'print self.name + " is on floor: " + Building.getFloor( Building.pos.y + pos.y + sprite.h )
+		Return Building.getFloor( Building.pos.y + _pos.y )
+	End Method
+
+
+	Method IsOnFloor:Byte()
+		return pos.y = Building.GetFloorY(GetFloor())
+	End Method
+
+	'ignores y
+	Method IsAtElevator:Byte()
+		return Building.Elevator.IsInFrontOfDoor(pos.x + self.framewidth/2)
+	End Method
+
+	Method IsInElevator:Byte()
+		If Not IsAtElevator()
+			inElevator=False
+			If Building.Elevator.passenger = self Then Building.Elevator.passenger = null
+			Return False
+		else
+			If Building.Elevator.passenger = self
+				inElevator=True
+				Return True
+			EndIf
+		EndIf
+		inElevator=False
+		Return False
+	End Method
+
+	Method IsAI:Int()
+		If id > 4 Then Return True
+		If Game.networkgame Then If id < 4 Then If Network.IP[id - 1] = Null Then Return True
+		if self.ControlledByID = 0 then return true
+		Return False
+	End Method
 
 	Method FigureMovement(deltaTime:float=1.0)
 		local targetX:int = self.target.x
@@ -111,14 +146,14 @@ Type TFigures
 
 		If not Self.IsInElevator() 'And isOnFloor())
 			Self.pos.x	:+ deltaTime * Self.dx
-			If Not Self.IsOnFloor() Then Self.pos.setY( Building.GetFloorY(Self.onFloor) - Self.sprite.h )
+			If Not Self.IsOnFloor() Then Self.pos.setY( Building.GetFloorY(Self.GetFloor()) )
 		Else
 			Self.dx = 0.0
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
-		If self.pos.y + self.sprite.h < Building.GetFloorY(13) Then self.pos.setY( Building.GetFloorY(13) - self.sprite.h )
-		If self.pos.y + self.sprite.h > Building.GetFloorY( 0) Then self.pos.setY( Building.GetFloorY(0) - self.sprite.h )
+		If self.pos.y - self.sprite.h < Building.GetFloorY(13) Then self.pos.setY( Building.GetFloorY(13) )
+		If self.pos.y - self.sprite.h > Building.GetFloorY( 0) Then self.pos.setY( Building.GetFloorY(0) )
 		'limit player position horizontally
 	    If Floor(pos.x) <= 200 Then pos.setX(200);target.setX(200)
 	    If Floor(pos.x) >= 579 Then pos.setX(579);target.setX(579)
@@ -130,7 +165,7 @@ Type TFigures
 
 	      	NextAnimTimer = MilliSecs() + NextAnimTime
 	  		If dx = 0
-	      		If onFloor <> clickedToFloor and  not IsInElevator() and IsAtElevator()
+	      		If self.hasToChangeFloor() and not IsInElevator() and IsAtElevator()
 	     		   	AnimPos = 10
 	      		Else
 			        If MilliSecs() - NextTwinkerTimer > 0 Then
@@ -152,15 +187,15 @@ Type TFigures
 			If Figure.pos.y = Self.pos.y And Figure <> Self
 				If Abs(Figure.pos.x - Self.pos.x) < 50
 					If figure.id <= 3 And Self.id <= 3
-						If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x + framewidth, Building.pos.y + Self.pos.y - 8, 0)
-						If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18,Building.pos.y + Self.pos.y-8, 3)
+						If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 0)
+						If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18,Building.pos.y + self.pos.y - self.sprite.h-8, 3)
 					Else
 						If Self.id = figure_HausmeisterID
-							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 8 + framewidth, Building.pos.y + Self.pos.y - 8, 1)
-							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18+13,Building.pos.y + Self.pos.y-8, 4)
+							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 8 + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 1)
+							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18+13,Building.pos.y + self.pos.y - self.sprite.h-8, 4)
 						Else
-							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x + framewidth, Building.pos.y + Self.pos.y - 8, 1)
-							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 18, Building.pos.y + Self.pos.y - 8, 4)
+							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 1)
+							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 18, Building.pos.y + self.pos.y - self.sprite.h - 8, 4)
 						EndIf
 					EndIf
 				EndIf
@@ -240,79 +275,46 @@ Type TFigures
 		obj.LastID:+1
 		obj.Sprite		= sprite
 		obj.framewidth	= obj.sprite.framew 'overwriteable for different center/handle
-		obj.pos.setY( Building.GetFloorY(onFloor) - obj.sprite.h )
+		obj.pos.setY( Building.GetFloorY(onFloor) )
 		obj.NextAnimTimer = MilliSecs() + obj.NextAnimTime
-		obj.onFloor = onFloor
-		obj.toFloor = onFloor
 		obj.ControlledByID = ControlledByID
 		obj.ListLink = List.AddLast(obj)
 		SortList List
 		Return obj
 	End Function
 
-	Method IsOnFloor:Byte()
-		return pos.y = (Building.GetFloorY(onFloor) - self.sprite.h)
-	End Method
-
-	'ignores y
-	Method IsAtElevator:Byte()
-		return Building.Elevator.IsInFrontOfDoor(pos.x + self.framewidth/2)
-	End Method
-
-	Method IsInElevator:Byte()
-		If Not IsAtElevator()
-			inElevator=False
-			If Building.Elevator.passenger = id Then Building.Elevator.passenger = -1
-			Return False
-		else
-			If Building.Elevator.passenger = id
-				inElevator=True
-				Return True
-			EndIf
-		EndIf
-		inElevator=False
-		Return False
-	End Method
-
-	Method IsAI:Int()
-		If id > 4 Then Return True
-		If Game.networkgame Then If id < 4 Then If Network.IP[id - 1] = Null Then Return True
-		if self.ControlledByID = 0 then return true
-		Return False
-	End Method
-
 	Method CallElevator:Int()
 		if calledElevator then return false
 		'print self.name+" calls elevator"
 
 		If id = Game.playerID Or (IsAI() And Game.playerID = 1)
-			If IsAtElevator() Then Building.Elevator.AddFloorRoute(onFloor, 1, id, False, False)
+			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, False)
 		Else
-			If IsAtElevator() Then Building.Elevator.AddFloorRoute(onFloor, 1, id, False, True)
+			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, True)
 		EndIf
 		calledElevator = True
 		If Not Building.Elevator.EgoMode Then SortList(Building.Elevator.FloorRouteList)
 	End Method
 
 	Method SendElevator:Int()
-		'print self.name+" sends elevator"
-		Building.Elevator.passenger = id
-		toFloor			= clickedToFloor
-		clickedToFloor	= -1
-		'calledElevator	= False
+		print self.name+" sends elevator"
+		Building.Elevator.passenger = self
+		'target.y		= Building.getFloorY(Building.getFloor(target.y))
 		If id = Game.playerID Or (IsAI() And Game.playerID = 1)
-			Building.Elevator.AddFloorRoute(toFloor, 0, id, True, False)
+			Building.Elevator.AddFloorRoute(self.GetFloor(target), 0, id, True, False)
 		Else
-			Building.Elevator.AddFloorRoute(toFloor, 0, id, True, True)
+			Building.Elevator.AddFloorRoute(self.GetFloor(target), 0, id, True, True)
 		EndIf
+		'clickedToFloor	= -1
+		'calledElevator	= False
 	End Method
 
 	Method ChangeTarget(x:Int=null, y:Int=null)
 		if x=null then x=target.x
 		if y=null then y=target.y
 
-		'if player is not in elevator
-		If Self.id = Building.Elevator.passenger then return
+		'if player is in elevator dont accept changes
+		If Self = Building.Elevator.passenger then return
 		'y is not of floor 0 -13
 		If Building.GetFloor(y) < 0 OR Building.GetFloor(y) > 13 then return
 
@@ -331,15 +333,15 @@ Type TFigures
 		'center figure to target
 		target.setX(target.x - frameWidth/2)
 
-
-		clickedToFloor = Building.GetFloor(y)
-
 		inRoom = Null
 		'change to event
 		If Game.networkgame Then If Network.IsConnected Then Network.SendPlayerPosition()
 	End Method
 
+
 	Method Update(deltaTime:float)
+		self.alreadydrawn = 0
+
 		If updatefunc_ <> Null
 			updatefunc_(ListLink, deltaTime)
 		Else
@@ -361,7 +363,7 @@ Type TFigures
 			If Self.ControlledByID >= 0 and Self.id <> figure_HausmeisterID 'in multiplayer to be checked if its the player or not
 				'figure center is within 4px wide frame of room "spot" ?
 				'if self.ControlledByID = 1 then print "targetx="+target.x+" x="+(pos.x + framewidth/2)+", y="+(Building.pos.y + Building.GetFloorY(toFloor) - 5)+", wx:"+(clickedToRoom.Pos.x + doorCenter -2)+", wy:"+(Building.pos.y + Building.GetFloorY(clickedToRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)+" w:"+4+" h:"+54
-				If inRoom = Null And functions.IsIn(pos.x + framewidth/2, Building.pos.y + Building.GetFloorY(toFloor) - 5, clickedToRoom.Pos.x + doorCenter -2, Building.pos.y + Building.GetFloorY(clickedToRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, 4, 54)
+				If inRoom = Null And functions.IsIn(pos.x + framewidth/2, Building.pos.y + pos.y - 5, clickedToRoom.Pos.x + doorCenter -2, Building.pos.y + Building.GetFloorY(clickedToRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, 4, 54)
 			        'Print "standing in front of clickedroom "
 					AnimPos = 10
 					If clickedToRoom.doortype >= 0 and clickedToRoom.getDoorType() <> 5 and inRoom <> clickedToRoom
@@ -374,11 +376,11 @@ Type TFigures
         			    SetInRoom(clickedToRoom)
 					EndIf
 					If clickedToRoom.getDoorType() <> 5
-						If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = onFloor And IsAtElevator()
+						If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And IsAtElevator()
 							CallElevator()
 						EndIf
 					EndIf
-					If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = onFloor And Building.Elevator.onFloor = clickedToRoom.Pos.y And Building.Elevator.Open = 1
+					If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And Building.Elevator.onFloor = clickedToRoom.Pos.y And Building.Elevator.Open = 1
 						SetInRoom(clickedToRoom)
 						Building.Elevator.waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime
 					EndIf
@@ -389,16 +391,17 @@ Type TFigures
 			'figure wants to change floor
 			If Self.HasToChangeFloor() and IsAtElevator()
 				CallElevator()
-		        If Building.Elevator.passenger = -1 and calledElevator = True and Building.Elevator.Open = 1 and Building.Elevator.onFloor = onFloor
+		        If Building.Elevator.passenger= null  and calledElevator = True and Building.Elevator.Open = 1 and Building.Elevator.onFloor = GetFloor()
 	          		SendElevator()
 		        EndIf
 			EndIf
 
-
-			If IsInElevator() and Building.Elevator.Open = 1 and onFloor = toFloor and toFloor = Building.Elevator.toFloor
-				If self.sprite.h + Int(pos.y) = Int(Building.GetFloorY(toFloor))
+			If Building.Elevator.passenger = self and Building.Elevator.Open = 1 and pos.y = target.y and Building.getFloor(building.pos.y+target.y) = Building.Elevator.toFloor
+				print (self.sprite.h + Int(pos.y))+" = "+(target.y)
+				If self.sprite.h + Int(pos.y) = (target.y)
 					calledElevator	= False
-					Building.Elevator.passenger = -1
+					Building.Elevator.passenger = null
+					print "fahrstuhlrausschmiss"
 
 					'set target again - so player can click on signs in roomboard
 				'	self.SetToRoom( TRooms.GetTargetroom(self.target.x + self.FrameWidth /2, Building.pos.y + Building.GetFloorY(Building.GetFloor(self.pos.y)) - 5) )
@@ -421,13 +424,15 @@ Type TFigures
 				If Not ShadowDisabled
 					SetColor 0, 0, 0
 					SetAlpha 0.2
-					Sprite.DrawClipped(self.pos.x + 2, Building.pos.y + self.pos.y + 2, self.pos.x + 2, Building.pos.y + self.pos.y, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
+					Sprite.DrawClipped(self.pos.x + 2, Building.pos.y + self.pos.y - self.sprite.h + 2, self.pos.x + 2, Building.pos.y + self.pos.y - self.sprite.h, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
 					SetAlpha 1.0
 					SetColor 255, 255, 255
 				EndIf
-				Sprite.Draw(self.pos.x, Building.pos.y + self.pos.y, AnimPos)
+				Sprite.Draw(self.pos.x, Building.pos.y + self.pos.y - self.sprite.h, AnimPos)
 			EndIf
 		EndIf
+		'DrawRect(0,Building.pos.y + self.pos.y, 50,2)
+		'DrawRect(0,Building.pos.y + self.target.y, 100,2)
 		Self.GetPeopleOnSameFloor()
 	End Method
 

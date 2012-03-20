@@ -10,8 +10,8 @@ Type TTVGNetwork
 	Field IsConnected% 				= False   				' Are you connected?
 	Field ServerIP:Int				= 0						' if 0 then: wow, I'm the server
 	Field ServerPort:Int			= 0
-	Field MyIP$ 					= TNetwork.DottedIP(TNetwork.GetHostIP("")) ' my local IP
-	Field intMyIP% 					= TNetwork.IntIP(MyIP$) ' Int of server IP
+	Field MyIP$ 					= ""					' my local IP
+	Field intMyIP% 					= 0						' Int of server IP
 	Field Stream:TUDPStream      							' UDP Stream
 	Field myPing:Int[4], PingTime:Int[4], PingTimer:Int =0  ' Ping and Ping Timer
 	Field UpdateTime:Int         							' Update Timer
@@ -148,8 +148,12 @@ Type TTVGNetwork
 	Function Create:TTVGNetwork(fallbackip:String)
 		Local Network:TTVGNetwork = New TTVGNetwork
 		If Network.intMyIP% = 0
-			Network.MyIP$ = fallbackip
-			Network.intMyIP% = TNetwork.IntIP(fallbackip)
+'ron			Network.MyIP	= TNetwork.DottedIP(TNetwork.GetHostIP(""))
+			Network.intMyIP	= TNetwork.IntIP(Network.MyIP$)
+		endif
+		If Network.intMyIP% = 0
+			Network.MyIP$		= fallbackip
+			Network.intMyIP%	= TNetwork.IntIP(fallbackip)
 		EndIf
 		Return Network
 	End Function
@@ -334,10 +338,6 @@ Type TTVGNetwork
        WriteInt stream, Player[MyID].Figure.dx
        WriteInt Stream, Player[MyID].Figure.AnimPos
        WriteInt Stream, Player[MyID].Figure.target.x
-       WriteInt Stream, Player[MyID].Figure.toFloor
-       WriteInt Stream, Player[MyID].Figure.onFloor
-       WriteInt Stream, Player[MyID].Figure.calledElevator
-       WriteInt Stream, Player[MyID].Figure.clickedToFloor
        WriteInt Stream, Player[MyID].Figure.inElevator
        If (Player[MyID].Figure.inRoom <> Null) Then WriteInt Stream, Player[MyID].Figure.inRoom.uniqueID Else WriteInt Stream, 0
        If (Player[MyID].Figure.clickedToRoom <> Null) Then WriteInt stream, Player[MyID].Figure.clickedToRoom.uniqueID Else WriteInt stream, 0
@@ -360,10 +360,6 @@ Type TTVGNetwork
 	         WriteInt stream, Player[j+1].Figure.dx
 	         WriteInt stream, Player[j+1].Figure.AnimPos
 	         WriteInt stream, Player[j+1].Figure.target.x
-	         WriteInt stream, Player[j+1].Figure.toFloor
-	         WriteInt stream, Player[j+1].Figure.onFloor
-	         WriteInt stream, Player[j+1].Figure.calledElevator
-	         WriteInt stream, Player[j+1].Figure.clickedToFloor
 	         WriteInt stream, Player[j+1].Figure.inElevator
              If (Player[j+1].Figure.inRoom <> Null) Then WriteInt stream, Player[j+1].Figure.inRoom.uniqueID Else WriteInt stream, 0
              If (Player[j+1].Figure.clickedToRoom <> Null) Then WriteInt stream, Player[j+1].Figure.clickedToRoom.uniqueID Else WriteInt stream, 0
@@ -584,10 +580,7 @@ Type TTVGNetwork
        WriteInt   stream, Building.Elevator.upwards
        WriteFloat stream, Building.Elevator.Pos.x
        WriteFloat stream, Building.Elevator.Pos.y
-       WriteInt   stream, Building.Elevator.onFloor
-       WriteInt   stream, Building.Elevator.toFloor
        WriteInt   stream, Building.Elevator.open
-       WriteInt   stream, Building.Elevator.passenger
 	   Local FloorCount:Int = Building.Elevator.FloorRouteList.Count()
 	   WriteInt stream, FloorCount
 	   If FloorCount > 0
@@ -765,11 +758,7 @@ Type TTVGNetwork
     Local First:Int = ReadByte(Stream)
     Print "net: got floorroute:"+floornumber
     Building.Elevator.AddFloorRoute(floornumber, call, who, First, True)
-    If First Then
-  	  Player[ RemotePlayerID].Figure.clickedToFloor = -1
-      Player[ RemotePlayerID].Figure.calledElevator = False
-      Building.Elevator.passenger = RemotePlayerID
-    End If
+    If First Then Building.Elevator.passenger = Player[ RemotePlayerID ].figure
   End Method
 
   Method GotPacket_ElevatorSynchronize(_IP:Int, _Port:Short)
@@ -779,7 +768,6 @@ Type TTVGNetwork
     Building.Elevator.Pos.x = ReadFloat(stream)
     Local myY:Float = ReadFloat(stream)
     Building.Elevator.onFloor = ReadInt(stream)
-    Building.Elevator.toFloor = ReadInt(stream)
     Building.Elevator.open = ReadInt(stream)
     Local passenger:Int = ReadInt(stream)
 	'Building.Elevator.passenger = passenger
@@ -795,7 +783,7 @@ Type TTVGNetwork
 '	Else
 '	    Building.Elevator.y = myY
 '	EndIf
-	If Building.Elevator.passenger >= 0 Then Building.Elevator.Pos.y = myY
+	If Building.Elevator.passenger <> null Then Building.Elevator.Pos.y = myY
 	Local FloorCount:Int = ReadInt(stream)
     building.Elevator.FloorRouteList.Clear()
     'Print "synchronizing elevator"
@@ -973,23 +961,19 @@ Type TTVGNetwork
      Local x:Float = ReadFloat(stream)
      Local y:Float = ReadFloat(stream)
 
-	 Player[ RemotePlayerID ].Figure.dx              = ReadInt(stream)
-     Player[ RemotePlayerID ].Figure.AnimPos         = ReadInt(Stream)
-     Player[ RemotePlayerID ].Figure.target.x         = ReadInt(stream)
-     Player[ RemotePlayerID ].Figure.toFloor         = ReadInt(Stream)
-     Player[ RemotePlayerID ].Figure.onFloor         = ReadInt(Stream)
-     Player[ RemotePlayerID ].Figure.calledElevator  = ReadInt(Stream)
-     Player[ RemotePlayerID ].Figure.clickedToFloor  = ReadInt(Stream)
-     Player[ RemotePlayerID ].Figure.inElevator      = ReadInt(stream)
+	 Player[ RemotePlayerID ].Figure.dx					= ReadInt(stream)
+     Player[ RemotePlayerID ].Figure.AnimPos			= ReadInt(Stream)
+     Player[ RemotePlayerID ].Figure.target.x			= ReadInt(stream)
+     Player[ RemotePlayerID ].Figure.inElevator			= ReadInt(stream)
 
      'only synchronize position when not in Elevator
-	 If Building.Elevator.passenger <> RemotePlayerID 'Not Player[ RemotePlayerID ].Figure.inElevator
+	 If Building.Elevator.passenger <> Player[ RemotePlayerID ].figure 'Not Player[ RemotePlayerID ].Figure.inElevator
 	   Player[ RemotePlayerID ].Figure.pos.x               = x
 	   Player[ RemotePlayerID ].Figure.pos.y               = y
 	 End If
 
      If Player[ RemotePlayerID ].Figure.inElevator
-	   Building.Elevator.passenger = Player[ RemotePlayerID ].Figure.id
+	   Building.Elevator.passenger = Player[ RemotePlayerID ].Figure
 	   Player[ RemotePlayerID ].Figure.pos.x =  Int(Building.Elevator.GetDoorCenter() - Int(Player[ RemotePlayerID ].Figure.FrameWidth/2) - 3)
 	 EndIf
 
@@ -1032,10 +1016,8 @@ Type TTVGNetwork
      If figurebase <> Player[ RemotePlayerID].figurebase Then Player[ RemotePlayerID].UpdateFigureBase(figurebase)
      If Player[ RemotePlayerID].color.colR <> colR Or..
         Player[ RemotePlayerID].color.colG <> colG Or..
-        Player[ RemotePlayerID].color.colB <> colB Then
-       Player[ RemotePlayerID].color.colR = colR
-       Player[ RemotePlayerID].color.colG = colG
-       Player[ RemotePlayerID].color.colB = colB
+        Player[ RemotePlayerID].color.colB <> colB
+       Player[ RemotePlayerID].color.setCOlor(colR, colG, colB)
        Player[ RemotePlayerID].RecolorFigure(TPlayerColor.GetColor(colR, colG,colB))
      EndIf
      If RemotePlayerID <> game.playerID
@@ -1048,19 +1030,22 @@ Type TTVGNetwork
 	'if debugmode Print "NET: got PlayerDetails"
   End Method
 
-  Method GotPacket_PlayerIPs(_IP:Int, _Port:Short)
-    For Local i:Int = 0 To 3
-      IP[ i ]   = ReadInt(Stream)
-      Port[ i ] = ReadShort(Stream)
-      If IP[ i ] <> Null Then Player[i+1].Figure.ControlledByID= i+1
-      If IP[ i ] = Null Then Player[i+1].Figure.ControlledByID= 0
-    Next
-    'if debugmode Print "NET: got synchronize PlayerIP-packet"
-  End Method
+	Method GotPacket_PlayerIPs(_IP:Int, _Port:Short)
+		For Local i:Int = 0 To 3
+			IP[ i ]   = ReadInt(Stream)
+			Port[ i ] = ReadShort(Stream)
+			If IP[ i ] <> Null
+				Player[i+1].Figure.ControlledByID= i+1
+			else
+				Player[i+1].Figure.ControlledByID= 0
+			endif
+		Next
+		'if debugmode Print "NET: got synchronize PlayerIP-packet"
+	End Method
 
-  Method GotPacket_Join(_IP:Int, _Port:Short)
-    Print "got join from "+TNetwork.DottedIP(_IP)+":"+_Port
-    'it's the user acting as server knocking on the door
+	Method GotPacket_Join(_IP:Int, _Port:Short)
+		Print "got join from "+TNetwork.DottedIP(_IP)+":"+_Port
+		'it's the user acting as server knocking on the door
 	If Not IsConnected And isHost Then
 	  NetAck (RecvID, _IP, _Port)             ' Send ACK
       IsConnected = True        ' Connected

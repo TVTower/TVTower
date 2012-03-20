@@ -724,7 +724,7 @@ Type TDragAndDrop
 
  	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TPosition)
  	  For Local P:TDragAndDrop = EachIn List
-		If P.pos.x = _pos.x And P.pos.y = _pos.y Then Return P
+		If P.pos.isSame(_pos) Then Return P
 	  Next
 	  Return Null
  	End Function
@@ -747,11 +747,6 @@ Type TDragAndDrop
 
     Method CanDrop:Int(x:Int, y:Int, _Typ:String="")
 		return (IsIn(x,y) = 1 And typ=_Typ)
-    End Method
-
-    Method Drop:Int(x:Int, y:Int, _typ:String="")
-		local used:int = IsIn(x,y) And typ=_typ
-        Return used
     End Method
 End Type
 
@@ -796,6 +791,11 @@ Type TPlayerColor
 
    Global List:TList = CreateList()
 
+	Method SetColor(colR:Int, colG:Int, colB:Int)
+		self.colR = colR
+		self.colG = colG
+		self.colB = colB
+	End Method
 
    Function GetColor:TPlayerColor(colR:Int, colG:Int, colB:Int)
      Local color:TPlayerColor

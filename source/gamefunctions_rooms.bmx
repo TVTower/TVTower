@@ -574,7 +574,11 @@ Function Room_Elevator_Compute(_room:TRooms)
     Game.cursorstate = 0
     player[game.playerid].figure.fromroom =Null
     If Building.Elevator.waitAtFloorTimer - MilliSecs() <= 0 and Player[Game.playerID].figure.inRoom.name = "elevator" Then
+		Print "Schmeisse Figur " +  player[game.playerID].figure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
       'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritt
+	  player[game.playerID].figure.inElevator = False
+		  player[game.playerID].figure.calledElevator= false
+
       player[game.playerID].figure.inRoom = Null
 	  player[game.playerID].Figure.clickedToRoom = Null
       building.elevator.waitAtFloorTimer = MilliSecs()

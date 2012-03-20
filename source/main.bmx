@@ -258,11 +258,11 @@ Type TGame
 		Localization.AddLanguages("de, en") 'adds German and English to possible language
 		Localization.SetLanguage(Game.userlanguage) 'selects language
 		Localization.LoadResource("res/lang/lang_"+Game.userlanguage+".txt")
-		Game.networkgame	= 0
+		Game.networkgame		= 0
 		Game.minutesOfDayGone	= 0
-		Game.day 			= 1
-		Game.minute 		= 0
-		Game.title			= "unknown"
+		Game.day 				= 1
+		Game.minute 			= 0
+		Game.title				= "unknown"
 		Return Game
 	End Function
 
@@ -381,14 +381,17 @@ Type TGame
 		Return Self.hour + 1
 	End Method
 
+	Method IsGameLeader:int()
+		return (Game.networkgame And Game.playerID = 1) Or (Not Game.networkgame)
+	End Method
+
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
 		Self.minutesOfDayGone :+ (Float(speed) / 10.0)
 		Self.timeSinceBegin	:+ (Float(speed) / 10.0)
 
-		If (Game.networkgame And Game.playerID = 1) Or (Not Game.networkgame)
-			If NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
-		EndIf
+		'time for news ?
+		If IsGameLeader()) AND NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
 
 		'if speed to high - potential skip of minutes, so "fetch them"
 		'sets minute / hour / day
@@ -1258,8 +1261,7 @@ Type TElevator
 	Field waitAtFloorTimeForRoomboard:Int = 5000 								'wait 650ms until moving to destination
 	Field spriteDoor:TAnimSprites
 	Field spriteInner:TGW_Sprites
-	Field passenger:Int			=-1
-	Field passengerFigure:TFigures = Null
+	Field passenger:TFigures = Null
 	Field onFloor:Int 			= 0
 	Field open:Int 				= 0
 	Field toFloor:Int 			= 0
@@ -1284,7 +1286,6 @@ Type TElevator
 		LoadSaveFile.xmlWrite("PLANTIME",			Self.PlanTime)
 		LoadSaveFile.xmlWrite("WAITATFLOORTIMER",	Self.waitAtFloorTimer)
 		LoadSaveFile.xmlWrite("WAITATFLOORTIME",	Self.waitAtFloorTime)
-		LoadSaveFile.xmlWrite("PASSENGER",			Self.passenger)
 		LoadSaveFile.xmlWrite("ONFLOOR",	 		Self.onFloor)
 		LoadSaveFile.xmlWrite("OPEN",	 			Self.open)
 		LoadSaveFile.xmlWrite("TOFLOOR",			Self.toFloor)
@@ -1309,7 +1310,6 @@ Type TElevator
 		PlanTime		= ReadInt(loadfile)
 		waitAtFloorTimer= ReadInt(loadfile)
 		waitAtFloorTime = ReadInt(loadfile)
-		passenger		= ReadInt(loadfile)
 		onFloor		 	= ReadInt(loadfile)
 		open		 	= ReadInt(loadfile)
 		toFloor		 	= ReadInt(loadfile)
@@ -1341,6 +1341,9 @@ Type TElevator
 		Return obj
 	End Function
 
+	'nice-modus ? -- wenn spieler aus 1. etage fahrstuhl von 12. etage holt - und zwischendrin
+	'einer von 8. in den 6. fahren will - mitnehmen - dafuer muss der Fahrstuhl aber wissen,
+	'das er vom 8. in den 6. will - momentan gibt es nur die information "fahr in den 8."
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
 		If ElevatorCallIsDuplicate(floornumber, who) Then Print "duplicate elevator call by ID "+who;Return 0	'if duplicate - don't add
 		Local FloorRoute:TFloorRoute = TFloorRoute.Create(floornumber,call,who)
@@ -1359,7 +1362,11 @@ Type TElevator
 	Method GetFloorRoute:Int()
 		If Not FloorRouteList.IsEmpty()
 			Local tmpfloor:TFloorRoute = TFloorRoute(FloorRouteList.First())
-			If onFloor = tmpfloor.floornumber Then FloorRouteList.RemoveFirst
+			If onFloor = tmpfloor.floornumber
+				local fig:TFigures = TFigures.getFigure(tmpfloor.who)
+				if fig <> null and not fig.isAtElevator() then fig.calledElevator = false
+				FloorRouteList.RemoveFirst
+			endif
 			Return tmpfloor.floornumber
 		EndIf
 		Return -1
@@ -1374,13 +1381,7 @@ Type TElevator
 	Method OpenDoor()
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
 		open = 2 'wird geoeffnet
-		If passenger >= 0
-			Local Figure:TFigures = TFigures.GetFigure(passenger)
-			If Figure <> Null
-				Figure.onFloor	= onFloor
-				Figure.pos.setY( Building.GetFloorY(onFloor) - Figure.sprite.h )
-			EndIf
-		End If
+		If passenger <> null then passenger.pos.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
 		'If Game.networkgame Then If Network.IsConnected Then If Game.playerID = 1 Then Network.SendElevatorSynchronize()
 	End Method
 
@@ -1403,17 +1404,12 @@ Type TElevator
 		'elevatorbg
 		spriteInner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 4)
 		'figures in elevator
-		If passengerFigure = Null
-			For Local Figure:TFigures = EachIn TFigures.List
-				If Figure.IsInElevator() Then passengerFigure = Figure;passengerFigure.Draw(); passengerFigure.alreadydrawn = 1
-			Next
-		Else
-			passengerFigure.Draw(); passengerFigure.alreadydrawn = 1
-		EndIf
-		'
+		If passenger <> null then passenger.Draw();passenger.alreadydrawn = 1
+
+
 		For Local i:Int = 0 To 13
 			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h
-			If locy < 410 And locy > - 50 then Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
+			If locy < 410 And locy > - 50 AND i <> onFloor then  Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
 		Next
 	End Method
 
@@ -1428,9 +1424,11 @@ Type TElevator
 		If spriteDoor.getCurrentAnimationName() = "opendoor"
 			open = 2 'opening
 			If spriteDoor.getCurrentAnimation().isFinished()
-				If open = 2 And passenger <> - 1
-					TFigures.GetFigure(passenger).inElevator	= False
-					passengerFigure 							= Null
+				If open = 2 And passenger <> null
+					print "reset passenger"
+					passenger.calledElevator= false
+					passenger.inElevator	= False
+					passenger				= Null
 				EndIf
 				spriteDoor.setCurrentAnimation("open")
 				open = 1 'open
@@ -1449,38 +1447,19 @@ Type TElevator
 		If (onFloor <> toFloor And open <> 0) And open <> 3 And waitAtFloorTimer <= MilliSecs() Then CloseDoor
 		If (onFloor = toFloor) And open = 0 Then OpenDoor;waitAtFloorTimer = MilliSecs() + waitAtFloorTime
 
-		'figure wants to select room within elevator
-		If open And waitAtFloortimer + waitAtFloorTimeForRoomboard <= MilliSecs() And waitAtFloorTimer <> 0
-			If passenger <> - 1
-				TFigures.GetFigure(passenger).inElevator = False
-				passengerFigure = Null
-				Print "Schmeisse Figur " + TFigures.GetFigure(passenger).Name + " aus dem Fahrstuhl (" + (MilliSecs() - waitatfloortimer) + ")"
-				passenger = -1
-			EndIf
-		EndIf
-
 		'move figure who is in elevator
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.IsInElevator()
-				If open=0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
-					Figure.pos.setY ( Building.Elevator.Pos.y + spriteInner.h - Figure.sprite.h )
-				EndIf
+					Figure.pos.setY ( Building.Elevator.Pos.y + spriteInner.h) '+1 odd displacement
 				Exit 'only one figure in elevator possible
 			EndIf
 		Next
 
 		spriteDoor.Update(deltaTime)
 
-		'move figure in elevator
+		'wait some time?
 		If (onFloor <> toFloor And open <> 0) Or (onFloor = toFloor)
 			Local tmpFloor:Int 		= GetFloorRoute()
-			For Local Figure:TFigures = EachIn TFigures.List
-				If Figure.IsInElevator() And Figure.toRoom <> null and Figure.toRoom.pos.y = toFloor
-					Figure.onFloor = Building.Elevator.onFloor
-					Figure.pos.setY( Building.GetFloorY(Figure.onFloor) - Figure.sprite.h )
-					Exit 'only one figure in elevator possible
-				EndIf
-			Next
 			If waitAtFloorTimer <= MilliSecs() And toFloor = onFloor
 				If tmpfloor = onFloor	Then waitAtFloorTimer = MilliSecs() + waitAtFloorTime
 				If tmpFloor <> -1		then toFloor = tmpfloor
@@ -1509,19 +1488,14 @@ Type TElevator
 		SetBlend MASKBLEND
 		TRooms.DrawDoors()
 
-		'check wether elevator has to move to somewhere but doors aren't closed, if so, start closing-animation
 		If (onFloor <> toFloor And open <> 0)Or(onFloor = toFloor)
-			Local locy:Int = Parent.pos.y + Parent.GetFloorY(onFloor) - spriteInner.h + 5
-			spriteInner.DrawClipped(Parent.pos.x + pos.x, locy - 3, Parent.pos.x + 131 + 230, locy, 40, 50,0,0)
+'			For Local Figure:TFigures = EachIn TFigures.List
+'				If Figure.isOnFloor() and Figure.IsAtElevator() Then Figure.Draw() ;Figure.alreadydrawn = 0 'not alreadydrawn for openinganimation
+'			Next
 		EndIf
 
-		For Local Figure:TFigures = EachIn TFigures.List
-			If Figure.IsOnFloor() Then Figure.Draw() ;Figure.alreadydrawn = 0 'not alreadydrawn for openinganimation
-		Next
-
-		If (onFloor <> toFloor And open <> 0) Or (onFloor = toFloor)
-			spriteDoor.Draw(Parent.pos.x + pos.x, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)
-		EndIf
+		'draw missing door (where elevator is)
+		spriteDoor.Draw(Parent.pos.x + pos.x, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)
 
 		For Local i:Int = 0 To 13
 			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h - 8
@@ -1550,9 +1524,6 @@ Type TElevator
 				FontManager.basefont.draw(FloorRoute.floornumber + " 'holen' " + TFigures.GetFigure(FloorRoute.who).Name, 650, 50 + routepos * 15)
 			EndIf
 			routepos:+1
-		Next
-		For Local Figure:TFigures = EachIn TFigures.List
-			If (Not Figure.IsInElevator()) And Not Figure.alreadydrawn Then Figure.Draw()
 		Next
 	End Method
 
@@ -1699,6 +1670,11 @@ Type TBuilding extends TRenderable
 
 		SetBlend ALPHABLEND
 		Elevator.Draw()
+
+		For Local Figure:TFigures = EachIn TFigures.List
+			If not Figure.alreadydrawn Then Figure.Draw()
+		Next
+
 
 		SetBlend MASKBLEND
 		local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
@@ -1976,9 +1952,9 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:float=1.0)
 	If figure.WaitTime < MilliSecs()
 		figure.WaitTime = MilliSecs() + 15000
 		'Print "zu lange auf fahrstuhl gewartet"
-		Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.sprite.h)
+		Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 	EndIf
-	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And figure.onFloor = Building.GetFloor(figure.target.y)
+	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And figure.GetFloor() = Building.GetFloor(figure.target.y)
 		Local zufall:Int = Rand(0, 100)
 		Local zufallx:Int = Rand(150, 580)
 		If figure.LastSpecialTime < MilliSecs()
@@ -1989,12 +1965,12 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:float=1.0)
 			Until Abs(figure.pos.x - zufallx) > 15
 
 			If zufall > 85 And Not figure.IsAtElevator()
-				Local sendToFloor:Int = figure.onFloor + 1
-				If figure.onFloor >= 13 Then sendToFloor = 0
+				Local sendToFloor:Int = figure.GetFloor() + 1
+				If sendToFloor > 13 Then sendToFloor = 0
 				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.sprite.h)
 				figure.WaitTime = MilliSecs() + 15000
 			Else If zufall <= 85 And Not figure.isAtElevator()
-				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.onfloor) - figure.sprite.h)
+				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 			EndIf
 		EndIf
 	EndIf
@@ -2004,7 +1980,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:float=1.0)
 		If Figure.AnimPos < 8 Or Figure.AnimPos > 10 Then Figure.AnimPos = Figure.AnimPos + 1
 		Figure.NextAnimTimer = MilliSecs() + Figure.NextAnimTime
 		If Figure.dx = 0
-			If Figure.onFloor <> Building.GetFloor(figure.target.y) And Not Figure.IsInElevator() And Figure.IsAtElevator()
+			If Figure.HasToChangeFloor() And Not Figure.IsInElevator() And Figure.IsAtElevator()
 				Figure.AnimPos = 10
 			Else
 				If MilliSecs() - Figure.NextTwinkerTimer > 0
