@@ -1,57 +1,382 @@
-﻿'base of all networkevents...
+﻿Const NET_PACKET_RELIABLE:int	= 1
+
+
+'message states
+Const NET_STATE_ALL:int			= 0
+Const NET_STATE_CREATED:int		= 1
+Const NET_STATE_MODIFIED:int	= 2
+Const NET_STATE_CLOSED:int		= 3
+Const NET_STATE_SYNCED:int		= 4
+Const NET_STATE_MESSAGE:int		= 5
+Const NET_STATE_ZOMBIE:int		=-1
+'types
+Const NET_TYPE_STRING:int		= 1
+Const NET_TYPE_INT:int			= 2
+Const NET_TYPE_UINT8:int		= 3
+Const NET_TYPE_UINT16:int		= 4
+Const NET_TYPE_FLOAT16:int		= 5
+Const NET_TYPE_FLOAT32:int		= 6
+
+
+'--from gnet.bmx
+Function PackFloat16:int( f:float )
+	Local i:int=(Int Ptr Varptr f)[0]
+	If i=$00000000 Return $0000	'+0
+	If i=$80000000 Return $8000	'-0
+	Local M:int=i Shl 9
+	Local S:int=i Shr 31
+	Local E:int=(i Shr 23 & $ff)-127
+	If E=128
+		If M then Return $ffff		'NaN
+		Return S Shl 15 | $7c00	'+/-Infinity
+	EndIf
+	M:+$00200000
+	If Not (M & $ffe00000) then E:+1
+	If E>15
+		Return S Shl 15 | $7c00	'+/-Infinity
+	Else If E<-15
+		Return S Shl 15			'+/- 0
+	EndIf
+	Return S Shl 15 | (E+15) Shl 10 | M Shr 22
+End Function
+
+Function UnpackFloat16:float( i:int )
+	i:&$ffff
+	If i=$0000 Return +0.0
+	If i=$8000 Return -0.0
+	Local M:int=i Shl 22
+	Local S:int=i Shr 15
+	Local E:int=(i Shr 10 & $1f)-15
+	If E=16
+		If M Return 0.0/0.0		'NaN
+		If S Return -1.0/0.0	'-Infinity
+		Return +1.0/0.0			'+Infinity
+	Else If E = -15				'denormal as float16, but normal as float32.
+		For local i:int = 0 To 9          'find the leading 1-bit
+			Local bit:int = M & $80000000
+			M:Shl 1
+			If bit then Exit
+		Next
+		E:-i
+	EndIf
+	Local n:int =S Shl 31 | (E+127) Shl 23 | M Shr 9
+	Return (Float Ptr Varptr n)[0]
+End Function
+
+Function PackFloat32:int( f:float )
+	Return (Int Ptr Varptr f)[0]
+End Function
+
+Function UnpackFloat32:float( i:int )
+	Return (Float Ptr Varptr i)[0]
+End Function
+'--
+
+Type TNetworkObject
+	field sender:int
+	field receiver:int
+	field data:byte[]
+	field state:int
+	field id:int
+	Field slots:TNetworkObjectSlot[32]
+	field modified:int
+	field target:object 'remote ?
+
+	Function Create:TNetworkObject( id:int,state:int,sender:int, receiver:int )
+		Local obj:TNetworkObject=New TNetworkObject
+		obj.id		= id
+		obj.state	= state
+		obj.sender	= sender
+		obj.receiver= receiver
+		Return obj
+	End Function
+
+	Method SetInt( index:int,data:int )
+		WriteSlot( index ).SetInt data
+	End Method
+
+	Method SetFloat( index:int, data:float )
+		WriteSlot( index ).SetFloat data
+	End Method
+
+	Method SetString( index:int, data:string )
+		WriteSlot( index ).SetString data
+	End Method
+
+	Method GetInt:int( index:int )
+		Return slots[index].GetInt()
+	End Method
+
+	Method GetFloat:float( index:int )
+		Return slots[index].GetFloat()
+	End Method
+
+	Method GetString:string( index:int )
+		Return slots[index].GetString()
+	End Method
+
+	Method WriteSlot:TNetworkObjectSlot( index:int )
+		Assert state<>NET_STATE_CLOSED And state<>NET_STATE_ZOMBIE Else "Object has been closed"
+		modified :|1 Shl index
+		If state = NET_STATE_SYNCED then state=NET_STATE_MODIFIED
+		Return slots[index]
+	End Method
+
+	Method Sync:TNetworkMessage()
+		Select state
+			Case NET_STATE_SYNCED, NET_STATE_ZOMBIE 	Return null
+		End Select
+
+		Local msg:TNetworkMessage
+
+		'local
+		If Not receiver
+			msg			= New TNetworkMessage
+			msg.id		= id
+			msg.state	= state
+			msg.data	= PackSlots( modified )
+		EndIf
+
+		modified=0
+
+		Select state
+			Case NET_STATE_CREATED,NET_STATE_MODIFIED
+				state=NET_STATE_SYNCED
+			Case NET_STATE_CLOSED
+				target=Null
+				state=NET_STATE_ZOMBIE
+		End Select
+
+		Return msg
+	End Method
+
+
+	Method Update( msg:TNetworkMessage )
+		Assert id=msg.id
+		self.UnpackSlots(msg.data)
+		state = msg.state
+	End Method
+
+	Method CreateMessage:TNetworkMessage(messageType:int=0)
+		select messageType
+			case NET_STATE_CREATED, NET_STATE_MESSAGE
+					return TNetworkMessage.Create(id, messageType, PackSlots( ~0 ))
+			case NET_STATE_CLOSED
+					return TNetworkMessage.Create(id, messageType, PackSlots( 0 ))
+		end select
+	End Method
+
+	Method PackSlots:Byte[]( mask:int )
+		Local size:int
+		For Local index:int = 0 Until 32
+			If Not (mask & 1 Shl index) then Continue
+			Select slots[index].slottype
+				Case false, 0			continue
+				Case NET_TYPE_INT		size:+5
+				Case NET_TYPE_UINT8		size:+2
+				Case NET_TYPE_UINT16	size:+3
+				Case NET_TYPE_FLOAT16	size:+3
+				Case NET_TYPE_FLOAT32	size:+5
+				Case NET_TYPE_STRING	size:+3+GetString(index).length
+			End Select
+		Next
+		If size>$fff0 Throw "NetworkMessage data too large"
+		Local data:Byte[size]
+		Local p:Byte Ptr=data
+		For Local index:int = 0 Until 32
+			If Not (mask & 1 Shl index) Continue
+			Select slots[index].slottype
+				Case false, 0			continue
+				Case NET_TYPE_INT		Local n:int = GetInt( index )
+										p[0]=NET_TYPE_INT Shl 5 | index
+										p[1]=n Shr 24
+										p[2]=n Shr 16
+										p[3]=n Shr 8
+										p[4]=n Shr 0
+										p:+5
+				Case NET_TYPE_UINT8		Local n:int = GetInt( index )
+										p[0]=NET_TYPE_UINT8 Shl 5 | index
+										p[1]=n
+										p:+2
+				Case NET_TYPE_UINT16	Local n:int = GetInt( index )
+										p[0]=NET_TYPE_UINT16 Shl 5 | index
+										p[1]=n Shr 8
+										p[2]=n Shr 0
+										p:+3
+				Case NET_TYPE_FLOAT16	Local n:int = PackFloat16( GetFloat(index) )
+										p[0]=NET_TYPE_FLOAT16 Shl 5 | index
+										p[1]=n Shr 8
+										p[2]=n Shr 0
+										p:+3
+				Case NET_TYPE_FLOAT32	Local n:int = PackFloat32( GetFloat(index) )
+										p[0]=NET_TYPE_FLOAT32 Shl 5 | index
+										p[1]=n Shr 24
+										p[2]=n Shr 16
+										p[3]=n Shr 8
+										p[4]=n Shr 0
+										p:+5
+				Case NET_TYPE_STRING	Local data:string =GetString( index )
+										Local n:int=data.length
+										p[0]=NET_TYPE_STRING Shl 5 | index
+										p[1]=n Shr 8
+										p[2]=n Shr 0
+										Local t:Byte Ptr=data.ToCString()
+										MemCopy p+3,t,n
+										MemFree t
+										p:+3+n
+				Default					Throw "Invalid TNetworkObjectSlot data type"
+			End Select
+		Next
+		Return data
+	End Method
+
+	Method UnpackSlots( data:Byte[] )
+		Local p:Byte Ptr=data
+		Local e:Byte Ptr=p+data.length
+		While p<e
+			Local typ:int=p[0] Shr 5
+			Local index:int =p[0] & 31
+			p:+1
+			Select typ
+				Case NET_TYPE_INT		SetInt index,p[0] Shl 24 | p[1] Shl 16 | p[2] Shl 8 | p[3]
+										p:+4
+				Case NET_TYPE_UINT8		SetInt index,p[0]
+										p:+1
+				Case NET_TYPE_UINT16	SetInt index,p[0] Shl 8 | p[1]
+										p:+2
+				Case NET_TYPE_FLOAT16	SetFloat index, UnpackFloat16( p[0] Shl 8 | p[1] )
+										p:+2
+				Case NET_TYPE_FLOAT32	SetFloat index,UnpackFloat32( p[0] Shl 24 | p[1] Shl 16 | p[2] Shl 8 | p[3] )
+										p:+4
+				Case NET_TYPE_STRING	local length:int = p[0] Shl 8 | p[1]
+										SetString index, String.FromBytes( p+2, length )
+										p:+2 +length
+				Default					Throw "Invalid NetworkObjectSlot data type"
+			End Select
+		Wend
+		If p<>e Throw "Corrupt NEtworkObject message"
+	End Method
+End Type
+
+Type TNetworkObjectSlot
+	Field slottype:int
+	Field _int:int
+	Field _float:float
+	Field _string:string
+
+	Method SetInt( data:int )
+		Assert slottype = 0 Or slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16
+		_int=data
+		If data<0
+			slottype=NET_TYPE_INT
+		Else If data<=255
+			slottype=NET_TYPE_UINT8
+		Else If data<=65535
+			slottype=NET_TYPE_UINT16
+		Else
+			slottype=NET_TYPE_INT
+		EndIf
+	End Method
+
+	Method SetFloat( data:float )
+		Assert slottype=0 Or slottype=NET_TYPE_FLOAT32
+		_float	= data
+		slottype= NET_TYPE_FLOAT32
+	End Method
+
+	Method SetString( data:string )
+		Assert slottype=0 Or slottype=NET_TYPE_STRING
+		_string	= data
+		slottype= NET_TYPE_STRING
+	End Method
+
+	Method GetInt:int()
+		Assert slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16
+		Return _int
+	End Method
+
+	Method GetFloat:float()
+		Assert slottype = NET_TYPE_FLOAT32
+		Return _float
+	End Method
+
+	Method GetString:string()
+		Assert slottype = NET_TYPE_STRING
+		Return _string
+	End Method
+
+End Type
+
+
+Type TNetworkMessage
+	Field id:int
+	Field state:int
+	Field data:Byte[]
+
+	Function Create:TNetworkMessage(id:int, state:int, data:byte[])
+		local obj:TNetworkMessage = new TNetworkMessage
+		obj.id = id
+		obj.state = state
+		obj.data = data
+		return obj
+	End Function
+End Type
+
+
+
+
+
+
+
+
+'base of all networkevents...
 'added to the base networking functions are all methods to send and receive data from clients
 'including playerposition, programmesending, changes of elevatorpositions etc.
 Type TTVGNetwork
 	' // Network Specific Declares
-	Field SpeedFactor:Double 		= 0.1
-	Field SpeedFactorLan:Double 	= 0.1
-	Field SpeedFactorOnline:Double	= 1.0
-	Field isHost% 					= False    				' Are you hosting or joining?
-	Field IsConnected% 				= False   				' Are you connected?
-	Field ServerIP:Int				= 0						' if 0 then: wow, I'm the server
-	Field ServerPort:Int			= 0
-	Field MyIP$ 					= ""					' my local IP
-	Field intMyIP% 					= 0						' Int of server IP
+	Field isHost:int				= False    				' Are you hosting or joining?
+	Field IsConnected:int			= False   				' Are you connected?
+	Field localIP:string				= ""					' my local IP
+	Field intLocalIP:int				= 0						' Int of server IP
 	Field Stream:TUDPStream      							' UDP Stream
 	Field myPing:Int[4], PingTime:Int[4], PingTimer:Int =0  ' Ping and Ping Timer
 	Field UpdateTime:Int         							' Update Timer
 	Field MainSyncTime:Int       							' Main Update Timer
 	Field AnnounceTime:Int       							' Main Announcement Timer
 	Field SendID%, RecvID%, lastRecv:Int[52] 				' Packet IDs and Duplicate checking Array
-	Field MyID:Int = -1 'which playernumber is mine? - so which line of the iparray and so on
-	Field IP%[4], Port:Short[4]  							' Client IP and Port
-	Field debugmode:Byte = True  							' Toggles the display of debug messages
+	Field MyID:Int 					= -1					' which playernumber is mine? - so which line of the iparray and so on
+	Field IP:int[4], Port:Short[4] 							' Client IP and Port
+	Field debugmode:Byte			= True					' Toggles the display of debug messages
 	Field bSentFull:Byte         							' Full update boolean
-	Field n:NetObj, netList:TList = New TList 			' Packet Object and List
-	Field LastOnlineRequestTimer:Int = 0
-	Field LastOnlineRequestTime:Int = 10000   			'time until next action (getlist, announce...)
-	Field LastOnlineHashCode:String = ""
-	Field OnlineIP:String= ""                				' ip for internet
-	Field intOnlineIP:Int= 0                 				' int version of ip for internet
-	Field ChatSpamTime:Int = 0
-	' // Networking Constants
-	Global HOSTPORT:Byte 				= 4544              ' * IMPORTANT * This UDP port must not be blocked by
-	Global ONLINEPORT:Byte 			= 4544            	' a routeror firewall, or CreateUDPStream will fail
-	Global LOCALPORT:Byte 			= 4544
-	Global NET_ACK:Byte    			= 1					' ALL: ACKnowledge
-	Global NET_JOIN:Byte   			= 2					' ALL: Join Attempt
-	Global NET_PING:Byte   			= 3					' Ping
-	Global NET_PONG:Byte   			= 4					' Pong
-	Global NET_UPDATE:Byte 			= 5					' Update
-	Global NET_STATE:Byte  			= 6					' State update only
-	Global NET_QUIT:Byte   			= 7					' ALL:    Quit
-	Global NET_ANNOUNCEGAME:Byte   	= 8					' SERVER: Announce a game
-	Global NET_SETSLOT:Byte 			= 9					' SERVER: command from server to set to a given playerslot
-	Global NET_SLOTSET:Byte 			= 10				' ALL: 	  response to all, that IP uses slot X now
-	Global NET_PLAYERLIST:Byte 		= 11				' SERVER: List of all players in our game
-	Global NET_CHATMESSAGE:Byte 		= 12				' ALL:    a sent chatmessage ;D
-	Global NET_PLAYERIPS:Byte 		= 13				' Packet contains IPs of all four Players
-	Global NET_PLAYERDETAILS:Byte 	= 14				' ALL:    name, channelname...
-	Global NET_PLAYERPOSITION:Byte 	= 15				' ALL:    x,y,room,target...
-	Global NET_SENDPROGRAMME:Byte 	= 16				' SERVER: sends a Programme to a user for adding this to the players collection
+	Field n:NetObj, netList:TList = New TList	 			' Packet Object and List
+	Field LastOnlineRequestTimer:Int	= 0
+	Field LastOnlineRequestTime:Int		= 10000   			'time until next action (getlist, announce...)
+	Field LastOnlineHashCode:String		= ""
+	Field OnlineIP:String				= ""                ' ip for internet
+	Field intOnlineIP:Int				= 0					' int version of ip for internet
+	Field ChatSpamTime:Int				= 0					' // Networking Constants
+	Global HOSTPORT:Byte				= 4544              ' * IMPORTANT * This UDP port must not be blocked by
+	Global ONLINEPORT:Byte				= 4544            	' a router or firewall, or CreateUDPStream will fail
+	Global LOCALPORT:Byte				= 4544
+	Global NET_ACK:Byte					= 1					' ALL: ACKnowledge
+	Global NET_JOIN:Byte				= 2					' ALL: Join Attempt
+	Global NET_PING:Byte				= 3					' Ping
+	Global NET_PONG:Byte				= 4					' Pong
+	Global NET_UPDATE:Byte				= 5					' Update
+	Global NET_STATE:Byte				= 6					' State update only
+	Global NET_QUIT:Byte				= 7					' ALL:    Quit
+	Global NET_ANNOUNCEGAME:Byte		= 8					' SERVER: Announce a game
+	Global NET_SETSLOT:Byte				= 9					' SERVER: command from server to set to a given playerslot
+	Global NET_SLOTSET:Byte				= 10				' ALL: 	  response to all, that IP uses slot X now
+	Global NET_PLAYERLIST:Byte			= 11				' SERVER: List of all players in our game
+	Global NET_CHATMESSAGE:Byte			= 12				' ALL:    a sent chatmessage ;D
+	Global NET_PLAYERIPS:Byte			= 13				' Packet contains IPs of all four Players
+	Global NET_PLAYERDETAILS:Byte		= 14				' ALL:    name, channelname...
+	Global NET_PLAYERPOSITION:Byte		= 15				' ALL:    x,y,room,target...
+	Global NET_SENDPROGRAMME:Byte		= 16				' SERVER: sends a Programme to a user for adding this to the players collection
 	Global NET_GAMEREADY:Byte			= 17				' ALL:    sends a ReadyFlag
 	Global NET_STARTGAME:Byte			= 18				' SERVER: sends a StartFlag
-	Global NET_PLAN_PROGRAMMECHANGE:Byte = 19				' ALL:    playerprogramme has changed (added, removed and so on)
+	Global NET_PLAN_PROGRAMMECHANGE:Byte= 19				' ALL:    playerprogramme has changed (added, removed and so on)
 	Global NET_STATIONCHANGE:Byte		= 20				' ALL:    stations have changes (added ...)
 	Global NET_ELEVATORROUTECHANGE:Byte	= 21				' ALL:    elevator routes have changed
 	Global NET_ELEVATORSYNCHRONIZE:Byte	= 22				' SERVER: synchronizing the elevator
@@ -62,16 +387,16 @@ Type TTVGNetwork
 	Global NET_NEWSSUBSCRIPTIONLEVEL:Byte = 27				' ALL: sends Changes in subscription levels of news-agencies
 	Global NET_PLAN_NEWSCHANGE:Byte		= 28				' ALL: sends Changes of news in the players newsstudio
 	Global NET_MOVIEAGENCY_CHANGE:Byte	= 29				' ALL: sends changes of programme in movieshop
-	Global NET_DELETE:Byte = 0
-	Global NET_ADD:Byte    = 1
-	Global NET_CHANGE:Byte = 2
-	Global NET_BUY:Byte	   = 3
-	Global NET_SELL:Byte   = 4
-	Global NET_BID:Byte	   = 5
-	Global NET_SWITCH:Byte = 6
-	Global MyStream:TStream = New TStream
-	Global MyBank:TBank = New TBank
-	Global LastElevatorSynchronize:Int =0
+	Global NET_DELETE:Byte				= 0
+	Global NET_ADD:Byte					= 1
+	Global NET_CHANGE:Byte				= 2
+	Global NET_BUY:Byte					= 3
+	Global NET_SELL:Byte				= 4
+	Global NET_BID:Byte					= 5
+	Global NET_SWITCH:Byte				= 6
+	Global MyStream:TStream				= New TStream
+	Global MyBank:TBank					= New TBank
+	Global LastElevatorSynchronize:Int	= 0
 	Global BackupStreamPtr:Byte Ptr
 	Global BackupStreamSize:Int = 0
 
@@ -147,13 +472,22 @@ Type TTVGNetwork
 
 	Function Create:TTVGNetwork(fallbackip:String)
 		Local Network:TTVGNetwork = New TTVGNetwork
-		If Network.intMyIP% = 0
-'ron			Network.MyIP	= TNetwork.DottedIP(TNetwork.GetHostIP(""))
-			Network.intMyIP	= TNetwork.IntIP(Network.MyIP$)
+
+		If Network.intlocalIP = 0
+			?not linux
+			Network.localIP		= TNetwork.DottedIP(TNetwork.GetHostIP(""))
+			?
+			?linux
+'			Network.LocalIP	= TNetwork.DottedIP(TNetwork.GetHostIP("eth0"))
+			Network.LocalIP	= TNetwork.DottedIP(TNetwork.GetHostIP(""))
+			?
+			Network.intLocalIP	= TNetwork.IntIP(Network.localIP)
 		endif
-		If Network.intMyIP% = 0
-			Network.MyIP$		= fallbackip
-			Network.intMyIP%	= TNetwork.IntIP(fallbackip)
+
+		If Network.intlocalIP = 0
+			print "NET: using fallback IP " +fallbackip
+			Network.localIP		= fallbackip
+			Network.intlocalIP	= TNetwork.IntIP(fallbackip)
 		EndIf
 		Return Network
 	End Function
@@ -188,7 +522,7 @@ Type TTVGNetwork
 
   Method WriteMyIP()
     If Not Game.onlinegame
-      WriteInt stream, intMyIP
+      WriteInt stream, intLocalIP
   	  WriteShort stream, HOSTPORT
 	Else
       WriteInt stream, intOnlineIP
@@ -196,11 +530,14 @@ Type TTVGNetwork
 	EndIf
   End Method
 
+	'modier of sync speed
+	Method GetSyncSpeedFactor:int()
+		If game.onlinegame Then return 1.0 else return 0.1
+	End Method
+
   Method GetMyIP:Int()
-    If game.onlinegame Then SpeedFactor = SpeedFactorOnline
-    If Not game.onlinegame Then SpeedFactor = SpeedFactorLan
 	If Game.onlinegame Then Return intOnlineIP
-	Return intMyIP
+	Return intLocalIP
   End Method
 
   Method GetMyPort:Short()
@@ -212,6 +549,7 @@ Type TTVGNetwork
     For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i],Port[i]) 'IP[i]<> Null And IP[i] <> intMyIP
       WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
       WriteByte Stream, NET_CHATMESSAGE
 	  WriteMyIP()
       WriteInt Stream, Game.playerID
@@ -228,6 +566,7 @@ Type TTVGNetwork
     For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i], Port[i]) 'And IP[i] <> intMyIP
        WriteInt Stream, SendID
+		WriteInt Stream, not NET_PACKET_RELIABLE
        WriteByte stream, NET_PLAYERIPS
 	   WriteMyIP()
        WriteInt Stream, IP[0]
@@ -248,38 +587,40 @@ Type TTVGNetwork
 
   Method SendJoin()
       WriteInt stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
       WriteByte stream, NET_JOIN
 	  WriteMyIP()
       SendReliableUDP(0, 100,5, "SendJoin")
   End Method
 
-  Method SendGameAnnouncement()
-'    if debugmode Print "NET: announcing a game"
-    If Game.gamestate <> 0 Then	 'no announcement when already in game
-      If Not Game.onlinegame
-	    WriteInt   stream, SendID
-	    WriteByte  stream, NET_ANNOUNCEGAME
-	    WriteMyIP()
-	    WriteByte  stream, (GetFreeSlot()-1)
-	    WriteByte  stream, Len(Game.title)
-	    WriteString stream, Game.title
-        stream.SendUDPMsg TNetwork.IntIP(GetBroadcastIP(MyIP)), Network.HOSTPORT
-        SendID:+1
-	  Else
-        Local Onlinestream:TStream = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=AddGame&Titel="+UrlEncode(Game.title)+"&IP="+OnlineIP+"&Port="+ONLINEPORT+"&Spieler="+Self.getFreeSlot()+"&Hashcode="+LastOnlineHashCode)
-		Local timeouttimer:Int = MilliSecs()+5000 '5 seconds okay?
-	    Local timeout:Byte = False
-	    If Not Onlinestream Then Throw ("Not Online?")
-	    While Not Eof(Onlinestream) Or timeout
-	     If timeouttimer < MilliSecs() Then timeout = True
-	      Local responsestring:String = ReadLine(Onlinestream)
-		  If responsestring <> Null
-		    If responsestring <> "UPDATEDGAME" Then LastOnlineHashCode = responsestring
-		  EndIf
-        Wend
-        CloseStream Onlinestream
-  	  EndIf
-    EndIf
+	Method SendGameAnnouncement()
+		If Game.gamestate = 0 then return 'no announcement when already in game
+		If Not Game.onlinegame
+			Print "NET: announcing a LAN game to " +GetBroadcastIP(localIP)
+			WriteInt   stream, SendID
+			WriteByte  stream, not NET_PACKET_RELIABLE
+			WriteByte  stream, NET_ANNOUNCEGAME
+			WriteMyIP()
+			WriteByte  stream, (GetFreeSlot()-1)
+			WriteByte  stream, Len(Game.title)
+			WriteString stream, Game.title
+'			stream.SendUDPMsg TNetwork.IntIP(GetBroadcastIP(localIP)), Network.HOSTPORT
+			stream.SendUDPMsg intLocalIP, Network.HOSTPORT
+			SendID:+1
+		Else
+			Print "NET: announcing a ONLINE game "
+			Local Onlinestream:TStream = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=AddGame&Titel="+UrlEncode(Game.title)+"&IP="+OnlineIP+"&Port="+ONLINEPORT+"&Spieler="+Self.getFreeSlot()+"&Hashcode="+LastOnlineHashCode)
+			Local timeouttimer:Int = MilliSecs()+5000 '5 seconds okay?
+			Local timeout:Byte = False
+			If Not Onlinestream Then Throw ("Not Online?")
+
+			While Not Eof(Onlinestream) Or timeout
+				If timeouttimer < MilliSecs() Then timeout = True
+				Local responsestring:String = ReadLine(Onlinestream)
+				If responsestring <> Null AND responsestring <> "UPDATEDGAME" Then LastOnlineHashCode = responsestring
+			Wend
+			CloseStream Onlinestream
+		EndIf
   End Method
 
   Method SendPlayerDetails:Byte()
@@ -378,6 +719,7 @@ Type TTVGNetwork
      If IP[i]<> Null
      ' Stream.Flush
        WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte Stream, NET_SENDPROGRAMME
  	   WriteMyIP()
        WriteByte stream, playerID
@@ -396,6 +738,7 @@ Type TTVGNetwork
    For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i], Port[i])
        WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte stream, NET_MOVIEAGENCY_CHANGE
  	   WriteMyIP()
        WriteByte stream, playerID
@@ -461,6 +804,7 @@ Type TTVGNetwork
      If IP[i]<> Null
       If onlyto <0 Or onlyto=i Then
        WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte Stream, NET_GAMEREADY
  	   WriteMyIP()
        WriteByte Stream, playerID
@@ -476,6 +820,7 @@ Type TTVGNetwork
      If IP[i]<> Null
        'Stream.Flush
        WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte Stream, NET_STARTGAME
  	   WriteMyIP()
        SendReliableUDP(i, 100, -1, "SendGameStart")
@@ -490,6 +835,7 @@ Type TTVGNetwork
      If IsNoComputerNorMe(IP[i],Port[i])
        'Stream.Flush
        WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte Stream, NET_PLAN_PROGRAMMECHANGE
  	   WriteMyIP()
        WriteByte Stream, playerID
@@ -512,6 +858,7 @@ Type TTVGNetwork
        If IP[i]<> Null
        ' Stream.Flush
          WriteInt stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
          WriteByte stream, NET_SENDCONTRACT
          WriteMyIP()
          WriteByte stream, playerID
@@ -531,6 +878,7 @@ Type TTVGNetwork
      If IsNoComputerNorMe(IP[i],Port[i])
        'Stream.Flush
        WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte Stream, NET_PLAN_ADCHANGE
  	   WriteMyIP()
        WriteByte Stream, playerID
@@ -554,6 +902,7 @@ Type TTVGNetwork
      If IsNoComputerNorMe(IP[i],Port[i])
        'Stream.Flush
        WriteInt Stream, SendID
+		WriteInt Stream, not NET_PACKET_RELIABLE
        WriteByte Stream, NET_STATIONCHANGE
  	   WriteMyIP()
        WriteByte Stream, playerID
@@ -573,6 +922,7 @@ Type TTVGNetwork
    For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i],Port[i]) And game.playerID=1 'IP[i]<> Null And IP[i] <> intMyIP And Player[MyID]<>Null And game.playerID=1
        WriteInt stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte Stream, NET_ELEVATORSYNCHRONIZE
  	   WriteMyIP()
        WriteByte  stream, MyID
@@ -602,6 +952,7 @@ Type TTVGNetwork
    For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i],Port[i]) And Player[MyID]<>Null
        WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte Stream, NET_ELEVATORROUTECHANGE
  	   WriteMyIP()
        WriteByte Stream, MyID
@@ -620,6 +971,7 @@ Type TTVGNetwork
      If IsNoComputerNorMe(IP[i],Port[i])
        'Stream.Flush
        WriteInt Stream, SendID
+		WriteInt Stream, not NET_PACKET_RELIABLE
        WriteByte stream, NET_PROGRAMMECOLLECTION_CHANGE
  	   WriteMyIP()
        WriteByte stream, playerID
@@ -637,6 +989,7 @@ Type TTVGNetwork
    For Local i:Int = 0 To 3
     If IsNoComputerNorMe(IP[i],Port[i])
        WriteInt  stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte stream, NET_NEWSSUBSCRIPTIONLEVEL
  	   WriteMyIP()
        WriteByte Stream, playerID
@@ -651,6 +1004,7 @@ Type TTVGNetwork
    For Local i:Int = 0 To 3
     If IsNoComputerNorMe(IP[i],Port[i])
        WriteInt  stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte stream, NET_SENDNEWS
  	   WriteMyIP()
        WriteByte Stream, playerID
@@ -665,6 +1019,7 @@ Type TTVGNetwork
    For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i],Port[i])
        WriteInt stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
        WriteByte stream, NET_PLAN_NEWSCHANGE
  	   WriteMyIP()
        WriteByte stream, playerID
@@ -1056,6 +1411,7 @@ Type TTVGNetwork
       'sends to joining user, which ip is now on slot X
       'Print "NET: "+TNetwork.DottedIP(_IP)+" ("+_PORT+") wants to join - Send setslot"
       WriteInt Stream, SendID
+		WriteInt Stream, NET_PACKET_RELIABLE
       WriteByte Stream, NET_SETSLOT
       WriteMyIP()
       WriteInt Stream, _IP
@@ -1065,17 +1421,16 @@ Type TTVGNetwork
     EndIf
   End Method
 
-  Method GotPacket_AnnounceGame(_IP:Int, _Port:Short)
-    If _ip <> intMyIP Then
-	  Local teamamount:Int = ReadByte(Stream)
-	  Local titlelength:Byte = ReadByte(stream)
-	  Local title:String = ReadString(stream, titlelength)
-      NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+teamamount+" von 4)","",TNetwork.DottedIP(_ip),_Port,0, "HOSTGAME")
-    EndIf
-  End Method
+	Method GotPacket_AnnounceGame(_IP:Int, _Port:Short)
+		Local teamamount:Int	= ReadByte(Stream)
+		Local titlelength:Byte	= ReadByte(stream)
+		Local title:String		= ReadString(stream, titlelength)
+		print "got announcement"
+		If _ip <> intLocalIP then NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+teamamount+" von 4)","",TNetwork.DottedIP(_ip),_Port,0, "HOSTGAME")
+	End Method
 
   Method GotPacket_ChatMessage(_IP:Int, _Port:Short)
-    If _IP <> intMyIP Then
+    If _IP <> intLocalIP Then
      Local RemotePlayerID:Int = ReadInt(Stream)
      Local ChatMessageLen:Int = ReadInt(Stream)
      Local ChatMessage:String = ReadString(Stream, ChatMessageLen)
@@ -1100,8 +1455,8 @@ Type TTVGNetwork
 			 MenuChannelNames[slot-1] .value = game.userchannelname
 			 Local OldRecvID:Int = RecvID
              If     Game.onlinegame Then intOnlineIP = aimedIP  'on server the ip was another one - may be from the dialup-networkcard
-             If Not Game.onlinegame Then intMyIP = aimedIP  'on server the ip was another one - may be from the dialup-networkcard
-             MyIP = TNetwork.DottedIP(aimedIP)
+             If Not Game.onlinegame Then intLocalIP = aimedIP  'on server the ip was another one - may be from the dialup-networkcard
+             localIP = TNetwork.DottedIP(aimedIP)
              Game.gamestate=3
 		     NetAck (RecvID, _IP, _Port)                 ' Send ACK
              MyID = slot
@@ -1110,6 +1465,7 @@ Type TTVGNetwork
            '   Stream.Flush 'alten Mist raushauen, neuen rein
 	         'sends to server, which ip is now on slot X
 	          WriteInt Stream, SendID
+					WriteInt Stream, not NET_PACKET_RELIABLE
   	          WriteByte Stream, NET_SLOTSET
  	          WriteMyIP()
 	          WriteByte stream, slot
@@ -1128,6 +1484,7 @@ Type TTVGNetwork
    For Local i:Int = 0 To 3
      If IsNoComputerNorMe(IP[i], Port[i]) And Game.playerID = 1
 	    WriteInt Stream, SendID
+		WriteInt Stream, not NET_PACKET_RELIABLE
 	    WriteByte Stream, NET_STATE
   	    WriteMyIP()
 	    WriteFloat Stream, Game.minutesOfDayGone
@@ -1137,176 +1494,131 @@ Type TTVGNetwork
    Next
   End Method
 
-  Method UpdateUDP(fromNotConnectedPlayer:Int = 0)
-    If IsConnected Or fromNotConnectedPlayer Then ' Updates
+	Method UpdateUDP(fromNotConnectedPlayer:Int = 0)
+		If 1=1 OR IsConnected Or fromNotConnectedPlayer ' Updates
 
+			'Aller 1500ms einen Status rueberschicken (unbestaetigt)
+			If isHost And MilliSecs() >= MainSyncTime+ 1500*self.GetSyncSpeedFactor()
+				SendPlayerIPs()
+				'if Abs(MilliSecs() - LastElevatorSynchronize)>500 Then SendElevatorSynchronize()
+				SendState()
+				MainSyncTime = MilliSecs()
+			EndIf
 
-      'Aller 1500ms einen Status rueberschicken (unbestaetigt)
-      If isHost And MilliSecs() >= MainSyncTime+ 1500*Speedfactor
-		SendPlayerIPs()
-	'	If Abs(MilliSecs() - LastElevatorSynchronize)>500 Then SendElevatorSynchronize()
-		SendState()
-        MainSyncTime = MilliSecs()
-	  EndIf
+			'Aller 4000ms einen Status rueberschicken (unbestaetigt)
+			If MilliSecs() >= UpdateTime + 4000*self.GetSyncSpeedFactor()
+				SendState()
+				SendPlayerDetails()
+				UpdateTime = MilliSecs()
+			EndIf
 
-      'Aller 4000ms einen Status rueberschicken (unbestaetigt)
-      If MilliSecs() >= UpdateTime + 4000*Speedfactor
-	    SendState()
-		SendPlayerDetails()
-        UpdateTime = MilliSecs()
-	  EndIf
+			'Ping aller 1 Sekunde absetzen (unbestaetigt)
+			If MilliSecs() >= PingTimer + 1000*self.GetSyncSpeedFactor()
+				SendPlayerPosition()
+				For Local i:Int = 0 To 3
+					If IP[i]<> Null And IP[i] <> IP[Game.playerID-1]
+						WriteInt stream, SendID
+							WriteInt Stream, not NET_PACKET_RELIABLE
+						WriteByte stream, NET_PING
+						WriteMyIP()
+						WriteInt stream, game.playerID
+						SendUDP(i)
+					EndIf
+					PingTime[ i ] = MilliSecs()
+				Next
+				PingTimer = MilliSecs()
+			EndIf
+		EndIf 'is connected
 
-      'Ping aller 1 Sekunde absetzen (unbestaetigt)
-	  If MilliSecs() >= PingTimer + 1000*Speedfactor
-		SendPlayerPosition()
-        For Local i:Int = 0 To 3
-          If IP[i]<> Null And IP[i] <> IP[Game.playerID-1]
-	        WriteInt stream, SendID
-	        WriteByte stream, NET_PING
-   	        WriteMyIP()
-			WriteInt stream, game.playerID
-	        SendUDP(i)
-	      EndIf
-          PingTime[ i ] = MilliSecs()
-        Next
-        PingTimer = MilliSecs()
-  	  EndIf
-    EndIf 'is connected
+		If GameSettingsOkButton_Announce.iscrossed() And isHost And MilliSecs() >=  AnnounceTime + Game.onlinegame*4000*self.GetSyncSpeedFactor() + 1000
+			AnnounceTime = MilliSecs()
+			SendGameAnnouncement()
+		EndIf
 
-    If GameSettingsOkButton_Announce.iscrossed() And..
-	   isHost And MilliSecs() >=  AnnounceTime + Game.onlinegame*4000*Speedfactor + 1000
-		AnnounceTime = MilliSecs()
-        SendGameAnnouncement()
-	EndIf
-
-    Local bMsgIsNew:Int
-    While stream.RecvAvail() ' Then
-	  stream.RecvMsg()
-  	  RecvID = ReadInt(Stream)
-	  Local data:Int   = ReadByte(Stream)
-	  Local _IP:Int     = ReadInt(stream)
- 	  Local _Port:Int   = ReadShort(stream)
-	  If Not Game.onlinegame
-	    _IP:Int     = stream.GetMsgIP()
- 	    _Port:Int   = stream.GetMsgPort()
-	  End If
+		Local bMsgIsNew:Int
+		While stream.RecvAvail() ' Then
+			stream.RecvMsg()
+			RecvID = ReadInt(Stream)
+			Local data:Int   		= ReadByte(Stream)
+			print data
+			Local reliablePacket:Int= ReadInt(stream)
+			Local _IP:Int     		= ReadInt(stream)
+			Local _Port:Int   		= ReadShort(stream)
+			If Not Game.onlinegame
+				_IP:Int     = stream.GetMsgIP()
+				_Port:Int   = stream.GetMsgPort()
+			EndIf
 
 	    Select data
-	      Case NET_JOIN                 ' JOIN PACKET
-            GotPacket_Join(_IP,_Port)
-       	  Case NET_ANNOUNCEGAME         ' A game was announced
-			GotPacket_AnnounceGame(_IP, _Port)
-       	  Case NET_SETSLOT         ' Answer of join-request, only sent to join-sender
-            GotPacket_SetSlot(_IP,_Port)
-            IsConnected = True 'we have connected and server send setslot
-            NetAck (RecvID, _IP, _Port)
-            Print "sending ack for setting slot"
-       	  Case NET_PLAYERIPS         ' synchronizing PlayerIPs and Ports
-            GotPacket_PlayerIPs(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_PLAYERDETAILS         ' name, channelname and so on
-			GotPacket_PlayerDetails(_IP, _Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_PLAYERPOSITION         ' x,y, room, target...
-			GotPacket_PlayerPosition(_IP, _Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_CHATMESSAGE         ' someone has written something into the chat
-            GotPacket_ChatMessage(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_MOVIEAGENCY_CHANGE			' got change of programmes in MovieAgency from Server
-            GotPacket_SendMovieAgencyChange(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_SENDPROGRAMME       ' got StartupProgramme from Server
-            GotPacket_SendProgramme(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_SENDCONTRACT       ' got StartupContract from Server
-            GotPacket_SendContract(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_SENDNEWS       ' got News from Server
-            GotPacket_SendNEWS(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-		  Case NET_NEWSSUBSCRIPTIONLEVEL
-		    GotPacket_NewsSubscriptionLevel(_IP, _Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_GAMEREADY       ' got readyflag
-            GotPacket_GameReady(_IP,_Port)
-            If Player[ Game.playerID ].networkstate = 1 Then NetAck (RecvID, _IP, _Port)
-       	  Case NET_STARTGAME       ' got startcommand
-            Game.networkgameready = 1
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_PLAN_PROGRAMMECHANGE  ' got flag to change Programme of Player
-            GotPacket_Plan_ProgrammeChange(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_PLAN_NEWSCHANGE  ' got flag to change Programme of Player
-            GotPacket_Plan_NewsChange(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-		  Case NET_PROGRAMMECOLLECTION_CHANGE  'got change of programme (remove, readd, remove from plan ...)
-		    GotPacket_ProgrammeCollectionChange(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_PLAN_ADCHANGE  ' got flag to change Programme of Player
-            GotPacket_Plan_AdChange(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_STATIONCHANGE  ' got flag to change Programme of Player
-            GotPacket_StationChange(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_ELEVATORSYNCHRONIZE  ' got flag to change Programme of Player
-            GotPacket_ElevatorSynchronize(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-       	  Case NET_ELEVATORROUTECHANGE   ' got flag to change Programme of Player
-            GotPacket_ElevatorRouteChange(_IP,_Port)
-            NetAck (RecvID, _IP, _Port)
-		  Case NET_SLOTSET
- 		    Local slot:Byte   = ReadByte(Stream)-1
- 		    Local OldRecvID:Int = ReadInt(stream)
- 		    Local channellen:Int = ReadInt(stream)
- 		    Local namelen:Int = ReadInt(stream)
- 		    Local channel:String = ReadString(stream, channellen)
- 		    Local name:String = ReadString(stream, namelen)
- 		    ip[slot] = _IP
- 		    Port[slot] = _Port
-			TReliableUDP.GotAckPacket(OldRecvID, _IP, _Port)
-			GameSettings_Chat.AddEntry("", name+" hat sich in das Spiel eingeklinkt (Sender: "+channel+")", 0,"", "", MilliSecs())
-		    'If debugmode Print "NET: IP "+_IP+" set to slot "+slot
-		    If Game.playerID = 1 Then SendPlayerIPs()
- 	      Case NET_PING                 ' Received Ping, Send Pong
-		    Local RemotePlayerID:Int = ReadInt(stream)
-		    WriteInt stream, SendID
-		    WriteByte stream, NET_PONG
-			WriteMyIP()
-		    WriteInt stream, MyID
- 	        SendUDP(RemotePlayerID-1)
-		  Case NET_PONG                 ' Ping / Pong - Calculate Ping
-		    Local RemotePlayerID:Int = ReadInt(stream)
-			If IP[ RemotePlayerID-1 ] = _IP
-		      myPing[ RemotePlayerID ] = (MilliSecs() - PingTime[ RemotePlayerID ]) / 2
-		    EndIf
-			'Game.time:+ Int(myPing / 1000)
-		  Case NET_ACK                  ' ACK PACKET
-		    Local AckForSendID:Int = ReadInt(Stream)
-		    TReliableUDP.GotAckPacket(AckForSendID, _IP, _Port)
-		    RemoveNetObj AckForSendID   ' Remove Reliable Packet (ACK has been received)
-		  Case NET_STATE                ' State Update
- 	        Game.minutesOfDayGone = ReadFloat(Stream)
- 	        Game.speed = ReadFloat(Stream)
-		  Case NET_UPDATE               ' Full update, align
-	        Local remotePlayerID:Int = ReadInt(Stream)
-		    Player[remotePlayerID].Figure.pos.x = ReadFloat(stream)          ' X
-		    Player[remotePlayerID].Figure.pos.y = ReadFloat(stream)          ' Y
-		    'DebugLog "NET: got update for Player "+remotePlayerID
-		  Case NET_QUIT                 ' Player Quits
-	        Local remotePlayerID:Byte = ReadByte(Stream)
-		    IP[remoteplayerid - 1] =0
-		    Port[remoteplayerid - 1] =0
-		    Player[remoteplayerid].Figure.ControlledByID=-1
-			TReliableUDP.DeletePacketsForIP(_IP,_Port)
-		    Print "Player "+remoteplayerid+" left the game..."
-		    'IsConnected = 2                     ' Quit
-		    NetAck (RecvID, _IP, _Port)                 ' Send ACK
- 	    End Select
-    Wend 'Endif
-	  stream.Flush()
+			Case NET_JOIN					GotPacket_Join(_IP,_Port)				' JOIN PACKET
+			Case NET_ANNOUNCEGAME			GotPacket_AnnounceGame(_IP, _Port)		' A game was announced
+			Case NET_SETSLOT				GotPacket_SetSlot(_IP,_Port)			' Answer of join-request, only sent to join-sender
+											IsConnected = True 						' we have connected and server send setslot
+			Case NET_PLAYERIPS				GotPacket_PlayerIPs(_IP,_Port)			' synchronizing PlayerIPs and Ports
+			Case NET_PLAYERDETAILS			GotPacket_PlayerDetails(_IP, _Port)		' name, channelname and so on
+			Case NET_PLAYERPOSITION			GotPacket_PlayerPosition(_IP, _Port)	' x,y, room, target...
+			Case NET_CHATMESSAGE			GotPacket_ChatMessage(_IP,_Port)		' someone has written something into the chat
+			Case NET_MOVIEAGENCY_CHANGE		GotPacket_SendMovieAgencyChange(_IP,_Port) ' got change of programmes in MovieAgency from Server
+			Case NET_SENDPROGRAMME			GotPacket_SendProgramme(_IP,_Port)		' got StartupProgramme from Server
+			Case NET_SENDCONTRACT			GotPacket_SendContract(_IP,_Port)       ' got StartupContract from Server
+			Case NET_SENDNEWS				GotPacket_SendNEWS(_IP,_Port)	       ' got News from Server
+			Case NET_NEWSSUBSCRIPTIONLEVEL	GotPacket_NewsSubscriptionLevel(_IP, _Port)
+			Case NET_GAMEREADY				GotPacket_GameReady(_IP,_Port)				' got readyflag
+			Case NET_STARTGAME				Game.networkgameready = 1					' got startcommand
+			Case NET_PLAN_PROGRAMMECHANGE	GotPacket_Plan_ProgrammeChange(_IP,_Port)	' got flag to change Programme of Player
+			Case NET_PLAN_NEWSCHANGE		GotPacket_Plan_NewsChange(_IP,_Port)		' got flag to change Programme of Player
+			Case NET_PROGRAMMECOLLECTION_CHANGE
+											GotPacket_ProgrammeCollectionChange(_IP,_Port)	'got change of programme (remove, readd, remove from plan ...)
+			Case NET_PLAN_ADCHANGE		    GotPacket_Plan_AdChange(_IP,_Port)			' got flag to change Programme of Player
+        	Case NET_STATIONCHANGE			GotPacket_StationChange(_IP,_Port)			' got flag to change Programme of Player
+			Case NET_ELEVATORSYNCHRONIZE	GotPacket_ElevatorSynchronize(_IP,_Port)	' got flag to change Programme of Player
+			Case NET_ELEVATORROUTECHANGE	GotPacket_ElevatorRouteChange(_IP,_Port)	' got flag to change Programme of Player
+			Case NET_SLOTSET			    Local slot:Byte			= ReadByte(Stream)-1
+											Local OldRecvID:Int		= ReadInt(stream)
+											Local channellen:Int	= ReadInt(stream)
+											Local namelen:Int		= ReadInt(stream)
+											Local channel:String	= ReadString(stream, channellen)
+											Local name:String		= ReadString(stream, namelen)
+											ip[slot]	= _IP
+											Port[slot]	= _Port
+											TReliableUDP.GotAckPacket(OldRecvID, _IP, _Port)
+											GameSettings_Chat.AddEntry("", name+" hat sich in das Spiel eingeklinkt (Sender: "+channel+")", 0,"", "", MilliSecs())
+											If Game.playerID = 1 Then SendPlayerIPs()
+			Case NET_PING					Local RemotePlayerID:Int = ReadInt(stream)	' Received Ping, Send Pong
+											WriteInt stream, SendID
+											WriteInt Stream, not NET_PACKET_RELIABLE
+											WriteByte stream, NET_PONG
+											WriteMyIP()
+											WriteInt stream, MyID
+											SendUDP(RemotePlayerID-1)
+			Case NET_PONG				    Local RemotePlayerID:Int = ReadInt(stream)	' Ping / Pong - Calculate Ping
+											If IP[ RemotePlayerID-1 ] = _IP
+												myPing[ RemotePlayerID ] = (MilliSecs() - PingTime[ RemotePlayerID ]) / 2
+											EndIf
+											'Game.time:+ Int(myPing / 1000)
+			Case NET_ACK				    Local AckForSendID:Int = ReadInt(Stream)	' ACK PACKET
+											TReliableUDP.GotAckPacket(AckForSendID, _IP, _Port)
+											RemoveNetObj AckForSendID   				' Remove Reliable Packet (ACK has been received)
+			Case NET_STATE		 	        Game.minutesOfDayGone = ReadFloat(Stream)
+											Game.speed = ReadFloat(Stream)
+											' State Update
+			Case NET_UPDATE					Local remotePlayerID:Int = ReadInt(Stream)	' Full update, align
+											Player[remotePlayerID].Figure.pos.x = ReadFloat(stream)          ' X
+											Player[remotePlayerID].Figure.pos.y = ReadFloat(stream)          ' Y
+			Case NET_QUIT			        Local remotePlayerID:Byte = ReadByte(Stream)	' Player Quits
+											IP[remoteplayerid - 1] =0
+											Port[remoteplayerid - 1] =0
+											Player[remoteplayerid].Figure.ControlledByID=-1
+											TReliableUDP.DeletePacketsForIP(_IP,_Port)
+											Print "Player "+remoteplayerid+" left the game..."
+											'IsConnected = 2                     ' Quit
+			End Select
 
-      TReliableUDP.ReSend() 'send again all not ACKed packets
+			if reliablePacket then	NetAck (RecvID, _IP, _Port)
+
+		Wend 'Endif
+		stream.Flush()
+		TReliableUDP.ReSend() 'send again all not ACKed packets
   End Method
 
   Method ClearLastRecv()
@@ -1316,54 +1628,53 @@ Type TTVGNetwork
   End Method
 
 
-  ' // IsMsgNew gibt zurueck, ob das UDP-Paket ein Duplikat oder ein Altes ist
-  Method IsMsgNew:Byte(id:Int, data:Int = 0, _IP:Int, _Port:Short)
-    For Local i:Int = 50 To 0 Step -1
-        lastRecv[i + 1] = lastRecv[ i ]
-    Next
-    lastRecv[0] = id
+	'IsMsgNew gibt zurueck, ob das UDP-Paket ein Duplikat oder ein Altes ist
+	Method IsMsgNew:Byte(id:Int, data:Int = 0, _IP:Int, _Port:Short)
+		For Local i:Int = 50 To 0 Step -1
+			lastRecv[i + 1] = lastRecv[ i ]
+		Next
+		lastRecv[0] = id
 
-    For Local i:Int = 1 To 51
-      If lastRecv[ i ] = lastRecv[0] Then ' Duplicate
-		Select data ' ACK Anyway (Reliable packets only)
-	      Case NET_QUIT, NET_SENDCONTRACT
-	      NetAck (RecvID, _IP, _Port)
-	      If debugmode = True Then Print "*** Received duplicate packet ("+data+"), resending ACK ***"
-   	    End Select
-   	    If data = NET_JOIN Then Return True
-   	    If data = NET_GAMEREADY Then Print "*** got gameready";Return True
-        Return False
-      EndIf
-    Next
-    Return True
-  End Method
+		For Local i:Int = 1 To 51
+			If lastRecv[ i ] = lastRecv[0] ' Duplicate
+				Select data ' ACK Anyway (Reliable packets only)
+					Case NET_QUIT, NET_SENDCONTRACT		NetAck (RecvID, _IP, _Port)
+														If debugmode Then Print "*** Received duplicate packet ("+data+"), resending ACK ***"
+					Case NET_JOIN 						Return True
+					Case NET_GAMEREADY 					Print "*** got gameready"
+														Return True
+				End Select
+				Return False
+			EndIf
+		Next
+		Return True
+	End Method
 
-  ' // RemoveNetObj removes reliable UDP packets from the queue once an ACK has been received
-  Method RemoveNetObj(AckID:Int)
-    For n:NetObj = EachIn netList
-      If n.SID = AckID Then
-	    Local tmpID:Int = n.id
-	    netList.Remove n
-	    For n:NetObj = EachIn netList                                ' Remove old entries
-	      If n.id = tmpID And n.SID <= AckID Then
-            netList.Remove n
-          EndIf
-	    Next
-        Exit
-      EndIf
-    Next
-  End Method
+	' // RemoveNetObj removes reliable UDP packets from the queue once an ACK has been received
+	Method RemoveNetObj(AckID:Int)
+		For n:NetObj = EachIn netList
+			If n.SID = AckID
+				Local tmpID:Int = n.id
+				netList.Remove n
+				For n:NetObj = EachIn netList                                ' Remove old entries
+					If n.id = tmpID And n.SID <= AckID Then netList.Remove n
+				Next
+				Exit
+			EndIf
+		Next
+	End Method
 
-  ' // NetAck sends ACKnowledge packet to client
-  Method NetAck(RecvID:Int, _IP:Int, _Port:Short)
-    WriteInt Stream, SendID
-    WriteByte stream, NET_ACK
-	WriteMyIP()
-    WriteInt Stream, RecvID
-'    SendUDP
-    stream.SendUDPMsg  _IP, _Port
-	SendID:+1	         ' Increment send counter
-  End Method
+	'NetAck sends ACKnowledge packet to client
+	Method NetAck(RecvID:Int, _IP:Int, _Port:Short)
+		WriteInt Stream, SendID
+		WriteInt Stream, not NET_PACKET_RELIABLE
+		WriteByte stream, NET_ACK
+		WriteMyIP()
+		WriteInt Stream, RecvID
+		'SendUDP
+		stream.SendUDPMsg  _IP, _Port
+		SendID:+1	         ' Increment send counter
+	End Method
 
   'sends the current packet to player i
   Method SendUDP(i:Int=0)
@@ -1374,10 +1685,10 @@ Type TTVGNetwork
   'sends the current packet to player i
   'and adds it to the reliableUDP-packets which are handled automatically
   'If MaxRetry is <0 then it will be tried forever
-  Method SendReliableUDP(i:Int=0, retrytime:Int = 200, MaxRetry:Int = -1, desc:String="")
+  Method SendReliableUDP(peerID:Int=0, retrytime:Int = 200, MaxRetry:Int = -1, desc:String="")
     BackupStream(MyBank)
-    TReliableUDP.Create(SendID, IP[i], Port[i], MyBank, retrytime, MaxRetry, desc)
-    stream.SendUDPMsg IP[i], Port[i]
+    TReliableUDP.Create(SendID, IP[peerID], Port[peerID], MyBank, retrytime, MaxRetry, desc)
+    stream.SendUDPMsg IP[peerID], Port[peerID]
     BackupStream(MyBank)
 	SendID:+1	         ' Increment send counter
   End Method
@@ -1481,7 +1792,7 @@ Type TReliableUDP
     ReliableUDP.targetIP  = IP
     ReliableUDP.targetPort= Port
     ReliableUDP.content   = content
-    ReliableUDP.retrytime = retrytime*Network.Speedfactor
+    ReliableUDP.retrytime = retrytime*Network.GetSyncSpeedFactor()
     ReliableUDP.MaxRetry = MaxRetry
     ReliableUDP.desc = desc
 

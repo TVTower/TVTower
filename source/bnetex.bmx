@@ -47,7 +47,7 @@ Extern "OS"
 		Const SOL_SOCKET_ : Int   = $FFFF
 		Const SO_SNDBUF_  : Short = $1001
 		Const SO_RCVBUF_  : Short = $1002
-		
+
 		Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctlsocket@12"
 		Function inet_addr_:Int(Address$z) = "inet_addr@4"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa@4"
@@ -58,7 +58,7 @@ Extern "OS"
 		Const SOL_SOCKET_ : Int   = 1 ' Not sure!
 		Const SO_SNDBUF_  : Short = 7 ' Not sure!
 		Const SO_RCVBUF_  : Short = 8 ' Not sure!
-		
+
 		Function ioctl_(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
 		Function inet_addr_:Int(Address$z) = "inet_addr"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
@@ -187,7 +187,7 @@ Type TNetwork
 	Function IntIP:Int(IP:String)
 		Return htonl_(inet_addr_(IP))
 	End Function
-End Type 
+End Type
 
 Rem
 	bbdoc: Net-Stream Type
@@ -206,20 +206,20 @@ Type TNetStream Extends TStream Abstract
 		Self.RecvSize    = 0
 		Self.SendSize    = 0
 	End Method
-	
+
 	Method Delete()
 		Self.Close()
 		If Self.RecvSize > 0 Then MemFree(Self.RecvBuffer)
 		If Self.SendSize > 0 Then MemFree(Self.SendBuffer)
 	End Method
-	
+
 	Method Init:Int() Abstract
-	
+
 	Method RecvMsg:Int() Abstract
-	
+
 	Method Read:Int(Buffer:Byte Ptr, Size:Int)
 		Local Temp:Byte Ptr
-	
+
 		If Size > Self.RecvSize Then Size = Self.RecvSize
 		If Size > 0 Then
 			MemCopy(Buffer, Self.RecvBuffer, Size)
@@ -237,14 +237,14 @@ Type TNetStream Extends TStream Abstract
 
 		Return Size
 	End Method
-	
+
 	Method SendMsg:Int() Abstract
 
 	Method Write:Int(Buffer:Byte Ptr, Size:Int)
 		Local Temp:Byte Ptr
-	
+
 		If Size <= 0 Then Return 0
-		
+
 		Temp = MemAlloc(Self.SendSize+Size)
 		If Self.SendSize > 0 Then
 			MemCopy(Temp, Self.SendBuffer, Self.SendSize)
@@ -257,10 +257,10 @@ Type TNetStream Extends TStream Abstract
 			Self.SendBuffer = Temp
 			Self.SendSize   = Size
 		EndIf
-		
+
 		Return Size
 	End Method
-	
+
 	Rem
 		bbdoc:   Stellt fest, ob Bytes ausgelesen werden k&ouml;nnen
 		returns: False, wenn noch Bytes ausgelesen werden k&ouml;nnen, True wenn nicht
@@ -271,7 +271,7 @@ Type TNetStream Extends TStream Abstract
 	Method Eof:Int()
 		Return Self.RecvSize = 0
 	End Method
-	
+
 	Rem
 		bbdoc:   Gibt die Anzahl an empfangenen Bytes zur&uuml;ck
 		returns: Anzahl an empfangenen Bytes
@@ -359,7 +359,7 @@ Type TUDPStream Extends TNetStream
 	Field fDataSent    : Float = 0
 	Field fDataSum     : Float = 0
 	Field fLastSecond  : Float = 0
-	
+
 	Method New()
 		Self.LocalPort   = 0
 		Self.LocalIP     = 0
@@ -434,7 +434,7 @@ Type TUDPStream Extends TNetStream
 	Method GetLocalPort:Short()
 		Return Self.LocalPort
 	End Method
-	
+
 	Rem
 		bbdoc:   Gibt die lokale IP-Adresse in Integerform zur&uuml;ck
 		returns: IntegerIP
@@ -463,7 +463,7 @@ Type TUDPStream Extends TNetStream
 		returns: Empfngerport
 		about:   An diesen Port wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
-		         Siehe auch: #SetRemotePort	
+		         Siehe auch: #SetRemotePort
 	End Rem
 	Method GetRemotePort:Short()
 		Return Self.RemotePort
@@ -485,7 +485,7 @@ Type TUDPStream Extends TNetStream
 		returns: EmpfngerIP
 		about:   An diese IP-Adresse wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
-		         Siehe auch: #SetRemotePort	
+		         Siehe auch: #SetRemotePort
 	End Rem
 	Method GetRemoteIP:Int()
 		Return Self.RemoteIP
@@ -512,7 +512,7 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt Abbruchszeiten f&uuml;r das Empfangen und Senden 
+		bbdoc:   Setzt Abbruchszeiten f&uuml;r das Empfangen und Senden
 		returns: -
 		about:   Bestimmt, wie lange #RecvMsg und #SendMsg max. warten d&uuml;rfen.<br />
 		         Angaben in Millisekunden<br />
@@ -554,18 +554,18 @@ Type TUDPStream Extends TNetStream
 	Method RecvMsg:Int()
 		Local Read:Int, Result:Int, Size:Int, MessageIP:Int, MessagePort:Int
 		Local Temp:Byte Ptr
-		
+
 		If Self.Socket = INVALID_SOCKET_ Then Return 0
-	
+
 		Read = Self.Socket
 		If selectex_(1, Varptr(Read), 0, Null, 0, Null, Self.RecvTimeout) <> 1 ..
 		   Then Return 0
-	
+
 		If ioctl_(Self.Socket, FIONREAD, Varptr(Size)) = SOCKET_ERROR_ ..
 		   Then Return 0
-	
+
 		If Size <= 0 Then Return 0
-	
+
 		If Self.RecvSize > 0 Then
 			Temp = MemAlloc(Self.RecvSize+Size)
 			MemCopy(Temp, Self.RecvBuffer, Self.RecvSize)
@@ -573,7 +573,7 @@ Type TUDPStream Extends TNetStream
 			Self.RecvBuffer = Temp
 			'speed measurement
 			If Floor(MilliSecs()/1000) <> Self.fLastSecond
-			  Self.fDataSum  = Self.fDataGot + Self.fDataSent    
+			  Self.fDataSum  = Self.fDataGot + Self.fDataSent
 			  Self.fLastSecond = Floor(MilliSecs() / 1000)
 			  Self.fDataGot  = 0
 			  Self.fDataSent = 0
@@ -583,10 +583,10 @@ Type TUDPStream Extends TNetStream
 		Else
 			Self.RecvBuffer = MemAlloc(Size)
 		EndIf
-	
+
 		Result = recvfrom_(Self.Socket, Self.RecvBuffer+Self.RecvSize, ..
 		                   Size, 0, MessageIP, MessagePort)
-			
+
 		If Result = SOCKET_ERROR_ Or Result = 0 Then
 			Return 0
 		Else
@@ -597,7 +597,7 @@ Type TUDPStream Extends TNetStream
 		EndIf
 	End Method
 
-	
+
 	Method SendUDPMsg:Int(iIP:Int, shPort:Short = 0)
       Local oldIP:Int = Self.remoteIP
 	  Local oldPort:Short = Self.RemotePort
@@ -608,7 +608,7 @@ Type TUDPStream Extends TNetStream
 	  Self.RemotePort = oldPort
 	  Return returnvalue
 	End Method
-	
+
 	Rem
 		bbdoc:   Sendet eine Nachricht
 		returns: Anzahl der versendeten Bytes.
@@ -620,17 +620,17 @@ Type TUDPStream Extends TNetStream
 	End Rem
 	Method SendMsg:Int()
 		Local Write:Int, Result:Int, Temp:Byte Ptr
-		
+
 		If Self.Socket = INVALID_SOCKET_ Or ..
 		   Self.SendSize = 0 Then Return 0
-			
+
 		Write = Self.Socket
 		If selectex_(0, Null, 1, Varptr(Write), 0, Null, 0) <> 1 ..
 		   Then Return 0
 
 		Result = sendto_(Self.Socket, Self.SendBuffer, Self.SendSize, ..
 		                 0, Self.RemoteIP, Self.RemotePort)
-			
+
 		If Result = SOCKET_ERROR_ Or Result = 0 Then
 			Return 0
 		Else
@@ -642,10 +642,10 @@ Type TUDPStream Extends TNetStream
 				MemCopy(Temp, Self.SendBuffer+Result, Self.SendSize-Result)
 				MemFree(Self.SendBuffer)
 				Self.SendBuffer = Temp
-				Self.SendSize :- Result  
+				Self.SendSize :- Result
 				'speed measurement
 				If Floor(MilliSecs()/1000) <> Self.fLastSecond
-				Self.fDataSum  = Self.fDataGot + Self.fDataSent    
+				Self.fDataSum  = Self.fDataGot + Self.fDataSent
 				Self.fLastSecond = Floor(MilliSecs() / 1000)
 				Self.fDataGot  = 0
 				Self.fDataSent = 0
@@ -653,14 +653,14 @@ Type TUDPStream Extends TNetStream
 				Self.fDataSent :+ (Self.Sendsize- Result)
 				'end speed
 			EndIf
-			
+
 			Return Result
 		EndIf
 	End Method
-	
+
 	Method UDPSpeedString:String()
-	 If Self.fDataSum > 1024 Then Return ((Int(Self.fDataSum*10/1024))/10)+"kb/s" 
-	 If Self.fDataSum <= 1024 Then Return Int(Self.fDataSum)+"b/s" 
+	 If Self.fDataSum > 1024 Then Return ((Int(Self.fDataSum*10/1024))/10)+"kb/s"
+	 If Self.fDataSum <= 1024 Then Return Int(Self.fDataSum)+"b/s"
 	End Method
 End Type
 
@@ -679,7 +679,7 @@ Type TTCPStream Extends TNetStream
 	Field RecvTimeout   : Int
 	Field SendTimeout   : Int
 	Field AcceptTimeout : Int
-	
+
 	Method New()
 		Self.LocalIP       = 0
 		Self.LocalPort     = 0
@@ -783,7 +783,7 @@ Type TTCPStream Extends TNetStream
 		about:   Zu diesen Port ist der TCPStream entweder verbunden oder muss noch<br />
 		         mit #Connect verbunden werden. Dieser Port muss NICHT mit dem lokalen<br />
 		         Port &uuml;bereinstimmen.<br />
-		         Siehe auch: #SetRemotePort	
+		         Siehe auch: #SetRemotePort
 	End Rem
 	Method GetRemotePort:Short()
 		Return Self.RemotePort
@@ -902,7 +902,7 @@ Type TTCPStream Extends TNetStream
 		about:   Jeder Client verbindet sich nur einmal mit dem Server, danach muss sein<br />
 		         Clientstream auf eintreffende Nachricht gepr&uuml;ft werden.<br />
 		         Der Server muss zuvor mit #Listen "aktiviert" werden.<br />
-		         Siehe auch: #Listen 
+		         Siehe auch: #Listen
 	End Rem
 	Method Accept:TTCPStream()
 		Local Read:Int, Result:Int, Address:TSockAddr, AddrLen:Int
@@ -939,7 +939,7 @@ Type TTCPStream Extends TNetStream
 		Client.RemoteIP   = ntohl_(Address.SinAddr)
 		Client.RemotePort = ntohs_(Address.SinPort)
 
-		Return Client 
+		Return Client
 	End Method
 
 	Rem
@@ -964,7 +964,7 @@ Type TTCPStream Extends TNetStream
 
 		If ioctl_(Self.Socket, FIONREAD, Varptr(Size)) = SOCKET_ERROR_ ..
 		   Then Return 0
-	
+
 		If Size <= 0 Then Return 0
 
 		If Self.RecvSize > 0 Then
@@ -1023,7 +1023,7 @@ Type TTCPStream Extends TNetStream
 				Self.SendBuffer = Temp
 				Self.SendSize :- Result
 			EndIf
-			
+
 			Return Result
 		EndIf
 	End Method

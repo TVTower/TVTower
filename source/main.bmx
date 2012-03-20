@@ -17,6 +17,7 @@ Import "files.bmx"								'Load images, configs,... (imports functions.bmx)
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_events.bmx"				'event handler
 Import "basefunctions_deltatimer.bmx"
+Import "gamefunctions_network.bmx"
 GUIManager.globalScale	= 0.75
 GUIManager.defaultFont	= FontManager.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -110,6 +111,10 @@ Type TGame
 	Field playerID:Int 				= 1						'playerID of player who sits in front of the screen
 	Field error:Int 				= 0 					'is there a error (errorbox) floating around?
 	Field gamestate:Int 			= 0						'0 = Mainmenu, 1=Running, ...
+
+	field network:TNetworkConnection=null
+
+	'--networkgame auf "isNetworkGame()" umbauen
 	Field networkgame:Int 			= 0 					'are we playing a network game? 0=false, 1=true, 2
 	Field networkgameready:Int 		= 0 					'is the network game ready - all options set? 0=false
 	Field onlinegame:Int 			= 0 					'playing over internet? 0=false
@@ -391,7 +396,7 @@ Type TGame
 		Self.timeSinceBegin	:+ (Float(speed) / 10.0)
 
 		'time for news ?
-		If IsGameLeader()) AND NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
+		If IsGameLeader() AND NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
 
 		'if speed to high - potential skip of minutes, so "fetch them"
 		'sets minute / hour / day
@@ -473,6 +478,10 @@ Type TGame
 	End Method
 End Type
 
+Type PacketTypes
+	Global PlayerState:Byte				= 6					' Player Name, Position...
+End Type
+
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer
@@ -483,8 +492,6 @@ Type TPlayer
 	Field maxaudience:Int 		= 0 		{saveload = "normal"}		'maximum possible audience
 	Field ProgrammeCollection:TPlayerProgrammeCollection
 	Field ProgrammePlan:TPlayerProgrammePlan
-	Field ActualProgramme:TProgramme									'holds actual programme running on players channel
-	Field ActualContract:TContract										'holds actual contract running on players channel
 	Field Figure:TFigures												'actual figure the player uses
 	Field playerID:Int 			= 0			{saveload = "normal"}		'global used ID of the player
 	Field color:TPlayerColor											'the playercolor used to colorize symbols and figures
@@ -1356,7 +1363,7 @@ Type TElevator
 			EndIf
 			FloorRouteList.AddLast(floorroute)
 		EndIf
-		If Not fromNetwork Then If Game.networkgame Then If Network.IsConnected Then Print "send route to net";Network.SendElevatorRouteChange(floornumber, call, who, First)
+		If Not fromNetwork and Game.networkgame Then Print "send route to net";Network.SendElevatorRouteChange(floornumber, call, who, First)
 	End Method
 
 	Method GetFloorRoute:Int()
@@ -1375,14 +1382,14 @@ Type TElevator
 	Method CloseDoor()
 		Self.spriteDoor.setCurrentAnimation("closedoor", True)
 		open = 3
-		If Game.networkgame Then If Network.IsConnected Then If Game.playerID = 1 Then Network.SendElevatorSynchronize()
+		If Game.networkgame and Game.playerID = 1 Then Network.SendElevatorSynchronize()
 	End Method
 
 	Method OpenDoor()
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
 		open = 2 'wird geoeffnet
 		If passenger <> null then passenger.pos.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
-		'If Game.networkgame Then If Network.IsConnected Then If Game.playerID = 1 Then Network.SendElevatorSynchronize()
+		'If Game.networkgame and Game.playerID = 1 Then Network.SendElevatorSynchronize()
 	End Method
 
 	Method GetDoorCenter:int()
@@ -1876,7 +1883,7 @@ Type TNewsAgency
 		For Local i:Int = 1 To 4
 			If Player[i].newsabonnements[news.genre] > 0
 				TNewsBlock.Create("",0,-100, i, 60*(3-Player[i].newsabonnements[news.genre]), news)
-				If Game.networkgame Then If Network.IsConnected Then Network.SendNews(i, news)
+				If Game.networkgame Then Network.SendNews(i, news)
 			EndIf
 		Next
 	End Method
@@ -2134,7 +2141,7 @@ Function UpdateChat(UseChat:TGuiChat)
 	If Usechat.EnterPressed = 2
 		If Usechat.GUIInput.Value$ <> ""
 			Usechat.AddEntry("",Usechat.GUIInput.Value$, Game.playerID,"", "", MilliSecs())
-			If Game.networkgame If Network.isConnected Then Network.SendChatMessage(Usechat.GUIInput.Value$)
+			If Game.networkgame then Network.SendChatMessage(Usechat.GUIInput.Value$)
 			'NetPlayer.SendNetMessage(UDPClientIP, NetworkPlayername$, "CHAT", GUIChat_NWGL_Chat.GUIInput.value$)
 			Usechat.GUIInput.Value$ = ""
 			Network.ChatSpamTime = MilliSecs() + 500
@@ -2150,7 +2157,7 @@ Function UpdateChat(UseChat:TGuiChat)
 			Else
 				Usechat.TeamNames[i] = "unknown"
 				Usechat.TeamColors[i] = TPlayerColor.Create(255,255,255)
-			End If
+			EndIf
 		Next
 	EndIf
 End Function
@@ -2182,9 +2189,9 @@ End Function
 Function NetGameLobbyDoubleClick:Int(sender:Object)
 	NetgameLobbyButton_Join.Clicked	= 1
 	GameSettingsButton_Start.disable()
-	Network.isHost 					= False
-	Network.IP[0] = TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP())
-	Network.Port[0] = Short(NetgameLobby_gamelist.GetEntryPort())
+	Network.isHost				= False
+	Network.IP[0]				= TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP())
+	Network.Port[0]				= Short(NetgameLobby_gamelist.GetEntryPort())
 	GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
 	Network.NetConnect()
 End Function
@@ -2245,17 +2252,21 @@ Global PlayerDetailsTimer:Int
 Function Menu_Main()
 	GUIManager.Update("MainMenu")
 	If MainMenuButton_Start.GetClicks() > 0 Then Game.gamestate = 5
-	If MainMenuButton_Network.GetClicks() > 0 Then
+	If MainMenuButton_Network.GetClicks() > 0
 		Game.gamestate  = 2
 		Game.onlinegame = 0
 	EndIf
-	If MainMenuButton_Online.GetClicks() > 0 Then
+	If MainMenuButton_Online.GetClicks() > 0
 		Game.gamestate = 2
 		Game.onlinegame = 1
 	EndIf
+	'multiplayer
 	if game.gamestate = 2
+'		Game.network = new TNetworkConnection
+'		Game.network.ListenToLan()
+
 		Network.stream = New TUDPStream
-		If Not Network.Stream.Init() Then Throw("Can't create socket")
+		If Not Network.Stream.Init() Then Throw("Network: Can't create socket")
 		Network.stream.SetLocalPort(Network.GetMyPort())
 		Game.networkgame = 1
 	endif
@@ -2305,27 +2316,27 @@ Function Menu_NetworkLobby()
 	GUIManager.Update("NetGameLobby")
 	If NetgameLobbyButton_Create.GetClicks() > 0 Then
 		GameSettingsButton_Start.enable()
-		Game.gamestate = 3
-		Network.isHost = True
-		Network.IP[0] = Network.GetMyIP()
-		Network.Port[0] = Network.GetMyPort()
-		Network.MyID = 1
-		DebugLog "create networkgame"
+		Game.gamestate	= 3
+		Network.isHost	= True
+		Network.IP[0]	= Network.GetMyIP()
+		Network.Port[0]	= Network.GetMyPort()
+		Network.MyID	= 1
+		print "create networkgame"
 	EndIf
 	If NetgameLobbyButton_Join.GetClicks() > 0 Then
 		'Game.gamestate = 3
 		GameSettingsButton_Start.disable()
-		Network.isHost = False
-		Network.IP[0] = TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP())
-		Network.Port[0] = Short(NetgameLobby_gamelist.GetEntryPort())
-		GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
+		Network.isHost				= False
+		Network.IP[0]				= TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP())
+		Network.Port[0]				= Short(NetgameLobby_gamelist.GetEntryPort())
+		GameSettingsGameTitle.Value	= NetgameLobby_gamelist.GetEntryTitle()
 		Network.NetConnect()
 	EndIf
 	If NetgameLobbyButton_Back.GetClicks() > 0 Then
-		Game.gamestate = 1
-		Game.onlinegame = False
+		Game.gamestate		= 1
+		Game.onlinegame		= False
 		Network.stream.Close
-		Game.networkgame = False
+		Game.networkgame	= False
 	EndIf
 End Function
 
@@ -2347,7 +2358,7 @@ Function Menu_GameSettings()
 	End If
 
 	Local ChangesAllowed:Byte[4]
-	If Network.IsConnected
+	If Game.networkgame = 1
 		If MilliSecs() >= PlayerDetailsTimer + 1000
 			Network.SendPlayerDetails()
 			PlayerDetailsTimer = MilliSecs()
@@ -2357,7 +2368,7 @@ Function Menu_GameSettings()
 	For Local i:Int = 0 To 3
 		If Not MenuPlayerNames[i].on Then Player[i+1].Name = MenuPlayerNames[i].Value
 		If Not MenuChannelNames[i].on Then Player[i+1].channelname = MenuChannelNames[i].Value
-		If Network.IsConnected Or Game.playerID=1 Then
+		If Game.networkgame Or Game.playerID=1 Then
 			If Game.gamestate <> 4 And Player[i+1].Figure.ControlledByID = Game.playerID Or (Player[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				ChangesAllowed[i] = True
 				MenuPlayerNames[i].grayedout = False
@@ -2388,7 +2399,7 @@ Function Menu_GameSettings()
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
 		If Game.networkgame
-			If Network.IsConnected Then Network.NetDisconnect(False)
+			Network.NetDisconnect(False)
 			Game.playerID = 1
 			TReliableUDP.List.Clear()
 			Game.gamestate = 2
@@ -2492,7 +2503,7 @@ Function Menu_GameSettings_Draw()
 	For Local i:Int = 0 To 3
 		SetColor 50,50,50
 		DrawRect(60 + i*190, 90, 110,110)
-		If Network.IsConnected Or Game.playerID=1 Then
+		If Game.networkgame Or Game.playerID=1 Then
 			If Game.gamestate <> 4 And Player[i+1].Figure.ControlledByID = Game.playerID Or (Player[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				SetColor 255,255,255
 			Else
@@ -2869,7 +2880,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 
 	If KEYMANAGER.IsHit(KEY_ESCAPE) Then ExitGame = 1
 	If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
-	If Game.networkgame Then If Network.IsConnected Then Network.UpdateUDP
+	If Game.networkgame Then Network.UpdateUDP
 End Function
 
 'inGame
@@ -3140,7 +3151,7 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		EventManager.update()
 
 	Until AppTerminate() Or ExitGame = 1
-	If Game.networkgame Then If Network.IsConnected = True Then Network.NetDisconnect ' Disconnect
+	If Game.networkgame Then Network.NetDisconnect ' Disconnect
 EndIf 'not exit game
 
 OnEnd( EndHook )
