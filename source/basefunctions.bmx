@@ -797,6 +797,16 @@ Type TPlayerColor
 		self.colB = colB
 	End Method
 
+	Method ToInt:int()
+		return ARGB_Color(255, colR, colG, colB )
+	End Method
+
+	Method FromInt:int(color:int)
+		colR = ARGB_Red(color)
+		colG = ARGB_Green(color)
+		colB = ARGB_Blue(color)
+	End Method
+
    Function GetColor:TPlayerColor(colR:Int, colG:Int, colB:Int)
      Local color:TPlayerColor
      For color = EachIn TPlayerColor.List

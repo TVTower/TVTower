@@ -8,7 +8,7 @@ Import brl.Graphics
 Import brl.maxlua
 Import brl.reflection
 Import brl.threads
-Import "bnetex.bmx"								'udp and tcpip-layer and functions
+Import "external/bnetex/bnetex.bmx"								'udp and tcpip-layer and functions
 'Import "changelog.bmx"							'holds the notes for changes and additions
 
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
@@ -153,10 +153,10 @@ Type TGame
 	Function SaveGame:Int(savename:String="savegame.xml")
 		LoadSaveFile.InitSave()   'opens a savegamefile for getting filled
 		For Local i:Int = 1 To 4
-			If Player[i] <> Null
-				If Player[i].PlayerKI = Null And Player[i].figure.controlledbyID = 0 Then PrintDebug ("TGame.Update()", "FEHLER: KI fuer Spieler " + i + " nicht gefunden", DEBUG_UPDATES)
-				If Player[i].figure.controlledbyID = 0
-					LoadSaveFile.xmlWrite("KI"+i, Player[i].PlayerKI.CallOnSave())
+			If Players[i] <> Null
+				If Players[i].PlayerKI = Null And Players[i].figure.controlledbyID = 0 Then PrintDebug ("TGame.Update()", "FEHLER: KI fuer Spieler " + i + " nicht gefunden", DEBUG_UPDATES)
+				If Players[i].figure.controlledbyID = 0
+					LoadSaveFile.xmlWrite("KI"+i, Players[i].PlayerKI.CallOnSave())
 				EndIf
 			EndIf
 		Next
@@ -200,13 +200,13 @@ Type TGame
 				LoadSaveFile.NODE = NODE
 				Select LoadSaveFile.NODE.Name
 					Case "KI1"
-						Player[1].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
+						Players[1].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
 					Case "KI2"
-						Player[2].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
+						Players[2].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
 					Case "KI3"
-						Player[3].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
+						Players[3].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
 					Case "KI4"
-						Player[4].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
+						Players[4].PlayerKI.CallOnLoad(LoadSaveFile.NODE.Value)
 					Case "GAMESETTINGS"
 						TError.DrawNewError("Lade Basiseinstellungen...")
 						TGame.REMOVE_Load()
@@ -270,6 +270,10 @@ Type TGame
 		Game.title				= "unknown"
 		Return Game
 	End Function
+
+	Method IsPlayerID:int(number:int)
+		return (number > 0 and number <= 4)
+	End Method
 
 	Method GetDayName:String(day:Int, longVersion:Int=0)
 		Local versionString:String = "SHORT"
@@ -504,6 +508,13 @@ Type TPlayer
 	Field CreditCurrent:Int = 200000
 	Field CreditMaximum:Int = 300000
 
+	Function getByID:TPlayer( playerID:int = 0)
+		for local player:TPlayer = eachin TPlayer.list
+			if playerID = player.playerID then return player
+		Next
+		return null
+	End Function
+
 	Function Load:Tplayer(pnode:xmlNode)
 		Local Player:TPlayer = TPlayer.Create("save", "save", Assets.GetSpritePack("figures").GetSprite("Man1") , 0, 0, 0, 0, 0, 0, 1, "")
 		TFigures.List.Remove(Player.figure)
@@ -533,7 +544,7 @@ Type TPlayer
 			Node = Node.NextSibling()
 		Wend
 		Player.color = TPlayerColor.GetColor(colr, colg, colb)
-			.Player[Player.playerID] = Player  '.player is player in root-scope
+		Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetFigure(FigureID)
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
 			PrintDebug("TPlayer.Load()", "Lade AI für Spieler" + Player.playerID, DEBUG_SAVELOAD)
@@ -545,9 +556,14 @@ Type TPlayer
 		Return Player
 	End Function
 
+	Method IsAI:int()
+		'return self.playerKI <> null
+		return self.figure.IsAI()
+	End Method
+
 	Function LoadAll()
 		TPlayer.List.Clear()
-		Player[1] = Null;Player[2] = Null;Player[3] = Null;Player[4] = Null;
+		Players[1] = Null;Players[2] = Null;Players[3] = Null;Players[4] = Null;
 		TPlayer.globalID = 1
 		TFinancials.List.Clear()
 		Local Children:TList = LoadSaveFile.NODE.ChildList
@@ -640,7 +656,8 @@ Type TPlayer
 	End Method
 
 	'colorizes a figure and the corresponding sign next to the players doors in the building
-	Method RecolorFigure(PlayerColor:TPlayerColor)
+	Method RecolorFigure(PlayerColor:TPlayerColor = null)
+		if PlayerColor = null then PlayerColor = self.color
 		color.used	= 0
 		color		= PlayerColor
 		color.used	= playerID
@@ -683,7 +700,7 @@ Type TPlayer
 
 	'helper to call from external types - only for current game.playerID-Player
 	Function extSetCredit:String(amount:Int)
-		Player[Game.playerID].SetCredit(amount)
+		Players[Game.playerID].SetCredit(amount)
 	End Function
 
 	'increases Credit
@@ -960,7 +977,7 @@ Type TFinancials
 
 	Method ChangeMoney(_moneychange:Int)
 		money:+_moneychange
-		If Player[Self.playerID].Figure.isAI() Then Player[Self.playerID].PlayerKI.CallOnMoneyChanged()
+		If Players[Self.playerID].isAI() Then Players[Self.playerID].PlayerKI.CallOnMoneyChanged()
 		If Self.playerID = Game.playerID Then Interface.BottomImgDirty = True
 	End Method
 
@@ -1280,6 +1297,7 @@ Type TElevator
 	Field EgoMode:Int = 1   								'EgoMode: 	If I have the elevator, the elevator will only stop
 	'			at my destination and not if someone waits between
 	'			both floors and could be taken with me.
+	Field Network_LastSynchronize:Int	= 0
 
 	Method ElevatorCallIsDuplicate:Int(floornumber:Int, who:Int)
 		For Local DupeRoute:TFloorRoute = EachIn FloorRouteList
@@ -1363,7 +1381,10 @@ Type TElevator
 			EndIf
 			FloorRouteList.AddLast(floorroute)
 		EndIf
-		If Not fromNetwork And Game.networkgame Then Print "send route to net";Network.SendElevatorRouteChange(floornumber, call, who, First)
+		If Not fromNetwork And Game.networkgame
+			Print "send route to net"
+			Network_SendRouteChange(floornumber, call, who, First)
+		endif
 	End Method
 
 	Method GetFloorRoute:Int()
@@ -1382,8 +1403,45 @@ Type TElevator
 	Method CloseDoor()
 		Self.spriteDoor.setCurrentAnimation("closedoor", True)
 		open = 3
-		If Game.networkgame And Game.playerID = 1 Then Network.SendElevatorSynchronize()
+		If Game.networkgame Then self.Network_SendSynchronize()
 	End Method
+
+	Method Network_SendRouteChange(floornumber:Int, call:Int=0, who:Int, First:int=False)
+		local obj:TNetworkObject = Network.CreateSimplePacket( NET_ELEVATORROUTECHANGE, NET_PACKET_RELIABLE)
+		obj.SetInt(1, game.playerID)
+		obj.SetInt(2, call)
+		obj.SetInt(3, floornumber)
+		obj.SetInt(4, who)
+		obj.SetInt(2, First)
+		Network.BroadcastNetworkMessage( obj.sync(), Network.host )
+	End Method
+
+	Method Network_SendSynchronize()
+		'only server sends packet
+		if not Network.isServer then return
+
+		Print "NET: SendElevatorSynchronize"
+
+		local obj:TNetworkObject = Network.CreateSimplePacket( NET_ELEVATORSYNCHRONIZE, NET_PACKET_RELIABLE)
+		obj.setInt(1, game.playerID)
+		obj.setFloat(2, game.timeSinceBegin)
+		obj.setInt(3, upwards)
+		obj.setFloat(4, pos.x)
+		obj.setFloat(5, pos.y)
+		obj.setInt(6, open)
+		obj.setInt(7, FloorRouteList.Count() )
+		If FloorRouteList.Count() > 0
+			local floorString:string = ""
+			For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
+				floorString:+ FloorRoute.call+"|"+FloorRoute.direction+"|"+FloorRoute.floornumber+"|"+FloorRoute.who+","
+			Next
+			obj.setString(8, floorString)
+		EndIf
+		Network.BroadcastNetworkMessage( obj.sync(), Network.host )
+		Network_LastSynchronize = MilliSecs()
+	End Method
+
+
 
 	Method OpenDoor()
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
@@ -1662,11 +1720,11 @@ Type TBuilding Extends TRenderable
 		DrawBackground(tweenValue)
 		TProfiler.Leave("Draw-Building-Background")
 
-		If Building.GetFloor(Player[Game.playerID].Figure.pos.y) <= 4
+		If Building.GetFloor(Players[Game.playerID].Figure.pos.y) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
 			Building.gfx_buildingEntrance.Draw(pos.x, pos.y + 1024 - Building.gfx_buildingEntrance.h - 3)
 			Building.gfx_buildingWall.Draw(pos.x + 127 + 507, pos.y + 1024 - Building.gfx_buildingWall.h - 3)
-		Else If Building.GetFloor(Player[Game.playerID].Figure.pos.y) >= 8
+		Else If Building.GetFloor(Players[Game.playerID].Figure.pos.y) >= 8
 			SetColor 255, 255, 255
 			Building.gfx_buildingRoof.Draw(pos.x + 127, pos.y - Building.gfx_buildingRoof.h)
 		EndIf
@@ -1881,8 +1939,8 @@ Type TNewsAgency
 
 	Method AddNews:Int(news:TNews)
 		For Local i:Int = 1 To 4
-			If Player[i].newsabonnements[news.genre] > 0
-				TNewsBlock.Create("",0,-100, i, 60*(3-Player[i].newsabonnements[news.genre]), news)
+			If Players[i].newsabonnements[news.genre] > 0
+				TNewsBlock.Create("",0,-100, i, 60*(3-Players[i].newsabonnements[news.genre]), news)
 				If Game.networkgame Then Network.SendNews(i, news)
 			EndIf
 		Next
@@ -1898,7 +1956,7 @@ Type TNewsAgency
 			news.happenedminute = Game.GetActualMinute()
 			Local NoOneSubscribed:Byte= True
 			For Local i:Int = 1 To 4
-				If Player[i].newsabonnements[news.genre] > 0
+				If Players[i].newsabonnements[news.genre] > 0
 					NoOneSubscribed = False
 				EndIf
 			Next
@@ -2059,11 +2117,11 @@ TPlayerColor.Create(125, 143, 147, 0) ; TPlayerColor.Create(255, 125, 255, 0)
 
 'create playerfigures in figures-image
 'Local tmpFigure:TImage = Assets.GetSpritePack("figures").GetSpriteImage("", 0)
-Global Player:TPlayer[5]
-Player[1] = TPlayer.Create(Game.username, Game.userchannelname, Assets.GetSpritePack("figures").GetSpriteByID(0), 500, 1, 70, 247, 50, 50, 1, "Player 1")
-Player[2] = TPlayer.Create("Alfie", "SunTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 450, 3, 70, 245, 220, 0, 0, "Player 2")
-Player[3] = TPlayer.Create("Seidi", "FunTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 250, 8, 70, 40, 210, 0, 0, "Player 3")
-Player[4] = TPlayer.Create("Sandra", "RatTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 480, 13, 70, 0, 110, 245, 0, "Player 4")
+Global Players:TPlayer[5]
+Players[1] = TPlayer.Create(Game.username, Game.userchannelname, Assets.GetSpritePack("figures").GetSpriteByID(0), 500, 1, 70, 247, 50, 50, 1, "Player 1")
+Players[2] = TPlayer.Create("Alfie", "SunTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 450, 3, 70, 245, 220, 0, 0, "Player 2")
+Players[3] = TPlayer.Create("Seidi", "FunTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 250, 8, 70, 40, 210, 0, 0, "Player 3")
+Players[4] = TPlayer.Create("Sandra", "RatTV", Assets.GetSpritePack("figures").GetSpriteByID(0), 480, 13, 70, 0, 110, 245, 0, "Player 4")
 
 Global tempfigur:TFigures = TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
 tempfigur.FrameWidth	= 12 'overwriting
@@ -2151,9 +2209,9 @@ Function UpdateChat(UseChat:TGuiChat)
 	EndIf
 	If Usechat.TeamNames[1] = ""
 		For Local i:Int = 0 To 4
-			If Player[i] <> Null
-				Usechat.TeamNames[i] = Player[i].Name
-				Usechat.TeamColors[i] = Player[i].color
+			If Players[i] <> Null
+				Usechat.TeamNames[i] = Players[i].Name
+				Usechat.TeamColors[i] = Players[i].color
 			Else
 				Usechat.TeamNames[i] = "unknown"
 				Usechat.TeamColors[i] = TPlayerColor.Create(255,255,255)
@@ -2174,10 +2232,10 @@ Function DrawAllSelectionRects()
 			DrawRect(406 + 40 + i * 10, 92 + 68, 9, 9)
 			DrawRect(596 + 40 + i * 10, 92 + 68, 9, 9)
 			If MOUSEMANAGER.IsHit(1)
-				If functions.IsIn(MouseX(), MouseY(), 26 + 40 + i * 10, 92 + 68, 7, 9) And (Player[1].Figure.ControlledByID = Game.playerID Or (Player[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Player[1].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 216 + 40 + i * 10, 92 + 68, 7, 9) And (Player[2].Figure.ControlledByID = Game.playerID Or (Player[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Player[2].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 406 + 40 + i * 10, 92 + 68, 7, 9) And (Player[3].Figure.ControlledByID = Game.playerID Or (Player[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Player[3].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 596 + 40 + i * 10, 92 + 68, 7, 9) And (Player[4].Figure.ControlledByID = Game.playerID Or (Player[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Player[4].RecolorFigure(locobject)
+				If functions.IsIn(MouseX(), MouseY(), 26 + 40 + i * 10, 92 + 68, 7, 9) And (Players[1].Figure.ControlledByID = Game.playerID Or (Players[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[1].RecolorFigure(locobject)
+				If functions.IsIn(MouseX(), MouseY(), 216 + 40 + i * 10, 92 + 68, 7, 9) And (Players[2].Figure.ControlledByID = Game.playerID Or (Players[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[2].RecolorFigure(locobject)
+				If functions.IsIn(MouseX(), MouseY(), 406 + 40 + i * 10, 92 + 68, 7, 9) And (Players[3].Figure.ControlledByID = Game.playerID Or (Players[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[3].RecolorFigure(locobject)
+				If functions.IsIn(MouseX(), MouseY(), 596 + 40 + i * 10, 92 + 68, 7, 9) And (Players[4].Figure.ControlledByID = Game.playerID Or (Players[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[4].RecolorFigure(locobject)
 			EndIf
 			i:+1
 		EndIf
@@ -2189,22 +2247,22 @@ End Function
 Function NetGameLobbyDoubleClick:Int(sender:Object)
 	NetgameLobbyButton_Join.Clicked	= 1
 	GameSettingsButton_Start.disable()
-	Network.isHost				= False
-	Network.IP[0]				= TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP())
-	Network.Port[0]				= Short(NetgameLobby_gamelist.GetEntryPort())
-	GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
-	Network.NetConnect()
+
+	if Network.NetConnect( TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
+		GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
+	endif
 End Function
 NetgameLobby_gamelist.SetDoubleClickFunc(NetGameLobbyDoubleClick)
 
-Global Network:TTVGNetwork = TTVGNetwork.Create(game.userfallbackip)
-Network.ONLINEPORT = Game.userport
+
+Include "network.bmx"
+Network.init(game.userfallbackip)
 
 For Local i:Int = 0 To 7
 	If i < 4
-		MenuPlayerNames[i]	= TGUIinput.Create(50 + 190 * i, 65, 130, 1, Player[i + 1].Name, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
+		MenuPlayerNames[i]	= TGUIinput.Create(50 + 190 * i, 65, 130, 1, Players[i + 1].Name, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
 		MenuPlayerNames[i].TextDisplacement.setX(3)
-		MenuChannelNames[i]	= TGUIinput.Create(50 + 190 * i, 180, 130, 1, Player[i + 1].channelname, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
+		MenuChannelNames[i]	= TGUIinput.Create(50 + 190 * i, 180, 130, 1, Players[i + 1].channelname, 16, "GameSettings", FontManager.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
 		MenuChannelNames[i].TextDisplacement.setX(3)
 	End If
 	If i Mod 2 = 0
@@ -2233,10 +2291,10 @@ TPPbuttons.Create(Assets.GetSprite("btn_news"), GetLocale("PLANNER_MESSAGES"), 6
 CreateDropZones()
 Global Database:TDatabase = TDatabase.Create(); Database.Load(Game.userdb) 'load all movies, news, series and ad-contracts
 
-StationMap.AddStation(310, 260, 1, Player[1].maxaudience)
-StationMap.AddStation(310, 260, 2, Player[2].maxaudience)
-StationMap.AddStation(310, 260, 3, Player[3].maxaudience)
-StationMap.AddStation(310, 260, 4, Player[4].maxaudience)
+StationMap.AddStation(310, 260, 1, Players[1].maxaudience)
+StationMap.AddStation(310, 260, 2, Players[2].maxaudience)
+StationMap.AddStation(310, 260, 3, Players[3].maxaudience)
+StationMap.AddStation(310, 260, 4, Players[4].maxaudience)
 
 HideMouse()
 SetColor 255,255,255
@@ -2262,9 +2320,6 @@ Function Menu_Main()
 	EndIf
 	'multiplayer
 	If game.gamestate = 2
-'		Game.network = new TNetworkConnection
-'		Game.network.ListenToLan()
-
 		Network.stream = New TUDPStream
 		If Not Network.Stream.Init() Then Throw("Network: Can't create socket")
 		Network.stream.SetLocalPort(Network.GetMyPort())
@@ -2313,24 +2368,29 @@ Function Menu_NetworkLobby()
 		EndIf
 	EndIf
 	If Not Game.onlinegame Then NetgameLobby_gamelist.SetFilter("HOSTGAME")
+
+'ron
+	if Keymanager.isHit(KEY_D)
+		GameSettingsOkButton_Announce.crossed = true'not GameSettingsOkButton_Announce.crossed
+		Game.networkgame	= true'Game.networkgame
+		Network.isServer	= true 'Network.isServer
+		KeyManager.resetKey(KEY_D)
+	endif
+
 	GUIManager.Update("NetGameLobby")
 	If NetgameLobbyButton_Create.GetClicks() > 0 Then
 		GameSettingsButton_Start.enable()
 		Game.gamestate	= 3
-		Network.isHost	= True
-		Network.IP[0]	= Network.GetMyIP()
-		Network.Port[0]	= Network.GetMyPort()
-		Network.MyID	= 1
+		Network.isServer		= True
+		Network.host.playerID	= 1
 		Print "create networkgame"
 	EndIf
 	If NetgameLobbyButton_Join.GetClicks() > 0 Then
 		'Game.gamestate = 3
 		GameSettingsButton_Start.disable()
-		Network.isHost				= False
-		Network.IP[0]				= TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP())
-		Network.Port[0]				= Short(NetgameLobby_gamelist.GetEntryPort())
+		Network.isServer				= False
 		GameSettingsGameTitle.Value	= NetgameLobby_gamelist.GetEntryTitle()
-		Network.NetConnect()
+		Network.NetConnect( TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
 	EndIf
 	If NetgameLobbyButton_Back.GetClicks() > 0 Then
 		Game.gamestate		= 1
@@ -2358,18 +2418,20 @@ Function Menu_GameSettings()
 	End If
 
 	Local ChangesAllowed:Byte[4]
+rem
+ronny
 	If Game.networkgame = 1
 		If MilliSecs() >= PlayerDetailsTimer + 1000
 			Network.SendPlayerDetails()
 			PlayerDetailsTimer = MilliSecs()
 		End If
 	End If
-
+endrem
 	For Local i:Int = 0 To 3
-		If Not MenuPlayerNames[i].on Then Player[i+1].Name = MenuPlayerNames[i].Value
-		If Not MenuChannelNames[i].on Then Player[i+1].channelname = MenuChannelNames[i].Value
+		If Not MenuPlayerNames[i].on Then Players[i+1].Name = MenuPlayerNames[i].Value
+		If Not MenuChannelNames[i].on Then Players[i+1].channelname = MenuChannelNames[i].Value
 		If Game.networkgame Or Game.playerID=1 Then
-			If Game.gamestate <> 4 And Player[i+1].Figure.ControlledByID = Game.playerID Or (Player[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
+			If Game.gamestate <> 4 And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				ChangesAllowed[i] = True
 				MenuPlayerNames[i].grayedout = False
 				MenuChannelNames[i].grayedout = False
@@ -2411,8 +2473,8 @@ Function Menu_GameSettings()
 	For Local i:Int = 0 To 7
 		If ChangesAllowed[Ceil(i/2)]
 			If MenuFigureArrows[i].GetClicks() > 0
-				If i Mod 2  = 0 Player[1+Ceil(i/2)].UpdateFigureBase(Player[Ceil(1+i/2)].figurebase -1)
-				If i Mod 2 <> 0 Player[1+Ceil(i/2)].UpdateFigureBase(Player[Ceil(1+i/2)].figurebase +1)
+				If i Mod 2  = 0 Players[1+Ceil(i/2)].UpdateFigureBase(Players[Ceil(1+i/2)].figurebase -1)
+				If i Mod 2 <> 0 Players[1+Ceil(i/2)].UpdateFigureBase(Players[Ceil(1+i/2)].figurebase +1)
 			End If
 		EndIf
 	Next
@@ -2469,12 +2531,11 @@ Function Menu_NetworkLobby_Draw()
 	SetColor 255,255,255
 	GUIManager.Draw("NetGameLobby")
 	If Not Game.onlinegame Then
-		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_NETWORKGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
-		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_NETWORKGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
+		FontManager.GetFont("Default",16, BOLDFONT).drawstyled(GetLocale("MENU_NETWORKGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,20,20,150, 1)
 	Else
-		SetAlpha 0.3;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_ONLINEGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,500,50,0, 0, 0,  0)
-		SetAlpha 1.0;FontManager.GetFont("Default",16, ITALICFONT).drawBlock(GetLocale("MENU_ONLINEGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 34,275,500,50,0, 20,20,150)
+		FontManager.GetFont("Default",16, BOLDFONT).drawstyled(GetLocale("MENU_ONLINEGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,20,20,150, 1)
 	EndIf
+
 	If Game.cursorstate = 0 DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
 	If Game.cursorstate = 1 DrawImage(gfx_mousecursor, MouseX()-10, MouseY()-10,1)
 End Function
@@ -2504,7 +2565,7 @@ Function Menu_GameSettings_Draw()
 		SetColor 50,50,50
 		DrawRect(60 + i*190, 90, 110,110)
 		If Game.networkgame Or Game.playerID=1 Then
-			If Game.gamestate <> 4 And Player[i+1].Figure.ControlledByID = Game.playerID Or (Player[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
+			If Game.gamestate <> 4 And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				SetColor 255,255,255
 			Else
 				SetColor 225,255,150
@@ -2528,14 +2589,22 @@ Function Menu_GameSettings_Draw()
 
 	DrawAllSelectionRects()
 
-	Player[1].Figure.Sprite.Draw(25 + 90 - Player[1].Figure.Sprite.framew / 2, 159 - Player[1].Figure.Sprite.h, 8)
-	Player[2].Figure.Sprite.Draw(215 + 90 - Player[2].Figure.Sprite.framew / 2, 159 - Player[2].Figure.Sprite.h, 8)
-	Player[3].Figure.Sprite.Draw(405 + 90 - Player[3].Figure.Sprite.framew / 2, 159 - Player[3].Figure.Sprite.h, 8)
-	Player[4].Figure.Sprite.Draw(595 + 90 - Player[4].Figure.Sprite.framew / 2, 159 - Player[4].Figure.Sprite.h, 8)
+	Players[1].Figure.Sprite.Draw(25 + 90 - Players[1].Figure.Sprite.framew / 2, 159 - Players[1].Figure.Sprite.h, 8)
+	Players[2].Figure.Sprite.Draw(215 + 90 - Players[2].Figure.Sprite.framew / 2, 159 - Players[2].Figure.Sprite.h, 8)
+	Players[3].Figure.Sprite.Draw(405 + 90 - Players[3].Figure.Sprite.framew / 2, 159 - Players[3].Figure.Sprite.h, 8)
+	Players[4].Figure.Sprite.Draw(595 + 90 - Players[4].Figure.Sprite.framew / 2, 159 - Players[4].Figure.Sprite.h, 8)
 
 	GUIManager.Draw("GameSettings",0, 10)
 	If Game.cursorstate = 0 DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
 	If Game.cursorstate = 1 DrawImage(gfx_mousecursor, MouseX()-10, MouseY()-10,1)
+
+	if Game.networkgame
+		FontManager.basefont.drawStyled("Ping:", 15,5, 255,255,255,2)
+		for local peer:TNetworkpeer = eachin Network.peers
+			FontManager.basefont.drawStyled("Ping "+(peer.playerID)+": "+peer.ping+"ms", 15,30+(peer.playerID-1)*11, 255,255,255, 2)
+		Next
+	endif
+
 
 	If Game.gamestate = 4
 		SetColor 180,180,200
@@ -2559,14 +2628,14 @@ Function Menu_GameSettings_Draw()
 					EndIf
 					Print "send programme:"+ProgrammeArray[j].title
 				Next
-				Network.SendProgramme(playerids, ProgrammeArray)
+				Network.AddProgrammesToPlayer(playerids, ProgrammeArray)
 				Local ContractArray:TContract[]
 				For Local j:Int = 0 To Game.startAdAmount-1
 					ContractArray=ContractArray[..ContractArray.length+1]
 					ContractArray[j] = TContract.GetRandomContract()
 					Print "send contract:"+ContractArray[j].title
 				Next
-				Network.SendContract(playerids, ContractArray)
+				Network.AddContractsToPlayer(playerids, ContractArray)
 			Next
 
 			Network.SendGameReady(Game.playerID)
@@ -2579,10 +2648,10 @@ Function Menu_GameSettings_Draw()
 		SetColor 0,0,0
 		FontManager.basefont.draw("Synchronisiere Startbedingungen...", 220,220)
 		FontManager.basefont.draw("Starte Netzwerkspiel...", 220,240)
-		FontManager.basefont.draw("Player 1..."+Player[1].networkstate+" MovieListCount"+Player[1].ProgrammeCollection.MovieList.Count(), 220,260)
-		FontManager.basefont.draw("Player 2..."+Player[2].networkstate+" MovieListCount"+Player[2].ProgrammeCollection.MovieList.Count(), 220,280)
-		FontManager.basefont.draw("Player 3..."+Player[3].networkstate+" MovieListCount"+Player[3].ProgrammeCollection.MovieList.Count(), 220,300)
-		FontManager.basefont.draw("Player 4..."+Player[4].networkstate+" MovieListCount"+Player[4].ProgrammeCollection.MovieList.Count(), 220,320)
+		FontManager.basefont.draw("Player 1..."+Players[1].networkstate+" MovieListCount"+Players[1].ProgrammeCollection.MovieList.Count(), 220,260)
+		FontManager.basefont.draw("Player 2..."+Players[2].networkstate+" MovieListCount"+Players[2].ProgrammeCollection.MovieList.Count(), 220,280)
+		FontManager.basefont.draw("Player 3..."+Players[3].networkstate+" MovieListCount"+Players[3].ProgrammeCollection.MovieList.Count(), 220,300)
+		FontManager.basefont.draw("Player 4..."+Players[4].networkstate+" MovieListCount"+Players[4].ProgrammeCollection.MovieList.Count(), 220,320)
 		If Not Game.networkgameready = 1 Then FontManager.basefont.draw("not ready!!", 220,360)
 		Flip
 		Network.UpdateUDP()
@@ -2592,7 +2661,7 @@ Function Menu_GameSettings_Draw()
 			TReliableUDP.DeletePacketsWithCommand("SetSlot (Got Join)")
 			TReliableUDP.DeletePacketsWithCommand("SendProgramme")
 			TReliableUDP.DeletePacketsWithCommand("SendContract")
-			Player[Game.playerID].networkstate=1
+			Players[Game.playerID].networkstate=1
 			Game.gamestate =0
 		EndIf
 	EndIf
@@ -2729,24 +2798,24 @@ Function Init_Creation()
 				SeedRnd(MilliSecs())
 				If i = 0
 					'1 teleshopping/quiz-programme
-					Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
+					Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 				Else
-					Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie())
+					Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie())
 				EndIf
 			Next
 			'give 1 series to each player
 			Local prog:TProgramme = TProgramme.GetRandomSerie(playerids)
-			Player[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie(playerids))
-			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
-			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
-			Player[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
+			Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie(playerids))
+			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
+			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
+			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 		Next
 		TFigures.GetFigure(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
 	EndIf
 			'abonnement for each newsgroup = 1
 	For Local playerids:Int = 1 To 4
 		For Local i:Int = 0 To 4
-			Player[playerids].newsabonnements[i] = 1
+			Players[playerids].newsabonnements[i] = 1
 		Next
 	Next
 
@@ -2777,14 +2846,14 @@ Function Init_Colorization()
 
 	'colorizing for every player and inputvalues (player and channelname) to players variables
 	For Local i:Int = 1 To 4
-		Player[i].Name					= MenuPlayerNames[i-1].Value
-		Player[i].channelname			= MenuChannelNames[i-1].Value
-		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Player[i].color.colR, Player[i].color.colG, Player[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
+		Players[i].Name					= MenuPlayerNames[i-1].Value
+		Players[i].channelname			= MenuChannelNames[i-1].Value
+		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
+		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
+		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
+		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
 	Next
 End Function
 
@@ -2807,7 +2876,7 @@ End Function
 Function UpdateMain(deltaTime:Float = 1.0)
 	TError.UpdateErrors()
 	Game.cursorstate = 0
-	If Player[Game.playerID].Figure.inRoom <> Null Then Player[Game.playerID].Figure.inRoom.Update(0)
+	If Players[Game.playerID].Figure.inRoom <> Null Then Players[Game.playerID].Figure.inRoom.Update(0)
 
 	'ingamechat
 	'	If Game.networkgame
@@ -2832,15 +2901,15 @@ Function UpdateMain(deltaTime:Float = 1.0)
 			If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
 		EndIf
 		If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
-		If KEYMANAGER.IsHit(KEY_W) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
-		If KEYMANAGER.IsHit(KEY_A) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("archive", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_B) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("betty", 0)
-		If KEYMANAGER.IsHit(KEY_F) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("movieagency", 0)
-		If KEYMANAGER.IsHit(KEY_O) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("office", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_C) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("chief", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_N) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("news", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_R) Player[Game.playerID].Figure.inRoom = TRooms.GetRoom("roomboard", -1)
-		If KEYMANAGER.IsHit(KEY_D) Player[Game.playerID].maxaudience = Stationmap.einwohner
+		If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
+		If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("archive", Game.playerID)
+		If KEYMANAGER.IsHit(KEY_B) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("betty", 0)
+		If KEYMANAGER.IsHit(KEY_F) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("movieagency", 0)
+		If KEYMANAGER.IsHit(KEY_O) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("office", Game.playerID)
+		If KEYMANAGER.IsHit(KEY_C) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("chief", Game.playerID)
+		If KEYMANAGER.IsHit(KEY_N) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("news", Game.playerID)
+		If KEYMANAGER.IsHit(KEY_R) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("roomboard", -1)
+		If KEYMANAGER.IsHit(KEY_D) Players[Game.playerID].maxaudience = Stationmap.einwohner
 		If KEYMANAGER.IsHit(KEY_S)
 			Game.oldspeed = Game.speed
 			Game.speed = 0
@@ -2860,21 +2929,21 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	EndIf
 	'#EndRegion
 
-	If Player[Game.playerID].Figure.inRoom = Null
+	If Players[Game.playerID].Figure.inRoom = Null
 		If MOUSEMANAGER.IsDown(1)
 			If functions.IsIn(MouseX(), MouseY(), 20, 10, 760, 373)
-				Player[Game.playerID].Figure.ChangeTarget(MouseX(), MouseY())
+				Players[Game.playerID].Figure.ChangeTarget(MouseX(), MouseY())
 			EndIf
 			MOUSEMANAGER.resetKey(1)
 		EndIf
 	EndIf
 	'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
-	If Player[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Player[Game.playerID].Figure.pos.y  'working for player as center
+	If Players[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Players[Game.playerID].Figure.pos.y  'working for player as center
 	Fader.Update(deltaTime)
 
 	Game.Update(deltaTime)
 	Interface.Update(deltaTime)
-	If Player[Game.playerID].Figure.inRoom = Null Then Building.Update(deltaTime)
+	If Players[Game.playerID].Figure.inRoom = Null Then Building.Update(deltaTime)
 	Building.Elevator.Update(deltaTime)
 	TFigures.UpdateAll(deltaTime)
 
@@ -2885,7 +2954,7 @@ End Function
 
 'inGame
 Function DrawMain(tweenValue:Float=1.0)
-	If Player[Game.playerID].Figure.inRoom = Null
+	If Players[Game.playerID].Figure.inRoom = Null
 		TProfiler.Enter("Draw-Building")
 		SetColor Int(190 * Building.timecolor), Int(215 * Building.timecolor), Int(230 * Building.timecolor)
 		DrawRect(20, 10, 140, 373)
@@ -2896,8 +2965,8 @@ Function DrawMain(tweenValue:Float=1.0)
 		TProfiler.Leave("Draw-Building")
 	Else
 		TProfiler.Enter("Draw-Room")
-		Player[Game.playerID].Figure.inRoom.Draw()		'draw the room
-		Player[Game.playerID].Figure.inRoom.Update(1) 	'update room-actions
+		Players[Game.playerID].Figure.inRoom.Draw()		'draw the room
+		Players[Game.playerID].Figure.inRoom.Update(1) 	'update room-actions
 		TProfiler.Leave("Draw-Room")
 	EndIf
 
@@ -2906,7 +2975,7 @@ Function DrawMain(tweenValue:Float=1.0)
 	Interface.Draw()
 	TProfiler.Leave("Draw-Interface")
 
-	FontManager.baseFont.draw( "Netstate:" + Player[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, 0)
+	FontManager.baseFont.draw( "Netstate:" + Players[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, 0)
 
 	If Game.DebugInfos
 		SetColor 0,0,0
@@ -2924,20 +2993,22 @@ Function DrawMain(tweenValue:Float=1.0)
 			DrawRect(660, 483,115,120)
 			SetAlpha 1.0
 			SetColor 255,255,255
-			FontManager.basefont.draw(Network.stream.UDPSpeedString(), 662,490)
+'			FontManager.basefont.draw(Network.stream.UDPSpeedString(), 662,490)
 			For Local i:Int = 0 To 3
-				If Player[i + 1].Figure.inRoom <> Null
-					FontManager.basefont.draw("Player " + (i + 1) + ": " + Player[i + 1].Figure.inRoom.Name, 662, 510 + i * 11)
+				If Players[i + 1].Figure.inRoom <> Null
+					FontManager.basefont.draw("Player " + (i + 1) + ": " + Players[i + 1].Figure.inRoom.Name, 662, 510 + i * 11)
 				Else
-					If Player[i + 1].Figure.IsInElevator()
+					If Players[i + 1].Figure.IsInElevator()
 						FontManager.basefont.draw("Player " + (i + 1) + ": InElevator", 662, 510 + i * 11)
-					Else If Player[i + 1].Figure.IsAtElevator()
+					Else If Players[i + 1].Figure.IsAtElevator()
 						FontManager.basefont.draw("Player " + (i + 1) + ":			AtElevator", 662, 510 + i * 11)
 					Else
 						FontManager.basefont.draw("Player " + (i + 1) + ": Building", 662, 510 + i * 11)
 					EndIf
 				EndIf
-				FontManager.basefont.draw("Ping "+(i+1)+": "+Network.MyPing[i]+"ms", 672,555+i*11)
+			Next
+			for local peer:TNetworkpeer = eachin Network.peers
+				FontManager.basefont.draw("Ping "+(peer.playerID)+": "+peer.ping+"ms", 672,555+(peer.playerID-1)*11)
 			Next
 		EndIf
 	EndIf
@@ -2971,8 +3042,8 @@ Type TEventListenerPlayer Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
-			If evt._trigger = "game.onminute" Then Self.Player.PlayerKI.CallOnMinute()
-			If evt._trigger = "game.onday" Then Self.Player.PlayerKI.CallOnDayBegins()
+			If evt._trigger = "game.onminute" and self.Player.isAI() then Self.Player.PlayerKI.CallOnMinute()
+			If evt._trigger = "game.onday" and self.Player.isAI() then Self.Player.PlayerKI.CallOnDayBegins()
 		EndIf
 	End Method
 End Type
@@ -3043,9 +3114,9 @@ Type TEventListenerOnDay Extends TEventListenerBase
 			If evt.time > 0
 				TRooms.ResetRoomSigns()
 				For Local i:Int = 1 To 4
-					For Local NewsBlock:TNewsBlock = EachIn Player[i].ProgrammePlan.NewsBlocks
+					For Local NewsBlock:TNewsBlock = EachIn Players[i].ProgrammePlan.NewsBlocks
 						If Game.day - Newsblock.news.happenedday >= 2
-							Player[Newsblock.owner].ProgrammePlan.RemoveNewsBlock(NewsBlock)
+							Players[Newsblock.owner].ProgrammePlan.RemoveNewsBlock(NewsBlock)
 						EndIf
 					Next
 				Next
@@ -3114,9 +3185,9 @@ End Type
 '__________________________________________
 'events
 For Local i:Int = 1 To 4
-	If Player[i].figure.isAI()
-		EventManager.registerListener( "Game.OnMinute",	TEventListenerPlayer.Create(Player[i]) )
-		EventManager.registerListener( "Game.OnDay", 	TEventListenerPlayer.Create(Player[i]) )
+	If Players[i].figure.isAI()
+		EventManager.registerListener( "Game.OnMinute",	TEventListenerPlayer.Create(Players[i]) )
+		EventManager.registerListener( "Game.OnDay", 	TEventListenerPlayer.Create(Players[i]) )
 	EndIf
 Next
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
@@ -3138,10 +3209,10 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 		If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Exit				'ESC pressed, exit game
 
-		If KEYMANAGER.Ishit(Key_F1) And Player[1].figure.isAI() Then Player[1].PlayerKI.reloadScript()
-		If KEYMANAGER.Ishit(Key_F2) And Player[2].figure.isAI() Then Player[2].PlayerKI.reloadScript()
-		If KEYMANAGER.Ishit(Key_F3) And Player[3].figure.isAI() Then Player[3].PlayerKI.reloadScript()
-		If KEYMANAGER.Ishit(Key_F4) And Player[4].figure.isAI() Then Player[4].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F1) And Players[1].isAI() Then Players[1].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F2) And Players[2].isAI() Then Players[2].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F3) And Players[3].isAI() Then Players[3].PlayerKI.reloadScript()
+		If KEYMANAGER.Ishit(Key_F4) And Players[4].isAI() Then Players[4].PlayerKI.reloadScript()
 
 		If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
 		App.Timer.loop()
@@ -3160,5 +3231,3 @@ Function EndHook()
 	TProfiler.DumpLog("Profiler.txt")
 
 End Function
-
-Include "network.bmx"

@@ -1,36 +1,40 @@
 SuperStrict
 
-Import pub.StdC
-Import BRL.Socket
-Import BRL.Stream
-Import BRL.Math
-
-'Import Brl.Stream
-'Import Pub.StdC
+Rem
+	bbdoc: BNetEx
+	about: Netzwerk Modul f&uuml;r UDP und TCP<br />
+	       <br />
+	       License:<br />
+	       Permission is hereby granted, free of charge, to any person obtaining a copy of<br />
+	       this software and associated documentation files (the "Software"), to deal in<br />
+	       the Software without restriction, including without limitation the rights to<br />
+	       use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of<br />
+	       the Software, and to permit persons to whom the Software is furnished to do so,<br />
+	       subject to the following conditions:<br />
+	       <br />
+	       The author Oliver Skawronek and the co-author Inkubus have to be by name mentioned.
+End Rem
+rem
+Module Vertex.BNetEx
+ModuleInfo "Version: 1.70 Beta"
+ModuleInfo "Author: Oliver Skawronek"
+ModuleInfo "Additive Work: Inkubus"
+ModuleInfo "License: Modified MIT"
+ModuleInfo "Modserver: BlitzHelp"
+endrem
+Import Brl.Stream
+Import Pub.StdC
+?Win32
+	Import "windows.c"
+	Import "libiphlpapi.a"
 ?Linux
 	Import "linux.c"
+	Import "bsd.c"
+?MacOS
+	Import "bsd.c"
 ?
 
 Private
-
-?Win32
-	Global selectex_:Int(ReadCount:Int,  ReadSockets:Int Ptr, ..
-	                     WriteCount:Int, WriteSockets:Int Ptr, ..
-	                     ExceptCount:Int, ExceptSockets:Int Ptr, ..
-	                     Milliseconds:Int) = select_
-?MacOs
-	Global selectex_:Int(ReadCount:Int,  ReadSockets:Int Ptr, ..
-	                     WriteCount:Int, WriteSockets:Int Ptr, ..
-	                     ExceptCount:Int, ExceptSockets:Int Ptr, ..
-	                     Milliseconds:Int) = select_
-?Linux
-	Extern "C"
-		Function selectex_:Int(ReadCount:Int,  ReadSockets:Int Ptr, ..
-		                       WriteCount:Int, WriteSockets:Int Ptr, ..
-		                       ExceptCount:Int, ExceptSockets:Int Ptr, ..
-		                       Milliseconds:Int) = "pselect_"
-	End Extern
-?
 
 Type TSockAddr
 	Field SinFamily : Short
@@ -39,45 +43,140 @@ Type TSockAddr
 	Field SinZero   : Long
 End Type
 
+Type TICMP
+	Field _Type    : Byte
+	Field Code     : Byte
+	Field Checksum : Short
+	Field ID       : Short
+	Field Sequence : Short
+
+	Function BuildChecksum:Short(Buffer:Short Ptr, Size:Int)
+		Local Checksum:Long
+
+		While Size > 1
+			Checksum :+ Buffer[0]
+			Buffer :+ 1
+			Size :- 2
+		Wend
+		If Size Then Checksum :+ (Byte Ptr(Buffer))[0]
+
+		Checksum = (Checksum Shr 16) + (Checksum & $FFFF)
+		Checksum :+ Checksum Shr 16
+		Return htons_(~Checksum)
+	End Function
+End Type
+
 Extern "OS"
 	Const INVALID_SOCKET_ : Int = -1
+	Const SOCK_RAW_       : Int = 3
+	Const IPPROTO_ICMP    : Int = 1
+
+	Const ICMP_ECHOREPLY   : Byte = 0
+	Const ICMP_UNREACHABLE : Byte = 3
+	Const ICMP_ECHO        : Byte = 8
+
+	Const ICMP_CODE_NETWORK_UNREACHABLE : Byte = 0
+	Const ICMP_CODE_HOST_UNREACHABLE    : Byte = 1
 
 	?Win32
-		Const FIONREAD    : Int   = $4004667F
-		Const SOL_SOCKET_ : Int   = $FFFF
-		Const SO_SNDBUF_  : Short = $1001
-		Const SO_RCVBUF_  : Short = $1002
+		Const FIONREAD      : Int   = $4004667F
+		Const SOL_SOCKET_   : Int   = $FFFF
+		Const SO_BROADCAST_ : Short = $20
+		Const SO_SNDBUF_    : Short = $1001
+		Const SO_RCVBUF_    : Short = $1002
 
 		Function ioctl_:Int(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctlsocket@12"
 		Function inet_addr_:Int(Address$z) = "inet_addr@4"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa@4"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname@12"
+		Function GetCurrentProcessId:Int() = "GetCurrentProcessId@0"
 
 	?MacOS
-		Const FIONREAD    : Int   = $4004667F
-		Const SOL_SOCKET_ : Int   = 1 ' Not sure!
-		Const SO_SNDBUF_  : Short = 7 ' Not sure!
-		Const SO_RCVBUF_  : Short = 8 ' Not sure!
+		Const FIONREAD      : Int   = $4004667F
+		Const SOL_SOCKET_   : Int   = $FFFF
+		Const SO_BROADCAST_ : Short = $20
+		Const SO_SNDBUF_    : Short = $1001
+		Const SO_RCVBUF_    : Short = $1002
 
 		Function ioctl_(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
 		Function inet_addr_:Int(Address$z) = "inet_addr"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname"
+		Function GetCurrentProcessId:Int() = "getpid"
 
 	?Linux
-		Const FIONREAD    : Int   = $0000541B
-		Const SOL_SOCKET_ : Int   = 1
-		Const SO_SNDBUF_  : Short = 7
-		Const SO_RCVBUF_  : Short = 8
+		Const FIONREAD      : Int   = $0000541B
+		Const SOL_SOCKET_   : Int   = 1
+		Const SO_BROADCAST_ : Short = 6
+		Const SO_SNDBUF_    : Short = 7
+		Const SO_RCVBUF_    : Short = 8
 
 		Function ioctl_(Socket:Int, Command:Int, Arguments:Byte Ptr) = "ioctl"
 		Function inet_addr_:Int(Address$z) = "inet_addr"
 		Function inet_ntoa_:Byte Ptr(Adress:Int) = "inet_ntoa"
 		Function getsockname_:Int(Socket:Int, Name:Byte Ptr, NameLen:Int Ptr) = "getsockname"
+		Function GetCurrentProcessId:Int() = "getpid"
 	?
 End Extern
 
+Extern "C"
+	?Linux
+		Function selectex_:Int(ReadCount:Int, ReadSockets:Int Ptr, ..
+		                       WriteCount:Int, WriteSockets:Int Ptr, ..
+		                       ExceptCount:Int, ExceptSockets:Int Ptr, ..
+		                       Milliseconds:Int) = "pselect_"
+	?
+
+	Function GetNetworkAdapter(Device:Byte Ptr, MAC:Byte Ptr, ..
+	                           Address:Int Ptr, Netmask:Int Ptr, ..
+	                           Broadcast:Int Ptr) = "GetNetworkAdapter"
+End Extern
+
+?Win32
+	Global selectex_:Int(ReadCount:Int, ReadSockets:Int Ptr, ..
+	                     WriteCount:Int, WriteSockets:Int Ptr, ..
+	                     ExceptCount:Int, ExceptSockets:Int Ptr, ..
+	                     Milliseconds:Int) = select_
+?MacOS
+	Global selectex_:Int(ReadCount:Int, ReadSockets:Int Ptr, ..
+	                     WriteCount:Int, WriteSockets:Int Ptr, ..
+	                     ExceptCount:Int, ExceptSockets:Int Ptr, ..
+	                     Milliseconds:Int) = select_
+?
+
 Public
+
+Rem
+	bbdoc: Netzwerkadapter-Information
+	about: Enth&auml;lt Informationen &uuml;ber einen Netzwerkadapter(ggf. Netzwerkkarte).<br />
+	       Siehe auch: #GetNetworkAdapter
+End Rem
+Type TAdapterInfo
+	Rem
+		bbdoc: Name des Netzwerkadapters
+	End Rem
+	Field Device    : String
+	Rem
+		bbdoc: MAC-Adresse des Netzwerkadapters
+		about: Siehe auch: #StringMAC
+	End Rem
+	Field MAC       : Byte[6]
+	Rem
+		bbdoc: IP-Adresse des Netzwerkadapters
+		about: Siehe auch: #StringIP
+	End Rem
+	Field Address   : Int
+	Rem
+		bbdoc: Broadcast-Adresse des Netzwerkadapters
+		about: Siehe auch: #StringIP
+	End Rem
+	Field Broadcast : Int
+	Rem
+		bbdoc: Netzmaske des Netzwerkadapters
+		about: Siehe auch: #StringIP, #SetBroadcast
+	End Rem
+	Field Netmask   : Int
+End Type
 
 Rem
 	bbdoc: Network Type
@@ -166,15 +265,38 @@ Type TNetwork
 	Function StringIP:String(IP:Int)
 		Return String.FromCString(inet_ntoa_(htonl_(IP)))
 	End Function
+
 	Rem
-		bbdoc:   Wandelt Integer- in StringIP um
-		returns: Umgewandelte StringIP
-		about:   Es wird ein String in Form von "X.Y.Z.W" zur&uuml;ckgegeben.<br />
-		         z. B. TNetwork.dottedIP(2130706433) -> "127.0.0.1"<br />
-		         Siehe auch: #IntIP
+		bbdoc:   Wandelt Integer- in StringMAC um
+		returns: Umgewandelte StringMAC
+		about:   Es wird ein String in From von "AA:BB:CC:DD:EE:FF" zur&uuml;ckgegeben.<br />
+		         AA, BB, CC, DD, EE und FF repr&auml;sentieren jeweils ein Byte in hexa-
+		         dezimaler Schreibweise.<br />
+		         Siehe auch: #TAdapterInfo, #GetNetworkAdapter
 	End Rem
-	Function DottedIP:String(IP:Int)
-		Return String.FromCString(inet_ntoa_(htonl_(IP)))
+	Function StringMAC:String(MAC:Byte[])
+		Local Out:String, Index:Int, Nibble1:Byte, Nibble2:Byte
+
+		For Index = 0 To 5
+			Nibble1 = (MAC[Index] & $F0) Shr 4
+			Nibble2 = MAC[Index] & $0F
+
+			If(Nibble1 < 10)
+				Out :+ Chr(Nibble1 + 48)
+			Else
+				Out :+ Chr(Nibble1 + 55)
+			EndIf
+
+			If(Nibble2 < 10)
+				Out :+ Chr(Nibble2 + 48)
+			Else
+				Out :+ Chr(Nibble2 + 55)
+			EndIf
+
+			Out :+ "-"
+		Next
+
+		Return Out[..Out.Length - 1]
 	End Function
 
 	Rem
@@ -186,6 +308,116 @@ Type TNetwork
 	End Rem
 	Function IntIP:Int(IP:String)
 		Return htonl_(inet_addr_(IP))
+	End Function
+
+	Rem
+		bbdoc:   ICMP Ping
+		returns: -1 falls ein Fehler auftrat, ansonsten die Zeit in Millisekunden,<br/>
+		         vom Echo Request zum Echo Reply
+		about:   Die Funktion emrittelt, wie lange es gedauert hat, bis der<br />
+		         der Host RemoteIP die angegebenen Daten Data mit der Bytegr&ouml;&szlig;e<br />
+		         Size empfangen und zurück gesendet hat. Erhält der Client keine<br />
+		         Antwort innerhalb der Zeit Timeout, liefert die Funktion<br />
+		         -1 zur&uuml;ck. Weitere Fehlerquellen können sein, dass die Funktion nicht<br />
+		         mit Root/Administratorrechten ausgef&uuml;hrt wurde, das Netzwerk<br />
+		         bzw. der Host nicht erreichbar ist oder der Host ICMP Pings nicht akzeptiert.
+		         Siehe auch: #GetHostIP, #GetHostIPs, #IntIP
+	End Rem
+	Function Ping:Int(RemoteIP:Int, Data:Byte Ptr, Size:Int, Sequence:Int = 0, ..
+	                  Timeout:Int = 5000)
+		Local Socket:Int, ProcessID:Int, ICMP:TICMP, Buffer:Byte Ptr, Temp:Int, ..
+		      Start:Int, Stop:Int, Result:Int, SenderIP:Int, SenderPort:Int, ..
+		      IPSize:Int
+
+		Socket = socket_(AF_INET_, SOCK_RAW_, IPPROTO_ICMP)
+		If Socket = INVALID_SOCKET_ Then Return -1
+
+		ProcessID = GetCurrentProcessID()
+
+		ICMP = New TICMP
+		ICMP._Type     = ICMP_ECHO
+		ICMP.Code      = 0
+		ICMP.Checksum  = 0
+		ICMP.ID        = ProcessID
+		ICMP.Sequence  = Sequence
+
+		Buffer = MemAlloc(65536)
+		MemCopy(Buffer, ICMP, 8)
+		MemCopy(Buffer + 8, Data, Size)
+		Short Ptr(Buffer)[1] = htons_(TICMP.BuildChecksum(Short Ptr(Buffer), 8 + Size))
+
+		Temp = Socket
+		If (selectex_(0, Null, 1, Varptr(Temp), 0, Null, 0) <> 1) Or ..
+		   (sendto_(Socket, Buffer, 8 + Size, 0, RemoteIP, 0) = SOCKET_ERROR_) Then
+			MemFree(Buffer)
+			closesocket_(Socket)
+			Return -1
+		EndIf
+
+		Start = MilliSecs()
+		Repeat
+			Temp = Socket
+			If selectex_(1, Varptr(Temp), 0, Null, 0, Null, Timeout) <> 1 Then
+				MemFree(Buffer)
+				closesocket_(Socket)
+				Return -1
+			EndIf
+
+			Result = recvfrom_(Socket, Buffer, 65536, 0, SenderIP, SenderPort)
+			Stop = MilliSecs()
+			If Result = SOCKET_ERROR_ Then
+				MemFree(Buffer)
+				closesocket_(Socket)
+				Return -1
+			EndIf
+
+			?X86
+				IPSize = (Buffer[0] & $0F)*4
+			?PPC
+				IPSize = (Buffer[0] & $F0)*4
+			?
+			MemCopy(ICMP, Buffer + IPSize, 8)
+
+			If ICMP.ID <> ProcessID Then
+				Continue
+			ElseIf ICMP._Type = ICMP_UNREACHABLE Then
+				If ICMP.Code = ICMP_CODE_HOST_UNREACHABLE Or ..
+				   ICMP.Code = ICMP_CODE_NETWORK_UNREACHABLE Then
+					MemFree(Buffer)
+					closesocket_(Socket)
+					Return -1
+				EndIf
+			ElseIf ICMP.Code = ICMP_ECHOREPLY Then
+				Exit
+			EndIf
+		Forever
+
+		MemFree(Buffer)
+		closesocket_(Socket)
+
+		Return Stop - Start
+	End Function
+
+	Rem
+		bbdoc:   F&uuml;llt eine Struktur mit Netzwerkadapter-Informationen
+		returns: False, wenn ein Fehler auftrat, ansonsten True
+		about:   Ermittelt den ersten Ethernet-Netzwerkadapter und f&uuml;llt die<br />
+		         angegebene Struktur Info. Ist Info eine Nullreferenz so wird eine neue<br />
+		         Instanz angelegt. Die Funktion muss mit Root/Administratorrechten ausgef&uuml;hrt<br />
+		         werden.
+		         Siehe auch: #TAdapterInfo
+	End Rem
+	Function GetAdapterInfo:Int(Info:TAdapterInfo Var)
+		Local Device:Byte Ptr
+
+		If Not Info Then Info = New TAdapterInfo
+
+		Device = MemAlloc(256)
+		If Not GetNetworkAdapter(Device, Info.MAC, Varptr(Info.Address), ..
+			Varptr(Info.Netmask), Varptr(Info.Broadcast)) Then Return False
+		Info.Device = String.FromCString(Device)
+
+		Return True
 	End Function
 End Type
 
@@ -265,7 +497,7 @@ Type TNetStream Extends TStream Abstract
 		bbdoc:   Stellt fest, ob Bytes ausgelesen werden k&ouml;nnen
 		returns: False, wenn noch Bytes ausgelesen werden k&ouml;nnen, True wenn nicht
 		about:   Diese Methode funktioniert auf Basis der #Size Methode und pr&uuml;ft somit<br />
-		         die Gr&ouml;e des Empfangspuffers.<br />
+		         die Gr&ouml;ße des Empfangspuffers.<br />
 		         Siehe auch: #Size
 	End Rem
 	Method Eof:Int()
@@ -275,7 +507,7 @@ Type TNetStream Extends TStream Abstract
 	Rem
 		bbdoc:   Gibt die Anzahl an empfangenen Bytes zur&uuml;ck
 		returns: Anzahl an empfangenen Bytes
-		about:   Nach jedem #RecvMsg wird eine Nachricht in den Empfangspuffer angehngt.<br />
+		about:   Nach jedem #RecvMsg wird eine Nachricht in den Empfangspuffer angehängt.<br />
 		         Diese Methode gibt zur&uuml;ck, wieviel Bytes noch mit den allgemeinen Stream-<br />
 		         befehlen, wie z. B. #ReadLine , aus diesen ausgelesen werden k&ouml;nnen.<br>
 		         Siehe auch: #RecvAvail
@@ -285,7 +517,7 @@ Type TNetStream Extends TStream Abstract
 	End Method
 
 	Rem
-		bbdoc:   Lscht den internen Sende- und Empfangspuffer.
+		bbdoc:   Löscht den internen Sende- und Empfangspuffer.
 		returns: -
 		about:   Die empfangenen und gesendeten Daten werden gel&ouml;scht und die internen<br />
 			     Sende- und Empfangsgr&ouml;&szlig;en zu 0 gesetzt.<br />
@@ -354,11 +586,14 @@ Type TUDPStream Extends TNetStream
 
 	Field RecvTimeout : Int
 	Field SendTimeout : Int
+
+	'ron
 	Field fSpeed       : Float = 0
 	Field fDataGot     : Float = 0
 	Field fDataSent    : Float = 0
 	Field fDataSum     : Float = 0
 	Field fLastSecond  : Float = 0
+
 
 	Method New()
 		Self.LocalPort   = 0
@@ -399,7 +634,7 @@ Type TUDPStream Extends TNetStream
 		returns: False, wenn ein Fehler auftrat, ansonsten True
 		about:   Wenn bei Port 0 angegeben wurde, so sucht das Betriebssystem einen <br />
 		         freihen Port. Diesen kann man mit #GetLocalPort ermittelt werden.<br />
-		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empfngers <br />
+		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empfängers <br />
 		         &uuml;bereinstimmen.<br />
 		         Siehe auch: #GetLocalPort , #GetLocalIP
 	End Rem
@@ -438,7 +673,7 @@ Type TUDPStream Extends TNetStream
 	Rem
 		bbdoc:   Gibt die lokale IP-Adresse in Integerform zur&uuml;ck
 		returns: IntegerIP
-		about:   Damit lsst sich NICHT die globale IP ermitteln.<br />
+		about:   Damit lässt sich NICHT die globale IP ermitteln.<br />
 		         Diese Methode ist erst nach #SetLocalPort einsatzbereit.<br />
 		         Siehe auch: #SetLocalPort , #GetLocalPort
 	End Rem
@@ -447,7 +682,7 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt den Empfngerport
+		bbdoc:   Setzt den Empfängerport
 		returns: -
 		about:   An diesen Port wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
@@ -459,8 +694,8 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt den Empfngerport zur&uuml;ck
-		returns: Empfngerport
+		bbdoc:   Gibt den Empfängerport zur&uuml;ck
+		returns: Empfängerport
 		about:   An diesen Port wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
 		         Siehe auch: #SetRemotePort
@@ -470,7 +705,7 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt die EmpfngerIP
+		bbdoc:   Setzt die EmpfängerIP
 		returns: -
 		about:   An diese IP-Adresse wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Benutze diese Methode in Zusammenhang mit SetRemotePort.<br />
@@ -481,14 +716,47 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt die EmpfngerIP zur&uuml;ck
-		returns: EmpfngerIP
+		bbdoc:   Gibt die EmpfängerIP zur&uuml;ck
+		returns: EmpfängerIP
 		about:   An diese IP-Adresse wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
 		         Siehe auch: #SetRemotePort
 	End Rem
 	Method GetRemoteIP:Int()
 		Return Self.RemoteIP
+	End Method
+
+	Rem
+		bbdoc:   Aktiviert/Deaktiviert das Senden und Empfangen von Broadcast-Nachrichten
+		returns: False, wenn ein Fehler auftrat, ansonsten True.
+		about:   Siehe auch: #GetAdapterInfo, #TAdapterInfo, #GetBroadcast
+	End Rem
+	Method SetBroadcast:Int(Enable:Int)
+		If Self.Socket = INVALID_SOCKET_ Then Return False
+		If Enable Then Enable = True
+
+		If setsockopt_(Self.Socket, SOL_SOCKET_, SO_BROADCAST_, Varptr(Enable), 4) ..
+			= SOCKET_ERROR_ Then Return False
+
+		Return True
+	End Method
+
+	Rem
+		bbdoc:   Gibt den aktuellen Broadcast-Zustand zur&uuml;ck
+		returns: -1, wenn ein Fehler auftrat, True wenn Broadcasting aktiviert ist, <br>
+		         False wenn broadcasting deaktiviert ist.
+		about:   Siehe auch: #SetBroadcast
+	End Rem
+	Method GetBroadcast:Int()
+		Local Enable:Int, Size:Int
+
+		If Self.Socket = INVALID_SOCKET_ Then Return False
+
+		Size = 4
+		If getsockopt_(Self.Socket, SOL_SOCKET_, SO_BROADCAST_, Varptr(Enable), ..
+		               Size)= SOCKET_ERROR_ Then Return -1
+
+		Return Enable
 	End Method
 
 	Rem
@@ -542,9 +810,9 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Empfngt eine Nachricht
+		bbdoc:   Empfängt eine Nachricht
 		returns: Anzahl der empfangenen Bytes.
-		about:   Empfngt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
+		about:   Empfängt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
 		         kann mit #RecvAvail gepr&uuml;ft werden. Die AbsenderIP sowie der Absenderport<br />
 		         k&ouml;nnen mit #GetMsgIP und #GetMsgPort ermittelt werden.<br />
 		         Die Nachricht wird in einem Puffer gelagert.<br />
@@ -558,9 +826,11 @@ Type TUDPStream Extends TNetStream
 		If Self.Socket = INVALID_SOCKET_ Then Return 0
 
 		Read = Self.Socket
-		If selectex_(1, Varptr(Read), 0, Null, 0, Null, Self.RecvTimeout) <> 1 then Return 0
+		If selectex_(1, Varptr(Read), 0, Null, 0, Null, Self.RecvTimeout) <> 1 ..
+		   Then Return 0
 
-		If ioctl_(Self.Socket, FIONREAD, Varptr(Size)) = SOCKET_ERROR_ then Return 0
+		If ioctl_(Self.Socket, FIONREAD, Varptr(Size)) = SOCKET_ERROR_ ..
+		   Then Return 0
 
 		If Size <= 0 Then Return 0
 
@@ -578,6 +848,7 @@ Type TUDPStream Extends TNetStream
 			EndIf
 			Self.fDataGot :+ Self.RecvSize
 			'end speed
+
 		Else
 			Self.RecvBuffer = MemAlloc(Size)
 		EndIf
@@ -595,24 +866,25 @@ Type TUDPStream Extends TNetStream
 		EndIf
 	End Method
 
-
-	Method SendUDPMsg:Int(iIP:Int, shPort:Short = 0)
-      Local oldIP:Int = Self.remoteIP
-	  Local oldPort:Short = Self.RemotePort
-	  Self.RemoteIP = iIP
-	  Self.RemotePort = shPort
-	  Local returnvalue:Int = Self.SendMsg()
-	  Self.RemoteIP = oldIP
-	  Self.RemotePort = oldPort
-	  Return returnvalue
+	Method SendUDPMsg:Int(IP:Int, Port:int = 0)
+		Local oldIP:Int = remoteIP
+		Local oldPort:Short = RemotePort
+		SetBroadcast(true)
+		RemoteIP = IP
+		RemotePort = Port
+		Local returnvalue:Int = SendMsg()
+		RemoteIP = oldIP
+		RemotePort = oldPort
+		Return returnvalue
 	End Method
+
 
 	Rem
 		bbdoc:   Sendet eine Nachricht
 		returns: Anzahl der versendeten Bytes.
 		about:   Sendet eine Nachricht an den mit #SetRemoteIP und #SetRemotePort festgelegten<br/>
-		         Empfnger. Dazu sollte sich eine Nachricht schon im Sendepuffer befinden.<br />
-		         Dieser lsst sich mit den &uuml;blichen Streambefehlen wie<br />
+		         Empfänger. Dazu sollte sich eine Nachricht schon im Sendepuffer befinden.<br />
+		         Dieser lässt sich mit den &uuml;blichen Streambefehlen wie<br />
 		         #WriteLine beschreiben.<br />
 		         Siehe auch: #RecvMsg , #SetRemotePort , #SetRemoteIP
 	End Rem
@@ -655,18 +927,12 @@ Type TUDPStream Extends TNetStream
 			Return Result
 		EndIf
 	End Method
-
-	Method UDPSpeedString:String()
-	 If Self.fDataSum > 1024 Then Return ((Int(Self.fDataSum*10/1024))/10)+"kb/s"
-	 If Self.fDataSum <= 1024 Then Return Int(Self.fDataSum)+"b/s"
-	End Method
 End Type
-
 
 Rem
 	bbdoc: TCP-Stream Type
 	about: Type f&uuml;r verbindungsorientierte Kommunikation.<br />
-	       F&uuml;r TCP-Server und Client gleichemraen zu benutzen
+	       F&uuml;r TCP-Server und Client gleichemraßen zu benutzen
 End Rem
 Type TTCPStream Extends TNetStream
 	Field LocalIP       : Int
@@ -716,7 +982,7 @@ Type TTCPStream Extends TNetStream
 		returns: False, wenn ein Fehler auftrat, ansonsten True
 		about:   Wenn bei Port 0 angegeben wurde, so sucht das Betriebssystem einen <br />
 		         freihen Port. Diesen kann man mit #GetLocalPort herausbekommen.<br />
-		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empfngers <br />
+		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empfängers <br />
 		         &uuml;bereinstimmen.<br />
 		         Siehe auch: #GetLocalPort , #GetLocalIP
 	End Rem
@@ -755,7 +1021,7 @@ Type TTCPStream Extends TNetStream
 	Rem
 		bbdoc:   Gibt die lokale IP in Integerform zur&uuml;ck
 		returns: IntegerIP
-		about:   Damit lsst sich NICHT die globale IP herausfinden. Diese Methode<br />
+		about:   Damit lässt sich NICHT die globale IP herausfinden. Diese Methode<br />
 		         ist erst nach #SetLocalPort einsatzbereit.<br />
 		         Siehe auch: #SetLocalPort , #GetLocalPort
 	End Rem
@@ -764,7 +1030,7 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt den Empfngerport
+		bbdoc:   Setzt den Empfängerport
 		returns: -
 		about:   Zu diesen Port wird der TCPStream nach #Connect verbunden. Dieser Port<br />
 		         muss NICHT mit dem lokalen Port &uuml;bereinstimmen. Benutze diese Methode in<br />
@@ -776,8 +1042,8 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt den Empfngerport zur&uuml;ck
-		returns: Empfngerport
+		bbdoc:   Gibt den Empfängerport zur&uuml;ck
+		returns: Empfängerport
 		about:   Zu diesen Port ist der TCPStream entweder verbunden oder muss noch<br />
 		         mit #Connect verbunden werden. Dieser Port muss NICHT mit dem lokalen<br />
 		         Port &uuml;bereinstimmen.<br />
@@ -788,7 +1054,7 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt die EmpfngerIP
+		bbdoc:   Setzt die EmpfängerIP
 		returns: -
 		about:   Zu dieser IP-Adresse wird der TCPStream nach #Connect verbunden.<br />
 		         Benutze diese Methode in Zusammenhang mit #SetRemotePort.<br />
@@ -799,8 +1065,8 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt die EmpfngerIP in Integerform zur&uuml;ck
-		returns: EmpfngerIP
+		bbdoc:   Gibt die EmpfängerIP in Integerform zur&uuml;ck
+		returns: EmpfängerIP
 		about:   Zu dieser IP-Adresse ist der TCPStream entweder verbunden oder muss noch<br />
 		         mit #Connect verbunden werden.<br />
 		         Siehe auch: #SetRemotePort
@@ -941,9 +1207,9 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Empfngt eine Nachricht
+		bbdoc:   Empfängt eine Nachricht
 		returns: Anzahl der empfangenen Bytes.
-		about:   Empfngt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
+		about:   Empfängt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
 		         kann mit #RecvAvail gepr&uuml;ft werden. Die Nachricht wird in einem<br />
 		         Puffer gelagert. Das Auslesen der Nachricht erfolgt &uuml;ber &uuml;bliche <br />
 		         Streambefehle wie #ReadLine .<br />
@@ -989,7 +1255,7 @@ Type TTCPStream Extends TNetStream
 		returns: Anzahl der versendeten Bytes.
 		about:   Sendet eine Nachricht an den Client bzw. an den verbundenen Server. Dazu<br />
 		         sollte sich eine Nachricht schon im Sendepuffer befinden.<br />
-		         Dieser lsst sich mit den &uuml;blichen Streambefehlen wie #WriteLine<br />
+		         Dieser lässt sich mit den &uuml;blichen Streambefehlen wie #WriteLine<br />
 		         beschreiben.<br />
 		         Siehe auch: #RecvMsg
 	End Rem

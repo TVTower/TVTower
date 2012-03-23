@@ -20,6 +20,19 @@ end
 function OnLeaveRoom()
 	--SendToChat("Und raus aus dem Zimmer!")
 end
+--[[
+-- wird intern jeder lua als _OnAssignPlayer(playerID) vorangestellt
+function OnCreate(playerID)
+	playerID = tonumber(playerID)
+	TVT.DebugPrint("param : "..playerID)
+	--param oder getPlayerID moeglich - eventuell kann die Funktion aber verzichtet werden
+		if TVT.getPlayerID()	== 1 then TVT = TVTPlayer1 end
+		if playerID				== 2 then TVT = TVTPlayer2 end
+		if playerID				== 3 then TVT = TVTPlayer3 end
+		if playerID				== 4 then TVT = TVTPlayer4 end
+		if TVT == nil then	TVT.DebugPrint("Konnte TVT nicht setzen") end
+end
+]]
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)

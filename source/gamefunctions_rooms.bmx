@@ -85,7 +85,7 @@ Type TRooms
 				EndIf
 
 
-				If foundtooltip = 0 And Player[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, localroom.doorwidth, 54)
+				If foundtooltip = 0 And Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, localroom.doorwidth, 54)
 					If localroom.tooltip = Null
 						localroom.tooltip = TTooltip.Create(localroom.desc, localroom.descTwo, 100, 140, 0, 0)
 					else
@@ -182,7 +182,7 @@ Type TRooms
 				FadeAnimationActive = True
 			Else
 				CloseDoor()
- 			    Player[Game.playerID].Figure.LeaveRoom()
+ 			    Players[Game.playerID].Figure.LeaveRoom()
 			EndIf
 		EndIf
 		Return dontleave
@@ -200,7 +200,7 @@ Type TRooms
 				Fader.EnableFadeout()
 				CloseDoor()
 				FadeAnimationActive = False
- 			    Player[Game.playerID].Figure.LeaveRoom()
+ 			    Players[Game.playerID].Figure.LeaveRoom()
 				Return 0
 			EndIf
 	  End If
@@ -226,7 +226,7 @@ Type TRooms
 	     Case "programmeplanner" Room_ProgrammePlanner_Compute(Self) ;Return 0
 	     Case "news" Room_News_Compute(Self) ;Return 0
 	  End Select
-	 Player[game.playerID].figure.fromroom = Null
+	 Players[game.playerID].figure.fromroom = Null
     End Method
 
     'draw actual room
@@ -393,7 +393,7 @@ global PlannerToolTip:TTooltip
 Function Room_News_Compute(_room:TRooms)
 
 	if not TRooms.doadraw 'draw it
-		player[game.playerid].figure.fromroom =Null
+		Players[game.playerid].figure.fromroom =Null
 		TNewsbuttons.UpdateAll(App.timer.getDeltaTime())
 		Game.cursorstate = 0
 		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
@@ -401,7 +401,7 @@ Function Room_News_Compute(_room:TRooms)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.lifetime = PlannerToolTip.startlifetime
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;player[game.playerID].figure.inRoom = TRooms.GetRoom("newsplanner", _room.owner)
+			If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("newsplanner", _room.owner)
 		endif
 		If PlannerToolTip <> Null  Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 	else
@@ -422,17 +422,17 @@ Function Room_Office_Compute(_room:TRooms)
     If PlannerToolTip <> Null  Then PlannerToolTip.Draw()
    DrawText(_room.owner, 20,20)
   Else
-	player[game.playerid].figure.fromroom =Null
+	Players[game.playerid].figure.fromroom =Null
     If MouseManager.IsHit(1)
       If functions.IsIn(MouseX(),MouseY(),25,40,150,295)
-		Player[Game.playerID].Figure.LeaveRoom()
+		Players[Game.playerID].Figure.LeaveRoom()
         MOUSEMANAGER.resetKey(1)
 	  EndIf
       If functions.IsIn(MouseX(),MouseY(),164,54,67,110) And _room.owner = game.playerID
         MOUSEMANAGER.resetKey(1);
 		Game.cursorstate = 0;
-		player[game.playerID].figure.inRoom = TRooms.GetRoom("safe", -1)
-        Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+		Players[game.playerID].figure.inRoom = TRooms.GetRoom("safe", -1)
+        Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
      EndIf
 	EndIf
 
@@ -442,7 +442,7 @@ Function Room_Office_Compute(_room:TRooms)
       PlannerToolTip.enabled = 1
       PlannerToolTip.lifetime = PlannerToolTip.startlifetime
       Game.cursorstate = 1
-      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;player[game.playerID].figure.inRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("programmeplanner", _room.owner)
     EndIf
     If _room.owner = Game.playerID
    	  If functions.IsIn(MouseX(), MouseY(), 732,45,160,170)
@@ -450,7 +450,7 @@ Function Room_Office_Compute(_room:TRooms)
 	    StationsToolTip.enabled = 1
 	    StationsToolTip.lifetime = StationsToolTip.startlifetime
 	    Game.cursorstate = 1
-	    If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;player[game.playerID].figure.inRoom = TRooms.GetRoom("stationmap", _room.owner)
+	    If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("stationmap", _room.owner)
 	  EndIf
       If StationsToolTip <> Null Then StationsToolTip.Update()
     EndIf
@@ -462,7 +462,7 @@ End Function
 Function Room_Safe_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
   Else
-    Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", game.playerID)
+    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", game.playerID)
     Game.cursorstate = 0
   EndIf
 End Function
@@ -471,12 +471,12 @@ End Function
 Function Room_Financials_Compute(_room:TRooms)
 	If TRooms.doadraw 'draw it
 		Local showday:Int = Game.getWeekday()
-		Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
 		Game.cursorstate = 0
 		local font13:TBitmapFont = FontManager.GetFont("Default", 14, BOLDFONT)
 		local font12:TBitmapFont = FontManager.GetFont("Default", 11)
 
-		local finances:TFinancials = Player[_room.owner].finances[showday]
+		local finances:TFinancials = Players[_room.owner].finances[showday]
 		local line:int = 14
 		font13.drawBlock(Localization.GetString("FINANCES_OVERVIEW") 	,55, 236,330,20, 0,50,50,50)
 		font13.drawBlock(Localization.GetString("FINANCES_COSTS")       ,55,  30,330,20, 0,50,50,50)
@@ -512,17 +512,17 @@ Function Room_Financials_Compute(_room:TRooms)
 		font12.drawBlock(Localization.GetString("FINANCES_NEWSAGENCIES")    ,55, 49+line*7,330,20,0,120,120,120)
 		font12.drawBlock(Localization.GetString("FINANCES_STATION_COSTS")   ,55, 49+line*8,330,20,0,50,50,50)
 		font12.drawBlock(Localization.GetString("FINANCES_MISC_COSTS")     	,55, 49+line*9,330,20,0,120,120,120)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_movies          ,280, 49+line*0,93,20,2,50,50,50)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_stations        ,280, 49+line*1,93,20,2,120,120,120)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_scripts         ,280, 49+line*2,93,20,2,50,50,50)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_productionstuff ,280, 49+line*3,93,20,2,120,120,120)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_penalty         ,280, 49+line*4,93,20,2,50,50,50)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_rent            ,280, 49+line*5,93,20,2,120,120,120)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_news            ,280, 49+line*6,93,20,2,50,50,50)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_newsagencies    ,280, 49+line*7,93,20,2,120,120,120)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_stationfees     ,280, 49+line*8,93,20,2,50,50,50)
-		font12.drawBlock(Player[_room.owner].finances[showday].paid_misc            ,280, 49+line*9,93,20,2,120,120,120)
-		font13.drawBlock(Player[_room.owner].finances[showday].paid_total           ,280,194,92,20,2,30,30,30)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_movies          ,280, 49+line*0,93,20,2,50,50,50)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_stations        ,280, 49+line*1,93,20,2,120,120,120)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_scripts         ,280, 49+line*2,93,20,2,50,50,50)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_productionstuff ,280, 49+line*3,93,20,2,120,120,120)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_penalty         ,280, 49+line*4,93,20,2,50,50,50)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_rent            ,280, 49+line*5,93,20,2,120,120,120)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_news            ,280, 49+line*6,93,20,2,50,50,50)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_newsagencies    ,280, 49+line*7,93,20,2,120,120,120)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_stationfees     ,280, 49+line*8,93,20,2,50,50,50)
+		font12.drawBlock(Players[_room.owner].finances[showday].paid_misc            ,280, 49+line*9,93,20,2,120,120,120)
+		font13.drawBlock(Players[_room.owner].finances[showday].paid_total           ,280,194,92,20,2,30,30,30)
 
 
 		Local maxvalue:float=0.0
@@ -555,9 +555,9 @@ Function Room_Image_Compute(_room:TRooms)
 		FontManager.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
 
 		FontManager.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
-		FontManager.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Player[_room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
+		FontManager.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Players[_room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	Else
-		Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
 	EndIf
 
 End Function
@@ -565,22 +565,22 @@ End Function
 
 Function Room_Elevator_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
-    player[game.playerid].figure.fromroom =Null
+    Players[game.playerid].figure.fromroom =Null
     TRoomSigns.DrawAll()
     DrawText(_room.owner + "                   ---- bin in " + _room.name, 20, 20)
 '    DrawText(_room.owner, 20,20)
     DrawText(Building.Elevator.waitAtFloorTimer - MilliSecs(), 20, 40)
   Else
     Game.cursorstate = 0
-    player[game.playerid].figure.fromroom =Null
-    If Building.Elevator.waitAtFloorTimer - MilliSecs() <= 0 and Player[Game.playerID].figure.inRoom.name = "elevator" Then
-		Print "Schmeisse Figur " +  player[game.playerID].figure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
+    Players[game.playerid].figure.fromroom =Null
+    If Building.Elevator.waitAtFloorTimer - MilliSecs() <= 0 and Players[Game.playerID].figure.inRoom.name = "elevator" Then
+		Print "Schmeisse Figur " +  Players[game.playerID].figure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
       'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritt
-	  player[game.playerID].figure.inElevator = False
-		  player[game.playerID].figure.calledElevator= false
+	  Players[game.playerID].figure.inElevator = False
+		  Players[game.playerID].figure.calledElevator= false
 
-      player[game.playerID].figure.inRoom = Null
-	  player[game.playerID].Figure.clickedToRoom = Null
+      Players[game.playerID].figure.inRoom = Null
+	  Players[game.playerID].Figure.clickedToRoom = Null
       building.elevator.waitAtFloorTimer = MilliSecs()
     EndIf
     If MouseManager.IsHit(1)
@@ -593,14 +593,14 @@ End Function
 
 Function Room_RoomBoard_Compute(_room:TRooms)
 	if TRooms.doadraw 'draw it
-		player[game.playerid].figure.fromroom =Null
+		Players[game.playerid].figure.fromroom =Null
 		TRoomSigns.DrawAll()
 		FontManager.basefont.draw("owner:"+_room.owner, 20,20)
 		FontManager.basefont.draw(building.Elevator.waitAtFloorTimer - MilliSecs(), 20,40)
 	Else
 		' MouseManager.changeStatus()
 		Game.cursorstate = 0
-		player[game.playerid].figure.fromroom =Null
+		Players[game.playerid].figure.fromroom =Null
 		TRoomSigns.UpdateAll(True)
 		If MouseManager.IsDown(1) Then MouseManager.resetKey(1)
 	EndIf
@@ -628,7 +628,7 @@ Function Room_AdAgency_Compute(_room:TRooms)
         Next
 		FontManager.basefont.draw("owner:"+_room.owner, 20,20)
 	Else
-    player[game.playerid].figure.fromroom =Null
+    Players[game.playerid].figure.fromroom =Null
     Game.cursorstate = 0
     TContractBlock.UpdateAll(True)
   EndIf
@@ -677,14 +677,14 @@ Function Room_MovieAgency_Compute(_room:TRooms)
         Next
     ReverseList(TMovieAgencyBlocks.List)
   Else
-    player[game.playerid].figure.fromroom =Null
+    Players[game.playerid].figure.fromroom =Null
     Game.cursorstate = 0
     If functions.IsIn(MouseX(), MouseY(), 210,220,140,60)
       If AuctionToolTip = Null Then AuctionToolTip = TTooltip.Create("Auktion", "Film- und Serienauktion", 200, 180, 0, 0)
       AuctionToolTip.enabled = 1
       AuctionToolTip.lifetime = AuctionToolTip.startlifetime
       Game.cursorstate = 1
-      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;player[game.playerID].figure.inRoom = TRooms.GetRoom("movieauction", _room.owner)
+      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("movieauction", _room.owner)
     EndIf
 
 	If MilliSecs() > Room_MovieAgency_GimmickTimer + 6000 Then Room_MovieAgency_GimmickTimer = MilliSecs() + 250
@@ -710,7 +710,7 @@ Function Room_MovieAuction_Compute(_room:TRooms)
 	FontManager.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
 	TAuctionProgrammeBlocks.DrawAll(0)
   Else
-    Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("movieagency", 0)
+    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("movieagency", 0)
     Game.cursorstate = 0
 	TAuctionProgrammeBlocks.UpdateAll(0)
   EndIf
@@ -718,20 +718,20 @@ End Function
 
 Function Room_Betty_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
-    Player[Game.playerid].figure.fromroom = Null
+    Players[Game.playerid].figure.fromroom = Null
 	For Local i:Int = 1 To 4
 		local sprite:TGW_Sprites = Assets.GetSprite("gfx_room_betty_picture1")
 		Local picY:Int = 240
 		Local picX:Int = 410 + i * (sprite.w + 5)
 		sprite.Draw( picX, picY )
 		SetAlpha 0.4
-		SetColor Player[i].color.colB, Player[i].color.colG, Player[i].color.colR
+		SetColor Players[i].color.colB, Players[i].color.colG, Players[i].color.colR
 		DrawRect(picX + 2, picY + 8, 26, 28)
 		SetColor 255, 255, 255
 		SetAlpha 1.0
-		local x:float = picX + Int(sprite.w / 2) - Int(Player[i].Figure.Sprite.framew / 2)
+		local x:float = picX + Int(sprite.w / 2) - Int(Players[i].Figure.Sprite.framew / 2)
 		local y:float = picY + sprite.h - 30
-		Player[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
+		Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 	Next
 	Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
 	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, FontManager.GetFont("Default",14))
@@ -741,7 +741,7 @@ End Function
 
 Function Room_Chief_Compute(_room:TRooms)
 	If TRooms.doadraw 'draw it
-		player[game.playerid].figure.fromroom =Null
+		Players[game.playerid].figure.fromroom =Null
 		For Local i:Int = 1 To plength-1
 			part_array[i].Draw()
 		Next
@@ -752,30 +752,30 @@ Function Room_Chief_Compute(_room:TRooms)
 
 	If _room.Dialogues.Count() <= 0
 		Local ChefDialoge:TDialogueTexts[5]
-		ChefDialoge[0] = TDialogueTexts.Create("Was ist " + Player[Game.playerID].name + "?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!")
+		ChefDialoge[0] = TDialogueTexts.Create("Was ist " + Players[Game.playerID].name + "?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!")
 		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create("Ja, ist ja schon gut Chef ich störe nicht weiter!", - 2, Null))
 		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create("Ich wollte wegen *ähm* einem Kredit nachfragen.", 1, Null))
-		If Player[Game.playerID].GetCreditCurrent() > 0 Then ChefDialoge[0].AddAnswer(TDialogueAnswer.Create("Ich will etwas von meinem Kredit abbezahlen..", 3, Null))
-		If Player[Game.playerID].GetCreditAvaiable() > 0
-			ChefDialoge[1] = TDialogueTexts.Create("Schon wieder neue Kohle?" + Chr(13) + "Naja, Sie machen Ihren Job ja besser als andere Praktikanten. Allerdings sind nicht mehr als " + Player[Game.playerID].GetCreditAvaiable() + "€ drin, verstanden!?")
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Ja, den Kredit nehme ich dann wohl.", 2, TPlayer.extSetCredit, Player[Game.playerID].GetCreditAvaiable()))
+		If Players[Game.playerID].GetCreditCurrent() > 0 Then ChefDialoge[0].AddAnswer(TDialogueAnswer.Create("Ich will etwas von meinem Kredit abbezahlen..", 3, Null))
+		If Players[Game.playerID].GetCreditAvaiable() > 0
+			ChefDialoge[1] = TDialogueTexts.Create("Schon wieder neue Kohle?" + Chr(13) + "Naja, Sie machen Ihren Job ja besser als andere Praktikanten. Allerdings sind nicht mehr als " + Players[Game.playerID].GetCreditAvaiable() + "€ drin, verstanden!?")
+			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Ja, den Kredit nehme ich dann wohl.", 2, TPlayer.extSetCredit, Players[Game.playerID].GetCreditAvaiable()))
 			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Ach, nein Danke Boss, hab's mir anders überlegt", - 2))
 		Else
-			ChefDialoge[1] = TDialogueTexts.Create("Wollen Sie nicht erstmal den alten Kredit zurückzahlen?" + Chr(13) + "Sie schulden mir noch " + Player[Game.playerID].GetCreditCurrent() + "€ - zahlen Sie die ersteinmal ab!" + Chr(13) + "Und nun raus bevor ich mich vergesse")
+			ChefDialoge[1] = TDialogueTexts.Create("Wollen Sie nicht erstmal den alten Kredit zurückzahlen?" + Chr(13) + "Sie schulden mir noch " + Players[Game.playerID].GetCreditCurrent() + "€ - zahlen Sie die ersteinmal ab!" + Chr(13) + "Und nun raus bevor ich mich vergesse")
 			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Ja, dann zahl ich halt etwas zurück.", 3))
 			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Öhm, ich schau dann wohl später nochmal vorbei.", - 2))
 		EndIf
 		ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Können wir nicht über etwas anderes reden?", 0))
 
-		ChefDialoge[2] = TDialogueTexts.Create("So und nun an die Arbeit " + Player[Game.playerID].name + "!")
+		ChefDialoge[2] = TDialogueTexts.Create("So und nun an die Arbeit " + Players[Game.playerID].name + "!")
 		ChefDialoge[2].AddAnswer(TDialogueAnswer.Create("Ok, bin ja schon weg.", - 2))
 
 		ChefDialoge[3] = TDialogueTexts.Create("Soso, wenigstens eine gute Nachricht für den heutigen Tag." + Chr(13) + " " + Chr(13) + "Wieviel wollen Sie denn zurückzahlen?")
-		If Player[Game.playerID].GetCreditCurrent() >= 100000 And Player[Game.playerID].GetRawMoney() >= 100000
+		If Players[Game.playerID].GetCreditCurrent() >= 100000 And Players[Game.playerID].GetRawMoney() >= 100000
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Naja 100000€ könnte ich zurückzahlen.", - 2, TPlayer.extSetCredit, - 1 * 100000))
 		EndIf
-		If Player[Game.playerID].GetCreditCurrent() < Player[Game.playerID].GetRawMoney()
-			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Eigentlich gleich den kompletten Kredit.", - 2, TPlayer.extSetCredit, - 1 * Player[Game.playerID].GetCreditCurrent()))
+		If Players[Game.playerID].GetCreditCurrent() < Players[Game.playerID].GetRawMoney()
+			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Eigentlich gleich den kompletten Kredit.", - 2, TPlayer.extSetCredit, - 1 * Players[Game.playerID].GetCreditCurrent()))
 		EndIf
 		ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Hab's mir doch anders überlegt, bis später Chef.", - 2))
 		ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Können wir nicht über etwas anderes reden?", 0))
@@ -920,19 +920,19 @@ Next
 
 Function Room_StationMap_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
-	Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
     StationMap.Draw()
 	GUIManager.Draw("STATIONMAP")
 	FontManager.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
 	For Local i:Int = 0 To 3
 		SetColor 100, 100, 100
 		DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 15, 18)
-		Player[i + 1].color.MySetColor()
+		Players[i + 1].color.MySetColor()
 		DrawRect(565, 33 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 13, 16)
 	Next
 	SetColor 255, 255, 255
   Else
-	Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
     StationMap.Update()
 	GUIManager.Update("STATIONMAP")
   EndIf
@@ -944,17 +944,17 @@ Function Room_NewsPlanner_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
     SetColor 255,255,255  'normal
     SetColor 255,255,255
-    If game.networkgame Then If network.isHost Then DrawText ( (Game.timeSinceBegin - NewsAgency.NextEventTime), 50,12)
+    If game.networkgame Then If network.isServer Then DrawText ( (Game.timeSinceBegin - NewsAgency.NextEventTime), 50,12)
 	GUIManager.Draw("Newsplanner")
-    Player[_room.owner].ProgrammePlan.DrawAllNewsBlocks()
+    Players[_room.owner].ProgrammePlan.DrawAllNewsBlocks()
   Else
-    Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("news", _room.owner)
+    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("news", _room.owner)
     Game.cursorstate = 0
     If Btn_newsplanner_up.GetClicks() >= 1 Then TNewsBlock.DecLeftListPosition()
     If Btn_newsplanner_down.GetClicks() >= 1 Then TNewsBlock.IncLeftListPosition()
     If TNewsBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
 	GUIManager.Update("Newsplanner")
-    Player[_room.owner].ProgrammePlan.UpdateAllNewsBlocks()
+    Players[_room.owner].ProgrammePlan.UpdateAllNewsBlocks()
   endif
 End Function
 
@@ -1042,12 +1042,12 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 		TPPbuttons.DrawAll()
 
 
-		If Player[_room.owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks > 0
+		If Players[_room.owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks > 0
 			TAdBlock.DrawAll(_room.owner)
 			SetColor 255,255,255  'normal
-			Player[_room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
+			Players[_room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
 		Else
-			Player[_room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
+			Players[_room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
 			SetColor 255,255,255  'normal
 			TAdBlock.DrawAll(_room.owner)
 		EndIf
@@ -1072,7 +1072,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 			If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw(1)
 			If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
 			If PPprogrammeList.GetOpen() = 0 And PPcontractList.GetOpen() = 0
-				For Local ProgrammeBlock:TProgrammeBlock = EachIn Player[_room.owner].ProgrammePlan.ProgrammeBlocks
+				For Local ProgrammeBlock:TProgrammeBlock = EachIn Players[_room.owner].ProgrammePlan.ProgrammeBlocks
 					If ProgrammeBlock.sendHour >= Game.daytoplan*24 AND ProgrammeBlock.sendHour <= Game.daytoplan*24+24 And..
 					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.programme.blocks)
 						If Programmeblock.sendHour > game.day*24 + game.GetActualHour()
@@ -1099,7 +1099,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 	Else
 		TProfiler.Enter("ProgrammePlanner:UPDATE")
 		Game.cursorstate = 0
-		Player[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
 		If functions.IsIn(MouseX(), MouseY(), 759,17,14,15)
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsHit(1)
@@ -1120,7 +1120,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 		TPPbuttons.UpdateAll()
 
 		TAdBlock.UpdateAll(_room.owner)
-		Player[_room.owner].ProgrammePlan.UpdateAllProgrammeBlocks()
+		Players[_room.owner].ProgrammePlan.UpdateAllProgrammeBlocks()
 
 		If _room.owner = Game.playerID
 			If TProgrammeBlock.AdditionallyDragged > 0 OR TADblock.AdditionallyDragged > 0 Then Game.cursorstate=2
@@ -1156,7 +1156,7 @@ Function Room_Archive_Compute(_room:TRooms)
     SetColor 255,255,255
   Else
     Game.cursorstate = 0
-    Player[Game.playerID].Figure.fromRoom = Null
+    Players[Game.playerID].Figure.fromRoom = Null
 
     If (functions.IsIn(MouseX(), MouseY(), 605,65,120,90) Or functions.IsIn(MouseX(), MouseY(), 525,155,240,225)) And..
       ArchiveProgrammeList.GetOpen() = 0
@@ -1384,7 +1384,7 @@ Type TRoomSigns Extends TBlock
 				If room.Pos.x = 417 Then xpos = 3
 				If room.Pos.x = 599 Then xpos = 4
 				If functions.IsIn(_x, _y, room.Pos.x, room.Pos.y, _width, _height)
-					Local _figure:TFigures = Player[Game.playerID].Figure
+					Local _figure:TFigures = Players[Game.playerID].Figure
 					clickedroom = TRooms.GetRoomFromMapPos(xpos, signfloor)
 					print clickedroom.name
 					_figure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
@@ -1486,11 +1486,11 @@ End Function
 'room[0] = TRooms.Create(gfx_rooms_archive, "empty", "leerer Raum", 0, 0, - 1, 0)
 Function Init_SetRoomNames()
 	For Local i:Int = 1 To 4
-		TRooms.GetRoom("studiosize1", i).desc:+" " + Player[i].channelname
-		TRooms.GetRoom("office", i).desc:+" " + Player[i].name
-		TRooms.GetRoom("chief", i).desc:+" " + Player[i].channelname
-		TRooms.GetRoom("news", i).desc:+" " + Player[i].channelname
-		TRooms.GetRoom("archive", i).desc:+" " + Player[i].channelname
+		TRooms.GetRoom("studiosize1", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoom("office", i).desc:+" " + Players[i].name
+		TRooms.GetRoom("chief", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoom("news", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoom("archive", i).desc:+" " + Players[i].channelname
 	Next
 End Function
 

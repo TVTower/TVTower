@@ -35,10 +35,6 @@ End Type
 'SuperStrict
 Global activeKI:KI = Null
 
-Function getLuaEngine:TLuaEngine()
-	Return activeKI.LuaEngine
-End Function
-
 Type KI
 	Field playerId:Byte
 	Field LuaEngine:TLuaEngine
@@ -59,13 +55,29 @@ Type KI
 		ret.LuaFunctions	= TLuaFunctions.Create(pId)		'own functions for player
 		ret.LuaEngine		= TLuaEngine.Create()			'register engine and functions
 		ret.LuaEngine.RegisterBlitzmaxObject(ret.LuaFunctions, "TVT")
+		ret.LuaEngine.RegisterBlitzmaxObject(ret.LuaFunctions, "TVTPlayer"+pId) 'for each player an individual thingy
 
 		ret.scriptName		= script
 		ret.reloadScript()
 		KI_EventManager.registerKI(ret)
-		Print "Player " + pId + ": AI loaded in " + Float(MilliSecs() - loadtime) + "ms"
+		Print "Player " + pId + " (ME:"+ret.LuaFunctions.ME+"): AI loaded in " + Float(MilliSecs() - loadtime) + "ms"
+		ret._OnAssignPlayer()
 		Return ret
 	End Function
+
+	Method _OnAssignPlayer()
+	    activeKI = Self
+		Local args:Object[1]
+		args[0] = string(self.playerID)
+		Self.LuaEngine.CallLuaFunction("_OnAssignPlayer", args)
+	End Method
+
+	Method OnCreate()
+	    activeKI = Self
+		Local args:Object[1]
+		args[0] = string(self.playerID)
+		Self.LuaEngine.CallLuaFunction("OnCreate", args)
+	End Method
 
 	Method PrintErrors()
 '		If Self.scriptEnv.GetLastErrorNumber() <> LastErrorNumber
@@ -83,8 +95,18 @@ Type KI
 		if self.scriptAsString <> "" then Print "Reloaded LUA AI for player "+Self.playerId
 		self.scriptAsString = LoadText(scriptName)
 
-		Local str:String = scriptConstants + Chr:String(10) + Chr:String(13) + scriptAsString
-		Self.LuaEngine.LoadSource(scriptAsString)
+		'assign different TLuaFunctionobjects to instances
+		local quote:String=Chr(34)
+		local br:String=Chr(13)
+		Local str:String =	"function _OnAssignPlayer(playerID)"+..
+							"	playerID = tonumber(playerID)"+br+..
+							"	if TVT.getPlayerID()	== 1 then TVT = TVTPlayer1 end"+br+..
+							"	if playerID				== 2 then TVT = TVTPlayer2 end"+br+..
+							"	if playerID				== 3 then TVT = TVTPlayer3 end"+br+..
+							"	if playerID				== 4 then TVT = TVTPlayer4 end"+br+..
+							"	if TVT == nil then	TVT.DebugPrint("+quote+"Konnte TVT-Klasse nicht ueberschreiben"+quote+") end"+br+..
+							"end"+br+br
+		Self.LuaEngine.LoadSource(str + scriptAsString)
 	End Method
 
 	Method CallOnLoad(savedluascript:String="")
@@ -190,31 +212,31 @@ Type TLuaFunctions
 	Field MAXMOVIESPARGENRE:Int = 8
 	Field MAXSPOTS:Int 'Wird initialisiert
 
-	Field MOVIE_GENRE_ACTION:Int = 0
-	Field MOVIE_GENRE_THRILLER:Int = 1
-	Field MOVIE_GENRE_SCIFI:Int = 2
-	Field MOVIE_GENRE_COMEDY:Int = 3
-	Field MOVIE_GENRE_HORROR:Int = 4
-	Field MOVIE_GENRE_LOVE:Int = 5
-	Field MOVIE_GENRE_EROTIC:Int = 6
-	Field MOVIE_GENRE_WESTERN:Int = 7
-	Field MOVIE_GENRE_LIVE:Int = 8
-	Field MOVIE_GENRE_KIDS:Int = 9
-	Field MOVIE_GENRE_CARTOON:Int = 10
-	Field MOVIE_GENRE_MUSIC:Int = 11
-	Field MOVIE_GENRE_SPORT:Int = 12
-	Field MOVIE_GENRE_CULTURE:Int = 13
-	Field MOVIE_GENRE_FANTASY:Int = 14
-	Field MOVIE_GENRE_YELLOWPRESS:Int = 15
-	Field MOVIE_GENRE_NEWS:Int = 16
-	Field MOVIE_GENRE_SHOW:Int = 17
-	Field MOVIE_GENRE_MONUMENTAL:Int = 18
+	const MOVIE_GENRE_ACTION:Int = 0
+	const MOVIE_GENRE_THRILLER:Int = 1
+	const MOVIE_GENRE_SCIFI:Int = 2
+	const MOVIE_GENRE_COMEDY:Int = 3
+	const MOVIE_GENRE_HORROR:Int = 4
+	const MOVIE_GENRE_LOVE:Int = 5
+	const MOVIE_GENRE_EROTIC:Int = 6
+	const MOVIE_GENRE_WESTERN:Int = 7
+	const MOVIE_GENRE_LIVE:Int = 8
+	const MOVIE_GENRE_KIDS:Int = 9
+	const MOVIE_GENRE_CARTOON:Int = 10
+	const MOVIE_GENRE_MUSIC:Int = 11
+	const MOVIE_GENRE_SPORT:Int = 12
+	const MOVIE_GENRE_CULTURE:Int = 13
+	const MOVIE_GENRE_FANTASY:Int = 14
+	const MOVIE_GENRE_YELLOWPRESS:Int = 15
+	const MOVIE_GENRE_NEWS:Int = 16
+	const MOVIE_GENRE_SHOW:Int = 17
+	const MOVIE_GENRE_MONUMENTAL:Int = 18
 
-	Field NEWS_GENRE_TECHNICS:Int = 3
-	Field NEWS_GENRE_POLITICS:Int = 0
-	Field NEWS_GENRE_SHOWBIZ:Int = 1
-	Field NEWS_GENRE_SPORT:Int = 2
-	Field NEWS_GENRE_CURRENTS:Int = 4
+	const NEWS_GENRE_TECHNICS:Int = 3
+	const NEWS_GENRE_POLITICS:Int = 0
+	const NEWS_GENRE_SHOWBIZ:Int = 1
+	const NEWS_GENRE_SPORT:Int = 2
+	const NEWS_GENRE_CURRENTS:Int = 4
 
 	'Die Räume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
@@ -263,10 +285,21 @@ Type TLuaFunctions
 	Field ROOM_OFFICE_PLAYER4:Int
 	Field ROOM_STUDIOSIZE_PLAYER4:Int
 
+
+	Method getPlayerID:Int()
+		return activeKI.playerId
+	End Method
+
+
+	Method DebugPrint(text:string)
+		print "LUAKI DebugPrint: "+text
+	End Method
+
 	Function Create:TLuaFunctions(pPlayerId:Int)
 		Local ret:TLuaFunctions = New TLuaFunctions
 
 		ret.ME = pPlayerId
+
 		ret.MAXSPOTS = Game.maxContractsAllowed
 
 		ret.ROOM_MOVIEAGENCY = TRooms.GetRoom("movieagency", 0).uniqueID
@@ -316,7 +349,7 @@ Type TLuaFunctions
 
 		Return ret
 	End Function
-
+rem
 	Function Lua_GetString:String(luaState:Byte Ptr)
 		Return String.FromCString(lua_tostring(luaState, -1))
 	End Function
@@ -325,6 +358,8 @@ Type TLuaFunctions
 	Function Lua_GetDouble:Double(luaState:Byte Ptr)
 		Return lua_tonumber(luaState, -1)
 	End Function
+endrem
+
 
 	Method PrintOut:Int(text:String)
 		Print text
@@ -338,7 +373,7 @@ Type TLuaFunctions
 
 	Method SendToChat:Int(ChatText:String)
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
+		If Players[PlayerID] <> Null
 			InGame_Chat.AddEntry("", ChatText, PlayerID, "", "", MilliSecs())
 			Local KIcommand:Int = 0
 			If PlayerID = 1
@@ -346,11 +381,11 @@ Type TLuaFunctions
 					If Left(ChatText, 1) = "/"
 						KIcommand = 1
 						Local KIPlayerID:Int = Int(Mid(chattext, 2,1))
-						If Player[KIPlayerID] <> Null
-							If Player[KIplayerID].Figure.IsAI()
+						If Players[KIPlayerID] <> Null
+							If Players[KIplayerID].Figure.IsAI()
 								Local chatvalue:String = Right(chattext, chattext.Length - 3)
 								Print chatvalue
-								Player[KIplayerID].PlayerKI.CallOnChat(chatvalue)
+								Players[KIplayerID].PlayerKI.CallOnChat(chatvalue)
 							EndIf
 						EndIf
 					EndIf
@@ -362,24 +397,24 @@ Type TLuaFunctions
 
 
 	Method GetPlayerPosX:Int(PlayerID:Int = Null)
-		If Player[PlayerID] <> Null
+		If Players[PlayerID] <> Null
 		  ' ReturnNumberToLua gibt dem Befehl des Luascriptes (GetPlayerPosX)
 		  ' einen Wert zurueck...
-		  Return(Floor(Player[PlayerID].figure.pos.x))
+		  Return(Floor(Players[PlayerID].figure.pos.x))
 		EndIf
 		Return - 1
 	End Method
 
 	Method GetPlayerTargetPosX:Int(PlayerID:Int = Null)
-		If Player[PlayerID] <> Null
-			Return(Floor(Player[PlayerID].figure.target.x))
+		If Players[PlayerID] <> Null
+			Return(Floor(Players[PlayerID].figure.target.x))
 		EndIf
 		Return - 1
 	End Method
 
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
-		If Player[PlayerID] <> Null
-		  Player[PlayerID].figure.changeTarget(newTargetX,null)
+		If Players[PlayerID] <> Null
+		  Players[PlayerID].figure.changeTarget(newTargetX,null)
 		Else
 			Return - 1
 		EndIf
@@ -396,8 +431,8 @@ Type TLuaFunctions
 
 	Method getPlayerMaxAudience:Int()
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
-			Return Player[PlayerID].maxaudience
+		If Players[PlayerID] <> Null
+			Return Players[PlayerID].maxaudience
 		Else
 			Return 1
 		EndIf
@@ -405,8 +440,8 @@ Type TLuaFunctions
 
 	Method getPlayerAudience:Int()
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
-			Return Player[PlayerID].audience
+		If Players[PlayerID] <> Null
+			Return Players[PlayerID].audience
 		Else
 			Return 0
 		EndIf
@@ -414,8 +449,8 @@ Type TLuaFunctions
 
 	Method getPlayerCredit:Int()
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
-			Return Player[PlayerID].finances[Game.getWeekday()].credit
+		If Players[PlayerID] <> Null
+			Return Players[PlayerID].finances[Game.getWeekday()].credit
 		Else
 			Return 0
 		EndIf
@@ -423,8 +458,8 @@ Type TLuaFunctions
 
 	Method getPlayerMoney:Int()
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
-			Return Player[PlayerID].finances[Game.getWeekday()].money
+		If Players[PlayerID] <> Null
+			Return Players[PlayerID].finances[Game.getWeekday()].money
 		Else
 			Return 0
 		EndIf
@@ -432,8 +467,8 @@ Type TLuaFunctions
 
 	Method getPlayerRoom:Int()
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
-			Local room:TRooms = Player[PlayerID].figure.inRoom
+		If Players[PlayerID] <> Null
+			Local room:TRooms = Players[PlayerID].figure.inRoom
 			If room <> Null
 		  		Return room.uniqueId
 			Else
@@ -446,8 +481,8 @@ Type TLuaFunctions
 
 	Method getPlayerTargetRoom:Int()
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
-			Local room:TRooms = Player[PlayerID].figure.toRoom
+		If Players[PlayerID] <> Null
+			Local room:TRooms = Players[PlayerID].figure.toRoom
 			If room <> Null
 		  		Return room.uniqueId
 			Else
@@ -460,8 +495,8 @@ Type TLuaFunctions
 
 	Method getPlayerFloor:Int()
 		Local PlayerID:Int = activeKI.playerId
-		If Player[PlayerID] <> Null
-			return Player[PlayerID].figure.GetFloor()
+		If Players[PlayerID] <> Null
+			return Players[PlayerID].figure.GetFloor()
 		Else
 			Return 0
 		EndIf
@@ -479,7 +514,7 @@ Type TLuaFunctions
 	Method doGoToRoom:Int(roomId:Int = 0)
 		Local PlayerID:Int = activeKI.playerId
 		Local Room:TRooms = TRooms.GetRoomFromID(roomId)
-		If Room <> Null Then Player[PlayerID].Figure.SendToRoom(Room)
+		If Room <> Null Then Players[PlayerID].Figure.SendToRoom(Room)
 	    Return 1
 	End Method
 	' ###########################################################
@@ -656,12 +691,12 @@ Type TLuaFunctions
 	Method of_getMovie:Int(day:Int = -1, hour:Int = -1)
 		Local playerId:Int = activeKI.playerId
 
-		If Player[playerId] <> Null
-			If Player[playerId].Figure.inRoom.Name <> "office"
+		If Players[playerId] <> Null
+			If Players[playerId].Figure.inRoom.Name <> "office"
 				Return - 1
 			Else
-				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
-				Local Programme:TProgramme = Player[owner].ProgrammePlan.GetActualProgramme(hour, day)
+				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
+				Local Programme:TProgramme = Players[owner].ProgrammePlan.GetActualProgramme(hour, day)
 				If Programme <> Null then Return Programme.id Else Return 0
 			EndIf
 		Else
@@ -672,12 +707,12 @@ Type TLuaFunctions
 	Method of_getSpot:Int(day:Int = -1, hour:Int = -1)
 		Local playerId:Int = activeKI.playerId
 
-		If Player[playerId] <> Null
-			If Player[PlayerID].Figure.inRoom.name <> "office"
+		If Players[playerId] <> Null
+			If Players[PlayerID].Figure.inRoom.name <> "office"
 				Return - 1
 			Else
-				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
-				Local obj:TAdBlock = Player[owner].ProgrammePlan.GetActualAdBlock(hour, day)
+				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
+				Local obj:TAdBlock = Players[owner].ProgrammePlan.GetActualAdBlock(hour, day)
 				If obj <> Null
 					Return obj.contract.id
 				Else
@@ -692,12 +727,12 @@ Type TLuaFunctions
 	Method of_getPlayerSpotCount:Int()
 		Local playerId:Int = activeKI.playerId
 		Local ret:Int = 0
-		If Player[PlayerID] <> Null
-			If Player[playerId].Figure.inRoom.Name <> "office"
+		If Players[PlayerID] <> Null
+			If Players[playerId].Figure.inRoom.Name <> "office"
 				Return - 1
 			Else
-				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
-				Return Player[owner].ProgrammeCollection.ContractList.Count() - 1
+				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
+				Return Players[owner].ProgrammeCollection.ContractList.Count() - 1
 			EndIf
 		Else
 			Return - 1
@@ -707,13 +742,13 @@ Type TLuaFunctions
 	Method of_getPlayerSpot:Int(arraynumber:Int = -1)
 		Local playerId:Int = activeKI.playerId
 		Local ret:Int = 0
-		If Player[PlayerID] <> Null
-			If Player[playerId].Figure.inRoom.Name <> "office"
+		If Players[PlayerID] <> Null
+			If Players[playerId].Figure.inRoom.Name <> "office"
 				Return - 1
 			Else
-				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
-				If arraynumber >= 0 & arraynumber <= Player[owner].ProgrammeCollection.ContractList.Count() - 1
-					Local obj:TContract = TContract(Player[owner].ProgrammeCollection.ContractList.ValueAtIndex(arraynumber))
+				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
+				If arraynumber >= 0 & arraynumber <= Players[owner].ProgrammeCollection.ContractList.Count() - 1
+					Local obj:TContract = TContract(Players[owner].ProgrammeCollection.ContractList.ValueAtIndex(arraynumber))
 					If obj <> Null
 						Return obj.id
 					Else
@@ -730,12 +765,12 @@ Type TLuaFunctions
 		Local playerId:Int = activeKI.playerId
 
 		Local ret:Int = -2
-		If Player[PlayerID] <> Null
-			If Player[playerId].Figure.inRoom.Name <> "office"
+		If Players[PlayerID] <> Null
+			If Players[playerId].Figure.inRoom.Name <> "office"
 				Return - 1
 			Else
-				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
-				Local obj:TAdBlock = Player[owner].ProgrammePlan.GetActualAdBlock(hour, day)
+				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
+				Local obj:TAdBlock = Players[owner].ProgrammePlan.GetActualAdBlock(hour, day)
 				If obj <> Null
 					Return obj.contract.spotnumber
 				Else
@@ -750,12 +785,12 @@ Type TLuaFunctions
 	Method of_getSpotBeenSent:Int(contractID:Int = -1)
 		Local playerId:Int = activeKI.playerId
 
-		If Player[PlayerID] <> Null
-			If Player[playerId].Figure.inRoom.Name <> "office"
+		If Players[PlayerID] <> Null
+			If Players[playerId].Figure.inRoom.Name <> "office"
 				Return - 1
 			Else
-				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
-				Local contractobj:TContract = Player[owner].ProgrammeCollection.GetContract(contractID)
+				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
+				Local contractobj:TContract = Players[owner].ProgrammeCollection.GetContract(contractID)
 				Local obj:TAdBlock = TAdBlock.GetBlockByContract(contractobj)
 				If obj <> Null
 					Return obj.GetSuccessfulSentContractCount()
@@ -771,12 +806,12 @@ Type TLuaFunctions
 	Method of_getSpotDaysLeft:Int(contractID:Int = -1)
 		Local playerId:Int = activeKI.playerId
 
-		If Player[PlayerID] <> Null
-			If Player[playerId].Figure.inRoom.Name <> "office"
+		If Players[PlayerID] <> Null
+			If Players[playerId].Figure.inRoom.Name <> "office"
 				Return - 1
 			Else
-				Local owner:Int = Player[PlayerID].Figure.inRoom.owner
-				Local contractobj:TContract = Player[owner].ProgrammeCollection.GetContract(contractID)
+				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
+				Local contractobj:TContract = Players[owner].ProgrammeCollection.GetContract(contractID)
 				If contractobj <> Null
 					Return contractobj.getDaysToFinish()
 				Else
@@ -791,10 +826,10 @@ Type TLuaFunctions
 	Method of_doMovieInPlan:Int(day:Int = -1, hour:Int = -1, ObjectID:Int = -1)
 		Local playerId:Int = activeKI.playerId
 
-		If Player[playerId] <> Null
-			If Player[PlayerID].Figure.inRoom <> Null
-				If Player[PlayerID].Figure.inRoom.name = "office" Or Player[PlayerID].Figure.fromRoom.name = "office"
-					Local owner:Int = Player[PlayerID].Figure.inRoom.owner
+		If Players[playerId] <> Null
+			If Players[PlayerID].Figure.inRoom <> Null
+				If Players[PlayerID].Figure.inRoom.name = "office" Or Players[PlayerID].Figure.fromRoom.name = "office"
+					Local owner:Int = Players[PlayerID].Figure.inRoom.owner
 					'Schluessel da? - einfuegen!
 					If playerId <> owner
 						Return - 1
@@ -803,7 +838,7 @@ Type TLuaFunctions
 							If day = Game.day And hour = Game.GetActualHour() And Game.GetActualMinute() > 5
 								Return - 2
 							Else
-								Local Obj:TProgrammeBlock = Player[playerID].ProgrammePlan.GetActualProgrammeBlock(hour, day)
+								Local Obj:TProgrammeBlock = Players[playerID].ProgrammePlan.GetActualProgrammeBlock(hour, day)
 								If Obj <> Null
 									Obj.DeleteBlock()
 									Return 1
@@ -812,9 +847,9 @@ Type TLuaFunctions
 								EndIf
 							EndIf
 						Else
-							Local Obj:TProgramme = Player[playerID].ProgrammeCollection.GetProgramme(ObjectID)
+							Local Obj:TProgramme = Players[playerID].ProgrammeCollection.GetProgramme(ObjectID)
 							If Obj <> Null
-								If Player[playerID].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
+								If Players[playerID].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
 									Local objBlock:TProgrammeBlock = TProgrammeBlock.CreateDragged(obj, playerId)
 									objBlock.sendHour = day*24 + hour
 									objBlock.dragged = 0
@@ -836,10 +871,10 @@ Type TLuaFunctions
 	Method doSpotInPlan:Int(day:Int = -1, hour:Int = -1, ObjectID:Int = -1)
 		Local playerId:Int = activeKI.playerId
 
-		If Player[playerId] <> Null
-			If Player[playerId].Figure.inRoom <> Null
-				If Player[PlayerID].Figure.inRoom.name = "office" Or Player[PlayerID].Figure.fromRoom.name = "office"
-					Local owner:Int = Player[PlayerID].Figure.inRoom.owner
+		If Players[playerId] <> Null
+			If Players[playerId].Figure.inRoom <> Null
+				If Players[PlayerID].Figure.inRoom.name = "office" Or Players[PlayerID].Figure.fromRoom.name = "office"
+					Local owner:Int = Players[PlayerID].Figure.inRoom.owner
 					'Schluessel da? - einfuegen!
 					If playerId <> owner
 						Return - 1
@@ -857,10 +892,10 @@ Type TLuaFunctions
 								EndIf
 							EndIf
 						Else
-							Local Obj:TContract = Player[playerID].ProgrammeCollection.GetContract(ObjectID)
+							Local Obj:TContract = Players[playerID].ProgrammeCollection.GetContract(ObjectID)
 							If Obj <> Null
-								If Player[playerID].ProgrammePlan.ContractPlaceable(Obj, hour, day)
-									Obj = Player[playerID].ProgrammePlan.CloneContract(Obj)
+								If Players[playerID].ProgrammePlan.ContractPlaceable(Obj, hour, day)
+									Obj = Players[playerID].ProgrammePlan.CloneContract(Obj)
 									Obj.senddate = day
 									Obj.sendtime = hour
 									Local objBlock:TAdBlock = TAdBlock.createDragged(obj, playerId)
@@ -883,14 +918,14 @@ Type TLuaFunctions
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, ObjectID:Int = -1)
 		Local playerId:Int = activeKI.playerId
 
-		If Player[PlayerID] <> Null
+		If Players[PlayerID] <> Null
 			Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
 			If Programme <> Null
 	'			Local maxAudiencePercentage:Float = 0.0
 	'			  If hour < 6 And hour > 1 Then maxAudiencePercentage = Float(RandRange(5, 15)) / 100
 	'			  If hour >= 6 And hour < 18 Then maxAudiencePercentage = Float(RandRange(10, 10 + hour)) / 100
 	'		  	  If hour >= 18 Or hour <= 1 Then maxAudiencePercentage = Float(RandRange(15, 20 + hour)) / 100
-	'	        Local Quote:Int = Floor((Programme.ComputeAudienceQuote(Player[playerID].audience / Player[playerID].maxaudience) / 1000 / maxAudiencePercentage) * 1000 * 100)
+	'	        Local Quote:Int = Floor((Programme.ComputeAudienceQuote(Players[playerID].audience / Players[playerID].maxaudience) / 1000 / maxAudiencePercentage) * 1000 * 100)
 				Local Quote:Int = Floor(Programme.ComputeAudienceQuote(0.5) * 100 / Game.maxAudiencePercentage)
 				Print "quote:" + Quote
 				Return Quote
@@ -935,8 +970,8 @@ Type TLuaFunctions
 		Local playerId:Int = activeKI.playerId
 
 		Local ret:Int = 0
-		If Player[PlayerID] <> Null
-			If Player[PlayerID].Figure.inRoom.name <> "adagency"
+		If Players[PlayerID] <> Null
+			If Players[PlayerID].Figure.inRoom.name <> "adagency"
 				Return - 1
 			Else
 				For Local Block:TContractBlock = EachIn TContractBlock.List
@@ -954,8 +989,8 @@ Type TLuaFunctions
 		Local playerId:Int = activeKI.playerId
 
 		Local ret:Int = 0
-		If Player[PlayerID] <> Null
-			If Player[playerId].Figure.inRoom.Name <> "adagency"
+		If Players[PlayerID] <> Null
+			If Players[playerId].Figure.inRoom.Name <> "adagency"
 				Return - 1
 			Else
 				If ArrayID >= TContractBlock.List.Count() Or ArrayID < 0
@@ -979,8 +1014,8 @@ Type TLuaFunctions
 		Local playerId:Int = activeKI.playerId
 
 		Local ret:Int = 0
-		If Player[PlayerID] <> Null
-			If Player[PlayerID].Figure.inRoom.name <> "movieagency"
+		If Players[PlayerID] <> Null
+			If Players[PlayerID].Figure.inRoom.name <> "movieagency"
 				Return - 1
 			Else
 				For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
@@ -998,8 +1033,8 @@ Type TLuaFunctions
 		Local playerId:Int = activeKI.playerId
 
 		Local ret:Int = 0
-		If Player[PlayerID] <> Null
-			If Player[PlayerID].Figure.inRoom.name <> "movieagency"
+		If Players[PlayerID] <> Null
+			If Players[PlayerID].Figure.inRoom.name <> "movieagency"
 				Return - 1
 			Else
 				If ArrayID >= TMovieAgencyBlocks.List.Count() Or arrayID < 0
@@ -1017,8 +1052,8 @@ Type TLuaFunctions
 		Local playerId:Int = activeKI.playerId
 
 		Local ret:Int = 0
-		If Player[playerId] <> Null
-			If Player[PlayerID].Figure.inRoom.name <> "movieagency"
+		If Players[playerId] <> Null
+			If Players[PlayerID].Figure.inRoom.name <> "movieagency"
 				Return - 1
 			Else
 				For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List

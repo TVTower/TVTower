@@ -128,7 +128,7 @@ Type TFigures
 
 	Method IsAI:Int()
 		If id > 4 Then Return True
-		If Game.networkgame Then If id < 4 Then If Network.IP[id - 1] = Null Then Return True
+	'	If Game.networkgame Then If id < 4 Then If Network.IP[id - 1] = Null Then Return True
 		if self.ControlledByID = 0 then return true
 		Return False
 	End Method
@@ -225,9 +225,9 @@ Type TFigures
 
 	Method LeaveRoom:Int()
 		If ParentPlayer <> Null And controlledByID = 0
-			If Player[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
-				'Print "LeaveRoom:"+Player[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
-				If Player[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
+			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
+				'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
+				If Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
 					 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
 					 'Print "movieagency left: programmes bought"
 				EndIf
