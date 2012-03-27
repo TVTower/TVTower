@@ -211,7 +211,7 @@ Type TFigures
 		If ParentPlayer <> Null And controlledByID = 0
 			If room <> Null Then ParentPlayer.PlayerKI.CallOnReachRoom(room.uniqueID) Else ParentPlayer.PlayerKI.CallOnReachRoom(0)
 		EndIf
-		If Game.networkgame Then If Network.IsConnected Then Network.SendPlayerPosition()
+		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
 	End Method
 
 	'backing up former room
@@ -219,7 +219,7 @@ Type TFigures
 		if toRoom <> room
 			If fromRoom <> toRoom Then fromRoom = toRoom
 			toRoom = room
-			If Game.networkgame Then If Network.IsConnected Then Network.SendPlayerPosition()
+			If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
 		endif
 	End Method
 
@@ -240,7 +240,7 @@ Type TFigures
 		SetInRoom(toRoom)
 		clickedToRoom = Null
 		If inRoom = Null Then pos.setX(target.x)
-		If Game.networkgame Then If Network.IsConnected Then Network.SendPlayerPosition()
+		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
 		'EndIf
 	End Method
 
@@ -335,7 +335,7 @@ Type TFigures
 
 		inRoom = Null
 		'change to event
-		If Game.networkgame Then If Network.IsConnected Then Network.SendPlayerPosition()
+		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
 	End Method
 
 
@@ -348,7 +348,7 @@ Type TFigures
 			If id = Game.playerID
 				If Int(target.x) = Floor(pos.x)
 					If Game.networkgame and LastSync + 1000 < MilliSecs()
-						Network.SendPlayerPosition()
+						NetworkHelper.SendPlayerPosition()
 						LastSync = MilliSecs()
 					EndIf
 				EndIf

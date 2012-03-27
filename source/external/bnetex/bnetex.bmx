@@ -316,9 +316,9 @@ Type TNetwork
 		         vom Echo Request zum Echo Reply
 		about:   Die Funktion emrittelt, wie lange es gedauert hat, bis der<br />
 		         der Host RemoteIP die angegebenen Daten Data mit der Bytegr&ouml;&szlig;e<br />
-		         Size empfangen und zur¸ck gesendet hat. Erh‰lt der Client keine<br />
+		         Size empfangen und zur√ºck gesendet hat. Erh√§lt der Client keine<br />
 		         Antwort innerhalb der Zeit Timeout, liefert die Funktion<br />
-		         -1 zur&uuml;ck. Weitere Fehlerquellen kˆnnen sein, dass die Funktion nicht<br />
+		         -1 zur&uuml;ck. Weitere Fehlerquellen k√∂nnen sein, dass die Funktion nicht<br />
 		         mit Root/Administratorrechten ausgef&uuml;hrt wurde, das Netzwerk<br />
 		         bzw. der Host nicht erreichbar ist oder der Host ICMP Pings nicht akzeptiert.
 		         Siehe auch: #GetHostIP, #GetHostIPs, #IntIP
@@ -497,7 +497,7 @@ Type TNetStream Extends TStream Abstract
 		bbdoc:   Stellt fest, ob Bytes ausgelesen werden k&ouml;nnen
 		returns: False, wenn noch Bytes ausgelesen werden k&ouml;nnen, True wenn nicht
 		about:   Diese Methode funktioniert auf Basis der #Size Methode und pr&uuml;ft somit<br />
-		         die Gr&ouml;ﬂe des Empfangspuffers.<br />
+		         die Gr&ouml;√üe des Empfangspuffers.<br />
 		         Siehe auch: #Size
 	End Rem
 	Method Eof:Int()
@@ -507,7 +507,7 @@ Type TNetStream Extends TStream Abstract
 	Rem
 		bbdoc:   Gibt die Anzahl an empfangenen Bytes zur&uuml;ck
 		returns: Anzahl an empfangenen Bytes
-		about:   Nach jedem #RecvMsg wird eine Nachricht in den Empfangspuffer angeh‰ngt.<br />
+		about:   Nach jedem #RecvMsg wird eine Nachricht in den Empfangspuffer angeh√§ngt.<br />
 		         Diese Methode gibt zur&uuml;ck, wieviel Bytes noch mit den allgemeinen Stream-<br />
 		         befehlen, wie z. B. #ReadLine , aus diesen ausgelesen werden k&ouml;nnen.<br>
 		         Siehe auch: #RecvAvail
@@ -517,7 +517,7 @@ Type TNetStream Extends TStream Abstract
 	End Method
 
 	Rem
-		bbdoc:   Lˆscht den internen Sende- und Empfangspuffer.
+		bbdoc:   L√∂scht den internen Sende- und Empfangspuffer.
 		returns: -
 		about:   Die empfangenen und gesendeten Daten werden gel&ouml;scht und die internen<br />
 			     Sende- und Empfangsgr&ouml;&szlig;en zu 0 gesetzt.<br />
@@ -634,7 +634,7 @@ Type TUDPStream Extends TNetStream
 		returns: False, wenn ein Fehler auftrat, ansonsten True
 		about:   Wenn bei Port 0 angegeben wurde, so sucht das Betriebssystem einen <br />
 		         freihen Port. Diesen kann man mit #GetLocalPort ermittelt werden.<br />
-		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empf‰ngers <br />
+		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empf√§ngers <br />
 		         &uuml;bereinstimmen.<br />
 		         Siehe auch: #GetLocalPort , #GetLocalIP
 	End Rem
@@ -673,7 +673,7 @@ Type TUDPStream Extends TNetStream
 	Rem
 		bbdoc:   Gibt die lokale IP-Adresse in Integerform zur&uuml;ck
 		returns: IntegerIP
-		about:   Damit l‰sst sich NICHT die globale IP ermitteln.<br />
+		about:   Damit l√§sst sich NICHT die globale IP ermitteln.<br />
 		         Diese Methode ist erst nach #SetLocalPort einsatzbereit.<br />
 		         Siehe auch: #SetLocalPort , #GetLocalPort
 	End Rem
@@ -682,7 +682,7 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt den Empf‰ngerport
+		bbdoc:   Setzt den Empf√§ngerport
 		returns: -
 		about:   An diesen Port wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
@@ -694,8 +694,8 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt den Empf‰ngerport zur&uuml;ck
-		returns: Empf‰ngerport
+		bbdoc:   Gibt den Empf√§ngerport zur&uuml;ck
+		returns: Empf√§ngerport
 		about:   An diesen Port wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
 		         Siehe auch: #SetRemotePort
@@ -705,7 +705,7 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt die Empf‰ngerIP
+		bbdoc:   Setzt die Empf√§ngerIP
 		returns: -
 		about:   An diese IP-Adresse wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Benutze diese Methode in Zusammenhang mit SetRemotePort.<br />
@@ -716,8 +716,8 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt die Empf‰ngerIP zur&uuml;ck
-		returns: Empf‰ngerIP
+		bbdoc:   Gibt die Empf√§ngerIP zur&uuml;ck
+		returns: Empf√§ngerIP
 		about:   An diese IP-Adresse wird die k&uuml;nftige Nachricht mit #SendMsg geschickt.<br />
 		         Dieser Port muss NICHT mit dem lokalen Port &uuml;bereinstimmen.<br />
 		         Siehe auch: #SetRemotePort
@@ -810,9 +810,9 @@ Type TUDPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Empf‰ngt eine Nachricht
+		bbdoc:   Empf√§ngt eine Nachricht
 		returns: Anzahl der empfangenen Bytes.
-		about:   Empf‰ngt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
+		about:   Empf√§ngt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
 		         kann mit #RecvAvail gepr&uuml;ft werden. Die AbsenderIP sowie der Absenderport<br />
 		         k&ouml;nnen mit #GetMsgIP und #GetMsgPort ermittelt werden.<br />
 		         Die Nachricht wird in einem Puffer gelagert.<br />
@@ -869,13 +869,15 @@ Type TUDPStream Extends TNetStream
 	Method SendUDPMsg:Int(IP:Int, Port:int = 0)
 		Local oldIP:Int = remoteIP
 		Local oldPort:Short = RemotePort
-		SetBroadcast(true)
 		RemoteIP = IP
 		RemotePort = Port
-		Local returnvalue:Int = SendMsg()
+		local _sendSize:int = SendSize
+		While SendMsg() ; Wend
+
+'		Local returnvalue:Int = SendMsg()
 		RemoteIP = oldIP
 		RemotePort = oldPort
-		Return returnvalue
+		Return _sendSize
 	End Method
 
 
@@ -883,8 +885,8 @@ Type TUDPStream Extends TNetStream
 		bbdoc:   Sendet eine Nachricht
 		returns: Anzahl der versendeten Bytes.
 		about:   Sendet eine Nachricht an den mit #SetRemoteIP und #SetRemotePort festgelegten<br/>
-		         Empf‰nger. Dazu sollte sich eine Nachricht schon im Sendepuffer befinden.<br />
-		         Dieser l‰sst sich mit den &uuml;blichen Streambefehlen wie<br />
+		         Empf√§nger. Dazu sollte sich eine Nachricht schon im Sendepuffer befinden.<br />
+		         Dieser l√§sst sich mit den √ºblichen Streambefehlen wie<br />
 		         #WriteLine beschreiben.<br />
 		         Siehe auch: #RecvMsg , #SetRemotePort , #SetRemoteIP
 	End Rem
@@ -913,16 +915,17 @@ Type TUDPStream Extends TNetStream
 				MemFree(Self.SendBuffer)
 				Self.SendBuffer = Temp
 				Self.SendSize :- Result
+			EndIf
+
 				'speed measurement
 				If Floor(MilliSecs()/1000) <> Self.fLastSecond
-				Self.fDataSum  = Self.fDataGot + Self.fDataSent
-				Self.fLastSecond = Floor(MilliSecs() / 1000)
-				Self.fDataGot  = 0
-				Self.fDataSent = 0
+					Self.fDataSum  = Self.fDataGot + Self.fDataSent
+					Self.fLastSecond = Floor(MilliSecs() / 1000)
+					Self.fDataGot  = 0
+					Self.fDataSent = 0
 				EndIf
-				Self.fDataSent :+ (Self.Sendsize- Result)
+				Self.fDataSent :+ Result
 				'end speed
-			EndIf
 
 			Return Result
 		EndIf
@@ -932,7 +935,7 @@ End Type
 Rem
 	bbdoc: TCP-Stream Type
 	about: Type f&uuml;r verbindungsorientierte Kommunikation.<br />
-	       F&uuml;r TCP-Server und Client gleichemraﬂen zu benutzen
+	       F&uuml;r TCP-Server und Client gleichemra√üen zu benutzen
 End Rem
 Type TTCPStream Extends TNetStream
 	Field LocalIP       : Int
@@ -982,7 +985,7 @@ Type TTCPStream Extends TNetStream
 		returns: False, wenn ein Fehler auftrat, ansonsten True
 		about:   Wenn bei Port 0 angegeben wurde, so sucht das Betriebssystem einen <br />
 		         freihen Port. Diesen kann man mit #GetLocalPort herausbekommen.<br />
-		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empf‰ngers <br />
+		         Dies ist nur der lokale Port, und muss NICHT mit dem Port des Empf√§ngers <br />
 		         &uuml;bereinstimmen.<br />
 		         Siehe auch: #GetLocalPort , #GetLocalIP
 	End Rem
@@ -1021,7 +1024,7 @@ Type TTCPStream Extends TNetStream
 	Rem
 		bbdoc:   Gibt die lokale IP in Integerform zur&uuml;ck
 		returns: IntegerIP
-		about:   Damit l‰sst sich NICHT die globale IP herausfinden. Diese Methode<br />
+		about:   Damit l√§sst sich NICHT die globale IP herausfinden. Diese Methode<br />
 		         ist erst nach #SetLocalPort einsatzbereit.<br />
 		         Siehe auch: #SetLocalPort , #GetLocalPort
 	End Rem
@@ -1030,7 +1033,7 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt den Empf‰ngerport
+		bbdoc:   Setzt den Empf√§ngerport
 		returns: -
 		about:   Zu diesen Port wird der TCPStream nach #Connect verbunden. Dieser Port<br />
 		         muss NICHT mit dem lokalen Port &uuml;bereinstimmen. Benutze diese Methode in<br />
@@ -1042,8 +1045,8 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt den Empf‰ngerport zur&uuml;ck
-		returns: Empf‰ngerport
+		bbdoc:   Gibt den Empf√§ngerport zur&uuml;ck
+		returns: Empf√§ngerport
 		about:   Zu diesen Port ist der TCPStream entweder verbunden oder muss noch<br />
 		         mit #Connect verbunden werden. Dieser Port muss NICHT mit dem lokalen<br />
 		         Port &uuml;bereinstimmen.<br />
@@ -1054,7 +1057,7 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Setzt die Empf‰ngerIP
+		bbdoc:   Setzt die Empf√§ngerIP
 		returns: -
 		about:   Zu dieser IP-Adresse wird der TCPStream nach #Connect verbunden.<br />
 		         Benutze diese Methode in Zusammenhang mit #SetRemotePort.<br />
@@ -1065,8 +1068,8 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Gibt die Empf‰ngerIP in Integerform zur&uuml;ck
-		returns: Empf‰ngerIP
+		bbdoc:   Gibt die Empf√§ngerIP in Integerform zur&uuml;ck
+		returns: Empf√§ngerIP
 		about:   Zu dieser IP-Adresse ist der TCPStream entweder verbunden oder muss noch<br />
 		         mit #Connect verbunden werden.<br />
 		         Siehe auch: #SetRemotePort
@@ -1207,9 +1210,9 @@ Type TTCPStream Extends TNetStream
 	End Method
 
 	Rem
-		bbdoc:   Empf‰ngt eine Nachricht
+		bbdoc:   Empf√§ngt eine Nachricht
 		returns: Anzahl der empfangenen Bytes.
-		about:   Empf‰ngt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
+		about:   Empf√§ngt eine eingehende Nachricht. Ob eine Nachricht vorliegt,<br />
 		         kann mit #RecvAvail gepr&uuml;ft werden. Die Nachricht wird in einem<br />
 		         Puffer gelagert. Das Auslesen der Nachricht erfolgt &uuml;ber &uuml;bliche <br />
 		         Streambefehle wie #ReadLine .<br />
@@ -1255,7 +1258,7 @@ Type TTCPStream Extends TNetStream
 		returns: Anzahl der versendeten Bytes.
 		about:   Sendet eine Nachricht an den Client bzw. an den verbundenen Server. Dazu<br />
 		         sollte sich eine Nachricht schon im Sendepuffer befinden.<br />
-		         Dieser l‰sst sich mit den &uuml;blichen Streambefehlen wie #WriteLine<br />
+		         Dieser l√§sst sich mit den &uuml;blichen Streambefehlen wie #WriteLine<br />
 		         beschreiben.<br />
 		         Siehe auch: #RecvMsg
 	End Rem

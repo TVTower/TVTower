@@ -1040,7 +1040,7 @@ Type TNewsbuttons Extends TButton
     Method OnClick()
 		If self.clickstate >= 3 Then self.clickstate=0 else	self.clickstate:+1
 		Players[Game.playerID].newsabonnements[genre] = clickstate
-		If Game.networkgame Then If Network.IsConnected Then Network.SendNewsSubscriptionLevel(Game.playerID, genre, clickstate)
+		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendNewsSubscriptionChange(Game.playerID, genre, clickstate)
 		Mousemanager.resetKey(1)
     End Method
 
@@ -1480,7 +1480,7 @@ Type TStationMap
 			Players[playerid].maxaudience = CalculateAudienceSum(playerid)
 			'events ...
 			'network
-			if game.networkgame Then if Network.IsConnected Then Network.SendStationChange(game.playerid, station, Players[game.playerID].maxaudience,1)
+			if game.networkgame Then if Network.IsConnected Then NetworkHelper.SendStationChange(game.playerid, station, Players[game.playerID].maxaudience,1)
 			self.LastStation.Reset()
 			Self.buyStation[playerid] = Null
 			print "bought"
@@ -1495,7 +1495,7 @@ Type TStationMap
 			Players[station.owner].maxaudience = CalculateAudienceSum(station.owner) 'auf entsprechenden Player umstellen
 			'events ...
 			'network
-			If Game.networkgame Then If Network.IsConnected Then Network.SendStationChange(station.owner, station, Players[station.owner].maxaudience, 0)
+			If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendStationChange(station.owner, station, Players[station.owner].maxaudience, 0)
 			LastStation.reset()
 			'when station is sold, audience will decrease, atm buy =/= increase ;D
 			Players[station.owner].ComputeAudience(1)

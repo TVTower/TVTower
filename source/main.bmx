@@ -8,7 +8,8 @@ Import brl.Graphics
 Import brl.maxlua
 Import brl.reflection
 Import brl.threads
-Import "external/bnetex/bnetex.bmx"								'udp and tcpip-layer and functions
+Import "basefunctions_network.bmx"
+'Import "external/bnetex/bnetex.bmx"								'udp and tcpip-layer and functions
 'Import "changelog.bmx"							'holds the notes for changes and additions
 
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
@@ -1407,22 +1408,20 @@ Type TElevator
 	End Method
 
 	Method Network_SendRouteChange(floornumber:Int, call:Int=0, who:Int, First:int=False)
-		local obj:TNetworkObject = Network.CreateSimplePacket( NET_ELEVATORROUTECHANGE, NET_PACKET_RELIABLE)
+		local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORROUTECHANGE, NET_PACKET_RELIABLE )
 		obj.SetInt(1, game.playerID)
 		obj.SetInt(2, call)
 		obj.SetInt(3, floornumber)
 		obj.SetInt(4, who)
 		obj.SetInt(2, First)
-		Network.BroadcastNetworkMessage( obj.sync(), Network.host )
+		Network.BroadcastNetworkObject( obj, Network.client )
 	End Method
 
 	Method Network_SendSynchronize()
 		'only server sends packet
 		if not Network.isServer then return
 
-		Print "NET: SendElevatorSynchronize"
-
-		local obj:TNetworkObject = Network.CreateSimplePacket( NET_ELEVATORSYNCHRONIZE, NET_PACKET_RELIABLE)
+		local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORSYNCHRONIZE, NET_PACKET_RELIABLE )
 		obj.setInt(1, game.playerID)
 		obj.setFloat(2, game.timeSinceBegin)
 		obj.setInt(3, upwards)
@@ -1437,7 +1436,7 @@ Type TElevator
 			Next
 			obj.setString(8, floorString)
 		EndIf
-		Network.BroadcastNetworkMessage( obj.sync(), Network.host )
+		Network.BroadcastNetworkObject( obj, Network.client )
 		Network_LastSynchronize = MilliSecs()
 	End Method
 
@@ -1941,7 +1940,7 @@ Type TNewsAgency
 		For Local i:Int = 1 To 4
 			If Players[i].newsabonnements[news.genre] > 0
 				TNewsBlock.Create("",0,-100, i, 60*(3-Players[i].newsabonnements[news.genre]), news)
-				If Game.networkgame Then Network.SendNews(i, news)
+				If Game.networkgame Then NetworkHelper.SendNews(i, news)
 			EndIf
 		Next
 	End Method
@@ -2199,7 +2198,7 @@ Function UpdateChat(UseChat:TGuiChat)
 	If Usechat.EnterPressed = 2
 		If Usechat.GUIInput.Value$ <> ""
 			Usechat.AddEntry("",Usechat.GUIInput.Value$, Game.playerID,"", "", MilliSecs())
-			If Game.networkgame Then Network.SendChatMessage(Usechat.GUIInput.Value$)
+			If Game.networkgame Then NetworkHelper.SendChatMessage(Usechat.GUIInput.Value$)
 			'NetPlayer.SendNetMessage(UDPClientIP, NetworkPlayername$, "CHAT", GUIChat_NWGL_Chat.GUIInput.value$)
 			Usechat.GUIInput.Value$ = ""
 			Network.ChatSpamTime = MilliSecs() + 500
@@ -2248,15 +2247,16 @@ Function NetGameLobbyDoubleClick:Int(sender:Object)
 	NetgameLobbyButton_Join.Clicked	= 1
 	GameSettingsButton_Start.disable()
 
-	if Network.NetConnect( TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
+	if Network.ConnectToServer( HostIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
+		Game.gamestate = 3
 		GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
 	endif
 End Function
 NetgameLobby_gamelist.SetDoubleClickFunc(NetGameLobbyDoubleClick)
 
 
-Include "network.bmx"
-Network.init(game.userfallbackip)
+Include "gamefunctions_network.bmx"
+'Network.init(game.userfallbackip)
 
 For Local i:Int = 0 To 7
 	If i < 4
@@ -2320,9 +2320,6 @@ Function Menu_Main()
 	EndIf
 	'multiplayer
 	If game.gamestate = 2
-		Network.stream = New TUDPStream
-		If Not Network.Stream.Init() Then Throw("Network: Can't create socket")
-		Network.stream.SetLocalPort(Network.GetMyPort())
 		Game.networkgame = 1
 	EndIf
 End Function
@@ -2331,9 +2328,9 @@ Function Menu_NetworkLobby()
 	NetgameLobby_gamelist.RemoveOldEntries(NetgameLobby_gamelist.uId, 11000)
 	If Game.onlinegame
 		If Network.OnlineIP = ""
-			Local Onlinestream:TStream   = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
-			Local timeouttimer:Int = MilliSecs()+5000 '5 seconds okay?
-			Local timeout:Byte = False
+			Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
+			Local timeouttimer:Int		= MilliSecs()+5000 '5 seconds okay?
+			Local timeout:Byte			= False
 			If Not Onlinestream Then Throw ("Not Online?")
 			While Not Eof(Onlinestream) Or timeout
 				If timeouttimer < MilliSecs() Then timeout = True
@@ -2341,7 +2338,8 @@ Function Menu_NetworkLobby()
 				Local responseArray:String[] = responsestring.split("|")
 				If responseArray <> Null
 					Network.OnlineIP = responseArray[0]
-					Network.intOnlineIP = TNetwork.IntIP(Network.OnlineIP)
+					Network.intOnlineIP = HostIP(Network.OnlineIP)
+'					Network.intOnlineIP = TNetwork.IntIP(Network.OnlineIP)
 					Print "set your onlineIP"+responseArray[0]
 				EndIf
 			Wend
@@ -2369,38 +2367,37 @@ Function Menu_NetworkLobby()
 	EndIf
 	If Not Game.onlinegame Then NetgameLobby_gamelist.SetFilter("HOSTGAME")
 
-'ron
-	if Keymanager.isHit(KEY_D)
-		GameSettingsOkButton_Announce.crossed = true'not GameSettingsOkButton_Announce.crossed
-		Game.networkgame	= true'Game.networkgame
-		Network.isServer	= true 'Network.isServer
-		KeyManager.resetKey(KEY_D)
-	endif
-
 	GUIManager.Update("NetGameLobby")
 	If NetgameLobbyButton_Create.GetClicks() > 0 Then
 		GameSettingsButton_Start.enable()
 		Game.gamestate	= 3
-		Network.isServer		= True
-		Network.host.playerID	= 1
-		Print "create networkgame"
+		Network.localFallbackIP = HostIP(game.userfallbackip)
+		Network.StartServer()
+		Network.ConnectToLocalServer()
+		Network.client.playerID	= 1
 	EndIf
 	If NetgameLobbyButton_Join.GetClicks() > 0 Then
-		'Game.gamestate = 3
 		GameSettingsButton_Start.disable()
 		Network.isServer				= False
-		GameSettingsGameTitle.Value	= NetgameLobby_gamelist.GetEntryTitle()
-		Network.NetConnect( TNetwork.IntIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
+
+		if Network.ConnectToServer( HostIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
+			Game.gamestate = 3
+			GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
+		endif
 	EndIf
 	If NetgameLobbyButton_Back.GetClicks() > 0 Then
 		Game.gamestate		= 1
 		Game.onlinegame		= False
-		Network.stream.Close
+
+		if Network.infoStream then Network.infoStream.close()
 		Game.networkgame	= False
 	EndIf
 End Function
 
 Function Menu_GameSettings()
+	'disable/enable announcement on lan/online
+	Network.announceEnabled = GameSettingsOkButton_Announce.crossed
+
 	If GameSettingsOkButton_Announce.crossed And Game.playerID=1
 		GameSettingsOkButton_Announce.enable()
 		GameSettingsGameTitle.disable()
@@ -2461,9 +2458,8 @@ endrem
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
 		If Game.networkgame
-			Network.NetDisconnect(False)
+			If Game.networkgame Then Network.DisconnectFromServer()
 			Game.playerID = 1
-			TReliableUDP.List.Clear()
 			Game.gamestate = 2
 			GameSettingsOkButton_Announce.crossed = False
 		Else
@@ -2598,14 +2594,6 @@ Function Menu_GameSettings_Draw()
 	If Game.cursorstate = 0 DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
 	If Game.cursorstate = 1 DrawImage(gfx_mousecursor, MouseX()-10, MouseY()-10,1)
 
-	if Game.networkgame
-		FontManager.basefont.drawStyled("Ping:", 15,5, 255,255,255,2)
-		for local peer:TNetworkpeer = eachin Network.peers
-			FontManager.basefont.drawStyled("Ping "+(peer.playerID)+": "+peer.ping+"ms", 15,30+(peer.playerID-1)*11, 255,255,255, 2)
-		Next
-	endif
-
-
 	If Game.gamestate = 4
 		SetColor 180,180,200
 		SetAlpha 0.5
@@ -2628,17 +2616,17 @@ Function Menu_GameSettings_Draw()
 					EndIf
 					Print "send programme:"+ProgrammeArray[j].title
 				Next
-				Network.AddProgrammesToPlayer(playerids, ProgrammeArray)
+				NetworkHelper.AddProgrammesToPlayer(playerids, ProgrammeArray)
 				Local ContractArray:TContract[]
 				For Local j:Int = 0 To Game.startAdAmount-1
 					ContractArray=ContractArray[..ContractArray.length+1]
 					ContractArray[j] = TContract.GetRandomContract()
 					Print "send contract:"+ContractArray[j].title
 				Next
-				Network.AddContractsToPlayer(playerids, ContractArray)
+				NetworkHelper.AddContractsToPlayer(playerids, ContractArray)
 			Next
 
-			Network.SendGameReady(Game.playerID)
+			NetworkHelper.SendGameReady(Game.playerID)
 		End If
 		Repeat
 		SetColor 180,180,200
@@ -2654,13 +2642,13 @@ Function Menu_GameSettings_Draw()
 		FontManager.basefont.draw("Player 4..."+Players[4].networkstate+" MovieListCount"+Players[4].ProgrammeCollection.MovieList.Count(), 220,320)
 		If Not Game.networkgameready = 1 Then FontManager.basefont.draw("not ready!!", 220,360)
 		Flip
-		Network.UpdateUDP()
+		Network.Update()
 		Until Game.networkgameready = 1
 		If Game.networkgameready Then
 			GameSettingsOkButton_Announce.crossed = False
-			TReliableUDP.DeletePacketsWithCommand("SetSlot (Got Join)")
-			TReliableUDP.DeletePacketsWithCommand("SendProgramme")
-			TReliableUDP.DeletePacketsWithCommand("SendContract")
+'			TReliableUDP.DeletePacketsWithCommand("SetSlot (Got Join)")
+'			TReliableUDP.DeletePacketsWithCommand("SendProgramme")
+'			TReliableUDP.DeletePacketsWithCommand("SendContract")
 			Players[Game.playerID].networkstate=1
 			Game.gamestate =0
 		EndIf
@@ -2746,7 +2734,7 @@ End Type
 Game.gamestate = 1
 Function UpdateMenu(deltaTime:Float=1.0)
 	'	App.Timer.Update(0)
-	If Game.networkgame Then Network.UpdateUDP
+	If Game.networkgame Then Network.Update()
 	If Game.gamestate = 1
 		Menu_Main()
 	ElseIf Game.gamestate = 2
@@ -2949,7 +2937,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 
 	If KEYMANAGER.IsHit(KEY_ESCAPE) Then ExitGame = 1
 	If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
-	If Game.networkgame Then Network.UpdateUDP
+	If Game.networkgame Then Network.Update()
 End Function
 
 'inGame
@@ -3006,9 +2994,6 @@ Function DrawMain(tweenValue:Float=1.0)
 						FontManager.basefont.draw("Player " + (i + 1) + ": Building", 662, 510 + i * 11)
 					EndIf
 				EndIf
-			Next
-			for local peer:TNetworkpeer = eachin Network.peers
-				FontManager.basefont.draw("Ping "+(peer.playerID)+": "+peer.ping+"ms", 672,555+(peer.playerID-1)*11)
 			Next
 		EndIf
 	EndIf
@@ -3222,7 +3207,7 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 		EventManager.update()
 
 	Until AppTerminate() Or ExitGame = 1
-	If Game.networkgame Then Network.NetDisconnect ' Disconnect
+	If Game.networkgame Then Network.DisconnectFromServer()
 EndIf 'not exit game
 
 OnEnd( EndHook )
