@@ -75,6 +75,13 @@ Type TApp
 	End Function
 End Type
 
+
+Const GAMESTATE_RUNNING:int					= 0
+Const GAMESTATE_MAINMENU:int				= 1
+Const GAMESTATE_NETWORKLOBBY:int			= 2
+Const GAMESTATE_SETTINGSMENU:int			= 3
+Const GAMESTATE_STARTMULTIPLAYER:int		= 4		'mode when data gets synchronized
+
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame
 	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...
@@ -1408,20 +1415,20 @@ Type TElevator
 	End Method
 
 	Method Network_SendRouteChange(floornumber:Int, call:Int=0, who:Int, First:int=False)
-		local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORROUTECHANGE, NET_PACKET_RELIABLE )
+		local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORROUTECHANGE )
 		obj.SetInt(1, game.playerID)
 		obj.SetInt(2, call)
 		obj.SetInt(3, floornumber)
 		obj.SetInt(4, who)
 		obj.SetInt(2, First)
-		Network.BroadcastNetworkObject( obj, Network.client )
+		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
 	Method Network_SendSynchronize()
 		'only server sends packet
 		if not Network.isServer then return
 
-		local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORSYNCHRONIZE, NET_PACKET_RELIABLE )
+		local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORSYNCHRONIZE )
 		obj.setInt(1, game.playerID)
 		obj.setFloat(2, game.timeSinceBegin)
 		obj.setInt(3, upwards)
@@ -1436,7 +1443,7 @@ Type TElevator
 			Next
 			obj.setString(8, floorString)
 		EndIf
-		Network.BroadcastNetworkObject( obj, Network.client )
+		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 		Network_LastSynchronize = MilliSecs()
 	End Method
 
@@ -2219,36 +2226,13 @@ Function UpdateChat(UseChat:TGuiChat)
 	EndIf
 End Function
 
-
-Function DrawAllSelectionRects()
-	Local i:Int = 0
-
-	For Local locobject:TPlayerColor = EachIn TPlayerColor.List
-		If locobject.used = 0
-			SetColor locobject.colR, locobject.colG, locobject.colB
-			DrawRect(26 + 40 + i * 10, 92 + 68, 9, 9)
-			DrawRect(216 + 40 + i * 10, 92 + 68, 9, 9)
-			DrawRect(406 + 40 + i * 10, 92 + 68, 9, 9)
-			DrawRect(596 + 40 + i * 10, 92 + 68, 9, 9)
-			If MOUSEMANAGER.IsHit(1)
-				If functions.IsIn(MouseX(), MouseY(), 26 + 40 + i * 10, 92 + 68, 7, 9) And (Players[1].Figure.ControlledByID = Game.playerID Or (Players[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[1].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 216 + 40 + i * 10, 92 + 68, 7, 9) And (Players[2].Figure.ControlledByID = Game.playerID Or (Players[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[2].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 406 + 40 + i * 10, 92 + 68, 7, 9) And (Players[3].Figure.ControlledByID = Game.playerID Or (Players[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[3].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 596 + 40 + i * 10, 92 + 68, 7, 9) And (Players[4].Figure.ControlledByID = Game.playerID Or (Players[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then Players[4].RecolorFigure(locobject)
-			EndIf
-			i:+1
-		EndIf
-		SetColor 255,255,255
-	Next
-End Function
-
 'Doubleclick-function for NetGameLobby_GameList
 Function NetGameLobbyDoubleClick:Int(sender:Object)
 	NetgameLobbyButton_Join.Clicked	= 1
 	GameSettingsButton_Start.disable()
 
 	if Network.ConnectToServer( HostIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
-		Game.gamestate = 3
+		Game.gamestate = GAMESTATE_SETTINGSMENU
 		GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
 	endif
 End Function
@@ -2309,17 +2293,17 @@ Global PlayerDetailsTimer:Int
 'Menuroutines... Submenus and so on
 Function Menu_Main()
 	GUIManager.Update("MainMenu")
-	If MainMenuButton_Start.GetClicks() > 0 Then Game.gamestate = 5
+	If MainMenuButton_Start.GetClicks() > 0 Then Game.gamestate = GAMESTATE_SETTINGSMENU
 	If MainMenuButton_Network.GetClicks() > 0
-		Game.gamestate  = 2
+		Game.gamestate  = GAMESTATE_NETWORKLOBBY
 		Game.onlinegame = 0
 	EndIf
 	If MainMenuButton_Online.GetClicks() > 0
-		Game.gamestate = 2
+		Game.gamestate = GAMESTATE_NETWORKLOBBY
 		Game.onlinegame = 1
 	EndIf
 	'multiplayer
-	If game.gamestate = 2
+	If game.gamestate = GAMESTATE_NETWORKLOBBY
 		Game.networkgame = 1
 	EndIf
 End Function
@@ -2370,7 +2354,7 @@ Function Menu_NetworkLobby()
 	GUIManager.Update("NetGameLobby")
 	If NetgameLobbyButton_Create.GetClicks() > 0 Then
 		GameSettingsButton_Start.enable()
-		Game.gamestate	= 3
+		Game.gamestate	= GAMESTATE_SETTINGSMENU
 		Network.localFallbackIP = HostIP(game.userfallbackip)
 		Network.StartServer()
 		Network.ConnectToLocalServer()
@@ -2381,12 +2365,12 @@ Function Menu_NetworkLobby()
 		Network.isServer				= False
 
 		if Network.ConnectToServer( HostIP(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
-			Game.gamestate = 3
+			Game.gamestate = GAMESTATE_SETTINGSMENU
 			GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
 		endif
 	EndIf
 	If NetgameLobbyButton_Back.GetClicks() > 0 Then
-		Game.gamestate		= 1
+		Game.gamestate		= GAMESTATE_MAINMENU
 		Game.onlinegame		= False
 
 		if Network.infoStream then Network.infoStream.close()
@@ -2395,6 +2379,9 @@ Function Menu_NetworkLobby()
 End Function
 
 Function Menu_GameSettings()
+	local modifiedPlayers:int = false
+	Local ChangesAllowed:Byte[4]
+
 	'disable/enable announcement on lan/online
 	Network.announceEnabled = GameSettingsOkButton_Announce.crossed
 
@@ -2412,23 +2399,13 @@ Function Menu_GameSettings()
 		GameSettingsGameTitle.disable()
 		GameSettingsGameTitle.grayedout = True
 		GameSettingsOkButton_Announce.disable()
-	End If
+	EndIf
 
-	Local ChangesAllowed:Byte[4]
-rem
-ronny
-	If Game.networkgame = 1
-		If MilliSecs() >= PlayerDetailsTimer + 1000
-			Network.SendPlayerDetails()
-			PlayerDetailsTimer = MilliSecs()
-		End If
-	End If
-endrem
 	For Local i:Int = 0 To 3
 		If Not MenuPlayerNames[i].on Then Players[i+1].Name = MenuPlayerNames[i].Value
 		If Not MenuChannelNames[i].on Then Players[i+1].channelname = MenuChannelNames[i].Value
 		If Game.networkgame Or Game.playerID=1 Then
-			If Game.gamestate <> 4 And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
+			If Game.gamestate <> GAMESTATE_STARTMULTIPLAYER And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				ChangesAllowed[i] = True
 				MenuPlayerNames[i].grayedout = False
 				MenuChannelNames[i].grayedout = False
@@ -2447,9 +2424,12 @@ endrem
 	GUIManager.Update("GameSettings")
 	If GameSettingsButton_Start.GetClicks() > 0 Then
 		If Not Game.networkgame And Not Game.onlinegame
-			Game.gamestate = 0
+			Game.gamestate = GAMESTATE_RUNNING
 		Else
-			Game.gamestate = 4
+			GameSettingsOkButton_Announce.crossed = False
+			Interface.ShowChannel = Game.playerID
+
+			Game.gamestate = GAMESTATE_STARTMULTIPLAYER
 		EndIf
 		'Begin Game - create Events
 		EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", game.minute))
@@ -2460,25 +2440,50 @@ endrem
 		If Game.networkgame
 			If Game.networkgame Then Network.DisconnectFromServer()
 			Game.playerID = 1
-			Game.gamestate = 2
+			Game.gamestate = GAMESTATE_NETWORKLOBBY
 			GameSettingsOkButton_Announce.crossed = False
 		Else
-			Game.gamestate = 1
+			Game.gamestate = GAMESTATE_MAINMENU
 		EndIf
 	EndIf
-	For Local i:Int = 0 To 7
-		If ChangesAllowed[Ceil(i/2)]
-			If MenuFigureArrows[i].GetClicks() > 0
-				If i Mod 2  = 0 Players[1+Ceil(i/2)].UpdateFigureBase(Players[Ceil(1+i/2)].figurebase -1)
-				If i Mod 2 <> 0 Players[1+Ceil(i/2)].UpdateFigureBase(Players[Ceil(1+i/2)].figurebase +1)
-			End If
+
+	'clicks on color rect
+	Local i:Int = 0
+	For Local locobject:TPlayerColor = EachIn TPlayerColor.List
+		If locobject.used = 0
+			If MOUSEMANAGER.IsHit(1)
+				If functions.IsIn(MouseX(), MouseY(), 26 + 40 + i * 10, 92 + 68, 7, 9) And (Players[1].Figure.ControlledByID = Game.playerID Or (Players[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=true;Players[1].RecolorFigure(locobject)
+				If functions.IsIn(MouseX(), MouseY(), 216 + 40 + i * 10, 92 + 68, 7, 9) And (Players[2].Figure.ControlledByID = Game.playerID Or (Players[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=true;Players[2].RecolorFigure(locobject)
+				If functions.IsIn(MouseX(), MouseY(), 406 + 40 + i * 10, 92 + 68, 7, 9) And (Players[3].Figure.ControlledByID = Game.playerID Or (Players[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=true;Players[3].RecolorFigure(locobject)
+				If functions.IsIn(MouseX(), MouseY(), 596 + 40 + i * 10, 92 + 68, 7, 9) And (Players[4].Figure.ControlledByID = Game.playerID Or (Players[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=true;Players[4].RecolorFigure(locobject)
+			EndIf
+			i:+1
 		EndIf
 	Next
 
-	If Game.gamestate = 4
-		GameSettingsOkButton_Announce.crossed = False
-		Interface.ShowChannel = Game.playerID
-	End If
+	'left right arrows to change figure base
+	For Local i:Int = 0 To 7
+		If ChangesAllowed[Ceil(i/2)]
+			If MenuFigureArrows[i].GetClicks() > 0
+				If i Mod 2  = 0 then Players[1+Ceil(i/2)].UpdateFigureBase(Players[Ceil(1+i/2)].figurebase -1)
+				If i Mod 2 <> 0 then Players[1+Ceil(i/2)].UpdateFigureBase(Players[Ceil(1+i/2)].figurebase +1)
+				modifiedPlayers = true
+			EndIf
+		EndIf
+	Next
+
+	If Game.networkgame = 1
+		if modifiedPlayers
+			NetworkHelper.SendPlayerDetails()
+			PlayerDetailsTimer = Millisecs()
+		Endif
+		If MilliSecs() >= PlayerDetailsTimer + 1000
+			NetworkHelper.SendPlayerDetails()
+			PlayerDetailsTimer = MilliSecs()
+		EndIf
+	EndIf
+
+
 End Function
 
 Global MenuPreviewPicTimer:Int = 0
@@ -2561,7 +2566,7 @@ Function Menu_GameSettings_Draw()
 		SetColor 50,50,50
 		DrawRect(60 + i*190, 90, 110,110)
 		If Game.networkgame Or Game.playerID=1 Then
-			If Game.gamestate <> 4 And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
+			If Game.gamestate <> GAMESTATE_STARTMULTIPLAYER And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				SetColor 255,255,255
 			Else
 				SetColor 225,255,150
@@ -2583,7 +2588,19 @@ Function Menu_GameSettings_Draw()
 	DrawRect(405 + 41, 111, 99, 48)
 	DrawRect(595 + 41, 111, 99, 48)
 
-	DrawAllSelectionRects()
+
+	local i:int =0
+	For Local locobject:TPlayerColor = EachIn TPlayerColor.List
+		If locobject.used = 0
+			SetColor locobject.colR, locobject.colG, locobject.colB
+			DrawRect(26 + 40 + i * 10, 92 + 68, 9, 9)
+			DrawRect(216 + 40 + i * 10, 92 + 68, 9, 9)
+			DrawRect(406 + 40 + i * 10, 92 + 68, 9, 9)
+			DrawRect(596 + 40 + i * 10, 92 + 68, 9, 9)
+			i:+1
+		EndIf
+	Next
+	SetColor 255,255,255
 
 	Players[1].Figure.Sprite.Draw(25 + 90 - Players[1].Figure.Sprite.framew / 2, 159 - Players[1].Figure.Sprite.h, 8)
 	Players[2].Figure.Sprite.Draw(215 + 90 - Players[2].Figure.Sprite.framew / 2, 159 - Players[2].Figure.Sprite.h, 8)
@@ -2594,7 +2611,7 @@ Function Menu_GameSettings_Draw()
 	If Game.cursorstate = 0 DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
 	If Game.cursorstate = 1 DrawImage(gfx_mousecursor, MouseX()-10, MouseY()-10,1)
 
-	If Game.gamestate = 4
+	If Game.gamestate = GAMESTATE_STARTMULTIPLAYER
 		SetColor 180,180,200
 		SetAlpha 0.5
 		DrawRect 200,200,400,200
@@ -2602,20 +2619,26 @@ Function Menu_GameSettings_Draw()
 		SetColor 0,0,0
 		FontManager.basefont.draw("Synchronisiere Startbedingungen...", 220,220)
 		FontManager.basefont.draw("Starte Netzwerkspiel...", 220,240)
-		If Game.playerID = 1 Then
+
+		'master should spread startprogramme around
+		If Game.isGameLeader()
 			For Local playerids:Int = 1 To 4
 				SeedRnd(MilliSecs()*Rand(5))
-				Local ProgrammeArray:TProgramme[]
-				For Local j:Int = 0 To Game.startMovieAmount-1
-					ProgrammeArray=ProgrammeArray[..ProgrammeArray.length+1]
-					If j = 0
+				Local ProgrammeArray:TProgramme[Game.startMovieAmount-1 +1] '+1 for serie
+
+				For Local i:Int = 0 To Game.startMovieAmount-1
+					SeedRnd(MilliSecs())
+					If i = 0
 						'1 teleshopping/quiz-programme
-						ProgrammeArray[j] = TProgramme.GetRandomProgrammeByGenre(20)
+						ProgrammeArray[i] = TProgramme.GetRandomProgrammeByGenre(20)
 					Else
-						ProgrammeArray[j] = TProgramme.GetRandomMovie(playerids)
+						ProgrammeArray[i] = TProgramme.GetRandomMovie(playerids)
 					EndIf
-					Print "send programme:"+ProgrammeArray[j].title
+					Print "send programme:"+ProgrammeArray[i].title
 				Next
+				'give 1 series to each player
+				ProgrammeArray[Game.startMovieAmount-1] = TProgramme.GetRandomSerie(playerids)
+
 				NetworkHelper.AddProgrammesToPlayer(playerids, ProgrammeArray)
 				Local ContractArray:TContract[]
 				For Local j:Int = 0 To Game.startAdAmount-1
@@ -2627,30 +2650,35 @@ Function Menu_GameSettings_Draw()
 			Next
 
 			NetworkHelper.SendGameReady(Game.playerID)
-		End If
+		EndIf
+
+		local start:int = Millisecs()
 		Repeat
-		SetColor 180,180,200
-		SetAlpha 1.0
-		DrawRect 200,200,400,200
-		SetAlpha 1.0
-		SetColor 0,0,0
-		FontManager.basefont.draw("Synchronisiere Startbedingungen...", 220,220)
-		FontManager.basefont.draw("Starte Netzwerkspiel...", 220,240)
-		FontManager.basefont.draw("Player 1..."+Players[1].networkstate+" MovieListCount"+Players[1].ProgrammeCollection.MovieList.Count(), 220,260)
-		FontManager.basefont.draw("Player 2..."+Players[2].networkstate+" MovieListCount"+Players[2].ProgrammeCollection.MovieList.Count(), 220,280)
-		FontManager.basefont.draw("Player 3..."+Players[3].networkstate+" MovieListCount"+Players[3].ProgrammeCollection.MovieList.Count(), 220,300)
-		FontManager.basefont.draw("Player 4..."+Players[4].networkstate+" MovieListCount"+Players[4].ProgrammeCollection.MovieList.Count(), 220,320)
-		If Not Game.networkgameready = 1 Then FontManager.basefont.draw("not ready!!", 220,360)
-		Flip
-		Network.Update()
-		Until Game.networkgameready = 1
+			SetColor 180,180,200
+			SetAlpha 1.0
+			DrawRect 200,200,400,200
+			SetAlpha 1.0
+			SetColor 0,0,0
+			FontManager.basefont.draw("Synchronisiere Startbedingungen...", 220,220)
+			FontManager.basefont.draw("Starte Netzwerkspiel...", 220,240)
+			FontManager.basefont.draw("Player 1..."+Players[1].networkstate+" MovieListCount"+Players[1].ProgrammeCollection.MovieList.Count(), 220,260)
+			FontManager.basefont.draw("Player 2..."+Players[2].networkstate+" MovieListCount"+Players[2].ProgrammeCollection.MovieList.Count(), 220,280)
+			FontManager.basefont.draw("Player 3..."+Players[3].networkstate+" MovieListCount"+Players[3].ProgrammeCollection.MovieList.Count(), 220,300)
+			FontManager.basefont.draw("Player 4..."+Players[4].networkstate+" MovieListCount"+Players[4].ProgrammeCollection.MovieList.Count(), 220,320)
+			If Not Game.networkgameready = 1 Then FontManager.basefont.draw("not ready!!", 220,360)
+			Flip
+			Network.Update()
+
+			if Millisecs() - start > 5000 then game.gamestate = GAMESTATE_SETTINGSMENU
+		Until Game.networkgameready = 1 OR game.gamestate <> GAMESTATE_STARTMULTIPLAYER
+
 		If Game.networkgameready Then
 			GameSettingsOkButton_Announce.crossed = False
 '			TReliableUDP.DeletePacketsWithCommand("SetSlot (Got Join)")
 '			TReliableUDP.DeletePacketsWithCommand("SendProgramme")
 '			TReliableUDP.DeletePacketsWithCommand("SendContract")
 			Players[Game.playerID].networkstate=1
-			Game.gamestate =0
+			Game.gamestate = GAMESTATE_RUNNING
 		EndIf
 	EndIf
 End Function
@@ -2731,17 +2759,20 @@ Type TBetty
 	End Method
 End Type
 
-Game.gamestate = 1
+Game.gamestate = GAMESTATE_MAINMENU
 Function UpdateMenu(deltaTime:Float=1.0)
 	'	App.Timer.Update(0)
 	If Game.networkgame Then Network.Update()
-	If Game.gamestate = 1
-		Menu_Main()
-	ElseIf Game.gamestate = 2
-		Menu_NetworkLobby()
-	ElseIf (Game.gamestate = 3 Or Game.gamestate = 4 Or Game.gamestate = 5)
-		Menu_GameSettings()
-	EndIf
+
+	Select Game.gamestate
+		case GAMESTATE_MAINMENU
+			Menu_Main()
+		case GAMESTATE_NETWORKLOBBY
+			Menu_NetworkLobby()
+		case GAMESTATE_SETTINGSMENU, GAMESTATE_STARTMULTIPLAYER
+			Menu_GameSettings()
+	EndSelect
+
 	If KEYMANAGER.IsHit(KEY_ESCAPE) Then ExitGame = 1
 	If AppTerminate() Then ExitGame = 1
 End Function
@@ -2755,20 +2786,29 @@ Function DrawMenu(tweenValue:Float=1.0)
 	gfx_startscreen.render(0, 0)
 
 	' DrawImage(gfx_startscreen, 0, 0)
-	If Game.gamestate < 3 Or Game.gamestate > 5
-		If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * App.Timer.getDeltaTime() Else LogoCurrY = LogoTargetY
-		DrawImage(gfx_startscreen_logo, 400 - ImageWidth(gfx_startscreen_logo) / 2, LogoCurrY)
-	Else
-		DrawImage(gfx_startscreen_logosmall, 540, 480)
-	EndIf
+
+
+	Select game.gamestate
+		case GAMESTATE_SETTINGSMENU, GAMESTATE_STARTMULTIPLAYER
+			DrawImage(gfx_startscreen_logosmall, 540, 480)
+		default
+			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * App.Timer.getDeltaTime() Else LogoCurrY = LogoTargetY
+			DrawImage(gfx_startscreen_logo, 400 - ImageWidth(gfx_startscreen_logo) / 2, LogoCurrY)
+	EndSelect
 	SetColor 0, 0, 0
 
 	SetColor 255,255,255
 	FontManager.GetFont("Default",11, ITALICFONT).drawBlock(versionstring, 10,575, 500,20,0,75,75,140)
 	FontManager.GetFont("Default",11, ITALICFONT).drawBlock(copyrightstring, 10,585, 500,20,0,60,60,120)
-	If Game.gamestate = 1 Then Menu_Main_Draw()..
-	ElseIf Game.gamestate = 2 Then Menu_NetworkLobby_Draw()..
-	ElseIf (Game.gamestate = 3 Or Game.gamestate = 4 Or Game.gamestate = 5) Then Menu_GameSettings_Draw()
+
+	Select Game.gamestate
+		case GAMESTATE_MAINMENU
+			Menu_Main_Draw()
+		case GAMESTATE_NETWORKLOBBY
+			Menu_NetworkLobby_Draw()
+		case GAMESTATE_SETTINGSMENU, GAMESTATE_STARTMULTIPLAYER
+			Menu_GameSettings_Draw()
+	EndSelect
 End Function
 
 Function Init_Creation()
@@ -2782,18 +2822,18 @@ Function Init_Creation()
 	TFigures.GetFigure(figure_HausmeisterID).updatefunc_ = Null
 	If Not Game.networkgame Then
 		For Local playerids:Int = 1 To 4
-			For Local i:Int = 0 To 5
+			For Local i:Int = 0 To Game.startMovieAmount-1
 				SeedRnd(MilliSecs())
 				If i = 0
 					'1 teleshopping/quiz-programme
 					Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 				Else
-					Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie())
+					Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie(playerids))
 				EndIf
 			Next
 			'give 1 series to each player
-			Local prog:TProgramme = TProgramme.GetRandomSerie(playerids)
 			Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie(playerids))
+
 			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
 			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)

@@ -224,12 +224,13 @@ Type TNetworkClient extends TNetworkConnection
 
 	Method SendEvent:Int(_event:int=Null,flags:Int=0,channel:Int=0)
 		if _event = null then print "null event"
-		local obj:TNetworkObject = TNetworkObject.Create(_event, flags )
+		local obj:TNetworkObject = TNetworkObject.Create(_event )
 		self.send( obj, flags)
 	End Method
 
 
 
+	'sends a packet from this client to the connected server
 	Method Send:Int(NetworkObject:TNetworkObject=Null,flags:Int=0,channel:Int=0)
 		if not NetworkObject then return 0
 		local packet:TNetworkPacket = NetworkObject.ToPacket()
@@ -256,33 +257,30 @@ Type TNetworkClient extends TNetworkConnection
 		if response = null then response = TNetworkObject.Create(0)
 		if evType = 0 then evType = response.evType
 		enet_peer_address( enetpeer , response.senderIP , response.senderPort )
-		print "<-- client receives packet from="+dottedIP(response.senderIP)+", evType="+evType
+'		print "<-- client receives packet from="+dottedIP(response.senderIP)+", evType="+evType
 
 		Select evType
 			Case NET_CONNECT
 				if not joined
 					print "client: send connect"
 					Self.connected	= 1
-					local obj:TNetworkObject = TNetworkObject.Create(NET_JOINREQUEST, not NET_PACKET_RELIABLE )
+					local obj:TNetworkObject = TNetworkObject.Create(NET_JOINREQUEST )
 					obj.setString(1,"Name")
 					self.Send(obj)
 				endif
 			Case NET_JOINRESPONSE
-					print "client: got joinresponse"
 				'got join - if ok then also set playerID
 				joined = response.getInt(1)
-				If not joined
+				local playerID:int = response.getInt(2)
+				If not joined OR playerID > self.maxClients
 					Disconnect()
 				else
-					print "      ---   I'm connected now!"
-					local playerID:int = response.getInt(2)
-					self.playerID = Min(4,Max(0,playerID))
+					self.playerID = Max(0,playerID)
 				endif
 			Case NET_PINGREQUEST
 				print "client: got PING ... send PONG"
 				response.evType = NET_PINGRESPONSE 'change ev type from ping request to response
 				Send(response)
-				Return
 			Case NET_PINGRESPONSE
 				print "client: got pong, calc latency"
 				latency = MilliSecs()-response.getInt(1)
@@ -472,9 +470,23 @@ Type TNetworkServer Extends TNetworkConnection
 		Local client:TNetworkClient=FindClient(enet_peer_ip(enetpeer),enet_peer_port(enetpeer))
 		local response:TNetworkObject = TNetworkObject.fromPacket(packet)
 
+		'should we only act as relay (client broadcasting)
+		local toRelay:int = floor(response.evType / 10000)
+		if toRelay
+			response.evType :mod 10000
+			'print "Server got relay event:" + response.evType
+			'at the moment broadcasts are reliable
+			self.broadcast(response, null, NET_PACKET_RELIABLE)
+			self.broadcast(response, client, NET_PACKET_RELIABLE)
+			return
+		endif
+
+
+
+
 		Local answer:TNetworkObject
 		enet_peer_address( enetpeer , response.senderIP , response.senderPort )
-		print "<-- server receives packet from="+dottedIP(response.senderIP)+", evType="+evType
+	'	print "<-- server receives packet from="+dottedIP(response.senderIP)+", evType="+evType
 
 		if evType = 0 then evType = response.evType
 
@@ -485,7 +497,7 @@ Type TNetworkServer Extends TNetworkConnection
 			Case NET_LEAVEGAMEREQUEST
 				If client
 					client.SendEvent(NET_LEAVEGAMERESPONSE, NET_PACKET_RELIABLE)
-					answer = TNetworkObject.Create(NET_PLAYERLEFT, NET_PACKET_RELIABLE)
+					answer = TNetworkObject.Create(NET_PLAYERLEFT)
 					answer.setInt(1, client.playerID)
 					answer.setString(2, client.name)
 					Broadcast(answer, null, NET_PACKET_RELIABLE)
@@ -496,7 +508,7 @@ Type TNetworkServer Extends TNetworkConnection
 			Case NET_JOINREQUEST
 				If client
 					Disconnect(client,1)
-					answer = TNetworkObject.Create(NET_PLAYERLEFT, NET_PACKET_RELIABLE)
+					answer = TNetworkObject.Create(NET_PLAYERLEFT)
 					answer.setInt(1, client.playerID)
 					Broadcast(answer)
 				EndIf
@@ -523,18 +535,24 @@ Type TNetworkServer Extends TNetworkConnection
 						clientmap.insert(client.name,client)
 						clients.AddLast(client)
 
-						answer = TNetworkObject.Create(NET_JOINRESPONSE, NET_PACKET_RELIABLE)
+						answer = TNetworkObject.Create(NET_JOINRESPONSE)
 						answer.setInt(1, 1)
-						answer.setInt(2, clients.count()-1)
-						self.Send(client, answer,NET_PACKET_RELIABLE)
+						answer.setInt(2, clients.count()) 'change to GetSlot() or so
+						SendToClient(client, answer,NET_PACKET_RELIABLE)
 
 						'send peer data
 						'Tell everyone he joined
-							answer = TNetworkObject.Create(NET_PLAYERJOINED, NET_PACKET_RELIABLE)
-							answer.setString(1, client.name)
+							answer = TNetworkObject.Create(NET_PLAYERJOINED)
+							answer.setInt(1, clients.count()) 'change to GetSlot() or so
+							answer.setString(2, client.name)
+
+							'inform callback about playerjoined
+
+							If callback then callback(Self,client,evType, answer )
+
 							Broadcast(answer, null, NET_PACKET_RELIABLE)
 					Else
-						answer = TNetworkObject.Create(NET_JOINRESPONSE, NET_PACKET_RELIABLE)
+						answer = TNetworkObject.Create(NET_JOINRESPONSE)
 						answer.setInt(1, 0) 'no, you can't joint
 						answer.setInt(2, 1) 'reason: name already taken
 						client.Send(answer,NET_PACKET_RELIABLE)
@@ -558,12 +576,11 @@ Type TNetworkServer Extends TNetworkConnection
 				EndIf
 				response.evType = NET_PINGRESPONSE
 				client.Send(response)
-			Return
+				response.evType = NET_PINGREQUEST
+				'Return
 		EndSelect
 
-		If callback
-			callback(Self,client,evType, response )
-		EndIf
+		If callback then callback(Self,client,evType, response )
 	EndMethod
 
 	Method BroadcastEvent:Int(_event:int=Null, exceptClient:TNetworkClient=null, flags:Int=0,channel:Int=0)
@@ -571,23 +588,41 @@ Type TNetworkServer Extends TNetworkConnection
 	End Method
 
 	Method Broadcast:Int(NetworkObject:TNetworkObject=Null, exceptClient:TNetworkClient=null, flags:Int=0,channel:Int=0)
+		if not NetworkObject then return 0
+		local packet:TNetworkPacket = NetworkObject.ToPacket()
 		Local result:Int=1
 		For Local client:TNetworkClient=EachIn clients
 			if client <> exceptClient
-				if Not Send(client, NetworkObject,flags,channel) then result=0
+'				if not client.send(NetworkObject, flags, channel) then result = 0
+				if Not SendPacketToClient(client, packet,flags,channel) then result=0
 			endif
 		Next
 		Return result
 	EndMethod
 
-	Method Send:Int(client:TNetworkClient, NetworkObject:TNetworkObject=Null,flags:Int=0,channel:Int=0)
+	Method Send:Int(NetworkObject:TNetworkObject=Null,flags:Int=0,channel:Int=0)
 		if not NetworkObject then return 0
 		local packet:TNetworkPacket = NetworkObject.ToPacket()
 		if not packet then return 0
 
 		If packet and packet._bank.size()=0 then packet=Null
 
-		If Not client.enetpeer RuntimeError "Can't send to local client."
+		Local result:Int
+		If packet
+			Local data:Byte[] = New Byte[packet._bank.size()]
+			MemCopy(Varptr data[0],packet._bank.buf(),packet._bank.size())
+			Local enetpacket:Byte Ptr = enet_packet_create(data,data.length,flags)
+			'send to this peer / connection
+			result = (enet_peer_send(self.enetpeer,channel,enetpacket)=0)
+		endif
+		return result
+	EndMethod
+
+	'send packet - so for broadcast we dont need "topacket" for each client
+	Method SendPacketToClient:Int(client:TNetworkClient, packet:TNetworkPacket=Null,flags:Int=0,channel:Int=0)
+		if not packet then return 0
+		If packet and packet._bank.size()=0 then packet=Null
+		If Not client.enetpeer then RuntimeError "Can't send to local client."
 
 		Local result:Int
 		If packet
@@ -598,6 +633,12 @@ Type TNetworkServer Extends TNetworkConnection
 			result = (enet_peer_send(client.enetpeer,channel,enetpacket)=0)
 		endif
 		return result
+	EndMethod
+
+	Method SendToClient:Int(client:TNetworkClient, NetworkObject:TNetworkObject=Null,flags:Int=0,channel:Int=0)
+		if not NetworkObject then return 0
+		local packet:TNetworkPacket = NetworkObject.ToPacket()
+		return self.SendPacketToClient(client, packet, flags, channel)
 	EndMethod
 
 
@@ -636,8 +677,8 @@ EndType
 
 
 
-Function CreateNetworkObject:TNetworkObject(evType:int, reliable:int=0)
-	return TNetworkObject.Create(evType, reliable)
+Function CreateNetworkObject:TNetworkObject(evType:int)
+	return TNetworkObject.Create(evType)
 End Function
 
 
@@ -745,6 +786,9 @@ Type TTVGNetwork
 	Method StopServer:int( )
 		self.isServer = false
 		server.free()
+		client.free()
+		self.server = null
+		self.client = null
 	End Method
 
 	Method GetMyIP:int()
@@ -768,9 +812,13 @@ Type TTVGNetwork
 		return self.isConnected
 	End Method
 
-	Method BroadcastNetworkObject(obj:TNetworkObject, exceptClient:TNetworkClient = null, flags:int = 0)
-		if not server then return
-		server.Broadcast(obj, exceptClient, flags)
+	'client wants to broadcast - so we send a relaypacket to server
+	Method BroadcastNetworkObject(obj:TNetworkObject, flags:int = 0)
+		if not client then return
+		'add 10000 so we see its for relaying
+		obj.evType = obj.evType + 10000
+		'client sends to server
+		client.send(obj, flags)
 	End Method
 
 	Method Update:int()
@@ -885,10 +933,9 @@ Type TTVGNetwork
 		if self.GetFreeSlot() = 0 then return
 
 		self.announceTime = Millisecs() + self.announceTimer
-		local obj:TNetworkObject = TNetworkObject.Create(NET_ANNOUNCEGAME, not NET_PACKET_RELIABLE)
+		local obj:TNetworkObject = TNetworkObject.Create(NET_ANNOUNCEGAME)
 		If self.announceToLan
 			'Print "NET: announcing a LAN game to " +GetBroadcastIP(self.GetMyIP())
-			local obj:TNetworkObject = TNetworkObject.Create(NET_ANNOUNCEGAME, not NET_PACKET_RELIABLE)
 			obj.setInt(1, self.GetFreeSlot())
 			obj.setString(2, self.announceTitle)
 			obj.setInt(3, self.GetMyIP())
@@ -1069,7 +1116,6 @@ Type TNetworkObject
 	Field slots:TNetworkObjectSlot[32]
 	field modified:int
 	field target:object 'remote ?
-	field reliable:int = 0		'sync packets reliable?
 
 	Method new()
 		For Local i:int = 0 Until 32
@@ -1077,7 +1123,7 @@ Type TNetworkObject
 		Next
 	End Method
 
-	Function Create:TNetworkObject( evType:int, reliable:int=0 )
+	Function Create:TNetworkObject( evType:int )
 		Local obj:TNetworkObject=New TNetworkObject
 		obj.state	= NET_STATE_MESSAGE
 		obj.evType	= evType
@@ -1085,7 +1131,6 @@ Type TNetworkObject
 			obj.senderIP	= enet_host_ip(Network.server.enetpeer)
 			obj.senderPort	= enet_host_port(Network.server.enetpeer)
 		endif
-		obj.reliable= reliable
 		Return obj
 	End Function
 
@@ -1129,7 +1174,6 @@ Type TNetworkObject
 		packet.writeInt(self.senderPort)
 		local packedData:byte[] = PackSlots( modified )
 		packet.writeBytes( packedData, len(packedData) )
-		modified=0
 		return packet
 	End Method
 
@@ -1176,7 +1220,6 @@ Type TNetworkObject
 		'local
 		msg.state	= state
 		msg.evType	= evType
-		msg.reliable= reliable
 		msg.data	= PackSlots( modified )
 
 		modified=0
@@ -1348,16 +1391,14 @@ Type TNetworkMessage
 	Field id:int
 	Field state:int
 	Field evType:int
-	Field reliable:int = 0
 	Field data:Byte[]
 
-	Function Create:TNetworkMessage(id:int, state:int, evType:int, data:byte[], reliable:int = 0)
+	Function Create:TNetworkMessage(id:int, state:int, evType:int, data:byte[])
 		local obj:TNetworkMessage = new TNetworkMessage
 		obj.id = id
 		obj.state = state
 		obj.evType= evType
 		obj.data = data
-		obj.reliable = reliable
 		return obj
 	End Function
 End Type
@@ -1386,6 +1427,11 @@ Type TNetworkConnection
 	End Method
 
 	Method Free()
+		If enethost
+			enet_host_destroy(enethost)
+			enethost=Null
+		EndIf
+
 		If link
 			link.remove()
 			link=Null
