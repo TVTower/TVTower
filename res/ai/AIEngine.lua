@@ -67,6 +67,7 @@ function AIPlayer:ValidateRound()
 end
 
 function AIPlayer:Tick()
+	self:TickAnalyse()
 	if self.CurrentTask == nil then
 		self:BeginNewTask()
 	else
@@ -76,6 +77,10 @@ function AIPlayer:Tick()
 			self.CurrentTask:Tick()
 		end
 	end
+end
+
+function AIPlayer:TickAnalyse()
+	--Zum �berschreiben
 end
 
 function AIPlayer:BeginNewTask()
@@ -268,7 +273,7 @@ function AIJobGoToRoom:Tick()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-function debugMsg(pMessage)
+function debugMsg(pMessage)	
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		TVT.PrintOut(TVT.ME .. ": " .. pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)

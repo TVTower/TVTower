@@ -3,6 +3,7 @@
 -- or maybe package.config:sub(1,1)
 dofile("res/ai/AIEngine.lua")
 dofile("res/ai/TaskMoviePurchase.lua")
+dofile("res/ai/TaskNewsAgency.lua")
 
 -- ##### GLOBALS #####
 globalPlayer = nil
@@ -19,7 +20,8 @@ TASK_BOSS			= "Boss"
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 DefaultAIPlayer = AIPlayer:new{
 	CurrentTask = nil;
-	Budget = nil
+	Budget = nil;
+	Stats = nil
 }
 
 function DefaultAIPlayer:typename()
@@ -28,18 +30,73 @@ end
 
 function DefaultAIPlayer:initializePlayer()
 	debugMsg("Initialisiere DefaultAIPlayer-KI ...")
+	self.Stats = BusinessStats:new()
 end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
-	self.TaskList[TASK_MOVIEPURCHASE]	= TaskMoviePurchase:new()
-	--self.TaskList[TASK_NEWSAGENCY]		= TVTNewsAgency:new()
+	--self.TaskList[TASK_MOVIEPURCHASE]	= TaskMoviePurchase:new()
+	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
 	--self.TaskList[TASK_ADAGENCY]		= TVTAdAgency:new()
 	--self.TaskList[TASK_SCHEDULING]		= TVTScheduling:new()
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
 	--self.TaskList[TASK_ARCHIVE]			= TVTArchive:new()
+end
+
+function DefaultAIPlayer:TickAnalyse()
+	self.Stats:ReadStats()
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+BusinessStats = SLFDataObject:new{
+	MinAudience = -1;	
+	AverageAudience = -1;
+	MaxAudience = -1;
+	
+	MinAudienceTemp = 100000000000;
+	AverageAudienceTemp = -1;
+	MaxAudienceTemp = -1;
+	
+	TotalAudience = 0;
+	AudienceRateScans = 0;
+}
+
+function BusinessStats:DayBegin()
+	self.MinAudienceTemp = 100000000000
+	self.AverageAudienceTemp = -1
+	self.MaxAudienceTemp = -1
+	self.AudienceRateScans = 0
+end
+
+function BusinessStats:ReadStats()
+	
+	local currentAudience = TVT.getPlayerAudience()
+	if (currentAudience == 0) then
+		return;
+	end
+	
+	self.AudienceRateScans = self.AudienceRateScans + 1
+	
+	debugMsg("currentAudience: " .. currentAudience)
+	
+	if currentAudience < self.MinAudienceTemp then
+		self.MinAudience = currentAudience
+		self.MinAudienceTemp = currentAudience
+	end
+	if currentAudience > self.MaxAudienceTemp then
+		self.MaxAudience = currentAudience
+		self.MaxAudienceTemp = currentAudience
+	end	
+	
+	self.TotalAudience = self.TotalAudience + currentAudience
+	self.AverageAudienceTemp = math.round(self.TotalAudience / self.AudienceRateScans, 0)
+	self.AverageAudience = self.AverageAudienceTemp
+	
+	--debugMsg("Stats: " .. self.AverageAudience .. " (" .. self.MinAudience .. " - " .. self.MaxAudience .. ")")
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
