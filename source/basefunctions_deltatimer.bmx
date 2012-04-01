@@ -1,6 +1,10 @@
 superstrict
 Import "basefunctions_events.bmx"
+
+'Import Brl.threads
 'class for smooth framerates
+
+'Global drawMutex:TMutex = CreateMutex()
 
 Type TDeltaTimer
 	field newTime:int 				= 0
@@ -35,14 +39,56 @@ Type TDeltaTimer
 		self.oldTime		= self.newTime
 
 		if self.secondGone >= 1000.0 'in ms
-			self.secondGone = 0.0
-			self.fps		= self.timesDrawn
-			self.ups		= self.timesUpdated
-			'print "second"
-			'print self.deltas+ "     delta: "+self.deltaTimePhysics
-			self.deltas = 0.0
-			self.timesDrawn = 0
-			self.timesUpdated = 0
+			self.secondGone 	= 0.0
+			self.fps			= self.timesDrawn
+			self.ups			= self.timesUpdated
+			self.deltas			= 0.0
+			self.timesDrawn 	= 0
+			self.timesUpdated	= 0
+		endif
+
+		'fill time available for this loop
+		self.loopTime = Min(0.25, self.loopTime)	'min 4 updates per seconds 1/4
+		self.accumulator :+ self.loopTime
+
+		'update gets deltatime - fraction of a second (speed = pixels per second)
+	'	LockMutex(drawMutex)
+		While self.accumulator >= self.deltaTime
+			self.totalTime		:+ self.deltaTime
+			self.accumulator	:- self.deltaTime
+			self.timesUpdated	:+ 1
+			EventManager.triggerEvent( "App.onUpdate", TEventSimple.Create("App.onUpdate",null))
+		Wend
+	'	UnLockMutex(drawMutex)
+
+	'	if TryLockMutex(drawMutex)
+			'how many % of ONE update are left - 1.0 would mean: 1 update missing
+			self.tweenValue = self.accumulator / self.deltaTime
+
+			'draw gets tweenvalue (0..1)
+			self.timesDrawn :+1
+			EventManager.triggerEvent( "App.onDraw", TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+			'Delay(1)
+	'		UnlockMutex(drawMutex)
+	'	endif
+	End Method
+
+
+
+	Method singleThreadLoop()
+		self.newTime		= MilliSecs()
+		if self.oldTime = 0.0 then self.oldTime = self.newTime - 1
+		self.secondGone		:+ (self.newTime - self.oldTime)
+		self.loopTime		= (self.newTime - self.oldTime) / 1000.0
+		self.oldTime		= self.newTime
+
+		if self.secondGone >= 1000.0 'in ms
+			self.secondGone 	= 0.0
+			self.fps			= self.timesDrawn
+			self.ups			= self.timesUpdated
+			self.deltas			= 0.0
+			self.timesDrawn 	= 0
+			self.timesUpdated	= 0
 		endif
 
 		'fill time available for this loop
@@ -51,9 +97,9 @@ Type TDeltaTimer
 
 		'update gets deltatime - fraction of a second (speed = pixels per second)
 		While self.accumulator >= self.deltaTime
-			self.totalTime :+ self.deltaTime
-			self.accumulator :- self.deltaTime
-			self.timesUpdated :+ 1
+			self.totalTime		:+ self.deltaTime
+			self.accumulator	:- self.deltaTime
+			self.timesUpdated	:+ 1
 			EventManager.triggerEvent( "App.onUpdate", TEventSimple.Create("App.onUpdate",null))
 		Wend
 		'how many % of ONE update are left - 1.0 would mean: 1 update missing

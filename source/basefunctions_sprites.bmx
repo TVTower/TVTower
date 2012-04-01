@@ -6,8 +6,6 @@ Import BRL.Random
 Import brl.reflection
 Import brl.FreeTypeFont
 'Import "basefunctions.bmx"
-Import "basefunctions_xml.bmx"
-Import "basefunctions_loadsave.bmx"
 Import "basefunctions_image.bmx"
 Import "basefunctions_asset.bmx"
 

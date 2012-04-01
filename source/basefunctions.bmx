@@ -6,8 +6,6 @@ Import "basefunctions_localization.bmx"
 'Import "basefunctions_text.bmx"
 Import "basefunctions_keymanager.bmx"	'holds pressed Keys and Mousebuttons for one mainloop instead of resetting it like MouseHit()
 Import brl.reflection
-Import "basefunctions_loadsave.bmx"
-Import "basefunctions_xml.bmx"
 
 'Import bah.libxml
 Import "external/libxml/libxml.bmx"
@@ -46,7 +44,6 @@ Type TXmlHelper
 	field filename:string =""
 	field file:TxmlDoc
 	field root:TxmlNode
-	field currentNode:TxmlNode
 
 	Function Create:TXmlHelper(filename:string)
 		local obj:TXmlHelper = new TXmlHelper
@@ -56,50 +53,51 @@ Type TXmlHelper
 		return obj
 	End Function
 
-	Method SetNode(newCurrentNode:TxmlNode)
-		self.currentNode = newCurrentNode
-	End Method
-
 	Method FindRootChild:TxmlNode(nodeName:string)
 		local children:TList = root.getChildren()
+		if not children then return null
 		For local child:TxmlNode = eachin children
 			if child.getName() = nodeName then return child
 		Next
 		return null
 	End Method
 
-	Method FindChild:TxmlNode(nodeName:string)
+	Method findAttribute:string(node:TxmlNode, attributeName:string, defaultValue:string)
+		if node.hasAttribute(attributeName) <> null then return node.getAttribute(attributeName) else return defaultValue
+	End Method
+
+
+	Method FindChild:TxmlNode(node:TxmlNode, nodeName:string)
 		nodeName = nodeName.ToLower()
-		local children:TList = currentNode.getChildren()
+		local children:TList = node.getChildren()
+		if not children then return null
 		For local child:TxmlNode = eachin children
 			if child.getName().ToLower() = nodeName then return child
 		Next
 		return null
 	End Method
 
-	Method FindValue:string(fieldName:string, defaultValue:string, logString:string="")
+	Method FindValue:string(node:TxmlNode, fieldName:string, defaultValue:string, logString:string="")
 		fieldName = fieldName.ToLower()
 
 		'given node has attribute (<episode number="1">)
-		If currentNode.getAttribute(fieldName) <> null
-			Return currentNode.getAttribute(fieldName)
+		If node.hasAttribute(fieldName) <> null
+			Return node.getAttribute(fieldName)
 		endif
-
 		'children
-		local children:TList = currentNode.getChildren()
-
-		For local subNode:TxmlNode = EachIn children
-			If subNode.getName().ToLower() = fieldName then return subNode.getContent()
-			If subNode.getAttribute(fieldName) <> null then Return subNode.getAttribute(fieldName)
-		Next
-
+		local children:TList = node.getChildren()
+		if children <> null
+			For local subNode:TxmlNode = EachIn children
+				If subNode.getName().ToLower() = fieldName then return subNode.getContent()
+				If subNode.getAttribute(fieldName) <> null then Return subNode.getAttribute(fieldName)
+			Next
+		endif
 		if logString <> "" then print logString
-
 		return defaultValue
 	EndMethod
 
-	Method FindValueInt:int(fieldName:string, defaultValue:int, logString:string="")
-		return int( self.FindValue(fieldName, string(defaultValue), logString) )
+	Method FindValueInt:int(node:TxmlNode, fieldName:string, defaultValue:int, logString:string="")
+		return int( self.FindValue(node, fieldName, string(defaultValue), logString) )
 	End Method
 
 End Type
@@ -294,7 +292,7 @@ Type TPosition
 		endrem
 	End Method
 
-	Function Load:TPosition(pnode:xmlNode)
+	Function Load:TPosition(pnode:TxmlNode)
 		print "implement load position"
 		rem
 		Local tmpObj:TPosition = New TPosition

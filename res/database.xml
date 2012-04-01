@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="14.03.2012 16:55" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="28.03.2012 18:44" />
 	<allmovies>
 		<movie>
 			<title>...denn sie wissen nicht, was sie tun</title>
@@ -4654,7 +4654,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 			<episode number="1">
 				<title>Leichte Gewinne</title>
 				<description>Um ein Stammpublikum einzurichten werden in der ersten Folge die Lösungen gleich mit eingeblendet.</description>
-				<data  genre="20" 	price="15"	critics="5"	speed="20" />
+				<data  genre="20" 	price="12"	critics="9"	speed="16" />
 			</episode>
 			<episode number="2">
 				<title>Harte Brocken</title>
@@ -6318,6 +6318,11 @@ Daran hat man zu kauen.</description>
 			<data minaudience="50" repetitions="2" profit="100"  penalty="150" targetgroup="3" duration="3" />
 		</ad>
 		<ad>
+			<title>StyleDJ</title>
+			<description>Ist ihre Party mal wieder total langweilig? Buchen Sie StyleDJ und ihre Anlass ist gerettet. StyleDJ - unvergesslich, stimmungsvoll, professionell.</description>
+			<data minaudience="3" repetitions="0" profit="100"  penalty="20" targetgroup="0" duration="1" />
+		</ad>
+		<ad>
 			<title>Sunny</title>
 			<description>Der Hersteller für High-Tech flächendeckend.
 It's a sunny</description>
@@ -6366,5 +6371,5 @@ Aber nur mit Ulbricht Umzüge!</description>
 			<data minaudience="150" repetitions="4" profit="150"  penalty="200" targetgroup="-1" duration="2" />
 		</ad>
 	</allads>
-	<time value="580.68ms" />
+	<time value="553.02ms" />
 </tvgdb>

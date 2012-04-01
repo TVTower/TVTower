@@ -7,7 +7,6 @@ Import brl.reflection
 ?Threaded
 Import brl.Threads
 ?
-Import "basefunctions_xml.bmx"
 Import "basefunctions_image.bmx"
 Import "basefunctions_sprites.bmx"
 Import "basefunctions_asset.bmx"
@@ -21,12 +20,13 @@ Type TAssetManager
 	global AssetsToLoad:TMap = CreateMap()
 '	global AssetsLoaded:TMap = CreateMap()
 	?Threaded
-	global AssetsLoadedLock:TMutex = CreateMutex()
+	global MutexContentLock:TMutex = CreateMutex()
 	global AssetsToLoadLock:TMutex = CreateMutex()
 	global AssetsLoadThread:TThread
 	?
 	'threadable function that loads objects
 	Function LoadAssetsInThread:Object(Input:Object)
+		print "loadassetsinthread"
 		For Local key:string = EachIn TAssetManager.AssetsToLoad.keys()
 			local obj:TAsset			= TAsset(TAssetManager.AssetsToLoad.ValueForKey(key))
 			local loadedObject:TAsset	= null
@@ -40,21 +40,22 @@ Type TAssetManager
 loadedObject.setLoaded(true)
 			'add to map of loaded objects
 			?Threaded
-				LockMutex(TAssetManager.AssetsLoadedLock)
+				LockMutex(MutexContentLock)
 			?
 			TAssetManager.content.insert(obj.GetName(), loadedObject)
 			'remove asset from toload-map ?
 			'---
 			?Threaded
-				UnlockMutex(TAssetManager.AssetsLoadedLock)
+				UnlockMutex(MutexContentLock)
 			?
 			GCCollect() '<- FIX!
 		next
 	End Function
 
 	Method StartLoadingAssets()
+		print "startloadingassets"
 		?Threaded
-			if TAssetManager.AssetsLoadThread = null OR not ThreadRunning(TAssetManager.AssetsLoadThread)
+			if not TAssetManager.AssetsLoadThread OR not ThreadRunning(TAssetManager.AssetsLoadThread)
 				print " - - - - - - - - - - - - "
 				print "StartLoadingAssets: create thread"
 				print " - - - - - - - - - - - - "
@@ -67,11 +68,13 @@ loadedObject.setLoaded(true)
 	End Method
 
 	Method AddToLoadAsset(resourceName:string, resource:object)
+		print "addtoloadasset"
 		TAssetManager.AssetsToLoad.insert(resourceName, resource)
 		self.StartLoadingAssets()
 	End Method
 
 	Function Create:TAssetManager(initialContent:TMap=Null, checkExistence:Int = 0)
+		print "create:Tassetmanager"
 		Local obj:TAssetManager = New TAssetManager
 		If initialContent <> Null Then obj.content = initialContent
 		obj.checkExistence = checkExistence
@@ -79,6 +82,7 @@ loadedObject.setLoaded(true)
 	End Function
 
 	Method AddSet(content:TMap)
+		print "addset"
 		Local key:string
 		For key = EachIn content.keys()
 			local obj:object = content.ValueForKey(key)
@@ -92,6 +96,7 @@ loadedObject.setLoaded(true)
 	End Method
 
 	Method PrintAssets()
+		print "printassets"
 		local res:string = ""
 		local count:int = 0
 		for local key:object = eachin self.content.keys()
@@ -106,6 +111,7 @@ loadedObject.setLoaded(true)
 
 
 	Method SetContent(content:TMap)
+		print "setcontent"
 		Self.content = content
 	End Method
 
@@ -122,7 +128,13 @@ loadedObject.setLoaded(true)
 			asset = self.ConvertImageToSprite(TImage(asset._object), assetName, -1)
 		endif
 		'if asset._type <> "SPRITE" then print "ASSETMANAGER: Add TAsset '"+lower(string(assetName))+"' [" + asset._type+"]"
-		Self.content.Insert(assetName, asset)
+		?Threaded
+		LockMutex(MutexContentLock)
+		?
+			Self.content.Insert(assetName, asset)
+		?Threaded
+		UnlockMutex(MutexContentLock)
+		?
 	End Method
 
 	Function ConvertImageToSprite:TGW_Sprites(img:Timage, spriteName:string, spriteID:int =-1)
@@ -141,7 +153,13 @@ loadedObject.setLoaded(true)
 				result.animCount = animCount
 				result.framew = result.w / animCount
 			endif
+			?Threaded
+				LockMutex(MutexContentLock)
+			?
 			self.content.insert(assetName, result )
+			?Threaded
+				UnlockMutex(MutexContentLock)
+			?
 		endif
 	End Method
 
@@ -218,25 +236,27 @@ End Type
 
 
 Type TXmlLoader
-	Field currentFile:xmlDocument
+	field xml:TXmlHelper = null
+'	Field currentFile:xmlDocument
 	Field Values:TMap = CreateMap()
 
 	global loadWarning:int = 0
 
 
 	Function Create:TXmlLoader()
-		Local obj:TXmlLoader = New TXmlLoader
-		Return obj
+		return New TXmlLoader
 	End Function
 
 
 	Method Parse(url:String)
 		PrintDebug("XmlLoader.Parse:", url, DEBUG_LOADING)
-		'Local root:xmlNode
-		Self.currentFile = xmlDocument.Create(url)
-		If Self.currentFile = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
-		For Local child:xmlNode = EachIn Self.currentFile.Root().ChildList
-			Select child.Name
+		xml = TXmlHelper.Create(url)
+		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
+		local listChildren:TList = xml.root.getChildren()
+		if not listChildren then return
+
+		For Local child:TxmlNode = EachIn listChildren
+			Select child.getName()
 				Case "resources"	Self.LoadResources(child)
 				Case "rooms"		Self.LoadRooms(child)
 			End Select
@@ -244,21 +264,25 @@ Type TXmlLoader
 	End Method
 
 
-	Method LoadChild:TMap(childNode:xmlNode)
+	Method LoadChild:TMap(childNode:TxmlNode)
 		Local optionsMap:TMap = CreateMap()
-		For Local childOptions:xmlNode = EachIn childNode.ChildList
-			If childOptions.HasChildren()
-				optionsMap.Insert((Lower(childOptions.Name) + "_" + Lower(childoptions.Attribute("name", 0).value)), Self.LoadChild(childOptions))
+		local listChildren:TList = childNode.getChildren()
+
+		For Local childOptions:TxmlNode = EachIn listChildren
+			If childOptions.getChildren() <> null
+				optionsMap.Insert((Lower(childOptions.getName()) + "_" + Lower(xml.findAttribute(childoptions, "name", "unkown"))), Self.LoadChild(childOptions))
 			Else
-				optionsMap.Insert((Lower(childOptions.Name) + "_" + Lower(childoptions.Attribute("name", 0).value)), childOptions.Value)
+				optionsMap.Insert((Lower(childOptions.getName()) + "_" + Lower(xml.findAttribute(childoptions, "name", "unkown"))), childOptions.getContent())
 			EndIf
 		Next
 		Return optionsMap
 	End Method
 
 
-	Method LoadXmlResource(childNode:xmlNode)
-		Local _url:String = childNode.FindChild("url", 0, 0).Value
+	Method LoadXmlResource(childNode:TxmlNode)
+		Local _url:String = xml.FindValue(childNode, "url", "")
+		if _url = "" then return
+
 		Local childXML:TXmlLoader = TXmlLoader.Create()
 		childXML.Parse(_url)
 		For Local obj:Object = EachIn MapKeys(childXML.Values)
@@ -268,11 +292,10 @@ Type TXmlLoader
 		Next
 	End Method
 
-	Method GetImageFlags:Int(childNode:xmlNode)
+	Method GetImageFlags:Int(childNode:TxmlNode)
 		Local flags:Int = 0
-		Local flagsstring:String = ""
-		If childNode.FindChild("flags", 0, 0) <> Null
-			flagsstring = String(childNode.FindChild("flags", 0, 0).Value)
+		Local flagsstring:String = xml.FindValue(childNode, "flags", "")
+		If flagsstring <> ""
 			Local flagsarray:String[] = flagsstring.split(",")
 			For Local flag:String = EachIn flagsarray
 				flag = Upper(flag.Trim())
@@ -286,40 +309,29 @@ Type TXmlLoader
 		Return flags
 	End Method
 
-	Method getAttribute:string(node:xmlNode, fieldname:string, defaultValue:string="")
-		if node.HasAttribute(fieldname, false)
-			return node.Attribute(fieldname).Value
-		else
-			return defaultValue
-		endif
-	End Method
+	Method LoadImageResource(childNode:TxmlNode)
+		Local _name:String		= Lower( xml.FindValue(childNode, "name", "default") )
+		Local _type:String		= Upper( xml.FindValue(childNode, "type", ""))
+		Local _url:String		= xml.FindValue(childNode, "url", "")
+		if _type = "" or _url = "" then return
 
-	Method LoadImageResource(childNode:xmlNode)
-		Local _name:String = Lower( getAttribute(childNode, "name", "default") )
-		Local _type:String = Upper(childNode.FindChild("type", 0, 0).Value)
-		Local _frames:Int = 0
-		Local _cellwidth:Int = 0
-		Local _cellheight:Int = 0
-		Local _url:String = childNode.FindChild("url", 0, 0).Value
-		Local _img:TImage = Null
-		Local _flags:Int = Self.GetImageFlags(childNode)
+		Local _frames:Int		= xml.FindValueInt(childNode, "frames", 0)
+		Local _cellwidth:Int	= xml.FindValueInt(childNode, "cellwidth", 0)
+		Local _cellheight:Int	= xml.FindValueInt(childNode, "cellheight", 0)
+		Local _img:TImage		= Null
+		Local _flags:Int		= Self.GetImageFlags(childNode)
+		'recolor/colorize?
+		Local _r:Int			= xml.FindValueInt(childNode, "r", -1)
+		Local _g:Int			= xml.FindValueInt(childNode, "g", -1)
+		Local _b:Int			= xml.FindValueInt(childNode, "b", -1)
+
 		'direct load or threaded possible?
 		'solange threaded n bissl buggy - immer direkt laden
 		Local directLoadNeeded:Int = True ' <-- threaded load
-		'recolor/colorize?
-		Local _r:Int		= Int( getAttribute(childNode, "r", "-1") )
-		Local _g:Int		= Int( getAttribute(childNode, "g", "-1") )
-		Local _b:Int		= Int( getAttribute(childNode, "b", "-1") )
 		If _r >= 0 And _g >= 0 And _b >= 0 then directLoadNeeded = true
 
-		If childNode.FindChild("cellwidth", 0, 0) <> Null Then _cellwidth = Int(childNode.FindChild("cellwidth", 0, 0).Value)
-		If childNode.FindChild("cellheight", 0, 0) <> Null Then _cellheight = Int(childNode.FindChild("cellheight", 0, 0).Value)
-		If childNode.FindChild("frames", 0, 0) <> Null Then _frames = Int(childNode.FindChild("frames", 0, 0).Value)
-
-
-		If childNode.FindChild("scripts") <> Null Then directLoadNeeded = True
-		If childNode.FindChild("colorize") <> Null Then directLoadNeeded = True
-
+		If xml.FindChild(childNode, "scripts") <> Null Then directLoadNeeded = True
+		If xml.FindChild(childNode,"colorize") <> Null Then directLoadNeeded = True
 		'create helper, so load-function has all needed data
 		Local LoadAssetHelper:TGW_Sprites = TGW_Sprites.Create(Null, _name, 0,0, 0, 0, _frames, -1, _cellwidth, _cellheight)
 		LoadAssetHelper._flags = _flags
@@ -335,7 +347,7 @@ Type TXmlLoader
 		Else
 			LoadAssetHelper.setUrl(_url)
 
-			If directLoadNeeded Then
+			If directLoadNeeded
 				'print "LoadImageResource: "+_name + " | DIRECT type = "+_type
 				'add as single sprite so it is reachable through "GetSprite" too
 				Local sprite:TGW_Sprites = TGW_Sprites.LoadFromAsset(LoadAssetHelper)
@@ -352,18 +364,16 @@ Type TXmlLoader
 
 	End Method
 
-	Method parseScripts(childNode:xmlNode, data:Object)
+	Method parseScripts(childNode:TxmlNode, data:Object)
 		PrintDebug("XmlLoader.LoadImageResource:", "found image scripts", DEBUG_LOADING)
-		Local scripts:xmlNode = childNode.FindChild("scripts")
-		If scripts <> Null And scripts.ChildList <> Null
-			For Local script:xmlNode = EachIn scripts.ChildList
-				Local scriptDo:String= String(script.Attribute("do",0).Value)
-
-				local _dest:string	= Lower(String(script.Attribute("dest").Value))
-				Local _r:Int		= Int( getAttribute(script, "r", "-1") )
-				Local _g:Int		= Int( getAttribute(script, "g", "-1") )
-				Local _b:Int		= Int( getAttribute(script, "b", "-1") )
-
+		Local scripts:TxmlNode = xml.FindChild(childNode, "scripts")
+		If scripts <> Null And scripts.getChildren() <> Null
+			For Local script:TxmlNode = EachIn scripts.GetChildren()
+				Local scriptDo:String	= xml.findValue(script,"do", "")
+				local _dest:string		= Lower(xml.findValue(script,"dest", ""))
+				Local _r:Int			= xml.FindValueInt(script, "r", -1)
+				Local _g:Int			= xml.FindValueInt(script, "g", -1)
+				Local _b:Int			= xml.FindValueInt(script, "b", -1)
 
 				If scriptDo = "ColorizeCopy"
 					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And TImage(data) <> Null
@@ -382,20 +392,20 @@ Type TXmlLoader
 				EndIf
 
 				If scriptDo = "CopySprite"
-					Local _src:String	= String(script.Attribute("src").Value)
+					Local _src:String	= xml.findValue(script, "src", "")
 					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
 						TGW_Spritepack(data).CopySprite(_src, _dest, _r, _g, _b)
 					EndIf
 				EndIf
 
 				If scriptDo = "AddCopySprite"
-					Local _src:String	= String(script.Attribute("src").Value)
+					Local _src:String	= xml.findValue(script, "src", "")
 					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
-						Local _x:Int		= Int( getAttribute(script, "x", TGW_Spritepack(data).getSprite(_src).pos.x) )
-						Local _y:Int		= Int( getAttribute(script, "y", TGW_Spritepack(data).getSprite(_src).pos.y) )
-						Local _w:Int		= Int( getAttribute(script, "w", TGW_Spritepack(data).getSprite(_src).w) )
-						Local _h:Int		= Int( getAttribute(script, "h", TGW_Spritepack(data).getSprite(_src).h) )
-						Local _frames:Int	= Int( getAttribute(script, "frames", TGW_Spritepack(data).getSprite(_src).animcount) )
+						Local _x:Int		= xml.findValueInt(script, "x", 	TGW_Spritepack(data).getSprite(_src).pos.x)
+						Local _y:Int		= xml.findValueInt(script, "y", 	TGW_Spritepack(data).getSprite(_src).pos.y)
+						Local _w:Int		= xml.findValueInt(script, "w", 	TGW_Spritepack(data).getSprite(_src).w)
+						Local _h:Int		= xml.findValueInt(script, "h", 	TGW_Spritepack(data).getSprite(_src).h)
+						Local _frames:Int	= xml.findValueInt(script, "frames",TGW_Spritepack(data).getSprite(_src).animcount)
 						Assets.Add(_dest, TGW_Spritepack(data).AddCopySprite(_src, _dest, _x, _y, _w, _h, _frames, _r, _g, _b))
 					EndIf
 				EndIf
@@ -405,30 +415,29 @@ Type TXmlLoader
 		EndIf
 	End Method
 
-	Method LoadSpritePackResource(childNode:xmlNode)
-		Local _name:String = Lower(String(childNode.Attribute("name", 0).Value))
-		Local _url:String = childNode.FindChild("url", 0, 0).Value
-		Local _flags:Int = Self.GetImageFlags(childNode)
+	Method LoadSpritePackResource(childNode:TxmlNode)
+		Local _name:String	= Lower( xml.findValue(childNode, "name", "") )
+		Local _url:String	= xml.findValue(childNode, "url", "")
+		Local _flags:Int	= Self.GetImageFlags(childNode)
 		'Print "LoadSpritePackResource: "+_name + " " + _flags + " ["+url+"]"
-		Local _image:TImage = LoadImage(_url, _flags) 'CheckLoadImage(_url, _flags)
+		Local _image:TImage	= LoadImage(_url, _flags) 'CheckLoadImage(_url, _flags)
 		Local spritePack:TGW_SpritePack = TGW_SpritePack.Create(_image, _name)
 		'add spritepack to asset
 		Assets.Add(_name, spritePack)
 
 		'sprites
-		If childNode.FindChild("children") <> Null
-			Local children:xmlNode = childNode.FindChild("children")
-			For Local child:xmlNode = EachIn children.ChildList
-				Local childName:String	= Lower(String(child.Attribute("name", 0).Value))
-				Local childX:Int		= Int( getAttribute(child, "x", "0") )
-				Local childY:Int		= Int( getAttribute(child, "y", "0") )
-				Local childW:Int		= Int( getAttribute(child, "w", "1") )
-				Local childH:Int		= Int( getAttribute(child, "h", "1") )
-				Local childID:Int		= -1
-				Local childFrames:Int	= 1
-				If child.HasAttribute("id", 0) Then childID	= Int(child.Attribute("id", 0).Value)
-				If child.HasAttribute("frames", 0) Then childFrames	= Int(child.Attribute("frames", 0).Value)
-				If child.HasAttribute("f", 0) Then childFrames	= Int(child.Attribute("f", 0).Value)
+		Local children:TxmlNode = xml.FindChild(childNode, "children")
+		If children <> Null
+			local childList:TList =  children.getChildren()
+			For Local child:TxmlNode = EachIn childList
+				Local childName:String	= Lower(xml.findValue(child,"name", ""))
+				Local childX:Int		= xml.findValueInt(child, "x", 0)
+				Local childY:Int		= xml.findValueInt(child, "y", 0)
+				Local childW:Int		= xml.findValueInt(child, "w", 1)
+				Local childH:Int		= xml.findValueInt(child, "h", 1)
+				Local childID:Int		= xml.findValueInt(child, "id", -1)
+				Local childFrames:Int	= xml.findValueInt(child, "frames", 1)
+				      childFrames		= xml.findValueInt(child, "f", childFrames)
 
 				If childName<> "" And childW > 0 And childH > 0
 					'create sprite and add it to assets
@@ -436,11 +445,10 @@ Type TXmlLoader
 					Assets.Add(childName, sprite)
 
 					'recolor/colorize?
-					Local _r:Int		= Int( getAttribute(child, "r", "-1") )
-					Local _g:Int		= Int( getAttribute(child, "g", "-1") )
-					Local _b:Int		= Int( getAttribute(child, "b", "-1") )
+					Local _r:Int			= xml.FindValueInt(child, "r", -1)
+					Local _g:Int			= xml.FindValueInt(child, "g", -1)
+					Local _b:Int			= xml.FindValueInt(child, "b", -1)
 					If _r >= 0 And _g >= 0 And _b >= 0 then sprite.colorize(_r,_g,_b)
-
 				EndIf
 			Next
 		EndIf
@@ -449,8 +457,8 @@ Type TXmlLoader
 
 	End Method
 
-	Method LoadResource(childNode:xmlNode)
-		Local _type:String = Upper(childNode.FindChild("type", 0, 0).Value)
+	Method LoadResource(childNode:TxmlNode)
+		Local _type:String = Upper(xml.findValue(childNode, "type", ""))
 		Select _type
 			Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
 			Case "XML"					Self.LoadXmlResource(childNode)
@@ -459,49 +467,39 @@ Type TXmlLoader
 	End Method
 
 
-	Method LoadResources(childNode:xmlNode)
+	Method LoadResources(childNode:TxmlNode)
 		'for every single resource
-		For Local child:xmlNode = EachIn childNode.ChildList
+		For Local child:TxmlNode = EachIn childNode.GetChildren()
 			Self.LoadResource(child)
 		Next
 	End Method
 
-
-	Method GetValue:String(node:xmlNode, child:String = "", attribute:String, defaultvalue:String = "")
-		Local result:String = defaultvalue
-		Local usenode:xmlNode = node
-		If child <> ""
-			usenode = node.FindChild(child, 0, 0)
-			If usenode = Null Then usenode = node
-		EndIf
-		If usenode.FindChild(attribute, 0, 0) <> Null
-			If usenode.FindChild(attribute, 0, 0).Value <> Null Then Return usenode.FindChild(attribute, 0, 0).value
-		Else If usenode.Attribute(attribute, 0) <> Null
-			Return usenode.Attribute(attribute, 0).value
-		Else
-			Return result
-		EndIf
-	End Method
-
-
-	Method LoadRooms(childNode:xmlNode)
+	Method LoadRooms(childNode:TxmlNode)
+		print "load rooms"
 		'for every single room
 		Local values_room:TMap = TMap(Self.values.ValueForKey("rooms"))
 		If values_room = Null Then values_room = CreateMap() ;
-
-		For Local child:xmlNode = EachIn childNode.ChildList
-			Local room:TMap = CreateMap()
-			Local owner:Int = Int(Self.GetValue(child, "", "owner", "-1"))
-			Local name:String = Self.GetValue(child, "", "name", "unknown")
-			room.Insert("name",		Name + String(owner))
+		For Local child:TxmlNode = EachIn childNode.getChildren()
+			Local room:TMap		= CreateMap()
+			Local owner:Int		= xml.FindValueInt(child, "owner", -1)
+			Local name:String	= xml.FindValue(child, "name", "unknown")
+			room.Insert("name",		name + String(owner))
 			room.Insert("owner",	String(owner))
 			room.Insert("roomname", name)
-			room.Insert("image", 	Self.GetValue(child, "", "image", "rooms_archive"))
-			room.Insert("tooltip", 	Self.GetValue(child, "tooltip", "1", ""))
-			room.Insert("tooltip2", Self.GetValue(child, "tooltip", "2", ""))
-			room.Insert("x", 		Self.GetValue(child, "door", "x", "0"))
-			room.Insert("y", 		Self.GetValue(child, "door", "y", "0"))
-			room.Insert("doortype", Self.GetValue(child, "door", "type", "-1"))
+			room.Insert("image", 	xml.FindValue(child, "image", "rooms_archive") )
+			local subNode:TxmlNode = null
+			subNode = xml.FindChild(child, "tooltip")
+			if subNode <> null
+				room.Insert("tooltip", 	xml.FindValue(subNode, "text", "") )
+				room.Insert("tooltip2", xml.FindValue(subNode, "description", "") )
+			else
+				room.Insert("tooltip", 	"" )
+				room.Insert("tooltip2", "" )
+			endif
+			subNode = xml.FindChild(child, "door")
+			room.Insert("x", 		xml.FindValue(subNode, "x", 0) )
+			room.Insert("y", 		xml.FindValue(subNode, "y", 0) )
+			room.Insert("doortype", xml.FindValue(subNode, "type", -1) )
 			values_room.Insert(Name + owner, TAsset.CreateBaseAsset(room, "ROOMDATA"))
 			PrintDebug("XmlLoader.LoadRooms:", "inserted room: " + Name, DEBUG_LOADING)
 			'print "rooms: "+Name + owner
@@ -514,7 +512,6 @@ End Type
 
 
 rem
-
 Type TResource
 	field _name:string
 	field _loaded:int = 0

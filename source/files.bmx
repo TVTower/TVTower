@@ -22,7 +22,6 @@ Import brl.Max2D
 Import brl.Retro
 
 Import "basefunctions.bmx"
-Import "basefunctions_xml.bmx"
 Import "basefunctions_image.bmx"
 Import "basefunctions_resourcemanager.bmx"
 
@@ -141,13 +140,13 @@ Global DX9StartMemory:Int	= 0
 Global Settings:TApplicationSettings = TApplicationSettings.Create()
 '#Region Read Screenmode
 	Local xml:TXmlHelper = TXmlHelper.Create("config/settings.xml")
-	xml.setNode( xml.FindRootChild("settings") )
-	If xml.currentNode = Null Or xml.currentNode.getName() <> "settings"
-		Print "settings.xml fehlt der settings-Bereich"
-	EndIf
-	Settings.fullscreen	= xml.FindValueInt("fullscreen", Settings.fullscreen, "settings.xml fehlt 'fullscreen', setze Defaultwert: "+Settings.fullscreen)
-	Settings.directx	= xml.FindValueInt("directx", Settings.directx, "settings.xml fehlt 'directx', setze Defaultwert: "+Settings.directx+" (OpenGL)")
-	Settings.colordepth	= xml.FindValueInt("colordepth", Settings.colordepth, "settings.xml fehlt 'colordepth', setze Defaultwert: "+Settings.colordepth)
+	local node:TXmlNode = xml.findRootChild("settings")
+	If node = Null Or node.getName() <> "settings" then	Print "settings.xml fehlt der settings-Bereich"
+
+	Settings.fullscreen	= xml.FindValueInt(node, "fullscreen", Settings.fullscreen, "settings.xml fehlt 'fullscreen', setze Defaultwert: "+Settings.fullscreen)
+	Settings.directx	= xml.FindValueInt(node, "directx", Settings.directx, "settings.xml fehlt 'directx', setze Defaultwert: "+Settings.directx+" (OpenGL)")
+	Settings.colordepth	= xml.FindValueInt(node, "colordepth", Settings.colordepth, "settings.xml fehlt 'colordepth', setze Defaultwert: "+Settings.colordepth)
+
 	If Settings.colordepth <> 16 And Settings.colordepth <> 32
 		Print "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16"
 		Settings.colordepth = 16
@@ -199,10 +198,11 @@ Next
 GrabImage(particle_image,0,0)
 Cls
 SetAlpha 1.0
-
+print "load resources"
 Global XmlLoader:TXmlLoader = TXmlLoader.Create()
 XmlLoader.Parse("config/resources.xml")
 Assets.AddSet(XmlLoader.Values) 'copy XML-values
+print "finished resources"
 
 '=== Building ======================
 '--- Elevator / Items -----

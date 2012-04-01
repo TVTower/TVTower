@@ -476,7 +476,7 @@ Type TNetworkServer Extends TNetworkConnection
 			response.evType :mod 10000
 			'print "Server got relay event:" + response.evType
 			'at the moment broadcasts are reliable
-			self.broadcast(response, null, NET_PACKET_RELIABLE)
+	'self.broadcast(response, null, NET_PACKET_RELIABLE)
 			self.broadcast(response, client, NET_PACKET_RELIABLE)
 			return
 		endif
@@ -534,7 +534,7 @@ Type TNetworkServer Extends TNetworkConnection
 					If not FindClientByName(client.name)
 						clientmap.insert(client.name,client)
 						clients.AddLast(client)
-
+						client.playerID = clients.count()
 						answer = TNetworkObject.Create(NET_JOINRESPONSE)
 						answer.setInt(1, 1)
 						answer.setInt(2, clients.count()) 'change to GetSlot() or so
@@ -722,7 +722,7 @@ Type TTVGNetwork
 	Field announceEnabled:int		= 0
 	Field announceTitle:string		= "unknown"				' title used when announcing
 	Field announceTime:Int			= -1					' Main Announcement Timer
-	Field announceTimer:Int			= 2500					' Main Announcement Timer
+	Field announceTimer:Int			= 1500					' Main Announcement Timer
 	Field announceToLan:int			= 1
 
 	Field PingTimer:Int 			= 0 					' Ping and Ping Timer
@@ -1370,6 +1370,17 @@ Type TNetworkObjectSlot
 		slottype= NET_TYPE_STRING
 	End Method
 
+rem
+	Method GetInt:int(defaultValue:int=0)
+		if defaultValue <> null
+			if slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16 then Return _int
+			return defaultValue
+		endif
+
+		Assert slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16, "wrong slot type:"+slottype
+		Return _int
+	End Method
+endrem
 	Method GetInt:int(defaultValue:int=0)
 		Assert slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16, "wrong slot type:"+slottype
 		Return _int

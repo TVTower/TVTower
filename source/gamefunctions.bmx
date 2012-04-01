@@ -1,4 +1,119 @@
 ﻿
+Type TSaveFile
+  Field xml:TXmlHelper
+  Field node:TxmlNode
+  Field currentnode:TxmlNode
+  Field Nodes:TxmlNode[10]
+  Field NodeDepth:Int = 0
+  Field lastNode:TxmlNode
+
+  Function Create:TSaveFile()
+  	Local tmpobj:TSaveFile = New TSaveFile
+	Return tmpobj
+  End Function
+
+  Method InitSave()
+	self.xml		= new TXmlHelper
+	self.xml.file	= TxmlDoc.newDoc("1.0")
+	Self.xml.root 	= TxmlNode.newNode("tvtsavegame")
+	self.xml.file.setRootElement(self.xml.root)
+    Self.Nodes[0]	= xml.root
+	Self.lastNode	= xml.root
+  End Method
+
+	Method InitLoad(filename:String="save.xml", zipped:Byte=0)
+		self.xml		= new TXmlHelper
+		self.xml.file	= TxmlDoc.parseFile(filename)
+		Self.xml.root	= xml.file.getRootElement()
+		Self.node		= Self.xml.root
+	End Method
+
+	Method xmlWrite(typ:String="unknown",str:String, newDepth:Byte=0, depth:Int=-1)
+		If depth <=-1 Or depth >=10 Then depth = Self.NodeDepth ';newDepth=False
+		If newDepth
+			Self.Nodes[Self.NodeDepth+1] = Self.Nodes[depth].addChild( typ )
+			Self.Nodes[Self.NodeDepth+1].addAttribute("var", str)
+			Self.NodeDepth:+1
+		Else
+			Self.Nodes[depth].addChild( typ ).addAttribute("var", str)
+		EndIf
+	End Method
+
+	Method xmlCloseNode()
+		Self.NodeDepth:-1
+	End Method
+
+	Method xmlBeginNode(str:String)
+		Self.Nodes[Self.NodeDepth + 1] = Self.Nodes[Self.NodeDepth].AddChild( str )
+		Self.NodeDepth:+1
+	End Method
+
+	Method xmlSave(filename:String="-", zipped:Byte=0)
+		If filename = "-" Then Print "nodes:"+Self.xml.root.getChildren().count() Else Self.xml.file.saveFile(filename)
+	End Method
+
+	'Summary: saves an object to defined XMLstream
+	Method SaveObject:Int(obj:Object, nodename:String, _addfunc(obj:Object))
+		Local result:String = ""
+	    Self.xmlBeginNode(nodename)
+			'list of objects as obj-param - iterate through all listobjects
+			If TList(obj) <> Null
+				For Local listobj:Object = EachIn TList(obj)
+					SaveObject(listobj, nodename + "_CHILD", _addfunc)
+				Next
+			Else
+				Local typ:TTypeId = TTypeId.ForObject(obj)
+				For Local t:TField = EachIn typ.EnumFields()
+					If t.MetaData("sl") <> "no"
+						local fieldtype:TTypeId = TTypeId.ForObject(t.get(obj))
+						If fieldtype.ExtendsType(ArrayTypeId)
+							If fieldtype.ArrayLength(typ) > 0
+								Print "array '" + t.Name() + " - " + fieldtype.Name() + "'"
+							EndIf
+						End If
+						If TList(t.Get(obj)) <> Null
+							Local liste:TList = TList(t.Get(obj))
+							For Local childobj:Object = EachIn liste
+								Print "saving list children..."
+								Self.SaveObject(childobj, nodename + "_CHILD", _addfunc)
+							Next
+						Else
+							Self.xmlWrite(Upper(t.name()), String(t.Get(obj)))
+						End If
+					EndIf
+				Next
+				If _addfunc <> Null Then _addfunc(obj)
+			EndIf
+		Self.xmlCloseNode()
+	End Method
+
+	'Summary: loads an object from a XMLstream
+	Method LoadObject:Object(obj:Object, _handleNodefunc(_obj:Object, _node:txmlnode))
+print "implement LoadObject"
+return null
+rem
+		Local NODE:txmlNode = Self.NODE.FirstChild()
+		Local nodevalue:String
+		While NODE <> Null
+			nodevalue = ""
+			If NODE.hasAttribute("var", False) Then nodevalue = Self.NODE.Attribute("var").value
+			Local typ:TTypeId = TTypeId.ForObject(obj)
+			For Local t:TField = EachIn typ.EnumFields()
+				If t.MetaData("sl") <> "no" And Upper(t.name()) = NODE.name
+					t.Set(obj, nodevalue)
+				EndIf
+			Next
+			Self.NODE = Self.NODE.nextSibling()
+			If _handleNodefunc <> Null Then _handleNodefunc(obj, NODE)
+		Wend
+		Return obj
+endrem
+	End Method
+End Type
+Global LoadSaveFile:TSaveFile = TSaveFile.Create()
+
+
+
 Type TPlannerList
 	Field openState:int				= 0 '0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
 	Field currentGenre:Int			=-1
@@ -273,7 +388,10 @@ Type TAudienceQuotes
   Global sheet:TTooltip = Null {saveload = "nosave"}
 
 
-	Function Load:TAudienceQuotes(pnode:xmlNode)
+	Function Load:TAudienceQuotes(pnode:TxmlNode)
+print "implement Load:TAudienceQuotes"
+return null
+rem
   		Local audience:TAudienceQuotes = New TAudienceQuotes
 		Local NODE:xmlNode = pnode.FirstChild()
 		While NODE <> Null
@@ -289,13 +407,14 @@ Type TAudienceQuotes
 		Wend
 		TAudienceQuotes.List.AddLast(audience)
 		Return audience
+endrem
 	End Function
 
 	Function LoadAll()
 		TAudienceQuotes.List.Clear()
-		Local Children:TList = LoadSaveFile.NODE.ChildList
-		For Local NODE:xmlNode = EachIn Children
-			If NODE.name = "AUDIENCEQUOTE"
+		Local Children:TList = LoadSaveFile.NODE.getChildren()
+		For Local NODE:TxmlNode = EachIn Children
+			If NODE.getName() = "AUDIENCEQUOTE"
 				TAudienceQuotes.Load(NODE)
 			End If
 		Next
@@ -1038,9 +1157,8 @@ Type TNewsbuttons Extends TButton
     End Function
 
     Method OnClick()
-		If self.clickstate >= 3 Then self.clickstate=0 else	self.clickstate:+1
-		Players[Game.playerID].newsabonnements[genre] = clickstate
-		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendNewsSubscriptionChange(Game.playerID, genre, clickstate)
+		If self.clickstate > Game.MaxAbonnementLevel Then self.clickstate=0 else self.clickstate:+1
+		Players[Game.playerID].SetNewsAbonnement(genre, clickstate)
 		Mousemanager.resetKey(1)
     End Method
 
@@ -1314,7 +1432,10 @@ Type TStation
 		return Max( 25000, Int(Ceil(summe / 10000)) * 25000 )
 	End Function
 
-	Function Load:TStation(pnode:xmlNode)
+	Function Load:TStation(pnode:TxmlNode)
+print "implement Load:TStation"
+return null
+rem
 		Local station:TStation= New TStation
 		Local NODE:xmlNode = pnode.FirstChild()
 		While NODE <> Null
@@ -1329,6 +1450,7 @@ Type TStation
 			Node = Node.NextSibling()
 		Wend
 	Return station
+endrem
   End Function
 
 
@@ -1394,7 +1516,10 @@ Type TStationMap
 	Global List:TList = CreateList()
 
 
-	Function Load:TStationmap(pnode:xmlNode)
+	Function Load:TStationmap(pnode:TxmlNode)
+print "implement Load:TStationmap"
+return null
+rem
 		Local StationMap:TStationMap = New TStationMap
 		Local NODE:xmlNode = pnode.FirstChild()
 		While NODE <> Null
@@ -1413,16 +1538,17 @@ Type TStationMap
 			End Select
 			NODE = NODE.nextSibling()
 		Wend
+endrem
   End Function
 
 	Function LoadAll()
 		PrintDebug("TStationMap.LoadAll()", "Lade StationMaps", DEBUG_SAVELOAD)
 		TStationMap.List.Clear()
-		Local Children:TList = LoadSaveFile.NODE.ChildList
-		For Local node:xmlNode = EachIn Children
-			If NODE.name = "STATIONMAP"
+		Local Children:TList = LoadSaveFile.NODE.getChildren()
+		For Local node:txmlNode = EachIn Children
+			If NODE.getName() = "STATIONMAP"
 			      TStationMap.Load(NODE)
-			End If
+			EndIf
 		Next
 	End Function
 

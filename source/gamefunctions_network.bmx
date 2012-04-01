@@ -4,18 +4,17 @@
 Const NET_SETSLOT:Int				= 101					' SERVER: command from server to set to a given playerslot
 Const NET_SLOTSET:Int				= 102				' ALL: 	  response to all, that IP uses slot X now
 Const NET_CHATMESSAGE:Int			= 104				' ALL:    a sent chatmessage ;D
-Const NET_PEERDATA:Int				= 105				' Packet contains IPs of all four Players/peers
 	Const NET_PLAYERDETAILS:Int			= 106				' ALL:    name, channelname...
-Const NET_PLAYERPOSITION:Int		= 107				' ALL:    x,y,room,target...
-Const NET_SENDPROGRAMME:Int			= 108				' SERVER: sends a Programme to a user for adding this to the players collection
+	Const NET_FIGUREPOSITION:Int		= 107				' ALL:    x,y,room,target...
+	Const NET_SENDPROGRAMME:Int			= 108				' SERVER: sends a Programme to a user for adding this to the players collection
 	Const NET_GAMEREADY:Int				= 109				' ALL:    sends a ReadyFlag
-Const NET_STARTGAME:Int				= 110				' SERVER: sends a StartFlag
+	Const NET_STARTGAME:Int				= 110				' SERVER: sends a StartFlag
 Const NET_PLAN_PROGRAMMECHANGE:Int	= 111				' ALL:    playerprogramme has changed (added, removed and so on)
 Const NET_STATIONCHANGE:Int			= 112				' ALL:    stations have changes (added ...)
 Const NET_ELEVATORROUTECHANGE:Int	= 113				' ALL:    elevator routes have changed
 Const NET_ELEVATORSYNCHRONIZE:Int	= 114				' SERVER: synchronizing the elevator
 Const NET_PLAN_ADCHANGE:Int			= 115				' ALL:    playerprogramme has changed (added, removed and so on)
-Const NET_SENDCONTRACT:Int			= 116				' SERVER: sends a Contract to a user for adding this to the players collection
+	Const NET_SENDCONTRACT:Int			= 116				' SERVER: sends a Contract to a user for adding this to the players collection
 Const NET_PROGRAMMECOLLECTION_CHANGE:Int = 117			' ALL:    programmecollection was changed (removed, sold...)
 Const NET_SENDNEWS:Int				= 118				' SERVER: creates and sends news
 Const NET_NEWSSUBSCRIPTIONCHANGE:Int= 119				' ALL: sends Changes in subscription levels of news-agencies
@@ -38,15 +37,16 @@ Network.callbackClient		= ClientEventHandler
 Network.callbackInfoChannel	= InfoChannelEventHandler
 
 Function ServerEventHandler(server:TNetworkServer,client:TNetworkclient,id:Int, networkObject:TNetworkObject)
-	print "Server got event:" + networkObject.evType
+'	print "Server got event:" + networkObject.evType
 	Select networkObject.evType
 		'player joined, send player data to all
 		case NET_PLAYERJOINED 		NetworkHelper.SendPlayerDetails()
+
 	EndSelect
 End Function
 
 Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetworkObject)
-	print "client got event:" + networkObject.evType
+'	print "client got event:" + networkObject.evType
 	Select networkObject.evType
 		case NET_PLAYERJOINED
 			local playerID:int		= NetworkObject.getInt(1)
@@ -64,8 +64,17 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 				Network.client.playerID = playerID
 			endif
 
+		case NET_STARTGAME			print "got: startgame";Game.gamestate = GAMESTATE_RUNNING;Game.networkgameready = 1 'start the game
 		case NET_PLAYERDETAILS		NetworkHelper.ReceivePlayerDetails( networkObject )
+		case NET_FIGUREPOSITION		NetworkHelper.ReceiveFigurePosition( networkObject )
 		case NET_GAMEREADY			NetworkHelper.ReceiveGameReady( networkObject )
+		case NET_SENDCONTRACT		NetworkHelper.ReceiveContractsToPlayer( networkObject )
+		case NET_SENDPROGRAMME		NetworkHelper.ReceiveProgrammesToPlayer( networkObject )
+
+		case NET_NEWSSUBSCRIPTIONCHANGE	NetworkHelper.ReceiveNewsSubscriptionChange( networkObject )
+
+		case NET_ELEVATORROUTECHANGE	Building.Elevator.Network_ReceiveRouteChange( networkObject )
+		case NET_ELEVATORSYNCHRONIZE	Building.Elevator.Network_ReceiveSynchronize( networkObject )
 	EndSelect
 
 End Function
@@ -86,33 +95,67 @@ End Function
 
 
 Type TNetworkHelper
-	Method AddContractsToPlayer(playerID:Int, contract:TContract[])
+	Method SendContractsToPlayer(playerID:Int, contract:TContract[])
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDCONTRACT )
 		obj.setInt(1, playerID)
 
 		'store in one field
 		local IDstring:string=""
-		For Local i:Int = 0 To contract.length-1
-			IDstring :+ contract[i].id+","
-		Next
+		if contract.length > 0
+			For Local i:Int = 0 To contract.length-1
+				IDstring :+ contract[i].id+","
+			Next
+		endif
 		obj.setString(2, IDstring)
 
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
-	Method AddProgrammesToPlayer(playerID:Int, programme:TProgramme[])
+	Method ReceiveContractsToPlayer( obj:TNetworkObject )
+		Local remotePlayerID:Int		= obj.getInt(1)
+		local IDs:string[]				= obj.getString(2).split(",")
+		for local id:string = eachin IDs
+			if id <> "" and int(id) > 0
+				Players[ remotePlayerID ].ProgrammeCollection.AddContract(TContract.getContract( int(id) ))
+			endif
+		Next
+	End Method
+
+
+
+
+	Method ReceiveProgrammesToPlayer( obj:TNetworkObject )
+		Local remotePlayerID:Int		= obj.getInt(1)
+		local IDs:string[]				= obj.getString(2).split(",")
+		for local id:string = eachin IDs
+			if id <> "" and int(id) > 0
+				Players[ remotePlayerID ].ProgrammeCollection.AddProgramme(TProgramme.GetProgramme( int(id) ))
+				Players[ remotePlayerID ].ProgrammeCollection.AddContract(TContract.getContract( int(id) ))
+			endif
+		Next
+	End Method
+
+	Method SendProgrammesToPlayer(playerID:Int, programme:TProgramme[])
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDPROGRAMME )
 		obj.setInt(1, playerID)
 
 		'store in one field
 		local IDstring:string=""
-		For Local i:Int = 0 To programme.length-1
-			IDstring :+ programme[i].id+","
-		Next
+		if programme.length > 0
+			For Local i:Int = 0 To programme.length-1
+				if programme[i] = null
+					print "programme "+i+" is null"
+				else
+					IDstring :+ programme[i].id+","
+				endif
+			Next
+		endif
 		obj.setString(2, IDstring)
 
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
+
+
 
 
 	Method ReceivePlayerDetails( obj:TNetworkObject )
@@ -162,37 +205,154 @@ Type TNetworkHelper
 		Next
 	End Method
 
-	Method SendPlayerPosition()
-		Print "NET: send playerposition of SELF (hosting: AI players too)"
 
-		For Local i:Int = 1 To 4
-			'it's me or i'm hosting and its an AI player
-			if i = Network.client.playerID OR (Network.isServer and Players[i].isAI())
-				local obj:TNetworkObject = TNetworkObject.Create( NET_PLAYERPOSITION )
-				obj.SetInt(	1, i )							'playerID
-				obj.SetInt(	2, Players[i].Figure.pos.x )	'pos.x
-				obj.SetInt(	3, Players[i].Figure.pos.y )	'...
-				obj.SetInt(	4, Players[i].Figure.target.x )
-				obj.SetInt(	5, Players[i].Figure.target.y )
-				if Players[i].Figure.inRoom <> null 			then obj.setInt( 6, Players[i].Figure.inRoom.uniqueID)
-				if Players[i].Figure.clickedToRoom <> null		then obj.setInt( 7, Players[i].Figure.clickedToRoom.uniqueID)
-				if Players[i].Figure.toRoom <> null 			then obj.setInt( 8, Players[i].Figure.toRoom.uniqueID)
-				if Players[i].Figure.fromRoom <> null 			then obj.setInt( 9, Players[i].Figure.fromRoom.uniqueID)
-				Network.BroadcastNetworkObject( obj )
-			EndIf
-		Next
+
+
+	Method SendFigurePosition(figure:TFigures)
+		'no player figures can only be send from Master
+		if figure.ParentPlayer = null and not Network.isServer then return
+
+		local obj:TNetworkObject = TNetworkObject.Create( NET_FIGUREPOSITION )
+		obj.SetInt(		1, figure.id )		'playerID
+		obj.SetFloat(	2, figure.pos.x )	'pos.x
+		obj.SetFloat(	3, figure.pos.y )	'...
+		obj.SetFloat(	4, figure.target.x )
+		obj.SetFloat(	5, figure.target.y )
+		if figure.inRoom <> null 			then obj.setInt( 6, figure.inRoom.uniqueID)
+		if figure.clickedToRoom <> null		then obj.setInt( 7, figure.clickedToRoom.uniqueID)
+		if figure.toRoom <> null 			then obj.setInt( 8, figure.toRoom.uniqueID)
+		if figure.fromRoom <> null 			then obj.setInt( 9, figure.fromRoom.uniqueID)
+		Network.BroadcastNetworkObject( obj )
 	End Method
 
+	Method ReceiveFigurePosition( obj:TNetworkObject )
+		Local figureID:Int		= obj.getInt(1)
+		local figure:TFigures	= TFigures.getByID( figureID )
+		if figure = null then return
+
+		local posX:Float			= obj.getFloat(2)
+		local posY:Float			= obj.getFloat(3)
+		local targetX:Float			= obj.getFloat(4)
+		local targetY:Float			= obj.getFloat(5)
+		local inRoomID:int			= obj.getInt(6, -1)
+		local clickedRoomID:int		= obj.getInt(7, -1)
+		local toRoomID:int			= obj.getInt(8, -1)
+		local fromRoomID:int		= obj.getInt(9, -1)
+
+		If not figure.IsInElevator()
+			'only set X if wrong floor or x differs > 10 pixels
+			if posY = targetY
+				if Abs(posX - targetX) > 10 then figure.pos.setXY(posX,posY)
+			else
+				figure.pos.setXY(posX,posY)
+			endif
+		endif
+		figure.target.setXY(targetX,targetY)
+
+		If inRoomID <= 0 Then figure.inRoom = Null
+		If figure.inroom <> Null
+			If inRoomID > 0 and figure.inRoom.uniqueID <> inRoomID
+				figure.inRoom = TRooms.GetRoomFromID(inRoomID)
+				If figure.inRoom.name = "elevator" then Building.Elevator.waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime
+			EndIf
+		EndIf
+
+		If clickedRoomID <= 0 Then figure.clickedToRoom = Null
+		If clickedRoomID > 0 Then figure.clickedToRoom = TRooms.GetRoomFromID( clickedRoomID )
+
+		If toRoomID <= 0 Then figure.toRoom = Null
+		If toRoomID > 0 Then figure.toRoom = TRooms.GetRoomFromID( toRoomID )
+
+		If fromRoomID <= 0 Then figure.fromRoom = Null
+		If fromRoomID > 0 And figure.fromroom <> Null
+			If figure.fromRoom.uniqueID <> fromRoomID then figure.fromRoom = TRooms.GetRoomFromID(fromRoomID)
+		EndIf
+	End Method
+
+
+
+
 	Method SendGameReady(playerID:Int, onlyTo:Int=-1)
+		print "sendGameReady "+playerID
 		local obj:TNetworkObject = TNetworkObject.Create( NET_GAMEREADY )
 		obj.setInt(1, playerID)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
+
+		Game.gamestate = GAMESTATE_STARTMULTIPLAYER
+		'self ready
+		Players[ playerID ].networkstate = 1
+
+		for local i:int = 1 to 4
+			'set AI players ready
+			if Players[ i ].figure.controlledByID = 0 then Players[ i ].networkstate = 1
+		NExt
+
+		if Network.isServer
+
+			local allReady:int = 1
+			for local otherclient:TNetworkclient = eachin Network.server.clients
+				if not Players[ otherclient.playerID ].networkstate then allReady = false
+			Next
+			if allReady
+				'send game start
+				Game.networkgameready = 1
+				Game.gamestate = GAMESTATE_RUNNING
+				GameSettingsOkButton_Announce.crossed = False
+
+				print "NET: send game start to all others"
+				Network.BroadcastNetworkObject( TNetworkObject.Create( NET_STARTGAME ), NET_PACKET_RELIABLE )
+				return
+			endif
+		endif
 	End Method
 
 	Method ReceiveGameReady( obj:TNetworkObject )
-		local playerID:int = obj.getInt(1)
-		Print "NET: got GameReadyFlag from Player:"+Players[ playerID ].name + " ("+playerID+")"
+		local remotePlayerID:int = obj.getInt(1)
+		Players[ remotePlayerID ].networkstate = 1
+
+		'all players have their start programme?
+		local allReady:int = 1
+		for local i:int = 1 to 4
+			if Players[i].ProgrammeCollection.movielist.count() < Game.startMovieAmount
+				print "movie missing player("+i+") " + Players[i].ProgrammeCollection.movielist.count() + " < " + Game.startMovieAmount
+				allReady = false
+				exit
+			endif
+			if Players[i].ProgrammeCollection.serieslist.count() < Game.startSeriesAmount
+				print "serie missing player("+i+") " + Players[i].ProgrammeCollection.movielist.count() + " < " + Game.startMovieAmount
+				allReady = false
+				exit
+			endif
+			if Players[i].ProgrammeCollection.contractlist.count() < Game.startAdAmount then print "ad missing";allReady = false;exit
+		Next
+		if allReady and Game.GAMESTATE <> GAMESTATE_RUNNING
+			SendGameReady( Game.PlayerID, 0)
+		endif
 	End Method
+
+
+
+
+	Method SendNewsSubscriptionChange(playerID:Int, genre:int, level:int)
+		local obj:TNetworkObject = TNetworkObject.Create( NET_NEWSSUBSCRIPTIONCHANGE )
+		obj.setInt(1, playerID)
+		obj.setInt(2, genre)
+		obj.setInt(3, level)
+		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
+	End Method
+
+	Method ReceiveNewsSubscriptionChange( obj:TNetworkObject )
+		Local playerID:Int			= obj.getInt(1)
+		local player:TPlayer		= TPlayer.getByID( playerID )
+		if player = null then return
+
+		Local genre:Int				= obj.getInt(2)
+		Local level:Int				= obj.getInt(3)
+		Players[ playerID ].setNewsAbonnement(genre, level)
+		Print "set genre "+genre+" to level "+level+" for player "+playerID
+	End Method
+
+
 
 
 
@@ -208,17 +368,6 @@ Type TNetworkHelper
 		obj.setInt(1, Game.PlayerID)
 		obj.setString(2, ChatMessage)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE  )
-	End Method
-
-
-
-
-	Method SendNewsSubscriptionChange(playerID:Int, genre:int, level:int)
-		local obj:TNetworkObject = TNetworkObject.Create( NET_NEWSSUBSCRIPTIONCHANGE )
-		obj.setInt(1, playerID)
-		obj.setInt(2, genre)
-		obj.setInt(3, level)
-		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
 	Method SendStationChange(playerID:Int, station:TStation, newaudience:Int, add:int=1)

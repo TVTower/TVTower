@@ -6,7 +6,6 @@ Type TFigures
 	Field initialdx:Float	= 0.0
 	field target:TPosition	= TPosition.Create(-1,-1)
 
-'	Field clickedToFloor:Int = -1
 	Field toRoom:TRooms		= Null			{sl = "no"}
 	Field fromRoom:TRooms	= Null			{sl = "no"}
 	Field clickedToRoom:TRooms = Null		{sl = "no"}
@@ -26,16 +25,20 @@ Type TFigures
 	Field BackupAnimTime:Int= 120
 	Field inElevator:Byte	= 0
 	Field ControlledByID:Int= -1
-	Field alreadydrawn:Int	= 0 {sl = "no"}
+	Field alreadydrawn:Int	= 0 			{sl = "no"}
 	Field updatefunc_(ListLink:TLink, deltaTime:float) {sl = "no"}
 	Field LastSync:Int		= 0
+	Global SyncTime:int		= 2500
 	Field ListLink:TLink					{sl = "no"}
 	Field ParentPlayer:TPlayer = Null		{sl = "no"}
-	Global LastID:Int = 1					{sl = "no"}
+	Global LastID:Int = 0					{sl = "no"}
 	Global List:TList = CreateList()
 
 
-	Function Load:TFigures(pnode:xmlNode, figure:TFigures)
+	Function Load:TFigures(pnode:txmlNode, figure:TFigures)
+print "implement Load:TFigures"
+return null
+rem
 		Local node:xmlNode = pnode.FirstChild()
 		While NODE <> Null
 			Local nodevalue:String = ""
@@ -50,14 +53,15 @@ Type TFigures
 			Node = Node.NextSibling()
 		Wend
 		Return Figure
+endrem
 	End Function
 
 	Function LoadAll()
 		Local figureID:Int = 1
-		Local Children:TList = LoadSaveFile.node.ChildList
-		For Local node:xmlNode = EachIn Children
-			If node.name = "FIGURES_CHILD"
-				Local Figure:TFigures = TFigures.GetFigure(figureID)
+		Local Children:TList = LoadSaveFile.node.getChildren()
+		For Local node:txmlNode = EachIn Children
+			If node.getName() = "FIGURES_CHILD"
+				Local Figure:TFigures = TFigures.GetByID(figureID)
 				figureID:+1
 				If Figure <> Null Then Figure = TFigures.Load(NODE, Figure)
 				If Figure = Null Then Print "Figure.LoadAll: Figure Missing";Exit
@@ -66,19 +70,23 @@ Type TFigures
 		'Print "loaded figure informations"
 	End Function
 
-	Function AdditionalLoad(obj:Object, node:xmlNode)
+	Function AdditionalLoad(obj:Object, node:txmlNode)
+print "implement additionalLoad"
+return
+rem
 		Local figure:TFigures = TFigures(obj)
 		If figure <> Null
 			Local nodevalue:String = ""
 			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
 			Select NODE.name
-				Case "TOROOMID" figure.toRoom = TRooms.GetRoomFromID(Int(nodevalue))
-				Case "FROMROOMID" figure.fromRoom = TRooms.GetRoomFromID(Int(nodevalue))
-				Case "CLICKEDTOROOMID" figure.clickedToRoom = TRooms.GetRoomFromID(Int(nodevalue))
-				Case "INROOMID" figure.inRoom = TRooms.GetRoomFromID(Int(nodevalue))
+				Case "TOROOMID" 		figure.toRoom = TRooms.GetRoomFromID(Int(nodevalue))
+				Case "FROMROOMID" 		figure.fromRoom = TRooms.GetRoomFromID(Int(nodevalue))
+				Case "CLICKEDTOROOMID"	figure.clickedToRoom = TRooms.GetRoomFromID(Int(nodevalue))
+				Case "INROOMID"			figure.inRoom = TRooms.GetRoomFromID(Int(nodevalue))
 			End Select
 			figure.NextAnimTimer = MilliSecs()
 		EndIf
+endrem
 	End Function
 
 	Function AdditionalSave(obj:Object)
@@ -211,7 +219,7 @@ Type TFigures
 		If ParentPlayer <> Null And controlledByID = 0
 			If room <> Null Then ParentPlayer.PlayerKI.CallOnReachRoom(room.uniqueID) Else ParentPlayer.PlayerKI.CallOnReachRoom(0)
 		EndIf
-		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
+		If Game.networkgame and Network.IsConnected then self.Network_SendPosition()
 	End Method
 
 	'backing up former room
@@ -219,7 +227,7 @@ Type TFigures
 		if toRoom <> room
 			If fromRoom <> toRoom Then fromRoom = toRoom
 			toRoom = room
-			If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
+			If Game.networkgame and Network.IsConnected then self.Network_SendPosition()
 		endif
 	End Method
 
@@ -240,7 +248,7 @@ Type TFigures
 		SetInRoom(toRoom)
 		clickedToRoom = Null
 		If inRoom = Null Then pos.setX(target.x)
-		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
+		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(self)
 		'EndIf
 	End Method
 
@@ -257,29 +265,32 @@ Type TFigures
  		If room <> Null Then Self.ChangeTarget(room.Pos.x + 5, Building.pos.y + Building.getfloorY(room.Pos.y) - 5)
 	End Method
 
-	Function GetFigure:TFigures(id:Int)
+	Function GetByID:TFigures(id:Int)
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.id = id Then Return Figure
 		Next
 		Return Null
 	End Function
 
+	Method New()
+		LastID:+1
+		id		= LastID
+		ListLink= List.AddLast(self)
+		List.Sort()
+	End Method
+
 	Function Create:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
 		Local obj:TFigures=New TFigures
-		obj.name = Figurename
+		obj.name 			= Figurename
 		obj.pos.setX(x)
 		obj.target.setX(x)
-		obj.dx			= dx
-		obj.initialdx	= dx
-		obj.id			= LastID
-		obj.LastID:+1
-		obj.Sprite		= sprite
-		obj.framewidth	= obj.sprite.framew 'overwriteable for different center/handle
+		obj.dx				= dx
+		obj.initialdx		= dx
+		obj.Sprite			= sprite
+		obj.framewidth		= obj.sprite.framew 'overwriteable for different center/handle
 		obj.pos.setY( Building.GetFloorY(onFloor) )
-		obj.NextAnimTimer = MilliSecs() + obj.NextAnimTime
-		obj.ControlledByID = ControlledByID
-		obj.ListLink = List.AddLast(obj)
-		SortList List
+		obj.NextAnimTimer	= MilliSecs() + obj.NextAnimTime
+		obj.ControlledByID	= ControlledByID
 		Return obj
 	End Function
 
@@ -298,18 +309,13 @@ Type TFigures
 
 	Method SendElevator:Int()
 		print self.name+" sends elevator"
-		Building.Elevator.passenger = self
-		'target.y		= Building.getFloorY(Building.getFloor(target.y))
-		If id = Game.playerID Or (IsAI() And Game.playerID = 1)
-			Building.Elevator.AddFloorRoute(self.GetFloor(target), 0, id, True, False)
-		Else
-			Building.Elevator.AddFloorRoute(self.GetFloor(target), 0, id, True, True)
-		EndIf
-		'clickedToFloor	= -1
-		'calledElevator	= False
+		Building.Elevator.SendToFloor(self.getFloor(target), self)
 	End Method
 
 	Method ChangeTarget(x:Int=null, y:Int=null)
+		'only change target if its your figure or you are game leader
+		if id <> Players[ game.playerID ].figure.id and not Game.isGameLeader() then return
+
 		if x=null then x=target.x
 		if y=null then y=target.y
 
@@ -335,7 +341,7 @@ Type TFigures
 
 		inRoom = Null
 		'change to event
-		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendPlayerPosition()
+		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(self)
 	End Method
 
 
@@ -348,7 +354,7 @@ Type TFigures
 			If id = Game.playerID
 				If Int(target.x) = Floor(pos.x)
 					If Game.networkgame and LastSync + 1000 < MilliSecs()
-						NetworkHelper.SendPlayerPosition()
+						NetworkHelper.SendFigurePosition(self)
 						LastSync = MilliSecs()
 					EndIf
 				EndIf
@@ -409,6 +415,14 @@ Type TFigures
 			EndIf
 
 	    EndIf
+
+		'sync playerposition if not done for long time
+		If Game.networkgame and Network.IsConnected and self.lastSync < Millisecs() then self.Network_SendPosition()
+	End Method
+
+	Method Network_SendPosition()
+		NetworkHelper.SendFigurePosition(self)
+		self.lastSync = Millisecs() + self.SyncTime
 	End Method
 
 	Function UpdateAll(deltaTime:float)

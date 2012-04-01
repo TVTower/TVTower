@@ -12,9 +12,16 @@ Framework brl.glmax2d
 Import "source/main.bmx"
 
 Incbin "source/version.txt"
+
+
+
 Rem
 
-'done
+- todo :
+	* TPlayerColor-creation in XML auslagern ...
+	* erster klick auf newsgenre/abobuttons erhoeht nicht auf 2
+	* Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
+	  - eventuell "Timer" erstellen und per Event->timertick abrufen
 
 ' 2012:
 ' gamefunctions - tstation - farben der ovale anpassen auf tplayercolor
