@@ -330,6 +330,31 @@ End Function
 '	Return String.fromCString(out)
 'End Function
 
+Type TxmlBaseEnumerator
+
+	Field _next:TxmlBase
+
+	Function Create:TxmlBaseEnumerator( parent_:TxmlBase )
+		Local ret_:TxmlBaseEnumerator = New TxmlBaseEnumerator
+		ret_._next = TxmlBase.chooseCreateFromType( Byte Ptr( Int Ptr( parent_._basePtr + TxmlBase._children )[0] ) )
+
+		Return ret_
+	End Function
+
+	Method HasNext:Int()
+		Return _next<> Null
+	End Method
+
+	Method NextObject:Object()
+		Local ret_:TxmlBase = _next
+
+		_next = _next.nextSibling()
+		Return ret_
+	End Method
+
+End Type
+
+
 Rem
 bbdoc: The base Type for #TxmlDoc, #TxmlNode, #TxmlAttribute, #TxmlEntity, #TxmlDtd, #TxmlDtdElement and #TxmlDtdAttribute.
 End Rem
@@ -347,6 +372,10 @@ Type TxmlBase Abstract
 
 	Method initBase(pointer:Byte Ptr)
 		_basePtr = pointer
+	End Method
+
+	Method ObjectEnumerator:TxmlBaseEnumerator()
+		Return TxmlBaseEnumerator.Create( Self )
 	End Method
 
 	Function chooseCreateFromType:TxmlBase(_ptr:Byte Ptr)

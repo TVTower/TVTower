@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <tvt>
 	<resources>
 		<resource name="rooms_pplanning">
@@ -71,7 +71,6 @@
 		</resource>
 	</resources>
 	<rooms>
-
 		<room name="archive" owner="1" image="rooms_archive">
 			<tooltip text="ROOM_ARCHIVE_OF" />
 			<door x="4" y="2" type="3" />
@@ -189,6 +188,5 @@
 			<tooltip text="ROOM_ROOMAGENCY" description="ROOM_ROOMAGENCY_OWNER" />
 			<door x="2" y="9" type="2" />
 		</room>
-
 	</rooms>
 </tvt>

@@ -15,7 +15,7 @@ Import brl.D3D7Max2D
 Import brl.PNGLoader
 Import brl.FreeTypeFont
 ?Threaded
-Import brl.threads
+'Import brl.threads
 ?
 
 Import brl.Max2D
@@ -174,7 +174,8 @@ Try
 	If Settings.directx = -1
 		SetGraphicsDriver GLMax2DDriver()
 	Else
-		SetGraphicsDriver BufferedGLMax2DDriver()
+		SetGraphicsDriver GLMax2DDriver()
+'		SetGraphicsDriver BufferedGLMax2DDriver()
 	EndIf
 	g = Graphics(Settings.width, Settings.height, Settings.colordepth*Settings.fullscreen, Settings.hertz, Settings.Flag)
 	If g = Null Then Throw "Graphics initiation error! no OpenGL available."
@@ -198,11 +199,9 @@ Next
 GrabImage(particle_image,0,0)
 Cls
 SetAlpha 1.0
-print "load resources"
 Global XmlLoader:TXmlLoader = TXmlLoader.Create()
 XmlLoader.Parse("config/resources.xml")
 Assets.AddSet(XmlLoader.Values) 'copy XML-values
-print "finished resources"
 
 '=== Building ======================
 '--- Elevator / Items -----

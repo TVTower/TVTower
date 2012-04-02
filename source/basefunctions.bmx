@@ -85,19 +85,24 @@ Type TXmlHelper
 			Return node.getAttribute(fieldName)
 		endif
 		'children
-		local children:TList = node.getChildren()
-		if children <> null
-			For local subNode:TxmlNode = EachIn children
-				If subNode.getName().ToLower() = fieldName then return subNode.getContent()
-				If subNode.getAttribute(fieldName) <> null then Return subNode.getAttribute(fieldName)
+'		local children:TList = node.getChildren()
+'		if children <> null and children.count() > 0
+			For local subNode:TxmlNode = EachIn node
+				if subNode.getType() = XML_TEXT_NODE then continue
+				if subNode <> null
+					If subNode.getName().ToLower() = fieldName then return subNode.getContent()
+					If subNode.hasAttribute(fieldName) then Return subNode.getAttribute(fieldName)
+				endif
 			Next
-		endif
+'		endif
 		if logString <> "" then print logString
 		return defaultValue
 	EndMethod
 
 	Method FindValueInt:int(node:TxmlNode, fieldName:string, defaultValue:int, logString:string="")
-		return int( self.FindValue(node, fieldName, string(defaultValue), logString) )
+		local result:string = self.FindValue(node, fieldName, string(defaultValue), logString)
+		if result = null then return defaultValue
+		return int( result )
 	End Method
 
 End Type
@@ -120,6 +125,13 @@ Const DEBUG_NEWS:Byte = 1
 Const DEBUG_START:Byte = 3
 Const DEBUG_IMAGES:Byte = 5
 
+Function CurrentDateTime:String(_what:String="%d %B %Y")
+	Local	time:Byte[256],buff:Byte[256]
+	time_(time)
+	strftime_(buff,256,_what,localtime_( time ))
+	Return String.FromCString(buff)
+End Function
+
 Function PrintDebug(functiontext:String = "", message:String, Debug:Byte)
 	Local debugtext:String = ""
 	If Debug = DEBUG_NETWORK Then debugtext = "NET"
@@ -132,7 +144,6 @@ Function PrintDebug(functiontext:String = "", message:String, Debug:Byte)
 	If Debug = DEBUG_START Then debugtext = "START"
 	If Debug = DEBUG_IMAGES Then debugtext = "IMAGES"
 	debugtext = LSet(debugtext, 8) + "| "
-
 	TLogFile.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(functiontext) + ": " + message)
 End Function
 
@@ -505,7 +516,7 @@ Type TLogFile
 	End Function
 
 	Function AddLog(MyText:String)
-		Strings.AddLast(MyText)
+		'Strings.AddLast(MyText)
 	End Function
 End Type
 

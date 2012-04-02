@@ -7,7 +7,7 @@ Import brl.timer
 Import brl.Graphics
 Import brl.maxlua
 Import brl.reflection
-Import brl.threads
+'Import brl.threads
 Import "basefunctions_network.bmx"
 'Import "external/bnetex/bnetex.bmx"								'udp and tcpip-layer and functions
 'Import "changelog.bmx"							'holds the notes for changes and additions
@@ -3186,6 +3186,15 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
+			If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
+			If KEYMANAGER.Ishit(Key_F1) And Players[1].isAI() Then Players[1].PlayerKI.reloadScript()
+			If KEYMANAGER.Ishit(Key_F2) And Players[2].isAI() Then Players[2].PlayerKI.reloadScript()
+			If KEYMANAGER.Ishit(Key_F3) And Players[3].isAI() Then Players[3].PlayerKI.reloadScript()
+			If KEYMANAGER.Ishit(Key_F4) And Players[4].isAI() Then Players[4].PlayerKI.reloadScript()
+
+			If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
+
+
 			KEYMANAGER.changeStatus()
 			If Game.gamestate = 0
 				UpdateMain(App.Timer.getDeltaTime())
@@ -3253,61 +3262,17 @@ Global Init_Complete:Int = 0
 'could also be done during update ("if not initDone...")
 EventManager.Init()
 
-rem
-
-Const HERTZ# = 60
-Global Ending:int
-Global Timer:TTimer = CreateTimer ( HERTZ )
-AddHook EmitEventHook , Hook
-
-While Not Ending
-  WaitSystem
-Wend
-
-
-Function Hook:Object ( id:int , data:Object , context:Object )
-  Local Event:TEvent = TEvent ( data )
-  Select Event.source
-    Case Null
-      If Event.id = EVENT_APPTERMINATE then Ending = True
-      If Event.id = EVENT_KEYDOWN And Event.data = KEY_ESCAPE then Ending = True
-    Case Timer
-      If Event.id = EVENT_TIMERTICK
-        StopTimer Timer
-        GameLoop()
-		Timer = CreateTimer ( HERTZ )
-      EndIf
-  EndSelect
-  Return data
-EndFunction
-endrem
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
+	If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 	Repeat
-		If Not GameLoop() Then Exit
+		App.Timer.loop()
+		'process events not directly triggered
+		'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
+		EventManager.update()
 	Until AppTerminate() Or ExitGame = 1
 	If Game.networkgame Then Network.DisconnectFromServer()
 EndIf 'not exit game
-
-
-
-Function GameLoop:Int()
-	If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
-	If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1;Return False				'ESC pressed, exit game
-
-	If KEYMANAGER.Ishit(Key_F1) And Players[1].isAI() Then Players[1].PlayerKI.reloadScript()
-	If KEYMANAGER.Ishit(Key_F2) And Players[2].isAI() Then Players[2].PlayerKI.reloadScript()
-	If KEYMANAGER.Ishit(Key_F3) And Players[3].isAI() Then Players[3].PlayerKI.reloadScript()
-	If KEYMANAGER.Ishit(Key_F4) And Players[4].isAI() Then Players[4].PlayerKI.reloadScript()
-
-	If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
-	App.Timer.loop()
-
-	'process events not directly triggered
-	'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
-	EventManager.update()
-	Return True
-End Function
 
 
 OnEnd( EndHook )

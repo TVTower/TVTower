@@ -82,7 +82,6 @@ loadedObject.setLoaded(true)
 	End Function
 
 	Method AddSet(content:TMap)
-		print "addset"
 		Local key:string
 		For key = EachIn content.keys()
 			local obj:object = content.ValueForKey(key)
@@ -96,7 +95,6 @@ loadedObject.setLoaded(true)
 	End Method
 
 	Method PrintAssets()
-		print "printassets"
 		local res:string = ""
 		local count:int = 0
 		for local key:object = eachin self.content.keys()
@@ -111,7 +109,6 @@ loadedObject.setLoaded(true)
 
 
 	Method SetContent(content:TMap)
-		print "setcontent"
 		Self.content = content
 	End Method
 
@@ -250,25 +247,24 @@ Type TXmlLoader
 
 	Method Parse(url:String)
 		PrintDebug("XmlLoader.Parse:", url, DEBUG_LOADING)
-		xml = TXmlHelper.Create(url)
-		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
-		local listChildren:TList = xml.root.getChildren()
-		if not listChildren then return
 
-		For Local child:TxmlNode = EachIn listChildren
-			Select child.getName()
-				Case "resources"	Self.LoadResources(child)
-				Case "rooms"		Self.LoadRooms(child)
-			End Select
+		self.xml = TXmlHelper.Create(url)
+		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
+
+		for local child:TxmlNode = eachin xml.root
+			if child.getType() = XML_ELEMENT_NODE
+				Select child.getName()
+					Case "resources"	Self.LoadResources(child)
+					Case "rooms"		Self.LoadRooms(child)
+				End Select
+			endif
 		Next
 	End Method
 
 
 	Method LoadChild:TMap(childNode:TxmlNode)
 		Local optionsMap:TMap = CreateMap()
-		local listChildren:TList = childNode.getChildren()
-
-		For Local childOptions:TxmlNode = EachIn listChildren
+		For Local childOptions:TxmlNode = EachIn childNode
 			If childOptions.getChildren() <> null
 				optionsMap.Insert((Lower(childOptions.getName()) + "_" + Lower(xml.findAttribute(childoptions, "name", "unkown"))), Self.LoadChild(childOptions))
 			Else
@@ -282,12 +278,11 @@ Type TXmlLoader
 	Method LoadXmlResource(childNode:TxmlNode)
 		Local _url:String = xml.FindValue(childNode, "url", "")
 		if _url = "" then return
-
 		Local childXML:TXmlLoader = TXmlLoader.Create()
 		childXML.Parse(_url)
+
 		For Local obj:Object = EachIn MapKeys(childXML.Values)
 			PrintDebug("XmlLoader.LoadXmlResource:", "loading object: " + String(obj), DEBUG_LOADING)
-			'print "XmlLoader.LoadXmlResource:"+string(obj)+ " - "+_url
 			Self.Values.Insert(obj, childXML.Values.ValueForKey(obj))
 		Next
 	End Method
@@ -319,6 +314,7 @@ Type TXmlLoader
 		Local _cellwidth:Int	= xml.FindValueInt(childNode, "cellwidth", 0)
 		Local _cellheight:Int	= xml.FindValueInt(childNode, "cellheight", 0)
 		Local _img:TImage		= Null
+
 		Local _flags:Int		= Self.GetImageFlags(childNode)
 		'recolor/colorize?
 		Local _r:Int			= xml.FindValueInt(childNode, "r", -1)
@@ -367,8 +363,10 @@ Type TXmlLoader
 	Method parseScripts(childNode:TxmlNode, data:Object)
 		PrintDebug("XmlLoader.LoadImageResource:", "found image scripts", DEBUG_LOADING)
 		Local scripts:TxmlNode = xml.FindChild(childNode, "scripts")
-		If scripts <> Null And scripts.getChildren() <> Null
-			For Local script:TxmlNode = EachIn scripts.GetChildren()
+		If scripts <> Null
+			For Local script:TxmlNode = EachIn scripts
+				if script.getType() <> XML_ELEMENT_NODE then continue
+
 				Local scriptDo:String	= xml.findValue(script,"do", "")
 				local _dest:string		= Lower(xml.findValue(script,"dest", ""))
 				Local _r:Int			= xml.FindValueInt(script, "r", -1)
@@ -428,8 +426,9 @@ Type TXmlLoader
 		'sprites
 		Local children:TxmlNode = xml.FindChild(childNode, "children")
 		If children <> Null
-			local childList:TList =  children.getChildren()
-			For Local child:TxmlNode = EachIn childList
+			For Local child:TxmlNode = EachIn children
+				if child.getType() <> XML_ELEMENT_NODE then continue
+
 				Local childName:String	= Lower(xml.findValue(child,"name", ""))
 				Local childX:Int		= xml.findValueInt(child, "x", 0)
 				Local childY:Int		= xml.findValueInt(child, "y", 0)
@@ -469,17 +468,18 @@ Type TXmlLoader
 
 	Method LoadResources(childNode:TxmlNode)
 		'for every single resource
-		For Local child:TxmlNode = EachIn childNode.GetChildren()
-			Self.LoadResource(child)
+		for local child:TxmlNode = eachin childNode
+			if child.getType() = XML_ELEMENT_NODE then Self.LoadResource(child)
 		Next
 	End Method
 
 	Method LoadRooms(childNode:TxmlNode)
-		print "load rooms"
 		'for every single room
 		Local values_room:TMap = TMap(Self.values.ValueForKey("rooms"))
 		If values_room = Null Then values_room = CreateMap() ;
-		For Local child:TxmlNode = EachIn childNode.getChildren()
+		For Local child:TxmlNode = EachIn childNode
+			if child.getType() <> XML_ELEMENT_NODE then continue
+
 			Local room:TMap		= CreateMap()
 			Local owner:Int		= xml.FindValueInt(child, "owner", -1)
 			Local name:String	= xml.FindValue(child, "name", "unknown")

@@ -722,7 +722,7 @@ Type TTVGNetwork
 	Field announceEnabled:int		= 0
 	Field announceTitle:string		= "unknown"				' title used when announcing
 	Field announceTime:Int			= -1					' Main Announcement Timer
-	Field announceTimer:Int			= 1500					' Main Announcement Timer
+	Field announceTimer:Int			= 750					' Main Announcement Timer
 	Field announceToLan:int			= 1
 
 	Field PingTimer:Int 			= 0 					' Ping and Ping Timer
