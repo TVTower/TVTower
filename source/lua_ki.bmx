@@ -27,6 +27,9 @@ Type TLuaEngine
 
 	'Once registered, the object can be accessed from within Lua scripts using the @ObjName identifer.
 	Method RegisterBlitzmaxObject(Obj:Object, ObjName:String)
+		'Achtung!!!
+		'Es kann immer nur ein Objekt pro Name registriert werden.
+		'Das registrierte Objekt gilt für alle LuaInstanzen
 		LuaRegisterObject Obj, ObjName
 	End Method
 End Type
@@ -45,7 +48,7 @@ Type KI
 	Field inRoom:Byte
 	Field LastErrorNumber:Int = 0
 
-	field LuaFunctions:TLuaFunctions
+	Field LuaFunctions:TLuaFunctions
 
 
 	Function Create:KI(pId:Byte, script:String)
@@ -61,21 +64,18 @@ Type KI
 		ret.reloadScript()
 		KI_EventManager.registerKI(ret)
 		Print "Player " + pId + " (ME:"+ret.LuaFunctions.ME+"): AI loaded in " + Float(MilliSecs() - loadtime) + "ms"
-		ret._OnAssignPlayer()
 		Return ret
 	End Function
-
-	Method _OnAssignPlayer()
-	    activeKI = Self
-		Local args:Object[1]
-		args[0] = string(self.playerID)
-		Self.LuaEngine.CallLuaFunction("_OnAssignPlayer", args)
+	
+	Method SetActive()
+		activeKI = Self
+		Self.LuaEngine.RegisterBlitzmaxObject(Self.LuaFunctions, "TVT")
 	End Method
-
+	
 	Method OnCreate()
-	    activeKI = Self
+		Self.SetActive()
 		Local args:Object[1]
-		args[0] = string(self.playerID)
+		args[0] = String(Self.playerID)
 		Self.LuaEngine.CallLuaFunction("OnCreate", args)
 	End Method
 
@@ -92,25 +92,14 @@ Type KI
 	End Method
 
 	Method reloadScript()
-		if self.scriptAsString <> "" then Print "Reloaded LUA AI for player "+Self.playerId
-		self.scriptAsString = LoadText(scriptName)
-
-		'assign different TLuaFunctionobjects to instances
-		local quote:String=Chr(34)
-		local br:String=Chr(13)
-		Local str:String =	"function _OnAssignPlayer(playerID)"+..
-							"	playerID = tonumber(playerID)"+br+..
-							"	if TVT.getPlayerID()	== 1 then TVT = TVTPlayer1 end"+br+..
-							"	if playerID				== 2 then TVT = TVTPlayer2 end"+br+..
-							"	if playerID				== 3 then TVT = TVTPlayer3 end"+br+..
-							"	if playerID				== 4 then TVT = TVTPlayer4 end"+br+..
-							"	if TVT == nil then	TVT.DebugPrint("+quote+"Konnte TVT-Klasse nicht ueberschreiben"+quote+") end"+br+..
-							"end"+br+br
-		Self.LuaEngine.LoadSource(str + scriptAsString)
+		Self.SetActive()
+		If Self.scriptAsString <> "" Then Print "Reloaded LUA AI for player "+Self.playerId
+		Self.scriptAsString = LoadText(scriptName)
+		Self.LuaEngine.LoadSource(scriptAsString)
 	End Method
 
 	Method CallOnLoad(savedluascript:String="")
-	    activeKI = Self
+	    Self.SetActive()
 		Local args:Object[1]
 		args[0] = savedluascript
 		Self.LuaEngine.CallLuaFunction("OnLoad", args)
@@ -118,7 +107,7 @@ Type KI
 	End Method
 
 	Method CallOnSave()
-	    activeKI = Self
+	    Self.SetActive()
 		Local args:Object[1]
 		args[0] = "5.0"
 		Self.LuaEngine.CallLuaFunction("OnSave", args)
@@ -126,7 +115,7 @@ Type KI
 	End Method
 
 	Method CallOnMinute()
-	    activeKI = Self
+	    Self.SetActive()
 		Local args:Object[1]
 		args[0] = "5.0"
 		'print "KI call on Minute"
@@ -135,7 +124,7 @@ Type KI
 	End Method
 
 	Method CallOnChat(text:String = "")
-	    activeKI = Self
+	    Self.SetActive()
 	    Try
 			Local args:Object[1]
 			args[0] = text
@@ -147,7 +136,7 @@ Type KI
 	End Method
 
 	Method CallOnReachRoom(roomId:Byte)
-	    activeKI = Self
+	    Self.SetActive()
 	    inRoom = roomId
 	    Try
 	'	    Self.scriptEnv.BeginLUAFunctionCall()
@@ -159,7 +148,7 @@ Type KI
 	End Method
 
 	Method CallOnLeaveRoom()
-	    activeKI = Self
+	    Self.SetActive()
 	    inRoom = -1
 	    Try
 	'	    Self.scriptEnv.BeginLUAFunctionCall()
@@ -170,7 +159,7 @@ Type KI
 	End Method
 
 	Method CallOnDayBegins()
-	    activeKI = Self
+	    Self.SetActive()
 	    Try
 	'	    Self.scriptEnv.BeginLUAFunctionCall()
 	'		Self.scriptEnv.CallFunction("OnDayBegins", 0)
@@ -180,7 +169,7 @@ Type KI
 	End Method
 
 	Method CallOnMoneyChanged()
-	    activeKI = Self
+	    Self.SetActive()
 	    Try
 	'	    Self.scriptEnv.BeginLUAFunctionCall()
 	'		Self.scriptEnv.CallFunction("OnMoneyChanged", 0)
@@ -188,7 +177,7 @@ Type KI
 		    Print "Script " + scriptName + " enthaelt die Funktion OnMoneyChanged nicht"
 		End Try
 	End Method
-rem
+Rem
 	Method fileToString:String(filename:String)
 		Local file:TStream = OpenStream(filename, True, False)
 		Return file.ReadString(file.Size())
@@ -212,31 +201,31 @@ Type TLuaFunctions
 	Field MAXMOVIESPARGENRE:Int = 8
 	Field MAXSPOTS:Int 'Wird initialisiert
 
-	const MOVIE_GENRE_ACTION:Int = 0
-	const MOVIE_GENRE_THRILLER:Int = 1
-	const MOVIE_GENRE_SCIFI:Int = 2
-	const MOVIE_GENRE_COMEDY:Int = 3
-	const MOVIE_GENRE_HORROR:Int = 4
-	const MOVIE_GENRE_LOVE:Int = 5
-	const MOVIE_GENRE_EROTIC:Int = 6
-	const MOVIE_GENRE_WESTERN:Int = 7
-	const MOVIE_GENRE_LIVE:Int = 8
-	const MOVIE_GENRE_KIDS:Int = 9
-	const MOVIE_GENRE_CARTOON:Int = 10
-	const MOVIE_GENRE_MUSIC:Int = 11
-	const MOVIE_GENRE_SPORT:Int = 12
-	const MOVIE_GENRE_CULTURE:Int = 13
-	const MOVIE_GENRE_FANTASY:Int = 14
-	const MOVIE_GENRE_YELLOWPRESS:Int = 15
-	const MOVIE_GENRE_NEWS:Int = 16
-	const MOVIE_GENRE_SHOW:Int = 17
-	const MOVIE_GENRE_MONUMENTAL:Int = 18
+	Const MOVIE_GENRE_ACTION:Int = 0
+	Const MOVIE_GENRE_THRILLER:Int = 1
+	Const MOVIE_GENRE_SCIFI:Int = 2
+	Const MOVIE_GENRE_COMEDY:Int = 3
+	Const MOVIE_GENRE_HORROR:Int = 4
+	Const MOVIE_GENRE_LOVE:Int = 5
+	Const MOVIE_GENRE_EROTIC:Int = 6
+	Const MOVIE_GENRE_WESTERN:Int = 7
+	Const MOVIE_GENRE_LIVE:Int = 8
+	Const MOVIE_GENRE_KIDS:Int = 9
+	Const MOVIE_GENRE_CARTOON:Int = 10
+	Const MOVIE_GENRE_MUSIC:Int = 11
+	Const MOVIE_GENRE_SPORT:Int = 12
+	Const MOVIE_GENRE_CULTURE:Int = 13
+	Const MOVIE_GENRE_FANTASY:Int = 14
+	Const MOVIE_GENRE_YELLOWPRESS:Int = 15
+	Const MOVIE_GENRE_NEWS:Int = 16
+	Const MOVIE_GENRE_SHOW:Int = 17
+	Const MOVIE_GENRE_MONUMENTAL:Int = 18
 
-	const NEWS_GENRE_TECHNICS:Int = 3
-	const NEWS_GENRE_POLITICS:Int = 0
-	const NEWS_GENRE_SHOWBIZ:Int = 1
-	const NEWS_GENRE_SPORT:Int = 2
-	const NEWS_GENRE_CURRENTS:Int = 4
+	Const NEWS_GENRE_TECHNICS:Int = 3
+	Const NEWS_GENRE_POLITICS:Int = 0
+	Const NEWS_GENRE_SHOWBIZ:Int = 1
+	Const NEWS_GENRE_SPORT:Int = 2
+	Const NEWS_GENRE_CURRENTS:Int = 4
 
 	'Die Räume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
@@ -287,12 +276,12 @@ Type TLuaFunctions
 
 
 	Method getPlayerID:Int()
-		return activeKI.playerId
+		Return activeKI.playerId
 	End Method
 
 
-	Method DebugPrint(text:string)
-		print "LUAKI DebugPrint: "+text
+	Method DebugPrint(text:String)
+		Print "LUAKI DebugPrint: "+text
 	End Method
 
 	Function Create:TLuaFunctions(pPlayerId:Int)
@@ -349,7 +338,7 @@ Type TLuaFunctions
 
 		Return ret
 	End Function
-rem
+Rem
 	Function Lua_GetString:String(luaState:Byte Ptr)
 		Return String.FromCString(lua_tostring(luaState, -1))
 	End Function
@@ -414,7 +403,7 @@ endrem
 
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
 		If Players[PlayerID] <> Null
-		  Players[PlayerID].figure.changeTarget(newTargetX,null)
+		  Players[PlayerID].figure.changeTarget(newTargetX,Null)
 		Else
 			Return - 1
 		EndIf
@@ -496,7 +485,7 @@ endrem
 	Method getPlayerFloor:Int()
 		Local PlayerID:Int = activeKI.playerId
 		If Players[PlayerID] <> Null
-			return Players[PlayerID].figure.GetFloor()
+			Return Players[PlayerID].figure.GetFloor()
 		Else
 			Return 0
 		EndIf
@@ -697,7 +686,7 @@ endrem
 			Else
 				Local owner:Int = Players[PlayerID].Figure.inRoom.owner
 				Local Programme:TProgramme = Players[owner].ProgrammePlan.GetActualProgramme(hour, day)
-				If Programme <> Null then Return Programme.id Else Return 0
+				If Programme <> Null Then Return Programme.id Else Return 0
 			EndIf
 		Else
 			Return - 1
@@ -1041,7 +1030,7 @@ endrem
 					Return - 2
 				Else
 					Local Block:TMovieAgencyBlocks = TMovieAgencyBlocks(TMovieAgencyBlocks.List.ValueAtIndex(ArrayID))
-					If Block <> Null then Return Block.Programme.id Else Return - 3
+					If Block <> Null Then Return Block.Programme.id Else Return - 3
 				EndIf
 			EndIf
 		EndIf
