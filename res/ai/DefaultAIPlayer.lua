@@ -96,7 +96,7 @@ function BusinessStats:ReadStats()
 	self.AverageAudienceTemp = math.round(self.TotalAudience / self.AudienceRateScans, 0)
 	self.AverageAudience = self.AverageAudienceTemp
 	
-	--debugMsg("Stats: " .. self.AverageAudience .. " (" .. self.MinAudience .. " - " .. self.MaxAudience .. ")")
+	debugMsg("Stats: " .. self.AverageAudience .. " (" .. self.MinAudience .. " - " .. self.MaxAudience .. ")")
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
