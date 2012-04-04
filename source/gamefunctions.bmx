@@ -1598,21 +1598,27 @@ endrem
 		valuetorefresh = CalculateAudienceSum(playerid)
 	End Method
 
-    Method Buy(x:Float, y:Float, playerid:Int = 1)
+    Method Buy(x:Float, y:Float, playerid:Int = 1, fromNetwork:int = false)
 		If Players[playerid].finances[Game.getWeekday()].PayStation(self.LastStation.getPrice() )
 			Local station:TStation = TStation.Create(LastStation.pos.x,LastStation.pos.y, self.LastStation.reach, self.LastStation.getPrice(), playerid)
 			StationList.AddLast(station)
 			Print "Player" + playerid + " kauft Station für " + station.price + " Euro (" + station.reach + " Einwohner)"
 			Players[playerid].maxaudience = CalculateAudienceSum(playerid)
-			'events ...
 			'network
-			if game.networkgame Then if Network.IsConnected Then NetworkHelper.SendStationChange(game.playerid, station, Players[game.playerID].maxaudience,1)
+			if game.networkgame Then NetworkHelper.SendStationChange(game.playerid, station, Players[game.playerID].maxaudience, 1)
 			self.LastStation.Reset()
 			Self.buyStation[playerid] = Null
-			print "bought"
 		EndIf
     End Method
 
+	Method SellByPos(pos:TPosition, reach:int, playerID:int)
+		for local station:TStation = eachin self.StationList
+			if station.pos.isSame(pos) and station.reach = station.reach and station.owner = playerID
+				self.sell(station)
+				exit
+			endif
+		Next
+	End Method
 
 	Method Sell(station:TStation)
 		If Players[station.owner].finances[Game.getWeekday()].SellStation(Floor(station.price * 0.75))

@@ -18,7 +18,6 @@ Import "files.bmx"								'Load images, configs,... (imports functions.bmx)
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_events.bmx"				'event handler
 Import "basefunctions_deltatimer.bmx"
-'Import "gamefunctions_network.bmx"
 GUIManager.globalScale	= 0.75
 GUIManager.defaultFont	= FontManager.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -48,6 +47,7 @@ Global ExitGame:Int 				= 0 			'=1 and the game will exit
 Global NewsAgency:TNewsAgency = New TNewsAgency
 
 SeedRand(103452)
+print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken"
 
 TButton.UseFont 		= FontManager.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
@@ -317,7 +317,7 @@ endrem
 		Self.username			= xml.FindValue(node,"username", "Ano Nymus")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'username' fehlt, setze Defaultwert: 'Ano Nymus'", DEBUG_LOADING)
 		Self.userchannelname	= xml.FindValue(node,"channelname", "SunTV")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'userchannelname' fehlt, setze Defaultwert: 'SunTV'", DEBUG_LOADING)
 		Self.userlanguage		= xml.FindValue(node,"language", "de")			'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'language' fehlt, setze Defaultwert: 'de'", DEBUG_LOADING)
-		Self.userport			= xml.FindValueInt(node,"onlineport", 4544)		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'onlineport' fehlt, setze Defaultwert: '4444'", DEBUG_LOADING)
+		Self.userport			= xml.FindValueInt(node,"onlineport", 4444)		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'onlineport' fehlt, setze Defaultwert: '4444'", DEBUG_LOADING)
 		Self.userdb				= xml.FindValue(node,"database", "res/database.xml")	'Print "settings.xml - missing 'database' - set to default: 'database.xml'"
 		Self.title				= xml.FindValue(node,"defaultgamename", "MyGame")		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'defaultgamename' fehlt, setze Defaultwert: 'MyGame'", DEBUG_LOADING)
 		Self.userfallbackip		= xml.FindValue(node,"fallbacklocalip", "192.168.0.1")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'fallbacklocalip' fehlt, setze Defaultwert: '192.168.0.1'", DEBUG_LOADING)
@@ -650,8 +650,10 @@ endrem
 	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True)
 		If level > Game.maxAbonnementLevel Then Return
 		If genre > 5 Then Return 'max 6 categories 0-5
-		Self.newsabonnements[genre] = level
-		If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Game.playerID, genre, level)
+		if Self.newsabonnements[genre] <> level
+			Self.newsabonnements[genre] = level
+			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Game.playerID, genre, level)
+		endif
 	End Method
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
@@ -771,9 +773,7 @@ endrem
 			block = Player.ProgrammePlan.GetActualProgrammeBlock()
 			Player.audience = 0
 
-			If block = Null Or block.programme = Null
-				Print "no block/block.programme for player "+player.playerID
-			ElseIf Player.maxaudience <> 0
+			If block and block.programme and Player.maxaudience <> 0
 				Player.audience = Floor(Player.maxaudience * block.Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
 				If recompute
@@ -1354,7 +1354,7 @@ Type TElevator
 	'einer von 8. in den 6. fahren will - mitnehmen - dafuer muss der Fahrstuhl aber wissen,
 	'das er vom 8. in den 6. will - momentan gibt es nur die information "fahr in den 8."
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
-		If ElevatorCallIsDuplicate(floornumber, who) Then Print "duplicate elevator call by ID "+who;Return 0	'if duplicate - don't add
+		If ElevatorCallIsDuplicate(floornumber, who) Then Return 0	'if duplicate - don't add
 		Local FloorRoute:TFloorRoute = TFloorRoute.Create(floornumber,call,who)
 		If First Or Not call
 			FloorRouteList.AddFirst(floorroute)
@@ -1366,7 +1366,7 @@ Type TElevator
 			FloorRouteList.AddLast(floorroute)
 		EndIf
 		If Not fromNetwork And Game.networkgame
-			Print "send route to net"
+			'Print "send route to net"
 			Network_SendRouteChange(floornumber, call, who, First)
 		EndIf
 	End Method
@@ -1416,7 +1416,6 @@ Type TElevator
 		Local who:Int			= obj.getInt(3)
 		Local first:Int			= obj.getInt(4)
 
-		Print "net: got floorroute:"+floornumber
 		AddFloorRoute(floornumber, call, who, First, True)
 		If First Then passenger = TFigures.getById( who )
 	End Method
@@ -1519,7 +1518,6 @@ Type TElevator
 			open = 2 'opening
 			If spriteDoor.getCurrentAnimation().isFinished()
 				If open = 2 And passenger <> Null
-					Print "reset passenger"
 					passenger.calledElevator= False
 					passenger.inElevator	= False
 					passenger				= Null
@@ -2453,6 +2451,7 @@ Function Menu_GameSettings()
 	GUIManager.Update("GameSettings")
 	If GameSettingsButton_Start.GetClicks() > 0 Then
 		If Not Game.networkgame And Not Game.onlinegame
+			If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 			Game.gamestate = GAMESTATE_RUNNING
 		Else
 			GameSettingsOkButton_Announce.crossed = False
@@ -2668,11 +2667,22 @@ Function Menu_GameSettings_Draw()
 
 				Local ContractArray:TContract[]
 				For Local j:Int = 0 To Game.startAdAmount-1
-					ContractArray=ContractArray[..ContractArray.length+1]
-					ContractArray[j] = TContract.GetRandomContract()
+					ContractArray		= ContractArray[..ContractArray.length+1]
+					ContractArray[j]	= TContract.GetRandomContract()
 				Next
 				NetworkHelper.SendContractsToPlayer(playerids, ContractArray)
 				Print "sent data for player: "+playerids
+
+				'add to local collections
+				For local programme:TProgramme = eachin programmeArray
+					if programme then Players[ playerids ].ProgrammeCollection.AddProgramme( programme )
+				Next
+				For local contract:TContract = eachin contractArray
+					if contract then Players[ playerids ].ProgrammeCollection.AddContract( contract )
+				Next
+
+
+
 			Next
 			NetworkHelper.SendGameReady(Game.playerID)
 		EndIf
@@ -2697,8 +2707,9 @@ Function Menu_GameSettings_Draw()
 		Until Game.networkgameready = 1 Or game.gamestate <> GAMESTATE_STARTMULTIPLAYER
 
 		If Game.networkgameready
-		Game.networkgameready = 1
-		Game.gamestate = GAMESTATE_RUNNING
+			If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
+			Game.networkgameready = 1
+			Game.gamestate = GAMESTATE_RUNNING
 			GameSettingsOkButton_Announce.crossed = False
 			Players[Game.playerID].networkstate=1
 			Game.gamestate = GAMESTATE_RUNNING
@@ -2786,8 +2797,7 @@ End Type
 Game.gamestate = GAMESTATE_MAINMENU
 Function UpdateMenu(deltaTime:Float=1.0)
 	'	App.Timer.Update(0)
-	If Game.networkgame Then Network.Update()
-
+	If Game.networkgame then Network.Update()
 	Select Game.gamestate
 		Case GAMESTATE_MAINMENU
 			Menu_Main()
@@ -2873,9 +2883,8 @@ Function Init_Creation()
 	Next
 
 	'creation of blocks for players rooms
-	lastblocks = 0
-
 	For Local playerids:Int = 1 To 4
+		lastblocks = 0
 		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 0 * Assets.GetSprite("pp_adblock1").h, playerids, 1)
 		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 1 * Assets.GetSprite("pp_adblock1").h, playerids, 2)
 		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 2 * Assets.GetSprite("pp_adblock1").h, playerids, 3)
@@ -3264,7 +3273,6 @@ EventManager.Init()
 
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
-	If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 	Repeat
 		App.Timer.loop()
 		'process events not directly triggered

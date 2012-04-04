@@ -516,7 +516,7 @@ Type TLogFile
 	End Function
 
 	Function AddLog(MyText:String)
-		'Strings.AddLast(MyText)
+		Strings.AddLast(MyText)
 	End Function
 End Type
 

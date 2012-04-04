@@ -756,7 +756,7 @@ Type TTVGNetwork
 
 	Method FindGames()
 		if inGame then return
-		if not infoStream then self.InitInfoStream()
+		if not infoStream then print "init stream";self.InitInfoStream()
 
 		local packet:TNetworkPacket = self.ReceiveInfoPackets()
 		if packet <> null
@@ -1334,7 +1334,8 @@ Type TNetworkObject
 				Default					Throw "Invalid NetworkObjectSlot data type"
 			End Select
 		Wend
-		If p<>e Throw "Corrupt NetworkObject message"
+'		If p<>e Throw "Corrupt NetworkObject message"
+		If p<>e print "Corrupt NetworkObject message - longer than expected"
 	End Method
 End Type
 

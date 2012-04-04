@@ -308,7 +308,7 @@ endrem
 	End Method
 
 	Method SendElevator:Int()
-		print self.name+" sends elevator"
+		'print self.name+" sends elevator"
 		Building.Elevator.SendToFloor(self.getFloor(target), self)
 	End Method
 

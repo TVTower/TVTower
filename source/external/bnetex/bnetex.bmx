@@ -869,6 +869,7 @@ Type TUDPStream Extends TNetStream
 	Method SendUDPMsg:Int(IP:Int, Port:int = 0)
 		Local oldIP:Int = remoteIP
 		Local oldPort:Short = RemotePort
+		SetBroadcast(true)
 		RemoteIP = IP
 		RemotePort = Port
 		local _sendSize:int = SendSize
@@ -886,7 +887,7 @@ Type TUDPStream Extends TNetStream
 		returns: Anzahl der versendeten Bytes.
 		about:   Sendet eine Nachricht an den mit #SetRemoteIP und #SetRemotePort festgelegten<br/>
 		         Empfänger. Dazu sollte sich eine Nachricht schon im Sendepuffer befinden.<br />
-		         Dieser lässt sich mit den üblichen Streambefehlen wie<br />
+		         Dieser lässt sich mit den &uuml;blichen Streambefehlen wie<br />
 		         #WriteLine beschreiben.<br />
 		         Siehe auch: #RecvMsg , #SetRemotePort , #SetRemoteIP
 	End Rem
