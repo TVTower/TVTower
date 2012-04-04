@@ -7,11 +7,7 @@ Import brl.timer
 Import brl.Graphics
 Import brl.maxlua
 Import brl.reflection
-'Import brl.threads
 Import "basefunctions_network.bmx"
-'Import "external/bnetex/bnetex.bmx"								'udp and tcpip-layer and functions
-'Import "changelog.bmx"							'holds the notes for changes and additions
-
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
 Import "files.bmx"								'Load images, configs,... (imports functions.bmx)
 
@@ -42,12 +38,11 @@ Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47
 Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, 0, "Newsplanner", 3)
 
 Global SaveError:TError, LoadError:TError
-Global ExitGame:Int 				= 0 			'=1 and the game will exit
-
-Global NewsAgency:TNewsAgency = New TNewsAgency
+Global ExitGame:Int 							= 0 			'=1 and the game will exit
+Global NewsAgency:TNewsAgency					= New TNewsAgency
 
 SeedRand(103452)
-print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken"
+print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
 TButton.UseFont 		= FontManager.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
