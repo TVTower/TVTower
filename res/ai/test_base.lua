@@ -38,10 +38,10 @@ end
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)
-	TVT.PrintOut("Eigentlich bin ich diese Nr: " .. TVT.ME)
-	PrinteNummerAusEinemAnderenFile()
-	TVT.PrintOut("Es sollte doch aber folgendes sein: " .. TVT.ME)
-	TVT.PrintOut("==================================")
+--	TVT.PrintOut("Eigentlich bin ich diese Nr: " .. TVT.ME)
+--	PrinteNummerAusEinemAnderenFile()
+--	TVT.PrintOut("Es sollte doch aber folgendes sein: " .. TVT.ME)
+--	TVT.PrintOut("==================================")
 	
 -- auskommentieren wenn man alle KI-Spieler testen will
 --  if ME ~= 2 then
