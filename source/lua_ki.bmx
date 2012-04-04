@@ -34,7 +34,6 @@ Type TLuaEngine
 	End Method
 End Type
 
-
 'SuperStrict
 Global activeKI:KI = Null
 
