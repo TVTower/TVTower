@@ -1,36 +1,35 @@
 'handles network events
 
 'first 100 ids reserved for base network events
-Const NET_SETSLOT:Int				= 101					' SERVER: command from server to set to a given playerslot
-Const NET_SLOTSET:Int				= 102				' ALL: 	  response to all, that IP uses slot X now
-Const NET_CHATMESSAGE:Int			= 104				' ALL:    a sent chatmessage ;D
-	Const NET_PLAYERDETAILS:Int			= 106				' ALL:    name, channelname...
-	Const NET_FIGUREPOSITION:Int		= 107				' ALL:    x,y,room,target...
-	Const NET_SENDPROGRAMME:Int			= 108				' SERVER: sends a Programme to a user for adding this to the players collection
-	Const NET_GAMEREADY:Int				= 109				' ALL:    sends a ReadyFlag
-	Const NET_STARTGAME:Int				= 110				' SERVER: sends a StartFlag
-	Const NET_PLAN_PROGRAMMECHANGE:Int	= 111				' ALL:    playerprogramme has changed (added, removed and so on)
-	Const NET_STATIONCHANGE:Int			= 112				' ALL:    stations have changes (added ...)
-	Const NET_ELEVATORROUTECHANGE:Int	= 113				' ALL:    elevator routes have changed
-	Const NET_ELEVATORSYNCHRONIZE:Int	= 114				' SERVER: synchronizing the elevator
-	Const NET_PLAN_ADCHANGE:Int			= 115				' ALL:    playerprogramme has changed (added, removed and so on)
-	Const NET_SENDCONTRACT:Int			= 116				' SERVER: sends a Contract to a user for adding this to the players collection
-	Const NET_PROGRAMMECOLLECTIONCHANGE:Int = 117			' ALL:    programmecollection was changed (removed, sold...)
-	Const NET_SENDNEWS:Int				= 118				' SERVER: creates and sends news
-	Const NET_NEWSSUBSCRIPTIONCHANGE:Int= 119				' ALL: sends Changes in subscription levels of news-agencies
-	Const NET_PLAN_NEWSCHANGE:Int		= 120				' ALL: sends Changes of news in the players newsstudio
-	Const NET_MOVIEAGENCYCHANGE:Int		= 121				' ALL: sends changes of programme in movieshop
+'Const NET_SETSLOT:Int					= 101				' SERVER: command from server to set to a given playerslot
+'Const NET_SLOTSET:Int					= 102				' ALL: 	  response to all, that IP uses slot X now
 
-rem
+Const NET_SENDGAMESTATE:Int				= 102				' ALL:    sends a ReadyFlag
+Const NET_GAMEREADY:Int					= 103				' ALL:    sends a ReadyFlag
+Const NET_STARTGAME:Int					= 104				' SERVER: sends a StartFlag
+Const NET_CHATMESSAGE:Int				= 105				' ALL:    a sent chatmessage ;D
+Const NET_PLAYERDETAILS:Int				= 106				' ALL:    name, channelname...
+Const NET_FIGUREPOSITION:Int			= 107				' ALL:    x,y,room,target...
+Const NET_SENDPROGRAMME:Int				= 108				' SERVER: sends a Programme to a user for adding this to the players collection
+Const NET_SENDCONTRACT:Int				= 109				' SERVER: sends a Contract to a user for adding this to the players collection
+Const NET_SENDNEWS:Int					= 110				' SERVER: creates and sends news
+Const NET_ELEVATORSYNCHRONIZE:Int		= 111				' SERVER: synchronizing the elevator
+Const NET_ELEVATORROUTECHANGE:Int		= 112				' ALL:    elevator routes have changed
+Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113				' ALL: sends Changes in subscription levels of news-agencies
+Const NET_STATIONCHANGE:Int				= 114				' ALL:    stations have changes (added ...)
+Const NET_MOVIEAGENCYCHANGE:Int			= 115				' ALL: sends changes of programme in movieshop
+Const NET_PROGRAMMECOLLECTIONCHANGE:Int = 116				' ALL:    programmecollection was changed (removed, sold...)
+Const NET_PLAN_PROGRAMMECHANGE:Int		= 117				' ALL:    playerprogramme has changed (added, removed and so on)
+Const NET_PLAN_ADCHANGE:Int				= 118				' ALL:    playerprogramme has changed (added, removed and so on)
+Const NET_PLAN_NEWSCHANGE:Int			= 119				' ALL: sends Changes of news in the players newsstudio
 
-Const NET_DELETE:Int				= 0
-Const NET_ADD:Int					= 1000
-Const NET_CHANGE:Int				= 2000
-Const NET_BUY:Int					= 3000
-Const NET_SELL:Int					= 4000
-Const NET_BID:Int					= 5000
-Const NET_SWITCH:Int				= 6000
-endrem
+Const NET_DELETE:Int					= 0
+Const NET_ADD:Int						= 1000
+Const NET_CHANGE:Int					= 2000
+Const NET_BUY:Int						= 3000
+Const NET_SELL:Int						= 4000
+Const NET_BID:Int						= 5000
+Const NET_SWITCH:Int					= 6000
 
 Network.callbackServer		= ServerEventHandler
 Network.callbackClient		= ClientEventHandler
@@ -71,6 +70,7 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 		case NET_SENDCONTRACT				NetworkHelper.ReceiveContractsToPlayer( networkObject )
 		case NET_SENDPROGRAMME				NetworkHelper.ReceiveProgrammesToPlayer( networkObject )
 		case NET_SENDNEWS					NetworkHelper.ReceiveNews( networkObject )
+		case NET_SENDGAMESTATE				NetworkHelper.ReceiveGameState( networkObject )
 
 		case NET_CHATMESSAGE				NetworkHelper.ReceiveChatMessage( networkObject )
 
@@ -86,7 +86,7 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 		case NET_PLAN_NEWSCHANGE			NetworkHelper.ReceivePlanNewsChange( networkObject )
 		case NET_PLAN_ADCHANGE				NetworkHelper.ReceivePlanAdChange( networkObject )
 
-		default 							print "client got unused event:" + networkObject.evType
+		default 							if networkObject.evType>=100 then print "client got unused event:" + networkObject.evType
 	EndSelect
 
 End Function
@@ -107,6 +107,36 @@ End Function
 
 
 Type TNetworkHelper
+	Method SendGameState()
+		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDGAMESTATE )
+		obj.setInt(1, Game.playerID)
+		obj.setFloat(2, game.speed)
+		obj.setFloat(3, game.minutesOfDayGone) 'lastminutes not stored - so clients can catch up
+		obj.setFloat(4, game.timeSinceBegin)
+		Network.BroadcastNetworkObject( obj, not NET_PACKET_RELIABLE )
+	End Method
+
+	Method ReceiveGameState( obj:TNetworkObject )
+		Local playerID:Int		= obj.getInt(1)
+		'must be a player DIFFERENT to me
+		if not Game.IsPlayerID(playerID) or playerID = game.playerID then return
+
+		'60 upd per second = -> App.Timer.getDeltaTime() => 16ms
+		'ping in ms -> latency/2 -> 0.5*latency/16ms = "1,3 updates bis ping ankommt"
+		'pro Update: zeiterhoehung von "game.speed/10.0"
+		'-> bereinigung: "0.5*latency/16" * "game.speed/10.0"
+		local correction:float = 0.5*Network.client.latency / App.Timer.getDeltaTime()   *   game.speed/10.0
+		'we want it in s not in ms
+		correction :/ 1000.0
+'		print obj.getFloat(3) + "  + "+correction
+
+		Game.speed 				= obj.getFloat(2)
+		Game.minutesOfDayGone	= obj.getFloat(3) + correction
+		Game.timeSinceBegin		= obj.getFloat(4) + correction
+	End Method
+
+
+'checked
 	Method SendContractsToPlayer(playerID:Int, contract:TContract[])
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDCONTRACT )
 		obj.setInt(1, playerID)
@@ -135,8 +165,7 @@ Type TNetworkHelper
 
 
 
-
-
+'checked
 	Method SendProgrammesToPlayer(playerID:Int, programme:TProgramme[])
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDPROGRAMME )
 		obj.setInt(1, playerID)
@@ -148,7 +177,7 @@ Type TNetworkHelper
 				if programme[i] = null
 					print "programme "+i+" is null"
 				else
-					print "send programme - id:"+ programme[i].id + "	title:"+programme[i].title
+					'print "send programme - id:"+ programme[i].id + "	title:"+programme[i].title
 					IDstring :+ programme[i].id+","
 				endif
 			Next
@@ -163,7 +192,7 @@ Type TNetworkHelper
 		local IDs:string[]				= obj.getString(2).split(",")
 		for local id:string = eachin IDs
 			if id <> "" and int(id) > 0
-				print "get programme - id:"+ int(id) + "	title:"+TProgramme.GetProgramme( int(id) ).title
+				'print "get programme - id:"+ int(id) + "	title:"+TProgramme.GetProgramme( int(id) ).title
 				Players[ remotePlayerID ].ProgrammeCollection.AddProgramme(TProgramme.GetProgramme( int(id) ))
 			endif
 		Next
@@ -171,6 +200,28 @@ Type TNetworkHelper
 
 
 
+'checked
+	Method SendPlayerDetails()
+		'print "Send Player Details to all but me ("+TNetwork.dottedIP(host.ip)+")"
+		'send packets indivual - no need to have multiple entities in one packet
+
+		for local player:TPlayer = eachin TPlayer.list
+			'it's me or i'm hosting and its an AI player
+			if player.playerID = Network.client.playerID OR (Network.isServer and Player.isAI())
+				'Print "NET: send playerdetails of ME and IF I'm the host also from AI players"
+
+				local obj:TNetworkObject = TNetworkObject.Create( NET_PLAYERDETAILS )
+				obj.SetInt(	1, player.playerID )
+				obj.SetString( 2, Player.name )			'name
+				obj.SetString( 3, Player.channelname )	'...
+				obj.SetInt(	4, Player.color.toInt() )
+				obj.SetInt(	5, Player.figurebase )
+				obj.SetInt(	6, Player.figure.controlledByID )
+
+				Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
+			EndIf
+		Next
+	End Method
 
 	Method ReceivePlayerDetails( obj:TNetworkObject )
 		Local playerID:Int			= obj.getInt(1)
@@ -197,31 +248,9 @@ Type TNetworkHelper
 		EndIf
 	End Method
 
-	Method SendPlayerDetails()
-		'print "Send Player Details to all but me ("+TNetwork.dottedIP(host.ip)+")"
-		'send packets indivual - no need to have multiple entities in one packet
-
-		for local player:TPlayer = eachin TPlayer.list
-			'it's me or i'm hosting and its an AI player
-			if player.playerID = Network.client.playerID OR (Network.isServer and Player.isAI())
-				'Print "NET: send playerdetails of ME and IF I'm the host also from AI players"
-
-				local obj:TNetworkObject = TNetworkObject.Create( NET_PLAYERDETAILS )
-				obj.SetInt(	1, player.playerID )
-				obj.SetString( 2, Player.name )			'name
-				obj.SetString( 3, Player.channelname )	'...
-				obj.SetInt(	4, Player.color.toInt() )
-				obj.SetInt(	5, Player.figurebase )
-				obj.SetInt(	6, Player.figure.controlledByID )
-
-				Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
-			EndIf
-		Next
-	End Method
 
 
-
-
+'checked
 	Method SendFigurePosition(figure:TFigures)
 		'no player figures can only be send from Master
 		if figure.ParentPlayer = null and not Network.isServer then return
@@ -285,7 +314,7 @@ Type TNetworkHelper
 
 
 
-
+'checked
 	Method SendGameReady(playerID:Int, onlyTo:Int=-1)
 		print "sendGameReady "+playerID
 		local obj:TNetworkObject = TNetworkObject.Create( NET_GAMEREADY )
@@ -346,7 +375,7 @@ Type TNetworkHelper
 
 
 
-
+'checked
 	Method SendNewsSubscriptionChange(playerID:Int, genre:int, level:int)
 		local obj:TNetworkObject = TNetworkObject.Create( NET_NEWSSUBSCRIPTIONCHANGE )
 		obj.setInt(1, playerID)
@@ -362,11 +391,11 @@ Type TNetworkHelper
 
 		Local genre:Int				= obj.getInt(2)
 		Local level:Int				= obj.getInt(3)
-		Players[ playerID ].setNewsAbonnement(genre, level)
+		Players[ playerID ].setNewsAbonnement(genre, level, false)
 	End Method
 
 
-'--- new
+
 
 	Method SendMovieAgencyChange(methodtype:int, playerID:Int, newID:Int=-1, slot:Int=-1, programme:TProgramme)
 		local obj:TNetworkObject = TNetworkObject.Create( NET_MOVIEAGENCYCHANGE )
@@ -463,7 +492,7 @@ Type TNetworkHelper
 
 
 
-
+'checked
 	Method SendNews(playerID:Int, news:TNews)
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDNEWS )
 		obj.setInt(1, playerID)
@@ -578,7 +607,7 @@ Type TNetworkHelper
 
 
 
-
+'checked
 	Method SendPlanAdChange(playerID:Int, block:TAdBlock, add:int=1)
 		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_ADCHANGE )
 		obj.setInt(1, playerID)
@@ -613,7 +642,7 @@ Type TNetworkHelper
 
 			Adblock = TAdblock.CreateDragged( Contract,playerID )
 			Adblock.dragged = 0
-			Print "NET: CREATED NEW Adblock: "+contract.Title
+			'Print "NET: CREATED NEW Adblock: "+contract.Title
 		endif
 
 		Adblock.senddate			= senddate
@@ -623,15 +652,13 @@ Type TNetworkHelper
 		AdBlock.Pos					= pos
 		AdBlock.StartPos			= startpos
 
-		Print "NET: set adblock on new position: "+adblock.contract.Title
-
 		Players[ playerID ].ProgrammePlan.RefreshAdPlan( senddate )
 		If add
 			Players[ playerID ].ProgrammePlan.AddContract( adblock.contract )
-			Print "NET: ADDED adblock:"+Adblock.contract.Title+" to Player:"+playerID
+			'Print "NET: ADDED adblock:"+Adblock.contract.Title+" to Player:"+playerID
 		Else
 			Players[ playerID ].ProgrammePlan.RemoveContract( adblock.contract )
-			Print "NET: REMOVED adblock:"+Adblock.contract.Title+" from Player:"+playerID
+			'Print "NET: REMOVED adblock:"+Adblock.contract.Title+" from Player:"+playerID
 		EndIf
 	End Method
 
@@ -687,9 +714,6 @@ Type TNetworkHelper
 			'Print "NET: REMOVED programme:"+Programmeblock.programme.Title+" from Player:"+playerID
 		EndIf
 	End Method
-
-'--- end new
-
 
 End Type
 Global NetworkHelper:TNetworkHelper = new TNetworkHelper

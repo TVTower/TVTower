@@ -41,15 +41,6 @@ CONST NET_PLAYERJOINED:int			= 11
 Const NET_ANNOUNCEGAME:Int			= 12					' SERVER: Announce a game
 
 
-Const NET_DELETE:Int				= 0
-Const NET_ADD:Int					= 1000
-Const NET_CHANGE:Int				= 2000
-Const NET_BUY:Int					= 3000
-Const NET_SELL:Int					= 4000
-Const NET_BID:Int					= 5000
-Const NET_SWITCH:Int				= 6000
-
-
 Extern "OS"
 	?Win32
 		Const FIONREAD      : Int   = $4004667F
@@ -278,11 +269,9 @@ Type TNetworkClient extends TNetworkConnection
 					self.playerID = Max(0,playerID)
 				endif
 			Case NET_PINGREQUEST
-				print "client: got PING ... send PONG"
 				response.evType = NET_PINGRESPONSE 'change ev type from ping request to response
 				Send(response)
 			Case NET_PINGRESPONSE
-				print "client: got pong, calc latency"
 				latency = MilliSecs()-response.getInt(1)
 				response.setInt(2, response.senderIP)
 				response.setInt(3, response.senderPort)
@@ -296,6 +285,13 @@ Type TNetworkClient extends TNetworkConnection
 
 
 	Method Ping:Int(ip:Int=0,port:Int=0)
+		local obj:TNetworkObject = TNetworkObject.Create(NET_PINGREQUEST)
+		obj.setInt(1, MilliSecs())
+		Return Send(obj)
+'''''''
+
+
+
 		Const disconnecttimeout:Int=1000
 		Local packet:TNetworkPacket=New TNetworkPacket,addr:Byte Ptr,eneTNetworkPacket:Byte Ptr,ev:EnetEvent,result:Int,id:Int,start:Int
 
@@ -303,7 +299,7 @@ Type TNetworkClient extends TNetworkConnection
 		If self.ip=ip And self.port=port then ip=0
 
 		If Not enethost then RuntimeError("Can't ping remote client.")
-		If ip
+		If ip > 0
 			If pingpeer
 				enet_peer_disconnect(pingpeer)
 				pingpeer=Null
@@ -354,66 +350,6 @@ Type TNetworkClient extends TNetworkConnection
 			Return Send(response)
 		EndIf
 	EndMethod
-rem
-	Method GotPacket_AnnounceGame( packet:TNetworkPacket )
-		local obj:TNetworkObject	= TNetworkObject.FromPacket(packet)
-		Local teamamount:Int		= obj.getInt(1)
-		Local title:String			= obj.getString(2)
-		'If _ip <> intLocalIP then
-		'print "got announce : "+title
-		NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+(4-teamamount)+" von 4)","",DottedIP(packet.ip),packet.port,0, "HOSTGAME")
-	End Method
-
-	Method GotPacket_SetSlot( packet:TNetworkPacket )
-		local obj:TNetworkObject	= TNetworkObject.FromPacket(packet)
-
-		self.ip		= obj.getInt(1) 'my ip could be an dialup ip
-		self.port	= obj.getInt(2)
-		Local slot:int		= parent.MaxPeers - obj.getInt(3) +1
-		print "CLIENT: server asked me to set slot to "+slot
-		self.playerID					= slot
-		game.playerID					= slot
-		Players[slot].name				= game.username
-		MenuPlayerNames[slot-1].value	= game.username
-		MenuChannelNames[slot-1].value	= game.userchannelname
-
-		intOnlineIP = self.ip						'on server the ip was another one - may be from the dialup-networkcard
-		onlineIP	= DottedIP(intOnlineIP)
-
-		Game.gamestate=3
-
-		IsConnected = True
-
-		'send answer to SetSlot -> SlotSet
-		local sendobj:TNetworkObject = Self.CreateSimplePacket(NET_SLOTSET, not NET_PACKET_RELIABLE)
-		sendobj.setInt(1, slot)
-		sendobj.setInt(2, OldRecvID)
-		sendobj.setString(3, game.username)
-		sendobj.setString(4, game.userchannelname)
-		Print "NET: set to slot "+slot+" and send slotset to server"
-		Self.SendNetworkMessageToIP( sendobj.sync(), packet.ip, packet.port )
-	End Method
-
-	Method GotPacket_SlotSet( packet:TNetworkPacket )
-		local obj:TNetworkObject	= TNetworkObject.FromPacket(packet)
-		Local slot:int			= obj.getInt(1)
-		Local OldRecvID:Int		= obj.getInt(2)
-		Local name:String		= obj.getString(3, "Defaultname")
-		Local channel:String	= obj.getString(4, "Defaultchannel")
-
-		local peer:TNetworkPeer = self.findPeerByIP(packet.ip, packet.port, false)
-		if peer = null then peer = self.AddPeer( TNetworkPeer.Create(self. packet.ip,packet.port) )
-		peer.playerID = slot
-
-
-'ronny zum debuggen auskommentiert TReliableUDP.GotAckPacket(OldRecvID, packet.ip, packet.port)
-		GameSettings_Chat.AddEntry("", name+" hat sich in das Spiel eingeklinkt (Sender: "+channel+")", 0,"", "", MilliSecs())
-		Print "SERVER: got slotset from " dottedIP(peer.ip)
-		Print "     -> sending peer data"
-		'If self.isServer Then SendPeerData()
-	End Method
-endrem
-
 End Type
 
 
@@ -575,7 +511,7 @@ Type TNetworkServer Extends TNetworkConnection
 					client.enetpeer	= enetpeer
 				EndIf
 				response.evType = NET_PINGRESPONSE
-				client.Send(response)
+				SendToClient(client, response)
 				response.evType = NET_PINGREQUEST
 				'Return
 		EndSelect
@@ -725,7 +661,8 @@ Type TTVGNetwork
 	Field announceTimer:Int			= 750					' Main Announcement Timer
 	Field announceToLan:int			= 1
 
-	Field PingTimer:Int 			= 0 					' Ping and Ping Timer
+	Field pingTime:Int 				= 0 					' Ping Timer
+	Field pingTimer:Int 			= 4000 					' Ping Timer
 	Field UpdateTime:Int         							' Update Timer
 	Field MainSyncTime:Int       							' Main Update Timer
 	Field LastOnlineRequestTimer:Int	= 0
@@ -825,9 +762,15 @@ Type TTVGNetwork
 		if self.isServer then self.SendGameAnnouncement()
 		self.FindGames()
 
-		if self.server then self.server.Update()
-		if self.client then self.client.Update()
 
+		if self.server then self.server.Update()
+		if self.client
+			if self.pingTime < Millisecs()
+				self.client.Ping()
+				self.pingTime = Millisecs()+self.pingTimer
+			endif
+			self.client.Update()
+		endif
 	End Method
 
 	Function URLEncode:String(txt:String)

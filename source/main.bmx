@@ -26,9 +26,6 @@ Include "lua_ki.bmx"							'LUA connection
 'Initialise Render-To-Texture
 tRender.Initialise()
 
-Global Fader:TFader	= New TFader
-
-
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
 Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21)
 Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(645, 16)
@@ -39,6 +36,7 @@ Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 
 
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 							= 0 			'=1 and the game will exit
+Global Fader:TFader								= New TFader
 Global NewsAgency:TNewsAgency					= New TNewsAgency
 
 SeedRand(103452)
@@ -96,14 +94,14 @@ Type TGame
 	Field DoorOpenTime:Int				= 100	{nosave}	'time how long a door will be shown open until figure enters
 
 	Field username:String				= ""	{nosave}	'username of the player ->set in config
-	Field userport:Short				= 4444	{nosave}	'userport of the player ->set in config
+	Field userport:Short				= 4544	{nosave}	'userport of the player ->set in config
 	Field userchannelname:String		= ""	{nosave}	'channelname the player uses ->set in config
 	Field userlanguage:String			= "de"	{nosave}	'language the player uses ->set in config
 	Field userdb:String					= ""	{nosave}
 	Field userfallbackip:String			= "" 	{nosave}
 
 	Field speed:Float				= 0.1 					'Speed of the game
-	Field oldspeed:Float			= 0.1 					'Speed of the game
+	Field oldspeed:Float			= 0.1 					'Speed of the game - used when saving a game ("pause")
 	Field minutesOfDayGone:Float	= 0.0					'time of day in game, unformatted
 	Field lastMinutesOfDayGone:Float= 0.0					'time last update was done
 	Field timeSinceBegin:Float 								'time in game, not reset every day
@@ -117,7 +115,8 @@ Type TGame
 	Field error:Int 				= 0 					'is there a error (errorbox) floating around?
 	Field gamestate:Int 			= 0						'0 = Mainmenu, 1=Running, ...
 
-	'Field network:TNetworkConnection=Null
+	Field stateSyncTime:int			= 0						'last sync
+	Field stateSyncTimer:int		= 2000					'sync every
 
 	'--networkgame auf "isNetworkGame()" umbauen
 	Field networkgame:Int 			= 0 					'are we playing a network game? 0=false, 1=true, 2
@@ -369,6 +368,12 @@ endrem
 
 		'time for news ?
 		If IsGameLeader() And NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
+
+		'send state to clients
+		If IsGameLeader() And self.networkgame and self.stateSyncTime < Millisecs()
+			NetworkHelper.SendGameState()
+			self.stateSyncTime = Millisecs() + self.stateSyncTimer
+		endif
 
 		'if speed to high - potential skip of minutes, so "fetch them"
 		'sets minute / hour / day
@@ -3231,6 +3236,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			EndIf
 			FontManager.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
 			FontManager.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
+			if game.networkgame then FontManager.baseFont.Draw("ping "+Int(Network.client.latency)+"ms", 375,0)
 			If App.prepareScreenshot = 1 Then DrawImage(gfx_startscreen_logosmall, App.settings.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
 
 			TProfiler.Enter("Draw-Flip")
