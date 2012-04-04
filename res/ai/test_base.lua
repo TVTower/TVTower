@@ -1,6 +1,4 @@
-﻿dofile("res/ai/test_base2.lua")
-
-inOfficeFake = ROOM_OFFICE_PLAYER_ME
+﻿inOfficeFake = ROOM_OFFICE_PLAYER_ME
 
 function OnMoneyChanged()
 	--SendToChat("Hey mein Geld hat sich geaendert")
