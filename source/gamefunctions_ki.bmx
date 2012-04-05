@@ -240,7 +240,7 @@ Type TLuaFunctions
 		Return activeKI.playerId
 	End Method
 
-	Method __PlayerInRoom:int(roomname:string, checkFromRoom:int = false)
+	Method _PlayerInRoom:int(roomname:string, checkFromRoom:int = false)
 		if checkFromRoom
 			'from room has to be set AND inroom <> null (no building!)
 			return (Players[ self.ME ].Figure.inRoom and Players[ self.ME ].Figure.inRoom.Name = roomname) or (Players[ self.ME ].Figure.inRoom and Players[ self.ME ].Figure.fromRoom and Players[ self.ME ].Figure.fromRoom.Name = roomname)

@@ -172,7 +172,7 @@ Type TRooms
 	'leave with Open/close-animation (black)
 	Method LeaveAnimated:Int(dontleave:Int)
         If Self.name = "roomboard" Then If TRoomSigns.AdditionallyDragged > 0 Then dontleave = True
-        If Self.name = "adagency"    Then Print "contractstoplayer";TContractBlock.ContractsToPlayer(Game.playerID)
+        If Self.name = "adagency"    Then TContractBlock.ContractsToPlayer(Game.playerID)
         If Self.name = "movieagency" Then TMovieAgencyBlocks.ProgrammeToPlayer(Game.playerID)
         If Self.name = "archive" Then TArchiveProgrammeBlock.ProgrammeToSuitcase(Game.playerID)
         If Not dontleave Then
