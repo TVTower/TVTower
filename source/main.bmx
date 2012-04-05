@@ -5,7 +5,6 @@ SuperStrict
 'Framework brl.glmax2d
 Import brl.timer
 Import brl.Graphics
-Import brl.maxlua
 Import brl.reflection
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
@@ -14,6 +13,7 @@ Import "files.bmx"								'Load images, configs,... (imports functions.bmx)
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_events.bmx"				'event handler
 Import "basefunctions_deltatimer.bmx"
+Import "basefunctions_lua.bmx"					'our lua engine
 GUIManager.globalScale	= 0.75
 GUIManager.defaultFont	= FontManager.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -21,7 +21,7 @@ Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 												'		- base class For buttons And extension newsbutton
 												'		- stationmap-handling, -creation ...
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
-Include "lua_ki.bmx"							'LUA connection
+Include "gamefunctions_ki.bmx"					'LUA connection
 
 'Initialise Render-To-Texture
 tRender.Initialise()

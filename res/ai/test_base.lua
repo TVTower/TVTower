@@ -1,4 +1,4 @@
-﻿inOfficeFake = ROOM_OFFICE_PLAYER_ME
+﻿inOfficeFake = TVT.ROOM_OFFICE_PLAYER_ME
 
 function OnMoneyChanged()
 	--SendToChat("Hey mein Geld hat sich geaendert")
@@ -40,7 +40,7 @@ function OnMinute(number)
 --	PrinteNummerAusEinemAnderenFile()
 --	TVT.PrintOut("Es sollte doch aber folgendes sein: " .. TVT.ME)
 --	TVT.PrintOut("==================================")
-	
+
 -- auskommentieren wenn man alle KI-Spieler testen will
 --  if ME ~= 2 then
 --   return 0
