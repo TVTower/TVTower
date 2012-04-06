@@ -963,7 +963,7 @@ endrem
 
 	Method ChangeMoney(_moneychange:Int)
 		money:+_moneychange
-		If Players[Self.playerID].isAI() Then Players[Self.playerID].PlayerKI.CallOnMoneyChanged()
+		If Players[ Self.playerID ].isAI() Then Players[ Self.playerID ].PlayerKI.CallOnMoneyChanged()
 		If Self.playerID = Game.playerID Then Interface.BottomImgDirty = True
 	End Method
 

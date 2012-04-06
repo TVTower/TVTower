@@ -6,8 +6,6 @@
 '**************************************************************************************************
 
 'SuperStrict
-Global activeKI:KI = Null
-
 Type KI
 	Field playerId:Byte
 	Field LuaEngine:TLuaEngine
@@ -15,7 +13,6 @@ Type KI
 	Field scriptAsString:String = ""
 	Field scriptConstants:String
 	Field MyLuaState:Byte Ptr
-	Field inRoom:Byte
 	Field LastErrorNumber:Int = 0
 
 	Field LuaFunctions:TLuaFunctions
@@ -33,13 +30,7 @@ Type KI
 		Return ret
 	End Function
 
-	Method SetActive()
-		activeKI = Self
-'		Self.LuaEngine.RegisterBlitzmaxObject(Self.LuaFunctions, "TVT")
-	End Method
-
 	Method OnCreate()
-		Self.SetActive()
 		Local args:Object[1]
 		args[0] = String(Self.playerID)
 		Self.LuaEngine.CallLuaFunction("OnCreate", args)
@@ -51,7 +42,6 @@ Type KI
 	End Method
 
 	Method reloadScript()
-		Self.SetActive()
 		If Self.scriptAsString <> "" Then Print "Reloaded LUA AI for player "+Self.playerId
 		Self.scriptAsString = LoadText(scriptName)
 
@@ -60,7 +50,6 @@ Type KI
 	End Method
 
 	Method CallOnLoad(savedluascript:String="")
-	    Self.SetActive()
 		Local args:Object[1]
 		args[0] = savedluascript
 		Self.LuaEngine.CallLuaFunction("OnLoad", args)
@@ -68,7 +57,6 @@ Type KI
 	End Method
 
 	Method CallOnSave()
-	    Self.SetActive()
 		Local args:Object[1]
 		args[0] = "5.0"
 		Self.LuaEngine.CallLuaFunction("OnSave", args)
@@ -76,7 +64,6 @@ Type KI
 	End Method
 
 	Method CallOnMinute()
-	    Self.SetActive()
 		Local args:Object[1]
 		args[0] = "5.0"
 		'print "KI call on Minute"
@@ -85,69 +72,47 @@ Type KI
 	End Method
 
 	Method CallOnChat(text:String = "")
-	    Self.SetActive()
 	    Try
 			Local args:Object[1]
 			args[0] = text
 			Self.LuaEngine.CallLuaFunction("OnChat", args)
-	'		Self.PrintErrors()
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion onChat nicht"
 		End Try
 	End Method
 
-	Method CallOnReachRoom(roomId:Byte)
-	    Self.SetActive()
-	    inRoom = roomId
+	Method CallOnReachRoom(roomId:int)
 	    Try
-	'	    Self.scriptEnv.BeginLUAFunctionCall()
-	'		Self.scriptEnv.AddNumberParameter(roomId)
-	'		Self.scriptEnv.CallFunction("OnReachRoom", 0)
+			Local args:Object[1]
+			args[0] = string(roomId)
+			Self.LuaEngine.CallLuaFunction("OnReachRoom", args)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnReachRoom nicht"
 		End Try
 	End Method
 
 	Method CallOnLeaveRoom()
-	    Self.SetActive()
-	    inRoom = -1
 	    Try
-	'	    Self.scriptEnv.BeginLUAFunctionCall()
-	'		Self.scriptEnv.CallFunction("OnLeaveRoom", 0)
+			Self.LuaEngine.CallLuaFunction("OnLeaveRoom", null)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnLeaveRoom nicht"
 		End Try
 	End Method
 
 	Method CallOnDayBegins()
-	    Self.SetActive()
 	    Try
-	'	    Self.scriptEnv.BeginLUAFunctionCall()
-	'		Self.scriptEnv.CallFunction("OnDayBegins", 0)
+			Self.LuaEngine.CallLuaFunction("OnDayBegins", null)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnDayBegins nicht"
 		End Try
 	End Method
 
 	Method CallOnMoneyChanged()
-	    Self.SetActive()
 	    Try
-	'	    Self.scriptEnv.BeginLUAFunctionCall()
-	'		Self.scriptEnv.CallFunction("OnMoneyChanged", 0)
+			Self.LuaEngine.CallLuaFunction("OnMoneyChanged", null)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnMoneyChanged nicht"
 		End Try
-	End Method
-Rem
-	Method fileToString:String(filename:String)
-		Local file:TStream = OpenStream(filename, True, False)
-		Return file.ReadString(file.Size())
-		file.Close()
-	End Method
-endrem
-	Method addScriptConstant(name$, value$)
-		scriptConstants = scriptConstants + Chr:String(10) + Chr:String(13) + name + " = " + value
-		'
 	End Method
 End Type
 
@@ -237,7 +202,7 @@ Type TLuaFunctions
 
 
 	Method getPlayerID:Int()
-		Return activeKI.playerId
+		Return self.ME
 	End Method
 
 	Method _PlayerInRoom:int(roomname:string, checkFromRoom:int = false)
