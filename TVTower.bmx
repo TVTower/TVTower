@@ -16,10 +16,8 @@ Incbin "source/version.txt"
 
 
 Rem
-
 - todo :
 	* TPlayerColor-creation in XML auslagern ...
-	* erster klick auf newsgenre/abobuttons erhoeht nicht auf 2
 	* Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
 	  - eventuell "Timer" erstellen und per Event->timertick abrufen
 
@@ -34,8 +32,6 @@ Live-Events:
 Quiz/Call-In
 	- Werbung: Werbebloecke die prozentual von der Zuschauerzahl
 	  Einkuenfte erzielen
-	- Sendungen: Komplette Stundensendungen die geringe Einnahmen
-	  erzielen -> erledigt
 
 
 Eigenproduktionen:

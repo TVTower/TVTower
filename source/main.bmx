@@ -647,6 +647,11 @@ endrem
 		Next
 	End Method
 
+	Method GetNewsAbonnement:int(genre:int)
+		If genre > 5 Then Return 0 'max 6 categories 0-5
+		return self.newsabonnements[genre]
+	End Method
+
 	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True)
 		If level > Game.maxAbonnementLevel Then Return
 		If genre > 5 Then Return 'max 6 categories 0-5

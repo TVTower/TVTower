@@ -216,7 +216,7 @@ endrem
 		If room <> null Then room.CloseDoor()
 
 	 	inRoom = room
-		If ParentPlayer <> Null And controlledByID = 0
+		If ParentPlayer <> Null And self.isAI()
 			If room <> Null Then ParentPlayer.PlayerKI.CallOnReachRoom(room.uniqueID) Else ParentPlayer.PlayerKI.CallOnReachRoom(0)
 		EndIf
 		If Game.networkgame and Network.IsConnected then self.Network_SendPosition()
@@ -232,7 +232,7 @@ endrem
 	End Method
 
 	Method LeaveRoom:Int()
-		If ParentPlayer <> Null And controlledByID = 0
+		If ParentPlayer <> Null And self.isAI()
 			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
 				'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
 				If Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"

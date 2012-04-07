@@ -1117,8 +1117,26 @@ Type TNewsbuttons Extends TButton
 
     Function UpdateAll(deltaTime:float=1.0)
 		For Local Button:TNewsbuttons = EachIn TNewsbuttons.List
-			If Button.owner = Game.playerID
 
+			If Button.tooltip<> Null
+				'sync with player abo
+				Button.clickstate = Players[ Button.owner ].GetNewsAbonnement(Button.genre)
+
+				If Button.clickstate=0
+					Button.tooltip.title = Button.Caption+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
+					Button.tooltip.text = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ (Button.clickstate+1)*10000+"€"
+				Else
+					Button.tooltip.title = Button.Caption+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+Button.clickstate
+					If Button.clickstate=3
+						Button.tooltip.text = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0€"
+					Else
+						Button.tooltip.text = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ (Button.clickstate+1)*10000+ "€"
+					EndIf
+				EndIf
+				Button.tooltip.Update(deltaTime)
+			EndIf
+
+			If Button.owner = Game.playerID
 				If Button.IsIn(MouseX(), MouseY())
 					if MOUSEMANAGER.IsDown(1)
 						if Button.clicked = 0 then Button.Clicked =1
@@ -1138,26 +1156,12 @@ Type TNewsbuttons Extends TButton
 					Button.clicked = 0
 				EndIf
 			EndIf
-			If Button.tooltip<> Null
-				If Button.clickstate=0
-					Button.tooltip.title = Button.Caption+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
-					Button.tooltip.text = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ (Button.clickstate+1)*10000+"€"
-				Else
-					Button.tooltip.title = Button.Caption+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+Button.clickstate
-					If Button.clickstate=3
-						Button.tooltip.text = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0€"
-					Else
-						Button.tooltip.text = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ (Button.clickstate+1)*10000+ "€"
-					EndIf
-				EndIf
-				Button.tooltip.Update(deltaTime)
-			EndIf
 		Next
 		'tooltips
     End Function
 
     Method OnClick()
-		If self.clickstate > Game.MaxAbonnementLevel Then self.clickstate=0 else self.clickstate:+1
+		If self.clickstate > Game.MaxAbonnementLevel Then self.clickstate=0 else self.clickstate :+1
 		Players[Game.playerID].SetNewsAbonnement(genre, clickstate)
 		Mousemanager.resetKey(1)
     End Method
@@ -1170,7 +1174,7 @@ Type TNewsbuttons Extends TButton
 		endif
 		SetColor 0,0,0
 		SetAlpha 0.4
-		For Local i:Int = 0 To Players[Game.playerID].newsabonnements[genre]-1
+		For Local i:Int = 0 to Players[Game.playerID].newsabonnements[genre]-1
 			DrawRect(x+8+i*10, y+ Assets.getSprite(self.spriteBaseName).h -7, 7,4)
 		Next
 		SetColor 255,255,255
