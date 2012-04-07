@@ -389,28 +389,28 @@ endrem
 
 		'if speed to high - potential skip of minutes, so "fetch them"
 		'sets minute / hour / day
-		Local missedMinutes:Int = Floor( Self.minutesOfDayGone - Self.lastMinutesOfDayGone)
-		If missedMinutes > 0
-			For Local i:Int = 1 To missedMinutes
-				Self.minute = Floor ( Self.lastMinutesOfDayGone + i ) Mod 60 '0 to 59
-				EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", Self.minute))
+		Local missedMinutes:Int = floor(Self.minutesOfDayGone - Self.lastMinutesOfDayGone)
+		If missedMinutes = 0 then return
 
-				'hour
-				If Self.minute = 0
-					Self.hour = Floor( (Self.lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
-					EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", Self.hour))
-				EndIf
+		For Local i:Int = 1 To missedMinutes
+			Self.minute = (Floor(Self.lastMinutesOfDayGone)  + i ) Mod 60 '0 to 59
+			EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", Self.minute))
 
-				'day
-				If Self.hour = 0 And Self.minute = 0
-					Self.minutesOfDayGone 	= 0			'reset minutes of day
-					Self.day				:+1			'increase current day
-					Self.daytoplan 			= Self.day 	'weg, wenn doch nicht automatisch wechseln
-					EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", Self.day))
-				EndIf
-			Next
-			Self.lastMinutesOfDayGone = Self.minutesOfDayGone
-		EndIf
+			'hour
+			If Self.minute = 0
+				Self.hour = Floor( (Self.lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
+				EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", Self.hour))
+			EndIf
+
+			'day
+			If Self.hour = 0 And Self.minute = 0
+				Self.minutesOfDayGone 	= 0			'reset minutes of day
+				Self.day				:+1			'increase current day
+				Self.daytoplan 			= Self.day 	'weg, wenn doch nicht automatisch wechseln
+				EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", Self.day))
+			EndIf
+		Next
+		Self.lastMinutesOfDayGone = floor(Self.minutesOfDayGone)
 	End Method
 
 	'Summary: returns day of the week including gameday
