@@ -283,6 +283,18 @@ endrem
 		Return (number > 0 And number <= 4)
 	End Method
 
+	Method GetMaxAudience:int(playerID:int=-1)
+		if not Game.isPlayerID(playerID)
+			local avg:int = 0
+			for local i:int = 1 to 4
+				avg :+ Players[ i ].maxaudience
+			Next
+			avg:/4
+			return avg
+		endif
+		return Players[ playerID ].maxaudience
+	End Method
+
 	Method GetDayName:String(day:Int, longVersion:Int=0)
 		Local versionString:String = "SHORT"
 		If longVersion = 1 Then versionString = "LONG"
@@ -2313,7 +2325,7 @@ HideMouse()
 SetColor 255,255,255
 
 For Local i:Int = 0 To 9
-	TContractBlock.Create(TContract.GetRandomContract(), i, 0)
+	TContractBlock.Create(TContract.GetRandomContractWithMaxAudience(Game.getMaxAudience(-1), -1), i, 0)
 	TMovieAgencyBlocks.Create(TProgramme.GetRandomMovie(),i,0)
 	If i > 0 And i < 9 Then TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithMinPrice(200000),i)
 Next

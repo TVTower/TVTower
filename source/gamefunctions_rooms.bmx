@@ -626,12 +626,11 @@ Function Room_AdAgency_Compute(_room:TRooms)
             EndIf
           EndIf
         Next
-		FontManager.basefont.draw("owner:"+_room.owner, 20,20)
 	Else
-    Players[game.playerid].figure.fromroom =Null
-    Game.cursorstate = 0
-    TContractBlock.UpdateAll(True)
-  EndIf
+		Players[ game.playerid ].figure.fromroom = Null
+		Game.cursorstate = 0
+		TContractBlock.UpdateAll(True)
+	EndIf
 End Function
 
 Global Room_MovieAgency_GimmickTimer:Int = 0

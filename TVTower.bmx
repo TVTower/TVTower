@@ -19,7 +19,8 @@ Rem
 - todo :
 	* TPlayerColor-creation in XML auslagern ...
 	* Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
-	  - eventuell "Timer" erstellen und per Event->timertick abrufen
+		- DirectX -> eigene WindowDeco - stylen
+		- OpenGL ... - WindowDeco nicht stylebar
 
 ' 2012:
 ' gamefunctions - tstation - farben der ovale anpassen auf tplayercolor
