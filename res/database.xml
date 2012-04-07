@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="07.04.2012 17:43" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="07.04.2012 18:55" />
 	<allmovies>
 		<movie>
 			<title>...denn sie wissen nicht, was sie tun</title>
@@ -4673,6 +4673,36 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 			</episode>
 		</serie>
 		<serie>
+			<title>Entstehung des Kosmos</title>
+			<description>Klaus Berntsch stellt Vorschulkindern in lustigen Einspielern die Entstehung des Kosmos vor.</description>
+			<data  actors="Klaus Berntsch" director="Astrid Jupidar" country="AUT" year="2005" genre="13"  blocks="2" price="20" critics="90" speed="20" outcome="0" />
+			<episode number="1">
+				<title>Der Urknall</title>
+				<description>Peng hat's gemacht und Klaus spielt mit einer platzenden Melone den Urknall nach.</description>
+				<data  genre="13" 	price="20"	critics="62"	speed="20" />
+			</episode>
+			<episode number="2">
+				<title>Ferne Galaxien</title>
+				<description>In dieser Folge wird die Entstehung der Galaxien mittels Buntstift und einem Blatt Papier gekritzelt. </description>
+				<data  genre="13" 	price="26"	critics="74"	speed="25" />
+			</episode>
+			<episode number="3">
+				<title>Lecker Milch...straße</title>
+				<description>Eine Packung H-Milch reicht Klaus Berntsch um den kleinen Zuschauern die Form der Milchstrasse zu zeigen.</description>
+				<data  genre="13" 	price="20"	critics="90"	speed="45" />
+			</episode>
+			<episode number="4">
+				<title>Unser Sonnensystem</title>
+				<description>Alle 8 Planeten und den einen Explaneten stellt Berntsch vor in dem er  verschiedene Früchte auf ein Gestell patscht.</description>
+				<data  genre="13" 	price="29"	critics="72"	speed="24" />
+			</episode>
+			<episode number="5">
+				<title>Der noch blaue Planet</title>
+				<description>noch ist er blau doch Berntsch hält den Kindern die Gefahren für unseren Planeten vor Augen.</description>
+				<data  genre="13" 	price="17"	critics="98"	speed="32" />
+			</episode>
+		</serie>
+		<serie>
 			<title>Fußball-Weltmeisterschaft Italien 1990</title>
 			<description>Die XIV. WM war geprägt von legendären Spielern, Toren und Szenen. Gezeigt werden Achtel-, Viertel-, Halbfinale und Finale.</description>
 			<data  actors="-" director="-" country="I" year="1990" genre="12"  blocks="2" time="20" price="100" critics="84" speed="192" outcome="204" />
@@ -6132,6 +6162,11 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</descript
 			<data   repetitions="2"  profit="50" penalty="20" targetgroup="0" duration="2" />
 		</ad>
 		<ad>
+			<title>Chateau Migraine</title>
+			<description>Beim Kauf einer Flasche Rotwein gibts jetzt zwei Kopfschmerztabletten gratis dazu.</description>
+			<data minaudience="70"  repetitions="2"  profit="100" penalty="15" targetgroup="5" duration="2" />
+		</ad>
+		<ad>
 			<title>Copyshop Raub</title>
 			<description>Raub-Kopien sehen fast so gut aus wie die Originale. Wir verkaufen auch Permanentmarker!</description>
 			<data minaudience="10"  repetitions="3" fixedprice="1" profit="3000" penalty="12000" targetgroup="0" duration="3" />
@@ -6144,7 +6179,12 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</descript
 		<ad>
 			<title>Dubantours</title>
 			<description>Reisen sie an die größten Strände der Welt, ob Gobi oder Sahara. Dubantours bringt sie hin.</description>
-			<data minaudience="20"  repetitions="5"  profit="80" penalty="90" targetgroup="4" duration="3" />
+			<data minaudience="50"  repetitions="5"  profit="60" penalty="75" targetgroup="4" duration="3" />
+		</ad>
+		<ad>
+			<title>Eau de WC</title>
+			<description>Bestellen Sie jetzt und sichern sie sich den Duft der Frauen betört und ihre WC-Gäste bezaubert. Neu: Zitrone!</description>
+			<data minaudience="10"  repetitions="3" fixedprice="1" profit="1000" penalty="1" targetgroup="0" duration="2" />
 		</ad>
 		<ad>
 			<title>ESCAL</title>
@@ -6158,9 +6198,19 @@ In Tempelhof und Steglitz</description>
 			<data minaudience="20"  repetitions="2"  profit="80" penalty="12" targetgroup="2" duration="3" />
 		</ad>
 		<ad>
+			<title>Fleischerei Fettmit</title>
+			<description>Das Auge isst man mit!</description>
+			<data minaudience="100"  repetitions="3"  profit="86" penalty="15" targetgroup="3" duration="2" />
+		</ad>
+		<ad>
 			<title>Fort</title>
 			<description>Der neue Fort ist da. Mehr Sicherheit und ein ansprechendes Design zu einem unschlagbaren Preis.</description>
 			<data minaudience="150"  repetitions="5"  profit="15" penalty="15" targetgroup="0" duration="3" />
+		</ad>
+		<ad>
+			<title>Frau Müller</title>
+			<description>Höre reifen Frauen beim Stricken zu. </description>
+			<data minaudience="10"  repetitions="7"  profit="15" penalty="10" targetgroup="2" duration="7" />
 		</ad>
 		<ad>
 			<title>GameStation 2</title>
@@ -6214,6 +6264,11 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 			<data minaudience="25"  repetitions="1"  profit="50" penalty="50" targetgroup="2" duration="1" />
 		</ad>
 		<ad>
+			<title>Leckerfett</title>
+			<description>Die perfekte Mischung aus Gänsefett und natürlichem Pflanzenfett macht Leckerfett soooo unglaublich lecker.</description>
+			<data   repetitions="4"  profit="10" penalty="20" targetgroup="0" duration="3" />
+		</ad>
+		<ad>
 			<title>Lemor</title>
 			<description>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
 Ich fühl mich wohl mit Lemor</description>
@@ -6228,6 +6283,11 @@ Ich fühl mich wohl mit Lemor</description>
 			<title>MasterCard</title>
 			<description>MacGyver als Werbeträger für die MasterCard: R. D. Anderson noch einmal in seiner Paraderolle - unbezahlbar</description>
 			<data minaudience="220"  repetitions="1"  profit="25" penalty="20" targetgroup="7" duration="1" />
+		</ad>
+		<ad>
+			<title>Matratzendoktor</title>
+			<description>Quietscht Ihre Matratze? Rufen Sie den Matratzendoktor. Inklusive Probestunde.</description>
+			<data minaudience="10"  repetitions="3"  profit="15" penalty="11" targetgroup="3" duration="3" />
 		</ad>
 		<ad>
 			<title>MinutePass</title>
@@ -6287,6 +6347,11 @@ Der Vorteil: Kein Porto für Überweisungsträger</description>
 			<data minaudience="50"  repetitions="3"  profit="100" penalty="50" targetgroup="1" duration="5" />
 		</ad>
 		<ad>
+			<title>Raus Hier</title>
+			<description>Dein freundliches Reisebüro... Wohin Du willst - solang die Kohle stimmt.</description>
+			<data   repetitions="3"  profit="15" penalty="50" targetgroup="0" duration="4" />
+		</ad>
+		<ad>
 			<title>Ravell</title>
 			<description>Die Nummer 1 im Modellbau. Ob Messerschmitt, Panther oder U.S.S. Enterprise - Ravell führt es.</description>
 			<data minaudience="50"  repetitions="3"  profit="50" penalty="50" targetgroup="9" duration="3" />
@@ -6329,6 +6394,11 @@ It's a sunny</description>
 			<data minaudience="225"  repetitions="4"  profit="25" penalty="25" targetgroup="9" duration="5" />
 		</ad>
 		<ad>
+			<title>Superfurni</title>
+			<description>Gestalten Sie ihre Möbel selber!</description>
+			<data   repetitions="6"  profit="50" penalty="25" targetgroup="9" duration="3" />
+		</ad>
+		<ad>
 			<title>Sylters</title>
 			<description>Ein reines Wasser muß durch einen tiefen Stein</description>
 			<data minaudience="150"  repetitions="3"  profit="20" penalty="20" targetgroup="4" duration="4" />
@@ -6358,7 +6428,7 @@ Aber nur mit Ulbricht Umzüge!</description>
 		<ad>
 			<title>wasch das</title>
 			<description>Deo, Duschmittel, Badezusatz: Körperpflege in vielen Variationen.</description>
-			<data minaudience="20"  repetitions="2"  profit="5" penalty="0" targetgroup="0" duration="1" />
+			<data minaudience="10"  repetitions="2"  profit="15" penalty="0" targetgroup="0" duration="1" />
 		</ad>
 		<ad>
 			<title>Wodka Jelzin</title>
@@ -6370,6 +6440,11 @@ Aber nur mit Ulbricht Umzüge!</description>
 			<description>Geiz sei geil, so die Botschaft dieser Werbung.</description>
 			<data minaudience="150" minimage="150" repetitions="4"  profit="15" penalty="20" targetgroup="0" duration="2" />
 		</ad>
+		<ad>
+			<title>Zimzi</title>
+			<description>Lecker Zimtstäbchen mit Reizhustenallergie. Noch nie war so trocken...so lecker.</description>
+			<data   repetitions="4"  profit="9" penalty="10" targetgroup="1" duration="5" />
+		</ad>
 	</allads>
-	<time value="233.62ms" />
+	<time value="411.16ms" />
 </tvgdb>

@@ -604,7 +604,8 @@ endrem
 		Player.Figure.ParentPlayer = Player
 		If controlledByID = 0 And Game.playerID = 1 Then
 			If TPlayer.globalID = 2
-				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
+				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
+'KIrem				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 			Else
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
 			EndIf
@@ -757,6 +758,14 @@ endrem
 		Next
 	End Function
 
+	'end of day - take over money for next day
+	Function TakeOverMoney()
+		local dayBefore:int = Max(0, Game.getWeekday()-1)
+		For Local Player:TPlayer = EachIn TPlayer.List
+			Player.finances[Game.getWeekday()].money = Player.finances[ dayBefore ].money
+		Next
+	End Function
+
 	'computes penalties for expired ad-contracts
 	Function ComputeContractPenalties()
 		Local LastContract:TContract = Null
@@ -819,7 +828,7 @@ endrem
 				newsBlock = Player.ProgrammePlan.getActualNewsBlock(i)
 				If newsBlock <> Null And Player.maxaudience <> 0
 					audience :+ Floor(Player.maxaudience * NewsBlock.news.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
-					If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
+					'If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
 				EndIf
 			Next
 			Player.audience= Ceil(audience / 3)
@@ -891,7 +900,7 @@ Type TFinancials
 	Field ListLink:TLink {saveload = "special" sl = "no"}
 	Global List:TList = CreateList() {saveload = "special" sl = "no"}
 
-
+	global debug:int = 0
 
 	Function Load:TFinancials(pnode:txmlNode, finance:TFinancials)
 print "implement Load:TFinancials"
@@ -956,13 +965,9 @@ endrem
 		Return finances
 	End Function
 
-	'returns the the position in the array the actual game-day fits to
-	Function GetDayOfWeek:Int(day:Int)
-		Return ((day-1) Mod 7)
-	End Function
-
 	'refreshs stats about misc sells
 	Method SellMisc(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" MISC : "+_money
 		sold_ads	:+_money
 		sold_total	:+_money
 		ChangeMoney(_money)
@@ -979,10 +984,12 @@ endrem
 		money:+_moneychange
 		If Players[ Self.playerID ].isAI() Then Players[ Self.playerID ].PlayerKI.CallOnMoneyChanged()
 		If Self.playerID = Game.playerID Then Interface.BottomImgDirty = True
+		if debug then print "FINANZ: player :"+self.playerID+" geldaenderung:"+_moneychange
 	End Method
 
 	'refreshs stats about earned money from adspots
 	Method SellAds(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" Werbeeinahme: "+_money
 		sold_ads	:+_money
 		sold_total	:+_money
 		money		:+_money
@@ -993,11 +1000,13 @@ endrem
 	Method earnCallerRevenue(_money:Int)
 		Self.callerRevenue	:+_money
 		Self.sold_total		:+_money
+		if debug then print "FINANZ: player :"+self.playerID+" Callshowgewinn: "+_money
 		ChangeMoney(_money)
 	End Method
 
 	'refreshs stats about earned money from selling a movie/programme
 	Method SellMovie(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" Filmverkauf: "+_money
 		sold_movies	:+_money
 		sold_total	:+_money
 		ChangeMoney(_money)
@@ -1026,6 +1035,7 @@ endrem
 	'refreshs stats about paid money from buying a movie/programme
 	Method PayMovie:Byte(_money:Int)
 		If money >= _money
+			if debug then print "FINANZ: player :"+self.playerID+" Filmkauf: -"+_money
 			paid_movies:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1039,6 +1049,7 @@ endrem
 	'refreshs stats about paid money from buying a station
 	Method PayStation:Byte(_money:Int)
 		If money >= _money
+			if debug then print "FINANZ: player :"+self.playerID+" Stationkauf: -"+_money
 			paid_stations:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1052,6 +1063,7 @@ endrem
 	'refreshs stats about paid money from buying a script (own production)
 	Method PayScript:Byte(_money:Int)
 		If money >= _money
+			if debug then print "FINANZ: player :"+self.playerID+" Scriptkauf: -"+_money
 			paid_scripts:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1077,6 +1089,7 @@ endrem
 
 	'refreshs stats about paid money from paying a penalty fee (not sent the necessary adspots)
 	Method PayPenalty(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" Werbestrafe: -"+_money
 		paid_penalty:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1084,6 +1097,7 @@ endrem
 
 	'refreshs stats about paid money from paying the rent of rooms
 	Method PayRent(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" Miete: -"+_money
 		paid_rent:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1092,6 +1106,7 @@ endrem
 	'refreshs stats about paid money from paying for the sent newsblocks
 	Method PayNews:Byte(_money:Int)
 		If money >= _money
+			if debug then print "FINANZ: player :"+self.playerID+" Newskauf: -"+_money
 			paid_news:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1104,6 +1119,7 @@ endrem
 
 	'refreshs stats about paid money from paying the daily costs a newsagency-abonnement
 	Method PayNewsAgencies(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" Newsabo: -"+_money
 		paid_newsagencies:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1111,6 +1127,7 @@ endrem
 
 	'refreshs stats about paid money from paying the fees for the owned stations
 	Method PayStationFees(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" Stationsgebuehren: -"+_money
 		paid_stationfees:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1118,6 +1135,7 @@ endrem
 
 	'refreshs stats about paid money from paying misc things
 	Method PayMisc(_money:Int)
+		if debug then print "FINANZ: player :"+self.playerID+" MISC: -"+_money
 		paid_misc:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -2325,7 +2343,7 @@ HideMouse()
 SetColor 255,255,255
 
 For Local i:Int = 0 To 9
-	TContractBlock.Create(TContract.GetRandomContractWithMaxAudience(Game.getMaxAudience(-1), -1), i, 0)
+	TContractBlock.Create(TContract.GetRandomContractWithMaxAudience(Game.getMaxAudience(-1), -1, 0.15), i, 0)
 	TMovieAgencyBlocks.Create(TProgramme.GetRandomMovie(),i,0)
 	If i > 0 And i < 9 Then TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithMinPrice(200000),i)
 Next
@@ -2682,7 +2700,7 @@ Function Menu_GameSettings_Draw()
 				Local ContractArray:TContract[]
 				For Local j:Int = 0 To Game.startAdAmount-1
 					ContractArray		= ContractArray[..ContractArray.length+1]
-					ContractArray[j]	= TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids)
+					ContractArray[j]	= TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids, 0.10)
 				Next
 				NetworkHelper.SendContractsToPlayer(playerids, ContractArray)
 				Print "sent data for player: "+playerids
@@ -2883,7 +2901,7 @@ Function Init_Creation()
 			Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			for local i:int = 0 to 2
-				Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids),playerids)
+				Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids, 0.10),playerids)
 			Next
 		Next
 		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
@@ -2969,12 +2987,14 @@ Function UpdateMain(deltaTime:Float = 1.0)
 
 	'#Region 'developer shortcuts (1-4, B=office, C=Chief ...)
 	If GUIManager.getActive() <> InGame_Chat.GUIInput.uId
-		If Not Game.networkgame
-			If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
-			If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
-			If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
-			If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
-		EndIf
+if not game.networkgame
+		If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
+		If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
+		If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
+		If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
+		If KEYMANAGER.IsHit(KEY_5) then game.speed = 60
+		If KEYMANAGER.IsHit(KEY_6) then game.speed = 0.10
+
 		If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
 		If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
 		If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("archive", Game.playerID)
@@ -2986,21 +3006,27 @@ Function UpdateMain(deltaTime:Float = 1.0)
 		If KEYMANAGER.IsHit(KEY_R) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("roomboard", -1)
 		If KEYMANAGER.IsHit(KEY_D) Players[Game.playerID].maxaudience = Stationmap.einwohner
 		If KEYMANAGER.IsHit(KEY_S)
+rem
 			Game.oldspeed = Game.speed
 			Game.speed = 0
 			SaveError = TError.Create("Speichere...", "Spielstand wird gespeichert")
 			Game.SaveGame()
 			SaveError.link.Remove()
 			Game.speed = Game.oldspeed
+endrem
 		EndIf
 		If KEYMANAGER.IsHit(KEY_L)
+rem
 			Game.speed = 0
 			LoadError = TError.Create("Lade...", "Spielstand wird geladen")
 			Game.LoadGame("savegame.zip")
 			LoadError.link.Remove()
+endrem
 		EndIf
-		If KEYMANAGER.IsDown(KEY_UP) Game.speed:+0.05
-		If KEYMANAGER.IsDown(KEY_DOWN) Game.speed:-0.05;If Game.speed < 0 Then Game.speed = 0
+endif
+
+		If KEYMANAGER.IsDown(KEY_UP) then Game.speed:+0.05
+		If KEYMANAGER.IsDown(KEY_DOWN) then Game.speed = Max( Game.speed - 0.05, 0)
 	EndIf
 	'#EndRegion
 
@@ -3169,6 +3195,9 @@ Type TEventListenerOnDay Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
+			'take over current money
+			TPlayer.TakeOverMoney()
+
 			'Neuer Award faellig?
 			If Betty.GetAwardEnding() < Game.day - 1
 				Betty.GetLastAwardWinner()

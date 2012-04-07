@@ -259,7 +259,7 @@ Type TgfxProgrammelist extends TPlannerList
 				locy :+ 12
 				SetAlpha 1.0
 				gfxtapeepisodes.Draw(locx, locy)
-				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodeList.count() + ") " + episode.title, locx + 10, locy + 3, 85, 12, 0, 0, 0, 0, True)
+				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodeList.count() + ") " + episode.title, locx + 10, locy + 1, 85, 12, 0, 0, 0, 0, True)
 				If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
 					Game.cursorstate = 1
 					SetAlpha 0.2;DrawRect(locx, locy, gfxtapeepisodes.w, gfxtapeepisodes.h) ;SetAlpha 1.0
@@ -307,7 +307,9 @@ Type TgfxProgrammelist extends TPlannerList
 
 	Method SetOpen:Int(newState:Int)
 		newState = Max(0, newState)
-		If newState <= 0 Then enabled = 0;currentseries=Null;currentgenre=-1 else enabled = 1
+		if newState <= 1 then currentgenre=-1
+		if newState <= 2 then currentseries=Null
+		If newState = 0 Then enabled = 0;currentseries=Null;currentgenre=-1 else enabled = 1
 
 		self.openState = newState
 	End Method
