@@ -413,11 +413,6 @@ Function Clamp:Float(value:Float, minvalue:Float = 0.0, maxvalue:Float = 1.0)
 	Return value
 End Function
 
-Function WriteStringWithLen(str:String, stream:TStream)
-  stream.WriteInt(Len(str))
-  stream.WriteString(str)
-End Function
-
 Global LastSeekPos:Int =0
 Function Stream_SeekString:Int(str:String, stream:TStream)
   If stream <> Null
@@ -675,43 +670,66 @@ endrem
 		Return out$
 	End Function
 
-  'formats a value: 100400 = 100,4TSD
-  'formatiert einen Zahlenwert: 100400 = 100,4TSD
-  Function convertValue:String(value:String,nachkomma:Int,typ:Int)
+
+	Function RoundMoney:int(value:int)
+		if value = 0 then return 0
+		if value <= 25 then return 25
+		if value <= 50 then return 50
+		if value <= 75 then return 75
+		if value <= 100 then return 100
+		'102 /50 = 2 mod 2 = 0 -> un/gerade
+		if value <= 1000 then return ceil(float(value) / 250.0)*250
+		if value <= 5000 then return ceil(float(value) / 500.0)*500
+		if value <= 10000 then return ceil(float(value) / 1000.0)*1000
+		if value <= 50000 then return ceil(float(value) / 2500.0)*2500
+		if value <= 100000 then return ceil(float(value) / 10000.0)*10000
+		if value <= 500000 then return ceil(float(value) / 25000.0)*25000
+		if value <= 1000000 then return ceil(float(value) / 250000.0)*250000
+		return ceil(value / 2500000)*2500000
+	End Function
+
+
+  'formats a value: 1000400 = 1,0 Mio
+	Function convertValue:String(value:String,nachkomma:Int=2,typ:Int=0)
       ' typ 1: 250000 = 250Tsd
       ' typ 2: 250000 = 0,25Mio
       ' typ 3: 250000 = 0,0Mrd
       ' typ 0: 250000 = 0,25Mio (automatisch)
       ' nachkomma - anzahl der Nachkommastellen, nicht genuegend Nachkommas vorhanden: passiert nix weiter
-      Local delimeter:String = ","
-      Local minus:String = ""
-      Local laenge:Int
-      If Int(value) < 0
-        value = Mid(value, 2, Len(value))
-        minus = "-"
-      Else
-        minus = ""
-      EndIf
+		Local delimeter:String	= ","
+		Local minus:String		= ""
+		Local laenge:Int		= 0
+		If Int(value) < 0
+			value = Mid(value, 2, Len(value))
+			minus = "-"
+		EndIf
 
-      laenge = Len(value)
-      If laenge < 4
-        For Local i:Int = 0 To laenge-3
-          value = "0"+value
-        Next
-      EndIf
+		laenge = Len(string(int(value)))
 
-      If nachkomma < 1 Then delimeter = ""
-      If typ = 0 Then
-        If laenge <  7 Then typ=1
-        If laenge < 10 and laenge >= 7 Then typ=2
-        If laenge >= 10 Then typ=3
-      EndIf
-      If value = "0" Then typ = 0
-      If typ = 0 Then Return "0"
-      If typ = 1 Then Return minus + Mid(value, 1,Len(value)-(3*typ))+ delimeter + Mid(value, Len(value)-(3*typ-1),nachkomma)+ " Tsd"
-      If typ = 2 Then Return minus + Mid(value, 1,Len(value)-(3*typ))+ delimeter + Mid(value, Len(value)-(3*typ-1),nachkomma)+ " Mio"
-      If typ = 3 Then Return minus + Mid(value, 1,Len(value)-(3*typ))+ delimeter + Mid(value, Len(value)-(3*typ-1),nachkomma)+ " Mrd"
-      'Return convertValue
+		If nachkomma < 1 Then delimeter = ""
+		If typ = 0
+			'
+'			If laenge <  4 Then typ=0
+'			If laenge <  7 and laenge >= 4 Then typ=1
+			If laenge < 9 and laenge >= 7 Then typ=2
+			If laenge >= 9 Then typ=3
+		EndIf
+		If value = "0" Then typ = -1
+
+		local dottedValue:string = ""
+		if int(value) < 1000000 then dottedValue = int(floor(int(value) / 1000))+"."+Left( int((int(value) - int(floor(int(value) / 1000)*1000))) +"000",3)
+		if int(value) < 1000 then dottedValue = value
+
+		select typ
+'			case -1		Return "0"
+'			case 0		Return minus + value
+'			case 1		Return minus + Mid(value, 1,Len(value)-(3*typ))+ delimeter + Mid(value, Len(value)-(3*typ-1),nachkomma)+ " Tsd"
+			case 2		Return minus + Mid(value, 1,Len(value)-(3*typ))+ delimeter + Mid(value, Len(value)-(3*typ-1),nachkomma)+ " Mio"
+			case 3 		Return minus + Mid(value, 1,Len(value)-(3*typ))+ delimeter + Mid(value, Len(value)-(3*typ-1),nachkomma)+ " Mrd"
+
+			default		Return minus + dottedValue
+		endselect
+		'Return convertValue
     End Function
 
 	Function convertPercent:String(value:String, nachkomma:Int)

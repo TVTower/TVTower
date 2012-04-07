@@ -437,7 +437,7 @@ Type TLuaFunctions
 '- - - - - -
 	Method SpotAudience:Int(spotId:Int = -1)
 		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj then Return Int(obj.CalculateMinAudience()) else Return -1
+	    If obj then Return Int(obj.getMinAudience(obj.owner)) else Return -1
 	End Method
 
 	Method SpotToSend:Int(spotId:Int = -1)
@@ -452,12 +452,12 @@ Type TLuaFunctions
 
 	Method SpotProfit:Int(spotId:Int = -1)
 		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj then Return Int(obj.CalculatePrice(obj.profit)) else Return -1
+	    If obj then Return Int(obj.CalculateProfit(obj.profit, obj.owner)) else Return -1
 	End Method
 
 	Method SpotPenalty:Int(spotId:Int = -1)
 		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj then return Int(obj.CalculatePrice(obj.penalty)) else Return -1
+	    If obj then return Int(obj.CalculatePenalty(obj.penalty, obj.owner)) else Return -1
 	End Method
 
 	Method SpotTargetgroup:Int(spotId:Int = -1)

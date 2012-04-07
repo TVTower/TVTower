@@ -2,6 +2,7 @@ LANG_DE = German
 LANG_EN = English
 
 DAY = day
+DAYS = days
 WEEK_SHORT_MONDAY   = mo
 WEEK_SHORT_TUESDAY  = tu
 WEEK_SHORT_WEDNESDAY= we

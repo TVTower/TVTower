@@ -726,13 +726,10 @@ endrem
 			If Adblock <> Null
 				If Player.audience < Adblock.contract.calculatedMinAudience
 					'Print "player audience:"+player.audience + " < "+Adblock.contract.calculatedMinAudience
-					Adblock.botched = 1
 					Adblock.contract.botched = 1
 					Adblock.GetPreviousContractCount()
 				EndIf
 				If Player.audience >= Adblock.contract.calculatedMinAudience
-					'Print "player audience:"+player.audience + " < "+Adblock.contract.calculatedMinAudience
-					Adblock.botched = 3
 					Adblock.contract.botched = 3
 				EndIf
 				If Player.audience > Adblock.contract.calculatedMinAudience And Adblock.contract.spotnumber >= Adblock.contract.spotcount
@@ -2673,7 +2670,7 @@ Function Menu_GameSettings_Draw()
 				Local ContractArray:TContract[]
 				For Local j:Int = 0 To Game.startAdAmount-1
 					ContractArray		= ContractArray[..ContractArray.length+1]
-					ContractArray[j]	= TContract.GetRandomContract()
+					ContractArray[j]	= TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids)
 				Next
 				NetworkHelper.SendContractsToPlayer(playerids, ContractArray)
 				Print "sent data for player: "+playerids
@@ -2873,10 +2870,9 @@ Function Init_Creation()
 			'give 1 call in
 			Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
-
-			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
-			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
-			Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContract(),playerids)
+			for local i:int = 0 to 2
+				Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids),playerids)
+			Next
 		Next
 		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
 	EndIf
