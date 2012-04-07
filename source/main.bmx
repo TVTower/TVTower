@@ -707,8 +707,7 @@ endrem
 
 	'increases Credit
 	Method SetCredit(amount:Int)
-		Self.finances[Game.getWeekday()].money:+amount
-		Self.finances[Game.getWeekday()].credit:+amount
+		Self.finances[Game.getWeekday()].TakeCredit(amount)
 		Self.CreditCurrent:+amount
 	End Method
 
@@ -747,7 +746,8 @@ endrem
 				EndIf
 				If Player.audience > Adblock.contract.calculatedMinAudience And Adblock.contract.spotnumber >= Adblock.contract.spotcount
 					Adblock.contract.botched = 2
-					Player.finances[Game.getWeekday()].SellAds(Adblock.contract.calculatedProfit)
+					print "werbegeld: "+Adblock.contract.calculatedProfit
+					Player.finances[Game.getWeekday()].earnAdProfit(Adblock.contract.calculatedProfit)
 					AdBlock.RemoveOverheadAdblocks() 'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
 					'Print "should remove contract:"+adblock.contract.title
 					TContractBlock.RemoveContractFromSuitcase(Adblock.contract)
@@ -762,7 +762,7 @@ endrem
 	Function TakeOverMoney()
 		local dayBefore:int = Max(0, Game.getWeekday()-1)
 		For Local Player:TPlayer = EachIn TPlayer.List
-			Player.finances[Game.getWeekday()].money = Player.finances[ dayBefore ].money
+			Player.finances[Game.getWeekday()].takeOverFromDayBefore(Player.finances[ dayBefore ])
 		Next
 	End Function
 
@@ -965,6 +965,11 @@ endrem
 		Return finances
 	End Function
 
+	Method TakeOverFromDayBefore:int(otherFinances:TFinancials)
+		self.money = otherFinances.money
+		self.credit = otherFinances.credit
+	End Method
+
 	'refreshs stats about misc sells
 	Method SellMisc(_money:Int)
 		if debug then print "FINANZ: player :"+self.playerID+" MISC : "+_money
@@ -988,11 +993,10 @@ endrem
 	End Method
 
 	'refreshs stats about earned money from adspots
-	Method SellAds(_money:Int)
+	Method earnAdProfit(_money:Int)
 		if debug then print "FINANZ: player :"+self.playerID+" Werbeeinahme: "+_money
 		sold_ads	:+_money
 		sold_total	:+_money
-		money		:+_money
 		ChangeMoney(_money)
 	End Method
 
@@ -1029,6 +1033,15 @@ endrem
 	Method GetProgrammeBid(_money:Int)
 		paid_movies:-_money
 		paid_total:-_money
+		ChangeMoney(+ _money)
+	End Method
+
+	Method TakeCredit:Byte(_money:Int)
+		credit		:+_money
+		sold_misc	:+_money	'kind of income
+		sold_total	:+_money	'kind of income
+		paid_misc	:+_money	'kind of duty
+		paid_total	:+_money	'kind of duty
 		ChangeMoney(+ _money)
 	End Method
 
