@@ -385,7 +385,7 @@ Type TBitmapFont
 	End Method
 
 	Method getBlockHeight:Float(text:String, w:Float, h:Float)
-		Return self.getHeight(text)
+		return self.drawBlock(text, 0,0,w,h,0, 0,0,0,0,0,0)
 	End Method
 
 	Method drawOnPixmap(Text:String, x:Int, y:Int, cR:Int=0, cG:Int=0, cB:Int=0, Pixmap:TPixmap, blur:Byte=0)

@@ -874,7 +874,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		self._highlighted = 0
-		If functions.MouseIn( x, y, w, FontManager.baseFont.getBlockHeight(Self._text, w, h))
+		If functions.MouseIn( x, y, w, FontManager.getFont("Default", 12).getBlockHeight(Self._text, w, h))
 			self._highlighted = 1
 			If clicked
 				If _func <> Null Then _func(Self._funcparam)
@@ -885,7 +885,15 @@ Type TDialogueAnswer
 	End Method
 
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h,, 200*self._highlighted, 100*self._highlighted, 100*self._highlighted)
+		if self._highlighted
+			SetColor 200,100,100
+			DrawOval(x, y +3, 6, 6)
+			FontManager.getFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h,0, 0, 0, 0)
+		else
+			SetColor 0,0,0
+			DrawOval(x, y +3, 6, 6)
+			FontManager.getFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h,0, 100, 100, 100)
+		endif
 	End Method
 End Type
 
@@ -908,12 +916,11 @@ Type TDialogueTexts
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		Local ydisplace:Float = FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h)
 		ydisplace:+15 'displace answers a bit
-
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			Local returnValue:Int = answer.Update(x + 9, y + ydisplace, w - 9, h, clicked)
 			If returnValue <> - 1 Then _goTo = returnValue
-			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 5
+			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 2
 		Next
 		Return _goTo
 	End Method
@@ -923,9 +930,8 @@ Type TDialogueTexts
 		ydisplace:+15 'displace answers a bit
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
-			DrawOval(x, y + ydisplace + 4, 6, 6)
-			answer.Draw(x + 9, y + ydisplace, w - 9, h)
-			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 5
+			answer.Draw(x, y + ydisplace, w, h)
+			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 2
 		Next
 	End Method
 End Type
@@ -954,7 +960,8 @@ Type TDialogue
 		If clicked >= 1 Then clicked = 1;MouseManager.resetKey(1)
 		Local nextText:Int = _currentText
 		If Self._texts.Count() > 0
-			Local returnValue:Int = TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Update(_x + 10, _y + 10, _w - 40, _h, clicked)
+
+			Local returnValue:Int = TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Update(_x + 10, _y + 10, _w - 60, _h, clicked)
 			If returnValue <> - 1 Then nextText = returnValue
 		EndIf
 		_currentText = nextText

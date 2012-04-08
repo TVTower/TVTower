@@ -187,6 +187,11 @@ Type TNetworkClient extends TNetworkConnection
 			server=Null
 		EndIf
 		joined=False
+		print ""
+		print "- - - - - - - - - -"
+		print "| DISCONNECTED !! |"
+		print "- - - - - - - - - -"
+		print ""
 	EndMethod
 
 	Method Connect:int(ip:Int,port:Int, timeout:int = 0)

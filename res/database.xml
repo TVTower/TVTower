@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="07.04.2012 18:55" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="08.04.2012 10:07" />
 	<allmovies>
 		<movie>
 			<title>...denn sie wissen nicht, was sie tun</title>
@@ -6162,6 +6162,11 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</descript
 			<data   repetitions="2"  profit="50" penalty="20" targetgroup="0" duration="2" />
 		</ad>
 		<ad>
+			<title>Call-A-Beer</title>
+			<description>Kein Bier mehr? Schick nicht die Frau, ruf Call-A-Beer!</description>
+			<data minaudience="40" minimage="50" repetitions="2"  profit="35" penalty="20" targetgroup="9" duration="1" />
+		</ad>
+		<ad>
 			<title>Chateau Migraine</title>
 			<description>Beim Kauf einer Flasche Rotwein gibts jetzt zwei Kopfschmerztabletten gratis dazu.</description>
 			<data minaudience="70"  repetitions="2"  profit="100" penalty="15" targetgroup="5" duration="2" />
@@ -6170,6 +6175,11 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</descript
 			<title>Copyshop Raub</title>
 			<description>Raub-Kopien sehen fast so gut aus wie die Originale. Wir verkaufen auch Permanentmarker!</description>
 			<data minaudience="10"  repetitions="3" fixedprice="1" profit="3000" penalty="12000" targetgroup="0" duration="3" />
+		</ad>
+		<ad>
+			<title>Crunchmunch</title>
+			<description>Knusprig knackiger Knabberspass mit feurig scharfer Chilinote. Nur für kurze Zeit mit Tiermotiven.</description>
+			<data minaudience="50" minimage="180" repetitions="3"  profit="30" penalty="50" targetgroup="5" duration="3" />
 		</ad>
 		<ad>
 			<title>Dr. Papper</title>
@@ -6219,6 +6229,11 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 			<data minaudience="220"  repetitions="6"  profit="25" penalty="20" targetgroup="2" duration="4" />
 		</ad>
 		<ad>
+			<title>Gib Pfote</title>
+			<description>Die natürlichen Bestandteile von Gib Pfote wird ihr Hund lieben. Lecker Pudel.</description>
+			<data minaudience="30" minimage="40" repetitions="2"  profit="25" penalty="20" targetgroup="0" duration="2" />
+		</ad>
+		<ad>
 			<title>Gillettine</title>
 			<description>Mit Mach 4 oder NOCH schneller fliegt der Rasierer über die Geischtshaut eines echten Kerls - für das Beste im Mann.</description>
 			<data minaudience="150"  repetitions="4"  profit="15" penalty="100" targetgroup="9" duration="4" />
@@ -6239,6 +6254,11 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 			<data minaudience="100"  repetitions="2"  profit="10" penalty="5" targetgroup="0" duration="3" />
 		</ad>
 		<ad>
+			<title>Hobelmarkt</title>
+			<description>Hier fallen nicht nur Späne, nein auch die Preise. Ein Hobelmarkt ist sicher auch in Ihrer Nähe.</description>
+			<data minaudience="80" minimage="100" repetitions="3"  profit="25" penalty="15" targetgroup="9" duration="2" />
+		</ad>
+		<ad>
 			<title>Je Ne Reviens Pas</title>
 			<description>Wurth Paris liefert den Duft ausgewählter Essenzen für ein edles Parfüm.</description>
 			<data minaudience="175"  repetitions="3"  profit="15" penalty="20" targetgroup="8" duration="2" />
@@ -6247,6 +6267,11 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 			<title>Jesse Wasser- und Wärmedienst</title>
 			<description>Wir sorgen für ihre Sanitäranlagen. Schon ab 10 € - ohne Scheiß!</description>
 			<data minaudience="20"  repetitions="2"  profit="50" penalty="50" targetgroup="4" duration="2" />
+		</ad>
+		<ad>
+			<title>Kau-Tschuk</title>
+			<description>Der lecker Knabberspass für Jung und Alt. Aus Reifen gemacht, in 5 bunten Geschmacksrichtungen.</description>
+			<data minaudience="60"  repetitions="7"  profit="30" penalty="80" targetgroup="0" duration="2" />
 		</ad>
 		<ad>
 			<title>KittyFood</title>
@@ -6273,6 +6298,11 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 			<description>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
 Ich fühl mich wohl mit Lemor</description>
 			<data minaudience="125"  repetitions="4"  profit="15" penalty="100" targetgroup="3" duration="5" />
+		</ad>
+		<ad>
+			<title>Maike</title>
+			<description>Hoher Tragekomfort und nahezu unsichtbar - die neuen Maike-Hygieneeinlagen.</description>
+			<data minaudience="50" minimage="100" repetitions="3"  profit="30" penalty="45" targetgroup="8" duration="4" />
 		</ad>
 		<ad>
 			<title>Märzedes</title>
@@ -6329,6 +6359,11 @@ Habt Ihr das zu bieten? Alter Schwede!</description>
 			<title>Pipsi Cola</title>
 			<description>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</description>
 			<data minaudience="170" minimage="150" repetitions="4"  profit="20" penalty="20" targetgroup="2" duration="2" />
+		</ad>
+		<ad>
+			<title>Plöpp-Bier</title>
+			<description>Prickelndes Hopfengold. Für die kritischen Tage im Monat sollte Mann immer Plöpp-Bier im Haus haben.</description>
+			<data minaudience="50" minimage="50" repetitions="3"  profit="20" penalty="10" targetgroup="9" duration="4" />
 		</ad>
 		<ad>
 			<title>Polstermöbel Dobrawa</title>
@@ -6409,10 +6444,20 @@ It's a sunny</description>
 			<data   repetitions="3"  profit="5" penalty="5" targetgroup="3" duration="2" />
 		</ad>
 		<ad>
+			<title>Tu-doch-so</title>
+			<description>Kein Geld für den Urlaub oder die Yacht? Wir schicken Postkarten aus Uganda oder fälschen Fotos.</description>
+			<data minaudience="30" minimage="10" repetitions="4"  profit="30" penalty="25" targetgroup="5" duration="3" />
+		</ad>
+		<ad>
 			<title>Tublerone</title>
 			<description>Na und?
 Tublerone - Schokolade mit Charakter.</description>
 			<data minaudience="125"  repetitions="2"  profit="100" penalty="100" targetgroup="-1" duration="1" />
+		</ad>
+		<ad>
+			<title>Tussishop</title>
+			<description>Nette Frauen aus aus dem Katalog. Dank Fernabsatz Rückgabe ohne Probleme möglich.</description>
+			<data   repetitions="3"  profit="30" penalty="25" targetgroup="9" duration="5" />
 		</ad>
 		<ad>
 			<title>Ulbricht Umzüge</title>
@@ -6446,5 +6491,5 @@ Aber nur mit Ulbricht Umzüge!</description>
 			<data   repetitions="4"  profit="9" penalty="10" targetgroup="1" duration="5" />
 		</ad>
 	</allads>
-	<time value="411.16ms" />
+	<time value="496.99ms" />
 </tvgdb>

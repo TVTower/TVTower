@@ -497,6 +497,7 @@ Type TNetworkHelper
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDNEWS )
 		obj.setInt(1, playerID)
 		obj.setInt(2, news.id)
+		print "sende news: "+news.id+" - "+news.title
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
@@ -505,9 +506,9 @@ Type TNetworkHelper
 		Local newsID:Int	= obj.getInt(2)
 		Local news:TNews	= TNews.GetNews(newsID)
 		If not news or not Game.isPlayerID(playerID) then return
+		NewsAgency.AddNewsToPlayer(news, playerID, true)
 
-		TNewsBlock.Create("",0,-100, playerID , 60*(3-Players[ playerID ].newsabonnements[news.genre]), news)
-		'Print "net: added news (id:"+newsID+") to Player:"+playerID
+		Print "net: added news (id:"+newsID+") to Player:"+playerID
 	End Method
 
 

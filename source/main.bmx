@@ -2014,31 +2014,31 @@ Type TNewsAgency
 		'Print "NEWS: no previous news found"
 	End Method
 
-	Method AddNews:Int(news:TNews)
-		For Local i:Int = 1 To 4
-			If Players[i].newsabonnements[news.genre] > 0
-				TNewsBlock.Create("",0,-100, i, 60*(3-Players[i].newsabonnements[news.genre]), news)
-				If Game.networkgame Then NetworkHelper.SendNews(i, news)
-			EndIf
-		Next
+	Method AddNewsToPlayer(news:TNews, forPlayer:int=-1, fromNetwork:int=0)
+		if not Game.isPlayerID( forPlayer) then return
+
+		If Players[ forPlayer ].newsabonnements[news.genre] > 0
+			TNewsBlock.Create("",0,-100, forPlayer, 60*(3-Players[ forPlayer ].newsabonnements[news.genre]), news)
+			If Game.isGameLeader() and not fromNetwork and Game.networkgame Then NetworkHelper.SendNews( forPlayer, news)
+		endif
 	End Method
 
 	Method AnnounceNewNews()
 		Local news:TNews = Null
 		If RandRange(1,10)>3 Then news = GetNextFromChain()  '70% alte Nachrichten holen, 30% neue Kette/Singlenews
 		If news = Null Then news = TNews.GetRandomNews() 'TNews.GetRandomChainParent()
-		If news <> Null Then
-			news.happenedday = Game.day
-			news.happenedhour = Game.GetActualHour()
-			news.happenedminute = Game.GetActualMinute()
-			Local NoOneSubscribed:Byte= True
+		If news <> Null
+			news.happenedday			= Game.day
+			news.happenedhour			= Game.GetActualHour()
+			news.happenedminute			= Game.GetActualMinute()
+			Local NoOneSubscribed:int	= True
 			For Local i:Int = 1 To 4
-				If Players[i].newsabonnements[news.genre] > 0
-					NoOneSubscribed = False
-				EndIf
+				If Players[i].newsabonnements[news.genre] > 0 then NoOneSubscribed = False
 			Next
-			If Not NoOneSubscribed Then
-				AddNews(news)
+			If Not NoOneSubscribed
+				For Local i:Int = 1 To 4
+					AddNewsToPlayer(news, i)
+				Next
 				LastNewsList.AddLast(News)
 				'Print "NEWS: added "+news.title+" episodes:"+news.episodecount
 			Else
@@ -2046,10 +2046,10 @@ Type TNewsAgency
 			EndIf
 		EndIf
 		LastEventTime = Game.timeSinceBegin
-		If RandRange(0,10) = 1 Then
-			NextEventTime = Game.timeSinceBegin + RandRange(5,50) 'between 5 and 50 minutes until next news
+		If RandRange(0,10) = 1
+			NextEventTime = Game.timeSinceBegin + RandRange(20,50) 'between 20 and 50 minutes until next news
 		Else
-			NextEventTime = Game.timeSinceBegin + RandRange(90,200) 'between 60 and 250 minutes until next news
+			NextEventTime = Game.timeSinceBegin + RandRange(90,250) 'between 90 and 250 minutes until next news
 		EndIf
 	End Method
 End Type
@@ -3001,23 +3001,6 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	'#Region 'developer shortcuts (1-4, B=office, C=Chief ...)
 	If GUIManager.getActive() <> InGame_Chat.GUIInput.uId
 if not game.networkgame
-		If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
-		If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
-		If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
-		If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
-		If KEYMANAGER.IsHit(KEY_5) then game.speed = 60
-		If KEYMANAGER.IsHit(KEY_6) then game.speed = 0.10
-
-		If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
-		If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
-		If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("archive", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_B) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("betty", 0)
-		If KEYMANAGER.IsHit(KEY_F) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("movieagency", 0)
-		If KEYMANAGER.IsHit(KEY_O) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("office", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_C) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("chief", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_N) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("news", Game.playerID)
-		If KEYMANAGER.IsHit(KEY_R) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("roomboard", -1)
-		If KEYMANAGER.IsHit(KEY_D) Players[Game.playerID].maxaudience = Stationmap.einwohner
 		If KEYMANAGER.IsHit(KEY_S)
 rem
 			Game.oldspeed = Game.speed
@@ -3250,14 +3233,34 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
-			If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
-			If KEYMANAGER.Ishit(Key_F1) And Players[1].isAI() Then Players[1].PlayerKI.reloadScript()
-			If KEYMANAGER.Ishit(Key_F2) And Players[2].isAI() Then Players[2].PlayerKI.reloadScript()
-			If KEYMANAGER.Ishit(Key_F3) And Players[3].isAI() Then Players[3].PlayerKI.reloadScript()
-			If KEYMANAGER.Ishit(Key_F4) And Players[4].isAI() Then Players[4].PlayerKI.reloadScript()
+			If GUIManager.getActive() <> InGame_Chat.GUIInput.uId
+				If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
+				If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
+				If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
+				If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
+				If KEYMANAGER.IsHit(KEY_5) then game.speed = 60
+				If KEYMANAGER.IsHit(KEY_6) then game.speed = 0.10
 
-			If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
+				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
+				If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
+				If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("archive", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_B) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("betty", 0)
+				If KEYMANAGER.IsHit(KEY_F) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("movieagency", 0)
+				If KEYMANAGER.IsHit(KEY_O) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("office", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_C) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("chief", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_N) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("news", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_R) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("roomboard", -1)
+				If KEYMANAGER.IsHit(KEY_D) Players[Game.playerID].maxaudience = Stationmap.einwohner
 
+
+				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
+				If KEYMANAGER.Ishit(Key_F1) And Players[1].isAI() Then Players[1].PlayerKI.reloadScript()
+				If KEYMANAGER.Ishit(Key_F2) And Players[2].isAI() Then Players[2].PlayerKI.reloadScript()
+				If KEYMANAGER.Ishit(Key_F3) And Players[3].isAI() Then Players[3].PlayerKI.reloadScript()
+				If KEYMANAGER.Ishit(Key_F4) And Players[4].isAI() Then Players[4].PlayerKI.reloadScript()
+
+				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
+			endif
 
 			KEYMANAGER.changeStatus()
 			If Game.gamestate = 0
