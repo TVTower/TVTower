@@ -6,36 +6,36 @@ Import brl.retro
 Import "basefunctions_lua.c"
 Extern
 	Function lua_boxobject( L:Byte Ptr,obj:Object )
-	Function lua_unboxobject:Object( L:Byte Ptr,index:int)
+	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
 	Function lua_pushlightobject( L:Byte Ptr,obj:Object )
-	Function lua_tolightobject:Object( L:Byte Ptr,index:int )
+	Function lua_tolightobject:Object( L:Byte Ptr,index:Int )
 	Function lua_gcobject( L:Byte Ptr )
 End Extern
 'end from maxlua
 
 
 Type TLuaEngine
-	global list:TList	= CreateList()
-	global lastID:int = 0
-	field id:int = 0
+	Global list:TList	= CreateList()
+	Global lastID:Int = 0
+	Field id:Int = 0
 
-	field _luaState:Byte Ptr		'Pointer to current lua environment
-	field _source:string	= ""	'current code
-	field _chunk:int		= 0		'current code loaded as chunk
-	field _initDone:int		= 0		'meta table set up finished?
-	field _objMetaTable:int			'for GC ... from MaxLua
-	Field _fenv:int					'we store other objects in our metatable - we are responsible for them
+	Field _luaState:Byte Ptr		'Pointer to current lua environment
+	Field _source:String	= ""	'current code
+	Field _chunk:Int		= 0		'current code loaded as chunk
+	Field _initDone:Int		= 0		'meta table set up finished?
+	Field _objMetaTable:Int			'for GC ... from MaxLua
+	Field _fenv:Int					'we store other objects in our metatable - we are responsible for them
 									'fenv should be known from Lua itself
 
-	Function Create:TLuaEngine( source:string )
-		local obj:TLuaEngine = New TLuaEngine.SetSource( source )
+	Function Create:TLuaEngine( source:String )
+		Local obj:TLuaEngine = New TLuaEngine.SetSource( source )
 		'init fenv and register self
 		obj.RegisterToLua()
 		obj.lastID :+1
 		obj.id = obj.lastID
 
-		self.list.addLast(obj)
-		return obj
+		Self.list.addLast(obj)
+		Return obj
 	End Function
 
 	Method Delete()
@@ -46,45 +46,45 @@ Type TLuaEngine
 
 	Function FindEngine:TLuaEngine(LuaState:Byte Ptr)
 		'local num:int = 1
-		for local engine:TLuaEngine = eachin TLuaEngine.list
-			if engine._luaState = LuaState
+		For Local engine:TLuaEngine = EachIn TLuaEngine.list
+			If engine._luaState = LuaState
 				'print "engine number "+num
-				return engine
-			endif
+				Return engine
+			EndIf
 			'num:+1
 		Next
-		print "engine not found"
-		return null
+		Print "engine not found"
+		Return Null
 	End Function
 
 	Method getLuaState:Byte Ptr()
-		If Not self._luaState
-			self._luaState=luaL_newstate()
-			luaL_openlibs self._luaState
+		If Not Self._luaState
+			Self._luaState=luaL_newstate()
+			luaL_openlibs Self._luaState
 		EndIf
-		Return self._luaState
+		Return Self._luaState
 	End Method
 
-	Method getSource:string()
+	Method getSource:String()
 		Return _source
 	End Method
 
-	Method SetSource:TLuaEngine( source:string )
+	Method SetSource:TLuaEngine( source:String )
 		_source=source
 		If _chunk
-			LuaL_unref( getLuaState(),LUA_REGISTRYINDEX,_chunk )
+			luaL_unref( getLuaState(),LUA_REGISTRYINDEX,_chunk )
 			_chunk=0
 		EndIf
 
-		self.RegisterToLua()
+		Self.RegisterToLua()
 
 		Return Self
 	End Method
 
 	'we are parent of other registered objects
-	Method RegisterToLua:int()
+	Method RegisterToLua:Int()
 		'push class block
-		If Not lua_pushchunk() then Return null
+		If Not lua_pushchunk() Then Return Null
 
 		'create fenv table
 		lua_newtable( getLuaState() )
@@ -96,7 +96,7 @@ Type TLuaEngine
 		'set self/super object
 		lua_pushvalue( getLuaState(),-1 )
 		lua_setfield( getLuaState(),-2,"self" )
-		lua_pushobject( self )
+		lua_pushobject( Self )
 		lua_setfield( getLuaState(),-2,"super" )
 		'set meta indices
 		lua_pushcfunction( getLuaState(), IndexSelf )
@@ -110,16 +110,18 @@ Type TLuaEngine
 
 		'ready!
 		lua_setfenv( getLuaState(),-2 )
-		If lua_pcall( getLuaState(),0,0,0 ) then DumpError()
+		If lua_pcall( getLuaState(),0,0,0 ) Then DumpError()
 	End Method
 
 	Method DumpError()
-		WriteStdout "LUA ERROR in Engine "+self.id+"~n"
-		WriteStdout lua_tostring( getLuaState(),-1 )
+		Print "#################################"
+		WriteStdout "LUA ERROR in Engine "+Self.id+"~n"
+		WriteStdout lua_tostring( getLuaState(),-1 )+"~n"
+		Print "#################################"
 	End Method
 
 
-	Method lua_pushChunk:int()
+	Method lua_pushChunk:Int()
 		If Not _chunk
 			If luaL_loadstring( getLuaState(),_source )
 				WriteStdout "Error loading script :~n" + lua_tostring( getLuaState(),-1 ) + "~n"
@@ -155,9 +157,9 @@ Type TLuaEngine
 					Local s:String = typeId.GetArrayElement(obj, i).ToString()
 					lua_pushlstring( getLuaState(), s, s.length )
 				Case ArrayTypeId
-					self.lua_pushArray( typeId.GetArrayElement(obj, i) )
+					Self.lua_pushArray( typeId.GetArrayElement(obj, i) )
 				Default ' for everything else, we just push the object..
-					self.lua_pushobject( typeId.GetArrayElement(obj, i) )
+					Self.lua_pushobject( typeId.GetArrayElement(obj, i) )
 			End Select
 
 			lua_settable( getLuaState(), -3 )
@@ -172,7 +174,7 @@ Type TLuaEngine
 	End Method
 
 	'from MaxLua
-			Method getObjMetaTable:int()
+			Method getObjMetaTable:Int()
 				If Not _initDone
 					lua_newtable( getLuaState() )
 					lua_pushcfunction( getLuaState(),lua_gcobject )
@@ -189,10 +191,10 @@ Type TLuaEngine
 			End Method
 
 			'adding a new method/field/func to lua
-			Method Index:int( )
+			Method Index:Int( )
 				Local obj:Object		= lua_unboxobject( getLuaState(),1 )
 				Local typeId:TTypeId	= TTypeId.ForObject( obj )
-				Local ident:string		= lua_tostring( getLuaState(),2 )
+				Local ident:String		= lua_tostring( getLuaState(),2 )
 
 				Local mth:TMethod		= typeId.FindMethod( ident )
 				'thing we have to push is a method
@@ -205,7 +207,7 @@ Type TLuaEngine
 
 				'thing we have to push is a field
 				Local fld:TField		= typeId.FindField( ident )
-				If fld= null then return false
+				If fld= Null Then Return False
 
 				Select fld.TypeId() ' BaH - added more types
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
@@ -215,7 +217,7 @@ Type TLuaEngine
 					Case DoubleTypeId
 						lua_pushnumber( getLuaState(),fld.GetDouble( obj ))
 					Case StringTypeId
-						Local t:string = fld.GetString( obj )
+						Local t:String = fld.GetString( obj )
 						lua_pushlstring( getLuaState(),t,t.length )
 					Default
 						lua_pushobject( fld.Get( obj ) )
@@ -223,14 +225,14 @@ Type TLuaEngine
 				Return True
 			End Method
 
-			Method NewIndex:int( )
+			Method NewIndex:Int( )
 				Local obj:Object		= lua_unboxobject( getLuaState(),1 )
 				Local typeId:TTypeId	= TTypeId.ForObject( obj )
 
-				Local ident:string		= lua_tostring( getLuaState(),2 )
+				Local ident:String		= lua_tostring( getLuaState(),2 )
 
 				Local mth:TMethod		= typeId.FindMethod( ident )
-				If mth then Throw "newIndex ERROR"
+				If mth Then Throw "newIndex ERROR"
 
 				Local fld:TField=typeId.FindField( ident )
 				If fld
@@ -247,31 +249,31 @@ Type TLuaEngine
 							fld.Set( obj,lua_unboxobject( getLuaState(),3 ) )
 					End Select
 					Return True
-				endif
-				print "newindex: ident not found: "+ident
+				EndIf
+				Print "newindex: ident not found: "+ident
 			End Method
 
 			'functions so we can push them to lua
 
 				'they get called if a script tries to run a method/func/field from a blitzmax object
-				Function IndexObject:int( fromLuaState:Byte Ptr )
-					local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
-					If engine and engine.Index( ) then Return 1
+				Function IndexObject:Int( fromLuaState:Byte Ptr )
+					Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
+					If engine And engine.Index( ) Then Return 1
 				End Function
 
-				Function NewIndexObject:int( fromLuaState:Byte Ptr)
-					local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
-					If engine and engine.NewIndex( ) then Return true
+				Function NewIndexObject:Int( fromLuaState:Byte Ptr)
+					Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
+					If engine And engine.NewIndex( ) Then Return True
 					Throw "newindexobject ERROR"
 				End Function
 
 
-				Function IndexSelf:int( fromLuaState:Byte Ptr )
-					local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
+				Function IndexSelf:Int( fromLuaState:Byte Ptr )
+					Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
 
 					lua_getfield( engine.getLuaState(),1,"super" )
 					lua_replace( engine.getLuaState(),1 )
-					If engine.Index( ) then Return 1
+					If engine.Index( ) Then Return 1
 
 					lua_remove( engine.getLuaState(),1 )
 					lua_gettable( engine.getLuaState(),LUA_GLOBALSINDEX )
@@ -283,19 +285,19 @@ Type TLuaEngine
 					lua_rawset( fromLuaState,1 )
 				End Function
 
-				Function Invoke:int( fromLuaState:Byte Ptr )
-					local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
-					return engine._Invoke()
+				Function Invoke:Int( fromLuaState:Byte Ptr )
+					Local engine:TLuaEngine = TLuaEngine.FindEngine(fromLuaState)
+					Return engine._Invoke()
 				End Function
 
 
-			Method _Invoke:int()
+			Method _Invoke:Int()
 				Local obj:Object		= lua_unboxobject( getLuaState(),LUA_GLOBALSINDEX-1 )
 				Local meth:TMethod		= TMethod( lua_tolightobject( getLuaState(),LUA_GLOBALSINDEX-2 ) )
 				Local tys:TTypeId[]		= meth.ArgTypes()
-				local args:Object[tys.length]
+				Local args:Object[tys.length]
 
-				For Local i:int = 0 Until args.length
+				For Local i:Int = 0 Until args.length
 					Select tys[i]
 						Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
 							args[i]=String.FromInt( lua_tointeger( getLuaState(),i+1 ) )
@@ -318,19 +320,19 @@ Type TLuaEngine
 					Case DoubleTypeId
 						lua_pushnumber( getLuaState(),t.ToString().ToDouble() )
 					Case StringTypeId
-						Local s:string = t.ToString()
+						Local s:String = t.ToString()
 						lua_pushlstring( getLuaState(),s,s.length )
 					Default
 						lua_pushobject( t )
 				End Select
-				Return true
+				Return True
 			End Method
 
 ' end maxlua import
 
 
 
-	Method CallLuaFunction:object(name:String, args:Object[] = Null)
+	Method CallLuaFunction:Object(name:String, args:Object[] = Null)
 		'push fenv
 		lua_rawgeti( getLuaState(),LUA_REGISTRYINDEX,_fenv )
 
@@ -338,9 +340,9 @@ Type TLuaEngine
 		lua_getfield( getLuaState(),-1,name )
 		If lua_isnil( getLuaState(),-1 )
 			lua_pop( getLuaState(),2 )
-			Return null
+			Return Null
 		EndIf
-		For Local i:int = 0 Until args.length
+		For Local i:Int = 0 Until args.length
 			Local typeId:TTypeId = TTypeId.ForObject( args[i] )
 			Select typeId
 				Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
@@ -353,15 +355,15 @@ Type TLuaEngine
 					Local s:String = args[i].ToString()
 					lua_pushlstring( getLuaState() ,s,s.length )
 				Case ArrayTypeId
-					self.lua_pushArray( args[i] )
+					Self.lua_pushArray( args[i] )
 				Default
-					self.lua_pushobject( args[i] )
+					Self.lua_pushobject( args[i] )
 			End Select
 		Next
-		If lua_pcall( getLuaState(),args.length,1,0 ) then DumpError()
+		If lua_pcall( getLuaState(),args.length,1,0 ) Then DumpError()
 
 		Local ret:Object
-		If Not lua_isnil( getLuaState(),-1 ) then ret = lua_tostring( getLuaState(), -1 )
+		If Not lua_isnil( getLuaState(),-1 ) Then ret = lua_tostring( getLuaState(), -1 )
 
 		' pop the result
 		lua_pop( getLuaState(),1 )
@@ -380,12 +382,12 @@ Type TLuaEngine
 		lua_setglobal( getLuaState(),ObjName )
 	End Method
 
-	Method RegisterInt( name:string, value:int )
+	Method RegisterInt( name:String, value:Int )
 		lua_pushinteger getLuaState(),value
 		lua_setfield getLuaState(),LUA_GLOBALSINDEX,name
 	End Method
 
-	Method RegisterFunction( name:string,value:Byte Ptr )
+	Method RegisterFunction( name:String,value:Byte Ptr )
 		lua_pushcclosure( getLuaState(),value,0 )
 		lua_setfield( getLuaState(),LUA_GLOBALSINDEX,name )
 	End Method

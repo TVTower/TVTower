@@ -4,10 +4,9 @@
 dofile("res/ai/AIEngine.lua")
 dofile("res/ai/TaskMoviePurchase.lua")
 dofile("res/ai/TaskNewsAgency.lua")
+dofile("res/ai/TaskAdAgency.lua")
 
 -- ##### GLOBALS #####
-globalPlayer = nil
-
 TASK_MOVIEPURCHASE	= "MoviePurchase"
 TASK_NEWSAGENCY		= "NewsAgency"
 TASK_ARCHIVE		= "Archive"
@@ -31,13 +30,14 @@ end
 function DefaultAIPlayer:initializePlayer()
 	debugMsg("Initialisiere DefaultAIPlayer-KI ...")
 	self.Stats = BusinessStats:new()
+	self.Stats:Initialize()
 end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
 	--self.TaskList[TASK_MOVIEPURCHASE]	= TaskMoviePurchase:new()
-	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
-	--self.TaskList[TASK_ADAGENCY]		= TVTAdAgency:new()
+	--self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
+	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
 	--self.TaskList[TASK_SCHEDULING]		= TVTScheduling:new()
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
@@ -48,55 +48,42 @@ end
 function DefaultAIPlayer:TickAnalyse()
 	self.Stats:ReadStats()
 end
+
+function DefaultAIPlayer:OnDayBegins()
+	self.Stats:OnDayBegins()
+end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 BusinessStats = SLFDataObject:new{
-	MinAudience = -1;	
-	AverageAudience = -1;
-	MaxAudience = -1;
-	
-	MinAudienceTemp = 100000000000;
-	AverageAudienceTemp = -1;
-	MaxAudienceTemp = -1;
-	
-	TotalAudience = 0;
-	AudienceRateScans = 0;
+	Audience = nil;
+	SpotProfit = nil;
 }
 
-function BusinessStats:DayBegin()
-	self.MinAudienceTemp = 100000000000
-	self.AverageAudienceTemp = -1
-	self.MaxAudienceTemp = -1
-	self.AudienceRateScans = 0
+function BusinessStats:Initialize()
+	self.Audience = StatisticEvaluator:new()
+	self.SpotProfit = StatisticEvaluator:new()
 end
 
-function BusinessStats:ReadStats()
-	
+function BusinessStats:OnDayBegins()
+	self.Audience:Adjust()
+	self.SpotProfit:Adjust()
+end
+
+function BusinessStats:ReadStats()	
 	local currentAudience = TVT.getPlayerAudience()
 	if (currentAudience == 0) then
 		return;
 	end
 	
-	self.AudienceRateScans = self.AudienceRateScans + 1
-	
-	debugMsg("currentAudience: " .. currentAudience)
-	
-	if currentAudience < self.MinAudienceTemp then
-		self.MinAudience = currentAudience
-		self.MinAudienceTemp = currentAudience
-	end
-	if currentAudience > self.MaxAudienceTemp then
-		self.MaxAudience = currentAudience
-		self.MaxAudienceTemp = currentAudience
-	end	
-	
-	self.TotalAudience = self.TotalAudience + currentAudience
-	self.AverageAudienceTemp = math.round(self.TotalAudience / self.AudienceRateScans, 0)
-	self.AverageAudience = self.AverageAudienceTemp
-	
-	debugMsg("Stats: " .. self.AverageAudience .. " (" .. self.MinAudience .. " - " .. self.MaxAudience .. ")")
+	--debugMsg("currentAudience: " .. currentAudience)
+	self.Audience:AddValue(currentAudience)
+	--debugMsg("Stats: " .. self.Audience.AverageValue .. " (" .. self.Audience.MinValue .. " - " .. self.Audience.MaxValue .. ")")
+end
+
+function BusinessStats:AddSpot(spot)
+	self.SpotProfit:AddValue(spot.SpotProfit)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -120,10 +107,11 @@ function OnChat(message)
 end
 
 function OnDayBegins()
+	getAIPlayer():OnDayBegins()
 end
 
 function OnReachRoom(roomId)
-	--getAIPlayer():OnReachRoom()
+	getAIPlayer():OnReachRoom()
 end
 
 function OnLeaveRoom()

@@ -40,7 +40,7 @@ Global Fader:TFader								= New TFader
 Global NewsAgency:TNewsAgency					= New TNewsAgency
 
 SeedRand(103452)
-print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
+Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
 TButton.UseFont 		= FontManager.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
@@ -115,8 +115,8 @@ Type TGame
 	Field error:Int 				= 0 					'is there a error (errorbox) floating around?
 	Field gamestate:Int 			= 0						'0 = Mainmenu, 1=Running, ...
 
-	Field stateSyncTime:int			= 0						'last sync
-	Field stateSyncTimer:int		= 2000					'sync every
+	Field stateSyncTime:Int			= 0						'last sync
+	Field stateSyncTimer:Int		= 2000					'sync every
 
 	'--networkgame auf "isNetworkGame()" umbauen
 	Field networkgame:Int 			= 0 					'are we playing a network game? 0=false, 1=true, 2
@@ -137,9 +137,9 @@ Type TGame
 
 	'Summary: loads the GameObject from a XMLstream
 	Function REMOVE_Load:Int()
-print "implement TGame:Load"
-return 0
-rem
+Print "implement TGame:Load"
+Return 0
+Rem
 		PrintDebug("TGame.Load()", "Lade Spieleinstellungen", DEBUG_SAVELOAD)
 		Local NODE:xmlNode = LoadSaveFile.NODE.FirstChild()
 		Local nodevalue:String
@@ -283,16 +283,16 @@ endrem
 		Return (number > 0 And number <= 4)
 	End Method
 
-	Method GetMaxAudience:int(playerID:int=-1)
-		if not Game.isPlayerID(playerID)
-			local avg:int = 0
-			for local i:int = 1 to 4
+	Method GetMaxAudience:Int(playerID:Int=-1)
+		If Not Game.isPlayerID(playerID)
+			Local avg:Int = 0
+			For Local i:Int = 1 To 4
 				avg :+ Players[ i ].maxaudience
 			Next
 			avg:/4
-			return avg
-		endif
-		return Players[ playerID ].maxaudience
+			Return avg
+		EndIf
+		Return Players[ playerID ].maxaudience
 	End Method
 
 	Method GetDayName:String(day:Int, longVersion:Int=0)
@@ -315,11 +315,11 @@ endrem
 	Method LoadConfig:Byte(configfile:String="config/settings.xml")
 		Local xml:TxmlHelper = TxmlHelper.Create(configfile)
 		If xml <> Null Then PrintDebug ("TGame.LoadConfig()", "settings.xml eingelesen", DEBUG_LOADING)
-		local node:TxmlNode = xml.FindRootChild("settings")
+		Local node:TxmlNode = xml.FindRootChild("settings")
 		If node = Null Or node.getName() <> "settings"
 			Print "settings.xml fehlt der settings-Bereich"
-			return 0
-		endif
+			Return 0
+		EndIf
 		Self.username			= xml.FindValue(node,"username", "Ano Nymus")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'username' fehlt, setze Defaultwert: 'Ano Nymus'", DEBUG_LOADING)
 		Self.userchannelname	= xml.FindValue(node,"channelname", "SunTV")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'userchannelname' fehlt, setze Defaultwert: 'SunTV'", DEBUG_LOADING)
 		Self.userlanguage		= xml.FindValue(node,"language", "de")			'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'language' fehlt, setze Defaultwert: 'de'", DEBUG_LOADING)
@@ -382,15 +382,15 @@ endrem
 		If IsGameLeader() And NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
 
 		'send state to clients
-		If IsGameLeader() And self.networkgame and self.stateSyncTime < Millisecs()
+		If IsGameLeader() And Self.networkgame And Self.stateSyncTime < MilliSecs()
 			NetworkHelper.SendGameState()
-			self.stateSyncTime = Millisecs() + self.stateSyncTimer
-		endif
+			Self.stateSyncTime = MilliSecs() + Self.stateSyncTimer
+		EndIf
 
 		'if speed to high - potential skip of minutes, so "fetch them"
 		'sets minute / hour / day
-		Local missedMinutes:Int = floor(Self.minutesOfDayGone - Self.lastMinutesOfDayGone)
-		If missedMinutes = 0 then return
+		Local missedMinutes:Int = Floor(Self.minutesOfDayGone - Self.lastMinutesOfDayGone)
+		If missedMinutes = 0 Then Return
 
 		For Local i:Int = 1 To missedMinutes
 			Self.minute = (Floor(Self.lastMinutesOfDayGone)  + i ) Mod 60 '0 to 59
@@ -410,7 +410,7 @@ endrem
 				EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", Self.day))
 			EndIf
 		Next
-		Self.lastMinutesOfDayGone = floor(Self.minutesOfDayGone)
+		Self.lastMinutesOfDayGone = Floor(Self.minutesOfDayGone)
 	End Method
 
 	'Summary: returns day of the week including gameday
@@ -501,9 +501,9 @@ Type TPlayer
 	End Function
 
 	Function Load:Tplayer(pnode:TxmlNode)
-print "implement Load:Tplayer"
-return null
-rem
+Print "implement Load:Tplayer"
+Return Null
+Rem
 		Local Player:TPlayer = TPlayer.Create("save", "save", Assets.GetSpritePack("figures").GetSprite("Man1") , 0, 0, 0, 0, 0, 0, 1, "")
 		TFigures.List.Remove(Player.figure)
 		Local i:Int = 0, j:Int = 0
@@ -557,7 +557,7 @@ endrem
 		TFinancials.List.Clear()
 		Local Children:TList = LoadSaveFile.NODE.getChildren()
 		For Local node:txmlNode = EachIn Children
-			If NODE.getName() = "PLAYER" then TPlayer.Load(NODE)
+			If NODE.getName() = "PLAYER" Then TPlayer.Load(NODE)
 		Next
 		'Print "loaded player informations"
 	End Function
@@ -604,8 +604,8 @@ endrem
 		Player.Figure.ParentPlayer = Player
 		If controlledByID = 0 And Game.playerID = 1 Then
 			If TPlayer.globalID = 2
-				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
-'KIrem				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
+'				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
+				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 			Else
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
 			EndIf
@@ -660,18 +660,18 @@ endrem
 		Next
 	End Method
 
-	Method GetNewsAbonnement:int(genre:int)
+	Method GetNewsAbonnement:Int(genre:Int)
 		If genre > 5 Then Return 0 'max 6 categories 0-5
-		return self.newsabonnements[genre]
+		Return Self.newsabonnements[genre]
 	End Method
 
 	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True)
 		If level > Game.maxAbonnementLevel Then Return
 		If genre > 5 Then Return 'max 6 categories 0-5
-		if Self.newsabonnements[genre] <> level
+		If Self.newsabonnements[genre] <> level
 			Self.newsabonnements[genre] = level
 			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Game.playerID, genre, level)
-		endif
+		EndIf
 	End Method
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
@@ -746,7 +746,7 @@ endrem
 				EndIf
 				If Player.audience > Adblock.contract.calculatedMinAudience And Adblock.contract.spotnumber >= Adblock.contract.spotcount
 					Adblock.contract.botched = 2
-					print "werbegeld: "+Adblock.contract.calculatedProfit
+					Print "werbegeld: "+Adblock.contract.calculatedProfit
 					Player.finances[Game.getWeekday()].earnAdProfit(Adblock.contract.calculatedProfit)
 					AdBlock.RemoveOverheadAdblocks() 'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
 					'Print "should remove contract:"+adblock.contract.title
@@ -760,7 +760,7 @@ endrem
 
 	'end of day - take over money for next day
 	Function TakeOverMoney()
-		local dayBefore:int = Max(0, Game.getWeekday()-1)
+		Local dayBefore:Int = Max(0, Game.getWeekday()-1)
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Player.finances[Game.getWeekday()].takeOverFromDayBefore(Player.finances[ dayBefore ])
 		Next
@@ -796,7 +796,7 @@ endrem
 			block = Player.ProgrammePlan.GetActualProgrammeBlock()
 			Player.audience = 0
 
-			If block and block.programme and Player.maxaudience <> 0
+			If block And block.programme And Player.maxaudience <> 0
 				Player.audience = Floor(Player.maxaudience * block.Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
 				If recompute
@@ -900,12 +900,12 @@ Type TFinancials
 	Field ListLink:TLink {saveload = "special" sl = "no"}
 	Global List:TList = CreateList() {saveload = "special" sl = "no"}
 
-	global debug:int = 0
+	Global debug:Int = 0
 
 	Function Load:TFinancials(pnode:txmlNode, finance:TFinancials)
-print "implement Load:TFinancials"
-return null
-rem
+Print "implement Load:TFinancials"
+Return Null
+Rem
 		Local NODE:xmlNode = pnode.FirstChild()
 		While NODE <> Null
 			Local nodevalue:String = ""
@@ -965,14 +965,14 @@ endrem
 		Return finances
 	End Function
 
-	Method TakeOverFromDayBefore:int(otherFinances:TFinancials)
-		self.money = otherFinances.money
-		self.credit = otherFinances.credit
+	Method TakeOverFromDayBefore:Int(otherFinances:TFinancials)
+		Self.money = otherFinances.money
+		Self.credit = otherFinances.credit
 	End Method
 
 	'refreshs stats about misc sells
 	Method SellMisc(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" MISC : "+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" MISC : "+_money
 		sold_ads	:+_money
 		sold_total	:+_money
 		ChangeMoney(_money)
@@ -989,12 +989,12 @@ endrem
 		money:+_moneychange
 		If Players[ Self.playerID ].isAI() Then Players[ Self.playerID ].PlayerKI.CallOnMoneyChanged()
 		If Self.playerID = Game.playerID Then Interface.BottomImgDirty = True
-		if debug then print "FINANZ: player :"+self.playerID+" geldaenderung:"+_moneychange
+		If debug Then Print "FINANZ: player :"+Self.playerID+" geldaenderung:"+_moneychange
 	End Method
 
 	'refreshs stats about earned money from adspots
 	Method earnAdProfit(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" Werbeeinahme: "+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" Werbeeinahme: "+_money
 		sold_ads	:+_money
 		sold_total	:+_money
 		ChangeMoney(_money)
@@ -1004,13 +1004,13 @@ endrem
 	Method earnCallerRevenue(_money:Int)
 		Self.callerRevenue	:+_money
 		Self.sold_total		:+_money
-		if debug then print "FINANZ: player :"+self.playerID+" Callshowgewinn: "+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" Callshowgewinn: "+_money
 		ChangeMoney(_money)
 	End Method
 
 	'refreshs stats about earned money from selling a movie/programme
 	Method SellMovie(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" Filmverkauf: "+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" Filmverkauf: "+_money
 		sold_movies	:+_money
 		sold_total	:+_money
 		ChangeMoney(_money)
@@ -1048,7 +1048,7 @@ endrem
 	'refreshs stats about paid money from buying a movie/programme
 	Method PayMovie:Byte(_money:Int)
 		If money >= _money
-			if debug then print "FINANZ: player :"+self.playerID+" Filmkauf: -"+_money
+			If debug Then Print "FINANZ: player :"+Self.playerID+" Filmkauf: -"+_money
 			paid_movies:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1062,7 +1062,7 @@ endrem
 	'refreshs stats about paid money from buying a station
 	Method PayStation:Byte(_money:Int)
 		If money >= _money
-			if debug then print "FINANZ: player :"+self.playerID+" Stationkauf: -"+_money
+			If debug Then Print "FINANZ: player :"+Self.playerID+" Stationkauf: -"+_money
 			paid_stations:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1076,7 +1076,7 @@ endrem
 	'refreshs stats about paid money from buying a script (own production)
 	Method PayScript:Byte(_money:Int)
 		If money >= _money
-			if debug then print "FINANZ: player :"+self.playerID+" Scriptkauf: -"+_money
+			If debug Then Print "FINANZ: player :"+Self.playerID+" Scriptkauf: -"+_money
 			paid_scripts:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1102,7 +1102,7 @@ endrem
 
 	'refreshs stats about paid money from paying a penalty fee (not sent the necessary adspots)
 	Method PayPenalty(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" Werbestrafe: -"+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" Werbestrafe: -"+_money
 		paid_penalty:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1110,7 +1110,7 @@ endrem
 
 	'refreshs stats about paid money from paying the rent of rooms
 	Method PayRent(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" Miete: -"+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" Miete: -"+_money
 		paid_rent:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1119,7 +1119,7 @@ endrem
 	'refreshs stats about paid money from paying for the sent newsblocks
 	Method PayNews:Byte(_money:Int)
 		If money >= _money
-			if debug then print "FINANZ: player :"+self.playerID+" Newskauf: -"+_money
+			If debug Then Print "FINANZ: player :"+Self.playerID+" Newskauf: -"+_money
 			paid_news:+_money
 			paid_total:+_money
 			ChangeMoney(- _money)
@@ -1132,7 +1132,7 @@ endrem
 
 	'refreshs stats about paid money from paying the daily costs a newsagency-abonnement
 	Method PayNewsAgencies(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" Newsabo: -"+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" Newsabo: -"+_money
 		paid_newsagencies:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1140,7 +1140,7 @@ endrem
 
 	'refreshs stats about paid money from paying the fees for the owned stations
 	Method PayStationFees(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" Stationsgebuehren: -"+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" Stationsgebuehren: -"+_money
 		paid_stationfees:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -1148,7 +1148,7 @@ endrem
 
 	'refreshs stats about paid money from paying misc things
 	Method PayMisc(_money:Int)
-		if debug then print "FINANZ: player :"+self.playerID+" MISC: -"+_money
+		If debug Then Print "FINANZ: player :"+Self.playerID+" MISC: -"+_money
 		paid_misc:+_money
 		paid_total:+_money
 		ChangeMoney(- _money)
@@ -2014,13 +2014,13 @@ Type TNewsAgency
 		'Print "NEWS: no previous news found"
 	End Method
 
-	Method AddNewsToPlayer(news:TNews, forPlayer:int=-1, fromNetwork:int=0)
-		if not Game.isPlayerID( forPlayer) then return
+	Method AddNewsToPlayer(news:TNews, forPlayer:Int=-1, fromNetwork:Int=0)
+		If Not Game.isPlayerID( forPlayer) Then Return
 
 		If Players[ forPlayer ].newsabonnements[news.genre] > 0
 			TNewsBlock.Create("",0,-100, forPlayer, 60*(3-Players[ forPlayer ].newsabonnements[news.genre]), news)
-			If Game.isGameLeader() and not fromNetwork and Game.networkgame Then NetworkHelper.SendNews( forPlayer, news)
-		endif
+			If Game.isGameLeader() And Not fromNetwork And Game.networkgame Then NetworkHelper.SendNews( forPlayer, news)
+		EndIf
 	End Method
 
 	Method AnnounceNewNews()
@@ -2031,9 +2031,9 @@ Type TNewsAgency
 			news.happenedday			= Game.day
 			news.happenedhour			= Game.GetActualHour()
 			news.happenedminute			= Game.GetActualMinute()
-			Local NoOneSubscribed:int	= True
+			Local NoOneSubscribed:Int	= True
 			For Local i:Int = 1 To 4
-				If Players[i].newsabonnements[news.genre] > 0 then NoOneSubscribed = False
+				If Players[i].newsabonnements[news.genre] > 0 Then NoOneSubscribed = False
 			Next
 			If Not NoOneSubscribed
 				For Local i:Int = 1 To 4
@@ -2719,11 +2719,11 @@ Function Menu_GameSettings_Draw()
 				Print "sent data for player: "+playerids
 
 				'add to local collections
-				For local programme:TProgramme = eachin programmeArray
-					if programme then Players[ playerids ].ProgrammeCollection.AddProgramme( programme )
+				For Local programme:TProgramme = EachIn programmeArray
+					If programme Then Players[ playerids ].ProgrammeCollection.AddProgramme( programme )
 				Next
-				For local contract:TContract = eachin contractArray
-					if contract then Players[ playerids ].ProgrammeCollection.AddContract( contract )
+				For Local contract:TContract = EachIn contractArray
+					If contract Then Players[ playerids ].ProgrammeCollection.AddContract( contract )
 				Next
 
 
@@ -2842,7 +2842,7 @@ End Type
 Game.gamestate = GAMESTATE_MAINMENU
 Function UpdateMenu(deltaTime:Float=1.0)
 	'	App.Timer.Update(0)
-	If Game.networkgame then Network.Update()
+	If Game.networkgame Then Network.Update()
 	Select Game.gamestate
 		Case GAMESTATE_MAINMENU
 			Menu_Main()
@@ -2913,7 +2913,7 @@ Function Init_Creation()
 			'give 1 call in
 			Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
-			for local i:int = 0 to 2
+			For Local i:Int = 0 To 2
 				Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids, 0.10),playerids)
 			Next
 		Next
@@ -3000,9 +3000,9 @@ Function UpdateMain(deltaTime:Float = 1.0)
 
 	'#Region 'developer shortcuts (1-4, B=office, C=Chief ...)
 	If GUIManager.getActive() <> InGame_Chat.GUIInput.uId
-if not game.networkgame
+If Not game.networkgame
 		If KEYMANAGER.IsHit(KEY_S)
-rem
+Rem
 			Game.oldspeed = Game.speed
 			Game.speed = 0
 			SaveError = TError.Create("Speichere...", "Spielstand wird gespeichert")
@@ -3012,17 +3012,17 @@ rem
 endrem
 		EndIf
 		If KEYMANAGER.IsHit(KEY_L)
-rem
+Rem
 			Game.speed = 0
 			LoadError = TError.Create("Lade...", "Spielstand wird geladen")
 			Game.LoadGame("savegame.zip")
 			LoadError.link.Remove()
 endrem
 		EndIf
-endif
+EndIf
 
-		If KEYMANAGER.IsDown(KEY_UP) then Game.speed:+0.05
-		If KEYMANAGER.IsDown(KEY_DOWN) then Game.speed = Max( Game.speed - 0.05, 0)
+		If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
+		If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
 	EndIf
 	'#EndRegion
 
@@ -3238,8 +3238,8 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
 				If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
 				If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
-				If KEYMANAGER.IsHit(KEY_5) then game.speed = 60
-				If KEYMANAGER.IsHit(KEY_6) then game.speed = 0.10
+				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 60
+				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 0.10
 
 				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
 				If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
@@ -3260,7 +3260,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.Ishit(Key_F4) And Players[4].isAI() Then Players[4].PlayerKI.reloadScript()
 
 				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
-			endif
+			EndIf
 
 			KEYMANAGER.changeStatus()
 			If Game.gamestate = 0
@@ -3294,7 +3294,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			EndIf
 			FontManager.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
 			FontManager.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
-			if game.networkgame then FontManager.baseFont.Draw("ping "+Int(Network.client.latency)+"ms", 375,0)
+			If game.networkgame Then FontManager.baseFont.Draw("ping "+Int(Network.client.latency)+"ms", 375,0)
 			If App.prepareScreenshot = 1 Then DrawImage(gfx_startscreen_logosmall, App.settings.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
 
 			TProfiler.Enter("Draw-Flip")

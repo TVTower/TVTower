@@ -14,6 +14,9 @@
 -- ##### INCLUDES #####
 dofile("res/ai/SLF.lua")
 
+-- ##### GLOBALS #####
+globalPlayer = nil
+
 -- ##### KONSTANTEN #####
 TASK_STATUS_OPEN	= "T_open"
 TASK_STATUS_PREPARE	= "T_prepare"
@@ -24,8 +27,6 @@ JOB_STATUS_NEW		= "J_new"
 JOB_STATUS_REDO		= "J_redo"
 JOB_STATUS_RUN		= "J_run"
 JOB_STATUS_DONE		= "J_done"
-
--- ##### KONSTANTEN #####
 
 -- ##### KLASSEN #####
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -105,6 +106,10 @@ function AIPlayer:SelectTask()
 	return BestTask
 end
 
+function AIPlayer:OnDayBegins()
+	--Zum �berschreiben
+end
+
 function AIPlayer:OnReachRoom()
 	self.CurrentTask:OnReachRoom()
 end
@@ -137,6 +142,7 @@ end
 
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgew�hlt wurde (NICHT �BERSCHREIBEN!)
 function AITask:StartNextJob()
+	debugMsg("StartNextJob")
 	local roomNumber = TVT.GetPlayerRoom()
 	debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
 	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt daf�r, dass der Spieler in den richtigen Raum geht!
@@ -160,7 +166,7 @@ function AITask:Tick()
 	if (self.CurrentJob == nil) then
 		self:StartNextJob() --Von vorne anfangen
 	else
-		if self.CurrentJob.Status == JOB_STATUS_DONE then
+		if self.CurrentJob.Status == JOB_STATUS_DONE then			
 			self.CurrentJob = nil
 			--SendToChat("----- Alter Job ist fertig - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
@@ -197,8 +203,9 @@ function AITask:SetDone()
 end
 
 function AITask:OnReachRoom()
+	debugMsg("OnReachRoom!")
 	if (self.CurrentJob ~= nil) then
-		self:OnReachRoom()
+		self.CurrentJob:OnReachRoom()
 	end
 end
 
@@ -218,12 +225,10 @@ function AIJob:typename()
 end
 
 function AIJob:Start(pParams)
-	debugMsg("Start1/2")
 	self.StartParams = pParams
 	self.StartJob = TVT.GetTime()
 	self.LastCheck = TVT.GetTime()
 	self:Prepare()
-	debugMsg("Start2/2")
 end
 
 function AIJob:Prepare(pParams)
@@ -258,25 +263,79 @@ function AIJobGoToRoom:typename()
 end
 
 function AIJobGoToRoom:OnReachRoom()
-	self.sStatus = JOB_STATUS_DONE
+	debugMsg("AIJobGoToRoom DONE!")
+	self.Status = JOB_STATUS_DONE
 end
 
 function AIJobGoToRoom:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
 		TVT.DoGoToRoom(self.TargetRoom)
-		self.sStatus = JOB_STATUS_RUN
+		self.Status = JOB_STATUS_RUN
 	end
 end
 
 function AIJobGoToRoom:Tick()
-	self:ReDoCheck(10)
+	if (self.Status ~= JOB_STATUS_DONE) then
+		self:ReDoCheck(10)
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+StatisticEvaluator = SLFDataObject:new{
+	MinValue = -1;	
+	AverageValue = -1;
+	MaxValue = -1;
+	
+	MinValueTemp = 100000000000000;
+	AverageValueTemp = -1;
+	MaxValueTemp = -1;
+	
+	TotalSum = 0;
+	Values = 0;
+}
+
+function StatisticEvaluator:Adjust()
+	self.MinValueTemp = 100000000000000
+	self.AverageValueTemp = -1
+	self.MaxValueTemp = -1
+	self.Values = 0
+end
+
+function StatisticEvaluator:AddValue(value)		
+	self.Values = self.Values + 1
+	
+	if value < self.MinValueTemp then
+		self.MinValue = value
+		self.MinValueTemp = value
+	end
+	if value > self.MaxValueTemp then
+		self.MaxValue = value
+		self.MaxValueTemp = value
+	end	
+	
+	self.TotalSum = self.TotalSum + value
+	self.AverageValueTemp = math.round(self.TotalSum / self.Values, 0)
+	self.AverageValue = self.AverageValueTemp
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 function debugMsg(pMessage)	
-	--TVT.PrintOut(TVT.ME)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		TVT.PrintOut(TVT.ME .. ": " .. pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	end
+end
+
+function CutFactor(factor, minValue, maxValue)	
+	if (factor > maxValue) then
+		return maxValue
+	elseif (factor < minValue) then
+		return minValue
+	else
+		return factor
+	end	
 end
