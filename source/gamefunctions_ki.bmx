@@ -641,7 +641,7 @@ Type TLuaFunctions
 
 		Local ret:Int = 0
 		For Local Block:TContractBlock = EachIn TContractBlock.list
-			If Block.contract.id = ObjektID then return Block.SignContract( self.ME )
+			If Block.contract.id = ObjektID and Block.owner <= 0 then return Block.SignContract( self.ME )
 		Next
 		Return -2
 	End Method
@@ -651,7 +651,7 @@ Type TLuaFunctions
 
 		Local ret:Int = 0
 		For Local Block:TContractBlock = EachIn TContractBlock.List
-			If Block.owner <> self.ME then ret:+1
+			If Block.owner <= 0 then ret:+1
 		Next
 		Return ret
 	End Method
