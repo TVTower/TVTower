@@ -296,9 +296,10 @@ endrem
 
 	Method CallElevator:Int()
 		if calledElevator then return false
+
 		'print self.name+" calls elevator"
 
-		If id = Game.playerID Or (IsAI() And Game.playerID = 1)
+		If id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader())
 			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, False)
 		Else
 			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, True)

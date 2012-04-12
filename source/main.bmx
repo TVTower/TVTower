@@ -1405,9 +1405,12 @@ Type TElevator
 			FloorRouteList.AddFirst(floorroute)
 			Self.toFloor = Self.GetFloorRoute()
 		Else
-			If Not FloorRouteList.IsEmpty() And (TFloorRoute(FloorRouteList.Last()).who = who Or TFloorRoute(FloorRouteList.Last()).floornumber = floornumber)
-				FloorRouteList.RemoveLast()
-			EndIf
+	'dieser bereich ist nur nutzbar, wenn mehrere Personen gleichzeitig fahren koennen
+
+'			If Not FloorRouteList.IsEmpty() And (TFloorRoute(FloorRouteList.Last()).who = who Or TFloorRoute(FloorRouteList.Last()).floornumber = floornumber)
+'				print "entferne letzte"
+'				FloorRouteList.RemoveLast()
+'			EndIf
 			FloorRouteList.AddLast(floorroute)
 		EndIf
 		If Not fromNetwork And Game.networkgame
