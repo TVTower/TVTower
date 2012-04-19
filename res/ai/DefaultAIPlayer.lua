@@ -2,6 +2,7 @@
 -- use slash for directories - windows accepts it, linux needs it
 -- or maybe package.config:sub(1,1)
 dofile("res/ai/AIEngine.lua")
+dofile("res/ai/BudgetManager.lua")
 dofile("res/ai/TaskMoviePurchase.lua")
 dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
@@ -31,6 +32,9 @@ function DefaultAIPlayer:initializePlayer()
 	debugMsg("Initialisiere DefaultAIPlayer-KI ...")
 	self.Stats = BusinessStats:new()
 	self.Stats:Initialize()
+	
+	self.Budget = BudgetManager:new()
+	self.Budget:Initialize()
 end
 
 function DefaultAIPlayer:initializeTasks()
@@ -51,6 +55,7 @@ end
 
 function DefaultAIPlayer:OnDayBegins()
 	self.Stats:OnDayBegins()
+	self.Budget:CalculateBudget()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -59,16 +64,25 @@ end
 BusinessStats = SLFDataObject:new{
 	Audience = nil;
 	SpotProfit = nil;
+	SpotProfitPerSpot = nil;
+	SpotProfitPerSpotAcceptable = nil;
+	SpotPenalty = nil;
 }
 
 function BusinessStats:Initialize()
 	self.Audience = StatisticEvaluator:new()
 	self.SpotProfit = StatisticEvaluator:new()
+	self.SpotProfitPerSpot = StatisticEvaluator:new()
+	self.SpotProfitPerSpotAcceptable = StatisticEvaluator:new()
+	self.SpotPenalty = StatisticEvaluator:new()
 end
 
 function BusinessStats:OnDayBegins()
 	self.Audience:Adjust()
 	self.SpotProfit:Adjust()
+	self.SpotProfitPerSpot:Adjust()
+	self.SpotProfitPerSpotAcceptable:Adjust()
+	self.SpotPenalty:Adjust()
 end
 
 function BusinessStats:ReadStats()	
@@ -84,6 +98,11 @@ end
 
 function BusinessStats:AddSpot(spot)
 	self.SpotProfit:AddValue(spot.SpotProfit)
+	self.SpotProfitPerSpot:AddValue(spot.SpotProfit / spot.SpotToSend)
+	if (spot.Audience < globalPlayer.Stats.Audience.MaxValue) then
+		self.SpotProfitPerSpotAcceptable:AddValue(spot.SpotProfit / spot.SpotToSend)
+	end
+	self.SpotPenalty:AddValue(spot.SpotPenalty)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -95,6 +114,7 @@ end
 function getAIPlayer()
 	if globalPlayer == nil then
 		globalPlayer = DefaultAIPlayer:new()
+		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien
 	end
 	return globalPlayer
 end

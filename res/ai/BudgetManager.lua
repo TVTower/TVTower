@@ -15,7 +15,7 @@ function BudgetManager:typename()
 	return "BudgetManager"
 end
 
-function BudgetManager:initialize()
+function BudgetManager:Initialize()
 	-- Da am Anfang auf keine Erfahrungswerte bezüglich der Budgethöhe zurückgegriffen werden kann,
 	-- wird für alle vergangenen Tage angenommen, dass es gleich war. Das Budget entspricht erstmal 80% des Startkapitals.
 	local playerMoney = TVT.GetPlayerMoney(TVT.ME) --aktueller Geldstand
@@ -45,7 +45,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	local YesterdayStartAccountBalance = self.TodayStartAccountBalance	-- den gestrigen Wert zwischenspeichern
 
 	-- Werte nachjustieren
-	self.TodayStartAccountBalance = GetPlayerMoney(ME) -- Kontostand aktualisieren
+	self.TodayStartAccountBalance = TVT.GetPlayerMoney() -- Kontostand aktualisieren
 	self.BudgetMinimum = self.BudgetMinimum * 1.01
 	self.BudgetMaximum = self.TodayStartAccountBalance * 0.95
 
@@ -75,7 +75,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 end
 
 function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
-	--SendToChat("A1.1: " .. pTurnOver); SendToChat("AX.1: " .. self.BudgetHistory[OLD_BUDGET_1]); SendToChat("AX.2: " .. self.BudgetHistory[OLD_BUDGET_2]); SendToChat("AX.3: " .. self.BudgetHistory[OLD_BUDGET_3])
+	debugMsg("A1.1: " .. pTurnOver); debugMsg("AX.1: " .. self.BudgetHistory[OLD_BUDGET_1]); debugMsg("AX.2: " .. self.BudgetHistory[OLD_BUDGET_2]); debugMsg("AX.3: " .. self.BudgetHistory[OLD_BUDGET_3])
 	
 	-- Alle Erfahrungswerte werden aufsummiert und mit einem Faktor gewichtet und dann durch 10 geteilt. 4 + 3 + 2 + 1 / 10	
 	local TempSum = ((pTurnOver * 4) + (self.BudgetHistory[OLD_BUDGET_1] * 3) + (self.BudgetHistory[OLD_BUDGET_2] * 2) + (self.BudgetHistory[OLD_BUDGET_3] * 1)) / 10	
@@ -87,9 +87,11 @@ function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
 end
 
 function BudgetManager:AllocateBudgetToTaks(pBudget)
+	local player = _G["globalPlayer"] --Zugriff die globale Variable
+
 	-- Zählen wie viele Budgetanteile es insgesamt gibt
 	local BudgetUnits = 0	
-	for k,v in pairs(getBrain().TaskList) do
+	for k,v in pairs(player.TaskList) do
 		BudgetUnits = BudgetUnits + v.BudgetWeigth
 	end
 
@@ -97,10 +99,10 @@ function BudgetManager:AllocateBudgetToTaks(pBudget)
 	local BudgetUnit = pBudget / BudgetUnits
 
 	-- Die Budgets zuweisen
-	for k,v in pairs(getBrain().TaskList) do
+	for k,v in pairs(player.TaskList) do
 		v.CurrentBudget = math.round(v.BudgetWeigth * BudgetUnit)
 		v.BudgetWholeDay = v.CurrentBudget
-		--debugMsg(v:typename() .. ": " .. v.Budget)
+		--debugMsg(v:typename() .. "- BudgetWholeDay: " .. v.BudgetWholeDay)
 	end
 end
 

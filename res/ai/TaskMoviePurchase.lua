@@ -3,6 +3,7 @@ TaskMoviePurchase = AITask:new{
 	NiveauChecked = false;
 	MovieCount = 0;
 	CheckMode = 0;
+	BudgetWeigth = 7;
 	MovieList = nil;
 	TargetRoom = TVT.ROOM_MOVIEAGENCY;
 	MoviePurchaseJob = nil

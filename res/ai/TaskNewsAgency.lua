@@ -1,6 +1,7 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 TaskNewsAgency = AITask:new{
 	TargetRoom = TVT.ROOM_NEWSAGENCY_PLAYER_ME;
+	BudgetWeigth = 3
 }
 
 function TaskNewsAgency:typename()

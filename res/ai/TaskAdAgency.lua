@@ -1,6 +1,8 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-TaskAdAgency = AITask:new{
+TaskAdAgency = AITask:new{	
 	TargetRoom = TVT.ROOM_ADAGENCY;
+	SpotsInAgency = nil;
+	BudgetWeigth = 1 --TODO: Nach dem TEST auf 0 REDUZIEREN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	-- zu Senden
 	-- Strafe
 	-- Zuschauer
@@ -14,12 +16,20 @@ end
 function TaskAdAgency:Activate()
 	debugMsg("Starte Task 'TaskAdAgency'")
 	-- Was getan werden soll:
-	self.AdAgencyJob = JobCheckSpots:new()
+	self.JobCheckSpots = JobCheckSpots:new()
+	self.JobCheckSpots.AdAgencyTask = self
+	
+	self.AppraiseSpots = AppraiseSpots:new()
+	self.AppraiseSpots.AdAgencyTask = self
+	
+	self.SpotsInAgency = {}
 end
 
 function TaskAdAgency:GetNextJobInTargetRoom()
-	if (self.AdAgencyJob.Status ~= JOB_STATUS_DONE) then
-		return self.AdAgencyJob
+	if (self.JobCheckSpots.Status ~= JOB_STATUS_DONE) then
+		return self.JobCheckSpots
+	elseif (self.AppraiseSpots.Status ~= JOB_STATUS_DONE) then
+		return self.AppraiseSpots
 	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -29,6 +39,7 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 JobCheckSpots = AIJob:new{
 	CurrentSpotIndex = 0;
+	AdAgencyTask = nil
 }
 
 function JobCheckSpots:Prepare()
@@ -37,49 +48,78 @@ function JobCheckSpots:Prepare()
 end
 
 function JobCheckSpots:Tick()
-	--debugMsg("CheckSpot Tick")
-	--debugMsg("CheckSpot: " .. self.CurrentSpotIndex)
 	local spotId = TVT.sa_getSpot(self.CurrentSpotIndex)
 	if (spotId == -2) then
 		self.Status = JOB_STATUS_DONE
+		return
 	end	
-	--debugMsg("CheckSpot Tick - SpotId: " .. spotId)
+	
 	local spot = Spot:new()
 	spot:Initialize(spotId)
-	self:AppraiseSpot(spot)
+	local player = _G["globalPlayer"]
+	self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
 	
 	self.CurrentSpotIndex = self.CurrentSpotIndex + 1
 end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-function JobCheckSpots:AppraiseSpot(spot)
---[[
-	local stats = globalPlayer.Stats
-	local score = -1
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+AppraiseSpots = AIJob:new{
+	CurrentSpotIndex = 0;
+	AdAgencyTask = nil
+}
+
+function AppraiseSpots:Tick()
+	local spot = self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex]
+	self:AppraiseSpot(spot)	
+	self.CurrentSpotIndex = self.CurrentSpotIndex + 1
+end
+
+function AppraiseSpots:AppraiseSpot(spot)
+	--return nil --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	debugMsg("AppraiseSpot")
+	debugMsg("===================")
+	local player = _G["globalPlayer"]
+	local stats = player.Stats
+	local score = -1	
 	
-	if (spot.Audience > stats.MaxAudience) then
+	if (spot.Audience > stats.Audience.MaxValue) then
 		spot.Appraisal = -2
+		debugMsg("zu viele Zuschauer verlangt! " .. spot.Audience .. " / " .. stats.Audience.MaxValue)
 		return
 	end
 	
-	local financeBase = spot.SpotProfit / self.SpotToSend
+	debugMsg("spot.SpotProfit: " .. spot.SpotProfit .. " ; spot.SpotToSend: " .. spot.SpotToSend)
+	local profitPerSpot = spot.SpotProfit / spot.SpotToSend
+	debugMsg("profitPerSpot: " .. profitPerSpot .. " ; stats.SpotProfitPerSpotAcceptable.AverageValue: " .. stats.SpotProfitPerSpotAcceptable.AverageValue)
+	local financePower = profitPerSpot / stats.SpotProfitPerSpotAcceptable.AverageValue	
+	debugMsg("financePower1: " .. financePower)
+	financePower = CutFactor(financePower, 0.3, 2)
+	debugMsg("financePower2: " .. financePower)
 
 	-- 2 = Locker zu schaffen / 0.3 schwierig zu schaffen	
-	local audienceFactor = stats.AverageAudience / spot.Audience	
+	local audienceFactor = stats.Audience.AverageValue / spot.Audience
 	audienceFactor = CutFactor(audienceFactor, 0.3, 2)
+	debugMsg("audienceFactor: " .. audienceFactor .. " ; SpotProfitPerSpot: " .. stats.Audience.AverageValue .. " ; Audience:" .. spot.Audience)
 
-	-- 2 = Risiko und Strafe sind Verhältnis gering  / 0.3 = Risiko und Strafe sind Verhältnis hoch
-	local riskFactor = spot.SpotProfit / spot.SpotPenalty
+	-- 2 = Risiko und Strafe sind im Verhältnis gering  / 0.3 = Risiko und Strafe sind Verhältnis hoch
+	local riskFactor = stats.SpotPenalty.AverageValue / spot.SpotPenalty
 	riskFactor = CutFactor(riskFactor, 0.3, 2)
 	riskFactor = riskFactor * audienceFactor
-	riskFactor = CutFactor(riskFactor, 0.2, 2)	
+	riskFactor = CutFactor(riskFactor, 0.2, 2)
+	debugMsg("riskFactor: " .. riskFactor .. " ; SpotPenalty: " .. stats.SpotPenalty.AverageValue .. " ; SpotPenalty:" .. spot.SpotPenalty)
 		
 	-- 2 leicht zu packen / 0.3 hoher Druck
-	local pressureFactor = self.SpotMaxDays / self.SpotToSend
+	local pressureFactor = spot.SpotMaxDays / spot.SpotToSend
 	pressureFactor = CutFactor(pressureFactor, 0.3, 2)
-]]--
+	debugMsg("pressureFactor: " .. pressureFactor .. " ; SpotMaxDays: " .. spot.SpotMaxDays .. " ; SpotToSend:" .. spot.SpotToSend)
+		
+	self.Attractiveness = audienceFactor * riskFactor * pressureFactor
+	debugMsg("financePower: " .. financePower .. " ; audienceFactor: " .. audienceFactor .. " ; riskFactor: " .. riskFactor .. " ; pressureFactor: " .. pressureFactor .. " ; Attractiveness: " .. self.Attractiveness)
 	
-	
-	
+	debugMsg("===================")
 	
 	--financeBase
 	
@@ -88,9 +128,6 @@ function JobCheckSpots:AppraiseSpot(spot)
 	-- Je geringer die benötigten Zuschauer desto besser
 	-- Je weniger Spots desto besser
 	-- Je mehr Zeit desto besser
-	
-	--self.Attractiveness = 
-	
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
