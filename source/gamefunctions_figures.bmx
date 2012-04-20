@@ -296,7 +296,7 @@ endrem
 
 	Method CallElevator:Int()
 		if calledElevator then return false
-
+		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then calledElevator=true;return false
 		'print self.name+" calls elevator"
 
 		If id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader())
@@ -322,6 +322,7 @@ endrem
 
 		'if player is in elevator dont accept changes
 		If Self = Building.Elevator.passenger then return
+
 		'y is not of floor 0 -13
 		If Building.GetFloor(y) < 0 OR Building.GetFloor(y) > 13 then return
 
@@ -382,6 +383,8 @@ endrem
 						If id = Game.playerID Then Fader.EnableFadeout() 'room fading
         			    SetInRoom(clickedToRoom)
 					EndIf
+
+					'we stand in front of elevator - and clicked on it (to go to other floors)
 					If clickedToRoom.getDoorType() <> 5
 						If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And IsAtElevator()
 							CallElevator()
@@ -395,23 +398,43 @@ endrem
 			EndIf
 		EndIf
 		If Visible and (inRoom = Null or inRoom.name = "elevator")
+			if Building.Elevator.blockedByFigureID >= 0
+				Building.elevator.SetDoorOpen()
+				Building.elevator.waitAtFloorTimer = MilliSecs() + Building.elevator.waitAtFloorTime
+			endif
+
 			'figure wants to change floor
 			If Self.HasToChangeFloor() and IsAtElevator()
 				CallElevator()
-		        If Building.Elevator.passenger= null  and calledElevator = True and Building.Elevator.Open = 1 and Building.Elevator.onFloor = GetFloor()
-	          		SendElevator()
-		        EndIf
+
+				'we need blockedByFigureID as "inElevator()" could be used to
+				'redirect the elevator when nearly reached target
+				'->misuse of the elevator would be possible
+				if Building.elevator.blockedByFigureID = self.id
+					Building.elevator.blockedByFigureID = -1
+					'print "send elevator from plan"
+					SendElevator()
+				endif
+
+
+				'it is for me not another figure on the same floor who called earlier
+				If Building.elevator.allowedPassengerID = -1 or Building.elevator.allowedPassengerID = self.id
+					'empty and open elevator on my floor PLUS I called it
+					if Building.elevator.onFloor = GetFloor()
+						If not Building.elevator.passenger and calledElevator and Building.elevator.Open = 1
+							'print "send elevator"
+							SendElevator()
+						EndIf
+					endif
+				EndIf
 			EndIf
 
 			If Building.Elevator.passenger = self and Building.Elevator.Open = 1 and pos.y = target.y and Building.getFloor(building.pos.y+target.y) = Building.Elevator.toFloor
-				print (self.sprite.h + Int(pos.y))+" = "+(target.y)
 				If self.sprite.h + Int(pos.y) = (target.y)
-					calledElevator	= False
-					Building.Elevator.passenger = null
-					print "fahrstuhlrausschmiss"
-
+					calledElevator				= False
+					Building.Elevator.passenger	= null
 					'set target again - so player can click on signs in roomboard
-				'	self.SetToRoom( TRooms.GetTargetroom(self.target.x + self.FrameWidth /2, Building.pos.y + Building.GetFloorY(Building.GetFloor(self.pos.y)) - 5) )
+					'self.SetToRoom( TRooms.GetTargetroom(self.target.x + self.FrameWidth /2, Building.pos.y + Building.GetFloorY(Building.GetFloor(self.pos.y)) - 5) )
 				EndIf
 			EndIf
 
@@ -446,8 +469,6 @@ endrem
 				Sprite.Draw(self.pos.x, Building.pos.y + self.pos.y - self.sprite.h, AnimPos)
 			EndIf
 		EndIf
-		'DrawRect(0,Building.pos.y + self.pos.y, 50,2)
-		'DrawRect(0,Building.pos.y + self.target.y, 100,2)
 		Self.GetPeopleOnSameFloor()
 	End Method
 

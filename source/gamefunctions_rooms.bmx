@@ -193,7 +193,6 @@ Type TRooms
     'spezielle Funktionen des Raumes abarbeiten/zeichnen. Kann man darin
     'was anklicken? Animierte Gimmicks? Hier zeichnen.
     Method Update:Int(draw:Byte=0)
-'	 DrawText(Self.name, 150,30)
 	  TRooms.doadraw = Draw
 	  If Fader.fadeenabled And FadeAnimationActive
   			If Fader.fadecount >= 20 And Fader.fadeout = False
@@ -420,7 +419,6 @@ Function Room_Office_Compute(_room:TRooms)
       If StationsToolTip <> Null Then StationsToolTip.Draw()
     EndIf
     If PlannerToolTip <> Null  Then PlannerToolTip.Draw()
-   DrawText(_room.owner, 20,20)
   Else
 	Players[game.playerid].figure.fromroom =Null
     If MouseManager.IsHit(1)
@@ -564,31 +562,35 @@ End Function
 
 
 Function Room_Elevator_Compute(_room:TRooms)
-  If TRooms.doadraw 'draw it
-    Players[game.playerid].figure.fromroom =Null
-    TRoomSigns.DrawAll()
-    DrawText(_room.owner + "                   ---- bin in " + _room.name, 20, 20)
-'    DrawText(_room.owner, 20,20)
-    DrawText(Building.Elevator.waitAtFloorTimer - MilliSecs(), 20, 40)
-  Else
-    Game.cursorstate = 0
-    Players[game.playerid].figure.fromroom =Null
-    If Building.Elevator.waitAtFloorTimer - MilliSecs() <= 0 and Players[Game.playerID].figure.inRoom.name = "elevator" Then
-		Print "Schmeisse Figur " +  Players[game.playerID].figure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
-      'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritt
-	  Players[game.playerID].figure.inElevator = False
-		  Players[game.playerID].figure.calledElevator= false
+	local playerFigure:TFigures = Players[Game.playerID].figure
+	If TRooms.doadraw 'draw it
+		TRoomSigns.DrawAll()
+		FontManager.baseFont.Draw("Rausschmiss in "+(Building.Elevator.waitAtFloorTimer - MilliSecs()), 600, 20)
+	Else
+		local mouseHit:int = MouseManager.IsHit(1)
 
-      Players[game.playerID].figure.inRoom = Null
-	  Players[game.playerID].Figure.clickedToRoom = Null
-      building.elevator.waitAtFloorTimer = MilliSecs()
-    EndIf
-    If MouseManager.IsHit(1)
-      building.Elevator.waitAtFloorTimer = 0
-	  TRoomSigns.GetRoomPosFromXY(MouseX(),MouseY())
-    EndIf
-    TRoomSigns.UpdateAll(False)
-  EndIf
+		Game.cursorstate = 0
+		playerFigure.fromroom =Null
+		If playerFigure.inRoom.name = "elevator"
+			if Building.Elevator.waitAtFloorTimer <= MilliSecs()
+				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
+				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritt
+				playerFigure.inElevator		= False
+				playerFigure.calledElevator	= False
+				playerFigure.inRoom			= Null
+				playerFigure.clickedToRoom	= Null
+				Building.Elevator.blockedByFigureID = -1
+				building.elevator.waitAtFloorTimer = MilliSecs()
+			else if mouseHit
+				building.Elevator.waitAtFloorTimer = 0
+				building.Elevator.blockedByFigureID	= playerFigure.id
+				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseX(),MouseY())
+				if clickedRoom then playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
+			endif
+		EndIf
+		TRoomSigns.UpdateAll(False)
+		if mouseHit then MouseManager.ResetKey(1)
+	EndIf
 End Function
 
 Function Room_RoomBoard_Compute(_room:TRooms)
@@ -1367,12 +1369,9 @@ Type TRoomSigns Extends TBlock
 		Next
   End Function
 
-    Function GetRoomPosFromXY:int(_x:Int, _y:Int)
+    Function GetRoomFromXY:TRooms(_x:Int, _y:Int)
 		Local _width:Int = Assets.GetSprite("gfx_elevator_sign_bg").w
 		Local _height:Int = Assets.GetSprite("gfx_elevator_sign_bg").h
-		Local clickedroom:TRooms = Null
-		Print "GetRoomPosFromXY : search room"
-
 
 		For Local room:TRoomSigns = EachIn TRoomSigns.List
 			If room.Pos.x >= 0
@@ -1383,22 +1382,14 @@ Type TRoomSigns Extends TBlock
 				If room.Pos.x = 417 Then xpos = 3
 				If room.Pos.x = 599 Then xpos = 4
 				If functions.IsIn(_x, _y, room.Pos.x, room.Pos.y, _width, _height)
-					Local _figure:TFigures = Players[Game.playerID].Figure
-					clickedroom = TRooms.GetRoomFromMapPos(xpos, signfloor)
-					print clickedroom.name
-					_figure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
-
-	'ron				Local figurex:Int	= _figure.oldtargetx + _figure.FrameWidth /2
-	'ron				Local figurey:Int	= Building.pos.y + Building.GetFloorY(_figure.clickedToFloor) - 5
-	'ron				_figure.SetToRoom( TRooms.GetTargetroom(figurex, figurey) )
-	'ron				_figure.fromRoom = Null
-					Mousemanager.resetKey(1)
-					return 1
+					Local clickedroom:TRooms = TRooms.GetRoomFromMapPos(xpos, signfloor)
+					print "GetRoomFromXY : "+clickedroom.name
+					return clickedroom
 				EndIf
 			EndIf
 		Next
-		Print "GetRoomPosFromXY : no room found"
-		return 0
+		Print "GetRoomFromXY : no room found"
+		return null
     End Function
 
 End Type

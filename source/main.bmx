@@ -1313,6 +1313,8 @@ Type TElevator
 	Field spriteDoor:TAnimSprites
 	Field spriteInner:TGW_Sprites
 	Field passenger:TFigures = Null
+	Field blockedByFigureID:int	=-1									'player using plan
+	Field allowedPassengerID:int=-1
 	Field onFloor:Int 			= 0
 	Field open:Int 				= 0
 	Field toFloor:Int 			= 0
@@ -1399,18 +1401,14 @@ Type TElevator
 	'einer von 8. in den 6. fahren will - mitnehmen - dafuer muss der Fahrstuhl aber wissen,
 	'das er vom 8. in den 6. will - momentan gibt es nur die information "fahr in den 8."
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
+		'print "add floor route: "+floornumber
+
 		If ElevatorCallIsDuplicate(floornumber, who) Then Return 0	'if duplicate - don't add
 		Local FloorRoute:TFloorRoute = TFloorRoute.Create(floornumber,call,who)
 		If First Or Not call
 			FloorRouteList.AddFirst(floorroute)
 			Self.toFloor = Self.GetFloorRoute()
 		Else
-	'dieser bereich ist nur nutzbar, wenn mehrere Personen gleichzeitig fahren koennen
-
-'			If Not FloorRouteList.IsEmpty() And (TFloorRoute(FloorRouteList.Last()).who = who Or TFloorRoute(FloorRouteList.Last()).floornumber = floornumber)
-'				print "entferne letzte"
-'				FloorRouteList.RemoveLast()
-'			EndIf
 			FloorRouteList.AddLast(floorroute)
 		EndIf
 		If Not fromNetwork And Game.networkgame
@@ -1419,17 +1417,29 @@ Type TElevator
 		EndIf
 	End Method
 
+	Method GetCurrentRoute:TFloorRoute()
+		If Not FloorRouteList.IsEmpty() then return TFloorRoute(FloorRouteList.First())
+		return null
+	End Method
+
 	Method GetFloorRoute:Int()
 		If Not FloorRouteList.IsEmpty()
+			'elevator is on the floor the route
 			Local tmpfloor:TFloorRoute = TFloorRoute(FloorRouteList.First())
+			Local fig:TFigures = TFigures.getByID( tmpfloor.who )
+			allowedPassengerID = tmpfloor.who
 			If onFloor = tmpfloor.floornumber
-				Local fig:TFigures = TFigures.getByID( tmpfloor.who )
-				If fig <> Null And Not fig.isAtElevator() Then fig.calledElevator = False
+				If fig <> Null And Not fig.isAtElevator()
+					fig.calledElevator = False
+					allowedPassengerID = -1
+				endif
+				'print "entferne erste route da onfloor "+onFloor+" = "+tmpfloor.floornumber+" tmpfloor - fig: "+fig.name
 				FloorRouteList.RemoveFirst
 			EndIf
 			Return tmpfloor.floornumber
 		EndIf
-		Return -1
+		allowedPassengerID = -1
+		Return onFloor
 	End Method
 
 	Method CloseDoor()
@@ -1445,6 +1455,12 @@ Type TElevator
 		If passenger <> Null Then passenger.pos.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
 
 		If Game.networkgame Then Self.Network_SendSynchronize()
+	End Method
+
+	'eg. used for elevator-room-finder-plan
+	Method SetDoorOpen()
+		self.spriteDoor.setCurrentAnimation("open")
+		self.open = 1
 	End Method
 
 
@@ -1543,7 +1559,7 @@ Type TElevator
 		SetColor 255, 255, 255
 
 		'elevatorbg
-		spriteInner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 4)
+		spriteInner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 3.0)
 		'figures in elevator
 		If passenger <> Null Then passenger.Draw();passenger.alreadydrawn = 1
 
@@ -1583,45 +1599,46 @@ Type TElevator
 
 		EndIf
 
+		'door open? we can get next route - if nobody is using the plan
+		if open = 1 and toFloor = onFloor or toFloor = -1
+			if blockedByFigureID < 0 then toFloor = GetFloorRoute()
+'			if toFloor < 0 then toFloor = onFloor
+		endif
 		'check wether elevator has to move to somewhere but doors aren't closed - if so, start closing-animation
 		If (onFloor <> toFloor And open <> 0) And open <> 3 And waitAtFloorTimer <= MilliSecs()
 			CloseDoor()
 			Network_SendSynchronize()
 		EndIf
-		If (onFloor = toFloor) And open = 0 Then OpenDoor;waitAtFloorTimer = MilliSecs() + waitAtFloorTime
+
+		If onFloor = toFloor And open = 0
+			OpenDoor()
+			waitAtFloorTimer = MilliSecs() + waitAtFloorTime
+		endif
+
+		spriteDoor.Update(deltaTime)
+
+		'move elevator
+		If onFloor <> toFloor and open = 0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
+			upwards = onfloor < toFloor
+			If Not upwards
+				Pos.y	= Min(Pos.y + deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
+			Else
+				Pos.y	= Max(Pos.y - deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
+			EndIf
+
+			If Pos.y + spriteInner.h < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(13) - spriteInner.h
+			If Pos.y + spriteInner.h > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.h
+		EndIf
 
 		'move figure who is in elevator
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.IsInElevator()
-					Figure.pos.setY ( Building.Elevator.Pos.y + spriteInner.h) '+1 odd displacement
+				'figure position in elevator - displace
+				Figure.pos.setY ( Building.Elevator.Pos.y + spriteInner.h)
 				Exit 'only one figure in elevator possible
 			EndIf
 		Next
 
-		spriteDoor.Update(deltaTime)
-
-		'wait some time?
-		If (onFloor <> toFloor And open <> 0) Or (onFloor = toFloor)
-			Local tmpFloor:Int 		= GetFloorRoute()
-			If waitAtFloorTimer <= MilliSecs() And toFloor = onFloor
-				If tmpfloor = onFloor	Then waitAtFloorTimer = MilliSecs() + waitAtFloorTime
-				If tmpFloor <> -1		Then toFloor = tmpfloor
-			EndIf
-		EndIf
-
-		'move elevator
-		If onFloor <> toFloor
-			If open = 0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
-				upwards = onfloor < toFloor
-				If Not upwards
-					Pos.y	= Min(Pos.y + deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
-				Else
-					Pos.y	= Max(Pos.y - deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
-				EndIf
-				If Pos.y + spriteInner.h < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(13) - spriteInner.h
-				If Pos.y + spriteInner.h > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.h
-			EndIf
-		EndIf
 		TRooms.UpdateDoorToolTips(deltaTime)
 
 '		if Network_LastSynchronize < Millisecs() then Network_SendSynchronize()
@@ -1631,13 +1648,7 @@ Type TElevator
 	Method Draw()
 		Local locy:Int = 0
 		SetBlend MASKBLEND
-		TRooms.DrawDoors()
-
-		If (onFloor <> toFloor And open <> 0)Or(onFloor = toFloor)
-'			For Local Figure:TFigures = EachIn TFigures.List
-'				If Figure.isOnFloor() and Figure.IsAtElevator() Then Figure.Draw() ;Figure.alreadydrawn = 0 'not alreadydrawn for openinganimation
-'			Next
-		EndIf
+	'dis	TRooms.DrawDoors()
 
 		'draw missing door (where elevator is)
 		spriteDoor.Draw(Parent.pos.x + pos.x, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)
@@ -1662,6 +1673,7 @@ Type TElevator
 
 		SetBlend ALPHABLEND
 		Local routepos:Int = 0
+		FontManager.basefont.draw("tofloor:" + self.toFloor, 650, 35)
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
 			If floorroute.call = 0
 				FontManager.basefont.draw(FloorRoute.floornumber + " 'senden' " + TFigures.GetByID(FloorRoute.who).Name, 650, 50 + routepos * 15)

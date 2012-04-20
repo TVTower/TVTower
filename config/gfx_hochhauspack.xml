@@ -8,7 +8,7 @@
 		<resource name="gfx_hochhauspack">
 			<type>SpritePack</type>
  			<url>grafiken/hochhaus/hochhauspack.png</url>
-			<children>
+ 			<children>
 				<child name="gfx_building_Dach" 			x="0" 	y="296" w="507"	h="51"	id="0" />
 				<child name="gfx_building_Eingang" 			x="0" 	y="397" w="166"	h="77"	id="1" />
 				<child name="gfx_building_Zaun" 			x="166" y="397" w="126"	h="51"	id="2" />
