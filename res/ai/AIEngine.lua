@@ -153,6 +153,9 @@ function AITask:StartNextJob()
 		self.StartTask = TVT.GetTime()
 		self.TickCounter = 0;
 		self.CurrentJob = self:GetNextJobInTargetRoom()
+		if (self.Status == TASK_STATUS_DONE) then
+			return
+		end
 	end
 
 	self.CurrentJob:Start()

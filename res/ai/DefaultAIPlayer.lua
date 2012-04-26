@@ -3,12 +3,12 @@
 -- or maybe package.config:sub(1,1)
 dofile("res/ai/AIEngine.lua")
 dofile("res/ai/BudgetManager.lua")
-dofile("res/ai/TaskMoviePurchase.lua")
+dofile("res/ai/TaskMovieDistributor.lua")
 dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
 
 -- ##### GLOBALS #####
-TASK_MOVIEPURCHASE	= "MoviePurchase"
+TASK_MOVIEDISTRIBUTOR	= "MovieDistributor"
 TASK_NEWSAGENCY		= "NewsAgency"
 TASK_ARCHIVE		= "Archive"
 TASK_ADAGENCY		= "AdAgency"
@@ -16,6 +16,9 @@ TASK_SCHEDULING		= "Scheduling"
 TASK_STATIONS		= "Stations"
 TASK_BETTY			= "Betty"
 TASK_BOSS			= "Boss"
+
+PROGRAM_MOVIE		= "movie"
+PROGRAM_SERIES		= "series"
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 DefaultAIPlayer = AIPlayer:new{
@@ -39,9 +42,9 @@ end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
-	--self.TaskList[TASK_MOVIEPURCHASE]	= TaskMoviePurchase:new()
+	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
 	--self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
-	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
+	--self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
 	--self.TaskList[TASK_SCHEDULING]		= TVTScheduling:new()
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
@@ -67,6 +70,10 @@ BusinessStats = SLFDataObject:new{
 	SpotProfitPerSpot = nil;
 	SpotProfitPerSpotAcceptable = nil;
 	SpotPenalty = nil;
+	MoviePricePerBlockAcceptable = nil;
+	SeriesPricePerBlockAcceptable = nil;
+	MovieQualityAcceptable = nil;
+	SeriesQualityAcceptable = nil;
 }
 
 function BusinessStats:Initialize()
@@ -75,6 +82,10 @@ function BusinessStats:Initialize()
 	self.SpotProfitPerSpot = StatisticEvaluator:new()
 	self.SpotProfitPerSpotAcceptable = StatisticEvaluator:new()
 	self.SpotPenalty = StatisticEvaluator:new()
+	self.MoviePricePerBlockAcceptable = StatisticEvaluator:new()
+	self.SeriesPricePerBlockAcceptable = StatisticEvaluator:new()
+	self.MovieQualityAcceptable = StatisticEvaluator:new()
+	self.SeriesQualityAcceptable = StatisticEvaluator:new()
 end
 
 function BusinessStats:OnDayBegins()
@@ -83,6 +94,10 @@ function BusinessStats:OnDayBegins()
 	self.SpotProfitPerSpot:Adjust()
 	self.SpotProfitPerSpotAcceptable:Adjust()
 	self.SpotPenalty:Adjust()
+	self.MoviePricePerBlockAcceptable:Adjust()
+	self.SeriesPricePerBlockAcceptable:Adjust()
+	self.MovieQualityAcceptable:Adjust()
+	self.SeriesQualityAcceptable:Adjust()
 end
 
 function BusinessStats:ReadStats()	
@@ -103,6 +118,19 @@ function BusinessStats:AddSpot(spot)
 		self.SpotProfitPerSpotAcceptable:AddValue(spot.SpotProfit / spot.SpotToSend)
 	end
 	self.SpotPenalty:AddValue(spot.SpotPenalty)
+end
+
+function BusinessStats:AddMovie(movie)
+	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
+	if (movie:CheckConditions(maxPrice)) then -- Preisgrenze
+		if (movie.ProgramType == PROGRAM_MOVIE) then
+			self.MovieQualityAcceptable:AddValue(movie.Quality)
+			self.MoviePricePerBlockAcceptable:AddValue(movie.PricePerBlock)
+		elseif (movie.ProgramType == PROGRAM_SERIES) then
+			self.SeriesQualityAcceptable:AddValue(movie.Quality)
+			self.SeriesPricePerBlockAcceptable:AddValue(movie.PricePerBlock)
+		end
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
