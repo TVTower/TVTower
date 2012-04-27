@@ -2105,13 +2105,14 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 End Function
 
 Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
+	local waitForElevator:int = 25000
 	Local Figure:TFigures = TFigures(ListLink.value())
-	If figure.WaitTime < MilliSecs()
-		figure.WaitTime = MilliSecs() + 15000
-		'Print "zu lange auf fahrstuhl gewartet"
+	If figure.WaitTime < MilliSecs() and figure.hasToChangeFloor()
+		figure.WaitTime = MilliSecs() + waitForElevator
+		'Print "hausmeister: zu lange auf fahrstuhl gewartet"
 		Figure.ChangeTarget(RandRange(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 	EndIf
-	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And figure.GetFloor() = Building.GetFloor(figure.target.y)
+	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And not figure.hasToChangeFloor()
 		Local zufall:Int = RandRange(0, 100)
 		Local zufallx:Int = RandRange(150, 580)
 		If figure.LastSpecialTime < MilliSecs()
@@ -2121,12 +2122,14 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 				zufallx = RandRange(150, 580)
 			Until Abs(figure.pos.x - zufallx) > 15
 
-			If zufall > 85 And Not figure.IsAtElevator()
+			If zufall > 80 And Not figure.IsAtElevator() and not figure.hasToChangeFloor()
 				Local sendToFloor:Int = figure.GetFloor() + 1
 				If sendToFloor > 13 Then sendToFloor = 0
+				'print "hausmeister: naechste Etage"
 				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.sprite.h)
-				figure.WaitTime = MilliSecs() + 15000
-			Else If zufall <= 85 And Not figure.isAtElevator()
+				figure.WaitTime = MilliSecs() + waitForElevator
+			Else If zufall <= 80 And Not figure.hasToChangeFloor()
+				'print "hausmeister: neues ziel"
 				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 			EndIf
 		EndIf
