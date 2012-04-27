@@ -695,6 +695,9 @@ Type TLuaFunctions
 		Return -2
 	End Method
 
+	Method PrivateTest() {_private}
+	End Method
+
 	'LUA_md_doSellMovie
 	'
 	'LUA_ma_getMoviecount

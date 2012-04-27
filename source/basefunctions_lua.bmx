@@ -196,9 +196,16 @@ Type TLuaEngine
 				Local typeId:TTypeId	= TTypeId.ForObject( obj )
 				Local ident:String		= lua_tostring( getLuaState(),2 )
 
+				'PRIVATE...do not add private functions/methods
+				'so method _myMethod() is private, same for _myField:int = 0
+				if Chr( ident[0] ) =  "_" and ident <> "_G" then print "ident is private:"+ident; return True
+
 				Local mth:TMethod		= typeId.FindMethod( ident )
 				'thing we have to push is a method
 				If mth
+					'PRIVATE...do not add private functions/methods
+					if mth.MetaData("_private") then return True
+
 					lua_pushvalue( getLuaState(),1 )
 					lua_pushlightobject( getLuaState(),mth )
 					lua_pushcclosure( getLuaState(),Invoke,2 )
@@ -208,6 +215,11 @@ Type TLuaEngine
 				'thing we have to push is a field
 				Local fld:TField		= typeId.FindField( ident )
 				If fld= Null Then Return False
+
+				'PRIVATE...do not add private functions/methods
+				if fld.MetaData("_private") then return True
+
+
 
 				Select fld.TypeId() ' BaH - added more types
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
