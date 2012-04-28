@@ -3126,7 +3126,7 @@ Type TEventListenerPlayer Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
-			If evt._trigger = "game.onminute" And Self.Player.isAI() Then Self.Player.PlayerKI.CallOnMinute()
+			If evt._trigger = "game.onminute" And Self.Player.isAI() Then Self.Player.PlayerKI.CallOnMinute(evt.time)
 			If evt._trigger = "game.onday" And Self.Player.isAI() Then Self.Player.PlayerKI.CallOnDayBegins()
 		EndIf
 	End Method

@@ -36,13 +36,35 @@ end
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)
-	TVT.PrintOut("collection - contracts:")
-	contracts = MY.ProgrammeCollection.getContracts()
-	TVT.PrintOut("coll 0:" .. contracts[0].id)
-	for i, contract in ipairs(contracts) do
-		TVT.PrintOut("contract id:"..contract.id)
+	if tonumber(number) == 0 and MY.playerID == 2 then
+		TVT.PrintOut("DEBUG DATA for player " .. MY.playerID)
+		TVT.PrintOut("- - - - - - - - - - - -")
+		TVT.PrintOut("ProgrammeCollection - contracts:")
+		entries = MY.ProgrammeCollection.getContracts()
+		for i, entry in ipairs(entries) do
+			TVT.PrintOut("	contract "..i.."/"..#entries.."		: "..entry.title .. " (id: "..entry.id..")")
+		end
+		TVT.PrintOut("ProgrammeCollection - movies:")
+		entries = MY.ProgrammeCollection.getMovies()
+		for i, entry in ipairs(entries) do
+			TVT.PrintOut("	movie "..i.."/"..#entries.."			: "..entry.title .. " (id: "..entry.id..")")
+		end
+		TVT.PrintOut("ProgrammeCollection - series:")
+		entries = MY.ProgrammeCollection.getSeries()
+		for i, entry in ipairs(entries) do
+			TVT.PrintOut("	serie "..i.."/"..#entries.."			: "..entry.title .. " (id: "..entry.id..")")
+			episodes = entry.getEpisodes()
+			for j, entry in ipairs(episodes) do
+				TVT.PrintOut("		episode "..j.."/"..#episodes.."	: "..entry.title .. " (id: "..entry.id..")")
+			end
+		end
+		TVT.PrintOut("ProgrammeCollection - programme in general:")
+		entries = MY.ProgrammeCollection.getProgrammes()
+		for i, entry in ipairs(entries) do
+			TVT.PrintOut("	programme "..i.."/"..#entries.."	: "..entry.title .. " (id: "..entry.id..")")
+		end
+		TVT.PrintOut("- - - - - - - - - - - -")
 	end
-
 --	TVT.PrintOut("Eigentlich bin ich diese Nr: " .. TVT.ME)
 --	PrinteNummerAusEinemAnderenFile()
 --	TVT.PrintOut("Es sollte doch aber folgendes sein: " .. TVT.ME)

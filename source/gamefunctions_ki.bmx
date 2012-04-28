@@ -49,7 +49,6 @@ Type KI
 		LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
 		if TPlayer.getById(self.PlayerID) <> null
 			print "LUA: Registering <Player> as <MY>"
-			print "my ID:"+TPlayer.getById(self.PlayerID).playerID + " ( "+self.PlayerID+")"
 			LuaEngine.RegisterBlitzmaxObject(TPlayer.getById(self.PlayerID), "MY")
 		else
 			print "LUA: ERROR Registering <Player> as <MY> - player not found"
@@ -71,12 +70,10 @@ Type KI
 	'	Self.PrintErrors()
 	End Method
 
-	Method CallOnMinute()
+	Method CallOnMinute(minute:int=0)
 		Local args:Object[1]
-		args[0] = "5.0"
-		'print "KI call on Minute"
+		args[0] = string(minute)
 		Self.LuaEngine.CallLuaFunction("OnMinute", args)
-	'	Self.PrintErrors()
 	End Method
 
 	Method CallOnChat(text:String = "")
@@ -394,10 +391,10 @@ Type TLuaFunctions
 	    If obj then Return obj.episodeList.count() else Return -1
 	End Method
 
-	Method MovieFromSerie:Int(serieId:Int = -1, episode:Int = 0)
+	Method MovieFromSerie:Int(serieId:Int = -1, episodeNumber:Int = 0)
+		print "TVT.MovieFromSerie veraltet: nutze Programmobject.GetEpisode(episode)"
 		Local obj:TProgramme = TProgramme.GetProgramme(serieId)
-		If obj Then obj = TProgramme.GetEpisode(obj, episode)
-	    If obj then Return obj.id Else Return -1
+		if obj then obj = obj.GetEpisode(episodeNumber)
 	End Method
 
 	Method MoviePrice:Int(movieId:Int = -1)

@@ -138,14 +138,19 @@ Type TLuaEngine
 	Method lua_pushArray( obj:Object )
 		Local typeId:TTypeId=TTypeId.ForObject( obj )
 		Local size:Int = typeId.ArrayLength(obj)
-		print "pushing obj:"+typeId.name() + " size:"+size
 
-		lua_createtable( getLuaState(),size,0 )
+		lua_createtable( getLuaState(),size+1,0 )
+
+		'lua is not zero based as BlitzMax is... so we have to add one entry at the first pos
+		lua_pushinteger( getLuaState(), 0 )
+		lua_pushinteger( getLuaState(), -1 )
+		lua_settable( getLuaState(), -3 )
+
 
 		For Local i:Int = 0 until size
 
-			' the index
-			lua_pushinteger( getLuaState(), i)
+			' the index +1 as not zerobased
+			lua_pushinteger( getLuaState(), i+1)
 
 			Select typeId.ElementType()
 				Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
