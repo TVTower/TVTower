@@ -138,10 +138,11 @@ Type TLuaEngine
 	Method lua_pushArray( obj:Object )
 		Local typeId:TTypeId=TTypeId.ForObject( obj )
 		Local size:Int = typeId.ArrayLength(obj)
+		print "pushing obj:"+typeId.name() + " size:"+size
 
 		lua_createtable( getLuaState(),size,0 )
 
-		For Local i:Int = 0 Until size
+		For Local i:Int = 0 until size
 
 			' the index
 			lua_pushinteger( getLuaState(), i)
@@ -198,9 +199,10 @@ Type TLuaEngine
 
 				'PRIVATE...do not add private functions/methods
 				'so method _myMethod() is private, same for _myField:int = 0
-				if Chr( ident[0] ) =  "_" and ident <> "_G" then print "ident is private:"+ident; return True
+				'lua constant/var to access global: _G
+				if Chr( ident[0] ) =  "_" and ident <> "_G" then return True
 
-				Local mth:TMethod		= typeId.FindMethod( ident )
+				Local mth:TMethod = typeId.FindMethod( ident )
 				'thing we have to push is a method
 				If mth
 					'PRIVATE...do not add private functions/methods
@@ -213,26 +215,26 @@ Type TLuaEngine
 				EndIf
 
 				'thing we have to push is a field
-				Local fld:TField		= typeId.FindField( ident )
+				Local fld:TField = typeId.FindField( ident )
 				If fld= Null Then Return False
 
 				'PRIVATE...do not add private functions/methods
 				if fld.MetaData("_private") then return True
 
-
-
 				Select fld.TypeId() ' BaH - added more types
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
-						lua_pushinteger( getLuaState(),fld.GetInt( obj ))
+						lua_pushinteger( getLuaState(),fld.GetInt(obj) )
 					Case FloatTypeId
-						lua_pushnumber( getLuaState(),fld.GetFloat( obj ))
+						lua_pushnumber( getLuaState(),fld.GetFloat(obj) )
 					Case DoubleTypeId
-						lua_pushnumber( getLuaState(),fld.GetDouble( obj ))
+						lua_pushnumber( getLuaState(),fld.GetDouble(obj) )
 					Case StringTypeId
 						Local t:String = fld.GetString( obj )
 						lua_pushlstring( getLuaState(),t,t.length )
+					Case ArrayTypeId
+						lua_pushArray( fld.Get(obj) )
 					Default
-						lua_pushobject( fld.Get( obj ) )
+						lua_pushobject( fld.Get(obj) )
 				End Select
 				Return True
 			End Method
@@ -324,7 +326,10 @@ Type TLuaEngine
 					End Select
 				Next
 				Local t:Object=meth.Invoke( obj,args )
-				Select meth.TypeId()
+				local typeId:TTypeID = meth.TypeId()
+				if object[](t).length > 0 then typeId = ArrayTypeId
+
+				Select typeId
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
 						lua_pushinteger( getLuaState(),t.ToString().ToInt() )
 					Case FloatTypeId
@@ -334,6 +339,8 @@ Type TLuaEngine
 					Case StringTypeId
 						Local s:String = t.ToString()
 						lua_pushlstring( getLuaState(),s,s.length )
+					Case ArrayTypeId
+						lua_pushArray( t )
 					Default
 						lua_pushobject( t )
 				End Select

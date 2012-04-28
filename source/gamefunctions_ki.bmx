@@ -45,7 +45,15 @@ Type KI
 		If Self.scriptAsString <> "" Then Print "Reloaded LUA AI for player "+Self.playerId
 		Self.scriptAsString = LoadText(scriptName)
 
+		print "LUA: Registering <LuaFunctions> as <TVT>"
 		LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
+		if TPlayer.getById(self.PlayerID) <> null
+			print "LUA: Registering <Player> as <MY>"
+			print "my ID:"+TPlayer.getById(self.PlayerID).playerID + " ( "+self.PlayerID+")"
+			LuaEngine.RegisterBlitzmaxObject(TPlayer.getById(self.PlayerID), "MY")
+		else
+			print "LUA: ERROR Registering <Player> as <MY> - player not found"
+		endif
 		Self.LuaEngine.setSource(scriptAsString)
 	End Method
 

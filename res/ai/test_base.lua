@@ -36,6 +36,13 @@ end
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)
+	TVT.PrintOut("collection - contracts:")
+	contracts = MY.ProgrammeCollection.getContracts()
+	TVT.PrintOut("coll 0:" .. contracts[0].id)
+	for i, contract in ipairs(contracts) do
+		TVT.PrintOut("contract id:"..contract.id)
+	end
+
 --	TVT.PrintOut("Eigentlich bin ich diese Nr: " .. TVT.ME)
 --	PrinteNummerAusEinemAnderenFile()
 --	TVT.PrintOut("Es sollte doch aber folgendes sein: " .. TVT.ME)
@@ -50,7 +57,7 @@ function OnMinute(number)
 	-- Sende Chatnachrichten an Mitspieler
 	-----------------------------------------------------
     chatnumber = math.random(1,1000)
-    chattext = math.random(1,9)
+    chattext = math.random(1,10)
 		--SendToChat( "Quote erwartet: " .. GetEvaluatedAudienceQuote(10025, 22) )
 
     if (chatnumber >= 300) and (chatnumber <= 303) then
@@ -63,7 +70,8 @@ function OnMinute(number)
 	    if chattext == 7 then TVT.SendToChat("Pech im Spiel, Glück in der Liebe..." ) end
 	    if chattext == 8 then TVT.SendToChat("Harr harr, Dein Chef wird dir die Löffel lang ziehen." ) end
 	    if chattext == 9 then TVT.SendToChat("Nach mir die Sintflut." ) end
-	  end
+		if chattext ==10 then TVT.SendToChat("ich bin " .. MY.playerID .. " und ich habe derzeit einen Kredit von :" .. MY.GetCreditCurrent() ) end
+	end
 
     -----------------------------------------------------
 
