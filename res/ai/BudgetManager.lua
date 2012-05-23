@@ -71,7 +71,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	self.BudgetHistory[TODAY_BUDGET] = myBudget	
 
 	-- Das Budget auf die Tasks verteilen
-	self:AllocateBudgetToTaks(myBudget)
+	self:AllocateBudgetToTasks(myBudget)
 end
 
 function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
@@ -86,7 +86,7 @@ function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
 	return math.round(TempSum, -3) --Das ganze wird nun noch gerundet
 end
 
-function BudgetManager:AllocateBudgetToTaks(pBudget)
+function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
 
 	-- Zählen wie viele Budgetanteile es insgesamt gibt

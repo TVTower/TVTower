@@ -8,6 +8,8 @@ dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
 
 -- ##### GLOBALS #####
+aiIsActive = true
+
 TASK_MOVIEDISTRIBUTOR	= "MovieDistributor"
 TASK_NEWSAGENCY		= "NewsAgency"
 TASK_ARCHIVE		= "Archive"
@@ -59,6 +61,10 @@ end
 function DefaultAIPlayer:OnDayBegins()
 	self.Stats:OnDayBegins()
 	self.Budget:CalculateBudget()
+	
+	for k,v in pairs(self.TaskList) do
+		v:OnDayBegins()
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -152,19 +158,32 @@ function OnMoneyChanged()
 end
 
 function OnChat(message)
+	if (message == "stop") then
+		aiIsActive = false
+		debugMsg("AI stopped!")
+	elseif (message == "start") then
+		aiIsActive = true
+		debugMsg("AI started!")
+	end
 end
 
 function OnDayBegins()
-	getAIPlayer():OnDayBegins()
+	if (aiIsActive) then
+		getAIPlayer():OnDayBegins()
+	end
 end
 
 function OnReachRoom(roomId)
-	getAIPlayer():OnReachRoom()
+	if (aiIsActive) then
+		getAIPlayer():OnReachRoom()
+	end
 end
 
 function OnLeaveRoom()
 end
 
-function OnMinute(number)
-	getAIPlayer():Tick()
+function OnMinute(number)	
+	if (aiIsActive) then
+		getAIPlayer():Tick()
+	end
 end

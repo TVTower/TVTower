@@ -620,7 +620,7 @@ endrem
 		List.sort()
 
 		If controlledByID = 0 And Game.playerID = 1 Then
-			If TPlayer.globalID = 2
+			If Player.playerID = 2
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 			Else
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/test_base.lua")
@@ -1315,8 +1315,8 @@ Type TElevator
 	Field spriteDoor:TAnimSprites
 	Field spriteInner:TGW_Sprites
 	Field passenger:TFigures = Null
-	Field blockedByFigureID:int	=-1									'player using plan
-	Field allowedPassengerID:int=-1
+	Field blockedByFigureID:Int	=-1									'player using plan
+	Field allowedPassengerID:Int=-1
 	Field onFloor:Int 			= 0
 	Field open:Int 				= 0
 	Field toFloor:Int 			= 0
@@ -1420,8 +1420,8 @@ Type TElevator
 	End Method
 
 	Method GetCurrentRoute:TFloorRoute()
-		If Not FloorRouteList.IsEmpty() then return TFloorRoute(FloorRouteList.First())
-		return null
+		If Not FloorRouteList.IsEmpty() Then Return TFloorRoute(FloorRouteList.First())
+		Return Null
 	End Method
 
 	Method GetFloorRoute:Int()
@@ -1434,7 +1434,7 @@ Type TElevator
 				If fig <> Null And Not fig.isAtElevator()
 					fig.calledElevator = False
 					allowedPassengerID = -1
-				endif
+				EndIf
 				'print "entferne erste route da onfloor "+onFloor+" = "+tmpfloor.floornumber+" tmpfloor - fig: "+fig.name
 				FloorRouteList.RemoveFirst
 			EndIf
@@ -1461,8 +1461,8 @@ Type TElevator
 
 	'eg. used for elevator-room-finder-plan
 	Method SetDoorOpen()
-		self.spriteDoor.setCurrentAnimation("open")
-		self.open = 1
+		Self.spriteDoor.setCurrentAnimation("open")
+		Self.open = 1
 	End Method
 
 
@@ -1602,10 +1602,10 @@ Type TElevator
 		EndIf
 
 		'door open? we can get next route - if nobody is using the plan
-		if open = 1 and toFloor = onFloor or toFloor = -1
-			if blockedByFigureID < 0 then toFloor = GetFloorRoute()
+		If open = 1 And toFloor = onFloor Or toFloor = -1
+			If blockedByFigureID < 0 Then toFloor = GetFloorRoute()
 '			if toFloor < 0 then toFloor = onFloor
-		endif
+		EndIf
 		'check wether elevator has to move to somewhere but doors aren't closed - if so, start closing-animation
 		If (onFloor <> toFloor And open <> 0) And open <> 3 And waitAtFloorTimer <= MilliSecs()
 			CloseDoor()
@@ -1615,12 +1615,12 @@ Type TElevator
 		If onFloor = toFloor And open = 0
 			OpenDoor()
 			waitAtFloorTimer = MilliSecs() + waitAtFloorTime
-		endif
+		EndIf
 
 		spriteDoor.Update(deltaTime)
 
 		'move elevator
-		If onFloor <> toFloor and open = 0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
+		If onFloor <> toFloor And open = 0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
 			upwards = onfloor < toFloor
 			If Not upwards
 				Pos.y	= Min(Pos.y + deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
@@ -1675,7 +1675,7 @@ Type TElevator
 
 		SetBlend ALPHABLEND
 		Local routepos:Int = 0
-		FontManager.basefont.draw("tofloor:" + self.toFloor, 650, 35)
+		FontManager.basefont.draw("tofloor:" + Self.toFloor, 650, 35)
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
 			If floorroute.call = 0
 				FontManager.basefont.draw(FloorRoute.floornumber + " 'senden' " + TFigures.GetByID(FloorRoute.who).Name, 650, 50 + routepos * 15)
@@ -2107,14 +2107,14 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 End Function
 
 Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
-	local waitForElevator:int = 25000
+	Local waitForElevator:Int = 25000
 	Local Figure:TFigures = TFigures(ListLink.value())
-	If figure.WaitTime < MilliSecs() and figure.hasToChangeFloor()
+	If figure.WaitTime < MilliSecs() And figure.hasToChangeFloor()
 		figure.WaitTime = MilliSecs() + waitForElevator
 		'Print "hausmeister: zu lange auf fahrstuhl gewartet"
 		Figure.ChangeTarget(RandRange(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 	EndIf
-	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And not figure.hasToChangeFloor()
+	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And Not figure.hasToChangeFloor()
 		Local zufall:Int = RandRange(0, 100)
 		Local zufallx:Int = RandRange(150, 580)
 		If figure.LastSpecialTime < MilliSecs()
@@ -2124,7 +2124,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 				zufallx = RandRange(150, 580)
 			Until Abs(figure.pos.x - zufallx) > 15
 
-			If zufall > 80 And Not figure.IsAtElevator() and not figure.hasToChangeFloor()
+			If zufall > 80 And Not figure.IsAtElevator() And Not figure.hasToChangeFloor()
 				Local sendToFloor:Int = figure.GetFloor() + 1
 				If sendToFloor > 13 Then sendToFloor = 0
 				'print "hausmeister: naechste Etage"
@@ -2220,7 +2220,7 @@ Players[2] = TPlayer.Create("Alfie"			, "SunTV"				, Assets.GetSprite("Player2")
 Players[3] = TPlayer.Create("Seidi"			, "FunTV"				, Assets.GetSprite("Player3"), 250, 8 , 90, 40 , 210, 0  , 0, "Player 3")
 Players[4] = TPlayer.Create("Sandra"		, "RatTV"				, Assets.GetSprite("Player4"), 480, 13, 90, 0  , 110, 245, 0, "Player 4")
 
-local tempfigur:TFigures= TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
+Local tempfigur:TFigures= TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
 tempfigur.FrameWidth	= 12 'overwriting
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateHausmeister
@@ -2896,8 +2896,8 @@ Function DrawMenu(tweenValue:Float=1.0)
 			Menu_GameSettings_Draw()
 	EndSelect
 
-	If Game.cursorstate = 0 then DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
-	If Game.cursorstate = 1 then DrawImage(gfx_mousecursor, MouseX() - 10, MouseY() - 10, 1)
+	If Game.cursorstate = 0 Then DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
+	If Game.cursorstate = 1 Then DrawImage(gfx_mousecursor, MouseX() - 10, MouseY() - 10, 1)
 
 End Function
 

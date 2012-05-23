@@ -69,12 +69,13 @@ end
 
 function AIPlayer:Tick()
 	self:TickAnalyse()
-	if self.CurrentTask == nil then
+	
+	if (self.CurrentTask == nil) or (self.CurrentTask.Status == JOB_STATUS_DONE) then
 		self:BeginNewTask()
 	else
-		if self.CurrentTask.sStatus == TASK_STATUS_DONE then
+		if self.CurrentTask.Status == TASK_STATUS_DONE then
 			self:BeginNewTask()
-		else
+		else			
 			self.CurrentTask:Tick()
 		end
 	end
@@ -86,8 +87,7 @@ end
 
 function AIPlayer:BeginNewTask()
 	self.CurrentTask = self:SelectTask()
-	self.CurrentTask.sStatus = TASK_STATUS_OPEN
-	self.CurrentTask:Activate()
+	self.CurrentTask:Activate()	
 	self.CurrentTask:StartNextJob()
 end
 
@@ -140,6 +140,10 @@ function AITask:Activate()
 	debugMsg("Implementiere mich... " .. type(self))
 end
 
+function AITask:OnDayBegins()
+	--kann überschrieben werden
+end
+
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgew�hlt wurde (NICHT �BERSCHREIBEN!)
 function AITask:StartNextJob()
 	debugMsg("StartNextJob")
@@ -167,14 +171,15 @@ function AITask:Tick()
 	end
 
 	if (self.CurrentJob == nil) then
+		--debugMsg("----- Kein Job da - Neuen Starten")
 		self:StartNextJob() --Von vorne anfangen
 	else
 		if self.CurrentJob.Status == JOB_STATUS_DONE then			
 			self.CurrentJob = nil
-			--SendToChat("----- Alter Job ist fertig - Neuen Starten")
+			--debugMsg("----- Alter Job ist fertig - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
 		else
-			--SendToChat("----- Job-Tick")
+			--debugMsg("----- Job-Tick")
 			self.CurrentJob:Tick() --Fortsetzen
 		end
 	end
@@ -200,7 +205,7 @@ end
 
 function AITask:SetDone()
 	debugMsg("Done!")
-	self.sStatus = TASK_STATUS_DONE
+	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
 	self.LastDone = TVT.GetTime()
 end

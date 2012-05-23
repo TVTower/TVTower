@@ -11,7 +11,8 @@ TaskMovieDistributor = AITask:new{
 	MovieList = nil;
 	TargetRoom = TVT.ROOM_MOVIEAGENCY;
 	CheckMoviesJob = nil;
-	AppraiseMovies = nil
+	AppraiseMovies = nil;
+	CurrentBargainBudget = 0
 }
 
 function TaskMovieDistributor:typename()
@@ -20,12 +21,16 @@ end
 
 function TaskMovieDistributor:Activate()
 	debugMsg("Starte Task 'TaskAdAgency'")
+	
 	-- Was getan werden soll:
 	self.CheckMoviesJob = JobCheckMovies:new()
 	self.CheckMoviesJob.MovieDistributorTask = self
 	
 	self.AppraiseMovies = JobAppraiseMovies:new()
-	self.AppraiseMovies.MovieDistributorTask = self	
+	self.AppraiseMovies.MovieDistributorTask = self
+	
+	self.BuyMovies = JobBuyMovies:new()
+	self.BuyMovies.MovieDistributorTask = self		
 	
 	self.MoviesAtDistributor = {}	
 end
@@ -35,9 +40,15 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.CheckMoviesJob
 	elseif (self.AppraiseMovies.Status ~= JOB_STATUS_DONE) then
 		return self.AppraiseMovies
+	elseif (self.BuyMovies.Status ~= JOB_STATUS_DONE) then
+		return self.BuyMovies
 	end
 	
-	self.Status = TASK_STATUS_DONE
+	self:SetDone()
+end
+
+function AITask:OnDayBegins()
+	self.CurrentBargainBudget = self.BudgetWholeDay / 2 -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -48,7 +59,7 @@ JobCheckMovies = AIJob:new{
 }
 
 function JobCheckMovies:Prepare()
-	debugMsg("Job: CheckMovies")
+	debugMsg("Job: CheckMovies")	
 	self.CurrentMovieIndex = 0
 end
 
@@ -170,6 +181,44 @@ function JobAppraiseMovies:AppraiseMovie(movie)
 		
 	movie.Attractiveness = financeFactor * qualityFactor
 	--debugMsg("Movie-Attractiveness: ===== " .. movie.Attractiveness .. " ===== ; financeFactor: " .. financeFactor .. " ; qualityFactor: " .. qualityFactor)	
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+JobBuyMovies = AIJob:new{
+	MovieDistributorTask = nil;
+}
+
+function JobBuyMovies:Prepare()
+	debugMsg("Job: Buy Movies")
+	debugMsg("CurrentBudget: " .. self.MovieDistributorTask.CurrentBudget .. " - CurrentBargainBudget: " .. self.MovieDistributorTask.CurrentBargainBudget)
+	
+	local sortMethod = function(a, b)
+		return a.Attractiveness > b.Attractiveness
+	end	
+	table.sort(self.MovieDistributorTask.MoviesAtDistributor, sortMethod)		
+end
+
+function JobBuyMovies:Tick()
+	local movies = self.MovieDistributorTask.MoviesAtDistributor
+
+	--TODO: Prüfen wie viele Filme überhaupt gebraucht werden	
+	
+	for k,v in pairs(movies) do		
+		if (v.Price <= self.MovieDistributorTask.CurrentBudget) then
+			if (v.Price <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
+				if (v.Attractiveness > 1) then
+					debugMsg("Kaufe Film: " .. v.Id .. " - Attraktivität: ".. v.Attractiveness .. " - Preis: " .. v.Price)	
+					TVT.md_doBuyMovie(v.Id)
+					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v.Price
+					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v.Price
+				end
+			end		
+		end
+	end
+	
+	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
