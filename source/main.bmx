@@ -49,6 +49,11 @@ TTooltip.ToolTipIcons	= gfx_building_tooltips
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
 Global App:TApp = TApp.Create(60, 1) 'create with 60fps for physics and graphics
 
+
+rem
+Enthaelt Verbindung zu Einstellungen und Timern
+sonst nix
+endrem
 Type TApp
 	Field Timer:TDeltaTimer
 	Field limitFrames:Int = 0
@@ -3219,7 +3224,8 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 		Return New TEventListenerOnAppUpdate
 	End Function
 
-
+	'wird ausgeloest wenn OnAppUpdate-Event getriggert wird
+	'multi
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
