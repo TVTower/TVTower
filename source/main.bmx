@@ -595,7 +595,7 @@ endrem
 		return self.playerID
 	End Method
 
-	Method IsAI:Int()
+	Method IsAI:Int() {_exposeToLua}
 		'return self.playerKI <> null
 		Return Self.figure.IsAI()
 	End Method
