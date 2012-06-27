@@ -241,7 +241,7 @@ End Type
 
 
 
-Type TPosition
+Type TPosition {_exposeToLua="selected"}
 	Field x:Float
 	Field y:Float
 
@@ -256,6 +256,14 @@ Type TPosition
 		return TPosition.Create(pos.x,pos.y)
 	End Function
 
+	Method GetX:float() {_exposeToLua}
+		return self.x
+	End Method
+
+	Method GetY:float() {_exposeToLua}
+		return self.y
+	End Method
+
 	Method SetX(_x:Float)
 		Self.x = _x
 	End Method
@@ -269,8 +277,12 @@ Type TPosition
 		Self.SetY(_y)
 	End Method
 
-	Method isSame:int(otherPos:TPosition)
-		return self.x = otherPos.x AND self.y = otherPos.y
+	Method isSame:int(otherPos:TPosition, round:int=0) {_exposeToLua}
+		if round
+			return abs(self.x -otherPos.x)<1.0 AND abs(self.y -otherPos.y) < 1.0
+		else
+			return self.x = otherPos.x AND self.y = otherPos.y
+		endif
 	End Method
 
 	Method SetPos(otherPos:TPosition)

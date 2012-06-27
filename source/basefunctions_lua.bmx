@@ -180,6 +180,7 @@ Type TLuaEngine
 	End Method
 
 	'from MaxLua
+	'but added _private / _expose ... checks
 			Method getObjMetaTable:Int()
 				If Not _initDone
 					lua_newtable( getLuaState() )
@@ -202,6 +203,12 @@ Type TLuaEngine
 				Local typeId:TTypeId	= TTypeId.ForObject( obj )
 				Local ident:String		= lua_tostring( getLuaState(),2 )
 
+				'only expose if type set to get exposed
+				if not typeId.MetaData("_exposeToLua") then return false
+				local exposeType:string = typeId.MetaData("_exposeToLua")
+
+			'	print "registering ... "+ident
+
 				'PRIVATE...do not add private functions/methods
 				'so method _myMethod() is private, same for _myField:int = 0
 				'lua constant/var to access global: _G
@@ -212,6 +219,8 @@ Type TLuaEngine
 				If mth
 					'PRIVATE...do not add private functions/methods
 					if mth.MetaData("_private") then return True
+					'only expose the children with explicit mention
+					if exposeType = "selected" AND not mth.MetaData("_exposeToLua") then return True
 
 					lua_pushvalue( getLuaState(),1 )
 					lua_pushlightobject( getLuaState(),mth )
@@ -225,6 +234,8 @@ Type TLuaEngine
 
 				'PRIVATE...do not add private functions/methods
 				if fld.MetaData("_private") then return True
+				'only expose the children with explicit mention
+				if exposeType = "selected" AND not fld.MetaData("_exposeToLua") then return True
 
 				Select fld.TypeId() ' BaH - added more types
 					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId

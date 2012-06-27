@@ -121,7 +121,7 @@ Type KI
 	End Method
 End Type
 
-Type TLuaFunctions
+Type TLuaFunctions {_exposeToLua}
 	Field PLAYER1:Int = 1
 	Field PLAYER2:Int = 2
 	Field PLAYER3:Int = 3

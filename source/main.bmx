@@ -478,34 +478,34 @@ End Type
 
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
-Type TPlayer
-	Field Name:String 						{saveload = "normal"}		'playername
-	Field channelname:String 				{saveload = "normal"} 		'name of the channel
-	Field finances:TFinancials[7]										'One week of financial stats about credit, money, payments ...
-	Field audience:Int 			= 0 		{saveload = "normal"}		'general audience
-	Field maxaudience:Int 		= 0 		{saveload = "normal"}		'maximum possible audience
-	Field ProgrammeCollection:TPlayerProgrammeCollection
-	Field ProgrammePlan:TPlayerProgrammePlan
-	Field Figure:TFigures												'actual figure the player uses
-	Field playerID:Int 			= 0			{saveload = "normal"}		'global used ID of the player
-	Field color:TPlayerColor											'the playercolor used to colorize symbols and figures
-	Field figurebase:Int 		= 0			{saveload = "normal"}		'actual number of an array of figure-images
-	Field networkstate:Int 		= 0			{saveload = "normal"}		'1=ready, 0=not set, ...
-	Field newsabonnements:Int[6]			{_private hideFromAI}				'abonnementlevels for the newsgenres
-	Field PlayerKI:KI			= Null		{_private hideFromAI}
-	Global globalID:Int			= 1			{_private hideFromAI}
-	Global List:TList = CreateList()		{_private hideFromAI}
-	Field CreditCurrent:Int = 200000		{_private hideFromAI}
-	Field CreditMaximum:Int = 300000		{_private hideFromAI}
+Type TPlayer {_exposeToLua="selected"}
+	Field Name:String 										{saveload = "normal"}		'playername
+	Field channelname:String 								{saveload = "normal"} 		'name of the channel
+	Field finances:TFinancials[7]														'One week of financial stats about credit, money, payments ...
+	Field audience:Int 			= 0 						{saveload = "normal"}		'general audience
+	Field maxaudience:Int 		= 0 						{saveload = "normal"}		'maximum possible audience
+	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
+	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
+	Field Figure:TFigures									{_exposeToLua}				'actual figure the player uses
+	Field playerID:Int 			= 0							{saveload = "normal"}		'global used ID of the player
+	Field color:TPlayerColor															'the playercolor used to colorize symbols and figures
+	Field figurebase:Int 		= 0							{saveload = "normal"}		'actual number of an array of figure-images
+	Field networkstate:Int 		= 0							{saveload = "normal"}		'1=ready, 0=not set, ...
+	Field newsabonnements:Int[6]							{_private}					'abonnementlevels for the newsgenres
+	Field PlayerKI:KI			= Null						{_private}
+	Global globalID:Int			= 1							{_private}
+	Global List:TList = CreateList()						{_private}
+	Field CreditCurrent:Int = 200000						{_private}
+	Field CreditMaximum:Int = 300000						{_private}
 
-	Function getByID:TPlayer( playerID:Int = 0) {hideFromAI}
+	Function getByID:TPlayer( playerID:Int = 0)
 		For Local player:TPlayer = EachIn TPlayer.list
 			If playerID = player.playerID Then Return player
 		Next
 		Return Null
 	End Function
 
-	Function Load:Tplayer(pnode:TxmlNode) {hideFromAI}
+	Function Load:Tplayer(pnode:TxmlNode)
 Print "implement Load:Tplayer"
 Return Null
 Rem
@@ -550,7 +550,7 @@ Rem
 endrem
 	End Function
 
-	Function LoadAll() {hideFromAI}
+	Function LoadAll()
 		TPlayer.List.Clear()
 		Players[1] = Null;Players[2] = Null;Players[3] = Null;Players[4] = Null;
 		TPlayer.globalID = 1
@@ -562,7 +562,7 @@ endrem
 		'Print "loaded player informations"
 	End Function
 
-	Function SaveAll() {hideFromAI}
+	Function SaveAll()
 		LoadSaveFile.xmlBeginNode("ALLPLAYERS")
 		For Local Player:TPlayer = EachIn TPlayer.List
 			If Player<> Null Then Player.Save()
@@ -570,7 +570,7 @@ endrem
 		LoadSaveFile.xmlCloseNode()
 	End Function
 
-	Method Save() {hideFromAI}
+	Method Save()
 		LoadSaveFile.xmlBeginNode("PLAYER")
 		Local typ:TTypeId = TTypeId.ForObject(Self)
 		For Local t:TField = EachIn typ.EnumFields()
@@ -591,7 +591,11 @@ endrem
 		LoadSaveFile.xmlCloseNode()
 	End Method
 
-	Method IsAI:Int() {hideFromAI}
+	Method getPlayerID:int() {_exposeToLua}
+		return self.playerID
+	End Method
+
+	Method IsAI:Int()
 		'return self.playerKI <> null
 		Return Self.figure.IsAI()
 	End Method
@@ -599,7 +603,7 @@ endrem
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
-	Function Create:TPlayer(Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, pcolr:Int, pcolg:Int, pcolb:Int, ControlledByID:Int = 1, FigureName:String = "") {hideFromAI}
+	Function Create:TPlayer(Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, pcolr:Int, pcolg:Int, pcolb:Int, ControlledByID:Int = 1, FigureName:String = "")
 		Local Player:TPlayer	= New TPlayer
 
 
@@ -636,7 +640,7 @@ endrem
 	End Function
 
 	'loads a new figurbase and colorizes it
-	Method UpdateFigureBase(newfigurebase:Int) {hideFromAI}
+	Method UpdateFigureBase(newfigurebase:Int)
 		Local figureCount:Int = 12
 		If newfigurebase > figureCount - 1 Then newfigurebase = 0
 		If newfigurebase < 0 Then newfigurebase = figureCount - 1
@@ -651,7 +655,7 @@ endrem
 	End Method
 
 	'colorizes a figure and the corresponding sign next to the players doors in the building
-	Method RecolorFigure(PlayerColor:TPlayerColor = Null) {hideFromAI}
+	Method RecolorFigure(PlayerColor:TPlayerColor = Null)
 		If PlayerColor = Null Then PlayerColor = Self.color
 		color.used	= 0
 		color		= PlayerColor
@@ -662,17 +666,17 @@ endrem
 	End Method
 
 	'nothing up to now
-	Method UpdateFinances:Int() {hideFromAI}
+	Method UpdateFinances:Int()
 		For Local i:Int = 0 To 6
 		Next
 	End Method
 
-	Method GetNewsAbonnement:Int(genre:Int)
+	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre > 5 Then Return 0 'max 6 categories 0-5
 		Return Self.newsabonnements[genre]
 	End Method
 
-	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True)
+	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
 		If level > Game.maxAbonnementLevel Then Return
 		If genre > 5 Then Return 'max 6 categories 0-5
 		If Self.newsabonnements[genre] <> level
@@ -682,7 +686,7 @@ endrem
 	End Method
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetAudiencePercentage:Float()
+	Method GetAudiencePercentage:Float() {_exposeToLua}
 		If maxaudience > 0 And audience > 0
 			Return Float(audience * 100) / Float(maxaudience)
 		EndIf
@@ -690,7 +694,7 @@ endrem
 	End Method
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetRelativeAudiencePercentage:Float()
+	Method GetRelativeAudiencePercentage:Float() {_exposeToLua}
 		If game.maxAudiencePercentage > 0
 			Return Float(GetAudiencePercentage() / game.maxAudiencePercentage)
 		EndIf
@@ -699,21 +703,21 @@ endrem
 
 
 	'returns value chief will give as credit
-	Method GetCreditAvaiable:Int()
+	Method GetCreditAvaiable:Int() {_exposeToLua}
 		Return Max(0, Self.CreditMaximum - Self.CreditCurrent)
 	End Method
 
-	Method GetCreditCurrent:Int()
+	Method GetCreditCurrent:Int() {_exposeToLua}
 		Return Self.CreditCurrent
 	End Method
 
 	'helper to call from external types - only for current game.playerID-Player
-	Function extSetCredit:String(amount:Int) {hideFromAI}
+	Function extSetCredit:String(amount:Int)
 		Players[Game.playerID].SetCredit(amount)
 	End Function
 
 	'increases Credit
-	Method SetCredit(amount:Int) {hideFromAI}
+	Method SetCredit(amount:Int)
 		Self.finances[Game.getWeekday()].TakeCredit(amount)
 		Self.CreditCurrent:+amount
 	End Method
@@ -738,7 +742,7 @@ endrem
 
 	'computes ads - if a adblock is botched or run successful
 	'if successfull and ad-contract finished then it sells the ad (earn money)
-	Function ComputeAds() {hideFromAI}
+	Function ComputeAds()
 		Local Adblock:TAdBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Adblock = Player.ProgrammePlan.GetActualAdBlock(Player.playerID)
@@ -766,7 +770,7 @@ endrem
 	End Function
 
 	'end of day - take over money for next day
-	Function TakeOverMoney() {hideFromAI}
+	Function TakeOverMoney()
 		Local dayBefore:Int = Max(0, Game.getWeekday()-1)
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Player.finances[Game.getWeekday()].takeOverFromDayBefore(Player.finances[ dayBefore ])
@@ -774,7 +778,7 @@ endrem
 	End Function
 
 	'computes penalties for expired ad-contracts
-	Function ComputeContractPenalties() {hideFromAI}
+	Function ComputeContractPenalties()
 		Local LastContract:TContract = Null
 		For Local Player:TPlayer = EachIn TPlayer.List
 			For Local Contract:TContract = EachIn Player.ProgrammeCollection.contractlist
@@ -797,7 +801,7 @@ endrem
 
 	'computes audience depending on ComputeAudienceQuote and if the time is the same
 	'as for the last block of a programme, it decreases the topicality of that programme
-	Function ComputeAudience(recompute:Int = 0) {hideFromAI}
+	Function ComputeAudience(recompute:Int = 0)
 		Local block:TProgrammeBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
 			block = Player.ProgrammePlan.GetActualProgrammeBlock()
@@ -826,7 +830,7 @@ endrem
 	End Function
 
 	'computes newsshow-audience
-	Function ComputeNewsAudience() {hideFromAI}
+	Function ComputeNewsAudience()
 		Local newsBlock:TNewsBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Player.audience = 0
@@ -844,32 +848,32 @@ endrem
 	End Function
 
 	'nothing up to now
-	Method Update:Int() {hideFromAI}
+	Method Update:Int()
 		''
 	End Method
 
 	'returns formatted value of actual money
 	'gibt einen formatierten Wert des aktuellen Geldvermoegens zurueck
-	Method GetFormattedMoney:String()
+	Method GetFormattedMoney:String() {_exposeToLua}
 		Return functions.convertValue(String(Self.finances[Game.getWeekday()].money), 2, 0)
 	End Method
 
-	Method GetRawMoney:Int()
+	Method GetRawMoney:Int() {_exposeToLua}
 		Return Self.finances[Game.getWeekday()].money
 	End Method
 
 	'returns formatted value of actual credit
-	Method GetFormattedCredit:String()
+	Method GetFormattedCredit:String() {_exposeToLua}
 		Return functions.convertValue(String(Self.finances[Game.getWeekday()].credit), 2, 0)
 	End Method
 
 	'returns formatted value of actual audience
 	'gibt einen formatierten Wert der aktuellen Zuschauer zurueck
-	Method GetFormattedAudience:String()
+	Method GetFormattedAudience:String() {_exposeToLua}
 		Return functions.convertValue(String(Self.audience), 2, 0)
 	End Method
 
-	Method Compare:Int(otherObject:Object) {hideFromAI}
+	Method Compare:Int(otherObject:Object)
 		Local s:TPlayer = TPlayer(otherObject)
 		If Not s Then Return 1
 		If s.playerID > Self.playerID Then Return 1

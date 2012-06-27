@@ -1,10 +1,10 @@
 ﻿'Summary: all kind of characters walking through the building (players, terrorists and so on)
-Type TFigures
+Type TFigures {_exposeToLua="selected"}
 	Field Name:String		= "unknown"
-	Field pos:TPosition		= TPosition.Create(0.0,0.0) 'pos.y is difference to y of building
+	Field pos:TPosition		= TPosition.Create(0.0,0.0) {_exposeToLua}		'pos.y is difference to y of building
 	Field dx:Float			= 0.0 'pixels per second
 	Field initialdx:Float	= 0.0
-	field target:TPosition	= TPosition.Create(-1,-1)
+	field target:TPosition	= TPosition.Create(-1,-1) {_exposeToLua}
 
 	Field toRoom:TRooms		= Null			{sl = "no"}
 	Field fromRoom:TRooms	= Null			{sl = "no"}
@@ -313,7 +313,7 @@ endrem
 		Building.Elevator.SendToFloor(self.getFloor(target), self)
 	End Method
 
-	Method ChangeTarget(x:Int=null, y:Int=null)
+	Method ChangeTarget(x:Int=null, y:Int=null) {_exposeToLua}
 		'only change target if its your figure or you are game leader
 		if id <> Players[ game.playerID ].figure.id and not Game.isGameLeader() then return
 

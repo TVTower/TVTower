@@ -335,39 +335,31 @@ Type TBitmapFont
 	End Function
 
 	Function DrawCharPixmapOnPixmap(Source:TPixmap,Pixmap:TPixmap, x:Int, y:Int, fontSize:int, fontStyle:int =0)
-		  For Local i:Int = 0 To Source.width-1
+		For Local i:Int = 0 To Source.width-1
 			For Local j:Int = 0 To Source.height-1
-			  If x+1 < pixmap.width And y+j < pixmap.height
-				Local sourcepixel:Int = ReadPixel(Source, i,j)
-				Local destpixel:Int = ReadPixel(pixmap, x+i,y+j)
-	'			Local destA:Int = ARGB_Alpha(destpixel)
-				Local sourceA:Int = ARGB_Alpha(sourcepixel)
-				If sourceA <> -1 Then
-					If sourceA< -1 Then sourceA = -sourceA
-					Local destR:Int = ARGB_Red(destpixel)
-					Local destG:Int = ARGB_Green(destpixel)
-					Local destB:Int = ARGB_Blue(destpixel)
-					Local destA:Int = ARGB_Alpha(destpixel)
-					Local SourceR:Int = ARGB_Red(Sourcepixel)
-					Local SourceG:Int = ARGB_Green(Sourcepixel)
-					Local SourceB:Int = ARGB_Blue(Sourcepixel)
-					sourceR = Int( Float(sourceA/255.0)*sourceR) + Int(Float((255-sourceA)/255.0)*destR)
-					sourceG = Int( Float(sourceA/255.0)*sourceG) + Int(Float((255-sourceA)/255.0)*destG)
-					sourceB = Int( Float(sourceA/255.0)*sourceB) + Int(Float((255-sourceA)/255.0)*destB)
-					'also mix alpha
-					if (not fontStyle & BOLDFONT) OR fontSize >= 10
-						sourceA = 0.6*(SourceA*SourceA)/255 + 0.4*SourceA
-					endif
-'					else
-'						if sourceA >=200 then sourceA = 0.4*(SourceA*SourceA)/255 + 0.6*SourceA
-'						if sourceA < 200 then sourceA = 0.5*(SourceA*SourceA)/255 + 0.5*SourceA
-'					endif
-					sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
+				If x+1 < pixmap.width And y+j < pixmap.height
+					Local sourcepixel:Int = ReadPixel(Source, i,j)
+					Local destpixel:Int = ReadPixel(pixmap, x+i,y+j)
+					Local sourceA:Int = ARGB_Alpha(sourcepixel)
+					If sourceA <> -1
+						If sourceA< -1 Then sourceA = -sourceA
+						Local SourceR:Int = Int( Float(sourceA/255.0) * ARGB_Red(Sourcepixel) ) + Int(Float((255-sourceA)/255.0) * ARGB_Red(destpixel) )
+						Local SourceG:Int = Int( Float(sourceA/255.0) * ARGB_Green(Sourcepixel) ) + Int(Float((255-sourceA)/255.0) * ARGB_Green(destpixel) )
+						Local SourceB:Int = Int( Float(sourceA/255.0) * ARGB_Blue(Sourcepixel)) + Int(Float((255-sourceA)/255.0) * ARGB_Blue(destpixel) )
+						'also mix alpha
+						if (not fontStyle & BOLDFONT) OR fontSize >= 10
+							sourceA = 0.6*(SourceA*SourceA)/255 + 0.4*SourceA
+						endif
+						'else
+						'	if sourceA >=200 then sourceA = 0.4*(SourceA*SourceA)/255 + 0.6*SourceA
+						'	if sourceA < 200 then sourceA = 0.5*(SourceA*SourceA)/255 + 0.5*SourceA
+						'endif
+						sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
+					EndIf
+					If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)
 				EndIf
-				If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)
-			  EndIf
 			Next
-		  Next
+		Next
 	End Function
 
 	Method AddChar:TBitmapFontChar(charCode:int, img:timage, x:int, y:int, w:int, h:int, charWidth:float)
@@ -919,11 +911,11 @@ Type TGW_Sprites extends TRenderable
 	'Draws an Image if its in the viewport of the screen (not on Interface)
 	Method DrawInViewPort(_x:Int, _yItStandsOn:Int, align:Byte=0, Frame:Int=0)
 		If _yItStandsOn > 10 And _yItStandsOn - self.h < 373+10
-		  If align = 0 '_x is left side of image
-			self.Draw(_x, _yItStandsOn - self.h, Frame)
-		  ElseIf align = 1 '_x is right side of image
-			self.Draw(_x - self.w, _yItStandsOn - self.h,Frame)
-		  EndIf
+			If align = 0 '_x is left side of image
+				self.Draw(_x, _yItStandsOn - self.h, Frame)
+			ElseIf align = 1 '_x is right side of image
+				self.Draw(_x - self.w, _yItStandsOn - self.h,Frame)
+			EndIf
 		EndIf
 	End Method
 
@@ -1112,6 +1104,7 @@ Type TAnimSprites
 		Return AnimSprites
 	End Function
 
+	'insert a TAnimation with a certain Name
 	Method InsertAnimation(animationName:string, animation:TAnimation)
 		self.AnimationSets.insert(lower(animationName), animation)
 		if not self.AnimationSets.contains("default") then self.setCurrentAnimation(animationName, 0)

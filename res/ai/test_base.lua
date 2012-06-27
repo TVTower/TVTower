@@ -36,8 +36,8 @@ end
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)
-	if tonumber(number) == 0 and MY.playerID == 2 then
-		TVT.PrintOut("DEBUG DATA for player " .. MY.playerID)
+	if tonumber(number) == 0 and MY.getPlayerID() == 2 then
+		TVT.PrintOut("DEBUG DATA for player " .. MY.getPlayerID())
 		TVT.PrintOut("- - - - - - - - - - - -")
 		TVT.PrintOut("ProgrammeCollection - contracts:")
 		entries = MY.ProgrammeCollection.getContracts()
@@ -83,16 +83,16 @@ function OnMinute(number)
 		--SendToChat( "Quote erwartet: " .. GetEvaluatedAudienceQuote(10025, 22) )
 
     if (chatnumber >= 300) and (chatnumber <= 303) then
-	    if chattext == 1 then TVT.SendToChat("Ich mach Euch alle fertig. Hehe!!") end
-	    if chattext == 2 then TVT.SendToChat("Man seid Ihr ein paar Looser!!") end
-	    if chattext == 3 then TVT.SendToChat("Ene mene muh und raus bist DU!!") end
-	    if chattext == 4 then TVT.SendToChat("In meinem Schatten wird's kalt ;).") end
-	    if chattext == 5 then TVT.SendToChat("Wer den Euro nicht ehrt, ist die Zuschauer nicht wert.") end
-	    if chattext == 6 then TVT.SendToChat("Bettys Raum hat die ID " .. TVT.GetRoom("betty", 0) ) end
-	    if chattext == 7 then TVT.SendToChat("Pech im Spiel, Glück in der Liebe..." ) end
-	    if chattext == 8 then TVT.SendToChat("Harr harr, Dein Chef wird dir die Löffel lang ziehen." ) end
-	    if chattext == 9 then TVT.SendToChat("Nach mir die Sintflut." ) end
-		if chattext ==10 then TVT.SendToChat("ich bin " .. MY.playerID .. " und ich habe derzeit einen Kredit von :" .. MY.GetCreditCurrent() ) end
+		if chattext == 1 then TVT.SendToChat("Ich mach Euch alle fertig. Hehe!!") end
+		if chattext == 2 then TVT.SendToChat("Man seid Ihr ein paar Looser!!") end
+		if chattext == 3 then TVT.SendToChat("Ene mene muh und raus bist DU!!") end
+		if chattext == 4 then TVT.SendToChat("In meinem Schatten wird's kalt ;).") end
+		if chattext == 5 then TVT.SendToChat("Wer den Euro nicht ehrt, ist die Zuschauer nicht wert.") end
+		if chattext == 6 then TVT.SendToChat("Bettys Raum hat die ID " .. TVT.GetRoom("betty", 0) ) end
+		if chattext == 7 then TVT.SendToChat("Pech im Spiel, Glück in der Liebe..." ) end
+		if chattext == 8 then TVT.SendToChat("Harr harr, Dein Chef wird dir die Löffel lang ziehen." ) end
+		if chattext == 9 then TVT.SendToChat("Nach mir die Sintflut." ) end
+		if chattext ==10 then TVT.SendToChat("ich bin " .. MY.GetPlayerID() .. " und ich habe derzeit einen Kredit von :" .. MY.GetCreditCurrent() ) end
 	end
 
     -----------------------------------------------------
@@ -102,17 +102,20 @@ function OnMinute(number)
 	-----------------------------------------------------
 	-- Figur hat Zielposition erreicht
 	-----------------------------------------------------
-    if TVT.GetPlayerPosX(ME) == TVT.GetPlayerTargetPosX(ME) then
-      randomnumber = math.random(200,600)
+	if MY.Figure.pos.isSame(MY.Figure.target, true) then
+	--if TVT.GetPlayerPosX(ME) == TVT.GetPlayerTargetPosX(ME) then
+		randomnumber = math.random(200,600)
 
-      TVT.SetPlayerTargetPosX(ME, randomnumber)
-      if inOfficeFake == ROOM_OFFICE_PLAYER2 then
-        TVT.DoGoToRoom(ROOM_OFFICE_PLAYER3)
-        inOfficeFake = ROOM_OFFICE_PLAYER3
-      else
-        TVT.DoGoToRoom(ROOM_OFFICE_PLAYER2)
-        inOfficeFake = ROOM_OFFICE_PLAYER2
-      end
-    end
-  return PosX
+		MY.Figure.changeTarget(randomnumber)
+		--TVT.SetPlayerTargetPosX(ME, randomnumber)
+
+		if inOfficeFake == ROOM_OFFICE_PLAYER2 then
+			TVT.DoGoToRoom(ROOM_OFFICE_PLAYER3)
+			inOfficeFake = ROOM_OFFICE_PLAYER3
+		else
+			TVT.DoGoToRoom(ROOM_OFFICE_PLAYER2)
+			inOfficeFake = ROOM_OFFICE_PLAYER2
+		end
+	end
+	return PosX
 end
