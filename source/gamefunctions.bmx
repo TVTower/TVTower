@@ -1,4 +1,8 @@
-﻿
+﻿Superstrict
+
+Import "basefunctions_image.bmx"
+Import "basefunctions_resourcemanager.bmx"
+
 Type TSaveFile
   Field xml:TXmlHelper
   Field node:TxmlNode
