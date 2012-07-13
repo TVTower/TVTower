@@ -2,10 +2,12 @@
 -- use slash for directories - windows accepts it, linux needs it
 -- or maybe package.config:sub(1,1)
 dofile("res/ai/AIEngine.lua")
+dofile("res/ai/CommonObjects.lua")
 dofile("res/ai/BudgetManager.lua")
 dofile("res/ai/TaskMovieDistributor.lua")
 dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
+dofile("res/ai/TaskSchedule.lua")
 
 -- ##### GLOBALS #####
 aiIsActive = true
@@ -14,7 +16,7 @@ TASK_MOVIEDISTRIBUTOR	= "MovieDistributor"
 TASK_NEWSAGENCY		= "NewsAgency"
 TASK_ARCHIVE		= "Archive"
 TASK_ADAGENCY		= "AdAgency"
-TASK_SCHEDULING		= "Scheduling"
+TASK_SCHEDULE		= "Schedule"
 TASK_STATIONS		= "Stations"
 TASK_BETTY			= "Betty"
 TASK_BOSS			= "Boss"
@@ -47,7 +49,7 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
 	--self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
 	--self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
-	--self.TaskList[TASK_SCHEDULING]		= TVTScheduling:new()
+	--self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
@@ -80,6 +82,12 @@ BusinessStats = SLFDataObject:new{
 	SeriesPricePerBlockAcceptable = nil;
 	MovieQualityAcceptable = nil;
 	SeriesQualityAcceptable = nil;
+	
+	ProgramQualityLevel1 = nil;
+	ProgramQualityLevel2 = nil;
+	ProgramQualityLevel3 = nil;
+	ProgramQualityLevel4 = nil;
+	ProgramQualityLevel5 = nil;
 }
 
 function BusinessStats:Initialize()
@@ -92,6 +100,12 @@ function BusinessStats:Initialize()
 	self.SeriesPricePerBlockAcceptable = StatisticEvaluator:new()
 	self.MovieQualityAcceptable = StatisticEvaluator:new()
 	self.SeriesQualityAcceptable = StatisticEvaluator:new()
+	
+	self.ProgramQualityLevel1 = StatisticEvaluator:new()
+	self.ProgramQualityLevel2 = StatisticEvaluator:new()
+	self.ProgramQualityLevel3 = StatisticEvaluator:new()
+	self.ProgramQualityLevel4 = StatisticEvaluator:new()
+	self.ProgramQualityLevel5 = StatisticEvaluator:new()
 end
 
 function BusinessStats:OnDayBegins()
@@ -104,6 +118,12 @@ function BusinessStats:OnDayBegins()
 	self.SeriesPricePerBlockAcceptable:Adjust()
 	self.MovieQualityAcceptable:Adjust()
 	self.SeriesQualityAcceptable:Adjust()
+	
+	self.ProgramQualityLevel1:Adjust()
+	self.ProgramQualityLevel2:Adjust()
+	self.ProgramQualityLevel3:Adjust()
+	self.ProgramQualityLevel4:Adjust()
+	self.ProgramQualityLevel5:Adjust()
 end
 
 function BusinessStats:ReadStats()	
@@ -135,8 +155,12 @@ function BusinessStats:AddMovie(movie)
 		elseif (movie.ProgramType == PROGRAM_SERIES) then
 			self.SeriesQualityAcceptable:AddValue(movie.Quality)
 			self.SeriesPricePerBlockAcceptable:AddValue(movie.PricePerBlock)
-		end
+		end			
 	end
+end
+
+function BusinessStats:GetAverageQualityByLevel(level)
+
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

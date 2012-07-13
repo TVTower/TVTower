@@ -20,7 +20,7 @@ function TaskMovieDistributor:typename()
 end
 
 function TaskMovieDistributor:Activate()
-	debugMsg("Starte Task 'TaskAdAgency'")
+	debugMsg("Starte Task 'TaskMovieDistributor'")
 	
 	-- Was getan werden soll:
 	self.CheckMoviesJob = JobCheckMovies:new()
@@ -209,7 +209,7 @@ function JobBuyMovies:Tick()
 		if (v.Price <= self.MovieDistributorTask.CurrentBudget) then
 			if (v.Price <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 				if (v.Attractiveness > 1) then
-					debugMsg("Kaufe Film: " .. v.Id .. " - Attraktivität: ".. v.Attractiveness .. " - Preis: " .. v.Price)	
+					debugMsg("Kaufe Film: " .. v.Id .. " - Attraktivität: ".. v.Attractiveness .. " - Preis: " .. v.Price .. " - Qualität: " .. v.Quality)	
 					TVT.md_doBuyMovie(v.Id)
 					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v.Price
 					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v.Price
@@ -219,55 +219,5 @@ function JobBuyMovies:Tick()
 	end
 	
 	self.Status = JOB_STATUS_DONE
-end
--- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-
--- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-Movie = SLFDataObject:new{
-	Id = -1;
-	Sequels = -1;
-	Genre = -1;
-	Length = -1;
-	XRated = -1;
-	Profit = -1;
-	Speed = -1;
-	Review = -1;
-	Topicality = -1;
-	Price = -1;
-	PricePerBlock = -1;
-	Quality = -1;
-	ProgramType = nil;
-	Attractiveness = -1
-}
-
-function Movie:Initialize(movieId)
-	self.Id = movieId
-	self.Sequels = TVT.MovieSequels(movieId)
-	self.Genre = TVT.MovieGenre(movieId)
-	self.Length = TVT.MovieLength(movieId)
-	self.XRated = TVT.MovieXRated(movieId)
-	self.Profit = TVT.MovieProfit(movieId)
-	self.Speed = TVT.MovieSpeed(movieId)
-	self.Review = TVT.MovieReview(movieId)
-	self.Topicality = TVT.MovieTopicality(movieId)
-	self.Price = TVT.MoviePrice(movieId)
-	
-	self.Quality = (0.3 * self.Profit + 0.15 * self.Speed + 0.25 * self.Review + 0.3 * self.Topicality)
-	self.PricePerBlock = self.Price / self.Length
-
-	if (self.Sequels > 0) then
-		self.ProgramType = PROGRAM_SERIES
-	else
-		self.ProgramType = PROGRAM_MOVIE
-	end		
-end
-
-function Movie:CheckConditions(maxPrice, minQuality)
-	if (self.Price > maxPrice) then	return false end
-	if (minQuality ~= nil) then
-		if (self.Quality < minQuality) then return false end	
-	end
-	return true
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

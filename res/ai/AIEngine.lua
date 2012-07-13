@@ -156,7 +156,7 @@ function AITask:StartNextJob()
 		self.Status = TASK_STATUS_RUN
 		self.StartTask = TVT.GetTime()
 		self.TickCounter = 0;
-		self.CurrentJob = self:GetNextJobInTargetRoom()
+		self.CurrentJob = self:GetNextJobInTargetRoom()		
 		if (self.Status == TASK_STATUS_DONE) then
 			return
 		end
@@ -186,8 +186,8 @@ function AITask:Tick()
 end
 
 function AITask:GetNextJobInTargetRoom()
-	return self:getGotoJob()
-	--error("Muss noch implementiert werden")
+	--return self:getGotoJob()
+	error("Muss noch implementiert werden")
 end
 
 function AITask:getGotoJob()
