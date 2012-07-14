@@ -476,7 +476,7 @@ Type TNetworkHelper
 					TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, playerID)
 					print "NET: PCollection - readd "+programme.title
 			'sell
-			case 0	Players[ playerID ].finances[Game.getWeekday()].SellMovie(Programme.ComputePrice())
+			case 0	Players[ playerID ].finances[Game.getWeekday()].SellMovie(Programme.getPrice())
 					TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, playerID)
 					print "NET: PCollection - sell "+programme.title
 

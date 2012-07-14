@@ -369,7 +369,7 @@ endrem
 		Return game.maxAudiencePercentage
 	End Method
 
-	Method getNextHour:Int()
+	Method GetNextHour:Int()
 		If Self.hour+1 > 24 Then Return Self.hour+1 - 24
 		Return Self.hour + 1
 	End Method
@@ -428,11 +428,6 @@ endrem
 		Return Self.GetDayName( Max(0,_day-1) Mod 7, 1)
 	End Method
 
-	Method GetWeekday:Int(_day:Int = -1)
-		If _day < 0 Then _day = Self.day
-		Return Max(0,_day-1) Mod 7
-	End Method
-
 	'Summary: returns formatted value of actual gametime
 	Method GetFormattedTime:String()
 		Local strHours:String = Self.hour
@@ -453,19 +448,24 @@ endrem
 		Return hour+":"+minute
 	End Method
 
-	Method GetActualDay:Int(_time:Int = 0)
+	Method GetWeekday:Int(_day:Int = -1)
+		If _day < 0 Then _day = Self.day
+		Return Max(0,_day-1) Mod 7
+	End Method
+
+	Method GetDay:Int(_time:Int = 0)
 		If _time = 0 Then Return Self.day
 		_time = Ceil(_time / (24 * 60)) + 1
 		Return Int(_time)
 	End Method
 
-	Method GetActualMinute:Int(_time:Int = 0)
+	Method GetMinute:Int(_time:Int = 0)
 		If _time = 0 Then Return Self.minute
 		_time:-((Game.day - 1) * 24 * 60)
 		Return Int(_time) Mod 60
 	End Method
 
-	Method GetActualHour:Int(_time:Int = 0)
+	Method GetHour:Int(_time:Int = 0)
 		If _time = 0 Then Return Self.hour
 		_time:-(Game.day - 1) * 24 * 60
 		Return Int(Floor(_time / 60))
@@ -476,6 +476,13 @@ Type PacketTypes
 	Global PlayerState:Byte				= 6					' Player Name, Position...
 End Type
 
+Type TDB {_exposeToLua="selected"}
+	Method GetProgramme:TProgramme( programmeID:int ) {_exposeToLua}
+		return TProgramme.getProgramme( programmeID )
+	End Method
+
+End Type
+Global DB:TDB = new TDB
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer {_exposeToLua="selected"}
@@ -591,7 +598,7 @@ endrem
 		LoadSaveFile.xmlCloseNode()
 	End Method
 
-	Method getPlayerID:int() {_exposeToLua}
+	Method GetPlayerID:int() {_exposeToLua}
 		return self.playerID
 	End Method
 
@@ -703,7 +710,7 @@ endrem
 
 
 	'returns value chief will give as credit
-	Method GetCreditAvaiable:Int() {_exposeToLua}
+	Method GetCreditAvailable:Int() {_exposeToLua}
 		Return Max(0, Self.CreditMaximum - Self.CreditCurrent)
 	End Method
 
@@ -808,21 +815,21 @@ endrem
 			Player.audience = 0
 
 			If block And block.programme And Player.maxaudience <> 0
-				Player.audience = Floor(Player.maxaudience * block.Programme.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
+				Player.audience = Floor(Player.maxaudience * block.Programme.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
 				If recompute
-					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.day, Game.GetActualHour(), Game.GetActualMinute())
+					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.day, Game.GetHour(), Game.GetMinute())
 					If quote <> Null
 						quote.audience = Player.audience
 						quote.audiencepercentage = Int(Floor(Player.audience * 1000 / Player.maxaudience))
 					EndIf
 				Else
-					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetActualHour() - (block.sendhour - game.day*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetActualHour(), Game.GetActualMinute(), Game.day, Player.playerID)
+					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - game.day*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.day, Player.playerID)
 				EndIf
 				If block.sendHour - (game.day*24) + block.Programme.blocks <= Game.getNextHour()
 					If Not recompute
 						block.Programme.CutTopicality()
-						block.Programme.ComputePrice()
+						block.Programme.getPrice()
 					EndIf
 				EndIf
 			EndIf
@@ -843,7 +850,7 @@ endrem
 				EndIf
 			Next
 			Player.audience= Ceil(audience / 3)
-			TAudienceQuotes.Create("News: "+ Game.GetActualHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetActualHour(),Game.GetActualMinute(),Game.day, Player.playerID)
+			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.day, Player.playerID)
 		Next
 	End Function
 
@@ -854,18 +861,31 @@ endrem
 
 	'returns formatted value of actual money
 	'gibt einen formatierten Wert des aktuellen Geldvermoegens zurueck
-	Method GetFormattedMoney:String() {_exposeToLua}
+	Method GetMoneyFormatted:String()
 		Return functions.convertValue(String(Self.finances[Game.getWeekday()].money), 2, 0)
 	End Method
 
-	Method GetRawMoney:Int() {_exposeToLua}
+	Method GetMoney:Int() {_exposeToLua}
 		Return Self.finances[Game.getWeekday()].money
 	End Method
 
 	'returns formatted value of actual credit
-	Method GetFormattedCredit:String() {_exposeToLua}
+	Method GetCreditFormatted:String()
 		Return functions.convertValue(String(Self.finances[Game.getWeekday()].credit), 2, 0)
 	End Method
+
+	Method GetCredit:int() {_exposeToLua}
+		return Self.finances[Game.getWeekday()].credit
+	End Method
+
+	Method GetAudience:int() {_exposeToLua}
+		return Self.audience
+	End Method
+
+	Method GetMaxAudience:int() {_exposeToLua}
+		return Self.maxaudience
+	End Method
+
 
 	'returns formatted value of actual audience
 	'gibt einen formatierten Wert der aktuellen Zuschauer zurueck
@@ -1861,8 +1881,8 @@ Type TBuilding Extends TRenderable
 	End Method
 
 	Method UpdateBackground(deltaTime:Float)
-		ActHour = Game.GetActualHour()
-		DezimalTime = Float(Game.GetActualHour()) + Float(Game.GetActualMinute())*10/6/100
+		ActHour = Game.GetHour()
+		DezimalTime = Float(Game.GetHour()) + Float(Game.GetMinute())*10/6/100
 		If 9 <= ActHour And Acthour < 18 Then TimeColor = 1
 		If 5 <= ActHour And Acthour <= 9 		'overlapping to avoid colorjumps
 			skycolor = DezimalTime
@@ -1940,13 +1960,13 @@ Type TBuilding Extends TRenderable
 	Method DrawBackground(tweenValue:Float=1.0)
 		Local BuildingHeight:Int = gfx_building.h + 56
 		SetBlend MASKBLEND
-		DezimalTime = Float(Game.GetActualHour()) + Float(Game.GetActualMinute())*10/6/100
+		DezimalTime = Float(Game.GetHour()) + Float(Game.GetMinute())*10/6/100
 		If DezimalTime > 18 Or DezimalTime < 7
 			If DezimalTime > 18 And DezimalTime < 19 Then SetAlpha (19 - Dezimaltime)
 			If DezimalTime > 6 And DezimalTime < 8 Then SetAlpha (4 - Dezimaltime / 2)
 
 			'stars
-			Local minute:Float = Game.GetActualMinute()
+			Local minute:Float = Game.GetMinute()
 			For Local i:Int = 0 To 59
 				If i Mod 6 = 0 And minute Mod 2 = 0 Then StarsC[i] = RandMax( Max(1,StarsC[i]) )
 				SetColor StarsC[i] , StarsC[i] , StarsC[i]
@@ -2055,8 +2075,8 @@ Type TNewsAgency
 		If news = Null Then news = TNews.GetRandomNews() 'TNews.GetRandomChainParent()
 		If news <> Null
 			news.happenedday			= Game.day
-			news.happenedhour			= Game.GetActualHour()
-			news.happenedminute			= Game.GetActualMinute()
+			news.happenedhour			= Game.GetHour()
+			news.happenedminute			= Game.GetMinute()
 			Local NoOneSubscribed:Int	= True
 			For Local i:Int = 1 To 4
 				If Players[i].newsabonnements[news.genre] > 0 Then NoOneSubscribed = False

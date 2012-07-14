@@ -36,6 +36,8 @@ end
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)
+--		TVT.PrintOut("title: " .. MY.ProgrammeCollection.GetProgrammeFromList( 1 ).title )
+
 	if tonumber(number) == 0 and MY.getPlayerID() == 2 then
 		TVT.PrintOut("DEBUG DATA for player " .. MY.getPlayerID())
 		TVT.PrintOut("- - - - - - - - - - - -")

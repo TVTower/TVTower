@@ -757,9 +757,9 @@ Function Room_Chief_Compute(_room:TRooms)
 		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create("Ja, ist ja schon gut Chef ich störe nicht weiter!", - 2, Null))
 		ChefDialoge[0].AddAnswer(TDialogueAnswer.Create("Ich wollte wegen *ähm* einem Kredit nachfragen.", 1, Null))
 		If Players[Game.playerID].GetCreditCurrent() > 0 Then ChefDialoge[0].AddAnswer(TDialogueAnswer.Create("Ich will etwas von meinem Kredit abbezahlen..", 3, Null))
-		If Players[Game.playerID].GetCreditAvaiable() > 0
-			ChefDialoge[1] = TDialogueTexts.Create("Schon wieder neue Kohle?" + Chr(13) + "Naja, Sie machen Ihren Job ja besser als andere Praktikanten. Allerdings sind nicht mehr als " + Players[Game.playerID].GetCreditAvaiable() + "€ drin, verstanden!?")
-			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Ja, den Kredit nehme ich dann wohl.", 2, TPlayer.extSetCredit, Players[Game.playerID].GetCreditAvaiable()))
+		If Players[Game.playerID].GetCreditAvailable() > 0
+			ChefDialoge[1] = TDialogueTexts.Create("Schon wieder neue Kohle?" + Chr(13) + "Naja, Sie machen Ihren Job ja besser als andere Praktikanten. Allerdings sind nicht mehr als " + Players[Game.playerID].GetCreditAvailable() + "€ drin, verstanden!?")
+			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Ja, den Kredit nehme ich dann wohl.", 2, TPlayer.extSetCredit, Players[Game.playerID].GetCreditAvailable()))
 			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create("Ach, nein Danke Boss, hab's mir anders überlegt", - 2))
 		Else
 			ChefDialoge[1] = TDialogueTexts.Create("Wollen Sie nicht erstmal den alten Kredit zurückzahlen?" + Chr(13) + "Sie schulden mir noch " + Players[Game.playerID].GetCreditCurrent() + "€ - zahlen Sie die ersteinmal ab!" + Chr(13) + "Und nun raus bevor ich mich vergesse")
@@ -772,10 +772,10 @@ Function Room_Chief_Compute(_room:TRooms)
 		ChefDialoge[2].AddAnswer(TDialogueAnswer.Create("Ok, bin ja schon weg.", - 2))
 
 		ChefDialoge[3] = TDialogueTexts.Create("Soso, wenigstens eine gute Nachricht für den heutigen Tag." + Chr(13) + " " + Chr(13) + "Wieviel wollen Sie denn zurückzahlen?")
-		If Players[Game.playerID].GetCreditCurrent() >= 100000 And Players[Game.playerID].GetRawMoney() >= 100000
+		If Players[Game.playerID].GetCreditCurrent() >= 100000 And Players[Game.playerID].GetMoney() >= 100000
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Naja 100000€ könnte ich zurückzahlen.", - 2, TPlayer.extSetCredit, - 1 * 100000))
 		EndIf
-		If Players[Game.playerID].GetCreditCurrent() < Players[Game.playerID].GetRawMoney()
+		If Players[Game.playerID].GetCreditCurrent() < Players[Game.playerID].GetMoney()
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Eigentlich gleich den kompletten Kredit.", - 2, TPlayer.extSetCredit, - 1 * Players[Game.playerID].GetCreditCurrent()))
 		EndIf
 		ChefDialoge[3].AddAnswer(TDialogueAnswer.Create("Hab's mir doch anders überlegt, bis später Chef.", - 2))
@@ -1076,7 +1076,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 				For Local ProgrammeBlock:TProgrammeBlock = EachIn Players[_room.owner].ProgrammePlan.ProgrammeBlocks
 					If ProgrammeBlock.sendHour >= Game.daytoplan*24 AND ProgrammeBlock.sendHour <= Game.daytoplan*24+24 And..
 					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.programme.blocks)
-						If Programmeblock.sendHour > game.day*24 + game.GetActualHour()
+						If Programmeblock.sendHour > game.getDay()*24 + game.GetHour()
 							Game.cursorstate = 1
 						EndIf
 						local showOnRightSide:int = 0

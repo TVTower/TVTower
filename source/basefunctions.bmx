@@ -256,6 +256,15 @@ Type TPosition {_exposeToLua="selected"}
 		return TPosition.Create(pos.x,pos.y)
 	End Function
 
+	Method GetIntX:int() {_exposeToLua}
+		return floor(self.x)
+	End Method
+
+	Method GetIntY:int() {_exposeToLua}
+		return floor(self.y)
+	End Method
+
+
 	Method GetX:float() {_exposeToLua}
 		return self.x
 	End Method

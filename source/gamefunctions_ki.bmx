@@ -47,6 +47,9 @@ Type KI
 
 		Print "LUA: Registering <LuaFunctions> as <TVT>"
 		LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
+		Print "LUA: Registering <DB> as <DB>"
+		LuaEngine.RegisterBlitzmaxObject(DB, "DB")
+
 		If TPlayer.getById(Self.PlayerID) <> Null
 			Print "LUA: Registering <Player> as <MY>"
 			LuaEngine.RegisterBlitzmaxObject(TPlayer.getById(Self.PlayerID), "MY")
@@ -207,6 +210,8 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method getPlayerID:Int()
+		print "VERALTET: TVT.getPlayerID -> MY.GetPlayerID()"
+
 		Return Self.ME
 	End Method
 
@@ -303,15 +308,20 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method GetPlayerPosX:Int(PlayerID:Int = Null)
+		'oder beibehalten - dann kann die AI schauen ob eine Figur in der Naehe ist
+		'bspweise fuer Chat - "hey xy"
+		print "VERALTET: GetPlayerPosX -> math.floor( MY.Figure.Pos.GetX() ) ... floor fuer float->int"
 		If Not Game.isPlayerID( PlayerID ) Then Return -1 Else Return Floor(Players[ PlayerID ].figure.pos.x)
 	End Method
 
 	Method GetPlayerTargetPosX:Int(PlayerID:Int = Null)
+		print "VERALTET: GetPlayerTargetPosX -> math.floor( MY.Figure.Target.GetIntX() ) ... bzw GetX() fuer float"
 		If Not Game.isPlayerID( PlayerID ) Then Return -1 Else Return Floor(Players[ PlayerID ].figure.target.x)
 	End Method
 
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
-		If Not Game.isPlayerID( PlayerID ) Then Return -1 Else Return Players[PlayerID].figure.changeTarget(newTargetX,Null)
+		print "VERALTET: SetPlayerTargetPosX -> MY.Figure.changeTarget(x, y=null)"
+		If Not Game.isPlayerID( PlayerID ) OR Not Players[PlayerID].isAi() Then Return -1 Else Return Players[PlayerID].figure.changeTarget(newTargetX,Null)
 	End Method
 
 
@@ -324,18 +334,22 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 	Method getPlayerMaxAudience:Int()
+		Print "VERALTET: TVT.getPlayerMaxAudience() -> MY.GetMaxAudience()"
 		Return Players[ Self.ME ].maxaudience
 	End Method
 
 	Method getPlayerAudience:Int()
+		Print "VERALTET: TVT.getPlayerAudience() -> MY.GetAudience()"
 		Return Players[ Self.ME ].audience
 	End Method
 
 	Method getPlayerCredit:Int()
+		Print "VERALTET: TVT.getPlayerCredit() -> MY.GetCredit()"
 		Return Players[ Self.ME ].finances[Game.getWeekday()].credit
 	End Method
 
 	Method getPlayerMoney:Int()
+		Print "VERALTET: TVT.getPlayerMoney() -> MY.GetMoney()"
 		Return Players[ Self.ME ].finances[Game.getWeekday()].money
 	End Method
 
@@ -350,6 +364,7 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 	Method getPlayerFloor:Int()
+		Print "VERALTET: TVT.getPlayerFloor() -> MY.Figure.GetFloor()"
 		Return Players[ Self.ME ].figure.GetFloor()
 	End Method
 
@@ -367,19 +382,19 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method Day:Int(_time:Int = 0)
-		Return Game.GetActualDay(_time)
+		Return Game.GetDay(_time)
 	End Method
 
 	Method Hour:Int(_time:Int = 0)
-		Return Game.GetActualHour(_time)
+		Return Game.GetHour(_time)
 	End Method
 
 	Method Minute:Int(_time:Int = 0)
-		Return Game.GetActualHour(_time)
+		Return Game.GetMinute(_time)
 	End Method
 
 	Method Weekday:Int(_time:Int = 0)
-		Return ((Game.GetActualDay(_time) - 1) Mod 7)
+		Return Game.GetWeekday(_time)
 	End Method
 
 
@@ -387,55 +402,76 @@ Type TLuaFunctions {_exposeToLua}
 ' MOVIES
 '- - - - - -
 	Method MovieSequels:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieSequels -> Programmeobject.GetEpisodeCount()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 	    If obj Then Return obj.episodeList.count() Else Return -1
 	End Method
 
 	Method MovieFromSerie:Int(serieId:Int = -1, episodeNumber:Int = 0)
-		Print "TVT.MovieFromSerie veraltet: nutze Programmobject.GetEpisode(episode)"
+		Print "VERALTET: TVT.MovieFromSerie -> Programmeobject.GetEpisode(episode)"
 		Local obj:TProgramme = TProgramme.GetProgramme(serieId)
 		If obj Then obj = obj.GetEpisode(episodeNumber)
 	End Method
 
 	Method MoviePrice:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MoviePrice -> Programmeobject.GetPrice()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
-		If obj Then Return obj.ComputePrice() Else Return -1
+		If obj Then Return obj.getPrice() Else Return -1
 	End Method
 
 	Method MovieGenre:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieGenre -> Programmeobject.GetGenre() (bzw. GetGenreString() fuer Textwert)"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 		If obj Then Return obj.Genre Else Return -1
 	End Method
 
 	Method MovieLength:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieLength -> Programmeobject.GetBlocks()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 		If obj Then Return obj.blocks Else Return -1
 	End Method
 
 	Method MovieXRated:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieXRated -> Programmeobject.GetXRated()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 		If obj Then Return (obj.fsk18 <> "") Else Return -1
 	End Method
 
 	Method MovieProfit:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieProfit -> Programmeobject.GetOutcome()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 	    If obj Then Return obj.Outcome Else Return -1
 	End Method
 
 	Method MovieSpeed:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieSpeed -> Programmeobject.GetSpeed()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 	    If obj Then Return obj.speed Else Return -1
 	End Method
 
 	Method MovieReview:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieReview -> Programmeobject.GetReview()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 	    If obj Then Return obj.review Else Return -1
 	End Method
 
 	Method MovieTopicality:Int(movieId:Int = -1)
+		Print "VERALTET: TVT.MovieTopicality -> Programmeobject.GetTopicality()"
 		Local obj:TProgramme = TProgramme.GetProgramme(movieId)
 	    If obj Then Return obj.topicality Else Return -1
 	End Method
+
+	'Ich hab mir diese Hilfmethode gebaut, damit ich die Qualitätsberechnung nicht in der KI nachbauen muss.
+	'Es wäre zu kompliziert wenn die KI ihre Qualitätsprognose auf Grund einer riesigen Erfahrungsdatenbank durchführen müsste.
+	Method getActualProgrammQuality:Int(objectID:Int = -1, lastQuotePercentage:Float = 0.1)
+		Print "VERALTET: TVT.getActualProgrammQuality -> Programmeobject.getBaseAudienceQuote(lastQuotePercentage:float=0.1)"
+		Local Programme:TProgramme = TProgramme.GetProgramme(objectID)
+		If Programme <> Null
+			Local Quote:Int = Floor(Programme.getBaseAudienceQuote(lastQuotePercentage) * 100)
+			Return Quote
+		EndIf
+	End Method
+
 
 '- - - - - -
 ' SPOTS
@@ -537,7 +573,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Self.ME <> owner Then Return - 1
 
 		If ObjectID = 0 'Film bei Day,hour löschen
-			If day = Game.day And hour = Game.GetActualHour() And Game.GetActualMinute() > 5 Then Return -2
+			If day = Game.day And hour = Game.GetHour() And Game.GetMinute() > 5 Then Return -2
 
 			Local Obj:TProgrammeBlock = Players[ owner ].ProgrammePlan.GetActualProgrammeBlock(hour, day)
 			If Obj
@@ -570,7 +606,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Self.ME <> owner Then Return - 1
 
 		If ObjectID = 0 'Film bei Day,hour löschen
-			If day = Game.day And hour = Game.GetActualHour() Then Return -2
+			If day = Game.day And hour = Game.GetHour() Then Return -2
 
 			Local Obj:TAdBlock = TAdBlock.GetActualAdBlock(owner, hour, day)
 			If Obj
@@ -597,26 +633,15 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, ObjectID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der 
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
 		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
 		Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
 		If Programme <> Null
-			Local Quote:Int = Floor(Programme.ComputeAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
+			Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
 			Print "quote:" + Quote + "%"
 			Return Quote
 		EndIf
 	End Method
-	
-	'Ich hab mir diese Hilfmethode gebaut, damit ich die Qualitätsberechnung nicht in der KI nachbauen muss.
-	'Es wäre zu kompliziert wenn die KI ihre Qualitätsprognose auf Grund einer riesigen Erfahrungsdatenbank durchführen müsste.
-	Method getActualProgrammQuality:Int(objectID:Int = -1, lastQuotePercentage:Float = 0.1)
-		Local Programme:TProgramme = TProgramme.GetProgramme(objectID)
-		If Programme <> Null
-			Local Quote:Int = Floor(Programme.ComputeQuality(lastQuotePercentage) * 100)
-			Return Quote
-		EndIf
-	End Method	
-
 
 	'
 	'LUA_isHoliday

@@ -18,46 +18,51 @@ Movie = SLFDataObject:new{
 }
 
 function Movie:Initialize(movieId)
+	-- ronny: hier ueberlegen, ob nicht besser
+	-- das film-objekt selbst ausreicht und dann halt movie.GetXXX
 	self.Id = movieId
-	self.Sequels = TVT.MovieSequels(movieId)
-	self.Genre = TVT.MovieGenre(movieId)
-	self.Length = TVT.MovieLength(movieId)
-	self.XRated = TVT.MovieXRated(movieId)
-	self.Profit = TVT.MovieProfit(movieId)
-	self.Speed = TVT.MovieSpeed(movieId)
-	self.Review = TVT.MovieReview(movieId)
-	self.Topicality = TVT.MovieTopicality(movieId)
-	self.Price = TVT.MoviePrice(movieId)
-	
-	self.Quality = TVT.getActualProgrammQuality(movieId)
+	m = DB.GetProgramme(movieId)
+	self.Sequels = m.GetEpisodeCount()
+	self.Genre = m.GetGenre()
+	self.Length = m.GetBlocks()
+	self.XRated = m.GetXRated()
+	self.Profit = m.GetOutcome()
+	self.Speed = m.getSpeed()
+	self.Review = m.getReview()
+	self.Topicality = m.getTopicality()
+	self.Price = m.getPrice()
+
+	self.Quality = m.getBaseAudienceQuote(movieId)
 	--self.Quality = (0.3 * self.Profit + 0.15 * self.Speed + 0.25 * self.Review + 0.3 * self.Topicality)
 	self.PricePerBlock = self.Price / self.Length
 
+	-- ronny: hier gaenge auch: if (m.isMovie()) then
+	-- und bei speicherung des objektes auch in anderen Scriptbereichen...
 	if (self.Sequels > 0) then
 		self.ProgramType = PROGRAM_SERIES
 	else
 		self.ProgramType = PROGRAM_MOVIE
-	end		
-	
+	end
+
 	if self.Quality > 20 then
 		self.Level = 5
 	elseif self.Quality > 15 then
 		self.Level = 4
 	elseif self.Quality > 10 then
-		self.Level = 3		
+		self.Level = 3
 	elseif self.Quality > 5 then
 		self.Level = 2
 	else
 		self.Level = 1
 	end
-	
+
 	--debugMsg("Movie-Quality: " .. self.Quality .. " - ProgramType: " .. self.ProgramType .. " - Genre: " .. self.Genre)
 end
 
 function Movie:CheckConditions(maxPrice, minQuality)
 	if (self.Price > maxPrice) then	return false end
 	if (minQuality ~= nil) then
-		if (self.Quality < minQuality) then return false end	
+		if (self.Quality < minQuality) then return false end
 	end
 	return true
 end
@@ -72,11 +77,11 @@ Spot = SLFDataObject:new{
 	SpotProfit = -1;
 	SpotPenalty = -1;
 	SpotTargetgroup = "";
-	
+
 	Appraisal = -1;
 	FinanceWeight = -1;
 	Attractiveness = -1;
-	
+
 	Acuteness = -1; --Dringlichkeit
 	AcutenessVersionDate = -1;
 }
@@ -89,10 +94,10 @@ function Spot:Initialize(spotId)
 	self.SpotProfit = TVT.SpotProfit(spotId)
 	self.SpotPenalty = TVT.SpotPenalty(spotId)
 	self.SpotTargetgroup = TVT.SpotTargetgroup(spotId)
-	
+
 	self.FinanceWeight = (self.SpotProfit + self.SpotPenalty) / self.SpotToSend
 	self.Pressure = self.SpotToSend / self.SpotMaxDays * self.SpotMaxDays
-	
+
 	self.SpotsToBroadcast = -1
 	self.DaysLeft = -1
 end
@@ -104,11 +109,11 @@ function Spot:GetAcuteness()
 		local spotsBeenSent = TVT.of_getSpotBeenSent(self.Id)
 		self.SpotsToBroadcast = self.SpotToSend - spotsBeenSent
 		self.DaysLeft = TVT.of_getSpotDaysLeft(self.Id)
-		
+
 		self.Acuteness = self.SpotsToBroadcast / self.DaysLeft * self.DaysLeft * 100
 		self.AcutenessVersionDate = day
 	end
-	
+
 	return self.Acuteness
 end
 
@@ -124,13 +129,13 @@ end
 
 function Spot:OptimalBlocksToday()
 	local acuteness = self:GetAcuteness()
-	
+
 	local optimumCount = math.round(self.SpotsToBroadcast / self.DaysLeft)
-	
+
 	if (acuteness >= 100) and (self.SpotsToBroadcast > optimumCount) then
 		optimumCount = optimumCount + 1
 	end
-		
+
 	if (acuteness >= 100) then
 		return math.round(self.SpotsToBroadcast / self.DaysLeft)
 	end

@@ -39,7 +39,7 @@ function DefaultAIPlayer:initializePlayer()
 	debugMsg("Initialisiere DefaultAIPlayer-KI ...")
 	self.Stats = BusinessStats:new()
 	self.Stats:Initialize()
-	
+
 	self.Budget = BudgetManager:new()
 	self.Budget:Initialize()
 end
@@ -63,7 +63,7 @@ end
 function DefaultAIPlayer:OnDayBegins()
 	self.Stats:OnDayBegins()
 	self.Budget:CalculateBudget()
-	
+
 	for k,v in pairs(self.TaskList) do
 		v:OnDayBegins()
 	end
@@ -82,7 +82,7 @@ BusinessStats = SLFDataObject:new{
 	SeriesPricePerBlockAcceptable = nil;
 	MovieQualityAcceptable = nil;
 	SeriesQualityAcceptable = nil;
-	
+
 	ProgramQualityLevel1 = nil;
 	ProgramQualityLevel2 = nil;
 	ProgramQualityLevel3 = nil;
@@ -100,7 +100,7 @@ function BusinessStats:Initialize()
 	self.SeriesPricePerBlockAcceptable = StatisticEvaluator:new()
 	self.MovieQualityAcceptable = StatisticEvaluator:new()
 	self.SeriesQualityAcceptable = StatisticEvaluator:new()
-	
+
 	self.ProgramQualityLevel1 = StatisticEvaluator:new()
 	self.ProgramQualityLevel2 = StatisticEvaluator:new()
 	self.ProgramQualityLevel3 = StatisticEvaluator:new()
@@ -118,7 +118,7 @@ function BusinessStats:OnDayBegins()
 	self.SeriesPricePerBlockAcceptable:Adjust()
 	self.MovieQualityAcceptable:Adjust()
 	self.SeriesQualityAcceptable:Adjust()
-	
+
 	self.ProgramQualityLevel1:Adjust()
 	self.ProgramQualityLevel2:Adjust()
 	self.ProgramQualityLevel3:Adjust()
@@ -126,12 +126,12 @@ function BusinessStats:OnDayBegins()
 	self.ProgramQualityLevel5:Adjust()
 end
 
-function BusinessStats:ReadStats()	
-	local currentAudience = TVT.getPlayerAudience()
+function BusinessStats:ReadStats()
+	local currentAudience = MY.GetAudience()
 	if (currentAudience == 0) then
 		return;
 	end
-	
+
 	--debugMsg("currentAudience: " .. currentAudience)
 	self.Audience:AddValue(currentAudience)
 	--debugMsg("Stats: " .. self.Audience.AverageValue .. " (" .. self.Audience.MinValue .. " - " .. self.Audience.MaxValue .. ")")
@@ -155,7 +155,7 @@ function BusinessStats:AddMovie(movie)
 		elseif (movie.ProgramType == PROGRAM_SERIES) then
 			self.SeriesQualityAcceptable:AddValue(movie.Quality)
 			self.SeriesPricePerBlockAcceptable:AddValue(movie.PricePerBlock)
-		end			
+		end
 	end
 end
 
@@ -206,7 +206,7 @@ end
 function OnLeaveRoom()
 end
 
-function OnMinute(number)	
+function OnMinute(number)
 	if (aiIsActive) then
 		getAIPlayer():Tick()
 	end

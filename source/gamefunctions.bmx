@@ -1,7 +1,5 @@
-﻿Superstrict
-
-Import "basefunctions_image.bmx"
-Import "basefunctions_resourcemanager.bmx"
+﻿'Import "basefunctions_image.bmx"
+'Import "basefunctions_resourcemanager.bmx"
 
 Type TSaveFile
   Field xml:TXmlHelper
@@ -204,7 +202,7 @@ Type TgfxProgrammelist extends TPlannerList
 		For Local movie:TProgramme = EachIn Players[Game.playerID].ProgrammeCollection.List 'all programmes of one player
 			If movie.genre = genre
 				locy :+ 19
-				If movie.isMovie
+				If movie.isMovie()
 					gfxtape.Draw(locx, locy)
 				else
 					gfxtapeseries.Draw(locx, locy)
@@ -212,7 +210,7 @@ Type TgfxProgrammelist extends TPlannerList
 				font.DrawBlock(movie.title, locx + 13, locy + 5, 139, 16, 0, 0, 0, 0, True)
 				If functions.MouseIn( locx, locy, gfxtape.w, gfxtape.h)
 					SetAlpha 0.2;
-					If movie.isMovie
+					If movie.isMovie()
 						DrawRect(locx, locy, gfxtape.w, gfxtape.h)
 					else
 						DrawRect(locx, locy, gfxtapeseries.w, gfxtapeseries.h)
@@ -234,7 +232,7 @@ Type TgfxProgrammelist extends TPlannerList
 				If MOUSEMANAGER.IsHit(1) AND functions.MouseIn( locx, locy, gfxtape.w, gfxtape.h)
 					Game.cursorstate = 1
 					If createProgrammeblock
-						If movie.isMovie Then
+						If movie.isMovie()
 							TProgrammeBlock.CreateDragged(movie)
 							SetOpen(0)
 						Else
@@ -1250,9 +1248,9 @@ Type TInterface
 					Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
 					ActualProgramToolTip.TitleBGtype	= 0
 					if block.programme.parent <> null
-						ActualProgramText					= block.programme.parent.title + ": "+ block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetActualHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
+						ActualProgramText					= block.programme.parent.title + ": "+ block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
 					else
-						ActualProgramText					= block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetActualHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
+						ActualProgramText					= block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
 					endif
 				Else
 					ActualProgramToolTip.TitleBGtype	= 2
@@ -1341,9 +1339,9 @@ Type TInterface
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0
-				If audiencerate > 0.4 And (Game.GetActualHour() < 21 And Game.GetActualHour() > 6) Then girl_on = True
+				If audiencerate > 0.4 And (Game.GetHour() < 21 And Game.GetHour() > 6) Then girl_on = True
 				If audiencerate > 0.1 Then grandpa_on = True
-		  		If audiencerate > 0.3 And (Game.GetActualHour() < 2 Or Game.GetActualHour() > 11) Then teen_on = True
+		  		If audiencerate > 0.3 And (Game.GetHour() < 2 Or Game.GetHour() > 11) Then teen_on = True
 				If teen_on And grandpa_on
 					Assets.GetSprite("gfx_interface_audience_teen").Draw(570, 419 - 383 + NoDX9moveY)    'teen
 					Assets.GetSprite("gfx_interface_audience_grandpa").Draw(650, 419 - 383 + NoDX9moveY)      'teen
@@ -1366,7 +1364,7 @@ Type TInterface
 	  		SetBlend MASKBLEND
 	     	Assets.GetSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
-			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetFormattedMoney() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
+			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
 			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
 		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 		EndIf 'bottomimg is dirty

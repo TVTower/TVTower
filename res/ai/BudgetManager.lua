@@ -18,7 +18,7 @@ end
 function BudgetManager:Initialize()
 	-- Da am Anfang auf keine Erfahrungswerte bezüglich der Budgethöhe zurückgegriffen werden kann,
 	-- wird für alle vergangenen Tage angenommen, dass es gleich war. Das Budget entspricht erstmal 80% des Startkapitals.
-	local playerMoney = TVT.GetPlayerMoney(TVT.ME) --aktueller Geldstand
+	local playerMoney = MY.GetMoney() --aktueller Geldstand
 	local startBudget = math.round(playerMoney * 0.8) --Gesamtbudget das investiert werden soll. Später von der Risikobereitschafts abhängig machen.
 
 	-- Erfahrungswerte für den Anfang mit dem Standardwert initialisieren
@@ -45,7 +45,7 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	local YesterdayStartAccountBalance = self.TodayStartAccountBalance	-- den gestrigen Wert zwischenspeichern
 
 	-- Werte nachjustieren
-	self.TodayStartAccountBalance = TVT.GetPlayerMoney() -- Kontostand aktualisieren
+	self.TodayStartAccountBalance = MY.GetMoney() -- Kontostand aktualisieren
 	self.BudgetMinimum = self.BudgetMinimum * 1.01
 	self.BudgetMaximum = self.TodayStartAccountBalance * 0.95
 
@@ -59,16 +59,16 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	if myBudget < self.BudgetMinimum then
 		myBudget = self.BudgetMinimum
 	end
-	
+
 	--Maximal-Budget prüfen
 	if myBudget > self.BudgetMaximum then
 		myBudget = self.BudgetMaximum
 	end
 
 	-- TODO: Kredit ja/nein --- Zurückzahlen ja/nein
-	
+
 	-- Neuer History-Eintrag
-	self.BudgetHistory[TODAY_BUDGET] = myBudget	
+	self.BudgetHistory[TODAY_BUDGET] = myBudget
 
 	-- Das Budget auf die Tasks verteilen
 	self:AllocateBudgetToTasks(myBudget)
@@ -76,9 +76,9 @@ end
 
 function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
 	--debugMsg("A1.1: " .. pTurnOver); debugMsg("AX.1: " .. self.BudgetHistory[OLD_BUDGET_1]); debugMsg("AX.2: " .. self.BudgetHistory[OLD_BUDGET_2]); debugMsg("AX.3: " .. self.BudgetHistory[OLD_BUDGET_3])
-	
-	-- Alle Erfahrungswerte werden aufsummiert und mit einem Faktor gewichtet und dann durch 10 geteilt. 4 + 3 + 2 + 1 / 10	
-	local TempSum = ((pTurnOver * 4) + (self.BudgetHistory[OLD_BUDGET_1] * 3) + (self.BudgetHistory[OLD_BUDGET_2] * 2) + (self.BudgetHistory[OLD_BUDGET_3] * 1)) / 10	
+
+	-- Alle Erfahrungswerte werden aufsummiert und mit einem Faktor gewichtet und dann durch 10 geteilt. 4 + 3 + 2 + 1 / 10
+	local TempSum = ((pTurnOver * 4) + (self.BudgetHistory[OLD_BUDGET_1] * 3) + (self.BudgetHistory[OLD_BUDGET_2] * 2) + (self.BudgetHistory[OLD_BUDGET_3] * 1)) / 10
 	if pCurrentAccountBalance > (TempSum / 2) then -- Reicht der aktuelle Kontostand aus, um das errechnete Budget zu finanzieren?
 		-- Das Budget wird um 0% bis 9% erhöht
 		TempSum = TempSum + (pCurrentAccountBalance * ((math.random(10)-1)/100)) -- TODO: Zufallswert wird durch Level und Risikoreichtum bestimmt
@@ -90,7 +90,7 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
 
 	-- Zählen wie viele Budgetanteile es insgesamt gibt
-	local BudgetUnits = 0	
+	local BudgetUnits = 0
 	for k,v in pairs(player.TaskList) do
 		BudgetUnits = BudgetUnits + v.BudgetWeigth
 	end
