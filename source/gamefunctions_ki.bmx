@@ -161,7 +161,7 @@ Type TLuaFunctions {_exposeToLua}
 	Const NEWS_GENRE_SPORT:Int = 2
 	Const NEWS_GENRE_CURRENTS:Int = 4
 
-	'Die Räume werden alle initialisiert
+	'Die RÃ¤ume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
 	Field ROOM_ADAGENCY:Int
@@ -461,8 +461,8 @@ Type TLuaFunctions {_exposeToLua}
 	    If obj Then Return obj.topicality Else Return -1
 	End Method
 
-	'Ich hab mir diese Hilfmethode gebaut, damit ich die Qualitätsberechnung nicht in der KI nachbauen muss.
-	'Es wäre zu kompliziert wenn die KI ihre Qualitätsprognose auf Grund einer riesigen Erfahrungsdatenbank durchführen müsste.
+	'Ich hab mir diese Hilfmethode gebaut, damit ich die QualitÃ¤tsberechnung nicht in der KI nachbauen muss.
+	'Es wÃ¤re zu kompliziert wenn die KI ihre QualitÃ¤tsprognose auf Grund einer riesigen Erfahrungsdatenbank durchfÃ¼hren mÃ¼sste.
 	Method getActualProgrammQuality:Int(objectID:Int = -1, lastQuotePercentage:Float = 0.1)
 		Print "VERALTET: TVT.getActualProgrammQuality -> Programmeobject.getBaseAudienceQuote(lastQuotePercentage:float=0.1)"
 		Local Programme:TProgramme = TProgramme.GetProgramme(objectID)
@@ -572,7 +572,7 @@ Type TLuaFunctions {_exposeToLua}
 		'wenn user schluessel haben sollte, dann muesste an dieser Stelle dies ueberprueft werden
 		If Self.ME <> owner Then Return - 1
 
-		If ObjectID = 0 'Film bei Day,hour löschen
+		If ObjectID = 0 'Film bei Day,hour lÃ¶schen
 			If day = Game.day And hour = Game.GetHour() And Game.GetMinute() > 5 Then Return -2
 
 			Local Obj:TProgrammeBlock = Players[ owner ].ProgrammePlan.GetActualProgrammeBlock(hour, day)
@@ -605,7 +605,7 @@ Type TLuaFunctions {_exposeToLua}
 		'wenn user schluessel haben sollte, dann muesste an dieser Stelle dies ueberprueft werden
 		If Self.ME <> owner Then Return - 1
 
-		If ObjectID = 0 'Film bei Day,hour löschen
+		If ObjectID = 0 'Film bei Day,hour lÃ¶schen
 			If day = Game.day And hour = Game.GetHour() Then Return -2
 
 			Local Obj:TAdBlock = TAdBlock.GetActualAdBlock(owner, hour, day)
@@ -633,8 +633,8 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, ObjectID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
-		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter kÃ¶nnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
+		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verÃ¤ndern) errechnen.
 		Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
 		If Programme <> Null
 			Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)

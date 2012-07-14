@@ -1,4 +1,4 @@
-﻿SuperStrict
+SuperStrict
 Import brl.pngloader
 Import "basefunctions_zip.bmx"
 Import "basefunctions_localization.bmx"

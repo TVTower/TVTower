@@ -40,7 +40,7 @@ Global Fader:TFader								= New TFader
 Global NewsAgency:TNewsAgency					= New TNewsAgency
 
 SeedRand(103452)
-Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
+Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswÃ¼rfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
 TButton.UseFont 		= FontManager.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
@@ -239,25 +239,25 @@ endrem
 						TError.DrawNewError("Lade Programme...")
 						TProgramme.LoadAll()
 					Case "ALLCONTRACTS"
-						TError.DrawNewError("Lade Werbeverträge...")
+						TError.DrawNewError("Lade WerbevertrÃ¤ge...")
 					'TContract.LoadAll()
 					Case "ALLNEWS"
 						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade Werbeverträgeblöcke...")
+						TError.DrawNewError("Lade WerbevertrÃ¤geblÃ¶cke...")
 					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade Programmblöcke...")
+						TError.DrawNewError("Lade ProgrammblÃ¶cke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade Werbeblöcke...")
+						TError.DrawNewError("Lade WerbeblÃ¶cke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade Newsblöcke...")
+						TError.DrawNewError("Lade NewsblÃ¶cke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade Filmhändlerblöcke...")
+						TError.DrawNewError("Lade FilmhÃ¤ndlerblÃ¶cke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -547,7 +547,7 @@ Rem
 		Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI für Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI fÃ¼r Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player

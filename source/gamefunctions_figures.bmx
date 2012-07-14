@@ -1,4 +1,4 @@
-﻿'Summary: all kind of characters walking through the building (players, terrorists and so on)
+'Summary: all kind of characters walking through the building (players, terrorists and so on)
 Type TFigures {_exposeToLua="selected"}
 	Field Name:String		= "unknown"
 	Field pos:TPosition		= TPosition.Create(0.0,0.0) {_exposeToLua}		'pos.y is difference to y of building

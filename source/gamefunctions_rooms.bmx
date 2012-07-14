@@ -1,4 +1,4 @@
-﻿'Basictype of all rooms
+'Basictype of all rooms
 'Basictyp aller Raeume
 Type TRooms
     Field background:TGW_Sprites       	'background, the image containing the whole room

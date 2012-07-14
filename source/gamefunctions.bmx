@@ -1,4 +1,4 @@
-﻿'Import "basefunctions_image.bmx"
+'Import "basefunctions_image.bmx"
 'Import "basefunctions_resourcemanager.bmx"
 
 Type TSaveFile
