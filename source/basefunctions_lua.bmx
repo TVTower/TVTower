@@ -260,12 +260,23 @@ Type TLuaEngine
 				Local typeId:TTypeId	= TTypeId.ForObject( obj )
 
 				Local ident:String		= lua_tostring( getLuaState(),2 )
-
 				Local mth:TMethod		= typeId.FindMethod( ident )
 				If mth Then Throw "newIndex ERROR"
 
+				'only expose if type set to get exposed
+				if not typeId.MetaData("_exposeToLua") then print "Lua: Type "+typeId.name()+" not exposed to Lua"; return false
+				local exposeType:string = typeId.MetaData("_exposeToLua")
+
+
 				Local fld:TField=typeId.FindField( ident )
 				If fld
+					'PRIVATE...do not allow write to  private functions/methods
+					'check could be removed if performance critical
+					if fld.MetaData("_private") then return True
+					'only set values of children with explicit mention
+					if exposeType = "selected" AND not fld.MetaData("_exposeToLua") then return True
+					if fld.MetaData("_exposeToLua")<>"rw" then print "LUA: "+typeId.name()+"."+ident+" is read-only";return true
+
 					Select fld.TypeId()
 						Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
 							fld.SetInt( obj,lua_tointeger( getLuaState(),3 ) )
