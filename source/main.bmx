@@ -756,8 +756,8 @@ endrem
 				EndIf
 				If Player.audience > Adblock.contract.calculatedMinAudience And Adblock.contract.spotnumber >= Adblock.contract.spotcount
 					Adblock.contract.botched = 2
-					Print "werbegeld: "+Adblock.contract.calculatedProfit
-					Player.finances[Game.getWeekday()].earnAdProfit(Adblock.contract.calculatedProfit)
+					Print "werbegeld: "+Adblock.contract.GetProfit()
+					Player.finances[Game.getWeekday()].earnAdProfit(Adblock.contract.GetProfit() )
 					AdBlock.RemoveOverheadAdblocks() 'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
 					'Print "should remove contract:"+adblock.contract.title
 					TContractBlock.RemoveContractFromSuitcase(Adblock.contract)
@@ -784,7 +784,7 @@ endrem
 				If contract <> Null
 					If (contract.daystofinish-(Game.day - contract.daysigned)) <= 0
 						If LastContract = Null Or LastContract.title <> contract.title
-							Player.finances[Game.getWeekday()].PayPenalty(contract.calculatedPenalty)
+							Player.finances[Game.getWeekday()].PayPenalty(contract.GetPenalty() )
 							'Print Player.name+" paid a penalty of "+contract.calculatedPenalty+" for contract:"+contract.title
 						EndIf
 						LastContract = contract
@@ -1695,16 +1695,6 @@ Type TElevator
 		Next
 
 		SetBlend ALPHABLEND
-		Local routepos:Int = 0
-		FontManager.basefont.draw("tofloor:" + Self.toFloor, 650, 35)
-		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			If floorroute.call = 0
-				FontManager.basefont.draw(FloorRoute.floornumber + " 'senden' " + TFigures.GetByID(FloorRoute.who).Name, 650, 50 + routepos * 15)
-			Else
-				FontManager.basefont.draw(FloorRoute.floornumber + " 'holen' " + TFigures.GetByID(FloorRoute.who).Name, 650, 50 + routepos * 15)
-			EndIf
-			routepos:+1
-		Next
 	End Method
 
 End Type
@@ -3087,12 +3077,12 @@ Function DrawMain(tweenValue:Float=1.0)
 
 	If Game.DebugInfos
 		SetColor 0,0,0
-		DrawRect(10,15,100,100)
+		DrawRect(20,10,140,373)
 		SetColor 255, 255, 255
-		If App.settings.directx = -1 Then FontManager.baseFont.draw("Mode: OpenGL", 15,50)
-		If App.settings.directx = 0  Then FontManager.baseFont.draw("Mode: BufferedOpenGL", 15,50)
-		If App.settings.directx = 1  Then FontManager.baseFont.draw("Mode: DirectX 7", 15, 50)
-		If App.settings.directx = 2  Then FontManager.baseFont.draw("Mode: DirectX 9", 15,50)
+		If App.settings.directx = -1 Then FontManager.baseFont.draw("Mode: OpenGL", 25,50)
+		If App.settings.directx = 0  Then FontManager.baseFont.draw("Mode: BufferedOpenGL", 25,50)
+		If App.settings.directx = 1  Then FontManager.baseFont.draw("Mode: DirectX 7", 25, 50)
+		If App.settings.directx = 2  Then FontManager.baseFont.draw("Mode: DirectX 9", 25,50)
 
 		If Game.networkgame
 			GUIManager.Draw("InGame") 'draw ingamechat
@@ -3104,18 +3094,33 @@ Function DrawMain(tweenValue:Float=1.0)
 '			FontManager.basefont.draw(Network.stream.UDPSpeedString(), 662,490)
 			For Local i:Int = 0 To 3
 				If Players[i + 1].Figure.inRoom <> Null
-					FontManager.basefont.draw("Player " + (i + 1) + ": " + Players[i + 1].Figure.inRoom.Name, 662, 510 + i * 11)
+					FontManager.basefont.draw("Player " + (i + 1) + ": " + Players[i + 1].Figure.inRoom.Name, 25, 75 + i * 11)
 				Else
 					If Players[i + 1].Figure.IsInElevator()
-						FontManager.basefont.draw("Player " + (i + 1) + ": InElevator", 662, 510 + i * 11)
+						FontManager.basefont.draw("Player " + (i + 1) + ": InElevator", 25, 75 + i * 11)
 					Else If Players[i + 1].Figure.IsAtElevator()
-						FontManager.basefont.draw("Player " + (i + 1) + ": AtElevator", 662, 510 + i * 11)
+						FontManager.basefont.draw("Player " + (i + 1) + ": AtElevator", 25, 75 + i * 11)
 					Else
-						FontManager.basefont.draw("Player " + (i + 1) + ": Building", 662, 510 + i * 11)
+						FontManager.basefont.draw("Player " + (i + 1) + ": Building", 25, 75 + i * 11)
 					EndIf
 				EndIf
 			Next
 		EndIf
+
+
+		Local routepos:Int = 0
+		local startY:int = 75
+		If Game.networkgame then startY :+ 4*11
+
+		local callType:string = ""
+		FontManager.basefont.draw("tofloor:" + Building.elevator.toFloor, 25, startY)
+		For Local FloorRoute:TFloorRoute = EachIn Building.elevator.FloorRouteList
+			If floorroute.call = 0 then callType = " 'senden' " else callType= " 'holen' "
+			FontManager.basefont.draw(FloorRoute.floornumber + callType + TFigures.GetByID(FloorRoute.who).Name, 25, startY + 15 + routepos * 11)
+			routepos:+1
+		Next
+
+
 	EndIf
 End Function
 
@@ -3254,14 +3259,14 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 0.10
 
 				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
-				If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("adagency", 0)
-				If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("archive", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_B) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("betty", 0)
-				If KEYMANAGER.IsHit(KEY_F) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("movieagency", 0)
-				If KEYMANAGER.IsHit(KEY_O) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("office", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_C) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("chief", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_N) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("news", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_R) Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("roomboard", -1)
+				If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("adagency", 0)
+				If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("archive", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_B) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("betty", 0)
+				If KEYMANAGER.IsHit(KEY_F) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("movieagency", 0)
+				If KEYMANAGER.IsHit(KEY_O) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("office", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_C) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("chief", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_N) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("news", Game.playerID)
+				If KEYMANAGER.IsHit(KEY_R) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("roomboard", -1)
 				If KEYMANAGER.IsHit(KEY_D) Players[Game.playerID].maxaudience = Stationmap.einwohner
 
 

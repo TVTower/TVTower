@@ -229,50 +229,50 @@ Type TLuaFunctions {_exposeToLua}
 
 		ret.MAXSPOTS = Game.maxContractsAllowed
 
-		ret.ROOM_MOVIEAGENCY = TRooms.GetRoom("movieagency", 0).uniqueID
-		ret.ROOM_ADAGENCY = TRooms.GetRoom("adagency", 0).uniqueID
-		ret.ROOM_ROOMBOARD = TRooms.GetRoom("roomboard", - 1).uniqueID
-		ret.ROOM_PORTER = TRooms.GetRoom("porter", - 1).uniqueID
-		ret.ROOM_BETTY = TRooms.GetRoom("betty", 0).uniqueID
-		ret.ROOM_SUPERMARKET = TRooms.GetRoom("supermarket", 0).uniqueID
-		ret.ROOM_ROOMAGENCY = TRooms.GetRoom("roomagency", 0).uniqueID
-		ret.ROOM_PEACEBROTHERS = TRooms.GetRoom("peacebrothers", - 1).uniqueID
-		ret.ROOM_SCRIPTAGENCY = TRooms.GetRoom("scriptagency", 0).uniqueID
-		ret.ROOM_NOTOBACCO = TRooms.GetRoom("notobacco", - 1).uniqueID
-		ret.ROOM_TOBACCOLOBBY = TRooms.GetRoom("tobaccolobby", - 1).uniqueID
-		ret.ROOM_GUNSAGENCY = TRooms.GetRoom("gunsagency", - 1).uniqueID
-		ret.ROOM_VRDUBAN = TRooms.GetRoom("vrduban", - 1).uniqueID
-		ret.ROOM_FRDUBAN = TRooms.GetRoom("frduban", - 1).uniqueID
+		ret.ROOM_MOVIEAGENCY = TRooms.GetRoomByDetails("movieagency", 0).uniqueID
+		ret.ROOM_ADAGENCY = TRooms.GetRoomByDetails("adagency", 0).uniqueID
+		ret.ROOM_ROOMBOARD = TRooms.GetRoomByDetails("roomboard", - 1).uniqueID
+		ret.ROOM_PORTER = TRooms.GetRoomByDetails("porter", - 1).uniqueID
+		ret.ROOM_BETTY = TRooms.GetRoomByDetails("betty", 0).uniqueID
+		ret.ROOM_SUPERMARKET = TRooms.GetRoomByDetails("supermarket", 0).uniqueID
+		ret.ROOM_ROOMAGENCY = TRooms.GetRoomByDetails("roomagency", 0).uniqueID
+		ret.ROOM_PEACEBROTHERS = TRooms.GetRoomByDetails("peacebrothers", - 1).uniqueID
+		ret.ROOM_SCRIPTAGENCY = TRooms.GetRoomByDetails("scriptagency", 0).uniqueID
+		ret.ROOM_NOTOBACCO = TRooms.GetRoomByDetails("notobacco", - 1).uniqueID
+		ret.ROOM_TOBACCOLOBBY = TRooms.GetRoomByDetails("tobaccolobby", - 1).uniqueID
+		ret.ROOM_GUNSAGENCY = TRooms.GetRoomByDetails("gunsagency", - 1).uniqueID
+		ret.ROOM_VRDUBAN = TRooms.GetRoomByDetails("vrduban", - 1).uniqueID
+		ret.ROOM_FRDUBAN = TRooms.GetRoomByDetails("frduban", - 1).uniqueID
 
-		ret.ROOM_OFFICE_PLAYER_ME = TRooms.GetRoom("office", pPlayerId).uniqueID
-		ret.ROOM_STUDIOSIZE1_PLAYER_ME = TRooms.GetRoom("studiosize1", pPlayerId).uniqueID
-		ret.ROOM_BOSS_PLAYER_ME = TRooms.GetRoom("chief", pPlayerId).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER_ME = TRooms.GetRoom("news", pPlayerId).uniqueID
-		ret.ROOM_ARCHIVE_PLAYER_ME = TRooms.GetRoom("archive", pPlayerId).uniqueID
+		ret.ROOM_OFFICE_PLAYER_ME = TRooms.GetRoomByDetails("office", pPlayerId).uniqueID
+		ret.ROOM_STUDIOSIZE1_PLAYER_ME = TRooms.GetRoomByDetails("studiosize1", pPlayerId).uniqueID
+		ret.ROOM_BOSS_PLAYER_ME = TRooms.GetRoomByDetails("chief", pPlayerId).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER_ME = TRooms.GetRoomByDetails("news", pPlayerId).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER_ME = TRooms.GetRoomByDetails("archive", pPlayerId).uniqueID
 
-		ret.ROOM_ARCHIVE_PLAYER1 = TRooms.GetRoom("archive", 1).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER1 = TRooms.GetRoom("news", 1).uniqueID
-		ret.ROOM_BOSS_PLAYER1 = TRooms.GetRoom("chief", 1).uniqueID
-		ret.ROOM_OFFICE_PLAYER1 = TRooms.GetRoom("office", 1).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER1 = TRooms.GetRoom("studiosize1", 1).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER1 = TRooms.GetRoomByDetails("archive", 1).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER1 = TRooms.GetRoomByDetails("news", 1).uniqueID
+		ret.ROOM_BOSS_PLAYER1 = TRooms.GetRoomByDetails("chief", 1).uniqueID
+		ret.ROOM_OFFICE_PLAYER1 = TRooms.GetRoomByDetails("office", 1).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER1 = TRooms.GetRoomByDetails("studiosize1", 1).uniqueID
 
-		ret.ROOM_ARCHIVE_PLAYER2 = TRooms.GetRoom("archive", 2).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER2 = TRooms.GetRoom("news", 2).uniqueID
-		ret.ROOM_BOSS_PLAYER2 = TRooms.GetRoom("chief", 2).uniqueID
-		ret.ROOM_OFFICE_PLAYER2 = TRooms.GetRoom("office", 2).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER2 = TRooms.GetRoom("studiosize1", 2).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER2 = TRooms.GetRoomByDetails("archive", 2).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER2 = TRooms.GetRoomByDetails("news", 2).uniqueID
+		ret.ROOM_BOSS_PLAYER2 = TRooms.GetRoomByDetails("chief", 2).uniqueID
+		ret.ROOM_OFFICE_PLAYER2 = TRooms.GetRoomByDetails("office", 2).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER2 = TRooms.GetRoomByDetails("studiosize1", 2).uniqueID
 
-		ret.ROOM_ARCHIVE_PLAYER3 = TRooms.GetRoom("archive", 3).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER3 = TRooms.GetRoom("news", 3).uniqueID
-		ret.ROOM_BOSS_PLAYER3 = TRooms.GetRoom("chief", 3).uniqueID
-		ret.ROOM_OFFICE_PLAYER3 = TRooms.GetRoom("office", 3).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER3 = TRooms.GetRoom("studiosize1", 3).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER3 = TRooms.GetRoomByDetails("archive", 3).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER3 = TRooms.GetRoomByDetails("news", 3).uniqueID
+		ret.ROOM_BOSS_PLAYER3 = TRooms.GetRoomByDetails("chief", 3).uniqueID
+		ret.ROOM_OFFICE_PLAYER3 = TRooms.GetRoomByDetails("office", 3).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER3 = TRooms.GetRoomByDetails("studiosize1", 3).uniqueID
 
-		ret.ROOM_ARCHIVE_PLAYER4 = TRooms.GetRoom("archive", 4).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER4 = TRooms.GetRoom("news", 4).uniqueID
-		ret.ROOM_BOSS_PLAYER4 = TRooms.GetRoom("chief", 4).uniqueID
-		ret.ROOM_OFFICE_PLAYER4 = TRooms.GetRoom("office", 4).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER4 = TRooms.GetRoom("studiosize1", 4).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER4 = TRooms.GetRoomByDetails("archive", 4).uniqueID
+		ret.ROOM_NEWSAGENCY_PLAYER4 = TRooms.GetRoomByDetails("news", 4).uniqueID
+		ret.ROOM_BOSS_PLAYER4 = TRooms.GetRoomByDetails("chief", 4).uniqueID
+		ret.ROOM_OFFICE_PLAYER4 = TRooms.GetRoomByDetails("office", 4).uniqueID
+		ret.ROOM_STUDIOSIZE_PLAYER4 = TRooms.GetRoomByDetails("studiosize1", 4).uniqueID
 
 		Return ret
 	End Function
@@ -282,15 +282,22 @@ Type TLuaFunctions {_exposeToLua}
 		Return 1
 	EndMethod
 
-	Method GetProgramme:TProgramme( programmeID:int ) {_exposeToLua}
-		return TProgramme.getProgramme( programmeID )
+	Method GetProgramme:TProgramme( id:int ) {_exposeToLua}
+		return TProgramme.getProgramme( id )
 	End Method
 
-
-	Method GetRoom:Int(roomName:String, playerID:Int)
-		Local room:TRooms = TRooms.GetRoom(roomName, playerID, 0) '0 = not strict
-		If room <> Null Then Return room.uniqueID Else Return -1
+	Method GetContract:TContract( id:int ) {_exposeToLua}
+		return TContract.getContract( id )
 	End Method
+
+	Method GetRoomByDetails:TRooms(roomName:String, playerID:Int)
+		return TRooms.GetRoomByDetails(roomName, playerID, 0) '0 = not strict
+	End Method
+
+	Method GetRoom:TRooms(id:int)
+		return TRooms.GetRoom( id )
+	End Method
+
 
 	Method SendToChat:Int(ChatText:String)
 		If Players[ Self.ME ] <> Null
@@ -309,7 +316,6 @@ Type TLuaFunctions {_exposeToLua}
 		Return 1
 	EndMethod
 
-
 	Method GetPlayerPosX:Int(PlayerID:Int = Null)
 		'oder beibehalten - dann kann die AI schauen ob eine Figur in der Naehe ist
 		'bspweise fuer Chat - "hey xy"
@@ -325,15 +331,6 @@ Type TLuaFunctions {_exposeToLua}
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
 		print "VERALTET: SetPlayerTargetPosX -> MY.Figure.changeTarget(x, y=null)"
 		If Not Game.isPlayerID( PlayerID ) OR Not Players[PlayerID].isAi() Then Return -1 Else Return Players[PlayerID].figure.changeTarget(newTargetX,Null)
-	End Method
-
-
-	Method getMillisecs:Int()
-		Return MilliSecs()
-	End Method
-
-	Method getTime:Int()
-		Return Game.timeSinceBegin
 	End Method
 
 	Method getPlayerMaxAudience:Int()
@@ -372,17 +369,25 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 	Method getRoomFloor:Int(roomId:Int = 0)
-		Local Room:TRooms = TRooms.GetRoomFromID(roomId)
+		Local Room:TRooms = TRooms.GetRoom(roomId)
 		If Room <> Null Then Return Room.Pos.y Else Return 0
 	End Method
 
 	Method doGoToRoom:Int(roomId:Int = 0)
-		Local Room:TRooms = TRooms.GetRoomFromID(roomId)
+		Local Room:TRooms = TRooms.GetRoom(roomId)
 		If Room <> Null Then Players[ Self.ME ].Figure.SendToRoom(Room)
 	    Return 1
 	End Method
 
 
+
+	Method getMillisecs:Int()
+		Return MilliSecs()
+	End Method
+
+	Method getTime:Int()
+		Return Game.timeSinceBegin
+	End Method
 
 	Method Day:Int(_time:Int = 0)
 		Return Game.GetDay(_time)
@@ -480,31 +485,37 @@ Type TLuaFunctions {_exposeToLua}
 ' SPOTS
 '- - - - - -
 	Method SpotAudience:Int(spotId:Int = -1)
+		Print "VERALTET: TVT.SpotAudience(spotID) -> TVT.getContract(id).GetMinAudience(overwriteOwnerID)"
 		Local obj:TContract = TContract.GetContract(spotId)
 	    If obj Then Return Int(obj.getMinAudience(obj.owner)) Else Return -1
 	End Method
 
 	Method SpotToSend:Int(spotId:Int = -1)
+		Print "VERALTET: TVT.SpotToSend(spotID) -> TVT.getContract(id).GetSpotCount()"
 		Local obj:TContract = TContract.GetContract(spotId)
 	    If obj Then Return Int(obj.spotcount) Else Return -1
 	End Method
 
 	Method SpotMaxDays:Int(spotId:Int = -1)
+		Print "VERALTET: TVT.SpotMaxDays(spotID) -> TVT.getContract(id).GetDaysToFinish()"
 		Local obj:TContract = TContract.GetContract(spotId)
 	    If obj Then Return Int(obj.daystofinish) Else Return -1
 	End Method
 
 	Method SpotProfit:Int(spotId:Int = -1)
+		Print "VERALTET: TVT.SpotProfit(spotID) -> TVT.getContract(id).GetProfit(overwriteBaseValue=-1,otherPlayerID=-1)"
 		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.CalculateProfit(obj.profit, obj.owner)) Else Return -1
+	    If obj Then Return Int(obj.getProfit()) Else Return -1
 	End Method
 
 	Method SpotPenalty:Int(spotId:Int = -1)
+		Print "VERALTET: TVT.SpotPenalty(spotID) -> TVT.getContract(id).GetPenalty(overwriteBaseValue=-1,otherPlayerID=-1)"
 		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.CalculatePenalty(obj.penalty, obj.owner)) Else Return -1
+	    If obj Then Return Int(obj.GetPenalty()) Else Return -1
 	End Method
 
 	Method SpotTargetgroup:Int(spotId:Int = -1)
+		Print "VERALTET: TVT.SpotTargetgroup(spotID) -> TVT.getContract(id).GetTargetGroup() (bzw. GetTargetGroupString(overwriteGroup) fuer Text)"
 		Local obj:TContract = TContract.GetContract(spotId)
 	    If obj Then Return Int(obj.targetgroup) Else Return -1
 	End Method
@@ -564,7 +575,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("office", True) Then Return -1
 
 		Local contractObj:TContract = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetContract(contractID)
-		If contractObj Then Return contractobj.getDaysToFinish() Else Return - 1
+		If contractObj Then Return contractobj.getDaysLeft() Else Return - 1
 	End Method
 
 	Method of_doMovieInPlan:Int(day:Int = -1, hour:Int = -1, ObjectID:Int = -1)
@@ -684,7 +695,6 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_doBuySpot:Int(ObjektID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return -1
 
-		Local ret:Int = 0
 		For Local Block:TContractBlock = EachIn TContractBlock.list
 			If Block.contract.id = ObjektID And Block.owner <= 0 Then Return Block.SignContract( Self.ME )
 		Next
@@ -694,7 +704,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_getSpotCount:Int()
 		If Not _PlayerInRoom("adagency") Then Return -1
 
-		Local ret:Int = 0
+		local ret:int = 0
 		For Local Block:TContractBlock = EachIn TContractBlock.List
 			If Block.owner <= 0 Then ret:+1
 		Next
@@ -740,15 +750,64 @@ Type TLuaFunctions {_exposeToLua}
 		Return -2
 	End Method
 
-	Method PrivateTest() {_private}
+'untested
+	Method md_doSellMovie:Int(ObjektID:Int = -1)
+		If Not _PlayerInRoom("movieagency") Then Return -1
+
+		For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
+			If Block.Programme.id = ObjektID Then Return Block.Sell( Self.ME )
+		Next
+		Return -2
 	End Method
 
-	'LUA_md_doSellMovie
-	'
-	'LUA_ma_getMoviecount
-	'LUA_ma_getMovie
-	'LUA_ma_doBidMovie
-	'
+'- - - - - -
+' Movie Dealer - Movie Agency - Auctions
+'- - - - - -
+
+'untested
+	Method md_getAuctionMovie:Int(ArrayID:Int = -1)
+		If Not _PlayerInRoom("movieagency") Then Return -1
+
+		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
+		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		If Block Then Return Block.Programme.id Else Return -3
+	End Method
+
+'untested
+	Method md_getAuctionMovieCount:Int()
+		If Not _PlayerInRoom("movieagency") Then Return -1
+
+		return TAuctionProgrammeBlocks.List.count()
+	End Method
+
+'untested
+	Method md_doBidAuctionMovie:Int(ArrayID:int= -1)
+		If Not _PlayerInRoom("movieagency") Then Return -1
+
+		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
+		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		If Block then Return Block.SetBid( self.ME ) else Return -3
+	End Method
+
+'untested
+	Method md_GetAuctionMovieNextBid:Int(ArrayID:int= -1)
+		If Not _PlayerInRoom("movieagency") Then Return -1
+		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
+
+		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		If Block then Return Block.GetNextBid() else Return -3
+	End Method
+
+'untested
+	Method md_GetAuctionMovieHighestBidder:Int(ArrayID:int= -1)
+		If Not _PlayerInRoom("movieagency") Then Return -1
+		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
+
+		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		If Block then Return Block.GetHighestBidder() else Return -3
+	End Method
+
+
 	'LUA_ar_getMovieInBagCount
 	'LUA_ar_getMovieInBag
 	'LUA_ar_doMovieInBag

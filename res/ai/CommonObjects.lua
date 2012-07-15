@@ -19,7 +19,7 @@ Movie = SLFDataObject:new{
 
 function Movie:Initialize(movieId)
 	-- ronny: hier ueberlegen, ob nicht besser
-	-- das film-objekt selbst ausreicht und dann halt movie.GetXXX
+	--        das film-objekt selbst ausreicht und dann halt movie.GetXXX
 	self.Id = movieId
 	m = TVT.GetProgramme(movieId)
 	self.Sequels = m.GetEpisodeCount()
@@ -37,7 +37,7 @@ function Movie:Initialize(movieId)
 	self.PricePerBlock = self.Price / self.Length
 
 	-- ronny: hier gaenge auch: if (m.isMovie()) then
-	-- und bei speicherung des objektes auch in anderen Scriptbereichen...
+	--        und bei speicherung des objektes auch in anderen Scriptbereichen...
 	if (self.Sequels > 0) then
 		self.ProgramType = PROGRAM_SERIES
 	else
@@ -88,12 +88,15 @@ Spot = SLFDataObject:new{
 
 function Spot:Initialize(spotId)
 	self.Id = spotId
-	self.Audience = TVT.SpotAudience(spotId)
-	self.SpotToSend = TVT.SpotToSend(spotId)
-	self.SpotMaxDays = TVT.SpotMaxDays(spotId)
-	self.SpotProfit = TVT.SpotProfit(spotId)
-	self.SpotPenalty = TVT.SpotPenalty(spotId)
-	self.SpotTargetgroup = TVT.SpotTargetgroup(spotId)
+	spot = TVT.getContract( spotId )
+	self.Audience = spot.GetMinAudience()
+	self.SpotToSend = spot.GetSpotCount()
+	self.SpotMaxDays = spot.GetDaysToFinish()
+	--ronny: GetProfit / GetPenalty akzeptieren overwriteBaseValue(0-255) und overwritePlayerId
+	--       interessant fuer Spots die man selbst nicht hat
+	self.SpotProfit = spot.GetProfit()
+	self.SpotPenalty = spot.GetPenalty()
+	self.SpotTargetgroup = spot.GetTargetGroup()
 
 	self.FinanceWeight = (self.SpotProfit + self.SpotPenalty) / self.SpotToSend
 	self.Pressure = self.SpotToSend / self.SpotMaxDays * self.SpotMaxDays

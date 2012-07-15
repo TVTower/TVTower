@@ -295,20 +295,20 @@ Type TNetworkHelper
 		If inRoomID <= 0 Then figure.inRoom = Null
 		If figure.inroom <> Null
 			If inRoomID > 0 and figure.inRoom.uniqueID <> inRoomID
-				figure.inRoom = TRooms.GetRoomFromID(inRoomID)
+				figure.inRoom = TRooms.GetRoom(inRoomID)
 				If figure.inRoom.name = "elevator" then Building.Elevator.waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime
 			EndIf
 		EndIf
 
 		If clickedRoomID <= 0 Then figure.clickedToRoom = Null
-		If clickedRoomID > 0 Then figure.clickedToRoom = TRooms.GetRoomFromID( clickedRoomID )
+		If clickedRoomID > 0 Then figure.clickedToRoom = TRooms.GetRoom( clickedRoomID )
 
 		If toRoomID <= 0 Then figure.toRoom = Null
-		If toRoomID > 0 Then figure.toRoom = TRooms.GetRoomFromID( toRoomID )
+		If toRoomID > 0 Then figure.toRoom = TRooms.GetRoom( toRoomID )
 
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom <> Null
-			If figure.fromRoom.uniqueID <> fromRoomID then figure.fromRoom = TRooms.GetRoomFromID(fromRoomID)
+			If figure.fromRoom.uniqueID <> fromRoomID then figure.fromRoom = TRooms.GetRoom(fromRoomID)
 		EndIf
 	End Method
 
@@ -440,7 +440,7 @@ Type TNetworkHelper
 								For Local locObj:TAuctionProgrammeBlocks  = EachIn TAuctionProgrammeBlocks.List
 									If not locObj.Programme then continue
 									If locobj.Programme.id = ProgrammeID
-										locObj.SetBid( PlayerID, programmeID)
+										locObj.SetBid( PlayerID )
 										print "NET: MovieAgency auction bid "+methodtype+" obj:"+locobj.programme.title
 										exit
 									endif

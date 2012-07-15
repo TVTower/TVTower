@@ -89,7 +89,7 @@ Type TRooms
 					If localroom.tooltip = Null
 						localroom.tooltip = TTooltip.Create(localroom.desc, localroom.descTwo, 100, 140, 0, 0)
 					else
-						localroom.tooltip.lifetime = localroom.tooltip.startlifetime
+						localroom.tooltip.Hover()
 					endif
 					localroom.tooltip.pos.y = Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
 					localroom.tooltip.pos.x = localroom.Pos.x + localroom.doorwidth/2 - localroom.tooltip.GetWidth()/2
@@ -344,7 +344,7 @@ Type TRooms
 		Return Null
     End Function
 
-	Function GetRoomFromID:TRooms(ID:Int)
+	Function GetRoom:TRooms(ID:Int)
 		For Local room:TRooms = EachIn TRooms.RoomList
 			If room.uniqueID = id Then Return room
 		Next
@@ -378,7 +378,7 @@ Type TRooms
       Return Null
 	End Function
 
-	Function GetRoom:TRooms(desc:String, owner:Int, strictOwner:int = 1)
+	Function GetRoomByDetails:TRooms(desc:String, owner:Int, strictOwner:int = 1)
 		For Local room:TRooms= EachIn TRooms.RoomList
 			If room.name = desc and (room.owner = owner OR (strictOwner = 0 AND owner <=0 AND room.owner <=0)) Then Return room
 		Next
@@ -397,11 +397,11 @@ Function Room_News_Compute(_room:TRooms)
 		Game.cursorstate = 0
 		If PlannerToolTip <> Null  Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
-			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0, 1010)
+			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
-			PlannerToolTip.lifetime = PlannerToolTip.startlifetime
+			PlannerToolTip.Hover()
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("newsplanner", _room.owner)
+			If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("newsplanner", _room.owner)
 		endif
 	else
 		If PlannerToolTip <> Null  Then PlannerToolTip.Draw(App.Timer.getDeltaTime())
@@ -429,8 +429,8 @@ Function Room_Office_Compute(_room:TRooms)
       If functions.IsIn(MouseX(),MouseY(),164,54,67,110) And _room.owner = game.playerID
         MOUSEMANAGER.resetKey(1);
 		Game.cursorstate = 0;
-		Players[game.playerID].figure.inRoom = TRooms.GetRoom("safe", -1)
-        Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+		Players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("safe", -1)
+        Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", _room.owner)
      EndIf
 	EndIf
 
@@ -438,21 +438,21 @@ Function Room_Office_Compute(_room:TRooms)
     If functions.IsIn(MouseX(), MouseY(), 600,140,128,210)
       If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140, 0, 0)
       PlannerToolTip.enabled = 1
-      PlannerToolTip.lifetime = PlannerToolTip.startlifetime
+      PlannerToolTip.Hover()
       Game.cursorstate = 1
-      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("programmeplanner", _room.owner)
     EndIf
     If _room.owner = Game.playerID
    	  If functions.IsIn(MouseX(), MouseY(), 732,45,160,170)
 	    If StationsToolTip = Null Then StationsToolTip = TTooltip.Create("Senderkarte", "Kauf und Verkauf", 650, 80, 0, 0)
 	    StationsToolTip.enabled = 1
-	    StationsToolTip.lifetime = StationsToolTip.startlifetime
+	    StationsToolTip.Hover()
 	    Game.cursorstate = 1
-	    If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("stationmap", _room.owner)
+	    If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("stationmap", _room.owner)
 	  EndIf
-      If StationsToolTip <> Null Then StationsToolTip.Update()
+      If StationsToolTip <> Null Then StationsToolTip.Update(App.timer.getDeltaTime())
     EndIf
-    If PlannerToolTip <> Null  Then PlannerToolTip.Update()
+    If PlannerToolTip <> Null  Then PlannerToolTip.Update(App.timer.getDeltaTime())
   endif
 End Function
 
@@ -460,7 +460,7 @@ End Function
 Function Room_Safe_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
   Else
-    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", game.playerID)
+    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", game.playerID)
     Game.cursorstate = 0
   EndIf
 End Function
@@ -469,7 +469,7 @@ End Function
 Function Room_Financials_Compute(_room:TRooms)
 	If TRooms.doadraw 'draw it
 		Local showday:Int = Game.getWeekday()
-		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", _room.owner)
 		Game.cursorstate = 0
 		local font13:TBitmapFont = FontManager.GetFont("Default", 14, BOLDFONT)
 		local font12:TBitmapFont = FontManager.GetFont("Default", 11)
@@ -555,7 +555,7 @@ Function Room_Image_Compute(_room:TRooms)
 		FontManager.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
 		FontManager.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Players[_room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	Else
-		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("programmeplanner", _room.owner)
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", _room.owner)
 	EndIf
 
 End Function
@@ -640,9 +640,12 @@ Global Room_MovieAgency_GimmickTimer:Int = 0
 Function Room_MovieAgency_Compute(_room:TRooms)
 	Global AuctionToolTip:TTooltip
   If TRooms.doadraw 'draw it
-	Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+    If functions.IsIn(MouseX(), MouseY(), 210,220,140,60)
+		Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+	endif
+
 	If Room_MovieAgency_GimmickTimer > MilliSecs()
-	  Assets.GetSprite("gfx_gimmick_rooms_movieagency").Draw(20,10)
+	  Assets.GetSprite("gfx_gimmick_rooms_movieagency").Draw(10,60)
 	EndIf
 
 	local glow:string = ""
@@ -656,7 +659,9 @@ Function Room_MovieAgency_Compute(_room:TRooms)
     FontManager.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
     SetAlpha 1.0
 	TMovieAgencyBlocks.DrawAll(True)
-    If AuctionToolTip <> Null  Then AuctionToolTip.Draw()
+
+    If AuctionToolTip <> Null Then AuctionToolTip.Draw()
+
 	ReverseList(TMovieAgencyBlocks.List)
         For Local LocObject:TMovieAgencyBlocks= EachIn TMovieAgencyBlocks.List
       	  If locobject.owner <=0 Or locobject.owner=Game.playerID And..
@@ -683,14 +688,14 @@ Function Room_MovieAgency_Compute(_room:TRooms)
     If functions.IsIn(MouseX(), MouseY(), 210,220,140,60)
       If AuctionToolTip = Null Then AuctionToolTip = TTooltip.Create("Auktion", "Film- und Serienauktion", 200, 180, 0, 0)
       AuctionToolTip.enabled = 1
-      AuctionToolTip.lifetime = AuctionToolTip.startlifetime
+      AuctionToolTip.Hover()
       Game.cursorstate = 1
-      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoom("movieauction", _room.owner)
+      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("movieauction", _room.owner)
     EndIf
 
 	If MilliSecs() > Room_MovieAgency_GimmickTimer + 6000 Then Room_MovieAgency_GimmickTimer = MilliSecs() + 250
     TMovieAgencyBlocks.UpdateAll(True)
-	If AuctionToolTip <> Null Then AuctionToolTip.Update()
+	If AuctionToolTip <> Null Then AuctionToolTip.Update(App.timer.getDeltaTime())
   EndIf
 End Function
 
@@ -711,7 +716,7 @@ Function Room_MovieAuction_Compute(_room:TRooms)
 	FontManager.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
 	TAuctionProgrammeBlocks.DrawAll(0)
   Else
-    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("movieagency", 0)
+    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("movieagency", 0)
     Game.cursorstate = 0
 	TAuctionProgrammeBlocks.UpdateAll(0)
   EndIf
@@ -921,7 +926,7 @@ Next
 
 Function Room_StationMap_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
-	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", _room.owner)
     StationMap.Draw()
 	GUIManager.Draw("STATIONMAP")
 	FontManager.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
@@ -933,7 +938,7 @@ Function Room_StationMap_Compute(_room:TRooms)
 	Next
 	SetColor 255, 255, 255
   Else
-	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", _room.owner)
     StationMap.Update()
 	GUIManager.Update("STATIONMAP")
   EndIf
@@ -949,7 +954,7 @@ Function Room_NewsPlanner_Compute(_room:TRooms)
 	GUIManager.Draw("Newsplanner")
     Players[_room.owner].ProgrammePlan.DrawAllNewsBlocks()
   Else
-    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("news", _room.owner)
+    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("news", _room.owner)
     Game.cursorstate = 0
     If Btn_newsplanner_up.GetClicks() >= 1 Then TNewsBlock.DecLeftListPosition()
     If Btn_newsplanner_down.GetClicks() >= 1 Then TNewsBlock.IncLeftListPosition()
@@ -1100,7 +1105,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 	Else
 		TProfiler.Enter("ProgrammePlanner:UPDATE")
 		Game.cursorstate = 0
-		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoom("office", _room.owner)
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", _room.owner)
 		If functions.IsIn(MouseX(), MouseY(), 759,17,14,15)
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsHit(1)
@@ -1476,11 +1481,11 @@ End Function
 'room[0] = TRooms.Create(gfx_rooms_archive, "empty", "leerer Raum", 0, 0, - 1, 0)
 Function Init_SetRoomNames()
 	For Local i:Int = 1 To 4
-		TRooms.GetRoom("studiosize1", i).desc:+" " + Players[i].channelname
-		TRooms.GetRoom("office", i).desc:+" " + Players[i].name
-		TRooms.GetRoom("chief", i).desc:+" " + Players[i].channelname
-		TRooms.GetRoom("news", i).desc:+" " + Players[i].channelname
-		TRooms.GetRoom("archive", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoomByDetails("studiosize1", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoomByDetails("office", i).desc:+" " + Players[i].name
+		TRooms.GetRoomByDetails("chief", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoomByDetails("news", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoomByDetails("archive", i).desc:+" " + Players[i].channelname
 	Next
 End Function
 

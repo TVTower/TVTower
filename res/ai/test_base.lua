@@ -90,7 +90,7 @@ function OnMinute(number)
 		if chattext == 3 then TVT.SendToChat("Ene mene muh und raus bist DU!!") end
 		if chattext == 4 then TVT.SendToChat("In meinem Schatten wird's kalt ;).") end
 		if chattext == 5 then TVT.SendToChat("Wer den Euro nicht ehrt, ist die Zuschauer nicht wert.") end
-		if chattext == 6 then TVT.SendToChat("Bettys Raum hat die ID " .. TVT.GetRoom("betty", 0) ) end
+		if chattext == 6 then TVT.SendToChat("Bettys Raum hat die ID " .. TVT.GetRoomByDetails("betty", 0) ) end
 		if chattext == 7 then TVT.SendToChat("Pech im Spiel, Glück in der Liebe..." ) end
 		if chattext == 8 then TVT.SendToChat("Harr harr, Dein Chef wird dir die Löffel lang ziehen." ) end
 		if chattext == 9 then TVT.SendToChat("Nach mir die Sintflut." ) end

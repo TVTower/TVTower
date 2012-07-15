@@ -1,3 +1,5 @@
+Const CURRENCYSIGN:string = Chr(8364) 'eurosign
+
 Type TPlayerProgrammePlan
 	Field ProgrammeBlocks:TList = CreateList()
 	Field Contracts:TList		= CreateList()
@@ -589,7 +591,7 @@ Type TProgrammeElement
 End Type
 
 'ad-contracts
-Type TContract Extends TProgrammeElement
+Type TContract Extends TProgrammeElement {_exposeToLua="selected"}
   Field daystofinish:Int
   Field spotcount:Int
   Field spotssent:Int
@@ -601,14 +603,14 @@ Type TContract Extends TProgrammeElement
   Field minaudience:Float
   Field minimage:Float
   Field fixedPrice:Int
-  Field profit:Float
-  Field penalty:Float
+  Field profitBase:Float
+  Field penaltyBase:Float
   Field finished:Int =0
   Field clone:Int = 0 'is it a clone (used for adblocks) or the original one (contract-gfxlist)
   Field owner:Int = 0
   Field daysigned:Int 'day the contract has been taken from the advertiser-room
-  Field calculatedProfit:Int		= -1
-  Field calculatedPenalty:Int		= -1
+  Field profit:Int		= -1
+  Field penalty:Int		= -1
   Field calculatedMinAudience:Int 	= -1
 
   Global List:TList = CreateList() {saveload = "special"}
@@ -687,8 +689,8 @@ endrem
 		obj.minaudience		= Float(minaudience) / 10.0
 		obj.minimage		= Float(minimage) / 10.0
 		obj.fixedPrice		= fixedPrice
-		obj.profit			= Float(profit)
-		obj.penalty     	= Float(penalty)
+		obj.profitBase		= Float(profit)
+		obj.penaltyBase    	= Float(penalty)
 		obj.daysigned   	= -1
 
 		TContract.List.AddLast(obj)
@@ -740,28 +742,34 @@ endrem
 		owner					= playerID
 		daysigned				= day
 		calculatedMinAudience	= getMinAudience(playerID)
-		calculatedProfit		= CalculateProfit( profit, playerID )
-		calculatedPenalty		= CalculatePenalty( penalty, playerID )
+		self.profit				= self.GetProfit()
+		self.penalty			= self.GetPenalty()
 	End Method
 
-	Method GetMinAudiencePercentage:Float(dbvalue:Int = -1)
+	Method GetMinAudiencePercentage:Float(dbvalue:Int = -1)  {_exposeToLua}
 		If dbvalue < 0 Then dbvalue = Self.minaudience
 		Return dbvalue / 100.0 'from 75% to 0.75
 	End Method
 
 	'multiplies basevalues of prices, values are from 0 to 255 for 1 spot... per 1000 people in audience
 	'if targetgroup is set, the price is doubled
-	Method CalculateProfit:Int(profit:Int, playerID:Int)
-		If Self.calculatedProfit >= 0 Then Return Self.calculatedProfit
-		Return CalculatePrices(profit, playerID)
+	Method GetProfit:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
+		If Self.profit >= 0 Then Return Self.profit
+		if baseValue = -1 then baseValue = self.profitBase
+		if playerID = -1 then playerID = self.owner
+
+		Return CalculatePrices(baseValue, playerID)
 	End Method
 
-	Method CalculatePenalty:Int(penalty:Int, playerID:Int)
-		If Self.calculatedProfit >= 0 Then Return Self.calculatedProfit
-		Return CalculatePrices(penalty, playerID)
+	Method GetPenalty:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
+		If Self.penalty >= 0 Then Return Self.penalty
+		if baseValue = -1 then baseValue = self.penaltyBase
+		if playerID = -1 then playerID = self.owner
+
+		Return CalculatePrices(baseValue, playerID)
 	End Method
 
-	Method CalculatePrices:Int(baseprice:Int=0, playerID:Int)
+	Method CalculatePrices:Int(baseprice:Int=0, playerID:Int=-1)
 		Local price:Float				= baseprice
 		Local audiencepercentage:Float	= Self.GetMinAudiencePercentage()
 
@@ -785,7 +793,7 @@ endrem
 	End Method
 
 	'gets audience in numbers (not percents)
-	Method GetMinAudience:Int(playerID:Int=-1)
+	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
 		If playerID < 0 Then playerID = Self.owner
 
 		If calculatedMinAudience >=0 Then Return calculatedMinAudience
@@ -801,16 +809,34 @@ endrem
 		Return Floor(Players[ playerID ].maxaudience*0.5 * Self.GetMinAudiencePercentage() / 1000) * 1000
 	End Method
 
-	Function GetTargetgroupName:String(group:Int)
+	'days left for sending all contracts from today
+	Method GetDaysLeft:Int() {_exposeToLua}
+		Return (daystofinish-(Game.day - daysigned))
+	End Method
+
+	'amount of spots to send
+	Method GetSpotCount:Int() {_exposeToLua}
+		Return self.spotcount
+	End Method
+
+	'total days to send contract from date of sign
+	Method GetDaysToFinish:Int() {_exposeToLua}
+		Return self.daysToFinish
+	End Method
+
+	Method GetTargetGroup:Int() {_exposeToLua}
+		Return self.targetgroup
+	End Method
+
+	Method GetTargetGroupString:String(group:Int=-1) {_exposeToLua}
+		if group < 0 then group = self.targetGroup
 		If group >= 1 And group <=9
 			Return GetLocale("AD_GENRE_"+group)
 		EndIf
 		Return GetLocale("AD_GENRE_NONE")
-	End Function
-
-	Method GetDaysToFinish:Int()
-		Return (daystofinish-(Game.day - daysigned))
 	End Method
+
+
 
 	Method ShowSheet:Int(x:Int,y:Int, plannerday:Int = -1, successfulSentContracts:Int=-1)
 		Local playerID:Int = owner
@@ -822,7 +848,7 @@ endrem
 		FontManager.basefontBold.drawBlock(title 	       				, x+10 , y+11 , 270, 70,0, 0,0,0, 0,1)
 		font.drawBlock(description     		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "	, x+10 , y+94 , 130, 16)
-		font.drawBlock(functions.convertValue(String( CalculateProfit( profit, playerID ) ), 2, 0)+" €" , x+10 , y+94 , 130, 16,2)
+		font.drawBlock(functions.convertValue(String( self.getProfit( playerID ) ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
 		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
 		If successfulSentContracts >=0
 			font.DrawBlock((spotcount - successfulSentContracts)+"/"+spotcount , x+150, y+91 , 127, 16,2)
@@ -830,10 +856,10 @@ endrem
 			font.drawBlock(spotcount+"/"+spotcount , x+150, y+91 , 127, 19,2)
 		EndIf
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
-		font.drawBlock(functions.convertValue(String( CalculatePenalty( penalty, playerID ) ), 2, 0)+" €", x+10 , y+117, 130, 16,2)
+		font.drawBlock(functions.convertValue(String( self.GetPenalty( playerID ) ), 2, 0)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,2)
 		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+150, y+117, 127, 16)
-		font.drawBlock(functions.convertValue(String( getMinAudience( playerID ) ), 2, 0), x+150, y+117, 127, 16,2)
-		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetTargetgroupName(targetgroup)   , x+10 , y+140 , 270, 16)
+		font.drawBlock(functions.convertValue(String( GetMinAudience( playerID ) ), 2, 0), x+150, y+117, 127, 16,2)
+		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+self.GetTargetgroupString()   , x+10 , y+140 , 270, 16)
 		If owner <= 0
 			If daystofinish > 1
 				font.drawBlock(getLocale("AD_TIME")+": "+daystofinish + getLocale("DAYS"), x+86 , y+163 , 122, 16)
@@ -841,10 +867,10 @@ endrem
 				font.drawBlock(getLocale("AD_TIME")+": "+daystofinish + getLocale("DAY"), x+86 , y+163 , 122, 16)
 			EndIf
 		Else
-			Select getDaysToFinish()
+			Select self.getDaysLeft()
 				Case 0	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TODAY") , x+86 , y+163 , 126, 16)
 				Case 1	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOMORROW") , x+86 , y+163 , 126, 16)
-				Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysToFinish()), x+86 , y+163 , 122, 16)
+				Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysLeft()), x+86 , y+163 , 122, 16)
 			EndSelect
 		EndIf
 	End Method
@@ -2769,7 +2795,7 @@ Type TNewsBlock Extends TBlockGraphical
 
 
 		'draw graphic
-		If paid Then FontManager.GetFont("Default", 9).drawBlock("€ OK", pos.x + 1, pos.y + 65, 14, 25, 1, 50, 50, 50)
+		If paid Then FontManager.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", pos.x + 1, pos.y + 65, 14, 25, 1, 50, 50, 50)
 		FontManager.baseFontBold.drawBlock(news.title, pos.x + 15, pos.y + 3, 290, 15 + 8, 0, 20, 20, 20)
 		FontManager.baseFont.drawBlock(news.description, pos.x + 15, pos.y + 18, 300, 45 + 8, 0, 100, 100, 100)
 		SetAlpha 0.3
@@ -3187,8 +3213,11 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 		Return 0
 	End Method
 
-	Method Sell(PlayerID:Int=-1, fromNetwork:Int = False)
+	Method Sell:int(PlayerID:Int=-1, fromNetwork:Int = False)
 		If PlayerID = -1 Then PlayerID = Game.playerID
+		if PlayerID <> self.owner then return -1
+
+
 		Players[PlayerID].finances[Game.getWeekday()].SellMovie(Programme.getPrice())
 
 		Self.StartPos.SetPos(Self.StartPosBackup)
@@ -3199,6 +3228,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 		programme.owner = 0
 		owner = 0
 		'Print "Programme "+Programme.title +" sold"
+		return 1
 	End Method
 
   Function RemoveBlockByProgramme(programme:TProgramme, playerID:Int=0)
@@ -3858,8 +3888,8 @@ Type TAuctionProgrammeBlocks
 		  If Self.DrawnFirstTime < 30 Then Self.DrawnFirstTime:+1
 		  Assets.GetSprite("gfx_auctionmovie").Draw(x,y)
 	      FontManager.baseFont.drawBlock(Programme.title, x+31,y+5, 215,20)
-	      FontManager.baseFont.drawBlock("Preis:"+HighestBid+"€", x+31,y+20, 215,20,2,Null, 100,100,100,1)
-	      FontManager.baseFont.drawBlock("Bieten:"+NextBid+"€", x+31,y+33, 215,20,2,Null, 0,0,0,1)
+	      FontManager.baseFont.drawBlock("Preis:"+HighestBid+CURRENCYSIGN, x+31,y+20, 215,20,2,Null, 100,100,100,1)
+	      FontManager.baseFont.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, x+31,y+33, 215,20,2,Null, 0,0,0,1)
           If Players[Bid[0]] <> Null
     	    HighestBidder = Players[Bid[0]].name
 	        Local colr:Int = Players[Bid[0]].color.colr'+900
@@ -3892,7 +3922,11 @@ Type TAuctionProgrammeBlocks
       Next
   End Function
 
-	Method SetBid(playerID:Int, price:Int)
+	Method SetBid:int(playerID:Int)
+		If not Game.isPlayerID( playerID ) then return -1
+		if self.Bid[ self.Bid[0] ] = playerID then return 0
+
+		local price:int = self.GetNextBid()
 		If Players[playerID].finances[Game.getWeekday()].PayProgrammeBid(price) = True
 			If Players[Self.Bid[0]] <> Null Then
 				Players[Self.Bid[0]].finances[Game.getWeekday()].GetProgrammeBid(Self.Bid[Self.Bid[0]])
@@ -3902,6 +3936,28 @@ Type TAuctionProgrammeBlocks
 			Self.Bid[playerID] = price
 			Self.imageWithText = Null
 		EndIf
+		return price
+	End Method
+
+	Method GetNextBid:int()
+		Local HighestBid:Int	= self.Programme.getPrice()
+		Local NextBid:Int		= 0
+		If Game.isPlayerID(self.Bid[0]) AND self.Bid[ self.Bid[0] ] <> 0 Then HighestBid = self.Bid[ self.Bid[0] ]
+		NextBid = HighestBid
+		If HighestBid < 100000
+			NextBid :+ 10000
+		Else If HighestBid >= 100000 And HighestBid < 250000
+			NextBid :+ 25000
+		Else If HighestBid >= 250000 And HighestBid < 750000
+			NextBid :+ 50000
+		Else If HighestBid >= 750000
+			NextBid :+ 75000
+		EndIf
+		return NextBid
+	End Method
+
+	Method GetHighestBidder:int()
+		if Game.isPlayerID(self.Bid[0]) then return self.Bid[0] else return -1
 	End Method
 
 	Function UpdateAll(DraggingAllowed:Byte)
@@ -3909,21 +3965,9 @@ Type TAuctionProgrammeBlocks
 		Local MouseHit:Int = MOUSEMANAGER.IsHit(1)
 		For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
 			If MouseHit And functions.IsIn(MouseX(), MouseY(), locObject.x, locObject.y, Assets.GetSprite("gfx_auctionmovie").w, Assets.GetSprite("gfx_auctionmovie").h) And locObject.Bid[0] <> game.playerID
-				Local HighestBid:Int = locObject.Programme.getPrice()
-				Local NextBid:Int = 0
-				If locObject.Bid[0]>0 And locObject.Bid[0] <=4 Then If locObject.Bid[ locObject.Bid[0] ] <> 0 Then HighestBid = locObject.Bid[ locObject.Bid[0] ]
-				NextBid = HighestBid
-				If HighestBid < 100000
-					NextBid :+ 10000
-				Else If HighestBid >= 100000 And HighestBid < 250000
-					NextBid :+ 25000
-				Else If HighestBid >= 250000 And HighestBid < 750000
-					NextBid :+ 50000
-				Else If HighestBid >= 750000
-					NextBid :+ 75000
-				EndIf
-	  			If game.networkgame Then NetworkHelper.SendMovieAgencyChange(NET_BID, game.playerID, NextBid, -1, locObject.Programme)
-	  			locObject.SetBid(game.playerID, NextBid)  'set the bid
+
+	  			If game.networkgame Then NetworkHelper.SendMovieAgencyChange(NET_BID, game.playerID, locObject.GetNextBid(), -1, locObject.Programme)
+	  			locObject.SetBid( game.playerID )  'set the bid
 			EndIf
 		Next
 	End Function

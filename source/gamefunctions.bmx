@@ -471,7 +471,7 @@ endrem
 	  Sheet.pos.setXY(x,y)
 	  Sheet.width = 0
 	  Sheet.height = 0
-	  Sheet.lifetime = 10
+	  Sheet.Hover()
 	End If
   End Method
 
@@ -504,7 +504,8 @@ End Type
 'extends TRenderableChild - could get attached to sprites
 Type TTooltip extends TRenderableChild
   Field lifetime:float = 0.1
-  Field startlifetime:float = 1.0
+  Field startLifetime:float = 1.0
+  Field fadeTime:float= 0.20
   Field title:String
   Field text:String
   Field oldtitle:String
@@ -522,18 +523,19 @@ Type TTooltip extends TRenderableChild
   Global UseFontBold:TBitmapFont
   Global UseFont:TBitmapFont
   Global List:TList = CreateList()
+  Global startFadeTime:float = 0.2 '200ms after no-hover - fade away
 
-	Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 1000)
+	Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 250)
 		Local tooltip:TTooltip = New TTooltip
-		tooltip.title		= title
-		tooltip.oldtitle	= title
-		tooltip.text		= text
+		tooltip.title			= title
+		tooltip.oldtitle		= title
+		tooltip.text			= text
 		tooltip.pos.setXY(x,y)
-		tooltip.tooltipimage = -1
-		tooltip.width = width
-		tooltip.height= height
-		tooltip.lifetime		= float(lifetime) / 1000.0
+		tooltip.tooltipimage	= -1
+		tooltip.width			= width
+		tooltip.height			= height
 		tooltip.startlifetime	= float(lifetime) / 1000.0
+		tooltip.Hover()
 		If not List Then List	= CreateList()
 		List.AddLast(tooltip)
 		SortList List
@@ -542,11 +544,22 @@ Type TTooltip extends TRenderableChild
 		Return tooltip
 	End Function
 
+	Method Hover()
+		self.lifetime = self.startlifetime
+		self.fadeTime = self.startFadeTime
+	End Method
+
 	Method Update:Int(deltaTime:float=1.0)
 '		print "update "+self.lifetime + " " + deltatime
-		lifetime :- deltaTime
-		if lifetime < 1.0 then lifetime :* 0.8 'speed up fade
-		If lifetime <= 0 ' And enabled 'enabled - as pause sign?
+		self.lifetime :- deltaTime
+
+		'start fading if lifetime is running out (lower than fade time)
+		if self.lifetime <= self.startFadeTime
+			self.fadeTime :- deltaTime
+			self.fadeTime :* 0.8 'speed up fade
+		endif
+
+		If self.lifetime <= 0 ' And enabled 'enabled - as pause sign?
 			Self.Image		= Null
 			Self.enabled	= False
 			self.List.remove(Self)
@@ -562,11 +575,15 @@ Type TTooltip extends TRenderableChild
 
 	Method DrawShadow(_width:float, _height:float)
 		SetColor 0, 0, 0
-		SetAlpha (Float(100*lifetime / startlifetime) / 100.0)-0.8
+		SetAlpha self.GetFadeAmount()-0.8
 		DrawRect(self.pos.x+2,self.pos.y+2,_width,_height)
 
-		SetAlpha (Float(100*lifetime / startlifetime) / 100.0)-0.5
+		SetAlpha self.GetFadeAmount()-0.5
 		DrawRect(self.pos.x+1,self.pos.y+1,_width,_height)
+	End Method
+
+	Method GetFadeAmount:float()
+		return Float(100*self.fadeTime / self.startFadeTime) / 100.0
 	End Method
 
 	Method Draw:Int(tweenValue:float=1.0)
@@ -597,7 +614,7 @@ Type TTooltip extends TRenderableChild
 			endif
 			self.DrawShadow(boxWidth,boxHeight)
 
-			SetAlpha Float(100*lifetime / startlifetime) / 100.0
+			SetAlpha self.GetFadeAmount()
 			DrawRect(self.pos.x,self.pos.y, boxWidth,boxHeight)
 
 			SetColor 255,255,255
@@ -616,7 +633,7 @@ Type TTooltip extends TRenderableChild
 				displaceX = ImageWidth(TTooltip.ToolTipIcons)
 			endif
 
-			SetAlpha Float(100*lifetime / startlifetime) / 100.0
+			SetAlpha self.GetFadeAmount()
 			'caption
 			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("ABC")/2 +2 , 50,50,50, 2,0, 1, 0.1)
 			SetColor 90,90,90
@@ -635,7 +652,7 @@ Type TTooltip extends TRenderableChild
 			SetAlpha 1.0
 		Else 'not dirty
 			self.DrawShadow(ImageWidth(image),ImageHeight(image))
-			SetAlpha Float(100.0  * lifetime / startlifetime) / 100
+			SetAlpha self.GetFadeAmount()
 			SetColor 255,255,255
 			DrawImage(image, self.pos.x, self.pos.y)
 			SetAlpha 1.0
@@ -1071,8 +1088,8 @@ Type TPPbuttons Extends TButton
 		'open others?
 		If id = 0 Then PPcontractList.SetOpen(1)	'opens contractlist DebugLog("auf Werbung geklickt")
 		If id = 1 Then PPprogrammeList.SetOpen(1)	'opens genrelist  DebugLog("auf Filme geklickt")
-		If id = 3 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("financials", Players[Game.playerID].Figure.inRoom.owner)	'shows financials
-		If id = 4 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoom("image", Players[Game.playerID].Figure.inRoom.owner)	'shows image and audiencequotes
+		If id = 3 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("financials", Players[Game.playerID].Figure.inRoom.owner)	'shows financials
+		If id = 4 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("image", Players[Game.playerID].Figure.inRoom.owner)	'shows image and audiencequotes
     End Method
 
 End Type 'Buttons in ProgrammePlanner
@@ -1158,10 +1175,10 @@ Type TNewsbuttons Extends TButton
 
 					If Button.tooltip = Null
 						'Min(21) - left<=20 moves tooltip to right side
-						Button.tooltip = TTooltip.Create(Button.Caption, "", Max(21,Button.x), Button.y - 20,0,0,1010)
+						Button.tooltip = TTooltip.Create(Button.Caption, "", Max(21,Button.x), Button.y - 20,0,0)
 					else
 						Button.tooltip.enabled = 1
-						Button.tooltip.lifetime = Button.tooltip.startlifetime
+						Button.tooltip.Hover()
 					endif
 				else
 					Button.clicked = 0
@@ -1299,13 +1316,13 @@ Type TInterface
 				ActualProgramToolTip.text	= getLocale("TV_TURN_IT_ON")
 			EndIf
 			ActualProgramToolTip.enabled 	= 1
-			ActualProgramToolTip.lifetime	= ActualProgramToolTip.startlifetime
+			ActualProgramToolTip.Hover()
 	    EndIf
 		If functions.IsIn(MouseX(),MouseY(),385,468,108,30)
 			ActualAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
 			ActualAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			ActualAudienceToolTip.enabled 	= 1
-			ActualAudienceToolTip.lifetime 	= ActualAudienceToolTip.startlifetime
+			ActualAudienceToolTip.Hover()
 		EndIf
 	End Method
 
