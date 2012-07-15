@@ -3744,18 +3744,18 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 End Type
 
 'Programmeblocks used in Archive
-Type TAuctionProgrammeBlocks
-  Field x:Int = 0 {saveload = "normal"}
-  Field y:Int = 0 {saveload = "normal"}
-  Field imageWithText:TImage = Null
-  Field Programme:TProgramme
-  Field slot:Int = 0 {saveload = "normal"}
-  Field Bid:Int[5]
-  Field uniqueID:Int = 0 {saveload = "normal"}
-  Field Link:TLink
-  Global LastUniqueID:Int =0
-  Global List:TList = CreateList()
-  Global DrawnFirstTime:Byte = 0
+Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
+	Field x:Int = 0					{saveload = "normal"}
+	Field y:Int = 0					{saveload = "normal"}
+	Field imageWithText:TImage = Null
+	Field Programme:TProgramme
+	Field slot:Int = 0				{saveload = "normal"}
+	Field Bid:Int[5]
+	Field uniqueID:Int = 0			{saveload = "normal"}
+	Field Link:TLink
+	Global LastUniqueID:Int =0
+	Global List:TList = CreateList()
+	Global DrawnFirstTime:Byte = 0
 
   Function ProgrammeToPlayer()
     For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
@@ -3922,6 +3922,10 @@ Type TAuctionProgrammeBlocks
       Next
   End Function
 
+	Method GetProgramme:TProgramme()  {_exposeToLua}
+		return self.Programme
+	End Method
+
 	Method SetBid:int(playerID:Int)
 		If not Game.isPlayerID( playerID ) then return -1
 		if self.Bid[ self.Bid[0] ] = playerID then return 0
@@ -3939,7 +3943,7 @@ Type TAuctionProgrammeBlocks
 		return price
 	End Method
 
-	Method GetNextBid:int()
+	Method GetNextBid:int() {_exposeToLua}
 		Local HighestBid:Int	= self.Programme.getPrice()
 		Local NextBid:Int		= 0
 		If Game.isPlayerID(self.Bid[0]) AND self.Bid[ self.Bid[0] ] <> 0 Then HighestBid = self.Bid[ self.Bid[0] ]
@@ -3956,7 +3960,7 @@ Type TAuctionProgrammeBlocks
 		return NextBid
 	End Method
 
-	Method GetHighestBidder:int()
+	Method GetHighestBidder:int() {_exposeToLua}
 		if Game.isPlayerID(self.Bid[0]) then return self.Bid[0] else return -1
 	End Method
 

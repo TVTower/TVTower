@@ -763,6 +763,14 @@ Type TLuaFunctions {_exposeToLua}
 '- - - - - -
 ' Movie Dealer - Movie Agency - Auctions
 '- - - - - -
+'untested
+	Method md_getAuctionMovieBlock:TAuctionProgrammeBlocks(ArrayID:Int = -1)
+		If Not _PlayerInRoom("movieagency") Then Return null
+		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return null
+
+		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		If Block Then Return Block Else Return null
+	End Method
 
 'untested
 	Method md_getAuctionMovie:Int(ArrayID:Int = -1)
@@ -784,26 +792,23 @@ Type TLuaFunctions {_exposeToLua}
 	Method md_doBidAuctionMovie:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return -1
 
-		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
-		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
 		If Block then Return Block.SetBid( self.ME ) else Return -3
 	End Method
 
 'untested
 	Method md_GetAuctionMovieNextBid:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return -1
-		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
 
-		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
 		If Block then Return Block.GetNextBid() else Return -3
 	End Method
 
 'untested
 	Method md_GetAuctionMovieHighestBidder:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return -1
-		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
 
-		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
+		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
 		If Block then Return Block.GetHighestBidder() else Return -3
 	End Method
 
