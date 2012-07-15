@@ -476,14 +476,6 @@ Type PacketTypes
 	Global PlayerState:Byte				= 6					' Player Name, Position...
 End Type
 
-Type TDB {_exposeToLua="selected"}
-	Method GetProgramme:TProgramme( programmeID:int ) {_exposeToLua}
-		return TProgramme.getProgramme( programmeID )
-	End Method
-
-End Type
-Global DB:TDB = new TDB
-
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer {_exposeToLua="selected"}
 	Field Name:String 										{saveload = "normal"}		'playername

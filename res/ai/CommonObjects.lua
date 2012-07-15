@@ -21,7 +21,7 @@ function Movie:Initialize(movieId)
 	-- ronny: hier ueberlegen, ob nicht besser
 	-- das film-objekt selbst ausreicht und dann halt movie.GetXXX
 	self.Id = movieId
-	m = DB.GetProgramme(movieId)
+	m = TVT.GetProgramme(movieId)
 	self.Sequels = m.GetEpisodeCount()
 	self.Genre = m.GetGenre()
 	self.Length = m.GetBlocks()

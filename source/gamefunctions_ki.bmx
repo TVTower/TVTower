@@ -47,8 +47,6 @@ Type KI
 
 		Print "LUA: Registering <LuaFunctions> as <TVT>"
 		LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
-		Print "LUA: Registering <DB> as <DB>"
-		LuaEngine.RegisterBlitzmaxObject(DB, "DB")
 
 		If TPlayer.getById(Self.PlayerID) <> Null
 			Print "LUA: Registering <Player> as <MY>"
@@ -283,6 +281,11 @@ Type TLuaFunctions {_exposeToLua}
 		Print text
 		Return 1
 	EndMethod
+
+	Method GetProgramme:TProgramme( programmeID:int ) {_exposeToLua}
+		return TProgramme.getProgramme( programmeID )
+	End Method
+
 
 	Method GetRoom:Int(roomName:String, playerID:Int)
 		Local room:TRooms = TRooms.GetRoom(roomName, playerID, 0) '0 = not strict
