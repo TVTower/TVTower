@@ -58,7 +58,7 @@ JobCheckMovies = AIJob:new{
 	MovieDistributorTask = nil
 }
 
-function JobCheckMovies:Prepare()
+function JobCheckMovies:Prepare(pParams)
 	debugMsg("Job: CheckMovies")	
 	self.CurrentMovieIndex = 0
 end
@@ -101,7 +101,7 @@ JobAppraiseMovies = AIJob:new{
 	DaySeriesMinQuality = -1		
 }
 
-function JobAppraiseMovies:Prepare()
+function JobAppraiseMovies:Prepare(pParams)
 	debugMsg("Job: Appraise Movies")
 	self.CurrentMovieIndex = 0
 	self:AdjustMovieNiveau()
@@ -190,7 +190,7 @@ JobBuyMovies = AIJob:new{
 	MovieDistributorTask = nil;
 }
 
-function JobBuyMovies:Prepare()
+function JobBuyMovies:Prepare(pParams)
 	debugMsg("Job: Buy Movies")
 	debugMsg("CurrentBudget: " .. self.MovieDistributorTask.CurrentBudget .. " - CurrentBargainBudget: " .. self.MovieDistributorTask.CurrentBargainBudget)
 	

@@ -25,7 +25,7 @@ end
 JobNewsAgency = AIJob:new{
 }
 
-function JobNewsAgency:Prepare()
+function JobNewsAgency:Prepare(pParams)
 
 end
 

@@ -16,24 +16,24 @@ end
 function TaskSchedule:Activate()
 	debugMsg("Starte Task 'TaskSchedule'")
 	-- Was getan werden soll:
-	self.JobAnalyzeSchedule = JobAnalyzeSchedule:new()
-	self.JobAnalyzeSchedule.ScheduleTask = self	
+	self.AnalyzeScheduleJob = JobAnalyzeSchedule:new()
+	self.AnalyzeScheduleJob.ScheduleTask = self	
 	
 	self.ImperativelySchuduleJob = JobImperativelySchudule:new()
 	self.ImperativelySchuduleJob.ScheduleTask = self	
 	
-	self.JobSchedule = JobSchedule:new()
-	self.JobSchedule.ScheduleTask = self	
+	self.ScheduleJob = JobSchedule:new()
+	self.ScheduleJob.ScheduleTask = self	
 end
 
 function TaskSchedule:GetNextJobInTargetRoom()
 	debugMsg("GetNextJobInTargetRoomX")
-	if (self.JobAnalyzeSchedule.Status ~= JOB_STATUS_DONE) then
-		return self.JobAnalyzeSchedule
+	if (self.AnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
+		return self.AnalyzeScheduleJob
 	elseif (self.ImperativelySchuduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.ImperativelySchuduleJob					
-	elseif (self.JobSchedule.Status ~= JOB_STATUS_DONE) then
-		return self.JobSchedule	
+	elseif (self.ScheduleJob.Status ~= JOB_STATUS_DONE) then
+		return self.ScheduleJob	
 	end
 end
 
@@ -137,17 +137,17 @@ JobAnalyzeSchedule = AIJob:new{
 	Step = 1
 }
 
-function JobAnalyzeSchedule:Prepare()
+function JobAnalyzeSchedule:Prepare(pParams)
 	debugMsg("Analysiere Programmplan")
 	self.Step = 1
 end
 
 function JobAnalyzeSchedule:Tick()
-	if Step == 1 then
+	if self.Step == 1 then
 		self:ReadMoviesAndSpots()	
-	elseif Step == 2 then
+	elseif self.Step == 2 then
 		self:InitializeInventory()
-	elseif Step == 3 then
+	elseif self.Step == 3 then
 		self:Analyze()
 		self.Status = JOB_STATUS_DONE
 	end
@@ -158,35 +158,43 @@ end
 function JobAnalyzeSchedule:ReadMoviesAndSpots()
 	--TODO: Verlangsamen
 	--TODO: Movies und Spots die schon mal geladen wurden muss man nicht nochmal laden
-
 	for i=0,23 do
 		local movieId = TVT.of_getMovie(-1, i)
-		local movie = Movie:new()
-		movie:Initialize(movieId)		
-		self.ScheduleTask.TodayMovieSchedule[i] = movie		
+		if (movieId ~= 0) then
+			local movie = Movie:new()
+			movie:Initialize(movieId)		
+			self.ScheduleTask.TodayMovieSchedule[i] = movie		
+		end
 	end
-	
+
 	for i=0,23 do
 		local spotId = TVT.of_getSpot(-1, i)
-		local spot = Spot:new()
-		spot:Initialize(spotId)
-		self.ScheduleTask.TodaySpotSchedule[i] = spot		
+		if (spotId ~= 0) then
+			local spot = Spot:new()
+			spot:Initialize(spotId)
+			self.ScheduleTask.TodaySpotSchedule[i] = spot		
+		end
 	end
+	debugMsg("A3")
 end
 
 function JobAnalyzeSchedule:InitializeInventory()
 	for i=0,TVT.of_getPlayerSpotCount() do
 		local spotId = TVT.of_getPlayerSpot(i)
-		local spot = Spot:new()
-		spot:Initialize(spotId)
-		self.ScheduleTask.SpotInventory[spotId] = spot
+		if (spotId ~= 0) then
+			local spot = Spot:new()
+			spot:Initialize(spotId)
+			self.ScheduleTask.SpotInventory[spotId] = spot
+		end
 	end
 	
 	for i=0,TVT.of_getPlayerSpotCount() do
 		local spotId = TVT.of_getPlayerSpot(i)
-		local spot = Spot:new()
-		spot:Initialize(spotId)
-		self.ScheduleTask.SpotInventory[spotId] = spot
+		if (spotId ~= 0) then
+			local spot = Spot:new()
+			spot:Initialize(spotId)
+			self.ScheduleTask.SpotInventory[spotId] = spot
+		end
 	end		
 end
 
@@ -204,28 +212,28 @@ JobImperativelySchudule = AIJob:new{
 	CurrentHour = -1
 }
 
-function JobCheckSpots:Prepare()
+function JobImperativelySchudule:Prepare(pParams)
 	debugMsg("Prüfe ob dringende Programm- und Werveplanungen notwendig sind")
 end
 
-function JobCheckSpots:Tick()
+function JobImperativelySchudule:Tick()
 	if self:CheckImperatively() then
 		self:FillIntervals()
 	end
 end
 
-function JobCheckSpots:CheckImperatively()
+function JobImperativelySchudule:CheckImperatively()
 	--TODO über Tagesgrenzen hinweg
-	self.CurrentHour = TVT:getHour()
+	self.CurrentHour = TVT:Hour()
 	
-	for i=self.CurrentHour,self.CurrentHour+this.slotsToCheck do
+	for i=self.CurrentHour,self.CurrentHour+self.slotsToCheck do
 		local movie = self.ScheduleTask.TodayMovieSchedule[i]
 		if (movie == nil) then
 			return true
 		end
 	end
 	
-	for i=self.CurrentHour,self.CurrentHour+this.slotsToCheck do
+	for i=self.CurrentHour,self.CurrentHour+self.slotsToCheck do
 		local spot = self.ScheduleTask.TodaySpotSchedule[i]
 		if (spot == nil) then
 			return true
@@ -233,7 +241,7 @@ function JobCheckSpots:CheckImperatively()
 	end	
 end
 
-function JobCheckSpots:FillIntervals()	
+function JobImperativelySchudule:FillIntervals()	
 	--Zuschauerberechnung: ZuschauerquoteAufGrundderStunde * Programmquali * MaximalzuschauerproSpieler
 
 	for i=self.CurrentHour,self.CurrentHour+this.slotsToCheck do
@@ -276,7 +284,7 @@ function JobCheckSpots:FillIntervals()
 	end	
 end
 
-function JobCheckSpots:GetSpotList(guessedAudience, minFactor)
+function JobImperativelySchudule:GetSpotList(guessedAudience, minFactor)
 	local currentSpotList = {}
 	for k,v in pairs(self.ScheduleTask.SpotInventory) do
 		if (v.Audience < guessedAudience) and (v.Audience > guessedAudience * minFactor) then
@@ -286,7 +294,7 @@ function JobCheckSpots:GetSpotList(guessedAudience, minFactor)
 	return currentSpotList
 end
 
-function JobCheckSpots:FilterSpotList(spotList)
+function JobImperativelySchudule:FilterSpotList(spotList)
 	local currentSpotList = {}
 	for k,v in pairs(spotList) do
 		if v.MinBlocksToday() > 0 then
@@ -300,7 +308,7 @@ function JobCheckSpots:FilterSpotList(spotList)
 	end		
 end
 
-function GetBestMatchingSpot(spotList)
+function JobImperativelySchudule:GetBestMatchingSpot(spotList)
 	local bestAcuteness = -1
 	local bestSpot = nil
 
@@ -320,10 +328,10 @@ JobSchedule = AIJob:new{
 	ScheduleTask = nil
 }
 
-function JobCheckSpots:Prepare()
+function JobSchedule:Prepare(pParams)
 	debugMsg("Schaue Programmplan an")
 end
 
-function JobCheckSpots:Tick()
+function JobSchedule:Tick()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

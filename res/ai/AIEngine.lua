@@ -155,8 +155,9 @@ function AITask:StartNextJob()
 	else
 		self.Status = TASK_STATUS_RUN
 		self.StartTask = TVT.GetTime()
-		self.TickCounter = 0;
-		self.CurrentJob = self:GetNextJobInTargetRoom()		
+		self.TickCounter = 0;		
+		self.CurrentJob = self:GetNextJobInTargetRoom()	
+		
 		if (self.Status == TASK_STATUS_DONE) then
 			return
 		end
@@ -169,12 +170,12 @@ function AITask:Tick()
 	if (self.Status == TASK_STATUS_RUN) then
 		self.TickCounter = self.TickCounter + 1
 	end
-
+	
 	if (self.CurrentJob == nil) then
-		--debugMsg("----- Kein Job da - Neuen Starten")
-		self:StartNextJob() --Von vorne anfangen
+		--debugMsg("----- Kein Job da - Neuen Starten")		
+		self:StartNextJob() --Von vorne anfangen		
 	else
-		if self.CurrentJob.Status == JOB_STATUS_DONE then			
+		if self.CurrentJob.Status == JOB_STATUS_DONE then	
 			self.CurrentJob = nil
 			--debugMsg("----- Alter Job ist fertig - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
@@ -236,7 +237,7 @@ function AIJob:Start(pParams)
 	self.StartParams = pParams
 	self.StartJob = TVT.GetTime()
 	self.LastCheck = TVT.GetTime()
-	self:Prepare()
+	self:Prepare(pParams)
 end
 
 function AIJob:Prepare(pParams)

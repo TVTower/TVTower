@@ -16,8 +16,8 @@ end
 function TaskAdAgency:Activate()
 	debugMsg("Starte Task 'TaskAdAgency'")
 	-- Was getan werden soll:
-	self.JobCheckSpots = JobCheckSpots:new()
-	self.JobCheckSpots.AdAgencyTask = self
+	self.CheckSpots = JobCheckSpots:new()
+	self.CheckSpots.AdAgencyTask = self
 	
 	self.AppraiseSpots = AppraiseSpots:new()
 	self.AppraiseSpots.AdAgencyTask = self
@@ -29,11 +29,11 @@ function TaskAdAgency:Activate()
 end
 
 function TaskAdAgency:GetNextJobInTargetRoom()
-	if (self.JobCheckSpots.Status ~= JOB_STATUS_DONE) then
-		return self.JobCheckSpots
+	if (self.CheckSpots.Status ~= JOB_STATUS_DONE) then
+		return self.CheckSpots
 	elseif (self.AppraiseSpots.Status ~= JOB_STATUS_DONE) then
 		return self.AppraiseSpots
-	elseif (self.SignContracts.Status ~= JOB_STATUS_DONE) then
+	elseif (self.SignContracts.Status ~= JOB_STATUS_DONE) then	
 		return self.SignContracts
 	end
 end
@@ -47,7 +47,11 @@ JobCheckSpots = AIJob:new{
 	AdAgencyTask = nil
 }
 
-function JobCheckSpots:Prepare()
+function JobCheckSpots:typename()
+	return "JobCheckSpots"
+end
+
+function JobCheckSpots:Prepare(pParams)
 	debugMsg("Schaue Werbeangebote an")
 	self.CurrentSpotIndex = 0
 end
@@ -82,7 +86,7 @@ AppraiseSpots = AIJob:new{
 	AdAgencyTask = nil
 }
 
-function AppraiseSpots:Prepare()
+function AppraiseSpots:Prepare(pParams)
 	debugMsg("Bewerte Werbespotangebote")
 	self.CurrentSpotIndex = 0
 end
@@ -164,7 +168,7 @@ SignContracts = AIJob:new{
 	AdAgencyTask = nil
 }
 
-function SignContracts:Prepare()
+function SignContracts:Prepare(pParams)
 	debugMsg("Unterschreibe Werbeverträge")
 	self.CurrentSpotIndex = 0
 end
