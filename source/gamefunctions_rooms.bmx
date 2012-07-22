@@ -799,7 +799,7 @@ Function Room_Chief_Compute(_room:TRooms)
 		For local pp:int = 1 To 64
 			For local i:int = 1 To plength-1
 				If part_array[i].is_alive = False
-					part_array[i].Spawn(68,333,Rnd (1,pp+10),Rnd (250,775),Rnd (0.3,1.1),Rnd(176, 184),10,15)
+					part_array[i].Spawn(69,335,Rnd (5.0,35.0),Rnd (0.30,2.75),Rnd (0.2,1.4),Rnd(176, 184),2,2)
 					Exit
 				EndIf
 			Next
@@ -1400,7 +1400,7 @@ Type TRoomSigns Extends TBlock
 End Type
 
 
-Global part_array:Tparticle[200]
+Global part_array:Tparticle[100]
 Global spawn_delay:Int = 15
 Global pcount:Int
 Global part_counter:Int
@@ -1409,8 +1409,8 @@ Global plength:Int = Len part_array
 For Local i:Int = 1 To plength-1
 	part_array[i] = New Tparticle
 	part_array[i].image = particle_image
-	part_array[i].life = Rnd(100,1000)
-	part_array[i].scale = 1.0 '1.0 '0.3 '1.0
+	part_array[i].life = Rnd(0.100,1.5)
+	part_array[i].scale = 1.1
 	part_array[i].is_alive =False
 	part_array[i].alpha = 1
 Next

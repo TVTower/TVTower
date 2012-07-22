@@ -56,39 +56,43 @@ function AIPlayer:initialize()
 end
 
 function AIPlayer:initializePlayer()
-	--Zum �berschreiben
+	--Zum überschreiben
 end
 
 function AIPlayer:initializeTasks()
-	--Zum �berschreiben
+	--Zum überschreiben
 end
 
 function AIPlayer:ValidateRound()
-	--Zum �berschreiben
+	--Zum überschreiben
 end
 
 function AIPlayer:Tick()
 	self:TickAnalyse()
-	
+
 	if (self.CurrentTask == nil) or (self.CurrentTask.Status == JOB_STATUS_DONE) then
 		self:BeginNewTask()
 	else
 		if self.CurrentTask.Status == TASK_STATUS_DONE then
 			self:BeginNewTask()
-		else			
+		else
 			self.CurrentTask:Tick()
 		end
 	end
 end
 
 function AIPlayer:TickAnalyse()
-	--Zum �berschreiben
+	--Zum überschreiben
 end
 
 function AIPlayer:BeginNewTask()
 	self.CurrentTask = self:SelectTask()
-	self.CurrentTask:Activate()	
-	self.CurrentTask:StartNextJob()
+	if self.CurrentTask = nil
+		debugMsg("AIPlayer:BeginNewTask - task is nil... " )
+	else
+		self.CurrentTask:Activate()
+		self.CurrentTask:StartNextJob()
+	end
 end
 
 function AIPlayer:SelectTask()
@@ -107,7 +111,7 @@ function AIPlayer:SelectTask()
 end
 
 function AIPlayer:OnDayBegins()
-	--Zum �berschreiben
+	--Zum überschreiben
 end
 
 function AIPlayer:OnReachRoom()
@@ -149,15 +153,15 @@ function AITask:StartNextJob()
 	debugMsg("StartNextJob")
 	local roomNumber = TVT.GetPlayerRoom()
 	debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
-	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt daf�r, dass der Spieler in den richtigen Raum geht!
+	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafür, dass der Spieler in den richtigen Raum geht!
 		self.Status = TASK_STATUS_PREPARE
 		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
 		self.StartTask = TVT.GetTime()
-		self.TickCounter = 0;		
-		self.CurrentJob = self:GetNextJobInTargetRoom()	
-		
+		self.TickCounter = 0;
+		self.CurrentJob = self:GetNextJobInTargetRoom()
+
 		if (self.Status == TASK_STATUS_DONE) then
 			return
 		end
@@ -170,12 +174,12 @@ function AITask:Tick()
 	if (self.Status == TASK_STATUS_RUN) then
 		self.TickCounter = self.TickCounter + 1
 	end
-	
+
 	if (self.CurrentJob == nil) then
-		--debugMsg("----- Kein Job da - Neuen Starten")		
-		self:StartNextJob() --Von vorne anfangen		
+		--debugMsg("----- Kein Job da - Neuen Starten")
+		self:StartNextJob() --Von vorne anfangen
 	else
-		if self.CurrentJob.Status == JOB_STATUS_DONE then	
+		if self.CurrentJob.Status == JOB_STATUS_DONE then
 			self.CurrentJob = nil
 			--debugMsg("----- Alter Job ist fertig - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
@@ -258,7 +262,7 @@ function AIJob:ReDoCheck(pWait)
 end
 
 function AIJob:OnReachRoom()
-	--Kann �berschrieben werden
+	--Kann überschrieben werden
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -294,14 +298,14 @@ end
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 StatisticEvaluator = SLFDataObject:new{
-	MinValue = -1;	
+	MinValue = -1;
 	AverageValue = -1;
 	MaxValue = -1;
-	
+
 	MinValueTemp = 100000000000000;
 	AverageValueTemp = -1;
 	MaxValueTemp = -1;
-	
+
 	TotalSum = 0;
 	Values = 0;
 }
@@ -313,9 +317,9 @@ function StatisticEvaluator:Adjust()
 	self.Values = 0
 end
 
-function StatisticEvaluator:AddValue(value)		
+function StatisticEvaluator:AddValue(value)
 	self.Values = self.Values + 1
-	
+
 	if value < self.MinValueTemp then
 		self.MinValue = value
 		self.MinValueTemp = value
@@ -323,8 +327,8 @@ function StatisticEvaluator:AddValue(value)
 	if value > self.MaxValueTemp then
 		self.MaxValue = value
 		self.MaxValueTemp = value
-	end	
-	
+	end
+
 	self.TotalSum = self.TotalSum + value
 	self.AverageValueTemp = math.round(self.TotalSum / self.Values, 0)
 	self.AverageValue = self.AverageValueTemp
@@ -332,19 +336,19 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-function debugMsg(pMessage)	
+function debugMsg(pMessage)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		TVT.PrintOut(TVT.ME .. ": " .. pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	end
 end
 
-function CutFactor(factor, minValue, maxValue)	
+function CutFactor(factor, minValue, maxValue)
 	if (factor > maxValue) then
 		return maxValue
 	elseif (factor < minValue) then
 		return minValue
 	else
 		return factor
-	end	
+	end
 end

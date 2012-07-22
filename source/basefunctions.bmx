@@ -1080,10 +1080,10 @@ Type Tparticle
 		Field angle:Float
 		Field image:TImage
 		Field life:float
+		field startLife:float
 		Field is_alive:Int
 		Field alpha:Float
 		Field scale:Float
-		Field pred:Int,pgreen:Int,pblue:Int
 
 
 		Method Spawn(px:Float,py:Float,pvel:Float,plife:Float,pscale:Float,pangle:Float,pxrange:Float,pyrange:Float)
@@ -1094,13 +1094,11 @@ Type Tparticle
 			xrange		= pxrange
 			yrange		= pyrange
 
-			life		= plife / 1000.0
+			life		= plife
+			startLife	= plife
 			scale		= pscale
 			angle		= pangle
-			alpha		= Rnd(1.5,3.5)
-			pred		= Rnd(50,105)
-			pgreen		= pred
-			pblue		= Min(255,pred + 10)
+			alpha		= 0.10 * plife + Rnd(1,10)*0.05
 		End Method
 
 		Method Update(deltaTime:float = 1.0)
@@ -1111,24 +1109,21 @@ Type Tparticle
 				vel:* 0.99 '1.02 '0.98
 				x:+(vel*Cos(angle-90))*deltaTime
 				y:-(vel*Sin(angle-90))*deltaTime
-				alpha:*0.99*(1.0-deltaTime)
+				if life / startLife < 0.5 then alpha:*0.97*(1.0-deltaTime)
+
 				If y < 330 Then 	scale:*1.03*(1.0-deltaTime)
 				If y > 330 Then 	scale:*1.01*(1.0-deltaTime)
 				angle:*0.999
-				pred:* 1.005
 			EndIf
 		End Method
 
 		Method Draw()
 			If is_alive = True
-				SetBlend LIGHTBLEND 'ALPHABLEND
 				SetAlpha alpha
-				SetColor pred,pred,pred
 				SetRotation angle
-				SetScale(scale/2,scale/2)
+				SetScale(scale,scale)
 				DrawImage image,x,y
 				SetAlpha 1.0
-				SetBlend ALPHABLEND
 				SetRotation 0
 				SetScale 1,1
 				SetColor 255,255,255
