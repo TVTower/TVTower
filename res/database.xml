@@ -2072,7 +2072,7 @@ Hervorragend inszenierter Gangster-Film</description>
 		</movie>
 		<movie>
 			<title>Haben und Nichthaben</title>
-			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat. 
+			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat.
 Bogart und Bacall verliebten sich während der Dreharbeiten</description>
 			<data  actors="Humphrey Bogart, Walter Brennan, Lauren Bacall" director="Howard Hawks" country="USA" year="1944" genre="5"  blocks="2" time="0" price="200" critics="108" speed="96" outcome="156" />
 		</movie>
@@ -4984,8 +4984,8 @@ Hochdramatisch</description>
 		</serie>
 		<serie>
 			<title>Raumschiff Enterprise</title>
-			<description>Viele Lichtjahre von der Erde entfernt, 
-dringt die Enterprise in Galaxien vor, 
+			<description>Viele Lichtjahre von der Erde entfernt,
+dringt die Enterprise in Galaxien vor,
 die nie ein Mensch zuvor gesehen hat.
 Gene Roddenberry erschuf mit Star Trek einen bis heute anhaltenden Kult</description>
 			<data  actors="William Shatner, Leonard Nimoy, DeForest Kelley" director="Div." country="USA" year="1966" genre="2"  blocks="1" time="0" price="100" critics="108" speed="144" outcome="144" />
@@ -5159,6 +5159,41 @@ Stephen Hawking spielt sich selbst beim Kartenspiel mit Newton, Einstein und Dat
 				<data  genre="19" 	price="15"	critics="16"	speed="21" />
 			</episode>
 		</serie>
+
+
+		<serie>
+			<neu>Bolivien - Abk ?, Genre ändern!</neu>
+			<title>BBWr - Best-Of Bolivian Wrestling</title>
+			<description>Hart Härter bolivianisches Wrestling. Schlechte Schauspieler und echtes Blut entzücken Fans weltweit.</description>
+			<data  actors="Brett Hart, Hulg Hoden, Bernd `die Schlange´ Snake, Andreas Stahlhammer, Pelé `Gravedigger´ Queruan, Santiago `de Chile´ Perez" director="Ulfs Maul" country="Bol" year="2005" genre="12"  blocks="2" price="25" critics="20" speed="5" outcome="0" />
+			<episode number="1">
+				<title>Hart - Hoden</title>
+				<description>Ein spannendes Match von 1987 in dem Hoden seinem Widersacher Hart zeigt wo der Hammer hängt</description>
+				<data  year="1987" blocks="2"	price="185"	critics="100"	speed="80" />
+			</episode>
+			<episode number="2">
+				<title>Der neue wird eingewiesen</title>
+				<description>Die neuen Moderatoren Brett Hart und Hulg Hoden weisen den Neuling, Santiago `de Chile´ Perez ein... mit Stühlen auf dem Rücken.</description>
+				<data  director="Gustav Klein" year="1999" price="70"	critics="60"	speed="40" />
+			</episode>
+			<episode number="3">
+				<title>Snake - Gravedigger</title>
+				<description>Wer macht das Rennen? Der Amateur Snake aus aus Ostsachen gegen den BWr-Champion Pelé Queruan. Ein bissiger Kampf ist garantiert!</description>
+				<data  year="1998"  blocks="1"	price="90"	critics="40"	speed="100" />
+			</episode>
+			<episode number="4">
+				<title>Stahlhammer - Perez</title>
+				<description>Schlägt der Stahlhammer auf Granit oder schafft er es dem Altmeister Santiago `de Chile´ Perez zu schlagen? Nur für hartgesottene Zuschauer, Hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</description>
+				<data  year="2001" director="Gustav Klein" blocks="2"	price="76"	critics="20"	speed="120" />
+			</episode>
+			<episode number="5">
+				<title>Tag-Team-Match</title>
+				<description>Die Moderatoren nach Jahren wieder im Ring. Hart und Hoden im Team mit Stahlhammer gegen die bolivianische Muskelpracht verstärkt durch den deutschen Snake.</description>
+				<data  year="2004" blocks="1"	price="100"	critics="50"	speed="140" />
+			</episode>
+		</serie>
+
+
 		<serie>
 			<title>Seniorensause</title>
 			<description>Erika Böhme trifft rüstige Rentner aus den Geriatriehochburgen Deutschlands.</description>
@@ -5367,11 +5402,14 @@ Gastauftritte von Richard Dean Anderson und Don S. Davis</description>
 		</news>
 		<news>
 			<title>Computer Oskar-nominiert</title>
+			<neu>Realtitel! bzw "deutsch"</neu>
 			<description>Der amerikanische Computerhersteller Apfel staunte nicht schlecht, als ihr Computer für die beste Nebenrolle Oskar-nominiert wurde. </description>
 			<data genre="3" price="10" topicality="85" />
 		</news>
 		<news>
 			<title>Computerspiel zerstört PC</title>
+			<neu>Realtitel! bzw "deutsch"</neu>
+
 			<description>Das Spiel "Bedarf der Geschwindigkeit 12" des Herstellers Elektronische Künste hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</description>
 			<data genre="3" price="0" topicality="50" />
 			<episode number="1">
@@ -5688,6 +5726,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			<data genre="4" price="20" topicality="75" />
 		</news>
 		<news>
+			<neu>Realtitel!</neu>
 			<title>McGyver-Satire in Produktion</title>
 			<description>Nach jahrelanger Überlegung produziert R.D. Anderson nun eine Satire seiner Erfolgserie. Papierklammer, Gummiband und Taschenmesser stimmten schon zu.</description>
 			<data genre="1" price="0" topicality="90" />
@@ -5788,6 +5827,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 		</news>
 		<news>
+			<neu>Name real? dann "fiktiv" verneinen</neu>
 			<title>Preetz neuer Trainer in Berlin?</title>
 			<description>Dem Rekordtorschützen Michael Preetz wurde von seinem alten Verein der Trainerposten angeboten. Preetz sei interessiert, so der Vorstand.</description>
 			<data genre="2" price="0" topicality="125" />
@@ -5979,21 +6019,25 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 		</news>
 		<news>
 			<title>Teelichterpreis auf Rekordhoch</title>
-			<description>Nachdem sich der Ölpreis auf Öl und Gas gefestigt hat, steigt der Preis von Teelichter auf einen Rekord von 300 Prozent seines Wertes.</description>
+			<neu>Teelichter -> Teelichtern</neu>
+			<description>Nachdem sich der Ölpreis auf Öl und Gas gefestigt hat, steigt der Preis von Teelichtern auf einen Rekord von 300 Prozent seines Wertes.</description>
 			<data genre="4" price="0" topicality="50" />
 		</news>
 		<news>
 			<title>Terrorismusbekämpfung im Weltall</title>
-			<description>US-Präsident Baush will zur Sicherheit den Terrorismus auch im All bekämpfen. Ein Spaceshutle soll künftig 24h/Tag die int. Raumstation umkreisen. Kosten: 50Mrd USD.</description>
+			<neu>Spaceshutle -> Spaceshuttle</neu>
+			<description>US-Präsident Baush will zur Sicherheit den Terrorismus auch im All bekämpfen. Ein Spaceshuttle soll künftig 24h/Tag die int. Raumstation umkreisen. Kosten: 50Mrd USD.</description>
 			<data genre="0" price="0" topicality="150" />
 			<episode number="1">
 				<title>Terrorismusbekämpfung – jetzt 2 Shuttles</title>
-				<description>Um die Sicherheit vor Terroristen im All sicherzustellen sollen jetzt 2 Spaceshutles die int. Raumstation umkreisen. `Man kann ja nie wissen was passiert´, so Baush.</description>
+				<neu>Spaceshutle -> Spaceshuttle</neu>
+				<description>Um die Sicherheit vor Terroristen im All sicherzustellen sollen jetzt 2 Spaceshuttles die int. Raumstation umkreisen. `Man kann ja nie wissen was passiert´, so Baush.</description>
 				<data genre="0" price="0" topicality="125" />
 			</episode>
 			<episode number="2">
-				<title>Start der Shutles nicht in Amerika</title>
-				<description>Die beiden US Shutles zur Sicherung des Alls sollen aus Kostengründen nicht in Amerika starten. Im Gespräch sind die Ukraine und Russland.</description>
+				<neu>Spaceshutle -> Spaceshuttle</neu>
+				<title>Start der Shuttles nicht in Amerika</title>
+				<description>Die beiden US Shuttles zur Sicherung des Alls sollen aus Kostengründen nicht in Amerika starten. Im Gespräch sind die Ukraine und Russland.</description>
 				<data genre="0" price="0" topicality="100" />
 			</episode>
 			<episode number="3">
@@ -6068,7 +6112,8 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="3">
 				<title>Queen: Ich fühle mich gut!</title>
-				<description>Nach der Untersuchung der angegriffenen Queen sagte sie: "I am pleased!" und sah keine Probleme in ihrer neuen, kleinen Körpergrößer.</description>
+				<neu>Körpergrößer -> Körpergröße</neu>
+				<description>Nach der Untersuchung der angegriffenen Queen sagte sie: "I am pleased!" und sah keine Probleme in ihrer neuen, kleinen Körpergröße.</description>
 				<data genre="4" price="58" topicality="172" />
 			</episode>
 			<episode number="4">
@@ -6079,12 +6124,14 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 			</episode>
 		</news>
 		<news>
+			<neu>GEAENDERT desc</neu>
 			<title>Wahlen in Deutschland</title>
-			<description>Am kommenden Sonntag greift Deutschland zum Stimmzettel: Bundestagswahlen. Aktuelle Umfragen scheienen die momentane Regierung zu bestätigen.</description>
+			<description>Am kommenden Sonntag greift Deutschland zum Stimmzettel: Bundestagswahlen. Aktuelle Umfragen scheinen die momentane Regierung zu bestätigen.</description>
 			<data genre="0" price="0" topicality="150" />
 			<episode number="1">
 				<title>Morgen wird gewählt</title>
-				<description>Am Vorabend der Wahl geben sich die Kanzlerkandidaten der großen Volksparteien optimistisch. Eine große Koalition  wird von vornherein ausgeschlossen.</description>
+				<neu>Leerzeichen gefixt</neu>
+				<description>Am Vorabend der Wahl geben sich die Kanzlerkandidaten der großen Volksparteien optimistisch. Eine große Koalition wird von vornherein ausgeschlossen.</description>
 				<data genre="0" price="0" topicality="125" />
 			</episode>
 			<episode number="2">
@@ -6125,6 +6172,71 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 		</news>
 	</allnews>
 	<allads>
+		<ad>
+			<neu></neu>
+			<title>Tischlerei Nagler</title>
+			<description>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</description>
+			<data minaudience="20" minimage="0" repetitions="3"  profit="10" penalty="10" duration="3" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Buchstehude</title>
+			<description>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</description>
+			<data minaudience="20" minimage="0" repetitions="3"  profit="10" penalty="10" duration="3" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Saipien</title>
+			<description>Das neue Modell des renommierten Autoherstellers Saipien verzückt die Presse - auch Sie?</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Schwarzmalerei AG</title>
+			<description>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop "live" am Telefon.</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Hartz Bier</title>
+			<description>Unser Bier ist nicht nur günstig, es ist auch billig. Aktionswoche: Pfandfrei.</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Spruzzi Plöpp</title>
+			<description>Unsere Limonade beinhaltet nur natürliche Aromastoffe. Hmm lecker Käferflügel...</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Pantzers</title>
+			<description>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Lutschfix</title>
+			<description>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>Nichts-wie-weg</title>
+			<description>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und "Gepäck zurück"-Garantie.</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+		<ad>
+			<neu></neu>
+			<title>PoliPlay</title>
+			<description>Action-Spielfiguren Ihrer Lieblingspolitiker. Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</description>
+			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
+		</ad>
+
+
+
+
+
 		<ad>
 			<title>Aeroswift</title>
 			<description>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</description>
@@ -6276,7 +6388,7 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 		<ad>
 			<title>KittyFood</title>
 			<description>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</description>
-			<data minaudience="50"  repetitions="2"  profit="15" penalty="50" targetgroup="3" duration="1" />
+			<data minaudience="50"  repetitions="2"  profit="25" penalty="50" targetgroup="3" duration="1" />
 		</ad>
 		<ad>
 			<title>La Baguette</title>

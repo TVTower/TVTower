@@ -1,38 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvt>
 	<resources>
-		<resource name="resource_rooms">
-			<type>xml</type>
-			<url>config/rooms.xml</url>
-		</resource>
-		<resource name="resource_interface">
-			<type>xml</type>
-			<url>config/interface.xml</url>
-		</resource>
-		<resource name="resource_gui">
-			<type>xml</type>
-			<url>config/gui.xml</url>
-		</resource>
-		<resource name="resource_gfx_dialog">
-			<type>xml</type>
-			<url>config/gfx_dialog.xml</url>
-		</resource>
-		<resource name="resource_gfx_officepack">
-			<type>xml</type>
-			<url>config/gfx_officepack.xml</url>
-		</resource>
-		<resource name="resource_gfx_building">
-			<type>xml</type>
-			<url>config/gfx_hochhauspack.xml</url>
-		</resource>
-		<resource name="resource_gfx">
-			<type>xml</type>
-			<url>config/gfx.xml</url>
-		</resource>
-		<resource name="resource_figures">
-			<type>xml</type>
-			<url>config/figures.xml</url>
-		</resource>
-
+		<file name="resource_rooms" url="config/rooms.xml" />
+		<file name="resource_interface" url="config/interface.xml" />
+		<file name="resource_gui" url="config/gui.xml" />
+		<file name="resource_gfx_dialog" url="config/gfx_dialog.xml" />
+		<file name="resource_gfx_officepack" url="config/gfx_officepack.xml" />
+		<file name="resource_gfx_building" url="config/gfx_hochhauspack.xml" />
+		<file name="resource_gfx" url="config/gfx.xml" />
+		<file name="resource_figures" url="config/figures.xml" />
 	</resources>
 </tvt>

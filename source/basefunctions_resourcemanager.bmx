@@ -10,6 +10,7 @@ Import brl.Threads
 Import "basefunctions_image.bmx"
 Import "basefunctions_sprites.bmx"
 Import "basefunctions_asset.bmx"
+Import "basefunctions_events.bmx"
 
 Global Assets:TAssetManager = TAssetManager.Create(null,1)
 
@@ -251,16 +252,37 @@ Type TXmlLoader
 		self.xml = TXmlHelper.Create(url)
 		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
 
-		for local child:TxmlNode = eachin xml.root
-			if child.getType() = XML_ELEMENT_NODE
-				Select child.getName()
-					Case "resources"	Self.LoadResources(child)
-					Case "rooms"		Self.LoadRooms(child)
-				End Select
-			endif
+		self.LoadResources(xml.root)
+	End Method
+
+
+	Method LoadResources(node:TxmlNode)
+		for local childNode:TxmlNode = eachin node.getChildren()
+			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
+
+			'some loaders might be interested
+			EventManager.registerEvent( TEventSimple.Create("LoadResource."+_type, TEventData.Create().AddObject("node", childNode) ) )
+			Select _type
+				Case "RESOURCES"			Self.LoadResources(childNode)
+				Case "ROOMS"				Self.LoadRooms(childNode)
+				Case "FILE"					Self.LoadXmlFile(childNode)
+				Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
+				Case "SPRITEPACK"			Self.LoadSpritePackResource(childNode)
+			End Select
 		Next
 	End Method
 
+	Method LoadXmlFile(childNode:TxmlNode)
+		Local _url:String = xml.FindValue(childNode, "url", "")
+		if _url = "" then return
+		Local childXML:TXmlLoader = TXmlLoader.Create()
+		childXML.Parse(_url)
+
+		For Local obj:Object = EachIn MapKeys(childXML.Values)
+			PrintDebug("XmlLoader.LoadXmlResource:", "loading object: " + String(obj), DEBUG_LOADING)
+			Self.Values.Insert(obj, childXML.Values.ValueForKey(obj))
+		Next
+	End Method
 
 	Method LoadChild:TMap(childNode:TxmlNode)
 		Local optionsMap:TMap = CreateMap()
@@ -272,19 +294,6 @@ Type TXmlLoader
 			EndIf
 		Next
 		Return optionsMap
-	End Method
-
-
-	Method LoadXmlResource(childNode:TxmlNode)
-		Local _url:String = xml.FindValue(childNode, "url", "")
-		if _url = "" then return
-		Local childXML:TXmlLoader = TXmlLoader.Create()
-		childXML.Parse(_url)
-
-		For Local obj:Object = EachIn MapKeys(childXML.Values)
-			PrintDebug("XmlLoader.LoadXmlResource:", "loading object: " + String(obj), DEBUG_LOADING)
-			Self.Values.Insert(obj, childXML.Values.ValueForKey(obj))
-		Next
 	End Method
 
 	Method GetImageFlags:Int(childNode:TxmlNode)
@@ -456,22 +465,6 @@ Type TXmlLoader
 
 	End Method
 
-	Method LoadResource(childNode:TxmlNode)
-		Local _type:String = Upper(xml.findValue(childNode, "type", ""))
-		Select _type
-			Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
-			Case "XML"					Self.LoadXmlResource(childNode)
-			Case "SPRITEPACK"			Self.LoadSpritePackResource(childNode)
-		End Select
-	End Method
-
-
-	Method LoadResources(childNode:TxmlNode)
-		'for every single resource
-		for local child:TxmlNode = eachin childNode
-			if child.getType() = XML_ELEMENT_NODE then Self.LoadResource(child)
-		Next
-	End Method
 
 	Method LoadRooms(childNode:TxmlNode)
 		'for every single room
@@ -509,6 +502,7 @@ Type TXmlLoader
 
 	End Method
 End Type
+
 
 
 rem
