@@ -1358,7 +1358,6 @@ endrem
 		normalFont.DrawBlock(actors           , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":")), y+dY+148, 280-15-normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":"), 32,0) 	'prints actors
 		normalFont.DrawBlock(GetGenreString(Genre)  , x+78 , y+dY+35 , 150, 16,0) 	'prints genre
 		normalFont.DrawBlock(country          , x+10 , y+dY+35 , 150, 16,0)		'prints country
-		normalFont.DrawBlock(description      , x+10,  y+dy+56 , 278, 70,0) 'prints programmedescription on moviesheet
 		If genre <> GENRE_CALLINSHOW
 			normalFont.DrawBlock(year		      , x+36 , y+dY+35 , 150, 16,0) 	'prints year
 			normalFont.DrawBlock(description      , x+10,  y+dy+56 , 278, 70,0) 'prints programmedescription on moviesheet
