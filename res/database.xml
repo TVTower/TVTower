@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="08.04.2012 10:07" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="23.07.2012 23:41" />
 	<allmovies>
 		<movie>
 			<title>...denn sie wissen nicht, was sie tun</title>
@@ -2072,7 +2072,7 @@ Hervorragend inszenierter Gangster-Film</description>
 		</movie>
 		<movie>
 			<title>Haben und Nichthaben</title>
-			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat.
+			<description>Für Bogie-Fans Kult, für manchen Kritiker ein Casablanca-Duplikat. 
 Bogart und Bacall verliebten sich während der Dreharbeiten</description>
 			<data  actors="Humphrey Bogart, Walter Brennan, Lauren Bacall" director="Howard Hawks" country="USA" year="1944" genre="5"  blocks="2" time="0" price="200" critics="108" speed="96" outcome="156" />
 		</movie>
@@ -4326,6 +4326,36 @@ Eine Serie in der Serie entsteht.</description>
 			</episode>
 		</serie>
 		<serie>
+			<title>BBWr - Best-Of Bolivian Wrestling</title>
+			<description>Hart - Härter - bolivianisches Wrestling. Schlechte Schauspieler und echtes Blut entzücken Fans weltweit.</description>
+			<data  actors="Brett Hart, Hulg Hoden, Bernd `die Schlange´ Snake, Andreas Stahlhammer, Pelé `Gravedigger´ Queruan, Santiago `de Chile´ Perez" director="Ulfs Maul" country="BOL" year="2005" genre="12"  blocks="2" xrated="3" price="25" critics="20" speed="50" outcome="0" />
+			<episode number="1">
+				<title>Hart - Hoden</title>
+				<description>Ein spannendes Match von 1987 in dem Hoden seinem Widersacher Hart zeigt wo der Hammer hängt.</description>
+				<data  year="1987" genre="12"  blocks="2" xrated="3"	price="100"	critics="70"	speed="70" />
+			</episode>
+			<episode number="2">
+				<title>Der neue wird eingewiesen</title>
+				<description>Die neuen Moderatoren Brett Hart und Hulg Hoden weisen den Neuling, Santiago `de Chile´ Perez ein... mit Stühlen auf dem Rücken.</description>
+				<data  director="Gustav Klein" year="1999" genre="12"  xrated="3"	price="55"	critics="40"	speed="42" />
+			</episode>
+			<episode number="3">
+				<title>Snake - Gravedigger</title>
+				<description>Wer macht das Rennen? Der Amateur Snake aus aus Ostsachen gegen den BWr-Champion Pelé Queruan. Ein bissiger Kampf ist garantiert!</description>
+				<data  year="2000" genre="12"  xrated="3"	price="80"	critics="40"	speed="100" />
+			</episode>
+			<episode number="4">
+				<title>Stahlhammer - Perez</title>
+				<description>Schlägt der Stahlhammer auf Granit oder schafft er es dem Altmeister Santiago `de Chile´ Perez zu schlagen? Nur für hartgesottene Zuschauer, Hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</description>
+				<data  director="Gustav Klein" year="2001" genre="12"  blocks="2" xrated="1"	price="74"	critics="20"	speed="90" />
+			</episode>
+			<episode number="5">
+				<title>Tag-Team-Match</title>
+				<description>Die Moderatoren nach Jahren wieder im Ring. Hart und Hoden im Team mit Stahlhammer gegen die bolivianische Muskelpracht verstärkt durch den deutschen Snake.</description>
+				<data  year="2004" genre="12"  xrated="3"	price="122"	critics="42"	speed="132" />
+			</episode>
+		</serie>
+		<serie>
 			<title>Bonanza</title>
 			<description>Western-Familiensaga der Cartwrights von der Ponderosa-Farm in Nevada.
 Serien-Oldie
@@ -4984,8 +5014,8 @@ Hochdramatisch</description>
 		</serie>
 		<serie>
 			<title>Raumschiff Enterprise</title>
-			<description>Viele Lichtjahre von der Erde entfernt,
-dringt die Enterprise in Galaxien vor,
+			<description>Viele Lichtjahre von der Erde entfernt, 
+dringt die Enterprise in Galaxien vor, 
 die nie ein Mensch zuvor gesehen hat.
 Gene Roddenberry erschuf mit Star Trek einen bis heute anhaltenden Kult</description>
 			<data  actors="William Shatner, Leonard Nimoy, DeForest Kelley" director="Div." country="USA" year="1966" genre="2"  blocks="1" time="0" price="100" critics="108" speed="144" outcome="144" />
@@ -5159,41 +5189,6 @@ Stephen Hawking spielt sich selbst beim Kartenspiel mit Newton, Einstein und Dat
 				<data  genre="19" 	price="15"	critics="16"	speed="21" />
 			</episode>
 		</serie>
-
-
-		<serie>
-			<neu>Bolivien - Abk ?, Genre ändern!</neu>
-			<title>BBWr - Best-Of Bolivian Wrestling</title>
-			<description>Hart Härter bolivianisches Wrestling. Schlechte Schauspieler und echtes Blut entzücken Fans weltweit.</description>
-			<data  actors="Brett Hart, Hulg Hoden, Bernd `die Schlange´ Snake, Andreas Stahlhammer, Pelé `Gravedigger´ Queruan, Santiago `de Chile´ Perez" director="Ulfs Maul" country="Bol" year="2005" genre="12"  blocks="2" price="25" critics="20" speed="5" outcome="0" />
-			<episode number="1">
-				<title>Hart - Hoden</title>
-				<description>Ein spannendes Match von 1987 in dem Hoden seinem Widersacher Hart zeigt wo der Hammer hängt</description>
-				<data  year="1987" blocks="2"	price="185"	critics="100"	speed="80" />
-			</episode>
-			<episode number="2">
-				<title>Der neue wird eingewiesen</title>
-				<description>Die neuen Moderatoren Brett Hart und Hulg Hoden weisen den Neuling, Santiago `de Chile´ Perez ein... mit Stühlen auf dem Rücken.</description>
-				<data  director="Gustav Klein" year="1999" price="70"	critics="60"	speed="40" />
-			</episode>
-			<episode number="3">
-				<title>Snake - Gravedigger</title>
-				<description>Wer macht das Rennen? Der Amateur Snake aus aus Ostsachen gegen den BWr-Champion Pelé Queruan. Ein bissiger Kampf ist garantiert!</description>
-				<data  year="1998"  blocks="1"	price="90"	critics="40"	speed="100" />
-			</episode>
-			<episode number="4">
-				<title>Stahlhammer - Perez</title>
-				<description>Schlägt der Stahlhammer auf Granit oder schafft er es dem Altmeister Santiago `de Chile´ Perez zu schlagen? Nur für hartgesottene Zuschauer, Hier wurde der Weltrekord im Blutweitspritzen von 5.3m aufgestellt.</description>
-				<data  year="2001" director="Gustav Klein" blocks="2"	price="76"	critics="20"	speed="120" />
-			</episode>
-			<episode number="5">
-				<title>Tag-Team-Match</title>
-				<description>Die Moderatoren nach Jahren wieder im Ring. Hart und Hoden im Team mit Stahlhammer gegen die bolivianische Muskelpracht verstärkt durch den deutschen Snake.</description>
-				<data  year="2004" blocks="1"	price="100"	critics="50"	speed="140" />
-			</episode>
-		</serie>
-
-
 		<serie>
 			<title>Seniorensause</title>
 			<description>Erika Böhme trifft rüstige Rentner aus den Geriatriehochburgen Deutschlands.</description>
@@ -5391,6 +5386,36 @@ Gastauftritte von Richard Dean Anderson und Don S. Davis</description>
 			<data genre="1" price="0" topicality="75" />
 		</news>
 		<news>
+			<title>Bretz neuer Trainer in Berlin?</title>
+			<description>Dem Rekordtorschützen Michel Bretz wurde von seinem alten Verein der Trainerposten angeboten. Bretz sei interessiert, so der Vorstand.</description>
+			<data genre="2" price="0" topicality="125" />
+			<episode number="1">
+				<title>Bretz neuer Trainer in Berlin?</title>
+				<description>Dem Rekordtorschützen Michel Bretz wurde von seinem alten Verein der Trainerposten angeboten. Bretz sei interessiert, so der Vorstand.</description>
+				<data genre="2" price="0" topicality="175" />
+			</episode>
+			<episode number="2">
+				<title>Trainerschein für M. Bretz?</title>
+				<description>Die Chancen stehen gut: "Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden.", so der Herthaner. Berlin darf hoffen.</description>
+				<data genre="2" price="0" topicality="75" />
+			</episode>
+			<episode number="3">
+				<title>Probleme für Bretz &amp; Co</title>
+				<description>Da der frühere Kapitän der Berliner bisher keinen Trainerschein besitzt, könnte die Entscheidung des Stürmers noch auf sich warten lassen...</description>
+				<data genre="2" price="0" topicality="125" />
+			</episode>
+			<episode number="4">
+				<title>Und nun, Herr Bretz?</title>
+				<description>Alt-Herthaner Michel Bretz hat gestern den Trainerschein ausgestellt bekommen. Gespräche über die Zukunft seien nun am Laufen, so Bretz' Berater.</description>
+				<data genre="2" price="0" topicality="100" />
+			</episode>
+			<episode number="5">
+				<title>Hertho BSV holt Bretz</title>
+				<description>Perfekt: Michel Bretz wird den Trainerposten in der Hauptstadt übernehmen. Er freue sich auf diese Herausforderung, so Bretz, langjährige Nr. 11.</description>
+				<data genre="2" price="0" topicality="150" />
+			</episode>
+		</news>
+		<news>
 			<title>Bundeskanzler lehnt Filmhauptrolle ab</title>
 			<description>Kanzler Schröler lehnte die Hauptrolle in dem Film "Lügen ist meine Leidenschaft" verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</description>
 			<data genre="1" price="0" topicality="0" />
@@ -5402,24 +5427,21 @@ Gastauftritte von Richard Dean Anderson und Don S. Davis</description>
 		</news>
 		<news>
 			<title>Computer Oskar-nominiert</title>
-			<neu>Realtitel! bzw "deutsch"</neu>
-			<description>Der amerikanische Computerhersteller Apfel staunte nicht schlecht, als ihr Computer für die beste Nebenrolle Oskar-nominiert wurde. </description>
+			<description>Der amerikanische Computerhersteller EppelWoi staunte nicht schlecht, als ihr Computer für die beste Nebenrolle Oskar-nominiert wurde. </description>
 			<data genre="3" price="10" topicality="85" />
 		</news>
 		<news>
 			<title>Computerspiel zerstört PC</title>
-			<neu>Realtitel! bzw "deutsch"</neu>
-
-			<description>Das Spiel "Bedarf der Geschwindigkeit 12" des Herstellers Elektronische Künste hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</description>
+			<description>Das Spiel "Rasante Geschwindigkeiten 12" des Herstellers Elektromerz hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</description>
 			<data genre="3" price="0" topicality="50" />
 			<episode number="1">
 				<title>Mehrere Zockeropfer melden sich</title>
-				<description>Die Zahl der Opfer, deren PCs explodiert sind, steigt von Stunde zu Stunde. Elektronische Künste schweigt zu den Vorfällen.  </description>
+				<description>Die Zahl der Opfer, deren PCs explodiert sind, steigt von Stunde zu Stunde. Elektromerz schweigt zu den Vorfällen.  </description>
 				<data genre="3" price="0" topicality="50" />
 			</episode>
 			<episode number="2">
 				<title>PC-Explosionen sind Absicht!</title>
-				<description>Wie ein Sprecher des Herstellers Elektronische Künste mitteilte, seien die PC-Brände absichtlich geschehen. Die Leistung moderner Rechner wäre zu schwach.</description>
+				<description>Wie ein Sprecher des Herstellers Elektromerz mitteilte, seien die PC-Brände absichtlich geschehen. Die Leistung moderner Rechner wäre zu schwach.</description>
 				<data genre="3" price="0" topicality="50" />
 			</episode>
 			<episode number="3">
@@ -5429,7 +5451,7 @@ Gastauftritte von Richard Dean Anderson und Don S. Davis</description>
 			</episode>
 			<episode number="4">
 				<title>PC-Explosionen nur PR-Gag</title>
-				<description>Wie Elektronische Künste mitteilte, habe man die Hersteller von Computer-komponenten zwingen wollen, optische Rechner an zu bieten.</description>
+				<description>Wie Elektromerz mitteilte, habe man die Hersteller von Computerkomponenten zwingen wollen, optische Rechner an zu bieten.</description>
 				<data genre="3" price="0" topicality="75" />
 			</episode>
 		</news>
@@ -5726,7 +5748,6 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			<data genre="4" price="20" topicality="75" />
 		</news>
 		<news>
-			<neu>Realtitel!</neu>
 			<title>McGyver-Satire in Produktion</title>
 			<description>Nach jahrelanger Überlegung produziert R.D. Anderson nun eine Satire seiner Erfolgserie. Papierklammer, Gummiband und Taschenmesser stimmten schon zu.</description>
 			<data genre="1" price="0" topicality="90" />
@@ -5824,37 +5845,6 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 				<title>Polnischer Minister tritt zurück</title>
 				<description>Nachdem Journalisten herausfanden, dass der polnische Verkehrsminister Inhaber einer Helmfabrik ist, tritt dieser nun zurück.</description>
 				<data genre="0" price="16" topicality="150" />
-			</episode>
-		</news>
-		<news>
-			<neu>Name real? dann "fiktiv" verneinen</neu>
-			<title>Preetz neuer Trainer in Berlin?</title>
-			<description>Dem Rekordtorschützen Michael Preetz wurde von seinem alten Verein der Trainerposten angeboten. Preetz sei interessiert, so der Vorstand.</description>
-			<data genre="2" price="0" topicality="125" />
-			<episode number="1">
-				<title>Preetz neuer Trainer in Berlin?</title>
-				<description>Dem Rekordtorschützen Michael Preetz wurde von seinem alten Verein der Trainerposten angeboten. Preetz sei interessiert, so der Vorstand.</description>
-				<data genre="2" price="0" topicality="175" />
-			</episode>
-			<episode number="2">
-				<title>Trainerschein für M. Preetz?</title>
-				<description>Die Chancen stehen gut: "Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden.", so der Herthaner. Berlin darf hoffen.</description>
-				<data genre="2" price="0" topicality="75" />
-			</episode>
-			<episode number="3">
-				<title>Probleme für Preetz &amp; Co</title>
-				<description>Da der frühere Kapitän der Berliner bisher keinen Trainerschein besitzt, könnte die Entscheidung des Stürmers noch auf sich warten lassen...</description>
-				<data genre="2" price="0" topicality="125" />
-			</episode>
-			<episode number="4">
-				<title>Und nun, Herr Preetz?</title>
-				<description>Alt-Herthaner Michael Preetz hat gestern den Trainerschein ausgestellt bekommen. Gespräche über die Zukunft seien nun am Laufen, so Preetz' Berater.</description>
-				<data genre="2" price="0" topicality="100" />
-			</episode>
-			<episode number="5">
-				<title>Hertha BSC holt Preetz</title>
-				<description>Perfekt: Michael Preetz wird den Trainerposten in der Hauptstadt übernehmen. Er freue sich auf diese Herausforderung, so Preetz, langjährige Nr. 11.</description>
-				<data genre="2" price="0" topicality="150" />
 			</episode>
 		</news>
 		<news>
@@ -6019,50 +6009,46 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 		</news>
 		<news>
 			<title>Teelichterpreis auf Rekordhoch</title>
-			<neu>Teelichter -> Teelichtern</neu>
-			<description>Nachdem sich der Ölpreis auf Öl und Gas gefestigt hat, steigt der Preis von Teelichtern auf einen Rekord von 300 Prozent seines Wertes.</description>
+			<description>Nachdem sich der Ölpreis auf Öl und Gas gefestigt hat, steigt der Preis von Teelichtern um 300 Prozent des bisherigen Wertes.</description>
 			<data genre="4" price="0" topicality="50" />
 		</news>
 		<news>
 			<title>Terrorismusbekämpfung im Weltall</title>
-			<neu>Spaceshutle -> Spaceshuttle</neu>
 			<description>US-Präsident Baush will zur Sicherheit den Terrorismus auch im All bekämpfen. Ein Spaceshuttle soll künftig 24h/Tag die int. Raumstation umkreisen. Kosten: 50Mrd USD.</description>
 			<data genre="0" price="0" topicality="150" />
 			<episode number="1">
 				<title>Terrorismusbekämpfung – jetzt 2 Shuttles</title>
-				<neu>Spaceshutle -> Spaceshuttle</neu>
 				<description>Um die Sicherheit vor Terroristen im All sicherzustellen sollen jetzt 2 Spaceshuttles die int. Raumstation umkreisen. `Man kann ja nie wissen was passiert´, so Baush.</description>
 				<data genre="0" price="0" topicality="125" />
 			</episode>
 			<episode number="2">
-				<neu>Spaceshutle -> Spaceshuttle</neu>
 				<title>Start der Shuttles nicht in Amerika</title>
 				<description>Die beiden US Shuttles zur Sicherung des Alls sollen aus Kostengründen nicht in Amerika starten. Im Gespräch sind die Ukraine und Russland.</description>
 				<data genre="0" price="0" topicality="100" />
 			</episode>
 			<episode number="3">
-				<title>Start der Shutles in der Ukraine</title>
-				<description>Die US Shutles zur Terrorismusbekämpfung im All werden vom Ukrainischen Hafen „Bikonur“ starten. „Das ist ein gutes Signal für die Sicherheit der Welt“, so Baush.</description>
+				<title>Start der Shuttles in der Ukraine</title>
+				<description>Die US Shuttles zur Terrorismusbekämpfung im All werden vom Ukrainischen Hafen „Bikonur“ starten. „Das ist ein gutes Signal für die Sicherheit der Welt“, so Baush.</description>
 				<data genre="0" price="0" topicality="100" />
 			</episode>
 			<episode number="4">
-				<title>Start der US-Shutles verschoben.</title>
-				<description>Aufgrund von Sicherheitsmängeln auf dem ukrainischen Weltraumbahnhof `Bikonur´ verschiebt sich der Start der Shutles. Die genauen Verzögerungskosten sind unbekannt.</description>
+				<title>Start der US-Shuttles verschoben.</title>
+				<description>Aufgrund von Sicherheitsmängeln auf dem ukrainischen Weltraumbahnhof `Bikonur´ verschiebt sich der Start der Shuttles. Die genauen Verzögerungskosten sind unbekannt.</description>
 				<data genre="0" price="0" topicality="100" />
 			</episode>
 			<episode number="5">
 				<title>Kälteeinbruch in der Ukraine.</title>
-				<description>Durch heftige Schneestürme in der Ukraine verschiebt sich der Shutlestart zur Terrorismusbekämpfung erneut. US Präsident Baush ist beunruhigt wegen der Kosten.</description>
+				<description>Durch heftige Schneestürme in der Ukraine verschiebt sich der Shuttlestart zur Terrorismusbekämpfung erneut. US Präsident Baush ist beunruhigt wegen der Kosten.</description>
 				<data genre="0" price="0" topicality="100" />
 			</episode>
 			<episode number="6">
-				<title>Erfolgreicher Shutlestart</title>
-				<description>Endlich sind die beiden US Shutles vom ukrainischen Weltraumbahnhof `Bikonur´ gestartet.`Die 200Mio USD Mehrkosten wegen der Probleme sind zu verkraften, so Baush´.</description>
+				<title>Erfolgreicher Shuttlestart</title>
+				<description>Endlich sind die beiden US Shuttles vom ukrainischen Weltraumbahnhof `Bikonur´ gestartet.`Die 200Mio USD Mehrkosten wegen der Probleme sind zu verkraften, so Baush´.</description>
 				<data genre="0" price="0" topicality="125" />
 			</episode>
 			<episode number="7">
-				<title>Shutles umkreisen die Raumstation</title>
-				<description>Die beiden US Shutles zur Sicherung der int. Raumstation vor Terrorangriffen befinden sich auf Patrouillenflug. Die Schicht der Astronauten dauert jeweils 8 Stunden.</description>
+				<title>Shuttles umkreisen die Raumstation</title>
+				<description>Die beiden US Shuttles zur Sicherung der int. Raumstation vor Terrorangriffen befinden sich auf Patrouillenflug. Die Schicht der Astronauten dauert jeweils 8 Stunden.</description>
 				<data genre="0" price="0" topicality="100" />
 			</episode>
 			<episode number="8">
@@ -6082,17 +6068,17 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="11">
 				<title>Unglücksursache gefunden!</title>
-				<description>Die beiden US Shutles kollidierten auf ihrem Patrouillenflug im All wegen eines defekten Computersystems. Baush verlangt ein zusätzliches Shutle für Reperaturen.</description>
+				<description>Die beiden US Shuttles kollidierten auf ihrem Patrouillenflug im All wegen eines defekten Computersystems. Baush verlangt ein zusätzliches Shuttle für Reperaturen.</description>
 				<data genre="0" price="0" topicality="200" />
 			</episode>
 			<episode number="12">
-				<title>Widerstand gegen Shutlepläne.</title>
+				<title>Widerstand gegen Shuttlepläne.</title>
 				<description>Das vom US Präsidenten Baush verlangte 3. Shuttle für Reperaturzwecke für weitere 20Mrd USD wird vom Senat boykottiert. Auch die Bürger protestieren in Washington.</description>
 				<data genre="0" price="0" topicality="150" />
 			</episode>
 			<episode number="13">
 				<title>Sicherheitsprogramm gescheitert!</title>
-				<description>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. ´Ohne die 2 Shutles ist das All sicherer`, so ein Kongressminister.</description>
+				<description>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. ´Ohne die 2 Shuttles ist das All sicherer`, so ein Kongressminister.</description>
 				<data genre="0" price="0" topicality="175" />
 			</episode>
 		</news>
@@ -6112,8 +6098,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="3">
 				<title>Queen: Ich fühle mich gut!</title>
-				<neu>Körpergrößer -> Körpergröße</neu>
-				<description>Nach der Untersuchung der angegriffenen Queen sagte sie: "I am pleased!" und sah keine Probleme in ihrer neuen, kleinen Körpergröße.</description>
+				<description>Nach der Untersuchung der angegriffenen Queen sagte sie: "I am pleased!" und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</description>
 				<data genre="4" price="58" topicality="172" />
 			</episode>
 			<episode number="4">
@@ -6124,13 +6109,11 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 			</episode>
 		</news>
 		<news>
-			<neu>GEAENDERT desc</neu>
 			<title>Wahlen in Deutschland</title>
 			<description>Am kommenden Sonntag greift Deutschland zum Stimmzettel: Bundestagswahlen. Aktuelle Umfragen scheinen die momentane Regierung zu bestätigen.</description>
 			<data genre="0" price="0" topicality="150" />
 			<episode number="1">
 				<title>Morgen wird gewählt</title>
-				<neu>Leerzeichen gefixt</neu>
 				<description>Am Vorabend der Wahl geben sich die Kanzlerkandidaten der großen Volksparteien optimistisch. Eine große Koalition wird von vornherein ausgeschlossen.</description>
 				<data genre="0" price="0" topicality="125" />
 			</episode>
@@ -6173,71 +6156,6 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 	</allnews>
 	<allads>
 		<ad>
-			<neu></neu>
-			<title>Tischlerei Nagler</title>
-			<description>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</description>
-			<data minaudience="20" minimage="0" repetitions="3"  profit="10" penalty="10" duration="3" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Buchstehude</title>
-			<description>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</description>
-			<data minaudience="20" minimage="0" repetitions="3"  profit="10" penalty="10" duration="3" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Saipien</title>
-			<description>Das neue Modell des renommierten Autoherstellers Saipien verzückt die Presse - auch Sie?</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Schwarzmalerei AG</title>
-			<description>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop "live" am Telefon.</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Hartz Bier</title>
-			<description>Unser Bier ist nicht nur günstig, es ist auch billig. Aktionswoche: Pfandfrei.</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Spruzzi Plöpp</title>
-			<description>Unsere Limonade beinhaltet nur natürliche Aromastoffe. Hmm lecker Käferflügel...</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Pantzers</title>
-			<description>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Lutschfix</title>
-			<description>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>Nichts-wie-weg</title>
-			<description>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und "Gepäck zurück"-Garantie.</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-		<ad>
-			<neu></neu>
-			<title>PoliPlay</title>
-			<description>Action-Spielfiguren Ihrer Lieblingspolitiker. Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</description>
-			<data minaudience="25" minimage="15" repetitions="5"  profit="20" penalty="15" duration="5" />
-		</ad>
-
-
-
-
-
-		<ad>
 			<title>Aeroswift</title>
 			<description>Raumschiffe, Phaserwaffen, Marsschürfrechte. Bei Aeroswift diese Woche mit knallhart kalkulierten Preisen im Angebot.</description>
 			<data minaudience="100" minimage="100" repetitions="6"  profit="100" penalty="100" targetgroup="4" duration="3" />
@@ -6267,6 +6185,11 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</descript
 			<title>Bikeshop</title>
 			<description>Aktionswoche bei Bikeshop. Beim Kauf eines Fahrrads gibt eines umsonst.</description>
 			<data minaudience="20"  repetitions="2"  profit="50" penalty="0" targetgroup="2" duration="2" />
+		</ad>
+		<ad>
+			<title>Buchstehude</title>
+			<description>Boxershorts vom Dorf. Garantiert nur einmal getragen - pro Seite.</description>
+			<data minaudience="200" minimage="20" repetitions="3"  profit="25" penalty="35" targetgroup="9" duration="2" />
 		</ad>
 		<ad>
 			<title>Bundi</title>
@@ -6366,6 +6289,12 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 			<data minaudience="100"  repetitions="2"  profit="10" penalty="5" targetgroup="0" duration="3" />
 		</ad>
 		<ad>
+			<title>Hartz Bier</title>
+			<description>Unser Bier ist nicht nur günstig, es ist auch billig.
+Aktionswoche: Pfandfrei.</description>
+			<data minaudience="50"  repetitions="4"  profit="20" penalty="15" targetgroup="9" duration="2" />
+		</ad>
+		<ad>
 			<title>Hobelmarkt</title>
 			<description>Hier fallen nicht nur Späne, nein auch die Preise. Ein Hobelmarkt ist sicher auch in Ihrer Nähe.</description>
 			<data minaudience="80" minimage="100" repetitions="3"  profit="25" penalty="15" targetgroup="9" duration="2" />
@@ -6388,7 +6317,7 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 		<ad>
 			<title>KittyFood</title>
 			<description>Von Katzen für Katzen. Nahrhaftes Dosenfutter für ihren Stubentiger.</description>
-			<data minaudience="50"  repetitions="2"  profit="25" penalty="50" targetgroup="3" duration="1" />
+			<data minaudience="50"  repetitions="2"  profit="15" penalty="50" targetgroup="3" duration="1" />
 		</ad>
 		<ad>
 			<title>La Baguette</title>
@@ -6410,6 +6339,11 @@ Die GS2 ist der Nachfolger der GS aus dem Hause Sunny.</description>
 			<description>Die eingängige Musik kündet von der kuschelweichen Wäsche und Frische.
 Ich fühl mich wohl mit Lemor</description>
 			<data minaudience="125"  repetitions="4"  profit="15" penalty="100" targetgroup="3" duration="5" />
+		</ad>
+		<ad>
+			<title>Lutschfix</title>
+			<description>Der schnelle Bonbon gegen Husten. Jetzt auch als Nikotinersatz.</description>
+			<data minaudience="50" minimage="50" repetitions="3"  profit="30" penalty="20" targetgroup="0" duration="2" />
 		</ad>
 		<ad>
 			<title>Maike</title>
@@ -6452,6 +6386,11 @@ Ich fühl mich wohl mit Lemor</description>
 			<data minaudience="150"  repetitions="5"  profit="15" penalty="15" targetgroup="3" duration="5" />
 		</ad>
 		<ad>
+			<title>Nichts-wie-weg</title>
+			<description>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und "Gepäck zurück"-Garantie.</description>
+			<data minaudience="100" minimage="50" repetitions="3"  profit="35" penalty="30" targetgroup="0" duration="3" />
+		</ad>
+		<ad>
 			<title>Novea</title>
 			<description>Pflegeprodukte rund um die Haut. Salben/Crèmes, Badezusatz, Deodorants uvm.</description>
 			<data minaudience="75"  repetitions="5"  profit="100" penalty="50" targetgroup="-1" duration="7" />
@@ -6468,6 +6407,11 @@ Habt Ihr das zu bieten? Alter Schwede!</description>
 			<data minaudience="200"  repetitions="5"  profit="25" penalty="20" targetgroup="4" duration="4" />
 		</ad>
 		<ad>
+			<title>Pantzers</title>
+			<description>Unsere Windeln haben einen hohen Tragekomfort und sind geeignet für Jung und Alt.</description>
+			<data minaudience="100" minimage="100" repetitions="4"  profit="15" penalty="35" targetgroup="8" duration="4" />
+		</ad>
+		<ad>
 			<title>Pipsi Cola</title>
 			<description>Populärster Konkurrent von Koka Cola - doch geschmacklich auch so rein?</description>
 			<data minaudience="170" minimage="150" repetitions="4"  profit="20" penalty="20" targetgroup="2" duration="2" />
@@ -6476,6 +6420,12 @@ Habt Ihr das zu bieten? Alter Schwede!</description>
 			<title>Plöpp-Bier</title>
 			<description>Prickelndes Hopfengold. Für die kritischen Tage im Monat sollte Mann immer Plöpp-Bier im Haus haben.</description>
 			<data minaudience="50" minimage="50" repetitions="3"  profit="20" penalty="10" targetgroup="9" duration="4" />
+		</ad>
+		<ad>
+			<title>PoliPlay</title>
+			<description>Action-Spielfiguren Deiner Lieblingspolitiker.
+Für kurze Zeit Action-Märkel und Chaoz-Rözler zum Preis von einem.</description>
+			<data minaudience="100" minimage="70" repetitions="5"  profit="35" penalty="75" targetgroup="1" duration="3" />
 		</ad>
 		<ad>
 			<title>Polstermöbel Dobrawa</title>
@@ -6514,9 +6464,19 @@ Der Vorteil: Kein Porto für Überweisungsträger</description>
 			<data minaudience="20"  repetitions="6"  profit="40" penalty="30" targetgroup="2" duration="5" />
 		</ad>
 		<ad>
+			<title>Saipien</title>
+			<description>Das neue Modell des renommierten Autoherstellers Saipien verzückt die Presse - auch Sie?</description>
+			<data minaudience="100" minimage="150" repetitions="2"  profit="45" penalty="60" targetgroup="0" duration="4" />
+		</ad>
+		<ad>
 			<title>Saratti</title>
 			<description>Der Saratti-Mohr bietet traumhafte Schokolade. Zugreifen und dahinschmelzen.</description>
 			<data minaudience="75"  repetitions="3"  profit="100" penalty="15" targetgroup="-1" duration="4" />
+		</ad>
+		<ad>
+			<title>Schwarzmalerei AG</title>
+			<description>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop "live" am Telefon.</description>
+			<data minaudience="100" minimage="150" repetitions="3"  profit="20" penalty="15" targetgroup="8" duration="6" />
 		</ad>
 		<ad>
 			<title>Snuckers</title>
@@ -6528,6 +6488,11 @@ Daran hat man zu kauen.</description>
 			<title>Speck</title>
 			<description>Speck-Seife steht seit Jahrzenten für Qualität und saubere Hände.</description>
 			<data minaudience="50"  repetitions="2"  profit="10" penalty="2" targetgroup="3" duration="3" />
+		</ad>
+		<ad>
+			<title>Spruzzi Plöpp</title>
+			<description>Unsere Limonade beinhaltet nur natürliche Aromastoffe. Hmm lecker Käferflügel...</description>
+			<data minaudience="100" minimage="50" repetitions="5"  profit="28" penalty="42" targetgroup="2" duration="7" />
 		</ad>
 		<ad>
 			<title>StyleDJ</title>
@@ -6549,6 +6514,11 @@ It's a sunny</description>
 			<title>Sylters</title>
 			<description>Ein reines Wasser muß durch einen tiefen Stein</description>
 			<data minaudience="150"  repetitions="3"  profit="20" penalty="20" targetgroup="4" duration="4" />
+		</ad>
+		<ad>
+			<title>Tischlerei Nagler</title>
+			<description>Qualität die überzeugt. Nur wir ziehen Sie über den Echtholztisch.</description>
+			<data minaudience="200"  repetitions="3"  profit="20" penalty="20" targetgroup="0" duration="3" />
 		</ad>
 		<ad>
 			<title>ToughWhip</title>
@@ -6603,5 +6573,5 @@ Aber nur mit Ulbricht Umzüge!</description>
 			<data   repetitions="4"  profit="9" penalty="10" targetgroup="1" duration="5" />
 		</ad>
 	</allads>
-	<time value="496.99ms" />
+	<time value="536.14ms" />
 </tvgdb>

@@ -7,6 +7,7 @@ Import brl.reflection
 Import brl.FreeTypeFont
 'Import "basefunctions.bmx"
 Import "basefunctions_image.bmx"
+Import "basefunctions_events.bmx"
 Import "basefunctions_asset.bmx"
 
 CONST VALIGN_TOP:float		= 1
@@ -244,6 +245,24 @@ Type TBox
 End Type
 
 ' -------------------------------------
+Type TImageCache
+	field lifetime:int = 1000 '1000ms ?
+	field image:TImage
+
+	Method Setup:int(image:TImage, lifetime:int = 1000)
+		self.image = image
+		self.lifetime = Millisecs() + lifetime
+	End Method
+
+	Method isAlive:int()
+		if self.lifetime < Millisecs() then return false
+		return true
+	End Method
+
+	Method GetImage:TImage()
+		return self.image
+	End Method
+End Type
 
 
 Type TBitmapFontChar
@@ -270,7 +289,16 @@ Type TBitmapFont
 	Field uniqueID		:string =""
 	Field displaceY		:float=100.0
 
+	global ImageCaches:TMap = CreateMap()
+	global eventRegistered:int = 0
+
 	Function Create:TBitmapFont(url:String,size:Int, style:Int)
+		'listen to App-timer
+		EventManager.registerListener( "App.onUpdate", 	TEventListenerRunFunction.Create(TBitmapFont.onUpdateCaches) )
+
+
+
+
 		Local obj:TBitmapFont = New TBitmapFont
 
 		Local imgFont:TImageFont = LoadTrueTypeFont(url,size, style)
@@ -392,9 +420,11 @@ Type TBitmapFont
 		Else
 			self.draw(Text,x,y)
 		EndIf
-			Local TxtWidth:Int   = self.getWidth(Text)
-			Local Source:TPixmap = GrabPixmap(x-2,y-2,TxtWidth+4,self.getHeight(Text)+4)
-			Source = ConvertPixmap(Source, PF_RGB888)
+
+		Local TxtWidth:Int   = self.getWidth(Text)
+		Local Source:TPixmap = GrabPixmap(x-2,y-2,TxtWidth+4,self.getHeight(Text)+4)
+		Source = ConvertPixmap(Source, PF_RGB888)
+
 		If blur
 			blurPixmap(Source, 0.5)
 			Source = ConvertPixmap(Source, PF_RGB888)
@@ -581,6 +611,13 @@ Type TBitmapFont
 			endif
 		Next
 	End Method
+
+	Function onUpdateCaches(triggerEvent:TEventBase)
+		For local key:string = eachin TBitmapFont.ImageCaches.Keys()
+			local cache:TImageCache = TImageCache(TBitmapFont.ImageCaches.ValueForKey(key))
+			if cache and not cache.isAlive() then TBitmapFont.ImageCaches.Remove(key)
+		Next
+	End Function
 
 End Type
 
