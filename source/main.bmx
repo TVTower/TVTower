@@ -50,6 +50,8 @@ Global LoaderWidth:Int = 0
 
 Const DYNAMICALLY_LOAD_IMAGES:Byte = 1
 
+App.LoadResources("config/resources.xml")
+
 'Author: Ronny Otto
 'Date: 2006/09/21
 '---------
@@ -119,19 +121,6 @@ Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,ce
 End Function
 
 
-SetBlend ALPHABLEND
-Global XmlLoader:TXmlLoader = TXmlLoader.Create()
-XmlLoader.Parse("config/resources.xml")
-Assets.AddSet(XmlLoader.Values) 'copy XML-values
-
-
-Global particle_image:TImage = LoadImage("grafiken/chef/tex_smoke.png",0)
-'=== Building ======================
-'--- Elevator / Items -----
-Global gfx_building_tooltips:TImage 		= CheckLoadImage("grafiken/hochhaus/tooltips.png", -1, 20, 20, 0, 7)
-Global gfx_building_textballons:TImage		= CheckLoadImage("grafiken/hochhaus/textballons.png",-1, 23,12,0,6)
-'===================================
-
 Global gfx_interface_topbottom:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/interface/interface_ou.png", 0))
 
 Global gfx_datasheets_movie:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_filmblatt.png"))
@@ -139,27 +128,9 @@ Global gfx_datasheets_series:TBigImage		= TBigImage.createFromImage(CheckLoadIma
 Global gfx_datasheets_contract:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_werbeblatt.png"))
 
 '=== StationMap ====================
-Global stationmap_land_sachsen:TImage		= Assets.GetSprite("gfx_officepack_topo_sachsen").GetImage()
-Global stationmap_land_niedersachsen:TImage	= Assets.GetSprite("gfx_officepack_topo_niedersachsen").GetImage()
-Global stationmap_land_schleswigholstein:TImage = Assets.GetSprite("gfx_officepack_topo_schleswigholstein").GetImage()
-Global stationmap_land_meckpom:TImage		= Assets.GetSprite("gfx_officepack_topo_meckpom").GetImage()
-Global stationmap_land_nrw:TImage			= Assets.GetSprite("gfx_officepack_topo_nrw").GetImage()
-Global stationmap_land_brandenburg:TImage	= Assets.GetSprite("gfx_officepack_topo_brandenburg").GetImage()
-Global stationmap_land_sachsenanhalt:TImage = Assets.GetSprite("gfx_officepack_topo_sachsenanhalt").GetImage()
-Global stationmap_land_hessen:TImage		= Assets.GetSprite("gfx_officepack_topo_hessen").GetImage()
-Global stationmap_land_thueringen:TImage	= Assets.GetSprite("gfx_officepack_topo_thueringen").GetImage()
-Global stationmap_land_rheinlandpfalz:TImage= Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz").GetImage()
-Global stationmap_land_saarland:TImage		= Assets.GetSprite("gfx_officepack_topo_saarland").GetImage()
-Global stationmap_land_bayern:TImage		= Assets.GetSprite("gfx_officepack_topo_bayern").GetImage()
-Global stationmap_land_bawue:TImage			= Assets.GetSprite("gfx_officepack_topo_bawue").GetImage()
-Global stationmap_land_berlin:TImage		= Assets.GetSprite("gfx_officepack_topo_berlin").GetImage()
-Global stationmap_land_hamburg:TImage		= Assets.GetSprite("gfx_officepack_topo_hamburg").GetImage()
-Global stationmap_land_bremen:TImage		= Assets.GetSprite("gfx_officepack_topo_bremen").GetImage()
 
 Global stationmap_mainpix:TPixmap 			= LoadPixmap("grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png")
 '===================================
-
-Global gfx_mousecursor:TImage       		= CheckLoadImage("grafiken/interface/cursor.png", 0, 32,32,0,3) 'normal mousecursor
 
 '=== fonts =========================
 Global FontManager:TGW_FontManager	= TGW_FontManager.Create()
@@ -222,7 +193,7 @@ Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei 
 TButton.UseFont 		= FontManager.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= FontManager.GetFont("Default", 11, BOLDFONT)
 TTooltip.UseFont 		= FontManager.GetFont("Default", 11, 0)
-TTooltip.ToolTipIcons	= gfx_building_tooltips
+TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
 
 
@@ -264,6 +235,12 @@ Type TApp
 		EndIf
 	End Method
 
+	Method LoadResources:int(path:string="config/resources.xml")
+		local XmlLoader:TXmlLoader = TXmlLoader.Create()
+		XmlLoader.Parse(path)
+		Assets.AddSet(XmlLoader.Values) 'copy XML-values
+	End Method
+
 	Method InitGraphics:int()
 		Try
 			Select Settings.directx
@@ -286,6 +263,7 @@ Type TApp
 			?
 			EndIf
 		EndTry
+		SetBlend ALPHABLEND
 	End Method
 End Type
 
@@ -3123,9 +3101,9 @@ Function DrawMenu(tweenValue:Float=1.0)
 			Menu_GameSettings_Draw()
 	EndSelect
 
-	If Game.cursorstate = 0 Then DrawImage(gfx_mousecursor, MouseX()-7, MouseY(),0)
-	If Game.cursorstate = 1 Then DrawImage(gfx_mousecursor, MouseX() - 10, MouseY() - 10, 1)
-
+	If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
+	If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()-4	,1)
+	If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-10,	MouseY()-12	,2)
 End Function
 
 Function Init_Creation()

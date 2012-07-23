@@ -14,6 +14,14 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 
 
+' ressourcenlader - plugins (registerLoader) -> Stationmap mit details auslagern etc.
+
+
+
+
+
+
+
 
 Rem
 - todo :

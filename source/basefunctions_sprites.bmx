@@ -808,6 +808,7 @@ Type TGW_Sprites extends TRenderable
 	Field animcount:Int
 	Field SpriteID:Int = -1
 	Field parent:TGW_SpritePack
+	field pix:TPixmap = null
 
 	Function Create:TGW_Sprites(spritepack:TGW_SpritePack=null, spritename:String, posx:Float, posy:Float, w:Int, h:Int, animcount:Int = 0, SpriteID:Int = -1, spritew:Int = 0, spriteh:Int = 0)
 		Local Obj:TGW_Sprites = New TGW_Sprites
@@ -886,6 +887,23 @@ Type TGW_Sprites extends TRenderable
 		UnlockImage(self.parent.image)
 		GCCollect() '<- FIX!
 		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
+	End Method
+
+	Method PixelIsOpaque:int(x:int, y:int)
+'		x:- self.pos.x
+'		y:- self.pos.y
+		if x < 0 or y < 0 or x > self.framew or y > self.frameh then print "out of: "+x+", "+y;return 0
+
+		if self.pix = null then pix = LockImage(self.GetImage()) ';UnlockImage(self.parent.image) 'unlockimage does nothing in blitzmax (1.48)
+
+
+'		local pix:TPixmap = LockImage(self.parent.image)
+		Local sourcepixel:Int = ReadPixel(pix, x,y)
+'		UnlockImage(self.parent.image) 'unlockimage does nothing in blitzmax (1.48)
+
+'		print spriteName+": "+x+","+y+" a:"+ARGB_Alpha(sourcepixel)
+
+		return ARGB_Alpha(sourcepixel)
 	End Method
 
 	Method DrawClipped(imagex:Float, imagey:Float, ViewportX:Float, ViewPortY:Float, ViewPortW:Float, ViewPortH:Float, offsetx:Float = 0, offsety:Float = 0, theframe:Int = 0)
@@ -1160,4 +1178,64 @@ Type TAnimSprites
 		Update(deltaTime)
 		If returnToStart > 0 And pos.x-returntostart>800 Then pos.x = -returnToStart
 	End Method
+End Type
+
+
+
+Type TGW_SpritesParticle
+		Field x:Float,y:Float
+		Field xrange:Int,yrange:Int
+		Field vel:Float
+		Field angle:Float
+		Field image:TGW_Sprites
+		Field life:float
+		field startLife:float
+		Field is_alive:Int
+		Field alpha:Float
+		Field scale:Float
+
+
+		Method Spawn(px:Float,py:Float,pvel:Float,plife:Float,pscale:Float,pangle:Float,pxrange:Float,pyrange:Float)
+			is_alive	= True
+			x			= Rnd(px-(pxrange/2),px+(pxrange/2))
+			y			= Rnd(py-(pyrange/2),py+(pyrange/2))
+			vel			= pvel
+			xrange		= pxrange
+			yrange		= pyrange
+
+			life		= plife
+			startLife	= plife
+			scale		= pscale
+			angle		= pangle
+			alpha		= 0.10 * plife + Rnd(1,10)*0.05
+		End Method
+
+		Method Update(deltaTime:float = 1.0)
+			life:-deltaTime
+			If life <0 then is_alive = False
+			if is_alive = True
+				'pcount:+1
+				vel:* 0.99 '1.02 '0.98
+				x:+(vel*Cos(angle-90))*deltaTime
+				y:-(vel*Sin(angle-90))*deltaTime
+				if life / startLife < 0.5 then alpha:*0.97*(1.0-deltaTime)
+
+				If y < 330 Then 	scale:*1.03*(1.0-deltaTime)
+				If y > 330 Then 	scale:*1.01*(1.0-deltaTime)
+				angle:*0.999
+			EndIf
+		End Method
+
+		Method Draw()
+			If is_alive = True
+				SetAlpha alpha
+				SetRotation angle
+				SetScale(scale,scale)
+				image.draw(x,y)
+				SetAlpha 1.0
+				SetRotation 0
+				SetScale 1,1
+				SetColor 255,255,255
+			EndIf
+	    EndMethod
 End Type

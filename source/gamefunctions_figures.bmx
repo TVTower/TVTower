@@ -195,15 +195,15 @@ endrem
 			If Figure.pos.y = Self.pos.y And Figure <> Self
 				If Abs(Figure.pos.x - Self.pos.x) < 50
 					If figure.id <= 3 And Self.id <= 3
-						If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 0)
-						If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18,Building.pos.y + self.pos.y - self.sprite.h-8, 3)
+						If Figure.pos.x > Self.pos.x And Self.dx > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.pos.x + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 0)
+						If Figure.pos.x < Self.pos.x And Self.dx < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.pos.x-18,Building.pos.y + self.pos.y - self.sprite.h-8, 3)
 					Else
 						If Self.id = figure_HausmeisterID
-							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 8 + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 1)
-							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x-18+13,Building.pos.y + self.pos.y - self.sprite.h-8, 4)
+							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.pos.x - 8 + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 1)
+							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.pos.x-18+13,Building.pos.y + self.pos.y - self.sprite.h-8, 4)
 						Else
-							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then DrawImage (gfx_building_textballons, Self.pos.x + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 1)
-							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then DrawImage (gfx_building_textballons, Self.pos.x - 18, Building.pos.y + self.pos.y - self.sprite.h - 8, 4)
+							If Figure.pos.x > Self.pos.x And Self.dx > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.pos.x + framewidth, Building.pos.y + self.pos.y - self.sprite.h - 8, 1)
+							If Figure.pos.x < Self.pos.x And Self.dx < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.pos.x - 18, Building.pos.y + self.pos.y - self.sprite.h - 8, 4)
 						EndIf
 					EndIf
 				EndIf

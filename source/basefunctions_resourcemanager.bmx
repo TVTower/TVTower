@@ -310,9 +310,9 @@ Type TXmlLoader
 		Local _url:String		= xml.FindValue(childNode, "url", "")
 		if _type = "" or _url = "" then return
 
-		Local _frames:Int		= xml.FindValueInt(childNode, "frames", 0)
-		Local _cellwidth:Int	= xml.FindValueInt(childNode, "cellwidth", 0)
-		Local _cellheight:Int	= xml.FindValueInt(childNode, "cellheight", 0)
+		Local _frames:Int		= xml.FindValueInt(childNode, "frames", xml.FindValueInt(childNode, "f", 0))
+		Local _cellwidth:Int	= xml.FindValueInt(childNode, "cellwidth", xml.FindValueInt(childNode, "cw", 0))
+		Local _cellheight:Int	= xml.FindValueInt(childNode, "cellheight", xml.FindValueInt(childNode, "ch", 0))
 		Local _img:TImage		= Null
 
 		Local _flags:Int		= Self.GetImageFlags(childNode)

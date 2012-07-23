@@ -180,6 +180,8 @@ Type LocalizationMemoryResource
 		Local group:String = ""
 
 		For line = EachIn content.Split(chr(10))
+			if Left(line, 2) = "//" then print "comment:"+line;continue
+
 			If Left(line, 1) = "[" and Right(line, 1) = "]"
 				group = Mid(line, 2, line.length - 2).Trim()
 			EndIf
@@ -192,10 +194,10 @@ Type LocalizationMemoryResource
 
 			If Key <> Null and Key <> "" Then
 				If group <> Null and group <> ""
-					r.map.Insert(group + "::" + Key, value)
-					If r.map.ValueForKey(Key) = Null Then r.map.Insert(Key, value)
+					r.map.Insert( lower(group + "::" + Key), value )
+					If r.map.ValueForKey(Key) = Null Then r.map.Insert( lower(Key), value )
 				Else
-					r.map.Insert(Key, value)
+					r.map.Insert( lower(Key), value )
 				EndIf
 			EndIf
 		Next
@@ -208,9 +210,9 @@ Type LocalizationMemoryResource
       Local ret:Object
 
       If group <> Null Then
-         ret = map.ValueForKey(group + "::" + Key)
+         ret = map.ValueForKey( lower(group + "::" + Key) )
       Else
-         ret = map.ValueForKey(Key)
+         ret = map.ValueForKey( lower(Key) )
       EndIf
 
       If ret = Null Then Return Key

@@ -1400,15 +1400,15 @@ Type TRoomSigns Extends TBlock
 End Type
 
 
-Global part_array:Tparticle[100]
+Global part_array:TGW_SpritesParticle[100]
 Global spawn_delay:Int = 15
 Global pcount:Int
 Global part_counter:Int
 Global plength:Int = Len part_array
 
 For Local i:Int = 1 To plength-1
-	part_array[i] = New Tparticle
-	part_array[i].image = particle_image
+	part_array[i] = New TGW_SpritesParticle
+	part_array[i].image = Assets.GetSprite("gfx_tex_smoke")
 	part_array[i].life = Rnd(0.100,1.5)
 	part_array[i].scale = 1.1
 	part_array[i].is_alive =False

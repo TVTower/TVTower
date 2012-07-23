@@ -18,7 +18,7 @@ Next
 Type TMouseManager
    Field LastMouseX:Int =0
    Field LastMouseY:Int =0
-   Field MousePosChanged:Byte =0
+   Field hasMoved:int =0
    Field errorboxes:Int =0
    Field _iKeyStatus:Int[4]
 
@@ -49,9 +49,9 @@ Type TMouseManager
    'und ändert ggf. deren Status.
     Method changeStatus(_errorboxes:Int=0)
 	  errorboxes = _errorboxes
-	  MousePosChanged = False
+	  hasMoved = False
 	  If LastMouseX <> MouseX() Or LastMouseY <> MouseY()
-	    MousePosChanged = True
+	    hasMoved = True
 		LastMouseX = MouseX()
 		LastMouseY = MouseY()
 	  endif

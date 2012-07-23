@@ -518,7 +518,7 @@ Type TTooltip extends TRenderableChild
   Field enabled:Int = 0
 
   Global TooltipHeader:TGW_Sprites
-  Global ToolTipIcons:TImage
+  Global ToolTipIcons:TGW_Sprites
 
   Global UseFontBold:TBitmapFont
   Global UseFont:TBitmapFont
@@ -568,7 +568,7 @@ Type TTooltip extends TRenderableChild
 
 	Method GetWidth:Int()
 		local txtWidth:int = self.useFontBold.getWidth(title)+6
-		If tooltipimage >=0 Then txtwidth:+ ImageWidth(TTooltip.ToolTipIcons)+ 2
+		If tooltipimage >=0 Then txtwidth:+ TTooltip.ToolTipIcons.framew+ 2
 		If txtwidth < self.useFont.getWidth(text)+6 Then txtwidth = self.useFont.getWidth(text)+6
 		Return txtwidth
 	End Method
@@ -600,7 +600,7 @@ Type TTooltip extends TRenderableChild
 				'width from title + spacing
 				boxWidth = self.UseFontBold.getWidth(title)+6
 				'add icon to width
-				If tooltipimage >=0 Then boxWidth:+ ImageWidth(TTooltip.ToolTipIcons)+ 2
+				If tooltipimage >=0 Then boxWidth:+ TTooltip.ToolTipIcons.framew+ 2
 				'compare with tex
 				boxWidth = max(self.UseFont.getWidth(text)+6, boxWidth)
 				boxWidth :+ 4 'extra spacing
@@ -629,8 +629,8 @@ Type TTooltip extends TRenderableChild
 			SetColor 255,255,255
 			local displaceX:float = 0.0
 			If tooltipimage >=0
-				DrawImage(TTooltip.ToolTipIcons,self.pos.x+1,self.pos.y+1, tooltipimage)
-				displaceX = ImageWidth(TTooltip.ToolTipIcons)
+				TTooltip.ToolTipIcons.Draw(self.pos.x+1,self.pos.y+1, tooltipimage)
+				displaceX = TTooltip.ToolTipIcons.framew
 			endif
 
 			SetAlpha self.GetFadeAmount()
@@ -1405,9 +1405,9 @@ Type TInterface
 	    GUIManager.Draw("InGame")
 
 		If Game.error >=1 Then TError.DrawErrors()
-		If Game.cursorstate = 0 Then DrawImage(gfx_mousecursor, MouseX()-7, 	MouseY()	,0)
-		If Game.cursorstate = 1 Then DrawImage(gfx_mousecursor, MouseX()-7, 	MouseY()-4	,1)
-		If Game.cursorstate = 2 Then DrawImage(gfx_mousecursor, MouseX()-10,	MouseY()-12	,2)
+		If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
+		If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()-4	,1)
+		If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-10,	MouseY()-12	,2)
 	End Method
 
 End Type
@@ -1514,6 +1514,24 @@ endrem
 
 End Type
 
+Type TStationMapSection
+	field pos:TPosition
+	field sprite:TGW_Sprites
+	field name:string
+	global sections:TList = CreateList()
+
+	Method Setup:TStationMapSection(pos:TPosition, name:string, sprite:TGW_Sprites)
+		self.pos = pos
+		self.name = name
+		self.sprite = sprite
+		return self
+	End Method
+
+	Method Add()
+		self.sections.addLast(self)
+	End Method
+end Type
+
 Type TStationPoint
 	field pos:TPosition
 	field color:Int
@@ -1547,6 +1565,7 @@ Type TStationMap
 
 	Global List:TList = CreateList()
 
+	global initDone:int = 0
 
 	Function Load:TStationmap(pnode:TxmlNode)
 print "implement Load:TStationmap"
@@ -1675,8 +1694,28 @@ endrem
 	End Method
 
 
+	Method InitSections()
+		new TStationMapSection.Setup(TPosition.Create(207, 91), 	"bremen",	Assets.GetSprite("gfx_officepack_topo_bremen")).add()
+		new TStationMapSection.Setup(TPosition.Create(452, 118),	"berlin",	Assets.GetSprite("gfx_officepack_topo_berlin")).add()
+		new TStationMapSection.Setup(TPosition.Create(270, 69),		"hamburg",	Assets.GetSprite("gfx_officepack_topo_hamburg")).add()
+		new TStationMapSection.Setup(TPosition.Create(129, 258),	"bawue",	Assets.GetSprite("gfx_officepack_topo_bawue")).add()
+		new TStationMapSection.Setup(TPosition.Create(223, 221),	"bayern",	Assets.GetSprite("gfx_officepack_topo_bayern")).add()
+		new TStationMapSection.Setup(TPosition.Create( 69, 263),	"saarland",	Assets.GetSprite("gfx_officepack_topo_saarland")).add()
+		new TStationMapSection.Setup(TPosition.Create( 59, 203),	"rheinlandpfalz", Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz")).add()
+		new TStationMapSection.Setup(TPosition.Create(155, 169),	"hessen",	Assets.GetSprite("gfx_officepack_topo_hessen")).add()
+		new TStationMapSection.Setup(TPosition.Create(276, 169),	"thueringen",Assets.GetSprite("gfx_officepack_topo_thueringen")).add()
+		new TStationMapSection.Setup(TPosition.Create(388, 167),	"sachsen",	Assets.GetSprite("gfx_officepack_topo_sachsen")).add()
+		new TStationMapSection.Setup(TPosition.Create(314, 103),	"sachsenanhalt", Assets.GetSprite("gfx_officepack_topo_sachsenanhalt")).add()
+		new TStationMapSection.Setup(TPosition.Create(104, 61),		"niedersachsen", Assets.GetSprite("gfx_officepack_topo_niedersachsen")).add()
+		new TStationMapSection.Setup(TPosition.Create(213, 12),		"schleswigholstein", Assets.GetSprite("gfx_officepack_topo_schleswigholstein")).add()
+		new TStationMapSection.Setup(TPosition.Create(359, 78),		"brandenburg", Assets.GetSprite("gfx_officepack_topo_brandenburg")).add()
+		new TStationMapSection.Setup(TPosition.Create(55, 127),		"nrw", Assets.GetSprite("gfx_officepack_topo_nrw")).add()
+		new TStationMapSection.Setup(TPosition.Create(318, 21),		"meckpom", Assets.GetSprite("gfx_officepack_topo_meckpom")).add()
+	End Method
 
 	Method Update()
+		if not self.initDone then self.InitSections()
+
 		If action = 4 'sell finished?
 			If Self.sellStation[Game.playerID] <> Null Then Self.Sell(Self.sellStation[Game.playerID])
 			action = 0
@@ -1686,7 +1725,7 @@ endrem
 		'1. searching
 		If action = 1
 			Local pos:TPosition = TPosition.Create(0,0)
-			If MOUSEMANAGER.MousePosChanged
+			If MOUSEMANAGER.hasMoved
 				pos.setXY( MouseX() -20, MouseY() -10)
 
 				lastStation.reach = Self.CalculateStationRange(pos.X, pos.Y)
@@ -1704,70 +1743,26 @@ endrem
 		endif
 		'2. actually buy it
 		If action = 2 And LastStation.pos.X <> 0 And LastStation.pos.y <> 0
-			If MOUSEMANAGER.MousePosChanged Then LastStation.reach = Self.CalculateStationRange(LastStation.pos.X + 20, LastStation.pos.Y + 10)
+			If MOUSEMANAGER.hasMoved Then LastStation.reach = Self.CalculateStationRange(LastStation.pos.X + 20, LastStation.pos.Y + 10)
 			Buy(LastStation.pos.X, LastStation.pos.Y, Game.playerID)
 			LastStation.Reset()
 			action = 0
 		EndIf
 
-		ResetCollisions(3)
-		If functions.MouseIn(207, 91, Assets.GetSprite("gfx_officepack_topo_bremen").w, Assets.GetSprite("gfx_officepack_topo_bremen").h)
-			CollideImage(stationmap_land_bremen, 207, 91, 0, 0, 1, stationmap_land_bremen)
-		Else If functions.MouseIn( 452, 118, Assets.GetSprite("gfx_officepack_topo_berlin").w, Assets.GetSprite("gfx_officepack_topo_berlin").h)
-			CollideImage(stationmap_land_berlin, 452, 118, 0, 0, 1, stationmap_land_berlin)
-		Else If functions.MouseIn( 270, 69, Assets.GetSprite("gfx_officepack_topo_hamburg").w, Assets.GetSprite("gfx_officepack_topo_hamburg").h)
-			CollideImage(stationmap_land_hamburg, 270, 69, 0, 0, 1, stationmap_land_hamburg)
-		Else If functions.MouseIn( 129, 258, Assets.GetSprite("gfx_officepack_topo_bawue").w, Assets.GetSprite("gfx_officepack_topo_bawue").h)
-			CollideImage(stationmap_land_bawue, 129, 258, 0, 0, 1, stationmap_land_bawue)
-		Else If functions.MouseIn( 223, 221, Assets.GetSprite("gfx_officepack_topo_bayern").w, Assets.GetSprite("gfx_officepack_topo_bayern").h)
-			CollideImage(stationmap_land_bayern, 223, 221, 0, 0, 1, stationmap_land_bayern)
-		Else If functions.MouseIn( 69, 263, Assets.GetSprite("gfx_officepack_topo_saarland").w, Assets.GetSprite("gfx_officepack_topo_saarland").h)
-			CollideImage(stationmap_land_saarland, 69, 263, 0, 0, 1, stationmap_land_saarland)
-		Else If functions.MouseIn( 59, 203, Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz").w, Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz").h)
-			CollideImage(stationmap_land_rheinlandpfalz, 59, 203, 0, 0, 1, stationmap_land_rheinlandpfalz)
-		Else If functions.MouseIn( 155, 169, Assets.GetSprite("gfx_officepack_topo_hessen").w, Assets.GetSprite("gfx_officepack_topo_hessen").h)
-			CollideImage(stationmap_land_hessen, 155, 169, 0, 0, 1, stationmap_land_hessen)
-		Else If functions.MouseIn( 276, 169, Assets.GetSprite("gfx_officepack_topo_thueringen").w, Assets.GetSprite("gfx_officepack_topo_thueringen").h)
-			CollideImage(stationmap_land_thueringen, 276, 169, 0, 0, 1, stationmap_land_thueringen)
-		Else If functions.MouseIn( 388, 167, Assets.GetSprite("gfx_officepack_topo_sachsen").w, Assets.GetSprite("gfx_officepack_topo_sachsen").h)
-			CollideImage(stationmap_land_sachsen, 388, 167, 0, 0, 1, stationmap_land_sachsen)
-		Else If functions.MouseIn( 314, 103, Assets.GetSprite("gfx_officepack_topo_sachsenanhalt").w, Assets.GetSprite("gfx_officepack_topo_sachsenanhalt").h)
-			CollideImage(stationmap_land_sachsenanhalt, 314, 103, 0, 0, 1, stationmap_land_sachsenanhalt)
-		Else If functions.MouseIn( 104, 61, Assets.GetSprite("gfx_officepack_topo_niedersachsen").w, Assets.GetSprite("gfx_officepack_topo_niedersachsen").h)
-			CollideImage(stationmap_land_niedersachsen, 104, 61, 0, 0, 1, stationmap_land_niedersachsen)
-		Else If functions.MouseIn( 213, 12, Assets.GetSprite("gfx_officepack_topo_schleswigholstein").w, Assets.GetSprite("gfx_officepack_topo_schleswigholstein").h)
-			CollideImage(stationmap_land_schleswigholstein, 213, 12, 0, 0, 1, stationmap_land_schleswigholstein)
-		Else If functions.MouseIn( 359, 78, Assets.GetSprite("gfx_officepack_topo_brandenburg").w, Assets.GetSprite("gfx_officepack_topo_brandenburg").h)
-			CollideImage(stationmap_land_brandenburg, 359, 78, 0, 0, 1, stationmap_land_brandenburg)
-		Else If functions.MouseIn( 55, 127, Assets.GetSprite("gfx_officepack_topo_nrw").w, Assets.GetSprite("gfx_officepack_topo_nrw").h)
-			CollideImage(stationmap_land_nrw, 55, 127, 0, 0, 1, stationmap_land_nrw)
-		Else If functions.MouseIn( 318, 21, Assets.GetSprite("gfx_officepack_topo_meckpom").w, Assets.GetSprite("gfx_officepack_topo_meckpom").h)
-			CollideImage(stationmap_land_meckpom, 318, 21, 0, 0, 1, stationmap_land_meckpom)
-		EndIf
 		If action = 1 'placing a new station
-		  Local Collision_Layer:Int=1
-		  Local p:Object[]=CollideRect(MouseX(),MouseY(),1,1,Collision_Layer,0)
-		  Bundesland = "Unbekannt"
-		  For Local i:TImage=EachIn p
-			Select i
-				Case stationmap_land_bremen				bundesland="Bremen"
-				Case stationmap_land_berlin		  		bundesland="Berlin"
-				Case stationmap_land_hamburg			bundesland="Hamburg"
-				Case stationmap_land_bawue				bundesland="Baden-Wuerttemberg"
-				Case stationmap_land_bayern				bundesland="Bayern"
-				Case stationmap_land_saarland			bundesland="Saarland"
-				Case stationmap_land_rheinlandpfalz		bundesland="Rheinland-Pfalz"
-				Case stationmap_land_hessen				bundesland="Hessen"
-				Case stationmap_land_thueringen			bundesland="Thueringen"
-				Case stationmap_land_sachsen			bundesland="Sachsen"
-				Case stationmap_land_sachsenanhalt		bundesland="Sachsen-Anhalt"
-				Case stationmap_land_niedersachsen		bundesland="Niedersachsen"
-				Case stationmap_land_schleswigholstein	bundesland="Schleswig-Holstein"
-				Case stationmap_land_brandenburg		bundesland = "Brandenburg"
-				Case stationmap_land_nrw				bundesland="Nordrheinwestfahlen"
-				Case stationmap_land_meckpom			bundesland="Mecklenburg Vorpommern"
-			EndSelect
-		  Next
+			'only find new if mouse was moved - saves unneeded pixel reads
+			if MOUSEMANAGER.hasMoved
+				Bundesland = ""
+				For local section:TStationMapSection = eachin TStationMapSection.sections
+					if TFunctions.MouseIn(section.pos.x, section.pos.y, section.sprite.w, section.sprite.h)
+						if section.sprite.PixelIsOpaque(MouseX()-section.pos.x, MouseY()-section.pos.y) > 0
+							'print "	found "+section.name
+							Bundesland = Localization.GetString("MAP_COUNTRY_"+section.name)
+							exit
+						endif
+					endif
+				Next
+			endif
 		EndIf
 
   End Method
@@ -1822,6 +1817,18 @@ endrem
 				FontManager.baseFontBold.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
 			SetColor(255, 255, 255)
 		EndIf
+
+		if game.DebugMode
+			For local section:TStationMapSection = eachin TStationMapSection.sections
+				if TFunctions.MouseIn(section.pos.x, section.pos.y, section.sprite.w, section.sprite.h)
+					if section.sprite.PixelIsOpaque(MouseX()-section.pos.x, MouseY()-section.pos.y) > 0
+						section.sprite.Draw(section.pos.x, section.pos.y)
+						exit
+					endif
+				endif
+			Next
+		endif
+
   End Method
 
 	'summary: returns calculated distance between 2 points
