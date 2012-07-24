@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<image name="gfx_startscreen"				url="grafiken/start_bg.png" />
+		<image name="gfx_startscreen_logo"			url="grafiken/logo.png" />
+		<image name="gfx_startscreen_logoSmall"		url="grafiken/logo_small.png" />
+		<image name="gfx_startscreen_loadingBar"	url="grafiken/loading_bar.png" f="2" cw="680" ch="64" />
+	</resources>
+</tvt>

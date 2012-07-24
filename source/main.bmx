@@ -29,8 +29,6 @@ AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
 
 Global App:TApp = TApp.Create(60, 1) 'create with 60fps for physics and graphics
-App.LoadSettings("config/settings.xml")
-App.InitGraphics()
 
 
 Global filestotal:Int		= 16
@@ -40,11 +38,6 @@ Global filesperscreen:Int	= 30
 Global LoadImageError:Int	= 0
 Global LoadImageText:String	= ""
 
-
-Global gfx_startscreen:TBigImage		= TBigImage.CreateFromImage(LoadImage("grafiken/start_bg.png"))
-Global gfx_startscreen_logo:TImage		= LoadImage("grafiken/logo.png", 0)
-Global gfx_startscreen_logosmall:TImage	= LoadImage("grafiken/logo_small.png", 0)
-Global gfx_loading_bar:TImage			= LoadAnimImage("grafiken/loading_bar.png", 800, 64, 0, 2, 0)
 Global LogoFadeInFirstCall:Int = 0
 Global LoaderWidth:Int = 0
 
@@ -61,62 +54,33 @@ App.LoadResources("config/resources.xml")
 'Existiert das angegebene Bild nicht, kommt der Nutzer in eine Schleife, die ueber die fehlende
 'Datei informiert und danach das Spiel beendet. Ist die Datei vorhanden, gibt die Funktion das Bild zurueck.
 Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,cellHeight:Int = -1,firstCell:Int = -1,cellCount:Int = -1)
-	filecount:+1
-
 	Local locstring:String	= "pixmap"
 	Local locfilesize:Int	= 1
 
 	If path <> "" Then locstring = String(path)
 	If locstring <> "" Then locfilesize = FileSize(locstring)
-	SetColor 255, 255, 255
-	gfx_startscreen.render(0, 0)
-	If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
-	SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
-	DrawImage(gfx_startscreen_logo, App.settings.width/2 - ImageWidth(gfx_startscreen_logo) / 2, 100)
-	SetAlpha 1.0
-	DrawImage(gfx_loading_bar, 0, App.settings.width/2 -56  + 32, 1)
 
-	LoaderWidth = Max(filecount * pixelperfile, LoaderWidth+1)
-	DrawSubImageRect(gfx_loading_bar,0,App.settings.width/2 -56 +32, LoaderWidth, gfx_loading_bar.Height, 0, 0, LoaderWidth, gfx_loading_bar.Height, 0, 0, 0)
+	'fire event so LoaderScreen can refresh
+	EventManager.triggerEvent("onCheckLoadImage", TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1) ) )
 
-	SetAlpha 0.3
-	SetColor 0,0,0
-	DrawText "[" + Replace(RSet(filecount, String(filestotal).Length), " ", "0") + "/" + filestotal + "]", 90, 410
-	SetAlpha 0.5
-	DrawText "Loading ... "+locstring, 150, 410
-	SetAlpha 1.0
-	SetColor 255, 255, 255
-	Flip
 	If locfilesize > -1 And LoadImageError = 0
-		LoadImageError = 0
-		LoadImageText = "GFX: "+locstring+" loading..."
 		Local Img:TImage = Null
 		If cellWidth > 0
 			Img = LoadAnimImage(path, cellWidth, cellHeight, firstCell, cellCount,DYNAMICIMAGE)
 		Else
 			Img = LoadImage(path, flag)
 		EndIf
-		'DrawImage(img,0,0)
 		Return Img
 	Else
-		LoadImageError = 1
-		LoadImageText = "GFX: "+locstring+" not found..."
-		Print LoadImageText
 		Local ExitGame:Int = 0
-		If LoadImageError = 1
-			Repeat
-				Cls
-				SetColor 255,255,255
-				DrawText LoadImageText,10,10
-				DrawText "press ESC to exit TVGigant",10,30
-				SetColor 0,0,0
-				Flip
-				Delay(5)
-				LoadImageError = 0
-				If KeyHit(KEY_ESCAPE) Then ExitGame = 1
-			Until ExitGame = 1  Or AppTerminate()
-     		AppTerminate()
-		End If
+
+		Repeat
+			'fire event so LoaderScreen can refresh
+			EventManager.triggerEvent("onCheckLoadImage", TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1).AddNumber("error", 1) ) )
+			If KeyHit(KEY_ESCAPE) Then ExitGame = 1
+			delay(5)
+		Until ExitGame = 1 Or AppTerminate()
+		AppTerminate()
 	EndIf
 End Function
 
@@ -208,6 +172,10 @@ Type TApp
 	Field prepareScreenshot:Int = 0
 	Field g:TGraphics
 
+	global baseResourcesLoaded:int		= 0						'able to draw loading screen?
+	global baseResourceXmlUrl:string	= "config/startup.xml"	'holds bg for loading screen and more
+	global currentResourceUrl:string	= ""
+
 	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0)
 		Local obj:TApp = New TApp
 		obj.settings = new TApplicationSettings
@@ -216,6 +184,16 @@ Type TApp
 		'listen to App-timer
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
+		EventManager.registerListener( "XmlLoader.onLoadElement",	TEventListenerRunFunction.Create(TApp.drawLoadingScreen)  )
+		EventManager.registerListener( "onCheckLoadImage",	TEventListenerRunFunction.Create(TApp.drawLoadingScreen)  )
+		EventManager.registerListener( "XmlLoader.onFinishParsing",	TEventListenerRunFunction.Create(TApp.onFinishParsingXML)  )
+
+		obj.LoadSettings("config/settings.xml")
+		obj.InitGraphics()
+		'load graphics needed for loading screen
+		obj.currentResourceUrl = obj.baseResourceXmlUrl
+		obj.LoadResources(obj.baseResourceXmlUrl)
+
 
 		Return obj
 	End Function
@@ -265,6 +243,58 @@ Type TApp
 		EndTry
 		SetBlend ALPHABLEND
 	End Method
+
+	Function onFinishParsingXML( triggerEvent:TEventBase )
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt<>Null
+			if evt.getData().getString("url") = TApp.baseResourceXmlUrl then TApp.baseResourcesLoaded = 1
+		endif
+	End Function
+
+	Function drawLoadingScreen( triggerEvent:TEventBase )
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt<>Null
+			local element:string		= evt.getData().getString("element")
+			local text:string			= evt.getData().getString("text")
+			local itemNumber:int		= evt.getData().getInt("itemNumber")
+			local error:int				= evt.getData().getInt("error")
+			local maxItemNumber:int		= 0
+			if itemNumber > 0 then maxItemNumber = evt.getData().getInt("maxItemNumber")
+
+			if element = "XmlFile" then TApp.currentResourceUrl = text
+			if TApp.baseResourcesLoaded
+				SetColor 255, 255, 255
+				Assets.GetSprite("gfx_startscreen").Draw(0,0)
+
+				If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
+				SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
+				Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.width/2 - Assets.GetSprite("gfx_startscreen_logo").w / 2, 100)
+				SetAlpha 1.0
+				Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, 0, 0.5)
+
+				LoaderWidth = Min(680, LoaderWidth + (680.0 / 70.0))
+				Assets.GetSprite("gfx_startscreen_loadingBar").TileDraw((400-Assets.GetSprite("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, Assets.GetSprite("gfx_startscreen_loadingBar").frameh)
+				SetColor 0,0,0
+				if itemNumber > 0
+					SetAlpha 0.25
+					DrawText "[" + Replace(RSet(itemNumber, string(maxItemNumber).length), " ", "0") + "/" + maxItemNumber + "]", 670, 415
+					DrawText TApp.currentResourceUrl, 80, 402
+				endif
+				SetAlpha 0.5
+				DrawText "Loading: "+text, 80, 415
+				SetAlpha 1.0
+				if error > 0
+					SetColor 255, 0 ,0
+					DrawText("ERROR: ", 80,440)
+					SetAlpha 0.75
+					DrawText(text+" not found. (press ESC to exit)", 130,440)
+					SetAlpha 1.0
+				endif
+				SetColor 255, 255, 255
+				Flip
+			endif
+		endif
+	End Function
 End Type
 
 
@@ -3074,17 +3104,17 @@ Function DrawMenu(tweenValue:Float=1.0)
 'no cls needed - we render a background
 '	Cls
 	SetColor 255,255,255
-	gfx_startscreen.render(0, 0)
+	Assets.GetSprite("gfx_startscreen").Draw(0,0)
 
 	' DrawImage(gfx_startscreen, 0, 0)
 
 
 	Select game.gamestate
 		Case GAMESTATE_SETTINGSMENU, GAMESTATE_STARTMULTIPLAYER
-			DrawImage(gfx_startscreen_logosmall, 540, 480)
+			Assets.GetSprite("gfx_startscreen_logoSmall").Draw(540, 480)
 		Default
 			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * App.Timer.getDeltaTime() Else LogoCurrY = LogoTargetY
-			DrawImage(gfx_startscreen_logo, 400 - ImageWidth(gfx_startscreen_logo) / 2, LogoCurrY)
+			Assets.GetSprite("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, 0, 0.5)
 	EndSelect
 	SetColor 0, 0, 0
 
@@ -3506,7 +3536,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			FontManager.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
 			FontManager.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
 			If game.networkgame Then FontManager.baseFont.Draw("ping "+Int(Network.client.latency)+"ms", 375,0)
-			If App.prepareScreenshot = 1 Then DrawImage(gfx_startscreen_logosmall, App.settings.width - ImageWidth(gfx_startscreen_logosmall) - 10, 10)
+			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.width - 10, 10, 0, 1)
 
 			TProfiler.Enter("Draw-Flip")
 				Flip App.limitFrames

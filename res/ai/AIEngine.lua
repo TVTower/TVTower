@@ -87,7 +87,7 @@ end
 
 function AIPlayer:BeginNewTask()
 	self.CurrentTask = self:SelectTask()
-	if self.CurrentTask = nil
+	if self.CurrentTask == nil then
 		debugMsg("AIPlayer:BeginNewTask - task is nil... " )
 	else
 		self.CurrentTask:Activate()

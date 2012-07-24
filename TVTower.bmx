@@ -13,6 +13,7 @@ Import "source/main.bmx"
 
 Incbin "source/version.txt"
 
+' "TImageCache" in TBitmapFont-Rendering einbinden
 
 ' ressourcenlader - plugins (registerLoader) -> Stationmap mit details auslagern etc.
 

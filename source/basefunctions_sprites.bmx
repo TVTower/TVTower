@@ -1025,7 +1025,7 @@ Type TGW_Sprites extends TRenderable
 			Local MaxFramesInCol:Int	= Ceil(w / framew)
 			Local framerow:Int			= Ceil(theframe / MaxFramesInCol)
 			Local framecol:Int 			= theframe - (framerow * MaxFramesInCol)
-			DrawImageArea(parent.image, x - align*w * scale, y - valign * h * scale, pos.x + framecol * framew, pos.y + framerow * frameh, framew, frameh, 0)
+			DrawImageArea(parent.image, x - align*framew * scale, y - valign * frameh * scale, pos.x + framecol * framew, pos.y + framerow * frameh, framew, frameh, 0)
 		EndIf
 	End Method
 

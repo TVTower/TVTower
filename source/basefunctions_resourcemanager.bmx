@@ -237,8 +237,11 @@ Type TXmlLoader
 	field xml:TXmlHelper = null
 '	Field currentFile:xmlDocument
 	Field Values:TMap = CreateMap()
+	Field url:string=""
 
 	global loadWarning:int = 0
+	global maxItemNumber:int = 0
+	global currentItemNumber:int = 0
 
 
 	Function Create:TXmlLoader()
@@ -246,22 +249,45 @@ Type TXmlLoader
 	End Function
 
 
+	Method doLoadElement(element:string, text:string, number:int=0)
+		'fire event so LoaderScreen can refresh
+		EventManager.triggerEvent("XmlLoader.onLoadElement", TEventSimple.Create("XmlLoader.onLoadElement", TEventData.Create().AddString("element", element).AddString("text", text).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
+	End Method
+
+
 	Method Parse(url:String)
 		PrintDebug("XmlLoader.Parse:", url, DEBUG_LOADING)
+		'reset counter
+		self.maxItemNumber = 1
+		self.currentItemNumber = 0
 
 		self.xml = TXmlHelper.Create(url)
+		self.url = url
 		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
 
 		self.LoadResources(xml.root)
+		EventManager.triggerEvent("XmlLoader.onFinishParsing", TEventSimple.Create("XmlLoader.onFinishParsing", TEventData.Create().AddString("url", url) ) )
 	End Method
 
 
 	Method LoadResources(node:TxmlNode)
-		for local childNode:TxmlNode = eachin node.getChildren()
+		local children:TList = node.getChildren()
+		for local childNode:TxmlNode = eachin children
+			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
+			if _type<>"RESOURCES" then self.maxItemNumber:+ 1' children.count()	'it is a entry - so increase
+		Next
+
+		for local childNode:TxmlNode = eachin children
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
 
+'			self.doLoadElement("Resources", url, self.currentItemNumber)
+
 			'some loaders might be interested
-			EventManager.registerEvent( TEventSimple.Create("LoadResource."+_type, TEventData.Create().AddObject("node", childNode) ) )
+			if _type <> "RESOURCES"
+				EventManager.registerEvent( TEventSimple.Create("LoadResource."+_type, TEventData.Create().AddObject("node", childNode) ) )
+				self.currentItemNumber:+1		'increase by each entry
+			endif
+
 			Select _type
 				Case "RESOURCES"			Self.LoadResources(childNode)
 				Case "ROOMS"				Self.LoadRooms(childNode)
@@ -275,6 +301,10 @@ Type TXmlLoader
 	Method LoadXmlFile(childNode:TxmlNode)
 		Local _url:String = xml.FindValue(childNode, "url", "")
 		if _url = "" then return
+
+		'emit loader event for loading screen
+		self.doLoadElement("XmlFile", _url, self.currentItemNumber)
+
 		Local childXML:TXmlLoader = TXmlLoader.Create()
 		childXML.Parse(_url)
 
@@ -315,9 +345,13 @@ Type TXmlLoader
 
 	Method LoadImageResource(childNode:TxmlNode)
 		Local _name:String		= Lower( xml.FindValue(childNode, "name", "default") )
-		Local _type:String		= Upper( xml.FindValue(childNode, "type", ""))
+		Local _type:String		= Upper( xml.FindValue(childNode, "type", childNode.getName()))
 		Local _url:String		= xml.FindValue(childNode, "url", "")
 		if _type = "" or _url = "" then return
+
+		'emit loader event for loading screen
+		self.doLoadElement("image resource", _url, self.currentItemNumber)
+
 
 		Local _frames:Int		= xml.FindValueInt(childNode, "frames", xml.FindValueInt(childNode, "f", 0))
 		Local _cellwidth:Int	= xml.FindValueInt(childNode, "cellwidth", xml.FindValueInt(childNode, "cw", 0))
@@ -365,7 +399,6 @@ Type TXmlLoader
 				'TExtendedPixmap.Create(_name, _url, _cellwidth, _cellheight, _frames, _type)
 			EndIf
 		EndIf
-
 
 	End Method
 
@@ -426,6 +459,11 @@ Type TXmlLoader
 		Local _name:String	= Lower( xml.findValue(childNode, "name", "") )
 		Local _url:String	= xml.findValue(childNode, "url", "")
 		Local _flags:Int	= Self.GetImageFlags(childNode)
+
+		'emit loader event for loading screen
+		self.doLoadElement("image spritepack resource", _url, self.currentItemNumber)
+
+
 		'Print "LoadSpritePackResource: "+_name + " " + _flags + " ["+url+"]"
 		Local _image:TImage	= LoadImage(_url, _flags) 'CheckLoadImage(_url, _flags)
 		Local spritePack:TGW_SpritePack = TGW_SpritePack.Create(_image, _name)
