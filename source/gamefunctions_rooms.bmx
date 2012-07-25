@@ -671,7 +671,7 @@ Function Room_MovieAgency_Compute(_room:TRooms)
 			  If LocObject.dragged Then game.cursorstate = 2 Else Game.cursorstate = 1
 			  SetColor 0,0,0
 			  SetAlpha 0.2
-			  Local x:Float = 120 + gfx_datasheets_movie.width - 20
+			  Local x:Float = 120 + Assets.GetSprite("gfx_datasheets_movie").w - 20
 			  Local tri:Float[]=[x,45.0,x,90.0,locobject.Pos.x+locobject.width/2.0+3,locobject.Pos.y+locobject.height/2.0]
 			  DrawPoly(tri)
 			  SetColor 255,255,255

@@ -13,8 +13,14 @@ Import "source/main.bmx"
 
 Incbin "source/version.txt"
 
-' "TImageCache" in TBitmapFont-Rendering einbinden
 
+' XML-Dateien: Animationskonfiguration
+'	- TAsset -> global "currentDeltaTime"
+'	- TAsset -> global "updateList" haelt Assets die in einer Update-Runde aktualisiert werden muessen
+'	- TAsset -> Sprites mit Animationskonfiguration setzen sich in diese "updateList"
+'	- TAsset -> TAsset.UpdateAll() ruft die Updates auf (currentDeltaTime -> animationen etc)
+
+' "TImageCache" in TBitmapFont-Rendering einbinden
 ' ressourcenlader - plugins (registerLoader) -> Stationmap mit details auslagern etc.
 
 

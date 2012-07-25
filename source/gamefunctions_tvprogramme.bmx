@@ -842,7 +842,7 @@ endrem
 		Local playerID:Int = owner
 		If playerID <= 0 Then playerID = game.playerID
 
-		gfx_datasheets_contract.render(x,y)
+		Assets.GetSprite("gfx_datasheets_contract").Draw(x,y)
 
 		Local font:TBitmapFont = FontManager.basefont
 		FontManager.basefontBold.drawBlock(title 	       				, x+10 , y+11 , 270, 70,0, 0,0,0, 0,1)
@@ -1332,10 +1332,10 @@ endrem
 		Local dY:Int = 0
 
 		If isMovie()
-			gfx_datasheets_movie.render(x,y)
+			Assets.GetSprite("gfx_datasheets_movie").Draw(x,y)
 			FontManager.basefontBold.DrawBlock(title, x + 10, y + 11, 278, 20)
 		Else
-			gfx_datasheets_series.render(x,y)
+			Assets.GetSprite("gfx_datasheets_series").Draw(x,y)
 			'episode display
 			If series <> Null
 				FontManager.basefontBold.DrawBlock(series.title, x + 10, y + 11, 278, 20)

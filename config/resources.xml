@@ -6,7 +6,7 @@
 		<file name="resource_gui" url="config/gui.xml" />
 		<file name="resource_gfx_dialog" url="config/gfx_dialog.xml" />
 		<file name="resource_gfx_officepack" url="config/gfx_officepack.xml" />
-		<file name="resource_gfx_building" url="config/gfx_hochhauspack.xml" />
+		<file name="resource_gfx_building" url="config/gfx_hochhaus.xml" />
 		<file name="resource_gfx" url="config/gfx.xml" />
 		<file name="resource_figures" url="config/figures.xml" />
 	</resources>

@@ -529,7 +529,6 @@ Type TResourceLoaders
 	End Function
 
 	Function onLoadRooms:int( triggerEvent:TEventBase )
-		print "load room"
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt=Null then return 0
 

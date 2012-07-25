@@ -45,52 +45,6 @@ Const DYNAMICALLY_LOAD_IMAGES:Byte = 1
 
 App.LoadResources("config/resources.xml")
 
-'Author: Ronny Otto
-'Date: 2006/09/21
-'---------
-'If the image does not exist the user will come into a loop which informs about the missing
-'file and exits the game afterwards. Function returns the image if the file is existing.
-'---------
-'Existiert das angegebene Bild nicht, kommt der Nutzer in eine Schleife, die ueber die fehlende
-'Datei informiert und danach das Spiel beendet. Ist die Datei vorhanden, gibt die Funktion das Bild zurueck.
-Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,cellHeight:Int = -1,firstCell:Int = -1,cellCount:Int = -1)
-	Local locstring:String	= "pixmap"
-	Local locfilesize:Int	= 1
-
-	If path <> "" Then locstring = String(path)
-	If locstring <> "" Then locfilesize = FileSize(locstring)
-
-	'fire event so LoaderScreen can refresh
-	EventManager.triggerEvent( TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1) ) )
-
-	If locfilesize > -1 And LoadImageError = 0
-		Local Img:TImage = Null
-		If cellWidth > 0
-			Img = LoadAnimImage(path, cellWidth, cellHeight, firstCell, cellCount,DYNAMICIMAGE)
-		Else
-			Img = LoadImage(path, flag)
-		EndIf
-		Return Img
-	Else
-		Local ExitGame:Int = 0
-
-		Repeat
-			'fire event so LoaderScreen can refresh
-			EventManager.triggerEvent( TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1).AddNumber("error", 1) ) )
-			If KeyHit(KEY_ESCAPE) Then ExitGame = 1
-			delay(5)
-		Until ExitGame = 1 Or AppTerminate()
-		AppTerminate()
-	EndIf
-End Function
-
-
-Global gfx_interface_topbottom:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/interface/interface_ou.png", 0))
-
-Global gfx_datasheets_movie:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_filmblatt.png"))
-Global gfx_datasheets_series:TBigImage		= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_serienblatt.png"))
-Global gfx_datasheets_contract:TBigImage	= TBigImage.createFromImage(CheckLoadImage("grafiken/datenblaetter/tv_werbeblatt.png"))
-
 '=== StationMap ====================
 
 Global stationmap_mainpix:TPixmap 			= LoadPixmap("grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png")
@@ -186,7 +140,6 @@ Type TApp
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
 		EventManager.registerListener( "XmlLoader.onLoadElement",	TEventListenerRunFunction.Create(TApp.drawLoadingScreen)  )
-		EventManager.registerListener( "onCheckLoadImage",	TEventListenerRunFunction.Create(TApp.drawLoadingScreen)  )
 		EventManager.registerListener( "XmlLoader.onFinishParsing",	TEventListenerRunFunction.Create(TApp.onFinishParsingXML)  )
 
 		obj.LoadSettings("config/settings.xml")
@@ -243,6 +196,7 @@ Type TApp
 			EndIf
 		EndTry
 		SetBlend ALPHABLEND
+		HideMouse()
 	End Method
 
 	Function onFinishParsingXML( triggerEvent:TEventBase )
@@ -293,6 +247,10 @@ Type TApp
 					SetAlpha 1.0
 				endif
 				SetColor 255, 255, 255
+
+				'base cursor
+				Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
+
 				Flip 0
 			endif
 		endif
@@ -1933,8 +1891,8 @@ Type TBuilding Extends TRenderable
 	Field borderright:Int 			= 127 + 40 + 429
 	Field borderleft:Int			= 127 + 40
 	Field skycolor:Float = 0
-	Field ufo_normal:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo"), 0, 100, 0,0, 9, 100)
-	Field ufo_beaming:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_ufo2"), 0, 100, 0,0, 9, 100)
+	Field ufo_normal:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo"), 0, 100, 0,0, 9, 100)
+	Field ufo_beaming:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo2"), 0, 100, 0,0, 9, 100)
 	Field Elevator:TElevator
 
 	Field Moon_curKubSplineX:appKubSpline =New appKubSpline
@@ -1984,7 +1942,7 @@ Type TBuilding Extends TRenderable
 		Building.ufo_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-150, 200+RandMax(400), 200+RandMax(200), 65, -50])
 		Building.ufo_curKubSplineY.GetDataInt([1, 2, 3, 4, 5], [-50+RandMax(200), 100+RandMax(200) , 200+RandMax(300), 330,150])
 		For Local i:Int = 0 To Building.CloudCount-1
-			Building.Clouds[i] = TAnimSprites.Create(Assets.GetSprite("building_clouds"), - 200 * i + (i + 1) * RandMax(400), - 30 + RandMax(30), 2 + RandRange(0, 6),0,1,0)
+			Building.Clouds[i] = TAnimSprites.Create(Assets.GetSprite("gfx_building_BG_clouds"), - 200 * i + (i + 1) * RandMax(400), - 30 + RandMax(30), 2 + RandRange(0, 6),0,1,0)
 		Next
 
 		'background buildings
@@ -2185,7 +2143,7 @@ Type TBuilding Extends TRenderable
 			DezimalTime:+3
 			If DezimalTime > 24 Then DezimalTime:-24
 			SetBlend ALPHABLEND
-			Assets.GetSprite("gfx_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), pos.y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.day Mod 12)
+			Assets.GetSprite("gfx_building_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), pos.y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.day Mod 12)
 		EndIf
 		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
 
@@ -2202,7 +2160,7 @@ Type TBuilding Extends TRenderable
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
 					ufo_beaming.Draw()
 				Else
-					Assets.GetSprite("gfx_building_ufo").DrawInViewPort(ufo_curKubSplineX.ValueInt(ufo_tPos), - 330 - 15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h) + ufo_curKubSplineY.ValueInt(ufo_tPos), 0, ufo_normal.GetCurrentFrame())
+					Assets.GetSprite("gfx_building_BG_ufo").DrawInViewPort(ufo_curKubSplineX.ValueInt(ufo_tPos), - 330 - 15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h) + ufo_curKubSplineY.ValueInt(ufo_tPos), 0, ufo_normal.GetCurrentFrame())
 				EndIf
 			EndIf
 		EndIf
@@ -2605,7 +2563,6 @@ StationMap.AddStation(310, 260, 2, Players[2].maxaudience)
 StationMap.AddStation(310, 260, 3, Players[3].maxaudience)
 StationMap.AddStation(310, 260, 4, Players[4].maxaudience)
 
-HideMouse()
 SetColor 255,255,255
 
 For Local i:Int = 0 To 9

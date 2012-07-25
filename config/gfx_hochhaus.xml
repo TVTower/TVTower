@@ -1,10 +1,23 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources>
-		<resource name="gfx_building_sign_base">
-			<type>image</type>
-			<url>grafiken/hochhaus/raum_schild.png</url>
-		</resource>
+		<image name="gfx_building_sign_base"			url="grafiken/hochhaus/raum_schild.png">
+			<scripts>
+				<script	do="ColorizeCopy"	dest="gfx_building_sign0"	r="200"	g="200"	b="200" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign1"	r="80"	g="20"	b="20" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign2"	r="20"	g="100"	b="20" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign3"	r="50"	g="50"	b="100" />
+				<script	do="ColorizeCopy"	dest="gfx_building_sign4"	r="100"	g="100"	b="0" />
+			</scripts>
+		</image>
+		<image name="gfx_building"						url="grafiken/hochhaus/hochhaus.png" flags="FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE" />
+		<image name="gfx_building_tooltips"				url="grafiken/hochhaus/tooltips.png" cw="20" ch="20" f="7" />
+		<image name="gfx_building_textballons"			url="grafiken/hochhaus/textballons.png" cw="23" ch="12" f="6" />
+		<image name="gfx_building_standlight" 			url="grafiken/hochhaus/hochhaus_standlampe.png" usage="is unused atm" />
+		<image name="gfx_building_BG_clouds"			url="grafiken/hochhaus/wolken.png" flags="FILTEREDIMAGE" />
+		<image name="gfx_building_BG_moon"				url="grafiken/hochhaus/himmel_mondphasen2.png" cw="40" ch="40" f="12" flags="FILTEREDIMAGE" />
+
+
 		<resource name="gfx_hochhauspack">
 			<type>SpritePack</type>
  			<url>grafiken/hochhaus/hochhauspack.png</url>
@@ -47,8 +60,8 @@
 				<child name="gfx_building_Wandlampe"		x="430" y="189"	w="60"	h="54"	id="30" />
 				<child name="gfx_building_Tueren"		x="215" y="458"	w="228"	h="54"	frames="6"	id="31" />
 
-				<child name="gfx_building_ufo"	x="0" y="228" w="207"	h="13"	f="9"	id="32" />
-				<child name="gfx_building_ufo2"	x="0" y="241" w="207"	h="40"	f="9"	id="33" />
+				<child name="gfx_building_BG_ufo"	x="0" y="228" w="207"	h="13"	f="9"	id="32" />
+				<child name="gfx_building_BG_ufo2"	x="0" y="241" w="207"	h="40"	f="9"	id="33" />
 
 			</children>
 			<scripts>

@@ -5,6 +5,14 @@
 			<type>image</type>
  			<url>grafiken/interface/interface_lr.png</url>
 		</resource>
+		<resource name="gfx_interface_topbottom">
+			<type>SpritePack</type>
+ 			<url>grafiken/interface/interface_ou.png</url>
+			<children>
+				<child name="gfx_interface_bottom"	x="0" y="0"		w="800"	h="217"	id="1" />
+				<child name="gfx_interface_top"		x="0" y="217"	w="800"	h="20"	id="2" />
+			</children>
+		</resource>
 		<resource name="gfx_interface_antenna">
 			<type>image</type>
  			<url>grafiken/interface/interface_antenne_alpha.png</url>

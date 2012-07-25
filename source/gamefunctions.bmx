@@ -1328,7 +1328,7 @@ Type TInterface
 
 	'draws the interface
 	Method Draw(tweenValue:float=1.0)
-		gfx_interface_topbottom.renderInViewPort(0, - 217, 0, 0, 800, 20)
+		Assets.GetSprite("gfx_interface_top").Draw(0,0)
 		Assets.GetSprite("gfx_interface_leftright").DrawClipped(0, 20, 0, 20, 27, 363, 0, 0)
 		SetBlend SOLIDBLEND
 		Assets.GetSprite("gfx_interface_leftright").DrawClipped(780 - 27, 20, 780, 20, 20, 363, 0, 0)
@@ -1337,7 +1337,8 @@ Type TInterface
 			Local NoDX9moveY:Int = 383
 
 			SetBlend MASKBLEND
-			gfx_interface_topbottom.renderInViewPort(0, 0 + NoDX9moveY, 0, 0 + NoDX9moveY, 800, 217)
+			'draw bottom, aligned "bottom"
+			Assets.GetSprite("gfx_interface_bottom").Draw(0,App.settings.Height,0,1)
 
 			If ShowChannel <> 0 Then Assets.GetSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
