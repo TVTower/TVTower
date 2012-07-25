@@ -175,6 +175,7 @@ Type TApp
 	global baseResourcesLoaded:int		= 0						'able to draw loading screen?
 	global baseResourceXmlUrl:string	= "config/startup.xml"	'holds bg for loading screen and more
 	global currentResourceUrl:string	= ""
+	global maxResourceCount:int			= 310					'set to <=0 to get a output of loaded resources
 
 	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0)
 		Local obj:TApp = New TApp
@@ -248,6 +249,7 @@ Type TApp
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
 			if evt.getData().getString("url") = TApp.baseResourceXmlUrl then TApp.baseResourcesLoaded = 1
+			if TApp.maxResourceCount <= 0 then print "loaded items from xml: "+evt.getData().getInt("loaded")
 		endif
 	End Function
 
@@ -272,7 +274,7 @@ Type TApp
 				SetAlpha 1.0
 				Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, 0, 0.5)
 
-				LoaderWidth = Min(680, LoaderWidth + (680.0 / 70.0))
+				LoaderWidth = Min(680, LoaderWidth + (680.0 / TApp.maxResourceCount))
 				Assets.GetSprite("gfx_startscreen_loadingBar").TileDraw((400-Assets.GetSprite("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, Assets.GetSprite("gfx_startscreen_loadingBar").frameh)
 				SetColor 0,0,0
 				if itemNumber > 0
@@ -291,7 +293,7 @@ Type TApp
 					SetAlpha 1.0
 				endif
 				SetColor 255, 255, 255
-				Flip
+				Flip 0
 			endif
 		endif
 	End Function

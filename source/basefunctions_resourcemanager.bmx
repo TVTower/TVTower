@@ -242,16 +242,19 @@ Type TXmlLoader
 	global loadWarning:int = 0
 	global maxItemNumber:int = 0
 	global currentItemNumber:int = 0
-
+	global loadedItems:int = 0
 
 	Function Create:TXmlLoader()
 		return New TXmlLoader
 	End Function
 
 
-	Method doLoadElement(element:string, text:string, number:int=0)
+	Method doLoadElement(element:string, text:string, action:String, number:int=-1)
+		if number < 0 then self.currentItemNumber:+1;number= self.currentItemNumber
+		self.loadedItems:+1
+
 		'fire event so LoaderScreen can refresh
-		EventManager.triggerEvent("XmlLoader.onLoadElement", TEventSimple.Create("XmlLoader.onLoadElement", TEventData.Create().AddString("element", element).AddString("text", text).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
+		EventManager.triggerEvent("XmlLoader.onLoadElement", TEventSimple.Create("XmlLoader.onLoadElement", TEventData.Create().AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
 	End Method
 
 
@@ -266,7 +269,7 @@ Type TXmlLoader
 		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
 
 		self.LoadResources(xml.root)
-		EventManager.triggerEvent("XmlLoader.onFinishParsing", TEventSimple.Create("XmlLoader.onFinishParsing", TEventData.Create().AddString("url", url) ) )
+		EventManager.triggerEvent("XmlLoader.onFinishParsing", TEventSimple.Create("XmlLoader.onFinishParsing", TEventData.Create().AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
 	End Method
 
 
@@ -303,7 +306,7 @@ Type TXmlLoader
 		if _url = "" then return
 
 		'emit loader event for loading screen
-		self.doLoadElement("XmlFile", _url, self.currentItemNumber)
+		self.doLoadElement("XmlFile", _url, "loading", self.currentItemNumber)
 
 		Local childXML:TXmlLoader = TXmlLoader.Create()
 		childXML.Parse(_url)
@@ -350,7 +353,7 @@ Type TXmlLoader
 		if _type = "" or _url = "" then return
 
 		'emit loader event for loading screen
-		self.doLoadElement("image resource", _url, self.currentItemNumber)
+		self.doLoadElement("image resource", _url, "loading", self.currentItemNumber)
 
 
 		Local _frames:Int		= xml.FindValueInt(childNode, "frames", xml.FindValueInt(childNode, "f", 0))
@@ -422,6 +425,9 @@ Type TXmlLoader
 							self.loadWarning :+1
 						endif
 
+						'emit loader event for loading screen
+			'			self.doLoadElement("colorize copy", _dest, "colorize copy")
+
 						local img:Timage = ColorizeTImage(TImage(data),_r, _g, _b)
 						if img <> null
 							Assets.AddImageAsSprite(_dest, img)
@@ -434,6 +440,9 @@ Type TXmlLoader
 				If scriptDo = "CopySprite"
 					Local _src:String	= xml.findValue(script, "src", "")
 					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
+						'emit loader event for loading screen
+				'		self.doLoadElement("copy sprite", _dest, "")
+
 						TGW_Spritepack(data).CopySprite(_src, _dest, _r, _g, _b)
 					EndIf
 				EndIf
@@ -446,6 +455,10 @@ Type TXmlLoader
 						Local _w:Int		= xml.findValueInt(script, "w", 	TGW_Spritepack(data).getSprite(_src).w)
 						Local _h:Int		= xml.findValueInt(script, "h", 	TGW_Spritepack(data).getSprite(_src).h)
 						Local _frames:Int	= xml.findValueInt(script, "frames",TGW_Spritepack(data).getSprite(_src).animcount)
+
+						'emit loader event for loading screen
+						self.doLoadElement("add copy sprite", _dest, "")
+
 						Assets.Add(_dest, TGW_Spritepack(data).AddCopySprite(_src, _dest, _x, _y, _w, _h, _frames, _r, _g, _b))
 					EndIf
 				EndIf
@@ -461,7 +474,7 @@ Type TXmlLoader
 		Local _flags:Int	= Self.GetImageFlags(childNode)
 
 		'emit loader event for loading screen
-		self.doLoadElement("image spritepack resource", _url, self.currentItemNumber)
+		self.doLoadElement("image spritepack resource", _url, "loading", self.currentItemNumber)
 
 
 		'Print "LoadSpritePackResource: "+_name + " " + _flags + " ["+url+"]"
@@ -486,6 +499,10 @@ Type TXmlLoader
 				      childFrames		= xml.findValueInt(child, "f", childFrames)
 
 				If childName<> "" And childW > 0 And childH > 0
+					'emit loader event for loading screen
+					self.doLoadElement("image spritepack resource", _url, "load sprite from pack")
+
+
 					'create sprite and add it to assets
 					Local sprite:TGW_Sprites = spritePack.AddSprite(childName, childX, childY, childW, childH, childFrames, childID)
 					Assets.Add(childName, sprite)
@@ -508,12 +525,15 @@ Type TXmlLoader
 		'for every single room
 		Local values_room:TMap = TMap(Self.values.ValueForKey("rooms"))
 		If values_room = Null Then values_room = CreateMap() ;
-		For Local child:TxmlNode = EachIn childNode
-			if child.getType() <> XML_ELEMENT_NODE then continue
-
+		For Local child:TxmlNode = EachIn childNode.GetChildren()
+'			if child.getType() <> XML_ELEMENT_NODE then continue
 			Local room:TMap		= CreateMap()
 			Local owner:Int		= xml.FindValueInt(child, "owner", -1)
 			Local name:String	= xml.FindValue(child, "name", "unknown")
+
+			'emit loader event for loading screen
+			'self.doLoadElement("load rooms", name, "load room")
+
 			room.Insert("name",		name + String(owner))
 			room.Insert("owner",	String(owner))
 			room.Insert("roomname", name)
