@@ -124,14 +124,14 @@ Type TDeltaTimer
 			self.totalTime		:+ self.deltaTime
 			self.accumulator	:- self.deltaTime
 			self.timesUpdated	:+ 1
-			EventManager.triggerEvent( "App.onUpdate", TEventSimple.Create("App.onUpdate",null))
+			EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
 		Wend
 		'how many % of ONE update are left - 1.0 would mean: 1 update missing
 		self.tweenValue = self.accumulator / self.deltaTime
 
 		'draw gets tweenvalue (0..1)
 		self.timesDrawn :+1
-		EventManager.triggerEvent( "App.onDraw", TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+		EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
 		'Delay(1)
 	End Method
 	?

@@ -254,7 +254,7 @@ Type TXmlLoader
 		self.loadedItems:+1
 
 		'fire event so LoaderScreen can refresh
-		EventManager.triggerEvent("XmlLoader.onLoadElement", TEventSimple.Create("XmlLoader.onLoadElement", TEventData.Create().AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onLoadElement", TEventData.Create().AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
 	End Method
 
 
@@ -269,7 +269,7 @@ Type TXmlLoader
 		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
 
 		self.LoadResources(xml.root)
-		EventManager.triggerEvent("XmlLoader.onFinishParsing", TEventSimple.Create("XmlLoader.onFinishParsing", TEventData.Create().AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onFinishParsing", TEventData.Create().AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
 	End Method
 
 
@@ -285,15 +285,14 @@ Type TXmlLoader
 
 '			self.doLoadElement("Resources", url, self.currentItemNumber)
 
-			'some loaders might be interested
-			if _type <> "RESOURCES"
-				EventManager.registerEvent( TEventSimple.Create("LoadResource."+_type, TEventData.Create().AddObject("node", childNode) ) )
-				self.currentItemNumber:+1		'increase by each entry
-			endif
+			'some loaders might be interested - fire it so handler reacts immediately
+			EventManager.triggerEvent( TEventSimple.Create("LoadResource."+_type, TEventData.Create().AddObject("node", childNode).AddObject("xmlLoader", self) ) )
+
+			self.currentItemNumber:+1		'increase by each entry
 
 			Select _type
 				Case "RESOURCES"			Self.LoadResources(childNode)
-				Case "ROOMS"				Self.LoadRooms(childNode)
+'				Case "ROOMS"				Self.LoadRooms(childNode)
 				Case "FILE"					Self.LoadXmlFile(childNode)
 				Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
 				Case "SPRITEPACK"			Self.LoadSpritePackResource(childNode)
@@ -519,17 +518,36 @@ Type TXmlLoader
 		'Self.Values.Insert(_name, TAsset.CreateBaseAsset(spritePack, "SPRITEPACK"))
 
 	End Method
+End Type
 
 
-	Method LoadRooms(childNode:TxmlNode)
+Type TResourceLoaders
+	Function Create:TResourceLoaders()
+		EventManager.registerListener( "LoadResource.ROOMS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadRooms)  )
+
+		return new TResourceLoaders
+	End Function
+
+	Function onLoadRooms:int( triggerEvent:TEventBase )
+		print "load room"
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt=Null then return 0
+
+		local childNode:TxmlNode = TxmlNode(evt.getData().get("node"))
+		if childNode = null then return 0
+		local xmlLoader:TXmlLoader = TXmlLoader(evt.getData().get("xmlLoader"))
+		if xmlLoader = null then return 0
+
+
 		'for every single room
-		Local values_room:TMap = TMap(Self.values.ValueForKey("rooms"))
+		Local values_room:TMap = TMap(xmlLoader.values.ValueForKey("rooms"))
 		If values_room = Null Then values_room = CreateMap() ;
+
 		For Local child:TxmlNode = EachIn childNode.GetChildren()
 '			if child.getType() <> XML_ELEMENT_NODE then continue
 			Local room:TMap		= CreateMap()
-			Local owner:Int		= xml.FindValueInt(child, "owner", -1)
-			Local name:String	= xml.FindValue(child, "name", "unknown")
+			Local owner:Int		= xmlLoader.xml.FindValueInt(child, "owner", -1)
+			Local name:String	= xmlLoader.xml.FindValue(child, "name", "unknown")
 
 			'emit loader event for loading screen
 			'self.doLoadElement("load rooms", name, "load room")
@@ -537,30 +555,29 @@ Type TXmlLoader
 			room.Insert("name",		name + String(owner))
 			room.Insert("owner",	String(owner))
 			room.Insert("roomname", name)
-			room.Insert("image", 	xml.FindValue(child, "image", "rooms_archive") )
+			room.Insert("image", 	xmlLoader.xml.FindValue(child, "image", "rooms_archive") )
 			local subNode:TxmlNode = null
-			subNode = xml.FindChild(child, "tooltip")
+			subNode = xmlLoader.xml.FindChild(child, "tooltip")
 			if subNode <> null
-				room.Insert("tooltip", 	xml.FindValue(subNode, "text", "") )
-				room.Insert("tooltip2", xml.FindValue(subNode, "description", "") )
+				room.Insert("tooltip", 	xmlLoader.xml.FindValue(subNode, "text", "") )
+				room.Insert("tooltip2", xmlLoader.xml.FindValue(subNode, "description", "") )
 			else
 				room.Insert("tooltip", 	"" )
 				room.Insert("tooltip2", "" )
 			endif
-			subNode = xml.FindChild(child, "door")
-			room.Insert("x", 		xml.FindValue(subNode, "x", 0) )
-			room.Insert("y", 		xml.FindValue(subNode, "y", 0) )
-			room.Insert("doortype", xml.FindValue(subNode, "type", -1) )
+			subNode = xmlLoader.xml.FindChild(child, "door")
+			room.Insert("x", 		xmlLoader.xml.FindValue(subNode, "x", 0) )
+			room.Insert("y", 		xmlLoader.xml.FindValue(subNode, "y", 0) )
+			room.Insert("doortype", xmlLoader.xml.FindValue(subNode, "type", -1) )
 			values_room.Insert(Name + owner, TAsset.CreateBaseAsset(room, "ROOMDATA"))
 			PrintDebug("XmlLoader.LoadRooms:", "inserted room: " + Name, DEBUG_LOADING)
 			'print "rooms: "+Name + owner
 		Next
 		Assets.Add("rooms", TAsset.CreateBaseAsset(values_room, "TMAP"))
-		'Self.values.Insert("rooms", TAsset.Create(values_room, "ROOMS"))
 
-	End Method
+	End Function
 End Type
-
+TResourceLoaders.Create()
 
 
 rem

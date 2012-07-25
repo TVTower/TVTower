@@ -61,7 +61,7 @@ Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,ce
 	If locstring <> "" Then locfilesize = FileSize(locstring)
 
 	'fire event so LoaderScreen can refresh
-	EventManager.triggerEvent("onCheckLoadImage", TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1) ) )
+	EventManager.triggerEvent( TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1) ) )
 
 	If locfilesize > -1 And LoadImageError = 0
 		Local Img:TImage = Null
@@ -76,7 +76,7 @@ Function CheckLoadImage:TImage(path:Object, flag:Int = -1, cellWidth:Int = -1,ce
 
 		Repeat
 			'fire event so LoaderScreen can refresh
-			EventManager.triggerEvent("onCheckLoadImage", TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1).AddNumber("error", 1) ) )
+			EventManager.triggerEvent( TEventSimple.Create("onCheckLoadImage", TEventData.Create().AddString("element", "image").AddString("text", locstring).AddNumber("itemNumber", -1).AddNumber("error", 1) ) )
 			If KeyHit(KEY_ESCAPE) Then ExitGame = 1
 			delay(5)
 		Until ExitGame = 1 Or AppTerminate()

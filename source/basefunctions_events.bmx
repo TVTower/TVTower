@@ -54,8 +54,8 @@ Type TEventManager
 		self._events.AddLast(event)
 	End Method
 
-	Method triggerEvent(trigger:string, triggeredByEvent:TEventBase)
-		local listeners:TList = TList(self._listeners.ValueForKey( lower(trigger) ))
+	Method triggerEvent(triggeredByEvent:TEventBase)
+		local listeners:TList = TList(self._listeners.ValueForKey( lower(triggeredByEvent._trigger) ))
 		if listeners <> null
 			for local listener:TEventListenerBase = eachin listeners
 				listener.onEvent(triggeredByEvent)
@@ -78,7 +78,7 @@ Type TEventManager
 				If startTime <= _ticks						' is it time for this event?
 					event.onEvent()							' start event
 					if event._trigger <> ""					' only trigger event if _trigger is set
-						self.triggerEvent(event._trigger, event)
+						self.triggerEvent( event )
 					endif
 					self._events.RemoveFirst()			' remove from list
 					self._processEvents()				' another event may start on the same ticks - check again
