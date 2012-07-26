@@ -844,8 +844,8 @@ endrem
 
 		Assets.GetSprite("gfx_datasheets_contract").Draw(x,y)
 
-		Local font:TBitmapFont = FontManager.basefont
-		FontManager.basefontBold.drawBlock(title 	       				, x+10 , y+11 , 270, 70,0, 0,0,0, 0,1)
+		Local font:TBitmapFont = Assets.fonts.basefont
+		Assets.fonts.basefontBold.drawBlock(title 	       				, x+10 , y+11 , 270, 70,0, 0,0,0, 0,1)
 		font.drawBlock(description     		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "	, x+10 , y+94 , 130, 16)
 		font.drawBlock(functions.convertValue(String( self.getProfit( playerID ) ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
@@ -1327,21 +1327,21 @@ endrem
 		Local widthbaroutcome:Float		= Float(Outcome/ 255)
 		Local widthbartopicality:Float	= Float(Float(topicality) / 255)
 		Local widthbarMaxTopicality:Float= Float(Float(MaxTopicality) / 255)
-		Local normalFont:TBitmapFont	= FontManager.baseFont
+		Local normalFont:TBitmapFont	= Assets.fonts.baseFont
 
 		Local dY:Int = 0
 
 		If isMovie()
 			Assets.GetSprite("gfx_datasheets_movie").Draw(x,y)
-			FontManager.basefontBold.DrawBlock(title, x + 10, y + 11, 278, 20)
+			Assets.fonts.basefontBold.DrawBlock(title, x + 10, y + 11, 278, 20)
 		Else
 			Assets.GetSprite("gfx_datasheets_series").Draw(x,y)
 			'episode display
 			If series <> Null
-				FontManager.basefontBold.DrawBlock(series.title, x + 10, y + 11, 278, 20)
+				Assets.fonts.basefontBold.DrawBlock(series.title, x + 10, y + 11, 278, 20)
 				normalFont.DrawBlock("(" + episodeNumber + "/" + series.episodeList.count() + ") " + title, x + 10, y + 34, 278, 20, 0)  'prints programmedescription on moviesheet
 			Else
-				FontManager.basefontBold.DrawBlock(title, x + 10, y + 11, 278, 20)
+				Assets.fonts.basefontBold.DrawBlock(title, x + 10, y + 11, 278, 20)
 				normalFont.DrawBlock(episodeList.count()+" "+GetLocale("MOVIE_EPISODES") , x+10,  y+34 , 278, 20,0) 'prints programmedescription on moviesheet
 			EndIf
 
@@ -2063,7 +2063,7 @@ Type TAdBlock Extends TBlockGraphical
 			'draw graphic
 
 			SetColor 0,0,0
-			FontManager.baseFontBold.DrawBlock(Self.contract.title, pos.x + 3, pos.y+2, Self.width-5, 18, 0, 0, 0, 0, True)
+			Assets.fonts.basefontBold.DrawBlock(Self.contract.title, pos.x + 3, pos.y+2, Self.width-5, 18, 0, 0, 0, 0, True)
 			SetColor 80,80,80
 			Local text:String = (contract.spotnumber)+"/"+contract.spotcount
 			If State = 1 And contract.spotnumber = contract.spotcount
@@ -2071,7 +2071,7 @@ Type TAdBlock Extends TBlockGraphical
 			ElseIf contract.botched=1
 				text = "------"
 			EndIf
-			FontManager.baseFont.Draw(text ,Pos.x+5,Pos.y+18)
+			Assets.fonts.baseFont.Draw(text ,Pos.x+5,Pos.y+18)
 			SetColor 255,255,255 'eigentlich alte Farbe wiederherstellen
 			SetAlpha 1.0
 		EndIf 'same day or dragged
@@ -2527,13 +2527,13 @@ Type TProgrammeBlock Extends TBlockGraphical
 			title = Self.programme.parent.title + " (" + Self.programme.episodeNumber + "/" + Self.programme.parent.episodeList.count() + ")"
 		EndIf
 
-		While FontManager.baseFontBold.getWidth(title) > maxWidth And title.length > 4
+		While Assets.fonts.basefontBold.getWidth(title) > maxWidth And title.length > 4
 			title = title[..title.length-3]+".."
 		Wend
 
-		FontManager.baseFontBold.DrawBlock(title, _pos.x + 5, _pos.y +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
+		Assets.fonts.basefontBold.DrawBlock(title, _pos.x + 5, _pos.y +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
 		If color <> Null Then color.set()
-		Local useFont:TBitmapFont = FontManager.GetFont("Default", 11, ITALICFONT)
+		Local useFont:TBitmapFont = Assets.GetFont("Default", 11, ITALICFONT)
 		If programme.parent <> Null
 			useFont.Draw(Self.Programme.getGenreString()+"-Serie",_pos.x+5,_pos.y+18)
 			useFont.Draw("Teil: " + Self.Programme.episodeNumber + "/" + Self.programme.parent.episodeList.count(), _pos.x + 138, _pos.y + 18)
@@ -2793,16 +2793,16 @@ Type TNewsBlock Extends TBlockGraphical
 
 
 		'draw graphic
-		If paid Then FontManager.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", pos.x + 1, pos.y + 65, 14, 25, 1, 50, 50, 50)
-		FontManager.baseFontBold.drawBlock(news.title, pos.x + 15, pos.y + 3, 290, 15 + 8, 0, 20, 20, 20)
-		FontManager.baseFont.drawBlock(news.description, pos.x + 15, pos.y + 18, 300, 45 + 8, 0, 100, 100, 100)
+		If paid Then Assets.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", pos.x + 1, pos.y + 65, 14, 25, 1, 50, 50, 50)
+		Assets.fonts.basefontBold.drawBlock(news.title, pos.x + 15, pos.y + 3, 290, 15 + 8, 0, 20, 20, 20)
+		Assets.fonts.baseFont.drawBlock(news.description, pos.x + 15, pos.y + 18, 300, 45 + 8, 0, 100, 100, 100)
 		SetAlpha 0.3
-		FontManager.GetFont("Default", 9).drawBlock(news.GetGenre(news.Genre), pos.x + 15, pos.y + 72, 120, 15, 0, 0, 0, 0)
+		Assets.GetFont("Default", 9).drawBlock(news.GetGenre(news.Genre), pos.x + 15, pos.y + 72, 120, 15, 0, 0, 0, 0)
 		SetAlpha 1.0
-		FontManager.GetFont("Default", 12).drawBlock(news.ComputePrice() + ",-", pos.x + 220, pos.y + 70, 90, 15, 2, 0, 0, 0)
-		If Game.day - news.happenedday = 0 Then FontManager.baseFont.drawBlock("Heute " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", pos.x + 90, pos.y + 72, 140, 15, 2, 0, 0, 0)
-		If Game.day - news.happenedday = 1 Then FontManager.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", pos.x + 90, pos.y + 72, 140, 15, 2, 0, 0, 0)
-		If Game.day - news.happenedday = 2 Then FontManager.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", pos.x + 90, pos.y + 72, 140, 15, 2, 0, 0, 0)
+		Assets.GetFont("Default", 12).drawBlock(news.ComputePrice() + ",-", pos.x + 220, pos.y + 70, 90, 15, 2, 0, 0, 0)
+		If Game.day - news.happenedday = 0 Then Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", pos.x + 90, pos.y + 72, 140, 15, 2, 0, 0, 0)
+		If Game.day - news.happenedday = 1 Then Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", pos.x + 90, pos.y + 72, 140, 15, 2, 0, 0, 0)
+		If Game.day - news.happenedday = 2 Then Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", pos.x + 90, pos.y + 72, 140, 15, 2, 0, 0, 0)
 		SetColor 255, 255, 255
 		SetAlpha 1.0
 	End Method
@@ -3885,9 +3885,9 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	    Else
 		  If Self.DrawnFirstTime < 30 Then Self.DrawnFirstTime:+1
 		  Assets.GetSprite("gfx_auctionmovie").Draw(x,y)
-	      FontManager.baseFont.drawBlock(Programme.title, x+31,y+5, 215,20)
-	      FontManager.baseFont.drawBlock("Preis:"+HighestBid+CURRENCYSIGN, x+31,y+20, 215,20,2,Null, 100,100,100,1)
-	      FontManager.baseFont.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, x+31,y+33, 215,20,2,Null, 0,0,0,1)
+	      Assets.fonts.baseFont.drawBlock(Programme.title, x+31,y+5, 215,20)
+	      Assets.fonts.baseFont.drawBlock("Preis:"+HighestBid+CURRENCYSIGN, x+31,y+20, 215,20,2,Null, 100,100,100,1)
+	      Assets.fonts.baseFont.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, x+31,y+33, 215,20,2,Null, 0,0,0,1)
           If Players[Bid[0]] <> Null
     	    HighestBidder = Players[Bid[0]].name
 	        Local colr:Int = Players[Bid[0]].color.colr'+900
@@ -3897,13 +3897,13 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 		    If colg > 255 Then colg = 255
 		    If colb > 255 Then colb = 255
 '			SetImageFont FontManager.GW_GetFont("Default", 10)
-			SetAlpha 1.0;FontManager.GetFont("Default", 10).drawBlock(HighestBidder, x + 33, y + 35, 150, 20, 0, colr - 200, colg - 200, colb - 200, 1)
-			SetAlpha 1.0;FontManager.GetFont("Default", 10).drawBlock(HighestBidder, x + 32, y + 34, 150, 20, 0, colr - 150, colg - 150, colb - 150, 1)
+			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 33, y + 35, 150, 20, 0, colr - 200, colg - 200, colb - 200, 1)
+			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 32, y + 34, 150, 20, 0, colr - 150, colg - 150, colb - 150, 1)
 	        Local pixmap:TPixmap = GrabPixmap(x+33-2,y+35-2,TextWidth(HighestBidder)+4,TextHeight(HighestBidder)+3)
 			pixmap = ConvertPixmap(pixmap, PF_RGBA8888)
             blurPixmap(pixmap, 0.6)
 			DrawPixmap(YFlipPixmap(pixmap), x+33-2,y+35-2 + pixmap.height)
-			SetAlpha 1.0;FontManager.GetFont("Default", 10).drawBlock(HighestBidder, x + 32, y + 34, 150, 20, 0, colr, colg, colb, 1)
+			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 32, y + 34, 150, 20, 0, colr, colg, colb, 1)
 		  EndIf
 		  Imagewithtext = TImage.Create(Assets.GetSprite("gfx_auctionmovie").w,Assets.GetSprite("gfx_auctionmovie").h-1,1,0,255,0,255)
 		  Imagewithtext.pixmaps[0] = GrabPixmap(x,y,Assets.GetSprite("gfx_auctionmovie").w,Assets.GetSprite("gfx_auctionmovie").h-1)

@@ -176,7 +176,7 @@ Type TgfxProgrammelist extends TPlannerList
 				Local genrecount:Int = TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List)
 
 				If genrecount > 0
-					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
+					Assets.fonts.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
 					SetAlpha 0.6; SetColor 0, 255, 0
 					'takes 20% of fps...
 					For Local i:Int = 0 To genrecount -1
@@ -184,7 +184,7 @@ Type TgfxProgrammelist extends TPlannerList
 					Next
 				else
 					SetAlpha 0.3; SetColor 0, 0, 0
-					FontManager.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
+					Assets.fonts.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
 				EndIf
 				SetAlpha 1.0
 				SetColor 255, 255, 255
@@ -198,7 +198,7 @@ Type TgfxProgrammelist extends TPlannerList
 		Local locx:Int = Pos.x - gfxmovies.w + 25
 		Local locy:Int = Pos.y+7 -19
 
-		local font:TBitmapFont = FontManager.GetFont("Font10")
+		local font:TBitmapFont = Assets.GetFont("Font10")
 		For Local movie:TProgramme = EachIn Players[Game.playerID].ProgrammeCollection.List 'all programmes of one player
 			If movie.genre = genre
 				locy :+ 19
@@ -253,7 +253,7 @@ Type TgfxProgrammelist extends TPlannerList
 	Method DrawEpisodeTapes:Int(series:TProgramme, createProgrammeblock:Int=1)
 		Local locx:Int = Pos.x - gfxepisodes.w + 8
 		Local locy:Int = Pos.y + 5 + gfxmovies.h - 4 -12 '-4 as displacement for displaced the background
-		local font:TBitmapFont = FontManager.GetFont("Default", 8)
+		local font:TBitmapFont = Assets.GetFont("Default", 8)
 
 		For Local i:Int = 0 To series.episodelist.Count()-1
 			Local episode:TProgramme = TProgramme(series.episodeList.ValueAtIndex(i))   'all programmes of one player
@@ -341,7 +341,7 @@ Type TgfxContractlist extends TPlannerList
 		local boxHeight:int			= gfxtape.h + 2
 		Local locx:Int 				= Pos.x - gfxcontracts.w + 10
 		Local locy:Int 				= Pos.y+7 - boxHeight
-		local font:TBitmapFont 		= FontManager.GetFont("Default", 10)
+		local font:TBitmapFont 		= Assets.GetFont("Default", 10)
 		For Local contract:TContract = EachIn Players[Game.playerID].ProgrammeCollection.ContractList 'all contracts of one player
 			locy :+ boxHeight
 			gfxtape.Draw(locx, locy)
@@ -867,8 +867,8 @@ Type TError
 		Game.cursorstate = 0
 		SetColor 255,255,255
 		sprite.Draw(pos.x,pos.y)
-		FontManager.GetFont("Default", 15, BOLDFONT).DrawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.w - 60, 40, 0, 150, 50, 50)
-		FontManager.GetFont("Default", 12).DrawBlock(message, pos.x+12+6,pos.y+50,sprite.w-40, sprite.h-60,0,50,50,50)
+		Assets.GetFont("Default", 15, BOLDFONT).DrawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.w - 60, 40, 0, 150, 50, 50)
+		Assets.GetFont("Default", 12).DrawBlock(message, pos.x+12+6,pos.y+50,sprite.w-40, sprite.h-60,0,50,50,50)
   End Method
 End Type
 
@@ -893,7 +893,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		self._highlighted = 0
-		If functions.MouseIn( x, y, w, FontManager.getFont("Default", 12).getBlockHeight(Self._text, w, h))
+		If functions.MouseIn( x, y, w, Assets.GetFont("Default", 12).getBlockHeight(Self._text, w, h))
 			self._highlighted = 1
 			If clicked
 				If _func <> Null Then _func(Self._funcparam)
@@ -907,11 +907,11 @@ Type TDialogueAnswer
 		if self._highlighted
 			SetColor 200,100,100
 			DrawOval(x, y +3, 6, 6)
-			FontManager.getFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h,0, 0, 0, 0)
+			Assets.GetFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h,0, 0, 0, 0)
 		else
 			SetColor 0,0,0
 			DrawOval(x, y +3, 6, 6)
-			FontManager.getFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h,0, 100, 100, 100)
+			Assets.GetFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h,0, 100, 100, 100)
 		endif
 	End Method
 End Type
@@ -933,24 +933,24 @@ Type TDialogueTexts
 	End Method
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
-		Local ydisplace:Float = FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h)
+		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h)
 		ydisplace:+15 'displace answers a bit
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			Local returnValue:Int = answer.Update(x + 9, y + ydisplace, w - 9, h, clicked)
 			If returnValue <> - 1 Then _goTo = returnValue
-			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 2
+			ydisplace:+Assets.GetFont("Default", 14).getHeight(answer._text) + 2
 		Next
 		Return _goTo
 	End Method
 
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		Local ydisplace:Float = FontManager.getFont("Default", 14).drawBlock(Self._text, x, y, w, h)
+		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h)
 		ydisplace:+15 'displace answers a bit
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			answer.Draw(x, y + ydisplace, w, h)
-			ydisplace:+FontManager.getFont("Default", 14).getHeight(answer._text) + 2
+			ydisplace:+Assets.GetFont("Default", 14).getHeight(answer._text) + 2
 		Next
 	End Method
 End Type
@@ -990,7 +990,7 @@ Type TDialogue
 
 	Method Draw()
 		SetColor 255, 255, 255
-	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), _x, _y, _w, _h, "StartLeftDown", 0, "", FontManager.getFont("Default", 14))
+	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), _x, _y, _w, _h, "StartLeftDown", 0, "", Assets.GetFont("Default", 14))
 		SetColor 0, 0, 0
 		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(_x + 10, _y + 10, _w - 60, _h)
 		SetColor 255, 255, 255
@@ -1025,7 +1025,7 @@ Type TButton
 '    Method OnClick() Abstract
 
     Method Draw(tweenValue:float=1.0)
-		local font:TBitmapFont = FontManager.getFont("Default", 10, BOLDFONT)
+		local font:TBitmapFont = Assets.GetFont("Default", 10, BOLDFONT)
 		local textWidth:int = font.getWidth(Caption)
         If Clicked <> 0
 			SetColor(220, 220, 220)
@@ -1382,9 +1382,9 @@ Type TInterface
 	  		SetBlend MASKBLEND
 	     	Assets.GetSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
-			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
-			FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
-		 	FontManager.getFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
+		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
@@ -1397,9 +1397,9 @@ Type TInterface
 			SetAlpha 1.0
 		EndIf
 		SetAlpha 0.25
-		FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime() + " Uhr", 366, 542, 120, 25, 1, 180, 180, 180)
+		Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime() + " Uhr", 366, 542, 120, 25, 1, 180, 180, 180)
 		SetAlpha 0.9
-		FontManager.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime()+ " Uhr", 365,541,120,25,1, 40,40,40)
+		Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime()+ " Uhr", 365,541,120,25,1, 40,40,40)
 		SetAlpha 1.0
    		ActualProgramToolTip.Draw()
 	    ActualAudienceToolTip.Draw()
@@ -1553,7 +1553,8 @@ Type TStationMap
 	Field LastCalculatedAudienceIncrease:int = -1
 	Field action:Int		= 0			{saveload = "normal"}	'2= station buying (another click on the map buys the station)
 																'1= searching a station
-	Field populationmap:Int[stationmap_mainpix.width + 20, stationmap_mainpix.height + 20]
+	Field populationmap:Int[5,5]
+	field populationMapSize:TPosition = TPosition.Create()
 	Field bundesland:String = "" {saveload = "normal"}	'mouse over state
 	Field outsideLand:Int = 0
 
@@ -1625,10 +1626,16 @@ endrem
 		local start:int = Millisecs()
 		local i:int, j:int
 
+		local pix:TPixmap = Assets.GetPixmap("stationmap_populationDensity")
+		local map:int[pix.width + 20, pix.height + 20]
+		obj.populationMap = map
+		obj.populationMapSize.SetX(pix.width)
+		obj.populationMapSize.SetY(pix.height)
+
 		'read all inhabitants of the map
-		For i = 0 To stationmap_mainpix.width-1
-			For j = 0 To stationmap_mainpix.height-1
-				obj.populationmap[i, j] = obj.getPopulationForBrightness( ARGB_RED(stationmap_mainpix.ReadPixel(i, j)) )
+		For i = 0 To pix.width-1
+			For j = 0 To pix.height-1
+				obj.populationmap[i, j] = obj.getPopulationForBrightness( ARGB_RED(pix.ReadPixel(i, j)) )
 				obj.einwohner:+ obj.populationmap[i, j]
 			Next
 		Next
@@ -1795,7 +1802,7 @@ endrem
 			baseStationSprite.draw(MouseX(), MouseY() +radius -baseStationSprite.h-2, -1,0,0.5)
 			SetAlpha 1.0
 		EndIf
-		local font:TBitmapFont = FontManager.baseFont
+		local font:TBitmapFont = Assets.fonts.baseFont
 		If action = 1
 			SetColor(0, 0, 0)
 			font.Draw(bundesland, 595, 35)
@@ -1804,7 +1811,7 @@ endrem
 			font.Draw("Zuwachs: ", 595, 69)
 				font.DrawBlock(functions.convertValue(String(LastCalculatedAudienceIncrease), 2, 0), 660, 69, 102, 20, 2)
 			font.Draw("Preis: ", 595, 86)
-				FontManager.baseFontBold.DrawBlock(functions.convertValue(self.LastStation.GetPrice(), 2, 0), 660, 86, 102, 20, 2)
+				Assets.fonts.baseFontBold.DrawBlock(functions.convertValue(self.LastStation.GetPrice(), 2, 0), 660, 86, 102, 20, 2)
 			SetColor(180, 180, 255)
 			font.Draw(bundesland, 594, 34)
 			SetColor(255,255,255)
@@ -1815,7 +1822,7 @@ endrem
 			font.Draw("Reichweite: ", 595, 197)
 				font.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2)
 			font.Draw("Preis: ", 595, 214)
-				FontManager.baseFontBold.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
+				Assets.fonts.baseFontBold.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
 			SetColor(255, 255, 255)
 		EndIf
 
@@ -1905,8 +1912,8 @@ endrem
 'print "for posX = "+Max(x - radius,radius)+" To "+Min(x + radius, stationmap_mainpix.width-radius)
 'print "	For posY = "+Max(y - radius,radius)+" To "+Min(y + radius, stationmap_mainpix.height-radius)
 		' innerhalb des Bildes?
-		For posX = Max(x - radius,radius) To Min(x + radius, stationmap_mainpix.width-radius)
-			For posY = Max(y - radius,radius) To Min(y + radius, stationmap_mainpix.height-radius)
+		For posX = Max(x - radius,radius) To Min(x + radius, self.populationMapSize.x-radius)
+			For posY = Max(y - radius,radius) To Min(y + radius, self.populationMapSize.y-radius)
 				' noch innerhalb des Kreises?
 				If self.calculateDistance( posX - x, posY - y ) <= radius
 					map.Insert(String((posX) + "," + (posY)), TStationPoint.Create((posX) , (posY), color ))
@@ -1969,8 +1976,8 @@ endrem
 		Local returnValue:Int = 0
 		' für die aktuelle Koordinate die summe berechnen
 		' min/max = immer innerhalb des Bildes
-		For posX = Max(x - radius,radius) To Min(x + radius, stationmap_mainpix.width-radius)
-			For posY = Max(y - radius,radius) To Min(y + radius, stationmap_mainpix.height-radius)
+		For posX = Max(x - radius,radius) To Min(x + radius, self.populationMapSize.x-radius)
+			For posY = Max(y - radius,radius) To Min(y + radius, self.populationMapSize.y-radius)
 				' noch innerhalb des Kreises?
 				If self.calculateDistance( posX - x, posY - y ) <= radius
 					returnvalue:+ populationmap[posX, posY]

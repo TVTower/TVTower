@@ -623,8 +623,8 @@ End Type
 
 
 Type TGW_FontManager
-	Field DefaultFont:TGW_Font
-	Field baseFont:TBitmapFont
+	Field DefaultFont:TGW_Font = null
+	Field baseFont:TBitmapFont = null
 	Field baseFontBold:TBitmapFont
 	Field List:TList = CreateList()
 
@@ -655,6 +655,10 @@ Type TGW_FontManager
 
 		Local Font:TGW_Font = TGW_Font.Create(_FName, _FFile, _FSize, _FStyle)
 		Self.List.AddLast(Font)
+
+		if self.DefaultFont = null then self.DefaultFont = Font
+		if self.baseFont = null then self.baseFont = Font.ffont
+
 		Return Font
 	End Method
 End Type

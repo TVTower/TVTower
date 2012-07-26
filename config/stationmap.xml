@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<pixmap name="stationmap_populationDensity" url="grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png" />
+	</resources>
+</tvt>

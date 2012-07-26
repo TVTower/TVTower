@@ -9,5 +9,6 @@
 		<file name="resource_gfx_building" url="config/gfx_hochhaus.xml" />
 		<file name="resource_gfx" url="config/gfx.xml" />
 		<file name="resource_figures" url="config/figures.xml" />
+		<file name="resource_stationmap" url="config/stationmap.xml" />
 	</resources>
 </tvt>

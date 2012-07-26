@@ -471,8 +471,8 @@ Function Room_Financials_Compute(_room:TRooms)
 		Local showday:Int = Game.getWeekday()
 		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", _room.owner)
 		Game.cursorstate = 0
-		local font13:TBitmapFont = FontManager.GetFont("Default", 14, BOLDFONT)
-		local font12:TBitmapFont = FontManager.GetFont("Default", 11)
+		local font13:TBitmapFont = Assets.GetFont("Default", 14, BOLDFONT)
+		local font12:TBitmapFont = Assets.GetFont("Default", 11)
 
 		local finances:TFinancials = Players[_room.owner].finances[showday]
 		local line:int = 14
@@ -550,10 +550,10 @@ End Function
 Function Room_Image_Compute(_room:TRooms)
 	If TRooms.doadraw 'draw it
 		Game.cursorstate = 0
-		FontManager.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
+		Assets.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
 
-		FontManager.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
-		FontManager.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Players[_room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
+		Assets.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
+		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Players[_room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	Else
 		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", _room.owner)
 	EndIf
@@ -565,7 +565,7 @@ Function Room_Elevator_Compute(_room:TRooms)
 	local playerFigure:TFigures = Players[Game.playerID].figure
 	If TRooms.doadraw 'draw it
 		TRoomSigns.DrawAll()
-		FontManager.baseFont.Draw("Rausschmiss in "+(Building.Elevator.waitAtFloorTimer - MilliSecs()), 600, 20)
+		Assets.fonts.baseFont.Draw("Rausschmiss in "+(Building.Elevator.waitAtFloorTimer - MilliSecs()), 600, 20)
 	Else
 		local mouseHit:int = MouseManager.IsHit(1)
 
@@ -597,8 +597,8 @@ Function Room_RoomBoard_Compute(_room:TRooms)
 	if TRooms.doadraw 'draw it
 		Players[game.playerid].figure.fromroom =Null
 		TRoomSigns.DrawAll()
-		FontManager.basefont.draw("owner:"+_room.owner, 20,20)
-		FontManager.basefont.draw(building.Elevator.waitAtFloorTimer - MilliSecs(), 20,40)
+		Assets.fonts.baseFont.draw("owner:"+_room.owner, 20,20)
+		Assets.fonts.baseFont.draw(building.Elevator.waitAtFloorTimer - MilliSecs(), 20,40)
 	Else
 		' MouseManager.changeStatus()
 		Game.cursorstate = 0
@@ -655,8 +655,8 @@ Function Room_MovieAgency_Compute(_room:TRooms)
 	Assets.GetSprite("gfx_suitcase"+glow).Draw(530, 240)
 
     SetAlpha 0.5
-    FontManager.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
-    FontManager.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
+    Assets.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
+    Assets.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
     SetAlpha 1.0
 	TMovieAgencyBlocks.DrawAll(True)
 
@@ -705,15 +705,15 @@ Function Room_MovieAuction_Compute(_room:TRooms)
   If TRooms.doadraw 'draw it
 	Assets.GetSprite("gfx_suitcase").Draw(530, 240)
     SetAlpha 0.5
-    FontManager.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
-    FontManager.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
+    Assets.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
+    Assets.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
     SetAlpha 1.0
 	TMovieAgencyBlocks.DrawAll(True)
 	SetAlpha 0.5;SetColor 0,0,0
 	DrawRect(20,10,760,373)
 	SetAlpha 1.0;SetColor 255,255,255
 	DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 120, 60, 555, 290)
-	FontManager.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
+	Assets.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
 	TAuctionProgrammeBlocks.DrawAll(0)
   Else
     Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("movieagency", 0)
@@ -740,7 +740,7 @@ Function Room_Betty_Compute(_room:TRooms)
 		Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 	Next
 	Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
-	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, FontManager.GetFont("Default",14))
+	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, Assets.GetFont("Default",14))
   EndIf
 
 End Function
@@ -929,7 +929,7 @@ Function Room_StationMap_Compute(_room:TRooms)
 	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", _room.owner)
     StationMap.Draw()
 	GUIManager.Draw("STATIONMAP")
-	FontManager.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
+	Assets.fonts.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
 	For Local i:Int = 0 To 3
 		SetColor 100, 100, 100
 		DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 15, 18)
@@ -979,11 +979,11 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 
 			For Local i:Int = 0 To 11
 				'left side
-				FontManager.baseFont.drawOnPixmap( (i + 12) + ":00", 356, 25 + i * 30, 255,255,255, Pix, True )
+				Assets.fonts.baseFont.drawOnPixmap( (i + 12) + ":00", 356, 25 + i * 30, 255,255,255, Pix, True )
 				'right side
 				local text:string = i + ":00"
 				If i < 10 then text = "0" + text
-				FontManager.baseFont.drawOnPixmap(text, 29, 25 + i * 30, 255,255,255, Pix, True)
+				Assets.fonts.baseFont.drawOnPixmap(text, 29, 25 + i * 30, 255,255,255, Pix, True)
 			Next
 			_room.background = Assets.GetSprite("rooms_pplanning")
 			TRooms.ActiveBackground = Assets.GetSprite("rooms_pplanning")
@@ -1071,7 +1071,7 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 		If Game.daytoplan = Game.day Then SetColor 0,100,0
 		If Game.daytoplan < Game.day Then SetColor 100,100,0
 		If Game.daytoplan > Game.day Then SetColor 0,0,0
-		FontManager.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(Game.daytoplan), 691, 17, 100, 15, 0)
+		Assets.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(Game.daytoplan), 691, 17, 100, 15, 0)
 
 		SetColor 255,255,255
 		If _room.owner = Game.playerID
@@ -1261,8 +1261,8 @@ Type TRoomSigns Extends TBlock
 					If colr > 255 Then colr = 255
 					If colg > 255 Then colg = 255
 					If colb > 255 Then colb = 255
-					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+23,Pos.y+4,150,20,0,0,0,0,1)
-					SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,0,0,0,1)
+					SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+23,Pos.y+4,150,20,0,0,0,0,1)
+					SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,0,0,0,1)
 					Local TxtWidth:Int = Min(TextWidth(title)+4, image.w-23-5)
 					Local pixmap:TPixmap = GrabPixmap(Pos.x+23-2,Pos.y+4-2,TxtWidth,TextHeight(title)+3)
 					pixmap = ConvertPixmap(pixmap, PF_RGB888)
@@ -1271,9 +1271,9 @@ Type TRoomSigns Extends TBlock
 					DrawImage(LoadImage(pixmap), Pos.x+21,Pos.y+2)
 
 					If owner > 0 And owner <=4
-						SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,colr,colg,colb,1)
+						SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,colr,colg,colb,1)
 					Else
-						SetAlpha 1.0;FontManager.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,250,250,250,1)
+						SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,250,250,250,1)
 					EndIf
 				endif
 			EndIf

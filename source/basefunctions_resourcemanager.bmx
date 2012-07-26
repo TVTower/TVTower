@@ -16,6 +16,7 @@ Global Assets:TAssetManager = TAssetManager.Create(null,1)
 
 Type TAssetManager
 	global content:TMap = CreateMap()
+	global fonts:TGW_FontManager = TGW_FontManager.Create()
 	Field checkExistence:Int
 
 	global AssetsToLoad:TMap = CreateMap()
@@ -124,14 +125,18 @@ loadedObject.setLoaded(true)
 				endif
 			endif
 			asset = self.ConvertImageToSprite(TImage(asset._object), assetName, -1)
+		elseif asset._type = "PIXMAP"
+			if TPixmap(asset._object) = null
+				print "ASSETS: given pixmap '"+assetName+"' is NULL"
+			endif
 		endif
 		'if asset._type <> "SPRITE" then print "ASSETMANAGER: Add TAsset '"+lower(string(assetName))+"' [" + asset._type+"]"
 		?Threaded
-		LockMutex(MutexContentLock)
-		?
+			LockMutex(MutexContentLock)
 			Self.content.Insert(assetName, asset)
-		?Threaded
-		UnlockMutex(MutexContentLock)
+			UnlockMutex(MutexContentLock)
+		?not Threaded
+			Self.content.Insert(assetName, asset)
 		?
 	End Method
 
@@ -195,6 +200,11 @@ loadedObject.setLoaded(true)
 		return Self.content.ValueForKey(assetName)
 	End Method
 
+	Method GetFont:TBitmapFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
+		return self.fonts.GetFont(_FName, _FSize, _FStyle)
+	End Method
+
+
 	Method GetSprite:TGW_Sprites(assetName:String, defaultName:string="")
 		assetName = lower(assetName)
 		Self.checkExistence = True
@@ -212,7 +222,7 @@ loadedObject.setLoaded(true)
 		Return TGW_SpritePack(Self.GetObject(assetName, "SPRITEPACK"))
 	End Method
 
-	Method GetFont:TImageFont(assetName:String)
+	Method GetImageFont:TImageFont(assetName:String)
 		assetName = lower(assetName)
 		Return TImageFont(Self.GetObject(assetName,"IMAGEFONT"))
 	End Method
@@ -220,7 +230,15 @@ loadedObject.setLoaded(true)
 	Method GetImage:TImage(assetName:String)
 		assetName = lower(assetName)
 		Self.checkExistence = True
-		Return TImage(Self.GetObject(assetName))
+		'tpixmap is no child of TAsset ...get _object
+		Return TImage(TAsset(Self.GetObject(assetName))._object)
+	End Method
+
+	Method GetPixmap:TPixmap(assetName:String)
+		assetName = lower(assetName)
+		Self.checkExistence = True
+		'tpixmap is no child of TAsset ...get _object
+		Return TPixmap(TAsset(Self.GetObject(assetName, "PIXMAP"))._object)
 	End Method
 
 	Method GetBigImage:TBigImage(assetName:String)
@@ -294,6 +312,7 @@ Type TXmlLoader
 				Case "RESOURCES"			Self.LoadResources(childNode)
 '				Case "ROOMS"				Self.LoadRooms(childNode)
 				Case "FILE"					Self.LoadXmlFile(childNode)
+				Case "PIXMAP"				Self.LoadPixmapResource(childNode)
 				Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
 				Case "SPRITEPACK"			Self.LoadSpritePackResource(childNode)
 			End Select
@@ -343,6 +362,19 @@ Type TXmlLoader
 			flags = 0
 		EndIf
 		Return flags
+	End Method
+
+
+	Method LoadPixmapResource(childNode:TxmlNode)
+		Local _name:String		= Lower( xml.FindValue(childNode, "name", "default") )
+		Local _type:String		= Upper( xml.FindValue(childNode, "type", childNode.getName()))
+		Local _url:String		= xml.FindValue(childNode, "url", "")
+		if _type = "" or _url = "" then return
+
+		'emit loader event for loading screen
+		self.doLoadElement("pixmap resource", _url, "loading", self.currentItemNumber)
+		Assets.Add(_name, TAsset.CreateBaseAsset( LoadPixmap(_url) ,"PIXMAP") )
+		print Assets.GetPixmap(_name).width
 	End Method
 
 	Method LoadImageResource(childNode:TxmlNode)
