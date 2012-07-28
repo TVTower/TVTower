@@ -294,14 +294,14 @@ Type TXmlLoader
 	Method LoadResources(node:TxmlNode)
 		local children:TList = node.getChildren()
 		for local childNode:TxmlNode = eachin children
+
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
 			if _type<>"RESOURCES" then self.maxItemNumber:+ 1' children.count()	'it is a entry - so increase
 		Next
 
-		for local childNode:TxmlNode = eachin children
+		for local childNode:TxmlNode = eachin node.getChildren()
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
 
-'			self.doLoadElement("Resources", url, self.currentItemNumber)
 
 			'some loaders might be interested - fire it so handler reacts immediately
 			EventManager.triggerEvent( TEventSimple.Create("LoadResource."+_type, TEventData.Create().AddObject("node", childNode).AddObject("xmlLoader", self) ) )
@@ -374,7 +374,6 @@ Type TXmlLoader
 		'emit loader event for loading screen
 		self.doLoadElement("pixmap resource", _url, "loading", self.currentItemNumber)
 		Assets.Add(_name, TAsset.CreateBaseAsset( LoadPixmap(_url) ,"PIXMAP") )
-		print Assets.GetPixmap(_name).width
 	End Method
 
 	Method LoadImageResource(childNode:TxmlNode)

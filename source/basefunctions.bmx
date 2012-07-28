@@ -90,7 +90,7 @@ Type TXmlHelper
 				if subNode.getType() = XML_TEXT_NODE then continue
 				if subNode <> null
 					If subNode.getName().ToLower() = fieldName then return subNode.getContent()
-					If subNode.hasAttribute(fieldName) then Return subNode.getAttribute(fieldName)
+					If subNode.getName().ToLower() = "data" and subNode.hasAttribute(fieldName) then Return subNode.getAttribute(fieldName)
 				endif
 			Next
 '		endif

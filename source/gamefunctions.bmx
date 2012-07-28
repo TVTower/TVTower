@@ -1545,6 +1545,7 @@ Type TStationPoint
 	End Function
 End Type
 
+EventManager.registerListener( "LoadResource.STATIONMAP",	TEventListenerRunFunction.Create(TStationMap.onLoadStationMapConfiguration)  )
 Type TStationMap
 	Field StationList:TList	= CreateList()
 	Field radius:Int		= 15		{saveload = "normal"}
@@ -1648,6 +1649,15 @@ endrem
 		SortList List
 		Return obj
 	End Function
+
+	Function onLoadStationMapConfiguration:int( triggerEvent:TEventBase)
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt=Null then return 0
+
+		print "STATIONMAP on load stat"
+
+	End Function
+
 
 	Method AddStation(x:Int, y:Int, playerid:Int, valuetorefresh:Int Var)
 		Local reach:Int = Self.CalculateAudienceIncrease(playerid, x, y)

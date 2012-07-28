@@ -9,12 +9,14 @@ Type TDeltaTimer
 	field newTime:int 				= 0
 	field oldTime:int 				= 0.0
 	field loopTime:float			= 0.1
-	field deltaTime:float			= 0.1		'10 updates per second
+	field nextDraw:float			= 0.0
 	field accumulator:float			= 0.0
 	field tweenValue:float			= 0.0		'between 0..1 (0 = no tween, 1 = full tween)
 
 	field fps:int 					= 0
 	field ups:int					= 0
+	field currentUps:int			= 0
+	field currentFps:int			= 0
 	field deltas:float 				= 0.0
 	field timesDrawn:int 			= 0
 	field timesUpdated:int 			= 0
@@ -28,9 +30,10 @@ Type TDeltaTimer
 	Global useDeltaTimer:TDeltaTimer= null
 	?
 
-	Function Create:TDeltaTimer(physicsFps:int = 60)
+	Function Create:TDeltaTimer(physicsFps:int = 60, graphicsFps:int = -1)
 		local obj:TDeltaTimer	= new TDeltaTimer
-		obj.deltaTime			= 1.0 / float(physicsFps)
+		obj.ups					= physicsFps
+		obj.fps					= graphicsFps
 		obj.newTime				= MilliSecs()
 		obj.oldTime				= 0.0
 		return obj
@@ -47,8 +50,8 @@ Type TDeltaTimer
 
 			if useDeltaTimer.secondGone >= 1000.0 'in ms
 				useDeltaTimer.secondGone 	= 0.0
-				useDeltaTimer.fps			= useDeltaTimer.timesDrawn
-				useDeltaTimer.ups			= useDeltaTimer.timesUpdated
+				useDeltaTimer.currentFps	= useDeltaTimer.timesDrawn
+				useDeltaTimer.currentUps	= useDeltaTimer.timesUpdated
 				useDeltaTimer.deltas		= 0.0
 				useDeltaTimer.timesDrawn 	= 0
 				useDeltaTimer.timesUpdated	= 0
@@ -58,18 +61,18 @@ Type TDeltaTimer
 			useDeltaTimer.loopTime = Min(0.25, useDeltaTimer.loopTime)	'min 4 updates per seconds 1/4
 			useDeltaTimer.accumulator :+ useDeltaTimer.loopTime
 
-			if useDeltaTimer.accumulator >= useDeltaTimer.deltaTime
+			if useDeltaTimer.accumulator >= useDeltaTimer.getDeltaTime()
 				'force lock as physical updates are crucial
 				LockMutex(drawMutex)
-				While useDeltaTimer.accumulator >= useDeltaTimer.deltaTime
-					useDeltaTimer.totalTime		:+ useDeltaTimer.deltaTime
-					useDeltaTimer.accumulator	:- useDeltaTimer.deltaTime
+				While useDeltaTimer.accumulator >= useDeltaTimer.getDeltaTime()
+					useDeltaTimer.totalTime		:+ useDeltaTimer.getDeltaTime()
+					useDeltaTimer.accumulator	:- useDeltaTimer.getDeltaTime()
 					useDeltaTimer.timesUpdated	:+ 1
 					EventManager.triggerEvent( "App.onUpdate", TEventSimple.Create("App.onUpdate",null))
 				Wend
 				UnLockMutex(drawMutex)
 			else
-				delay( floor(Max(1, 1000.0 * (useDeltaTimer.deltaTime - useDeltaTimer.accumulator) - 1)) )
+				delay( floor(Max(1, 1000.0 * (useDeltaTimer.getDeltaTime() - useDeltaTimer.accumulator) - 1)) )
 			endif
 		forever
 	End Function
@@ -84,15 +87,17 @@ Type TDeltaTimer
 			self.UpdateThread = CreateThread(self.RunUpdateThread, Null)
 		endif
 
-		'if we get the mutex (not updating now) -> send draw event
-		if TryLockMutex(drawMutex)
-			'how many % of ONE update are left - 1.0 would mean: 1 update missing
-			self.tweenValue = self.accumulator / self.deltaTime
+		If self.fps < 0 OR (self.fps > 0 and self.nextDraw <= 0.0)
+			'if we get the mutex (not updating now) -> send draw event
+			if TryLockMutex(drawMutex)
+				'how many % of ONE update are left - 1.0 would mean: 1 update missing
+				self.tweenValue = self.accumulator / self.getDeltaTime()
 
-			'draw gets tweenvalue (0..1)
-			self.timesDrawn :+1
-			EventManager.triggerEvent( "App.onDraw", TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
-			UnlockMutex(drawMutex)
+				'draw gets tweenvalue (0..1)
+				self.timesDrawn :+1
+				EventManager.triggerEvent( "App.onDraw", TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+				UnlockMutex(drawMutex)
+			endif
 		endif
 		delay(2)
 	End Method
@@ -108,8 +113,8 @@ Type TDeltaTimer
 
 		if self.secondGone >= 1000.0 'in ms
 			self.secondGone 	= 0.0
-			self.fps			= self.timesDrawn
-			self.ups			= self.timesUpdated
+			self.currentFps		= self.timesDrawn
+			self.currentUps		= self.timesUpdated
 			self.deltas			= 0.0
 			self.timesDrawn 	= 0
 			self.timesUpdated	= 0
@@ -119,19 +124,36 @@ Type TDeltaTimer
 		self.loopTime = Min(0.25, self.loopTime)	'min 4 updates per seconds 1/4
 		self.accumulator :+ self.loopTime
 
+
+		local updateTime:int = Millisecs()
 		'update gets deltatime - fraction of a second (speed = pixels per second)
-		While self.accumulator >= self.deltaTime
-			self.totalTime		:+ self.deltaTime
-			self.accumulator	:- self.deltaTime
+		While self.accumulator >= self.GetDeltaTime()
+			self.totalTime		:+ self.GetDeltaTime()
+			self.accumulator	:- self.GetDeltaTime()
 			self.timesUpdated	:+ 1
 			EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
 		Wend
-		'how many % of ONE update are left - 1.0 would mean: 1 update missing
-		self.tweenValue = self.accumulator / self.deltaTime
+		updateTime :-Millisecs()
 
-		'draw gets tweenvalue (0..1)
-		self.timesDrawn :+1
-		EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+		'time for drawing?
+		'- subtract looptime
+		'  -> time lost for doing other things
+		self.nextDraw	:- self.looptime
+
+		If self.fps < 0 OR (self.fps > 0 and self.nextDraw <= 0.0)
+			self.nextDraw = 1.0/float(self.fps)
+
+			'how many % of ONE update are left - 1.0 would mean: 1 update missing
+			self.tweenValue:+ self.accumulator * self.ups
+
+			'draw gets tweenvalue (0..1)
+			self.timesDrawn :+1
+			EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+		else
+			'print self.nextDraw - self.looptime
+			delay( self.nextDraw - self.looptime)
+		EndIf
+
 		'Delay(1)
 	End Method
 	?
@@ -145,7 +167,7 @@ Type TDeltaTimer
 	'time between physical updates as fraction to a second
 	'used to be able to give "velocity" in pixels per second (dx = 100 means 100px per second)
 	Method getDeltaTime:float()
-		return self.deltaTime
+		return 1.0/self.ups
 	End Method
 End Type
 

@@ -19,13 +19,18 @@ Import brl.D3D9Max2D
 Import brl.D3D7Max2D
 ?
 
+Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
+												'		- base class For buttons And extension newsbutton
+												'		- stationmap-handling, -creation ...
+
+
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
 
-Global App:TApp = TApp.Create(60, 1) 'create with 60fps for physics and graphics
+Global App:TApp = TApp.Create(60, 100) 'create with 60fps for physics and graphics
 App.LoadResources("config/resources.xml")
 
 'defaultfont
@@ -37,9 +42,6 @@ Assets.fonts.baseFontBold = Assets.getFont("Default", 11, BOLDFONT)
 GUIManager.globalScale	= 0.75
 GUIManager.defaultFont	= Assets.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
-Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
-												'		- base class For buttons And extension newsbutton
-												'		- stationmap-handling, -creation ...
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 
@@ -89,11 +91,11 @@ Type TApp
 	global LoaderWidth:Int = 0
 
 
-	Function Create:TApp(physicsFps:Int = 60, limitFrames:Int = 0)
+	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 60)
 		Local obj:TApp = New TApp
 		obj.settings = new TApplicationSettings
 		'create timer
-		obj.timer = TDeltaTimer.Create(physicsFps)
+		obj.timer = TDeltaTimer.Create(updatesPerSecond, framesPerSecond)
 		'listen to App-timer
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
@@ -3451,7 +3453,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			Else
 				DrawMenu()
 			EndIf
-			Assets.fonts.baseFont.Draw("FPS:"+App.Timer.fps + " UPS:" + Int(App.Timer.ups), 150,0)
+			Assets.fonts.baseFont.Draw("FPS:"+App.Timer.currentFps + " UPS:" + Int(App.Timer.currentUps), 150,0)
 			Assets.fonts.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
 			If game.networkgame Then Assets.fonts.baseFont.Draw("ping "+Int(Network.client.latency)+"ms", 375,0)
 			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.width - 10, 10, 0, 1)
