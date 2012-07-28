@@ -1,3 +1,7 @@
+#ifndef THREADED
+	#define THREADED
+#endif
+
 #include <brl.mod/blitz.mod/blitz.h>
 
 #include <pub.mod/lua.mod/lua-5.1.4/src/lua.h>

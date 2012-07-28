@@ -17,7 +17,6 @@ Type TDeltaTimer
 	field ups:int					= 0
 	field currentUps:int			= 0
 	field currentFps:int			= 0
-	field deltas:float 				= 0.0
 	field timesDrawn:int 			= 0
 	field timesUpdated:int 			= 0
 	field secondGone:float 			= 0.0
@@ -52,7 +51,6 @@ Type TDeltaTimer
 				useDeltaTimer.secondGone 	= 0.0
 				useDeltaTimer.currentFps	= useDeltaTimer.timesDrawn
 				useDeltaTimer.currentUps	= useDeltaTimer.timesUpdated
-				useDeltaTimer.deltas		= 0.0
 				useDeltaTimer.timesDrawn 	= 0
 				useDeltaTimer.timesUpdated	= 0
 			endif
@@ -68,7 +66,7 @@ Type TDeltaTimer
 					useDeltaTimer.totalTime		:+ useDeltaTimer.getDeltaTime()
 					useDeltaTimer.accumulator	:- useDeltaTimer.getDeltaTime()
 					useDeltaTimer.timesUpdated	:+ 1
-					EventManager.triggerEvent( "App.onUpdate", TEventSimple.Create("App.onUpdate",null))
+					EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
 				Wend
 				UnLockMutex(drawMutex)
 			else
@@ -95,7 +93,7 @@ Type TDeltaTimer
 
 				'draw gets tweenvalue (0..1)
 				self.timesDrawn :+1
-				EventManager.triggerEvent( "App.onDraw", TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+				EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue)) )
 				UnlockMutex(drawMutex)
 			endif
 		endif
@@ -115,7 +113,6 @@ Type TDeltaTimer
 			self.secondGone 	= 0.0
 			self.currentFps		= self.timesDrawn
 			self.currentUps		= self.timesUpdated
-			self.deltas			= 0.0
 			self.timesDrawn 	= 0
 			self.timesUpdated	= 0
 		endif
@@ -125,7 +122,6 @@ Type TDeltaTimer
 		self.accumulator :+ self.loopTime
 
 
-		local updateTime:int = Millisecs()
 		'update gets deltatime - fraction of a second (speed = pixels per second)
 		While self.accumulator >= self.GetDeltaTime()
 			self.totalTime		:+ self.GetDeltaTime()
@@ -133,7 +129,6 @@ Type TDeltaTimer
 			self.timesUpdated	:+ 1
 			EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
 		Wend
-		updateTime :-Millisecs()
 
 		'time for drawing?
 		'- subtract looptime
@@ -153,8 +148,6 @@ Type TDeltaTimer
 			'print self.nextDraw - self.looptime
 			delay( self.nextDraw - self.looptime)
 		EndIf
-
-		'Delay(1)
 	End Method
 	?
 	'tween value = oldposition*tween + (1-tween)*newPosition

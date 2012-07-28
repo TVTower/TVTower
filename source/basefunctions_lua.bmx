@@ -3,7 +3,11 @@ Import Pub.Lua
 Import BRL.Reflection
 Import brl.retro
 'from maxlua
+?threaded
+Import "basefunctions_lua_threaded.c"
+?not threaded
 Import "basefunctions_lua.c"
+?
 Extern
 	Function lua_boxobject( L:Byte Ptr,obj:Object )
 	Function lua_unboxobject:Object( L:Byte Ptr,index:Int)
