@@ -99,8 +99,8 @@ Type TApp
 		'listen to App-timer
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
-		EventManager.registerListener( "XmlLoader.onLoadElement",	TEventListenerRunFunction.Create(TApp.drawLoadingScreen)  )
-		EventManager.registerListener( "XmlLoader.onFinishParsing",	TEventListenerRunFunction.Create(TApp.onFinishParsingXML)  )
+		EventManager.registerListenerFunction( "XmlLoader.onLoadElement",	TApp.drawLoadingScreen )
+		EventManager.registerListenerFunction( "XmlLoader.onFinishParsing",	TApp.onFinishParsingXML )
 
 		obj.LoadSettings("config/settings.xml")
 		obj.InitGraphics()
@@ -2401,13 +2401,13 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
-Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(600, 300, 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(600, 348, 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(600, 396, 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(TPosition.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 
-Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(600, 300, 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(600, 345, 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(600, 390, 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
 Global NetgameLobby_gamelist:TGUIList		= TGUIList.Create(25 + 3, 300, 440, 175, 1, 100, "NetGameLobby")
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
 NetgameLobby_gamelist.GUIbackground = Null
@@ -2416,8 +2416,8 @@ Global GameSettingsBG:TGUIBackgroundBox = TGUIBackgroundBox.Create(20, 20, 760, 
 
 Global GameSettingsOkButton_Announce:TGUIOkButton = TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings")
 Global GameSettingsGameTitle:TGuiInput = TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
-Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(600, 300, 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
-Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(600, 345, 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
 Global GameSettings_Chat:TGUIChat = TGuiChat.Create(20 + 3, 300, 450, 250, 1, 200, "GameSettings")
 Global InGame_Chat:TGUIChat = TGuiChat.Create(20, 10, 250, 200, 1, 200, "InGame")
 GameSettings_Chat._UpdateFunc_	= UpdateChat_GameSettings
@@ -2431,7 +2431,7 @@ InGame_Chat.clickable			= 0
 InGame_Chat.nobackground		= True
 InGame_Chat.fadeout				= True
 InGame_Chat.GUIInput.pos.setXY( 290, 385)
-InGame_Chat.GuiInput.width		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").w
+InGame_Chat.GuiInput.dimension.setX( gfx_GuiPack.GetSprite("Chat_IngameOverlay").w )
 InGame_Chat.GuiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").w - 20
 InGame_Chat.GUIInput.InputImage	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
 InGame_Chat.useFont				= Assets.GetFont("Default", 11)
@@ -2471,16 +2471,22 @@ Function UpdateChat(UseChat:TGuiChat)
 End Function
 
 'Doubleclick-function for NetGameLobby_GameList
-Function NetGameLobbyDoubleClick:Int(sender:Object)
-	NetgameLobbyButton_Join.Clicked	= 1
-	GameSettingsButton_Start.disable()
+Function onClick_NetGameLobby:Int(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		local clickType:int = evt.getData().getInt("type")
+		if clickType = EVENT_DOUBLECLICK
+			NetgameLobbyButton_Join.clicked	= TPosition.Create(1,1)
+			GameSettingsButton_Start.disable()
 
-	If Network.ConnectToServer( HostIp(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
-		Game.gamestate = GAMESTATE_SETTINGSMENU
-		GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
-	EndIf
+			If Network.ConnectToServer( HostIp(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
+				Game.gamestate = GAMESTATE_SETTINGSMENU
+				GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
+			EndIf
+		endif
+	endif
 End Function
-NetgameLobby_gamelist.SetDoubleClickFunc(NetGameLobbyDoubleClick)
+EventManager.registerListenerFunction( "guiobject.onClick",	onClick_NetGameLobby, NetgameLobby_gamelist )
 
 
 Include "gamefunctions_network.bmx"

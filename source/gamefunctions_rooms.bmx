@@ -825,102 +825,117 @@ rem
 endrem
 End Function
 
-Function OnClick_StationMapSell(sender:Object)
-	Local button:TGUIButton = TGUIButton(sender)
-	If button <> Null
-         button.value = "Wirklich verkaufen"
-         StationMap.action = 3 'selling of stations
-		 button.SetClickFunc(OnClick_StationMapSellApprove)
-     EndIf
-End Function
-Function OnClick_StationMapSellApprove(sender:Object)
-	Local button:TGUIButton = TGUIButton(sender)
-	If button <> Null
-         button.value = "Verkaufen"
-         StationMap.action = 4 'finished selling
-		 button.SetClickFunc(OnClick_StationMapSell)
-'		 button.disable()
+Function OnClick_StationMapSell(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		Local button:TGUIButton = TGUIButton(evt._sender)
+		If button <> Null
+			if StationMap.action <> 3
+				button.value = "Wirklich verkaufen"
+				StationMap.action = 3 'selling of stations
+			else
+				 button.value = "Verkaufen"
+				 StationMap.action = 4 'finished selling
+			endif
+		endif
      EndIf
 End Function
 
-Function OnClick_StationMapNew(sender:Object)
-	Local button:TGUIButton = TGUIButton(sender)
-	If button <> Null
-         button.value = "Kaufen"
-         StationMap.action = 1 'enables buying of stations
-		 button.SetClickFunc(OnClick_StationMapBuy)
-     EndIf
+Function OnClick_StationMapBuy(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		Local button:TGUIButton = TGUIButton(evt._sender)
+		If button <> Null
+			if StationMap.action <> 1
+				button.value		= "Kaufen"
+				StationMap.action	= 1			'enables buying of stations
+			else
+				button.value		= "Neue Station"
+				StationMap.action 	= 2			'tries to buy
+			endif
+		EndIf
+	endif
 End Function
-Function OnClick_StationMapBuy(sender:Object)
-	Local button:TGUIButton = TGUIButton(sender)
-	If button <> Null
-         button.value = "Neue Station"
-         StationMap.action = 2 'tries to buy
-		 button.SetClickFunc(OnClick_StationMapNew)
-	EndIf
-End Function
-Function OnUpdate_StationMapBuy(sender:Object)
-	Local button:TGUIButton = TGUIButton(sender)
-	If button <> Null
+
+Function OnUpdate_StationMapBuy(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		Local obj:TGUIButton = TGUIButton(evt._sender)
+
 		If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseX() < 570
 			local ClickPos:TPosition = TPosition.Create( MouseX() - 20, MouseY() - 10 )
 			If StationMap.LastStation.pos.isSame( ClickPos )
-				OnClick_StationMapBuy(button)
+				EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
 			Else
 				StationMap.LastStation.pos.setPos(clickPos)
 			EndIf
 			MouseManager.resetKey(1)
-			If StationMap.action > 1 Then OnClick_StationMapBuy(sender)
-	  	EndIf
+			If StationMap.action > 1
+				EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
+			endif
+		EndIf
 	EndIf
 End Function
-Function OnUpdate_StationMapSell(sender:Object)
-	Local button:TGUIButton = TGUIButton(sender)
-	If button <> Null
-		If StationMap.sellStation[Game.playerID] <> Null Then button.enable() Else button.disable()
+
+Function OnUpdate_StationMapSell(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		Local obj:TGUIButton = TGUIButton(evt._sender)
+		If obj <> Null
+			If StationMap.sellStation[Game.playerID] <> Null Then obj.enable() Else obj.disable()
+		EndIf
 	EndIf
 End Function
-Function OnUpdate_StationMapList(sender:Object)
-	Local List:TGUIList = TGUIList(sender)
-	If List <> Null
-		'first fill of stationlist
-		List.ClearEntries()
-		Local counter:Int = 0
-		For Local station:TStation = EachIn StationMap.StationList
-			If Game.playerID = station.owner
-				List.AddEntry("", "Station (" + functions.convertValue(station.reach, 2, 0) + ")", 0, 0, 0, MilliSecs())
-				If list.ListPosClicked = counter
-					StationMap.sellStation[Game.playerID] = station
-				End If
-				counter:+1
-			EndIf
-		Next
-	EndIf
+
+Function OnUpdate_StationMapList(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		Local obj:TGUIList = TGUIList(evt._sender)
+		If obj <> Null
+			'first fill of stationlist
+			obj.ClearEntries()
+			Local counter:Int = 0
+			For Local station:TStation = EachIn StationMap.StationList
+				If Game.playerID = station.owner
+					obj.AddEntry("", "Station (" + functions.convertValue(station.reach, 2, 0) + ")", 0, 0, 0, MilliSecs())
+					If obj.ListPosClicked = counter
+						StationMap.sellStation[Game.playerID] = station
+					EndIf
+					counter:+1
+				EndIf
+			Next
+		EndIf
+	Endif
 End Function
-Function OnUpdate_StationMapFilters(sender:Object)
-	Local obj:TGUIOkbutton = TGUIOkbutton(sender)
-	If obj <> Null
-		StationMap.filter_ShowStations[Int(obj.value)] = obj.crossed
-	End If
+
+Function OnUpdate_StationMapFilters(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		Local obj:TGUIOkbutton = TGUIOkbutton(evt._sender)
+		If obj <> Null then StationMap.filter_ShowStations[Int(obj.value)] = obj.crossed
+	EndIf
 End Function
 
 'StationMap-GUIcomponents
 Local button:TGUIButton
-button = TGUIButton.Create(610, 110, 155,,, , "Neue Station", "STATIONMAP")
-button.SetClickFunc(OnClick_StationMapNew)
-button.SetUpdateFunc(OnUpdate_StationMapBuy)
+button = TGUIButton.Create(TPosition.Create(610, 110), 155,,, , "Neue Station", "STATIONMAP")
 button.SetTextalign("CENTER")
-button = TGUIButton.Create(610, 345, 155,,, , "Station verkaufen", "STATIONMAP")
-button.SetClickFunc(OnClick_StationMapSell)
-button.SetUpdateFunc(OnUpdate_StationMapSell)
+EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
+EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
+
+button = TGUIButton.Create(TPosition.Create(610, 345), 155,,, , "Station verkaufen", "STATIONMAP")
 button.disable()
 button.SetTextalign("CENTER")
+EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
+EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, button )
+
 Local stationlist:TGUIList = TGUIList.Create(588, 233, 190, 100,, 40, "STATIONMAP")
 stationlist.DisableBackground()
 stationlist.SetControlState(1)
-stationlist.SetUpdateFunc(OnUpdate_StationMapList)
+EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapList, stationlist )
 For Local i:Int = 0 To 3
-	TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, 1, String(i + 1), "STATIONMAP").SetUpdateFunc(OnUpdate_StationMapFilters)
+	local button:TGUIOkbutton = TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, 1, String(i + 1), "STATIONMAP")
+	EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapFilters, button )
 Next
 
 

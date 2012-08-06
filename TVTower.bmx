@@ -13,7 +13,6 @@ Import "source/main.bmx"
 
 Incbin "source/version.txt"
 
-
 ' XML-Dateien: Animationskonfiguration
 '	- TAsset -> global "currentDeltaTime"
 '	- TAsset -> global "updateList" haelt Assets die in einer Update-Runde aktualisiert werden muessen

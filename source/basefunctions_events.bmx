@@ -41,6 +41,10 @@ Type TEventManager
 		listeners.AddLast(eventListener)					'add to list of listeners
 	End Method
 
+	Method registerListenerFunction( trigger:string, _function(triggeredByEvent:TEventBase), limitToObject:object=null )
+		self.registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToObject) )
+	End Method
+
 	' remove an event from a trigger
 	Method unregisterListener(trigger:string, eventListener:TEventListenerBase)
 		local listeners:TList = TList(self._listeners.ValueForKey( lower(trigger) ))
@@ -89,26 +93,34 @@ Type TEventManager
 End Type
 
 Type TEventListenerBase
-	method onEvent(triggeredByEvent:TEventBase) Abstract
+	field _limitToObject:object
+
+	method OnEvent:int(triggeredByEvent:TEventBase) Abstract
 End Type
 
 Type TEventListenerRunFunction extends TEventListenerBase
 	field _function(triggeredByEvent:TEventBase)
 
-	Function Create:TEventListenerRunFunction(_function(triggeredByEvent:TEventBase) )
+	Function Create:TEventListenerRunFunction(_function(triggeredByEvent:TEventBase), limitToObject:object=null )
 		local obj:TEventListenerRunFunction = new TEventListenerRunFunction
-		obj._function = _function
+		obj._function		= _function
+		obj._limitToObject	= limitToObject
 		return obj
 	End Function
 
-	Method OnEvent(triggerEvent:TEventBase)
-		self._function(triggerEvent)
+	Method OnEvent:int(triggerEvent:TEventBase)
+		if triggerEvent = null then return 0
+
+		if self._limitToObject = null OR (self._limitToObject = triggerEvent._sender)
+			self._function(triggerEvent)
+		endif
 	End Method
 End Type
 
 Type TEventBase
 	Field _startTime:int
 	Field _trigger:string = ""
+	Field _sender:object = null
 	field _data:object
 
 	Method getStartTime:Int()
@@ -116,6 +128,10 @@ Type TEventBase
 	End Method
 
 	Method onEvent()
+	End Method
+
+	Method getData:TEventData()
+		return TEventData(self._data)
 	End Method
 
 	' to sort the event queue by time
@@ -134,16 +150,13 @@ End Type
 
 Type TEventSimple extends TEventBase
 
-	Function Create:TEventSimple(trigger:string, data:object)
+	Function Create:TEventSimple(trigger:string, data:object, sender:object=null)
 		local obj:TEventSimple = new TEventSimple
 		obj._trigger	= lower(trigger)
 		obj._data	 	= data
+		obj._sender		= sender
 		return obj
 	End Function
-
-	Method getData:TEventData()
-		return TEventData(self._data)
-	End Method
 End Type
 
 Type TEventData
