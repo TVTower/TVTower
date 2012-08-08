@@ -286,17 +286,22 @@ Type TPosition {_exposeToLua="selected"}
 		Self.SetY(_y)
 	End Method
 
+	Method SetPos(otherPos:TPosition)
+		Self.SetX(otherPos.x)
+		Self.SetY(otherPos.y)
+	End Method
+
+	Method MoveXY( _x:float, _y:float )
+		Self.x:+ _x
+		Self.y:+ _y
+	End Method
+
 	Method isSame:int(otherPos:TPosition, round:int=0) {_exposeToLua}
 		if round
 			return abs(self.x -otherPos.x)<1.0 AND abs(self.y -otherPos.y) < 1.0
 		else
 			return self.x = otherPos.x AND self.y = otherPos.y
 		endif
-	End Method
-
-	Method SetPos(otherPos:TPosition)
-		Self.SetX(otherPos.x)
-		Self.SetY(otherPos.y)
 	End Method
 
 	Function SwitchPos(Pos:TPosition Var, otherPos:TPosition Var)
@@ -351,26 +356,26 @@ End Type
 Function ARGB_Alpha:Int(ARGB:Int)
  Return (argb Shr 24) & $ff
  'Return Int((ARGB & $FF000000:Int) / $1000000:Int)
-End Function
+EndFunction
 
 Function ARGB_Red:Int(ARGB:Int)
   Return (argb Shr 16) & $ff
 ' Return Int((ARGB & $00FF0000:Int) / $10000:Int)
-End Function
+EndFunction
 
 Function ARGB_Green:Int(ARGB:Int)
   Return (argb Shr 8) & $ff
 ' Return Int((ARGB & $0000FF00:Int) / $100:Int)
-End Function
+EndFunction
 
 Function ARGB_Blue:Int(ARGB:Int)
  Return (argb & $ff)
 ' Return (ARGB & $000000FF:Int)
-End Function
+EndFunction
 
 Function ARGB_Color:Int(alpha:Int,red:Int,green:Int,blue:Int)
  Return (Int(alpha * $1000000) + Int(red * $10000) + Int(green * $100) + Int(blue))
-End Function
+EndFunction
 
 
 'returns true if the given pixel is monochrome (grey)

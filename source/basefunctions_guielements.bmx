@@ -9,8 +9,8 @@ Import "basefunctions_events.bmx"
 
 
 ''''''GUIzeugs'
-CONST EVENT_CLICK:int		= 1
-CONST EVENT_DOUBLECLICK:int = 2
+CONST EVENT_GUI_CLICK:int		= 1
+CONST EVENT_GUI_DOUBLECLICK:int = 2
 
 Global gfx_GuiPack:TGW_SpritePack = TGW_SpritePack.Create(LoadImage("grafiken/GUI/guipack.png"), "guipack_pack")
 gfx_GuiPack.AddAnimSpriteMultiCol("Input", 290, 30, 204, 27, 34, 27, 6)
@@ -23,26 +23,21 @@ gfx_GuiPack.AddSprite("Chat_Middle", 0, 100, 445, 50)
 gfx_GuiPack.AddSprite("Chat_Bottom", 0, 142, 445, 35)
 gfx_GuiPack.AddSprite("Chat_Input", 0, 186, 445, 35)
 
-For Local i:Int = 0 To 255
-  KEYWRAPPER.allowKey(i,KEYWRAP_ALLOW_BOTH,600,200)
-Next
-
 Type TGUIManager
 	Field Defaultfont:TBitmapFont
-	Field GUIobjectactive:Int
-	Field LastGuiID:Int 		= 0
 	Field globalScale:Float		= 1.0
 	Field MouseIsHit:Int 		= 0
-	Field List:TList = CreateList()
+	Field List:TList			= CreateList()
 
 	Function Create:TGUIManager()
 		Local obj:TGUIManager = New TGUIManager
+
 		Return obj
 	End Function
 
 	Method Add(GUIobject:TGUIobject)
 		Self.List.AddLast(GUIobject)
-		Self.list.sort(True, Self.SortObjects)
+		Self.List.sort(True, Self.SortObjects)
 	End Method
 
 	Function SortObjects:Int(ob1:Object, ob2:Object)
@@ -50,28 +45,23 @@ Type TGUIManager
 		Local objB:TGUIobject = TGUIobject(ob2)
 
 		If Not objB Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-		If GUIManager.getActive() = objB.uid Return - 1 Else Return 1
+		If GUIManager.getActive() = objB._id then Return - 1 Else Return 1
 		If objB._visible = 0
-			If objB.Zindex <= objA.ZIndex
-				Return 0
-			Else
-				Return -1
-			EndIf
+			If objB.Zindex <= objA.ZIndex then Return 0 else Return -1
 		EndIf
-		If objB.ZIndex <= objA.ZIndex Then	Return 1 Else Return 0
+		If objB.ZIndex <= objA.ZIndex Then Return 1 Else Return 0
 	End Function
 
-	Method isActive:Int(uid:Int)
-		Return uid = Self.GUIobjectactive
+	Method isActive:Int(id:Int)
+		Return id = TGUIObject._activeID
 	End Method
 
 	Method getActive:Int()
-		Return Self.GUIobjectactive
+		Return TGUIObject._activeID
 	End Method
 
-
-	Method setActive(uid:Int)
-		Self.GUIobjectactive = uid
+	Method setActive(id:Int)
+		TGUIObject._activeID = id
 	End Method
 
 	Method Remove(guiobject:TGUIObject)
@@ -80,83 +70,71 @@ Type TGUIManager
 
 
 	Method Update(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
-		If Not List Return                           'aufhoeren wenn keine Liste vorhanden
-		List.Sort()
+		'sort needed ? should be done during adding
+		'List.Sort()
+
+		'store mouse button 1 state
 		If MOUSEMANAGER.IsHit(1) Then MouseIsHit = 1 Else MouseIsHit = 0
-		For Local GUIobject:TGUIobject = EachIn Self.List 'Liste hier global
-			If (toZ = -1000 Or guiobject.zIndex <= toZ) And (fromZ = -1000 Or guiobject.zIndex >= fromZ)
-				If guiobject._visible = 1 And (State = guiobject.forstateonly Or State = "")
-					If guiobject.clickable
-						If State <> guiobject.forstateonly Or Not functions.isIn( MouseX(), MouseY(), guiobject.pos.x, guiobject.pos.y, guiobject.dimension.x, guiobject.dimension.y )
-							guiobject.mouseIsDown = null
-							guiobject.clicked = null
-							guiobject.mouseover = 0
-							guiobject.setState("")
-							If MouseIsHit And Self.getActive() = guiobject.uid Then Self.setActive(0)
-					   EndIf
-					   If guiobject.typ <> "background" And functions.isIn(MouseX(), MouseY(), guiobject.pos.x, guiobject.pos.y, guiobject.dimension.x, guiobject.dimension.y)
-							If MOUSEMANAGER.IsDown(1) And guiobject._enabled
-								Self.setActive(guiobject.uid)
-								guiobject.EnterPressed = 1
-								guiobject.MouseIsDown = TPosition.Create( MouseX(), MouseY() )
-							EndIf
-							guiobject.mouseover = 1
 
-							If guiobject.clickable And guiobject._enabled
-								If MOUSEMANAGER.isDown(1) Or guiobject.MouseIsDown Then guiobject.setState("active") Else guiobject.setState("hover")
+		For Local obj:TGUIobject = EachIn Self.List
+			'skip if not visible
+			If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then continue
+			'skip if not set visible or different state
+			If obj._visible = 0 or (State <> obj.forstateonly And State <> "") then continue
 
-								If MOUSEMANAGER.isUp(1) And guiobject.MouseIsDown
-									guiobject.Clicked = TPosition.Create( MouseX(), MouseY() )
-									'fire onClickEvent
-									If guiobject._enabled
-										EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TEventData.Create().AddNumber("type", 1), guiobject ) )
-									EndIf
-									guiobject.MouseIsDown = null 'added for imagebutton and arrowbutton not being reset when mouse standing still
-								EndIf
-							EndIf
+			If obj.clickable
+				If State <> obj.forstateonly Or Not functions.isIn( MouseX(), MouseY(), obj.pos.x, obj.pos.y, obj.dimension.x, obj.dimension.y )
+					obj.mouseIsDown = null
+					obj.clicked = null
+					obj.mouseover = 0
+					obj.setState("")
+					If MouseIsHit And Self.getActive() = obj._id Then Self.setActive(0)
+				EndIf
+				If obj.clickable And functions.isIn(MouseX(), MouseY(), obj.pos.x, obj.pos.y, obj.dimension.x, obj.dimension.y)
+					If MOUSEMANAGER.IsDown(1) And obj._enabled
+						Self.setActive(obj._id)
+						obj.EnterPressed = 1
+						obj.MouseIsDown = TPosition.Create( MouseX(), MouseY() )
+					EndIf
+					obj.mouseover = 1
+
+					If obj.clickable And obj._enabled
+						If MOUSEMANAGER.isDown(1) Or obj.MouseIsDown Then obj.setState("active") Else obj.setState("hover")
+
+						If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
+							obj.Clicked = TPosition.Create( MouseX(), MouseY() )
+							'fire onClickEvent
+							If obj._enabled then EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TEventData.Create().AddNumber("type", 1), obj ) )
+							'added for imagebutton and arrowbutton not being reset when mouse standing still
+							obj.MouseIsDown = null
 						EndIf
 					EndIf
-					If guiobject.value = "" Then guiobject.value = "  "
-					If guiobject.backupvalue = "x" Then guiobject.backupvalue = guiobject.value
-					If updatelanguage Or Chr(guiobject.value[0] ) = "_" Then If Chr(guiobject.backupvalue[0] ) = "_" Then guiobject.value = Localization.GetString(Right(guiobject.backupvalue, Len(guiobject.backupvalue) - 1))
-
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.onUpdate", null, guiobject ) )
-					guiobject.Update()
-				EndIf 'forstateonly
+				EndIf
 			EndIf
+			If obj.value = "" Then obj.value = "  "
+			If obj.backupvalue = "x" Then obj.backupvalue = obj.value
+			If updatelanguage Or Chr(obj.value[0] ) = "_" Then If Chr(obj.backupvalue[0] ) = "_" Then obj.value = Localization.GetString(Right(obj.backupvalue, Len(obj.backupvalue) - 1))
+
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onUpdate", null, obj ) )
+			obj.Update()
 		Next
 	End Method
 
 	Method DisplaceGUIobjects(State:String = "", x:Int = 0, y:Int = 0)
-    	If Not List Return                           'aufhoeren wenn keine Liste vorhanden
-		For Local GUIobject:TGUIobject = EachIn Self.List 'Liste hier global
-			If State = guiobject.forstateonly
-				guiobject.pos.x:+x
-				guiobject.pos.y:+y
-			EndIf 'forstateonly
+		For Local obj:TGUIobject = EachIn Self.List
+			If State = obj.forstateonly then obj.pos.MoveXY( x,y )
 		Next
 	End Method
 
 	Method Draw:Int(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
-		If Not List Return False	'aufhoeren wenn keine Liste vorhanden
-		'Self.oldfont = GetImageFont()
-		'Local myoldfont:TImageFont = Self.oldfont
+		For Local obj:TGUIobject = EachIn Self.List
+			'skip if not visible
+			If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then continue
+			'skip if not set visible or different state
+			If obj._visible = 0 or (State <> obj.forstateonly And State <> "") then continue
 
-		For Local GUIobject:TGUIobject = EachIn Self.List 'Liste hier global
-			If (toZ = -1000 Or guiobject.zIndex <= toZ) And (fromZ = -1000 Or guiobject.zIndex >= fromZ)
-				If State = guiobject.forstateonly
-					'If guiobject.enabled = 0 Return
-					If guiobject._visible = 1
-						'If GuiObject.UseFont <> Null Then SetImageFont guiobject.UseFont Else SetImageFont Self.Defaultfont
-						If guiobject.value = "" Then guiobject.value = "  "
-						If guiobject.backupvalue = "x" Then guiobject.backupvalue = guiobject.value
-						If updatelanguage Or Chr(guiobject.value[0] ) = "_" Then If Chr(guiobject.backupvalue[0] ) = "_" Then guiobject.value = Localization.GetString(Right(guiobject.backupvalue, Len(guiobject.backupvalue) - 1))
-						GUIobject.Draw()
-					EndIf
-				EndIf 'forstateonly
-			EndIf
+			obj.Draw()
 		Next
-		'SetImageFont myoldfont
 	End Method
 
 End Type
@@ -167,6 +145,7 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 Type TGUIobject
 	Field pos:TPosition				= TPosition.Create(-1,-1)
 	Field dimension:TPosition		= TPosition.Create(-1,-1)
+	Field zIndex:Int
 	Field scale:Float				= 1.0
 	Field align:Int					= 0 			'alignment of object
 	Field state:String				= ""
@@ -174,32 +153,36 @@ Type TGUIobject
 	Field backupvalue:String		= "x"
 	Field clicked:TPosition			= null			'null = not clicked
 	Field mouseIsDown:TPosition		= TPosition.Create(-1,-1)
-	Field ParentGUIObject:TGUIobject = Null
-	Field zIndex:Int
 	Field EnterPressed:Int=0
-	Field uid:Int
 	Field on:Int
-	Field typ:String
-	Field _enabled:Int = 1
-	Field _visible:Int = 1
-	Field clickable:Int=1
-	Field mouseover:Int = 0			'could be done with TPosition
-	Field forstateonly:String = "" 'fuer welchen gamestate anzeigen
-	Field useFont:TBitmapFont' = SmallImageFont
-	Field grayedout:Int = 0
+	Field clickable:Int				= 1
+	Field mouseover:Int				= 0			'could be done with TPosition
+	Field _id:Int
+	Field _enabled:Int				= 1
+	Field _visible:Int				= 1
+	Field forstateonly:String		= ""		'fuer welchen gamestate anzeigen
+	Field useFont:TBitmapFont
 
+	global _activeID:int			= 0
+	global _lastID:int
+
+	Method New()
+		self._id = self.GetNextID()
+	End Method
 
 	Method BaseInit(useFont:TBitmapFont=Null)
 		If useFont = Null Then Self.useFont = GUIManager.defaultFont Else Self.useFont = useFont
 	End Method
 
-	Function GetNewID:Int()
-		GUIManager.LastGuiID:+1
-		Return GUIManager.LastGuiID
+	Function GetNextID:Int()
+		TGUIobject._lastID:+1
+		Return TGUIobject._lastID
 	End Function
 
-	Method GetClicks:Int()
-		If Self.grayedout Then Self.Clicked = null
+	'returns true if clicked
+	'resets clicked value!
+	Method getClicks:Int()
+		If not Self._enabled Then Self.Clicked = null
 
 		if self.clicked
 			self.clicked = null
@@ -228,6 +211,10 @@ Type TGUIobject
 	Method disable()
 		self._enabled = 0
 		GUIManager.list.sort()
+	End Method
+
+	Method isActive:int()
+		return self._id = self._activeID
 	End Method
 
 	Method SetZIndex(zindex:Int)
@@ -263,37 +250,37 @@ Type TGUIobject
 			value :+ charToAdd
 		Next
 
-        If KEYWRAPPER.pressedKey(186) If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-        If KEYWRAPPER.pressedKey(192) If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-        If KEYWRAPPER.pressedKey(222) If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+        If KEYWRAPPER.pressedKey(186) then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+        If KEYWRAPPER.pressedKey(192) then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+        If KEYWRAPPER.pressedKey(222) then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 
-        If KEYWRAPPER.pressedKey(48)  If shiftPressed Then value :+ "=" Else value :+ "0"
-        If KEYWRAPPER.pressedKey(49)  If shiftPressed Then value :+ "!" Else value :+ "1"
-        If KEYWRAPPER.pressedKey(50)  If shiftPressed Then value :+ Chr(34) Else value :+ "2"
-        If KEYWRAPPER.pressedKey(51)  If shiftPressed Then value :+ "§" Else value :+ "3"
-        If KEYWRAPPER.pressedKey(52)  If shiftPressed Then value :+ "$" Else value :+ "4"
-        If KEYWRAPPER.pressedKey(53)  If shiftPressed Then value :+ "%" Else value :+ "5"
-        If KEYWRAPPER.pressedKey(54)  If shiftPressed Then value :+ "&" Else value :+ "6"
-        If KEYWRAPPER.pressedKey(55)  If shiftPressed Then value :+ "/" Else value :+ "7"
-        If KEYWRAPPER.pressedKey(56)  If shiftPressed Then value :+ "(" Else value :+ "8"
-        If KEYWRAPPER.pressedKey(57)  If shiftPressed Then value :+ ")" Else value :+ "9"
+        If KEYWRAPPER.pressedKey(48) then If shiftPressed Then value :+ "=" Else value :+ "0"
+        If KEYWRAPPER.pressedKey(49) then If shiftPressed Then value :+ "!" Else value :+ "1"
+        If KEYWRAPPER.pressedKey(50) then If shiftPressed Then value :+ Chr(34) Else value :+ "2"
+        If KEYWRAPPER.pressedKey(51) then If shiftPressed Then value :+ "§" Else value :+ "3"
+        If KEYWRAPPER.pressedKey(52) then If shiftPressed Then value :+ "$" Else value :+ "4"
+        If KEYWRAPPER.pressedKey(53) then If shiftPressed Then value :+ "%" Else value :+ "5"
+        If KEYWRAPPER.pressedKey(54) then If shiftPressed Then value :+ "&" Else value :+ "6"
+        If KEYWRAPPER.pressedKey(55) then If shiftPressed Then value :+ "/" Else value :+ "7"
+        If KEYWRAPPER.pressedKey(56) then If shiftPressed Then value :+ "(" Else value :+ "8"
+        If KEYWRAPPER.pressedKey(57) then If shiftPressed Then value :+ ")" Else value :+ "9"
         If KEYWRAPPER.pressedKey(219) And shiftPressed Then value :+ "?"
         If KEYWRAPPER.pressedKey(219) And altGrPressed Then value :+ "\"
         If KEYWRAPPER.pressedKey(219) And Not altGrPressed And Not shiftPressed Then value :+ "ß"
 
-        If KEYWRAPPER.pressedKey(221) If shiftPressed Then value :+ "`" Else value :+ "´"
-	    If KEYWRAPPER.pressedKey(188) If shiftPressed Then value :+ ";" Else value :+ ","
-	    If KEYWRAPPER.pressedKey(189) If shiftPressed Then value :+ "_" Else value :+ "-"
-	    If KEYWRAPPER.pressedKey(190) If shiftPressed Then value :+ ":" Else value :+ "."
-        If KEYWRAPPER.pressedKey(226) If shiftPressed Then value :+ ">" Else value :+ "<"
-        If KEYWRAPPER.pressedKey(KEY_BACKSPACE) value = value[..value.length -1]
-	    If KEYWRAPPER.pressedKey(106) value :+ "*"
-	    If KEYWRAPPER.pressedKey(111) value :+ "/"
-	    If KEYWRAPPER.pressedKey(109) value :+ "-"
-	    If KEYWRAPPER.pressedKey(109) value :+ "-"
-	    If KEYWRAPPER.pressedKey(110) value :+ ","
+        If KEYWRAPPER.pressedKey(221) then If shiftPressed Then value :+ "`" Else value :+ "´"
+	    If KEYWRAPPER.pressedKey(188) then If shiftPressed Then value :+ ";" Else value :+ ","
+	    If KEYWRAPPER.pressedKey(189) then If shiftPressed Then value :+ "_" Else value :+ "-"
+	    If KEYWRAPPER.pressedKey(190) then If shiftPressed Then value :+ ":" Else value :+ "."
+        If KEYWRAPPER.pressedKey(226) then If shiftPressed Then value :+ ">" Else value :+ "<"
+        If KEYWRAPPER.pressedKey(KEY_BACKSPACE) then value = value[..value.length -1]
+	    If KEYWRAPPER.pressedKey(106) then value :+ "*"
+	    If KEYWRAPPER.pressedKey(111) then value :+ "/"
+	    If KEYWRAPPER.pressedKey(109) then value :+ "-"
+	    If KEYWRAPPER.pressedKey(109) then value :+ "-"
+	    If KEYWRAPPER.pressedKey(110) then value :+ ","
 	    For Local i:Int = 0 To 9
-			If KEYWRAPPER.pressedKey(96+i) Then  value :+ "0"
+			If KEYWRAPPER.pressedKey(96+i) Then value :+ "0"
 		Next
 	    If KEYWRAPPER.pressedKey(32) Then value :+ " "
 
@@ -314,12 +301,10 @@ Type TGUIButton Extends TGUIobject
 		obj._enabled	= enabled
 		obj.textalign	= textalign
 		If width < 0 Then width = obj.useFont.getWidth(value) + 8
-		obj.uid			= TGUIObject.GetNewID()
 		obj.scale		= GUIManager.globalScale
 		obj.dimension.SetXY(width, Assets.GetSprite("gfx_gui_button.L").h * obj.scale )
 		obj.zindex		= 10
 		obj.value		= value
-		obj.typ			= "button"
 		obj.forstateonly= State
 
     	GUIManager.Add( obj )
@@ -334,10 +319,11 @@ Type TGUIButton Extends TGUIobject
 
 	Method Update()
 		If Not manualState
-	        If MouseIsDown And Not grayedout Then on = 1 Else on = 0
-			If Not MouseOver Then on = 0 'no mouse within button-regions, so button not clicked
+	        If MouseIsDown And self._enabled Then on = 1 Else on = 0
+			'no mouse within button-regions, so button not clicked
+			If Not MouseOver Then on = 0
 		EndIf
-		If Self._enabled = False
+		If not Self._enabled
 			self.on = 2
 			self.clicked = null
 		endif
@@ -349,7 +335,7 @@ Type TGUIButton Extends TGUIobject
 		If Self.scale <> 1.0 Then SetScale Self.scale, Self.scale
 		Assets.GetSprite("gfx_gui_button"+Self.state+".L").Draw(Self.pos.x,Self.pos.y)
 		Assets.GetSprite("gfx_gui_button"+Self.state+".M").TileDrawHorizontal(Self.pos.x + Assets.GetSprite("gfx_gui_button"+Self.state+".L").w*Self.scale, Self.pos.y, self.dimension.x - ( Assets.GetSprite("gfx_gui_button"+Self.state+".L").w + Assets.GetSprite("gfx_gui_button"+Self.state+".R").w)*scale, Self.scale)
-		Assets.GetSprite("gfx_gui_button"+Self.state+".R").Draw(Self.pos.x + self.dimension.x - Assets.GetSprite("gfx_gui_button"+Self.state+".R").w*Self.scale, Self.pos.y)
+		Assets.GetSprite("gfx_gui_button"+Self.state+".R").Draw(Self.pos.x + self.dimension.x, Self.pos.y, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale)
 		If Self.scale <> 1.0 Then SetScale 1.0,1.0
 
 		Local TextX:Float = Ceil(Self.pos.x + 10)
@@ -357,8 +343,6 @@ Type TGUIButton Extends TGUIobject
 		If textalign = 1 Then TextX = Ceil(Self.pos.x + (Self.dimension.x - Self.useFont.getWidth(value)) / 2)
 
 		SetAlpha 0.50
-'		SetColor 250, 0,0
-'		DrawRect(TextX, TextY, 40, self.useFont.getHeight("abcd"))
 		SetColor 250, 250, 250
 		Self.Usefont.Draw(value, TextX, TextY+1)
 		SetAlpha 1.0
@@ -377,22 +361,18 @@ Type TGUIButton Extends TGUIobject
 End Type
 
 Type TGUIImageButton Extends TGUIobject
-    Field grayedout:Int
 	Field startframe:Int = 0
 	Field spriteBaseName:String = ""
 
-	Function Create:TGUIImageButton(x:Int, y:Int, width:Int, Height:Int, spriteBaseName:String, on:Byte = 0, enabled:Byte = 1, grayedout:Int = 0, State:String = "", startframe:Int = 0)
+	Function Create:TGUIImageButton(x:Int, y:Int, width:Int, Height:Int, spriteBaseName:String, on:Byte = 0, enabled:Byte = 1, State:String = "", startframe:Int = 0)
 		Local obj:TGUIImageButton = New TGUIImageButton
 		obj.pos.setXY( x,y )
 		obj.on      = on
-		obj.grayedout=grayedout
 		obj._enabled = enabled
 		obj.spriteBaseName = spriteBaseName
 		obj.startframe = startframe
 		obj.dimension.setXY( Assets.getSprite(spriteBaseName).w, Assets.getSprite(spriteBaseName).h )
-		obj.uid      = TGUIObject.GetNewID()
 		obj.value$  = ""
-		obj.typ$    = "button"
 		obj.forstateonly = State$
 
 		GUIManager.Add( obj )
@@ -407,7 +387,7 @@ Type TGUIImageButton Extends TGUIobject
 		SetColor 255,255,255
 
         If MouseIsDown Then on = 1 Else on = 0
-        If grayedout = 1
+        If not self._enabled
 			self.on = 2
 			self.Clicked = null
 		endif
@@ -432,10 +412,8 @@ Type TGUIBackgroundBox  Extends TGUIobject
 		obj.BaseInit(useFont)
 		obj.pos.setXY( x,y )
 		obj.textalign	= textalign
-		obj.uid			= TGUIObject.GetNewID()
 		obj.dimension.setXY( width, height )
 		obj.value		= value
-		obj.typ			= "backgroundbox"
 		obj.zindex		= 0
 		obj.forstateonly = State
 		obj.scale		= GUIManager.globalScale
@@ -460,7 +438,7 @@ Type TGUIBackgroundBox  Extends TGUIobject
 		Local addY:Float = 0
 		Assets.GetSprite("gfx_gui_box_context.TL").Draw(Self.pos.x,Self.pos.y)
 		Assets.GetSprite("gfx_gui_box_context.TM").TileDrawHorizontal(Self.pos.x + Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale, Self.pos.y, self.dimension.x - Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale - Assets.GetSprite("gfx_gui_box_context.TR").w*Self.scale, Self.scale)
-		Assets.GetSprite("gfx_gui_box_context.TR").Draw(Self.pos.x + self.dimension.x - Assets.GetSprite("gfx_gui_box_context.TR").w*Self.scale, Self.pos.y) 'align left
+		Assets.GetSprite("gfx_gui_box_context.TR").Draw(Self.pos.x + self.dimension.x, Self.pos.y, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale)
 		addY = Assets.GetSprite("gfx_gui_box_context.TM").h * scale
 
 		Assets.GetSprite("gfx_gui_box_context.ML").TileDrawVertical(Self.pos.x,Self.pos.y + addY, self.dimension.y - addY - (Assets.GetSprite("gfx_gui_box_context.BL").h*Self.scale), Self.scale )
@@ -473,10 +451,9 @@ Type TGUIBackgroundBox  Extends TGUIobject
 		'buggy "line" zwischen bottom und tiled bg
 		addY :-1
 
-'		drawRect(self.pos.x-5, self.pos.y + addY, 200, 50)
 		Assets.GetSprite("gfx_gui_box_context.BL").Draw(Self.pos.x,Self.pos.y + addY)
 		Assets.GetSprite("gfx_gui_box_context.BM").TileDrawHorizontal(Self.pos.x + Assets.GetSprite("gfx_gui_box_context.BL").w*Self.scale, Self.pos.y + addY, self.dimension.x - Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale - Assets.GetSprite("gfx_gui_box_context.BR").w*Self.scale, Self.scale)
-		Assets.GetSprite("gfx_gui_box_context.BR").Draw(Self.pos.x + self.dimension.x - Assets.GetSprite("gfx_gui_box_context.BR").w*Self.scale, Self.pos.y +  addY) 'align left
+		Assets.GetSprite("gfx_gui_box_context.BR").Draw(Self.pos.x + self.dimension.x, Self.pos.y +  addY, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale)
 
 		If Self.scale <> 1.0 Then SetScale 1.0,1.0
 
@@ -503,26 +480,24 @@ End Type
 Type TGUIArrowButton  Extends TGUIobject
    ' Global List:Tlist
     Field direction:String
-    Field grayedout:Int
 
-	Function Create:TGUIArrowButton(x:Int,y:Int, direction:Int=0, on:Byte = 0, enabled:Byte = 1, grayedout:Int =0, State:String="", align:Int = 0)
+	Function Create:TGUIArrowButton(x:Int,y:Int, direction:Int=0, on:Byte = 0, enabled:Byte = 1, State:String="", align:Int = 0)
 		Local obj:TGUIArrowButton=New TGUIArrowButton
 		obj.pos.setXY( x,y)
 		obj.on      	= on
-		obj.grayedout	= grayedout
 		obj._enabled 	= enabled
-		obj.direction = "left"
-		If direction = 0 Then obj.direction = "left"
-		If direction = 1 Then obj.direction = "up"
-		If direction = 2 Then obj.direction = "right"
-		If direction = 3 Then obj.direction = "down"
-		obj.zindex		= 40
+		select direction
+			case 0		obj.direction="left"
+			case 1		obj.direction="up"
+			case 2		obj.direction="right"
+			case 3		obj.direction="down"
+			default		obj.direction="left"
+		endselect
 
+		obj.zindex		= 40
 		obj.scale		= GUIManager.globalScale
 		obj.dimension.setXY( Assets.GetSprite("gfx_gui_arrow_"+obj.direction).w * obj.scale, Assets.GetSprite("gfx_gui_arrow_"+obj.direction).h * obj.scale )
-		obj.uid			= obj.GetNewID()
 		obj.value		= ""
-		obj.typ			= "button"
 		obj.forstateonly= State
 		obj.setAlign(align)
 
@@ -532,26 +507,26 @@ Type TGUIArrowButton  Extends TGUIobject
 
 	Method setAlign(align:Int=0)
 		If Self.align <> align
-			If Self.align = 0 And align = 1
-				Self.pos.setX( Self.pos.x - Self.dimension.x )
-			EndIf
-			If Self.align = 1 And align = 0
-				Self.pos.setX( Self.pos.x + Self.dimension.x )
-			EndIf
+			If Self.align = 0 And align = 1 then Self.pos.setX( Self.pos.x - Self.dimension.x )
+			If Self.align = 1 And align = 0 then Self.pos.setX( Self.pos.x + Self.dimension.x )
 		EndIf
 	End Method
 
 	Method Update()
-        If MouseIsDown And Not grayedout Then on = 1 Else on = 0
-        If grayedout=1 then self.Clicked = null
+        If MouseIsDown And Not self._enabled Then on = 1 Else on = 0
+        If not self._enabled
+			self.Clicked = null
+			self.on = 2
+		endif
 	End Method
 
 	Method Draw()
+		If self.on >= 2 then return
+
 		SetColor 255,255,255
-		If Self.scale <> 1.0 Then SetScale Self.scale, Self.scale
- 		If on < 2 Then Assets.GetSprite("gfx_gui_arrow_"+Self.direction+Self.state).Draw(Self.pos.x, Self.pos.y)
-		If Self.scale <> 1.0 Then SetScale 1.0, 1.0
-	    If grayedout=1  on = 2
+		SetScale Self.scale, Self.scale
+		Assets.GetSprite("gfx_gui_arrow_"+Self.direction+Self.state).Draw(Self.pos.x, Self.pos.y)
+		SetScale 1.0, 1.0
 	End Method
 
 End Type
@@ -564,22 +539,20 @@ Type TGUISlider  Extends TGUIobject
     Field drawvalue:Int = 0
 
 	Function Create:TGUISlider(x:Int, y:Int, width:Int, minvalue:Int, maxvalue:Int, enabled:Byte = 1, value:String, State:String = "")
-		Local GUISlider:TGUISlider = New TGUISlider
-		GUISlider.BaseInit()
-		GUISlider.pos.setXY( x,y )
-		GUISlider.on = 0
-		GUISlider._enabled = enabled
+		Local obj:TGUISlider = New TGUISlider
+		obj.BaseInit()
+		obj.pos.setXY( x,y )
+		obj.on = 0
+		obj._enabled = enabled
 		If width < 0 Then width = TextWidth(value) + 8
-		guislider.uid = Rand(1, 10000)
-		GUISlider.dimension.setXY( width, gfx_GuiPack.GetSprite("Button").frameh )
-		GUISlider.value = value
-		GUISlider.minvalue = minvalue
-		GUISlider.maxvalue = maxvalue
-		GUISlider.actvalue = minvalue
-		GUISlider.typ = "slider"
-		GUISlider.forstateonly = State
-		GUIMAnager.Add( GUISlider )
-		Return GUISlider
+		obj.dimension.setXY( width, gfx_GuiPack.GetSprite("Button").frameh )
+		obj.value = value
+		obj.minvalue = minvalue
+		obj.maxvalue = maxvalue
+		obj.actvalue = minvalue
+		obj.forstateonly = State
+		GUIMAnager.Add( obj )
+		Return obj
 	End Function
 
 	Method Update()
@@ -679,7 +652,6 @@ Type TGUIinput  Extends TGUIobject
     Field InputImage:TGW_Sprites = Null	  'own Image for Inputarea
     Field OverlayColor:TColor = TColor.Create(200,200,200)
     Field OverlayColA:Float = 0.5
-    Field grayedout:Int = 0
 	Field TextDisplacement:TPosition = TPosition.Create(5,5)
 
     Function Create:TGUIinput(x:Int, y:Int, width:Int, enabled:Byte = 1, value:String, maxlength:Int = 128, State:String = "", useFont:TBitmapFont = Null)
@@ -692,7 +664,6 @@ Type TGUIinput  Extends TGUIobject
 		obj.dimension.setXY( Max(width, 40), Assets.GetSprite("gfx_gui_input.L").h * obj.scale )
 		obj.maxTextWidth= obj.dimension.x - 15
 		obj.value		= value
-		obj.uid			= obj.GetNewID()
 		obj.maxlength	= maxlength
 		obj.forstateonly = State
 		obj.EnterPressed = 0
@@ -705,15 +676,19 @@ Type TGUIinput  Extends TGUIobject
 
 
 	Method Update()
-		If Not grayedout
+		If self._enabled
 			If EnterPressed >= 2
 				EnterPressed = 0
 				GUIManager.setActive(0)
 			EndIf
-			If GUIManager.isActive(Self.uid) Then value = Input2Value(value)
+			If GUIManager.isActive(Self._id) Then value = Input2Value(value)
 		EndIf
-		If GUIManager.isActive(uid) Then on = 1 Else on = 0
-		If GUIManager.isActive(uid) Then Self.setState("active")
+		If GUIManager.isActive(self._id)
+			self.on = 1
+			self.setState("active")
+		Else
+			self.on = 0
+		endif
 
         If value.length > maxlength Then value = value[..maxlength]
 	End Method
@@ -728,7 +703,10 @@ Type TGUIinput  Extends TGUIobject
 		Local useTextDisplaceX:Int	= Self.TextDisplacement.x
 	    Local i:Int					= 0
 		Local printvalue:String		= value
-		If grayedout Then on = 0;SetColor 225, 255, 150
+		If not self._enabled
+			self.on = 0
+			SetColor 225, 255, 150
+		endif
 
 		If Self.scale <> 1.0 Then SetScale Self.scale, Self.scale
 		If nobackground = 0
@@ -743,7 +721,7 @@ Type TGUIinput  Extends TGUIobject
 				OverlayImage.Draw( Self.pos.x + Left, Self.pos.y + top )
 			EndIf
 		Else
-			If GUIManager.getActive() = uid
+			If GUIManager.getActive() = self._id
 				If InputImage = Null
 					SetAlpha OverlayColA
 					OverlayColor.set()
@@ -816,30 +794,25 @@ Type TGUIDropDownEntries   'Listeneintraege der GUIListe
 End Type
 
 Type TGUIDropDown  Extends TGUIobject
-   ' Global List:Tlist
-    Field grayedout:Int
-    Field Values : String[]
+    Field Values:String[]
 	Field Entries:TGUIDropDownEntries = New TGUIDropDownEntries
-	Field EntryList: TList
-    Field PosChangeTimer: Int
+	Field EntryList:TList
+    Field PosChangeTimer:Int
 	Field ListPosClicked:Int=-1
 	Field ListPosEntryID:Int=-1
 	Field buttonheight:Int
 	Field textalign:Int = 0
 	Field OnChange_(listpos:Int) = TGUIDropDown.DoNothing
 
-	Function Create:TGUIDropDown(x:Int, y:Int, width:Int = -1, on:Byte = 0, enabled:Byte = 1, grayedout:Int = 0, value:String, State:String = "")
+	Function Create:TGUIDropDown(x:Int, y:Int, width:Int = -1, on:Byte = 0, enabled:Byte = 1, value:String, State:String = "")
 		Local GUIDropDown:TGUIDropDown=New TGUIDropDown
 		GUIDropDown.pos.setXY( x,y )
 		GUIDropDown.on = on
-		guiDropDown.grayedout = grayedout
 		GUIDropDown._enabled = enabled
 		If width < 0 Then width = TextWidth(value:String) + 8
-		guiDropDown.uid = Rand(1, 10000)
 		GUIDropDown.buttonheight = gfx_GuiPack.GetSprite("DropDown").frameh * 2
 		GUIDropDown.dimension.setXY( width, GUIDropDown.buttonheight)
 		GUIDropDown.value = value
-		GUIDropDown.typ = "dropdown"
 		GUIDropDown.forstateonly = State
 		If Not guiDropDown.EntryList Then guiDropDown.EntryList = CreateList()
 
@@ -858,7 +831,7 @@ Type TGUIDropDown  Extends TGUIobject
 
 	Method Update()
 	    Local printheight:Int = 0, i:Int = 0
-        If GUIManager.getActive() = uid Then on = 1 Else on = 0
+        If self.isActive() Then on = 1 Else on = 0
 		If MOUSEMANAGER.IsHit(1) And on
 			For Local Entries:TGUIDropDownEntries = EachIn EntryList 'Liste hier global
 				If functions.isin( MouseX(),MouseY(), Self.pos.x + 5, Self.pos.y + 5 + printheight + 30, self.dimension.x - 10, 5 + printheight + 30 + TextHeight(Entries.value) )
@@ -894,12 +867,12 @@ Type TGUIDropDown  Extends TGUIobject
 	    Local j:Int					= 0
 	    Local useheight:Int			= 0
 	    Local printheight:Int		= 0
-        If grayedout = 1
+        If not self._enabled
 			self.on = 2
 			self.clicked = null
 		endif
 
-		If on = 1 And Not grayedout 'ausgeklappt zeichnen
+		If on = 1 And self._enabled 'ausgeklappt zeichnen
 			useheight = 0
 			For Local Entries:TGUIDropDownEntries = EachIn EntryList 'Liste hier global
 				useheight = useheight + TextHeight(Entries.value)
@@ -966,7 +939,7 @@ Type TGUIDropDown  Extends TGUIobject
 			GuiSprite.Draw(Self.pos.x + self.dimension.x - ImgWidth, Self.pos.y, 2 + 3 * on)
 			GuiSprite.Draw(Self.pos.x + self.dimension.x - ImgWidth, Self.pos.y + ImgHeight, 11 + 3 * on)
 		End If
-		If on = 0 Or grayedout
+		If on = 0 Or not self._enabled
 			GuiSprite.Draw(Self.pos.x, Self.pos.y, 0 + 3 * on)
 			GuiSprite.Draw(Self.pos.x, Self.pos.y + buttonheight - ImgHeight, 9 + 3 * on)
 
@@ -978,16 +951,16 @@ Type TGUIDropDown  Extends TGUIobject
 			GuiSprite.Draw(Self.pos.x + self.dimension.x - ImgWidth, Self.pos.y, 2 + 3 * on)
 			GuiSprite.Draw(Self.pos.x + self.dimension.x - ImgWidth, Self.pos.y + ImgHeight, 11 + 3 * on)
 		EndIf
-		If on Or grayedout
-			If grayedout Then SetAlpha 0.7
+		If on Or not self._enabled
+			If not self._enabled Then SetAlpha 0.7
 			DrawText(value, Self.pos.x + (self.dimension.x - TextWidth(value)) / 2 - 4, Self.pos.y - (TextHeight(value) - buttonheight) / 2 - 2)
-			If grayedout Then SetAlpha 1.0
+			If not self._enabled Then SetAlpha 1.0
 	    Else
 			SetColor 230, 230, 230
 			DrawText(value, Self.pos.x + (self.dimension.x - TextWidth(value)) / 2 - 4 + 1, Self.pos.y - (TextHeight(value) - buttonheight) / 2 - 1)
 			SetColor 255, 255, 255
 		EndIf
-        If grayedout = 1 Then on = 2
+        If not self._enabled = 1 Then on = 2
 		'debuglog ("GUIradiobutton zeichnen")
 	End Method
 End Type
@@ -1011,8 +984,6 @@ Type TGUIOkButton  Extends TGUIobject
 		obj.forstateonly= State
 		obj.zindex		= 50
 		obj.crossed		= on
-		obj.typ			= "okbutton"
-		obj.uid			= obj.GetNewID()
 		GUIManager.Add( obj )
 		Return obj
 	End Function
@@ -1054,7 +1025,6 @@ Type TGUIbackground Extends TGUIobject
 		 If width < 0 Then width = 40
 		 GUIbackground.dimension.setXY( width, height )
 		 GUIbackground.value$   = ""
-		 GUIbackground.typ$     = "background"
 		 GUIbackground.forstateonly = State$
 
 		GUIManager.Add( GUIbackground )
@@ -1119,16 +1089,13 @@ Type TGUIList  Extends TGUIobject
 		 GUIList._enabled = enabled
 		 If width < 40 Then width = 40
 		 GUIList.dimension.setXY( width, height )
-		 GUIList.uid      = Rand(1,10000)
 		 GUIList.maxlength= maxlength
-		 guilist.typ      = "list"
 		 guilist.PosChangeTimer  = MilliSecs()
 		 guilist.ListStartsAtPos = 0
 		 guilist.ListPosClicked = -1
 		 guilist.GUIbackground:TGUIbackground = New TGUIbackground
 		 guilist.GUIbackground.pos.setXY( x,y )
 		 guilist.GUIbackground.dimension.setXY( width, height )
-		 guilist.GUIbackground.typ$     = "background"
 
 		 GUIList.forstateonly = State$
 
@@ -1155,11 +1122,11 @@ Type TGUIList  Extends TGUIobject
 	  filter$ = usefilter$
 	End Method
 
- 	Method RemoveOldEntries:Int(uid:Int=0, timeout:Int=500)
+ 	Method RemoveOldEntries:Int(pid:Int=0, timeout:Int=500)
 	  Local i:Int = 0
 	  Local RemoveTime:Int = MilliSecs()
 	  For Local Entries:TGUIListEntries = EachIn Self.EntryList
-        If Entries.pid = uid
+        If Entries.pid = pid
 		  If Entries.time = 0 Then Entries.time = MilliSecs()
           If Entries.time +timeout < RemoveTime
 		    Print "RemoveOldEntries - entry aged... removing "+ (entries.time + timeout)+"<"+RemoveTime
@@ -1176,7 +1143,7 @@ Type TGUIList  Extends TGUIobject
 	Method AddUniqueEntry:Int(title$, value$, team$, ip$, port$, time:Int, usefilter:String = "")
       If filter$ = "" Or filter$ = usefilter$
 	    For Local Entries:TGUIListEntries = EachIn Self.EntryList 'Liste hier global
-			If Entries.pid = uid
+			If Entries.pid = self._id
 				If Entries.ip$ = ip$ And Entries.port$ = port$
 					Entries.time = time
 					If time = 0 Then Entries.time = MilliSecs()
@@ -1186,7 +1153,7 @@ Type TGUIList  Extends TGUIobject
 				EndIf
 			EndIf
  	    Next
-		EntryList.AddLast( TGUIListEntries.Create(title, value, team, uid, ip, port, time) )
+		EntryList.AddLast( TGUIListEntries.Create(title, value, team, self._id, ip, port, time) )
       EndIf
 	End Method
 
@@ -1246,7 +1213,7 @@ Type TGUIList  Extends TGUIobject
 
 	Method AddEntry(title$, value$, team$, ip$, port$, time:Int)
 	  If time = 0 Then time = MilliSecs()
-	  EntryList.AddLast(TGUIListEntries.Create(title$, value$,team$,uid, ip$, port$, time))
+	  EntryList.AddLast(TGUIListEntries.Create(title$, value$,team$,self._id, ip$, port$, time))
 	End Method
 
 	Method Draw()
@@ -1255,7 +1222,7 @@ Type TGUIList  Extends TGUIobject
 		Local Zeit : Int
 		Local printvalue:String
 		Zeit = MilliSecs()
-        If GUIManager.getActive() = uid Then on = 1 Else on = 0
+        If self.isActive() Then on = 1 Else on = 0
 		If Not Self.nobackground
 		    If GUIbackground <> Null
 			 GUIbackground.pos.setPos(Self.pos)
@@ -1302,7 +1269,7 @@ Type TGUIList  Extends TGUIobject
 				  ListPosClicked = i
 				  If LastMouseClickPos = i
 				    If LastMouseClickTime + 50 < MilliSecs() And LastMouseClicktime +700 > MilliSecs()
-						EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TEventData.Create().AddNumber("type", EVENT_DOUBLECLICK), self ) )
+						EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TEventData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK), self ) )
 				    EndIf
 				  EndIf
 				  LastMouseClickTime = MilliSecs()
@@ -1330,7 +1297,7 @@ Type TGUIList  Extends TGUIobject
 		For i = 0 To Ceil(self.dimension.y / guiListControl.frameh) - 1
   		  guiListControl.Draw(Self.pos.x + self.dimension.x - guiListControl.framew, Self.pos.y + i * guiListControl.frameh, 7)
 		Next
-        If GUIManager.getActive() = uid And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y <= Self.pos.y+14
+        If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y <= Self.pos.y+14
 			guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 1)
 			If PosChangeTimer + 250 < Zeit And ListStartsAtPos > 0
 				ListStartsAtPos = ListStartsAtPos -1
@@ -1340,7 +1307,7 @@ Type TGUIList  Extends TGUIobject
 			guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 0)
         EndIf
 
-        If GUIManager.getActive() = uid And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y >= Self.pos.y+self.dimension.y-14
+        If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y >= Self.pos.y+self.dimension.y-14
 			guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y + self.dimension.y - 14, 5)
 			If PosChangeTimer + 250 < Zeit And ListStartsAtPos < Int(EntryList.Count() - 2)
 				ListStartsAtPos = ListStartsAtPos + 1
@@ -1377,19 +1344,15 @@ Type TGUIChat  Extends TGUIList
 		 GUIChat._enabled = enabled
 		 If width < 40 Then width = 40
 		 GUIChat.dimension.setXY( width, height )
-		 GUIChat.uid      = Rand(1,10000)
 		 GUIChat.maxlength= maxlength
-		 GUIChat.typ      = "list"
 		 GUIChat.PosChangeTimer  = MilliSecs()
 		 GUIChat.ListStartsAtPos = 0
 		 GUIChat.ListPosClicked = -1
 		 GUIChat.GUIInput:TGUIinput = New TGUIinput
-		 GUIChat.ParentGUIObject = GUIChat
 		 GUIChat.GUIInput.pos.setXY( x+8, y+height-26 -3)
 		 GUIChat.GUIInput.dimension.setXY( width-30, 20 )
-		 GUIChat.GUIInput.uid = GUIchat.uid
+		 GUIChat.GUIInput._id = GUIchat._id
 		 GUIChat.GUIInput.maxlength = 100
-		 GUIChat.GUIInput.typ$     = "input"
 		 GUIChat.GUIInput.color.adjust(50,50,50, True)
 
 		 GUIchat.GUIInput.nobackground = 1
@@ -1400,7 +1363,6 @@ Type TGUIChat  Extends TGUIList
 		 GUIChat.GUIbackground:TGUIbackground = New TGUIbackground
 		 GUIChat.GUIbackground.pos.setXY( x,y )
 		 GUIChat.GUIbackground.dimension.setXY( width, height )
-		 GUIChat.GUIbackground.typ$     = "background"
 		 GUIchat.AutoScroll  = 1
 
 		 GUIChat.forstateonly = State$
@@ -1415,9 +1377,9 @@ Type TGUIChat  Extends TGUIList
    	Method Update()
 		Self.EnterPressed = Self.GUIInput.EnterPressed
 		Self.GUIInput.Update()
-		If Self.EnterPressed = 1 Then GUIManager.setActive(Self.uid)
+		If Self.EnterPressed = 1 Then GUIManager.setActive(Self._id)
 		_UpdateFunc_()
-       If GUIManager.getActive() = uid Then on = 1 Else on = 0
+       If self.isActive() Then on = 1 Else on = 0
 	End Method
 
 
@@ -1495,7 +1457,7 @@ Type TGUIChat  Extends TGUIList
 		For i = 0 To Ceil(Self.dimension.y / guiListControl.frameh) - 1
   		  guiListControl.Draw(Self.pos.x + self.dimension.x - guiListControl.framew, Self.pos.y + i * guiListControl.frameh, 7)
 		Next
-        If GUIManager.getActive() = uid And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y <= Self.pos.y+14
+        If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y <= Self.pos.y+14
           guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 1)
           If PosChangeTimer + 250 < Zeit And ListStartsAtPos > 0
             ListStartsAtPos = ListStartsAtPos -1
@@ -1505,7 +1467,7 @@ Type TGUIChat  Extends TGUIList
 	      guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 0)
         EndIf
 
-        If GUIManager.getActive() = uid And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y >= Self.pos.y+Self.dimension.y-14
+        If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y >= Self.pos.y+Self.dimension.y-14
           guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y + Self.dimension.y - 14, 5)
           If PosChangeTimer + 250 < Zeit And ListStartsAtPos < Int(EntryList.Count() - 2)
             ListStartsAtPos = ListStartsAtPos + 1

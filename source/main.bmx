@@ -53,8 +53,8 @@ Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21
 Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(645, 16)
 
 Print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
-Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, 0, "Newsplanner", 0)
-Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, 0, "Newsplanner", 3)
+Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, "Newsplanner", 0)
+Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, "Newsplanner", 3)
 
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 							= 0 			'=1 and the game will exit
@@ -772,7 +772,7 @@ endrem
 		List.AddLast(Player)
 		List.sort()
 
-		If controlledByID = 0 And Game.playerID = 1 Then
+		If controlledByID = 0 And Game.playerID = 1
 			If Player.playerID = 2
 				Player.PlayerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 			Else
@@ -812,6 +812,7 @@ endrem
 	'nothing up to now
 	Method UpdateFinances:Int()
 		For Local i:Int = 0 To 6
+			'
 		Next
 	End Method
 
@@ -2475,7 +2476,7 @@ Function onClick_NetGameLobby:Int(triggerEvent:TEventBase)
 	Local evt:TEventSimple = TEventSimple(triggerEvent)
 	If evt<>Null
 		local clickType:int = evt.getData().getInt("type")
-		if clickType = EVENT_DOUBLECLICK
+		if clickType = EVENT_GUI_DOUBLECLICK
 			NetgameLobbyButton_Join.clicked	= TPosition.Create(1,1)
 			GameSettingsButton_Start.disable()
 
@@ -2500,9 +2501,9 @@ For Local i:Int = 0 To 7
 		MenuChannelNames[i].TextDisplacement.setX(3)
 	EndIf
 	If i Mod 2 = 0
-		MenuFigureArrows[i] = TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,0,1,0,"GameSettings", 0)
+		MenuFigureArrows[i] = TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,0,1,"GameSettings", 0)
 	Else
-		MenuFigureArrows[i] = TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,0,1,0,"GameSettings", 1)
+		MenuFigureArrows[i] = TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,0,1,"GameSettings", 1)
 	EndIf
 Next
 
@@ -2552,13 +2553,11 @@ Function Menu_Main()
 		Game.onlinegame = 1
 	EndIf
 	'multiplayer
-	If game.gamestate = GAMESTATE_NETWORKLOBBY
-		Game.networkgame = 1
-	EndIf
+	If game.gamestate = GAMESTATE_NETWORKLOBBY then Game.networkgame = 1
 End Function
 
 Function Menu_NetworkLobby()
-	NetgameLobby_gamelist.RemoveOldEntries(NetgameLobby_gamelist.uId, 11000)
+	NetgameLobby_gamelist.RemoveOldEntries(NetgameLobby_gamelist._id, 11000)
 	If Game.onlinegame
 		If Network.OnlineIP = ""
 			Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
@@ -2637,16 +2636,13 @@ Function Menu_GameSettings()
 	If GameSettingsOkButton_Announce.crossed And Game.playerID=1
 		GameSettingsOkButton_Announce.enable()
 		GameSettingsGameTitle.disable()
-		GameSettingsGameTitle.grayedout = True
 		If GameSettingsGameTitle.Value = "" Then GameSettingsGameTitle.Value = "no title"
 		Game.title = GameSettingsGameTitle.Value
 	Else
 		GameSettingsGameTitle.enable()
-		GameSettingsGameTitle.grayedout = False
 	EndIf
 	If Game.playerID <> 1
 		GameSettingsGameTitle.disable()
-		GameSettingsGameTitle.grayedout = True
 		GameSettingsOkButton_Announce.disable()
 	EndIf
 
@@ -2656,14 +2652,14 @@ Function Menu_GameSettings()
 		If Game.networkgame Or Game.playerID=1 Then
 			If Game.gamestate <> GAMESTATE_STARTMULTIPLAYER And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				ChangesAllowed[i] = True
-				MenuPlayerNames[i].grayedout = False
-				MenuChannelNames[i].grayedout = False
+				MenuPlayerNames[i].enable()
+				MenuChannelNames[i].enable()
 				MenuFigureArrows[i*2].enable()
 				MenuFigureArrows[i*2 +1].enable()
 			Else
 				ChangesAllowed[i] = False
-				MenuPlayerNames[i].grayedout = True
-				MenuChannelNames[i].grayedout = True
+				MenuPlayerNames[i].disable()
+				MenuChannelNames[i].disable()
 				MenuFigureArrows[i*2].disable()
 				MenuFigureArrows[i*2 +1].disable()
 			EndIf
@@ -2671,7 +2667,7 @@ Function Menu_GameSettings()
 	Next
 
 	GUIManager.Update("GameSettings")
-	If GameSettingsButton_Start.GetClicks() > 0 Then
+	If GameSettingsButton_Start.GetClicks() > 0
 		If Not Game.networkgame And Not Game.onlinegame
 			If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
 			Game.gamestate = GAMESTATE_RUNNING
@@ -3160,9 +3156,9 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	'	If Game.networkgame
 	'		If KEYWRAPPER.pressedKey(KEY_ENTER) And GUIManager.getActive() <> InGame_Chat.GUIINPUT.uId And Network.ChatSpamTime < MilliSecs()
 	If KEYMANAGER.IsHit(KEY_ENTER)
-		If Not GUIManager.isActive(InGame_Chat.GUIINPUT.uId)
+		If Not GUIManager.isActive(InGame_Chat.GUIINPUT._id)
 			If Network.ChatSpamTime < MilliSecs()
-				GUIManager.setActive( InGame_Chat.GUIInput.uId )
+				GUIManager.setActive( InGame_Chat.GUIInput._id )
 			Else
 				Print "no spam pls"
 			EndIf
@@ -3171,7 +3167,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	'	EndIf
 
 	'#Region 'developer shortcuts (1-4, B=office, C=Chief ...)
-	If GUIManager.getActive() <> InGame_Chat.GUIInput.uId
+	If GUIManager.getActive() <> InGame_Chat.GUIInput._id
 		If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
 		If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
 	EndIf
@@ -3400,7 +3396,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 	Method OnEvent(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
-			If GUIManager.getActive() <> InGame_Chat.GUIInput.uId
+			If GUIManager.getActive() <> InGame_Chat.GUIInput._id
 				If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
 				If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
 				If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
