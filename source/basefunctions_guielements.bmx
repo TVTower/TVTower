@@ -1040,10 +1040,6 @@ Type TGUIList  Extends TGUIobject
 		Return obj
 	End Function
 
-	Method Update()
-		'
-	End Method
-
 	Method DisableBackground()
 		Self.nobackground = True
 	End Method
@@ -1076,17 +1072,18 @@ Type TGUIList  Extends TGUIobject
 	End Method
 
 ' should be done in specific
-	Method AddUniqueEntry:Int(title$, value$, team$, ip$, port:int, time:Int, usefilter:String = "")
-		If filter$ = "" Or filter$ = usefilter$
+	Method AddUniqueEntry:Int(title:string, value:string, team:string, ip:string, port:int, time:Int, usefilter:String = "")
+		If filter = "" Or filter = usefilter
 			For Local Entry:TGUIEntry = EachIn Self.EntryList
-				If Entry.data.getInt("pid", 0) = self._id
-					If Entry.data.getString("ip", "0.0.0.0") = ip And Entry.data.getInt("port",0) = port
-						If time = 0 Then time = MilliSecs()
-						Entry.data.addNumber("time", time)
-						Entry.data.addString("team", team)
-						Entry.data.addString("value", value)
-						Return 0
-					EndIf
+				If Entry.data.getInt("pid", 0) = self._id AND ..
+				   Entry.data.getString("ip", "0.0.0.0") = ip AND ..
+				   Entry.data.getInt("port",0) = port
+
+					If time = 0 Then time = MilliSecs()
+					Entry.data.addNumber("time", time)
+					Entry.data.addString("team", team)
+					Entry.data.addString("value", value)
+					Return 0
 				EndIf
 			Next
 			local data:TData = new TData
@@ -1107,6 +1104,7 @@ Type TGUIList  Extends TGUIobject
 			If i = ListPosClicked then Return Entries.data.getInt("port",0)
   	      	i:+1
 	    Next
+	    return 0
 	End Method
 
 	Method GetEntryTime:Int()
@@ -1115,6 +1113,7 @@ Type TGUIList  Extends TGUIobject
    	        If i = ListPosClicked then Return Entries.data.getInt("time",0)
   	      	i:+1
 	    Next
+	    return 0
 	End Method
 
 	Method GetEntryValue:String()
@@ -1154,31 +1153,23 @@ Type TGUIList  Extends TGUIobject
 		EntryList.AddLast( TGUIEntry.Create(data) )
 	End Method
 
-	Method Draw()
-		Local i:Int = 0
-		Local spaceavaiable:Int =0
-		Local Zeit : Int
-		Local printvalue:String
-		Zeit = MilliSecs()
+	Method Update()
         If self.isActive() Then on = 1 Else on = 0
-		If Not Self.nobackground
-		    If GUIbackground <> Null
-			 GUIbackground.pos.setPos(Self.pos)
-			 GUIbackground.dimension.setPos(self.dimension)
-	        Else
-				gfx_GuiPack.GetSprite("Chat_Top").Draw(Self.pos.x, Self.pos.y)
-				gfx_GuiPack.GetSprite("Chat_Middle").TileDraw(Self.pos.x, Self.pos.y + gfx_GuiPack.GetSprite("Chat_Top").h, gfx_GuiPack.GetSprite("Chat_Middle").w, self.dimension.y - gfx_GuiPack.GetSprite("Chat_Top").h - gfx_GuiPack.GetSprite("Chat_Bottom").h)
-				gfx_GuiPack.GetSprite("Chat_Bottom").Draw(Self.pos.x, Self.pos.y + self.dimension.y, 0, 1)
-	        EndIf
-		EndIf
-		'SetViewport(Self.pos.x, Self.pos.y, width - 12, height)
-	    i = 0
-		SpaceAvaiable = self.dimension.y 'Hoehe der Liste
-		Local controlWidth:Float = ControlEnabled * gfx_GuiPack.GetSprite("ListControl").framew
-	    For Local Entries:TGUIEntry = EachIn self.EntryList
-			If i > ListStartsAtPos-1
-				If TextHeight( Entries.data.getString("value", "") ) < SpaceAvaiable
+	End Method
 
+	Method Draw()
+		Local i:Int					= 0
+		Local spaceavaiable:Int		= self.dimension.y 'Hoehe der Liste
+		Local controlWidth:Float	= ControlEnabled * gfx_GuiPack.GetSprite("ListControl").framew
+		Local Zeit:Int				= MilliSecs()
+		Local printvalue:String
+
+'			gfx_GuiPack.GetSprite("Chat_Top").Draw(Self.pos.x, Self.pos.y)
+'			gfx_GuiPack.GetSprite("Chat_Middle").TileDraw(Self.pos.x, Self.pos.y + gfx_GuiPack.GetSprite("Chat_Top").h, gfx_GuiPack.GetSprite("Chat_Middle").w, self.dimension.y - gfx_GuiPack.GetSprite("Chat_Top").h - gfx_GuiPack.GetSprite("Chat_Bottom").h)
+'			gfx_GuiPack.GetSprite("Chat_Bottom").Draw(Self.pos.x, Self.pos.y + self.dimension.y, 0, 1)
+
+	    For Local Entries:TGUIEntry = EachIn self.EntryList
+			If i > ListStartsAtPos-1 AND SpaceAvaiable > TextHeight( Entries.data.getString("value", "") )
 				printValue = Entries.data.getString("value", "")
 				If Entries.data.getInt("team", 0) > 0 then printValue = "[Team "+Entries.data.getInt("team", 0) + "]: "+printValue
 
@@ -1198,62 +1189,59 @@ Type TGUIList  Extends TGUIobject
 					SetColor(255,255,255)
 				EndIf
 				If ListPosClicked = i then SetColor(250, 180, 20)
-				If MouseX() > Self.pos.x + 5 And MouseX() < Self.pos.x + self.dimension.x - 6 - ControlWidth And MouseY() > Self.pos.y + 5 + self.dimension.y - Spaceavaiable And MouseY() < Self.pos.y + 5 + self.dimension.y - Spaceavaiable + TextHeight(printvalue)
+				If functions.MouseIn(Self.pos.x + 5, Self.pos.y + 5 + self.dimension.y - Spaceavaiable, self.dimension.x - 1 - ControlWidth, useFont.getHeight(printvalue))
 					SetAlpha(0.5)
-					DrawRect(Self.pos.x+8,Self.pos.y+8+self.dimension.y-SpaceAvaiable ,self.dimension.x-20, TextHeight(printvalue$))
+					DrawRect(Self.pos.x+8,Self.pos.y+8+self.dimension.y-SpaceAvaiable ,self.dimension.x-20, useFont.getHeight(printvalue))
 					SetAlpha(1)
 					If MouseIsDown
-						ListPosClicked = i
-						If LastMouseClickPos = i
-							If LastMouseClickTime + 50 < MilliSecs() And LastMouseClicktime +700 > MilliSecs()
-								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK), self ) )
-							EndIf
+						If LastMouseClickPos = i AND LastMouseClickTime + 50 < MilliSecs() And LastMouseClicktime +700 > MilliSecs()
+							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK), self ) )
 						EndIf
-						LastMouseClickTime = MilliSecs()
-						LastMouseClickPos = i
+						ListPosClicked		= i
+						LastMouseClickTime	= MilliSecs()
+						LastMouseClickPos	= i
 					EndIf
 				EndIf
-	            SetColor(55,55,55)
-	            Local text:String[] = printvalue.split(":")
-	            If Len(text) = 2 Then text[0] = text[0]+":"
+				SetColor(55,55,55)
+				Local text:String[] = printvalue.split(":")
+				If Len(text) = 2 Then text[0] = text[0]+":"
 
-  	            useFont.Draw(text[0], Self.pos.x+13, Self.pos.y+8+self.dimension.y-SpaceAvaiable)
-	            SetColor(55,55,55)
-	            If Len(text) > 1
+				useFont.Draw(text[0], Self.pos.x+13, Self.pos.y+8+self.dimension.y-SpaceAvaiable)
+				SetColor(55,55,55)
+				If Len(text) > 1
 					useFont.Draw(text[1], Self.pos.x+13+useFont.getWidth(text[0]), Self.pos.y+8+self.dimension.y-SpaceAvaiable)
 					SetColor(255,255,255)
 				EndIf
-                SpaceAvaiable:-useFont.getHeight(printvalue)
-            EndIf
+				SpaceAvaiable:-useFont.getHeight(printvalue)
 			EndIf
 			i:+1
   		Next
 
-    If ControlEnabled = 1
-		Local guiListControl:TGW_Sprites = gfx_GuiPack.GetSprite("ListControl")
-		For i = 0 To Ceil(self.dimension.y / guiListControl.frameh) - 1
-  		  guiListControl.Draw(Self.pos.x + self.dimension.x - guiListControl.framew, Self.pos.y + i * guiListControl.frameh, 7)
-		Next
-        If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y <= Self.pos.y+14
-			guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 1)
-			If PosChangeTimer + 250 < Zeit And ListStartsAtPos > 0
-				ListStartsAtPos = ListStartsAtPos -1
-				PosChangeTimer = Zeit
+		If ControlEnabled = 1
+			Local guiListControl:TGW_Sprites = gfx_GuiPack.GetSprite("ListControl")
+			For i = 0 To Ceil(self.dimension.y / guiListControl.frameh) - 1
+			  guiListControl.Draw(Self.pos.x + self.dimension.x - guiListControl.framew, Self.pos.y + i * guiListControl.frameh, 7)
+			Next
+			If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y <= Self.pos.y+14
+				guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 1)
+				If PosChangeTimer + 250 < Zeit And ListStartsAtPos > 0
+					ListStartsAtPos = ListStartsAtPos -1
+					PosChangeTimer = Zeit
+				EndIf
+			Else
+				guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 0)
 			EndIf
-	    Else
-			guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y, 0)
-        EndIf
 
-        If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y >= Self.pos.y+self.dimension.y-14
-			guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y + self.dimension.y - 14, 5)
-			If PosChangeTimer + 250 < Zeit And ListStartsAtPos < Int(EntryList.Count() - 2)
-				ListStartsAtPos = ListStartsAtPos + 1
-				PosChangeTimer = Zeit
+			If self.isActive() And self.mouseIsDown And self.clicked and Self.clicked.x >= Self.pos.x+self.dimension.x-14 And Self.clicked.y >= Self.pos.y+self.dimension.y-14
+				guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y + self.dimension.y - 14, 5)
+				If PosChangeTimer + 250 < Zeit And ListStartsAtPos < Int(EntryList.Count() - 2)
+					ListStartsAtPos = ListStartsAtPos + 1
+					PosChangeTimer = Zeit
+				EndIf
+			Else
+				guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y + self.dimension.y - 14, 4)
 			EndIf
-        Else
-			guiListControl.Draw(Self.pos.x + self.dimension.x - 14, Self.pos.y + self.dimension.y - 14, 4)
-		EndIf
-    EndIf 'ControlEnabled
+		EndIf 'ControlEnabled
 
 		SetColor 255,255,255
 	End Method

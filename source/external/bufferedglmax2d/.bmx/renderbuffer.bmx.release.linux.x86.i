@@ -2,7 +2,7 @@ import brl.blitz
 import brl.graphics
 import pub.glew
 import brl.glmax2d
-TRenderState^brl.blitz.Object{
+TRenderState^Object{
 .texture_name%&
 .render_mode%&
 .blend_source%&
@@ -23,7 +23,7 @@ TRenderState^brl.blitz.Object{
 +SetTexture%(tex%)="_bb_TRenderState_SetTexture"
 +RestoreState%(state:TRenderState="bbNullObject")="_bb_TRenderState_RestoreState"
 }F="bb_TRenderState"
-TRenderBuffer^brl.blitz.Object{
+TRenderBuffer^Object{
 ._vertices@*&
 ._texcoords@*&
 ._colors@*&

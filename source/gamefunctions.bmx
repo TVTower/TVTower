@@ -1641,8 +1641,9 @@ endrem
 			Next
 		Next
 		Print "StationMap: alle Pixel eingelesen - Einwohner:" + obj.einwohner + " zeit: "+(Millisecs()-start)+"ms"
+		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Stationmap").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 
-		obj.baseStationSprite	=  Assets.GetSprite("stationmap_antenna0")
+		obj.baseStationSprite	= Assets.GetSprite("stationmap_antenna0")
 		obj.LastStation			= TStation.Create(-1,-1, 0, 0, -1)
 
 		List.AddLast(obj)

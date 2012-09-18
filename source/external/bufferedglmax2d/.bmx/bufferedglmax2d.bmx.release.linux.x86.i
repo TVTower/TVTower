@@ -3,7 +3,7 @@ import brl.max2d
 import brl.glgraphics
 import brl.retro
 import "renderbuffer.bmx"
-TGLPackedTexture^brl.blitz.Object{
+TGLPackedTexture^Object{
 MinPackingSize%&=mem("_bb_TGLPackedTexture_MinPackingSize")
 ._filled%&
 ._u0#&
@@ -22,12 +22,12 @@ MinPackingSize%&=mem("_bb_TGLPackedTexture_MinPackingSize")
 -New%()="_bb_TGLPackedTexture_New"
 -Delete%()="_bb_TGLPackedTexture_Delete"
 -GetUnused:TGLPackedTexture(width%,height%)="_bb_TGLPackedTexture_GetUnused"
--Buffer%(pixmap:brl.pixmap.TPixmap)="_bb_TGLPackedTexture_Buffer"
+-Buffer%(pixmap:TPixmap)="_bb_TGLPackedTexture_Buffer"
 -Name%()="_bb_TGLPackedTexture_Name"
 -Unload%()="_bb_TGLPackedTexture_Unload"
 -MergeEmpty%()="_bb_TGLPackedTexture_MergeEmpty"
 }="bb_TGLPackedTexture"
-TGLTexturePack^brl.blitz.Object{
+TGLTexturePack^Object{
 ._gseq%&
 ._name%&
 ._root:TGLPackedTexture&
@@ -45,7 +45,7 @@ TGLTexturePack^brl.blitz.Object{
 -GetUnused:TGLPackedTexture(width%,height%)="_bb_TGLTexturePack_GetUnused"
 -MergeEmpty%()="_bb_TGLTexturePack_MergeEmpty"
 }="bb_TGLTexturePack"
-TGLBufferedImageFrame^brl.max2d.TImageFrame{
+TGLBufferedImageFrame^TImageFrame{
 ._gseq%&
 ._texture:TGLPackedTexture&
 .uv#&[]&
@@ -54,7 +54,7 @@ TGLBufferedImageFrame^brl.max2d.TImageFrame{
 -Init:TGLBufferedImageFrame(buffer:TGLPackedTexture)="_bb_TGLBufferedImageFrame_Init"
 -Draw%(x0#,y0#,x1#,y1#,tx#,ty#,sx#,sy#,sw#,sh#)="_bb_TGLBufferedImageFrame_Draw"
 }="bb_TGLBufferedImageFrame"
-TBufferedGLMax2DDriver^brl.max2d.TMax2DDriver{
+TBufferedGLMax2DDriver^TMax2DDriver{
 MinimumTextureWidth%&=mem("_bb_TBufferedGLMax2DDriver_MinimumTextureWidth")
 MinimumTextureHeight%&=mem("_bb_TBufferedGLMax2DDriver_MinimumTextureHeight")
 __blend_funcs%&[]&=mem:p("_bb_TBufferedGLMax2DDriver___blend_funcs")
@@ -85,12 +85,12 @@ __blend_funcs%&[]&=mem:p("_bb_TBufferedGLMax2DDriver___blend_funcs")
 -Delete%()="_bb_TBufferedGLMax2DDriver_Delete"
 -Reset%()="_bb_TBufferedGLMax2DDriver_Reset"
 -_rectPoints#&[](x0#,y0#,x1#,y1#,tx#,ty#)="_bb_TBufferedGLMax2DDriver__rectPoints"
--GraphicsModes:brl.graphics.TGraphicsMode&[]()="_bb_TBufferedGLMax2DDriver_GraphicsModes"
--AttachGraphics:brl.graphics.TGraphics(widget%,flags%)="_bb_TBufferedGLMax2DDriver_AttachGraphics"
--CreateGraphics:brl.graphics.TGraphics(width%,height%,depth%,hertz%,flags%)="_bb_TBufferedGLMax2DDriver_CreateGraphics"
--SetGraphics%(g:brl.graphics.TGraphics)="_bb_TBufferedGLMax2DDriver_SetGraphics"
+-GraphicsModes:TGraphicsMode&[]()="_bb_TBufferedGLMax2DDriver_GraphicsModes"
+-AttachGraphics:TGraphics(widget%,flags%)="_bb_TBufferedGLMax2DDriver_AttachGraphics"
+-CreateGraphics:TGraphics(width%,height%,depth%,hertz%,flags%)="_bb_TBufferedGLMax2DDriver_CreateGraphics"
+-SetGraphics%(g:TGraphics)="_bb_TBufferedGLMax2DDriver_SetGraphics"
 -Flip%(sync%)="_bb_TBufferedGLMax2DDriver_Flip"
--CreateFrameFromPixmap:brl.max2d.TImageFrame(pixmap:brl.pixmap.TPixmap,flags%)="_bb_TBufferedGLMax2DDriver_CreateFrameFromPixmap"
+-CreateFrameFromPixmap:TImageFrame(pixmap:TPixmap,flags%)="_bb_TBufferedGLMax2DDriver_CreateFrameFromPixmap"
 -SetBlend%(blend%)="_bb_TBufferedGLMax2DDriver_SetBlend"
 -SetAlpha%(alpha#)="_bb_TBufferedGLMax2DDriver_SetAlpha"
 -SetColor%(r%,g%,b%)="_bb_TBufferedGLMax2DDriver_SetColor"
@@ -104,8 +104,8 @@ __blend_funcs%&[]&=mem:p("_bb_TBufferedGLMax2DDriver___blend_funcs")
 -DrawRect%(x0#,y0#,x1#,y1#,tx#,ty#)="_bb_TBufferedGLMax2DDriver_DrawRect"
 -DrawOval%(x0#,y0#,x1#,y1#,tx#,ty#)="_bb_TBufferedGLMax2DDriver_DrawOval"
 -DrawPoly%(xy#&[],handlex#,handley#,originx#,originy#)="_bb_TBufferedGLMax2DDriver_DrawPoly"
--DrawPixmap%(pixmap:brl.pixmap.TPixmap,x%,y%)="_bb_TBufferedGLMax2DDriver_DrawPixmap"
--GrabPixmap:brl.pixmap.TPixmap(x%,y%,width%,height%)="_bb_TBufferedGLMax2DDriver_GrabPixmap"
+-DrawPixmap%(pixmap:TPixmap,x%,y%)="_bb_TBufferedGLMax2DDriver_DrawPixmap"
+-GrabPixmap:TPixmap(x%,y%,width%,height%)="_bb_TBufferedGLMax2DDriver_GrabPixmap"
 -SetResolution%(width#,height#)="_bb_TBufferedGLMax2DDriver_SetResolution"
 -ToString$()="_bb_TBufferedGLMax2DDriver_ToString"
 -RenderBuffer:TRenderBuffer()="_bb_TBufferedGLMax2DDriver_RenderBuffer"

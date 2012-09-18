@@ -31,17 +31,17 @@ Type TEventManager
 	End Method
 
 	' add a new listener to a trigger
-	Method registerListener(trigger:string, eventListener:TEventListenerBase)
+	Method registerListener:TLink(trigger:string, eventListener:TEventListenerBase)
 		trigger = lower(trigger)
 		local listeners:TList = TList(self._listeners.ValueForKey(trigger))
 		if listeners = null									'if not existing, create a new list
 			listeners = CreateList()
 			self._listeners.Insert(trigger, listeners)
 		endif
-		listeners.AddLast(eventListener)					'add to list of listeners
+		return listeners.AddLast(eventListener)					'add to list of listeners
 	End Method
 
-	Method registerListenerFunction( trigger:string, _function(triggeredByEvent:TEventBase), limitToObject:object=null )
+	Method registerListenerFunction:TLink( trigger:string, _function(triggeredByEvent:TEventBase), limitToObject:object=null )
 		self.registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToObject) )
 	End Method
 
@@ -49,6 +49,14 @@ Type TEventManager
 	Method unregisterListener(trigger:string, eventListener:TEventListenerBase)
 		local listeners:TList = TList(self._listeners.ValueForKey( lower(trigger) ))
 		if listeners <> null then listeners.remove(eventListener)
+	End Method
+
+	Method unregisterAllListeners(trigger:string)
+		self._listeners.remove( lower(trigger) )
+	End Method
+
+	Method unregisterListenerByLink(link:TLink)
+		link.remove()
 	End Method
 
 

@@ -29,7 +29,6 @@ Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
-
 Global App:TApp = TApp.Create(60, 100) 'create with 60fps for physics and graphics
 App.LoadResources("config/resources.xml")
 
@@ -44,6 +43,7 @@ GUIManager.defaultFont	= Assets.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
+
 
 'Initialise Render-To-Texture
 tRender.Initialise()
@@ -82,10 +82,12 @@ Type TApp
 	Field prepareScreenshot:Int = 0
 	Field g:TGraphics
 
+	Field creationTime:int
+	global lastLoadEvent:TEventSimple	= null
 	global baseResourcesLoaded:int		= 0						'able to draw loading screen?
 	global baseResourceXmlUrl:string	= "config/startup.xml"	'holds bg for loading screen and more
 	global currentResourceUrl:string	= ""
-	global maxResourceCount:int			= 310					'set to <=0 to get a output of loaded resources
+	global maxResourceCount:int			= 331					'set to <=0 to get a output of loaded resources
 
 	global LogoFadeInFirstCall:Int = 0
 	global LoaderWidth:Int = 0
@@ -93,14 +95,17 @@ Type TApp
 
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 60)
 		Local obj:TApp = New TApp
+		obj.creationTime = Millisecs()
 		obj.settings = new TApplicationSettings
 		'create timer
 		obj.timer = TDeltaTimer.Create(updatesPerSecond, framesPerSecond)
 		'listen to App-timer
-		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
-		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
-		EventManager.registerListenerFunction( "XmlLoader.onLoadElement",	TApp.drawLoadingScreen )
+		'-register to draw loading screen
+		EventManager.registerListenerFunction( "App.onDraw", 	TApp.drawLoadingScreen )
+		'-register for each toLoad-Element from XML files
+		EventManager.registerListenerFunction( "XmlLoader.onLoadElement",	TApp.onLoadElement )
 		EventManager.registerListenerFunction( "XmlLoader.onFinishParsing",	TApp.onFinishParsingXML )
+		EventManager.registerListenerFunction( "Loader.onLoadElement",	TApp.onLoadElement )
 
 		obj.LoadSettings("config/settings.xml")
 		obj.InitGraphics()
@@ -131,6 +136,13 @@ Type TApp
 		local XmlLoader:TXmlLoader = TXmlLoader.Create()
 		XmlLoader.Parse(path)
 		Assets.AddSet(XmlLoader.Values) 'copy XML-values
+	End Method
+
+	Method StartApp()
+		EventManager.unregisterAllListeners( "App.onDraw" )
+		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
+		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
+		print "LADEZEIT : "+(Millisecs() - self.creationTime) +"ms"
 	End Method
 
 	Method InitGraphics:int()
@@ -168,8 +180,15 @@ Type TApp
 		endif
 	End Function
 
+	Function onLoadElement( triggerEvent:TEventBase )
+		TApp.lastLoadEvent = TEventSimple(triggerEvent)
+		if TApp.baseResourcesLoaded
+			App.timer.loop()
+ 		endif
+	End Function
+
 	Function drawLoadingScreen( triggerEvent:TEventBase )
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		Local evt:TEventSimple = TApp.lastLoadEvent
 		If evt<>Null
 			local element:string		= evt.getData().getString("element")
 			local text:string			= evt.getData().getString("text")
@@ -179,41 +198,40 @@ Type TApp
 			if itemNumber > 0 then maxItemNumber = evt.getData().getInt("maxItemNumber")
 
 			if element = "XmlFile" then TApp.currentResourceUrl = text
-			if TApp.baseResourcesLoaded
-				SetColor 255, 255, 255
-				Assets.GetSprite("gfx_startscreen").Draw(0,0)
 
-				If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
-				SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
-				Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.width/2 - Assets.GetSprite("gfx_startscreen_logo").w / 2, 100)
-				SetAlpha 1.0
-				Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, 0, 0.5)
+			SetColor 255, 255, 255
+			Assets.GetSprite("gfx_startscreen").Draw(0,0)
 
-				LoaderWidth = Min(680, LoaderWidth + (680.0 / TApp.maxResourceCount))
-				Assets.GetSprite("gfx_startscreen_loadingBar").TileDraw((400-Assets.GetSprite("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, Assets.GetSprite("gfx_startscreen_loadingBar").frameh)
-				SetColor 0,0,0
-				if itemNumber > 0
-					SetAlpha 0.25
-					DrawText "[" + Replace(RSet(itemNumber, string(maxItemNumber).length), " ", "0") + "/" + maxItemNumber + "]", 670, 415
-					DrawText TApp.currentResourceUrl, 80, 402
-				endif
-				SetAlpha 0.5
-				DrawText "Loading: "+text, 80, 415
-				SetAlpha 1.0
-				if error > 0
-					SetColor 255, 0 ,0
-					DrawText("ERROR: ", 80,440)
-					SetAlpha 0.75
-					DrawText(text+" not found. (press ESC to exit)", 130,440)
-					SetAlpha 1.0
-				endif
-				SetColor 255, 255, 255
+			If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
+			SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
+			Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.width/2 - Assets.GetSprite("gfx_startscreen_logo").w / 2, 100)
+			SetAlpha 1.0
+			Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, 0, 0.5)
 
-				'base cursor
-				Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
-
-				Flip 0
+			LoaderWidth = Min(680, LoaderWidth + (680.0 / TApp.maxResourceCount))
+			Assets.GetSprite("gfx_startscreen_loadingBar").TileDraw((400-Assets.GetSprite("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, Assets.GetSprite("gfx_startscreen_loadingBar").frameh)
+			SetColor 0,0,0
+			if itemNumber > 0
+				SetAlpha 0.25
+				DrawText "[" + Replace(RSet(itemNumber, string(maxItemNumber).length), " ", "0") + "/" + maxItemNumber + "]", 670, 415
+				DrawText TApp.currentResourceUrl, 80, 402
 			endif
+			SetAlpha 0.5
+			DrawText "Loading: "+text, 80, 415
+			SetAlpha 1.0
+			if error > 0
+				SetColor 255, 0 ,0
+				DrawText("ERROR: ", 80,440)
+				SetAlpha 0.75
+				DrawText(text+" not found. (press ESC to exit)", 130,440)
+				SetAlpha 1.0
+			endif
+			SetColor 255, 255, 255
+
+			'base cursor
+			Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
+
+			Flip 0
 		endif
 	End Function
 End Type
@@ -748,8 +766,8 @@ endrem
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
 	Function Create:TPlayer(Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, pcolr:Int, pcolg:Int, pcolb:Int, ControlledByID:Int = 1, FigureName:String = "")
-		Local Player:TPlayer	= New TPlayer
-
+		Local Player:TPlayer		= New TPlayer
+		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Player").AddNumber("itemNumber", globalID).AddNumber("maxItemNumber", 4) ) )
 
 		Player.Name					= Name
 		Player.playerID				= globalID
@@ -1894,6 +1912,8 @@ Type TBuilding Extends TRenderable
 	Global List:TList = CreateList()
 
 	Function Create:TBuilding()
+		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+
 		Local Building:TBuilding = New TBuilding
 		Building.gfx_building	= Assets.GetSprite("gfx_building")
 		Building.pos.y			= 0 - Building.gfx_building.h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
@@ -2357,7 +2377,8 @@ Global StationMap:TStationMap	= TStationMap.Create()
 Global Interface:TInterface		= TInterface.Create()
 Global Game:TGame	  			= TGame.Create()
 Global Building:TBuilding		= TBuilding.Create()
-PrintDebug ("  Init_CreateAllRooms()", "creation of all rooms with assigned playernames", DEBUG_START)
+
+EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
 
 '#Region  Creating PlayerColors
@@ -3115,6 +3136,7 @@ Function Init_Creation()
 End Function
 
 Function Init_Colorization()
+	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Colorization").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 	'colorize the images
 	Assets.AddImageAsSprite("gfx_financials_barren0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(200, 200, 200) )
 	Assets.AddImageAsSprite("gfx_building_sign0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(200,200,200) )
@@ -3142,7 +3164,11 @@ Function Init_All()
 	PrintDebug ("  Init_Colorization()", "colorizing Images corresponding to playercolors", DEBUG_START)
 	Init_Colorization()
 	Init_SetRoomNames()					'setzt Raumnamen entsprechend Spieler/Sendernamen
+
+	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 	Init_CreateRoomTooltips()			'erstellt Raum-Tooltips und somit auch Raumplaner-Schilder
+
+	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Fill background of building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 	PrintDebug ("  TRooms.DrawDoorsOnBackground()", "drawing door-sprites on the building-sprite", DEBUG_START)
 	TRooms.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
 	PrintDebug ("  Building.DrawItemsToBackground()", "drawing plants and lights on the building-sprite", DEBUG_START)
@@ -3497,6 +3523,7 @@ Global Init_Complete:Int = 0
 'Init EventManager
 'could also be done during update ("if not initDone...")
 EventManager.Init()
+App.StartApp() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
 
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
