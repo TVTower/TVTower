@@ -525,9 +525,9 @@ Type TNetworkHelper
 		Local playerID:Int			= obj.getInt(1)
 		Local chatMessage:String	= obj.getString(2)
 		If Game.gamestate = GAMESTATE_RUNNING
-			InGame_Chat.AddEntry("",ChatMessage, playerID,"", "", MilliSecs())
+			InGame_Chat.AddEntry("",ChatMessage, playerID,"", 0, MilliSecs())
 		Else
-			GameSettings_Chat.AddEntry("", ChatMessage, playerID,"", "", MilliSecs())
+			GameSettings_Chat.AddEntry("", ChatMessage, playerID,"", 0, MilliSecs())
 		EndIf
 	End Method
 

@@ -107,6 +107,50 @@ Type TXmlHelper
 End Type
 
 
+Type TData
+	field data:TMap = CreateMap()
+
+	Function Create:TData()
+		local obj:TData = new TData
+		return obj
+	End Function
+
+	Method Add:TData(key:string, data:object)
+		self.data.insert(key, data)
+		return self
+	End Method
+
+	Method AddString:TData(key:string, data:string)
+		self.Add( key, object(data) )
+		return self
+	End Method
+
+	Method AddNumber:TData(key:string, data:float)
+		self.Add( key, object( string(data) ) )
+		return self
+	End Method
+
+	Method AddObject:TData(key:string, data:object)
+		self.Add( key, object( data ) )
+		return self
+	End Method
+
+	Method Get:object(key:string)
+		return self.data.ValueForKey(key)
+	End Method
+
+	Method GetString:string(key:string, defaultValue:string=null)
+		local result:object = self.Get(key)
+		if result then return String( result )
+		return defaultValue
+	End Method
+
+	Method GetInt:int(key:string, defaultValue:int = null)
+		local result:object = self.Get(key)
+		if result then return Int( float( String( result ) ) )
+		return defaultValue
+	End Method
+End Type
 
 
 
@@ -803,13 +847,14 @@ Type TDragAndDrop
 End Type
 
 Type TColor
-	Field r:int=0, g:int=0, b:int=0
+	Field r:int=0, g:int=0, b:int=0, a:float=1.0
 
-	Function Create:TColor(r:int=0,g:int=0,b:int=0)
+	Function Create:TColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
 		local obj:TColor = new TColor
 		obj.r = r
 		obj.g = g
 		obj.b = b
+		obj.a = a
 		return obj
 	End Function
 
@@ -828,6 +873,12 @@ Type TColor
 	Method set()
 		SetColor(self.r, self.g, self.b)
 	End Method
+
+	Method setRGBA()
+		SetColor(self.r, self.g, self.b)
+		SetAlpha(self.a)
+	End Method
+
 
 	Method get()
 		GetColor(self.r, self.g, self.b)

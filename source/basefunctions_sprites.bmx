@@ -510,7 +510,7 @@ Type TBitmapFont
 		Return usedheight
 	End Method
 
-	Method drawStyled:object(text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0, returnType:int=0, doDraw:int=1, special:float=0.0)
+	Method drawStyled:object(text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0, returnType:int=0, doDraw:int=1, special:float=-1.0)
 		local height:float = 0.0
 		local width:float = 0.0
 		local oldR:int, oldG:int, oldB:int
@@ -521,7 +521,11 @@ Type TBitmapFont
 			height:+ 1
 			if doDraw
 				local oldA:float = getAlpha()
-				SetAlpha float(0.75*oldA)
+				if special <> -1.0
+					SetAlpha float(special*oldA)
+				else
+					SetAlpha float(0.75*oldA)
+				endif
 				SetColor 250,250,250
 				self.draw(text, x,y+1)
 				SetAlpha oldA
@@ -532,7 +536,7 @@ Type TBitmapFont
 			width:+1
 			if doDraw
 				local oldA:float = getAlpha()
-				if special <> 0.0 then SetAlpha special*oldA else SetAlpha 0.5*oldA
+				if special <> -1.0 then SetAlpha special*oldA else SetAlpha 0.5*oldA
 				SetColor 0,0,0
 				self.draw(text, x+1,y+1)
 				SetAlpha oldA
@@ -978,12 +982,25 @@ Type TGW_Sprites extends TRenderable
 		EndIf
 	End Method
 
-	Method TileDrawHorizontal(x:float, y:float, w:float, scale:float=1.0)
-		local widthLeft:float = w
-		local currentX:float = x
+	Method getFramePos:TPosition(frame:int=-1)
+		If frame < 0 then return TPosition.Create(0,0)
+
+		Local MaxFramesInCol:Int	= Ceil(w / framew)
+		Local framerow:Int			= Ceil(frame / Max(1,MaxFramesInCol))
+		Local framecol:Int 			= frame - (framerow * MaxFramesInCol)
+		return TPosition.Create( framecol * self.framew, framerow * self.frameh )
+	End Method
+
+	Method TileDrawHorizontal(x:float, y:float, w:float, scale:float=1.0, theframe:int=-1)
+		local widthLeft:float	= w
+		local currentX:float	= x
+		local framePos:TPosition = self.getFramePos(theframe)
+
 		while widthLeft > 0
-			local widthPart:float = Min(self.w, widthLeft) 'draw part of sprite or whole ?
-			DrawSubImageRect( parent.image, currentX, y, widthPart, self.h, self.pos.x, self.pos.y, widthPart, self.h )
+			local widthPart:float = Min(self.framew, widthLeft) 'draw part of sprite or whole ?
+			DrawSubImageRect( parent.image, currentX, y, widthPart, self.h, self.pos.x + framePos.x, self.pos.y + framePos.y, widthPart, self.frameh, 0 )
+			'old variant (no frames)
+			'DrawSubImageRect( parent.image, currentX, y, widthPart, self.h, self.pos.x, self.pos.y, widthPart, self.h )
 			currentX :+ widthPart * scale
 			widthLeft :- widthPart * scale
 		Wend
@@ -1001,7 +1018,7 @@ Type TGW_Sprites extends TRenderable
 	End Method
 
 
-	Method TileDraw(x:Float, y:Float, w:Int, h:Int, animframe:Int = -1, scale:float=1.0)
+	Method TileDraw(x:Float, y:Float, w:Int, h:Int, scale:float=1.0)
 		local heightLeft:float = floor(h)
 		local currentY:float = y
 		while heightLeft >= 1

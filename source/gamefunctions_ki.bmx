@@ -301,7 +301,7 @@ Type TLuaFunctions {_exposeToLua}
 
 	Method SendToChat:Int(ChatText:String)
 		If Players[ Self.ME ] <> Null
-			InGame_Chat.AddEntry("", ChatText, Self.ME, "", "", MilliSecs())
+			InGame_Chat.AddEntry("", ChatText, Self.ME, "", 0, MilliSecs())
 			If Game.IsGameLeader()
 				If ChatText.Length > 4 And Left(ChatText, 1) = "/"
 					Local KIPlayerID:Int = Int(Mid(chattext, 2,1))

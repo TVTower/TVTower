@@ -40,6 +40,22 @@
 				<child name="gfx_gui_button.active.M"	x="224"	y="96" 	w="32" 	h="48" />
 				<child name="gfx_gui_button.active.R"	x="256"	y="96" 	w="32" 	h="48" />
 
+				<child name="gfx_gui_dropdown.L"				x="0" 	y="192" w="16" 	h="48" />
+				<child name="gfx_gui_dropdown.M" 				x="16" 	y="192"	w="32" 	h="48" />
+				<child name="gfx_gui_dropdown.R" 				x="48" 	y="192"	w="48" 	h="48" />
+				<child name="gfx_gui_dropdown.hover.L"			x="96" 	y="192"	w="16" 	h="48" />
+				<child name="gfx_gui_dropdown.hover.M"			x="112"	y="192"	w="32" 	h="48" />
+				<child name="gfx_gui_dropdown.hover.R"			x="144"	y="192"	w="48" 	h="48" />
+				<child name="gfx_gui_dropdown.active.L"			x="192"	y="192"	w="16" 	h="48" />
+				<child name="gfx_gui_dropdown.active.M"			x="208"	y="192"	w="32" 	h="48" />
+				<child name="gfx_gui_dropdown.active.R"			x="240"	y="192"	w="48" 	h="48" />
+				<child name="gfx_gui_dropdown_list_entry.L"		x="192"	y="240"	w="16" 	h="32" />
+				<child name="gfx_gui_dropdown_list_entry.M"		x="208"	y="240"	w="32" 	h="32" />
+				<child name="gfx_gui_dropdown_list_entry.R"		x="240"	y="240"	w="48" 	h="32" />
+				<child name="gfx_gui_dropdown_list_bottom.L"	x="192"	y="272"	w="16" 	h="32" />
+				<child name="gfx_gui_dropdown_list_bottom.M"	x="208"	y="272"	w="32" 	h="32" />
+				<child name="gfx_gui_dropdown_list_bottom.R"	x="240"	y="272"	w="48" 	h="32" />
+
 				<child name="gfx_gui_input.L" 			x="0" 	y="304" 	w="32" 	h="48" />
 				<child name="gfx_gui_input.M" 			x="32" 	y="304" 	w="16" 	h="48" />
 				<child name="gfx_gui_input.R" 			x="48" 	y="304" 	w="48" 	h="48" />

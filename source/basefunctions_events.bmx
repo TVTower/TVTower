@@ -2,7 +2,7 @@ superstrict
 'event-classes
 Import brl.Map
 Import brl.retro
-
+Import "basefunctions.bmx"  'get TData-Type
 global EventManager:TEventManager = new TEventManager
 
 Type TEventManager
@@ -130,8 +130,8 @@ Type TEventBase
 	Method onEvent()
 	End Method
 
-	Method getData:TEventData()
-		return TEventData(self._data)
+	Method getData:TData()
+		return TData(self._data)
 	End Method
 
 	' to sort the event queue by time
@@ -159,43 +159,3 @@ Type TEventSimple extends TEventBase
 	End Function
 End Type
 
-Type TEventData
-	field data:TMap = CreateMap()
-
-	Function Create:TEventData()
-		local obj:TEventData = new TEventData
-		return obj
-	End Function
-
-	Method Add:TEventData(key:string, data:object)
-		self.data.insert(key, data)
-		return self
-	End Method
-
-	Method AddString:TEventData(key:string, data:string)
-		self.Add( key, object(data) )
-		return self
-	End Method
-
-	Method AddNumber:TEventData(key:string, data:float)
-		self.Add( key, object( string(data) ) )
-		return self
-	End Method
-
-	Method AddObject:TEventData(key:string, data:object)
-		self.Add( key, object( data ) )
-		return self
-	End Method
-
-	Method Get:object(key:string)
-		return self.data.ValueForKey(key)
-	End Method
-
-	Method GetString:string(key:string)
-		return String( self.Get(key) )
-	End Method
-
-	Method GetInt:int(key:string)
-		return Int( float( string(self.Get(key)) ) )
-	End Method
-End Type

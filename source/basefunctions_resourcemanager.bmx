@@ -272,7 +272,7 @@ Type TXmlLoader
 		self.loadedItems:+1
 
 		'fire event so LoaderScreen can refresh
-		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onLoadElement", TEventData.Create().AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onLoadElement", TData.Create().AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
 	End Method
 
 
@@ -287,7 +287,7 @@ Type TXmlLoader
 		If Self.xml = Null Then PrintDebug ("TXmlLoader", "Datei '" + url + "' nicht gefunden.", DEBUG_LOADING)
 
 		self.LoadResources(xml.root)
-		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onFinishParsing", TEventData.Create().AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onFinishParsing", TData.Create().AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
 	End Method
 
 
@@ -304,7 +304,7 @@ Type TXmlLoader
 
 
 			'some loaders might be interested - fire it so handler reacts immediately
-			EventManager.triggerEvent( TEventSimple.Create("LoadResource."+_type, TEventData.Create().AddObject("node", childNode).AddObject("xmlLoader", self) ) )
+			EventManager.triggerEvent( TEventSimple.Create("LoadResource."+_type, TData.Create().AddObject("node", childNode).AddObject("xmlLoader", self) ) )
 
 			self.currentItemNumber:+1		'increase by each entry
 

@@ -2406,6 +2406,11 @@ Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(TPosition.Create(600
 Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(TPosition.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 
+Global Test:TGUIDropDown = TGUIDropDown.Create(20,20,150,1,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Test.AddEntry("test2")
+Test.AddEntry("test3")
+Test.AddEntry("test4")
+
 Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
 Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
 Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
@@ -2449,7 +2454,7 @@ Function UpdateChat_InGame();			UpdateChat(InGame_Chat);			End Function
 Function UpdateChat(UseChat:TGuiChat)
 	If Usechat.EnterPressed = 2
 		If Usechat.GUIInput.Value$ <> ""
-			Usechat.AddEntry("",Usechat.GUIInput.Value$, Game.playerID,"", "", MilliSecs())
+			Usechat.AddEntry("",Usechat.GUIInput.Value$, Game.playerID,"", 0, MilliSecs())
 			If Game.networkgame Then NetworkHelper.SendChatMessage(Usechat.GUIInput.Value$)
 			'NetPlayer.SendNetMessage(UDPClientIP, NetworkPlayername$, "CHAT", GUIChat_NWGL_Chat.GUIInput.value$)
 			Usechat.GUIInput.Value$ = ""
