@@ -164,6 +164,7 @@ function JobAnalyzeSchedule:ReadMoviesAndSpots()
 			local movie = Movie:new()
 			movie:Initialize(movieId)		
 			self.ScheduleTask.TodayMovieSchedule[i] = movie		
+			debugMsg("A1")
 		end
 	end
 
@@ -173,9 +174,9 @@ function JobAnalyzeSchedule:ReadMoviesAndSpots()
 			local spot = Spot:new()
 			spot:Initialize(spotId)
 			self.ScheduleTask.TodaySpotSchedule[i] = spot		
+			debugMsg("A2")
 		end
 	end
-	debugMsg("A3")
 end
 
 function JobAnalyzeSchedule:InitializeInventory()
@@ -185,23 +186,27 @@ function JobAnalyzeSchedule:InitializeInventory()
 			local spot = Spot:new()
 			spot:Initialize(spotId)
 			self.ScheduleTask.SpotInventory[spotId] = spot
+			debugMsg("A3")
 		end
 	end
-	
+
 	for i=0,TVT.of_getPlayerSpotCount() do
 		local spotId = TVT.of_getPlayerSpot(i)
 		if (spotId ~= 0) then
 			local spot = Spot:new()
 			spot:Initialize(spotId)
 			self.ScheduleTask.SpotInventory[spotId] = spot
+			debugMsg("A4")
 		end
-	end		
+	end			
 end
 
 function JobAnalyzeSchedule:Analyze()
+	--debugMsg("A1")
 	for k,v in pairs(self.ScheduleTask) do
 		v:RecalcPriority()
 	end
+	--debugMsg("A2")
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

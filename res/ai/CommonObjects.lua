@@ -1,68 +1,96 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+-- Movie ist jetzt nur noch ein Wrapper
 Movie = SLFDataObject:new{
 	Id = -1;
-	Sequels = -1;
-	Genre = -1;
-	Length = -1;
-	XRated = -1;
-	Profit = -1;
-	Speed = -1;
-	Review = -1;
-	Topicality = -1;
-	Price = -1;
 	PricePerBlock = -1;
 	Quality = -1;
-	ProgramType = nil;
-	Attractiveness = -1;
-	Level = -1;
+	Attractiveness = -1; --Dieser Wert wird von außen gesetzt... und hängt von den Bewertungskriterien des Spielers ab
+	Object = nil;
 }
 
 function Movie:Initialize(movieId)
-	-- ronny: hier ueberlegen, ob nicht besser
-	--        das film-objekt selbst ausreicht und dann halt movie.GetXXX
-	self.Id = movieId
-	m = TVT.GetProgramme(movieId)
-	self.Sequels = m.GetEpisodeCount()
-	self.Genre = m.GetGenre()
-	self.Length = m.GetBlocks()
-	self.XRated = m.GetXRated()
-	self.Profit = m.GetOutcome()
-	self.Speed = m.getSpeed()
-	self.Review = m.getReview()
-	self.Topicality = m.getTopicality()
-	self.Price = m.getPrice()
+	self.Id = movieId	
+	self.Object = TVT.GetProgramme(movieId)
+	--debugMsg("Movie-Quality: " .. self.GetQuality() .. " - ProgramType: " .. self.ProgramType .. " - Genre: " .. self.Genre)
+end
 
-	self.Quality = m.getBaseAudienceQuote(movieId)
-	--self.Quality = (0.3 * self.Profit + 0.15 * self.Speed + 0.25 * self.Review + 0.3 * self.Topicality)
-	self.PricePerBlock = self.Price / self.Length
+function Movie:GetSequels()
+	return self.Object.GetEpisodeCount()
+end
 
-	-- ronny: hier gaenge auch: if (m.isMovie()) then
-	--        und bei speicherung des objektes auch in anderen Scriptbereichen...
-	if (self.Sequels > 0) then
-		self.ProgramType = PROGRAM_SERIES
-	else
-		self.ProgramType = PROGRAM_MOVIE
+function Movie:GetGenre()
+	return self.Object.GetGenre()
+end
+
+function Movie:GetLength()
+	return self.Object.GetBlocks()
+end
+
+function Movie:GetXRated()
+	return self.Object.GetXRated()
+end
+
+function Movie:GetProfit()
+	return self.Object.GetOutcome()
+end
+
+function Movie:GetSpeed()
+	return self.Object.getSpeed()
+end
+
+function Movie:GetReview()
+	return self.Object.getReview()
+end
+
+function Movie:GetTopicality()
+	return self.Object.getTopicality()
+end
+
+function Movie:GetPrice()
+	return self.Object.getPrice()
+end
+
+function Movie:IsMovie()
+	return self.Object.isMovie()
+end
+
+function Movie:GetQuality()
+	if (self.Quality == -1) then
+		self.Quality = self.Object.getBaseAudienceQuote(self.Id)
 	end
+	return self.Quality
+end
 
-	if self.Quality > 20 then
-		self.Level = 5
-	elseif self.Quality > 15 then
-		self.Level = 4
-	elseif self.Quality > 10 then
-		self.Level = 3
-	elseif self.Quality > 5 then
-		self.Level = 2
-	else
-		self.Level = 1
+function Movie:GetPricePerBlock()
+	if (self.PricePerBlock == -1) then
+		self.PricePerBlock = self:GetPrice() / self:GetLength()
 	end
+	return self.PricePerBlock
+end
 
-	--debugMsg("Movie-Quality: " .. self.Quality .. " - ProgramType: " .. self.ProgramType .. " - Genre: " .. self.Genre)
+function Movie:GetLevel()
+	if (self.Level == -1) then
+		local quality = self:GetQuality()
+		--debugMsg("GetQuality: " .. quality)
+		if quality > 20 then
+			self.Level = 5
+		elseif quality > 15 then
+			self.Level = 4
+		elseif quality > 10 then
+			self.Level = 3
+		elseif quality > 5 then
+			self.Level = 2
+		else
+			self.Level = 1
+		end
+	end
+	return self.Level
 end
 
 function Movie:CheckConditions(maxPrice, minQuality)
-	if (self.Price > maxPrice) then	return false end
+	if (self:GetPrice() > maxPrice) then return false end
 	if (minQuality ~= nil) then
-		if (self.Quality < minQuality) then return false end
+		if (self:GetQuality() < minQuality) then return false end
 	end
 	return true
 end

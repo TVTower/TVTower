@@ -46,7 +46,7 @@ end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}	
-	--self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
+	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
 	--self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
 	--self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
 	--self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
@@ -150,11 +150,11 @@ function BusinessStats:AddMovie(movie)
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
 	if (movie:CheckConditions(maxPrice)) then -- Preisgrenze
 		if (movie.ProgramType == PROGRAM_MOVIE) then
-			self.MovieQualityAcceptable:AddValue(movie.Quality)
-			self.MoviePricePerBlockAcceptable:AddValue(movie.PricePerBlock)
+			self.MovieQualityAcceptable:AddValue(movie:GetQuality())
+			self.MoviePricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
 		elseif (movie.ProgramType == PROGRAM_SERIES) then
-			self.SeriesQualityAcceptable:AddValue(movie.Quality)
-			self.SeriesPricePerBlockAcceptable:AddValue(movie.PricePerBlock)
+			self.SeriesQualityAcceptable:AddValue(movie:GetQuality())
+			self.SeriesPricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
 		end
 	end
 end

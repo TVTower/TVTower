@@ -170,12 +170,12 @@ function JobAppraiseMovies:AppraiseMovie(movie)
 	end	
 	
 	-- Je günstiger desto besser
-	local financeFactor = movie.PricePerBlock / pricePerBlockStats.AverageValue	
+	local financeFactor = movie:GetPricePerBlock() / pricePerBlockStats.AverageValue	
 	financeFactor = CutFactor(financeFactor, 0.2, 2)
-	--debugMsg("movie.PricePerBlock: " .. movie.PricePerBlock .. " ; pricePerBlockStats.AverageValue: " .. pricePerBlockStats.AverageValue)
+	--debugMsg("movie.GetPricePerBlock: " .. movie.PricePerBlock .. " ; pricePerBlockStats.AverageValue: " .. pricePerBlockStats.AverageValue)
 	
 	-- Je qualitativ hochwertiger desto besser
-	local qualityFactor = movie.Quality / qualityStats.AverageValue	
+	local qualityFactor = movie:GetQuality() / qualityStats.AverageValue	
 	qualityFactor = CutFactor(qualityFactor, 0.2, 2)
 	--debugMsg("movie.Quality: " .. movie.Quality .. " ; qualityStats.AverageValue: " .. qualityStats.AverageValue)
 		
@@ -206,13 +206,13 @@ function JobBuyMovies:Tick()
 	--TODO: Prüfen wie viele Filme überhaupt gebraucht werden	
 	
 	for k,v in pairs(movies) do		
-		if (v.Price <= self.MovieDistributorTask.CurrentBudget) then
-			if (v.Price <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
+		if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
+			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 				if (v.Attractiveness > 1) then
-					debugMsg("Kaufe Film: " .. v.Id .. " - Attraktivität: ".. v.Attractiveness .. " - Preis: " .. v.Price .. " - Qualität: " .. v.Quality)	
+					debugMsg("Kaufe Film: " .. v.Id .. " - Attraktivität: ".. v.Attractiveness .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v:GetQuality())	
 					TVT.md_doBuyMovie(v.Id)
-					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v.Price
-					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v.Price
+					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v:GetPrice()
+					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()
 				end
 			end		
 		end
