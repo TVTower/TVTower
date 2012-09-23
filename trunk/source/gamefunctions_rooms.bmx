@@ -918,23 +918,22 @@ End Function
 
 'StationMap-GUIcomponents
 Local button:TGUIButton
-button = TGUIButton.Create(TPosition.Create(610, 110), 155,,, , "Neue Station", "STATIONMAP")
+button = new TGUIButton.Create(TPosition.Create(610, 110), 155,,, , "Neue Station", "STATIONMAP")
 button.SetTextalign("CENTER")
 EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
 EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
 
-button = TGUIButton.Create(TPosition.Create(610, 345), 155,,, , "Station verkaufen", "STATIONMAP")
+button = new TGUIButton.Create(TPosition.Create(610, 345), 155,,, , "Station verkaufen", "STATIONMAP")
 button.disable()
 button.SetTextalign("CENTER")
 EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
 EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, button )
 
-Local stationlist:TGUIList = TGUIList.Create(588, 233, 190, 100,, 40, "STATIONMAP")
-stationlist.DisableBackground()
+Local stationlist:TGUIList = new TGUIList.Create(588, 233, 190, 100,, 40, "STATIONMAP")
 stationlist.SetControlState(1)
 EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapList, stationlist )
 For Local i:Int = 0 To 3
-	local button:TGUIOkbutton = TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, 1, String(i + 1), "STATIONMAP")
+	local button:TGUIOkbutton = new TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, 1, String(i + 1), "STATIONMAP", Assets.GetFont("Default", 11, BOLDFONT))
 	EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapFilters, button )
 Next
 

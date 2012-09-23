@@ -27,7 +27,7 @@ MENU_JOIN       = Join
 MENU_CREATE_GAME= Create game
 MENU_BACK       = Back
 
-MENU_AVAIABLE_GAMES = avaiable games
+MENU_AVAILABLE_GAMES = available games
 
 NEWS_TECHNICS_MEDIA   = media/technics
 NEWS_POLITICS_ECONOMY = politics/economy

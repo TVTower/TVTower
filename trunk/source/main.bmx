@@ -53,8 +53,8 @@ Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21
 Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(645, 16)
 
 Print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
-Global Btn_newsplanner_up:TGUIImageButton		= TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, "Newsplanner", 0)
-Global Btn_newsplanner_down:TGUIImageButton		= TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, "Newsplanner", 3)
+Global Btn_newsplanner_up:TGUIImageButton		= new TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, "Newsplanner", 0)
+Global Btn_newsplanner_down:TGUIImageButton		= new TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, "Newsplanner", 3)
 
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 							= 0 			'=1 and the game will exit
@@ -2423,78 +2423,68 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
-Global MainMenuButton_Start:TGUIButton		= TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Network:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Online:TGUIButton		= TGUIButton.Create(TPosition.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 
-Global Test:TGUIDropDown = TGUIDropDown.Create(20,20,150,1,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 Test.AddEntry("test2")
 Test.AddEntry("test3")
 Test.AddEntry("test4")
 
-Global NetgameLobbyButton_Join:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Create:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Back:TGUIButton	= TGUIButton.Create(TPosition.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobby_gamelist:TGUIList		= TGUIList.Create(25 + 3, 300, 440, 175, 1, 100, "NetGameLobby")
+Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 1, 100, "NetGameLobby")
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
-NetgameLobby_gamelist.GUIbackground = Null
+NetgameLobby_gamelist.AddBackground("")
 
-Global GameSettingsBG:TGUIBackgroundBox = TGUIBackgroundBox.Create(20, 20, 760, 260, 00, "Spieleinstellung", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
+Global GameSettingsBG:TGUIBackgroundBox = new TGUIBackgroundBox.Create(20, 20, 760, 260, 00, "Spieleinstellung", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
 
-Global GameSettingsOkButton_Announce:TGUIOkButton = TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings")
-Global GameSettingsGameTitle:TGuiInput = TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
-Global GameSettingsButton_Start:TGUIButton = TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
-Global GameSettingsButton_Back:TGUIButton = TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
-Global GameSettings_Chat:TGUIChat = TGuiChat.Create(20 + 3, 300, 450, 250, 1, 200, "GameSettings")
-Global InGame_Chat:TGUIChat = TGuiChat.Create(20, 10, 250, 200, 1, 200, "InGame")
-GameSettings_Chat._UpdateFunc_	= UpdateChat_GameSettings
-InGame_Chat._UpdateFunc_ 		= UpdateChat_InGame
+Global GameSettingsOkButton_Announce:TGUIOkButton = new TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsGameTitle:TGuiInput		= new TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
+Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
+Global GameSettings_Chat:TGUIChat			= new TGuiChat.Create(20, 300, 520, 250, 0, "Chat", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
+Global InGame_Chat:TGUIChat					= new TGuiChat.Create(20, 10, 250, 200, 0, "Chat", "InGame")
+GameSettings_Chat.setMaxLength(200)
+InGame_Chat.setMaxLength(200)
+InGame_Chat.disableBackground()
+InGame_Chat.list.doFadeOut			= true
+InGame_Chat.list.backgroundEnabled	= true
+'GUIManager.DefaultFont = Assets.GetFont("Default", 12, BOLDFONT)
 
-GUIManager.DefaultFont = Assets.GetFont("Default", 12, BOLDFONT)
+GameSettings_Chat.input.TextDisplacement.setXY(5,2)
+InGame_Chat.clickable				= 0
+InGame_Chat.input.pos.setXY( 255, 377)
+InGame_Chat.input.autoAlignText = 0
+InGame_Chat.input.TextDisplacement.setXY(0,5)
 
-GameSettings_Chat.GUIInput.TextDisplacement.setXY(5,2)
-'#Region  :configuring "InGame_Chat"-object
-InGame_Chat.clickable			= 0
-InGame_Chat.nobackground		= True
-InGame_Chat.fadeout				= True
-InGame_Chat.GUIInput.pos.setXY( 290, 385)
-InGame_Chat.GuiInput.dimension.setX( gfx_GuiPack.GetSprite("Chat_IngameOverlay").w )
-InGame_Chat.GuiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").w - 20
-InGame_Chat.GUIInput.InputImage	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
-InGame_Chat.useFont				= Assets.GetFont("Default", 11)
-InGame_Chat.guichatgfx			= 0
-
-InGame_Chat.colR= 255; InGame_Chat.colG= 255; InGame_Chat.colB= 255
-InGame_Chat.GuiInput.color.adjust(255,255,255, True)
-'#End Region
+InGame_Chat.input.dimension.setX( gfx_GuiPack.GetSprite("Chat_IngameOverlay").w )
+InGame_Chat.input.maxTextWidth		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").w - 20
+InGame_Chat.input.InputImageActive	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
+InGame_Chat.useFont					= Assets.GetFont("Default", 11)
+InGame_Chat.input.color.adjust(255,255,255,true)
 '#End Region
 
-Function UpdateChat_GameSettings();		UpdateChat(GameSettings_Chat);		End Function
-Function UpdateChat_InGame();			UpdateChat(InGame_Chat);			End Function
+'register listener - want to receive input change event in chats
+EventManager.registerListenerFunction( "guiobject.onChange",	onChange_ChatInput, InGame_Chat.input )
+EventManager.registerListenerFunction( "guiobject.onChange",	onChange_ChatInput, GameSettings_Chat.input )
 
-Function UpdateChat(UseChat:TGuiChat)
-	If Usechat.EnterPressed = 2
-		If Usechat.GUIInput.Value$ <> ""
-			Usechat.AddEntry("",Usechat.GUIInput.Value$, Game.playerID,"", 0, MilliSecs())
-			If Game.networkgame Then NetworkHelper.SendChatMessage(Usechat.GUIInput.Value$)
-			'NetPlayer.SendNetMessage(UDPClientIP, NetworkPlayername$, "CHAT", GUIChat_NWGL_Chat.GUIInput.value$)
-			Usechat.GUIInput.Value$ = ""
-			Network.ChatSpamTime = MilliSecs() + 500
-			GUIManager.setActive(0)
-		EndIf
-'		if GUIManager.isActive(Usechat.GUIInput.uid) then GUIManager.setActive(0)
-	EndIf
-	If Usechat.TeamNames[1] = ""
-		For Local i:Int = 0 To 4
-			If Players[i] <> Null
-				Usechat.TeamNames[i] = Players[i].Name
-				Usechat.TeamColors[i] = Players[i].color
-			Else
-				Usechat.TeamNames[i] = "unknown"
-				Usechat.TeamColors[i] = TPlayerColor.Create(255,255,255)
-			EndIf
-		Next
-	EndIf
+
+Function onChange_ChatInput:Int(triggerEvent:TEventBase)
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If evt<>Null
+		local input:TGUIinput	= TGUIInput(evt._sender)
+		if not input then return 0
+		local chat:TGUIChat		= TGUIChat(input._parent)
+
+		chat.list.AddEntry("",input.Value, Game.playerID,"", 0, MilliSecs())
+		If Game.networkgame Then NetworkHelper.SendChatMessage(input.Value)
+
+		input.Value				= ""
+		Network.ChatSpamTime	= MilliSecs() + 500
+	endif
 End Function
 
 'Doubleclick-function for NetGameLobby_GameList
@@ -2503,7 +2493,7 @@ Function onClick_NetGameLobby:Int(triggerEvent:TEventBase)
 	If evt<>Null
 		local clickType:int = evt.getData().getInt("type")
 		if clickType = EVENT_GUI_DOUBLECLICK
-			NetgameLobbyButton_Join.clicked	= TPosition.Create(1,1)
+			NetgameLobbyButton_Join.mouseIsClicked	= TPosition.Create(1,1)
 			GameSettingsButton_Start.disable()
 
 			If Network.ConnectToServer( HostIp(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
@@ -2521,15 +2511,15 @@ Include "gamefunctions_network.bmx"
 
 For Local i:Int = 0 To 7
 	If i < 4
-		MenuPlayerNames[i]	= TGUIinput.Create(50 + 190 * i, 65, 130, 1, Players[i + 1].Name, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
+		MenuPlayerNames[i]	= new TGUIinput.Create(50 + 190 * i, 65, 130, 1, Players[i + 1].Name, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
 		MenuPlayerNames[i].TextDisplacement.setX(3)
-		MenuChannelNames[i]	= TGUIinput.Create(50 + 190 * i, 180, 130, 1, Players[i + 1].channelname, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
+		MenuChannelNames[i]	= new TGUIinput.Create(50 + 190 * i, 180, 130, 1, Players[i + 1].channelname, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
 		MenuChannelNames[i].TextDisplacement.setX(3)
 	EndIf
 	If i Mod 2 = 0
-		MenuFigureArrows[i] = TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,0,1,"GameSettings", 0)
+		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,0,1,"GameSettings", 0)
 	Else
-		MenuFigureArrows[i] = TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,0,1,"GameSettings", 1)
+		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,0,1,"GameSettings", 1)
 	EndIf
 Next
 
@@ -2798,12 +2788,15 @@ Function Menu_NetworkLobby_Draw()
 	DrawRect(0,0,App.settings.width,App.settings.height)
 	SetAlpha 1.0
 	SetColor 255,255,255
-	GUIManager.Draw("NetGameLobby")
-	If Not Game.onlinegame Then
-		Assets.GetFont("Default",16, BOLDFONT).drawstyled(GetLocale("MENU_NETWORKGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,20,20,150, 1)
+
+	If Not Game.onlinegame
+		NetgameLobby_gamelist.background.value = Localization.GetString("MENU_NETWORKGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES")
 	Else
-		Assets.GetFont("Default",16, BOLDFONT).drawstyled(GetLocale("MENU_ONLINEGAME")+": "+GetLocale("MENU_AVAIABLE_GAMES"), 36,277,20,20,150, 1)
+		NetgameLobby_gamelist.background.value = Localization.GetString("MENU_ONLINEGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES")
 	EndIf
+
+
+	GUIManager.Draw("NetGameLobby")
 End Function
 
 Function Menu_GameSettings_Draw()
@@ -3084,6 +3077,28 @@ Function DrawMenu(tweenValue:Float=1.0)
 	If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-10,	MouseY()-12	,2)
 End Function
 
+
+'set ownerNames/Colours of lists in chats
+Function Init_ChatColors()
+	For Local i:Int = 0 To 4
+		If Players[i] <> Null
+			InGame_Chat.list.OwnerNames[i] = Players[i].Name
+			InGame_Chat.list.OwnerColors[i] = Players[i].color
+
+			GameSettings_Chat.list.OwnerNames[i] = Players[i].Name
+			GameSettings_Chat.list.OwnerColors[i] = Players[i].color
+		Else
+			InGame_Chat.list.OwnerNames[i] = "unknown"
+			InGame_Chat.list.OwnerColors[i] = TPlayerColor.Create(255,255,255)
+
+			GameSettings_Chat.list.OwnerNames[i] = "unknown"
+			GameSettings_Chat.list.OwnerColors[i] = TPlayerColor.Create(255,255,255)
+
+		EndIf
+	Next
+End Function
+
+
 Function Init_Creation()
 	Local lastblocks:Int = 0
 	'Local lastprogramme:TProgrammeBlock = New TProgrammeBlock
@@ -3169,10 +3184,16 @@ Function Init_All()
 	Init_CreateRoomTooltips()			'erstellt Raum-Tooltips und somit auch Raumplaner-Schilder
 
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Fill background of building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+
 	PrintDebug ("  TRooms.DrawDoorsOnBackground()", "drawing door-sprites on the building-sprite", DEBUG_START)
 	TRooms.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
+
 	PrintDebug ("  Building.DrawItemsToBackground()", "drawing plants and lights on the building-sprite", DEBUG_START)
 	Building.DrawItemsToBackground()	'draws plants and lights which are behind the figures
+
+	PrintDebug ("  Init_ChatColours()", "setting playernames and colors", DEBUG_START)
+	Init_ChatColors()					'
+
 	PrintDebug ("Init_All()", "complete", DEBUG_START)
 End Function
 
@@ -3187,18 +3208,18 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	'	If Game.networkgame
 	'		If KEYWRAPPER.pressedKey(KEY_ENTER) And GUIManager.getActive() <> InGame_Chat.GUIINPUT.uId And Network.ChatSpamTime < MilliSecs()
 	If KEYMANAGER.IsHit(KEY_ENTER)
-		If Not GUIManager.isActive(InGame_Chat.GUIINPUT._id)
+		If Not GUIManager.isActive(InGame_Chat.input._id)
 			If Network.ChatSpamTime < MilliSecs()
-				GUIManager.setActive( InGame_Chat.GUIInput._id )
+				GUIManager.setActive( InGame_Chat.input._id )
 			Else
-				Print "no spam pls"
+				Print "no spam pls (input stays deactivated)"
 			EndIf
 		EndIf
 	EndIf
 	'	EndIf
 
 	'#Region 'developer shortcuts (1-4, B=office, C=Chief ...)
-	If GUIManager.getActive() <> InGame_Chat.GUIInput._id
+	If GUIManager.getActive() <> InGame_Chat.input._id
 		If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
 		If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
 	EndIf
@@ -3326,12 +3347,13 @@ Type TEventListenerPlayer Extends TEventListenerBase
 		Return obj
 	End Function
 
-	Method OnEvent(triggerEvent:TEventBase)
+	Method OnEvent:int(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
 			If evt._trigger = "game.onminute" And Self.Player.isAI() Then Self.Player.PlayerKI.CallOnMinute(evt.time)
 			If evt._trigger = "game.onday" And Self.Player.isAI() Then Self.Player.PlayerKI.CallOnDayBegins()
 		EndIf
+		return true
 	End Method
 End Type
 
@@ -3343,7 +3365,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 	End Function
 
 
-	Method OnEvent(triggerEvent:TEventBase)
+	Method OnEvent:int(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
 			'things happening x:05
@@ -3371,6 +3393,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
  			EndIf
  			If minute = 5 Or minute = 55 Or minute=0 Then Interface.BottomImgDirty = True
 		EndIf
+		return true
 	End Method
 End Type
 
@@ -3381,7 +3404,7 @@ Type TEventListenerOnDay Extends TEventListenerBase
 		Return obj
 	End Function
 
-	Method OnEvent(triggerEvent:TEventBase)
+	Method OnEvent:int(triggerEvent:TEventBase)
 		Local evt:TEventOnTime = TEventOnTime(triggerEvent)
 		If evt<>Null
 			'take over current money
@@ -3413,6 +3436,7 @@ Type TEventListenerOnDay Extends TEventListenerBase
 			EndIf
 
 		EndIf
+		return true
 	End Method
 End Type
 
@@ -3424,10 +3448,10 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 
 	'wird ausgeloest wenn OnAppUpdate-Event getriggert wird
 	'multi
-	Method OnEvent(triggerEvent:TEventBase)
+	Method OnEvent:int(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
-			If GUIManager.getActive() <> InGame_Chat.GUIInput._id
+			If GUIManager.getActive() <> InGame_Chat.input._id
 				If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
 				If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
 				If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
@@ -3466,6 +3490,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 
 			MOUSEMANAGER.changeStatus(Game.error)
 		EndIf
+		return true
 	End Method
 End Type
 
@@ -3476,7 +3501,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 	End Function
 
 
-	Method OnEvent(triggerEvent:TEventBase)
+	Method OnEvent:int(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 
 		If evt<>Null
@@ -3498,6 +3523,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			If App.prepareScreenshot = 1 Then SaveScreenshot();App.prepareScreenshot = 0
 			TProfiler.Leave("Draw")
 		EndIf
+		return true
 	End Method
 End Type
 

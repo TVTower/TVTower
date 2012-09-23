@@ -1,4 +1,6 @@
-﻿inOfficeFake = TVT.ROOM_OFFICE_PLAYER_ME
+﻿function onCreate()
+	inOfficeFake = TVT.ROOM_OFFICE_PLAYER_ME
+end
 
 function OnMoneyChanged()
 	--SendToChat("Hey mein Geld hat sich geaendert")

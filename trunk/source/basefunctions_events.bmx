@@ -69,8 +69,11 @@ Type TEventManager
 	Method triggerEvent(triggeredByEvent:TEventBase)
 		local listeners:TList = TList(self._listeners.ValueForKey( lower(triggeredByEvent._trigger) ))
 		if listeners <> null
+			local continueTriggering:int = 0
 			for local listener:TEventListenerBase = eachin listeners
-				listener.onEvent(triggeredByEvent)
+				continueTriggering = listener.onEvent(triggeredByEvent)
+				'stop triggering the event if ONE of them vetos
+				if continueTriggering = false AND continueTriggering<>null then exit
 			Next
 		endif
 	End Method
@@ -120,8 +123,9 @@ Type TEventListenerRunFunction extends TEventListenerBase
 		if triggerEvent = null then return 0
 
 		if self._limitToObject = null OR (self._limitToObject = triggerEvent._sender)
-			self._function(triggerEvent)
+			return self._function(triggerEvent)
 		endif
+		return true
 	End Method
 End Type
 

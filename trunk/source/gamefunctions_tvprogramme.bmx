@@ -1672,7 +1672,7 @@ Type TDatabase
 
 		'---------------------------------------------
 		'importing all movies
-		Print "reading movies from database"
+		'Print "reading movies from database"
 		nodeParent		= xml.FindRootChild("allmovies")
 		loadError		= "Problems loading movies. Check database.xml"
 		If nodeParent <> Null
@@ -1708,7 +1708,7 @@ Type TDatabase
 		'---------------------------------------------
 		'importing all series including their episodes
 		nodeParent		= xml.FindRootChild("allseries")
-		Print "reading series from database"
+		'Print "reading series from database"
 		loadError		= "Problems loading series. Check database.xml"
 		If nodeParent = Null Then Throw loadError
 		listChildren = nodeParent.getChildren()
@@ -1767,7 +1767,7 @@ Type TDatabase
 		'---------------------------------------------
 		'importing all ads
 		nodeParent		= xml.FindRootChild("allads")
-		Print "reading ads from database"
+		'Print "reading ads from database"
 		loadError		= "Problems loading ads. Check database.xml"
 		If nodeParent = Null Then Throw loadError
 
@@ -1796,7 +1796,7 @@ Type TDatabase
 		'---------------------------------------------
 		'importing all news including their chains
 		nodeParent		= xml.FindRootChild("allnews")
-		Print "reading news from database"
+		'Print "reading news from database"
 		loadError		= "Problems loading news. Check database.xml"
 		If nodeParent = Null Then Throw loadError
 		listChildren = nodeParent.getChildren()

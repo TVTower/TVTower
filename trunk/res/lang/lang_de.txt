@@ -27,7 +27,7 @@ MENU_JOIN       = Beitreten
 MENU_CREATE_GAME= Spiel erstellen
 MENU_BACK       = Zurück
 
-MENU_AVAIABLE_GAMES = verfügbare Spiele
+MENU_AVAILABLE_GAMES = verfügbare Spiele
 
 NEWS_TECHNICS_MEDIA   = Medien/Technik
 NEWS_POLITICS_ECONOMY = Politik/Wirtschaft

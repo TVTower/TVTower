@@ -45,11 +45,11 @@ Type KI
 		If Self.scriptAsString <> "" Then Print "Reloaded LUA AI for player "+Self.playerId
 		Self.scriptAsString = LoadText(scriptName)
 
-		Print "LUA: Registering <LuaFunctions> as <TVT>"
+		'Print "LUA: Registering <LuaFunctions> as <TVT> AND <Player> as <MY>"
 		LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
 
 		If TPlayer.getById(Self.PlayerID) <> Null
-			Print "LUA: Registering <Player> as <MY>"
+			'Print "LUA: Registering <Player> as <MY>"
 			LuaEngine.RegisterBlitzmaxObject(TPlayer.getById(Self.PlayerID), "MY")
 		Else
 			Print "LUA: ERROR Registering <Player> as <MY> - player not found"
@@ -301,7 +301,7 @@ Type TLuaFunctions {_exposeToLua}
 
 	Method SendToChat:Int(ChatText:String)
 		If Players[ Self.ME ] <> Null
-			InGame_Chat.AddEntry("", ChatText, Self.ME, "", 0, MilliSecs())
+			InGame_Chat.list.AddEntry("", ChatText, Self.ME, "", 0, MilliSecs())
 			If Game.IsGameLeader()
 				If ChatText.Length > 4 And Left(ChatText, 1) = "/"
 					Local KIPlayerID:Int = Int(Mid(chattext, 2,1))
