@@ -1388,7 +1388,7 @@ Type TGUITextList Extends TGUIList
 '    Field turndirection:Int = 0
 
 	Field OwnerNames:String[5]
-	Field OwnerColors:TPlayerColor[5]
+	Field OwnerColors:TColor[5]
 
     Method Create:TGUITextList(x:Int, y:Int, width:Int, height:Int = 50, enabled:Byte = 1, maxlength:Int = 128, State:String = "")
 		super.Create(x,y,width,height,enabled,maxlength,State)
@@ -1445,7 +1445,7 @@ Type TGUITextList Extends TGUIList
 						SetAlpha entryAlpha
 
 						If PlayerID > 0
-							dimension = TPosition(Self.useFont.drawStyled(Self.OwnerNames[PlayerID]+": ", Self.GetX()+2, Self.GetY()+displace +2, OwnerColors[PlayerID].colR,OwnerColors[PlayerID].colG,OwnerColors[PlayerID].ColB, 2,2, i))
+							dimension = TPosition(Self.useFont.drawStyled(Self.OwnerNames[PlayerID]+": ", Self.GetX()+2, Self.GetY()+displace +2, OwnerColors[PlayerID].r,OwnerColors[PlayerID].g,OwnerColors[PlayerID].b, 2,2, i))
 						Else
 							dimension = TPosition(Self.useFont.drawStyled("System:", Self.GetX()+2, Self.GetY()+displace +2, 50,50,50, 2,2, i))
 						EndIf

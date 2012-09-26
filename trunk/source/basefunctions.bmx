@@ -847,7 +847,13 @@ Type TDragAndDrop
 End Type
 
 Type TColor
-	Field r:int=0, g:int=0, b:int=0, a:float=1.0
+	Field r:int			= 0
+	Field g:int			= 0
+	Field b:int			= 0
+	Field a:float		= 1.0
+	Field ownerID:int	= 0				'store if a player/object... uses that color
+
+	global list:TList	= CreateList()	'storage for colors (allows handle referencing)
 
 	Function Create:TColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
 		local obj:TColor = new TColor
@@ -856,6 +862,27 @@ Type TColor
 		obj.b = b
 		obj.a = a
 		return obj
+	End Function
+
+	Method SetOwner:TColor(ownerID:int)
+		self.ownerID = ownerID
+		return self
+	End Method
+
+	Method AddToList:TColor()
+		self.list.AddLast(self)
+		return self
+	End Method
+
+	Function getFromListObj:TColor(col:TColor)
+		return TColor.getFromList(col.r,col.g,col.b,col.a)
+	End Function
+
+	Function getFromList:TColor(r:Int, g:Int, b:Int, a:float=1.0)
+		For local obj:TColor = EachIn TColor.List
+			If obj.r = r And obj.g = g And obj.b = b And obj.a = a Then Return obj
+		Next
+		Return Null
 	End Function
 
 	Method adjust(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)
@@ -870,7 +897,23 @@ Type TColor
 		endif
 	End Method
 
+	Method FromInt:int(color:int)
+		self.r = ARGB_Red(color)
+		self.g = ARGB_Green(color)
+		self.b = ARGB_Blue(color)
+		self.a = float(ARGB_Alpha(color))/255.0
+	End Method
+
+	Method ToInt:int()
+		return ARGB_Color(ceil(self.a*255), self.r, self.g, self.b )
+	End Method
+
 	Method set()
+		SetColor(self.r, self.g, self.b)
+	End Method
+
+	'same as set()
+	Method setRGB()
 		SetColor(self.r, self.g, self.b)
 	End Method
 
@@ -885,67 +928,6 @@ Type TColor
 	End Method
 End Type
 
-Type TPlayerColor
-   Field colR:Int = 0
-   Field colG:Int = 0
-   Field colB:Int = 0
-   Field color:Int = 0
-   Field used:Byte 'id of player who uses this color
-
-   Global List:TList = CreateList()
-
-	Method SetColor(colR:Int, colG:Int, colB:Int)
-		self.colR = colR
-		self.colG = colG
-		self.colB = colB
-	End Method
-
-	Method ToInt:int()
-		return ARGB_Color(255, colR, colG, colB )
-	End Method
-
-	Method FromInt:int(color:int)
-		colR = ARGB_Red(color)
-		colG = ARGB_Green(color)
-		colB = ARGB_Blue(color)
-	End Method
-
-   Function GetColor:TPlayerColor(colR:Int, colG:Int, colB:Int)
-     Local color:TPlayerColor
-     For color = EachIn TPlayerColor.List
-     	If color.colR = colR And color.colG = colG And color.colB = colB Then Return color
-     Next
-     Return Null
-   End Function
-
-   Method GetUnusedColor:TPlayerColor(playerID:Int)
-     For Local color:TPlayerColor = EachIn TPlayerColor.List
-     	If color.used = 0 Then color.used =playerID; Self.used=0; Return color
-     Next
-   End Method
-
-   Function Create:TPlayerColor(r:Int = 0, g:Int = 0, b:Int = 0, used:Byte = 0)
-    Local locObject:TPlayerColor = TPlayerColor.GetColor(r, g, b)
-	If locObject = Null
-		locObject = New TPlayerColor
-	    locObject.colR = r
-	    locObject.colG = g
-	    locObject.colB = b
-	    locObject.used = used
-	    locObject.color = ARGB_Color(255,r,g,b)
-	    List.AddLast(locObject)
-	    Return locObject
-	Else
-		Return locObject
-	EndIf
-   End Function
-
-
-   Method MySetColor()
-		SetColor (colR, colG, colB)
-   End Method
-
-End Type
 
 
 '==================================================================================================================================

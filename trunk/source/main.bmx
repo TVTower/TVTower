@@ -650,7 +650,7 @@ Type TPlayer {_exposeToLua="selected"}
 	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
 	Field Figure:TFigures									{_exposeToLua}				'actual figure the player uses
 	Field playerID:Int 			= 0							{saveload = "normal"}		'global used ID of the player
-	Field color:TPlayerColor															'the playercolor used to colorize symbols and figures
+	Field color:TColor																	'the color used to colorize symbols and figures
 	Field figurebase:Int 		= 0							{saveload = "normal"}		'actual number of an array of figure-images
 	Field networkstate:Int 		= 0							{saveload = "normal"}		'1=ready, 0=not set, ...
 	Field newsabonnements:Int[6]							{_private}					'abonnementlevels for the newsgenres
@@ -674,7 +674,7 @@ Rem
 		Local Player:TPlayer = TPlayer.Create("save", "save", Assets.GetSpritePack("figures").GetSprite("Man1") , 0, 0, 0, 0, 0, 0, 1, "")
 		TFigures.List.Remove(Player.figure)
 		Local i:Int = 0, j:Int = 0
-		Local colr:Byte = 0, colg:Byte = 0, colb:Byte = 0
+		Local col:TColor = null
 		Local FigureID:Int = 0
 
 		Local NODE:xmlNode = pnode.FirstChild()
@@ -689,16 +689,14 @@ Rem
 			Next
 			Select NODE.Name
 				Case "FINANCE" Player.finances[i].Create(Player.PlayerID, 550000, 2500000) ;Player.finances[i].Load(NODE, Player.finances[i] ) ;i:+1
-				Case "COLORR" colR = Byte(nodevalue)
-				Case "COLORG" colG = Byte(nodevalue)
-				Case "COLORB" colB = Byte(nodevalue)
+				Case "COLOR" col = TColor.FromInt(nodevalue)
 				Case "FIGUREID" FigureID = Int(nodevalue)
 				Case "NEWSABONNEMENTS0" Or "NEWSABONNEMENTS1" Or "NEWSABONNEMENTS2" Or "NEWSABONNEMENTS3" Or "NEWSABONNEMENTS4" Or "NEWSABONNEMENTS5"
 					If TNewsbuttons.GetButton(j, Player.playerID) <> Null Then TNewsbuttons.GetButton(j, Player.playerID).clickstate = Player.newsabonnements[j] ;j:+1
 			End Select
 			Node = Node.NextSibling()
 		Wend
-		Player.color = TPlayerColor.GetColor(colr, colg, colb)
+		Player.color = TColor.getFromListObj(col)
 		Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
@@ -743,10 +741,8 @@ endrem
 		For Local i:Int = 0 To 6
 			Self.finances[i].Save()
 		Next
-		LoadSaveFile.xmlWrite("COLORR",			Self.color.colr)
-		LoadSaveFile.xmlWrite("COLORG",			Self.color.colg)
-		LoadSaveFile.xmlWrite("COLORB",			Self.color.colb)
-		LoadSaveFile.xmlWrite("FIGUREID", Self.figure.id)
+		LoadSaveFile.xmlWrite("COLOR",		Self.color.ToInt())
+		LoadSaveFile.xmlWrite("FIGUREID",	Self.figure.id)
 		For Local j:Int = 0 To 5
 			LoadSaveFile.xmlWrite("NEWSABONNEMENTS"+j,	Self.newsabonnements[j])
 		Next
@@ -771,11 +767,10 @@ endrem
 
 		Player.Name					= Name
 		Player.playerID				= globalID
-		Player.color				= TPlayerColor.Create(pcolr,pcolg,pcolb, TPlayer.globalID)
+		Player.color				= TColor.Create(pcolr,pcolg,pcolb).AddToList().SetOwner(TPlayer.globalID)
 		Player.channelname			= channelname
 		Player.Figure				= TFigures.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayer	= Player
-	'	Player.Figure.Sprite		= Assets.GetSprite("Player" + Player.playerID)
 		For Local i:Int = 0 To 6
 			Player.finances[i] = TFinancials.Create(Player.playerID, 550000, 250000)
 			Player.finances[i].revenue_before = 550000
@@ -783,7 +778,8 @@ endrem
 		Next
 		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
 		Player.ProgrammePlan		= TPlayerProgrammePlan.Create(Player)
-		Player.RecolorFigure(Player.color.GetUnusedColor(globalID))
+'		Player.RecolorFigure(Player.color.GetUnusedColor(globalID))
+		Player.RecolorFigure(Player.color)
 		Player.UpdateFigureBase(0)
 		Player.globalID:+1
 
@@ -812,19 +808,19 @@ endrem
 		Local tmppix:TPixmap = LockImage(Assets.GetSpritePack("figures").image, 0)
 		'clear area in all-figures-image
 		tmppix.Window(tmpSprite.Pos.x, tmpSprite.Pos.y, tmpSprite.w, tmpSprite.h).ClearPixels(0)
-		DrawOnPixmap(ColorizeTImage(Assets.GetSpritePack("figures").GetSpriteImage("", figurebase, False), color.colR, color.colG, color.colB), 0, tmppix, tmpSprite.Pos.x, tmpSprite.Pos.y)
+		DrawOnPixmap(ColorizeTImage(Assets.GetSpritePack("figures").GetSpriteImage("", figurebase, False), color.r, color.g, color.b), 0, tmppix, tmpSprite.Pos.x, tmpSprite.Pos.y)
 		UnlockImage(Assets.GetSpritePack("figures").image, 0)
 	End Method
 
 	'colorizes a figure and the corresponding sign next to the players doors in the building
-	Method RecolorFigure(PlayerColor:TPlayerColor = Null)
-		If PlayerColor = Null Then PlayerColor = Self.color
-		color.used	= 0
-		color		= PlayerColor
-		color.used	= playerID
+	Method RecolorFigure(newColor:TColor = Null)
+		If newColor = Null Then newColor = Self.color
+		self.color.ownerID	= 0
+		self.color			= newColor
+		self.color.ownerID	= playerID
 		UpdateFigureBase(figurebase)
 		'overwrite asset
-		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetSprite("gfx_building_sign_base").getImage(), color.colR, color.colG, color.colB) )
+		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetSprite("gfx_building_sign_base").getImage(), color.r, color.g, color.b) )
 	End Method
 
 	'nothing up to now
@@ -2382,12 +2378,18 @@ EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Cre
 Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
 
 '#Region  Creating PlayerColors
-TPlayerColor.Create(247, 50, 50, 0) ; TPlayerColor.Create(245, 220, 0, 0)
-TPlayerColor.Create(40, 210, 0, 0) ; TPlayerColor.Create(0, 110, 245, 0)
-TPlayerColor.Create(158, 62, 32, 0) ; TPlayerColor.Create(224, 154, 0, 0)
-TPlayerColor.Create(102, 170, 29, 0) ; TPlayerColor.Create(18, 187, 107, 0)
-TPlayerColor.Create(205, 113, 247, 0) ; TPlayerColor.Create(255, 255, 0, 0)
-TPlayerColor.Create(125, 143, 147, 0) ; TPlayerColor.Create(255, 125, 255, 0)
+TColor.Create(247, 50, 50).AddToList()
+TColor.Create(245, 220, 0).AddToList()
+TColor.Create(40, 210, 0).AddToList()
+TColor.Create(0, 110, 245).AddToList()
+TColor.Create(158, 62, 32).AddToList()
+TColor.Create(224, 154, 0).AddToList()
+TColor.Create(102, 170, 29).AddToList()
+TColor.Create(18, 187, 107).AddToList()
+TColor.Create(205, 113, 247).AddToList()
+TColor.Create(255, 255, 0).AddToList()
+TColor.Create(125, 143, 147).AddToList()
+TColor.Create(255, 125, 255).AddToList()
 '#End Region
 
 'create playerfigures in figures-image
@@ -2711,17 +2713,22 @@ Function Menu_GameSettings()
 
 	'clicks on color rect
 	Local i:Int = 0
-	For Local locobject:TPlayerColor = EachIn TPlayerColor.List
-		If locobject.used = 0
-			If MOUSEMANAGER.IsHit(1)
-				If functions.IsIn(MouseX(), MouseY(), 26 + 40 + i * 10, 92 + 68, 7, 9) And (Players[1].Figure.ControlledByID = Game.playerID Or (Players[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[1].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 216 + 40 + i * 10, 92 + 68, 7, 9) And (Players[2].Figure.ControlledByID = Game.playerID Or (Players[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[2].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 406 + 40 + i * 10, 92 + 68, 7, 9) And (Players[3].Figure.ControlledByID = Game.playerID Or (Players[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[3].RecolorFigure(locobject)
-				If functions.IsIn(MouseX(), MouseY(), 596 + 40 + i * 10, 92 + 68, 7, 9) And (Players[4].Figure.ControlledByID = Game.playerID Or (Players[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[4].RecolorFigure(locobject)
+
+'	rewrite to Assets instead of global list in TColor ?
+'	local colors:TList = Assets.GetList("PlayerColors")
+
+	If MOUSEMANAGER.IsHit(1)
+		For Local obj:TColor = EachIn TColor.List
+			'only for unused colors
+			If obj.ownerID = 0
+				If functions.IsIn(MouseX(), MouseY(), 26 + 40 + i * 10, 92 + 68, 7, 9) And (Players[1].Figure.ControlledByID = Game.playerID Or (Players[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[1].RecolorFigure(obj)
+				If functions.IsIn(MouseX(), MouseY(), 216 + 40 + i * 10, 92 + 68, 7, 9) And (Players[2].Figure.ControlledByID = Game.playerID Or (Players[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[2].RecolorFigure(obj)
+				If functions.IsIn(MouseX(), MouseY(), 406 + 40 + i * 10, 92 + 68, 7, 9) And (Players[3].Figure.ControlledByID = Game.playerID Or (Players[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[3].RecolorFigure(obj)
+				If functions.IsIn(MouseX(), MouseY(), 596 + 40 + i * 10, 92 + 68, 7, 9) And (Players[4].Figure.ControlledByID = Game.playerID Or (Players[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Players[4].RecolorFigure(obj)
+				i:+1
 			EndIf
-			i:+1
-		EndIf
-	Next
+		Next
+	EndIf
 
 	'left right arrows to change figure base
 	For Local i:Int = 0 To 7
@@ -2848,9 +2855,9 @@ Function Menu_GameSettings_Draw()
 
 
 	Local i:Int =0
-	For Local locobject:TPlayerColor = EachIn TPlayerColor.List
-		If locobject.used = 0
-			SetColor locobject.colR, locobject.colG, locobject.colB
+	For Local obj:TColor = EachIn TColor.List
+		If obj.ownerID = 0
+			obj.SetRGB()
 			DrawRect(26 + 40 + i * 10, 92 + 68, 9, 9)
 			DrawRect(216 + 40 + i * 10, 92 + 68, 9, 9)
 			DrawRect(406 + 40 + i * 10, 92 + 68, 9, 9)
@@ -3089,10 +3096,10 @@ Function Init_ChatColors()
 			GameSettings_Chat.list.OwnerColors[i] = Players[i].color
 		Else
 			InGame_Chat.list.OwnerNames[i] = "unknown"
-			InGame_Chat.list.OwnerColors[i] = TPlayerColor.Create(255,255,255)
+			InGame_Chat.list.OwnerColors[i] = TColor.Create(255,255,255)
 
 			GameSettings_Chat.list.OwnerNames[i] = "unknown"
-			GameSettings_Chat.list.OwnerColors[i] = TPlayerColor.Create(255,255,255)
+			GameSettings_Chat.list.OwnerColors[i] = TColor.Create(255,255,255)
 
 		EndIf
 	Next
@@ -3164,12 +3171,12 @@ Function Init_Colorization()
 	For Local i:Int = 1 To 4
 		Players[i].Name					= MenuPlayerNames[i-1].Value
 		Players[i].channelname			= MenuChannelNames[i-1].Value
-		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB) )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Players[i].color.colR, Players[i].color.colG, Players[i].color.colB),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
+		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b) )
+		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b) )
+		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Players[i].color.r, Players[i].color.g, Players[i].color.b) )
+		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b) )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
 	Next
 End Function
 

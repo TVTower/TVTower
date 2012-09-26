@@ -1501,7 +1501,7 @@ endrem
 		Local radius:Int = StationMap.radius
 		SetAlpha 0.3
 		Select owner
-			Case 1,2,3,4	Players[owner].color.MySetColor()
+			Case 1,2,3,4	Players[owner].color.SetRGB()
 							antennaNr = "stationmap_antenna"+owner
 			Default			SetColor 255, 255, 255
 							antennaNr = "stationmap_antenna0"

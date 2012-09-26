@@ -731,7 +731,7 @@ Function Room_Betty_Compute(_room:TRooms)
 		Local picX:Int = 410 + i * (sprite.w + 5)
 		sprite.Draw( picX, picY )
 		SetAlpha 0.4
-		SetColor Players[i].color.colB, Players[i].color.colG, Players[i].color.colR
+		Players[i].color.SetRGB()
 		DrawRect(picX + 2, picY + 8, 26, 28)
 		SetColor 255, 255, 255
 		SetAlpha 1.0
@@ -947,7 +947,7 @@ Function Room_StationMap_Compute(_room:TRooms)
 	For Local i:Int = 0 To 3
 		SetColor 100, 100, 100
 		DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 15, 18)
-		Players[i + 1].color.MySetColor()
+		Players[i + 1].color.SetRGB()
 		DrawRect(565, 33 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 13, 16)
 	Next
 	SetColor 255, 255, 255

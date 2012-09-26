@@ -3890,12 +3890,9 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	      Assets.fonts.baseFont.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, x+31,y+33, 215,20,2,Null, 0,0,0,1)
           If Players[Bid[0]] <> Null
     	    HighestBidder = Players[Bid[0]].name
-	        Local colr:Int = Players[Bid[0]].color.colr'+900
-	        Local colg:Int = Players[Bid[0]].color.colg'+900
-	        Local colb:Int = Players[Bid[0]].color.colb'+900
-		    If colr > 255 Then colr = 255
-		    If colg > 255 Then colg = 255
-		    If colb > 255 Then colb = 255
+	        Local colr:Int = Min(255, Players[Bid[0]].color.r) '+900
+	        Local colg:Int = Min(255, Players[Bid[0]].color.g) '+900
+	        Local colb:Int = Min(255, Players[Bid[0]].color.b) '+900
 '			SetImageFont FontManager.GW_GetFont("Default", 10)
 			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 33, y + 35, 150, 20, 0, colr - 200, colg - 200, colb - 200, 1)
 			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 32, y + 34, 150, 20, 0, colr - 150, colg - 150, colb - 150, 1)
