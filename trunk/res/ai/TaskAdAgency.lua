@@ -62,6 +62,7 @@ function JobCheckSpots:Tick()
 end
 
 function JobCheckSpots:CheckSpot()
+
 	local spotId = TVT.sa_getSpot(self.CurrentSpotIndex)
 	if (spotId == -2) then
 		self.Status = JOB_STATUS_DONE
@@ -70,11 +71,10 @@ function JobCheckSpots:CheckSpot()
 
 	local spot = Spot:new()
 	spot:Initialize(spotId)
+
 	local player = _G["globalPlayer"]
 	self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
-	
 	player.Stats:AddSpot(spot)
-	
 	self.CurrentSpotIndex = self.CurrentSpotIndex + 1
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -115,14 +115,14 @@ function AppraiseSpots:AppraiseSpot(spot)
 	local stats = player.Stats
 	local score = -1	
 	
-	if (spot.Audience > stats.Audience.MaxValue) then
-		spot.Appraisal = -2
+	if (spot:GetMinAudience() > stats.Audience.MaxValue) then
+		--spot.Appraisal = -2
 		--debugMsg("zu viele Zuschauer verlangt! " .. spot.Audience .. " / " .. stats.Audience.MaxValue)
 		return
 	end
 	
 	--debugMsg("spot.SpotProfit: " .. spot.SpotProfit .. " ; spot.SpotToSend: " .. spot.SpotToSend)
-	local profitPerSpot = spot.SpotProfit / spot.SpotToSend
+	local profitPerSpot = spot:GetProfit() / spot:GetSpotCount()
 	--debugMsg("profitPerSpot: " .. profitPerSpot .. " ; stats.SpotProfitPerSpotAcceptable.AverageValue: " .. stats.SpotProfitPerSpotAcceptable.AverageValue)
 	local financePower = profitPerSpot / stats.SpotProfitPerSpotAcceptable.AverageValue	
 	--debugMsg("financePower1: " .. financePower)
@@ -130,19 +130,19 @@ function AppraiseSpots:AppraiseSpot(spot)
 	--debugMsg("financePower: " .. financePower)
 
 	-- 2 = Locker zu schaffen / 0.3 schwierig zu schaffen	
-	local audienceFactor = stats.Audience.AverageValue / spot.Audience
+	local audienceFactor = stats.Audience.AverageValue / spot:GetMinAudience()
 	audienceFactor = CutFactor(audienceFactor, 0.3, 2)
 	--debugMsg("audienceFactor: " .. audienceFactor .. " ; stats.Audience.AverageValue: " .. stats.Audience.AverageValue .. " ; spot.Audience:" .. spot.Audience)
 
 	-- 2 = Risiko und Strafe sind im Verhältnis gering  / 0.3 = Risiko und Strafe sind Verhältnis hoch
-	local riskFactor = stats.SpotPenalty.AverageValue / spot.SpotPenalty
+	local riskFactor = stats.SpotPenalty.AverageValue / spot:GetPenalty()
 	riskFactor = CutFactor(riskFactor, 0.3, 2)
 	riskFactor = riskFactor * audienceFactor
 	riskFactor = CutFactor(riskFactor, 0.2, 2)
 	--debugMsg("riskFactor: " .. riskFactor .. " ; SpotPenalty: " .. stats.SpotPenalty.AverageValue .. " ; SpotPenalty:" .. spot.SpotPenalty)
 		
 	-- 2 leicht zu packen / 0.3 hoher Druck
-	local pressureFactor = spot.SpotMaxDays / spot.SpotToSend
+	local pressureFactor = spot:GetDaysToFinish() / spot:GetSpotCount()
 	pressureFactor = CutFactor(pressureFactor, 0.2, 2)
 	--debugMsg("pressureFactor: " .. pressureFactor .. " ; SpotMaxDays: " .. spot.SpotMaxDays .. " ; SpotToSend:" .. spot.SpotToSend)
 		

@@ -11,6 +11,7 @@ Movie = SLFDataObject:new{
 function Movie:Initialize(movieId)
 	self.Id = movieId	
 	self.Object = TVT.GetProgramme(movieId)
+	
 	--debugMsg("Movie-Quality: " .. self.GetQuality() .. " - ProgramType: " .. self.ProgramType .. " - Genre: " .. self.Genre)
 end
 
@@ -99,38 +100,60 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 Spot = SLFDataObject:new{
 	Id = -1;
-	Audience = -1;
-	SpotToSend = -1;
-	SpotMaxDays = -1;
-	SpotProfit = -1;
-	SpotPenalty = -1;
-	SpotTargetgroup = "";
-
-	Appraisal = -1;
+	Object = nil;
+	
 	FinanceWeight = -1;
-	Attractiveness = -1;
-
+	Pressure = -1;
+	SpotsToBroadcast = -1;
+	DaysLeft = -1;
+	
 	Acuteness = -1; --Dringlichkeit
-	AcutenessVersionDate = -1;
+	AcutenessVersionDate = -1;	
+	
+	Attractiveness = -1;
 }
 
 function Spot:Initialize(spotId)
 	self.Id = spotId
-	spot = TVT.getContract( spotId )
-	self.Audience = spot.GetMinAudience()
-	self.SpotToSend = spot.GetSpotCount()
-	self.SpotMaxDays = spot.GetDaysToFinish()
-	--ronny: GetProfit / GetPenalty akzeptieren overwriteBaseValue(0-255) und overwritePlayerId
-	--       interessant fuer Spots die man selbst nicht hat
-	self.SpotProfit = spot.GetProfit()
-	self.SpotPenalty = spot.GetPenalty()
-	self.SpotTargetgroup = spot.GetTargetGroup()
+	self.Object = TVT.getContract(spotId)
+end
 
-	self.FinanceWeight = (self.SpotProfit + self.SpotPenalty) / self.SpotToSend
-	self.Pressure = self.SpotToSend / self.SpotMaxDays * self.SpotMaxDays
+function Spot:GetMinAudience()
+	return self.Object.GetMinAudience()
+end
 
-	self.SpotsToBroadcast = -1
-	self.DaysLeft = -1
+function Spot:GetSpotCount()
+	return self.Object.GetSpotCount()
+end
+
+function Spot:GetDaysToFinish()
+	return self.Object.GetDaysToFinish()
+end
+
+function Spot:GetProfit()
+	return self.Object.GetProfit()
+end
+
+function Spot:GetPenalty()
+	return self.Object.GetPenalty()
+end
+
+function Spot:GetTargetGroup()
+	return self.Object.GetTargetGroup()
+end
+
+function Spot:GetFinanceWeight()
+	if (self.FinanceWeight == -1) then
+		self.FinanceWeight = (self:GetProfit() + self:GetPenalty()) / self:GetSpotCount()
+	end
+	return self.FinanceWeight
+end
+
+function Spot:GetPressure()
+	if (self.Pressure == -1) then
+		self.Pressure = self:GetSpotCount() / self:GetDaysToFinish() * self:GetDaysToFinish()
+	end
+	return self.Pressure
 end
 
 function Spot:GetAcuteness()

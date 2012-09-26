@@ -46,10 +46,10 @@ end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}	
-	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
+	--self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
 	--self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
 	--self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
-	--self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
+	self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
@@ -138,12 +138,12 @@ function BusinessStats:ReadStats()
 end
 
 function BusinessStats:AddSpot(spot)
-	self.SpotProfit:AddValue(spot.SpotProfit)
-	self.SpotProfitPerSpot:AddValue(spot.SpotProfit / spot.SpotToSend)
-	if (spot.Audience < globalPlayer.Stats.Audience.MaxValue) then
-		self.SpotProfitPerSpotAcceptable:AddValue(spot.SpotProfit / spot.SpotToSend)
+	self.SpotProfit:AddValue(spot:GetProfit())
+	self.SpotProfitPerSpot:AddValue(spot:GetProfit() / spot:GetSpotCount())
+	if (spot:GetMinAudience() < globalPlayer.Stats.Audience.MaxValue) then
+		self.SpotProfitPerSpotAcceptable:AddValue(spot:GetProfit() / spot:GetSpotCount())
 	end
-	self.SpotPenalty:AddValue(spot.SpotPenalty)
+	self.SpotPenalty:AddValue(spot:GetPenalty())
 end
 
 function BusinessStats:AddMovie(movie)
