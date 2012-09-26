@@ -32,8 +32,6 @@ Incbin "source/version.txt"
 Rem
 - todo :
 	* "impact"-feld bei filmen (refresh rate)
-
-	* TPlayerColor-creation in XML auslagern ...
 	* Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
 		- DirectX -> eigene WindowDeco - stylen
 		- OpenGL ... - WindowDeco nicht stylebar

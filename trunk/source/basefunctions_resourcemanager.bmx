@@ -211,6 +211,11 @@ loadedObject.setLoaded(true)
 		return TGW_Sprites(Self.GetObject(assetName, "SPRITE", defaultName))
 	End Method
 
+	Method GetList:TList(assetName:String)
+		assetName = lower(assetName)
+		Return TList(TAsset(Self.GetObject(assetName, "TLIST"))._object)
+	End Method
+
 	Method GetMap:TMap(assetName:String)
 		assetName = lower(assetName)
 		Return TMap(TAsset(Self.GetObject(assetName, "TMAP"))._object)
@@ -555,18 +560,67 @@ End Type
 Type TResourceLoaders
 	Function Create:TResourceLoaders()
 		EventManager.registerListener( "LoadResource.ROOMS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadRooms)  )
+		EventManager.registerListener( "LoadResource.COLORS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
+		EventManager.registerListener( "LoadResource.COLOR",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColor)  )
 
 		return new TResourceLoaders
 	End Function
 
-	Function onLoadRooms:int( triggerEvent:TEventBase )
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt=Null then return 0
+	Function assignBasics:int(event:TEventBase, childNode:TxmlNode var, xmlLoader:TXmlLoader var)
+		Local evt:TEventSimple = TEventSimple(event)
+		If evt=Null then return false
 
-		local childNode:TxmlNode = TxmlNode(evt.getData().get("node"))
-		if childNode = null then return 0
-		local xmlLoader:TXmlLoader = TXmlLoader(evt.getData().get("xmlLoader"))
-		if xmlLoader = null then return 0
+		childNode = TxmlNode(evt.getData().get("node"))
+		if childNode = null then return false
+
+		xmlLoader = TXmlLoader(evt.getData().get("xmlLoader"))
+		if xmlLoader = null then return false
+
+		return true
+	End Function
+
+	'could also be in a different files - just register to the special event
+	Function onLoadColors:int( triggerEvent:TEventBase )
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+
+		local listName:string = xmlLoader.xml.FindValue(childNode, "name", "colorList")
+		local list:TList = CreateList()
+		'add list to assets
+		Assets.Add(listName, TAsset.CreateBaseAsset(list, "TLIST"))
+
+		For Local child:TxmlNode = EachIn childNode.GetChildren()
+			EventManager.triggerEvent( TEventSimple.Create("LoadResource.COLOR", TData.Create().AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
+		Next
+	End Function
+
+	'could also be in a different files - just register to the special event
+	Function onLoadColor:int( triggerEvent:TEventBase )
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+
+		local list:TList	= TList( TEventSimple(triggerEvent).getData().get("list") )
+		Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
+		Local r:int			= xmlLoader.xml.FindValueInt(childNode, "r", 0)
+		Local g:int			= xmlLoader.xml.FindValueInt(childNode, "g", 0)
+		Local b:int			= xmlLoader.xml.FindValueInt(childNode, "b", 0)
+		Local a:int			= xmlLoader.xml.FindValueInt(childNode, "a", 255)
+
+		'if a list was given - add to that group
+		if list then list.addLast(TColor.Create(r,g,b,a))
+
+		'add the color asset if name given (special colors have names :D)
+		if name <> "" then Assets.Add(name, TAsset.CreateBaseAsset(TColor.Create(r,g,b,a), "TCOLOR"))
+	End Function
+
+
+	'could also be in a different files - just register to the special event
+	Function onLoadRooms:int( triggerEvent:TEventBase )
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
 
 
 		'for every single room
@@ -608,151 +662,3 @@ Type TResourceLoaders
 	End Function
 End Type
 TResourceLoaders.Create()
-
-
-rem
-Type TResource
-	field _name:string
-	field _loaded:int = 0
-	field _type:string
-	field _url:object
-
-	Method GetName:string()
-		return self._name
-	End Method
-
-	Method SetName(name:string)
-		self._name = name
-	end Method
-
-	Method GetUrl:object()
-		return self._url
-	End Method
-
-	Method SetUrl(url:object)
-		self._url = url
-	end Method
-
-	Method GetType:string()
-		return self._type
-	End Method
-
-	Method SetType(name:string)
-		self._type = name
-	end Method
-
-	Method GetLoaded:int()
-		return self._loaded
-	End Method
-
-	Method SetLoaded(loaded:int)
-		self._loaded = loaded
-	end Method
-
-End Type
-
-Type TResourceImage extends TResource
-	field pixmap:TPixmap
-	field image:TImage
-	field width:float
-	field height:float
-	field flags:int
-
-	Function Create:TResourceImage(name:string, url:object, flags:int=-1)
-		local tmpObj:TResourceImage = new TResourceImage
-		tmpObj.setName(name)
-		tmpObj.setUrl(url)
-		tmpObj.setType("IMAGE")
-		tmpObj.flags = flags
-		return tmpObj
-	End Function
-
-	Method LoadFromPixmap()
-		self.image = LoadImage(self.pixmap, self.flags)
-		self.width = self.image.width
-		self.height = self.image.height
-		GCCollect() '<- FIX!
-	End Method
-End Type
-
-Type TResourceManager
-	global resources:TMap = CreateMap()
-	global unloadedResources:TMap = CreateMap()
-	global loaderVars:TMap = CreateMap()
-	global unloadedMutex:TMutex = CreateMutex()
-	global loaderVarsMutex:TMutex = CreateMutex()
-	global unloadedThread:TThread
-
-
-	Function Create:TResourceManager()
-		local tmpobj:TResourceManager = new TResourceManager
-		return tmpobj
-	End Function
-
-	Function StartLoadFiles()
-		if TResourceManager.unloadedThread = null
-			TResourceManager.unloadedThread =  CreateThread( TResourceManager.LoadFiles, Null )
-		endif
-	End Function
-
-	'thread function
-	Function LoadFiles:Object(data:Object)
-		Local count:Int = 0
-		Local total:Int = 0
-		LockMutex TResourceManager.unloadedMutex
-			For tmpobj:object = eachin TResourceManager.unloadedResources.Keys()
-				total:+1
-			Next
-
-			For Local obj:TResource = EachIn TResourceManager.unloadedResources.Values()
-				count:+1
-				if TResourceImage(obj) <> Null then TResourceImage(obj).pixmap = LoadPixmap(obj.GetUrl())
-				TResourceManager.unloadedResources.remove(obj)
-				TResourceManager.resources.insert(obj.GetName(),obj)
-				obj.setLoaded(true)
-				'print "loaded "+ string(obj.GetUrl()) + " for "+ obj.GetName()
-				LockMutex TResourceManager.loaderVarsMutex
-					TResourceManager.loaderVars.Insert("count", String(count))
-					TResourceManager.loaderVars.Insert("text", String(obj.GetUrl()))
-					TResourceManager.loaderVars.Insert("total", String(total))
-				UnlockMutex TResourceManager.loaderVarsMutex
-				'Delay 1
-			Next
-		UnlockMutex TResourceManager.unloadedMutex
-	End Function
-
-	Function LoadImagesFromPixmaps()
-		For Local obj:TResource = EachIn TResourceManager.resources.Values()
-			if TResourceImage(obj) <> null
-				if TResourceImage(obj).flags & MASKEDIMAGE then SetMaskColor 255, 0, 255 else SetMaskColor 0, 0, 0
-				TResourceImage(obj).LoadFromPixmap()
-				'print "loaded image from pixmap for "+ obj.GetName()
-				TResourceImage(obj).pixmap = null
-			endif
-		Next
-	End Function
-
-	Function Add:int(resource:TResource)
-		if( NOT resource.GetLoaded() )
-			TResourceManager.unloadedResources.Insert(resource.GetName(), resource)
-		else
-			TResourceManager.resources.Insert(resource.GetName(), resource)
-		endif
-
-		'immediately start loading
-		TResourceManager.StartLoadFiles()
-
-		return true
-	End Function
-
-	Function Get:TResource(name:string)
-		If TResource(TResourceManager.resources.ValueForKey(name)) = Null Then Print "TResourceManager: '" + name + "' konnte nicht gefunden werden."
-		Return TResource(TResourceManager.resources.ValueForKey(name))
-	End Function
-
-	Function GetTImage:TImage(name:string)
-		If TResource(TResourceManager.resources.ValueForKey(name)) = Null Then Print "TResourceManager: '" + name + "' konnte nicht gefunden werden."
-		Return TResourceImage(TResourceManager.resources.ValueForKey(name)).image
-	End Function
-End Type
-endrem

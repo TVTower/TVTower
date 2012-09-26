@@ -2399,21 +2399,15 @@ Global Building:TBuilding		= TBuilding.Create()
 EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
 
-'#Region  Creating PlayerColors
-TColor.Create(247, 50, 50).AddToList()	'red
-TColor.Create(245, 220, 0).AddToList()	'yellow
-TColor.Create(40, 210, 0).AddToList()	'green
-TColor.Create(0, 110, 245).AddToList()	'blue
-TColor.Create(158, 62, 32).AddToList()
-TColor.Create(224, 154, 0).AddToList()
-TColor.Create(102, 170, 29).AddToList()
-TColor.Create(18, 187, 107).AddToList()
-TColor.Create(205, 113, 247).AddToList()
-TColor.Create(255, 255, 0).AddToList()
-TColor.Create(125, 143, 147).AddToList()
-TColor.Create(255, 125, 255).AddToList()
+'Creating PlayerColors - could also be done "automagically"
+local playerColors:TList = Assets.GetList("playerColors")
+if playerColors = null then Throw "no playerColors found in configuration"
+For local col:TColor = eachin playerColors
+	col.AddToList()
+Next
 
-'#End Region
+
+
 
 'create playerfigures in figures-image
 'Local tmpFigure:TImage = Assets.GetSpritePack("figures").GetSpriteImage("", 0)
