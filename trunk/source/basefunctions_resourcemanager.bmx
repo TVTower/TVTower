@@ -370,8 +370,8 @@ Type TXmlLoader
 	End Method
 
 
-	Method LoadPixmapResource(childNode:TxmlNode)
-		Local _name:String		= Lower( xml.FindValue(childNode, "name", "default") )
+	Method LoadPixmapResource(childNode:TxmlNode, defaultName:string="default")
+		Local _name:String		= Lower( xml.FindValue(childNode, "name", defaultName) )
 		Local _type:String		= Upper( xml.FindValue(childNode, "type", childNode.getName()))
 		Local _url:String		= xml.FindValue(childNode, "url", "")
 		if _type = "" or _url = "" then return
@@ -381,8 +381,8 @@ Type TXmlLoader
 		Assets.Add(_name, TAsset.CreateBaseAsset( LoadPixmap(_url) ,"PIXMAP") )
 	End Method
 
-	Method LoadImageResource(childNode:TxmlNode)
-		Local _name:String		= Lower( xml.FindValue(childNode, "name", "default") )
+	Method LoadImageResource(childNode:TxmlNode, defaultName:string="default")
+		Local _name:String		= Lower( xml.FindValue(childNode, "name", defaultName) )
 		Local _type:String		= Upper( xml.FindValue(childNode, "type", childNode.getName()))
 		Local _url:String		= xml.FindValue(childNode, "url", "")
 		if _type = "" or _url = "" then return
@@ -558,6 +558,7 @@ End Type
 
 
 Type TResourceLoaders
+
 	Function Create:TResourceLoaders()
 		EventManager.registerListener( "LoadResource.ROOMS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadRooms)  )
 		EventManager.registerListener( "LoadResource.COLORS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )

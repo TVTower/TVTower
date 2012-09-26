@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources>
-		<pixmap name="stationmap_populationDensity" url="grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png" />
 		<stationmap>
-			<densitymap type="pixmassp" url="grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png" />
+			<!-- map with graytone values of population density -->
+			<densitymap url="grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png" />
 			<states>
 				<state name="bremen"			x="207" y="91"	sprite="gfx_officepack_topo_bremen" />
 				<state name="berlin"			x="452" y="118"	sprite="gfx_officepack_topo_berlin" />

@@ -29,7 +29,7 @@ Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
-Global App:TApp = TApp.Create(60, 100) 'create with 60fps for physics and graphics
+Global App:TApp = TApp.Create(60, 60) 'create with 60fps for physics and graphics
 rem
 global testimg:TImage = null
 global testimg1:TImage = null
@@ -831,7 +831,8 @@ endrem
 		'clear area in all-figures-image
 		tmppix.Window(tmpSprite.Pos.x, tmpSprite.Pos.y, tmpSprite.w, tmpSprite.h).ClearPixels(0)
 		DrawOnPixmap(ColorizeTImage(Assets.GetSpritePack("figures").GetSpriteImage("", figurebase, False), color), 0, tmppix, tmpSprite.Pos.x, tmpSprite.Pos.y)
-		UnlockImage(Assets.GetSpritePack("figures").image, 0)
+		'unlock not needed as doing nothing
+		'UnlockImage(Assets.GetSpritePack("figures").image, 0)
 	End Method
 
 	'colorizes a figure and the corresponding sign next to the players doors in the building
@@ -2874,7 +2875,7 @@ Function Menu_GameSettings_Draw()
 
 	Local i:Int =0
 	For Local obj:TColor = EachIn TColor.List
-		If obj.ownerID = 0
+		If obj.ownerID = 0 and i <= 10
 			obj.SetRGB()
 			DrawRect(26 + 40 + i * 10, 92 + 68, 9, 9)
 			DrawRect(216 + 40 + i * 10, 92 + 68, 9, 9)

@@ -1521,7 +1521,7 @@ Type TStationMapSection
 	field name:string
 	global sections:TList = CreateList()
 
-	Method Setup:TStationMapSection(pos:TPosition, name:string, sprite:TGW_Sprites)
+	Method Create:TStationMapSection(pos:TPosition, name:string, sprite:TGW_Sprites)
 		self.pos = pos
 		self.name = name
 		self.sprite = sprite
@@ -1567,8 +1567,6 @@ Type TStationMap
     field baseStationSprite:TGW_Sprites
 
 	Global List:TList = CreateList()
-
-	global initDone:int = 0
 
 	Function Load:TStationmap(pnode:TxmlNode)
 print "implement Load:TStationmap"
@@ -1651,11 +1649,27 @@ endrem
 		Return obj
 	End Function
 
+	'external xml configuration of map and states
 	Function onLoadStationMapConfiguration:int( triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt=Null then return 0
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
 
-		print "STATIONMAP on load stat"
+		'find and load density map data (and overwrite asset name)
+		local densityNode:TXmlNode = xmlLoader.xml.FindChild(childNode, "densitymap")
+		if densityNode then xmlLoader.LoadPixmapResource(densityNode, "stationmap_populationDensity")
+
+		'find and load states data
+		local statesNode:TXmlNode = xmlLoader.xml.FindChild(childNode, "states")
+		if statesNode = null then Throw("StationMap: states definition missing in XML files.")
+
+		For Local child:TxmlNode = EachIn statesNode.GetChildren()
+			local name:string	= xmlLoader.xml.FindValue(child, "name", "")
+			local sprite:string	= xmlLoader.xml.FindValue(child, "sprite", "")
+			local pos:TPosition	= TPosition.Create( xmlLoader.xml.FindValueInt(child, "x", 0), xmlLoader.xml.FindValueInt(child, "y", 0) )
+			'add state section if data is ok
+			if name<>"" and sprite<>"" then new TStationMapSection.Create(pos,name, Assets.GetSprite(sprite)).add()
+		Next
 
 	End Function
 
@@ -1663,7 +1677,7 @@ endrem
 	Method AddStation(x:Int, y:Int, playerid:Int, valuetorefresh:Int Var)
 		Local reach:Int = Self.CalculateAudienceIncrease(playerid, x, y)
 
-		print "StationMap: added station to "+playerID+" reach:"+reach
+		'print "StationMap: added station to "+playerID+" reach:"+reach
 		StationList.AddLast(TStation.Create(x, y, reach, TStation.calculatePrice(reach), playerid))
 		valuetorefresh = CalculateAudienceSum(playerid)
 	End Method
@@ -1712,28 +1726,7 @@ endrem
 		Return costs
 	End Method
 
-
-	Method InitSections()
-		new TStationMapSection.Setup(TPosition.Create(207, 91), 	"bremen",	Assets.GetSprite("gfx_officepack_topo_bremen")).add()
-		new TStationMapSection.Setup(TPosition.Create(452, 118),	"berlin",	Assets.GetSprite("gfx_officepack_topo_berlin")).add()
-		new TStationMapSection.Setup(TPosition.Create(270, 69),		"hamburg",	Assets.GetSprite("gfx_officepack_topo_hamburg")).add()
-		new TStationMapSection.Setup(TPosition.Create(129, 258),	"bawue",	Assets.GetSprite("gfx_officepack_topo_bawue")).add()
-		new TStationMapSection.Setup(TPosition.Create(223, 221),	"bayern",	Assets.GetSprite("gfx_officepack_topo_bayern")).add()
-		new TStationMapSection.Setup(TPosition.Create( 69, 263),	"saarland",	Assets.GetSprite("gfx_officepack_topo_saarland")).add()
-		new TStationMapSection.Setup(TPosition.Create( 59, 203),	"rheinlandpfalz", Assets.GetSprite("gfx_officepack_topo_rheinlandpfalz")).add()
-		new TStationMapSection.Setup(TPosition.Create(155, 169),	"hessen",	Assets.GetSprite("gfx_officepack_topo_hessen")).add()
-		new TStationMapSection.Setup(TPosition.Create(276, 169),	"thueringen",Assets.GetSprite("gfx_officepack_topo_thueringen")).add()
-		new TStationMapSection.Setup(TPosition.Create(388, 167),	"sachsen",	Assets.GetSprite("gfx_officepack_topo_sachsen")).add()
-		new TStationMapSection.Setup(TPosition.Create(314, 103),	"sachsenanhalt", Assets.GetSprite("gfx_officepack_topo_sachsenanhalt")).add()
-		new TStationMapSection.Setup(TPosition.Create(104, 61),		"niedersachsen", Assets.GetSprite("gfx_officepack_topo_niedersachsen")).add()
-		new TStationMapSection.Setup(TPosition.Create(213, 12),		"schleswigholstein", Assets.GetSprite("gfx_officepack_topo_schleswigholstein")).add()
-		new TStationMapSection.Setup(TPosition.Create(359, 78),		"brandenburg", Assets.GetSprite("gfx_officepack_topo_brandenburg")).add()
-		new TStationMapSection.Setup(TPosition.Create(55, 127),		"nrw", Assets.GetSprite("gfx_officepack_topo_nrw")).add()
-		new TStationMapSection.Setup(TPosition.Create(318, 21),		"meckpom", Assets.GetSprite("gfx_officepack_topo_meckpom")).add()
-	End Method
-
 	Method Update()
-		if not self.initDone then self.InitSections()
 
 		If action = 4 'sell finished?
 			If Self.sellStation[Game.playerID] <> Null Then Self.Sell(Self.sellStation[Game.playerID])

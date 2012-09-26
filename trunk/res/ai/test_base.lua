@@ -1,5 +1,5 @@
-﻿function onCreate()
-	inOfficeFake = TVT.ROOM_OFFICE_PLAYER_ME
+﻿function OnCreate()
+	inOfficeFake = tonumber(TVT.ROOM_OFFICE_PLAYER_ME)
 end
 
 function OnMoneyChanged()
