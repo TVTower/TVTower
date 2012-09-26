@@ -164,7 +164,6 @@ function JobAnalyzeSchedule:ReadMoviesAndSpots()
 			local movie = Movie:new()
 			movie:Initialize(movieId)		
 			self.ScheduleTask.TodayMovieSchedule[i] = movie		
-			debugMsg("A1")
 		end
 	end
 
@@ -174,7 +173,6 @@ function JobAnalyzeSchedule:ReadMoviesAndSpots()
 			local spot = Spot:new()
 			spot:Initialize(spotId)
 			self.ScheduleTask.TodaySpotSchedule[i] = spot		
-			debugMsg("A2")
 		end
 	end
 end

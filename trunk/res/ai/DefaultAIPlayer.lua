@@ -21,9 +21,6 @@ TASK_STATIONS		= "Stations"
 TASK_BETTY			= "Betty"
 TASK_BOSS			= "Boss"
 
-PROGRAM_MOVIE		= "movie"
-PROGRAM_SERIES		= "series"
-
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 DefaultAIPlayer = AIPlayer:new{
 	CurrentTask = nil;
@@ -46,10 +43,10 @@ end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}	
-	--self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
+	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
 	--self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
 	--self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
-	self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
+	--self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
@@ -148,12 +145,12 @@ end
 
 function BusinessStats:AddMovie(movie)
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
-	if (movie:CheckConditions(maxPrice)) then -- Preisgrenze
-		if (movie.ProgramType == PROGRAM_MOVIE) then
-			self.MovieQualityAcceptable:AddValue(movie:GetQuality())
+	if (CheckMovieBuyConditions(movie, maxPrice)) then -- Preisgrenze
+		if (movie.IsMovie()) then
+			self.MovieQualityAcceptable:AddValue(movie.getBaseAudienceQuote())
 			self.MoviePricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
-		elseif (movie.ProgramType == PROGRAM_SERIES) then
-			self.SeriesQualityAcceptable:AddValue(movie:GetQuality())
+		else
+			self.SeriesQualityAcceptable:AddValue(movie.getBaseAudienceQuote())
 			self.SeriesPricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
 		end
 	end

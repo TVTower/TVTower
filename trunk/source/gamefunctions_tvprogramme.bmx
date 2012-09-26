@@ -588,6 +588,10 @@ Type TProgrammeElement
 
 		Self.LastID :+1
 	End Method
+	
+	Method GetId:Int() {_exposeToLua}
+		Return Self.id
+	End Method	
 End Type
 
 'ad-contracts
@@ -903,6 +907,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field maxtopicality:Int 	= 255
 	Field parent:TProgramme		= Null
 	Field owner:Int = 0
+	Field attractiveness:Float	= -1 'Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	'holding all programmes
 	Global ProgList:TList		= CreateList()	{saveload = "nosave"}
 	Global ProgMovieList:TList	= CreateList()	{saveload = "nosave"}
@@ -1156,6 +1161,14 @@ endrem
 		Return TProgramme.GetRandomProgrammeFromList(resultList, playerID)
 	End Function
 
+	Method GetAttractiveness:Float() {_exposeToLua}
+		Return Self.attractiveness
+	End Method
+	
+	Method SetAttractiveness(value:Float) {_exposeToLua}
+		Self.attractiveness = value
+	End Method 	
+
 	Method GetGenre:int() {_exposeToLua}
 		return self.genre
 	End Method
@@ -1196,7 +1209,28 @@ endrem
 	Method GetEpisodeCount:int() {_exposeToLua}
 		return self.episodeList.count()
 	End Method
+	
+	'Manuel: Wird nur in der Lua-KI verwendet
+	Method GetPricePerBlock:Int() {_exposeToLua}
+		Return Self.GetPrice() / Self.GetBlocks()
+	End Method
 
+	'Manuel: Wird nur in der Lua-KI verwendet	
+	Method GetQualityLevel:Int() {_exposeToLua}
+		Local quality:Int = Self.GetBaseAudienceQuote()
+		
+		If quality > 20
+			Return 5
+		ElseIf quality > 15
+			Return 4
+		ElseIf quality > 10
+			Return 3
+		ElseIf quality > 5
+			Return 2
+		Else
+			Return 1
+		EndIf
+	End Method
 
 	'returns array of all episodes or an empty array if no episodes are found
 	Method GetEpisodes:Object[]()
