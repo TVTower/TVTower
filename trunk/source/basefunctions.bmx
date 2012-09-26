@@ -398,44 +398,46 @@ End Type
 'Type TColorFunctions
 
 Function ARGB_Alpha:Int(ARGB:Int)
- Return (argb Shr 24) & $ff
- 'Return Int((ARGB & $FF000000:Int) / $1000000:Int)
+	Return (argb Shr 24) & $ff
 EndFunction
 
 Function ARGB_Red:Int(ARGB:Int)
-  Return (argb Shr 16) & $ff
-' Return Int((ARGB & $00FF0000:Int) / $10000:Int)
+	Return (argb Shr 16) & $ff
 EndFunction
 
 Function ARGB_Green:Int(ARGB:Int)
-  Return (argb Shr 8) & $ff
-' Return Int((ARGB & $0000FF00:Int) / $100:Int)
+	Return (argb Shr 8) & $ff
 EndFunction
 
 Function ARGB_Blue:Int(ARGB:Int)
- Return (argb & $ff)
-' Return (ARGB & $000000FF:Int)
+	Return (argb & $ff)
 EndFunction
 
 Function ARGB_Color:Int(alpha:Int,red:Int,green:Int,blue:Int)
- Return (Int(alpha * $1000000) + Int(red * $10000) + Int(green * $100) + Int(blue))
+	Return (Int(alpha * $1000000) + Int(red * $10000) + Int(green * $100) + Int(blue))
+EndFunction
+
+Function RGBA_Color:Int(alpha:int,red:int,green:int,blue:int)
+'	Return (Int(alpha * $1000000) + Int(blue * $10000) + Int(green * $100) + Int(red))
+'	is the same :
+	local argb:int = 0
+	local pointer:Byte Ptr = Varptr(argb)
+	pointer[0] = red
+	pointer[1] = green
+	pointer[2] = blue
+	pointer[3] = alpha
+
+	return argb
 EndFunction
 
 
 'returns true if the given pixel is monochrome (grey)
 Function isMonochrome:int(argb:Int)
-Try
-	Local alpha:Int = ARGB_Alpha(argb)
-	Local red:Int = ARGB_Red(argb)
-	Local green:Int = ARGB_Green(argb)
-	Local blue:Int = ARGB_Blue(argb)
-	                                                        '250
-	If (red = green) And (red = blue) And(alpha <> 0) And(red < 250) Then Return green
+	If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And ARGB_Alpha(argb) <> 0 then Return ARGB_Red(argb)
+	'old with "white filter < 250"
+	'filter should be done outside of that function
+	'If (red = green) And (red = blue) And(alpha <> 0) And(red < 250) Then Return green
 	Return 0
-Catch a$
-	Print "abgefangen: "+a$
-EndTry
-
 End Function
 
 
@@ -869,7 +871,10 @@ Type TColor
 		return self
 	End Method
 
-	Method AddToList:TColor()
+	Method AddToList:TColor(remove:int=0)
+		'if in list - remove first as wished
+		if remove then self.list.remove(self)
+
 		self.list.AddLast(self)
 		return self
 	End Method
@@ -883,6 +888,13 @@ Type TColor
 			If obj.r = r And obj.g = g And obj.b = b And obj.a = a Then Return obj
 		Next
 		Return Null
+	End Function
+
+	Function getByOwner:TColor(ownerID:int=0)
+		For local obj:TColor = EachIn TColor.List
+			if obj.ownerID = ownerID then return obj
+		Next
+		return Null
 	End Function
 
 	Method adjust(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)

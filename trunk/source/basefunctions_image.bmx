@@ -358,494 +358,52 @@ End Type
 
 
 
-Const DDERR_INVALIDSURFACETYPE:Int = $88760250
-Const DDERR_INVALIDPARAMS:Int = $80070057
-Const DDERR_INVALIDOBJECT:Int = $88760082
-Const DDERR_NOTFOUND:Int = $887600ff
-Const DDERR_SURFACELOST:Int = $887601c2
+'colorizes an TImage (may be an AnimImage when given cell_width and height)
+Function ColorizeTImage:TImage(_image:TImage, color:TColor, cell_width:Int=0,cell_height:Int=0,first_cell:Int=0,cell_count:Int=1, flag:Int=0, loadAnimated:Int = 1)
+	If _image = Null then return Null
 
-Global tRenderERROR:String
+	'get pixmap of image - unlock not needed as it does nothing (26.09.2012)
+	local pixmap:TPixmap = LockImage(_image)
 
-Function tRTTError:String(err:Int)
-
-	Select err
-		Case DDERR_INVALIDSURFACETYPE
-			Return "DDERR_INVALIDSURFACETYPE"
-
-		Case DDERR_INVALIDPARAMS
-			Return "DDERR_INVALIDPARAMS"
-
-		Case DDERR_INVALIDOBJECT
-			Return "DDERR_INVALIDOBJECT"
-
-		Case DDERR_NOTFOUND
-			Return "DDERR_NOTFOUND"
-
-		Case DDERR_SURFACELOST
-			Return "DDERR_SURFACELOST"
-
-	End Select
+	'load
+	If cell_width > 0 And cell_count > 0 And loadAnimated
+		Return LoadAnimImage( ColorizePixmap(pixmap, color), cell_width, cell_height, first_cell,cell_count, flag)
+	else
+		Return LoadImage( ColorizePixmap(pixmap, color) )
+	endif
 End Function
 
-Type tRender
+'colorize an Pixmap and return a pixmap
+Function ColorizePixmap:TPixmap(pixmap:TPixmap,color:TColor)
+	'create a copy to work on
+	local newpixmap:TPixmap = pixmap.Copy()
 
-	?Win32
-'	Global DX9Surface:IDirect3DSurface9
-	Global DXFrame:TD3D7ImageFrame
-'	Global DX9Frame:TDX9ImageFrame
-	Global backbuffer:IDirectDrawSurface7
-'	Global backbufferDX9:IDirect3DSurface9
+	'convert format of wrong one -> make sure the pixmaps are 32 bit format
+	If newpixmap.format <> PF_RGBA8888 Then newpixmap.convert(PF_RGBA8888)
 
-	?
-	Global GLFrame:TGLImageFrame
-	Global DX:Int
-	Global Image:TImage = CreateImage(1,1)
-	Global Width:Int
-	Global Height:Int
-	Global o_r:Int, o_g:Int, o_b:Int
-Rem
-bbdoc: Initialise the Module
-about:
-The module must be initialised before use. This ensures usage of the correct render pipeline. If the render device is changed then you must
-re initialise the module.
-End Rem
-	Function Initialise:Int()
-	?Win32
-		If _max2dDriver.ToString() = "DirectX7"
-			DX = True
-			D3D7GraphicsDriver().Direct3DDevice7().GetRenderTarget Varptr backbuffer
+	'create INT pointer to pixels - we have a RGBA format
+	'Int Pointer contain 4 bytes -> RGBA
+	'Byte Pointer would point to individual bytes
+	local pixelPointer:Int Ptr = Int Ptr( newpixmap.PixelPtr(0,0) )
 
-		'	ViewPort = New D3DVIEWPORT7
-'		Else If _max2dDriver.toString() = "DirectX9"
-'			DX = 2
-'			D3D9GraphicsDriver().Direct3DDevice9().GetRenderTarget(0, backbufferDX9)
-		Else
-	?
-			DX = False
-			'kommentierung entfernt
-		'GlEnable(GL_TEXTURE_2D)
-	?Win32
-		EndIf
-	?
-'		DebugLog "tRender : Initialise OK"
-		Return True
-	End Function
+	For local x:int = 0 to pixmap.width * pixmap.height
+		'skip empty pixels - even possible?
+		'if not pixelPointer[0] then continue
 
-'#################################################################################
+		'get "graytone" of the pixel at pixelPointer position
+		local colorTone:int = isMonochrome( pixelPointer[0] )
 
-Rem
-bbdoc: Create Image with Render Characteristics
-returns: TImage Handle to Object
-about:
- <table>
-		<tr><td><b>Width:Int</td><td>Width in Pixels of Image, try to follow the normal rules of textures</td></tr>
-		<tr><td><b>Height:Int</td><td>Height in Pixels of Image</td></tr>
-		<tr><td><b>Flags:Int</td><td>Normal Image Flags</td></tr>
-	</table>
-End Rem
-	Function Create:TImage(Width:Int,Height:Int,Flags:Int=FILTEREDIMAGE)
+		'colorize if monochrome and not black (>0) and not white (255)
+		'colorize with RGBA! not ARGB!
+		If colorTone > 0 and colorTone < 255 then pixelPointer[0] = RGBA_Color( ARGB_Alpha(pixelPointer[0]), Int(colorTone * color.r / 255), Int(colortone * color.g / 255), Int(colortone * color.b / 255))
 
-		Local t:TImage=New TImage
-		t.width=width
-		t.height=height
-		t.flags=flags
-		t.mask_r= 0
-		t.mask_g= 0
-		t.mask_b= 0
-		t.pixmaps=New TPixmap[1]
-		t.frames=New TImageFrame[1]
-		t.seqs=New Int[1]
-		t.pixmaps[0]= t.Lock(0,True,False)
-		t.seqs[0]=GraphicsSeq
-
-	'	MaskPixmap( t.pixmaps[0],mask_r,mask_g,mask_b )
-	?Win32
-		If DX = 1
-			t.frames[0] = CreateFrame(TD3D7Max2DDriver(_max2dDriver),t.Width,t.Height,t.flags)
-'		Else If DX = 2
-'			t.frames[0] = CreateFrameDX9(TD3D9Max2DDriver(_max2dDriver), t.width, t.Height, t.flags)
-		Else
-	?
-			t.frames[0] = TGLImageFrame.CreateFromPixmap:TGLImageFrame(t.pixmaps[0] , t.flags)
-
-	?Win32
-		EndIf
-	?
-
-'		DebugLog "tRender : Create OK"
-
-
-		Return t
-
-	End Function
-
-'#################################################################################
-?Win32
-	Function CreateFrame:TD3D7ImageFrame(Driver:TD3D7Max2DDriver, width:Int, Height:Int, flags:Int)
-		Function Pow2Size:Int(n:Int)
-			Local t:Int = 1
-			While t<n
-				t:*2
-			Wend
-			Return t
-		End Function
-
-		Local swidth:Int = Pow2Size(width)
-		Local sheight:Int = Pow2Size(Height)
-		Local desc:DDSURFACEDESC2 = New DDSURFACEDESC2
-		Local res:Int
-
-		desc.dwSize=SizeOf(desc)
-		desc.dwFlags=DDSD_WIDTH|DDSD_HEIGHT|DDSD_CAPS|DDSD_PIXELFORMAT
-		desc.dwWidth=swidth
-		desc.dwHeight=sheight
-		desc.ddsCaps=DDSCAPS_TEXTURE|DDSCAPS_3DDEVICE|DDSCAPS_VIDEOMEMORY|DDSCAPS_LOCALVIDMEM  ' **************************************************
-		desc.ddsCaps2=DDSCAPS2_HINTDYNAMIC'|DDSCAPS2_TEXTUREMANAGE
-		desc.ddpf_dwSize=SizeOf(DDPIXELFORMAT)
-		desc.ddpf_dwFlags=DDPF_RGB|DDPF_ALPHAPIXELS
-		desc.ddpf_BitCount=32
-		desc.ddpf_BitMask_0=$ff0000
-		desc.ddpf_BitMask_1=$00ff00
-		desc.ddpf_BitMask_2=$0000ff
-		desc.ddpf_BitMask_3=$ff000000
-
-
-		Local surf:IDirectDrawSurface7
-		If flags & MIPMAPPEDIMAGE desc.ddsCaps:|DDSCAPS_MIPMAP|DDSCAPS_COMPLEX
-		res=D3D7GraphicsDriver().DirectDraw7().CreateSurface( desc,Varptr surf,Null )
-		If res<>DD_OK
-			tRenderERROR = tRTTError(res)
-			DebugLog "tRender : CreateFrame ERROR : "+tRenderERROR
-			Return Null
-		EndIf
-		'RuntimeError "Create DX7 surface Failed"
-
-		Local frame:TD3D7ImageFrame=New TD3D7ImageFrame
-		frame.driver=driver
-		frame.surface=surf
-		frame.sinfo=New DDSURFACEDESC2
-		frame.sinfo.dwSize=SizeOf(frame.sinfo)
-		frame.xyzuv=New Float[24]
-		frame.width=width
-		frame.height=height
-		frame.flags=flags
-		frame.SetUV 0.0,0.0,Float(width)/swidth,Float(height)/sheight
-
-
-		'frame.BuildMipMaps()
-		DebugLog "tRender : CreateFrame OK"
-		Return frame
-	End Function
-?
-
-'#################################################################################
-Rem
-bbdoc: Set Screen Viewport
-about:
- <table>
-	<tr><td><b>X:Int</td><td>Set the X Position of the Viewport</td></tr>
-	<tr><td><b>Y:Int</td><td>Set the Y Position of the Viewport</td></tr>
-	<tr><td><b>Width:Int</td><td>Set the Viewport Width in Pixels</td></tr>
-	<tr><td><b>Height:Int</td><td>Set the Viewport Height in Pixels</td></tr>
-	<tr><td><b>FlipY:Byte</td><td>Flip the Viewport on the Y Axis, OpenGL only. Automatically done by the Texture Renderer.</td></tr>
- </table>
-End Rem
-	Function ViewportSet:Int(X:Int=0,Y:Int=0,Width:Int,Height:Int,FlipY:Byte=False)
-	?Win32
-		If DX = 1
-			Local viewport:D3DVIEWPORT7=New D3DVIEWPORT7
-			viewport.dwX=x
-			viewport.dwY=y
-			viewport.dwWidth=width
-			viewport.dwHeight=height
-			D3D7GraphicsDriver().Direct3DDevice7().SetViewport(viewport)
-'		Else If DX = 2
-'			Local viewport:D3DVIEWPORT9 = New D3DVIEWPORT9
-'			viewport.x = x
-'			viewport.Y = y
-'			viewport.Width = width
-'			viewport.Height = Height
-'			D3D9GraphicsDriver().Direct3DDevice9().SetViewport(viewport)
-		Else
-	?
-			If FlipY
-				glViewport(X, Y, Width, Height)
-				glMatrixMode(GL_PROJECTION)
-				glPushMatrix()
-				glLoadIdentity()
-				gluOrtho2D(X, GraphicsWidth(), GraphicsHeight(),Y)
-				glScalef(1, -1, 1)
-				glTranslatef(0, -GraphicsHeight(), 0)
-				glMatrixMode(GL_MODELVIEW)
-			Else
-				glViewport(X, Y, Width, Height)
-				glMatrixMode(GL_PROJECTION)
-				glLoadIdentity()
-				glOrtho(X, GraphicsWidth(), GraphicsHeight(), Y, -1, 1)
-				glMatrixMode(GL_MODELVIEW)
-				glLoadIdentity()
-			EndIf
-	?Win32
-		EndIf
-	?
-'		DebugLog "tRender : ViewportSet OK"
-		Return True
-	EndFunction
-
-'#################################################################################
-Rem
-bbdoc: Begin the Texture Render Process
-about:
- <table>
-	<tr><td><b>Image:TImage</td><td>The Image to Render to, as created with "Create" command.</td></tr>
-	<tr><td><b>Viewport:Byte</td><td>True (default) to Automatically resize the viewport to the image size</td></tr>
- </table>
-End Rem
-	Function TextureRender_Begin:Int(Image1:TImage,Viewport:Byte=True)
-	SetScale Float(GraphicsWidth())/Float(ImageWidth(image1)),Float(GraphicsHeight())/Float(ImageHeight(image1))
-
-
-		Image = Image1
-		If Viewport Then
-			Width = image1.width
-			Height = image1.height
-		Else
-			Width = GraphicsWidth()
-			Height = GraphicsHeight()
-		EndIf
-		If DX = 1
-			'DebugLog "w : " + width + " h : " + height
-			ViewportSet(0, 0, Width, Height)
-'		Else If DX = 2
-'			ViewportSet(0, 0, Width, Height)
-		Else
-			ViewportSet(0,0,Width,Height,True)
-		EndIf
-
-	?Win32
-		If DX = 1
-			Local DXFrame:TD3D7ImageFrame = TD3D7ImageFrame (image1.frame(0))
-			D3D7GraphicsDriver().Direct3DDevice7().SetRenderTarget( DXFrame.Surface,0)
-			D3D7GraphicsDriver().Direct3DDevice7().BeginScene()
-'		Else If DX = 2
-'			D3D9GraphicsDriver().Direct3DDevice9().SetRenderTarget(0, DX9Surface)  'backbufferDX9)
-'			D3D9GraphicsDriver().Direct3DDevice9().BeginScene()
-		Else
-	?
-			GLFrame:TGLImageFrame = TGLImageFrame(Image1.frame(0))
-		'	ViewportSet(0,0,Width,Height,True)
-	?Win32
-		EndIf
-	?
-	'	debuglog "tRender : TextureRender_Begin OK"
-		Return True
-	End Function
-
-	'Clear the Current Viewport with color
-	'col:Int - The Color to clear the Viewport with includes Alpha AARRGGBB format.
-	Function Cls(col:Int=$FF000000)
-	?Win32
-		If dx = 1
-			D3D7GraphicsDriver().Direct3DDevice7().Clear 1,Null,D3DCLEAR_TARGET,col,0,0
-'		Else If dx = 2
-'			D3D9GraphicsDriver().Direct3DDevice9().Clear 1, Null, D3DCLEAR_TARGET, col, 0, 0
-		Else
-	?
-				Local Red# 	= (col Shr 16) & $FF
-				Local Green# 	= (col Shr 8) & $FF
-				Local Blue# 	= col & $FF
-				Local Alpha# 	= (col Shr 24) & $FF
-			'	DebugLog Alpha
-				glClearColor red/255.0,green/255.0,blue/255.0,alpha/255.0
-				glClear GL_COLOR_BUFFER_BIT
-	?Win32
-		EndIf
-	?
-	End Function
-
-'#################################################################################
-?win32
-	Function SetMipMap:Int(Image:TImage,Level:Int)
-		If DX = 1
-			Local DXFrame:TD3D7ImageFrame = TD3D7ImageFrame (image.frame(0))
-
-			'DXFrame.BuildMipMaps()
-
-			Local	src:IDirectDrawSurface7
-			Local	dest:IDirectDrawSurface7
-			Local	caps2:DDSCAPS2
-			caps2=New DDSCAPS2
-			caps2.dwCaps=DDSCAPS_TEXTURE|DDSCAPS_MIPMAP'|DDSCAPS_3DDEVICE
-			caps2.dwCaps2= DDSCAPS2_MIPMAPSUBLEVEL
-
-			src = DXFrame.Surface
-
-			Local res:Int = src.GetAttachedSurface(caps2,Varptr dest)
-
-			If res<>DD_OK
-				tRenderERROR = tRTTError(res)
-				Return False
-			EndIf
-
-			DXFrame.Surface =  dest
-			dest.Release_
-
-			'DebugLog "MipMap Selected OK"
-			Return True
-'		Else If DX = 2
-'			Local DXFrame:TDX9ImageFrame = TDX9ImageFrame (image.Frame(0))
-'
-'			'DXFrame.BuildMipMaps()
-'
-'			Local src:IDirect3DSurface9
-'			Local dest:IDirect3DSurface9
-'			Local	caps2:DDSCAPS2
-'			caps2=New DDSCAPS2
-'			caps2.dwCaps=DDSCAPS_TEXTURE|DDSCAPS_MIPMAP'|DDSCAPS_3DDEVICE
-'			caps2.dwCaps2= DDSCAPS2_MIPMAPSUBLEVEL
-'
-'			src = backbufferdx9
-'			'DebugLog "MipMap Selected OK"
-'			Return True
-		Else
-			Return False
-		EndIf
-	End Function
-?
-
-		Function Pow2Size:Int(n:Int)
-			Local t:Int = 1
-			While t<n
-				t:*2
-			Wend
-			Return t
-		End Function
-
-	'End the Texture Render Process
-	'This Must be called when you have finished rendering To the Texture
-	Function TextureRender_End:Int()
-	SetScale 1.0, 1.0
-	?Win32
-		If dx = 1
-			D3D7GraphicsDriver().Direct3DDevice7().EndScene()
-'		Else If dx = 2
-'			D3D9GraphicsDriver().Direct3DDevice9().EndScene()
-		Else
-	?
-'			glBindTexture_ GL_TEXTURE_2D, GLFrame.name
-			glBindTexture GL_TEXTURE_2D, GLFrame.name
-			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, Pow2Size(Width), Pow2Size(Height), 0)
-'			glBindTexture_ GL_TEXTURE_2D, 0
-			glBindTexture GL_TEXTURE_2D, 0
-	?Win32
-		EndIf
-	?
-		ViewportSet(0,0,GraphicsWidth(),GraphicsHeight())
-		DrawImageRect Image, - 2000, - 2000, 1, 1
-	'	debuglog "tRender : TextureRender_End OK"
-		Return True
-	End Function
-
-	'Begin the Normal BackBuffer Rendering Process
-	Function BackBufferRender_Begin:Int()
-	?Win32
-		If DX = 1 Then
-			D3D7GraphicsDriver().Direct3DDevice7().SetRenderTarget(backbuffer,0)
-'		Else If DX = 2 Then
-'			D3D9GraphicsDriver().Direct3DDevice9().SetRenderTarget(0, backbufferdx9)
-'
-		Else
-	?
-		'entfernt
-		'	If GLFrame <> Null Then glBindTexture GL_TEXTURE_2D,GLFrame.name
-	?Win32
-		EndIf
-	?
-		ViewportSet(0,0,GraphicsWidth(),GraphicsHeight())
-'		DebugLog "tRender : BackBufferRender_Begin OK"
-		Return True
-	End Function
-
-	'This Must be called when you have finished rendering to the BackBuffer and Before the Flip Command.
-	Function BackBufferRender_End:Int()
-	?Win32
-		If DX = 1
-			D3D7GraphicsDriver().Direct3DDevice7().EndScene()
-'		Else If DX = 2
-'			D3D9GraphicsDriver().Direct3DDevice9().EndScene()
-		Else
-	?
-'			glBindTexture_ GL_TEXTURE_2D, 0
-			glBindTexture GL_TEXTURE_2D, 0
-	?Win32
-		EndIf
-	?
-'		DebugLog "tRender : BackBufferRender_End OK"
-		Return True
-	End Function
-
-'#################################################################################
-
-
-End Type
-
-
-'colorize an image with rgb-colors (bigger than 255 is no problem as long grey isn't 255
-Function ColorizedImage:TImage(imagea:TImage, r:Float, g:Float, b:Float)
-  Local mypixmap2:TPixmap = LockImage(imagea)
-  If mypixmap2.format <> PF_RGBA8888 Then mypixmap2.convert(PF_RGBA8888) 'make sure the pixmaps are 32 bit format
-
-  UnlockImage(imagea)
-  Local mypixelptr2:Int Ptr = Int Ptr(mypixmap2.PixelPtr(0,0))
-  Local mypixelptr2backup:Int Ptr = mypixelptr2
-  For Local my_x:Int=0 To ((mypixmap2.width)*(mypixmap2.height))
- '   If Mypixelptr2[0] = Null Then Exit
- 	 Local graycolor:Int = isMonochrome(mypixelptr2[0])
-     If graycolor > 0
-         If mypixelptr2[0] <> 0 Then mypixelptr2[0] = ARGB_Color(ARGB_Alpha(mypixelptr2[0]), Int(graycolor * r / 100), Int(graycolor * g / 100), Int(graycolor * b / 100))
-    EndIf
-     mypixelptr2:+1
-     If mypixelptr2 = mypixelptr2backup+(mypixmap2.pitch Shr 2)
-         mypixelptr2backup=mypixelptr2
-     EndIf
-  Next
-  mypixmap2.height = imagea.height
-  mypixmap2.width = imagea.width
-  Return LoadImage(mypixmap2)
+		'move next pixel
+		pixelPointer:+1
+	Next
+	return newpixmap
 End Function
 
-'colorize an TImage and return a pixmap
-Function ColorizePixmap:TPixmap(_image:TImage,frame:Int,r:Float,g:Float,b:Float)
-If _image <> Null
 
-  Local mypixmap:TPixmap= LockImage(_image, frame)
-  If mypixmap.format <> PF_RGBA8888 Then mypixmap.convert(PF_RGBA8888) 'make sure the pixmaps are 32 bit format
-  Local mypixmap2:TPixmap = TPixmap.Create(mypixmap.width,mypixmap.height, mypixmap.format,1)
-  mypixmap2 = mypixmap.Copy()
-  Local mypixelptr2:Int Ptr = Int Ptr(mypixmap2.PixelPtr(0,0))
-  Local mypixelptr2backup:Int Ptr = mypixelptr2
-  For Local my_x:Int=0 To ((mypixmap2.width)*(mypixmap2.height))
-  '  If Mypixelptr2[0] = Null Then Exit
-     Local colortone:Int = isMonochrome(mypixelptr2[0])
-     If colortone > 0 And mypixelptr2[0] <> 0
-       mypixelptr2[0] = ARGB_Color(ARGB_Alpha(mypixelptr2[0]),Int(colortone*r/255), Int(colortone*g/255), Int(colortone*b/255))
-     EndIf
-     mypixelptr2:+1
-     If mypixelptr2 = mypixelptr2backup+(mypixmap2.pitch Shr 2)
-         mypixelptr2backup=mypixelptr2
-     EndIf
-  Next
-  UnlockImage(_image, Frame)
-  Return mypixmap2
-EndIf
-End Function
-
-'colorizing not animated images
-Function ColorizeImage:TPixmap(imgpath:String, cr:Int,cg:Int,cb:Int)
-  Local colorpixmap:TPixmap=LockImage(ColorizedImage(LoadImage(imgpath), cr,cg,cb))
-  UnlockImage(ColorizedImage(LoadImage(imgpath), cr,cg,cb))
-  Return colorpixmap
-End Function
 
 'copies an TImage to not manipulate the source image
 Function CopyImage:TImage(src:TImage)
@@ -870,32 +428,3 @@ Function CopyImage:TImage(src:TImage)
 
    Return dst
 End Function
-
-'colorizes an TImage (may be an AnimImage when given cell_width and height)
-Function ColorizeTImage:TImage(_image:TImage, r:Int,g:Int,b:Int, cell_width:Int=0,cell_height:Int=0,first_cell:Int=0,cell_count:Int=1, flag:Int=0, loadAnimated:Int = 1)
-	If _image <> Null
-		Local d:Int = r
-		r = b;b = d
-		Local mypixmap:TPixmap = LockImage(_image)
-		If mypixmap.format <> PF_RGBA8888 Then mypixmap.convert(PF_RGBA8888) 'make sure the pixmaps are 32 bit format
-		Local mypixmap2:TPixmap = TPixmap.Create(_image.width, _image.height, mypixmap.format, 1)
-		mypixmap2 = mypixmap.Copy()
-		UnlockImage(_image)
-		Local mypixelptr2:Int Ptr = Int Ptr(mypixmap2.PixelPtr(0, 0))
-		Local mypixelptr2backup:Int Ptr = mypixelptr2
-		For Local my_x:Int=0 To ((mypixmap2.width)*(mypixmap2.height))
-			Local colortone:Int = isMonochrome(mypixelptr2[0])
-			If colortone > 0 And mypixelptr2[0] <> 0
-				mypixelptr2[0] = ARGB_Color(ARGB_Alpha(mypixelptr2[0]), Int(colortone * r / 255), Int(colortone * g / 255), Int(colortone * b / 255))
-			EndIf
-			mypixelptr2:+1
-			If mypixelptr2 = mypixelptr2backup+(mypixmap2.pitch Shr 2)
-				mypixelptr2backup=mypixelptr2
-			EndIf
-		Next
-		MyPixmap = Null
-		If cell_width > 0 And cell_count > 0 And loadAnimated Then Return LoadAnimImage(mypixmap2, cell_width, cell_height, first_cell,cell_count, flag)
-		Return LoadImage(mypixmap2)
-	EndIf
-End Function
-'End Type

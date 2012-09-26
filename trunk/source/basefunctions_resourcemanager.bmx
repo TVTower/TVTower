@@ -423,7 +423,7 @@ Type TXmlLoader
 				'print "LoadImageResource: "+_name + " | DIRECT type = "+_type
 				'add as single sprite so it is reachable through "GetSprite" too
 				Local sprite:TGW_Sprites = TGW_Sprites.LoadFromAsset(LoadAssetHelper)
-				If _r >= 0 And _g >= 0 And _b >= 0 then sprite.colorize(_r,_g,_b)
+				If _r >= 0 And _g >= 0 And _b >= 0 then sprite.colorize( TColor.Create(_r,_g,_b) )
 				Assets.Add(_name, sprite)
 				Self.parseScripts(childNode, sprite.GetImage())
 			Else
@@ -458,7 +458,7 @@ Type TXmlLoader
 						'emit loader event for loading screen
 			'			self.doLoadElement("colorize copy", _dest, "colorize copy")
 
-						local img:Timage = ColorizeTImage(TImage(data),_r, _g, _b)
+						local img:Timage = ColorizeTImage(TImage(data), TColor.Create(_r, _g, _b) )
 						if img <> null
 							Assets.AddImageAsSprite(_dest, img)
 						else
@@ -473,7 +473,7 @@ Type TXmlLoader
 						'emit loader event for loading screen
 				'		self.doLoadElement("copy sprite", _dest, "")
 
-						TGW_Spritepack(data).CopySprite(_src, _dest, _r, _g, _b)
+						TGW_Spritepack(data).CopySprite(_src, _dest, TColor.Create(_r, _g, _b))
 					EndIf
 				EndIf
 
@@ -489,7 +489,7 @@ Type TXmlLoader
 						'emit loader event for loading screen
 						self.doLoadElement("add copy sprite", _dest, "")
 
-						Assets.Add(_dest, TGW_Spritepack(data).AddCopySprite(_src, _dest, _x, _y, _w, _h, _frames, _r, _g, _b))
+						Assets.Add(_dest, TGW_Spritepack(data).AddCopySprite(_src, _dest, _x, _y, _w, _h, _frames, TColor.Create(_r, _g, _b)))
 					EndIf
 				EndIf
 
@@ -541,7 +541,7 @@ Type TXmlLoader
 					Local _r:Int			= xml.FindValueInt(child, "r", -1)
 					Local _g:Int			= xml.FindValueInt(child, "g", -1)
 					Local _b:Int			= xml.FindValueInt(child, "b", -1)
-					If _r >= 0 And _g >= 0 And _b >= 0 then sprite.colorize(_r,_g,_b)
+					If _r >= 0 And _g >= 0 And _b >= 0 then sprite.colorize( TColor.Create(_r,_g,_b) )
 				EndIf
 			Next
 		EndIf

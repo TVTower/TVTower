@@ -786,11 +786,16 @@ Type TGW_SpritePack extends TRenderable
 		If spriteobj <> Null Then ClipImageToViewport(Self.image, x - spriteobj.pos.x, y - spriteobj.pos.y, vx, vy, vw, vh, 0, 0)
 	End Method
 
-	Method ColorizeSprite(spriteName:String, colR:Int,colG:Int,colB:Int)
+
+	Method ColorizeSpriteRGB(spriteName:String, colR:Int,colG:Int,colB:Int)
+		self.ColorizeSprite( spriteName, TColor.Create(colR,colG,colB) )
+	End Method
+
+	Method ColorizeSprite(spriteName:String, color:TColor)
 		'to access pos and dimension
 		Local tmpSprite:TGW_Sprites = Self.GetSprite(spriteName)
 		'store backup (we clean it before pasting colorized output
-		local tmpImg:TImage = ColorizeTImage(Self.GetSpriteImage(spriteName), colR, colG, colB)
+		local tmpImg:TImage = ColorizeTImage(Self.GetSpriteImage(spriteName), color)
 		Local tmppix:TPixmap = LockImage(Self.image, 0)
 			tmppix.Window(tmpSprite.Pos.x, tmpSprite.pos.y, tmpSprite.w, tmpSprite.h).ClearPixels(0)
 			DrawOnPixmap(tmpImg, 0, tmppix, tmpSprite.pos.x, tmpSprite.pos.y)
@@ -798,20 +803,29 @@ Type TGW_SpritePack extends TRenderable
 		GCCollect() '<- FIX!
 	End Method
 
-	Method CopySprite(spriteNameSrc:String, spriteNameDest:String, colR:Int,colG:Int,colB:Int)
+
+	Method CopySpriteRGB(spriteNameSrc:String, spriteNameDest:String, colR:Int,colG:Int,colB:Int)
+		self.CopySprite( spriteNameSrc, spriteNameDest, TColor.Create(colR,colG,colB) )
+	End Method
+
+	Method CopySprite(spriteNameSrc:String, spriteNameDest:String, color:TColor)
 		Local tmpSpriteDest:TGW_Sprites = Self.GetSprite(spriteNameDest)
 		Local tmppix:TPixmap = LockImage(Self.image, 0)
 			tmppix.Window(tmpSpriteDest.Pos.x, tmpSpriteDest.pos.y, tmpSpriteDest.w, tmpSpriteDest.h).ClearPixels(0)
-			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), colR, colG, colB), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
+			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), color), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
 		UnlockImage(Self.image, 0)
 		GCCollect() '<- FIX!
 	End Method
 
-	Method AddCopySprite:TGW_Sprites(spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, colR:Int,colG:Int,colB:Int)
+	Method AddCopySpriteRGB:TGW_Sprites(spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, colR:Int,colG:Int,colB:Int)
+		self.AddCopySprite( spriteNameSrc, spriteNameDest, posx, posy, w,h, animcount, TColor.Create(colR,colG,colB) )
+	End Method
+
+	Method AddCopySprite:TGW_Sprites(spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, color:TColor)
 		local tmpSpriteDest:TGW_Sprites = self.AddSprite(spriteNameDest,posx, posy, w, h, animcount)
 		Local tmppix:TPixmap = LockImage(Self.image, 0)
 			tmppix.Window(tmpSpriteDest.Pos.x, tmpSpriteDest.pos.y, tmpSpriteDest.w, tmpSpriteDest.h).ClearPixels(0)
-			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), colR, colG, colB), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
+			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), color), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
 		UnlockImage(Self.image, 0)
 		GCCollect() '<- FIX!
 		return tmpSpriteDest
@@ -918,12 +932,12 @@ Type TGW_Sprites extends TRenderable
 	End Method
 
 	'let spritePack colorize the sprite
-	Method Colorize(colR:Int,colG:Int,colB:Int)
-		self.parent.ColorizeSprite(self.spriteName, colR,colG,colB)
+	Method Colorize(color:TColor)
+		self.parent.ColorizeSprite(self.spriteName, Color)
 	End Method
 
-	Method GetColorizedImage:TImage(r:int, g:int, b:int)
-		return ColorizeTImage(self.GetImage(0), r,g,b, self.framew, self.frameh, 0, self.animcount, 0, 0)
+	Method GetColorizedImage:TImage(color:TColor)
+		return ColorizeTImage(self.GetImage(0), color, self.framew, self.frameh, 0, self.animcount, 0, 0)
 	End Method
 
 	Method GetFrameImage:TImage(framenr:Int = 0)

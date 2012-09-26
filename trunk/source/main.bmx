@@ -30,6 +30,30 @@ Global CopyrightString:String	= "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
 Global App:TApp = TApp.Create(60, 100) 'create with 60fps for physics and graphics
+rem
+global testimg:TImage = null
+global testimg1:TImage = null
+global testimg2:TImage = null
+global testimg3:TImage = null
+SetColor 100,100,100
+DrawRect(0,0,100,100)
+'Flip(0)
+testimg = LoadImage(GrabPixmap(0,0,100,100))
+testimg1 = ColorizeTImage(LoadImage(GrabPixmap(0,0,100,100)), TColor.Create(255,0,0))
+testimg2 = ColorizeTImage(LoadImage(GrabPixmap(0,0,100,100)), TColor.Create(0,255,0))
+testimg3 = ColorizeTImage(LoadImage(GrabPixmap(0,0,100,100)), TColor.Create(0,0,255))
+cls
+SetColor 255,255,255
+DrawRect(0,0,800,600)
+DrawImage(testimg, 0,0)
+DrawImage(testimg1, 150,0)
+DrawImage(testimg2, 300,0)
+DrawImage(testimg3, 450,0)
+flip(0)
+WaitKey()
+End
+endrem
+
 App.LoadResources("config/resources.xml")
 
 'defaultfont
@@ -45,8 +69,6 @@ Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 
 
-'Initialise Render-To-Texture
-tRender.Initialise()
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
 Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21)
@@ -761,13 +783,13 @@ endrem
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
-	Function Create:TPlayer(Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, pcolr:Int, pcolg:Int, pcolb:Int, ControlledByID:Int = 1, FigureName:String = "")
+	Function Create:TPlayer(Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "")
 		Local Player:TPlayer		= New TPlayer
 		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Player").AddNumber("itemNumber", globalID).AddNumber("maxItemNumber", 4) ) )
 
 		Player.Name					= Name
 		Player.playerID				= globalID
-		Player.color				= TColor.Create(pcolr,pcolg,pcolb).AddToList().SetOwner(TPlayer.globalID)
+		Player.color				= color.AddToList(true).SetOwner(TPlayer.globalID)
 		Player.channelname			= channelname
 		Player.Figure				= TFigures.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayer	= Player
@@ -808,7 +830,7 @@ endrem
 		Local tmppix:TPixmap = LockImage(Assets.GetSpritePack("figures").image, 0)
 		'clear area in all-figures-image
 		tmppix.Window(tmpSprite.Pos.x, tmpSprite.Pos.y, tmpSprite.w, tmpSprite.h).ClearPixels(0)
-		DrawOnPixmap(ColorizeTImage(Assets.GetSpritePack("figures").GetSpriteImage("", figurebase, False), color.r, color.g, color.b), 0, tmppix, tmpSprite.Pos.x, tmpSprite.Pos.y)
+		DrawOnPixmap(ColorizeTImage(Assets.GetSpritePack("figures").GetSpriteImage("", figurebase, False), color), 0, tmppix, tmpSprite.Pos.x, tmpSprite.Pos.y)
 		UnlockImage(Assets.GetSpritePack("figures").image, 0)
 	End Method
 
@@ -820,7 +842,7 @@ endrem
 		self.color.ownerID	= playerID
 		UpdateFigureBase(figurebase)
 		'overwrite asset
-		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetSprite("gfx_building_sign_base").getImage(), color.r, color.g, color.b) )
+		Assets.AddImageAsSprite( "gfx_building_sign"+String(playerID), ColorizeTImage(Assets.GetSprite("gfx_building_sign_base").getImage(), color) )
 	End Method
 
 	'nothing up to now
@@ -2378,10 +2400,10 @@ EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Cre
 Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
 
 '#Region  Creating PlayerColors
-TColor.Create(247, 50, 50).AddToList()
-TColor.Create(245, 220, 0).AddToList()
-TColor.Create(40, 210, 0).AddToList()
-TColor.Create(0, 110, 245).AddToList()
+TColor.Create(247, 50, 50).AddToList()	'red
+TColor.Create(245, 220, 0).AddToList()	'yellow
+TColor.Create(40, 210, 0).AddToList()	'green
+TColor.Create(0, 110, 245).AddToList()	'blue
 TColor.Create(158, 62, 32).AddToList()
 TColor.Create(224, 154, 0).AddToList()
 TColor.Create(102, 170, 29).AddToList()
@@ -2390,15 +2412,17 @@ TColor.Create(205, 113, 247).AddToList()
 TColor.Create(255, 255, 0).AddToList()
 TColor.Create(125, 143, 147).AddToList()
 TColor.Create(255, 125, 255).AddToList()
+
 '#End Region
 
 'create playerfigures in figures-image
 'Local tmpFigure:TImage = Assets.GetSpritePack("figures").GetSpriteImage("", 0)
 Global Players:TPlayer[5]
-Players[1] = TPlayer.Create(Game.username	, Game.userchannelname	, Assets.GetSprite("Player1"), 500, 1 , 90, 247, 50 , 50 , 1, "Player 1")
-Players[2] = TPlayer.Create("Alfie"			, "SunTV"				, Assets.GetSprite("Player2"), 450, 3 , 90, 245, 220, 0  , 0, "Player 2")
-Players[3] = TPlayer.Create("Seidi"			, "FunTV"				, Assets.GetSprite("Player3"), 250, 8 , 90, 40 , 210, 0  , 0, "Player 3")
-Players[4] = TPlayer.Create("Sandra"		, "RatTV"				, Assets.GetSprite("Player4"), 480, 13, 90, 0  , 110, 245, 0, "Player 4")
+'TColor.GetByOwner -> get first unused color, TPlayer.Create sets owner of the color
+Players[1] = TPlayer.Create(Game.username	,Game.userchannelname	,Assets.GetSprite("Player1"),	500,  1, 90, TColor.getByOwner(0), 1, "Player 1")
+Players[2] = TPlayer.Create("Alfie"			,"SunTV"				,Assets.GetSprite("Player2"),	450,  3, 90, TColor.getByOwner(0), 0, "Player 2")
+Players[3] = TPlayer.Create("Seidi"			,"FunTV"				,Assets.GetSprite("Player3"),	250,  8, 90, TColor.getByOwner(0), 0, "Player 3")
+Players[4] = TPlayer.Create("Sandra"		,"RatTV"				,Assets.GetSprite("Player4"),	480, 13, 90, TColor.getByOwner(0), 0, "Player 4")
 
 Local tempfigur:TFigures= TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
 tempfigur.FrameWidth	= 12 'overwriting
@@ -3160,27 +3184,30 @@ End Function
 Function Init_Colorization()
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Colorization").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 	'colorize the images
-	Assets.AddImageAsSprite("gfx_financials_barren0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(200, 200, 200) )
-	Assets.AddImageAsSprite("gfx_building_sign0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(200,200,200) )
-	Assets.AddImageAsSprite("gfx_elevator_sign0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(200,200,200) )
-	Assets.AddImageAsSprite("gfx_elevator_sign_dragged0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(200, 200, 200) )
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(100,100,100), Assets.GetSprite("gfx_building_sign_base").animcount )
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons5", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(100,100,100), Assets.GetSprite("gfx_building_sign_base").animcount )
+	local gray:TColor = TColor.Create(200, 200, 200)
+	local gray2:TColor = TColor.Create(100, 100, 100)
+	Assets.AddImageAsSprite("gfx_financials_barren0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage( gray ) )
+	Assets.AddImageAsSprite("gfx_building_sign0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage( gray ) )
+	Assets.AddImageAsSprite("gfx_elevator_sign0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( gray ) )
+	Assets.AddImageAsSprite("gfx_elevator_sign_dragged0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage( gray ) )
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage( gray2 ), Assets.GetSprite("gfx_building_sign_base").animcount )
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons5", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage( gray2 ), Assets.GetSprite("gfx_building_sign_base").animcount )
 
 	'colorizing for every player and inputvalues (player and channelname) to players variables
 	For Local i:Int = 1 To 4
 		Players[i].Name					= MenuPlayerNames[i-1].Value
 		Players[i].channelname			= MenuChannelNames[i-1].Value
-		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b) )
-		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b) )
-		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Players[i].color.r, Players[i].color.g, Players[i].color.b) )
-		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b) )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Players[i].color.r, Players[i].color.g, Players[i].color.b),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
+		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(Players[i].color) )
+		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Players[i].color) )
+		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Players[i].color) )
+		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Players[i].color) )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Players[i].color),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Players[i].color),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
 	Next
 End Function
 
 Function Init_All()
+
 	PrintDebug ("Init_All()", "start", DEBUG_START)
 	Init_Creation()
 	PrintDebug ("  Init_Colorization()", "colorizing Images corresponding to playercolors", DEBUG_START)
