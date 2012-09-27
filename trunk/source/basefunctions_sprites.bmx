@@ -288,6 +288,7 @@ Type TBitmapFont
 	Field gfx			:TMax2dGraphics
 	Field uniqueID		:string =""
 	Field displaceY		:float=100.0
+	Field lineHeightModifier:float = 0.2	'modifier * lineheight gets added at the end
 
 	Field drawToPixmap:TPixmap = null
 
@@ -560,7 +561,6 @@ Type TBitmapFont
 		local currentLine:int = 0
 
 		local color:TColor = new TColor.Get()
-'if self.drawToPixmap and doDraw=1 then print text+ " -> "+color.r+","+color.g+","+color.b+" a"+color.a
 		For text:string = eachin textLines
 			currentLine:+1
 
@@ -591,7 +591,7 @@ Type TBitmapFont
 			width = max(width, lineWidth)
 			height:+lineHeight
 			'except first line (maybe only one line) - add extra spacing between lines
-			if currentLine > 0 then height:+ ceil(lineHeight*0.4)
+			if currentLine > 0 then height:+ ceil( lineHeight* self.lineHeightModifier )
 		Next
 		if returnType = 0 then return string(width)
 		if returnType = 1 then return string(height)

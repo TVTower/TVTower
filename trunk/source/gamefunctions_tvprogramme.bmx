@@ -1384,12 +1384,14 @@ endrem
 		If Self.fsk18 <> 0 Then normalFont.DrawBlock(GetLocale("MOVIE_XRATED") , x+240 , y+dY+34 , 50, 20,0) 'prints pg-rating
 
 		normalFont.DrawBlock(GetLocale("MOVIE_DIRECTOR")+":", x+10 , y+dY+135, 280, 16,0)
-		normalFont.DrawBlock(GetLocale("MOVIE_ACTORS")+":"  , x+10 , y+dY+148, 280, 32,0)
 		normalFont.DrawBlock(GetLocale("MOVIE_SPEED")       , x+222, y+dY+187, 280, 16,0)
 		normalFont.DrawBlock(GetLocale("MOVIE_CRITIC")      , x+222, y+dY+210, 280, 16,0)
 		normalFont.DrawBlock(GetLocale("MOVIE_BOXOFFICE")   , x+222, y+dY+233, 280, 16,0)
 		normalFont.DrawBlock(director         , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":")) , y+dY+135, 280-15-normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":"), 16,0) 	'prints director
-		normalFont.DrawBlock(actors           , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":")), y+dY+148, 280-15-normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":"), 32,0) 	'prints actors
+		if actors <> ""
+			normalFont.DrawBlock(GetLocale("MOVIE_ACTORS")+":"  , x+10 , y+dY+148, 280, 32,0)
+			normalFont.DrawBlock(actors           , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":")), y+dY+148, 280-15-normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":"), 32,0) 	'prints actors
+		endif
 		normalFont.DrawBlock(GetGenreString(Genre)  , x+78 , y+dY+35 , 150, 16,0) 	'prints genre
 		normalFont.DrawBlock(country          , x+10 , y+dY+35 , 150, 16,0)		'prints country
 		If genre <> GENRE_CALLINSHOW
@@ -3777,8 +3779,9 @@ End Type
 
 'Programmeblocks used in Archive
 Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
-	Field x:Int = 0					{saveload = "normal"}
-	Field y:Int = 0					{saveload = "normal"}
+	Field pos:TPosition = TPosition.Create(0,0)
+	Field dim:TPosition	= TPosition.Create(0,0)
+
 	Field imageWithText:TImage = Null
 	Field Programme:TProgramme
 	Field slot:Int = 0				{saveload = "normal"}
@@ -3788,22 +3791,21 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	Global LastUniqueID:Int =0
 	Global List:TList = CreateList()
 
-  Function ProgrammeToPlayer()
-    For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-      If locObject.Programme <> Null And locObject.Bid[0] > 0 And locObject.Bid[0] <= 4
-	    Players[locobject.Bid[0]].ProgrammeCollection.AddProgramme(locobject.Programme)
-		Print "player "+Players[locobject.Bid[0]].name + " won the auction for: "+locobject.Programme.title
-		Repeat
-		  LocObject.Programme = TProgramme.GetRandomMovieWithMinPrice(250000)
-		Until LocObject.Programme <> Null
-		locObject.imageWithText = Null
-		For Local i:Int = 0 To 4
-	 	  LocObject.Bid[i] = 0
+	Function ProgrammeToPlayer()
+		For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
+			If locObject.Programme <> Null And locObject.Bid[0] > 0 And locObject.Bid[0] <= 4
+				Players[locobject.Bid[0]].ProgrammeCollection.AddProgramme(locobject.Programme)
+				Print "player "+Players[locobject.Bid[0]].name + " won the auction for: "+locobject.Programme.title
+				Repeat
+					LocObject.Programme = TProgramme.GetRandomMovieWithMinPrice(250000)
+				Until LocObject.Programme <> Null
+				locObject.imageWithText = Null
+				For Local i:Int = 0 To 4
+					LocObject.Bid[i] = 0
+				Next
+			End If
 		Next
-      End If
-    Next
-
-  End Function
+	End Function
 
   Function LoadAll(loadfile:TStream)
     TAuctionProgrammeBlocks.List.Clear()
@@ -3816,8 +3818,8 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	Repeat
       Local AuctionProgrammeBlocks:TAuctionProgrammeBlocks = New TAuctionProgrammeBlocks
 	  AuctionProgrammeBlocks.uniqueID = ReadInt(loadfile)
-	  AuctionProgrammeBlocks.x 	= ReadInt(loadfile)
-	  AuctionProgrammeBlocks.y   = ReadInt(loadfile)
+	  AuctionProgrammeBlocks.pos.x 	= ReadInt(loadfile)
+	  AuctionProgrammeBlocks.pos.y   = ReadInt(loadfile)
 	  Local ProgrammeID:Int  = ReadInt(loadfile)
 	  If ProgrammeID >= 0
 	    AuctionProgrammeBlocks.Programme = TProgramme.GetProgramme(ProgrammeID)
@@ -3871,19 +3873,18 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	End Method
 
 	Function Create:TAuctionProgrammeBlocks(Programme:TProgramme, slot:Int=0)
-		Local LocObject:TAuctionProgrammeBlocks=New TAuctionProgrammeBlocks
-		LocObject.x			= 140+((slot+1) Mod 2)* 260
-		LocObject.y			= 75+ Ceil((slot-1) / 2)*60
-		LocObject.Bid[0]	= 0
-		LocObject.Bid[1]	= 0
-		LocObject.Bid[2]	= 0
-		LocObject.Bid[3]	= 0
-		LocObject.Bid[4]	= 0
-		LocObject.slot		= slot
-		LocObject.Programme	= Programme
-		List.AddLast(LocObject)
+		Local obj:TAuctionProgrammeBlocks=New TAuctionProgrammeBlocks
+
+		obj.pos.SetXY( 140+((slot+1) Mod 2)* 260,   80+ Ceil((slot-1) / 2)*60 )
+		obj.dim.SetXY( Assets.GetSprite("gfx_auctionmovie").w, Assets.GetSprite("gfx_auctionmovie").h )
+		For Local i:Int = 0 To 4
+			obj.Bid[i] = 0
+		Next
+		obj.slot		= slot
+		obj.Programme	= Programme
+		obj.List.AddLast(obj)
 		TAuctionProgrammeBlocks.list.sort(True, TAuctionProgrammeBlocks.sort)
-		Return LocObject
+		Return obj
 	End Function
 
 	Function Sort:Int(o1:Object, o2:Object)
@@ -3893,10 +3894,14 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
         Return (s1.slot)-(s2.slot)
 	End Function
 
+	Method ShowSheet:Int(x:Int,y:Int)
+		Programme.ShowSheet(x,y)
+	End Method
+
+
     'draw the Block inclusive text
     'zeichnet den Block inklusive Text
     Method Draw()
-		Local HighestBidder:String	= ""
 		Local HighestBid:Int		= Programme.getPrice()
 		Local NextBid:Int			= 0
 
@@ -3922,40 +3927,53 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 
 			if not ImageWithText THROW "GetImage Error for gfx_auctionmovie"
 
-			'set target for font
-			local font:TBitmapFont = Assets.GetFont("Default", 10)
+			local font:TBitmapFont		= Assets.GetFont("Default", 10)
+			local titleFont:TBitmapFont	= Assets.GetFont("Default", 10, BOLDFONT)
+
+			'set target for fonts
 			font.setTargetImage(ImageWithText)
+			titleFont.setTargetImage(ImageWithText)
 
 			If Players[Bid[0]] <> Null
-				HighestBidder = Players[Bid[0]].name
-				font.drawStyled(HighestBidder,33,35, 0, 0, 0, 1, 0.25)
-'				font.drawStyled(HighestBidder,33,35, Players[Bid[0]].color.r, Players[Bid[0]].color.g, Players[Bid[0]].color.b, 1, 0.25)
+				titleFont.drawStyled(Players[Bid[0]].name,31,33, Players[Bid[0]].color.r, Players[Bid[0]].color.g, Players[Bid[0]].color.b, 2, 0, 1, 0.25)
+			else
+				font.drawStyled("ohne Bieter", 31,33, 150,150,150, 0, 0, 1, 0.25)
 			EndIf
-			Assets.GetFont("Default", 10, BOLDFONT).setTargetImage(ImageWithText)
-			Assets.GetFont("Default", 10, BOLDFONT).drawBlock(Programme.title, 31,5, 215,20, 0, 0,0,0, false, 1, 1, 0.50)
-'			Assets.GetFont("Default", 10, BOLDFONT).drawStyled(Programme.title, 31,5, 0,0,0,1,0,1,0.25)
-			Assets.GetFont("Default", 10, BOLDFONT).resetTarget()
+			titleFont.drawBlock(Programme.title, 31,5, 215,30, 0, 0,0,0, false, 1, 1, 0.50)
 
-'			font.drawBlock(Programme.title, 31,5, 215,20,0, 0,0,0)
-			font.drawBlock("Preis:"+HighestBid+CURRENCYSIGN, 31,20, 215,20,2, 100,100,100,1)
-			font.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, 31,33, 215,20,2, 0,0,0,1)
+			font.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, 31,33, 212,20,2, 0,0,0,1)
 
-			'reset target for font
+			'reset target for fonts
+			titleFont.resetTarget()
 			font.resetTarget()
 
 	    EndIf
 		SetColor 255,255,255
 		SetAlpha 1
-		DrawImage(imageWithText,x,y)
+		DrawImage(imageWithText,pos.x,pos.y)
     End Method
 
 
-  Function DrawAll(DraggingAllowed:Byte)
-		TAuctionProgrammeBlocks.list.sort(True, TAuctionProgrammeBlocks.sort)
-      For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-        locObject.Draw()
-      Next
-  End Function
+	Function DrawAll(DraggingAllowed:Byte)
+		'sort only needed during add/remove...
+		'TAuctionProgrammeBlocks.list.sort(True, TAuctionProgrammeBlocks.sort)
+		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
+			obj.Draw()
+		Next
+
+		'draw sheets (must be afterwards to avoid overlapping (itemA Sheet itemB itemC) )
+		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
+			if functions.IsIn(MouseX(), MouseY(), obj.Pos.x, obj.Pos.y, obj.dim.x, obj.dim.y)
+				if obj.pos.x+obj.dim.x > App.settings.width/2
+					obj.Programme.ShowSheet(90,50)
+				else
+					obj.Programme.ShowSheet(400,50)
+				endif
+				Exit
+			endif
+		Next
+
+	End Function
 
 	Method GetProgramme:TProgramme()  {_exposeToLua}
 		return self.Programme
@@ -4002,14 +4020,15 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 		if Game.isPlayerID(self.Bid[0]) then return self.Bid[0] else return -1
 	End Method
 
-	Function UpdateAll(DraggingAllowed:Byte)
+	Function UpdateAll:int(DraggingAllowed:Byte)
 		TAuctionProgrammeBlocks.list.sort(True, TAuctionProgrammeBlocks.sort)
 		Local MouseHit:Int = MOUSEMANAGER.IsHit(1)
-		For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-			If MouseHit And functions.IsIn(MouseX(), MouseY(), locObject.x, locObject.y, Assets.GetSprite("gfx_auctionmovie").w, Assets.GetSprite("gfx_auctionmovie").h) And locObject.Bid[0] <> game.playerID
+		if not MouseHit then return 0
 
-	  			If game.networkgame Then NetworkHelper.SendMovieAgencyChange(NET_BID, game.playerID, locObject.GetNextBid(), -1, locObject.Programme)
-	  			locObject.SetBid( game.playerID )  'set the bid
+		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
+			if obj.Bid[0] <> game.playerID And functions.IsIn(MouseX(), MouseY(), obj.pos.x, obj.pos.y, obj.dim.x, obj.dim.y)
+				If game.networkgame Then NetworkHelper.SendMovieAgencyChange(NET_BID, game.playerID, obj.GetNextBid(), -1, obj.Programme)
+				obj.SetBid( game.playerID )  'set the bid
 			EndIf
 		Next
 	End Function

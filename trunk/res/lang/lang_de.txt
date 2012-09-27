@@ -70,13 +70,15 @@ ROOM_FREE_STUDIO      = Freies Studio
 ROOM_STUDIO_OF        = Studio von
 ROOM_SCRIPT_OFFICE    = Drehbuchagentur
 ROOM_SCRIPT_OFFICE_OWNER= John S. Jibble
-ROOM_NOTOBACCO        = Anti-Raucher e.V.
-ROOM_NOTOBACCO_OWNER  = Amerikanische Gesellschaft gegen Nikotin-Mißbrauch
-ROOM_TOBACCOLOBBY     = Tabaklobby
-ROOM_TOBACCOLOBBY_OWNER= Vereinigung amerikanischer Tabakproduzenten
-ROOM_VRDUBAN          = Konsulat der VR Duban
-ROOM_FRDUBAN          = Botschaft der FR Duban
-ROOM_PORTER           = Pförtner
+ROOM_NOTOBACCO			= Anti-Raucher e.V.
+ROOM_NOTOBACCO_OWNER	= Amerikanische Gesellschaft gegen Nikotin-Mißbrauch
+ROOM_TOBACCOLOBBY		= Tabaklobby
+ROOM_TOBACCOLOBBY_OWNER	= Vereinigung amerikanischer Tabakproduzenten
+ROOM_VRDUBAN			= Konsulat der VR Duban
+ROOM_FRDUBAN			= Botschaft der FR Duban
+ROOM_PORTER				= Pförtner
+ROOM_AUCTION			= Auktion
+ROOM_AUCTION_SUB		= Film- und Serienauktion
 
 BROADCASTING_OUTAGE = Sendeausfall !!
 ADVERTISMENT        = Werbung
@@ -141,6 +143,7 @@ MOVIE_GENRE_19= Lückenfüller
 MOVIE_GENRE_20= Call-In/Shopping
 MOVIE_CALLINSHOW= Du verdienst 0.5-2% der Zuschauerzahl in €.
 
+CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Zum Bieten auf Film oder Serie klicken.
 
 ERROR_NOT_ENOUGH_MONEY      = Nicht genügend Geld!
 ERROR_NOT_ENOUGH_MONEY_TEXT = Du besitzt nicht genügend finanzielle Mittel um diese Aktion durchzuführen.

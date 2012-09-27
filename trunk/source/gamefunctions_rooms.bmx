@@ -702,24 +702,27 @@ End Function
 
 Function Room_MovieAuction_Compute(_room:TRooms)
 	Global AuctionRect:TImage
-  If TRooms.doadraw 'draw it
-	Assets.GetSprite("gfx_suitcase").Draw(530, 240)
-    SetAlpha 0.5
-    Assets.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
-    Assets.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
-    SetAlpha 1.0
-	TMovieAgencyBlocks.DrawAll(True)
-	SetAlpha 0.5;SetColor 0,0,0
-	DrawRect(20,10,760,373)
-	SetAlpha 1.0;SetColor 255,255,255
-	DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 120, 60, 555, 290)
-	Assets.GetFont("Default",12).draw("Zum Bieten auf Film oder Serie klicken",145,315)
-	TAuctionProgrammeBlocks.DrawAll(0)
-  Else
-    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("movieagency", 0)
-    Game.cursorstate = 0
-	TAuctionProgrammeBlocks.UpdateAll(0)
-  EndIf
+	If TRooms.doadraw 'draw it
+		Assets.GetSprite("gfx_suitcase").Draw(530, 240)
+		SetAlpha 0.5
+		Assets.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
+		Assets.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
+		SetAlpha 1.0
+		TMovieAgencyBlocks.DrawAll(True)
+		SetAlpha 0.5;SetColor 0,0,0
+		DrawRect(20,10,760,373)
+		SetAlpha 1.0;SetColor 255,255,255
+		DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 120, 60, 555, 290)
+		SetAlpha 0.5
+		Assets.GetFont("Default",12,BOLDFONT).drawBlock(Localization.GetString("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, 1, 230,230,230, false, 2, 1, 0.25)
+		SetAlpha 1.0
+
+		TAuctionProgrammeBlocks.DrawAll(0)
+	Else
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("movieagency", 0)
+		Game.cursorstate = 0
+		TAuctionProgrammeBlocks.UpdateAll(0)
+	EndIf
 End Function
 
 Function Room_Betty_Compute(_room:TRooms)
