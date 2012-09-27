@@ -108,34 +108,49 @@ Function DrawOnPixmap(image:TImage, framenr:Int = 0, Pixmap:TPixmap, x:Int, y:In
 	  If framenr > 0 UnlockImage(image, framenr)
 End Function
 
-Function DrawPixmapOnPixmap(Source:TPixmap,Pixmap:TPixmap, x:Int, y:Int)
-	  For Local i:Int = 0 To Source.width-1
-	    For Local j:Int = 0 To Source.height-1
-		  If x+1 < pixmap.width And y+j < pixmap.height
-			Local sourcepixel:Int = ReadPixel(Source, i,j)
-			Local destpixel:Int = ReadPixel(pixmap, x+i,y+j)
-'			Local destA:Int = ARGB_Alpha(destpixel)
-			Local sourceA:Int = ARGB_Alpha(sourcepixel)
-			If sourceA <> -1 Then
-				If sourceA< -1 Then sourceA = -sourceA
-				Local destR:Int = ARGB_Red(destpixel)
-				Local destG:Int = ARGB_Green(destpixel)
-				Local destB:Int = ARGB_Blue(destpixel)
-				Local destA:Int = ARGB_Alpha(destpixel)
-				Local SourceR:Int = ARGB_Red(Sourcepixel)
-				Local SourceG:Int = ARGB_Green(Sourcepixel)
-				Local SourceB:Int = ARGB_Blue(Sourcepixel)
-				sourceR = Int( Float(sourceA/255.0)*sourceR) + Int(Float((255-sourceA)/255.0)*destR)
-				sourceG = Int( Float(sourceA/255.0)*sourceG) + Int(Float((255-sourceA)/255.0)*destG)
-				sourceB = Int( Float(sourceA/255.0)*sourceB) + Int(Float((255-sourceA)/255.0)*destB)
-				'also mix alpha
-				sourceA = SourceA + ((255-sourceA)/255) * destA
-				sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
+Function DrawPixmapOnPixmap(Source:TPixmap,Pixmap:TPixmap, x:Int, y:Int, color:TColor = null)
+	Local SourceR:float		= 0.0
+	Local SourceG:float		= 0.0
+	Local SourceB:float		= 0.0
+	Local SourceA:float		= 0.0
+	Local DestR:float		= 0.0
+	Local DestG:float		= 0.0
+	Local DestB:float		= 0.0
+	Local DestA:float		= 0.0
+	Local modifyAlpha:Float = 1.0
+	if color then modifyAlpha = color.a
+
+	For Local i:Int = 0 To Source.width-1
+		For Local j:Int = 0 To Source.height-1
+			If x+1 < pixmap.width And y+j < pixmap.height
+				Local sourcepixel:Int = ReadPixel(Source, i,j)
+				Local destpixel:Int = ReadPixel(pixmap, x+i,y+j)
+				sourceA = ARGB_Alpha(sourcepixel) * modifyAlpha
+				If sourceA <> -1
+					If sourceA< -1 Then sourceA = -sourceA
+					destR	= ARGB_Red(destpixel)
+					destG	= ARGB_Green(destpixel)
+					destB	= ARGB_Blue(destpixel)
+					destA	= ARGB_Alpha(destpixel)
+					SourceR	= ARGB_Red(Sourcepixel)
+					SourceG	= ARGB_Green(Sourcepixel)
+					SourceB	= ARGB_Blue(Sourcepixel)
+					if color
+							SourceR :*color.r/255.0
+							SourceG :*color.g/255.0
+							SourceB :*color.b/255.0
+					endif
+					sourceR = Int( Float(sourceA/255.0)*sourceR) + Int(Float((255-sourceA)/255.0)*destR)
+					sourceG = Int( Float(sourceA/255.0)*sourceG) + Int(Float((255-sourceA)/255.0)*destG)
+					sourceB = Int( Float(sourceA/255.0)*sourceB) + Int(Float((255-sourceA)/255.0)*destB)
+					'also mix alpha
+					sourceA = SourceA + ((255-sourceA)/255) * destA
+					sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
+				EndIf
+				If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)
 			EndIf
-			If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)
-		  EndIf
 		Next
-	  Next
+	Next
 End Function
 
 Function blurPixmap(pm:TPixmap, k:Float = 0.5)
@@ -404,6 +419,11 @@ Function ColorizePixmap:TPixmap(pixmap:TPixmap,color:TColor)
 End Function
 
 
+
+'for single frames
+Function CopyImage2:TImage(src:TImage)
+	return LoadImage( LockImage(src).copy() , src.flags )
+End Function
 
 'copies an TImage to not manipulate the source image
 Function CopyImage:TImage(src:TImage)

@@ -576,7 +576,7 @@ Type TProgrammeElement
 	Field title:String 	{_exposeToLua}
 
 	Field description:String
-	Field id:Int = 0
+	Field id:Int = 0	{_exposeToLua}
 	Field programmeType:Int = 0
 	Global LastID:Int = 0
 
@@ -1233,7 +1233,7 @@ endrem
 	End Method
 
 	'returns array of all episodes or an empty array if no episodes are found
-	Method GetEpisodes:Object[]()
+	Method GetEpisodes:Object[]() {_exposeToLua}
 		If Self.episodeList
 			Return Self.episodeList.toArray()
 		Else
@@ -3787,7 +3787,6 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	Field Link:TLink
 	Global LastUniqueID:Int =0
 	Global List:TList = CreateList()
-	Global DrawnFirstTime:Byte = 0
 
   Function ProgrammeToPlayer()
     For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
@@ -3897,50 +3896,57 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
     'draw the Block inclusive text
     'zeichnet den Block inklusive Text
     Method Draw()
+		Local HighestBidder:String	= ""
+		Local HighestBid:Int		= Programme.getPrice()
+		Local NextBid:Int			= 0
 
-	  Local HighestBidder:String = ""
-	  Local HighestBid:Int = Programme.getPrice()
-	  Local NextBid:Int = 0
-	  If Bid[0]>0 And Bid[0] <=4 Then If Bid[ Bid[0] ] <> 0 Then HighestBid = Bid[ Bid[0] ]
-	  NextBid = HighestBid
-      If HighestBid < 100000
-	    NextBid :+ 10000
-	  Else If HighestBid >= 100000 And HighestBid < 250000
-	    NextBid :+ 25000
-	  Else If HighestBid >= 250000 And HighestBid < 750000
-	    NextBid :+ 50000
-	  Else If HighestBid >= 750000
-	    NextBid :+ 75000
-	  EndIf
+		If Bid[0]>0 And Bid[0] <=4 Then If Bid[ Bid[0] ] <> 0 Then HighestBid = Bid[ Bid[0] ]
+		NextBid = HighestBid
 
-	  SetColor 255,255,255  'normal
-	    If imagewithtext <> Null And Self.DrawnFirstTime > 20
-	      DrawImage(imagewithtext,x,y)
-	    Else
-		  If Self.DrawnFirstTime < 30 Then Self.DrawnFirstTime:+1
-		  Assets.GetSprite("gfx_auctionmovie").Draw(x,y)
-	      Assets.fonts.baseFont.drawBlock(Programme.title, x+31,y+5, 215,20)
-	      Assets.fonts.baseFont.drawBlock("Preis:"+HighestBid+CURRENCYSIGN, x+31,y+20, 215,20,2,Null, 100,100,100,1)
-	      Assets.fonts.baseFont.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, x+31,y+33, 215,20,2,Null, 0,0,0,1)
-          If Players[Bid[0]] <> Null
-    	    HighestBidder = Players[Bid[0]].name
-	        Local colr:Int = Min(255, Players[Bid[0]].color.r) '+900
-	        Local colg:Int = Min(255, Players[Bid[0]].color.g) '+900
-	        Local colb:Int = Min(255, Players[Bid[0]].color.b) '+900
-'			SetImageFont FontManager.GW_GetFont("Default", 10)
-			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 33, y + 35, 150, 20, 0, colr - 200, colg - 200, colb - 200, 1)
-			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 32, y + 34, 150, 20, 0, colr - 150, colg - 150, colb - 150, 1)
-	        Local pixmap:TPixmap = GrabPixmap(x+33-2,y+35-2,TextWidth(HighestBidder)+4,TextHeight(HighestBidder)+3)
-			pixmap = ConvertPixmap(pixmap, PF_RGBA8888)
-            blurPixmap(pixmap, 0.6)
-			DrawPixmap(YFlipPixmap(pixmap), x+33-2,y+35-2 + pixmap.height)
-			SetAlpha 1.0;Assets.GetFont("Default", 10).drawBlock(HighestBidder, x + 32, y + 34, 150, 20, 0, colr, colg, colb, 1)
-		  EndIf
-		  Imagewithtext = TImage.Create(Assets.GetSprite("gfx_auctionmovie").w,Assets.GetSprite("gfx_auctionmovie").h-1,1,0,255,0,255)
-		  Imagewithtext.pixmaps[0] = GrabPixmap(x,y,Assets.GetSprite("gfx_auctionmovie").w,Assets.GetSprite("gfx_auctionmovie").h-1)
+		If HighestBid < 100000
+			NextBid :+ 10000
+		Else If HighestBid >= 100000 And HighestBid < 250000
+			NextBid :+ 25000
+		Else If HighestBid >= 250000 And HighestBid < 750000
+			NextBid :+ 50000
+		Else If HighestBid >= 750000
+			NextBid :+ 75000
+		EndIf
+
+		SetColor 255,255,255  'normal
+	    If imageWithText = Null
+
+			ImageWithText = CopyImage2( Assets.GetSprite("gfx_auctionmovie").GetImage(0) )
+'			ImageWithText = CreateImage(300,40)
+			local pix:TPixmap = LockImage(ImageWithText)
+
+			if not ImageWithText THROW "GetImage Error for gfx_auctionmovie"
+
+			'set target for font
+			local font:TBitmapFont = Assets.GetFont("Default", 10)
+			font.setTargetImage(ImageWithText)
+
+			If Players[Bid[0]] <> Null
+				HighestBidder = Players[Bid[0]].name
+				font.drawStyled(HighestBidder,33,35, 0, 0, 0, 1, 0.25)
+'				font.drawStyled(HighestBidder,33,35, Players[Bid[0]].color.r, Players[Bid[0]].color.g, Players[Bid[0]].color.b, 1, 0.25)
+			EndIf
+			Assets.GetFont("Default", 10, BOLDFONT).setTargetImage(ImageWithText)
+			Assets.GetFont("Default", 10, BOLDFONT).drawBlock(Programme.title, 31,5, 215,20, 0, 0,0,0, false, 1, 1, 0.50)
+'			Assets.GetFont("Default", 10, BOLDFONT).drawStyled(Programme.title, 31,5, 0,0,0,1,0,1,0.25)
+			Assets.GetFont("Default", 10, BOLDFONT).resetTarget()
+
+'			font.drawBlock(Programme.title, 31,5, 215,20,0, 0,0,0)
+			font.drawBlock("Preis:"+HighestBid+CURRENCYSIGN, 31,20, 215,20,2, 100,100,100,1)
+			font.drawBlock("Bieten:"+NextBid+CURRENCYSIGN, 31,33, 215,20,2, 0,0,0,1)
+
+			'reset target for font
+			font.resetTarget()
+
 	    EndIf
-	  SetColor 255,255,255
-      SetAlpha 1
+		SetColor 255,255,255
+		SetAlpha 1
+		DrawImage(imageWithText,x,y)
     End Method
 
 
@@ -3958,6 +3964,9 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	Method SetBid:int(playerID:Int)
 		If not Game.isPlayerID( playerID ) then return -1
 		if self.Bid[ self.Bid[0] ] = playerID then return 0
+
+		'reset so cache gets renewed
+		self.imageWithText = null
 
 		local price:int = self.GetNextBid()
 		If Players[playerID].finances[Game.getWeekday()].PayProgrammeBid(price) = True

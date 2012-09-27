@@ -38,9 +38,9 @@ end
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)
---		TVT.PrintOut("title: " .. MY.ProgrammeCollection.GetProgrammeFromList( 1 ).title )
+	-- TVT.PrintOut("title: " .. tonumber(number) .. MY.getPlayerID() .. MY.ProgrammeCollection.GetProgrammeFromList( 1 ).title )
 
-	if tonumber(number) == 0 and MY.getPlayerID() == 2 then
+	if tonumber(number) == 0 and MY.getPlayerID() == 3 then
 		TVT.PrintOut("DEBUG DATA for player " .. MY.getPlayerID())
 		TVT.PrintOut("- - - - - - - - - - - -")
 		TVT.PrintOut("ProgrammeCollection - contracts:")
@@ -57,7 +57,7 @@ function OnMinute(number)
 		entries = MY.ProgrammeCollection.getSeries()
 		for i, entry in ipairs(entries) do
 			TVT.PrintOut("	serie "..i.."/"..#entries.."			: "..entry.title .. " (id: "..entry.id..")")
-			episodes = entry.getEpisodes()
+			episodes = entry.GetEpisodes()
 			for j, entry in ipairs(episodes) do
 				TVT.PrintOut("		episode "..j.."/"..#episodes.."	: "..entry.title .. " (id: "..entry.id..")")
 			end

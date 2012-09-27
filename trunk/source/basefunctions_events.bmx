@@ -146,6 +146,11 @@ Type TEventBase
 		return TData(self._data)
 	End Method
 
+	'returns wether trigger is the same
+	Method isTrigger:int(trigger:string)
+		return _trigger = lower(trigger)
+	End Method
+
 	' to sort the event queue by time
 	Method Compare:Int(other:Object)
 		Local event:TEventBase = TEventBase(other)

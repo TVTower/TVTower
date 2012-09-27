@@ -562,7 +562,7 @@ Type TResourceLoaders
 	Function Create:TResourceLoaders()
 		EventManager.registerListener( "LoadResource.ROOMS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadRooms)  )
 		EventManager.registerListener( "LoadResource.COLORS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
-		EventManager.registerListener( "LoadResource.COLOR",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColor)  )
+		EventManager.registerListener( "LoadResource.COLOR",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
 
 		return new TResourceLoaders
 	End Function
@@ -586,36 +586,34 @@ Type TResourceLoaders
 		local xmlLoader:TXmlLoader = null
 		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
 
-		local listName:string = xmlLoader.xml.FindValue(childNode, "name", "colorList")
-		local list:TList = CreateList()
-		'add list to assets
-		Assets.Add(listName, TAsset.CreateBaseAsset(list, "TLIST"))
+		'groups
+		if triggerEvent.isTrigger("LoadResource.COLORS")
+			local listName:string = xmlLoader.xml.FindValue(childNode, "name", "colorList")
+			local list:TList = CreateList()
+			'add list to assets
+			Assets.Add(listName, TAsset.CreateBaseAsset(list, "TLIST"))
 
-		For Local child:TxmlNode = EachIn childNode.GetChildren()
-			EventManager.triggerEvent( TEventSimple.Create("LoadResource.COLOR", TData.Create().AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
-		Next
+			For Local child:TxmlNode = EachIn childNode.GetChildren()
+				EventManager.triggerEvent( TEventSimple.Create("LoadResource.COLOR", TData.Create().AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
+			Next
+		endif
+
+		'individual color
+		if triggerEvent.isTrigger("LoadResource.COLOR")
+			local list:TList	= TList( TEventSimple(triggerEvent).getData().get("list") )
+			Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
+			Local r:int			= xmlLoader.xml.FindValueInt(childNode, "r", 0)
+			Local g:int			= xmlLoader.xml.FindValueInt(childNode, "g", 0)
+			Local b:int			= xmlLoader.xml.FindValueInt(childNode, "b", 0)
+			Local a:int			= xmlLoader.xml.FindValueInt(childNode, "a", 255)
+
+			'if a list was given - add to that group
+			if list then list.addLast(TColor.Create(r,g,b,a))
+
+			'add the color asset if name given (special colors have names :D)
+			if name <> "" then Assets.Add(name, TAsset.CreateBaseAsset(TColor.Create(r,g,b,a), "TCOLOR"))
+		endif
 	End Function
-
-	'could also be in a different files - just register to the special event
-	Function onLoadColor:int( triggerEvent:TEventBase )
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
-		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
-
-		local list:TList	= TList( TEventSimple(triggerEvent).getData().get("list") )
-		Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
-		Local r:int			= xmlLoader.xml.FindValueInt(childNode, "r", 0)
-		Local g:int			= xmlLoader.xml.FindValueInt(childNode, "g", 0)
-		Local b:int			= xmlLoader.xml.FindValueInt(childNode, "b", 0)
-		Local a:int			= xmlLoader.xml.FindValueInt(childNode, "a", 255)
-
-		'if a list was given - add to that group
-		if list then list.addLast(TColor.Create(r,g,b,a))
-
-		'add the color asset if name given (special colors have names :D)
-		if name <> "" then Assets.Add(name, TAsset.CreateBaseAsset(TColor.Create(r,g,b,a), "TCOLOR"))
-	End Function
-
 
 	'could also be in a different files - just register to the special event
 	Function onLoadRooms:int( triggerEvent:TEventBase )

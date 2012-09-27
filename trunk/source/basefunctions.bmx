@@ -897,7 +897,7 @@ Type TColor
 		return Null
 	End Function
 
-	Method adjust(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)
+	Method adjust:TColor(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)
 		if overwrite
 			self.r = r
 			self.g = g
@@ -907,36 +907,43 @@ Type TColor
 			self.g :+g
 			self.b :+b
 		endif
+		return self
 	End Method
 
-	Method FromInt:int(color:int)
+	Method FromInt:TColor(color:int)
 		self.r = ARGB_Red(color)
 		self.g = ARGB_Green(color)
 		self.b = ARGB_Blue(color)
 		self.a = float(ARGB_Alpha(color))/255.0
+		return self
 	End Method
 
 	Method ToInt:int()
 		return ARGB_Color(ceil(self.a*255), self.r, self.g, self.b )
 	End Method
 
-	Method set()
+	Method set:TColor()
 		SetColor(self.r, self.g, self.b)
+		return self
 	End Method
 
 	'same as set()
-	Method setRGB()
+	Method setRGB:TColor()
 		SetColor(self.r, self.g, self.b)
+		return self
 	End Method
 
-	Method setRGBA()
+	Method setRGBA:TColor()
 		SetColor(self.r, self.g, self.b)
 		SetAlpha(self.a)
+		return self
 	End Method
 
 
-	Method get()
+	Method get:TColor()
 		GetColor(self.r, self.g, self.b)
+		self.a = GetAlpha()
+		return self
 	End Method
 End Type
 

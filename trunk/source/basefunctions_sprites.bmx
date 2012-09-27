@@ -289,6 +289,8 @@ Type TBitmapFont
 	Field uniqueID		:string =""
 	Field displaceY		:float=100.0
 
+	Field drawToPixmap:TPixmap = null
+
 	global ImageCaches:TMap = CreateMap()
 	global eventRegistered:int = 0
 
@@ -408,36 +410,21 @@ Type TBitmapFont
 		return self.drawBlock(text, 0,0,w,h,0, 0,0,0,0,0,0)
 	End Method
 
-	Method drawOnPixmap(Text:String, x:Int, y:Int, cR:Int=0, cG:Int=0, cB:Int=0, Pixmap:TPixmap, blur:Byte=0)
-		local oldR:int, oldG:int, oldB:int
-		GetColor(oldR, oldG, oldB)
-
-		If blur
-			SetColor(50,50,50)
-			self.draw(Text,x-1,y-1)
-			self.draw(Text,x+1,y+1)
-			SetColor cr,cg,cb
-		Else
-			self.draw(Text,x,y)
-		EndIf
-
-		Local TxtWidth:Int   = self.getWidth(Text)
-		Local Source:TPixmap = GrabPixmap(x-2,y-2,TxtWidth+4,self.getHeight(Text)+4)
-		Source = ConvertPixmap(Source, PF_RGB888)
-
-		If blur
-			blurPixmap(Source, 0.5)
-			Source = ConvertPixmap(Source, PF_RGB888)
-			DrawImage(LoadImage(Source), x-2,y-2)
-			self.draw(Text,x,y)
-			Source = GrabPixmap(x-2,y-2,TxtWidth+4,self.getHeight(Text)+4)
-			Source = ConvertPixmap(Source, PF_RGB888)
-		EndIf
-		DrawPixmapOnPixmap(Source, Pixmap,x-20,y-10)
-		SetColor( oldR, oldG, oldB )
+	'render to screen
+	Method resetTarget()
+		self.drawToPixmap = null
 	End Method
 
-	Method drawBlock:float(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1)
+	'render to target pixmap
+	Method setTargetPixmap(pixmap:TPixmap)
+		self.drawToPixmap = pixmap
+	End Method
+
+	Method setTargetImage(image:TImage)
+		self.drawToPixmap = LockImage(image)
+	End Method
+
+	Method drawBlock:float(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0)
 		Local charcount:Int		= 0
 		Local deletedchars:Int	= 0
 		Local charpos:Int		= 0
@@ -445,9 +432,9 @@ Type TBitmapFont
 		Local spaceAvaiable:Float = h
 		Local alignedx:Int		= 0
 		Local usedHeight:Int	= 0
-		local oldColor:TColor	= TColor.Create()
-
-		If doDraw then oldcolor.get(); SetColor(cR,cG,cB)
+'not needed as drawStyled is called with params for color
+'		local oldColor:TColor	= TColor.Create()
+'		If doDraw then oldcolor.get(); SetColor(cR,cG,cB)
 
 		If NoLineBreak = False
 			Repeat
@@ -476,7 +463,7 @@ Type TBitmapFont
 					If align = 0 Then alignedx = x
 					If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
 					If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
-					self.drawStyled(drawLine, alignedx, y + h - spaceAvaiable, cR, cG, cB, style)
+					self.drawStyled(drawLine, alignedx, y + h - spaceAvaiable, cR, cG, cB, style, 0, 1,special)
 				endif
 
 				spaceAvaiable :- self.getHeight(linetxt)
@@ -495,18 +482,18 @@ Type TBitmapFont
 				If align = 1 Then alignedx = x+(w - self.getWidth(linetxt$))/2
 				If align = 2 Then alignedx = x+(w - self.getWidth(linetxt$))
 				spaceAvaiable = spaceAvaiable - self.getHeight(linetxt$[..Len(linetxt$)-2]+"..")
-				If doDraw Then self.drawStyled(linetxt[..Len(linetxt) - 2] + "..", alignedx, y, cR, cG, cB, style)
+				If doDraw Then self.drawStyled(linetxt[..Len(linetxt) - 2] + "..", alignedx, y, cR, cG, cB, style, 0, 1, special)
 			Else
 				If align = 0 Then alignedx = x
 				If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
 				If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
 				spaceAvaiable :- self.getHeight(linetxt)
-				If doDraw Then self.drawStyled(linetxt, alignedx, y, cR, cG, cB, style)
+				If doDraw Then self.drawStyled(linetxt, alignedx, y, cR, cG, cB, style, 0, 1, special)
 			EndIf
 			usedheight = self.getHeight(linetxt)
 		EndIf
 
-		If doDraw then oldColor.set()
+'		If doDraw then oldColor.set()
 		Return usedheight
 	End Method
 
@@ -543,7 +530,7 @@ Type TBitmapFont
 			endif
 		endif
 
-		SetColor cr,cg,cb
+		SetColor( cr,cg,cb )
 		local result:object = self.draw(text,x,y, returnType, doDraw)
 
 
@@ -572,6 +559,8 @@ Type TBitmapFont
 		local textLines:string[]	= text.split(chr(13))
 		local currentLine:int = 0
 
+		local color:TColor = new TColor.Get()
+'if self.drawToPixmap and doDraw=1 then print text+ " -> "+color.r+","+color.g+","+color.b+" a"+color.a
 		For text:string = eachin textLines
 			currentLine:+1
 
@@ -587,7 +576,13 @@ Type TBitmapFont
 						lineHeight = MAX(lineHeight, bm.box.h)
 						if doDraw
 							local sprite:TGW_Sprites = TGW_Sprites(self.charsSprites.ValueForKey(string(text[i])))
-							if sprite <> null then sprite.Draw(x+lineWidth+tx,y+height+ty - self.displaceY)
+							if sprite <> null
+								if self.drawToPixmap
+									sprite.DrawOnPixmap(self.drawToPixmap, x+lineWidth+tx,y+height+ty - self.displaceY, color)
+								else
+									sprite.Draw(x+lineWidth+tx,y+height+ty - self.displaceY)
+								endif
+							endif
 						endif
 					endif
 					lineWidth :+ bm.charWidth * gfx.tform_ix
@@ -604,13 +599,21 @@ Type TBitmapFont
 	End Method
 
 	Method drawfixed(text:String,x:Float,y:Float)
+		local color:TColor = new TColor.Get()
+
 		For Local i:Int = 0 Until text.length
 			Local bm:TBitmapFontChar = TBitmapFontChar(self.chars.ValueForKey(string(text[i]-32)))
 			if bm <> null
 				Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
 				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
 				local sprite:TGW_Sprites = TGW_Sprites(self.charsSprites.ValueForKey(string(text[i]-32)))
-				if sprite <> null then sprite.Draw(x+tx,y+ty)
+				if sprite <> null
+					if self.drawToPixmap
+						sprite.DrawOnPixmap(self.drawToPixmap, x+tx,y+ty, color)
+					else
+						sprite.Draw(x+tx,y+ty)
+					endif
+				endif
 				x :+ bm.charWidth
 			endif
 		Next
@@ -846,9 +849,8 @@ Type TGW_SpritePack extends TRenderable
 					ResizePixmap(tmppix, srcPix.width + destX, srcPix.height + destY)
 					print "CopyImageOnSpritePackImage: resize"
 				endif
-		'		print srcPix.format + " sollte:" +PF_RGBA8888
+
 				If srcPix.format <> PF_RGBA8888 Then srcPix.convert(PF_RGBA8888) 'make sure the pixmaps are 32 bit format
-		'		If tmppix.format <> PF_RGBA8888 Then tmppix.convert(PF_RGBA8888) 'make sure the pixmaps are 32 bit format
 				DrawPixmapOnPixmap(srcPix, tmppix, destX, destY)
 			if dest = null then UnlockImage(Self.image, 0)
 		endif
@@ -919,15 +921,27 @@ Type TGW_Sprites extends TRenderable
 		return TGW_Sprites.Create(spritepack, obj.getName(), 0,0, ImageWidth(spritepack.image), ImageHeight(spritepack.image), obj.animcount, -1, obj.framew, obj.frameh)
 	End Function
 
-	Method GetImage:TImage(loadAnimated:Int =1)
+	Method DrawOnImage(image:TImage, x:int, y:int, color:TColor=null)
+		DrawPixmapOnPixmap(self.getPixmap(), LockImage(image), x,y, color)
+	End Method
+
+	Method DrawOnPixmap(pixmap:TPixmap, x:int,y:int, color:TColor=null)
+		DrawPixmapOnPixmap(self.getPixmap(), pixmap, x,y, color)
+	End Method
+
+	Method GetPixmap:TPixmap(loadAnimated:int =1)
 		Local DestPixmap:TPixmap = LockImage(self.parent.image, 0, False, True).Window(self.Pos.x, self.Pos.y, self.w, self.h)
-		UnlockImage(self.parent.image)
-		GCCollect() '<- FIX!
+		'UnlockImage(self.parent.image)
+		'GCCollect() '<- FIX!
+		return DestPixmap
+	End Method
+
+	Method GetImage:TImage(loadAnimated:Int =1)
 		SetMaskColor(255,0,255)
 		If self.animcount >1 And loadAnimated
-			Return LoadAnimImage(DestPixmap, self.framew, self.frameh, 0, self.animcount)
+			Return LoadAnimImage( self.GetPixmap(1), self.framew, self.frameh, 0, self.animcount)
 		Else
-			Return LoadImage(DestPixmap)
+			Return LoadImage( self.GetPixmap(0) )
 		EndIf
 	End Method
 

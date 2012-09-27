@@ -988,21 +988,24 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 
 		If Not DrawnOnProgrammePlannerBG
 			local pixImage:Timage = Assets.GetSprite("rooms_pplanning").parent.image
-			Local Pix:TPixmap = LockImage(pixImage)
-			'SetImageFont(font11)
+			'set target for font
+			Assets.fonts.baseFont.setTargetImage(pixImage)
 
 			For Local i:Int = 0 To 11
 				'left side
-				Assets.fonts.baseFont.drawOnPixmap( (i + 12) + ":00", 356, 25 + i * 30, 255,255,255, Pix, True )
+				Assets.fonts.baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, 240,240,240,2,0,1,0.25)
 				'right side
 				local text:string = i + ":00"
 				If i < 10 then text = "0" + text
-				Assets.fonts.baseFont.drawOnPixmap(text, 29, 25 + i * 30, 255,255,255, Pix, True)
+				Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, 240,240,240,2,0,1,0.25)
 			Next
 			_room.background = Assets.GetSprite("rooms_pplanning")
 			TRooms.ActiveBackground = Assets.GetSprite("rooms_pplanning")
 			DrawnOnProgrammePlannerBG = True
-			UnlockImage(pixImage)
+
+			'reset target for font
+			Assets.fonts.baseFont.resetTarget()
+
 		EndIf
 
 		TProfiler.Enter("ProgrammePlanner:DRAW")
