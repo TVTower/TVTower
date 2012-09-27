@@ -588,10 +588,10 @@ Type TProgrammeElement
 
 		Self.LastID :+1
 	End Method
-	
+
 	Method GetId:Int() {_exposeToLua}
 		Return Self.id
-	End Method	
+	End Method
 End Type
 
 'ad-contracts
@@ -1164,10 +1164,10 @@ endrem
 	Method GetAttractiveness:Float() {_exposeToLua}
 		Return Self.attractiveness
 	End Method
-	
+
 	Method SetAttractiveness(value:Float) {_exposeToLua}
 		Self.attractiveness = value
-	End Method 	
+	End Method
 
 	Method GetGenre:int() {_exposeToLua}
 		return self.genre
@@ -1209,16 +1209,16 @@ endrem
 	Method GetEpisodeCount:int() {_exposeToLua}
 		return self.episodeList.count()
 	End Method
-	
+
 	'Manuel: Wird nur in der Lua-KI verwendet
 	Method GetPricePerBlock:Int() {_exposeToLua}
 		Return Self.GetPrice() / Self.GetBlocks()
 	End Method
 
-	'Manuel: Wird nur in der Lua-KI verwendet	
+	'Manuel: Wird nur in der Lua-KI verwendet
 	Method GetQualityLevel:Int() {_exposeToLua}
 		Local quality:Int = Self.GetBaseAudienceQuote()
-		
+
 		If quality > 20
 			Return 5
 		ElseIf quality > 15
@@ -1242,7 +1242,7 @@ endrem
 	End Method
 
 	'returns episode if found
-	Method GetEpisode:TProgramme(number:Int)
+	Method GetEpisode:TProgramme(number:Int) {_exposeToLua}
 		If TProgramme(Self.episodeList.ValueAtIndex(number)) <> Null Then Return TProgramme(Self.episodeList.ValueAtIndex(number))
 		Return Null
 	End Method
