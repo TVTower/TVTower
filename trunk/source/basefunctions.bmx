@@ -283,6 +283,37 @@ Type TNumberCurve
 End Type
 
 
+'for things happening every X moments
+Type TTimer
+	field interval:int	= 0		'happens every ...
+	field timer:int		= 0		'time when event last happened
+
+	Function Create:TTimer(interval:int)
+		local obj:TTimer = new TTimer
+		obj.interval	= interval
+		'set timer
+		obj.reset()
+		return obj
+	End Function
+
+	Method isExpired:int()
+		return ( self.timer + self.interval <= Millisecs() )
+	End Method
+
+	Method reachedHalftime:int()
+		return ( self.timer + 0.5*self.interval <= Millisecs() )
+	End Method
+
+	Method expire()
+		self.timer = -self.interval
+	End Method
+
+	Method reset()
+		self.timer = Millisecs()
+	End Method
+
+End Type
+
 
 
 Type TPosition {_exposeToLua="selected"}

@@ -1194,7 +1194,7 @@ endrem
 		Self.attractiveness = value
 	End Method
 
-	Method GetRefreshModifier:float{} {_exposeToLua}
+	Method GetRefreshModifier:float() {_exposeToLua}
 		return self.refreshModifier
 	End Method
 
@@ -1343,7 +1343,7 @@ endrem
 	End Method
 
 	Method CutTopicality:Int()
-		topicality:*0.5 'default cut
+		topicality:*0.65 'default cut
 		topicality:/self.GetGenreRefreshModifier()	'modified
 	rem
 		'old approach
@@ -1375,19 +1375,17 @@ endrem
 			value :* 0.75
 		Else
 			If Outcome > 0 'movies
-				value = 0.45 * 255 * Outcome + 0.25 * 255 * review + 0.3 * 255 * speed
-				If (maxTopicality >= 220) Then value:*1.25
-				If (maxTopicality >= 240) Then value:*1.25
-				If (maxTopicality >= 250) Then value:*1.25
-				If (maxTopicality > 253)  Then value:*1.4 'the more current the more expensive
+				value = 0.55 * 255 * Outcome + 0.25 * 255 * review + 0.2 * 255 * speed
+				If (maxTopicality >= 220) Then value:*1.3
+				If (maxTopicality >= 240) Then value:*1.3
+				If (maxTopicality >= 250) Then value:*1.4
+				If (maxTopicality > 253)  Then value:*1.5 'the more current the more expensive
 			Else 'shows, productions, series...
-				tmpreview = 1.6667 * review
-				If (review > 0.5 * 255) Then tmpreview = 255 - 2.5 * (review - 0.5 * 255)
-				tmpspeed = 1.6667 * speed
-				If (speed > 0.6 * 255) Then tmpspeed = 255 - 2.5 * (speed - 0.6 * 255)
-				value = 0.4 * 255 * tmpreview + 0.6 * 255 * tmpspeed
+				If (review > 0.5 * 255) Then tmpreview = 255 - 2.5 * (review - 0.5 * 255) else tmpreview = 1.6667 * review
+				If (speed > 0.6 * 255) Then tmpspeed = 255 - 2.5 * (speed - 0.6 * 255) else tmpspeed = 1.6667 * speed
+				value = 0.8 * ( 0.45 * 255 * tmpreview + 0.55 * 255 * tmpspeed )
 			EndIf
-			value:*(3 * ComputeTopicality() / 255)
+			value:*(3.0 * ComputeTopicality() / 255)
 			value = Int(Floor(value / 1000) * 1000)
 		EndIf
 		Return value

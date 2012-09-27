@@ -232,6 +232,8 @@ endrem
 	End Method
 
 	Method LeaveRoom:Int()
+		print self.name+" leaves room:"+self.inRoom.name
+
 		If ParentPlayer <> Null And self.isAI()
 			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
 				'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
@@ -242,8 +244,12 @@ endrem
 			EndIf
 			ParentPlayer.PlayerKI.CallOnLeaveRoom()
 		EndIf
+
+		'display a open door if leaving it
+		If inRoom <> Null Then inRoom.OpenDoor()
+
 		toRoom = fromRoom
-		If fromRoom <> Null Then fromRoom.CloseDoor()
+'		If fromRoom <> Null Then fromRoom.CloseDoor()
 		fromRoom = Null
 		SetInRoom(toRoom)
 		clickedToRoom = Null
@@ -314,6 +320,9 @@ endrem
 	End Method
 
 	Method ChangeTarget(x:Int=null, y:Int=null) {_exposeToLua}
+		'needed for AI like post dude
+		if self.inRoom <> null then self.LeaveRoom()
+
 		'only change target if its your figure or you are game leader
 		if id <> Players[ game.playerID ].figure.id and not Game.isGameLeader() then return
 
@@ -378,7 +387,8 @@ endrem
 		        		If id = Game.playerID Then Fader.Enable() 'room fading
 						clickedToRoom.OpenDoor()
 					EndIf
-					If clickedToRoom.getDoorType() = 5 and clickedToRoom.DoorOpenTimer > 0 and clickedToRoom.DoorOpenTimer + Game.DoorOpenTime < MilliSecs()
+					'if open, timer started and reached halftime --> "wait a moment" before entering
+					If clickedToRoom.getDoorType() = 5 and not clickedToRoom.DoorTimer.isExpired() and clickedToRoom.DoorTimer.reachedHalftime()
 						clickedToRoom.CloseDoor()
 						If id = Game.playerID Then Fader.EnableFadeout() 'room fading
         			    SetInRoom(clickedToRoom)

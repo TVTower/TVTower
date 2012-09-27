@@ -1854,7 +1854,8 @@ Type TElevator
 	Method Draw()
 		Local locy:Int = 0
 		SetBlend MASKBLEND
-	'dis	TRooms.DrawDoors()
+
+		TRooms.DrawDoors() 'draw overlay -open doors etc.
 
 		'draw missing door (where elevator is)
 		spriteDoor.Draw(Parent.pos.x + pos.x, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)

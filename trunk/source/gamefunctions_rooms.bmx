@@ -1,12 +1,11 @@
 'Basictype of all rooms
-'Basictyp aller Raeume
 Type TRooms
-    Field background:TGW_Sprites       	'background, the image containing the whole room
-	Field name:String            		'name of the room, eg. "archive" for archive room
-    Field desc:String					'description, eg. "Bettys bureau" (used for tooltip)
-    Field descTwo:String		=""		'description, eg. "name of the owner" (used for tooltip)
-    Field DoorOpenTimer:Int		= 0
-	Field DoorOpenTime:int		= 250
+    Field background:TGW_Sprites    	   	'background, the image containing the whole room
+	Field name:String			= ""  		'name of the room, eg. "archive" for archive room
+    Field desc:String			= ""		'description, eg. "Bettys bureau" (used for tooltip)
+    Field descTwo:String		= ""		'description, eg. "name of the owner" (used for tooltip)
+
+	Field DoorTimer:TTimer		= TTimer.Create(500)
 	Field Pos:TPosition					'x of the rooms door in the building, y as floornumber
     Field xpos:Int				= 0
     Field doortype:Int			=-1
@@ -44,15 +43,17 @@ Type TRooms
     End Method
 
     Method CloseDoor()
-		DoorOpenTimer = 0
+		'timer finished
+		self.DoorTimer.expire()
     End Method
 
 	Method getDoorType:int()
-		if DoorOpenTimer = 0 then return self.doortype else return 5
+		if self.DoorTimer.isExpired() then return self.doortype else return 5
 	End Method
 
     Method OpenDoor()
-		DoorOpenTimer = MilliSecs()+DoorOpenTime
+		'timer ticks again
+		self.DoorTimer.reset()
     End Method
 
 	Function CloseAllDoors()
@@ -138,11 +139,12 @@ Type TRooms
 
 	Function DrawDoors:Int()
 		If RoomList = Null Then Print "RoomList missing"
+
 		For Local room:TRooms = EachIn RoomList
 			If room <> Null
 				If room.doortype >= 0 And room.name <> "" And room.Pos.x > 0
 					If room.getDoorType() >= 5 And room.name <> "roomboard" And room.name <> "credits" And room.name <> "porter"
-						If room.getDoorType() = 5 AND room.DoorOpenTimer + 500 < MilliSecs() Then room.CloseDoor()
+						If room.getDoorType() = 5 AND room.DoorTimer.isExpired() Then room.CloseDoor()
 						'valign = 1 -> subtract sprite height
 						Assets.GetSprite("gfx_building_Tueren").Draw(room.Pos.x, Building.pos.y + Building.GetFloorY(room.Pos.y), room.getDoorType(), VALIGN_TOP)
 					EndIf
