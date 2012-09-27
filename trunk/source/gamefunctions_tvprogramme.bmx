@@ -892,6 +892,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field director:String		= ""
 	Field country:String		= "UNK"
 	Field year:Int				= 1900
+	Field refreshModifier:float	= 1.0					'how fast a movie "regenerates" (added to genreModifier)
 	Field livehour:Int			= 0
 	Field Outcome:Float			= 0
 	Field review:Float			= 0
@@ -913,8 +914,31 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Global ProgMovieList:TList	= CreateList()	{saveload = "nosave"}
 	Global ProgSeriesList:TList	= CreateList()	{saveload = "nosave"}
 
+	'genre modifiers
+	Global genreRefreshModifier:float[] =  [	1.0, .. 	'action
+												1.0, .. 	'thriller
+												1.0, .. 	'scifi
+												1.5, .. 	'comedy
+												1.0, ..		'horror
+												1.0, ..		'love
+												1.5, ..		'erotic
+												1.0, ..		'western
+												0.75, ..	'live
+												1.5, .. 	'children
+												1.25, .. 	'animated / cartoon
+												1.25, .. 	'music
+												1.0, .. 	'sport
+												1.0, .. 	'culture
+												1.0, .. 	'fantasy
+												1.25, .. 	'yellow press
+												1.0, .. 	'news
+												1.0, .. 	'show
+												1.0, .. 	'monumental
+												1.0, .. 	'fillers
+												1.0 .. 		'paid programming
+											]
 
-	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, episode:Int=-1)
+	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=1.0, episode:Int=-1)
 		Local obj:TProgramme =New TProgramme
 		If episode >= 0
 			obj.BaseInit(title, description, TYPE_SERIE)
@@ -927,6 +951,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 			ProgMovieList.AddLast(obj)
 		EndIf
 		obj.episodeNumber = episode
+		obj.refreshModifier = Max(0.0, refreshModifier)
 		obj.review      = Max(0,review)
 		obj.speed       = Max(0,speed)
 		obj.relPrice    = Max(0,relPrice)
@@ -1169,6 +1194,17 @@ endrem
 		Self.attractiveness = value
 	End Method
 
+	Method GetRefreshModifier:float{} {_exposeToLua}
+		return self.refreshModifier
+	End Method
+
+	Method GetGenreRefreshModifier:float(genre:int=-1) {_exposeToLua}
+		if genre = -1 then genre = self.genre
+		if genre < self.genreRefreshModifier.length then return self.genreRefreshModifier[genre]
+		'default is 1.0
+		return 1.0
+	End Method
+
 	Method GetGenre:int() {_exposeToLua}
 		return self.genre
 	End Method
@@ -1307,6 +1343,10 @@ endrem
 	End Method
 
 	Method CutTopicality:Int()
+		topicality:*0.5 'default cut
+		topicality:/self.GetGenreRefreshModifier()	'modified
+	rem
+		'old approach
 		Select genre
 			Case 13, 15, 17, 20
 				topicality :* 0.7
@@ -1315,13 +1355,11 @@ endrem
 			Default
 				topicality :* 0.5
 		End Select
-'		local topicalityPercentage:float= float(topicality)/float(maxTopicality)
-'		topicalityPercentage * topicalityPercentage
-
+	endrem
 	End Method
 
 	Method RefreshTopicality:Int()
-		topicality = Min(topicality*1.5, maxtopicality)
+		topicality = Min(topicality*1.5 * self.GetGenreRefreshModifier() * self.refreshModifier, maxtopicality)
 		Return topicality
 	End Method
 
@@ -1732,7 +1770,7 @@ Type TDatabase
 					Outcome 	= xml.FindValueInt(nodeChild,"outcome", 0)
 					livehour 	= xml.FindValueInt(nodeChild,"time", 0)
 					If duration < 0 Or duration > 12 Then duration =1
-					TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, -1)
+					TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, 1.0, -1)
 					'print "film: "+title+ " " + Database.totalmoviescount
 					Database.totalmoviescount :+ 1
 				EndIf
@@ -1767,7 +1805,7 @@ Type TDatabase
 				Outcome 	= xml.FindValueInt(nodeChild,"outcome", -1)
 				livehour 	= xml.FindValueInt(nodeChild,"time", -1)
 				If duration < 0 Or duration > 12 Then duration =1
-				Local parent:TProgramme = TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, 0)
+				Local parent:TProgramme = TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, 1.0, 0)
 				Database.seriescount :+ 1
 
 				'load episodes

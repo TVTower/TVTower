@@ -1,5 +1,5 @@
 
-<!-- saved from url=(0168)http://gwron.kicks-ass.net/doc/?mainfile=%2Fhome%2Fronny%2FArbeit%2FProgrammieren%2FProjekte%2FApps%2FTVTower.WorkingCopy%2FTVTower%2FTVTower.bmx&onlyLua=0&action=build -->
+<!-- saved from url=(0166)http://localhost/doc/?mainfile=%2Fhome%2Fronny%2FArbeit%2FProgrammieren%2FProjekte%2FApps%2FTVTower.WorkingCopy%2FTVTower%2Ftrunk%2FTVTower.bmx&onlyLua=0&action=build -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
 		body					{ font-family: Sans-Serif; font-size:13px;}
@@ -883,11 +883,11 @@
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">color</span>
-						<span id="varType">:TPlayerColor</span>
+						<span id="varType">:TColor</span>
 						<div class="clear"></div>
 					</div>
 				</div>
-				<div id="comment">the playercolor used to colorize symbols and figures<br></div>
+				<div id="comment">the color used to colorize symbols and figures<br></div>
 			</div>
 		
 			<div id="element" class="even1">
@@ -974,7 +974,7 @@
 						<span id="typeString">function</span>
 						<span id="name">Create</span>
 						<span id="returns">:TPlayer</span>
-						<span id="params">( Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, pcolr:Int, pcolg:Int, pcolb:Int, ControlledByID:Int = 1, FigureName:String = "" )</span>
+						<span id="params">( Name:String, channelname:String = "", sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "" )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -1365,7 +1365,7 @@
 						<span id="typeString">method</span>
 						<span id="name">RecolorFigure</span>
 						<span id="returns"></span>
-						<span id="params">( PlayerColor:TPlayerColor = Null )</span>
+						<span id="params">( newColor:TColor = Null )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -3019,7 +3019,7 @@
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">OnEvent</span>
-						<span id="returns"></span>
+						<span id="returns">:int</span>
 						<span id="params">( triggerEvent:TEventBase )</span>
 						<div class="clear"></div>
 					</div>
@@ -3057,7 +3057,7 @@
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">OnEvent</span>
-						<span id="returns"></span>
+						<span id="returns">:int</span>
 						<span id="params">( triggerEvent:TEventBase )</span>
 						<div class="clear"></div>
 					</div>
@@ -3083,7 +3083,7 @@
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">OnEvent</span>
-						<span id="returns"></span>
+						<span id="returns">:int</span>
 						<span id="params">( triggerEvent:TEventBase )</span>
 						<div class="clear"></div>
 					</div>
@@ -3109,7 +3109,7 @@
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">OnEvent</span>
-						<span id="returns"></span>
+						<span id="returns">:int</span>
 						<span id="params">( triggerEvent:TEventBase )</span>
 						<div class="clear"></div>
 					</div>
@@ -3135,7 +3135,7 @@
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">OnEvent</span>
-						<span id="returns"></span>
+						<span id="returns">:int</span>
 						<span id="params">( triggerEvent:TEventBase )</span>
 						<div class="clear"></div>
 					</div>
@@ -5869,9 +5869,34 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">a</span>
+						<span id="varType">:float</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">AddToList</span>
+						<span id="returns">:TColor</span>
+						<span id="params">( remove:int=0 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">adjust</span>
-						<span id="returns"></span>
+						<span id="returns">:TColor</span>
 						<span id="params">( r:int=-1,g:int=-1,b:int=-1, overwrite:int=0 )</span>
 						<div class="clear"></div>
 					</div>
@@ -5881,6 +5906,18 @@
 		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">b</span>
+						<span id="varType">:int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">Create</span>
@@ -5892,124 +5929,12 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">get</span>
-						<span id="returns"></span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">r</span>
-						<span id="varType">:int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">set</span>
-						<span id="returns"></span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">setRGBA</span>
-						<span id="returns"></span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="">TPlayerColor</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">colB</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">colG</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">color</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">colR</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">Create</span>
-						<span id="returns">:TPlayerColor</span>
-						<span id="params">( r:Int = 0, g:Int = 0, b:Int = 0, used:Byte = 0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">FromInt</span>
-						<span id="returns">:int</span>
+						<span id="returns">:TColor</span>
 						<span id="params">( color:int )</span>
 						<div class="clear"></div>
 					</div>
@@ -6020,10 +5945,35 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">g</span>
+						<span id="varType">:int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">get</span>
+						<span id="returns">:TColor</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
 						<span id="typeString">function</span>
-						<span id="name">GetColor</span>
-						<span id="returns">:TPlayerColor</span>
-						<span id="params">( colR:Int, colG:Int, colB:Int )</span>
+						<span id="name">getByOwner</span>
+						<span id="returns">:TColor</span>
+						<span id="params">( ownerID:int=0 )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -6033,10 +5983,10 @@
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">GetUnusedColor</span>
-						<span id="returns">:TPlayerColor</span>
-						<span id="params">( playerID:Int )</span>
+						<span id="typeString">function</span>
+						<span id="name">getFromList</span>
+						<span id="returns">:TColor</span>
+						<span id="params">( r:Int, g:Int, b:Int, a:float=1.0 )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -6046,36 +5996,10 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">MySetColor</span>
-						<span id="returns"></span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">SetColor</span>
-						<span id="returns"></span>
-						<span id="params">( colR:Int, colG:Int, colB:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">ToInt</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
+						<span id="typeString">function</span>
+						<span id="name">getFromListObj</span>
+						<span id="returns">:TColor</span>
+						<span id="params">( col:TColor )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -6086,8 +6010,85 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
-						<span id="name">used</span>
-						<span id="varType">:Byte</span>
+						<span id="name">ownerID</span>
+						<span id="varType">:int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">r</span>
+						<span id="varType">:int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">set</span>
+						<span id="returns">:TColor</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">SetOwner</span>
+						<span id="returns">:TColor</span>
+						<span id="params">( ownerID:int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">setRGB</span>
+						<span id="returns">:TColor</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">setRGBA</span>
+						<span id="returns">:TColor</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">ToInt</span>
+						<span id="returns">:int</span>
+						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -7299,6 +7300,19 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
+						<span id="name">isTrigger</span>
+						<span id="returns">:int</span>
+						<span id="params">( trigger:string )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
 						<span id="name">onEvent</span>
 						<span id="returns"></span>
 						<span id="params">(  )</span>
@@ -7308,8 +7322,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">_data</span>
@@ -7320,8 +7334,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">_sender</span>
@@ -7332,8 +7346,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">_startTime</span>
@@ -7344,8 +7358,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">_trigger</span>
@@ -7911,8 +7925,8 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
-						<span id="name">GetMap</span>
-						<span id="returns">:TMap</span>
+						<span id="name">GetList</span>
+						<span id="returns">:TList</span>
 						<span id="params">( assetName:String )</span>
 						<div class="clear"></div>
 					</div>
@@ -7922,6 +7936,19 @@
 		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">GetMap</span>
+						<span id="returns">:TMap</span>
+						<span id="params">( assetName:String )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetObject</span>
@@ -7933,8 +7960,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetPixmap</span>
@@ -7946,8 +7973,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetSprite</span>
@@ -7959,8 +7986,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetSpritePack</span>
@@ -7972,8 +7999,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">LoadAssetsInThread</span>
@@ -7985,8 +8012,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">PrintAssets</span>
@@ -7998,8 +8025,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">SetContent</span>
@@ -8011,8 +8038,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">StartLoadingAssets</span>
@@ -8082,7 +8109,7 @@
 						<span id="typeString">method</span>
 						<span id="name">LoadImageResource</span>
 						<span id="returns"></span>
-						<span id="params">( childNode:TxmlNode )</span>
+						<span id="params">( childNode:TxmlNode, defaultName:string="default" )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -8095,7 +8122,7 @@
 						<span id="typeString">method</span>
 						<span id="name">LoadPixmapResource</span>
 						<span id="returns"></span>
-						<span id="params">( childNode:TxmlNode )</span>
+						<span id="params">( childNode:TxmlNode, defaultName:string="default" )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -8207,9 +8234,35 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
+						<span id="name">assignBasics</span>
+						<span id="returns">:int</span>
+						<span id="params">( event:TEventBase, childNode:TxmlNode var, xmlLoader:TXmlLoader var )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">function</span>
 						<span id="name">Create</span>
 						<span id="returns">:TResourceLoaders</span>
 						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">function</span>
+						<span id="name">onLoadColors</span>
+						<span id="returns">:int</span>
+						<span id="params">(  triggerEvent:TEventBase  )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -8473,149 +8526,6 @@
 						<span id="typeString">var</span>
 						<span id="name">y</span>
 						<span id="varType">:Float</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="">tRender</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">BackBufferRender_Begin</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">BackBufferRender_End</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">Cls</span>
-						<span id="returns"></span>
-						<span id="params">( col:Int=$FF000000 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">#################################################################################<br></div>
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">Create</span>
-						<span id="returns">:TImage</span>
-						<span id="params">( Width:Int,Height:Int,Flags:Int=FILTEREDIMAGE )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">#################################################################################<br></div>
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">CreateFrame</span>
-						<span id="returns">:TD3D7ImageFrame</span>
-						<span id="params">( Driver:TD3D7Max2DDriver, width:Int, Height:Int, flags:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">Initialise</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">#################################################################################<br></div>
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">Pow2Size</span>
-						<span id="returns">:Int</span>
-						<span id="params">( n:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">SetMipMap</span>
-						<span id="returns">:Int</span>
-						<span id="params">( Image:TImage,Level:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">TextureRender_Begin</span>
-						<span id="returns">:Int</span>
-						<span id="params">( Image1:TImage,Viewport:Byte=True )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">TextureRender_End</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">ViewportSet</span>
-						<span id="returns">:Int</span>
-						<span id="params">( X:Int=0,Y:Int=0,Width:Int,Height:Int,FlipY:Byte=False )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9232,7 +9142,7 @@
 						<span id="typeString">method</span>
 						<span id="name">drawBlock</span>
 						<span id="returns">:float</span>
-						<span id="params">( text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1 )</span>
+						<span id="params">( text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0 )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9269,9 +9179,9 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
-						<span id="name">drawOnPixmap</span>
-						<span id="returns"></span>
-						<span id="params">( Text:String, x:Int, y:Int, cR:Int=0, cG:Int=0, cB:Int=0, Pixmap:TPixmap, blur:Byte=0 )</span>
+						<span id="name">drawStyled</span>
+						<span id="returns">:object</span>
+						<span id="params">( text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0, returnType:int=0, doDraw:int=1, special:float=-1.0 )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9281,10 +9191,9 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">drawStyled</span>
-						<span id="returns">:object</span>
-						<span id="params">( text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0, returnType:int=0, doDraw:int=1, special:float=-1.0 )</span>
+						<span id="typeString">var</span>
+						<span id="name">drawToPixmap</span>
+						<span id="varType">:TPixmap</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9371,8 +9280,8 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
-						<span id="name">MaxSigns</span>
-						<span id="varType">:Int</span>
+						<span id="name">lineHeightModifier</span>
+						<span id="varType">:float</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9382,10 +9291,61 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">MaxSigns</span>
+						<span id="varType">:Int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">onUpdateCaches</span>
 						<span id="returns"></span>
 						<span id="params">( triggerEvent:TEventBase )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">resetTarget</span>
+						<span id="returns"></span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">setTargetImage</span>
+						<span id="returns"></span>
+						<span id="params">( image:TImage )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">setTargetPixmap</span>
+						<span id="returns"></span>
+						<span id="params">( pixmap:TPixmap )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9595,7 +9555,7 @@
 						<span id="typeString">method</span>
 						<span id="name">AddCopySprite</span>
 						<span id="returns">:TGW_Sprites</span>
-						<span id="params">( spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, colR:Int,colG:Int,colB:Int )</span>
+						<span id="params">( spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, color:TColor )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9604,6 +9564,19 @@
 		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">AddCopySpriteRGB</span>
+						<span id="returns">:TGW_Sprites</span>
+						<span id="params">( spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, colR:Int,colG:Int,colB:Int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">AddSprite</span>
@@ -9615,11 +9588,24 @@
 				
 			</div>
 		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">ColorizeSprite</span>
+						<span id="returns"></span>
+						<span id="params">( spriteName:String, color:TColor )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
-						<span id="name">ColorizeSprite</span>
+						<span id="name">ColorizeSpriteRGB</span>
 						<span id="returns"></span>
 						<span id="params">( spriteName:String, colR:Int,colG:Int,colB:Int )</span>
 						<div class="clear"></div>
@@ -9647,7 +9633,7 @@
 						<span id="typeString">method</span>
 						<span id="name">CopySprite</span>
 						<span id="returns"></span>
-						<span id="params">( spriteNameSrc:String, spriteNameDest:String, colR:Int,colG:Int,colB:Int )</span>
+						<span id="params">( spriteNameSrc:String, spriteNameDest:String, color:TColor )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9656,6 +9642,19 @@
 		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">CopySpriteRGB</span>
+						<span id="returns"></span>
+						<span id="params">( spriteNameSrc:String, spriteNameDest:String, colR:Int,colG:Int,colB:Int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">Create</span>
@@ -9667,8 +9666,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">Draw</span>
@@ -9680,8 +9679,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">DrawSprite</span>
@@ -9693,8 +9692,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">DrawToViewPort</span>
@@ -9706,8 +9705,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetSprite</span>
@@ -9719,8 +9718,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetSpriteByID</span>
@@ -9732,8 +9731,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetSpriteFrameImage</span>
@@ -9745,8 +9744,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">GetSpriteImage</span>
@@ -9758,8 +9757,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">image</span>
@@ -9770,8 +9769,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">LastSpriteID</span>
@@ -9782,8 +9781,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">sprites</span>
@@ -9812,7 +9811,7 @@
 						<span id="typeString">method</span>
 						<span id="name">Colorize</span>
 						<span id="returns"></span>
-						<span id="params">( colR:Int,colG:Int,colB:Int )</span>
+						<span id="params">( color:TColor )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9874,6 +9873,32 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">DrawOnImage</span>
+						<span id="returns"></span>
+						<span id="params">( image:TImage, x:int, y:int, color:TColor=null )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">DrawOnPixmap</span>
+						<span id="returns"></span>
+						<span id="params">( pixmap:TPixmap, x:int,y:int, color:TColor=null )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">frameh</span>
 						<span id="varType">:Int</span>
@@ -9901,7 +9926,7 @@
 						<span id="typeString">method</span>
 						<span id="name">GetColorizedImage</span>
 						<span id="returns">:TImage</span>
-						<span id="params">( r:int, g:int, b:int )</span>
+						<span id="params">( color:TColor )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -9950,6 +9975,19 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">GetPixmap</span>
+						<span id="returns">:TPixmap</span>
+						<span id="params">( loadAnimated:int =1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">h</span>
 						<span id="varType">:Float</span>
@@ -9959,8 +9997,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">LoadFromAsset</span>
@@ -9972,8 +10010,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">parent</span>
@@ -9984,8 +10022,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">pix</span>
@@ -9996,8 +10034,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">PixelIsOpaque</span>
@@ -10009,8 +10047,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">SpriteID</span>
@@ -10021,8 +10059,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">spriteName</span>
@@ -10033,8 +10071,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">TileDraw</span>
@@ -10046,8 +10084,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">TileDrawHorizontal</span>
@@ -10059,8 +10097,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">TileDrawVertical</span>
@@ -10072,8 +10110,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">Update</span>
@@ -10085,8 +10123,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">w</span>
@@ -14356,9 +14394,10 @@
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">name</span>
-						<span id="varType">:string</span>
+						<span id="typeString">method</span>
+						<span id="name">Create</span>
+						<span id="returns">:TStationMapSection</span>
+						<span id="params">( pos:TPosition, name:string, sprite:TGW_Sprites )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -14369,8 +14408,8 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
-						<span id="name">pos</span>
-						<span id="varType">:TPosition</span>
+						<span id="name">name</span>
+						<span id="varType">:string</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -14380,10 +14419,9 @@
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">Setup</span>
-						<span id="returns">:TStationMapSection</span>
-						<span id="params">( pos:TPosition, name:string, sprite:TGW_Sprites )</span>
+						<span id="typeString">var</span>
+						<span id="name">pos</span>
+						<span id="varType">:TPosition</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -14670,19 +14708,6 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
-						<span id="typeString">method</span>
-						<span id="name">InitSections</span>
-						<span id="returns"></span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">LastCalculatedAudienceIncrease</span>
 						<span id="varType">:int</span>
@@ -14692,8 +14717,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">LastStation</span>
@@ -14704,8 +14729,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">Load</span>
@@ -14717,8 +14742,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">LoadAll</span>
@@ -14730,8 +14755,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">onLoadStationMapConfiguration</span>
@@ -14743,8 +14768,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">outsideLand</span>
@@ -14755,8 +14780,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">populationmap</span>
@@ -14767,8 +14792,8 @@
 				<div id="comment">1= searching a station<br></div>
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">populationMapSize</span>
@@ -14779,8 +14804,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">radius</span>
@@ -14791,8 +14816,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">SaveAll</span>
@@ -14804,8 +14829,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">Sell</span>
@@ -14817,8 +14842,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">SellByPos</span>
@@ -14830,8 +14855,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">sellStation</span>
@@ -14842,8 +14867,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">StationList</span>
@@ -14854,8 +14879,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">StationShare</span>
@@ -14866,8 +14891,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">Update</span>
@@ -14879,8 +14904,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">_FillPoints</span>
@@ -15690,9 +15715,10 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">id</span>
-						<span id="varType">:Int</span>
+						<span id="typeString">method</span>
+						<span id="name">GetId</span>
+						<span id="returns">:Int</span>
+						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -15703,7 +15729,7 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
-						<span id="name">programmeType</span>
+						<span id="name">id</span>
 						<span id="varType">:Int</span>
 						<div class="clear"></div>
 					</div>
@@ -15713,6 +15739,18 @@
 		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">programmeType</span>
+						<span id="varType">:Int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">title</span>
@@ -16265,8 +16303,8 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
-						<span id="name">blocks</span>
-						<span id="varType">:Int</span>
+						<span id="name">attractiveness</span>
+						<span id="varType">:Float</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -16275,6 +16313,18 @@
 		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">blocks</span>
+						<span id="varType">:Int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">Buy</span>
@@ -16286,8 +16336,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">ComputeTopicality</span>
@@ -16299,8 +16349,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">CountGenre</span>
@@ -16312,8 +16362,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">country</span>
@@ -16324,21 +16374,21 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">Create</span>
 						<span id="returns">:TProgramme</span>
-						<span id="params">( title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, episode:Int=-1 )</span>
+						<span id="params">( title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=1.0, episode:Int=-1 )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">CutTopicality</span>
@@ -16350,8 +16400,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">director</span>
@@ -16362,8 +16412,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">episodeList</span>
@@ -16374,11 +16424,23 @@
 				
 			</div>
 		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">episodeNumber</span>
+						<span id="varType">:Int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
-						<span id="name">episodeNumber</span>
+						<span id="name">fsk18</span>
 						<span id="varType">:Int</span>
 						<div class="clear"></div>
 					</div>
@@ -16390,7 +16452,7 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
-						<span id="name">fsk18</span>
+						<span id="name">Genre</span>
 						<span id="varType">:Int</span>
 						<div class="clear"></div>
 					</div>
@@ -16400,10 +16462,11 @@
 		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
-					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">Genre</span>
-						<span id="varType">:Int</span>
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetAttractiveness</span>
+						<span id="returns">:Float</span>
+						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -16451,7 +16514,7 @@
 		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
-					<div id="wrapper" class="">
+					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetEpisode</span>
 						<span id="returns">:TProgramme</span>
@@ -16477,7 +16540,7 @@
 		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
-					<div id="wrapper" class="">
+					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetEpisodes</span>
 						<span id="returns">:Object[]</span>
@@ -16505,34 +16568,8 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
-						<span id="name">GetGenreString</span>
-						<span id="returns">:String</span>
-						<span id="params">( _genre:Int=-1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">GetMovie</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">( id:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetOutcome</span>
-						<span id="returns">:int</span>
+						<span id="name">GetGenreRefreshModifier</span>
+						<span id="returns">:float</span>
 						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
@@ -16544,7 +16581,59 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
+						<span id="name">GetGenreString</span>
+						<span id="returns">:String</span>
+						<span id="params">( _genre:Int=-1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">function</span>
+						<span id="name">GetMovie</span>
+						<span id="returns">:TProgramme</span>
+						<span id="params">( id:Int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetOutcome</span>
+						<span id="returns">:int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
 						<span id="name">GetPrice</span>
+						<span id="returns">:Int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetPricePerBlock</span>
 						<span id="returns">:Int</span>
 						<span id="params">(  )</span>
 						<div class="clear"></div>
@@ -16568,6 +16657,19 @@
 		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetQualityLevel</span>
+						<span id="returns">:Int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">GetRandomMovie</span>
@@ -16579,8 +16681,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">GetRandomMovieWithMinPrice</span>
@@ -16592,8 +16694,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">GetRandomProgrammeByGenre</span>
@@ -16605,8 +16707,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">GetRandomProgrammeFromList</span>
@@ -16618,8 +16720,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">GetRandomSerie</span>
@@ -16631,8 +16733,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetReview</span>
@@ -16644,8 +16746,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">GetSeries</span>
@@ -16657,8 +16759,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetSpeed</span>
@@ -16670,8 +16772,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetTopicality</span>
@@ -16683,8 +16785,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetXRated</span>
@@ -16696,8 +16798,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">isMovie</span>
@@ -16709,8 +16811,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">livehour</span>
@@ -16721,8 +16823,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">Load</span>
@@ -16734,8 +16836,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">LoadAll</span>
@@ -16747,8 +16849,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">maxtopicality</span>
@@ -16759,8 +16861,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">Outcome</span>
@@ -16771,8 +16873,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">owner</span>
@@ -16783,8 +16885,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">parent</span>
@@ -16793,6 +16895,18 @@
 					</div>
 				</div>
 				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">refreshModifier</span>
+						<span id="varType">:float</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div id="comment">how fast a movie "regenerates" (added to genreModifier)<br></div>
 			</div>
 		
 			<div id="element" class="even1">
@@ -16873,6 +16987,19 @@
 		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">SetAttractiveness</span>
+						<span id="returns"></span>
+						<span id="params">( value:Float )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">ShowSheet</span>
@@ -16884,8 +17011,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">speed</span>
@@ -16896,8 +17023,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">topicality</span>
@@ -16908,8 +17035,8 @@
 				<div id="comment">how "attractive" a movie is (the more shown, the less this value)<br></div>
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">year</span>
@@ -16920,8 +17047,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">_isMovie</span>
@@ -19027,6 +19154,18 @@
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">dim</span>
+						<span id="varType">:TPosition</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
 						<span id="typeString">method</span>
 						<span id="name">Draw</span>
 						<span id="returns"></span>
@@ -19037,8 +19176,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">DrawAll</span>
@@ -19050,8 +19189,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetHighestBidder</span>
@@ -19063,8 +19202,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetNextBid</span>
@@ -19076,8 +19215,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetProgramme</span>
@@ -19089,8 +19228,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">imageWithText</span>
@@ -19101,8 +19240,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">Link</span>
@@ -19113,13 +19252,25 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">LoadAll</span>
 						<span id="returns"></span>
 						<span id="params">( loadfile:TStream )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="">
+						<span id="typeString">var</span>
+						<span id="name">pos</span>
+						<span id="varType">:TPosition</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -19193,6 +19344,19 @@
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
+						<span id="typeString">method</span>
+						<span id="name">ShowSheet</span>
+						<span id="returns">:Int</span>
+						<span id="params">( x:Int,y:Int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">slot</span>
 						<span id="varType">:Int</span>
@@ -19202,8 +19366,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="">
 						<span id="typeString">function</span>
 						<span id="name">Sort</span>
@@ -19215,8 +19379,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="">
 						<span id="typeString">var</span>
 						<span id="name">uniqueID</span>
@@ -19227,37 +19391,13 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">function</span>
-						<span id="name">UpdateAll</span>
-						<span id="returns"></span>
-						<span id="params">( DraggingAllowed:Byte )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">x</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="">
-						<span id="typeString">var</span>
-						<span id="name">y</span>
-						<span id="varType">:Int</span>
+						<span id="typeString">function</span>
+						<span id="name">UpdateAll</span>
+						<span id="returns">:int</span>
+						<span id="params">( DraggingAllowed:Byte )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -22696,4 +22836,4 @@
 			</div>
 			</div></div>
 
-</body><link rel="stylesheet" type="text/css" href="data:text/css,"></html>
+</body><div style="display: none; " id="C0_7Y2FstgQygE4hC9nT4" class="SW4cPaIGhP4a7z_fNHydhZ"></div><div style="display: none; " id="g4Ahbkc9kjTClRMlMfZfoXKio" class="SW4cPaIGhP4a7z_fNHydhZ"></div><div style="display: none; " id="rdaTEGxdC_SRDsMY2akvbh" class="SW4cPaIGhP4a7z_fNHydhZ"></div><link rel="stylesheet" type="text/css" href="data:text/css,"></html>

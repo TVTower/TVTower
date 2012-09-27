@@ -1,5 +1,5 @@
 
-<!-- saved from url=(0168)http://gwron.kicks-ass.net/doc/?mainfile=%2Fhome%2Fronny%2FArbeit%2FProgrammieren%2FProjekte%2FApps%2FTVTower.WorkingCopy%2FTVTower%2FTVTower.bmx&onlyLua=1&action=build -->
+<!-- saved from url=(0166)http://localhost/doc/?mainfile=%2Fhome%2Fronny%2FArbeit%2FProgrammieren%2FProjekte%2FApps%2FTVTower.WorkingCopy%2FTVTower%2Ftrunk%2FTVTower.bmx&onlyLua=1&action=build -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
 		body					{ font-family: Sans-Serif; font-size:13px;}
@@ -291,7 +291,7 @@
 				</div>
 				
 			</div>
-			</div></div>																																																																									<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayerProgrammeCollection</span>		<span id="comment">holds all Programmes a player possesses</span>	</div>	<div id="elements">
+			</div></div>																																																																							<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayerProgrammeCollection</span>		<span id="comment">holds all Programmes a player possesses</span>	</div>	<div id="elements">
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
@@ -647,6 +647,19 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
+						<span id="name">GetAttractiveness</span>
+						<span id="returns">:Float</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
 						<span id="name">GetBaseAudienceQuote</span>
 						<span id="returns">:Float</span>
 						<span id="params">( lastquote:Float=0.1 )</span>
@@ -669,12 +682,38 @@
 				
 			</div>
 		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetEpisode</span>
+						<span id="returns">:TProgramme</span>
+						<span id="params">( number:Int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetEpisodeCount</span>
 						<span id="returns">:int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetEpisodes</span>
+						<span id="returns">:Object[]</span>
 						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
@@ -699,6 +738,19 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
+						<span id="name">GetGenreRefreshModifier</span>
+						<span id="returns">:float</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
 						<span id="name">GetGenreString</span>
 						<span id="returns">:String</span>
 						<span id="params">( _genre:Int=-1 )</span>
@@ -708,8 +760,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetOutcome</span>
@@ -721,8 +773,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetPrice</span>
@@ -734,8 +786,34 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetPricePerBlock</span>
+						<span id="returns">:Int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetQualityLevel</span>
+						<span id="returns">:Int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetReview</span>
@@ -747,8 +825,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetSpeed</span>
@@ -760,8 +838,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetTopicality</span>
@@ -773,8 +851,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetXRated</span>
@@ -786,8 +864,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">isMovie</span>
@@ -798,9 +876,22 @@
 				</div>
 				
 			</div>
-			</div></div>									<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TAuctionProgrammeBlocks</span>		<span id="comment">Programmeblocks used in Archive</span>	</div>	<div id="elements">
+		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">SetAttractiveness</span>
+						<span id="returns"></span>
+						<span id="params">( value:Float )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+			</div></div>									<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TAuctionProgrammeBlocks</span>		<span id="comment">Programmeblocks used in Archive</span>	</div>	<div id="elements">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetHighestBidder</span>
@@ -812,8 +903,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetNextBid</span>
@@ -825,8 +916,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetProgramme</span>
@@ -2323,4 +2414,4 @@
 			</div>
 			</div></div>	
 
-</body><link rel="stylesheet" type="text/css" href="data:text/css,"></html>
+</body><div style="display: none; " id="R0OCTNHSmraGNnM3" class="utQEgMC4mTAaQbdmwwy26"></div><div style="display: none; " id="zXaYYQSCUUjvY4piFDcvdXCk" class="utQEgMC4mTAaQbdmwwy26"></div><div style="display: none; " id="CUtcR0lQmjzHDg8gh7" class="utQEgMC4mTAaQbdmwwy26"></div><link rel="stylesheet" type="text/css" href="data:text/css,"></html>
