@@ -616,6 +616,8 @@ Type TContract Extends TProgrammeElement {_exposeToLua="selected"}
   Field profit:Int		= -1
   Field penalty:Int		= -1
   Field calculatedMinAudience:Int 	= -1
+  Field attractiveness:Float	= -1 'Wird nur in der Lua-KI verwendet du die Filme zu bewerten
+
 
   Global List:TList = CreateList() {saveload = "special"}
 
@@ -840,6 +842,13 @@ endrem
 		Return GetLocale("AD_GENRE_NONE")
 	End Method
 
+	Method GetAttractiveness:Float() {_exposeToLua}
+		Return Self.attractiveness
+	End Method
+
+	Method SetAttractiveness(value:Float) {_exposeToLua}
+		Self.attractiveness = value
+	End Method
 
 
 	Method ShowSheet:Int(x:Int,y:Int, plannerday:Int = -1, successfulSentContracts:Int=-1)
@@ -885,6 +894,36 @@ endrem
 		Next
 		Return Null
 	End Function
+	
+	'Wird bisher nur in der LUA-KI verwendet
+	'Wie hoch ist das finanzielle Gewicht pro Spot?
+	'Wird dafür gebraucht um die Wichtigkeit des Spots zu bewerten
+	Function GetFinanceWeight:float()
+		Return (self.GetProfit() + self.GetPenalty()) / self.GetSpotCount()
+	End Function
+	
+	'Wird bisher nur in der LUA-KI verwendet
+	'Anzahl der Spots die noch zu senden sind um den Vertrag zu erfüllen
+	Function GetCountOfSpotsToBroadcast()
+		Local obj:TAdBlock = TAdBlock.GetBlockByContract( Self )
+		Local spotsBeenSent:Int = obj.GetSuccessfulSentContractCount()
+		Return self.GetSpotCount() - spotsBeenSent	
+	End Function	
+	
+	'Wird bisher nur in der LUA-KI verwendet
+	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (Gesamt)
+	Function GetPressure:float()
+		Local daysLeft:Int = self.GetDaysToFinish()
+		Return self.GetSpotCount() / daysLeft  * daysLeft
+	End Function
+	
+	'Wird bisher nur in der LUA-KI verwendet
+	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)	
+	Function GetActualPressure:float()
+		Local daysLeft:Int = self.GetDaysToFinish()
+		Return self.GetCountOfSpotsToBroadcast() / daysLeft * daysLeft
+	End Function		
+		
 End Type
 
 Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent of movies, series and so on
