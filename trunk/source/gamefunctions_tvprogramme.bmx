@@ -899,7 +899,7 @@ endrem
 	'Wie hoch ist das finanzielle Gewicht pro Spot?
 	'Wird dafür gebraucht um die Wichtigkeit des Spots zu bewerten
 	Function GetFinanceWeight:float()
-		Return (self.GetProfit() + self.GetPenalty()) / self.GetSpotCount()
+		'Return (self.GetProfit() + self.GetPenalty()) / self.GetSpotCount()
 	End Function
 	
 	'Wird bisher nur in der LUA-KI verwendet
