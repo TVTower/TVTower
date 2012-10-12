@@ -261,10 +261,10 @@ Type TNetworkHelper
 		obj.SetFloat(	3, figure.pos.y )	'...
 		obj.SetFloat(	4, figure.target.x )
 		obj.SetFloat(	5, figure.target.y )
-		if figure.inRoom <> null 			then obj.setInt( 6, figure.inRoom.uniqueID)
-		if figure.clickedToRoom <> null		then obj.setInt( 7, figure.clickedToRoom.uniqueID)
-		if figure.toRoom <> null 			then obj.setInt( 8, figure.toRoom.uniqueID)
-		if figure.fromRoom <> null 			then obj.setInt( 9, figure.fromRoom.uniqueID)
+		if figure.inRoom <> null 			then obj.setInt( 6, figure.inRoom.id)
+		if figure.clickedToRoom <> null		then obj.setInt( 7, figure.clickedToRoom.id)
+		if figure.toRoom <> null 			then obj.setInt( 8, figure.toRoom.id)
+		if figure.fromRoom <> null 			then obj.setInt( 9, figure.fromRoom.id)
 		Network.BroadcastNetworkObject( obj )
 	End Method
 
@@ -294,7 +294,7 @@ Type TNetworkHelper
 
 		If inRoomID <= 0 Then figure.inRoom = Null
 		If figure.inroom <> Null
-			If inRoomID > 0 and figure.inRoom.uniqueID <> inRoomID
+			If inRoomID > 0 and figure.inRoom.id <> inRoomID
 				figure.inRoom = TRooms.GetRoom(inRoomID)
 				If figure.inRoom.name = "elevator" then Building.Elevator.waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime
 			EndIf
@@ -308,7 +308,7 @@ Type TNetworkHelper
 
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom <> Null
-			If figure.fromRoom.uniqueID <> fromRoomID then figure.fromRoom = TRooms.GetRoom(fromRoomID)
+			If figure.fromRoom.id <> fromRoomID then figure.fromRoom = TRooms.GetRoom(fromRoomID)
 		EndIf
 	End Method
 

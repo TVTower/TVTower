@@ -229,50 +229,50 @@ Type TLuaFunctions {_exposeToLua}
 
 		ret.MAXSPOTS = Game.maxContractsAllowed
 
-		ret.ROOM_MOVIEAGENCY = TRooms.GetRoomByDetails("movieagency", 0).uniqueID
-		ret.ROOM_ADAGENCY = TRooms.GetRoomByDetails("adagency", 0).uniqueID
-		ret.ROOM_ROOMBOARD = TRooms.GetRoomByDetails("roomboard", - 1).uniqueID
-		ret.ROOM_PORTER = TRooms.GetRoomByDetails("porter", - 1).uniqueID
-		ret.ROOM_BETTY = TRooms.GetRoomByDetails("betty", 0).uniqueID
-		ret.ROOM_SUPERMARKET = TRooms.GetRoomByDetails("supermarket", 0).uniqueID
-		ret.ROOM_ROOMAGENCY = TRooms.GetRoomByDetails("roomagency", 0).uniqueID
-		ret.ROOM_PEACEBROTHERS = TRooms.GetRoomByDetails("peacebrothers", - 1).uniqueID
-		ret.ROOM_SCRIPTAGENCY = TRooms.GetRoomByDetails("scriptagency", 0).uniqueID
-		ret.ROOM_NOTOBACCO = TRooms.GetRoomByDetails("notobacco", - 1).uniqueID
-		ret.ROOM_TOBACCOLOBBY = TRooms.GetRoomByDetails("tobaccolobby", - 1).uniqueID
-		ret.ROOM_GUNSAGENCY = TRooms.GetRoomByDetails("gunsagency", - 1).uniqueID
-		ret.ROOM_VRDUBAN = TRooms.GetRoomByDetails("vrduban", - 1).uniqueID
-		ret.ROOM_FRDUBAN = TRooms.GetRoomByDetails("frduban", - 1).uniqueID
+		ret.ROOM_MOVIEAGENCY = TRooms.GetRoomByDetails("movieagency", 0).id
+		ret.ROOM_ADAGENCY = TRooms.GetRoomByDetails("adagency", 0).id
+		ret.ROOM_ROOMBOARD = TRooms.GetRoomByDetails("roomboard", - 1).id
+		ret.ROOM_PORTER = TRooms.GetRoomByDetails("porter", - 1).id
+		ret.ROOM_BETTY = TRooms.GetRoomByDetails("betty", 0).id
+		ret.ROOM_SUPERMARKET = TRooms.GetRoomByDetails("supermarket", 0).id
+		ret.ROOM_ROOMAGENCY = TRooms.GetRoomByDetails("roomagency", 0).id
+		ret.ROOM_PEACEBROTHERS = TRooms.GetRoomByDetails("peacebrothers", - 1).id
+		ret.ROOM_SCRIPTAGENCY = TRooms.GetRoomByDetails("scriptagency", 0).id
+		ret.ROOM_NOTOBACCO = TRooms.GetRoomByDetails("notobacco", - 1).id
+		ret.ROOM_TOBACCOLOBBY = TRooms.GetRoomByDetails("tobaccolobby", - 1).id
+		ret.ROOM_GUNSAGENCY = TRooms.GetRoomByDetails("gunsagency", - 1).id
+		ret.ROOM_VRDUBAN = TRooms.GetRoomByDetails("vrduban", - 1).id
+		ret.ROOM_FRDUBAN = TRooms.GetRoomByDetails("frduban", - 1).id
 
-		ret.ROOM_OFFICE_PLAYER_ME = TRooms.GetRoomByDetails("office", pPlayerId).uniqueID
-		ret.ROOM_STUDIOSIZE1_PLAYER_ME = TRooms.GetRoomByDetails("studiosize1", pPlayerId).uniqueID
-		ret.ROOM_BOSS_PLAYER_ME = TRooms.GetRoomByDetails("chief", pPlayerId).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER_ME = TRooms.GetRoomByDetails("news", pPlayerId).uniqueID
-		ret.ROOM_ARCHIVE_PLAYER_ME = TRooms.GetRoomByDetails("archive", pPlayerId).uniqueID
+		ret.ROOM_OFFICE_PLAYER_ME = TRooms.GetRoomByDetails("office", pPlayerId).id
+		ret.ROOM_STUDIOSIZE1_PLAYER_ME = TRooms.GetRoomByDetails("studiosize1", pPlayerId).id
+		ret.ROOM_BOSS_PLAYER_ME = TRooms.GetRoomByDetails("chief", pPlayerId).id
+		ret.ROOM_NEWSAGENCY_PLAYER_ME = TRooms.GetRoomByDetails("news", pPlayerId).id
+		ret.ROOM_ARCHIVE_PLAYER_ME = TRooms.GetRoomByDetails("archive", pPlayerId).id
 
-		ret.ROOM_ARCHIVE_PLAYER1 = TRooms.GetRoomByDetails("archive", 1).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER1 = TRooms.GetRoomByDetails("news", 1).uniqueID
-		ret.ROOM_BOSS_PLAYER1 = TRooms.GetRoomByDetails("chief", 1).uniqueID
-		ret.ROOM_OFFICE_PLAYER1 = TRooms.GetRoomByDetails("office", 1).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER1 = TRooms.GetRoomByDetails("studiosize1", 1).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER1 = TRooms.GetRoomByDetails("archive", 1).id
+		ret.ROOM_NEWSAGENCY_PLAYER1 = TRooms.GetRoomByDetails("news", 1).id
+		ret.ROOM_BOSS_PLAYER1 = TRooms.GetRoomByDetails("chief", 1).id
+		ret.ROOM_OFFICE_PLAYER1 = TRooms.GetRoomByDetails("office", 1).id
+		ret.ROOM_STUDIOSIZE_PLAYER1 = TRooms.GetRoomByDetails("studiosize1", 1).id
 
-		ret.ROOM_ARCHIVE_PLAYER2 = TRooms.GetRoomByDetails("archive", 2).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER2 = TRooms.GetRoomByDetails("news", 2).uniqueID
-		ret.ROOM_BOSS_PLAYER2 = TRooms.GetRoomByDetails("chief", 2).uniqueID
-		ret.ROOM_OFFICE_PLAYER2 = TRooms.GetRoomByDetails("office", 2).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER2 = TRooms.GetRoomByDetails("studiosize1", 2).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER2 = TRooms.GetRoomByDetails("archive", 2).id
+		ret.ROOM_NEWSAGENCY_PLAYER2 = TRooms.GetRoomByDetails("news", 2).id
+		ret.ROOM_BOSS_PLAYER2 = TRooms.GetRoomByDetails("chief", 2).id
+		ret.ROOM_OFFICE_PLAYER2 = TRooms.GetRoomByDetails("office", 2).id
+		ret.ROOM_STUDIOSIZE_PLAYER2 = TRooms.GetRoomByDetails("studiosize1", 2).id
 
-		ret.ROOM_ARCHIVE_PLAYER3 = TRooms.GetRoomByDetails("archive", 3).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER3 = TRooms.GetRoomByDetails("news", 3).uniqueID
-		ret.ROOM_BOSS_PLAYER3 = TRooms.GetRoomByDetails("chief", 3).uniqueID
-		ret.ROOM_OFFICE_PLAYER3 = TRooms.GetRoomByDetails("office", 3).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER3 = TRooms.GetRoomByDetails("studiosize1", 3).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER3 = TRooms.GetRoomByDetails("archive", 3).id
+		ret.ROOM_NEWSAGENCY_PLAYER3 = TRooms.GetRoomByDetails("news", 3).id
+		ret.ROOM_BOSS_PLAYER3 = TRooms.GetRoomByDetails("chief", 3).id
+		ret.ROOM_OFFICE_PLAYER3 = TRooms.GetRoomByDetails("office", 3).id
+		ret.ROOM_STUDIOSIZE_PLAYER3 = TRooms.GetRoomByDetails("studiosize1", 3).id
 
-		ret.ROOM_ARCHIVE_PLAYER4 = TRooms.GetRoomByDetails("archive", 4).uniqueID
-		ret.ROOM_NEWSAGENCY_PLAYER4 = TRooms.GetRoomByDetails("news", 4).uniqueID
-		ret.ROOM_BOSS_PLAYER4 = TRooms.GetRoomByDetails("chief", 4).uniqueID
-		ret.ROOM_OFFICE_PLAYER4 = TRooms.GetRoomByDetails("office", 4).uniqueID
-		ret.ROOM_STUDIOSIZE_PLAYER4 = TRooms.GetRoomByDetails("studiosize1", 4).uniqueID
+		ret.ROOM_ARCHIVE_PLAYER4 = TRooms.GetRoomByDetails("archive", 4).id
+		ret.ROOM_NEWSAGENCY_PLAYER4 = TRooms.GetRoomByDetails("news", 4).id
+		ret.ROOM_BOSS_PLAYER4 = TRooms.GetRoomByDetails("chief", 4).id
+		ret.ROOM_OFFICE_PLAYER4 = TRooms.GetRoomByDetails("office", 4).id
+		ret.ROOM_STUDIOSIZE_PLAYER4 = TRooms.GetRoomByDetails("studiosize1", 4).id
 
 		Return ret
 	End Function
@@ -355,12 +355,12 @@ Type TLuaFunctions {_exposeToLua}
 
 	Method getPlayerRoom:Int()
 		Local room:TRooms = Players[ Self.ME ].figure.inRoom
-		If room <> Null Then Return room.uniqueId Else Return 0
+		If room <> Null Then Return room.id Else Return 0
 	End Method
 
 	Method getPlayerTargetRoom:Int()
 		Local room:TRooms = Players[ Self.ME ].figure.toRoom
-		If room <> Null Then Return room.uniqueId Else Return 0
+		If room <> Null Then Return room.id Else Return 0
 	End Method
 
 	Method getPlayerFloor:Int()

@@ -66,16 +66,18 @@ Type TEventManager
 		self._events.AddLast(event)
 	End Method
 
-	Method triggerEvent(triggeredByEvent:TEventBase)
+	'runs all listeners NOW ...returns amount of listeners
+	Method triggerEvent:int(triggeredByEvent:TEventBase)
 		local listeners:TList = TList(self._listeners.ValueForKey( lower(triggeredByEvent._trigger) ))
-		if listeners <> null
-			local continueTriggering:int = 0
+		if listeners
 			for local listener:TEventListenerBase = eachin listeners
-				continueTriggering = listener.onEvent(triggeredByEvent)
+				listener.onEvent(triggeredByEvent)
 				'stop triggering the event if ONE of them vetos
-				if continueTriggering = false AND continueTriggering<>null then exit
+				if triggeredByEvent.isVeto() then exit
 			Next
+			return listeners.count()
 		endif
+		return 0
 	End Method
 
 	Method update()
@@ -134,10 +136,14 @@ Type TEventBase
 	Field _trigger:string = ""
 	Field _sender:object = null
 	field _data:object
+	field _veto:int = 0
 
 	Method getStartTime:Int()
 		Return self._startTime
 	End Method
+
+	Method setVeto(); self._veto = true; End Method
+	Method isVeto:int(); return (_veto=true); End Method
 
 	Method onEvent()
 	End Method

@@ -4,52 +4,33 @@ Type TRooms
 	Field name:String			= ""  		'name of the room, eg. "archive" for archive room
     Field desc:String			= ""		'description, eg. "Bettys bureau" (used for tooltip)
     Field descTwo:String		= ""		'description, eg. "name of the owner" (used for tooltip)
+    Field tooltip:TTooltip					'uses description
 
 	Field DoorTimer:TTimer		= TTimer.Create(500)
-	Field Pos:TPosition					'x of the rooms door in the building, y as floornumber
-    Field xpos:Int				= 0
+	Field Pos:TPosition						'x of the rooms door in the building, y as floornumber
+    Field xpos:Int				= 0			'door 1-4 on floor
     Field doortype:Int			=-1
     Field doorwidth:Int			= 38
     Field RoomSign:TRoomSigns
-    Field owner:Int				=-1		'to draw the logo/symbol of the owner
-    Field tooltip:TTooltip
-    Field uniqueID:Int			= 1
+    Field owner:Int				=-1			'to draw the logo/symbol of the owner
+    Field id:Int				= 1
 	Field FadeAnimationActive:Int = 0
 	Field RoomBoardX:Int		= 0
-    Global ActiveRoom:TRooms			'which room is activated at the moment
-    Global RoomList:TList				'global list of rooms
+	Field Dialogues:TList		= CreateList()
+
+    Global RoomList:TList		= CreateList()		'global list of rooms
     Global LastID:Int			= 1
 	Global doadraw:Int			= 0
 	Global DoorsDrawnToBackground:Int = 0   'doors drawn to Pixmap of background
-    Global ActiveBackground:TGW_Sprites
-	Global ActiveBackgroundID:Int = 0
-	Field Dialogues:TList = CreateList()
 
-    Function ResetRoomSigns()
-		For Local room:TRooms = EachIn TRooms.RoomList
-			If room.RoomSign <> Null
-				Room.RoomSign.Pos.SetPos(room.RoomSign.OrigPos)
-				Room.RoomSign.StartPos.SetPos(room.RoomSign.OrigPos)
-				room.RoomSign.dragged		= 0
-			End If
-		Next
-		TRoomSigns.AdditionallyDragged = 0
-    End Function
-
-    'delete Room out of RoomList
-    'Raum aus der Raumliste entfernen
-    Method RemoveRoom()
-		ListRemove RoomList,(Self)
-    End Method
+	Method getDoorType:int()
+		if self.DoorTimer.isExpired() then return self.doortype else return 5
+	End Method
 
     Method CloseDoor()
 		'timer finished
 		self.DoorTimer.expire()
     End Method
-
-	Method getDoorType:int()
-		if self.DoorTimer.isExpired() then return self.doortype else return 5
-	End Method
 
     Method OpenDoor()
 		'timer ticks again
@@ -63,208 +44,205 @@ Type TRooms
 	End Function
 
     Function DrawDoorToolTips:Int()
-		If RoomList = Null Then Print "RoomList missing"
-		For Local localroom:TRooms = EachIn RoomList
-			If localroom <> Null
-				If localroom.tooltip <> Null
-					If localroom.tooltip.enabled Then localroom.tooltip.Draw()
-				EndIf
-    		EndIf
+		For Local obj:TRooms = EachIn RoomList
+			If obj.tooltip and obj.tooltip.enabled Then obj.tooltip.Draw()
 		Next
 	End Function
 
     Function UpdateDoorToolTips:Int(deltaTime:float)
-		Local foundtooltip:Int = 0
-		For Local localroom:TRooms = EachIn RoomList
-			foundtooltip = 0
-			If localroom <> Null
-				If localroom.tooltip <> Null
-					If localroom.tooltip.enabled
-						localroom.tooltip.pos.y = Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
-						localroom.tooltip.Update(deltaTime)
-					EndIf
-				EndIf
+		For Local obj:TRooms = EachIn TRooms.RoomList
+			'delete and skip if not found
+			If not obj then TRooms.RoomList.remove(obj); continue
 
+			If obj.tooltip AND obj.tooltip.enabled
+				obj.tooltip.pos.y = Building.pos.y + Building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
+				obj.tooltip.Update(deltaTime)
+			EndIf
 
-				If foundtooltip = 0 And Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), localroom.Pos.x, Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, localroom.doorwidth, 54)
-					If localroom.tooltip = Null
-						localroom.tooltip = TTooltip.Create(localroom.desc, localroom.descTwo, 100, 140, 0, 0)
-					else
-						localroom.tooltip.Hover()
-					endif
-					localroom.tooltip.pos.y = Building.pos.y + Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
-					localroom.tooltip.pos.x = localroom.Pos.x + localroom.doorwidth/2 - localroom.tooltip.GetWidth()/2
-					localroom.tooltip.enabled = 1
-					If localroom.name = "chief" Then localroom.tooltip.tooltipimage = 2
-					If localroom.name = "news" Then localroom.tooltip.tooltipimage = 4
-					If localroom.name = "archive" Then localroom.tooltip.tooltipimage = 0
-					If localroom.name = "office" Then localroom.tooltip.tooltipimage = 1
-					If (localroom.name.Find("studio",0)+1) =1 Then localroom.tooltip.tooltipimage = 5
-					If localroom.owner >= 1 Then localroom.tooltip.TitleBGtype = localroom.owner + 10
-					foundtooltip = 1
-				EndIf
+			If Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), obj.Pos.x, obj.pos.y + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
+				If obj.tooltip
+					obj.tooltip.Hover()
+				else
+					obj.tooltip = TTooltip.Create(obj.desc, obj.descTwo, 100, 140, 0, 0)
+				endif
+				obj.tooltip.pos.y	= Building.pos.y + Building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
+				obj.tooltip.pos.x	= obj.Pos.x + obj.doorwidth/2 - obj.tooltip.GetWidth()/2
+				obj.tooltip.enabled	= 1
+				If obj.name = "chief"					Then obj.tooltip.tooltipimage = 2
+				If obj.name = "news"					Then obj.tooltip.tooltipimage = 4
+				If obj.name = "archive"					Then obj.tooltip.tooltipimage = 0
+				If obj.name = "office"					Then obj.tooltip.tooltipimage = 1
+				If (obj.name.Find("studio",0)+1) =1		Then obj.tooltip.tooltipimage = 5
+				If obj.owner >= 1 Then obj.tooltip.TitleBGtype = obj.owner + 10
 			EndIf
 		Next
     End Function
 
 	Function DrawDoorsOnBackground:Int()
-	  If Not DoorsDrawnToBackground
-	    Local gfx_building_elevator_border:TImage = Assets.GetSprite("gfx_building_Fahrstuhl_Rahmen").GetImage()
-	    Local Pix:TPixmap = LockImage(Assets.GetSprite("gfx_building").parent.image)
+		'do nothing if already done
+		If DoorsDrawnToBackground then return 0
+
+		Local Pix:TPixmap = LockImage(Assets.GetSprite("gfx_building").parent.image)
 
 		'fahrstuhlrahmen
-	  	For Local i:Int = 0 To 13
-			DrawOnPixmap(gfx_building_elevator_border, 0, Pix, 230, 67 - ImageHeight(gfx_building_elevator_border) + 73 * i)
-	  	Next
+		Local elevatorBorder:TGW_Sprites= Assets.GetSprite("gfx_building_Fahrstuhl_Rahmen")
+		For Local i:Int = 0 To 13
+			DrawOnPixmap(elevatorBorder.getImage(), 0, Pix, 230, 67 - elevatorBorder.h + 73*i)
+		Next
 
-	    For Local localroom:TRooms = EachIn RoomList
-          If localroom <> Null
-            If localroom.doortype >= 0 And localroom.Pos.x > 0
-              If localroom.doortype > 5 Then localroom.doortype=5
-              If localroom.name <> "roomboard" And localroom.name <> "credits" And localroom.name <> "porter"
-				DrawOnPixmap(Assets.GetSprite("gfx_building_Tueren").GetFrameImage(localroom.doortype), 0, Pix, localroom.Pos.x - Building.pos.x - 127, Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)
-				If localroom.owner < 5 And localroom.owner >=0
-					DrawOnPixmap(Assets.GetSprite("gfx_building_sign"+localroom.owner).parent.image , 0, Pix, localroom.Pos.x - Building.pos.x - 127 + 2 + Assets.GetSprite("gfx_building_Tueren").framew, Building.GetFloorY(localroom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)
-				EndIf
-           EndIf
-            EndIf
-          EndIf
+		local doorSprite:TGW_Sprites = Assets.GetSprite("gfx_building_Tueren")
+		For Local obj:TRooms = EachIn TRooms.RoomList
+			'skip invisible rooms (without door)
+			if obj.name = "" OR obj.name = "roomboard" OR obj.name = "credits" OR obj.name = "porter" then continue
+			If obj.doortype < 0 OR obj.Pos.x <= 0 then continue
+
+			'clamp doortype
+			obj.doortype = Min(5, obj.doortype)
+			'draw door
+			DrawOnPixmap(doorSprite.GetFrameImage(obj.doortype), 0, Pix, obj.Pos.x - Building.pos.x - 127, Building.GetFloorY(obj.Pos.y) - doorSprite.h)
+			'draw sign next to door
+			If obj.owner < 5 And obj.owner >=0 then DrawOnPixmap(Assets.GetSprite("gfx_building_sign"+obj.owner).parent.image , 0, Pix, obj.Pos.x - Building.pos.x - 127 + 2 + doorSprite.framew, Building.GetFloorY(obj.Pos.y) - doorSprite.h)
         Next
-		UnlockImage(Assets.GetSprite("gfx_building").parent.image)
-'		gfx_building_skyscraper.CreateFromPixmap(Pix)
+		'no unlock needed atm as doing nothing
+		'UnlockImage(Assets.GetSprite("gfx_building").parent.image)
 		DoorsDrawnToBackground = True
-      EndIf
-
 	End Function
 
 	Function DrawDoors:Int()
-		If RoomList = Null Then Print "RoomList missing"
+		For Local obj:TRooms = EachIn TRooms.RoomList
+			'skip invisible rooms (without door)
+			if obj.name = "" OR obj.name = "roomboard" OR obj.name = "credits" OR obj.name = "porter" then continue
+			If obj.doortype < 0 OR obj.Pos.x <= 0 then continue
 
-		For Local room:TRooms = EachIn RoomList
-			If room <> Null
-				If room.doortype >= 0 And room.name <> "" And room.Pos.x > 0
-					If room.getDoorType() >= 5 And room.name <> "roomboard" And room.name <> "credits" And room.name <> "porter"
-						If room.getDoorType() = 5 AND room.DoorTimer.isExpired() Then room.CloseDoor()
-						'valign = 1 -> subtract sprite height
-						Assets.GetSprite("gfx_building_Tueren").Draw(room.Pos.x, Building.pos.y + Building.GetFloorY(room.Pos.y), room.getDoorType(), VALIGN_TOP)
-					EndIf
-				EndIf
+			If obj.getDoorType() >= 5
+				If obj.getDoorType() = 5 AND obj.DoorTimer.isExpired() Then obj.CloseDoor()
+				'valign = 1 -> subtract sprite height
+				Assets.GetSprite("gfx_building_Tueren").Draw(obj.Pos.x, Building.pos.y + Building.GetFloorY(obj.Pos.y), obj.getDoorType(), VALIGN_TOP)
 			EndIf
 		Next
-		'if game.debugmode Print "GAME: finished TRooms.drawDoors"
     End Function
-
-    'draw Room
-    'Raum zeichnen
-    Method Draw()
-		SetBlend SOLIDBLEND
-		If background = Null
-			Print "ERROR: room.draw() - background missing"
-		Else
-			If ActiveBackground = Null OR ActiveBackgroundID <> Self.uniqueID
-				ActiveBackground = Self.background
-				ActiveBackgroundID = Self.uniqueID
-			EndIf
-			ActiveBackground.Draw(20,10)
-		EndIf
-		SetBlend ALPHABLEND
-		ActiveRoom = Self
-	End Method
 
 	'leave with Open/close-animation (black)
 	Method LeaveAnimated:Int(dontleave:Int)
-        If Self.name = "roomboard" Then If TRoomSigns.AdditionallyDragged > 0 Then dontleave = True
-        If Self.name = "adagency"    Then TContractBlock.ContractsToPlayer(Game.playerID)
-        If Self.name = "movieagency" Then TMovieAgencyBlocks.ProgrammeToPlayer(Game.playerID)
-        If Self.name = "archive" Then TArchiveProgrammeBlock.ProgrammeToSuitcase(Game.playerID)
-        If Not dontleave Then
-			If GetDoorType() >= 0
-				Fader.Enable() 'room fading
-				OpenDoor()
-				FadeAnimationActive = True
-			Else
-				CloseDoor()
- 			    Players[Game.playerID].Figure.LeaveRoom()
-			EndIf
+		'roomboard left without animation as soon as something dragged but leave forced
+        If Self.name = "roomboard" AND TRoomSigns.AdditionallyDragged > 0 Then return True
+        If Self.name = "adagency"		Then TContractBlock.ContractsToPlayer(Game.playerID)
+        If Self.name = "movieagency"	Then TMovieAgencyBlocks.ProgrammeToPlayer(Game.playerID)
+        If Self.name = "archive"		Then TArchiveProgrammeBlock.ProgrammeToSuitcase(Game.playerID)
+
+		If GetDoorType() >= 0
+			Fader.Enable() 'room fading
+			OpenDoor()
+			FadeAnimationActive = True
+		Else
+			CloseDoor()
+			Players[Game.playerID].Figure.LeaveRoom()
 		EndIf
-		Return dontleave
+		Return false
+	End Method
+
+    'draw Room
+	Method Draw:int()
+		if not self.background then Throw "ERROR: room.draw() - background missing";return 0
+
+		SetBlend SOLIDBLEND
+		self.background.Draw(20,10)
+		SetBlend ALPHABLEND
+
+		'emit event so custom draw functions can run
+		EventManager.triggerEvent( TEventSimple.Create("rooms.onDraw", TData.Create().AddNumber("type", 1).AddObject("room", self)) )
+
+		TRooms.doadraw = 1
+		Select Self.name
+			Case "betty"			Room_Betty_Compute(Self) ;Return 0
+'			Case "office"			Room_Office_Compute(Self) ;Return 0
+			Case "archive"			Room_Archive_Compute(Self) ;Return 0
+			Case "safe"				Room_Safe_Compute(Self) ;Return 0
+			Case "elevator"			Room_Elevator_Compute(Self) ;Return 0
+			Case "roomboard"		Room_RoomBoard_Compute(Self) ;Return 0
+			Case "movieagency"		Room_MovieAgency_Compute(Self) ;Return 0
+			Case "movieauction"		Room_MovieAuction_Compute(Self) ;Return 0
+			Case "adagency"			Room_AdAgency_Compute(Self) ;Return 0
+			Case "financials"		Room_Financials_Compute(Self) ;Return 0
+			Case "image"			Room_Image_Compute(Self) ;Return 0
+			Case "chief"			Room_Chief_Compute(Self) ;Return 0
+			Case "stationmap"		Room_StationMap_Compute(Self) ;Return 0
+			Case "newsplanner"		Room_NewsPlanner_Compute(Self) ;Return 0
+			Case "programmeplanner" Room_ProgrammePlanner_Compute(Self) ;Return 0
+			Case "news" 			Room_News_Compute(Self) ;Return 0
+		End Select
+
 	End Method
 
     'process special functions of this room. Is there something to click on?
     'animated gimmicks? draw within this function.
-    'spezielle Funktionen des Raumes abarbeiten/zeichnen. Kann man darin
-    'was anklicken? Animierte Gimmicks? Hier zeichnen.
-    Method Update:Int(draw:Byte=0)
-	  TRooms.doadraw = Draw
-	  If Fader.fadeenabled And FadeAnimationActive
-  			If Fader.fadecount >= 20 And Fader.fadeout = False
+	Method Update:Int()
+		TRooms.doadraw = 0
+
+		If Fader.fadeenabled And FadeAnimationActive
+			If Fader.fadecount >= 20 And not Fader.fadeout
 				Fader.EnableFadeout()
 				CloseDoor()
 				FadeAnimationActive = False
  			    Players[Game.playerID].Figure.LeaveRoom()
 				Return 0
 			EndIf
-	  End If
-      If MOUSEMANAGER.IsDown(2)
-		Local dontleave:Int = Self.LeaveAnimated(0)
-        If Not dontleave Then MOUSEMANAGER.resetKey(2)
-      EndIf
-	  Select Self.name
-	     Case "betty" Room_Betty_Compute(Self) ;Return 0
-	     Case "office" Room_Office_Compute(Self) ;Return 0
-	     Case "archive" Room_Archive_Compute(Self) ;Return 0
-	     Case "safe" Room_Safe_Compute(Self) ;Return 0
-	     Case "elevator" Room_Elevator_Compute(Self) ;Return 0
-	     Case "roomboard" Room_RoomBoard_Compute(Self) ;Return 0
-	     Case "movieagency" Room_MovieAgency_Compute(Self) ;Return 0
-	     Case "movieauction" Room_MovieAuction_Compute(Self) ;Return 0
-	     Case "adagency" Room_AdAgency_Compute(Self) ;Return 0
-	     Case "financials" Room_Financials_Compute(Self) ;Return 0
-	     Case "image" Room_Image_Compute(Self) ;Return 0
-	     Case "chief" Room_Chief_Compute(Self) ;Return 0
-	     Case "stationmap" Room_StationMap_Compute(Self) ;Return 0
-	     Case "newsplanner" Room_NewsPlanner_Compute(Self) ;Return 0
-	     Case "programmeplanner" Room_ProgrammePlanner_Compute(Self) ;Return 0
-	     Case "news" Room_News_Compute(Self) ;Return 0
-	  End Select
-	 Players[game.playerID].figure.fromroom = Null
-    End Method
+		End If
+		'something blocks leaving? - check it
+		If MOUSEMANAGER.IsDown(2) AND not Self.LeaveAnimated(0) then MOUSEMANAGER.resetKey(2)
 
-    'draw actual room
-    'aktuellen Raum zeichnen
-    Method DrawActiveOne()
-      If ActiveRoom <> Null
-        If not RoomList Print "ERROR: no RoomList";Return       'aufhoeren wenn keine Liste vorhanden
-    '    For Local room:TRooms= EachIn RoomList
-    '      If ActiveRoom = room.name
-            If ActiveRoom.background = Null
-				Print "ERROR: missing ActiveRoom.background"
-            Else
-				activeRoom.background.Draw(20, 10)
-			EndIf
-			'DrawImage(ActiveRoom.background, 20,10,0)
-            ActiveRoom.Update()
-        '  EndIf
-        'Next
-      EndIf
-    End Method
+		'emit event so custom updaters can handle
+		'store amount of listeners
+		local listeners:int = EventManager.triggerEvent( TEventSimple.Create("rooms.onUpdate", TData.Create().AddNumber("type", 0).AddObject("room", self)) )
+
+		Select Self.name
+			Case "betty"			Room_Betty_Compute(Self) ;Return 0
+'			Case "office"			Room_Office_Compute(Self) ;Return 0
+			Case "archive"			Room_Archive_Compute(Self) ;Return 0
+			Case "safe"				Room_Safe_Compute(Self) ;Return 0
+			Case "elevator"			Room_Elevator_Compute(Self) ;Return 0
+			Case "roomboard"		Room_RoomBoard_Compute(Self) ;Return 0
+			Case "movieagency"		Room_MovieAgency_Compute(Self) ;Return 0
+			Case "movieauction"		Room_MovieAuction_Compute(Self) ;Return 0
+			Case "adagency"			Room_AdAgency_Compute(Self) ;Return 0
+			Case "financials"		Room_Financials_Compute(Self) ;Return 0
+			Case "image"			Room_Image_Compute(Self) ;Return 0
+			Case "chief"			Room_Chief_Compute(Self) ;Return 0
+			Case "stationmap"		Room_StationMap_Compute(Self) ;Return 0
+			Case "newsplanner"		Room_NewsPlanner_Compute(Self) ;Return 0
+			Case "programmeplanner" Room_ProgrammePlanner_Compute(Self) ;Return 0
+			Case "news" 			Room_News_Compute(Self) ;Return 0
+		End Select
+
+
+		'room got no special handling ...
+		if listeners = 0 then Players[game.playerID].figure.fromroom = Null
+	End Method
+
+	Method BaseSetup:TRooms(background:TGW_Sprites, name:string, desc:string, owner:int)
+		self.background	= background
+		self.name		= name
+		self.desc		= desc
+		self.owner		= owner
+		self.LastID:+1
+		self.id			= self.LastID
+
+		self.RoomList.AddLast(self)
+
+		return self
+	End Method
 
     'create room and use preloaded image
     'Raum erstellen und bereits geladenes Bild nutzen
     'x = 1-4
     'y = floor
 	Function Create:TRooms(background:TGW_Sprites, name:String = "unknown", desc:String = "unknown", descTwo:String = "", x:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
-		Local obj:TRooms	= New TRooms
-		obj.background 	= background
-		obj.name		= name
-		obj.desc		= desc
+		Local obj:TRooms=New TRooms.BaseSetup(background, name, desc, owner)
+
 		obj.descTwo		= descTwo
-		obj.owner		= owner
 		obj.doorwidth	= Assets.GetSprite("gfx_building_Tueren").framew
-		obj.uniqueID	= TRooms.LastID + 1
-		obj.LastID:+1
 		obj.xpos		= x
-		obj.Pos			= TPosition.Create()
+		obj.Pos			= TPosition.Create(0,y)
 		If x <=4
 			If x = 0 Then obj.Pos.x = -10
 			If x = 1 Then obj.Pos.x = 206
@@ -272,63 +250,45 @@ Type TRooms
 			If x = 3 Then obj.Pos.x = 469
 			If x = 4 Then obj.Pos.x = 557
 		EndIf
-		obj.RoomBoardX = x
-		obj.Pos.y = y
-		obj.doortype = doortype
+		obj.RoomBoardX	= x
+		obj.doortype	= doortype
+		If createATooltip then obj.CreateTooltip(x)
 
-		If not RoomList Then RoomList = CreateList()
-		RoomList.AddLast(obj)
-		SortList RoomList
-
-		If createATooltip
-			obj.CreateTooltip(x)
-		EndIf
 		Return obj
 	End Function
-
-	Method CreateTooltip(myx:Int = 0)
-		If doortype >= 0
-	       	Local signx:Int = Self.RoomBoardX
-	       	Local signy:Int = 0
-	       	If signx <= 4 Then
-	       	  If signx = 1 Then signx = 26
-	  	      If signx = 2 Then signx = 208
-		      If signx = 3 Then signx = 417
-		      If signx = 4 Then signx = 599
-	        EndIf
-	        signy = 41 + (13 - Pos.y) * 23
-	        RoomSign = TRoomSigns.Create(desc, signx, signy, owner)
-		EndIf
-	End Method
 
     'create room and use preloaded image
     'Raum erstellen und bereits geladenes Bild nutzen
 	Function CreateWithPos:TRooms(background:TGW_Sprites, name:String = "unknown", desc:String = "unknown", x:Int = 0, xpos:Int = 0, width:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
-	  Local tmproom:TRooms=New TRooms
-	  tmproom.background = background
-	  tmproom.name       = name
-	  tmproom.desc       = desc
-	  tmproom.owner      = owner
-	  tmproom.doorwidth  = width
-	  TRooms.LastID:+1
-	  tmproom.uniqueID = TRooms.LastID
-	  tmproom.xpos = xpos
-	  tmproom.Pos = TPosition.Create()
-	  tmproom.Pos.SetXY(x, y)
+		Local obj:TRooms=New TRooms.BaseSetup(background, name, desc, owner)
+		obj.doorwidth	= width
+		obj.xpos		= xpos
+		obj.Pos			= TPosition.Create(x,y)
+		obj.doortype	= doortype
+		obj.RoomBoardX	= obj.xpos
 
-	  tmproom.doortype = doortype
+		If CreateAToolTip then obj.CreateToolTip(xpos)
 
-	  If not RoomList Then RoomList = CreateList()
-	  RoomList.AddLast(tmproom)
-	  SortList RoomList
-	  tmproom.RoomBoardX = tmproom.xpos
-
-	  If CreateAToolTip
-	  	tmproom.CreateToolTip(xpos)
-	  EndIf
-
-	  Return tmproom
+		Return obj
 	End Function
+
+
+	Method CreateTooltip(myx:Int = 0)
+		If doortype >= 0
+			Local signx:Int = Self.RoomBoardX
+			Local signy:Int = 0
+			If signx <= 4
+				If signx = 1 Then signx = 26
+				If signx = 2 Then signx = 208
+				If signx = 3 Then signx = 417
+				If signx = 4 Then signx = 599
+			EndIf
+	        signy = 41 + (13 - Pos.y) * 23
+			RoomSign = TRoomSigns.Create(desc, signx, signy, owner)
+		EndIf
+	End Method
+
+
 
     Function GetTargetRoom:TRooms(x:int, y:int)
 		For Local room:TRooms = EachIn TRooms.RoomList
@@ -348,17 +308,8 @@ Type TRooms
 
 	Function GetRoom:TRooms(ID:Int)
 		For Local room:TRooms = EachIn TRooms.RoomList
-			If room.uniqueID = id Then Return room
+			If room.id = id Then Return room
 		Next
-		Return Null
-	End Function
-
-	Function GetRandomReachableRoom:TRooms()
-		Local room:TRooms = Null
-		Repeat
-			room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
-			If room.doortype >0 Then Return room
-		Forever
 		Return Null
 	End Function
 
@@ -388,6 +339,9 @@ Type TRooms
 	End Function
 End Type
 
+
+
+
 'Buereau: special functions, gimmicks, ...
 'Buero: Spezialfunktionen, Gimmicks, ...
 global PlannerToolTip:TTooltip
@@ -411,51 +365,68 @@ Function Room_News_Compute(_room:TRooms)
     EndIf
 End Function
 
-'Buereau: special functions, gimmicks, ...
-'Buero: Spezialfunktionen, Gimmicks, ...
-Function Room_Office_Compute(_room:TRooms)
-  Global PlannerToolTip:TTooltip
-  Global StationsToolTip:TTooltip
-  If TRooms.doadraw 'draw it
-    If _room.owner = Game.playerID
-      If StationsToolTip <> Null Then StationsToolTip.Draw()
-    EndIf
-    If PlannerToolTip <> Null  Then PlannerToolTip.Draw()
-  Else
-	Players[game.playerid].figure.fromroom =Null
-    If MouseManager.IsHit(1)
-      If functions.IsIn(MouseX(),MouseY(),25,40,150,295)
-		Players[Game.playerID].Figure.LeaveRoom()
-        MOUSEMANAGER.resetKey(1)
-	  EndIf
-      If functions.IsIn(MouseX(),MouseY(),164,54,67,110) And _room.owner = game.playerID
-        MOUSEMANAGER.resetKey(1);
-		Game.cursorstate = 0;
-		Players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("safe", -1)
-        Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", _room.owner)
-     EndIf
-	EndIf
 
-	Game.cursorstate = 0
-    If functions.IsIn(MouseX(), MouseY(), 600,140,128,210)
-      If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140, 0, 0)
-      PlannerToolTip.enabled = 1
-      PlannerToolTip.Hover()
-      Game.cursorstate = 1
-      If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("programmeplanner", _room.owner)
-    EndIf
-    If _room.owner = Game.playerID
-   	  If functions.IsIn(MouseX(), MouseY(), 732,45,160,170)
-	    If StationsToolTip = Null Then StationsToolTip = TTooltip.Create("Senderkarte", "Kauf und Verkauf", 650, 80, 0, 0)
-	    StationsToolTip.enabled = 1
-	    StationsToolTip.Hover()
-	    Game.cursorstate = 1
-	    If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("stationmap", _room.owner)
-	  EndIf
-      If StationsToolTip <> Null Then StationsToolTip.Update(App.timer.getDeltaTime())
-    EndIf
-    If PlannerToolTip <> Null  Then PlannerToolTip.Update(App.timer.getDeltaTime())
-  endif
+
+
+EventManager.registerListener( "rooms.onUpdate",	TEventListenerRunFunction.Create(rooms_handleOffice)  )
+EventManager.registerListener( "rooms.onDraw",		TEventListenerRunFunction.Create(rooms_handleOffice)  )
+
+global StationsToolTip:TTooltip
+
+Function rooms_handleOffice:int( triggerEvent:TEventBase )
+	Local evt:TEventSimple = TEventSimple(triggerEvent)
+	If not evt then return 0
+
+	local room:TRooms = TRooms(evt.getData().get("room"))
+	if not room then return 0
+
+	local drawMode:int= evt.getData().getInt("type",0)
+
+	if drawMode
+		'allowed for owner only
+		If room AND room.owner = Game.playerID
+			If StationsToolTip Then StationsToolTip.Draw()
+		EndIf
+
+		'allowed for all - if having keys
+		If PlannerToolTip <> Null Then PlannerToolTip.Draw()
+
+	else
+		Players[game.playerid].figure.fromroom = Null
+		If MouseManager.IsHit(1)
+			If functions.IsIn(MouseX(),MouseY(),25,40,150,295)
+				Players[Game.playerID].Figure.LeaveRoom()
+				MOUSEMANAGER.resetKey(1)
+			EndIf
+			If functions.IsIn(MouseX(),MouseY(),164,54,67,110) And room.owner = game.playerID
+				MOUSEMANAGER.resetKey(1);
+				Game.cursorstate = 0;
+				Players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("safe", -1)
+				Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
+			EndIf
+		EndIf
+
+		Game.cursorstate = 0
+		If functions.IsIn(MouseX(), MouseY(), 600,140,128,210)
+			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140, 0, 0)
+			PlannerToolTip.enabled = 1
+			PlannerToolTip.Hover()
+			Game.cursorstate = 1
+			If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+		EndIf
+		If room.owner = Game.playerID
+			If functions.IsIn(MouseX(), MouseY(), 732,45,160,170)
+				If not StationsToolTip Then StationsToolTip = TTooltip.Create("Senderkarte", "Kauf und Verkauf", 650, 80, 0, 0)
+				StationsToolTip.enabled = 1
+				StationsToolTip.Hover()
+				Game.cursorstate = 1
+				If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("stationmap", room.owner)
+			EndIf
+			If StationsToolTip Then StationsToolTip.Update(App.timer.getDeltaTime())
+		EndIf
+		If PlannerToolTip Then PlannerToolTip.Update(App.timer.getDeltaTime())
+
+	endif
 End Function
 
 
@@ -1005,7 +976,6 @@ Function Room_ProgrammePlanner_Compute(_room:TRooms)
 				Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, 240,240,240,2,0,1,0.25)
 			Next
 			_room.background = Assets.GetSprite("rooms_pplanning")
-			TRooms.ActiveBackground = Assets.GetSprite("rooms_pplanning")
 			DrawnOnProgrammePlannerBG = True
 
 			'reset target for font
@@ -1203,14 +1173,15 @@ End Function
 
 'signs used in elevator-plan /room-plan
 Type TRoomSigns Extends TBlock
-  Field title:String
-  Field image:TGW_Sprites
-  Field imageWithText:TGW_Sprites
-  Field image_dragged:TGW_Sprites
-  Global DragAndDropList:TList
-  Global List:TList = CreateList()
-  Global AdditionallyDragged:Int =0
-  Global DebugMode:Byte = 1
+  Field title:String				= ""
+  Field image:TGW_Sprites			= null
+  Field imageWithText:TGW_Sprites	= null
+  Field image_dragged:TGW_Sprites	= null
+
+  Global DragAndDropList:TList		= CreateList()
+  Global List:TList					= CreateList()
+  Global AdditionallyDragged:Int	= 0
+  Global DebugMode:Byte				= 1
 
 
   Function Create:TRoomSigns(text:String="unknown", x:Int=0, y:Int=0, owner:Int=0)
@@ -1228,7 +1199,6 @@ Type TRoomSigns Extends TBlock
  	  LocObject.width			= LocObject.image.w
  	  LocObject.Height			= LocObject.image.h - 1
  	  LocObject.title			= text
- 	  If not List Then List = CreateList()
  	  List.AddLast(LocObject)
  	  SortList List
         Local DragAndDrop:TDragAndDrop = New TDragAndDrop
@@ -1242,6 +1212,17 @@ Type TRoomSigns Extends TBlock
 
  	  Return LocObject
 	End Function
+
+
+    Function ResetPositions()
+		For Local obj:TRoomSigns = EachIn TRoomSigns.list
+			obj.Pos.SetPos(obj.OrigPos)
+			obj.StartPos.SetPos(obj.OrigPos)
+			obj.dragged	= 0
+		Next
+		TRoomSigns.AdditionallyDragged = 0
+    End Function
+
 
 	Method SetDragable(_dragable:Int = 1)
 		dragable = _dragable

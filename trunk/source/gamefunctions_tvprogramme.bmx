@@ -894,36 +894,37 @@ endrem
 		Next
 		Return Null
 	End Function
-	
+
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie hoch ist das finanzielle Gewicht pro Spot?
 	'Wird dafür gebraucht um die Wichtigkeit des Spots zu bewerten
-	Function GetFinanceWeight:float()
+	Method GetFinanceWeight:float() {_exposeToLua}
 		Return (self.GetProfit() + self.GetPenalty()) / self.GetSpotCount()
-	End Function
-	
+	End Method
+
 	'Wird bisher nur in der LUA-KI verwendet
 	'Anzahl der Spots die noch zu senden sind um den Vertrag zu erfüllen
-	Function GetCountOfSpotsToBroadcast()
+	Method GetCountOfSpotsToBroadcast:int() {_exposeToLua}
 		Local obj:TAdBlock = TAdBlock.GetBlockByContract( Self )
-		Local spotsBeenSent:Int = obj.GetSuccessfulSentContractCount()
-		Return self.GetSpotCount() - spotsBeenSent	
-	End Function	
-	
+		if not obj then return 0
+
+		Return self.GetSpotCount() - obj.GetSuccessfulSentContractCount()
+	End Method
+
 	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (Gesamt)
-	Function GetPressure:float()
-		Local daysLeft:Int = self.GetDaysToFinish()
-		Return self.GetSpotCount() / daysLeft  * daysLeft
-	End Function
-	
+	Method GetPressure:float() {_exposeToLua}
+		'daysToFinish für heute = 0  -> x/0 nix gut
+		Return self.GetSpotCount() / Max(0.0001, self.GetDaysToFinish() * self.GetDaysToFinish())
+	End Method
+
 	'Wird bisher nur in der LUA-KI verwendet
-	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)	
-	Function GetActualPressure:float()
-		Local daysLeft:Int = self.GetDaysToFinish()
-		Return self.GetCountOfSpotsToBroadcast() / daysLeft * daysLeft
-	End Function		
-		
+	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)
+	Method GetActualPressure:float() {_exposeToLua}
+		'daysToFinish für heute = 0  -> x/0 nix gut
+		Return self.GetCountOfSpotsToBroadcast() / Max(0.0001, self.GetDaysToFinish() * self.GetDaysToFinish())
+	End Method
+
 End Type
 
 Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent of movies, series and so on

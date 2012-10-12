@@ -92,10 +92,10 @@ endrem
 	Function AdditionalSave(obj:Object)
 		Local figure:TFigures = TFigures(obj)
 		If figure <> Null
-			If figure.toRoom <> Null Then LoadSaveFile.xmlWrite("TOROOMID", figure.toRoom.uniqueID) Else LoadSaveFile.xmlWrite("TOROOMID", "-1")
-			If figure.fromRoom <> Null Then LoadSaveFile.xmlWrite("FROMROOMID", figure.FromRoom.uniqueID) Else LoadSaveFile.xmlWrite("FROMROOMID", "-1")
-			If figure.clickedToRoom <> Null Then LoadSaveFile.xmlWrite("CLICKEDTOROOMID", figure.ClickedToRoom.uniqueID) Else LoadSaveFile.xmlWrite("CLICKEDTOROOMID", "-1")
-			If figure.inRoom <> Null Then LoadSaveFile.xmlWrite("INROOMID", figure.inRoom.uniqueID) Else LoadSaveFile.xmlWrite("INROOMID", "-1")
+			If figure.toRoom <> Null Then LoadSaveFile.xmlWrite("TOROOMID", figure.toRoom.id) Else LoadSaveFile.xmlWrite("TOROOMID", "-1")
+			If figure.fromRoom <> Null Then LoadSaveFile.xmlWrite("FROMROOMID", figure.FromRoom.id) Else LoadSaveFile.xmlWrite("FROMROOMID", "-1")
+			If figure.clickedToRoom <> Null Then LoadSaveFile.xmlWrite("CLICKEDTOROOMID", figure.ClickedToRoom.id) Else LoadSaveFile.xmlWrite("CLICKEDTOROOMID", "-1")
+			If figure.inRoom <> Null Then LoadSaveFile.xmlWrite("INROOMID", figure.inRoom.id) Else LoadSaveFile.xmlWrite("INROOMID", "-1")
 		EndIf
 	End Function
 
@@ -217,7 +217,7 @@ endrem
 
 	 	inRoom = room
 		If ParentPlayer <> Null And self.isAI()
-			If room <> Null Then ParentPlayer.PlayerKI.CallOnReachRoom(room.uniqueID) Else ParentPlayer.PlayerKI.CallOnReachRoom(0)
+			If room <> Null Then ParentPlayer.PlayerKI.CallOnReachRoom(room.id) Else ParentPlayer.PlayerKI.CallOnReachRoom(0)
 		EndIf
 		If Game.networkgame and Network.IsConnected then self.Network_SendPosition()
 	End Method

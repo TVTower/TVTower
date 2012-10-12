@@ -2282,8 +2282,9 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 				Figure.specialTime = 0
 				Local room:TRooms
 				Repeat
-					room = TRooms.GetRandomReachableRoom()
-				Until room <> Figure.inRoom
+					room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
+				Until room.doortype >0 and room <> Figure.inRoom
+
 				If Figure.LastSpecialTime = 0
 					Figure.LastSpecialTime=1
 					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
@@ -2297,7 +2298,10 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 		EndIf
 	EndIf
 	If figure.inRoom = Null And figure.clickedToRoom = Null And figure.dx = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
-		Local room:TRooms = TRooms.GetRandomReachableRoom()
+		Local room:TRooms
+		Repeat
+			room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
+		Until room.doortype >0
 		'Print "Bote: steht rum -> neues Ziel gesucht"
 		Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 	EndIf
@@ -3232,7 +3236,7 @@ End Function
 Function UpdateMain(deltaTime:Float = 1.0)
 	TError.UpdateErrors()
 	Game.cursorstate = 0
-	If Players[Game.playerID].Figure.inRoom <> Null Then Players[Game.playerID].Figure.inRoom.Update(0)
+	If Players[Game.playerID].Figure.inRoom <> Null Then Players[Game.playerID].Figure.inRoom.Update()
 
 	'ingamechat
 	'	If Game.networkgame
@@ -3292,7 +3296,6 @@ Function DrawMain(tweenValue:Float=1.0)
 	Else
 		TProfiler.Enter("Draw-Room")
 		Players[Game.playerID].Figure.inRoom.Draw()		'draw the room
-		Players[Game.playerID].Figure.inRoom.Update(1) 	'update room-actions
 		TProfiler.Leave("Draw-Room")
 	EndIf
 
@@ -3455,7 +3458,7 @@ Type TEventListenerOnDay Extends TEventListenerBase
 			TAuctionProgrammeBlocks.ProgrammeToPlayer() 'won auctions moved to programmecollection of player
 			'if new day, not start day
 			If evt.time > 0
-				TRooms.ResetRoomSigns()
+				TRoomSigns.ResetPositions()
 				For Local i:Int = 1 To 4
 					For Local NewsBlock:TNewsBlock = EachIn Players[i].ProgrammePlan.NewsBlocks
 						If Game.day - Newsblock.news.happenedday >= 2
