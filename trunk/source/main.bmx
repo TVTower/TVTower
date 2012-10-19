@@ -30,37 +30,7 @@ Global CopyrightString:String	= "by Ronny Otto, gamezworld.de"
 AppTitle = "TVTower - " + versionstring + " " + copyrightstring
 
 Global App:TApp = TApp.Create(60, 60) 'create with 60fps for physics and graphics
-rem
-global testimg:TImage = null
-global testimg1:TImage = null
-global testimg2:TImage = null
-global testimg3:TImage = null
-SetColor 100,100,100
-DrawRect(0,0,100,100)
-'Flip(0)
-testimg = LoadImage(GrabPixmap(0,0,100,100))
-testimg1 = ColorizeTImage(LoadImage(GrabPixmap(0,0,100,100)), TColor.Create(255,0,0))
-testimg2 = ColorizeTImage(LoadImage(GrabPixmap(0,0,100,100)), TColor.Create(0,255,0))
-testimg3 = ColorizeTImage(LoadImage(GrabPixmap(0,0,100,100)), TColor.Create(0,0,255))
-cls
-SetColor 255,255,255
-DrawRect(0,0,800,600)
-DrawImage(testimg, 0,0)
-DrawImage(testimg1, 150,0)
-DrawImage(testimg2, 300,0)
-DrawImage(testimg3, 450,0)
-flip(0)
-WaitKey()
-End
-endrem
-
 App.LoadResources("config/resources.xml")
-
-'defaultfont
-Assets.fonts.AddFont("Default", "res/fonts/Vera.ttf", 11, SMOOTHFONT)
-Assets.fonts.AddFont("Default", "res/fonts/VeraBd.ttf", 11, SMOOTHFONT + BOLDFONT)
-Assets.fonts.AddFont("Default", "res/fonts/VeraIt.ttf", 11, SMOOTHFONT + ITALICFONT)
-Assets.fonts.baseFontBold = Assets.getFont("Default", 11, BOLDFONT)
 
 GUIManager.globalScale	= 0.75
 GUIManager.defaultFont	= Assets.GetFont("Default", 12)
@@ -74,10 +44,6 @@ Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16
 Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21)
 Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(645, 16)
 
-Print "onclick-eventlistener integrieren: btn_newsplanner_up/down"
-Global Btn_newsplanner_up:TGUIImageButton		= new TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, "Newsplanner", 0)
-Global Btn_newsplanner_down:TGUIImageButton		= new TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, "Newsplanner", 3)
-
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 							= 0 			'=1 and the game will exit
 Global Fader:TFader								= New TFader
@@ -87,8 +53,8 @@ SeedRand(103452)
 Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
 TButton.UseFont 		= Assets.GetFont("Default", 12, 0)
-TTooltip.UseFontBold	= Assets.GetFont("Default", 11, BOLDFONT)
-TTooltip.UseFont 		= Assets.GetFont("Default", 11, 0)
+TTooltip.UseFontBold	= Assets.fonts.baseFontBold
+TTooltip.UseFont 		= Assets.fonts.baseFont
 TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
 
@@ -99,20 +65,20 @@ sonst nix
 endrem
 Type TApp
 	Field Timer:TDeltaTimer
-	Field limitFrames:Int = 0
+	Field limitFrames:Int				= 0
 	Field settings:TApplicationSettings
-	Field prepareScreenshot:Int = 0
+	Field prepareScreenshot:Int			= 0						'logo for screenshot
 	Field g:TGraphics
 
-	Field creationTime:int
+	Field creationTime:int 'only used for debug purpose (loadingtime)
 	global lastLoadEvent:TEventSimple	= null
 	global baseResourcesLoaded:int		= 0						'able to draw loading screen?
 	global baseResourceXmlUrl:string	= "config/startup.xml"	'holds bg for loading screen and more
 	global currentResourceUrl:string	= ""
 	global maxResourceCount:int			= 331					'set to <=0 to get a output of loaded resources
 
-	global LogoFadeInFirstCall:Int = 0
-	global LoaderWidth:Int = 0
+	global LogoFadeInFirstCall:Int		= 0
+	global LoaderWidth:Int				= 0
 
 
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 60)
@@ -2449,28 +2415,28 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
-Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
-Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
 
 Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 Test.AddEntry("test2")
 Test.AddEntry("test3")
 Test.AddEntry("test4")
 
-Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
-Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.GetFont("Default", 11, BOLDFONT))
+Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 1, 100, "NetGameLobby")
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
 NetgameLobby_gamelist.AddBackground("")
 
 Global GameSettingsBG:TGUIBackgroundBox = new TGUIBackgroundBox.Create(20, 20, 760, 260, 00, "Spieleinstellung", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
 
-Global GameSettingsOkButton_Announce:TGUIOkButton = new TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsOkButton_Announce:TGUIOkButton = new TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings", Assets.fonts.baseFontBold)
 Global GameSettingsGameTitle:TGuiInput		= new TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
-Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
-Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.GetFont("Default", 11, BOLDFONT))
+Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.fonts.baseFontBold)
+Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.fonts.baseFontBold)
 Global GameSettings_Chat:TGUIChat			= new TGuiChat.Create(20, 300, 520, 250, 0, "Chat", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
 Global InGame_Chat:TGUIChat					= new TGuiChat.Create(20, 10, 250, 200, 0, "Chat", "InGame")
 GameSettings_Chat.setMaxLength(200)
@@ -3212,10 +3178,10 @@ Function Init_All()
 	Init_Creation()
 	PrintDebug ("  Init_Colorization()", "colorizing Images corresponding to playercolors", DEBUG_START)
 	Init_Colorization()
-	Init_SetRoomNames()					'setzt Raumnamen entsprechend Spieler/Sendernamen
 
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-	Init_CreateRoomTooltips()			'erstellt Raum-Tooltips und somit auch Raumplaner-Schilder
+	'setzt Raumnamen, erstellt Raum-Tooltips und Raumplaner-Schilder
+	Init_CreateRoomDetails()
 
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Fill background of building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 

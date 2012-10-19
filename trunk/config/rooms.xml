@@ -71,6 +71,7 @@
 		</resource>
 	</resources>
 	<rooms>
+		<!-- visible rooms in the building -->
 		<room name="archive" owner="1" image="rooms_archive">
 			<tooltip text="ROOM_ARCHIVE_OF" />
 			<door x="4" y="2" type="3" />
@@ -187,6 +188,30 @@
 		<room name="roomagency" owner="0" image="rooms_supermarket">
 			<tooltip text="ROOM_ROOMAGENCY" description="ROOM_ROOMAGENCY_OWNER" />
 			<door x="2" y="9" type="2" />
+		</room>
+		<room name="betty" owner="0" image="rooms_betty">
+			<tooltip text="ROOM_BETTY" />
+			<door x="1" y="13" type="1" />
+		</room>
+		<room name="supermarket" owner="0" image="rooms_supermarket">
+			<tooltip text="ROOM_SUPERMARKET" description="ROOM_SUPERMARKET_SUB" />
+			<door x="3" y="1" type="3" />
+		</room>
+		<room name="movieagency" owner="0" image="rooms_movieagency">
+			<tooltip text="ROOM_MOVIEAGENCY" description="ROOM_MOVIEAGENCY_OWNER" />
+			<door x="1" y="3" type="3" />
+		</room>
+		<room name="adagency" owner="0" image="rooms_adagency">
+			<tooltip text="ROOM_ADAGENCY" description="ROOM_ADAGENCY_OWNER" />
+			<door x="1" y="10" type="3" />
+		</room>
+
+		<!-- rooms within other rooms -->
+		<room name="safe" image="rooms_supermarket">
+			<tooltip text="ROOM_SAFE" />
+		</room>
+		<room name="movieauction" image="rooms_movieagency">
+			<tooltip text="ROOM_MOVIEAGENCY" />
 		</room>
 	</rooms>
 </tvt>

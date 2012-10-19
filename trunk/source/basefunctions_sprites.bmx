@@ -631,8 +631,9 @@ End Type
 
 Type TGW_FontManager
 	Field DefaultFont:TGW_Font = null
-	Field baseFont:TBitmapFont = null
-	Field baseFontBold:TBitmapFont
+	Field baseFont:TBitmapFont		= null
+	Field baseFontBold:TBitmapFont	= null
+	Field baseFontItalic:TBitmapFont= null
 	Field List:TList = CreateList()
 
 	Function Create:TGW_FontManager()
@@ -643,7 +644,8 @@ Type TGW_FontManager
 
 '	Method GW_GetFont:TImageFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
 	Method GetFont:TBitmapFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
-		If _FName = "Default" And _FSize = -1 And _FStyle = -1 Then Return DefaultFont.FFont
+		_FName = lower(_FName)
+		If _FName = "default" And _FSize = -1 And _FStyle = -1 Then Return DefaultFont.FFont
 		If _FSize = -1 Then _FSize = DefaultFont.FSize
 		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle Else _FStyle = _FStyle | SMOOTHFONT
 
@@ -656,6 +658,8 @@ Type TGW_FontManager
 	End Method
 
 	Method AddFont:TGW_Font(_FName:String, _FFile:String, _FSize:Int, _FStyle:Int)
+		_FName = lower(_FName)
+
 		If _FSize = -1 Then _FSize = DefaultFont.FSize
 		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle
 		If _FFile = "" Then _FFile = DefaultFont.FFile

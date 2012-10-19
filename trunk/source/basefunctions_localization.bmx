@@ -60,6 +60,14 @@ Type Localization
       Next
    End Function
 
+	Function GetStringWithParams:string(Key:string, group:string = Null, params:string[] = null)
+		local result:string = Localization.GetString(Key, group)
+		if params = null then return result
+
+		For local i:int = 0 until Len(params)
+			result = result.replace("%"+(i+1), params[i])
+		Next
+	End Function
 
    'Returns the value for the specified key, or an empty string if the key was not found
    Function GetString:String(Key:String, group:String = Null)
@@ -68,7 +76,7 @@ Type Localization
       For Local r:LocalizationMemoryResource = EachIn resources
          If r.language <> currentLanguage Then Continue
          ret = r.GetString(Key, group)
-         If ret <> Null Then Return ret
+         If ret <> Null Then Return ret.replace("\n", Chr(13))
       Next
 
       Return ret
@@ -148,7 +156,6 @@ Localization.supportedLanguages = New TList
 function GetLocale:string(key:string)
 	return Localization.getString(key)
 end Function
-
 
 
 

@@ -14,6 +14,9 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 
 REM
+* SaveLoad als Events "Movie.onLoad"
+
+
 * Räume als besetzt markieren (damit KI keine Filme kauft waehrend ich beim Haendler steh :D)
 * XML-Dateien: Animationskonfiguration
 	- TAsset -> global "currentDeltaTime"

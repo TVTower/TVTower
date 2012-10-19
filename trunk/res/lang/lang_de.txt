@@ -195,3 +195,23 @@ MAP_COUNTRY_SCHLESWIGHOLSTEIN	=	Schleswig-Holstein
 MAP_COUNTRY_BRANDENBURG			=	Brandenburg
 MAP_COUNTRY_NRW					=	Nordrhein-Westfahlen
 MAP_COUNTRY_MECKPOM				=	Mecklenburg Vorpommern
+
+
+DIALOGUE_BOSS_WELCOME					=	Was ist %1 ?!\nHaben Sie nichts besseres zu tun als meine Zeit zu verschwenden?\n  \nAb an die Arbeit oder jemand anderes erledigt Ihren Job...!
+DIALOGUE_BOSS_WILLNOTDISTURB			=	Ja, ist ja schon gut Chef ich störe nicht weiter!
+DIALOGUE_BOSS_ASKFORCREDIT				=	Ich wollte wegen *ähm* einem Kredit nachfragen.
+DIALOGUE_BOSS_REPAYCREDIT				=	Ich will etwas von meinem Kredit abbezahlen...
+DIALOGUE_BOSS_CREDIT_OK					=	Schon wieder neue Kohle?\nNaja, Sie machen Ihren Job ja besser als andere Praktikanten.\nAllerdings sind nicht mehr als %1€ drin, verstanden!?
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT			=	Ja, den Kredit nehme ich dann wohl.
+DIALOGUE_BOSS_DECLINE1					=	Ach, nein Danke Boss, hab's mir anders überlegt.
+DIALOGUE_BOSS_DECLINE2					=	Hab's mir doch anders überlegt, bis später Chef.
+DIALOGUE_BOSS_DECLINE3					=	Öhm, ich schau dann wohl später nochmal vorbei.
+DIALOGUE_BOSS_CREDIT_REPAY				=	Wollen Sie nicht erstmal den alten Kredit zurückzahlen?\nSie schulden mir noch %1€ - zahlen Sie die ersteinmal ab!\nUnd nun raus bevor ich mich vergesse!!
+DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT		=	Ja, dann zahl ich halt etwas zurück.
+DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE	=	Soso, wenigstens eine gute Nachricht für den heutigen Tag.\n \nWieviel wollen Sie denn zurückzahlen?
+DIALOGUE_BOSS_CREDIT_REPAY_100K			=	Naja, so 100000€ könnte ich zurückzahlen.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL			=	Eigentlich gleich den kompletten Kredit, also %1€.
+
+DIALOGUE_BOSS_CHANGETOPIC				=	Können wir nicht über etwas anderes reden?
+DIALOGUE_BOSS_BACKTOWORK				=	So und nun an die Arbeit %1!
+DIALOGUE_BOSS_BACKTOWORK_OK				=	Ok, bin ja schon weg.

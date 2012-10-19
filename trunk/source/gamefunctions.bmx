@@ -587,6 +587,12 @@ Type TTooltip extends TRenderableChild
 	End Method
 
 	Method Draw:Int(tweenValue:float=1.0)
+rem
+		DrawRect(200,50,20, 20)
+		SetColor 0,0,0
+		DrawText(self.pos.x + " " +self.pos.y, 200,50)
+		SetColor 255,255,255
+endrem
 		If Not enabled Then Return 0
 
 		If Title <> oldTitle then self.DirtyImage = True
@@ -1088,6 +1094,10 @@ Type TPPbuttons Extends TButton
 		'open others?
 		If id = 0 Then PPcontractList.SetOpen(1)	'opens contractlist DebugLog("auf Werbung geklickt")
 		If id = 1 Then PPprogrammeList.SetOpen(1)	'opens genrelist  DebugLog("auf Filme geklickt")
+
+		print "tppbutton onClick - auf eventemitter umstellen"
+		'If id = 3 Then RoomHandler_Office.currentsub = RoomHandler_Office.SUB_FINANCIALS	'shows financials
+		'If id = 4 Then RoomHandler_Office.currentsub = RoomHandler_Office.SUB_IMAGE			'shows image
 		If id = 3 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("financials", Players[Game.playerID].Figure.inRoom.owner)	'shows financials
 		If id = 4 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("image", Players[Game.playerID].Figure.inRoom.owner)	'shows image and audiencequotes
     End Method

@@ -190,3 +190,23 @@ MAP_COUNTRY_SCHLESWIGHOLSTEIN	=	Schleswig-Holstein
 MAP_COUNTRY_BRANDENBURG			=	Brandenburg
 MAP_COUNTRY_NRW					=	Nordrhein-Westfahlen
 MAP_COUNTRY_MECKPOM				=	Mecklenburg Vorpommern
+
+
+DIALOGUE_BOSS_WELCOME					=	What's up %1 ?!\nIs there nothing to do for you than eating up my time?\n \nBack to work or someone else will get your Job...!
+DIALOGUE_BOSS_WILLNOTDISTURB			=	Ah alright, Boss I will no longer disturb!
+DIALOGUE_BOSS_ASKFORCREDIT				=	I just *uhm* wanted to ask for credit.
+DIALOGUE_BOSS_REPAYCREDIT				=	I want to repay my credit...
+DIALOGUE_BOSS_CREDIT_OK					=	Again. Money. Agaaain?\nHmm, ok you are better in your job than other candidates. More than %1€ is not possible, understood?!
+DIALOGUE_BOSS_CREDIT_OK_ACCEPT			=	Yes, I will take that credit.
+DIALOGUE_BOSS_DECLINE1					=	Hmm, thanks boss but I changed my mind.
+DIALOGUE_BOSS_DECLINE2					=	Just changed my mind, see you later boss.
+DIALOGUE_BOSS_DECLINE3					=	Ahem, I will come back later.
+DIALOGUE_BOSS_CREDIT_REPAY				=	Won't you just repay the old credit?\nYou still owe me %1€ - repay that first!\nAnd now get lost or I'll kick your ass!!
+DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT		=	Okay, I will repay something.
+DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE	=	You don't say, at least one good news for today.\n \nHow much do you want to repay?
+DIALOGUE_BOSS_CREDIT_REPAY_100K			=	Oh well, I could repay 100000€.
+DIALOGUE_BOSS_CREDIT_REPAY_ALL			=	Hmm, the whole credit which is %1€.
+
+DIALOGUE_BOSS_CHANGETOPIC				=	Can't we talk about something different?
+DIALOGUE_BOSS_BACKTOWORK				=	Okay %1, now back to work!
+DIALOGUE_BOSS_BACKTOWORK_OK				=	Aye sire, on my way.

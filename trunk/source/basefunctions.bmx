@@ -286,22 +286,31 @@ End Type
 'for things happening every X moments
 Type TTimer
 	field interval:int	= 0		'happens every ...
+	field actionTime:int= 0	'plus duration
 	field timer:int		= 0		'time when event last happened
 
-	Function Create:TTimer(interval:int)
+	Function Create:TTimer(interval:int, actionTime:int = 0)
 		local obj:TTimer = new TTimer
 		obj.interval	= interval
+		obj.actionTime	= actionTime
 		'set timer
 		obj.reset()
 		return obj
 	End Function
 
+	'returns TRUE if interval is gone (ignores action time)
+	Method doAction:int()
+		local timeLeft:int = Millisecs() - (self.timer + self.interval)
+		return ( timeLeft > 0 AND timeLeft < self.actionTime )
+	End Method
+
+	'returns TRUE if interval and duration is gone (ignores duration)
 	Method isExpired:int()
-		return ( self.timer + self.interval <= Millisecs() )
+		return ( self.timer + self.interval + self.actionTime <= Millisecs() )
 	End Method
 
 	Method reachedHalftime:int()
-		return ( self.timer + 0.5*self.interval <= Millisecs() )
+		return ( self.timer + 0.5*(self.interval + self.actionTime) <= Millisecs() )
 	End Method
 
 	Method expire()

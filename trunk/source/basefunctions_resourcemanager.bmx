@@ -315,7 +315,6 @@ Type TXmlLoader
 
 			Select _type
 				Case "RESOURCES"			Self.LoadResources(childNode)
-'				Case "ROOMS"				Self.LoadRooms(childNode)
 				Case "FILE"					Self.LoadXmlFile(childNode)
 				Case "PIXMAP"				Self.LoadPixmapResource(childNode)
 				Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
@@ -560,6 +559,8 @@ End Type
 Type TResourceLoaders
 
 	Function Create:TResourceLoaders()
+		EventManager.registerListener( "LoadResource.FONTS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadFonts)  )
+		EventManager.registerListener( "LoadResource.FONT",		TEventListenerRunFunction.Create(TResourceLoaders.onLoadFonts)  )
 		EventManager.registerListener( "LoadResource.ROOMS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadRooms)  )
 		EventManager.registerListener( "LoadResource.COLORS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
 		EventManager.registerListener( "LoadResource.COLOR",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
@@ -578,6 +579,53 @@ Type TResourceLoaders
 		if xmlLoader = null then return false
 
 		return true
+	End Function
+
+
+	'could also be in a different files - just register to the special event
+	Function onLoadFonts:int( triggerEvent:TEventBase )
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+
+		'groups
+		if triggerEvent.isTrigger("LoadResource.FONTS")
+			For Local child:TxmlNode = EachIn childNode.GetChildren()
+				EventManager.triggerEvent( TEventSimple.Create("LoadResource.FONT", TData.Create().AddObject("node", child).AddObject("xmlLoader", xmlLoader) ) )
+			Next
+		endif
+
+		'individual color
+		if triggerEvent.isTrigger("LoadResource.FONT")
+			Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
+			Local url:String	= xmlLoader.xml.FindValue(childNode, "url", "")
+			Local size:int		= xmlLoader.xml.FindValueInt(childNode, "size", 10)
+			Local setDefault:int= xmlLoader.xml.FindValueInt(childNode, "default", 0)
+
+			Local flags:Int = 0
+			Local flagsstring:String = xmlLoader.xml.FindValue(childNode, "flags", "")
+			If flagsstring <> ""
+				Local flagsarray:String[] = flagsstring.split(",")
+				For Local flag:String = EachIn flagsarray
+					flag = Upper(flag.Trim())
+					If flag = "BOLDFONT" Then flags = flags + BOLDFONT
+					If flag = "ITALICFONT" Then flags = flags + ITALICFONT
+				Next
+			endif
+
+			if name="" or url="" then return 0
+			local font:TGW_Font = Assets.fonts.AddFont(name, url, size, SMOOTHFONT +flags)
+
+			if setDefault
+				if flags & BOLDFONT
+					Assets.fonts.baseFontBold = font.FFont
+				elseif flags & ITALICFONT
+					Assets.fonts.baseFontItalic = font.FFont
+				else
+					Assets.fonts.baseFont = font.FFont
+				endif
+			endif
+		endif
 	End Function
 
 	'could also be in a different files - just register to the special event
@@ -649,9 +697,15 @@ Type TResourceLoaders
 				room.Insert("tooltip2", "" )
 			endif
 			subNode = xmlLoader.xml.FindChild(child, "door")
-			room.Insert("x", 		xmlLoader.xml.FindValue(subNode, "x", 0) )
-			room.Insert("y", 		xmlLoader.xml.FindValue(subNode, "y", 0) )
-			room.Insert("doortype", xmlLoader.xml.FindValue(subNode, "type", -1) )
+			if subNode
+				room.Insert("x", 		xmlLoader.xml.FindValue(subNode, "x", 0) )
+				room.Insert("y", 		xmlLoader.xml.FindValue(subNode, "y", 0) )
+				room.Insert("doortype", xmlLoader.xml.FindValue(subNode, "type", -1) )
+			else
+				room.Insert("x", "0" )
+				room.Insert("y", "0" )
+				room.Insert("doortype", "-1")
+			endif
 			values_room.Insert(Name + owner, TAsset.CreateBaseAsset(room, "ROOMDATA"))
 			PrintDebug("XmlLoader.LoadRooms:", "inserted room: " + Name, DEBUG_LOADING)
 			'print "rooms: "+Name + owner
