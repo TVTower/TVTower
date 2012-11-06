@@ -179,9 +179,13 @@ Type TLuaEngine
 
 	'calls getobjmetatable
 	Method lua_pushobject( obj:Object )
-		lua_boxobject( getLuaState(),obj )
-		lua_rawgeti( getLuaState(),LUA_REGISTRYINDEX, getObjMetaTable())
-		lua_setmetatable( getLuaState(),-2 )
+		If obj = null then 'mv 06.11.2012: Es ist nötig "null"-Werte in Lua-kompatible "nil"-Werte umzuwandeln.
+			lua_pushnil( getLuaState() )
+		Else		
+			lua_boxobject( getLuaState(),obj )
+			lua_rawgeti( getLuaState(),LUA_REGISTRYINDEX, getObjMetaTable())
+			lua_setmetatable( getLuaState(),-2 )		
+		Endif		
 	End Method
 
 	'from MaxLua

@@ -1,6 +1,6 @@
 Const CURRENCYSIGN:string = Chr(8364) 'eurosign
 
-Type TPlayerProgrammePlan
+Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field ProgrammeBlocks:TList = CreateList()
 	Field Contracts:TList		= CreateList()
 	Field NewsBlocks:TList		= CreateList()
@@ -274,18 +274,17 @@ Type TPlayerProgrammePlan
 		Return 0
 	End Method
 
-	Method GetActualProgramme:TProgramme(time:Int = -1, day:Int = - 1)
+	Method GetActualProgramme:TProgramme(time:Int = -1, day:Int = -1) {_exposeToLua}
 		If time = -1 Then time = Game.GetHour()
 		If day  = -1 Then day  = Game.day
 		Local planHour:Int = day*24+time
-
 		For Local block:TProgrammeBlock = EachIn Self.ProgrammeBlocks
 			If (block.sendHour + block.Programme.blocks - 1 >= planHour) Then Return block.programme
 		Next
 		Return Null
 	End Method
 
-	Method GetActualContract:TContract(time:Int = -1, day:Int = - 1)
+	Method GetActualContract:TContract(time:Int = -1, day:Int = - 1) {_exposeToLua}
 		If time = -1 Then time = Game.GetHour()
 		If day  = -1 Then day  = Game.day
 
@@ -298,7 +297,7 @@ Type TPlayerProgrammePlan
 	Method GetActualAdBlock:TAdBlock(playerID:Int, time:Int = -1, day:Int = - 1)
 		If time = -1 Then time = Game.GetHour()
 		If day  = -1 Then day  = Game.day
-
+		
 		For Local adblock:TAdBlock= EachIn TAdBlock.List
 			If adblock.owner = playerID
 				If (adblock.contract.sendtime>= time And adblock.contract.sendtime <=time) And..
@@ -308,7 +307,7 @@ Type TPlayerProgrammePlan
 		Return Null
 	End Method
 
-	Method GetActualNewsBlock:TNewsBlock(position:Int)
+	Method GetActualNewsBlock:TNewsBlock(position:Int) {_exposeToLua}
 		For Local newsBlock:TNewsBlock = EachIn Self.NewsBlocks
 			If newsBlock.sendslot = position Then Return newsBlock
 		Next
@@ -914,17 +913,58 @@ endrem
 	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (Gesamt)
 	Method GetPressure:float() {_exposeToLua}
-		'daysToFinish für heute = 0  -> x/0 nix gut
-		Return self.GetSpotCount() / Max(0.0001, self.GetDaysToFinish() * self.GetDaysToFinish())
+		daysToFinish = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
+		Return self.GetSpotCount() / daysToFinish * daysToFinish
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)
 	Method GetActualPressure:float() {_exposeToLua}
-		'daysToFinish für heute = 0  -> x/0 nix gut
-		Return self.GetCountOfSpotsToBroadcast() / Max(0.0001, self.GetDaysToFinish() * self.GetDaysToFinish())
+		daysToFinish = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
+		Return self.GetCountOfSpotsToBroadcast() / daysToFinish * daysToFinish
 	End Method
 
+	'Wird bisher nur in der LUA-KI verwendet
+	'Wie dringd ist es diese Spots zu senden
+	Method GetAcuteness:float() {_exposeToLua}
+		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
+		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
+		Return spotsToBroadcast  / daysLeft * daysLeft  * 100
+	End Method
+
+	'Wird bisher nur in der LUA-KI verwendet
+	'Viele Spots sollten heute mindestens gesendet werden	
+	Method SendMinimalBlocksToday:int() {_exposeToLua}
+		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
+		Local acuteness:int = self.GetAcuteness()
+		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
+
+		If (acuteness >= 100) Then
+			Return int(spotsToBroadcast / daysLeft) 'int rundet
+		Elseif (acuteness >= 70) Then
+			Return 1
+		Else
+			Return 0
+		Endif
+	End Method
+	
+	'Wird bisher nur in der LUA-KI verwendet
+	'Viele Spots sollten heute optimalerweise gesendet werden	
+	Method SendOptimalBlocksToday:int() {_exposeToLua}
+		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
+		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
+
+		Local acuteness:int = self.GetAcuteness()
+		Local optimumCount:int = Int(spotsToBroadcast / daysLeft) 'int rundet
+		
+		If (acuteness >= 100) and (spotsToBroadcast > optimumCount) Then
+			optimumCount = optimumCount + 1
+		Endif
+	
+		If (acuteness >= 100) Then
+			return Int(spotsToBroadcast / daysLeft)  'int rundet
+		Endif
+	End Method
 End Type
 
 Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent of movies, series and so on
@@ -1293,8 +1333,7 @@ endrem
 
 	'Manuel: Wird nur in der Lua-KI verwendet
 	Method GetQualityLevel:Int() {_exposeToLua}
-		Local quality:Int = Self.GetBaseAudienceQuote()
-
+		Local quality:Int = Self.GetBaseAudienceQuote() * 100
 		If quality > 20
 			Return 5
 		ElseIf quality > 15
@@ -1353,11 +1392,9 @@ endrem
 						+0.4	*Float(review)/255.0..
 						+0.3	*Float(speed)/255.0..
 		EndIf
-
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
 		Local age:Int = Max(0,100-Max(0,game.year - year))
 		quality:* Max(0.10, (age/ 100.0))
-
 		'repetitions wont be watched that much
 		quality	:*	(ComputeTopicality()/255.0)^2
 

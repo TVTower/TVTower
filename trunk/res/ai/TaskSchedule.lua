@@ -19,8 +19,8 @@ function TaskSchedule:Activate()
 	self.AnalyzeScheduleJob = JobAnalyzeSchedule:new()
 	self.AnalyzeScheduleJob.ScheduleTask = self	
 	
-	self.ImperativelySchuduleJob = JobImperativelySchudule:new()
-	self.ImperativelySchuduleJob.ScheduleTask = self	
+	self.EmergencySchuduleJob = JobEmergencySchedule:new()
+	self.EmergencySchuduleJob.ScheduleTask = self	
 	
 	self.ScheduleJob = JobSchedule:new()
 	self.ScheduleJob.ScheduleTask = self	
@@ -30,8 +30,8 @@ function TaskSchedule:GetNextJobInTargetRoom()
 	debugMsg("GetNextJobInTargetRoomX")
 	if (self.AnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.AnalyzeScheduleJob
-	elseif (self.ImperativelySchuduleJob.Status ~= JOB_STATUS_DONE) then
-		return self.ImperativelySchuduleJob					
+	elseif (self.EmergencySchuduleJob.Status ~= JOB_STATUS_DONE) then
+		return self.EmergencySchuduleJob					
 	elseif (self.ScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.ScheduleJob	
 	end
@@ -89,8 +89,19 @@ function TaskSchedule:GetMaxAudiencePercentageByHour(hour)
 	end
 end
 
-function TaskSchedule:GetQualityLevel(hour)
-	local maxAudience = self:GetMaxAudiencePerHour(hour)
+-- Berechnet die Vermutung wie viel Zuschauer wohl zu dieser Stunde wohl erreicht werden können
+function TaskSchedule:GuessedAudienceForHourAndLevel(hour)	
+	local level = self:GetQualityLevel(hour) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
+	local globalPercentageByHour = self:GetMaxAudiencePercentageByHour(hour) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
+	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
+	
+	--Formel: Filmqualität * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
+	local guessedAudience = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
+	return guessedAudience
+end
+
+function TaskSchedule:GetQualityLevel(hour)	
+	local maxAudience = self:GetMaxAudiencePercentageByHour(hour)
 	if (maxAudience <= 5) then
 		return 1 --Nachtprogramm
 	elseif (maxAudience <= 10) then
@@ -104,17 +115,8 @@ function TaskSchedule:GetQualityLevel(hour)
 	end
 end
 
-function TaskSchedule:GuessedAudienceForHourAndLevel(hour)
-	local level = self:GetQualityLevel(hour)
-	local globalPercentageByHour = self:GetMaxAudiencePercentageByHour(hour)		
-	local averageProgramQualityByLevel = self:GetAverageQualityByLevel(level)
-	
-	local guessedAudience = globalPercentageByHour * averageProgramQualityByLevel * TVT.getPlayerMaxAudience()
-	return guessedAudience
-end
-
 --TODO später dynamisieren
-function TaskSchedule:GetAverageQualityByLevel(level)
+function TaskSchedule:GetAverageMovieQualityByLevel(level)
 	if (level == 1) then
 		return 3 --Nachtprogramm
 	elseif (level == 2) then
@@ -144,10 +146,6 @@ end
 
 function JobAnalyzeSchedule:Tick()
 	if self.Step == 1 then
-		self:ReadMoviesAndSpots()	
-	elseif self.Step == 2 then
-		self:InitializeInventory()
-	elseif self.Step == 3 then
 		self:Analyze()
 		self.Status = JOB_STATUS_DONE
 	end
@@ -155,131 +153,98 @@ function JobAnalyzeSchedule:Tick()
 	self.Step = self.Step + 1
 end
 
-function JobAnalyzeSchedule:ReadMoviesAndSpots()
-	--TODO: Verlangsamen
-	--TODO: Movies und Spots die schon mal geladen wurden muss man nicht nochmal laden
-	for i=0,23 do
-		local movieId = TVT.of_getMovie(-1, i)
-		if (movieId ~= 0) then
-			local movie = Movie:new()
-			movie:Initialize(movieId)		
-			self.ScheduleTask.TodayMovieSchedule[i] = movie		
-		end
-	end
-
-	for i=0,23 do
-		local spotId = TVT.of_getSpot(-1, i)
-		if (spotId ~= 0) then
-			local spot = Spot:new()
-			spot:Initialize(spotId)
-			self.ScheduleTask.TodaySpotSchedule[i] = spot		
-		end
-	end
-end
-
-function JobAnalyzeSchedule:InitializeInventory()
-	for i=0,TVT.of_getPlayerSpotCount() do
-		local spotId = TVT.of_getPlayerSpot(i)
-		if (spotId ~= 0) then
-			local spot = Spot:new()
-			spot:Initialize(spotId)
-			self.ScheduleTask.SpotInventory[spotId] = spot
-			debugMsg("A3")
-		end
-	end
-
-	for i=0,TVT.of_getPlayerSpotCount() do
-		local spotId = TVT.of_getPlayerSpot(i)
-		if (spotId ~= 0) then
-			local spot = Spot:new()
-			spot:Initialize(spotId)
-			self.ScheduleTask.SpotInventory[spotId] = spot
-			debugMsg("A4")
-		end
-	end			
-end
-
 function JobAnalyzeSchedule:Analyze()
 	--debugMsg("A1")
 	for k,v in pairs(self.ScheduleTask) do
-		v:RecalcPriority()
+--		v:RecalcPriority()
 	end
 	--debugMsg("A2")
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobImperativelySchudule = AIJob:new{
+JobEmergencySchedule = AIJob:new{
 	ScheduleTask = nil,
-	SlotsToCheck = 4,
+	SlotsToCheck = 8, --4,
 	CurrentHour = -1
 }
 
-function JobImperativelySchudule:Prepare(pParams)
-	debugMsg("Prüfe ob dringende Programm- und Werveplanungen notwendig sind")
+function JobEmergencySchedule:Prepare(pParams)
+	debugMsg("Prüfe ob dringende Programm- und Werbeplanungen notwendig sind")
 end
 
-function JobImperativelySchudule:Tick()
+function JobEmergencySchedule:Tick()
 	if self:CheckImperatively() then
 		self:FillIntervals()
 	end
 end
 
-function JobImperativelySchudule:CheckImperatively()
+function JobEmergencySchedule:CheckImperatively()
 	--TODO über Tagesgrenzen hinweg
 	self.CurrentHour = TVT:Hour()
-	
-	for i=self.CurrentHour,self.CurrentHour+self.slotsToCheck do
-		local movie = self.ScheduleTask.TodayMovieSchedule[i]
-		if (movie == nil) then
+				
+	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
+		local programme = MY.ProgrammePlan.GetActualProgramme(i)
+		if (programme == nil) then
 			return true
 		end
 	end
 	
-	for i=self.CurrentHour,self.CurrentHour+self.slotsToCheck do
-		local spot = self.ScheduleTask.TodaySpotSchedule[i]
-		if (spot == nil) then
+	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
+		local contract = MY.ProgrammePlan.GetActualContract(i)
+		if (adblock == nil) then
 			return true
 		end
 	end	
 end
 
-function JobImperativelySchudule:FillIntervals()	
+function JobEmergencySchedule:FillIntervals()	
+	--Aufgabe: So schnell wie möglich die Lücken füllen
 	--Zuschauerberechnung: ZuschauerquoteAufGrundderStunde * Programmquali * MaximalzuschauerproSpieler
 
-	for i=self.CurrentHour,self.CurrentHour+this.slotsToCheck do
-		local level = self:GetQualityLevel(hour)
-		local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(i)
+	--debugMsg("for: " .. self.CurrentHour .. ", " .. self.CurrentHour+self.SlotsToCheck .. "(" .. self.CurrentHour .. ", " .. self.SlotsToCheck .. ")" )
+	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
+		--debugMsg("Stunde: " .. i)
+		local currentDay = TVT:Day() --Ist eben so im BlitzMaxCode.
 		
-		local currentSpotList = self:GetSpotList(guessedAudience, 0.8)
-		if (table.count(currentSpotList) == 0) then
-			currentSpotList = self:GetSpotList(guessedAudience, 0.6)
+		--Prüfen ob ne Lücke existiert, wenn ja => füllen		
+		local programme = MY.ProgrammePlan.GetActualProgramme(i, currentDay)
+		if (programme == nil) then
+			self:SetMovieToEmptyBlock(currentDay, i)
+		--else
+			--debugMsg("okay: " .. programme.title)
 		end
-		if (table.count(currentSpotList) == 0) then
-			currentSpotList = self:GetSpotList(guessedAudience, 0.4)
-		end
-		if (table.count(currentSpotList) == 0) then
-			currentSpotList = self:GetSpotList(guessedAudience, 0)
-		end
+			
 		
-		currentSpotList = FilterSpotList(currentSpotList)
-		self:GetBestMatchingSpot(currentSpotList)
 		
-		local movie = self.ScheduleTask:GetMovieByLevel(level)
+		-- local level = self.ScheduleTask:GetQualityLevel(i)
+		-- debugMsg("Level: " .. level)
+		-- local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(i)
+		-- debugMsg("guessedAudience: " .. guessedAudience .. "(" .. i .. ")")
 		
-		--TVT.getEvaluatedAudienceQuote(i, )
-		--
-		--player.Stats.
+		-- local currentSpotList = self:GetSpotList(guessedAudience, 0.8)
+		-- if (table.count(currentSpotList) == 0) then
+			-- currentSpotList = self:GetSpotList(guessedAudience, 0.6)
+		-- end
+		-- if (table.count(currentSpotList) == 0) then
+			-- currentSpotList = self:GetSpotList(guessedAudience, 0.4)
+		-- end
+		-- if (table.count(currentSpotList) == 0) then
+			-- currentSpotList = self:GetSpotList(guessedAudience, 0)
+		-- end
+		
+		-- currentSpotList = self:FilterSpotList(currentSpotList)
+		-- local spot = self:GetBestMatchingSpot(currentSpotList)
 	
-		local maxAudience = self.ScheduleTask:GetQualityLevel(i)
+		-- local maxAudience = self.ScheduleTask:GetQualityLevel(i)
 	
-		local movie = self.ScheduleTask.TodayMovieSchedule[i]
-		if (movie == nil) then
-			return true
-		end
+		-- local movie = self.ScheduleTask.TodayMovieSchedule[i]
+		-- if (movie == nil) then
+			--return true
+		-- end
 	end
 	
-	for i=self.CurrentHour,self.CurrentHour+this.slotsToCheck do
+	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
 		local spot = self.ScheduleTask.TodaySpotSchedule[i]
 		if (spot == nil) then
 			return true
@@ -287,23 +252,71 @@ function JobImperativelySchudule:FillIntervals()
 	end	
 end
 
-function JobImperativelySchudule:GetSpotList(guessedAudience, minFactor)
+function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
+	local level = self.ScheduleTask:GetQualityLevel(hour)	
+	local programmeList = nil
+	local choosenProgramme = nil
+	for i=level,1,-1 do
+		programmeList = self:GetProgrammeList(i)
+		if (table.count(programmeList) > 0) then
+			break
+		end
+	end			
+
+	if (table.count(programmeList) == 0) then
+		for i=level,level+2 do
+			programmeList = self:GetProgrammeList(i)
+			if (table.count(programmeList) > 0) then
+				break
+			end
+		end				
+	end
+	
+	if (table.count(programmeList) == 1) then
+		choosenProgramme = table.first(programmeList)
+	elseif (table.count(programmeList) > 1) then
+		local sortMethod = function(a, b)
+			return a.GetAttractiveness() > b.GetAttractiveness()
+		end	
+		table.sort(programmeList, sortMethod)
+		choosenProgramme = table.first(programmeList)
+	end
+
+	if (choosenProgramme ~= nil) then
+		debugMsg("Setze Film! Tag: " .. day .. " - Stunde: " .. hour .. " Programm: " .. choosenProgramme.title)
+		TVT.of_doMovieInPlan(day, hour, choosenProgramme.Id)
+	end			
+end
+
+function JobEmergencySchedule:GetProgrammeList(level)
+	local currentProgrammeList = {}		
+	for i=0,MY.ProgrammeCollection.GetProgrammeCount()-1 do
+		local programme = MY.ProgrammeCollection.GetProgrammeFromList(i)
+		if programme.GetQualityLevel() == level then			
+			table.insert(currentProgrammeList, programme)
+		end
+	end		
+	return currentProgrammeList
+end
+
+function JobEmergencySchedule:GetSpotList(guessedAudience, minFactor)
 	local currentSpotList = {}
 	for k,v in pairs(self.ScheduleTask.SpotInventory) do
 		if (v.Audience < guessedAudience) and (v.Audience > guessedAudience * minFactor) then
-			currentSpotList[k] = v
+			table.insert(currentSpotList, v)
 		end
 	end
 	return currentSpotList
 end
 
-function JobImperativelySchudule:FilterSpotList(spotList)
+function JobEmergencySchedule:FilterSpotList(spotList)
 	local currentSpotList = {}
 	for k,v in pairs(spotList) do
-		if v.MinBlocksToday() > 0 then
-			currentSpotList[k] = v
+		if v.MinBlocksToday() > 0 then --TODO: Die Anzahl der bereits geplanten Sendungen von MinBlocksToday abziehen
+			table.insert(currentSpotList, v)
 		end
 	end
+	--TODO: Optimum hinzufügen	
 	if (table.count(currentSpotList) > 0) then
 		return currentSpotList
 	else
@@ -311,7 +324,7 @@ function JobImperativelySchudule:FilterSpotList(spotList)
 	end		
 end
 
-function JobImperativelySchudule:GetBestMatchingSpot(spotList)
+function JobEmergencySchedule:GetBestMatchingSpot(spotList)
 	local bestAcuteness = -1
 	local bestSpot = nil
 

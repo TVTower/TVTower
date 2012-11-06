@@ -142,6 +142,12 @@ table.count = function(pTable)
 	return Count
 end
 
+table.first = function(pTable)
+	for k,v in pairs(pTable) do
+		return v
+	end
+end
+
 table.sortByKeys = function(t, f)
 	local a = {}
 	for n in pairs(t) do
