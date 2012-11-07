@@ -204,52 +204,43 @@ function JobEmergencySchedule:FillIntervals()
 
 	--debugMsg("for: " .. self.CurrentHour .. ", " .. self.CurrentHour+self.SlotsToCheck .. "(" .. self.CurrentHour .. ", " .. self.SlotsToCheck .. ")" )
 	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
-		--debugMsg("Stunde: " .. i)
 		local currentDay = TVT:Day() --Ist eben so im BlitzMaxCode.
 		
-		--Prüfen ob ne Lücke existiert, wenn ja => füllen		
+		--Werbung: Prüfen ob ne Lücke existiert, wenn ja => füllen
+		local contract = MY.ProgrammePlan.GetActualContract(i, currentDay)
+		if (contract == nil) then			
+			self:SetContractToEmptyBlock(currentDay, i)	
+		end			
+		
+		--Film: Prüfen ob ne Lücke existiert, wenn ja => füllen		
 		local programme = MY.ProgrammePlan.GetActualProgramme(i, currentDay)
 		if (programme == nil) then
 			self:SetMovieToEmptyBlock(currentDay, i)
-		--else
-			--debugMsg("okay: " .. programme.title)
-		end
-			
+		end		
+	end	
+end
+
+function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
+	local level = self.ScheduleTask:GetQualityLevel(hour)
+	local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(hour)
 		
-		
-		-- local level = self.ScheduleTask:GetQualityLevel(i)
-		-- debugMsg("Level: " .. level)
-		-- local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(i)
-		-- debugMsg("guessedAudience: " .. guessedAudience .. "(" .. i .. ")")
-		
-		-- local currentSpotList = self:GetSpotList(guessedAudience, 0.8)
-		-- if (table.count(currentSpotList) == 0) then
-			-- currentSpotList = self:GetSpotList(guessedAudience, 0.6)
-		-- end
-		-- if (table.count(currentSpotList) == 0) then
-			-- currentSpotList = self:GetSpotList(guessedAudience, 0.4)
-		-- end
-		-- if (table.count(currentSpotList) == 0) then
-			-- currentSpotList = self:GetSpotList(guessedAudience, 0)
-		-- end
-		
-		-- currentSpotList = self:FilterSpotList(currentSpotList)
-		-- local spot = self:GetBestMatchingSpot(currentSpotList)
-	
-		-- local maxAudience = self.ScheduleTask:GetQualityLevel(i)
-	
-		-- local movie = self.ScheduleTask.TodayMovieSchedule[i]
-		-- if (movie == nil) then
-			--return true
-		-- end
+	local currentSpotList = self:GetSpotList(guessedAudience, 0.8)
+	if (table.count(currentSpotList) == 0) then
+		currentSpotList = self:GetSpotList(guessedAudience, 0.6)
+		if (table.count(currentSpotList) == 0) then
+			currentSpotList = self:GetSpotList(guessedAudience, 0.4)
+			if (table.count(currentSpotList) == 0) then
+				currentSpotList = self:GetSpotList(guessedAudience, 0)
+			end					
+		end		
 	end
 	
-	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
-		local spot = self.ScheduleTask.TodaySpotSchedule[i]
-		if (spot == nil) then
-			return true
-		end
-	end	
+	currentSpotList = self:FilterSpotList(currentSpotList)
+	local choosenSpot = self:GetBestMatchingSpot(currentSpotList)
+	if (choosenSpot ~= nil) then
+		debugMsg("Setze Spot! Tag: " .. day .. " - Stunde: " .. hour .. " Name: " .. choosenSpot.title)
+		local result = TVT.of_doSpotInPlan(day, hour, choosenSpot.Id)
+	end		
 end
 
 function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
@@ -301,18 +292,20 @@ end
 
 function JobEmergencySchedule:GetSpotList(guessedAudience, minFactor)
 	local currentSpotList = {}
-	for k,v in pairs(self.ScheduleTask.SpotInventory) do
-		if (v.Audience < guessedAudience) and (v.Audience > guessedAudience * minFactor) then
-			table.insert(currentSpotList, v)
-		end
-	end
+	for i=0,MY.ProgrammeCollection.GetContractCount()-1 do
+		local contract = MY.ProgrammeCollection.GetContractFromList(i)
+		local minAudience = contract.GetMinAudience()
+		if (minAudience < guessedAudience) and (minAudience > guessedAudience * minFactor) then
+			table.insert(currentSpotList, contract)
+		end				
+	end			
 	return currentSpotList
 end
 
 function JobEmergencySchedule:FilterSpotList(spotList)
 	local currentSpotList = {}
 	for k,v in pairs(spotList) do
-		if v.MinBlocksToday() > 0 then --TODO: Die Anzahl der bereits geplanten Sendungen von MinBlocksToday abziehen
+		if v.SendMinimalBlocksToday() > 0 then --TODO: Die Anzahl der bereits geplanten Sendungen von MinBlocksToday abziehen
 			table.insert(currentSpotList, v)
 		end
 	end
@@ -329,8 +322,9 @@ function JobEmergencySchedule:GetBestMatchingSpot(spotList)
 	local bestSpot = nil
 
 	for k,v in pairs(spotList) do
-		if (bestAcuteness < v.Acuteness) then
-			bestAcuteness = v.Acuteness
+		local acuteness = v.GetAcuteness()
+		if (bestAcuteness < acuteness) then
+			bestAcuteness = acuteness
 			bestSpot = v
 		end
 	end

@@ -637,7 +637,8 @@ Type TLuaFunctions {_exposeToLua}
 				Obj.sendtime			= hour
 				Local objBlock:TAdBlock = TAdBlock.createDragged(obj, owner)
 				objBlock.dragged		= 0
-				ObjBlock.SetBaseCoords(ObjBlock.GetBlockX(hour), ObjBlock.GetBlockY(hour))
+				objBlock.SetBaseCoords(objBlock.GetBlockX(hour), objBlock.GetBlockY(hour))
+				objBlock.AddBlock() 'mv 07.11.2012: Das ist wohl nötig, sonst landet es nicht in TPlayerProgrammePlan.Contracts und kann somit auch nicht von TPlayerProgrammePlan.GetActualContract gefunden werden
 				Return 1
 			Else
 				Return -3
