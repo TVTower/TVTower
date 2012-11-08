@@ -2256,7 +2256,7 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 			Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 		EndIf
 	EndIf
-	If figure.inRoom = Null And figure.clickedToRoom = Null And figure.dx = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
+	If figure.inRoom = Null And figure.clickedToRoom = Null And figure.vel.GetX() = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
 		Local room:TRooms
 		Repeat
 			room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
@@ -2307,11 +2307,11 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 	Figure.FigureMovement(deltaTime)
 
 	'get next sprite frame number
-	If Figure.dx = 0
+	If Figure.vel.GetX() = 0
 		'show the backside if at elevator
 		If Figure.hasToChangeFloor() and not Figure.IsInElevator() and Figure.IsAtElevator()
 			Figure.setCurrentAnimation("standBack",true)
-		'show front
+		'show front or custom idle/specials
 		Else
 			'stopping from movement -> do special
 			If Figure.getCurrentAnimationName() = "walkright" or Figure.getCurrentAnimationName() = "walkright"
@@ -2337,8 +2337,8 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 			EndIf
 		EndIf
 	EndIf
-	if Figure.dx > 0 then Figure.setCurrentAnimation("walkRight")
-	if Figure.dx < 0 then Figure.setCurrentAnimation("walkLeft")
+	if Figure.vel.GetX() > 0 then Figure.setCurrentAnimation("walkRight")
+	if Figure.vel.GetX() < 0 then Figure.setCurrentAnimation("walkLeft")
 
 
 	'limit position to left and right border of building

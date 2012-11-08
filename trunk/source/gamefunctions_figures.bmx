@@ -1,12 +1,11 @@
 'Summary: all kind of characters walking through the building (players, terrorists and so on)
 Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field Name:String		= "unknown"
-	'rect:
+	'rect: from TMoveableAnimSprites
 	' .position.y is difference to y of building
 	' .dimension.x and .y = "end" of figure in sprite
-	Field rect:TRectangle	= TRectangle.Create(0,0,11,0) {_exposeToLua}
-	Field dx:Float			= 0.0 'pixels per second
-	Field initialdx:Float	= 0.0
+
+	Field initialdx:Float	= 0.0 'backup of self.vel.x
 	field target:TPoint		= TPoint.Create(-1,-1) {_exposeToLua}
 
 	Field toRoom:TRooms		= Null			{sl = "no"}
@@ -18,8 +17,6 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field Visible:Int		= 1
 	'Field Sprite:TMoveableAnimSprites 				{sl = "no"}
 
-	Field AnimPos:Int			= 0
-	Field AnimTimer:TTimer		= TTimer.Create(130)
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
 	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
@@ -147,16 +144,19 @@ endrem
 		'do we have to change the floor?
 		if self.HasToChangeFloor() then targetX = Building.Elevator.GetDoorCenter() - self.rect.GetW()/2 '-GetW/2 to center figure
 
-		If targetX < Floor(Self.rect.GetX()) Then Self.dx = -(Abs(Self.initialdx))
-		If targetX > Floor(Self.rect.GetX()) Then Self.dx =  (Abs(Self.initialdx))
+		If targetX < Floor(Self.rect.GetX()) Then Self.vel.SetX( -(Abs(Self.initialdx)))
+		If targetX > Floor(Self.rect.GetX()) Then Self.vel.SetX(  (Abs(Self.initialdx)))
 
- 		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.dx) Then Self.dx = 0;Self.rect.position.setX(targetX)
+ 		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.vel.GetX())
+			Self.vel.SetX(0)
+			Self.rect.position.setX(targetX)
+		endif
 
 		If not Self.IsInElevator()
-			Self.rect.position.MoveXY(deltaTime * Self.dx, 0)
+			Self.rect.position.MoveXY(deltaTime * Self.vel.GetX(), 0)
 			If Not Self.IsOnFloor() Then Self.rect.position.setY( Building.GetFloorY(Self.GetFloor()) )
 		Else
-			Self.dx = 0.0
+			Self.vel.SetX(0)
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
@@ -168,7 +168,7 @@ endrem
 	End Method
 
 	Method FigureAnimation(deltaTime:float=1.0)
-		If dx = 0
+		If self.vel.GetX() = 0
 			'show the backside if at elevator
 			If self.hasToChangeFloor() and not IsInElevator() and IsAtElevator()
 				self.setCurrentAnimation("standBack",true)
@@ -177,8 +177,8 @@ endrem
 				self.setCurrentAnimation("standFront",true)
 			EndIf
 		EndIf
-		if dx > 0 then self.setCurrentAnimation("walkRight", true)
-		if dx < 0 then self.setCurrentAnimation("walkLeft", true)
+		if self.vel.GetX() > 0 then self.setCurrentAnimation("walkRight", true)
+		if self.vel.GetX() < 0 then self.setCurrentAnimation("walkLeft", true)
 	End Method
 
 	Method GetPeopleOnSameFloor()
@@ -186,15 +186,15 @@ endrem
 			If Figure.rect.GetY() = Self.rect.GetY() And Figure <> Self
 				If Abs(Figure.rect.GetX() - Self.rect.GetX()) < 50
 					If figure.id <= 3 And Self.id <= 3
-						If Figure.rect.GetX() > Self.rect.GetX() And Self.dx > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() + rect.GetW(), Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 0)
-						If Figure.rect.GetX() < Self.rect.GetX() And Self.dx < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX()-18,Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 3)
+						If Figure.rect.GetX() > Self.rect.GetX() And self.vel.GetX() > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() + rect.GetW(), Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 0)
+						If Figure.rect.GetX() < Self.rect.GetX() And self.vel.GetX() < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX()-18,Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 3)
 					Else
 						If Self.id = figure_HausmeisterID
-							If Figure.rect.GetX() > Self.rect.GetX() And Self.dx > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() - 8 + self.rect.GetW(), Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 1)
-							If Figure.rect.GetX() < Self.rect.GetX() And Self.dx < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() -18+13,Building.pos.y + self.rect.GetY() - self.sprite.h-8, 4)
+							If Figure.rect.GetX() > Self.rect.GetX() And self.vel.GetX() > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() - 8 + self.rect.GetW(), Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 1)
+							If Figure.rect.GetX() < Self.rect.GetX() And self.vel.GetX() < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() -18+13,Building.pos.y + self.rect.GetY() - self.sprite.h-8, 4)
 						Else
-							If Figure.rect.GetX() > Self.rect.GetX() And Self.dx > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() + self.rect.GetW(), Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 1)
-							If Figure.rect.GetX() < Self.rect.GetX() And Self.dx < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() - 18, Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 4)
+							If Figure.rect.GetX() > Self.rect.GetX() And self.vel.GetX() > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() + self.rect.GetW(), Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 1)
+							If Figure.rect.GetX() < Self.rect.GetX() And self.vel.GetX() < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() - 18, Building.pos.y + self.rect.GetY() - self.sprite.h - 8, 4)
 						EndIf
 					EndIf
 				EndIf
@@ -290,7 +290,7 @@ endrem
 		self.name 			= Figurename
 		self.rect			= TRectangle.Create(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
 		self.target.setX(x)
-		self.dx				= dx
+		self.vel.SetX(dx)
 		self.initialdx		= dx
 		self.Sprite			= sprite
 		self.ControlledByID	= ControlledByID
@@ -351,6 +351,11 @@ endrem
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(self)
 	End Method
 
+	'overwrite default UpdateMovement - we handle it in FigureMovement
+	Method UpdateMovement(deltaTime:float)
+		'nothing
+	End Method
+
 
 	Method Update(deltaTime:float)
 		'update parent class (anim pos)
@@ -381,7 +386,8 @@ endrem
 				'if self.ControlledByID = 1 then print "targetx="+target.x+" x="+(pos.x + framewidth/2)+", y="+(Building.pos.y + Building.GetFloorY(toFloor) - 5)+", wx:"+(clickedToRoom.Pos.x + doorCenter -2)+", wy:"+(Building.pos.y + Building.GetFloorY(clickedToRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)+" w:"+4+" h:"+54
 				If inRoom = Null And functions.IsIn(rect.GetX() + rect.GetW()/2, Building.pos.y + rect.GetY() - 5, clickedToRoom.Pos.x + doorCenter -2, Building.pos.y + Building.GetFloorY(clickedToRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, 4, 54)
 			        'Print "standing in front of clickedroom "
-					AnimPos = 10
+			        self.SetCurrentAnimation("standFront")
+
 					If clickedToRoom.doortype >= 0 and clickedToRoom.getDoorType() <> 5 and inRoom <> clickedToRoom
 		        		If id = Game.playerID Then Fader.Enable() 'room fading
 						clickedToRoom.OpenDoor()
@@ -467,8 +473,6 @@ endrem
 	End Function
 
 	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
-		'DrawLine( 0, Building.pos.y + self.rect.GetY(), 800,Building.pos.y + self.rect.GetY())
-		Local ShadowDisabled:Int = 0
 		If Visible And (inRoom = Null Or inRoom.name = "elevator")
 			If Sprite <> Null
 				super.Draw(self.rect.GetX(), Building.pos.y + self.rect.GetY() - self.sprite.h)

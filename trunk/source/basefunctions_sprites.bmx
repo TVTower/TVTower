@@ -1185,9 +1185,9 @@ Type TAnimation
 End Type
 
 'makes anim sprites moveable
-Type TMoveableAnimSprites extends TAnimSprites
-	Field rect:TRectangle			= TRectangle.Create(0,0,0,0)
-	Field vel:TPoint				= TPoint.Create(0,0)
+Type TMoveableAnimSprites extends TAnimSprites {_exposeToLua="selected"}
+	Field rect:TRectangle			= TRectangle.Create(0,0,0,0) {_exposeToLua}
+	Field vel:TPoint				= TPoint.Create(0,0) {_exposeToLua}
 	Field returnToStart:Int			= 0
 
 	Method Create:TMoveableAnimSprites(sprite:TGW_Sprites, AnimCount:Int = 1, animTime:Int)
@@ -1212,11 +1212,15 @@ Type TMoveableAnimSprites extends TAnimSprites
 		endif
 	End Method
 
+	Method UpdateMovement(deltaTime:float)
+		self.rect.position.MoveXY( deltaTime * self.vel.x, deltaTime * self.vel.y )
+	End Method
+
 	Method Update(deltaTime:float)
 		'call AnimSprites.Update
 		super.Update(deltaTime)
 
-		self.rect.position.MoveXY( deltaTime * self.vel.x, deltaTime * self.vel.y )
+		self.UpdateMovement(deltaTime)
 	End Method
 
 
