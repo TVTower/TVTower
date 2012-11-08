@@ -120,7 +120,7 @@ Type TPlannerList
 	Field openState:int				= 0 '0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
 	Field currentGenre:Int			=-1
 	Field enabled:Int				= 0
-	Field Pos:TPosition 			= TPosition.Create()
+	Field Pos:TPoint 				= TPoint.Create()
 
 	Method GetOpen:Int()
 		return self.openState
@@ -705,13 +705,13 @@ Type TBlockGraphical extends TBlock
 End Type
 
 Type TBlock
-  Field dragable:Int = 1 {saveload = "normalExt"}
-  Field dragged:Int = 0 {saveload = "normalExt"}
-  Field Pos:TPosition = TPosition.Create(0, 0) {saveload = "normal"}
-  Field OrigPos:TPosition = TPosition.Create(0, 0) {saveload = "normalExtB"}
-  Field StartPos:TPosition = TPosition.Create(0, 0) {saveload = "normalExt"}
-  Field StartPosBackup:TPosition = TPosition.Create(0, 0)
-  Field owner:Int =0 {saveload="normalExt"}
+  Field dragable:Int			= 1 {saveload = "normalExt"}
+  Field dragged:Int				= 0 {saveload = "normalExt"}
+  Field Pos:TPoint				= TPoint.Create(0, 0) {saveload = "normal"}
+  Field OrigPos:TPoint 			= TPoint.Create(0, 0) {saveload = "normalExtB"}
+  Field StartPos:TPoint			= TPoint.Create(0, 0) {saveload = "normalExt"}
+  Field StartPosBackup:TPoint	= TPoint.Create(0, 0)
+  Field owner:Int				= 0 {saveload="normalExt"}
   Field Height:Int {saveload = "normalExt"}
   Field width:Int {saveload = "normalExt"}
 
@@ -726,15 +726,14 @@ Type TBlock
 
 	'switches current and startcoords of two blocks
 	Method SwitchCoords(otherObj:TBlock)
-		TPosition.SwitchPos(Self.Pos, 				otherObj.Pos)
-		TPosition.SwitchPos(Self.StartPos,			otherObj.StartPos)
-		TPosition.SwitchPos(Self.StartPosBackup,	otherObj.StartPosBackup)
+		TPoint.SwitchPos(Self.Pos, 				otherObj.Pos)
+		TPoint.SwitchPos(Self.StartPos,			otherObj.StartPos)
+		TPoint.SwitchPos(Self.StartPosBackup,	otherObj.StartPosBackup)
 	End Method
 
-	'checks if _x, _y is within startposition+dimension
+	'checks if _x, _y is within starTPoint+dimension
 	Method ContainingCoord:Byte(_x:Int, _y:Int)
-		If TFunctions.IsIn(_x,_y, Self.StartPos.x, Self.StartPos.y, Self.width, Self.height) Return True
-		Return False
+		return TFunctions.IsIn(_x,_y, Self.StartPos.x, Self.StartPos.y, Self.width, Self.height)
 	End Method
 
 	Method SetCoords(_x:Int=1000, _y:Int=1000, _startx:Int=1000, _starty:Int=1000)
@@ -744,7 +743,7 @@ Type TBlock
       If _starty <> 1000 Then Self.StartPos.SetY(_starty)
 	End Method
 
-	Method SetBasePos(_pos:TPosition = null)
+	Method SetBasePos(_pos:TPoint = null)
 		if _pos <> null then self.pos.setPos(_pos); self.StartPos.setPos(_pos)
 	End Method
 
@@ -812,7 +811,7 @@ Type TError
 	Field message:String
 	Field id:Int
 	Field link:TLink
-	field pos:TPosition
+	field pos:TPoint
 	Global List:TList = CreateList()
 	Global LastID:Int=0
 	global sprite:TGW_Sprites
@@ -824,7 +823,7 @@ Type TError
 		obj.id		= LastID
 		LastID :+1
 		if obj.sprite = null then obj.sprite = Assets.GetSprite("gfx_errorbox")
-		obj.pos		= TPosition.Create(400-obj.sprite.w/2 +6, 200-obj.sprite.h/2 +6)
+		obj.pos		= TPoint.Create(400-obj.sprite.w/2 +6, 200-obj.sprite.h/2 +6)
 		obj.link	= List.AddLast(obj)
 		Game.error:+1
 		Return obj
@@ -964,15 +963,12 @@ End Type
 Type TDialogue
 	Field _texts:TList = CreateList() 'of TDialogueTexts
 	Field _currentText:Int = 0
-	Field _x:Float, _y:Float
-	Field _w:Float, _h:Float
+	Field _rect:TRectangle = TRectangle.Create(0,0,0,0)
 
 	Function Create:TDialogue(x:Float, y:Float, w:Float, h:Float)
 		Local obj:TDialogue = New TDialogue
-		obj._x = x
-		obj._y = y
-		obj._w = w
-		obj._h = h
+		obj._rect.position.SetXY(x,y)
+		obj._rect.dimension.SetXY(w,h)
 		Return obj
 	End Function
 
@@ -986,7 +982,7 @@ Type TDialogue
 		Local nextText:Int = _currentText
 		If Self._texts.Count() > 0
 
-			Local returnValue:Int = TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Update(_x + 10, _y + 10, _w - 60, _h, clicked)
+			Local returnValue:Int = TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Update(self._rect.GetX() + 10, self._rect.GetY() + 10, self._rect.GetW() - 60, self._rect.GetH(), clicked)
 			If returnValue <> - 1 Then nextText = returnValue
 		EndIf
 		_currentText = nextText
@@ -996,19 +992,16 @@ Type TDialogue
 
 	Method Draw()
 		SetColor 255, 255, 255
-	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), _x, _y, _w, _h, "StartLeftDown", 0, "", Assets.GetFont("Default", 14))
+	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), self._rect.GetX(), self._rect.GetY(), self._rect.GetW(), self._rect.GetH(), "StartLeftDown", 0, "", Assets.GetFont("Default", 14))
 		SetColor 0, 0, 0
-		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(_x + 10, _y + 10, _w - 60, _h)
+		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(self._rect.GetX() + 10, self._rect.GetY() + 10, self._rect.GetW() - 60, self._rect.GetH())
 		SetColor 255, 255, 255
 	End Method
 End Type
 
 
 Type TButton
-    Field x:Int = 0
-    Field y:Int = 0
-    Field w:Int = 0
-    Field h:Int = 0
+	Field rect:TRectangle = TRectangle.Create(0,0,0,0)
     Field id:Int = 0
 	Field Sprite:TGW_Sprites
     Field Caption:String = ""
@@ -1020,14 +1013,6 @@ Type TButton
     Global UseFont:TBitmapFont
     Global List:TList
 
-    Method IsIn:Int(_x:Int, _y:Int)
-		If _x >= x and _x <= x + w and _y >= y and _y <= y + h
-			Return 1
-		Else
-			Return 0
-		EndIf
-    End Method
-
 '    Method OnClick() Abstract
 
     Method Draw(tweenValue:float=1.0)
@@ -1035,11 +1020,11 @@ Type TButton
 		local textWidth:int = font.getWidth(Caption)
         If Clicked <> 0
 			SetColor(220, 220, 220)
-			sprite.Draw(x + 1, y + 1)
-			font.drawStyled(Caption, x + w/2 - textWidth/2 +1, y + 43, fontr - 50, fontg - 50, fontb - 50, 1)
+			sprite.Draw(rect.GetX() + 1, rect.GetY() + 1)
+			font.drawStyled(Caption, rect.GetX() + rect.GetW()/2 - textWidth/2 +1, rect.GetY() + 43, fontr - 50, fontg - 50, fontb - 50, 1)
     	Else
-		  	sprite.Draw(x, y)
-			font.drawStyled(Caption, x + w/2 - textWidth/2, y + 42, fontr, fontg, fontb, 1)
+		  	sprite.Draw(rect.GetX(), rect.GetY())
+			font.drawStyled(Caption, rect.GetX() + rect.GetW()/2 - textWidth/2, rect.GetY() + 42, fontr, fontg, fontb, 1)
     	EndIf
         If Clicked <> 0 then SetColor(255,255,255)
 	End Method
@@ -1050,20 +1035,18 @@ End Type
 
 
 Type TPPbuttons Extends TButton
-    Global List:TList
+    Global List:TList = CreateList()
 
     Function Create:TPPbuttons(sprite:TGW_Sprites, _caption:String = "", x:Int, y:Int, id:Int)
 		Local Button:TPPbuttons=New TPPbuttons
-		Button.x = x
-		Button.y = y
-		Button.w = sprite.w
-		Button.h = sprite.h
-		Button.Sprite = sprite
-		Button.Caption = _caption
-		Button.enabled = 1
-		Button.id = id
-		Button.Clicked = 0
-		If Not List Then List = CreateList()
+		Button.rect.position.SetXY( x,y )
+		Button.rect.dimension.SetXY( sprite.w, sprite.h )
+		Button.Sprite	= sprite
+		Button.Caption	= _caption
+		Button.enabled	= 1
+		Button.id		= id
+		Button.Clicked	= 0
+
 		List.AddLast(Button)
 		SortList List
 		Return Button
@@ -1077,7 +1060,7 @@ Type TPPbuttons Extends TButton
 
     Function UpdateAll()
     	For Local Button:TPPbuttons = EachIn TPPbuttons.List
-    	    If Button.IsIn(MouseX(), MouseY()) And MOUSEMANAGER.IsDown(1)
+    	    If Button.rect.IntersectsXY(MouseX(), MouseY()) And MOUSEMANAGER.IsDown(1)
 				Button.Clicked = 1
 			Else If Button.Clicked = 1
 				Button.OnClick()
@@ -1105,7 +1088,7 @@ Type TPPbuttons Extends TButton
 End Type 'Buttons in ProgrammePlanner
 
 Type TNewsbuttons Extends TButton
-    Global List:TList
+    Global List:TList = CreateList()
     Field frameNr:Int =0
     Field genre:Int = 0
 	Field owner:Int = 0
@@ -1114,24 +1097,23 @@ Type TNewsbuttons Extends TButton
 	field spriteBaseName:string = ""
 
     Function Create:TNewsbuttons(frameNr:Int=0,genre:Int=0,_caption:String="", owner:Int=0, x:Int, y:Int, id:Int)
-	  Local Button:TNewsbuttons=New TNewsbuttons
+		Local Button:TNewsbuttons=New TNewsbuttons
 		genre = min(max(0,genre), 4)
-	  Button.x			= x
-	  Button.y			= y
-	  Button.spriteBaseName = "gfx_news_btn"+genre
-	  Button.w			= Assets.getSprite("gfx_news_btn"+genre).w
-	  Button.h			= Assets.getSprite("gfx_news_btn"+genre).h
-	  Button.genre		= genre
-	  Button.owner		= owner
-	  Button.frameNr	= frameNr
-	  Button.Caption	= _caption
-  	  Button.enabled	= 1
-  	  Button.id = id
-  	  Button.Clicked	= 0
-  	  If Not List Then List = CreateList()
- 	  List.AddLast(Button)
- 	  SortList List
- 	  Return Button
+		Button.spriteBaseName = "gfx_news_btn"+genre
+
+		Button.rect.position.SetXY( x,y )
+		Button.rect.dimension.SetXY( Assets.getSprite("gfx_news_btn"+genre).w,Assets.getSprite("gfx_news_btn"+genre).h )
+
+		Button.genre		= genre
+		Button.owner		= owner
+		Button.frameNr		= frameNr
+		Button.Caption		= _caption
+		Button.enabled		= 1
+		Button.id			= id
+		Button.Clicked		= 0
+		List.AddLast(Button)
+		SortList List
+		Return Button
     EndFunction
 
 	Function GetButton:TNewsbuttons(genre:Int, owner:Int)
@@ -1175,7 +1157,7 @@ Type TNewsbuttons Extends TButton
 			EndIf
 
 			If Button.owner = Game.playerID
-				If Button.IsIn(MouseX(), MouseY())
+				If Button.rect.IntersectsXY( MouseX(), MouseY() )
 					if MOUSEMANAGER.IsDown(1)
 						if Button.clicked = 0 then Button.Clicked =1
 					Else if Button.clicked = 1
@@ -1185,7 +1167,7 @@ Type TNewsbuttons Extends TButton
 
 					If Button.tooltip = Null
 						'Min(21) - left<=20 moves tooltip to right side
-						Button.tooltip = TTooltip.Create(Button.Caption, "", Max(21,Button.x), Button.y - 20,0,0)
+						Button.tooltip = TTooltip.Create(Button.Caption, "", Max(21,Button.rect.GetX()), Button.rect.GetY() - 20,0,0)
 					else
 						Button.tooltip.enabled = 1
 						Button.tooltip.Hover()
@@ -1206,14 +1188,14 @@ Type TNewsbuttons Extends TButton
 
     Method Draw(tweenValue:float=1.0)
         If self.clicked > 0
-			Assets.getSprite(self.spriteBaseName+"_clicked").draw(x,y)
+			Assets.getSprite(self.spriteBaseName+"_clicked").draw( rect.GetX(),rect.GetY() )
     	Else
-			Assets.getSprite(self.spriteBaseName).draw(x,y)
+			Assets.getSprite(self.spriteBaseName).draw( rect.GetX(),rect.GetY() )
 		endif
 		SetColor 0,0,0
 		SetAlpha 0.4
 		For Local i:Int = 0 to Players[Game.playerID].newsabonnements[genre]-1
-			DrawRect(x+8+i*10, y+ Assets.getSprite(self.spriteBaseName).h -7, 7,4)
+			DrawRect( rect.GetX()+8+i*10, rect.GetY()+ Assets.getSprite(self.spriteBaseName).h -7, 7,4)
 		Next
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -1436,7 +1418,7 @@ End Type
 'functions are calculation of audiencesums and drawing of stations
 
 Type TStation
-	field pos:TPosition
+	field pos:TPoint
 	Field reach:Int=0
 	Field price:Int
 	Field owner:Int = 0
@@ -1446,7 +1428,7 @@ Type TStation
 
 	Function Create:TStation(x:Int,y:Int, reach:Int, price:Int, owner:Int)
 		Local obj:TStation = New TStation
-		obj.pos = TPosition.Create(x,y)
+		obj.pos = TPoint.Create(x,y)
 		obj.reach = reach
 		obj.price = price
 		obj.owner = owner
@@ -1526,12 +1508,12 @@ endrem
 End Type
 
 Type TStationMapSection
-	field pos:TPosition
+	field pos:TPoint
 	field sprite:TGW_Sprites
 	field name:string
 	global sections:TList = CreateList()
 
-	Method Create:TStationMapSection(pos:TPosition, name:string, sprite:TGW_Sprites)
+	Method Create:TStationMapSection(pos:TPoint, name:string, sprite:TGW_Sprites)
 		self.pos = pos
 		self.name = name
 		self.sprite = sprite
@@ -1544,12 +1526,12 @@ Type TStationMapSection
 end Type
 
 Type TStationPoint
-	field pos:TPosition
+	field pos:TPoint
 	field color:Int
 
 	Function Create:TStationPoint(x:Int, y:Int, color:Int)
 		Local obj:TStationPoint = New TStationPoint
-		obj.pos = TPosition.Create(x,y)
+		obj.pos = TPoint.Create(x,y)
 		obj.color = color
 		Return obj
 	End Function
@@ -1565,7 +1547,7 @@ Type TStationMap
 	Field action:Int		= 0			{saveload = "normal"}	'2= station buying (another click on the map buys the station)
 																'1= searching a station
 	Field populationmap:Int[5,5]
-	field populationMapSize:TPosition = TPosition.Create()
+	field populationMapSize:TPoint = TPoint.Create()
 	Field bundesland:String = "" {saveload = "normal"}	'mouse over state
 	Field outsideLand:Int = 0
 
@@ -1676,7 +1658,7 @@ endrem
 		For Local child:TxmlNode = EachIn statesNode.GetChildren()
 			local name:string	= xmlLoader.xml.FindValue(child, "name", "")
 			local sprite:string	= xmlLoader.xml.FindValue(child, "sprite", "")
-			local pos:TPosition	= TPosition.Create( xmlLoader.xml.FindValueInt(child, "x", 0), xmlLoader.xml.FindValueInt(child, "y", 0) )
+			local pos:TPoint	= TPoint.Create( xmlLoader.xml.FindValueInt(child, "x", 0), xmlLoader.xml.FindValueInt(child, "y", 0) )
 			'add state section if data is ok
 			if name<>"" and sprite<>"" then new TStationMapSection.Create(pos,name, Assets.GetSprite(sprite)).add()
 		Next
@@ -1705,7 +1687,7 @@ endrem
 		EndIf
     End Method
 
-	Method SellByPos(pos:TPosition, reach:int, playerID:int)
+	Method SellByPos(pos:TPoint, reach:int, playerID:int)
 		for local station:TStation = eachin self.StationList
 			if station.pos.isSame(pos) and station.reach = station.reach and station.owner = playerID
 				self.sell(station)
@@ -1746,7 +1728,7 @@ endrem
 		'buying stations
 		'1. searching
 		If action = 1
-			Local pos:TPosition = TPosition.Create(0,0)
+			Local pos:TPoint = TPoint.Create(0,0)
 			If MOUSEMANAGER.hasMoved
 				pos.setXY( MouseX() -20, MouseY() -10)
 

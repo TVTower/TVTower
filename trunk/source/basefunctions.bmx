@@ -324,20 +324,73 @@ Type TTimer
 End Type
 
 
+Type TRectangle {_exposeToLua="selected"}
+	Field position:TPoint {_exposeToLua}
+	Field dimension:TPoint {_exposeToLua}
 
-Type TPosition {_exposeToLua="selected"}
+	Function Create:TRectangle(x:Float=0.0,y:Float=0.0, w:float=0.0, h:float=0.0)
+		local obj:TRectangle = new TRectangle
+		obj.position	= TPoint.Create(x,y)
+		obj.dimension	= TPoint.Create(w,h)
+		return obj
+	End Function
+
+	'does the rects overlap?
+	Method Intersects:int(rect:TRectangle) {_exposeToLua}
+		if self.IntersectsXY( rect.GetX(), rect.GetY() ) OR ..
+		   self.IntersectsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() )
+			return true
+		endif
+
+		return false
+	End Method
+
+	'does the point overlap?
+	Method IntersectsPoint:int(point:TPoint) {_exposeToLua}
+		return self.IntersectsXY( point.GetX(), point.GetY() )
+	End Method
+
+	'does the rect overlap with the coordinates?
+	Method IntersectsXY:int(x:float, y:float) {_exposeToLua}
+		If x >= self.position.GetX() And x <= self.position.GetX() + self.dimension.GetX() And..
+		   y >= self.position.GetY() And y <= self.position.GetY() + self.dimension.GetY()
+			Return 1
+		Endif
+
+		Return 0
+	End Method
+
+	Method GetX:float()
+		return self.position.GetX()
+	End Method
+
+	Method GetY:float()
+		return self.position.GetY()
+	End Method
+
+	Method GetW:float()
+		return self.dimension.GetX()
+	End Method
+
+	Method GetH:float()
+		return self.dimension.GetY()
+	End Method
+
+End Type
+
+Type TPoint {_exposeToLua="selected"}
 	Field x:Float
 	Field y:Float
 
-	Function Create:TPosition(_x:Float=0.0,_y:Float=0.0)
-		Local tmpObj:TPosition = New TPosition
+	Function Create:TPoint(_x:Float=0.0,_y:Float=0.0)
+		Local tmpObj:TPoint = New TPoint
 		tmpObj.SetX(_x)
 		tmpObj.SetY(_y)
 		Return tmpObj
 	End Function
 
-	Function CreateFromPos:TPosition(pos:TPosition)
-		return TPosition.Create(pos.x,pos.y)
+	Function CreateFromPos:TPoint(pos:TPoint)
+		return TPoint.Create(pos.x,pos.y)
 	End Function
 
 	Method GetIntX:int() {_exposeToLua}
@@ -370,7 +423,7 @@ Type TPosition {_exposeToLua="selected"}
 		Self.SetY(_y)
 	End Method
 
-	Method SetPos(otherPos:TPosition)
+	Method SetPos(otherPos:TPoint)
 		Self.SetX(otherPos.x)
 		Self.SetY(otherPos.y)
 	End Method
@@ -380,7 +433,7 @@ Type TPosition {_exposeToLua="selected"}
 		Self.y:+ _y
 	End Method
 
-	Method isSame:int(otherPos:TPosition, round:int=0) {_exposeToLua}
+	Method isSame:int(otherPos:TPoint, round:int=0) {_exposeToLua}
 		if round
 			return abs(self.x -otherPos.x)<1.0 AND abs(self.y -otherPos.y) < 1.0
 		else
@@ -388,7 +441,12 @@ Type TPosition {_exposeToLua="selected"}
 		endif
 	End Method
 
-	Function SwitchPos(Pos:TPosition Var, otherPos:TPosition Var)
+	Method isInRect:int(rect:TRectangle)
+		return rect.IntersectsPoint(self)
+	End Method
+
+
+	Function SwitchPos(Pos:TPoint Var, otherPos:TPoint Var)
 		Local oldx:Float, oldy:Float
 		oldx = Pos.x
 		oldy = Pos.y
@@ -400,37 +458,11 @@ Type TPosition {_exposeToLua="selected"}
 
  	Method Save()
 		print "implement"
-		rem
-		LoadSaveFile.xmlBeginNode("POS")
-			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") <> "special"
-					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-				EndIf
-			Next
-	 	LoadSaveFile.xmlCloseNode()
-		endrem
 	End Method
 
-	Function Load:TPosition(pnode:TxmlNode)
+	Function Load:TPoint(pnode:TxmlNode)
 		print "implement load position"
-		rem
-		Local tmpObj:TPosition = New TPosition
-		Local node:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-			Local typ:TTypeId = TTypeId.ForObject(figure)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") <> "special" And Upper(t.name()) = NODE.name
-					t.Set(tmpObj, nodevalue)
-				EndIf
-			Next
-			Node = Node.NextSibling()
-		Wend
-	  Return tmpObj
-		endrem
-  End Function
+	End Function
 End Type
 
 
@@ -853,14 +885,14 @@ Global functions:TFunctions = New TFunctions
 
 
 Type TDragAndDrop
-	field pos:TPosition = TPosition.Create(0,0)
+	field pos:TPoint = TPoint.Create(0,0)
   Field w:Int = 0
   Field h:Int = 0
   Field typ:String = ""
   Field slot:Int = 0
   Global List:TList = CreateList()
 
- 	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TPosition)
+ 	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TPoint)
  	  For Local P:TDragAndDrop = EachIn List
 		If P.pos.isSame(_pos) Then Return P
 	  Next

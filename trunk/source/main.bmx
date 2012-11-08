@@ -1491,7 +1491,7 @@ Type TElevator
 	Field open:Int 				= 0
 	Field toFloor:Int 			= 0
 	Field speed:Float 			= 120  								'pixels per second ;D
-	Field Pos:TPosition			= TPosition.Create(131+230,115) 	'difference to x/y of building,
+	Field Pos:TPoint			= TPoint.Create(131+230,115) 	'difference to x/y of building,
 	Field Parent:TBuilding
 	Field FloorRouteList:TList	= CreateList()
 	Field upwards:Int = 0
@@ -1624,7 +1624,7 @@ Type TElevator
 	Method OpenDoor()
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
 		open = 2 'wird geoeffnet
-		If passenger <> Null Then passenger.pos.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
+		If passenger <> Null Then passenger.rect.position.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
 
 		If Game.networkgame Then Self.Network_SendSynchronize()
 	End Method
@@ -1806,7 +1806,7 @@ Type TElevator
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.IsInElevator()
 				'figure position in elevator - displace
-				Figure.pos.setY ( Building.Elevator.Pos.y + spriteInner.h)
+				Figure.rect.position.setY ( Building.Elevator.Pos.y + spriteInner.h)
 				Exit 'only one figure in elevator possible
 			EndIf
 		Next
@@ -1853,7 +1853,7 @@ Include "gamefunctions_figures.bmx"
 
 'Summary: Type of building, area around it and doors,...
 Type TBuilding Extends TRenderable
-	Field pos:TPosition = TPosition.Create(20,0)
+	Field pos:TPoint = TPoint.Create(20,0)
 	Field borderright:Int 			= 127 + 40 + 429
 	Field borderleft:Int			= 127 + 40
 	Field skycolor:Float = 0
@@ -1977,11 +1977,11 @@ Type TBuilding Extends TRenderable
 		DrawBackground(tweenValue)
 		TProfiler.Leave("Draw-Building-Background")
 
-		If Building.GetFloor(Players[Game.playerID].Figure.pos.y) <= 4
+		If Building.GetFloor(Players[Game.playerID].Figure.rect.GetY()) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
 			Building.gfx_buildingEntrance.Draw(pos.x, pos.y + 1024 - Building.gfx_buildingEntrance.h - 3)
 			Building.gfx_buildingWall.Draw(pos.x + 127 + 507, pos.y + 1024 - Building.gfx_buildingWall.h - 3)
-		Else If Building.GetFloor(Players[Game.playerID].Figure.pos.y) >= 8
+		Else If Building.GetFloor(Players[Game.playerID].Figure.rect.GetY()) >= 8
 			SetColor 255, 255, 255
 			Building.gfx_buildingRoof.Draw(pos.x + 127, pos.y - Building.gfx_buildingRoof.h)
 		EndIf
@@ -2281,7 +2281,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 		'Print "hausmeister: zu lange auf fahrstuhl gewartet"
 		Figure.ChangeTarget(RandRange(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 	EndIf
-	If Int(Figure.pos.x) = Int(Figure.target.x) And Not Figure.IsInElevator() And Not figure.hasToChangeFloor()
+	If Int(Figure.rect.GetX()) = Int(Figure.target.x) And Not Figure.IsInElevator() And Not figure.hasToChangeFloor()
 		Local zufall:Int = RandRange(0, 100)
 		Local zufallx:Int = RandRange(150, 580)
 		If figure.LastSpecialTime < MilliSecs()
@@ -2289,7 +2289,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 			'no left-right-left-right movement for just some pixels
 			Repeat
 				zufallx = RandRange(150, 580)
-			Until Abs(figure.pos.x - zufallx) > 15
+			Until Abs(figure.rect.GetX() - zufallx) > 15
 
 			If zufall > 80 And Not figure.IsAtElevator() And Not figure.hasToChangeFloor()
 				Local sendToFloor:Int = figure.GetFloor() + 1
@@ -2321,8 +2321,8 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 			EndIf
 		EndIf
 	EndIf
-	If Floor(Figure.pos.x) <= 200 Then Figure.pos.setX(200);Figure.target.setX(200)
-	If Floor(Figure.pos.x) >= 579 Then Figure.pos.setX(579);Figure.target.setX(579)
+	If Floor(Figure.rect.GetX()) <= 200 Then Figure.rect.position.setX(200);Figure.target.setX(200)
+	If Floor(Figure.rect.GetX()) >= 579 Then Figure.rect.position.setX(579);Figure.target.setX(579)
 
 	If Figure.specialTime < MilliSecs()
 		If Figure.dx > 0 Then If Figure.AnimPos > 3
@@ -2339,7 +2339,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 	If Figure.dx > 0
 		If Figure.AnimPos >= 11
 			Figure.NextAnimTime = 300
-			Figure.pos.x		:-deltaTime * Figure.dx
+			Figure.rect.position.MoveXY( -deltaTime * Figure.dx, 0 )
 			If Figure.specialTime < MilliSecs()
 				Figure.NextAnimTime = Figure.BackupAnimTime
 				Figure.AnimPos = 0
@@ -2349,7 +2349,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 	Else If Figure.dx < 0
 		If Figure.AnimPos >= 13
 			Figure.NextAnimTime = 300
-			Figure.pos.x		:- deltaTime * Figure.dx
+			Figure.rect.position.MoveXY( -deltaTime * Figure.dx, 0 )
 			If Figure.specialTime < MilliSecs()
 				Figure.NextAnimTime = Figure.BackupAnimTime
 				Figure.AnimPos = 4
@@ -2391,18 +2391,18 @@ Players[3] = TPlayer.Create("Seidi"			,"FunTV"				,Assets.GetSprite("Player3"),	
 Players[4] = TPlayer.Create("Sandra"		,"RatTV"				,Assets.GetSprite("Player4"),	480, 13, 90, TColor.getByOwner(0), 0, "Player 4")
 
 Local tempfigur:TFigures= TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
-tempfigur.FrameWidth	= 12 'overwriting
+tempfigur.rect.dimension.SetX(12) 'overwriting
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
 
 tempfigur				= TFigures.Create("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
-tempfigur.FrameWidth	= 12
+tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
 
 tempfigur				= TFigures.Create("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 8,-65,0)
-tempfigur.FrameWidth = 12
+tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
 
@@ -2415,18 +2415,18 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
-Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.fonts.baseFontBold)
-Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
-Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPosition.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
 
 Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 Test.AddEntry("test2")
 Test.AddEntry("test3")
 Test.AddEntry("test4")
 
-Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
-Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
-Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 1, 100, "NetGameLobby")
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
 NetgameLobby_gamelist.AddBackground("")
@@ -2435,8 +2435,8 @@ Global GameSettingsBG:TGUIBackgroundBox = new TGUIBackgroundBox.Create(20, 20, 7
 
 Global GameSettingsOkButton_Announce:TGUIOkButton = new TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings", Assets.fonts.baseFontBold)
 Global GameSettingsGameTitle:TGuiInput		= new TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
-Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.fonts.baseFontBold)
-Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPosition.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.fonts.baseFontBold)
+Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.fonts.baseFontBold)
+Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.fonts.baseFontBold)
 Global GameSettings_Chat:TGUIChat			= new TGuiChat.Create(20, 300, 520, 250, 0, "Chat", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
 Global InGame_Chat:TGUIChat					= new TGuiChat.Create(20, 10, 250, 200, 0, "Chat", "InGame")
 GameSettings_Chat.setMaxLength(200)
@@ -2448,11 +2448,11 @@ InGame_Chat.list.backgroundEnabled	= true
 
 GameSettings_Chat.input.TextDisplacement.setXY(5,2)
 InGame_Chat.clickable				= 0
-InGame_Chat.input.pos.setXY( 255, 377)
+InGame_Chat.input.rect.position.setXY( 255, 377)
 InGame_Chat.input.autoAlignText = 0
 InGame_Chat.input.TextDisplacement.setXY(0,5)
 
-InGame_Chat.input.dimension.setX( gfx_GuiPack.GetSprite("Chat_IngameOverlay").w )
+InGame_Chat.input.rect.dimension.setX( gfx_GuiPack.GetSprite("Chat_IngameOverlay").w )
 InGame_Chat.input.maxTextWidth		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").w - 20
 InGame_Chat.input.InputImageActive	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
 InGame_Chat.useFont					= Assets.GetFont("Default", 11)
@@ -2485,7 +2485,7 @@ Function onClick_NetGameLobby:Int(triggerEvent:TEventBase)
 	If evt<>Null
 		local clickType:int = evt.getData().getInt("type")
 		if clickType = EVENT_GUI_DOUBLECLICK
-			NetgameLobbyButton_Join.mouseIsClicked	= TPosition.Create(1,1)
+			NetgameLobbyButton_Join.mouseIsClicked	= TPoint.Create(1,1)
 			GameSettingsButton_Start.disable()
 
 			If Network.ConnectToServer( HostIp(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
@@ -3234,7 +3234,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 		EndIf
 	EndIf
 	'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
-	If Players[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Players[Game.playerID].Figure.pos.y  'working for player as center
+	If Players[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Players[Game.playerID].Figure.rect.GetY()  'working for player as center
 	Fader.Update(deltaTime)
 
 	Game.Update(deltaTime)

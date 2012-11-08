@@ -320,12 +320,12 @@ Type TLuaFunctions {_exposeToLua}
 		'oder beibehalten - dann kann die AI schauen ob eine Figur in der Naehe ist
 		'bspweise fuer Chat - "hey xy"
 		print "VERALTET: GetPlayerPosX -> math.floor( MY.Figure.Pos.GetX() ) ... floor fuer float->int"
-		If Not Game.isPlayerID( PlayerID ) Then Return -1 Else Return Floor(Players[ PlayerID ].figure.pos.x)
+		If Not Game.isPlayerID( PlayerID ) Then Return -1 Else Return Floor(Players[ PlayerID ].figure.rect.GetX() )
 	End Method
 
 	Method GetPlayerTargetPosX:Int(PlayerID:Int = Null)
 		print "VERALTET: GetPlayerTargetPosX -> math.floor( MY.Figure.Target.GetIntX() ) ... bzw GetX() fuer float"
-		If Not Game.isPlayerID( PlayerID ) Then Return -1 Else Return Floor(Players[ PlayerID ].figure.target.x)
+		If Not Game.isPlayerID( PlayerID ) Then Return -1 Else Return Floor(Players[ PlayerID ].figure.target.GetX() )
 	End Method
 
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)

@@ -33,7 +33,7 @@ Type TRenderManager
 End Type
 
 Type TRenderable extends TAsset
-	field pos:TPosition = TPosition.Create(0,0)
+	field pos:TPoint = TPoint.Create(0,0)
 
 End Type
 
@@ -546,7 +546,7 @@ Type TBitmapFont
 		color.get()
 		SetAlpha bgAlpha
 		SetColor bgCol, bgCol, bgCol
-		local dimension:TPosition = TPosition( self.drawStyled(value,0,0, 0,0,0, style,2,0) )
+		local dimension:TPoint = TPoint( self.drawStyled(value,0,0, 0,0,0, style,2,0) )
 		DrawRect(x, y, dimension.x, dimension.y)
 		SetAlpha OldAlpha
 		color.set()
@@ -595,7 +595,7 @@ Type TBitmapFont
 		Next
 		if returnType = 0 then return string(width)
 		if returnType = 1 then return string(height)
-		return TPosition.Create(width, height)
+		return TPoint.Create(width, height)
 	End Method
 
 	Method drawfixed(text:String,x:Float,y:Float)
@@ -1014,19 +1014,19 @@ Type TGW_Sprites extends TRenderable
 		EndIf
 	End Method
 
-	Method getFramePos:TPosition(frame:int=-1)
-		If frame < 0 then return TPosition.Create(0,0)
+	Method getFramePos:TPoint(frame:int=-1)
+		If frame < 0 then return TPoint.Create(0,0)
 
 		Local MaxFramesInCol:Int	= Ceil(w / framew)
 		Local framerow:Int			= Ceil(frame / Max(1,MaxFramesInCol))
 		Local framecol:Int 			= frame - (framerow * MaxFramesInCol)
-		return TPosition.Create( framecol * self.framew, framerow * self.frameh )
+		return TPoint.Create( framecol * self.framew, framerow * self.frameh )
 	End Method
 
 	Method TileDrawHorizontal(x:float, y:float, w:float, scale:float=1.0, theframe:int=-1)
 		local widthLeft:float	= w
 		local currentX:float	= x
-		local framePos:TPosition = self.getFramePos(theframe)
+		local framePos:TPoint = self.getFramePos(theframe)
 
 		while widthLeft > 0
 			local widthPart:float = Min(self.framew, widthLeft) 'draw part of sprite or whole ?
@@ -1186,8 +1186,8 @@ End Type
 
 'base of animated sprites... contains timers and so on, supports reversed animations
 Type TAnimSprites
-	Field pos:TPosition				= TPosition.Create(0,0)
-	Field vel:TPosition				= TPosition.Create(0,0)
+	Field pos:TPoint				= TPoint.Create(0,0)
+	Field vel:TPoint				= TPoint.Create(0,0)
 	Field sprite:TGW_Sprites
 	Field returnToStart:Int			= 0
 	Field visible:Int 				= 1

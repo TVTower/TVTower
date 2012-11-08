@@ -80,7 +80,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				If Not block.dragged
 					If block.dragable And block.State = 0 And functions.DoMeet(block.sendhour, block.sendhour+block.programme.blocks, Game.daytoplan*24,Game.daytoplan*24+24)
 						For Local i:Int = 1 To block.programme.blocks
-							Local pos:TPosition = block.GetBlockSlotXY(i, block.pos)
+							Local pos:TPoint = block.GetBlockSlotXY(i, block.pos)
 							If functions.MouseIn(pos.x, pos.y, block.width, 30)
 								block.Drag()
 								Exit
@@ -162,10 +162,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local havetosort:Byte = 0
 		Local dontpay:Int = 0
 		Local number:Int = 0
-		If TNewsBlock.LeftListPositionMax >=4
-			If TNewsBlock.LeftListPosition+4 > TNewsBlock.LeftListPositionMax Then TNewsBlock.LeftListPosition = TNewsBlock.LeftListPositionMax-4
+		If TNewsBlock.LeftLisTPointMax >=4
+			If TNewsBlock.LeftLisTPoint+4 > TNewsBlock.LeftLisTPointMax Then TNewsBlock.LeftLisTPoint = TNewsBlock.LeftLisTPointMax-4
 		Else
-			TNewsBlock.LeftListPosition = 0
+			TNewsBlock.LeftLisTPoint = 0
 		EndIf
 
 		Self.NewsBlocks.sort(True, TNewsBlock.sort)
@@ -174,8 +174,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If NewsBlock.owner = Game.playerID
 				If newsblock.GetSlotOfBlock() < 0 And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeSinceBegin)
 					number :+ 1
-					If number >= TNewsBlock.LeftListPosition And number =< TNewsBlock.LeftListPosition+4
-						NewsBlock.Pos.SetXY(35, 22+88*(number-TNewsBlock.LeftListPosition   -1))
+					If number >= TNewsBlock.LeftLisTPoint And number =< TNewsBlock.LeftLisTPoint+4
+						NewsBlock.Pos.SetXY(35, 22+88*(number-TNewsBlock.LeftLisTPoint   -1))
 					Else
 						NewsBlock.pos.SetXY(0, -100)
 					EndIf
@@ -249,7 +249,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				EndIf
 			EndIf
 		Next
-		TNewsBlock.LeftListPositionMax = number
+		TNewsBlock.LeftLisTPointMax = number
 		TNewsBlock.AdditionallyDragged = 0
     End Method
 
@@ -297,7 +297,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetActualAdBlock:TAdBlock(playerID:Int, time:Int = -1, day:Int = - 1)
 		If time = -1 Then time = Game.GetHour()
 		If day  = -1 Then day  = Game.day
-		
+
 		For Local adblock:TAdBlock= EachIn TAdBlock.List
 			If adblock.owner = playerID
 				If (adblock.contract.sendtime>= time And adblock.contract.sendtime <=time) And..
@@ -313,6 +313,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
 	End Method
 
+	'used if receiving changes via network
 	Method RefreshAdPlan(day:Int)
 		For Local contract:TContract = EachIn Self.Contracts
 			If contract.senddate = day Then Self.RemoveContract(contract)
@@ -933,7 +934,7 @@ endrem
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Viele Spots sollten heute mindestens gesendet werden	
+	'Viele Spots sollten heute mindestens gesendet werden
 	Method SendMinimalBlocksToday:int() {_exposeToLua}
 		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
 		Local acuteness:int = self.GetAcuteness()
@@ -947,20 +948,20 @@ endrem
 			Return 0
 		Endif
 	End Method
-	
+
 	'Wird bisher nur in der LUA-KI verwendet
-	'Viele Spots sollten heute optimalerweise gesendet werden	
+	'Viele Spots sollten heute optimalerweise gesendet werden
 	Method SendOptimalBlocksToday:int() {_exposeToLua}
 		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 
 		Local acuteness:int = self.GetAcuteness()
 		Local optimumCount:int = Int(spotsToBroadcast / daysLeft) 'int rundet
-		
+
 		If (acuteness >= 100) and (spotsToBroadcast > optimumCount) Then
 			optimumCount = optimumCount + 1
 		Endif
-	
+
 		If (acuteness >= 100) Then
 			return Int(spotsToBroadcast / daysLeft)  'int rundet
 		Endif
@@ -2079,8 +2080,8 @@ Type TAdBlock Extends TBlockGraphical
 
 	Function Create:TAdBlock(x:Int = 0, y:Int = 0, owner:Int = 0, contractpos:Int = -1)
 		Local AdBlock:TAdBlock=New TAdBlock
-		AdBlock.Pos 		= TPosition.Create(x, y)
-		AdBlock.StartPos	= TPosition.Create(x, y)
+		AdBlock.Pos 		= TPoint.Create(x, y)
+		AdBlock.StartPos	= TPoint.Create(x, y)
 		Adblock.owner = owner
 		AdBlock.blocks = 1
 		AdBlock.State = 0
@@ -2118,8 +2119,8 @@ Type TAdBlock Extends TBlockGraphical
 	  Local playerID:Int =0
 	  If owner < 0 Then playerID = game.playerID Else playerID = owner
 	  Local AdBlock:TAdBlock=New TAdBlock
- 	  AdBlock.Pos 			= TPosition.Create(MouseX(), MouseY())
- 	  AdBlock.StartPos		= TPosition.Create(0, 0)
+ 	  AdBlock.Pos 			= TPoint.Create(MouseX(), MouseY())
+ 	  AdBlock.StartPos		= TPoint.Create(0, 0)
  	  AdBlock.owner 		= playerID
  	  AdBlock.State 		= 0
  	  Adblock.id			= TAdBlock.LastUniqueID
@@ -2269,7 +2270,7 @@ Type TAdBlock Extends TBlockGraphical
 						AdBlock.dragged = 1
 						For Local OtherlocObject:TAdBlock = EachIn TAdBlock.List
 							If OtherLocObject.dragged And OtherLocObject <> Adblock And OtherLocObject.owner = Game.playerID
-								TPosition.SwitchPos(AdBlock.StartPos, OtherlocObject.StartPos)
+								TPoint.SwitchPos(AdBlock.StartPos, OtherlocObject.StartPos)
   								OtherLocObject.dragged = 1
 								If OtherLocObject.GetTimeOfBlock() < game.GetHour() And game.GetMinute() >= 55
 									OtherLocObject.dragged = 0
@@ -2311,7 +2312,7 @@ Type TAdBlock Extends TBlockGraphical
                    EndIf
                   Next
                   If DoNotDrag <> 1
-						Local oldPos:TPosition = TPosition.CreateFromPos(AdBlock.StartPos)
+						Local oldPos:TPoint = TPoint.CreateFromPos(AdBlock.StartPos)
                		 AdBlock.startPos.SetPos(DragAndDrop.pos)
 					 If Adblock.GetTimeOfBlock() < Game.GetHour() Or (Adblock.GetTimeOfBlock() = Game.GetHour() And Game.GetMinute() >= 55)
 						adblock.dragged = True
@@ -2540,8 +2541,8 @@ Type TProgrammeBlock Extends TBlockGraphical
 	Method SetStartConfig(x:Float, y:Float, owner:Int=0, state:Int=0)
  	  Self.image 		= Assets.GetSprite("pp_programmeblock1")
  	  Self.image_dragged= Assets.GetSprite("pp_programmeblock1_dragged")
-	  Self.Pos			= TPosition.Create(x, y)
-	  Self.StartPos		= TPosition.Create(x, y)
+	  Self.Pos			= TPoint.Create(x, y)
+	  Self.StartPos		= TPoint.Create(x, y)
  	  Self.owner 		= owner
  	  Self.State 		= state
 	  Self.id 			= Self.lastUniqueID
@@ -2652,7 +2653,7 @@ Type TProgrammeBlock Extends TBlockGraphical
 						Self.DrawBlockPart(pos.x,pos.y + (i-1)*30,_type)
 					Else
 						'draw on "planner spot" position
-						Local _pos:TPosition = Self.getSlotXY(Self.sendhour+i-1)
+						Local _pos:TPoint = Self.getSlotXY(Self.sendhour+i-1)
 
 						If Self.sendhour+i-1 >= game.daytoplan*24 And Self.sendhour+i-1 < game.daytoplan*24+24
 							Self.DrawBlockPart(_pos.x,_pos.y ,_type)
@@ -2667,7 +2668,7 @@ Type TProgrammeBlock Extends TBlockGraphical
 		EndIf 'daytoplan switch
     End Method
 
-    Method DrawBlockText(color:TColor = Null, _pos:TPosition)
+    Method DrawBlockText(color:TColor = Null, _pos:TPoint)
 		SetColor 0,0,0
 
 		Local maxWidth:Int = Self.image.w - 5
@@ -2701,7 +2702,7 @@ Type TProgrammeBlock Extends TBlockGraphical
 				Self.image.Draw(Self.StartPos.x, Self.StartPos.y)
 			Else
 				For Local i:Int = 1 To Self.programme.blocks
-					Local _pos:TPosition = Self.getBlockSlotXY(i, Self.startPos)
+					Local _pos:TPoint = Self.getBlockSlotXY(i, Self.startPos)
 					Local _type:Int = 1
 					If i > 1 And i < Self.programme.blocks Then _type = 2
 					If i = Self.programme.blocks Then _type = 3
@@ -2733,25 +2734,25 @@ Type TProgrammeBlock Extends TBlockGraphical
 	End Method
 
 	'give total hour - returns position of planner-slot
-	Method GetSlotXY:TPosition(totalHours:Int)
+	Method GetSlotXY:TPoint(totalHours:Int)
 		totalHours = totalHours Mod 24
 		Local top:Int = 17
 		If Floor(totalHours/12) Mod 2 = 1 '(12-23, + next day 12-23 and so on)
-			Return TPosition.Create(394, top + (totalHours - 12)*30)
+			Return TPoint.Create(394, top + (totalHours - 12)*30)
 		Else
-			Return TPosition.Create(67, top + totalHours*30)
+			Return TPoint.Create(67, top + totalHours*30)
 		EndIf
 	End Method
 
 	'returns the slot coordinates of a position on the plan
 	'returns for current day not total (eg. 0-23)
-	Method GetBlockSlotXY:TPosition(blockNumber:Int, _pos:TPosition = Null)
+	Method GetBlockSlotXY:TPoint(blockNumber:Int, _pos:TPoint = Null)
 		Return Self.GetSlotXY( Self.GetHourOfBlock(blockNumber, _pos) )
 	End Method
 
 	'returns the hour of a position on the plan
 	'returns for current day not total (eg. 0-23)
-	Method GetHourOfBlock:Int(blockNumber:Int, _pos:TPosition= Null)
+	Method GetHourOfBlock:Int(blockNumber:Int, _pos:TPoint= Null)
 		If _pos = Null Then _pos = Self.pos
 		'0-11 links, 12-23 rechts
 		Local top:Int = 17
@@ -2793,8 +2794,8 @@ Type TNewsBlock Extends TBlockGraphical
     Global LastUniqueID:Int 		= 0
     Global DragAndDropList:TList
 
-    Global LeftListPosition:Int		= 0
-    Global LeftListPositionMax:Int	= 4
+    Global LeftLisTPoint:Int		= 0
+    Global LeftLisTPointMax:Int	= 4
 
 
 	Function LoadAll(loadfile:TStream)
@@ -2807,8 +2808,8 @@ Type TNewsBlock Extends TBlockGraphical
 
 		TNewsBlock.lastUniqueID:Int        = ReadInt(loadfile)
 		TNewsBlock.AdditionallyDragged:Int = ReadInt(loadfile)
-		TNewsBlock.LeftListPosition:Int    = ReadInt(loadfile)
-		TNewsBlock.LeftListPositionMax:Int = ReadInt(loadfile)
+		TNewsBlock.LeftLisTPoint:Int    = ReadInt(loadfile)
+		TNewsBlock.LeftLisTPointMax:Int = ReadInt(loadfile)
 		Local NewsBlockCount:Int = ReadInt(loadfile)
 		If NewsBlockCount > 0
 			Repeat
@@ -2844,8 +2845,8 @@ Type TNewsBlock Extends TBlockGraphical
 		LoadSaveFile.xmlBeginNode("ALLNEWSBLOCKS")
 			LoadSaveFile.xmlWrite("LASTUNIQUEID",		TNewsBlock.LastUniqueID)
 			LoadSaveFile.xmlWrite("ADDITIONALLYDRAGGED",TNewsBlock.AdditionallyDragged)
-			LoadSaveFile.xmlWrite("LEFTLISTPOSITION",	TNewsBlock.LeftListPosition)
-			LoadSaveFile.xmlWrite("LEFTLISTPOSITIONMAX",TNewsBlock.LeftListPositionMax)
+			LoadSaveFile.xmlWrite("LEFTLISTPoint",	TNewsBlock.LeftLisTPoint)
+			LoadSaveFile.xmlWrite("LEFTLISTPointMAX",TNewsBlock.LeftLisTPointMax)
 			'SaveFile.WriteInt(TNewsBlock.List.Count())
 			For Local i:Int = 1 To 4
 				For Local NewsBlock:TNewsBlock= EachIn Players[i].ProgrammePlan.NewsBlocks
@@ -2874,8 +2875,8 @@ Type TNewsBlock Extends TBlockGraphical
 
 	Function Create:TNewsBlock(text:String="unknown", x:Int=0, y:Int=0, owner:Int=1, publishdelay:Int=0, usenews:TNews=Null)
 	  Local LocObject:TNewsBlock=New TNewsBlock
-	  LocObject.Pos		= TPosition.Create(x, y)
-	  LocObject.StartPos= TPosition.Create(x, y)
+	  LocObject.Pos		= TPoint.Create(x, y)
+	  LocObject.StartPos= TPoint.Create(x, y)
  	  LocObject.owner = owner
  	  LocObject.State = 0
  	  locobject.publishdelay = publishdelay
@@ -2903,12 +2904,12 @@ Type TNewsBlock Extends TBlockGraphical
         Players[owner].finances[Game.getWeekday()].PayNews(news.ComputePrice())
     End Method
 
-	Function IncLeftListPosition:Int(amount:Int=1)
-      If TNewsBlock.LeftListPositionMax-TNewsBlock.LeftListPosition > 4 Then TNewsBlock.LeftListPosition:+amount
+	Function IncLeftLisTPoint:Int(amount:Int=1)
+      If TNewsBlock.LeftLisTPointMax-TNewsBlock.LeftLisTPoint > 4 Then TNewsBlock.LeftLisTPoint:+amount
 	End Function
 
-	Function DecLeftListPosition:Int(amount:Int=1)
-		TNewsBlock.LeftListPosition = Max(0, TNewsBlock.LeftListPosition -amount)
+	Function DecLeftLisTPoint:Int(amount:Int=1)
+		TNewsBlock.LeftLisTPoint = Max(0, TNewsBlock.LeftLisTPoint -amount)
 	End Function
 
 	Method SetDragable(_dragable:Int = 1)
@@ -3091,9 +3092,9 @@ Type TContractBlock Extends TBlockGraphical
 
 		Local x:Int = 285 + slot * LocObject.width
 		Local y:Int = 300 - 10 - LocObject.height - slot * 7
-		LocObject.Pos			= TPosition.Create(x, y)
-		LocObject.OrigPos		= TPosition.Create(x, y)
-		LocObject.StartPos		= TPosition.Create(x, y)
+		LocObject.Pos			= TPoint.Create(x, y)
+		LocObject.OrigPos		= TPoint.Create(x, y)
+		LocObject.StartPos		= TPoint.Create(x, y)
 		LocObject.slot 			= slot
 		LocObject.origSlot		= slot
 		locObject.owner 		= owner
@@ -3175,7 +3176,7 @@ Type TContractBlock Extends TBlockGraphical
 							locObject.dragged = 1
 							For Local OtherlocObject:TContractBlock = EachIn TContractBlock.List
 								If OtherLocObject.dragged And OtherLocObject <> locObject
-									TPosition.SwitchPos(locObject.StartPos, OtherLocObject.StartPos)
+									TPoint.SwitchPos(locObject.StartPos, OtherLocObject.StartPos)
 									OtherLocObject.dragged = 0
 								EndIf
 							Next
@@ -3456,10 +3457,10 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 			y=134-70 + 110
 		EndIf
 		If owner > 0 Then y = 260
-		LocObject.Pos			=TPosition.Create(x, y)
-		LocObject.OrigPos		=TPosition.Create(x, y)
-		LocObject.StartPos		=TPosition.Create(x, y)
-		LocObject.StartPosBackup=TPosition.Create(x, y)
+		LocObject.Pos			=TPoint.Create(x, y)
+		LocObject.OrigPos		=TPoint.Create(x, y)
+		LocObject.StartPos		=TPoint.Create(x, y)
+		LocObject.StartPosBackup=TPoint.Create(x, y)
 		LocObject.slot = slot
 		locObject.owner = owner
 		'hier noch als variablen uebernehmen
@@ -3518,7 +3519,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 			'	locObj.dragable = True
 				'its a programme of the player, so set it to the coords of the suitcase
 				If locObj.owner = Game.playerID
-					If locObj.StartPosBackup = Null Then Print "StartPosBackup missing";locObj.StartPosBackup = TPosition.Create(0,0)
+					If locObj.StartPosBackup = Null Then Print "StartPosBackup missing";locObj.StartPosBackup = TPoint.Create(0,0)
 					If locObj.StartPosBackup.y = 0 Then locObj.StartPosBackup.SetPos(locObj.StartPos)
 					locObj.SetCoords(550+imgWidth*localslot, 267, 550+imgWidth*localslot, 267)
 					locObj.dragable = True
@@ -3764,9 +3765,9 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 		Local obj:TArchiveProgrammeBlock=New TArchiveProgrammeBlock
 		Local x:Int=60+slot*15 'ImageWidth(gfx_movie[0])
 		Local y:Int=285 'ImageHeight(gfx_movie[0])
-		obj.Pos			= TPosition.Create(x, y)
-		obj.OrigPos		= TPosition.Create(x, y)
-		obj.StartPos	= TPosition.Create(x, y)
+		obj.Pos			= TPoint.Create(x, y)
+		obj.OrigPos		= TPoint.Create(x, y)
+		obj.StartPos	= TPoint.Create(x, y)
 		obj.slot		= slot
 		obj.owner 		= owner
 		obj.dragable	= 1
@@ -3782,8 +3783,8 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
     'erstellt einen gedraggten Programmblock (genutzt von der Film- und Serienauswahl)
 	Function CreateDragged:TArchiveProgrammeBlock(programme:TProgramme, owner:Int =-1)
 		Local obj:TArchiveProgrammeBlock= TArchiveProgrammeBlock.Create(programme, 0, owner)
-		obj.Pos		= TPosition.Create(MouseX(), MouseY())
-		obj.StartPos= TPosition.Create(0, 0) 'ProgrammeBlock.x, ProgrammeBlock.y
+		obj.Pos		= TPoint.Create(MouseX(), MouseY())
+		obj.StartPos= TPoint.Create(0, 0) 'ProgrammeBlock.x, ProgrammeBlock.y
 		'dragged
 		obj.dragged	= 1
 		TArchiveProgrammeBlock.AdditionallyDragged :+ 1
@@ -3892,8 +3893,8 @@ End Type
 
 'Programmeblocks used in Archive
 Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
-	Field pos:TPosition = TPosition.Create(0,0)
-	Field dim:TPosition	= TPosition.Create(0,0)
+	Field pos:TPoint = TPoint.Create(0,0)
+	Field dim:TPoint	= TPoint.Create(0,0)
 
 	Field imageWithText:TImage = Null
 	Field Programme:TProgramme

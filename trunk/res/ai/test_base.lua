@@ -106,7 +106,7 @@ function OnMinute(number)
 	-----------------------------------------------------
 	-- Figur hat Zielposition erreicht
 	-----------------------------------------------------
-	if MY.Figure.pos.isSame(MY.Figure.target, true) then
+	if MY.Figure.rect.position.isSame(MY.Figure.target, true) then
 	--if TVT.GetPlayerPosX(ME) == TVT.GetPlayerTargetPosX(ME) then
 		randomnumber = math.random(200,600)
 

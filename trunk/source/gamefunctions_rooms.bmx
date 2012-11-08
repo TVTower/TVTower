@@ -7,7 +7,7 @@ Type TRooms
     Field tooltip:TTooltip		= null		'uses description
 
 	Field DoorTimer:TTimer		= TTimer.Create(500)
-	Field Pos:TPosition						'x of the rooms door in the building, y as floornumber
+	Field Pos:TPoint						'x of the rooms door in the building, y as floornumber
     Field xpos:Int				= 0			'door 1-4 on floor
     Field doortype:Int			=-1
     Field doorwidth:Int			= 38
@@ -226,7 +226,7 @@ Type TRooms
 		obj.descTwo		= descTwo
 		obj.doorwidth	= Assets.GetSprite("gfx_building_Tueren").framew
 		obj.xpos		= x
-		obj.Pos			= TPosition.Create(0,y)
+		obj.Pos			= TPoint.Create(0,y)
 		If x <=4
 			If x = 0 Then obj.Pos.x = -10
 			If x = 1 Then obj.Pos.x = 206
@@ -247,7 +247,7 @@ Type TRooms
 		Local obj:TRooms=New TRooms.BaseSetup(background, name, desc, owner)
 		obj.doorwidth	= width
 		obj.xpos		= xpos
-		obj.Pos			= TPosition.Create(x,y)
+		obj.Pos			= TPoint.Create(x,y)
 		obj.doortype	= doortype
 		obj.RoomBoardX	= obj.xpos
 
@@ -1020,8 +1020,8 @@ Type RoomHandler_NewsPlanner extends TRoomHandler
 
 		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("news", room.owner)
 		Game.cursorstate = 0
-		If Btn_newsplanner_up.GetClicks() >= 1 Then TNewsBlock.DecLeftListPosition()
-		If Btn_newsplanner_down.GetClicks() >= 1 Then TNewsBlock.IncLeftListPosition()
+		If Btn_newsplanner_up.GetClicks() >= 1 Then TNewsBlock.DecLeftLisTPoint()
+		If Btn_newsplanner_down.GetClicks() >= 1 Then TNewsBlock.IncLeftLisTPoint()
 		If TNewsBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
 		GUIManager.Update("Newsplanner")
 		Players[ room.owner ].ProgrammePlan.UpdateAllNewsBlocks()
@@ -1303,7 +1303,7 @@ Function OnUpdate_StationMapBuy(triggerEvent:TEventBase)
 		Local obj:TGUIButton = TGUIButton(evt._sender)
 
 		If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseX() < 570
-			local ClickPos:TPosition = TPosition.Create( MouseX() - 20, MouseY() - 10 )
+			local ClickPos:TPoint = TPoint.Create( MouseX() - 20, MouseY() - 10 )
 			If StationMap.LastStation.pos.isSame( ClickPos )
 				EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
 			Else
@@ -1358,12 +1358,12 @@ End Function
 
 'StationMap-GUIcomponents
 Local button:TGUIButton
-button = new TGUIButton.Create(TPosition.Create(610, 110), 155,,, , "Neue Station", "STATIONMAP")
+button = new TGUIButton.Create(TPoint.Create(610, 110), 155,,, , "Neue Station", "STATIONMAP")
 button.SetTextalign("CENTER")
 EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
 EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
 
-button = new TGUIButton.Create(TPosition.Create(610, 345), 155,,, , "Station verkaufen", "STATIONMAP")
+button = new TGUIButton.Create(TPoint.Create(610, 345), 155,,, , "Station verkaufen", "STATIONMAP")
 button.disable()
 button.SetTextalign("CENTER")
 EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
@@ -1414,9 +1414,9 @@ Type TRoomSigns Extends TBlock
 
   Function Create:TRoomSigns(text:String="unknown", x:Int=0, y:Int=0, owner:Int=0)
 	  Local LocObject:TRoomSigns=New TRoomSigns
-	  LocObject.Pos 	= TPosition.Create(x, y)
-	  LocObject.OrigPos	= TPosition.Create(x, y)
-	  LocObject.StartPos= TPosition.Create(x, y)
+	  LocObject.Pos 	= TPoint.Create(x, y)
+	  LocObject.OrigPos	= TPoint.Create(x, y)
+	  LocObject.StartPos= TPoint.Create(x, y)
 
  	  LocObject.dragable = 1
 	  LocObject.owner = owner

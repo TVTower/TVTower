@@ -257,8 +257,8 @@ Type TNetworkHelper
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_FIGUREPOSITION )
 		obj.SetInt(		1, figure.id )		'playerID
-		obj.SetFloat(	2, figure.pos.x )	'pos.x
-		obj.SetFloat(	3, figure.pos.y )	'...
+		obj.SetFloat(	2, figure.rect.GetX() )	'position.x
+		obj.SetFloat(	3, figure.rect.GetY() )	'...
 		obj.SetFloat(	4, figure.target.x )
 		obj.SetFloat(	5, figure.target.y )
 		if figure.inRoom <> null 			then obj.setInt( 6, figure.inRoom.id)
@@ -285,9 +285,9 @@ Type TNetworkHelper
 		If not figure.IsInElevator()
 			'only set X if wrong floor or x differs > 10 pixels
 			if posY = targetY
-				if Abs(posX - targetX) > 10 then figure.pos.setXY(posX,posY)
+				if Abs(posX - targetX) > 10 then figure.rect.position.setXY(posX,posY)
 			else
-				figure.pos.setXY(posX,posY)
+				figure.rect.position.setXY(posX,posY)
 			endif
 		endif
 		figure.target.setXY(targetX,targetY)
@@ -551,7 +551,7 @@ Type TNetworkHelper
 		if not Game.isPlayerID( playerID ) then return
 
 		Local add:int		= obj.getInt(2)
-		Local pos:TPosition	= TPosition.Create( obj.getFloat(3), obj.getFloat(4) )
+		Local pos:TPoint	= TPoint.Create( obj.getFloat(3), obj.getFloat(4) )
 		Local reach:Int		= obj.getInt(5)
 		Local price:Int		= obj.getInt(6)
 		Local newaudience:Int= obj.getInt(7)
@@ -588,8 +588,8 @@ Type TNetworkHelper
 
 		local remove:int		= obj.getInt(2)
 		local blockID:int		= obj.getInt(3)
-		local pos:TPosition 	= TPosition.Create( obj.getFloat(4), obj.getFloat(5) )
-		local startpos:TPosition= TPosition.Create( obj.getFloat(6), obj.getFloat(7) )
+		local pos:TPoint 	= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
+		local startpos:TPoint= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
 		local paid:int			= obj.getInt(8)
 		local newsID:int		= obj.getInt(9)
 		local sendslot:int		= obj.getInt(10)
@@ -630,8 +630,8 @@ Type TNetworkHelper
 
 		local add:int			= obj.getInt(2)
 		local blockID:int		= obj.getInt(3)
-		local pos:TPosition 	= TPosition.Create( obj.getFloat(4), obj.getFloat(5) )
-		local startpos:TPosition= TPosition.Create( obj.getFloat(6), obj.getFloat(7) )
+		local pos:TPoint 	= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
+		local startpos:TPoint= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
 		local senddate:int		= obj.getInt(8)
 		local sendtime:int		= obj.getInt(9)
 		local contractID:int	= obj.getInt(10)
@@ -687,8 +687,8 @@ Type TNetworkHelper
 
 		local add:int			= obj.getInt(2)
 		local blockID:int		= obj.getInt(3)
-		local pos:TPosition 	= TPosition.Create( obj.getFloat(4), obj.getFloat(5) )
-		local startpos:TPosition= TPosition.Create( obj.getFloat(6), obj.getFloat(7) )
+		local pos:TPoint 	= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
+		local startpos:TPoint= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
 
 		local sendhour:int		= obj.getInt(8)
 		'leave int 9 alone

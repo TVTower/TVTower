@@ -117,7 +117,8 @@ Type TGUIManager
 						'print Millisecs() +": set INactive " + TTypeId.ForObject( obj ).name() + string(" [ID:"+(obj._id)+"]")
 					endif
 				EndIf
-				If functions.isIn(MouseX(), MouseY(), obj.GetX(), obj.GetY(), obj.dimension.x, obj.dimension.y)
+				'no rect.intersects as GetX and GetY add parent position
+				If functions.isIn(MouseX(), MouseY(), obj.GetX(), obj.GetY(), obj.GetWidth(), obj.GetHeight())
 					'activate objects - or skip if if one gets active
 					If MouseIsDown And obj._enabled
 						'create a new "event"
@@ -125,7 +126,7 @@ Type TGUIManager
 							Self.setActive(obj._id)
 							'print Millisecs() +": set active/clicked " + TTypeId.ForObject( obj ).name() + string(" [ID:"+(obj._id)+"]")
 							obj.EnterPressed = 1
-							obj.MouseIsDown = TPosition.Create( MouseX(), MouseY() )
+							obj.MouseIsDown = TPoint.Create( MouseX(), MouseY() )
 						endif
 
 						'we found a gui element which can accept clicks
@@ -138,7 +139,7 @@ Type TGUIManager
 						If MouseIsDown Or obj.MouseIsDown Then obj.setState("active") Else obj.setState("hover")
 
 						If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
-							obj.mouseIsClicked = TPosition.Create( MouseX(), MouseY() )
+							obj.mouseIsClicked = TPoint.Create( MouseX(), MouseY() )
 							'fire onClickEvent
 							If obj._enabled then EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
 							'added for imagebutton and arrowbutton not being reset when mouse standing still
@@ -158,7 +159,7 @@ Type TGUIManager
 
 	Method DisplaceGUIobjects(State:String = "", x:Int = 0, y:Int = 0)
 		For Local obj:TGUIobject = EachIn Self.List
-			If State = obj.forstateonly then obj.pos.MoveXY( x,y )
+			If State = obj.forstateonly then obj.rect.position.MoveXY( x,y )
 		Next
 	End Method
 
@@ -183,20 +184,19 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 
 
 Type TGUIobject
-	Field pos:TPosition				= TPosition.Create(-1,-1)
-	Field dimension:TPosition		= TPosition.Create(-1,-1)
+	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
 	Field zIndex:Int
 	Field scale:Float				= 1.0
 	Field align:Int					= 0 			'alignment of object
 	Field state:String				= ""
 	Field value:String				= ""
 	Field backupvalue:String		= "x"
-	Field mouseIsClicked:TPosition	= null			'null = not clicked
-	Field mouseIsDown:TPosition		= TPosition.Create(-1,-1)
+	Field mouseIsClicked:TPoint		= null			'null = not clicked
+	Field mouseIsDown:TPoint		= TPoint.Create(-1,-1)
 	Field EnterPressed:Int=0
 	Field on:Int
 	Field clickable:Int				= 1
-	Field mouseover:Int				= 0			'could be done with TPosition
+	Field mouseover:Int				= 0			'could be done with TPoint
 	Field _id:Int
 	Field _enabled:Int				= 1
 	Field _visible:Int				= 1
@@ -215,7 +215,7 @@ Type TGUIobject
 
 	Method CreateBase:TGUIobject(x:float,y:float, enabled:int=1, forstateonly:string="", useFont:TBitmapFont=null)
 		If useFont <> Null Then Self.useFont = useFont
-		self.pos.setXY( x,y )
+		self.rect.position.setXY( x,y )
 		self.forstateonly = forstateonly
 		self._enabled = enabled
 	end Method
@@ -243,20 +243,31 @@ Type TGUIobject
 	End Method
 
 	Method GetWidth:float()
-		return self.dimension.x
+		return self.rect.GetW()
 	End Method
 
 	Method GetHeight:float()
-		return self.dimension.y
+		return self.rect.GetH()
 	End Method
 
+	Method GetRect:TRectangle()
+		if self._parent <> null
+			return TRectangle.Create(	self._parent.rect.GetX() + self.rect.GetX(), ..
+										self._parent.rect.GetY() + self.rect.GetY(), ..
+										self.rect.GetW(), ..
+										self.rect.GetH() ..
+									)
+		endif
+		return self.rect
+	End Method
 
+	'adds parent position
 	Method GetX:float()
-		if self._parent <> null then return self._parent.pos.x + self.pos.x else return self.pos.x
+		if self._parent <> null then return self._parent.rect.GetX() + self.rect.GetX() else return self.rect.GetX()
 	End Method
 
 	Method GetY:float()
-		if self._parent <> null then return self._parent.pos.y + self.pos.y else return self.pos.y
+		if self._parent <> null then return self._parent.rect.GetY() + self.rect.GetY() else return self.rect.GetY()
 	End Method
 
 
@@ -299,8 +310,8 @@ Type TGUIobject
 	Method DrawBaseForm(identifier:string, x:float, y:float)
 		SetScale Self.scale, Self.scale
 		Assets.GetSprite(identifier+".L").Draw(x,y)
-		Assets.GetSprite(identifier+".M").TileDrawHorizontal(x + Assets.GetSprite(identifier+".L").w*Self.scale, y, self.dimension.x - ( Assets.GetSprite(identifier+".L").w + Assets.GetSprite(identifier+".R").w)*self.scale, Self.scale)
-		Assets.GetSprite(identifier+".R").Draw(x + self.dimension.x, y, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale)
+		Assets.GetSprite(identifier+".M").TileDrawHorizontal(x + Assets.GetSprite(identifier+".L").w*Self.scale, y, self.GetWidth() - ( Assets.GetSprite(identifier+".L").w + Assets.GetSprite(identifier+".R").w)*self.scale, Self.scale)
+		Assets.GetSprite(identifier+".R").Draw(x + self.GetWidth(), y, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale)
 		SetScale 1.0,1.0
 	End Method
 
@@ -378,13 +389,13 @@ Type TGUIButton Extends TGUIobject
 	Field textalign:Int		= 0
 	Field manualState:Int	= 0
 
-	Method Create:TGUIButton(pos:TPosition, width:Int=-1, on:int=0, enabled:int=1, textalign:Int=0, value:String, State:String = "", UseFont:TBitmapFont = Null)
+	Method Create:TGUIButton(pos:TPoint, width:Int=-1, on:int=0, enabled:int=1, textalign:Int=0, value:String, State:String = "", UseFont:TBitmapFont = Null)
 		super.CreateBase(pos.x,pos.y, enabled, State, UseFont)
 
 		self.on			= on
 		self.textalign	= textalign
 		If width < 0 Then width = self.useFont.getWidth(value) + 8
-		self.dimension.SetXY(width, Assets.GetSprite("gfx_gui_button.L").h * self.scale )
+		self.rect.dimension.SetXY(width, Assets.GetSprite("gfx_gui_button.L").h * self.scale )
 		self.zindex		= 10
 		self.value		= value
 
@@ -419,8 +430,8 @@ Type TGUIButton Extends TGUIobject
 		self.DrawBaseForm( "gfx_gui_button"+Self.state, Self.GetX(),Self.GetY() )
 
 		Local TextX:Float = Ceil(Self.GetX() + 10)
-		Local TextY:Float = Ceil(Self.GetY() - (Self.useFont.getHeight("ABC") - self.dimension.y) / 2)
-		If textalign = 1 Then TextX = Ceil(Self.GetX() + (Self.dimension.x - Self.useFont.getWidth(value)) / 2)
+		Local TextY:Float = Ceil(Self.GetY() - (Self.useFont.getHeight("ABC") - self.GetHeight()) / 2)
+		If textalign = 1 Then TextX = Ceil(Self.GetX() + (Self.GetWidth() - Self.useFont.getWidth(value)) / 2)
 
 		self.DrawBaseFormText(value, TextX, TextY)
 	End Method
@@ -437,7 +448,7 @@ Type TGUIImageButton Extends TGUIobject
 		self.on				= on
 		self.spriteBaseName	= spriteBaseName
 		self.startframe		= startframe
-		self.dimension.setXY( Assets.getSprite(spriteBaseName).w, Assets.getSprite(spriteBaseName).h )
+		self.rect.dimension.setXY( Assets.getSprite(spriteBaseName).w, Assets.getSprite(spriteBaseName).h )
 		self.value			= ""
 
 		GUIManager.Add( self )
@@ -477,7 +488,7 @@ Type TGUIBackgroundBox  Extends TGUIobject
 		super.CreateBase(x,y, true, State, useFont)
 
 		self.textalign	= textalign
-		self.dimension.setXY( width, height )
+		self.rect.dimension.setXY( width, height )
 		self.value		= value
 		self.zindex		= 0
 
@@ -502,31 +513,31 @@ Type TGUIBackgroundBox  Extends TGUIobject
 
 		If Self.scale <> 1.0 Then SetScale Self.scale, Self.scale
 		Local addY:Float = 0
-		local drawPos:TPosition = TPosition.Create(self.GetX(), self.GetY())
+		local drawPos:TPoint = TPoint.Create(self.GetX(), self.GetY())
 		Assets.GetSprite("gfx_gui_box_context.TL").Draw( drawPos.x,drawPos.y )
-		Assets.GetSprite("gfx_gui_box_context.TM").TileDrawHorizontal( drawPos.x + Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale, drawPos.y, self.dimension.x - Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale - Assets.GetSprite("gfx_gui_box_context.TR").w*Self.scale, Self.scale )
-		Assets.GetSprite("gfx_gui_box_context.TR").Draw( drawPos.x + self.dimension.x, drawPos.y, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale )
+		Assets.GetSprite("gfx_gui_box_context.TM").TileDrawHorizontal( drawPos.x + Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale, drawPos.y, self.GetWidth() - Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale - Assets.GetSprite("gfx_gui_box_context.TR").w*Self.scale, Self.scale )
+		Assets.GetSprite("gfx_gui_box_context.TR").Draw( drawPos.x + self.GetWidth(), drawPos.y, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale )
 		addY = Assets.GetSprite("gfx_gui_box_context.TM").h * scale
 
-		Assets.GetSprite("gfx_gui_box_context.ML").TileDrawVertical( drawPos.x,drawPos.y + addY, self.dimension.y - addY - (Assets.GetSprite("gfx_gui_box_context.BL").h*Self.scale), Self.scale )
-		Assets.GetSprite("gfx_gui_box_context.MM").TileDraw( drawPos.x + Assets.GetSprite("gfx_gui_box_context.ML").w*Self.scale, drawPos.y + addY, self.dimension.x - Assets.GetSprite("gfx_gui_box_context.BL").w*scale - Assets.GetSprite("gfx_gui_box_context.BR").w*scale,  self.dimension.y - addY - (Assets.GetSprite("gfx_gui_box_context.BL").h*Self.scale), Self.scale )
-		Assets.GetSprite("gfx_gui_box_context.MR").TileDrawVertical( drawPos.x + self.dimension.x - Assets.GetSprite("gfx_gui_box_context.MR").w*Self.scale,drawPos.y + addY, self.dimension.y - addY - (Assets.GetSprite("gfx_gui_box_context.BR").h*Self.scale), Self.scale )
+		Assets.GetSprite("gfx_gui_box_context.ML").TileDrawVertical( drawPos.x,drawPos.y + addY, self.GetHeight() - addY - (Assets.GetSprite("gfx_gui_box_context.BL").h*Self.scale), Self.scale )
+		Assets.GetSprite("gfx_gui_box_context.MM").TileDraw( drawPos.x + Assets.GetSprite("gfx_gui_box_context.ML").w*Self.scale, drawPos.y + addY, self.GetWidth() - Assets.GetSprite("gfx_gui_box_context.BL").w*scale - Assets.GetSprite("gfx_gui_box_context.BR").w*scale,  self.GetHeight() - addY - (Assets.GetSprite("gfx_gui_box_context.BL").h*Self.scale), Self.scale )
+		Assets.GetSprite("gfx_gui_box_context.MR").TileDrawVertical( drawPos.x + self.GetWidth() - Assets.GetSprite("gfx_gui_box_context.MR").w*Self.scale,drawPos.y + addY, self.GetHeight() - addY - (Assets.GetSprite("gfx_gui_box_context.BR").h*Self.scale), Self.scale )
 
-		addY = self.dimension.y - Assets.GetSprite("gfx_gui_box_context.BM").h * scale
+		addY = self.GetHeight() - Assets.GetSprite("gfx_gui_box_context.BM").h * scale
 
 		'buggy "line" zwischen bottom und tiled bg
 		addY :-1
 
 		Assets.GetSprite("gfx_gui_box_context.BL").Draw( drawPos.x,drawPos.y + addY)
-		Assets.GetSprite("gfx_gui_box_context.BM").TileDrawHorizontal( drawPos.x + Assets.GetSprite("gfx_gui_box_context.BL").w*Self.scale, drawPos.y + addY, self.dimension.x - Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale - Assets.GetSprite("gfx_gui_box_context.BR").w*Self.scale, Self.scale )
-		Assets.GetSprite("gfx_gui_box_context.BR").Draw( drawPos.x + self.dimension.x, drawPos.y +  addY, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale )
+		Assets.GetSprite("gfx_gui_box_context.BM").TileDrawHorizontal( drawPos.x + Assets.GetSprite("gfx_gui_box_context.BL").w*Self.scale, drawPos.y + addY, self.GetWidth() - Assets.GetSprite("gfx_gui_box_context.TL").w*Self.scale - Assets.GetSprite("gfx_gui_box_context.BR").w*Self.scale, Self.scale )
+		Assets.GetSprite("gfx_gui_box_context.BR").Draw( drawPos.x + self.GetWidth(), drawPos.y +  addY, -1, VALIGN_BOTTOM, ALIGN_LEFT, self.scale )
 
 		If Self.scale <> 1.0 Then SetScale 1.0,1.0
 
 		Local TextX:Float = Ceil( drawPos.x + 10)
 		Local TextY:Float = Ceil( drawPos.y + 5 - (Self.useFont.getHeight(value) - Assets.GetSprite("gfx_gui_box_context.TL").h * Self.scale) / 2 )
 
-		If textalign = 1 Then TextX = Ceil( drawPos.x + (self.dimension.x - Self.useFont.getWidth(value)) / 2 )
+		If textalign = 1 Then TextX = Ceil( drawPos.x + (self.GetWidth() - Self.useFont.getWidth(value)) / 2 )
 
 		self.UseFont.drawStyled(value,TextX,TextY, 200,200,200, 2, 0, 1, 0.75)
 
@@ -564,7 +575,7 @@ Type TGUIArrowButton  Extends TGUIobject
 
 		self.on      	= on
 		self.zindex		= 40
-		self.dimension.setXY( Assets.GetSprite("gfx_gui_arrow_"+self.direction).w * self.scale, Assets.GetSprite("gfx_gui_arrow_"+self.direction).h * self.scale )
+		self.rect.dimension.setXY( Assets.GetSprite("gfx_gui_arrow_"+self.direction).w * self.scale, Assets.GetSprite("gfx_gui_arrow_"+self.direction).h * self.scale )
 		self.value		= ""
 		self.setAlign(align)
 
@@ -574,8 +585,8 @@ Type TGUIArrowButton  Extends TGUIobject
 
 	Method setAlign(align:Int=0)
 		If Self.align <> align
-			If Self.align = 0 And align = 1 then Self.pos.setX( Self.pos.x - Self.dimension.x )
-			If Self.align = 1 And align = 0 then Self.pos.setX( Self.pos.x + Self.dimension.x )
+			If Self.align = 0 And align = 1 then Self.rect.position.setX( Self.rect.position.x - Self.GetWidth() )
+			If Self.align = 1 And align = 0 then Self.rect.position.setX( Self.rect.position.x + Self.GetWidth() )
 		EndIf
 	End Method
 
@@ -611,7 +622,7 @@ Type TGUISlider  Extends TGUIobject
 		super.CreateBase(x,y,enabled, State,null)
 		If width < 0 Then width = TextWidth(value) + 8
 		self.on			= 0
-		self.dimension.setXY( width, gfx_GuiPack.GetSprite("Button").frameh )
+		self.rect.dimension.setXY( width, gfx_GuiPack.GetSprite("Button").frameh )
 		self.value		= value
 		self.minvalue	= minvalue
 		self.maxvalue	= maxvalue
@@ -648,13 +659,13 @@ Type TGUISlider  Extends TGUIobject
 	Method Draw()
 		Local sprite:TGW_Sprites = gfx_GuiPack.GetSprite("Slider")
 
-		Local PixelPerValue:Float = self.dimension.x / (maxvalue - 1 - minvalue)
+		Local PixelPerValue:Float = self.GetWidth() / (maxvalue - 1 - minvalue)
 	    Local actvalueX:Float = actvalue * PixelPerValue
 	    Local maxvalueX:Float = (maxvalue) * PixelPerValue
 		Local difference:Int = actvalueX '+ PixelPerValue / 2
 
 		If on
-			difference = MouseX() - Self.pos.x + PixelPerValue / 2
+			difference = MouseX() - Self.rect.position.x + PixelPerValue / 2
 			actvalue = Float(difference) / PixelPerValue
 			If actvalue > maxvalue Then actvalue = maxvalue
 			If actvalue < minvalue Then actvalue = minvalue
@@ -670,12 +681,12 @@ Type TGUISlider  Extends TGUIobject
 		Else
 			sprite.Draw( Self.GetX(), Self.GetY(), 4 )
 		EndIf
-  		If Ceil(actvalueX) > self.dimension.x - sprite.framew
-			sprite.DrawClipped( Self.GetX() + self.dimension.x - sprite.framew, Self.GetY(), Self.GetX() + self.dimension.x - sprite.framew, Self.GetY(), Ceil(actvalueX) - (self.dimension.x - sprite.framew) + 5, sprite.frameh, 0, 0, 6) 'links an
+  		If Ceil(actvalueX) > self.GetWidth() - sprite.framew
+			sprite.DrawClipped( Self.GetX() + self.GetWidth() - sprite.framew, Self.GetY(), Self.GetX() + self.GetWidth() - sprite.framew, Self.GetY(), Ceil(actvalueX) - (self.GetWidth() - sprite.framew) + 5, sprite.frameh, 0, 0, 6) 'links an
   		    'links aus
-  		    sprite.DrawClipped( Self.GetX() + self.dimension.x - sprite.framew, Self.GetY(), Self.GetX() + actvalueX + 5, Self.GetY(), sprite.framew, sprite.frameh, 0, 0, 2 )
+  		    sprite.DrawClipped( Self.GetX() + self.GetWidth() - sprite.framew, Self.GetY(), Self.GetX() + actvalueX + 5, Self.GetY(), sprite.framew, sprite.frameh, 0, 0, 2 )
 		Else
-			sprite.Draw( Self.GetX() + self.dimension.x, Self.GetY(), 2, VALIGN_BOTTOM, ALIGN_LEFT )
+			sprite.Draw( Self.GetX() + self.GetWidth(), Self.GetY(), 2, VALIGN_BOTTOM, ALIGN_LEFT )
 		EndIf
 
 
@@ -683,7 +694,7 @@ Type TGUISlider  Extends TGUIobject
 		'      \
 		' [L][++++++()-----][R]
 		' MaxWidth = GuiObj.w - [L].w - [R].w
-		local maxWidth:float	= self.dimension.x - 2*sprite.framew
+		local maxWidth:float	= self.GetWidth() - 2*sprite.framew
 		local reachedWidth:float= Min(maxWidth, actvalueX - sprite.framew)
 		local missingWidth:float= maxWidth - reachedWidth
 		'gefaerbter Balken
@@ -701,7 +712,7 @@ Type TGUISlider  Extends TGUIobject
 		local drawText:string = self.value
 		If drawvalue <> 0 then drawText = (actvalue + addvalue) + " " + drawText
 
-		Self.Usefont.Draw(value, Self.GetX()+self.dimension.x+7, Self.GetY()- (Self.useFont.getHeight(drawText) - self.dimension.y) / 2 - 1)
+		Self.Usefont.Draw(value, Self.GetX()+self.GetWidth()+7, Self.GetY()- (Self.useFont.getHeight(drawText) - self.GetHeight()) / 2 - 1)
 	End Method
 
 End Type
@@ -714,7 +725,7 @@ Type TGUIinput Extends TGUIobject
     Field InputImageActive:TGW_Sprites	= Null	  'own Image for Inputarea
     Field InputImage:TGW_Sprites		= Null	  'own Image for Inputarea
     Field OverlayColor:TColor			= TColor.Create(200,200,200, 0.5)
-	Field TextDisplacement:TPosition	= TPosition.Create(5,5)
+	Field TextDisplacement:TPoint		= TPoint.Create(5,5)
 	Field autoAlignText:int				= 1
 	Field valueChanged:int				= 0 '1 if changed
 
@@ -722,8 +733,8 @@ Type TGUIinput Extends TGUIobject
 		super.CreateBase(x,y,enabled, State, useFont)
 
 		self.zindex			= 20
-		self.dimension.setXY( Max(width, 40), Assets.GetSprite("gfx_gui_input.L").h * self.scale )
-		self.maxTextWidth	= self.dimension.x - 15
+		self.rect.dimension.setXY( Max(width, 40), Assets.GetSprite("gfx_gui_input.L").h * self.scale )
+		self.maxTextWidth	= self.GetWidth() - 15
 		self.value			= value
 		self.maxlength		= maxlength
 		self.EnterPressed	= 0
@@ -799,7 +810,7 @@ Type TGUIinput Extends TGUIobject
 		If Self.useFont = Null Then self.useFont = GUIManager.defaultFont 'item not created with create but new
 
 		'only center text if autoAlign is set
-		if self.autoAlignText then Self.textDisplacement.y = (self.dimension.y - Self.useFont.getHeight("abcd")) /2
+		if self.autoAlignText then Self.textDisplacement.y = (self.GetHeight() - Self.useFont.getHeight("abcd")) /2
 
         If OverlayImage <> Null
 			useTextDisplaceX :+ OverlayImage.framew * Self.scale
@@ -874,18 +885,15 @@ Type TGUIDropDown Extends TGUIobject
 
 		If width < 0 Then width = self.useFont.getWidth(value) + 8
 		self.on			= 0	'open or closed dropdown?
-		self.dimension.setXY( width, Assets.GetSprite("gfx_gui_dropdown.L").frameh * self.scale)
+		self.rect.dimension.setXY( width, Assets.GetSprite("gfx_gui_dropdown.L").frameh * self.scale)
 		self.value		= value
-		self.heightIfOpen = self.dimension.y
+		self.heightIfOpen = self.rect.GetH()
 
 		GUIManager.Add( self )
 		Return self
 	End Method
 
-	Method GetWidth:float()
-		return self.dimension.x
-	End Method
-
+	'overwrite default method
 	Method GetHeight:float()
 		return self.heightIfOpen
 	End Method
@@ -906,7 +914,7 @@ Type TGUIDropDown Extends TGUIobject
 
 		if self.on = 0 then return
 
-		local currentAddY:Int = self.dimension.y
+		local currentAddY:Int = self.rect.GetH() 'ignore "if open"
 		local lineHeight:float = Assets.GetSprite("gfx_gui_dropdown_list_entry.L").h*self.scale
 
 		'reset hovered item id ...
@@ -914,7 +922,7 @@ Type TGUIDropDown Extends TGUIobject
 
 		'check new hovered or clicked items
 		For Local Entry:TGUIEntry = EachIn self.EntryList 'Liste hier global
-			If functions.MouseIn( Self.GetX(), Self.GetY() + currentAddY, self.dimension.x, lineHeight)
+			If functions.MouseIn( Self.GetX(), Self.GetY() + currentAddY, self.GetWidth(), lineHeight)
 				If GUIManager.MouseIsHit
 					value			= Entry.getValue()
 					clickedEntryID	= Entry.id
@@ -930,7 +938,7 @@ Type TGUIDropDown Extends TGUIobject
 			currentAddY:+ lineHeight
 		Next
 		'store height if opened
-		self.heightIfOpen = self.dimension.y + currentAddY
+		self.heightIfOpen = self.rect.GetH() + currentAddY
 
 
 		if hoveredEntryID > 0
@@ -959,12 +967,12 @@ Type TGUIDropDown Extends TGUIobject
 
 		'draw list if enabled
 		If on = 1 And self._enabled 'ausgeklappt zeichnen
-			useheight = self.dimension.y
+			useheight = self.rect.GetH()
 			For Local Entry:TGUIEntry = EachIn self.EntryList
 				if self.EntryList.last() = Entry
-					self.DrawBaseForm( "gfx_gui_dropdown_list_bottom", Self.pos.x, Self.pos.y + useheight )
+					self.DrawBaseForm( "gfx_gui_dropdown_list_bottom", Self.rect.GetX(), Self.rect.GetY() + useheight )
 				else
-					self.DrawBaseForm( "gfx_gui_dropdown_list_entry", Self.pos.x, Self.pos.y + useheight )
+					self.DrawBaseForm( "gfx_gui_dropdown_list_entry", Self.rect.GetX(), Self.rect.GetY() + useheight )
 				endif
 
 				SetColor 100,100,100
@@ -972,7 +980,7 @@ Type TGUIDropDown Extends TGUIobject
 				If Entry.id = self.clickedEntryID then SetColor 0,0,0
 				If Entry.id = self.hoveredEntryID then SetColor 150,150,150
 
-				If textalign = 1 Then self.useFont.Draw( Entry.getValue(), Self.GetX() + (self.dimension.x - self.useFont.getWidth( Entry.GetValue() ) ) / 2, Self.GetY() + useheight + 5)
+				If textalign = 1 Then self.useFont.Draw( Entry.getValue(), Self.GetX() + (self.GetWidth() - self.useFont.getWidth( Entry.GetValue() ) ) / 2, Self.GetY() + useheight + 5)
 				If textalign = 0 Then self.useFont.Draw( Entry.getValue(), Self.GetX() + 10, Self.GetY() + useHeight + 5)
 				SetColor 255,255,255
 
@@ -992,10 +1000,10 @@ Type TGUIDropDown Extends TGUIobject
 
 		If on Or not self._enabled
 			If not self._enabled Then SetAlpha 0.7
-			self.DrawBaseFormText(value, Self.GetX() + 10, Self.GetY() + self.dimension.y/2 - self.useFont.getHeight(value)/2)
+			self.DrawBaseFormText(value, Self.GetX() + 10, Self.GetY() + self.rect.GetH()/2 - self.useFont.getHeight(value)/2)
 			If not self._enabled Then SetAlpha 1.0
 	    Else
-			self.DrawBaseFormText(value, Self.GetX() + 10, Self.GetY() + self.dimension.y/2 - self.useFont.getHeight(value)/2)
+			self.DrawBaseFormText(value, Self.GetX() + 10, Self.GetY() + self.rect.GetH()/2 - self.useFont.getHeight(value)/2)
 		EndIf
 		SetColor 255, 255, 255
 
@@ -1015,7 +1023,7 @@ Type TGUIOkButton Extends TGUIobject
 
 		self.on			= on
 		'scale in both dimensions ()
-		self.dimension.setXY( Assets.GetSprite("gfx_gui_ok_off").w * self.scale, Assets.GetSprite("gfx_gui_ok_off").h * self.scale)
+		self.rect.dimension.setXY( Assets.GetSprite("gfx_gui_ok_off").w * self.scale, Assets.GetSprite("gfx_gui_ok_off").h * self.scale)
 		'store assetWidth to have dimension.x store "whole widget"
 		self.assetWidth	= Assets.GetSprite("gfx_gui_ok_off").w
 		self.value		= value
@@ -1050,14 +1058,14 @@ Type TGUIOkButton Extends TGUIobject
 		Local textDisplaceX:Int = 5
 		local dimX:float = int(string(Self.useFont.drawStyled(value, 0, 0, 0, 0, 0, 1, 0,0) ))
 		local dimY:float = int(string(Self.useFont.drawStyled(value, 0, 0, 0, 0, 0, 1, 1,0) ))
-		self.dimension.x = Self.assetWidth*Self.scale + textDisplaceX + dimX
+		self.rect.dimension.setX( Self.assetWidth*Self.scale + textDisplaceX + dimX )
 
 
 		local col:TColor = TColor.create(100,100,100)
 		if Self.mouseover Then col = TColor.create(50,50,50)
 		if not self._enabled then col = TColor.create(150,150,150)
 
-		Self.useFont.drawStyled( value, Self.GetX()+Self.assetWidth*Self.scale + textDisplaceX, Self.GetY() - (dimY - self.dimension.y) / 2, col.r, col.g, col.b, 1 )
+		Self.useFont.drawStyled( value, Self.GetX()+Self.assetWidth*Self.scale + textDisplaceX, Self.GetY() - (dimY - self.GetHeight()) / 2, col.r, col.g, col.b, 1 )
 	End Method
 
 End Type
@@ -1133,7 +1141,7 @@ Type TGUIScroller
 		self.buttonPressedDown	= 0
 
 		If self.parent.isActive() And self.parent.mouseIsDown And self.parent.mouseIsClicked
-			if self.parent.mouseIsClicked.x >= self.parent.GetX()+self.parent.dimension.x-14 And self.parent.mouseIsClicked.y <= self.parent.GetY()+14
+			if self.parent.mouseIsClicked.x >= self.parent.GetX()+self.parent.GetWidth()-14 And self.parent.mouseIsClicked.y <= self.parent.GetY()+14
 				self.buttonPressedUp = 1
 				If self.scrollTimer + self.scrollSpeed < Millisecs()
 					scrollTo = 1
@@ -1141,7 +1149,7 @@ Type TGUIScroller
 				EndIf
 			EndIf
 
-			If self.parent.mouseIsClicked.x >= self.parent.GetX()+self.parent.dimension.x-14 And self.parent.mouseIsClicked.y >= self.parent.GetY()+self.parent.dimension.y-14
+			If self.parent.mouseIsClicked.x >= self.parent.GetX()+self.parent.GetWidth()-14 And self.parent.mouseIsClicked.y >= self.parent.GetY()+self.parent.GetHeight()-14
 				self.buttonPressedDown = 1
 				If self.scrollTimer + self.scrollSpeed < Millisecs()
 					scrollTo = -1
@@ -1153,12 +1161,12 @@ Type TGUIScroller
 	End Method
 
 	Method Draw()
-		For local i:int = 0 To Ceil(self.parent.dimension.y / self.sprite.frameh) - 1
-		  self.sprite.Draw(parent.GetX() + parent.dimension.x - self.sprite.framew, parent.GetY() + i * self.sprite.frameh, 7)
+		For local i:int = 0 To Ceil(self.parent.GetHeight() / self.sprite.frameh) - 1
+		  self.sprite.Draw(parent.GetX() + parent.GetWidth() - self.sprite.framew, parent.GetY() + i * self.sprite.frameh, 7)
 		Next
 
-		self.sprite.Draw(parent.GetX() + parent.dimension.x - 14, parent.GetY(), 0 + self.buttonPressedUp)
-		self.sprite.Draw(parent.GetX() + parent.dimension.x - 14, parent.GetY() + parent.dimension.y - 14, 4 + self.buttonPressedDown)
+		self.sprite.Draw(parent.GetX() + parent.GetWidth() - 14, parent.GetY(), 0 + self.buttonPressedUp)
+		self.sprite.Draw(parent.GetX() + parent.GetWidth() - 14, parent.GetY() + parent.GetHeight() - 14, 4 + self.buttonPressedDown)
 	End Method
 
 End Type
@@ -1181,7 +1189,7 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 		super.CreateBase(x,y,enabled,State,null)
 
 		If width < 40 Then width = 40
-		self.dimension.setXY( width, height )
+		self.rect.dimension.setXY( width, height )
 		self.maxlength			= maxlength
 		self.ListStartsAtPos	= 0
 		self.ListPosClicked		= -1
@@ -1193,7 +1201,7 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 	End Method
 
 	Method AddBackground(title:string="Box")
-		self.background = new TGUIBackgroundBox.Create(self.GetX(), self.GetY(), self.dimension.x, self.dimension.y, 0, title, self.forstateonly, Assets.GetFont("Default", 16, BOLDFONT))
+		self.background = new TGUIBackgroundBox.Create(self.GetX(), self.GetY(), self.GetWidth(), self.GetHeight(), 0, title, self.forstateonly, Assets.GetFont("Default", 16, BOLDFONT))
 		self.background.SetSelfManaged()
 	End Method
 
@@ -1316,7 +1324,7 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 
 	Method Draw()
 		Local i:Int					= 0
-		Local spaceavaiable:Int		= self.dimension.y 'Hoehe der Liste
+		Local spaceavaiable:Int		= self.GetHeight() 'Hoehe der Liste
 		Local controlWidth:Float	= ControlEnabled * gfx_GuiPack.GetSprite("ListControl").framew
 		Local printvalue:String
 
@@ -1327,7 +1335,7 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 				printValue = Entries.data.getString("value", "")
 				If Entries.data.getInt("owner", 0) > 0 then printValue = "[Team "+Entries.data.getInt("owner", 0) + "]: "+printValue
 
-				While TextWidth(printValue+"...") > self.dimension.x-4-18
+				While TextWidth(printValue+"...") > self.GetWidth()-4-18
 					printvalue= printValue[..printvalue.length-1]
 				Wend
 				If Entries.data.getInt("owner", 0) > 0
@@ -1338,14 +1346,14 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 				If i = ListPosClicked
 					SetAlpha(0.5)
 					SetColor(250,180,20)
-					DrawRect(Self.pos.x+8,Self.pos.y+8+self.dimension.y-SpaceAvaiable ,self.dimension.x-20, TextHeight(printvalue))
+					DrawRect(Self.rect.position.x+8,Self.rect.position.y+8+self.GetHeight()-SpaceAvaiable ,self.GetWidth()-20, TextHeight(printvalue))
 					SetAlpha(1)
 					SetColor(255,255,255)
 				EndIf
 				If ListPosClicked = i then SetColor(250, 180, 20)
-				If functions.MouseIn(Self.pos.x + 5, Self.pos.y + 5 + self.dimension.y - Spaceavaiable, self.dimension.x - 1 - ControlWidth, useFont.getHeight(printvalue))
+				If functions.MouseIn(Self.rect.position.x + 5, Self.rect.position.y + 5 + self.GetHeight() - Spaceavaiable, self.GetWidth() - 1 - ControlWidth, useFont.getHeight(printvalue))
 					SetAlpha(0.5)
-					DrawRect(Self.pos.x+8,Self.pos.y+8+self.dimension.y-SpaceAvaiable ,self.dimension.x-20, useFont.getHeight(printvalue))
+					DrawRect(Self.rect.position.x+8,Self.rect.position.y+8+self.GetHeight()-SpaceAvaiable ,self.GetWidth()-20, useFont.getHeight(printvalue))
 					SetAlpha(1)
 					If MouseIsDown
 						If LastMouseClickPos = i AND LastMouseClickTime + 50 < MilliSecs() And LastMouseClicktime +700 > MilliSecs()
@@ -1360,10 +1368,10 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 				Local text:String[] = printvalue.split(":")
 				If Len(text) = 2 Then text[0] = text[0]+":"
 
-				useFont.Draw(text[0], Self.pos.x+13, Self.pos.y+8+self.dimension.y-SpaceAvaiable)
+				useFont.Draw(text[0], Self.rect.position.x+13, Self.rect.position.y+8+self.GetHeight()-SpaceAvaiable)
 				SetColor(55,55,55)
 				If Len(text) > 1
-					useFont.Draw(text[1], Self.pos.x+13+useFont.getWidth(text[0]), Self.pos.y+8+self.dimension.y-SpaceAvaiable)
+					useFont.Draw(text[1], Self.rect.position.x+13+useFont.getWidth(text[0]), Self.rect.position.y+8+self.GetHeight()-SpaceAvaiable)
 					SetColor(255,255,255)
 				EndIf
 				SpaceAvaiable:-useFont.getHeight(printvalue)
@@ -1414,7 +1422,7 @@ Type TGUITextList Extends TGUIList
 		Local charcount:Int
 		Local charpos:Int
 		Local lineprintvalue:String=""
-		SpaceAvaiable = Self.dimension.y 'Hoehe der Liste
+		SpaceAvaiable = Self.GetHeight() 'Hoehe der Liste
 	    i = 0
 
 		Local displace:Float = 0.0
@@ -1428,7 +1436,7 @@ Type TGUITextList Extends TGUIList
 				EndIf
 				If Self.useFont.getHeight( Entries.data.getString("value", "") ) < SpaceAvaiable-chatinputheight
 					Local playerID:Int = Entries.data.getInt("owner",1)
-					Local dimension:TPosition
+					Local dimension:TPoint
 					Local nameWidth:Float=0.0
 					Local blockHeight:Float = 0.0
 
@@ -1438,19 +1446,19 @@ Type TGUITextList Extends TGUIList
 						If i = 1 AND self.backgroundEnabled
 							SetAlpha Min(0.3, 0.3*entryAlpha)
 							self.backgroundColor.Set()
-							DrawRect(Self.GetX(), Self.GetY()+displace, self.dimension.x, blockHeight)
+							DrawRect(Self.GetX(), Self.GetY()+displace, self.GetWidth(), blockHeight)
 							SetColor 255,255,255
 						EndIf
 
 						SetAlpha entryAlpha
 
 						If PlayerID > 0
-							dimension = TPosition(Self.useFont.drawStyled(Self.OwnerNames[PlayerID]+": ", Self.GetX()+2, Self.GetY()+displace +2, OwnerColors[PlayerID].r,OwnerColors[PlayerID].g,OwnerColors[PlayerID].b, 2,2, i))
+							dimension = TPoint(Self.useFont.drawStyled(Self.OwnerNames[PlayerID]+": ", Self.GetX()+2, Self.GetY()+displace +2, OwnerColors[PlayerID].r,OwnerColors[PlayerID].g,OwnerColors[PlayerID].b, 2,2, i))
 						Else
-							dimension = TPosition(Self.useFont.drawStyled("System:", Self.GetX()+2, Self.GetY()+displace +2, 50,50,50, 2,2, i))
+							dimension = TPoint(Self.useFont.drawStyled("System:", Self.GetX()+2, Self.GetY()+displace +2, 50,50,50, 2,2, i))
 						EndIf
 						nameWidth = dimension.x
-						blockHeight = Self.useFont.drawBlock(Entries.data.getString("value", ""), Self.GetX()+2+nameWidth, Self.GetY()+displace +2, self.dimension.x - nameWidth, SpaceAvaiable, 0, 255,255,255,0,2, i)
+						blockHeight = Self.useFont.drawBlock(Entries.data.getString("value", ""), Self.GetX()+2+nameWidth, Self.GetY()+displace +2, self.GetWidth() - nameWidth, SpaceAvaiable, 0, 255,255,255,0,2, i)
 
 						If i = 1 Then displace:+blockHeight
 					Next
@@ -1478,7 +1486,7 @@ Type TGUIChat extends TGUIPanel
 
 		self.setZIndex(10)
 		If width < 40 Then width = 40
-		self.dimension.setXY( width, height )
+		self.rect.dimension.setXY( width, height )
 
 		self.list = new TGUITextList.Create( 0,0,width, height, 1, 100, state)
 
@@ -1490,7 +1498,7 @@ Type TGUIChat extends TGUIPanel
 		self.AddChild(self.list) 'adding sets parent -> parent used for displacement
 
 		self.input = new TGUIinput.Create(0, 0, width - 10, 1, "", 100, state, null)
-		self.input.pos.SetXY(5, height - self.input.dimension.y - 5)
+		self.input.rect.position.SetXY(5, height - self.input.GetHeight() - 5)
 		'input.SetSelfManaged()
 		self.input.color.adjust(50,50,50, True)
 		self.input.maxlength	= 100
@@ -1498,7 +1506,7 @@ Type TGUIChat extends TGUIPanel
 		self.AddChild(self.input)
 
 		'subtract input from list height
-		self.list.dimension.MoveXY(0,-self.input.dimension.y - 10)
+		self.list.rect.dimension.MoveXY(0,-self.input.GetHeight() - 10)
 
 		'obj.GUIbackground:TGUIbackground = New TGUIbackground
 		'obj.GUIbackground.pos.setXY( x,y )
