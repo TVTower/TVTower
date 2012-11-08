@@ -285,39 +285,59 @@ End Type
 
 'for things happening every X moments
 Type TTimer
-	field interval:int	= 0		'happens every ...
-	field actionTime:int= 0	'plus duration
-	field timer:int		= 0		'time when event last happened
+	field interval:int		= 0		'happens every ...
+	field intervalToUse:int	= 0		'happens every ...
+	field actionTime:int	= 0		'plus duration
+	field randomness:int	= 0		'value the interval can "change" on GetIntervall() to BOTH sides - minus and plus
+	field timer:int			= 0		'time when event last happened
 
-	Function Create:TTimer(interval:int, actionTime:int = 0)
+	Function Create:TTimer(interval:int, actionTime:int = 0, randomness:int = 0)
 		local obj:TTimer = new TTimer
 		obj.interval	= interval
 		obj.actionTime	= actionTime
+		obj.randomness	= randomness
 		'set timer
 		obj.reset()
 		return obj
 	End Function
 
+	Method GetInterval:int()
+		return self.intervalToUse
+	End Method
+
+	Method SetInterval(value:int, resetTimer:int=false)
+		self.interval = value
+		if resetTimer then self.Reset()
+	End Method
+
+	Method SetActionTime(value:int, resetTimer:int=false)
+		self.actionTime = value
+		if resetTimer then self.Reset()
+	End Method
+
 	'returns TRUE if interval is gone (ignores action time)
+	'action time could be eg. "show text for actiontime-seconds EVERY interval-seconds"
 	Method doAction:int()
-		local timeLeft:int = Millisecs() - (self.timer + self.interval)
+		local timeLeft:int = Millisecs() - (self.timer + self.GetInterval() )
 		return ( timeLeft > 0 AND timeLeft < self.actionTime )
 	End Method
 
 	'returns TRUE if interval and duration is gone (ignores duration)
 	Method isExpired:int()
-		return ( self.timer + self.interval + self.actionTime <= Millisecs() )
+		return ( self.timer + self.GetInterval() + self.actionTime <= Millisecs() )
 	End Method
 
 	Method reachedHalftime:int()
-		return ( self.timer + 0.5*(self.interval + self.actionTime) <= Millisecs() )
+		return ( self.timer + 0.5*(self.GetInterval() + self.actionTime) <= Millisecs() )
 	End Method
 
 	Method expire()
-		self.timer = -self.interval
+		self.timer = -self.GetInterval()
 	End Method
 
 	Method reset()
+		self.intervalToUse = self.interval + rand(-self.randomness, self.randomness)
+
 		self.timer = Millisecs()
 	End Method
 

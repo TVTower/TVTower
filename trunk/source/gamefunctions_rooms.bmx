@@ -1253,7 +1253,7 @@ Function Room_Betty_Compute(_room:TRooms)
 		DrawRect(picX + 2, picY + 8, 26, 28)
 		SetColor 255, 255, 255
 		SetAlpha 1.0
-		local x:float = picX + Int(sprite.w / 2) - Int(Players[i].Figure.Sprite.framew / 2)
+		local x:float = picX + Int(sprite.framew / 2) - Int(Players[i].Figure.Sprite.framew / 2)
 		local y:float = picY + sprite.h - 30
 		Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 	Next

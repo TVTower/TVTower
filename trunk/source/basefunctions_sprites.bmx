@@ -1092,14 +1092,15 @@ Type TAnimation
 	field framesTime:float[]			'duration for each frame
 	field paused:byte			= 0		'stay with currentFrame or cycle through frames?
 	field frameTimer:float		= null
+	field randomness:int		= 0
 
 
-	Function Create:TAnimation(framesArray:int[][], repeatTimes:int=0, paused:byte=0)
+	Function Create:TAnimation(framesArray:int[][], repeatTimes:int=0, paused:byte=0, randomness:int = 0)
 		local obj:TAnimation = new TAnimation
 		local framecount:int = len( framesArray )
 
-		obj.frames		= obj.frames[..framecount] 'extend
-		obj.framesTime	= obj.framesTime[..framecount] 'extend
+		obj.frames		= obj.frames[..framecount+1] 'extend
+		obj.framesTime	= obj.framesTime[..framecount+1] 'extend
 
 		For local i:int = 0 to framecount-1
 			obj.frames[i]		= framesArray[i][0]
@@ -1139,7 +1140,7 @@ Type TAnimation
 	End Method
 
 	Method ResetFrameTimer()
-		self.frameTimer = self.framesTime[self.currentFramePos]
+		self.frameTimer = self.framesTime[self.currentFramePos] + RandRange(-self.randomness, self.randomness)
 	End Method
 
 	Method getFrameCount:int()
@@ -1183,22 +1184,53 @@ Type TAnimation
 
 End Type
 
+'makes anim sprites moveable
+Type TMoveableAnimSprites extends TAnimSprites
+	Field rect:TRectangle			= TRectangle.Create(0,0,0,0)
+	Field vel:TPoint				= TPoint.Create(0,0)
+	Field returnToStart:Int			= 0
+
+	Method Create:TMoveableAnimSprites(sprite:TGW_Sprites, AnimCount:Int = 1, animTime:Int)
+		super.Create(sprite, AnimCount, animTime)
+		return self
+	End Method
+
+	'not able to override TAnimSprites-functions/methods
+	Method SetupMoveable:TMoveableAnimSprites(x:Int, y:Int, dx:Int, dy:int = 0)
+		self.rect.position.setXY(x, y)
+		self.rect.dimension.setXY(sprite.framew, sprite.frameh)
+		self.vel.setXY(dx,dy)
+		return self
+	End Method
+
+	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
+		If visible
+			If _x = -10000 OR _x = null Then _x = rect.position.x
+			If _y = -10000 Then _y = rect.position.y
+			'call AnimSprites.Draw
+			super.Draw(_x,_y)
+		endif
+	End Method
+
+	Method Update(deltaTime:float)
+		'call AnimSprites.Update
+		super.Update(deltaTime)
+
+		self.rect.position.MoveXY( deltaTime * self.vel.x, deltaTime * self.vel.y )
+	End Method
+
+
+End Type
 
 'base of animated sprites... contains timers and so on, supports reversed animations
 Type TAnimSprites
-	Field pos:TPoint				= TPoint.Create(0,0)
-	Field vel:TPoint				= TPoint.Create(0,0)
 	Field sprite:TGW_Sprites
-	Field returnToStart:Int			= 0
 	Field visible:Int 				= 1
 	Field AnimationSets:TMap	 	= CreateMap()
 	Field currentAnimation:string	= "default"
 
-	Function Create:TAnimSprites(sprite:TGW_Sprites, x:Int, y:Int, dx:Int, dy:int = 0, AnimCount:Int = 1, animTime:Int)
-		Local AnimSprites:TAnimSprites=New TAnimSprites
-		AnimSprites.pos.setXY(x, y)
-		AnimSprites.vel.setXY(dx,dy)
-		AnimSprites.sprite = sprite
+	Method Create:TAnimSprites(sprite:TGW_Sprites, AnimCount:Int = 1, animTime:Int)
+		self.sprite = sprite
 
 		local framesArray:int[][2]
 		framesArray	= framesArray[..AnimCount] 'extend
@@ -1207,10 +1239,18 @@ Type TAnimSprites
 			framesArray[i][0]	= i
 			framesArray[i][1]	= animTime
 		Next
-		AnimSprites.insertAnimation( "default", TAnimation.Create(framesArray,0,0) )
+		self.insertAnimation( "default", TAnimation.Create(framesArray,0,0) )
 
-		Return AnimSprites
-	End Function
+		Return self
+	End Method
+
+	Method GetWidth:int()
+		return self.sprite.framew
+	End Method
+
+	Method GetHeight:int()
+		return self.sprite.frameh
+	End Method
 
 	'insert a TAnimation with a certain Name
 	Method InsertAnimation(animationName:string, animation:TAnimation)
@@ -1218,9 +1258,10 @@ Type TAnimSprites
 		if not self.AnimationSets.contains("default") then self.setCurrentAnimation(animationName, 0)
 	End Method
 
-	Method setCurrentAnimation(animationName:string, startAnimation:byte = 1)
+	Method setCurrentAnimation(animationName:string, startAnimation:int = 1)
+		local reset:int = 1 - (self.currentAnimation = lower(animationName))
 		self.currentAnimation = lower(animationName)
-		self.getCurrentAnimation().Reset()
+		if reset then self.getCurrentAnimation().Reset()
 		if startAnimation then self.getCurrentAnimation().Playback()
 	End Method
 
@@ -1246,10 +1287,8 @@ Type TAnimSprites
 		return self.getCurrentAnimation().getCurrentFrame()
 	End Method
 
-	Method Draw(_x:float=-10000.0, _y:float = -10000, overwriteAnimation:string="")
+	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
 		If visible
-			If _x = -10000 OR _x = null Then _x = pos.x
-			If _y = -10000 Then _y = pos.y
 			if overwriteAnimation <> ""
 				sprite.Draw(_x,_y, self.getAnimation(overwriteAnimation).getCurrentFrame() )
 			else
@@ -1260,14 +1299,8 @@ Type TAnimSprites
 
 	Method Update(deltaTime:float)
 		self.getCurrentAnimation().Update(deltaTime)
-		self.pos.x :+ deltaTime * self.vel.x
-		self.pos.y :+ deltaTime * self.vel.y
 	End Method
 
-	Method UpdateWithReturn(deltaTime:float=1.0)
-		Update(deltaTime)
-		If returnToStart > 0 And pos.x-returntostart>800 Then pos.x = -returnToStart
-	End Method
 End Type
 
 

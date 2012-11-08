@@ -757,7 +757,7 @@ endrem
 		Player.playerID				= globalID
 		Player.color				= color.AddToList(true).SetOwner(TPlayer.globalID)
 		Player.channelname			= channelname
-		Player.Figure				= TFigures.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
+		Player.Figure				= new TFigures.CreateFigure(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayer	= Player
 		For Local i:Int = 0 To 6
 			Player.finances[i] = TFinancials.Create(Player.playerID, 550000, 250000)
@@ -1557,7 +1557,7 @@ Type TElevator
 
 	Function Create:TElevator(Parent:TBuilding)
 		Local obj:TElevator=New TElevator
-		obj.spriteDoor	= TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 0, 0, 0, 0, 8, 150)
+		obj.spriteDoor	= new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
 		obj.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
 		obj.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
 		obj.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
@@ -1857,8 +1857,8 @@ Type TBuilding Extends TRenderable
 	Field borderright:Int 			= 127 + 40 + 429
 	Field borderleft:Int			= 127 + 40
 	Field skycolor:Float = 0
-	Field ufo_normal:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo"), 0, 100, 0,0, 9, 100)
-	Field ufo_beaming:TAnimSprites = TAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo2"), 0, 100, 0,0, 9, 100)
+	Field ufo_normal:TMoveableAnimSprites = new TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo"), 9, 100).SetupMoveable(0, 100, 0,0)
+	Field ufo_beaming:TMoveableAnimSprites = new TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo2"), 9, 100).SetupMoveable(0, 100, 0,0)
 	Field Elevator:TElevator
 
 	Field Moon_curKubSplineX:appKubSpline =New appKubSpline
@@ -1880,7 +1880,7 @@ Type TBuilding Extends TRenderable
 	Field ufo_newDataT:Int[], ufo_newDataX:Int[], ufo_newDataY:Int[]
 	Field ufo_constSpeed:Int 			= False
 	Field ufo_pixelPerSecond:Float	= 25
-	Field Clouds:TAnimSprites[5]
+	Field Clouds:TMoveableAnimSprites[5]
 	Field CloudCount:Int = 5
 	Field TimeColor:Double
 	Field DezimalTime:Float
@@ -1910,7 +1910,7 @@ Type TBuilding Extends TRenderable
 		Building.ufo_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-150, 200+RandMax(400), 200+RandMax(200), 65, -50])
 		Building.ufo_curKubSplineY.GetDataInt([1, 2, 3, 4, 5], [-50+RandMax(200), 100+RandMax(200) , 200+RandMax(300), 330,150])
 		For Local i:Int = 0 To Building.CloudCount-1
-			Building.Clouds[i] = TAnimSprites.Create(Assets.GetSprite("gfx_building_BG_clouds"), - 200 * i + (i + 1) * RandMax(400), - 30 + RandMax(30), 2 + RandRange(0, 6),0,1,0)
+			Building.Clouds[i] = new TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_clouds"), 1,0).SetupMoveable(- 200 * i + (i + 1) * RandMax(400), - 30 + RandMax(30), 2 + RandRange(0, 6),0)
 		Next
 
 		'background buildings
@@ -2064,8 +2064,7 @@ Type TBuilding Extends TRenderable
 					ufo_lastTChange = MilliSecs()
 				EndIf
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
-					ufo_beaming.pos.x = 65
-					ufo_beaming.pos.y = -15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h)
+					ufo_beaming.rect.position.SetXY( 65, -15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h) )
 					ufo_beaming.Update(deltatime)
 					If ufo_beaming.getCurrentAnimation().getCurrentFramePos() <> 6
 						ufo_pixelPerSecond = 0
@@ -2116,7 +2115,7 @@ Type TBuilding Extends TRenderable
 		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
 
 		For Local i:Int = 0 To Building.CloudCount - 1
-			Clouds[i].Draw(Null, Clouds[i].pos.Y + 0.2*pos.y) 'parallax
+			Clouds[i].Draw(Null, Clouds[i].rect.position.Y + 0.2*pos.y) 'parallax
 		Next
 
 		If DezimalTime > 18 Or DezimalTime < 7
@@ -2241,26 +2240,20 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 	Figure.FigureMovement(deltaTime)
 	Figure.FigureAnimation(deltaTime)
 	If figure.inRoom <> Null
-		If figure.specialTime = 0
-			figure.specialTime = MilliSecs()+2000+RandMax(50)*100
-		Else
-			If figure.specialTime < MilliSecs()
-				Figure.specialTime = 0
-				Local room:TRooms
-				Repeat
-					room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
-				Until room.doortype >0 and room <> Figure.inRoom
+		If figure.SpecialTimer.isExpired()
+			Figure.SpecialTimer.Reset()
+			Local room:TRooms
+			Repeat
+				room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
+			Until room.doortype >0 and room <> Figure.inRoom
 
-				If Figure.LastSpecialTime = 0
-					Figure.LastSpecialTime=1
-					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
-				Else
-					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
-					Figure.LastSpecialTime=0
-				EndIf
-				'Print "Bote: war in Raum -> neues Ziel gesucht"
-				Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
+			If Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
+				Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
+			else
+				Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
 			EndIf
+			'Print "Bote: war in Raum -> neues Ziel gesucht"
+			Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 		EndIf
 	EndIf
 	If figure.inRoom = Null And figure.clickedToRoom = Null And figure.dx = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
@@ -2274,90 +2267,83 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 End Function
 
 Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
-	Local waitForElevator:Int = 25000
 	Local Figure:TFigures = TFigures(ListLink.value())
-	If figure.WaitTime < MilliSecs() And figure.hasToChangeFloor()
-		figure.WaitTime = MilliSecs() + waitForElevator
-		'Print "hausmeister: zu lange auf fahrstuhl gewartet"
+
+	'waited to long - change target
+	If figure.hasToChangeFloor() and figure.WaitAtElevatorTimer.isExpired()
+		figure.WaitAtElevatorTimer.Reset()
 		Figure.ChangeTarget(RandRange(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 	EndIf
+
+	'reached target
 	If Int(Figure.rect.GetX()) = Int(Figure.target.x) And Not Figure.IsInElevator() And Not figure.hasToChangeFloor()
-		Local zufall:Int = RandRange(0, 100)
-		Local zufallx:Int = RandRange(150, 580)
-		If figure.LastSpecialTime < MilliSecs()
-			figure.LastSpecialTime = MilliSecs() + 1500
-			'no left-right-left-right movement for just some pixels
+		'do something special
+		If figure.SpecialTimer.isExpired()
+			'reset is done later - we want to catch isExpired there too
+			'figure.SpecialTimer.Reset()
+
+			Local zufall:Int = RandRange(0, 100)	'what to do?
+			Local zufallx:Int = RandRange(150, 580)	'where to go?
+
+			'move to a spot further away than just some pixels
 			Repeat
 				zufallx = RandRange(150, 580)
 			Until Abs(figure.rect.GetX() - zufallx) > 15
 
+			'move to a different floor
 			If zufall > 80 And Not figure.IsAtElevator() And Not figure.hasToChangeFloor()
 				Local sendToFloor:Int = figure.GetFloor() + 1
 				If sendToFloor > 13 Then sendToFloor = 0
-				'print "hausmeister: naechste Etage"
 				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.sprite.h)
-				figure.WaitTime = MilliSecs() + waitForElevator
+				Figure.WaitAtElevatorTimer.Reset()
+
+			'move to a different X on same floor
 			Else If zufall <= 80 And Not figure.hasToChangeFloor()
-				'print "hausmeister: neues ziel"
 				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 			EndIf
 		EndIf
 	EndIf
+	'do default Movement (limit borders, move in elevator...)
 	Figure.FigureMovement(deltaTime)
 
-	If MilliSecs() - Figure.NextAnimTimer >= 0
-		If Figure.AnimPos < 8 Or Figure.AnimPos > 10 Then Figure.AnimPos = Figure.AnimPos + 1
-		Figure.NextAnimTimer = MilliSecs() + Figure.NextAnimTime
-		If Figure.dx = 0
-			If Figure.HasToChangeFloor() And Not Figure.IsInElevator() And Figure.IsAtElevator()
-				Figure.AnimPos = 10
-			Else
-				If MilliSecs() - Figure.NextTwinkerTimer > 0
-					Figure.AnimPos = 9
-					Figure.NextTwinkerTimer = MilliSecs() + RandMax(1000) + 1500
-				Else
-					Figure.AnimPos = 8
-				EndIf
+	'get next sprite frame number
+	If Figure.dx = 0
+		'show the backside if at elevator
+		If Figure.hasToChangeFloor() and not Figure.IsInElevator() and Figure.IsAtElevator()
+			Figure.setCurrentAnimation("standBack",true)
+		'show front
+		Else
+			'stopping from movement -> do special
+			If Figure.getCurrentAnimationName() = "walkright" or Figure.getCurrentAnimationName() = "walkright"
+				Figure.SpecialTimer.expire()
+			endif
+
+			'maybe something special?
+			If Figure.SpecialTimer.isExpired()
+				Figure.SpecialTimer.Reset()
+
+				'only clean with a chance of 30%
+				if RandRange(0,100) < 30
+					'clean to the right
+					If Figure.getCurrentAnimationName() = "walkright"
+						Figure.setCurrentAnimation("cleanRight")
+					'clean to the left
+					else
+						Figure.setCurrentAnimation("cleanLeft")
+					endif
+				else
+					Figure.setCurrentAnimation("standFront")
+				endif
 			EndIf
 		EndIf
 	EndIf
+	if Figure.dx > 0 then Figure.setCurrentAnimation("walkRight")
+	if Figure.dx < 0 then Figure.setCurrentAnimation("walkLeft")
+
+
+	'limit position to left and right border of building
 	If Floor(Figure.rect.GetX()) <= 200 Then Figure.rect.position.setX(200);Figure.target.setX(200)
 	If Floor(Figure.rect.GetX()) >= 579 Then Figure.rect.position.setX(579);Figure.target.setX(579)
-
-	If Figure.specialTime < MilliSecs()
-		If Figure.dx > 0 Then If Figure.AnimPos > 3
-			Figure.NextAnimTime = Figure.BackupAnimTime
-			Figure.AnimPos = 0
-			If RandRange(0,40) > 30 Then Figure.specialTime = MilliSecs()+RandRange(1000,3000);Figure.AnimPos = 11
-		EndIf
-		If Figure.dx < 0 Then If Figure.AnimPos > 7
-			Figure.NextAnimTime = Figure.BackupAnimTime
-			Figure.AnimPos = 3
-			If RandRange(0,40) > 30 Then Figure.specialTime = MilliSecs()+RandRange(1000,3000);Figure.AnimPos = 13
-		EndIf
-	EndIf
-	If Figure.dx > 0
-		If Figure.AnimPos >= 11
-			Figure.NextAnimTime = 300
-			Figure.rect.position.MoveXY( -deltaTime * Figure.dx, 0 )
-			If Figure.specialTime < MilliSecs()
-				Figure.NextAnimTime = Figure.BackupAnimTime
-				Figure.AnimPos = 0
-			EndIf
-			If Figure.AnimPos >= 13 Then Figure.AnimPos = 11
-		EndIf
-	Else If Figure.dx < 0
-		If Figure.AnimPos >= 13
-			Figure.NextAnimTime = 300
-			Figure.rect.position.MoveXY( -deltaTime * Figure.dx, 0 )
-			If Figure.specialTime < MilliSecs()
-				Figure.NextAnimTime = Figure.BackupAnimTime
-				Figure.AnimPos = 4
-			EndIf
-			If Figure.AnimPos >= 15 Or Figure.AnimPos = 0 Then Figure.AnimPos = 13
-		EndIf
-		If (Figure.AnimPos > 7 And Figure.AnimPos < 13) Or Figure.AnimPos < 4 Then Figure.AnimPos = 4
-	EndIf
 End Function
 
 
@@ -2390,18 +2376,21 @@ Players[2] = TPlayer.Create("Alfie"			,"SunTV"				,Assets.GetSprite("Player2"),	
 Players[3] = TPlayer.Create("Seidi"			,"FunTV"				,Assets.GetSprite("Player3"),	250,  8, 90, TColor.getByOwner(0), 0, "Player 3")
 Players[4] = TPlayer.Create("Sandra"		,"RatTV"				,Assets.GetSprite("Player4"),	480, 13, 90, TColor.getByOwner(0), 0, "Player 4")
 
-Local tempfigur:TFigures= TFigures.Create("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
+Local tempfigur:TFigures= new TFigures.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
+tempfigur.InsertAnimation("cleanRight", TAnimation.Create([ [11,130], [12,130] ], -1, 0) )
+tempfigur.InsertAnimation("cleanLeft", TAnimation.Create([ [13,130], [14,130] ], -1, 0) )
+
 tempfigur.rect.dimension.SetX(12) 'overwriting
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
 
-tempfigur				= TFigures.Create("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
+tempfigur				= new TFigures.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
 
-tempfigur				= TFigures.Create("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 8,-65,0)
+tempfigur				= new TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 8,-65,0)
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote

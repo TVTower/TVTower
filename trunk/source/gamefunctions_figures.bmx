@@ -1,5 +1,5 @@
 'Summary: all kind of characters walking through the building (players, terrorists and so on)
-Type TFigures {_exposeToLua="selected"}
+Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field Name:String		= "unknown"
 	'rect:
 	' .position.y is difference to y of building
@@ -16,26 +16,22 @@ Type TFigures {_exposeToLua="selected"}
 	Field id:Int			= 0
 	Field calledElevator:Int= 0
 	Field Visible:Int		= 1
-	Field Sprite:TGW_Sprites 				{sl = "no"}
+	'Field Sprite:TMoveableAnimSprites 				{sl = "no"}
 
-	Field AnimPos:Int		= 0
-	Field NextTwinkerTimer:Int = 0
-	Field NextAnimTimer:Int	= 0				{sl = "no"}
-	Field NextAnimTime:Int	= 130			{sl = "no"}
-	Field specialTime:Int	= 0
-	Field LastSpecialTime:Int = 0
-	Field WaitTime:Int		= 0
-	Field BackupAnimTime:Int= 120
+	Field AnimPos:Int			= 0
+	Field AnimTimer:TTimer		= TTimer.Create(130)
+	Field SpecialTimer:TTimer	= TTimer.Create(1500)
+	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
+	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
+
 	Field inElevator:Byte	= 0
 	Field ControlledByID:Int= -1
 	Field alreadydrawn:Int	= 0 			{sl = "no"}
 	Field updatefunc_(ListLink:TLink, deltaTime:float) {sl = "no"}
-	Field LastSync:Int		= 0
-	Global SyncTime:int		= 2500
 	Field ListLink:TLink					{sl = "no"}
 	Field ParentPlayer:TPlayer = Null		{sl = "no"}
-	Global LastID:Int = 0					{sl = "no"}
-	Global List:TList = CreateList()
+	Global LastID:Int		= 0				{sl = "no"}
+	Global List:TList		= CreateList()
 
 
 	Function Load:TFigures(pnode:txmlNode, figure:TFigures)
@@ -119,7 +115,7 @@ endrem
 
 	'ignores y
 	Method IsAtElevator:Byte()
-		return Building.Elevator.IsInFrontOfDoor(self.rect.GetX() + self.rect.GetW()/2)
+		return Building.Elevator.IsInFrontOfDoor(ceil(self.rect.GetX() + self.rect.GetW()/2))
 	End Method
 
 	Method IsInElevator:Byte()
@@ -156,7 +152,7 @@ endrem
 
  		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.dx) Then Self.dx = 0;Self.rect.position.setX(targetX)
 
-		If not Self.IsInElevator() 'And isOnFloor())
+		If not Self.IsInElevator()
 			Self.rect.position.MoveXY(deltaTime * Self.dx, 0)
 			If Not Self.IsOnFloor() Then Self.rect.position.setY( Building.GetFloorY(Self.GetFloor()) )
 		Else
@@ -172,26 +168,17 @@ endrem
 	End Method
 
 	Method FigureAnimation(deltaTime:float=1.0)
-	    If MilliSecs()- NextAnimTimer >= 0
-			AnimPos = Min(8, AnimPos+1)
-
-	      	NextAnimTimer = MilliSecs() + NextAnimTime
-	  		If dx = 0
-	      		If self.hasToChangeFloor() and not IsInElevator() and IsAtElevator()
-	     		   	AnimPos = 10
-	      		Else
-			        If MilliSecs() - NextTwinkerTimer > 0 Then
-	        			AnimPos = 9
-	      			   	NextTwinkerTimer = MilliSecs() + Rand(1000)+1500
-	      			Else
-	          			AnimPos = 8
-					EndIf
-				EndIf
+		If dx = 0
+			'show the backside if at elevator
+			If self.hasToChangeFloor() and not IsInElevator() and IsAtElevator()
+				self.setCurrentAnimation("standBack",true)
+			'show front
+			Else
+				self.setCurrentAnimation("standFront",true)
 			EndIf
-	    EndIf
-
-	    If dx > 0 Then If AnimPos > 3 Then AnimPos = 0
-	    If dx < 0 Then If AnimPos > 7 Or AnimPos < 4 Then AnimPos = 4
+		EndIf
+		if dx > 0 then self.setCurrentAnimation("walkRight", true)
+		if dx < 0 then self.setCurrentAnimation("walkLeft", true)
 	End Method
 
 	Method GetPeopleOnSameFloor()
@@ -289,18 +276,26 @@ endrem
 		List.Sort()
 	End Method
 
-	Function Create:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
-		Local obj:TFigures=New TFigures
-		obj.name 			= Figurename
-		obj.rect			= TRectangle.Create(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
-		obj.target.setX(x)
-		obj.dx				= dx
-		obj.initialdx		= dx
-		obj.Sprite			= sprite
-		obj.NextAnimTimer	= MilliSecs() + obj.NextAnimTime
-		obj.ControlledByID	= ControlledByID
-		Return obj
-	End Function
+	Method CreateFigure:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
+		super.Create(sprite, 4, 130)
+
+		self.insertAnimation("default", TAnimation.Create([ [8,1000] ], -1, 0 ) )
+
+		self.insertAnimation("walkRight", TAnimation.Create([ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
+		self.insertAnimation("walkLeft", TAnimation.Create([ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
+		self.insertAnimation("standFront", TAnimation.Create([ [8,2500], [9,150] ], -1, 0, 500) )
+		self.insertAnimation("standBack", TAnimation.Create([ [10,1000] ], -1, 0 ) )
+
+
+		self.name 			= Figurename
+		self.rect			= TRectangle.Create(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
+		self.target.setX(x)
+		self.dx				= dx
+		self.initialdx		= dx
+		self.Sprite			= sprite
+		self.ControlledByID	= ControlledByID
+		Return self
+	End Method
 
 	Method CallElevator:Int()
 		if calledElevator then return false
@@ -358,6 +353,9 @@ endrem
 
 
 	Method Update(deltaTime:float)
+		'update parent class (anim pos)
+		super.Update(deltaTime)
+
 		self.alreadydrawn = 0
 
 		If updatefunc_ <> Null
@@ -365,9 +363,9 @@ endrem
 		Else
 			If id = Game.playerID
 				If self.rect.position.isSame(target)
-					If Game.networkgame and LastSync + 1000 < MilliSecs()
+					If Game.networkgame and self.SyncTimer.isExpired()
 						NetworkHelper.SendFigurePosition(self)
-						LastSync = MilliSecs()
+						self.SyncTimer.Reset()
 					EndIf
 				EndIf
 			EndIf
@@ -452,12 +450,14 @@ endrem
 	    EndIf
 
 		'sync playerposition if not done for long time
-		If Game.networkgame and Network.IsConnected and self.lastSync < Millisecs() then self.Network_SendPosition()
+		If Game.networkgame and Network.IsConnected and self.SyncTimer.isExpired()
+			self.Network_SendPosition()
+			self.SyncTimer.Reset()
+		endif
 	End Method
 
 	Method Network_SendPosition()
 		NetworkHelper.SendFigurePosition(self)
-		self.lastSync = Millisecs() + self.SyncTime
 	End Method
 
 	Function UpdateAll(deltaTime:float)
@@ -466,19 +466,12 @@ endrem
 		Next
 	End Function
 
-	Method Draw()
+	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
 		'DrawLine( 0, Building.pos.y + self.rect.GetY(), 800,Building.pos.y + self.rect.GetY())
 		Local ShadowDisabled:Int = 0
 		If Visible And (inRoom = Null Or inRoom.name = "elevator")
 			If Sprite <> Null
-				If Not ShadowDisabled
-					SetColor 0, 0, 0
-					SetAlpha 0.2
-					Sprite.DrawClipped(self.rect.GetX() + 2, Building.pos.y + self.rect.GetY() - self.sprite.h + 2, self.rect.GetX() + 2, Building.pos.y + self.rect.GetY() - self.sprite.h, Sprite.framew, Sprite.frameh, 0, 0, AnimPos)
-					SetAlpha 1.0
-					SetColor 255, 255, 255
-				EndIf
-				Sprite.Draw(self.rect.GetX(), Building.pos.y + self.rect.GetY() - self.sprite.h, AnimPos)
+				super.Draw(self.rect.GetX(), Building.pos.y + self.rect.GetY() - self.sprite.h)
 			EndIf
 		EndIf
 		Self.GetPeopleOnSameFloor()
