@@ -1,34 +1,34 @@
 'Summary: all kind of characters walking through the building (players, terrorists and so on)
 Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
-	Field Name:String		= "unknown"
 	'rect: from TMoveableAnimSprites
 	' .position.y is difference to y of building
 	' .dimension.x and .y = "end" of figure in sprite
 
-	Field initialdx:Float	= 0.0 'backup of self.vel.x
-	field target:TPoint		= TPoint.Create(-1,-1) {_exposeToLua}
+	Field Name:String			= "unknown"
+	Field initialdx:Float		= 0.0 'backup of self.vel.x
+	field target:TPoint			= TPoint.Create(-1,-1) {_exposeToLua}
 
-	Field toRoom:TRooms		= Null			{sl = "no"}
-	Field fromRoom:TRooms	= Null			{sl = "no"}
-	Field clickedToRoom:TRooms = Null		{sl = "no"}
-	Field inRoom:TRooms		= Null			{sl = "no"}
-	Field id:Int			= 0
-	Field calledElevator:Int= 0
-	Field Visible:Int		= 1
-	'Field Sprite:TMoveableAnimSprites 				{sl = "no"}
+	Field toRoom:TRooms			= Null			{sl = "no"}
+	Field fromRoom:TRooms		= Null			{sl = "no"}
+	Field clickedToRoom:TRooms	= Null			{sl = "no"}
+	Field inRoom:TRooms			= Null			{sl = "no"}
+	Field id:Int				= 0
+	Field calledElevator:Int	= 0
+	Field Visible:Int			= 1
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
 	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
 
-	Field inElevator:Byte	= 0
-	Field ControlledByID:Int= -1
-	Field alreadydrawn:Int	= 0 			{sl = "no"}
+	Field inElevator:Byte		= 0
+	Field ControlledByID:Int	= -1
+	Field alreadydrawn:Int		= 0 			{sl = "no"}
 	Field updatefunc_(ListLink:TLink, deltaTime:float) {sl = "no"}
-	Field ListLink:TLink					{sl = "no"}
-	Field ParentPlayer:TPlayer = Null		{sl = "no"}
-	Global LastID:Int		= 0				{sl = "no"}
-	Global List:TList		= CreateList()
+	Field ListLink:TLink						{sl = "no"}
+	Field ParentPlayer:TPlayer	= Null			{sl = "no"}
+
+	Global LastID:Int			= 0				{sl = "no"}
+	Global List:TList			= CreateList()
 
 
 	Function Load:TFigures(pnode:txmlNode, figure:TFigures)

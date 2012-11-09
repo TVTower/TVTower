@@ -905,7 +905,7 @@ endrem
 				EndIf
 				If Player.audience > Adblock.contract.calculatedMinAudience And Adblock.contract.spotnumber >= Adblock.contract.spotcount
 					Adblock.contract.botched = 2
-					Print "werbegeld: "+Adblock.contract.GetProfit()
+					Print "Werbung erfolgreich gesendet. Werbegeld: "+Adblock.contract.GetProfit()
 					Player.finances[Game.getWeekday()].earnAdProfit(Adblock.contract.GetProfit() )
 					AdBlock.RemoveOverheadAdblocks() 'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
 					'Print "should remove contract:"+adblock.contract.title

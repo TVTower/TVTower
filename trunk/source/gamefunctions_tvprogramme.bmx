@@ -342,6 +342,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		contract			= CloneContract(_Contract)
 		contract.owner		= Self.parent.playerID
 		contract.senddate	= Game.daytoplan
+
 		Self.Contracts.AddLast(contract)
 		GetPreviousContractCount(contract)
 	End Method
@@ -368,13 +369,15 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			clone.botched = 0
 			clone.finished = 0
 			clone.owner = 0
+
 			Return clone
 		EndIf
 	End Function
 
 	Method RemoveContract(_contract:TContract)
 		For Local contract:TContract = EachIn Self.Contracts
-			If contract <> Null And contract.title = _contract.title And contract.senddate = _contract.senddate And contract.sendtime = _contract.sendtime
+			if contract = null then continue
+			If contract.id = _contract.id And contract.senddate = _contract.senddate And contract.sendtime = _contract.sendtime
 				Self.Contracts.remove(_contract)
 			EndIf
 		Next
@@ -384,7 +387,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local count:Int = 1
 		If Not Self.Contracts Then Self.Contracts = CreateList()
 		For Local contract:TContract = EachIn Self.Contracts
-			If contract.title = _contract.title And contract.botched <> 1
+			'If contract.title = _contract.title And contract.botched <> 1
+			If contract.id = _contract.id And contract.botched <> 1
 				contract.spotnumber = count
 				count :+ 1
 			EndIf
@@ -396,7 +400,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local count:Int = 1
 		Local contract:TContract = Null
 		For Local contract:TContract = EachIn Self.Contracts
-			If contract.title = _contract.title 'mv 08.11.2012 - ACHTUNG!: Wenn nur der Name verglichen wird kann es zu Problemen kommen, wenn ein Contract mit dem gleichen Namen früher schon mal gesendet wurde.
+			If contract.id = _contract.id
+			'mv 08.11.2012 - ACHTUNG!: Wenn nur der Name verglichen wird kann es zu Problemen kommen, wenn ein Contract mit dem gleichen Namen früher schon mal gesendet wurde.
+			'If contract.title = _contract.title
 				If contract.botched <> 1
 					contract.spotnumber = count
 					count :+1
@@ -410,7 +416,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method GetContractBroadcastCount:Int(_contractId:int, successful:int = 1, planned:int = 0) {_exposeToLua} 'successful & planned sind bool-Werte
 		Local count:Int = 0
 		Local playerID:Int = Game.playerID
-		
+
 		For Local adblock:TAdBlock= EachIn TAdBlock.List 'Es muss TAdBlock.List sein, denn Self.Contracts beinhaltet die Contracts in welchen "botched" nicht gesetzt wird.
 			If adblock.owner = playerID
 				Local contract:TContract = adblock.contract
@@ -418,13 +424,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 					if successful = 1 And (contract.botched = 3 Or contract.botched = 2)  'botched 3 = dieser war erfolgreich ; botched 2 = Contract insgesamt komplett erfolgreich/abgeschlossen
 						count :+1
 					Elseif planned = 1 and contract.senddate <> -1 and contract.sendtime <> -1 And contract.botched = 0 'botched 0 = noch nicht gesendet / die sendtime- und senddate-Prüfung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
-						count :+1					
+						count :+1
 					EndIf
-				EndIf	
+				EndIf
 			EndIf
-		Next		
+		Next
 		Return count
-	End Method	
+	End Method
 End Type
 
 Global GENRE_CALLINSHOW:Int = 20
@@ -478,8 +484,9 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method RemoveOriginalContract(_contract:TContract) {_private hideFromAI}
 		If _contract <> Null
 			For Local contract:TContract = EachIn ContractList
-				If contract.title = _contract.title And contract.clone = 0
-					'Print "removing contract:"+contract.title
+'				If contract.title = _contract.title And contract.clone = 0
+				If contract.id = _contract.id And contract.clone = 0
+					'Print "removing contract:"+contract.title + " id:"+contract.id+"="+_contract.id
 					ContractList.Remove(contract)
 					Exit
 				EndIf
@@ -603,9 +610,14 @@ Type TProgrammeElement
 		Self.title = title
 		Self.description = description
 		Self.programmeType = programmeType
-		Self.id = Self.LastID
+		Self.id = Self.GenerateID()
 
+	End Method
+
+	Method GenerateID:int()
 		Self.LastID :+1
+		'print "ID:"+self.LastID+" ... " +title
+		return self.LastID
 	End Method
 
 	Method GetId:Int() {_exposeToLua}
@@ -767,6 +779,10 @@ endrem
 		owner					= playerID
 		daysigned				= day
 		calculatedMinAudience	= getMinAudience(playerID)
+		' generate OWN id
+		' with custom ID we are able to check versus that later
+		self.GenerateID()
+
 		self.profit				= self.GetProfit()
 		self.penalty			= self.GetPenalty()
 	End Method
@@ -1190,6 +1206,11 @@ endrem
 				Next
 			EndIf
 		If Not isepisode Then LoadSaveFile.xmlCloseNode()
+	End Method
+
+	Method GetParent:TProgramme()
+		if not self.parent then return self
+		return self.parent
 	End Method
 
 	Method Buy()
@@ -2129,7 +2150,7 @@ Type TAdBlock Extends TBlockGraphical
 
 		Adblock.Link = List.AddLast(AdBlock)
 		TAdBlock.list.sort(True, TAdblock.sort)
-
+		print "Create Adblock : "+Adblock.contract.title
 		Players[owner].ProgrammePlan.AddContract(AdBlock.contract)
 		Return AdBlock
 	End Function
@@ -2386,7 +2407,8 @@ Type TAdBlock Extends TBlockGraphical
   	Local count:Int = 1
   	If Not List Then List = CreateList()
   	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched <> 1
+'  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched <> 1
+  	  If Adblock.owner = contract.owner And Adblock.contract.id = contract.id And adblock.contract.botched <> 1
   	    AdBlock.contract.spotnumber = count
   	    If count > contract.spotcount And Game.day <= Adblock.senddate
   	      'DebugLog "removing overheadadblock"
@@ -2405,9 +2427,11 @@ Type TAdBlock Extends TBlockGraphical
   Function RemoveAdblocks:Int(Contract:TContract, BeginDay:Int=0)
   	If Not List Then List = CreateList()
   	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And..
+'  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And..
+  	  If Adblock.owner = contract.owner And Adblock.contract.id = contract.id And..
 	     (adblock.contract.daysigned + adblock.contract.daystofinish < BeginDay)
         'TAdBlock.List.Remove(Adblock)
+        print "remove adblock"
 		Adblock.Link.Remove()
   	  EndIf
   	Next
@@ -2422,7 +2446,8 @@ Type TAdBlock Extends TBlockGraphical
   	Local count:Int = 1
   	If Not List Then List = CreateList()
   	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched <> 1
+'  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched <> 1
+  	  If Adblock.owner = contract.owner And Adblock.contract.id = contract.id And adblock.contract.botched <> 1
   	    AdBlock.contract.spotnumber = count
   	    count :+ 1
   	  '  If count > contract.spotcount and Game.day > Game.daytoplan Then count = 1
@@ -2437,7 +2462,8 @@ Type TAdBlock Extends TBlockGraphical
   	Local count:Int = 0
   	If Not List Then List = CreateList()
   	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched = 3
+'  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched = 3
+  	  If Adblock.owner = contract.owner And Adblock.contract.id = contract.id And adblock.contract.botched = 3
   	    count :+ 1
   	  EndIf
   	Next
@@ -2450,19 +2476,20 @@ Type TAdBlock Extends TBlockGraphical
     End Method
 
     Method AddBlock()
-      'Print "LOCAL: added adblock:"+Self.contract.title
-'      Players[game.playerID].ProgrammePlan.RefreshProgrammePlan(game.playerID, Self.Programme.senddate)
-      Players[Game.playerID].ProgrammePlan.AddContract(Self.contract)
-      If game.networkgame Then NetworkHelper.SendPlanAdChange(game.playerID, Self, 1)
+		'Print "LOCAL: added adblock:"+Self.contract.title
+		'Players[game.playerID].ProgrammePlan.RefreshProgrammePlan(game.playerID, Self.Programme.senddate)
+		Players[Game.playerID].ProgrammePlan.AddContract(Self.contract)
+		If game.networkgame Then NetworkHelper.SendPlanAdChange(game.playerID, Self, 1)
     End Method
 
     Function GetBlockByContract:TAdBlock(contract:TContract)
 	 For Local _AdBlock:TAdBlock = EachIn TAdBlock.List
-		If contract.daysigned = _Adblock.contract.daysigned..
-		   And contract.title = _Adblock.contract.title..
-		   And contract.owner = _Adblock.contract.owner
-		  Return _Adblock
-		EndIf
+		if contract.id = _Adblock.contract.id then return _Adblock
+'		If contract.daysigned = _Adblock.contract.daysigned..
+'		   And contract.title = _Adblock.contract.title..
+'		   And contract.owner = _Adblock.contract.owner
+'		  Return _Adblock
+'		EndIf
 	 Next
     End Function
 
@@ -2692,20 +2719,18 @@ Type TProgrammeBlock Extends TBlockGraphical
 
 		Local maxWidth:Int = Self.image.w - 5
 		Local title:String = Self.programme.title
+		local titleAppend:string = ""
 		If Not Self.programme.isMovie()
-			'Test-Variablen: können nach einem Fix wieder weg
-			local a1:TProgramme = Self.programme
-			local a2:TProgramme = Self.programme.parent
-			local a3:int = Self.programme.episodeNumber
-			local a4:TList = Self.programme.parent.episodeList 'mv 09.11.2012: Hier kommt es ab und zu zu Fehlern beim Zugriff auf parent. Ich vermute ein Threading-Problem, da es nur passiert, wenn die KI schnell hintereinander Filme in den Programmplan setzt. Wenn man dann den Programmplan ansieht kommt es zur Exception
-			local a5:int = Self.programme.parent.episodeList.count()
-		
-			title = Self.programme.parent.title + " (" + Self.programme.episodeNumber + "/" + Self.programme.parent.episodeList.count() + ")"
+			title = Self.programme.GetParent().title
+			'uncomment if you wish episodenumber in title
+			'titleAppend = " (" + Self.programme.episodeNumber + "/" + Self.programme.GetParent().episodeList.count() + ")"
 		EndIf
 
-		While Assets.fonts.basefontBold.getWidth(title) > maxWidth And title.length > 4
+		While Assets.fonts.basefontBold.getWidth(title+titleAppend) > maxWidth And title.length > 4
 			title = title[..title.length-3]+".."
 		Wend
+		'add "(1/10)"
+		title = title + titleAppend
 
 		Assets.fonts.basefontBold.DrawBlock(title, _pos.x + 5, _pos.y +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
 		If color <> Null Then color.set()
