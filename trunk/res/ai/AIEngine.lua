@@ -16,6 +16,7 @@ dofile("res/ai/SLF.lua")
 
 -- ##### GLOBALS #####
 globalPlayer = nil
+unitTestMode = true
 
 -- ##### KONSTANTEN #####
 TASK_STATUS_OPEN	= "T_open"

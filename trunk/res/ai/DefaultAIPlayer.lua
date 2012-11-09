@@ -8,6 +8,9 @@ dofile("res/ai/TaskMovieDistributor.lua")
 dofile("res/ai/TaskNewsAgency.lua")
 dofile("res/ai/TaskAdAgency.lua")
 dofile("res/ai/TaskSchedule.lua")
+if (unitTestMode) then
+	dofile("res/ai/UnitTests.lua")
+end
 
 -- ##### GLOBALS #####
 aiIsActive = true

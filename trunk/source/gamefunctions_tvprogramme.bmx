@@ -396,7 +396,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local count:Int = 1
 		Local contract:TContract = Null
 		For Local contract:TContract = EachIn Self.Contracts
-			If contract.title = _contract.title
+			If contract.title = _contract.title 'mv 08.11.2012 - ACHTUNG!: Wenn nur der Name verglichen wird kann es zu Problemen kommen, wenn ein Contract mit dem gleichen Namen früher schon mal gesendet wurde.
 				If contract.botched <> 1
 					contract.spotnumber = count
 					count :+1
@@ -406,6 +406,25 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			EndIf
 		Next
 	End Method
+
+	Method GetContractBroadcastCount:Int(_contractId:int, successful:int = 1, planned:int = 0) {_exposeToLua} 'successful & planned sind bool-Werte
+		Local count:Int = 0
+		Local playerID:Int = Game.playerID
+		
+		For Local adblock:TAdBlock= EachIn TAdBlock.List 'Es muss TAdBlock.List sein, denn Self.Contracts beinhaltet die Contracts in welchen "botched" nicht gesetzt wird.
+			If adblock.owner = playerID
+				Local contract:TContract = adblock.contract
+				If contract.id = _contractId
+					if successful = 1 And (contract.botched = 3 Or contract.botched = 2)  'botched 3 = dieser war erfolgreich ; botched 2 = Contract insgesamt komplett erfolgreich/abgeschlossen
+						count :+1
+					Elseif planned = 1 and contract.senddate <> -1 and contract.sendtime <> -1 And contract.botched = 0 'botched 0 = noch nicht gesendet / die sendtime- und senddate-Prüfung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
+						count :+1					
+					EndIf
+				EndIf	
+			EndIf
+		Next		
+		Return count
+	End Method	
 End Type
 
 Global GENRE_CALLINSHOW:Int = 20
@@ -2674,6 +2693,13 @@ Type TProgrammeBlock Extends TBlockGraphical
 		Local maxWidth:Int = Self.image.w - 5
 		Local title:String = Self.programme.title
 		If Not Self.programme.isMovie()
+			'Test-Variablen: können nach einem Fix wieder weg
+			local a1:TProgramme = Self.programme
+			local a2:TProgramme = Self.programme.parent
+			local a3:int = Self.programme.episodeNumber
+			local a4:TList = Self.programme.parent.episodeList 'mv 09.11.2012: Hier kommt es ab und zu zu Fehlern beim Zugriff auf parent. Ich vermute ein Threading-Problem, da es nur passiert, wenn die KI schnell hintereinander Filme in den Programmplan setzt. Wenn man dann den Programmplan ansieht kommt es zur Exception
+			local a5:int = Self.programme.parent.episodeList.count()
+		
 			title = Self.programme.parent.title + " (" + Self.programme.episodeNumber + "/" + Self.programme.parent.episodeList.count() + ")"
 		EndIf
 

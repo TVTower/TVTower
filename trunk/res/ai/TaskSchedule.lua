@@ -9,6 +9,9 @@ TaskSchedule = AITask:new{
 	SpotInventory = {};
 }
 
+--Mögliche Probleme:
+--GetPreviousContractCountById vergleicht nur den Namen des Contracts. Es kann also sein, dass ein Contract der vor mehreren Tagen schon mal gesendet wurde da mit reingerechnet wird.
+
 function TaskSchedule:typename()
 	return "TaskSchedule"
 end
@@ -166,71 +169,94 @@ end
 JobEmergencySchedule = AIJob:new{
 	ScheduleTask = nil,
 	SlotsToCheck = 8, --4,
-	CurrentHour = -1
+	testCase = 0
 }
 
 function JobEmergencySchedule:Prepare(pParams)
 	debugMsg("Prüfe ob dringende Programm- und Werbeplanungen notwendig sind")
-end
-
-function JobEmergencySchedule:Tick()
-	if self:CheckImperatively() then
-		self:FillIntervals()
+	if (unitTestMode) then
+		self:UnitTest()
 	end
 end
 
-function JobEmergencySchedule:CheckImperatively()
-	--TODO über Tagesgrenzen hinweg
-	self.CurrentHour = TVT:Hour()
-				
-	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
-		local programme = MY.ProgrammePlan.GetActualProgramme(i)
+function JobEmergencySchedule:Tick()
+	if (self.testCase > 3) then
+		return nil
+	end
+
+	if self:CheckEmergencyCase(self.SlotsToCheck) then
+		self:FillIntervals(self.SlotsToCheck)
+		self.testCase = self.testCase + 1
+	end
+end
+
+function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
+	local fixedDay, fixedHour = 0
+	local currentDay = day
+	local currentHour = hour
+	if (currentDay == nil) then currentDay = TVT:Day() end	
+	if (currentHour == nil) then currentHour = TVT:Hour() end	
+			
+	for i = currentHour, currentHour + howManyHours do
+		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
+		local programme = MY.ProgrammePlan.GetActualProgramme(fixedHour, fixedDay)
 		if (programme == nil) then
+			debugMsg("CheckEmergencyCase: Programme - " .. fixedHour .. " / " .. fixedDay)
 			return true
 		end
 	end
 	
-	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
-		local contract = MY.ProgrammePlan.GetActualContract(i)
-		if (adblock == nil) then
+	for i = currentHour, currentHour + howManyHours do
+		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
+		local contract = MY.ProgrammePlan.GetActualContract(fixedHour, fixedDay)
+		if (contract == nil) then
+			debugMsg("CheckEmergencyCase: Contract - " .. fixedHour .. " / " .. fixedDay)
 			return true
 		end
-	end	
+	end
+	
+	return false
 end
 
-function JobEmergencySchedule:FillIntervals()	
+function JobEmergencySchedule:FillIntervals(howManyHours)	
 	--Aufgabe: So schnell wie möglich die Lücken füllen
 	--Zuschauerberechnung: ZuschauerquoteAufGrundderStunde * Programmquali * MaximalzuschauerproSpieler
 
-	--debugMsg("for: " .. self.CurrentHour .. ", " .. self.CurrentHour+self.SlotsToCheck .. "(" .. self.CurrentHour .. ", " .. self.SlotsToCheck .. ")" )
-	for i=self.CurrentHour,self.CurrentHour+self.SlotsToCheck do
-		local currentDay = TVT:Day() --Ist eben so im BlitzMaxCode.
+	local fixedDay, fixedHour = 0
+	local currentDay = TVT:Day()
+	local currentHour = TVT:Hour()
+	
+	for i = currentHour, currentHour + howManyHours do
+		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)	
+		--debugMsg("FillIntervals --- Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 		
 		--Werbung: Prüfen ob ne Lücke existiert, wenn ja => füllen
-		local contract = MY.ProgrammePlan.GetActualContract(i, currentDay)
+		local contract = MY.ProgrammePlan.GetActualContract(fixedHour, fixedDay)
 		if (contract == nil) then			
-			self:SetContractToEmptyBlock(currentDay, i)	
+			self:SetContractToEmptyBlock(fixedDay, fixedHour)	
 		end			
 		
 		--Film: Prüfen ob ne Lücke existiert, wenn ja => füllen		
-		local programme = MY.ProgrammePlan.GetActualProgramme(i, currentDay)
+		local programme = MY.ProgrammePlan.GetActualProgramme(fixedHour, fixedDay)
 		if (programme == nil) then
-			self:SetMovieToEmptyBlock(currentDay, i)
+			self:SetMovieToEmptyBlock(fixedDay, fixedHour)
 		end		
 	end	
 end
 
 function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
-	local level = self.ScheduleTask:GetQualityLevel(hour)
-	local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(hour)
+	local fixedDay, fixedHour = self:FixDayAndHour(day, hour)
+
+	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
+	local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedHour)
 		
-	local currentSpotList = self:GetSpotList(guessedAudience, 0.8)
+	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8)
 	if (table.count(currentSpotList) == 0) then
-		currentSpotList = self:GetSpotList(guessedAudience, 0.6)
+		currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.6)
 		if (table.count(currentSpotList) == 0) then
-			currentSpotList = self:GetSpotList(guessedAudience, 0.4)
+			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4)
 			if (table.count(currentSpotList) == 0) then
-				currentSpotList = self:GetSpotList(guessedAudience, 0)
+				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0)
 			end					
 		end		
 	end
@@ -238,13 +264,17 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	currentSpotList = self:FilterSpotList(currentSpotList)
 	local choosenSpot = self:GetBestMatchingSpot(currentSpotList)
 	if (choosenSpot ~= nil) then
-		debugMsg("Setze Spot! Tag: " .. day .. " - Stunde: " .. hour .. " Name: " .. choosenSpot.title)
-		local result = TVT.of_doSpotInPlan(day, hour, choosenSpot.Id)
+		debugMsg("Setze Spot! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Name: " .. choosenSpot.title)
+		local result = TVT.of_doSpotInPlan(fixedDay, fixedHour, choosenSpot.Id)
+	else
+		debugMsg("Keinen Spot gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 	end		
 end
 
 function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
-	local level = self.ScheduleTask:GetQualityLevel(hour)	
+	local fixedDay, fixedHour = self:FixDayAndHour(day, hour)
+
+	local level = self.ScheduleTask:GetQualityLevel(fixedHour)	
 	local programmeList = nil
 	local choosenProgramme = nil
 	for i=level,1,-1 do
@@ -274,8 +304,10 @@ function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
 	end
 
 	if (choosenProgramme ~= nil) then
-		debugMsg("Setze Film! Tag: " .. day .. " - Stunde: " .. hour .. " Programm: " .. choosenProgramme.title)
-		TVT.of_doMovieInPlan(day, hour, choosenProgramme.Id)
+		debugMsg("Setze Film! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Programm: " .. choosenProgramme.title)
+		TVT.of_doMovieInPlan(fixedDay, fixedHour, choosenProgramme.Id)
+	else
+		debugMsg("Keinen Film gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)		
 	end			
 end
 
@@ -290,14 +322,19 @@ function JobEmergencySchedule:GetProgrammeList(level)
 	return currentProgrammeList
 end
 
-function JobEmergencySchedule:GetSpotList(guessedAudience, minFactor)
+function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor)
 	local currentSpotList = {}
-	for i=0,MY.ProgrammeCollection.GetContractCount()-1 do
+	for i = 0, MY.ProgrammeCollection.GetContractCount() - 1 do
 		local contract = MY.ProgrammeCollection.GetContractFromList(i)
 		local minAudience = contract.GetMinAudience()
 		if (minAudience < guessedAudience) and (minAudience > guessedAudience * minFactor) then
-			table.insert(currentSpotList, contract)
+			local count = MY.ProgrammePlan.GetContractBroadcastCount(contract.id, 1, 1)
+			--debugMsg("GetMatchingSpotList: " .. contract.title .. " - " .. count)
+			if (count < contract.GetSpotCount()) then		
+				table.insert(currentSpotList, contract)
+			end
 		end				
+		
 	end			
 	return currentSpotList
 end
@@ -330,6 +367,15 @@ function JobEmergencySchedule:GetBestMatchingSpot(spotList)
 	end
 	
 	return bestSpot
+end
+
+function JobEmergencySchedule:FixDayAndHour(day, hour)
+	local moduloHour = hour
+	if (hour > 23) then
+		moduloHour = hour % 24
+	end
+	local newDay = day + (hour - moduloHour) / 24
+	return newDay, moduloHour
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
