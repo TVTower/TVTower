@@ -1,0 +1,7 @@
+@define doVersion
+	version = os.date('%d.%m.%y %H:%M')
+
+	file = io.open(arg1,"w")
+	file:write(version)
+	file:close()
+@end

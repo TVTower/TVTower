@@ -1,0 +1,9 @@
+button 1: x0	y84
+button 2: x49	y84
+button 3: x0	y237
+button 4: x49	y237
+button 5: x98	y237
+
+
+
+

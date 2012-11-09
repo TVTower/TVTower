@@ -1,0 +1,297 @@
+#!BMK
+
+@define assemble
+	local src = nvl(arg1, %infile%)
+	local obj = nvl(arg2, %outfile%)
+
+	sys.DeleteFile(obj)
+	
+	if bmk.Platform() == "macos" then
+		if bmk.CPU() == "ppc" then
+			cmd = "as -arch ppc"
+		else
+			cmd = "as -arch i386"
+		end
+		cmd = cmd .. " -W -o " .. bmk.Quote(obj) .. " " .. bmk.Quote(src)
+	else
+		if bmk.Platform() == "win32" then
+			local prefix = bmk.Option("path_to_wine", "")
+			if prefix ~= "" then
+				prefix = prefix .. " "
+			end
+			
+			cmd = prefix .. bmk.Quote(utils.BlitzMaxPath() .. "/bin/fasm.exe") .. " "
+		else
+			cmd = bmk.Quote(utils.BlitzMaxPath() .. "/bin/fasm") .. " "
+		end
+		
+		if bmk.Platform() == "linux" then
+			cmd = cmd .. " -m32768 "
+		end
+		
+		cmd = cmd .. bmk.Quote(src) .. " " .. bmk.Quote(obj)
+	end
+
+	if bmk.Sys(cmd) ~= 0 then
+		bmk.ThrowNew("Build Error: Failed to assemble " .. src)
+	end
+@end
+
+@define compileBMX
+	local src = nvl(arg1, %infile%)
+	local obj = nvl(arg2, %outfile%)
+	local opts = nvl(arg3, %options%)
+
+	sys.DeleteFile(obj)
+	
+	local bcc_app = "bcc"
+
+	# if we are doing a universal build, be sure and call the correct bcc!
+	if %universal% == "1" and bmk.CPU() == "ppc" then
+		bcc_app = bcc_app .. "_ppc"
+	end
+	
+	if bmk.Platform() == "win32" then
+		bcc_app = bcc_app .. ".exe"
+	end
+	
+	local prefix = ""
+	if bmk.Platform() == "win32" then
+		prefix = bmk.Option("path_to_wine", "")
+		if prefix ~= "" then
+			prefix = prefix .. " "
+		end
+	end
+
+	azm = sys.StripExt(obj) .. ".s"
+	cmd = prefix .. bmk.Quote(utils.BlitzMaxPath() .. "/bin/" .. bcc_app) .." " .. opts .. " -o " .. bmk.Quote(azm) .. " " .. bmk.Quote(src)
+
+	if bmk.Sys( cmd ) ~= 0 then
+		bmk.ThrowNew("Build Error: failed to compile " .. src)
+	end
+
+	if bmk.Platform() == "macos" and bmk.CPU() == "x86" then
+		cmd = bmk.Quote(utils.BlitzMaxPath() .. "/bin/fasm2as") .. " " .. bmk.Quote(azm)
+			if bmk.Sys( cmd ) ~= 0 then
+				bmk.ThrowNew("Fasm2as failed - please contact BRL!")
+		end
+	end
+
+	# TODO : we can't call another generated function from here... so we'd need to make sure this is called elsewhere.
+	#assemble(nil, azm, obj)
+@end
+
+@define compileC
+	local src = nvl(arg1, %infile%)
+	local obj = nvl(arg2, %outfile%)
+	local opts = arg3
+
+	sys.DeleteFile(obj)
+
+	#opts = opts .. " " .. %cc_opts% .. " " .. %BMK_CC_OPTS%
+	
+	local ext = sys.ExtractExt(src)
+
+	if bmk.Platform() == "macos" then
+		cmd = "gcc"
+		
+		if ext == "cpp" or ext == "cxx" or ext == "mm" or ext == "cc" then
+			cmd = "g++"
+		end
+
+		if bmk.CPU() == "ppc" then
+			cmd = cmd .. " -arch ppc "
+		else
+			cmd = cmd .. " -arch i386 "
+		end
+		
+	elseif bmk.Platform() == "win32" then
+		cmd = bmk.Option("path_to_gcc", "gcc")
+		if ext == "cpp" or ext == "cxx" or ext == "mm" or ext == "cc" then
+			cmd = bmk.Option("path_to_gpp", "g++")
+		end
+		
+	elseif bmk.Platform() == "linux" then
+	
+		cmd = "gcc"
+	end
+
+	# disable warnings ?
+	if %CC_WARNINGS% == "" then
+		opts = opts .. " -w"
+	end
+
+	cmd = cmd .. opts .. %cc_opts% .. %mod_ccopts% .. " -o " .. bmk.Quote(obj) .. " " .. bmk.Quote(src)
+
+	if bmk.MultiSys( cmd, src ) ~= 0 then
+		bmk.ThrowNew("Build Error: failed to compile " .. src)
+	end
+
+@end
+
+@define addlib
+	globals.Add("libs", arg1)
+@end
+
+## adds a cc_opt option
+@define addccopt
+	globals.AddOption("cc_opts", arg1, arg2)
+@end
+
+@define setccopt
+	globals.SetOption("cc_opts", arg1, arg2)
+@end
+
+@define addwin32ccopt
+	if bmk.Platform() == "win32" then
+		globals.AddOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define setwin32ccopt
+	if bmk.Platform() == "win32" then
+		globals.SetOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define addmacccopt
+	if bmk.Platform() == "macos" then
+		globals.AddOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define setmacccopt
+	if bmk.Platform() == "macos" then
+		globals.SetOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define addmacppcccopt
+	if bmk.Platform() == "macos" and bmk.CPU() == "ppc" then
+		globals.AddOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define setmacppcccopt
+	if bmk.Platform() == "macos" and bmk.CPU() == "ppc" then
+		globals.SetOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define addmacx86ccopt
+	if bmk.Platform() == "macos" and bmk.CPU() == "x86" then
+		globals.AddOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define setmacx86ccopt
+	if bmk.Platform() == "macos" and bmk.CPU() == "x86" then
+		globals.SetOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define addlinuxccopt
+	if bmk.Platform() == "linux" then
+		globals.AddOption("cc_opts", arg1, arg2)
+	end
+@end
+
+@define setlinuxccopt
+	if bmk.Platform() == "linux" then
+		globals.SetOption("cc_opts", arg1, arg2)
+	end
+@end
+
+## removes a cc_opt option
+@define rmccopt
+	globals.Remove("cc_opts", arg1)
+@end
+
+@define addldopt
+	globals.AddOption("ld_opts", arg1, arg2)
+@end
+
+# compiles the specified file, using the current options.
+@define make
+	make.Make(arg1)
+@end
+
+@define skipmod
+	globals.Add("skip_mod", arg1)
+@end
+
+@define skipmodwin32
+	if bmk.Platform() == "win32" then
+		globals.Add("skip_mod", arg1)
+	end
+@end
+
+@define skipmodmac
+	if bmk.Platform() == "macos" then
+		globals.Add("skip_mod", arg1)
+	end
+@end
+
+@define skipmodlinux
+	if bmk.Platform() == "linux" then
+		globals.Add("skip_mod", arg1)
+	end
+@end
+
+# the default ccopts
+# used for compiling c-type files
+@define default_cc_opts
+
+	globals.Clear("cc_opts")
+
+	if bmk.Platform() == "macos" then
+		
+		# compile for 10.3 ?
+		# macos version >= 0x1050 ?
+		if tonumber(%macos_version%) >= 4176 then
+			globals.SetOption("cc_opts", "osversion", "-mmacosx-version-min=10.3")
+		end
+	elseif bmk.Platform() == "win32" then
+
+		globals.SetOption("cc_opts", "arch", "-march=pentium")
+		globals.SetOption("cc_opts", "fastmath", "-ffast-math")
+		
+	elseif bmk.Platform() == "linux" then
+		globals.SetOption("cc_opts", "aliasing", "-fno-strict-aliasing")
+		globals.SetOption("cc_opts", "arch", "-m32")
+		globals.SetOption("cc_opts", "fancymath", "-mfancy-math-387")
+	
+	end
+
+	globals.SetOption("cc_opts", "exceptions", "-fno-exceptions")
+	globals.SetOption("cc_opts", "linker", "-c")
+	globals.SetOption("cc_opts", "optimization", "-O2")
+
+@end
+
+
+# Supported file extensions
+#
+# SOURCE_UNKNOWN = 0
+# SOURCE_BMX = 1
+# SOURCE_IFACE = 2
+# SOURCE_C = 4
+# SOURCE_HEADER = 8
+# SOURCE_ASM = 16
+@define source_type
+	local ext = ";" .. arg0 .. ";"
+	
+	if string.find(";bmx;", ext) then
+		return 1
+	elseif string.find(";i;", ext) then
+		return 2
+	elseif string.find(";c;m;cc;cpp;cxx;mm;", ext) then
+		return 4
+	elseif string.find(";h;hpp;hxx;", ext) then
+		return 8
+	elseif string.find(";s;asm;", ext) then
+		return 16
+	end
+	
+	return 0
+@end
