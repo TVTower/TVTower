@@ -68,6 +68,8 @@ Type TDeltaTimer
 					useDeltaTimer.timesUpdated	:+ 1
 					EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
 				Wend
+				EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
+
 				UnLockMutex(drawMutex)
 			else
 				delay( floor(Max(1, 1000.0 * (useDeltaTimer.getDeltaTime() - useDeltaTimer.accumulator) - 1)) )
@@ -144,6 +146,7 @@ Type TDeltaTimer
 			'draw gets tweenvalue (0..1)
 			self.timesDrawn :+1
 			EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+			EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
 		else
 			'print self.nextDraw - self.looptime
 			delay( self.nextDraw - self.looptime)

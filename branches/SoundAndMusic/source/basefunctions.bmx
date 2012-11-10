@@ -395,6 +395,10 @@ Type TRectangle {_exposeToLua="selected"}
 	Method GetH:float()
 		return self.dimension.GetY()
 	End Method
+	
+	Method GetAbsoluteCenterPoint:TPoint()
+		return TPoint.Create(Self.GetX() + Self.GetW()/2, Self.GetY() + Self.GetH()/2)
+	End Method
 
 End Type
 

@@ -4,6 +4,11 @@
 SuperStrict
 Import brl.timer
 Import brl.Graphics
+Import brl.Map
+Import brl.OpenALAudio
+'Import brl.FreeAudioAudio
+'Import brl.WAVLoader
+Import brl.OGGLoader
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
@@ -50,7 +55,7 @@ Global Fader:TFader								= New TFader
 Global NewsAgency:TNewsAgency					= New TNewsAgency
 
 SeedRand(103452)
-Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswÃ¼rfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
+Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
 TButton.UseFont 		= Assets.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= Assets.fonts.baseFontBold
@@ -130,6 +135,8 @@ Type TApp
 		EventManager.unregisterAllListeners( "App.onDraw" )
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
+		EventManager.registerListener( "App.onSoundUpdate", TEventListenerOnSoundUpdate.Create() )
+		SoundManager.PlayMusic(MUSIC_TITLE)
 		print "LADEZEIT : "+(Millisecs() - self.creationTime) +"ms"
 	End Method
 
@@ -390,25 +397,25 @@ endrem
 						TError.DrawNewError("Lade Programme...")
 						TProgramme.LoadAll()
 					Case "ALLCONTRACTS"
-						TError.DrawNewError("Lade WerbevertrÃ¤ge...")
+						TError.DrawNewError("Lade Werbeverträge...")
 					'TContract.LoadAll()
 					Case "ALLNEWS"
 						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade WerbevertrÃ¤geblÃ¶cke...")
+						TError.DrawNewError("Lade Werbeverträgeblöcke...")
 					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade ProgrammblÃ¶cke...")
+						TError.DrawNewError("Lade Programmblöcke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade WerbeblÃ¶cke...")
+						TError.DrawNewError("Lade Werbeblöcke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade NewsblÃ¶cke...")
+						TError.DrawNewError("Lade Newsblöcke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade FilmhÃ¤ndlerblÃ¶cke...")
+						TError.DrawNewError("Lade Filmhändlerblöcke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -688,7 +695,7 @@ Rem
 		Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI fÃ¼r Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI für Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
@@ -1622,6 +1629,9 @@ Type TElevator
 	End Method
 
 	Method OpenDoor()
+		If (Players[Game.playerID].Figure.inRoom = null) Then 'Wenn der Spieler nicht in einem Raum ist, dann kommt jetzt das Fahrstuhl-Bling je nach Distanz
+			SoundManager.PlaySFX(SFX_ELEVATOR_DING, CalculateDistance(Players[Game.playerID].Figure, GetElevatorCenterPos()), TSfxOptions.GetElevatorOptions())
+		Endif
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
 		open = 2 'wird geoeffnet
 		If passenger <> Null Then passenger.rect.position.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
@@ -1716,6 +1726,12 @@ Type TElevator
 
 	Method GetDoorCenter:Int()
 		Return parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
+	End Method
+	
+	Method GetElevatorCenterPos:TPoint()
+		local posX:int = parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
+		local posY:int = Pos.y + Self.spriteDoor.sprite.frameh/2 + 56 'Hier kein parent.pos.y hinzuaddieren sonst kommt blödsinn raus... keine Ahnung warum. Die Differenz dürfte laut Untersuchungen ungefähr 56 betragen (geschätzt)
+		Return TPoint.Create(posX, posY)
 	End Method
 
 	Method IsInFrontOfDoor:Int(x:Int, y:Int=-1)
@@ -2160,7 +2176,7 @@ Type TBuilding Extends TRenderable
 	End Method
 
 	Method GetFloor:Int(_y:Int)
-		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13)
+		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
 End Type
 
@@ -2346,7 +2362,9 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 	If Floor(Figure.rect.GetX()) >= 579 Then Figure.rect.position.setX(579);Figure.target.setX(579)
 End Function
 
-
+'Sound-Files einlesen - da es lange dauert eventuell nur bei Bedarf oder in einem anderen Thread laden.
+Global SoundManager:TSoundManager = TSoundManager.Create()
+SoundManager.LoadSoundFiles()
 
 '#Region: Globals, Player-Creation
 Global StationMap:TStationMap	= TStationMap.Create()
@@ -2678,6 +2696,7 @@ Function Menu_GameSettings()
 		EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", game.minute))
 		EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", game.hour))
 		EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", game.day))
+		Soundmanager.PlayMusic(MUSIC_MUSIC)
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
 		If Game.networkgame
@@ -3516,6 +3535,25 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 End Type
 
 
+Type TEventListenerOnSoundUpdate Extends TEventListenerBase
+
+	Function Create:TEventListenerOnSoundUpdate()
+		Return New TEventListenerOnSoundUpdate
+	End Function
+
+
+	Method OnEvent:int(triggerEvent:TEventBase)
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt<>Null
+			TProfiler.Enter("SoundUpdate")
+			SoundManager.Update()
+			TProfiler.Leave("SoundUpdate")
+		EndIf
+		return true
+	End Method
+End Type
+
+
 
 '__________________________________________
 'events
@@ -3556,4 +3594,266 @@ Function EndHook()
 	Print "Dumping profile information -> Profiler.txt ."
 	TProfiler.DumpLog("Profiler.txt")
 
+End Function
+
+
+Const MUSIC_TITLE:String					= "MUSIC_TITLE"
+Const MUSIC_MUSIC:String					= "MUSIC_MUSIC"
+
+Const SFX_ELEVATOR_DING:String				= "SFX_ELEVATOR_DING"
+
+Type TSoundManager
+	Field soundFiles:TMap = null
+	Field musicChannel1:TChannel = null
+	Field musicChannel2:TChannel = null
+	Field activeMusicChannel:TChannel = null
+	Field inactiveMusicChannel:TChannel = null
+	
+	Field sfxChannel_Elevator:TChannel = null
+	Field sfxVolume:float = 1
+	Field defaultSfxOptions:TSfxOptions = null
+	
+	Field musicOn:int = 1
+	Field musicVolume:float = 1
+	Field nextMusicTitleVolume:float = 1
+	Field lastTitleNumber:int = 0
+	Field currentMusic:TSound = null
+	Field nextMusicTitle:TSound = null
+	Field forceNextMusicTitle:int = 0
+	Field fadeProcess:int = 0 '0 = nicht aktiv  1 = aktiv
+	Field fadeOutVolume:int = 1000
+	Field fadeInVolume:int = 0		
+	
+	Function Create:TSoundManager()
+		EnableOpenALAudio()
+		SetAudioDriver("OpenAL")
+		
+		Local manager:TSoundManager = New TSoundManager
+		manager.musicChannel1 = AllocChannel()
+		manager.musicChannel2 = AllocChannel()
+		manager.activeMusicChannel = manager.musicChannel1
+		manager.inactiveMusicChannel = manager.musicChannel2
+		manager.sfxChannel_Elevator = AllocChannel()
+		manager.defaultSfxOptions = TSfxOptions.Create()
+		Return manager 
+	End Function
+
+	Method LoadSoundFiles()
+		'mv: Alternativ können die Files auch in einem seperaten Thread geladen werden oder erst bei Bedarf... dann ruckelt's leider aber etwas. Kannst du (Ronny) entscheiden ;)		
+		local total:int = 7
+				
+		Self.soundFiles = CreateMap:TMap()
+		LoadProgress(1, total)
+		MapInsert( Self.soundFiles, MUSIC_TITLE, LoadSound("res/music/title.ogg", SOUND_LOOP) )
+		LoadProgress(2, total)
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "1", LoadSound("res/music/music1.ogg") )
+		LoadProgress(3, total)
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "2", LoadSound("res/music/music2.ogg") )
+		LoadProgress(4, total)
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "3", LoadSound("res/music/music3.ogg") )
+		LoadProgress(5, total)
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "4", LoadSound("res/music/music4.ogg") )
+		LoadProgress(6, total)
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "5", LoadSound("res/music/music5.ogg") )						
+		'LoadProgress(7, total)
+		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "6", LoadSound("res/music/music6.ogg") )
+		'LoadProgress(8, total)
+		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "7", LoadSound("res/music/music7.ogg") )
+		'LoadProgress(9, total)
+		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "8", LoadSound("res/music/music8.ogg") )
+		'LoadProgress(10, total)
+		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "9", LoadSound("res/music/music9.ogg") )
+
+		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "9", LoadSound("res/music/specialroom1.ogg") )		
+		'Rnd(1, TRooms.RoomList.Count() - 1)
+		
+		LoadProgress(7, total)
+		MapInsert( Self.soundFiles, SFX_ELEVATOR_DING, LoadSound("res/sfx/elevator_ding.ogg") )										
+	End Method
+	
+	Method LoadProgress(currentCount:int, totalCount:int)
+		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "sound files").AddNumber("itemNumber", currentCount).AddNumber("maxItemNumber", totalCount) ) )
+	End Method
+
+	Method Update()
+		If (not musicOn) Then
+			Return
+		End If
+	
+		'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
+		if (Self.activeMusicChannel.Playing()) then			
+			if (Self.forceNextMusicTitle and Self.nextMusicTitle <> null) Or Self.fadeProcess > 0 then
+				FadeOverToNextTitle()
+			endif
+		Else
+			PlayMusic(MUSIC_MUSIC)
+		Endif
+	End Method
+	
+	Method FadeOverToNextTitle()		
+		If (Self.fadeProcess = 0) Then
+			Self.fadeProcess = 1
+			Self.inactiveMusicChannel.SetVolume(0)			
+			PlaySound(Self.nextMusicTitle, Self.inactiveMusicChannel)
+			Self.nextMusicTitle = null
+			Self.forceNextMusicTitle = false
+			Self.fadeOutVolume = 1000
+			Self.fadeInVolume = 0
+		Endif
+		
+		If (Self.fadeProcess = 1) Then 'Das fade out des aktiven Channels
+			Self.fadeOutVolume = Self.fadeOutVolume - 15
+			Self.activeMusicChannel.SetVolume(float(Self.fadeOutVolume) / 1000 * Self.musicVolume)
+			
+			Self.fadeInVolume = Self.fadeInVolume + 15
+			Self.inactiveMusicChannel.SetVolume(float(Self.fadeInVolume) / 1000 * Self.nextMusicTitleVolume)
+		Endif
+				
+		if Self.fadeOutVolume <= 0 And Self.fadeInVolume >= 1000 then
+			Self.fadeProcess = 0 'Prozess beendet
+			Self.musicVolume = Self.nextMusicTitleVolume
+			SwitchMusicChannels()
+		endif									
+	End Method
+	
+	Method SwitchMusicChannels()
+		Local channelTemp:TChannel = Self.activeMusicChannel
+		Self.activeMusicChannel = Self.inactiveMusicChannel
+		Self.inactiveMusicChannel = channelTemp
+		Self.inactiveMusicChannel.Stop()
+	End Method
+
+	Method PlayMusic(music:string)
+		Self.nextMusicTitle = GetMusic(music)
+		Self.forceNextMusicTitle = true
+		Self.nextMusicTitleVolume = GetVolume(music)
+
+		'Wenn der Musik-Channel noch nicht läuft, dann jetzt starten
+		if (not Self.activeMusicChannel.Playing()) then
+			Self.musicVolume = Self.nextMusicTitleVolume
+			Self.activeMusicChannel.SetVolume(Self.musicVolume)
+			PlaySound(Self.nextMusicTitle, Self.activeMusicChannel)
+			Self.forceNextMusicTitle = false
+		endif		
+	End Method
+	
+	Method PlaySFX(sfx:string, distance:int = -1, options:TSfxOptions = null)
+		'Später statt distance auch eventuell irgendwelche beweglichen Sprites... bei jedem Update wird die Laustärke angepasst (z.B. für das UFO)
+	
+		If (options = null) Then options = Self.defaultSfxOptions		
+		local distanceVolume:float = options.GetVolume(distance)					
+		'print sfx + " (" + distanceVolume + ")"
+		
+		local currSfx:TSound = Self.GetSFX(sfx)
+		local currChannel:TChannel = Self.GetSFXChannel(sfx)				
+				
+		currChannel.SetVolume(sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautstärke der SFX reduzieren soll
+		PlaySound(currSfx, currChannel)
+	End Method
+	
+	Method GetMusic:TSound (music:string)
+		Local result:TSound
+		
+		Select music
+			Case MUSIC_MUSIC
+				Local nextTitleNumber:int = int(Rnd(1,5))				
+				while(nextTitleNumber = Self.lastTitleNumber)
+					nextTitleNumber = int(Rnd(1,5))
+				wend											
+				result = TSound(MapValueForKey(Self.soundFiles, MUSIC_MUSIC + nextTitleNumber))
+				Self.lastTitleNumber = nextTitleNumber 
+				print "Play music: " + MUSIC_MUSIC + " (" + nextTitleNumber + ")"
+			Default
+				result = TSound(MapValueForKey(Self.soundFiles, music))
+				print "Play music: " + MUSIC_MUSIC
+		EndSelect
+		Return result
+	End Method
+	
+	Method GetSFX:TSound (sfx:string)
+		Return TSound(MapValueForKey(Self.soundFiles, sfx))
+	End Method	
+	
+	Method GetVolume:float(music:string)
+		Select music
+			Case MUSIC_TITLE
+				return 1
+			Default
+				return 0.2
+		EndSelect	
+	End Method
+	
+	Method GetSFXChannel:TChannel(sfx:string)
+		Select sfx
+			Case SFX_ELEVATOR_DING
+				Return Self.sfxChannel_Elevator
+		EndSelect
+	End Method
+End Type
+
+Type TSfxOptions
+	Field nearbyDistanceRange:int = -1
+	Field maxDistanceRange:int = 1000
+	
+	Field nearbyRangeVolume:float = 1
+	Field midRangeVolume:float = 0.8
+	Field minVolume:float = 0
+	
+	Function Create:TSfxOptions()
+		Return new TSfxOptions 
+	End Function	
+	
+	Method GetVolume:float(currentDistance:int)
+		local result:float = midRangeVolume
+		If (currentDistance <> -1) Then			
+			If currentDistance > Self.maxDistanceRange Then 'zu weit weg
+				result = Self.minVolume
+			Elseif currentDistance < Self.nearbyDistanceRange Then 'sehr nah dran
+				result = Self.nearbyRangeVolume
+			Else 'irgendwo dazwischen
+				result = midRangeVolume * (float(Self.maxDistanceRange) - float(currentDistance)) / float(Self.maxDistanceRange)
+			Endif				
+		Endif	
+		
+		Return result
+	End Method
+	
+	Function GetElevatorOptions:TSfxOptions()
+		local result:TSfxOptions = new TSfxOptions
+		result.nearbyDistanceRange = 30
+		result.maxDistanceRange = 500			
+		result.nearbyRangeVolume = 1
+		result.midRangeVolume = 0.5
+		result.minVolume = 0.05
+		Return result
+	End Function
+End Type
+
+Function CalculateDistance:int(obj1:object, obj2:object)
+	local point1:TPoint = null
+	local point2:TPoint = null
+
+  	If TPoint(obj1) then
+		point1 = TPoint(obj1)
+  	Elseif TMoveableAnimSprites(obj1) then
+		point1 = TMoveableAnimSprites(obj1).rect.GetAbsoluteCenterPoint()
+	Endif
+
+  	If TPoint(obj2) then
+		point2 = TPoint(obj2)
+  	Elseif TMoveableAnimSprites(obj2) then
+		point2 = TMoveableAnimSprites(obj2).rect.GetAbsoluteCenterPoint()
+	Endif
+  	
+	local distanceX:int = CalculateIntDistance(point1.x, point2.x)
+	local distanceY:int = CalculateIntDistance(point1.y, point2.y)	
+	Return Sqr(distanceX * distanceX + distanceY * distanceY) 'a² + b² = c²	
+End function
+
+Function CalculateIntDistance:int(value1:int, value2:int)
+	If (value1 > value2) Then
+		Return value1 - value2
+	Else
+		Return value2 - value1
+	EndIf
 End Function
