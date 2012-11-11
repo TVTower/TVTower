@@ -50,7 +50,7 @@ Global Fader:TFader								= New TFader
 Global NewsAgency:TNewsAgency					= New TNewsAgency
 
 SeedRand(103452)
-Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswÃ¼rfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
+Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
 TButton.UseFont 		= Assets.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= Assets.fonts.baseFontBold
@@ -390,25 +390,25 @@ endrem
 						TError.DrawNewError("Lade Programme...")
 						TProgramme.LoadAll()
 					Case "ALLCONTRACTS"
-						TError.DrawNewError("Lade WerbevertrÃ¤ge...")
+						TError.DrawNewError("Lade Werbeverträge...")
 					'TContract.LoadAll()
 					Case "ALLNEWS"
 						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade WerbevertrÃ¤geblÃ¶cke...")
+						TError.DrawNewError("Lade Werbeverträgeblöcke...")
 					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade ProgrammblÃ¶cke...")
+						TError.DrawNewError("Lade Programmblöcke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade WerbeblÃ¶cke...")
+						TError.DrawNewError("Lade Werbeblöcke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade NewsblÃ¶cke...")
+						TError.DrawNewError("Lade Newsblöcke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade FilmhÃ¤ndlerblÃ¶cke...")
+						TError.DrawNewError("Lade Filmhändlerblöcke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -688,7 +688,7 @@ Rem
 		Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI fÃ¼r Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI für Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
@@ -1572,6 +1572,7 @@ Type TElevator
 	'nice-modus ? -- wenn spieler aus 1. etage fahrstuhl von 12. etage holt - und zwischendrin
 	'einer von 8. in den 6. fahren will - mitnehmen - dafuer muss der Fahrstuhl aber wissen,
 	'das er vom 8. in den 6. will - momentan gibt es nur die information "fahr in den 8."
+	'mv: Überlegungen zur Optimierung der Route im Kommentar von OptimizeRoute()
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
 		'print "add floor route: "+floornumber
 
@@ -1596,6 +1597,7 @@ Type TElevator
 
 	Method GetFloorRoute:Int()
 		If Not FloorRouteList.IsEmpty()
+			'OptimizeRoute()		
 			'elevator is on the floor the route
 			Local tmpfloor:TFloorRoute = TFloorRoute(FloorRouteList.First())
 			Local fig:TFigures = TFigures.getByID( tmpfloor.who )
@@ -1612,6 +1614,16 @@ Type TElevator
 		EndIf
 		allowedPassengerID = -1
 		Return onFloor
+	End Method
+
+	Method OptimizeRoute()		
+		'mv: Nach einiger Überlegungszeit kam ich zu folgendem Ergebnis:
+		'Es ist ohne das Feature mehrere Passagier zu befördern nicht möglich eine Optimierung vorzunehmen.
+		'Problem: Man kann zum Zeitpunkt des Fahrstuhl-Calls nicht sicher sagen wo die Figur hin will... oder ob sie ihre Meinung bezüglich des Ziels während des Wartens ändert.
+		'Deshalb lassen sich z.B. auch keine Leerfahren mit Zwischenpassaieren ausnutzen
+		'Eine Möglichkeit für Optimierungen sehe ich dennoch: Dies erfordert aber ein wichtiges Feature: Mehrere Passagiere
+		
+		'Testcode entfernt
 	End Method
 
 	Method CloseDoor()

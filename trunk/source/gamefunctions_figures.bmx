@@ -14,12 +14,12 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field inRoom:TRooms			= Null			{sl = "no"}
 	Field id:Int				= 0
 	Field calledElevator:Int	= 0
-	Field loopsWaitingForElevator:Int = 0
 	Field Visible:Int			= 1
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
 	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
+	Field RecheckElevatorStatus:TTimer = TTimer.Create(25000)
 
 	Field inElevator:Byte		= 0
 	Field ControlledByID:Int	= -1
@@ -299,9 +299,7 @@ endrem
 	End Method
 
 	Method CallElevator:Int()
-		loopsWaitingForElevator = loopsWaitingForElevator + 1
-		if loopsWaitingForElevator = 10 Or (loopsWaitingForElevator MOD 1000) = 0 Then CheckElevatorStatus() 'Gleich zu Beginn und nach einiger Zeit nochmal nachprüfen, ob der Fahrstuhl auch wirklich kommt (verhindert einige sync bugs)
-			
+		If RecheckElevatorStatus.isExpired() Then CheckElevatorStatus() 'Nach einiger Zeit nochmal nachprüfen, ob der Fahrstuhl auch wirklich kommt (verhindert einige sync bugs)			
 		if calledElevator then return false
 		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then calledElevator=true;return false
 		'print self.name+" calls elevator"
@@ -312,7 +310,6 @@ endrem
 			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, True)
 		EndIf
 		calledElevator = True
-		loopsWaitingForElevator = 0
 		If Not Building.Elevator.EgoMode Then SortList(Building.Elevator.FloorRouteList)
 	End Method
 
@@ -348,8 +345,8 @@ endrem
 			target.setX(self.clickedToRoom.pos.x +  (self.clickedToRoom.name <> "elevator")*Assets.GetSprite("gfx_building_Tueren").framew/2 )
 		endif
 		
-		'Prüfe ob das mit dem Fahrstuhl noch passt
-		self.CheckElevatorStatus()
+		'Baldige Prüfung, ob das mit dem Fahrstuhl noch passt
+		RecheckElevatorStatus = TTimer.Create(1000)
 		
 		'center figure to target
 		target.setX(target.x - self.rect.GetW()/2)
@@ -375,7 +372,7 @@ endrem
 			Endif
 		Next	
 		calledElevator = routeExists
-		If Not calledElevator Then loopsWaitingForElevator = 0		
+		If calledElevator Then RecheckElevatorStatus = TTimer.Create(25000) 'In spätestens 25 Sekunden nochmal prüfen
 	End Method
 
 
