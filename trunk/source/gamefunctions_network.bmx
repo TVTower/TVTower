@@ -648,17 +648,15 @@ Type TNetworkHelper
 
 		Adblock.senddate			= senddate
 		Adblock.sendtime			= sendtime
-		Adblock.contract.senddate	= senddate
-		Adblock.contract.sendtime	= sendtime
 		AdBlock.Pos					= pos
 		AdBlock.StartPos			= startpos
 
 		Players[ playerID ].ProgrammePlan.RefreshAdPlan( senddate )
 		If add
-			Players[ playerID ].ProgrammePlan.AddContract( adblock.contract )
+			Players[ playerID ].ProgrammePlan.AddAdBlock( adblock )
 			'Print "NET: ADDED adblock:"+Adblock.contract.Title+" to Player:"+playerID
 		Else
-			Players[ playerID ].ProgrammePlan.RemoveContract( adblock.contract )
+			Players[ playerID ].ProgrammePlan.RemoveAdBlock( adblock )
 			'Print "NET: REMOVED adblock:"+Adblock.contract.Title+" from Player:"+playerID
 		EndIf
 	End Method

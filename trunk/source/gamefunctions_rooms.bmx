@@ -1,27 +1,27 @@
 ﻿'Basictype of all rooms
-Type TRooms
-    Field background:TGW_Sprites    	   	'background, the image containing the whole room
-	Field name:String			= ""  		'name of the room, eg. "archive" for archive room
-    Field desc:String			= ""		'description, eg. "Bettys bureau" (used for tooltip)
-    Field descTwo:String		= ""		'description, eg. "name of the owner" (used for tooltip)
-    Field tooltip:TTooltip		= null		'uses description
+Type TRooms  {_exposeToLua="selected"}
+    Field background:TGW_Sprites    	   				'background, the image containing the whole room
+	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
+    Field desc:String			= ""					'description, eg. "Bettys bureau" (used for tooltip)
+    Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
+    Field tooltip:TTooltip		= null					'uses description
 
 	Field DoorTimer:TTimer		= TTimer.Create(500)
-	Field Pos:TPoint						'x of the rooms door in the building, y as floornumber
-    Field xpos:Int				= 0			'door 1-4 on floor
+	Field Pos:TPoint									'x of the rooms door in the building, y as floornumber
+    Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
     Field doorwidth:Int			= 38
     Field RoomSign:TRoomSigns
-    Field owner:Int				=-1			'to draw the logo/symbol of the owner
-    Field id:Int				= 1
+    Field owner:Int				=-1						'to draw the logo/symbol of the owner
+    Field id:Int				= 1		 {_exposeToLua}
 	Field FadeAnimationActive:Int = 0
 	Field RoomBoardX:Int		= 0
 	Field Dialogues:TList		= CreateList()
 
-    Global RoomList:TList		= CreateList()		'global list of rooms
+    Global RoomList:TList		= CreateList()			'global list of rooms
     Global LastID:Int			= 1
 	Global doadraw:Int			= 0
-	Global DoorsDrawnToBackground:Int = 0   'doors drawn to Pixmap of background
+	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
 	Method getDoorType:int()
 		if self.DoorTimer.isExpired() then return self.doortype else return 5

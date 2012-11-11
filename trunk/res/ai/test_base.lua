@@ -41,33 +41,35 @@ function OnMinute(number)
 	-- TVT.PrintOut("title: " .. tonumber(number) .. MY.getPlayerID() .. MY.ProgrammeCollection.GetProgrammeFromList( 1 ).title )
 
 	if tonumber(number) == 0 and MY.getPlayerID() == 3 then
+--[[
 		TVT.PrintOut("DEBUG DATA for player " .. MY.getPlayerID())
 		TVT.PrintOut("- - - - - - - - - - - -")
 		TVT.PrintOut("ProgrammeCollection - contracts:")
 		entries = MY.ProgrammeCollection.getContracts()
 		for i, entry in ipairs(entries) do
-			TVT.PrintOut("	contract "..i.."/"..#entries.."		: "..entry.title .. " (id: "..entry.id..")")
+			TVT.PrintOut("	contract "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 		end
 		TVT.PrintOut("ProgrammeCollection - movies:")
 		entries = MY.ProgrammeCollection.getMovies()
 		for i, entry in ipairs(entries) do
-			TVT.PrintOut("	movie "..i.."/"..#entries.."			: "..entry.title .. " (id: "..entry.id..")")
+			TVT.PrintOut("	movie "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 		end
 		TVT.PrintOut("ProgrammeCollection - series:")
 		entries = MY.ProgrammeCollection.getSeries()
 		for i, entry in ipairs(entries) do
-			TVT.PrintOut("	serie "..i.."/"..#entries.."			: "..entry.title .. " (id: "..entry.id..")")
+			TVT.PrintOut("	serie "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 			episodes = entry.GetEpisodes()
 			for j, entry in ipairs(episodes) do
-				TVT.PrintOut("		episode "..j.."/"..#episodes.."	: "..entry.title .. " (id: "..entry.id..")")
+				TVT.PrintOut("		episode "..j.."/"..#episodes.."	: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 			end
 		end
 		TVT.PrintOut("ProgrammeCollection - programme in general:")
 		entries = MY.ProgrammeCollection.getProgrammes()
 		for i, entry in ipairs(entries) do
-			TVT.PrintOut("	programme "..i.."/"..#entries.."	: "..entry.title .. " (id: "..entry.id..")")
+			TVT.PrintOut("	programme "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 		end
 		TVT.PrintOut("- - - - - - - - - - - -")
+]]
 	end
 --	TVT.PrintOut("Eigentlich bin ich diese Nr: " .. TVT.ME)
 --	PrinteNummerAusEinemAnderenFile()
@@ -92,7 +94,7 @@ function OnMinute(number)
 		if chattext == 3 then TVT.SendToChat("Ene mene muh und raus bist DU!!") end
 		if chattext == 4 then TVT.SendToChat("In meinem Schatten wird's kalt ;).") end
 		if chattext == 5 then TVT.SendToChat("Wer den Euro nicht ehrt, ist die Zuschauer nicht wert.") end
-		if chattext == 6 then TVT.SendToChat("Bettys Raum hat die ID " .. TVT.GetRoomByDetails("betty", 0) ) end
+		if chattext == 6 then TVT.SendToChat("Bettys Raum hat die ID " .. TVT.GetRoomByDetails("betty", 0).id ) end
 		if chattext == 7 then TVT.SendToChat("Pech im Spiel, Glück in der Liebe..." ) end
 		if chattext == 8 then TVT.SendToChat("Harr harr, Dein Chef wird dir die Löffel lang ziehen." ) end
 		if chattext == 9 then TVT.SendToChat("Nach mir die Sintflut." ) end

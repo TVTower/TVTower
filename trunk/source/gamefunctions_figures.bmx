@@ -299,7 +299,7 @@ endrem
 	End Method
 
 	Method CallElevator:Int()
-		If RecheckElevatorStatus.isExpired() Then CheckElevatorStatus() 'Nach einiger Zeit nochmal nachprüfen, ob der Fahrstuhl auch wirklich kommt (verhindert einige sync bugs)			
+		If RecheckElevatorStatus.isExpired() Then CheckElevatorStatus() 'Nach einiger Zeit nochmal nachprüfen, ob der Fahrstuhl auch wirklich kommt (verhindert einige sync bugs)
 		if calledElevator then return false
 		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then calledElevator=true;return false
 		'print self.name+" calls elevator"
@@ -344,10 +344,10 @@ endrem
 			'print "clicked to room: "+self.clickedToRoom.name + " "+self.clickedToRoom.pos.x
 			target.setX(self.clickedToRoom.pos.x +  (self.clickedToRoom.name <> "elevator")*Assets.GetSprite("gfx_building_Tueren").framew/2 )
 		endif
-		
+
 		'Baldige Prüfung, ob das mit dem Fahrstuhl noch passt
-		RecheckElevatorStatus = TTimer.Create(1000)
-		
+		RecheckElevatorStatus.SetInterval(1000, true)
+
 		'center figure to target
 		target.setX(target.x - self.rect.GetW()/2)
 
@@ -360,19 +360,19 @@ endrem
 	Method UpdateMovement(deltaTime:float)
 		'nothing
 	End Method
-	
+
 	'Stellt sicher, dass die Variable "calledElevator" und die Wirklichkeit des Fahrstuhls überein stimmt.
 	'Es kam zu Problemen, wenn man zu früh geklickt hat... oder kam sporadisch zu Fällen in denen der Fahrstuhl einen nicht mehr holte
 	Method CheckElevatorStatus()
 		local routeExists:int = false
 		For Local floorRoute:TFloorRoute = EachIn Building.Elevator.FloorRouteList
-			If floorRoute.who = self.id Then
+			If floorRoute.who = self.id
 				routeExists = true
 				Exit
 			Endif
-		Next	
+		Next
 		calledElevator = routeExists
-		If calledElevator Then RecheckElevatorStatus = TTimer.Create(25000) 'In spätestens 25 Sekunden nochmal prüfen
+		If calledElevator Then RecheckElevatorStatus.SetInterval(25000, true) 'In spätestens 25 Sekunden nochmal prüfen
 	End Method
 
 

@@ -489,46 +489,6 @@ Type TLuaFunctions {_exposeToLua}
 
 
 '- - - - - -
-' SPOTS
-'- - - - - -
-	Method SpotAudience:Int(spotId:Int = -1)
-		Print "VERALTET: TVT.SpotAudience(spotID) -> TVT.getContract(id).GetMinAudience(overwriteOwnerID)"
-		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.getMinAudience(obj.owner)) Else Return self.RESULT_NOTFOUND
-	End Method
-
-	Method SpotToSend:Int(spotId:Int = -1)
-		Print "VERALTET: TVT.SpotToSend(spotID) -> TVT.getContract(id).GetSpotCount()"
-		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.spotcount) Else Return self.RESULT_NOTFOUND
-	End Method
-
-	Method SpotMaxDays:Int(spotId:Int = -1)
-		Print "VERALTET: TVT.SpotMaxDays(spotID) -> TVT.getContract(id).GetDaysToFinish()"
-		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.daystofinish) Else Return self.RESULT_NOTFOUND
-	End Method
-
-	Method SpotProfit:Int(spotId:Int = -1)
-		Print "VERALTET: TVT.SpotProfit(spotID) -> TVT.getContract(id).GetProfit(overwriteBaseValue=-1,otherPlayerID=-1)"
-		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.getProfit()) Else Return self.RESULT_NOTFOUND
-	End Method
-
-	Method SpotPenalty:Int(spotId:Int = -1)
-		Print "VERALTET: TVT.SpotPenalty(spotID) -> TVT.getContract(id).GetPenalty(overwriteBaseValue=-1,otherPlayerID=-1)"
-		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.GetPenalty()) Else Return self.RESULT_NOTFOUND
-	End Method
-
-	Method SpotTargetgroup:Int(spotId:Int = -1)
-		Print "VERALTET: TVT.SpotTargetgroup(spotID) -> TVT.getContract(id).GetTargetGroup() (bzw. GetTargetGroupString(overwriteGroup) fuer Text)"
-		Local obj:TContract = TContract.GetContract(spotId)
-	    If obj Then Return Int(obj.targetgroup) Else Return self.RESULT_NOTFOUND
-	End Method
-
-
-'- - - - - -
 ' Office
 '- - - - - -
 	Method of_getMovie:Int(day:Int = -1, hour:Int = -1)
@@ -565,7 +525,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
 		Local obj:TAdBlock = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetActualAdBlock(hour, day)
-		If obj Then Return obj.contract.spotnumber Else Return self.RESULT_NOTFOUND
+		If obj Then Return obj.GetSpotNumber() Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method of_getSpotBeenSent:Int(contractID:Int = -1)
@@ -575,7 +535,7 @@ Type TLuaFunctions {_exposeToLua}
 		If Not contractObj Then Return self.RESULT_NOTFOUND
 
 		Local obj:TAdBlock = TAdBlock.GetBlockByContract( contractObj )
-		If obj Then Return obj.GetSuccessfulSentContractCount() Else Return self.RESULT_NOTFOUND
+		If obj Then Return obj.contract.GetSpotsSent() Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method of_getSpotDaysLeft:Int(contractID:Int = -1)
@@ -590,26 +550,25 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_doMovieInPlan:Int(day:Int = -1, hour:Int = -1, ObjectID:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local owner:Int = Players[ Self.ME ].Figure.inRoom.owner
-
-		'wenn user schluessel haben sollte, dann muesste an dieser Stelle dies ueberprueft werden
-		If Self.ME <> owner Then Return self.RESULT_NOKEY
+		'wenn user schluessel fuer den Raum haben sollte,
+		'ist dies hier egal -> nur schauen erlaubt fuer "Fremde"
+		If Self.ME <> Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'Film bei Day,hour loeschen
 			If day = Game.day And hour = Game.GetHour() And Game.GetMinute() > 5 Then Return self.RESULT_INUSE
 
-			Local Obj:TProgrammeBlock = Players[ owner ].ProgrammePlan.GetActualProgrammeBlock(hour, day)
+			Local Obj:TProgrammeBlock = Players[ self.ME ].ProgrammePlan.GetActualProgrammeBlock(hour, day)
 			if not Obj then Return self.RESULT_NOTFOUND
 
 			Obj.DeleteBlock()
 			Return self.RESULT_OK
 		'platzieren
 		Else
-			Local Obj:TProgramme = Players[ owner ].ProgrammeCollection.GetProgramme(ObjectID)
+			Local Obj:TProgramme = Players[ self.ME ].ProgrammeCollection.GetProgramme(ObjectID)
 			if not Obj then Return self.RESULT_NOTFOUND
 
-			If Players[ owner ].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
-				Local objBlock:TProgrammeBlock	= TProgrammeBlock.CreateDragged(obj, owner)
+			If Players[ self.ME ].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
+				Local objBlock:TProgrammeBlock	= TProgrammeBlock.CreateDragged(obj, self.ME)
 				objBlock.sendHour				= day*24 + hour
 				objBlock.dragged				= 0
 				ObjBlock.SetBasePos(ObjBlock.GetSlotXY(hour))
@@ -624,30 +583,26 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_doSpotInPlan:Int(day:Int = -1, hour:Int = -1, ObjectID:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local owner:Int = Players[ Self.ME ].Figure.inRoom.owner
-
-		'wenn user schluessel haben sollte, dann muesste an dieser Stelle dies ueberprueft werden
-		If Self.ME <> owner Then Return self.RESULT_NOKEY
+		'wenn user schluessel fuer den Raum haben sollte,
+		'ist dies hier egal -> nur schauen erlaubt fuer "Fremde"
+		If Self.ME <> Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'Spot bei Day,hour loeschen
 			If day = Game.day And hour = Game.GetHour() Then Return -2
 
-			Local Obj:TAdBlock = TAdBlock.GetActualAdBlock(owner, hour, day)
+			Local Obj:TAdBlock = Players[ self.ME ].ProgrammePlan.GetActualAdBlock(hour, day)
 			If not Obj then Return self.RESULT_NOTFOUND
 
-			Obj.RemoveBlock()
+			Obj.RemoveFromPlan()
 			Return self.RESULT_OK
 		Else
-			Local Obj:TContract = Players[ owner ].ProgrammeCollection.GetContract(ObjectID)
-			if not Obj then Return self.RESULT_NOTFOUND
-			If Players[ owner ].ProgrammePlan.ContractPlaceable(Obj, hour, day)
-				Obj						= Players[ owner ].ProgrammePlan.CloneContract(Obj)
-				Obj.senddate			= day
-				Obj.sendtime			= hour
-				Local objBlock:TAdBlock = TAdBlock.createDragged(obj, owner)
-				objBlock.dragged		= 0
-				objBlock.SetBaseCoords(objBlock.GetBlockX(hour), objBlock.GetBlockY(hour))
-				objBlock.AddBlock() 'mv 07.11.2012: Das ist wohl nötig, sonst landet es nicht in TPlayerProgrammePlan.Contracts und kann somit auch nicht von TPlayerProgrammePlan.GetActualContract gefunden werden
+			Local contract:TContract = Players[ self.ME ].ProgrammeCollection.GetContract(ObjectID)
+			if not contract then Return self.RESULT_NOTFOUND
+			If Players[ self.ME ].ProgrammePlan.AdBlockPlaceable(hour, day)
+				Local obj:TAdBlock = TAdBlock.create(contract, TAdBlock.GetBlockX(hour),TAdBlock.GetBlockY(hour), self.ME)
+				obj.senddate	= day
+				obj.sendtime	= hour
+				obj.AddToPlan()
 				Return self.RESULT_OK
 			Else
 				Return self.RESULT_NOTALLOWED
