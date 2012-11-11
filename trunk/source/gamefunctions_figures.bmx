@@ -14,6 +14,7 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field inRoom:TRooms			= Null			{sl = "no"}
 	Field id:Int				= 0
 	Field calledElevator:Int	= 0
+	Field loopsWaitingForElevator:Int = 0
 	Field Visible:Int			= 1
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
@@ -298,6 +299,9 @@ endrem
 	End Method
 
 	Method CallElevator:Int()
+		loopsWaitingForElevator = loopsWaitingForElevator + 1
+		if loopsWaitingForElevator = 10 Or (loopsWaitingForElevator MOD 1000) = 0 Then CheckElevatorStatus() 'Gleich zu Beginn und nach einiger Zeit nochmal nachprüfen, ob der Fahrstuhl auch wirklich kommt (verhindert einige sync bugs)
+			
 		if calledElevator then return false
 		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then calledElevator=true;return false
 		'print self.name+" calls elevator"
@@ -308,6 +312,7 @@ endrem
 			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, True)
 		EndIf
 		calledElevator = True
+		loopsWaitingForElevator = 0
 		If Not Building.Elevator.EgoMode Then SortList(Building.Elevator.FloorRouteList)
 	End Method
 
@@ -342,7 +347,10 @@ endrem
 			'print "clicked to room: "+self.clickedToRoom.name + " "+self.clickedToRoom.pos.x
 			target.setX(self.clickedToRoom.pos.x +  (self.clickedToRoom.name <> "elevator")*Assets.GetSprite("gfx_building_Tueren").framew/2 )
 		endif
-
+		
+		'Prüfe ob das mit dem Fahrstuhl noch passt
+		self.CheckElevatorStatus()
+		
 		'center figure to target
 		target.setX(target.x - self.rect.GetW()/2)
 
@@ -354,6 +362,20 @@ endrem
 	'overwrite default UpdateMovement - we handle it in FigureMovement
 	Method UpdateMovement(deltaTime:float)
 		'nothing
+	End Method
+	
+	'Stellt sicher, dass die Variable "calledElevator" und die Wirklichkeit des Fahrstuhls überein stimmt.
+	'Es kam zu Problemen, wenn man zu früh geklickt hat... oder kam sporadisch zu Fällen in denen der Fahrstuhl einen nicht mehr holte
+	Method CheckElevatorStatus()
+		local routeExists:int = false
+		For Local floorRoute:TFloorRoute = EachIn Building.Elevator.FloorRouteList
+			If floorRoute.who = self.id Then
+				routeExists = true
+				Exit
+			Endif
+		Next	
+		calledElevator = routeExists
+		If Not calledElevator Then loopsWaitingForElevator = 0		
 	End Method
 
 
