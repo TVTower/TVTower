@@ -1607,7 +1607,6 @@ Type TElevator
 			allowedPassengerID = tmpfloor.who
 			If onFloor = tmpfloor.floornumber
 				If fig <> Null And Not fig.isAtElevator()
-					fig.calledElevator = False
 					allowedPassengerID = -1
 				EndIf
 				'print "entferne erste route da onfloor "+onFloor+" = "+tmpfloor.floornumber+" tmpfloor - fig: "+fig.name
@@ -1769,7 +1768,6 @@ Type TElevator
 			open = 2 'opening
 			If spriteDoor.getCurrentAnimation().isFinished()
 				If open = 2 And passenger <> Null
-					passenger.calledElevator= False
 					passenger.inElevator	= False
 					passenger				= Null
 				EndIf

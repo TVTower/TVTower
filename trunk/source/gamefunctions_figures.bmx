@@ -13,13 +13,11 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field clickedToRoom:TRooms	= Null			{sl = "no"}
 	Field inRoom:TRooms			= Null			{sl = "no"}
 	Field id:Int				= 0
-	Field calledElevator:Int	= 0
 	Field Visible:Int			= 1
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
 	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
-	Field RecheckElevatorStatus:TTimer = TTimer.Create(25000)
 
 	Field inElevator:Byte		= 0
 	Field ControlledByID:Int	= -1
@@ -299,9 +297,8 @@ endrem
 	End Method
 
 	Method CallElevator:Int()
-		If RecheckElevatorStatus.isExpired() Then CheckElevatorStatus() 'Nach einiger Zeit nochmal nachprüfen, ob der Fahrstuhl auch wirklich kommt (verhindert einige sync bugs)
-		if calledElevator then return false
-		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then calledElevator=true;return false
+		if IsElevatorCalled() then return false
+		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then return false
 		'print self.name+" calls elevator"
 
 		If id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader())
@@ -309,7 +306,7 @@ endrem
 		Else
 			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, True)
 		EndIf
-		calledElevator = True
+
 		If Not Building.Elevator.EgoMode Then SortList(Building.Elevator.FloorRouteList)
 	End Method
 
@@ -345,9 +342,6 @@ endrem
 			target.setX(self.clickedToRoom.pos.x +  (self.clickedToRoom.name <> "elevator")*Assets.GetSprite("gfx_building_Tueren").framew/2 )
 		endif
 
-		'Baldige Prüfung, ob das mit dem Fahrstuhl noch passt
-		RecheckElevatorStatus.SetInterval(1000, true)
-
 		'center figure to target
 		target.setX(target.x - self.rect.GetW()/2)
 
@@ -361,20 +355,14 @@ endrem
 		'nothing
 	End Method
 
-	'Stellt sicher, dass die Variable "calledElevator" und die Wirklichkeit des Fahrstuhls überein stimmt.
-	'Es kam zu Problemen, wenn man zu früh geklickt hat... oder kam sporadisch zu Fällen in denen der Fahrstuhl einen nicht mehr holte
-	Method CheckElevatorStatus()
-		local routeExists:int = false
+	Method IsElevatorCalled:int()
 		For Local floorRoute:TFloorRoute = EachIn Building.Elevator.FloorRouteList
 			If floorRoute.who = self.id
-				routeExists = true
-				Exit
+				Return true
 			Endif
 		Next
-		calledElevator = routeExists
-		If calledElevator Then RecheckElevatorStatus.SetInterval(25000, true) 'In spätestens 25 Sekunden nochmal prüfen
+		Return false
 	End Method
-
 
 	Method Update(deltaTime:float)
 		'update parent class (anim pos)
@@ -455,7 +443,7 @@ endrem
 				If Building.elevator.allowedPassengerID = -1 or Building.elevator.allowedPassengerID = self.id
 					'empty and open elevator on my floor PLUS I called it
 					if Building.elevator.onFloor = GetFloor()
-						If not Building.elevator.passenger and calledElevator and Building.elevator.Open = 1
+						If not Building.elevator.passenger and Building.elevator.Open = 1
 							'print "send elevator"
 							SendElevator()
 						EndIf
@@ -465,7 +453,6 @@ endrem
 
 			If Building.Elevator.passenger = self and Building.Elevator.Open = 1 and rect.GetY() = target.y and Building.getFloor(building.pos.y+target.y) = Building.Elevator.toFloor
 				If self.sprite.h + Int(rect.GetY()) = target.y
-					calledElevator				= False
 					Building.Elevator.passenger	= null
 					'set target again - so player can click on signs in roomboard
 					'self.SetToRoom( TRooms.GetTargetroom(self.target.x + self.FrameWidth /2, Building.pos.y + Building.GetFloorY(Building.GetFloor(self.pos.y)) - 5) )
