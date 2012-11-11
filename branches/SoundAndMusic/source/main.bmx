@@ -1731,7 +1731,7 @@ Type TElevator
 	Method GetElevatorCenterPos:TPoint()
 		local posX:int = parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
 		local posY:int = Pos.y + Self.spriteDoor.sprite.frameh/2 + 56 'Hier kein parent.pos.y hinzuaddieren sonst kommt blödsinn raus... keine Ahnung warum. Die Differenz dürfte laut Untersuchungen ungefähr 56 betragen (geschätzt)
-		Return TPoint.Create(posX, posY)
+		Return TPoint.Create(posX, posY, -20) '-20 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
 	End Method
 
 	Method IsInFrontOfDoor:Int(x:Int, y:Int=-1)
@@ -1782,7 +1782,8 @@ Type TElevator
 			open = 3 'closing
 			If spriteDoor.getCurrentAnimation().isFinished()
 				spriteDoor.setCurrentAnimation("closed")
-				open = 0 'closed
+				open = 0 'closed		
+				SoundManager.PlaySFXForMovingElement(SFX_ELEVATOR_ENGINE, TElevatorElementPosition.Create(Self), TSfxOptions.GetMoveableElevatorOptions())
 			EndIf
 
 		EndIf
@@ -3601,6 +3602,7 @@ Const MUSIC_TITLE:String					= "MUSIC_TITLE"
 Const MUSIC_MUSIC:String					= "MUSIC_MUSIC"
 
 Const SFX_ELEVATOR_DING:String				= "SFX_ELEVATOR_DING"
+Const SFX_ELEVATOR_ENGINE:String			= "SFX_ELEVATOR_ENGINE"
 
 Type TSoundManager
 	Field soundFiles:TMap = null
@@ -3622,7 +3624,9 @@ Type TSoundManager
 	Field forceNextMusicTitle:int = 0
 	Field fadeProcess:int = 0 '0 = nicht aktiv  1 = aktiv
 	Field fadeOutVolume:int = 1000
-	Field fadeInVolume:int = 0		
+	Field fadeInVolume:int = 0
+	
+	Field movingElements:TMap = null
 	
 	Function Create:TSoundManager()
 		EnableOpenALAudio()
@@ -3635,26 +3639,27 @@ Type TSoundManager
 		manager.inactiveMusicChannel = manager.musicChannel2
 		manager.sfxChannel_Elevator = AllocChannel()
 		manager.defaultSfxOptions = TSfxOptions.Create()
+		manager.movingElements = CreateMap()
 		Return manager 
 	End Function
 
 	Method LoadSoundFiles()
 		'mv: Alternativ können die Files auch in einem seperaten Thread geladen werden oder erst bei Bedarf... dann ruckelt's leider aber etwas. Kannst du (Ronny) entscheiden ;)		
-		local total:int = 7
+		local total:int = 8
 				
 		Self.soundFiles = CreateMap:TMap()
 		LoadProgress(1, total)
 		MapInsert( Self.soundFiles, MUSIC_TITLE, LoadSound("res/music/title.ogg", SOUND_LOOP) )
 		LoadProgress(2, total)
-		MapInsert( Self.soundFiles, MUSIC_MUSIC + "1", LoadSound("res/music/music1.ogg") )
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "1", LoadSound("res/music/music1.ogg", SOUND_HARDWARE) )
 		LoadProgress(3, total)
-		MapInsert( Self.soundFiles, MUSIC_MUSIC + "2", LoadSound("res/music/music2.ogg") )
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "2", LoadSound("res/music/music2.ogg", SOUND_HARDWARE) )
 		LoadProgress(4, total)
-		MapInsert( Self.soundFiles, MUSIC_MUSIC + "3", LoadSound("res/music/music3.ogg") )
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "3", LoadSound("res/music/music3.ogg", SOUND_HARDWARE) )
 		LoadProgress(5, total)
-		MapInsert( Self.soundFiles, MUSIC_MUSIC + "4", LoadSound("res/music/music4.ogg") )
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "4", LoadSound("res/music/music4.ogg", SOUND_HARDWARE) )
 		LoadProgress(6, total)
-		MapInsert( Self.soundFiles, MUSIC_MUSIC + "5", LoadSound("res/music/music5.ogg") )						
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "5", LoadSound("res/music/music5.ogg", SOUND_HARDWARE) )						
 		'LoadProgress(7, total)
 		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "6", LoadSound("res/music/music6.ogg") )
 		'LoadProgress(8, total)
@@ -3668,7 +3673,10 @@ Type TSoundManager
 		'Rnd(1, TRooms.RoomList.Count() - 1)
 		
 		LoadProgress(7, total)
-		MapInsert( Self.soundFiles, SFX_ELEVATOR_DING, LoadSound("res/sfx/elevator_ding.ogg") )										
+		MapInsert( Self.soundFiles, SFX_ELEVATOR_DING, LoadSound("res/sfx/elevator_ding.ogg", SOUND_HARDWARE) )
+		
+		LoadProgress(8, total)
+		MapInsert( Self.soundFiles, SFX_ELEVATOR_ENGINE, LoadSound("res/sfx/elevator_engine.ogg", SOUND_LOOP | SOUND_HARDWARE) )
 	End Method
 	
 	Method LoadProgress(currentCount:int, totalCount:int)
@@ -3676,18 +3684,20 @@ Type TSoundManager
 	End Method
 
 	Method Update()
-		If (not musicOn) Then
-			Return
-		End If
+		For Local element:TMovingElementSFX = EachIn MapValues(movingElements)
+			element.AdjustSettings()
+		Next
 	
-		'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
-		if (Self.activeMusicChannel.Playing()) then			
-			if (Self.forceNextMusicTitle and Self.nextMusicTitle <> null) Or Self.fadeProcess > 0 then
-				FadeOverToNextTitle()
-			endif
-		Else
-			PlayMusic(MUSIC_MUSIC)
-		Endif
+		If musicOn Then			
+			'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
+			if (Self.activeMusicChannel.Playing()) then			
+				if (Self.forceNextMusicTitle and Self.nextMusicTitle <> null) Or Self.fadeProcess > 0 then
+					FadeOverToNextTitle()
+				endif
+			Else
+				PlayMusic(MUSIC_MUSIC)
+			Endif
+		EndIf
 	End Method
 	
 	Method FadeOverToNextTitle()		
@@ -3738,17 +3748,34 @@ Type TSoundManager
 	End Method
 	
 	Method PlaySFX(sfx:string, distance:int = -1, options:TSfxOptions = null)
-		'Später statt distance auch eventuell irgendwelche beweglichen Sprites... bei jedem Update wird die Laustärke angepasst (z.B. für das UFO)
-	
-		If (options = null) Then options = Self.defaultSfxOptions		
+		If (options = null) Then options = Self.defaultSfxOptions
 		local distanceVolume:float = options.GetVolume(distance)					
-		'print sfx + " (" + distanceVolume + ")"
 		
 		local currSfx:TSound = Self.GetSFX(sfx)
 		local currChannel:TChannel = Self.GetSFXChannel(sfx)				
 				
 		currChannel.SetVolume(sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautstärke der SFX reduzieren soll
 		PlaySound(currSfx, currChannel)
+		'print sfx + " (" + distanceVolume + ")"		
+	End Method
+	
+	Method PlaySFXForMovingElement(sfx:string, element:TElementPosition, options:TSfxOptions = null)
+	
+		If (options = null) Then options = Self.defaultSfxOptions	
+		local currSfx:TSound = Self.GetSFX(sfx)
+		local currChannel:TChannel = Self.GetSFXChannel(sfx)	
+			
+		local elementfx:TMovingElementSFX = TMovingElementSFX.Create(sfx, currSfx, currChannel, element, options)
+		
+		elementfx.Play()
+		
+		If MapContains(movingElements, elementfx.GetID()) Then MapRemove (movingElements, elementfx.GetID()) 'Alte Einträge entfernen		
+		MapInsert(movingElements, elementfx.GetID(), elementfx) 'Neuer Eintrag hinzufügen
+		
+		local count:int = 0
+		For Local element:TMovingElementSFX = EachIn MapValues(movingElements)
+			count = count + 1
+		Next		
 	End Method
 	
 	Method GetMusic:TSound (music:string)
@@ -3787,7 +3814,86 @@ Type TSoundManager
 		Select sfx
 			Case SFX_ELEVATOR_DING
 				Return Self.sfxChannel_Elevator
+			Case SFX_ELEVATOR_ENGINE
+				Return Self.sfxChannel_Elevator				
 		EndSelect
+	End Method
+End Type
+
+Type TMovingElementSFX
+	Field sfxName:string
+	Field sfx:TSound = null
+	Field channel:TChannel = null
+	Field element:TElementPosition = null
+	Field options:TSfxOptions = null	
+	
+	Function Create:TMovingElementSFX(_sfxName:string, _sfx:TSound, _channel:TChannel, _element:TElementPosition, _options:TSfxOptions )
+		local result:TMovingElementSFX= new TMovingElementSFX
+		result.sfxName = _sfxName
+		result.sfx = _sfx
+		result.channel = _channel
+		result.element = _element
+		result.options = _options
+		Return result
+	End Function
+	
+	Method GetID:string()
+		Return element.GetID() + "_" + sfxName
+	End Method
+	
+	Method Play()
+		AdjustSettings()
+		PlaySound(sfx, channel)		
+	End Method
+	
+	Method AdjustSettings()
+		local playerPoint:TPoint = Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
+		local elementPoint:TPoint = element.GetCenter()
+		local distance:int = CalculateDistance(playerPoint, elementPoint)
+		
+		'Lautstärke ist Abgängig von der Entfernung zur Geräuschquelle
+		local distanceVolume:float = options.GetVolume(distance)
+		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautstärke der SFX reduzieren soll		
+		
+		'Liegt die Geräuschequelle links, muss der Pegel in Richtung linker Lautsprecher gehen und umgekehrt
+		If (elementPoint.z = 0) Then
+			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite. 
+			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
+			channel.SetPan(float(elementPoint.x - playerPoint.x) / 170)			
+			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
+		Else						
+			local xAxis:float = CalculateIntDistance(elementPoint.x, playerPoint.x)
+			local zAxis:float = CalculateIntDistance(elementPoint.z, playerPoint.z)				
+			local angle:float = ATan(zAxis / xAxis) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete			
+
+			local rawPan:float = ((90 - angle) / 90)
+			'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist (im Real passiert dies durch zurückgeworfenen Schall).
+			local panCorrection:float = max(0, min(1, xAxis / 170))
+			local correctPan:float = rawPan * panCorrection 
+
+			
+			'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
+			If (elementPoint.x < playerPoint.x) Then 'von links
+				channel.SetPan(-correctPan)
+				'print "Pan:" + (-correctPan) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")    # " + rawPan + " / " + panCorrection
+			Elseif (elementPoint.x > playerPoint.x) Then 'von rechts
+				channel.SetPan(correctPan)
+				'print "Pan:" + correctPan + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")    # " + rawPan + " / " + panCorrection
+			Else
+				channel.SetPan(0)
+			Endif
+			
+			If elementPoint.z < 0 Then 'Hintergrund
+				channel.SetDepth(-(angle / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+				'print "Depth:" + (-(angle / 90)) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")"
+			ElseIf elementPoint.z > 0 Then 'Vordergrund
+				channel.SetDepth(angle / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+				'print "Depth:" + (angle / 90) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")"
+			Endif
+			'TODO: Offene Frage: Hängt die Depth auch von der Y-Achse ab?
+			'Beispiel: Etwas ist 20 m vom Hörer weg (auf der Z-Achse) im Hintergrund.
+			'Verändert sich die Depth auch, wenn sich die Geräuschquelle (weiterhin 20 Meter auf der z-Achse) nach oben oder unten bewegt (also zusätzlich zur Lautstärke)? Ich glaube nicht.
+		Endif					
 	End Method
 End Type
 
@@ -3827,7 +3933,49 @@ Type TSfxOptions
 		result.minVolume = 0.05
 		Return result
 	End Function
+	
+	Function GetMoveableElevatorOptions:TSfxOptions()
+		local result:TSfxOptions = new TSfxOptions
+		result.nearbyDistanceRange = 0
+		result.maxDistanceRange = 500			
+		result.nearbyRangeVolume = 0.5
+		result.midRangeVolume = 0.5
+		result.minVolume = 0.05
+		Return result
+	End Function
 End Type
+
+
+'Das ElementPositionzeug kann auch eventuell wo anders hin
+Type TElementPosition 'Basisklasse für verschiedene Wrapper
+	Method GetID:string() abstract
+'	Method GetTopLeft:TPoint() abstract
+	Method GetCenter:TPoint() abstract
+	Method GetIsVisible:int() abstract		
+End Type
+
+Type TElevatorElementPosition Extends TElementPosition
+	Field Elevator:TElevator = null
+				
+	Function Create:TElevatorElementPosition(_elevator:TElevator)
+		local result:TElevatorElementPosition = new TElevatorElementPosition
+		result.Elevator = _elevator
+		return result
+	End Function
+	
+	Method GetID:string()
+		Return "Elevator"
+	End Method
+	
+	Method GetCenter:TPoint()
+		Return Elevator.GetElevatorCenterPos()
+	End Method
+	
+	Method GetIsVisible:int()
+		Return (Players[Game.playerID].Figure.inRoom = null)
+	End Method	
+End Type
+
 
 Function CalculateDistance:int(obj1:object, obj2:object)
 	local point1:TPoint = null
