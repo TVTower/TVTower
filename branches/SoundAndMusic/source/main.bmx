@@ -3629,8 +3629,11 @@ Type TSoundManager
 	Field movingElements:TMap = null
 	
 	Function Create:TSoundManager()
-		EnableOpenALAudio()
-		SetAudioDriver("OpenAL")
+		If EnableOpenALAudio() Then
+			SetAudioDriver("OpenAL")
+		Else
+			SetAudioDriver("FreeAudio")
+		End If
 		
 		Local manager:TSoundManager = New TSoundManager
 		manager.musicChannel1 = AllocChannel()
