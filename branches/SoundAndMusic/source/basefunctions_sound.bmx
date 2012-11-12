@@ -6,11 +6,36 @@ Import brl.OpenALAudio
 Import brl.OGGLoader
 Import "basefunctions.bmx"
 
+Import maxmod2.ogg
+Import maxmod2.rtaudio
 Const MUSIC_TITLE:String					= "MUSIC_TITLE"
 Const MUSIC_MUSIC:String					= "MUSIC_MUSIC"
 
 Const SFX_ELEVATOR_DING:String				= "SFX_ELEVATOR_DING"
 Const SFX_ELEVATOR_ENGINE:String			= "SFX_ELEVATOR_ENGINE"
+
+'type to store music files (ogg) in it
+'data is stored in bank
+'Play-Method is adopted from maxmod2.bmx-Function "play"
+Type TMusicStream
+	field bank:TBank
+	field url:object
+
+	Function Create:TMusicStream(url:object)
+		local obj:TMusicStream = new TMusicStream
+		obj.bank = LoadBank(url)
+		obj.url = url
+		return obj
+	End Function
+
+	Method Play:TChannel(sendToChannel:Tchannel var, loop:int=false )
+		Local chn:TChannel = CueMusic(self.bank, loop)
+		If Not chn then Return Null
+		ResumeChannel(chn)
+		sendToChannel = chn
+		Return sendToChannel
+	End Method
+End Type
 
 Type TSoundManager
 	Field soundFiles:TMap = null
@@ -18,22 +43,25 @@ Type TSoundManager
 	Field musicChannel2:TChannel = null
 	Field activeMusicChannel:TChannel = null
 	Field inactiveMusicChannel:TChannel = null
-	
+
 	Field sfxChannel_Elevator:TChannel = null
 	Field sfxVolume:float = 1
 	Field defaultSfxOptions:TSfxOptions = null
-	
+
 	Field musicOn:int = 1
 	Field musicVolume:float = 1
 	Field nextMusicTitleVolume:float = 1
 	Field lastTitleNumber:int = 0
+	Field currentMusicStream:TMusicStream = null
+	Field nextMusicTitleStream:TMusicStream = null
+
 	Field currentMusic:TSound = null
 	Field nextMusicTitle:TSound = null
 	Field forceNextMusicTitle:int = 0
 	Field fadeProcess:int = 0 '0 = nicht aktiv  1 = aktiv
 	Field fadeOutVolume:int = 1000
 	Field fadeInVolume:int = 0
-	
+
 	Field movingElements:TMap = null
 	Field receiver:TElementPosition
 	
@@ -41,10 +69,11 @@ Type TSoundManager
 		If EnableOpenALAudio() Then
 			SetAudioDriver("OpenAL")
 		Else
-			SetAudioDriver("FreeAudio")	
+			SetAudioDriver("MaxMod RtAudio")
+			'SetAudioDriver("FreeAudio")
 		End If
-		
-		
+
+
 		Local manager:TSoundManager = New TSoundManager
 		manager.musicChannel1 = AllocChannel()
 		manager.musicChannel2 = AllocChannel()
@@ -53,7 +82,7 @@ Type TSoundManager
 		manager.sfxChannel_Elevator = AllocChannel()
 		manager.defaultSfxOptions = TSfxOptions.Create()
 		manager.movingElements = CreateMap()
-		Return manager 
+		Return manager
 	End Function
 	
 	Method SetDefaultReceiver(_receiver:TElementPosition)
@@ -62,11 +91,24 @@ Type TSoundManager
 	End Method
 
 	Method LoadSoundFiles()
-		'mv: Alternativ können die Files auch in einem seperaten Thread geladen werden oder erst bei Bedarf... dann ruckelt's leider aber etwas. Kannst du (Ronny) entscheiden ;)		
+		'mv: Alternativ kÃ¶nnen die Files auch in einem seperaten Thread geladen werden oder erst bei Bedarf... dann ruckelt's leider aber etwas. Kannst du (Ronny) entscheiden ;)
 		local total:int = 8
-				
+
 		Self.soundFiles = CreateMap:TMap()
 		LoadProgress(1, total)
+		Self.soundFiles.insert( MUSIC_TITLE, TMusicStream.Create("res/music/title.ogg") )
+		LoadProgress(2, total)
+		Self.soundFiles.insert( MUSIC_MUSIC + "1", TMusicStream.Create("res/music/music1.ogg") )
+		LoadProgress(3, total)
+		Self.soundFiles.insert( MUSIC_MUSIC + "2", TMusicStream.Create("res/music/music2.ogg") )
+		LoadProgress(4, total)
+		Self.soundFiles.insert( MUSIC_MUSIC + "3", TMusicStream.Create("res/music/music3.ogg") )
+		LoadProgress(5, total)
+		Self.soundFiles.insert( MUSIC_MUSIC + "4", TMusicStream.Create("res/music/music4.ogg") )
+		LoadProgress(6, total)
+		Self.soundFiles.insert( MUSIC_MUSIC + "5", TMusicStream.Create("res/music/music5.ogg") )
+		print "loaded sound files"
+rem
 		MapInsert( Self.soundFiles, MUSIC_TITLE, LoadSound("res/music/title.ogg", SOUND_LOOP) )
 		LoadProgress(2, total)
 		MapInsert( Self.soundFiles, MUSIC_MUSIC + "1", LoadSound("res/music/music1.ogg", SOUND_HARDWARE) )
@@ -77,7 +119,8 @@ Type TSoundManager
 		LoadProgress(5, total)
 		MapInsert( Self.soundFiles, MUSIC_MUSIC + "4", LoadSound("res/music/music4.ogg", SOUND_HARDWARE) )
 		LoadProgress(6, total)
-		MapInsert( Self.soundFiles, MUSIC_MUSIC + "5", LoadSound("res/music/music5.ogg", SOUND_HARDWARE) )						
+		MapInsert( Self.soundFiles, MUSIC_MUSIC + "5", LoadSound("res/music/music5.ogg", SOUND_HARDWARE) )
+endrem
 		'LoadProgress(7, total)
 		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "6", LoadSound("res/music/music6.ogg") )
 		'LoadProgress(8, total)
@@ -87,16 +130,16 @@ Type TSoundManager
 		'LoadProgress(10, total)
 		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "9", LoadSound("res/music/music9.ogg") )
 
-		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "9", LoadSound("res/music/specialroom1.ogg") )		
+		'MapInsert( Self.soundFiles, MUSIC_MUSIC + "9", LoadSound("res/music/specialroom1.ogg") )
 		'Rnd(1, TRooms.RoomList.Count() - 1)
-		
+
 		LoadProgress(7, total)
 		MapInsert( Self.soundFiles, SFX_ELEVATOR_DING, LoadSound("res/sfx/elevator_ding.ogg", SOUND_HARDWARE) )
-		
+
 		LoadProgress(8, total)
 		MapInsert( Self.soundFiles, SFX_ELEVATOR_ENGINE, LoadSound("res/sfx/elevator_engine.ogg", SOUND_LOOP | SOUND_HARDWARE) )
 	End Method
-	
+
 	Method LoadProgress(currentCount:int, totalCount:int)
 		'EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "sound files").AddNumber("itemNumber", currentCount).AddNumber("maxItemNumber", totalCount) ) )
 	End Method
@@ -105,45 +148,47 @@ Type TSoundManager
 		For Local element:TMovingElementSFX = EachIn MapValues(movingElements)
 			element.AdjustSettings()
 		Next
-	
-		If musicOn Then			
-			'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
-			if (Self.activeMusicChannel.Playing()) then			
-				if (Self.forceNextMusicTitle and Self.nextMusicTitle <> null) Or Self.fadeProcess > 0 then
+
+		If musicOn Then
+			'Wenn der Musik-Channel nicht lÃ¤uft, dann muss nichts gemacht werden
+			if (Self.activeMusicChannel.Playing()) then
+				if (Self.forceNextMusicTitle and Self.nextMusicTitleStream <> null) Or Self.fadeProcess > 0 then
 					FadeOverToNextTitle()
 				endif
 			Else
-				PlayMusic(MUSIC_MUSIC)
+				self.PlayMusic(MUSIC_MUSIC)
 			Endif
 		EndIf
 	End Method
-	
-	Method FadeOverToNextTitle()		
+
+	Method FadeOverToNextTitle()
 		If (Self.fadeProcess = 0) Then
 			Self.fadeProcess = 1
-			Self.inactiveMusicChannel.SetVolume(0)			
-			PlaySound(Self.nextMusicTitle, Self.inactiveMusicChannel)
-			Self.nextMusicTitle = null
+			Self.inactiveMusicChannel.SetVolume(0)
+			'PlaySound(Self.nextMusicTitle, Self.inactiveMusicChannel)
+			Self.nextMusicTitleStream.Play(Self.inactiveMusicChannel, true)
+			Self.nextMusicTitleStream = null
+
 			Self.forceNextMusicTitle = false
 			Self.fadeOutVolume = 1000
 			Self.fadeInVolume = 0
 		Endif
-		
+
 		If (Self.fadeProcess = 1) Then 'Das fade out des aktiven Channels
 			Self.fadeOutVolume = Self.fadeOutVolume - 15
 			Self.activeMusicChannel.SetVolume(float(Self.fadeOutVolume) / 1000 * Self.musicVolume)
-			
+
 			Self.fadeInVolume = Self.fadeInVolume + 15
 			Self.inactiveMusicChannel.SetVolume(float(Self.fadeInVolume) / 1000 * Self.nextMusicTitleVolume)
 		Endif
-				
+
 		if Self.fadeOutVolume <= 0 And Self.fadeInVolume >= 1000 then
 			Self.fadeProcess = 0 'Prozess beendet
 			Self.musicVolume = Self.nextMusicTitleVolume
 			SwitchMusicChannels()
-		endif									
+		endif
 	End Method
-	
+
 	Method SwitchMusicChannels()
 		Local channelTemp:TChannel = Self.activeMusicChannel
 		Self.activeMusicChannel = Self.inactiveMusicChannel
@@ -152,17 +197,21 @@ Type TSoundManager
 	End Method
 
 	Method PlayMusic(music:string)
-		Self.nextMusicTitle = GetMusic(music)
+		Self.nextMusicTitleStream = GetMusicStream(music)
 		Self.forceNextMusicTitle = true
 		Self.nextMusicTitleVolume = GetVolume(music)
 
-		'Wenn der Musik-Channel noch nicht läuft, dann jetzt starten
+		'Wenn der Musik-Channel noch nicht lÃ¤uft, dann jetzt starten
 		if (not Self.activeMusicChannel.Playing()) then
 			Self.musicVolume = Self.nextMusicTitleVolume
 			Self.activeMusicChannel.SetVolume(Self.musicVolume)
-			PlaySound(Self.nextMusicTitle, Self.activeMusicChannel)
+
+			'true = loop the music
+			self.nextMusicTitleStream.Play(self.activeMusicChannel, true)
+			'PlaySound(Self.nextMusicTitle, Self.activeMusicChannel)
+
 			Self.forceNextMusicTitle = false
-		endif		
+		endif
 	End Method
 
 	Method PlaySFX(sfx:string, element:TElementPosition, options:TSfxOptions = null)
@@ -176,8 +225,8 @@ Type TSoundManager
 		elementfx.Play()
 		
 		If element.IsMovable()
-			If MapContains(movingElements, elementfx.GetID()) Then MapRemove (movingElements, elementfx.GetID()) 'Alte Einträge entfernen		
-			MapInsert(movingElements, elementfx.GetID(), elementfx) 'Neuer Eintrag hinzufügen
+			If MapContains(movingElements, elementfx.GetID()) Then MapRemove (movingElements, elementfx.GetID()) 'Alte EintrÃ¤ge entfernen		
+			MapInsert(movingElements, elementfx.GetID(), elementfx) 'Neuer Eintrag hinzufÃ¼gen
 			
 			local count:int = 0
 			For Local element:TMovingElementSFX = EachIn MapValues(movingElements)
@@ -185,18 +234,37 @@ Type TSoundManager
 			Next		
 		Endif
 	End Method
-	
-	Method GetMusic:TSound (music:string)
-		Local result:TSound
-		
+
+	Method GetMusicStream:TMusicStream(music:string)
+		Local result:TMusicStream
+
 		Select music
 			Case MUSIC_MUSIC
-				Local nextTitleNumber:int = int(Rnd(1,5))				
+				Local nextTitleNumber:int = int(Rnd(1,5))
 				while(nextTitleNumber = Self.lastTitleNumber)
 					nextTitleNumber = int(Rnd(1,5))
-				wend											
+				wend
+				result = TMusicStream(MapValueForKey(Self.soundFiles, MUSIC_MUSIC + nextTitleNumber))
+				Self.lastTitleNumber = nextTitleNumber
+				print "Play music: " + MUSIC_MUSIC + " (" + nextTitleNumber + ")"
+			Default
+				result = TMusicStream(MapValueForKey(Self.soundFiles, music))
+				print "Play music: " + MUSIC_MUSIC
+		EndSelect
+		Return result
+	End Method
+
+	Method GetMusic:TSound (music:string)
+		Local result:TSound
+
+		Select music
+			Case MUSIC_MUSIC
+				Local nextTitleNumber:int = int(Rnd(1,5))
+				while(nextTitleNumber = Self.lastTitleNumber)
+					nextTitleNumber = int(Rnd(1,5))
+				wend
 				result = TSound(MapValueForKey(Self.soundFiles, MUSIC_MUSIC + nextTitleNumber))
-				Self.lastTitleNumber = nextTitleNumber 
+				Self.lastTitleNumber = nextTitleNumber
 				print "Play music: " + MUSIC_MUSIC + " (" + nextTitleNumber + ")"
 			Default
 				result = TSound(MapValueForKey(Self.soundFiles, music))
@@ -204,26 +272,26 @@ Type TSoundManager
 		EndSelect
 		Return result
 	End Method
-	
+
 	Method GetSFX:TSound (sfx:string)
 		Return TSound(MapValueForKey(Self.soundFiles, sfx))
-	End Method	
-	
+	End Method
+
 	Method GetVolume:float(music:string)
 		Select music
 			Case MUSIC_TITLE
 				return 1
 			Default
 				return 0.2
-		EndSelect	
+		EndSelect
 	End Method
-	
+
 	Method GetSFXChannel:TChannel(sfx:string)
 		Select sfx
 			Case SFX_ELEVATOR_DING
 				Return Self.sfxChannel_Elevator
 			Case SFX_ELEVATOR_ENGINE
-				Return Self.sfxChannel_Elevator				
+				Return Self.sfxChannel_Elevator
 		EndSelect
 	End Method
 End Type
@@ -263,28 +331,28 @@ Type TMovingElementSFX
 		local elementPoint:TPoint = element.GetCenter()
 		local distance:int = CalculateDistanceOfPoints(playerPoint, elementPoint)
 		
-		'Lautstärke ist Abgängig von der Entfernung zur Geräuschquelle
+		'LautstÃ¤rke ist AbgÃ¤ngig von der Entfernung zur GerÃ¤uschquelle
 		local distanceVolume:float = options.GetVolume(distance)
-		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautstärke der SFX reduzieren soll		
+		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die LautstÃ¤rke der SFX reduzieren soll		
 		
-		'Liegt die Geräuschequelle links, muss der Pegel in Richtung linker Lautsprecher gehen und umgekehrt
+		'Liegt die GerÃ¤uschequelle links, muss der Pegel in Richtung linker Lautsprecher gehen und umgekehrt
 		If (elementPoint.z = 0) Then
-			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite. 
-			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
+			'170 Grenzwert = Erst aber dem Abstand von 170 (gefÃ¼hlt/geschÃ¤tzt) hÃ¶rt man nur noch von einer Seite. 
+			'Ergebnis sollte ungefÃ¤hr zwischen -1 (links) und +1 (rechts) liegen.
 			channel.SetPan(float(elementPoint.x - playerPoint.x) / 170)			
 			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
 		Else						
 			local xAxis:float = CalculateIntDistance(elementPoint.x, playerPoint.x)
 			local zAxis:float = CalculateIntDistance(elementPoint.z, playerPoint.z)				
-			local angle:float = ATan(zAxis / xAxis) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete			
+			local angle:float = ATan(zAxis / xAxis) 'Winkelfunktion: Welchen Winkel hat der HÃ¶rer zur Soundquelle. 90Â° = davor/dahiner    0Â° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete			
 
 			local rawPan:float = ((90 - angle) / 90)
-			'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist (im Real passiert dies durch zurückgeworfenen Schall).
+			'Den r/l Effekt sollte noch etwas abgeschwÃ¤cht werden, wenn die Quelle nah ist (im Real passiert dies durch zurÃ¼ckgeworfenen Schall).
 			local panCorrection:float = max(0, min(1, xAxis / 170))
 			local correctPan:float = rawPan * panCorrection 
 
 			
-			'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
+			'0Â° => Aus einer Richtung  /  90Â° => aus beiden Richtungen
 			If (elementPoint.x < playerPoint.x) Then 'von links
 				channel.SetPan(-correctPan)
 				'print "Pan:" + (-correctPan) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")    # " + rawPan + " / " + panCorrection
@@ -302,9 +370,9 @@ Type TMovingElementSFX
 				channel.SetDepth(angle / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
 				'print "Depth:" + (angle / 90) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")"
 			Endif
-			'TODO: Offene Frage: Hängt die Depth auch von der Y-Achse ab?
-			'Beispiel: Etwas ist 20 m vom Hörer weg (auf der Z-Achse) im Hintergrund.
-			'Verändert sich die Depth auch, wenn sich die Geräuschquelle (weiterhin 20 Meter auf der z-Achse) nach oben oder unten bewegt (also zusätzlich zur Lautstärke)? Ich glaube nicht.
+			'TODO: Offene Frage: HÃ¤ngt die Depth auch von der Y-Achse ab?
+			'Beispiel: Etwas ist 20 m vom HÃ¶rer weg (auf der Z-Achse) im Hintergrund.
+			'VerÃ¤ndert sich die Depth auch, wenn sich die GerÃ¤uschquelle (weiterhin 20 Meter auf der z-Achse) nach oben oder unten bewegt (also zusÃ¤tzlich zur LautstÃ¤rke)? Ich glaube nicht.
 		Endif					
 	End Method
 End Type
@@ -359,7 +427,7 @@ End Type
 
 
 'Das ElementPositionzeug kann auch eventuell wo anders hin
-Type TElementPosition 'Basisklasse für verschiedene Wrapper
+Type TElementPosition 'Basisklasse fÃ¼r verschiedene Wrapper
 	Method GetID:string() abstract
 '	Method GetTopLeft:TPoint() abstract
 	Method GetCenter:TPoint() abstract
@@ -371,7 +439,7 @@ End Type
 Function CalculateDistanceOfPoints:int(point1:TPoint, point2:TPoint)
 	local distanceX:int = CalculateIntDistance(point1.x, point2.x)
 	local distanceY:int = CalculateIntDistance(point1.y, point2.y)	
-	Return Sqr(distanceX * distanceX + distanceY * distanceY) 'a² + b² = c²	
+	Return Sqr(distanceX * distanceX + distanceY * distanceY) 'aÂ² + bÂ² = cÂ²	
 End function
 
 Function CalculateIntDistance:int(value1:int, value2:int)

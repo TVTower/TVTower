@@ -19,7 +19,7 @@ REM
 
 * Räume als besetzt markieren (damit KI keine Filme kauft waehrend ich beim Haendler steh :D)
 * XML-Dateien: Animationskonfiguration
-	- TAsset -> global "currentDeltaTime"
+		- TAsset -> global "currentDeltaTime"
 	- TAsset -> global "updateList" haelt Assets die in einer Update-Runde aktualisiert werden muessen
 	- TAsset -> Sprites mit Animationskonfiguration setzen sich in diese "updateList"
 	- TAsset -> TAsset.UpdateAll() ruft die Updates auf (currentDeltaTime -> animationen etc)

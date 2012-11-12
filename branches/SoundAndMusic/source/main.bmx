@@ -1721,7 +1721,7 @@ Type TElevator
 	Method GetDoorCenter:Int()
 		Return parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
 	End Method
-	
+
 	Method GetElevatorCenterPos:TPoint()
 		local posX:int = parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
 		local posY:int = Pos.y + Self.spriteDoor.sprite.frameh/2 + 56 'Hier kein parent.pos.y hinzuaddieren sonst kommt blödsinn raus... keine Ahnung warum. Die Differenz dürfte laut Untersuchungen ungefähr 56 betragen (geschätzt)
@@ -3643,3 +3643,4 @@ Function EndHook()
 End Function
 
 
+
