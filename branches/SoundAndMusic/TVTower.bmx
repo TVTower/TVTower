@@ -9,6 +9,7 @@ SuperStrict
 '
 
 Framework brl.glmax2d
+Import pub.freeaudio 'fuer rtaudio
 Import "source/main.bmx"
 
 Incbin "source/version.txt"

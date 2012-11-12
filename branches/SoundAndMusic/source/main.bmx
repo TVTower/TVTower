@@ -1776,7 +1776,7 @@ Type TElevator
 			open = 3 'closing
 			If spriteDoor.getCurrentAnimation().isFinished()
 				spriteDoor.setCurrentAnimation("closed")
-				open = 0 'closed		
+				open = 0 'closed
 				SoundManager.PlaySFX(SFX_ELEVATOR_ENGINE, TElevatorElementPosition.Create(Self, true), TSfxOptions.GetMoveableElevatorOptions())
 			EndIf
 
@@ -1860,51 +1860,51 @@ Type TElevator
 
 End Type
 
-Type TPlayerElementPosition Extends TElementPosition	
+Type TPlayerElementPosition Extends TElementPosition
 	Function Create:TPlayerElementPosition ()
-		return new TPlayerElementPosition 
+		return new TPlayerElementPosition
 	End Function
-	
+
 	Method GetID:string()
 		Return "Player"
 	End Method
-	
+
 	Method GetCenter:TPoint()
 		Return Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
 	End Method
-	
+
 	Method GetIsVisible:int()
 		Return true
 	End Method
-	
+
 	Method IsMovable:int()
 		Return false 'Bedeutet das es nicht überwacht wird. Speziell beim Player
-	End Method	
+	End Method
 End Type
 
 Type TElevatorElementPosition Extends TElementPosition
 	Field Elevator:TElevator = null
 	Field Movable:int = true
-				
+
 	Function Create:TElevatorElementPosition(_elevator:TElevator, _movable:int)
 		local result:TElevatorElementPosition = new TElevatorElementPosition
 		result.Elevator = _elevator
 		result.Movable = ­_movable
 		return result
 	End Function
-	
+
 	Method GetID:string()
 		Return "Elevator"
 	End Method
-	
+
 	Method GetCenter:TPoint()
 		Return Elevator.GetElevatorCenterPos()
 	End Method
-	
+
 	Method GetIsVisible:int()
 		Return (Players[Game.playerID].Figure.inRoom = null)
 	End Method
-	
+
 	Method IsMovable:int()
 		Return ­Movable
 	End Method

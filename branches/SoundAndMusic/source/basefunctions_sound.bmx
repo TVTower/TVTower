@@ -1,13 +1,27 @@
 SuperStrict
 Import brl.Map
 Import brl.OpenALAudio
-'Import brl.FreeAudioAudio
-'Import brl.WAVLoader
+Import brl.FreeAudioAudio
+Import brl.WAVLoader
 Import brl.OGGLoader
 Import "basefunctions.bmx"
 
+
 Import maxmod2.ogg
 Import maxmod2.rtaudio
+?Linux
+TMaxModRtAudioDriver.Init("LINUX_PULSE")
+?not Linux
+TMaxModRtAudioDriver.Init()
+?
+if not SetAudioDriver("MaxMod RtAudio") then throw "Audio Failed"
+'for local str:string = eachin TMaxModRtAudioDriver.Active.APIs.Values()
+'	print "maxmod api:"+str
+'Next
+
+
+
+
 Const MUSIC_TITLE:String					= "MUSIC_TITLE"
 Const MUSIC_MUSIC:String					= "MUSIC_MUSIC"
 
@@ -64,15 +78,19 @@ Type TSoundManager
 
 	Field movingElements:TMap = null
 	Field receiver:TElementPosition
-	
+
 	Function Create:TSoundManager()
-		If EnableOpenALAudio() Then
+rem
+		If EnableOpenALAudio()
+			print "AudioDriver: OpenAL"
 			SetAudioDriver("OpenAL")
 		Else
+'			print "AudioDriver: MaxMod RtAudio"
 			SetAudioDriver("MaxMod RtAudio")
 			'SetAudioDriver("FreeAudio")
+'		SetAudioDriver("OpenAL")
 		End If
-
+endrem
 
 		Local manager:TSoundManager = New TSoundManager
 		manager.musicChannel1 = AllocChannel()
@@ -84,7 +102,7 @@ Type TSoundManager
 		manager.movingElements = CreateMap()
 		Return manager
 	End Function
-	
+
 	Method SetDefaultReceiver(_receiver:TElementPosition)
 		print "SetDefaultReceiver"
 		receiver = _receiver
@@ -215,23 +233,23 @@ endrem
 	End Method
 
 	Method PlaySFX(sfx:string, element:TElementPosition, options:TSfxOptions = null)
-	
-		If (options = null) Then options = Self.defaultSfxOptions	
+
+		If (options = null) Then options = Self.defaultSfxOptions
 		local currSfx:TSound = Self.GetSFX(sfx)
-		local currChannel:TChannel = Self.GetSFXChannel(sfx)	
-			
+		local currChannel:TChannel = Self.GetSFXChannel(sfx)
+
 		local elementfx:TMovingElementSFX = TMovingElementSFX.Create(self, sfx, currSfx, currChannel, receiver, element, options)
-		
+
 		elementfx.Play()
-		
+
 		If element.IsMovable()
-			If MapContains(movingElements, elementfx.GetID()) Then MapRemove (movingElements, elementfx.GetID()) 'Alte Einträge entfernen		
+			If MapContains(movingElements, elementfx.GetID()) Then MapRemove (movingElements, elementfx.GetID()) 'Alte Einträge entfernen
 			MapInsert(movingElements, elementfx.GetID(), elementfx) 'Neuer Eintrag hinzufügen
-			
+
 			local count:int = 0
 			For Local element:TMovingElementSFX = EachIn MapValues(movingElements)
 				count = count + 1
-			Next		
+			Next
 		Endif
 	End Method
 
@@ -303,8 +321,8 @@ Type TMovingElementSFX
 	Field channel:TChannel = null
 	Field element:TElementPosition = null
 	Field options:TSfxOptions = null
-	Field receiver:TElementPosition = null	
-	
+	Field receiver:TElementPosition = null
+
 	Function Create:TMovingElementSFX(_soundManager:TSoundManager, _sfxName:string, _sfx:TSound, _channel:TChannel, _receiver:TElementPosition, _element:TElementPosition, _options:TSfxOptions )
 		local result:TMovingElementSFX= new TMovingElementSFX
 		result.soundManager = _soundManager
@@ -316,42 +334,42 @@ Type TMovingElementSFX
 		result.receiver = _receiver
 		Return result
 	End Function
-	
+
 	Method GetID:string()
 		Return element.GetID() + "_" + sfxName
 	End Method
-	
+
 	Method Play()
 		AdjustSettings()
-		PlaySound(sfx, channel)		
+		PlaySound(sfx, channel)
 	End Method
-	
+
 	Method AdjustSettings()
 		local playerPoint:TPoint = receiver.GetCenter()
 		local elementPoint:TPoint = element.GetCenter()
 		local distance:int = CalculateDistanceOfPoints(playerPoint, elementPoint)
-		
+
 		'Lautstärke ist Abgängig von der Entfernung zur Geräuschquelle
 		local distanceVolume:float = options.GetVolume(distance)
-		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautstärke der SFX reduzieren soll		
-		
+		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautstärke der SFX reduzieren soll
+
 		'Liegt die Geräuschequelle links, muss der Pegel in Richtung linker Lautsprecher gehen und umgekehrt
 		If (elementPoint.z = 0) Then
-			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite. 
+			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite.
 			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
-			channel.SetPan(float(elementPoint.x - playerPoint.x) / 170)			
+			channel.SetPan(float(elementPoint.x - playerPoint.x) / 170)
 			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
-		Else						
+		Else
 			local xAxis:float = CalculateIntDistance(elementPoint.x, playerPoint.x)
-			local zAxis:float = CalculateIntDistance(elementPoint.z, playerPoint.z)				
-			local angle:float = ATan(zAxis / xAxis) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete			
+			local zAxis:float = CalculateIntDistance(elementPoint.z, playerPoint.z)
+			local angle:float = ATan(zAxis / xAxis) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
 
 			local rawPan:float = ((90 - angle) / 90)
 			'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist (im Real passiert dies durch zurückgeworfenen Schall).
 			local panCorrection:float = max(0, min(1, xAxis / 170))
-			local correctPan:float = rawPan * panCorrection 
+			local correctPan:float = rawPan * panCorrection
 
-			
+
 			'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
 			If (elementPoint.x < playerPoint.x) Then 'von links
 				channel.SetPan(-correctPan)
@@ -362,7 +380,7 @@ Type TMovingElementSFX
 			Else
 				channel.SetPan(0)
 			Endif
-			
+
 			If elementPoint.z < 0 Then 'Hintergrund
 				channel.SetDepth(-(angle / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
 				'print "Depth:" + (-(angle / 90)) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")"
@@ -373,51 +391,51 @@ Type TMovingElementSFX
 			'TODO: Offene Frage: Hängt die Depth auch von der Y-Achse ab?
 			'Beispiel: Etwas ist 20 m vom Hörer weg (auf der Z-Achse) im Hintergrund.
 			'Verändert sich die Depth auch, wenn sich die Geräuschquelle (weiterhin 20 Meter auf der z-Achse) nach oben oder unten bewegt (also zusätzlich zur Lautstärke)? Ich glaube nicht.
-		Endif					
+		Endif
 	End Method
 End Type
 
 Type TSfxOptions
 	Field nearbyDistanceRange:int = -1
 	Field maxDistanceRange:int = 1000
-	
+
 	Field nearbyRangeVolume:float = 1
 	Field midRangeVolume:float = 0.8
 	Field minVolume:float = 0
-	
+
 	Function Create:TSfxOptions()
-		Return new TSfxOptions 
-	End Function	
-	
+		Return new TSfxOptions
+	End Function
+
 	Method GetVolume:float(currentDistance:int)
 		local result:float = midRangeVolume
-		If (currentDistance <> -1) Then			
+		If (currentDistance <> -1) Then
 			If currentDistance > Self.maxDistanceRange Then 'zu weit weg
 				result = Self.minVolume
 			Elseif currentDistance < Self.nearbyDistanceRange Then 'sehr nah dran
 				result = Self.nearbyRangeVolume
 			Else 'irgendwo dazwischen
 				result = midRangeVolume * (float(Self.maxDistanceRange) - float(currentDistance)) / float(Self.maxDistanceRange)
-			Endif				
-		Endif	
-		
+			Endif
+		Endif
+
 		Return result
 	End Method
-	
+
 	Function GetElevatorOptions:TSfxOptions()
 		local result:TSfxOptions = new TSfxOptions
 		result.nearbyDistanceRange = 30
-		result.maxDistanceRange = 500			
+		result.maxDistanceRange = 500
 		result.nearbyRangeVolume = 1
 		result.midRangeVolume = 0.5
 		result.minVolume = 0.05
 		Return result
 	End Function
-	
+
 	Function GetMoveableElevatorOptions:TSfxOptions()
 		local result:TSfxOptions = new TSfxOptions
 		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500			
+		result.maxDistanceRange = 500
 		result.nearbyRangeVolume = 0.5
 		result.midRangeVolume = 0.5
 		result.minVolume = 0.05
@@ -431,15 +449,15 @@ Type TElementPosition 'Basisklasse für verschiedene Wrapper
 	Method GetID:string() abstract
 '	Method GetTopLeft:TPoint() abstract
 	Method GetCenter:TPoint() abstract
-	Method GetIsVisible:int() abstract		
+	Method GetIsVisible:int() abstract
 	Method IsMovable:int() abstract
 End Type
 
 
 Function CalculateDistanceOfPoints:int(point1:TPoint, point2:TPoint)
 	local distanceX:int = CalculateIntDistance(point1.x, point2.x)
-	local distanceY:int = CalculateIntDistance(point1.y, point2.y)	
-	Return Sqr(distanceX * distanceX + distanceY * distanceY) 'a² + b² = c²	
+	local distanceY:int = CalculateIntDistance(point1.y, point2.y)
+	Return Sqr(distanceX * distanceX + distanceY * distanceY) 'a² + b² = c²
 End function
 
 Function CalculateIntDistance:int(value1:int, value2:int)
