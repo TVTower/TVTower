@@ -1,24 +1,28 @@
 SuperStrict
 Import brl.Map
-Import brl.OpenALAudio
-Import brl.FreeAudioAudio
+'Import brl.OpenALAudio
+'Import brl.FreeAudioAudio
 Import brl.WAVLoader
 Import brl.OGGLoader
 Import "basefunctions.bmx"
 
-
 Import maxmod2.ogg
 Import maxmod2.rtaudio
+Import MaxMod2.WAV
+
 ?Linux
+'linux needs a different maxmod-implementation
 TMaxModRtAudioDriver.Init("LINUX_PULSE")
-?not Linux
-TMaxModRtAudioDriver.Init()
-?
-if not SetAudioDriver("MaxMod RtAudio") then throw "Audio Failed"
-'for local str:string = eachin TMaxModRtAudioDriver.Active.APIs.Values()
-'	print "maxmod api:"+str
+If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
+'only possible for linux
+'For Local str:String = EachIn TMaxModRtAudioDriver.Active.APIs.Values()
+'	Print "maxmod api:"+str
 'Next
 
+?Not Linux
+'init has to be done for all
+If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
+?
 
 
 

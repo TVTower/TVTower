@@ -1,36 +1,45 @@
 Import maxmod2.ogg
 Import maxmod2.rtaudio
-?Linux
-TMaxModRtAudioDriver.Init("LINUX_PULSE")
-?not Linux
-TMaxModRtAudioDriver.Init()
-?
+Import MaxMod2.WAV
+Import brl.max2d
 
-if not SetAudioDriver("MaxMod RtAudio") then throw "Audio Failed"
-'for local str:string = eachin TMaxModRtAudioDriver.Active.APIs.Values()
-'	print "maxmod api:"+str
+?Linux
+'linux needs a different maxmod-implementation
+TMaxModRtAudioDriver.Init("LINUX_PULSE")
+If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
+'only possible for linux
+'For Local str:String = EachIn TMaxModRtAudioDriver.Active.APIs.Values()
+'	Print "maxmod api:"+str
 'Next
 
-Graphics 640,480
+?Not Linux
+'init has to be done for all
+If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
+?
+'MaxModVerbose True
 
+SetGraphicsDriver GLMax2DDriver()
+Graphics 640,480
+Print "graphics ...done"
 
 'type to store music files (ogg) in it
 'data is stored in bank
 'Play-Method is adopted from maxmod2.bmx-Function "play"
 Type TMusicStream
-	field bank:TBank
-	field url:object
+	Field bank:TBank
+	Field url:Object
 
-	Function Create:TMusicStream(url:object)
-		local obj:TMusicStream = new TMusicStream
+	Function Create:TMusicStream(url:Object)
+		Local obj:TMusicStream = New TMusicStream
 		obj.bank = LoadBank(url)
 		obj.url = url
-		return obj
+		If obj Then Print "loaded object" Else Print "error loading obj" 
+		Return obj
 	End Function
 
-	Method Play:TChannel(sendToChannel:Tchannel var, loop:int=false )
-		sendToChannel = CueMusic(self.bank, loop)
-		If Not sendToChannel then Return Null
+	Method Play:TChannel(sendToChannel:TChannel Var, loop:Int=False )
+		sendToChannel = CueMusic(Self.bank, loop)
+		If Not sendToChannel Then Return Null
 		ResumeChannel(sendToChannel)
 		Return sendToChannel
 	End Method
@@ -44,16 +53,16 @@ Next
 
 Local chans:TChannel[4],nchan
 
-local music:TMusicStream = TMusicStream.Create("res/music/music1.ogg")
+Local music:TMusicStream = TMusicStream.Create("res/music/music1.ogg")
 While Not KeyHit( KEY_ESCAPE )
 
 	If KeyHit( KEY_SPACE )
-		print Millisecs()+ " playing"
+		Print MilliSecs()+ " playing"
 		nchan=(nchan+1) & 3
 		If chans[nchan]
 			StopChannel chans[nchan]
-			print "stopping "+nchan
-		endif
+			Print "stopping "+nchan
+		EndIf
 		chans[nchan]=AllocChannel()
 		music.Play(chans[nchan])
 '		PlaySound sound,chans[nchan]
