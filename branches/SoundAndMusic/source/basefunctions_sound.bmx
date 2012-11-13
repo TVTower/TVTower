@@ -6,13 +6,19 @@ Import brl.WAVLoader
 Import brl.OGGLoader
 Import "basefunctions.bmx"
 
+
 Import maxmod2.ogg
 Import maxmod2.rtaudio
 Import MaxMod2.WAV
 
 ?Linux
 'linux needs a different maxmod-implementation
+
+'maybe move it to maxmod - or leave it out to save dependencies if not used
+'import pulse for pulseaudio support
+Import "-lpulse-simple"
 TMaxModRtAudioDriver.Init("LINUX_PULSE")
+
 If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
 'only possible for linux
 'For Local str:String = EachIn TMaxModRtAudioDriver.Active.APIs.Values()

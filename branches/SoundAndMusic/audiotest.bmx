@@ -5,7 +5,12 @@ Import brl.max2d
 
 ?Linux
 'linux needs a different maxmod-implementation
+
+'maybe move it to maxmod - or leave it out to save dependencies if not used
+'import pulse for pulseaudio support
+Import "-lpulse-simple"
 TMaxModRtAudioDriver.Init("LINUX_PULSE")
+
 If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
 'only possible for linux
 'For Local str:String = EachIn TMaxModRtAudioDriver.Active.APIs.Values()
@@ -33,7 +38,7 @@ Type TMusicStream
 		Local obj:TMusicStream = New TMusicStream
 		obj.bank = LoadBank(url)
 		obj.url = url
-		If obj Then Print "loaded object" Else Print "error loading obj" 
+		If obj Then Print "loaded object" Else Print "error loading obj"
 		Return obj
 	End Function
 
