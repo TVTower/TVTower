@@ -130,6 +130,12 @@ endrem
 		if self.ControlledByID = 0 then return true
 		Return False
 	End Method
+	
+	Method IsActivePlayer:Int()
+		If id = 1 Then Print "IsActivePlayer: " + name + "    -----------------------------------------------------------------"
+		If id = 1 Then Return true 'TODO: Man müsste hier noch prüfen, ob andere Spieler gesteuert werden außer id = 1
+		Return false
+	End Method
 
 	Method FigureMovement(deltaTime:float=1.0)
 		local targetX:int = floor(self.target.x)
