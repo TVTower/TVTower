@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<!-- other syntax ... simpler :D -->
+		<image name="gfx_datasheets_movie"		url="grafiken/datenblaetter/tv_filmblatt.png" />
+		<image name="gfx_datasheets_series"		url="grafiken/datenblaetter/tv_serienblatt.png" />
+		<image name="gfx_datasheets_contract"	url="grafiken/datenblaetter/tv_werbeblatt.png" />
+		<image name="gfx_datasheets_bar"		url="grafiken/datenblaetter/tv_balken.png" />
+
+		<spritepack name="gfx_room_filmverleiher_pack">
+ 			<url>grafiken/filmverleiher/raum_filmverleiher_extras.png</url>
+			<children>
+				<child name="gfx_auctionmovie" 						x="0"	y="310"	w="256"	h="55"	/>
+				<child name="gfx_gimmick_rooms_movieagency" 		x="140"	y="0"	w="116"	h="240"	/>
+				<child name="gfx_hint_rooms_movieagency"	 		x="0" 	y="0"	w="140"	h="240"	/>
+				<child name="gfx_movie0"					 		x="0"	y="240"	w="15"	h="70"	r="100"	g="30"	b="130" />
+				<child name="gfx_movie1"					 		x="15"	y="240"	w="15"	h="70"	r="120"	g="100"	b="20" />
+				<child name="gfx_movie2"					 		x="30"	y="240"	w="15"	h="70"	r="150"	g="50"	b="100" />
+				<child name="gfx_movie3"					 		x="45"	y="240"	w="15"	h="70"	r="100"	g="150"	b="200" />
+				<child name="gfx_movie4"					 		x="60"	y="240"	w="15"	h="70"	r="130"	g="200"	b="80" />
+				<child name="gfx_movie5"					 		x="75"	y="240"	w="15"	h="70"	r="210"	g="25"	b="220" />
+				<child name="gfx_movie6"					 		x="90"	y="240"	w="15"	h="70"	r="180"	g="180"	b="20" />
+				<child name="gfx_movie7"					 		x="105"	y="240"	w="15"	h="70"	r="130"	g="50"	b="100" />
+				<child name="gfx_movie8"					 		x="120"	y="240"	w="15"	h="70"	r="230"	g="120"	b="80" />
+				<child name="gfx_movie9"					 		x="135"	y="240"	w="15"	h="70"	r="230"	g="220"	b="40" />
+			</children>
+		</spritepack>
+
+		<spritepack name="gfx_suitcase_pack">
+ 			<url>grafiken/koffer.png</url>
+			<children>
+				<child name="gfx_suitcase" 		x="0" y="0"		w="220"	h="120"	/>
+				<child name="gfx_suitcase_glow"	x="0" y="120"	w="220"	h="120"	/>
+			</children>
+		</spritepack>
+		<resource name="gfx_news_pp">
+			<type>SpritePack</type>
+ 			<url>grafiken/news/newsplanung_button.png</url>
+			<children>
+				<child name="gfx_news_pp_btn_up" 				x="0"	y="0"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_up_clicked" 		x="47"	y="0"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_up_disabled" 		x="94"	y="0"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_down" 				x="0"	y="32"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_down_clicked" 		x="47"	y="32"	w="47"	h="32"	/>
+				<child name="gfx_news_pp_btn_down_disabled"		x="94"	y="32"	w="47"	h="32"	/>
+			</children>
+		</resource>
+		<resource name="gfx_news_btn_pack">
+			<type>SpritePack</type>
+ 			<url>grafiken/news/button.png</url>
+			<children>
+				<child name="gfx_news_btn0" 			x="0"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn1" 			x="41"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn2" 			x="82"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn3" 			x="123"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn4" 			x="164"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn0_clicked"		x="0"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn1_clicked"		x="41"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn2_clicked"		x="82"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn3_clicked"		x="123"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn4_clicked"		x="164"	y="42"	w="41"	h="42"	/>
+			</children>
+		</resource>
+		<resource name="stationmap_antenna">
+			<type>image</type>
+ 			<url>grafiken/senderkarte/antenne3.png</url>
+			<scripts>
+				<script	do="ColorizeCopy"	dest="stationmap_antenna0"	r="255"	g="255"	b="255" />
+				<script	do="ColorizeCopy"	dest="stationmap_antenna1"	r="100"	g="20"	b="20" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna2"	r="20"	g="100"	b="20" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna3"	r="50"	g="50"	b="100" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna4"	r="100"	g="100"	b="0" />
+			</scripts>
+		</resource>
+		<resource name="gfx_news_sheet0">
+			<type>image</type>
+ 			<url>grafiken/news/newsplanung_news.png</url>
+			<scripts>
+				<script	do="ColorizeCopy"	dest="gfx_news_sheet1"	r="205"	g="170"	b="50" />
+				<script	do="ColorizeCopy"	dest="gfx_news_sheet2"	r="50"	g="140"	b="205" />
+				<script do="ColorizeCopy"	dest="gfx_news_sheet3"	r="220"	g="30"	b="30" />
+				<script do="ColorizeCopy"	dest="gfx_news_sheet4"	r="170"	g="30"	b="220" />
+				<script do="ColorizeCopy"	dest="gfx_news_sheet5"	r="60"	g="160"	b="60" />
+			</scripts>
+		</resource>
+		<image name="gfx_room_betty_picture1"			url="grafiken/betty/bild1.png" />
+		<image name="gfx_errorbox"						url="grafiken/errorbox.png" />
+		<image name="gfx_tooltip_header"				url="grafiken/gui/tooltip.png" />
+		<image name="gfx_tex_smoke"						url="grafiken/chef/tex_smoke.png" />
+		<image name="gfx_elevator_sign_bg"				url="grafiken/hinweistafel/gfx_tafel_halterung.png" />
+		<image name="gfx_elevator_sign_base"			url="grafiken/hinweistafel/gfx_tafel_weiss.png" />
+		<image name="gfx_elevator_sign_dragged_base"	url="grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
+
+		<resource name="gfx_contracts_pack">
+			<type>SpritePack</type>
+ 			<url>grafiken/werbeagentur/werbung_vertraege.png</url>
+			<children>
+				<child name="gfx_contracts_base"			x="0"	y="60"	w="21"	h="68"	id="0" />
+				<child name="gfx_contracts_base_dragged"	x="0"	y="0"	w="21"	h="60"	id="1" />
+				<child name="gfx_contracts_0"				x="0"	y="60"	w="21"	h="68"	id="0" />
+				<child name="gfx_contracts_0_dragged"		x="0"	y="0"	w="21"	h="60"	id="1" />
+			</children>
+			<scripts>
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_1"		x="21"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_2"		x="42"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_3"		x="63"		r="100"		g="100"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_4"		x="84"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_5"		x="105"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_6"		x="126"		r="150"		g="150"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_7"		x="147"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_8"		x="168"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_9"		x="189"		r="90"		g="90"		b="150" />
+
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_1_dragged"	x="21"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_2_dragged"	x="42"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_3_dragged"	x="63"		r="100"		g="100"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_4_dragged"	x="84"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_5_dragged"	x="105"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_6_dragged"	x="126"		r="150"		g="150"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_7_dragged"	x="147"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_8_dragged"	x="168"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_9_dragged"	x="189"		r="90"		g="90"		b="150" />
+			</scripts>
+		</resource>
+	</resources>
+</tvt>

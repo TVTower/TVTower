@@ -1,0 +1,9 @@
+Filmverleiher:
+--------------
+
+
+auktion: 195,210 - 327,270
+
+
+auktion: rundeseck - auf untergrund rgb 75 (grau) den raum mit 50% transparenz abbilden
+

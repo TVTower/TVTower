@@ -1,0 +1,10 @@
+ModuleInfo "Version: 1.01"
+ModuleInfo "Author: Various"
+ModuleInfo "License: Public Domain"
+ModuleInfo "Modserver: BRL"
+ModuleInfo "Credit: Adapted for BlitzMax by Kanati"
+import brl.blitz
+SeedRand(seed)="SeedRand"
+Rand32()="Rand32"
+RandMax(hi)="RandMax"
+RandRange(lo,hi)="RandRange"

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<!-- name not needed in general - but "playerColorX" for default playercolors -->
+		<colors name="playerColors">
+			<color r="247"	g="50"	b="50"	name="playerColor1" />
+			<color r="245"	g="220"	b="0"	name="playerColor2" />
+			<color r="40"	g="210"	b="0"	name="playerColor3" />
+			<color r="0"	g="110"	b="245"	name="playerColor4" />
+			<color r="158"	g="62"	b="32" />
+			<color r="224"	g="154"	b="0" />
+			<color r="102"	g="170"	b="29" />
+			<color r="18"	g="187"	b="107" />
+			<color r="205"	g="113"	b="247" />
+			<color r="255"	g="255"	b="0" />
+			<color r="125"	g="143"	b="147" />
+			<color r="255"	g="125"	b="255" />
+			<color r="150"	g="150"	b="255" />
+			<color r="50"	g="120"	b="200" />
+		</colors>
+	</resources>
+</tvt>

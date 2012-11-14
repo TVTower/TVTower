@@ -1,0 +1,28 @@
+filmkassette im menu platzieren:
+
+nr	x	y
+1	8	7
+2	"	26
+3	"	45
+4	"	64
+5	"	83
+6	"	102
+7	"	121
+8	"	140
+9	"	159
+10	"	178
+
+Titel auf Kassette:
+
+schreiben von 12,3 - 152,14 - b:141 h:12
+
+
+
+Linien fuer "anzahl anzeige"	b:1	h:14
+
+nr	x	y
+1-1	111	19
+2-1	111	37
+3-1	111	54
+...
+	

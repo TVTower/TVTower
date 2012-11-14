@@ -1,0 +1,19 @@
+<p>Persistence is a means of storing data beyond the execution of a program, in such a way that the data can be reproduced, in memory, at a later time.</p>
+<p>The BaH.Persistence module attempts to do this through the use of reflection and xml.</p>
+<h3>Usage</h3>
+<p>
+The most simple usage is to pass an object into TPersist.Serialize(), which returns the serialized representation of it as a String.
+</p>
+<p>
+To reverse the process, the serialized String can be passed into TPersist.DeSerialize(), returning a new Object instance, which is essentially a "deep"
+copy of the original object.
+</p>
+<p>
+There are also methods, SerializeToFile(), SerializeToDoc(), and SerializeToStream() which output to different formats apporpriately.
+</p>
+<p>
+The DeSerialize() function itself can take a TxmlDoc, TStream or String data as a parameter, as well as there being the specialised methods of
+DeSerializeFromDoc(), DeSerializeFromFile(), and DeSerializeFromStream().
+</p>
+<p>
+</p>

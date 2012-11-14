@@ -1,0 +1,78 @@
+mv 10.04.2008:
+- Die Methode "md_doBuyMovie" führt zu einem Absturz: "Unhandled Memory Exception ErrorDumping profile information"
+
+mv 31.12.2007:
+- Ich hab alle Debugmeldungen ausgeschaltet für eventuelle Silvester-Demo
+- Hab noch einen Grafikfehler entdeckt (Türe, ganz links um Hochhaus "wackelt"). Infos gab's per E-Mail.
+
+ro 28.12.2007:
+- Problem mit doppeltem OnMinute nicht nachvollziehbar
+- OnDayBegins wird nun auch bei Spielstart aufgerufen
+
+mv 20.12.2007:
+- Wenn man einen Raum verlässt wird nicht nur OnLeaveRoom() aufgerufen, sondern gleich danach auch OnReachRoom(roomId), was aber nicht richtig ist.
+- Nochmals zur Fahrstuhlsache: Wenn man direkt vor dem Fahrstuhl steht und DoGoToRoom() aufruft, reagiert er nicht darauf, dass er den Fahrstuhl nochmals holt. Erst wenn er vom Fahrstuhl weg läuft funktioniert das DoGoToRoom mit dem Fahrstuhl-Call.
+
+mv 19.12.2007:
+- Es wäre schön, wenn du die kompletten Funktionen von ein, zwei Räumen einbinden könntest, denn das käme direkt nach dem erreichen des Meilensteines 1. Hab jetzt alle Features dafür implementiert.
+- Der Chat versagt nach einer bestimmen Zeit (es kommen dann überhaupt keine Meldungen mehr) wenn man viele Nachrichten ausgibt.
+- Der Fahrstuhl funktioniert nicht immer richtig. Es scheint als habe der Fahrstuhl den Call vergessen (gelbes Licht geht aus). Dann steht die Figur davor und kann nicht weiter
+- Entweder wird beim Tageswechsel in der Minute 0 zwei mal die Tick-Methode aufgerufen oder getTime() verzählt sich:
+  Hab mal bei jedem Tick das Ergebnis von getTime() in die Konsole geschrieben. Beim Tageswechsel sieht das dann so aus...
+  
+  Time: 1438
+  Time: 1439
+  Time: 1440
+  wasch das = wasch das and contract.clone = 0
+  Hanz Tomato Ketchup = Pustbank and contract.clone = 0
+  Althans = Pustbank and contract.clone = 0
+  Pustbank = Pustbank and contract.clone = 0
+  Time: 1440
+  Time: 1441
+  Time: 1442
+  
+  Wie du siehst, kommt es zwei mal zur Ausgabe 1440.
+
+mv 18.12.2007:
+- DoGoToRoom() scheint nun richtig zu funktionieren - Danke dafür
+- Der Meilenstein 1 ist schon in Reichweite. Werde ihn bald erreichen.
+- Es fehlt jetzt noch die Implementierung der Funktionen für die einzelnen Räume
+
+ro 13.12.2007:
+- DoGoToRoom() - Fehler behoben (hatte statt y die Etage an die Funktion SendToRoom weitergegeben, ein einfaches Y hat gefehlt ;D)
+- neue Funktion "GetMillisecs" - liefert ms seit Rechnerstart zurueck
+
+mv 12.12.2007:
+- Habe ein kleines Framework erstellt, mit dem ich auch einfache Art und Weise sämliche Variablen/Tabellen serialisieren kann. Jetzt fehlt nur noch das OnSave und OnLoad zum testen
+- Da die Library OS nicht verfügbar ist, benötige ich eine Methode, welche mit als Ganzzahl die aktuelle Systemuhrzeit zurückliefert um meinen Zufallsgenerator zu initialisieren.
+
+mv 11.12.2007:
+- Weitere Untersuchung der Standardbibliotheken [mv 12.12.2007 Text gekürzt]
+  Aktuelle Lua-Anbindung:
+  http://lua-users.org/wiki/BlitzMax
+  http://www.andreas-rozek.de/BlitzMax/lua.bmx
+
+mv 08.12.2007:
+- Lua-Standardbibliotheken analysiert. [mv 12.12.2007 Text gekürzt] Da das Skript in einer Sandbox läuft, sind die Standardlibraries OS und IO nicht verfügbar.
+
+mv 04.12.2007:
+- DoGoToRoom() funktioniert nicht mehr richtig... es führt den Spieler nicht in den Zielraum, sondern nur ein "paar" Stockwerke nach oben. Probier's mal anhand von DoGoToRoom(ROOM_OFFICE_PLAYER_ME).
+
+mv 03.12.2007:
+- Der Fahrstuhl reagiert nicht immer richtig: Manchmal wir der Spieler einfach vergessen. Es nützt auch nichts während des wartens, dass Ziel erneut anzuklicken. Erst wenn man die Spielfigur im gleichen Stockwerk zuvor bewegt, hat man eine neue Chance auf Erfolg beim Stockwerkwechsel.
+- Die Chat-Funktion im Spiel reagiert noch etwas seltsam: Zum einen ist sie sehr empfindlich (ein Tastendruck bewirkt schnell eine Verdoppelung des Buchstabens; zum anderen ist es nicht immer möglich die Nachricht über Return abzusetzen.
+
+mv 30.11.2007:
+- OnDayBegins sollte auch zu Spielbeginn (nach dem initialisieren der KI) aufgerufen werden
+- [OK] OnChat für Chatnachrichten die man an den Spieler schicken kann. Syntax: /Spieler-ID Nachricht
+- [OK] getEvaluatedAudienceQuote um eine geschätze Anzahl von Zuschauern für einen Film/Sendetag/Stunde zu erfahren
+
+mv 29.11.2007:
+- [OK] Die Konstanten für die Räume funktionieren nicht 
+- [OK] Es wäre schön wenn ich irgendwo die Exceptions sehen würde, die das Skript auswirft (Console, MsgBox) 
+- [OK] NiceToHave: Ne Event-Methode die Aufgerufen wird, wenn ne Chat-Nachrichten eintrifft... man könnte das auch auf alle Chatnachrichten beschränken die mit einem Slash beginnen. So könnte ich in der Testphase auch von außen Manipulieren
+
+mv 30.11.2007:
+- [OK] Lua_SetPlayerTargetPosX addiert zur Y-Position jeweils 1 (man geht also immer ein Stockwerk nach oben)
+- [OK] LUA_doGoto ist noch nicht fertig -> 'TODO: Spieler losschicken
+- Eine Mehtode zum Stockwerkwechsel ala "Lua_SetPlayerTargetPosY" konnte ich nicht finden
