@@ -1,27 +1,27 @@
-ï»¿'Basictype of all rooms
-Type TRooms
-    Field background:TGW_Sprites    	   	'background, the image containing the whole room
-	Field name:String			= ""  		'name of the room, eg. "archive" for archive room
-    Field desc:String			= ""		'description, eg. "Bettys bureau" (used for tooltip)
-    Field descTwo:String		= ""		'description, eg. "name of the owner" (used for tooltip)
-    Field tooltip:TTooltip		= null		'uses description
+'Basictype of all rooms
+Type TRooms  {_exposeToLua="selected"}
+    Field background:TGW_Sprites    	   				'background, the image containing the whole room
+	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
+    Field desc:String			= ""					'description, eg. "Bettys bureau" (used for tooltip)
+    Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
+    Field tooltip:TTooltip		= null					'uses description
 
 	Field DoorTimer:TTimer		= TTimer.Create(500)
-	Field Pos:TPoint						'x of the rooms door in the building, y as floornumber
-    Field xpos:Int				= 0			'door 1-4 on floor
+	Field Pos:TPoint									'x of the rooms door in the building, y as floornumber
+    Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
     Field doorwidth:Int			= 38
     Field RoomSign:TRoomSigns
-    Field owner:Int				=-1			'to draw the logo/symbol of the owner
-    Field id:Int				= 1
+    Field owner:Int				=-1						'to draw the logo/symbol of the owner
+    Field id:Int				= 1		 {_exposeToLua}
 	Field FadeAnimationActive:Int = 0
 	Field RoomBoardX:Int		= 0
 	Field Dialogues:TList		= CreateList()
 
-    Global RoomList:TList		= CreateList()		'global list of rooms
+    Global RoomList:TList		= CreateList()			'global list of rooms
     Global LastID:Int			= 1
 	Global doadraw:Int			= 0
-	Global DoorsDrawnToBackground:Int = 0   'doors drawn to Pixmap of background
+	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
 	Method getDoorType:int()
 		if self.DoorTimer.isExpired() then return self.doortype else return 5
@@ -580,10 +580,8 @@ Type RoomHandler_Office extends TRoomHandler
 						Exit
 					EndIf
 				Next
-				For Local AdBlock:TAdBlock = EachIn TAdBlock.List
-					If room.owner = AdBlock.owner And..
-					   AdBlock.senddate = Game.daytoplan And..
-					   functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.width, AdBlock.Height)
+				For Local AdBlock:TAdBlock = EachIn Players[ room.owner ].ProgrammePlan.AdBlocks
+					If AdBlock.senddate = Game.daytoplan And functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.width, AdBlock.Height)
 						Game.cursorstate = 1
 						If MouseX() <= 400 then AdBlock.ShowSheet(358,20);Exit else AdBlock.ShowSheet(30,20);Exit
 					EndIf
@@ -975,7 +973,7 @@ Type RoomHandler_News extends TRoomHandler
 		If PlannerToolTip Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 
 		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
-			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "HinzufÃ¼gen und entfernen", 180, 100, 0, 0)
+			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
@@ -1141,9 +1139,9 @@ Type RoomHandler_Chief extends TRoomHandler
 	  Local ChefText:String
 	  ChefText = "Was ist?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!"
 	  If Betty.LastAwardWinner <> Game.playerID And Betty.LastAwardWinner <> 0
-		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis fÃ¼r " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
+		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis für " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
 		If Betty.LastAwardType <> 0
-			ChefText = "Was fÃ¤llt Ihnen ein den Award fÃ¼r " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis fÃ¼r " + Betty.GetAwardTypeString() + "."
+			ChefText = "Was fällt Ihnen ein den Award für " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis für " + Betty.GetAwardTypeString() + "."
 		EndIf
 	  EndIf
 	  functions.DrawDialog(Assets.GetSpritePack("gfx_dialog"), 350, 60, 450, 120, "StartLeftDown", 0, ChefText, Font14)
@@ -1174,13 +1172,12 @@ Function Room_Elevator_Compute(_room:TRooms)
 		local mouseHit:int = MouseManager.IsHit(1)
 
 		Game.cursorstate = 0
-		playerFigure.fromroom =Null
+		playerFigure.fromroom = Null
 		If playerFigure.inRoom.name = "elevator"
 			if Building.Elevator.waitAtFloorTimer <= MilliSecs()
 				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
 				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritt
 				playerFigure.inElevator		= False
-				playerFigure.calledElevator	= False
 				playerFigure.inRoom			= Null
 				playerFigure.clickedToRoom	= Null
 				Building.Elevator.blockedByFigureID = -1
@@ -1257,7 +1254,7 @@ Function Room_Betty_Compute(_room:TRooms)
 		local y:float = picY + sprite.h - 30
 		Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 	Next
-	Local DlgText:String = "Na Du?" + Chr(13) + "Du kÃ¶nntest ruhig mal Ã¶fters bei mir vorbeischauen."
+	Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
 	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, Assets.GetFont("Default",14))
   EndIf
 
@@ -1483,36 +1480,17 @@ Type TRoomSigns Extends TBlock
 		Else
 			If imagewithtext <> Null
 				imagewithtext.Draw(Pos.x,Pos.y)
-			Else
-				if image <> null
-					image.Draw(Pos.x,Pos.y)
-					Local colr:Int = 255
-					Local colg:Int = 255
-					Local colb:Int = 255
-					If colr > 255 Then colr = 255
-					If colg > 255 Then colg = 255
-					If colb > 255 Then colb = 255
-					SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+23,Pos.y+4,150,20,0,0,0,0,1)
-					SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,0,0,0,1)
-					Local TxtWidth:Int = Min(TextWidth(title)+4, image.w-23-5)
-					Local pixmap:TPixmap = GrabPixmap(Pos.x+23-2,Pos.y+4-2,TxtWidth,TextHeight(title)+3)
-					pixmap = ConvertPixmap(pixmap, PF_RGB888)
-					blurPixmap(pixmap, 0.5)
-					pixmap = ConvertPixmap(pixmap, PF_RGB888)
-					DrawImage(LoadImage(pixmap), Pos.x+21,Pos.y+2)
-
-					If owner > 0 And owner <=4
-						SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,colr,colg,colb,1)
-					Else
-						SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,250,250,250,1)
-					EndIf
+			Elseif image
+				local newimgwithtext:Timage = image.GetImageCopy()
+				Local font:TBitmapFont = Assets.GetFont("Default",9, BOLDFONT)
+				font.setTargetImage(newimgwithtext)
+				if self.owner > 0
+					font.drawBlock(title, 22, 3, 150,20, 0, 230, 230, 230, 0, 2, 1, 0.5)
+				else
+					font.drawBlock(title, 22, 3, 150,20, 0, 50, 50, 50, 0, 2, 1, 0.3)
 				endif
-			EndIf
-			If imagewithtext = Null AND image <> null
-				local newimgwithtext:Timage = TImage.Create(image.w, image.h -1,1,0,255,0,255)
-				newimgwithtext.pixmaps[0].format = PF_RGB888
-				newimgwithtext.pixmaps[0] = GrabPixmap(Pos.x,Pos.y,image.w,image.h-1)
-				newimgwithtext.pixmaps[0] = ConvertPixmap(newimgwithtext.pixmaps[0], PF_RGB888)
+				font.resetTarget()
+
 				imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
 			EndIf
 		EndIf

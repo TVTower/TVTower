@@ -529,6 +529,21 @@ Type TBitmapFont
 				self.draw(text, x+1,y+1)
 				SetAlpha oldA
 			endif
+		'glow
+		else if style = 3
+			if doDraw
+				local oldA:float = getAlpha()
+				SetColor 0,0,0
+				if special <> -1.0 then SetAlpha 0.5*special*oldA else SetAlpha 0.25*oldA
+				self.draw(text, x-2,y)
+				self.draw(text, x+2,y)
+				self.draw(text, x,y-2)
+				self.draw(text, x,y+2)
+				if special <> -1.0 then SetAlpha special*oldA else SetAlpha 0.5*oldA
+				self.draw(text, x+1,y+1)
+				self.draw(text, x-1,y-1)
+				SetAlpha oldA
+			endif
 		endif
 
 		SetColor( cr,cg,cb )
@@ -933,6 +948,8 @@ Type TGW_Sprites extends TRenderable
 		DrawPixmapOnPixmap(self.getPixmap(), pixmap, x,y, color)
 	End Method
 
+	'is only a reference to the memory block of the pixmap
+	'NO REAL copy
 	Method GetPixmap:TPixmap(loadAnimated:int =1)
 		Local DestPixmap:TPixmap = LockImage(self.parent.image, 0, False, True).Window(self.Pos.x, self.Pos.y, self.w, self.h)
 		'UnlockImage(self.parent.image)
@@ -940,12 +957,24 @@ Type TGW_Sprites extends TRenderable
 		return DestPixmap
 	End Method
 
+	'is only a reference to the memory block of the images pixmap
+	'NO REAL copy
 	Method GetImage:TImage(loadAnimated:Int =1)
 		SetMaskColor(255,0,255)
 		If self.animcount >1 And loadAnimated
 			Return LoadAnimImage( self.GetPixmap(1), self.framew, self.frameh, 0, self.animcount)
 		Else
 			Return LoadImage( self.GetPixmap(0) )
+		EndIf
+	End Method
+
+	'creates a REAL copy (no reference) of an image
+	Method GetImageCopy:TImage(loadAnimated:int = 1)
+		SetMaskColor(255,0,255)
+		If self.animcount >1 And loadAnimated
+			Return LoadAnimImage( self.GetPixmap(1).copy(), self.framew, self.frameh, 0, self.animcount)
+		Else
+			Return LoadImage( self.GetPixmap(0).copy() )
 		EndIf
 	End Method
 
@@ -1099,10 +1128,10 @@ Type TAnimation
 		local obj:TAnimation = new TAnimation
 		local framecount:int = len( framesArray )
 
-		obj.frames		= obj.frames[..framecount+1] 'extend
-		obj.framesTime	= obj.framesTime[..framecount+1] 'extend
+		obj.frames		= obj.frames[..framecount] 'extend
+		obj.framesTime	= obj.framesTime[..framecount] 'extend
 
-		For local i:int = 0 to framecount-1
+		For local i:int = 0 until framecount
 			obj.frames[i]		= framesArray[i][0]
 			obj.framesTime[i]	= float(framesArray[i][1]) * 0.001
 		Next
@@ -1111,28 +1140,29 @@ Type TAnimation
 		return obj
 	End Function
 
-	Method Update(deltaTime:float=1.0)
-		If not self.paused
-			if self.frameTimer = null then self.ResetFrameTimer()
+	Method Update:int(deltaTime:float=1.0)
+		'skip update if only 1 frame is set
+		'skip if paused
+		If self.paused or self.frames.length <= 1 then return 0
 
-			self.frameTimer :- deltaTime
-			if self.frameTimer <= 0.0
-				'increase current frameposition but only if frame is set
-				'resets frametimer too
-				self.setCurrentFramePos(self.currentFramePos + 1)
-				'print self.currentFramePos + " -> "+ self.currentFrame
+		if self.frameTimer = null then self.ResetFrameTimer()
+		self.frameTimer :- deltaTime
+		if self.frameTimer <= 0.0
+			'increase current frameposition but only if frame is set
+			'resets frametimer too
+			self.setCurrentFramePos(self.currentFramePos + 1)
+			'print self.currentFramePos + " -> "+ self.currentFrame
 
-				'reached end
-				If self.currentFramePos >= len(self.frames)-1
-					If self.repeatTimes = 0 then
-						self.Pause()	'stop animation
-					Else
-						self.setCurrentFramePos( 0 )
-						self.repeatTimes	:-1
-					EndIf
+			'reached end
+			If self.currentFramePos >= len(self.frames)-1
+				If self.repeatTimes = 0 then
+					self.Pause()	'stop animation
+				Else
+					self.setCurrentFramePos( 0 )
+					self.repeatTimes	:-1
 				EndIf
-			Endif
-		EndIf
+			EndIf
+		Endif
 	End Method
 
 	Method Reset()

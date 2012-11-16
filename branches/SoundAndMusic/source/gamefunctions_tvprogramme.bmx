@@ -2,8 +2,8 @@ Const CURRENCYSIGN:string = Chr(8364) 'eurosign
 
 Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field ProgrammeBlocks:TList = CreateList()
-	Field Contracts:TList		= CreateList()
 	Field NewsBlocks:TList		= CreateList()
+	Field AdBlocks:TList		= CreateList()
 
 	Field AdditionallyDraggedProgrammeBlocks:Int = 0
 
@@ -11,14 +11,13 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	Function Create:TPlayerProgrammePlan( parent:TPlayer)
 		Local obj:TPlayerProgrammePlan = New TPlayerProgrammePlan
-'		TPlayerProgrammePlan.List.AddLast(obj)
 		obj.parent = parent
 		Return obj
 	End Function
 
 	Method ClearLists:int()
 		ProgrammeBlocks.Clear()
-		Contracts.Clear()
+		AdBlocks.Clear()
 		NewsBlocks.Clear()
 	End Method
 
@@ -266,12 +265,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Return 0
 	End Method
 
-	Method ContractPlaceable:Int(Contract:TContract, time:Int = -1, day:Int = -1)
-		If Contract = Null Then Return 0
+	Method AdblockPlaceable:Int(time:Int = -1, day:Int = -1)
 		If time = -1 Then time = Game.GetHour()
 		If day  = -1 Then day  = Game.day
-		If GetActualContract(time, day) = Null Then Return 1
-		Return 0
+		If not GetActualAdBlock(time, day) Then Return True else Return False
 	End Method
 
 	Method GetActualProgramme:TProgramme(time:Int = -1, day:Int = -1) {_exposeToLua}
@@ -284,45 +281,34 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Return Null
 	End Method
 
-	Method GetActualContract:TContract(time:Int = -1, day:Int = - 1) {_exposeToLua}
+	Method GetActualAdBlock:TAdBlock(time:Int = -1, day:Int = - 1) {_exposeToLua}
 		If time = -1 Then time = Game.GetHour()
 		If day  = -1 Then day  = Game.day
 
-		For Local contract:TContract = EachIn Self.Contracts
-			If (contract.sendtime>= time And contract.sendtime <=time) And contract.senddate = day Then Return contract
-		Next
-		Return Null
-	End Method
-
-	Method GetActualAdBlock:TAdBlock(playerID:Int, time:Int = -1, day:Int = - 1)
-		If time = -1 Then time = Game.GetHour()
-		If day  = -1 Then day  = Game.day
-
-		For Local adblock:TAdBlock= EachIn TAdBlock.List
-			If adblock.owner = playerID
-				If (adblock.contract.sendtime>= time And adblock.contract.sendtime <=time) And..
-					adblock.contract.senddate = day Then Return adblock
-			EndIf
+		For Local block:TAdBlock= EachIn self.Adblocks
+			If block.sendtime = time And block.senddate = day Then Return block
 		Next
 		Return Null
 	End Method
 
 	Method GetActualNewsBlock:TNewsBlock(position:Int) {_exposeToLua}
-		For Local newsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			If newsBlock.sendslot = position Then Return newsBlock
+		For Local block:TNewsBlock = EachIn Self.NewsBlocks
+			If block.sendslot = position Then Return block
 		Next
+		return Null
 	End Method
 
 	'used if receiving changes via network
 	Method RefreshAdPlan(day:Int)
-		For Local contract:TContract = EachIn Self.Contracts
-			If contract.senddate = day Then Self.RemoveContract(contract)
+		'remove all from today in players plan
+		For Local block:TAdblock = EachIn Self.AdBlocks
+			If block.senddate = day Then Self.RemoveAdBlock(block)
 		Next
-		For Local Adblock:TAdBlock= EachIn TAdBlock.List
-			If adblock.contract.owner = Self.parent.playerID
-				'Print "REFRESH AD:ADDED "+adblock.contract.title;
-				Self.AddContract(adblock.contract)
-			EndIf
+		print "RO: check RefreshAdPlan - needed ? "
+		'add all from player in global list
+		For Local block:TAdBlock= EachIn self.AdBlocks
+			'Print "REFRESH AD:ADDED "+adblock.contract.title;
+			Self.AddAdBlock(block)
 		Next
 	End Method
 
@@ -337,14 +323,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'Player[self.parent.playerID].ProgrammeCollection.RemoveProgramme( _Programme )
 	End Method
 
-	Method AddContract(_Contract:TContract)
-		Local contract:TContract = New TContract
-		contract			= CloneContract(_Contract)
-		contract.owner		= Self.parent.playerID
-		contract.senddate	= Game.daytoplan
-		Self.Contracts.AddLast(contract)
-		GetPreviousContractCount(contract)
+	Method AddAdBlock(block:TAdBlock)
+		block.owner 	= Self.parent.playerID
+		block.senddate	= Game.daytoplan
+
+		self.AdBlocks.AddLast(block)
+		'sort my adblocks
+		self.AdBlocks.sort(True, TAdblock.sort)
 	End Method
+
+	Method RemoveAdBlock(block:TAdBlock)
+		Self.AdBlocks.remove(block)
+		'sort my adblocks
+		self.AdBlocks.sort(True, TAdblock.sort)
+	End Method
+
 
 	Method AddNewsBlock(block:TNewsBlock)
 		Self.NewsBlocks.AddLast(block)
@@ -354,103 +347,54 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Self.NewsBlocks.remove(block)
 	End Method
 
-	'clones a TProgramme - a normal prog = otherprog
-	'just creates a reference to this object, but we want
-	'a real copy (to be able to send repeatitions of movies
-	Function CloneContract:TContract(_contract:TContract)
-		If _contract <> Null
-			Local typ:TTypeId = TTypeId.ForObject(_contract)
-			Local clone:TContract = New TContract
-			For Local t:TField = EachIn typ.EnumFields()
-				t.Set(clone, t.Get(_contract))
-			Next
-			TContract(clone).clone = 1
-			clone.botched = 0
-			clone.finished = 0
-			clone.owner = 0
-			Return clone
-		EndIf
-	End Function
-
-	Method RemoveContract(_contract:TContract)
-		For Local contract:TContract = EachIn Self.Contracts
-			If contract <> Null And contract.title = _contract.title And contract.senddate = _contract.senddate And contract.sendtime = _contract.sendtime
-				Self.Contracts.remove(_contract)
-			EndIf
-		Next
-	End Method
-
-	Method GetPreviousContractCount:Int(_contract:TContract)
-		Local count:Int = 1
-		If Not Self.Contracts Then Self.Contracts = CreateList()
-		For Local contract:TContract = EachIn Self.Contracts
-			If contract.title = _contract.title And contract.botched <> 1
-				contract.spotnumber = count
-				count :+ 1
-			EndIf
-		Next
-		Return count
-	End Method
-
-	Method RenewContractCount:Int(_contract:TContract)
-		Local count:Int = 1
-		Local contract:TContract = Null
-		For Local contract:TContract = EachIn Self.Contracts
-			If contract.title = _contract.title 'mv 08.11.2012 - ACHTUNG!: Wenn nur der Name verglichen wird kann es zu Problemen kommen, wenn ein Contract mit dem gleichen Namen früher schon mal gesendet wurde.
-				If contract.botched <> 1
-					contract.spotnumber = count
-					count :+1
-				Else
-					contract.spotnumber = 0
-				EndIf
-			EndIf
-		Next
-	End Method
-
+	global sentBroadcastHint:int = 0
 	Method GetContractBroadcastCount:Int(_contractId:int, successful:int = 1, planned:int = 0) {_exposeToLua} 'successful & planned sind bool-Werte
+		if not sentBroadcastHint
+			print "GetContractBroadcastCount:"
+			print " - koennte eventuell ersetzt werden, da der TContract nur in der Collection vorhanden ist, wenn er noch nicht abgeschlossen ist"
+			sentBroadcastHint = 1
+		endif
 		Local count:Int = 0
-		Local playerID:Int = Game.playerID
-		
-		For Local adblock:TAdBlock= EachIn TAdBlock.List 'Es muss TAdBlock.List sein, denn Self.Contracts beinhaltet die Contracts in welchen "botched" nicht gesetzt wird.
-			If adblock.owner = playerID
-				Local contract:TContract = adblock.contract
-				If contract.id = _contractId
-					if successful = 1 And (contract.botched = 3 Or contract.botched = 2)  'botched 3 = dieser war erfolgreich ; botched 2 = Contract insgesamt komplett erfolgreich/abgeschlossen
-						count :+1
-					Elseif planned = 1 and contract.senddate <> -1 and contract.sendtime <> -1 And contract.botched = 0 'botched 0 = noch nicht gesendet / die sendtime- und senddate-Prüfung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
-						count :+1					
-					EndIf
-				EndIf	
+		For Local block:TAdBlock= EachIn self.AdBlocks
+			'skip wrong contracts
+			If block.contract.id <> _contractId then continue
+
+			'Block erfolgreich gesendet
+			if successful = 1 And not block.isBotched() and block.isAired()
+				count :+1
+			'Block noch nicht gesendet / die sendtime- und senddate-Prüfung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
+			Elseif planned = 1 And not block.isAired() and block.senddate <> -1 and block.sendtime <> -1
+				count :+1
 			EndIf
-		Next		
+		Next
 		Return count
-	End Method	
+	End Method
 End Type
 
-Global GENRE_CALLINSHOW:Int = 20
-
-Global TYPE_MOVIE:Int = 1
-Global TYPE_SERIE:Int = 2
-Global TYPE_EPISODE:Int = 4
-Global TYPE_CONTRACT:Int = 8
-Global TYPE_AD:Int = 16
-Global TYPE_NEWS:Int = 32
+Global GENRE_CALLINSHOW:Int	= 20
+Global TYPE_MOVIE:Int		= 1
+Global TYPE_SERIE:Int		= 2
+Global TYPE_EPISODE:Int		= 4
+Global TYPE_CONTRACT:Int	= 8
+Global TYPE_CONTRACTBASE:Int= 16
+Global TYPE_AD:Int 			= 32
+Global TYPE_NEWS:Int 		= 64
 
 'holds all Programmes a player possesses
 Type TPlayerProgrammeCollection {_exposeToLua="selected"}
-	Field List:TList			= CreateList() {_private hideFromAI}
-	Field MovieList:TList		= CreateList() {_private hideFromAI}
-	Field SeriesList:TList		= CreateList() {_private hideFromAI}
-	Field ContractList:TList	= CreateList() {_private hideFromAI}
+	Field List:TList			= CreateList()	'no need to add {_private} as expose is selected
+	Field MovieList:TList		= CreateList()
+	Field SeriesList:TList		= CreateList()
+	Field ContractList:TList	= CreateList()
 	Field parent:TPlayer
 
-	Function Create:TPlayerProgrammeCollection(player:TPlayer) {hideFromAI}
+	Function Create:TPlayerProgrammeCollection(player:TPlayer)
 		Local obj:TPlayerProgrammeCollection = New TPlayerProgrammeCollection
-		obj.parent =player
+		obj.parent = player
 		Return obj
 	End Function
 
-	Method ClearLists() {_private hideFromAI}
+	Method ClearLists()
 		List.Clear()
 		MovieList.Clear()
 		SeriesList.Clear()
@@ -475,16 +419,21 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 
 
 	'removes Contract from Collection (Advertising-Menu in Programmeplanner)
-	Method RemoveOriginalContract(_contract:TContract) {_private hideFromAI}
-		If _contract <> Null
-			For Local contract:TContract = EachIn ContractList
-				If contract.title = _contract.title And contract.clone = 0
-					'Print "removing contract:"+contract.title
-					ContractList.Remove(contract)
-					Exit
-				EndIf
-			Next
-		EndIf
+	Method RemoveContract:int(_contract:TContract)
+		If not _contract then return False
+		self.ContractList.Remove(_contract)
+
+		print "RO: cleanup RemoveContract if working."
+		rem
+			wird nicht mehr gebraucht
+		For Local contract:TContract = EachIn self.ContractList
+			If contract.id = _contract.id And contract.clone = 0
+				'Print "removing contract:"+contract.title + " id:"+contract.id+"="+_contract.id
+				ContractList.Remove(contract)
+				Exit
+			EndIf
+		Next
+		endrem
 	End Method
 
 	Method RemoveProgramme:Int(programme:TProgramme, typ:Int = 1)
@@ -499,7 +448,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method AddContract:Int(contract:TContract, owner:Int=0)
 		If contract <> Null
 			contract.sign(owner)
-			'DebugLog contract.calculatedMinAudience + " ("+contract.GetMinAudiencePercentage(contract.minaudience)+"%)"
+			'DebugLog contract.minAudience + " ("+contract.GetMinAudiencePercentage(contract.contractBase.minaudience)+"%)"
 			Self.ContractList.AddLast(contract)
 			TContractBlock.Create(contract, 1,owner)
 		EndIf
@@ -590,99 +539,120 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	End Method
 End Type
 
-
-Type TProgrammeElement
-	Field title:String 	{_exposeToLua}
-
-	Field description:String
-	Field id:Int = 0	{_exposeToLua}
+Type TProgrammeElementBase {_exposeToLua="selected"}
 	Field programmeType:Int = 0
+	Field id:Int			= 0		 {_exposeToLua}
 	Global LastID:Int = 0
+
+	Method GenerateID:int()
+		Self.LastID :+1
+		self.id = self.LastID
+		'print "ID:"+self.LastID+" ... " +title
+		return self.LastID
+	End Method
+
+	Method GetID:int() {_exposeToLua}
+		return self.id
+	End Method
+
+End Type
+
+Type TProgrammeElement extends TProgrammeElementBase {_exposeToLua="selected"}
+	Field title:String			{_exposeToLua}
+	Field description:String	{_exposeToLua}
 
 	Method BaseInit(title:String, description:String, programmeType:Int = 0)
 		Self.title = title
 		Self.description = description
 		Self.programmeType = programmeType
-		Self.id = Self.LastID
-
-		Self.LastID :+1
+		Self.id = Self.GenerateID()
 	End Method
 
-	Method GetId:Int() {_exposeToLua}
-		Return Self.id
+	'get the title
+	Method GetDescription:string() {_exposeToLua}
+		Return self.description
 	End Method
+
+	'get the title
+	Method GetTitle:string() {_exposeToLua}
+		Return self.title
+	End Method
+
+End Type
+
+
+'contract base - straight from the DB
+Type TContractBase Extends TProgrammeElement {_exposeToLua="selected"}
+	Field daysToFinish:Int					' days to fullfill a (signed) contract
+	Field spotCount:Int						' spots to send
+	Field targetGroup:Int					' target group of the spot
+	Field minAudienceBase:Float				' minimum audience (real value calculated on sign)
+	Field minImageBase:Float				' minimum image base value (real value calculated on sign)
+	Field hasFixedPrice:Int					' flag wether price is fixed
+	Field profitBase:Float					' base of profit (real value calculated on sign)
+	Field penaltyBase:Float					' base of penalty (real value calculated on sign)
+	global List:TList = CreateList()		' holding all TContractBases
+
+	Function Create:TContractBase(title:String, description:String, daystofinish:Int, spotcount:Int, targetgroup:Int, minaudience:Int, minimage:Int, fixedPrice:Int, profit:Int, penalty:Int)
+		Local obj:TContractBase = New TContractBase
+		obj.BaseInit(title, description, TYPE_CONTRACTBASE)
+		obj.daysToFinish	= daystofinish
+		obj.spotCount		= spotcount
+		obj.targetGroup		= targetgroup
+		obj.minAudienceBase	= Float(minaudience) / 10.0
+		obj.minImageBase	= Float(minimage) / 10.0
+		obj.hasFixedPrice	= fixedPrice
+		obj.profitBase		= Float(profit)
+		obj.penaltyBase    	= Float(penalty)
+		obj.List.AddLast(obj)
+		Return obj
+	End Function
+
+	Function GetRandom:TContractBase(_list:TList = null)
+		if _list = Null then _list = TContractBase.list
+		If _list = Null Then Return Null
+		If _list.count() > 0
+			Local obj:TContractBase = TContractBase(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
+			if obj then return obj
+		endif
+		return Null
+	End Function
+
+	Function GetRandomWithMaxAudience:TContractBase(maxAudience:Int, maxAudienceQuote:Float=0.35)
+		'maxAudienceQuote - xx% market share as maximum
+		'filter to entries we need
+		Local resultList:TList = CreateList()
+		For local obj:TContractBase = EachIn TContractBase.list
+			If obj.minAudienceBase <= maxAudience*maxAudienceQuote
+				resultList.addLast(obj)
+			EndIf
+		Next
+		Return TContractBase.GetRandom(resultList)
+	End Function
+
 End Type
 
 'ad-contracts
-Type TContract Extends TProgrammeElement {_exposeToLua="selected"}
-  Field daystofinish:Int
-  Field spotcount:Int
-  Field spotssent:Int
-  Field spotnumber:Int = -1
-  Field botched:Int =0
-  Field senddate:Int = -1
-  Field sendtime:Int = -1
-  Field targetgroup:Int
-  Field minaudience:Float
-  Field minimage:Float
-  Field fixedPrice:Int
-  Field profitBase:Float
-  Field penaltyBase:Float
-  Field finished:Int =0
-  Field clone:Int = 0 'is it a clone (used for adblocks) or the original one (contract-gfxlist)
-  Field owner:Int = 0
-  Field daysigned:Int 'day the contract has been taken from the advertiser-room
-  Field profit:Int		= -1
-  Field penalty:Int		= -1
-  Field calculatedMinAudience:Int 	= -1
-  Field attractiveness:Float	= -1 'Wird nur in der Lua-KI verwendet du die Filme zu bewerten
+Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
+	Field contractBase:TContractBase= Null	{_exposeToLua}	' holds real contract data
+	Field spotsSent:Int				= 0						' how many spots were succesfully sent up to now
+	Field state:Int					= 0						' 1 = finished, -1 = botched
+	Field owner:Int					= 0
+	Field daySigned:Int				= -1					' day the contract has been taken from the advertiser-room
+	Field profit:Int				= -1					' calculated profit value (on sign)
+	Field penalty:Int				= -1					' calculated penalty value (on sign)
+	Field minAudience:Int		 	= -1					' calculated minimum audience value (on sign)
+	Field attractiveness:Float		= -1					' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
+	global List:TList = CreateList()						' holding all Tcontracts
 
-
-  Global List:TList = CreateList() {saveload = "special"}
 
 	Function Load:TContract(pnode:TxmlNode)
-Print "implement load contracts"
-Rem
-		Local Contract:TContract = New TContract
-		Local NODE:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If NODE.Name = Upper("MINAUDIENCEMULTIPLICATOR")
-				TContract.MinAudienceMultiplicator = Double(node.Attribute("var").Value)
-			EndIf
-			If NODE.Name = Upper("CONTRACTS")
-				If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-				Local typ:TTypeId = TTypeId.ForObject(StationMap)
-				For Local t:TField = EachIn typ.EnumFields()
-					If t.MetaData("saveload") <> "special" And Upper(t.name()) = NODE.name
-						t.Set(Contract, nodevalue)
-					EndIf
-				Next
-				If contract.owner > 0 And contract.owner <= 4
-				    If contract.clone > 0 Then Players[contract.owner].ProgrammePlan.AddContract(contract)
-				    If contract.clone = 0 Then Players[contract.owner].ProgrammeCollection.AddContract(contract)
-				EndIf
-				If contract.clone = 0 Then TContract.List.AddLast(contract)
-			EndIf
-			NODE = NODE.nextSibling()
-		Wend
-		Return contract
-endrem
+		Print "implement load contracts"
 	End Function
 
 	Function LoadAll()
-Print "TContract.LoadAll()"
-Return
-Rem
-		PrintDebug("TContract.LoadAll()", "Lade WerbevertrÃ¤ge", DEBUG_SAVELOAD)
-		TContract.List.Clear()
-		Local Children:TList = LoadSaveFile.NODE.ChildList
-		For Local node:xmlNode = EachIn Children
-			If NODE.name = "ALLCONTRACTS"
-			      TContract.Load(NODE)
-			End If
-		Next
-endrem
+		Print "TContract.LoadAll()"
+		Return
 	End Function
 
 	Function SaveAll()
@@ -702,29 +672,28 @@ endrem
 		LoadSaveFile.xmlCloseNode()
 	End Method
 
-	Function Create:TContract(title:String, description:String, daystofinish:Int, spotcount:Int, targetgroup:Int, minaudience:Int, minimage:Int, fixedPrice:Int, profit:Int, penalty:Int, id:Int=0, owner:Int = 0)
-		Local obj:TContract =New TContract
-		obj.BaseInit(title, description, TYPE_CONTRACT)
-		obj.daystofinish	= daystofinish
-		obj.spotcount		= spotcount
-		obj.spotssent		= 0
-		obj.owner			= owner
-		obj.spotnumber		=  1
-		obj.targetgroup		= targetgroup
-		obj.minaudience		= Float(minaudience) / 10.0
-		obj.minimage		= Float(minimage) / 10.0
-		obj.fixedPrice		= fixedPrice
-		obj.profitBase		= Float(profit)
-		obj.penaltyBase    	= Float(penalty)
-		obj.daysigned   	= -1
+	'create UNSIGNED (adagency)
+	Function Create:TContract(contractBase:TContractBase)
+		Local obj:TContract = New TContract
+		obj.GenerateID()
+		obj.programmeType	= TYPE_CONTRACT
+		obj.contractBase	= contractBase
 
-		TContract.List.AddLast(obj)
-		SortList(TContract.List)
+		obj.List.AddLast(obj)
 		Return obj
 	End Function
 
+	'sign the contract -> calculate values and change owner
+	Method Sign(owner:int, day:int=-1)
+		If day < 0 Then day = game.day
+		self.daySigned		= day
+		self.owner			= owner
+		self.profit			= self.GetProfit()
+		self.penalty		= self.GetPenalty()
+		self.minAudience	= self.GetMinAudience(owner)
+	End Method
 
-	Function GetRandomContractFromList:TContract(_list:TList, playerID:Int =-1)
+	Function GetRandomFromList:TContract(_list:TList, playerID:Int =-1)
 		If _list = Null Then Return Null
 		If _list.count() > 0
 			Local obj:TContract = TContract(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
@@ -737,169 +706,156 @@ endrem
 		Return Null
 	End Function
 
-	Function GetRandomContract:TContract(playerID:Int = -1)
-		'filter to entries we need
-		Local obj:TContract
-		Local resultList:TList = CreateList()
-		For obj = EachIn TContract.list
-			If obj.owner <= 0 And obj.daysigned < 0 Then resultList.addLast(obj)
-		Next
-		Return TContract.GetRandomContractFromList(resultList, playerID)
-	End Function
-
-	Function GetRandomContractWithMaxAudience:TContract(maxAudience:Int, playerID:Int = -1, maxAudienceQuote:Float=0.35)
-		'maxAudienceQuote - xx% market share as maximum
-		'filter to entries we need
-		Local obj:TContract
-		Local resultList:TList = CreateList()
-		For obj = EachIn TContract.list
-			If obj.owner <= 0 And obj.daysigned < 0 And obj.getMinAudience(playerID) <= maxAudience*maxAudienceQuote
-				resultList.addLast(obj)
-			EndIf
-		Next
-		Return TContract.GetRandomContractFromList(resultList, playerID)
-	End Function
-
-
-
-	Method Sign:Int(playerID:Int, day:Int = -1)
-		If day < 0 Then day = game.day
-		owner					= playerID
-		daysigned				= day
-		calculatedMinAudience	= getMinAudience(playerID)
-		self.profit				= self.GetProfit()
-		self.penalty			= self.GetPenalty()
-	End Method
-
-	Method GetMinAudiencePercentage:Float(dbvalue:Int = -1)  {_exposeToLua}
-		If dbvalue < 0 Then dbvalue = Self.minaudience
-		Return dbvalue / 100.0 'from 75% to 0.75
+	'percents = 0.0 - 1.0 (0-100%)
+	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1)  {_exposeToLua}
+		If dbvalue < 0 Then dbvalue = Self.contractBase.minAudienceBase
+		Return Max(0.0, Min(1.0, dbvalue / 100.0)) 'from 75% to 0.75
 	End Method
 
 	'multiplies basevalues of prices, values are from 0 to 255 for 1 spot... per 1000 people in audience
 	'if targetgroup is set, the price is doubled
 	Method GetProfit:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
+		'already calculated
 		If Self.profit >= 0 Then Return Self.profit
-		if baseValue = -1 then baseValue = self.profitBase
-		if playerID = -1 then playerID = self.owner
 
+		'calculate
+		if baseValue = -1 then baseValue = self.contractBase.profitBase
+		if playerID = -1 then playerID = self.owner
 		Return CalculatePrices(baseValue, playerID)
 	End Method
 
 	Method GetPenalty:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
+		'already calculated
 		If Self.penalty >= 0 Then Return Self.penalty
-		if baseValue = -1 then baseValue = self.penaltyBase
-		if playerID = -1 then playerID = self.owner
 
+		'calculate
+		if baseValue = -1 then baseValue = self.contractBase.penaltyBase
+		if playerID = -1 then playerID = self.owner
 		Return CalculatePrices(baseValue, playerID)
 	End Method
 
 	Method CalculatePrices:Int(baseprice:Int=0, playerID:Int=-1)
-		Local price:Float				= baseprice
-		Local audiencepercentage:Float	= Self.GetMinAudiencePercentage()
-
+		'price is for each spot
+		Local price:Float = baseprice * Float( self.GetSpotCount() )
 
 		'ad is with fixed price - only avaible without minimum restriction
-		If Self.fixedPrice>0
-			Return price * spotcount
-		Else
-			'print title+" spots: "+spotcount+" baseprice: "+baseprice + " audience:"+audiencepercentage+"%   * " + int(Max(1, CalculateMinAudience(playerID)/1000)) + "tsd viewers	 playerid:"+playerID
+		If Self.contractBase.hasFixedPrice
+			'print self.contractBase.title + " has fixed price : "+ price + " base:"+baseprice + " profitbase:"+self.contractBase.profitBase
+			Return price
+		endif
+		'dynamic price
+		'----
+		'price we would get if 100% of audience is watching
+		price :* Max(5, getMinAudience(playerID)/1000)
 
-			'price we would get if 100% of audience is watching
-			price :* Max(5, getMinAudience(playerID)/1000)
-		EndIf
-		If Self.targetgroup > 0 Then price :*1.5
+		'specific targetgroups change price
+		If Self.GetTargetGroup() > 0 Then price :*1.75
 
-		'price is for each spot
-		price:* Float(spotcount)
-
-		price = TFunctions.RoundMoney(price)
-		Return price
+		'return "beautiful" prices
+		Return TFunctions.RoundToBeautifulValue(price)
 	End Method
 
 	'gets audience in numbers (not percents)
 	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
+		'already calculated?
+		If self.minAudience >=0 Then Return self.minAudience
+
 		If playerID < 0 Then playerID = Self.owner
 
-		If calculatedMinAudience >=0 Then Return calculatedMinAudience
-		If Not Game.isPlayerID(playerID)
-			Local avg:Int = 0
+		local useAudience:int = 0
+
+		If Game.isPlayerID(playerID)
+			useAudience = Players[ playerID ].maxaudience
+		else
+			'in case of "playerID = -1" we use the avg value
 			For Local i:Int = 1 To 4
-				avg :+ Players[ i ].maxaudience
+				useAudience :+ Players[ i ].maxaudience
 			Next
-			avg:/4
-			Return Floor(avg * Self.GetMinAudiencePercentage() / 1000) * 1000
+			useAudience:/4
 		EndIf
 		'0.5 = more than 50 percent of whole germany wont watch TV the same time
-		Return Floor(Players[ playerID ].maxaudience*0.5 * Self.GetMinAudiencePercentage() / 1000) * 1000
+		'therefor: maximum of half the audience can be "needed"
+		Return TFunctions.RoundToBeautifulValue( Floor(useAudience*0.5 * Self.GetMinAudiencePercentage()) )
 	End Method
 
 	'days left for sending all contracts from today
 	Method GetDaysLeft:Int() {_exposeToLua}
-		Return (daystofinish-(Game.day - daysigned))
+		Return ( self.contractBase.daysToFinish - (Game.day - self.daySigned) )
 	End Method
 
-	'amount of spots to send
+	'get the contractBase (to access its ID or title by its GetXXX() )
+	Method GetContractBase:TContractBase() {_exposeToLua}
+		Return self.contractBase
+	End Method
+
+	'get the title (differing from other programmeObjects: inherits from contractBase)
+	Method GetTitle:string() {_exposeToLua}
+		Return self.contractBase.title
+	End Method
+
+	'amount of spots still missing
+	Method GetSpotsToSend:int() {_exposeToLua}
+		Return ( self.contractBase.spotCount - self.spotsSent )
+	End Method
+
+	'amount of spots which have already been successfully broadcasted
+	Method GetSpotsSent:int() {_exposeToLua}
+		Return self.spotsSent
+	End Method
+
+	'amount of total spots to send
 	Method GetSpotCount:Int() {_exposeToLua}
-		Return self.spotcount
+		Return self.contractBase.spotCount
 	End Method
 
 	'total days to send contract from date of sign
 	Method GetDaysToFinish:Int() {_exposeToLua}
-		Return self.daysToFinish
+		Return self.contractBase.daysToFinish
 	End Method
 
 	Method GetTargetGroup:Int() {_exposeToLua}
-		Return self.targetgroup
+		Return self.contractBase.targetGroup
 	End Method
 
 	Method GetTargetGroupString:String(group:Int=-1) {_exposeToLua}
-		if group < 0 then group = self.targetGroup
+		'if no group given, use the one of the object
+		if group < 0 then group = self.contractBase.targetGroup
+
 		If group >= 1 And group <=9
 			Return GetLocale("AD_GENRE_"+group)
+		else
+			Return GetLocale("AD_GENRE_NONE")
 		EndIf
-		Return GetLocale("AD_GENRE_NONE")
 	End Method
 
-	Method GetAttractiveness:Float() {_exposeToLua}
-		Return Self.attractiveness
-	End Method
-
-	Method SetAttractiveness(value:Float) {_exposeToLua}
-		Self.attractiveness = value
-	End Method
-
-
-	Method ShowSheet:Int(x:Int,y:Int, plannerday:Int = -1, successfulSentContracts:Int=-1)
+	Method ShowSheet:Int(x:Int,y:Int)
 		Local playerID:Int = owner
-		If playerID <= 0 Then playerID = game.playerID
+		'nobody owns it or unsigned contract
+		If playerID <= 0 or self.daySigned < 0 Then playerID = game.playerID
 
 		Assets.GetSprite("gfx_datasheets_contract").Draw(x,y)
 
 		Local font:TBitmapFont = Assets.fonts.basefont
-		Assets.fonts.basefontBold.drawBlock(title 	       				, x+10 , y+11 , 270, 70,0, 0,0,0, 0,1)
-		font.drawBlock(description     		 		, x+10 , y+33 , 270, 70)
+		Assets.fonts.basefontBold.drawBlock(self.contractBase.title	, x+10 , y+11 , 270, 70,0, 0,0,0, 0,0)
+		font.drawBlock(self.contractBase.description   		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "	, x+10 , y+94 , 130, 16)
-		font.drawBlock(functions.convertValue(String( self.getProfit( playerID ) ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
+		font.drawBlock(functions.convertValue(String( self.getProfit() ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
 		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		If successfulSentContracts >=0
-			font.DrawBlock((spotcount - successfulSentContracts)+"/"+spotcount , x+150, y+91 , 127, 16,2)
-		Else
-			font.drawBlock(spotcount+"/"+spotcount , x+150, y+91 , 127, 19,2)
-		EndIf
+		font.DrawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+91 , 127, 16,2)
+
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
-		font.drawBlock(functions.convertValue(String( self.GetPenalty( playerID ) ), 2, 0)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,2)
+		font.drawBlock(functions.convertValue(String( self.GetPenalty() ), 2, 0)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,2)
 		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+150, y+117, 127, 16)
 		font.drawBlock(functions.convertValue(String( GetMinAudience( playerID ) ), 2, 0), x+150, y+117, 127, 16,2)
 		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+self.GetTargetgroupString()   , x+10 , y+140 , 270, 16)
 		If owner <= 0
-			If daystofinish > 1
-				font.drawBlock(getLocale("AD_TIME")+": "+daystofinish + getLocale("DAYS"), x+86 , y+163 , 122, 16)
+			If self.GetDaysToFinish() > 1
+				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() + getLocale("DAYS"), x+86 , y+163 , 122, 16)
 			Else
-				font.drawBlock(getLocale("AD_TIME")+": "+daystofinish + getLocale("DAY"), x+86 , y+163 , 122, 16)
+				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() + getLocale("DAY"), x+86 , y+163 , 122, 16)
 			EndIf
 		Else
-			Select self.getDaysLeft()
+			Select self.GetDaysLeft()
 				Case 0	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TODAY") , x+86 , y+163 , 126, 16)
 				Case 1	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOMORROW") , x+86 , y+163 , 126, 16)
 				Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysLeft()), x+86 , y+163 , 122, 16)
@@ -914,6 +870,17 @@ endrem
 		Return Null
 	End Function
 
+
+	'Wird bisher nur in der LUA-KI verwendet
+	Method GetAttractiveness:Float() {_exposeToLua}
+		Return Self.attractiveness
+	End Method
+
+	'Wird bisher nur in der LUA-KI verwendet
+	Method SetAttractiveness(value:Float) {_exposeToLua}
+		Self.attractiveness = value
+	End Method
+
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie hoch ist das finanzielle Gewicht pro Spot?
 	'Wird dafür gebraucht um die Wichtigkeit des Spots zu bewerten
@@ -922,32 +889,23 @@ endrem
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Anzahl der Spots die noch zu senden sind um den Vertrag zu erfüllen
-	Method GetCountOfSpotsToBroadcast:int() {_exposeToLua}
-		Local obj:TAdBlock = TAdBlock.GetBlockByContract( Self )
-		if not obj then return 0
-
-		Return self.GetSpotCount() - obj.GetSuccessfulSentContractCount()
-	End Method
-
-	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (Gesamt)
 	Method GetPressure:float() {_exposeToLua}
-		daysToFinish = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
-		Return self.GetSpotCount() / daysToFinish * daysToFinish
+		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
+		Return self.GetSpotCount() / _daysToFinish * _daysToFinish
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)
 	Method GetActualPressure:float() {_exposeToLua}
-		daysToFinish = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
-		Return self.GetCountOfSpotsToBroadcast() / daysToFinish * daysToFinish
+		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
+		Return self.GetSpotsToSend() / _daysToFinish * _daysToFinish
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie dringd ist es diese Spots zu senden
 	Method GetAcuteness:float() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
+		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return spotsToBroadcast  / daysLeft * daysLeft  * 100
 	End Method
@@ -955,13 +913,13 @@ endrem
 	'Wird bisher nur in der LUA-KI verwendet
 	'Viele Spots sollten heute mindestens gesendet werden
 	Method SendMinimalBlocksToday:int() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
+		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
 		Local acuteness:int = self.GetAcuteness()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 
-		If (acuteness >= 100) Then
+		If (acuteness >= 100)
 			Return int(spotsToBroadcast / daysLeft) 'int rundet
-		Elseif (acuteness >= 70) Then
+		Elseif (acuteness >= 70)
 			Return 1
 		Else
 			Return 0
@@ -971,21 +929,22 @@ endrem
 	'Wird bisher nur in der LUA-KI verwendet
 	'Viele Spots sollten heute optimalerweise gesendet werden
 	Method SendOptimalBlocksToday:int() {_exposeToLua}
-		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetCountOfSpotsToBroadcast()
+		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
 
 		Local acuteness:int = self.GetAcuteness()
 		Local optimumCount:int = Int(spotsToBroadcast / daysLeft) 'int rundet
 
-		If (acuteness >= 100) and (spotsToBroadcast > optimumCount) Then
+		If (acuteness >= 100) and (spotsToBroadcast > optimumCount)
 			optimumCount = optimumCount + 1
 		Endif
 
-		If (acuteness >= 100) Then
+		If (acuteness >= 100)
 			return Int(spotsToBroadcast / daysLeft)  'int rundet
 		Endif
 	End Method
 End Type
+
 
 Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent of movies, series and so on
 	Field actors:String			= ""
@@ -1099,8 +1058,8 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	End Method
 
 	Function Load:TProgramme(pnode:txmlNode, isEpisode:Int = 0, origowner:Int = 0)
-	Print "implement Load:TProgramme"
-Return Null
+		Print "implement Load:TProgramme"
+		Return Null
 Rem
 		Local Programme:TProgramme = New TProgramme
 		Programme.episodeList = CreateList() ' TObjectList.Create(100)
@@ -1190,6 +1149,11 @@ endrem
 				Next
 			EndIf
 		If Not isepisode Then LoadSaveFile.xmlCloseNode()
+	End Method
+
+	Method GetParent:TProgramme()
+		if not self.parent then return self
+		return self.parent
 	End Method
 
 	Method Buy()
@@ -1955,7 +1919,7 @@ Type TDatabase
 				penalty		= xml.FindValueInt(nodeChild,"penalty", 0)
 				daystofinish= xml.FindValueInt(nodeChild,"duration", 1)
 
-				TContract.Create(title, description, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty, Database.contractscount, 0)
+				TContractBase.Create(title, description, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
 				'print "contract: "+title+ " " + Database.contractscount
 				Database.contractscount :+ 1
 			EndIf
@@ -2011,73 +1975,23 @@ End Type
 
 
 Type TAdBlock Extends TBlockGraphical
-	Field State:Int 				= 0			{saveload = "normal"}
-    Field timeset:Int 				=-1			{saveload = "normal"}
-    Field Height:Int							{saveload = "normal"}
-    Field width:Int								{saveload = "normal"}
-    Field blocks:Int				= 1			{saveload = "normal"}
-    Field senddate:Int				=-1			{saveload = "normal"} 			 'which day this ad is planned to be send?
-    Field sendtime:Int				=-1			{saveload = "normal"}			 'which time this ad is planned to be send?
-    Field contract:TContract
-    Field id:Int					= 0			{saveload = "normal"}
-	Field Link:TLink
-    Global LastUniqueID:Int			= 0
-    Global DragAndDropList:TList
-    Global List:TList = CreateList()
+	Field airedState:Int 			= 0			'indicator when the block got aired
+    Field Height:Int				= 0
+    Field width:Int					= 0
+    Field blocks:Int				= 1
+    Field botched:int				= 0			'did the block run successful or failed it?
+    Field senddate:Int				=-1			'which day this ad is planned to be send?
+    Field sendtime:Int				=-1			'which time this ad is planned to be send?
+    Field contract:TContract		= Null
+    Global DragAndDropList:TList	= CreateList()
+    Global spriteBaseName:String	= "pp_adblock1"
 
-    Global spriteBaseName:String = "pp_adblock1"
-
-  Function LoadAll(loadfile:TStream)
-    TAdBlock.List.Clear()
-	Print "cleared adblocklist:"+TAdBlock.List.Count()
-    Local BeginPos:Int = Stream_SeekString("<ADB/>",loadfile)+1
-    Local EndPos:Int = Stream_SeekString("</ADB>",loadfile)  -6
-    Local strlen:Int = 0
-    loadfile.Seek(BeginPos)
-
-	TAdBlock.lastUniqueID:Int        = ReadInt(loadfile)
-    TAdBlock.AdditionallyDragged:Int = ReadInt(loadfile)
-	Repeat
-      Local AdBlock:TAdBlock= New TAdBlock
-	  AdBlock.state    = ReadInt(loadfile)
-	  AdBlock.dragable = ReadInt(loadfile)
-	  AdBlock.dragged = ReadInt(loadfile)
-	  AdBlock.StartPos.Load(Null)
-	  AdBlock.timeset   = ReadInt(loadfile)
-	  AdBlock.height   = ReadInt(loadfile)
-	  AdBlock.width   = ReadInt(loadfile)
-	  AdBlock.blocks   = ReadInt(loadfile)
-	  AdBlock.senddate = ReadInt(loadfile)
-	  AdBlock.sendtime = ReadInt(loadfile)
-	  AdBlock.owner    = ReadInt(loadfile)
-	  Local ContractID:Int = ReadInt(loadfile)
-      If ContractID >= 0
-	    Local contract:TContract = New TContract
-		contract = TContract.Load(Null) 'loadfile)
-        AdBlock.contract = New TContract
- 	    AdBlock.contract = Players[AdBlock.owner].ProgrammePlan.CloneContract(contract)
- 	    AdBlock.contract.owner = AdBlock.owner
-        AdBlock.contract.senddate = contract.senddate
-        AdBlock.contract.sendtime = contract.sendtime
- 	    AdBlock.contract.spotnumber = Adblock.GetPreviousContractCount()
-	  EndIf
-		AdBlock.Pos.Load(Null)
-	  AdBlock.id = ReadInt(loadfile)
-	  AdBlock.Link = TAdBlock.List.AddLast(AdBlock)
-	  ReadString(loadfile,5) 'finishing string (eg. "|PRB|")
-	  Players[AdBlock.owner].ProgrammePlan.AddContract(AdBlock.contract)
-	Until loadfile.Pos() >= EndPos
-	Print "loaded adblocklist"
-  End Function
+	Function LoadAll(loadfile:TStream)
+		print "Implement TAdblock.Loadall - in TPlayerProgrammePlan"
+	End Function
 
 	Function SaveAll()
-		LoadSaveFile.xmlBeginNode("ALLADBLOCKS")
-			LoadSaveFile.xmlWrite("LASTUNIQUEID", 			TAdBlock.LastUniqueID)
-			LoadSaveFile.xmlWrite("ADDITIONALLYDRAGGED", 	TAdBlock.AdditionallyDragged)
-			For Local AdBlock:TAdBlock= EachIn TAdBlock.List
-				If AdBlock <> Null Then AdBlock.Save()
-			Next
-		LoadSaveFile.xmlCloseNode()
+		print "Implement TAdblock.Saveall - in TPlayerProgrammePlan"
 	End Function
 
 	Method Save()
@@ -2097,80 +2011,43 @@ Type TAdBlock Extends TBlockGraphical
 		LoadSavefile.xmlCloseNode()
 	End Method
 
-	Function Create:TAdBlock(x:Int = 0, y:Int = 0, owner:Int = 0, contractpos:Int = -1)
-		Local AdBlock:TAdBlock=New TAdBlock
-		AdBlock.Pos 		= TPoint.Create(x, y)
-		AdBlock.StartPos	= TPoint.Create(x, y)
-		Adblock.owner = owner
-		AdBlock.blocks = 1
-		AdBlock.State = 0
-		Adblock.id = TAdBlock.LastUniqueID
-		TAdBlock.LastUniqueID :+1
+	Function Create:TAdBlock(contract:TContract = Null, x:Int, y:Int, owner:Int)
+		If owner < 0 Then owner = game.playerID
+		Local obj:TAdBlock = New TAdBlock
+		obj.GenerateID()
+		obj.Pos 		= TPoint.Create(x, y)
+		obj.StartPos	= TPoint.Create(x, y)
+		obj.owner		= owner
 
-		'hier noch als variablen uebernehmen
-		AdBlock.dragable = 1
-		AdBlock.width = Assets.GetSprite("pp_adblock1").w
-		AdBlock.Height = Assets.GetSprite("pp_adblock1").h
-		AdBlock.senddate = Game.day
-		AdBlock.sendtime = AdBlock.GetTimeOfBlock()
+		obj.SetDragable(1)
+		obj.width		= Assets.GetSprite("pp_adblock1").w
+		obj.Height 		= Assets.GetSprite("pp_adblock1").h
+		obj.senddate	= Game.daytoplan
+		obj.sendtime	= obj.GetTimeOfBlock()
+		'obj.sendtime	= Int(Floor((obj.StartPos.y - 17) / 30))
 
-		Local _contract:TContract
-		If contractpos <= -1
-			_contract = Players[owner].ProgrammeCollection.GetRandomContract()
-		Else
-			SortList(Players[owner].ProgrammeCollection.ContractList)
-			_contract = TContract(Players[owner].ProgrammeCollection.ContractList.ValueAtIndex(contractPos-1))
-		EndIf
-		AdBlock.contract			= Players[owner].ProgrammePlan.CloneContract(_contract)
-		AdBlock.contract.owner		= owner
-		AdBlock.contract.spotnumber	= Players[owner].ProgrammePlan.GetPreviousContractCount(AdBlock.contract)
-		AdBlock.contract.senddate	= Game.day
-		AdBlock.contract.sendtime	= Int(Floor((Adblock.StartPos.y - 17) / 30))
+		If not contract then contract = Players[owner].ProgrammeCollection.GetRandomContract()
+		obj.contract	= contract
+'		obj.Link		= List.AddLast(obj)
 
-		Adblock.Link = List.AddLast(AdBlock)
-		TAdBlock.list.sort(True, TAdblock.sort)
+'		TAdBlock.list.sort(True, TAdblock.sort)
+'		print "TAdblock.Create : "+obj.contract.contractBase.title+" owner:"+owner
+'		print " - remove TAdBlock.list - already stored in individual TProgrammePlanners ?"
 
-		Players[owner].ProgrammePlan.AddContract(AdBlock.contract)
-		Return AdBlock
+		'store the object in the players plan
+		Players[owner].ProgrammePlan.AddAdblock(obj)
+		Return obj
 	End Function
 
 	Function CreateDragged:TAdBlock(contract:TContract, owner:Int=-1)
-	  Local playerID:Int =0
-	  If owner < 0 Then playerID = game.playerID Else playerID = owner
-	  Local AdBlock:TAdBlock=New TAdBlock
- 	  AdBlock.Pos 			= TPoint.Create(MouseX(), MouseY())
- 	  AdBlock.StartPos		= TPoint.Create(0, 0)
- 	  AdBlock.owner 		= playerID
- 	  AdBlock.State 		= 0
- 	  Adblock.id			= TAdBlock.LastUniqueID
- 	  TAdBlock.LastUniqueID :+1
- 	  AdBlock.dragable 		= 1
- 	  AdBlock.width 		= Assets.GetSprite("pp_adblock1").w
- 	  AdBlock.Height		= Assets.GetSprite("pp_adblock1").h
- 	  AdBlock.senddate 		= Game.daytoplan
-      AdBlock.sendtime 		= 100
-
- 	  AdBlock.contract				= Players[playerID].ProgrammePlan.CloneContract(contract)
- 	  AdBlock.contract.owner		= playerID
- 	  AdBlock.contract.spotnumber 	= Adblock.GetPreviousContractCount()
-  	  Adblock.dragged 				= 1
-	  Adblock.Link 					= List.AddLast(AdBlock)
-		TAdBlock.list.sort(True, TAdblock.sort)
- 	  Return Adblock
+		Local obj:TAdBlock = TAdBlock.Create(contract, MouseX(), MouseY(), owner)
+		'things differing from normal
+		obj.StartPos		= TPoint.Create(0, 0)
+		obj.senddate 		= Game.daytoplan
+		obj.sendtime 		= 100
+		obj.dragged			= 1
+		Return obj
 	End Function
-
-	Function GetActualAdBlock:TAdBlock(playerID:Int = -1, time:Int = -1, day:Int = -1)
-		If playerID = -1 Then playerID = Game.playerID
-		If time = -1 Then time = Game.GetHour()
-		If day = -1 Then day = Game.day
-
-		For Local Obj:TAdBlock = EachIn TAdBlock.list
-			If Obj.owner = playerID
-				If (Obj.sendtime) = time And Obj.senddate = day Then Return Obj
-			EndIf
-  		Next
-		Return Null
-  	End Function
 
 	Method SetDragable(_dragable:Int = 1)
 		dragable = _dragable
@@ -2183,47 +2060,54 @@ Type TAdBlock Extends TBlockGraphical
         Return (10000*s1.dragged + (s1.sendtime + 25*s1.senddate))-(10000*s2.dragged + (s2.sendtime + 25*s2.senddate))
 	End Function
 
-	Method GetBlockX:Int(time:Int)
+	Function GetBlockX:Int(time:Int)
 		If time < 12 Then Return 67 + Assets.GetSprite("pp_programmeblock1").w
 		Return 394 + Assets.GetSprite("pp_programmeblock1").w
-	End Method
+	End Function
 
-	Method GetBlockY:Int(time:Int)
+	Function GetBlockY:Int(time:Int)
 		If time < 12 Then Return time * 30 + 17
 		Return (time - 12) * 30 + 17
-	End Method
+	End Function
 
     Method GetTimeOfBlock:Int(_x:Int = 1000, _y:Int = 1000)
 		If StartPos.x = 589
-    	  Return 12+(Int(Floor(StartPos.y - 17) / 30))
+			Return 12+(Int(Floor(StartPos.y - 17) / 30))
 		Else If StartPos.x = 262
-    	  Return 1*(Int(Floor(StartPos.y - 17) / 30))
+			Return 1*(Int(Floor(StartPos.y - 17) / 30))
     	EndIf
     	Return -1
     End Method
+
+	'loops through the list (eg. convert to playerprogrammeplan)
+	'and gets the spot number the block will hold
+	Method GetSpotNumber:int()
+		'list is ordered by sendtime and dragged state
+		'the older the earlier -> leave the loop if meeting self
+		local spotNumber:int = 1
+		For local obj:TAdBlock = eachin Players[ self.owner ].ProgrammePlan.AdBlocks
+			'different contract - skip it
+			if obj.contract <> self.contract then continue
+			'reached self - finish
+			if obj = self then return spotNumber
+			'other adblock from that contract - get it if not a failed one
+			if not obj.isBotched() then spotNumber :+1
+		Next
+		return spotNumber
+	End Method
 
     'draw the Adblock inclusive text
     'zeichnet den Programmblock inklusive Text
     Method Draw()
 		'Draw dragged Adblockgraphic
 		If dragged = 1 Or senddate = Game.daytoplan 'out of gameplanner
-			State = 1
-			If Game.day > Game.daytoplan Then State = 4
-			If Game.day < Game.daytoplan Then State = 0
-			If Game.day = Game.daytoplan
-				If GetTimeOfBlock() > (Int(Floor((Game.minutesOfDayGone-55) / 60))) Then State = 0  'normal
-				If GetTimeOfBlock() = (Int(Floor((Game.minutesOfDayGone-55) / 60))) Then State = 2  'running
-				If GetTimeOfBlock() < (Int(Floor((Game.minutesOfDayGone) / 60)))    Then State = 1  'runned
-				If GetTimeOfBlock() < 0      									    Then State = 0  'normal
-			EndIf
-
-			If State = 0 Then SetColor 255,255,255;dragable=1  'normal
-			If State = 1 Then SetColor 200,255,200;dragable=0  'runned
-			If State = 2 Then SetColor 250,230,120;dragable=0  'running
-			If State = 4 Then SetColor 255,255,255;dragable=0  'old day
+			If airedState = 0 Then SetColor 255,255,255 'normal
+			If airedState = 1 Then SetColor 200,255,200 'runned
+			If airedState = 2 Then SetColor 250,230,120 'running
+			If airedState = 4 Then SetColor 255,255,255 'old day
 
 			Local variant:String = ""
-			If dragged = 1 And State = 0
+			If dragged = 1 And not self.isAired()
 				If TAdBlock.AdditionallyDragged >0 Then SetAlpha 1- (1/TAdBlock.AdditionallyDragged * 0.25)
 				variant = "_dragged"
 			EndIf
@@ -2232,12 +2116,14 @@ Type TAdBlock Extends TBlockGraphical
 			'draw graphic
 
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.DrawBlock(Self.contract.title, pos.x + 3, pos.y+2, Self.width-5, 18, 0, 0, 0, 0, True)
+			Assets.fonts.basefontBold.DrawBlock(Self.contract.contractBase.title, pos.x + 3, pos.y+2, Self.width-5, 18, 0, 0, 0, 0, True)
 			SetColor 80,80,80
-			Local text:String = (contract.spotnumber)+"/"+contract.spotcount
-			If State = 1 And contract.spotnumber = contract.spotcount
+			local spotNumber:int	= self.GetSpotNumber()
+			local spotCount:int		= self.contract.GetSpotCount()
+			Local text:String		= spotNumber + "/" + spotCount
+			If self.isAired() and not self.isBotched() And spotNumber = spotCount
 				text = "- OK -"
-			ElseIf contract.botched=1
+			ElseIf self.isBotched()
 				text = "------"
 			EndIf
 			Assets.fonts.baseFont.Draw(text ,Pos.x+5,Pos.y+18)
@@ -2246,230 +2132,229 @@ Type TAdBlock Extends TBlockGraphical
 		EndIf 'same day or dragged
     End Method
 
-	Function DrawAll(origowner:Int)
-		TAdBlock.list.sort(True, TAdblock.sort)
-      For Local AdBlock:TAdBlock = EachIn TAdBlock.List
-        If origowner = Adblock.owner ' or Adblock.owner = Game.playerID
-     	  AdBlock.Draw()
-        EndIf
-      Next
+	Function DrawAll(owner:Int =-1)
+		if owner = -1 then owner = game.playerID
+
+		Players[ owner ].ProgrammePlan.AdBlocks.sort(True, TAdblock.sort)
+
+		For Local AdBlock:TAdBlock = EachIn Players[ owner ].ProgrammePlan.AdBlocks
+			AdBlock.Draw()
+		Next
 	End Function
 
-	Function UpdateAll(origowner:Int)
-      Local gfxListenabled:Byte = 0
-      Local havetosort:Byte = 0
-      Local number:Int = 0
-      If PPprogrammeList.enabled <> 0 Or PPcontractList.enabled <> 0 Then gfxListenabled = 1
+	'get bool wether adblock airing failed to fulfill the contracts requirements
+	Method isBotched:int() {_exposeToLua}
+		return self.botched
+	end Method
 
-		TAdBlock.list.sort(True, TAdblock.sort)
-      For Local AdBlock:TAdBlock = EachIn TAdBlock.List
-      If Adblock.owner = Game.playerID And origowner = game.playerID
-        number :+ 1
-        If AdBlock.dragged = 1 Then AdBlock.timeset = -1; AdBlock.contract.senddate = Game.daytoplan
-        If PPprogrammeList.enabled=0 And MOUSEMANAGER.IsHit(2) And AdBlock.dragged = 1
-'          Game.IsMouseRightHit = 0
-          ReverseList TAdBlock.List
-          Adblock.RemoveBlock()
-          Adblock.Link.Remove()
-		  havetosort = 1
-          ReverseList TAdBlock.List
-          AdBlock.GetPreviousContractCount()
-          MOUSEMANAGER.resetKey(2)
-        EndIf
-		If Adblock.dragged And Adblock.StartPos.x>0 And Adblock.StartPos.y >0
-		 If Adblock.GetTimeOfBlock() < game.GetHour() Or (Adblock.GetTimeOfBlock() = game.GetHour() And game.GetMinute() >= 55)
-			Adblock.dragged = False
- 		 EndIf
-		EndIf
-
-        If gfxListenabled=0 And MOUSEMANAGER.IsHit(1)
-	    	If AdBlock.dragged = 0 And AdBlock.dragable = 1 And Adblock.State = 0
-    	        If Adblock.senddate = game.daytoplan
-					If functions.IsIn(MouseX(), MouseY(), AdBlock.pos.x, Adblock.pos.y, AdBlock.width, AdBlock.height-1)
-						AdBlock.dragged = 1
-						For Local OtherlocObject:TAdBlock = EachIn TAdBlock.List
-							If OtherLocObject.dragged And OtherLocObject <> Adblock And OtherLocObject.owner = Game.playerID
-								TPoint.SwitchPos(AdBlock.StartPos, OtherlocObject.StartPos)
-  								OtherLocObject.dragged = 1
-								If OtherLocObject.GetTimeOfBlock() < game.GetHour() And game.GetMinute() >= 55
-									OtherLocObject.dragged = 0
-								EndIf
-							End If
-						Next
-						Adblock.RemoveBlock() 'just removes the contract from the plan, the adblock still exists
-						AdBlock.GetPreviousContractCount()
-					EndIf
-				EndIf
-			Else
-            Local DoNotDrag:Int = 0
-            If PPprogrammeList.enabled=0 And MOUSEMANAGER.IsHit(1)  And Adblock.State = 0
-'			  Print ("X:"+Adblock.x+ " Y:"+Adblock.y+" time:"+Adblock.GetTimeOfBlock(Adblock.x,Adblock.y))' > game.GetHour())
-              AdBlock.dragged = 0
-              For Local DragAndDrop:TDragAndDrop = EachIn TAdBlock.DragAndDropList
-                If DragAndDrop.CanDrop(MouseX(),MouseY(),"adblock")
-                  For Local OtherAdBlock:TAdBlock = EachIn TAdBlock.List
-                   If OtherAdBlock.owner = Game.playerID Then
-                   'is there a Adblock positioned at the desired place?
-                      If MOUSEMANAGER.IsHit(1) And OtherAdBlock.dragable = 1 And OtherAdBlock.pos.x = DragAndDrop.pos.x
-                        If OtherAdblock.senddate = game.daytoplan
-                         If OtherAdBlock.pos.y = DragAndDrop.pos.y
-                           If OtherAdBlock.State = 0
-                             OtherAdBlock.dragged = 1
-           	    	         otherAdblock.RemoveBlock()
-          					 havetosort = 1
-                           Else
-                             DoNotDrag = 1
-                           EndIf
-             	         EndIf
-             	        EndIf
-                      EndIf
-                    If havetosort
-       				  OtherAdBlock.GetPreviousContractCount()
-  	          		  AdBlock.GetPreviousContractCount()
-                      Exit
-                    EndIf
-                   EndIf
-                  Next
-                  If DoNotDrag <> 1
-						Local oldPos:TPoint = TPoint.CreateFromPos(AdBlock.StartPos)
-               		 AdBlock.startPos.SetPos(DragAndDrop.pos)
-					 If Adblock.GetTimeOfBlock() < Game.GetHour() Or (Adblock.GetTimeOfBlock() = Game.GetHour() And Game.GetMinute() >= 55)
-						adblock.dragged = True
-						If AdBlock.startPos.isSame(oldPos) Then Adblock.dragged = False
-						AdBlock.StartPos.setPos(oldPos)
-						MOUSEMANAGER.resetKey(1)
-					 Else
-						AdBlock.StartPos.setPos(oldPos)
-						Adblock.Pos.SetPos(DragAndDrop.pos)
-						AdBlock.StartPos.SetPos(AdBlock.pos)
-                     EndIf
-					Exit 'exit loop-each-dragndrop, we've already found the right position
-				  EndIf
-                EndIf
-              Next
-				If AdBlock.IsAtStartPos()
-					AdBlock.Pos.SetPos(AdBlock.StartPos)
-	      		    AdBlock.dragged    			= 0
-    	            AdBlock.contract.sendtime	= Adblock.GetTimeOfBlock()
-        	        AdBlock.contract.senddate	= Game.daytoplan
-            	    AdBlock.sendtime			= Adblock.GetTimeOfBlock()
-                	AdBlock.senddate			= Game.daytoplan
-	   	            Adblock.AddBlock()
-					TAdBlock.list.sort(True, TAdblock.sort)
-    		        AdBlock.GetPreviousContractCount()
-				EndIf
-            EndIf
-          EndIf
-         EndIf
-
-        If AdBlock.dragged = 1
-  		  	Adblock.State = 0
-			TAdBlock.AdditionallyDragged = TAdBlock.AdditionallyDragged +1
-			AdBlock.Pos.SetXY(MouseX() - AdBlock.width  /2 - TAdBlock.AdditionallyDragged *5,..
-							  MouseY() - AdBlock.height /2 - TAdBlock.AdditionallyDragged *5)
-        EndIf
-        If AdBlock.dragged = 0
-          If Adblock.StartPos.x = 0 And Adblock.StartPos.y = 0
-          	AdBlock.dragged = 1
-          	TAdBlock.AdditionallyDragged = TAdBlock.AdditionallyDragged +1
-          Else
-				AdBlock.Pos.SetPos(AdBlock.StartPos)
-          EndIf
-        EndIf
-      EndIf
-      Next
-        TAdBlock.AdditionallyDragged = 0
-    End Function
-
-  Method RemoveOverheadAdblocks:Int()
-    sendtime = GetTimeOfBlock()
-  	Local count:Int = 1
-  	If Not List Then List = CreateList()
-  	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched <> 1
-  	    AdBlock.contract.spotnumber = count
-  	    If count > contract.spotcount And Game.day <= Adblock.senddate
-  	      'DebugLog "removing overheadadblock"
-  	      'TAdBlock.List.Remove(Adblock)
-		  Adblock.Link.Remove()
-  	    Else
-  	      count :+ 1
-  	    EndIf
-  	  EndIf
-  	Next
-  '	contract.spotnumber = count-1
-  	Return count
-  End Method
-
-  'removes Adblocks which are supposed to be deleted for its contract being obsolete (expired)
-  Function RemoveAdblocks:Int(Contract:TContract, BeginDay:Int=0)
-  	If Not List Then List = CreateList()
-  	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And..
-	     (adblock.contract.daysigned + adblock.contract.daystofinish < BeginDay)
-        'TAdBlock.List.Remove(Adblock)
-		Adblock.Link.Remove()
-  	  EndIf
-  	Next
-  End Function
-
-	Method ShowSheet:Int(x:Int,y:Int)
-		Self.contract.showSheet(x,y,-1, GetSuccessfulSentContractCount())
+	Method setBotched:int(bool:int=1)
+		self.botched = bool
 	End Method
 
-   Method GetPreviousContractCount:Int()
-    sendtime = GetTimeOfBlock()
-  	Local count:Int = 1
-  	If Not List Then List = CreateList()
-  	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched <> 1
-  	    AdBlock.contract.spotnumber = count
-  	    count :+ 1
-  	  '  If count > contract.spotcount and Game.day > Game.daytoplan Then count = 1
-  	  EndIf
-  	Next
-  '	contract.spotnumber = count-1
-  	Return count
-  End Method
+	Method isAired:int() {_exposeToLua}
+		Select self.airedState
+			case 4,1,2	return True			'4 = old day, 1 = runned, 2 = running
+			default		return False
+		end Select
+	End Method
 
-   Method GetSuccessfulSentContractCount:Int()
-    sendtime = GetTimeOfBlock()
-  	Local count:Int = 0
-  	If Not List Then List = CreateList()
-  	For Local AdBlock:TAdBlock= EachIn List
-  	  If Adblock.owner = contract.owner And Adblock.contract.title = contract.title And adblock.contract.botched = 3
-  	    count :+ 1
-  	  EndIf
-  	Next
-  	Return count
-  End Method
-    'remove from programmeplan
-    Method RemoveBlock()
-   	  Players[Game.playerID].ProgrammePlan.RemoveContract(Self.contract)
-      If game.networkgame Then NetworkHelper.SendPlanAdChange(game.playerID, Self, 0)
+	Method Update()
+		If dragged = 1 Or senddate = Game.daytoplan 'out of gameplanner
+			self.airedState = 1
+			If Game.day > Game.daytoplan Then self.airedState = 4 'old day
+			If Game.day < Game.daytoplan Then self.airedState = 0 'normal
+			If Game.day = Game.daytoplan
+				If GetTimeOfBlock() > (Int(Floor((Game.minutesOfDayGone-55) / 60))) Then self.airedState = 0  'normal
+				If GetTimeOfBlock() = (Int(Floor((Game.minutesOfDayGone-55) / 60))) Then self.airedState = 2  'running
+				If GetTimeOfBlock() < (Int(Floor((Game.minutesOfDayGone) / 60)))    Then self.airedState = 1  'runned
+				If GetTimeOfBlock() < 0      									    Then self.airedState = 0  'normal
+			EndIf
+
+			if not self.isAired() then self.SetDragable(1) else self.SetDragable(0)
+		endif
+	End Method
+
+	Function UpdateAll(owner:Int = -1)
+		Local gfxListenabled:Byte = 0
+		Local havetosort:Byte = 0
+		Local number:Int = 0
+		If PPprogrammeList.enabled <> 0 Or PPcontractList.enabled <> 0 Then gfxListenabled = 1
+
+		if owner = -1 then owner = game.playerID
+
+		local AdBlockList:TList = Players[ owner ].ProgrammePlan.AdBlocks
+		AdBlockList.sort(True, TAdblock.sort)
+
+		'get current states
+		For Local AdBlock:TAdBlock = EachIn AdBlockList
+			AdBlock.Update()
+		Next
+
+
+		For Local AdBlock:TAdBlock = EachIn AdBlockList
+			number :+ 1
+			If AdBlock.dragged = 1
+				AdBlock.senddate = Game.daytoplan
+			endif
+			If PPprogrammeList.enabled=0 And MOUSEMANAGER.IsHit(2) And AdBlock.dragged = 1
+				'Game.IsMouseRightHit = 0
+				Adblock.RemoveFromPlan()
+				havetosort = 1
+				MOUSEMANAGER.resetKey(2)
+			EndIf
+			If Adblock.dragged And Adblock.StartPos.x>0 And Adblock.StartPos.y >0
+				If Adblock.GetTimeOfBlock() < game.GetHour() Or (Adblock.GetTimeOfBlock() = game.GetHour() And game.GetMinute() >= 55)
+					Adblock.dragged = False
+				EndIf
+			EndIf
+
+			If gfxListenabled=0 And MOUSEMANAGER.IsHit(1)
+				If AdBlock.dragged = 0 And AdBlock.dragable = 1 And not Adblock.isAired()
+					If Adblock.senddate = game.daytoplan
+						If functions.IsIn(MouseX(), MouseY(), AdBlock.pos.x, Adblock.pos.y, AdBlock.width, AdBlock.height-1)
+							AdBlock.dragged = 1
+							For Local OtherlocObject:TAdBlock = EachIn AdBlockList
+								If OtherLocObject.dragged And OtherLocObject <> Adblock
+									TPoint.SwitchPos(AdBlock.StartPos, OtherlocObject.StartPos)
+									OtherLocObject.dragged = 1
+									If OtherLocObject.GetTimeOfBlock() < game.GetHour() And game.GetMinute() >= 55
+										OtherLocObject.dragged = 0
+									EndIf
+								End If
+							Next
+							'just removes the contract from the plan, the adblock still exists
+							Adblock.RemoveFromPlan()
+						EndIf
+					EndIf
+				Else
+					Local DoNotDrag:Int = 0
+					If PPprogrammeList.enabled=0 And MOUSEMANAGER.IsHit(1) And not Adblock.isAired()
+						'Print ("X:"+Adblock.x+ " Y:"+Adblock.y+" time:"+Adblock.GetTimeOfBlock(Adblock.x,Adblock.y))' > game.GetHour())
+						AdBlock.dragged = 0
+						For Local DragAndDrop:TDragAndDrop = EachIn TAdBlock.DragAndDropList
+							If DragAndDrop.CanDrop(MouseX(),MouseY(),"adblock")
+								For Local OtherAdBlock:TAdBlock = EachIn AdBlockList
+									'is there a Adblock positioned at the desired place?
+									If MOUSEMANAGER.IsHit(1) And OtherAdBlock.dragable = 1 And OtherAdBlock.pos.x = DragAndDrop.pos.x
+										If OtherAdblock.senddate = game.daytoplan
+											If OtherAdBlock.pos.y = DragAndDrop.pos.y
+												If not OtherAdBlock.isAired()
+													OtherAdBlock.dragged = 1
+													otherAdblock.RemoveFromPlan()
+													havetosort = 1
+												Else
+													DoNotDrag = 1
+												EndIf
+											EndIf
+										EndIf
+									EndIf
+									If havetosort then Exit
+								Next
+								If DoNotDrag <> 1
+									Local oldPos:TPoint = TPoint.CreateFromPos(AdBlock.StartPos)
+									AdBlock.startPos.SetPos(DragAndDrop.pos)
+									If Adblock.GetTimeOfBlock() < Game.GetHour() Or (Adblock.GetTimeOfBlock() = Game.GetHour() And Game.GetMinute() >= 55)
+										adblock.dragged = True
+										If AdBlock.startPos.isSame(oldPos) Then Adblock.dragged = False
+										AdBlock.StartPos.setPos(oldPos)
+										MOUSEMANAGER.resetKey(1)
+									Else
+										AdBlock.StartPos.setPos(oldPos)
+										Adblock.Pos.SetPos(DragAndDrop.pos)
+										AdBlock.StartPos.SetPos(AdBlock.pos)
+									EndIf
+									Exit 'exit loop-each-dragndrop, we've already found the right position
+								EndIf
+							EndIf
+						Next
+						If AdBlock.IsAtStartPos()
+							AdBlock.Pos.SetPos(AdBlock.StartPos)
+							AdBlock.dragged 	= 0
+							AdBlock.sendtime	= Adblock.GetTimeOfBlock()
+							AdBlock.senddate	= Game.daytoplan
+							Adblock.AddToPlan()
+						EndIf
+					EndIf
+				EndIf
+			EndIf
+
+			If AdBlock.dragged = 1
+				Adblock.airedState = 0
+				TAdBlock.AdditionallyDragged = TAdBlock.AdditionallyDragged +1
+				AdBlock.Pos.SetXY(MouseX() - AdBlock.width  /2 - TAdBlock.AdditionallyDragged *5,..
+								  MouseY() - AdBlock.height /2 - TAdBlock.AdditionallyDragged *5)
+			EndIf
+			If AdBlock.dragged = 0
+				If Adblock.StartPos.x = 0 And Adblock.StartPos.y = 0
+					AdBlock.dragged = 1
+					TAdBlock.AdditionallyDragged = TAdBlock.AdditionallyDragged +1
+				Else
+					AdBlock.Pos.SetPos(AdBlock.StartPos)
+				EndIf
+			EndIf
+		Next
+		TAdBlock.AdditionallyDragged = 0
+    End Function
+
+	'remove adblocks not needed (contract successful before)
+	Method RemoveOverheadAdblocks:Int()
+		'loop through all blocks, increase count if we found a successful adblock
+		'- if count is bigger than spotcount, it is overhead: remove them
+
+		Local successfulBlocks:Int = 0
+		For Local otherBlock:TAdBlock= EachIn Players[ self.owner ].ProgrammePlan.Adblocks
+			'skip other contracts or failed ones
+			If otherBlock.contract <> self.contract OR otherBlock.botched then continue
+			'else add to the count
+			successfulBlocks :+ 1
+
+			'found enough successful adblocks of that contract? remove overhead
+			If successfulBlocks > self.contract.GetSpotCount() then otherBlock.RemoveFromPlan()
+		Next
+		Return successfulBlocks
+	End Method
+
+	'removes Adblocks which are supposed to be deleted for its contract being obsolete (expired)
+	'BeginDay: AdBlocks with contracts ending before that day get removed
+	Function RemoveAdblocks:Int(Contract:TContract, BeginDay:Int=0)
+		For Local otherBlock:TAdBlock= EachIn Players[ contract.owner ].ProgrammePlan.Adblocks
+			'skip other contracts
+			If otherBlock.contract <> contract then continue
+
+			if otherBlock.contract.daySigned + contract.GetDaysToFinish() < BeginDay
+				print "remove adblock with obsolete contract"
+				otherBlock.RemoveFromPlan()
+			EndIf
+		Next
+	End Function
+
+	Method ShowSheet:Int(x:Int,y:Int)
+		Self.contract.showSheet(x,y)
+	End Method
+
+	'remove from programmeplan
+	Method RemoveFromPlan()
+		Players[ self.owner ].ProgrammePlan.RemoveAdBlock(Self)
+		If game.networkgame Then NetworkHelper.SendPlanAdChange(self.owner, Self, 0)
     End Method
 
-    Method AddBlock()
-      'Print "LOCAL: added adblock:"+Self.contract.title
-'      Players[game.playerID].ProgrammePlan.RefreshProgrammePlan(game.playerID, Self.Programme.senddate)
-      Players[Game.playerID].ProgrammePlan.AddContract(Self.contract)
-      If game.networkgame Then NetworkHelper.SendPlanAdChange(game.playerID, Self, 1)
+	'add to programmeplan of the owner
+    Method AddToPlan()
+		Players[ self.owner ].ProgrammePlan.AddAdBlock(Self)
+		If game.networkgame Then NetworkHelper.SendPlanAdChange(self.owner, Self, 1)
     End Method
 
     Function GetBlockByContract:TAdBlock(contract:TContract)
-	 For Local _AdBlock:TAdBlock = EachIn TAdBlock.List
-		If contract.daysigned = _Adblock.contract.daysigned..
-		   And contract.title = _Adblock.contract.title..
-		   And contract.owner = _Adblock.contract.owner
-		  Return _Adblock
-		EndIf
-	 Next
-    End Function
+		For Local _AdBlock:TAdBlock = EachIn Players[ contract.owner ].ProgrammePlan.Adblocks
+			if contract = _Adblock.contract then return _Adblock
+		Next
+		return Null
+	End Function
 
-	Function GetBlock:TAdBlock(id:Int)
-	 For Local _AdBlock:TAdBlock = EachIn TAdBlock.List
-	 	If _Adblock.ID = id Then Return _Adblock
-	 Next
+	Function GetBlock:TAdBlock(playerID:int, id:Int)
+		For Local _AdBlock:TAdBlock = EachIn Players[ playerID ].ProgrammePlan.Adblocks
+			If _Adblock.ID = id Then Return _Adblock
+		Next
 		Return Null
 	End Function
 End Type
@@ -2692,20 +2577,18 @@ Type TProgrammeBlock Extends TBlockGraphical
 
 		Local maxWidth:Int = Self.image.w - 5
 		Local title:String = Self.programme.title
+		local titleAppend:string = ""
 		If Not Self.programme.isMovie()
-			'Test-Variablen: können nach einem Fix wieder weg
-			local a1:TProgramme = Self.programme
-			local a2:TProgramme = Self.programme.parent
-			local a3:int = Self.programme.episodeNumber
-			local a4:TList = Self.programme.parent.episodeList 'mv 09.11.2012: Hier kommt es ab und zu zu Fehlern beim Zugriff auf parent. Ich vermute ein Threading-Problem, da es nur passiert, wenn die KI schnell hintereinander Filme in den Programmplan setzt. Wenn man dann den Programmplan ansieht kommt es zur Exception
-			local a5:int = Self.programme.parent.episodeList.count()
-		
-			title = Self.programme.parent.title + " (" + Self.programme.episodeNumber + "/" + Self.programme.parent.episodeList.count() + ")"
+			title = Self.programme.GetParent().title
+			'uncomment if you wish episodenumber in title
+			'titleAppend = " (" + Self.programme.episodeNumber + "/" + Self.programme.GetParent().episodeList.count() + ")"
 		EndIf
 
-		While Assets.fonts.basefontBold.getWidth(title) > maxWidth And title.length > 4
+		While Assets.fonts.basefontBold.getWidth(title+titleAppend) > maxWidth And title.length > 4
 			title = title[..title.length-3]+".."
 		Wend
+		'add "(1/10)"
+		title = title + titleAppend
 
 		Assets.fonts.basefontBold.DrawBlock(title, _pos.x + 5, _pos.y +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
 		If color <> Null Then color.set()
@@ -2987,47 +2870,17 @@ End Type
 
 'Contracts used in AdAgency
 Type TContractBlock Extends TBlockGraphical
-	Field contract:TContract
-	Field slot:Int = 0			{saveload = "normal"}	'slot at the moment
-	Field origSlot:Int = 0		{saveload = "normal"}	'slot on table
+	Field contract:TContract						' which (signed) contract it is representing
+	Field slot:Int = 0								' slot at the moment
+	Field origSlot:Int = 0							' slot on table
+	Field dragAndDrop:TDragAndDrop					' local link to the dnd
 	Global DragAndDropList:TList = CreateList()
 	Global List:TList = CreateList()
 	Global AdditionallyDragged:Int =0
 
-  Function LoadAll(loadfile:TStream)
-    TContractBlock.List.Clear()
-	Print "cleared contractblocklist:"+TContractBlock.List.Count()
-    Local BeginPos:Int = Stream_SeekString("<CONTRACTB/>",loadfile)+1
-    Local EndPos:Int = Stream_SeekString("</CONTRACTB>",loadfile)  -12
-    'Local strlen:Int = 0
-    loadfile.Seek(BeginPos)
-    TContractBlock.AdditionallyDragged:Int = ReadInt(loadfile)
-	Local ContractBlockCount:Int = ReadInt(loadfile)
-	If ContractBlockCount > 0
-	Repeat
-      Local ContractBlock:TContractBlock= New TContractBlock
-	  ContractBlock.Pos.Load(Null)
-	  ContractBlock.OrigPos.Load(Null)
-	  Local ContractID:Int  = ReadInt(loadfile)
-	  If ContractID >= 0
-	    ContractBlock.contract = TContract.GetContract(ContractID)
-		Local targetgroup:Int = ContractBlock.contract.targetgroup
-		If targetgroup > 9 Or targetgroup <0 Then targetgroup = 0
-		ContractBlock.imageBaseName	= "gfx_contracts_"+targetgroup
- 	  	ContractBlock.width		= Assets.getSprite(ContractBlock.imageBaseName).w
- 	  	ContractBlock.Height	= Assets.getSprite(ContractBlock.imageBaseName).h
-	  EndIf
-	  ContractBlock.dragable= ReadInt(loadfile)
-	  ContractBlock.dragged = ReadInt(loadfile)
-	  ContractBlock.slot	= ReadInt(loadfile)
-		ContractBlock.StartPos.Load(Null)
-	  ContractBlock.owner   = ReadInt(loadfile)
-	  TContractBlock.List.AddLast(ContractBlock)
-	  ReadString(loadfile,5) 'finishing string (eg. "|PRB|")
-	Until loadfile.Pos() >= EndPos
-	EndIf
-	Print "loaded contractblocklist"
-  End Function
+	Function LoadAll(loadfile:TStream)
+		print "implement"
+	End Function
 
 	Function SaveAll()
 		Local ContractCount:Int = 0
@@ -3059,34 +2912,54 @@ Type TContractBlock Extends TBlockGraphical
 		LoadSaveFile.xmlCloseNode()
 	End Method
 
+	'all contracts in the suitcase will get signed...
 	Function ContractsToPlayer:Int(playerID:Int)
 		TContractBlock.list.sort(True, TBlock.SortDragged)
 
-		For Local locObject:TContractBlock = EachIn TContractBlock.List
-			If locobject.pos.x > 520 And locobject.owner <= 0
-				locobject.SignContract(playerID)
-			EndIf
+		For Local obj:TContractBlock = EachIn TContractBlock.List
+			'sign all on the suitcase side
+			If obj.pos.GetX() > 520 And obj.contract.owner <= 0 then obj.SignContract(playerID)
 		Next
 	End Function
 
+	'if botched or finished: remove the contract from the suitcase to
+	'gain space for other contracts
 	Function RemoveContractFromSuitcase(contract:TContract)
+		print "RO: cleanup RemoveContractFromSuitcase if working"
 		If contract <> Null
-			For Local ContractBlock:TContractBlock =EachIn TContractBlock.List
-				If ContractBlock.contract.id = contract.id Then TContractBlock.list.remove(ContractBlock);Exit
+			For Local obj:TContractBlock = EachIn TContractBlock.List
+				'If obj.contract.id = contract.id Then TContractBlock.list.remove(ContractBlock);Exit
+				If obj.contract = contract
+					TContractBlock.list.remove(obj)
+					Exit
+				endif
 			Next
 		EndIf
 	End Function
 
+	'adds the contract to a player, signs it and fetches a new one.
 	Method SignContract:Int(playerID:Int)
-		'locobject.owner = playerID
 		If game.networkgame
 			Local ContractArray:TContract[1]
 			ContractArray[0] = Self.contract
-			If network.IsConnected Then NetworkHelper.SendContractsToPlayer(game.playerID, ContractArray)
+			If network.IsConnected Then NetworkHelper.SendContractsToPlayer(playerID, ContractArray)
 			ContractArray = Null
 		EndIf
+		'adds a contract to the players collection
+		'contract gets signed THERE
 		Players[playerID].ProgrammeCollection.AddContract(Self.contract, playerID)
 
+		'create a new ContractBlock at the original Position
+		local newContract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.30) )
+		self.Create(newContract, self.origSlot)
+		'remove the now unused block
+		self.List.Remove(self)
+		'remove old DND-object
+		self.DragAndDropList.Remove(self.dragAndDrop)
+
+
+		print "RO: cleanup TContractBlock.SignContract if working"
+rem
 		Self.slot	= Self.origSlot	'revert to original slot
 
 		Local x:Int = 285 + Self.slot * Assets.getSprite(Self.imageBaseName).w
@@ -3104,46 +2977,48 @@ Type TContractBlock Extends TBlockGraphical
 		EndIf
 		Self.owner = 0
 		Return True
+endrem
 	End Method
 
 
 	'if owner = 0 then its a block of the adagency, otherwise it's one of the player'
 	Function Create:TContractBlock(contract:TContract, slot:Int=0, owner:Int=0)
-		Local LocObject:TContractBlock=New TContractBlock
-		Local targetgroup:Int = contract.targetgroup
+		Local obj:TContractBlock=New TContractBlock
+		Local targetgroup:Int = contract.GetTargetGroup()
 		If targetgroup > 9 Or targetgroup <0 Then targetgroup = 0
-		locObject.imageBaseName	= "gfx_contracts_"+targetgroup
- 	  	locObject.width			= Assets.getSprite(locObject.imageBaseName).w
- 	  	locObject.Height		= Assets.getSprite(locObject.imageBaseName).h
+		obj.imageBaseName	= "gfx_contracts_"+targetgroup
+ 	  	obj.width			= Assets.getSprite(obj.imageBaseName).w
+ 	  	obj.Height			= Assets.getSprite(obj.imageBaseName).h
 
-		Local x:Int = 285 + slot * LocObject.width
-		Local y:Int = 300 - 10 - LocObject.height - slot * 7
-		LocObject.Pos			= TPoint.Create(x, y)
-		LocObject.OrigPos		= TPoint.Create(x, y)
-		LocObject.StartPos		= TPoint.Create(x, y)
-		LocObject.slot 			= slot
-		LocObject.origSlot		= slot
-		locObject.owner 		= owner
-		LocObject.dragable 		= 1
-		LocObject.contract 		= contract
-		List.AddLast(LocObject)
-		TContractBlock.list.sort(True, TBlock.SortDragged)
+		Local x:Int = 285 + slot * obj.width
+		Local y:Int = 300 - 10 - obj.height - slot * 7
+		obj.Pos				= TPoint.Create(x, y)
+		obj.OrigPos			= TPoint.Create(x, y)
+		obj.StartPos		= TPoint.Create(x, y)
+		obj.slot 			= slot
+		obj.origSlot		= slot
+		obj.owner 			= owner
+		obj.dragable	 	= 1
+		obj.contract 		= contract
 
 		If owner = 0
-			Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-			DragAndDrop.slot 	= slot + 200
-			DragAndDrop.pos.SetXY(x,y)
-			DragAndDrop.w 		= LocObject.width
-			DragAndDrop.h 		= LocObject.height
-			TContractBlock.DragAndDropList.AddLast(DragAndDrop)
+			obj.DragAndDrop 		= New TDragAndDrop
+			obj.DragAndDrop.slot 	= slot + 200
+			obj.DragAndDrop.pos.SetXY(x,y)
+			obj.DragAndDrop.w 		= obj.width
+			obj.DragAndDrop.h 		= obj.height
+			TContractBlock.DragAndDropList.AddLast(obj.DragAndDrop)
 		Else
-			LocObject.dragable = 0
+			obj.dragable = 0
 		EndIf
-		Return LocObject
+
+		List.AddLast(obj)
+		TContractBlock.list.sort(True, TBlock.SortDragged)
+		Return obj
 	End Function
 
-	Method SetDragable(_dragable:Int = 1)
-		dragable = _dragable
+	Method SetDragable(on:Int = 1)
+		dragable = on
 	End Method
 
     'draw the Block inclusive text
@@ -3168,10 +3043,12 @@ Type TContractBlock Extends TBlockGraphical
 
 	Function DrawAll(DraggingAllowed:Int)
 		TContractBlock.list.sort(True, TBlock.SortDragged)
-		For Local locObject:TContractBlock = EachIn TContractBlock.List
-			If locObject.contract <> Null And (locobject.owner <= 0 Or locobject.owner = Game.playerID)
-				locObject.Draw()
-			EndIf
+		For Local obj:TContractBlock = EachIn TContractBlock.List
+			if not obj.contract
+				TContractBlock.List.Remove(obj)
+				continue
+			endif
+			If obj.owner <= 0 Or obj.owner = Game.playerID then obj.Draw()
 		Next
 	End Function
 
@@ -3180,30 +3057,29 @@ Type TContractBlock Extends TBlockGraphical
 
 		TContractBlock.list.sort(True, TBlock.SortDragged)
 
-		For Local locObject:TContractBlock = EachIn TContractBlock.List
-			If locobject.owner = Game.playerID Or locobject.startPos.x > 550
-				locobject.Pos.SetXY(550 + Assets.GetSprite(locobject.imageBaseName).w*localslot, 87)
-				locobject.StartPos.SetPos(locobject.Pos)
-				If locobject.owner = game.playerID Then locobject.dragable = 0
-				locobject.slot = localslot
+		For Local obj:TContractBlock = EachIn TContractBlock.List
+			If obj.owner = Game.playerID Or obj.startPos.x > 550
+				obj.Pos.SetXY(550 + Assets.GetSprite(obj.imageBaseName).w*localslot, 87)
+				obj.StartPos.SetPos(obj.Pos)
+				If obj.owner = game.playerID Then obj.SetDragable(0)
+				obj.slot = localslot
 				localslot:+1
 			EndIf
-			If DraggingAllowed And locobject.owner <= 0
-				If MOUSEMANAGER.IsHit(2) And locObject.dragged = 1
-					Print "right"
-					locObject.Pos.SetPos(locObject.StartPos)
-					locobject.dragged = 0
+			If DraggingAllowed And obj.owner <= 0
+				If MOUSEMANAGER.IsHit(2) And obj.dragged = 1
+					obj.Pos.SetPos(obj.StartPos)
+					obj.dragged = 0
 					MOUSEMANAGER.resetKey(2)
 				EndIf
 				If MOUSEMANAGER.IsHit(1)
 					'drag
-					If locObject.dragged = 0 And locObject.dragable = 1
-						If functions.MouseIn(locObject.Pos.x, locObject.Pos.y, locObject.width-1, locObject.height)
-							locObject.dragged = 1
-							For Local OtherlocObject:TContractBlock = EachIn TContractBlock.List
-								If OtherLocObject.dragged And OtherLocObject <> locObject
-									TPoint.SwitchPos(locObject.StartPos, OtherLocObject.StartPos)
-									OtherLocObject.dragged = 0
+					If obj.dragged = 0 And obj.dragable = 1
+						If functions.MouseIn(obj.Pos.x, obj.Pos.y, obj.width-1, obj.height)
+							obj.dragged = 1
+							For Local otherObj:TContractBlock = EachIn TContractBlock.List
+								If otherObj.dragged And otherObj <> obj
+									TPoint.SwitchPos(obj.StartPos, otherObj.StartPos)
+									otherObj.dragged = 0
 								EndIf
 							Next
 							MouseManager.resetKey(1)
@@ -3211,43 +3087,43 @@ Type TContractBlock Extends TBlockGraphical
 					'drop
 					Else
 						Local realDNDfound:Int = 0
-						locObject.dragged = 0
+						obj.dragged = 0
 
 						For Local DragAndDrop:TDragAndDrop = EachIn TContractBlock.DragAndDropList
-							If DragAndDrop.CanDrop(MouseX(), MouseY()) = 1 And (DragAndDrop.pos.x < 550 Or DragAndDrop.pos.x > 550 + Assets.GetSprite(locobject.imageBaseName).w * (localslot - 1))
+							If DragAndDrop.CanDrop(MouseX(), MouseY()) = 1 And (DragAndDrop.pos.x < 550 Or DragAndDrop.pos.x > 550 + Assets.GetSprite(obj.imageBaseName).w * (localslot - 1))
 								'limit contracts in suitcase
 								If localslot >= Game.maxContractsAllowed Then Exit
 
-								For Local OtherlocObject:TContractBlock= EachIn TContractBlock.List
-									If DraggingAllowed And otherlocobject.owner <= 0
-										If MOUSEMANAGER.IsHit(1) And OtherlocObject.dragable = 1 And OtherlocObject.pos.isSame(DragAndDrop.pos)
-											OtherlocObject.dragged = 1
+								For Local otherObj:TContractBlock= EachIn TContractBlock.List
+									If DraggingAllowed And otherObj.owner <= 0
+										If MOUSEMANAGER.IsHit(1) And otherObj.dragable = 1 And otherObj.pos.isSame(DragAndDrop.pos)
+											otherObj.dragged = 1
 											MouseManager.resetKey(1)
 											Exit
 										EndIf
 									EndIf
 								Next
-								LocObject.Pos.SetPos(DragAndDrop.pos)
-								LocObject.StartPos.SetPos(LocObject.Pos)
+								obj.Pos.SetPos(DragAndDrop.pos)
+								obj.StartPos.SetPos(obj.Pos)
 								realDNDfound =1
 								Exit 'exit loop-each-dragndrop, we've already found the right position
 							EndIf
 						Next
 
 						'no drop-area under Adblock (otherwise this part is not executed - "exit"), so reset position
-						If LocObject.IsAtStartPos()
-							locObject.dragged = 0
-							LocObject.Pos.SetPos(LocObject.StartPos)
+						If obj.IsAtStartPos()
+							obj.dragged = 0
+							obj.Pos.SetPos(obj.StartPos)
 							TContractBlock.list.sort(True, TBlock.SortDragged)
 						EndIf
 					EndIf
 				EndIf
-				If locObject.dragged = 1
+				If obj.dragged = 1
 					TContractBlock.AdditionallyDragged :+1
-					LocObject.Pos.SetXY(MouseX() - locObject.width /2 -  TContractBlock.AdditionallyDragged *5,..
-										MouseY() - locObject.height /2 - TContractBlock.AdditionallyDragged *5)
+					obj.Pos.SetXY(MouseX() - obj.width/2  - TContractBlock.AdditionallyDragged *5,..
+							      MouseY() - obj.height/2 - TContractBlock.AdditionallyDragged *5)
 				Else
-					LocObject.Pos.SetPos(LocObject.StartPos)
+					obj.Pos.SetPos(obj.StartPos)
 				EndIf
 			EndIf
 		Next
@@ -3258,13 +3134,7 @@ End Type
 
 Type TSuitcaseProgrammeBlocks Extends TBlockGraphical
 	Field Programme:TProgramme
-	Field id:Int = 0
-	Global LastID:Int = 0
 
-	Method GetNewID()
-		Self.id = Self.LastID
-		Self.LastID:+1
-	EndMethod
 
     'draw the Block inclusive text
     'zeichnet den Block inklusive Text

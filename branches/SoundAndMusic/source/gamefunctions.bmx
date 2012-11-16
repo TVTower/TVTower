@@ -338,7 +338,7 @@ Type TgfxContractlist extends TPlannerList
 	End Method
 
 	Method DrawTapes:Int()
-		local boxHeight:int			= gfxtape.h + 2
+		local boxHeight:int			= gfxtape.h + 1
 		Local locx:Int 				= Pos.x - gfxcontracts.w + 10
 		Local locy:Int 				= Pos.y+7 - boxHeight
 		local font:TBitmapFont 		= Assets.GetFont("Default", 10)
@@ -346,7 +346,7 @@ Type TgfxContractlist extends TPlannerList
 			locy :+ boxHeight
 			gfxtape.Draw(locx, locy)
 
-			font.drawBlock(contract.title, locx + 13,locy + 3, 139,16,0,0,0,0,True)
+			font.drawBlock(contract.contractBase.title, locx + 13,locy + 3, 139,16,0,0,0,0,True)
 			If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtape.w, gfxtape.h)
 				Game.cursorstate = 1
 				SetAlpha 0.2;DrawRect(locx, locy, gfxtape.w, gfxtape.h) ;SetAlpha 1.0
@@ -700,8 +700,8 @@ Type TBlockGraphical extends TBlock
 	Field imageDraggedBaseName:string
 	Field image:TGW_Sprites
 	Field image_dragged:TGW_Sprites
-
     Global AdditionallyDragged:Int	= 0
+
 End Type
 
 Type TBlock
@@ -714,6 +714,14 @@ Type TBlock
   Field owner:Int				= 0 {saveload="normalExt"}
   Field Height:Int {saveload = "normalExt"}
   Field width:Int {saveload = "normalExt"}
+  Field id:int
+  Global LastID:int = 0
+
+	Method GenerateID()
+		Self.id = Self.LastID
+		Self.LastID:+1
+	End Method
+
 
 	'switches coords and state of blocks
 	Method SwitchBlock(otherObj:TBlock)
@@ -1241,11 +1249,11 @@ Type TInterface
 		GUIManager.Update("InGame")
 		If ShowChannel <> 0
 			If Game.minute >= 55
-				Local contract:TContract = Players[ShowChannel].ProgrammePlan.GetActualContract()
+				Local adblock:TAdBlock = Players[ShowChannel].ProgrammePlan.GetActualAdBlock()
 				Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_ads")
-			    If contract <> Null
+			    If adblock <> Null
 					ActualProgramToolTip.TitleBGtype 	= 1
-					ActualProgramText 					= getLocale("ADVERTISMENT")+": "+contract.title
+					ActualProgramText 					= getLocale("ADVERTISMENT")+": "+adblock.contract.contractBase.title
 				Else
 					ActualProgramToolTip.TitleBGtype	= 2
 					ActualProgramText					= getLocale("BROADCASTING_OUTAGE")

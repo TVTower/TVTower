@@ -1,34 +1,33 @@
 'Summary: all kind of characters walking through the building (players, terrorists and so on)
 Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
-	Field Name:String		= "unknown"
 	'rect: from TMoveableAnimSprites
 	' .position.y is difference to y of building
 	' .dimension.x and .y = "end" of figure in sprite
 
-	Field initialdx:Float	= 0.0 'backup of self.vel.x
-	field target:TPoint		= TPoint.Create(-1,-1) {_exposeToLua}
+	Field Name:String			= "unknown"
+	Field initialdx:Float		= 0.0 'backup of self.vel.x
+	field target:TPoint			= TPoint.Create(-1,-1) {_exposeToLua}
 
-	Field toRoom:TRooms		= Null			{sl = "no"}
-	Field fromRoom:TRooms	= Null			{sl = "no"}
-	Field clickedToRoom:TRooms = Null		{sl = "no"}
-	Field inRoom:TRooms		= Null			{sl = "no"}
-	Field id:Int			= 0
-	Field calledElevator:Int= 0
-	Field Visible:Int		= 1
-	'Field Sprite:TMoveableAnimSprites 				{sl = "no"}
+	Field toRoom:TRooms			= Null			{sl = "no"}
+	Field fromRoom:TRooms		= Null			{sl = "no"}
+	Field clickedToRoom:TRooms	= Null			{sl = "no"}
+	Field inRoom:TRooms			= Null			{sl = "no"}
+	Field id:Int				= 0
+	Field Visible:Int			= 1
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
 	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
 
-	Field inElevator:Byte	= 0
-	Field ControlledByID:Int= -1
-	Field alreadydrawn:Int	= 0 			{sl = "no"}
+	Field inElevator:Byte		= 0
+	Field ControlledByID:Int	= -1
+	Field alreadydrawn:Int		= 0 			{sl = "no"}
 	Field updatefunc_(ListLink:TLink, deltaTime:float) {sl = "no"}
-	Field ListLink:TLink					{sl = "no"}
-	Field ParentPlayer:TPlayer = Null		{sl = "no"}
-	Global LastID:Int		= 0				{sl = "no"}
-	Global List:TList		= CreateList()
+	Field ListLink:TLink						{sl = "no"}
+	Field ParentPlayer:TPlayer	= Null			{sl = "no"}
+
+	Global LastID:Int			= 0				{sl = "no"}
+	Global List:TList			= CreateList()
 
 
 	Function Load:TFigures(pnode:txmlNode, figure:TFigures)
@@ -223,7 +222,7 @@ endrem
 	End Method
 
 	Method LeaveRoom:Int()
-		print self.name+" leaves room:"+self.inRoom.name
+		if self.inRoom <> null then print self.name+" leaves room:"+self.inRoom.name else print self.name+" leaves special room."
 
 		If ParentPlayer <> Null And self.isAI()
 			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
@@ -298,8 +297,11 @@ endrem
 	End Method
 
 	Method CallElevator:Int()
-		if calledElevator then return false
-		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then calledElevator=true;return false
+		'auskommentieren wenn nur der Spieler den Fahrstuhl holen kann
+		'if id <> game.playerID then return 0
+
+		if IsElevatorCalled() then return false
+		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then return false
 		'print self.name+" calls elevator"
 
 		If id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader())
@@ -307,7 +309,7 @@ endrem
 		Else
 			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, True)
 		EndIf
-		calledElevator = True
+
 		If Not Building.Elevator.EgoMode Then SortList(Building.Elevator.FloorRouteList)
 	End Method
 
@@ -356,6 +358,14 @@ endrem
 		'nothing
 	End Method
 
+	Method IsElevatorCalled:int()
+		For Local floorRoute:TFloorRoute = EachIn Building.Elevator.FloorRouteList
+			If floorRoute.who = self.id
+				Return true
+			Endif
+		Next
+		Return false
+	End Method
 
 	Method Update(deltaTime:float)
 		'update parent class (anim pos)
@@ -436,7 +446,7 @@ endrem
 				If Building.elevator.allowedPassengerID = -1 or Building.elevator.allowedPassengerID = self.id
 					'empty and open elevator on my floor PLUS I called it
 					if Building.elevator.onFloor = GetFloor()
-						If not Building.elevator.passenger and calledElevator and Building.elevator.Open = 1
+						If not Building.elevator.passenger and Building.elevator.Open = 1
 							'print "send elevator"
 							SendElevator()
 						EndIf
@@ -446,7 +456,6 @@ endrem
 
 			If Building.Elevator.passenger = self and Building.Elevator.Open = 1 and rect.GetY() = target.y and Building.getFloor(building.pos.y+target.y) = Building.Elevator.toFloor
 				If self.sprite.h + Int(rect.GetY()) = target.y
-					calledElevator				= False
 					Building.Elevator.passenger	= null
 					'set target again - so player can click on signs in roomboard
 					'self.SetToRoom( TRooms.GetTargetroom(self.target.x + self.FrameWidth /2, Building.pos.y + Building.GetFloorY(Building.GetFloor(self.pos.y)) - 5) )

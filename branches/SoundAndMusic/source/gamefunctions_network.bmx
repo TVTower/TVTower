@@ -636,7 +636,7 @@ Type TNetworkHelper
 		local sendtime:int		= obj.getInt(9)
 		local contractID:int	= obj.getInt(10)
 
-		Local Adblock:TAdBlock	= TAdBlock.getBlock( blockID )
+		Local Adblock:TAdBlock	= TAdBlock.getBlock( playerID, blockID )
 		if not Adblock
 			Local Contract:TContract = Players[ playerID ].ProgrammeCollection.getContract( contractID )
 			If not contract then return
@@ -648,17 +648,15 @@ Type TNetworkHelper
 
 		Adblock.senddate			= senddate
 		Adblock.sendtime			= sendtime
-		Adblock.contract.senddate	= senddate
-		Adblock.contract.sendtime	= sendtime
 		AdBlock.Pos					= pos
 		AdBlock.StartPos			= startpos
 
 		Players[ playerID ].ProgrammePlan.RefreshAdPlan( senddate )
 		If add
-			Players[ playerID ].ProgrammePlan.AddContract( adblock.contract )
+			Players[ playerID ].ProgrammePlan.AddAdBlock( adblock )
 			'Print "NET: ADDED adblock:"+Adblock.contract.Title+" to Player:"+playerID
 		Else
-			Players[ playerID ].ProgrammePlan.RemoveContract( adblock.contract )
+			Players[ playerID ].ProgrammePlan.RemoveAdBlock( adblock )
 			'Print "NET: REMOVED adblock:"+Adblock.contract.Title+" from Player:"+playerID
 		EndIf
 	End Method

@@ -896,27 +896,36 @@ endrem
 	Function ComputeAds()
 		Local Adblock:TAdBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
-			Adblock = Player.ProgrammePlan.GetActualAdBlock(Player.playerID)
-			If Adblock <> Null
-				If Player.audience < Adblock.contract.calculatedMinAudience
-					'Print "player audience:"+player.audience + " < "+Adblock.contract.calculatedMinAudience
-					Adblock.contract.botched = 1
-					Adblock.GetPreviousContractCount()
-				EndIf
-				If Player.audience >= Adblock.contract.calculatedMinAudience
-					Adblock.contract.botched = 3
-				EndIf
-				If Player.audience > Adblock.contract.calculatedMinAudience And Adblock.contract.spotnumber >= Adblock.contract.spotcount
-					Adblock.contract.botched = 2
-					Print "werbegeld: "+Adblock.contract.GetProfit()
+			Adblock = Player.ProgrammePlan.GetActualAdBlock()
+			'skip if no ad is send at the moment
+			If not Adblock then continue
+
+			'ad failed (audience lower than needed)
+			If Player.audience < Adblock.contract.GetMinAudience()
+				Adblock.SetBotched(1)
+			'ad is ok
+			else
+				Adblock.SetBotched(0)
+				'successful sent - so increase the value the contract
+				AdBlock.contract.spotsSent:+1
+
+				'successful sent all needed spots?
+				If Adblock.contract.GetSpotsSent() >= Adblock.contract.GetSpotsToSend()
+					'set contract fulfilled
+					Adblock.contract.state = 1
+
+					'give money
 					Player.finances[Game.getWeekday()].earnAdProfit(Adblock.contract.GetProfit() )
-					AdBlock.RemoveOverheadAdblocks() 'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
-					'Print "should remove contract:"+adblock.contract.title
+
+					'removes Blocks which are more than needed (eg 3 of 2 to be shown Adblocks)
+					AdBlock.RemoveOverheadAdblocks()
+
+					'remove contract from collection (and suitcase)
+					'contract is still stored within adblocks (until they get deleted)
 					TContractBlock.RemoveContractFromSuitcase(Adblock.contract)
-					Player.ProgrammeCollection.RemoveOriginalContract(Adblock.contract)
+					Player.ProgrammeCollection.RemoveContract(Adblock.contract)
+				endif
 				EndIf
-			EndIf
-			Adblock = Null
 		Next
 	End Function
 
@@ -930,22 +939,16 @@ endrem
 
 	'computes penalties for expired ad-contracts
 	Function ComputeContractPenalties()
-		Local LastContract:TContract = Null
 		For Local Player:TPlayer = EachIn TPlayer.List
 			For Local Contract:TContract = EachIn Player.ProgrammeCollection.contractlist
-				If contract <> Null
-					If (contract.daystofinish-(Game.day - contract.daysigned)) <= 0
-						If LastContract = Null Or LastContract.title <> contract.title
+				If not contract then continue
+
+				If contract.GetDaysLeft() <= 0
 							Player.finances[Game.getWeekday()].PayPenalty(contract.GetPenalty() )
+					Player.ProgrammeCollection.RemoveContract(contract)
+					TAdBlock.RemoveAdblocks(contract, Game.day)
 							'Print Player.name+" paid a penalty of "+contract.calculatedPenalty+" for contract:"+contract.title
 						EndIf
-						LastContract = contract
-						Player.ProgrammeCollection.RemoveOriginalContract(contract)
-						TAdBlock.RemoveAdblocks(contract, Game.day)
-					EndIf
-				EndIf
-				contract= Null
-				LastContract= Null
 			Next
 		Next
 	End Function
@@ -1566,6 +1569,7 @@ Type TElevator
 		obj.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
 		obj.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
 		obj.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
+		obj.spriteDoor.setCurrentAnimation("closed", True)
 		obj.spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
 		obj.Parent		= Parent
 		obj.Pos.SetY(Parent.GetFloorY(obj.onFloor) - obj.spriteInner.h)
@@ -1575,6 +1579,7 @@ Type TElevator
 	'nice-modus ? -- wenn spieler aus 1. etage fahrstuhl von 12. etage holt - und zwischendrin
 	'einer von 8. in den 6. fahren will - mitnehmen - dafuer muss der Fahrstuhl aber wissen,
 	'das er vom 8. in den 6. will - momentan gibt es nur die information "fahr in den 8."
+	'mv: Überlegungen zur Optimierung der Route im Kommentar von OptimizeRoute()
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
 		'print "add floor route: "+floornumber
 
@@ -1599,13 +1604,13 @@ Type TElevator
 
 	Method GetFloorRoute:Int()
 		If Not FloorRouteList.IsEmpty()
+			'OptimizeRoute()
 			'elevator is on the floor the route
 			Local tmpfloor:TFloorRoute = TFloorRoute(FloorRouteList.First())
 			Local fig:TFigures = TFigures.getByID( tmpfloor.who )
 			allowedPassengerID = tmpfloor.who
 			If onFloor = tmpfloor.floornumber
 				If fig <> Null And Not fig.isAtElevator()
-					fig.calledElevator = False
 					allowedPassengerID = -1
 				EndIf
 				'print "entferne erste route da onfloor "+onFloor+" = "+tmpfloor.floornumber+" tmpfloor - fig: "+fig.name
@@ -1615,6 +1620,16 @@ Type TElevator
 		EndIf
 		allowedPassengerID = -1
 		Return onFloor
+	End Method
+
+	Method OptimizeRoute()
+		'mv: Nach einiger Überlegungszeit kam ich zu folgendem Ergebnis:
+		'Es ist ohne das Feature mehrere Passagier zu befördern nicht möglich eine Optimierung vorzunehmen.
+		'Problem: Man kann zum Zeitpunkt des Fahrstuhl-Calls nicht sicher sagen wo die Figur hin will... oder ob sie ihre Meinung bezüglich des Ziels während des Wartens ändert.
+		'Deshalb lassen sich z.B. auch keine Leerfahren mit Zwischenpassaieren ausnutzen
+		'Eine Möglichkeit für Optimierungen sehe ich dennoch: Dies erfordert aber ein wichtiges Feature: Mehrere Passagiere
+
+		'Testcode entfernt
 	End Method
 
 	Method CloseDoor()
@@ -1764,7 +1779,6 @@ Type TElevator
 			open = 2 'opening
 			If spriteDoor.getCurrentAnimation().isFinished()
 				If open = 2 And passenger <> Null
-					passenger.calledElevator= False
 					passenger.inElevator	= False
 					passenger				= Null
 				EndIf
@@ -2303,6 +2317,8 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 	If figure.inRoom <> Null
 		If figure.SpecialTimer.isExpired()
 			Figure.SpecialTimer.Reset()
+			'sometimes wait a bit longer
+			if rand(0,100) < 20
 			Local room:TRooms
 			Repeat
 				room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
@@ -2315,6 +2331,7 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 			EndIf
 			'Print "Bote: war in Raum -> neues Ziel gesucht"
 			Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
+			endif
 		EndIf
 	EndIf
 	If figure.inRoom = Null And figure.clickedToRoom = Null And figure.vel.GetX() = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
@@ -2595,7 +2612,8 @@ StationMap.AddStation(310, 260, 4, Players[4].maxaudience)
 SetColor 255,255,255
 
 For Local i:Int = 0 To 9
-	TContractBlock.Create(TContract.GetRandomContractWithMaxAudience(Game.getMaxAudience(-1), -1, 0.15), i, 0)
+	local contract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.15) )
+	TContractBlock.Create(contract, i, 0)
 	TMovieAgencyBlocks.Create(TProgramme.GetRandomMovie(),i,0)
 	If i > 0 And i < 9 Then TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithMinPrice(200000),i)
 Next
@@ -2947,7 +2965,7 @@ Function Menu_GameSettings_Draw()
 				Local ContractArray:TContract[]
 				For Local j:Int = 0 To Game.startAdAmount-1
 					ContractArray		= ContractArray[..ContractArray.length+1]
-					ContractArray[j]	= TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids, 0.10)
+					ContractArray[j]	= TContract.Create(TContractBase.GetRandomWithMaxAudience(Players[ playerids ].maxaudience, 0.10))
 				Next
 				NetworkHelper.SendContractsToPlayer(playerids, ContractArray)
 				Print "sent data for player: "+playerids
@@ -3174,7 +3192,7 @@ Function Init_Creation()
 			Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			For Local i:Int = 0 To 2
-				Players[playerids].ProgrammeCollection.AddContract(TContract.GetRandomContractWithMaxAudience(Players[ playerids ].maxaudience, playerids, 0.10),playerids)
+				Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Players[ playerids ].maxaudience, 0.10)),playerids)
 			Next
 		Next
 		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
@@ -3189,9 +3207,15 @@ Function Init_Creation()
 	'creation of blocks for players rooms
 	For Local playerids:Int = 1 To 4
 		lastblocks = 0
-		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 0 * Assets.GetSprite("pp_adblock1").h, playerids, 1)
-		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 1 * Assets.GetSprite("pp_adblock1").h, playerids, 2)
-		TAdBlock.Create(67 + Assets.GetSprite("pp_programmeblock1").w, 17 + 2 * Assets.GetSprite("pp_adblock1").h, playerids, 3)
+		SortList(Players[playerids].ProgrammeCollection.ContractList)
+
+		local addWidth:int = Assets.GetSprite("pp_programmeblock1").w
+		local addHeight:int = Assets.GetSprite("pp_adblock1").h
+		local playerCollection:TPlayerProgrammeCollection = Players[playerids].ProgrammeCollection
+		TAdBlock.Create(playerCollection.GetRandomContract(), 67 + addWidth, 17 + 0 * addHeight, playerids)
+		TAdBlock.Create(playerCollection.GetRandomContract(), 67 + addWidth, 17 + 1 * addHeight, playerids)
+		TAdBlock.Create(playerCollection.GetRandomContract(), 67 + addWidth, 17 + 2 * addHeight, playerids)
+
 		Local lastprogramme:TProgrammeBlock
 		lastprogramme = TProgrammeBlock.Create(67, 17 + 0 * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 1)
 		lastblocks :+ lastprogramme.programme.blocks
