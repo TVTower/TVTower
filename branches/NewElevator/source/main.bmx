@@ -2900,8 +2900,8 @@ Function DrawMain(tweenValue:Float=1.0)
 		Assets.fonts.baseFont.draw("tofloor:" + Building.elevator.TargetFloor, 25, startY)
 
 		Assets.fonts.baseFont.draw("Status:" + Building.elevator.ElevatorStatus, 100, startY)
-		if Building.elevator.TemporaryRouteList <> null
-			For Local FloorRoute:TFloorRoute = EachIn Building.elevator.TemporaryRouteList
+		if Building.elevator.Strategy.TemporaryRouteList <> null
+			For Local FloorRoute:TFloorRoute = EachIn Building.elevator.Strategy.TemporaryRouteList
 				If floorroute.call = 0 then callType = " 'senden' " else callType= " 'holen' "
 				Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
 				routepos:+1
