@@ -1099,10 +1099,10 @@ Type TAnimation
 		local obj:TAnimation = new TAnimation
 		local framecount:int = len( framesArray )
 
-		obj.frames		= obj.frames[..framecount+1] 'extend
-		obj.framesTime	= obj.framesTime[..framecount+1] 'extend
+		obj.frames		= obj.frames[..framecount] 'extend
+		obj.framesTime	= obj.framesTime[..framecount] 'extend
 
-		For local i:int = 0 to framecount-1
+		For local i:int = 0 until framecount
 			obj.frames[i]		= framesArray[i][0]
 			obj.framesTime[i]	= float(framesArray[i][1]) * 0.001
 		Next
@@ -1111,28 +1111,29 @@ Type TAnimation
 		return obj
 	End Function
 
-	Method Update(deltaTime:float=1.0)
-		If not self.paused
-			if self.frameTimer = null then self.ResetFrameTimer()
+	Method Update:int(deltaTime:float=1.0)
+		'skip update if only 1 frame is set
+		'skip if paused
+		If self.paused or self.frames.length <= 1 then return 0
 
-			self.frameTimer :- deltaTime
-			if self.frameTimer <= 0.0
-				'increase current frameposition but only if frame is set
-				'resets frametimer too
-				self.setCurrentFramePos(self.currentFramePos + 1)
-				'print self.currentFramePos + " -> "+ self.currentFrame
+		if self.frameTimer = null then self.ResetFrameTimer()
+		self.frameTimer :- deltaTime
+		if self.frameTimer <= 0.0
+			'increase current frameposition but only if frame is set
+			'resets frametimer too
+			self.setCurrentFramePos(self.currentFramePos + 1)
+			'print self.currentFramePos + " -> "+ self.currentFrame
 
-				'reached end
-				If self.currentFramePos >= len(self.frames)-1
-					If self.repeatTimes = 0 then
-						self.Pause()	'stop animation
-					Else
-						self.setCurrentFramePos( 0 )
-						self.repeatTimes	:-1
-					EndIf
+			'reached end
+			If self.currentFramePos >= len(self.frames)-1
+				If self.repeatTimes = 0 then
+					self.Pause()	'stop animation
+				Else
+					self.setCurrentFramePos( 0 )
+					self.repeatTimes	:-1
 				EndIf
-			Endif
-		EndIf
+			EndIf
+		Endif
 	End Method
 
 	Method Reset()
