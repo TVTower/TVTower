@@ -834,7 +834,7 @@ endrem
 	End Function
 
 
-	Function RoundMoney:int(value:int)
+	Function RoundToBeautifulValue:int(value:int)
 		if value = 0 then return 0
 		if value <= 25 then return 25
 		if value <= 50 then return 50

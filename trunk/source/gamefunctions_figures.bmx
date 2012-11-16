@@ -222,7 +222,7 @@ endrem
 	End Method
 
 	Method LeaveRoom:Int()
-		print self.name+" leaves room:"+self.inRoom.name
+		if self.inRoom <> null then print self.name+" leaves room:"+self.inRoom.name else print self.name+" leaves special room."
 
 		If ParentPlayer <> Null And self.isAI()
 			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
@@ -297,6 +297,9 @@ endrem
 	End Method
 
 	Method CallElevator:Int()
+		'auskommentieren wenn nur der Spieler den Fahrstuhl holen kann
+		'if id <> game.playerID then return 0
+
 		if IsElevatorCalled() then return false
 		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then return false
 		'print self.name+" calls elevator"

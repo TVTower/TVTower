@@ -580,10 +580,8 @@ Type RoomHandler_Office extends TRoomHandler
 						Exit
 					EndIf
 				Next
-				For Local AdBlock:TAdBlock = EachIn TAdBlock.List
-					If room.owner = AdBlock.owner And..
-					   AdBlock.senddate = Game.daytoplan And..
-					   functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.width, AdBlock.Height)
+				For Local AdBlock:TAdBlock = EachIn Players[ room.owner ].ProgrammePlan.AdBlocks
+					If AdBlock.senddate = Game.daytoplan And functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.width, AdBlock.Height)
 						Game.cursorstate = 1
 						If MouseX() <= 400 then AdBlock.ShowSheet(358,20);Exit else AdBlock.ShowSheet(30,20);Exit
 					EndIf
@@ -1174,7 +1172,7 @@ Function Room_Elevator_Compute(_room:TRooms)
 		local mouseHit:int = MouseManager.IsHit(1)
 
 		Game.cursorstate = 0
-		playerFigure.fromroom =Null
+		playerFigure.fromroom = Null
 		If playerFigure.inRoom.name = "elevator"
 			if Building.Elevator.waitAtFloorTimer <= MilliSecs()
 				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
@@ -1482,36 +1480,17 @@ Type TRoomSigns Extends TBlock
 		Else
 			If imagewithtext <> Null
 				imagewithtext.Draw(Pos.x,Pos.y)
-			Else
-				if image <> null
-					image.Draw(Pos.x,Pos.y)
-					Local colr:Int = 255
-					Local colg:Int = 255
-					Local colb:Int = 255
-					If colr > 255 Then colr = 255
-					If colg > 255 Then colg = 255
-					If colb > 255 Then colb = 255
-					SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+23,Pos.y+4,150,20,0,0,0,0,1)
-					SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,0,0,0,1)
-					Local TxtWidth:Int = Min(TextWidth(title)+4, image.w-23-5)
-					Local pixmap:TPixmap = GrabPixmap(Pos.x+23-2,Pos.y+4-2,TxtWidth,TextHeight(title)+3)
-					pixmap = ConvertPixmap(pixmap, PF_RGB888)
-					blurPixmap(pixmap, 0.5)
-					pixmap = ConvertPixmap(pixmap, PF_RGB888)
-					DrawImage(LoadImage(pixmap), Pos.x+21,Pos.y+2)
-
-					If owner > 0 And owner <=4
-						SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,colr,colg,colb,1)
-					Else
-						SetAlpha 1.0;Assets.GetFont("Default",10).drawBlock(title, Pos.x+22,Pos.y+3,150,20,0,250,250,250,1)
-					EndIf
+			Elseif image
+				local newimgwithtext:Timage = image.GetImageCopy()
+				Local font:TBitmapFont = Assets.GetFont("Default",9, BOLDFONT)
+				font.setTargetImage(newimgwithtext)
+				if self.owner > 0
+					font.drawBlock(title, 22, 3, 150,20, 0, 230, 230, 230, 0, 2, 1, 0.5)
+				else
+					font.drawBlock(title, 22, 3, 150,20, 0, 50, 50, 50, 0, 2, 1, 0.3)
 				endif
-			EndIf
-			If imagewithtext = Null AND image <> null
-				local newimgwithtext:Timage = TImage.Create(image.w, image.h -1,1,0,255,0,255)
-				newimgwithtext.pixmaps[0].format = PF_RGB888
-				newimgwithtext.pixmaps[0] = GrabPixmap(Pos.x,Pos.y,image.w,image.h-1)
-				newimgwithtext.pixmaps[0] = ConvertPixmap(newimgwithtext.pixmaps[0], PF_RGB888)
+				font.resetTarget()
+
 				imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
 			EndIf
 		EndIf

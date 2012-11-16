@@ -529,6 +529,21 @@ Type TBitmapFont
 				self.draw(text, x+1,y+1)
 				SetAlpha oldA
 			endif
+		'glow
+		else if style = 3
+			if doDraw
+				local oldA:float = getAlpha()
+				SetColor 0,0,0
+				if special <> -1.0 then SetAlpha 0.5*special*oldA else SetAlpha 0.25*oldA
+				self.draw(text, x-2,y)
+				self.draw(text, x+2,y)
+				self.draw(text, x,y-2)
+				self.draw(text, x,y+2)
+				if special <> -1.0 then SetAlpha special*oldA else SetAlpha 0.5*oldA
+				self.draw(text, x+1,y+1)
+				self.draw(text, x-1,y-1)
+				SetAlpha oldA
+			endif
 		endif
 
 		SetColor( cr,cg,cb )
@@ -933,6 +948,8 @@ Type TGW_Sprites extends TRenderable
 		DrawPixmapOnPixmap(self.getPixmap(), pixmap, x,y, color)
 	End Method
 
+	'is only a reference to the memory block of the pixmap
+	'NO REAL copy
 	Method GetPixmap:TPixmap(loadAnimated:int =1)
 		Local DestPixmap:TPixmap = LockImage(self.parent.image, 0, False, True).Window(self.Pos.x, self.Pos.y, self.w, self.h)
 		'UnlockImage(self.parent.image)
@@ -940,12 +957,24 @@ Type TGW_Sprites extends TRenderable
 		return DestPixmap
 	End Method
 
+	'is only a reference to the memory block of the images pixmap
+	'NO REAL copy
 	Method GetImage:TImage(loadAnimated:Int =1)
 		SetMaskColor(255,0,255)
 		If self.animcount >1 And loadAnimated
 			Return LoadAnimImage( self.GetPixmap(1), self.framew, self.frameh, 0, self.animcount)
 		Else
 			Return LoadImage( self.GetPixmap(0) )
+		EndIf
+	End Method
+
+	'creates a REAL copy (no reference) of an image
+	Method GetImageCopy:TImage(loadAnimated:int = 1)
+		SetMaskColor(255,0,255)
+		If self.animcount >1 And loadAnimated
+			Return LoadAnimImage( self.GetPixmap(1).copy(), self.framew, self.frameh, 0, self.animcount)
+		Else
+			Return LoadImage( self.GetPixmap(0).copy() )
 		EndIf
 	End Method
 

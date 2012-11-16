@@ -1566,6 +1566,7 @@ Type TElevator
 		obj.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
 		obj.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
 		obj.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
+		obj.spriteDoor.setCurrentAnimation("closed", True)
 		obj.spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
 		obj.Parent		= Parent
 		obj.Pos.SetY(Parent.GetFloorY(obj.onFloor) - obj.spriteInner.h)
@@ -1600,7 +1601,7 @@ Type TElevator
 
 	Method GetFloorRoute:Int()
 		If Not FloorRouteList.IsEmpty()
-			'OptimizeRoute()		
+			'OptimizeRoute()
 			'elevator is on the floor the route
 			Local tmpfloor:TFloorRoute = TFloorRoute(FloorRouteList.First())
 			Local fig:TFigures = TFigures.getByID( tmpfloor.who )
@@ -1618,13 +1619,13 @@ Type TElevator
 		Return onFloor
 	End Method
 
-	Method OptimizeRoute()		
+	Method OptimizeRoute()
 		'mv: Nach einiger Überlegungszeit kam ich zu folgendem Ergebnis:
 		'Es ist ohne das Feature mehrere Passagier zu befördern nicht möglich eine Optimierung vorzunehmen.
 		'Problem: Man kann zum Zeitpunkt des Fahrstuhl-Calls nicht sicher sagen wo die Figur hin will... oder ob sie ihre Meinung bezüglich des Ziels während des Wartens ändert.
 		'Deshalb lassen sich z.B. auch keine Leerfahren mit Zwischenpassaieren ausnutzen
 		'Eine Möglichkeit für Optimierungen sehe ich dennoch: Dies erfordert aber ein wichtiges Feature: Mehrere Passagiere
-		
+
 		'Testcode entfernt
 	End Method
 

@@ -636,7 +636,7 @@ Type TNetworkHelper
 		local sendtime:int		= obj.getInt(9)
 		local contractID:int	= obj.getInt(10)
 
-		Local Adblock:TAdBlock	= TAdBlock.getBlock( blockID )
+		Local Adblock:TAdBlock	= TAdBlock.getBlock( playerID, blockID )
 		if not Adblock
 			Local Contract:TContract = Players[ playerID ].ProgrammeCollection.getContract( contractID )
 			If not contract then return
