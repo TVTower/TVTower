@@ -7,13 +7,14 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field Name:String			= "unknown"
 	Field initialdx:Float		= 0.0 'backup of self.vel.x
 	field target:TPoint			= TPoint.Create(-1,-1) {_exposeToLua}
+	Field PosOffset:TPoint		= TPoint.Create(0,0)
 
 	Field toRoom:TRooms			= Null			{sl = "no"}
 	Field fromRoom:TRooms		= Null			{sl = "no"}
 	Field clickedToRoom:TRooms	= Null			{sl = "no"}
 	Field inRoom:TRooms			= Null			{sl = "no"}
 	Field id:Int				= 0
-	Field Visible:Int			= 1
+	Field Visible:Int			= 1		
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
@@ -132,7 +133,6 @@ endrem
 	End Method
 	
 	Method IsActivePlayer:Int()
-		If id = 1 Then Print "IsActivePlayer: " + name + "    -----------------------------------------------------------------"
 		If id = 1 Then Return true 'TODO: Man müsste hier noch prüfen, ob andere Spieler gesteuert werden außer id = 1
 		Return false
 	End Method
@@ -160,7 +160,7 @@ endrem
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
-		If self.rect.GetY() - self.sprite.h < Building.GetFloorY(13) Then self.rect.position.setY( Building.GetFloorY(13) )
+		If self.rect.GetY() < Building.GetFloorY(13) Then self.rect.position.setY( Building.GetFloorY(13) ) 'beim Vergleich oben nicht "self.sprite.h" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
 		If self.rect.GetY() - self.sprite.h > Building.GetFloorY( 0) Then self.rect.position.setY( Building.GetFloorY(0) )
 		'limit player position horizontally
 	    If Floor(self.rect.GetX()) <= 200 Then rect.position.setX(200);target.setX(200)
@@ -309,7 +309,6 @@ endrem
 
 	Method GoOnBoardAndSendElevator:Int()		
 		If Building.Elevator.EnterTheElevator(self, self.getFloor(target))
-			print self.name+" sends elevator"
 			Building.Elevator.SendElevator(self.getFloor(target), self)
 		Endif
 	End Method
@@ -417,7 +416,7 @@ endrem
 					EndIf
 					If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And Building.Elevator.CurrentFloor = clickedToRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
 						SetInRoom(clickedToRoom)
-						Building.Elevator.waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime
+						Building.Elevator.UsePlan(self)						
 					EndIf
 				EndIf
 			EndIf
@@ -440,7 +439,6 @@ endrem
 			If IsInElevator() 'And elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then			
 				local elevator:TElevator = Building.Elevator
 				If elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then
-					Print "Steige aus: " + name
 					elevator.LeaveTheElevator(self)
 				Endif		
 			Endif
@@ -466,7 +464,7 @@ endrem
 	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
 		If Visible And (inRoom = Null Or inRoom.name = "elevator")
 			If Sprite <> Null
-				super.Draw(self.rect.GetX(), Building.pos.y + self.rect.GetY() - self.sprite.h)
+				super.Draw(self.rect.GetX() + PosOffset.getX(), Building.pos.y + self.rect.GetY() - self.sprite.h + PosOffset.getY())
 			EndIf
 		EndIf
 		Self.GetPeopleOnSameFloor()

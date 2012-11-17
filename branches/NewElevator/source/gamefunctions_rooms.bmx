@@ -1165,7 +1165,7 @@ End Function
 
 Function Room_Elevator_Compute(_room:TRooms) 'Dies hier ist die Raumauswahl im Fahrstuhl.
 	local playerFigure:TFigures = Players[Game.playerID].figure
-	print "Room_Elevator_Compute"
+
 	If TRooms.doadraw 'draw it
 		TRoomSigns.DrawAll()
 		Assets.fonts.baseFont.Draw("Rausschmiss in "+(Building.Elevator.waitAtFloorTimer - MilliSecs()), 600, 20)
@@ -1180,13 +1180,16 @@ Function Room_Elevator_Compute(_room:TRooms) 'Dies hier ist die Raumauswahl im F
 				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritts
 				playerFigure.inRoom			= Null
 				playerFigure.clickedToRoom	= Null
-				Building.Elevator.blockedByFigureUsingPlan = -1
-				building.elevator.waitAtFloorTimer = MilliSecs()
-			else if mouseHit
-				building.Elevator.waitAtFloorTimer = 0
-				building.Elevator.blockedByFigureUsingPlan = playerFigure.id
+				building.elevator.UsePlan(playerFigure)
+			else if mouseHit				
 				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseX(),MouseY())
-				if clickedRoom then playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
+				if clickedRoom
+					playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
+					If Building.Elevator.EnterTheElevator(playerFigure) 'das Ziel hier nicht angeben, sonst kommt es zu einer Einsteigeprüfung die den Spieler eventuell wieder rauswirft.
+						Building.Elevator.SendElevator(playerFigure.getFloor(playerFigure.target), playerFigure)
+					Endif
+				Endif
+				building.Elevator.PlanningFinished(playerFigure)
 			endif
 		EndIf
 		TRoomSigns.UpdateAll(False)

@@ -1,32 +1,44 @@
+'=== Struktur des Elevators ===
+'Ziel der Überarbeitung war es u.a. auch die Lesbarkeit und Aufteilung des Codes zu optimieren.
+'Auch die Reduzierung der vielen komplexen Prüfungen sollte erreicht werden... dies wird vor allem durch den Ablauf des "ElevatorStatus" realisiert.
+
+'TElevator: Grundlegende Klasse zur Darstellung und Steuerung des Fahrstuhls. Die Logik der Routensteuerung ist in TElevatorRouteLogic ausgelagert
+'TElevatorRouteLogic: Ableitungen dieser abstrakten Klasse können die Logik für die Routenberechnung implementieren
+'TFloorRoute: In dieser Klasse werden die Routen-Daten die Calls und Sends des Fahrstuhls abgelegt.
+
+'Die Standard-Logikimplementierung ist "TElevatorSmartStrategy" zu finden. Diese benötigt die Klasse "TSmartFloorRoute" eine Ableitung von 'TFloorRoute
+
 Type TElevator
 	'Referenzen
 	Field Building :TBuilding				= null		'Das Gebäude
 	Field Passengers:TList					= CreateList()	'Alle aktuellen Passagiere als TFigures			
-	Field Strategy:TElevatorDefaultStrategy = TElevatorDefaultStrategy.Create(self)		
+	Field RouteLogic:TElevatorRouteLogic	= null
 	Field FloorRouteList:TList				= CreateList() 'Die Liste mit allen Fahrstuhlanfragen und Sendekommandos in der Reihenfolge in der sie gestellt wurden
 	
 	'Aktueller Status (zu speichern)
-	Field ElevatorStatus:Int				= 0			'0 = warte auf nächsten Auftrag, 1 = Türen schließen, 2 = Fahren, 3 = Türen öffnen, 4 = entladen/beladen, 5 = warte auf Nutzereingabe	
+	Field ElevatorStatus:Int				= 0			'0 = warte auf nächsten Auftrag, 1 = Türen schließen, 2 = Fahren, 3 = Türen öffnen, 4 = entladen/beladen, 5 = warte auf Nutzereingabe (für den Plan)
 	Field DoorStatus:Int 					= 0    		'0 = closed, 1 = open, 2 = opening, 3 = closing	
 	Field CurrentFloor:Int					= 0			'Aktuelles Stockwerk
 	Field TargetFloor:Int					= 0			'Hier fährt der Fahrstuhl hin	
 	Field Direction:Int						= 1			'Aktuelle/letzte Bewegungsrichtung: -1 = nach unten; +1 = nach oben; 0 = gibt es nicht
 	Field ReadyForBoarding:int				= false		'während der ElevatorStatus 4, 5 und 0 möglich.
 	Field BlockedByFigureUsingPlan:Int		= -1		'player using plan / Spieler-ID oder -1
-	Field Pos:TPoint						= TPoint.Create(131+230,115) 	'Aktuelle Position - difference to x/y of building								
+	Field Pos:TPoint						= TPoint.Create(131+230,115) 	'Aktuelle Position - difference to x/y of building
+	Field FiguresUsingPlan:TList			= CreateList() 'Für das Netzwerkspiel... da können mehrere Spieler ein Ziel im Plan auswählen
 
 	'Einstellungen
 	Field Speed:Float 						= 120		'pixels per second ;D
 	
 	'Timer
 	Field PlanTime:Int						= 4000 		'TODOX muss geklärt werden was das ist					
-'	Field WaitAtFloorTime:Int				= 5000 		'Wie lange (Millisekunden) werden die Türen offen gelassen	
 	Field WaitAtFloorTime:Int				= 650 		'Wie lange (Millisekunden) werden die Türen offen gelassen
 	Field WaitAtFloorTimer:Int				= 0			'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
 		
 	'Grafikelemente	
 	Field SpriteDoor:TAnimSprites						'Das Türensprite und seine Animationen
-	Field SpriteInner:TGW_Sprites						'Ds Sprite des Innenraums
+	Field SpriteInner:TGW_Sprites						'Das Sprite des Innenraums
+	Field PassengerOffset:TPoint[]						'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures ein paar Offsets im Fahrstuhl
+	Field PassengerPosition:TFigures[]					'Hier wird abgelegt, welches Offset schon in Benutzung ist und von welcher Figur
 	
 	'===== Konstrukor, Speichern, Laden =====
 	
@@ -39,8 +51,18 @@ Type TElevator
 		obj.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
 		obj.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
 		obj.spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
+		
+		obj.PassengerPosition  = obj.PassengerPosition[..6]
+		obj.PassengerOffset    = obj.PassengerOffset[..6]
+		obj.PassengerOffset[0] = TPoint.Create(0, 0)
+		obj.PassengerOffset[1] = TPoint.Create(-12, 0)
+		obj.PassengerOffset[2] = TPoint.Create(-6, 0)
+		obj.PassengerOffset[3] = TPoint.Create(3, 0)
+		obj.PassengerOffset[4] = TPoint.Create(-3, 0)		
+		obj.PassengerOffset[5] = TPoint.Create(-8, 0)
+		
 		obj.Building = building
-		obj.Pos.SetY(building.GetFloorY(obj.CurrentFloor) - obj.spriteInner.h)	
+		obj.Pos.SetY(building.GetFloorY(obj.CurrentFloor) - obj.spriteInner.h)
 		
 		obj.spriteDoor.setCurrentAnimation("open")
 		obj.doorStatus = 1 'open		
@@ -66,22 +88,34 @@ Type TElevator
 		AddFloorRoute(targetFloor, 0, figure)
 	End Method	
 	
-	Method EnterTheElevator:int(figure:TFigures, myTargetFloor:int=-1) 'bzw. einsteigen
+	Method EnterTheElevator:int(figure:TFigures, myTargetFloor:int=-1) 'bzw. einsteigen		
 		If Not IsAllowedToEnterToElevator(figure, myTargetFloor) Then Return False
-	
 		If Not Passengers.Contains(figure)
 			Passengers.AddLast(figure)
+			SetFigureOffset(figure)
 			RemoveRouteOfPlayer(figure, 1) 'Call-Route entfernen
 			Return true
-		Endif
-		
+		Endif		
 		Return false
 	End Method
 	
 	Method LeaveTheElevator(figure:TFigures) 'aussteigen
-		RemoveRouteOfPlayer(figure, 0) 'Send-Route entfernen
-		Passengers.remove(figure)
+		RemoveFigureOffset(figure)		'Das Offset auf jeden Fall zurücksetzen
+		RemoveRouteOfPlayer(figure, 0)  'Send-Route entfernen
+		Passengers.remove(figure)		'Aus der Passagierliste entfernen
 	End Method
+	
+	Method UsePlan(figure:TFigures)		
+		ElevatorStatus = 5 'Den Wartestatus setzen
+		If Not FiguresUsingPlan.Contains(figure)
+			waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime 'Die Zeit zurück setzen/verlängern
+			FiguresUsingPlan.AddLast(figure)
+		Endif
+	End Method
+	
+	Method PlanningFinished(figure:TFigures)
+		FiguresUsingPlan.Remove(figure)
+	End Method	
 	
 	'===== Externe Hilfsmethoden für Figuren =====
 
@@ -104,9 +138,9 @@ Type TElevator
 	'===== Hilfsmethoden =====
 											
 	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigures)
-		If Not ElevatorCallIsDuplicate(floornumber, who) Then 'Prüfe auf Duplikate
-			FloorRouteList.AddLast(TFloorRoute.Create(self, floornumber, call, who))
-			Strategy.AddFloorRoute(floornumber, call, who)
+		If Not ElevatorCallIsDuplicate(floornumber, who) Then 'Prüfe auf Duplikate			
+			FloorRouteList.AddLast(RouteLogic.CreateFloorRoute(floornumber, call, who))
+			RouteLogic.AddFloorRoute(floornumber, call, who)
 		EndIf		
 	End Method
 							
@@ -117,16 +151,16 @@ Type TElevator
 	Method RemoveRoute(route:TFloorRoute)
 		if (route <> null)
 			FloorRouteList.remove(route)
-			Strategy.RemoveRouteOfPlayer(route)
+			RouteLogic.RemoveRouteOfPlayer(route)
 		Endif
 	End Method		
 	
-	Method RemoveIgnoredRoutes()
+	Method RemoveIgnoredRoutes() 'Entfernt alle (Call-)Routen die nicht wahrgenommen wurden
 		Local tempList:TList = FloorRouteList.Copy()
 		For Local route:TFloorRoute = EachIn tempList
 			If route.floornumber = CurrentFloor And route.call = 1
 				If Passengers.Contains(route.who)					
-					throw "Logic-Exception: Person is in passengers-list, but the call-task still exists"
+					throw "Logic-Exception: Person is in passengers-list, but the call-task still exists." 'Diesen Fehler lassen... er zeigt das noch ein Programmierfehler vorliegt der sonst "verschluckt" werden würde
 				Else
 					RemoveRoute(route)
 				Endif															
@@ -135,7 +169,7 @@ Type TElevator
 	End Method	
 	
 	Method IsAllowedToEnterToElevator:int(figure:TFigures, myTargetFloor:int=-1)		
-		Return Strategy.IsAllowedToEnterToElevator(figure:TFigures, myTargetFloor:int=-1)
+		Return RouteLogic.IsAllowedToEnterToElevator(figure, myTargetFloor)
 	End Method		
 						
 	Method ElevatorCallIsDuplicate:Int(floornumber:Int, who:TFigures)
@@ -153,27 +187,67 @@ Type TElevator
 	End Method
 	
 	Method CalculateNextTarget:int()
-		Return Strategy.CalculateNextTarget()
+		Return RouteLogic.CalculateNextTarget()
 	End Method	
+	
+	'===== Offset-Funktionen =====
+	
+	Method SetFigureOffset(figure:TFigures)
+		for local i:int = 0 to len(PassengerOffset) -1
+			If PassengerPosition[i] = null Then PassengerPosition[i] = figure; Exit
+		next
+	End Method
+	
+	Method RemoveFigureOffset(figure:TFigures)
+		for local i:int = 0 to len(PassengerOffset) -1
+			If PassengerPosition[i] = figure Then PassengerPosition[i] = null; Exit
+		next
+		figure.PosOffset.SetXY(0, 0)
+	End Method
+	
+	Method MovePassengerToPosition() 'Aktualisiert das Offset und bewegt die Figur an die richtige Position
+		for local i:int = 0 to len(PassengerPosition) - 1
+			local figure:TFigures = PassengerPosition[i]				
+			If figure <> null
+				local offset:TPoint = PassengerOffset[i]
+				If figure.PosOffset.getX() <> offset.getX()
+					if figure.PosOffset.getX() > offset.getX() Then figure.PosOffset.setX(figure.PosOffset.getX() -0.4) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.4)
+				Endif
+			Endif
+		next		
+	End Method
+	
+	Method MoveDeboardingPassengersToCenter() 'Aktualisiert das Offset und bewegt die Figur zum Ausgang
+		for local i:int = 0 to len(PassengerPosition) - 1
+			local figure:TFigures = PassengerPosition[i]			
+			If figure <> null				
+				local route:TFloorRoute = GetRouteByPassenger(figure, 0)
+				If route.floornumber = CurrentFloor 'Will die Person aussteigen?
+					local offset:TPoint = PassengerOffset[i]					
+					If figure.PosOffset.getX() <> 0
+						if figure.PosOffset.getX() > 0 Then figure.PosOffset.setX(figure.PosOffset.getX() -0.5) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.5)
+					Endif
+				Endif
+			Endif
+		next		
+	End Method		
 	
 	'===== Fahrstuhl steuern =====
 	
 	Method OpenDoor()
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
-		print "++++++++++++++++++++++++++++++++ opendoor"
 		DoorStatus = 2 'wird geoeffnet
 	End Method	
 	
 	Method CloseDoor()
 		Self.spriteDoor.setCurrentAnimation("closedoor", True)
-		print "++++++++++++++++++++++++++++++++ closedoor"
 		DoorStatus = 3 'closing
 	End Method
 	
 	'===== Aktualisierungs-Methoden =====
 					
 	Method Update(deltaTime:Float=1.0)					
-		'Aktualisierung des current floors
+		'Aktualisierung des current floors - mv: da ich hier nicht durchblicke lass ich's so wie's ist ;)
 		If Abs(Building.GetFloorY(Building.GetFloor(Building.pos.y + Pos.y + spriteInner.h - 1)) - (Pos.y + spriteInner.h)) <= 1
 			'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
 			'until the function returns the new one, instead of positioning it directly on the floorground
@@ -191,11 +265,10 @@ Type TElevator
 		If ElevatorStatus = 1 '1 = Türen schließen					
 			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer <= MilliSecs() Then CloseDoor() 'Wenn die Wartezeit vorbei ist, dann Türen schließen
 			
-			'Türanimation für das Schließen fortsetzen
-			If spriteDoor.getCurrentAnimationName() = "closedoor"
+			'Warten bis die Türanimation fertig ist
+			If spriteDoor.getCurrentAnimationName() = "closedoor"				
 				If spriteDoor.getCurrentAnimation().isFinished()					
 					spriteDoor.setCurrentAnimation("closed")
-					print "++++++++++++++++++++++++++++++++ closed"
 					doorStatus = 0 'closed
 					ElevatorStatus = 2 '2 = Fahren
 				EndIf
@@ -203,7 +276,7 @@ Type TElevator
 		Endif
 		
 		If ElevatorStatus = 2 '2 = Fahren		
-			TargetFloor = CalculateNextTarget() 'Nochmal prüfen ob es ein neueres Ziel gibt.
+			TargetFloor = CalculateNextTarget() 'Nochmal prüfen ob es vielleicht ein neueres Ziel gibt das unterwegs eingeladen werden muss
 			
 			if CurrentFloor = TargetFloor 'Ist der Fahrstuhl da/angekommen, aber die Türen sind noch geschlossen? Dann öffnen!
 				ElevatorStatus = 3 'Türen öffnen					
@@ -222,8 +295,8 @@ Type TElevator
 				If Pos.y + spriteInner.h > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.h		
 				
 				'Die Figuren im Fahrstuhl mit der Kabine mitbewegen
-				For Local Figure:TFigures = EachIn Passengers
-					Figure.rect.position.setY ( Building.Elevator.Pos.y + spriteInner.h)
+				For Local figure:TFigures = EachIn Passengers
+					figure.rect.position.setY( Building.Elevator.Pos.y + spriteInner.h)
 				Next					
 			EndIf						
 		Endif		
@@ -236,47 +309,45 @@ Type TElevator
 		
 			'Türanimationen für das Öffnen fortsetzen... aber auch Passagiere ausladen, wenn es fertig ist
 			If spriteDoor.getCurrentAnimationName() = "opendoor"
+				MoveDeboardingPassengersToCenter() 'Während der Tür-öffnen-Animation bewegen sich die betroffenen Figuren zum Ausgang			
 				If spriteDoor.getCurrentAnimation().isFinished()
 					ElevatorStatus = 4 'entladen					
-					print "door open"
 					spriteDoor.setCurrentAnimation("open")
 					doorStatus = 1 'open
 				EndIf
 			EndIf		
 		Endif
 		
-		If ElevatorStatus = 4 '4 = entladen		
+		If ElevatorStatus = 4 Or ElevatorStatus = 5 '4 = entladen / einsteigen UND 5 = warte auf Nutzereingabe (für den Plan)					
 			If ReadyForBoarding = false
-				print "aussteigen / einsteigen"
-				'Deboarding() 'Jetzt aussteigen
 				ReadyForBoarding = true
 			Else 'ist im Else-Zweig damit die Update-Loop nochmal zu den Figuren wechseln kann um ein-/auszusteigen
+				'Eventuell die Wartezeit vorab beenden, wenn die Auswahl getätigt wurde. Aber nur wenn auch wirklich im Wartemodus
+				If ElevatorStatus = 5 And FiguresUsingPlan.IsEmpty() Then waitAtFloorTimer = 0
 				'Wenn die Wartezeit um ist, dann nach nem neuen Ziel suchen
-				If waitAtFloorTimer <= MilliSecs() Then				
-					print "Entferne nicht wahrgenommene routen"
-					RemoveIgnoredRoutes()	
-					ElevatorStatus = 0
-					Strategy.TemporaryRouteList = null
+				If waitAtFloorTimer <= MilliSecs() Then
+					FiguresUsingPlan.Clear() 'Alle Figuren die den Plan genutzt haben werden jetzt rausgeworfen
+					RemoveIgnoredRoutes() 'Entferne nicht wahrgenommene routen
+					ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
+					RouteLogic.BoardingDone()
 				endif			
 			Endif
 		Endif
 		
-		'if ElevatorStatus = 1 or ElevatorStatus = 3 Then 
+		If ElevatorStatus <> 3 Then MovePassengerToPosition() 'Die Passagiere an ihre Position bewegen wenn notwendig. Natürlich nicht während des Aussteigens
+				
 		spriteDoor.Update(deltaTime) 'Türe animieren
-		
-		'Tooltips aktualisieren
-		TRooms.UpdateDoorToolTips(deltaTime) 'Wirklich notwendig?
+				
+		TRooms.UpdateDoorToolTips(deltaTime) 'Tooltips aktualisieren ----  TODO: Ist das an dieser Stelle wirklich notwendig? Begründen
 	End Method
 								
 	Method Draw() 'needs to be restructured (some test-lines within)
 		SetBlend MASKBLEND
-		'TODOX: Warum werden hier die anderen Türen gezeichnet? Vielleicht wieder rein machen
+		'TODO: Warum werden hier die anderen Türen gezeichnet? Vielleicht wieder rein machen... bisher kein Grund gefunden
 		'TRooms.DrawDoors() 'draw overlay -open doors etc.   
 
-		'Die fehlende Tür zeichnen... also da wo der Fahrstuhl ist
-		'If spriteDoor.getCurrentAnimationName() = "open" print "Elevator 1"
+		'Den leeren Schacht zeichnen... also da wo der Fahrstuhl war
 		spriteDoor.Draw(Building.pos.x + pos.x, Building.pos.y + Building.GetFloorY(CurrentFloor) - 50)
-		'If spriteDoor.getCurrentAnimationName() = "open" print "Elevator 2"
 		
 		'Fahrstuhlanzeige über den Türen
 		For Local i:Int = 0 To 13
@@ -288,7 +359,6 @@ Type TElevator
 			EndIf
 		Next
 
-		'TODOX: Muss wohl überarbeitet werden, da sich ja auch die Routen ändern
 		'Fahrstuhlanzeige über den Türen
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
 			Local locy:Int = Building.pos.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.h + 23
@@ -301,12 +371,13 @@ Type TElevator
 		SetBlend ALPHABLEND
 	End Method
 	
-	Method DrawFloorDoors()		
+	Method DrawFloorDoors()				
 		'Innenraum zeichen (BG)     =>   elevatorBG without image -> black
 		SetColor 0,0,0
 		DrawRect(Building.pos.x + 360, Max(Building.pos.y, 10) , 44, 373)
 		SetColor 255, 255, 255		
 		spriteInner.Draw(Building.pos.x + Pos.x, Building.pos.y + Pos.y + 3.0)
+		
 		
 		'Zeichne Figuren
 		If Not passengers.IsEmpty() Then
@@ -314,7 +385,7 @@ Type TElevator
 				passenger.Draw()
 				passenger.alreadydrawn = 1
 			Next				
-		Endif
+		Endif	
 
 		'Zeichne Türen in allen Stockwerken (außer im aktuellen)
 		For Local i:Int = 0 To 13
@@ -324,33 +395,44 @@ Type TElevator
 			Endif
 		Next
 	End Method	
+
+	'===== Netzwerk-Methoden =====
 	
 	Method Network_SendRouteChange(floornumber:Int, call:Int=0, who:Int, First:Int=False)
-		'TODOX
+		'TODO: Wollte Ronny ja eh noch überarbeiten
 	End Method
 
 	Method Network_ReceiveRouteChange( obj:TNetworkObject )
-		'TODOX
+		'TODO: Wollte Ronny ja eh noch überarbeiten
 	End Method
 
 	Method Network_SendSynchronize()
-		'TODOX
+		'TODO: Wollte Ronny ja eh noch überarbeiten
 	End Method
 
 	Method Network_ReceiveSynchronize( obj:TNetworkObject )
-		'TODOX
-	End Method		
-	
+		'TODO: Wollte Ronny ja eh noch überarbeiten
+	End Method			
 End Type
+
+
+Type TElevatorRouteLogic
+	Method CreateFloorRoute:TFloorRoute(floornumber:Int, call:Int=0, who:TFigures=null) abstract
+	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigures) abstract
+	Method RemoveRouteOfPlayer(currentRoute:TFloorRoute) abstract
+	Method IsAllowedToEnterToElevator:int(figure:TFigures, myTargetFloor:int=-1) abstract
+	Method CalculateNextTarget:int() abstract
+	Method BoardingDone() abstract
+	Method GetSortedRouteList:TList() abstract
+End Type
+
 
 'an elevator, contains rules how to draw and functions when to move
 Type TFloorRoute
 	Field elevator:TElevator
 	Field floornumber:Int
 	Field call:Int
-	Field who:TFigures
-	
-	Field sortNumber:Int = -1
+	Field who:TFigures	
 	
 	Method Save()
 	End Method
@@ -366,6 +448,208 @@ Type TFloorRoute
 		floorRoute.who = who		
 		Return floorRoute
 	End Function
+	
+	Method ToStringX:string(prefix:string)
+		Return ""
+	End Method		
+End Type
+
+
+
+'###############################################################
+'###############################################################
+'###############################################################
+'Hier beginnt die konkrete Implementierung der TElevatorSmartLogic
+
+
+Type TElevatorSmartLogic Extends TElevatorRouteLogic
+	Field Elevator:TElevator					'Die Referenz zum Fahrstuhl
+	Field TemporaryRouteList:TList				'Die temporäre RouteList. Sie ist so lange aktuell, bis sich etwas an FloorRouteList ändert, dann wird TemporaryRouteList auf null gesetzt
+	Field TopTurningPointForSort:int = -1		'Das aktuell höchste Stockwerk das es zu erreichen gibt
+	Field BottomTurningPointForSort:int = -1	'Das aktuell tiefste Stockwerk das es zu erreichen gibt
+	Field PrivilegePlayerMode:int = False		'Ist dieser Modus aktiv werden die Spieler durch einen Wechsel der Fahrtrichtung bevorzugt.
+
+	Function Create:TElevatorSmartLogic(elevator:TElevator, privilegePlayerMode:int)		
+		local strategy:TElevatorSmartLogic = new TElevatorSmartLogic
+		strategy.Elevator = elevator
+		strategy.PrivilegePlayerMode = privilegePlayerMode
+		Return strategy
+	End Function
+
+	'===== Externe Methoden =====
+	
+	Method CreateFloorRoute:TFloorRoute(floornumber:Int, call:Int=0, who:TFigures=null)
+		Return TSmartFloorRoute.Create(Elevator, floornumber, call, who)
+	End Method
+	
+	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigures)
+		TemporaryRouteList = null 'Das null-setzten zwingt die Routenberechnung zur Aktualisierung
+	End Method	
+	
+	Method RemoveRouteOfPlayer(currentRoute:TFloorRoute)
+		If TemporaryRouteList <> null Then TemporaryRouteList.remove(currentRoute)
+	End Method		
+	
+	Method IsAllowedToEnterToElevator:int(figure:TFigures, myTargetFloor:int=-1)		
+		'Man darf auch einsteigen wenn man eigentlich in ne andere Richtung wollte... ist der Parameter aber dabei, dann wird geprüft				
+		If myTargetFloor = -1 Then Return True
+		local e:TElevator = Elevator
+		If (e.Direction = CalcDirection(e.CurrentFloor, myTargetFloor) Or (e.CurrentFloor = TopTurningPointForSort And e.Direction = 1) Or (e.CurrentFloor = BottomTurningPointForSort And e.Direction = -1))
+			Return True
+		Endif
+		Return False
+	End Method		
+
+	Method BoardingDone()
+		TemporaryRouteList = null 'Das null-setzten zwingt die Routenberechnung zur Aktualisierung
+	End Method	
+	
+	Method GetSortedRouteList:TList()
+		Return TemporaryRouteList
+	End Method
+	
+	Method CalculateNextTarget:int()
+		'Die Berechnung der Reihenfolge finden nur dann statt, wenn TemporaryRouteList auf null gesetzt wird. Dies ist dann der Fall, wenn es eine neue Route gibt.
+		if TemporaryRouteList = null
+			Local startDirection:int = Elevator.Direction
+			
+			CalcBottomAndTopTurningPoint() 'Berechnet das aktuell höchste und tiefste Stockwerk und schreibt dies in TopTuringPointForSort und BottomTuringPointForSort				
+			FixDirection() 'Das oberste und unterste Stockwerk legen fest ob ein Richtungswechsel ansteht... das zu wissen ist für die aktuelle Berechnung			
+			CalcSortNumbers() 'Berechnet die Sortiernummer neu
+				
+			If PrivilegePlayerMode 'TODO: Eventuell auf einen Modus Spieler + KI erweitern... so das nur die Boten und der Hausmeister benachteiligt werden.
+				If Elevator.ElevatorStatus <> 2 'Während dem fahren darf man die Richtung dann aber doch nicht ändern... erst bei der nächsten Station erhält man den Vorteil										
+					Elevator.Direction = GetPlayerPreferenceDirection() 'Neue Richtung bestimmen bzw. alte bestätigen... um den Spieler zu bevorzugen										
+					if startDirection <> Elevator.Direction 'Für diesen Modus muss FixDirection und CalcSortNumbers nochmal ausgeführt werden wenn sich die Direction geändert hat						
+						FixDirection()
+						CalcSortNumbers()
+					Endif					
+				Endif
+			Endif
+						
+			'Die Sortierung ausführen (anhand der Sortiernummer)
+			local tempList:TList = Elevator.FloorRouteList.Copy()												
+			SortList(tempList, True, DefaultRouteSort)
+			TemporaryRouteList = tempList		
+		Endif
+		
+		'Den ersten Eintrag zurückgeben oder das aktuelle Stockwert wenn nichts gefunden wurde
+		Local nextTarget:TFloorRoute = TFloorRoute(TemporaryRouteList.First())
+		If nextTarget <> null
+			Return nextTarget.floornumber
+		Else
+			Return Elevator.TargetFloor
+		Endif
+	End Method	
+	
+	'===== Hilfsmethoden =====
+	
+	Method CalcBottomAndTopTurningPoint()
+		TopTurningPointForSort= -1;
+		BottomTurningPointForSort= 20;
+
+		For Local route:TSmartFloorRoute = EachIn Elevator.FloorRouteList
+			If route.floornumber < BottomTurningPointForSort Then BottomTurningPointForSort = route.floornumber
+			If route.floornumber > TopTurningPointForSort Then TopTurningPointForSort = route.floornumber
+		Next	
+	End Method
+	
+	Method FixDirection()
+		'Das oberste und unterste Stockwerk legen fest ob ein Richtungswechsel ansteht... das zu wissen ist für die aktuelle Berechnung
+		If Elevator.CurrentFloor >= TopTurningPointForSort Then Elevator.Direction = -1
+		If Elevator.CurrentFloor <= BottomTurningPointForSort Then Elevator.Direction = 1		
+	End Method		
+	
+	Method CalcSortNumbers()
+		For Local route:TSmartFloorRoute = EachIn Elevator.FloorRouteList
+			route.CalcSortNumber()
+		Next	
+	End Method
+	
+	Method CalcDirection:int(fromFloor:int, toFloor:int)
+		If fromFloor = toFloor Then Return 0
+		If fromFloor < toFloor Then Return 1 Else Return -1
+	End Method
+	
+	Function GetRouteIndexOfFigure:int(figure:TFigures)
+		local index:int = 0
+		For Local route:TFloorRoute = EachIn Building.Elevator.FloorRouteList
+			If route.who = figure Then Return index
+		Next
+		Return -1
+	End Function
+	
+	Method GetPlayerPreferenceDirection:int() 'Sortiert die Liste nach aktiven Spielern und deren Klickreihenfolge... und dann nach deren Sortiernummer
+		local tempList:TList = Elevator.FloorRouteList.Copy()		
+		If Not tempList.IsEmpty()	
+			SortList(tempList, True, PlayerPreferenceRouteSort)					
+			local currRoute:TFloorRoute = TFloorRoute(tempList.First())
+			if currRoute <> null
+				If currRoute.who.IsActivePlayer()
+					local target:int = currRoute.floornumber
+					
+					If Elevator.CurrentFloor = target					
+						Return Elevator.Direction
+					ElseIf Elevator.CurrentFloor < target
+						Return 1
+					Else
+						Return -1
+					Endif
+				Endif
+			Endif
+		Endif	
+		Return Elevator.Direction
+	End Method		
+	
+	'===== Sortiermethoden =====
+			
+	Function DefaultRouteSort:Int( o1:Object, o2:Object )
+		Return TSmartFloorRoute(o1).SortNumber - TSmartFloorRoute(o2).SortNumber
+	End Function	
+	
+	Function PlayerPreferenceRouteSort:Int( o1:Object, o2:Object )
+		local route1:TSmartFloorRoute = TSmartFloorRoute(o1)
+		local route2:TSmartFloorRoute = TSmartFloorRoute(o2)
+		If route1.who.IsActivePlayer()			
+			If route2.who.IsActivePlayer()
+				Return GetRouteIndexOfFigure(route1.who) - GetRouteIndexOfFigure(route2.who)
+			Else
+				Return -1
+			Endif			
+		Else
+			If route2.who.IsActivePlayer()
+				Return 1
+			Endif
+		Endif
+	
+		Return route1.CalcSortNumber() - route2.CalcSortNumber()
+	End Function					
+End Type
+
+
+'Diese Klasse ist eine Erweiterung von TFloorRoute um die Sortiernummer besser zu berechnen.
+'TODO: Später kann vielleicht auch TElevatorSmartLogic diese Sortiernummer berechnen... dann braucht man TSmartFloorRoute nicht mehr, wenn TFloorRoute dafür die reine Nummer bekommt.
+Type TSmartFloorRoute Extends TFloorRoute
+	Field SortNumber:Int = -1
+	
+	Method Save()
+	End Method
+
+	Function Load:TFloorRoute(loadfile:TStream)
+	End Function
+	
+	Function Create:TSmartFloorRoute(elevator:TElevator, floornumber:Int, call:Int=0, who:TFigures=null)
+		Local floorRoute:TSmartFloorRoute = New TSmartFloorRoute
+		floorRoute.elevator = elevator
+		floorRoute.floornumber = floornumber
+		floorRoute.call = call
+		floorRoute.who = who		
+		Return floorRoute
+	End Function
+	
+	Method GetSmartLogic:TElevatorSmartLogic()
+		Return TElevatorSmartLogic(elevator.RouteLogic)
+	End Method
 
 	Method IntendedFollowingTarget:int()
 		Return who.getFloor(who.target)
@@ -376,6 +660,31 @@ Type TFloorRoute
 			If floornumber < IntendedFollowingTarget() Then Return 1 Else Return -1			
 		Endif
 		Return 0
+	End Method
+	
+	Method CalcSortNumber() 'Berechnet eine Nummer für die Gewichtung die dann sortiert werden kann.
+		local currentPathTarget:int = 0, returnPathTarget:int = 0
+		sortNumber = 0
+		
+		If elevator.Direction = 1
+			currentPathTarget = GetSmartLogic().TopTurningPointForSort
+			returnPathTarget = GetSmartLogic().BottomTurningPointForSort
+		else
+			currentPathTarget = GetSmartLogic().BottomTurningPointForSort
+			returnPathTarget = GetSmartLogic().TopTurningPointForSort	
+		endif
+		
+		'Hinweg
+		sortNumber = sortNumber + CalcSortNumberForPath( elevator.CurrentFloor, currentPathTarget, 10000, 20000)
+		If ( sortNumber >= 20000 ) 'nur auf dem Rückweg zu bekommen
+			sortNumber = sortNumber + CalcSortNumberForPath( currentPathTarget, returnPathTarget , 30000, 40000 )
+			If ( sortNumber >= 60000 ) 'Hat zu spät gecalled für die Fahrt in diese Richtung. Liegt hinter der Fahrtrichtung
+				sortNumber = sortNumber + GetDistance( returnPathTarget , elevator.CurrentFloor ) * 100
+			Endif
+		Endif
+		
+		'Zur konstanteren Sortierung... kann man eventuell auch weglassen
+		sortNumber = sortNumber + GetDistance( floornumber, IntendedFollowingTarget() );			
 	End Method
 	
 	Method IsAcceptableForPath:int(fromFloor:int, toFloor:int)
@@ -415,40 +724,7 @@ Type TFloorRoute
 		Else
 			Return notInPathPenalty
 		Endif
-	End Method	
-	
-	Method CalcSortNumber:int()
-		If sortNumber = -1	
-			local currentPathTarget:int = 0, returnPathTarget:int = 0
-			sortNumber = 0
-			
-			If elevator.Direction = 1
-				currentPathTarget = elevator.Strategy.TopTuringPointForSort
-				returnPathTarget = elevator.Strategy.BottomTuringPointForSort
-			else
-				currentPathTarget = elevator.Strategy.BottomTuringPointForSort
-				returnPathTarget = elevator.Strategy.TopTuringPointForSort	
-			endif
-			
-			'Hinweg
-			sortNumber = sortNumber + CalcSortNumberForPath( elevator.CurrentFloor, currentPathTarget, 10000, 20000)
-			If ( sortNumber >= 20000 ) 'nur auf dem Rückweg zu bekommen
-				sortNumber = sortNumber + CalcSortNumberForPath( currentPathTarget, returnPathTarget , 30000, 40000 )
-				If ( sortNumber >= 60000 ) 'Hat zu spät gecalled für die Fahrt in diese Richtung. Liegt hinter der Fahrtrichtung
-					sortNumber = sortNumber + GetDistance( returnPathTarget , elevator.CurrentFloor ) * 100
-				Endif
-			Endif
-			
-			'Zur konstanteren Sortierung... kann man eventuell auch weglassen
-			sortNumber = sortNumber + GetDistance( floornumber, IntendedFollowingTarget() );					
-		Endif
-		Return sortNumber
-	End Method
-
-	'Method Compare:Int(otherObject:Object)	
-	'	If otherObject = null Then Return 1
-	'	Return CalcSortNumber() - TFloorRoute(otherObject).CalcSortNumber();
-	'End Method	
+	End Method		
 	
 	Method ToStringX:string(prefix:string)
 		If call = 1
@@ -457,154 +733,4 @@ Type TFloorRoute
 			Return prefix + self.ToString() + " S   " + Elevator.CurrentFloor + " -> " + floornumber + " ( -> " + IntendedFollowingTarget() + " | " + IntendedDirection() + ")    " + CalcSortNumber() + "   = " + who.name + " (" + who.id + ")"
 		Endif		
 	End Method		
-End Type
-
-Type TElevatorDefaultStrategy
-	Field Elevator:TElevator
-	Field TemporaryRouteList:TList			= null		'Die temporäre RouteList. Sie ist so lange aktuell, bis sich etwas an FloorRouteList ändert, dann wird TemporaryRouteList auf null gesetzt
-	Field TopTuringPointForSort:int = -1
-	Field BottomTuringPointForSort:int = -1
-
-	Function Create:TElevatorDefaultStrategy(elevator:TElevator)		
-		local strategy:TElevatorDefaultStrategy = new TElevatorDefaultStrategy
-		strategy.Elevator = elevator
-		Return strategy
-	End Function
-	
-	Method CalcDirection:int(fromFloor:int, toFloor:int)
-		If fromFloor = toFloor Then Return 0
-		If fromFloor < toFloor Then Return 1 Else Return -1
-	End Method
-	
-	Method IsAllowedToEnterToElevator:int(figure:TFigures, myTargetFloor:int=-1)		
-		'Man darf auch einsteigen wenn man eigentlich in ne andere Richtung wollte... ist der Parameter aber dabei, dann wird geprüft				
-		If myTargetFloor = -1 Then Return True
-		local e:TElevator = Elevator
-		If (e.Direction = CalcDirection(e.CurrentFloor, myTargetFloor) Or (e.CurrentFloor = TopTuringPointForSort And e.Direction = 1) Or (e.CurrentFloor = BottomTuringPointForSort And e.Direction = -1))
-			Return True
-		Endif
-		Return False
-	End Method	
-	
-	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigures)
-		TemporaryRouteList = null 'Das null-setzten zwingt die Routenberechnung zur Aktualisierung
-	End Method	
-	
-	Method RemoveRouteOfPlayer(currentRoute:TFloorRoute)
-		If TemporaryRouteList <> null Then TemporaryRouteList.remove(currentRoute)
-	End Method		
-
-
-
-
-	Method CalculateNextTarget:int()
-		if TemporaryRouteList = null		
-			TopTuringPointForSort= -1;
-			BottomTuringPointForSort= 20;
-
-			For Local route:TFloorRoute = EachIn Elevator.FloorRouteList
-				If route.floornumber < BottomTuringPointForSort Then BottomTuringPointForSort = route.floornumber
-				If route.floornumber > TopTuringPointForSort Then TopTuringPointForSort = route.floornumber
-				route.sortNumber = -1
-			Next	
-			print "..........................................................................A: " + Elevator.Direction 
-			If Elevator.ElevatorStatus <> 2
-				Elevator.Direction = GetPlayerPreferenceDirection()			
-				print "..........................................................................B: " + Elevator.Direction 
-				
-				For Local route:TFloorRoute = EachIn Elevator.FloorRouteList
-					route.sortNumber = -1
-				Next			
-			Endif
-			
-			If Elevator.CurrentFloor >= TopTuringPointForSort Then Elevator.Direction = -1
-			If Elevator.CurrentFloor <= BottomTuringPointForSort Then Elevator.Direction = 1			
-		
-			local tempList:TList = Elevator.FloorRouteList.Copy()												
-			SortList(tempList, True, DefaultRouteSort)
-			TemporaryRouteList = tempList
-			
-			Print ">>>>>>>>>>>>>>>"
-			print "Direction: " + Elevator.Direction
-			print "CurrentFloor: " + Elevator.CurrentFloor + "     ( " + BottomTuringPointForSort + "->" + TopTuringPointForSort + ")"
-			print "==="
-			For Local figure:TFigures = EachIn Elevator.Passengers
-				print figure.name
-			Next
-			print "==="			
-			For Local route:TFloorRoute = EachIn TemporaryRouteList 
-				print route.ToStringX("")
-			Next
-			Print "<<<<<<<<<<<<<<<"
-		Endif
-		
-		Local nextTarget:TFloorRoute = TFloorRoute(TemporaryRouteList.First())
-		If nextTarget <> null
-			'If (nextTarget.floornumber < TargetFloor And Direction = 1) Or (nextTarget.floornumber > TargetFloor And Direction = -1) 'Ein Richtungswechsel... bitte neu berechnen			
-			Return nextTarget.floornumber
-		Else
-			Return Elevator.TargetFloor
-		Endif
-	End Method
-
-
-	
-	
-	
-	Function DefaultRouteSort:Int( o1:Object, o2:Object )
-		Return TFloorRoute(o1).CalcSortNumber() - TFloorRoute(o2).CalcSortNumber()
-	End Function				
-	
-	Function PlayerPreferenceRouteSort:Int( o1:Object, o2:Object )
-		local route1:TFloorRoute = TFloorRoute(o1)
-		local route2:TFloorRoute = TFloorRoute(o2)
-'		print "PlayerPreferenceRouteSort1: " + route1.who.id + " - " + route2.who.id
-		If route1.who.IsActivePlayer()			
-			If route2.who.IsActivePlayer()
-'				print "PlayerPreferenceRouteSort2: " + (GetRouteIndexOfFigure(route1.who) - GetRouteIndexOfFigure(route2.who))
-				Return GetRouteIndexOfFigure(route1.who) - GetRouteIndexOfFigure(route2.who)
-			Else
-'				print "PlayerPreferenceRouteSort3: -1"
-				Return -1
-			Endif			
-		Else
-			If route2.who.IsActivePlayer()
-				'print "PlayerPreferenceRouteSort4: 1"
-				Return 1
-			Endif
-		Endif
-	
-'		print "PlayerPreferenceRouteSort5: " + (route1.CalcSortNumber() - route2.CalcSortNumber())
-		Return route1.CalcSortNumber() - route2.CalcSortNumber()
-	End Function	
-	
-	Function GetRouteIndexOfFigure:int(figure:TFigures)
-		local index:int = 0
-		For Local route:TFloorRoute = EachIn Building.Elevator.FloorRouteList
-			If route.who = figure Then Return index
-		Next
-		Return -1
-	End Function		
-	
-	Method GetPlayerPreferenceDirection:int()
-		local tempList:TList = Elevator.FloorRouteList.Copy()		
-		If Not tempList.IsEmpty()	
-			SortList(tempList, True, PlayerPreferenceRouteSort)					
-			local currRoute:TFloorRoute = TFloorRoute(tempList.First())
-			if currRoute <> null
-				If currRoute.who.IsActivePlayer()
-					local target:int = currRoute.floornumber
-					
-					If Elevator.CurrentFloor = target					
-						Return Elevator.Direction
-					ElseIf Elevator.CurrentFloor < target
-						Return 1
-					Else
-						Return -1
-					Endif
-				Endif
-			Endif
-		Endif	
-		Return Elevator.Direction
-	End Method	
 End Type
