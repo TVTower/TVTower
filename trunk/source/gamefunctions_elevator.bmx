@@ -30,9 +30,9 @@ Type TElevator
 	Field Speed:Float 						= 120		'pixels per second ;D
 
 	'Timer
-	Field PlanTime:Int						= 4000 		'TODOX muss geklärt werden was das ist
-	Field WaitAtFloorTime:Int				= 1700 		'Wie lange (Millisekunden) werden die Türen offen gelassen (alt: 650)
-	Field WaitAtFloorTimer:Int				= 0			'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
+	Field PlanTime:Int						= 4000 		'Zeit die ein Spieler im Raumplan verbringen kann bis er rausgeschmissen wird
+	Field WaitAtFloorTimer:TTimer			= null 		'Wie lange (Millisekunden) werden die Türen offen gelassen (alt: 650)
+	Field WaitAtFloorTime:Int				= 1700		'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
 
 	'Grafikelemente
 	Field SpriteDoor:TAnimSprites						'Das Türensprite und seine Animationen
@@ -40,10 +40,15 @@ Type TElevator
 	Field PassengerOffset:TPoint[]						'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures ein paar Offsets im Fahrstuhl
 	Field PassengerPosition:TFigures[]					'Hier wird abgelegt, welches Offset schon in Benutzung ist und von welcher Figur
 
+
+
 	'===== Konstrukor, Speichern, Laden =====
 
 	Function Create:TElevator(building:TBuilding)
 		Local obj:TElevator = New TElevator
+		'create timer
+		obj.WaitAtFloorTimer = TTimer.Create( obj.WaitAtFloorTime )
+		'create sprite
 		obj.spriteDoor = new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
 		obj.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
 		obj.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
@@ -108,7 +113,8 @@ Type TElevator
 	Method UsePlan(figure:TFigures)
 		ElevatorStatus = 5 'Den Wartestatus setzen
 		If Not FiguresUsingPlan.Contains(figure)
-			waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime 'Die Zeit zurück setzen/verlängern
+			'Die Zeit zurücksetzen/verlängern
+			waitAtFloorTimer.SetInterval(self.PlanTime, true)
 			FiguresUsingPlan.AddLast(figure)
 		Endif
 	End Method
@@ -282,7 +288,7 @@ Type TElevator
 		Endif
 
 		If ElevatorStatus = 1 '1 = Türen schließen
-			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer <= MilliSecs() Then CloseDoor() 'Wenn die Wartezeit vorbei ist, dann Türen schließen
+			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer.isExpired() Then CloseDoor() 'Wenn die Wartezeit vorbei ist, dann Türen schließen
 
 			'Warten bis die Türanimation fertig ist
 			If spriteDoor.getCurrentAnimationName() = "closedoor"
@@ -315,7 +321,7 @@ Type TElevator
 
 				'Die Figuren im Fahrstuhl mit der Kabine mitbewegen
 				For Local figure:TFigures = EachIn Passengers
-					figure.rect.position.setY( Building.Elevator.Pos.y + spriteInner.h)
+					figure.rect.position.setY( self.Pos.y + spriteInner.h)
 				Next
 			EndIf
 		Endif
@@ -323,7 +329,8 @@ Type TElevator
 		If ElevatorStatus = 3 '3 = Türen öffnen
 			If doorStatus = 0
 				OpenDoor()
-				waitAtFloorTimer = MilliSecs() + waitAtFloorTime 'Es wird bestimmt wie lange die Türen mindestens offen bleiben.
+				'wie lange die Türen mindestens offen bleiben.
+				waitAtFloorTimer.SetInterval(waitAtFloorTime, true)
 			Endif
 
 			'Türanimationen für das Öffnen fortsetzen... aber auch Passagiere ausladen, wenn es fertig ist
@@ -342,9 +349,9 @@ Type TElevator
 				ReadyForBoarding = true
 			Else 'ist im Else-Zweig damit die Update-Loop nochmal zu den Figuren wechseln kann um ein-/auszusteigen
 				'Eventuell die Wartezeit vorab beenden, wenn die Auswahl getätigt wurde. Aber nur wenn auch wirklich im Wartemodus
-				If ElevatorStatus = 5 And FiguresUsingPlan.IsEmpty() Then waitAtFloorTimer = 0
+				If ElevatorStatus = 5 And FiguresUsingPlan.IsEmpty() Then waitAtFloorTimer.expire()
 				'Wenn die Wartezeit um ist, dann nach nem neuen Ziel suchen
-				If waitAtFloorTimer <= MilliSecs() Then
+				If waitAtFloorTimer.isExpired()
 					FiguresUsingPlan.Clear() 'Alle Figuren die den Plan genutzt haben werden jetzt rausgeworfen
 					RemoveIgnoredRoutes() 'Entferne nicht wahrgenommene routen
 					ElevatorStatus = 0 '0 = warte auf nächsten Auftrag

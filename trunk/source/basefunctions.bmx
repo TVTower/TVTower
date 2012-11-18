@@ -327,6 +327,10 @@ Type TTimer
 		return ( self.timer + self.GetInterval() + self.actionTime <= Millisecs() )
 	End Method
 
+	Method getTimeUntilExpire:int()
+		return self.timer + self.GetInterval() + self.actionTime - Millisecs()
+	End Method
+
 	Method reachedHalftime:int()
 		return ( self.timer + 0.5*(self.GetInterval() + self.actionTime) <= Millisecs() )
 	End Method

@@ -1211,20 +1211,20 @@ Function Room_Elevator_Compute(_room:TRooms) 'Dies hier ist die Raumauswahl im F
 
 	If TRooms.doadraw 'draw it
 		TRoomSigns.DrawAll()
-		Assets.fonts.baseFont.Draw("Rausschmiss in "+(Building.Elevator.waitAtFloorTimer - MilliSecs()), 600, 20)
+		Assets.fonts.baseFont.Draw("Rausschmiss in "+Building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 600, 20)
 	Else
 		local mouseHit:int = MouseManager.IsHit(1)
 
 		Game.cursorstate = 0
 		playerFigure.fromroom =Null
 		If playerFigure.inRoom.name = "elevator"
-			if Building.Elevator.waitAtFloorTimer <= MilliSecs()
-				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
+			if Building.Elevator.waitAtFloorTimer.IsExpired()
+				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl"
 				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritts
 				playerFigure.inRoom			= Null
 				playerFigure.clickedToRoom	= Null
 				building.elevator.UsePlan(playerFigure)
-			else if mouseHit				
+			else if mouseHit
 				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseX(),MouseY())
 				if clickedRoom
 					playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
@@ -1245,7 +1245,7 @@ Function Room_RoomBoard_Compute(_room:TRooms)
 		Players[game.playerid].figure.fromroom =Null
 		TRoomSigns.DrawAll()
 		Assets.fonts.baseFont.draw("owner:"+_room.owner, 20,20)
-		Assets.fonts.baseFont.draw(building.Elevator.waitAtFloorTimer - MilliSecs(), 20,40)
+		Assets.fonts.baseFont.draw(building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 20,40)
 	Else
 		' MouseManager.changeStatus()
 		Game.cursorstate = 0
