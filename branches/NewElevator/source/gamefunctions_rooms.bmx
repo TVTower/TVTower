@@ -1,4 +1,4 @@
-'Basictype of all rooms
+ï»¿'Basictype of all rooms
 Type TRooms  {_exposeToLua="selected"}
     Field background:TGW_Sprites    	   				'background, the image containing the whole room
 	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
@@ -157,7 +157,6 @@ Type TRooms  {_exposeToLua="selected"}
 		TRooms.doadraw = 1
 		Select Self.name
 			Case "betty"			Room_Betty_Compute(Self) ;Return 0
-			Case "safe"				Room_Safe_Compute(Self) ;Return 0
 			Case "elevator"			Room_Elevator_Compute(Self) ;Return 0
 			Case "roomboard"		Room_RoomBoard_Compute(Self) ;Return 0
 			Case "adagency"			Room_AdAgency_Compute(Self) ;Return 0
@@ -190,7 +189,6 @@ Type TRooms  {_exposeToLua="selected"}
 
 		Select Self.name
 			Case "betty"			Room_Betty_Compute(Self) ;Return 0
-			Case "safe"				Room_Safe_Compute(Self) ;Return 0
 			Case "elevator"			Room_Elevator_Compute(Self) ;Return 0
 			Case "roomboard"		Room_RoomBoard_Compute(Self) ;Return 0
 			Case "adagency"			Room_AdAgency_Compute(Self) ;Return 0
@@ -326,8 +324,10 @@ Type TRoomHandler
 	'unused atm global playerID:int
 
 	Function _RegisterHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), room:TRooms = null)
+		if room
 		EventManager.registerListenerFunction( "rooms.onUpdate", updateFunc, room )
 		EventManager.registerListenerFunction( "rooms.onDraw", drawFunc, room )
+		endif
 	End Function
 
 	Function Init() abstract
@@ -340,6 +340,7 @@ End Type
 Type RoomHandler_Office extends TRoomHandler
 	global StationsToolTip:TTooltip
 	global PlannerToolTip:TTooltip
+	global SafeToolTip:TTooltip
 	global DrawnOnProgrammePlannerBG:int = 0
 
 	Function Init()
@@ -348,14 +349,21 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'register self for all offices
+		'also register sub rooms
+		'WHY: if not registering to the events, the individual updates/draws
+		'     are not possible (draw/update wont get that special rooms in the event)
+		'SO:  register ALL subrooms with individual draw/update functions
 		For local i:int = 1 to 4
-			local room:TRooms = null
-			room = TRooms.GetRoomByDetails("office", i)
-			'only add if room found, else skip reg
-			if room then super._RegisterHandler(RoomHandler_Office.Update, RoomHandler_Office.Draw, room)
+			'Update and Draw reference RoomHandler_Office.Update and RoomHandler_Office.Draw
+			'but this cannot be handled in parent class ("automagically")
+			'that is why we DONT let the type itself be the param
 
-			room = TRooms.GetRoomByDetails("programmeplanner", i)
-			if room then super._RegisterHandler(RoomHandler_Office.Update, RoomHandler_Office.Draw, room)
+			'reg rooms
+			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("office", i))
+			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("programmeplanner", i))
+			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("safe", i))
+			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("financials", i))
+			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("image", i))
 
 		Next
 	End Function
@@ -368,6 +376,7 @@ Type RoomHandler_Office extends TRoomHandler
 			case "programmeplanner"		DrawProgrammePlanner( room )
 			case "financials"			DrawFinancials( room )
 			case "image"				DrawImage( room )
+			case "safe"					DrawSafe( room )
 			default						DrawMain( room )
 		End Select
 	End Function
@@ -380,6 +389,7 @@ Type RoomHandler_Office extends TRoomHandler
 			case "programmeplanner"		UpdateProgrammePlanner( room )
 			case "financials"			UpdateFinancials( room )
 			case "image"				UpdateImage( room )
+			case "safe"					UpdateSafe( room )
 			default						UpdateMain( room )
 		End Select
 	End Function
@@ -398,6 +408,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'allowed for all - if having keys
 		If PlannerToolTip <> Null Then PlannerToolTip.Draw()
+
+		If SafeToolTip <> Null Then SafeToolTip.Draw()
 	End Function
 
 	Function UpdateMain:int( room:TRooms )
@@ -407,22 +419,38 @@ Type RoomHandler_Office extends TRoomHandler
 				Players[Game.playerID].Figure.LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
-			If functions.IsIn(MouseX(),MouseY(),164,54,67,110) And room.owner = game.playerID
-				MOUSEMANAGER.resetKey(1);
-				Game.cursorstate = 0;
-				Players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("safe", -1)
-				Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
 			EndIf
-		EndIf
 
 		Game.cursorstate = 0
+		'safe - reachable for all
+		If functions.IsIn(MouseX(), MouseY(), 165,85,70,100)
+			If SafeToolTip = Null Then SafeToolTip = TTooltip.Create("Safe", "Laden und Speichern", 140, 100, 0, 0)
+			SafeToolTip.enabled = 1
+			SafeToolTip.Hover()
+			Game.cursorstate = 1
+			If MOUSEMANAGER.IsHit(1)
+				MOUSEMANAGER.resetKey(1)
+				Game.cursorstate = 0
+			'	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
+				players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("safe", room.owner)
+			endif
+		EndIf
+
+		'planner - reachable for all
 		If functions.IsIn(MouseX(), MouseY(), 600,140,128,210)
 			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+			If MOUSEMANAGER.IsHit(1)
+				MOUSEMANAGER.resetKey(1)
+				Game.cursorstate = 0
+				Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
+				players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+			endif
 		EndIf
+
+		'station map - only reachable for owner
 		If room.owner = Game.playerID
 			If functions.IsIn(MouseX(), MouseY(), 732,45,160,170)
 				If not StationsToolTip Then StationsToolTip = TTooltip.Create("Senderkarte", "Kauf und Verkauf", 650, 80, 0, 0)
@@ -433,7 +461,9 @@ Type RoomHandler_Office extends TRoomHandler
 			EndIf
 			If StationsToolTip Then StationsToolTip.Update(App.timer.getDeltaTime())
 		EndIf
+
 		If PlannerToolTip Then PlannerToolTip.Update(App.timer.getDeltaTime())
+		If SafeToolTip Then SafeToolTip.Update(App.timer.getDeltaTime())
 	End Function
 
 
@@ -730,6 +760,22 @@ Type RoomHandler_Office extends TRoomHandler
 		Game.cursorstate = 0
 	End Function
 
+
+
+	'===================================
+	'Office: Safe screen
+	'===================================
+
+	Function DrawSafe:int( room:TRooms )
+		'draw disks here
+	End Function
+
+	Function UpdateSafe:int( room:TRooms )
+		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
+		Game.cursorstate = 0
+	End Function
+
+
 End Type
 
 
@@ -973,7 +1019,7 @@ Type RoomHandler_News extends TRoomHandler
 		If PlannerToolTip Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 
 		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
-			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
+			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "HinzufÃ¼gen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
@@ -1139,9 +1185,9 @@ Type RoomHandler_Chief extends TRoomHandler
 	  Local ChefText:String
 	  ChefText = "Was ist?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!"
 	  If Betty.LastAwardWinner <> Game.playerID And Betty.LastAwardWinner <> 0
-		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis für " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
+		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis fÃ¼r " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
 		If Betty.LastAwardType <> 0
-			ChefText = "Was fällt Ihnen ein den Award für " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis für " + Betty.GetAwardTypeString() + "."
+			ChefText = "Was fÃ¤llt Ihnen ein den Award fÃ¼r " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis fÃ¼r " + Betty.GetAwardTypeString() + "."
 		EndIf
 	  EndIf
 	  functions.DrawDialog(Assets.GetSpritePack("gfx_dialog"), 350, 60, 450, 120, "StartLeftDown", 0, ChefText, Font14)
@@ -1150,17 +1196,14 @@ Type RoomHandler_Chief extends TRoomHandler
 End Type
 
 
+print "umbauen auf roomhandler...."
+print "umbauen auf roomhandler...."
+print "umbauen auf roomhandler...."
+print "umbauen auf roomhandler...."
+print "umbauen auf roomhandler...."
+print "umbauen auf roomhandler...."
+print "umbauen auf roomhandler...."
 
-
-'Buereau: special functions, gimmicks, ...
-'Buero: Spezialfunktionen, Gimmicks, ...
-Function Room_Safe_Compute(_room:TRooms)
-  If TRooms.doadraw 'draw it
-  Else
-    Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", game.playerID)
-    Game.cursorstate = 0
-  EndIf
-End Function
 
 
 Function Room_Elevator_Compute(_room:TRooms) 'Dies hier ist die Raumauswahl im Fahrstuhl.
@@ -1257,7 +1300,7 @@ Function Room_Betty_Compute(_room:TRooms)
 		local y:float = picY + sprite.h - 30
 		Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 	Next
-	Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
+	Local DlgText:String = "Na Du?" + Chr(13) + "Du kÃ¶nntest ruhig mal Ã¶fters bei mir vorbeischauen."
 	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, Assets.GetFont("Default",14))
   EndIf
 
@@ -1625,6 +1668,7 @@ Function Init_CreateAllRooms()
 		TRooms.Create(Assets.GetSprite("rooms_stationmap") , "stationmap", Localization.GetString("ROOM_STATIONMAP") , "", 0, 0, - 1, i)
 		TRooms.Create(Assets.GetSprite("rooms_newsplanning") , "newsplanner", Localization.GetString("ROOM_NEWSPLANNER") , "", 0, 0, - 1, i)
 		TRooms.Create(Assets.GetSprite("rooms_financials") , "financials", Localization.GetString("ROOM_FINANCES") , "", 0, 0, - 1, i)
+		TRooms.Create(Assets.GetSprite("rooms_safe") , "safe", Localization.GetString("ROOM_SAFE") , "", 0, 0, - 1, i)
 		TRooms.Create(Assets.GetSprite("rooms_image") , "image", Localization.GetString("ROOM_IMAGE_AND_QUOTES") , "", 0, 0, - 1, i)
 	Next
 

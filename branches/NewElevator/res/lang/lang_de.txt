@@ -42,10 +42,11 @@ PLANNER_FINANCES  = Finanzen
 PLANNER_IMAGE     = Image
 PLANNER_MESSAGES  = Mitteilungen
 
-ROOM_NEWSPLANNER      = Newsplaner
-ROOM_FINANCES         = Finanzen
-ROOM_IMAGE_AND_QUOTES = Image/Quoten
-ROOM_PROGRAMMEPLANNER = Programmplaner
+ROOM_NEWSPLANNER		= Newsplaner
+ROOM_FINANCES			= Finanzen
+ROOM_SAFE				= Speichern und Laden
+ROOM_IMAGE_AND_QUOTES	= Image/Quoten
+ROOM_PROGRAMMEPLANNER	= Programmplaner
 ROOM_STATIONMAP       = Senderkarte
 ROOM_ROOMMAP          = Hinweistafel
 ROOM_MOVIEAGENCY      = Film-Agentur
