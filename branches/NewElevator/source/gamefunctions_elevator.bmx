@@ -156,8 +156,7 @@ Type TElevator
 	End Method		
 	
 	Method RemoveIgnoredRoutes() 'Entfernt alle (Call-)Routen die nicht wahrgenommen wurden
-		Local tempList:TList = FloorRouteList.Copy()
-		For Local route:TFloorRoute = EachIn tempList
+		For Local route:TFloorRoute = EachIn FloorRouteList
 			If route.floornumber = CurrentFloor And route.call = 1
 				If Passengers.Contains(route.who)					
 					throw "Logic-Exception: Person is in passengers-list, but the call-task still exists." 'Diesen Fehler lassen... er zeigt das noch ein Programmierfehler vorliegt der sonst "verschluckt" werden würde
