@@ -44,6 +44,7 @@ PLANNER_MESSAGES		= messages
 
 ROOM_NEWSPLANNER		= newsplanner
 ROOM_FINANCES			= finances
+ROOM_SAFE				= save and load
 ROOM_IMAGE_AND_QUOTES	= image/audience
 ROOM_PROGRAMMEPLANNER	= programmeplanner
 ROOM_STATIONMAP			= stationmap
