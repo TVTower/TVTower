@@ -132,7 +132,7 @@ Type TApp
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
 		EventManager.registerListener( "App.onSoundUpdate", TEventListenerOnSoundUpdate.Create() )
-		SoundManager.PlayMusic(MUSIC_TITLE)
+		SoundManager.PlayMusic(MUSIC_TITLE)		
 		print "LADEZEIT : "+(Millisecs() - self.creationTime) +"ms"
 	End Method
 
@@ -925,7 +925,7 @@ endrem
 					TContractBlock.RemoveContractFromSuitcase(Adblock.contract)
 					Player.ProgrammeCollection.RemoveContract(Adblock.contract)
 				endif
-				EndIf
+			EndIf
 		Next
 	End Function
 
@@ -944,11 +944,11 @@ endrem
 				If not contract then continue
 
 				If contract.GetDaysLeft() <= 0
-							Player.finances[Game.getWeekday()].PayPenalty(contract.GetPenalty() )
+					Player.finances[Game.getWeekday()].PayPenalty(contract.GetPenalty() )
 					Player.ProgrammeCollection.RemoveContract(contract)
 					TAdBlock.RemoveAdblocks(contract, Game.day)
-							'Print Player.name+" paid a penalty of "+contract.calculatedPenalty+" for contract:"+contract.title
-						EndIf
+					'Print Player.name+" paid a penalty of "+contract.calculatedPenalty+" for contract:"+contract.title
+				EndIf
 			Next
 		Next
 	End Function
@@ -1438,550 +1438,7 @@ Function CreateDropZones:Int()
 
 End Function
 
-'an elevator, contains rules how to draw and functions when to move
-Type TFloorRoute
-	Field floornumber:Int
-	Field call:Int
-	Field who:Int =0
-
-	Method Save()
-		LoadSaveFile.xmlBeginNode("ROUTE")
-		LoadSaveFile.xmlWrite("FLOORNUMBER",Self.floornumber)
-		LoadSaveFile.xmlWrite("CALL",		Self.call)
-		LoadSaveFile.xmlWrite("WHO",		Self.who)
-		LoadSaveFile.xmlCloseNode()
-	End Method
-
-	Function Load:TFloorRoute(loadfile:TStream)
-		Local Route:TFloorRoute = New TFloorRoute
-		Route.floornumber = ReadInt(loadfile:TStream)
-		Route.call 		= ReadInt(loadfile:TStream)
-		Route.who		= ReadInt(loadfile:TStream)
-		ReadString(loadfile, 5) 'read |FLR|
-		Return Route
-	End Function
-
-	Function Create:TFloorRoute(floornumber:Int, call:Int=0, who:Int=0, direction:Int=-1)
-		Local FloorRoute:TFloorRoute = New TFloorRoute
-		FloorRoute.floornumber = floornumber
-		FloorRoute.call = call
-		floorRoute.who = who
-		Return FloorRoute
-	End Function
-
-	Method Compare:Int(otherObject:Object)
-		Local s:TFloorRoute = TFloorRoute(otherObject)
-		If Not s Then Return 1				  ' Objekt nicht gefunden, an das Ende der Liste setzen
-		If Building.Elevator.upwards Then
-			If Building.Elevator.onFloor-s.floornumber >= Building.Elevator.onFloor-floornumber Then Return 1
-			If Building.Elevator.onFloor-s.floornumber <= Building.Elevator.onFloor-floornumber Then Return 0
-			Else
-				If Building.Elevator.onFloor-s.floornumber >= Building.Elevator.onFloor-floornumber Then Return 0
-			If Building.Elevator.onFloor-s.floornumber <= Building.Elevator.onFloor-floornumber Then Return 1
-		EndIf
-	End Method
-
-End Type
-
-Type TElevator
-	Field PlanTime:Int			= 4000
-	Field waitAtFloorTimer:Int	= 0
-	Field waitAtFloorTime:Int	= 650 								'wait 650ms until moving to destination
-	Field waitAtFloorTimeForRoomboard:Int = 7500 					'wait 7500ms then throw out
-	Field spriteDoor:TAnimSprites
-	Field spriteInner:TGW_Sprites
-	Field passenger:TFigures = Null
-	Field blockedByFigureID:Int	=-1									'player using plan
-	Field allowedPassengerID:Int=-1
-	Field onFloor:Int 			= 0
-	Field open:Int 				= 0
-	Field toFloor:Int 			= 0
-	Field speed:Float 			= 120  								'pixels per second ;D
-	Field Pos:TPoint			= TPoint.Create(131+230,115) 	'difference to x/y of building,
-	Field Parent:TBuilding
-	Field FloorRouteList:TList	= CreateList()
-	Field upwards:Int = 0
-	Field EgoMode:Int = 1   								'EgoMode: 	If I have the elevator, the elevator will only stop
-	Field SoundSource:TElevatorSoundSource = TElevatorSoundSource.Create(self, true)
-	'			at my destination and not if someone waits between
-	'			both floors and could be taken with me.
-
-	Field Network_LastSynchronize:Int	= 0
-	Field Network_SynchronizeTimer:Int	= 2000 						'every 2000ms
-
-	Method ElevatorCallIsDuplicate:Int(floornumber:Int, who:Int)
-		For Local DupeRoute:TFloorRoute = EachIn FloorRouteList
-			If DupeRoute.who = who And DupeRoute.floornumber = floornumber Then Return True
-		Next
-		Return False
-	End Method
-
-	Method Save()
-		LoadSaveFile.xmlBeginNode("ELEVATOR")
-		LoadSaveFile.xmlWrite("PLANTIME",			Self.PlanTime)
-		LoadSaveFile.xmlWrite("WAITATFLOORTIMER",	Self.waitAtFloorTimer)
-		LoadSaveFile.xmlWrite("WAITATFLOORTIME",	Self.waitAtFloorTime)
-		LoadSaveFile.xmlWrite("ONFLOOR",	 		Self.onFloor)
-		LoadSaveFile.xmlWrite("OPEN",	 			Self.open)
-		LoadSaveFile.xmlWrite("TOFLOOR",			Self.toFloor)
-		LoadSaveFile.xmlWrite("SPEED",				Self.speed)
-		LoadSaveFile.xmlWrite("X",					Self.Pos.x)
-		LoadSaveFile.xmlWrite("Y",					Self.Pos.y)
-		LoadSaveFile.xmlWrite("UPWARDS",			Self.upwards)
-		LoadSaveFile.xmlWrite("EGOMODE",			Self.EgoMode)
-		LoadSaveFile.xmlBeginNode("ELEVATORROUTE")
-		For Local Route:TFloorRoute = EachIn FloorRouteList
-			If Route.floornumber <= 13 And route.floornumber >=0 Then Route.Save()';Print "s:"+route.who
-		Next
-		LoadSaveFile.xmlCloseNode()
-		LoadSaveFile.xmlCloseNode()
-	End Method
-
-	Method Load(loadfile:TStream)
-		FloorRouteList.Clear()
-		Local BeginPos:Int = Stream_SeekString("<ELEVATOR/>",loadfile)+1
-		Local EndPos:Int = Stream_SeekString("</ELEVATOR>",loadfile)  -11
-		loadfile.Seek(BeginPos)
-		PlanTime		= ReadInt(loadfile)
-		waitAtFloorTimer= ReadInt(loadfile)
-		waitAtFloorTime = ReadInt(loadfile)
-		onFloor		 	= ReadInt(loadfile)
-		open		 	= ReadInt(loadfile)
-		toFloor		 	= ReadInt(loadfile)
-		speed		 	= ReadInt(loadfile)
-		Pos.x		 	= ReadFloat(loadfile)
-		Pos.y		 	= ReadFloat(loadfile)
-		upwards			= ReadInt(loadfile)
-		egomode			= ReadInt(loadfile)
-		BeginPos = Stream_SeekString("<ELEVATORROUTE/>",loadfile)+1
-		EndPos   = Stream_SeekString("</ELEVATORROUTE>",loadfile)  -17
-		loadfile.Seek(BeginPos)
-		Repeat
-		Local Route:TFloorRoute = TFloorRoute.Load(loadfile)
-		If route.who < 100 And route.floornumber <=13 And route.floornumber >= 0 Then FloorRouteList.AddLast(route)
-		Until loadfile.Pos() >= EndPos
-	End Method
-
-	Function Create:TElevator(Parent:TBuilding)
-		Local obj:TElevator=New TElevator
-		obj.spriteDoor	= new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
-		obj.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
-		obj.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
-		obj.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
-		obj.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
-		obj.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
-		obj.spriteDoor.setCurrentAnimation("closed", True)
-		obj.spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
-		obj.Parent		= Parent
-		obj.Pos.SetY(Parent.GetFloorY(obj.onFloor) - obj.spriteInner.h)
-		Return obj
-	End Function
-
-	'nice-modus ? -- wenn spieler aus 1. etage fahrstuhl von 12. etage holt - und zwischendrin
-	'einer von 8. in den 6. fahren will - mitnehmen - dafuer muss der Fahrstuhl aber wissen,
-	'das er vom 8. in den 6. will - momentan gibt es nur die information "fahr in den 8."
-	'mv: Überlegungen zur Optimierung der Route im Kommentar von OptimizeRoute()
-	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:Int, First:Int = False, fromNetwork:Int = False)
-		'print "add floor route: "+floornumber
-
-		If ElevatorCallIsDuplicate(floornumber, who) Then Return 0	'if duplicate - don't add
-		Local FloorRoute:TFloorRoute = TFloorRoute.Create(floornumber,call,who)
-		If First Or Not call
-			FloorRouteList.AddFirst(floorroute)
-			Self.toFloor = Self.GetFloorRoute()
-		Else
-			FloorRouteList.AddLast(floorroute)
-		EndIf
-		If Not fromNetwork And Game.networkgame
-			'Print "send route to net"
-			Network_SendRouteChange(floornumber, call, who, First)
-		EndIf
-	End Method
-
-	Method GetCurrentRoute:TFloorRoute()
-		If Not FloorRouteList.IsEmpty() Then Return TFloorRoute(FloorRouteList.First())
-		Return Null
-	End Method
-
-	Method GetFloorRoute:Int()
-		If Not FloorRouteList.IsEmpty()
-			'OptimizeRoute()
-			'elevator is on the floor the route
-			Local tmpfloor:TFloorRoute = TFloorRoute(FloorRouteList.First())
-			Local fig:TFigures = TFigures.getByID( tmpfloor.who )
-			allowedPassengerID = tmpfloor.who
-			If onFloor = tmpfloor.floornumber
-				If fig <> Null And Not fig.isAtElevator()
-					allowedPassengerID = -1
-				EndIf
-				'print "entferne erste route da onfloor "+onFloor+" = "+tmpfloor.floornumber+" tmpfloor - fig: "+fig.name
-				FloorRouteList.RemoveFirst
-			EndIf
-			Return tmpfloor.floornumber
-		EndIf
-		allowedPassengerID = -1
-		Return onFloor
-	End Method
-
-	Method OptimizeRoute()
-		'mv: Nach einiger Überlegungszeit kam ich zu folgendem Ergebnis:
-		'Es ist ohne das Feature mehrere Passagier zu befördern nicht möglich eine Optimierung vorzunehmen.
-		'Problem: Man kann zum Zeitpunkt des Fahrstuhl-Calls nicht sicher sagen wo die Figur hin will... oder ob sie ihre Meinung bezüglich des Ziels während des Wartens ändert.
-		'Deshalb lassen sich z.B. auch keine Leerfahren mit Zwischenpassaieren ausnutzen
-		'Eine Möglichkeit für Optimierungen sehe ich dennoch: Dies erfordert aber ein wichtiges Feature: Mehrere Passagiere
-
-		'Testcode entfernt
-	End Method
-
-	Method CloseDoor()
-		SoundSource.PlaySfx(SFX_ELEVATOR_CLOSEDOOR)
-		Self.spriteDoor.setCurrentAnimation("closedoor", True)
-		open = 3
-
-		If Game.networkgame Then Self.Network_SendSynchronize()
-	End Method
-
-	Method OpenDoor()
-		SoundSource.PlaySfx(SFX_ELEVATOR_OPENDOOR)
-		Self.spriteDoor.setCurrentAnimation("opendoor", True)
-		open = 2 'wird geoeffnet
-		If passenger <> Null Then passenger.rect.position.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
-
-		If Game.networkgame Then Self.Network_SendSynchronize()
-	End Method
-
-	'eg. used for elevator-room-finder-plan
-	Method SetDoorOpen()
-		Self.spriteDoor.setCurrentAnimation("open")
-		Self.open = 1
-	End Method
-
-
-
-	Method Network_SendRouteChange(floornumber:Int, call:Int=0, who:Int, First:Int=False)
-		Local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORROUTECHANGE )
-		obj.SetInt(1, call)
-		obj.SetInt(2, floornumber)
-		obj.SetInt(3, who)
-		obj.SetInt(4, First)
-		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
-	End Method
-
-	Method Network_ReceiveRouteChange( obj:TNetworkObject )
-		Local call:Int			= obj.getInt(1)
-		Local floornumber:Int	= obj.getInt(2)
-		Local who:Int			= obj.getInt(3)
-		Local first:Int			= obj.getInt(4)
-
-		AddFloorRoute(floornumber, call, who, First, True)
-		If First Then passenger = TFigures.getById( who )
-	End Method
-
-
-
-	Method Network_SendSynchronize()
-		'only server sends packet
-		If Not Network.isServer Then Return
-
-		Local obj:TNetworkObject = TNetworkObject.Create( NET_ELEVATORSYNCHRONIZE )
-		obj.setInt(1, upwards)
-		obj.setFloat(2, pos.x)
-		obj.setFloat(3, pos.y)
-		obj.setInt(4, open)
-		If passenger <> Null Then obj.setInt(5, passenger.id)
-		obj.setInt(6, FloorRouteList.Count() )
-		If FloorRouteList.Count() > 0
-			Local floorString:String = ""
-			For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-				floorString:+ FloorRoute.call+"|"+FloorRoute.floornumber+"|"+FloorRoute.who+","
-			Next
-			obj.setString(7, floorString)
-		EndIf
-		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
-'		Network_LastSynchronize = MilliSecs() + Network_SynchronizeTimer
-	End Method
-
-	Method Network_ReceiveSynchronize( obj:TNetworkObject )
-		upwards 				= obj.getInt(1)
-		Pos.x					= obj.getFloat(2)
-'		If passenger Then
-
-		'only change y if difference is bigger than 10 pixels
-		Local newPosY:Float		= obj.getFloat(3)
-		If Abs(newPosY - pos.y) > 10 Then Pos.Y = newPosY
-
-	'	open					= obj.getInt(4)
-		Local passengerID:Int	= obj.getInt(5,-1)
-		If passengerID > 0 Then passenger = TFigures.getByID( passengerID )
-
-		Local floorCount:Int	= obj.getInt(6)
-		Local floors:String[]	= obj.getString(7).split(",")
-		'print "floorCount:"+floorCount + " floors:"+floors.length
-		If floorCount > 0 And floorCount = floors.length-1 '-1 as there is a "," at the end of a string
-			Self.FloorRouteList.clear() 'empty list
-			For Local i:Int = 0 To floors.length -1 -1
-				Local Floor:String[] = floors[i].split("|")
-				If Floor.length = 3 Then AddFloorRoute(Int(Floor[1]), Int(Floor[0]), Int(Floor[2]), False, True)
-			Next
-		EndIf
-	End Method
-
-	Method SendToFloor(Floor:Int, figure:TFigures)
-		passenger = figure
-		If figure.id = Game.playerID Or (figure.IsAI() And Game.playerID = 1)
-			AddFloorRoute(Floor, 0, figure.id, True, False)
-		Else
-			AddFloorRoute(Floor, 0, figure.id, True, True)
-		EndIf
-	End Method
-
-	Method GetDoorCenter:Int()
-		Return parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
-	End Method
-
-	Method GetElevatorCenterPos:TPoint()
-		local posX:int = parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
-		local posY:int = Pos.y + Self.spriteDoor.sprite.frameh/2 + 56 'Hier kein parent.pos.y hinzuaddieren sonst kommt blödsinn raus... keine Ahnung warum. Die Differenz dürfte laut Untersuchungen ungefähr 56 betragen (geschätzt)
-		Return TPoint.Create(posX, posY, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
-	End Method
-
-	Method IsInFrontOfDoor:Int(x:Int, y:Int=-1)
-		Return x = GetDoorCenter()
-	End Method
-
-	Method DrawFloorDoors()
-		Local locy:Int = 0
-
-		'elevatorBG without image -> black
-		SetColor 0,0,0
-		DrawRect(Parent.pos.x + 360, Max(parent.pos.y, 10) , 44, 373)
-		SetColor 255, 255, 255
-
-		'elevatorbg
-		spriteInner.Draw(Parent.pos.x + Pos.x, Parent.pos.y + Pos.y + 3.0)
-		'figures in elevator
-		If passenger <> Null Then passenger.Draw();passenger.alreadydrawn = 1
-
-
-		For Local i:Int = 0 To 13
-			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h
-			If locy < 410 And locy > - 50 And i <> onFloor Then  Self.spriteDoor.Draw(Parent.pos.x + Pos.x, locy, "closed")
-		Next
-	End Method
-
-
-	Method Update(deltaTime:Float=1.0)
-		'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
-		'until the function returns the new one, instead of positioning it directly on the floorground
-		If Abs(Building.GetFloorY(Building.GetFloor(Parent.pos.y + Pos.y + spriteInner.h - 1)) - (Pos.y + spriteInner.h)) <= 1
-			onFloor = Building.GetFloor(Parent.pos.y + Pos.y + spriteInner.h - 1)
-		EndIf
-
-		If spriteDoor.getCurrentAnimationName() = "opendoor"
-			open = 2 'opening
-			If spriteDoor.getCurrentAnimation().isFinished()
-				If open = 2 And passenger <> Null
-					passenger.inElevator	= False
-					passenger				= Null
-				EndIf
-				spriteDoor.setCurrentAnimation("open")
-				open = 1 'open
-			EndIf
-		EndIf
-		If spriteDoor.getCurrentAnimationName() = "closedoor"
-			open = 3 'closing
-			If spriteDoor.getCurrentAnimation().isFinished()
-				spriteDoor.setCurrentAnimation("closed")
-				open = 0 'closed
-				SoundSource.PlaySfx(SFX_ELEVATOR_ENGINE)
-			EndIf
-
-		EndIf
-
-		'door open? we can get next route - if nobody is using the plan
-		If open = 1 And toFloor = onFloor Or toFloor = -1
-			If blockedByFigureID < 0 Then toFloor = GetFloorRoute()
-'			if toFloor < 0 then toFloor = onFloor
-		EndIf
-		'check wether elevator has to move to somewhere but doors aren't closed - if so, start closing-animation
-		If (onFloor <> toFloor And open <> 0) And open <> 3 And waitAtFloorTimer <= MilliSecs()
-			CloseDoor()
-			Network_SendSynchronize()
-		EndIf
-
-		If onFloor = toFloor And open = 0
-			OpenDoor()
-			waitAtFloorTimer = MilliSecs() + waitAtFloorTime
-		EndIf
-
-		spriteDoor.Update(deltaTime)
-
-		'move elevator
-		If onFloor <> toFloor And open = 0 And waitAtFloorTimer <= MilliSecs() 'elevator is closed, closing-animation stopped
-			upwards = onfloor < toFloor
-			If Not upwards
-				Pos.y	= Min(Pos.y + deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
-			Else
-				Pos.y	= Max(Pos.y - deltaTime * speed, Building.GetFloorY(toFloor) - spriteInner.h)
-			EndIf
-
-			If Pos.y + spriteInner.h < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(13) - spriteInner.h
-			If Pos.y + spriteInner.h > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.h
-		EndIf
-
-		'move figure who is in elevator
-		For Local Figure:TFigures = EachIn TFigures.List
-			If Figure.IsInElevator()
-				'figure position in elevator - displace
-				Figure.rect.position.setY ( Building.Elevator.Pos.y + spriteInner.h)
-				Exit 'only one figure in elevator possible
-			EndIf
-		Next
-
-		TRooms.UpdateDoorToolTips(deltaTime)
-
-'		if Network_LastSynchronize < Millisecs() then Network_SendSynchronize()
-	End Method
-
-	'needs to be restructured (some test-lines within)
-	Method Draw()
-		Local locy:Int = 0
-		SetBlend MASKBLEND
-
-		TRooms.DrawDoors() 'draw overlay -open doors etc.
-
-		'draw missing door (where elevator is)
-		spriteDoor.Draw(Parent.pos.x + pos.x, Parent.pos.y + Parent.GetFloorY(onFloor) - 50)
-
-		For Local i:Int = 0 To 13
-			locy = Parent.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h - 8
-			If locy < 410 And locy > -50
-				SetColor 200,0,0
-				DrawRect(Parent.pos.x+Pos.x-4 + 10 + (onFloor)*2, locy + 3, 2,2)
-				SetColor 255,255,255
-			EndIf
-		Next
-
-		'elevator sign - indicator
-		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			locy = Parent.pos.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.h + 23
-			'elevator is called to this floor					'elevator will stop there (destination)
-			If	 floorroute.call Then SetColor 200,220,20 	Else SetColor 100,220,20
-			DrawRect(Parent.pos.x + Pos.x + 44, locy, 3,3)
-			SetColor 255,255,255
-		Next
-
-		SetBlend ALPHABLEND
-	End Method
-
-End Type
-
-Type TPlayerElementPosition Extends TElementPosition
-	Function Create:TPlayerElementPosition ()
-		return new TPlayerElementPosition
-	End Function
-
-	Method GetID:string()
-		Return "Player"
-	End Method
-
-	Method GetCenter:TPoint()
-		Return Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
-	End Method
-
-	Method GetIsVisible:int()
-		Return true
-	End Method
-
-	Method IsMovable:int()
-		Return false 'Bedeutet das es nicht überwacht wird. Speziell beim Player
-	End Method
-End Type
-
-Type TElevatorSoundSource Extends TSoundSourceElement
-	Field Elevator:TElevator = null
-	Field Movable:int = true
-
-	Function Create:TElevatorSoundSource(_elevator:TElevator, _movable:int)
-		local result:TElevatorSoundSource  = new TElevatorSoundSource
-		result.Elevator = _elevator
-		result.Movable = ­_movable
-		
-		result.AddDynamicSfxChannel("Main")
-		result.AddDynamicSfxChannel("Door")
-		
-		return result
-	End Function
-
-	Method GetID:string()
-		Return "Elevator"
-	End Method
-
-	Method GetCenter:TPoint()
-		Return Elevator.GetElevatorCenterPos()
-	End Method
-
-	Method IsMovable:int()
-		Return ­Movable
-	End Method
-	
-	Method GetIsHearable:int()
-		Return (Players[Game.playerID].Figure.inRoom = null)
-	End Method
-	
-	Method GetChannelForSfx:TSfxChannel(sfx:string)
-		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
-				Return GetSfxChannelByName("Door")
-			Case SFX_ELEVATOR_CLOSEDOOR
-				Return GetSfxChannelByName("Door")
-			Case SFX_ELEVATOR_ENGINE
-				Return GetSfxChannelByName("Main")
-		EndSelect		
-	End Method
-	
-	Method GetSfxSettings:TSfxSettings(sfx:string)
-		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
-				Return GetDoorOptions()
-			Case SFX_ELEVATOR_CLOSEDOOR
-				Return GetDoorOptions()
-			Case SFX_ELEVATOR_ENGINE
-				Return GetEngineOptions()
-		EndSelect						
-	End Method
-	
-	Method OnPlaySfx:int(sfx:string)
-		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
-				local engineChannel:TSfxChannel = GetChannelForSfx(SFX_ELEVATOR_ENGINE)
-				engineChannel.Stop()
-		EndSelect
-		
-		Return True
-	End Method
-	
-	Method GetDoorOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
-		result.nearbyDistanceRange = 30
-		result.maxDistanceRange = 500			
-		result.nearbyRangeVolume = 1
-		result.midRangeVolume = 0.25
-		result.minVolume = 0
-		Return result
-	End Method
-
-	Method GetEngineOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
-		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
-		result.midRangeVolume = 0.25
-		result.minVolume = 0.05
-		Return result
-	End Method	
-End Type
-
+Include "gamefunctions_elevator.bmx"
 Include "gamefunctions_figures.bmx"
 
 'Summary: Type of building, area around it and doors,...
@@ -2037,6 +1494,7 @@ Type TBuilding Extends TRenderable
 		Building.gfx_building	= Assets.GetSprite("gfx_building")
 		Building.pos.y			= 0 - Building.gfx_building.h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
 		Building.Elevator		= TElevator.Create(Building)
+		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
 
 		Building.Moon_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-50, -50, 400, 850, 850])
 		Building.Moon_curKubSplineY.GetDataInt([1, 2, 3, 4, 5], [650, 200, 20 , 200, 650])
@@ -2377,18 +1835,18 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 			Figure.SpecialTimer.Reset()
 			'sometimes wait a bit longer
 			if rand(0,100) < 20
-			Local room:TRooms
-			Repeat
-				room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
-			Until room.doortype >0 and room <> Figure.inRoom
+				Local room:TRooms
+				Repeat
+					room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
+				Until room.doortype >0 and room <> Figure.inRoom
 
-			If Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
-				Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
-			else
-				Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
-			EndIf
-			'Print "Bote: war in Raum -> neues Ziel gesucht"
-			Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
+				If Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
+					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
+				else
+					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
+				EndIf
+				'Print "Bote: war in Raum -> neues Ziel gesucht"
+				Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 			endif
 		EndIf
 	EndIf
@@ -2482,10 +1940,11 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 	If Floor(Figure.rect.GetX()) >= 579 Then Figure.rect.position.setX(579);Figure.target.setX(579)
 End Function
 
+
 'Sound-Files einlesen - da es lange dauert eventuell nur bei Bedarf oder in einem anderen Thread laden.
-print "SetDefaultReceiverXXXXXXXXXXXX"
 SoundManager.SetDefaultReceiver(TPlayerElementPosition.Create())
 SoundManager.LoadSoundFiles()
+
 
 '#Region: Globals, Player-Creation
 Global StationMap:TStationMap	= TStationMap.Create()
@@ -2529,7 +1988,7 @@ tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
 
-tempfigur				= new TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 8,-65,0)
+tempfigur				= new TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 1,-65,0)
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
@@ -3446,12 +2905,19 @@ Function DrawMain(tweenValue:Float=1.0)
 		If Game.networkgame then startY :+ 4*11
 
 		local callType:string = ""
-		Assets.fonts.baseFont.draw("tofloor:" + Building.elevator.toFloor, 25, startY)
-		For Local FloorRoute:TFloorRoute = EachIn Building.elevator.FloorRouteList
-			If floorroute.call = 0 then callType = " 'senden' " else callType= " 'holen' "
-			Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + TFigures.GetByID(FloorRoute.who).Name, 25, startY + 15 + routepos * 11)
-			routepos:+1
-		Next
+		
+		Assets.fonts.baseFont.draw("tofloor:" + Building.elevator.TargetFloor, 25, startY)
+
+		Assets.fonts.baseFont.draw("Status:" + Building.elevator.ElevatorStatus, 100, startY)
+		if Building.elevator.RouteLogic.GetSortedRouteList() <> null
+			For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
+				If floorroute.call = 0 then callType = " 'senden' " else callType= " 'holen' "
+				Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
+				routepos:+1
+			Next
+		else
+			Assets.fonts.baseFont.draw("neu berechnen", 25, startY + 15)
+		endif
 
 
 	EndIf
@@ -3662,7 +3128,6 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 	End Method
 End Type
 
-
 Type TEventListenerOnSoundUpdate Extends TEventListenerBase
 
 	Function Create:TEventListenerOnSoundUpdate()
@@ -3680,8 +3145,6 @@ Type TEventListenerOnSoundUpdate Extends TEventListenerBase
 		return true
 	End Method
 End Type
-
-
 
 '__________________________________________
 'events
@@ -3724,4 +3187,108 @@ Function EndHook()
 
 End Function
 
+Type TPlayerElementPosition Extends TElementPosition
+	Function Create:TPlayerElementPosition ()
+		return new TPlayerElementPosition
+	End Function
 
+	Method GetID:string()
+		Return "Player"
+	End Method
+
+	Method GetCenter:TPoint()
+		Return Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
+	End Method
+
+	Method GetIsVisible:int()
+		Return true
+	End Method
+
+	Method IsMovable:int()
+		Return false 'Bedeutet das es nicht überwacht wird. Speziell beim Player
+	End Method
+End Type
+
+Type TElevatorSoundSource Extends TSoundSourceElement
+	Field Elevator:TElevator = null
+	Field Movable:int = true
+
+	Function Create:TElevatorSoundSource(_elevator:TElevator, _movable:int)
+		local result:TElevatorSoundSource  = new TElevatorSoundSource
+		result.Elevator = _elevator
+		result.Movable = ­_movable
+		
+		result.AddDynamicSfxChannel("Main")
+		result.AddDynamicSfxChannel("Door")
+		
+		return result
+	End Function
+
+	Method GetID:string()
+		Return "Elevator"
+	End Method
+
+	Method GetCenter:TPoint()
+		Return Elevator.GetElevatorCenterPos()
+	End Method
+
+	Method IsMovable:int()
+		Return ­Movable
+	End Method
+	
+	Method GetIsHearable:int()
+		Return (Players[Game.playerID].Figure.inRoom = null)
+	End Method
+	
+	Method GetChannelForSfx:TSfxChannel(sfx:string)
+		Select sfx
+			Case SFX_ELEVATOR_OPENDOOR
+				Return GetSfxChannelByName("Door")
+			Case SFX_ELEVATOR_CLOSEDOOR
+				Return GetSfxChannelByName("Door")
+			Case SFX_ELEVATOR_ENGINE
+				Return GetSfxChannelByName("Main")
+		EndSelect		
+	End Method
+	
+	Method GetSfxSettings:TSfxSettings(sfx:string)
+		Select sfx
+			Case SFX_ELEVATOR_OPENDOOR
+				Return GetDoorOptions()
+			Case SFX_ELEVATOR_CLOSEDOOR
+				Return GetDoorOptions()
+			Case SFX_ELEVATOR_ENGINE
+				Return GetEngineOptions()
+		EndSelect						
+	End Method
+	
+	Method OnPlaySfx:int(sfx:string)
+		Select sfx
+			Case SFX_ELEVATOR_OPENDOOR
+				local engineChannel:TSfxChannel = GetChannelForSfx(SFX_ELEVATOR_ENGINE)
+				engineChannel.Stop()
+		EndSelect
+		
+		Return True
+	End Method
+	
+	Method GetDoorOptions:TSfxSettings()
+		local result:TSfxSettings = new TSfxSettings
+		result.nearbyDistanceRange = 50
+		result.maxDistanceRange = 500			
+		result.nearbyRangeVolume = 1
+		result.midRangeVolume = 0.5
+		result.minVolume = 0
+		Return result
+	End Method
+
+	Method GetEngineOptions:TSfxSettings()
+		local result:TSfxSettings = new TSfxSettings
+		result.nearbyDistanceRange = 0
+		result.maxDistanceRange = 500
+		result.nearbyRangeVolume = 0.5
+		result.midRangeVolume = 0.25
+		result.minVolume = 0.05
+		Return result
+	End Method	
+End Type

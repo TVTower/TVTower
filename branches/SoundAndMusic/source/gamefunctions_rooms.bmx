@@ -280,8 +280,8 @@ Type TRooms  {_exposeToLua="selected"}
 					Return room
 				EndIf
 			EndIf
-			If room.name = "elevator" AND functions.IsIn(x, y, Building.pos.x + Building.Elevator.pos.x, Building.pos.y + Building.GetFloorY(room.Pos.y) - 58, Building.Elevator.spriteDoor.sprite.framew, 58)
-				room.Pos.x = Building.Elevator.GetDoorCenter()
+			If room.name = "elevator" AND functions.IsIn(x, y, Building.pos.x + Building.Elevator.pos.x, Building.pos.y + Building.GetFloorY(room.Pos.y) - 58, Building.Elevator.GetDoorWidth(), 58)
+				room.Pos.x = Building.Elevator.GetDoorCenterX()
 				Return room
 			EndIf
 		Next
@@ -1207,8 +1207,9 @@ print "umbauen auf roomhandler...."
 
 
 
-Function Room_Elevator_Compute(_room:TRooms)
+Function Room_Elevator_Compute(_room:TRooms) 'Dies hier ist die Raumauswahl im Fahrstuhl.
 	local playerFigure:TFigures = Players[Game.playerID].figure
+
 	If TRooms.doadraw 'draw it
 		TRoomSigns.DrawAll()
 		Assets.fonts.baseFont.Draw("Rausschmiss in "+(Building.Elevator.waitAtFloorTimer - MilliSecs()), 600, 20)
@@ -1220,17 +1221,19 @@ Function Room_Elevator_Compute(_room:TRooms)
 		If playerFigure.inRoom.name = "elevator"
 			if Building.Elevator.waitAtFloorTimer <= MilliSecs()
 				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
-				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritt
-				playerFigure.inElevator		= False
+				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritts
 				playerFigure.inRoom			= Null
 				playerFigure.clickedToRoom	= Null
-				Building.Elevator.blockedByFigureID = -1
-				building.elevator.waitAtFloorTimer = MilliSecs()
+				building.elevator.UsePlan(playerFigure)
 			else if mouseHit
-				building.Elevator.waitAtFloorTimer = 0
-				building.Elevator.blockedByFigureID	= playerFigure.id
 				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseX(),MouseY())
-				if clickedRoom then playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
+				if clickedRoom
+					playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
+					If Building.Elevator.EnterTheElevator(playerFigure) 'das Ziel hier nicht angeben, sonst kommt es zu einer Einsteigeprüfung die den Spieler eventuell wieder rauswirft.
+						Building.Elevator.SendElevator(playerFigure.getFloor(playerFigure.target), playerFigure)
+					Endif
+				Endif
+				building.Elevator.PlanningFinished(playerFigure)
 			endif
 		EndIf
 		TRoomSigns.UpdateAll(False)
@@ -1537,6 +1540,13 @@ Type TRoomSigns Extends TBlock
 
 				imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
 			EndIf
+			If imagewithtext = Null AND image <> null
+				local newimgwithtext:Timage = TImage.Create(image.w, image.h -1,1,0,255,0,255)
+				newimgwithtext.pixmaps[0].format = PF_RGB888
+				newimgwithtext.pixmaps[0] = GrabPixmap(Pos.x,Pos.y,image.w,image.h-1)
+				newimgwithtext.pixmaps[0] = ConvertPixmap(newimgwithtext.pixmaps[0], PF_RGB888)
+				imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
+		EndIf
 		EndIf
 		SetAlpha 1
     End Method
@@ -1737,7 +1747,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method IsMovable:int()
-		Return ­False
+		Return False
 	End Method
 	
 	Method GetIsHearable:int()

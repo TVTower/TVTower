@@ -386,7 +386,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 
 		'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
 		local distanceVolume:float = CurrentSettings.GetVolumeByDistance(distanceXYZ)		
-		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+		channel.SetVolume(SoundManager.sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
 		
 		If (sourcePoint.z = 0) Then
 			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite.

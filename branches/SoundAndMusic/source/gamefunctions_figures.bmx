@@ -7,19 +7,19 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field Name:String			= "unknown"
 	Field initialdx:Float		= 0.0 'backup of self.vel.x
 	field target:TPoint			= TPoint.Create(-1,-1) {_exposeToLua}
+	Field PosOffset:TPoint		= TPoint.Create(0,0)
 
 	Field toRoom:TRooms			= Null			{sl = "no"}
 	Field fromRoom:TRooms		= Null			{sl = "no"}
 	Field clickedToRoom:TRooms	= Null			{sl = "no"}
 	Field inRoom:TRooms			= Null			{sl = "no"}
 	Field id:Int				= 0
-	Field Visible:Int			= 1
+	Field Visible:Int			= 1		
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
 	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
 
-	Field inElevator:Byte		= 0
 	Field ControlledByID:Int	= -1
 	Field alreadydrawn:Int		= 0 			{sl = "no"}
 	Field updatefunc_(ListLink:TLink, deltaTime:float) {sl = "no"}
@@ -104,29 +104,25 @@ endrem
 		Return Building.getFloor( Building.pos.y + _pos.y )
 	End Method
 
+	Method GetTargetFloor:int()
+		Return Building.getFloor( Building.pos.y + target.y)
+	End Method
 
 	Method IsOnFloor:Byte()
 		return rect.GetY() = Building.GetFloorY(GetFloor())
 	End Method
 
+	Method GetCenterX:int()
+		Return ceil(self.rect.GetX() + self.rect.GetW()/2)
+	End Method
+
 	'ignores y
 	Method IsAtElevator:Byte()
-		return Building.Elevator.IsInFrontOfDoor(ceil(self.rect.GetX() + self.rect.GetW()/2))
+		return Building.Elevator.IsFigureInFrontOfDoor(self)
 	End Method
 
 	Method IsInElevator:Byte()
-		If Not IsAtElevator()
-			inElevator=False
-			If Building.Elevator.passenger = self Then Building.Elevator.passenger = null
-			Return False
-		else
-			If Building.Elevator.passenger = self
-				inElevator=True
-				Return True
-			EndIf
-		EndIf
-		inElevator=False
-		Return False
+		Return Building.Elevator.IsFigureInElevator(self)
 	End Method
 
 	Method IsAI:Int()
@@ -135,13 +131,18 @@ endrem
 		if self.ControlledByID = 0 then return true
 		Return False
 	End Method
+	
+	Method IsActivePlayer:Int()
+		If id = 1 Then Return true 'TODO: Man müsste hier noch prüfen, ob andere Spieler gesteuert werden außer id = 1
+		Return false
+	End Method
 
 	Method FigureMovement(deltaTime:float=1.0)
 		local targetX:int = floor(self.target.x)
 		if target.y=-1 then target.setPos(self.rect.position)
 
 		'do we have to change the floor?
-		if self.HasToChangeFloor() then targetX = Building.Elevator.GetDoorCenter() - self.rect.GetW()/2 '-GetW/2 to center figure
+		if self.HasToChangeFloor() then targetX = Building.Elevator.GetDoorCenterX() - self.rect.GetW()/2 '-GetW/2 to center figure
 
 		If targetX < Floor(Self.rect.GetX()) Then Self.vel.SetX( -(Abs(Self.initialdx)))
 		If targetX > Floor(Self.rect.GetX()) Then Self.vel.SetX(  (Abs(Self.initialdx)))
@@ -159,7 +160,7 @@ endrem
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
-		If self.rect.GetY() - self.sprite.h < Building.GetFloorY(13) Then self.rect.position.setY( Building.GetFloorY(13) )
+		If self.rect.GetY() < Building.GetFloorY(13) Then self.rect.position.setY( Building.GetFloorY(13) ) 'beim Vergleich oben nicht "self.sprite.h" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
 		If self.rect.GetY() - self.sprite.h > Building.GetFloorY( 0) Then self.rect.position.setY( Building.GetFloorY(0) )
 		'limit player position horizontally
 	    If Floor(self.rect.GetX()) <= 200 Then rect.position.setX(200);target.setX(200)
@@ -222,7 +223,7 @@ endrem
 	End Method
 
 	Method LeaveRoom:Int()
-		if self.inRoom <> null then print self.name+" leaves room:"+self.inRoom.name else print self.name+" leaves special room."
+		print self.name+" leaves room:"+self.inRoom.name
 
 		If ParentPlayer <> Null And self.isAI()
 			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
@@ -296,26 +297,20 @@ endrem
 		Return self
 	End Method
 
-	Method CallElevator:Int()
-		'auskommentieren wenn nur der Spieler den Fahrstuhl holen kann
-		'if id <> game.playerID then return 0
+	Method CallElevator:Int()		
+		if IsElevatorCalled() then return false 'Wenn er bereits gerufen wurde, dann abbrechen
 
-		if IsElevatorCalled() then return false
-		if Building.Elevator.onFloor = GetFloor() and IsAtElevator() then return false
-		'print self.name+" calls elevator"
-
-		If id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader())
-			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, False)
-		Else
-			If IsAtElevator() Then Building.Elevator.AddFloorRoute(self.GetFloor(), 1, id, False, True)
-		EndIf
-
-		If Not Building.Elevator.EgoMode Then SortList(Building.Elevator.FloorRouteList)
+		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss überprüft werden
+		if Building.Elevator.CurrentFloor = GetFloor() and IsAtElevator() then return false
+		If IsAtElevator() Then 'Fahrstuhl darf man nur rufen, wenn man davor steht
+			Building.Elevator.CallElevator(self)						
+		Endif		
 	End Method
 
-	Method SendElevator:Int()
-		'print self.name+" sends elevator"
-		Building.Elevator.SendToFloor(self.getFloor(target), self)
+	Method GoOnBoardAndSendElevator:Int()		
+		If Building.Elevator.EnterTheElevator(self, self.getFloor(target))
+			Building.Elevator.SendElevator(self.getFloor(target), self)
+		Endif
 	End Method
 
 	Method ChangeTarget(x:Int=null, y:Int=null) {_exposeToLua}
@@ -329,7 +324,7 @@ endrem
 		if y=null then y=target.y
 
 		'if player is in elevator dont accept changes
-		If Self = Building.Elevator.passenger then return
+		If Building.Elevator.passengers.Contains(Self) then return
 
 		'y is not of floor 0 -13
 		If Building.GetFloor(y) < 0 OR Building.GetFloor(y) > 13 then return
@@ -352,6 +347,10 @@ endrem
 		'change to event
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(self)
 	End Method
+	
+	Method IsGameLeader:Int()
+		Return (id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader()))
+	End Method
 
 	'overwrite default UpdateMovement - we handle it in FigureMovement
 	Method UpdateMovement(deltaTime:float)
@@ -360,7 +359,7 @@ endrem
 
 	Method IsElevatorCalled:int()
 		For Local floorRoute:TFloorRoute = EachIn Building.Elevator.FloorRouteList
-			If floorRoute.who = self.id
+			If floorRoute.who.id = self.id
 				Return true
 			Endif
 		Next
@@ -415,54 +414,35 @@ endrem
 							CallElevator()
 						EndIf
 					EndIf
-					If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And Building.Elevator.onFloor = clickedToRoom.Pos.y And Building.Elevator.Open = 1
+					If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And Building.Elevator.CurrentFloor = clickedToRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
 						SetInRoom(clickedToRoom)
-						Building.Elevator.waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime
+						Building.Elevator.UsePlan(self)						
 					EndIf
 				EndIf
 			EndIf
 		EndIf
-		If Visible and (inRoom = Null or inRoom.name = "elevator")
-			if Building.Elevator.blockedByFigureID >= 0
-				Building.elevator.SetDoorOpen()
-				Building.elevator.waitAtFloorTimer = MilliSecs() + Building.elevator.waitAtFloorTime
-			endif
-
-			'figure wants to change floor
-			If Self.HasToChangeFloor() and IsAtElevator()
-				CallElevator()
-
-				'we need blockedByFigureID as "inElevator()" could be used to
-				'redirect the elevator when nearly reached target
-				'->misuse of the elevator would be possible
-				if Building.elevator.blockedByFigureID = self.id
-					Building.elevator.blockedByFigureID = -1
-					'print "send elevator from plan"
-					SendElevator()
-				endif
-
-
-				'it is for me not another figure on the same floor who called earlier
-				If Building.elevator.allowedPassengerID = -1 or Building.elevator.allowedPassengerID = self.id
-					'empty and open elevator on my floor PLUS I called it
-					if Building.elevator.onFloor = GetFloor()
-						If not Building.elevator.passenger and Building.elevator.Open = 1
-							'print "send elevator"
-							SendElevator()
-						EndIf
-					endif
-				EndIf
-			EndIf
-
-			If Building.Elevator.passenger = self and Building.Elevator.Open = 1 and rect.GetY() = target.y and Building.getFloor(building.pos.y+target.y) = Building.Elevator.toFloor
-				If self.sprite.h + Int(rect.GetY()) = target.y
-					Building.Elevator.passenger	= null
-					'set target again - so player can click on signs in roomboard
-					'self.SetToRoom( TRooms.GetTargetroom(self.target.x + self.FrameWidth /2, Building.pos.y + Building.GetFloorY(Building.GetFloor(self.pos.y)) - 5) )
-				EndIf
-			EndIf
-
-	    EndIf
+		
+		If Visible and (inRoom = Null or inRoom.name = "elevator")			
+			If Self.HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
+				local elevator:TElevator = Building.Elevator
+			
+				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
+			
+				'Ist der Fahrstuhl da? Kann ich einsteigen?
+				If elevator.CurrentFloor = GetFloor() And elevator.ReadyForBoarding
+					GoOnBoardAndSendElevator()
+				Else 'Ansonsten ruf ich ihn halt						
+					CallElevator()					
+				Endif																
+			Endif			
+			
+			If IsInElevator() 'And elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then			
+				local elevator:TElevator = Building.Elevator
+				If elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then
+					elevator.LeaveTheElevator(self)
+				Endif		
+			Endif
+		Endif
 
 		'sync playerposition if not done for long time
 		If Game.networkgame and Network.IsConnected and self.SyncTimer.isExpired()
@@ -484,7 +464,7 @@ endrem
 	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
 		If Visible And (inRoom = Null Or inRoom.name = "elevator")
 			If Sprite <> Null
-				super.Draw(self.rect.GetX(), Building.pos.y + self.rect.GetY() - self.sprite.h)
+				super.Draw(self.rect.GetX() + PosOffset.getX(), Building.pos.y + self.rect.GetY() - self.sprite.h + PosOffset.getY())
 			EndIf
 		EndIf
 		Self.GetPeopleOnSameFloor()
