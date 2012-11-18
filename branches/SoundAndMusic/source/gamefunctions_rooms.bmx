@@ -1,4 +1,4 @@
-ï»¿'Basictype of all rooms
+'Basictype of all rooms
 Type TRooms  {_exposeToLua="selected"}
     Field background:TGW_Sprites    	   				'background, the image containing the whole room
 	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
@@ -1020,7 +1020,7 @@ Type RoomHandler_News extends TRoomHandler
 		If PlannerToolTip Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 
 		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
-			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "HinzufÃ¼gen und entfernen", 180, 100, 0, 0)
+			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
@@ -1186,9 +1186,9 @@ Type RoomHandler_Chief extends TRoomHandler
 	  Local ChefText:String
 	  ChefText = "Was ist?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!"
 	  If Betty.LastAwardWinner <> Game.playerID And Betty.LastAwardWinner <> 0
-		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis fÃ¼r " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
+		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis für " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
 		If Betty.LastAwardType <> 0
-			ChefText = "Was fÃ¤llt Ihnen ein den Award fÃ¼r " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis fÃ¼r " + Betty.GetAwardTypeString() + "."
+			ChefText = "Was fällt Ihnen ein den Award für " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis für " + Betty.GetAwardTypeString() + "."
 		EndIf
 	  EndIf
 	  functions.DrawDialog(Assets.GetSpritePack("gfx_dialog"), 350, 60, 450, 120, "StartLeftDown", 0, ChefText, Font14)
@@ -1301,7 +1301,7 @@ Function Room_Betty_Compute(_room:TRooms)
 		local y:float = picY + sprite.h - 30
 		Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 	Next
-	Local DlgText:String = "Na Du?" + Chr(13) + "Du kÃ¶nntest ruhig mal Ã¶fters bei mir vorbeischauen."
+	Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
 	DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, Assets.GetFont("Default",14))
   EndIf
 
@@ -1723,76 +1723,3 @@ Function Init_CreateRoomDetails()
 		Room.CreateRoomsign()
 	Next
 End Function
-
-
-Type TDoorSoundSource Extends TSoundSourceElement
-	Field Room:TRooms
-
-	Function Create:TDoorSoundSource(_room:TRooms)
-		local result:TDoorSoundSource = new TDoorSoundSource
-		result.Room = _room
-		
-		result.AddDynamicSfxChannel(SFX_OPEN_DOOR)
-		result.AddDynamicSfxChannel(SFX_CLOSE_DOOR)
-		
-		return result
-	End Function
-
-	Method GetID:string()
-		Return "Door"
-	End Method
-
-	Method GetCenter:TPoint()
-		Return TPoint.Create(Room.Pos.x + Room.doorwidth/2, Building.pos.y + Building.GetFloorY(Room.Pos.y) - Room.doorheight/2, -15)
-	End Method
-
-	Method IsMovable:int()
-		Return False
-	End Method
-	
-	Method GetIsHearable:int()
-		Return (Players[Game.playerID].Figure.inRoom = null)
-	End Method
-	
-	Method GetChannelForSfx:TSfxChannel(sfx:string)
-		Select sfx
-			Case SFX_OPEN_DOOR
-				Return GetSfxChannelByName(SFX_OPEN_DOOR)
-			Case SFX_CLOSE_DOOR
-				Return GetSfxChannelByName(SFX_CLOSE_DOOR)
-		EndSelect		
-	End Method
-	
-	Method GetSfxSettings:TSfxSettings(sfx:string)
-		Return GetDoorOptions()
-	End Method
-	
-	Method OnPlaySfx:int(sfx:string)
-		Return True
-	End Method
-	
-	Method GetDoorOptions:TSfxSettings()
-'		local position:TPoint = GetCenter()
-'		local floorY:int = Building.pos.y + Building.GetFloorY(Room.Pos.y)				
-				
-		local result:TSfxSettings = new TSfxSettings
-		result.nearbyDistanceRange = 60
-'		result.nearbyDistanceRangeTopY = (floorY - position.y - 73) * -1 '73 = Stockwerkhöhe
-'		result.nearbyDistanceRangeBottomY = floorY - position.y
-		result.maxDistanceRange = 100			
-		result.nearbyRangeVolume = 1
-		result.midRangeVolume = 0.25
-		result.minVolume = 0
-		Return result
-	End Method
-
-	Method GetEngineOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
-		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
-		result.midRangeVolume = 0.25
-		result.minVolume = 0.05
-		Return result
-	End Method	
-End Type

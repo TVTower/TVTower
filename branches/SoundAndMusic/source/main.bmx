@@ -38,7 +38,7 @@ GUIManager.defaultFont	= Assets.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
-
+Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
@@ -1753,6 +1753,13 @@ Type TBuilding Extends TRenderable
 	Method GetFloor:Int(_y:Int)
 		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
+	
+	Method getFloorByPoint:Int(point:TPoint)
+		for local i:int = 0 to 13
+			If Building.GetFloorY(i) < point.y Then Return i
+		next
+		Return -1
+	End Method
 End Type
 
 
@@ -3186,109 +3193,3 @@ Function EndHook()
 	TProfiler.DumpLog("Profiler.txt")
 
 End Function
-
-Type TPlayerElementPosition Extends TElementPosition
-	Function Create:TPlayerElementPosition ()
-		return new TPlayerElementPosition
-	End Function
-
-	Method GetID:string()
-		Return "Player"
-	End Method
-
-	Method GetCenter:TPoint()
-		Return Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
-	End Method
-
-	Method GetIsVisible:int()
-		Return true
-	End Method
-
-	Method IsMovable:int()
-		Return false 'Bedeutet das es nicht überwacht wird. Speziell beim Player
-	End Method
-End Type
-
-Type TElevatorSoundSource Extends TSoundSourceElement
-	Field Elevator:TElevator = null
-	Field Movable:int = true
-
-	Function Create:TElevatorSoundSource(_elevator:TElevator, _movable:int)
-		local result:TElevatorSoundSource  = new TElevatorSoundSource
-		result.Elevator = _elevator
-		result.Movable = ­_movable
-		
-		result.AddDynamicSfxChannel("Main")
-		result.AddDynamicSfxChannel("Door")
-		
-		return result
-	End Function
-
-	Method GetID:string()
-		Return "Elevator"
-	End Method
-
-	Method GetCenter:TPoint()
-		Return Elevator.GetElevatorCenterPos()
-	End Method
-
-	Method IsMovable:int()
-		Return ­Movable
-	End Method
-	
-	Method GetIsHearable:int()
-		Return (Players[Game.playerID].Figure.inRoom = null)
-	End Method
-	
-	Method GetChannelForSfx:TSfxChannel(sfx:string)
-		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
-				Return GetSfxChannelByName("Door")
-			Case SFX_ELEVATOR_CLOSEDOOR
-				Return GetSfxChannelByName("Door")
-			Case SFX_ELEVATOR_ENGINE
-				Return GetSfxChannelByName("Main")
-		EndSelect		
-	End Method
-	
-	Method GetSfxSettings:TSfxSettings(sfx:string)
-		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
-				Return GetDoorOptions()
-			Case SFX_ELEVATOR_CLOSEDOOR
-				Return GetDoorOptions()
-			Case SFX_ELEVATOR_ENGINE
-				Return GetEngineOptions()
-		EndSelect						
-	End Method
-	
-	Method OnPlaySfx:int(sfx:string)
-		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
-				local engineChannel:TSfxChannel = GetChannelForSfx(SFX_ELEVATOR_ENGINE)
-				engineChannel.Stop()
-		EndSelect
-		
-		Return True
-	End Method
-	
-	Method GetDoorOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
-		result.nearbyDistanceRange = 50
-		result.maxDistanceRange = 500			
-		result.nearbyRangeVolume = 1
-		result.midRangeVolume = 0.5
-		result.minVolume = 0
-		Return result
-	End Method
-
-	Method GetEngineOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
-		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
-		result.midRangeVolume = 0.25
-		result.minVolume = 0.05
-		Return result
-	End Method	
-End Type

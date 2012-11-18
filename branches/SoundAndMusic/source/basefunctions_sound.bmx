@@ -382,10 +382,9 @@ Type TDynamicSfxChannel Extends TSfxChannel
 	Method AdjustSettings(isUpdate:int)
 		local sourcePoint:TPoint = Source.GetCenter()
 		local receiverPoint:TPoint = Receiver.GetCenter() 'Meistens die Position der Spielfigur		
-		local distanceXYZ:int = receiverPoint.DistanceTo(sourcePoint)
-
+	
 		'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
-		local distanceVolume:float = CurrentSettings.GetVolumeByDistance(distanceXYZ)		
+		local distanceVolume:float = CurrentSettings.GetVolumeByDistance(Source, Receiver)		
 		channel.SetVolume(SoundManager.sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
 		
 		If (sourcePoint.z = 0) Then
@@ -393,7 +392,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
 			channel.SetPan(float(sourcePoint.x - receiverPoint.x) / 170)
 			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
-		Else
+		Else					
 			local xDistance:float = TPoint.DistanceOfValues(sourcePoint.x, receiverPoint.x)
 			local yDistance:float = TPoint.DistanceOfValues(sourcePoint.y, receiverPoint.y)
 			local zDistance:float = TPoint.DistanceOfValues(sourcePoint.z, receiverPoint.z)
@@ -448,7 +447,9 @@ Type TSfxSettings
 		Return defaultVolume
 	End Method
 	
-	Method GetVolumeByDistance:float(currentDistance:int)
+	Method GetVolumeByDistance:float(source:TSoundSourceElement, receiver:TElementPosition)
+		local currentDistance:int = source.GetCenter().DistanceTo(receiver.getCenter())
+	
 		local result:float = midRangeVolume
 		If (currentDistance <> -1) Then
 			If currentDistance > Self.maxDistanceRange Then 'zu weit weg
