@@ -30,34 +30,37 @@ If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
 If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
 ?
 
-
+Global SoundManager:TSoundManager = TSoundManager.Create()
 
 Const MUSIC_TITLE:String					= "MUSIC_TITLE"
 Const MUSIC_MUSIC:String					= "MUSIC_MUSIC"
 
-Const SFX_ELEVATOR_DING:String				= "SFX_ELEVATOR_DING"
+Const SFX_ELEVATOR_OPENDOOR:String			= "SFX_ELEVATOR_OPENDOOR"
+Const SFX_ELEVATOR_CLOSEDOOR:String			= "SFX_ELEVATOR_CLOSEDOOR"
 Const SFX_ELEVATOR_ENGINE:String			= "SFX_ELEVATOR_ENGINE"
+
+Const SFX_OPEN_DOOR:String					= "SFX_OPEN_DOOR"
+Const SFX_CLOSE_DOOR:String					= "SFX_CLOSE_DOOR"
+
 
 'type to store music files (ogg) in it
 'data is stored in bank
 'Play-Method is adopted from maxmod2.bmx-Function "play"
 Type TMusicStream
 	field bank:TBank
-	field url:object
+	field loop:int
 
-	Function Create:TMusicStream(url:object)
+	Function Create:TMusicStream(url:object, loop:int=false)
 		local obj:TMusicStream = new TMusicStream
 		obj.bank = LoadBank(url)
-		obj.url = url
+		obj.loop = loop
 		return obj
 	End Function
 
-	Method Play:TChannel(sendToChannel:Tchannel var, loop:int=false )
-		Local chn:TChannel = CueMusic(self.bank, loop)
-		If Not chn then Return Null
-		ResumeChannel(chn)
-		sendToChannel = chn
-		Return sendToChannel
+	Method GetChannel:TChannel(volume:int)
+		local channel:TChannel = CueMusic(self.bank, loop)
+		channel.SetVolume(volume)
+		Return channel
 	End Method
 End Type
 
@@ -69,8 +72,9 @@ Type TSoundManager
 	Field inactiveMusicChannel:TChannel = null
 
 	Field sfxChannel_Elevator:TChannel = null
+	Field sfxChannel_Elevator2:TChannel = null
 	Field sfxVolume:float = 1
-	Field defaultSfxOptions:TSfxOptions = null
+	Field defaultSfxSettings:TSfxSettings = null
 
 	Field musicOn:int = 1
 	Field musicVolume:float = 1
@@ -86,7 +90,7 @@ Type TSoundManager
 	Field fadeOutVolume:int = 1000
 	Field fadeInVolume:int = 0
 
-	Field movingElements:TMap = null
+	Field soundSources:TList = CreateList()
 	Field receiver:TElementPosition
 
 	Function Create:TSoundManager()
@@ -105,16 +109,19 @@ endrem
 		Local manager:TSoundManager = New TSoundManager
 		manager.musicChannel1 = AllocChannel()
 		manager.musicChannel2 = AllocChannel()
-		manager.activeMusicChannel = manager.musicChannel1
-		manager.inactiveMusicChannel = manager.musicChannel2
 		manager.sfxChannel_Elevator = AllocChannel()
-		manager.defaultSfxOptions = TSfxOptions.Create()
-		manager.movingElements = CreateMap()
+		manager.sfxChannel_Elevator2 = AllocChannel()
+		manager.defaultSfxSettings = TSfxSettings.Create()
 		Return manager
 	End Function
+	
+	Method GetDefaultReceiver:TElementPosition()
+		print "GetDefaultReceiver: " + (receiver <> null)
+		Return receiver
+	End Method
 
 	Method SetDefaultReceiver(_receiver:TElementPosition)
-		print "SetDefaultReceiver"
+		print "SetDefaultReceiver: " + (_receiver <> null)
 		receiver = _receiver
 	End Method
 
@@ -124,7 +131,7 @@ endrem
 
 		Self.soundFiles = CreateMap:TMap()
 		LoadProgress(1, total)
-		Self.soundFiles.insert( MUSIC_TITLE, TMusicStream.Create("res/music/title.ogg") )
+		Self.soundFiles.insert( MUSIC_TITLE, TMusicStream.Create("res/music/title.ogg", true) )
 		LoadProgress(2, total)
 		Self.soundFiles.insert( MUSIC_MUSIC + "1", TMusicStream.Create("res/music/music1.ogg") )
 		LoadProgress(3, total)
@@ -162,7 +169,18 @@ endrem
 		'Rnd(1, TRooms.RoomList.Count() - 1)
 
 		LoadProgress(7, total)
-		MapInsert( Self.soundFiles, SFX_ELEVATOR_DING, LoadSound("res/sfx/elevator_ding.ogg", SOUND_HARDWARE) )
+		MapInsert( Self.soundFiles, SFX_ELEVATOR_OPENDOOR, LoadSound("res/sfx/elevator_openDoor.ogg", SOUND_HARDWARE) )
+		
+		LoadProgress(7, total)
+		MapInsert( Self.soundFiles, SFX_ELEVATOR_CLOSEDOOR, LoadSound("res/sfx/elevator_closeDoor.ogg", SOUND_HARDWARE) )
+		
+		
+		LoadProgress(7, total)
+		MapInsert( Self.soundFiles, SFX_OPEN_DOOR, LoadSound("res/sfx/openDoor.ogg", SOUND_HARDWARE) )
+		
+		LoadProgress(7, total)
+		MapInsert( Self.soundFiles, SFX_CLOSE_DOOR, LoadSound("res/sfx/closeDoor.ogg", SOUND_HARDWARE) )		
+		
 
 		LoadProgress(8, total)
 		MapInsert( Self.soundFiles, SFX_ELEVATOR_ENGINE, LoadSound("res/sfx/elevator_engine.ogg", SOUND_LOOP | SOUND_HARDWARE) )
@@ -172,29 +190,36 @@ endrem
 		'EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "sound files").AddNumber("itemNumber", currentCount).AddNumber("maxItemNumber", totalCount) ) )
 	End Method
 
+	Method RegisterSoundSource(soundSource:TSoundSourceElement)
+		If Not soundSources.Contains(soundSource) Then soundSources.AddLast(soundSource)
+	End Method
+
 	Method Update()
-		For Local element:TMovingElementSFX = EachIn MapValues(movingElements)
-			element.AdjustSettings()
+		For Local element:TSoundSourceElement = EachIn soundSources
+			element.Update()
 		Next
 
 		If musicOn Then
-			'Wenn der Musik-Channel nicht l√§uft, dann muss nichts gemacht werden
-			if (Self.activeMusicChannel.Playing()) then
-				if (Self.forceNextMusicTitle and Self.nextMusicTitleStream <> null) Or Self.fadeProcess > 0 then
-					FadeOverToNextTitle()
-				endif
-			Else
-				self.PlayMusic(MUSIC_MUSIC)
+			'Wenn der Musik-Channel nicht l‰uft, dann muss nichts gemacht werden
+			If activeMusicChannel <> null
+				If (Self.activeMusicChannel.Playing()) then
+					If (Self.forceNextMusicTitle and Self.nextMusicTitleStream <> null) Or Self.fadeProcess > 0 then
+						print "Fadeover"
+						FadeOverToNextTitle()
+					endif
+				Else
+					print "not playing"
+					self.PlayMusic(MUSIC_MUSIC)
+				Endif
 			Endif
 		EndIf
 	End Method
 
 	Method FadeOverToNextTitle()
-		If (Self.fadeProcess = 0) Then
-			Self.fadeProcess = 1
-			Self.inactiveMusicChannel.SetVolume(0)
-			'PlaySound(Self.nextMusicTitle, Self.inactiveMusicChannel)
-			Self.nextMusicTitleStream.Play(Self.inactiveMusicChannel, true)
+		If (fadeProcess = 0) Then
+			fadeProcess = 1
+			inactiveMusicChannel = nextMusicTitleStream.GetChannel(0)
+			ResumeChannel(inactiveMusicChannel)			
 			Self.nextMusicTitleStream = null
 
 			Self.forceNextMusicTitle = false
@@ -226,29 +251,26 @@ endrem
 
 	Method PlayMusic(music:string)
 		Self.nextMusicTitleStream = GetMusicStream(music)
-		Self.forceNextMusicTitle = true
 		Self.nextMusicTitleVolume = GetVolume(music)
+		Self.forceNextMusicTitle = true		
 
 		'Wenn der Musik-Channel noch nicht l√§uft, dann jetzt starten
-		if (not Self.activeMusicChannel.Playing()) then
-			Self.musicVolume = Self.nextMusicTitleVolume
-			Self.activeMusicChannel.SetVolume(Self.musicVolume)
-
-			'true = loop the music
-			self.nextMusicTitleStream.Play(self.activeMusicChannel, true)
-			'PlaySound(Self.nextMusicTitle, Self.activeMusicChannel)
+		if activeMusicChannel = null Or not activeMusicChannel.Playing() then
+			musicVolume = Self.nextMusicTitleVolume
+			
+			activeMusicChannel = nextMusicTitleStream.GetChannel(musicVolume)
+			ResumeChannel(activeMusicChannel)
 
 			Self.forceNextMusicTitle = false
 		endif
 	End Method
-
-	Method PlaySFX(sfx:string, element:TElementPosition, options:TSfxOptions = null)
-
+REM
+	Method PlaySfx(sfx:string, element:TElementPosition, options:TSfxOptions = null)
 		If (options = null) Then options = Self.defaultSfxOptions
-		local currSfx:TSound = Self.GetSFX(sfx)
-		local currChannel:TChannel = Self.GetSFXChannel(sfx)
+		local currSfx:TSound = Self.GetSfx(sfx)
+		local currChannel:TChannel = Self.GetSfxChannel(sfx)
 
-		local elementfx:TMovingElementSFX = TMovingElementSFX.Create(self, sfx, currSfx, currChannel, receiver, element, options)
+		local elementfx:TSoundSourceElement = TMovingElementSfx.Create(self, sfx, currSfx, currChannel, receiver, element, options)
 
 		elementfx.Play()
 
@@ -257,12 +279,12 @@ endrem
 			MapInsert(movingElements, elementfx.GetID(), elementfx) 'Neuer Eintrag hinzuf√ºgen
 
 			local count:int = 0
-			For Local element:TMovingElementSFX = EachIn MapValues(movingElements)
+			For Local element:TMovingElementSfx = EachIn MapValues(movingElements)
 				count = count + 1
 			Next
 		Endif
 	End Method
-
+ENDREM
 	Method GetMusicStream:TMusicStream(music:string)
 		Local result:TMusicStream
 
@@ -282,26 +304,7 @@ endrem
 		Return result
 	End Method
 
-	Method GetMusic:TSound (music:string)
-		Local result:TSound
-
-		Select music
-			Case MUSIC_MUSIC
-				Local nextTitleNumber:int = int(Rnd(1,5))
-				while(nextTitleNumber = Self.lastTitleNumber)
-					nextTitleNumber = int(Rnd(1,5))
-				wend
-				result = TSound(MapValueForKey(Self.soundFiles, MUSIC_MUSIC + nextTitleNumber))
-				Self.lastTitleNumber = nextTitleNumber
-				print "Play music: " + MUSIC_MUSIC + " (" + nextTitleNumber + ")"
-			Default
-				result = TSound(MapValueForKey(Self.soundFiles, music))
-				print "Play music: " + MUSIC_MUSIC
-		EndSelect
-		Return result
-	End Method
-
-	Method GetSFX:TSound (sfx:string)
+	Method GetSfx:TSound (sfx:string)
 		Return TSound(MapValueForKey(Self.soundFiles, sfx))
 	End Method
 
@@ -314,110 +317,138 @@ endrem
 		EndSelect
 	End Method
 
-	Method GetSFXChannel:TChannel(sfx:string)
+	Method GetSfxChannel:TChannel(sfx:string)
 		Select sfx
-			Case SFX_ELEVATOR_DING
+			Case SFX_ELEVATOR_OPENDOOR
 				Return Self.sfxChannel_Elevator
+			Case SFX_ELEVATOR_CLOSEDOOR
+				Return Self.sfxChannel_Elevator2				
 			Case SFX_ELEVATOR_ENGINE
 				Return Self.sfxChannel_Elevator
 		EndSelect
 	End Method
 End Type
 
-Type TMovingElementSFX
-	Field soundManager:TSoundManager
-	Field sfxName:string
-	Field sfx:TSound = null
-	Field channel:TChannel = null
-	Field element:TElementPosition = null
-	Field options:TSfxOptions = null
-	Field receiver:TElementPosition = null
-
-	Function Create:TMovingElementSFX(_soundManager:TSoundManager, _sfxName:string, _sfx:TSound, _channel:TChannel, _receiver:TElementPosition, _element:TElementPosition, _options:TSfxOptions )
-		local result:TMovingElementSFX= new TMovingElementSFX
-		result.soundManager = _soundManager
-		result.sfxName = _sfxName
-		result.sfx = _sfx
-		result.channel = _channel
-		result.element = _element
-		result.options = _options
-		result.receiver = _receiver
-		Return result
+'Diese Basisklasse ist ein Wrapper f¸r einen normalen Channel mit erweiterten Funktionen
+Type TSfxChannel
+	Field Channel:TChannel = AllocChannel()
+	Field CurrentSfx:string
+	Field CurrentSettings:TSfxSettings
+	
+	Function Create:TSfxChannel()
+		Return new TSfxChannel
 	End Function
+	
+	Method PlaySfx(sfx:string, settings:TSfxSettings=null)		
+		CurrentSfx = sfx
+		CurrentSettings = settings		
+		
+		AdjustSettings(false)
 
-	Method GetID:string()
-		Return element.GetID() + "_" + sfxName
+		local sound:TSound = SoundManager.GetSfx(sfx)		
+		PlaySound(sound, Channel)
 	End Method
-
-	Method Play()
-		AdjustSettings()
-		PlaySound(sfx, channel)
+	
+	Method IsActive:int()
+		Return Channel.Playing()
 	End Method
+	
+	Method Stop()
+		Channel.Stop()
+	End Method
+	
+	Method AdjustSettings(isUpdate:int)
+		If Not isUpdate			
+			channel.SetVolume(SoundManager.sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautst‰rke der Sfx reduzieren soll
+		Endif
+	End Method
+End Type
 
-	Method AdjustSettings()
-		local playerPoint:TPoint = receiver.GetCenter()
-		local elementPoint:TPoint = element.GetCenter()
-		local distance:int = CalculateDistanceOfPoints(playerPoint, elementPoint)
+'Der dynamische SfxChannel hat die Mˆglichkeit abh‰ngig von der Position von Sound-Quelle und Empf‰nger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
+Type TDynamicSfxChannel Extends TSfxChannel
+	Field Source:TSoundSourceElement			
+	Field Receiver:TElementPosition
+	
+	Function CreateDynamicSfxChannel:TSfxChannel(source:TSoundSourceElement=null)
+		local sfxChannel:TDynamicSfxChannel = new TDynamicSfxChannel
+		sfxChannel.Source = source		
+		Return sfxChannel
+	End Function	
+	
+	Method SetReceiver(_receiver:TElementPosition)
+		self.Receiver = _receiver
+	End Method
+	
+	Method AdjustSettings(isUpdate:int)
+		local sourcePoint:TPoint = Source.GetCenter()
+		local receiverPoint:TPoint = Receiver.GetCenter() 'Meistens die Position der Spielfigur		
+		local distanceXYZ:int = receiverPoint.DistanceTo(sourcePoint)
 
-		'Lautst√§rke ist Abg√§ngig von der Entfernung zur Ger√§uschquelle
-		local distanceVolume:float = options.GetVolume(distance)
-		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautst√§rke der SFX reduzieren soll
-
-		'Liegt die Ger√§uschequelle links, muss der Pegel in Richtung linker Lautsprecher gehen und umgekehrt
-		If (elementPoint.z = 0) Then
-			'170 Grenzwert = Erst aber dem Abstand von 170 (gef√ºhlt/gesch√§tzt) h√∂rt man nur noch von einer Seite.
-			'Ergebnis sollte ungef√§hr zwischen -1 (links) und +1 (rechts) liegen.
-			channel.SetPan(float(elementPoint.x - playerPoint.x) / 170)
+		'Lautst‰rke ist Abh‰ngig von der Entfernung zur Ger‰uschquelle
+		local distanceVolume:float = CurrentSettings.GetVolumeByDistance(distanceXYZ)		
+		channel.SetVolume(SoundManager.sfxVolume * 0.75 * distanceVolume) '0.75 ist ein fixer Wert die Lautst‰rke der Sfx reduzieren soll
+		
+		If (sourcePoint.z = 0) Then
+			'170 Grenzwert = Erst aber dem Abstand von 170 (gef¸hlt/gesch‰tzt) hˆrt man nur noch von einer Seite.
+			'Ergebnis sollte ungef‰hr zwischen -1 (links) und +1 (rechts) liegen.
+			channel.SetPan(float(sourcePoint.x - receiverPoint.x) / 170)
 			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
 		Else
-			local xAxis:float = CalculateIntDistance(elementPoint.x, playerPoint.x)
-			local zAxis:float = CalculateIntDistance(elementPoint.z, playerPoint.z)
-			local angle:float = ATan(zAxis / xAxis) 'Winkelfunktion: Welchen Winkel hat der H√∂rer zur Soundquelle. 90¬∞ = davor/dahiner    0¬∞ = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
+			local xDistance:float = TPoint.DistanceOfValues(sourcePoint.x, receiverPoint.x)
+			local yDistance:float = TPoint.DistanceOfValues(sourcePoint.y, receiverPoint.y)
+			local zDistance:float = TPoint.DistanceOfValues(sourcePoint.z, receiverPoint.z)
+			local angleZX:float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hˆrer zur Soundquelle. 90∞ = davor/dahiner    0∞ = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
 
-			local rawPan:float = ((90 - angle) / 90)
-			'Den r/l Effekt sollte noch etwas abgeschw√§cht werden, wenn die Quelle nah ist (im Real passiert dies durch zur√ºckgeworfenen Schall).
-			local panCorrection:float = max(0, min(1, xAxis / 170))
+			local rawPan:float = ((90 - angleZX) / 90)			
+			local panCorrection:float = max(0, min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschw‰cht werden, wenn die Quelle nah ist
 			local correctPan:float = rawPan * panCorrection
 
-
-			'0¬∞ => Aus einer Richtung  /  90¬∞ => aus beiden Richtungen
-			If (elementPoint.x < playerPoint.x) Then 'von links
+			'0∞ => Aus einer Richtung  /  90∞ => aus beiden Richtungen
+			If (sourcePoint.x < receiverPoint.x) Then 'von links
 				channel.SetPan(-correctPan)
 				'print "Pan:" + (-correctPan) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")    # " + rawPan + " / " + panCorrection
-			Elseif (elementPoint.x > playerPoint.x) Then 'von rechts
+			Elseif (sourcePoint.x > receiverPoint.x) Then 'von rechts
 				channel.SetPan(correctPan)
 				'print "Pan:" + correctPan + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")    # " + rawPan + " / " + panCorrection
 			Else
 				channel.SetPan(0)
 			Endif
+			
+			local angleOfDepth:float = ATan(receiverPoint.DistanceTo(sourcePoint, false) / zDistance) '0 = direkt hinter mir/vor mir, 90∞ = ¸ber/unter/neben mir
 
-			If elementPoint.z < 0 Then 'Hintergrund
-				channel.SetDepth(-(angle / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
-				'print "Depth:" + (-(angle / 90)) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")"
-			ElseIf elementPoint.z > 0 Then 'Vordergrund
-				channel.SetDepth(angle / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
-				'print "Depth:" + (angle / 90) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")"
+			If sourcePoint.z < 0 Then 'Hintergrund
+				channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+			'	print "Depth:" + (-((90 - angleOfDepth) / 90)) + " - angle: " + angleOfDepth + " (" + distanceXY + "/" + zAxis + ")"
+			ElseIf sourcePoint.z > 0 Then 'Vordergrund
+				channel.SetDepth((90 - angleOfDepth) / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+			'	print "Depth:" + ((90 - angleOfDepth) / 90) + " - angle: " + angleOfDepth + " (" + distanceXY + "/" + zAxis + ")"
 			Endif
-			'TODO: Offene Frage: H√§ngt die Depth auch von der Y-Achse ab?
-			'Beispiel: Etwas ist 20 m vom H√∂rer weg (auf der Z-Achse) im Hintergrund.
-			'Ver√§ndert sich die Depth auch, wenn sich die Ger√§uschquelle (weiterhin 20 Meter auf der z-Achse) nach oben oder unten bewegt (also zus√§tzlich zur Lautst√§rke)? Ich glaube nicht.
 		Endif
-	End Method
+	End Method			
 End Type
 
-Type TSfxOptions
-	Field nearbyDistanceRange:int = -1
-	Field maxDistanceRange:int = 1000
 
+Type TSfxSettings
+	Field defaultVolume:float = 1
+
+	Field nearbyDistanceRange:int = -1
+'	Field nearbyDistanceRangeTopY:int -1
+'	Field nearbyDistanceRangeBottomY:int -1   hier war ich
+	Field maxDistanceRange:int = 1000	
+	
 	Field nearbyRangeVolume:float = 1
 	Field midRangeVolume:float = 0.8
-	Field minVolume:float = 0
+	Field minVolume:float = 0	
 
-	Function Create:TSfxOptions()
-		Return new TSfxOptions
+	Function Create:TSfxSettings()
+		Return new TSfxSettings
 	End Function
-
-	Method GetVolume:float(currentDistance:int)
+	
+	Method GetVolume:float()
+		Return defaultVolume
+	End Method
+	
+	Method GetVolumeByDistance:float(currentDistance:int)
 		local result:float = midRangeVolume
 		If (currentDistance <> -1) Then
 			If currentDistance > Self.maxDistanceRange Then 'zu weit weg
@@ -430,50 +461,56 @@ Type TSfxOptions
 		Endif
 
 		Return result
-	End Method
-
-	Function GetElevatorOptions:TSfxOptions()
-		local result:TSfxOptions = new TSfxOptions
-		result.nearbyDistanceRange = 30
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 1
-		result.midRangeVolume = 0.5
-		result.minVolume = 0.05
-		Return result
-	End Function
-
-	Function GetMoveableElevatorOptions:TSfxOptions()
-		local result:TSfxOptions = new TSfxOptions
-		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
-		result.midRangeVolume = 0.5
-		result.minVolume = 0.05
-		Return result
-	End Function
+	End Method	
 End Type
 
 
 'Das ElementPositionzeug kann auch eventuell wo anders hin
-Type TElementPosition 'Basisklasse f√ºr verschiedene Wrapper
+Type TElementPosition 'Basisklasse f¸r verschiedene Wrapper
 	Method GetID:string() abstract
-'	Method GetTopLeft:TPoint() abstract
 	Method GetCenter:TPoint() abstract
-	Method GetIsVisible:int() abstract
 	Method IsMovable:int() abstract
 End Type
 
 
-Function CalculateDistanceOfPoints:int(point1:TPoint, point2:TPoint)
-	local distanceX:int = CalculateIntDistance(point1.x, point2.x)
-	local distanceY:int = CalculateIntDistance(point1.y, point2.y)
-	Return Sqr(distanceX * distanceX + distanceY * distanceY) 'a¬≤ + b¬≤ = c¬≤
-End function
+Type TSoundSourceElement Extends TElementPosition
+	Field SfxChannels:TMap = CreateMap()
+		
+	Method GetIsHearable:int() abstract
+	Method GetChannelForSfx:TSfxChannel(sfx:string) abstract
+	Method GetSfxSettings:TSfxSettings(sfx:string) abstract	
+	Method OnPlaySfx:int(sfx:string) abstract
+	
+	Method GetReceiver:TElementPosition()
+		Return SoundManager.GetDefaultReceiver()
+	End Method
+	
+	Method PlaySfx(sfx:string)		
+		If Not OnPlaySfx(sfx) Then Return
+		
+		SoundManager.RegisterSoundSource(self)
+		
+		local channel:TSfxChannel = GetChannelForSfx(sfx)
+		local settings:TSfxSettings = GetSfxSettings(sfx)
+		
+		If TDynamicSfxChannel(channel)
+			TDynamicSfxChannel(channel).SetReceiver(GetReceiver())
+		Endif
+		
+		channel.PlaySfx(sfx, settings)
+	End Method
+	
+	Method Update()	
+		For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
+			If sfxChannel.IsActive() Then sfxChannel.AdjustSettings(true)
+		Next		
+	End Method
 
-Function CalculateIntDistance:int(value1:int, value2:int)
-	If (value1 > value2) Then
-		Return value1 - value2
-	Else
-		Return value2 - value1
-	EndIf
-End Function
+	Method AddDynamicSfxChannel(name:string)
+		SfxChannels.insert(name, TDynamicSfxChannel.CreateDynamicSfxChannel(self))
+	End Method	
+
+	Method GetSfxChannelByName:TSfxChannel(name:string)
+		Return TSfxChannel(MapValueForKey(SfxChannels, name))	
+	End Method
+End Type

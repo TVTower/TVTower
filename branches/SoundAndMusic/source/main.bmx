@@ -1502,6 +1502,7 @@ Type TElevator
 	Field FloorRouteList:TList	= CreateList()
 	Field upwards:Int = 0
 	Field EgoMode:Int = 1   								'EgoMode: 	If I have the elevator, the elevator will only stop
+	Field SoundSource:TElevatorSoundSource = TElevatorSoundSource.Create(self, true)
 	'			at my destination and not if someone waits between
 	'			both floors and could be taken with me.
 
@@ -1633,6 +1634,7 @@ Type TElevator
 	End Method
 
 	Method CloseDoor()
+		SoundSource.PlaySfx(SFX_ELEVATOR_CLOSEDOOR)
 		Self.spriteDoor.setCurrentAnimation("closedoor", True)
 		open = 3
 
@@ -1640,7 +1642,7 @@ Type TElevator
 	End Method
 
 	Method OpenDoor()
-		SoundManager.PlaySFX(SFX_ELEVATOR_DING, TElevatorElementPosition.Create(Self, false), TSfxOptions.GetElevatorOptions())
+		SoundSource.PlaySfx(SFX_ELEVATOR_OPENDOOR)
 		Self.spriteDoor.setCurrentAnimation("opendoor", True)
 		open = 2 'wird geoeffnet
 		If passenger <> Null Then passenger.rect.position.setY( Building.GetFloorY(onFloor) - passenger.sprite.h )
@@ -1740,7 +1742,7 @@ Type TElevator
 	Method GetElevatorCenterPos:TPoint()
 		local posX:int = parent.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2
 		local posY:int = Pos.y + Self.spriteDoor.sprite.frameh/2 + 56 'Hier kein parent.pos.y hinzuaddieren sonst kommt blödsinn raus... keine Ahnung warum. Die Differenz dürfte laut Untersuchungen ungefähr 56 betragen (geschätzt)
-		Return TPoint.Create(posX, posY, -20) '-20 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
+		Return TPoint.Create(posX, posY, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
 	End Method
 
 	Method IsInFrontOfDoor:Int(x:Int, y:Int=-1)
@@ -1791,7 +1793,7 @@ Type TElevator
 			If spriteDoor.getCurrentAnimation().isFinished()
 				spriteDoor.setCurrentAnimation("closed")
 				open = 0 'closed
-				SoundManager.PlaySFX(SFX_ELEVATOR_ENGINE, TElevatorElementPosition.Create(Self, true), TSfxOptions.GetMoveableElevatorOptions())
+				SoundSource.PlaySfx(SFX_ELEVATOR_ENGINE)
 			EndIf
 
 		EndIf
@@ -1896,14 +1898,18 @@ Type TPlayerElementPosition Extends TElementPosition
 	End Method
 End Type
 
-Type TElevatorElementPosition Extends TElementPosition
+Type TElevatorSoundSource Extends TSoundSourceElement
 	Field Elevator:TElevator = null
 	Field Movable:int = true
 
-	Function Create:TElevatorElementPosition(_elevator:TElevator, _movable:int)
-		local result:TElevatorElementPosition = new TElevatorElementPosition
+	Function Create:TElevatorSoundSource(_elevator:TElevator, _movable:int)
+		local result:TElevatorSoundSource  = new TElevatorSoundSource
 		result.Elevator = _elevator
 		result.Movable = ­_movable
+		
+		result.AddDynamicSfxChannel("Main")
+		result.AddDynamicSfxChannel("Door")
+		
 		return result
 	End Function
 
@@ -1915,13 +1921,65 @@ Type TElevatorElementPosition Extends TElementPosition
 		Return Elevator.GetElevatorCenterPos()
 	End Method
 
-	Method GetIsVisible:int()
-		Return (Players[Game.playerID].Figure.inRoom = null)
-	End Method
-
 	Method IsMovable:int()
 		Return ­Movable
 	End Method
+	
+	Method GetIsHearable:int()
+		Return (Players[Game.playerID].Figure.inRoom = null)
+	End Method
+	
+	Method GetChannelForSfx:TSfxChannel(sfx:string)
+		Select sfx
+			Case SFX_ELEVATOR_OPENDOOR
+				Return GetSfxChannelByName("Door")
+			Case SFX_ELEVATOR_CLOSEDOOR
+				Return GetSfxChannelByName("Door")
+			Case SFX_ELEVATOR_ENGINE
+				Return GetSfxChannelByName("Main")
+		EndSelect		
+	End Method
+	
+	Method GetSfxSettings:TSfxSettings(sfx:string)
+		Select sfx
+			Case SFX_ELEVATOR_OPENDOOR
+				Return GetDoorOptions()
+			Case SFX_ELEVATOR_CLOSEDOOR
+				Return GetDoorOptions()
+			Case SFX_ELEVATOR_ENGINE
+				Return GetEngineOptions()
+		EndSelect						
+	End Method
+	
+	Method OnPlaySfx:int(sfx:string)
+		Select sfx
+			Case SFX_ELEVATOR_OPENDOOR
+				local engineChannel:TSfxChannel = GetChannelForSfx(SFX_ELEVATOR_ENGINE)
+				engineChannel.Stop()
+		EndSelect
+		
+		Return True
+	End Method
+	
+	Method GetDoorOptions:TSfxSettings()
+		local result:TSfxSettings = new TSfxSettings
+		result.nearbyDistanceRange = 30
+		result.maxDistanceRange = 500			
+		result.nearbyRangeVolume = 1
+		result.midRangeVolume = 0.25
+		result.minVolume = 0
+		Return result
+	End Method
+
+	Method GetEngineOptions:TSfxSettings()
+		local result:TSfxSettings = new TSfxSettings
+		result.nearbyDistanceRange = 0
+		result.maxDistanceRange = 500
+		result.nearbyRangeVolume = 0.5
+		result.midRangeVolume = 0.25
+		result.minVolume = 0.05
+		Return result
+	End Method	
 End Type
 
 Include "gamefunctions_figures.bmx"
@@ -2425,7 +2483,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 End Function
 
 'Sound-Files einlesen - da es lange dauert eventuell nur bei Bedarf oder in einem anderen Thread laden.
-Global SoundManager:TSoundManager = TSoundManager.Create()
+print "SetDefaultReceiverXXXXXXXXXXXX"
 SoundManager.SetDefaultReceiver(TPlayerElementPosition.Create())
 SoundManager.LoadSoundFiles()
 
@@ -3667,4 +3725,3 @@ Function EndHook()
 End Function
 
 
-

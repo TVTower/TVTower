@@ -11,6 +11,7 @@ Type TRooms  {_exposeToLua="selected"}
     Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
     Field doorwidth:Int			= 38
+    Field doorHeight:Int		= 52
     Field RoomSign:TRoomSigns
     Field owner:Int				=-1						'to draw the logo/symbol of the owner
     Field id:Int				= 1		 {_exposeToLua}
@@ -1668,3 +1669,76 @@ Function Init_CreateRoomDetails()
 		Room.CreateRoomsign()
 	Next
 End Function
+
+
+Type TDoorSoundSource Extends TSoundSourceElement
+	Field Room:TRooms
+
+	Function Create:TDoorSoundSource(_room:TRooms)
+		local result:TDoorSoundSource = new TDoorSoundSource
+		result.Room = _room
+		
+		result.AddDynamicSfxChannel(SFX_OPEN_DOOR)
+		result.AddDynamicSfxChannel(SFX_CLOSE_DOOR)
+		
+		return result
+	End Function
+
+	Method GetID:string()
+		Return "Door"
+	End Method
+
+	Method GetCenter:TPoint()
+		Return TPoint.Create(Room.Pos.x + Room.doorwidth/2, Building.pos.y + Building.GetFloorY(Room.Pos.y) - Room.doorheight/2, -15)
+	End Method
+
+	Method IsMovable:int()
+		Return ­False
+	End Method
+	
+	Method GetIsHearable:int()
+		Return (Players[Game.playerID].Figure.inRoom = null)
+	End Method
+	
+	Method GetChannelForSfx:TSfxChannel(sfx:string)
+		Select sfx
+			Case SFX_OPEN_DOOR
+				Return GetSfxChannelByName(SFX_OPEN_DOOR)
+			Case SFX_CLOSE_DOOR
+				Return GetSfxChannelByName(SFX_CLOSE_DOOR)
+		EndSelect		
+	End Method
+	
+	Method GetSfxSettings:TSfxSettings(sfx:string)
+		Return GetDoorOptions()
+	End Method
+	
+	Method OnPlaySfx:int(sfx:string)
+		Return True
+	End Method
+	
+	Method GetDoorOptions:TSfxSettings()
+'		local position:TPoint = GetCenter()
+'		local floorY:int = Building.pos.y + Building.GetFloorY(Room.Pos.y)				
+				
+		local result:TSfxSettings = new TSfxSettings
+		result.nearbyDistanceRange = 60
+'		result.nearbyDistanceRangeTopY = (floorY - position.y - 73) * -1 '73 = Stockwerkhöhe
+'		result.nearbyDistanceRangeBottomY = floorY - position.y
+		result.maxDistanceRange = 100			
+		result.nearbyRangeVolume = 1
+		result.midRangeVolume = 0.25
+		result.minVolume = 0
+		Return result
+	End Method
+
+	Method GetEngineOptions:TSfxSettings()
+		local result:TSfxSettings = new TSfxSettings
+		result.nearbyDistanceRange = 0
+		result.maxDistanceRange = 500
+		result.nearbyRangeVolume = 0.5
+		result.midRangeVolume = 0.25
+		result.minVolume = 0.05
+		Return result
+	End Method	
+End Type

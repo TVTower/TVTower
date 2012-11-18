@@ -479,7 +479,28 @@ Type TPoint {_exposeToLua="selected"}
 	Method isInRect:int(rect:TRectangle)
 		return rect.IntersectsPoint(self)
 	End Method
+	
+	Method DistanceTo:float(otherPoint:TPoint, withZ:int = true)
+		local distanceX:float = DistanceOfValues(x, otherPoint.x)
+		local distanceY:float = DistanceOfValues(y, otherPoint.y)
+		local distanceZ:float = DistanceOfValues(z, otherPoint.z)
+		
+		local distanceXY:float = Sqr(distanceX * distanceX + distanceY * distanceY) 'Wurzel(a² + b²) = Hypotenuse von X und Y
+		
+		If withZ and distanceZ <> 0
+			Return Sqr(distanceXY * distanceXY + distanceZ * distanceZ) 'Wurzel(a² + b²) = Hypotenuse von XY und Z
+		Else
+			Return distanceXY
+		Endif
+	End Method
 
+	Function DistanceOfValues:int(value1:int, value2:int)
+		If (value1 > value2) Then
+			Return value1 - value2
+		Else
+			Return value2 - value1
+		EndIf
+	End Function	
 
 	Function SwitchPos(Pos:TPoint Var, otherPos:TPoint Var)
 		Local oldx:Float, oldy:Float, oldz:Float
