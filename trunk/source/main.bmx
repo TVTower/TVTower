@@ -26,8 +26,8 @@ Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto, gamezworld.de"
-AppTitle = "TVTower - " + versionstring + " " + copyrightstring
+Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
+AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 
 Global App:TApp = TApp.Create(60, 60) 'create with 60fps for physics and graphics
 App.LoadResources("config/resources.xml")
