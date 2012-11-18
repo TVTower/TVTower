@@ -13,6 +13,7 @@ Type TRooms  {_exposeToLua="selected"}
     Field doorwidth:Int			= 38
     Field RoomSign:TRoomSigns
     Field owner:Int				=-1						'to draw the logo/symbol of the owner
+    Field used:int				=-1						'>0 is user id
     Field id:Int				= 1		 {_exposeToLua}
 	Field FadeAnimationActive:Int = 0
 	Field RoomBoardX:Int		= 0
@@ -57,6 +58,8 @@ Type TRooms  {_exposeToLua="selected"}
 			If obj.tooltip AND obj.tooltip.enabled
 				obj.tooltip.pos.y = Building.pos.y + Building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
 				obj.tooltip.Update(deltaTime)
+				'delete old tooltips
+				if obj.tooltip.lifetime < 0 then obj.tooltip = null
 			EndIf
 
 			If Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
@@ -75,7 +78,8 @@ Type TRooms  {_exposeToLua="selected"}
 				If (obj.name.Find("studio",0)+1) =1		Then obj.tooltip.tooltipimage = 5
 				If obj.owner >= 1 Then obj.tooltip.TitleBGtype = obj.owner + 10
 
-				return 0
+				'returning leaves other tooltips unhandled (and drawn in a semi-finished-state)
+				'return 0
 			EndIf
 		Next
     End Function
@@ -626,6 +630,8 @@ Type RoomHandler_Office extends TRoomHandler
 	Function UpdateProgrammePlanner:int( room:TRooms )
 		Game.cursorstate = 0
 		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
+		Players[Game.playerID].Figure.fromRoom.used = Players[ Game.playerID ].figure.id
+
 		If functions.IsIn(MouseX(), MouseY(), 759,17,14,15)
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsHit(1)
@@ -739,6 +745,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Function UpdateFinancials:int( room:TRooms )
 		Players[ Game.playerID ].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+		Players[Game.playerID].Figure.fromRoom.used = Players[ Game.playerID ].figure.id
 		Game.cursorstate = 0
 	End Function
 
@@ -757,6 +764,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Function UpdateImage:int( room:TRooms )
 		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+		Players[Game.playerID].Figure.fromRoom.used = Players[ Game.playerID ].figure.id
 		Game.cursorstate = 0
 	End Function
 
@@ -772,6 +780,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Function UpdateSafe:int( room:TRooms )
 		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
+		Players[Game.playerID].Figure.fromRoom.used = Players[ Game.playerID ].figure.id
 		Game.cursorstate = 0
 	End Function
 

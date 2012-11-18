@@ -216,15 +216,16 @@ Type TElevator
 			If figure <> null
 				local offset:TPoint = PassengerOffset[i]
 				If figure.PosOffset.getX() <> offset.getX()
-					'set "y" to 1 -> indicator we are moving in the elevator
-					figure.PosOffset.setY( 1 )
+					'set to 1 -> indicator we are moving in the elevator (boarding)
+					figure.boardingState = 1
 
 					'avoid rounding errors ("jittering") and set to target if distance is smaller than movement
 					'we only do that if offsets differ to avoid doing it if no offset is set
 					if abs(figure.PosOffset.getX() - offset.getX()) <= 0.4
 						'set x to the target so it settles to that value
-						'set "y" to 0 so figures can recognize they reached the displaced x
-						figure.PosOffset.setXY( offset.getX(), 0 )
+						figure.PosOffset.setX( offset.getX())
+						'set state to 0 so figures can recognize they reached the displaced x
+						figure.boardingState = 0
 					else
 						if figure.PosOffset.getX() > offset.getX() Then figure.PosOffset.setX(figure.PosOffset.getX() -0.4) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.4)
 					endif
@@ -239,15 +240,17 @@ Type TElevator
 			If figure <> null
 				If GetRouteByPassenger(figure, 0).floornumber = CurrentFloor 'Will die Person aussteigen?
 					If figure.PosOffset.getX() <> 0
-						'set "y" to 1 -> indicator we are moving in the elevator
-						figure.PosOffset.setY( 1 )
+						'set state to -1 -> indicator we are moving in the elevator but from Offset to 0 (different to boarding)
+						figure.boardingState = -1
 
 						'avoid rounding errors ("jittering") and set to target if distance is smaller than movement
 						'we only do that if offsets differ to avoid doing it if no offset is set
 						if abs(figure.PosOffset.getX()) <= 0.5
 							'set x to 0 so it settles to that value
 							'set "y" to 0 so figures can recognize they reached the displaced x
-							figure.PosOffset.setXY( 0, 0 )
+							figure.PosOffset.setX( 0 )
+							'set state to 0 so figures can recognize they reached the displaced x
+							figure.boardingState = 0
 						else
 							if figure.PosOffset.getX() > 0 Then figure.PosOffset.setX(figure.PosOffset.getX() -0.5) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.5)
 						endif
@@ -369,8 +372,6 @@ Type TElevator
 
 	Method Draw() 'needs to be restructured (some test-lines within)
 		SetBlend MASKBLEND
-		'TODO: Warum werden hier die anderen Türen gezeichnet? Vielleicht wieder rein machen... bisher kein Grund gefunden
-		'TRooms.DrawDoors() 'draw overlay -open doors etc.
 
 		'Den leeren Schacht zeichnen... also da wo der Fahrstuhl war
 		spriteDoor.Draw(Building.pos.x + pos.x, Building.pos.y + Building.GetFloorY(CurrentFloor) - 50)

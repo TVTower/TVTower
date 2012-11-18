@@ -1479,6 +1479,8 @@ Type TBuilding Extends TRenderable
 	Field gfx_buildingRoof:TGW_Sprites
 	Field gfx_buildingWall:TGW_Sprites
 
+	Field roomUsedTooltip:TTooltip = null
+
 	Global StarsX:Int[60]
 	Global StarsY:Int[60]
 	Global StarsC:Int[60]
@@ -1533,6 +1535,8 @@ Type TBuilding Extends TRenderable
 	Method Update(deltaTime:Float=1.0)
 		pos.y = Clamp(pos.y, - 637, 88)
 		UpdateBackground(deltaTime)
+
+		if self.roomUsedTooltip <> null then self.roomUsedTooltip.Update(deltaTime)
 	End Method
 
 	Method DrawItemsToBackground:Int()
@@ -1578,8 +1582,14 @@ Type TBuilding Extends TRenderable
 
 		Assets.GetSprite("gfx_building").draw(pos.x + 127, pos.y)
 
-		SetBlend ALPHABLEND
+		SetBlend MASKBLEND
+
+		'draw overlay - open doors are drawn over "background-image-doors" etc.
+		TRooms.DrawDoors()
+		'draw elevator parts
 		Elevator.Draw()
+
+		SetBlend ALPHABLEND
 
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Not Figure.alreadydrawn Then Figure.Draw()
@@ -1600,6 +1610,7 @@ Type TBuilding Extends TRenderable
 		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 75, pos.y + GetFloorY(12), - 1, 1)
 		SetBlend ALPHABLEND
 		TRooms.DrawDoorToolTips()
+		if self.roomUsedTooltip <> null then self.roomUsedTooltip.Draw()
 	End Method
 
 	Method UpdateBackground(deltaTime:Float)
@@ -1736,6 +1747,13 @@ Type TBuilding Extends TRenderable
 
 		SetColor 255, 255, 255
 		SetBlend ALPHABLEND
+	End Method
+
+	Method CreateRoomUsedTooltip:int(room:TRooms)
+		roomUsedTooltip			= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
+		roomUsedTooltip.pos.y	= pos.y + GetFloorY(room.Pos.y)
+		roomUsedTooltip.pos.x	= room.Pos.x + room.doorwidth/2 - roomUsedTooltip.GetWidth()/2
+		roomUsedTooltip.enabled = 1
 	End Method
 
 	Method CenterToFloor:Int(floornumber:Int)
@@ -2897,7 +2915,7 @@ Function DrawMain(tweenValue:Float=1.0)
 		If Game.networkgame then startY :+ 4*11
 
 		local callType:string = ""
-		
+
 		Assets.fonts.baseFont.draw("tofloor:" + Building.elevator.TargetFloor, 25, startY)
 
 		Assets.fonts.baseFont.draw("Status:" + Building.elevator.ElevatorStatus, 100, startY)
