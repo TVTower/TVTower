@@ -31,7 +31,7 @@ Type TElevator
 	
 	'Timer
 	Field PlanTime:Int						= 4000 		'TODOX muss geklärt werden was das ist					
-	Field WaitAtFloorTime:Int				= 650 		'Wie lange (Millisekunden) werden die Türen offen gelassen
+	Field WaitAtFloorTime:Int				= 1700 		'Wie lange (Millisekunden) werden die Türen offen gelassen (alt: 650)
 	Field WaitAtFloorTimer:Int				= 0			'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
 		
 	'Grafikelemente	
