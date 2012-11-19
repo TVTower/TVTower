@@ -1,6 +1,7 @@
 LANG_DE = German
 LANG_EN = English
 
+CURRENCY = €
 DAY = day
 DAYS = days
 WEEK_SHORT_MONDAY		= mo

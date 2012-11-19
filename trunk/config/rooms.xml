@@ -72,23 +72,25 @@
 	</resources>
 	<screens>
 		<screen name="screen_archive" image="screen_bg_archive" />
-		<screen name="screen_news" image="screen_bg_news" />
 		<screen name="screen_chief" image="screen_bg_chief" />
-		<screen name="screen_office" image="screen_bg_bureau" />
 		<screen name="screen_studio" image="screen_bg_studio" />
 		<screen name="screen_supermarket" image="screen_bg_supermarket" />
 		<screen name="screen_betty" image="screen_bg_betty" />
-		<screen name="screen_movieagency" image="screen_bg_movieagency" />
 		<screen name="screen_adagency" image="screen_bg_adagency" />
 		<screen name="screen_elevator" image="screen_bg_elevator" />
 		<screen name="screen_credits" image="screen_bg_credits" />
 
+		<screen name="screen_movieagency" image="screen_bg_movieagency" />
+		<screen name="screen_movieauction" image="screen_bg_movieagency" parent="screen_movieagency" />
+
+		<screen name="screen_office" image="screen_bg_bureau" />
 		<screen name="screen_office_pplanning" image="screen_bg_pplanning" parent="screen_office" />
 		<screen name="screen_office_financials" image="screen_bg_financials" parent="screen_office_pplanning" />
 		<screen name="screen_office_image" image="screen_bg_image" parent="screen_office_pplanning" />
 		<screen name="screen_office_stationmap" image="screen_bg_stationmap" parent="screen_office" />
 		<screen name="screen_office_safe" image="screen_bg_safe" parent="screen_office" />
 
+		<screen name="screen_news" image="screen_bg_news" />
 		<screen name="screen_news_newsplanning" image="screen_bg_newsplanning" parent="screen_news" />
 	</screens>
 	<rooms>

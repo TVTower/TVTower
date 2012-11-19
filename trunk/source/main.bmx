@@ -41,8 +41,6 @@ Include "gamefunctions_ki.bmx"					'LUA connection
 
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
-Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21)
-Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(645, 16)
 
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 							= 0 			'=1 and the game will exit
@@ -52,7 +50,6 @@ Global NewsAgency:TNewsAgency					= New TNewsAgency
 SeedRand(103452)
 Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
-TButton.UseFont 		= Assets.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= Assets.fonts.baseFontBold
 TTooltip.UseFont 		= Assets.fonts.baseFont
 TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
@@ -819,17 +816,25 @@ endrem
 		Next
 	End Method
 
+	Method GetNewsAbonnementPrice:int(level:int=0)
+		return Min(5,level) * 10000
+	End Method
+
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre > 5 Then Return 0 'max 6 categories 0-5
 		Return Self.newsabonnements[genre]
 	End Method
 
+	Method IncreaseNewsAbonnement(genre:int) {_exposeToLua}
+		self.SetNewsAbonnement( genre, self.GetNewsAbonnement(genre)+1 )
+	End Method
+
 	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
-		If level > Game.maxAbonnementLevel Then Return
+		If level > Game.maxAbonnementLevel Then level = 0 'before: Return
 		If genre > 5 Then Return 'max 6 categories 0-5
 		If Self.newsabonnements[genre] <> level
 			Self.newsabonnements[genre] = level
-			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Game.playerID, genre, level)
+			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(self.playerID, genre, level)
 		EndIf
 	End Method
 
@@ -2113,15 +2118,6 @@ For Local i:Int = 0 To 7
 	EndIf
 Next
 
-'#Region : Button (News and ProgrammePlanner)-Creation
-For Local i:Int = 0 To 4
-	TNewsbuttons.Create(0,3, GetLocale("NEWS_TECHNICS_MEDIA"), i, 20,194,0)
-	TNewsbuttons.Create(1,0, GetLocale("NEWS_POLITICS_ECONOMY"), i, 69,194,1)
-	TNewsbuttons.Create(2,1, GetLocale("NEWS_SHOWBIZ"), i, 20,247,2)
-	TNewsbuttons.Create(3,2, GetLocale("NEWS_SPORT"), i, 69,247,3)
-	TNewsbuttons.Create(4,4, GetLocale("NEWS_CURRENTAFFAIRS"),i, 118,247,4)
-Next
-'#End Region
 
 CreateDropZones()
 Global Database:TDatabase = TDatabase.Create(); Database.Load(Game.userdb) 'load all movies, news, series and ad-contracts

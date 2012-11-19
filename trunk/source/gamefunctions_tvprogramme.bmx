@@ -61,8 +61,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
     End Method
 
-	Method UpdateAllProgrammeBlocks()
-		Local gfxListenabled:Byte = (PPprogrammeList.enabled <> 0 Or PPcontractList.enabled <> 0)
+	Method UpdateAllProgrammeBlocks(gfxListenabled:int = 0)
 		'assume all are dropped
 		Self.AdditionallyDraggedProgrammeBlocks = 0
 
@@ -2174,11 +2173,9 @@ Type TAdBlock Extends TBlockGraphical
 		endif
 	End Method
 
-	Function UpdateAll(owner:Int = -1)
-		Local gfxListenabled:Byte = 0
+	Function UpdateAll(owner:Int = -1, gfxListenabled:int, programmeListOpen:int)
 		Local havetosort:Byte = 0
 		Local number:Int = 0
-		If PPprogrammeList.enabled <> 0 Or PPcontractList.enabled <> 0 Then gfxListenabled = 1
 
 		if owner = -1 then owner = game.playerID
 
@@ -2196,7 +2193,7 @@ Type TAdBlock Extends TBlockGraphical
 			If AdBlock.dragged = 1
 				AdBlock.senddate = Game.daytoplan
 			endif
-			If PPprogrammeList.enabled=0 And MOUSEMANAGER.IsHit(2) And AdBlock.dragged = 1
+			If not programmeListOpen And MOUSEMANAGER.IsHit(2) And AdBlock.dragged = 1
 				'Game.IsMouseRightHit = 0
 				Adblock.RemoveFromPlan()
 				havetosort = 1
@@ -2208,7 +2205,7 @@ Type TAdBlock Extends TBlockGraphical
 				EndIf
 			EndIf
 
-			If gfxListenabled=0 And MOUSEMANAGER.IsHit(1)
+			If not gfxListenabled And MOUSEMANAGER.IsHit(1)
 				If AdBlock.dragged = 0 And AdBlock.dragable = 1 And not Adblock.isAired()
 					If Adblock.senddate = game.daytoplan
 						If functions.IsIn(MouseX(), MouseY(), AdBlock.pos.x, Adblock.pos.y, AdBlock.width, AdBlock.height-1)
@@ -2228,7 +2225,7 @@ Type TAdBlock Extends TBlockGraphical
 					EndIf
 				Else
 					Local DoNotDrag:Int = 0
-					If PPprogrammeList.enabled=0 And MOUSEMANAGER.IsHit(1) And not Adblock.isAired()
+					If not programmeListOpen And MOUSEMANAGER.IsHit(1) And not Adblock.isAired()
 						'Print ("X:"+Adblock.x+ " Y:"+Adblock.y+" time:"+Adblock.GetTimeOfBlock(Adblock.x,Adblock.y))' > game.GetHour())
 						AdBlock.dragged = 0
 						For Local DragAndDrop:TDragAndDrop = EachIn TAdBlock.DragAndDropList
