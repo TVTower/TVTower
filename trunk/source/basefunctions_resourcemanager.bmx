@@ -681,6 +681,7 @@ Type TResourceLoaders
 			Local room:TMap		= CreateMap()
 			Local owner:Int		= xmlLoader.xml.FindValueInt(child, "owner", -1)
 			Local name:String	= xmlLoader.xml.FindValue(child, "name", "unknown")
+			Local id:string		= xmlLoader.xml.FindValue(child, "id", "")
 
 			'emit loader event for loading screen
 			'self.doLoadElement("load rooms", name, "load room")
@@ -708,7 +709,7 @@ Type TResourceLoaders
 				room.Insert("y", "0" )
 				room.Insert("doortype", "-1")
 			endif
-			values_room.Insert(Name + owner, TAsset.CreateBaseAsset(room, "ROOMDATA"))
+			values_room.Insert(Name + owner + id, TAsset.CreateBaseAsset(room, "ROOMDATA"))
 			PrintDebug("XmlLoader.LoadRooms:", "inserted room: " + Name, DEBUG_LOADING)
 			'print "rooms: "+Name + owner
 		Next

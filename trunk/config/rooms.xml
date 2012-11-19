@@ -79,6 +79,7 @@
 		<screen name="screen_adagency" image="screen_bg_adagency" />
 		<screen name="screen_elevator" image="screen_bg_elevator" />
 		<screen name="screen_credits" image="screen_bg_credits" />
+		<screen name="screen_roomboard" image="screen_bg_elevator" />
 
 		<screen name="screen_movieagency" image="screen_bg_movieagency" />
 		<screen name="screen_movieauction" image="screen_bg_movieagency" parent="screen_movieagency" />
@@ -212,7 +213,7 @@
 			<tooltip text="ROOM_ROOMAGENCY" description="ROOM_ROOMAGENCY_OWNER" />
 			<door x="2" y="9" type="2" />
 		</room>
-		<room name="betty" owner="0" image="screen_betty">
+		<room name="betty" owner="0" screen="screen_betty">
 			<tooltip text="ROOM_BETTY" />
 			<door x="1" y="13" type="1" />
 		</room>
@@ -228,5 +229,21 @@
 			<tooltip text="ROOM_ADAGENCY" description="ROOM_ADAGENCY_OWNER" />
 			<door x="1" y="10" type="3" />
 		</room>
+
+		<!-- elevator doors, to make them clickable | ID is differing so assets are inserted properly-->
+		<room name="elevator" owner="0" id="0"  screen="screen_elevator"><door x="0" y="0" type="-1"></door></room>
+		<room name="elevator" owner="0" id="1"  screen="screen_elevator"><door x="0" y="1" type="-1"></door></room>
+		<room name="elevator" owner="0" id="2"  screen="screen_elevator"><door x="0" y="2" type="-1"></door></room>
+		<room name="elevator" owner="0" id="3"  screen="screen_elevator"><door x="0" y="3" type="-1"></door></room>
+		<room name="elevator" owner="0" id="4"  screen="screen_elevator"><door x="0" y="4" type="-1"></door></room>
+		<room name="elevator" owner="0" id="5"  screen="screen_elevator"><door x="0" y="5" type="-1"></door></room>
+		<room name="elevator" owner="0" id="6"  screen="screen_elevator"><door x="0" y="6" type="-1"></door></room>
+		<room name="elevator" owner="0" id="7"  screen="screen_elevator"><door x="0" y="7" type="-1"></door></room>
+		<room name="elevator" owner="0" id="8"  screen="screen_elevator"><door x="0" y="8" type="-1"></door></room>
+		<room name="elevator" owner="0" id="9"  screen="screen_elevator"><door x="0" y="9" type="-1"></door></room>
+		<room name="elevator" owner="0" id="10" screen="screen_elevator"><door x="0" y="10" type="-1"></door></room>
+		<room name="elevator" owner="0" id="11" screen="screen_elevator"><door x="0" y="11" type="-1"></door></room>
+		<room name="elevator" owner="0" id="12" screen="screen_elevator"><door x="0" y="12" type="-1"></door></room>
+		<room name="elevator" owner="0" id="13" screen="screen_elevator"><door x="0" y="13" type="-1"></door></room>
 	</rooms>
 </tvt>

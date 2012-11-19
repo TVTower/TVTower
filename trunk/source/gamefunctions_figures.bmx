@@ -375,6 +375,9 @@ endrem
 	End Method
 
 	Method CallElevator:Int()
+		'ego nur ich selbst
+		'if not self.parentPlayer or self.parentPlayer.playerID <> 1 then return false
+
 		if IsElevatorCalled() then return false 'Wenn er bereits gerufen wurde, dann abbrechen
 
 		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss überprüft werden
@@ -390,21 +393,24 @@ endrem
 		Endif
 	End Method
 
-	Method ChangeTarget(x:Int=null, y:Int=null) {_exposeToLua}
+	Method ChangeTarget:int(x:Int=null, y:Int=null) {_exposeToLua}
+		'ego nur ich selbst
+		'if not self.parentPlayer or self.parentPlayer.playerID <> 1 then return false
+
 		'needed for AI like post dude
 		if self.inRoom <> null then self.LeaveRoom()
 
 		'only change target if its your figure or you are game leader
-		if id <> Players[ game.playerID ].figure.id and not Game.isGameLeader() then return
+		if id <> Players[ game.playerID ].figure.id and not Game.isGameLeader() then return false
 
 		if x=null then x=target.x
 		if y=null then y=target.y
 
 		'if player is in elevator dont accept changes
-		If Building.Elevator.passengers.Contains(Self) then return
+		If Building.Elevator.passengers.Contains(Self) then return false
 
 		'y is not of floor 0 -13
-		If Building.GetFloor(y) < 0 OR Building.GetFloor(y) > 13 then return
+		If Building.GetFloor(y) < 0 OR Building.GetFloor(y) > 13 then return false
 
 		'set target x so, that center of figure moves to there
 		'set target y to "basement" y of that floor
@@ -486,14 +492,19 @@ endrem
 					If clickedToRoom.getDoorType() = 5 and not clickedToRoom.DoorTimer.isExpired() and clickedToRoom.DoorTimer.reachedHalftime()
 						clickedToRoom.CloseDoor()
 						EnterRoom(clickedToRoom)
-					'we stand in front of elevator - and clicked on it (to go to other floors)
-					elseIf clickedToRoom.getDoorType() <> 5
-						If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And IsAtElevator()
-							CallElevator()
-						EndIf
-					elseIf clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And Building.Elevator.CurrentFloor = clickedToRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
-						EnterRoom(clickedToRoom, false)
-						Building.Elevator.UsePlan(self)
+
+					elseIf clickedToRoom.getDoorType() <> 5 '5 is an open door
+						'we stand in front of elevator - and clicked on it (to go to other floors)
+						If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() and IsAtElevator()
+							'elevator is in our floor and open
+							if Building.Elevator.CurrentFloor = clickedToRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
+								EnterRoom(clickedToRoom, false)
+								Building.Elevator.UsePlan(self)
+							'not here or closed
+							else
+								CallElevator()
+							EndIf
+						endif
 					EndIf
 				EndIf
 			EndIf
