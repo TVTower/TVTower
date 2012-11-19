@@ -13,12 +13,12 @@
 
 				<child name="genres" 						x="0" 	y="0" 	w="139" h="348" />
 				<child name="episodes" 						x="0" 	y="348"	w="107" h="135" />
-				<child name="btn_options"					x="318"	y="351"	w="98"	h="56" />
-				<child name="btn_programme"					x="423"	y="416"	w="98"	h="56" />
-				<child name="btn_financials"				x="839"	y="230"	w="98"	h="56" />
-				<child name="btn_image"						x="604"	y="320"	w="98"	h="56" />
-				<child name="btn_news"						x="318"	y="407"	w="98"	h="56" />
-				<child name="btn_ads"						x="702"	y="320"	w="98"	h="56" />
+				<child name="programmeplanner_btn_options"		x="318"	y="351"	w="98"	h="56" />
+				<child name="programmeplanner_btn_programme"	x="423"	y="416"	w="98"	h="56" />
+				<child name="programmeplanner_btn_financials"	x="839"	y="230"	w="98"	h="56" />
+				<child name="programmeplanner_btn_image"		x="604"	y="320"	w="98"	h="56" />
+				<child name="programmeplanner_btn_news"			x="318"	y="407"	w="98"	h="56" />
+				<child name="programmeplanner_btn_ads"			x="702"	y="320"	w="98"	h="56" />
 				<child name="pp_cassettes_movies"			x="687"	y="107"	w="159"	h="18" />
 				<child name="pp_cassettes_episodes"			x="878"	y="109"	w="97"	h="11" />
 				<child name="pp_cassettes_series"			x="604"	y="376"	w="159"	h="18" />

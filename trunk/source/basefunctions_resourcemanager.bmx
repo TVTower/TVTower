@@ -11,6 +11,7 @@ Import "basefunctions_image.bmx"
 Import "basefunctions_sprites.bmx"
 Import "basefunctions_asset.bmx"
 Import "basefunctions_events.bmx"
+Import "basefunctions_screens.bmx"
 
 Global Assets:TAssetManager = TAssetManager.Create(null,1)
 
@@ -562,6 +563,7 @@ Type TResourceLoaders
 		EventManager.registerListener( "LoadResource.FONTS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadFonts)  )
 		EventManager.registerListener( "LoadResource.FONT",		TEventListenerRunFunction.Create(TResourceLoaders.onLoadFonts)  )
 		EventManager.registerListener( "LoadResource.ROOMS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadRooms)  )
+		EventManager.registerListener( "LoadResource.SCREENS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadScreens)  )
 		EventManager.registerListener( "LoadResource.COLORS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
 		EventManager.registerListener( "LoadResource.COLOR",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
 
@@ -686,7 +688,7 @@ Type TResourceLoaders
 			room.Insert("name",		name + String(owner))
 			room.Insert("owner",	String(owner))
 			room.Insert("roomname", name)
-			room.Insert("image", 	xmlLoader.xml.FindValue(child, "image", "rooms_archive") )
+			room.Insert("screen", 	xmlLoader.xml.FindValue(child, "screen", "screen_credits") )
 			local subNode:TxmlNode = null
 			subNode = xmlLoader.xml.FindChild(child, "tooltip")
 			if subNode <> null
@@ -712,6 +714,30 @@ Type TResourceLoaders
 		Next
 		Assets.Add("rooms", TAsset.CreateBaseAsset(values_room, "TMAP"))
 
+	End Function
+
+
+	Function onLoadScreens:int( triggerEvent:TEventBase )
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+
+		'screen group
+		if triggerEvent.isTrigger("LoadResource.SCREENS")
+			For Local child:TxmlNode = EachIn childNode.GetChildren()
+				Local name:String	= Lower( xmlLoader.xml.FindValue(child, "name", "") )
+				local image:string	= Lower( xmlLoader.xml.FindValue(child, "image", "screen_bg_archive") )
+				local parent:string = Lower( xmlLoader.xml.FindValue(child, "parent", "") )
+				if name <> ""
+					local screen:TScreen= TScreen.Create(name, Assets.GetSprite(image))
+
+					'if screen has a parent -> set it
+					if parent <> "" and TScreen.GetScreen(parent) <> null
+						TScreen.GetScreen(parent).AddSubScreen(screen)
+					endif
+				endif
+			Next
+		endif
 	End Function
 End Type
 TResourceLoaders.Create()

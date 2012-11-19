@@ -140,8 +140,10 @@ Type TGUIManager
 
 						If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
 							obj.mouseIsClicked = TPoint.Create( MouseX(), MouseY() )
-							'fire onClickEvent
-							If obj._enabled then EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
+							If obj._enabled
+								'fire onClickEvent
+								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
+							endif
 							'added for imagebutton and arrowbutton not being reset when mouse standing still
 							obj.MouseIsDown = null
 						EndIf
@@ -203,7 +205,7 @@ Type TGUIobject
 	field _parent:TGUIobject		= null
 	Field forstateonly:String		= ""		'fuer welchen gamestate anzeigen
 	Field useFont:TBitmapFont
-
+	Field className:string			= ""
 	global _activeID:int			= 0
 	global _lastID:int
 
@@ -211,6 +213,11 @@ Type TGUIobject
 		self._id	= self.GetNextID()
 		self.scale	= GUIManager.globalScale
 		Self.useFont = GUIManager.defaultFont
+		self.className = TTypeId.ForObject(self).Name()
+	End Method
+
+	Method getClassName:string()
+		return self.className
 	End Method
 
 	Method CreateBase:TGUIobject(x:float,y:float, enabled:int=1, forstateonly:string="", useFont:TBitmapFont=null)
@@ -438,11 +445,53 @@ Type TGUIButton Extends TGUIobject
 
 End Type
 
-Type TGUIImageButton Extends TGUIobject
-	Field startframe:Int = 0
-	Field spriteBaseName:String = ""
+Type TGUILabel extends TGUIobject
+	Field text:string = ""
+	Field displacement:TPoint = TPoint.Create(0,0)
+	Field color:TColor = TColor.Create(0,0,0)
+	field alignment:float = 0.5 '0 = left, 0.5 = center, 1 = right
+	Global defaultLabelFont:TBitmapFont
 
-	Method Create:TGUIImageButton(x:Int, y:Int, width:Int, Height:Int, spriteBaseName:String, on:Byte = 0, enabled:Byte = 1, State:String = "", startframe:Int = 0)
+	'will be added to general GuiManager
+	'-- use CreateSelfContained to get a unmanaged object
+	Method Create:TGUILabel(x:int,y:int, text:string, color:TColor=null, displacement:TPoint = null, enabled:byte=1, State:string="")
+		local useFont:TBitmapFont = self.defaultLabelFont
+		super.CreateBase(x,y, enabled, State, useFont)
+
+		self.text = text
+		if color then self.color = color
+		if displacement then self.displacement = displacement
+
+		GUIManager.Add( self )
+		return self
+	End Method
+
+	Function SetDefaultLabelFont(font:TBitmapFont)
+		if font <> null then TGUILabel.defaultLabelFont = font
+	End Function
+
+	Method Update:int()
+	End Method
+
+	Method SetAlignLeft:int(); self.alignment = 0; End Method
+	Method SetAlignRight:int(); self.alignment = 1; End Method
+	Method SetAlignCenter:int(); self.alignment = 0.5; End Method
+
+	Method Draw:int()
+		usefont.drawStyled(text, floor(rect.GetX() + alignment*(rect.GetW() - usefont.getWidth(text))) + self.displacement.GetX(), floor(rect.GetY() + self.displacement.GetY()), color.r, color.g, color.b, 1)
+	End Method
+
+End Type
+
+
+Type TGUIImageButton Extends TGUIobject
+	Field startframe:Int		= 0
+	Field spriteBaseName:String	= ""
+
+	'could be done in a TGUILabel
+	Field caption:TGUILabel		= null
+
+	Method Create:TGUIImageButton(x:Int, y:Int, spriteBaseName:String, on:int = 0, enabled:Byte = 1, State:String = "", startframe:Int = 0)
 		super.CreateBase(x,y, enabled, State, null)
 
 		self.on				= on
@@ -455,9 +504,22 @@ Type TGUIImageButton Extends TGUIobject
 		Return self
 	End Method
 
+	Method SetCaption(caption:String, color:TColor=null, position:TPoint=null )
+		self.caption = new TGUILabel.Create(self.rect.GetX(), self.rect.GetY(), caption,color,position)
+		'we want to manage it...
+		GUIManager.Remove(self.caption)
+	End Method
+
 	Method Update()
 		'button like behaviour
 		if self.mouseIsClicked then	GuiManager.SetActive(0)
+
+
+		'unmanaged label -> we have to position it ourself
+		if self.caption
+			self.caption.rect.position.SetPos( self.rect.position )
+			self.caption.rect.dimension.SetPos( self.rect.dimension )
+		endif
 	End Method
 
 	Method Draw()
@@ -472,7 +534,20 @@ Type TGUIImageButton Extends TGUIobject
 		Local state:String = ""
 		If on = 2 Then state = "_disabled"
 		If on = 1 Then state = "_clicked"
- 		Assets.GetSprite(Self.spriteBaseName+state).draw(Self.GetX(), Self.GetY())
+		local sprite:TGW_Sprites = Assets.GetSprite(Self.spriteBaseName+state, Self.spriteBaseName)
+
+		'no clicked image found: displace button and caption by 1,1
+		if sprite.GetName() = self.spriteBaseName and on = 1
+			sprite.draw(Self.GetX()+1, Self.GetY()+1)
+			if self.caption
+				self.caption.rect.position.MoveXY( 1,1 )
+				self.caption.Draw()
+				self.caption.rect.position.MoveXY( -1,-1 )
+			endif
+		else
+			sprite.draw(Self.GetX(), Self.GetY())
+			if self.caption then self.caption.Draw()
+		endif
 	End Method
 
 End Type
@@ -1358,6 +1433,8 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 					If MouseIsDown
 						If LastMouseClickPos = i AND LastMouseClickTime + 50 < MilliSecs() And LastMouseClicktime +700 > MilliSecs()
 							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK), self ) )
+							'also trigger specific class event
+							EventManager.registerEvent( TEventSimple.Create( self.getClassName()+".OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK), self ) )
 						EndIf
 						ListPosClicked		= i
 						LastMouseClickTime	= MilliSecs()

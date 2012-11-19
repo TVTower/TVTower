@@ -2121,12 +2121,6 @@ For Local i:Int = 0 To 4
 	TNewsbuttons.Create(3,2, GetLocale("NEWS_SPORT"), i, 69,247,3)
 	TNewsbuttons.Create(4,4, GetLocale("NEWS_CURRENTAFFAIRS"),i, 118,247,4)
 Next
-TPPbuttons.Create(Assets.GetSprite("btn_options"), GetLocale("PLANNER_OPTIONS"), 672, 40 + 2 * 56, 2)
-TPPbuttons.Create(Assets.GetSprite("btn_programme"), GetLocale("PLANNER_PROGRAMME"), 672, 40 + 1 * 56, 1)
-TPPbuttons.Create(Assets.GetSprite("btn_ads"), GetLocale("PLANNER_ADS"), 672, 40 + 0 * 56, 0)
-TPPbuttons.Create(Assets.GetSprite("btn_financials"), GetLocale("PLANNER_FINANCES"), 672, 40 + 3 * 56, 3)
-TPPbuttons.Create(Assets.GetSprite("btn_image"), GetLocale("PLANNER_IMAGE"), 672, 40 + 4 * 56, 4)
-TPPbuttons.Create(Assets.GetSprite("btn_news"), GetLocale("PLANNER_MESSAGES"), 672, 40 + 5 * 56, 5)
 '#End Region
 
 CreateDropZones()
@@ -2361,7 +2355,7 @@ Function Menu_Main_Draw()
 
 	If MenuPreviewPicTimer < MilliSecs()
 		MenuPreviewPicTimer = MilliSecs() + MenuPreviewPicTime
-		MenuPreviewPic = TRooms(TRooms.RoomList.ValueAtIndex(Rnd(1, TRooms.RoomList.Count() - 1))).background
+		MenuPreviewPic = TRooms(TRooms.RoomList.ValueAtIndex(Rnd(1, TRooms.RoomList.Count() - 1))).screenManager.GetCurrentScreen().background
 	EndIf
 	If MenuPreviewPic <> Null
 		SetBlend ALPHABLEND

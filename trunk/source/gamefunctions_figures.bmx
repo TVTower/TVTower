@@ -260,6 +260,8 @@ endrem
 					local kickFigure:TFigures = TFigures.GetByID(room.used)
 					if kickFigure
 						print "Figur "+self.name+" schmeisst "+ kickFigure.name + " aus dem Raum "+room.name
+						EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", TData.Create().Add("figure", kickFigure), room ) )
+
 						kickFigure.LeaveRoom()
 					endif
 					If useFader and id = Game.playerID Then Fader.EnableFadeout() 'room fading
@@ -288,23 +290,28 @@ endrem
 		endif
 	End Method
 
+	Method LeaveToBuilding:int()
+		self.inRoom = null
+	End Method
+
 	Method LeaveRoom:Int()
-		print self.name+" leaves room:"+self.inRoom.name
+		if self.inRoom
+			print self.name+" leaves room:"+self.inRoom.name
 
-		'set unused
-		self.inRoom.used = -1
+			'set unused
+			self.inRoom.used = -1
 
-		If ParentPlayer And self.isAI()
-			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
-				'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
-				If Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
-					 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
-					 'Print "movieagency left: programmes bought"
+			If ParentPlayer And self.isAI()
+				If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
+					'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
+					If Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
+						 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
+						 'Print "movieagency left: programmes bought"
+					EndIf
 				EndIf
+				ParentPlayer.PlayerKI.CallOnLeaveRoom()
 			EndIf
-			ParentPlayer.PlayerKI.CallOnLeaveRoom()
-		EndIf
-
+		endif
 		'display a open door if leaving it
 		If inRoom Then inRoom.OpenDoor()
 
