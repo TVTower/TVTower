@@ -242,6 +242,17 @@ endrem
 		return false
     End Method
 
+	Method KickFigureFromRoom:int(kickFigure:TFigures, room:TRooms)
+		if not kickFigure or not room then return false
+
+		print "Figur "+self.name+" schmeisst "+ kickFigure.name + " aus dem Raum "+room.name
+		print "<--- hier nen Rausschmeiss-Sound - auch per Event einbindbar"
+		'maybe someone is interested in this information
+		EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", TData.Create().Add("figure", kickFigure), room ) )
+
+		kickFigure.LeaveRoom()
+		return true
+	End Method
 
 	Method EnterRoom:int(room:TRooms, useFader:int = true)
 		'no room = going to building
@@ -256,14 +267,9 @@ endrem
 			if ParentPlayer <> null
 				'andere rausschmeissen
 				if self.parentPlayer.playerID = room.owner
-					'andere rausschmeissen
-					local kickFigure:TFigures = TFigures.GetByID(room.used)
-					if kickFigure
-						print "Figur "+self.name+" schmeisst "+ kickFigure.name + " aus dem Raum "+room.name
-						EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", TData.Create().Add("figure", kickFigure), room ) )
+					'andere rausschmeissen (falls vorhanden)
+					self.KickFigureFromRoom(TFigures.GetByID(room.used), room)
 
-						kickFigure.LeaveRoom()
-					endif
 					If useFader and id = Game.playerID Then Fader.EnableFadeout() 'room fading
 					_SetInRoom(room)
 				'Besetztzeichen ausgeben / KI informieren

@@ -21,7 +21,6 @@ Type TRooms  {_exposeToLua="selected"}
 
     Global RoomList:TList		= CreateList()			'global list of rooms
     Global LastID:Int			= 1
-	Global doadraw:Int			= 0
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
 	Method getDoorType:int()
@@ -160,10 +159,6 @@ Type TRooms  {_exposeToLua="selected"}
 		'emit event so custom draw functions can run
 		EventManager.triggerEvent( TEventSimple.Create("rooms.onDraw", TData.Create().AddNumber("type", 1), self) )
 
-		TRooms.doadraw = 1
-		Select Self.name
-			Case "roomboard"		Room_RoomBoard_Compute(Self) ;Return 0
-		End Select
 		return 0
 	End Method
 
@@ -184,8 +179,6 @@ Type TRooms  {_exposeToLua="selected"}
     'process special functions of this room. Is there something to click on?
     'animated gimmicks? draw within this function.
 	Method Update:Int()
-		TRooms.doadraw = 0
-
 		If Fader.fadeenabled And FadeAnimationActive
 			If Fader.fadecount >= 20 And not Fader.fadeout
 				Fader.EnableFadeout()
@@ -211,10 +204,6 @@ Type TRooms  {_exposeToLua="selected"}
 
 		'something blocks leaving? - check it
 		If MOUSEMANAGER.IsDown(2) AND not Self.LeaveAnimated(0) then MOUSEMANAGER.resetKey(2)
-
-		Select Self.name
-			Case "roomboard"		Room_RoomBoard_Compute(Self) ;Return 0
-		End Select
 
 		'room got no special handling ...
 		if listeners = 0 then Players[game.playerID].figure.fromroom = Null
@@ -1536,7 +1525,6 @@ Type RoomHandler_Elevator extends TRoomHandler
 		'14 floors
 		for local i:int = 0 to 13
 			super._RegisterHandler(onUpdate, onDraw, TRooms.GetRoomFromMapPos(0,i))
-			print TRooms.GetRoomFromMapPos(0,i).name
 		Next
 		'if checking in onDraw/onUpdate for name = "elevator"
 		'it is also possible to use:
@@ -1584,20 +1572,29 @@ Type RoomHandler_Elevator extends TRoomHandler
 	End Function
 End Type
 
-Function Room_RoomBoard_Compute(_room:TRooms)
-	if TRooms.doadraw 'draw it
-		Players[game.playerid].figure.fromroom =Null
+Type RoomHandler_Roomboard extends TRoomHandler
+	Function Init()
+		super._RegisterHandler(onUpdate, onDraw, TRooms.GetRoomByDetails("roomboard", -1))
+	End Function
+
+	Function onDraw:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return 0
+
 		TRoomSigns.DrawAll()
-		Assets.fonts.baseFont.draw("owner:"+_room.owner, 20,20)
+		Assets.fonts.baseFont.draw("owner:"+ room.owner, 20,20)
 		Assets.fonts.baseFont.draw(building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 20,40)
-	Else
-		' MouseManager.changeStatus()
+	End Function
+
+	Function onUpdate:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return 0
+
 		Game.cursorstate = 0
-		Players[game.playerid].figure.fromroom =Null
 		TRoomSigns.UpdateAll(True)
 		If MouseManager.IsDown(1) Then MouseManager.resetKey(1)
-	EndIf
-End Function
+	End Function
+End Type
 
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
@@ -1729,13 +1726,6 @@ Type TRoomSigns Extends TBlock
 				endif
 				font.resetTarget()
 
-				imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
-			EndIf
-			If imagewithtext = Null AND image <> null
-				local newimgwithtext:Timage = TImage.Create(image.w, image.h -1,1,0,255,0,255)
-				newimgwithtext.pixmaps[0].format = PF_RGB888
-				newimgwithtext.pixmaps[0] = GrabPixmap(Pos.x,Pos.y,image.w,image.h-1)
-				newimgwithtext.pixmaps[0] = ConvertPixmap(newimgwithtext.pixmaps[0], PF_RGB888)
 				imagewithtext = Assets.ConvertImageToSprite(newimgwithtext, "imagewithtext")
 			EndIf
 		EndIf
@@ -1886,6 +1876,7 @@ Function Init_CreateAllRooms()
 	RoomHandler_Betty.Init()
 
 	RoomHandler_Elevator.Init()
+	RoomHandler_Roomboard.Init()
 
 
 End Function

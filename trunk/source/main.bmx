@@ -3064,6 +3064,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("adagency", 0)
 				If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("archive", Game.playerID)
 				If KEYMANAGER.IsHit(KEY_B) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("betty", 0)
+				If KEYMANAGER.IsHit(KEY_K) TFigures.GetByID(5).KickFigureFromRoom(Players[Game.playerID].Figure, Players[Game.playerID].Figure.inRoom)
 				If KEYMANAGER.IsHit(KEY_F) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("movieagency", 0)
 				If KEYMANAGER.IsHit(KEY_O) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("office", Game.playerID)
 				If KEYMANAGER.IsHit(KEY_C) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("chief", Game.playerID)
