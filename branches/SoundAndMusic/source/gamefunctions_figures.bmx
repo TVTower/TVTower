@@ -204,7 +204,8 @@ endrem
 
 	'player is now in room "room"
 	Method SetInRoom:Int(room:TRooms)
-		If room <> null Then room.CloseDoor()
+		print "SetInRoom: CloseDoor"
+		If room <> null Then room.CloseDoor(self)
 
 	 	inRoom = room
 		If ParentPlayer <> Null And self.isAI()
@@ -237,7 +238,7 @@ endrem
 		EndIf
 
 		'display a open door if leaving it
-		If inRoom <> Null Then inRoom.OpenDoor()
+		If inRoom <> Null Then inRoom.OpenDoor(self)
 
 		toRoom = fromRoom
 '		If fromRoom <> Null Then fromRoom.CloseDoor()
@@ -399,11 +400,12 @@ endrem
 
 					If clickedToRoom.doortype >= 0 and clickedToRoom.getDoorType() <> 5 and inRoom <> clickedToRoom
 		        		If id = Game.playerID Then Fader.Enable() 'room fading
-						clickedToRoom.OpenDoor()
+						clickedToRoom.OpenDoor(self)
 					EndIf
 					'if open, timer started and reached halftime --> "wait a moment" before entering
 					If clickedToRoom.getDoorType() = 5 and not clickedToRoom.DoorTimer.isExpired() and clickedToRoom.DoorTimer.reachedHalftime()
-						clickedToRoom.CloseDoor()
+						print "Update: CloseDoor"
+						clickedToRoom.CloseDoor(self)
 						If id = Game.playerID Then Fader.EnableFadeout() 'room fading
         			    SetInRoom(clickedToRoom)
 					EndIf

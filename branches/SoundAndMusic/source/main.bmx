@@ -1754,7 +1754,7 @@ Type TBuilding Extends TRenderable
 		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
 	
-	Method getFloorByPoint:Int(point:TPoint)
+	Method getFloorByPixelExactPoint:Int(point:TPoint) 'y ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000		
 		for local i:int = 0 to 13
 			If Building.GetFloorY(i) < point.y Then Return i
 		next
@@ -1989,7 +1989,7 @@ tempfigur.rect.dimension.SetX(12) 'overwriting
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
-
+REM
 tempfigur				= new TFigures.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
@@ -2000,6 +2000,31 @@ tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
 
+tempfigur				= new TFigures.CreateFigure("Bote3", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 2,-55,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+
+tempfigur				= new TFigures.CreateFigure("Bote4", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 3,-45,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+
+tempfigur				= new TFigures.CreateFigure("Bote5", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 4,-75,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+
+tempfigur				= new TFigures.CreateFigure("Bote6", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 5,-85,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+
+tempfigur				= new TFigures.CreateFigure("Bote7", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 6,-70,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+ENDREM
 tempfigur = Null
 
 Global MenuPlayerNames:TGUIinput[4]

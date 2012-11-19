@@ -116,12 +116,10 @@ endrem
 	End Function
 	
 	Method GetDefaultReceiver:TElementPosition()
-		print "GetDefaultReceiver: " + (receiver <> null)
 		Return receiver
 	End Method
 
 	Method SetDefaultReceiver(_receiver:TElementPosition)
-		print "SetDefaultReceiver: " + (_receiver <> null)
 		receiver = _receiver
 	End Method
 
@@ -250,6 +248,7 @@ endrem
 	End Method
 
 	Method PlayMusic(music:string)
+		Return
 		Self.nextMusicTitleStream = GetMusicStream(music)
 		Self.nextMusicTitleVolume = GetVolume(music)
 		Self.forceNextMusicTitle = true		
@@ -334,6 +333,7 @@ Type TSfxChannel
 	Field Channel:TChannel = AllocChannel()
 	Field CurrentSfx:string
 	Field CurrentSettings:TSfxSettings
+	Field MuteAfterCurrentSfx:int
 	
 	Function Create:TSfxChannel()
 		Return new TSfxChannel
@@ -357,11 +357,19 @@ Type TSfxChannel
 		Channel.Stop()
 	End Method
 	
+	Method Mute()
+		If MuteAfterCurrentSfx And IsActive()
+			AdjustSettings(true)
+		Else
+			Channel.SetVolume(0)
+		Endif
+	End Method
+	
 	Method AdjustSettings(isUpdate:int)
 		If Not isUpdate			
 			channel.SetVolume(SoundManager.sfxVolume * 0.75 * CurrentSettings.GetVolume()) '0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
 		Endif
-	End Method
+	End Method	
 End Type
 
 'Der dynamische SfxChannel hat die Möglichkeit abhängig von der Position von Sound-Quelle und Empfänger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
@@ -486,8 +494,10 @@ Type TSoundSourceElement Extends TElementPosition
 		Return SoundManager.GetDefaultReceiver()
 	End Method
 	
-	Method PlaySfx(sfx:string)		
+	Method PlaySfx(sfx:string)
+		If Not GetIsHearable() Then Return
 		If Not OnPlaySfx(sfx) Then Return
+		print "PlaySfx: " + sfx
 		
 		SoundManager.RegisterSoundSource(self)
 		
@@ -501,14 +511,22 @@ Type TSoundSourceElement Extends TElementPosition
 		channel.PlaySfx(sfx, settings)
 	End Method
 	
-	Method Update()	
-		For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
-			If sfxChannel.IsActive() Then sfxChannel.AdjustSettings(true)
-		Next		
+	Method Update()
+		If GetIsHearable()		
+			For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
+				If sfxChannel.IsActive() Then sfxChannel.AdjustSettings(true)
+			Next
+		Else		
+			For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
+				sfxChannel.Mute()
+			Next		
+		Endif
 	End Method
 
-	Method AddDynamicSfxChannel(name:string)
-		SfxChannels.insert(name, TDynamicSfxChannel.CreateDynamicSfxChannel(self))
+	Method AddDynamicSfxChannel(name:string, muteAfterSfx:int=false)
+		local sfxChannel:TSfxChannel = TDynamicSfxChannel.CreateDynamicSfxChannel(self)
+		sfxChannel.MuteAfterCurrentSfx = muteAfterSfx	
+		SfxChannels.insert(name, sfxChannel)
 	End Method	
 
 	Method GetSfxChannelByName:TSfxChannel(name:string)

@@ -1,19 +1,22 @@
 Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
 
 	Method GetVolumeByDistance:float(source:TSoundSourceElement, receiver:TElementPosition)
-		local currentDistance:int = source.GetCenter().DistanceTo(receiver.getCenter())
-	
-		local result:float = midRangeVolume
-		If (currentDistance <> -1) Then
-			If currentDistance > Self.maxDistanceRange Then 'zu weit weg
-				result = Self.minVolume
-			Elseif currentDistance < Self.nearbyDistanceRange Then 'sehr nah dran
-				result = Self.nearbyRangeVolume
-			Else 'irgendwo dazwischen
-				result = midRangeVolume * (float(Self.maxDistanceRange) - float(currentDistance)) / float(Self.maxDistanceRange)
-			Endif
-		Endif
+		local floorNumberSource:int = Building.getFloorByPixelExactPoint(source.GetCenter())
+		local floorNumberTarget:int = Building.getFloorByPixelExactPoint(receiver.GetCenter())
+		local floorDistance:int = TPoint.DistanceOfValues(floorNumberSource, floorNumberTarget)
+'		print "floorDistance: " + floorDistance + " - " + Exponential(0.5, floorDistance) + " # " + floorNumberSource + " $ " + floorNumberTarget
+		Return super.GetVolumeByDistance(source, receiver) * Exponential(0.5, floorDistance)
+	End Method
 
+	Method Exponential:float(base:float, expo:float)
+'		print "Exponential1: " + base + " - " + expo
+		local result:float = base
+		If expo >= 2
+			for local i:int = 1 to expo - 1
+				result = result * base
+			next
+		Endif
+'		print "Exponential2: " + result
 		Return result
 	End Method
 
@@ -28,7 +31,7 @@ Type TPlayerElementPosition Extends TElementPosition
 		Return "Player"
 	End Method
 
-	Method GetCenter:TPoint()
+	Method GetCenter:TPoint()	
 		Return Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
 	End Method
 
@@ -55,6 +58,11 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		
 		return result
 	End Function
+	
+	Method PlaySfx(sfx:string)			
+		'print "aa1: " + GetCenter().x + "/" + GetCenter().y + " - " + Building.getFloorByPixelExactPoint(GetCenter())	
+		super.PlaySfx(sfx)
+	End Method	
 
 	Method GetID:string()
 		Return "Elevator"
@@ -71,15 +79,6 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	Method GetIsHearable:int()
 		Return (Players[Game.playerID].Figure.inRoom = null)
 	End Method
-	
-	Method PlaySfx(sfx:string)		
-		print "Quelle: " + GetCenter().x + "/" + GetCenter().y + "/" + GetCenter().z + " = " + sfx
-		print "Meine Methode1: " + Building.getFloorByPoint(GetCenter())
-		print "getFloor: " + Building.getFloor(GetCenter().y)
-	
-		super.PlaySfx(sfx)
-	End Method	
-
 	
 	Method GetChannelForSfx:TSfxChannel(sfx:string)
 		Select sfx
@@ -136,23 +135,62 @@ End Type
 
 Type TDoorSoundSource Extends TSoundSourceElement
 	Field Room:TRooms
+	Field IsPlayerAction:int
+	Field DoorTimer:TTimer		= TTimer.Create(1000)'500
+	Field CloseDoorSoundInRoom:int
 
 	Function Create:TDoorSoundSource(_room:TRooms)
 		local result:TDoorSoundSource = new TDoorSoundSource
 		result.Room = _room
 		
-		result.AddDynamicSfxChannel(SFX_OPEN_DOOR)
-		result.AddDynamicSfxChannel(SFX_CLOSE_DOOR)
+		result.AddDynamicSfxChannel(SFX_OPEN_DOOR, true)
+		result.AddDynamicSfxChannel(SFX_CLOSE_DOOR, true)
 		
 		return result
 	End Function
 
+	Method PlayDoorSfx(sfx:string, figure:TFigures)
+		If figure <> null Then print "PlayDoorSfx: " + sfx + " = " + room.name +  " (" + figure.name + ")" Else print "PlayDoorSfx: " + sfx + " = " + room.name + " (none)"
+		If figure = Players[Game.playerID].Figure
+			If IsPlayerAction
+				Print "Überhört"
+			Else
+				If sfx = SFX_OPEN_DOOR
+					CloseDoorSoundInRoom = (not (Players[Game.playerID].Figure.inRoom = Room))
+					IsPlayerAction = true
+					print "IsPlayerAction = true"
+					PlaySfx(sfx)
+					DoorTimer.reset()
+				Elseif sfx = SFX_CLOSE_DOOR
+				print "üüü"	
+				Endif			
+			Endif		
+		Else
+			PlaySfx(sfx)
+		Endif		
+	End Method
+	
+	Method Update()
+		If IsPlayerAction
+			If DoorTimer.isExpired() Then	
+				If CloseDoorSoundInRoom = (Players[Game.playerID].Figure.inRoom = Room)
+					PlayDoorSfx(SFX_CLOSE_DOOR, null)
+				Endif
+				IsPlayerAction = false
+				print "IsPlayerAction = false"
+				print "----------------------------------------"
+			Endif
+		Endif
+		super.Update()		
+	End Method	
+	
 	Method GetID:string()
 		Return "Door"
 	End Method
 
 	Method GetCenter:TPoint()
-		Return TPoint.Create(Room.Pos.x + Room.doorwidth/2, Building.pos.y + Building.GetFloorY(Room.Pos.y) - Room.doorheight/2, -15)
+		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + Building.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
+		Return TPoint.Create(Room.Pos.x + Room.doorwidth/2, Building.GetFloorY(Room.Pos.y) - Room.doorheight/2, -15)
 	End Method
 
 	Method IsMovable:int()
@@ -160,7 +198,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Method
 	
 	Method GetIsHearable:int()
-		Return (Players[Game.playerID].Figure.inRoom = null)
+		Return (Players[Game.playerID].Figure.inRoom = null) or IsPlayerAction
 	End Method
 	
 	Method GetChannelForSfx:TSfxChannel(sfx:string)
@@ -178,17 +216,12 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	
 	Method OnPlaySfx:int(sfx:string)
 		Return True
-	End Method
+	End Method	
 	
 	Method GetDoorOptions:TSfxSettings()
-'		local position:TPoint = GetCenter()
-'		local floorY:int = Building.pos.y + Building.GetFloorY(Room.Pos.y)				
-				
-		local result:TSfxSettings = new TSfxSettings
+		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
 		result.nearbyDistanceRange = 60
-'		result.nearbyDistanceRangeTopY = (floorY - position.y - 73) * -1 '73 = Stockwerkhöhe
-'		result.nearbyDistanceRangeBottomY = floorY - position.y
-		result.maxDistanceRange = 100			
+		result.maxDistanceRange = 500
 		result.nearbyRangeVolume = 1
 		result.midRangeVolume = 0.25
 		result.minVolume = 0
