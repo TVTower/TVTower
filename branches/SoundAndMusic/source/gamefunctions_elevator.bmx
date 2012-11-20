@@ -31,9 +31,9 @@ Type TElevator
 	Field Speed:Float 						= 120		'pixels per second ;D
 	
 	'Timer
-	Field PlanTime:Int						= 4000 		'TODOX muss geklärt werden was das ist					
-	Field WaitAtFloorTime:Int				= 1700 		'Wie lange (Millisekunden) werden die Türen offen gelassen (alt: 650)
-	Field WaitAtFloorTimer:Int				= 0			'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
+	Field PlanTime:Int						= 4000 		'Zeit die ein Spieler im Raumplan verbringen kann bis er rausgeschmissen wird
+	Field WaitAtFloorTimer:TTimer			= null 		'Wie lange (Millisekunden) werden die Türen offen gelassen (alt: 650)
+	Field WaitAtFloorTime:Int				= 1700		'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
 		
 	'Grafikelemente	
 	Field SpriteDoor:TAnimSprites						'Das Türensprite und seine Animationen
@@ -41,10 +41,15 @@ Type TElevator
 	Field PassengerOffset:TPoint[]						'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures ein paar Offsets im Fahrstuhl
 	Field PassengerPosition:TFigures[]					'Hier wird abgelegt, welches Offset schon in Benutzung ist und von welcher Figur
 	
+
+
 	'===== Konstrukor, Speichern, Laden =====
 	
 	Function Create:TElevator(building:TBuilding)
 		Local obj:TElevator = New TElevator		
+		'create timer
+		obj.WaitAtFloorTimer = TTimer.Create( obj.WaitAtFloorTime )
+		'create sprite
 		obj.spriteDoor = new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
 		obj.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
 		obj.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
@@ -109,7 +114,8 @@ Type TElevator
 	Method UsePlan(figure:TFigures)		
 		ElevatorStatus = 5 'Den Wartestatus setzen
 		If Not FiguresUsingPlan.Contains(figure)
-			waitAtFloorTimer = MilliSecs() + Building.Elevator.PlanTime 'Die Zeit zurück setzen/verlängern
+			'Die Zeit zurücksetzen/verlängern
+			waitAtFloorTimer.SetInterval(self.PlanTime, true)
 			FiguresUsingPlan.AddLast(figure)
 		Endif
 	End Method
@@ -215,7 +221,19 @@ Type TElevator
 			If figure <> null
 				local offset:TPoint = PassengerOffset[i]
 				If figure.PosOffset.getX() <> offset.getX()
+					'set to 1 -> indicator we are moving in the elevator (boarding)
+					figure.boardingState = 1
+
+					'avoid rounding errors ("jittering") and set to target if distance is smaller than movement
+					'we only do that if offsets differ to avoid doing it if no offset is set
+					if abs(figure.PosOffset.getX() - offset.getX()) <= 0.4
+						'set x to the target so it settles to that value
+						figure.PosOffset.setX( offset.getX())
+						'set state to 0 so figures can recognize they reached the displaced x
+						figure.boardingState = 0
+					else
 					if figure.PosOffset.getX() > offset.getX() Then figure.PosOffset.setX(figure.PosOffset.getX() -0.4) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.4)
+					endif
 				Endif
 			Endif
 		next		
@@ -225,11 +243,22 @@ Type TElevator
 		for local i:int = 0 to len(PassengerPosition) - 1
 			local figure:TFigures = PassengerPosition[i]			
 			If figure <> null				
-				local route:TFloorRoute = GetRouteByPassenger(figure, 0)
-				If route.floornumber = CurrentFloor 'Will die Person aussteigen?
-					local offset:TPoint = PassengerOffset[i]					
+				If GetRouteByPassenger(figure, 0).floornumber = CurrentFloor 'Will die Person aussteigen?
 					If figure.PosOffset.getX() <> 0
+						'set state to -1 -> indicator we are moving in the elevator but from Offset to 0 (different to boarding)
+						figure.boardingState = -1
+
+						'avoid rounding errors ("jittering") and set to target if distance is smaller than movement
+						'we only do that if offsets differ to avoid doing it if no offset is set
+						if abs(figure.PosOffset.getX()) <= 0.5
+							'set x to 0 so it settles to that value
+							'set "y" to 0 so figures can recognize they reached the displaced x
+							figure.PosOffset.setX( 0 )
+							'set state to 0 so figures can recognize they reached the displaced x
+							figure.boardingState = 0
+						else
 						if figure.PosOffset.getX() > 0 Then figure.PosOffset.setX(figure.PosOffset.getX() -0.5) Else figure.PosOffset.setX(figure.PosOffset.getX() +0.5)
+						endif
 					Endif
 				Endif
 			Endif
@@ -269,7 +298,7 @@ Type TElevator
 		Endif	
 
 		If ElevatorStatus = 1 '1 = Türen schließen					
-			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer <= MilliSecs() Then CloseDoor() 'Wenn die Wartezeit vorbei ist, dann Türen schließen
+			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer.isExpired() Then CloseDoor() 'Wenn die Wartezeit vorbei ist, dann Türen schließen
 			
 			'Warten bis die Türanimation fertig ist
 			If spriteDoor.getCurrentAnimationName() = "closedoor"				
@@ -303,7 +332,7 @@ Type TElevator
 				
 				'Die Figuren im Fahrstuhl mit der Kabine mitbewegen
 				For Local figure:TFigures = EachIn Passengers
-					figure.rect.position.setY( Building.Elevator.Pos.y + spriteInner.h)
+					figure.rect.position.setY( self.Pos.y + spriteInner.h)
 				Next					
 			EndIf						
 		Endif		
@@ -311,7 +340,8 @@ Type TElevator
 		If ElevatorStatus = 3 '3 = Türen öffnen
 			If doorStatus = 0
 				OpenDoor()
-				waitAtFloorTimer = MilliSecs() + waitAtFloorTime 'Es wird bestimmt wie lange die Türen mindestens offen bleiben.
+				'wie lange die Türen mindestens offen bleiben.
+				waitAtFloorTimer.SetInterval(waitAtFloorTime, true)
 			Endif
 		
 			'Türanimationen für das Öffnen fortsetzen... aber auch Passagiere ausladen, wenn es fertig ist
@@ -330,9 +360,9 @@ Type TElevator
 				ReadyForBoarding = true
 			Else 'ist im Else-Zweig damit die Update-Loop nochmal zu den Figuren wechseln kann um ein-/auszusteigen
 				'Eventuell die Wartezeit vorab beenden, wenn die Auswahl getätigt wurde. Aber nur wenn auch wirklich im Wartemodus
-				If ElevatorStatus = 5 And FiguresUsingPlan.IsEmpty() Then waitAtFloorTimer = 0
+				If ElevatorStatus = 5 And FiguresUsingPlan.IsEmpty() Then waitAtFloorTimer.expire()
 				'Wenn die Wartezeit um ist, dann nach nem neuen Ziel suchen
-				If waitAtFloorTimer <= MilliSecs() Then
+				If waitAtFloorTimer.isExpired()
 					FiguresUsingPlan.Clear() 'Alle Figuren die den Plan genutzt haben werden jetzt rausgeworfen
 					RemoveIgnoredRoutes() 'Entferne nicht wahrgenommene routen
 					ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
@@ -350,8 +380,6 @@ Type TElevator
 								
 	Method Draw() 'needs to be restructured (some test-lines within)
 		SetBlend MASKBLEND
-		'TODO: Warum werden hier die anderen Türen gezeichnet? Vielleicht wieder rein machen... bisher kein Grund gefunden
-		'TRooms.DrawDoors() 'draw overlay -open doors etc.   
 
 		'Den leeren Schacht zeichnen... also da wo der Fahrstuhl war
 		spriteDoor.Draw(Building.pos.x + pos.x, Building.pos.y + Building.GetFloorY(CurrentFloor) - 50)

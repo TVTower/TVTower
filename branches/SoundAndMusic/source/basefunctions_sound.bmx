@@ -74,7 +74,7 @@ Type TSoundManager
 	Field sfxChannel_Elevator:TChannel = null
 	Field sfxChannel_Elevator2:TChannel = null
 	Field sfxVolume:float = 1
-	Field defaultSfxSettings:TSfxSettings = null
+	Field defaulTSfxDynamicSettings:TSfxSettings = null
 
 	Field musicOn:int = 1
 	Field musicVolume:float = 1
@@ -111,7 +111,7 @@ endrem
 		manager.musicChannel2 = AllocChannel()
 		manager.sfxChannel_Elevator = AllocChannel()
 		manager.sfxChannel_Elevator2 = AllocChannel()
-		manager.defaultSfxSettings = TSfxSettings.Create()
+		manager.defaulTSfxDynamicSettings = TSfxSettings.Create()
 		Return manager
 	End Function
 	
@@ -248,7 +248,7 @@ endrem
 	End Method
 
 	Method PlayMusic(music:string)
-		Return
+		'Return
 		Self.nextMusicTitleStream = GetMusicStream(music)
 		Self.nextMusicTitleVolume = GetVolume(music)
 		Self.forceNextMusicTitle = true		
@@ -391,44 +391,66 @@ Type TDynamicSfxChannel Extends TSfxChannel
 		local sourcePoint:TPoint = Source.GetCenter()
 		local receiverPoint:TPoint = Receiver.GetCenter() 'Meistens die Position der Spielfigur		
 	
-		'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
-		local distanceVolume:float = CurrentSettings.GetVolumeByDistance(Source, Receiver)		
-		channel.SetVolume(SoundManager.sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+		If CurrentSettings.forceVolume
+			channel.SetVolume(CurrentSettings.defaultVolume)
+			'print "Volume:" + CurrentSettings.defaultVolume
+		Else
+			'Lautstärke ist Abhängig von der Entfernung zur Geräuschquelle
+			local distanceVolume:float = CurrentSettings.GetVolumeByDistance(Source, Receiver)		
+			channel.SetVolume(SoundManager.sfxVolume * distanceVolume) ''0.75 ist ein fixer Wert die Lautstärke der Sfx reduzieren soll
+			'print "Volume: " + (SoundManager.sfxVolume * distanceVolume)
+		Endif
 		
 		If (sourcePoint.z = 0) Then
 			'170 Grenzwert = Erst aber dem Abstand von 170 (gefühlt/geschätzt) hört man nur noch von einer Seite.
 			'Ergebnis sollte ungefähr zwischen -1 (links) und +1 (rechts) liegen.
-			channel.SetPan(float(sourcePoint.x - receiverPoint.x) / 170)
-			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
-		Else					
-			local xDistance:float = TPoint.DistanceOfValues(sourcePoint.x, receiverPoint.x)
-			local yDistance:float = TPoint.DistanceOfValues(sourcePoint.y, receiverPoint.y)
-			local zDistance:float = TPoint.DistanceOfValues(sourcePoint.z, receiverPoint.z)
-			local angleZX:float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
-
-			local rawPan:float = ((90 - angleZX) / 90)			
-			local panCorrection:float = max(0, min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist
-			local correctPan:float = rawPan * panCorrection
-
-			'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
-			If (sourcePoint.x < receiverPoint.x) Then 'von links
-				channel.SetPan(-correctPan)
-				'print "Pan:" + (-correctPan) + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")    # " + rawPan + " / " + panCorrection
-			Elseif (sourcePoint.x > receiverPoint.x) Then 'von rechts
-				channel.SetPan(correctPan)
-				'print "Pan:" + correctPan + " - angle: " + angle + " (" + xAxis + "/" + zAxis + ")    # " + rawPan + " / " + panCorrection
+			If CurrentSettings.forcePan
+				channel.SetPan(CurrentSettings.defaultPan)
 			Else
-				channel.SetPan(0)
+				channel.SetPan(float(sourcePoint.x - receiverPoint.x) / 170)
+			Endif
+			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
+		Else		
+			local zDistance:float = TPoint.DistanceOfValues(sourcePoint.z, receiverPoint.z)
+		
+			If CurrentSettings.forcePan
+				channel.SetPan(CurrentSettings.defaultPan)
+				'print "Pan:" + CurrentSettings.defaultPan
+			Else					
+				local xDistance:float = TPoint.DistanceOfValues(sourcePoint.x, receiverPoint.x)
+				local yDistance:float = TPoint.DistanceOfValues(sourcePoint.y, receiverPoint.y)
+				
+				local angleZX:float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
+	
+				local rawPan:float = ((90 - angleZX) / 90)			
+				local panCorrection:float = max(0, min(1, xDistance / 170)) 'Den r/l Effekt sollte noch etwas abgeschwächt werden, wenn die Quelle nah ist
+				local correctPan:float = rawPan * panCorrection
+	
+				'0° => Aus einer Richtung  /  90° => aus beiden Richtungen
+				If (sourcePoint.x < receiverPoint.x) Then 'von links
+					channel.SetPan(-correctPan)
+					'print "Pan:" + (-correctPan) + " - angleZX: " + angleZX + " (" + xDistance + "/" + zDistance + ")    # " + rawPan + " / " + panCorrection
+				Elseif (sourcePoint.x > receiverPoint.x) Then 'von rechts
+					channel.SetPan(correctPan)
+					'print "Pan:" + correctPan + " - angleZX: " + angleZX + " (" + xDistance + "/" + zDistance + ")    # " + rawPan + " / " + panCorrection
+				Else
+					channel.SetPan(0)
+				Endif
 			Endif
 			
-			local angleOfDepth:float = ATan(receiverPoint.DistanceTo(sourcePoint, false) / zDistance) '0 = direkt hinter mir/vor mir, 90° = über/unter/neben mir
-
-			If sourcePoint.z < 0 Then 'Hintergrund
-				channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
-			'	print "Depth:" + (-((90 - angleOfDepth) / 90)) + " - angle: " + angleOfDepth + " (" + distanceXY + "/" + zAxis + ")"
-			ElseIf sourcePoint.z > 0 Then 'Vordergrund
-				channel.SetDepth((90 - angleOfDepth) / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
-			'	print "Depth:" + ((90 - angleOfDepth) / 90) + " - angle: " + angleOfDepth + " (" + distanceXY + "/" + zAxis + ")"
+			If CurrentSettings.forceDepth
+				channel.SetDepth(CurrentSettings.defaultDepth)
+				'print "Depth:" + CurrentSettings.defaultDepth
+			Else			
+				local angleOfDepth:float = ATan(receiverPoint.DistanceTo(sourcePoint, false) / zDistance) '0 = direkt hinter mir/vor mir, 90° = über/unter/neben mir
+	
+				If sourcePoint.z < 0 Then 'Hintergrund
+					channel.SetDepth(-((90 - angleOfDepth) / 90)) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+					'print "Depth:" + (-((90 - angleOfDepth) / 90)) + " - angle: " + angleOfDepth + " (" + receiverPoint.DistanceTo(sourcePoint, false) + "/" + zDistance + ")"
+				ElseIf sourcePoint.z > 0 Then 'Vordergrund
+					channel.SetDepth((90 - angleOfDepth) / 90) 'Minuswert = Hintergrund / Pluswert = Vordergrund
+					'print "Depth:" + ((90 - angleOfDepth) / 90) + " - angle: " + angleOfDepth + " (" + receiverPoint.DistanceTo(sourcePoint, false) + "/" + zDistance + ")"
+				Endif
 			Endif
 		Endif
 	End Method			
@@ -436,7 +458,13 @@ End Type
 
 
 Type TSfxSettings
+	Field forceVolume:float = false
+	Field forcePan:float = false
+	Field forceDepth:float = false
+
 	Field defaultVolume:float = 1
+	Field defaultPan:float = 0
+	Field defaultDepth:float = 0
 
 	Field nearbyDistanceRange:int = -1
 '	Field nearbyDistanceRangeTopY:int -1
@@ -473,7 +501,6 @@ Type TSfxSettings
 	End Method	
 End Type
 
-
 'Das ElementPositionzeug kann auch eventuell wo anders hin
 Type TElementPosition 'Basisklasse für verschiedene Wrapper
 	Method GetID:string() abstract
@@ -494,7 +521,7 @@ Type TSoundSourceElement Extends TElementPosition
 		Return SoundManager.GetDefaultReceiver()
 	End Method
 	
-	Method PlaySfx(sfx:string)
+	Method PlaySfx(sfx:string, sfxSettings:TSfxSettings=null)
 		If Not GetIsHearable() Then Return
 		If Not OnPlaySfx(sfx) Then Return
 		print "PlaySfx: " + sfx
@@ -502,13 +529,15 @@ Type TSoundSourceElement Extends TElementPosition
 		SoundManager.RegisterSoundSource(self)
 		
 		local channel:TSfxChannel = GetChannelForSfx(sfx)
-		local settings:TSfxSettings = GetSfxSettings(sfx)
+		local settings:TSfxSettings = sfxSettings
+		If settings = null Then settings = GetSfxSettings(sfx)
 		
 		If TDynamicSfxChannel(channel)
 			TDynamicSfxChannel(channel).SetReceiver(GetReceiver())
 		Endif
 		
 		channel.PlaySfx(sfx, settings)
+		print "End PlaySfx: " + sfx
 	End Method
 	
 	Method Update()

@@ -1482,6 +1482,8 @@ Type TBuilding Extends TRenderable
 	Field gfx_buildingRoof:TGW_Sprites
 	Field gfx_buildingWall:TGW_Sprites
 
+	Field roomUsedTooltip:TTooltip = null
+
 	Global StarsX:Int[60]
 	Global StarsY:Int[60]
 	Global StarsC:Int[60]
@@ -1536,6 +1538,8 @@ Type TBuilding Extends TRenderable
 	Method Update(deltaTime:Float=1.0)
 		pos.y = Clamp(pos.y, - 637, 88)
 		UpdateBackground(deltaTime)
+
+		if self.roomUsedTooltip <> null then self.roomUsedTooltip.Update(deltaTime)
 	End Method
 
 	Method DrawItemsToBackground:Int()
@@ -1581,8 +1585,14 @@ Type TBuilding Extends TRenderable
 
 		Assets.GetSprite("gfx_building").draw(pos.x + 127, pos.y)
 
-		SetBlend ALPHABLEND
+		SetBlend MASKBLEND
+
+		'draw overlay - open doors are drawn over "background-image-doors" etc.
+		TRooms.DrawDoors()
+		'draw elevator parts
 		Elevator.Draw()
+
+		SetBlend ALPHABLEND
 
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Not Figure.alreadydrawn Then Figure.Draw()
@@ -1603,6 +1613,7 @@ Type TBuilding Extends TRenderable
 		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 75, pos.y + GetFloorY(12), - 1, 1)
 		SetBlend ALPHABLEND
 		TRooms.DrawDoorToolTips()
+		if self.roomUsedTooltip <> null then self.roomUsedTooltip.Draw()
 	End Method
 
 	Method UpdateBackground(deltaTime:Float)
@@ -1739,6 +1750,13 @@ Type TBuilding Extends TRenderable
 
 		SetColor 255, 255, 255
 		SetBlend ALPHABLEND
+	End Method
+
+	Method CreateRoomUsedTooltip:int(room:TRooms)
+		roomUsedTooltip			= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
+		roomUsedTooltip.pos.y	= pos.y + GetFloorY(room.Pos.y)
+		roomUsedTooltip.pos.x	= room.Pos.x + room.doorwidth/2 - roomUsedTooltip.GetWidth()/2
+		roomUsedTooltip.enabled = 1
 	End Method
 
 	Method CenterToFloor:Int(floornumber:Int)
@@ -1989,7 +2007,7 @@ tempfigur.rect.dimension.SetX(12) 'overwriting
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
-REM
+
 tempfigur				= new TFigures.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
@@ -1999,7 +2017,7 @@ tempfigur				= new TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures"
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
-
+REM
 tempfigur				= new TFigures.CreateFigure("Bote3", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 2,-55,0)
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
@@ -2142,12 +2160,6 @@ For Local i:Int = 0 To 4
 	TNewsbuttons.Create(3,2, GetLocale("NEWS_SPORT"), i, 69,247,3)
 	TNewsbuttons.Create(4,4, GetLocale("NEWS_CURRENTAFFAIRS"),i, 118,247,4)
 Next
-TPPbuttons.Create(Assets.GetSprite("btn_options"), GetLocale("PLANNER_OPTIONS"), 672, 40 + 2 * 56, 2)
-TPPbuttons.Create(Assets.GetSprite("btn_programme"), GetLocale("PLANNER_PROGRAMME"), 672, 40 + 1 * 56, 1)
-TPPbuttons.Create(Assets.GetSprite("btn_ads"), GetLocale("PLANNER_ADS"), 672, 40 + 0 * 56, 0)
-TPPbuttons.Create(Assets.GetSprite("btn_financials"), GetLocale("PLANNER_FINANCES"), 672, 40 + 3 * 56, 3)
-TPPbuttons.Create(Assets.GetSprite("btn_image"), GetLocale("PLANNER_IMAGE"), 672, 40 + 4 * 56, 4)
-TPPbuttons.Create(Assets.GetSprite("btn_news"), GetLocale("PLANNER_MESSAGES"), 672, 40 + 5 * 56, 5)
 '#End Region
 
 CreateDropZones()
@@ -2383,7 +2395,7 @@ Function Menu_Main_Draw()
 
 	If MenuPreviewPicTimer < MilliSecs()
 		MenuPreviewPicTimer = MilliSecs() + MenuPreviewPicTime
-		MenuPreviewPic = TRooms(TRooms.RoomList.ValueAtIndex(Rnd(1, TRooms.RoomList.Count() - 1))).background
+		MenuPreviewPic = TRooms(TRooms.RoomList.ValueAtIndex(Rnd(1, TRooms.RoomList.Count() - 1))).screenManager.GetCurrentScreen().background
 	EndIf
 	If MenuPreviewPic <> Null
 		SetBlend ALPHABLEND

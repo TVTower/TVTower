@@ -8,13 +8,14 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field initialdx:Float		= 0.0 'backup of self.vel.x
 	field target:TPoint			= TPoint.Create(-1,-1) {_exposeToLua}
 	Field PosOffset:TPoint		= TPoint.Create(0,0)
+	Field boardingState:int		= 0				'0=no boarding, 1=boarding, -1=deboarding
 
 	Field toRoom:TRooms			= Null			{sl = "no"}
 	Field fromRoom:TRooms		= Null			{sl = "no"}
 	Field clickedToRoom:TRooms	= Null			{sl = "no"}
 	Field inRoom:TRooms			= Null			{sl = "no"}
 	Field id:Int				= 0
-	Field Visible:Int			= 1		
+	Field Visible:Int			= 1
 
 	Field SpecialTimer:TTimer	= TTimer.Create(1500)
 	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
@@ -131,7 +132,7 @@ endrem
 		if self.ControlledByID = 0 then return true
 		Return False
 	End Method
-	
+
 	Method IsActivePlayer:Int()
 		If id = 1 Then Return true 'TODO: Man müsste hier noch prüfen, ob andere Spieler gesteuert werden außer id = 1
 		Return false
@@ -169,12 +170,22 @@ endrem
 
 	Method FigureAnimation(deltaTime:float=1.0)
 		If self.vel.GetX() = 0
+				'default - no movement needed
+				if self.boardingState = 0
+					self.setCurrentAnimation("standFront",true)
+				'boarding/deboarding movement
+				else
+					'multiply boardingState : if boarding it is 1, if deboarding it is -1
+					'so multiplying negates value if needed
+					if self.boardingState * self.PosOffset.GetX() > 0 then self.setCurrentAnimation("walkRight", true)
+					if self.boardingState * self.PosOffset.GetX() < 0 then self.setCurrentAnimation("walkLeft", true)
+				endif
+
 			'show the backside if at elevator
 			If self.hasToChangeFloor() and not IsInElevator() and IsAtElevator()
 				self.setCurrentAnimation("standBack",true)
 			'show front
 			Else
-				self.setCurrentAnimation("standFront",true)
 			EndIf
 		EndIf
 		if self.vel.GetX() > 0 then self.setCurrentAnimation("walkRight", true)
@@ -203,47 +214,113 @@ endrem
 	End Method
 
 	'player is now in room "room"
-	Method SetInRoom:Int(room:TRooms)
-		print "SetInRoom: CloseDoor"
-		If room <> null Then room.CloseDoor(self)
+	Method _SetInRoom:Int(room:TRooms)
+		If room <> null 
+			room.CloseDoor(self)
+			room.used = self.id
+		Endif
 
 	 	inRoom = room
 		If ParentPlayer <> Null And self.isAI()
-			If room <> Null Then ParentPlayer.PlayerKI.CallOnReachRoom(room.id) Else ParentPlayer.PlayerKI.CallOnReachRoom(0)
+			If room Then ParentPlayer.PlayerKI.CallOnReachRoom(room.id) Else ParentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_NOTFOUND)
 		EndIf
 		If Game.networkgame and Network.IsConnected then self.Network_SendPosition()
 	End Method
 
-	'backing up former room
-	Method SetToRoom:Int(room:TRooms)
-		if toRoom <> room
-			If fromRoom <> toRoom Then fromRoom = toRoom
-			toRoom = room
-			If Game.networkgame and Network.IsConnected then self.Network_SendPosition()
+    Method CanEnterRoom:int(room:TRooms)
+		if not room then return false
+		'nicht besetzt: enter moeglich
+		if room.used < 0 then return true
+
+		'sonstige spielfiguren (keine spieler) koennen niemanden rausschmeissen
+		'aber auch einfach ueberall rein egal ob wer drin ist
+		if not self.parentPlayer then return true
+
+		'kann andere rausschmeissen
+		if self.parentPlayer.playerID = room.owner then return true
+
+		'sobald besetzt und kein spieler:
+		return false
+    End Method
+
+
+	Method EnterRoom:int(room:TRooms, useFader:int = true)
+		'no room = going to building
+		if not room then return _SetInRoom(null)
+
+		'npcs wie Boten koennen einfach rein
+		if not ParentPlayer then _SetInRoom(room)
+
+		'besetzt - und jemand anderes ?
+		if room.used >=0 and room.used <> self.id
+			'nur richtige Spieler benoetigen spezielle Behandlung (events etc.)
+			if ParentPlayer <> null
+				'andere rausschmeissen
+				if self.parentPlayer.playerID = room.owner
+					'andere rausschmeissen
+					local kickFigure:TFigures = TFigures.GetByID(room.used)
+					if kickFigure
+						print "Figur "+self.name+" schmeisst "+ kickFigure.name + " aus dem Raum "+room.name
+						EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", TData.Create().Add("figure", kickFigure), room ) )
+
+						kickFigure.LeaveRoom()
+					endif
+					If useFader and id = Game.playerID Then Fader.EnableFadeout() 'room fading
+					_SetInRoom(room)
+				'Besetztzeichen ausgeben / KI informieren
+				else
+					'ziel entfernen
+					self.toRoom = null
+					self.clickedToRoom = null
+
+					'Spieler benachrichtigen
+					if self.isAI()
+						ParentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_INUSE)
+					else
+						'tooltip only for user
+						if self.parentPlayer.playerID = Game.playerID
+							Building.CreateRoomUsedTooltip(room)
+'							print room.name +" ist besetzt"
+						endif
+					endif
+				endif
+			endif
+		else
+			If useFader and id = Game.playerID Then Fader.EnableFadeout() 'room fading
+			_SetInRoom(room)
 		endif
 	End Method
 
+	Method LeaveToBuilding:int()
+		self.inRoom = null
+	End Method
+
 	Method LeaveRoom:Int()
-		print self.name+" leaves room:"+self.inRoom.name
+		if self.inRoom
+			print self.name+" leaves room:"+self.inRoom.name
 
-		If ParentPlayer <> Null And self.isAI()
-			If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
-				'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
-				If Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
-					 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
-					 'Print "movieagency left: programmes bought"
+			'set unused
+			self.inRoom.used = -1
+
+			If ParentPlayer And self.isAI()
+				If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
+					'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
+					If Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
+						 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
+						 'Print "movieagency left: programmes bought"
+					EndIf
 				EndIf
+				ParentPlayer.PlayerKI.CallOnLeaveRoom()
 			EndIf
-			ParentPlayer.PlayerKI.CallOnLeaveRoom()
-		EndIf
-
+		endif
 		'display a open door if leaving it
-		If inRoom <> Null Then inRoom.OpenDoor(self)
+		If inRoom Then inRoom.OpenDoor(self)
 
 		toRoom = fromRoom
 '		If fromRoom <> Null Then fromRoom.CloseDoor()
 		fromRoom = Null
-		SetInRoom(toRoom)
+		EnterRoom( toRoom )
+
 		clickedToRoom = Null
 		If inRoom = Null Then self.rect.position.setX(target.x)
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(self)
@@ -298,17 +375,17 @@ endrem
 		Return self
 	End Method
 
-	Method CallElevator:Int()		
+	Method CallElevator:Int()
 		if IsElevatorCalled() then return false 'Wenn er bereits gerufen wurde, dann abbrechen
 
 		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss überprüft werden
 		if Building.Elevator.CurrentFloor = GetFloor() and IsAtElevator() then return false
 		If IsAtElevator() Then 'Fahrstuhl darf man nur rufen, wenn man davor steht
-			Building.Elevator.CallElevator(self)						
-		Endif		
+			Building.Elevator.CallElevator(self)
+		Endif
 	End Method
 
-	Method GoOnBoardAndSendElevator:Int()		
+	Method GoOnBoardAndSendElevator:Int()
 		If Building.Elevator.EnterTheElevator(self, self.getFloor(target))
 			Building.Elevator.SendElevator(self.getFloor(target), self)
 		Endif
@@ -348,7 +425,7 @@ endrem
 		'change to event
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(self)
 	End Method
-	
+
 	Method IsGameLeader:Int()
 		Return (id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader()))
 	End Method
@@ -388,61 +465,62 @@ endrem
 			Self.FigureAnimation(deltaTime)
 		EndIf
 		'figure wants to change room
-		If clickedToRoom <> Null and clickedToRoom <> fromRoom
+		If clickedToRoom and clickedToRoom <> fromRoom
 			local doorCenter:int = (clickedToRoom.name <> "elevator")*Assets.GetSprite("gfx_building_Tueren").framew/2
 
 			If Self.ControlledByID >= 0 and Self.id <> figure_HausmeisterID 'in multiplayer to be checked if its the player or not
 				'figure center is within 4px wide frame of room "spot" ?
 				'if self.ControlledByID = 1 then print "targetx="+target.x+" x="+(pos.x + framewidth/2)+", y="+(Building.pos.y + Building.GetFloorY(toFloor) - 5)+", wx:"+(clickedToRoom.Pos.x + doorCenter -2)+", wy:"+(Building.pos.y + Building.GetFloorY(clickedToRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)+" w:"+4+" h:"+54
 				If inRoom = Null And functions.IsIn(rect.GetX() + rect.GetW()/2, Building.pos.y + rect.GetY() - 5, clickedToRoom.Pos.x + doorCenter -2, Building.pos.y + Building.GetFloorY(clickedToRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, 4, 54)
-			        'Print "standing in front of clickedroom "
-			        self.SetCurrentAnimation("standFront")
 
 					If clickedToRoom.doortype >= 0 and clickedToRoom.getDoorType() <> 5 and inRoom <> clickedToRoom
-		        		If id = Game.playerID Then Fader.Enable() 'room fading
+						'if player is able to enter the room (not used) then start fader
+						if id = Game.playerID and self.CanEnterRoom(clickedToRoom) then Fader.Enable() 'room fading
+
 						clickedToRoom.OpenDoor(self)
+						self.SetCurrentAnimation("standBack")
+					else
+						'Print "standing in front of clickedroom "
+						self.SetCurrentAnimation("standFront")
 					EndIf
 					'if open, timer started and reached halftime --> "wait a moment" before entering
 					If clickedToRoom.getDoorType() = 5 and not clickedToRoom.DoorTimer.isExpired() and clickedToRoom.DoorTimer.reachedHalftime()
-						print "Update: CloseDoor"
+						print "Update: CloseDoor1"
 						clickedToRoom.CloseDoor(self)
-						If id = Game.playerID Then Fader.EnableFadeout() 'room fading
-        			    SetInRoom(clickedToRoom)
-					EndIf
-
+						print "Update: CloseDoor2"
+						EnterRoom(clickedToRoom)
 					'we stand in front of elevator - and clicked on it (to go to other floors)
-					If clickedToRoom.getDoorType() <> 5
+					elseIf clickedToRoom.getDoorType() <> 5
 						If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And IsAtElevator()
 							CallElevator()
 						EndIf
-					EndIf
-					If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And Building.Elevator.CurrentFloor = clickedToRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
-						SetInRoom(clickedToRoom)
-						Building.Elevator.UsePlan(self)						
+					elseIf clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And Building.Elevator.CurrentFloor = clickedToRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
+						EnterRoom(clickedToRoom, false)
+						Building.Elevator.UsePlan(self)
 					EndIf
 				EndIf
 			EndIf
 		EndIf
-		
-		If Visible and (inRoom = Null or inRoom.name = "elevator")			
+
+		If Visible and (inRoom = Null or inRoom.name = "elevator")
 			If Self.HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
 				local elevator:TElevator = Building.Elevator
-			
+
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
-			
+
 				'Ist der Fahrstuhl da? Kann ich einsteigen?
 				If elevator.CurrentFloor = GetFloor() And elevator.ReadyForBoarding
 					GoOnBoardAndSendElevator()
-				Else 'Ansonsten ruf ich ihn halt						
-					CallElevator()					
-				Endif																
-			Endif			
-			
-			If IsInElevator() 'And elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then			
+				Else 'Ansonsten ruf ich ihn halt
+					CallElevator()
+				Endif
+			Endif
+
+			If IsInElevator() 'And elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then
 				local elevator:TElevator = Building.Elevator
 				If elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then
 					elevator.LeaveTheElevator(self)
-				Endif		
+				Endif
 			Endif
 		Endif
 

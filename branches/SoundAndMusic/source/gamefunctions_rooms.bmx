@@ -1,6 +1,6 @@
 'Basictype of all rooms
 Type TRooms  {_exposeToLua="selected"}
-    Field background:TGW_Sprites    	   				'background, the image containing the whole room
+	Field screenManager:TScreenManager		= null					'screenmanager - controls what scene to show
 	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
     Field desc:String			= ""					'description, eg. "Bettys bureau" (used for tooltip)
     Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
@@ -14,6 +14,7 @@ Type TRooms  {_exposeToLua="selected"}
     Field doorHeight:Int		= 52
     Field RoomSign:TRoomSigns
     Field owner:Int				=-1						'to draw the logo/symbol of the owner
+    Field used:int				=-1						'>0 is user id
     Field id:Int				= 1		 {_exposeToLua}
 	Field FadeAnimationActive:Int = 0
 	Field RoomBoardX:Int		= 0
@@ -25,17 +26,17 @@ Type TRooms  {_exposeToLua="selected"}
 	Global doadraw:Int			= 0
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
-	Method getDoorType:int()
+	Method getDoorType:int()		
+		If name = "supermarket"
+			'if self.DoorTimer.isExpired() then print "getDoorType: " + self.doortype else print "getDoorType: " + 5
+		endif
 		if self.DoorTimer.isExpired() then return self.doortype else return 5
 	End Method
 
     Method CloseDoor(figure:TFigures)
 		'timer finished
 		If Not DoorTimer.isExpired()
-			print "closeDoor1"
-			SoundSource.PlayDoorSfx(SFX_CLOSE_DOOR, figure)
-			print "closeDoor2"		
-		
+			SoundSource.PlayDoorSfx(SFX_CLOSE_DOOR, figure)		
 			self.DoorTimer.expire()
 		Endif
     End Method
@@ -43,15 +44,12 @@ Type TRooms  {_exposeToLua="selected"}
     Method OpenDoor(figure:TFigures)
 		'timer ticks again
 		If DoorTimer.isExpired()
-			print "openDoor1"
 			SoundSource.PlayDoorSfx(SFX_OPEN_DOOR, figure)
-			print "openDoor2"
-			self.DoorTimer.reset()
 		Endif
+		self.DoorTimer.reset()
     End Method
 
 	Function CloseAllDoors()
-		print "CloseAllDoors"
 		For Local room:TRooms = EachIn TRooms.RoomList
 			room.CloseDoor(null)
 		Next
@@ -71,6 +69,8 @@ Type TRooms  {_exposeToLua="selected"}
 			If obj.tooltip AND obj.tooltip.enabled
 				obj.tooltip.pos.y = Building.pos.y + Building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
 				obj.tooltip.Update(deltaTime)
+				'delete old tooltips
+				if obj.tooltip.lifetime < 0 then obj.tooltip = null
 			EndIf
 
 			If Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
@@ -89,7 +89,8 @@ Type TRooms  {_exposeToLua="selected"}
 				If (obj.name.Find("studio",0)+1) =1		Then obj.tooltip.tooltipimage = 5
 				If obj.owner >= 1 Then obj.tooltip.TitleBGtype = obj.owner + 10
 
-				return 0
+				'returning leaves other tooltips unhandled (and drawn in a semi-finished-state)
+				'return 0
 			EndIf
 		Next
     End Function
@@ -160,11 +161,12 @@ Type TRooms  {_exposeToLua="selected"}
 
     'draw Room
 	Method Draw:int()
-		if not self.background then Throw "ERROR: room.draw() - background missing";return 0
+		if not self.screenManager then Throw "ERROR: room.draw() - screenManager missing";return 0
 
-		SetBlend SOLIDBLEND
-		self.background.Draw(20,10)
-		SetBlend ALPHABLEND
+		'draw rooms current screen
+		self.screenManager.Draw()
+		'emit event so custom functions can run after screen draw, sender = screen
+		EventManager.triggerEvent( TEventSimple.Create("rooms.onScreenDraw", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
 
 		'emit event so custom draw functions can run
 		EventManager.triggerEvent( TEventSimple.Create("rooms.onDraw", TData.Create().AddNumber("type", 1), self) )
@@ -180,6 +182,20 @@ Type TRooms  {_exposeToLua="selected"}
 		return 0
 	End Method
 
+
+	'only leave a room if not in a subscreen
+	'if in subscreen, go to parent one
+	Method HandleRightClick()
+		if MOUSEMANAGER.IsHit(2)
+			if self.screenManager.GetCurrentScreen() = self.screenManager.baseScreen
+				'we want to leave the room
+			else
+				self.screenManager.GoToParentScreen()
+				MOUSEMANAGER.ResetKey(2)
+			endif
+		endif
+	End Method
+
     'process special functions of this room. Is there something to click on?
     'animated gimmicks? draw within this function.
 	Method Update:Int()
@@ -188,17 +204,27 @@ Type TRooms  {_exposeToLua="selected"}
 		If Fader.fadeenabled And FadeAnimationActive
 			If Fader.fadecount >= 20 And not Fader.fadeout
 				Fader.EnableFadeout()
-				print "Room.Update - CloseDoor"
+				print "Room.Update - CloseDoor1"
 				CloseDoor(Players[Game.playerID].Figure)
+				print "Room.Update - CloseDoor2"
 				FadeAnimationActive = False
  			    Players[Game.playerID].Figure.LeaveRoom()
 				Return 0
 			EndIf
 		End If
 
+
+		'update rooms current screen
+		self.screenManager.Update(App.timer.getDeltaTime())
+		'emit event so custom functions can run after screen update, sender = screen
+		EventManager.triggerEvent( TEventSimple.Create("rooms.onScreenUpdate", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
+
 		'emit event so custom updaters can handle
 		'store amount of listeners
 		local listeners:int = EventManager.triggerEvent( TEventSimple.Create("rooms.onUpdate", TData.Create().AddNumber("type", 0), self) )
+
+		'handle normal right click - check subrooms
+		self.HandleRightClick()
 
 		'something blocks leaving? - check it
 		If MOUSEMANAGER.IsDown(2) AND not Self.LeaveAnimated(0) then MOUSEMANAGER.resetKey(2)
@@ -217,8 +243,8 @@ Type TRooms  {_exposeToLua="selected"}
 
 	End Method
 
-	Method BaseSetup:TRooms(background:TGW_Sprites, name:string, desc:string, owner:int)
-		self.background	= background
+	Method BaseSetup:TRooms(screenManager:TScreenManager, name:string, desc:string, owner:int)
+		self.screenManager = screenManager
 		self.name		= name
 		self.desc		= desc
 		self.owner		= owner
@@ -234,8 +260,8 @@ Type TRooms  {_exposeToLua="selected"}
     'Raum erstellen und bereits geladenes Bild nutzen
     'x = 1-4
     'y = floor
-	Function Create:TRooms(background:TGW_Sprites, name:String = "unknown", desc:String = "unknown", descTwo:String = "", x:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
-		Local obj:TRooms=New TRooms.BaseSetup(background, name, desc, owner)
+	Function Create:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", descTwo:String = "", x:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
+		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
 
 		obj.descTwo		= descTwo
 		obj.doorwidth	= Assets.GetSprite("gfx_building_Tueren").framew
@@ -257,8 +283,8 @@ Type TRooms  {_exposeToLua="selected"}
 
     'create room and use preloaded image
     'Raum erstellen und bereits geladenes Bild nutzen
-	Function CreateWithPos:TRooms(background:TGW_Sprites, name:String = "unknown", desc:String = "unknown", x:Int = 0, xpos:Int = 0, width:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
-		Local obj:TRooms=New TRooms.BaseSetup(background, name, desc, owner)
+	Function CreateWithPos:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", x:Int = 0, xpos:Int = 0, width:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
+		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
 		obj.doorwidth	= width
 		obj.xpos		= xpos
 		obj.Pos			= TPoint.Create(x,y)
@@ -346,6 +372,15 @@ Type TRoomHandler
 		endif
 	End Function
 
+	'special events for screens used in rooms - only this event has the room as sender
+	'screens.onScreenUpdate/Draw is more general purpose
+	Function _RegisterScreenHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), screen:TScreen)
+		if screen
+			EventManager.registerListenerFunction( "rooms.onScreenUpdate", updateFunc, screen )
+			EventManager.registerListenerFunction( "rooms.onScreenDraw", drawFunc, screen )
+		endif
+	End Function
+
 	Function Init() abstract
 	Function Update:int( triggerEvent:TEventBase ) abstract
 	Function Draw:int( triggerEvent:TEventBase ) abstract
@@ -358,65 +393,65 @@ Type RoomHandler_Office extends TRoomHandler
 	global PlannerToolTip:TTooltip
 	global SafeToolTip:TTooltip
 	global DrawnOnProgrammePlannerBG:int = 0
+	global ProgrammePlannerButtons:TGUIImageButton[6]
 
 	Function Init()
 		'add gfx to background image
 		If Not DrawnOnProgrammePlannerBG then InitProgrammePlannerBackground()
 
+		'programme planner buttons
+		TGUILabel.SetDefaultLabelFont( Assets.GetFont("Default", 10, BOLDFONT) )
+		ProgrammePlannerButtons[0] = new TGUIImageButton.Create(672, 40+0*56, "programmeplanner_btn_ads",0,1,"programmeplanner")
+		ProgrammePlannerButtons[0].SetCaption(GetLocale("PLANNER_ADS"),,TPoint.Create(0,42))
+		ProgrammePlannerButtons[1] = new TGUIImageButton.Create(672, 40+1*56, "programmeplanner_btn_programme",0,1,"programmeplanner")
+		ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"),,TPoint.Create(0,42))
+		ProgrammePlannerButtons[2] = new TGUIImageButton.Create(672, 40+2*56, "programmeplanner_btn_options",0,1,"programmeplanner")
+		ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_OPTIONS"),,TPoint.Create(0,42))
+		ProgrammePlannerButtons[3] = new TGUIImageButton.Create(672, 40+3*56, "programmeplanner_btn_financials",0,1,"programmeplanner")
+		ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_FINANCES"),,TPoint.Create(0,42))
+		ProgrammePlannerButtons[4] = new TGUIImageButton.Create(672, 40+4*56, "programmeplanner_btn_image",0,1,"programmeplanner")
+		ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_IMAGE"),,TPoint.Create(0,42))
+		ProgrammePlannerButtons[5] = new TGUIImageButton.Create(672, 40+5*56, "programmeplanner_btn_news",0,1,"programmeplanner")
+		ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_MESSAGES"),,TPoint.Create(0,42))
+		TGUILabel.SetDefaultLabelFont( null )
 
-		'register self for all offices
-		'also register sub rooms
-		'WHY: if not registering to the events, the individual updates/draws
-		'     are not possible (draw/update wont get that special rooms in the event)
-		'SO:  register ALL subrooms with individual draw/update functions
+		'we are interested in the programmeplanner buttons
+		EventManager.registerListenerFunction( "guiobject.onClick", onProgrammePlannerButtonClick )
+
 		For local i:int = 1 to 4
-			'Update and Draw reference RoomHandler_Office.Update and RoomHandler_Office.Draw
-			'but this cannot be handled in parent class ("automagically")
-			'that is why we DONT let the type itself be the param
+			'we are interested if a figure gets kicked out of the office
+			'-> we can kick the figure out of the subrooms too
+			EventManager.registerListenerFunction( "room.kickFigure",	onRoomKickFigure, TRooms.GetRoomByDetails("office", i) )
 
-			'reg rooms
-			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("office", i))
-			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("programmeplanner", i))
-			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("safe", i))
-			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("financials", i))
-			super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("image", i))
-
+			'we don't want to handle room drawing
+			'super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("office", i))
 		Next
+		'no need for individual screens, all can be handled by one function (room is param)
+		super._RegisterScreenHandler( onUpdateOffice, onDrawOffice, TScreen.GetScreen("screen_office") )
+		super._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, TScreen.GetScreen("screen_office_pplanning") )
+		super._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, TScreen.GetScreen("screen_office_financials") )
+		super._RegisterScreenHandler( onUpdateImage, onDrawImage, TScreen.GetScreen("screen_office_image") )
+
 	End Function
 
-	Function Draw:int( triggerEvent:TEventBase )
+	Function onRoomKickFigure:Int(triggerEvent:TEventBase)
 		local room:TRooms = TRooms(triggerEvent._sender)
 		if not room then return 0
 
-		Select room.name
-			case "programmeplanner"		DrawProgrammePlanner( room )
-			case "financials"			DrawFinancials( room )
-			case "image"				DrawImage( room )
-			case "safe"					DrawSafe( room )
-			default						DrawMain( room )
-		End Select
-	End Function
-
-	Function Update:int( triggerEvent:TEventBase )
-		local room:TRooms = TRooms(triggerEvent._sender)
-		if not room then return 0
-
-		Select room.name
-			case "programmeplanner"		UpdateProgrammePlanner( room )
-			case "financials"			UpdateFinancials( room )
-			case "image"				UpdateImage( room )
-			case "safe"					UpdateSafe( room )
-			default						UpdateMain( room )
-		End Select
-	End Function
-
+		local kickFigure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
+		kickFigure.LeaveToBuilding()
+	End function
 
 
 '===================================
 'Office: Room screen
 '===================================
 
-	Function DrawMain:int( room:TRooms )
+	Function onDrawOffice:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
 		'allowed for owner only
 		If room AND room.owner = Game.playerID
 			If StationsToolTip Then StationsToolTip.Draw()
@@ -428,7 +463,11 @@ Type RoomHandler_Office extends TRoomHandler
 		If SafeToolTip <> Null Then SafeToolTip.Draw()
 	End Function
 
-	Function UpdateMain:int( room:TRooms )
+	Function onUpdateOffice:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
 		Players[game.playerid].figure.fromroom = Null
 		If MouseManager.IsHit(1)
 			If functions.IsIn(MouseX(),MouseY(),25,40,150,295)
@@ -447,8 +486,8 @@ Type RoomHandler_Office extends TRoomHandler
 			If MOUSEMANAGER.IsHit(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-			'	Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
-				players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("safe", room.owner)
+
+				room.screenManager.GoToSubScreen("screen_office_safe")
 			endif
 		EndIf
 
@@ -461,8 +500,7 @@ Type RoomHandler_Office extends TRoomHandler
 			If MOUSEMANAGER.IsHit(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-				Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
-				players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+				room.screenManager.GoToSubScreen("screen_office_pplanning")
 			endif
 		EndIf
 
@@ -473,7 +511,11 @@ Type RoomHandler_Office extends TRoomHandler
 				StationsToolTip.enabled = 1
 				StationsToolTip.Hover()
 				Game.cursorstate = 1
-				If MOUSEMANAGER.IsHit(1) Then MOUSEMANAGER.resetKey(1);Game.cursorstate = 0;players[game.playerID].figure.inRoom = TRooms.GetRoomByDetails("stationmap", room.owner)
+				If MOUSEMANAGER.IsHit(1)
+					MOUSEMANAGER.resetKey(1)
+					Game.cursorstate = 0
+					room.screenManager.GoToSubScreen("screen_office_stationmap")
+				endif
 			EndIf
 			If StationsToolTip Then StationsToolTip.Update(App.timer.getDeltaTime())
 		EndIf
@@ -490,7 +532,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'add gfx to background
 	Function InitProgrammePlannerBackground:int()
-		Local roomImg:TImage				= Assets.GetSprite("rooms_pplanning").parent.image
+		Local roomImg:TImage				= Assets.GetSprite("screen_bg_pplanning").parent.image
 		Local Pix:TPixmap					= LockImage(roomImg)
 		Local gfx_ProgrammeBlock1:TImage	= Assets.GetSprite("pp_programmeblock1").GetImage()
 		Local gfx_AdBlock1:TImage			= Assets.GetSprite("pp_adblock1").GetImage()
@@ -515,18 +557,20 @@ Type RoomHandler_Office extends TRoomHandler
 			If i < 10 then text = "0" + text
 			Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, 240,240,240,2,0,1,0.25)
 		Next
-		'Ron: not needed - we reference the image
-		'room.background = Assets.GetSprite("rooms_pplanning")
 		DrawnOnProgrammePlannerBG = True
 
 		'reset target for font
 		Assets.fonts.baseFont.resetTarget()
 	End Function
 
-	Function DrawProgrammePlanner:int( room:TRooms )
+
+	Function onDrawProgrammePlanner:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
 		Local State:Int		= 0
 		Local othertime:Int	= 0
-
 
 		'draw blocks (backgrounds)
 		For Local i : Byte = 0 To 23
@@ -581,7 +625,7 @@ Type RoomHandler_Office extends TRoomHandler
 		SetAlpha 1.0
 		SetColor 255, 255, 255  'normal
 
-		TPPbuttons.DrawAll()
+		GUIManager.Draw("programmeplanner")
 
 
 		If Players[room.owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks > 0
@@ -639,9 +683,13 @@ Type RoomHandler_Office extends TRoomHandler
 
 	End Function
 
-	Function UpdateProgrammePlanner:int( room:TRooms )
+	Function onUpdateProgrammePlanner:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
 		Game.cursorstate = 0
-		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
+
 		If functions.IsIn(MouseX(), MouseY(), 759,17,14,15)
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsHit(1)
@@ -659,7 +707,8 @@ Type RoomHandler_Office extends TRoomHandler
 			endif
 			If Game.daytoplan <= 1 Then Game.daytoplan = 1
 		EndIf
-		TPPbuttons.UpdateAll()
+
+		GUIManager.Update("programmeplanner")
 
 		TAdBlock.UpdateAll(room.owner)
 		Players[room.owner].ProgrammePlan.UpdateAllProgrammeBlocks()
@@ -672,12 +721,34 @@ Type RoomHandler_Office extends TRoomHandler
 	End Function
 
 
+	Function onProgrammePlannerButtonClick:int( triggerEvent:TEventBase )
+		local button:TGUIImageButton = TGUIImageButton( triggerEvent._sender )
+		if not button then return 0
+
+		'close both lists
+		PPcontractList.SetOpen(0)
+		PPprogrammeList.SetOpen(0)
+
+		'open others?
+		If button = ProgrammePlannerButtons[0] Then return PPcontractList.SetOpen(1)		'opens contract list
+		If button = ProgrammePlannerButtons[1] Then return PPprogrammeList.SetOpen(1)		'opens programme genre list
+
+		local room:TRooms = Players[Game.playerID].Figure.inRoom
+		'If button = ProgrammePlannerButtons[2] then return room.screenManager.GoToSubScreen("screen_office_options")
+		If button = ProgrammePlannerButtons[3] then return room.screenManager.GoToSubScreen("screen_office_financials")
+		If button = ProgrammePlannerButtons[4] then return room.screenManager.GoToSubScreen("screen_office_image")
+		'If button = ProgrammePlannerButtons[5] then return room.screenManager.GoToSubScreen("screen_office_messages")
+	End Function
 
 '===================================
 'Office: Financials screen
 '===================================
 
-	Function DrawFinancials:int( room:TRooms )
+	Function onDrawFinancials:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
 		local finances:TFinancials	= Players[ room.owner ].finances[ Game.getWeekday() ]
 		local font13:TBitmapFont	= Assets.GetFont("Default", 14, BOLDFONT)
 		local font12:TBitmapFont	= Assets.GetFont("Default", 11)
@@ -753,8 +824,11 @@ Type RoomHandler_Office extends TRoomHandler
 		font12.drawBlock(functions.convertValue(Int(maxvalue/2),2,0),478 , 315,100,20,2,180,180,180)
 	End Function
 
-	Function UpdateFinancials:int( room:TRooms )
-		Players[ Game.playerID ].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+	Function onUpdateFinancials:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		'local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		'if not room then return 0
+
 		Game.cursorstate = 0
 	End Function
 
@@ -764,33 +838,24 @@ Type RoomHandler_Office extends TRoomHandler
 	'Office: Image screen
 	'===================================
 
-	Function DrawImage:int( room:TRooms )
+	Function onDrawImage:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
 		Assets.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
 
 		Assets.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
 		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Players[room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	End Function
 
-	Function UpdateImage:int( room:TRooms )
-		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("programmeplanner", room.owner)
+	Function onUpdateImage:int( triggerEvent:TEventBase )
+		'local screen:TScreen	= TScreen(triggerEvent._sender)
+		'local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
+		'if not room then return 0
+
 		Game.cursorstate = 0
 	End Function
-
-
-
-	'===================================
-	'Office: Safe screen
-	'===================================
-
-	Function DrawSafe:int( room:TRooms )
-		'draw disks here
-	End Function
-
-	Function UpdateSafe:int( room:TRooms )
-		Players[Game.playerID].Figure.fromRoom = TRooms.GetRoomByDetails("office", room.owner)
-		Game.cursorstate = 0
-	End Function
-
 
 End Type
 
@@ -1055,8 +1120,8 @@ Type RoomHandler_NewsPlanner extends TRoomHandler
 	Global Btn_newsplanner_down:TGUIImageButton
 
 	Function Init()
-		Btn_newsplanner_up		= new TGUIImageButton.Create(375, 150, 47, 32, "gfx_news_pp_btn_up", 0, 1, "Newsplanner", 0)
-		Btn_newsplanner_down	= new TGUIImageButton.Create(375, 250, 47, 32, "gfx_news_pp_btn_down", 0, 1, "Newsplanner", 3)
+		Btn_newsplanner_up		= new TGUIImageButton.Create(375, 150, "gfx_news_pp_btn_up", 0, 1, "Newsplanner", 0)
+		Btn_newsplanner_down	= new TGUIImageButton.Create(375, 250, "gfx_news_pp_btn_down", 0, 1, "Newsplanner", 3)
 
 		'register self for all archives
 		For local i:int = 1 to 4
@@ -1227,15 +1292,15 @@ Function Room_Elevator_Compute(_room:TRooms) 'Dies hier ist die Raumauswahl im F
 
 	If TRooms.doadraw 'draw it
 		TRoomSigns.DrawAll()
-		Assets.fonts.baseFont.Draw("Rausschmiss in "+(Building.Elevator.waitAtFloorTimer - MilliSecs()), 600, 20)
+		Assets.fonts.baseFont.Draw("Rausschmiss in "+Building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 600, 20)
 	Else
 		local mouseHit:int = MouseManager.IsHit(1)
 
 		Game.cursorstate = 0
 		playerFigure.fromroom = Null
 		If playerFigure.inRoom.name = "elevator"
-			if Building.Elevator.waitAtFloorTimer <= MilliSecs()
-				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl (" + (MilliSecs() - Building.Elevator.waitAtFloorTimer) + ")"
+			if Building.Elevator.waitAtFloorTimer.IsExpired()
+				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl"
 				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritts
 				playerFigure.inRoom			= Null
 				playerFigure.clickedToRoom	= Null
@@ -1261,7 +1326,7 @@ Function Room_RoomBoard_Compute(_room:TRooms)
 		Players[game.playerid].figure.fromroom =Null
 		TRoomSigns.DrawAll()
 		Assets.fonts.baseFont.draw("owner:"+_room.owner, 20,20)
-		Assets.fonts.baseFont.draw(building.Elevator.waitAtFloorTimer - MilliSecs(), 20,40)
+		Assets.fonts.baseFont.draw(building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 20,40)
 	Else
 		' MouseManager.changeStatus()
 		Game.cursorstate = 0
@@ -1680,23 +1745,18 @@ End Type
 
 Function Init_CreateAllRooms()
 	For Local i:Int = 1 To 4
-		TRooms.Create(Assets.GetSprite("rooms_pplanning") , "programmeplanner", Localization.GetString("ROOM_PROGRAMMEPLANNER") , "", 0, 0, - 1, i)
-		TRooms.Create(Assets.GetSprite("rooms_stationmap") , "stationmap", Localization.GetString("ROOM_STATIONMAP") , "", 0, 0, - 1, i)
-		TRooms.Create(Assets.GetSprite("rooms_newsplanning") , "newsplanner", Localization.GetString("ROOM_NEWSPLANNER") , "", 0, 0, - 1, i)
-		TRooms.Create(Assets.GetSprite("rooms_financials") , "financials", Localization.GetString("ROOM_FINANCES") , "", 0, 0, - 1, i)
-		TRooms.Create(Assets.GetSprite("rooms_safe") , "safe", Localization.GetString("ROOM_SAFE") , "", 0, 0, - 1, i)
-		TRooms.Create(Assets.GetSprite("rooms_image") , "image", Localization.GetString("ROOM_IMAGE_AND_QUOTES") , "", 0, 0, - 1, i)
+		TRooms.Create(TScreenManager.Create(TScreen.GetScreen("screen_news_newsplanning")) , "newsplanner", Localization.GetString("ROOM_NEWSPLANNER") , "", 0, 0, - 1, i)
 	Next
 
 	'elevator doors, to make them clickable
 	For Local i:Int =0 To 13
-	  TRooms.Create(Assets.GetSprite("rooms_elevator"), "elevator", Localization.GetString("ROOM_ROOMMAP") , "", 0, i, - 1, 0)
+	  TRooms.Create(TScreenManager.Create(TScreen.GetScreen("screen_elevator")), "elevator", Localization.GetString("ROOM_ROOMMAP") , "", 0, i, - 1, 0)
 	Next
 
 	'exact xpos
-	TRooms.CreateWithPos(Assets.GetSprite("rooms_elevator"), "roomboard", Localization.GetString("ROOM_ROOMBOARD"), 527, 4, 59, 0, 1, - 1)
-	TRooms.CreateWithPos(Assets.GetSprite("rooms_credits"), "credits", Localization.GetString("ROOM_CREDITS"), 559, 4, 52, 13, 1, - 1)
-	TRooms.CreateWithPos(Assets.GetSprite("rooms_credits"), "porter", Localization.GetString("ROOM_PORTER"), 186, 1, 66, 0, 1, - 1)
+	TRooms.CreateWithPos(TScreenManager.Create(TScreen.GetScreen("screen_elevator")), "roomboard", Localization.GetString("ROOM_ROOMBOARD"), 527, 4, 59, 0, 1, - 1)
+	TRooms.CreateWithPos(TScreenManager.Create(TScreen.GetScreen("screen_credits")), "credits", Localization.GetString("ROOM_CREDITS"), 559, 4, 52, 13, 1, - 1)
+	TRooms.CreateWithPos(TScreenManager.Create(TScreen.GetScreen("screen_credits")), "porter", Localization.GetString("ROOM_PORTER"), 186, 1, 66, 0, 1, - 1)
 	'empty rooms
 
 	PrintDebug("  Init_CreateAllRooms()", "created Rooms", DEBUG_START)
@@ -1704,7 +1764,7 @@ Function Init_CreateAllRooms()
 	Local roomMap:TMap = Assets.GetMap("rooms")
 	For Local asset:TAsset = EachIn roomMap.Values()
 		local room:TMap = TMap(asset._object)
-		TRooms.Create(Assets.GetSprite(String(room.ValueForKey("image"))),  ..
+		TRooms.Create(TScreenManager.Create(TScreen.GetScreen(String(room.ValueForKey("screen")))),  ..
 					  String(room.ValueForKey("roomname")),  ..
 					  Localization.GetString(String(room.ValueForKey("tooltip"))),  ..
 					  Localization.GetString(String(room.ValueForKey("tooltip2"))),  ..

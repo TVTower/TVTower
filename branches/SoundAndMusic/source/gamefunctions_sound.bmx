@@ -59,7 +59,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		return result
 	End Function
 	
-	Method PlaySfx(sfx:string)			
+	Method PlaySfx(sfx:string, sfxSettings:TSfxSettings=null)			
 		'print "aa1: " + GetCenter().x + "/" + GetCenter().y + " - " + Building.getFloorByPixelExactPoint(GetCenter())	
 		super.PlaySfx(sfx)
 	End Method	
@@ -134,8 +134,8 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 End Type
 
 Type TDoorSoundSource Extends TSoundSourceElement
-	Field Room:TRooms
-	Field IsPlayerAction:int
+	Field Room:TRooms			'Die Raum dieser Türe
+	Field IsGamePlayerAction:int	'
 	Field DoorTimer:TTimer		= TTimer.Create(1000)'500
 	Field CloseDoorSoundInRoom:int
 
@@ -150,19 +150,23 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Function
 
 	Method PlayDoorSfx(sfx:string, figure:TFigures)
-		If figure <> null Then print "PlayDoorSfx: " + sfx + " = " + room.name +  " (" + figure.name + ")" Else print "PlayDoorSfx: " + sfx + " = " + room.name + " (none)"
 		If figure = Players[Game.playerID].Figure
-			If IsPlayerAction
-				Print "Überhört"
-			Else
+			If Not IsGamePlayerAction
 				If sfx = SFX_OPEN_DOOR
-					CloseDoorSoundInRoom = (not (Players[Game.playerID].Figure.inRoom = Room))
-					IsPlayerAction = true
-					print "IsPlayerAction = true"
-					PlaySfx(sfx)
-					DoorTimer.reset()
-				Elseif sfx = SFX_CLOSE_DOOR
-				print "üüü"	
+					If DoorTimer.isExpired()
+						CloseDoorSoundInRoom = (not (Players[Game.playerID].Figure.inRoom = Room))
+						IsGamePlayerAction = true
+						If Players[Game.playerID].Figure.inRoom = null
+							'print "1 draußen -> drinnen #############################"
+							PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen
+						Else
+							'print "1 drinnen -> draußen #############################"
+							PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen
+						Endif						
+						DoorTimer.reset() 'den Close auf Timer setzen... 
+					Else
+						DoorTimer.reset()
+					Endif
 				Endif			
 			Endif		
 		Else
@@ -171,16 +175,20 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Method
 	
 	Method Update()
-		If IsPlayerAction
+		If IsGamePlayerAction
 			If DoorTimer.isExpired() Then	
-				If CloseDoorSoundInRoom = (Players[Game.playerID].Figure.inRoom = Room)
-					PlayDoorSfx(SFX_CLOSE_DOOR, null)
+				If Players[Game.playerID].Figure.inRoom = null
+					'print "2 draußen #############################"
+					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBeforeDoorSettings())
+				Else
+					'print "2 drinnen #############################"
+					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBehindDoorSettings())
 				Endif
-				IsPlayerAction = false
-				print "IsPlayerAction = false"
-				print "----------------------------------------"
+				PlayDoorSfx(SFX_CLOSE_DOOR, null)
+				IsGamePlayerAction = false
 			Endif
 		Endif
+		
 		super.Update()		
 	End Method	
 	
@@ -198,7 +206,8 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Method
 	
 	Method GetIsHearable:int()
-		Return (Players[Game.playerID].Figure.inRoom = null) or IsPlayerAction
+		if Room.name = "" OR Room.name = "roomboard" OR Room.name = "credits" OR Room.name = "porter" then Return false	
+		Return (Players[Game.playerID].Figure.inRoom = null) or IsGamePlayerAction
 	End Method
 	
 	Method GetChannelForSfx:TSfxChannel(sfx:string)
@@ -222,19 +231,32 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
 		result.nearbyDistanceRange = 60
 		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 1
-		result.midRangeVolume = 0.25
+		result.nearbyRangeVolume = 0.5
+		result.midRangeVolume = 0.2
 		result.minVolume = 0
 		Return result
 	End Method
-
-	Method GetEngineOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
-		result.nearbyDistanceRange = 0
-		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
-		result.midRangeVolume = 0.25
-		result.minVolume = 0.05
-		Return result
-	End Method	
+	
+	Method GetPlayerBeforeDoorSettings:TSfxSettings()
+		local result:TSfxSettings = GetDoorOptions()
+		result.forceVolume = true
+		result.forcePan = true
+		result.forceDepth = true		
+		result.defaultVolume = 0.5
+		result.defaultPan = 0
+		result.defaultDepth = -1
+		Return result	
+	End Method
+	
+	Method GetPlayerBehindDoorSettings:TSfxSettings()
+		local result:TSfxSettings = GetDoorOptions()
+		result.forceVolume = true
+		result.forcePan = true
+		result.forceDepth = true		
+		result.defaultVolume = 0.5
+		result.defaultPan = 0
+		result.defaultDepth = 1
+		Return result	
+	End Method
+	
 End Type

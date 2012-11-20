@@ -1015,9 +1015,8 @@ Type TButton
     Field Caption:String = ""
     Field enabled:Int = 1
     Field Clicked:Int = 0
-    Field fontr:Int = 100
-    Field fontg:Int = 100
-    Field fontb:Int = 100
+    Field fontColor:TColor = TColor.Create(100,100,100)
+
     Global UseFont:TBitmapFont
     Global List:TList
 
@@ -1029,71 +1028,16 @@ Type TButton
         If Clicked <> 0
 			SetColor(220, 220, 220)
 			sprite.Draw(rect.GetX() + 1, rect.GetY() + 1)
-			font.drawStyled(Caption, rect.GetX() + rect.GetW()/2 - textWidth/2 +1, rect.GetY() + 43, fontr - 50, fontg - 50, fontb - 50, 1)
+			font.drawStyled(Caption, rect.GetX() + rect.GetW()/2 - textWidth/2 +1, rect.GetY() + 43, FontColor.r - 50, FontColor.g - 50, FontColor.b - 50, 1)
     	Else
 		  	sprite.Draw(rect.GetX(), rect.GetY())
-			font.drawStyled(Caption, rect.GetX() + rect.GetW()/2 - textWidth/2, rect.GetY() + 42, fontr, fontg, fontb, 1)
+			font.drawStyled(Caption, rect.GetX() + rect.GetW()/2 - textWidth/2, rect.GetY() + 42, FontColor.r, FontColor.g, FontColor.b, 1)
     	EndIf
         If Clicked <> 0 then SetColor(255,255,255)
 	End Method
 End Type
 
 
-
-
-
-Type TPPbuttons Extends TButton
-    Global List:TList = CreateList()
-
-    Function Create:TPPbuttons(sprite:TGW_Sprites, _caption:String = "", x:Int, y:Int, id:Int)
-		Local Button:TPPbuttons=New TPPbuttons
-		Button.rect.position.SetXY( x,y )
-		Button.rect.dimension.SetXY( sprite.w, sprite.h )
-		Button.Sprite	= sprite
-		Button.Caption	= _caption
-		Button.enabled	= 1
-		Button.id		= id
-		Button.Clicked	= 0
-
-		List.AddLast(Button)
-		SortList List
-		Return Button
-    EndFunction
-
-    Function DrawAll()
-    	For Local Button:TPPbuttons = EachIn TPPbuttons.List
-    		Button.Draw()
-    	Next
-    End Function
-
-    Function UpdateAll()
-    	For Local Button:TPPbuttons = EachIn TPPbuttons.List
-    	    If Button.rect.IntersectsXY(MouseX(), MouseY()) And MOUSEMANAGER.IsDown(1)
-				Button.Clicked = 1
-			Else If Button.Clicked = 1
-				Button.OnClick()
-				Button.Clicked = 0
-			EndIf
-    	Next
-    End Function
-
-    Method OnClick()
-		'close both
-		PPcontractList.SetOpen(0)
-		PPprogrammeList.SetOpen(0)
-
-		'open others?
-		If id = 0 Then PPcontractList.SetOpen(1)	'opens contractlist DebugLog("auf Werbung geklickt")
-		If id = 1 Then PPprogrammeList.SetOpen(1)	'opens genrelist  DebugLog("auf Filme geklickt")
-
-		print "tppbutton onClick - auf eventemitter umstellen"
-		'If id = 3 Then RoomHandler_Office.currentsub = RoomHandler_Office.SUB_FINANCIALS	'shows financials
-		'If id = 4 Then RoomHandler_Office.currentsub = RoomHandler_Office.SUB_IMAGE			'shows image
-		If id = 3 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("financials", Players[Game.playerID].Figure.inRoom.owner)	'shows financials
-		If id = 4 Then Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("image", Players[Game.playerID].Figure.inRoom.owner)	'shows image and audiencequotes
-    End Method
-
-End Type 'Buttons in ProgrammePlanner
 
 Type TNewsbuttons Extends TButton
     Global List:TList = CreateList()
