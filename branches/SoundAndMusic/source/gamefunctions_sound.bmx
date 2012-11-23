@@ -137,7 +137,6 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	Field Room:TRooms			'Die Raum dieser Türe
 	Field IsGamePlayerAction:int	'
 	Field DoorTimer:TTimer		= TTimer.Create(1000)'500
-	Field CloseDoorSoundInRoom:int
 
 	Function Create:TDoorSoundSource(_room:TRooms)
 		local result:TDoorSoundSource = new TDoorSoundSource
@@ -150,24 +149,29 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Function
 
 	Method PlayDoorSfx(sfx:string, figure:TFigures)
-		If figure = Players[Game.playerID].Figure
-			If Not IsGamePlayerAction
-				If sfx = SFX_OPEN_DOOR
-					If DoorTimer.isExpired()
-						CloseDoorSoundInRoom = (not (Players[Game.playerID].Figure.inRoom = Room))
-						IsGamePlayerAction = true
-						If Players[Game.playerID].Figure.inRoom = null
-							'print "1 draußen -> drinnen #############################"
-							PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen
+		If figure = Players[Game.playerID].Figure 'Dieser Code nur für den aktiven Spieler
+			If Not IsGamePlayerAction 'Wenn wir uns noch nicht im Spezialmodus befinden, dann weiter
+				If sfx = SFX_OPEN_DOOR 'Nur der Open-Sound kann den Spezialmodus starten
+					'print "Room.used: " + Room.used
+					'If Room.used <> 0 'Raum ist auch wirklich leer 
+						If DoorTimer.isExpired() 
+							IsGamePlayerAction = true
+							If Players[Game.playerID].Figure.inRoom = null
+								If Room.used >= 0 Then IsGamePlayerAction = false
+								PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen
+							Else
+								'print "1 drinnen -> draußen #############################"
+								PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen
+							Endif						
+							DoorTimer.reset() 'den Close auf Timer setzen... 
 						Else
-							'print "1 drinnen -> draußen #############################"
-							PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen
-						Endif						
-						DoorTimer.reset() 'den Close auf Timer setzen... 
-					Else
-						DoorTimer.reset()
-					Endif
-				Endif			
+							DoorTimer.reset()
+						Endif			
+
+					'Endif
+				Elseif sfx = SFX_CLOSE_DOOR
+					PlaySfx(sfx)
+				Endif
 			Endif		
 		Else
 			PlaySfx(sfx)
@@ -184,6 +188,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 					'print "2 drinnen #############################"
 					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBehindDoorSettings())
 				Endif
+				Print "Time close##########################"
 				PlayDoorSfx(SFX_CLOSE_DOOR, null)
 				IsGamePlayerAction = false
 			Endif
