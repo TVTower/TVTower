@@ -26,6 +26,7 @@ Type TFigures extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field updatefunc_(ListLink:TLink, deltaTime:float) {sl = "no"}
 	Field ListLink:TLink						{sl = "no"}
 	Field ParentPlayer:TPlayer	= Null			{sl = "no"}
+	Field SoundSource:TFigureSoundSource = TFigureSoundSource.Create(self)
 
 	Global LastID:Int			= 0				{sl = "no"}
 	Global List:TList			= CreateList()
@@ -145,12 +146,19 @@ endrem
 		'do we have to change the floor?
 		if self.HasToChangeFloor() then targetX = Building.Elevator.GetDoorCenterX() - self.rect.GetW()/2 '-GetW/2 to center figure
 
-		If targetX < Floor(Self.rect.GetX()) Then Self.vel.SetX( -(Abs(Self.initialdx)))
-		If targetX > Floor(Self.rect.GetX()) Then Self.vel.SetX(  (Abs(Self.initialdx)))
+		If targetX < Floor(Self.rect.GetX()) 
+			Self.vel.SetX( -(Abs(Self.initialdx)))
+			SoundSource.PlayOrContinueSFX(SFX_STEPS)
+		Endif
+		If targetX > Floor(Self.rect.GetX())
+			Self.vel.SetX(  (Abs(Self.initialdx)))
+			SoundSource.PlayOrContinueSFX(SFX_STEPS)
+		Endif
 
  		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.vel.GetX())
 			Self.vel.SetX(0)
 			Self.rect.position.setX(targetX)
+			SoundSource.Stop(SFX_STEPS)
 		endif
 
 		If not Self.IsInElevator()
@@ -158,6 +166,7 @@ endrem
 			If Not Self.IsOnFloor() Then Self.rect.position.setY( Building.GetFloorY(Self.GetFloor()) )
 		Else
 			Self.vel.SetX(0)
+			SoundSource.Stop(SFX_STEPS)			
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
@@ -485,9 +494,9 @@ endrem
 					EndIf
 					'if open, timer started and reached halftime --> "wait a moment" before entering
 					If clickedToRoom.getDoorType() = 5 and not clickedToRoom.DoorTimer.isExpired() and clickedToRoom.DoorTimer.reachedHalftime()
-						print "Update: CloseDoor1"
+						print name + " - Update: CloseDoor1"
 						clickedToRoom.CloseDoor(self)
-						print "Update: CloseDoor2"
+						print name + " - Update: CloseDoor2"
 						EnterRoom(clickedToRoom)
 					'we stand in front of elevator - and clicked on it (to go to other floors)
 					elseIf clickedToRoom.getDoorType() <> 5

@@ -42,6 +42,7 @@ Const SFX_ELEVATOR_ENGINE:String			= "SFX_ELEVATOR_ENGINE"
 Const SFX_OPEN_DOOR:String					= "SFX_OPEN_DOOR"
 Const SFX_CLOSE_DOOR:String					= "SFX_CLOSE_DOOR"
 
+Const SFX_STEPS:String						= "SFX_STEPS"
 
 'type to store music files (ogg) in it
 'data is stored in bank
@@ -182,6 +183,10 @@ endrem
 
 		LoadProgress(8, total)
 		MapInsert( Self.soundFiles, SFX_ELEVATOR_ENGINE, LoadSound("res/sfx/elevator_engine.ogg", SOUND_LOOP | SOUND_HARDWARE) )
+		
+		LoadProgress(9, total)
+		MapInsert( Self.soundFiles, SFX_STEPS, LoadSound("res/sfx/steps.ogg", SOUND_LOOP | SOUND_HARDWARE) )
+		
 	End Method
 
 	Method LoadProgress(currentCount:int, totalCount:int)
@@ -524,7 +529,7 @@ Type TSoundSourceElement Extends TElementPosition
 	Method PlaySfx(sfx:string, sfxSettings:TSfxSettings=null)
 		If Not GetIsHearable() Then Return
 		If Not OnPlaySfx(sfx) Then Return
-		print "PlaySfx: " + sfx
+		'print GetID() + " # PlaySfx: " + sfx
 		
 		SoundManager.RegisterSoundSource(self)
 		
@@ -537,7 +542,22 @@ Type TSoundSourceElement Extends TElementPosition
 		Endif
 		
 		channel.PlaySfx(sfx, settings)
-		print "End PlaySfx: " + sfx
+		'print GetID() + " # End PlaySfx: " + sfx
+	End Method
+	
+	Method PlayOrContinueSfx(sfx:string, sfxSettings:TSfxSettings=null)
+		local channel:TSfxChannel = GetChannelForSfx(sfx)
+		if not channel.IsActive()
+			print "PlayOrContinueSfx: start"
+			PlaySfx(sfx, sfxSettings)
+		Else
+			print "PlayOrContinueSfx: Continue"
+		endif
+	End Method	
+	
+	Method Stop(sfx:string)
+		local channel:TSfxChannel = GetChannelForSfx(sfx)
+		channel.Stop()
 	End Method
 	
 	Method Update()

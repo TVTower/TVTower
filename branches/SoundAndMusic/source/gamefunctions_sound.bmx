@@ -113,7 +113,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	End Method
 	
 	Method GetDoorOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
+		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
 		result.nearbyDistanceRange = 50
 		result.maxDistanceRange = 500			
 		result.nearbyRangeVolume = 1
@@ -149,26 +149,26 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Function
 
 	Method PlayDoorSfx(sfx:string, figure:TFigures)
+		'Die Türsound brauchen eine spezielle Behandlung wenn es sich dabei um einen Spieler handelt der einen Raum betritt oder verlässt.
+		'Diese spezielle Behandlung (der Modus) wird durch IsGamePlayerAction = true gekenntzeichnet.
+		'Ist dieser Modus aktiv wird ein Timer gestartet welcher das Schließen der Türe nach einiger Zeit abspielt (siehe Update).
+		'Dies ist nötig da im normalen Codeablauf das "CloseDoor" von TRooms zu schnell kommt. Dieser Schließensound aus CloseDoor muss in diesem Modus abgefangen werden
+	
 		If figure = Players[Game.playerID].Figure 'Dieser Code nur für den aktiven Spieler
-			If Not IsGamePlayerAction 'Wenn wir uns noch nicht im Spezialmodus befinden, dann weiter
+			If Not IsGamePlayerAction 'Wenn wir uns noch nicht im Spezialmodus befinden, dann weiter prüfen ob man ihn gleich aktiv schalten muss
 				If sfx = SFX_OPEN_DOOR 'Nur der Open-Sound kann den Spezialmodus starten
-					'print "Room.used: " + Room.used
-					'If Room.used <> 0 'Raum ist auch wirklich leer 
-						If DoorTimer.isExpired() 
-							IsGamePlayerAction = true
-							If Players[Game.playerID].Figure.inRoom = null
-								If Room.used >= 0 Then IsGamePlayerAction = false
-								PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen
-							Else
-								'print "1 drinnen -> draußen #############################"
-								PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen
-							Endif						
-							DoorTimer.reset() 'den Close auf Timer setzen... 
-						Else
-							DoorTimer.reset()
-						Endif			
-
-					'Endif
+					If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
+						IsGamePlayerAction = true 'Den Modus starten
+						If Players[Game.playerID].Figure.inRoom = null 'von draußen (Flur) nach drinen (Raum)
+							If Room.used >= 0 Then IsGamePlayerAction = false 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
+							PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
+						Else 'von drinnen (Raum) nach draußen (Flur)
+							PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
+						Endif	
+						DoorTimer.reset() 'den Close auf Timer setzen... 
+					Else 'In dem Fall ist die Türe also noch offen
+						DoorTimer.reset() 'Den Schließen-Sound verschieben.
+					Endif			
 				Elseif sfx = SFX_CLOSE_DOOR
 					PlaySfx(sfx)
 				Endif
@@ -180,17 +180,13 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	
 	Method Update()
 		If IsGamePlayerAction
-			If DoorTimer.isExpired() Then	
+			If DoorTimer.isExpired() 'Wenn der Timer abgelaufen, dann den Türschließsound spielen
 				If Players[Game.playerID].Figure.inRoom = null
-					'print "2 draußen #############################"
-					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBeforeDoorSettings())
+					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 				Else
-					'print "2 drinnen #############################"
-					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBehindDoorSettings())
+					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
 				Endif
-				Print "Time close##########################"
-				PlayDoorSfx(SFX_CLOSE_DOOR, null)
-				IsGamePlayerAction = false
+				IsGamePlayerAction = false 'Modus beenden
 			Endif
 		Endif
 		
@@ -236,7 +232,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
 		result.nearbyDistanceRange = 60
 		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.5
+		result.nearbyRangeVolume = 0.6
 		result.midRangeVolume = 0.2
 		result.minVolume = 0
 		Return result
@@ -264,4 +260,61 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		Return result	
 	End Method
 	
+End Type
+
+Type TFigureSoundSource Extends TSoundSourceElement
+	Field Figure:TFigures
+	
+	Function Create:TFigureSoundSource (_figure:TFigures)
+		local result:TFigureSoundSource = new TFigureSoundSource 
+		result.Figure= ­_figure
+		
+		result.AddDynamicSfxChannel("Steps")
+		
+		return result
+	End Function
+	
+	Method GetID:string()
+		Return "Figure: " + Figure.name
+	End Method
+
+	Method GetCenter:TPoint()
+		Return Figure.rect.GetAbsoluteCenterPoint()
+	End Method
+
+	Method IsMovable:int()
+		Return ­true
+	End Method
+	
+	Method GetIsHearable:int()
+		Return (Players[Game.playerID].Figure.inRoom = null)
+	End Method
+	
+	Method GetChannelForSfx:TSfxChannel(sfx:string)
+		Select sfx
+			Case SFX_STEPS
+				Return GetSfxChannelByName("Steps")
+		EndSelect		
+	End Method
+	
+	Method GetSfxSettings:TSfxSettings(sfx:string)
+		Select sfx
+			Case SFX_STEPS
+				Return GetStepsSettings()
+		EndSelect						
+	End Method
+	
+	Method OnPlaySfx:int(sfx:string)
+		Return true
+	End Method
+	
+	Method GetStepsSettings:TSfxSettings()
+		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
+		result.nearbyDistanceRange = 60
+		result.maxDistanceRange = 300
+		result.nearbyRangeVolume = 0.15
+		result.midRangeVolume = 0.05
+		result.minVolume = 0
+		Return result
+	End Method	
 End Type
