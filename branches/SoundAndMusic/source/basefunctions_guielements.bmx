@@ -133,6 +133,11 @@ Type TGUIManager
 						'dont check further guiobjects
 						MouseIsDown = 0
 					EndIf
+
+					'create events
+					if obj.mouseover = 0 then EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), obj ) )
+					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseOver", TData.Create(), obj ) )
+
 					obj.mouseover = 1
 
 					If obj._enabled
@@ -154,8 +159,9 @@ Type TGUIManager
 			If obj.backupvalue = "x" Then obj.backupvalue = obj.value
 			If updatelanguage Or Chr(obj.value[0] ) = "_" Then If Chr(obj.backupvalue[0] ) = "_" Then obj.value = Localization.GetString(Right(obj.backupvalue, Len(obj.backupvalue) - 1))
 
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onUpdate", null, obj ) )
 			obj.Update()
+			'fire event
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", null, obj ) )
 		Next
 	End Method
 
@@ -177,6 +183,8 @@ Type TGUIManager
 			If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then continue
 
 			obj.Draw()
+			'fire event
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", TData.Create(), obj ) )
 		Next
 	End Method
 
@@ -504,10 +512,19 @@ Type TGUIImageButton Extends TGUIobject
 		Return self
 	End Method
 
-	Method SetCaption(caption:String, color:TColor=null, position:TPoint=null )
+	Method SetCaption:TGUIImageButton(caption:String, color:TColor=null, position:TPoint=null)
 		self.caption = new TGUILabel.Create(self.rect.GetX(), self.rect.GetY(), caption,color,position)
 		'we want to manage it...
 		GUIManager.Remove(self.caption)
+		return self
+	End Method
+
+	Method GetCaption:TGUILabel()
+		return self.caption
+	End Method
+
+	Method GetCaptionText:string()
+		if self.caption then return self.caption.text else return ""
 	End Method
 
 	Method Update()
@@ -516,7 +533,7 @@ Type TGUIImageButton Extends TGUIobject
 
 
 		'unmanaged label -> we have to position it ourself
-		if self.caption
+		if self.caption and self.caption._enabled
 			self.caption.rect.position.SetPos( self.rect.position )
 			self.caption.rect.dimension.SetPos( self.rect.dimension )
 		endif
@@ -539,14 +556,14 @@ Type TGUIImageButton Extends TGUIobject
 		'no clicked image found: displace button and caption by 1,1
 		if sprite.GetName() = self.spriteBaseName and on = 1
 			sprite.draw(Self.GetX()+1, Self.GetY()+1)
-			if self.caption
+			if self.caption and self.caption._enabled
 				self.caption.rect.position.MoveXY( 1,1 )
 				self.caption.Draw()
 				self.caption.rect.position.MoveXY( -1,-1 )
 			endif
 		else
 			sprite.draw(Self.GetX(), Self.GetY())
-			if self.caption then self.caption.Draw()
+			if self.caption and self.caption._enabled then self.caption.Draw()
 		endif
 	End Method
 
@@ -1432,6 +1449,7 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 					SetAlpha(1)
 					If MouseIsDown
 						If LastMouseClickPos = i AND LastMouseClickTime + 50 < MilliSecs() And LastMouseClicktime +700 > MilliSecs()
+							'registering is enough, trigger would be immediate but not needed
 							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK), self ) )
 							'also trigger specific class event
 							EventManager.registerEvent( TEventSimple.Create( self.getClassName()+".OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK), self ) )

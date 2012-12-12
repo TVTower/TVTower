@@ -30,9 +30,6 @@ REM
 * Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
 	- DirectX -> eigene WindowDeco - stylen
 	- OpenGL ... - WindowDeco nicht stylebar
-
-* Filmauktionen:
-	- Filminformationen anzeigen
 * Live-Events:
 	- Fussball, Formel1, Konzerte, ... fehlen noch
 * Quiz/Call-In

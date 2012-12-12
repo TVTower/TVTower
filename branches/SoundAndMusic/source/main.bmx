@@ -42,8 +42,6 @@ Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
-Global PPprogrammeList:TgfxProgrammelist		= TgfxProgrammelist.Create(515, 16, 21)
-Global PPcontractList:TgfxContractlist			= TgfxContractlist.Create(645, 16)
 
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 							= 0 			'=1 and the game will exit
@@ -53,7 +51,6 @@ Global NewsAgency:TNewsAgency					= New TNewsAgency
 SeedRand(103452)
 Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
-TButton.UseFont 		= Assets.GetFont("Default", 12, 0)
 TTooltip.UseFontBold	= Assets.fonts.baseFontBold
 TTooltip.UseFont 		= Assets.fonts.baseFont
 TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
@@ -822,17 +819,25 @@ endrem
 		Next
 	End Method
 
+	Method GetNewsAbonnementPrice:int(level:int=0)
+		return Min(5,level) * 10000
+	End Method
+
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre > 5 Then Return 0 'max 6 categories 0-5
 		Return Self.newsabonnements[genre]
 	End Method
 
+	Method IncreaseNewsAbonnement(genre:int) {_exposeToLua}
+		self.SetNewsAbonnement( genre, self.GetNewsAbonnement(genre)+1 )
+	End Method
+
 	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
-		If level > Game.maxAbonnementLevel Then Return
+		If level > Game.maxAbonnementLevel Then level = 0 'before: Return
 		If genre > 5 Then Return 'max 6 categories 0-5
 		If Self.newsabonnements[genre] <> level
 			Self.newsabonnements[genre] = level
-			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Game.playerID, genre, level)
+			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(self.playerID, genre, level)
 		EndIf
 	End Method
 
@@ -1879,7 +1884,7 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 		Local room:TRooms
 		Repeat
 			room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
-		Until room.doortype >0
+		Until room.doortype >0 and room.name = "supermarket"
 		'Print "Bote: steht rum -> neues Ziel gesucht"
 		Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 	EndIf
@@ -2152,15 +2157,6 @@ For Local i:Int = 0 To 7
 	EndIf
 Next
 
-'#Region : Button (News and ProgrammePlanner)-Creation
-For Local i:Int = 0 To 4
-	TNewsbuttons.Create(0,3, GetLocale("NEWS_TECHNICS_MEDIA"), i, 20,194,0)
-	TNewsbuttons.Create(1,0, GetLocale("NEWS_POLITICS_ECONOMY"), i, 69,194,1)
-	TNewsbuttons.Create(2,1, GetLocale("NEWS_SHOWBIZ"), i, 20,247,2)
-	TNewsbuttons.Create(3,2, GetLocale("NEWS_SPORT"), i, 69,247,3)
-	TNewsbuttons.Create(4,4, GetLocale("NEWS_CURRENTAFFAIRS"),i, 118,247,4)
-Next
-'#End Region
 
 CreateDropZones()
 Global Database:TDatabase = TDatabase.Create(); Database.Load(Game.userdb) 'load all movies, news, series and ad-contracts
@@ -3108,6 +3104,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.IsHit(KEY_W) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("adagency", 0)
 				If KEYMANAGER.IsHit(KEY_A) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("archive", Game.playerID)
 				If KEYMANAGER.IsHit(KEY_B) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("betty", 0)
+				If KEYMANAGER.IsHit(KEY_K) TFigures.GetByID(5).KickFigureFromRoom(Players[Game.playerID].Figure, Players[Game.playerID].Figure.inRoom)
 				If KEYMANAGER.IsHit(KEY_F) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("movieagency", 0)
 				If KEYMANAGER.IsHit(KEY_O) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("office", Game.playerID)
 				If KEYMANAGER.IsHit(KEY_C) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("chief", Game.playerID)
