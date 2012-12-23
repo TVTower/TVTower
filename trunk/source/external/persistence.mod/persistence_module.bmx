@@ -1,4 +1,4 @@
-' Copyright (c) 2008-2011 Bruce A Henderson
+' Copyright (c) 2008-2012 Bruce A Henderson
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy
 ' of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@ Module BaH.Persistence
 ModuleInfo "Version: 1.00"
 ModuleInfo "Author: Bruce A Henderson"
 ModuleInfo "License: MIT"
-ModuleInfo "Copyright: 2008-2011 Bruce A Henderson"
+ModuleInfo "Copyright: 2008-2012 Bruce A Henderson"
 
 ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release"
@@ -93,8 +93,8 @@ Type TPersist
 		If doc Then
 			doc.Free()
 			doc = Null
-			objectMap.Clear()
 		End If
+		objectMap.Clear()
 	End Method
 
 	Rem
@@ -122,6 +122,7 @@ Type TPersist
 			End If
 			doc.saveFormatFile(filename, format)
 		End If
+		Free()
 	End Method
 
 	Rem
@@ -134,6 +135,7 @@ Type TPersist
 
 		Local exportDoc:TxmlDoc = doc
 		doc = Null
+		Free()
 		Return exportDoc
 	End Method
 
@@ -148,6 +150,7 @@ Type TPersist
 		If doc Then
 			stream.WriteString(ToString())
 		End If
+		Free()
 	End Method
 
 	Rem
@@ -438,6 +441,7 @@ Type TPersist
 		Local root:TxmlNode = doc.GetRootElement()
 		fileVersion = root.GetAttribute("ver").ToInt() ' get the format version
 		Local obj:Object = DeSerializeObject("", root)
+		doc = Null
 		Free()
 		Return obj
 	End Method
@@ -738,12 +742,13 @@ Type TPersist
 	End Function
 
 	Function Base36:String( val:Int )
+		Local vLong:Long = $FFFFFFFF & Long(Byte Ptr(val))
 		Local buf:Short[6]
 		For Local k:Int=5 To 0 Step -1
-			Local n:Int=(val Mod 36) + 48
+			Local n:Int=(vLong Mod 36) + 48
 			If n > 57 n:+ 7
 			buf[k]=n
-			val = val / 36
+			vLong = vLong / 36
 		Next
 		Return String.FromShorts( buf,6 )
 	End Function
@@ -761,11 +766,6 @@ Type TPersistCollisionException Extends TPersistException
 		e.ref = ref
 		e.obj1 = obj1
 		e.obj2 = obj2
-		'
-		Local op1:Int=Int(Byte Ptr(obj1))
-		Local op2:Int=Int(Byte Ptr(obj2))
-		'
-		DebugStop
 		Return e
 	End Function
 
