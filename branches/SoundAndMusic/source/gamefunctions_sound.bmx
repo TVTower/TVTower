@@ -1,21 +1,21 @@
 Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
 
-	Method GetVolumeByDistance:float(source:TSoundSourceElement, receiver:TElementPosition)
-		local floorNumberSource:int = Building.getFloorByPixelExactPoint(source.GetCenter())
-		local floorNumberTarget:int = Building.getFloorByPixelExactPoint(receiver.GetCenter())
-		local floorDistance:int = TPoint.DistanceOfValues(floorNumberSource, floorNumberTarget)
+	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TElementPosition)
+		Local floorNumberSource:Int = Building.getFloorByPixelExactPoint(source.GetCenter())
+		Local floorNumberTarget:Int = Building.getFloorByPixelExactPoint(receiver.GetCenter())
+		Local floorDistance:Int = TPoint.DistanceOfValues(floorNumberSource, floorNumberTarget)
 '		print "floorDistance: " + floorDistance + " - " + Exponential(0.5, floorDistance) + " # " + floorNumberSource + " $ " + floorNumberTarget
-		Return super.GetVolumeByDistance(source, receiver) * Exponential(0.5, floorDistance)
+		Return Super.GetVolumeByDistance(source, receiver) * Exponential(0.5, floorDistance)
 	End Method
 
-	Method Exponential:float(base:float, expo:float)
+	Method Exponential:Float(base:Float, expo:Float)
 '		print "Exponential1: " + base + " - " + expo
-		local result:float = base
+		Local result:Float = base
 		If expo >= 2
-			for local i:int = 1 to expo - 1
+			For Local i:Int = 1 To expo - 1
 				result = result * base
-			next
-		Endif
+			Next
+		EndIf
 '		print "Exponential2: " + result
 		Return result
 	End Method
@@ -24,10 +24,10 @@ End Type
 
 Type TPlayerElementPosition Extends TElementPosition
 	Function Create:TPlayerElementPosition ()
-		return new TPlayerElementPosition
+		Return New TPlayerElementPosition
 	End Function
 
-	Method GetID:string()
+	Method GetID:String()
 		Return "Player"
 	End Method
 
@@ -35,36 +35,36 @@ Type TPlayerElementPosition Extends TElementPosition
 		Return Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
 	End Method
 
-	Method GetIsVisible:int()
-		Return true
+	Method GetIsVisible:Int()
+		Return True
 	End Method
 
-	Method IsMovable:int()
-		Return false 'Bedeutet das es nicht überwacht wird. Speziell beim Player
+	Method IsMovable:Int()
+		Return False 'Bedeutet das es nicht überwacht wird. Speziell beim Player
 	End Method
 End Type
 
 Type TElevatorSoundSource Extends TSoundSourceElement
-	Field Elevator:TElevator = null
-	Field Movable:int = true
+	Field Elevator:TElevator = Null
+	Field Movable:Int = True
 
-	Function Create:TElevatorSoundSource(_elevator:TElevator, _movable:int)
-		local result:TElevatorSoundSource  = new TElevatorSoundSource
+	Function Create:TElevatorSoundSource(_elevator:TElevator, _movable:Int)
+		Local result:TElevatorSoundSource  = New TElevatorSoundSource
 		result.Elevator = _elevator
 		result.Movable = ­_movable
 		
 		result.AddDynamicSfxChannel("Main")
 		result.AddDynamicSfxChannel("Door")
 		
-		return result
+		Return result
 	End Function
 	
-	Method PlaySfx(sfx:string, sfxSettings:TSfxSettings=null)			
+	Method PlaySfx(sfx:String, sfxSettings:TSfxSettings=Null)			
 		'print "aa1: " + GetCenter().x + "/" + GetCenter().y + " - " + Building.getFloorByPixelExactPoint(GetCenter())	
-		super.PlaySfx(sfx)
+		Super.PlaySfx(sfx)
 	End Method	
 
-	Method GetID:string()
+	Method GetID:String()
 		Return "Elevator"
 	End Method
 
@@ -72,15 +72,15 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		Return Elevator.GetElevatorCenterPos()
 	End Method
 
-	Method IsMovable:int()
+	Method IsMovable:Int()
 		Return ­Movable
 	End Method
 	
-	Method GetIsHearable:int()
-		Return (Players[Game.playerID].Figure.inRoom = null)
+	Method GetIsHearable:Int()
+		Return (Players[Game.playerID].Figure.inRoom = Null)
 	End Method
 	
-	Method GetChannelForSfx:TSfxChannel(sfx:string)
+	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		Select sfx
 			Case SFX_ELEVATOR_OPENDOOR
 				Return GetSfxChannelByName("Door")
@@ -91,7 +91,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		EndSelect		
 	End Method
 	
-	Method GetSfxSettings:TSfxSettings(sfx:string)
+	Method GetSfxSettings:TSfxSettings(sfx:String)
 		Select sfx
 			Case SFX_ELEVATOR_OPENDOOR
 				Return GetDoorOptions()
@@ -102,10 +102,10 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		EndSelect						
 	End Method
 	
-	Method OnPlaySfx:int(sfx:string)
+	Method OnPlaySfx:Int(sfx:String)
 		Select sfx
 			Case SFX_ELEVATOR_OPENDOOR
-				local engineChannel:TSfxChannel = GetChannelForSfx(SFX_ELEVATOR_ENGINE)
+				Local engineChannel:TSfxChannel = GetChannelForSfx(SFX_ELEVATOR_ENGINE)
 				engineChannel.Stop()
 		EndSelect
 		
@@ -113,7 +113,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	End Method
 	
 	Method GetDoorOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
+		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
 		result.nearbyDistanceRange = 50
 		result.maxDistanceRange = 500			
 		result.nearbyRangeVolume = 1
@@ -123,7 +123,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetEngineOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxSettings
+		Local result:TSfxSettings = New TSfxSettings
 		result.nearbyDistanceRange = 0
 		result.maxDistanceRange = 500
 		result.nearbyRangeVolume = 0.5
@@ -135,20 +135,20 @@ End Type
 
 Type TDoorSoundSource Extends TSoundSourceElement
 	Field Room:TRooms			'Die Raum dieser Türe
-	Field IsGamePlayerAction:int	'
+	Field IsGamePlayerAction:Int	'
 	Field DoorTimer:TTimer		= TTimer.Create(1000)'500
 
 	Function Create:TDoorSoundSource(_room:TRooms)
-		local result:TDoorSoundSource = new TDoorSoundSource
+		Local result:TDoorSoundSource = New TDoorSoundSource
 		result.Room = _room
 		
-		result.AddDynamicSfxChannel(SFX_OPEN_DOOR, true)
-		result.AddDynamicSfxChannel(SFX_CLOSE_DOOR, true)
+		result.AddDynamicSfxChannel(SFX_OPEN_DOOR, True)
+		result.AddDynamicSfxChannel(SFX_CLOSE_DOOR, True)
 		
-		return result
+		Return result
 	End Function
 
-	Method PlayDoorSfx(sfx:string, figure:TFigures)
+	Method PlayDoorSfx(sfx:String, figure:TFigures)
 		'Die Türsound brauchen eine spezielle Behandlung wenn es sich dabei um einen Spieler handelt der einen Raum betritt oder verlässt.
 		'Diese spezielle Behandlung (der Modus) wird durch IsGamePlayerAction = true gekenntzeichnet.
 		'Ist dieser Modus aktiv wird ein Timer gestartet welcher das Schließen der Türe nach einiger Zeit abspielt (siehe Update).
@@ -158,42 +158,42 @@ Type TDoorSoundSource Extends TSoundSourceElement
 			If Not IsGamePlayerAction 'Wenn wir uns noch nicht im Spezialmodus befinden, dann weiter prüfen ob man ihn gleich aktiv schalten muss
 				If sfx = SFX_OPEN_DOOR 'Nur der Open-Sound kann den Spezialmodus starten
 					If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
-						IsGamePlayerAction = true 'Den Modus starten
-						If Players[Game.playerID].Figure.inRoom = null 'von draußen (Flur) nach drinen (Raum)
-							If Room.used >= 0 Then IsGamePlayerAction = false 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
+						IsGamePlayerAction = True 'Den Modus starten
+						If Players[Game.playerID].Figure.inRoom = Null 'von draußen (Flur) nach drinen (Raum)
+							If Room.used >= 0 Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
 							PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 						Else 'von drinnen (Raum) nach draußen (Flur)
 							PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
-						Endif	
+						EndIf	
 						DoorTimer.reset() 'den Close auf Timer setzen... 
 					Else 'In dem Fall ist die Türe also noch offen
 						DoorTimer.reset() 'Den Schließen-Sound verschieben.
-					Endif			
-				Elseif sfx = SFX_CLOSE_DOOR
+					EndIf			
+				ElseIf sfx = SFX_CLOSE_DOOR
 					PlaySfx(sfx)
-				Endif
-			Endif		
+				EndIf
+			EndIf		
 		Else
 			PlaySfx(sfx)
-		Endif		
+		EndIf		
 	End Method
 	
 	Method Update()
 		If IsGamePlayerAction
 			If DoorTimer.isExpired() 'Wenn der Timer abgelaufen, dann den Türschließsound spielen
-				If Players[Game.playerID].Figure.inRoom = null
+				If Players[Game.playerID].Figure.inRoom = Null
 					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 				Else
 					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
-				Endif
-				IsGamePlayerAction = false 'Modus beenden
-			Endif
-		Endif
+				EndIf
+				IsGamePlayerAction = False 'Modus beenden
+			EndIf
+		EndIf
 		
-		super.Update()		
+		Super.Update()		
 	End Method	
 	
-	Method GetID:string()
+	Method GetID:String()
 		Return "Door"
 	End Method
 
@@ -202,16 +202,16 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		Return TPoint.Create(Room.Pos.x + Room.doorwidth/2, Building.GetFloorY(Room.Pos.y) - Room.doorheight/2, -15)
 	End Method
 
-	Method IsMovable:int()
+	Method IsMovable:Int()
 		Return False
 	End Method
 	
-	Method GetIsHearable:int()
-		if Room.name = "" OR Room.name = "roomboard" OR Room.name = "credits" OR Room.name = "porter" then Return false	
-		Return (Players[Game.playerID].Figure.inRoom = null) or IsGamePlayerAction
+	Method GetIsHearable:Int()
+		If Room.name = "" Or Room.name = "roomboard" Or Room.name = "credits" Or Room.name = "porter" Then Return False	
+		Return (Players[Game.playerID].Figure.inRoom = Null) Or IsGamePlayerAction
 	End Method
 	
-	Method GetChannelForSfx:TSfxChannel(sfx:string)
+	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		Select sfx
 			Case SFX_OPEN_DOOR
 				Return GetSfxChannelByName(SFX_OPEN_DOOR)
@@ -220,41 +220,41 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		EndSelect		
 	End Method
 	
-	Method GetSfxSettings:TSfxSettings(sfx:string)
+	Method GetSfxSettings:TSfxSettings(sfx:String)
 		Return GetDoorOptions()
 	End Method
 	
-	Method OnPlaySfx:int(sfx:string)
+	Method OnPlaySfx:Int(sfx:String)
 		Return True
 	End Method	
 	
 	Method GetDoorOptions:TSfxSettings()
-		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
+		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
 		result.nearbyDistanceRange = 60
 		result.maxDistanceRange = 500
-		result.nearbyRangeVolume = 0.6
-		result.midRangeVolume = 0.2
+		result.nearbyRangeVolume = 0.25
+		result.midRangeVolume = 0.12
 		result.minVolume = 0
 		Return result
 	End Method
 	
 	Method GetPlayerBeforeDoorSettings:TSfxSettings()
-		local result:TSfxSettings = GetDoorOptions()
-		result.forceVolume = true
-		result.forcePan = true
-		result.forceDepth = true		
-		result.defaultVolume = 0.5
+		Local result:TSfxSettings = GetDoorOptions()
+		result.forceVolume = True
+		result.forcePan = True
+		result.forceDepth = True		
+		result.defaultVolume = 0.3
 		result.defaultPan = 0
 		result.defaultDepth = -1
 		Return result	
 	End Method
 	
 	Method GetPlayerBehindDoorSettings:TSfxSettings()
-		local result:TSfxSettings = GetDoorOptions()
-		result.forceVolume = true
-		result.forcePan = true
-		result.forceDepth = true		
-		result.defaultVolume = 0.5
+		Local result:TSfxSettings = GetDoorOptions()
+		result.forceVolume = True
+		result.forcePan = True
+		result.forceDepth = True		
+		result.defaultVolume = 0.3
 		result.defaultPan = 0
 		result.defaultDepth = 1
 		Return result	
@@ -266,15 +266,15 @@ Type TFigureSoundSource Extends TSoundSourceElement
 	Field Figure:TFigures
 	
 	Function Create:TFigureSoundSource (_figure:TFigures)
-		local result:TFigureSoundSource = new TFigureSoundSource 
+		Local result:TFigureSoundSource = New TFigureSoundSource 
 		result.Figure= ­_figure
 		
 		result.AddDynamicSfxChannel("Steps")
 		
-		return result
+		Return result
 	End Function
 	
-	Method GetID:string()
+	Method GetID:String()
 		Return "Figure: " + Figure.name
 	End Method
 
@@ -282,38 +282,41 @@ Type TFigureSoundSource Extends TSoundSourceElement
 		Return Figure.rect.GetAbsoluteCenterPoint()
 	End Method
 
-	Method IsMovable:int()
-		Return ­true
+	Method IsMovable:Int()
+		Return ­True
 	End Method
 	
-	Method GetIsHearable:int()
-		Return (Players[Game.playerID].Figure.inRoom = null)
+	Method GetIsHearable:Int()
+		Return (Players[Game.playerID].Figure.inRoom = Null)
 	End Method
 	
-	Method GetChannelForSfx:TSfxChannel(sfx:string)
+	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		Select sfx
 			Case SFX_STEPS
 				Return GetSfxChannelByName("Steps")
 		EndSelect		
 	End Method
 	
-	Method GetSfxSettings:TSfxSettings(sfx:string)
+	Method GetSfxSettings:TSfxSettings(sfx:String)
 		Select sfx
 			Case SFX_STEPS
 				Return GetStepsSettings()
 		EndSelect						
 	End Method
 	
-	Method OnPlaySfx:int(sfx:string)
-		Return true
+	Method OnPlaySfx:Int(sfx:String)
+		Return True
 	End Method
 	
 	Method GetStepsSettings:TSfxSettings()
-		local result:TSfxSettings = new TSfxFloorSoundBarrierSettings
+		Local result:TSfxSettings = New TSfxFloorSoundBarrierSettings
 		result.nearbyDistanceRange = 60
 		result.maxDistanceRange = 300
-		result.nearbyRangeVolume = 0.15
-		result.midRangeVolume = 0.05
+		result.nearbyRangeVolume = 0.3
+		result.midRangeVolume = 0.15
+		
+		'result.nearbyRangeVolume = 0.15
+		'result.midRangeVolume = 0.05
 		result.minVolume = 0
 		Return result
 	End Method	
