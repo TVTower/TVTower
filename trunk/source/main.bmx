@@ -2021,12 +2021,12 @@ PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.fonts.baseFontBold)
 Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
 Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
-
+rem
 Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 Test.AddEntry("test2")
 Test.AddEntry("test3")
 Test.AddEntry("test4")
-
+endrem
 Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)

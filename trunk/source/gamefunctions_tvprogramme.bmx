@@ -840,7 +840,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		font.drawBlock(getLocale("AD_PROFIT")+": "	, x+10 , y+94 , 130, 16)
 		font.drawBlock(functions.convertValue(String( self.getProfit() ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
 		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		font.DrawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+91 , 127, 16,2)
+		font.DrawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+94 , 127, 16,2)
 
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
 		font.drawBlock(functions.convertValue(String( self.GetPenalty() ), 2, 0)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,2)
@@ -1042,6 +1042,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		If actors = "" Then obj.actors = Self.actors Else obj.actors = actors
 		If director = "" Then obj.director = Self.director Else obj.director = director
 		If country = "" Then obj.country = Self.country Else obj.country = country
+		If description = "" Then obj.description = Self.description Else obj.description = description
 
 		obj.topicality		= obj.ComputeTopicality()
 		obj.maxtopicality	= obj.topicality

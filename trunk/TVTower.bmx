@@ -31,9 +31,6 @@ REM
 	- OpenGL ... - WindowDeco nicht stylebar
 * Live-Events:
 	- Fussball, Formel1, Konzerte, ... fehlen noch
-* Quiz/Call-In
-	- Werbung: Werbebloecke die prozentual von der Zuschauerzahl
-	  Einkuenfte erzielen
 * Eigenproduktionen:
 	- Filme - die auch bspweise in den Wiederverkauf
 	  gelangen koennen. Hier sollte evtl der "Kino"-Wert
