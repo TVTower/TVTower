@@ -26,6 +26,7 @@ Type TFigures Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field updatefunc_(ListLink:TLink, deltaTime:Float) {sl = "no"}
 	Field ListLink:TLink						{sl = "no"}
 	Field ParentPlayer:TPlayer	= Null			{sl = "no"}
+	Field SoundSource:TFigureSoundSource = TFigureSoundSource.Create(Self)
 
 	Global LastID:Int			= 0				{sl = "no"}
 	Global List:TList			= CreateList()
@@ -145,8 +146,14 @@ endrem
 		'do we have to change the floor?
 		If Self.HasToChangeFloor() Then targetX = Building.Elevator.GetDoorCenterX() - Self.rect.GetW()/2 '-GetW/2 to center figure
 
-		If targetX < Floor(Self.rect.GetX()) Then Self.vel.SetX( -(Abs(Self.initialdx)))
-		If targetX > Floor(Self.rect.GetX()) Then Self.vel.SetX(  (Abs(Self.initialdx)))
+		If targetX < Floor(Self.rect.GetX()) 
+			Self.vel.SetX( -(Abs(Self.initialdx)))
+			SoundSource.PlayOrContinueSFX(SFX_STEPS)
+		EndIf
+		If targetX > Floor(Self.rect.GetX())
+			Self.vel.SetX(  (Abs(Self.initialdx)))
+			SoundSource.PlayOrContinueSFX(SFX_STEPS)
+		EndIf
 
  		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.vel.GetX())
 			Self.vel.SetX(0)
@@ -158,6 +165,7 @@ endrem
 			If Not Self.IsOnFloor() Then Self.rect.position.setY( Building.GetFloorY(Self.GetFloor()) )
 		Else
 			Self.vel.SetX(0)
+			SoundSource.Stop(SFX_STEPS)			
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
@@ -190,7 +198,7 @@ endrem
 				Self.setCurrentAnimation("standFront",True)
 			EndIf
 		'if moving
-		else
+		Else
 			If Self.vel.GetX() > 0 Then Self.setCurrentAnimation("walkRight", True)
 			If Self.vel.GetX() < 0 Then Self.setCurrentAnimation("walkLeft", True)
 		EndIf
@@ -220,7 +228,7 @@ endrem
 	'player is now in room "room"
 	Method _SetInRoom:Int(room:TRooms)
 		If room <> Null
-			room.CloseDoor()
+			room.CloseDoor(Players[Game.playerID].Figure)
 			room.used = Self.id
 		EndIf
 
@@ -324,7 +332,7 @@ endrem
 			EndIf
 		EndIf
 		'display a open door if leaving it
-		If inRoom Then inRoom.OpenDoor()
+		If inRoom Then inRoom.OpenDoor(Self)
 
 		toRoom = fromRoom
 '		If fromRoom <> Null Then fromRoom.CloseDoor()
@@ -493,7 +501,7 @@ endrem
 						'if player is able to enter the room (not used) then start fader
 						If id = Game.playerID And Self.CanEnterRoom(clickedToRoom) Then Fader.Enable() 'room fading
 
-						clickedToRoom.OpenDoor()
+						clickedToRoom.OpenDoor(Self)
 						Self.SetCurrentAnimation("standBack")
 					Else
 						'Print "standing in front of clickedroom "
@@ -501,16 +509,18 @@ endrem
 					EndIf
 					'if open, timer started and reached halftime --> "wait a moment" before entering
 					If clickedToRoom.getDoorType() = 5 And Not clickedToRoom.DoorTimer.isExpired() And clickedToRoom.DoorTimer.reachedHalftime()
-						clickedToRoom.CloseDoor()
+						Print name + " - Update: CloseDoor1"
+						clickedToRoom.CloseDoor(Self)
+						Print name + " - Update: CloseDoor2"
 						EnterRoom(clickedToRoom)
 
 					ElseIf clickedToRoom.getDoorType() <> 5 '5 is an open door
-						'we stand in front of elevator - and clicked on it (to go to other floors)
+					'we stand in front of elevator - and clicked on it (to go to other floors)
 						If clickedToRoom.name = "elevator" And clickedToRoom.Pos.y = GetFloor() And IsAtElevator()
 							'elevator is in our floor and open
 							If Building.Elevator.CurrentFloor = clickedToRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
-								EnterRoom(clickedToRoom, False)
-								Building.Elevator.UsePlan(Self)
+						EnterRoom(clickedToRoom, False)
+						Building.Elevator.UsePlan(Self)
 							'not here or closed
 							Else
 								CallElevator()

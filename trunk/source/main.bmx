@@ -6,6 +6,7 @@ Import brl.timer
 Import brl.Graphics
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
+Import "basefunctions_sound.bmx"
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_events.bmx"				'event handler
 Import "basefunctions_deltatimer.bmx"
@@ -37,7 +38,7 @@ GUIManager.defaultFont	= Assets.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
-
+Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
@@ -127,6 +128,8 @@ Type TApp
 		EventManager.unregisterAllListeners( "App.onDraw" )
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
+		EventManager.registerListener( "App.onSoundUpdate", TEventListenerOnSoundUpdate.Create() )
+		SoundManager.PlayMusic(MUSIC_TITLE)		
 		print "LADEZEIT : "+(Millisecs() - self.creationTime) +"ms"
 	End Method
 
@@ -1771,7 +1774,14 @@ Type TBuilding Extends TRenderable
 	End Method
 
 	Method GetFloor:Int(_y:Int)
-		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13)
+		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
+	End Method
+	
+	Method getFloorByPixelExactPoint:Int(point:TPoint) 'y ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000		
+		for local i:int = 0 to 13
+			If Building.GetFloorY(i) < point.y Then Return i
+		next
+		Return -1
 	End Method
 End Type
 
@@ -1874,7 +1884,7 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 		Local room:TRooms
 		Repeat
 			room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
-		Until room.doortype >0
+		Until room.doortype >0 and room.name = "supermarket"
 		'Print "Bote: steht rum -> neues Ziel gesucht"
 		Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
 	EndIf
@@ -1961,6 +1971,10 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 End Function
 
 
+'Sound-Files einlesen - da es lange dauert eventuell nur bei Bedarf oder in einem anderen Thread laden.
+SoundManager.SetDefaultReceiver(TPlayerElementPosition.Create())
+SoundManager.LoadSoundFiles()
+
 
 '#Region: Globals, Player-Creation
 Global StationMap:TStationMap	= TStationMap.Create()
@@ -2008,7 +2022,32 @@ tempfigur				= new TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures"
 tempfigur.rect.dimension.SetX(12)
 tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateBote
+REM
+tempfigur				= new TFigures.CreateFigure("Bote3", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 2,-55,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
 
+tempfigur				= new TFigures.CreateFigure("Bote4", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 3,-45,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+
+tempfigur				= new TFigures.CreateFigure("Bote5", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 4,-75,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+
+tempfigur				= new TFigures.CreateFigure("Bote6", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 5,-85,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+
+tempfigur				= new TFigures.CreateFigure("Bote7", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 6,-70,0)
+tempfigur.rect.dimension.SetX(12)
+tempfigur.target.setX(550)
+tempfigur.updatefunc_	= UpdateBote
+ENDREM
 tempfigur = Null
 
 Global MenuPlayerNames:TGUIinput[4]
@@ -2278,6 +2317,7 @@ Function Menu_GameSettings()
 		EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", game.minute))
 		EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", game.hour))
 		EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", game.day))
+		Soundmanager.PlayMusic(MUSIC_MUSIC)
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
 		If Game.networkgame
@@ -2905,7 +2945,7 @@ Function DrawMain(tweenValue:Float=1.0)
 		If Game.networkgame then startY :+ 4*11
 
 		local callType:string = ""
-
+		
 		Assets.fonts.baseFont.draw("tofloor:" + Building.elevator.TargetFloor, 25, startY)
 
 		Assets.fonts.baseFont.draw("Status:" + Building.elevator.ElevatorStatus, 100, startY)
@@ -3129,7 +3169,23 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 	End Method
 End Type
 
+Type TEventListenerOnSoundUpdate Extends TEventListenerBase
 
+	Function Create:TEventListenerOnSoundUpdate()
+		Return New TEventListenerOnSoundUpdate
+	End Function
+
+
+	Method OnEvent:int(triggerEvent:TEventBase)
+		Local evt:TEventSimple = TEventSimple(triggerEvent)
+		If evt<>Null
+			TProfiler.Enter("SoundUpdate")
+			SoundManager.Update()
+			TProfiler.Leave("SoundUpdate")
+		EndIf
+		return true
+	End Method
+End Type
 
 '__________________________________________
 'events

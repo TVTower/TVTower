@@ -399,17 +399,23 @@ Type TRectangle {_exposeToLua="selected"}
 	Method GetH:float()
 		return self.dimension.GetY()
 	End Method
+	
+	Method GetAbsoluteCenterPoint:TPoint()
+		return TPoint.Create(Self.GetX() + Self.GetW()/2, Self.GetY() + Self.GetH()/2)
+	End Method
 
 End Type
 
 Type TPoint {_exposeToLua="selected"}
 	Field x:Float
 	Field y:Float
+	Field z:Float 'Tiefe des Raumes (für Audio) Minus-Werte = Hintergrund; Plus-Werte = Vordergrund
 
-	Function Create:TPoint(_x:Float=0.0,_y:Float=0.0)
+	Function Create:TPoint(_x:Float=0.0,_y:Float=0.0,_z:Float=0.0)
 		Local tmpObj:TPoint = New TPoint
 		tmpObj.SetX(_x)
 		tmpObj.SetY(_y)
+		tmpObj.SetZ(_z)
 		Return tmpObj
 	End Function
 
@@ -433,6 +439,10 @@ Type TPoint {_exposeToLua="selected"}
 	Method GetY:float() {_exposeToLua}
 		return self.y
 	End Method
+	
+	Method GetZ:float() {_exposeToLua}
+		return self.z
+	End Method	
 
 	Method SetX(_x:Float)
 		Self.x = _x
@@ -441,6 +451,10 @@ Type TPoint {_exposeToLua="selected"}
 	Method SetY(_y:Float)
 		Self.y = _y
 	End Method
+	
+	Method SetZ(_z:Float)
+		Self.z = _z
+	End Method	
 
 	Method SetXY(_x:Float, _y:Float)
 		Self.SetX(_x)
@@ -450,6 +464,7 @@ Type TPoint {_exposeToLua="selected"}
 	Method SetPos(otherPos:TPoint)
 		Self.SetX(otherPos.x)
 		Self.SetY(otherPos.y)
+		Self.SetZ(otherPos.z)
 	End Method
 
 	Method MoveXY( _x:float, _y:float )
@@ -468,16 +483,40 @@ Type TPoint {_exposeToLua="selected"}
 	Method isInRect:int(rect:TRectangle)
 		return rect.IntersectsPoint(self)
 	End Method
+	
+	Method DistanceTo:float(otherPoint:TPoint, withZ:int = true)
+		local distanceX:float = DistanceOfValues(x, otherPoint.x)
+		local distanceY:float = DistanceOfValues(y, otherPoint.y)
+		local distanceZ:float = DistanceOfValues(z, otherPoint.z)
+		
+		local distanceXY:float = Sqr(distanceX * distanceX + distanceY * distanceY) 'Wurzel(a² + b²) = Hypotenuse von X und Y
+		
+		If withZ and distanceZ <> 0
+			Return Sqr(distanceXY * distanceXY + distanceZ * distanceZ) 'Wurzel(a² + b²) = Hypotenuse von XY und Z
+		Else
+			Return distanceXY
+		Endif
+	End Method
 
+	Function DistanceOfValues:int(value1:int, value2:int)
+		If (value1 > value2) Then
+			Return value1 - value2
+		Else
+			Return value2 - value1
+		EndIf
+	End Function	
 
 	Function SwitchPos(Pos:TPoint Var, otherPos:TPoint Var)
-		Local oldx:Float, oldy:Float
+		Local oldx:Float, oldy:Float, oldz:Float
 		oldx = Pos.x
 		oldy = Pos.y
+		oldz = Pos.z
 		Pos.x = otherpos.x
 		Pos.y = otherpos.y
+		Pos.z = otherpos.z
 		otherpos.x = oldx
 		otherpos.y = oldy
+		otherpos.z = oldz
 	End Function
 
  	Method Save()

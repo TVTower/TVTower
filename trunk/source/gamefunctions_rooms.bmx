@@ -6,11 +6,12 @@ Type TRooms  {_exposeToLua="selected"}
     Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
     Field tooltip:TTooltip		= null					'uses description
 
-	Field DoorTimer:TTimer		= TTimer.Create(500)
+	Field DoorTimer:TTimer		= TTimer.Create(500)'500
 	Field Pos:TPoint									'x of the rooms door in the building, y as floornumber
     Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
     Field doorwidth:Int			= 38
+    Field doorHeight:Int		= 52
     Field RoomSign:TRoomSigns
     Field owner:Int				=-1						'to draw the logo/symbol of the owner
     Field used:int				=-1						'>0 is user id
@@ -18,28 +19,38 @@ Type TRooms  {_exposeToLua="selected"}
 	Field FadeAnimationActive:Int = 0
 	Field RoomBoardX:Int		= 0
 	Field Dialogues:TList		= CreateList()
+	Field SoundSource:TDoorSoundSource = TDoorSoundSource.Create(self)
 
     Global RoomList:TList		= CreateList()			'global list of rooms
     Global LastID:Int			= 1
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
-	Method getDoorType:int()
+	Method getDoorType:int()		
+		If name = "supermarket"
+			'if self.DoorTimer.isExpired() then print "getDoorType: " + self.doortype else print "getDoorType: " + 5
+		endif
 		if self.DoorTimer.isExpired() then return self.doortype else return 5
 	End Method
 
-    Method CloseDoor()
+    Method CloseDoor(figure:TFigures)
 		'timer finished
-		self.DoorTimer.expire()
+		If Not DoorTimer.isExpired()
+			SoundSource.PlayDoorSfx(SFX_CLOSE_DOOR, figure)		
+			self.DoorTimer.expire()
+		Endif
     End Method
 
-    Method OpenDoor()
+    Method OpenDoor(figure:TFigures)
 		'timer ticks again
+		If DoorTimer.isExpired()
+			SoundSource.PlayDoorSfx(SFX_OPEN_DOOR, figure)
+		Endif
 		self.DoorTimer.reset()
     End Method
 
 	Function CloseAllDoors()
 		For Local room:TRooms = EachIn TRooms.RoomList
-			room.CloseDoor()
+			room.CloseDoor(null)
 		Next
 	End Function
 
@@ -121,7 +132,7 @@ Type TRooms  {_exposeToLua="selected"}
 			If obj.doortype < 0 OR obj.Pos.x <= 0 then continue
 
 			If obj.getDoorType() >= 5
-				If obj.getDoorType() = 5 AND obj.DoorTimer.isExpired() Then obj.CloseDoor()
+				If obj.getDoorType() = 5 AND obj.DoorTimer.isExpired() Then obj.CloseDoor(null); print "DrawDoors - CloseDoor"
 				'valign = 1 -> subtract sprite height
 				Assets.GetSprite("gfx_building_Tueren").Draw(obj.Pos.x, Building.pos.y + Building.GetFloorY(obj.Pos.y), obj.getDoorType(), VALIGN_TOP)
 			EndIf
@@ -138,10 +149,11 @@ Type TRooms  {_exposeToLua="selected"}
 
 		If GetDoorType() >= 0
 			Fader.Enable() 'room fading
-			OpenDoor()
+			OpenDoor(Players[Game.playerID].Figure)
 			FadeAnimationActive = True
 		Else
-			CloseDoor()
+			print "LeaveAnimated - CloseDoor"
+			CloseDoor(Players[Game.playerID].Figure)
 			Players[Game.playerID].Figure.LeaveRoom()
 		EndIf
 		Return false
@@ -182,7 +194,9 @@ Type TRooms  {_exposeToLua="selected"}
 		If Fader.fadeenabled And FadeAnimationActive
 			If Fader.fadecount >= 20 And not Fader.fadeout
 				Fader.EnableFadeout()
-				CloseDoor()
+				print "Room.Update - CloseDoor1"
+				CloseDoor(Players[Game.playerID].Figure)
+				print "Room.Update - CloseDoor2"
 				FadeAnimationActive = False
  			    Players[Game.playerID].Figure.LeaveRoom()
 				Return 0
@@ -335,8 +349,8 @@ Type TRoomHandler
 
 	Function _RegisterHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), room:TRooms = null)
 		if room
-			EventManager.registerListenerFunction( "rooms.onUpdate", updateFunc, room )
-			EventManager.registerListenerFunction( "rooms.onDraw", drawFunc, room )
+		EventManager.registerListenerFunction( "rooms.onUpdate", updateFunc, room )
+		EventManager.registerListenerFunction( "rooms.onDraw", drawFunc, room )
 		endif
 	End Function
 
@@ -422,9 +436,9 @@ Type RoomHandler_Office extends TRoomHandler
 	End function
 
 
-	'===================================
-	'Office: Room screen
-	'===================================
+'===================================
+'Office: Room screen
+'===================================
 
 	Function onDrawOffice:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
@@ -453,7 +467,7 @@ Type RoomHandler_Office extends TRoomHandler
 				Players[Game.playerID].Figure.LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
-		EndIf
+			EndIf
 
 		Game.cursorstate = 0
 		'safe - reachable for all
@@ -505,9 +519,9 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 
-	'===================================
-	'Office: ProgrammePlanner screen
-	'===================================
+'===================================
+'Office: ProgrammePlanner screen
+'===================================
 
 	'add gfx to background
 	Function InitProgrammePlannerBackground:int()
@@ -724,9 +738,9 @@ Type RoomHandler_Office extends TRoomHandler
 		'If button = ProgrammePlannerButtons[5] then return room.screenManager.GoToSubScreen("screen_office_messages")
 	End Function
 
-	'===================================
-	'Office: Financials screen
-	'===================================
+'===================================
+'Office: Financials screen
+'===================================
 
 	Function onDrawFinancials:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
@@ -1560,7 +1574,7 @@ Type RoomHandler_Elevator extends TRoomHandler
 				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseX(),MouseY())
 				if clickedRoom
 					playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
-					If Building.Elevator.EnterTheElevator(playerFigure) 'das Ziel hier nicht angeben, sonst kommt es zu einer Einsteigeprüfung die den Spieler eventuell wieder rauswirft.
+					If Building.Elevator.EnterTheElevator(playerFigure) 'das Ziel hier nicht angeben, sonst kommt es zu einer EinsteigeprÃ¼fung die den Spieler eventuell wieder rauswirft.
 						Building.Elevator.SendElevator(playerFigure.getFloor(playerFigure.target), playerFigure)
 					Endif
 				Endif
