@@ -1292,9 +1292,12 @@ Type TAnimSprites
 		if not self.AnimationSets.contains("default") then self.setCurrentAnimation(animationName, 0)
 	End Method
 
+	'Set a new Animation
+	'If it is a different animation name, the Animation will get reset (start from begin)
 	Method setCurrentAnimation(animationName:string, startAnimation:int = 1)
-		local reset:int = 1 - (self.currentAnimation = lower(animationName))
-		self.currentAnimation = lower(animationName)
+		animationName = lower(animationName)
+		local reset:int = 1 - (self.currentAnimation = animationName)
+		self.currentAnimation = animationName
 		if reset then self.getCurrentAnimation().Reset()
 		if startAnimation then self.getCurrentAnimation().Playback()
 	End Method

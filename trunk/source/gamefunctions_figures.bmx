@@ -169,6 +169,7 @@ endrem
 	End Method
 
 	Method FigureAnimation(deltaTime:Float=1.0)
+		'if standing
 		If Self.vel.GetX() = 0
 				'default - no movement needed
 				If Self.boardingState = 0
@@ -186,10 +187,13 @@ endrem
 				Self.setCurrentAnimation("standBack",True)
 			'show front
 			Else
+				Self.setCurrentAnimation("standFront",True)
 			EndIf
+		'if moving
+		else
+			If Self.vel.GetX() > 0 Then Self.setCurrentAnimation("walkRight", True)
+			If Self.vel.GetX() < 0 Then Self.setCurrentAnimation("walkLeft", True)
 		EndIf
-		If Self.vel.GetX() > 0 Then Self.setCurrentAnimation("walkRight", True)
-		If Self.vel.GetX() < 0 Then Self.setCurrentAnimation("walkLeft", True)
 	End Method
 
 	Method GetPeopleOnSameFloor()
