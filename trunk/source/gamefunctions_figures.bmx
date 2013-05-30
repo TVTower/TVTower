@@ -158,6 +158,7 @@ endrem
  		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.vel.GetX())
 			Self.vel.SetX(0)
 			Self.rect.position.setX(targetX)
+			SoundSource.Stop(SFX_STEPS)			
 		EndIf
 
 		If Not Self.IsInElevator()
@@ -509,9 +510,9 @@ endrem
 					EndIf
 					'if open, timer started and reached halftime --> "wait a moment" before entering
 					If clickedToRoom.getDoorType() = 5 And Not clickedToRoom.DoorTimer.isExpired() And clickedToRoom.DoorTimer.reachedHalftime()
-						Print name + " - Update: CloseDoor1"
+						'Print name + " - Update: CloseDoor1"
 						clickedToRoom.CloseDoor(Self)
-						Print name + " - Update: CloseDoor2"
+						'Print name + " - Update: CloseDoor2"
 						EnterRoom(clickedToRoom)
 
 					ElseIf clickedToRoom.getDoorType() <> 5 '5 is an open door

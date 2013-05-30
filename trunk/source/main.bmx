@@ -3120,6 +3120,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.Ishit(Key_F4) And Players[4].isAI() Then Players[4].PlayerKI.reloadScript()
 
 				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
+				If KEYMANAGER.Ishit(Key_F6) Then Soundmanager.PlayMusic(MUSIC_MUSIC)
 			EndIf
 
 			KEYMANAGER.changeStatus()

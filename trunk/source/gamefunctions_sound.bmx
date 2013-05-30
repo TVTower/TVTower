@@ -264,18 +264,18 @@ End Type
 
 Type TFigureSoundSource Extends TSoundSourceElement
 	Field Figure:TFigures
+	Field ChannelInitialized:Int = 0
 	
 	Function Create:TFigureSoundSource (_figure:TFigures)
 		Local result:TFigureSoundSource = New TFigureSoundSource 
 		result.Figure= ­_figure
-		
-		result.AddDynamicSfxChannel("Steps")
+		'result.AddDynamicSfxChannel("Steps" + result.Figure.name)
 		
 		Return result
 	End Function
 	
 	Method GetID:String()
-		Return "Figure: " + Figure.name
+		Return "Figure" + Figure.id
 	End Method
 
 	Method GetCenter:TPoint()
@@ -290,10 +290,15 @@ Type TFigureSoundSource Extends TSoundSourceElement
 		Return (Players[Game.playerID].Figure.inRoom = Null)
 	End Method
 	
-	Method GetChannelForSfx:TSfxChannel(sfx:String)
+	Method GetChannelForSfx:TSfxChannel(sfx:String)		
 		Select sfx
 			Case SFX_STEPS
-				Return GetSfxChannelByName("Steps")
+				If Not Self.ChannelInitialized
+					Self.AddDynamicSfxChannel("Steps" + Self.GetID()) 'Channel erst hier hinzufügen... am Anfang hat Figure noch keine id
+					Self.ChannelInitialized = True
+				EndIf			
+			
+				Return GetSfxChannelByName("Steps" + Self.GetID())
 		EndSelect		
 	End Method
 	

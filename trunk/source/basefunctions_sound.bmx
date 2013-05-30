@@ -58,11 +58,11 @@ Type TMusicStream
 		Return obj
 	End Function
 
-	Method GetChannel:TChannel(volume:Int)
+	Method GetChannel:TChannel(volume:Float)
 		Local channel:TChannel = CueMusic(Self.bank, loop)
 		channel.SetVolume(volume)
 		Return channel
-	End Method
+	End Method	
 End Type
 
 Type TSoundManager
@@ -200,7 +200,7 @@ endrem
 	Method Update()
 		For Local element:TSoundSourceElement = EachIn soundSources
 			element.Update()
-		Next
+		Next		
 
 		If musicOn Then
 			'Wenn der Musik-Channel nicht l‰uft, dann muss nichts gemacht werden
@@ -211,7 +211,6 @@ endrem
 						FadeOverToNextTitle()
 					EndIf
 				Else
-					'Print "not playing"
 					Self.PlayMusic(MUSIC_MUSIC)
 				EndIf
 			EndIf
@@ -252,18 +251,16 @@ endrem
 		Self.inactiveMusicChannel.Stop()
 	End Method
 
-	Method PlayMusic(music:String)
-		'Return
+	Method PlayMusic(music:String)		
 		Self.nextMusicTitleStream = GetMusicStream(music)
 		Self.nextMusicTitleVolume = GetVolume(music)
-		Self.forceNextMusicTitle = True		
-
+		Self.forceNextMusicTitle = True
+		
 		'Wenn der Musik-Channel noch nicht l√§uft, dann jetzt starten
 		If activeMusicChannel = Null Or Not activeMusicChannel.Playing() Then
-			musicVolume = Self.nextMusicTitleVolume
-			
-			activeMusicChannel = nextMusicTitleStream.GetChannel(musicVolume)
-			ResumeChannel(activeMusicChannel)
+			Local musicVolume:Float = Self.nextMusicTitleVolume			
+			Self.activeMusicChannel = Self.nextMusicTitleStream.GetChannel(musicVolume)
+			ResumeChannel(Self.activeMusicChannel)
 
 			Self.forceNextMusicTitle = False
 		EndIf
@@ -288,7 +285,8 @@ Rem
 			Next
 		Endif
 	End Method
-ENDREM
+EndRem
+
 	Method GetMusicStream:TMusicStream(music:String)
 		Local result:TMusicStream
 

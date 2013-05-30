@@ -244,30 +244,48 @@ function JobEmergencySchedule:FillIntervals(howManyHours)
 	end
 end
 
+function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRestrictions)
+	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8, false, noBroadcastRestrictions)
+	if (table.count(currentSpotList) == 0) then
+		currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.6, false, noBroadcastRestrictions)
+		if (table.count(currentSpotList) == 0) then
+			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4, false, noBroadcastRestrictions)
+			if (table.count(currentSpotList) == 0) then
+				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, false, noBroadcastRestrictions)
+				if (table.count(currentSpotList) == 0) then
+					currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, true, noBroadcastRestrictions)
+				end
+			end
+		end
+	end
+	return currentSpotList;
+end
+
 function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	local fixedDay, fixedHour = self:FixDayAndHour(day, hour)
 
 	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
 	local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedHour)
 
-	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8)
+	local currentSpotList = self:GetFittingSpotList(guessedAudience, false)
 	if (table.count(currentSpotList) == 0) then
-		currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.6)
-		if (table.count(currentSpotList) == 0) then
-			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4)
-			if (table.count(currentSpotList) == 0) then
-				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0)
-			end
-		end
+		currentSpotList = self:GetFittingSpotList(guessedAudience, true)
 	end
-
-	currentSpotList = self:FilterSpotList(currentSpotList)
-	local choosenSpot = self:GetBestMatchingSpot(currentSpotList)
+	
+	local filteredCurrentSpotList = self:FilterSpotList(currentSpotList)
+	local choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 	if (choosenSpot ~= nil) then
 		debugMsg("Setze Spot! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Name: " .. choosenSpot.contractBase.title)
 		local result = TVT.of_doSpotInPlan(fixedDay, fixedHour, choosenSpot.Id)
 	else
-		debugMsg("Keinen Spot gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
+		--nochmal ohne Filter!
+		choosenSpot = self:GetBestMatchingSpot(currentSpotList)
+		if (choosenSpot ~= nil) then
+			debugMsg("Setze Spot - ungefiltert! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Name: " .. choosenSpot.contractBase.title)
+			local result = TVT.of_doSpotInPlan(fixedDay, fixedHour, choosenSpot.Id)		
+		else
+			debugMsg("Keinen Spot gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
+		end
 	end
 end
 
@@ -322,15 +340,15 @@ function JobEmergencySchedule:GetProgrammeList(level)
 	return currentProgrammeList
 end
 
-function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor)
+function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, noAudienceRestrictions, noBroadcastRestrictions)
 	local currentSpotList = {}
 	for i = 0, MY.ProgrammeCollection.GetContractCount() - 1 do
 		local contract = MY.ProgrammeCollection.GetContractFromList(i)
 		local minAudience = contract.GetMinAudience()
-		if (minAudience < guessedAudience) and (minAudience > guessedAudience * minFactor) then
+		if ((minAudience < guessedAudience) and (minAudience > guessedAudience * minFactor)) or noAudienceRestrictions then
 			local count = MY.ProgrammePlan.GetContractBroadcastCount(contract.id, 1, 1)
 			--debugMsg("GetMatchingSpotList: " .. contract.title .. " - " .. count)
-			if (count < contract.GetSpotCount()) then
+			if (count < contract.GetSpotCount() or noBroadcastRestrictions) then
 				table.insert(currentSpotList, contract)
 			end
 		end

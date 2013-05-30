@@ -140,17 +140,39 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
     End Method
 
-	Method GetNewsBlock:TNewsBlock(id:Int)
+	Method GetNewsBlock:TNewsBlock(id:Int) {_exposeToLua}
 		For Local obj:TNewsBlock = EachIn Self.NewsBlocks
 			If obj.id = id Then Return obj
 		Next
 		Return Null
 	EndMethod
 
+	Method GetNewsCount:Int() {_exposeToLua}
+		Local result:Int = 0
+		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
+			If NewsBlock.owner = Game.playerID
+				result = result + 1
+			EndIf
+		Next
+		Return result	
+	End Method
+	
+	Method GetNewsFromList:TNewsBlock(pos:Int=0) {_exposeToLua}
+		Local result:Int = 0
+		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
+			If NewsBlock.owner = Game.playerID				
+				If pos = result
+					Return NewsBlock
+				EndIf
+				result = result + 1
+			EndIf
+		Next
+		Return Null	
+	End Method
 
 	Method DrawAllNewsBlocks()
 		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			If Self.parent.playerID = Game.playerID
+			If Self.parent.playerID = Game.playerID 'TODO: Ist dieser Vergleich richtig? Ist nicht "NewsBlock.owner = Game.playerID" korrekt?
 				If (newsblock.dragged=1 Or (newsblock.pos.y > 0)) And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeSinceBegin) Then NewsBlock.Draw()
 			EndIf
 		Next
