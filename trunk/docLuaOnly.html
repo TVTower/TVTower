@@ -1,5 +1,5 @@
 
-<!-- saved from url=(0166)http://localhost/doc/?mainfile=%2Fhome%2Fronny%2FArbeit%2FProgrammieren%2FProjekte%2FApps%2FTVTower.WorkingCopy%2FTVTower%2Ftrunk%2FTVTower.bmx&onlyLua=1&action=build -->
+<!-- saved from url=(0176)http://gwron.kicks-ass.net/doc/?mainfile=%2Fhome%2Fronny%2FArbeit%2FProgrammieren%2FProjekte%2FApps%2FTVTower.WorkingCopy%2FTVTower%2Ftrunk%2FTVTower.bmx&onlyLua=1&action=build -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
 		body					{ font-family: Sans-Serif; font-size:13px;}
@@ -151,8 +151,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetPlayerID</span>
@@ -164,13 +164,26 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetRelativeAudiencePercentage</span>
 						<span id="returns">:Float</span>
 						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">IncreaseNewsAbonnement</span>
+						<span id="returns"></span>
+						<span id="params">( genre:int )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -226,7 +239,70 @@
 				</div>
 				
 			</div>
-			</div></div>																								<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPosition</span>		<span id="comment"></span>	</div>	<div id="elements">
+			</div></div>																								<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TRectangle</span>		<span id="comment"></span>	</div>	<div id="elements">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">dimension</span>
+						<span id="varType">:TPoint</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">Intersects</span>
+						<span id="returns">:int</span>
+						<span id="params">( rect:TRectangle )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">IntersectsPoint</span>
+						<span id="returns">:int</span>
+						<span id="params">( point:TPoint )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">IntersectsXY</span>
+						<span id="returns">:int</span>
+						<span id="params">( x:float, y:float )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">position</span>
+						<span id="varType">:TPoint</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPoint</span>		<span id="comment"></span>	</div>	<div id="elements">
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
@@ -283,15 +359,156 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
-						<span id="name">isSame</span>
-						<span id="returns">:int</span>
-						<span id="params">( otherPos:TPosition, round:int=0 )</span>
+						<span id="name">GetZ</span>
+						<span id="returns">:float</span>
+						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
 				
 			</div>
-			</div></div>																																																																							<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayerProgrammeCollection</span>		<span id="comment">holds all Programmes a player possesses</span>	</div>	<div id="elements">
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">isSame</span>
+						<span id="returns">:int</span>
+						<span id="params">( otherPos:TPoint, round:int=0 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+			</div></div>																																													<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TMoveableAnimSprites</span>		<span id="comment">makes anim sprites moveable</span>	</div>	<div id="elements">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">rect</span>
+						<span id="varType">:TRectangle</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">vel</span>
+						<span id="varType">:TPoint</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+			</div></div>																																									<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayerProgrammePlan</span>		<span id="comment"></span>	</div>	<div id="elements">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetActualAdBlock</span>
+						<span id="returns">:TAdBlock</span>
+						<span id="params">( time:Int = -1, day:Int = - 1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetActualNewsBlock</span>
+						<span id="returns">:TNewsBlock</span>
+						<span id="params">( position:Int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetActualProgramme</span>
+						<span id="returns">:TProgramme</span>
+						<span id="params">( time:Int = -1, day:Int = -1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetContractBroadcastCount</span>
+						<span id="returns">:Int</span>
+						<span id="params">( _contractId:int, successful:int = 1, planned:int = 0 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetNewsBlock</span>
+						<span id="returns">:TNewsBlock</span>
+						<span id="params">( id:Int )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetNewsBlockFromSlot</span>
+						<span id="returns">:TNewsBlock</span>
+						<span id="params">( sendslot:Int=0 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetNewsCount</span>
+						<span id="returns">:Int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetNewsFromList</span>
+						<span id="returns">:TNewsBlock</span>
+						<span id="params">( pos:Int=0 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayerProgrammeCollection</span>		<span id="comment">holds all Programmes a player possesses</span>	</div>	<div id="elements">
 			<div id="element" class="even0">
 				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
@@ -525,7 +742,146 @@
 				</div>
 				
 			</div>
-			</div></div>	<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TContract</span>		<span id="comment">ad-contracts</span>	</div>	<div id="elements">
+			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TProgrammeElementBase</span>		<span id="comment"></span>	</div>	<div id="elements">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetID</span>
+						<span id="returns">:int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">id</span>
+						<span id="varType">:Int</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TProgrammeElement</span>		<span id="comment"></span>	</div>	<div id="elements">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">description</span>
+						<span id="varType">:String</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetDescription</span>
+						<span id="returns">:string</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetTitle</span>
+						<span id="returns">:string</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">title</span>
+						<span id="varType">:String</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TContractBase</span>		<span id="comment">contract base - straight from the DB</span>	</div>	<div id="elements">	</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TContract</span>		<span id="comment">ad-contracts</span>	</div>	<div id="elements">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">var</span>
+						<span id="name">contractBase</span>
+						<span id="varType">:TContractBase</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div id="comment"> holds real contract data<br></div>
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetActualPressure</span>
+						<span id="returns">:float</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetAcuteness</span>
+						<span id="returns">:float</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetAttractiveness</span>
+						<span id="returns">:Float</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetContractBase</span>
+						<span id="returns">:TContractBase</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
@@ -556,9 +912,9 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
-						<span id="name">GetMinAudience</span>
-						<span id="returns">:Int</span>
-						<span id="params">( playerID:Int=-1 )</span>
+						<span id="name">GetFinanceWeight</span>
+						<span id="returns">:float</span>
+						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -569,9 +925,9 @@
 				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
-						<span id="name">GetMinAudiencePercentage</span>
-						<span id="returns">:Float</span>
-						<span id="params">( dbvalue:Int = -1 )</span>
+						<span id="name">GetMinAudience</span>
+						<span id="returns">:Int</span>
+						<span id="params">( playerID:Int=-1 )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -582,9 +938,35 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
+						<span id="name">GetMinAudiencePercentage</span>
+						<span id="returns">:Float</span>
+						<span id="params">( dbvalue:Float = -1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
 						<span id="name">GetPenalty</span>
 						<span id="returns">:Int</span>
 						<span id="params">( baseValue:Int= -1, playerID:Int=-1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetPressure</span>
+						<span id="returns">:float</span>
+						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -621,6 +1003,32 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
+						<span id="name">GetSpotsSent</span>
+						<span id="returns">:int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetSpotsToSend</span>
+						<span id="returns">:int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
 						<span id="name">GetTargetGroup</span>
 						<span id="returns">:Int</span>
 						<span id="params">(  )</span>
@@ -637,6 +1045,58 @@
 						<span id="name">GetTargetGroupString</span>
 						<span id="returns">:String</span>
 						<span id="params">( group:Int=-1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetTitle</span>
+						<span id="returns">:string</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">SendMinimalBlocksToday</span>
+						<span id="returns">:int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even1">
+				<div id="header" class="even1">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">SendOptimalBlocksToday</span>
+						<span id="returns">:int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">SetAttractiveness</span>
+						<span id="returns"></span>
+						<span id="params">( value:Float )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -740,7 +1200,7 @@
 						<span id="typeString">method</span>
 						<span id="name">GetGenreRefreshModifier</span>
 						<span id="returns">:float</span>
-						<span id="params">(  )</span>
+						<span id="params">( genre:int=-1 )</span>
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -773,8 +1233,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetPrice</span>
@@ -786,8 +1246,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetPricePerBlock</span>
@@ -799,12 +1259,25 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">GetQualityLevel</span>
 						<span id="returns">:Int</span>
+						<span id="params">(  )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
+						<span id="name">GetRefreshModifier</span>
+						<span id="returns">:float</span>
 						<span id="params">(  )</span>
 						<div class="clear"></div>
 					</div>
@@ -928,7 +1401,7 @@
 				</div>
 				
 			</div>
-			</div></div>			<div id="type">	<div id="header">		<span id="name" class="LuaAll">TLuaFunctions</span>		<span id="comment"></span>	</div>	<div id="elements">
+			</div></div>												<div id="type">	<div id="header">		<span id="name" class="LuaAll">TLuaFunctions</span>		<span id="comment"></span>	</div>	<div id="elements">
 			<div id="element" class="even1">
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
@@ -1004,7 +1477,7 @@
 						<div class="clear"></div>
 					</div>
 				</div>
-				<div id="comment">LUA_br_getStationAudience LUA_br_getStationAudienceIncrease LUA_br_getStationPrice LUA_Kaufe Sender LUA_Verkaufe Sender  LUA_be_getSammyPoints LUA_be_getBettyLove LUA_be_getSammyGenre<br></div>
+				
 			</div>
 		
 			<div id="element" class="even1">
@@ -1553,6 +2026,19 @@
 				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
+						<span id="name">ne_doNewsInPlan</span>
+						<span id="returns">:Int</span>
+						<span id="params">( slot:int=1, ObjectID:Int = -1 )</span>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div id="comment">LUA_br_getStationAudience LUA_br_getStationAudienceIncrease LUA_br_getStationPrice LUA_Kaufe Sender LUA_Verkaufe Sender  LUA_be_getSammyPoints LUA_be_getBettyLove LUA_be_getSammyGenre<br></div>
+			</div>
+		
+			<div id="element" class="even0">
+				<div id="header" class="even0">
+					<div id="wrapper" class="LuaAll">
+						<span id="typeString">method</span>
 						<span id="name">of_doMovieInPlan</span>
 						<span id="returns">:Int</span>
 						<span id="params">( day:Int = -1, hour:Int = -1, ObjectID:Int = -1 )</span>
@@ -1562,8 +2048,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_doSpotInPlan</span>
@@ -1575,8 +2061,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_getMovie</span>
@@ -1588,8 +2074,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_getPlayerSpot</span>
@@ -1601,8 +2087,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_getPlayerSpotCount</span>
@@ -1614,8 +2100,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_getSpot</span>
@@ -1627,8 +2113,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_getSpotBeenSent</span>
@@ -1640,8 +2126,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_getSpotDaysLeft</span>
@@ -1653,8 +2139,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">of_getSpotWillBeSent</span>
@@ -1666,8 +2152,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">PLAYER1</span>
@@ -1678,8 +2164,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">PLAYER2</span>
@@ -1690,8 +2176,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">PLAYER3</span>
@@ -1702,8 +2188,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">PLAYER4</span>
@@ -1714,8 +2200,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">PrintOut</span>
@@ -1727,8 +2213,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ADAGENCY</span>
@@ -1739,8 +2225,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ARCHIVE_PLAYER1</span>
@@ -1751,8 +2237,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ARCHIVE_PLAYER2</span>
@@ -1763,8 +2249,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ARCHIVE_PLAYER3</span>
@@ -1775,8 +2261,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ARCHIVE_PLAYER4</span>
@@ -1787,8 +2273,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ARCHIVE_PLAYER_ME</span>
@@ -1799,8 +2285,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_BETTY</span>
@@ -1811,8 +2297,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_BOSS_PLAYER1</span>
@@ -1823,8 +2309,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_BOSS_PLAYER2</span>
@@ -1835,8 +2321,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_BOSS_PLAYER3</span>
@@ -1847,8 +2333,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_BOSS_PLAYER4</span>
@@ -1859,8 +2345,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_BOSS_PLAYER_ME</span>
@@ -1871,8 +2357,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_FRDUBAN</span>
@@ -1883,8 +2369,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_GUNSAGENCY</span>
@@ -1895,8 +2381,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_MOVIEAGENCY</span>
@@ -1907,8 +2393,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_NEWSAGENCY_PLAYER1</span>
@@ -1919,8 +2405,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_NEWSAGENCY_PLAYER2</span>
@@ -1931,8 +2417,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_NEWSAGENCY_PLAYER3</span>
@@ -1943,8 +2429,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_NEWSAGENCY_PLAYER4</span>
@@ -1955,8 +2441,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_NEWSAGENCY_PLAYER_ME</span>
@@ -1967,8 +2453,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_NOTOBACCO</span>
@@ -1979,8 +2465,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_OFFICE_PLAYER1</span>
@@ -1991,8 +2477,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_OFFICE_PLAYER2</span>
@@ -2003,8 +2489,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_OFFICE_PLAYER3</span>
@@ -2015,8 +2501,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_OFFICE_PLAYER4</span>
@@ -2027,8 +2513,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_OFFICE_PLAYER_ME</span>
@@ -2039,8 +2525,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_PEACEBROTHERS</span>
@@ -2051,8 +2537,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_PORTER</span>
@@ -2063,8 +2549,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ROOMAGENCY</span>
@@ -2075,8 +2561,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_ROOMBOARD</span>
@@ -2087,8 +2573,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_SCRIPTAGENCY</span>
@@ -2099,8 +2585,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_STUDIOSIZE1_PLAYER_ME</span>
@@ -2111,8 +2597,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_STUDIOSIZE_PLAYER1</span>
@@ -2123,8 +2609,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_STUDIOSIZE_PLAYER2</span>
@@ -2135,8 +2621,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_STUDIOSIZE_PLAYER3</span>
@@ -2147,8 +2633,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_STUDIOSIZE_PLAYER4</span>
@@ -2159,8 +2645,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_SUPERMARKET</span>
@@ -2171,8 +2657,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_TOBACCOLOBBY</span>
@@ -2183,8 +2669,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_TOWER</span>
@@ -2195,8 +2681,8 @@
 				<div id="comment">Die Räume werden alle initialisiert<br></div>
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">var</span>
 						<span id="name">ROOM_VRDUBAN</span>
@@ -2207,8 +2693,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">sa_doBuySpot</span>
@@ -2220,8 +2706,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">sa_getSpot</span>
@@ -2233,8 +2719,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">sa_getSpotCount</span>
@@ -2246,8 +2732,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
+			<div id="element" class="even1">
+				<div id="header" class="even1">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">SendToChat</span>
@@ -2259,8 +2745,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">SetPlayerTargetPosX</span>
@@ -2272,86 +2758,8 @@
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SpotAudience</span>
-						<span id="returns">:Int</span>
-						<span id="params">( spotId:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
 			<div id="element" class="even1">
 				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SpotMaxDays</span>
-						<span id="returns">:Int</span>
-						<span id="params">( spotId:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SpotPenalty</span>
-						<span id="returns">:Int</span>
-						<span id="params">( spotId:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SpotProfit</span>
-						<span id="returns">:Int</span>
-						<span id="params">( spotId:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SpotTargetgroup</span>
-						<span id="returns">:Int</span>
-						<span id="params">( spotId:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SpotToSend</span>
-						<span id="returns">:Int</span>
-						<span id="params">( spotId:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">Weekday</span>
@@ -2363,8 +2771,8 @@
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
+			<div id="element" class="even0">
+				<div id="header" class="even0">
 					<div id="wrapper" class="LuaAll">
 						<span id="typeString">method</span>
 						<span id="name">_PlayerInRoom</span>
@@ -2375,43 +2783,6 @@
 				</div>
 				
 			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TFigures</span>		<span id="comment">Summary: all kind of characters walking through the building (players, terrorists and so on)</span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">ChangeTarget</span>
-						<span id="returns"></span>
-						<span id="params">( x:Int=null, y:Int=null )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">pos</span>
-						<span id="varType">:TPosition</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">pos.y is difference to y of building<br></div>
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">target</span>
-						<span id="varType">:TPosition</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div>	
+			</div></div>							
 
-</body><div style="display: none; " id="R0OCTNHSmraGNnM3" class="utQEgMC4mTAaQbdmwwy26"></div><div style="display: none; " id="zXaYYQSCUUjvY4piFDcvdXCk" class="utQEgMC4mTAaQbdmwwy26"></div><div style="display: none; " id="CUtcR0lQmjzHDg8gh7" class="utQEgMC4mTAaQbdmwwy26"></div><link rel="stylesheet" type="text/css" href="data:text/css,"></html>
+</body></html>
