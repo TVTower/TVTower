@@ -653,7 +653,7 @@ Type RoomHandler_Office extends TRoomHandler
 			If PPprogrammeList.GetOpen() = 0 And PPcontractList.GetOpen() = 0
 				For Local ProgrammeBlock:TProgrammeBlock = EachIn Players[room.owner].ProgrammePlan.ProgrammeBlocks
 					If ProgrammeBlock.sendHour >= Game.daytoplan*24 AND ProgrammeBlock.sendHour <= Game.daytoplan*24+24 And..
-					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.width, ProgrammeBlock.height*ProgrammeBlock.programme.blocks)
+					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.rect.GetW(), ProgrammeBlock.rect.GetH()*ProgrammeBlock.programme.blocks)
 						If Programmeblock.sendHour > game.getDay()*24 + game.GetHour()
 							Game.cursorstate = 1
 						EndIf
@@ -664,7 +664,7 @@ Type RoomHandler_Office extends TRoomHandler
 					EndIf
 				Next
 				For Local AdBlock:TAdBlock = EachIn Players[ room.owner ].ProgrammePlan.AdBlocks
-					If AdBlock.senddate = Game.daytoplan And functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.width, AdBlock.Height)
+					If AdBlock.senddate = Game.daytoplan And functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.rect.GetW(), AdBlock.rect.GetH())
 						Game.cursorstate = 1
 						If MouseX() <= 400 then AdBlock.ShowSheet(358,20);Exit else AdBlock.ShowSheet(30,20);Exit
 					EndIf
@@ -1031,7 +1031,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			'skip problematic ones
 			if not obj.Programme then continue
 
-			if functions.IsIn(MouseX(), MouseY(), obj.Pos.x, obj.Pos.y, obj.width, obj.height)
+			If obj.rect.containsXY( MouseX(), MouseY() )
 				If obj.dragged = 0 then obj.Programme.ShowSheet(30,20)
 				Exit
 			EndIf
@@ -1063,7 +1063,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			'skip problematic ones
 			if not obj.Programme then exit
 
-			if functions.IsIn(MouseX(), MouseY(), obj.Pos.x, obj.Pos.y, obj.width, obj.height)
+			If obj.rect.containsXY( MouseX(), MouseY() )
 				If obj.dragged = 0 then game.cursorstate = 1 else game.cursorstate = 2
 				Exit
 			EndIf
@@ -1121,12 +1121,12 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			If obj.owner > 0 and obj.owner <> Game.playerID then continue
             If not obj.Programme then continue
 
-			If obj.dragged = 1 OR functions.IsIn(MouseX(), MouseY(), obj.Pos.x, obj.Pos.y, obj.width, obj.height)
+			If obj.dragged OR obj.rect.containsXY( MouseX(), MouseY() )
 				If obj.dragged Then game.cursorstate = 2 Else Game.cursorstate = 1
 				SetColor 0,0,0
 				SetAlpha 0.2
 				Local x:Float = 120 + Assets.GetSprite("gfx_datasheets_movie").w - 20
-				Local tri:Float[]=[x,45.0,x,90.0,obj.Pos.x+obj.width/2.0+3,obj.Pos.y+obj.height/2.0]
+				Local tri:Float[]=[x,45.0,x,90.0,obj.rect.GetX()+obj.rect.GetW()/2.0+3,obj.rect.GetY()+obj.rect.getH()/2.0]
 				DrawPoly(tri)
 				SetColor 255,255,255
 				SetAlpha 1.0
@@ -1509,7 +1509,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		TContractBlock.DrawAll(True)
 		For Local LocObject:TContractBlock= EachIn TContractBlock.List
 			If locobject.owner <=0 Or locobject.owner=Game.playerID And..
-			   functions.IsIn(MouseX(), MouseY(), LocObject.Pos.x, locobject.Pos.y, locobject.width, locobject.height)
+			   LocObject.rect.containsXY( MouseX(), MouseY() )
 				If LocObject.contract <> Null
 					If LocObject.contract.owner <> 0
 						Local block:TAdBlock = TAdblock.GetBlockByContract(LocObject.contract)
@@ -1646,7 +1646,7 @@ End Type
 
 
 'signs used in elevator-plan /room-plan
-Type TRoomSigns Extends TBlock
+Type TRoomSigns Extends TBlockMoveable
   Field title:String				= ""
   Field image:TGW_Sprites			= null
   Field imageWithText:TGW_Sprites	= null
@@ -1660,9 +1660,6 @@ Type TRoomSigns Extends TBlock
 
   Function Create:TRoomSigns(text:String="unknown", x:Int=0, y:Int=0, owner:Int=0)
 	  Local LocObject:TRoomSigns=New TRoomSigns
-	  LocObject.Pos 	= TPoint.Create(x, y)
-	  LocObject.OrigPos	= TPoint.Create(x, y)
-	  LocObject.StartPos= TPoint.Create(x, y)
 
  	  LocObject.dragable = 1
 	  LocObject.owner = owner
@@ -1670,8 +1667,9 @@ Type TRoomSigns Extends TBlock
 
  	  Locobject.image			= Assets.GetSprite("gfx_elevator_sign"+owner)
  	  Locobject.image_dragged	= Assets.GetSprite("gfx_elevator_sign_dragged"+owner)
- 	  LocObject.width			= LocObject.image.w
- 	  LocObject.Height			= LocObject.image.h - 1
+	  LocObject.OrigPos			= TPoint.Create(x, y)
+	  LocObject.StartPos		= TPoint.Create(x, y)
+	  LocObject.rect 			= TRectangle.Create(x,y, LocObject.image.w, LocObject.image.h - 1)
  	  LocObject.title			= text
  	  List.AddLast(LocObject)
  	  SortList List
@@ -1690,7 +1688,7 @@ Type TRoomSigns Extends TBlock
 
     Function ResetPositions()
 		For Local obj:TRoomSigns = EachIn TRoomSigns.list
-			obj.Pos.SetPos(obj.OrigPos)
+			obj.rect.position.SetPos(obj.OrigPos)
 			obj.StartPos.SetPos(obj.OrigPos)
 			obj.dragged	= 0
 		Next
@@ -1710,8 +1708,8 @@ Type TRoomSigns Extends TBlock
     End Method
 
     Method GetSlotOfBlock:Int()
-    	If Pos.x = 589 then Return 12+(Int(Floor(StartPos.y - 17) / 30))
-    	If Pos.x = 262 then Return 1*(Int(Floor(StartPos.y - 17) / 30))
+    	If rect.GetX() = 589 then Return 12+(Int(Floor(StartPos.y - 17) / 30))
+    	If rect.GetX() = 262 then Return 1*(Int(Floor(StartPos.y - 17) / 30))
     	Return -1
     End Method
 
@@ -1723,12 +1721,12 @@ Type TRoomSigns Extends TBlock
 		If dragged = 1
 			If TRoomSigns.AdditionallyDragged > 0 Then SetAlpha 1- 1/TRoomSigns.AdditionallyDragged * 0.25
 			if image_dragged <> null
-				image_dragged.Draw(Pos.x,Pos.y)
-				If imagewithtext <> Null then imagewithtext.Draw(Pos.x,Pos.y)
+				image_dragged.Draw(rect.GetX(),rect.GetY())
+				If imagewithtext <> Null then imagewithtext.Draw(rect.GetX(),rect.GetY())
 			endif
 		Else
 			If imagewithtext <> Null
-				imagewithtext.Draw(Pos.x,Pos.y)
+				imagewithtext.Draw(rect.GetX(),rect.GetY())
 			Elseif image
 				local newimgwithtext:Timage = image.GetImageCopy()
 				Local font:TBitmapFont = Assets.GetFont("Default",9, BOLDFONT)
@@ -1765,7 +1763,7 @@ Type TRoomSigns Extends TBlock
 				If DraggingAllowed And locObj.dragable
 					'if right mbutton clicked and block dragged: reset coord of block
 					If MOUSEMANAGER.IsHit(2) And locObj.dragged
-						locObj.SetCoords(locObj.StartPos.x, locObj.StartPos.y, 1000, 1000)
+						locObj.SetCoords(locObj.StartPos.x, locObj.StartPos.y)
 						locObj.dragged = False
 						MOUSEMANAGER.resetKey(2)
 					EndIf
@@ -1775,12 +1773,12 @@ Type TRoomSigns Extends TBlock
 						'search for underlaying block (we have a block dragged already)
 						If locObj.dragged
 							'obj over old position - drop ?
-							If functions.IsIn(MouseX(),MouseY(),LocObj.StartPosBackup.x,locobj.StartPosBackup.y,locobj.width,locobj.height)
+							If functions.IsIn(MouseX(),MouseY(),LocObj.StartPosBackup.x,locobj.StartPosBackup.y,locobj.rect.GetW(),locobj.rect.GetH())
 								locObj.dragged = False
 							EndIf
 
 							'want to drop in origin-position
-							If locObj.ContainingCoord(MouseX(), MouseY())
+							If locObj.containsCoord(MouseX(), MouseY())
 								locObj.dragged = False
 								MouseManager.resetKey(1)
 								If Self.DebugMode=1 Then Print "roomboard: dropped to original position"
@@ -1788,7 +1786,7 @@ Type TRoomSigns Extends TBlock
 							Else
 								For Local OtherLocObj:TRoomSigns = EachIn TRoomSigns.List
 									If OtherLocObj <> Null
-										If OtherLocObj.ContainingCoord(MouseX(), MouseY()) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
+										If OtherLocObj.containsCoord(MouseX(), MouseY()) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
 '											If game.networkgame Then
 '												Network.SendMovieAgencyChange(Network.NET_SWITCH, game.playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
 '			  								End If
@@ -1801,7 +1799,7 @@ Type TRoomSigns Extends TBlock
 								Next
 							EndIf		'end: drop in origin or search for other obj underlaying
 						Else			'end: an obj is dragged
-							If LocObj.ContainingCoord(MouseX(), MouseY())
+							If LocObj.containsCoord(MouseX(), MouseY())
 								locObj.dragged = 1
 								MouseManager.resetKey(1)
 							EndIf
@@ -1814,9 +1812,9 @@ Type TRoomSigns Extends TBlock
 			If locObj.dragged = 1
 				TRoomSigns.AdditionallyDragged :+1
 				Local displacement:Int = TRoomSigns.AdditionallyDragged *5
-				locObj.setCoords(MouseX() - locObj.width/2 - displacement, 11+ MouseY() - locObj.height/2 - displacement)
+				locObj.setCoords(MouseX() - locObj.rect.GetW()/2 - displacement, 11+ MouseY() - locObj.rect.GetH()/2 - displacement)
 			Else
-				locObj.SetCoords(locObj.StartPos.x, locObj.StartPos.y,1000,1000)
+				locObj.SetCoords(locObj.StartPos.x, locObj.StartPos.y)
 			EndIf
 		Next
 		ReverseList TRoomSigns.list 'reorder: first are not dragged obj
@@ -1837,14 +1835,14 @@ Type TRoomSigns Extends TBlock
 		Local _height:Int = Assets.GetSprite("gfx_elevator_sign_bg").h
 
 		For Local room:TRoomSigns = EachIn TRoomSigns.List
-			If room.Pos.x >= 0
+			If room.rect.GetX() >= 0
 				Local signfloor:Int = (13 - Ceil((MouseY() -41) / 23))
 				Local xpos:Int = 0
-				If room.Pos.x = 26 Then xpos = 1
-				If room.Pos.x = 208 Then xpos = 2
-				If room.Pos.x = 417 Then xpos = 3
-				If room.Pos.x = 599 Then xpos = 4
-				If functions.IsIn(_x, _y, room.Pos.x, room.Pos.y, _width, _height)
+				If room.rect.GetX() = 26 Then xpos = 1
+				If room.rect.GetX() = 208 Then xpos = 2
+				If room.rect.GetX() = 417 Then xpos = 3
+				If room.rect.GetX() = 599 Then xpos = 4
+				If functions.IsIn(_x, _y, room.rect.GetX(), room.rect.GetY(), _width, _height)
 					Local clickedroom:TRooms = TRooms.GetRoomFromMapPos(xpos, signfloor)
 					print "GetRoomFromXY : "+clickedroom.name
 					return clickedroom

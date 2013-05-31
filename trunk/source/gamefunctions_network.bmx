@@ -572,8 +572,8 @@ Type TNetworkHelper
 		obj.setInt(1, playerID)
 		obj.setInt(2, remove)
 		obj.setInt(3, block.id)
-		obj.setFloat(4, block.Pos.x)
-		obj.setFloat(5, block.Pos.y)
+		obj.setFloat(4, block.rect.GetX())
+		obj.setFloat(5, block.rect.GetY())
 		obj.setFloat(6, block.StartPos.x)
 		obj.setFloat(7, block.StartPos.y)
 		obj.setInt(8, block.paid)
@@ -588,8 +588,8 @@ Type TNetworkHelper
 
 		local remove:int		= obj.getInt(2)
 		local blockID:int		= obj.getInt(3)
-		local pos:TPoint 	= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
-		local startpos:TPoint= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
+		local pos:TPoint 		= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
+		local startpos:TPoint	= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
 		local paid:int			= obj.getInt(8)
 		local newsID:int		= obj.getInt(9)
 		local sendslot:int		= obj.getInt(10)
@@ -601,7 +601,7 @@ Type TNetworkHelper
 		If Not paid Then newsblock.Pay()
 		newsblock.sendslot	= sendslot
 		newsblock.owner		= playerID
-		newsblock.Pos		= pos
+		newsblock.rect.position		= pos
 		newsblock.StartPos	= startpos
 		print "NET: NewsChange - "+remove+": "+newsblock.news.title
 	End Method
@@ -614,8 +614,8 @@ Type TNetworkHelper
 		obj.setInt(1, playerID)
 		obj.setInt(2, add)
 		obj.setInt(3, block.id)
-		obj.setFloat(4, block.Pos.x)
-		obj.setFloat(5, block.Pos.y)
+		obj.setFloat(4, block.rect.GetX())
+		obj.setFloat(5, block.rect.GetY())
 		obj.setFloat(6, block.StartPos.x)
 		obj.setFloat(7, block.StartPos.y)
 		obj.setInt(8, block.senddate)
@@ -648,7 +648,7 @@ Type TNetworkHelper
 
 		Adblock.senddate			= senddate
 		Adblock.sendtime			= sendtime
-		AdBlock.Pos					= pos
+		AdBlock.rect.position		= pos
 		AdBlock.StartPos			= startpos
 
 		Players[ playerID ].ProgrammePlan.RefreshAdPlan( senddate )
@@ -670,8 +670,8 @@ Type TNetworkHelper
 		obj.setInt(1, playerID)
 		obj.setInt(2, add)
 		obj.setInt(3, block.id)
-		obj.setFloat(4, block.Pos.x)
-		obj.setFloat(5, block.Pos.y)
+		obj.setFloat(4, block.rect.GetX())
+		obj.setFloat(5, block.rect.GetY())
 		obj.setFloat(6, block.StartPos.x)
 		obj.setFloat(7, block.StartPos.y)
 		obj.setInt(8, block.sendhour)
@@ -701,9 +701,9 @@ Type TNetworkHelper
 			'Print "NET: ADDED NEW programme"
 		endif
 
-		programmeBlock.sendhour = sendhour
-		programmeBlock.Pos		= pos
-		programmeBlock.StartPos	= startpos
+		programmeBlock.sendhour 		= sendhour
+		programmeBlock.rect.position	= pos
+		programmeBlock.StartPos			= startpos
 
 		If add
 			Players[ playerID ].ProgrammePlan.AddProgrammeBlock( Programmeblock )

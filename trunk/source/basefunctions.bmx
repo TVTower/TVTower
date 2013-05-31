@@ -349,8 +349,8 @@ End Type
 
 
 Type TRectangle {_exposeToLua="selected"}
-	Field position:TPoint {_exposeToLua}
-	Field dimension:TPoint {_exposeToLua}
+	Field position:TPoint {_exposeToLua saveload="normal"}
+	Field dimension:TPoint {_exposeToLua saveload="normal"}
 
 	Function Create:TRectangle(x:Float=0.0,y:Float=0.0, w:float=0.0, h:float=0.0)
 		local obj:TRectangle = new TRectangle
@@ -361,8 +361,8 @@ Type TRectangle {_exposeToLua="selected"}
 
 	'does the rects overlap?
 	Method Intersects:int(rect:TRectangle) {_exposeToLua}
-		if self.IntersectsXY( rect.GetX(), rect.GetY() ) OR ..
-		   self.IntersectsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() )
+		if self.containsXY( rect.GetX(), rect.GetY() ) OR ..
+		   self.containsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() )
 			return true
 		endif
 
@@ -370,12 +370,12 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 	'does the point overlap?
-	Method IntersectsPoint:int(point:TPoint) {_exposeToLua}
-		return self.IntersectsXY( point.GetX(), point.GetY() )
+	Method containsPoint:int(point:TPoint) {_exposeToLua}
+		return self.containsXY( point.GetX(), point.GetY() )
 	End Method
 
 	'does the rect overlap with the coordinates?
-	Method IntersectsXY:int(x:float, y:float) {_exposeToLua}
+	Method containsXY:int(x:float, y:float) {_exposeToLua}
 		If x >= self.position.GetX() And x <= self.position.GetX() + self.dimension.GetX() And..
 		   y >= self.position.GetY() And y <= self.position.GetY() + self.dimension.GetY()
 			Return 1
@@ -481,7 +481,7 @@ Type TPoint {_exposeToLua="selected"}
 	End Method
 
 	Method isInRect:int(rect:TRectangle)
-		return rect.IntersectsPoint(self)
+		return rect.containsPoint(self)
 	End Method
 	
 	Method DistanceTo:float(otherPoint:TPoint, withZ:int = true)

@@ -695,7 +695,7 @@ End Type
 		gfx_Rect.GetSprite(nameBase+"Back").TileDraw(x + gfx_Rect.GetSprite(nameBase+"TopLeft").w, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, width - gfx_Rect.GetSprite(nameBase+"TopLeft").w - gfx_Rect.GetSprite(nameBase+"TopRight").w, Height - gfx_Rect.GetSprite(nameBase+"TopLeft").h - gfx_Rect.GetSprite(nameBase+"BottomLeft").h)
 	End Function
 
-Type TBlockGraphical extends TBlock
+Type TBlockGraphical extends TBlockMoveable
 	Field imageBaseName:string
 	Field imageDraggedBaseName:string
 	Field image:TGW_Sprites
@@ -704,18 +704,17 @@ Type TBlockGraphical extends TBlock
 
 End Type
 
-Type TBlock
-  Field dragable:Int			= 1 {saveload = "normalExt"}
-  Field dragged:Int				= 0 {saveload = "normalExt"}
-  Field Pos:TPoint				= TPoint.Create(0, 0) {saveload = "normal"}
-  Field OrigPos:TPoint 			= TPoint.Create(0, 0) {saveload = "normalExtB"}
-  Field StartPos:TPoint			= TPoint.Create(0, 0) {saveload = "normalExt"}
-  Field StartPosBackup:TPoint	= TPoint.Create(0, 0)
-  Field owner:Int				= 0 {saveload="normalExt"}
-  Field Height:Int {saveload = "normalExt"}
-  Field width:Int {saveload = "normalExt"}
-  Field id:int
-  Global LastID:int = 0
+Type TBlockMoveable
+	Field rect:TRectangle			= TRectangle.Create(0,0,0,0)
+	Field dragable:Int				= 1 {saveload = "normalExt"}
+	Field dragged:Int				= 0 {saveload = "normalExt"}
+	Field OrigPos:TPoint 			= TPoint.Create(0, 0) {saveload = "normalExtB"}
+	Field StartPos:TPoint			= TPoint.Create(0, 0) {saveload = "normalExt"}
+	Field StartPosBackup:TPoint		= TPoint.Create(0, 0)
+	Field owner:Int					= 0 {saveload="normalExt"}
+	Field id:int
+
+	Global LastID:int = 0
 
 	Method GenerateID()
 		Self.id = Self.LastID
@@ -724,50 +723,46 @@ Type TBlock
 
 
 	'switches coords and state of blocks
-	Method SwitchBlock(otherObj:TBlock)
-		Local old:Int
+	Method SwitchBlock(otherObj:TBlockMoveable)
 		Self.SwitchCoords(otherObj)
-		old = Self.dragged
-		Self.dragged = otherObj.dragged
-		otherObj.dragged = old
+		Local old:Int	= Self.dragged
+		Self.dragged	= otherObj.dragged
+		otherObj.dragged= old
 	End Method
 
 	'switches current and startcoords of two blocks
-	Method SwitchCoords(otherObj:TBlock)
-		TPoint.SwitchPos(Self.Pos, 				otherObj.Pos)
+	Method SwitchCoords(otherObj:TBlockMoveable)
+		TPoint.SwitchPos(Self.rect.position, 	otherObj.rect.position)
 		TPoint.SwitchPos(Self.StartPos,			otherObj.StartPos)
 		TPoint.SwitchPos(Self.StartPosBackup,	otherObj.StartPosBackup)
 	End Method
 
-	'checks if _x, _y is within starTPoint+dimension
-	Method ContainingCoord:Byte(_x:Int, _y:Int)
-		return TFunctions.IsIn(_x,_y, Self.StartPos.x, Self.StartPos.y, Self.width, Self.height)
+	'checks if x, y are within startPoint+dimension
+	Method containsCoord:Byte(x:Int, y:Int)
+		return TFunctions.IsIn( x,y, Self.StartPos.GetX(), Self.StartPos.GetY(), Self.rect.GetW(), Self.rect.getH() )
 	End Method
 
-	Method SetCoords(_x:Int=1000, _y:Int=1000, _startx:Int=1000, _starty:Int=1000)
-      If _x<>1000 		 Then Self.pos.SetX(_x)
-      If _y<>1000		 Then Self.pos.SetY(_y)
-      If _startx <> 1000 Then Self.StartPos.setX(_startx)
-      If _starty <> 1000 Then Self.StartPos.SetY(_starty)
+	Method SetCoords(x:Int=NULL, y:Int=NULL, startx:Int=NULL, starty:Int=NULL)
+      If x<>NULL 		Then Self.rect.position.SetX(x)
+      If y<>NULL		Then Self.rect.position.SetY(y)
+      If startx<>NULL	Then Self.StartPos.setX(startx)
+      If starty<>NULL	Then Self.StartPos.SetY(starty)
 	End Method
 
-	Method SetBasePos(_pos:TPoint = null)
-		if _pos <> null then self.pos.setPos(_pos); self.StartPos.setPos(_pos)
-	End Method
-
-	Method SetBaseCoords(_x:Int = 1000, _y:Int = 1000)
-      If _x <> 1000 Then Self.Pos.SetX(_x);Self.StartPos.SetX(_x)
-      If _y <> 1000 Then Self.Pos.SetY(_y);Self.StartPos.SetY(_y)
+	Method SetBasePos(pos:TPoint = null)
+		if pos <> null
+			self.rect.position.setPos(pos)
+			self.StartPos.setPos(pos)
+		endif
 	End Method
 
 	Method IsAtStartPos:Int()
-		If Abs(Self.pos.x - Self.StartPos.x)<=1 And Abs(Self.pos.y - Self.StartPos.y)<=1 Then Return True
-		Return False
+		return self.rect.position.isSame(self.StartPos, true)
 	End Method
 
 	Function SortDragged:int(o1:object, o2:object)
-		Local s1:TBlock = TBlock(o1)
-		Local s2:TBlock = TBlock(o2)
+		Local s1:TBlockMoveable = TBlockMoveable(o1)
+		Local s2:TBlockMoveable = TBlockMoveable(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
 		Return (s1.dragged * 100)-(s2.dragged * 100)
 	End Function
