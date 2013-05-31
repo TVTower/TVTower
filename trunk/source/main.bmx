@@ -1827,8 +1827,7 @@ Type TNewsAgency
 
 	Method AddNewsToPlayer(news:TNews, forPlayer:Int=-1, fromNetwork:Int=0)
 		'only add news/newsblock if player is Host/Player OR AI
-		if not Game.isLocalPlayer(forPlayer) AND not Game.isAIPlayer(forPlayer) then return
-
+		if not Game.isLocalPlayer(forPlayer) AND not Game.isAIPlayer(forPlayer) then return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Players[ forPlayer ].newsabonnements[news.genre] > 0
 			TNewsBlock.Create("",0,-100, forPlayer, 60*(3-Players[ forPlayer ].newsabonnements[news.genre]), news)
 			If Game.isGameLeader() And Not fromNetwork And Game.networkgame Then NetworkHelper.SendNews( forPlayer, news)

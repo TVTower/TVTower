@@ -63,19 +63,39 @@ function JobNewsAgency:Prepare(pParams)
 end
 
 function JobNewsAgency:Tick()
-	--for k,v in pairs(self.Newslist) do
-	--	if (v.paid = false) then
-	--		v.pay
-	--	end
-	--end
+	if (table.count(self.Newslist) > 0) then
+		debugMsg("Do news in plan: " .. self.Newslist[1].id .. " -> 1")
+		TVT.ne_doNewsInPlan(0)
+		TVT.ne_doNewsInPlan(0, self.Newslist[1].id)
+	end
+	if (table.count(self.Newslist) > 1) then
+		debugMsg("Do news in plan: " .. self.Newslist[2].id .. " -> 2")
+		TVT.ne_doNewsInPlan(1)
+		TVT.ne_doNewsInPlan(1, self.Newslist[2].id)
+	end
+	if (table.count(self.Newslist) > 2) then
+		debugMsg("Do news in plan: " .. self.Newslist[3].id .. " -> 3")
+		TVT.ne_doNewsInPlan(2)
+		TVT.ne_doNewsInPlan(2, self.Newslist[3].id)
+	end
+	self.Status = JOB_STATUS_DONE
 end
 
 function JobNewsAgency:GetNewsList()
-	local currentNewsList = {}
+	local currentNewsList = {}	
+	
 	for i = 0, MY.ProgrammePlan.GetNewsCount() - 1 do
 		local news = MY.ProgrammePlan.GetNewsFromList(i)
-		table.insert(currentNewsList, news)
+		if (news.IsReadyToPublish() == 1) then
+			table.insert(currentNewsList, news)
+		end
 	end
+	
+	local sortMethod = function(a, b)
+		return a.news.GetAttractiveness() > b.news.GetAttractiveness()
+	end
+	table.sort(currentNewsList, sortMethod)	
+	
 	return currentNewsList
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

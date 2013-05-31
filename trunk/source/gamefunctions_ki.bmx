@@ -641,7 +641,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method ne_doNewsInPlan:Int(slot:int=1, ObjectID:Int = -1)
-		If Not _PlayerInRoom("newsroom", True) Then Return self.RESULT_WRONGROOM
+		If Not (_PlayerInRoom("newsroom", True) or _PlayerInRoom("news", True)) Then Return self.RESULT_WRONGROOM
 
 		'Es ist egal ob ein Spieler einen Schluessel fuer den Raum hat,
 		'Es ist nur schauen erlaubt fuer "Fremde"
@@ -651,13 +651,12 @@ Type TLuaFunctions {_exposeToLua}
 			Local Obj:TNewsBlock = Players[ self.ME ].ProgrammePlan.GetNewsBlockFromSlot(slot)
 			If not Obj then Return self.RESULT_NOTFOUND
 
-			Players[ self.ME ].ProgrammePlan.RemoveNewsBlock(obj)
+			'Players[ self.ME ].ProgrammePlan.RemoveNewsBlock(obj)
 
 			Return self.RESULT_OK
 		Else
 			Local obj:TNewsBlock = Players[ self.ME ].ProgrammePlan.GetNewsBlock(ObjectID)
 			If not obj then Return self.RESULT_NOTFOUND
-
 			Players[ self.ME ].ProgrammePlan.SetNewsBlockSlot(obj, slot)
 			
 			Return self.RESULT_OK

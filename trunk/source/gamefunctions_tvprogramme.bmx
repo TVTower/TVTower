@@ -149,16 +149,27 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			NewsBlock.Pay()
 		EndIf
 
-		newsblock.sendslot = slot
+		newsblock.sendslot = slot		
+		
 		if slot>=0
 			'add to slot
+			
+			'TODO: Versuch einer Lösung... aber sehr schlecht... ein Plan
+			newsblock.Pos.setXY( 445, 106 + slot * Assets.getSprite("gfx_news_sheet0").h )
+			newsBlock.StartPos.SetPos(newsBlock.Pos)			
+			
 			If game.networkgame Then NetworkHelper.SendPlanNewsChange(newsblock.owner, newsblock, 1)
 		else
 			'remove from slot
+			'newsblock.Pos.setXY(35, 22 + i * Assets.getSprite("gfx_news_sheet0").h)
 			If game.networkgame Then NetworkHelper.SendPlanNewsChange(newsblock.owner, newsblock, 0)
 		endif
     End Method
 
+	Method ClearNewsBlockSlot:int(slot:int)
+		Local NewsBlock:TNewsBlock = GetNewsBlockFromSlot(slot)
+		NewsBlock.sendslot = -1
+	End Method
 
 	Method GetNewsBlock:TNewsBlock(id:Int) {_exposeToLua}
 		For Local obj:TNewsBlock = EachIn Self.NewsBlocks
@@ -168,26 +179,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	EndMethod
 
 	Method GetNewsCount:Int() {_exposeToLua}
-		Local result:Int = 0
-		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			If NewsBlock.owner = Game.playerID
-				result = result + 1
-			EndIf
-		Next
-		Return result	
+		Return Self.NewsBlocks.count()
 	End Method
 	
 	Method GetNewsFromList:TNewsBlock(pos:Int=0) {_exposeToLua}
-		Local result:Int = 0
-		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			If NewsBlock.owner = Game.playerID				
-				If pos = result
-					Return NewsBlock
-				EndIf
-				result = result + 1
-			EndIf
-		Next
-		Return Null	
+		Return TNewsBlock( NewsBlocks.ValueAtIndex(pos) )
 	End Method
 
 	Method GetNewsBlockFromSlot:TNewsBlock(sendslot:Int=0) {_exposeToLua}
@@ -284,14 +280,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 							If NewsBlock.IsAtStartPos()
 								'place on ground, pay if needed etc.
 								NewsBlock.Drop()
-
+								
 								Self.NewsBlocks.sort(True, TNewsBlock.sort)
 							EndIf
 						EndIf
 					EndIf
 				EndIf
 				If NewsBlock.dragged = 1
-					TNewsBlock.AdditionallyDragged = TNewsBlock.AdditionallyDragged +1
+					TNewsBlock.AdditionallyDragged = TNewsBlock.AdditionallyDragged +1					
 					NewsBlock.Pos.SetXY(MouseX() - NewsBlock.width /2 - TNewsBlock.AdditionallyDragged *5, MouseY() - NewsBlock.height /2 - TNewsBlock.AdditionallyDragged *5)
 				EndIf
 				If NewsBlock.dragged = 0
@@ -1565,7 +1561,7 @@ endrem
 	End Method
  End Type
 
-Type TNews Extends TProgrammeElement
+Type TNews Extends TProgrammeElement {_exposeToLua="selected"}
   Field Genre:Int
   Field quality:Int
   Field price:Int
@@ -1701,6 +1697,10 @@ endrem
 
 	Method ComputeTopicality:Float()
 		Return Max(0, Int(255-10*((Game.day*10000+game.GetHour()*100+game.GetMinute()) - (happenedday*10000+happenedhour*100+happenedminute))/100) )'simplest form ;D
+	End Method
+
+	Method GetAttractiveness:Float() {_exposeToLua}
+		Return 0.35*((quality+5)/255) + 0.5*ComputeTopicality()/255 + 0.15
 	End Method
 
 	'computes a percentage which could be multiplied with maxaudience
@@ -2743,14 +2743,14 @@ Type TProgrammeBlock Extends TBlockGraphical
     End Method
 End Type
 
-Type TNewsBlock Extends TBlockGraphical
+Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
 	Field State:Int 		= 0 	{saveload = "normal"}
     Field sendslot:Int 		= -1 	{saveload = "normal"} 'which day this news is planned to be send?
     Field publishdelay:Int 	= 0		{saveload = "normal"} 'value added to publishtime when compared with Game.minutesOfDayGone to delay the "usabilty" of the block
     Field publishtime:Int 	= 0		{saveload = "normal"} '
     Field paid:Byte 		= 0 	{saveload = "normal"}
-    Field news:TNews
-	Field id:Int	 		= 0 	{saveload = "normal"}
+    Field news:TNews				{_exposeToLua}
+	Field id:Int	 		= 0 	{_exposeToLua saveload = "normal"}
     Global LastUniqueID:Int 		= 0
     Global DragAndDropList:TList
 
@@ -2888,6 +2888,14 @@ Type TNewsBlock Extends TBlockGraphical
     	Return -1
     End Method
 
+	Method IsReadyToPublish:Int() {_exposeToLua}
+		Return (publishtime + publishdelay <= Game.timeSinceBegin)
+	End Method
+	
+	Method IsInProgramme:Int() {_exposeToLua}
+		Return (pos.x > 400) 'TODO: Irgendwann ne bessere Prüfung einbauen... statt Koordinaten abzufragen	
+	End Method	
+
     'remove from programmeplan
     Method Drag()
 		If Self.dragged <> 1
@@ -2898,9 +2906,9 @@ Type TNewsBlock Extends TBlockGraphical
     End Method
 
 	'add to plan again
-    Method Drop()
+    Method Drop()		
 		If Self.dragged <> 0
-			Self.dragged = 0
+			Self.dragged = 0			
 			self.Pos.SetPos(self.StartPos)
 
 			Players[owner].ProgrammePlan.SetNewsBlockSlot(self, self.GetSlotOfBlock() )
@@ -2909,7 +2917,7 @@ Type TNewsBlock Extends TBlockGraphical
 
     'draw the Block inclusive text
 	Method Draw()
-		print "drawing block "+self.news.title+" to player "+self.owner
+		'print "drawing block "+self.news.title+" to player "+self.owner
 
 		State = 0
 		SetColor 255,255,255
