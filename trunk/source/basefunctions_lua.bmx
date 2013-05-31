@@ -4,8 +4,8 @@ Import BRL.Reflection
 Import brl.retro
 'from maxlua
 ?threaded
-'Import "basefunctions_lua_threaded.c"
-Import "basefunctions_lua.c"
+Import "basefunctions_lua_threaded.c"
+'Import "basefunctions_lua.c"
 ?not threaded
 Import "basefunctions_lua.c"
 ?
