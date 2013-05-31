@@ -435,10 +435,21 @@ endrem
 		Return Game
 	End Function
 
+	'returns whether the given number is a valid player id
 	Method IsPlayerID:Int(number:Int)
 		Return (number > 0 And number <= 4)
 	End Method
 
+	Method IsAIPlayer:Int(number:int)
+		return (Players[number].PlayerKI <> NULL And Players[number].figure.controlledbyID = 0)
+	End Method
+
+	Method IsLocalPlayer:Int(number:int)
+		return number = self.playerID
+	End Method
+
+	
+	
 	Method GetMaxAudience:Int(playerID:Int=-1)
 		If Not Game.isPlayerID(playerID)
 			Local avg:Int = 0
@@ -1815,7 +1826,8 @@ Type TNewsAgency
 	End Method
 
 	Method AddNewsToPlayer(news:TNews, forPlayer:Int=-1, fromNetwork:Int=0)
-		If Not Game.isPlayerID( forPlayer) Then Return
+		'only add news/newsblock if player is Host/Player OR AI
+		if not Game.isLocalPlayer(forPlayer) AND not Game.isAIPlayer(forPlayer) then return
 
 		If Players[ forPlayer ].newsabonnements[news.genre] > 0
 			TNewsBlock.Create("",0,-100, forPlayer, 60*(3-Players[ forPlayer ].newsabonnements[news.genre]), news)
