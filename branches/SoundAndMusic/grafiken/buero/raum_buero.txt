@@ -1,5 +1,0 @@
-jalousine: x546, y28
-grau: 188 -> blautoene (tageszeitabhaengig)
-
-keyboard_leds: x655, y253
--"", "1", "2" - jeweils zum austauschen - damit die LEDs mal leuchten und mal nicht leuchten ;D
