@@ -112,7 +112,7 @@ Type TNetworkHelper
 		obj.setInt(1, Game.playerID)
 		obj.setFloat(2, game.speed)
 		obj.setFloat(3, game.minutesOfDayGone) 'lastminutes not stored - so clients can catch up
-		obj.setFloat(4, game.timeSinceBegin)
+		obj.setFloat(4, game.timeGone)
 		Network.BroadcastNetworkObject( obj, not NET_PACKET_RELIABLE )
 	End Method
 
@@ -132,7 +132,7 @@ Type TNetworkHelper
 
 		Game.speed 				= obj.getFloat(2)
 		Game.minutesOfDayGone	= obj.getFloat(3) + correction
-		Game.timeSinceBegin		= obj.getFloat(4) + correction
+		Game.timeGone			= obj.getFloat(4) + correction
 	End Method
 
 

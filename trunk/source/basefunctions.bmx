@@ -187,7 +187,7 @@ Function PrintDebug(functiontext:String = "", message:String, Debug:Byte)
 	If Debug = DEBUG_START Then debugtext = "START"
 	If Debug = DEBUG_IMAGES Then debugtext = "IMAGES"
 	debugtext = LSet(debugtext, 8) + "| "
-	TLogFile.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(functiontext) + ": " + message)
+	AppLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(functiontext) + ": " + message)
 End Function
 
 Function SortListArray(List:TList Var)
@@ -700,26 +700,39 @@ Type TCall
 End Type
 
 Type TLogFile
-	Global activated:Byte = 1
-	Global Strings:TList = CreateList()
+	field Strings:TList		= CreateList()
+	field title:string		= ""
+	field filename:string	= ""
+	global logs:TList		= CreateList()
 
-	Function DumpLog(file:String, doPrint:Int = 1)
-		If TLogFile.Strings = Null Then TLogFile.Strings = CreateList()
+	Function Create:TLogFile(title:string, filename:string)
+		local obj:TLogFile = new TLogFile
+		obj.title = title
+		obj.filename = filename
+		TLogfile.logs.addLast(obj)
 
-		Local fi:TStream = WriteFile( file )
+		return obj
+	End Function
 
-			WriteLine fi, "TVT Log V1.0"
-			For Local MyText:String = EachIn Strings
-				If doPrint = 1 then Print MyText
-				WriteLine fi, MyText
+	Function DumpLog(doPrint:Int = 1)
+		For local logfile:TLogFile = eachin TLogFile.logs
+			Local fi:TStream = WriteFile( logfile.filename )
+			WriteLine fi, logfile.title
+			For Local line:String = EachIn logfile.Strings
+				If doPrint = 1 then Print line
+				WriteLine fi, line
 			Next
-		CloseFile fi
+			CloseFile fi
+		Next
 	End Function
 
-	Function AddLog(MyText:String)
-		Strings.AddLast(MyText)
-	End Function
+	Method AddLog:int(text:String, addDateTime:int=FALSE)
+		if addDateTime then text = "[" + CurrentTime() + "] " + text
+		Strings.AddLast(text)
+		return TRUE
+	End Method
 End Type
+Global AppLog:TLogFile = TLogFile.Create("TVT Log v1.0", "log.app.txt")
 
 Type TProfiler
 	Global activated:Byte = 1
@@ -758,22 +771,6 @@ Type TProfiler
 				WriteLine fi, "| " + LSet(funcName, 24) + "  Calls: " + RSet(c.calls, 8) + "  Total: " + LSet(String(Float(tottime) / Float(1000)),8)+"s" + "  Avg:" + LSet(AvgTime,8)+"ms"+ " |"
 			Next
 			WriteLine fi,"'-----------------------------------------------------------------------------'"
-
-			WriteLine fi,""
-			WriteLine fi,".-----------------------------------------------------------------------------."
-			WriteLine fi,"| AppLog      |                                                               |"
-			WriteLine fi,"|-----------------------------------------------------------------------------|"
-			For Local MyText:String = EachIn TLogFile.Strings
-				if len(MyText)<=75
-					WriteLine fi, "| "+LSet(MyText, 75)+" |"
-				else
-					WriteLine fi, "| "+MyText
-				endif
-			Next
-			WriteLine fi,"'-----------------------------------------------------------------------------'"
-
-
-
 		CloseFile fi
 
 	End Function

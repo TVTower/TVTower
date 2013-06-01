@@ -200,12 +200,12 @@ function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
 	local fixedDay, fixedHour = 0
 	local currentDay = day
 	local currentHour = hour
-	if (currentDay == nil) then currentDay = TVT:Day() end
-	if (currentHour == nil) then currentHour = TVT:Hour() end
+	if (currentDay == nil) then currentDay = Game.GetDay() end
+	if (currentHour == nil) then currentHour = Game.GetHour() end
 
 	for i = currentHour, currentHour + howManyHours do
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
-		local programme = MY.ProgrammePlan.GetActualProgramme(fixedHour, fixedDay)
+		local programme = MY.ProgrammePlan.GetCurrentProgramme(fixedHour, fixedDay)
 		if (programme == nil) then
 			--debugMsg("CheckEmergencyCase: Programme - " .. fixedHour .. " / " .. fixedDay)
 			return true
@@ -214,7 +214,7 @@ function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
 
 	for i = currentHour, currentHour + howManyHours do
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
-		local adblock = MY.ProgrammePlan.GetActualAdBlock(fixedHour, fixedDay)
+		local adblock = MY.ProgrammePlan.GetCurrentAdBlock(fixedHour, fixedDay)
 		if (adblock == nil) then
 			--debugMsg("CheckEmergencyCase: Adblock - " .. fixedHour .. " / " .. fixedDay)
 			return true
@@ -229,21 +229,21 @@ function JobEmergencySchedule:FillIntervals(howManyHours)
 	--Zuschauerberechnung: ZuschauerquoteAufGrundderStunde * Programmquali * MaximalzuschauerproSpieler
 
 	local fixedDay, fixedHour = 0
-	local currentDay = TVT:Day()
-	local currentHour = TVT:Hour()
+	local currentDay = Game.GetDay()
+	local currentHour = Game.GetHour()
 
 	for i = currentHour, currentHour + howManyHours do
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
 		--debugMsg("FillIntervals --- Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 
 		--Werbung: Prüfen ob ne Lücke existiert, wenn ja => füllen
-		local adblock = MY.ProgrammePlan.GetActualAdBlock(fixedHour, fixedDay)
+		local adblock = MY.ProgrammePlan.GetCurrentAdBlock(fixedHour, fixedDay)
 		if (adblock == nil) then
 			self:SetContractToEmptyBlock(fixedDay, fixedHour)
 		end
 
 		--Film: Prüfen ob ne Lücke existiert, wenn ja => füllen
-		local programme = MY.ProgrammePlan.GetActualProgramme(fixedHour, fixedDay)
+		local programme = MY.ProgrammePlan.GetCurrentProgramme(fixedHour, fixedDay)
 		if (programme == nil) then
 			self:SetMovieToEmptyBlock(fixedDay, fixedHour)
 		end

@@ -150,7 +150,7 @@ function AITask:OnDayBegins()
 	--kann überschrieben werden
 end
 
---Wird aufgerufen, wenn der Task zur Bearbeitung ausgew�hlt wurde (NICHT �BERSCHREIBEN!)
+--Wird aufgerufen, wenn der Task zur Bearbeitung ausgewaehlt wurde (NICHT UEBERSCHREIBEN!)
 function AITask:StartNextJob()
 	--debugMsg("StartNextJob")
 	local roomNumber = TVT.GetPlayerRoom()
@@ -160,7 +160,7 @@ function AITask:StartNextJob()
 		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
-		self.StartTask = TVT.GetTime()
+		self.StartTask = Game.GetTimeGone()
 		self.TickCounter = 0;
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
@@ -206,7 +206,7 @@ end
 function AITask:RecalcPriority()
 	local Ran1 = math.random(4)
 	local Ran2 = math.random(4)
-	local TimeDiff = TVT.GetTime() - self.LastDone	
+	local TimeDiff = Game.GetTimeGone() - self.LastDone	
 	local player = _G["globalPlayer"]	
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 	self.CurrentPriority = requisitionPriority + self.SituationPriority + (self.BasePriority * (8+Ran1)) + (TimeDiff / 10 * (self.BasePriority - 2 + Ran2))
@@ -216,7 +216,7 @@ function AITask:SetDone()
 	debugMsg("<<< Task abgeschlossen!")
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
-	self.LastDone = TVT.GetTime()
+	self.LastDone = Game.GetTimeGone()
 end
 
 function AITask:OnReachRoom()
@@ -243,8 +243,8 @@ end
 
 function AIJob:Start(pParams)
 	self.StartParams = pParams
-	self.StartJob = TVT.GetTime()
-	self.LastCheck = TVT.GetTime()
+	self.StartJob = Game.GetTimeGone()
+	self.LastCheck = Game.GetTimeGone()
 	self:Prepare(pParams)
 end
 
@@ -253,14 +253,14 @@ function AIJob:Prepare(pParams)
 end
 
 function AIJob:Tick()
-	--Kann �berschrieben werden
+	--Kann ueberschrieben werden
 end
 
 function AIJob:ReDoCheck(pWait)
-	if ((self.LastCheck + pWait) < TVT.GetTime()) then
+	if ((self.LastCheck + pWait) < Game.GetTimeGone()) then
 		debugMsg("ReDoCheck")
 		self.Status = JOB_STATUS_REDO
-		self.LastCheck = TVT.GetTime()
+		self.LastCheck = Game.GetTimeGone()
 		self:Prepare(self.StartParams)
 	end
 end

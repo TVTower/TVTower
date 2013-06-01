@@ -572,8 +572,8 @@ Type RoomHandler_Office extends TRoomHandler
 			if rightSide then slotPos :- 12
 
 			'for programmeblocks
-			If Game.day > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
-			If Game.day = Game.daytoplan
+			If Game.GetDay() > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
+			If Game.GetDay() = Game.daytoplan
 				If i > othertime
 					State = 0  'normal
 				Else If i = othertime
@@ -593,8 +593,8 @@ Type RoomHandler_Office extends TRoomHandler
 			EndIf
 
 			'for adblocks
-			If Game.day > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
-			If Game.day = Game.daytoplan
+			If Game.GetDay() > Game.daytoplan Then State = 4 Else State = 0 'else = game.day < game.daytoplan
+			If Game.GetDay() = Game.daytoplan
 				othertime = Int(Floor((Game.minutesOfDayGone - 55) / 60))
 				If i > othertime
 					State = 0  'normal
@@ -633,7 +633,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'overlay old days
-		If Game.day > Game.daytoplan
+		If Game.GetDay() > Game.daytoplan
 			SetColor 100,100,100
 			SetAlpha 0.5
 			DrawRect(27,17,637,360)
@@ -641,10 +641,10 @@ Type RoomHandler_Office extends TRoomHandler
 			SetAlpha 1.0
 		EndIf
 
-		If Game.daytoplan = Game.day Then SetColor 0,100,0
-		If Game.daytoplan < Game.day Then SetColor 100,100,0
-		If Game.daytoplan > Game.day Then SetColor 0,0,0
-		Assets.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(Game.daytoplan), 691, 17, 100, 15, 0)
+		If Game.daytoplan = Game.GetDay() Then SetColor 0,100,0
+		If Game.daytoplan < Game.GetDay() Then SetColor 100,100,0
+		If Game.daytoplan > Game.GetDay() Then SetColor 0,0,0
+		Assets.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(1+ Game.daytoplan - Game.GetDay(Game.GetTimeStart())), 691, 18, 100, 15, 0)
 
 		SetColor 255,255,255
 		If room.owner = Game.playerID
@@ -698,7 +698,7 @@ Type RoomHandler_Office extends TRoomHandler
 				Game.cursorstate = 0
 				Game.daytoplan :- 1
 			endif
-			If Game.daytoplan <= 1 Then Game.daytoplan = 1
+			If Game.daytoplan < Game.GetDay(Game.timeStart) Then Game.daytoplan = Game.GetDay(Game.timeStart)
 		EndIf
 
 		GUIManager.Update("programmeplanner")

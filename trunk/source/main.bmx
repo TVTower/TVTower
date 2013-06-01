@@ -232,7 +232,7 @@ Const GAMESTATE_SETTINGSMENU:Int			= 3
 Const GAMESTATE_STARTMULTIPLAYER:Int		= 4		'mode when data gets synchronized
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
-Type TGame
+Type TGame {_exposeToLua="selected"}
 	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...
 	Const maxAbonnementLevel:Int		= 3
 
@@ -260,11 +260,13 @@ Type TGame
 	Field oldspeed:Float			= 0.1 					'Speed of the game - used when saving a game ("pause")
 	Field minutesOfDayGone:Float	= 0.0					'time of day in game, unformatted
 	Field lastMinutesOfDayGone:Float= 0.0					'time last update was done
-	Field timeSinceBegin:Float 								'time in game, not reset every day
-	Field year:Int=2006, day:Int=1, minute:Int=0, hour:Int=0 'date in game
+	Field timeGone:Double			= 0.0					'time in game, not reset every day
+	Field timeStart:Double			= 0.0					'time used when starting the game
+	Field daysPlayed:int			= 0
+	const daysPerYear:int			= 14 					'5 weeks
+	Field daytoplan:Int 			= 0						'which day has to be shown in programmeplanner
 
 	Field title:String 				= "MyGame"				'title of the game
-	Field daytoplan:Int 			= 1						'which day has to be shown in programmeplanner
 
 	Field cursorstate:Int		 	= 0 					'which cursor has to be shown? 0=normal 1=dragging
 	Field playerID:Int 				= 1						'playerID of player who sits in front of the screen
@@ -429,8 +431,10 @@ endrem
 		Localization.LoadResource("res/lang/lang_"+Game.userlanguage+".txt")
 		Game.networkgame		= 0
 		Game.minutesOfDayGone	= 0
-		Game.day 				= 1
-		Game.minute 			= 0
+		Game.timeGone			= Game.MakeTime(1985,1,0,0)
+		Game.timeStart			= Game.MakeTime(1985,1,0,0)
+		'print "year: "+Game.GetYear()+" day: "+Game.GetDay()+" hour: "+Game.GetHour()+" min: "+Game.GetMinute()
+		Game.dayToPlan			= Game.GetDay()
 		Game.title				= "unknown"
 		Return Game
 	End Function
@@ -462,7 +466,7 @@ endrem
 		Return Players[ playerID ].maxaudience
 	End Method
 
-	Method GetDayName:String(day:Int, longVersion:Int=0)
+	Method GetDayName:String(day:Int, longVersion:Int=0) {_exposeToLua}
 		Local versionString:String = "SHORT"
 		If longVersion = 1 Then versionString = "LONG"
 
@@ -497,10 +501,10 @@ endrem
 	End Method
 
 	Method calculateMaxAudiencePercentage:Float(forHour:Int= -1)
-		If forHour <= 0 Then forHour = Self.hour
+		If forHour <= 0 Then forHour = Self.GetHour()
 
 		'based on weekday (thursday) in march 2011 - maybe add weekend
-		Select hour
+		Select self.GetHour()
 			Case 0	game.maxAudiencePercentage = 11.40 + Float(RandRange( -6, 6))/ 100.0 'Germany ~9 Mio
 			Case 1	game.maxAudiencePercentage =  6.50 + Float(RandRange( -4, 4))/ 100.0 'Germany ~5 Mio
 			Case 2	game.maxAudiencePercentage =  3.80 + Float(RandRange( -3, 3))/ 100.0
@@ -531,9 +535,10 @@ endrem
 		Return game.maxAudiencePercentage
 	End Method
 
-	Method GetNextHour:Int()
-		If Self.hour+1 > 24 Then Return Self.hour+1 - 24
-		Return Self.hour + 1
+	Method GetNextHour:Int() {_exposeToLua}
+		local nextHour:int = self.GetHour()+1
+		If nextHour > 24 Then Return nextHour - 24
+		Return nextHour
 	End Method
 
 	Method IsGameLeader:Int()
@@ -542,11 +547,11 @@ endrem
 
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
-		Self.minutesOfDayGone :+ (Float(speed) / 10.0)
-		Self.timeSinceBegin	:+ (Float(speed) / 10.0)
+		Self.minutesOfDayGone	:+ (Float(speed) / 10.0)
+		Self.timeGone			:+ (Float(speed) / 10.0)
 
 		'time for news ?
-		If IsGameLeader() And NewsAgency.NextEventTime < timeSinceBegin Then NewsAgency.AnnounceNewNews()
+		If IsGameLeader() And NewsAgency.NextEventTime < self.timeGone Then NewsAgency.AnnounceNewNews()
 
 		'send state to clients
 		If IsGameLeader() And Self.networkgame And Self.stateSyncTime < MilliSecs()
@@ -559,78 +564,104 @@ endrem
 		Local missedMinutes:Int = Floor(Self.minutesOfDayGone - Self.lastMinutesOfDayGone)
 		If missedMinutes = 0 Then Return
 
+		local minute:int	= 0
+		local hour:int		= 0
 		For Local i:Int = 1 To missedMinutes
-			Self.minute = (Floor(Self.lastMinutesOfDayGone)  + i ) Mod 60 '0 to 59
-			EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", Self.minute))
+			minute = (Floor(Self.lastMinutesOfDayGone)  + i ) Mod 60 '0 to 59
+			EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", minute))
 
 			'hour
-			If Self.minute = 0
-				Self.hour = Floor( (Self.lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
-				EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", Self.hour))
+			If minute = 0
+				hour = Floor( (Self.lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
+				EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", hour))
 			EndIf
 
 			'day
-			If Self.hour = 0 And Self.minute = 0
+			If hour = 0 And minute = 0
 				Self.minutesOfDayGone 	= 0			'reset minutes of day
-				Self.day				:+1			'increase current day
-				Self.daytoplan 			= Self.day 	'weg, wenn doch nicht automatisch wechseln
-				EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", Self.day))
+				Self.daysPlayed			:+1			'increase current day
+			 	'automatically change current-plan-day on day change
+				Self.dayToPlan 			= Self.getDay()
+				EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", Self.GetDay()))
 			EndIf
 		Next
 		Self.lastMinutesOfDayGone = Floor(Self.minutesOfDayGone)
 	End Method
 
 	'Summary: returns day of the week including gameday
-	Method GetFormattedDay:String(_day:Int = -5)
+	Method GetFormattedDay:String(_day:Int = -5) {_exposeToLua}
 		Return _day+"."+GetLocale("DAY")+" ("+Self.GetDayName( Max(0,_day-1) Mod 7, 0)+ ")"
 	End Method
 
-	Method GetFormattedDayLong:String(_day:Int = -1)
-		If _day < 0 Then _day = Self.day
+	Method GetFormattedDayLong:String(_day:Int = -1) {_exposeToLua}
+		If _day < 0 Then _day = Self.GetDay()
 		Return Self.GetDayName( Max(0,_day-1) Mod 7, 1)
 	End Method
 
 	'Summary: returns formatted value of actual gametime
-	Method GetFormattedTime:String()
-		Local strHours:String = Self.hour
-		Local strMinutes:String = Self.minute
+	Method GetFormattedTime:String(time:double=0) {_exposeToLua}
+		Local strHours:String = Self.GetHour(time)
+		Local strMinutes:String = Self.GetMinute(time)
 
-		If Self.hour < 10 Then strHours = "0"+strHours
-		If Self.minute < 10 Then strMinutes = "0"+strMinutes
+		If int(strHours) < 10 Then strHours = "0"+strHours
+		If int(strMinutes) < 10 Then strMinutes = "0"+strMinutes
 		Return strHours+":"+strMinutes
 	End Method
 
-	Method GetFormattedExternTime:String(hour:Int, _minute:Int)
-		Local minute:String = ""
-		If Int(_minute) Mod 60 < 10
-			minute = "0"+Int(_minute) Mod 60
-		Else
-			minute = Int(_minute Mod 60)
-		End If
-		Return hour+":"+minute
-	End Method
-
-	Method GetWeekday:Int(_day:Int = -1)
-		If _day < 0 Then _day = Self.day
+	Method GetWeekday:Int(_day:Int = -1) {_exposeToLua}
+		If _day < 0 Then _day = Self.GetDay()
 		Return Max(0,_day-1) Mod 7
 	End Method
 
-	Method GetDay:Int(_time:Int = 0)
-		If _time = 0 Then Return Self.day
-		_time = Ceil(_time / (24 * 60)) + 1
+	Method MakeTime:double(year:int,day:int,hour:int,minute:int) {_exposeToLua}
+		'year=1,day=1,hour=0,minute=1 should result in "1*yearInSeconds+1"
+		'as it is 1 minute after end of last year - new years eve ;D
+		'there is no "day 0" (as there would be no "month 0")
+	
+		return (((day-1) + year*self.daysPerYear)*24 + hour)*60 + minute
+	End Method
+
+	Method GetTimeGone:double() {_exposeToLua}
+		Return Self.timeGone
+	End Method
+
+	Method GetTimeStart:double() {_exposeToLua}
+		Return Self.timeStart
+	End Method
+
+	Method GetYear:Int(_time:double = 0) {_exposeToLua}
+		If _time = 0 Then _time = self.timeGone
+		_time = floor(_time / (24 * 60 * self.daysPerYear))
 		Return Int(_time)
 	End Method
 
-	Method GetMinute:Int(_time:Int = 0)
-		If _time = 0 Then Return Self.minute
-		_time:-((Game.day - 1) * 24 * 60)
-		Return Int(_time) Mod 60
+	Method GetDayOfYear:int(_time:double = 0) {_exposeToLua}
+		return (self.GetDay() - self.GetYear()*self.daysPerYear)
 	End Method
 
-	Method GetHour:Int(_time:Int = 0)
-		If _time = 0 Then Return Self.hour
-		_time:-(Game.day - 1) * 24 * 60
+	Method GetDay:Int(_time:double = 0) {_exposeToLua}
+		If _time = 0 Then _time = self.timeGone
+		_time = floor(_time / (24 * 60))
+		'we are ON a day (it is not finished yet)
+		'if we "ceil" the time, we would ignore 1.0 as this would
+		'not get rounded to 2.0 like 1.01 would do
+		Return 1 + Int(_time)
+	End Method
+
+	Method GetHour:Int(_time:double = 0) {_exposeToLua}
+		If _time = 0 Then _time = self.timeGone
+		'remove days from time
+		_time = _time Mod (24*60)
+		'hours = how many times 60 minutes fit into rest time
 		Return Int(Floor(_time / 60))
+	End Method
+
+	Method GetMinute:Int(_time:double = 0) {_exposeToLua}
+		If _time = 0 Then _time = self.timeGone
+		'remove days from time
+		_time = _time Mod (24*60)
+		'minutes = rest not fitting into hours
+		Return Int(_time) Mod 60
 	End Method
 End Type
 
@@ -912,7 +943,7 @@ endrem
 	Function ComputeAds()
 		Local Adblock:TAdBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
-			Adblock = Player.ProgrammePlan.GetActualAdBlock()
+			Adblock = Player.ProgrammePlan.GetCurrentAdBlock()
 			'skip if no ad is send at the moment
 			If not Adblock then continue
 
@@ -962,7 +993,7 @@ endrem
 				If contract.GetDaysLeft() <= 0
 					Player.finances[Game.getWeekday()].PayPenalty(contract.GetPenalty() )
 					Player.ProgrammeCollection.RemoveContract(contract)
-					TAdBlock.RemoveAdblocks(contract, Game.day)
+					TAdBlock.RemoveAdblocks(contract, Game.GetDay())
 					'Print Player.name+" paid a penalty of "+contract.calculatedPenalty+" for contract:"+contract.title
 				EndIf
 			Next
@@ -974,22 +1005,22 @@ endrem
 	Function ComputeAudience(recompute:Int = 0)
 		Local block:TProgrammeBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
-			block = Player.ProgrammePlan.GetActualProgrammeBlock()
+			block = Player.ProgrammePlan.GetCurrentProgrammeBlock()
 			Player.audience = 0
 
 			If block And block.programme And Player.maxaudience <> 0
 				Player.audience = Floor(Player.maxaudience * block.Programme.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				'maybe someone sold a station
 				If recompute
-					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.day, Game.GetHour(), Game.GetMinute())
+					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())
 					If quote <> Null
 						quote.audience = Player.audience
 						quote.audiencepercentage = Int(Floor(Player.audience * 1000 / Player.maxaudience))
 					EndIf
 				Else
-					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - game.day*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.day, Player.playerID)
+					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
 				EndIf
-				If block.sendHour - (game.day*24) + block.Programme.blocks <= Game.getNextHour()
+				If block.sendHour - (Game.GetDay()*24) + block.Programme.blocks <= Game.getNextHour()
 					If Not recompute
 						block.Programme.CutTopicality()
 						block.Programme.getPrice()
@@ -1006,14 +1037,14 @@ endrem
 			Player.audience = 0
 			Local audience:Int = 0
 			For Local i:Int = 1 To 3
-				newsBlock = Player.ProgrammePlan.getActualNewsBlock(i)
+				newsBlock = Player.ProgrammePlan.GetNewsBlockFromSlot(i)
 				If newsBlock <> Null And Player.maxaudience <> 0
 					audience :+ Floor(Player.maxaudience * NewsBlock.news.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 					'If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
 				EndIf
 			Next
 			Player.audience= Ceil(audience / 3)
-			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.day, Player.playerID)
+			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
 		Next
 	End Function
 
@@ -1669,7 +1700,7 @@ Type TBuilding Extends TRenderable
 		Moon_lastTChange = MilliSecs()
 		'end compute and draw moon
 		If DezimalTime > 18 Or DezimalTime < 7
-			If Game.day Mod 2 = 0
+			If Game.GetDay() Mod 2 = 0
 				'compute and draw Ufo
 				If ActHour < 6 Then ufo_pixelPerSecond = Float(Floor(Game.speed * 30))
 				If ActHour = 0
@@ -1728,7 +1759,7 @@ Type TBuilding Extends TRenderable
 			DezimalTime:+3
 			If DezimalTime > 24 Then DezimalTime:-24
 			SetBlend ALPHABLEND
-			Assets.GetSprite("gfx_building_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), pos.y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.day Mod 12)
+			Assets.GetSprite("gfx_building_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), pos.y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.GetDay() Mod 12)
 		EndIf
 		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
 
@@ -1740,7 +1771,7 @@ Type TBuilding Extends TRenderable
 			SetBlend MASKBLEND
 			SetAlpha 1.0
 
-			If Game.day Mod 2 = 0 Then
+			If Game.GetDay() Mod 2 = 0 Then
 				'compute and draw Ufo
 				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
 					ufo_beaming.Draw()
@@ -1799,15 +1830,15 @@ End Type
 
 'likely a kind of agency providing news... 'at the moment only a base object
 Type TNewsAgency
-	Field LastEventTime:Float =0
-	Field NextEventTime:Float = 0
+	Field LastEventTime:Double = 0
+	Field NextEventTime:Double = 0
 	Field LastNewsList:TList = CreateList() 'holding news from the past hours/day for chains
 
 
 	Method GetNextFromChain:TNews()
 		Local news:TNews
 		For Local parentnews:TNews = EachIn LastNewsList
-			If parentnews.happenedday < Game.day
+			If Game.GetDay(parentnews.happenedtime) < Game.getDay()
 				If parentnews.parent <> Null
 					If parentnews.episode < parentnews.parent.episodecount
 						news = TNews.GetNextInNewsChain(parentnews)
@@ -1834,14 +1865,13 @@ Type TNewsAgency
 		EndIf
 	End Method
 
-	Method AnnounceNewNews()
+	Method AnnounceNewNews(delayAnnouncement:int=0)
 		Local news:TNews = Null
 		If RandRange(1,10)>3 Then news = GetNextFromChain()  '70% alte Nachrichten holen, 30% neue Kette/Singlenews
 		If news = Null Then news = TNews.GetRandomNews() 'TNews.GetRandomChainParent()
 		If news <> Null
-			news.happenedday			= Game.day
-			news.happenedhour			= Game.GetHour()
-			news.happenedminute			= Game.GetMinute()
+			news.happenedtime			= Game.timeGone + delayAnnouncement
+			print "happened time:"+news.happenedtime+" day:"+Game.getDay(news.happenedtime)+" "+Game.getHour(news.happenedtime)+":"+Game.getMinute(news.happenedtime)
 			Local NoOneSubscribed:Int	= True
 			For Local i:Int = 1 To 4
 				If Players[i].newsabonnements[news.genre] > 0 Then NoOneSubscribed = False
@@ -1856,11 +1886,11 @@ Type TNewsAgency
 				News.used = 0
 			EndIf
 		EndIf
-		LastEventTime = Game.timeSinceBegin
+		LastEventTime = Game.timeGone
 		If RandRange(0,10) = 1
-			NextEventTime = Game.timeSinceBegin + RandRange(20,50) 'between 20 and 50 minutes until next news
+			NextEventTime = Game.timeGone + RandRange(20,50) 'between 20 and 50 minutes until next news
 		Else
-			NextEventTime = Game.timeSinceBegin + RandRange(90,250) 'between 90 and 250 minutes until next news
+			NextEventTime = Game.timeGone + RandRange(90,250) 'between 90 and 250 minutes until next news
 		EndIf
 	End Method
 End Type
@@ -2325,9 +2355,9 @@ Function Menu_GameSettings()
 			Game.gamestate = GAMESTATE_STARTMULTIPLAYER
 		EndIf
 		'Begin Game - create Events
-		EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", game.minute))
-		EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", game.hour))
-		EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", game.day))
+		EventManager.registerEvent( TEventOnTime.Create("Game.OnMinute", game.GetMinute()) )
+		EventManager.registerEvent( TEventOnTime.Create("Game.OnHour", game.GetHour()) )
+		EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )
 		Soundmanager.PlayMusic(MUSIC_MUSIC)
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
@@ -2631,7 +2661,7 @@ Type TBetty
 	Method SetAwardType(AwardType:Int = 0, SetEndingDay:Int = 0, Duration:Int = 0)
 		If Duration = 0 Then Duration = Self.AwardDuration
 		CurrentAwardType = AwardType
-		If SetEndingDay = True Then AwardEndingAtDay = Game.day + Duration
+		If SetEndingDay = True Then AwardEndingAtDay = Game.GetDay() + Duration
 	End Method
 
 	Method GetAwardEnding:Int()
@@ -3030,7 +3060,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			'call-in shows/quiz - generate income
 			ElseIf minute = 54
 				For Local player:TPlayer = EachIn TPlayer.list
-					Local block:TProgrammeBlock = player.ProgrammePlan.GetActualProgrammeBlock()
+					Local block:TProgrammeBlock = player.ProgrammePlan.GetCurrentProgrammeBlock()
 					If block<>Null And block.programme.genre = GENRE_CALLINSHOW
 						Local revenue:Int = player.audience * Rnd(0.05, 0.2)
 						player.finances[Game.getWeekday()].earnCallerRevenue(revenue)
@@ -3063,7 +3093,7 @@ Type TEventListenerOnDay Extends TEventListenerBase
 			TPlayer.TakeOverMoney()
 
 			'Neuer Award faellig?
-			If Betty.GetAwardEnding() < Game.day - 1
+			If Betty.GetAwardEnding() < Game.GetDay() - 1
 				Betty.GetLastAwardWinner()
 				Betty.SetAwardType(RandRange(0, Betty.MaxAwardTypes), True)
 			End If
@@ -3080,7 +3110,7 @@ Type TEventListenerOnDay Extends TEventListenerBase
 				TRoomSigns.ResetPositions()
 				For Local i:Int = 1 To 4
 					For Local NewsBlock:TNewsBlock = EachIn Players[i].ProgrammePlan.NewsBlocks
-						If Game.day - Newsblock.news.happenedday >= 2
+						If Game.GetDay() - Game.GetDay(Newsblock.news.happenedtime) >= 2
 							Players[Newsblock.owner].ProgrammePlan.RemoveNewsBlock(NewsBlock)
 						EndIf
 					Next
@@ -3122,7 +3152,6 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.IsHit(KEY_N) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("news", Game.playerID)
 				If KEYMANAGER.IsHit(KEY_R) Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("roomboard", -1)
 				If KEYMANAGER.IsHit(KEY_D) Players[Game.playerID].maxaudience = Stationmap.einwohner
-
 
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
 				If KEYMANAGER.Ishit(Key_F1) And Players[1].isAI() Then Players[1].PlayerKI.reloadScript()
@@ -3217,6 +3246,12 @@ Next
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
 EventManager.registerListener( "Game.OnMinute",	TEventListenerOnMinute.Create() )
 
+'create 3 starting news
+If Game.IsGameLeader()
+	NewsAgency.AnnounceNewNews(-60)
+	NewsAgency.AnnounceNewNews(-120)
+	NewsAgency.AnnounceNewNews(-120)
+endif
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 
@@ -3242,7 +3277,7 @@ EndIf 'not exit game
 
 OnEnd( EndHook )
 Function EndHook()
-	Print "Dumping profile information -> Profiler.txt ."
-	TProfiler.DumpLog("Profiler.txt")
+	TProfiler.DumpLog("log.profiler.txt")
+	TLogFile.DumpLog(FALSE)
 
 End Function

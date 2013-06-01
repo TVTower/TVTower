@@ -1008,12 +1008,13 @@ End Type
 'updates tv-images shown and so on
 Type TInterface
   Field gfx_bottomRTT:TImage
-  Field ActualProgram:TGW_Sprites
-  Field ActualAudience:TImage
-  Field ActualNoise:TGW_Sprites
-  Field ActualProgramText:String
-  Field ActualProgramToolTip:TTooltip
-  Field ActualAudienceToolTip:TTooltip
+  Field CurrentProgramme:TGW_Sprites
+  Field CurrentAudience:TImage
+  Field CurrentNoise:TGW_Sprites
+  Field CurrentProgrammeText:String
+  Field CurrentProgrammeToolTip:TTooltip
+  Field CurrentAudienceToolTip:TTooltip
+  Field CurrentTimeToolTip:TTooltip
   Field NoiseAlpha:Float	= 0.95
   Field ChangeNoiseTimer:float= 0.0
   Field ShowChannel:Byte 	= 1
@@ -1023,10 +1024,11 @@ Type TInterface
 	'creates and returns an interface
 	Function Create:TInterface()
 		Local Interface:TInterface = New TInterface
-		Interface.ActualNoise			= Assets.GetSprite("gfx_interface_TVprogram_noise1")
-		Interface.ActualProgram			= Assets.GetSprite("gfx_interface_TVprogram_none")
-		Interface.ActualProgramToolTip	= TTooltip.Create("", "", 40, 395)
-		Interface.ActualAudienceToolTip	= TTooltip.Create("", "", 385, 450)
+		Interface.CurrentNoise				= Assets.GetSprite("gfx_interface_TVprogram_noise1")
+		Interface.CurrentProgramme			= Assets.GetSprite("gfx_interface_TVprogram_none")
+		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
+		Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
+		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 355, 495)
 		If Not InterfaceList Then InterfaceList = CreateList()
 		InterfaceList.AddLast(Interface)
 		SortList InterfaceList
@@ -1036,43 +1038,45 @@ Type TInterface
 	Method Update(deltaTime:float=1.0)
 		GUIManager.Update("InGame")
 		If ShowChannel <> 0
-			If Game.minute >= 55
-				Local adblock:TAdBlock = Players[ShowChannel].ProgrammePlan.GetActualAdBlock()
-				Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_ads")
+			If Game.GetMinute() >= 55
+				Local adblock:TAdBlock = Players[ShowChannel].ProgrammePlan.GetCurrentAdBlock()
+				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_ads")
 			    If adblock <> Null
-					ActualProgramToolTip.TitleBGtype 	= 1
-					ActualProgramText 					= getLocale("ADVERTISMENT")+": "+adblock.contract.contractBase.title
+					CurrentProgrammeToolTip.TitleBGtype = 1
+					CurrentProgrammeText 				= getLocale("ADVERTISMENT")+": "+adblock.contract.contractBase.title
 				Else
-					ActualProgramToolTip.TitleBGtype	= 2
-					ActualProgramText					= getLocale("BROADCASTING_OUTAGE")
+					CurrentProgrammeToolTip.TitleBGtype	= 2
+					CurrentProgrammeText				= getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			Else
-				Local block:TProgrammeBlock = Players[ShowChannel].ProgrammePlan.GetActualProgrammeBlock()
-				Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_none")
+				Local block:TProgrammeBlock = Players[ShowChannel].ProgrammePlan.GetCurrentProgrammeBlock()
+				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_none")
 				If block <> Null
-					Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
-					ActualProgramToolTip.TitleBGtype	= 0
+					Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
+					CurrentProgrammeToolTip.TitleBGtype	= 0
 					if block.programme.parent <> null
-						ActualProgramText					= block.programme.parent.title + ": "+ block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
+						CurrentProgrammeText = block.programme.parent.title + ": "+ block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.GetDay()*24))+"/"+block.Programme.blocks+")"
 					else
-						ActualProgramText					= block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.day*24))+"/"+block.Programme.blocks+")"
+						CurrentProgrammeText = block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.GetDay()*24))+"/"+block.Programme.blocks+")"
 					endif
 				Else
-					ActualProgramToolTip.TitleBGtype	= 2
-					ActualProgramText 					= getLocale("BROADCASTING_OUTAGE")
+					CurrentProgrammeToolTip.TitleBGtype	= 2
+					CurrentProgrammeText 				= getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			EndIf
-			If Game.minute <= 5
-				Interface.ActualProgram = Assets.GetSprite("gfx_interface_TVprogram_news")
-				ActualProgramToolTip.TitleBGtype	= 3
-				ActualProgramText 					= getLocale("NEWS")
+			If Game.GetMinute() <= 5
+				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_news")
+				CurrentProgrammeToolTip.TitleBGtype	= 3
+				CurrentProgrammeText				= getLocale("NEWS")
 			EndIf
 		Else
-			ActualProgramToolTip.TitleBGtype	= 3
-			ActualProgramText 					= getLocale("TV_OFF")
+			CurrentProgrammeToolTip.TitleBGtype		= 3
+			CurrentProgrammeText 					= getLocale("TV_OFF")
 		EndIf 'showchannel <>0
-		If ActualProgramToolTip.enabled Then ActualProgramToolTip.Update(deltaTime)
-		If ActualAudienceToolTip.enabled Then ActualAudienceToolTip.Update(deltaTime)
+
+		If CurrentProgrammeToolTip.enabled Then CurrentProgrammeToolTip.Update(deltaTime)
+		If CurrentAudienceToolTip.enabled Then CurrentAudienceToolTip.Update(deltaTime)
+		If CurrentTimeToolTip.enabled Then CurrentTimeToolTip.Update(deltaTime)
 
 		'channel selection (tvscreen on interface)
 		If MOUSEMANAGER.IsHit(1)
@@ -1088,30 +1092,39 @@ Type TInterface
 		ChangeNoiseTimer :+ deltaTime
 		If ChangeNoiseTimer >= 0.20
 		    Local randomnoise:Int = Rand(0,3)
-			If randomnoise = 0 Then ActualNoise = Assets.GetSprite("gfx_interface_TVprogram_noise1")
-			If randomnoise = 1 Then ActualNoise = Assets.GetSprite("gfx_interface_TVprogram_noise2")
-			If randomnoise = 2 Then ActualNoise = Assets.GetSprite("gfx_interface_TVprogram_noise3")
-			If randomnoise = 3 Then ActualNoise = Assets.GetSprite("gfx_interface_TVprogram_noise4")
+			If randomnoise = 0 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise1")
+			If randomnoise = 1 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise2")
+			If randomnoise = 2 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise3")
+			If randomnoise = 3 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise4")
 			ChangeNoiseTimer = 0.0
 			NoiseAlpha = 0.45 - (Rand(0,10)*0.01)
 		EndIf
 
 		If functions.IsIn(MouseX(),MouseY(),20,385,280,200)
-			ActualProgramToolTip.title 		= ActualProgramText
+			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
 			If ShowChannel <> 0
-				ActualProgramToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Players[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Players[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
+				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Players[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Players[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
 			Else
-				ActualProgramToolTip.text	= getLocale("TV_TURN_IT_ON")
+				CurrentProgrammeToolTip.text	= getLocale("TV_TURN_IT_ON")
 			EndIf
-			ActualProgramToolTip.enabled 	= 1
-			ActualProgramToolTip.Hover()
+			CurrentProgrammeToolTip.enabled 	= 1
+			CurrentProgrammeToolTip.Hover()
 	    EndIf
 		If functions.IsIn(MouseX(),MouseY(),385,468,108,30)
-			ActualAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
-			ActualAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
-			ActualAudienceToolTip.enabled 	= 1
-			ActualAudienceToolTip.Hover()
+			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
+			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
+			CurrentAudienceToolTip.enabled 	= 1
+			CurrentAudienceToolTip.Hover()
 		EndIf
+		If functions.IsIn(MouseX(),MouseY(),385,533,108,45)
+			CurrentTimeToolTip.title 	= getLocale("GAME_TIME")+": "
+			CurrentTimeToolTip.text  	= Game.GetFormattedTime()+" "+getLocale("DAY")+" "+Game.GetDayOfYear()+"/"+Game.daysPerYear+" "+Game.GetYear()
+			CurrentTimeToolTip.enabled 	= 1
+			CurrentTimeToolTip.Hover()
+			'force redraw
+			CurrentTimeToolTip.dirtyImage = true
+		EndIf
+
 	End Method
 
 	'draws the interface
@@ -1138,8 +1151,8 @@ Type TInterface
 				EndIf
 		    Next
 			If ShowChannel <> 0
-				'If ActualProgram = Null Then Print "ERROR: ActualProgram is missing"
-				ActualProgram.Draw(49, 403 - 383 + NoDX9moveY)
+				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
+				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
 				Local audiencerate:Float	= Float(Players[ShowChannel].audience / Float(Game.maxAudiencePercentage * Players[Game.playerID].maxaudience))
 				Local girl_on:Int 			= 0
@@ -1172,7 +1185,7 @@ Type TInterface
 			SetBlend ALPHABLEND
 			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
 			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
-		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.day) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
+		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
@@ -1180,8 +1193,8 @@ Type TInterface
 
 		If ShowChannel <> 0
 			SetAlpha NoiseAlpha
-			If ActualNoise = Null Then Print "ERROR: ActualNoise is missing"
-			ActualNoise.Draw(50, 404)
+			If CurrentNoise = Null Then Print "ERROR: CurrentNoise is missing"
+			CurrentNoise.Draw(50, 404)
 			SetAlpha 1.0
 		EndIf
 		SetAlpha 0.25
@@ -1189,8 +1202,9 @@ Type TInterface
 		SetAlpha 0.9
 		Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime()+ " Uhr", 365,541,120,25,1, 40,40,40)
 		SetAlpha 1.0
-   		ActualProgramToolTip.Draw()
-	    ActualAudienceToolTip.Draw()
+   		CurrentProgrammeToolTip.Draw()
+	    CurrentAudienceToolTip.Draw()
+   		CurrentTimeToolTip.Draw()
 	    GUIManager.Draw("InGame")
 
 		If Game.error >=1 Then TError.DrawErrors()

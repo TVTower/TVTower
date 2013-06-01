@@ -5,6 +5,11 @@
 ' License:
 '**************************************************************************************************
 
+Global AiLog:TLogFile[4]
+For local i:int = 0 to 3
+	AiLog[i] = TLogFile.Create("KI Log v1.0", "log.ki"+(i+1)+".txt")
+Next
+
 Global KIRunning:Int = true
 
 'SuperStrict
@@ -53,6 +58,7 @@ Type KI
 		If TPlayer.getById(Self.PlayerID) <> Null
 			'Print "LUA: Registering <Player> as <MY>"
 			LuaEngine.RegisterBlitzmaxObject(TPlayer.getById(Self.PlayerID), "MY")
+			LuaEngine.RegisterBlitzmaxObject(Game, "Game")
 		Else
 			Print "LUA: ERROR Registering <Player> as <MY> - player not found"
 		EndIf
@@ -388,30 +394,12 @@ Type TLuaFunctions {_exposeToLua}
 	    Return self.RESULT_OK
 	End Method
 
-
-
 	Method getMillisecs:Int()
 		Return MilliSecs()
 	End Method
 
-	Method getTime:Int()
-		Return Game.timeSinceBegin
-	End Method
-
-	Method Day:Int(_time:Int = 0)
-		Return Game.GetDay(_time)
-	End Method
-
-	Method Hour:Int(_time:Int = 0)
-		Return Game.GetHour(_time)
-	End Method
-
-	Method Minute:Int(_time:Int = 0)
-		Return Game.GetMinute(_time)
-	End Method
-
-	Method Weekday:Int(_time:Int = 0)
-		Return Game.GetWeekday(_time)
+	Method addToLog:int(text:string)
+		return AiLog[Self.ME-1].AddLog(text)
 	End Method
 
 
@@ -480,8 +468,8 @@ Type TLuaFunctions {_exposeToLua}
 
 	'Ich hab mir diese Hilfmethode gebaut, damit ich die Qualitätsberechnung nicht in der KI nachbauen muss.
 	'Es wäre zu kompliziert wenn die KI ihre Qualitätsprognose auf Grund einer riesigen Erfahrungsdatenbank durchführen müsste.
-	Method getActualProgrammQuality:Int(objectID:Int = -1, lastQuotePercentage:Float = 0.1)
-		Print "VERALTET: TVT.getActualProgrammQuality -> Programmeobject.getBaseAudienceQuote(lastQuotePercentage:float=0.1)"
+	Method GetCurrentProgrammQuality:Int(objectID:Int = -1, lastQuotePercentage:Float = 0.1)
+		Print "VERALTET: TVT.GetCurrentProgrammQuality -> Programmeobject.getBaseAudienceQuote(lastQuotePercentage:float=0.1)"
 		Local Programme:TProgramme = TProgramme.GetProgramme(objectID)
 		If Programme <> Null
 			Local Quote:Int = Floor(Programme.getBaseAudienceQuote(lastQuotePercentage) * 100)
@@ -496,14 +484,14 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getMovie:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TProgramme	= Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetActualProgramme(hour, day)
+		Local obj:TProgramme	= Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentProgramme(hour, day)
 		If obj Then Return obj.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method of_getSpot:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TAdBlock = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetActualAdBlock(hour, day)
+		Local obj:TAdBlock = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 		If obj Then Return obj.contract.id Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -526,7 +514,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getSpotWillBeSent:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TAdBlock = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetActualAdBlock(hour, day)
+		Local obj:TAdBlock = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 		If obj Then Return obj.GetSpotNumber() Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -557,9 +545,9 @@ Type TLuaFunctions {_exposeToLua}
 		If Self.ME <> Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'Film bei Day,hour loeschen
-			If day = Game.day And hour = Game.GetHour() And Game.GetMinute() > 5 Then Return self.RESULT_INUSE
+			If day = Game.GetDay() And hour = Game.GetHour() And Game.GetMinute() > 5 Then Return self.RESULT_INUSE
 
-			Local Obj:TProgrammeBlock = Players[ self.ME ].ProgrammePlan.GetActualProgrammeBlock(hour, day)
+			Local Obj:TProgrammeBlock = Players[ self.ME ].ProgrammePlan.GetCurrentProgrammeBlock(hour, day)
 			if not Obj then Return self.RESULT_NOTFOUND
 
 			Obj.DeleteBlock()
@@ -590,9 +578,9 @@ Type TLuaFunctions {_exposeToLua}
 		If Self.ME <> Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'Spot bei Day,hour loeschen
-			If day = Game.day And hour = Game.GetHour() Then Return -2
+			If day = Game.GetDay() And hour = Game.GetHour() Then Return -2
 
-			Local Obj:TAdBlock = Players[ self.ME ].ProgrammePlan.GetActualAdBlock(hour, day)
+			Local Obj:TAdBlock = Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 			If not Obj then Return self.RESULT_NOTFOUND
 
 			Obj.RemoveFromPlan()

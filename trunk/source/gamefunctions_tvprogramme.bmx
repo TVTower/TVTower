@@ -40,37 +40,36 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method ProgrammePlaceable:Int(Programme:TProgramme, time:Int = -1, day:Int = -1)
 		If Programme = Null Then Return 0
 		If time = -1 Then time = Game.GetHour()
-		If day  = -1 Then day  = Game.day
+		If day  = -1 Then day  = Game.GetDay()
 
-		If GetActualProgramme(time, day) = Null
+		If GetCurrentProgramme(time, day) = Null
 			If time + Programme.blocks - 1 > 23 Then time:-24;day:+1 'sendung geht bis nach 0 Uhr
-			If GetActualProgramme(time + Programme.blocks - 1, day) = Null Then Return 1
+			If GetCurrentProgramme(time + Programme.blocks - 1, day) = Null Then Return TRUE
 		EndIf
-		Return 0
+		Return FALSE
 	End Method
 
 
+	'Removes all not-yet-run ProgrammeBlocks of the given programme from the
+	'plan's list.
+	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveProgramme(_Programme:TProgramme, removeCurrentRunning:Int = 0)
-		'remove all blocks using that programme and are NOT run
-		Local currentHour :Int = game.day*24+game.GetHour()
+		Local currentHour:Int = game.GetDay()*24 + game.GetHour()
 		For Local block:TProgrammeBlock = EachIn Self.ProgrammeBlocks
-			If block.programme = _Programme And block.sendhour +removeCurrentRunning*block.programme.blocks > currentHour Then Self.ProgrammeBlocks.remove(block)
+			'skip other programmes
+			If block.programme <> _Programme then continue
+			'only remove if sending is planned in the future or param allows current one
+			If block.sendhour +removeCurrentRunning*block.programme.blocks > currentHour Then Self.ProgrammeBlocks.remove(block)
 		Next
-
-		'remove programme from player programme list
-		'Player[self.parent.playerID].ProgrammeCollection.RemoveProgramme( _Programme )
 	End Method	
 
 
 	'Returns the programme for the given day/time
-	Method GetActualProgramme:TProgramme(time:Int = -1, day:Int = -1) {_exposeToLua}
-		If time = -1 Then time = Game.GetHour()
-		If day  = -1 Then day  = Game.day
-		Local planHour:Int = day*24+time
-		For Local block:TProgrammeBlock = EachIn Self.ProgrammeBlocks
-			If (block.sendHour + block.Programme.blocks - 1 >= planHour) Then Return block.programme
-		Next
-		Return Null
+	Method GetCurrentProgramme:TProgramme(time:Int = -1, day:Int = -1) {_exposeToLua}
+		local block:TProgrammeBlock = self.GetCurrentProgrammeBlock(time, day)
+		if block then return block.programme
+
+		return Null
 	End Method
 
 
@@ -90,10 +89,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 	'Get a ProgrammeBlock which is set for the given time/day
-	Method GetActualProgrammeBlock:TProgrammeBlock(time:Int = -1, day:Int = - 1)
+	Method GetCurrentProgrammeBlock:TProgrammeBlock(time:Int = -1, day:Int = - 1)
 		If time = -1 Then time = Game.GetHour()
-		If day  = -1 Then day  = Game.day
-		Local planHour:Int = day*24 + time
+		If day  = -1 Then day  = Game.GetDay()
+		Local planHour:Int = self.GetPlanHour(time, day)
 
 		For Local block:TProgrammeBlock = EachIn Self.ProgrammeBlocks
 			If (block.sendHour + block.Programme.blocks - 1 >= planHour And block.sendHour <= planHour) Then Return block
@@ -179,7 +178,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 								EndIf
 							EndIf
 						Next
-						If block.IsAtStartPos() And DoNotDrag = 0 And (Game.day < Game.daytoplan Or (Game.day = Game.daytoplan And Game.GetHour() < block.GetHourOfBlock(1,block.StartPos)))
+						If block.IsAtStartPos() And DoNotDrag = 0 And (Game.GetDay() < Game.dayToPlan Or (Game.GetDay() = Game.dayToPlan And Game.GetHour() < block.GetHourOfBlock(1,block.StartPos)))
 							block.Drop()
 							block.rect.position.SetPos(block.StartPos)
 						EndIf
@@ -199,20 +198,17 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'NewsBlock
 	'=========
 
-	Method GetActualNewsBlock:TNewsBlock(position:Int) {_exposeToLua}
-		print "DEPRECATED: GetActualNewsBlock() - use GetNewsBlockFromSlot() now!"
-		return self.GetNewsBlockFromSlot(position)
-	End Method
-
-
 	'set the slot of the given newsblock
     Method SetNewsBlockSlot:int(newsblock:TNewsBlock, slot:int)
 		'only if not done already
-		if newsblock.sendslot = slot then return FALSE
+'		if newsblock.sendslot = slot then return FALSE
 
-		If Not newsblock.paid And newsblock.rect.GetX() > 400
+		print "paid:"+newsblock.paid+" slot:"+slot
+		If Not newsblock.paid And slot>=0 'newsblock.rect.GetX() > 400
+			print "pay!"
 			NewsBlock.Pay()
 		EndIf
+
 
 		newsblock.sendslot = slot		
 		
@@ -288,7 +284,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 '			If NewsBlock.owner = Game.playerID
 				'only draw if:
 				' a) dragged and visible on screen | b) and ready for publish
-				If (newsblock.dragged=1 Or newsblock.rect.getY() > 0) And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeSinceBegin) Then NewsBlock.Draw()
+				If (newsblock.dragged=1 Or newsblock.rect.getY() > 0) And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeGone) Then NewsBlock.Draw()
 '			EndIf
 		Next
     End Method
@@ -308,7 +304,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
 			'arrange news blocks on left side if not done yet
-			If newsblock.GetSlotOfBlock() < 0 And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeSinceBegin)
+			If newsblock.GetSlotOfBlock() < 0 And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeGone)
 				number :+ 1
 				If number >= TNewsBlock.LeftLisTPoint And number =< TNewsBlock.LeftLisTPoint+4
 					NewsBlock.rect.position.SetXY(35, 22+88*(number-TNewsBlock.LeftLisTPoint-1))
@@ -389,14 +385,14 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	Method AdblockPlaceable:Int(time:Int = -1, day:Int = -1)
 		If time = -1 Then time = Game.GetHour()
-		If day  = -1 Then day  = Game.day
-		If not GetActualAdBlock(time, day) Then Return True else Return False
+		If day  = -1 Then day  = Game.GetDay()
+		If not GetCurrentAdBlock(time, day) Then Return True else Return False
 	End Method
 
 
-	Method GetActualAdBlock:TAdBlock(time:Int = -1, day:Int = - 1) {_exposeToLua}
+	Method GetCurrentAdBlock:TAdBlock(time:Int = -1, day:Int = - 1) {_exposeToLua}
 		If time = -1 Then time = Game.GetHour()
-		If day  = -1 Then day  = Game.day
+		If day  = -1 Then day  = Game.GetDay()
 
 		For Local block:TAdBlock= EachIn self.Adblocks
 			If block.sendtime = time And block.senddate = day Then Return block
@@ -776,7 +772,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 
 	'sign the contract -> calculate values and change owner
 	Method Sign(owner:int, day:int=-1)
-		If day < 0 Then day = game.day
+		If day < 0 Then day = game.GetDay()
 		self.daySigned		= day
 		self.owner			= owner
 		self.profit			= self.GetProfit()
@@ -875,7 +871,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 
 	'days left for sending all contracts from today
 	Method GetDaysLeft:Int() {_exposeToLua}
-		Return ( self.contractBase.daysToFinish - (Game.day - self.daySigned) )
+		Return ( self.contractBase.daysToFinish - (Game.GetDay() - self.daySigned) )
 	End Method
 
 	'get the contractBase (to access its ID or title by its GetXXX() )
@@ -992,7 +988,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)
-	Method GetActualPressure:float() {_exposeToLua}
+	Method GetCurrentPressure:float() {_exposeToLua}
 		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return self.GetSpotsToSend() / _daysToFinish * _daysToFinish
 	End Method
@@ -1453,7 +1449,7 @@ endrem
 			Next
 			topicality = value / Self.episodeList.count()
 		ElseIf topicality < 0
-			topicality = Max(0, 255 - 2 * Max(0, Game.year - year) )   'simplest form ;D
+			topicality = Max(0, 255 - 2 * Max(0, Game.GetYear() - year) )   'simplest form ;D
 		EndIf
 		Return topicality
 	End Method
@@ -1473,7 +1469,7 @@ endrem
 						+0.3	*Float(speed)/255.0..
 		EndIf
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
-		Local age:Int = Max(0,100-Max(0,game.year - year))
+		Local age:Int = Max(0,100-Max(0,game.GetYear() - year))
 		quality:* Max(0.10, (age/ 100.0))
 		'repetitions wont be watched that much
 		quality	:*	(ComputeTopicality()/255.0)^2
@@ -1615,9 +1611,7 @@ Type TNews Extends TProgrammeElement {_exposeToLua="selected"}
   Field episodecount:Int = 0
   Field episode:Int = 0
   Field episodeList:TList 	{saveload="special"}
-  Field happenedday:Int = -1
-  Field happenedhour:Int = -1
-  Field happenedminute:Int = -1
+  Field happenedtime:Double = -1
   Field parent:TNews = Null
   Field used : Int = 0  										'event happened, so this news is not repeated until every else news is used
   Global LastUniqueID:Int = 0 {saveload="special"}
@@ -1725,9 +1719,7 @@ endrem
 			Print "NEWS: allsent > 250... reset"
 			news = TNews(List.ValueAtIndex((randRange(0, List.Count() - 1))))
 		EndIf
-		news.happenedday = game.day
-		news.happenedhour = game.GetHour()
-		news.happenedminute = game.GetMinute()
+		news.happenedtime = game.timeGone
 		news.used = 1
 		Print "get random news: "+news.title
 		Return news
@@ -1743,7 +1735,7 @@ endrem
 	End Function
 
 	Method ComputeTopicality:Float()
-		Return Max(0, Int(255-10*((Game.day*10000+game.GetHour()*100+game.GetMinute()) - (happenedday*10000+happenedhour*100+happenedminute))/100) )'simplest form ;D
+		Return Max(0, Int(255-10*(Game.timeGone - self.happenedtime))) 'simplest form ;D
 	End Method
 
 	Method GetAttractiveness:Float() {_exposeToLua}
@@ -1796,7 +1788,7 @@ endrem
 	End Method
 
 	'returns Parent (first) of a random NewsChain	(genre -1 is random)
-	'Important: only unused (happenedday = -1 or older than X days)
+	'Important: only unused (happenedtime = -1 or older than X days)
 	Function GetRandomChainParent:TNews(Genre:Int=-1)
 		Local allsent:Int =0
 		Local news:TNews=Null
@@ -1805,24 +1797,20 @@ endrem
 		Until news.used = 0 Or allsent > 250
 		If allsent > 250 Then news = TNews(List.ValueAtIndex(randRange(0, List.Count() - 1)))
 
-		news.happenedday = game.day
-		news.happenedhour = game.GetHour()
-		news.happenedminute = game.GetMinute()
-		news.used = 1
+		news.happenedtime	= game.timeGone
+		news.used			= 1
 		Return news
 	EndFunction
 
   'returns the next news out of a chain, params are the currentnews
-  'Important: only unused (happenedday = -1 or older than X days)
+  'Important: only unused (happenedtime = -1 or older than X days)
   Function GetNextInNewsChain:TNews(currentNews:TNews, isParent:Int=0)
     Local news:TNews=Null
     If currentNews <> Null
       If Not isParent Then news = TNews(currentNews.parent.episodeList.ValueAtIndex(currentnews.episode -1))
       If     isParent Then news = TNews(currentNews.episodeList.ValueAtIndex(0))
-      news.happenedday		= game.day
-      news.happenedhour		= game.GetHour()
-      news.happenedminute	= game.GetMinute()
-      news.used				= 1
+      news.happenedtime	= game.timeGone
+      news.used			= 1
       Return news
     EndIf
   EndFunction
@@ -1834,10 +1822,8 @@ endrem
 '     news = TNews(TNews.List.Items[ i ])
 	 If news <> Null
   	   If news.id = number
-         news.happenedday = Game.day
-  	     news.happenedhour = Game.GetHour()
-  	     news.happenedminute = Game.GetMinute()
-	     Return news
+			news.happenedtime = game.timeGone
+			Return news
 	   EndIf
 	 EndIf
    Next
@@ -2252,9 +2238,9 @@ Type TAdBlock Extends TBlockGraphical
 	Method Update()
 		If dragged = 1 Or senddate = Game.daytoplan 'out of gameplanner
 			self.airedState = 1
-			If Game.day > Game.daytoplan Then self.airedState = 4 'old day
-			If Game.day < Game.daytoplan Then self.airedState = 0 'normal
-			If Game.day = Game.daytoplan
+			If Game.GetDay() > Game.daytoplan Then self.airedState = 4 'old day
+			If Game.GetDay() < Game.daytoplan Then self.airedState = 0 'normal
+			If Game.GetDay() = Game.daytoplan
 				If GetTimeOfBlock() > (Int(Floor((Game.minutesOfDayGone-55) / 60))) Then self.airedState = 0  'normal
 				If GetTimeOfBlock() = (Int(Floor((Game.minutesOfDayGone-55) / 60))) Then self.airedState = 2  'running
 				If GetTimeOfBlock() < (Int(Floor((Game.minutesOfDayGone) / 60)))    Then self.airedState = 1  'runned
@@ -2601,9 +2587,9 @@ Type TProgrammeBlock Extends TBlockGraphical
 
 	Method GetState:Int()
 		State = 1
-		If Game.day > Game.daytoplan Then State = 4
-		If Game.day < Game.daytoplan Then State = 0
-		If Game.day = Game.daytoplan
+		If Game.GetDay() > Game.daytoplan Then State = 4
+		If Game.GetDay() < Game.daytoplan Then State = 0
+		If Game.GetDay() = Game.daytoplan
 			'xx:05
 			Local moviesStartTime:Int	= Int(Floor((Game.minutesOfDayGone-5) / 60))
 			'xx:55
@@ -2880,7 +2866,7 @@ Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
 		obj.owner		= owner
 		obj.State		= 0
 		obj.publishdelay= publishdelay
-		obj.publishtime	= Game.timeSinceBegin
+		obj.publishtime	= Game.timeGone
 		'hier noch als variablen uebernehmen
 		obj.dragable	= 1
 		obj.sendslot	= -1
@@ -2919,7 +2905,7 @@ Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
 		Local n1:TNewsBlock = TNewsBlock(o1)
 		Local n2:TNewsBlock = TNewsBlock(o2)
 		If Not n2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-		Return (Not n2.dragged) * (n2.news.happenedday*10000+n2.news.happenedhour*100+n2.news.happenedminute) - (Not n1.dragged) * (n1.news.happenedday*10000+n1.news.happenedhour*100+n1.news.happenedminute)
+		Return (Not n2.dragged) * (n2.news.happenedtime) - (Not n1.dragged) * (n1.news.happenedtime)
     End Function
 
     Method GetSlotOfBlock:Int()
@@ -2928,7 +2914,7 @@ Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
     End Method
 
 	Method IsReadyToPublish:Int() {_exposeToLua}
-		Return (publishtime + publishdelay <= Game.timeSinceBegin)
+		Return (publishtime + publishdelay <= Game.timeGone)
 	End Method
 	
 	Method IsInProgramme:Int() {_exposeToLua}
@@ -2977,9 +2963,12 @@ Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
 		Assets.GetFont("Default", 9).drawBlock(news.GetGenre(news.Genre), rect.GetX() + 15, rect.GetY() + 72, 120, 15, 0, 0, 0, 0)
 		SetAlpha 1.0
 		Assets.GetFont("Default", 12).drawBlock(news.ComputePrice() + ",-", rect.GetX() + 220, rect.GetY() + 70, 90, 15, 2, 0, 0, 0)
-		If Game.day - news.happenedday = 0 Then Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
-		If Game.day - news.happenedday = 1 Then Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
-		If Game.day - news.happenedday = 2 Then Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedExternTime(news.happenedhour, news.happenedminute) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
+
+		Select Game.getDay() - Game.GetDay(news.happenedtime)
+			case 0	Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedTime(news.happenedtime) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
+			case 1	Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedTime(news.happenedtime) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
+			case 2	Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedTime(news.happenedtime) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
+		End Select
 		SetColor 255, 255, 255
 		SetAlpha 1.0
 	End Method
@@ -3739,7 +3728,7 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 			If locobject.owner = playerID And Not locobject.alreadyInSuitcase
 				TMovieAgencyBlocks.Create(locobject.Programme, myslot, playerID)
 				'reset audience "sendeausfall"
-				If Players[playerID].ProgrammePlan.GetActualProgramme().id = locobject.Programme.id Then Players[playerID].audience = 0
+				If Players[playerID].ProgrammePlan.GetCurrentProgramme().id = locobject.Programme.id Then Players[playerID].audience = 0
 				'remove programme from plan
 				Players[playerID].ProgrammePlan.RemoveProgramme( locobject.Programme )
 				'remove programme from players collection
