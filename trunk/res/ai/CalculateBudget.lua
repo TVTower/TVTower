@@ -8,7 +8,7 @@ function TaskCalculateBudget:typename()
 end
 
 function TaskCalculateBudget:Activate()
-	debugMsg("Starte Task 'TaskCalculateBudget'")
+	debugMsg(">>> Starte Task 'TaskCalculateBudget'")
 end
 
 function TaskCalculateBudget:GetNextJobInTargetRoom()

@@ -28,7 +28,8 @@ TASK_BOSS			= "Boss"
 DefaultAIPlayer = AIPlayer:new{
 	CurrentTask = nil;
 	Budget = nil;
-	Stats = nil
+	Stats = nil;
+	Requisitions = nil
 }
 
 function DefaultAIPlayer:typename()
@@ -42,14 +43,16 @@ function DefaultAIPlayer:initializePlayer()
 
 	self.Budget = BudgetManager:new()
 	self.Budget:Initialize()
+	
+	self.Requisitions = {}
 end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}	
-	--self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
+	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
 	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
-	--self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
-	--self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
+	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
+	self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
@@ -68,8 +71,28 @@ function DefaultAIPlayer:OnDayBegins()
 		v:OnDayBegins()
 	end
 end
--- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+function DefaultAIPlayer:AddRequisition(requisition)
+	table.insert(self.Requisitions, requisition)
+end
+
+function DefaultAIPlayer:RemoveRequisition(requisition)
+	table.remove(self.Requisitions, requisition)
+end
+
+function DefaultAIPlayer:GetRequisitionPriority(taskId)
+	local prio = 0
+
+	for k,v in pairs(self.Requisitions) do
+		if (v.TaskId == taskId) then
+			prio = prio + v.Priority
+		end
+	end
+	
+	return prio
+end
+
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 BusinessStats = SLFDataObject:new{
@@ -89,6 +112,10 @@ BusinessStats = SLFDataObject:new{
 	ProgramQualityLevel4 = nil;
 	ProgramQualityLevel5 = nil;
 }
+
+function BusinessStats:typename()
+	return "BusinessStats"
+end
 
 function BusinessStats:Initialize()
 	self.Audience = StatisticEvaluator:new()
@@ -211,3 +238,35 @@ function OnMinute(number)
 		getAIPlayer():Tick()
 	end
 end
+
+--TVTMoviePurchase
+--	BudgetWeigth = 7
+--	BasePriority = 8
+	
+--TVTNewsAgency
+--	BudgetWeigth = 3
+--	BasePriority = 8
+	
+--TVTAdAgency
+--	BudgetWeigth = 0
+--	BasePriority = 8
+	
+--TVTScheduling
+--	BudgetWeigth = 0
+--	BasePriority = 10
+	
+--TVTStations
+--	BudgetWeigth = 2
+--	BasePriority = 3
+	
+--TVTBettyTask
+--	BudgetWeigth = 1
+--	BasePriority = 2
+	
+--TVTBossTask
+--	BudgetWeigth = 0
+--	BasePriority = 5
+	
+--TVTArchive
+--	BudgetWeigth = 0
+--	BasePriority = 3

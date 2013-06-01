@@ -5,6 +5,7 @@ TaskMovieDistributor = AITask:new{
 	MovieCount = 0;
 	CheckMode = 0;
 	BudgetWeigth = 7;
+	BasePriority = 8;
 	MovieList = nil;
 	TargetRoom = TVT.ROOM_MOVIEAGENCY;
 	CheckMoviesJob = nil;
@@ -17,7 +18,7 @@ function TaskMovieDistributor:typename()
 end
 
 function TaskMovieDistributor:Activate()
-	debugMsg("Starte Task 'TaskMovieDistributor'")
+	debugMsg(">>> Starte Task 'TaskMovieDistributor'")
 	
 	-- Was getan werden soll:
 	self.CheckMoviesJob = JobCheckMovies:new()
@@ -56,7 +57,7 @@ JobCheckMovies = AIJob:new{
 }
 
 function JobCheckMovies:Prepare(pParams)
-	debugMsg("Job: CheckMovies")	
+	debugMsg("Schaue Filmangebot an")	
 	self.CurrentMovieIndex = 0
 end
 
@@ -98,7 +99,7 @@ JobAppraiseMovies = AIJob:new{
 }
 
 function JobAppraiseMovies:Prepare(pParams)
-	debugMsg("Job: Appraise Movies")
+	debugMsg("Bewerte/Vergleiche Filme")
 	self.CurrentMovieIndex = 0
 	self:AdjustMovieNiveau()
 end
@@ -185,7 +186,7 @@ JobBuyMovies = AIJob:new{
 }
 
 function JobBuyMovies:Prepare(pParams)
-	debugMsg("Job: Buy Movies")
+	debugMsg("Kaufe Filme")
 	--debugMsg("CurrentBudget: " .. self.MovieDistributorTask.CurrentBudget .. " - CurrentBargainBudget: " .. self.MovieDistributorTask.CurrentBargainBudget)
 	
 	local sortMethod = function(a, b)
@@ -203,7 +204,8 @@ function JobBuyMovies:Tick()
 		if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
 			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 				if (v.GetAttractiveness() > 1) then
-					debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.getBaseAudienceQuote())	
+					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.getBaseAudienceQuote())	
+					debugMsg("Kaufe Film: " .. v.title .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())	
 					TVT.md_doBuyMovie(v.GetId())
 					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v:GetPrice()
 					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()

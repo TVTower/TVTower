@@ -440,8 +440,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	global sentBroadcastHint:int = 0
 	Method GetContractBroadcastCount:Int(_contractId:int, successful:int = 1, planned:int = 0) {_exposeToLua} 'successful & planned sind bool-Werte
 		if not sentBroadcastHint
-			print "GetContractBroadcastCount:"
-			print " - koennte eventuell ersetzt werden, da der TContract nur in der Collection vorhanden ist, wenn er noch nicht abgeschlossen ist"
+			'TODO?
+			'print "GetContractBroadcastCount:"
+			'print " - koennte eventuell ersetzt werden, da der TContract nur in der Collection vorhanden ist, wenn er noch nicht abgeschlossen ist"
 			sentBroadcastHint = 1
 		endif
 		Local count:Int = 0
@@ -795,6 +796,10 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		Print "contract list empty - wrong filter ?"
 		Return Null
 	End Function
+	
+	Method IsAvailableToSign:Int()  {_exposeToLua}
+		Return (self.owner <= 0 and self.daySigned = -1)
+	End Method	
 
 	'percents = 0.0 - 1.0 (0-100%)
 	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1)  {_exposeToLua}
@@ -1753,7 +1758,7 @@ endrem
 		Return quote * Game.maxAudiencePercentage
 	End Method
 
-	Method ComputePrice:Int()
+	Method ComputePrice:Int() {_exposeToLua}
 		Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
 	End Method
 

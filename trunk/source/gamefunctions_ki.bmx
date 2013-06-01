@@ -160,11 +160,11 @@ Type TLuaFunctions {_exposeToLua}
 	Const MOVIE_GENRE_SHOW:Int = 17
 	Const MOVIE_GENRE_MONUMENTAL:Int = 18
 
-	Const NEWS_GENRE_TECHNICS:Int = 3
-	Const NEWS_GENRE_POLITICS:Int = 0
-	Const NEWS_GENRE_SHOWBIZ:Int = 1
-	Const NEWS_GENRE_SPORT:Int = 2
-	Const NEWS_GENRE_CURRENTS:Int = 4
+	Field NEWS_GENRE_TECHNICS:Int = 3
+	Field NEWS_GENRE_POLITICS:Int = 0
+	Field NEWS_GENRE_SHOWBIZ:Int = 1
+	Field NEWS_GENRE_SPORT:Int = 2
+	Field NEWS_GENRE_CURRENTS:Int = 4
 
 	'Die Räume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
@@ -715,7 +715,7 @@ Type TLuaFunctions {_exposeToLua}
 		Local Block:TContractBlock = TContractBlock(TContractBlock.List.ValueAtIndex(ArrayID))
 		If Block Then Return Block.contract.id Else Return self.RESULT_NOTFOUND
 	End Method
-
+	
 '- - - - - -
 ' Movie Dealer - Movie Agency
 '- - - - - -

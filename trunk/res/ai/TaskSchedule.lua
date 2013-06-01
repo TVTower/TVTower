@@ -2,6 +2,7 @@
 TaskSchedule = AITask:new{
 	TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME;
 	BudgetWeigth = 0;
+	BasePriority = 10;
 	TodayMovieSchedule = {};
 	TomorrowMovieSchedule = {};
 	TodaySpotSchedule = {};
@@ -17,7 +18,7 @@ function TaskSchedule:typename()
 end
 
 function TaskSchedule:Activate()
-	debugMsg("Starte Task 'TaskSchedule'")
+	debugMsg(">>> Starte Task 'TaskSchedule'")
 	-- Was getan werden soll:
 	self.AnalyzeScheduleJob = JobAnalyzeSchedule:new()
 	self.AnalyzeScheduleJob.ScheduleTask = self
@@ -30,7 +31,7 @@ function TaskSchedule:Activate()
 end
 
 function TaskSchedule:GetNextJobInTargetRoom()
-	debugMsg("GetNextJobInTargetRoomX")
+	--debugMsg("GetNextJobInTargetRoomX")
 	if (self.AnalyzeScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.AnalyzeScheduleJob
 	elseif (self.EmergencySchuduleJob.Status ~= JOB_STATUS_DONE) then
@@ -38,6 +39,8 @@ function TaskSchedule:GetNextJobInTargetRoom()
 	elseif (self.ScheduleJob.Status ~= JOB_STATUS_DONE) then
 		return self.ScheduleJob
 	end
+	
+	self:SetDone()
 end
 
 function TaskSchedule:GetMaxAudiencePercentageByHour(hour)
@@ -188,6 +191,8 @@ function JobEmergencySchedule:Tick()
 		self:FillIntervals(self.SlotsToCheck)
 		self.testCase = self.testCase + 1
 	end
+	
+	self.Status = JOB_STATUS_DONE
 end
 
 function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
@@ -201,7 +206,7 @@ function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
 		local programme = MY.ProgrammePlan.GetActualProgramme(fixedHour, fixedDay)
 		if (programme == nil) then
-			debugMsg("CheckEmergencyCase: Programme - " .. fixedHour .. " / " .. fixedDay)
+			--debugMsg("CheckEmergencyCase: Programme - " .. fixedHour .. " / " .. fixedDay)
 			return true
 		end
 	end
@@ -210,7 +215,7 @@ function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
 		local adblock = MY.ProgrammePlan.GetActualAdBlock(fixedHour, fixedDay)
 		if (adblock == nil) then
-			debugMsg("CheckEmergencyCase: Adblock - " .. fixedHour .. " / " .. fixedDay)
+			--debugMsg("CheckEmergencyCase: Adblock - " .. fixedHour .. " / " .. fixedDay)
 			return true
 		end
 	end
@@ -263,15 +268,19 @@ end
 
 function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	local fixedDay, fixedHour = self:FixDayAndHour(day, hour)
-
-	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
+	--local level = self.ScheduleTask:GetQualityLevel(fixedHour)
 	local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedHour)
 
 	local currentSpotList = self:GetFittingSpotList(guessedAudience, false)
 	if (table.count(currentSpotList) == 0) then
+		--Neue Anfoderung stellen: Passenden Werbevertrag abschließen (für die Zukunft)
+		local requisition = SpotRequisition:new()
+		requisition.guessedAudience = guessedAudience
+		local player = _G["globalPlayer"]
+		player:AddRequisition(requisition)
 		currentSpotList = self:GetFittingSpotList(guessedAudience, true)
 	end
-	
+
 	local filteredCurrentSpotList = self:FilterSpotList(currentSpotList)
 	local choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 	if (choosenSpot ~= nil) then
@@ -352,7 +361,6 @@ function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, no
 				table.insert(currentSpotList, contract)
 			end
 		end
-
 	end
 	return currentSpotList
 end
@@ -407,5 +415,6 @@ function JobSchedule:Prepare(pParams)
 end
 
 function JobSchedule:Tick()
+	self.Status = JOB_STATUS_DONE
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

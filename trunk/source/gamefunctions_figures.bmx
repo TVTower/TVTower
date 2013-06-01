@@ -316,7 +316,7 @@ endrem
 
 	Method LeaveRoom:Int()
 		If Self.inRoom
-			Print Self.name+" leaves room:"+Self.inRoom.name
+			'Print Self.name+" leaves room:"+Self.inRoom.name
 
 			'set unused
 			Self.inRoom.used = -1

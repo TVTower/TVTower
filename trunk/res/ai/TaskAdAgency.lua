@@ -2,7 +2,8 @@
 TaskAdAgency = AITask:new{	
 	TargetRoom = TVT.ROOM_ADAGENCY;
 	SpotsInAgency = nil;
-	BudgetWeigth = 1 --TODO: Nach dem TEST auf 0 REDUZIEREN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	BasePriority = 8;
+	BudgetWeigth = 0
 	-- zu Senden
 	-- Strafe
 	-- Zuschauer
@@ -14,7 +15,7 @@ function TaskAdAgency:typename()
 end
 
 function TaskAdAgency:Activate()
-	debugMsg("Starte Task 'TaskAdAgency'")
+	debugMsg(">>> Starte Task 'TaskAdAgency'")
 	-- Was getan werden soll:
 	self.CheckSpots = JobCheckSpots:new()
 	self.CheckSpots.AdAgencyTask = self
@@ -36,6 +37,8 @@ function TaskAdAgency:GetNextJobInTargetRoom()
 	elseif (self.SignContracts.Status ~= JOB_STATUS_DONE) then	
 		return self.SignContracts
 	end
+	
+	self:SetDone()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -59,21 +62,25 @@ end
 function JobCheckSpots:Tick()
 	self:CheckSpot()
 	self:CheckSpot()
+	self:CheckSpot()
 end
 
 function JobCheckSpots:CheckSpot()
-
 	local spotId = TVT.sa_getSpot(self.CurrentSpotIndex)
-	if (spotId == -2) then
+	if ((spotId == -2) or (spotId == -8)) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end	
 
 	local spot = TVT.GetContract(spotId)
-
-	local player = _G["globalPlayer"]
-	self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
-	player.Stats:AddSpot(spot)
+	
+	if (spot.IsAvailableToSign() == 1) then
+		--debugMsg("Signable")
+		local player = _G["globalPlayer"]
+		self.AdAgencyTask.SpotsInAgency[self.CurrentSpotIndex] = spot
+		player.Stats:AddSpot(spot)	
+	end
+	
 	self.CurrentSpotIndex = self.CurrentSpotIndex + 1
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -86,7 +93,7 @@ AppraiseSpots = AIJob:new{
 }
 
 function AppraiseSpots:Prepare(pParams)
-	debugMsg("Bewerte Werbespotangebote")
+	debugMsg("Bewerte/Vergleiche Werbevertr‰ge")
 	self.CurrentSpotIndex = 0
 end
 
@@ -146,7 +153,7 @@ function AppraiseSpots:AppraiseSpot(spot)
 	--debugMsg("pressureFactor: " .. pressureFactor .. " ; SpotMaxDays: " .. spot.SpotMaxDays .. " ; SpotToSend:" .. spot.SpotToSend)
 		
 	spot.SetAttractiveness(audienceFactor * riskFactor * pressureFactor)
-	debugMsg("Spot-Attractiveness: ===== " .. spot.GetAttractiveness() .. " ===== ; financePower: " .. financePower .. " ; audienceFactor: " .. audienceFactor .. " ; riskFactor: " .. riskFactor .. " ; pressureFactor: " .. pressureFactor)
+	--debugMsg("Spot-Attractiveness: ===== " .. spot.GetAttractiveness() .. " ===== ; financePower: " .. financePower .. " ; audienceFactor: " .. audienceFactor .. " ; riskFactor: " .. riskFactor .. " ; pressureFactor: " .. pressureFactor)
 	
 	--debugMsg("===================")
 	
@@ -173,7 +180,7 @@ function SignContracts:Prepare(pParams)
 end
 
 function SignContracts:Tick()	
-	debugMsg("SignContracts")
+	--debugMsg("SignContracts")
 	
 	--Sortieren
 	local sortMethod = function(a, b)
@@ -181,10 +188,39 @@ function SignContracts:Tick()
 	end	
 	table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)
 	
+	local openSpots = self:GetCommonRequisition()
+	--debugMsg("openSpots: " .. openSpots)
+	if (openSpots > 0) then
+		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
+			if (openSpots > 0) then
+				openSpots = openSpots - value.GetSpotCount()
+				debugMsg("Schlieﬂe Werbevertrag: " .. value.contractBase.title .. " (" .. value.GetID() .. ")")
+				TVT.sa_doBuySpot(value.GetID())				
+			end
+		end	
+	end
 	
-	for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-		--debugMsg(key .. " : " .. value.Attractiveness)
-	end	
+	self.Status = JOB_STATUS_DONE
+end
+
+function SignContracts:GetCommonRequisition()
+	local unsendedSpots = 0
+
+	for i = 0, MY.ProgrammeCollection.GetContractCount() - 1 do
+		local contract = MY.ProgrammeCollection.GetContractFromList(i)
+		local count = MY.ProgrammePlan.GetContractBroadcastCount(contract.id, 1, 1)
+		--debugMsg("GetMatchingSpotList: " .. contract.title .. " - " .. count)			
+		
+		if (count < contract.GetSpotCount()) then
+			unsendedSpots = unsendedSpots + (contract.GetSpotCount() - count)
+		end
+	end
+	--debugMsg("unsendedSpots: " .. unsendedSpots)
+	if (unsendedSpots > 5) then
+		return 0
+	else
+		return 5 - unsendedSpots
+	end
 end
 
 

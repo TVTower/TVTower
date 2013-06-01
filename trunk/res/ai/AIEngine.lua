@@ -123,6 +123,7 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Ein Task repräsentiert eine zu erledigende KI-Aufgabe die sich üblicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
 AITask = KIDataObjekt:new{
+	Id = nil; -- Der eindeutige Name des Tasks
 	Status = TASK_STATUS_OPEN; -- Der Status der Aufgabe
 	CurrentJob = nil; -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
 	BasePriority = 0; -- Grundlegende Priorität der Aufgabe
@@ -151,9 +152,9 @@ end
 
 --Wird aufgerufen, wenn der Task zur Bearbeitung ausgew�hlt wurde (NICHT �BERSCHREIBEN!)
 function AITask:StartNextJob()
-	debugMsg("StartNextJob")
+	--debugMsg("StartNextJob")
 	local roomNumber = TVT.GetPlayerRoom()
-	debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
+	--debugMsg("Player-Raum: " .. roomNumber .. " - Target-Raum: " .. self.TargetRoom)
 	if TVT.GetPlayerRoom() ~= self.TargetRoom then --sorgt dafür, dass der Spieler in den richtigen Raum geht!
 		self.Status = TASK_STATUS_PREPARE
 		self.CurrentJob = self:getGotoJob()
@@ -205,19 +206,21 @@ end
 function AITask:RecalcPriority()
 	local Ran1 = math.random(4)
 	local Ran2 = math.random(4)
-	local TimeDiff = TVT.GetTime() - self.LastDone
-	self.CurrentPriority = self.SituationPriority + (self.BasePriority * (8+Ran1)) + (TimeDiff / 10 * (self.BasePriority - 2 + Ran2))
+	local TimeDiff = TVT.GetTime() - self.LastDone	
+	local player = _G["globalPlayer"]	
+	local requisitionPriority = player:GetRequisitionPriority(self.Id)
+	self.CurrentPriority = requisitionPriority + self.SituationPriority + (self.BasePriority * (8+Ran1)) + (TimeDiff / 10 * (self.BasePriority - 2 + Ran2))
 end
 
 function AITask:SetDone()
-	debugMsg("Done!")
+	debugMsg("<<< Task abgeschlossen!")
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
 	self.LastDone = TVT.GetTime()
 end
 
 function AITask:OnReachRoom()
-	debugMsg("OnReachRoom!")
+	--debugMsg("OnReachRoom!")
 	if (self.CurrentJob ~= nil) then
 		self.CurrentJob:OnReachRoom()
 	end
@@ -277,7 +280,7 @@ function AIJobGoToRoom:typename()
 end
 
 function AIJobGoToRoom:OnReachRoom()
-	debugMsg("AIJobGoToRoom DONE!")
+	--debugMsg("AIJobGoToRoom DONE!")
 	self.Status = JOB_STATUS_DONE
 end
 
@@ -333,6 +336,17 @@ function StatisticEvaluator:AddValue(value)
 	self.TotalSum = self.TotalSum + value
 	self.AverageValueTemp = math.round(self.TotalSum / self.Values, 0)
 	self.AverageValue = self.AverageValueTemp
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Requisition = SLFDataObject:new{
+	TaskId = nil,
+	Priority = 0 -- 10 = hoch 1 = gering
+}
+
+function Requisition:typename()
+	return "Requisition"
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

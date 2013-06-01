@@ -1,7 +1,8 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 TaskNewsAgency = AITask:new{
 	TargetRoom = TVT.ROOM_NEWSAGENCY_PLAYER_ME;
-	BudgetWeigth = 3
+	BudgetWeigth = 3;
+	BasePriority = 8
 }
 
 function TaskNewsAgency:typename()
@@ -9,9 +10,11 @@ function TaskNewsAgency:typename()
 end
 
 function TaskNewsAgency:Activate()
-	debugMsg("Starte Task 'TaskNewsAgency'")
+	debugMsg(">>> Starte Task 'TaskNewsAgency'")
 	-- Was getan werden soll:
-	self.NewsAgencyAbonnementsJob = JobNewsAgency:new()
+	self.NewsAgencyAbonnementsJob = JobNewsAgencyAbonnements:new()
+	self.NewsAgencyAbonnementsJob.Task = self
+	
 	self.NewsAgencyJob = JobNewsAgency:new()
 end
 
@@ -29,26 +32,39 @@ end
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 JobNewsAgencyAbonnements = AIJob:new{
+	Task = nil
 }
 
 function JobNewsAgencyAbonnements:Prepare(pParams)
-	debugMsg("Job: JobNewsAgencyAbonnements")
+	debugMsg("Prüfe/Schließe Nachrichtenabonnements")	
 end
 
 function JobNewsAgencyAbonnements:Tick()
-	self.Status = JOB_STATUS_DONE
---GetMyNewsBlocks
-
-
---GetNewsAbonnementPrice
-	--local abbonnement = MY.GetNewsAbonnement(NEWS_GENRE_POLITICS)
-	--MY.GetNewsAbonnement(NEWS_GENRE_SHOWBIZ)
-	--MY.GetNewsAbonnement(NEWS_GENRE_SPORT)
-	--MY.GetNewsAbonnement(NEWS_GENRE_TECHNICS)
-	--MY.GetNewsAbonnement(NEWS_GENRE_CURRENTS)
-	--SetNewsAbonnement
+	local abonnementBudget = self.Task.BudgetWholeDay * 0.5
+	local abonnementCount = (abonnementBudget - (abonnementBudget % 10000)) / 10000
 	
-	--AddNewsBlock
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_POLITICS, self:GetAbonnementLevel(abonnementCount, 1))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SHOWBIZ, self:GetAbonnementLevel(abonnementCount, 2))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SPORT, self:GetAbonnementLevel(abonnementCount, 3))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_TECHNICS, self:GetAbonnementLevel(abonnementCount, 4))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_CURRENTS, self:GetAbonnementLevel(abonnementCount, 5))
+	
+	--self.Task.CurrentBudget = self.Task.CurrentBudget - (abonnementCount * 10000)
+
+	self.Status = JOB_STATUS_DONE
+end
+
+function JobNewsAgencyAbonnements:GetAbonnementLevel(abonnementCount, dividend)
+	--debugMsg("dividend: " .. dividend .. " (" .. abonnementCount .. ")")
+	if (abonnementCount >= (dividend + 10)) then
+		return 3
+	elseif (abonnementCount >= (dividend + 5)) then
+		return 2
+	elseif (abonnementCount >= dividend) then
+		return 1
+	else
+		return 0
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -58,23 +74,24 @@ JobNewsAgency = AIJob:new{
 }
 
 function JobNewsAgency:Prepare(pParams)
-	debugMsg("Job: JobNewsAgency")
+	debugMsg("Bewerte/Kaufe Nachrichten")
 	self.Newslist = self.GetNewsList()
 end
 
 function JobNewsAgency:Tick()
+	--TODO: EInfache Lösung	
 	if (table.count(self.Newslist) > 0) then
-		debugMsg("Do news in plan: " .. self.Newslist[1].id .. " -> 1")
+		debugMsg("Kaufe Nachricht: " .. self.Newslist[1].news.title .. " (" .. self.Newslist[1].id .. ") - Slot: 1 - Preis: " .. self.Newslist[1].news.ComputePrice())
 		TVT.ne_doNewsInPlan(0)
 		TVT.ne_doNewsInPlan(0, self.Newslist[1].id)
 	end
 	if (table.count(self.Newslist) > 1) then
-		debugMsg("Do news in plan: " .. self.Newslist[2].id .. " -> 2")
+		debugMsg("Kaufe Nachricht: " .. self.Newslist[2].news.title .. " (" .. self.Newslist[2].id .. ") - Slot: 2 - Preis: " .. self.Newslist[2].news.ComputePrice())
 		TVT.ne_doNewsInPlan(1)
 		TVT.ne_doNewsInPlan(1, self.Newslist[2].id)
 	end
 	if (table.count(self.Newslist) > 2) then
-		debugMsg("Do news in plan: " .. self.Newslist[3].id .. " -> 3")
+		debugMsg("Kaufe Nachricht: " .. self.Newslist[3].news.title .. " (" .. self.Newslist[3].id .. ") - Slot: 3 - Preis: " .. self.Newslist[3].news.ComputePrice())
 		TVT.ne_doNewsInPlan(2)
 		TVT.ne_doNewsInPlan(2, self.Newslist[3].id)
 	end
