@@ -208,7 +208,7 @@ function SignContracts:GetCommonRequisition()
 
 	for i = 0, MY.ProgrammeCollection.GetContractCount() - 1 do
 		local contract = MY.ProgrammeCollection.GetContractFromList(i)
-		local count = MY.ProgrammePlan.GetContractBroadcastCount(contract.id, 1, 1)
+		local count = MY.ProgrammePlan.GetContractBroadcastCount(contract.id, 1, 0)
 		--debugMsg("GetMatchingSpotList: " .. contract.title .. " - " .. count)			
 		
 		if (count < contract.GetSpotCount()) then
@@ -216,10 +216,10 @@ function SignContracts:GetCommonRequisition()
 		end
 	end
 	--debugMsg("unsendedSpots: " .. unsendedSpots)
-	if (unsendedSpots > 5) then
+	if (unsendedSpots > 8) then
 		return 0
 	else
-		return 5 - unsendedSpots
+		return 8 - unsendedSpots
 	end
 end
 

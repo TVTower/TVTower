@@ -3132,6 +3132,13 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 
 				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
 				If KEYMANAGER.Ishit(Key_F6) Then Soundmanager.PlayMusic(MUSIC_MUSIC)
+				If KEYMANAGER.Ishit(Key_F9)
+					if (KIRunning)
+						KIRunning = false
+					else
+						KIRunning = true
+					endif
+				endif
 			EndIf
 
 			KEYMANAGER.changeStatus()

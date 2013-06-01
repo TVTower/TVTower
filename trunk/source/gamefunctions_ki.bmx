@@ -5,6 +5,8 @@
 ' License:
 '**************************************************************************************************
 
+Global KIRunning:Int = true
+
 'SuperStrict
 Type KI
 	Field playerId:Byte
@@ -33,7 +35,7 @@ Type KI
 	Method OnCreate()
 		Local args:Object[1]
 		args[0] = String(Self.playerID)
-		Self.LuaEngine.CallLuaFunction("OnCreate", args)
+		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnCreate", args)
 	End Method
 
 	Method Stop()
@@ -60,21 +62,21 @@ Type KI
 	Method CallOnLoad(savedluascript:String="")
 		Local args:Object[1]
 		args[0] = savedluascript
-		Self.LuaEngine.CallLuaFunction("OnLoad", args)
+		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnLoad", args)
 	'	Self.PrintErrors()
 	End Method
 
 	Method CallOnSave()
 		Local args:Object[1]
 		args[0] = "5.0"
-		Self.LuaEngine.CallLuaFunction("OnSave", args)
+		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnSave", args)
 	'	Self.PrintErrors()
 	End Method
 
 	Method CallOnMinute(minute:Int=0)
 		Local args:Object[1]
 		args[0] = String(minute)
-		Self.LuaEngine.CallLuaFunction("OnMinute", args)
+		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnMinute", args)
 	End Method
 
 	Method CallOnChat(text:String = "")
@@ -91,7 +93,7 @@ Type KI
 	    Try
 			Local args:Object[1]
 			args[0] = String(roomId)
-			Self.LuaEngine.CallLuaFunction("OnReachRoom", args)
+			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnReachRoom", args)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnReachRoom nicht"
 		End Try
@@ -99,7 +101,7 @@ Type KI
 
 	Method CallOnLeaveRoom()
 	    Try
-			Self.LuaEngine.CallLuaFunction("OnLeaveRoom", Null)
+			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnLeaveRoom", Null)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnLeaveRoom nicht"
 		End Try
@@ -107,7 +109,7 @@ Type KI
 
 	Method CallOnDayBegins()
 	    Try
-			Self.LuaEngine.CallLuaFunction("OnDayBegins", Null)
+			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnDayBegins", Null)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnDayBegins nicht"
 		End Try
@@ -115,7 +117,7 @@ Type KI
 
 	Method CallOnMoneyChanged()
 	    Try
-			Self.LuaEngine.CallLuaFunction("OnMoneyChanged", Null)
+			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnMoneyChanged", Null)
 		Catch ex:Object
 		    Print "Script " + scriptName + " enthaelt die Funktion OnMoneyChanged nicht"
 		End Try

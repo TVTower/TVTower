@@ -108,13 +108,14 @@ end
 
 function TaskSchedule:GetQualityLevel(hour)
 	local maxAudience = self:GetMaxAudiencePercentageByHour(hour)
-	if (maxAudience <= 5) then
+	debugMsg("+++++++++++++ GetQualityLevel - maxAud: " .. maxAudience .. " - Hour:" .. hour)
+	if (maxAudience <= 0.05) then
 		return 1 --Nachtprogramm
-	elseif (maxAudience <= 10) then
+	elseif (maxAudience <= 0.10) then
 		return 2 --Mitternacht + Morgen
-	elseif (maxAudience <= 15) then
+	elseif (maxAudience <= 0.15) then
 		return 3 -- Nachmittag
-	elseif (maxAudience <= 25) then
+	elseif (maxAudience <= 0.25) then
 		return 4 -- Vorabend / Spät
 	else
 		return 5 -- Primetime
@@ -249,23 +250,6 @@ function JobEmergencySchedule:FillIntervals(howManyHours)
 	end
 end
 
-function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRestrictions)
-	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8, false, noBroadcastRestrictions)
-	if (table.count(currentSpotList) == 0) then
-		currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.6, false, noBroadcastRestrictions)
-		if (table.count(currentSpotList) == 0) then
-			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4, false, noBroadcastRestrictions)
-			if (table.count(currentSpotList) == 0) then
-				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, false, noBroadcastRestrictions)
-				if (table.count(currentSpotList) == 0) then
-					currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, true, noBroadcastRestrictions)
-				end
-			end
-		end
-	end
-	return currentSpotList;
-end
-
 function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	local fixedDay, fixedHour = self:FixDayAndHour(day, hour)
 	--local level = self.ScheduleTask:GetQualityLevel(fixedHour)
@@ -302,6 +286,7 @@ function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
 	local fixedDay, fixedHour = self:FixDayAndHour(day, hour)
 
 	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
+	debugMsg("Quality-Level: " .. level .. " (" .. fixedHour .. ")")
 	local programmeList = nil
 	local choosenProgramme = nil
 	for i=level,1,-1 do
@@ -340,13 +325,34 @@ end
 
 function JobEmergencySchedule:GetProgrammeList(level)
 	local currentProgrammeList = {}
+	debugMsg("-- GetProgrammeList Start: " .. level)
 	for i=0,MY.ProgrammeCollection.GetProgrammeCount()-1 do
 		local programme = MY.ProgrammeCollection.GetProgrammeFromList(i)
 		if programme.GetQualityLevel() == level then
+			debugMsg("Programme: " .. programme.title .. " - A:" .. programme.GetAttractiveness() .. " Qa:" .. programme.GetQualityLevel() .. " Qo:" .. programme.GetBaseAudienceQuote() .. " T:" .. programme.GetTopicality())
+		
 			table.insert(currentProgrammeList, programme)
 		end
 	end
+	debugMsg("-- GetProgrammeList End")
 	return currentProgrammeList
+end
+
+function JobEmergencySchedule:GetFittingSpotList(guessedAudience, noBroadcastRestrictions)
+	local currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.8, false, noBroadcastRestrictions)
+	if (table.count(currentSpotList) == 0) then
+		currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.6, false, noBroadcastRestrictions)
+		if (table.count(currentSpotList) == 0) then
+			currentSpotList = self:GetMatchingSpotList(guessedAudience, 0.4, false, noBroadcastRestrictions)
+			if (table.count(currentSpotList) == 0) then
+				currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, false, noBroadcastRestrictions)
+				if (table.count(currentSpotList) == 0) then
+					currentSpotList = self:GetMatchingSpotList(guessedAudience, 0, true, noBroadcastRestrictions)
+				end
+			end
+		end
+	end
+	return currentSpotList;
 end
 
 function JobEmergencySchedule:GetMatchingSpotList(guessedAudience, minFactor, noAudienceRestrictions, noBroadcastRestrictions)
