@@ -439,6 +439,16 @@ endrem
 		Return Game
 	End Function
 
+	'Things to init directly after game started
+	Function onStart:int(triggerEvent:TEventBase)
+		'create 3 starting news
+		If Game.IsGameLeader()
+			NewsAgency.AnnounceNewNews(-60)
+			NewsAgency.AnnounceNewNews(-120)
+			NewsAgency.AnnounceNewNews(-120)
+		endif
+	End Function
+
 	'returns whether the given number is a valid player id
 	Method IsPlayerID:Int(number:Int)
 		Return (number > 0 And number <= 4)
@@ -1871,17 +1881,19 @@ Type TNewsAgency
 		If news = Null Then news = TNews.GetRandomNews() 'TNews.GetRandomChainParent()
 		If news <> Null
 			news.happenedtime			= Game.timeGone + delayAnnouncement
-			print "happened time:"+news.happenedtime+" day:"+Game.getDay(news.happenedtime)+" "+Game.getHour(news.happenedtime)+":"+Game.getMinute(news.happenedtime)
+
 			Local NoOneSubscribed:Int	= True
 			For Local i:Int = 1 To 4
 				If Players[i].newsabonnements[news.genre] > 0 Then NoOneSubscribed = False
 			Next
+			'only add news if there are players wanting the news, else save them
+			'for later stages
 			If Not NoOneSubscribed
 				For Local i:Int = 1 To 4
 					AddNewsToPlayer(news, i)
 				Next
 				LastNewsList.AddLast(News)
-				'Print "NEWS: added "+news.title+" episodes:"+news.episodecount
+				Print "ANNOUNCENEWNEWS: added news | "+news.title+" | now:"+Game.GetTimeGone()+" | happenedtime:"+news.happenedtime+" day:"+Game.getDay(news.happenedtime)+" "+Game.GetFormattedTime(news.happenedtime)
 			Else
 				News.used = 0
 			EndIf
@@ -2358,6 +2370,8 @@ Function Menu_GameSettings()
 		EventManager.registerEvent( TEventOnTime.Create("Game.OnMinute", game.GetMinute()) )
 		EventManager.registerEvent( TEventOnTime.Create("Game.OnHour", game.GetHour()) )
 		EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )
+		'so we could add news etc.
+		EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
 		Soundmanager.PlayMusic(MUSIC_MUSIC)
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
@@ -3245,13 +3259,7 @@ For Local i:Int = 1 To 4
 Next
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
 EventManager.registerListener( "Game.OnMinute",	TEventListenerOnMinute.Create() )
-
-'create 3 starting news
-If Game.IsGameLeader()
-	NewsAgency.AnnounceNewNews(-60)
-	NewsAgency.AnnounceNewNews(-120)
-	NewsAgency.AnnounceNewNews(-120)
-endif
+EventManager.registerListenerFunction( "Game.OnStart",	TGame.onStart )
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 
@@ -3262,6 +3270,7 @@ Global Init_Complete:Int = 0
 'could also be done during update ("if not initDone...")
 EventManager.Init()
 App.StartApp() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
+
 
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)

@@ -203,9 +203,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		'only if not done already
 '		if newsblock.sendslot = slot then return FALSE
 
-		print "paid:"+newsblock.paid+" slot:"+slot
+		'print "SetNewsBlockSlot: "+newsblock.news.title + " | slot: " + slot + " | paid: "+newsblock.paid + " | price: "+newsblock.news.ComputePrice()
+
 		If Not newsblock.paid And slot>=0 'newsblock.rect.GetX() > 400
-			print "pay!"
+			print "PAY NOW - paid:"+newsblock.paid+" slot:"+slot
 			NewsBlock.Pay()
 		EndIf
 
@@ -216,7 +217,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'add to slot
 			
 			'TODO: Versuch einer Lösung... aber sehr schlecht... ein Plan
-			newsblock.rect.position.setXY( 445, 106 + slot * Assets.getSprite("gfx_news_sheet0").h )
+			newsblock.rect.position.setXY( 445, 106 + (slot-1) * Assets.getSprite("gfx_news_sheet0").h )
 			newsBlock.StartPos.SetPos(newsBlock.rect.position)			
 			
 			If game.networkgame Then NetworkHelper.SendPlanNewsChange(newsblock.owner, newsblock, 1)
@@ -333,7 +334,6 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 					Else
 						Local DoNotDrag:Int = 0
 						If NewsBlock.State = 0
-							NewsBlock.dragged = 0
 							For Local DragAndDrop:TDragAndDrop = EachIn TNewsBlock.DragAndDropList
 								If DragAndDrop.CanDrop(MouseX(),MouseY()) = 1
 									For Local OtherNewsBlock:TNewsBlock = EachIn Self.NewsBlocks
@@ -363,6 +363,9 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 								
 								Self.NewsBlocks.sort(True, TNewsBlock.sort)
 							EndIf
+							'set to undragged in all cases - but not before Drop()
+							'as drop only acts if dragged
+							NewsBlock.dragged = 0
 						EndIf
 					EndIf
 				EndIf
@@ -2861,12 +2864,14 @@ Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
 
 	Function Create:TNewsBlock(text:String="unknown", x:Int=0, y:Int=0, owner:Int=1, publishdelay:Int=0, usenews:TNews=Null)
 		If usenews = Null Then usenews = TNews.GetRandomNews()
+		'if no happened time is set, use the Game time 
+		if usenews.happenedtime <= 0 then usenews.happenedtime = Game.GetTimeGone()
 
 		Local obj:TNewsBlock = New TNewsBlock
 		obj.owner		= owner
 		obj.State		= 0
 		obj.publishdelay= publishdelay
-		obj.publishtime	= Game.timeGone
+		obj.publishtime	= usenews.happenedtime
 		'hier noch als variablen uebernehmen
 		obj.dragable	= 1
 		obj.sendslot	= -1
@@ -2931,7 +2936,7 @@ Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
     End Method
 
 	'add to plan again
-    Method Drop()		
+    Method Drop()
 		If Self.dragged <> 0
 			Self.dragged = 0			
 			self.rect.position.SetPos(self.StartPos)
