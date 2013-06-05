@@ -19,8 +19,15 @@ ENDREM
 
 
 ''''''GUIzeugs'
-CONST EVENT_GUI_CLICK:int		= 1
-CONST EVENT_GUI_DOUBLECLICK:int = 2
+CONST EVENT_GUI_CLICK:int			= 1
+CONST EVENT_GUI_DOUBLECLICK:int		= 2
+CONST GUI_OBJECT_DRAGGED:int		= 1
+CONST GUI_OBJECT_VISIBLE:int		= 2
+CONST GUI_OBJECT_ENABLED:int		= 4
+CONST GUI_OBJECT_CLICKABLE:int		= 8
+CONST GUI_OBJECT_DRAGABLE:int		= 16
+
+CONST GUI_OBJECT_ACCEPTS_DROP:int	= 128
 
 Global gfx_GuiPack:TGW_SpritePack = TGW_SpritePack.Create(LoadImage("grafiken/GUI/guipack.png"), "guipack_pack")
 gfx_GuiPack.AddAnimSpriteMultiCol("ListControl", 96, 0, 56, 28, 14, 14, 8)
@@ -33,14 +40,55 @@ Type TGUIManager
 	Field globalScale:Float		= 1.0
 	Field MouseIsHit:Int 		= 0
 	Field MouseIsDown:Int 		= 0
+	Field MouseIsDownTime:Int	= 0
+	Field currentState:string	= ""			'which state are we currently handling?
 	Field List:TList			= CreateList()
 	Field ListReverse:TList		= CreateList()
+	global viewportX:int=0,viewportY:int=0,viewportW:int=0,viewportH:int=0
 
 	Function Create:TGUIManager()
 		Local obj:TGUIManager = New TGUIManager
 
+		'is something dropping on a gui element?
+		EventManager.registerListenerFunction( "guiobject.onDrop",	TGUIManager.onDrop )
+
+
 		Return obj
 	End Function
+
+	Function onDrop:int( triggerEvent:TEventBase )
+		local guiobject:TGUIObject = TGUIObject(triggerEvent.GetSender())
+		if guiobject = Null then return FALSE
+
+		local data:TData = triggerEvent.GetData()
+		if not data then return FALSE
+
+		'find out if it hit a list...
+		local coord:TPoint = TPoint( data.get("coord") )
+		local dropTarget:TGuiObject = GUIManager.GetObjectByPos( coord, NULL, TRUE, GUI_OBJECT_ACCEPTS_DROP )
+
+		'if we found a dropTarget - emit an event
+		if dropTarget<>Null
+			'print "sendEvent: guiobject.onDropOnTarget for object " + TTypeId.ForObject(dropTarget).Name()+" ["+dropTarget._id+"]"
+			local event:TEventSimple = TEventSimple.Create( "guiobject.onDropOnTarget", TData.Create().AddObject("coord", coord) , guiobject, dropTarget )
+			EventManager.triggerEvent( event )
+			'if there is a veto happening (dropTarget does not want the item)
+			'also veto the onDrop-event
+			if event.isVeto() then triggerEvent.setVeto()
+		'no dropTarget found
+		else
+			triggerEvent.setVeto()
+		endif
+	End Function
+
+	Method RestrictViewport(x:int,y:int,w:int,h:int)
+		GetViewport(viewportX,viewportY,viewportW,viewportH)
+		SetViewport(x,y,w,h)
+	End Method
+
+	Method ResetViewport()
+		SetViewport(viewportX,viewportY,viewportW,viewportH)
+	End Method
 
 	Method Add(GUIobject:TGUIobject)
 		Self.List.AddLast(GUIobject)
@@ -52,13 +100,28 @@ Type TGUIManager
 		Local objA:TGUIobject = TGUIobject(ob1)
 		Local objB:TGUIobject = TGUIobject(ob2)
 
-		If not objB Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-		If GUIManager.getActive() = objB._id
-			Return - 1
-		Else
-			If objB._visible = 0 then return (objB.Zindex <= objA.ZIndex)-1  '0 or -1
-			return (objB.ZIndex <= objA.ZIndex)
+		'undefined object - move at the end of the list
+		If not objB Then Return 1
+
+		'if objA is a dragged element - move to top
+		If objA._flags & GUI_OBJECT_DRAGGED
+			'if both are dragged, sort by higher number
+			if objA._timeDragged < objB._timeDragged then Return -1
+			Return 1
 		endif
+
+		'if objA is active element - move to top
+		If GUIManager.getActive() = objA._id then Return 1
+
+		'if objA is invisible, move to to end
+		if not(objA._flags & GUI_OBJECT_VISIBLE) then Return -1
+
+		'if objB is "higher", move it to the top
+		if objB.zIndex > objA.zIndex then Return -1
+		'if objB is "same height", do not move at all
+		if objB.zIndex = objA.zIndex then Return 0
+		'move to the end
+		return 1
 	End Function
 
 	Method SortList()
@@ -85,45 +148,87 @@ Type TGUIManager
 	End Method
 
 
+	'returns whether an object is hidden/invisible/inactive and therefor
+	'does not have to get handled now
+	Method haveToHandleObject:int(obj:TGUIObject, State:string="", fromZ:Int=-1000, toZ:Int=-1000)
+		'skip if parent has not to get handled
+		if(obj._parent <> null and not self.haveToHandleObject(obj._parent,State,fromZ,toZ)) then return FALSE
+
+		'skip if not visible
+		if not(obj._flags & GUI_OBJECT_VISIBLE) then return FALSE
+
+		'skip if not visible by zindex
+		If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then return FALSE
+
+		'limit display by state - skip if object is hidden in that state
+		If (State<>"" AND State <> obj.GetLimitToState() And obj.GetLimitToState() <> "") then return FALSE
+
+		return TRUE
+	End Method
+
+	Method GetObjectByPos:TGuiObject(coord:TPoint, limitState:string=Null, ignoreDragged:int=TRUE, requiredFlags:int=0)
+		if limitState=null then limitState = self.currentState
+
+		'from bottom to top - bottom has biggest "area" to hit
+		For Local obj:TGUIobject = EachIn Self.List
+			if not self.haveToHandleObject(obj, limitState) then continue
+
+			'avoids finding the dragged object on a drop-event
+			if not ignoreDragged and obj.isDragged() then continue
+			'if obj is required to accept drops, but does not so  - continue
+			if (requiredFlags & GUI_OBJECT_ACCEPTS_DROP) and not(obj._flags & GUI_OBJECT_ACCEPTS_DROP) then continue
+
+			if obj.getRect().containsXY( coord.getX(), coord.getY() ) then return obj
+		Next
+
+		return Null
+	End Method
+
+
 	Method Update(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
-		'sort needed ? should be done during adding
-		'List.Sort()
+		self.currentState = State
 
 		'store mouse button 1 state
 		If MOUSEMANAGER.IsHit(1) Then MouseIsHit = 1 Else MouseIsHit = 0
-		If MOUSEMANAGER.IsDown(1) Then MouseIsDown = 1 Else MouseIsDown = 0
+		If MOUSEMANAGER.IsDown(1)
+			MouseIsDown = 1
+			'store time when first mousedown happened
+			if self.MouseIsDownTime = 0 then self.MouseIsDownTime = millisecs()
+		Else
+			MouseIsDown = 0
+			self.MouseIsDownTime = 0
+		endif
+		
+		local foundClickObject:int = FALSE
+		local foundHoverObject:int = FALSE
+		local foundDraggedObject:int=TGUIobject(self.list.last()).isDragged()
 
 		For Local obj:TGUIobject = EachIn Self.ListReverse 'from top to bottom
-			'skip if parent not visible
-			if obj._parent <> null and obj._parent._visible = 0 then continue
+			if not self.haveToHandleObject(obj,State,fromZ,toZ) then continue
 
-			'skip if not visible
-			If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then continue
-			'skip if not set visible or different state
-			If obj._visible = 0 or (State <> obj.forstateonly And State <> "") then continue
+			'always be above parent
+			if obj._parent and obj._parent.zIndex >= obj.zIndex then obj.setZIndex(obj._parent.zIndex+10)
 
-			'mouseclick somewhere - should deactivate active button
-'			If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
-
-			If obj.clickable
-				If State <> obj.forstateonly Or Not functions.isIn( MouseX(), MouseY(), obj.GetX(), obj.GetY(), obj.GetWidth(), obj.GetHeight() )
-					obj.mouseIsDown = null
-					obj.mouseIsClicked = null
-					obj.mouseover = 0
+			if obj._flags & GUI_OBJECT_CLICKABLE
+				If Not functions.isIn( MouseX(), MouseY(), obj.GetX(), obj.GetY(), obj.GetWidth(), obj.GetHeight() )
+					obj.mouseIsDown		= null
+					obj.mouseIsClicked	= null
+					obj.mouseover		= 0
 					obj.setState("")
 					'mouseclick somewhere - should deactivate active button
-					If MouseIsHit And obj.isActive()
-						Self.setActive(0)
+					If self.MouseIsHit And obj.isActive()
+						self.setActive(0)
 						'print Millisecs() +": set INactive " + TTypeId.ForObject( obj ).name() + string(" [ID:"+(obj._id)+"]")
 					endif
 				EndIf
 				'no rect.intersects as GetX and GetY add parent position
-				If functions.isIn(MouseX(), MouseY(), obj.GetX(), obj.GetY(), obj.GetWidth(), obj.GetHeight())
+				If (foundDraggedObject=FALSE or obj.isDragged()) AND..
+				   functions.isIn(MouseX(), MouseY(), obj.GetX(), obj.GetY(), obj.GetWidth(), obj.GetHeight())
 					'activate objects - or skip if if one gets active
-					If MouseIsDown And obj._enabled
+					If self.MouseIsDown And obj._flags & GUI_OBJECT_ENABLED
 						'create a new "event"
-						if Self.getActive() <> obj._id
-							Self.setActive(obj._id)
+						if obj.MouseIsDown = null 'if self.getActive() <> obj._id
+							self.setActive(obj._id)
 							'print Millisecs() +": set active/clicked " + TTypeId.ForObject( obj ).name() + string(" [ID:"+(obj._id)+"]")
 							obj.EnterPressed = 1
 							obj.MouseIsDown = TPoint.Create( MouseX(), MouseY() )
@@ -131,56 +236,65 @@ Type TGUIManager
 
 						'we found a gui element which can accept clicks
 						'dont check further guiobjects
-						MouseIsDown = 0
+						self.MouseIsDown = 0
 					EndIf
 
-					'create events
-					if obj.mouseover = 0 then EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), obj ) )
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseOver", TData.Create(), obj ) )
+					if not foundHoverObject and obj._flags & GUI_OBJECT_ENABLED
+						'create events
+						if obj.mouseover = 0 then EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), obj ) )
+						EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseOver", TData.Create(), obj ) )
+						obj.mouseover = 1
+'						print "over "+obj.className
+						foundHoverObject = TRUE
 
-					obj.mouseover = 1
-
-					If obj._enabled
-						If MouseIsDown Or obj.MouseIsDown Then obj.setState("active") Else obj.setState("hover")
+						If self.MouseIsDown Or obj.MouseIsDown
+							obj.setState("active")
+							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseDown", TData.Create().AddNumber("type", 1), obj ) )
+						Else
+							obj.setState("hover")
+						endif
 
 						If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
-							obj.mouseIsClicked = TPoint.Create( MouseX(), MouseY() )
-							If obj._enabled
-								'fire onClickEvent
-								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
+							if not foundClickObject
+								obj.mouseIsClicked = TPoint.Create( MouseX(), MouseY() )
+								If obj._flags & GUI_OBJECT_ENABLED
+									'fire onClickEvent
+									EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
+									'print ".onclick " +obj.className + " ["+obj._id+"]"
+								endif
+								'added for imagebutton and arrowbutton not being reset when mouse standing still
+								obj.MouseIsDown = null
+								foundClickObject = TRUE
 							endif
-							'added for imagebutton and arrowbutton not being reset when mouse standing still
-							obj.MouseIsDown = null
 						EndIf
-					EndIf
+					endif
+
 				EndIf
 			EndIf
 			If obj.value = "" Then obj.value = "  "
 			If obj.backupvalue = "x" Then obj.backupvalue = obj.value
 			If updatelanguage Or Chr(obj.value[0] ) = "_" Then If Chr(obj.backupvalue[0] ) = "_" Then obj.value = Localization.GetString(Right(obj.backupvalue, Len(obj.backupvalue) - 1))
 
+			'run custom guiobject update
 			obj.Update()
+
 			'fire event
 			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", null, obj ) )
+
 		Next
 	End Method
 
 	Method DisplaceGUIobjects(State:String = "", x:Int = 0, y:Int = 0)
 		For Local obj:TGUIobject = EachIn Self.List
-			If State = obj.forstateonly then obj.rect.position.MoveXY( x,y )
+			If State = obj.GetLimitToState() then obj.rect.position.MoveXY( x,y )
 		Next
 	End Method
 
 	Method Draw:Int(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
+		self.currentState = State
+
 		For Local obj:TGUIobject = EachIn Self.List
-			'skip if parent not visible
-			if obj._parent <> null and obj._parent._visible = 0 then continue
-
-			'skip if not set visible or different state
-			If obj._visible = 0 or (State <> obj.forstateonly And State <> "") then continue
-
-			'skip if not visible (z-filter)
-			If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then continue
+			if not self.haveToHandleObject(obj,State,fromZ,toZ) then continue
 
 			obj.Draw()
 			'fire event
@@ -195,23 +309,22 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 
 Type TGUIobject
 	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
-	Field zIndex:Int
+	Field zIndex:Int					
 	Field scale:Float				= 1.0
 	Field align:Int					= 0 			'alignment of object
+	Field valign:Int				= 0 			'vertical-alignment of object
 	Field state:String				= ""
 	Field value:String				= ""
 	Field backupvalue:String		= "x"
 	Field mouseIsClicked:TPoint		= null			'null = not clicked
 	Field mouseIsDown:TPoint		= TPoint.Create(-1,-1)
 	Field EnterPressed:Int=0
-	Field on:Int
-	Field clickable:Int				= 1
 	Field mouseover:Int				= 0			'could be done with TPoint
 	Field _id:Int
-	Field _enabled:Int				= 1
-	Field _visible:Int				= 1
+	Field _flags:int				= 0
+	Field _timeDragged:int			= 0			'time when item got dragged, maybe find a better name
 	field _parent:TGUIobject		= null
-	Field forstateonly:String		= ""		'fuer welchen gamestate anzeigen
+	Field _limitToState:String		= ""		'fuer welchen gamestate anzeigen
 	Field useFont:TBitmapFont
 	Field className:string			= ""
 	global _activeID:int			= 0
@@ -222,88 +335,67 @@ Type TGUIobject
 		self.scale	= GUIManager.globalScale
 		Self.useFont = GUIManager.defaultFont
 		self.className = TTypeId.ForObject(self).Name()
+
+		'default options
+		self.setOption(GUI_OBJECT_VISIBLE, TRUE)
+		self.setOption(GUI_OBJECT_ENABLED, TRUE)
+		self.setOption(GUI_OBJECT_CLICKABLE, TRUE)
 	End Method
 
 	Method getClassName:string()
 		return self.className
 	End Method
 
-	Method CreateBase:TGUIobject(x:float,y:float, enabled:int=1, forstateonly:string="", useFont:TBitmapFont=null)
+	Method CreateBase:TGUIobject(x:float,y:float, limitState:string="", useFont:TBitmapFont=null)
 		If useFont <> Null Then Self.useFont = useFont
 		self.rect.position.setXY( x,y )
-		self.forstateonly = forstateonly
-		self._enabled = enabled
+		self._limitToState = limitState
 	end Method
 
-	Method SetSelfManaged()
-		GuiManager.Remove(self)
+	Method RestrictViewport()
+		GUIManager.RestrictViewport(self.getX(),self.getY(), self.rect.getW(),self.rect.getH())
 	End Method
 
-	Function GetNextID:Int()
-		TGUIobject._lastID:+1
-		Return TGUIobject._lastID
-	End Function
+	Method ResetViewport()
+		GUIManager.ResetViewport()
+	End Method
 
-	'returns true if clicked
-	'resets clicked value!
-	Method getClicks:Int()
-		If not Self._enabled Then Self.mouseIsClicked = null
+	Method getOption:int(option:int)
+		return self._flags & option
+	End Method
 
-		if self.mouseIsClicked
-			self.mouseIsClicked = null
-			return 1
+	Method setOption(option:int, enable:int=TRUE)
+		if enable
+			self._flags :| option
 		else
-			return 0
+			self._flags :& ~option
 		endif
 	End Method
 
-	Method GetWidth:float()
-		return self.rect.GetW()
+	Method isDragable:int()
+		return self._flags & GUI_OBJECT_DRAGABLE
 	End Method
 
-	Method GetHeight:float()
-		return self.rect.GetH()
+	Method isDragged:int()
+		return self._flags & GUI_OBJECT_DRAGGED
 	End Method
 
-	Method GetRect:TRectangle()
-		if self._parent <> null
-			return TRectangle.Create(	self._parent.rect.GetX() + self.rect.GetX(), ..
-										self._parent.rect.GetY() + self.rect.GetY(), ..
-										self.rect.GetW(), ..
-										self.rect.GetH() ..
-									)
-		endif
-		return self.rect
-	End Method
-
-	'adds parent position
-	Method GetX:float()
-		if self._parent <> null then return self._parent.rect.GetX() + self.rect.GetX() else return self.rect.GetX()
-	End Method
-
-	Method GetY:float()
-		if self._parent <> null then return self._parent.rect.GetY() + self.rect.GetY() else return self.rect.GetY()
-	End Method
-
-
-	Method Draw() Abstract
-	Method Update() Abstract
 
 	Method Show()
-		Self._visible = 1
+		self._flags :| GUI_OBJECT_VISIBLE
 	End Method
 
 	Method Hide()
-		Self._visible = 0
+		self._flags :& ~GUI_OBJECT_VISIBLE
 	End Method
 
 	Method enable()
-		self._enabled = 1
+		self._flags :| GUI_OBJECT_ENABLED
 		GUIManager.SortList()
 	End Method
 
 	Method disable()
-		self._enabled = 0
+		self._flags :& ~GUI_OBJECT_ENABLED
 		GUIManager.SortList()
 	End Method
 
@@ -321,6 +413,127 @@ Type TGUIobject
 		Self.state = state
 	End Method
 
+
+	Method drag:int(coord:TPoint=Null)
+		if not self.isDragable() or self.isDragged() then return FALSE
+		
+		'trigger an event immediately - if the event has a veto afterwards, do not drag!
+		local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", TData.Create().AddObject("coord", coord), self )
+		EventManager.triggerEvent( event )
+		if event.isVeto() then return FALSE
+
+		'nobody said no to "drag", so do it
+		self.setOption(GUI_OBJECT_DRAGGED, TRUE)
+
+		GUIManager.SortList()
+
+		return TRUE
+	End Method
+
+	Method drop:int(coord:TPoint=Null)
+		if not self.isDragged() then return FALSE
+
+		if coord and coord.getX()=-1 then coord = TPoint.Create(MouseX(), MouseY())
+
+		'fire an event - if the event has a veto afterwards, do not drag!
+		local event:TEventSimple = TEventSimple.Create( "guiobject.onDrop", TData.Create().AddObject("coord", coord), self )
+		EventManager.triggerEvent( event )
+		if event.isVeto() then return FALSE
+
+		'nobody said no to "drop", so do it
+		self.setOption(GUI_OBJECT_DRAGGED, FALSE)
+
+		GUIManager.SortList()
+		return TRUE
+	End Method
+	
+	Method setParent:int(parent:TGUIobject)
+		self._parent = parent
+	End Method
+
+	Method SetSelfManaged()
+		GuiManager.Remove(self)
+	End Method
+
+	Function GetNextID:Int()
+		TGUIobject._lastID:+1
+		Return TGUIobject._lastID
+	End Function
+
+	'returns true if clicked
+	'resets clicked value!
+	Method getClicks:Int()
+		if not(self._flags & GUI_OBJECT_ENABLED) Then Self.mouseIsClicked = null
+
+		if self.mouseIsClicked
+			self.mouseIsClicked = null
+			return 1
+		else
+			return 0
+		endif
+	End Method
+
+	Method GetLimitToState:string()
+		'if there is no limit set - ask parent if there is one
+		if self._limitToState="" and self._parent then return self._parent.GetLimitToState()
+
+		return self._limitToState
+	End Method
+
+	Method GetWidth:float()
+		return self.rect.GetW()
+	End Method
+
+	Method GetHeight:float()
+		return self.rect.GetH()
+	End Method
+
+	Method GetRect:TRectangle()
+		'if obj has a parent, use the parent's starting coordinates
+		if self._parent <> null
+			return TRectangle.Create(self.GetX(), self.GetY(), self.rect.GetW(), self.rect.GetH() )
+		else
+			return self.rect
+		endif
+	End Method
+
+	'adds parent position
+	Method GetX:float()
+		'maybe use a dragX, dragY-value instead of center point
+		if self._flags & GUI_OBJECT_DRAGGED then return MouseX() - self.getWidth()/2
+
+		if self._parent <> null
+			return self._parent.GetX() + self.rect.GetX()
+		else
+			return self.rect.GetX()
+		endif
+	End Method
+
+	Method GetY:float()
+		if self._flags & GUI_OBJECT_DRAGGED then return MouseY() - self.getHeight()/2
+
+		if self._parent <> null
+			return self._parent.GetY() + self.rect.GetY()
+		else
+			return self.rect.GetY()
+		endif
+	End Method
+
+	Method setAlignment(align:Int=0, valign:int=0)
+		If Self.align <> align
+			If Self.align = 0 And align = 1 then Self.rect.position.setX( Self.rect.position.x - Self.GetWidth() )
+			If Self.align = 1 And align = 0 then Self.rect.position.setX( Self.rect.position.x + Self.GetWidth() )
+		EndIf
+		If Self.valign <> valign
+			If Self.valign = 0 And valign = 1 then Self.rect.position.setY( Self.rect.position.y - Self.GetHeight() )
+			If Self.valign = 1 And valign = 0 then Self.rect.position.setY( Self.rect.position.y + Self.GetHeight() )
+		EndIf
+	End Method
+
+
+	Method Draw() Abstract
+	Method Update() Abstract
+
 	'eg. for buttons/inputfields/dropdownbase...
 	Method DrawBaseForm(identifier:string, x:float, y:float)
 		SetScale Self.scale, Self.scale
@@ -333,7 +546,7 @@ Type TGUIobject
 	Method DrawBaseFormText:object(_value:string, x:float, y:float)
 		local col:TColor = TColor.create(100,100,100)
 		if Self.mouseover Then col = TColor.create(50,50,50)
-		if not self._enabled then col = TColor.create(150,150,150)
+		if not(self._flags & GUI_OBJECT_ENABLED) then col = TColor.create(150,150,150)
 
 		return self.useFont.drawStyled(_value,x,y, col.r, col.g, col.b, 1, 0, 1, 0.5)
 	End Method
@@ -398,21 +611,21 @@ Type TGUIobject
 	    If KEYWRAPPER.pressedKey(13) Then EnterPressed :+1
    	    Return value
 	End Method
+	
 End Type
 
 Type TGUIButton Extends TGUIobject
 	Field textalign:Int		= 0
 	Field manualState:Int	= 0
 
-	Method Create:TGUIButton(pos:TPoint, width:Int=-1, on:int=0, enabled:int=1, textalign:Int=0, value:String, State:String = "", UseFont:TBitmapFont = Null)
-		super.CreateBase(pos.x,pos.y, enabled, State, UseFont)
+	Method Create:TGUIButton(pos:TPoint, width:Int=-1, value:String, State:String = "", UseFont:TBitmapFont = Null)
+		super.CreateBase(pos.x,pos.y, State, UseFont)
 
-		self.on			= on
-		self.textalign	= textalign
 		If width < 0 Then width = self.useFont.getWidth(value) + 8
 		self.rect.dimension.SetXY(width, Assets.GetSprite("gfx_gui_button.L").h * self.scale )
-		self.zindex		= 10
+		self.setZindex(10)
 		self.value		= value
+		self.textalign	= 1	'by default centered
 
     	GUIManager.Add( self )
 		Return self
@@ -425,13 +638,7 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 	Method Update()
-		If not manualState
-	        If MouseIsDown And self._enabled Then on = 1 Else on = 0
-			'no mouse within button-regions, so button not clicked
-			If not MouseOver Then on = 0
-		EndIf
-		If not Self._enabled
-			self.on = 2
+		If not(self._flags & GUI_OBJECT_ENABLED)
 			self.mouseIsClicked = null
 			self.mouseover = null
 		endif
@@ -464,7 +671,7 @@ Type TGUILabel extends TGUIobject
 	'-- use CreateSelfContained to get a unmanaged object
 	Method Create:TGUILabel(x:int,y:int, text:string, color:TColor=null, displacement:TPoint = null, enabled:byte=1, State:string="")
 		local useFont:TBitmapFont = self.defaultLabelFont
-		super.CreateBase(x,y, enabled, State, useFont)
+		super.CreateBase(x,y, State, useFont)
 
 		self.text = text
 		if color then self.color = color
@@ -499,10 +706,9 @@ Type TGUIImageButton Extends TGUIobject
 	'could be done in a TGUILabel
 	Field caption:TGUILabel		= null
 
-	Method Create:TGUIImageButton(x:Int, y:Int, spriteBaseName:String, on:int = 0, enabled:Byte = 1, State:String = "", startframe:Int = 0)
-		super.CreateBase(x,y, enabled, State, null)
+	Method Create:TGUIImageButton(x:Int, y:Int, spriteBaseName:String, State:String = "", startframe:Int = 0)
+		super.CreateBase(x,y, State, null)
 
-		self.on				= on
 		self.spriteBaseName	= spriteBaseName
 		self.startframe		= startframe
 		self.rect.dimension.setXY( Assets.getSprite(spriteBaseName).w, Assets.getSprite(spriteBaseName).h )
@@ -531,9 +737,10 @@ Type TGUIImageButton Extends TGUIobject
 		'button like behaviour
 		if self.mouseIsClicked then	GuiManager.SetActive(0)
 
+        If not(self._flags & GUI_OBJECT_ENABLED) then self.mouseIsClicked = null
 
 		'unmanaged label -> we have to position it ourself
-		if self.caption and self.caption._enabled
+		if self.caption and self.caption._flags & GUI_OBJECT_ENABLED
 			self.caption.rect.position.SetPos( self.rect.position )
 			self.caption.rect.dimension.SetPos( self.rect.dimension )
 		endif
@@ -542,28 +749,23 @@ Type TGUIImageButton Extends TGUIobject
 	Method Draw()
 		SetColor 255,255,255
 
-        If MouseIsDown Then on = 1 Else on = 0
-        If not self._enabled
-			self.on = 2
-			self.mouseIsClicked = null
-		endif
-
 		Local state:String = ""
-		If on = 2 Then state = "_disabled"
-		If on = 1 Then state = "_clicked"
+		if NOT self.getOption(GUI_OBJECT_ENABLED) then state = "_disabled"
+		if (self.mouseIsClicked or self.mouseIsDown) then state = "_clicked"
+
 		local sprite:TGW_Sprites = Assets.GetSprite(Self.spriteBaseName+state, Self.spriteBaseName)
 
 		'no clicked image found: displace button and caption by 1,1
-		if sprite.GetName() = self.spriteBaseName and on = 1
+		if sprite.GetName() = self.spriteBaseName and (self.mouseIsClicked or self.mouseIsDown)
 			sprite.draw(Self.GetX()+1, Self.GetY()+1)
-			if self.caption and self.caption._enabled
+			if self.caption and self.caption._flags & GUI_OBJECT_ENABLED
 				self.caption.rect.position.MoveXY( 1,1 )
 				self.caption.Draw()
 				self.caption.rect.position.MoveXY( -1,-1 )
 			endif
 		else
 			sprite.draw(Self.GetX(), Self.GetY())
-			if self.caption and self.caption._enabled then self.caption.Draw()
+			if self.caption and self.caption._flags & GUI_OBJECT_ENABLED then self.caption.Draw()
 		endif
 	End Method
 
@@ -571,20 +773,20 @@ End Type
 
 '''''TProgressBar -> Ladebildschirm
 
-Type TGUIBackgroundBox  Extends TGUIobject
+Type TGUIBackgroundBox Extends TGUIobject
    ' Global List:Tlist
 	Field textalign:Int = 0
 	Field manualState:Int = 0
 
 	Method Create:TGUIBackgroundBox(x:Int, y:Int, width:Int = 100, height:Int= 100, textalign:Int = 0, value:String, State:String = "", UseFont:TBitmapFont = Null)
-		super.CreateBase(x,y, true, State, useFont)
+		super.CreateBase(x,y, State, useFont)
 
 		self.textalign	= textalign
 		self.rect.dimension.setXY( width, height )
 		self.value		= value
-		self.zindex		= 0
+		self.setZindex(0)
 
-		self.clickable	= 0 'by default not clickable
+		self.setOption(GUI_OBJECT_CLICKABLE, FALSE) 'by default not clickable
 		GUIManager.Add( self )
 
 		Return self
@@ -651,11 +853,10 @@ End Type
 
 
 Type TGUIArrowButton  Extends TGUIobject
-   ' Global List:Tlist
     Field direction:String
 
-	Method Create:TGUIArrowButton(x:Int,y:Int, direction:Int=0, on:Byte = 0, enabled:Byte = 1, State:String="", align:Int = 0)
-		super.CreateBase(x,y,enabled,State,null)
+	Method Create:TGUIArrowButton(x:Int,y:Int, direction:Int=0, State:String="", align:Int = 0, valign:int=0)
+		super.CreateBase(x,y,State,null)
 
 		select direction
 			case 0		self.direction="left"
@@ -665,36 +866,27 @@ Type TGUIArrowButton  Extends TGUIobject
 			default		self.direction="left"
 		endselect
 
-		self.on      	= on
-		self.zindex		= 40
-		self.rect.dimension.setXY( Assets.GetSprite("gfx_gui_arrow_"+self.direction).w * self.scale, Assets.GetSprite("gfx_gui_arrow_"+self.direction).h * self.scale )
+		self.setZindex(40)
 		self.value		= ""
-		self.setAlign(align)
 
+		self.rect.dimension.setXY( Assets.GetSprite("gfx_gui_arrow_"+self.direction).w * self.scale, Assets.GetSprite("gfx_gui_arrow_"+self.direction).h * self.scale )
+		self.setAlignment(align, valign)
+
+		'let the guimanager manage the button
 		GUIManager.Add( self )
+
 		Return self
 	End Method
 
-	Method setAlign(align:Int=0)
-		If Self.align <> align
-			If Self.align = 0 And align = 1 then Self.rect.position.setX( Self.rect.position.x - Self.GetWidth() )
-			If Self.align = 1 And align = 0 then Self.rect.position.setX( Self.rect.position.x + Self.GetWidth() )
-		EndIf
-	End Method
-
 	Method Update()
-        If MouseIsDown And Not self._enabled Then on = 1 Else on = 0
-        If not self._enabled
+        If not(self._flags & GUI_OBJECT_ENABLED)
 			self.mouseIsClicked = null
-			self.on = 2
 		endif
 		'button like behaviour
-		if self.mouseIsClicked then	GuiManager.SetActive(0)
+		if self.mouseIsClicked then GuiManager.SetActive(0)
 	End Method
 
 	Method Draw()
-		If self.on >= 2 then return
-
 		SetColor 255,255,255
 		SetScale Self.scale, Self.scale
 		Assets.GetSprite("gfx_gui_arrow_"+Self.direction+Self.state).Draw(Self.GetX(), Self.GetY())
@@ -703,17 +895,17 @@ Type TGUIArrowButton  Extends TGUIobject
 
 End Type
 
-Type TGUISlider  Extends TGUIobject
+Type TGUISlider Extends TGUIobject
     Field minvalue:Int
     Field maxvalue:Int
     Field actvalue:Int = 50
     Field addvalue:Int = 0
     Field drawvalue:Int = 0
 
-	Method Create:TGUISlider(x:Int, y:Int, width:Int, minvalue:Int, maxvalue:Int, enabled:Byte = 1, value:String, State:String = "")
-		super.CreateBase(x,y,enabled, State,null)
+	Method Create:TGUISlider(x:Int, y:Int, width:Int, minvalue:Int, maxvalue:Int, value:String, State:String = "")
+		super.CreateBase(x,y,State,null)
+
 		If width < 0 Then width = TextWidth(value) + 8
-		self.on			= 0
 		self.rect.dimension.setXY( width, gfx_GuiPack.GetSprite("Button").frameh )
 		self.value		= value
 		self.minvalue	= minvalue
@@ -725,7 +917,7 @@ Type TGUISlider  Extends TGUIobject
 	End Method
 
 	Method Update()
-		If MouseIsDown Then on = 1 Else on = 0
+		'
 	End Method
 
     Method EnableDrawValue:Int()
@@ -756,7 +948,7 @@ Type TGUISlider  Extends TGUIobject
 	    Local maxvalueX:Float = (maxvalue) * PixelPerValue
 		Local difference:Int = actvalueX '+ PixelPerValue / 2
 
-		If on
+		If self.mouseIsDown
 			difference = MouseX() - Self.rect.position.x + PixelPerValue / 2
 			actvalue = Float(difference) / PixelPerValue
 			If actvalue > maxvalue Then actvalue = maxvalue
@@ -795,7 +987,10 @@ Type TGUISlider  Extends TGUIobject
 		if missingWidth > 0 then sprite.TileDrawHorizontal(Self.GetX() + sprite.framew + reachedWidth, self.GetY(), missingWidth, self.scale, 1)
 
 	    'dragger  -5px = Mitte des Draggers
-		sprite.Draw( Self.GetX() + Ceil(actvalueX - 5), Self.GetY(), 3 + on * 4)
+	    local mouseIsDown:int = 1
+	    if self.mouseIsDown then mouseIsDown=0
+	    
+		sprite.Draw( Self.GetX() + Ceil(actvalueX - 5), Self.GetY(), 3 + (mouseIsDown) * 4)
 
 
 		'draw label/text
@@ -821,10 +1016,10 @@ Type TGUIinput Extends TGUIobject
 	Field autoAlignText:int				= 1
 	Field valueChanged:int				= 0 '1 if changed
 
-    Method Create:TGUIinput(x:Int, y:Int, width:Int, enabled:Byte = 1, value:String, maxlength:Int = 128, State:String = "", useFont:TBitmapFont = Null)
-		super.CreateBase(x,y,enabled, State, useFont)
+    Method Create:TGUIinput(x:Int, y:Int, width:Int, value:String, maxlength:Int = 128, State:String = "", useFont:TBitmapFont = Null)
+		super.CreateBase(x,y,State, useFont)
 
-		self.zindex			= 20
+		self.setZindex(20)
 		self.rect.dimension.setXY( Max(width, 40), Assets.GetSprite("gfx_gui_input.L").h * self.scale )
 		self.maxTextWidth	= self.GetWidth() - 15
 		self.value			= value
@@ -838,7 +1033,7 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method Update()
-		If self._enabled
+		If self._flags & GUI_OBJECT_ENABLED
 			If EnterPressed >= 2
 				EnterPressed = 0
 				GUIManager.setActive(0)
@@ -846,7 +1041,7 @@ Type TGUIinput Extends TGUIobject
 					'reset changed indicator
 					self.valueChanged = 0
 					'fire onChange-event (text changed)
-					If self._enabled then EventManager.registerEvent( TEventSimple.Create( "guiobject.onChange", TData.Create().AddNumber("type", 1), self ) )
+					EventManager.registerEvent( TEventSimple.Create( "guiobject.onChange", TData.Create().AddNumber("type", 1), self ) )
 				endif
 			EndIf
 			If GUIManager.isActive(Self._id)
@@ -856,13 +1051,8 @@ Type TGUIinput Extends TGUIobject
 			endif
 		EndIf
 		If GUIManager.isActive(self._id)
-			self.on = 1
 			self.setState("active")
-		Else
-			self.on = 0
 		endif
-
-		If not self._enabled then self.on = 0
 
         If value.length > maxlength Then value = value[..maxlength]
 	End Method
@@ -885,7 +1075,7 @@ Type TGUIinput Extends TGUIobject
 			endif
 		else
 			'draw base buttonstyle
-			If not self._enabled then SetColor 225, 255, 150
+			If not(self._flags & GUI_OBJECT_ENABLED) then SetColor 225, 255, 150
 			self.DrawBaseForm("gfx_gui_input"+Self.state, self.GetX(),Self.GetY())
 		endif
 
@@ -911,7 +1101,7 @@ Type TGUIinput Extends TGUIobject
 		local textPosX:int = ceil( Self.GetX() + usetextDisplaceX + 2 )
 		local textPosY:int = ceil( Self.GetY() + Self.textDisplacement.y )
 
-		If on = 1
+		If self.isActive()
 			Self.color.set()
 			While Len(printvalue) >1 And Self.useFont.getWidth(printValue + "_") > useMaxTextWidth
 				printvalue = printValue[1..]
@@ -972,11 +1162,10 @@ Type TGUIDropDown Extends TGUIobject
 	Field textalign:Int = 0
 	Field heightIfOpen:float = 0
 
-	Method Create:TGUIDropDown(x:Int, y:Int, width:Int = -1, on:Byte = 0, enabled:Byte = 1, value:String, State:String = "", UseFont:TBitmapFont = Null)
-		super.CreateBase(x,y,enabled,State,UseFont)
+	Method Create:TGUIDropDown(x:Int, y:Int, width:Int = -1, on:Byte = 0, value:String, State:String = "", UseFont:TBitmapFont = Null)
+		super.CreateBase(x,y,State,UseFont)
 
 		If width < 0 Then width = self.useFont.getWidth(value) + 8
-		self.on			= 0	'open or closed dropdown?
 		self.rect.dimension.setXY( width, Assets.GetSprite("gfx_gui_dropdown.L").frameh * self.scale)
 		self.value		= value
 		self.heightIfOpen = self.rect.GetH()
@@ -997,14 +1186,9 @@ Type TGUIDropDown Extends TGUIobject
 	End Method
 
 	Method Update()
-        If self.isActive() Then on = 1 Else on = 0
+        If not(self._flags & GUI_OBJECT_ENABLED) then self.mouseIsClicked = null
 
-        If not self._enabled
-			self.on = 2
-			self.mouseIsClicked = null
-		endif
-
-		if self.on = 0 then return
+		if not self.isActive() or not self.mouseIsDown then return
 
 		local currentAddY:Int = self.rect.GetH() 'ignore "if open"
 		local lineHeight:float = Assets.GetSprite("gfx_gui_dropdown_list_entry.L").h*self.scale
@@ -1018,7 +1202,6 @@ Type TGUIDropDown Extends TGUIobject
 				If GUIManager.MouseIsHit
 					value			= Entry.getValue()
 					clickedEntryID	= Entry.id
-					on				= 0			'close it
 					GUIManager.setActive(0)
 					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnChange", TData.Create().AddNumber("entryID", entry.id), self ) )
 					GUIManager.MouseIsHit = 0
@@ -1058,7 +1241,7 @@ Type TGUIDropDown Extends TGUIobject
 	    Local printheight:Int		= 0
 
 		'draw list if enabled
-		If on = 1 And self._enabled 'ausgeklappt zeichnen
+		If self._flags & GUI_OBJECT_ENABLED 'ausgeklappt zeichnen
 			useheight = self.rect.GetH()
 			For Local Entry:TGUIEntry = EachIn self.EntryList
 				if self.EntryList.last() = Entry
@@ -1090,10 +1273,10 @@ Type TGUIDropDown Extends TGUIobject
 
 		'text on button
 
-		If on Or not self._enabled
-			If not self._enabled Then SetAlpha 0.7
+		If not(self._flags & GUI_OBJECT_ENABLED)
+			SetAlpha 0.7
 			self.DrawBaseFormText(value, Self.GetX() + 10, Self.GetY() + self.rect.GetH()/2 - self.useFont.getHeight(value)/2)
-			If not self._enabled Then SetAlpha 1.0
+			SetAlpha 1.0
 	    Else
 			self.DrawBaseFormText(value, Self.GetX() + 10, Self.GetY() + self.rect.GetH()/2 - self.useFont.getHeight(value)/2)
 		EndIf
@@ -1107,20 +1290,18 @@ End Type
 
 Type TGUIOkButton Extends TGUIobject
 	Field crossed:Int = 0
-	Field onoffstate:String = "off"
 	Field assetWidth:Float = 1.0
 
-	Method Create:TGUIOkButton(x:Int,y:Int,on:Byte = 0, enabled:Byte = 1, value:String, State:String="", useFont:TBitmapFont=null)
-		super.CreateBase(x,y,enabled,State,useFont)
+	Method Create:TGUIOkButton(x:Int,y:Int, crossed:int=FALSE, value:String, State:String="", useFont:TBitmapFont=null)
+		super.CreateBase(x,y,State,useFont)
 
-		self.on			= on
 		'scale in both dimensions ()
 		self.rect.dimension.setXY( Assets.GetSprite("gfx_gui_ok_off").w * self.scale, Assets.GetSprite("gfx_gui_ok_off").h * self.scale)
 		'store assetWidth to have dimension.x store "whole widget"
 		self.assetWidth	= Assets.GetSprite("gfx_gui_ok_off").w
 		self.value		= value
-		self.zindex		= 50
-		self.crossed	= on
+		self.setZindex(50)
+		self.crossed	= crossed
 		GUIManager.Add( self )
 		Return self
 	End Method
@@ -1130,8 +1311,6 @@ Type TGUIOkButton Extends TGUIobject
 		if self.mouseIsClicked then	GuiManager.SetActive(0)
 
 		If mouseIsClicked Then crossed = 1-crossed; self.mouseIsClicked = null
-		If crossed Then on = 1 Else on = 0
-		If crossed Then Self.onoffstate = "on" Else Self.onoffstate = "off"
 		'disable "active state"
 		If Self.state = ".active" Then Self.state = ".hover"
 
@@ -1144,7 +1323,11 @@ Type TGUIOkButton Extends TGUIobject
 
 	Method Draw()
 		If Self.scale <> 1.0 Then SetScale Self.scale, Self.scale
-		Assets.GetSprite("gfx_gui_ok_"+Self.onoffstate+Self.state).Draw(Self.GetX(), Self.GetY())
+		If crossed
+			Assets.GetSprite("gfx_gui_ok_on"+Self.state).Draw(Self.GetX(), Self.GetY())
+		else
+			Assets.GetSprite("gfx_gui_ok_off"+Self.state).Draw(Self.GetX(), Self.GetY())
+		endif
 		If Self.scale <> 1.0 Then SetScale 1.0,1.0
 
 		Local textDisplaceX:Int = 5
@@ -1155,113 +1338,605 @@ Type TGUIOkButton Extends TGUIobject
 
 		local col:TColor = TColor.create(100,100,100)
 		if Self.mouseover Then col = TColor.create(50,50,50)
-		if not self._enabled then col = TColor.create(150,150,150)
+		if not(self._flags & GUI_OBJECT_ENABLED) then col = TColor.create(150,150,150)
 
 		Self.useFont.drawStyled( value, Self.GetX()+Self.assetWidth*Self.scale + textDisplaceX, Self.GetY() - (dimY - self.GetHeight()) / 2, col.r, col.g, col.b, 1 )
 	End Method
 
 End Type
 
-Type TGUIPanel Extends TGUIBackgroundBox
-	Field children:TList = CreateList()
-	'Field _UpdateFunc_()
-	Field backgroundEnabled:int	= 1
+Type TGUIPanel Extends TGUIObject
+	Field elements:TList				= CreateList()
+	Field background:TGUIBackgroundBox	= Null
 
-	Method Create:TGUIPanel(x:Int, y:Int, width:Int = 100, height:Int= 100, textalign:Int = 0, value:String, State:String = "", UseFont:TBitmapFont = Null)
-		Super.Create(x,y,width,height,0,value,State, UseFont)
+	Method Create:TGUIPanel(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
+		self.rect.setXYWH(x, y, width, height)
+		self._limitToState = limitState
 
-'		If width < 0 Then width = 40
-'		self.dimension.setXY( width, height )
-'		self.value   		= ""
-
-'		GUIManager.Add( self )
-
+		GUIManager.Add( self )
 		Return self
 	End Method
 
-	Method AddChild(child:TGUIobject)
-		'child.forstateonly	= self.forstateonly
-		child._parent = self
-		self.children.addLast(child)
+	Method AddElement(element:TGUIobject)
+		element.setParent( self )
+		self.elements.addLast(element)
 	End Method
 
-	Method disableBackground(); self.backgroundEnabled=false; End Method
-	Method enableBackground(); self.backgroundEnabled=true; End Method
+	Method disableBackground()
+		if self.background then self.background.disable()
+	End Method
+
+	Method enableBackground()
+		if self.background then self.background.enable()
+	End Method
 
    	Method Update()
-		if self.backgroundEnabled
-			Super.Update()
-		else
-			If self.isActive() Then on = 1 Else on = 0
-		endif
-
-'		for local obj:TGUIobject = eachin self.children
-			'obj.Update()
-'		Next
-
-		'_UpdateFunc_()
-
+		'
 	End Method
 
 	Method Draw()
-		if self.backgroundEnabled then Super.Draw()
-	'	for local obj:TGUIobject = eachin self.children
-	'		obj.Draw()
-	'	Next
+		'
 	End Method
 End Type
 
-Type TGUIScroller
+rem
+Type TGUIScrollablePanel Extends TGUIPanel
+	Field guiScroller:TGUIScroller	= Null
+	Field guiScrollerEnabled:int	= TRUE
+	Field scrolled:TPoint			= TPoint.Create(0,0)
+
+	Method Create:TGUIScrollablePanel(x:Int, y:Int, width:Int = 100, height:Int= 100, State:string = "")
+	End Method
+End Type
+endrem
+
+Type TGUIScroller Extends TGUIobject
 	field sprite:TGW_Sprites
-	field parent:TGUIobject
-	field buttonPressedUp:int = 0
-	field buttonPressedDown:int = 0
-	field scrollSpeed:int		= 250
-	field scrollTimer:int		= 0
+	field mouseDownTime:int				= 200	'milliseconds until we react on "mousedown"
+	field guiButtonUp:TGUIArrowButton	= null
+	field guiButtonDown:TGUIArrowButton = null
 
 
 	Method Create:TGUIScroller(parent:TGUIobject)
 		self.sprite 		= gfx_GuiPack.GetSprite("ListControl")
-		self.parent 		= parent
-		self.scrollTimer 	= MilliSecs()
+		self.setParent(parent)
+
+		'create buttons
+		self.guiButtonUp	= new TGUIArrowButton.Create(0,0, 1, "", 0)
+		self.guiButtonDown	= new TGUIArrowButton.Create(0,parent.rect.GetH(), 3, "", 0,1)
+		'from button width, calculate position on own parent
+		self.rect.position.setXY(parent.rect.getW() - self.guiButtonUp.rect.getW(),0)
+		self.rect.dimension.setXY(self.guiButtonUp.rect.getW(), parent.rect.getH())
+		
+		'set the parent of the buttons so they inherit visible state etc.
+		self.guiButtonUp.setParent(self)
+		self.guiButtonDown.setParent(self)
+
+		'scroller is interested in click on its buttons
+		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScroller.onButtonClick, self.guiButtonUp )
+		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScroller.onButtonClick, self.guiButtonDown )
+		EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScroller.onButtonDown, self.guiButtonUp )
+		EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScroller.onButtonDown, self.guiButtonDown )
+
+		GUIManager.Add( self)
+
 		return self
 	End Method
+	
+
+	'handle clicks on the up/down-buttons and inform others about changes
+	Function onButtonClick:int( triggerEvent:TEventBase )
+		local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
+		if sender = Null then return FALSE
+		
+		local guiScroller:TGUIScroller = TGUIScroller( sender._parent )
+		if guiScroller = Null then return FALSE
+
+		'emit event that the scroller position has changed
+		if sender = guiScroller.guiButtonUp
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "upStep"), guiScroller ) )
+		elseif sender = guiScroller.guiButtonDown
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "downStep"), guiScroller ) )
+		endif
+	End Function
+
+	'handle clicks on the up/down-buttons and inform others about changes
+	Function onButtonDown:int( triggerEvent:TEventBase )
+		local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
+		if sender = Null then return FALSE
+		
+		local guiScroller:TGUIScroller = TGUIScroller( sender._parent )
+		if guiScroller = Null then return FALSE
+
+		if GUIManager.MouseIsDownTime > 0
+			'if we still have to wait - return without emitting events
+			if Millisecs() - GUIManager.MouseIsDownTime < guiScroller.mouseDownTime
+				return FALSE
+			endif
+		endif
+	
+
+		'emit event that the scroller position has changed
+		if sender = guiScroller.guiButtonUp
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "up"), guiScroller ) )
+		elseif sender = guiScroller.guiButtonDown
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "down"), guiScroller ) )
+		endif
+	End Function	
+
 
 	Method Update:int()
-		local scrollTo:int		= 0 '0 = no scroll, 1 = scroll UP, -1 = scroll DOWN
-		self.buttonPressedUp	= 0
-		self.buttonPressedDown	= 0
-
-		If self.parent.isActive() And self.parent.mouseIsDown And self.parent.mouseIsClicked
-			if self.parent.mouseIsClicked.x >= self.parent.GetX()+self.parent.GetWidth()-14 And self.parent.mouseIsClicked.y <= self.parent.GetY()+14
-				self.buttonPressedUp = 1
-				If self.scrollTimer + self.scrollSpeed < Millisecs()
-					scrollTo = 1
-					self.scrollTimer = Millisecs()
-				EndIf
-			EndIf
-
-			If self.parent.mouseIsClicked.x >= self.parent.GetX()+self.parent.GetWidth()-14 And self.parent.mouseIsClicked.y >= self.parent.GetY()+self.parent.GetHeight()-14
-				self.buttonPressedDown = 1
-				If self.scrollTimer + self.scrollSpeed < Millisecs()
-					scrollTo = -1
-					self.scrollTimer = Millisecs()
-				EndIf
-			EndIf
-		endif
-		return scrollTo
+		'nothing special
 	End Method
 
 	Method Draw()
-		For local i:int = 0 To Ceil(self.parent.GetHeight() / self.sprite.frameh) - 1
-		  self.sprite.Draw(parent.GetX() + parent.GetWidth() - self.sprite.framew, parent.GetY() + i * self.sprite.frameh, 7)
-		Next
+		SetColor 125,125,125
+		SetAlpha 0.25
+		
+		local width:int = self.guiButtonUp.getWidth() 
+		local height:int = self.guiButtonUp.getHeight() 
+		DrawRect(self.GetX() + width/4, self.GetY() + height/2, width/2, self.GetHeight()-height)
 
-		self.sprite.Draw(parent.GetX() + parent.GetWidth() - 14, parent.GetY(), 0 + self.buttonPressedUp)
-		self.sprite.Draw(parent.GetX() + parent.GetWidth() - 14, parent.GetY() + parent.GetHeight() - 14, 4 + self.buttonPressedDown)
+		SetAlpha 1.0
+		SetColor 255,255,255
 	End Method
 
 End Type
+
+Type TGUISlotList Extends TGUIListBase
+	Field _slotMinHeight:int = 0
+	Field _slotAmount:int = -1		'<=0 means dynamically, else it is fixed
+	Field _slots:TGUIobject[0]
+	field _autofillSlots:int = FALSE
+	
+    Method Create:TGUISlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+		Super.Create(x,y,width,height,state)
+		
+		self.autoSortItems = false
+		return self
+	End Method
+
+	'override
+	Method SetItemLimit:int(limit:int)
+		Super.SetItemLimit(limit)
+		self._slotAmount = limit
+
+		'maybe better "drag" items before if resizing to smaller slot amounts
+		self._slots = self._slots[..limit]
+	End Method
+
+	Method SetSlotMinHeight:int(height:int=0)
+		self._slotMinHeight = height
+	End Method
+
+	'which slot is occupied by the given item?
+	Method getSlot:int(item:TGUIobject)
+		For local i:int = 0 to self._slots.length-1
+			if self._slots[i] = item then return i
+		Next
+		return -1
+	End Method
+
+	'return the next free slot (for autofill)
+	Method getFreeSlot:int()
+		For local i:int = 0 to self._slots.length-1
+			if self._slots[i] then continue
+			return i
+		Next
+		return -1
+	End Method
+
+	'get a slot by a (global/screen) coord
+	Method GetSlotByCoord:int(coord:TPoint, isScreenCoord:int=TRUE)
+		'convert global/screen to local coords
+		if isScreenCoord then coord.MoveXY(-self.GetX(),-self.GetY())
+		local baseRect:TRectangle = TRectangle.Create(0, 0, self.rect.GetW(), self._slotMinHeight)
+
+		local currentYPos:float = 0
+		For local i:int = 0 to self._slots.length-1
+			baseRect.position.setY(currentYPos)
+'			print "x="+coord.getX()+",y="+coord.GetY()+" in x=" + baserect.getX()+",y="+baserect.getY()+",w="+baserect.getW()+",h="+baserect.getH()
+			if self._slots[i]
+				if self._slots[i].rect.containsXY(coord.getX(),coord.getY()) then return i
+				currentYPos :+ Max(self._slotMinHeight, self._slots[i].rect.getH() )
+			else
+				if baseRect.containsXY(coord.GetX(), coord.GetY()) then return i
+				currentYPos :+ self._slotMinHeight
+			endif
+		Next
+		return -1
+	End Method
+
+	Method GetItemByCoord:TGUIobject(coord:TPoint)
+		local slot:int = self.GetSlotByCoord(coord)
+		return self.GetItemBySlot(slot)
+	End Method
+
+	Method GetItemBySlot:TGUIobject(slot:int)
+		if slot < 0 or slot > self._slots.length-1 then return Null
+
+		return self._slots[slot]
+	End Method
+
+	'overrideable AddItem-Handler
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		local addToSlot:int = 0
+		'search for first free slot
+		if self._autofillSlots then addToslot = self.getFreeSlot()
+		'no free slot? find out on which slot we are dropping
+		'if possible, drag the other one and drop the new
+		if not self._autofillSlots or addToSlot < 0
+			local data:TData = TData(extra)
+			if not data then return FALSE
+
+			local dropCoord:TPoint = TPoint(data.get("coord"))
+			if not dropCoord then return FALSE
+
+			'set slot to land
+			addToSlot = self.GetSlotByCoord(dropCoord)
+			'no slot was hit
+			if addToSlot < 0 then return FALSE
+
+			'is there another item?
+			local dragItem:TGUIListItem = TGUIListItem(self.getItemBySlot(addToSlot))
+
+			if dragItem
+				'drag the other one
+				dragItem.drag()
+				'force sort the second time ... WHY IS THIS NEEDED? 
+				GuiManager.sortList()
+			endif
+		endif
+		
+		self._slots[addToSlot] = item
+		item.setParent(self)
+
+		self.RecalculateElements()
+
+		return TRUE
+	End Method
+
+	'overrideable RemoveItem-Handler
+	Method RemoveItem:int(item:TGUIobject)
+		For local i:int = 0 to self._slots.length-1
+			if self._slots[i] = item
+				self._slots[i] = null
+
+				self.RecalculateElements()
+				return TRUE
+			endif
+		Next
+		return FALSE
+	End Method
+
+	Method Draw()
+		'restrict by scrollable panel
+		self.guiEntriesPanel.RestrictViewPort()
+		local currentY:float = self.guiEntriesPanel.scrollPosition.GetY()
+		For local i:int = 0 to self._slots.length-1
+			if self._slots[i]
+				currentY :+ Max(self._slotMinHeight, self._slots[i].rect.getH())
+			else
+				SetAlpha 0.2
+				SetColor 0,0,0
+				DrawRect(self.getX(), self.getY()+currentY, self.rect.getW(), self._slotMinHeight)
+				SetColor 255,255,255
+				DrawRect(self.getX()+1, self.getY()+currentY+1, self.rect.getW()-2, self._slotMinHeight-2)
+				SetAlpha 1.0
+				currentY :+ self._slotMinHeight
+			endif
+		Next
+		DrawText(self.guiEntriesPanel.scrollPosition.GetY(), self.getX(), self.getY()+10)
+		self.ResetViewPort()
+	End Method
+
+
+	Method RecalculateElements:int()
+		local currentYPos:float = 0
+		For local i:int = 0 to self._slots.length-1
+			if self._slots[i]
+				'move entry's y position to current one
+				self._slots[i].rect.position.SetY(currentYPos)
+				currentYPos :+ Max(self._slotMinHeight, self._slots[i].rect.getH())
+			else
+				currentYPos :+ self._slotMinHeight
+			endif
+		Next
+		'set scroll limits:
+		'maximum is at the bottom of the area, not top - so subtract height
+		self.guiEntriesPanel.SetLimits(0, currentYPos - self.guiEntriesPanel.rect.GetH())
+	End Method
+
+End Type
+
+
+
+
+Type TGUIListBase Extends TGUIobject
+	Field guiBackground:TGUIBackgroundBox		= Null
+	Field guiEntriesPanel:TGUIScrollablePanel	= Null
+	Field guiScroller:TGUIScroller				= Null
+	Field guiScrollerEnabled:int				= TRUE
+
+	Field autoScroll:Int						= FALSE
+	Field entries:TList							= CreateList()
+	Field entriesLimit:int						= -1
+	Field autoSortItems:int						= TRUE
+
+    Method Create:TGUIListBase(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+		super.CreateBase(x,y,State,null)
+		self.setZIndex(10)
+		If width < 40 Then width = 40
+		self.rect.dimension.setXY( width, height )
+
+		self.guiScroller = new TGUIScroller.Create(self)
+
+		self.guiEntriesPanel = new TGUIScrollablePanel.Create(0,0, width-self.guiScroller.rect.getW(), height,state)
+		self.guiEntriesPanel.setParent(self)
+
+		'by default all lists accept drop
+		self.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+		'register events
+		'- we are interested in certain events from the scroller
+		EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged",	TGUIListBase.onScroll, self.guiScroller )
+		'is something dropping - check if it this list
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", self.onDropOnTarget, "TGUIListItem", self)
+
+		GUIManager.Add( self )
+		Return self
+	End Method
+
+	Method SetItemLimit:int(limit:int)
+		self.entriesLimit = limit
+	End Method
+
+	Method ReachedItemLimit:int()
+		if self.entriesLimit <= 0 then return FALSE
+		return (self.entries.count() >= self.entriesLimit)
+	End Method
+	
+	Method GetItemByCoord:TGUIobject(coord:TPoint)
+		For local entry:TGUIobject = eachin self.entries
+			'our entries are sorted and replaced, so we could
+			'quit as soon as the
+			'entry is out of range... 
+			if entry.GetY() > self.getY()+self.getHeight() then return Null
+			
+			if entry.GetRect().containsXY(coord.GetX(), coord.GetY()) then return entry
+		Next
+		return Null
+	End Method
+
+	'base handling of add item
+	Method _AddItem:int(item:TGUIobject, extra:object=null)
+		if self.ReachedItemLimit() then return FALSE
+
+		'set parent of the item - so item is able to calculate position
+		item.setParent(self.guiEntriesPanel)
+		self.entries.addLast(item)
+		if self.autoSortItems then print Self.entries.sort() ')(True, TGUIListItem.SortItems)
+
+		return TRUE
+	End Method
+
+	'base handling of add item
+	Method _RemoveItem:int(item:TGUIobject)
+		self.entries.Remove(item)
+		return TRUE
+	End Method
+
+	'overrideable AddItem-Handler
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		if self._AddItem(item, extra)
+			'recalculate positions, dimensions etc.
+			self.RecalculateElements()
+			return TRUE
+		endif
+		return FALSE
+	End Method
+	'overrideable RemoveItem-Handler
+	Method RemoveItem:int(item:TGUIobject)
+		if self._RemoveItem(item)
+			self.RecalculateElements()
+			return TRUE
+		endif
+		return FALSE
+	End Method
+
+	'recalculate scroll maximas, item positions...
+	Method RecalculateElements:int()
+		local currentYPos:float = 0
+		For local entry:TGUIobject = eachin self.entries
+			'move entry's y position to current one
+			entry.rect.position.SetY(currentYPos)
+
+			'advance to next y position
+			currentYPos:+entry.rect.GetH()
+		Next
+		'set scroll limits:
+		'maximum is at the bottom of the area, not top - so subtract height
+		self.guiEntriesPanel.SetLimits(0, currentYPos - self.guiEntriesPanel.rect.GetH())
+	End Method
+
+	Method SetScrollerState(on:Int = 1)
+		Self.guiScrollerEnabled = on
+	End Method
+
+	Function onDropOnTarget:int( triggerEvent:TEventBase )
+		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		'only handle if coming from another list ?
+		local parent:TGUIobject = item._parent
+		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
+		local fromList:TGUIListBase = TGUIListBase(parent)
+		if not fromList then return FALSE
+
+		local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
+		if not toList then return FALSE
+
+		local data:TData = triggerEvent.getData()
+		if not data then return FALSE
+
+		'move item if possible
+		fromList.removeItem(item)
+print "drop: removed FROM - contains now:" + fromList.entries.count()
+		'try to add the item, if not able, readd
+		if not toList.addItem(item, data)
+print "drop: not able to add TO"
+			if fromList.addItem(item) then return TRUE
+			'not able to add to "toList" but also not to "fromList"
+			'so set veto and keep the item dragged
+			triggerEvent.setVeto()
+		endif
+		
+	End Function
+
+	'handle events from the connected scroller
+	Function onScroll:int( triggerEvent:TEventBase )
+		local scroller:TGUIScroller = TGUIScroller(triggerEvent.GetSender())
+		if scroller = Null then return FALSE
+
+		local guiList:TGUIListBase = TGUIListBase(scroller._parent)
+		if not guiList then return FALSE
+
+		local data:TData = triggerEvent.GetData()
+		if not data then return FALSE
+
+		'this should be "calculate height and change amount"
+		if data.GetString("direction") = "upStep" then guiList.ScrollEntries(0, +10)
+		if data.GetString("direction") = "downStep" then guiList.ScrollEntries(0, -10)
+
+		if data.GetString("direction") = "up" then guiList.ScrollEntries(0, +1)
+		if data.GetString("direction") = "down" then guiList.ScrollEntries(0, -1)
+	End Function
+
+	'positive values scroll to top or left
+	Method ScrollEntries(dx:int, dy:int)
+		self.guiEntriesPanel.scroll(dx,dy)
+	End Method
+
+	Method Update()
+		'
+	End Method
+
+	Method Draw()
+		'
+	End Method
+End Type
+
+Type TGUIListItem Extends TGUIobject
+	field label:string = ""
+	field positionNumber:int = 0
+
+    Method Create:TGUIListItem(label:string="")
+		local defaultWidth:int = 120
+		local defaultHeight:int= 20
+
+   		super.CreateBase(0,0,"",null)
+		self.rect.dimension.setXY( defaultWidth, defaultHeight )
+		self.label = label
+
+		'make dragable
+		self.setOption(GUI_OBJECT_DRAGABLE, TRUE)
+
+		'register events
+		'- each item wants to know whether it was clicked
+		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIListItem.onClick, self )
+
+		GUIManager.add(self)
+
+		return self
+	End Method
+
+	Function onClick:int( triggerEvent:TEventBase )
+		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		local data:TData = triggerEvent.GetData()
+		if not data then return FALSE
+
+		if item.isDragged()
+			item.drop( TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)) )
+		else
+			item.drag( TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)) )
+		endif
+	End Function
+
+	Method Update()
+		'nothing special
+	End Method
+
+	Method Draw()
+		local sx:int,sy:int,sw:int,sh:int
+		if not(self._flags & GUI_OBJECT_DRAGGED)
+			GetViewport(sx,sy,sw,sh)
+			local parent:TGUIobject = self._parent
+			if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
+
+			if TGUIListBase(parent) then TGUIListBase(parent).RestrictViewPort()
+		endif
+		'self.getX() and self.getY() include parents coordinate
+		SetColor 0,0,0
+		DrawRect(self.getX(), self.getY(), self.rect.GetW(), self.rect.GetH() )
+		if self._flags & GUI_OBJECT_DRAGGED 
+			SetColor 125,0,125
+		else
+			SetColor 125,125,125
+		endif
+		DrawRect(self.getX()+1, self.getY()+1, self.rect.GetW()-2, self.rect.GetH()-2 )
+		SetColor 255,255,255
+
+		DrawText(self.label + " ["+self._id+"]", self.getX() + 5, self.getY() + 2+ 0.5*(self.rect.getH()-TextHeight(self.label)))
+
+		if not(self._flags & GUI_OBJECT_DRAGGED)
+			SetViewport(sx,sy,sw,sh)
+		endif
+	End Method
+End Type
+
+
+Type TGUIScrollablePanel Extends TGUIPanel
+	Field scrollPosition:TPoint	= TPoint.Create(0,0)
+	Field scrollLimit:TPoint = TPoint.Create(0,0)
+
+	Method Create:TGUIScrollablePanel(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
+		Super.Create(x,y,width,height,limitState)
+	
+		return self
+	End Method
+
+	Method SetLimits:int(lx:float,ly:float)
+		self.scrollLimit.setXY(lx,ly)
+	End Method
+
+	Method Scroll:int(dx:float,dy:float)
+		self.scrollPosition.MoveXY(dx, dy)
+
+		'check limits
+		self.scrollPosition.SetY( Min(0, self.scrollPosition.GetY()) )
+		self.scrollPosition.SetY( Max(self.scrollPosition.GetY(), -self.scrollLimit.GetY()) )
+	End Method
+
+	'override getters - to adjust values by scrollposition
+	Method GetY:float()
+		local y:float = Super.GetY()
+		return y + self.scrollPosition.getY()
+	End Method
+
+	Method GetX:float()
+		local x:float = Super.GetX()
+		return x + self.scrollPosition.getX()
+	End Method
+
+	Method RestrictViewport()
+		GUIManager.RestrictViewport(self.getX(),self.getY() - self.scrollPosition.getY(), self.rect.getW(), self.rect.getH())
+	End Method
+
+End Type
+
+
 
 
 Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or guiobject with background?
@@ -1277,8 +1952,8 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 	Field LastMouseClickPos:Int		= 0
 	Field background:TGUIBackgroundBox = null
 
-    Method Create:TGUIList(x:Int, y:Int, width:Int, height:Int = 50, enabled:Byte = 1, maxlength:Int = 128, State:String = "")
-		super.CreateBase(x,y,enabled,State,null)
+    Method Create:TGUIList(x:Int, y:Int, width:Int, height:Int = 50, maxlength:Int = 128, State:String = "")
+		super.CreateBase(x,y,State,null)
 
 		If width < 40 Then width = 40
 		self.rect.dimension.setXY( width, height )
@@ -1287,13 +1962,15 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 		self.ListPosClicked		= -1
 
 		self.scroller			= new TGUIScroller.Create(self)
+		'hide scroll element
+		self.scroller.hide()
 
 		GUIManager.Add( self )
 		Return self
 	End Method
 
 	Method AddBackground(title:string="Box")
-		self.background = new TGUIBackgroundBox.Create(self.GetX(), self.GetY(), self.GetWidth(), self.GetHeight(), 0, title, self.forstateonly, Assets.GetFont("Default", 16, BOLDFONT))
+		self.background = new TGUIBackgroundBox.Create(self.GetX(), self.GetY(), self.GetWidth(), self.GetHeight(), 0, title, "", Assets.GetFont("Default", 16, BOLDFONT))
 		self.background.SetSelfManaged()
 	End Method
 
@@ -1407,8 +2084,6 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 	End Method
 
 	Method Update()
-        If self.isActive() Then on = 1 Else on = 0
-
 		local scrollTo:int = self.scroller.Update()
 		if scrollTo = 1 and self.ListStartsAtPos > 0 then self.ListStartsAtPos :-1
 		if scrollTo =-1 and self.ListStartsAtPos < Int(self.EntryList.Count() - 2) then self.ListStartsAtPos :+1
@@ -1493,8 +2168,8 @@ Type TGUITextList Extends TGUIList
 	Field OwnerNames:String[5]
 	Field OwnerColors:TColor[5]
 
-    Method Create:TGUITextList(x:Int, y:Int, width:Int, height:Int = 50, enabled:Byte = 1, maxlength:Int = 128, State:String = "")
-		super.Create(x,y,width,height,enabled,maxlength,State)
+    Method Create:TGUITextList(x:Int, y:Int, width:Int, height:Int = 50, maxlength:Int = 128, State:String = "")
+		super.Create(x,y,width,height,maxlength,State)
 
 		return self
 	End Method
@@ -1572,33 +2247,37 @@ Type TGUITextList Extends TGUIList
 End Type
 
 'combination of elements
-Type TGUIChat extends TGUIPanel
+Type TGUIChat extends TGUIObject
+	field panel:TGUIPanel
 	field input:TGUIInput
 	field list:TGUITextList
 
-	Method Create:TGUIChat(x:Int, y:Int, width:Int = 100, height:Int= 100, textalign:Int = 0, value:String, State:String = "", UseFont:TBitmapFont = Null)
-		super.Create(x,y,width,height,textalign,value,state, UseFont)
+	Method Create:TGUIChat(x:Int, y:Int, width:Int = 100, height:Int= 100, title:string="", State:String = "", UseFont:TBitmapFont = Null)
+'		super.Create(x,y,width,height,textalign,value,state, UseFont)
 
 		self.setZIndex(10)
 		If width < 40 Then width = 40
 		self.rect.dimension.setXY( width, height )
 
-		self.list = new TGUITextList.Create( 0,0,width, height, 1, 100, state)
+		self.panel = new TGUIPanel.Create(0,0,width, height,state)
+		self.panel.setParent(self)
+
+		self.list = new TGUITextList.Create( 0,0,width, height, 100, state)
 
 		'input.SetSelfManaged()
 		self.list.ListStartsAtPos		= 0
 		self.list.ListPosClicked		= -1
 		self.list.AutoScroll			= 1
 		self.list.setZIndex(self.zindex + 1)
-		self.AddChild(self.list) 'adding sets parent -> parent used for displacement
+		self.panel.AddElement(self.list) 'adding sets parent -> parent used for displacement
 
-		self.input = new TGUIinput.Create(0, 0, width - 10, 1, "", 100, state, null)
+		self.input = new TGUIinput.Create(0, 0, width - 10, "", 100, state, null)
 		self.input.rect.position.SetXY(5, height - self.input.GetHeight() - 5)
 		'input.SetSelfManaged()
 		self.input.color.adjust(50,50,50, True)
 		self.input.maxlength	= 100
 		self.input.setZIndex(self.zindex + 2)
-		self.AddChild(self.input)
+		self.panel.AddElement(self.input)
 
 		'subtract input from list height
 		self.list.rect.dimension.MoveXY(0,-self.input.GetHeight() - 10)
@@ -1607,6 +2286,13 @@ Type TGUIChat extends TGUIPanel
 		'obj.GUIbackground.pos.setXY( x,y )
 		'obj.GUIbackground.dimension.setXY( width, height )
 		Return self
+	End Method
+
+	Method Draw()
+		'
+	End Method
+
+	Method Update()
 	End Method
 
 	Method SetMaxLength(value:int)

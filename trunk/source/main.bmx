@@ -2110,39 +2110,48 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
-Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.fonts.baseFontBold)
-Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 348), 120, 0, 1, 1, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
-Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 396), 120, 0, 1, 1, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 348), 120, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
+Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 396), 120, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
+
+Global Test:TGUIListBase = new TGUIListBase.Create(20,20,150,150,"MainMenu")
+For local i:int = 0 to 15
+	Test.AddItem( new TGUIListItem.Create("item "+i) )
+Next
+Global Test2:TGUISlotList = new TGUISlotList.Create(320,20,250,80,"MainMenu")
+Test2.SetItemLimit(2)
+Test2.SetSlotMinHeight(20)
+
 rem
-Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
+Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
 Test.AddEntry("test2")
 Test.AddEntry("test3")
 Test.AddEntry("test4")
 endrem
-Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
-Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
-Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 390), 120, 0, 1, 1, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)
-Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 1, 100, "NetGameLobby")
+Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 390), 120, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)
+Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 100, "NetGameLobby")
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
 NetgameLobby_gamelist.AddBackground("")
 
 Global GameSettingsBG:TGUIBackgroundBox = new TGUIBackgroundBox.Create(20, 20, 760, 260, 00, "Spieleinstellung", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
 
-Global GameSettingsOkButton_Announce:TGUIOkButton = new TGUIOkButton.Create(420, 234, 0, 1, "Spieleinstellungen abgeschlossen", "GameSettings", Assets.fonts.baseFontBold)
-Global GameSettingsGameTitle:TGuiInput		= new TGUIinput.Create(50, 230, 320, 1, Game.title, 32, "GameSettings")
-Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, 0, 1, 1, GetLocale("MENU_START_GAME"), "GameSettings", Assets.fonts.baseFontBold)
-Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, 0, 1, 1, GetLocale("MENU_BACK"), "GameSettings", Assets.fonts.baseFontBold)
-Global GameSettings_Chat:TGUIChat			= new TGuiChat.Create(20, 300, 520, 250, 0, "Chat", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
-Global InGame_Chat:TGUIChat					= new TGuiChat.Create(20, 10, 250, 200, 0, "Chat", "InGame")
+Global GameSettingsOkButton_Announce:TGUIOkButton = new TGUIOkButton.Create(420, 234, FALSE, "Spieleinstellungen abgeschlossen", "GameSettings", Assets.fonts.baseFontBold)
+Global GameSettingsGameTitle:TGuiInput		= new TGUIinput.Create(50, 230, 320, Game.title, 32, "GameSettings")
+Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_START_GAME"), "GameSettings", Assets.fonts.baseFontBold)
+Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, GetLocale("MENU_BACK"), "GameSettings", Assets.fonts.baseFontBold)
+Global GameSettings_Chat:TGUIChat			= new TGuiChat.Create(20, 300, 520, 250, "Chat", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
+Global InGame_Chat:TGUIChat					= new TGuiChat.Create(20, 10, 250, 200, "Chat", "InGame")
 GameSettings_Chat.setMaxLength(200)
 InGame_Chat.setMaxLength(200)
-InGame_Chat.disableBackground()
+InGame_Chat.panel.disableBackground()
 InGame_Chat.list.doFadeOut			= true
 InGame_Chat.list.backgroundEnabled	= true
 'GUIManager.DefaultFont = Assets.GetFont("Default", 12, BOLDFONT)
 
 GameSettings_Chat.input.TextDisplacement.setXY(5,2)
-InGame_Chat.clickable				= 0
+InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, FALSE)
 InGame_Chat.input.rect.position.setXY( 255, 377)
 InGame_Chat.input.autoAlignText = 0
 InGame_Chat.input.TextDisplacement.setXY(0,5)
@@ -2198,15 +2207,15 @@ Include "gamefunctions_network.bmx"
 
 For Local i:Int = 0 To 7
 	If i < 4
-		MenuPlayerNames[i]	= new TGUIinput.Create(50 + 190 * i, 65, 130, 1, Players[i + 1].Name, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
+		MenuPlayerNames[i]	= new TGUIinput.Create(50 + 190 * i, 65, 130, Players[i + 1].Name, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
 		MenuPlayerNames[i].TextDisplacement.setX(3)
-		MenuChannelNames[i]	= new TGUIinput.Create(50 + 190 * i, 180, 130, 1, Players[i + 1].channelname, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
+		MenuChannelNames[i]	= new TGUIinput.Create(50 + 190 * i, 180, 130, Players[i + 1].channelname, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
 		MenuChannelNames[i].TextDisplacement.setX(3)
 	EndIf
 	If i Mod 2 = 0
-		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,0,1,"GameSettings", 0)
+		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,"GameSettings", 0)
 	Else
-		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,0,1,"GameSettings", 1)
+		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,"GameSettings", 1)
 	EndIf
 Next
 
@@ -2336,8 +2345,8 @@ Function Menu_GameSettings()
 	EndIf
 
 	For Local i:Int = 0 To 3
-		If Not MenuPlayerNames[i].on Then Players[i+1].Name = MenuPlayerNames[i].Value
-		If Not MenuChannelNames[i].on Then Players[i+1].channelname = MenuChannelNames[i].Value
+		If Not MenuPlayerNames[i].isActive() Then Players[i+1].Name = MenuPlayerNames[i].Value
+		If Not MenuChannelNames[i].isActive() Then Players[i+1].channelname = MenuChannelNames[i].Value
 		If Game.networkgame Or Game.playerID=1 Then
 			If Game.gamestate <> GAMESTATE_STARTMULTIPLAYER And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				ChangesAllowed[i] = True
@@ -2490,9 +2499,9 @@ Function Menu_GameSettings_Draw()
 	' Local ChangesAllowed:Byte[4]
 	If Not Game.networkgame
 		GameSettingsBG.value = GetLocale("MENU_SOLO_GAME")
-		GameSettings_Chat._visible = False
+		GameSettings_Chat.setOption(GUI_OBJECT_VISIBLE,FALSE)
 	Else
-		GameSettings_Chat._visible = True
+		GameSettings_Chat.setOption(GUI_OBJECT_VISIBLE,TRUE)
 		If Not Game.onlinegame Then
 			GameSettingsBG.value = GetLocale("MENU_NETWORKGAME")
 		Else

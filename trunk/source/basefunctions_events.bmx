@@ -41,8 +41,8 @@ Type TEventManager
 		return listeners.AddLast(eventListener)					'add to list of listeners
 	End Method
 
-	Method registerListenerFunction:TLink( trigger:string, _function(triggeredByEvent:TEventBase), limitToObject:object=null )
-		self.registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToObject) )
+	Method registerListenerFunction:TLink( trigger:string, _function(triggeredByEvent:TEventBase), limitToSender:object=null, limitToReceiver:object=null )
+		self.registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
 	' remove an event from a trigger
@@ -106,27 +106,60 @@ Type TEventManager
 End Type
 
 Type TEventListenerBase
-	field _limitToObject:object
+	field _limitToSender:object		= Null
+	field _limitToReceiver:object	= Null
 
 	method OnEvent:int(triggeredByEvent:TEventBase) Abstract
+
+	'returns whether to ignore the incoming event (eg. limits...)
+	Method ignoreEvent:int(triggerEvent:TEventBase)
+		if triggerEvent = null then return TRUE
+		'Check limit for "sender"
+		if self._limitToSender<>Null
+			'is different classname / type
+			if string(self._limitToSender)<>null
+				if string(self._limitToSender).toLower() <> TTypeId.ForObject(triggerEvent._sender).Name().toLower()
+					return TRUE
+				endif
+			'different sender
+			elseif self._limitToSender <> triggerEvent._sender
+				return TRUE
+			endif
+		endif
+
+		'Check limit for "receiver" - but only if receiver is set
+		if self._limitToReceiver<>Null and triggerEvent._receiver<>Null
+			'is different classname / type
+			if string(self._limitToReceiver)<>null
+				if string(self._limitToReceiver).toLower() <> TTypeId.ForObject(triggerEvent._receiver).Name().toLower()
+					return TRUE
+				endif
+			'different receiver
+			elseif self._limitToReceiver <> triggerEvent._receiver
+				return TRUE
+			endif
+		endif
+
+		return FALSE
+	End Method
 End Type
 
 Type TEventListenerRunFunction extends TEventListenerBase
 	field _function(triggeredByEvent:TEventBase)
 
-	Function Create:TEventListenerRunFunction(_function(triggeredByEvent:TEventBase), limitToObject:object=null )
+	Function Create:TEventListenerRunFunction(_function(triggeredByEvent:TEventBase), limitToSender:object=null, limitToReceiver:object=null )
 		local obj:TEventListenerRunFunction = new TEventListenerRunFunction
-		obj._function		= _function
-		obj._limitToObject	= limitToObject
+		obj._function			= _function
+		obj._limitToSender		= limitToSender
+		obj._limitToReceiver	= limitToReceiver
 		return obj
 	End Function
 
 	Method OnEvent:int(triggerEvent:TEventBase)
 		if triggerEvent = null then return 0
 
-		if self._limitToObject = null OR (self._limitToObject = triggerEvent._sender)
-			return self._function(triggerEvent)
-		endif
+		if not self.ignoreEvent(triggerEvent) then return self._function(triggerEvent)
+
 		return true
 	End Method
 End Type
@@ -135,6 +168,7 @@ Type TEventBase
 	Field _startTime:int
 	Field _trigger:string = ""
 	Field _sender:object = null
+	Field _receiver:object = null
 	field _data:object
 	field _veto:int = 0
 
@@ -146,6 +180,14 @@ Type TEventBase
 	Method isVeto:int(); return (_veto=true); End Method
 
 	Method onEvent()
+	End Method
+
+	Method getReceiver:object()
+		return self._receiver
+	End Method
+
+	Method getSender:object()
+		return self._sender
 	End Method
 
 	Method getData:TData()
@@ -173,12 +215,13 @@ End Type
 
 Type TEventSimple extends TEventBase
 
-	Function Create:TEventSimple(trigger:string, data:object=null, sender:object=null)
+	Function Create:TEventSimple(trigger:string, data:object=null, sender:object=null, receiver:object=null)
 		if data=Null then data = TData.Create()
 		local obj:TEventSimple = new TEventSimple
 		obj._trigger	= lower(trigger)
 		obj._data	 	= data
 		obj._sender		= sender
+		obj._receiver	= receiver
 		return obj
 	End Function
 End Type

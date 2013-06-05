@@ -393,17 +393,17 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'programme planner buttons
 		TGUILabel.SetDefaultLabelFont( Assets.GetFont("Default", 10, BOLDFONT) )
-		ProgrammePlannerButtons[0] = new TGUIImageButton.Create(672, 40+0*56, "programmeplanner_btn_ads",0,1,"programmeplanner")
+		ProgrammePlannerButtons[0] = new TGUIImageButton.Create(672, 40+0*56, "programmeplanner_btn_ads","programmeplanner")
 		ProgrammePlannerButtons[0].SetCaption(GetLocale("PLANNER_ADS"),,TPoint.Create(0,42))
-		ProgrammePlannerButtons[1] = new TGUIImageButton.Create(672, 40+1*56, "programmeplanner_btn_programme",0,1,"programmeplanner")
+		ProgrammePlannerButtons[1] = new TGUIImageButton.Create(672, 40+1*56, "programmeplanner_btn_programme","programmeplanner")
 		ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"),,TPoint.Create(0,42))
-		ProgrammePlannerButtons[2] = new TGUIImageButton.Create(672, 40+2*56, "programmeplanner_btn_options",0,1,"programmeplanner")
+		ProgrammePlannerButtons[2] = new TGUIImageButton.Create(672, 40+2*56, "programmeplanner_btn_options","programmeplanner")
 		ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_OPTIONS"),,TPoint.Create(0,42))
-		ProgrammePlannerButtons[3] = new TGUIImageButton.Create(672, 40+3*56, "programmeplanner_btn_financials",0,1,"programmeplanner")
+		ProgrammePlannerButtons[3] = new TGUIImageButton.Create(672, 40+3*56, "programmeplanner_btn_financials","programmeplanner")
 		ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_FINANCES"),,TPoint.Create(0,42))
-		ProgrammePlannerButtons[4] = new TGUIImageButton.Create(672, 40+4*56, "programmeplanner_btn_image",0,1,"programmeplanner")
+		ProgrammePlannerButtons[4] = new TGUIImageButton.Create(672, 40+4*56, "programmeplanner_btn_image","programmeplanner")
 		ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_IMAGE"),,TPoint.Create(0,42))
-		ProgrammePlannerButtons[5] = new TGUIImageButton.Create(672, 40+5*56, "programmeplanner_btn_news",0,1,"programmeplanner")
+		ProgrammePlannerButtons[5] = new TGUIImageButton.Create(672, 40+5*56, "programmeplanner_btn_news","programmeplanner")
 		ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_MESSAGES"),,TPoint.Create(0,42))
 		TGUILabel.SetDefaultLabelFont( null )
 
@@ -864,22 +864,22 @@ Type RoomHandler_Office extends TRoomHandler
 	Function InitStationMap()
 		'StationMap-GUIcomponents
 		Local button:TGUIButton
-		button = new TGUIButton.Create(TPoint.Create(610, 110), 155,,, , "Neue Station", "STATIONMAP")
+		button = new TGUIButton.Create(TPoint.Create(610, 110), 155, "Neue Station", "STATIONMAP")
 		button.SetTextalign("CENTER")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
 
-		button = new TGUIButton.Create(TPoint.Create(610, 345), 155,,, , "Station verkaufen", "STATIONMAP")
+		button = new TGUIButton.Create(TPoint.Create(610, 345), 155, "Station verkaufen", "STATIONMAP")
 		button.disable()
 		button.SetTextalign("CENTER")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, button )
 
-		Local stationlist:TGUIList = new TGUIList.Create(588, 233, 190, 100,, 40, "STATIONMAP")
+		Local stationlist:TGUIList = new TGUIList.Create(588, 233, 190, 100, 40, "STATIONMAP")
 		stationlist.SetControlState(1)
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapList, stationlist )
 		For Local i:Int = 0 To 3
-			local button:TGUIOkbutton = new TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, 1, String(i + 1), "STATIONMAP", Assets.GetFont("Default", 11, BOLDFONT))
+			local button:TGUIOkbutton = new TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, String(i + 1), "STATIONMAP", Assets.GetFont("Default", 11, BOLDFONT))
 			EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapFilters, button )
 		Next
 	End Function
@@ -1203,15 +1203,15 @@ Type RoomHandler_News extends TRoomHandler
 	Global currentRoom:TRooms					'holding the currently updated room (so genre buttons can access it)
 
 	Function Init()
-		Btn_newsplanner_up		= new TGUIImageButton.Create(375, 150, "gfx_news_pp_btn_up", 0, 1, "Newsplanner", 0)
-		Btn_newsplanner_down	= new TGUIImageButton.Create(375, 250, "gfx_news_pp_btn_down", 0, 1, "Newsplanner", 3)
+		Btn_newsplanner_up		= new TGUIImageButton.Create(375, 150, "gfx_news_pp_btn_up", "Newsplanner", 0)
+		Btn_newsplanner_down	= new TGUIImageButton.Create(375, 250, "gfx_news_pp_btn_down", "Newsplanner", 3)
 
 		'create genre buttons
-		NewsGenreButtons[0]		= new TGUIImageButton.Create(20, 194, "gfx_news_btn0", 0,1, "newsroom", 0).SetCaption( GetLocale("NEWS_TECHNICS_MEDIA") )
-		NewsGenreButtons[1]		= new TGUIImageButton.Create(69, 194, "gfx_news_btn1", 0,1, "newsroom", 1).SetCaption( GetLocale("NEWS_POLITICS_ECONOMY") )
-		NewsGenreButtons[2]		= new TGUIImageButton.Create(20, 247, "gfx_news_btn2", 0,1, "newsroom", 2).SetCaption( GetLocale("NEWS_SHOWBIZ") )
-		NewsGenreButtons[3]		= new TGUIImageButton.Create(69, 247, "gfx_news_btn3", 0,1, "newsroom", 3).SetCaption( GetLocale("NEWS_SPORT") )
-		NewsGenreButtons[4]		= new TGUIImageButton.Create(118, 247, "gfx_news_btn4", 0,1, "newsroom", 4).SetCaption( GetLocale("NEWS_CURRENTAFFAIRS") )
+		NewsGenreButtons[0]		= new TGUIImageButton.Create(20, 194, "gfx_news_btn0", "newsroom", 0).SetCaption( GetLocale("NEWS_TECHNICS_MEDIA") )
+		NewsGenreButtons[1]		= new TGUIImageButton.Create(69, 194, "gfx_news_btn1", "newsroom", 1).SetCaption( GetLocale("NEWS_POLITICS_ECONOMY") )
+		NewsGenreButtons[2]		= new TGUIImageButton.Create(20, 247, "gfx_news_btn2", "newsroom", 2).SetCaption( GetLocale("NEWS_SHOWBIZ") )
+		NewsGenreButtons[3]		= new TGUIImageButton.Create(69, 247, "gfx_news_btn3", "newsroom", 3).SetCaption( GetLocale("NEWS_SPORT") )
+		NewsGenreButtons[4]		= new TGUIImageButton.Create(118, 247, "gfx_news_btn4", "newsroom", 4).SetCaption( GetLocale("NEWS_CURRENTAFFAIRS") )
 		'disable drawing of caption
 		for local i:int = 0 until len ( NewsGenreButtons ); NewsGenreButtons[i].GetCaption().Disable(); Next
 

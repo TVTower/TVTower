@@ -15,8 +15,16 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 
 REM
-* SaveLoad als Events "Movie.onLoad"
+* Schauspieler + Regisseur-Datenbank
+  - Anhand der "fruehsten" und "spaetesten" Filme kann eine
+    Aktivitaetenzeit festgelegt werden (ausserhalb waere Spekulation - unschoen
+    wenn bspweise jemand gestorben ist)
+  - News koennen ueber die Person innerhalb der Aktivitaetenzeit geschrieben
+    werden
+  - News koennten auch Filme "ankuendigen" (1 Jahr vor Produktionszeit) oder
+    es koennte Nachrichten geben à la "Schauspieler XY" verpflichtet
 
+* SaveLoad als Events "Movie.onLoad"
 
 * Räume als besetzt markieren (damit KI keine Filme kauft waehrend ich beim Haendler steh :D)
 * XML-Dateien: Animationskonfiguration

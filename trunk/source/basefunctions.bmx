@@ -384,6 +384,12 @@ Type TRectangle {_exposeToLua="selected"}
 		Return 0
 	End Method
 
+
+	Method setXYWH(x:float,y:float,w:float,h:float)
+		self.position.setXY(x,y)
+		self.dimension.setXY(w,h)
+	End Method
+
 	Method GetX:float()
 		return self.position.GetX()
 	End Method

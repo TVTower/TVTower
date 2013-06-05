@@ -301,6 +301,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			TNewsBlock.LeftListPoint = 0
 		EndIf
 
+		
+''''''''''''''''''''''''#DND auf Event umstellen
+
+
 		Self.NewsBlocks.sort(True, TNewsBlock.sort)
 
 		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
