@@ -1645,6 +1645,9 @@ Type TGUISlotList Extends TGUIListBase
 		'set scroll limits:
 		'maximum is at the bottom of the area, not top - so subtract height
 		self.guiEntriesPanel.SetLimits(0, currentYPos - self.guiEntriesPanel.rect.GetH())
+
+		'if not all entries fit on the panel, enable scroller
+		self.SetScrollerState( currentYPos > self.guiEntriesPanel.rect.GetH() )
 	End Method
 
 End Type
@@ -1656,7 +1659,6 @@ Type TGUIListBase Extends TGUIobject
 	Field guiBackground:TGUIBackgroundBox		= Null
 	Field guiEntriesPanel:TGUIScrollablePanel	= Null
 	Field guiScroller:TGUIScroller				= Null
-	Field guiScrollerEnabled:int				= TRUE
 
 	Field autoScroll:Int						= FALSE
 	Field entries:TList							= CreateList()
@@ -1676,6 +1678,8 @@ Type TGUIListBase Extends TGUIobject
 
 		'by default all lists accept drop
 		self.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+		'by default all lists do not have scrollers
+		Self.setScrollerState(FALSE)
 
 		'register events
 		'- we are interested in certain events from the scroller
@@ -1715,7 +1719,7 @@ Type TGUIListBase Extends TGUIobject
 		'set parent of the item - so item is able to calculate position
 		item.setParent(self.guiEntriesPanel)
 		self.entries.addLast(item)
-		if self.autoSortItems then print Self.entries.sort() ')(True, TGUIListItem.SortItems)
+		if self.autoSortItems then Self.entries.sort() ')(True, TGUIListItem.SortItems)
 
 		return TRUE
 	End Method
@@ -1757,10 +1761,19 @@ Type TGUIListBase Extends TGUIobject
 		'set scroll limits:
 		'maximum is at the bottom of the area, not top - so subtract height
 		self.guiEntriesPanel.SetLimits(0, currentYPos - self.guiEntriesPanel.rect.GetH())
+
+		'if not all entries fit on the panel, enable scroller
+		self.SetScrollerState( currentYPos > self.guiEntriesPanel.rect.GetH() )
 	End Method
 
 	Method SetScrollerState(on:Int = 1)
-		Self.guiScrollerEnabled = on
+		Self.guiScroller.setOption(GUI_OBJECT_ENABLED, on)
+		Self.guiScroller.setOption(GUI_OBJECT_VISIBLE, on)
+		if on
+			self.guiEntriesPanel.rect.dimension.setXY(self.rect.getW()-self.guiScroller.rect.getW(), self.rect.getH())
+		else
+			self.guiEntriesPanel.rect.dimension.setXY(self.rect.getW(), self.rect.getH())
+		endif
 	End Method
 
 	Function onDropOnTarget:int( triggerEvent:TEventBase )
@@ -1781,10 +1794,8 @@ Type TGUIListBase Extends TGUIobject
 
 		'move item if possible
 		fromList.removeItem(item)
-print "drop: removed FROM - contains now:" + fromList.entries.count()
 		'try to add the item, if not able, readd
 		if not toList.addItem(item, data)
-print "drop: not able to add TO"
 			if fromList.addItem(item) then return TRUE
 			'not able to add to "toList" but also not to "fromList"
 			'so set veto and keep the item dragged
@@ -1864,6 +1875,17 @@ Type TGUIListItem Extends TGUIobject
 		endif
 	End Function
 
+	Method Compare:Int(Other:Object)
+		If TGUIListItem(Other)
+			If self.label = TGUIListItem(Other).label then Return 0
+			If self.label.length > TGUIListItem(Other).label.length Then Return 1
+			If self.label.length < TGUIListItem(Other).label.length Then Return -1
+			
+			If self.label < TGUIListItem(Other).label Then Return -1 Else Return 1
+		endif
+		Return -1
+	End Method
+
 	Method Update()
 		'nothing special
 	End Method
@@ -1932,6 +1954,9 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 	Method RestrictViewport()
 		GUIManager.RestrictViewport(self.getX(),self.getY() - self.scrollPosition.getY(), self.rect.getW(), self.rect.getH())
+	End Method
+
+	Method Draw()
 	End Method
 
 End Type
