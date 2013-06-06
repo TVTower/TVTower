@@ -2114,13 +2114,46 @@ Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPoint.Create(60
 Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 348), 120, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
 Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 396), 120, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
 
-Global Test:TGUIListBase = new TGUIListBase.Create(20,20,150,150,"MainMenu")
+Global Test:TGUIListBase = new TGUIListBase.Create(10,20,150,150,"MainMenu")
 For local i:int = 0 to 15
 	Test.AddItem( new TGUIListItem.Create("item "+i) )
 Next
-Global Test2:TGUISlotList = new TGUISlotList.Create(320,20,250,80,"MainMenu")
+Global Test1:TGUIListBase = new TGUIListBase.Create(170,150,150,50,"MainMenu")
+Test1.AddItem( new TGUIListItem.Create("item A") )
+
+'chat
+Global Test3:TGUIListBase = new TGUIListBase.Create(300,20,400,150,"MainMenu")
+'button
+Global Test4:TGUIButton = new TGUIButton.Create(TPoint.Create(10, 170), 150, "AddItem", "MainMenu", Assets.fonts.baseFontBold)
+
+EventManager.registerListenerFunction( "guiobject.onClick",	TestButtonClick, Test4 )
+Function TestButtonClick:int( triggerEvent:TEventBase )
+	Test.AddItem( new TGUIListItem.Create("item "+Millisecs()) )
+End Function
+
+Global Test2:TGUISlotList = new TGUISlotList.Create(170,20,120,60,"MainMenu")
 Test2.SetItemLimit(2)
 Test2.SetSlotMinHeight(20)
+
+
+rem
+'tests:
+local rectA:TRectangle =TRectangle.Create(1,1,3,3)
+local rectB:TRectangle =TRectangle.Create(0,0,1,1)
+local rectC:TRectangle =TRectangle.Create(2,2,2,2)
+local rectD:TRectangle =TRectangle.Create(3,3,2,2)
+local rectE:TRectangle =TRectangle.Create(0,-10,2,12)
+local rectZ:TRectangle = Null
+
+rectZ = rectA.intersectRect(rectB)
+if rectZ then print "B: should not intersect IS x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
+rectZ = rectA.intersectRect(rectC)
+if rectZ then print "C: should x=2,y=2,w=2,h=2 IS x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
+rectZ = rectA.intersectRect(rectD)
+if rectZ then print "D: should x=3,y=3,w=1,h=1 IS  x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
+rectZ = rectA.intersectRect(rectE)
+if rectZ then print "E: should x=1,y=1,w=1,h=1 IS  x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
+endrem
 
 rem
 Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
@@ -2213,9 +2246,10 @@ For Local i:Int = 0 To 7
 		MenuChannelNames[i].TextDisplacement.setX(3)
 	EndIf
 	If i Mod 2 = 0
-		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,"GameSettings", 0)
+		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,"GameSettings")
 	Else
-		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,"GameSettings", 1)
+		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,"GameSettings")
+		MenuFigureArrows[i].rect.position.MoveXY(-MenuFigureArrows[i].GetScreenWidth(),0)
 	EndIf
 Next
 

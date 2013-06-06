@@ -359,14 +359,33 @@ Type TRectangle {_exposeToLua="selected"}
 		return obj
 	End Function
 
+	Method Copy:TRectangle()
+		return TRectangle.Create(self.position.x, self.position.y, self.dimension.x, self.dimension.y)
+	End Method
+
 	'does the rects overlap?
 	Method Intersects:int(rect:TRectangle) {_exposeToLua}
-		if self.containsXY( rect.GetX(), rect.GetY() ) OR ..
-		   self.containsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() )
-			return true
-		endif
+		return (   self.containsXY( rect.GetX(), rect.GetY() ) ..
+		        OR self.containsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() ) ..
+		       )
+	End Method
 
-		return false
+	'global helper variables should be faster than allocating locals each time (in huge amount)
+	global ix:float,iy:float,iw:float,ih:float
+	'get intersecting rectangle
+	Method IntersectRect:TRectangle(rectB:TRectangle) {_exposeToLua}
+		ix = max(self.GetX(), rectB.GetX())
+		iy = max(self.GetY(), rectB.GetY())
+		iw = min(self.GetX()+self.dimension.GetX(), rectB.position.GetX()+rectB.dimension.GetX() ) -ix
+		ih = min(self.GetY()+self.dimension.GetY(), rectB.position.GetY()+rectB.dimension.GetY() ) -iy
+
+		local intersect:TRectangle = TRectangle.Create(ix,iy,iw,ih)
+		
+		if iw > 0 AND ih > 0 then  
+			return intersect
+		else
+			return Null
+		endif
 	End Method
 
 	'does the point overlap?
@@ -374,14 +393,22 @@ Type TRectangle {_exposeToLua="selected"}
 		return self.containsXY( point.GetX(), point.GetY() )
 	End Method
 
+	Method containsX:int(x:float) {_exposeToLua}
+		return (    x >= self.position.GetX()..
+		        And x <= self.position.GetX() + self.dimension.GetX() )
+	End Method
+
+	Method containsY:int(y:float) {_exposeToLua}
+		return (    y >= self.position.GetY()..
+		        And y <= self.position.GetY() + self.dimension.GetY() )
+	End Method
+
 	'does the rect overlap with the coordinates?
 	Method containsXY:int(x:float, y:float) {_exposeToLua}
-		If x >= self.position.GetX() And x <= self.position.GetX() + self.dimension.GetX() And..
-		   y >= self.position.GetY() And y <= self.position.GetY() + self.dimension.GetY()
-			Return 1
-		Endif
-
-		Return 0
+		return (    x >= self.position.GetX()..
+		        And x <= self.position.GetX() + self.dimension.GetX() ..
+		        And y >= self.position.GetY()..
+		        And y <= self.position.GetY() + self.dimension.GetY() )
 	End Method
 
 
@@ -404,6 +431,14 @@ Type TRectangle {_exposeToLua="selected"}
 
 	Method GetH:float()
 		return self.dimension.GetY()
+	End Method
+
+	Method GetX2:float()
+		return self.position.GetX() + self.dimension.GetX()
+	End Method
+
+	Method GetY2:float()
+		return self.position.GetY() + self.dimension.GetY()
 	End Method
 	
 	Method GetAbsoluteCenterPoint:TPoint()

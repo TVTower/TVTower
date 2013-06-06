@@ -17,11 +17,12 @@ For local i:int = 0 To 255
 Next
 
 Type TMouseManager
-	Field LastMouseX:Int	= 0
-	Field LastMouseY:Int	= 0
-	Field hasMoved:int		= 0
-	Field errorboxes:Int	= 0
-	Field _iKeyStatus:Int[4]
+	Field LastMouseX:Int		= 0
+	Field LastMouseY:Int		= 0
+	Field hasMoved:int			= 0
+	Field errorboxes:Int		= 0
+	Field _iKeyStatus:Int[]		= [0,0,0,0]
+	Field _iKeyDownTime:Int[]	= [0,0,0,0]		'time since when the button is pressed
 
 	'Statusabfragen
 
@@ -35,6 +36,14 @@ Type TMouseManager
 
 	Method IsDown:Int( iKey:Int )
 		return Self._iKeyStatus[ iKey ] = KEY_STATE_DOWN
+	EndMethod
+
+	Method IsDownTime:Int( iKey:Int )
+		if Self._iKeyDownTime[ iKey ] > 0
+			return Millisecs() - Self._iKeyDownTime[ iKey ]
+		else
+			return 0
+		endif
 	EndMethod
 
 	Method isUp:Int( iKey:Int )
@@ -67,6 +76,14 @@ Type TMouseManager
 			ElseIf _iKeyStatus[ i ] = KEY_STATE_UP
 				_iKeyStatus[ i ] = KEY_STATE_NORMAL
 			EndIf
+
+			if MouseDown(i)
+				'store time when first mousedown happened
+				if self._iKeyDownTime[i] = 0 then self._iKeyDownTime[i] = millisecs()
+			Else
+				'reset time - mousedown no longer happening 
+				self._iKeyDownTime[i] = 0
+			endif
 		Next
 	EndMethod
 
