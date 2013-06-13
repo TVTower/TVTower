@@ -26,6 +26,7 @@ CONST GUI_OBJECT_VISIBLE:int		= 2
 CONST GUI_OBJECT_ENABLED:int		= 4
 CONST GUI_OBJECT_CLICKABLE:int		= 8
 CONST GUI_OBJECT_DRAGABLE:int		= 16
+CONST GUI_OBJECT_MANAGED:int		= 32
 
 CONST GUI_OBJECT_ACCEPTS_DROP:int	= 128
 
@@ -41,6 +42,7 @@ Type TGUIManager
 	Field currentState:string	= ""			'which state are we currently handling?
 	Field List:TList			= CreateList()
 	Field ListReverse:TList		= CreateList()
+	Field draggedObjects:int	= 0
 	global viewportX:int=0,viewportY:int=0,viewportW:int=0,viewportH:int=0
 
 	Function Create:TGUIManager()
@@ -62,20 +64,26 @@ Type TGUIManager
 
 		'find out if it hit a list...
 		local coord:TPoint = TPoint( data.get("coord") )
-		local dropTarget:TGuiObject = GUIManager.GetObjectByPos( coord, NULL, TRUE, GUI_OBJECT_ACCEPTS_DROP )
+		local dropTarget:TGuiObject = GUIManager.GetObjectByPos( coord, guiobject.GetLimitToState(), TRUE, GUI_OBJECT_ACCEPTS_DROP )
 
 		'if we found a dropTarget - emit an event
 		if dropTarget<>Null
-			'print "sendEvent: guiobject.onDropOnTarget for object " + TTypeId.ForObject(dropTarget).Name()+" ["+dropTarget._id+"]"
 			local event:TEventSimple = TEventSimple.Create( "guiobject.onDropOnTarget", TData.Create().AddObject("coord", coord) , guiobject, dropTarget )
 			EventManager.triggerEvent( event )
 			'if there is a veto happening (dropTarget does not want the item)
 			'also veto the onDrop-event
-			if event.isVeto() then triggerEvent.setVeto()
+			if event.isVeto()
+				triggerEvent.setVeto()
+			else
+				'inform others: we successfully dropped the object to a target
+				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDropOnTargetAccepted", TData.Create().AddObject("coord", coord) , guiobject, dropTarget ) )
+			endif
 		'no dropTarget found
 		else
 			triggerEvent.setVeto()
 		endif
+
+		return TRUE
 	End Function
 
 	Method RestrictViewport(x:int,y:int,w:int,h:int)
@@ -88,6 +96,7 @@ Type TGUIManager
 	End Method
 
 	Method Add(GUIobject:TGUIobject)
+		GUIobject.setOption(GUI_OBJECT_MANAGED, true)
 		Self.List.AddLast(GUIobject)
 		Self.ListReverse.AddFirst(GUIobject)
 		Self.SortList()
@@ -107,7 +116,7 @@ Type TGUIManager
 		'if objA and objB are dragged elements
 		if objA._flags & GUI_OBJECT_DRAGGED AND objB._flags & GUI_OBJECT_DRAGGED
 			'if a drag was earlier -> move to top
-			if objA._timeDragged < objB._timeDragged then Return 1 
+			if objA._timeDragged < objB._timeDragged then Return 1
 			if objA._timeDragged > objB._timeDragged then Return -1
 			return 0
 		endif
@@ -130,6 +139,8 @@ Type TGUIManager
 		'if objA is "lower"", move to bottom
 		if objA.zIndex < objB.zIndex then Return -1
 
+		'run custom compare job
+'		return objA.compare(objB)
 		return 0
 	End Function
 
@@ -150,10 +161,15 @@ Type TGUIManager
 		TGUIObject._activeID = id
 	End Method
 
-	Method Remove(guiobject:TGUIObject)
-		Self.List.remove(guiobject)
-		Self.ListReverse.remove(GUIobject)
-		Self.SortList()
+	'only remove from lists (object cleanup has to get called separately)
+	Method Remove(obj:TGUIObject)
+		obj.setOption(GUI_OBJECT_MANAGED, false)
+
+		Self.List.remove(obj)
+		Self.ListReverse.remove(obj)
+
+		'no need to sort on removal as the order wont change then (just one less)
+		'Self.SortList()
 	End Method
 
 
@@ -170,7 +186,7 @@ Type TGUIManager
 		If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then return FALSE
 
 		'limit display by state - skip if object is hidden in that state
-		If (State<>"" AND State <> obj.GetLimitToState() And obj.GetLimitToState() <> "") then return FALSE
+		If (State<>"" AND State.toLower() <> obj.GetLimitToState().toLower() And obj.GetLimitToState() <> "") then return FALSE
 
 		return TRUE
 	End Method
@@ -197,7 +213,9 @@ Type TGUIManager
 
 	Method Update(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
 		self.currentState = State
-		local mouseLButtonDown:int = MOUSEMANAGER.isDown(1)
+		local mouseButtonDown:int[] = MOUSEMANAGER.GetStatusDown()
+		local mouseButtonHit:int[] = MOUSEMANAGER.GetStatusDown()
+
 		local foundClickObject:int = FALSE
 		local foundHoverObject:int = FALSE
 		'first in reverse list is maybe dragged (sort says: dragged at the top)
@@ -205,8 +223,12 @@ Type TGUIManager
 		if not foundDraggedObject.isDragged() then foundDraggedObject = null
 		local screenRect:TRectangle = Null
 
+		GUIManager.draggedObjects = 0
 
 		For Local obj:TGUIobject = EachIn Self.ListReverse 'from top to bottom
+			'maybe move "below haveToHandleCheck" - so only "visible" objects are counted
+			if obj.isDragged() then GUIManager.draggedObjects :+ 1
+
 			if not self.haveToHandleObject(obj,State,fromZ,toZ) then continue
 
 			'always be above parent
@@ -223,8 +245,10 @@ Type TGUIManager
 					obj.mouseIsClicked	= null
 					obj.mouseover		= 0
 					obj.setState("")
-					'mouseclick somewhere - should deactivate active button
-					If MOUSEMANAGER.IsHit(1) And obj.isActive() then self.setActive(0)
+					'mouseclick somewhere - should deactivate active object
+					'no need to use the cached mouseButtonDown[] as we want the
+					'general information about a click
+					If MOUSEMANAGER.isHit(1) And obj.isActive() then self.setActive(0)
 				EndIf
 
 				'only do something if
@@ -232,11 +256,11 @@ Type TGUIManager
 				'b) we handle the dragged object
 				'c) and the mouse is within its rect
 				'-> only react to dragged obj or all if none is dragged
-				If(not foundDraggedObject OR obj.isDragged() ..
-				   AND screenRect AND screenRect.containsXY( MouseX(), MouseY() )  )
+				If( (not foundDraggedObject OR obj.isDragged()) ..
+				    AND screenRect AND screenRect.containsXY( MouseX(), MouseY() )  )
 
 					'activate objects - or skip if if one gets active
-					If mouseLButtonDown And obj._flags & GUI_OBJECT_ENABLED
+					If mouseButtonDown[1] And obj._flags & GUI_OBJECT_ENABLED
 						'create a new "event"
 						if obj.MouseIsDown = null 'if self.getActive() <> obj._id
 							self.setActive(obj._id)
@@ -246,34 +270,49 @@ Type TGUIManager
 
 						'we found a gui element which can accept clicks
 						'dont check further guiobjects for mousedown
-						mouseLButtonDown = FALSE
+						mouseButtonDown[1] = FALSE
+						mouseButtonHit[1] = FALSE
 					EndIf
 
 					if not foundHoverObject and obj._flags & GUI_OBJECT_ENABLED
 						'do not create "mouseover" for dragged objects
 						if not obj.isDragged()
 							'create events
-							if obj.mouseover = 0 then EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), obj ) )
+							'onmouseenter
+							if obj.mouseover = 0
+								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), obj ) )
+								obj.mouseover = 1
+							endif
+							'onmousemove
 							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseOver", TData.Create(), obj ) )
-							obj.mouseover = 1
+
 							foundHoverObject = TRUE
 						endif
 
-						If mouseLButtonDown Or obj.MouseIsDown
+'						If mouseButtonDown[1] Or obj.MouseIsDown
+						'somone decided to say the button is pressed above the object
+						If obj.MouseIsDown
 							obj.setState("active")
 							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseDown", TData.Create().AddNumber("type", 1), obj ) )
 						Else
 							obj.setState("hover")
 						endif
 
+						'inform others about a right guiobject click
+						If mouseButtonHit[2]
+							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 2), obj ) )
+							'reset Button
+							mouseButtonHit[2] = FALSE
+						endif
+
+						'do not use the cached mousebuttons when checking for "not pressed"
 						If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
-							if not foundClickObject
+							if not foundClickObject and obj._flags & GUI_OBJECT_ENABLED
 								obj.mouseIsClicked = TPoint.Create( MouseX(), MouseY() )
-								If obj._flags & GUI_OBJECT_ENABLED
-									'fire onClickEvent
-									EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
-									'print ".onclick " +obj.className + " ["+obj._id+"]"
-								endif
+
+								'fire onClickEvent
+								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
+
 								'added for imagebutton and arrowbutton not being reset when mouse standing still
 								obj.MouseIsDown = null
 								foundClickObject = TRUE
@@ -297,7 +336,7 @@ Type TGUIManager
 
 	Method DisplaceGUIobjects(State:String = "", x:Int = 0, y:Int = 0)
 		For Local obj:TGUIobject = EachIn Self.List
-			If State = obj.GetLimitToState() then obj.rect.position.MoveXY( x,y )
+			If State.toLower() = obj.GetLimitToState().toLower() then obj.rect.position.MoveXY( x,y )
 		Next
 	End Method
 
@@ -321,7 +360,7 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 
 Type TGUIobject
 	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
-	Field zIndex:Int					
+	Field zIndex:Int
 	Field scale:Float				= 1.0
 	Field align:Int					= 0 			'alignment of object
 	Field valign:Int				= 0 			'vertical-alignment of object
@@ -354,9 +393,35 @@ Type TGUIobject
 		self.setOption(GUI_OBJECT_CLICKABLE, TRUE)
 	End Method
 
+	Method SetManaged(bool:int)
+		if bool
+			if not self._flags & GUI_OBJECT_MANAGED then GUIManager.add(self)
+		else
+			if self._flags & GUI_OBJECT_MANAGED then GUIManager.remove(self)
+		endif
+	End Method
+
+	'cleanup function
+	Method Remove()
+		'just in case we have a managed one
+		GUIManager.remove(self)
+	End Method
+
 	Method getClassName:string()
 		return TTypeId.ForObject(self).Name()
 '		return self.className
+	End Method
+
+	Method getParent:TGUIobject(parentClassName:string="")
+		'if no special parent is requested, just return the direct parent
+		if parentClassName="" then return self._parent
+
+		if self._parent
+			if self._parent.getClassName().toLower() = parentClassName.toLower() then return self._parent
+			return self._parent.getParent(parentClassName)
+		endif
+
+		return Null
 	End Method
 
 	Method CreateBase:TGUIobject(x:float,y:float, limitState:string="", useFont:TBitmapFont=null)
@@ -423,10 +488,10 @@ Type TGUIobject
 	End Method
 
 	Method Resize(w:float=Null,h:float=Null)
-		self.rect.dimension.setX(w)
-		self.rect.dimension.setY(h)
+		if w then self.rect.dimension.setX(w)
+		if h then self.rect.dimension.setY(h)
 	End Method
-	
+
 	Method SetZIndex(zindex:Int)
 		Self.zIndex = zindex
 		GUIManager.SortList()
@@ -440,7 +505,7 @@ Type TGUIobject
 
 	Method drag:int(coord:TPoint=Null)
 		if not self.isDragable() or self.isDragged() then return FALSE
-		
+
 		'trigger an event immediately - if the event has a veto afterwards, do not drag!
 		local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", TData.Create().AddObject("coord", coord), self )
 		EventManager.triggerEvent( event )
@@ -466,11 +531,10 @@ Type TGUIobject
 
 		'nobody said no to "drop", so do it
 		self.setOption(GUI_OBJECT_DRAGGED, FALSE)
-
 		GUIManager.SortList()
 		return TRUE
 	End Method
-	
+
 	Method setParent:int(parent:TGUIobject)
 		self._parent = parent
 	End Method
@@ -495,6 +559,10 @@ Type TGUIobject
 		else
 			return 0
 		endif
+	End Method
+
+	Method SetLimitToState:int(state:string)
+		self._limitToState = state
 	End Method
 
 	Method GetLimitToState:string()
@@ -558,10 +626,10 @@ Type TGUIobject
 					self.GetScreenX(),..
 					self.GetScreenY(),..
 					self.GetScreenWidth(),..
-					self.GetScreenHeight() )		
+					self.GetScreenHeight() )
 
 		endif
-		
+
 		local resultRect:TRectangle = self._parent.GetScreenRect()
 		'only try to intersect if the parent gaves back an intersection (or self if no parent)
 		if resultRect
@@ -583,7 +651,7 @@ Type TGUIobject
 				)
 			endif
 		endif
-		
+
 
 		return resultRect
 	End Method
@@ -668,7 +736,7 @@ Type TGUIobject
 	    If KEYWRAPPER.pressedKey(13) Then EnterPressed :+1
    	    Return value
 	End Method
-	
+
 End Type
 
 Type TGUIButton Extends TGUIobject
@@ -1045,7 +1113,7 @@ Type TGUISlider Extends TGUIobject
 	    'dragger  -5px = Mitte des Draggers
 	    local mouseIsDown:int = 1
 	    if self.mouseIsDown then mouseIsDown=0
-	    
+
 		sprite.Draw( self.GetScreenX() + Ceil(actvalueX - 5), self.GetScreenY(), 3 + (mouseIsDown) * 4)
 
 
@@ -1445,7 +1513,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	Method Create:TGUIScrollablePanel(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
 		Super.Create(x,y,width,height,limitState)
 		self.minSize.SetXY(width,height)
-	
+
 		return self
 	End Method
 
@@ -1525,7 +1593,7 @@ Type TGUIScroller Extends TGUIobject
 
 		self.rect.position.setXY(parent.rect.getW() - self.guiButtonUp.rect.getW(),0)
 		self.Resize(self.guiButtonUp.rect.getW(), parent.rect.getH())
-		
+
 		'set the parent of the buttons so they inherit visible state etc.
 		self.guiButtonUp.setParent(self)
 		self.guiButtonDown.setParent(self)
@@ -1540,13 +1608,13 @@ Type TGUIScroller Extends TGUIobject
 
 		return self
 	End Method
-	
+
 
 	'handle clicks on the up/down-buttons and inform others about changes
 	Function onButtonClick:int( triggerEvent:TEventBase )
 		local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
 		if sender = Null then return FALSE
-		
+
 		local guiScroller:TGUIScroller = TGUIScroller( sender._parent )
 		if guiScroller = Null then return FALSE
 
@@ -1562,7 +1630,7 @@ Type TGUIScroller Extends TGUIobject
 	Function onButtonDown:int( triggerEvent:TEventBase )
 		local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
 		if sender = Null then return FALSE
-		
+
 		local guiScroller:TGUIScroller = TGUIScroller( sender._parent )
 		if guiScroller = Null then return FALSE
 
@@ -1572,7 +1640,7 @@ Type TGUIScroller Extends TGUIobject
 				return FALSE
 			endif
 		endif
-	
+
 
 		'emit event that the scroller position has changed
 		if sender = guiScroller.guiButtonUp
@@ -1580,7 +1648,7 @@ Type TGUIScroller Extends TGUIobject
 		elseif sender = guiScroller.guiButtonDown
 			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "down"), guiScroller ) )
 		endif
-	End Function	
+	End Function
 
 
 	Method Update:int()
@@ -1590,9 +1658,9 @@ Type TGUIScroller Extends TGUIobject
 	Method Draw()
 		SetColor 125,125,125
 		SetAlpha 0.25
-		
-		local width:int = self.guiButtonUp.GetScreenWidth() 
-		local height:int = self.guiButtonUp.GetScreenHeight() 
+
+		local width:int = self.guiButtonUp.GetScreenWidth()
+		local height:int = self.guiButtonUp.GetScreenHeight()
 		DrawRect(self.GetScreenX() + width/4, self.GetScreenY() + height/2, width/2, self.GetScreenHeight()-height)
 
 		SetAlpha 1.0
@@ -1612,6 +1680,7 @@ Type TGUIListBase Extends TGUIobject
 	Field entries:TList							= CreateList()
 	Field entriesLimit:int						= -1
 	Field autoSortItems:int						= TRUE
+	Field _dropOnTargetListenerLink:TLink		= null
 
     Method Create:TGUIListBase(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
 		super.CreateBase(x,y,State,null)
@@ -1629,14 +1698,35 @@ Type TGUIListBase Extends TGUIobject
 		'by default all lists do not have scrollers
 		Self.setScrollerState(FALSE)
 
+		Self.autoSortItems = true
+
+
 		'register events
 		'- we are interested in certain events from the scroller
 		EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged",	TGUIListBase.onScroll, self.guiScroller )
 		'is something dropping - check if it this list
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", self.onDropOnTarget, "TGUIListItem", self)
+		self.SetAcceptDrop("TGUIListItem")
 
 		GUIManager.Add( self )
 		Return self
+	End Method
+
+	'override resize and add minSize-support
+	Method Resize(w:float=Null,h:float=Null)
+		super.Resize(w,h)
+		'resize panel - but use resulting dimensions, not given (maybe restrictions happening!)
+		if self.guiEntriesPanel then self.guiEntriesPanel.Resize( self.rect.GetW() + - self.guiScroller.rect.getW(), self.rect.GetH() )
+		'move scroller
+		if self.guiScroller then self.guiScroller.rect.position.setXY(self.rect.getW() - self.guiScroller.guiButtonUp.rect.getW(),0)
+	End Method
+
+
+	Method SetAcceptDrop:int(accept:object)
+		'if we registered already - remove the old one
+		if self._dropOnTargetListenerLink then EventManager.unregisterListenerByLink(self._dropOnTargetListenerLink)
+
+		'is something dropping - check if it this list
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", self.onDropOnTarget, accept, self)
 	End Method
 
 	Method SetItemLimit:int(limit:int)
@@ -1647,14 +1737,14 @@ Type TGUIListBase Extends TGUIobject
 		if self.entriesLimit <= 0 then return FALSE
 		return (self.entries.count() >= self.entriesLimit)
 	End Method
-	
+
 	Method GetItemByCoord:TGUIobject(coord:TPoint)
 		For local entry:TGUIobject = eachin self.entries
 			'our entries are sorted and replaced, so we could
 			'quit as soon as the
-			'entry is out of range... 
+			'entry is out of range...
 			if entry.GetScreenY() > self.GetScreenY()+self.GetScreenHeight() then return Null
-			
+
 			if entry.GetScreenRect().containsXY(coord.GetX(), coord.GetY()) then return entry
 		Next
 		return Null
@@ -1662,7 +1752,7 @@ Type TGUIListBase Extends TGUIobject
 
 	'base handling of add item
 	Method _AddItem:int(item:TGUIobject, extra:object=null)
-		if self.ReachedItemLimit() then return FALSE
+'		if self.ReachedItemLimit() then return FALSE
 
 		'set parent of the item - so item is able to calculate position
 		item.setParent(self.guiEntriesPanel)
@@ -1676,6 +1766,7 @@ Type TGUIListBase Extends TGUIobject
 		endif
 
 		self.entries.addLast(item)
+
 		if self.autoSortItems then Self.entries.sort() ')(True, TGUIListItem.SortItems)
 
 		return TRUE
@@ -1683,8 +1774,14 @@ Type TGUIListBase Extends TGUIobject
 
 	'base handling of add item
 	Method _RemoveItem:int(item:TGUIobject)
-		self.entries.Remove(item)
-		return TRUE
+		'remove does remove the wrong ones...
+		'maybe because of custom sorting
+		if self.entries.Remove(item)
+			return TRUE
+		else
+			print "not able to remove item "+item._id
+			return FALSE
+		endif
 	End Method
 
 	'overrideable AddItem-Handler
@@ -1711,13 +1808,12 @@ Type TGUIListBase Extends TGUIobject
 		For local entry:TGUIobject = eachin self.entries
 			'move entry's y position to current one
 			entry.rect.position.SetY(currentYPos)
-
 			'advance to next y position
 			currentYPos:+entry.rect.GetH()
 		Next
 		'resize container panel
 		self.guiEntriesPanel.resize(null,currentYPos)
-	
+
 		'set scroll limits:
 		'maximum is at the bottom of the area, not top - so subtract height
 		self.guiEntriesPanel.SetLimits(0, currentYPos - self.guiEntriesPanel.getScreenheight())
@@ -1740,6 +1836,10 @@ Type TGUIListBase Extends TGUIobject
 		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
+		'ATTENTION:
+		'Item is still in dragged state!
+		'Keep this in mind when sorting the items
+
 		'only handle if coming from another list ?
 		local parent:TGUIobject = item._parent
 		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
@@ -1757,11 +1857,14 @@ Type TGUIListBase Extends TGUIobject
 		'try to add the item, if not able, readd
 		if not toList.addItem(item, data)
 			if fromList.addItem(item) then return TRUE
+
 			'not able to add to "toList" but also not to "fromList"
 			'so set veto and keep the item dragged
 			triggerEvent.setVeto()
 		endif
-		
+
+
+		return TRUE
 	End Function
 
 	'handle events from the connected scroller
@@ -1793,7 +1896,33 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 	Method Draw()
-		'
+rem
+'debug purpose only
+		local offset:int = self.GetScreenY()
+		For local entry:TGUIListItem = eachin self.entries
+			'move entry's y position to current one
+			SetAlpha 0.5
+			DrawRect(	self.GetScreenX() + entry.rect.GetX() - 20,..
+						self.GetScreenY() + entry.rect.GetY(),..
+						entry.rect.GetW(),..
+						entry.rect.GetH()-1..
+					)
+			SetAlpha 0.2
+			SetColor 0,255,255
+			DrawRect(0, offset+15, 40, 20 )
+			SetAlpha 1.0
+			DrawText(entry._id, 20, offset+15 )
+			offset:+ entry.rect.GetH()
+
+
+			SetAlpha 0.2
+			SetColor 255,255,255
+'			SetColor 0,0,0
+			SetAlpha 1.0
+			DrawText(entry._id, self.GetScreenX()-20 + entry.rect.GetX(), self.GetScreenY() + entry.rect.GetY() )
+			SetColor 255,255,255
+		Next
+endrem
 	End Method
 End Type
 
@@ -1803,12 +1932,16 @@ Type TGUISlotList Extends TGUIListBase
 	Field _slotAmount:int = -1		'<=0 means dynamically, else it is fixed
 	Field _slots:TGUIobject[0]
 	field _autofillSlots:int = FALSE
-	
+
     Method Create:TGUISlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
 		Super.Create(x,y,width,height,state)
-		
+
 		self.autoSortItems = false
 		return self
+	End Method
+
+	Method SetAutofillSlots(bool:int=TRUE)
+		self._autofillSlots = bool
 	End Method
 
 	'override
@@ -1839,6 +1972,20 @@ Type TGUISlotList Extends TGUIListBase
 			return i
 		Next
 		return -1
+	End Method
+
+	Method GetSlotCoord:TPoint(slot:int)
+		'TODO: [RON] should the positions get recalculated before ?
+		local currentYPos:float = 0
+		For local i:int = 0 to self._slots.length-1
+			if i = slot then return TPoint.Create(0,currentYPos)
+			if self._slots[i]
+				currentYPos :+ self._slots[i].rect.getY()
+			else
+				currentYPos :+ self._slotMinHeight
+			endif
+		Next
+		return Null
 	End Method
 
 	'get a slot by a (global/screen) coord
@@ -1873,14 +2020,46 @@ Type TGUISlotList Extends TGUIListBase
 		return self._slots[slot]
 	End Method
 
+	'may return a object which was on the place where the new item is to position
+	Method SetItemToSlot:int(item:TGUIobject,slot:int)
+		local itemSlot:int = self.GetSlot(item)
+		'somehow we try to place an item at the place where the item
+		'already resides
+		if itemSlot = slot then return TRUE
+
+		'is there another item?
+		local dragItem:TGUIobject = TGUIobject(self.getItemBySlot(slot))
+
+		if dragItem
+			'drag the other one
+			dragItem.drag()
+			'force sort the second time
+			'TODO: [RON] ... WHY IS THIS NEEDED? - commented it now, seems to work
+			'GuiManager.sortList()
+		endif
+
+		'if the item is already on the list, remove it from the former slot
+		if itemSlot >= 0 then self._slots[itemSlot] = Null
+
+		self._slots[slot] = item
+		item.setParent(self)
+
+		self.RecalculateElements()
+
+		return TRUE
+	End Method
+
 	'overrideable AddItem-Handler
 	Method AddItem:int(item:TGUIobject, extra:object=null)
-		local addToSlot:int = 0
+		local addToSlot:int = -1
+		if string(extra)<>"" then addToSlot= int( string(extra) )
+
 		'search for first free slot
-		if self._autofillSlots then addToslot = self.getFreeSlot()
-		'no free slot? find out on which slot we are dropping
+		if self._autofillSlots then addToSlot = self.getFreeSlot()
+
+		'no free slot or none given? find out on which slot we are dropping
 		'if possible, drag the other one and drop the new
-		if not self._autofillSlots or addToSlot < 0
+		if addToSlot < 0
 			local data:TData = TData(extra)
 			if not data then return FALSE
 
@@ -1891,24 +2070,9 @@ Type TGUISlotList Extends TGUIListBase
 			addToSlot = self.GetSlotByCoord(dropCoord)
 			'no slot was hit
 			if addToSlot < 0 then return FALSE
-
-			'is there another item?
-			local dragItem:TGUIListItem = TGUIListItem(self.getItemBySlot(addToSlot))
-
-			if dragItem
-				'drag the other one
-				dragItem.drag()
-				'force sort the second time ... WHY IS THIS NEEDED? 
-				GuiManager.sortList()
-			endif
 		endif
-		
-		self._slots[addToSlot] = item
-		item.setParent(self)
 
-		self.RecalculateElements()
-
-		return TRUE
+		return self.SetItemToSlot(item, addToSlot)
 	End Method
 
 	'overrideable RemoveItem-Handler
@@ -1925,6 +2089,8 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 	Method Draw()
+rem
+'debug purpose only
 		'restrict by scrollable panel - if not possible, there is no "space left"
 		if self.guiEntriesPanel.RestrictViewPort()
 			local currentY:float = self.guiEntriesPanel.scrollPosition.GetY()
@@ -1944,8 +2110,8 @@ Type TGUISlotList Extends TGUIListBase
 			DrawText(self.guiEntriesPanel.scrollPosition.GetY(), self.GetScreenX(), self.GetScreenY()+10)
 			self.ResetViewPort()
 		endif
+end rem
 	End Method
-
 
 	Method RecalculateElements:int()
 		local currentYPos:float = 0
@@ -1977,12 +2143,9 @@ Type TGUIListItem Extends TGUIobject
 	field label:string = ""
 	field positionNumber:int = 0
 
-    Method Create:TGUIListItem(label:string="")
-		local defaultWidth:int = 120
-		local defaultHeight:int= 20
-
-   		super.CreateBase(0,0,"",null)
-		self.Resize( defaultWidth, defaultHeight )
+    Method Create:TGUIListItem(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+   		super.CreateBase(x,y,"",null)
+		self.Resize( width, height )
 		self.label = label
 
 		'make dragable
@@ -1997,6 +2160,15 @@ Type TGUIListItem Extends TGUIobject
 		return self
 	End Method
 
+	Method Remove()
+		Super.Remove()
+
+		'also remove itself from the list it may belong to
+		local parent:TGUIobject = self._parent
+		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
+		if TGUIListBase(parent) then TGUIListBase(parent).RemoveItem(self)
+	End Method
+
 	Function onClick:int( triggerEvent:TEventBase )
 		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
 		if item = Null then return FALSE
@@ -2004,23 +2176,16 @@ Type TGUIListItem Extends TGUIobject
 		local data:TData = triggerEvent.GetData()
 		if not data then return FALSE
 
-		if item.isDragged()
-			item.drop( TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)) )
-		else
-			item.drag( TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)) )
+		'only react on clicks with left mouse button
+		if data.getInt("type") = 1
+			if item.isDragged()
+				item.drop( TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)) )
+			else
+				item.drag( TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)) )
+			endif
 		endif
 	End Function
 
-	Method Compare:Int(Other:Object)
-		If TGUIListItem(Other)
-			If self.label = TGUIListItem(Other).label then Return 0
-			If self.label.length > TGUIListItem(Other).label.length Then Return 1
-			If self.label.length < TGUIListItem(Other).label.length Then Return -1
-			
-			If self.label < TGUIListItem(Other).label Then Return -1 Else Return 1
-		endif
-		Return -1
-	End Method
 
 	Method Update()
 		'nothing special
@@ -2039,7 +2204,7 @@ Type TGUIListItem Extends TGUIobject
 			'self.GetScreenX() and self.GetScreenY() include parents coordinate
 			SetColor 0,0,0
 			DrawRect(self.GetScreenX(), self.GetScreenY(), self.rect.GetW(), self.rect.GetH() )
-			if self._flags & GUI_OBJECT_DRAGGED 
+			if self._flags & GUI_OBJECT_DRAGGED
 				SetColor 125,0,125
 			else
 				SetColor 125,125,125

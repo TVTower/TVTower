@@ -25,7 +25,7 @@ Type TRooms  {_exposeToLua="selected"}
     Global LastID:Int			= 1
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
-	Method getDoorType:int()		
+	Method getDoorType:int()
 		If name = "supermarket"
 			'if self.DoorTimer.isExpired() then print "getDoorType: " + self.doortype else print "getDoorType: " + 5
 		endif
@@ -35,7 +35,7 @@ Type TRooms  {_exposeToLua="selected"}
     Method CloseDoor(figure:TFigures)
 		'timer finished
 		If Not DoorTimer.isExpired()
-			SoundSource.PlayDoorSfx(SFX_CLOSE_DOOR, figure)		
+			SoundSource.PlayDoorSfx(SFX_CLOSE_DOOR, figure)
 			self.DoorTimer.expire()
 		Endif
     End Method
@@ -174,20 +174,6 @@ Type TRooms  {_exposeToLua="selected"}
 		return 0
 	End Method
 
-
-	'only leave a room if not in a subscreen
-	'if in subscreen, go to parent one
-	Method HandleRightClick()
-		if MOUSEMANAGER.IsHit(2)
-			if self.screenManager.GetCurrentScreen() = self.screenManager.baseScreen
-				'we want to leave the room
-			else
-				self.screenManager.GoToParentScreen()
-				MOUSEMANAGER.ResetKey(2)
-			endif
-		endif
-	End Method
-
     'process special functions of this room. Is there something to click on?
     'animated gimmicks? draw within this function.
 	Method Update:Int()
@@ -214,10 +200,23 @@ Type TRooms  {_exposeToLua="selected"}
 		local listeners:int = EventManager.triggerEvent( TEventSimple.Create("rooms.onUpdate", TData.Create().AddNumber("type", 0), self) )
 
 		'handle normal right click - check subrooms
-		self.HandleRightClick()
+		'only leave a room if not in a subscreen
+		'if in subscreen, go to parent one
+		if self.screenManager.GetCurrentScreen() <> self.screenManager.baseScreen
+			if MOUSEMANAGER.IsHit(2)
+				local event:TEventSimple = TEventSimple.Create("screens.OnLeave", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() )
+				EventManager.triggerEvent( event )
+				if not event.isVeto()
+					self.screenManager.GoToParentScreen()
+					MOUSEMANAGER.ResetKey(2)
+				endif
+			endif
+		else
+			'TODO: [RON] change this to OnLeave event too
+			'something blocks leaving? - check it
+			If MOUSEMANAGER.IsHit(2) AND not Self.LeaveAnimated(0) then MOUSEMANAGER.resetKey(2)
+		endif
 
-		'something blocks leaving? - check it
-		If MOUSEMANAGER.IsDown(2) AND not Self.LeaveAnimated(0) then MOUSEMANAGER.resetKey(2)
 
 		'room got no special handling ...
 		if listeners = 0 then Players[game.playerID].figure.fromroom = Null
@@ -1196,16 +1195,15 @@ End Type
 'News room
 Type RoomHandler_News extends TRoomHandler
 	global PlannerToolTip:TTooltip
-	Global Btn_newsplanner_up:TGUIImageButton
-	Global Btn_newsplanner_down:TGUIImageButton
 	Global NewsGenreButtons:TGUIImageButton[5]
 	Global NewsGenreTooltip:TTooltip			'the tooltip if hovering over the genre buttons
 	Global currentRoom:TRooms					'holding the currently updated room (so genre buttons can access it)
 
-	Function Init()
-		Btn_newsplanner_up		= new TGUIImageButton.Create(375, 150, "gfx_news_pp_btn_up", "Newsplanner", 0)
-		Btn_newsplanner_down	= new TGUIImageButton.Create(375, 250, "gfx_news_pp_btn_down", "Newsplanner", 3)
+	'lists for visually placing news blocks
+	Global NewsBlockListAvailable:TGUIListBase[5]
+	Global NewsBlockListUsed:TGUISlotList[5]
 
+	Function Init()
 		'create genre buttons
 		NewsGenreButtons[0]		= new TGUIImageButton.Create(20, 194, "gfx_news_btn0", "newsroom", 0).SetCaption( GetLocale("NEWS_TECHNICS_MEDIA") )
 		NewsGenreButtons[1]		= new TGUIImageButton.Create(69, 194, "gfx_news_btn1", "newsroom", 1).SetCaption( GetLocale("NEWS_POLITICS_ECONOMY") )
@@ -1226,6 +1224,28 @@ Type RoomHandler_News extends TRoomHandler
 		for local i:int = 0 to 3
 		'	EventManager.registerListenerFunction( "rooms.onUpdate", onUpdateRoom, TRooms.GetRoomByDetails("news", i) )
 		Next
+
+		'create the lists in the news planner
+		for local i:int = 1 to 4
+			NewsBlockListAvailable[i] = new TGUIListBase.Create(34,20,Assets.getSprite("gfx_news_sheet0").w, 356,"Newsplanner"+i)
+			NewsBlockListAvailable[i].SetAcceptDrop("TGUINewsBlock")
+			NewsBlockListAvailable[i].Resize(NewsBlockListAvailable[i].rect.GetW() + NewsBlockListAvailable[i].guiScroller.rect.GetW() + 3,NewsBlockListAvailable[i].rect.GetH())
+
+			NewsBlockListUsed[i] = new TGUISlotList.Create(444,105,Assets.getSprite("gfx_news_sheet0").w, 3*Assets.getSprite("gfx_news_sheet0").h,"Newsplanner"+i)
+			NewsBlockListUsed[i].SetItemLimit(3)
+			NewsBlockListUsed[i].SetAcceptDrop("TGUINewsBlock")
+			NewsBlockListUsed[i].SetSlotMinHeight(Assets.getSprite("gfx_news_sheet0").h)
+			NewsBlockListUsed[i].SetAutofillSlots(false)
+		Next
+		'if the player visually manages the blocks, we need to handle the events
+		'so we can inform the programmeplan about changes...
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropNewsBlock, "TGUINewsBlock" )
+		'this lists want to delete the item if a right mouse click happens...
+		EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsBlock, "TGUINewsBlock")
+		'also we want to interrupt leaving a room with dragged items
+		EventManager.registerListenerFunction( "screens.OnLeave", onLeaveScreen )
+
+
 
 		super._RegisterScreenHandler( onUpdateNews, onDrawNews, TScreen.GetScreen("screen_news") )
 		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, TScreen.GetScreen("screen_news_newsplanning") )
@@ -1355,7 +1375,8 @@ Type RoomHandler_News extends TRoomHandler
 
 		SetColor 255,255,255  'normal
 		GUIManager.Draw("Newsplanner")
-		Players[ room.owner ].ProgrammePlan.DrawAllNewsBlocks()
+		'player specific newsplanner elements
+		GUIManager.Draw("Newsplanner"+ room.owner )
 	End Function
 
 	Function onUpdateNewsPlanner:int( triggerEvent:TEventBase )
@@ -1364,11 +1385,89 @@ Type RoomHandler_News extends TRoomHandler
 		if not room then return 0
 
 		Game.cursorstate = 0
-		If Btn_newsplanner_up.GetClicks() >= 1 Then TNewsBlock.DecLeftLisTPoint()
-		If Btn_newsplanner_down.GetClicks() >= 1 Then TNewsBlock.IncLeftLisTPoint()
-		If TNewsBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
+'		If TNewsBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
+
+		'create Newsblock-guiBlocks if not done yet
+		For Local block:TNewsBlock = EachIn Players[ room.owner ].ProgrammePlan.NewsBlocks
+			if not block.guiBlock
+				block.guiBlock = new TGUINewsBlock.Create(block.news.title)
+				block.guiBlock.SetParentNewsBlock(block)
+				if block.slot >= 0
+					NewsBlockListUsed[ room.owner ].AddItem(block.guiBlock, string(block.slot))
+				else
+					NewsBlockListAvailable[ room.owner ].AddItem(block.guiBlock)
+				endif
+			endif
+			'check if game logic changed slots - if so, update positions
+			'used-list has a special order, so we have to sync slot-numbers
+			if block.slot >= 0
+				'move to the other list if not done yet
+				if block.guiBlock.getParent("TGUIListBase") = NewsBlockListAvailable[ room.owner ]
+					if NewsBlockListAvailable[ room.owner ].RemoveItem(block.guiBlock)
+						NewsBlockListUsed[ room.owner].AddItem(block.guiBlock, string(block.slot) )
+					endif
+				'if it is already on the correct side ... just set the correct slot values
+				elseif block.guiBlock.getParent("TGUISlotList") = NewsBlockListUsed[ room.owner ]
+					NewsBlockListUsed[ room.owner ].SetItemToSlot(block.guiBlock, block.slot)
+				endif
+			endif
+
+			if block.slot < 0 AND block.guiBlock.getParent("TGUISlotList") = NewsBlockListUsed[ room.owner ]
+				if NewsBlockListUsed[ room.owner].RemoveItem(block.guiBlock)
+					NewsBlockListAvailable[ room.owner ].AddItem(block.guiBlock)
+					print "moved to left"
+				else
+					print "not able to remove from usedList"
+				endif
+			endif
+		Next
+
+		'general newsplanner elements
 		GUIManager.Update("Newsplanner")
-		Players[ room.owner ].ProgrammePlan.UpdateAllNewsBlocks()
+		'player specific newsplanner elements
+		GUIManager.Update("Newsplanner"+ room.owner )
+	End Function
+
+	'in case of right mouse button click we want to remove the
+	'block from the player's programmePlan
+	Function onClickNewsBlock:int( triggerEvent:TEventBase )
+		'only react if the click came from the right mouse button
+		if triggerEvent.GetData().getInt("type",0) <> 2 then return TRUE
+
+		local guiNewsBlock:TGUINewsBlock= TGUINewsBlock(triggerEvent._sender)
+
+		'delete the newsblock of that guinewsblock from the owners programmeplan
+		' - this also removes the guiblock
+		Players[ guiNewsBlock.parentNewsBlock.owner ].ProgrammePlan.RemoveNewsBlock( guiNewsBlock.parentNewsBlock )
+
+	End Function
+
+	Function onDropNewsBlock:int( triggerEvent:TEventBase )
+		local guiNewsBlock:TGUINewsBlock = TGUINewsBlock( triggerEvent._sender )
+		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
+		if not guiNewsBlock or not receiverList then return FALSE
+
+		local owner:int = guiNewsBlock.parentNewsBlock.owner
+
+		if receiverList = NewsBlockListAvailable[owner]
+			Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, -1)
+		elseif receiverList = NewsBlockListUsed[owner]
+			local slot:int = NewsBlockListUsed[owner].getSlot(guiNewsBlock)
+			Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, slot)
+		endif
+	End Function
+
+	Function onLeaveScreen:int( triggerEvent:TEventBase )
+		local screen:TScreen = TScreen( triggerEvent._sender )
+		if screen.name <> "screen_news_newsplanning" return TRUE
+
+		'if there are some draggedObjects then do not leave
+		if GUIManager.draggedObjects > 0
+			triggerEvent.setVeto()
+			return FALSE
+		else
+			return TRUE
+		endif
 	End Function
 End Type
 

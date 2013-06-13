@@ -107,6 +107,36 @@ End Function
 
 
 Type TNetworkHelper
+	Method RegisterEventListeners:int()
+		EventManager.registerListenerFunction( "programmeplan.SetNewsBlockSlot",	NetworkHelper.onchangeNewsBlock )
+		EventManager.registerListenerFunction( "programmeplan.addNewsBlock",	NetworkHelper.onchangeNewsBlock )
+		EventManager.registerListenerFunction( "programmeplan.removeNewsBlock",	NetworkHelper.onchangeNewsBlock )
+	End Method
+
+	Function onchangeNewsBlock:int( triggerEvent:TEventBase )
+		local newsBlock:TNewsBlock = TNewsBlock(triggerEvent._sender)
+		if not newsBlock then return 0
+
+		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_NEWSCHANGE )
+		'base
+		obj.setInt(1, newsBlock.owner)
+		obj.setInt(2, newsBlock.slot)
+		obj.setInt(3, newsBlock.news.id)
+		'trigger specific
+		if triggerEvent.isTrigger("programmeplan.SetNewsBlockSlot")
+			obj.setInt(4, 0)
+		elseif triggerEvent.isTrigger("programmeplan.addNewsBlock")
+			obj.setInt(4, 1)
+		elseif triggerEvent.isTrigger("programmeplan.removeNewsBlock")
+			obj.setInt(4, 2)
+		else
+			return 0
+		endif
+
+		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
+	End Function
+
+
 	Method SendGameState()
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDGAMESTATE )
 		obj.setInt(1, Game.playerID)
@@ -567,43 +597,41 @@ Type TNetworkHelper
 
 
 	'add = 1 - added, add = 0 - removed
-	Method SendPlanNewsChange(playerID:Int, block:TNewsBlock, remove:int=0)
+	Method SendPlanNewsChange(playerID:Int, block:TNewsBlock, action:int=0)
+		'action = 0: add
+		'action = 1: delete
+		'action = 2: move
+
 		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_NEWSCHANGE )
 		obj.setInt(1, playerID)
-		obj.setInt(2, remove)
+		obj.setInt(2, action)
 		obj.setInt(3, block.id)
-		obj.setFloat(4, block.rect.GetX())
-		obj.setFloat(5, block.rect.GetY())
-		obj.setFloat(6, block.StartPos.x)
-		obj.setFloat(7, block.StartPos.y)
 		obj.setInt(8, block.paid)
 		obj.setInt(9, block.news.id)
-		obj.setInt(10, block.sendslot)
+		obj.setInt(10, block.slot)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
-	Method ReceivePlanNewsChange( obj:TNetworkObject )
+	Method ReceivePlanNewsChange:int( obj:TNetworkObject )
 		local playerID:int		= obj.getInt(1)
-		if not Game.IsPlayerID(playerID) then return
+		if not Game.IsPlayerID(playerID) then return NULL
 
-		local remove:int		= obj.getInt(2)
+		local action:int		= obj.getInt(2)
 		local blockID:int		= obj.getInt(3)
-		local pos:TPoint 		= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
-		local startpos:TPoint	= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
 		local paid:int			= obj.getInt(8)
 		local newsID:int		= obj.getInt(9)
-		local sendslot:int		= obj.getInt(10)
+		local slot:int			= obj.getInt(10)
 
 		Local newsblock:TNewsblock = Players[ playerID ].ProgrammePlan.getNewsBlock(blockID)
-		if not newsblock or newsblock.news.id <> newsID then return
+		if not newsblock or newsblock.news.id <> newsID then print "unknown newsblock received";return NUll
 
-		if remove then Players[ playerID ].ProgrammePlan.removeNewsBlock(newsBlock)
-		If Not paid Then newsblock.Pay()
-		newsblock.sendslot	= sendslot
-		newsblock.owner		= playerID
-		newsblock.rect.position		= pos
-		newsblock.StartPos	= startpos
-		print "NET: NewsChange - "+remove+": "+newsblock.news.title
+		if action=0 then Players[ playerID ].ProgrammePlan.addNewsBlock(newsBlock)
+		if action=1 then Players[ playerID ].ProgrammePlan.removeNewsBlock(newsBlock)
+'		if action=2 then Players[ playerID ].ProgrammePlan.moveNewsBlock(newsBlock, slot)
+
+		newsblock.slot				= slot
+		newsblock.owner				= playerID
+		print "NET: NewsChange - "+action+": "+newsblock.news.title
 	End Method
 
 

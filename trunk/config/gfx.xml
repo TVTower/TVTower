@@ -33,18 +33,6 @@
 				<child name="gfx_suitcase_glow"	x="0" y="120"	w="220"	h="120"	/>
 			</children>
 		</spritepack>
-		<resource name="gfx_news_pp">
-			<type>SpritePack</type>
- 			<url>grafiken/news/newsplanung_button.png</url>
-			<children>
-				<child name="gfx_news_pp_btn_up" 				x="0"	y="0"	w="47"	h="32"	/>
-				<child name="gfx_news_pp_btn_up_clicked" 		x="47"	y="0"	w="47"	h="32"	/>
-				<child name="gfx_news_pp_btn_up_disabled" 		x="94"	y="0"	w="47"	h="32"	/>
-				<child name="gfx_news_pp_btn_down" 				x="0"	y="32"	w="47"	h="32"	/>
-				<child name="gfx_news_pp_btn_down_clicked" 		x="47"	y="32"	w="47"	h="32"	/>
-				<child name="gfx_news_pp_btn_down_disabled"		x="94"	y="32"	w="47"	h="32"	/>
-			</children>
-		</resource>
 		<resource name="gfx_news_btn_pack">
 			<type>SpritePack</type>
  			<url>grafiken/news/button.png</url>

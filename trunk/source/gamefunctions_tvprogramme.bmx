@@ -17,7 +17,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Function
 
 
-	'Remove all blocks from the Plan 
+	'Remove all blocks from the Plan
 	Method ClearLists:int()
 		ProgrammeBlocks.Clear()
 		AdBlocks.Clear()
@@ -61,7 +61,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'only remove if sending is planned in the future or param allows current one
 			If block.sendhour +removeCurrentRunning*block.programme.blocks > currentHour Then Self.ProgrammeBlocks.remove(block)
 		Next
-	End Method	
+	End Method
 
 
 	'Returns the programme for the given day/time
@@ -199,192 +199,88 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'=========
 
 	'set the slot of the given newsblock
-    Method SetNewsBlockSlot:int(newsblock:TNewsBlock, slot:int)
+	'if not paid yet, it will only continue if pay is possible
+    Method SetNewsBlockSlot:int(newsblock:TNewsBlock, slot:int) {_exposeToLua}
 		'only if not done already
-'		if newsblock.sendslot = slot then return FALSE
+		if newsblock.slot = slot then return TRUE
 
-		'print "SetNewsBlockSlot: "+newsblock.news.title + " | slot: " + slot + " | paid: "+newsblock.paid + " | price: "+newsblock.news.ComputePrice()
+		'move to the right
+		if slot>=0
+			If Not newsblock.paid
+				'do not continue if pay not possible
+				if not NewsBlock.Pay() then return FALSE
+			endif
 
-		If Not newsblock.paid And slot>=0 'newsblock.rect.GetX() > 400
-			print "PAY NOW - paid:"+newsblock.paid+" slot:"+slot
-			NewsBlock.Pay()
+			'is there an other newsblock, move that back to -1
+			local otherBlock:TNewsBlock = self.GetNewsBlockFromSlot(slot)
+			if otherBlock and otherBlock <> newsblock then self.SetNewsBlockSlot(otherBlock,-1)
 		EndIf
 
+		'nothing is against using that slot (payment, ...) - so assign it
+		newsblock.slot = slot
 
-		newsblock.sendslot = slot		
-		
-		if slot>=0
-			'add to slot
-			
-			'TODO: Versuch einer Lösung... aber sehr schlecht... ein Plan
-			newsblock.rect.position.setXY( 445, 106 + (slot-1) * Assets.getSprite("gfx_news_sheet0").h )
-			newsBlock.StartPos.SetPos(newsBlock.rect.position)			
-			
-			If game.networkgame Then NetworkHelper.SendPlanNewsChange(newsblock.owner, newsblock, 1)
-		else
-			'remove from slot
-			'newsblock.Pos.setXY(35, 22 + i * Assets.getSprite("gfx_news_sheet0").h)
-			If game.networkgame Then NetworkHelper.SendPlanNewsChange(newsblock.owner, newsblock, 0)
-		endif
+		'emit an event so eg. network can recognize the change
+		EventManager.registerEvent( TEventSimple.Create( "newsblock.setSlot", TData.Create().AddNumber("slot", slot), newsblock ) )
+
+		return TRUE
     End Method
 
-	Method ClearNewsBlockSlot:int(slot:int)
+
+	'sets a item at the given slot back to unassigned (back to "available list")
+	Method ClearNewsBlockSlot:int(slot:int) {_exposeToLua}
 		Local NewsBlock:TNewsBlock = GetNewsBlockFromSlot(slot)
-		NewsBlock.sendslot = -1
+		if NewsBlock then self.SetNewsBlockSlot(NewsBlock,-1)
 	End Method
 
+
+	'returns the amount of news currently available
+	Method GetNewsCount:Int() {_exposeToLua}
+		Return Self.NewsBlocks.count()
+	End Method
+
+
+	'returns the block with the given id
 	Method GetNewsBlock:TNewsBlock(id:Int) {_exposeToLua}
 		For Local obj:TNewsBlock = EachIn Self.NewsBlocks
 			If obj.id = id Then Return obj
 		Next
 		Return Null
 	EndMethod
-	
 
-	Method GetNewsCount:Int() {_exposeToLua}
-		Return Self.NewsBlocks.count()
-	End Method
 
-	
+	'returns the newsblock at a specific position in the list
 	Method GetNewsFromList:TNewsBlock(pos:Int=0) {_exposeToLua}
 		Return TNewsBlock( NewsBlocks.ValueAtIndex(pos) )
 	End Method
-	
 
-	Method GetNewsBlockFromSlot:TNewsBlock(sendslot:Int=0) {_exposeToLua}
+
+	'returns the newsblock at the given slot
+	Method GetNewsBlockFromSlot:TNewsBlock(slot:Int=0) {_exposeToLua}
 		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			If NewsBlock.sendslot = sendslot then return NewsBlock
+			If NewsBlock.slot = slot then return NewsBlock
 		Next
-		Return Null	
-	End Method	
+		Return Null
+	End Method
 
 
+	'add a newsblock to the player's programmeplan
 	Method AddNewsBlock(block:TNewsBlock)
+		block.owner = self.parent.playerID
 		Self.NewsBlocks.AddLast(block)
 
-		If game.networkgame Then NetworkHelper.SendPlanNewsChange(block.owner, block, 1)
+		'emit an event so eg. network can recognize the change
+		EventManager.registerEvent( TEventSimple.Create( "programmeplan.addNewsBlock", TData.Create(), block ) )
 	End Method
-
 
 	Method RemoveNewsBlock(block:TNewsBlock)
+		'run cleanup from block
+		block.Remove()
+		'remove from list
 		Self.NewsBlocks.remove(block)
 
-		If game.networkgame Then NetworkHelper.SendPlanNewsChange(block.owner, block, 0)
+		'emit an event so eg. network can recognize the change
+		EventManager.registerEvent( TEventSimple.Create( "programmeplan.removeNewsBlock", TData.Create(), block ) )
 	End Method
-	
-
-	Method DrawAllNewsBlocks()
-		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			'TODO MV: Ist dieser Vergleich richtig?
-			'         Ist nicht "NewsBlock.owner = Game.playerID" korrekt?
-			'Ronny:   "parent.playerID" ist die ID von dem Spieler, dem der
-			'         ProgrammePlan gehoert. Enthaltene News sollten alle
-			'         diesem Spieler gehoeren. Eine Abfrage ist nicht noetig,
-			'         dies wird von "Method DrawAll.." ja schon abgedeckt
-			'         -> unnoetig:  If Self.parent.playerID = Game.playerID
-'			If NewsBlock.owner = Game.playerID
-				'only draw if:
-				' a) dragged and visible on screen | b) and ready for publish
-				If (newsblock.dragged=1 Or newsblock.rect.getY() > 0) And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeGone) Then NewsBlock.Draw()
-'			EndIf
-		Next
-    End Method
-
-
-    Method UpdateAllNewsBlocks()
-		Local havetosort:Byte = 0
-		Local dontpay:Int = 0
-		Local number:Int = 0
-		If TNewsBlock.LeftListPointMax >=4
-			If TNewsBlock.LeftListPoint+4 > TNewsBlock.LeftListPointMax Then TNewsBlock.LeftListPoint = TNewsBlock.LeftListPointMax-4
-		Else
-			TNewsBlock.LeftListPoint = 0
-		EndIf
-
-		
-''''''''''''''''''''''''#DND auf Event umstellen
-
-
-		Self.NewsBlocks.sort(True, TNewsBlock.sort)
-
-		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			'arrange news blocks on left side if not done yet
-			If newsblock.GetSlotOfBlock() < 0 And (Newsblock.publishtime + Newsblock.publishdelay <= Game.timeGone)
-				number :+ 1
-				If number >= TNewsBlock.LeftLisTPoint And number =< TNewsBlock.LeftLisTPoint+4
-					NewsBlock.rect.position.SetXY(35, 22+88*(number-TNewsBlock.LeftLisTPoint-1))
-				Else
-					NewsBlock.rect.position.SetXY(0, -100)
-				EndIf
-				NewsBlock.StartPos.SetPos(NewsBlock.rect.position)
-			EndIf
-			If newsblock.GetSlotOfBlock() > 0 Then dontpay = 1
-
-			'only handle clicks/movements for the owner
-			If NewsBlock.owner = Game.playerID
-				If NewsBlock.dragged = 1
-					NewsBlock.sendslot = -1
-					If MOUSEMANAGER.IsHit(2)
-						Players[Game.playerID].ProgrammePlan.RemoveNewsBlock(NewsBlock)
-						havetosort = 1
-						MOUSEMANAGER.resetKey(2)
-					EndIf
-				EndIf
-				If MOUSEMANAGER.IsHit(1)
-					If NewsBlock.dragged = 0 And NewsBlock.dragable = 1 And NewsBlock.State = 0
-						If NewsBlock.rect.containsXY( MouseX(), MouseY() )
-							NewsBlock.Drag()
-						EndIf
-					Else
-						Local DoNotDrag:Int = 0
-						If NewsBlock.State = 0
-							For Local DragAndDrop:TDragAndDrop = EachIn TNewsBlock.DragAndDropList
-								If DragAndDrop.CanDrop(MouseX(),MouseY()) = 1
-									For Local OtherNewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-										If OtherNewsBlock.owner = Game.playerID
-											'is there a NewsBlock positioned at the desired place?
-											If MOUSEMANAGER.IsHit(1) And OtherNewsBlock.dragable = 1 And OtherNewsBlock.rect.position.isSame(DragAndDrop.pos)
-												If OtherNewsBlock.State = 0
-													NewsBlock.Drop()
-													OtherNewsBlock.Drag()
-													Exit
-												Else
-													DoNotDrag = 1
-												EndIf
-											EndIf
-										EndIf
-									Next
-									If DoNotDrag <> 1
-										NewsBlock.rect.position.SetPos(DragAndDrop.pos)
-										NewsBlock.StartPos.SetPos(NewsBlock.rect.position)
-										Exit 'exit loop-each-dragndrop, we've already found the right position
-									EndIf
-								EndIf
-							Next
-							If NewsBlock.IsAtStartPos()
-								'place on ground, pay if needed etc.
-								NewsBlock.Drop()
-								
-								Self.NewsBlocks.sort(True, TNewsBlock.sort)
-							EndIf
-							'set to undragged in all cases - but not before Drop()
-							'as drop only acts if dragged
-							NewsBlock.dragged = 0
-						EndIf
-					EndIf
-				EndIf
-				If NewsBlock.dragged = 1
-					TNewsBlock.AdditionallyDragged = TNewsBlock.AdditionallyDragged +1					
-					NewsBlock.rect.position.SetXY(MouseX() - NewsBlock.rect.GetW()/2 - TNewsBlock.AdditionallyDragged *5, MouseY() - NewsBlock.rect.GetH()/2 - TNewsBlock.AdditionallyDragged *5)
-				EndIf
-				If NewsBlock.dragged = 0
-					NewsBlock.rect.position.SetPos(NewsBlock.StartPos)
-				EndIf
-			EndIf
-		Next
-		TNewsBlock.LeftLisTPointMax = number
-		TNewsBlock.AdditionallyDragged = 0
-    End Method
 
 
 	'Ad(Block)
@@ -799,10 +695,10 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		Print "contract list empty - wrong filter ?"
 		Return Null
 	End Function
-	
+
 	Method IsAvailableToSign:Int()  {_exposeToLua}
 		Return (self.owner <= 0 and self.daySigned = -1)
-	End Method	
+	End Method
 
 	'percents = 0.0 - 1.0 (0-100%)
 	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1)  {_exposeToLua}
@@ -1732,7 +1628,7 @@ endrem
 		Return news
 	End Function
 
-	Function GetGenre:String(Genre:Int)
+	Function GetGenreString:String(Genre:Int)
 		If Genre = 0 Then Return GetLocale("NEWS_POLITICS_ECONOMY")
 		If Genre = 1 Then Return GetLocale("NEWS_SHOWBIZ")
 		If Genre = 2 Then Return GetLocale("NEWS_SPORT")
@@ -2774,214 +2670,180 @@ Type TProgrammeBlock Extends TBlockGraphical
     End Method
 End Type
 
-Type TNewsBlock Extends TBlockGraphical {_exposeToLua="selected"}
-	Field State:Int 		= 0 	{saveload = "normal"}
-    Field sendslot:Int 		= -1 	{saveload = "normal"} 'which day this news is planned to be send?
-    Field publishdelay:Int 	= 0		{saveload = "normal"} 'value added to publishtime when compared with Game.minutesOfDayGone to delay the "usabilty" of the block
-    Field publishtime:Int 	= 0		{saveload = "normal"} '
-    Field paid:Byte 		= 0 	{saveload = "normal"}
-    Field news:TNews				{_exposeToLua}
-	Field id:Int	 		= 0 	{_exposeToLua saveload = "normal"}
-    Global LastUniqueID:Int 		= 0
-    Global DragAndDropList:TList
+'a graphical representation of programmes/news/ads...
+Type TGUINewsBlock extends TGUIListItem
+	Field parentNewsBlock:TNewsBlock = Null
+	Field imageBaseName:string = "gfx_news_sheet"
 
-    Global LeftLisTPoint:Int		= 0
-    Global LeftLisTPointMax:Int	= 4
+    Method Create:TGUINewsBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		'limit this blocks to the room "NewsPlannerXXX"
+   		super.CreateBase(x,y,"NewsplannerXXX",null)
+		self.Resize( width, height )
+		self.label = label
 
+		'make dragable by default
+		self.setOption(GUI_OBJECT_DRAGABLE, TRUE)
 
-	Function LoadAll(loadfile:TStream)
-'		TNewsBlock.List.Clear()
-		'Print "cleared newsblocklist:"+TNewsBlock.List.Count()
-		Local BeginPos:Int = Stream_SeekString("<NEWSB/>",loadfile)+1
-		Local EndPos:Int = Stream_SeekString("</NEWSB>",loadfile)  -8
-		Local strlen:Int = 0
-		loadfile.Seek(BeginPos)
+		'register events
+		'- each item wants to know whether it was clicked
+		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIListItem.onClick, self )
 
-		TNewsBlock.lastUniqueID:Int        = ReadInt(loadfile)
-		TNewsBlock.AdditionallyDragged:Int = ReadInt(loadfile)
-		TNewsBlock.LeftLisTPoint:Int    = ReadInt(loadfile)
-		TNewsBlock.LeftLisTPointMax:Int = ReadInt(loadfile)
-		Local NewsBlockCount:Int = ReadInt(loadfile)
-		If NewsBlockCount > 0
-			Repeat
-				Local NewsBlock:TNewsBlock= New TNewsBlock
-				NewsBlock.State      	= ReadInt(loadfile)
-				NewsBlock.dragable   	= ReadByte(loadfile)
-				NewsBlock.dragged    	= ReadByte(loadfile)
-				NewsBlock.StartPos.Load(Null)
-				NewsBlock.sendslot   	= ReadInt(loadfile)
-				NewsBlock.publishdelay	= ReadInt(loadfile)
-				NewsBlock.publishtime	= ReadInt(loadfile)
-				NewsBlock.paid 			= ReadByte(loadfile)
-				NewsBlock.rect.position.Load(Null)
-				NewsBlock.owner			= ReadInt(loadfile)
-				NewsBlock.id			= ReadInt(loadfile)
-				Local NewsID:Int		= ReadInt(loadfile)
-				If newsID >= 0 Then Newsblock.news = TNews.Load(Null) 'loadfile)
-
-				NewsBlock.imageBaseName = "gfx_news_sheet"
-				NewSBlock.rect.dimension.setXY( ..
-					Assets.GetSprite("gfx_news_sheet0").w, ..
-					Assets.GetSprite("gfx_news_sheet0").h ..
-				)
-
-				'TNewsBlock.List.AddLast(NewsBlock)
-				ReadString(loadfile,5) 'finishing string (eg. "|PRB|")
-				Players[NewsBlock.owner].ProgrammePlan.AddNewsBlock(NewsBlock)
-				Print "added '" + NewsBlock.news.title + "' to programmeplan for:"+newsBlock.owner
-			Until loadfile.Pos() >= EndPos
-		EndIf
-		Print "loaded newsblocklist"
-	End Function
-
-	Function SaveAll()
-		LoadSaveFile.xmlBeginNode("ALLNEWSBLOCKS")
-			LoadSaveFile.xmlWrite("LASTUNIQUEID",		TNewsBlock.LastUniqueID)
-			LoadSaveFile.xmlWrite("ADDITIONALLYDRAGGED",TNewsBlock.AdditionallyDragged)
-			LoadSaveFile.xmlWrite("LEFTLISTPoint",	TNewsBlock.LeftLisTPoint)
-			LoadSaveFile.xmlWrite("LEFTLISTPointMAX",TNewsBlock.LeftLisTPointMax)
-			'SaveFile.WriteInt(TNewsBlock.List.Count())
-			For Local i:Int = 1 To 4
-				For Local NewsBlock:TNewsBlock= EachIn Players[i].ProgrammePlan.NewsBlocks
-					If NewsBlock <> Null Then NewsBlock.Save()
-				Next
-			Next
-		LoadSaveFile.xmlCloseNode()
-	End Function
-
-	Method Save()
-		LoadSaveFile.xmlBeginNode("NEWSBLOCK")
-			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") = "normal" Or t.MetaData("saveload") = "normalExt"
-					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-				EndIf
-			Next
-			If Self.news <> Null
-				LoadSaveFile.xmlWrite("NEWSID",		Self.news.id)
-				Self.news.Save()
-			Else
-				LoadSaveFile.xmlWrite("NEWSID",		"-1")
-			EndIf
-		LoadSaveFile.xmlCloseNode()
+		GUIManager.add(self)
+		return self
 	End Method
 
-	Function Create:TNewsBlock(text:String="unknown", x:Int=0, y:Int=0, owner:Int=1, publishdelay:Int=0, usenews:TNews=Null)
-		If usenews = Null Then usenews = TNews.GetRandomNews()
-		'if no happened time is set, use the Game time 
-		if usenews.happenedtime <= 0 then usenews.happenedtime = Game.GetTimeGone()
+	Method SetParentNewsBlock:int(block:TNewsBlock)
+		self.parentNewsBlock = block
+		if block
+			'now we can calculate the item width
+			self.Resize( Assets.GetSprite(Self.imageBaseName+parentNewsBlock.news.genre).w, Assets.GetSprite(Self.imageBaseName+parentNewsBlock.news.genre).h )
+		endif
 
-		Local obj:TNewsBlock = New TNewsBlock
-		obj.owner		= owner
-		obj.State		= 0
-		obj.publishdelay= publishdelay
-		obj.publishtime	= usenews.happenedtime
-		'hier noch als variablen uebernehmen
-		obj.dragable	= 1
-		obj.sendslot	= -1
-		obj.id			= TNewsBlock.LastUniqueID
-		obj.LastUniqueID:+1
-		obj.news		= usenews
-		obj.imageBaseName = "gfx_news_sheet"
-		obj.imageBaseName = "gfx_news_sheet" '_dragged
+		'so it is only handled in the correct players newsplanner
+		'eg. "Newsplanner1" for player 1
+		self.SetLimitToState("Newsplanner"+block.owner)
 
-		obj.StartPos	= TPoint.Create(x, y)
-		obj.rect		= TRectangle.Create(x,y, Assets.GetSprite(obj.imageBaseName+"0").w, Assets.GetSprite(obj.imageBaseName+"0").h )
-
-		Players[owner].ProgrammePlan.AddNewsBlock(obj)
-		Return obj
-	End Function
-
-    Method Pay()
-        Players[owner].finances[Game.getWeekday()].PayNews(news.ComputePrice())
-
-		self.paid=True
-    End Method
-
-	Function IncLeftListPoint:Int(amount:Int=1)
-      If TNewsBlock.LeftListPointMax-TNewsBlock.LeftListPoint > 4 Then TNewsBlock.LeftListPoint:+amount
-	End Function
-
-	Function DecLeftListPoint:Int(amount:Int=1)
-		TNewsBlock.LeftListPoint = Max(0, TNewsBlock.LeftListPoint -amount)
-	End Function
-
-	Method SetDragable(_dragable:Int = 1)
-		dragable = _dragable
+		'as the news inflicts the sorting algorithm - resort
+		GUIManager.sortList()
 	End Method
 
-    Function Sort:Int(o1:Object, o2:Object)
-		Local n1:TNewsBlock = TNewsBlock(o1)
-		Local n2:TNewsBlock = TNewsBlock(o2)
-		If Not n2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-		Return (Not n2.dragged) * (n2.news.happenedtime) - (Not n1.dragged) * (n1.news.happenedtime)
-    End Function
+	Method Compare:int(Other:Object)
+		local otherBlock:TGUINewsBlock = TGUINewsBlock(Other)
+		If otherBlock<>null
+			'both items are dragged - check time
+			if self._flags & GUI_OBJECT_DRAGGED AND otherBlock._flags & GUI_OBJECT_DRAGGED
+				'if a drag was earlier -> move to top
+				if self._timeDragged < otherBlock._timeDragged then Return 1
+				if self._timeDragged > otherBlock._timeDragged then Return -1
+				return 0
+			endif
 
-    Method GetSlotOfBlock:Int()
-    	If rect.getX() = 445 And dragged = 0 Then Return Int((StartPos.y - 19) / 87)
-    	Return -1
-    End Method
+			if self.parentNewsBlock and otherBlock.parentNewsBlock
+				local publishDifference:int = self.parentNewsBlock.GetPublishTime() - otherBlock.parentNewsBlock.GetPublishTime()
 
-	Method IsReadyToPublish:Int() {_exposeToLua}
-		Return (publishtime + publishdelay <= Game.timeGone)
+				'self is newer ("later") than other
+				if publishDifference>0 then return -1
+				'self is older than other
+				if publishDifference<0 then return 1
+				'self is same age than other
+				'if publishDifference=0 then return (self.parentNewsBlock.id > otherBlock.parentNewsBlock.id)
+				if publishDifference=0 then return Super.Compare(Other)
+			endif
+		endif
+
+		return Super.Compare(Other)
 	End Method
-	
-	Method IsInProgramme:Int() {_exposeToLua}
-		Return (rect.GetX() > 400) 'TODO: Irgendwann ne bessere Prüfung einbauen... statt Koordinaten abzufragen	
-	End Method	
 
-    'remove from programmeplan
-    Method Drag()
-		If Self.dragged <> 1
-			Self.dragged	= 1
+	Method Update()
+	End Method
 
-			Players[owner].ProgrammePlan.SetNewsBlockSlot(self, -1 )
-		EndIf
-    End Method
 
-	'add to plan again
-    Method Drop()
-		If Self.dragged <> 0
-			Self.dragged = 0			
-			self.rect.position.SetPos(self.StartPos)
-
-			Players[owner].ProgrammePlan.SetNewsBlockSlot(self, self.GetSlotOfBlock() )
-		EndIf
-    End Method
-
-    'draw the Block inclusive text
 	Method Draw()
-		'print "drawing block "+self.news.title+" to player "+self.owner
-
 		State = 0
 		SetColor 255,255,255
-		dragable=1
-		Local variant:String = ""
-		If dragged = 1 And State = 0
-			If Self.AdditionallyDragged > 0 Then SetAlpha 1- 1/Self.AdditionallyDragged * 0.25
-			'variant = "_dragged"
-		EndIf
-		Assets.GetSprite(Self.imageBaseName+news.genre+variant).Draw(rect.GetX(), rect.GetY())
+
+		'cache calculation
+		'local screenX:float = self.GetScreenX()
+		'local screenY:float = self.GetScreenY()
+		'cache calculation and clamp to int
+		local screenX:float = int(self.GetScreenX())
+		local screenY:float = int(self.GetScreenY())
 
 
-		'draw graphic
-		If paid Then Assets.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", rect.GetX() + 1, rect.GetY() + 65, 14, 25, 1, 50, 50, 50)
-		Assets.fonts.basefontBold.drawBlock(news.title, rect.GetX() + 15, rect.GetY() + 3, 290, 15 + 8, 0, 20, 20, 20)
-		Assets.fonts.baseFont.drawBlock(news.description, rect.GetX() + 15, rect.GetY() + 18, 300, 45 + 8, 0, 100, 100, 100)
+
+		'background - no "_dragged" to add to name
+		Assets.GetSprite(Self.imageBaseName+parentNewsBlock.news.genre).Draw(screenX, screenY)
+
+		'paid state
+		If self.parentNewsBlock.paid Then Assets.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", screenX + 1, screenY + 65, 14, 25, 1, 50, 50, 50)
+
+		'default texts (title, text,...)
+		Assets.fonts.basefontBold.drawBlock(parentNewsBlock.news.title, screenX + 15, screenY + 4, 290, 15 + 8, 0, 20, 20, 20)
+		Assets.fonts.baseFont.drawBlock(parentNewsBlock.news.description, screenX + 15, screenY + 19, 300, 50 + 8, 0, 100, 100, 100)
 		SetAlpha 0.3
-		Assets.GetFont("Default", 9).drawBlock(news.GetGenre(news.Genre), rect.GetX() + 15, rect.GetY() + 72, 120, 15, 0, 0, 0, 0)
+		'SetRotation(-90)
+		'Assets.GetFont("Default", 9).drawBlock(parentNewsBlock.news.GetGenreString(parentNewsBlock.news.Genre), screenX + 3, screenY + 72, 120, 120, 0, 0, 0, 0)
+		'SetRotation(0)
+		Assets.GetFont("Default", 9).drawBlock(parentNewsBlock.news.GetGenreString(parentNewsBlock.news.Genre), screenX + 15, screenY + 74, 120, 15, 0, 0, 0, 0)
 		SetAlpha 1.0
-		Assets.GetFont("Default", 12).drawBlock(news.ComputePrice() + ",-", rect.GetX() + 220, rect.GetY() + 70, 90, 15, 2, 0, 0, 0)
+		Assets.GetFont("Default", 12).drawBlock(parentNewsBlock.news.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, 2, 0, 0, 0)
 
-		Select Game.getDay() - Game.GetDay(news.happenedtime)
-			case 0	Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedTime(news.happenedtime) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
-			case 1	Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedTime(news.happenedtime) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
-			case 2	Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedTime(news.happenedtime) + " Uhr", rect.GetX() + 90, rect.GetY() + 72, 140, 15, 2, 0, 0, 0)
+		Select Game.getDay() - Game.GetDay(parentNewsBlock.news.happenedtime)
+			case 0	Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+			case 1	Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+			case 2	Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
 		End Select
 		SetColor 255, 255, 255
 		SetAlpha 1.0
 	End Method
+End Type
 
+
+'This object stores a players newsblocks.
+'If needed, it creates a guiBlock to make it controllable visually
+Type TNewsBlock extends TGameObject {_exposeToLua="selected"}
+    Field slot:Int	 			= -1 	{saveload = "normal"} 'which of the available slots is the news using
+    Field publishDelay:Int 		= 0		{saveload = "normal"} 'delay the news for a certain time (depending on the abonnement-level)
+    Field paid:Byte 			= 0 	{saveload = "normal"}
+    Field news:TNews			= Null	{_exposeToLua}
+    Field owner:int				= 0		{_exposeToLua} 			'whose block is this?
+    Field guiBlock:TGUINewsBlock= Null
+
+
+	Function LoadAll(loadfile:TStream)
+		print "implement TNewsBlock.LoadAll"
+	End Function
+
+	Function SaveAll()
+		print "implement TNewsBlock.SaveAll"
+	End Function
+
+	Method Save()
+		print "implement TNewsBlock.Save"
+	End Method
+
+	Function Create:TNewsBlock(text:String="unknown", owner:Int=1, publishdelay:Int=0, usenews:TNews=Null)
+		If usenews = Null Then print"NewsBlock.Create - RandomNews";usenews = TNews.GetRandomNews()
+		'if no happened time is set, use the Game time
+		if usenews.happenedtime <= 0 then usenews.happenedtime = Game.GetTimeGone()
+
+		Local obj:TNewsBlock = New TNewsBlock
+		obj.publishDelay= publishdelay
+		'hier noch als variablen uebernehmen
+		obj.slot		= -1
+		obj.news		= usenews
+
+		'add to list and also set owner
+		Players[owner].ProgrammePlan.AddNewsBlock(obj)
+		Return obj
+	End Function
+
+	'clean up instructions
+	Method Remove()
+		self.guiBlock.Remove()
+	End Method
+
+    Method Pay:int()
+		'only pay if not already done
+		if not self.paid then self.paid = Players[self.owner].finances[Game.getWeekday()].PayNews(news.ComputePrice())
+		return self.paid
+    End Method
+
+    Method GetSlot:Int()
+		return self.slot
+    End Method
+
+    Method GetPublishTime:int() {_exposeToLua}
+		return self.news.happenedtime + self.publishdelay
+    End Method
+
+	Method IsReadyToPublish:Int() {_exposeToLua}
+		Return (self.news.happenedtime + self.publishDelay <= Game.timeGone)
+	End Method
+
+	Method IsInProgramme:Int() {_exposeToLua}
+		Return self.GetSlot()>0
+	End Method
 End Type
 
 'Contracts used in AdAgency

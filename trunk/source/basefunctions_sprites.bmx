@@ -581,6 +581,7 @@ Type TBitmapFont
 
 			local lineHeight:int = 0
 			local lineWidth:int = 0
+			local rotation:int = GetRotation()
 			For Local i:Int = 0 Until text.length
 				Local bm:TBitmapFontChar = TBitmapFontChar( self.chars.ValueForKey(string(text[i])) )
 				if bm <> null
@@ -600,7 +601,15 @@ Type TBitmapFont
 							endif
 						endif
 					endif
-					lineWidth :+ bm.charWidth * gfx.tform_ix
+					if rotation = -90
+						height:- MIN(lineHeight, bm.box.w)
+					elseif rotation = 90
+						height:+ MIN(lineHeight, bm.box.w)
+					elseif rotation = 180
+						lineWidth :- bm.charWidth * gfx.tform_ix
+					else
+						lineWidth :+ bm.charWidth * gfx.tform_ix
+					endif
 				EndIf
 			Next
 			width = max(width, lineWidth)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="30.05.2013 18:11" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="13.06.2013 16:58" />
 	<allmovies>
 		<movie>
 			<title>...sie waren sich der Konsequenzen nicht bewusst</title>
@@ -65,7 +65,7 @@ Raffinierter phantastischer Film</description>
 		<movie>
 			<title>U.I. - Unberechenbare Intelligenz</title>
 			<description>Als Ersatz für ihren schwer kranken Sohn adoptiert das Ehepaar Swinton einen Roboter, der einem Menschen erstaunlich nahe kommt.
-Spielbergs Hommage an Laurel Kubus</description>
+Playerhills Hommage an Laurel Kubus</description>
 			<data  actors="Hey Lee-Joe Osmose" director="Steve Playershill" country="USA" year="2001" genre="2"  blocks="3" time="20" price="150" critics="168" speed="96" outcome="144" />
 		</movie>
 		<movie>
@@ -113,8 +113,8 @@ Aus einem solchen Zusammentreffen hätte man wohl mehr machen können</descripti
 			<data  actors="Signme Weber" director="Dawid Tuencher" country="USA" year="1992" genre="2"  blocks="2" time="0" price="200" critics="24" speed="84" outcome="96" />
 		</movie>
 		<movie>
-			<title>MoXXXrt</title>
-			<description>Das Leben des Wolfgang MoXXXrt MoXXXrt, erzählt aus der Sicht Antonio Salieris.
+			<title>Mozart</title>
+			<description>Das Leben des Wolfgang Mozart Mozart, erzählt aus der Sicht Antonio Salieris.
 Grandiose Oper von Milodsch Fourmen</description>
 			<data  actors="F. Murrisch Aberham, Tom Dolce, Ellisbeth Porridge, Simon Ringnow, Roi Dottereis" director="Milodsch Fourmen" country="USA" year="1984" genre="11"  blocks="3" time="20" price="100" critics="156" speed="156" outcome="168" />
 		</movie>
@@ -303,7 +303,7 @@ Monumentaler Meilenstein</description>
 		</movie>
 		<movie>
 			<title>Der herbe Erdtrabant</title>
-			<description>Die Geschichte einer bedingungslosen Amour fou: In Paris verguckt sich der erfoldlose Schriftsteller Oscar in die beXXXubernde Tänzerin Mimi. Doch aus Liebe wird bald Überdruß.</description>
+			<description>Die Geschichte einer bedingungslosen Amour fou: In Paris verguckt sich der erfoldlose Schriftsteller Oscar in die bezaubernde Tänzerin Mimi. Doch aus Liebe wird bald Überdruß.</description>
 			<data  actors="XXX" director="Alan Smithee" country="GB" year="1992" genre="6"  blocks="3" time="0" price="150" critics="132" speed="96" outcome="108" />
 		</movie>
 		<movie>
@@ -495,7 +495,7 @@ Sehenswertes Regie-Debüt von Kewin Kostetnur</description>
 		</movie>
 		<movie>
 			<title>Der Albinohai</title>
-			<description>Spielbergs souveränes Spiel mit dem Schrecken und der Einsatz von Spezialeffekten zur möglichst realistischen Präsentation des menschenfressenden Monters führten zu einem Millionen-Dollar-Umsatz</description>
+			<description>Playerhills souveränes Spiel mit dem Schrecken und der Einsatz von Spezialeffekten zur möglichst realistischen Präsentation des menschenfressenden Monters führten zu einem Millionen-Dollar-Umsatz</description>
 			<data  actors="XXX" director="Steve Playershill" country="USA" year="1974" genre="4"  blocks="3" time="20" price="100" critics="108" speed="168" outcome="192" />
 		</movie>
 		<movie>
@@ -550,13 +550,13 @@ Liebevoll erzählt, nettes Kostüm für den Glücksdrachen Fuchur</description>
 		</movie>
 		<movie>
 			<title>Das Geflügel</title>
-			<description>Eine Kleinstadt wird von einer UnXXXhl an Vögeln überfallen.
-Einer der späteren Hitchcocks</description>
+			<description>Eine Kleinstadt wird von einer Unzahl an Vögeln überfallen.
+Einer der späteren Stitchhogs</description>
 			<data  actors="Tybbi Haedraen, Rod Teller, Jazzica Handy, Susanna Plakette, Veronika Parkright" director="Alfredo Stitchhog" country="USA" year="1963" genre="4"  blocks="3" time="20" price="100" critics="156" speed="84" outcome="180" />
 		</movie>
 		<movie>
 			<title>Der Wut-Psychiater</title>
-			<description>Anti-Agressions-Therapeut Dr. Rydell (Großartig: J. Nicholson) nimmt den zurückhaltenden jungen Dave Buznik unter seine Fittiche.</description>
+			<description>Anti-Agressions-Therapeut Dr. Rydell (Großartig: Jagg Nickelsson) nimmt den zurückhaltenden jungen Dave Buznik unter seine Fittiche.</description>
 			<data  actors="Jagg Nickelsson" director="Alan Smithee" country="USA" year="2003" genre="3"  blocks="2" time="20" price="200" critics="60" speed="144" outcome="108" />
 		</movie>
 		<movie>
@@ -611,7 +611,7 @@ Schwarzer Humor, gute Musik und Petr Sellerie in drei verschiedenen Rollen</desc
 		<movie>
 			<title>Drei Kerle in einem Ruderboot</title>
 			<description>Drei Männer wollen ungestörten Urlaub auf dem Rhein machen.
-Das Trio Erhardt, Kulenkampff, Giller sorgt für den riesigen Spaß des Films</description>
+Das Trio Gebhard, Keulenkopf, Mueller sorgt für den riesigen Spaß des Films</description>
 			<data  actors="Heinrich Gebhardt, Hans-Peter Keulenkopf, Walther Mueller" director="Helmhut Rot" country="D" year="1961" genre="3"  blocks="2" time="20" price="50" critics="120" speed="168" outcome="132" />
 		</movie>
 		<movie>
@@ -634,7 +634,7 @@ Spannendes Abenteuer nach Karl May</description>
 		</movie>
 		<movie>
 			<title>Der Extraterrestrische</title>
-			<description>Spielbergs Saga von dem auf Erden zurückgelassenen Außerirdischen, der in einem kleinen Jungen in Los Angeles einen wahren Freund findet.</description>
+			<description>Playerhills Saga von dem auf Erden zurückgelassenen Außerirdischen, der in einem kleinen Jungen in Los Angeles einen wahren Freund findet.</description>
 			<data  actors="XXX" director="Steve Playershill" country="USA" year="1982" genre="2"  blocks="2" time="20" price="150" critics="120" speed="120" outcome="192" />
 		</movie>
 		<movie>
@@ -657,7 +657,7 @@ Urkomisches Gagfeuerwerk</description>
 		</movie>
 		<movie>
 			<title>Millenium Day - Die letzte Nacht vorm Chaos</title>
-			<description>Dämonische Story, die von der Unruhe vor "dem Millennium" profitieren wollte, SchwarXXXcker auf seiner Karriereleiter jedoch nicht weiter nach oben katapultieren konnte</description>
+			<description>Dämonische Story, die von der Unruhe vor "dem Millennium" profitieren wollte, Schwarzacker auf seiner Karriereleiter jedoch nicht weiter nach oben katapultieren konnte</description>
 			<data  actors="Arnold Weissenacker" director="Alan Smithee" country="USA" year="1999" genre="0"  blocks="3" time="20" price="200" critics="24" speed="156" outcome="84" />
 		</movie>
 		<movie>
@@ -1058,7 +1058,7 @@ Namhafte Schauspieler, aber das Konzept kann nicht überzeugen</description>
 		</movie>
 		<movie>
 			<title>Mr. Galaxie</title>
-			<description>SchwarXXXcker läßt in diesem Frühwerk seiner Karriere ausgiebig die Muskeln spielen.
+			<description>Schwarzacker läßt in diesem Frühwerk seiner Karriere ausgiebig die Muskeln spielen.
 Viel Muckis, wenig Grips</description>
 			<data  actors="Arnold Weissenacker, Yeff Bruckner, " director="Alan Smithee" country="USA" year="1976" genre="5"  blocks="2" time="20" price="150" critics="12" speed="72" outcome="72" />
 		</movie>
@@ -1157,7 +1157,7 @@ Klassiker von Alfredo Stitchhog</description>
 		</movie>
 		<movie>
 			<title>Halb-Fiction</title>
-			<description>Tarantino verknüpft in seinem Kultfilm aus den 90ern drei Handlungsstränge in biXXXrrer Weise miteinander.</description>
+			<description>Tarantino verknüpft in seinem Kultfilm aus den 90ern drei Handlungsstränge in bizarrer Weise miteinander.</description>
 			<data  actors="Brus Will-Es, Sammael K. Hackson, Harvey Scheitell" director="Kentain Marafino" country="USA" year="1994" genre="0"  blocks="3" time="20" price="100" critics="96" speed="192" outcome="216" />
 		</movie>
 		<movie>
@@ -1438,7 +1438,7 @@ Mit Top Gun gelang Tim Cruz der internationale Durchbruch</description>
 		<movie>
 			<title>True Spy - Die Frau des Spiones</title>
 			<description>Geheimagent Harry Tasker lebt ein Doppelleben. Seine Frau Helen ahnt nichts von seinem gefährlichen Job.
-Spritziger Actioner mit dem Erfolgsduo Cameron/SchwarXXXcker</description>
+Spritziger Actioner mit dem Erfolgsduo Cameron/Schwarzacker</description>
 			<data  actors="Arnold Weissenacker" director="Yames Kamerun" country="USA" year="1994" genre="0"  blocks="3" time="20" price="50" critics="72" speed="180" outcome="144" />
 		</movie>
 		<movie>
@@ -1474,7 +1474,7 @@ Bewegender Film mit Ricardo Dream Handerson in seiner ersten Filmhauptrolle</des
 		</movie>
 		<movie>
 			<title>Versprechen sind zu halten</title>
-			<description>SchwarXXXcker als Vater, der das Verhältnis zu seinem Sohn aufpolieren will. Er macht sich auf die zermürbende Suche nach einem der beliebten Turbo-Man-Spielzeuge.</description>
+			<description>Schwarzacker als Vater, der das Verhältnis zu seinem Sohn aufpolieren will. Er macht sich auf die zermürbende Suche nach einem der beliebten Turbo-Man-Spielzeuge.</description>
 			<data  actors="Arnold Weissenacker" director="Alan Smithee" country="USA" year="1996" genre="3"  blocks="2" time="20" price="100" critics="36" speed="144" outcome="120" />
 		</movie>
 		<movie>
@@ -1988,12 +1988,12 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 		</news>
 		<news>
 			<title>Arbeitslosenquote sinkt</title>
-			<description>Die Arbeitslosenquote ist im Vergleich zum Vormonat wieder gesunken. Arbeitslose langsam aber sicher in der UnterXXXhl.</description>
+			<description>Die Arbeitslosenquote ist im Vergleich zum Vormonat wieder gesunken. Arbeitslose langsam aber sicher in der Unterzahl.</description>
 			<data genre="0" price="0" topicality="75" />
 		</news>
 		<news>
 			<title>Atmen wird teuer</title>
-			<description>Die Gesundheitsministerin hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr beXXXhlen muss. Die Gebühr richtet sich nach dem Lungeninhalt.</description>
+			<description>Die Gesundheitsministerin hat ein Gesetz erlassen, wonach jeder atmende Mensch eine Sauerstoffgebühr bezahlen muss. Die Gebühr richtet sich nach dem Lungeninhalt.</description>
 			<data genre="0" price="0" topicality="200" />
 			<episode number="1">
 				<title>Zurückrudern bei Sauerstoffgebühr</title>
@@ -2002,7 +2002,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 			</episode>
 			<episode number="2">
 				<title>Nur noch Gebühr auf Ausatmen</title>
-				<description>Nach dem umstrittenen Plan eine komplette Sauerstoffgebühr einzuführen, soll die Bevölkerung nur noch für das Ausatmen XXXhlen. Luft anhalten!</description>
+				<description>Nach dem umstrittenen Plan eine komplette Sauerstoffgebühr einzuführen, soll die Bevölkerung nur noch für das Ausatmen zahlen. Luft anhalten!</description>
 				<data genre="0" price="6" topicality="157" />
 			</episode>
 		</news>
@@ -2093,7 +2093,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 		</news>
 		<news>
 			<title>Computerviren überfallen das Internet</title>
-			<description>Eine ganze Armee teuflischer Viren befindet sich im Ansturm auf Rechner in aller Welt. Als besonders gefährlich gilt Virus &amp;#960; (Pi).</description>
+			<description>Eine ganze Armee teuflischer Viren befindet sich im Ansturm auf Rechner in aller Welt. Als besonders gefährlich gilt Virus π (Pi).</description>
 			<data genre="3" price="0" topicality="125" />
 			<episode number="1">
 				<title>Überall spukt &amp;#960; herum</title>
@@ -2193,7 +2193,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 		</news>
 		<news>
 			<title>Flaschensammler zur Kasse gebeten?</title>
-			<description>Insider-Informationen nach sollen Flaschensammler ab sofort für ihre Tätigkeit Gewinnsteuern beXXXhlen. Die Vereinigung Deutscher Flaschensammler legt Berufung ein.</description>
+			<description>Insider-Informationen nach sollen Flaschensammler ab sofort für ihre Tätigkeit Gewinnsteuern bezahlen. Die Vereinigung Deutscher Flaschensammler legt Berufung ein.</description>
 			<data genre="4" price="0" topicality="25" />
 		</news>
 		<news>
@@ -2864,7 +2864,7 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</descript
 		</ad>
 		<ad>
 			<title>Eau de WC</title>
-			<description>Bestellen Sie jetzt und sichern sie sich den Duft der Frauen betört und ihre WC-Gäste beXXXubert. Neu: Zitrone!</description>
+			<description>Bestellen Sie jetzt und sichern sie sich den Duft der Frauen betört und ihre WC-Gäste bezaubert. Neu: Zitrone!</description>
 			<data minaudience="10"  repetitions="3" fixedprice="1" profit="1000" penalty="1" targetgroup="0" duration="2" />
 		</ad>
 		<ad>
@@ -2993,7 +2993,7 @@ Ich fühl mich wohl mit Lemor</description>
 		</ad>
 		<ad>
 			<title>MasterCard</title>
-			<description>MacGyver als Werbeträger für die MasterCard: R. D. Anderson noch einmal in seiner Paraderolle - unbeXXXhlbar</description>
+			<description>MacGyver als Werbeträger für die MasterCard: R. D. Anderson noch einmal in seiner Paraderolle - unbezahlbar</description>
 			<data minaudience="220"  repetitions="1"  profit="25" penalty="20" targetgroup="7" duration="1" />
 		</ad>
 		<ad>
@@ -3210,5 +3210,5 @@ Aber nur mit Ulbricht Umzüge!</description>
 		</ad>
 	</allads>
 	<exportOptions onlyFakes="true" onlyCustom="false"/>
-	<time value="6835.03ms" />
+	<time value="7386.86ms" />
 </tvgdb>

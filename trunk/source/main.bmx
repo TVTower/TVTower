@@ -1421,29 +1421,6 @@ Function CreateDropZones:Int()
 		SortList TContractBlock.DragAndDropList
 	Next
 
-	'left newsagency slots
-	For i = 0 To 3
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-		DragAndDrop.slot = i
-		DragAndDrop.pos.setXY(35, 22 + i * Assets.getSprite("gfx_news_sheet0").h)
-		DragAndDrop.w = Assets.getSprite("gfx_news_sheet0").w
-		DragAndDrop.h = Assets.getSprite("gfx_news_sheet0").h
-		If Not TNewsBlock.DragAndDropList Then TNewsBlock.DragAndDropList = CreateList()
-		TNewsBlock.DragAndDropList.AddLast(DragAndDrop)
-		SortList TNewsBlock.DragAndDropList
-	Next
-
-	For i = 0 To 2
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-		DragAndDrop.slot = i+4
-		DragAndDrop.pos.setXY( 445, 106 + i * Assets.getSprite("gfx_news_sheet0").h )
-		DragAndDrop.w = Assets.getSprite("gfx_news_sheet0").w
-		DragAndDrop.h = Assets.getSprite("gfx_news_sheet0").h
-		If Not TNewsBlock.DragAndDropList Then TNewsBlock.DragAndDropList = CreateList()
-		TNewsBlock.DragAndDropList.AddLast(DragAndDrop)
-		SortList TNewsBlock.DragAndDropList
-	Next
-
 	'adblock
 	For i = 0 To 11
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
@@ -1870,7 +1847,7 @@ Type TNewsAgency
 		'only add news/newsblock if player is Host/Player OR AI
 		if not Game.isLocalPlayer(forPlayer) AND not Game.isAIPlayer(forPlayer) then return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Players[ forPlayer ].newsabonnements[news.genre] > 0
-			TNewsBlock.Create("",0,-100, forPlayer, 60*(3-Players[ forPlayer ].newsabonnements[news.genre]), news)
+			TNewsBlock.Create("", forPlayer, 60*(3-Players[ forPlayer ].newsabonnements[news.genre]), news)
 			If Game.isGameLeader() And Not fromNetwork And Game.networkgame Then NetworkHelper.SendNews( forPlayer, news)
 		EndIf
 	End Method
@@ -3218,6 +3195,18 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 
 				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
 				If KEYMANAGER.Ishit(Key_F6) Then Soundmanager.PlayMusic(MUSIC_MUSIC)
+				If KEYMANAGER.Ishit(Key_F7)
+					local news:int = 1
+					local slot:int = -1
+					print "set news "+news+" ["+Players[1].ProgrammePlan.GetNewsFromList(news).id+"] to slot "+slot 
+					Players[1].ProgrammePlan.SetNewsBlockSlot( Players[1].ProgrammePlan.GetNewsFromList(news), slot)
+				endif
+				If KEYMANAGER.Ishit(Key_F8)
+					local news:int = 1
+					local slot:int = rand(0,2)
+					print "set news "+news+" ["+Players[1].ProgrammePlan.GetNewsFromList(news).id+"] to slot "+slot
+					Players[1].ProgrammePlan.SetNewsBlockSlot( Players[1].ProgrammePlan.GetNewsFromList(news), slot)
+				endif
 				If KEYMANAGER.Ishit(Key_F9)
 					if (KIRunning)
 						KIRunning = false

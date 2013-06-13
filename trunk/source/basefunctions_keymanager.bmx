@@ -92,6 +92,22 @@ Type TMouseManager
 		Return KEY_STATE_UP
 	EndMethod
 
+	Method GetStatusDown:int[]()
+		return [false,..
+		        _iKeyStatus[1] = KEY_STATE_DOWN,..
+		        _iKeyStatus[2] = KEY_STATE_DOWN,..
+		        _iKeyStatus[3] = KEY_STATE_DOWN..
+		        ]
+	End Method
+
+	Method GetStatusHit:int[]()
+		return [false,..
+		        _iKeyStatus[1] = KEY_STATE_HIT,..
+		        _iKeyStatus[2] = KEY_STATE_HIT,..
+		        _iKeyStatus[3] = KEY_STATE_HIT..
+		        ]
+	End Method
+
 	Method getStatus:Int( iKey:Int )
 		Return _iKeyStatus[ iKey ]
 	EndMethod

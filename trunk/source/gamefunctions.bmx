@@ -704,7 +704,26 @@ Type TBlockGraphical extends TBlockMoveable
 
 End Type
 
-Type TBlockMoveable
+Type TGameObject {_exposeToLua="selected"}
+	Field id:Int		= 0 	{_exposeToLua saveload = "normal"}
+	Global LastID:int	= 0
+
+	Method New()
+		self.GenerateID()
+	End Method
+
+	Method GenerateID()
+		Self.id = Self.LastID
+		Self.LastID:+1
+	End Method
+
+	'overrideable method for cleanup actions
+	Method Remove()
+	End Method
+
+End Type
+
+Type TBlockMoveable extends TGameObject
 	Field rect:TRectangle			= TRectangle.Create(0,0,0,0)
 	Field dragable:Int				= 1 {saveload = "normalExt"}
 	Field dragged:Int				= 0 {saveload = "normalExt"}
@@ -712,15 +731,6 @@ Type TBlockMoveable
 	Field StartPos:TPoint			= TPoint.Create(0, 0) {saveload = "normalExt"}
 	Field StartPosBackup:TPoint		= TPoint.Create(0, 0)
 	Field owner:Int					= 0 {saveload="normalExt"}
-	Field id:int
-
-	Global LastID:int = 0
-
-	Method GenerateID()
-		Self.id = Self.LastID
-		Self.LastID:+1
-	End Method
-
 
 	'switches coords and state of blocks
 	Method SwitchBlock(otherObj:TBlockMoveable)
