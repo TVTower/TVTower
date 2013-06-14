@@ -220,7 +220,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		newsblock.slot = slot
 
 		'emit an event so eg. network can recognize the change
-		EventManager.registerEvent( TEventSimple.Create( "newsblock.setSlot", TData.Create().AddNumber("slot", slot), newsblock ) )
+		EventManager.registerEvent( TEventSimple.Create( "programmeplan.SetNewsBlockSlot", TData.Create().AddNumber("slot", slot), newsblock ) )
 
 		return TRUE
     End Method
@@ -2742,39 +2742,41 @@ Type TGUINewsBlock extends TGUIListItem
 		State = 0
 		SetColor 255,255,255
 
-		'cache calculation
-		'local screenX:float = self.GetScreenX()
-		'local screenY:float = self.GetScreenY()
-		'cache calculation and clamp to int
-		local screenX:float = int(self.GetScreenX())
-		local screenY:float = int(self.GetScreenY())
+		if self.RestrictViewPort()
+			'cache calculation
+			'local screenX:float = self.GetScreenX()
+			'local screenY:float = self.GetScreenY()
+			'cache calculation and clamp to int
+			local screenX:float = int(self.GetScreenX())
+			local screenY:float = int(self.GetScreenY())
 
+			'background - no "_dragged" to add to name
+			Assets.GetSprite(Self.imageBaseName+parentNewsBlock.news.genre).Draw(screenX, screenY)
 
+			'paid state
+			If self.parentNewsBlock.paid Then Assets.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", screenX + 1, screenY + 65, 14, 25, 1, 50, 50, 50)
 
-		'background - no "_dragged" to add to name
-		Assets.GetSprite(Self.imageBaseName+parentNewsBlock.news.genre).Draw(screenX, screenY)
+			'default texts (title, text,...)
+			Assets.fonts.basefontBold.drawBlock(parentNewsBlock.news.title, screenX + 15, screenY + 4, 290, 15 + 8, 0, 20, 20, 20)
+			Assets.fonts.baseFont.drawBlock(parentNewsBlock.news.description, screenX + 15, screenY + 19, 300, 50 + 8, 0, 100, 100, 100)
+			SetAlpha 0.3
+			'SetRotation(-90)
+			'Assets.GetFont("Default", 9).drawBlock(parentNewsBlock.news.GetGenreString(parentNewsBlock.news.Genre), screenX + 3, screenY + 72, 120, 120, 0, 0, 0, 0)
+			'SetRotation(0)
+			Assets.GetFont("Default", 9).drawBlock(parentNewsBlock.news.GetGenreString(parentNewsBlock.news.Genre), screenX + 15, screenY + 74, 120, 15, 0, 0, 0, 0)
+			SetAlpha 1.0
+			Assets.GetFont("Default", 12).drawBlock(parentNewsBlock.news.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, 2, 0, 0, 0)
 
-		'paid state
-		If self.parentNewsBlock.paid Then Assets.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", screenX + 1, screenY + 65, 14, 25, 1, 50, 50, 50)
+			Select Game.getDay() - Game.GetDay(parentNewsBlock.news.happenedtime)
+				case 0	Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+				case 1	Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+				case 2	Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+			End Select
+			SetColor 255, 255, 255
+			SetAlpha 1.0
 
-		'default texts (title, text,...)
-		Assets.fonts.basefontBold.drawBlock(parentNewsBlock.news.title, screenX + 15, screenY + 4, 290, 15 + 8, 0, 20, 20, 20)
-		Assets.fonts.baseFont.drawBlock(parentNewsBlock.news.description, screenX + 15, screenY + 19, 300, 50 + 8, 0, 100, 100, 100)
-		SetAlpha 0.3
-		'SetRotation(-90)
-		'Assets.GetFont("Default", 9).drawBlock(parentNewsBlock.news.GetGenreString(parentNewsBlock.news.Genre), screenX + 3, screenY + 72, 120, 120, 0, 0, 0, 0)
-		'SetRotation(0)
-		Assets.GetFont("Default", 9).drawBlock(parentNewsBlock.news.GetGenreString(parentNewsBlock.news.Genre), screenX + 15, screenY + 74, 120, 15, 0, 0, 0, 0)
-		SetAlpha 1.0
-		Assets.GetFont("Default", 12).drawBlock(parentNewsBlock.news.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, 2, 0, 0, 0)
-
-		Select Game.getDay() - Game.GetDay(parentNewsBlock.news.happenedtime)
-			case 0	Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
-			case 1	Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
-			case 2	Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedTime(parentNewsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
-		End Select
-		SetColor 255, 255, 255
-		SetAlpha 1.0
+			self.resetViewport()
+		endif
 	End Method
 End Type
 
