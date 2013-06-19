@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="13.06.2013 16:58" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="19.06.2013 09:16" />
 	<allmovies>
 		<movie>
 			<title>...sie waren sich der Konsequenzen nicht bewusst</title>
@@ -937,6 +937,11 @@ Bescheidene Witzverkettungen nach den Comics von Waldi Meirs</description>
 			<data  actors="Kevin Specki, Ruessl Crowd, Jung Pearcing, Kim Baseringer, Donny KaPito" director="Kurtis Hanssohn" country="USA" year="1997" genre="1"  blocks="3" time="20" price="150" critics="156" speed="132" outcome="144" />
 		</movie>
 		<movie>
+			<title>Landung auf dem Mars</title>
+			<description>Die Solaris-Crew hat es geschafft: ein Amerikaner, ein Russe und der Papst landen auf dem Mars!</description>
+			<data  actors="Schorsch Busch, Wladimir Putschkin und Jupp XII." director="Stieven Harking" country="US" year="2006" genre="8"  blocks="3" time="20" price="255" critics="240" speed="204" outcome="228" />
+		</movie>
+		<movie>
 			<title>Der letzte Kinoheld</title>
 			<description>Der junge Filmfan Danny gelangt mittels einer magischen Kinokarte zu seinem Leinwandhelden Jack Slater. Umgekehrt entkommt ein Bösewicht aus dem Film in die Realität...</description>
 			<data  actors="Arnold Weissenacker, F. Murrisch Aberham" director="Yohan MacTiername" country="USA" year="1993" genre="0"  blocks="3" time="20" price="150" critics="48" speed="96" outcome="108" />
@@ -1166,6 +1171,11 @@ Klassiker von Alfredo Stitchhog</description>
 
 Gut gemachte Action am laufenden Band</description>
 			<data  actors="Silvester Melone, Ricardo Cranberry, Brain Pennehere" director="Tod Codechief" country="USA" year="1982" genre="0"  blocks="2" time="20" price="100" critics="24" speed="204" outcome="192" />
+		</movie>
+		<movie>
+			<title>Reiseziel Molwanien</title>
+			<description>Molwanien, das Land wo die Zahnärzte offen für Individualität plädieren. Reporter Borack zeigt ein verschlafenes Land.</description>
+			<data  actors="Mikael Borack, Antonali Schwipsiwupsi" director="Mikael Borack" country="MO" year="2000" genre="13"  blocks="1" time="0" price="0" critics="120" speed="24" outcome="12" />
 		</movie>
 		<movie>
 			<title>Totenmesse für einen Traum</title>
@@ -2017,9 +2027,19 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 			<data genre="4" price="0" topicality="50" />
 		</news>
 		<news>
+			<title>Bier fördert Haarwuchs</title>
+			<description>Der tägliche Konsum von Bier fördert nach neusten wissenschaftlichen Untersuchen den Haarwuchs. Nebenwirkung: Die Leber gibt den Geist auf. </description>
+			<data genre="3" price="0" topicality="50" />
+		</news>
+		<news>
 			<title>Bodyguard von Diva geschlagen</title>
 			<description>Ein Bodyguard soll von einer Modelldiva geschlagen worden sein. Er hatte sich geweigert, der betrunkenen Diva die Autoschlüssel auszuhändigen. </description>
 			<data genre="1" price="0" topicality="75" />
+		</news>
+		<news>
+			<title>Boris Wecker plant Come-back</title>
+			<description>Nach jahrelanger Tennis-Abstinenz plant Boris Wecker sein Come-back. Konkurenten freuen sich auf legendäre Hechtsprünge.</description>
+			<data genre="2" price="0" topicality="100" />
 		</news>
 		<news>
 			<title>Bretz neuer Trainer in Berlin?</title>
@@ -2055,6 +2075,11 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 			<title>Bundeskanzler lehnt Filmhauptrolle ab</title>
 			<description>Kanzler Schröler lehnte die Hauptrolle in dem Film "Lügen ist meine Leidenschaft" verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</description>
 			<data genre="1" price="0" topicality="0" />
+		</news>
+		<news>
+			<title>C&amp;B bankrott</title>
+			<description>Das Modehaus C&amp;B meldet Insolvenz an. Man sei nicht vom Rentner-Image losgekommen, so der Geschäftsführer.</description>
+			<data genre="0" price="0" topicality="50" />
 		</news>
 		<news>
 			<title>Caesar war Gallier!</title>
@@ -2115,6 +2140,11 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 				<description>Um die Endlosberechnung von Pi zu beenden, muß man lediglich das Integral von Pi in Verhältnis zu der relativen Masse der Nachkommastellen setzen.</description>
 				<data genre="0" price="0" topicality="125" />
 			</episode>
+		</news>
+		<news>
+			<title>Die roten Rosen geben Abschiedstournee</title>
+			<description>Die Band mit den Hits wie "Hier kommt Alexandra" gibt für nächstes Jahr ihre Abschiedstournee bekannt.</description>
+			<data genre="1" price="0" topicality="75" />
 		</news>
 		<news>
 			<title>Feministen boykotieren Beachvolleyball</title>
@@ -2253,6 +2283,11 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</description>
 			</episode>
 		</news>
 		<news>
+			<title>Grüner Punkt wird aufgegeben</title>
+			<description>Nach Einführung des Dosenpfands geben die Initiatoren des Grünen Punktes auf: Dosen werden nicht mehr weggeschmissen! </description>
+			<data genre="0" price="0" topicality="50" />
+		</news>
+		<news>
 			<title>Grünspecht in der Eifel gesichtet</title>
 			<description>Endlich, nach 38 Jahren wurde wieder der erste Grünspecht in der Eifel gesichtet. Lokale Naturschützer sind begeistert.</description>
 			<data genre="4" price="0" topicality="25" />
@@ -2319,6 +2354,11 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			<data genre="0" price="0" topicality="25" />
 		</news>
 		<news>
+			<title>Kunstraub im Louvre</title>
+			<description>In der letzten Nacht wurde die Mona Lisa aus dem Louvre in Paris gestohlen. Ein Nachtwächter bemerkte dies, als er den Rahmen säubern wollte.</description>
+			<data genre="4" price="0" topicality="125" />
+		</news>
+		<news>
 			<title>Licht an?</title>
 			<description>Ab sofort wird das Fahren mit Licht Pflicht. Damit soll die Unfallrate gesenkt werden.</description>
 			<data genre="4" price="0" topicality="100" />
@@ -2337,6 +2377,11 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 				<description>Die rüstige Sächsin, die Millionen gewann und auf Kreuzfahrt verscholl, ist wieder da: Sie verbrachte die Nacht in den Armen des Schiffsarztes.</description>
 				<data genre="4" price="0" topicality="67" />
 			</episode>
+		</news>
+		<news>
+			<title>Lottospielen strafbar</title>
+			<description>Nach einem Urteil des Bundesgerichthofes wird das Lottospielen in Deutschland strafbar. 82 Millionen Deutsche betroffen.</description>
+			<data genre="0" price="0" topicality="100" />
 		</news>
 		<news>
 			<title>Mann mit Schreibtisch erschlagen</title>
@@ -2564,6 +2609,11 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 		</news>
 		<news>
+			<title>Schwimmer hat Wasserallergie</title>
+			<description>Der 100m-Weltrekordler hat seinen Rücktritt angekündigt, da er seit kurzem an einer Wasserallergie leidet. </description>
+			<data genre="2" price="0" topicality="50" />
+		</news>
+		<news>
 			<title>Semmelgerste erwischt - 3,6 Promille </title>
 			<description>Schauspieler Martin Semmelgerste muss wegen Trunkenheit am Steuer für 6 Monate den Führerschein abgeben. Die Polizei stoppte ihn mit 3,6 Promille.</description>
 			<data genre="1" price="0" topicality="0" />
@@ -2614,6 +2664,11 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			<data genre="4" price="25" topicality="150" />
 		</news>
 		<news>
+			<title>Spezial-Sammy für Kalkhoven</title>
+			<description>Oliver Kalkhoven bekommt einen von TowerTV gesponsorten Spezial-Sammy für seine tiefgehende Beiträge zum Fernsehen.</description>
+			<data genre="1" price="0" topicality="150" />
+		</news>
+		<news>
 			<title>Straßenfeger findet 500 Euro</title>
 			<description>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 500 Euro. "Die wer'n sofort versofff'n", so der Finder.</description>
 			<data genre="4" price="0" topicality="50" />
@@ -2644,9 +2699,19 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 		</news>
 		<news>
+			<title>Tageszeitungen werden abgeschafft</title>
+			<description>Ein toller Schritt Richtung Umweltschutz, kommentierte der deutsche Umweltminister. Tageszeitungen gibt es ab sofort nur noch online.</description>
+			<data genre="3" price="0" topicality="100" />
+		</news>
+		<news>
 			<title>Teelichterpreis auf Rekordhoch</title>
 			<description>Nachdem sich der Ölpreis auf Öl und Gas gefestigt hat, steigt der Preis von Teelichtern um 300 Prozent des bisherigen Wertes.</description>
 			<data genre="4" price="0" topicality="50" />
+		</news>
+		<news>
+			<title>Tele-Komm schafft analog ab</title>
+			<description>Die deutsche Tele-Komm schafft die analoge Technik ab. Sie sei nicht mehr rentabel, da sie nicht mehr genutzt wird, so ein Sprecher. </description>
+			<data genre="3" price="0" topicality="100" />
 		</news>
 		<news>
 			<title>Terrorismusbekämpfung im Weltall</title>
@@ -2717,6 +2782,11 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 				<description>Der Senat stoppte die Sicherheitsvorkehrungen des Präsidenten im All. ´Ohne die 2 Shuttles ist das All sicherer`, so ein Kongressminister.</description>
 				<data genre="0" price="0" topicality="175" />
 			</episode>
+		</news>
+		<news>
+			<title>Terroristen nur noch mit GPS?</title>
+			<description>Da sich so viele Terroristen bei Anschlägen auf Duban verirren, sollten sie ab sofort mit GPS ausgestattet werden. Dieses Gerücht wurde im Internet gefunden.</description>
+			<data genre="0" price="0" topicality="0" />
 		</news>
 		<news>
 			<title>UFO in London gelandet!</title>
@@ -2836,6 +2906,11 @@ Solaruhren, Quartzuhren, Wecker, Großuhren, Damen- und Herrenmodelle.</descript
 			<title>Call-A-Beer</title>
 			<description>Kein Bier mehr? Schick nicht die Frau, ruf Call-A-Beer!</description>
 			<data minaudience="40" minimage="50" repetitions="2"  profit="35" penalty="20" targetgroup="9" duration="1" />
+		</ad>
+		<ad>
+			<title>Capri-Mond</title>
+			<description>Der Schlummertrunk aus der Alutüte.</description>
+			<data minaudience="70"  repetitions="2"  profit="100" penalty="50" targetgroup="2" duration="2" />
 		</ad>
 		<ad>
 			<title>Chateau Migraine</title>
@@ -2959,6 +3034,11 @@ Aktionswoche: Pfandfrei.</description>
 			<title>La Baguette</title>
 			<description>Ihre Baguettes in 1, 2 oder 3 Meter Länge!</description>
 			<data minaudience="100"  repetitions="1" fixedprice="1" profit="24000" penalty="0" targetgroup="0" duration="1" />
+		</ad>
+		<ad>
+			<title>Lacoast</title>
+			<description>Die Markenkleidung mit dem Sonnenschirm. Modische Schnitte und trendige Farben inklusive.</description>
+			<data minaudience="200"  repetitions="5"  profit="20" penalty="20" targetgroup="0" duration="5" />
 		</ad>
 		<ad>
 			<title>Laimi</title>
@@ -3110,6 +3190,11 @@ Der Vorteil: Kein Porto für Überweisungsträger</description>
 			<data minaudience="75"  repetitions="3"  profit="100" penalty="15" targetgroup="-1" duration="4" />
 		</ad>
 		<ad>
+			<title>Schlimm-Schnell</title>
+			<description>Verlieren Sie 50 Kilo innerhalb eines Monats!</description>
+			<data minaudience="220"  repetitions="4"  profit="20" penalty="20" targetgroup="8" duration="3" />
+		</ad>
+		<ad>
 			<title>Schwarzmalerei AG</title>
 			<description>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop "live" am Telefon.</description>
 			<data minaudience="100" minimage="150" repetitions="3"  profit="20" penalty="15" targetgroup="8" duration="6" />
@@ -3194,6 +3279,11 @@ Aber nur mit Ulbricht Umzüge!</description>
 			<data minaudience="10"  repetitions="2"  profit="15" penalty="0" targetgroup="0" duration="1" />
 		</ad>
 		<ad>
+			<title>Weisser Friese</title>
+			<description>Waschen Sie ihre Wäsche mit "Weisser Friese" porentief rein!</description>
+			<data minaudience="70"  repetitions="2"  profit="100" penalty="100" targetgroup="3" duration="3" />
+		</ad>
+		<ad>
 			<title>Wodka Jelzin</title>
 			<description>Des Wodkas reine Seele</description>
 			<data minaudience="50"  repetitions="4"  profit="100" penalty="15" targetgroup="9" duration="2" />
@@ -3210,5 +3300,5 @@ Aber nur mit Ulbricht Umzüge!</description>
 		</ad>
 	</allads>
 	<exportOptions onlyFakes="true" onlyCustom="false"/>
-	<time value="7386.86ms" />
+	<time value="7074.62ms" />
 </tvgdb>
