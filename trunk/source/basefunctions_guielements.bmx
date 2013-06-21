@@ -19,14 +19,15 @@ ENDREM
 
 
 ''''''GUIzeugs'
-CONST EVENT_GUI_CLICK:int			= 1
-CONST EVENT_GUI_DOUBLECLICK:int		= 2
-CONST GUI_OBJECT_DRAGGED:int		= 1
-CONST GUI_OBJECT_VISIBLE:int		= 2
-CONST GUI_OBJECT_ENABLED:int		= 4
-CONST GUI_OBJECT_CLICKABLE:int		= 8
-CONST GUI_OBJECT_DRAGABLE:int		= 16
-CONST GUI_OBJECT_MANAGED:int		= 32
+CONST EVENT_GUI_CLICK:int				= 1
+CONST EVENT_GUI_DOUBLECLICK:int			= 2
+CONST GUI_OBJECT_DRAGGED:int			= 1
+CONST GUI_OBJECT_VISIBLE:int			= 2
+CONST GUI_OBJECT_ENABLED:int			= 4
+CONST GUI_OBJECT_CLICKABLE:int			= 8
+CONST GUI_OBJECT_DRAGABLE:int			= 16
+CONST GUI_OBJECT_MANAGED:int			= 32
+CONST GUI_OBJECT_POSITIONABSOLUTE:int	= 64
 
 CONST GUI_OBJECT_ACCEPTS_DROP:int	= 128
 
@@ -412,7 +413,7 @@ Type TGUIobject
 '		return self.className
 	End Method
 
-	Method getParent:TGUIobject(parentClassName:string="")
+	Method getParent:TGUIobject(parentClassName:string="", strictMode:int=FALSE)
 		'if no special parent is requested, just return the direct parent
 		if parentClassName="" then return self._parent
 
@@ -420,8 +421,14 @@ Type TGUIobject
 			if self._parent.getClassName().toLower() = parentClassName.toLower() then return self._parent
 			return self._parent.getParent(parentClassName)
 		endif
-
-		return Null
+		'if no parent - we reached the top level and just return self
+		'as the searched parent
+		'exception is "strictMode" which forces exactly that wanted parent
+		if strictMode
+			return Null
+		else
+			return self
+		endif
 	End Method
 
 	Method CreateBase:TGUIobject(x:float,y:float, limitState:string="", useFont:TBitmapFont=null)
@@ -585,7 +592,8 @@ Type TGUIobject
 		'maybe use a dragX, dragY-value instead of center point
 		if self._flags & GUI_OBJECT_DRAGGED then return MouseX() - self.GetScreenWidth()/2
 
-		if self._parent <> null
+		'only integrate parent if parent is set, or object not positioned "absolute"
+		if self._parent <> null AND not(self._flags & GUI_OBJECT_POSITIONABSOLUTE)
 			return self._parent.GetScreenX() + self.rect.GetX()
 		else
 			return self.rect.GetX()
@@ -602,7 +610,8 @@ Type TGUIobject
 	Method GetScreenY:float()
 		if self._flags & GUI_OBJECT_DRAGGED then return MouseY() - self.getScreenHeight()/2
 
-		if self._parent <> null
+		'only integrate parent if parent is set, or object not positioned "absolute"
+		if self._parent <> null AND not(self._flags & GUI_OBJECT_POSITIONABSOLUTE)
 			'instead of "ScreenY", we ask the parent where it wants the Content...
 			return self._parent.GetContentScreenY() + self.rect.GetY()
 		else
@@ -613,6 +622,11 @@ Type TGUIobject
 	Method GetRect:TRectangle()
 		return self.rect
 	End Method
+
+	Method getDimension:TPoint()
+		return self.rect.dimension
+	End Method
+
 
 	'get a rectangle describing the objects area on the screen
 	Method GetScreenRect:TRectangle()
@@ -673,7 +687,7 @@ Type TGUIobject
 		if Self.mouseover Then col = TColor.create(50,50,50)
 		if not(self._flags & GUI_OBJECT_ENABLED) then col = TColor.create(150,150,150)
 
-		return self.useFont.drawStyled(_value,x,y, col.r, col.g, col.b, 1, 0, 1, 0.5)
+		return self.useFont.drawStyled(_value,x,y, col.r, col.g, col.b, 1, 1, 0.5)
 	End Method
 
 	Method Input2Value:String(value$)
@@ -958,7 +972,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 
 		If textalign = 1 Then TextX = Ceil( drawPos.x + (self.GetScreenWidth() - Self.useFont.getWidth(value)) / 2 )
 
-		self.UseFont.drawStyled(value,TextX,TextY, 200,200,200, 2, 0, 1, 0.75)
+		self.UseFont.drawStyled(value,TextX,TextY, 200,200,200, 2, 1, 0.75)
 
 rem
 		SetAlpha 0.50
@@ -1123,7 +1137,7 @@ Type TGUISlider Extends TGUIobject
 		local drawText:string = self.value
 		If drawvalue <> 0 then drawText = (actvalue + addvalue) + " " + drawText
 
-		Self.Usefont.Draw(value, self.GetScreenX()+self.GetScreenWidth()+7, self.GetScreenY()- (Self.useFont.getHeight(drawText) - self.GetScreenHeight()) / 2 - 1)
+		Self.Usefont.draw(value, self.GetScreenX()+self.GetScreenWidth()+7, self.GetScreenY()- (Self.useFont.getHeight(drawText) - self.GetScreenHeight()) / 2 - 1)
 	End Method
 
 End Type
@@ -1379,8 +1393,8 @@ Type TGUIDropDown Extends TGUIobject
 				If Entry.id = self.clickedEntryID then SetColor 0,0,0
 				If Entry.id = self.hoveredEntryID then SetColor 150,150,150
 
-				If textalign = 1 Then self.useFont.Draw( Entry.getValue(), self.GetScreenX() + (self.GetScreenWidth() - self.useFont.getWidth( Entry.GetValue() ) ) / 2, self.GetScreenY() + useheight + 5)
-				If textalign = 0 Then self.useFont.Draw( Entry.getValue(), self.GetScreenX() + 10, self.GetScreenY() + useHeight + 5)
+				If textalign = 1 Then self.useFont.draw( Entry.getValue(), self.GetScreenX() + (self.GetScreenWidth() - self.useFont.getWidth( Entry.GetValue() ) ) / 2, self.GetScreenY() + useheight + 5)
+				If textalign = 0 Then self.useFont.draw( Entry.getValue(), self.GetScreenX() + 10, self.GetScreenY() + useHeight + 5)
 				SetColor 255,255,255
 
 				'move y to next spot
@@ -1455,16 +1469,15 @@ Type TGUIOkButton Extends TGUIobject
 		If Self.scale <> 1.0 Then SetScale 1.0,1.0
 
 		Local textDisplaceX:Int = 5
-		local dimX:float = int(string(Self.useFont.drawStyled(value, 0, 0, 0, 0, 0, 1, 0,0) ))
-		local dimY:float = int(string(Self.useFont.drawStyled(value, 0, 0, 0, 0, 0, 1, 1,0) ))
-		self.Resize( Self.assetWidth*Self.scale + textDisplaceX + dimX )
+		local dim:TPoint = Self.useFont.drawStyled(value, 0, 0, 0, 0, 0, 1, 0)
+		self.Resize( Self.assetWidth*Self.scale + textDisplaceX + dim.getX() )
 
 
 		local col:TColor = TColor.create(100,100,100)
 		if Self.mouseover Then col = TColor.create(50,50,50)
 		if not(self._flags & GUI_OBJECT_ENABLED) then col = TColor.create(150,150,150)
 
-		Self.useFont.drawStyled( value, self.GetScreenX()+Self.assetWidth*Self.scale + textDisplaceX, self.GetScreenY() - (dimY - self.GetScreenHeight()) / 2, col.r, col.g, col.b, 1 )
+		Self.useFont.drawStyled( value, self.GetScreenX()+Self.assetWidth*Self.scale + textDisplaceX, self.GetScreenY() - (dim.getY() - self.GetScreenHeight()) / 2, col.r, col.g, col.b, 1 )
 	End Method
 
 End Type
@@ -1507,12 +1520,12 @@ End Type
 
 Type TGUIScrollablePanel Extends TGUIPanel
 	Field scrollPosition:TPoint	= TPoint.Create(0,0)
-	Field scrollLimit:TPoint = TPoint.Create(0,0)
-	Field minSize:TPoint			= TPoint.Create(0,0)
+	Field scrollLimit:TPoint	= TPoint.Create(0,0)
+	Field minSize:TPoint		= TPoint.Create(0,0)
 
 	Method Create:TGUIScrollablePanel(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
 		Super.Create(x,y,width,height,limitState)
-		self.minSize.SetXY(width,height)
+		self.minSize.SetXY(50,50)
 
 		return self
 	End Method
@@ -1553,7 +1566,7 @@ endrem
 
 		'check limits
 		self.scrollPosition.SetY( Min(0, self.scrollPosition.GetY()) )
-		self.scrollPosition.SetY( Max(self.scrollPosition.GetY(), -self.scrollLimit.GetY()) )
+		self.scrollPosition.SetY( Max(self.scrollPosition.GetY(), self.scrollLimit.GetY()) )
 	End Method
 
 
@@ -1586,12 +1599,12 @@ Type TGUIScroller Extends TGUIobject
 
 		'create buttons
 		self.guiButtonUp	= new TGUIArrowButton.Create(0,0, 1, "")
-		self.guiButtonDown	= new TGUIArrowButton.Create(0,parent.rect.GetH(), 3, "")
-		self.guiButtonDown.rect.position.MoveXY(0, -self.guiButtonDown.GetScreenHeight())
+		self.guiButtonDown	= new TGUIArrowButton.Create(0,0, 3, "")
 
 		'from button width, calculate position on own parent
 
 		self.rect.position.setXY(parent.rect.getW() - self.guiButtonUp.rect.getW(),0)
+		'this also aligns the buttons
 		self.Resize(self.guiButtonUp.rect.getW(), parent.rect.getH())
 
 		'set the parent of the buttons so they inherit visible state etc.
@@ -1609,6 +1622,12 @@ Type TGUIScroller Extends TGUIobject
 		return self
 	End Method
 
+	'override resize and add minSize-support
+	Method Resize(w:float=Null,h:float=Null)
+		super.Resize(w,h)
+
+		self.guiButtonDown.rect.position.SetXY(0, h-self.guiButtonDown.GetScreenHeight())
+	End Method
 
 	'handle clicks on the up/down-buttons and inform others about changes
 	Function onButtonClick:int( triggerEvent:TEventBase )
@@ -1715,9 +1734,18 @@ Type TGUIListBase Extends TGUIobject
 	Method Resize(w:float=Null,h:float=Null)
 		super.Resize(w,h)
 		'resize panel - but use resulting dimensions, not given (maybe restrictions happening!)
-		if self.guiEntriesPanel then self.guiEntriesPanel.Resize( self.rect.GetW() + - self.guiScroller.rect.getW(), self.rect.GetH() )
+		if self.guiEntriesPanel
+			'also set minsize so scroll works
+			self.guiEntriesPanel.minSize.SetXY( self.rect.GetW() - 2*self.guiScroller.rect.getW(), self.rect.GetH() )
+			print self.rect.GetW() - 2*self.guiScroller.rect.getW()
+			self.guiEntriesPanel.Resize( self.rect.GetW() - self.guiScroller.rect.getW(), self.rect.GetH() )
+		endif
+
 		'move scroller
-		if self.guiScroller then self.guiScroller.rect.position.setXY(self.rect.getW() - self.guiScroller.guiButtonUp.rect.getW(),0)
+		if self.guiScroller
+			self.guiScroller.rect.position.setXY(self.rect.getW() - self.guiScroller.guiButtonUp.rect.getW(),0)
+			self.guiScroller.Resize(0, h)
+		endif
 	End Method
 
 
@@ -1757,10 +1785,18 @@ Type TGUIListBase Extends TGUIobject
 		'set parent of the item - so item is able to calculate position
 		item.setParent(self.guiEntriesPanel)
 
+		'ŕecalculate dimensions as the item now knows its parent
+		local dimension:TPoint = item.getDimension()
+'		item.resize(dimension.x, dimension.y)
+
 		'if autoscroll, scroll to last item
 		'but only if scroll is already at limit
 		if autoscroll
 			if self.guiEntriesPanel.scrollLimit.GetY() <= self.guiEntriesPanel.scrollPosition.GetY()
+				'at this moment, we have to add dimension.y as the limit is not adjusted
+				'yet (this will happen some instructions later)
+				self.guiEntriesPanel.scrollLimit.MoveXY(0, -dimension.y)
+
 				self.ScrollEntries(0,self.guiEntriesPanel.scrollLimit.GetY())
 			endif
 		endif
@@ -1816,7 +1852,8 @@ Type TGUIListBase Extends TGUIobject
 
 		'set scroll limits:
 		'maximum is at the bottom of the area, not top - so subtract height
-		self.guiEntriesPanel.SetLimits(0, currentYPos - self.guiEntriesPanel.getScreenheight())
+'		self.guiEntriesPanel.SetLimits(0, -currentYPos +self.guiEntriesPanel.getScreenheight())
+		self.guiEntriesPanel.SetLimits(0, -(currentYPos - self.guiEntriesPanel.getScreenheight()) )
 
 		'if not all entries fit on the panel, enable scroller
 		self.SetScrollerState( currentYPos > self.guiEntriesPanel.GetScreenHeight() )
@@ -1879,11 +1916,11 @@ Type TGUIListBase Extends TGUIobject
 		if not data then return FALSE
 
 		'this should be "calculate height and change amount"
-		if data.GetString("direction") = "upStep" then guiList.ScrollEntries(0, +10)
-		if data.GetString("direction") = "downStep" then guiList.ScrollEntries(0, -10)
+		if data.GetString("direction") = "upStep" then guiList.ScrollEntries(0, +15)
+		if data.GetString("direction") = "downStep" then guiList.ScrollEntries(0, -15)
 
-		if data.GetString("direction") = "up" then guiList.ScrollEntries(0, +1)
-		if data.GetString("direction") = "down" then guiList.ScrollEntries(0, -1)
+		if data.GetString("direction") = "up" then guiList.ScrollEntries(0, +2)
+		if data.GetString("direction") = "down" then guiList.ScrollEntries(0, -2)
 	End Function
 
 	'positive values scroll to top or left
@@ -2129,7 +2166,7 @@ end rem
 
 		'set scroll limits:
 		'maximum is at the bottom of the area, not top - so subtract height
-		self.guiEntriesPanel.SetLimits(0, currentYPos - self.guiEntriesPanel.rect.GetH())
+		self.guiEntriesPanel.SetLimits(0, -(currentYPos - self.guiEntriesPanel.rect.GetH()) )
 
 		'if not all entries fit on the panel, enable scroller
 		self.SetScrollerState( currentYPos > self.guiEntriesPanel.rect.GetH() )
@@ -2185,7 +2222,6 @@ Type TGUIListItem Extends TGUIobject
 			endif
 		endif
 	End Function
-
 
 	Method Update()
 		'nothing special
@@ -2422,10 +2458,10 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 				Local text:String[] = printvalue.split(":")
 				If Len(text) = 2 Then text[0] = text[0]+":"
 
-				useFont.Draw(text[0], Self.rect.position.x+13, Self.rect.position.y+8+self.GetScreenHeight()-SpaceAvaiable)
+				useFont.draw(text[0], Self.rect.position.x+13, Self.rect.position.y+8+self.GetScreenHeight()-SpaceAvaiable)
 				SetColor(55,55,55)
 				If Len(text) > 1
-					useFont.Draw(text[1], Self.rect.position.x+13+useFont.getWidth(text[0]), Self.rect.position.y+8+self.GetScreenHeight()-SpaceAvaiable)
+					useFont.draw(text[1], Self.rect.position.x+13+useFont.getWidth(text[0]), Self.rect.position.y+8+self.GetScreenHeight()-SpaceAvaiable)
 					SetColor(255,255,255)
 				EndIf
 				SpaceAvaiable:-useFont.getHeight(printvalue)
@@ -2506,12 +2542,12 @@ Type TGUITextList Extends TGUIList
 						SetAlpha entryAlpha
 
 						If PlayerID > 0
-							dimension = TPoint(Self.useFont.drawStyled(Self.OwnerNames[PlayerID]+": ", self.GetScreenX()+2, self.GetScreenY()+displace +2, OwnerColors[PlayerID].r,OwnerColors[PlayerID].g,OwnerColors[PlayerID].b, 2,2, i))
+							dimension = Self.useFont.drawStyled(Self.OwnerNames[PlayerID]+": ", self.GetScreenX()+2, self.GetScreenY()+displace +2, OwnerColors[PlayerID].r,OwnerColors[PlayerID].g,OwnerColors[PlayerID].b, 2, i)
 						Else
-							dimension = TPoint(Self.useFont.drawStyled("System:", self.GetScreenX()+2, self.GetScreenY()+displace +2, 50,50,50, 2,2, i))
+							dimension = Self.useFont.drawStyled("System:", self.GetScreenX()+2, self.GetScreenY()+displace +2, 50,50,50, 2,i)
 						EndIf
 						nameWidth = dimension.x
-						blockHeight = Self.useFont.drawBlock(Entries.data.getString("value", ""), self.GetScreenX()+2+nameWidth, self.GetScreenY()+displace +2, self.GetScreenWidth() - nameWidth, SpaceAvaiable, 0, 255,255,255,0,2, i)
+						blockHeight = Self.useFont.drawBlock(Entries.data.getString("value", ""), self.GetScreenX()+2+nameWidth, self.GetScreenY()+displace +2, self.GetScreenWidth() - nameWidth, SpaceAvaiable, 0, 255,255,255,0,2, i).getY()
 
 						If i = 1 Then displace:+blockHeight
 					Next

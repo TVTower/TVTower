@@ -835,7 +835,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		font.drawBlock(getLocale("AD_PROFIT")+": "	, x+10 , y+94 , 130, 16)
 		font.drawBlock(functions.convertValue(String( self.getProfit() ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
 		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		font.DrawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+94 , 127, 16,2)
+		font.drawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+94 , 127, 16,2)
 
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
 		font.drawBlock(functions.convertValue(String( self.GetPenalty() ), 2, 0)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,2)
@@ -1459,43 +1459,43 @@ endrem
 
 		If isMovie()
 			Assets.GetSprite("gfx_datasheets_movie").Draw(x,y)
-			Assets.fonts.basefontBold.DrawBlock(title, x + 10, y + 11, 278, 20)
+			Assets.fonts.basefontBold.drawBlock(title, x + 10, y + 11, 278, 20)
 		Else
 			Assets.GetSprite("gfx_datasheets_series").Draw(x,y)
 			'episode display
 			If series <> Null
-				Assets.fonts.basefontBold.DrawBlock(series.title, x + 10, y + 11, 278, 20)
-				normalFont.DrawBlock("(" + episodeNumber + "/" + series.episodeList.count() + ") " + title, x + 10, y + 34, 278, 20, 0)  'prints programmedescription on moviesheet
+				Assets.fonts.basefontBold.drawBlock(series.title, x + 10, y + 11, 278, 20)
+				normalFont.drawBlock("(" + episodeNumber + "/" + series.episodeList.count() + ") " + title, x + 10, y + 34, 278, 20, 0)  'prints programmedescription on moviesheet
 			Else
-				Assets.fonts.basefontBold.DrawBlock(title, x + 10, y + 11, 278, 20)
-				normalFont.DrawBlock(episodeList.count()+" "+GetLocale("MOVIE_EPISODES") , x+10,  y+34 , 278, 20,0) 'prints programmedescription on moviesheet
+				Assets.fonts.basefontBold.drawBlock(title, x + 10, y + 11, 278, 20)
+				normalFont.drawBlock(episodeList.count()+" "+GetLocale("MOVIE_EPISODES") , x+10,  y+34 , 278, 20,0) 'prints programmedescription on moviesheet
 			EndIf
 
 			dy :+ 22
 		EndIf
-		If Self.fsk18 <> 0 Then normalFont.DrawBlock(GetLocale("MOVIE_XRATED") , x+240 , y+dY+34 , 50, 20,0) 'prints pg-rating
+		If Self.fsk18 <> 0 Then normalFont.drawBlock(GetLocale("MOVIE_XRATED") , x+240 , y+dY+34 , 50, 20,0) 'prints pg-rating
 
-		normalFont.DrawBlock(GetLocale("MOVIE_DIRECTOR")+":", x+10 , y+dY+135, 280, 16,0)
-		normalFont.DrawBlock(GetLocale("MOVIE_SPEED")       , x+222, y+dY+187, 280, 16,0)
-		normalFont.DrawBlock(GetLocale("MOVIE_CRITIC")      , x+222, y+dY+210, 280, 16,0)
-		normalFont.DrawBlock(GetLocale("MOVIE_BOXOFFICE")   , x+222, y+dY+233, 280, 16,0)
-		normalFont.DrawBlock(director         , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":")) , y+dY+135, 280-15-normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":"), 16,0) 	'prints director
+		normalFont.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", x+10 , y+dY+135, 280, 16,0)
+		normalFont.drawBlock(GetLocale("MOVIE_SPEED")       , x+222, y+dY+187, 280, 16,0)
+		normalFont.drawBlock(GetLocale("MOVIE_CRITIC")      , x+222, y+dY+210, 280, 16,0)
+		normalFont.drawBlock(GetLocale("MOVIE_BOXOFFICE")   , x+222, y+dY+233, 280, 16,0)
+		normalFont.drawBlock(director         , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":")) , y+dY+135, 280-15-normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":"), 16,0) 	'prints director
 		if actors <> ""
-			normalFont.DrawBlock(GetLocale("MOVIE_ACTORS")+":"  , x+10 , y+dY+148, 280, 32,0)
-			normalFont.DrawBlock(actors           , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":")), y+dY+148, 280-15-normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":"), 32,0) 	'prints actors
+			normalFont.drawBlock(GetLocale("MOVIE_ACTORS")+":"  , x+10 , y+dY+148, 280, 32,0)
+			normalFont.drawBlock(actors           , x+10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":")), y+dY+148, 280-15-normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":"), 32,0) 	'prints actors
 		endif
-		normalFont.DrawBlock(GetGenreString(Genre)  , x+78 , y+dY+35 , 150, 16,0) 	'prints genre
-		normalFont.DrawBlock(country          , x+10 , y+dY+35 , 150, 16,0)		'prints country
+		normalFont.drawBlock(GetGenreString(Genre)  , x+78 , y+dY+35 , 150, 16,0) 	'prints genre
+		normalFont.drawBlock(country          , x+10 , y+dY+35 , 150, 16,0)		'prints country
 		If genre <> GENRE_CALLINSHOW
-			normalFont.DrawBlock(year		      , x+36 , y+dY+35 , 150, 16,0) 	'prints year
-			normalFont.DrawBlock(description      , x+10,  y+dy+56 , 278, 70,0) 'prints programmedescription on moviesheet
+			normalFont.drawBlock(year		      , x+36 , y+dY+35 , 150, 16,0) 	'prints year
+			normalFont.drawBlock(description      , x+10,  y+dy+56 , 278, 70,0) 'prints programmedescription on moviesheet
 		Else
-			normalFont.DrawBlock(description      , x+10,  y+dy+56 , 278, 50,0) 'prints programmedescription on moviesheet
-			normalFont.DrawBlock(getLocale("MOVIE_CALLINSHOW")      , x+10,  y+dy+106 , 278, 20,0) 'prints programmedescription on moviesheet
+			normalFont.drawBlock(description      , x+10,  y+dy+56 , 278, 50,0) 'prints programmedescription on moviesheet
+			normalFont.drawBlock(getLocale("MOVIE_CALLINSHOW")      , x+10,  y+dy+106 , 278, 20,0) 'prints programmedescription on moviesheet
 		EndIf
-		normalFont.DrawBlock(GetLocale("MOVIE_TOPICALITY")  , x+84, y+281, 40, 16,0)
-		normalFont.DrawBlock(GetLocale("MOVIE_BLOCKS")+": "+blocks, x+10, y+281, 100, 16,0)
-		normalFont.DrawBlock(self.GetPrice(), x+240, y+281, 120, 20,0)
+		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY")  , x+84, y+281, 40, 16,0)
+		normalFont.drawBlock(GetLocale("MOVIE_BLOCKS")+": "+blocks, x+10, y+281, 100, 16,0)
+		normalFont.drawBlock(self.GetPrice(), x+240, y+281, 120, 20,0)
 
 		If widthbarspeed  >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(x+13 - 200 + widthbarspeed*200,	y+dY+188,		x+13, y+dY+187, 200, 12)
 		If widthbarreview >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(x+13 - 200 + widthbarreview*200,y+dY+210,		x+13, y+dY+209, 200, 12)
@@ -2096,7 +2096,7 @@ Type TAdBlock Extends TBlockGraphical
 			'draw graphic
 
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.DrawBlock(Self.contract.contractBase.title, rect.GetX()+3, rect.GetY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
+			Assets.fonts.basefontBold.drawBlock(Self.contract.contractBase.title, rect.GetX()+3, rect.GetY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
 			SetColor 80,80,80
 			local spotNumber:int	= self.GetSpotNumber()
 			local spotCount:int		= self.contract.GetSpotCount()
@@ -2106,7 +2106,7 @@ Type TAdBlock Extends TBlockGraphical
 			ElseIf self.isBotched()
 				text = "------"
 			EndIf
-			Assets.fonts.baseFont.Draw(text ,rect.GetX()+5,rect.GetY()+18)
+			Assets.fonts.baseFont.draw(text ,rect.GetX()+5,rect.GetY()+18)
 			SetColor 255,255,255 'eigentlich alte Farbe wiederherstellen
 			SetAlpha 1.0
 		EndIf 'same day or dragged
@@ -2568,15 +2568,15 @@ Type TProgrammeBlock Extends TBlockGraphical
 		'add "(1/10)"
 		title = title + titleAppend
 
-		Assets.fonts.basefontBold.DrawBlock(title, _pos.x + 5, _pos.y +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
+		Assets.fonts.basefontBold.drawBlock(title, _pos.x + 5, _pos.y +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
 		If color <> Null Then color.set()
 		Local useFont:TBitmapFont = Assets.GetFont("Default", 11, ITALICFONT)
 		If programme.parent <> Null
-			useFont.Draw(Self.Programme.getGenreString()+"-Serie",_pos.x+5,_pos.y+18)
-			useFont.Draw("Teil: " + Self.Programme.episodeNumber + "/" + Self.programme.parent.episodeList.count(), _pos.x + 138, _pos.y + 18)
+			useFont.draw(Self.Programme.getGenreString()+"-Serie",_pos.x+5,_pos.y+18)
+			useFont.draw("Teil: " + Self.Programme.episodeNumber + "/" + Self.programme.parent.episodeList.count(), _pos.x + 138, _pos.y + 18)
 		Else
-			useFont.Draw(Self.Programme.getGenreString(),_pos.x+5,_pos.y+18)
-			If Self.programme.fsk18 <> 0 Then useFont.Draw("FSK 18!",_pos.x+138,_pos.y+18)
+			useFont.draw(Self.Programme.getGenreString(),_pos.x+5,_pos.y+18)
+			If Self.programme.fsk18 <> 0 Then useFont.draw("FSK 18!",_pos.x+138,_pos.y+18)
 		EndIf
 		SetColor 255,255,255
 	End Method
@@ -3923,9 +3923,9 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 			titleFont.setTargetImage(ImageWithText)
 
 			If Players[Bid[0]] <> Null
-				titleFont.drawStyled(Players[Bid[0]].name,31,33, Players[Bid[0]].color.r, Players[Bid[0]].color.g, Players[Bid[0]].color.b, 2, 0, 1, 0.25)
+				titleFont.drawStyled(Players[Bid[0]].name,31,33, Players[Bid[0]].color.r, Players[Bid[0]].color.g, Players[Bid[0]].color.b, 2, 1, 0.25)
 			else
-				font.drawStyled("ohne Bieter", 31,33, 150,150,150, 0, 0, 1, 0.25)
+				font.drawStyled("ohne Bieter", 31,33, 150,150,150, 0, 1, 0.25)
 			EndIf
 			titleFont.drawBlock(Programme.title, 31,5, 215,30, 0, 0,0,0, false, 1, 1, 0.50)
 

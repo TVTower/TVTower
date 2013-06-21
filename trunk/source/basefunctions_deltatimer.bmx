@@ -99,6 +99,7 @@ Type TDeltaTimer
 				UnlockMutex(drawMutex)
 			endif
 		endif
+		'in a non threaded version we delay...
 		delay(2)
 	End Method
 	?
@@ -148,8 +149,9 @@ Type TDeltaTimer
 			EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
 			EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
 		else
-			'print self.nextDraw - self.looptime
-			delay( self.nextDraw - self.looptime)
+			'delay by a minimum of 2ms
+			delay Max(2, self.nextDraw - self.looptime)
+			'delay( self.nextDraw - self.looptime)
 		EndIf
 	End Method
 	?

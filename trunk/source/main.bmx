@@ -129,7 +129,7 @@ Type TApp
 		EventManager.registerListener( "App.onUpdate", 	TEventListenerOnAppUpdate.Create() )
 		EventManager.registerListener( "App.onDraw", 	TEventListenerOnAppDraw.Create() )
 		EventManager.registerListener( "App.onSoundUpdate", TEventListenerOnSoundUpdate.Create() )
-		SoundManager.PlayMusic(MUSIC_TITLE)		
+		SoundManager.PlayMusic(MUSIC_TITLE)
 		print "LADEZEIT : "+(Millisecs() - self.creationTime) +"ms"
 	End Method
 
@@ -462,8 +462,8 @@ endrem
 		return number = self.playerID
 	End Method
 
-	
-	
+
+
 	Method GetMaxAudience:Int(playerID:Int=-1)
 		If Not Game.isPlayerID(playerID)
 			Local avg:Int = 0
@@ -627,7 +627,7 @@ endrem
 		'year=1,day=1,hour=0,minute=1 should result in "1*yearInSeconds+1"
 		'as it is 1 minute after end of last year - new years eve ;D
 		'there is no "day 0" (as there would be no "month 0")
-	
+
 		return (((day-1) + year*self.daysPerYear)*24 + hour)*60 + minute
 	End Method
 
@@ -1805,8 +1805,8 @@ Type TBuilding Extends TRenderable
 	Method GetFloor:Int(_y:Int)
 		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
-	
-	Method getFloorByPixelExactPoint:Int(point:TPoint) 'y ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000		
+
+	Method getFloorByPixelExactPoint:Int(point:TPoint) 'y ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000
 		for local i:int = 0 to 13
 			If Building.GetFloorY(i) < point.y Then Return i
 		next
@@ -2091,53 +2091,22 @@ Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPoint.Create(60
 Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 348), 120, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
 Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 396), 120, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
 
-Global Test:TGUIListBase = new TGUIListBase.Create(10,20,150,150,"MainMenu")
-For local i:int = 0 to 15
-	Test.AddItem( new TGUIListItem.Create("item "+i) )
-Next
-Global Test1:TGUIListBase = new TGUIListBase.Create(170,150,150,50,"MainMenu")
-Test1.AddItem( new TGUIListItem.Create("item A") )
-
 'chat
-Global Test3:TGUIListBase = new TGUIListBase.Create(300,20,400,150,"MainMenu")
+Global TestChat:TGUIChatNEW = new TGUIChatNEW.Create(300,20,400,150,"MainMenu")
 'button
-Global Test4:TGUIButton = new TGUIButton.Create(TPoint.Create(10, 170), 150, "AddItem", "MainMenu", Assets.fonts.baseFontBold)
+Global Test4:TGUIButton = new TGUIButton.Create(TPoint.Create(300, 170), 400, "Add Chatline", "MainMenu", Assets.fonts.baseFontBold)
+for local i:int = 0 to 5
+	local entry:TGUIChatEntry = new TGUIChatEntry.CreateSimple("item asd fklsnmdfkln fglknrekgl nelkgvndfkl nvklerng erpgo eükdüpfk üpdfkgüp ekrgtm eörlgmeör gmeölrgm eörgmswqper wütr ütretRET egvdfmgö dmfgö"+Millisecs(), "Player"+rand(1,4), TColor.Create(rand(100,250),rand(100,250),rand(100,250)), 2500+rand(500,1000) )
+	TestChat.AddEntry( entry )
+Next
 
 EventManager.registerListenerFunction( "guiobject.onClick",	TestButtonClick, Test4 )
 Function TestButtonClick:int( triggerEvent:TEventBase )
-	Test.AddItem( new TGUIListItem.Create("item "+Millisecs()) )
+	local entry:TGUIChatEntry = new TGUIChatEntry.CreateSimple("item al nldwdnwldn landl anlk wd alwknd wad asmd "+Millisecs(), "Player"+rand(1,4), TColor.Create(rand(200),rand(200),rand(200)), rand(500,1000) )
+	TestChat.AddEntry( entry )
 End Function
 
-Global Test2:TGUISlotList = new TGUISlotList.Create(170,20,120,60,"MainMenu")
-Test2.SetItemLimit(2)
-Test2.SetSlotMinHeight(20)
 
-
-rem
-'tests:
-local rectA:TRectangle =TRectangle.Create(1,1,3,3)
-local rectB:TRectangle =TRectangle.Create(0,0,1,1)
-local rectC:TRectangle =TRectangle.Create(2,2,2,2)
-local rectD:TRectangle =TRectangle.Create(3,3,2,2)
-local rectE:TRectangle =TRectangle.Create(0,-10,2,12)
-local rectZ:TRectangle = Null
-
-rectZ = rectA.intersectRect(rectB)
-if rectZ then print "B: should not intersect IS x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
-rectZ = rectA.intersectRect(rectC)
-if rectZ then print "C: should x=2,y=2,w=2,h=2 IS x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
-rectZ = rectA.intersectRect(rectD)
-if rectZ then print "D: should x=3,y=3,w=1,h=1 IS  x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
-rectZ = rectA.intersectRect(rectE)
-if rectZ then print "E: should x=1,y=1,w=1,h=1 IS  x="+int(rectZ.GetX())+",y="+int(rectZ.GetY())+",w="+int(rectZ.GetW())+",h="+int(rectZ.GetH())
-endrem
-
-rem
-Global Test:TGUIDropDown = new TGUIDropDown.Create(20,20,150,1,"test","MainMenu", Assets.GetFont("Default", 11, BOLDFONT))
-Test.AddEntry("test2")
-Test.AddEntry("test3")
-Test.AddEntry("test4")
-endrem
 Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 390), 120, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)
@@ -3020,7 +2989,7 @@ Function DrawMain(tweenValue:Float=1.0)
 		If Game.networkgame then startY :+ 4*11
 
 		local callType:string = ""
-		
+
 		Assets.fonts.baseFont.draw("tofloor:" + Building.elevator.TargetFloor, 25, startY)
 
 		Assets.fonts.baseFont.draw("Status:" + Building.elevator.ElevatorStatus, 100, startY)
@@ -3198,7 +3167,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.Ishit(Key_F7)
 					local news:int = 1
 					local slot:int = -1
-					print "set news "+news+" ["+Players[1].ProgrammePlan.GetNewsFromList(news).id+"] to slot "+slot 
+					print "set news "+news+" ["+Players[1].ProgrammePlan.GetNewsFromList(news).id+"] to slot "+slot
 					Players[1].ProgrammePlan.SetNewsBlockSlot( Players[1].ProgrammePlan.GetNewsFromList(news), slot)
 				endif
 				If KEYMANAGER.Ishit(Key_F8)
@@ -3247,9 +3216,9 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			Else
 				DrawMenu()
 			EndIf
-			Assets.fonts.baseFont.Draw("FPS:"+App.Timer.currentFps + " UPS:" + Int(App.Timer.currentUps), 150,0)
-			Assets.fonts.baseFont.Draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
-			If game.networkgame Then Assets.fonts.baseFont.Draw("ping "+Int(Network.client.latency)+"ms", 375,0)
+			Assets.fonts.baseFont.draw("FPS:"+App.Timer.currentFps + " UPS:" + Int(App.Timer.currentUps), 150,0)
+			Assets.fonts.baseFont.draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
+			If game.networkgame Then Assets.fonts.baseFont.draw("ping "+Int(Network.client.latency)+"ms", 375,0)
 			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.width - 10, 10, 0, 1)
 
 			TProfiler.Enter("Draw-Flip")
@@ -3295,7 +3264,6 @@ EventManager.registerListenerFunction( "Game.OnStart",	TGame.onStart )
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 
-Global DelayPossible:Int = 0
 Global Init_Complete:Int = 0
 
 'Init EventManager

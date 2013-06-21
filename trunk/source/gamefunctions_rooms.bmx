@@ -543,11 +543,11 @@ Type RoomHandler_Office extends TRoomHandler
 
 		For Local i:Int = 0 To 11
 			'left side
-			Assets.fonts.baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, 240,240,240,2,0,1,0.25)
+			Assets.fonts.baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, 240,240,240,2,1,0.25)
 			'right side
 			local text:string = i + ":00"
 			If i < 10 then text = "0" + text
-			Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, 240,240,240,2,0,1,0.25)
+			Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, 240,240,240,2,1,0.25)
 		Next
 		DrawnOnProgrammePlannerBG = True
 
@@ -1651,7 +1651,7 @@ Type RoomHandler_Elevator extends TRoomHandler
 		local playerFigure:TFigures = Players[ Game.playerID ].figure
 
 		TRoomSigns.DrawAll()
-		Assets.fonts.baseFont.Draw("Rausschmiss in "+Building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 600, 20)
+		Assets.fonts.baseFont.draw("Rausschmiss in "+Building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 600, 20)
 	End Function
 
 	Function onUpdate:int( triggerEvent:TEventBase )

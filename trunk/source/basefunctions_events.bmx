@@ -81,9 +81,11 @@ Type TEventManager
 	End Method
 
 	Method update()
+		TProfiler.Enter("TEventManager.Update")
 		Assert self._ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
 		self._processEvents()
 		self._ticks :+ 1
+		TProfiler.Leave("TEventManager.Update")
 	End Method
 
 	Method _processEvents()

@@ -1,6 +1,185 @@
 'Import "basefunctions_image.bmx"
 'Import "basefunctions_resourcemanager.bmx"
 
+Type TGUIChatNEW extends TGUIObject
+	field guiList:TGUIListBase			= Null
+	field guiInput:TGUIInput			= Null
+	field guiInputPositionRelative:int	= 0		'is the input is inside the chatbox or absolute
+
+	Method Create:TGUIChatNEW(x:int,y:int,width:int,height:int, State:string="")
+		super.CreateBase(x,y,State,null)
+
+		self.guiList = new TGUIListBase.Create(0,0,width,height,State)
+		self.guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, false)
+		Self.guiList.autoSortItems = false
+		self.guiList.SetAcceptDrop("")
+		self.guiList.setParent(self)
+		self.guiList.autoScroll = true
+
+		self.guiInput = new TGUIInput.Create(0, height, width, "", 32, State)
+		self.guiInput.setParent(self)
+
+		'resize base and move child elements
+		self.resize(width,height)
+
+		GUIManager.Add( self )
+
+		return self
+	End Method
+
+	'override resize and add minSize-support
+	Method Resize(w:float=Null,h:float=Null)
+		super.Resize(w,h)
+
+		local subtractInputHeight:float = 0.0
+		'move and resize input field to the bottom
+		if self.guiInput and not self.guiInput.getOption(GUI_OBJECT_POSITIONABSOLUTE)
+			self.guiInput.rect.position.setXY(0, self.rect.getH() - self.guiInput.rect.getH())
+			subtractInputHeight = self.guiInput.rect.getH()
+		endif
+
+		'move and resize the listbox (subtract input if needed)
+		if self.guiList then self.guiList.resize(w, h - subtractInputHeight)
+
+	End Method
+
+	Method AddEntry(entry:TGUIListItem)
+		self.guiList.AddItem(entry)
+	End Method
+
+	Method Update()
+		'Super.update()
+	End Method
+
+	Method Draw()
+		local oldAlpha:float = GetAlpha()
+		SetAlpha oldAlpha*0.5
+		DrawRect(self.guiList.guiEntriesPanel.GetScreenX(), self.guiList.guiEntriesPanel.GetScreenY(), Min(self.guiList.rect.GetW(), self.guiList.guiEntriesPanel.rect.GetW()), Min(self.guiList.rect.GetH(), self.guiList.guiEntriesPanel.rect.GetH()) )
+		Setalpha oldAlpha
+
+		'Super.Draw()
+	End Method
+
+End Type
+
+
+Type TGUIChatEntry extends TGUIListItem
+	field lifetime:int		= Null
+	field senderName:string	= ""
+	field senderColor:TColor= TColor.Create(0,0,0)
+	field paddingBottom:int = 5
+
+	Method CreateSimple:TGUIChatEntry(text:string, senderName:string, senderColor:TColor, lifetime:int)
+		self.Create(text)
+		self.SetLifetime(lifeTime)
+		self.SetSender(senderName, senderColor)
+
+		return self
+	End Method
+
+    Method Create:TGUIChatEntry(text:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		'no "super.Create..." as we do not need events and dragable and...
+   		super.CreateBase(x,y,"",null)
+
+		self.Resize( width, height )
+		self.label = text
+
+		self.lifetime = 500
+
+		GUIManager.add(self)
+
+		return self
+	End Method
+
+	Method GetDimension:TPoint()
+		local move:TPoint = TPoint.Create(0,0)
+		if self.senderName
+			move = Assets.fonts.baseFontBold.drawStyled(self.senderName+":", self.GetScreenX(), self.GetScreenY(), self.senderColor.r, self.senderColor.g, self.senderColor.b, 2, 0)
+			'move the x so we get space between name and text
+			'move the y point 1 pixel as bold fonts are "higher"
+			move.setXY( move.x+5, 1)
+		endif
+		'available width is parentsDimension minus startingpoint
+		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
+		local maxWidth:int = parentPanel.minSize.getX()-self.rect.GetX()
+		'local maxWidth:int = self.GetParentWidth("tguiscrollablepanel")-self.rect.GetX()
+		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
+
+		local dimension:TPoint = Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, 255, 255, 255, 0, 2, 0)
+
+		'add padding
+		dimension.moveXY(0, self.paddingBottom)
+
+		'set current size and refresh scroll limits of list
+		'but only if something changed (eg. first time or content changed)
+		if self.rect.getW() <> dimension.getX() OR self.rect.getH() <> dimension.getY()
+			'resize item
+			self.Resize(dimension.getX(), dimension.getY())
+			'recalculate item positions and scroll limits
+'			local list:TGUIListBase = TGUIListBase(self.getParent("tguilistbase"))
+'			if list then list.RecalculateElements()
+		endif
+
+		return dimension
+	End Method
+
+	Method SetLifetime:int(lifetime:int=Null)
+		self.lifetime = lifetime
+	End Method
+
+	Method SetSender:int(senderName:string=Null, senderColor:TColor=Null)
+		if senderName then self.senderName = senderName
+		if senderColor then self.senderColor = senderColor
+	End Method
+
+	Method Update:int()
+		'if the item has a lifetime it will autoremove on death
+		if self.lifetime <> Null
+			self.lifetime :-1
+			if self.lifetime <= 0 then return self.Remove()
+		endif
+
+		super.Update()
+	End Method
+
+	Method GetParentWidth:float(parentClassName:string="toplevelparent")
+		if not self._parent then return self.rect.GetW()
+		return self.getParent(parentClassName).rect.GetW()
+	End Method
+
+	Method GetParentHeight:float(parentClassName:string="toplevelparent")
+		if not self._parent then return self.rect.GetH()
+		return self.getParent(parentClassName).rect.GetH()
+	End Method
+
+	Method Draw:int()
+		self.getParent("tguilistbase").RestrictViewPort()
+
+		if self.lifetime <> Null and self.lifetime <= 100 then setAlpha float(self.lifetime)/100.0
+		'available width is parentsDimension minus startingpoint
+		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
+		local maxWidth:int = parentPanel.minSize.getX()-self.rect.GetX()
+		'local maxWidth:int = self.GetParentWidth("tguiscrollablepanel")-self.rect.GetX()
+		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
+
+		local move:TPoint = TPoint.Create(0,0)
+		if self.senderName
+			move = Assets.fonts.baseFontBold.drawStyled(self.senderName+":", self.GetScreenX(), self.GetScreenY(), self.senderColor.r, self.senderColor.g, self.senderColor.b, 2, 1)
+			'move the x so we get space between name and text
+			'move the y point 1 pixel as bold fonts are "higher"
+			move.setXY( move.x+5, 1)
+		endif
+		Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, 255, 255, 255, 0, 2, 1, 0.5)
+
+		if self.lifetime <> Null and self.lifetime <= 100 then setAlpha 1.0
+
+		self.getParent("tguilistbase").ResetViewPort()
+	End Method
+
+End Type
+
+
+
 Type TSaveFile
   Field xml:TXmlHelper
   Field node:TxmlNode
@@ -176,7 +355,7 @@ Type TgfxProgrammelist extends TPlannerList
 				Local genrecount:Int = TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List)
 
 				If genrecount > 0
-					Assets.fonts.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
+					Assets.fonts.baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
 					SetAlpha 0.6; SetColor 0, 255, 0
 					'takes 20% of fps...
 					For Local i:Int = 0 To genrecount -1
@@ -184,7 +363,7 @@ Type TgfxProgrammelist extends TPlannerList
 					Next
 				else
 					SetAlpha 0.3; SetColor 0, 0, 0
-					Assets.fonts.baseFont.drawBlock (GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
+					Assets.fonts.baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
 				EndIf
 				SetAlpha 1.0
 				SetColor 255, 255, 255
@@ -207,7 +386,7 @@ Type TgfxProgrammelist extends TPlannerList
 				else
 					gfxtapeseries.Draw(locx, locy)
 				endif
-				font.DrawBlock(movie.title, locx + 13, locy + 5, 139, 16, 0, 0, 0, 0, True)
+				font.drawBlock(movie.title, locx + 13, locy + 5, 139, 16, 0, 0, 0, 0, True)
 				If functions.MouseIn( locx, locy, gfxtape.w, gfxtape.h)
 					SetAlpha 0.2;
 					If movie.isMovie()
@@ -261,7 +440,7 @@ Type TgfxProgrammelist extends TPlannerList
 				locy :+ 12
 				SetAlpha 1.0
 				gfxtapeepisodes.Draw(locx, locy)
-				font.DrawBlock("(" + episode.episodeNumber + "/" + series.episodeList.count() + ") " + episode.title, locx + 10, locy + 1, 85, 12, 0, 0, 0, 0, True)
+				font.drawBlock("(" + episode.episodeNumber + "/" + series.episodeList.count() + ") " + episode.title, locx + 10, locy + 1, 85, 12, 0, 0, 0, 0, True)
 				If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
 					Game.cursorstate = 1
 					SetAlpha 0.2;DrawRect(locx, locy, gfxtapeepisodes.w, gfxtapeepisodes.h) ;SetAlpha 1.0
@@ -641,10 +820,10 @@ endrem
 
 			SetAlpha self.GetFadeAmount()
 			'caption
-			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("ABC")/2 +2 , 50,50,50, 2,0, 1, 0.1)
+			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("ABC")/2 +2 , 50,50,50, 2, 1, 0.1)
 			SetColor 90,90,90
 			'text
-			If text <> "" Then self.Usefont.Draw(text, self.pos.x+5,self.pos.y+Self.TooltipHeader.h + 7)
+			If text <> "" Then self.Usefont.draw(text, self.pos.x+5,self.pos.y+Self.TooltipHeader.h + 7)
 			If self.pos.x > 20 And self.pos.y > 10 And self.pos.x + boxWidth < 760 And self.pos.y + boxHeight < 800 '383 'And lifetime = startlifetime
 				Image = TImage.Create(boxWidth, boxHeight, 1, 0, 255, 0, 255)
 				image.pixmaps[0] = GrabPixmap(self.pos.x, self.pos.y, boxWidth, boxHeight)
@@ -885,8 +1064,8 @@ Type TError
 		Game.cursorstate = 0
 		SetColor 255,255,255
 		sprite.Draw(pos.x,pos.y)
-		Assets.GetFont("Default", 15, BOLDFONT).DrawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.w - 60, 40, 0, 150, 50, 50)
-		Assets.GetFont("Default", 12).DrawBlock(message, pos.x+12+6,pos.y+50,sprite.w-40, sprite.h-60,0,50,50,50)
+		Assets.GetFont("Default", 15, BOLDFONT).drawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.w - 60, 40, 0, 150, 50, 50)
+		Assets.GetFont("Default", 12).drawBlock(message, pos.x+12+6,pos.y+50,sprite.w-40, sprite.h-60,0,50,50,50)
   End Method
 End Type
 
@@ -951,7 +1130,7 @@ Type TDialogueTexts
 	End Method
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
-		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h)
+		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
@@ -963,7 +1142,7 @@ Type TDialogueTexts
 	End Method
 
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h)
+		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
@@ -1621,24 +1800,24 @@ endrem
 		local font:TBitmapFont = Assets.fonts.baseFont
 		If action = 1
 			SetColor(0, 0, 0)
-			font.Draw(bundesland, 595, 35)
-			font.Draw("Reichweite: ", 595, 52)
-				font.DrawBlock(functions.convertValue(String(self.LastStation.reach), 2, 0), 660, 52, 102, 20, 0.5)
-			font.Draw("Zuwachs: ", 595, 69)
-				font.DrawBlock(functions.convertValue(String(LastCalculatedAudienceIncrease), 2, 0), 660, 69, 102, 20, 2)
-			font.Draw("Preis: ", 595, 86)
-				Assets.fonts.baseFontBold.DrawBlock(functions.convertValue(self.LastStation.GetPrice(), 2, 0), 660, 86, 102, 20, 2)
+			font.draw(bundesland, 595, 35)
+			font.draw("Reichweite: ", 595, 52)
+				font.drawBlock(functions.convertValue(String(self.LastStation.reach), 2, 0), 660, 52, 102, 20, 0.5)
+			font.draw("Zuwachs: ", 595, 69)
+				font.drawBlock(functions.convertValue(String(LastCalculatedAudienceIncrease), 2, 0), 660, 69, 102, 20, 2)
+			font.draw("Preis: ", 595, 86)
+				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(self.LastStation.GetPrice(), 2, 0), 660, 86, 102, 20, 2)
 			SetColor(180, 180, 255)
-			font.Draw(bundesland, 594, 34)
+			font.draw(bundesland, 594, 34)
 			SetColor(255,255,255)
 		EndIf
 
 		If Self.sellStation[Game.playerID] <> Null
 			SetColor(0, 0, 0)
-			font.Draw("Reichweite: ", 595, 197)
-				font.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2)
-			font.Draw("Preis: ", 595, 214)
-				Assets.fonts.baseFontBold.DrawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
+			font.draw("Reichweite: ", 595, 197)
+				font.drawBlock(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2)
+			font.draw("Preis: ", 595, 214)
+				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
 			SetColor(255, 255, 255)
 		EndIf
 

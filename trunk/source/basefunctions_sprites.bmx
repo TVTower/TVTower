@@ -400,15 +400,15 @@ Type TBitmapFont
 	End Method
 
 	Method getWidth:Float(text:String)
-		return float(string( self.draw(text,0,0,0,0) ))
+		return self.draw(text,0,0,0).getX()
 	End Method
 
 	Method getHeight:Float(text:String)
-		return float(string( self.draw(text,0,0,1,0) ))
+		return self.draw(text,0,0,0).getY()
 	End Method
 
 	Method getBlockHeight:Float(text:String, w:Float, h:Float)
-		return self.drawBlock(text, 0,0,w,h,0, 0,0,0,0,0,0)
+		return self.drawBlock(text, 0,0,w,h,0, 0,0,0,0,0,0).getY()
 	End Method
 
 	'render to screen
@@ -425,12 +425,12 @@ Type TBitmapFont
 		self.drawToPixmap = LockImage(image)
 	End Method
 
-	Method drawBlock:float(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0)
+	Method drawBlock:TPoint(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0)
 		Local charcount:Int		= 0
 		Local deletedchars:Int	= 0
 		Local charpos:Int		= 0
 		Local linetxt:String	= text
-		Local spaceAvaiable:Float = h
+		Local spaceAvailable:Float = h
 		Local alignedx:Int		= 0
 		Local usedHeight:Int	= 0
 'not needed as drawStyled is called with params for color
@@ -455,7 +455,7 @@ Type TBitmapFont
 				local drawLine:string = linetxt
 
 				'no space left, we have finally to truncate and delete rest...
-				If 2 * self.getHeight(linetxt) > SpaceAvaiable And linetxt <> text[deletedchars..]
+				If 2 * self.getHeight(linetxt) > spaceAvailable And linetxt <> text[deletedchars..]
 					drawLine = linetxt[..Len(linetxt) - 3] + " ..."
 					charcount = 0
 				EndIf
@@ -464,14 +464,14 @@ Type TBitmapFont
 					If align = 0 Then alignedx = x
 					If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
 					If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
-					self.drawStyled(drawLine, alignedx, y + h - spaceAvaiable, cR, cG, cB, style, 0, 1,special)
+					self.drawStyled(drawLine, alignedx, y + h - spaceAvailable, cR, cG, cB, style, 1,special)
 				endif
 
-				spaceAvaiable :- self.getHeight(linetxt)
+				spaceAvailable :- self.getHeight(linetxt)
 				deletedchars :+ (charcount+1)
 				linetxt = text[Deletedchars..]
 			Until charcount = 0
-			usedheight = h - spaceAvaiable
+			usedheight = h - spaceAvailable
 		Else 'no linebreak allowed
 			If self.getWidth(linetxt) >= w
 				charcount = Len(linetxt)-1
@@ -482,23 +482,23 @@ Type TBitmapFont
 				If align = 0 Then alignedx = x
 				If align = 1 Then alignedx = x+(w - self.getWidth(linetxt$))/2
 				If align = 2 Then alignedx = x+(w - self.getWidth(linetxt$))
-				spaceAvaiable = spaceAvaiable - self.getHeight(linetxt$[..Len(linetxt$)-2]+"..")
-				If doDraw Then self.drawStyled(linetxt[..Len(linetxt) - 2] + "..", alignedx, y, cR, cG, cB, style, 0, 1, special)
+				spaceAvailable = spaceAvailable - self.getHeight(linetxt$[..Len(linetxt$)-2]+"..")
+				If doDraw Then self.drawStyled(linetxt[..Len(linetxt) - 2] + "..", alignedx, y, cR, cG, cB, style, 1, special)
 			Else
 				If align = 0 Then alignedx = x
 				If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
 				If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
-				spaceAvaiable :- self.getHeight(linetxt)
-				If doDraw Then self.drawStyled(linetxt, alignedx, y, cR, cG, cB, style, 0, 1, special)
+				spaceAvailable :- self.getHeight(linetxt)
+				If doDraw Then self.drawStyled(linetxt, alignedx, y, cR, cG, cB, style, 1, special)
 			EndIf
 			usedheight = self.getHeight(linetxt)
 		EndIf
 
 '		If doDraw then oldColor.set()
-		Return usedheight
+		return TPoint.Create(w, usedheight)
 	End Method
 
-	Method drawStyled:object(text:String,x:Float,y:Float, cr:int, cg:int, cb:int, style:int=0, returnType:int=0, doDraw:int=1, special:float=-1.0)
+	Method drawStyled:TPoint(text:String,x:Float,y:Float, cr:int=0, cg:int=0, cb:int=0, style:int=0, doDraw:int=1, special:float=-1.0)
 		local height:float = 0.0
 		local width:float = 0.0
 		local oldR:int, oldG:int, oldB:int
@@ -547,29 +547,28 @@ Type TBitmapFont
 		endif
 
 		SetColor( cr,cg,cb )
-		local result:object = self.draw(text,x,y, returnType, doDraw)
-
+		local result:TPoint = self.draw(text,x,y, doDraw)
 
 		SetColor( oldR, oldG, oldB )
 		return result
 	End Method
 
 
-	Method drawWithBG:object(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:int=0)
+	Method drawWithBG:TPoint(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:int=0)
 		Local OldAlpha:Float = GetAlpha()
 		Local color:TColor = TColor.Create()
 		color.get()
 		SetAlpha bgAlpha
 		SetColor bgCol, bgCol, bgCol
-		local dimension:TPoint = TPoint( self.drawStyled(value,0,0, 0,0,0, style,2,0) )
-		DrawRect(x, y, dimension.x, dimension.y)
+		local dimension:TPoint = self.drawStyled(value,0,0, 0,0,0, style,0)
+		DrawRect(x, y, dimension.GetX(), dimension.GetY())
 		SetAlpha OldAlpha
 		color.set()
 		return self.drawStyled(value, x, y, color.r,color.g,color.b, style)
 	End Method
 
 
-	Method draw:object(text:String,x:Float,y:Float, returnType:int=1, doDraw:int = 1)
+	Method draw:TPoint(text:String,x:Float,y:Float, doDraw:int = 1)
 		local width:float = 0.0
 		local height:float = 0.0
 		local textLines:string[]	= text.split(chr(13))
@@ -617,8 +616,6 @@ Type TBitmapFont
 			'except first line (maybe only one line) - add extra spacing between lines
 			if currentLine > 0 then height:+ ceil( lineHeight* self.lineHeightModifier )
 		Next
-		if returnType = 0 then return string(width)
-		if returnType = 1 then return string(height)
 		return TPoint.Create(width, height)
 	End Method
 
