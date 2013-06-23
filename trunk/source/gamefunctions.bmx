@@ -1,10 +1,33 @@
 'Import "basefunctions_image.bmx"
 'Import "basefunctions_resourcemanager.bmx"
 
+global CHAT_CHANNEL_NONE:int	= 0
+global CHAT_CHANNEL_DEBUG:int	= 1
+global CHAT_CHANNEL_SYSTEM:int	= 2
+global CHAT_CHANNEL_PRIVATE:int	= 4
+'normal chat channels
+global CHAT_CHANNEL_LOBBY:int	= 8
+global CHAT_CHANNEL_INGAME:int	= 16
+global CHAT_CHANNEL_OTHER:int	= 32
+global CHAT_CHANNEL_GLOBAL:int	= 56	'includes LOBBY, INGAME, OTHER
+
+global CHAT_COMMAND_NONE:int	= 0
+global CHAT_COMMAND_WHISPER:int	= 1
+global CHAT_COMMAND_SYSTEM:int	= 2
+
+
 Type TGUIChatNEW extends TGUIObject
+	field _defaultTextColor:TColor		= TColor.Create(0,0,0)
 	field guiList:TGUIListBase			= Null
 	field guiInput:TGUIInput			= Null
 	field guiInputPositionRelative:int	= 0		'is the input is inside the chatbox or absolute
+	field _channels:int					= 0		'bitmask of channels the chat listens to
+	field guiBackground:TGUIobject		= Null
+	field guiInputHistory:TList			= CreateList()
+
+	global antiSpamTimer:int			= 0		'time when again allowed to send
+	global antiSpamTime:int				= 100
+	global globalEventsRegistered:int	= FALSE
 
 	Method Create:TGUIChatNEW(x:int,y:int,width:int,height:int, State:string="")
 		super.CreateBase(x,y,State,null)
@@ -22,9 +45,163 @@ Type TGUIChatNEW extends TGUIObject
 		'resize base and move child elements
 		self.resize(width,height)
 
+		'by default all chats want to list private messages and system announcements
+		self.setListenToChannel(CHAT_CHANNEL_PRIVATE, true)
+		self.setListenToChannel(CHAT_CHANNEL_SYSTEM, true)
+
+		'register events
+		'- observe text changes in our input field
+		EventManager.registerListenerFunction( "guiobject.onChange", self.onInputChange, self.guiInput )
+		'- observe wishes to add a new chat entry - listen to all sources
+		'  only do that once for all chats (function has to take care which one we mean)
+'		if not self.globalEventsRegistered
+			EventManager.registerListenerMethod( "chat.onAddEntry", self, "onAddEntry" )
+'			self.globalEventsRegistered = TRUE
+'		endif
+
 		GUIManager.Add( self )
 
 		return self
+	End Method
+
+	'returns boolean whether chat listens to a channel
+	Method isListeningToChannel:int(channel:int)
+		return self._channels & channel
+	End Method
+
+	Method setListenToChannel(channel:int, enable:int=TRUE)
+		if enable
+			self._channels :| channel
+		else
+			self._channels :& ~channel
+		endif
+	End Method
+
+	Method SetBackground(guiBackground:TGUIobject)
+		'set old background to managed again
+		if self.guiBackground then GUIManager.add(self.guiBackground)
+		'assign new background
+		self.guiBackground = guiBackground
+		self.guiBackground.setParent(self)
+		'set to unmanaged in all cases
+		GUIManager.remove(guiBackground)
+	End Method
+
+	Method SetDefaultTextColor(color:TColor)
+		self._defaultTextColor = color
+	End Method
+
+	Function onInputChange:int( triggerEvent:TEventBase )
+		local guiInput:TGUIInput = TGUIInput(triggerEvent.GetSender())
+		if guiInput = Null then return FALSE
+
+		local guiChat:TGUIChatNEW = TGUIChatNEW(guiInput._parent)
+		if guiChat = Null then return FALSE
+
+		'emit event : chats should get a new line
+		'- step A) is to get what channels we want to announce to
+		local sendToChannels:int = guiChat.GetChannelsFromText(guiInput.value)
+		'- step B) is emitting the event "for all"
+		'  (the listeners have to handle if they want or ignore the line
+
+		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", Game.playerID).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
+
+		'trigger antiSpam
+		guiChat.antiSpamTimer = Millisecs() + guiChat.antiSpamTime
+
+		if guiChat.guiInputHistory.last() <> guiInput.value
+			guiChat.guiInputHistory.AddLast(guiInput.value)
+		endif
+
+
+
+		'reset input field
+		guiInput.value = ""
+	End Function
+
+	Method onAddEntry:int( triggerEvent:TEventBase )
+		local guiChat:TGUIChatNEW = TGUIChatNew(triggerEvent.GetReceiver())
+		'if event has a specific receiver and this is not a chat - we are not interested
+		if triggerEvent.GetReceiver() AND not guiChat then return FALSE
+		'found a chat - but it is another chat
+		if guiChat and guiChat <> self then return FALSE
+
+		'here we could add code to exlude certain other chat channels
+		local sendToChannels:int = triggerEvent.GetData().getInt("channels", 0)
+		if self.isListeningToChannel(sendToChannels)
+			self.AddEntryFromData( triggerEvent.GetData() )
+		else
+			print "onAddEntry - unknown channel, not interested"
+		endif
+	End Method
+
+
+	Function GetChannelsFromText:int(text:string)
+		local sendToChannels:int = 0 'by default send to no channel
+		Select GetSpecialCommandFromText("/w ronny hi")
+			case CHAT_COMMAND_WHISPER
+				sendToChannels :| CHAT_CHANNEL_PRIVATE
+			default
+				sendToChannels :| CHAT_CHANNEL_GLOBAL
+		end Select
+		return SendToChannels
+	End Function
+
+	Function GetSpecialCommandFromText:int(text:string)
+		text = text.trim()
+
+		if Left( text,1 ) <> "/" then return CHAT_COMMAND_NONE
+
+		local spacePos:int = instr(text, " ")
+		local commandString:string = Mid(text, 2, spacePos-2 ).toLower()
+		local payload:string = Right(text, text.length -spacePos)
+
+		select commandString
+			case "fluestern", "whisper", "w"
+				'local spacePos:int = instr(payload, " ")
+				'local target:string = Mid(payload, 1, spacePos-1 ).toLower()
+				'local message:string = Right(payload, payload.length -spacePos)
+				'print "whisper to: " + "-"+target+"-"
+				'print "whisper msg:" + message
+				return CHAT_COMMAND_WHISPER
+			default
+				'print "command: -"+commandString+"-"
+				'print "payload: -"+payload+"-"
+				return CHAT_COMMAND_NONE
+		end select
+
+	End Function
+
+
+	Method AddEntry(entry:TGUIListItem)
+		self.guiList.AddItem(entry)
+	End Method
+
+	Method AddEntryFromData( data:TData )
+		local text:string		= data.GetString("text", "")
+		local textColor:TColor	= TColor( data.Get("textColor") )
+		local senderID:int		= data.GetInt("senderID", 0)
+		local senderName:string	= ""
+		local senderColor:TColor= Null
+
+		if Game.isPlayerID(senderID)
+			senderName	= Players[senderID].Name
+			senderColor	= Players[senderID].color
+			if not textColor then textColor = self._defaultTextColor
+		else
+			senderName	= "SYSTEM"
+			senderColor	= TColor.Create(255,100,100)
+			textColor	= TColor.Create(255,100,100)
+		endif
+
+
+		'finally add to the chat box
+		self.AddEntry( new TGUIChatEntry.CreateSimple(text, textColor, senderName, senderColor, null ) )
+	End Method
+
+	Method SetPadding:int(top:int,left:int,bottom:int,right:int)
+		self.padding.setTLBR(top,left,bottom,right)
+		self.resize()
 	End Method
 
 	'override resize and add minSize-support
@@ -34,17 +211,22 @@ Type TGUIChatNEW extends TGUIObject
 		local subtractInputHeight:float = 0.0
 		'move and resize input field to the bottom
 		if self.guiInput and not self.guiInput.getOption(GUI_OBJECT_POSITIONABSOLUTE)
-			self.guiInput.rect.position.setXY(0, self.rect.getH() - self.guiInput.rect.getH())
+			self.guiInput.resize(self.getContentScreenWidth(),null)
+			self.guiInput.rect.position.setXY(0, self.getContentScreenHeight() - self.guiInput.rect.getH())
 			subtractInputHeight = self.guiInput.rect.getH()
 		endif
 
 		'move and resize the listbox (subtract input if needed)
-		if self.guiList then self.guiList.resize(w, h - subtractInputHeight)
+		if self.guiList then self.guiList.resize(self.getContentScreenWidth(), self.getContentScreenHeight() - subtractInputHeight)
 
-	End Method
+		if self.guiBackground
+			'move background by negative padding values ( -> ignore padding)
+			self.guiBackground.rect.position.setXY(-self.padding.getLeft(), -self.padding.getTop())
 
-	Method AddEntry(entry:TGUIListItem)
-		self.guiList.AddItem(entry)
+			'background covers whole area, so resize it
+			self.guiBackground.resize(self.rect.getW(), self.rect.getH())
+		endif
+
 	End Method
 
 	Method Update()
@@ -52,16 +234,13 @@ Type TGUIChatNEW extends TGUIObject
 	End Method
 
 	Method Draw()
-		local oldAlpha:float = GetAlpha()
-		SetAlpha oldAlpha*0.5
-		DrawRect(self.guiList.guiEntriesPanel.GetScreenX(), self.guiList.guiEntriesPanel.GetScreenY(), Min(self.guiList.rect.GetW(), self.guiList.guiEntriesPanel.rect.GetW()), Min(self.guiList.rect.GetH(), self.guiList.guiEntriesPanel.rect.GetH()) )
-		Setalpha oldAlpha
-
+		if self.guiBackground
+			self.guiBackground.Draw()
+		endif
 		'Super.Draw()
 	End Method
 
 End Type
-
 
 Type TGUIChatEntry extends TGUIListItem
 	field lifetime:int		= Null
@@ -69,10 +248,11 @@ Type TGUIChatEntry extends TGUIListItem
 	field senderColor:TColor= TColor.Create(0,0,0)
 	field paddingBottom:int = 5
 
-	Method CreateSimple:TGUIChatEntry(text:string, senderName:string, senderColor:TColor, lifetime:int)
+	Method CreateSimple:TGUIChatEntry(text:string, textColor:TColor, senderName:string, senderColor:TColor, lifetime:int=null)
 		self.Create(text)
 		self.SetLifetime(lifeTime)
 		self.SetSender(senderName, senderColor)
+		self.SetLabel(text,textColor)
 
 		return self
 	End Method
@@ -101,8 +281,7 @@ Type TGUIChatEntry extends TGUIListItem
 		endif
 		'available width is parentsDimension minus startingpoint
 		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
-		local maxWidth:int = parentPanel.minSize.getX()-self.rect.GetX()
-		'local maxWidth:int = self.GetParentWidth("tguiscrollablepanel")-self.rect.GetX()
+		local maxWidth:int = parentPanel.GetContentScreenWidth()-self.rect.GetX()
 		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
 
 		local dimension:TPoint = Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, 255, 255, 255, 0, 2, 0)
@@ -132,6 +311,11 @@ Type TGUIChatEntry extends TGUIListItem
 		if senderColor then self.senderColor = senderColor
 	End Method
 
+	Method SetLabel:int(label:string=Null, labelColor:TColor=Null)
+		if label then self.label = label
+		if labelColor then self.labelColor = labelColor
+	End Method
+
 	Method Update:int()
 		'if the item has a lifetime it will autoremove on death
 		if self.lifetime <> Null
@@ -158,7 +342,8 @@ Type TGUIChatEntry extends TGUIListItem
 		if self.lifetime <> Null and self.lifetime <= 100 then setAlpha float(self.lifetime)/100.0
 		'available width is parentsDimension minus startingpoint
 		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
-		local maxWidth:int = parentPanel.minSize.getX()-self.rect.GetX()
+		local maxWidth:int = parentPanel.GetContentScreenWidth()-self.rect.GetX()
+
 		'local maxWidth:int = self.GetParentWidth("tguiscrollablepanel")-self.rect.GetX()
 		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
 
@@ -169,7 +354,7 @@ Type TGUIChatEntry extends TGUIListItem
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
 		endif
-		Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, 255, 255, 255, 0, 2, 1, 0.5)
+		Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, self.labelColor.r, self.labelColor.g, self.labelColor.b, 0, 2, 1, 0.5)
 
 		if self.lifetime <> Null and self.lifetime <= 100 then setAlpha 1.0
 
@@ -1225,7 +1410,6 @@ Type TInterface
 	End Function
 
 	Method Update(deltaTime:float=1.0)
-		GUIManager.Update("InGame")
 		If ShowChannel <> 0
 			If Game.GetMinute() >= 55
 				Local adblock:TAdBlock = Players[ShowChannel].ProgrammePlan.GetCurrentAdBlock()

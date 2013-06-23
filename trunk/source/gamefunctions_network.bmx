@@ -554,11 +554,10 @@ Type TNetworkHelper
 	Method ReceiveChatMessage( obj:TNetworkObject )
 		Local playerID:Int			= obj.getInt(1)
 		Local chatMessage:String	= obj.getString(2)
-		If Game.gamestate = GAMESTATE_RUNNING
-			InGame_Chat.list.AddEntry("",ChatMessage, playerID,"", 0, MilliSecs())
-		Else
-			GameSettings_Chat.list.AddEntry("", ChatMessage, playerID,"", 0, MilliSecs())
-		EndIf
+
+		'emit an event, we received a chat message
+		local sendToChannels:int = TGUIChatNew.GetChannelsFromText(chatMessage)
+		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", playerID).AddNumber("channels", sendToChannels).AddString("text",chatMessage) , null ) )
 	End Method
 
 

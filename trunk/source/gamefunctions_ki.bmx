@@ -85,13 +85,15 @@ Type KI
 		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnMinute", args)
 	End Method
 
-	Method CallOnChat(text:String = "")
+	'eg. use this if one whispers to the AI
+	Method CallOnChat(fromID:int=0, text:String = "")
 	    Try
-			Local args:Object[1]
+			Local args:Object[2]
 			args[0] = text
+			args[1] = string(fromID)
 			Self.LuaEngine.CallLuaFunction("OnChat", args)
 		Catch ex:Object
-		    Print "Script " + scriptName + " enthaelt die Funktion onChat nicht"
+		    Print "Script " + scriptName + " enthaelt die Funktion OnChat nicht"
 		End Try
 	End Method
 
@@ -316,17 +318,10 @@ Type TLuaFunctions {_exposeToLua}
 
 	Method SendToChat:Int(ChatText:String)
 		If Players[ Self.ME ] <> Null
-			InGame_Chat.list.AddEntry("", ChatText, Self.ME, "", 0, MilliSecs())
-			If Game.IsGameLeader()
-				If ChatText.Length > 4 And Left(ChatText, 1) = "/"
-					Local KIPlayerID:Int = Int(Mid(chattext, 2,1))
-					If Game.IsPlayerID( KIPlayerID ) And Players[ KIplayerID ].Figure.IsAI()
-						Local chatvalue:String = Right(chattext, chattext.Length - 3)
-						Print chatvalue
-						Players[ KIplayerID ].PlayerKI.CallOnChat(chatvalue)
-					EndIf
-				EndIf
-			EndIf
+			'emit an event, we received a chat message
+			local sendToChannels:int = TGUIChatNew.GetChannelsFromText(ChatText)
+			print "chatOnAddEntry"
+			EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) ) )
 		EndIf
 		Return 1
 	EndMethod
@@ -648,7 +643,7 @@ Type TLuaFunctions {_exposeToLua}
 			Local obj:TNewsBlock = Players[ self.ME ].ProgrammePlan.GetNewsBlock(ObjectID)
 			If not obj then Return self.RESULT_NOTFOUND
 			Players[ self.ME ].ProgrammePlan.SetNewsBlockSlot(obj, slot)
-			
+
 			Return self.RESULT_OK
 		EndIf
 	End Method
@@ -705,7 +700,7 @@ Type TLuaFunctions {_exposeToLua}
 		Local Block:TContractBlock = TContractBlock(TContractBlock.List.ValueAtIndex(ArrayID))
 		If Block Then Return Block.contract.id Else Return self.RESULT_NOTFOUND
 	End Method
-	
+
 '- - - - - -
 ' Movie Dealer - Movie Agency
 '- - - - - -

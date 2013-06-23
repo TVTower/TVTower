@@ -146,7 +146,7 @@ endrem
 		'do we have to change the floor?
 		If Self.HasToChangeFloor() Then targetX = Building.Elevator.GetDoorCenterX() - Self.rect.GetW()/2 '-GetW/2 to center figure
 
-		If targetX < Floor(Self.rect.GetX()) 
+		If targetX < Floor(Self.rect.GetX())
 			Self.vel.SetX( -(Abs(Self.initialdx)))
 			SoundSource.PlayOrContinueSFX(SFX_STEPS)
 		EndIf
@@ -158,7 +158,7 @@ endrem
  		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.vel.GetX())
 			Self.vel.SetX(0)
 			Self.rect.position.setX(targetX)
-			SoundSource.Stop(SFX_STEPS)			
+			SoundSource.Stop(SFX_STEPS)
 		EndIf
 
 		If Not Self.IsInElevator()
@@ -166,7 +166,7 @@ endrem
 			If Not Self.IsOnFloor() Then Self.rect.position.setY( Building.GetFloorY(Self.GetFloor()) )
 		Else
 			Self.vel.SetX(0)
-			SoundSource.Stop(SFX_STEPS)			
+			SoundSource.Stop(SFX_STEPS)
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)

@@ -33,7 +33,7 @@ AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 Global App:TApp = TApp.Create(60, 60) 'create with 60fps for physics and graphics
 App.LoadResources("config/resources.xml")
 
-GUIManager.globalScale	= 0.75
+GUIManager.globalScale	= 1.00
 GUIManager.defaultFont	= Assets.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
@@ -431,6 +431,7 @@ endrem
 		Localization.LoadResource("res/lang/lang_"+Game.userlanguage+".txt")
 		Game.networkgame		= 0
 		Game.minutesOfDayGone	= 0
+
 		Game.timeGone			= Game.MakeTime(1985,1,0,0)
 		Game.timeStart			= Game.MakeTime(1985,1,0,0)
 		'print "year: "+Game.GetYear()+" day: "+Game.GetDay()+" hour: "+Game.GetHour()+" min: "+Game.GetMinute()
@@ -2091,21 +2092,6 @@ Global MainMenuButton_Start:TGUIButton		= new TGUIButton.Create(TPoint.Create(60
 Global MainMenuButton_Network:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 348), 120, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
 Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(600, 396), 120, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
 
-'chat
-Global TestChat:TGUIChatNEW = new TGUIChatNEW.Create(300,20,400,150,"MainMenu")
-'button
-Global Test4:TGUIButton = new TGUIButton.Create(TPoint.Create(300, 170), 400, "Add Chatline", "MainMenu", Assets.fonts.baseFontBold)
-for local i:int = 0 to 5
-	local entry:TGUIChatEntry = new TGUIChatEntry.CreateSimple("item asd fklsnmdfkln fglknrekgl nelkgvndfkl nvklerng erpgo eükdüpfk üpdfkgüp ekrgtm eörlgmeör gmeölrgm eörgmswqper wütr ütretRET egvdfmgö dmfgö"+Millisecs(), "Player"+rand(1,4), TColor.Create(rand(100,250),rand(100,250),rand(100,250)), 2500+rand(500,1000) )
-	TestChat.AddEntry( entry )
-Next
-
-EventManager.registerListenerFunction( "guiobject.onClick",	TestButtonClick, Test4 )
-Function TestButtonClick:int( triggerEvent:TEventBase )
-	local entry:TGUIChatEntry = new TGUIChatEntry.CreateSimple("item al nldwdnwldn landl anlk wd alwknd wad asmd "+Millisecs(), "Player"+rand(1,4), TColor.Create(rand(200),rand(200),rand(200)), rand(500,1000) )
-	TestChat.AddEntry( entry )
-End Function
-
 
 Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
@@ -2114,53 +2100,36 @@ Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 
 NetgameLobby_gamelist.SetFilter("HOSTGAME")
 NetgameLobby_gamelist.AddBackground("")
 
-Global GameSettingsBG:TGUIBackgroundBox = new TGUIBackgroundBox.Create(20, 20, 760, 260, 00, "Spieleinstellung", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
-
+Global GameSettingsBG:TGUIBackgroundBox = new TGUIBackgroundBox.Create(20, 20, 760, 260, "GameSettings")
+GameSettingsBG.value = "Spieleinstellungen"
+GameSettingsBG.useFont = Assets.GetFont("Default", 16, BOLDFONT)
 Global GameSettingsOkButton_Announce:TGUIOkButton = new TGUIOkButton.Create(420, 234, FALSE, "Spieleinstellungen abgeschlossen", "GameSettings", Assets.fonts.baseFontBold)
 Global GameSettingsGameTitle:TGuiInput		= new TGUIinput.Create(50, 230, 320, Game.title, 32, "GameSettings")
 Global GameSettingsButton_Start:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_START_GAME"), "GameSettings", Assets.fonts.baseFontBold)
 Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, GetLocale("MENU_BACK"), "GameSettings", Assets.fonts.baseFontBold)
-Global GameSettings_Chat:TGUIChat			= new TGuiChat.Create(20, 300, 520, 250, "Chat", "GameSettings", Assets.GetFont("Default", 16, BOLDFONT))
-Global InGame_Chat:TGUIChat					= new TGuiChat.Create(20, 10, 250, 200, "Chat", "InGame")
-GameSettings_Chat.setMaxLength(200)
-InGame_Chat.setMaxLength(200)
-InGame_Chat.panel.disableBackground()
-InGame_Chat.list.doFadeOut			= true
-InGame_Chat.list.backgroundEnabled	= true
-'GUIManager.DefaultFont = Assets.GetFont("Default", 12, BOLDFONT)
 
-GameSettings_Chat.input.TextDisplacement.setXY(5,2)
+'chat windows
+Global GameSettings_Chat:TGUIChatNEW = new TGUIChatNEW.Create(20,300,520,200,"GameSettings")
+GameSettings_Chat.guiInput.setMaxLength(200)
+GameSettings_Chat.SetBackground( new TGUIBackgroundBox.Create(0,0,520,200,"") )
+GameSettings_Chat.SetPadding(35,5,7,6)
+GameSettings_Chat.guiBackground.value	= "Chat"
+GameSettings_Chat.guiBackground.usefont	= Assets.GetFont("Default", 16, BOLDFONT)
+
+Global InGame_Chat:TGUIChatNEW = new TGUIChatNEW.Create(20,10,250,200,"InGame")
+InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.5)
 InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, FALSE)
-InGame_Chat.input.rect.position.setXY( 255, 377)
-InGame_Chat.input.autoAlignText = 0
-InGame_Chat.input.TextDisplacement.setXY(0,5)
-
-InGame_Chat.input.rect.dimension.setX( gfx_GuiPack.GetSprite("Chat_IngameOverlay").w )
-InGame_Chat.input.maxTextWidth		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").w - 20
-InGame_Chat.input.InputImageActive	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
-InGame_Chat.useFont					= Assets.GetFont("Default", 11)
-InGame_Chat.input.color.adjust(255,255,255,true)
-'#End Region
-
-'register listener - want to receive input change event in chats
-EventManager.registerListenerFunction( "guiobject.onChange",	onChange_ChatInput, InGame_Chat.input )
-EventManager.registerListenerFunction( "guiobject.onChange",	onChange_ChatInput, GameSettings_Chat.input )
-
-
-Function onChange_ChatInput:Int(triggerEvent:TEventBase)
-	Local evt:TEventSimple = TEventSimple(triggerEvent)
-	If evt<>Null
-		local input:TGUIinput	= TGUIInput(evt._sender)
-		if not input then return 0
-		local chat:TGUIChat		= TGUIChat(input._parent)
-
-		chat.list.AddEntry("",input.Value, Game.playerID,"", 0, MilliSecs())
-		If Game.networkgame Then NetworkHelper.SendChatMessage(input.Value)
-
-		input.Value				= ""
-		Network.ChatSpamTime	= MilliSecs() + 500
-	endif
-End Function
+InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
+InGame_Chat.guiList.autoHideScroller = true
+'reposition input
+InGame_Chat.guiInput.rect.position.setXY( 275, 387)
+InGame_Chat.guiInput.setMaxLength(200)
+InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, TRUE)
+InGame_Chat.guiInput.maxTextWidth		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").w - 20
+InGame_Chat.guiInput.InputImageActive	= gfx_GuiPack.GetSprite("Chat_IngameOverlay")
+InGame_Chat.guiInput.color.adjust(255,255,255,true)
+InGame_Chat.guiInput.autoAlignText = 0
+InGame_Chat.guiInput.TextDisplacement.setXY(0,5)
 
 'Doubleclick-function for NetGameLobby_GameList
 Function onClick_NetGameLobby:Int(triggerEvent:TEventBase)
@@ -2188,8 +2157,11 @@ For Local i:Int = 0 To 7
 	If i < 4
 		MenuPlayerNames[i]	= new TGUIinput.Create(50 + 190 * i, 65, 130, Players[i + 1].Name, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_player"))
 		MenuPlayerNames[i].TextDisplacement.setX(3)
+		MenuPlayerNames[i].setZindex(150)
+
 		MenuChannelNames[i]	= new TGUIinput.Create(50 + 190 * i, 180, 130, Players[i + 1].channelname, 16, "GameSettings", Assets.GetFont("Default", 12)).SetOverlayImage(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
 		MenuChannelNames[i].TextDisplacement.setX(3)
+		MenuChannelNames[i].setZindex(150)
 	EndIf
 	If i Mod 2 = 0
 		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+ 20+190*Ceil(i/2)+10, 125,0,"GameSettings")
@@ -2197,6 +2169,7 @@ For Local i:Int = 0 To 7
 		MenuFigureArrows[i] = new TGUIArrowButton.Create(25+140+190*Ceil(i/2)+10, 125,2,"GameSettings")
 		MenuFigureArrows[i].rect.position.MoveXY(-MenuFigureArrows[i].GetScreenWidth(),0)
 	EndIf
+	MenuFigureArrows[i].setZindex(150)
 Next
 
 
@@ -2345,6 +2318,7 @@ Function Menu_GameSettings()
 	Next
 
 	GUIManager.Update("GameSettings")
+
 	If GameSettingsButton_Start.GetClicks() > 0
 		If Not Game.networkgame And Not Game.onlinegame
 			If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
@@ -2355,12 +2329,15 @@ Function Menu_GameSettings()
 
 			Game.gamestate = GAMESTATE_STARTMULTIPLAYER
 		EndIf
+
 		'Begin Game - create Events
 		EventManager.registerEvent( TEventOnTime.Create("Game.OnMinute", game.GetMinute()) )
 		EventManager.registerEvent( TEventOnTime.Create("Game.OnHour", game.GetHour()) )
 		EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )
+
 		'so we could add news etc.
 		EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
+
 		Soundmanager.PlayMusic(MUSIC_MUSIC)
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
@@ -2488,7 +2465,8 @@ Function Menu_GameSettings_Draw()
 			GameSettingsBG.value = GetLocale("MENU_ONLINEGAME")
 		EndIf
 	EndIf
-	GUIManager.Draw("GameSettings",0, 0,9)
+	'background gui items
+	GUIManager.Draw("GameSettings",0, 0, 100)
 
 	For Local i:Int = 0 To 3
 		SetColor 50,50,50
@@ -2535,7 +2513,8 @@ Function Menu_GameSettings_Draw()
 	Players[3].Figure.Sprite.Draw(405 + 90 - Players[3].Figure.Sprite.framew / 2, 159 - Players[3].Figure.Sprite.h, 8)
 	Players[4].Figure.Sprite.Draw(595 + 90 - Players[4].Figure.Sprite.framew / 2, 159 - Players[4].Figure.Sprite.h, 8)
 
-	GUIManager.Draw("GameSettings",0, 10)
+	'overlay gui items (higher zindex)
+	GUIManager.Draw("GameSettings",0, 101)
 
 	If Game.gamestate = GAMESTATE_STARTMULTIPLAYER
 		SetColor 180,180,200
@@ -2748,26 +2727,6 @@ Function DrawMenu(tweenValue:Float=1.0)
 End Function
 
 
-'set ownerNames/Colours of lists in chats
-Function Init_ChatColors()
-	For Local i:Int = 0 To 4
-		If Players[i] <> Null
-			InGame_Chat.list.OwnerNames[i] = Players[i].Name
-			InGame_Chat.list.OwnerColors[i] = Players[i].color
-
-			GameSettings_Chat.list.OwnerNames[i] = Players[i].Name
-			GameSettings_Chat.list.OwnerColors[i] = Players[i].color
-		Else
-			InGame_Chat.list.OwnerNames[i] = "unknown"
-			InGame_Chat.list.OwnerColors[i] = TColor.Create(255,255,255)
-
-			GameSettings_Chat.list.OwnerNames[i] = "unknown"
-			GameSettings_Chat.list.OwnerColors[i] = TColor.Create(255,255,255)
-
-		EndIf
-	Next
-End Function
-
 
 Function Init_Creation()
 	Local lastblocks:Int = 0
@@ -2870,9 +2829,6 @@ Function Init_All()
 	PrintDebug ("  Building.DrawItemsToBackground()", "drawing plants and lights on the building-sprite", DEBUG_START)
 	Building.DrawItemsToBackground()	'draws plants and lights which are behind the figures
 
-	PrintDebug ("  Init_ChatColours()", "setting playernames and colors", DEBUG_START)
-	Init_ChatColors()					'
-
 	PrintDebug ("Init_All()", "complete", DEBUG_START)
 End Function
 
@@ -2884,25 +2840,18 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	If Players[Game.playerID].Figure.inRoom <> Null Then Players[Game.playerID].Figure.inRoom.Update()
 
 	'ingamechat
-	'	If Game.networkgame
-	'		If KEYWRAPPER.pressedKey(KEY_ENTER) And GUIManager.getActive() <> InGame_Chat.GUIINPUT.uId And Network.ChatSpamTime < MilliSecs()
 	If KEYMANAGER.IsHit(KEY_ENTER)
-		If Not GUIManager.isActive(InGame_Chat.input._id)
-			If Network.ChatSpamTime < MilliSecs()
-				GUIManager.setActive( InGame_Chat.input._id )
+		If Not GUIManager.isActive(InGame_Chat.guiInput._id)
+			If InGame_Chat.antiSpamTimer < MilliSecs()
+				GUIManager.setActive( InGame_Chat.guiInput._id )
 			Else
 				Print "no spam pls (input stays deactivated)"
 			EndIf
 		EndIf
 	EndIf
-	'	EndIf
 
-	'#Region 'developer shortcuts (1-4, B=office, C=Chief ...)
-	If GUIManager.getActive() <> InGame_Chat.input._id
-		If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
-		If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
-	EndIf
-	'#EndRegion
+	'check for clicks on items BEFORE others check and use it
+	GUIManager.Update("InGame")
 
 	If Players[Game.playerID].Figure.inRoom = Null
 		If MOUSEMANAGER.IsDown(1)
@@ -3136,7 +3085,10 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 	Method OnEvent:int(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
-			If GUIManager.getActive() <> InGame_Chat.input._id
+			If not GUIManager.getActive()
+				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
+				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
+
 				If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
 				If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
 				If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3

@@ -184,7 +184,7 @@ Type TGUIManager
 		if not(obj._flags & GUI_OBJECT_VISIBLE) then return FALSE
 
 		'skip if not visible by zindex
-		If not ( (toZ = -1000 Or obj.zIndex <= toZ) And (fromZ = -1000 Or obj.zIndex >= fromZ)) then return FALSE
+		If not ( (toZ = -1000 Or obj.zIndex <= toZ) AND (fromZ = -1000 Or obj.zIndex >= fromZ)) then return FALSE
 
 		'limit display by state - skip if object is hidden in that state
 		If (State<>"" AND State.toLower() <> obj.GetLimitToState().toLower() And obj.GetLimitToState() <> "") then return FALSE
@@ -230,10 +230,10 @@ Type TGUIManager
 			'maybe move "below haveToHandleCheck" - so only "visible" objects are counted
 			if obj.isDragged() then GUIManager.draggedObjects :+ 1
 
-			if not self.haveToHandleObject(obj,State,fromZ,toZ) then continue
-
 			'always be above parent
 			if obj._parent and obj._parent.zIndex >= obj.zIndex then obj.setZIndex(obj._parent.zIndex+10)
+
+			if not self.haveToHandleObject(obj,State,fromZ,toZ) then continue
 
 			if obj._flags & GUI_OBJECT_CLICKABLE
 				'store screenRect to save multiple calculations
@@ -361,6 +361,8 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 
 Type TGUIobject
 	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
+	Field padding:TRectangle		= TRectangle.Create(0,0,0,0)
+
 	Field zIndex:Int
 	Field scale:Float				= 1.0
 	Field align:Int					= 0 			'alignment of object
@@ -594,17 +596,11 @@ Type TGUIobject
 
 		'only integrate parent if parent is set, or object not positioned "absolute"
 		if self._parent <> null AND not(self._flags & GUI_OBJECT_POSITIONABSOLUTE)
-			return self._parent.GetScreenX() + self.rect.GetX()
+			'instead of "ScreenX", we ask the parent where it wants the Content...
+			return self._parent.GetContentScreenX() + self.rect.GetX()
 		else
 			return self.rect.GetX()
 		endif
-	End Method
-
-	'at which y-coordinate has content/children to be drawn
-	'override this method if the object has kind of "padding" or
-	'virtual size
-	Method GetContentScreenY:float()
-		return self.GetScreenY()
 	End Method
 
 	Method GetScreenY:float()
@@ -618,6 +614,28 @@ Type TGUIobject
 			return self.rect.GetY()
 		endif
 	End Method
+
+	'override this methods if the object something like
+	'virtual size or "addtional padding"
+
+	'at which x-coordinate has content/children to be drawn
+	Method GetContentScreenX:float()
+		return self.GetScreenX() + self.padding.getLeft()
+	End Method
+	'at which y-coordinate has content/children to be drawn
+	Method GetContentScreenY:float()
+		return self.GetScreenY() + self.padding.getTop()
+	End Method
+	'available width for content/children
+	Method GetContentScreenWidth:float()
+		return self.GetScreenWidth() - (self.padding.getLeft() + self.padding.getRight())
+	End Method
+	'available height for content/children
+	Method GetContentScreenHeight:float()
+		return self.GetScreenHeight() - (self.padding.getTop() + self.padding.getBottom())
+	End Method
+
+
 
 	Method GetRect:TRectangle()
 		return self.rect
@@ -917,12 +935,10 @@ Type TGUIBackgroundBox Extends TGUIobject
 	Field textalign:Int = 0
 	Field manualState:Int = 0
 
-	Method Create:TGUIBackgroundBox(x:Int, y:Int, width:Int = 100, height:Int= 100, textalign:Int = 0, value:String, State:String = "", UseFont:TBitmapFont = Null)
-		super.CreateBase(x,y, State, useFont)
+	Method Create:TGUIBackgroundBox(x:Int, y:Int, width:Int = 100, height:Int= 100, State:String = "")
+		super.CreateBase(x,y, State, null)
 
-		self.textalign	= textalign
 		self.Resize( width, height )
-		self.value		= value
 		self.setZindex(0)
 
 		self.setOption(GUI_OBJECT_CLICKABLE, FALSE) 'by default not clickable
@@ -974,17 +990,6 @@ Type TGUIBackgroundBox Extends TGUIobject
 
 		self.UseFont.drawStyled(value,TextX,TextY, 200,200,200, 2, 1, 0.75)
 
-rem
-		SetAlpha 0.50
-		SetColor 75, 75, 75
-		Self.Usefont.Draw(value, TextX+1, TextY + 1)
-		SetAlpha 0.35
-		SetColor 0, 0, 0
-		Self.Usefont.Draw(value, TextX-1, TextY - 1)
-		SetAlpha 1.0
-		SetColor 200, 200, 200
-		Self.Usefont.Draw(value, TextX, TextY)
-endrem
 		SetColor 255,255,255
 	End Method
 
@@ -1167,6 +1172,10 @@ Type TGUIinput Extends TGUIobject
 
 		GUIMAnager.Add( self )
 	  	Return self
+	End Method
+
+	Method SetMaxLength:int(maxLength:int)
+		self.maxLength = maxLength
 	End Method
 
 
@@ -1542,20 +1551,12 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 	Method GetContentScreenY:float()
-		return self.GetScreenY() + self.scrollPosition.getY()
+		return Super.GetContentScreenY() + self.scrollPosition.getY()
 	End Method
 
-rem
-	Method GetScreenY:float()
-		'move by scroll position
-		return Super.GetScreenY() + self.scrollPosition.getY()
+	Method GetContentScreenX:float()
+		return Super.GetContentScreenX() + self.scrollPosition.getX()
 	End Method
-endrem
-	Method GetScreenX:float()
-		'move by scroll position
-		return Super.GetScreenX() + self.scrollPosition.getX()
-	End Method
-
 
 	Method SetLimits:int(lx:float,ly:float)
 		self.scrollLimit.setXY(lx,ly)
@@ -1691,14 +1692,18 @@ End Type
 
 
 Type TGUIListBase Extends TGUIobject
-	Field guiBackground:TGUIBackgroundBox		= Null
+	Field guiBackground:TGUIobject				= Null
+	Field backgroundColor:TColor				= TColor.Create(0,0,0,0)
 	Field guiEntriesPanel:TGUIScrollablePanel	= Null
 	Field guiScroller:TGUIScroller				= Null
 
 	Field autoScroll:Int						= FALSE
+	Field autoHideScroller:int					= FALSE 'hide if mouse not over parent
+	Field scrollerUsed:int						= FALSE 'we need it to do a "one time" auto scroll
 	Field entries:TList							= CreateList()
 	Field entriesLimit:int						= -1
 	Field autoSortItems:int						= TRUE
+	Field _mouseOverArea:int					= FALSE 'private mouseover-field (ignoring covering child elements)
 	Field _dropOnTargetListenerLink:TLink		= null
 
     Method Create:TGUIListBase(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
@@ -1730,14 +1735,29 @@ Type TGUIListBase Extends TGUIobject
 		Return self
 	End Method
 
+	Method SetPadding:int(top:int,left:int,bottom:int,right:int)
+		self.padding.setTLBR(top,left,bottom,right)
+		self.resize()
+	End Method
+
+	Method SetBackground(guiBackground:TGUIobject)
+		'set old background to managed again
+		if self.guiBackground then GUIManager.add(self.guiBackground)
+		'assign new background
+		self.guiBackground = guiBackground
+		self.guiBackground.setParent(self)
+		'set to unmanaged in all cases
+		GUIManager.remove(guiBackground)
+	End Method
+
 	'override resize and add minSize-support
 	Method Resize(w:float=Null,h:float=Null)
 		super.Resize(w,h)
+
 		'resize panel - but use resulting dimensions, not given (maybe restrictions happening!)
 		if self.guiEntriesPanel
 			'also set minsize so scroll works
 			self.guiEntriesPanel.minSize.SetXY( self.rect.GetW() - 2*self.guiScroller.rect.getW(), self.rect.GetH() )
-			print self.rect.GetW() - 2*self.guiScroller.rect.getW()
 			self.guiEntriesPanel.Resize( self.rect.GetW() - self.guiScroller.rect.getW(), self.rect.GetH() )
 		endif
 
@@ -1786,20 +1806,9 @@ Type TGUIListBase Extends TGUIobject
 		item.setParent(self.guiEntriesPanel)
 
 		'ŕecalculate dimensions as the item now knows its parent
+		'so a normal AddItem-handler can work with calculated dimensions from now on
 		local dimension:TPoint = item.getDimension()
 '		item.resize(dimension.x, dimension.y)
-
-		'if autoscroll, scroll to last item
-		'but only if scroll is already at limit
-		if autoscroll
-			if self.guiEntriesPanel.scrollLimit.GetY() <= self.guiEntriesPanel.scrollPosition.GetY()
-				'at this moment, we have to add dimension.y as the limit is not adjusted
-				'yet (this will happen some instructions later)
-				self.guiEntriesPanel.scrollLimit.MoveXY(0, -dimension.y)
-
-				self.ScrollEntries(0,self.guiEntriesPanel.scrollLimit.GetY())
-			endif
-		endif
 
 		self.entries.addLast(item)
 
@@ -1825,6 +1834,7 @@ Type TGUIListBase Extends TGUIobject
 		if self._AddItem(item, extra)
 			'recalculate positions, dimensions etc.
 			self.RecalculateElements()
+
 			return TRUE
 		endif
 		return FALSE
@@ -1833,6 +1843,7 @@ Type TGUIListBase Extends TGUIobject
 	Method RemoveItem:int(item:TGUIobject)
 		if self._RemoveItem(item)
 			self.RecalculateElements()
+
 			return TRUE
 		endif
 		return FALSE
@@ -1850,10 +1861,20 @@ Type TGUIListBase Extends TGUIobject
 		'resize container panel
 		self.guiEntriesPanel.resize(null,currentYPos)
 
+		'determine if we did not scroll the list to a middle position
+		'so this is true if we are at the very bottom of the list aka "the end"
+		local atListBottom:int = 1 > floor( abs(self.guiEntriesPanel.scrollLimit.GetY()-self.guiEntriesPanel.scrollPosition.getY() ) )
+
+
 		'set scroll limits:
 		'maximum is at the bottom of the area, not top - so subtract height
-'		self.guiEntriesPanel.SetLimits(0, -currentYPos +self.guiEntriesPanel.getScreenheight())
 		self.guiEntriesPanel.SetLimits(0, -(currentYPos - self.guiEntriesPanel.getScreenheight()) )
+
+		'in case of auto scrolling we should consider scrolling to
+		'the next visible part
+		if self.autoscroll and (not scrollerUsed OR atListBottom) then self.scrollToLastItem()
+'		if self.autoscroll then self.scrollToLastItem()
+
 
 		'if not all entries fit on the panel, enable scroller
 		self.SetScrollerState( currentYPos > self.guiEntriesPanel.GetScreenHeight() )
@@ -1921,6 +1942,8 @@ Type TGUIListBase Extends TGUIobject
 
 		if data.GetString("direction") = "up" then guiList.ScrollEntries(0, +2)
 		if data.GetString("direction") = "down" then guiList.ScrollEntries(0, -2)
+		'from now on the user decides if he wants the end of the chat or stay inbetween
+		guiList.scrollerUsed = TRUE
 	End Function
 
 	'positive values scroll to top or left
@@ -1928,11 +1951,39 @@ Type TGUIListBase Extends TGUIobject
 		self.guiEntriesPanel.scroll(dx,dy)
 	End Method
 
+
+	Method ScrollToLastItem()
+		'if self.guiEntriesPanel.scrollLimit.GetY() <= self.guiEntriesPanel.scrollPosition.GetY()
+			self.ScrollEntries(0,self.guiEntriesPanel.scrollLimit.GetY())
+		'endif
+	End Method
+
 	Method Update()
-		'
+		self._mouseOverArea = TRectangle.create( self.GetScreenX(), self.GetScreenY(), self.rect.GetW(), self.rect.GetH()).containsXY( MouseX(), MouseY() )
+
+		if self.autoHideScroller
+			if not self._mouseOverArea
+				self.guiScroller.hide()
+			else
+				self.guiScroller.show()
+			endif
+		endif
 	End Method
 
 	Method Draw()
+		if not self.guiBackground and self.backgroundColor.a > 0.0
+			local rect:TRectangle = TRectangle.create( self.guiEntriesPanel.GetScreenX(), self.guiEntriesPanel.GetScreenY(), Min(self.rect.GetW(), self.guiEntriesPanel.rect.GetW()), Min(self.rect.GetH(), self.guiEntriesPanel.rect.GetH()) )
+
+			if not self._mouseOverArea then self.backgroundColor.a :* 0.25
+			self.backgroundColor.setRGBA()
+			if not self._mouseOverArea then self.backgroundColor.a :* 4
+
+			DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH() )
+
+			Setalpha 1.0
+			SetColor 255,255,255
+		endif
+
 rem
 'debug purpose only
 		local offset:int = self.GetScreenY()
@@ -2178,6 +2229,8 @@ End Type
 
 Type TGUIListItem Extends TGUIobject
 	field label:string = ""
+	field labelColor:TColor	= TColor.Create(0,0,0)
+
 	field positionNumber:int = 0
 
     Method Create:TGUIListItem(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
@@ -2246,9 +2299,11 @@ Type TGUIListItem Extends TGUIobject
 				SetColor 125,125,125
 			endif
 			DrawRect(self.GetScreenX()+1, self.GetScreenY()+1, self.rect.GetW()-2, self.rect.GetH()-2 )
-			SetColor 255,255,255
 
+			self.labelColor.set()
 			DrawText(self.label + " ["+self._id+"]", self.GetScreenX() + 5, self.GetScreenY() + 2+ 0.5*(self.rect.getH()-TextHeight(self.label)))
+
+			SetColor 255,255,255
 		endif
 		if not(self._flags & GUI_OBJECT_DRAGGED) and TGUIListBase(parent)
 			TGUIListBase(parent).ResetViewPort()
@@ -2290,7 +2345,7 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 	End Method
 
 	Method AddBackground(title:string="Box")
-		self.background = new TGUIBackgroundBox.Create(self.GetScreenX(), self.GetScreenY(), self.GetScreenWidth(), self.GetScreenHeight(), 0, title, "", Assets.GetFont("Default", 16, BOLDFONT))
+		self.background = new TGUIBackgroundBox.Create(self.GetScreenX(), self.GetScreenY(), self.GetScreenWidth(), self.GetScreenHeight(), "")
 		self.background.SetSelfManaged()
 	End Method
 

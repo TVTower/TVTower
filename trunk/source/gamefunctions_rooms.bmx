@@ -460,7 +460,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		Players[game.playerid].figure.fromroom = Null
+		Players[game.playerID].figure.fromroom = Null
 		If MouseManager.IsHit(1)
 			If functions.IsIn(MouseX(),MouseY(),25,40,150,295)
 				Players[Game.playerID].Figure.LeaveRoom()
@@ -1513,7 +1513,7 @@ Type RoomHandler_Chief extends TRoomHandler
 		local room:TRooms = TRooms(triggerEvent._sender)
 		if not room then return 0
 
-		Players[game.playerid].figure.fromroom = Null
+		Players[game.playerID].figure.fromroom = Null
 
 		If room.Dialogues.Count() <= 0
 			Local ChefDialoge:TDialogueTexts[5]
@@ -1887,7 +1887,7 @@ Type TRoomSigns Extends TBlockMoveable
 									If OtherLocObj <> Null
 										If OtherLocObj.containsCoord(MouseX(), MouseY()) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
 '											If game.networkgame Then
-'												Network.SendMovieAgencyChange(Network.NET_SWITCH, game.playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
+'												Network.SendMovieAgencyChange(Network.NET_SWITCH, Game.playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
 '			  								End If
 											locObj.SwitchBlock(otherLocObj)
 											If Self.DebugMode=1 Then Print "roomboard: switched - other obj found"

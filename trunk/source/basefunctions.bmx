@@ -380,8 +380,8 @@ Type TRectangle {_exposeToLua="selected"}
 		ih = min(self.GetY()+self.dimension.GetY(), rectB.position.GetY()+rectB.dimension.GetY() ) -iy
 
 		local intersect:TRectangle = TRectangle.Create(ix,iy,iw,ih)
-		
-		if iw > 0 AND ih > 0 then  
+
+		if iw > 0 AND ih > 0 then
 			return intersect
 		else
 			return Null
@@ -411,7 +411,7 @@ Type TRectangle {_exposeToLua="selected"}
 		        And y <= self.position.GetY() + self.dimension.GetY() )
 	End Method
 
-
+	'rectangle names
 	Method setXYWH(x:float,y:float,w:float,h:float)
 		self.position.setXY(x,y)
 		self.dimension.setXY(w,h)
@@ -433,6 +433,47 @@ Type TRectangle {_exposeToLua="selected"}
 		return self.dimension.GetY()
 	End Method
 
+	'four sided functions
+	Method setTLBR(top:float,left:float,bottom:float,right:float)
+		self.position.setXY(top,left)
+		self.dimension.setXY(bottom,right)
+	End Method
+
+	Method SetTop:int(value:float)
+		return self.position.SetX(value)
+	End Method
+
+	Method SetLeft:int(value:float)
+		return self.position.SetY(value)
+	End Method
+
+	Method SetBottom:int(value:float)
+		return self.dimension.SetX(value)
+	End Method
+
+	Method SetRight:int(value:float)
+		return self.dimension.SetY(value)
+	End Method
+
+	Method GetTop:float()
+		return self.position.GetX()
+	End Method
+
+	Method GetLeft:float()
+		return self.position.GetY()
+	End Method
+
+	Method GetBottom:float()
+		return self.dimension.GetX()
+	End Method
+
+	Method GetRight:float()
+		return self.dimension.GetY()
+	End Method
+
+
+
+
 	Method GetX2:float()
 		return self.position.GetX() + self.dimension.GetX()
 	End Method
@@ -440,7 +481,7 @@ Type TRectangle {_exposeToLua="selected"}
 	Method GetY2:float()
 		return self.position.GetY() + self.dimension.GetY()
 	End Method
-	
+
 	Method GetAbsoluteCenterPoint:TPoint()
 		return TPoint.Create(Self.GetX() + Self.GetW()/2, Self.GetY() + Self.GetH()/2)
 	End Method
@@ -480,10 +521,10 @@ Type TPoint {_exposeToLua="selected"}
 	Method GetY:float() {_exposeToLua}
 		return self.y
 	End Method
-	
+
 	Method GetZ:float() {_exposeToLua}
 		return self.z
-	End Method	
+	End Method
 
 	Method SetX(_x:Float)
 		Self.x = _x
@@ -492,10 +533,10 @@ Type TPoint {_exposeToLua="selected"}
 	Method SetY(_y:Float)
 		Self.y = _y
 	End Method
-	
+
 	Method SetZ(_z:Float)
 		Self.z = _z
-	End Method	
+	End Method
 
 	Method SetXY(_x:Float, _y:Float)
 		Self.SetX(_x)
@@ -524,14 +565,14 @@ Type TPoint {_exposeToLua="selected"}
 	Method isInRect:int(rect:TRectangle)
 		return rect.containsPoint(self)
 	End Method
-	
+
 	Method DistanceTo:float(otherPoint:TPoint, withZ:int = true)
 		local distanceX:float = DistanceOfValues(x, otherPoint.x)
 		local distanceY:float = DistanceOfValues(y, otherPoint.y)
 		local distanceZ:float = DistanceOfValues(z, otherPoint.z)
-		
+
 		local distanceXY:float = Sqr(distanceX * distanceX + distanceY * distanceY) 'Wurzel(a² + b²) = Hypotenuse von X und Y
-		
+
 		If withZ and distanceZ <> 0
 			Return Sqr(distanceXY * distanceXY + distanceZ * distanceZ) 'Wurzel(a² + b²) = Hypotenuse von XY und Z
 		Else
@@ -545,7 +586,7 @@ Type TPoint {_exposeToLua="selected"}
 		Else
 			Return value2 - value1
 		EndIf
-	End Function	
+	End Function
 
 	Function SwitchPos(Pos:TPoint Var, otherPos:TPoint Var)
 		Local oldx:Float, oldy:Float, oldz:Float

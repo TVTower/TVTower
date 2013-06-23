@@ -825,7 +825,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 	Method ShowSheet:Int(x:Int,y:Int)
 		Local playerID:Int = owner
 		'nobody owns it or unsigned contract
-		If playerID <= 0 or self.daySigned < 0 Then playerID = game.playerID
+		If playerID <= 0 or self.daySigned < 0 Then playerID = Game.playerID
 
 		Assets.GetSprite("gfx_datasheets_contract").Draw(x,y)
 

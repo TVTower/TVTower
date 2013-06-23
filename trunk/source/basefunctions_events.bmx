@@ -45,6 +45,10 @@ Type TEventManager
 		self.registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
+	Method registerListenerMethod:TLink( trigger:string, objectInstance:object, methodName:string, limitToSender:object=null, limitToReceiver:object=null )
+		self.registerListener( trigger,	TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+	End Method
+
 	' remove an event from a trigger
 	Method unregisterListener(trigger:string, eventListener:TEventListenerBase)
 		local listeners:TList = TList(self._listeners.ValueForKey( lower(trigger) ))
@@ -116,8 +120,9 @@ Type TEventListenerBase
 	'returns whether to ignore the incoming event (eg. limits...)
 	Method ignoreEvent:int(triggerEvent:TEventBase)
 		if triggerEvent = null then return TRUE
+
 		'Check limit for "sender"
-		if self._limitToSender<>Null
+		if self._limitToSender<>Null and triggerEvent._sender <> null
 			'is different classname / type
 			if string(self._limitToSender)<>null
 				if string(self._limitToSender).toLower() <> TTypeId.ForObject(triggerEvent._sender).Name().toLower()
@@ -143,6 +148,34 @@ Type TEventListenerBase
 		endif
 
 		return FALSE
+	End Method
+End Type
+
+Type TEventListenerRunMethod extends TEventListenerBase
+	field _methodName:string = ""
+	field _objectInstance:object
+
+	Function Create:TEventListenerRunMethod(objectInstance:object, methodName:string, limitToSender:object=null, limitToReceiver:object=null )
+		local obj:TEventListenerRunMethod = new TEventListenerRunMethod
+		obj._methodName			= methodName
+		obj._objectInstance		= objectInstance
+		obj._limitToSender		= limitToSender
+		obj._limitToReceiver	= limitToReceiver
+		return obj
+	End Function
+
+	Method OnEvent:int(triggerEvent:TEventBase)
+		if triggerEvent = null then return 0
+
+		if not self.ignoreEvent(triggerEvent)
+			Local id:TTypeId		= TTypeId.ForObject( self._objectInstance )
+			Local update:TMethod	= id.FindMethod( self._methodName )
+
+			update.Invoke(self._objectInstance ,[triggerEvent])
+			return true
+		endif
+
+		return true
 	End Method
 End Type
 
