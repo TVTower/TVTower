@@ -320,7 +320,6 @@ Type TLuaFunctions {_exposeToLua}
 		If Players[ Self.ME ] <> Null
 			'emit an event, we received a chat message
 			local sendToChannels:int = TGUIChatNew.GetChannelsFromText(ChatText)
-			print "chatOnAddEntry"
 			EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) ) )
 		EndIf
 		Return 1

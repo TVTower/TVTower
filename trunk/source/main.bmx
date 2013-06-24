@@ -3085,6 +3085,10 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 	Method OnEvent:int(triggerEvent:TEventBase)
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
+			'say soundmanager to do something
+			EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
+
+
 			If not GUIManager.getActive()
 				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
 				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)

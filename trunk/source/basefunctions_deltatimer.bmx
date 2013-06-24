@@ -27,6 +27,13 @@ Type TDeltaTimer
 	Global UpdateThread:TThread
 	Global drawMutex:TMutex 		= CreateMutex()
 	Global useDeltaTimer:TDeltaTimer= null
+
+	field mainLoopTime:float		= 0.1
+	field mainLoopTimeAvg5:float	= 0.1
+	field mainLoopTimeAvg10:float	= 0.1
+	field mainNewTime:int			= 0
+	field mainOldTime:int			= 0.0
+
 	?
 
 	Function Create:TDeltaTimer(physicsFps:int = 60, graphicsFps:int = -1)
@@ -60,6 +67,7 @@ Type TDeltaTimer
 			useDeltaTimer.accumulator :+ useDeltaTimer.loopTime
 
 			if useDeltaTimer.accumulator >= useDeltaTimer.getDeltaTime()
+				'wait for the drawMutex to are unlocked (no drawing process at the moment)
 				'force lock as physical updates are crucial
 				LockMutex(drawMutex)
 				While useDeltaTimer.accumulator >= useDeltaTimer.getDeltaTime()
@@ -68,8 +76,6 @@ Type TDeltaTimer
 					useDeltaTimer.timesUpdated	:+ 1
 					EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
 				Wend
-				EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
-
 				UnLockMutex(drawMutex)
 			else
 				delay( floor(Max(1, 1000.0 * (useDeltaTimer.getDeltaTime() - useDeltaTimer.accumulator) - 1)) )
@@ -78,29 +84,56 @@ Type TDeltaTimer
 	End Function
 
 	Method Loop()
+		mainNewTime		= MilliSecs()
+		if mainOldTime = 0.0 then mainOldTime = mainNewTime - 1
+		mainLoopTime	= (mainNewTime - mainOldTime) / 1000.0
+		mainOldTime		= mainNewTime
+
 		'init update thread
 		if not self.UpdateThread OR not ThreadRunning(self.UpdateThread)
 			useDeltaTimer = self
-			print " - - - - - - - - - - - - "
-			print "Start Updatethread: create thread"
-			print " - - - - - - - - - - - - "
+			print " - - - - - - - - - - - - - - - - -"
+			print "Start Updatethread: create thread."
+			print " - - - - - - - - - - - - - - - - -"
 			self.UpdateThread = CreateThread(self.RunUpdateThread, Null)
 		endif
+
+		'time for drawing?
+		'- subtract looptime
+		'  -> time lost for doing other things
+		self.nextDraw :- mainLoopTime
 
 		If self.fps < 0 OR (self.fps > 0 and self.nextDraw <= 0.0)
 			'if we get the mutex (not updating now) -> send draw event
 			if TryLockMutex(drawMutex)
+				self.nextDraw = 1.0/float(self.fps)
+
 				'how many % of ONE update are left - 1.0 would mean: 1 update missing
 				self.tweenValue = self.accumulator / self.getDeltaTime()
+
 
 				'draw gets tweenvalue (0..1)
 				self.timesDrawn :+1
 				EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue)) )
 				UnlockMutex(drawMutex)
 			endif
-		endif
+		else
+rem
+			'avg time of a loop
+			if self.timesDrawn mod 10 = 0
+				self.mainLoopTimeAvg10 = self.mainLoopTime
+			elseif self.timesDrawn mod 5 = 0
+				self.mainLoopTimeAvg5 = self.mainLoopTime
+			endif
+			local avg:int = (self.mainLoopTimeAvg5+self.mainLoopTimeAvg10+self.mainLoopTime)/3
+			'delay by a minimum of 1ms - subtract looptime (as "time of next run")
+			delay Max(1, 1000.0*(self.nextDraw- avg) )
+endrem
+			'delay by a minimum of 1ms - subtract looptime (as "time of next run")
+			delay floor(Max(1, 1000.0*(self.nextDraw - self.mainLoopTime) -1))
+		EndIf
 		'in a non threaded version we delay...
-		delay(2)
+'		delay(2)
 	End Method
 	?
 
@@ -147,10 +180,9 @@ Type TDeltaTimer
 			'draw gets tweenvalue (0..1)
 			self.timesDrawn :+1
 			EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
-			EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
 		else
 			'delay by a minimum of 2ms
-			delay Max(2, self.nextDraw - self.looptime)
+			delay Max(1, self.nextDraw - self.looptime)
 			'delay( self.nextDraw - self.looptime)
 		EndIf
 	End Method
