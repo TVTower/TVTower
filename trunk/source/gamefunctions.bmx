@@ -18,10 +18,11 @@ global CHAT_COMMAND_SYSTEM:int	= 2
 
 Type TGUIChatNEW extends TGUIObject
 	field _defaultTextColor:TColor		= TColor.Create(0,0,0)
+	field _defaultHideEntryTime:int		= null
+	field _channels:int					= 0		'bitmask of channels the chat listens to
 	field guiList:TGUIListBase			= Null
 	field guiInput:TGUIInput			= Null
 	field guiInputPositionRelative:int	= 0		'is the input is inside the chatbox or absolute
-	field _channels:int					= 0		'bitmask of channels the chat listens to
 	field guiBackground:TGUIobject		= Null
 	field guiInputHistory:TList			= CreateList()
 
@@ -85,6 +86,10 @@ Type TGUIChatNEW extends TGUIObject
 		self.guiBackground.setParent(self)
 		'set to unmanaged in all cases
 		GUIManager.remove(guiBackground)
+	End Method
+
+	Method SetDefaultHideEntryTime(milliseconds:int=null)
+		self._defaultHideEntryTime = milliseconds
 	End Method
 
 	Method SetDefaultTextColor(color:TColor)
@@ -196,7 +201,10 @@ Type TGUIChatNEW extends TGUIObject
 
 
 		'finally add to the chat box
-		self.AddEntry( new TGUIChatEntry.CreateSimple(text, textColor, senderName, senderColor, null ) )
+		local entry:TGUIChatEntry = new TGUIChatEntry.CreateSimple(text, textColor, senderName, senderColor, null )
+		'if the default is "null" then no hiding will take place
+		entry.SetShowtime( self._defaultHideEntryTime )
+		self.AddEntry( entry )
 	End Method
 
 	Method SetPadding:int(top:int,left:int,bottom:int,right:int)
@@ -231,6 +239,13 @@ Type TGUIChatNEW extends TGUIObject
 
 	Method Update()
 		'Super.update()
+
+		'show items again if somone hovers over the list (-> reset timer)
+		if self.guiList._mouseOverArea
+			for local entry:TGuiObject = eachin self.guiList.entries
+				entry.show()
+			next
+		endif
 	End Method
 
 	Method Draw()
@@ -243,14 +258,12 @@ Type TGUIChatNEW extends TGUIObject
 End Type
 
 Type TGUIChatEntry extends TGUIListItem
-	field lifetime:int		= Null
-	field senderName:string	= ""
-	field senderColor:TColor= TColor.Create(0,0,0)
-	field paddingBottom:int = 5
+	field paddingBottom:int		= 5
 
 	Method CreateSimple:TGUIChatEntry(text:string, textColor:TColor, senderName:string, senderColor:TColor, lifetime:int=null)
 		self.Create(text)
 		self.SetLifetime(lifeTime)
+		self.SetShowtime(lifeTime)
 		self.SetSender(senderName, senderColor)
 		self.SetLabel(text,textColor)
 
@@ -264,7 +277,8 @@ Type TGUIChatEntry extends TGUIListItem
 		self.Resize( width, height )
 		self.label = text
 
-		self.lifetime = 500
+		self.setLifetime( 1000 )
+		self.setShowtime( 1000 )
 
 		GUIManager.add(self)
 
@@ -273,8 +287,10 @@ Type TGUIChatEntry extends TGUIListItem
 
 	Method GetDimension:TPoint()
 		local move:TPoint = TPoint.Create(0,0)
-		if self.senderName
-			move = Assets.fonts.baseFontBold.drawStyled(self.senderName+":", self.GetScreenX(), self.GetScreenY(), self.senderColor.r, self.senderColor.g, self.senderColor.b, 2, 0)
+		if self.Data.getString("senderName",null)
+			local senderColor:TColor = TColor(self.Data.get("senderColor"))
+			if not senderColor then senderColor = TColor.Create(0,0,0)
+			move = Assets.fonts.baseFontBold.drawStyled(self.Data.getString("senderName")+":", self.GetScreenX(), self.GetScreenY(), senderColor.r, senderColor.g, senderColor.b, 2, 0)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
@@ -302,28 +318,9 @@ Type TGUIChatEntry extends TGUIListItem
 		return dimension
 	End Method
 
-	Method SetLifetime:int(lifetime:int=Null)
-		self.lifetime = lifetime
-	End Method
-
 	Method SetSender:int(senderName:string=Null, senderColor:TColor=Null)
-		if senderName then self.senderName = senderName
-		if senderColor then self.senderColor = senderColor
-	End Method
-
-	Method SetLabel:int(label:string=Null, labelColor:TColor=Null)
-		if label then self.label = label
-		if labelColor then self.labelColor = labelColor
-	End Method
-
-	Method Update:int()
-		'if the item has a lifetime it will autoremove on death
-		if self.lifetime <> Null
-			self.lifetime :-1
-			if self.lifetime <= 0 then return self.Remove()
-		endif
-
-		super.Update()
+		if senderName then self.Data.AddString("senderName", senderName)
+		if senderColor then self.Data.Add("senderColor", senderColor)
 	End Method
 
 	Method GetParentWidth:float(parentClassName:string="toplevelparent")
@@ -339,7 +336,7 @@ Type TGUIChatEntry extends TGUIListItem
 	Method Draw:int()
 		self.getParent("tguilistbase").RestrictViewPort()
 
-		if self.lifetime <> Null and self.lifetime <= 100 then setAlpha float(self.lifetime)/100.0
+		if self.showtime <> Null then setAlpha float(self.showtime-Millisecs())/500.0
 		'available width is parentsDimension minus startingpoint
 		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
 		local maxWidth:int = parentPanel.GetContentScreenWidth()-self.rect.GetX()
@@ -348,21 +345,172 @@ Type TGUIChatEntry extends TGUIListItem
 		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
 
 		local move:TPoint = TPoint.Create(0,0)
-		if self.senderName
-			move = Assets.fonts.baseFontBold.drawStyled(self.senderName+":", self.GetScreenX(), self.GetScreenY(), self.senderColor.r, self.senderColor.g, self.senderColor.b, 2, 1)
+		if self.Data.getString("senderName",null)
+			local senderColor:TColor = TColor(self.Data.get("senderColor"))
+			if not senderColor then senderColor = TColor.Create(0,0,0)
+			move = Assets.fonts.baseFontBold.drawStyled(self.Data.getString("senderName", "")+":", self.GetScreenX(), self.GetScreenY(), senderColor.r, senderColor.g, senderColor.b, 2, 1)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
 		endif
 		Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, self.labelColor.r, self.labelColor.g, self.labelColor.b, 0, 2, 1, 0.5)
 
-		if self.lifetime <> Null and self.lifetime <= 100 then setAlpha 1.0
+		setAlpha 1.0
 
 		self.getParent("tguilistbase").ResetViewPort()
 	End Method
 
 End Type
 
+
+'create a custom type so we can check for doublettes on add
+Type TGUIGameList Extends TGUIListBase
+	field selectedEntry:TGUIobject = null
+
+    Method Create:TGUIGameList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+		super.Create(x,y,width,height, State)
+
+		'we want to know about clicks
+		EventManager.registerListenerMethod( "guiobject.onClick",	self, "onClickOnEntry", "TGUIGameEntry" )
+
+		return self
+	end Method
+
+	Method onClickOnEntry:Int(triggerEvent:TEventBase)
+		local entry:TGUIGameEntry = TGUIGameEntry( triggerEvent.GetSender() )
+		if not entry then return FALSE
+
+		'only mark selected if we are owner of that entry
+		if self.HasItem(entry)
+			if TGUIGameEntry(self.selectedEntry) then TGUIGameEntry(self.selectedEntry).selected = false
+			self.selectedEntry = entry
+			if TGUIGameEntry(self.selectedEntry) then TGUIGameEntry(self.selectedEntry).selected = true
+		endif
+	End Method
+
+	Method GetSelectedEntry:TGUIobject()
+		return self.selectedEntry
+	End Method
+
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		for local olditem:TGUIListItem = eachin self.entries
+			if TGUIGameEntry(item) and TGUIGameEntry(item).label = olditem.label
+				'refresh lifetime
+				olditem.setLifeTime(olditem.initialLifeTime)
+				'unset the new one
+				item.remove()
+				return FALSE
+			endif
+		next
+		return Super.AddItem(item, extra)
+	End Method
+End Type
+
+Type TGUIGameEntry extends TGUIListItem
+	field paddingBottom:int		= 3
+	field paddingTop:int		= 2
+	field selected:int			= FALSE
+
+	Method CreateSimple:TGUIGameEntry(_hostIP:string, _hostPort:int, _hostName:string="", gameTitle:string="", slotsUsed:int, slotsMax:int)
+		'make it "unique" enough
+		self.Create(_hostIP+":"+_hostPort)
+
+		self.data.AddString("hostIP", _hostIP)
+		self.data.AddNumber("hostPort", _hostPort)
+		self.data.AddString("hostName", _hostName)
+		self.data.AddString("gameTitle", gametitle)
+		self.data.AddNumber("slotsUsed", slotsUsed)
+		self.data.AddNumber("slotsMax", slotsMax)
+
+		return self
+	End Method
+
+    Method Create:TGUIGameEntry(text:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		'no "super.Create..." as we do not need events and dragable and...
+   		super.CreateBase(x,y,"",null)
+
+		self.SetLifetime(30000) '30 seconds
+		self.SetLabel(":D", TColor.Create(0,0,0))
+
+		self.Resize( width, height )
+
+		GUIManager.add(self)
+
+		return self
+	End Method
+
+	Method GetDimension:TPoint()
+		'available width is parentsDimension minus startingpoint
+		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
+		local maxWidth:int = parentPanel.GetContentScreenWidth()-self.rect.GetX()
+		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
+
+		local text:string = self.Data.getString("gameTitle","#unknowngametitle#")+" by "+ self.Data.getString("hostName","#unknownhostname#") + " ("+self.Data.getInt("slotsUsed",1)+"/"+self.Data.getInt("slotsMax",4)
+		local dimension:TPoint = Assets.fonts.baseFont.drawBlock(text, self.GetScreenX(), self.GetScreenY(), maxWidth, maxHeight, 0, 255, 255, 255, 0, 2, 0)
+
+		'add padding
+		dimension.moveXY(0, self.paddingBottom)
+
+		'set current size and refresh scroll limits of list
+		'but only if something changed (eg. first time or content changed)
+		if self.rect.getW() <> dimension.getX() OR self.rect.getH() <> dimension.getY()
+			'resize item
+			self.Resize(dimension.getX(), dimension.getY())
+		endif
+
+		return dimension
+	End Method
+
+
+
+	Method Draw:int()
+		self.getParent("tguigamelist").RestrictViewPort()
+
+		if self.showtime <> Null then setAlpha float(self.showtime-Millisecs())/500.0
+		'available width is parentsDimension minus startingpoint
+		local maxWidth:int = TGUIobject(self.getParent("topitem")).GetContentScreenWidth()-self.rect.GetX()
+		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
+
+		if self.mouseover
+			SetColor 250,210,100
+			DrawRect(self.GetScreenX(), self.GetScreenY(), maxWidth, self.rect.GetH())
+			SetColor 255,255,255
+		elseif self.selected
+			SetAlpha GetAlpha()*0.5
+			SetColor 250,210,100
+			DrawRect(self.GetScreenX(), self.GetScreenY(), maxWidth, self.rect.GetH())
+			SetColor 255,255,255
+			SetAlpha GetAlpha()*2.0
+		endif
+
+		'draw text
+		local move:TPoint = TPoint.Create(0, self.paddingTop)
+		local text:string = ""
+		local textColor:TColor = null
+		local textDim:TPoint = null
+		'line: title by hostname (slotsused/slotsmax)
+
+		text 		= self.Data.getString("gameTitle","#unknowngametitle#")
+		textColor	= TColor(self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
+		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.GetScreenX() + move.x, self.GetScreenY() + move.y, textColor.r, textColor.g, textColor.b, 2, 1,0.5)
+		move.moveXY(textDim.x,1)
+
+		text 		= " by "+self.Data.getString("hostName","#unknownhostname#")
+		textColor	= TColor(self.Data.get("hostNameColor", TColor.Create(50,50,150)) )
+		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.GetScreenX() + move.x, self.GetScreenY() + move.y, textColor.r, textColor.g, textColor.b)
+		move.moveXY(textDim.x,0)
+
+		text 		= " ("+self.Data.getInt("slotsUsed",1)+"/"++self.Data.getInt("slotsMax",4)+")"
+		textColor	= TColor(self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
+		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.GetScreenX() + move.x, self.GetScreenY() + move.y, textColor.r, textColor.g, textColor.b)
+		move.moveXY(textDim.x,0)
+
+		setAlpha 1.0
+
+		self.getParent("tguigamelist").ResetViewPort()
+	End Method
+
+End Type
 
 
 Type TSaveFile
@@ -1518,9 +1666,9 @@ Type TInterface
 			SetBlend ALPHABLEND
 		    For Local i:Int = 0 To 4
 				If i = ShowChannel
-					Assets.GetSprite("gfx_interface_channelbuttons"+(i+5)).Draw(75 + i * 33, 171 + NoDX9moveY, i)
+					Assets.GetSprite("gfx_interface_channelbuttons_on"+i).Draw(75 + i * 33, 171 + NoDX9moveY, i)
 				Else
-					Assets.GetSprite("gfx_interface_channelbuttons"+i).Draw(75 + i * 33, 171 + NoDX9moveY, i)
+					Assets.GetSprite("gfx_interface_channelbuttons_off"+i).Draw(75 + i * 33, 171 + NoDX9moveY, i)
 				EndIf
 		    Next
 			If ShowChannel <> 0

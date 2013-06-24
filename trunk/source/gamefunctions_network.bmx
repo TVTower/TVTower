@@ -62,8 +62,9 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			endif
 
 		case NET_STARTGAME					print "got: startgame"
-											Game.gamestate = GAMESTATE_RUNNING
-											Game.networkgameready = 1 'start the game
+											'set ready flag, so other things
+											'like colorization can start
+											Game.networkgameready = 1
 		case NET_PLAYERDETAILS				NetworkHelper.ReceivePlayerDetails( networkObject )
 		case NET_FIGUREPOSITION				NetworkHelper.ReceiveFigurePosition( networkObject )
 		case NET_GAMEREADY					NetworkHelper.ReceiveGameReady( networkObject )
@@ -94,12 +95,14 @@ End Function
 Function InfoChannelEventHandler(networkObject:TNetworkObject)
 '	print "infochannel: got event: "+networkObject.evType
 	if networkObject.evType = NET_ANNOUNCEGAME
-		Local teamamount:Int		= networkObject.getInt(1)
-		Local title:String			= networkObject.getString(2)
-		local IP:int				= networkObject.getInt(3)		'could differ from senderIP
-		local Port:int				= networkObject.getInt(4)		'differs from senderPort (info channel)
-		'If _ip <> intLocalIP then
-		NetgameLobby_gamelist.addUniqueEntry(title, title+"  (Spieler: "+(4-teamamount)+" von 4)","",DottedIP(IP), Port,0, "HOSTGAME")
+		Local slotsUsed:Int			= networkObject.getInt(1)
+		Local slotsMax:Int			= networkObject.getInt(2)
+		local _hostIP:int			= networkObject.getInt(3)		'could differ from senderIP
+		local _hostPort:int			= networkObject.getInt(4)		'differs from senderPort (info channel)
+		Local _hostName:String		= networkObject.getString(5)
+		Local gameTitle:String		= networkObject.getString(6)
+
+		NetgameLobbyGamelist.addItem( new TGUIGameEntry.CreateSimple(DottedIP(_hostIP), _hostPort,_hostName,gameTitle,slotsUsed,slotsMax) )
 	endif
 End Function
 
@@ -175,7 +178,9 @@ Type TNetworkHelper
 		local IDstring:string=""
 		if contract.length > 0
 			For Local i:Int = 0 To contract.length-1
-				IDstring :+ contract[i].id+","
+				'do not send the contract id itself (it is useless for others)
+				'but the contractbase.id so the remote client can reconstruct
+				IDstring :+ contract[i].contractBase.id+","
 			Next
 		endif
 		obj.setString(2, IDstring)
@@ -188,7 +193,10 @@ Type TNetworkHelper
 		local IDs:string[]				= obj.getString(2).split(",")
 		for local id:string = eachin IDs
 			if id <> "" and int(id) > 0
-				Players[ remotePlayerID ].ProgrammeCollection.AddContract(TContract.getContract( int(id) ))
+				local contract:TContract = TContract.Create( TContractBase.Get(int(id)) )
+
+				if not contract then print "ReceiveContractsToPlayer: contract "+id+" not found."
+				Players[ remotePlayerID ].ProgrammeCollection.AddContract( contract )
 			endif
 		Next
 	End Method
@@ -351,7 +359,7 @@ Type TNetworkHelper
 		obj.setInt(1, playerID)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 
-		Game.gamestate = GAMESTATE_STARTMULTIPLAYER
+		Game.SetGamestate(GAMESTATE_STARTMULTIPLAYER)
 		'self ready
 		Players[ playerID ].networkstate = 1
 
@@ -369,10 +377,7 @@ Type TNetworkHelper
 			if allReady
 				'send game start
 				Game.networkgameready = 1
-				Game.gamestate = GAMESTATE_RUNNING
-				GameSettingsOkButton_Announce.crossed = False
-
-				print "NET: send game start to all others"
+				print "NET: allReady so send game start to all others"
 				Network.BroadcastNetworkObject( TNetworkObject.Create( NET_STARTGAME ), NET_PACKET_RELIABLE )
 				return
 			endif
@@ -392,11 +397,15 @@ Type TNetworkHelper
 				exit
 			endif
 			if Players[i].ProgrammeCollection.serieslist.count() < Game.startSeriesAmount
-				print "serie missing player("+i+") " + Players[i].ProgrammeCollection.movielist.count() + " < " + Game.startMovieAmount
+				print "serie missing player("+i+") " + Players[i].ProgrammeCollection.seriesList.count() + " < " + Game.startSeriesAmount
 				allReady = false
 				exit
 			endif
-			if Players[i].ProgrammeCollection.contractlist.count() < Game.startAdAmount then print "ad missing";allReady = false;exit
+			if Players[i].ProgrammeCollection.contractlist.count() < Game.startAdAmount
+				print "ad missing player("+i+") " + Players[i].ProgrammeCollection.contractList.count() + " < " + Game.startAdAmount
+				allReady = false
+				exit
+			endif
 		Next
 		if allReady and Game.GAMESTATE <> GAMESTATE_RUNNING
 			SendGameReady( Game.PlayerID, 0)
@@ -527,7 +536,7 @@ Type TNetworkHelper
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDNEWS )
 		obj.setInt(1, playerID)
 		obj.setInt(2, news.id)
-		print "sende news: "+news.id+" - "+news.title
+		'print "sende news: "+news.id+" - "+news.title
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
@@ -538,7 +547,7 @@ Type TNetworkHelper
 		If not news or not Game.isPlayerID(playerID) then return
 		NewsAgency.AddNewsToPlayer(news, playerID, true)
 
-		Print "net: added news (id:"+newsID+") to Player:"+playerID
+		'Print "net: added news (id:"+newsID+") to Player:"+playerID
 	End Method
 
 

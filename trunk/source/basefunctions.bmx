@@ -135,8 +135,10 @@ Type TData
 		return self
 	End Method
 
-	Method Get:object(key:string)
-		return self.data.ValueForKey(key)
+	Method Get:object(key:string, defaultValue:object=null)
+		local result:object = self.data.ValueForKey(key)
+		if result then return result
+		return defaultValue
 	End Method
 
 	Method GetString:string(key:string, defaultValue:string=null)

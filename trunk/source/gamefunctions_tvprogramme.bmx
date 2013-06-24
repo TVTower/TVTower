@@ -598,6 +598,13 @@ Type TContractBase Extends TProgrammeElement {_exposeToLua="selected"}
 		Return obj
 	End Function
 
+	Function Get:TContractBase(id:Int)
+		For Local contractbase:TContractbase = EachIn List
+			If contractbase.id = id Then Return contractbase
+		Next
+		Return Null
+	End Function
+
 	Function GetRandom:TContractBase(_list:TList = null)
 		if _list = Null then _list = TContractBase.list
 		If _list = Null Then Return Null

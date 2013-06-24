@@ -187,8 +187,19 @@ Type TGUIManager
 		If not ( (toZ = -1000 Or obj.zIndex <= toZ) AND (fromZ = -1000 Or obj.zIndex >= fromZ)) then return FALSE
 
 		'limit display by state - skip if object is hidden in that state
-		If (State<>"" AND State.toLower() <> obj.GetLimitToState().toLower() And obj.GetLimitToState() <> "") then return FALSE
-
+		'deep check only if a specific state is wanted AND the object is limited to states
+		if(state<>"" and obj.GetLimitToState() <> "")
+			State = state.toLower()
+			local parts:string[] = obj.GetLimitToState().toLower().split("|")
+			local stateFound:int = FALSE
+			for local part:string = eachin parts
+				If State = part
+					stateFound=true
+					exit
+				endif
+			Next
+			return stateFound
+		endif
 		return TRUE
 	End Method
 
@@ -215,7 +226,7 @@ Type TGUIManager
 	Method Update(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
 		self.currentState = State
 		local mouseButtonDown:int[] = MOUSEMANAGER.GetStatusDown()
-		local mouseButtonHit:int[] = MOUSEMANAGER.GetStatusDown()
+		local mouseButtonHit:int[] = MOUSEMANAGER.GetStatusHit() 'single and double clicks!
 
 		local foundClickObject:int = FALSE
 		local foundHoverObject:int = FALSE
@@ -249,7 +260,7 @@ Type TGUIManager
 					'mouseclick somewhere - should deactivate active object
 					'no need to use the cached mouseButtonDown[] as we want the
 					'general information about a click
-					If MOUSEMANAGER.isHit(1) And obj.isActive() then self.setActive(0)
+					If MOUSEMANAGER.isHit(1,FALSE) And obj.isActive() then self.setActive(0)
 				EndIf
 
 				'only do something if
@@ -273,6 +284,8 @@ Type TGUIManager
 						'dont check further guiobjects for mousedown
 						mouseButtonDown[1] = FALSE
 						mouseButtonHit[1] = FALSE
+						'no underlaying clicks!
+						'MOUSEMANAGER.ResetKey(1)
 					EndIf
 
 					if not foundHoverObject and obj._flags & GUI_OBJECT_ENABLED
@@ -294,16 +307,20 @@ Type TGUIManager
 						'somone decided to say the button is pressed above the object
 						If obj.MouseIsDown
 							obj.setState("active")
-							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseDown", TData.Create().AddNumber("type", 1), obj ) )
+							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseDown", TData.Create().AddNumber("button", 1), obj ) )
 						Else
 							obj.setState("hover")
 						endif
 
 						'inform others about a right guiobject click
 						If mouseButtonHit[2]
-							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 2), obj ) )
+							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",2), obj ) )
 							'reset Button
 							mouseButtonHit[2] = FALSE
+						endif
+
+						if MOUSEMANAGER.isDoubleHit(1)
+							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK).AddNumber("button",1), obj ) )
 						endif
 
 						'do not use the cached mousebuttons when checking for "not pressed"
@@ -312,7 +329,7 @@ Type TGUIManager
 								obj.mouseIsClicked = TPoint.Create( MouseX(), MouseY() )
 
 								'fire onClickEvent
-								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", 1), obj ) )
+								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), obj ) )
 
 								'added for imagebutton and arrowbutton not being reset when mouse standing still
 								obj.MouseIsDown = null
@@ -362,7 +379,7 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 Type TGUIobject
 	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
 	Field padding:TRectangle		= TRectangle.Create(0,0,0,0)
-
+	Field data:TData				= TData.Create() 'storage for additional data
 	Field zIndex:Int
 	Field scale:Float				= 1.0
 	Field align:Int					= 0 			'alignment of object
@@ -471,6 +488,10 @@ Type TGUIobject
 
 	Method isDragged:int()
 		return self._flags & GUI_OBJECT_DRAGGED
+	End Method
+
+	Method isVisible:int()
+		return self._flags & GUI_OBJECT_VISIBLE
 	End Method
 
 
@@ -1757,7 +1778,7 @@ Type TGUIListBase Extends TGUIobject
 		'resize panel - but use resulting dimensions, not given (maybe restrictions happening!)
 		if self.guiEntriesPanel
 			'also set minsize so scroll works
-			self.guiEntriesPanel.minSize.SetXY( self.rect.GetW() - 2*self.guiScroller.rect.getW(), self.rect.GetH() )
+			self.guiEntriesPanel.minSize.SetXY(self.rect.GetW() - 2*self.guiScroller.rect.getW(), self.rect.GetH() )
 			self.guiEntriesPanel.Resize( self.rect.GetW() - self.guiScroller.rect.getW(), self.rect.GetH() )
 		endif
 
@@ -1765,6 +1786,15 @@ Type TGUIListBase Extends TGUIobject
 		if self.guiScroller
 			self.guiScroller.rect.position.setXY(self.rect.getW() - self.guiScroller.guiButtonUp.rect.getW(),0)
 			self.guiScroller.Resize(0, h)
+		endif
+
+
+		if self.guiBackground
+			'move background by negative padding values ( -> ignore padding)
+			self.guiBackground.rect.position.setXY(-self.padding.getLeft(), -self.padding.getTop())
+
+			'background covers whole area, so resize it
+			self.guiBackground.resize(self.rect.getW(), self.rect.getH())
 		endif
 	End Method
 
@@ -1849,6 +1879,13 @@ Type TGUIListBase Extends TGUIobject
 		return FALSE
 	End Method
 
+	Method HasItem:int(item:TGUIobject)
+		For local otheritem:TGUIobject = eachin self.entries
+			if otheritem = item then return TRUE
+		Next
+		return FALSE
+	End Method
+
 	'recalculate scroll maximas, item positions...
 	Method RecalculateElements:int()
 		local currentYPos:float = 0
@@ -1867,13 +1904,18 @@ Type TGUIListBase Extends TGUIobject
 
 
 		'set scroll limits:
-		'maximum is at the bottom of the area, not top - so subtract height
-		self.guiEntriesPanel.SetLimits(0, -(currentYPos - self.guiEntriesPanel.getScreenheight()) )
+		if currentYPos < self.guiEntriesPanel.getScreenheight()
+			'if there are only some elements, they might be "less high" than
+			'the available area - no need to align them at the bottom
+			self.guiEntriesPanel.SetLimits(0, -(currentYPos) )
+		else
+			'maximum is at the bottom of the area, not top - so subtract height
+			self.guiEntriesPanel.SetLimits(0, -(currentYPos - self.guiEntriesPanel.getScreenheight()) )
 
-		'in case of auto scrolling we should consider scrolling to
-		'the next visible part
-		if self.autoscroll and (not scrollerUsed OR atListBottom) then self.scrollToLastItem()
-'		if self.autoscroll then self.scrollToLastItem()
+			'in case of auto scrolling we should consider scrolling to
+			'the next visible part
+			if self.autoscroll and (not scrollerUsed OR atListBottom) then self.scrollToLastItem()
+		endif
 
 
 		'if not all entries fit on the panel, enable scroller
@@ -1954,7 +1996,8 @@ Type TGUIListBase Extends TGUIobject
 
 	Method ScrollToLastItem()
 		'if self.guiEntriesPanel.scrollLimit.GetY() <= self.guiEntriesPanel.scrollPosition.GetY()
-			self.ScrollEntries(0,self.guiEntriesPanel.scrollLimit.GetY())
+			self.ScrollEntries(0, self.guiEntriesPanel.scrollLimit.GetY() )
+'			self.ScrollEntries(0, Max(self.guiEntriesPanel.rect.getH(), self.guiEntriesPanel.scrollLimit.GetY()) )
 		'endif
 	End Method
 
@@ -1971,7 +2014,9 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 	Method Draw()
-		if not self.guiBackground and self.backgroundColor.a > 0.0
+		if self.guiBackground
+			self.guiBackground.Draw()
+		elseif self.backgroundColor.a > 0.0
 			local rect:TRectangle = TRectangle.create( self.guiEntriesPanel.GetScreenX(), self.guiEntriesPanel.GetScreenY(), Min(self.rect.GetW(), self.guiEntriesPanel.rect.GetW()), Min(self.rect.GetH(), self.guiEntriesPanel.rect.GetH()) )
 
 			if not self._mouseOverArea then self.backgroundColor.a :* 0.25
@@ -2030,6 +2075,11 @@ Type TGUISlotList Extends TGUIListBase
 
 	Method SetAutofillSlots(bool:int=TRUE)
 		self._autofillSlots = bool
+	End Method
+
+	'override
+	Method HasItem:int(item:TGUIobject)
+		return (self.getSlot(item) >= 0)
 	End Method
 
 	'override
@@ -2228,6 +2278,11 @@ End Type
 
 
 Type TGUIListItem Extends TGUIobject
+	field lifetime:float		= Null		'how long until auto remove? (current value)
+	field initialLifetime:float	= Null		'how long until auto remove? (initial value)
+	field showtime:float		= Null		'how long until hiding (current value)
+	field initialShowtime:float	= Null		'how long until hiding (initial value)
+
 	field label:string = ""
 	field labelColor:TColor	= TColor.Create(0,0,0)
 
@@ -2267,7 +2322,7 @@ Type TGUIListItem Extends TGUIobject
 		if not data then return FALSE
 
 		'only react on clicks with left mouse button
-		if data.getInt("type") = 1
+		if data.getInt("button") = 1
 			if item.isDragged()
 				item.drop( TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)) )
 			else
@@ -2276,8 +2331,46 @@ Type TGUIListItem Extends TGUIobject
 		endif
 	End Function
 
-	Method Update()
-		'nothing special
+	Method SetLabel:int(label:string=Null, labelColor:TColor=Null)
+		if label then self.label = label
+		if labelColor then self.labelColor = labelColor
+	End Method
+
+
+	Method SetLifetime:int(milliseconds:int=Null)
+		if milliseconds
+			self.initialLifetime = milliseconds
+			self.lifetime = millisecs() + milliseconds
+		else
+			self.initialLifetime = null
+			self.lifetime = null
+		endif
+	End Method
+
+	Method Show:int()
+		self.SetShowtime(self.initialShowtime)
+		super.Show()
+	End Method
+
+	Method SetShowtime:int(milliseconds:int=Null)
+		if milliseconds
+			self.InitialShowtime = milliseconds
+			self.showtime = millisecs() + milliseconds
+		else
+			self.InitialShowtime = null
+			self.showtime = null
+		endif
+	End Method
+
+
+	Method Update:int()
+		'if the item has a lifetime it will autoremove on death
+		if self.lifetime <> Null
+			if (Millisecs() > self.lifetime) then return self.Remove()
+		endif
+		if self.showtime <> Null and self.isVisible()
+			if (Millisecs() > self.showtime) then self.hide()
+		endif
 	End Method
 
 	Method Draw()

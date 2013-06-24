@@ -145,6 +145,43 @@ endrem
 	?
 
 	?not Threaded
+
+	'maybe this method is better
+	Field isRunning:Int = True
+	Field Timer:TTimer=null
+	Field nextUpdateTick:Int,nextDrawTick:Int
+	Method TimerLoop()
+		if not Timer then timer = CreateTimer(100)
+		self.newTime		= MilliSecs()
+		if self.oldTime = 0.0 then self.oldTime = self.newTime - 1
+		self.secondGone		:+ (self.newTime - self.oldTime)
+		self.loopTime		= (self.newTime - self.oldTime) / 1000.0
+		self.oldTime		= self.newTime
+
+		if self.secondGone >= 1000.0 'in ms
+			self.secondGone 	= 0.0
+			self.currentFps		= self.timesDrawn
+			self.currentUps		= self.timesUpdated
+			self.timesDrawn 	= 0
+			self.timesUpdated	= 0
+		endif
+
+	'	If MilliSecs() > nextUpdateTick +1000
+	'		nextUpdateTick= MilliSecs()-1
+	'	EndIf
+		If MilliSecs() > nextUpdateTick
+			EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
+			nextUpdateTick:+ ceil(1000.0/self.ups)
+			self.timesUpdated:+1
+		ElseIf MilliSecs() > nextDrawTick
+			EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
+			nextDrawTick= MilliSecs()+ ceil(1000.0/self.fps)
+			self.tweenValue = ceil(1000.0/self.ups) / nextUpdateTick
+			self.timesDrawn:+1
+		EndIf
+		WaitTimer Timer
+	End Method
+
 	Method Loop()
 		self.newTime		= MilliSecs()
 		if self.oldTime = 0.0 then self.oldTime = self.newTime - 1

@@ -91,6 +91,7 @@ Type TNetworkClient extends TNetworkConnection
 	Field server:TNetworkServer
 	Field link:TLink
 	Field playerID:int		=-1
+	Field playerName:string	= ""
 
 	Field callback(client:TNetworkClient,evType:Int,networkObject:TNetworkObject)
 	Field latency:Int
@@ -870,6 +871,15 @@ Type TTVGNetwork
 		return Max(0, self.maxPlayers-self.server.clients.count())
 	End Method
 
+	Method GetUsedSlots:Int()
+		return self.server.clients.count()
+	End Method
+
+	Method GetMaxSlots:Int()
+		return self.maxPlayers
+	End Method
+
+
 	'modier of sync speed
 	Method GetSyncSpeedFactor:float()
 		return 1.0 'If game.onlinegame Then return 1.0 else return 0.5
@@ -884,10 +894,13 @@ Type TTVGNetwork
 		local obj:TNetworkObject = TNetworkObject.Create(NET_ANNOUNCEGAME)
 		If self.announceToLan
 			'Print "NET: announcing a LAN game to " +GetBroadcastIP(self.GetMyIP())
-			obj.setInt(1, self.GetFreeSlot())
-			obj.setString(2, self.announceTitle)
+
+			obj.setInt(1, self.GetUsedSlots())
+			obj.setInt(2, self.GetMaxSlots())
 			obj.setInt(3, self.GetMyIP())
 			obj.setInt(4, self.localPort)
+			obj.setString(5, client.playerName)
+			obj.setString(6, self.announceTitle)
 			self.SendInfoPacket(obj.toPacket(), GetBroadcastIP(self.GetMyIP()), self.infoPort)
 		Else
 rem

@@ -467,6 +467,26 @@ endrem
 		return number = self.playerID
 	End Method
 
+	Method SetGameState:int( gamestate:int )
+		if self.gamestate = gamestate then return TRUE
+
+		self.gamestate = gamestate
+		select gamestate
+			case GAMESTATE_RUNNING
+					'Begin Game - create Events
+					EventManager.registerEvent( TEventOnTime.Create("Game.OnMinute", game.GetMinute()) )
+					EventManager.registerEvent( TEventOnTime.Create("Game.OnHour", game.GetHour()) )
+					EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )
+
+					'so we could add news etc.
+					EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
+
+					Soundmanager.PlayMusic(MUSIC_MUSIC)
+			default
+				'
+		endselect
+	end Method
+
 
 
 	Method GetMaxAudience:Int(playerID:Int=-1)
@@ -2100,9 +2120,18 @@ Global MainMenuButton_Online:TGUIButton		= new TGUIButton.Create(TPoint.Create(6
 Global NetgameLobbyButton_Join:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_JOIN"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobbyButton_Create:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 345), 120, GetLocale("MENU_CREATE_GAME"), "NetGameLobby", Assets.fonts.baseFontBold)
 Global NetgameLobbyButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(600, 390), 120, GetLocale("MENU_BACK"), "NetGameLobby", Assets.fonts.baseFontBold)
-Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 100, "NetGameLobby")
-NetgameLobby_gamelist.SetFilter("HOSTGAME")
-NetgameLobby_gamelist.AddBackground("")
+'Global NetgameLobby_gamelist:TGUIList		= new TGUIList.Create(20, 300, 520, 250, 100, "NetGameLobby")
+'NetgameLobby_gamelist.SetFilter("HOSTGAME")
+'NetgameLobby_gamelist.AddBackground("")
+
+'available games list
+Global NetgameLobbyGamelist:TGUIGameList = new TGUIGameList.Create(20,300,520,250,"NetGameLobby")
+NetgameLobbyGamelist.SetBackground( new TGUIBackgroundBox.Create(0,0,520,200,"") )
+NetgameLobbyGamelist.SetPadding(40,5,7,6)
+NetgameLobbyGamelist.guiBackground.value	= "Chat"
+NetgameLobbyGamelist.guiBackground.usefont	= Assets.GetFont("Default", 16, BOLDFONT)
+
+
 
 Global GameSettingsBG:TGUIBackgroundBox = new TGUIBackgroundBox.Create(20, 20, 760, 260, "GameSettings")
 GameSettingsBG.value = "Spieleinstellungen"
@@ -2116,11 +2145,12 @@ Global GameSettingsButton_Back:TGUIButton	= new TGUIButton.Create(TPoint.Create(
 Global GameSettings_Chat:TGUIChatNEW = new TGUIChatNEW.Create(20,300,520,200,"GameSettings")
 GameSettings_Chat.guiInput.setMaxLength(200)
 GameSettings_Chat.SetBackground( new TGUIBackgroundBox.Create(0,0,520,200,"") )
-GameSettings_Chat.SetPadding(35,5,7,6)
+GameSettings_Chat.SetPadding(40,5,7,6)
 GameSettings_Chat.guiBackground.value	= "Chat"
 GameSettings_Chat.guiBackground.usefont	= Assets.GetFont("Default", 16, BOLDFONT)
 
 Global InGame_Chat:TGUIChatNEW = new TGUIChatNEW.Create(20,10,250,200,"InGame")
+InGame_Chat.setDefaultHideEntryTime(10000)
 InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.5)
 InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, FALSE)
 InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
@@ -2135,23 +2165,32 @@ InGame_Chat.guiInput.color.adjust(255,255,255,true)
 InGame_Chat.guiInput.autoAlignText = 0
 InGame_Chat.guiInput.TextDisplacement.setXY(0,5)
 
+
 'Doubleclick-function for NetGameLobby_GameList
 Function onClick_NetGameLobby:Int(triggerEvent:TEventBase)
-	Local evt:TEventSimple = TEventSimple(triggerEvent)
-	If evt<>Null
-		local clickType:int = evt.getData().getInt("type")
-		if clickType = EVENT_GUI_DOUBLECLICK
-			NetgameLobbyButton_Join.mouseIsClicked	= TPoint.Create(1,1)
-			GameSettingsButton_Start.disable()
+	local entry:TGUIGameEntry = TGUIGameEntry(triggerEvent.getSender())
+	if not entry then return FALSE
 
-			If Network.ConnectToServer( HostIp(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
-				Game.gamestate = GAMESTATE_SETTINGSMENU
-				GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
-			EndIf
-		endif
+	'we are only interested in doubleclicks
+	local clickType:int = triggerEvent.getData().getInt("type", 0)
+	if clickType = EVENT_GUI_DOUBLECLICK
+		NetgameLobbyButton_Join.mouseIsClicked	= TPoint.Create(1,1)
+		GameSettingsButton_Start.disable()
+
+		local _hostIP:string = entry.data.getString("hostIP","0.0.0.0")
+		local _hostPort:int = entry.data.getInt("hostPort",0)
+		local gameTitle:string = entry.data.getString("gameTitle","#unknowngametitle#")
+
+		If Network.ConnectToServer( HostIp(_hostIP), _hostPort )
+			Game.gamestate = GAMESTATE_SETTINGSMENU
+			GameSettingsGameTitle.Value = gameTitle
+		EndIf
 	endif
+
+	return false
 End Function
-EventManager.registerListenerFunction( "guiobject.onClick",	onClick_NetGameLobby, NetgameLobby_gamelist )
+'we want to know about all clicks on TGUIGameEntry-objects
+EventManager.registerListenerFunction( "guiobject.onClick",	onClick_NetGameLobby, "TGUIGameEntry" )
 
 
 Include "gamefunctions_network.bmx"
@@ -2212,7 +2251,6 @@ Function Menu_Main()
 End Function
 
 Function Menu_NetworkLobby()
-	NetgameLobby_gamelist.RemoveOldEntries(NetgameLobby_gamelist._id, 11000)
 	If Game.onlinegame
 		If Network.OnlineIP = ""
 			Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
@@ -2232,8 +2270,8 @@ Function Menu_NetworkLobby()
 			Wend
 			CloseStream Onlinestream
 		Else
-			NetgameLobby_gamelist.SetFilter("ONLINEHOSTGAME")
 			If Network.LastOnlineRequestTimer + Network.LastOnlineRequestTime < MilliSecs()
+'TODO: [ron] rewrite handling
 				Network.LastOnlineRequestTimer = MilliSecs()
 				Local Onlinestream:TStream   = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=ListGames")
 				Local timeouttimer:Int = MilliSecs()+2500 '2.5 seconds okay?
@@ -2244,15 +2282,21 @@ Function Menu_NetworkLobby()
 					Local responsestring:String = ReadLine(Onlinestream)
 					Local responseArray:String[] = responsestring.split("|")
 					If responseArray <> Null
-						NetgameLobby_gamelist.addUniqueEntry(Network.URLDecode(responseArray[0]), Network.URLDecode(responseArray[0])+"  (Spieler: "+responseArray[1]+" von 4)","",responseArray[2],Short(responseArray[3]),0, "ONLINEHOSTGAME")
-						Print "added "+responseArray[0]
+						local gameTitle:string	= "[ONLINE] "+Network.URLDecode(responseArray[0])
+						local slotsUsed:int		= int(responseArray[1])
+						local slotsMax:int		= 4
+						local _hostName:string	= "#unknownplayername#"
+						local _hostIP:string	= responseArray[2]
+						local _hostPort:int		= int(responseArray[3])
+
+						NetgameLobbyGamelist.addItem( new TGUIGameEntry.CreateSimple(_hostIP, _hostPort, _hostName, gameTitle, slotsUsed, slotsMax) )
+						Print "added "+gameTitle
 					EndIf
 				Wend
 				CloseStream Onlinestream
 			EndIf
 		EndIf
 	EndIf
-	If Not Game.onlinegame Then NetgameLobby_gamelist.SetFilter("HOSTGAME")
 
 	GUIManager.Update("NetGameLobby")
 	If NetgameLobbyButton_Create.GetClicks() > 0 Then
@@ -2265,12 +2309,19 @@ Function Menu_NetworkLobby()
 	EndIf
 	If NetgameLobbyButton_Join.GetClicks() > 0 Then
 		GameSettingsButton_Start.disable()
-		Network.isServer				= False
+		Network.isServer = False
 
-		If Network.ConnectToServer( HostIp(NetgameLobby_gamelist.GetEntryIP()), NetgameLobby_gamelist.GetEntryPort() )
-			Game.gamestate = GAMESTATE_SETTINGSMENU
-			GameSettingsGameTitle.Value = NetgameLobby_gamelist.GetEntryTitle()
-		EndIf
+		local entry:TGUIGameEntry = TGUIGameEntry(NetgameLobbyGamelist.getSelectedEntry())
+		if entry
+			local _hostIP:string = entry.data.getString("hostIP","0.0.0.0")
+			local _hostPort:int = entry.data.getInt("hostPort",0)
+			local gameTitle:string = entry.data.getString("gameTitle","#unknowngametitle#")
+
+			If Network.ConnectToServer( HostIp(_hostIP), _hostPort )
+				Game.gamestate = GAMESTATE_SETTINGSMENU
+				GameSettingsGameTitle.Value = gameTitle
+			EndIf
+		endif
 	EndIf
 	If NetgameLobbyButton_Back.GetClicks() > 0 Then
 		Game.gamestate		= GAMESTATE_MAINMENU
@@ -2325,33 +2376,26 @@ Function Menu_GameSettings()
 
 	If GameSettingsButton_Start.GetClicks() > 0
 		If Not Game.networkgame And Not Game.onlinegame
-			If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
-			Game.gamestate = GAMESTATE_RUNNING
+			If Not Init_Complete
+				Init_All()
+				Init_Complete = True		'check if rooms/colors/... are initiated
+			endif
+			Game.SetGamestate(GAMESTATE_RUNNING)
 		Else
 			GameSettingsOkButton_Announce.crossed = False
 			Interface.ShowChannel = Game.playerID
 
-			Game.gamestate = GAMESTATE_STARTMULTIPLAYER
+			Game.SetGamestate(GAMESTATE_STARTMULTIPLAYER)
 		EndIf
-
-		'Begin Game - create Events
-		EventManager.registerEvent( TEventOnTime.Create("Game.OnMinute", game.GetMinute()) )
-		EventManager.registerEvent( TEventOnTime.Create("Game.OnHour", game.GetHour()) )
-		EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )
-
-		'so we could add news etc.
-		EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
-
-		Soundmanager.PlayMusic(MUSIC_MUSIC)
 	EndIf
 	If GameSettingsButton_Back.GetClicks() > 0 Then
 		If Game.networkgame
 			If Game.networkgame Then Network.DisconnectFromServer()
 			Game.playerID = 1
-			Game.gamestate = GAMESTATE_NETWORKLOBBY
+			Game.SetGamestate(GAMESTATE_NETWORKLOBBY)
 			GameSettingsOkButton_Announce.crossed = False
 		Else
-			Game.gamestate = GAMESTATE_MAINMENU
+			Game.SetGamestate(GAMESTATE_MAINMENU)
 		EndIf
 	EndIf
 
@@ -2386,18 +2430,19 @@ Function Menu_GameSettings()
 	Next
 
 	If Game.networkgame = 1
+		'sync if the player got modified
 		If modifiedPlayers
 			NetworkHelper.SendPlayerDetails()
 			PlayerDetailsTimer = MilliSecs()
 		EndIf
+		'sync in all cases every 1 second
 		If MilliSecs() >= PlayerDetailsTimer + 1000
 			NetworkHelper.SendPlayerDetails()
 			PlayerDetailsTimer = MilliSecs()
 		EndIf
 	EndIf
-
-
 End Function
+
 
 Global MenuPreviewPicTimer:Int = 0
 Global MenuPreviewPicTime:Int = 4000
@@ -2441,9 +2486,9 @@ Function Menu_NetworkLobby_Draw()
 	SetColor 255,255,255
 
 	If Not Game.onlinegame
-		NetgameLobby_gamelist.background.value = Localization.GetString("MENU_NETWORKGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES")
+		NetgameLobbyGamelist.guiBackground.value = Localization.GetString("MENU_NETWORKGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES")
 	Else
-		NetgameLobby_gamelist.background.value = Localization.GetString("MENU_ONLINEGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES")
+		NetgameLobbyGamelist.guiBackground.value = Localization.GetString("MENU_ONLINEGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES")
 	EndIf
 
 
@@ -2457,7 +2502,6 @@ Function Menu_GameSettings_Draw()
 	SetAlpha 1.0
 	SetColor 255,255,255
 
-	' Local ChangesAllowed:Byte[4]
 	If Not Game.networkgame
 		GameSettingsBG.value = GetLocale("MENU_SOLO_GAME")
 		GameSettings_Chat.setOption(GUI_OBJECT_VISIBLE,FALSE)
@@ -2475,7 +2519,7 @@ Function Menu_GameSettings_Draw()
 	For Local i:Int = 0 To 3
 		SetColor 50,50,50
 		DrawRect(60 + i*190, 90, 110,110)
-		If Game.networkgame Or Game.playerID=1 Then
+		If Game.networkgame Or Game.playerID=1
 			If Game.gamestate <> GAMESTATE_STARTMULTIPLAYER And Players[i+1].Figure.ControlledByID = Game.playerID Or (Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				SetColor 255,255,255
 			Else
@@ -2483,7 +2527,6 @@ Function Menu_GameSettings_Draw()
 			EndIf
 		EndIf
 		DrawRect(60 + i*190 +1, 90+1, 110-2,110-2)
-'		DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 25 + 3 + i * 190, 50, 180, 200)
 	Next
 
 	'player-figure background
@@ -2519,85 +2562,105 @@ Function Menu_GameSettings_Draw()
 
 	'overlay gui items (higher zindex)
 	GUIManager.Draw("GameSettings",0, 101)
-
-	If Game.gamestate = GAMESTATE_STARTMULTIPLAYER
-		SetColor 180,180,200
-		SetAlpha 0.5
-		DrawRect 200,200,400,200
-		SetAlpha 1.0
-		SetColor 0,0,0
-		Assets.fonts.baseFont.draw("Synchronisiere Startbedingungen...", 220,220)
-		Assets.fonts.baseFont.draw("Starte Netzwerkspiel...", 220,240)
-
-		'master should spread startprogramme around
-		If Game.isGameLeader()
-			For Local playerids:Int = 1 To 4
-				Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
-				SeedRnd(MilliSecs())
-				Local i:Int = 0
-				For i = 0 To Game.startMovieAmount-1
-					ProgrammeArray[i] = TProgramme.GetRandomMovie(playerids)
-				Next
-				'give series to each player
-				For i = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
-					ProgrammeArray[i] = TProgramme.GetRandomSerie(playerids)
-				Next
-				'give 1 call in
-				ProgrammeArray[Game.startMovieAmount + Game.startSeriesAmount] = TProgramme.GetRandomProgrammeByGenre(20)
-				NetworkHelper.SendProgrammesToPlayer(playerids, ProgrammeArray)
-
-				Local ContractArray:TContract[]
-				For Local j:Int = 0 To Game.startAdAmount-1
-					ContractArray		= ContractArray[..ContractArray.length+1]
-					ContractArray[j]	= TContract.Create(TContractBase.GetRandomWithMaxAudience(Players[ playerids ].maxaudience, 0.10))
-				Next
-				NetworkHelper.SendContractsToPlayer(playerids, ContractArray)
-				Print "sent data for player: "+playerids
-
-				'add to local collections
-				For Local programme:TProgramme = EachIn programmeArray
-					If programme Then Players[ playerids ].ProgrammeCollection.AddProgramme( programme )
-				Next
-				For Local contract:TContract = EachIn contractArray
-					If contract Then Players[ playerids ].ProgrammeCollection.AddContract( contract )
-				Next
-
-
-
-			Next
-			NetworkHelper.SendGameReady(Game.playerID)
-		EndIf
-
-		Local start:Int = MilliSecs()
-		Repeat
-			SetColor 180,180,200
-			SetAlpha 1.0
-			DrawRect 200,200,400,200
-			SetAlpha 1.0
-			SetColor 0,0,0
-			Assets.fonts.baseFont.draw("Synchronisiere Startbedingungen...", 220,220)
-			Assets.fonts.baseFont.draw("Starte Netzwerkspiel...", 220,240)
-			Assets.fonts.baseFont.draw("Player 1..."+Players[1].networkstate+" MovieListCount: "+Players[1].ProgrammeCollection.MovieList.Count(), 220,260)
-			Assets.fonts.baseFont.draw("Player 2..."+Players[2].networkstate+" MovieListCount: "+Players[2].ProgrammeCollection.MovieList.Count(), 220,280)
-			Assets.fonts.baseFont.draw("Player 3..."+Players[3].networkstate+" MovieListCount: "+Players[3].ProgrammeCollection.MovieList.Count(), 220,300)
-			Assets.fonts.baseFont.draw("Player 4..."+Players[4].networkstate+" MovieListCount: "+Players[4].ProgrammeCollection.MovieList.Count(), 220,320)
-			If Not Game.networkgameready = 1 Then Assets.fonts.baseFont.draw("not ready!!", 220,360)
-			Flip
-			Network.Update()
-			If MilliSecs() - start > 5000 Then game.gamestate = GAMESTATE_SETTINGSMENU
-		Until Game.networkgameready = 1 Or game.gamestate <> GAMESTATE_STARTMULTIPLAYER
-
-		If Game.networkgameready
-			If Not Init_Complete Then Init_All() ;Init_Complete = True		'check if rooms/colors/... are initiated
-			Game.networkgameready = 1
-			Game.gamestate = GAMESTATE_RUNNING
-			GameSettingsOkButton_Announce.crossed = False
-			Players[Game.playerID].networkstate=1
-			Game.gamestate = GAMESTATE_RUNNING
-			Print "STARTED THE GAME ..."
-		EndIf
-	EndIf
 End Function
+
+Function Menu_StartMultiplayer_Draw()
+	'as background
+	Menu_GameSettings_Draw()
+
+	SetColor 180,180,200
+	SetAlpha 0.5
+	DrawRect 200,200,400,200
+	SetAlpha 1.0
+	SetColor 0,0,0
+	Assets.fonts.baseFont.draw("Synchronisiere Startbedingungen...", 220,220)
+	Assets.fonts.baseFont.draw("Starte Netzwerkspiel...", 220,240)
+
+
+	SetColor 180,180,200
+	SetAlpha 1.0
+	DrawRect 200,200,400,200
+	SetAlpha 1.0
+	SetColor 0,0,0
+	Assets.fonts.baseFont.draw("Synchronisiere Startbedingungen...", 220,220)
+	Assets.fonts.baseFont.draw("Starte Netzwerkspiel...", 220,240)
+	Assets.fonts.baseFont.draw("Player 1..."+Players[1].networkstate+" MovieListCount: "+Players[1].ProgrammeCollection.GetProgrammeCount(), 220,260)
+	Assets.fonts.baseFont.draw("Player 2..."+Players[2].networkstate+" MovieListCount: "+Players[2].ProgrammeCollection.GetProgrammeCount(), 220,280)
+	Assets.fonts.baseFont.draw("Player 3..."+Players[3].networkstate+" MovieListCount: "+Players[3].ProgrammeCollection.GetProgrammeCount(), 220,300)
+	Assets.fonts.baseFont.draw("Player 4..."+Players[4].networkstate+" MovieListCount: "+Players[4].ProgrammeCollection.GetProgrammeCount(), 220,320)
+	If Not Game.networkgameready = 1 Then Assets.fonts.baseFont.draw("not ready!!", 220,360)
+End Function
+
+Global StartMultiplayerSyncStarted:int = 0
+Function Menu_StartMultiplayer:int()
+	'master should spread startprogramme around
+	If Game.isGameLeader() AND not StartMultiplayerSyncStarted
+		StartMultiplayerSyncStarted = Millisecs()
+
+		For Local playerids:Int = 1 To 4
+			Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
+			SeedRnd(MilliSecs())
+			Local i:Int = 0
+			For i = 0 To Game.startMovieAmount-1
+				ProgrammeArray[i] = TProgramme.GetRandomMovie(playerids)
+			Next
+			'give series to each player
+			For i = 0 To Game.startSeriesAmount-1
+				ProgrammeArray[Game.startMovieAmount+i] = TProgramme.GetRandomSerie(playerids)
+			Next
+			'give 1 call in
+			ProgrammeArray[Game.startMovieAmount + Game.startSeriesAmount] = TProgramme.GetRandomProgrammeByGenre(20)
+			NetworkHelper.SendProgrammesToPlayer(playerids, ProgrammeArray)
+
+			Local ContractArray:TContract[Game.startAdAmount]
+			For Local j:Int = 0 To Game.startAdAmount-1
+				ContractArray[j] = TContract.Create(TContractBase.GetRandomWithMaxAudience(Players[ playerids ].maxaudience, 0.10))
+			Next
+			NetworkHelper.SendContractsToPlayer(playerids, ContractArray)
+	Print "sent data for player: "+playerids
+
+			'add to local collections
+			For Local programme:TProgramme = EachIn programmeArray
+				If programme Then Players[ playerids ].ProgrammeCollection.AddProgramme( programme )
+			Next
+			For Local contract:TContract = EachIn contractArray
+				If contract Then Players[ playerids ].ProgrammeCollection.AddContract( contract )
+			Next
+
+
+		Next
+		NetworkHelper.SendGameReady(Game.playerID)
+	EndIf
+
+	If Game.networkgameready=1
+		'we have to set gamestate BEFORE init_all()
+		'as init_all sends events which trigger gamestate-update/draw
+
+		'register events and start game
+		Game.SetGamestate(GAMESTATE_RUNNING)
+
+		If Not Init_Complete
+			Init_All()
+			Init_Complete = True		'check if rooms/colors/... are initiated
+		endif
+
+		GameSettingsOkButton_Announce.crossed = False
+		Players[Game.playerID].networkstate=1
+		Print "STARTED THE GAME ..." + rand(0,10000)
+		return TRUE
+	else
+		'go back to game settings if something takes longer than expected
+		If MilliSecs() - StartMultiplayerSyncStarted > 5000
+			print "sync timeout"
+			StartMultiplayerSyncStarted = 0
+			game.SetGamestate(GAMESTATE_SETTINGSMENU)
+			return FALSE
+		endif
+	EndIf
+
+
+End Function
+
 
 Global Betty:TBetty = New TBetty
 Type TBetty
@@ -2675,17 +2738,22 @@ Type TBetty
 	End Method
 End Type
 
-Game.gamestate = GAMESTATE_MAINMENU
+Game.SetGamestate(GAMESTATE_MAINMENU)
 Function UpdateMenu(deltaTime:Float=1.0)
 	'	App.Timer.Update(0)
-	If Game.networkgame Then Network.Update()
+	If Game.networkgame
+'		Network.client.playerName = Players[Game.playerID].name
+		Network.Update()
+	endif
 	Select Game.gamestate
 		Case GAMESTATE_MAINMENU
 			Menu_Main()
 		Case GAMESTATE_NETWORKLOBBY
 			Menu_NetworkLobby()
-		Case GAMESTATE_SETTINGSMENU, GAMESTATE_STARTMULTIPLAYER
+		Case GAMESTATE_SETTINGSMENU
 			Menu_GameSettings()
+		Case GAMESTATE_STARTMULTIPLAYER
+			Menu_StartMultiplayer()
 	EndSelect
 
 	If KEYMANAGER.IsHit(KEY_ESCAPE) Then ExitGame = 1
@@ -2721,8 +2789,10 @@ Function DrawMenu(tweenValue:Float=1.0)
 			Menu_Main_Draw()
 		Case GAMESTATE_NETWORKLOBBY
 			Menu_NetworkLobby_Draw()
-		Case GAMESTATE_SETTINGSMENU, GAMESTATE_STARTMULTIPLAYER
+		Case GAMESTATE_SETTINGSMENU
 			Menu_GameSettings_Draw()
+		Case GAMESTATE_STARTMULTIPLAYER
+			Menu_StartMultiplayer_Draw()
 	EndSelect
 
 	If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
@@ -2739,9 +2809,8 @@ Function Init_Creation()
 		TMovieAgencyBlocks.Create(TProgramme.GetRandomSerie(),20+i,0)
 	Next
 
-	'create random programmes and so on
-	TFigures.GetByID(figure_HausmeisterID).updatefunc_ = Null
-	If Not Game.networkgame Then
+	'create random programmes and so on - but only if local game
+	If Not Game.networkgame
 		For Local playerids:Int = 1 To 4
 			SeedRnd(MilliSecs())
 			Local i:Int = 0
@@ -2760,8 +2829,11 @@ Function Init_Creation()
 			Next
 		Next
 		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
+	else
+		'remote should control the figure
+		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = Null
 	EndIf
-			'abonnement for each newsgroup = 1
+	'abonnement for each newsgroup = 1
 	For Local playerids:Int = 1 To 4
 		For Local i:Int = 0 To 4
 			Players[playerids].SetNewsAbonnement(i, 1)
@@ -2798,8 +2870,8 @@ Function Init_Colorization()
 	Assets.AddImageAsSprite("gfx_building_sign0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage( gray ) )
 	Assets.AddImageAsSprite("gfx_elevator_sign0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( gray ) )
 	Assets.AddImageAsSprite("gfx_elevator_sign_dragged0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage( gray ) )
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage( gray2 ), Assets.GetSprite("gfx_building_sign_base").animcount )
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons5", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage( gray2 ), Assets.GetSprite("gfx_building_sign_base").animcount )
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons_off0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage( gray2 ), Assets.GetSprite("gfx_building_sign_base").animcount )
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons_on0", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage( gray2 ), Assets.GetSprite("gfx_building_sign_base").animcount )
 
 	'colorizing for every player and inputvalues (player and channelname) to players variables
 	For Local i:Int = 1 To 4
@@ -2809,8 +2881,8 @@ Function Init_Colorization()
 		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(Players[i].color) )
 		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage( Players[i].color) )
 		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(Players[i].color) )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Players[i].color),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons"+(i+5), Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Players[i].color),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons_off"+i,   Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(Players[i].color),Assets.GetSprite("gfx_interface_channelbuttons_off").animcount )
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons_on"+i, Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(Players[i].color),Assets.GetSprite("gfx_interface_channelbuttons_on").animcount )
 	Next
 End Function
 
@@ -2821,6 +2893,8 @@ Function Init_All()
 	PrintDebug ("  Init_Colorization()", "colorizing Images corresponding to playercolors", DEBUG_START)
 	Init_Colorization()
 
+'triggering that event also triggers app.timer.loop which triggers update/draw of
+'gamesstates - which runs this again etc.
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 	'setzt Raumnamen, erstellt Raum-Tooltips und Raumplaner-Schilder
 	Init_CreateRoomDetails()

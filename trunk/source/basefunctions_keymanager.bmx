@@ -1,5 +1,4 @@
 SuperStrict
-
 Import brl.System
 import brl.PolledInput
 Global MOUSEMANAGER:TMouseManager = New TMouseManager
@@ -7,10 +6,11 @@ Global KEYMANAGER:TKeyManager = New TKeyManager
 Global KEYWRAPPER:TKeyWrapper = New TKeyWrapper
 
 'Tastenstadien
-Const KEY_STATE_NORMAL:int	= 0
-Const KEY_STATE_HIT:int		= 1
-Const KEY_STATE_DOWN:int	= 2
-Const KEY_STATE_UP:int		= 3
+Const KEY_STATE_NORMAL:int		= 0
+Const KEY_STATE_HIT:int			= 1
+Const KEY_STATE_DOWN:int		= 2
+Const KEY_STATE_UP:int			= 3
+Const KEY_STATE_DOUBLEHIT:int	= 4
 
 For local i:int = 0 To 255
 	KEYWRAPPER.allowKey(i,KEYWRAP_ALLOW_BOTH,600,200)
@@ -23,6 +23,8 @@ Type TMouseManager
 	Field errorboxes:Int		= 0
 	Field _iKeyStatus:Int[]		= [0,0,0,0]
 	Field _iKeyDownTime:Int[]	= [0,0,0,0]		'time since when the button is pressed
+	Field _iKeyHitTime:Int[]	= [0,0,0,0]		'time when the button was last hit
+	Field _doubleClickTime:int	= 300			'ms between two clicks for 1 double click
 
 	'Statusabfragen
 
@@ -30,8 +32,13 @@ Type TMouseManager
 		return Self._iKeyStatus[ iKey ] = KEY_STATE_NORMAL
 	EndMethod
 
-	Method IsHit:Int( iKey:Int)
-		return Self._iKeyStatus[ iKey ] = KEY_STATE_HIT
+	Method IsHit:Int( iKey:Int, ignoreDoubleClicks:int=TRUE)
+		if ignoreDoubleClicks then return Self._iKeyStatus[ iKey ] = KEY_STATE_HIT
+		return (Self._iKeyStatus[ iKey ] = KEY_STATE_HIT) or (Self._iKeyStatus[ iKey ] = KEY_STATE_DOUBLEHIT)
+	EndMethod
+
+	Method IsDoubleHit:Int( iKey:Int)
+		return Self._iKeyStatus[ iKey ] = KEY_STATE_DOUBLEHIT
 	EndMethod
 
 	Method IsDown:Int( iKey:Int )
@@ -68,8 +75,26 @@ Type TMouseManager
 
 		For Local i:Int = 1 To 3
 			If _iKeyStatus[ i ] = KEY_STATE_NORMAL
-				If MouseHit( i ) Then _iKeyStatus[ i ] = KEY_STATE_HIT
-			ElseIf _iKeyStatus[ i ] = KEY_STATE_HIT
+				If MouseHit( i )
+					_iKeyStatus[ i ] = KEY_STATE_HIT
+					'check for double click
+					'only act if we already clicked in the past
+					if _iKeyHitTime[ i ] > 0
+						'did we click in the time frame ?
+						if _iKeyHitTime[ i ] + _doubleClickTime > Millisecs()
+							_iKeyStatus[ i ] = KEY_STATE_DOUBLEHIT
+							_iKeyHitTime[ i ] = 0
+						else
+							'start a new doubleclick time
+							_iKeyHitTime[ i ] = millisecs()
+						endif
+					else
+						'save the click time so we now the passed time on next click
+						_iKeyHitTime[ i ] = millisecs()
+					endif
+
+				endif
+			ElseIf _iKeyStatus[ i ] = KEY_STATE_HIT or _iKeyStatus[ i ] = KEY_STATE_DOUBLEHIT
 				If MouseDown( i ) Then _iKeyStatus[ i ] = KEY_STATE_DOWN Else _iKeyStatus[ i ] = KEY_STATE_UP
 			ElseIf _iKeyStatus[ i ] = KEY_STATE_DOWN
 				If Not MouseDown( i ) Then _iKeyStatus[ i ] = KEY_STATE_UP
@@ -81,7 +106,7 @@ Type TMouseManager
 				'store time when first mousedown happened
 				if self._iKeyDownTime[i] = 0 then self._iKeyDownTime[i] = millisecs()
 			Else
-				'reset time - mousedown no longer happening 
+				'reset time - mousedown no longer happening
 				self._iKeyDownTime[i] = 0
 			endif
 		Next
@@ -102,9 +127,9 @@ Type TMouseManager
 
 	Method GetStatusHit:int[]()
 		return [false,..
-		        _iKeyStatus[1] = KEY_STATE_HIT,..
-		        _iKeyStatus[2] = KEY_STATE_HIT,..
-		        _iKeyStatus[3] = KEY_STATE_HIT..
+		        _iKeyStatus[1] = (KEY_STATE_HIT or KEY_STATE_DOUBLEHIT),..
+		        _iKeyStatus[2] = (KEY_STATE_HIT or KEY_STATE_DOUBLEHIT),..
+		        _iKeyStatus[3] = (KEY_STATE_HIT or KEY_STATE_DOUBLEHIT)..
 		        ]
 	End Method
 

@@ -27,6 +27,7 @@ REM
 * SaveLoad als Events "Movie.onLoad"
 
 * Räume als besetzt markieren (damit KI keine Filme kauft waehrend ich beim Haendler steh :D)
+    - Innenraeume checken? (Auktionsraum bei Filmhaendler)
 * XML-Dateien: Animationskonfiguration
 	- TAsset -> global "currentDeltaTime"
 	- TAsset -> global "updateList" haelt Assets die in einer Update-Runde aktualisiert werden muessen
