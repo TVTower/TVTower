@@ -30,7 +30,7 @@ Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 
-Global App:TApp = TApp.Create(60, 60) 'create with 60fps for physics and graphics
+Global App:TApp = TApp.Create(60,60) 'create with 60fps for physics and graphics
 App.LoadResources("config/resources.xml")
 
 GUIManager.globalScale	= 1.00
@@ -141,8 +141,12 @@ Type TApp
 				Case  2	SetGraphicsDriver D3D9Max2DDriver()
 				?
 				Case -1 SetGraphicsDriver GLMax2DDriver()
-				'Default SetGraphicsDriver BufferedGLMax2DDriver()
+				?Linux
+				Default SetGraphicsDriver BufferedGLMax2DDriver()
+				?
+				?not Linux
 				Default SetGraphicsDriver GLMax2DDriver()
+				?
 			EndSelect
 			g = Graphics(Settings.width, Settings.height, Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
 			If g = Null
@@ -3088,6 +3092,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			'say soundmanager to do something
 			EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
 
+			KEYMANAGER.changeStatus()
 
 			If not GUIManager.getActive()
 				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
@@ -3141,7 +3146,7 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				endif
 			EndIf
 
-			KEYMANAGER.changeStatus()
+
 			If Game.gamestate = 0
 				UpdateMain(App.Timer.getDeltaTime())
 			Else

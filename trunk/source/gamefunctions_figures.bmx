@@ -17,9 +17,9 @@ Type TFigures Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field id:Int				= 0
 	Field Visible:Int			= 1
 
-	Field SpecialTimer:TTimer	= TTimer.Create(1500)
-	Field WaitAtElevatorTimer:TTimer = TTimer.Create(25000)
-	Field SyncTimer:TTimer		= TTimer.Create(2500) 'network sync position timer
+	Field SpecialTimer:TIntervalTimer	= TIntervalTimer.Create(1500)
+	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(25000)
+	Field SyncTimer:TIntervalTimer		= TIntervalTimer.Create(2500) 'network sync position timer
 
 	Field ControlledByID:Int	= -1
 	Field alreadydrawn:Int		= 0 			{sl = "no"}

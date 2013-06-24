@@ -284,15 +284,15 @@ End Type
 
 
 'for things happening every X moments
-Type TTimer
+Type TIntervalTimer
 	field interval:int		= 0		'happens every ...
 	field intervalToUse:int	= 0		'happens every ...
 	field actionTime:int	= 0		'plus duration
 	field randomness:int	= 0		'value the interval can "change" on GetIntervall() to BOTH sides - minus and plus
 	field timer:int			= 0		'time when event last happened
 
-	Function Create:TTimer(interval:int, actionTime:int = 0, randomness:int = 0)
-		local obj:TTimer = new TTimer
+	Function Create:TIntervalTimer(interval:int, actionTime:int = 0, randomness:int = 0)
+		local obj:TIntervalTimer = new TIntervalTimer
 		obj.interval	= interval
 		obj.actionTime	= actionTime
 		obj.randomness	= randomness

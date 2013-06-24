@@ -6,7 +6,7 @@ Type TRooms  {_exposeToLua="selected"}
     Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
     Field tooltip:TTooltip		= null					'uses description
 
-	Field DoorTimer:TTimer		= TTimer.Create(500)'500
+	Field DoorTimer:TIntervalTimer		= TIntervalTimer.Create(500)'500
 	Field Pos:TPoint									'x of the rooms door in the building, y as floornumber
     Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
@@ -1079,7 +1079,7 @@ End Type
 
 'Movie agency
 Type RoomHandler_MovieAgency extends TRoomHandler
-	Global twinkerTimer:TTimer = TTimer.Create(6000,250)
+	Global twinkerTimer:TIntervalTimer = TIntervalTimer.Create(6000,250)
 	Global AuctionToolTip:TTooltip
 
 	Function Init()

@@ -3,6 +3,11 @@ Import "basefunctions_events.bmx"
 ?Threaded
 Import Brl.threads
 ?
+'timer mode
+Import Brl.timer
+Import Brl.event
+Import Brl.retro
+
 'class for smooth framerates
 
 Type TDeltaTimer
@@ -83,6 +88,7 @@ Type TDeltaTimer
 		forever
 	End Function
 
+
 	Method Loop()
 		mainNewTime		= MilliSecs()
 		if mainOldTime = 0.0 then mainOldTime = mainNewTime - 1
@@ -109,6 +115,7 @@ Type TDeltaTimer
 				self.nextDraw = 1.0/float(self.fps)
 
 				'how many % of ONE update are left - 1.0 would mean: 1 update missing
+				'this is NOT related to the fps! but some event listeners may want that information
 				self.tweenValue = self.accumulator / self.getDeltaTime()
 
 
@@ -175,7 +182,9 @@ endrem
 			self.nextDraw = 1.0/float(self.fps)
 
 			'how many % of ONE update are left - 1.0 would mean: 1 update missing
-			self.tweenValue:+ self.accumulator * self.ups
+			'this is NOT related to the fps! but some event listeners may want that information
+			self.tweenValue = self.accumulator / self.getDeltaTime()
+			'self.tweenValue:+ self.accumulator * self.ups
 
 			'draw gets tweenvalue (0..1)
 			self.timesDrawn :+1

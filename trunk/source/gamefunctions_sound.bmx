@@ -136,7 +136,7 @@ End Type
 Type TDoorSoundSource Extends TSoundSourceElement
 	Field Room:TRooms			'Die Raum dieser Türe
 	Field IsGamePlayerAction:Int	'
-	Field DoorTimer:TTimer		= TTimer.Create(1000)'500
+	Field DoorTimer:TIntervalTimer		= TIntervalTimer.Create(1000)'500
 
 	Function Create:TDoorSoundSource(_room:TRooms)
 		Local result:TDoorSoundSource = New TDoorSoundSource
