@@ -2,6 +2,9 @@ superstrict
 'event-classes
 Import brl.Map
 Import brl.retro
+?Threaded
+Import Brl.threads
+?
 Import "basefunctions.bmx"  'get TData-Type
 global EventManager:TEventManager = new TEventManager
 
@@ -72,6 +75,15 @@ Type TEventManager
 
 	'runs all listeners NOW ...returns amount of listeners
 	Method triggerEvent:int(triggeredByEvent:TEventBase)
+		?Threaded
+		'if we have systemonly-event we cannot do it in a subthread
+		'instead we just add that event to the upcoming events list
+		if triggeredByEvent._channel = 1
+			If CurrentThread()<>MainThread() then self.registerEvent(triggeredByEvent)
+		endif
+		?
+
+
 		local listeners:TList = TList(self._listeners.ValueForKey( lower(triggeredByEvent._trigger) ))
 		if listeners
 			for local listener:TEventListenerBase = eachin listeners
@@ -84,18 +96,25 @@ Type TEventManager
 		return 0
 	End Method
 
-	Method update()
-		TProfiler.Enter("TEventManager.Update")
+	Method update(onlyChannel:int=null)
 		Assert self._ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
-		self._processEvents()
+		self._processEvents(onlyChannel)
 		self._ticks :+ 1
-		TProfiler.Leave("TEventManager.Update")
 	End Method
 
-	Method _processEvents()
+	Method _processEvents(onlyChannel:int=null)
 		If Not self._events.IsEmpty()
 			Local event:TEventBase = TEventBase(self._events.First()) 			' get the next event
 			if event<> null
+				if onlyChannel<>null
+					'system
+					?Threaded
+					if event._channel = 1 and event._channel <> onlyChannel
+						If CurrentThread()<>MainThread() then return
+					endif
+					?
+				endif
+
 				Local startTime:int = event.getStartTime()
 '				Assert startTime >= self._ticks, "TEventManager: an future event didn't get triggered in time"
 				If startTime <= _ticks						' is it time for this event?
@@ -206,6 +225,7 @@ Type TEventBase
 	Field _receiver:object = null
 	field _data:object
 	field _veto:int = 0
+	field _channel:int = 0		'no special channel
 
 	Method getStartTime:Int()
 		Return self._startTime
@@ -250,13 +270,14 @@ End Type
 
 Type TEventSimple extends TEventBase
 
-	Function Create:TEventSimple(trigger:string, data:object=null, sender:object=null, receiver:object=null)
+	Function Create:TEventSimple(trigger:string, data:object=null, sender:object=null, receiver:object=null, channel:int=0)
 		if data=Null then data = TData.Create()
 		local obj:TEventSimple = new TEventSimple
 		obj._trigger	= lower(trigger)
 		obj._data	 	= data
 		obj._sender		= sender
 		obj._receiver	= receiver
+		obj._channel	= channel
 		return obj
 	End Function
 End Type

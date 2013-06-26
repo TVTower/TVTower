@@ -20,6 +20,10 @@ Import brl.D3D9Max2D
 Import brl.D3D7Max2D
 ?
 
+?Threaded
+Import brl.Threads
+?
+
 Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 												'		- base class For buttons And extension newsbutton
 												'		- stationmap-handling, -creation ...
@@ -2438,7 +2442,6 @@ Global MenuPreviewPicTimer:Int = 0
 Global MenuPreviewPicTime:Int = 4000
 Global MenuPreviewPic:TGW_Sprites = Null
 Function Menu_Main_Draw()
-	If RandRange(0,10) = 10 Then GCCollect()
 	SetColor 190,220,240
 	SetAlpha 0.5
 	DrawRect(0,0,App.settings.width,App.settings.Height)
@@ -3163,8 +3166,14 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			'say soundmanager to do something
 			EventManager.triggerEvent( TEventSimple.Create("App.onSoundUpdate",Null) ) 'mv 10.11.2012: Bitte den Event noch an die richtige Stelle verschieben. Der Sound braucht wohl nen eigenen Thread, sonst ruckelt es
 
-			KEYMANAGER.changeStatus()
-
+			'EventManager.triggerEvent( TEventSimple.Create("App.UpdateKeyManager",Null, Null, Null, 1) )
+			?Threaded
+			LockMutex(RefreshInputMutex)
+			?
+			RefreshInput = TRUE
+			?Threaded
+			UnLockMutex(RefreshInputMutex)
+			?
 			If Not GUIManager.getActive()
 				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
 				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
@@ -3223,9 +3232,10 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			Else
 				UpdateMenu(App.Timer.getDeltaTime())
 			EndIf
-			If RandRange(0,20) = 20 Then GCCollect()
 
-			MOUSEMANAGER.changeStatus(Game.error)
+			'threadsafe?
+'			MOUSEMANAGER.changeStatus()
+'			EventManager.triggerEvent( TEventSimple.Create("App.UpdateMouseManager",Null, Null, Null, 1) )
 		EndIf
 		Return True
 	End Method
@@ -3293,6 +3303,16 @@ Next
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
 EventManager.registerListener( "Game.OnMinute",	TEventListenerOnMinute.Create() )
 EventManager.registerListenerFunction( "Game.OnStart",	TGame.onStart )
+'we do not want them to happen in each timer loop but on request...
+EventManager.registerListenerFunction( "App.UpdateKeymanager",	UpdateKeymanager )
+EventManager.registerListenerFunction( "App.UpdateMouseManager",UpdateMousemanager )
+
+Function UpdateKeymanager:int( triggerEvent:TEventBase )
+	KEYMANAGER.ChangeStatus()
+End Function
+Function UpdateMousemanager:int( triggerEvent:TEventBase )
+	MOUSEMANAGER.ChangeStatus()
+End Function
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 
@@ -3303,14 +3323,35 @@ Global Init_Complete:Int = 0
 EventManager.Init()
 App.StartApp() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
 
+Global RefreshInput:int = TRUE
+?Threaded
+Global RefreshInputMutex:TMutex = CreateMutex()
+?
 
 If ExitGame <> 1 And Not AppTerminate()'not exit game
 	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
 	Repeat
 		App.Timer.loop()
+
+		'we cannot fetch keystats in threads
+		'so we have to do it 100% in the main thread - same for mouse
+	if RefreshInput
+		?Threaded
+		LockMutex(RefreshInputMutex)
+		?
+		KEYMANAGER.changeStatus()
+		MOUSEMANAGER.changeStatus()
+		RefreshInput = FALSE
+		?Threaded
+		UnLockMutex(RefreshInputMutex)
+		?
+	endif
+
 		'process events not directly triggered
 		'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
 		EventManager.update()
+
+		'If RandRange(0,20) = 20 Then GCCollect()
 	Until AppTerminate() Or ExitGame = 1
 	If Game.networkgame Then Network.DisconnectFromServer()
 EndIf 'not exit game

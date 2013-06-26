@@ -285,6 +285,7 @@ Type TGUIManager
 						mouseButtonDown[1] = FALSE
 						mouseButtonHit[1] = FALSE
 						'no underlaying clicks!
+						'attention: resetting a key from a non-mainthread ?!
 						'MOUSEMANAGER.ResetKey(1)
 					EndIf
 
@@ -1372,6 +1373,7 @@ Type TGUIDropDown Extends TGUIobject
 					clickedEntryID	= Entry.id
 					GUIManager.setActive(0)
 					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnChange", TData.Create().AddNumber("entryID", entry.id), self ) )
+					'threadsafe?
 					MOUSEMANAGER.ResetKey(1)
 					Exit
 				else

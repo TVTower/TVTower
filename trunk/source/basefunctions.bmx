@@ -5,7 +5,9 @@ Import "basefunctions_localization.bmx"
 'Import "basefunctions_text.bmx"
 Import "basefunctions_keymanager.bmx"	'holds pressed Keys and Mousebuttons for one mainloop instead of resetting it like MouseHit()
 Import brl.reflection
-
+?Threaded
+Import Brl.threads
+?
 'Import bah.libxml
 Import "external/libxml/libxml.bmx"
 Import "external/persistence.mod/persistence.bmx"
@@ -828,6 +830,9 @@ Type TProfiler
 	Global activated:Byte = 1
 	Global calls:TMap = CreateMap()
 	Global lastCall:TCall = null
+	?Threaded
+	Global accessMutex:TMutex = CreateMutex()
+	?
 
 	Function DumpLog( file:String )
 
@@ -867,6 +872,12 @@ Type TProfiler
 
 	Function Enter:int(func:String)
 		If TProfiler.activated
+			?Threaded
+				return TRUE
+				'wait for the mutex to get access to child variables
+				LockMutex(accessMutex)
+			?
+
 			Local call:tcall = null
 			call = TCall(calls.ValueForKey(func))
 			if call <> null
@@ -885,11 +896,20 @@ Type TProfiler
 			call.start	= MilliSecs()
 			calls.insert(func, call)
 			TProfiler.LastCall = call
+			?Threaded
+				'wait for the mutex to get access to child variables
+				UnLockMutex(accessMutex)
+			?
 		EndIf
 	End Function
 
 	Function Leave:int( func:String )
 		If TProfiler.activated
+			?Threaded
+				return TRUE
+				'wait for the mutex to get access to child variables
+				LockMutex(accessMutex)
+			?
 			Local call:TCall = TCall(calls.ValueForKey(func))
 			If call <> null
 				Local l:int = MilliSecs()-call.start
@@ -897,8 +917,16 @@ Type TProfiler
 				if call.parent <> null
 					TProfiler.LastCall = call.parent
 				endif
+				?Threaded
+					'wait for the mutex to get access to child variables
+					UnLockMutex(accessMutex)
+				?
 				Return true
 			EndIf
+			?Threaded
+				'wait for the mutex to get access to child variables
+				UnLockMutex(accessMutex)
+			?
 		EndIf
 		return false
 	End Function

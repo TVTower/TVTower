@@ -1,6 +1,9 @@
 SuperStrict
 Import brl.System
 import brl.PolledInput
+?Threaded
+Import brl.Threads
+?
 Global MOUSEMANAGER:TMouseManager = New TMouseManager
 Global KEYMANAGER:TKeyManager = New TKeyManager
 Global KEYWRAPPER:TKeyWrapper = New TKeyWrapper
