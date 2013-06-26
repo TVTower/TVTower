@@ -1077,8 +1077,9 @@ endrem
 			block = Player.ProgrammePlan.GetCurrentProgrammeBlock()
 			Player.audience = 0
 
-			If block And block.programme And Player.maxaudience <> 0
+			If block And block.programme And Player.maxaudience <> 0				
 				Player.audience = Floor(Player.maxaudience * block.Programme.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
+				AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience)) + ") * 1000"
 				'maybe someone sold a station
 				If recompute
 					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())

@@ -135,7 +135,9 @@ AITask = KIDataObjekt:new{
 	TargetRoom = -1; -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
 	CurrentBudget = 0; -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
 	BudgetWholeDay = 0; -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
-	BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
+	BudgetWeigth = 0; -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
+	NeededInvestmentBudget = -1; -- Wie viel Geld benötigt die KI für eine Großinvestition
+	InvestmentPriority = 0 -- Wie wahrscheinlich ist es, dass diese Aufgabe eine Großinvestition machen darf
 }
 
 function AITask:typename()
@@ -226,6 +228,9 @@ function AITask:OnReachRoom()
 	end
 end
 
+function AITask:BudgetSetup()
+end
+
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -258,7 +263,7 @@ end
 
 function AIJob:ReDoCheck(pWait)
 	if ((self.LastCheck + pWait) < Game.GetTimeGone()) then
-		debugMsg("ReDoCheck")
+		--debugMsg("ReDoCheck")
 		self.Status = JOB_STATUS_REDO
 		self.LastCheck = Game.GetTimeGone()
 		self:Prepare(self.StartParams)
@@ -318,7 +323,7 @@ function StatisticEvaluator:Adjust()
 	self.MinValueTemp = 100000000000000
 	self.AverageValueTemp = -1
 	self.MaxValueTemp = -1
-	self.Values = 0
+	self.Values = 0	
 end
 
 function StatisticEvaluator:AddValue(value)
@@ -342,11 +347,21 @@ end
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 Requisition = SLFDataObject:new{
 	TaskId = nil,
-	Priority = 0 -- 10 = hoch 1 = gering
+	TaskOwnerId = nil,
+	Priority = 0, -- 10 = hoch 1 = gering
+	Done = false
 }
 
 function Requisition:typename()
 	return "Requisition"
+end
+
+function Requisition:CheckActuality()
+	return true
+end
+
+function Requisition:Complete()
+	self.Done = true
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 

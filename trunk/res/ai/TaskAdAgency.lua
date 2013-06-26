@@ -23,6 +23,9 @@ function TaskAdAgency:Activate()
 	self.AppraiseSpots = AppraiseSpots:new()
 	self.AppraiseSpots.AdAgencyTask = self
 	
+	self.SignRequisitedContracts = SignRequisitedContracts:new()
+	self.SignRequisitedContracts.AdAgencyTask = self		
+	
 	self.SignContracts = SignContracts:new()
 	self.SignContracts.AdAgencyTask = self	
 	
@@ -30,10 +33,15 @@ function TaskAdAgency:Activate()
 end
 
 function TaskAdAgency:GetNextJobInTargetRoom()
-	if (self.CheckSpots.Status ~= JOB_STATUS_DONE) then
+	if (MY.ProgrammeCollection.GetContractCount() >= 8) then
+		self:SetDone()
+		return nil
+	elseif (self.CheckSpots.Status ~= JOB_STATUS_DONE) then
 		return self.CheckSpots
 	elseif (self.AppraiseSpots.Status ~= JOB_STATUS_DONE) then
 		return self.AppraiseSpots
+	elseif (self.SignRequisitedContracts.Status ~= JOB_STATUS_DONE) then	
+		return self.SignRequisitedContracts		
 	elseif (self.SignContracts.Status ~= JOB_STATUS_DONE) then	
 		return self.SignContracts
 	end
@@ -169,13 +177,104 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-SignContracts = AIJob:new{
+SignRequisitedContracts = AIJob:new{
 	CurrentSpotIndex = 0;
 	AdAgencyTask = nil
 }
 
+function SignRequisitedContracts:Prepare(pParams)
+	debugMsg("Unterschreibe benötigte Werbeverträge")
+	self.CurrentSpotIndex = 0
+	
+	self.Player = _G["globalPlayer"]
+	self.SpotRequisitions = self.Player:GetRequisitionsByTaskId(_G["TASK_ADAGENCY"])	
+end
+
+function SignRequisitedContracts:Tick()	
+	--debugMsg("SignRequisitedContracts")
+	
+	--Sortieren
+	local sortMethod = function(a, b)
+		return a.GetAttractiveness() > b.GetAttractiveness()
+	end	
+	table.sort(self.AdAgencyTask.SpotsInAgency, sortMethod)	
+	
+	for k,requisition in pairs(self.SpotRequisitions) do
+		local neededSpotCount = requisition.Count
+		
+		local guessedAudience = AITools:GuessedAudienceForLevel(requisition.Level)
+		local minGuessedAudience = (guessedAudience * 0.8)
+				
+		local signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.8))
+		if (signedContracts == 0) then		
+			signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))
+			if (signedContracts == 0) then
+				guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbeverträge... die Sinnhaftigkeit sollte nochmal geprüft werden								
+				signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))					
+				if (signedContracts == 0) then
+					guessedAudience = guessedAudience + 5000 -- Die 5000 sind einfach ein Erfahrungswert, denn es gibt kaum kleinere Werbeverträge... die Sinnhaftigkeit sollte nochmal geprüft werden
+					signedContracts = self:SignMatchingContracts(requisition, guessedAudience, self:GetMinGuessedAudience(guessedAudience, 0.6))									
+				end
+			end
+		end
+	end	
+	
+	self.Status = JOB_STATUS_DONE
+end
+
+function SignRequisitedContracts:GetMinGuessedAudience(guessedAudience, minFactor)
+	if (guessedAudience < 10000) then
+		return 0
+	else
+		return (guessedAudience * minFactor)
+	end
+end
+
+function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudience, minguessedAudience)
+	local signed = 0
+	local buyedContracts = {}
+	
+	for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
+		if MY.ProgrammeCollection.GetContractCount() >= 8 then break end
+	
+		local minAudience = value.GetMinAudience()
+	
+		if ((minAudience < guessedAudience) and (minAudience > minguessedAudience)) then
+			--Passender Spot... also kaufen
+			debugMsg("Schließe Werbevertrag: " .. value.contractBase.title .. " (" .. value.GetID() .. ") weil benötigt. Level: " .. requisition.Level)
+			TVT.sa_doBuySpot(value.GetID())
+			requisition:UseThisContract(value)
+			table.insert(buyedContracts, value)			
+			signed = signed + 1			
+			--neededSpotCount = neededSpotCount - value.GetSpotCount()
+		end
+		
+		--if (neededSpotCount <= 0) then
+		--	self.Player:RemoveRequisition(requisition)
+		--else
+		--	requisition.Count = neededSpotCount
+		--end		
+	end
+	
+	if (table.count(buyedContracts) > 0) then
+		debugMsg("Entferne " .. table.count(buyedContracts) .. " abgeschlossene Werbeverträge aus der Shop-Liste.")
+		table.removeCollection(self.AdAgencyTask.SpotsInAgency, buyedContracts)
+	end
+	
+	return signed
+end
+-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+-- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+SignContracts = AIJob:new{
+	CurrentSpotIndex = 0;
+	AdAgencyTask = nil
+}
+--self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 function SignContracts:Prepare(pParams)
-	debugMsg("Unterschreibe Werbeverträge")
+	debugMsg("Unterschreibe lukrative Werbeverträge")
 	self.CurrentSpotIndex = 0
 end
 
@@ -192,6 +291,7 @@ function SignContracts:Tick()
 	--debugMsg("openSpots: " .. openSpots)
 	if (openSpots > 0) then
 		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
+			if MY.ProgrammeCollection.GetContractCount() >= 8 then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
 				debugMsg("Schließe Werbevertrag: " .. value.contractBase.title .. " (" .. value.GetID() .. ")")

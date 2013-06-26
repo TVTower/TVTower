@@ -148,6 +148,13 @@ table.first = function(pTable)
 	end
 end
 
+table.contains = function(pTable, item)
+    for key, value in pairs(pTable) do
+        if value == item then return true end
+    end
+    return false
+end
+
 table.sortByKeys = function(t, f)
 	local a = {}
 	for n in pairs(t) do
@@ -159,6 +166,40 @@ table.sortByKeys = function(t, f)
 		i = i + 1
 		return a[i], t[a[i]]
 	end	
+end
+
+table.getKey = function(pTable, item)
+    for key, value in pairs(pTable) do
+        if value == item then
+			return key
+		end
+    end
+    return nil
+end
+
+table.getIndex = function(pTable, item)
+	local index = 0
+    for key, value in pairs(pTable) do		
+        if value == item then
+			return index
+		end
+		index = index + 1
+    end
+    return -1
+end
+
+table.removeElement = function(t, e)
+	local index = table.getIndex(t, e)
+	if (index ~= -1) then
+		table.remove(t, index)
+	end
+end
+
+table.removeCollection = function(t, c)
+    for key, value in pairs(c) do
+        local index = table.getIndex(t, value)
+		table.remove(t, index)
+    end	
 end
 
 -- ##### TEST #####

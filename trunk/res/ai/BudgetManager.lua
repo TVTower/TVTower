@@ -35,6 +35,8 @@ function BudgetManager:Initialize()
 end
 
 function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn des Tages aufgerufen
+	self:CheckInvestments()	
+
 	--Die Erfahrungswerte werden wieder um einen Tag nach hinten verschoben, da ein neuer Erfahrungswert dazukommt
 	self.BudgetHistory[OLD_BUDGET_3] = self.BudgetHistory[OLD_BUDGET_2]
 	self.BudgetHistory[OLD_BUDGET_2] = self.BudgetHistory[OLD_BUDGET_1]
@@ -74,6 +76,17 @@ function BudgetManager:CalculateBudget() -- Diese Methode wird immer zu Beginn d
 	self:AllocateBudgetToTasks(myBudget)
 end
 
+function BudgetManager:CheckInvestments()
+	local player = _G["globalPlayer"] --Zugriff die globale Variable
+
+	-- Zählen wie viele Budgetanteile es insgesamt gibt
+	for k,v in pairs(player.TaskList) do
+		v.InvestmentPriority = v.InvestmentPriority + v.BudgetWeigth
+	end
+	
+	--TODO: hier weiter machen
+end
+
 function BudgetManager:CalculateAverageBudget(pCurrentAccountBalance, pTurnOver)
 	--debugMsg("A1.1: " .. pTurnOver); debugMsg("AX.1: " .. self.BudgetHistory[OLD_BUDGET_1]); debugMsg("AX.2: " .. self.BudgetHistory[OLD_BUDGET_2]); debugMsg("AX.3: " .. self.BudgetHistory[OLD_BUDGET_3])
 
@@ -100,9 +113,11 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 
 	-- Die Budgets zuweisen
 	for k,v in pairs(player.TaskList) do
+		debugMsg(v:typename() .. "- Altes Budget: " .. v.CurrentBudget .. " / " .. v.BudgetWholeDay)
 		v.CurrentBudget = math.round(v.BudgetWeigth * BudgetUnit)
 		v.BudgetWholeDay = v.CurrentBudget
-		--debugMsg(v:typename() .. "- BudgetWholeDay: " .. v.BudgetWholeDay)
+		v:BudgetSetup()
+		debugMsg(v:typename() .. "- BudgetWholeDay: " .. v.BudgetWholeDay)
 	end
 end
 

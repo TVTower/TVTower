@@ -194,6 +194,23 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
     End Method
 
+	Method HowOftenProgrammeInPlan:Int(programmeId:Int, day:Int=-1, withPlanned:Int=0) {_exposeToLua}
+		If (day = -1) Then day = Game.GetDay()
+		
+		Local currentHour:Int = Game.GetHour()
+		Local count:Int = 0
+		
+		For Local i:Int = 0 To 23
+			If currentHour > i Or withPlanned = 1
+				local currentPro:TProgramme = Self.GetCurrentProgramme(i, day)
+				If (not (currentPro = null)) and currentPro.GetID() = programmeId
+					count = count + 1
+				Endif
+			Endif			
+		Next
+		
+		Return count
+	End Method
 
 	'NewsBlock
 	'=========
@@ -495,8 +512,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method GetContractFromList:TContract(pos:Int=0) {_exposeToLua}
 		Return TContract( ContractList.ValueAtIndex(pos) )
 	End Method
-
-
+	
 
 	Method GetProgramme:TProgramme(id:Int) {_exposeToLua}
 		For Local obj:TProgramme = EachIn Self.List
@@ -1434,7 +1450,7 @@ endrem
 	End Method
 
 	'computes a percentage which could be multiplied with maxaudience
-	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1)
+	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1) {_exposeToLua}
 		Local quote:Float		= self.getBaseAudienceQuote(lastquote)
 
 		'a bit of luck :D
@@ -2019,7 +2035,7 @@ Type TAdBlock Extends TBlockGraphical
     Field botched:int				= 0			'did the block run successful or failed it?
     Field senddate:Int				=-1			'which day this ad is planned to be send?
     Field sendtime:Int				=-1			'which time this ad is planned to be send?
-    Field contract:TContract		= Null
+    Field contract:TContract		= Null		{_exposeToLua}
     Global DragAndDropList:TList	= CreateList()
     Global spriteBaseName:String	= "pp_adblock1"
 
@@ -2050,6 +2066,7 @@ Type TAdBlock Extends TBlockGraphical
 
 	Function Create:TAdBlock(contract:TContract = Null, x:Int, y:Int, owner:Int)
 		If owner < 0 Then owner = game.playerID
+
 		local obj:TAdBlock = new TAdBlock
 		obj.GenerateID()
 		obj.rect 		= TRectangle.Create(x, y, Assets.GetSprite("pp_adblock1").w, Assets.GetSprite("pp_adblock1").h)

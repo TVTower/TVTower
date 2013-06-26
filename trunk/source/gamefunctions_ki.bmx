@@ -176,7 +176,7 @@ Type TLuaFunctions {_exposeToLua}
 	Field NEWS_GENRE_SPORT:Int = 2
 	Field NEWS_GENRE_CURRENTS:Int = 4
 
-	'Die RÃ¤ume werden alle initialisiert
+	'Die Räume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
 	Field ROOM_ADAGENCY:Int
@@ -460,8 +460,8 @@ Type TLuaFunctions {_exposeToLua}
 	    If obj Then Return obj.topicality Else Return self.RESULT_NOTFOUND
 	End Method
 
-	'Ich hab mir diese Hilfmethode gebaut, damit ich die QualitÃ¤tsberechnung nicht in der KI nachbauen muss.
-	'Es wÃ¤re zu kompliziert wenn die KI ihre QualitÃ¤tsprognose auf Grund einer riesigen Erfahrungsdatenbank durchfÃ¼hren mÃ¼sste.
+	'Ich hab mir diese Hilfmethode gebaut, damit ich die Qualitätsberechnung nicht in der KI nachbauen muss.
+	'Es wäre zu kompliziert wenn die KI ihre Qualitätsprognose auf Grund einer riesigen Erfahrungsdatenbank durchführen müsste.
 	Method GetCurrentProgrammQuality:Int(objectID:Int = -1, lastQuotePercentage:Float = 0.1)
 		Print "VERALTET: TVT.GetCurrentProgrammQuality -> Programmeobject.getBaseAudienceQuote(lastQuotePercentage:float=0.1)"
 		Local Programme:TProgramme = TProgramme.GetProgramme(objectID)
@@ -578,6 +578,16 @@ Type TLuaFunctions {_exposeToLua}
 			If not Obj then Return self.RESULT_NOTFOUND
 
 			Obj.RemoveFromPlan()
+			Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
+			If not (Obj = null)
+				print "TODO: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.contractBase.title
+				Obj.RemoveFromPlan()
+				Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
+				If not (Obj = null)
+					Return -64
+				endif				
+			endif
+			
 			Return self.RESULT_OK
 		Else
 			Local contract:TContract = Game.Players[ self.ME ].ProgrammeCollection.GetContract(ObjectID)
@@ -596,8 +606,8 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, ObjectID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter kÃ¶nnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
-		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verÃ¤ndern) errechnen.
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
+		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
 		Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
 		If Programme <> Null
 			Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
