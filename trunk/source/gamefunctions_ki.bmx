@@ -233,9 +233,9 @@ Type TLuaFunctions {_exposeToLua}
 	Method _PlayerInRoom:Int(roomname:String, checkFromRoom:Int = False)
 		If checkFromRoom
 			'from room has to be set AND inroom <> null (no building!)
-			Return (Players[ Self.ME ].Figure.inRoom And Players[ Self.ME ].Figure.inRoom.Name = roomname) Or (Players[ Self.ME ].Figure.inRoom And Players[ Self.ME ].Figure.fromRoom And Players[ Self.ME ].Figure.fromRoom.Name = roomname)
+			Return (Game.Players[ Self.ME ].Figure.inRoom And Game.Players[ Self.ME ].Figure.inRoom.Name = roomname) Or (Game.Players[ Self.ME ].Figure.inRoom And Game.Players[ Self.ME ].Figure.fromRoom And Game.Players[ Self.ME ].Figure.fromRoom.Name = roomname)
 		Else
-			Return (Players[ Self.ME ].Figure.inRoom And Players[ Self.ME ].Figure.inRoom.Name = roomname)
+			Return (Game.Players[ Self.ME ].Figure.inRoom And Game.Players[ Self.ME ].Figure.inRoom.Name = roomname)
 		EndIf
 	End Method
 
@@ -317,7 +317,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method SendToChat:Int(ChatText:String)
-		If Players[ Self.ME ] <> Null
+		If Game.Players[ Self.ME ] <> Null
 			'emit an event, we received a chat message
 			local sendToChannels:int = TGUIChatNew.GetChannelsFromText(ChatText)
 			EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) ) )
@@ -329,52 +329,52 @@ Type TLuaFunctions {_exposeToLua}
 		'oder beibehalten - dann kann die AI schauen ob eine Figur in der Naehe ist
 		'bspweise fuer Chat - "hey xy"
 		print "VERALTET: GetPlayerPosX -> math.floor( MY.Figure.Pos.GetX() ) ... floor fuer float->int"
-		If Not Game.isPlayerID( PlayerID ) Then Return self.RESULT_NOTALLOWED Else Return Floor(Players[ PlayerID ].figure.rect.GetX() )
+		If Not Game.isPlayer( PlayerID ) Then Return self.RESULT_NOTALLOWED Else Return Floor(Game.Players[ PlayerID ].figure.rect.GetX() )
 	End Method
 
 	Method GetPlayerTargetPosX:Int(PlayerID:Int = Null)
 		print "VERALTET: GetPlayerTargetPosX -> math.floor( MY.Figure.Target.GetIntX() ) ... bzw GetX() fuer float"
-		If Not Game.isPlayerID( PlayerID ) Then Return self.RESULT_NOTALLOWED Else Return Floor(Players[ PlayerID ].figure.target.GetX() )
+		If Not Game.isPlayer( PlayerID ) Then Return self.RESULT_NOTALLOWED Else Return Floor(Game.Players[ PlayerID ].figure.target.GetX() )
 	End Method
 
 	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
 		print "VERALTET: SetPlayerTargetPosX -> MY.Figure.changeTarget(x, y=null)"
-		If Not Game.isPlayerID( PlayerID ) OR Not Players[PlayerID].isAi() Then Return self.RESULT_NOTALLOWED Else Return Players[PlayerID].figure.changeTarget(newTargetX,Null)
+		If Not Game.isPlayer( PlayerID ) OR Not Game.Players[PlayerID].isAi() Then Return self.RESULT_NOTALLOWED Else Return Game.Players[PlayerID].figure.changeTarget(newTargetX,Null)
 	End Method
 
 	Method getPlayerMaxAudience:Int()
 		Print "VERALTET: TVT.getPlayerMaxAudience() -> MY.GetMaxAudience()"
-		Return Players[ Self.ME ].maxaudience
+		Return Game.Players[ Self.ME ].maxaudience
 	End Method
 
 	Method getPlayerAudience:Int()
 		Print "VERALTET: TVT.getPlayerAudience() -> MY.GetAudience()"
-		Return Players[ Self.ME ].audience
+		Return Game.Players[ Self.ME ].audience
 	End Method
 
 	Method getPlayerCredit:Int()
 		Print "VERALTET: TVT.getPlayerCredit() -> MY.GetCredit()"
-		Return Players[ Self.ME ].finances[Game.getWeekday()].credit
+		Return Game.Players[ Self.ME ].finances[Game.getWeekday()].credit
 	End Method
 
 	Method getPlayerMoney:Int()
 		Print "VERALTET: TVT.getPlayerMoney() -> MY.GetMoney()"
-		Return Players[ Self.ME ].finances[Game.getWeekday()].money
+		Return Game.Players[ Self.ME ].finances[Game.getWeekday()].money
 	End Method
 
 	Method getPlayerRoom:Int()
-		Local room:TRooms = Players[ Self.ME ].figure.inRoom
+		Local room:TRooms = Game.Players[ Self.ME ].figure.inRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method getPlayerTargetRoom:Int()
-		Local room:TRooms = Players[ Self.ME ].figure.toRoom
+		Local room:TRooms = Game.Players[ Self.ME ].figure.toRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method getPlayerFloor:Int()
 		Print "VERALTET: TVT.getPlayerFloor() -> MY.Figure.GetFloor()"
-		Return Players[ Self.ME ].figure.GetFloor()
+		Return Game.Players[ Self.ME ].figure.GetFloor()
 	End Method
 
 	Method getRoomFloor:Int(roomId:Int = 0)
@@ -384,7 +384,7 @@ Type TLuaFunctions {_exposeToLua}
 
 	Method doGoToRoom:Int(roomId:Int = 0)
 		Local Room:TRooms = TRooms.GetRoom(roomId)
-		If Room <> Null Then Players[ Self.ME ].Figure.SendToRoom(Room)
+		If Room <> Null Then Game.Players[ Self.ME ].Figure.SendToRoom(Room)
 	    Return self.RESULT_OK
 	End Method
 
@@ -478,29 +478,29 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getMovie:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TProgramme	= Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentProgramme(hour, day)
+		Local obj:TProgramme	= Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentProgramme(hour, day)
 		If obj Then Return obj.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method of_getSpot:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TAdBlock = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
+		Local obj:TAdBlock = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 		If obj Then Return obj.contract.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method of_getPlayerSpotCount:Int()
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Return Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.ContractList.Count() - 1
+		Return Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.ContractList.Count() - 1
 	End Method
 
 	Method of_getPlayerSpot:Int(arraynumber:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local owner:Int = Players[ Self.ME ].Figure.inRoom.owner
-		If arraynumber >= 0 And arraynumber <= Players[ owner ].ProgrammeCollection.ContractList.Count() - 1
-			Local obj:TContract = TContract(Players[ owner ].ProgrammeCollection.ContractList.ValueAtIndex(arraynumber))
+		Local owner:Int = Game.Players[ Self.ME ].Figure.inRoom.owner
+		If arraynumber >= 0 And arraynumber <= Game.Players[ owner ].ProgrammeCollection.ContractList.Count() - 1
+			Local obj:TContract = TContract(Game.Players[ owner ].ProgrammeCollection.ContractList.ValueAtIndex(arraynumber))
 			If obj Then Return obj.id Else Return self.RESULT_NOTFOUND
 		EndIf
 	End Method
@@ -508,14 +508,14 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getSpotWillBeSent:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TAdBlock = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
+		Local obj:TAdBlock = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 		If obj Then Return obj.GetSpotNumber() Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method of_getSpotBeenSent:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local contractObj:TContract = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetContract(contractID)
+		Local contractObj:TContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetContract(contractID)
 		If Not contractObj Then Return self.RESULT_NOTFOUND
 
 		Local obj:TAdBlock = TAdBlock.GetBlockByContract( contractObj )
@@ -525,7 +525,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getSpotDaysLeft:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local contractObj:TContract = Players[ Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetContract(contractID)
+		Local contractObj:TContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetContract(contractID)
 		If contractObj Then Return contractobj.getDaysLeft() Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -536,22 +536,22 @@ Type TLuaFunctions {_exposeToLua}
 
 		'wenn user schluessel fuer den Raum haben sollte,
 		'ist dies hier egal -> nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
+		If Self.ME <> Game.Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'Film bei Day,hour loeschen
 			If day = Game.GetDay() And hour = Game.GetHour() And Game.GetMinute() > 5 Then Return self.RESULT_INUSE
 
-			Local Obj:TProgrammeBlock = Players[ self.ME ].ProgrammePlan.GetCurrentProgrammeBlock(hour, day)
+			Local Obj:TProgrammeBlock = Game.Players[ self.ME ].ProgrammePlan.GetCurrentProgrammeBlock(hour, day)
 			if not Obj then Return self.RESULT_NOTFOUND
 
 			Obj.DeleteBlock()
 			Return self.RESULT_OK
 		'platzieren
 		Else
-			Local Obj:TProgramme = Players[ self.ME ].ProgrammeCollection.GetProgramme(ObjectID)
+			Local Obj:TProgramme = Game.Players[ self.ME ].ProgrammeCollection.GetProgramme(ObjectID)
 			if not Obj then Return self.RESULT_NOTFOUND
 
-			If Players[ self.ME ].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
+			If Game.Players[ self.ME ].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
 				Local objBlock:TProgrammeBlock	= TProgrammeBlock.CreateDragged(obj, self.ME)
 				objBlock.sendHour				= day*24 + hour
 				objBlock.dragged				= 0
@@ -569,20 +569,20 @@ Type TLuaFunctions {_exposeToLua}
 
 		'wenn user schluessel fuer den Raum haben sollte,
 		'ist dies hier egal -> nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
+		If Self.ME <> Game.Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'Spot bei Day,hour loeschen
 			If day = Game.GetDay() And hour = Game.GetHour() Then Return -2
 
-			Local Obj:TAdBlock = Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
+			Local Obj:TAdBlock = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 			If not Obj then Return self.RESULT_NOTFOUND
 
 			Obj.RemoveFromPlan()
 			Return self.RESULT_OK
 		Else
-			Local contract:TContract = Players[ self.ME ].ProgrammeCollection.GetContract(ObjectID)
+			Local contract:TContract = Game.Players[ self.ME ].ProgrammeCollection.GetContract(ObjectID)
 			if not contract then Return self.RESULT_NOTFOUND
-			If Players[ self.ME ].ProgrammePlan.AdBlockPlaceable(hour, day)
+			If Game.Players[ self.ME ].ProgrammePlan.AdBlockPlaceable(hour, day)
 				Local obj:TAdBlock = TAdBlock.create(contract, TAdBlock.GetBlockX(hour),TAdBlock.GetBlockY(hour), self.ME)
 				obj.senddate	= day
 				obj.sendtime	= hour
@@ -629,19 +629,19 @@ Type TLuaFunctions {_exposeToLua}
 
 		'Es ist egal ob ein Spieler einen Schluessel fuer den Raum hat,
 		'Es ist nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
+		If Self.ME <> Game.Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'News bei slotID loeschen
-			Local Obj:TNewsBlock = Players[ self.ME ].ProgrammePlan.GetNewsBlockFromSlot(slot)
+			Local Obj:TNewsBlock = Game.Players[ self.ME ].ProgrammePlan.GetNewsBlockFromSlot(slot)
 			If not Obj then Return self.RESULT_NOTFOUND
 
-			'Players[ self.ME ].ProgrammePlan.RemoveNewsBlock(obj)
+			'Game.Players[ self.ME ].ProgrammePlan.RemoveNewsBlock(obj)
 
 			Return self.RESULT_OK
 		Else
-			Local obj:TNewsBlock = Players[ self.ME ].ProgrammePlan.GetNewsBlock(ObjectID)
+			Local obj:TNewsBlock = Game.Players[ self.ME ].ProgrammePlan.GetNewsBlock(ObjectID)
 			If not obj then Return self.RESULT_NOTFOUND
-			Players[ self.ME ].ProgrammePlan.SetNewsBlockSlot(obj, slot)
+			Game.Players[ self.ME ].ProgrammePlan.SetNewsBlockSlot(obj, slot)
 
 			Return self.RESULT_OK
 		EndIf

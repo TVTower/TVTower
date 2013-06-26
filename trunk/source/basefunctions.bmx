@@ -104,6 +104,12 @@ Type TXmlHelper
 		return int( result )
 	End Method
 
+	Method FindValueFloat:float(node:TxmlNode, fieldName:string, defaultValue:int, logString:string="")
+		local result:string = self.FindValue(node, fieldName, string(defaultValue), logString)
+		if result = null then return defaultValue
+		return float( result )
+	End Method
+
 End Type
 
 

@@ -765,12 +765,12 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 
 		local useAudience:int = 0
 
-		If Game.isPlayerID(playerID)
-			useAudience = Players[ playerID ].maxaudience
+		If Game.isPlayer(playerID)
+			useAudience = Game.Players[ playerID ].maxaudience
 		else
 			'in case of "playerID = -1" we use the avg value
 			For Local i:Int = 1 To 4
-				useAudience :+ Players[ i ].maxaudience
+				useAudience :+ Game.Players[ i ].maxaudience
 			Next
 			useAudience:/4
 		EndIf
@@ -952,7 +952,8 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field director:String		= ""
 	Field country:String		= "UNK"
 	Field year:Int				= 1900
-	Field refreshModifier:float	= 1.0					'how fast a movie "regenerates" (added to genreModifier)
+	Field refreshModifier:float	= 1.0				'changes how much a programme "regenerates" (multiplied with genreModifier)
+	Field wearoffModifier:Float	= 1.0				'changes how much a programme loses during sending it
 	Field livehour:Int			= 0
 	Field Outcome:Float			= 0
 	Field review:Float			= 0
@@ -974,7 +975,11 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Global ProgMovieList:TList	= CreateList()	{saveload = "nosave"}
 	Global ProgSeriesList:TList	= CreateList()	{saveload = "nosave"}
 
-	'genre modifiers
+	Global wearoffFactor:float = 0.65 	'factor by what a programmes topicality DECREASES by sending it
+	Global refreshFactor:float = 1.5	'factor by what a programmes topicality INCREASES by a day switch
+
+	'values get multiplied with the refresh factor
+	'so this means: higher values increase the resulting topicality win
 	Global genreRefreshModifier:float[] =  [	1.0, .. 	'action
 												1.0, .. 	'thriller
 												1.0, .. 	'scifi
@@ -994,11 +999,35 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 												1.0, .. 	'news
 												1.0, .. 	'show
 												1.0, .. 	'monumental
-												1.0, .. 	'fillers
-												1.0 .. 		'paid programming
+												2.0, .. 	'fillers
+												2.0 .. 		'paid programming
+											]
+	'values get multiplied with the wearOff factor
+	'so this means: higher (>1.0) values decrease the resulting topicality loss
+	Global genreWearoffModifier:float[] =  [	1.0, .. 	'action
+												1.0, .. 	'thriller
+												1.0, .. 	'scifi
+												1.0, .. 	'comedy
+												1.0, ..		'horror
+												1.0, ..		'love
+												1.2, ..		'erotic
+												1.0, ..		'western
+												0.75, ..		'live
+												1.25, .. 	'children
+												1.15, .. 	'animated / cartoon
+												1.2, .. 	'music
+												0.95, .. 	'sport
+												1.1, .. 	'culture
+												1.0, .. 	'fantasy
+												1.2, .. 	'yellow press
+												0.9, .. 	'news
+												0.9, .. 	'show
+												1.1, .. 	'monumental
+												1.4, .. 	'fillers
+												1.4 .. 		'paid programming
 											]
 
-	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=1.0, episode:Int=-1)
+	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, episode:Int=-1)
 		Local obj:TProgramme =New TProgramme
 		If episode >= 0
 			obj.BaseInit(title, description, TYPE_SERIE)
@@ -1012,6 +1041,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		EndIf
 		obj.episodeNumber = episode
 		obj.refreshModifier = Max(0.0, refreshModifier)
+		obj.wearoffModifier = Max(0.0, wearoffModifier)
 		obj.review      = Max(0,review)
 		obj.speed       = Max(0,speed)
 		obj.relPrice    = Max(0,relPrice)
@@ -1031,7 +1061,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	End Function
 
 
-	Method AddEpisode:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, episode:Int=0, id:Int=0)
+	Method AddEpisode:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=null, wearoffModifier:float=null, episode:Int=0, id:Int=0)
 		Local obj:TProgramme = New TProgramme
 		obj.BaseInit( title, description, TYPE_SERIE | TYPE_EPISODE)
 		If review < 0 Then obj.review = Self.review Else obj.review = review
@@ -1045,6 +1075,9 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		If director = "" Then obj.director = Self.director Else obj.director = director
 		If country = "" Then obj.country = Self.country Else obj.country = country
 		If description = "" Then obj.description = Self.description Else obj.description = description
+
+		If refreshModifier = null Then obj.refreshModifier = Self.refreshModifier Else obj.refreshModifier = Max(0.0, refreshModifier)
+		If wearoffModifier = null Then obj.wearoffModifier = Self.wearoffModifier Else obj.wearoffModifier = Max(0.0, wearoffModifier)
 
 		obj.topicality		= obj.ComputeTopicality()
 		obj.maxtopicality	= obj.topicality
@@ -1092,9 +1125,9 @@ Rem
 
 		if Programme.owner > 0
 			'Print "added to player:"+Programme.used + " ("+Programme.title+") Clone:"+Programme.clone + " Time:"+Programme.sendtime
-			Players[Programme.owner].ProgrammeCollection.AddProgramme(Programme)
+			Game.Players[Programme.owner].ProgrammeCollection.AddProgramme(Programme)
 		elseIf isEpisode And origowner > 0
-			Players[origowner].ProgrammeCollection.AddProgramme(Programme)
+			Game.Players[origowner].ProgrammeCollection.AddProgramme(Programme)
 			'Print "added to player:"+Programme.used
 		EndIf
 		Return programme
@@ -1159,12 +1192,12 @@ endrem
 	End Method
 
 	Method Buy()
-		Players[Game.playerID].finances[Game.getWeekday()].PayMovie(self.getPrice())
+		Game.Players[Game.playerID].finances[Game.getWeekday()].PayMovie(self.getPrice())
 		'DebugLog "Programme "+title +" bought"
 	End Method
 
 	Method Sell()
-		Players[Game.playerID].finances[Game.getWeekday()].SellMovie(self.getPrice())
+		Game.Players[Game.playerID].finances[Game.getWeekday()].SellMovie(self.getPrice())
 		'DebugLog "Programme "+title +" sold"
 	End Method
 
@@ -1267,6 +1300,18 @@ endrem
 	Method GetGenreRefreshModifier:float(genre:int=-1) {_exposeToLua}
 		if genre = -1 then genre = self.genre
 		if genre < self.genreRefreshModifier.length then return self.genreRefreshModifier[genre]
+		'default is 1.0
+		return 1.0
+	End Method
+
+
+	Method GetWearoffModifier:float() {_exposeToLua}
+		return self.wearoffModifier
+	End Method
+
+	Method GetGenreWearoffModifier:float(genre:int=-1) {_exposeToLua}
+		if genre = -1 then genre = self.genre
+		if genre < self.genreWearoffModifier.length then return self.genreWearoffModifier[genre]
 		'default is 1.0
 		return 1.0
 	End Method
@@ -1406,23 +1451,13 @@ endrem
 	End Method
 
 	Method CutTopicality:Int()
-		topicality:*0.65 'default cut
-		topicality:/self.GetGenreRefreshModifier()	'modified
-	rem
-		'old approach
-		Select genre
-			Case 13, 15, 17, 20
-				topicality :* 0.7
-			Case 20 'call in
-				topicality :* 0.8
-			Default
-				topicality :* 0.5
-		End Select
-	endrem
+		'cut of by an individual cutoff factor - do not allow values > 1.0 (refresh instead of cut)
+		'the value : default * invidual * individualGenre
+		topicality:* Min(1.0, self.wearoffFactor * self.GetGenreWearoffModifier() * self.GetWearoffModifier() )
 	End Method
 
 	Method RefreshTopicality:Int()
-		topicality = Min(topicality*1.5 * self.GetGenreRefreshModifier() * self.refreshModifier, maxtopicality)
+		topicality = Min(maxtopicality, topicality*self.refreshFactor*self.GetGenreRefreshModifier()*self.GetRefreshModifier())
 		Return topicality
 	End Method
 
@@ -1777,6 +1812,8 @@ Type TDatabase
 		Local speed:Int
 		Local Outcome:Int
 		Local livehour:Int
+		local refreshModifier:float = 1.0
+		local wearoffModifier:float = 1.0
 
 		Local daystofinish:Int
 		Local spotcount:Int
@@ -1824,8 +1861,10 @@ Type TDatabase
 					speed 		= xml.FindValueInt(nodeChild,"speed", 0)
 					Outcome 	= xml.FindValueInt(nodeChild,"outcome", 0)
 					livehour 	= xml.FindValueInt(nodeChild,"time", 0)
+					refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
+					wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 					If duration < 0 Or duration > 12 Then duration =1
-					TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, 1.0, -1)
+					TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, refreshModifier, wearoffModifier, -1)
 					'print "film: "+title+ " " + Database.totalmoviescount
 					Database.totalmoviescount :+ 1
 				EndIf
@@ -1859,8 +1898,10 @@ Type TDatabase
 				speed 		= xml.FindValueInt(nodeChild,"speed", -1)
 				Outcome 	= xml.FindValueInt(nodeChild,"outcome", -1)
 				livehour 	= xml.FindValueInt(nodeChild,"time", -1)
+				refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
+				wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 				If duration < 0 Or duration > 12 Then duration =1
-				Local parent:TProgramme = TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, 1.0, 0)
+				Local parent:TProgramme = TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, refreshModifier, wearoffModifier, 0)
 				Database.seriescount :+ 1
 
 				'load episodes
@@ -1884,9 +1925,11 @@ Type TDatabase
 							speed 		= xml.FindValueInt(nodeEpisode,"speed", -1)
 							Outcome 	= xml.FindValueInt(nodeEpisode,"outcome", -1)
 							livehour	= xml.FindValueInt(nodeEpisode,"time", -1)
+							refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
+							wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 							'add episode to last added serie
 							'print "serie: --- episode:"+duration + " " + title
-							parent.AddEpisode(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, EpisodeNum)
+							parent.AddEpisode(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, refreshModifier, wearoffModifier, EpisodeNum)
 						EndIf
 					Next
 				EndIf
@@ -2018,11 +2061,11 @@ Type TAdBlock Extends TBlockGraphical
 		obj.sendtime	= obj.GetTimeOfBlock()
 		'self.sendtime	= Int(Floor((obj.StartPos.y - 17) / 30))
 
-		If not contract then contract = Players[owner].ProgrammeCollection.GetRandomContract()
+		If not contract then contract = Game.Players[owner].ProgrammeCollection.GetRandomContract()
 		obj.contract	= contract
 
 		'store the object in the players plan
-		Players[owner].ProgrammePlan.AddAdblock(obj)
+		Game.Players[owner].ProgrammePlan.AddAdblock(obj)
 		Return obj
 	End Function
 
@@ -2072,7 +2115,7 @@ Type TAdBlock Extends TBlockGraphical
 		'list is ordered by sendtime and dragged state
 		'the older the earlier -> leave the loop if meeting self
 		local spotNumber:int = 1
-		For local obj:TAdBlock = eachin Players[ self.owner ].ProgrammePlan.AdBlocks
+		For local obj:TAdBlock = eachin Game.Players[ self.owner ].ProgrammePlan.AdBlocks
 			'different contract - skip it
 			if obj.contract <> self.contract then continue
 			'reached self - finish
@@ -2122,9 +2165,9 @@ Type TAdBlock Extends TBlockGraphical
 	Function DrawAll(owner:Int =-1)
 		if owner = -1 then owner = game.playerID
 
-		Players[ owner ].ProgrammePlan.AdBlocks.sort(True, TAdblock.sort)
+		Game.Players[ owner ].ProgrammePlan.AdBlocks.sort(True, TAdblock.sort)
 
-		For Local AdBlock:TAdBlock = EachIn Players[ owner ].ProgrammePlan.AdBlocks
+		For Local AdBlock:TAdBlock = EachIn Game.Players[ owner ].ProgrammePlan.AdBlocks
 			AdBlock.Draw()
 		Next
 	End Function
@@ -2167,7 +2210,7 @@ Type TAdBlock Extends TBlockGraphical
 
 		if owner = -1 then owner = game.playerID
 
-		local AdBlockList:TList = Players[ owner ].ProgrammePlan.AdBlocks
+		local AdBlockList:TList = Game.Players[ owner ].ProgrammePlan.AdBlocks
 		AdBlockList.sort(True, TAdblock.sort)
 
 		'get current states
@@ -2289,7 +2332,7 @@ Type TAdBlock Extends TBlockGraphical
 		'- if count is bigger than spotcount, it is overhead: remove them
 
 		Local successfulBlocks:Int = 0
-		For Local otherBlock:TAdBlock= EachIn Players[ self.owner ].ProgrammePlan.Adblocks
+		For Local otherBlock:TAdBlock= EachIn Game.Players[ self.owner ].ProgrammePlan.Adblocks
 			'skip other contracts or failed ones
 			If otherBlock.contract <> self.contract OR otherBlock.botched then continue
 			'else add to the count
@@ -2304,7 +2347,7 @@ Type TAdBlock Extends TBlockGraphical
 	'removes Adblocks which are supposed to be deleted for its contract being obsolete (expired)
 	'BeginDay: AdBlocks with contracts ending before that day get removed
 	Function RemoveAdblocks:Int(Contract:TContract, BeginDay:Int=0)
-		For Local otherBlock:TAdBlock= EachIn Players[ contract.owner ].ProgrammePlan.Adblocks
+		For Local otherBlock:TAdBlock= EachIn Game.Players[ contract.owner ].ProgrammePlan.Adblocks
 			'skip other contracts
 			If otherBlock.contract <> contract then continue
 
@@ -2321,25 +2364,25 @@ Type TAdBlock Extends TBlockGraphical
 
 	'remove from programmeplan
 	Method RemoveFromPlan()
-		Players[ self.owner ].ProgrammePlan.RemoveAdBlock(Self)
+		Game.Players[ self.owner ].ProgrammePlan.RemoveAdBlock(Self)
 		If game.networkgame Then NetworkHelper.SendPlanAdChange(self.owner, Self, 0)
     End Method
 
 	'add to programmeplan of the owner
     Method AddToPlan()
-		Players[ self.owner ].ProgrammePlan.AddAdBlock(Self)
+		Game.Players[ self.owner ].ProgrammePlan.AddAdBlock(Self)
 		If game.networkgame Then NetworkHelper.SendPlanAdChange(self.owner, Self, 1)
     End Method
 
     Function GetBlockByContract:TAdBlock(contract:TContract)
-		For Local _AdBlock:TAdBlock = EachIn Players[ contract.owner ].ProgrammePlan.Adblocks
+		For Local _AdBlock:TAdBlock = EachIn Game.Players[ contract.owner ].ProgrammePlan.Adblocks
 			if contract = _Adblock.contract then return _Adblock
 		Next
 		return Null
 	End Function
 
 	Function GetBlock:TAdBlock(playerID:int, id:Int)
-		For Local _AdBlock:TAdBlock = EachIn Players[ playerID ].ProgrammePlan.Adblocks
+		For Local _AdBlock:TAdBlock = EachIn Game.Players[ playerID ].ProgrammePlan.Adblocks
 			If _Adblock.ID = id Then Return _Adblock
 		Next
 		Return Null
@@ -2390,9 +2433,9 @@ Type TProgrammeBlock Extends TBlockGraphical
         ProgrammeBlock.Programme 		  = Tprogramme.GetProgramme(ProgID) 'change owner?
         ProgrammeBlock.sendHour = ProgSendHour
 	  EndIf
-	  Players[ProgrammeBlock.owner].ProgrammePlan.ProgrammeBlocks.addLast(ProgrammeBlock)
+	  Game.Players[ProgrammeBlock.owner].ProgrammePlan.ProgrammeBlocks.addLast(ProgrammeBlock)
 	  ReadString(loadfile, 5)  'finishing string (eg. "|PRB|")
-'	  Players[ProgrammeBlock.owner].ProgrammePlan.AddProgramme(ProgrammeBlock.Programme, 1)
+'	  Game.Players[ProgrammeBlock.owner].ProgrammePlan.AddProgramme(ProgrammeBlock.Programme, 1)
 	Until loadfile.Pos() >= EndPos 'Or FinishString <> "|PRB|"
 	Print "loaded programmeblocklist"
   End Function
@@ -2451,8 +2494,8 @@ Type TProgrammeBlock Extends TBlockGraphical
 		obj.dragged		= 1
 		obj.Programme	= movie
 		obj.sendHour	= TPlayerProgrammePlan.getPlanHour(obj.GetHourOfBlock(1, obj.StartPos), Game.daytoplan)
-		obj.link		= Players[owner].ProgrammePlan.ProgrammeBlocks.addLast(obj)
-		Players[owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks :+ 1
+		obj.link		= Game.Players[owner].ProgrammePlan.ProgrammeBlocks.addLast(obj)
+		Game.Players[owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks :+ 1
 
 		Return obj
 	End Function
@@ -2461,15 +2504,15 @@ Type TProgrammeBlock Extends TBlockGraphical
 		Local obj:TProgrammeBlock=New TProgrammeBlock
 		obj.SetStartConfig(x,y,owner, randRange(0,3))
 		If Programmepos <= -1
-			obj.Programme = Players[owner].ProgrammeCollection.GetRandomProgramme(serie)
+			obj.Programme = Game.Players[owner].ProgrammeCollection.GetRandomProgramme(serie)
 		Else
-			SortList(Players[owner].ProgrammeCollection.MovieList)
+			SortList(Game.Players[owner].ProgrammeCollection.MovieList)
 			'get programme "pos"
-			obj.Programme = TProgramme(Players[owner].ProgrammeCollection.MovieList.ValueAtIndex(programmepos))
+			obj.Programme = TProgramme(Game.Players[owner].ProgrammeCollection.MovieList.ValueAtIndex(programmepos))
 		EndIf
 
 		obj.sendHour	= TPlayerProgrammePlan.getPlanHour(obj.GetHourOfBlock(1, obj.StartPos),Game.daytoplan)
-		obj.link		= Players[owner].ProgrammePlan.ProgrammeBlocks.addLast(obj)
+		obj.link		= Game.Players[owner].ProgrammePlan.ProgrammeBlocks.addLast(obj)
 		'Print "Player "+owner+" -Create block: added:"+obj.Programme.title
 		Return obj
 	End Function
@@ -2612,9 +2655,9 @@ Type TProgrammeBlock Extends TBlockGraphical
     Method DeleteBlock()
 		Print "deleteBlock: programme:"+Self.Programme.title
 		'remove self from block list
-		Players[Game.playerID].ProgrammePlan.ProgrammeBlocks.remove(Self)
+		Game.Players[Game.playerID].ProgrammePlan.ProgrammeBlocks.remove(Self)
 '		self.remove()
-'		Players[Game.playerID].ProgrammePlan.RemoveProgramme(Self.Programme)
+'		Game.Players[Game.playerID].ProgrammePlan.RemoveProgramme(Self.Programme)
     End Method
 
 	'give total hour - returns x of planner-slot
@@ -2823,7 +2866,7 @@ Type TNewsBlock extends TGameObject {_exposeToLua="selected"}
 		obj.news		= usenews
 
 		'add to list and also set owner
-		Players[owner].ProgrammePlan.AddNewsBlock(obj)
+		Game.Players[owner].ProgrammePlan.AddNewsBlock(obj)
 		Return obj
 	End Function
 
@@ -2834,7 +2877,7 @@ Type TNewsBlock extends TGameObject {_exposeToLua="selected"}
 
     Method Pay:int()
 		'only pay if not already done
-		if not self.paid then self.paid = Players[self.owner].finances[Game.getWeekday()].PayNews(news.ComputePrice())
+		if not self.paid then self.paid = Game.Players[self.owner].finances[Game.getWeekday()].PayNews(news.ComputePrice())
 		return self.paid
     End Method
 
@@ -2934,7 +2977,7 @@ Type TContractBlock Extends TBlockGraphical
 		EndIf
 		'adds a contract to the players collection
 		'contract gets signed THERE
-		Players[playerID].ProgrammeCollection.AddContract(Self.contract, playerID)
+		Game.Players[playerID].ProgrammeCollection.AddContract(Self.contract, playerID)
 
 		'create a new ContractBlock at the original Position
 		local newContract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.30) )
@@ -3234,7 +3277,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 	'buy means pay and set owner, but in players collection only if left the room!!
 	Method Buy:Int(playerID:Int = -1, fromNetwork:Int = False)
 		If PlayerID = -1 Then PlayerID = Game.playerID
-		If Players[PlayerID].finances[Game.getWeekday()].PayMovie(Programme.getPrice())
+		If Game.Players[PlayerID].finances[Game.getWeekday()].PayMovie(Programme.getPrice())
 			owner = PlayerID
 			Programme.owner = PlayerID
 			If Not fromNetwork And game.networkgame Then NetworkHelper.SendMovieAgencyChange(NET_BUY, PlayerID, -1, - 1, Programme)
@@ -3250,7 +3293,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 		if PlayerID <> self.owner then return -1
 
 
-		Players[PlayerID].finances[Game.getWeekday()].SellMovie(Programme.getPrice())
+		Game.Players[PlayerID].finances[Game.getWeekday()].SellMovie(Programme.getPrice())
 
 		Self.StartPos.SetPos(Self.StartPosBackup)
 		Self.StartPosBackup.SetY(0)
@@ -3308,7 +3351,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 		TMovieAgencyBlocks.list.sort(True, TBlockMoveable.SortDragged)
 		For Local obj:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
 			If obj.rect.getY() > 240 And obj.owner = playerID
-				Players[playerID].ProgrammeCollection.AddProgramme(obj.Programme)
+				Game.Players[playerID].ProgrammeCollection.AddProgramme(obj.Programme)
 				Local x:Int=600+obj.slot*15
 				Local y:Int=134-70
 
@@ -3416,7 +3459,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 		For Local locObj:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
 			If locObj.Programme <> Null
 				locObj.dragable = 1
-				If locObj.Programme.getPrice() > Players[Game.playerID].finances[0].money And..
+				If locObj.Programme.getPrice() > Game.Players[Game.playerID].finances[0].money And..
 				   locObj.owner <> Game.playerID And..
 				   locObj.dragged = 0  Then locObj.dragable = 0
 
@@ -3608,11 +3651,11 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 			If locobject.owner = playerID And Not locobject.alreadyInSuitcase
 				TMovieAgencyBlocks.Create(locobject.Programme, myslot, playerID)
 				'reset audience "sendeausfall"
-				If Players[playerID].ProgrammePlan.GetCurrentProgramme().id = locobject.Programme.id Then Players[playerID].audience = 0
+				If Game.Players[playerID].ProgrammePlan.GetCurrentProgramme().id = locobject.Programme.id Then Game.Players[playerID].audience = 0
 				'remove programme from plan
-				Players[playerID].ProgrammePlan.RemoveProgramme( locobject.Programme )
+				Game.Players[playerID].ProgrammePlan.RemoveProgramme( locobject.Programme )
 				'remove programme from players collection
-				Players[playerID].ProgrammeCollection.RemoveProgramme( locobject.Programme )
+				Game.Players[playerID].ProgrammeCollection.RemoveProgramme( locobject.Programme )
 
 				locobject.alreadyInSuitcase = True
 				myslot:+1
@@ -3629,7 +3672,7 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 	'if a archiveprogrammeblock is "deleted", the programme is readded to the players programmecollection
 	'afterwards it deletes the archiveprogrammeblock
 	Method ReAddProgramme:Int(playerID:Int)
-		Players[playerID].ProgrammeCollection.AddProgramme(Self.Programme, 2)
+		Game.Players[playerID].ProgrammeCollection.AddProgramme(Self.Programme, 2)
 		'remove blocks which may be already created for having left the archive before re-adding it...
 		TMovieAgencyBlocks.RemoveBlockByProgramme(Self.Programme, playerID)
 
@@ -3638,7 +3681,7 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 	End Method
 
 	Method RemoveProgramme:Int(programme:TProgramme, owner:Int=0)
-		Players[owner].ProgrammeCollection.RemoveProgramme(programme)
+		Game.Players[owner].ProgrammeCollection.RemoveProgramme(programme)
 	End Method
 
 	'if owner = 0 then its a block of the adagency, otherwise it's one of the player'
@@ -3789,8 +3832,8 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	Function ProgrammeToPlayer()
 		For Local locObject:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
 			If locObject.Programme <> Null And locObject.Bid[0] > 0 And locObject.Bid[0] <= 4
-				Players[locobject.Bid[0]].ProgrammeCollection.AddProgramme(locobject.Programme)
-				Print "player "+Players[locobject.Bid[0]].name + " won the auction for: "+locobject.Programme.title
+				Game.Players[locobject.Bid[0]].ProgrammeCollection.AddProgramme(locobject.Programme)
+				Print "player "+Game.Players[locobject.Bid[0]].name + " won the auction for: "+locobject.Programme.title
 				Repeat
 					LocObject.Programme = TProgramme.GetRandomMovieWithMinPrice(250000)
 				Until LocObject.Programme <> Null
@@ -3929,8 +3972,8 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 			font.setTargetImage(ImageWithText)
 			titleFont.setTargetImage(ImageWithText)
 
-			If Players[Bid[0]] <> Null
-				titleFont.drawStyled(Players[Bid[0]].name,31,33, Players[Bid[0]].color.r, Players[Bid[0]].color.g, Players[Bid[0]].color.b, 2, 1, 0.25)
+			If Game.Players[Bid[0]] <> Null
+				titleFont.drawStyled(Game.Players[Bid[0]].name,31,33, Game.Players[Bid[0]].color.r, Game.Players[Bid[0]].color.g, Game.Players[Bid[0]].color.b, 2, 1, 0.25)
 			else
 				font.drawStyled("ohne Bieter", 31,33, 150,150,150, 0, 1, 0.25)
 			EndIf
@@ -3975,16 +4018,16 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	End Method
 
 	Method SetBid:int(playerID:Int)
-		If not Game.isPlayerID( playerID ) then return -1
+		If not Game.isPlayer( playerID ) then return -1
 		if self.Bid[ self.Bid[0] ] = playerID then return 0
 
 		'reset so cache gets renewed
 		self.imageWithText = null
 
 		local price:int = self.GetNextBid()
-		If Players[playerID].finances[Game.getWeekday()].PayProgrammeBid(price) = True
-			If Players[Self.Bid[0]] <> Null Then
-				Players[Self.Bid[0]].finances[Game.getWeekday()].GetProgrammeBid(Self.Bid[Self.Bid[0]])
+		If Game.Players[playerID].finances[Game.getWeekday()].PayProgrammeBid(price) = True
+			If Game.Players[Self.Bid[0]] <> Null Then
+				Game.Players[Self.Bid[0]].finances[Game.getWeekday()].GetProgrammeBid(Self.Bid[Self.Bid[0]])
 				Self.Bid[Self.Bid[0]] = 0
 			EndIf
 			Self.Bid[0] = playerID
@@ -3997,7 +4040,7 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	Method GetNextBid:int() {_exposeToLua}
 		Local HighestBid:Int	= self.Programme.getPrice()
 		Local NextBid:Int		= 0
-		If Game.isPlayerID(self.Bid[0]) AND self.Bid[ self.Bid[0] ] <> 0 Then HighestBid = self.Bid[ self.Bid[0] ]
+		If Game.isPlayer(self.Bid[0]) AND self.Bid[ self.Bid[0] ] <> 0 Then HighestBid = self.Bid[ self.Bid[0] ]
 		NextBid = HighestBid
 		If HighestBid < 100000
 			NextBid :+ 10000
@@ -4012,7 +4055,7 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 	End Method
 
 	Method GetHighestBidder:int() {_exposeToLua}
-		if Game.isPlayerID(self.Bid[0]) then return self.Bid[0] else return -1
+		if Game.isPlayer(self.Bid[0]) then return self.Bid[0] else return -1
 	End Method
 
 	Function UpdateAll:int(DraggingAllowed:Byte)

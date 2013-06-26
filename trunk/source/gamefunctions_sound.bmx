@@ -32,7 +32,7 @@ Type TPlayerElementPosition Extends TElementPosition
 	End Method
 
 	Method GetCenter:TPoint()
-		Return Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
+		Return Game.Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
 	End Method
 
 	Method GetIsVisible:Int()
@@ -77,7 +77,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetIsHearable:Int()
-		Return (Players[Game.playerID].Figure.inRoom = Null)
+		Return (Game.Players[Game.playerID].Figure.inRoom = Null)
 	End Method
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
@@ -154,12 +154,12 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		'Ist dieser Modus aktiv wird ein Timer gestartet welcher das Schließen der Türe nach einiger Zeit abspielt (siehe Update).
 		'Dies ist nötig da im normalen Codeablauf das "CloseDoor" von TRooms zu schnell kommt. Dieser Schließensound aus CloseDoor muss in diesem Modus abgefangen werden
 
-		If figure = Players[Game.playerID].Figure 'Dieser Code nur für den aktiven Spieler
+		If figure = Game.Players[Game.playerID].Figure 'Dieser Code nur für den aktiven Spieler
 			If Not IsGamePlayerAction 'Wenn wir uns noch nicht im Spezialmodus befinden, dann weiter prüfen ob man ihn gleich aktiv schalten muss
 				If sfx = SFX_OPEN_DOOR 'Nur der Open-Sound kann den Spezialmodus starten
 					If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
 						IsGamePlayerAction = True 'Den Modus starten
-						If Players[Game.playerID].Figure.inRoom = Null 'von draußen (Flur) nach drinen (Raum)
+						If Game.Players[Game.playerID].Figure.inRoom = Null 'von draußen (Flur) nach drinen (Raum)
 							If Room.used >= 0 Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
 							PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 						Else 'von drinnen (Raum) nach draußen (Flur)
@@ -181,7 +181,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	Method Update()
 		If IsGamePlayerAction
 			If DoorTimer.isExpired() 'Wenn der Timer abgelaufen, dann den Türschließsound spielen
-				If Players[Game.playerID].Figure.inRoom = Null
+				If Game.Players[Game.playerID].Figure.inRoom = Null
 					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 				Else
 					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
@@ -208,7 +208,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 	Method GetIsHearable:Int()
 		If Room.name = "" Or Room.name = "roomboard" Or Room.name = "credits" Or Room.name = "porter" Then Return False
-		Return (Players[Game.playerID].Figure.inRoom = Null) Or IsGamePlayerAction
+		Return (Game.Players[Game.playerID].Figure.inRoom = Null) Or IsGamePlayerAction
 	End Method
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
@@ -287,7 +287,7 @@ Type TFigureSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetIsHearable:Int()
-		Return (Players[Game.playerID].Figure.inRoom = Null)
+		Return (Game.Players[Game.playerID].Figure.inRoom = Null)
 	End Method
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)

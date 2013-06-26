@@ -28,7 +28,6 @@ Type TGUIChatNEW extends TGUIObject
 
 	global antiSpamTimer:int			= 0		'time when again allowed to send
 	global antiSpamTime:int				= 100
-	global globalEventsRegistered:int	= FALSE
 
 	Method Create:TGUIChatNEW(x:int,y:int,width:int,height:int, State:string="")
 		super.CreateBase(x,y,State,null)
@@ -54,11 +53,7 @@ Type TGUIChatNEW extends TGUIObject
 		'- observe text changes in our input field
 		EventManager.registerListenerFunction( "guiobject.onChange", self.onInputChange, self.guiInput )
 		'- observe wishes to add a new chat entry - listen to all sources
-		'  only do that once for all chats (function has to take care which one we mean)
-'		if not self.globalEventsRegistered
-			EventManager.registerListenerMethod( "chat.onAddEntry", self, "onAddEntry" )
-'			self.globalEventsRegistered = TRUE
-'		endif
+		EventManager.registerListenerMethod( "chat.onAddEntry", self, "onAddEntry" )
 
 		GUIManager.Add( self )
 
@@ -108,7 +103,6 @@ Type TGUIChatNEW extends TGUIObject
 		local sendToChannels:int = guiChat.GetChannelsFromText(guiInput.value)
 		'- step B) is emitting the event "for all"
 		'  (the listeners have to handle if they want or ignore the line
-
 		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", Game.playerID).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
 
 		'trigger antiSpam
@@ -189,9 +183,9 @@ Type TGUIChatNEW extends TGUIObject
 		local senderName:string	= ""
 		local senderColor:TColor= Null
 
-		if Game.isPlayerID(senderID)
-			senderName	= Players[senderID].Name
-			senderColor	= Players[senderID].color
+		if Game.isPlayer(senderID)
+			senderName	= Game.Players[senderID].Name
+			senderColor	= Game.Players[senderID].color
 			if not textColor then textColor = self._defaultTextColor
 		else
 			senderName	= "SYSTEM"
@@ -685,10 +679,10 @@ Type TgfxProgrammelist extends TPlannerList
 				Assets.GetSprite("genres_entry"+entryNum).draw(Pos.x,currY)
 				lineHeight = Assets.GetSprite("genres_entry"+entryNum).h
 
-				Local genrecount:Int = TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List)
+				Local genrecount:Int = TProgramme.CountGenre(genres, Game.Players[Game.playerID].ProgrammeCollection.List)
 
 				If genrecount > 0
-					Assets.fonts.baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Players[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
+					Assets.fonts.baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres) + " (" + TProgramme.CountGenre(genres, Game.Players[Game.playerID].ProgrammeCollection.List) + ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, 0)
 					SetAlpha 0.6; SetColor 0, 255, 0
 					'takes 20% of fps...
 					For Local i:Int = 0 To genrecount -1
@@ -711,7 +705,7 @@ Type TgfxProgrammelist extends TPlannerList
 		Local locy:Int = Pos.y+7 -19
 
 		local font:TBitmapFont = Assets.GetFont("Font10")
-		For Local movie:TProgramme = EachIn Players[Game.playerID].ProgrammeCollection.List 'all programmes of one player
+		For Local movie:TProgramme = EachIn Game.Players[Game.playerID].ProgrammeCollection.List 'all programmes of one player
 			If movie.genre = genre
 				locy :+ 19
 				If movie.isMovie()
@@ -738,7 +732,7 @@ Type TgfxProgrammelist extends TPlannerList
 		Local locx:Int = Pos.x - gfxmovies.w + 25
 		Local locy:Int = Pos.y+7 -19
 
-		For Local movie:TProgramme = EachIn Players[Game.playerID].ProgrammeCollection.List 'all programmes of one player
+		For Local movie:TProgramme = EachIn Game.Players[Game.playerID].ProgrammeCollection.List 'all programmes of one player
 			If movie.genre = genre
 				locy :+ 19
 				If MOUSEMANAGER.IsHit(1) AND functions.MouseIn( locx, locy, gfxtape.w, gfxtape.h)
@@ -854,7 +848,7 @@ Type TgfxContractlist extends TPlannerList
 		Local locx:Int 				= Pos.x - gfxcontracts.w + 10
 		Local locy:Int 				= Pos.y+7 - boxHeight
 		local font:TBitmapFont 		= Assets.GetFont("Default", 10)
-		For Local contract:TContract = EachIn Players[Game.playerID].ProgrammeCollection.ContractList 'all contracts of one player
+		For Local contract:TContract = EachIn Game.Players[Game.playerID].ProgrammeCollection.ContractList 'all contracts of one player
 			locy :+ boxHeight
 			gfxtape.Draw(locx, locy)
 
@@ -1560,7 +1554,7 @@ Type TInterface
 	Method Update(deltaTime:float=1.0)
 		If ShowChannel <> 0
 			If Game.GetMinute() >= 55
-				Local adblock:TAdBlock = Players[ShowChannel].ProgrammePlan.GetCurrentAdBlock()
+				Local adblock:TAdBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentAdBlock()
 				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_ads")
 			    If adblock <> Null
 					CurrentProgrammeToolTip.TitleBGtype = 1
@@ -1570,7 +1564,7 @@ Type TInterface
 					CurrentProgrammeText				= getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			Else
-				Local block:TProgrammeBlock = Players[ShowChannel].ProgrammePlan.GetCurrentProgrammeBlock()
+				Local block:TProgrammeBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentProgrammeBlock()
 				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_none")
 				If block <> Null
 					Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
@@ -1624,7 +1618,7 @@ Type TInterface
 		If functions.IsIn(MouseX(),MouseY(),20,385,280,200)
 			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
 			If ShowChannel <> 0
-				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Players[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Players[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
+				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
 			Else
 				CurrentProgrammeToolTip.text	= getLocale("TV_TURN_IT_ON")
 			EndIf
@@ -1632,8 +1626,8 @@ Type TInterface
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
 		If functions.IsIn(MouseX(),MouseY(),385,468,108,30)
-			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
-			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
+			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
+			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 		EndIf
@@ -1675,7 +1669,7 @@ Type TInterface
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
-				Local audiencerate:Float	= Float(Players[ShowChannel].audience / Float(Game.maxAudiencePercentage * Players[Game.playerID].maxaudience))
+				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience / Float(Game.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience))
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0
@@ -1704,8 +1698,8 @@ Type TInterface
 	  		SetBlend MASKBLEND
 	     	Assets.GetSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
-			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
-			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Players[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].GetMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
 		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 		EndIf 'bottomimg is dirty
 
@@ -1824,7 +1818,7 @@ endrem
 		Local radius:Int = StationMap.radius
 		SetAlpha 0.3
 		Select owner
-			Case 1,2,3,4	Players[owner].color.SetRGB()
+			Case 1,2,3,4	Game.Players[owner].color.SetRGB()
 							antennaNr = "stationmap_antenna"+owner
 			Default			SetColor 255, 255, 255
 							antennaNr = "stationmap_antenna0"
@@ -2006,13 +2000,13 @@ endrem
 	End Method
 
     Method Buy(x:Float, y:Float, playerid:Int = 1, fromNetwork:int = false)
-		If Players[playerid].finances[Game.getWeekday()].PayStation(self.LastStation.getPrice() )
+		If Game.Players[playerid].finances[Game.getWeekday()].PayStation(self.LastStation.getPrice() )
 			Local station:TStation = TStation.Create(LastStation.pos.x,LastStation.pos.y, self.LastStation.reach, self.LastStation.getPrice(), playerid)
 			StationList.AddLast(station)
 			Print "Player" + playerid + " kauft Station für " + station.price + " Euro (" + station.reach + " Einwohner)"
-			Players[playerid].maxaudience = CalculateAudienceSum(playerid)
+			Game.Players[playerid].maxaudience = CalculateAudienceSum(playerid)
 			'network
-			if game.networkgame Then NetworkHelper.SendStationChange(game.playerid, station, Players[game.playerID].maxaudience, 1)
+			if game.networkgame Then NetworkHelper.SendStationChange(game.playerid, station, Game.Players[game.playerID].maxaudience, 1)
 			self.LastStation.Reset()
 			Self.buyStation[playerid] = Null
 		EndIf
@@ -2028,16 +2022,16 @@ endrem
 	End Method
 
 	Method Sell(station:TStation)
-		If Players[station.owner].finances[Game.getWeekday()].SellStation(Floor(station.price * 0.75))
+		If Game.Players[station.owner].finances[Game.getWeekday()].SellStation(Floor(station.price * 0.75))
 			StationList.Remove(station)
 	        Print "Player" + station.owner + " verkauft Station für " + (station.price * 0.75) + " Euro (" + station.reach + " Einwohner)"
-			Players[station.owner].maxaudience = CalculateAudienceSum(station.owner) 'auf entsprechenden Player umstellen
+			Game.Players[station.owner].maxaudience = CalculateAudienceSum(station.owner) 'auf entsprechenden Player umstellen
 			'events ...
 			'network
-			If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendStationChange(station.owner, station, Players[station.owner].maxaudience, 0)
+			If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendStationChange(station.owner, station, Game.Players[station.owner].maxaudience, 0)
 			LastStation.reset()
 			'when station is sold, audience will decrease, atm buy =/= increase ;D
-			Players[station.owner].ComputeAudience(1)
+			Game.Players[station.owner].ComputeAudience(1)
 		EndIf
     End Method
 

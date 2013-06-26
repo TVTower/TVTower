@@ -229,7 +229,7 @@ endrem
 	'player is now in room "room"
 	Method _SetInRoom:Int(room:TRooms)
 		If room <> Null
-			room.CloseDoor(Players[Game.playerID].Figure)
+			room.CloseDoor(Game.Players[Game.playerID].Figure)
 			room.used = Self.id
 		EndIf
 
@@ -322,9 +322,9 @@ endrem
 			Self.inRoom.used = -1
 
 			If ParentPlayer And Self.isAI()
-				If Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
-					'Print "LeaveRoom:"+Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
-					If Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
+				If Game.Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
+					'Print "LeaveRoom:"+Game.Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
+					If Game.Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
 						 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
 						 'Print "movieagency left: programmes bought"
 					EndIf
@@ -421,7 +421,7 @@ endrem
 		If Self.inRoom <> Null Then Self.LeaveRoom()
 
 		'only change target if its your figure or you are game leader
-		If id <> Players[ game.playerID ].figure.id And Not Game.isGameLeader() Then Return False
+		If id <> Game.Players[ game.playerID ].figure.id And Not Game.isGameLeader() Then Return False
 
 		If x=Null Then x=target.x
 		If y=Null Then y=target.y

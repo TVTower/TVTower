@@ -73,7 +73,7 @@ Type TRooms  {_exposeToLua="selected"}
 			EndIf
 
 			'only show tooltip if not "empty" and mouse in door-rect
-			If obj.desc <> "" and Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
+			If obj.desc <> "" and Game.Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
 				If obj.tooltip <> null
 					obj.tooltip.Hover()
 				else
@@ -149,12 +149,12 @@ Type TRooms  {_exposeToLua="selected"}
 
 		If GetDoorType() >= 0
 			Fader.Enable() 'room fading
-			OpenDoor(Players[Game.playerID].Figure)
+			OpenDoor(Game.Players[Game.playerID].Figure)
 			FadeAnimationActive = True
 		Else
 			print "LeaveAnimated - CloseDoor"
-			CloseDoor(Players[Game.playerID].Figure)
-			Players[Game.playerID].Figure.LeaveRoom()
+			CloseDoor(Game.Players[Game.playerID].Figure)
+			Game.Players[Game.playerID].Figure.LeaveRoom()
 		EndIf
 		Return false
 	End Method
@@ -181,10 +181,10 @@ Type TRooms  {_exposeToLua="selected"}
 			If Fader.fadecount >= 20 And not Fader.fadeout
 				Fader.EnableFadeout()
 				print "Room.Update - CloseDoor1"
-				CloseDoor(Players[Game.playerID].Figure)
+				CloseDoor(Game.Players[Game.playerID].Figure)
 				print "Room.Update - CloseDoor2"
 				FadeAnimationActive = False
- 			    Players[Game.playerID].Figure.LeaveRoom()
+ 			    Game.Players[Game.playerID].Figure.LeaveRoom()
 				Return 0
 			EndIf
 		End If
@@ -219,7 +219,7 @@ Type TRooms  {_exposeToLua="selected"}
 
 
 		'room got no special handling ...
-		if listeners = 0 then Players[game.playerID].figure.fromroom = Null
+		if listeners = 0 then Game.Players[game.playerID].figure.fromroom = Null
 		return 0
 
 	End Method
@@ -460,10 +460,10 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		Players[game.playerID].figure.fromroom = Null
+		Game.Players[game.playerID].figure.fromroom = Null
 		If MouseManager.IsHit(1)
 			If functions.IsIn(MouseX(),MouseY(),25,40,150,295)
-				Players[Game.playerID].Figure.LeaveRoom()
+				Game.Players[Game.playerID].Figure.LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
 			EndIf
@@ -620,12 +620,12 @@ Type RoomHandler_Office extends TRoomHandler
 		GUIManager.Draw("programmeplanner")
 
 
-		If Players[room.owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks > 0
+		If Game.Players[room.owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks > 0
 			TAdBlock.DrawAll(room.owner)
 			SetColor 255,255,255  'normal
-			Players[room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
+			Game.Players[room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
 		Else
-			Players[room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
+			Game.Players[room.owner].ProgrammePlan.DrawAllProgrammeBlocks()
 			SetColor 255,255,255  'normal
 			TAdBlock.DrawAll(room.owner)
 		EndIf
@@ -650,7 +650,7 @@ Type RoomHandler_Office extends TRoomHandler
 			If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw(1)
 			If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
 			If PPprogrammeList.GetOpen() = 0 And PPcontractList.GetOpen() = 0
-				For Local ProgrammeBlock:TProgrammeBlock = EachIn Players[room.owner].ProgrammePlan.ProgrammeBlocks
+				For Local ProgrammeBlock:TProgrammeBlock = EachIn Game.Players[room.owner].ProgrammePlan.ProgrammeBlocks
 					If ProgrammeBlock.sendHour >= Game.daytoplan*24 AND ProgrammeBlock.sendHour <= Game.daytoplan*24+24 And..
 					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.rect.GetW(), ProgrammeBlock.rect.GetH()*ProgrammeBlock.programme.blocks)
 						If Programmeblock.sendHour > game.getDay()*24 + game.GetHour()
@@ -662,7 +662,7 @@ Type RoomHandler_Office extends TRoomHandler
 						Exit
 					EndIf
 				Next
-				For Local AdBlock:TAdBlock = EachIn Players[ room.owner ].ProgrammePlan.AdBlocks
+				For Local AdBlock:TAdBlock = EachIn Game.Players[ room.owner ].ProgrammePlan.AdBlocks
 					If AdBlock.senddate = Game.daytoplan And functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.rect.GetW(), AdBlock.rect.GetH())
 						Game.cursorstate = 1
 						If MouseX() <= 400 then AdBlock.ShowSheet(358,20);Exit else AdBlock.ShowSheet(30,20);Exit
@@ -705,7 +705,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		local listsOpened:int = (PPprogrammeList.enabled <> 0 Or PPcontractList.enabled <> 0)
 		TAdBlock.UpdateAll(room.owner, listsOpened, PPprogrammeList.enabled)
-		Players[room.owner].ProgrammePlan.UpdateAllProgrammeBlocks(listsOpened)
+		Game.Players[room.owner].ProgrammePlan.UpdateAllProgrammeBlocks(listsOpened)
 
 		If room.owner = Game.playerID
 			If TProgrammeBlock.AdditionallyDragged > 0 OR TADblock.AdditionallyDragged > 0 Then Game.cursorstate=2
@@ -730,7 +730,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If button = ProgrammePlannerButtons[0] Then return PPcontractList.SetOpen(1)		'opens contract list
 		If button = ProgrammePlannerButtons[1] Then return PPprogrammeList.SetOpen(1)		'opens programme genre list
 
-		local room:TRooms = Players[Game.playerID].Figure.inRoom
+		local room:TRooms = Game.Players[Game.playerID].Figure.inRoom
 		'If button = ProgrammePlannerButtons[2] then return room.screenManager.GoToSubScreen("screen_office_options")
 		If button = ProgrammePlannerButtons[3] then return room.screenManager.GoToSubScreen("screen_office_financials")
 		If button = ProgrammePlannerButtons[4] then return room.screenManager.GoToSubScreen("screen_office_image")
@@ -746,7 +746,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		local finances:TFinancials	= Players[ room.owner ].finances[ Game.getWeekday() ]
+		local finances:TFinancials	= Game.Players[ room.owner ].finances[ Game.getWeekday() ]
 		local font13:TBitmapFont	= Assets.GetFont("Default", 14, BOLDFONT)
 		local font12:TBitmapFont	= Assets.GetFont("Default", 11)
 
@@ -843,7 +843,7 @@ Type RoomHandler_Office extends TRoomHandler
 		Assets.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
 
 		Assets.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
-		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Players[room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
+		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Game.Players[room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	End Function
 
 	Function onUpdateImage:int( triggerEvent:TEventBase )
@@ -894,7 +894,7 @@ Type RoomHandler_Office extends TRoomHandler
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
 			DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 15, 18)
-			Players[i + 1].color.SetRGB()
+			Game.Players[i + 1].color.SetRGB()
 			DrawRect(565, 33 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 13, 16)
 		Next
 		SetColor 255, 255, 255
@@ -1043,7 +1043,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		Game.cursorstate = 0
 
-		Players[Game.playerID].Figure.fromRoom = Null
+		Game.Players[Game.playerID].Figure.fromRoom = Null
 
 		If ArchiveProgrammeList.GetOpen() = 0
 			if functions.IsIn(MouseX(), MouseY(), 605,65,120,90) Or functions.IsIn(MouseX(), MouseY(), 525,155,240,225)
@@ -1302,7 +1302,7 @@ Type RoomHandler_News extends TRoomHandler
 		'how much levels do we have?
 		local level:int = 0
 		For local i:int = 0 until len( NewsGenreButtons )
-			if button = NewsGenreButtons[i] then level = Players[ room.owner ].GetNewsAbonnement(i);exit
+			if button = NewsGenreButtons[i] then level = Game.Players[ room.owner ].GetNewsAbonnement(i);exit
 		Next
 
 		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 180,100, 0, 0)
@@ -1314,13 +1314,13 @@ Type RoomHandler_News extends TRoomHandler
 
 		If level = 0
 			NewsGenreTooltip.title	= button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
-			NewsGenreTooltip.text	= getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ Players[ Game.playerID ].GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
+			NewsGenreTooltip.text	= getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ Game.Players[ Game.playerID ].GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 		Else
 			NewsGenreTooltip.title	= button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
 			if level = 3
 				NewsGenreTooltip.text = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0" + getLocale("CURRENCY")
 			Else
-				NewsGenreTooltip.text = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ Players[ Game.playerID ].GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
+				NewsGenreTooltip.text = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ Game.Players[ Game.playerID ].GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 			EndIf
 		EndIf
 	End Function
@@ -1336,7 +1336,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		'increase the abonnement
 		For local i:int = 0 until len( NewsGenreButtons )
-			if button = NewsGenreButtons[i] then Players[ Game.playerID ].IncreaseNewsAbonnement(i);exit
+			if button = NewsGenreButtons[i] then Game.Players[ Game.playerID ].IncreaseNewsAbonnement(i);exit
 		Next
 	End Function
 
@@ -1349,7 +1349,7 @@ Type RoomHandler_News extends TRoomHandler
 		'how much levels do we have?
 		local level:int = 0
 		For local i:int = 0 until len( NewsGenreButtons )
-			if button = NewsGenreButtons[i] then level = Players[ room.owner ].GetNewsAbonnement(i);exit
+			if button = NewsGenreButtons[i] then level = Game.Players[ room.owner ].GetNewsAbonnement(i);exit
 		Next
 
 		'draw the levels
@@ -1388,7 +1388,7 @@ Type RoomHandler_News extends TRoomHandler
 '		If TNewsBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
 
 		'create Newsblock-guiBlocks if not done yet
-		For Local block:TNewsBlock = EachIn Players[ room.owner ].ProgrammePlan.NewsBlocks
+		For Local block:TNewsBlock = EachIn Game.Players[ room.owner ].ProgrammePlan.NewsBlocks
 			if not block.guiBlock
 				block.guiBlock = new TGUINewsBlock.Create(block.news.title)
 				block.guiBlock.SetParentNewsBlock(block)
@@ -1438,7 +1438,7 @@ Type RoomHandler_News extends TRoomHandler
 
 		'delete the newsblock of that guinewsblock from the owners programmeplan
 		' - this also removes the guiblock
-		Players[ guiNewsBlock.parentNewsBlock.owner ].ProgrammePlan.RemoveNewsBlock( guiNewsBlock.parentNewsBlock )
+		Game.Players[ guiNewsBlock.parentNewsBlock.owner ].ProgrammePlan.RemoveNewsBlock( guiNewsBlock.parentNewsBlock )
 
 	End Function
 
@@ -1450,10 +1450,10 @@ Type RoomHandler_News extends TRoomHandler
 		local owner:int = guiNewsBlock.parentNewsBlock.owner
 
 		if receiverList = NewsBlockListAvailable[owner]
-			Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, -1)
+			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, -1)
 		elseif receiverList = NewsBlockListUsed[owner]
 			local slot:int = NewsBlockListUsed[owner].getSlot(guiNewsBlock)
-			Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, slot)
+			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, slot)
 		endif
 	End Function
 
@@ -1513,37 +1513,37 @@ Type RoomHandler_Chief extends TRoomHandler
 		local room:TRooms = TRooms(triggerEvent._sender)
 		if not room then return 0
 
-		Players[game.playerID].figure.fromroom = Null
+		Game.Players[game.playerID].figure.fromroom = Null
 
 		If room.Dialogues.Count() <= 0
 			Local ChefDialoge:TDialogueTexts[5]
-			ChefDialoge[0] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_WELCOME").replace("%1", Players[Game.playerID].name) )
+			ChefDialoge[0] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_WELCOME").replace("%1", Game.Players[Game.playerID].name) )
 			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
 			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
 
-			If Players[Game.playerID].GetCreditCurrent() > 0
+			If Game.Players[Game.playerID].GetCreditCurrent() > 0
 				ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
 			endif
-			If Players[Game.playerID].GetCreditAvailable() > 0
-				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%1", Players[Game.playerID].GetCreditAvailable()))
-				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT"), 2, TPlayer.extSetCredit, Players[Game.playerID].GetCreditAvailable()))
+			If Game.Players[Game.playerID].GetCreditAvailable() > 0
+				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%1", Game.Players[Game.playerID].GetCreditAvailable()))
+				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT"), 2, TPlayer.extSetCredit, Game.Players[Game.playerID].GetCreditAvailable()))
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
 			Else
-				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%1", Players[Game.playerID].GetCreditCurrent()))
+				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%1", Game.Players[Game.playerID].GetCreditCurrent()))
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
 			EndIf
 			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
 
-			ChefDialoge[2] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%1", Players[Game.playerID].name) )
+			ChefDialoge[2] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%1", Game.Players[Game.playerID].name) )
 			ChefDialoge[2].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
 
 			ChefDialoge[3] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
-			If Players[Game.playerID].GetCreditCurrent() >= 100000 And Players[Game.playerID].GetMoney() >= 100000
+			If Game.Players[Game.playerID].GetCreditCurrent() >= 100000 And Game.Players[Game.playerID].GetMoney() >= 100000
 				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), - 2, TPlayer.extSetCredit, - 1 * 100000))
 			EndIf
-			If Players[Game.playerID].GetCreditCurrent() < Players[Game.playerID].GetMoney()
-				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%1", Players[Game.playerID].GetCreditCurrent()), - 2, TPlayer.extSetCredit, - 1 * Players[Game.playerID].GetCreditCurrent()))
+			If Game.Players[Game.playerID].GetCreditCurrent() < Game.Players[Game.playerID].GetMoney()
+				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%1", Game.Players[Game.playerID].GetCreditCurrent()), - 2, TPlayer.extSetCredit, - 1 * Game.Players[Game.playerID].GetCreditCurrent()))
 			EndIf
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
@@ -1648,7 +1648,7 @@ Type RoomHandler_Elevator extends TRoomHandler
 		local room:TRooms = TRooms(triggerEvent._sender)
 		if not room then return 0
 
-		local playerFigure:TFigures = Players[ Game.playerID ].figure
+		local playerFigure:TFigures = Game.Players[ Game.playerID ].figure
 
 		TRoomSigns.DrawAll()
 		Assets.fonts.baseFont.draw("Rausschmiss in "+Building.Elevator.waitAtFloorTimer.GetTimeUntilExpire(), 600, 20)
@@ -1658,7 +1658,7 @@ Type RoomHandler_Elevator extends TRoomHandler
 		local room:TRooms = TRooms(triggerEvent._sender)
 		if not room then return 0
 
-		local playerFigure:TFigures = Players[ Game.playerID ].figure
+		local playerFigure:TFigures = Game.Players[ Game.playerID ].figure
 		local mouseHit:int = MouseManager.IsHit(1)
 
 		Game.cursorstate = 0
@@ -1725,13 +1725,13 @@ Type RoomHandler_Betty extends TRoomHandler
 			Local picX:Int = 410 + i * (sprite.w + 5)
 			sprite.Draw( picX, picY )
 			SetAlpha 0.4
-			Players[i].color.SetRGB()
+			Game.Players[i].color.SetRGB()
 			DrawRect(picX + 2, picY + 8, 26, 28)
 			SetColor 255, 255, 255
 			SetAlpha 1.0
-			local x:float = picX + Int(sprite.framew / 2) - Int(Players[i].Figure.Sprite.framew / 2)
+			local x:float = picX + Int(sprite.framew / 2) - Int(Game.Players[i].Figure.Sprite.framew / 2)
 			local y:float = picY + sprite.h - 30
-			Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
+			Game.Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 		Next
 
 		Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
@@ -1994,11 +1994,11 @@ End Function
 
 Function Init_CreateRoomDetails()
 	For Local i:Int = 1 To 4
-		TRooms.GetRoomByDetails("studiosize1", i).desc:+" " + Players[i].channelname
-		TRooms.GetRoomByDetails("office", i).desc:+" " + Players[i].name
-		TRooms.GetRoomByDetails("chief", i).desc:+" " + Players[i].channelname
-		TRooms.GetRoomByDetails("news", i).desc:+" " + Players[i].channelname
-		TRooms.GetRoomByDetails("archive", i).desc:+" " + Players[i].channelname
+		TRooms.GetRoomByDetails("studiosize1", i).desc:+" " + Game.Players[i].channelname
+		TRooms.GetRoomByDetails("office", i).desc:+" " + Game.Players[i].name
+		TRooms.GetRoomByDetails("chief", i).desc:+" " + Game.Players[i].channelname
+		TRooms.GetRoomByDetails("news", i).desc:+" " + Game.Players[i].channelname
+		TRooms.GetRoomByDetails("archive", i).desc:+" " + Game.Players[i].channelname
 	Next
 
 	For Local Room:TRooms = EachIn TRooms.RoomList
