@@ -333,7 +333,7 @@ endrem
 		For Local i:Int = 1 To 4
 			If Game.Players[i] <> Null
 				If Game.Players[i].PlayerKI = Null And Game.Players[i].figure.controlledbyID = 0 Then PrintDebug ("TGame.Update()", "FEHLER: KI fuer Spieler " + i + " nicht gefunden", DEBUG_UPDATES)
-				If Game.Players[i].figure.controlledbyID = 0
+				If Game.Players[i].figure.isAI()
 					LoadSaveFile.xmlWrite("KI"+i, Game.Players[i].PlayerKI.CallOnSave())
 				EndIf
 			EndIf
@@ -446,7 +446,6 @@ endrem
 
 		Game.timeGone			= Game.MakeTime(1985,1,0,0)
 		Game.timeStart			= Game.MakeTime(1985,1,0,0)
-		'print "year: "+Game.GetYear()+" day: "+Game.GetDay()+" hour: "+Game.GetHour()+" min: "+Game.GetMinute()
 		Game.dayToPlan			= Game.GetDay()
 		Game.title				= "unknown"
 
@@ -934,6 +933,10 @@ endrem
 		Return Min(5,level) * 10000
 	End Method
 
+	Method GetNewsAbonnementDelay:int(genre:int) {_exposeToLua}
+		return 60*(3-self.newsabonnements[genre])
+	End Method
+
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre > 5 Then Return 0 'max 6 categories 0-5
 		Return Self.newsabonnements[genre]
@@ -1282,7 +1285,8 @@ endrem
 
 	Method ChangeMoney(_moneychange:Int)
 		money:+_moneychange
-		If Game.Players[ Self.playerID ].isAI() Then Game.Players[ Self.playerID ].PlayerKI.CallOnMoneyChanged()
+		'change to event?
+		If Game.isGameLeader() and Game.Players[ Self.playerID ].isAI() Then Game.Players[ Self.playerID ].PlayerKI.CallOnMoneyChanged()
 		If Self.playerID = Game.playerID Then Interface.BottomImgDirty = True
 		If debug Then Print "FINANZ: player :"+Self.playerID+" geldaenderung:"+_moneychange
 	End Method
@@ -1907,8 +1911,7 @@ Type TNewsAgency
 		'only add news/newsblock if player is Host/Player OR AI
 		If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Game.Players[ forPlayer ].newsabonnements[news.genre] > 0
-			TNewsBlock.Create("", forPlayer, 60*(3-Game.Players[ forPlayer ].newsabonnements[news.genre]), news)
-			If Game.isGameLeader() And Not fromNetwork And Game.networkgame Then NetworkHelper.SendNews( forPlayer, news)
+			TNewsBlock.Create("", forPlayer, Game.Players[ forPlayer ].GetNewsAbonnementDelay(news.genre), news)
 		EndIf
 	End Method
 
@@ -2330,10 +2333,8 @@ Function Menu_GameSettings()
 	Local modifiedPlayers:Int = False
 	Local ChangesAllowed:Byte[4]
 
-	'disable/enable announcement on lan/online
-	Network.announceEnabled = GameSettingsOkButton_Announce.crossed
 
-	If GameSettingsOkButton_Announce.crossed And Game.playerID=1
+	If GameSettingsOkButton_Announce.crossed And Game.isGameLeader()
 		GameSettingsOkButton_Announce.enable()
 		GameSettingsGameTitle.disable()
 		If GameSettingsGameTitle.Value = "" Then GameSettingsGameTitle.Value = "no title"
@@ -2341,15 +2342,23 @@ Function Menu_GameSettings()
 	Else
 		GameSettingsGameTitle.enable()
 	EndIf
-	If Game.playerID <> 1
+	If not Game.isGameLeader()
 		GameSettingsGameTitle.disable()
 		GameSettingsOkButton_Announce.disable()
 	EndIf
 
+	'disable/enable announcement on lan/online
+	if GameSettingsOkButton_Announce.crossed
+		Network.client.playerName = Game.Players[ Game.playerID ].name
+		if not Network.announceEnabled then Network.StartAnnouncing(Game.title)
+	else
+		Network.StopAnnouncing()
+	endif
+
 	For Local i:Int = 0 To 3
 		If Not MenuPlayerNames[i].isActive() Then Game.Players[i+1].Name = MenuPlayerNames[i].Value
 		If Not MenuChannelNames[i].isActive() Then Game.Players[i+1].channelname = MenuChannelNames[i].Value
-		If Game.networkgame Or Game.playerID=1 Then
+		If Game.networkgame Or Game.isGameLeader()
 			If Game.gamestate <> GAMESTATE_STARTMULTIPLAYER And Game.Players[i+1].Figure.ControlledByID = Game.playerID Or (Game.Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
 				ChangesAllowed[i] = True
 				MenuPlayerNames[i].enable()
@@ -2378,6 +2387,7 @@ Function Menu_GameSettings()
 			Game.SetGamestate(GAMESTATE_RUNNING)
 		Else
 			GameSettingsOkButton_Announce.crossed = False
+			Network.StopAnnouncing()
 			Interface.ShowChannel = Game.playerID
 
 			Game.SetGamestate(GAMESTATE_STARTMULTIPLAYER)
@@ -2389,6 +2399,7 @@ Function Menu_GameSettings()
 			Game.playerID = 1
 			Game.SetGamestate(GAMESTATE_NETWORKLOBBY)
 			GameSettingsOkButton_Announce.crossed = False
+			Network.StopAnnouncing()
 		Else
 			Game.SetGamestate(GAMESTATE_MAINMENU)
 		EndIf
@@ -2799,13 +2810,17 @@ End Function
 
 Function Init_Creation()
 	'set all non human players to AI
-	If Game.IsGameLeader()
+	if Game.isGameLeader()
 		For Local playerids:Int = 1 To 4
 			If Game.IsPlayer(playerids) And Not Game.IsHumanPlayer(playerids)
 				Game.Players[playerids].SetAIControlled("res/ai/DefaultAIPlayer.lua")
+
+				'register ai player events - but only for game leader
+				EventManager.registerListener( "Game.OnMinute",	TEventListenerPlayer.Create(Game.Players[playerids]) )
+				EventManager.registerListener( "Game.OnDay", 	TEventListenerPlayer.Create(Game.Players[playerids]) )
 			EndIf
 		Next
-	EndIf
+	endif
 
 	Local lastblocks:Int = 0
 	'Local lastprogramme:TProgrammeBlock = New TProgrammeBlock
@@ -3170,11 +3185,13 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			'EventManager.triggerEvent( TEventSimple.Create("App.UpdateKeyManager",Null, Null, Null, 1) )
 			?Threaded
 			LockMutex(RefreshInputMutex)
-			?
 			RefreshInput = TRUE
-			?Threaded
 			UnLockMutex(RefreshInputMutex)
 			?
+			?not Threaded
+			KEYMANAGER.changeStatus()
+			?
+
 			If Not GUIManager.getActive()
 				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
 				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
@@ -3199,25 +3216,16 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].maxaudience = Stationmap.einwohner
 
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
-				If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
-				If KEYMANAGER.Ishit(Key_F2) And Game.Players[2].isAI() Then Game.Players[2].PlayerKI.reloadScript()
-				If KEYMANAGER.Ishit(Key_F3) And Game.Players[3].isAI() Then Game.Players[3].PlayerKI.reloadScript()
-				If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
+				if Game.isGameLeader()
+					If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F2) And Game.Players[2].isAI() Then Game.Players[2].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F3) And Game.Players[3].isAI() Then Game.Players[3].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
+				endif
 
 				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
 				If KEYMANAGER.Ishit(Key_F6) Then Soundmanager.PlayMusic(MUSIC_MUSIC)
-				If KEYMANAGER.Ishit(Key_F7)
-					Local news:Int = 1
-					Local slot:Int = -1
-					Print "set news "+news+" ["+Game.Players[1].ProgrammePlan.GetNewsFromList(news).id+"] to slot "+slot
-					Game.Players[1].ProgrammePlan.SetNewsBlockSlot( Game.Players[1].ProgrammePlan.GetNewsFromList(news), slot)
-				EndIf
-				If KEYMANAGER.Ishit(Key_F8)
-					Local news:Int = 1
-					Local slot:Int = Rand(0,2)
-					Print "set news "+news+" ["+Game.Players[1].ProgrammePlan.GetNewsFromList(news).id+"] to slot "+slot
-					Game.Players[1].ProgrammePlan.SetNewsBlockSlot( Game.Players[1].ProgrammePlan.GetNewsFromList(news), slot)
-				EndIf
+
 				If KEYMANAGER.Ishit(Key_F9)
 					If (KIRunning)
 						KIRunning = False
@@ -3235,8 +3243,9 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			EndIf
 
 			'threadsafe?
-'			MOUSEMANAGER.changeStatus()
-'			EventManager.triggerEvent( TEventSimple.Create("App.UpdateMouseManager",Null, Null, Null, 1) )
+			?not Threaded
+			MOUSEMANAGER.changeStatus()
+			?
 		EndIf
 		Return True
 	End Method
@@ -3261,7 +3270,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			EndIf
 			Assets.fonts.baseFont.draw("FPS:"+App.Timer.currentFps + " UPS:" + Int(App.Timer.currentUps), 150,0)
 			Assets.fonts.baseFont.draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
-			If game.networkgame Then Assets.fonts.baseFont.draw("ping "+Int(Network.client.latency)+"ms", 375,0)
+			If game.networkgame and Network.client Then Assets.fonts.baseFont.draw("ping "+Int(Network.client.latency)+"ms", 375,0)
 			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.width - 10, 10, 0, 1)
 
 			TProfiler.Enter("Draw-Flip")
@@ -3295,15 +3304,10 @@ End Type
 
 '__________________________________________
 'events
-For Local i:Int = 1 To 4
-	If Game.Players[i].figure.isAI()
-		EventManager.registerListener( "Game.OnMinute",	TEventListenerPlayer.Create(Game.Players[i]) )
-		EventManager.registerListener( "Game.OnDay", 	TEventListenerPlayer.Create(Game.Players[i]) )
-	EndIf
-Next
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
 EventManager.registerListener( "Game.OnMinute",	TEventListenerOnMinute.Create() )
 EventManager.registerListenerFunction( "Game.OnStart",	TGame.onStart )
+rem
 'we do not want them to happen in each timer loop but on request...
 EventManager.registerListenerFunction( "App.UpdateKeymanager",	UpdateKeymanager )
 EventManager.registerListenerFunction( "App.UpdateMouseManager",UpdateMousemanager )
@@ -3314,6 +3318,7 @@ End Function
 Function UpdateMousemanager:int( triggerEvent:TEventBase )
 	MOUSEMANAGER.ChangeStatus()
 End Function
+endrem
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 
@@ -3336,17 +3341,15 @@ If ExitGame <> 1 And Not AppTerminate()'not exit game
 
 		'we cannot fetch keystats in threads
 		'so we have to do it 100% in the main thread - same for mouse
+	?Threaded
 	if RefreshInput
-		?Threaded
 		LockMutex(RefreshInputMutex)
-		?
 		KEYMANAGER.changeStatus()
 		MOUSEMANAGER.changeStatus()
 		RefreshInput = FALSE
-		?Threaded
 		UnLockMutex(RefreshInputMutex)
-		?
 	endif
+	?
 
 		'process events not directly triggered
 		'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...

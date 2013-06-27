@@ -130,7 +130,7 @@ endrem
 	Method IsAI:Int()
 		If id > 4 Then Return True
 	'	If Game.networkgame Then If id < 4 Then If Network.IP[id - 1] = Null Then Return True
-		If Self.ControlledByID = 0 Then Return True
+		If Self.ControlledByID = 0 and self.parentPlayer and self.parentPlayer.playerKI Then Return True
 		Return False
 	End Method
 
@@ -234,6 +234,7 @@ endrem
 		EndIf
 
 	 	inRoom = room
+	 	'only call if it is a player's figure - and AI
 		If ParentPlayer <> Null And Self.isAI()
 			If room Then ParentPlayer.PlayerKI.CallOnReachRoom(room.id) Else ParentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_NOTFOUND)
 		EndIf

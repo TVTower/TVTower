@@ -689,6 +689,10 @@ Type TTVGNetwork
 		infoStream.SetRemotePort(self.infoPort)
 	End Method
 
+	Method StopAnnouncing:int()
+		self.announceEnabled = false
+	End Method
+
 	Method StartAnnouncing(title:string, toLan:int = 1)
 		self.InitInfoStream()
 		self.announceEnabled= true
@@ -1107,16 +1111,16 @@ Type TNetworkObject
 		WriteSlot( index ).SetString data
 	End Method
 
-	Method GetInt:int( index:int, defaultValue:int=null )
-		Return slots[index].GetInt( defaultValue )
+	Method GetInt:int( index:int, defaultValue:int=0, defaultProvided:int=FALSE )
+		Return slots[index].GetInt( defaultValue, defaultProvided )
 	End Method
 
-	Method GetFloat:float( index:int, defaultValue:float=null )
-		Return slots[index].GetFloat( defaultValue )
+	Method GetFloat:float( index:int, defaultValue:float=0.0, defaultProvided:int=FALSE  )
+		Return slots[index].GetFloat( defaultValue, defaultProvided )
 	End Method
 
-	Method GetString:string( index:int, defaultValue:string=null)
-		Return slots[index].GetString( defaultValue )
+	Method GetString:string( index:int, defaultValue:string="", defaultProvided:int=FALSE )
+		Return slots[index].GetString( defaultValue, defaultProvided )
 	End Method
 
 	Method WriteSlot:TNetworkObjectSlot( index:int )
@@ -1332,30 +1336,50 @@ Type TNetworkObjectSlot
 		slottype= NET_TYPE_STRING
 	End Method
 
-rem
-	Method GetInt:int(defaultValue:int=0)
-		if defaultValue <> null
-			if slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16 then Return _int
-			return defaultValue
+	'we have to add a "defaultProvided" as integers have no "null" (0 is null too!)
+	Method GetInt:int(defaultValue:int=0, defaultProvided:int=FALSE)
+		'if a defaultValue is set we return that as long as
+		'the type of the field is differing
+		if defaultProvided
+			if slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16
+				Return _int
+			else
+				Return defaultValue
+			endif
+		else
+			Assert slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16, "Wrong slot type. No INT but "+slottype
+			Return _int
 		endif
-
-		Assert slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16, "wrong slot type:"+slottype
-		Return _int
-	End Method
-endrem
-	Method GetInt:int(defaultValue:int=0)
-		Assert slottype=NET_TYPE_INT Or slottype=NET_TYPE_UINT8 Or slottype=NET_TYPE_UINT16, "wrong slot type:"+slottype
-		Return _int
 	End Method
 
-	Method GetFloat:float(defaultValue:float=0.0)
-		Assert slottype = NET_TYPE_FLOAT32
-		Return _float
+	Method GetFloat:float(defaultValue:float=0.0, defaultProvided:int=FALSE)
+		'float/int/string don't have real NULL, so we have to rely on defaultProvided
+		'if a defaultValue is set, return it as long as field type is differing
+		if defaultProvided
+			if slottype=NET_TYPE_FLOAT32
+				Return _float
+			else
+				Return defaultValue
+			endif
+		else
+			Assert slottype=NET_TYPE_FLOAT32, "Wrong slot type. No FLOAT but "+slottype
+			Return _float
+		endif
 	End Method
 
-	Method GetString:string(defaultValue:string="")
-		Assert slottype = NET_TYPE_STRING
-		Return _string
+	Method GetString:string(defaultValue:string="", defaultProvided:int=FALSE)
+		'float/int/string don't have real NULL, so we have to rely on defaultProvided
+		'if a defaultValue is set, return it as long as field type is differing
+		if defaultProvided
+			if slottype=NET_TYPE_STRING
+				Return _string
+			else
+				Return defaultValue
+			endif
+		else
+			Assert slottype=NET_TYPE_STRING, "Wrong slot type. No STRING but "+slottype
+			Return _string
+		endif
 	End Method
 
 End Type

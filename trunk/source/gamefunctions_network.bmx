@@ -56,7 +56,7 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			gameData.setInt(1, Game.playerID)
 			gameData.setInt(2, Game.randomSeedValue)
 			Network.BroadcastNetworkObject( gameData, NET_PACKET_RELIABLE )
-			
+
 		case NET_JOINRESPONSE
 			if not Network.client.joined then return
 			if Network.isServer then return
@@ -132,34 +132,32 @@ Type TNetworkHelper
 	End Method
 
 	Method RegisterEventListeners:int()
-		EventManager.registerListenerFunction( "programmeplan.SetNewsBlockSlot",	TNetworkHelper.onchangeNewsBlock )
-		EventManager.registerListenerFunction( "programmeplan.addNewsBlock",	TNetworkHelper.onchangeNewsBlock )
-		EventManager.registerListenerFunction( "programmeplan.removeNewsBlock",	TNetworkHelper.onchangeNewsBlock )
+		EventManager.registerListenerFunction( "programmeplan.SetNewsBlockSlot",	TNetworkHelper.onChangeNewsBlock )
+		EventManager.registerListenerFunction( "programmeplan.addNewsBlock",		TNetworkHelper.onChangeNewsBlock )
+		EventManager.registerListenerFunction( "programmeplan.removeNewsBlock",		TNetworkHelper.onChangeNewsBlock )
 		'someone adds a chatline
 		EventManager.registerListenerFunction( "chat.onAddEntry",	TNetworkHelper.OnChatAddEntry )
 	End Method
 
-	Function onchangeNewsBlock:int( triggerEvent:TEventBase )
+	'connect GUI with normal handling
+	Function onChangeNewsBlock:int( triggerEvent:TEventBase )
 		local newsBlock:TNewsBlock = TNewsBlock(triggerEvent._sender)
 		if not newsBlock then return 0
 
-		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_NEWSCHANGE )
-		'base
-		obj.setInt(1, newsBlock.owner)
-		obj.setInt(2, newsBlock.slot)
-		obj.setInt(3, newsBlock.news.id)
-		'trigger specific
-		if triggerEvent.isTrigger("programmeplan.SetNewsBlockSlot")
-			obj.setInt(4, 0)
-		elseif triggerEvent.isTrigger("programmeplan.addNewsBlock")
-			obj.setInt(4, 1)
-		elseif triggerEvent.isTrigger("programmeplan.removeNewsBlock")
-			obj.setInt(4, 2)
-		else
-			return 0
-		endif
+		local blockOwner:int = newsBlock.owner
 
-		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
+		'ignore ai player's events if no gameleader
+		if Game.isAiPlayer(blockOwner) and not Game.isGameLeader() then return false
+		'do not allow events from players for other players objects
+		if blockOwner <> Game.playerID and not Game.isGameLeader() then return FALSE
+
+		local action:int = -1
+		if triggerEvent.isTrigger("programmeplan.SetNewsBlockSlot") then action = NET_CHANGE
+		if triggerEvent.isTrigger("programmeplan.addNewsBlock") then action = NET_ADD
+		if triggerEvent.isTrigger("programmeplan.removeNewsBlock") then action = NET_DELETE
+		if action = -1 then return FALSE
+
+		NetworkHelper.SendPlanNewsChange(Game.playerID, newsBlock, action)
 	End Function
 
 
@@ -342,10 +340,10 @@ Type TNetworkHelper
 		local posY:Float			= obj.getFloat(3)
 		local targetX:Float			= obj.getFloat(4)
 		local targetY:Float			= obj.getFloat(5)
-		local inRoomID:int			= obj.getInt(6, -1)
-		local clickedRoomID:int		= obj.getInt(7, -1)
-		local toRoomID:int			= obj.getInt(8, -1)
-		local fromRoomID:int		= obj.getInt(9, -1)
+		local inRoomID:int			= obj.getInt(6, -1,TRUE)
+		local clickedRoomID:int		= obj.getInt(7, -1,TRUE)
+		local toRoomID:int			= obj.getInt(8, -1,TRUE)
+		local fromRoomID:int		= obj.getInt(9, -1,TRUE)
 
 		If not figure.IsInElevator()
 			'only set X if wrong floor or x differs > 10 pixels
@@ -670,41 +668,54 @@ Type TNetworkHelper
 
 
 
-	'add = 1 - added, add = 0 - removed
-	Method SendPlanNewsChange(playerID:Int, block:TNewsBlock, action:int=0)
-		'action = 0: add
-		'action = 1: delete
-		'action = 2: move
+	Method SendPlanNewsChange(sendingPlayerID:Int, block:TNewsBlock, action:int=0)
+		'actions: 0=add | 1=remove | 2=setslot/move
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_NEWSCHANGE )
-		obj.setInt(1, playerID)
+
+		obj.setInt(1, sendingPlayerID)
 		obj.setInt(2, action)
 		obj.setInt(3, block.id)
-		obj.setInt(8, block.paid)
+		obj.setInt(4, block.owner)
+		obj.setInt(8, block.news.happenedtime)
 		obj.setInt(9, block.news.id)
 		obj.setInt(10, block.slot)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
+
 	Method ReceivePlanNewsChange:int( obj:TNetworkObject )
-		local playerID:int		= obj.getInt(1)
-		if not Game.isPlayer(playerID) then return NULL
+		local sendingPlayerID:int = obj.getInt(1)
+		if not Game.isPlayer(sendingPlayerID) then return NULL
 
-		local action:int		= obj.getInt(2)
-		local blockID:int		= obj.getInt(3)
-		local paid:int			= obj.getInt(8)
-		local newsID:int		= obj.getInt(9)
-		local slot:int			= obj.getInt(10)
+		local action:int			= obj.getInt(2)
+		local blockID:int			= obj.getInt(3)
+		local blockOwnerID:int		= obj.getInt(4)
+		local newsHappenedtime:int	= obj.getInt(8)
+		local newsID:int			= obj.getInt(9)
+		local slot:int				= obj.getInt(10)
 
-		Local newsblock:TNewsblock = Game.Players[ playerID ].ProgrammePlan.getNewsBlock(blockID)
-		if not newsblock or newsblock.news.id <> newsID then print "unknown newsblock received";return NUll
+		Local newsBlock:TNewsblock = Game.Players[ blockOwnerID ].ProgrammePlan.getNewsBlock(blockID)
+		if not newsBlock or newsBlock.news.id <> newsID
+			'that block does not exist yet, create it (is new block)
+			'attention: normally a news will be send before but maybe it
+			'did not receive yet (udp...) so we may have to create a news too
+			local news:TNews = TNews.GetNews(newsID)
+			if not news
+				print "NEWS DOES NOT EXIST: "+newsID
+				return FALSE
+			endif
+			'set time when news really happened
+			news.happenedtime = newsHappenedTime
+			'create the block (->emits an addNewsBlock event - be sure to ignore in network! )
+			newsBlock = TNewsBlock.Create("", blockOwnerID, Game.Players[ blockOwnerID ].GetNewsAbonnementDelay(news.genre), news)
+		endif
 
-		if action=0 then Game.Players[ playerID ].ProgrammePlan.addNewsBlock(newsBlock)
-		if action=1 then Game.Players[ playerID ].ProgrammePlan.removeNewsBlock(newsBlock)
-'		if action=2 then Game.Players[ playerID ].ProgrammePlan.moveNewsBlock(newsBlock, slot)
+		'no need to react on "add" as this is automatically done if the block does not exist
+		'if action=NET_ADD then Game.Players[ playerID ].ProgrammePlan.addNewsBlock(newsBlock)
+		if action=NET_DELETE then Game.Players[ blockOwnerID ].ProgrammePlan.removeNewsBlock(newsBlock)
+		if action=NET_CHANGE then Game.Players[ blockOwnerID ].ProgrammePlan.SetNewsBlockSlot(newsBlock, slot)
 
-		newsblock.slot				= slot
-		newsblock.owner				= playerID
 		print "NET: NewsChange - "+action+": "+newsblock.news.title
 	End Method
 

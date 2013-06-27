@@ -1715,20 +1715,20 @@ endrem
 		Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
 	End Method
 
-	Function Create:TNews(title:String, description:String, Genre:Int, episode:Int=0, quality:Int=0, price:Int=0, id:Int=0)
-		Local LocObject:TNews =New TNews
-		LocObject.BaseInit(title, description, TYPE_NEWS)
-		LocObject.title       = title
-		LocObject.description = description
-		LocObject.Genre       = Genre
-		LocObject.episode     = episode
-		Locobject.quality     = quality
-		Locobject.price       = RandRange(80,100)
+	Function Create:TNews(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0, id:Int=0)
+		Local obj:TNews =New TNews
+		obj.BaseInit(title, description, TYPE_NEWS)
+		obj.title       = title
+		obj.description = description
+		obj.Genre       = Genre
+		obj.episode     = 0
+		obj.quality     = quality
+		obj.price       = RandRange(80,100)
 
-		LocObject.episodeList = CreateList()
-		List.AddLast(LocObject)
-		NewsList.AddLast(LocObject)
-		Return LocObject
+		obj.episodeList = CreateList()
+		List.AddLast(obj)
+		NewsList.AddLast(obj)
+		Return obj
 	End Function
 
 	Method AddEpisode:TNews(title:String, description:String, Genre:Int, episode:Int=0,quality:Int=0, price:Int=0, id:Int=0)
@@ -1997,7 +1997,7 @@ Type TDatabase
 				genre		= xml.FindValueInt(nodeChild,"genre", 0)
 				quality		= xml.FindValueInt(nodeChild,"topicality", 0)
 				price		= xml.FindValueInt(nodeChild,"price", 0)
-				Local parentNews:TNews = TNews.Create(title, description, Genre, Database.totalnewscount,quality, price, 0)
+				Local parentNews:TNews = TNews.Create(title, description, Genre, quality, price, Database.totalnewscount)
 
 				'load episodes
 				Local EpisodeNum:Int = 0

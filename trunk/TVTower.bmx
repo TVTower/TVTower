@@ -35,7 +35,6 @@ REM
 	- TAsset -> TAsset.UpdateAll() ruft die Updates auf (currentDeltaTime -> animationen etc)
 
 * "TImageCache" in TBitmapFont-Rendering einbinden
-* "impact"-feld bei filmen (refresh rate)
 * Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
 	- DirectX -> eigene WindowDeco - stylen
 	- OpenGL ... - WindowDeco nicht stylebar
