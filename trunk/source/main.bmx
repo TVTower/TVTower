@@ -264,12 +264,12 @@ Type TGame {_exposeToLua="selected"}
 
 	Field Players:TPlayer[5]
 
-	Field speed:Float				= 0.1 					'Speed of the game
-	Field oldspeed:Float			= 0.1 					'Speed of the game - used when saving a game ("pause")
+	Field speed:Float				= 1.0 					'Speed of the game in "game minutes per real-time second"
+	Field oldspeed:Float			= 1.0 					'Speed of the game - used when saving a game ("pause")
 	Field minutesOfDayGone:Float	= 0.0					'time of day in game, unformatted
 	Field lastMinutesOfDayGone:Float= 0.0					'time last update was done
-	Field timeGone:Double			= 0.0					'time in game, not reset every day
-	Field timeStart:Double			= 0.0					'time used when starting the game
+	Field timeGone:Double			= 0.0					'time (minutes) in game, not reset every day
+	Field timeStart:Double			= 0.0					'time (minutes) used when starting the game
 	Field daysPlayed:Int			= 0
 	Const daysPerYear:Int			= 14 					'5 weeks
 	Field daytoplan:Int 			= 0						'which day has to be shown in programmeplanner
@@ -290,7 +290,7 @@ Type TGame {_exposeToLua="selected"}
 	Field onlinegame:Int 			= 0 					'playing over internet? 0=false
 
 	'used so that random values are the same on all computers having the same seed value
-	field randomSeedValue:int		= millisecs()
+	field randomSeedValue:int		= 0
 
 
 	'Summary: saves the GameObject to a XMLstream
@@ -449,12 +449,31 @@ endrem
 		Game.dayToPlan			= Game.GetDay()
 		Game.title				= "unknown"
 
-		SeedRand( Game.randomSeedValue )
+		Game.SetRandomizerBase( Millisecs() )
 		'Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
-
 
 		Return Game
 	End Function
+
+	'returns how many game minutes equal to one real time second
+	Method GetGameMinutesPerSecond:float()
+		return self.speed
+	End Method
+	'returns how many seconds pass for one game minute
+	Method GetSecondsPerGameMinute:float()
+		return 1.0 / self.speed
+	End Method
+
+	Method GetRandomizerBase:int()
+		return self.randomSeedValue
+	End Method
+
+	Method SetRandomizerBase( value:int=0 )
+		self.randomSeedValue = value
+		'seed the random base for MERSENNE TWISTER (seedrnd for the internal one)
+		SeedRand( self.randomSeedValue )
+		print "setRandomizerBase - first random is: "+RandRange(0,10000)
+	End Method
 
 
 	Method CreateInitialPlayers()
@@ -466,10 +485,10 @@ endrem
 		Next
 		'create playerfigures in figures-image
 		'TColor.GetByOwner -> get first unused color, TPlayer.Create sets owner of the color
-		Self.Players[1] = TPlayer.Create(Self.username	,Self.userchannelname	,Assets.GetSprite("Player1"),	500,  1, 90, TColor.getByOwner(0), 1, "Player 1")
-		Self.Players[2] = TPlayer.Create("Alfie"		,"SunTV"				,Assets.GetSprite("Player2"),	450,  3, 90, TColor.getByOwner(0), 0, "Player 2")
-		Self.Players[3] = TPlayer.Create("Seidi"		,"FunTV"				,Assets.GetSprite("Player3"),	250,  8, 90, TColor.getByOwner(0), 0, "Player 3")
-		Self.Players[4] = TPlayer.Create("Sandra"		,"RatTV"				,Assets.GetSprite("Player4"),	480, 13, 90, TColor.getByOwner(0), 0, "Player 4")
+		Self.Players[1] = TPlayer.Create(Self.username	,Self.userchannelname	,Assets.GetSprite("Player1"),	250,  2, 90, TColor.getByOwner(0), 1, "Player 1")
+		Self.Players[2] = TPlayer.Create("Alfie"		,"SunTV"				,Assets.GetSprite("Player2"),	280,  5, 90, TColor.getByOwner(0), 0, "Player 2")
+		Self.Players[3] = TPlayer.Create("Seidi"		,"FunTV"				,Assets.GetSprite("Player3"),	240,  8, 90, TColor.getByOwner(0), 0, "Player 3")
+		Self.Players[4] = TPlayer.Create("Sandra"		,"RatTV"				,Assets.GetSprite("Player4"),	290, 13, 90, TColor.getByOwner(0), 0, "Player 4")
 	End Method
 
 
@@ -617,8 +636,9 @@ endrem
 
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
-		Self.minutesOfDayGone	:+ (Float(speed) / 10.0)
-		Self.timeGone			:+ (Float(speed) / 10.0)
+		'speed is given as a factor "game-time = x * real-time"
+		Self.minutesOfDayGone	:+ deltaTime * self.GetGameMinutesPerSecond()
+		Self.timeGone			:+ deltaTime * self.GetGameMinutesPerSecond()
 
 		'time for news ?
 		If IsGameLeader() And NewsAgency.NextEventTime < Self.timeGone Then NewsAgency.AnnounceNewNews()
@@ -638,12 +658,12 @@ endrem
 		Local hour:Int		= 0
 		For Local i:Int = 1 To missedMinutes
 			minute = (Floor(Self.lastMinutesOfDayGone)  + i ) Mod 60 '0 to 59
-			EventManager.registerEvent(TEventOnTime.Create("Game.OnMinute", minute))
+			EventManager.triggerEvent(TEventOnTime.Create("Game.OnMinute", minute))
 
 			'hour
 			If minute = 0
 				hour = Floor( (Self.lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
-				EventManager.registerEvent(TEventOnTime.Create("Game.OnHour", hour))
+				EventManager.triggerEvent(TEventOnTime.Create("Game.OnHour", hour))
 			EndIf
 
 			'day
@@ -652,7 +672,7 @@ endrem
 				Self.daysPlayed			:+1			'increase current day
 			 	'automatically change current-plan-day on day change
 				Self.dayToPlan 			= Self.getDay()
-				EventManager.registerEvent(TEventOnTime.Create("Game.OnDay", Self.GetDay()))
+				EventManager.triggerEvent(TEventOnTime.Create("Game.OnDay", Self.GetDay()))
 			EndIf
 		Next
 		Self.lastMinutesOfDayGone = Floor(Self.minutesOfDayGone)
@@ -1076,11 +1096,15 @@ endrem
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = 0)
 		Local block:TProgrammeBlock
+
+'should be same on all connected clients
+print "RON: ComputeAudience - luck: "+(Float(RandRange(-10,10))/1000.0)
+
 		For Local Player:TPlayer = EachIn TPlayer.List
 			block = Player.ProgrammePlan.GetCurrentProgrammeBlock()
 			Player.audience = 0
 
-			If block And block.programme And Player.maxaudience <> 0				
+			If block And block.programme And Player.maxaudience <> 0
 				Player.audience = Floor(Player.maxaudience * block.Programme.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience)) + ") * 1000"
 				'maybe someone sold a station
@@ -1549,42 +1573,34 @@ Type TBuilding Extends TRenderable
 	Field ufo_beaming:TMoveableAnimSprites = New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo2"), 9, 100).SetupMoveable(0, 100, 0,0)
 	Field Elevator:TElevator
 
-	Field Moon_curKubSplineX:appKubSpline =New appKubSpline
-	Field Moon_curKubSplineY:appKubSpline =New appKubSpline
-	Field Moon_curvStep:Float 		=.05
-	Field Moon_tPos:Float 			= 3
-	Field Moon_lastTChange:Int 		= MilliSecs()
-	Field Moon_setNewCurve:Int 		= False
-	Field Moon_newDataT:Int[], Moon_newDataX:Int[], Moon_newDataY:Int[]
-	Field Moon_constSpeed:Int 		= False
-	Field Moon_pixelPerSecond:Float 	= 10
+	Field Moon_Path:TCatmullRomSpline	= new TCatmullRomSpline
+	Field Moon_PathCurrentDistance:float= 0.0
+	Field Moon_MovementStarted:int		= FALSE
+	Field Moon_MovementBaseSpeed:float	= 0.0		'so that the whole path moved within time
 
-	Field ufo_curKubSplineX:appKubSpline =New appKubSpline
-	Field ufo_curKubSplineY:appKubSpline =New appKubSpline
-	Field ufo_curvStep:Float 			=.05
-	Field ufo_tPos:Float 				= 1
-	Field ufo_lastTChange:Int 		= MilliSecs()
-	Field ufo_setNewCurve:Int 		= False
-	Field ufo_newDataT:Int[], ufo_newDataX:Int[], ufo_newDataY:Int[]
-	Field ufo_constSpeed:Int 			= False
-	Field ufo_pixelPerSecond:Float	= 25
-	Field Clouds:TMoveableAnimSprites[5]
-	Field CloudCount:Int = 5
+	Field UFO_Path:TCatmullRomSpline	= New TCatmullRomSpline
+	Field UFO_PathCurrentDistance:float	= 0.0
+	Field UFO_MovementStarted:int		= FALSE
+	Field UFO_MovementBaseSpeed:float	= 0.0
+	Field UFO_DoBeamAnimation:int		= FALSE
+	Field UFO_BeamAnimationDone:int		= FALSE
+
+	Field Clouds:TMoveableAnimSprites[7]
+	Field CloudsAlpha:float[7]
+
 	Field TimeColor:Double
 	Field DezimalTime:Float
 	Field ActHour:Int
-	Field ItemsDrawnToBackground:Byte = 0
+	Field ItemsDrawnToBackground:Byte 	= 0
 	Field gfx_bgBuildings:TGW_Sprites[6]
 	Field gfx_building:TGW_Sprites
 	Field gfx_buildingEntrance:TGW_Sprites
 	Field gfx_buildingRoof:TGW_Sprites
 	Field gfx_buildingWall:TGW_Sprites
 
-	Field roomUsedTooltip:TTooltip = Null
+	Field roomUsedTooltip:TTooltip		= Null
 
-	Global StarsX:Int[60]
-	Global StarsY:Int[60]
-	Global StarsC:Int[60]
+	Global Stars:TPoint[60]
 	Global List:TList = CreateList()
 
 	Function Create:TBuilding()
@@ -1596,12 +1612,39 @@ Type TBuilding Extends TRenderable
 		Building.Elevator		= TElevator.Create(Building)
 		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
 
-		Building.Moon_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-50, -50, 400, 850, 850])
-		Building.Moon_curKubSplineY.GetDataInt([1, 2, 3, 4, 5], [650, 200, 20 , 200, 650])
-		Building.ufo_curKubSplineX.GetDataInt([1, 2, 3, 4, 5], [-150, 200+RandMax(400), 200+RandMax(200), 65, -50])
-		Building.ufo_curKubSplineY.GetDataInt([1, 2, 3, 4, 5], [-50+RandMax(200), 100+RandMax(200) , 200+RandMax(300), 330,150])
-		For Local i:Int = 0 To Building.CloudCount-1
-			Building.Clouds[i] = New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_clouds"), 1,0).SetupMoveable(- 200 * i + (i + 1) * RandMax(400), - 30 + RandMax(30), 2 + RandRange(0, 6),0)
+
+		'set moon movement
+		Building.Moon_Path.addXY( -50, 640 )
+		Building.Moon_Path.addXY( -50, 190 )
+		Building.Moon_Path.addXY( 400,  10 )
+		Building.Moon_Path.addXY( 850, 190 )
+		Building.Moon_Path.addXY( 850, 640 )
+
+		'set ufo movement
+		local displaceY:int = 280
+		local displaceX:int = 5
+		Building.UFO_path.addXY( -60 +displaceX, -410 +displaceY)
+		Building.UFO_path.addXY( -50 +displaceX, -400 +displaceY)
+		Building.UFO_path.addXY(  50 +displaceX, -350 +displaceY)
+		Building.UFO_path.addXY( -100 +displaceX, -300 +displaceY)
+		Building.UFO_path.addXY(  100 +displaceX, -250 +displaceY)
+		Building.UFO_path.addXY(  40 +displaceX, -200 +displaceY)
+		Building.UFO_path.addXY(  50 +displaceX,  -190 +displaceY)
+		Building.UFO_path.addXY(  60 +displaceX, -200 +displaceY)
+		Building.UFO_path.addXY(  70 +displaceX, -250 +displaceY)
+		Building.UFO_path.addXY(  400 +displaceX, -700 +displaceY)
+		Building.UFO_path.addXY(  410 +displaceX, -710 +displaceY)
+rem
+		Building.UFO_path.addXY(        -350, -400+Rand(0,200) )
+		Building.UFO_path.addXY( Rand(0,400)+100, -200+Rand(0,200) )
+		Building.UFO_path.addXY( Rand(0,200), -100+Rand(0,300) )
+		Building.UFO_path.addXY(        -170,             -100 )
+		Building.UFO_path.addXY(        -250,             -150 )
+endrem
+
+		For Local i:Int = 0 To Building.Clouds.length-1
+			Building.Clouds[i] = New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_clouds"), 1,0).SetupMoveable(- 200 * i + (i + 1) * Rand(0,400), - 30 + Rand(0,30), 2 + Rand(0, 6),0)
+			Building.CloudsAlpha[i] = float(Rand(80,100))/100.0
 		Next
 
 		'background buildings
@@ -1618,14 +1661,10 @@ Type TBuilding Extends TRenderable
 		Building.gfx_buildingRoof		= Assets.GetSprite("gfx_building_Dach")
 
 		For Local j:Int = 0 To 29
-			StarsX[j] = 10+RandMax(150)
-			StarsY[j] = 20+RandMax(273)
-			StarsC[j] = 50+RandMax(150)
+			Stars[j] = TPoint.Create( 10+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
 		Next
 		For Local j:Int = 30 To 59
-			StarsX[j] = 650+RandMax(150)
-			StarsY[j] = 20+RandMax(273)
-			StarsC[j] = 50+RandMax(150)
+			Stars[j] = TPoint.Create( 650+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
 		Next
 		If Not List Then List = CreateList()
 		List.AddLast(Building)
@@ -1676,6 +1715,7 @@ Type TBuilding Extends TRenderable
 			Building.gfx_buildingWall.Draw(pos.x + 127 + 507, pos.y + 1024 - Building.gfx_buildingWall.h - 3)
 		Else If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) >= 8
 			SetColor 255, 255, 255
+			SetBlend ALPHABLEND
 			Building.gfx_buildingRoof.Draw(pos.x + 127, pos.y - Building.gfx_buildingRoof.h)
 		EndIf
 		SetBlend MASKBLEND
@@ -1712,6 +1752,7 @@ Type TBuilding Extends TRenderable
 		SetBlend ALPHABLEND
 		TRooms.DrawDoorToolTips()
 		If Self.roomUsedTooltip <> Null Then Self.roomUsedTooltip.Draw()
+
 	End Method
 
 	Method UpdateBackground(deltaTime:Float)
@@ -1730,61 +1771,71 @@ Type TBuilding Extends TRenderable
 			If TimeColor < 0 Then TimeColor = 0
 			If skycolor <= 0 Then skycolor = 0
 		EndIf
-		'compute and draw moon
-		If ActHour > 18 Or ActHour < 7 Then Moon_pixelPerSecond = Float(Floor(Game.speed * 10))
-		If ActHour > 18 And ActHour < 20
-			Moon_tPos = 2;
-			Moon_lastTChange = MilliSecs()
-		EndIf
-		If ActHour = 7 Or ActHour = 18
-			Moon_tPos = 2;
-			Moon_pixelPerSecond = 1
-			Moon_lastTChange = MilliSecs()
-		EndIf
-		Local nextTPos:Float
-		Local curDist:Float =0
-		For nextTPos = Moon_tPos To Moon_tPos + Moon_curKubSplineX.dataX[Moon_curKubSplineX.dataCount - 1] -.001 Step.001
-			curDist:+Sqr((Moon_curKubSplineX.Value(nextTPos +.001) - Moon_curKubSplineX.Value(nextTPos)) ^ 2 + (Moon_curKubSplineY.Value(nextTPos +.001) - Moon_curKubSplineY.Value(nextTPos)) ^ 2)
-			If curDist >= Moon_pixelPerSecond Then Exit
-		Next
-		Moon_tPos:+(nextTPos - Moon_tPos) * (MilliSecs() - Moon_lastTChange) / 1000
-		Moon_lastTChange = MilliSecs()
-		'end compute and draw moon
-		If DezimalTime > 18 Or DezimalTime < 7
-			If Game.GetDay() Mod 2 = 0
-				'compute and draw Ufo
-				If ActHour < 6 Then ufo_pixelPerSecond = Float(Floor(Game.speed * 30))
-				If ActHour = 0
-					ufo_tPos = 1
-					ufo_lastTChange = MilliSecs()
-				EndIf
-				If ActHour = 6 'or ActHour = 18
-					ufo_tPos = 6
-					ufo_pixelPerSecond = 1
-					ufo_lastTChange = MilliSecs()
-				EndIf
-				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
-					ufo_beaming.rect.position.SetXY( 65, -15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h) )
-					ufo_beaming.Update(deltatime)
-					If ufo_beaming.getCurrentAnimation().getCurrentFramePos() <> 6
-						ufo_pixelPerSecond = 0
-					Else
-						ufo_pixelPerSecond = 10
-						ufo_lastTChange:+50
-					EndIf
-				Else
-					curDist = 0
-					For nextTPos = ufo_tPos To ufo_tPos + ufo_curKubSplineX.dataX[ufo_curKubSplineX.dataCount - 1] -.001 Step.001
-						curDist:+Sqr((ufo_curKubSplineX.Value(nextTPos +.001) - ufo_curKubSplineX.Value(nextTPos)) ^ 2 + (ufo_curKubSplineY.Value(nextTPos +.001) - ufo_curKubSplineY.Value(nextTPos)) ^ 2)
-						If curDist >= ufo_pixelPerSecond Then Exit
-					Next
-				EndIf
-				If ufo_pixelPerSecond > 0 Then ufo_tPos:+(nextTPos - ufo_tPos) * (MilliSecs() - ufo_lastTChange) / 1000
-				ufo_lastTChange = MilliSecs()
-				'end compute and draw Ufo
-			EndIf
-		EndIf
-		For Local i:Int = 0 To Building.CloudCount-1
+
+
+		'compute moon position
+		If ActHour > 18 Or ActHour < 7
+			'compute current distance
+			if not Moon_MovementStarted
+				'we have 15 hrs to "see the moon" - so we have add them accordingly
+				'this means - we have to calculate the hours "gone" since 18:00
+				local minutesPassed:int = 0
+				if ActHour>18
+					minutesPassed = (ActHour-18)*60 + Game.GetMinute()
+				else
+					minutesPassed = (ActHour+7)*60 + Game.GetMinute()
+				endif
+
+				'calculate the base speed needed so that the moon would move
+				'the whole path within 15 hrs (15*60 minutes)
+				'this means: after 15hrs 100% of distance are reached
+				Moon_MovementBaseSpeed = 1.0 / (15*60)
+
+				Moon_PathCurrentDistance = minutesPassed * Moon_MovementBaseSpeed
+
+				Moon_MovementStarted = TRUE
+			endif
+
+
+			Moon_PathCurrentDistance:+ deltaTime * Moon_MovementBaseSpeed * Game.GetGameMinutesPerSecond()
+		'	if Moon_PathCurrentDistance > 1.0 then Moon_PathCurrentDistance = 0.0
+		else
+			Moon_MovementStarted = FALSE
+			'set to beginning
+			Moon_PathCurrentDistance = 0.0
+		endif
+
+
+		'compute ufo
+		'-----------
+		'only happens between...
+		If Game.GetDay() Mod 2 = 0 and (DezimalTime > 18 Or DezimalTime < 7)
+			UFO_MovementBaseSpeed = 1.0 / 60.0 '30 minutes for whole path
+
+			'only continue moving if not doing the beamanimation
+			if not UFO_DoBeamAnimation or UFO_BeamAnimationDone
+				UFO_PathCurrentDistance:+ deltaTime * UFO_MovementBaseSpeed * Game.GetGameMinutesPerSecond()
+
+				'do beaming now
+				if UFO_PathCurrentDistance > 0.50 and not UFO_BeamAnimationDone
+					UFO_DoBeamAnimation = TRUE
+				endif
+			endif
+			if UFO_DoBeamAnimation and not UFO_BeamAnimationDone
+				if ufo_beaming.getCurrentAnimation().isFinished()
+					UFO_BeamAnimationDone = TRUE
+					UFO_DoBeamAnimation = FALSE
+				endif
+				ufo_beaming.update(deltaTime)
+			endif
+
+		else
+			'reset beam enabler anyways
+			UFO_DoBeamAnimation = FALSE
+			UFO_BeamAnimationDone=FALSE
+		endif
+
+		For Local i:Int = 0 To Building.Clouds.length-1
 			Clouds[i].Update(deltaTime)
 		Next
 	End Method
@@ -1792,62 +1843,73 @@ Type TBuilding Extends TRenderable
 	'Summary: Draws background of the mainscreen (stars, buildings, moon...)
 	Method DrawBackground(tweenValue:Float=1.0)
 		Local BuildingHeight:Int = gfx_building.h + 56
-		SetBlend MASKBLEND
-		DezimalTime = Float(Game.GetHour()) + Float(Game.GetMinute())*10/6/100
+
 		If DezimalTime > 18 Or DezimalTime < 7
 			If DezimalTime > 18 And DezimalTime < 19 Then SetAlpha (19 - Dezimaltime)
 			If DezimalTime > 6 And DezimalTime < 8 Then SetAlpha (4 - Dezimaltime / 2)
 
 			'stars
+			SetBlend MASKBLEND
 			Local minute:Float = Game.GetMinute()
 			For Local i:Int = 0 To 59
-				If i Mod 6 = 0 And minute Mod 2 = 0 Then StarsC[i] = RandMax( Max(1,StarsC[i]) )
-				SetColor StarsC[i] , StarsC[i] , StarsC[i]
-				Plot(StarsX[i] , StarsY[i] )
+				If i Mod 6 = 0 And minute Mod 2 = 0 Then Stars[i].z = Rand(0, Max(1,Stars[i].z) )
+				SetColor Stars[i].z , Stars[i].z , Stars[i].z
+				Plot(Stars[i].x , Stars[i].y )
 			Next
 
 			SetColor 255, 255, 255
 			DezimalTime:+3
 			If DezimalTime > 24 Then DezimalTime:-24
-			SetBlend ALPHABLEND
-			Assets.GetSprite("gfx_building_BG_moon").DrawInViewPort(Moon_curKubSplineX.ValueInt(Moon_tPos), pos.y + Moon_curKubSplineY.ValueInt(Moon_tPos), 0, Game.GetDay() Mod 12)
-		EndIf
-		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
 
-		For Local i:Int = 0 To Building.CloudCount - 1
+			SetBlend ALPHABLEND
+
+			local moonPos:TPoint = Moon_Path.GetTweenPoint( Moon_PathCurrentDistance, TRUE )
+			'Assets.GetSprite("gfx_building_BG_moon").DrawInViewPort(moonPos.x, 0.10 * (pos.y) + moonPos.y, 0, Game.GetDay() Mod 12)
+			Assets.GetSprite("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (pos.y) + moonPos.y, Game.GetDay() Mod 12)
+		EndIf
+
+		For Local i:Int = 0 To Building.Clouds.length - 1
+			SetColor Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i]
+			SetAlpha CloudsAlpha[i]
 			Clouds[i].Draw(Null, Clouds[i].rect.position.Y + 0.2*pos.y) 'parallax
 		Next
+		SetAlpha 1.0
 
+		SetColor Int(205 * timecolor) + 175, Int(205 * timecolor) + 175, Int(205 * timecolor) + 175
+		SetBlend ALPHABLEND
+		'draw UFO
 		If DezimalTime > 18 Or DezimalTime < 7
-			SetBlend MASKBLEND
 			SetAlpha 1.0
-
-			If Game.GetDay() Mod 2 = 0 Then
+'			If Game.GetDay() Mod 2 = 0
 				'compute and draw Ufo
-				If (Floor(ufo_curKubSplineX.ValueInt(ufo_tPos)) = 65 And Floor(ufo_curKubSplineY.ValueInt(ufo_tPos)) = 330) Or (ufo_beaming.getCurrentAnimation().getCurrentFramePos() > 1 And ufo_beaming.getCurrentAnimation().getCurrentFramePos() <= ufo_beaming.getCurrentAnimation().getFrameCount())
+				local UFOPos:TPoint = UFO_Path.GetTweenPoint( UFO_PathCurrentDistance, TRUE )
+				'print UFO_PathCurrentDistance
+				if UFO_DoBeamAnimation and not UFO_BeamAnimationDone
+					ufo_beaming.rect.position.SetXY(UFOPos.x, 0.25 * (pos.y + BuildingHeight - gfx_bgBuildings[0].h) + UFOPos.y)
 					ufo_beaming.Draw()
-				Else
-					Assets.GetSprite("gfx_building_BG_ufo").DrawInViewPort(ufo_curKubSplineX.ValueInt(ufo_tPos), - 330 - 15 + 105 + 0.25 * (pos.y + Assets.GetSprite("gfx_building").h - Assets.GetSprite("gfx_building_BG_Ebene3L").h) + ufo_curKubSplineY.ValueInt(ufo_tPos), 0, ufo_normal.GetCurrentFrame())
-				EndIf
-			EndIf
+				else
+					Assets.GetSprite("gfx_building_BG_ufo").Draw( UFOPos.x, 0.25 * (pos.y + BuildingHeight - gfx_bgBuildings[0].h) + UFOPos.y, ufo_normal.GetCurrentFrame())
+				endif
+'			EndIf
 		EndIf
 
 		SetBlend MASKBLEND
 
-		SetColor Int(225 * timecolor) + 30, Int(225 * timecolor) + 30, Int(225 * timecolor) + 30
+		local baseBrightness:int = 75
+
+		SetColor Int(225 * timecolor) + baseBrightness, Int(225 * timecolor) + baseBrightness, Int(225 * timecolor) + baseBrightness
 		gfx_bgBuildings[0].Draw(pos.x		, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[0].h), - 1, 0)
 		gfx_bgBuildings[1].Draw(pos.x + 634	, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[1].h), - 1, 0)
 
-		SetColor Int(215 * timecolor) + 40, Int(215 * timecolor) + 40, Int(215 * timecolor) + 40
+		SetColor Int(215 * timecolor) + baseBrightness+15, Int(215 * timecolor) + baseBrightness+15, Int(215 * timecolor) + baseBrightness+15
 		gfx_bgBuildings[2].Draw(pos.x		, 120 + 0.35 * (pos.y 		+ BuildingHeight - gfx_bgBuildings[2].h), - 1, 0)
 		gfx_bgBuildings[3].Draw(pos.x + 636	, 120 + 0.35 * (pos.y + 60	+ BuildingHeight - gfx_bgBuildings[3].h), - 1, 0)
 
-		SetColor Int(205 * timecolor) + 50, Int(205 * timecolor) + 50, Int(205 * timecolor) + 50
+		SetColor Int(205 * timecolor) + baseBrightness+30, Int(205 * timecolor) + baseBrightness+30, Int(205 * timecolor) + baseBrightness+30
 		gfx_bgBuildings[4].Draw(pos.x		, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[4].h), - 1, 0)
 		gfx_bgBuildings[5].Draw(pos.x + 634	, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[5].h), - 1, 0)
 
 		SetColor 255, 255, 255
-		SetBlend ALPHABLEND
 	End Method
 
 	Method CreateRoomUsedTooltip:Int(room:TRooms)
@@ -1907,16 +1969,22 @@ Type TNewsAgency
 		'Print "NEWS: no previous news found"
 	End Method
 
-	Method AddNewsToPlayer(news:TNews, forPlayer:Int=-1, fromNetwork:Int=0)
+	Method AddNewsToPlayer:int(news:TNews, forPlayer:Int=-1, fromNetwork:Int=0)
 		'only add news/newsblock if player is Host/Player OR AI
-		If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
+		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Game.Players[ forPlayer ].newsabonnements[news.genre] > 0
+			print "[LOCAL] AddNewsToPlayer: creating newsblock, player="+forPlayer
 			TNewsBlock.Create("", forPlayer, Game.Players[ forPlayer ].GetNewsAbonnementDelay(news.genre), news)
 		EndIf
 	End Method
 
-	Method AnnounceNewNews(delayAnnouncement:Int=0)
+	Method AnnounceNewNews:int(delayAnnouncement:Int=0)
+		'no need to check for gameleader - ALL players
+		'will handle it on their own - so the randomizer stays intact
+		'if not Game.isGameLeader() then return FALSE
+
 		Local news:TNews = Null
+
 		If RandRange(1,10)>3 Then news = GetNextFromChain()  '70% alte Nachrichten holen, 30% neue Kette/Singlenews
 		If news = Null Then news = TNews.GetRandomNews() 'TNews.GetRandomChainParent()
 		If news <> Null
@@ -1929,20 +1997,20 @@ Type TNewsAgency
 			'only add news if there are players wanting the news, else save them
 			'for later stages
 			If Not NoOneSubscribed
+				Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+Game.getDay(news.happenedtime)+", time="+Game.GetFormattedTime(news.happenedtime)
 				For Local i:Int = 1 To 4
 					AddNewsToPlayer(news, i)
 				Next
 				LastNewsList.AddLast(News)
-				Print "ANNOUNCENEWNEWS: added news | "+news.title+" | now:"+Game.GetTimeGone()+" | happenedtime:"+news.happenedtime+" day:"+Game.getDay(news.happenedtime)+" "+Game.GetFormattedTime(news.happenedtime)
 			Else
 				News.used = 0
 			EndIf
 		EndIf
 		LastEventTime = Game.timeGone
 		If RandRange(0,10) = 1
-			NextEventTime = Game.timeGone + RandRange(20,50) 'between 20 and 50 minutes until next news
+			NextEventTime = Game.timeGone + Rand(20,50) 'between 20 and 50 minutes until next news
 		Else
-			NextEventTime = Game.timeGone + RandRange(90,250) 'between 90 and 250 minutes until next news
+			NextEventTime = Game.timeGone + Rand(90,250) 'between 90 and 250 minutes until next news
 		EndIf
 	End Method
 End Type
@@ -1989,7 +2057,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 	'waited to long - change target
 	If figure.hasToChangeFloor() And figure.WaitAtElevatorTimer.isExpired()
 		figure.WaitAtElevatorTimer.Reset()
-		Figure.ChangeTarget(RandRange(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
+		Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
 	EndIf
 
 	'reached target
@@ -1999,12 +2067,12 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 			'reset is done later - we want to catch isExpired there too
 			'figure.SpecialTimer.Reset()
 
-			Local zufall:Int = RandRange(0, 100)	'what to do?
-			Local zufallx:Int = RandRange(150, 580)	'where to go?
+			Local zufall:Int = Rand(0, 100)	'what to do?
+			Local zufallx:Int = Rand(150, 580)	'where to go?
 
 			'move to a spot further away than just some pixels
 			Repeat
-				zufallx = RandRange(150, 580)
+				zufallx = Rand(150, 580)
 			Until Abs(figure.rect.GetX() - zufallx) > 15
 
 			'move to a different floor
@@ -2040,7 +2108,7 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 				Figure.SpecialTimer.Reset()
 
 				'only clean with a chance of 30%
-				If RandRange(0,100) < 30
+				If Rand(0,100) < 30
 					'clean to the right
 					If Figure.getCurrentAnimationName() = "walkright"
 						Figure.setCurrentAnimation("cleanRight")
@@ -2139,16 +2207,17 @@ Global GameSettingsButton_Start:TGUIButton	= New TGUIButton.Create(TPoint.Create
 Global GameSettingsButton_Back:TGUIButton	= New TGUIButton.Create(TPoint.Create(600, 345), 120, GetLocale("MENU_BACK"), "GameSettings", Assets.fonts.baseFontBold)
 
 'chat windows
-Global GameSettings_Chat:TGUIChatNEW = New TGUIChatNEW.Create(20,300,520,200,"GameSettings")
+Global GameSettings_Chat:TGUIChat = New TGUIChat.Create(20,300,520,200,"GameSettings")
 GameSettings_Chat.guiInput.setMaxLength(200)
 GameSettings_Chat.SetBackground( New TGUIBackgroundBox.Create(0,0,520,200,"") )
 GameSettings_Chat.SetPadding(40,5,7,6)
 GameSettings_Chat.guiBackground.value	= "Chat"
 GameSettings_Chat.guiBackground.usefont	= Assets.GetFont("Default", 16, BOLDFONT)
 
-Global InGame_Chat:TGUIChatNEW = New TGUIChatNEW.Create(20,10,250,200,"InGame")
+Global InGame_Chat:TGUIChat = New TGUIChat.Create(520,418,280,190,"InGame")
 InGame_Chat.setDefaultHideEntryTime(10000)
-InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.5)
+InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
+InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
 InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
 InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
 InGame_Chat.guiList.autoHideScroller = True
@@ -2161,7 +2230,6 @@ InGame_Chat.guiInput.InputImageActive	= gfx_GuiPack.GetSprite("Chat_IngameOverla
 InGame_Chat.guiInput.color.adjust(255,255,255,True)
 InGame_Chat.guiInput.autoAlignText = 0
 InGame_Chat.guiInput.TextDisplacement.setXY(0,5)
-
 
 'Doubleclick-function for NetGameLobby_GameList
 Function onClick_NetGameLobby:Int(triggerEvent:TEventBase)
@@ -2248,6 +2316,9 @@ Function Menu_Main()
 End Function
 
 Function Menu_NetworkLobby()
+	'register for events if not done yet
+	NetworkHelper.RegisterEventListeners()
+
 	If Game.onlinegame
 		If Network.OnlineIP = ""
 			Local Onlinestream:TStream	= ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=MyIP")
@@ -2598,6 +2669,7 @@ Function Menu_StartMultiplayer_Draw()
 End Function
 
 Global StartMultiplayerSyncStarted:Int = 0
+Global SendGameReadyTimer:int = 0
 Function Menu_StartMultiplayer:Int()
 	'master should spread startprogramme around
 	If Game.isGameLeader() And Not StartMultiplayerSyncStarted
@@ -2605,38 +2677,28 @@ Function Menu_StartMultiplayer:Int()
 
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
-			SeedRnd(MilliSecs())
 			Local i:Int = 0
 			For i = 0 To Game.startMovieAmount-1
-				ProgrammeArray[i] = TProgramme.GetRandomMovie(playerids)
+				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomMovie(playerids) )
 			Next
 			'give series to each player
 			For i = 0 To Game.startSeriesAmount-1
-				ProgrammeArray[Game.startMovieAmount+i] = TProgramme.GetRandomSerie(playerids)
+				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomSerie(playerids) )
 			Next
 			'give 1 call in
-			ProgrammeArray[Game.startMovieAmount + Game.startSeriesAmount] = TProgramme.GetRandomProgrammeByGenre(20)
-			NetworkHelper.SendProgrammesToPlayer(playerids, ProgrammeArray)
+			Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgrammeByGenre(20) )
 
-			Local ContractArray:TContract[Game.startAdAmount]
 			For Local j:Int = 0 To Game.startAdAmount-1
-				ContractArray[j] = TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].maxaudience, 0.10))
+				local contract:TContract = TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].maxaudience, 0.10))
+				Game.Players[ playerids ].ProgrammeCollection.AddContract( contract )
 			Next
-			NetworkHelper.SendContractsToPlayer(playerids, ContractArray)
-	Print "sent data for player: "+playerids
-
-			'add to local collections
-			For Local programme:TProgramme = EachIn programmeArray
-				If programme Then Game.Players[ playerids ].ProgrammeCollection.AddProgramme( programme )
-			Next
-			For Local contract:TContract = EachIn contractArray
-				If contract Then Game.Players[ playerids ].ProgrammeCollection.AddContract( contract )
-			Next
-
-
 		Next
-		NetworkHelper.SendGameReady(Game.playerID)
 	EndIf
+	'ask every 500ms
+	if Game.isGameLeader() and SendGameReadyTimer < millisecs()
+		NetworkHelper.SendGameReady(Game.playerID)
+		SendGameReadyTimer = Millisecs() +500
+	endif
 
 	If Game.networkgameready=1
 		GameSettingsOkButton_Announce.crossed = False
@@ -2653,6 +2715,9 @@ Function Menu_StartMultiplayer:Int()
 
 		'register events and start game
 		Game.SetGamestate(GAMESTATE_RUNNING)
+		'reset randomizer
+		Game.SetRandomizerBase( Game.GetRandomizerBase() )
+
 		Return True
 	Else
 		'go back to game settings if something takes longer than expected
@@ -2768,13 +2833,12 @@ End Function
 
 Global LogoTargetY:Float = 20
 Global LogoCurrY:Float = 100
+
 Function DrawMenu(tweenValue:Float=1.0)
 'no cls needed - we render a background
-'	Cls
+	Cls
 	SetColor 255,255,255
 	Assets.GetSprite("gfx_startscreen").Draw(0,0)
-
-	' DrawImage(gfx_startscreen, 0, 0)
 
 
 	Select game.gamestate
@@ -2809,6 +2873,14 @@ End Function
 
 
 Function Init_Creation()
+	'disable chat if not networkgaming
+	if not game.networkgame
+		InGame_Chat.hide()
+	else
+		InGame_Chat.show()
+	endif
+
+
 	'set all non human players to AI
 	if Game.isGameLeader()
 		For Local playerids:Int = 1 To 4
@@ -2831,7 +2903,6 @@ Function Init_Creation()
 	'create random programmes and so on - but only if local game
 	If Not Game.networkgame
 		For Local playerids:Int = 1 To 4
-			SeedRnd(MilliSecs())
 			Local i:Int = 0
 			For i = 0 To Game.startMovieAmount-1
 				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie(playerids))
@@ -2844,7 +2915,7 @@ Function Init_Creation()
 			Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			For Local i:Int = 0 To 2
-				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].maxaudience, 0.10)),playerids)
+				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].maxaudience, 0.10)) )
 			Next
 		Next
 		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
@@ -2853,7 +2924,9 @@ Function Init_Creation()
 		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = Null
 	EndIf
 	'abonnement for each newsgroup = 1
+
 	For Local playerids:Int = 1 To 4
+		'5 groups
 		For Local i:Int = 0 To 4
 			Game.Players[playerids].SetNewsAbonnement(i, 1)
 		Next
@@ -2992,7 +3065,7 @@ Function DrawMain(tweenValue:Float=1.0)
 	Interface.Draw()
 	TProfiler.Leave("Draw-Interface")
 
-	Assets.fonts.baseFont.draw( "Netstate:" + Game.Players[Game.playerID].networkstate + " Speed:" + Int(Game.speed * 100), 0, 0)
+	Assets.fonts.baseFont.draw( "Netstate:" + Game.Players[Game.playerID].networkstate + " Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), 0, 0)
 
 	If Game.DebugInfos
 		SetColor 0,0,0
@@ -3108,7 +3181,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 				For Local player:TPlayer = EachIn TPlayer.list
 					Local block:TProgrammeBlock = player.ProgrammePlan.GetCurrentProgrammeBlock()
 					If block<>Null And block.programme.genre = GENRE_CALLINSHOW
-						Local revenue:Int = player.audience * Rnd(0.05, 0.2)
+						Local revenue:Int = player.audience * float(RandRange(5, 2))/100.0
 						player.finances[Game.getWeekday()].earnCallerRevenue(revenue)
 					EndIf
 				Next
@@ -3193,15 +3266,15 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			?
 
 			If Not GUIManager.getActive()
-				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.05
-				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.05, 0)
+				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.10
+				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.10, 0)
 
 				If KEYMANAGER.IsHit(KEY_1) Game.playerID = 1
 				If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
 				If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
 				If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
-				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 60
-				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 0.10
+				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 60.0	'30 minutes per second
+				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 1.0	'1 minute per second
 
 				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
 				If KEYMANAGER.IsHit(KEY_W) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("adagency", 0)
@@ -3269,7 +3342,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 				DrawMenu()
 			EndIf
 			Assets.fonts.baseFont.draw("FPS:"+App.Timer.currentFps + " UPS:" + Int(App.Timer.currentUps), 150,0)
-			Assets.fonts.baseFont.draw("dTime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
+			Assets.fonts.baseFont.draw("looptime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
 			If game.networkgame and Network.client Then Assets.fonts.baseFont.draw("ping "+Int(Network.client.latency)+"ms", 375,0)
 			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.width - 10, 10, 0, 1)
 

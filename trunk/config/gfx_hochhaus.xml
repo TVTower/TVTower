@@ -21,6 +21,7 @@
 		<resource name="gfx_hochhauspack">
 			<type>SpritePack</type>
  			<url>grafiken/hochhaus/hochhauspack.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
  			<children>
 				<child name="gfx_building_Dach" 			x="0" 	y="296" w="507"	h="51"	id="0" />
 				<child name="gfx_building_Eingang" 			x="0" 	y="397" w="166"	h="77"	id="1" />
@@ -60,8 +61,8 @@
 				<child name="gfx_building_Wandlampe"		x="430" y="189"	w="60"	h="54"	id="30" />
 				<child name="gfx_building_Tueren"		x="215" y="458"	w="228"	h="54"	frames="6"	id="31" />
 
-				<child name="gfx_building_BG_ufo"	x="0" y="228" w="207"	h="13"	f="9"	id="32" />
-				<child name="gfx_building_BG_ufo2"	x="0" y="241" w="207"	h="40"	f="9"	id="33" />
+				<child name="gfx_building_BG_ufo"	x="0" y="229" w="207"	h="13"	f="9"	id="32" />
+				<child name="gfx_building_BG_ufo2"	x="0" y="243" w="207"	h="40"	f="9"	id="33" />
 
 			</children>
 			<scripts>

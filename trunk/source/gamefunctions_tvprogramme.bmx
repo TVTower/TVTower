@@ -8,6 +8,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field AdditionallyDraggedProgrammeBlocks:Int = 0
 
 	Field parent:TPlayer
+	Global fireEvents:int		= TRUE			'FALSE to avoid recursive handling (network)
 
 
 	Function Create:TPlayerProgrammePlan( parent:TPlayer)
@@ -53,14 +54,17 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'Removes all not-yet-run ProgrammeBlocks of the given programme from the
 	'plan's list.
 	'If removeCurrentRunning is true, also the current block can be affected
-	Method RemoveProgramme(_Programme:TProgramme, removeCurrentRunning:Int = 0)
+	Method RemoveProgramme(programme:TProgramme, removeCurrentRunning:Int = 0)
 		Local currentHour:Int = game.GetDay()*24 + game.GetHour()
 		For Local block:TProgrammeBlock = EachIn Self.ProgrammeBlocks
 			'skip other programmes
-			If block.programme <> _Programme then continue
+			If block.programme <> programme then continue
 			'only remove if sending is planned in the future or param allows current one
 			If block.sendhour +removeCurrentRunning*block.programme.blocks > currentHour Then Self.ProgrammeBlocks.remove(block)
 		Next
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.removeProgramme", TData.Create().add("programme", programme).addNumber("removeCurrentRunning", removeCurrentRunning), self ) )
 	End Method
 
 
@@ -196,19 +200,19 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	Method HowOftenProgrammeInPlan:Int(programmeId:Int, day:Int=-1, withPlanned:Int=0) {_exposeToLua}
 		If (day = -1) Then day = Game.GetDay()
-		
+
 		Local currentHour:Int = Game.GetHour()
 		Local count:Int = 0
-		
+
 		For Local i:Int = 0 To 23
 			If currentHour > i Or withPlanned = 1
 				local currentPro:TProgramme = Self.GetCurrentProgramme(i, day)
 				If (not (currentPro = null)) and currentPro.GetID() = programmeId
 					count = count + 1
 				Endif
-			Endif			
+			Endif
 		Next
-		
+
 		Return count
 	End Method
 
@@ -237,7 +241,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		newsblock.slot = slot
 
 		'emit an event so eg. network can recognize the change
-		EventManager.registerEvent( TEventSimple.Create( "programmeplan.SetNewsBlockSlot", TData.Create().AddNumber("slot", slot), newsblock ) )
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.SetNewsBlockSlot", TData.Create().AddNumber("slot", slot), newsblock ) )
 
 		return TRUE
     End Method
@@ -286,7 +290,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Self.NewsBlocks.AddLast(block)
 
 		'emit an event so eg. network can recognize the change
-		EventManager.registerEvent( TEventSimple.Create( "programmeplan.addNewsBlock", TData.Create(), block ) )
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.addNewsBlock", TData.Create(), block ) )
 	End Method
 
 	Method RemoveNewsBlock(block:TNewsBlock)
@@ -296,7 +300,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Self.NewsBlocks.remove(block)
 
 		'emit an event so eg. network can recognize the change
-		EventManager.registerEvent( TEventSimple.Create( "programmeplan.removeNewsBlock", TData.Create(), block ) )
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.removeNewsBlock", TData.Create(), block ) )
 	End Method
 
 
@@ -327,7 +331,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		For Local block:TAdblock = EachIn Self.AdBlocks
 			If block.senddate = day Then Self.RemoveAdBlock(block)
 		Next
-		print "RO: check RefreshAdPlan - needed ? "
+		print "RON: check RefreshAdPlan - needed ? "
 		'add all from player in global list
 		For Local block:TAdBlock= EachIn self.AdBlocks
 			'Print "REFRESH AD:ADDED "+adblock.contract.title;
@@ -394,6 +398,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Field SeriesList:TList		= CreateList()
 	Field ContractList:TList	= CreateList()
 	Field parent:TPlayer
+	Global fireEvents:int		= TRUE			'FALSE to avoid recursive handling (network)
 
 	Function Create:TPlayerProgrammeCollection(player:TPlayer)
 		Local obj:TPlayerProgrammeCollection = New TPlayerProgrammeCollection
@@ -426,11 +431,15 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 
 
 	'removes Contract from Collection (Advertising-Menu in Programmeplanner)
-	Method RemoveContract:int(_contract:TContract)
-		If not _contract then return False
-		self.ContractList.Remove(_contract)
+	Method RemoveContract:int(contract:TContract)
+		If not contract then return False
+		self.ContractList.Remove(contract)
 
-		print "RO: cleanup RemoveContract if working."
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeContract", TData.Create().add("contract", contract), self ) )
+
+
+		print "RON: cleanup RemoveContract if working."
 		rem
 			wird nicht mehr gebraucht
 		For Local contract:TContract = EachIn self.ContractList
@@ -443,32 +452,36 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		endrem
 	End Method
 
-	Method RemoveProgramme:Int(programme:TProgramme, typ:Int = 1)
+	Method RemoveProgramme:Int(programme:TProgramme)
 		If programme = Null Then Return False
 
-		Print "removed from player collection programme:"+programme.title +  " "+typ
+		Print "RON: PlayerCollection.RemoveProgramme: title="+programme.title
 		List.remove(programme)
 		MovieList.remove(programme)
-		If game.networkgame Then NetworkHelper.SendProgrammeCollectionChange(Self.parent.playerID, programme, typ)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeProgramme", TData.Create().add("programme", programme), self ) )
 	End Method
 
-	Method AddContract:Int(contract:TContract, owner:Int=0)
-		If contract <> Null
-			contract.sign(owner)
-			'DebugLog contract.minAudience + " ("+contract.GetMinAudiencePercentage(contract.contractBase.minaudience)+"%)"
-			Self.ContractList.AddLast(contract)
-			TContractBlock.Create(contract, 1,owner)
-		EndIf
+	Method AddContract:Int(contract:TContract)
+		If not contract then return FALSE
+
+		contract.sign( self.parent.playerID )
+		Self.ContractList.AddLast(contract)
+		TContractBlock.Create(contract, 1, self.parent.playerID )
+
+		'emit an event so eg. network can recognize the change
+		If fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addContract", TData.Create().add("contract", contract), self ) )
 	End Method
 
-	Method AddProgramme:Int(programme:TProgramme, typ:Int=0)
-		If programme <> Null
-			programme.owner = parent.playerID
-			If programme.isMovie() Then MovieList.AddLast(programme) Else SeriesList.AddLast(programme)
-			Self.List.AddLast(programme)
-			'readd
-			If typ = 2 And game.networkgame Then NetworkHelper.SendProgrammeCollectionChange(Self.parent.playerID, programme, typ)
-		EndIf
+	Method AddProgramme:Int(programme:TProgramme)
+		If not programme then return FALSE
+
+		programme.owner = parent.playerID
+		If programme.isMovie() Then MovieList.AddLast(programme) Else SeriesList.AddLast(programme)
+		Self.List.AddLast(programme)
+
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addProgramme", TData.Create().add("programme", programme), self ) )
 	End Method
 
 	'GetLocalRandom... differs from GetRandom... for using it's personal programmelist
@@ -481,15 +494,19 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	End Method
 
 	Method GetRandomMovie:TProgramme() {_exposeToLua}
-		Return TProgramme(MovieList.ValueAtIndex(randRange(0, MovieList.count()-1)))
+		'randrange is Mersenne - which is only used for across-Network-sync values
+		'Return TProgramme(MovieList.ValueAtIndex(randRange(0, MovieList.count()-1)))
+		Return TProgramme(MovieList.ValueAtIndex(rand(0, MovieList.count()-1)))
 	End Method
 
 	Method GetRandomSerie:TProgramme() {_exposeToLua}
-		Return TProgramme(SeriesList.ValueAtIndex(randRange(0, SeriesList.count()-1)))
+		'randrange is Mersenne - which is only used for across-Network-sync values
+		'Return TProgramme(SeriesList.ValueAtIndex(randRange(0, SeriesList.count()-1)))
+		Return TProgramme(SeriesList.ValueAtIndex(rand(0, SeriesList.count()-1)))
 	End Method
 
 	Method GetRandomContract:TContract() {_exposeToLua}
-		Return TContract(ContractList.ValueAtIndex(randRange(0, ContractList.count()-1)))
+		Return TContract(ContractList.ValueAtIndex(rand(0, ContractList.count()-1)))
 	End Method
 
 
@@ -512,7 +529,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method GetContractFromList:TContract(pos:Int=0) {_exposeToLua}
 		Return TContract( ContractList.ValueAtIndex(pos) )
 	End Method
-	
+
 
 	Method GetProgramme:TProgramme(id:Int) {_exposeToLua}
 		For Local obj:TProgramme = EachIn Self.List
@@ -524,6 +541,13 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method GetContract:TContract(id:Int) {_exposeToLua}
 		For Local contract:TContract=EachIn Self.ContractList
 			If contract.id = id Then Return contract
+		Next
+		Return Null
+	End Method
+
+	Method GetContractByBase:TContract(contractBaseID:Int) {_exposeToLua}
+		For Local contract:TContract=EachIn Self.ContractList
+			If contract.contractBase.id = contractBaseID Then Return contract
 		Next
 		Return Null
 	End Method
@@ -1452,7 +1476,6 @@ endrem
 	'computes a percentage which could be multiplied with maxaudience
 	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1) {_exposeToLua}
 		Local quote:Float		= self.getBaseAudienceQuote(lastquote)
-
 		'a bit of luck :D
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
@@ -1707,7 +1730,7 @@ endrem
 	Method ComputeAudienceQuote:Float(lastquote:Float=0)
 		Local quote:Float =0.0
 		If lastquote < 0 Then lastquote = 0
-			quote = 0.1*lastquote + 0.35*((quality+5)/255) + 0.5*ComputeTopicality()/255 + 0.05*(randMax(254)+1)/255
+			quote = 0.1*lastquote + 0.35*((quality+5)/255) + 0.5*ComputeTopicality()/255 + 0.05*(rand(0,254)+1)/255
 		Return quote * Game.maxAudiencePercentage
 	End Method
 
@@ -2889,7 +2912,8 @@ Type TNewsBlock extends TGameObject {_exposeToLua="selected"}
 
 	'clean up instructions
 	Method Remove()
-		self.guiBlock.Remove()
+		'if there was a gui block created, we should take care of it...
+		if self.guiBlock then self.guiBlock.Remove()
 	End Method
 
     Method Pay:int()
@@ -2986,23 +3010,18 @@ Type TContractBlock Extends TBlockGraphical
 
 	'adds the contract to a player, signs it and fetches a new one.
 	Method SignContract:Int(playerID:Int)
-		If game.networkgame
-			Local ContractArray:TContract[1]
-			ContractArray[0] = Self.contract
-			If network.IsConnected Then NetworkHelper.SendContractsToPlayer(playerID, ContractArray)
-			ContractArray = Null
-		EndIf
 		'adds a contract to the players collection
 		'contract gets signed THERE
-		Game.Players[playerID].ProgrammeCollection.AddContract(Self.contract, playerID)
+		Game.Players[playerID].ProgrammeCollection.AddContract(Self.contract)
 
-		'create a new ContractBlock at the original Position
-		local newContract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.30) )
-		self.Create(newContract, self.origSlot)
 		'remove the now unused block
 		self.List.Remove(self)
 		'remove old DND-object
 		self.DragAndDropList.Remove(self.dragAndDrop)
+
+		'create a new ContractBlock at the original Position
+		local newContract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.30) )
+		self.Create(newContract, self.origSlot)
 
 
 		print "RO: cleanup TContractBlock.SignContract if working"
@@ -3689,17 +3708,19 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 	'if a archiveprogrammeblock is "deleted", the programme is readded to the players programmecollection
 	'afterwards it deletes the archiveprogrammeblock
 	Method ReAddProgramme:Int(playerID:Int)
-		Game.Players[playerID].ProgrammeCollection.AddProgramme(Self.Programme, 2)
+		Game.Players[playerID].ProgrammeCollection.AddProgramme(Self.Programme)
 		'remove blocks which may be already created for having left the archive before re-adding it...
+		'movieagency blocks are also programmes in the "suitcase"
 		TMovieAgencyBlocks.RemoveBlockByProgramme(Self.Programme, playerID)
 
 		Self.alreadyInSuitcase = False
 		List.Remove(Self)
 	End Method
 
-	Method RemoveProgramme:Int(programme:TProgramme, owner:Int=0)
-		Game.Players[owner].ProgrammeCollection.RemoveProgramme(programme)
+	Method RemoveProgrammeFromPlan:Int(programme:TProgramme)
+		Game.Players[self.owner].ProgrammeCollection.RemoveProgramme(programme)
 	End Method
+
 
 	'if owner = 0 then its a block of the adagency, otherwise it's one of the player'
 	Function Create:TArchiveProgrammeBlock(Programme:TProgramme, slot:Int=0, owner:Int=0)
@@ -3783,7 +3804,7 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 										EndIf
 									Next
 									LocObject.rect.position.SetPos(DragAndDrop.pos)
-									locobject.RemoveProgramme(locobject.Programme, locobject.owner)
+									locobject.RemoveProgrammeFromPlan(locobject.Programme)
 									LocObject.StartPos.SetPos(LocObject.rect.position)
 									realDNDfound =1
 									Exit 'exit loop-each-dragndrop, we've already found the right position

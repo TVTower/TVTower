@@ -10,9 +10,10 @@ Const NET_STARTGAME:Int					= 104				' SERVER: sends a StartFlag
 Const NET_CHATMESSAGE:Int				= 105				' ALL:    a sent chatmessage ;D
 Const NET_PLAYERDETAILS:Int				= 106				' ALL:    name, channelname...
 Const NET_FIGUREPOSITION:Int			= 107				' ALL:    x,y,room,target...
-Const NET_SENDPROGRAMME:Int				= 108				' SERVER: sends a Programme to a user for adding this to the players collection
-Const NET_SENDCONTRACT:Int				= 109				' SERVER: sends a Contract to a user for adding this to the players collection
-Const NET_SENDNEWS:Int					= 110				' SERVER: creates and sends news
+'now handled by PROGRAMMECOLLECTIONCHANGE
+'Const NET_SENDPROGRAMME:Int			= 108				' SERVER: sends a Programme to a user for adding this to the players collection
+'Const NET_SENDCONTRACT:Int				= 109				' SERVER: sends a Contract to a user for adding this to the players collection
+'Const NET_SENDNEWS:Int					= 110				' SERVER: creates and sends news
 Const NET_ELEVATORSYNCHRONIZE:Int		= 111				' SERVER: synchronizing the elevator
 Const NET_ELEVATORROUTECHANGE:Int		= 112				' ALL:    elevator routes have changed
 Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113				' ALL: sends Changes in subscription levels of news-agencies
@@ -26,11 +27,12 @@ Const NET_GAMESETTINGS:Int				= 120				' SERVER: send extra settings (random see
 
 Const NET_DELETE:Int					= 0
 Const NET_ADD:Int						= 1000
-Const NET_CHANGE:Int					= 2000
-Const NET_BUY:Int						= 3000
-Const NET_SELL:Int						= 4000
-Const NET_BID:Int						= 5000
-Const NET_SWITCH:Int					= 6000
+Const NET_READD:Int						= 2000
+Const NET_CHANGE:Int					= 3000
+Const NET_BUY:Int						= 4000
+Const NET_SELL:Int						= 5000
+Const NET_BID:Int						= 6000
+Const NET_SWITCH:Int					= 7000
 
 Network.callbackServer		= ServerEventHandler
 Network.callbackClient		= ClientEventHandler
@@ -54,7 +56,7 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			'send others all important extra game data
 			local gameData:TNetworkObject = TNetworkObject.Create( NET_GAMESETTINGS )
 			gameData.setInt(1, Game.playerID)
-			gameData.setInt(2, Game.randomSeedValue)
+			gameData.setInt(2, Game.GetRandomizerBase() )
 			Network.BroadcastNetworkObject( gameData, NET_PACKET_RELIABLE )
 
 		case NET_JOINRESPONSE
@@ -74,17 +76,13 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			'we are not the gamemaster and got a playerID
 			local hostPlayerID:int = NetworkObject.getInt(1)
 			local randomSeedValue:int = NetworkObject.getInt(2)
-			Game.randomSeedValue = randomSeedValue
+			Game.SetRandomizerBase( randomSeedValue )
 
 		case NET_STARTGAME					Game.networkgameready = 1
 		case NET_GAMEREADY					NetworkHelper.ReceiveGameReady( networkObject )
 		case NET_SENDGAMESTATE				NetworkHelper.ReceiveGameState( networkObject )
 		case NET_PLAYERDETAILS				NetworkHelper.ReceivePlayerDetails( networkObject )
 		case NET_FIGUREPOSITION				NetworkHelper.ReceiveFigurePosition( networkObject )
-		'spreading programme data (basecontracts,programmes,news)
-		case NET_SENDCONTRACT				NetworkHelper.ReceiveContractsToPlayer( networkObject )
-		case NET_SENDPROGRAMME				NetworkHelper.ReceiveProgrammesToPlayer( networkObject )
-		case NET_SENDNEWS					NetworkHelper.ReceiveNews( networkObject )
 
 'untested
 
@@ -126,17 +124,28 @@ End Function
 
 
 Type TNetworkHelper
+	field registeredEvents:int = FALSE
+
 	Method Create:TNetworkHelper()
-		self.RegisterEventListeners()
+		'self.RegisterEventListeners()
 		return self
 	End Method
 
 	Method RegisterEventListeners:int()
+		if registeredEvents then return FALSE
+
 		EventManager.registerListenerFunction( "programmeplan.SetNewsBlockSlot",	TNetworkHelper.onChangeNewsBlock )
-		EventManager.registerListenerFunction( "programmeplan.addNewsBlock",		TNetworkHelper.onChangeNewsBlock )
+'		EventManager.registerListenerFunction( "programmeplan.addNewsBlock",		TNetworkHelper.onChangeNewsBlock )
 		EventManager.registerListenerFunction( "programmeplan.removeNewsBlock",		TNetworkHelper.onChangeNewsBlock )
 		'someone adds a chatline
 		EventManager.registerListenerFunction( "chat.onAddEntry",	TNetworkHelper.OnChatAddEntry )
+		'changes to the player's programmecollection
+		EventManager.registerListenerFunction( "programmecollection.removeProgramme",	TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.addProgramme",		TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeContract",	TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.addContract",		TNetworkHelper.onChangeProgrammeCollection )
+
+		registeredEvents = true
 	End Method
 
 	'connect GUI with normal handling
@@ -153,11 +162,40 @@ Type TNetworkHelper
 
 		local action:int = -1
 		if triggerEvent.isTrigger("programmeplan.SetNewsBlockSlot") then action = NET_CHANGE
-		if triggerEvent.isTrigger("programmeplan.addNewsBlock") then action = NET_ADD
+'		if triggerEvent.isTrigger("programmeplan.addNewsBlock") then action = NET_ADD
 		if triggerEvent.isTrigger("programmeplan.removeNewsBlock") then action = NET_DELETE
 		if action = -1 then return FALSE
 
 		NetworkHelper.SendPlanNewsChange(Game.playerID, newsBlock, action)
+	End Function
+
+	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
+		local programmeCollection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent._sender)
+		if not programmeCollection then return 0
+
+		local owner:int = programmeCollection.parent.playerID
+		'ignore ai player's events if no gameleader
+		if Game.isAiPlayer(owner) and not Game.isGameLeader() then return false
+		'do not allow events from players for other players objects
+		if owner <> Game.playerID and not Game.isGameLeader() then return FALSE
+
+
+		if triggerEvent.isTrigger("programmecollection.removeProgramme")
+			local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
+			NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_DELETE)
+		elseif triggerEvent.isTrigger("programmecollection.addProgramme")
+			local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
+			NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_ADD)
+
+		elseif triggerEvent.isTrigger("programmecollection.removeContract")
+			local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
+			NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_DELETE)
+		elseif triggerEvent.isTrigger("programmecollection.AddContract")
+			local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
+			NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_ADD)
+		endif
+
+		return FALSE
 	End Function
 
 
@@ -189,7 +227,8 @@ Type TNetworkHelper
 		Game.timeGone			= obj.getFloat(4) + correction
 	End Method
 
-
+rem
+RON
 'checked
 	Method SendContractsToPlayer(playerID:Int, contract:TContract[])
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDCONTRACT )
@@ -216,14 +255,18 @@ Type TNetworkHelper
 			if id <> "" and int(id) > 0
 				local contract:TContract = TContract.Create( TContractBase.Get(int(id)) )
 
-				if not contract then print "ReceiveContractsToPlayer: contract "+id+" not found."
-				Game.Players[ remotePlayerID ].ProgrammeCollection.AddContract( contract )
+				if not contract
+					print "[NET] ReceiveContractsToPlayer: contract "+id+" not found."
+				else
+					Game.Players[ remotePlayerID ].ProgrammeCollection.AddContract( contract )
+				endif
 			endif
 		Next
 	End Method
+endrem
 
-
-
+rem
+RON
 	'****************************
 	' send/receive programmes to
 	' for player's programmplan
@@ -238,7 +281,7 @@ Type TNetworkHelper
 		if programme.length > 0
 			For Local i:Int = 0 To programme.length-1
 				if programme[i] = null
-					print "programme "+i+" is null"
+					print "[NET] SendProgrammesToPlayer: programme "+i+" is null"
 				else
 					'print "send programme - id:"+ programme[i].id + "	title:"+programme[i].title
 					IDstring :+ programme[i].id+","
@@ -251,16 +294,16 @@ Type TNetworkHelper
 	End Method
 
 	Method ReceiveProgrammesToPlayer( obj:TNetworkObject )
-		Local remotePlayerID:Int		= obj.getInt(1)
-		local IDs:string[]				= obj.getString(2).split(",")
+		Local playerID:Int		= obj.getInt(1)
+		local IDs:string[]		= obj.getString(2).split(",")
 		for local id:string = eachin IDs
 			if id <> "" and int(id) > 0
-				'print "get programme - id:"+ int(id) + "	title:"+TProgramme.GetProgramme( int(id) ).title
-				Game.Players[ remotePlayerID ].ProgrammeCollection.AddProgramme(TProgramme.GetProgramme( int(id) ))
+				print "[NET] ProgrammesToPlayer : player="+playerID+", programme.id="+int(id)+ ", title:"+TProgramme.GetProgramme( int(id) ).title
+				Game.Players[ playerID ].ProgrammeCollection.AddProgramme(TProgramme.GetProgramme( int(id) ))
 			endif
 		Next
 	End Method
-
+endrem
 
 
 'checked
@@ -271,7 +314,7 @@ Type TNetworkHelper
 		for local player:TPlayer = eachin TPlayer.list
 			'it's me or i'm hosting and its an AI player
 			if player.playerID = Network.client.playerID OR (Network.isServer and Player.isAI())
-				'Print "NET: send playerdetails of ME and IF I'm the host also from AI players"
+				'Print "[NET] send playerdetails of ME and IF I'm the host also from AI players"
 
 				local obj:TNetworkObject = TNetworkObject.Create( NET_PLAYERDETAILS )
 				obj.SetInt(	1, player.playerID )
@@ -401,7 +444,7 @@ Type TNetworkHelper
 			if allReady
 				'send game start
 				Game.networkgameready = 1
-				print "NET: allReady so send game start to all others"
+				print "[NET] allReady so send game start to all others"
 				Network.BroadcastNetworkObject( TNetworkObject.Create( NET_STARTGAME ), NET_PACKET_RELIABLE )
 				return
 			endif
@@ -409,6 +452,7 @@ Type TNetworkHelper
 	End Method
 
 	Method ReceiveGameReady( obj:TNetworkObject )
+print "[NET] ReceiveGameReady"
 		local remotePlayerID:int = obj.getInt(1)
 		Game.Players[ remotePlayerID ].networkstate = 1
 
@@ -454,6 +498,7 @@ Type TNetworkHelper
 
 		Local genre:Int				= obj.getInt(2)
 		Local level:Int				= obj.getInt(3)
+		'print "[NET] ReceiveNewsSubscriptionChange: player="+playerID+", genre="+genre+", level="+level
 		Game.Players[ playerID ].setNewsAbonnement(genre, level, false)
 	End Method
 
@@ -495,7 +540,7 @@ Type TNetworkHelper
 									If locObj.Programme.id = ProgrammeID
 										if methodtype = NET_BUY then locObj.Buy( playerID, true)
 										if methodtype = NET_SELL then locObj.Sell( playerID, true)
-										print "NET: MovieAgency "+methodtype+" obj:"+locobj.programme.title
+										print "[NET] MovieAgency "+methodtype+" obj:"+locobj.programme.title
 										exit
 									EndIf
 								Next
@@ -504,7 +549,7 @@ Type TNetworkHelper
 									If not locObj.Programme then continue
 									If locobj.Programme.id = ProgrammeID
 										locObj.SetBid( PlayerID )
-										print "NET: MovieAgency auction bid "+methodtype+" obj:"+locobj.programme.title
+										print "[NET] MovieAgency auction bid "+methodtype+" obj:"+locobj.programme.title
 										exit
 									endif
 								Next
@@ -514,66 +559,88 @@ Type TNetworkHelper
 	End Method
 
 
-'entweder hier "verallgemeinern" (also ID + typ)
-'oder verschiedene ProgrammeCollectionXXXChange-Funktionen
+	Method SendProgrammeCollectionProgrammeChange(playerID:int= -1, programme:TProgramme, action:int=0)
+		self.SendProgrammeCollectionChange(playerID, 1, programme.id, action)
+	End Method
+	Method SendProgrammeCollectionContractChange(playerID:int= -1, contract:TContract, action:int=0)
+		local id:int = contract.id
+		'when adding a new contract, we do not send the contract id
+		'itself (it is useless for others)
+		'but the contractbase.id so the remote client can reconstruct
+		if action = NET_ADD then id = contract.contractBase.id
 
-	'typ = 1 - remove from plan, typ = 0 - sell, typ = 2 - readd, typ = 3 - remove from collection
-	Method SendProgrammeCollectionChange(playerID:int= -1, programme:TProgramme, typ:int=0)
+		self.SendProgrammeCollectionChange(playerID, 2, id, action)
+	End Method
+
+	Method SendProgrammeCollectionChange(playerID:int= -1, objectType:int=0, objectID:int=0, action:int=0)
 		local obj:TNetworkObject = TNetworkObject.Create( NET_PROGRAMMECOLLECTIONCHANGE )
 		obj.SetInt(1, playerID)
-		obj.SetInt(2, programme.id)
-		obj.SetInt(3, typ)
+		obj.SetInt(2, objectType)
+		obj.SetInt(3, objectID)
+		obj.SetInt(4, action)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 	End Method
 
-	Method ReceiveProgrammeCollectionChange( obj:TNetworkObject)
+	Method ReceiveProgrammeCollectionChange:int( obj:TNetworkObject)
 		local playerID:int		= obj.getInt(1)
-		local programmeID:int	= obj.getInt(2)
-		local typ:int			= obj.getInt(3)
+		local objectType:int	= obj.getInt(2)
+		local objectID:int		= obj.getInt(3)
+		local action:int		= obj.getInt(4)
+		if not Game.isPlayer(playerID) then return FALSE
 
-		Local programme:TProgramme = TProgramme.GetProgramme( programmeID )
-		if not programme or not Game.isPlayer(playerID) then return
+		select objectType
+			'Programme
+			case 1
+					Local programme:TProgramme = TProgramme.GetProgramme( objectID )
+					if not programme then return FALSE
 
-		select typ
-			'readd
-			case 2	Game.Players[ playerID ].ProgrammeCollection.AddProgramme(Programme)
-					TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, playerID)
-					print "NET: PCollection - readd "+programme.title
-			'sell
-			case 0	Game.Players[ playerID ].finances[Game.getWeekday()].SellMovie(Programme.getPrice())
-					TMovieAgencyBlocks.RemoveBlockByProgramme(Programme, playerID)
-					print "NET: PCollection - sell "+programme.title
+					'disable events - ignore it to avoid recursion
+					TPlayerProgrammeCollection.fireEvents = FALSE
 
-			'remove from Plan (Archive - ProgrammeToSuitcase)
-			case 1	Game.Players[ playerID ].ProgrammePlan.RemoveProgramme( programme )
-					print "NET: PCollection - remove from plan "+programme.title
+					select action
+						case NET_ADD
+								Game.Players[ playerID ].ProgrammeCollection.AddProgramme( programme )
+								print "[NET] PCollection"+playerID+" - add programme "+programme.title
+						case NET_READD
+								Game.Players[ playerID ].ProgrammeCollection.AddProgramme( programme )
+								TMovieAgencyBlocks.RemoveBlockByProgramme(programme, playerID)
+								print "[NET] PCollection"+playerID+" - readd programme "+programme.title
+						case NET_SELL
+								Game.Players[ playerID ].finances[Game.getWeekday()].SellMovie(programme.getPrice())
+								Game.Players[ playerID ].ProgrammeCollection.RemoveProgramme( programme )
+								'TMovieAgencyBlocks.RemoveBlockByProgramme(programme, playerID)
+								print "[NET] PCollection"+playerID+" - sell programme "+programme.title
+						'remove from Collection (Archive - RemoveProgramme)
+						case NET_DELETE
+								Game.Players[ playerID ].ProgrammeCollection.RemoveProgramme( programme )
+								print "[NET] PCollection"+playerID+" - remove programme "+programme.title
+					EndSelect
 
-			'remove from Collection (Archive - RemoveProgramme)
-			case 3	Game.Players[ playerID ].ProgrammeCollection.RemoveProgramme( programme )
-					print "NET: PCollection - remove from collection "+programme.title
+					TPlayerProgrammeCollection.fireEvents = TRUE
+			'Contract
+			case 2
+					Local contractbase:TContractBase = TContractBase.Get( objectID )
+					if not contractbase then return FALSE
+
+					'disable events - ignore it to avoid recursion
+					TPlayerProgrammeCollection.fireEvents = FALSE
+
+					select action
+						case NET_ADD
+								Game.Players[ playerID ].ProgrammeCollection.AddContract( TContract.Create(contractBase) )
+								print "[NET] PCollection"+playerID+" - add contract "+contractbase.title
+						case NET_DELETE
+								local contract:TContract = Game.Players[ playerID ].ProgrammeCollection.GetContractByBase( contractBase.id )
+								if contract
+									Game.Players[ playerID ].ProgrammeCollection.RemoveContract( contract )
+									print "[NET] PCollection"+playerID+" - remove contract "+contractbase.title
+								endif
+					EndSelect
+
+					TPlayerProgrammeCollection.fireEvents = TRUE
 		EndSelect
 	End Method
 
-
-
-'checked
-	Method SendNews(playerID:Int, news:TNews)
-		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDNEWS )
-		obj.setInt(1, playerID)
-		obj.setInt(2, news.id)
-		'print "sende news: "+news.id+" - "+news.title
-		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
-	End Method
-
-	Method ReceiveNews( obj:TNetworkObject )
-		Local playerID:Int	= obj.getInt(1)
-		Local newsID:Int	= obj.getInt(2)
-		Local news:TNews	= TNews.GetNews(newsID)
-		If not news or not Game.isPlayer(playerID) then return
-		NewsAgency.AddNewsToPlayer(news, playerID, true)
-
-		'Print "net: added news (id:"+newsID+") to Player:"+playerID
-	End Method
 
 
 
@@ -590,7 +657,6 @@ Type TNetworkHelper
 
 		'only send if not already coming from the network
 		if fromRemote = 0
-			print "received chat event..."+chatMessage
 			NetworkHelper.SendChatMessage(chatMessage, senderID, sendToChannels)
 		else
 			print "received chat event FROM NETWORK -> ignoring"
@@ -659,21 +725,21 @@ Type TNetworkHelper
 		Local newaudience:Int= obj.getInt(7)
 		If add
 			StationMap.Buy(pos.x,pos.y, playerID, true)
-			Print "NET: ADDED station to Player:"+playerID
+			Print "[NET] ReceiveStationChange: added station to Player:"+playerID
 		else
 			StationMap.SellByPos(pos, reach, playerID )
-			Print "NET: REMVOED station from Player:"+playerID
+			Print "[NET] ReceiveStationChange: removed station from Player:"+playerID
 		EndIf
 	End Method
 
 
 
-	Method SendPlanNewsChange(sendingPlayerID:Int, block:TNewsBlock, action:int=0)
+	Method SendPlanNewsChange(senderPlayerID:Int, block:TNewsBlock, action:int=0)
 		'actions: 0=add | 1=remove | 2=setslot/move
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_NEWSCHANGE )
 
-		obj.setInt(1, sendingPlayerID)
+		obj.setInt(1, senderPlayerID)
 		obj.setInt(2, action)
 		obj.setInt(3, block.id)
 		obj.setInt(4, block.owner)
@@ -681,11 +747,14 @@ Type TNetworkHelper
 		obj.setInt(9, block.news.id)
 		obj.setInt(10, block.slot)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
+
+		print "[NET] SendPlanNewsChange: senderPlayer="+senderPlayerID+", blockowner="+block.owner+", block="+block.id+", news="+block.news.id+", action="+action
 	End Method
 
 
 	Method ReceivePlanNewsChange:int( obj:TNetworkObject )
 		local sendingPlayerID:int = obj.getInt(1)
+
 		if not Game.isPlayer(sendingPlayerID) then return NULL
 
 		local action:int			= obj.getInt(2)
@@ -697,26 +766,41 @@ Type TNetworkHelper
 
 		Local newsBlock:TNewsblock = Game.Players[ blockOwnerID ].ProgrammePlan.getNewsBlock(blockID)
 		if not newsBlock or newsBlock.news.id <> newsID
-			'that block does not exist yet, create it (is new block)
-			'attention: normally a news will be send before but maybe it
-			'did not receive yet (udp...) so we may have to create a news too
-			local news:TNews = TNews.GetNews(newsID)
-			if not news
-				print "NEWS DOES NOT EXIST: "+newsID
-				return FALSE
-			endif
-			'set time when news really happened
-			news.happenedtime = newsHappenedTime
-			'create the block (->emits an addNewsBlock event - be sure to ignore in network! )
-			newsBlock = TNewsBlock.Create("", blockOwnerID, Game.Players[ blockOwnerID ].GetNewsAbonnementDelay(news.genre), news)
+			'do not automagically create new blocks for others...
+			'all do it independently from each other (for intact randomizer base )
+			return TRUE
+
+			rem
+				'that block does not exist yet, create it (is new block)
+				'attention: normally a news will be send before but maybe it
+				'did not receive yet (udp...) so we may have to create a news too
+				local news:TNews = TNews.GetNews(newsID)
+				if not news
+					print "[NET] ReceivePlanNewsChange: NEWS DOES NOT EXIST: "+newsID
+					return FALSE
+				endif
+				'set time when news really happened
+				news.happenedtime = newsHappenedTime
+
+				'create the block
+				'-> would emit an addNewsBlock event - ignore it to avoid recursion
+				TPlayerProgrammePlan.fireEvents = FALSE
+				newsBlock = TNewsBlock.Create("", blockOwnerID, Game.Players[ blockOwnerID ].GetNewsAbonnementDelay(news.genre), news)
+				TPlayerProgrammePlan.fireEvents = TRUE
+			endrem
 		endif
+
+		'deactivate events for that moment - avoid recursion
+		TPlayerProgrammePlan.fireEvents = FALSE
 
 		'no need to react on "add" as this is automatically done if the block does not exist
 		'if action=NET_ADD then Game.Players[ playerID ].ProgrammePlan.addNewsBlock(newsBlock)
 		if action=NET_DELETE then Game.Players[ blockOwnerID ].ProgrammePlan.removeNewsBlock(newsBlock)
 		if action=NET_CHANGE then Game.Players[ blockOwnerID ].ProgrammePlan.SetNewsBlockSlot(newsBlock, slot)
 
-		print "NET: NewsChange - "+action+": "+newsblock.news.title
+		TPlayerProgrammePlan.fireEvents = TRUE
+
+		print "[NET] ReceivePlanNewsChange: sendingPlayer="+sendingPlayerID+", blockowner="+blockOwnerID+", block="+newsBlock.id+", news="+newsBlock.news.id+", action="+action
 	End Method
 
 
@@ -798,8 +882,8 @@ Type TNetworkHelper
 
 		local add:int			= obj.getInt(2)
 		local blockID:int		= obj.getInt(3)
-		local pos:TPoint 	= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
-		local startpos:TPoint= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
+		local pos:TPoint 		= TPoint.Create( obj.getFloat(4), obj.getFloat(5) )
+		local startpos:TPoint	= TPoint.Create( obj.getFloat(6), obj.getFloat(7) )
 
 		local sendhour:int		= obj.getInt(8)
 		'leave int 9 alone
@@ -820,10 +904,10 @@ Type TNetworkHelper
 
 		If add
 			Game.Players[ playerID ].ProgrammePlan.AddProgrammeBlock( Programmeblock )
-			'Print "NET: ADDED programme:"+Programmeblock.programme.Title+" to Player:"+playerID
+			Print "[NET] ReceivePlanProgrammeChange: ADDED programme:"+Programmeblock.programme.Title+" to Player:"+playerID
 		Else
 			Game.Players[ playerID ].ProgrammePlan.RemoveProgramme( Programmeblock.programme )
-			'Print "NET: REMOVED programme:"+Programmeblock.programme.Title+" from Player:"+playerID
+			Print "[NET] ReceivePlanProgrammeChange: REMOVED programme:"+Programmeblock.programme.Title+" from Player:"+playerID
 		EndIf
 	End Method
 

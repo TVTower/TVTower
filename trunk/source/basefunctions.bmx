@@ -591,11 +591,14 @@ Type TPoint {_exposeToLua="selected"}
 	End Method
 
 	Function DistanceOfValues:int(value1:int, value2:int)
+		return abs(value1-value2)
+	rem
 		If (value1 > value2) Then
 			Return value1 - value2
 		Else
 			Return value2 - value1
 		EndIf
+	endrem
 	End Function
 
 	Function SwitchPos(Pos:TPoint Var, otherPos:TPoint Var)
@@ -1199,15 +1202,232 @@ End Type
 
 
 
-'==================================================================================================================================
+Type TCatmullRomSpline
+	Field points:TList			= CreateList()	'list of the control points (TPoint)
+	Field cache:TPoint[]						'array of cached points
+	Field cacheGenerated:int	= FALSE
+	Field totalDistance:float	= 0				'how long is the spline?
+	const resolution:float		= 100.0
+
+	Method New()
+		'
+	End Method
+
+	Method addXY:TCatmullRomSpline(x:float,y:float)
+		self.points.addLast( TPoint.Create( x, y ) )
+		self.cacheGenerated = FALSE
+		return self
+	End MEthod
+
+	'Call this to add a point to the end of the list
+	Method addPoint:TCatmullRomSpline(p:TPoint)
+		self.points.addlast(p)
+		self.cacheGenerated = FALSE
+		return self
+	End Method
+
+	Method addPoints:TCatmullRomSpline(p:TPoint[])
+		For local i:int = 0 to p.length-1
+			self.points.addLast(p[i])
+		Next
+		self.cacheGenerated = FALSE
+		return self
+	End Method
+
+	'draw the spline!
+	Method draw:int()
+		'Draw a rectangle at each control point so we can see
+		'them (not relevant to the algorithm)
+		For local p:TPoint = EachIn self.points
+			DrawRect(p.x-3 , p.y-3 , 7 , 7)
+		Next
+
+		'Check there are enough points to draw a spline
+	'	If self.points.count()<4 Then Return FALSE
+
+		'Get the first three  TLinks in the list of points. This algorithm
+		'is going to work by working out the first three points, then
+		'getting the last point at the start of the while loop. After the
+		'curve section has been drawn, every point is moved along one,
+		'and the TLink is moved to the next one so we can see if it's
+		'null, and then get the next p3 from it if not.
+
+		local pl:TLink	= Null
+		local p0:TPoint = Null
+		local p1:TPoint = Null
+		local p2:TPoint = Null
+		local p3:TPoint = Null
+
+		'assign first 2 points
+		'point 3 is assigned in the while loop
+		pl = points.firstlink()
+		p0 = TPoint( pl.value() )
+		pl = pl.nextlink()
+		p1 = TPoint( pl.value() )
+		pl = pl.nextlink()
+		p2 = TPoint( pl.value() )
+		pl = pl.nextlink()
+
+		'pl3 will be null when we've reached the end of the list
+		While pl <> Null
+			'get the point objects from the TLinks
+			p3 = TPoint( pl.value() )
+
+			local oldX:float = p1.x
+			local oldY:float = p1.y
+			local x:float = 0.0
+			local y:float = 0.0
+			'THE MEAT And BONES! Oddly, there isn't much to explain here, just copy the code.
+			For local t:float = 0 To 1 Step .01
+				x = .5 * ( (2 * p1.x) + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t * t + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * t * t * t)
+				y = .5 * ( (2 * p1.y) + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t * t + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * t * t * t)
+				DrawLine oldX , oldY , x , y
+
+				oldX = x
+				oldY = y
+			Next
+
+			'Move one place along the list
+			p0 = p1
+			p1 = p2
+			p2 = p3
+			pl=pl.nextlink()
+		Wend
+	End Method
+
+	Method GetTotalDistance:float()
+		if not self.cacheGenerated then self.GenerateCache()
+
+		return self.totalDistance
+	End Method
+
+	Method GenerateCache:float()
+		If self.points.count()<4 Then Return 0
+
+		local pl:TLink	= Null
+		local p0:TPoint, p1:TPoint, p2:TPoint, p3:TPoint = Null
+
+		'assign first 2 points
+		'point 3 is assigned in the while loop
+		pl = points.firstlink()
+		p0 = TPoint( pl.value() )
+		pl = pl.nextlink()
+		p1 = TPoint( pl.value() )
+		pl = pl.nextlink()
+		p2 = TPoint( pl.value() )
+		pl = pl.nextlink()
+
+		local oldPoint:TPoint = TPoint.Create(0,0,0)
+		local cachedPoints:int = 0
+
+		'pl3 will be null when we've reached the end of the list
+		While pl <> Null
+			'get the point objects from the TLinks
+			p3 = Tpoint( pl.value() )
+
+			oldPoint.SetPos(p1)
+
+			'THE MEAT And BONES! Oddly, there isn't much to explain here, just copy the code.
+			For local t:float = 0 To 1 Step 1.0/self.resolution
+				local point:TPoint = TPoint.Create(0,0,0)
+				point.x = .5 * ( (2 * p1.x) + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t * t + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * t * t * t)
+				point.y = .5 * ( (2 * p1.y) + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t * t + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * t * t * t)
+
+				'set distance
+				self.totalDistance :+ point.DistanceTo(oldPoint, false)
+				'distance is stored in the current points Z coordinate
+				point.z = self.totalDistance
+				oldPoint.setPos(point)
+
+				'add to cache
+				self.cache = self.cache[.. cachedPoints+1]
+				self.cache[cachedPoints] = point
+				cachedPoints:+1
+			Next
+
+			'Move one place along the list
+			p0 = p1
+			p1 = p2
+			p2 = p3
+			pl=pl.nextlink()
+
+		Wend
+
+		self.cacheGenerated = TRUE
+
+		return self.totalDistance
+	End Method
+
+	'returns the coordinate of a given distance
+	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
+	Method GetPoint:TPoint(distance:float, relativeValue:int=FALSE)
+		if not self.cacheGenerated then self.generateCache()
+		if relativeValue then distance = distance*self.totalDistance
+
+		For local t:float = 0 To self.cache.length-1
+			'if the searched distance is reached - return it
+			if self.cache[t].z > distance
+				return self.cache[Max(t-1, 0)]
+			endif
+		Next
+		return Null
+	End Method
+
+	'returns the coordinate of a given distance
+	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
+	Method GetTweenPoint:TPoint(distance:float, relativeValue:int=FALSE)
+		if not self.cacheGenerated then self.generateCache()
+		if relativeValue then distance = distance*self.totalDistance
+
+		local pointA:TPoint = Null
+		local pointB:TPoint = Null
+
+		For local t:float = 0 To self.cache.length-1
+			'if the searched distance is reached
+			if self.cache[t].z > distance
+				if not pointA
+					pointA = self.cache[Max(t-1, 0)]
+				elseif not pointB
+					pointB = self.cache[Max(t-1, 0)]
+					exit
+				endif
+			endif
+		Next
+		if pointA and pointB
+			'local distanceAB:float = abs(pointB.z - pointA.z)
+			'local distanceAX:float = abs(distance - pointA.z)
+			'local distanceBX:float = abs(distance - pointB.z)
+			'local weightAX:float   = 1- distanceAX/distanceAB
+			local weightAX:float   = 1- abs(distance - pointA.z)/abs(pointB.z - pointA.z)
+
+			return TPoint.Create(..
+				pointA.x*weightAX + pointB.x*(1-weightAX), ..
+				pointA.y*weightAX + pointB.y*(1-weightAX) ..
+			)
+
+'			print "distance: total="+distance+"  a=" +pointA.z + "  b="+ pointB.z+"  af=" +pointA.z/distance + "  bf="+ pointB.z/distance
+'			return TPoint.Create(..
+'				(pointA.z/distance) * pointA.x  +  pointB.z/distance * pointB.x, ..
+'				(pointA.z/distance) * pointA.y  +  pointB.z/distance * pointB.y  ..
+'			)
+		else
+			return Null
+		endif
+	End Method
+
+End Type
+
+
+
+'=======================================================================
 Type appKubSpline
-  Field dataX:Float[]
-  Field dataY:Float[]
-  Field dataCount:Int =0
-  Field koeffB:Float[]
-  Field koeffC:Float[]
-  Field koeffD:Float[]
-  '------------------------------------------------------------------------------------------------------------
+	Field dataX:Float[]
+	Field dataY:Float[]
+	Field dataCount:Int =0
+	Field koeffB:Float[]
+	Field koeffC:Float[]
+	Field koeffD:Float[]
+  '---------------------------------------------------------------------
   ' gets data as FLOAT and calculates the cubic splines
   ' if x-, y-arrays size is different, only the smaller count is taken
   ' data must be sorted uprising for x
@@ -1339,33 +1559,12 @@ Type appKubSpline
     Return ((koeffD[i] *q +koeffC[i]) *q +koeffB[i]) *q +dataY[i]
 
   End Method
-  '------------------------------------------------------------------------------------------------------------
+  '---------------------------------------------------------------------
   ' returns kubic splines value as rounded INT at given x -position
    'or always 0 if currently no data is loaded
   Method ValueInt:Int(x:Float)
+	local tmpResult:Float = self.Value(x)
 
-    If dataCount =0 Then Return 0
-
-    If x <dataX[0] Then
-      Repeat
-        x :+dataX[dataCount -1] -dataX[0]
-      Until x =>dataX[0]
-    ElseIf x >dataX[dataCount -1] Then
-      Repeat
-        x :-dataX[dataCount -1] -dataX[0]
-      Until x <=dataX[dataCount -1]
-    End If
-
-    Local q:Float =Sgn(dataX[dataCount -1] -dataX[0])
-    Local k:Int =-1
-    Local i:Int
-    Repeat
-      i =k
-      k :+1
-    Until (q *x <q *dataX[k]) Or k =dataCount -1
-
-    q =x - dataX[i]
-    Local tmpResult:Float =((koeffD[i] *q +koeffC[i]) *q +koeffB[i]) *q +dataY[i]
     If tmpResult -Floor(tmpResult) <=.5 Then
       Return Floor(tmpResult)
     Else
@@ -1373,10 +1572,10 @@ Type appKubSpline
     End If
 
   End Method
-  '------------------------------------------------------------------------------------------------------------
+  '---------------------------------------------------------------------
 
 End Type
-'------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+'-----------------------------------------------------------------------
 
 'Global colorfunctions:TColorFunctions = New TColorFunctions
 

@@ -16,7 +16,7 @@ global CHAT_COMMAND_WHISPER:int	= 1
 global CHAT_COMMAND_SYSTEM:int	= 2
 
 
-Type TGUIChatNEW extends TGUIObject
+Type TGUIChat extends TGUIObject
 	field _defaultTextColor:TColor		= TColor.Create(0,0,0)
 	field _defaultHideEntryTime:int		= null
 	field _channels:int					= 0		'bitmask of channels the chat listens to
@@ -29,7 +29,7 @@ Type TGUIChatNEW extends TGUIObject
 	global antiSpamTimer:int			= 0		'time when again allowed to send
 	global antiSpamTime:int				= 100
 
-	Method Create:TGUIChatNEW(x:int,y:int,width:int,height:int, State:string="")
+	Method Create:TGUIChat(x:int,y:int,width:int,height:int, State:string="")
 		super.CreateBase(x,y,State,null)
 
 		self.guiList = new TGUIListBase.Create(0,0,width,height,State)
@@ -95,7 +95,7 @@ Type TGUIChatNEW extends TGUIObject
 		local guiInput:TGUIInput = TGUIInput(triggerEvent.GetSender())
 		if guiInput = Null then return FALSE
 
-		local guiChat:TGUIChatNEW = TGUIChatNEW(guiInput._parent)
+		local guiChat:TGUIChat = TGUIChat(guiInput._parent)
 		if guiChat = Null then return FALSE
 
 		'emit event : chats should get a new line
@@ -119,7 +119,7 @@ Type TGUIChatNEW extends TGUIObject
 	End Function
 
 	Method onAddEntry:int( triggerEvent:TEventBase )
-		local guiChat:TGUIChatNEW = TGUIChatNew(triggerEvent.GetReceiver())
+		local guiChat:TGUIChat = TGUIChat(triggerEvent.GetReceiver())
 		'if event has a specific receiver and this is not a chat - we are not interested
 		if triggerEvent.GetReceiver() AND not guiChat then return FALSE
 		'found a chat - but it is another chat

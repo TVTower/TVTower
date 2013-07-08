@@ -319,7 +319,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method SendToChat:Int(ChatText:String)
 		If Game.Players[ Self.ME ] <> Null
 			'emit an event, we received a chat message
-			local sendToChannels:int = TGUIChatNew.GetChannelsFromText(ChatText)
+			local sendToChannels:int = TGUIChat.GetChannelsFromText(ChatText)
 			EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) ) )
 		EndIf
 		Return 1
@@ -585,9 +585,9 @@ Type TLuaFunctions {_exposeToLua}
 				Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 				If not (Obj = null)
 					Return -64
-				endif				
+				endif
 			endif
-			
+
 			Return self.RESULT_OK
 		Else
 			Local contract:TContract = Game.Players[ self.ME ].ProgrammeCollection.GetContract(ObjectID)

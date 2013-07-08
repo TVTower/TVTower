@@ -1038,17 +1038,6 @@ Type TGW_Sprites extends TRenderable
 		EndIf
 	End Method
 
-	'Draws an Image if its in the viewport of the screen (not on Interface)
-	Method DrawInViewPort(_x:Int, _yItStandsOn:Int, align:Byte=0, Frame:Int=0)
-		If _yItStandsOn > 10 And _yItStandsOn - self.h < 373+10
-			If align = 0 '_x is left side of image
-				self.Draw(_x, _yItStandsOn - self.h, Frame)
-			ElseIf align = 1 '_x is right side of image
-				self.Draw(_x - self.w, _yItStandsOn - self.h,Frame)
-			EndIf
-		EndIf
-	End Method
-
 	Method getFramePos:TPoint(frame:int=-1)
 		If frame < 0 then return TPoint.Create(0,0)
 
@@ -1176,7 +1165,7 @@ Type TAnimation
 	End Method
 
 	Method ResetFrameTimer()
-		self.frameTimer = self.framesTime[self.currentFramePos] + RandRange(-self.randomness, self.randomness)
+		self.frameTimer = self.framesTime[self.currentFramePos] + Rand(-self.randomness, self.randomness)
 	End Method
 
 	Method getFrameCount:int()

@@ -1717,6 +1717,7 @@ End Type
 Type TGUIListBase Extends TGUIobject
 	Field guiBackground:TGUIobject				= Null
 	Field backgroundColor:TColor				= TColor.Create(0,0,0,0)
+	Field backgroundColorHovered:TColor			= TColor.Create(0,0,0,0)
 	Field guiEntriesPanel:TGUIScrollablePanel	= Null
 	Field guiScroller:TGUIScroller				= Null
 
@@ -2018,12 +2019,15 @@ Type TGUIListBase Extends TGUIobject
 	Method Draw()
 		if self.guiBackground
 			self.guiBackground.Draw()
-		elseif self.backgroundColor.a > 0.0
+		else
 			local rect:TRectangle = TRectangle.create( self.guiEntriesPanel.GetScreenX(), self.guiEntriesPanel.GetScreenY(), Min(self.rect.GetW(), self.guiEntriesPanel.rect.GetW()), Min(self.rect.GetH(), self.guiEntriesPanel.rect.GetH()) )
 
-			if not self._mouseOverArea then self.backgroundColor.a :* 0.25
-			self.backgroundColor.setRGBA()
-			if not self._mouseOverArea then self.backgroundColor.a :* 4
+			if self._mouseOverArea
+				self.backgroundColorHovered.setRGBA()
+			else
+				self.backgroundColor.setRGBA()
+			endif
+
 
 			DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH() )
 
@@ -2628,89 +2632,3 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 
 End Type
 
-Type TGUITextList Extends TGUIList
-	field doFadeOut:int					= 0 'fade out old entries?
-	field backgroundEnabled:int			= 0
-	field backgroundColor:TColor		= TColor.Create(0,0,0)
-	field guiListControl:TGW_Sprites	= null
-
-	Field OwnerNames:String[5]
-	Field OwnerColors:TColor[5]
-
-    Method Create:TGUITextList(x:Int, y:Int, width:Int, height:Int = 50, maxlength:Int = 128, State:String = "")
-		super.Create(x,y,width,height,maxlength,State)
-
-		return self
-	End Method
-
-	Method Update()
-		Super.Update() 'normal List update
-
-	    For Local Entries:TGUIEntry = EachIn self.EntryList 'Liste hier global
-			If self.doFadeOut And (7 - Float(MilliSecs() - Entries.data.getInt("time", 0))/1000) <=0 Then EntryList.Remove(Entries)
-		Next
-	End Method
-
-	Method Draw()
-		if self.guiListControl = null then self.guiListControl = gfx_GuiPack.GetSprite("ListControl")
-
-		Local SpaceAvaiable:Int	= 0
-		Local i:Int				= 0
-		Local chatinputheight:Int=0
-		Local printvalue:String
-		Local charcount:Int
-		Local charpos:Int
-		Local lineprintvalue:String=""
-		SpaceAvaiable = Self.GetScreenHeight() 'Hoehe der Liste
-	    i = 0
-
-		Local displace:Float = 0.0
-	    For Local Entries:TGUIEntry = EachIn self.EntryList 'Liste hier global
-			local entryAlpha:float = 1.0
-			If self.doFadeOut then entryAlpha = (7 - Float(MilliSecs() - Entries.data.getInt("time",0) )/1000)
-
-			If i > ListStartsAtPos-1
-				If AutoScroll=1 And Self.useFont.getHeight( Entries.data.getString("value", "") ) > SpaceAvaiable-chatinputheight
-					ListStartsAtPos :+1
-				EndIf
-				If Self.useFont.getHeight( Entries.data.getString("value", "") ) < SpaceAvaiable-chatinputheight
-					Local playerID:Int = Entries.data.getInt("owner",1)
-					Local dimension:TPoint
-					Local nameWidth:Float=0.0
-					Local blockHeight:Float = 0.0
-
-					'0 = get dimensions
-					'1 = draw the text
-					For Local i:Int = 0 To 1
-						If i = 1 AND self.backgroundEnabled
-							SetAlpha Min(0.3, 0.3*entryAlpha)
-							self.backgroundColor.Set()
-							DrawRect(self.GetScreenX(), self.GetScreenY()+displace, self.GetScreenWidth(), blockHeight)
-							SetColor 255,255,255
-						EndIf
-
-						SetAlpha entryAlpha
-
-						If PlayerID > 0
-							dimension = Self.useFont.drawStyled(Self.OwnerNames[PlayerID]+": ", self.GetScreenX()+2, self.GetScreenY()+displace +2, OwnerColors[PlayerID].r,OwnerColors[PlayerID].g,OwnerColors[PlayerID].b, 2, i)
-						Else
-							dimension = Self.useFont.drawStyled("System:", self.GetScreenX()+2, self.GetScreenY()+displace +2, 50,50,50, 2,i)
-						EndIf
-						nameWidth = dimension.x
-						blockHeight = Self.useFont.drawBlock(Entries.data.getString("value", ""), self.GetScreenX()+2+nameWidth, self.GetScreenY()+displace +2, self.GetScreenWidth() - nameWidth, SpaceAvaiable, 0, 255,255,255,0,2, i).getY()
-
-						If i = 1 Then displace:+blockHeight
-					Next
-				EndIf
-			EndIf
-			i:+1
-			If self.doFadeOut Then SetAlpha (1)
-		Next
-
-		if self.ControlEnabled 'AND ... SCROLLING NOTWENDIG
-			self.scroller.Draw()
-		endif
-
-		SetColor 255,255,255
-	End Method
-End Type

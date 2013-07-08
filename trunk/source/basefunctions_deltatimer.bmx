@@ -149,9 +149,9 @@ endrem
 	'maybe this method is better
 	Field isRunning:Int = True
 	Field Timer:TTimer=null
-	Field nextUpdateTick:Int,nextDrawTick:Int
+	Field nextUpdateTick:Int,nextDrawTick:Int=0
 	Method TimerLoop()
-		if not Timer then timer = CreateTimer(100)
+		if not Timer then timer = CreateTimer(self.ups*2)
 		self.newTime		= MilliSecs()
 		if self.oldTime = 0.0 then self.oldTime = self.newTime - 1
 		self.secondGone		:+ (self.newTime - self.oldTime)
@@ -166,14 +166,15 @@ endrem
 			self.timesUpdated	= 0
 		endif
 
-	'	If MilliSecs() > nextUpdateTick +1000
-	'		nextUpdateTick= MilliSecs()-1
-	'	EndIf
+		If MilliSecs() > nextUpdateTick +1000
+			nextUpdateTick= MilliSecs()-1
+		EndIf
 		If MilliSecs() > nextUpdateTick
 			EventManager.triggerEvent( TEventSimple.Create("App.onUpdate",null) )
 			nextUpdateTick:+ ceil(1000.0/self.ups)
 			self.timesUpdated:+1
-		ElseIf MilliSecs() > nextDrawTick
+		endif
+		If MilliSecs() > nextDrawTick
 			EventManager.triggerEvent( TEventSimple.Create("App.onDraw", string(self.tweenValue) ) )
 			nextDrawTick= MilliSecs()+ ceil(1000.0/self.fps)
 			self.tweenValue = ceil(1000.0/self.ups) / nextUpdateTick
