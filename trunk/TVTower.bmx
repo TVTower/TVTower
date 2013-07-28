@@ -26,7 +26,7 @@ REM
 
 * SaveLoad als Events "Movie.onLoad"
 
-* Räume als besetzt markieren (damit KI keine Filme kauft waehrend ich beim Haendler steh :D)
+* Räume als besetzt markieren (damit KI keine Filme kauft während ich beim Händler steh :D)
     - Innenraeume checken? (Auktionsraum bei Filmhaendler)
 * XML-Dateien: Animationskonfiguration
 	- TAsset -> global "currentDeltaTime"

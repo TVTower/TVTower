@@ -1,6 +1,12 @@
 ﻿LANG_DE = Deutsch
 LANG_EN = Englisch
 
+GAME_TIME = Spielzeit
+BETTY_FEELINGS = Bettys Gefühle für Dich
+
+MONEY = Geld
+DEBT = Schulden
+
 CURRENCY = €
 DAY = Tag
 DAYS = Tage
@@ -170,6 +176,7 @@ FINANCES_NEWS         = Nachrichten
 FINANCES_NEWSAGENCIES = Nachrichtenagenturen
 FINANCES_STATION_COSTS= Sendergebühren
 FINANCES_MISC_COSTS   = Sonstige Kosten
+FINANCES_CALLER_REVENUE = Einnahmen von Call-In-Shows
 
 IMAGE_REACH		= Reichweite
 IMAGE_SHARETOTAL	= Marktanteil Total

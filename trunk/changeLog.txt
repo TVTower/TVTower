@@ -1,3 +1,217 @@
+2013-07-08 15:13  ronny
+
+	  - Chat sitzt nun "unten rechts" (und nur im Netzwerk sichtbar)
+	  - Ufo und Mond bewegen sich nun wieder korrekt
+	  - Neuer Pfad: TCatmullromspline (fuer Mond und Ufo benutzt)
+	  - Hintergrundhaeuser sind nun nachts etwas heller
+	  - Spielfiguren nun an anderen Startpunkten
+	  - GuiElemente - alte TGUIList entfernt
+	  - Ufografik hat im Hochhauspack nun mehr Abstand (verhindert
+	  "flickern")
+	  - Wolken haben nun leichte Alpha und Helligkeitsunterschiede
+	  - Netzwerk: weitere Bereiche korrigiert und ueberprueft (einige
+	  Dinge wie "SendProgramme" entfallen nun, da sie von
+	  ProgrammeCollectionChange integriert werden)
+	  
+	  trunk/TVTower, trunk/TVTower.exe, trunk/config/gfx_hochhaus.xml,
+	  trunk/grafiken/hochhaus/hochhauspack.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-27 07:30  ronny
+
+	  - Die Newsverteilung im Netzwerk an GUI-Events angeknuepft
+	  - Packaging-Code der Netzwerpakete gefixt
+	  (Blitzmax-Integer/strings/floats kennen kein richtiges "NULL" -
+	  sind dort 0,0.0 und "")
+	  - Abfrage der KI-Kontrolle geaendert (da Netzwerkspieler keine AI
+	  laden gab es dort Zugriffe auf Null-PlayerKI)
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions_network.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-26 20:01  starscrazy
+
+	  Achtung: Der Kommentar ist alt... ich hoffe die Hälfte stimmt
+	  noch..
+	  
+	  - Beim füllen des Programmplanes werden nun Spot-Engpässe zu
+	  Anforderungen an die AdAgency gestellt
+	  - Die AdAgency versucht die Anforderungen zu erfüllen und stellt
+	  wiederum Anforderungen an die Programmplanung die dann erfüllt
+	  werden.
+	  - Es wird nun versucht, dass sich Programmausstrahlungen sich
+	  nicht so oft wiederholen... allerdings ist dies manchmal
+	  unabdingbar (dafür auch die Methode "HowOftenProgrammeInPlan")
+	  - Das Ersetzen von Werbesendungen funktioniert nun einigermaßen.
+	  Da gibt's wohl noch nen Bug im BlitzMax-Code
+	  - Das SLF um ein paar nützliche table-Funktionen erweitert
+	  - BUG gefunden: Die Darstellung der gesendeten Werbeblöcke im
+	  Programmplan ist fehlerhaft... die Sendezahlen (Numerierung)
+	  stimmen nicht.
+	  - BUG gefunden: So wie es aussieht wird die Zahl der
+	  Werbeeinnahmen in der Bilanz wird um den Faktor 10 zu hoch
+	  angezeigt. Also statt 1.500 kommt 15.000
+	  - BUG gefunden: "of_doSpotInPlan" setzt keine Spots die am
+	  nächsten Tag gesendet werden sollen. Filme funktionieren aber -
+	  Spots nicht.
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/BudgetManager.lua,
+	  trunk/res/ai/CommonObjects.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/SLF.lua, trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx, trunk/source/main.bmx
+	  
+
+2013-06-26 18:20  ronny
+
+	  - ThreadedBuilds etwas ueberarbeitet, so sollte zumindest der
+	  Win32-Build ueber das Hauptmenue kommen
+	  - TProfiler sollte an den kritischen Stellen nun Threadsafe sein
+	  - Events koennen einen "channel" haben (die 1 ist fuer
+	  system-events, werden diese von einem subthread direkt
+	  getriggert, kommen sie ans Ende der normal abzuarbeitenden Liste)
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-26 12:19  ronny
+
+	  - Beim Mehrspielermodus wird beim Join nun der Zufalls-"Seed"
+	  gesetzt
+	  - Programme/Genres haben nun individuelle
+	  Abnutzungs-/Auffrischungsfaktoren (nun kann fast den ganzen Tag
+	  Trash gesendet werden :D)
+	  - globale Variable "Players" sitzt nun im TGame-Objekt
+	  
+	  trunk/TVTower, trunk/source/basefunctions.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-24 20:35  ronny
+
+	  - Netzwerk funktioniert wieder (in Grenzen :D - aber starten und
+	  rumlaufen etc. funzt)
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx,
+	  trunk/source/basefunctions_network.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-24 07:29  ronny
+
+	  - TTimer in TIntervalTimer umbenannt (TTimer wird von Blitzmax
+	  schon benutzt - fuer Systemtimer)
+	  - Linux nutzt nun BufferedGL
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-24 06:20  ronny
+
+	  - Threaded builds sollten nun auch korrekt die FPS limitieren
+	  
+	  trunk/TVTower, trunk/TVTower.exe, trunk/TVTower.mt.exe,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_ki.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-23 20:09  ronny
+
+	  - Eventsystem unterstuetzt nun auch Methoden-Listener (->
+	  verschiedene Chat-Listener)
+	  - Chats nutzen nun neue GUI-Systeme
+	  - InGame-Chat ueberarbeitet
+	  
+	  trunk/TVTower, trunk/TVTower.mt.exe, trunk/config/gui.xml,
+	  trunk/grafiken/gui/gui2011.png, trunk/grafiken/gui/packtest.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-21 16:57  ronny
+
+	  - Chat-Guiobject angelegt (aber kein gui-basiselement, deswegen
+	  in gamefunctions)
+	  - Changelog-Script eingefuegt
+	  - Rueckgabewerte bei bitmapfont-Zeichenfunktionen generalisiert
+	  auf TPoint (erspart returnValue-parameter und unsichere Castings)
+	  
+	  trunk/changeLog.sh, trunk/changeLog.txt, trunk/changeLog.xsl,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/external/svn2cl-0.13.tar.gz,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-19 20:30  ronny
+
+	  -/-
+	  
+	  trunk/TVTower.exe
+	  
+
+2013-06-19 20:29  ronny
+
+	  -win build
+	  
+	  trunk/TVTower, trunk/TVTower.mt.exe, trunk/audiotest.bmx,
+	  trunk/res/database.xml, trunk/source/version.txt
+	  
+
 2013-06-14 07:23  ronny
 
 	  - Sichtbarkeit der Newsbloecke limitieren

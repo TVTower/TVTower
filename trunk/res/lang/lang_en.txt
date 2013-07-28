@@ -1,6 +1,13 @@
 LANG_DE = German
 LANG_EN = English
 
+GAME_TIME = Game time
+BETTY_FEELINGS = Bettys feelings about you
+
+MONEY = Money
+DEBT = debt
+
+
 CURRENCY = €
 DAY = day
 DAYS = days
@@ -169,6 +176,7 @@ FINANCES_NEWS         = news
 FINANCES_NEWSAGENCIES = news agencies
 FINANCES_STATION_COSTS= station costs
 FINANCES_MISC_COSTS   = misc costs
+FINANCES_CALLER_REVENUE	= revenue from call-in-shows
 
 NEWSSTUDIO_NOT_SUBSCRIBED					= not subscribed
 NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL			= subscribe genre level

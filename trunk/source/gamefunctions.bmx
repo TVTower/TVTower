@@ -1530,6 +1530,8 @@ Type TInterface
   Field CurrentProgrammeText:String
   Field CurrentProgrammeToolTip:TTooltip
   Field CurrentAudienceToolTip:TTooltip
+  Field MoneyToolTip:TTooltip
+  Field BettyToolTip:TTooltip
   Field CurrentTimeToolTip:TTooltip
   Field NoiseAlpha:Float	= 0.95
   Field ChangeNoiseTimer:float= 0.0
@@ -1545,6 +1547,8 @@ Type TInterface
 		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
 		Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
 		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 355, 495)
+		Interface.MoneyToolTip				= TTooltip.Create("", "", 355, 365)
+		Interface.BettyToolTip				= TTooltip.Create("", "", 355, 465)
 		If Not InterfaceList Then InterfaceList = CreateList()
 		InterfaceList.AddLast(Interface)
 		SortList InterfaceList
@@ -1592,6 +1596,8 @@ Type TInterface
 		If CurrentProgrammeToolTip.enabled Then CurrentProgrammeToolTip.Update(deltaTime)
 		If CurrentAudienceToolTip.enabled Then CurrentAudienceToolTip.Update(deltaTime)
 		If CurrentTimeToolTip.enabled Then CurrentTimeToolTip.Update(deltaTime)
+		If BettyToolTip.enabled Then BettyToolTip.Update(deltaTime)
+		If MoneyToolTip.enabled Then MoneyToolTip.Update(deltaTime)
 
 		'channel selection (tvscreen on interface)
 		If MOUSEMANAGER.IsHit(1)
@@ -1625,19 +1631,37 @@ Type TInterface
 			CurrentProgrammeToolTip.enabled 	= 1
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
-		If functions.IsIn(MouseX(),MouseY(),385,468,108,30)
+		If functions.IsIn(MouseX(),MouseY(),355,468,130,30)
 			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
 			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 		EndIf
-		If functions.IsIn(MouseX(),MouseY(),385,533,108,45)
+		If functions.IsIn(MouseX(),MouseY(),355,533,130,45)
 			CurrentTimeToolTip.title 	= getLocale("GAME_TIME")+": "
 			CurrentTimeToolTip.text  	= Game.GetFormattedTime()+" "+getLocale("DAY")+" "+Game.GetDayOfYear()+"/"+Game.daysPerYear+" "+Game.GetYear()
 			CurrentTimeToolTip.enabled 	= 1
 			CurrentTimeToolTip.Hover()
 			'force redraw
 			CurrentTimeToolTip.dirtyImage = true
+		EndIf
+		If functions.IsIn(MouseX(),MouseY(),355,415,130,30)
+			MoneyToolTip.title 	= getLocale("MONEY")
+			MoneyTooltip.text	= getLocale("MONEY")+": "+Game.Players[Game.playerID].GetMoney() + getLocale("CURRENCY")
+			Moneytooltip.text	= MoneyTooltip.text + Chr(13)
+			Moneytooltip.text	= MoneyTooltip.text + getLocale("DEBT")+": "+ Game.Players[Game.playerID].GetCreditCurrent() + getLocale("CURRENCY")
+			MoneyToolTip.enabled 	= 1
+			MoneyToolTip.Hover()
+			'force redraw
+			MoneyToolTip.dirtyImage = true
+		EndIf
+		If functions.IsIn(MouseX(),MouseY(),355,510,130,15)
+			BettyToolTip.title	 	= getLocale("BETTY_FEELINGS")
+			BettyToolTip.text 	 	= "0 %"
+			BettyToolTip.enabled 	= 1
+			BettyToolTip.Hover()
+			'force redraw
+			BettyToolTip.dirtyImage = true
 		EndIf
 
 	End Method
@@ -1720,6 +1744,8 @@ Type TInterface
    		CurrentProgrammeToolTip.Draw()
 	    CurrentAudienceToolTip.Draw()
    		CurrentTimeToolTip.Draw()
+	    BettyToolTip.Draw()
+   		MoneyToolTip.Draw()
 	    GUIManager.Draw("InGame")
 
 		If Game.error >=1 Then TError.DrawErrors()

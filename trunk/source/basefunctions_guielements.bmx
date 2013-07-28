@@ -19,17 +19,20 @@ ENDREM
 
 
 ''''''GUIzeugs'
-CONST EVENT_GUI_CLICK:int				= 1
-CONST EVENT_GUI_DOUBLECLICK:int			= 2
-CONST GUI_OBJECT_DRAGGED:int			= 1
-CONST GUI_OBJECT_VISIBLE:int			= 2
-CONST GUI_OBJECT_ENABLED:int			= 4
-CONST GUI_OBJECT_CLICKABLE:int			= 8
-CONST GUI_OBJECT_DRAGABLE:int			= 16
-CONST GUI_OBJECT_MANAGED:int			= 32
-CONST GUI_OBJECT_POSITIONABSOLUTE:int	= 64
+CONST EVENT_GUI_CLICK:int					= 1
+CONST EVENT_GUI_DOUBLECLICK:int				= 2
+CONST GUI_OBJECT_DRAGGED:int				= 1
+CONST GUI_OBJECT_VISIBLE:int				= 2
+CONST GUI_OBJECT_ENABLED:int				= 4
+CONST GUI_OBJECT_CLICKABLE:int				= 8
+CONST GUI_OBJECT_DRAGABLE:int				= 16
+CONST GUI_OBJECT_MANAGED:int				= 32
+CONST GUI_OBJECT_POSITIONABSOLUTE:int		= 64
+CONST GUI_OBJECT_ACCEPTS_DROP:int			= 128
 
-CONST GUI_OBJECT_ACCEPTS_DROP:int	= 128
+CONST GUI_OBJECT_ORIENTATION_VERTICAL:int	= 0
+CONST GUI_OBJECT_ORIENTATION_HORIZONTAL:int	= 1
+
 
 Global gfx_GuiPack:TGW_SpritePack = TGW_SpritePack.Create(LoadImage("grafiken/GUI/guipack.png"), "guipack_pack")
 gfx_GuiPack.AddAnimSpriteMultiCol("ListControl", 96, 0, 56, 28, 14, 14, 8)
@@ -401,6 +404,7 @@ Type TGUIobject
 	Field className:string			= ""
 	global _activeID:int			= 0
 	global _lastID:int
+	global _debugMode:int			= FALSE
 
 	Method New()
 		self._id	= self.GetNextID()
@@ -1729,6 +1733,8 @@ Type TGUIListBase Extends TGUIobject
 	Field autoSortItems:int						= TRUE
 	Field _mouseOverArea:int					= FALSE 'private mouseover-field (ignoring covering child elements)
 	Field _dropOnTargetListenerLink:TLink		= null
+	Field _entryDisplacement:TPoint				= TPoint.Create(0,0)	'displace each entry by...
+	Field _orientation:int						= 0		'0 means vertical, 1 is horizontal
 
     Method Create:TGUIListBase(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
 		super.CreateBase(x,y,State,null)
@@ -1757,6 +1763,14 @@ Type TGUIListBase Extends TGUIobject
 
 		GUIManager.Add( self )
 		Return self
+	End Method
+
+	Method SetEntryDisplacement(x:float=0.0, y:float=0.0)
+		self._entryDisplacement.SetXY(x,y)
+	End Method
+
+	Method SetOrientation(orientation:int=0)
+		self._orientation = orientation
 	End Method
 
 	Method SetPadding:int(top:int,left:int,bottom:int,right:int)
@@ -1825,6 +1839,7 @@ Type TGUIListBase Extends TGUIobject
 			'quit as soon as the
 			'entry is out of range...
 			if entry.GetScreenY() > self.GetScreenY()+self.GetScreenHeight() then return Null
+			if entry.GetScreenX() > self.GetScreenX()+self.GetScreenWidth() then return Null
 
 			if entry.GetScreenRect().containsXY(coord.GetX(), coord.GetY()) then return entry
 		Next
@@ -1891,47 +1906,93 @@ Type TGUIListBase Extends TGUIobject
 
 	'recalculate scroll maximas, item positions...
 	Method RecalculateElements:int()
-		local currentYPos:float = 0
+		local currentPos:TPoint = TPoint.Create(0,0)
 		For local entry:TGUIobject = eachin self.entries
-			'move entry's y position to current one
-			entry.rect.position.SetY(currentYPos)
-			'advance to next y position
-			currentYPos:+entry.rect.GetH()
+			'move entry's position to current one
+			entry.rect.position.SetPos(currentPos)
+
+			if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+				'advance to next y position
+				currentPos.MoveXY( 0, entry.rect.GetH() )
+			elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+				'advance to next y position
+				currentPos.MoveXY( 0, entry.rect.GetH() )
+			endif
+
+			'add the displacement afterwards - so the first one is not displaced
+			currentPos.MoveXY(self._entryDisplacement.x,self._entryDisplacement.y)
 		Next
+		'remove the last displacement - so the last one does not add a displacement
+		'this avoids scrollers
+		currentPos.MoveXY(-self._entryDisplacement.x, -self._entryDisplacement.y)
+
 		'resize container panel
-		self.guiEntriesPanel.resize(null,currentYPos)
-
-		'determine if we did not scroll the list to a middle position
-		'so this is true if we are at the very bottom of the list aka "the end"
-		local atListBottom:int = 1 > floor( abs(self.guiEntriesPanel.scrollLimit.GetY()-self.guiEntriesPanel.scrollPosition.getY() ) )
+		self.guiEntriesPanel.resize(currentPos.getX(),currentPos.getY())
 
 
-		'set scroll limits:
-		if currentYPos < self.guiEntriesPanel.getScreenheight()
-			'if there are only some elements, they might be "less high" than
-			'the available area - no need to align them at the bottom
-			self.guiEntriesPanel.SetLimits(0, -(currentYPos) )
-		else
-			'maximum is at the bottom of the area, not top - so subtract height
-			self.guiEntriesPanel.SetLimits(0, -(currentYPos - self.guiEntriesPanel.getScreenheight()) )
+		if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+			'determine if we did not scroll the list to a middle position
+			'so this is true if we are at the very bottom of the list aka "the end"
+			local atListBottom:int = 1 > floor( abs(self.guiEntriesPanel.scrollLimit.GetY()-self.guiEntriesPanel.scrollPosition.getY() ) )
 
-			'in case of auto scrolling we should consider scrolling to
-			'the next visible part
-			if self.autoscroll and (not scrollerUsed OR atListBottom) then self.scrollToLastItem()
+			'set scroll limits:
+			if currentPos.getY() < self.guiEntriesPanel.getScreenheight()
+				'if there are only some elements, they might be "less high" than
+				'the available area - no need to align them at the bottom
+				self.guiEntriesPanel.SetLimits(0, -(currentPos.getY()) )
+			else
+				'maximum is at the bottom of the area, not top - so subtract height
+				self.guiEntriesPanel.SetLimits(0, -(currentPos.getY() - self.guiEntriesPanel.getScreenheight()) )
+
+				'in case of auto scrolling we should consider scrolling to
+				'the next visible part
+				if self.autoscroll and (not scrollerUsed OR atListBottom) then self.scrollToLastItem()
+			endif
+
+			'if not all entries fit on the panel, enable scroller
+			self.SetScrollerState( currentPos.getY() > self.guiEntriesPanel.GetScreenHeight() )
+
+		elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+
+			'determine if we did not scroll the list to a middle position
+			'so this is true if we are at the very bottom of the list aka "the end"
+			local atListBottom:int = 1 > floor( abs(self.guiEntriesPanel.scrollLimit.GetX()-self.guiEntriesPanel.scrollPosition.getX() ) )
+
+			'set scroll limits:
+			if currentPos.getX() < self.guiEntriesPanel.getScreenWidth()
+				'if there are only some elements, they might be "less high" than
+				'the available area - no need to align them at the bottom
+				self.guiEntriesPanel.SetLimits(-currentPos.getX(), 0 )
+			else
+				'maximum is at the bottom of the area, not top - so subtract height
+				self.guiEntriesPanel.SetLimits(-(currentPos.getX() - self.guiEntriesPanel.getScreenWidth()), 0 )
+
+				'in case of auto scrolling we should consider scrolling to
+				'the next visible part
+				if self.autoscroll and (not scrollerUsed OR atListBottom) then self.scrollToLastItem()
+			endif
+
+
+			'if not all entries fit on the panel, enable scroller
+			self.SetScrollerState( currentPos.getX() > self.guiEntriesPanel.GetScreenWidth() )
 		endif
-
-
-		'if not all entries fit on the panel, enable scroller
-		self.SetScrollerState( currentYPos > self.guiEntriesPanel.GetScreenHeight() )
 	End Method
 
 	Method SetScrollerState(on:Int = 1)
 		Self.guiScroller.setOption(GUI_OBJECT_ENABLED, on)
 		Self.guiScroller.setOption(GUI_OBJECT_VISIBLE, on)
-		if on
-			self.guiEntriesPanel.Resize(self.rect.getW()-self.guiScroller.rect.getW())
-		else
-			self.guiEntriesPanel.Resize(self.rect.getW())
+		if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+			if on
+				self.guiEntriesPanel.Resize(self.rect.getW()-self.guiScroller.rect.getW())
+			else
+				self.guiEntriesPanel.Resize(self.rect.getW())
+			endif
+		elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+			if on
+				self.guiEntriesPanel.Resize(0, self.rect.getH()-self.guiScroller.rect.getH())
+			else
+				self.guiEntriesPanel.Resize(0, self.rect.getH())
+			endif
 		endif
 	End Method
 
@@ -1998,10 +2059,11 @@ Type TGUIListBase Extends TGUIobject
 
 
 	Method ScrollToLastItem()
-		'if self.guiEntriesPanel.scrollLimit.GetY() <= self.guiEntriesPanel.scrollPosition.GetY()
+		if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
 			self.ScrollEntries(0, self.guiEntriesPanel.scrollLimit.GetY() )
-'			self.ScrollEntries(0, Max(self.guiEntriesPanel.rect.getH(), self.guiEntriesPanel.scrollLimit.GetY()) )
-		'endif
+		elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+			self.ScrollEntries(self.guiEntriesPanel.scrollLimit.GetX(), 0 )
+		endif
 	End Method
 
 	Method Update()
@@ -2067,7 +2129,7 @@ End Type
 
 
 Type TGUISlotList Extends TGUIListBase
-	Field _slotMinHeight:int = 0
+	Field _slotMinDimension:TPoint = TPoint.Create(0,0)
 	Field _slotAmount:int = -1		'<=0 means dynamically, else it is fixed
 	Field _slots:TGUIobject[0]
 	field _autofillSlots:int = FALSE
@@ -2097,8 +2159,8 @@ Type TGUISlotList Extends TGUIListBase
 		self._slots = self._slots[..limit]
 	End Method
 
-	Method SetSlotMinHeight:int(height:int=0)
-		self._slotMinHeight = height
+	Method SetSlotMinDimension:int(width:float=0.0, height:float=0.0)
+		self._slotMinDimension.setXY(width, height)
 	End Method
 
 	'which slot is occupied by the given item?
@@ -2120,13 +2182,23 @@ Type TGUISlotList Extends TGUIListBase
 
 	Method GetSlotCoord:TPoint(slot:int)
 		'TODO: [RON] should the positions get recalculated before ?
-		local currentYPos:float = 0
+		local currentPos:TPoint = TPoint.Create(0,0)
 		For local i:int = 0 to self._slots.length-1
-			if i = slot then return TPoint.Create(0,currentYPos)
-			if self._slots[i]
-				currentYPos :+ self._slots[i].rect.getY()
-			else
-				currentYPos :+ self._slotMinHeight
+			if i = slot then return currentPos
+
+			'if slot is possessed, use that dimension, else the minimum one
+			if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+				if self._slots[i]
+					currentPos.MoveXY(0, self._slots[i].rect.getY() )
+				else
+					currentPos.MoveXY(0, self._slotMinDimension.getY() )
+				endif
+			elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+				if self._slots[i]
+					currentPos.MoveXY(self._slots[i].rect.getX(), 0  )
+				else
+					currentPos.MoveXY(self._slotMinDimension.getX(), 0 )
+				endif
 			endif
 		Next
 		return Null
@@ -2136,19 +2208,39 @@ Type TGUISlotList Extends TGUIListBase
 	Method GetSlotByCoord:int(coord:TPoint, isScreenCoord:int=TRUE)
 		'convert global/screen to local coords
 		if isScreenCoord then coord.MoveXY(-self.GetScreenX(),-self.GetScreenY())
-		local baseRect:TRectangle = TRectangle.Create(0, 0, self.rect.GetW(), self._slotMinHeight)
+		local baseRect:TRectangle = null
+		if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+			baseRect = TRectangle.Create(0, 0, self.rect.GetW(), self._slotMinDimension.getY())
+		elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+			baseRect = TRectangle.Create(0, 0, self._slotMinDimension.getX(), self.rect.GetH())
+		else
+			print "unknown orientation : "+self._orientation
+		endif
 
-		local currentYPos:float = 0
+		local currentPos:TPoint = TPoint.Create(0,0)
 		For local i:int = 0 to self._slots.length-1
-			baseRect.position.setY(currentYPos)
+			baseRect.position.setPos(currentPos)
 '			print "x="+coord.getX()+",y="+coord.GetY()+" in x=" + baserect.getX()+",y="+baserect.getY()+",w="+baserect.getW()+",h="+baserect.getH()
-			if self._slots[i]
-				if self._slots[i].rect.containsXY(coord.getX(),coord.getY()) then return i
-				currentYPos :+ Max(self._slotMinHeight, self._slots[i].rect.getH() )
-			else
-				if baseRect.containsXY(coord.GetX(), coord.GetY()) then return i
-				currentYPos :+ self._slotMinHeight
+
+			if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+				if self._slots[i]
+					if self._slots[i].rect.containsXY(coord.getX(),coord.getY()) then return i
+					currentPos.MoveXY(0, Max(self._slotMinDimension.getY(), self._slots[i].rect.getH()) )
+				else
+					if baseRect.containsXY(coord.GetX(), coord.GetY()) then return i
+					currentPos.MoveXY(0, self._slotMinDimension.getY())
+				endif
+			elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+				if self._slots[i]
+					if self._slots[i].rect.containsXY(coord.getX(),coord.getY()) then return i
+					currentPos.MoveXY( Max(self._slotMinDimension.getX(), self._slots[i].rect.getW()), 0 )
+				else
+					if baseRect.containsXY(coord.GetX(), coord.GetY()) then return i
+					currentPos.MoveXY(self._slotMinDimension.getX(), 0)
+				endif
 			endif
+			'add the displacement
+			currentPos.MoveXY(self._entryDisplacement.x,self._entryDisplacement.y)
 		Next
 		return -1
 	End Method
@@ -2233,50 +2325,87 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 	Method Draw()
-rem
-'debug purpose only
-		'restrict by scrollable panel - if not possible, there is no "space left"
-		if self.guiEntriesPanel.RestrictViewPort()
-			local currentY:float = self.guiEntriesPanel.scrollPosition.GetY()
-			For local i:int = 0 to self._slots.length-1
-				if self._slots[i]
-					currentY :+ Max(self._slotMinHeight, self._slots[i].rect.getH())
-				else
-					SetAlpha 0.2
-					SetColor 0,0,0
-					DrawRect(self.GetScreenX(), self.GetScreenY()+currentY, self.rect.getW(), self._slotMinHeight)
-					SetColor 255,255,255
-					DrawRect(self.GetScreenX()+1, self.GetScreenY()+currentY+1, self.rect.getW()-2, self._slotMinHeight-2)
-					SetAlpha 1.0
-					currentY :+ self._slotMinHeight
-				endif
-			Next
-			DrawText(self.guiEntriesPanel.scrollPosition.GetY(), self.GetScreenX(), self.GetScreenY()+10)
-			self.ResetViewPort()
+		if self._debugMode
+			'restrict by scrollable panel - if not possible, there is no "space left"
+			if self.guiEntriesPanel.RestrictViewPort()
+				local currentPos:TPoint = TPoint.Create(self.guiEntriesPanel.scrollPosition.GetX(), self.guiEntriesPanel.scrollPosition.GetY())
+				For local i:int = 0 to self._slots.length-1
+					if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+						if self._slots[i]
+							currentPos.MoveXY(0, Max(self._slotMinDimension.GetY(), self._slots[i].rect.getH()) )
+						else
+							SetAlpha 0.2
+							SetColor 0,0,0
+							DrawRect(self.GetScreenX()+currentPos.getX(), self.GetScreenY()+currentPos.getY(), self.rect.getW(), self._slotMinDimension.getY())
+							SetColor 255,255,255
+							DrawRect(self.GetScreenX()+currentPos.getX()+1, self.GetScreenY()+currentPos.getY()+1, self.rect.getW()-2, self._slotMinDimension.getY()-2)
+							SetAlpha 1.0
+							currentPos.MoveXY(0, self._slotMinDimension.getY() )
+						endif
+					elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+						if self._slots[i]
+							currentPos.MoveXY(Max(self._slotMinDimension.GetX(), self._slots[i].rect.getW()), 0)
+						else
+							SetAlpha 0.2
+							SetColor 0,0,0
+							DrawRect(self.GetScreenX()+currentPos.getX(), self.GetScreenY()+currentPos.getY(), self._slotMinDimension.getX(), self._slotMinDimension.getY())
+							SetColor 255,255,255
+							DrawRect(self.GetScreenX()+currentPos.getX()+1, self.GetScreenY()+currentPos.getY()+1, self._slotMinDimension.getX(), self._slotMinDimension.getY()-2)
+							SetAlpha 1.0
+							currentPos.MoveXY(self._slotMinDimension.getX(),0 )
+						endif
+					endif
+					'add the displacement
+					currentPos.MoveXY(self._entryDisplacement.x,self._entryDisplacement.y)
+				Next
+				self.ResetViewPort()
+			endif
 		endif
-end rem
 	End Method
 
 	Method RecalculateElements:int()
-		local currentYPos:float = 0
+		local currentPos:TPoint = TPoint.Create()
 		For local i:int = 0 to self._slots.length-1
-			if self._slots[i]
-				'move entry's y position to current one
-				self._slots[i].rect.position.SetY(currentYPos)
-				currentYPos :+ Max(self._slotMinHeight, self._slots[i].rect.getH())
-			else
-				currentYPos :+ self._slotMinHeight
+			if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+				if self._slots[i]
+					'move entry's position to current one
+					self._slots[i].rect.position.SetPos(currentPos)
+					currentPos.MoveXY(0, Max(self._slotMinDimension.getY(), self._slots[i].rect.getH()) )
+				else
+					currentPos.MoveXY(0, self._slotMinDimension.GetY())
+				endif
+			elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+				if self._slots[i]
+					'move entry's position to current one
+					self._slots[i].rect.position.SetPos(currentPos)
+					currentPos.MoveXY(Max(self._slotMinDimension.getX(), self._slots[i].rect.getW()), 0)
+				else
+					currentPos.MoveXY(self._slotMinDimension.GetX(), 0)
+				endif
 			endif
+			'add the displacement afterwards - so the first one is not displaced
+			currentPos.MoveXY(self._entryDisplacement.x,self._entryDisplacement.y)
 		Next
+		'remove the last displacement - so the last one does not add a displacement
+		'this avoids scrollers
+		currentPos.MoveXY(-self._entryDisplacement.x, -self._entryDisplacement.y)
+
 		'resize container panel
-		self.guiEntriesPanel.resize(null,currentYPos)
+		self.guiEntriesPanel.resize(currentPos.getX(), currentPos.getY() )
 
-		'set scroll limits:
-		'maximum is at the bottom of the area, not top - so subtract height
-		self.guiEntriesPanel.SetLimits(0, -(currentYPos - self.guiEntriesPanel.rect.GetH()) )
-
-		'if not all entries fit on the panel, enable scroller
-		self.SetScrollerState( currentYPos > self.guiEntriesPanel.rect.GetH() )
+		if self._orientation = GUI_OBJECT_ORIENTATION_VERTICAL
+			'set scroll limits:
+			'maximum is at the bottom of the area, not top - so subtract height
+			self.guiEntriesPanel.SetLimits(0, -(currentPos.getY() - self.guiEntriesPanel.rect.GetH()) )
+			'if not all entries fit on the panel, enable scroller
+			self.SetScrollerState( currentPos.getY() > self.guiEntriesPanel.rect.GetH() )
+		elseif self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
+			'set scroll limits:
+			'maximum is at the bottom of the area, not top - so subtract height
+			self.guiEntriesPanel.SetLimits(-(currentPos.getX() - self.guiEntriesPanel.rect.GetW()), 0 )
+			'if not all entries fit on the panel, enable scroller
+			self.SetScrollerState( currentPos.getX() > self.guiEntriesPanel.rect.GetW() )
+		endif
 	End Method
 
 End Type

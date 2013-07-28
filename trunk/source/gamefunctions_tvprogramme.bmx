@@ -3199,6 +3199,78 @@ endrem
 End Type
 
 
+
+'a graphical representation of programmes/news/ads...
+Type TGUIProgrammeCoverBlock extends TGUIListItem
+	global assetBaseName:string = "gfx_movie"
+	Field programme:TProgramme = Null
+	Field asset:TGW_Sprites = null
+
+    Method Create:TGUIProgrammeCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		'limit this blocks to nothing - as soon as we parent it, it will
+		'follow the parents limits
+   		super.CreateBase(x,y,"MainMenu",null)
+		self.asset = Assets.GetSprite(self.assetBaseName+"0")
+   		'resize to a default value
+		self.Resize( asset.w, asset.h )
+		self.label = label
+
+		'make dragable by default
+		self.setOption(GUI_OBJECT_DRAGABLE, TRUE)
+
+		'register events
+		'- each item wants to know whether it was clicked
+		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIListItem.onClick, self )
+
+		GUIManager.add(self)
+		return self
+	End Method
+
+	Method SetProgramme:int(programme:TProgramme)
+		self.programme = programme
+
+		'set to a nice asset image
+       	If Programme.Genre < 9 then self.asset = Assets.GetSprite(self.assetBaseName+Programme.Genre)
+		'now we can calculate the item dimensions
+		self.Resize( asset.w, asset.h )
+
+		'so it is only handled in the correct players newsplanner
+		'eg. "Newsplanner1" for player 1
+		self.SetLimitToState("MainMenu")
+
+
+		'as the news inflicts the sorting algorithm - resort
+		GUIManager.sortList()
+	End Method
+
+	Method Update()
+	End Method
+
+
+	Method Draw()
+		SetColor 255,255,255
+
+		If self.mouseover
+			local sheetY:float = 20
+			local sheetX:float = 30 + 360*(MouseX() < 400)
+
+			SetColor 0,0,0
+			SetAlpha 0.2
+			Local x:Float = self.GetScreenX()
+			Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+			DrawPoly(tri)
+			SetColor 255,255,255
+			SetAlpha 1.0
+
+			self.Programme.ShowSheet(sheetX,sheetY)
+		endif
+
+		asset.draw(self.GetScreenX(), self.GetScreenY())
+
+	End Method
+End Type
+
+
 Type TSuitcaseProgrammeBlocks Extends TBlockGraphical
 	Field Programme:TProgramme
 

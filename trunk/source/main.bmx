@@ -57,7 +57,6 @@ TTooltip.UseFont 		= Assets.fonts.baseFont
 TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
 TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
 
-
 Rem
 Enthaelt Verbindung zu Einstellungen und Timern
 sonst nix
@@ -342,7 +341,6 @@ endrem
 		LoadSaveFile.SaveObject(TFigures.List, "FIGURES", TFigures.AdditionalSave) ; TError.DrawErrors() ;Flip 0  'XML
 		LoadSaveFile.SaveObject(TPlayer.List, "PLAYERS", TFigures.AdditionalSave) ; TError.DrawErrors() ;Flip 0  'XML
 
-
 		TStationMap.SaveAll();				TError.DrawErrors();Flip 0  'XML
 		TAudienceQuotes.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
@@ -450,7 +448,6 @@ endrem
 		Game.title				= "unknown"
 
 		Game.SetRandomizerBase( Millisecs() )
-		'Print "seedRand festgelegt - bei Netzwerk bitte jeweils neu auswürfeln und bei join mitschicken - fuer Testzwecke aber aktiv, immer gleiches Programm"
 
 		Return Game
 	End Function
@@ -2177,6 +2174,8 @@ Global MenuFigureArrows:TGUIArrowButton[8]
 PrintDebug ("Base", "creating GUIelements", DEBUG_START)
 'MainMenu
 
+
+
 Global MainMenuButton_Start:TGUIButton		= New TGUIButton.Create(TPoint.Create(600, 300), 120, GetLocale("MENU_SOLO_GAME"), "MainMenu", Assets.fonts.baseFontBold)
 Global MainMenuButton_Network:TGUIButton	= New TGUIButton.Create(TPoint.Create(600, 348), 120, GetLocale("MENU_NETWORKGAME"), "MainMenu", Assets.fonts.baseFontBold)
 Global MainMenuButton_Online:TGUIButton		= New TGUIButton.Create(TPoint.Create(600, 396), 120, GetLocale("MENU_ONLINEGAME"), "MainMenu", Assets.fonts.baseFontBold)
@@ -2519,6 +2518,34 @@ Function Menu_GameSettings()
 		EndIf
 	EndIf
 End Function
+
+
+'test objects
+TGUIObject._debugMode = TRUE
+Global TestList:TGUISlotList = new TGUISlotList.Create(20,20,300,200, "MainMenu")
+TestList.SetItemLimit(10)
+TestList.SetEntryDisplacement(10,8)
+'free lists do not have a proper panel size
+TestList.guiEntriesPanel.minSize.SetXY(300,200)
+TestList.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+TestList.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
+TestList.SetAcceptDrop("TGUIProgrammeCoverBlock")
+TestList.SetAutofillSlots(FALSE)
+
+
+Global TestKoffer:TGUISlotList = new TGUISlotList.Create(400,20,300,80, "MainMenu")
+TestKoffer.SetItemLimit(10)
+TestKoffer.SetEntryDisplacement(0,0)
+TestKoffer.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+TestKoffer.guiEntriesPanel.minSize.SetXY(300,80)
+TestKoffer.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
+TestKoffer.SetAcceptDrop("TGUIProgrammeCoverBlock")
+TestKoffer.SetAutofillSlots(TRUE)
+
+local item:TGUIProgrammeCoverBlock = new TGUIProgrammeCoverBlock.Create()
+item.setProgramme( TProgramme.GetRandomMovie(1) )
+print item.programme.title
+TestKoffer.addItem(item)
 
 
 Global MenuPreviewPicTimer:Int = 0
