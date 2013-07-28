@@ -50,7 +50,7 @@ Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16
 Global SaveError:TError, LoadError:TError
 Global ExitGame:Int 							= 0 			'=1 and the game will exit
 Global Fader:TFader								= New TFader
-Global NewsAgency:TNewsAgency					= New TNewsAgency
+Global NewsAgency:TNewsAgency					= New TNewsAgency.Create()
 
 TTooltip.UseFontBold	= Assets.fonts.baseFontBold
 TTooltip.UseFont 		= Assets.fonts.baseFont
@@ -638,7 +638,8 @@ endrem
 		Self.timeGone			:+ deltaTime * self.GetGameMinutesPerSecond()
 
 		'time for news ?
-		If IsGameLeader() And NewsAgency.NextEventTime < Self.timeGone Then NewsAgency.AnnounceNewNews()
+		If NewsAgency.NextEventTime < Self.timeGone Then NewsAgency.AnnounceNewNews()
+		If NewsAgency.NextChainCheckTime < Self.timeGone Then NewsAgency.ProcessNewsChains()
 
 		'send state to clients
 		If IsGameLeader() And Self.networkgame And Self.stateSyncTime < MilliSecs()
@@ -1940,39 +1941,125 @@ End Type
 
 'likely a kind of agency providing news... 'at the moment only a base object
 Type TNewsAgency
-	Field LastEventTime:Double = 0
-	Field NextEventTime:Double = 0
-	Field LastNewsList:TList = CreateList() 'holding news from the past hours/day for chains
+	Field NextEventTime:Double		= 0
+	Field NextChainChecktime:Double	= 0
+	Field activeNewsChains:TList	= CreateList() 'holding chained news from the past hours/day
 
+	Method Create:TNewsAgency()
+		'maybe do some initialization here
 
-	Method GetNextFromChain:TNews()
-		Local news:TNews
-		For Local parentnews:TNews = EachIn LastNewsList
-			If Game.GetDay(parentnews.happenedtime) < Game.getDay()
-				If parentnews.parent <> Null
-					If parentnews.episode < parentnews.parent.episodecount
-						news = TNews.GetNextInNewsChain(parentnews)
-					EndIf
-				End If
-				If parentnews.episodecount > 0 And parentnews.parent = Null
-					news = TNews.GetNextInNewsChain(parentnews, True) 'true = is the parent
-				EndIf
-				LastNewsList.Remove(parentnews)
-				If news <> Null Then PrintDebug("TNewsAgency.GetNextFromChain()", "NEWS: returning news:" + news.episode + " " + news.title, DEBUG_NEWS)
-				'Print "NEWS: returning previous news"
-				Return news
-			End If
+		return self
+	End Method
+
+	Method GetMovieNews:TNews()
+		local movie:TProgramme = self._GetAnnouncableMovie()
+		if movie
+			movie.releaseAnnounced = TRUE
+
+			local title:String = getLocale("NEWS_ANNOUNCE_MOVIE_TITLE"+Rand(1,2) )
+			local description:String = getLocale("NEWS_ANNOUNCE_MOVIE_DESCRIPTION"+Rand(1,4) )
+
+			'if same director and main actor...
+			if movie.getActor(1) = movie.getDirector(1)
+				title = getLocale("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE")
+				description = getLocale("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
+			endif
+			'if no actors ...
+			if movie.getActor(1) = "" or movie.getActor(1) = "XXX"
+				title = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
+				description = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
+			endif
+
+			'replace data
+			title = self._ReplaceMovieData(title, movie)
+			description = self._ReplaceMovieData(description, movie)
+
+			'quality and price are based on the movies data
+			Local News:TNews = TNews.Create(title, description, 1, movie.review, movie.outcome)
+			'remove news from TNews-list as we do not want to have them repeated :D
+			News.list.remove(News)
+
+			return News
+		endif
+		return Null
+	End Method
+
+	Method _ReplaceMovieData:string(text:string, movie:TProgramme)
+		For local i:int = 1 to 2
+			text = text.replace("%ACTORNAME"+i+"%", movie.getActor(i))
+			text = text.replace("%DIRECTORNAME"+i+"%", movie.getDirector(i))
 		Next
-		'Print "NEWS: no previous news found"
+		text = text.replace("%MOVIETITLE%", movie.title)
+
+		return text
+	end Method
+
+	'helper to get a movie which can be used for a news
+	Method _GetAnnouncableMovie:TProgramme()
+		'filter to entries we need
+		Local movie:TProgramme
+		Local resultList:TList = CreateList()
+		For movie = EachIn TProgramme.ProgMovieList
+			'ignore if filtered out
+			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
+			If movie.owner <> 0 Then continue
+			'ignore already announced movies
+			If movie.releaseAnnounced then continue
+
+			'only add movies of "next X days"
+			local movieTime:int = movie.year * Game.daysPerYear + movie.releaseDay
+			If movieTime > Game.getDay() AND movieTime - Game.getDay() < 6 Then resultList.addLast(movie)
+		Next
+		if resultList.count() > 0 then Return TProgramme.GetRandomProgrammeFromList(resultList)
+
+		return null
+	End Method
+
+	Method GetSpecialNews:TNews()
+	End Method
+
+
+	'announces new news chain elements
+	Method ProcessNewsChains:int()
+		local announced:int = 0
+		Local news:TNews = NULL
+		For Local chainElement:TNews = EachIn self.activeNewsChains
+			If not chainElement.isLastEpisode() then news = chainElement.GetNextNewsFromChain()
+			'remove the "old" one, the new element will get added instead (if existing)
+			activeNewsChains.Remove(chainElement)
+
+			'ignore if the chain ended already
+			if not news then continue
+
+			If chainElement.happenedTime + news.getHappenDelay() < Game.timeGone
+				self.announceNews(news)
+				announced:+1
+			endif
+		Next
+
+		'check every 10 game minutes
+		self.NextChainCheckTime = Game.timeGone + 10
+
+		return announced
 	End Method
 
 	Method AddNewsToPlayer:int(news:TNews, forPlayer:Int=-1, fromNetwork:Int=0)
 		'only add news/newsblock if player is Host/Player OR AI
 		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Game.Players[ forPlayer ].newsabonnements[news.genre] > 0
-			print "[LOCAL] AddNewsToPlayer: creating newsblock, player="+forPlayer
+			'print "[LOCAL] AddNewsToPlayer: creating newsblock, player="+forPlayer
 			TNewsBlock.Create("", forPlayer, Game.Players[ forPlayer ].GetNewsAbonnementDelay(news.genre), news)
 		EndIf
+	End Method
+
+	Method announceNews(news:TNews, happenedTime:int=0)
+		news.doHappen(happenedTime)
+
+		For Local i:Int = 1 To 4
+			AddNewsToPlayer(news, i)
+		Next
+
+		if news.episodes.count() > 0 then activeNewsChains.AddLast(News)
 	End Method
 
 	Method AnnounceNewNews:int(delayAnnouncement:Int=0)
@@ -1981,13 +2068,13 @@ Type TNewsAgency
 		'if not Game.isGameLeader() then return FALSE
 
 		Local news:TNews = Null
+		'try to load some movie news ("new movie announced...")
+		if not news and RandRange(1,100)<35 then news = self.GetMovieNews()
 
-		If RandRange(1,10)>3 Then news = GetNextFromChain()  '70% alte Nachrichten holen, 30% neue Kette/Singlenews
-		If news = Null Then news = TNews.GetRandomNews() 'TNews.GetRandomChainParent()
-		If news <> Null
-			news.happenedtime			= Game.timeGone + delayAnnouncement
+		If not news Then news = TNews.GetRandomNews()
 
-			Local NoOneSubscribed:Int	= True
+		If news
+			Local NoOneSubscribed:Int = True
 			For Local i:Int = 1 To 4
 				If Game.Players[i].newsabonnements[news.genre] > 0 Then NoOneSubscribed = False
 			Next
@@ -1995,15 +2082,10 @@ Type TNewsAgency
 			'for later stages
 			If Not NoOneSubscribed
 				Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+Game.getDay(news.happenedtime)+", time="+Game.GetFormattedTime(news.happenedtime)
-				For Local i:Int = 1 To 4
-					AddNewsToPlayer(news, i)
-				Next
-				LastNewsList.AddLast(News)
-			Else
-				News.used = 0
+				self.announceNews(news, Game.timeGone + delayAnnouncement)
 			EndIf
 		EndIf
-		LastEventTime = Game.timeGone
+
 		If RandRange(0,10) = 1
 			NextEventTime = Game.timeGone + Rand(20,50) 'between 20 and 50 minutes until next news
 		Else
@@ -2543,7 +2625,7 @@ TestKoffer.SetAcceptDrop("TGUIProgrammeCoverBlock")
 TestKoffer.SetAutofillSlots(TRUE)
 
 local item:TGUIProgrammeCoverBlock = new TGUIProgrammeCoverBlock.Create()
-item.setProgramme( TProgramme.GetRandomMovie(1) )
+item.setProgramme( TProgramme.GetRandomMovie() )
 print item.programme.title
 TestKoffer.addItem(item)
 
@@ -2706,11 +2788,11 @@ Function Menu_StartMultiplayer:Int()
 			Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
 			Local i:Int = 0
 			For i = 0 To Game.startMovieAmount-1
-				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomMovie(playerids) )
+				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomMovie() )
 			Next
 			'give series to each player
 			For i = 0 To Game.startSeriesAmount-1
-				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomSerie(playerids) )
+				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomSerie() )
 			Next
 			'give 1 call in
 			Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgrammeByGenre(20) )
@@ -2932,11 +3014,11 @@ Function Init_Creation()
 		For Local playerids:Int = 1 To 4
 			Local i:Int = 0
 			For i = 0 To Game.startMovieAmount-1
-				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie(playerids))
+				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie())
 			Next
 			'give series to each player
 			For i = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
-				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie(playerids))
+				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie())
 			Next
 			'give 1 call in
 			Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))

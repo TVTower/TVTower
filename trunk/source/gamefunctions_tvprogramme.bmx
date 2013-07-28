@@ -992,6 +992,8 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field director:String		= ""
 	Field country:String		= "UNK"
 	Field year:Int				= 1900
+	Field releaseDay:Int		= 1					'at which day was the programme released?
+	Field releaseAnnounced:int	= FALSE				'announced in news etc?
 	Field refreshModifier:float	= 1.0				'changes how much a programme "regenerates" (multiplied with genreModifier)
 	Field wearoffModifier:Float	= 1.0				'changes how much a programme loses during sending it
 	Field livehour:Int			= 0
@@ -1017,6 +1019,18 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 
 	Global wearoffFactor:float = 0.65 	'factor by what a programmes topicality DECREASES by sending it
 	Global refreshFactor:float = 1.5	'factor by what a programmes topicality INCREASES by a day switch
+
+	Global releaseDayCounter:int = 0
+
+	Global ignoreUnreleasedProgrammes:int	= TRUE	'hide movies of 2012 when in 1985?
+	Global _filterReleaseDateStart:int		= 1900
+	Global _filterReleaseDateEnd:int		= 2100
+
+	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=0, releaseEnd:int=0)
+		TProgramme.ignoreUnreleasedProgrammes = ignore
+		TProgramme._filterReleaseDateStart = releaseStart
+		TProgramme._filterReleaseDateEnd = releaseEnd
+	End Function
 
 	'values get multiplied with the refresh factor
 	'so this means: higher values increase the resulting topicality win
@@ -1079,6 +1093,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 			obj._isMovie     = 1
 			ProgMovieList.AddLast(obj)
 		EndIf
+
 		obj.episodeNumber = episode
 		obj.refreshModifier = Max(0.0, refreshModifier)
 		obj.wearoffModifier = Max(0.0, wearoffModifier)
@@ -1096,6 +1111,10 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		obj.livehour    = Max(-1,livehour)
 		obj.topicality  = obj.ComputeTopicality()
 		obj.maxtopicality = obj.topicality
+
+		obj.releaseDay = obj.releaseDayCounter mod TGame.daysPerYear
+		obj.releaseDaycounter:+1
+
 		ProgList.AddLast(obj)
 		Return obj
 	End Function
@@ -1109,6 +1128,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		If relPrice < 0 Then obj.relPrice = Self.relPrice Else obj.relPrice = relPrice
 		If blocks < 0 Then obj.blocks = Self.blocks Else obj.blocks = blocks
 		If year < 0	Then obj.year = Self.year Else obj.year = year
+		obj.releaseDay = self.releaseDay
 		If livehour < 0	Then obj.livehour = Self.livehour Else obj.livehour = livehour
 		If genre < 0 Then obj.genre = Self.genre Else obj.genre = genre
 		If actors = "" Then obj.actors = Self.actors Else obj.actors = actors
@@ -1241,6 +1261,29 @@ endrem
 		'DebugLog "Programme "+title +" sold"
 	End Method
 
+	Method GetActor:string(number:int=1)
+		number = max(1,number)
+		local _array:string[] = self.actors.split(",")
+		if _array.length >= number then return _array[number-1].trim()
+		return _array[0]
+	End Method
+
+	Method GetDirector:string(number:int=1)
+		number = max(1,number)
+		local _array:string[] = self.director.split(",")
+		if _array.length >= number then return _array[number-1].trim()
+		return _array[0]
+	End Method
+
+	Method isReleased:int()
+		if not self.ignoreUnreleasedProgrammes then return TRUE
+
+		'call-in shows are kind of "live"
+		if self.genre = GENRE_CALLINSHOW then return TRUE
+
+		return (self.year <= Game.getYear() and self.releaseDay <= Game.getDay())
+	End Method
+
 	Function CountGenre:Int(Genre:Int, Liste:TList)
 		Local genrecount:Int=0
 		For Local movie:TProgramme= EachIn Liste
@@ -1274,55 +1317,72 @@ endrem
 		Return Null
 	End Function
 
-	Function GetRandomProgrammeFromList:TProgramme(_list:TList, playerID:Int =-1)
+	Function GetRandomProgrammeFromList:TProgramme(_list:TList)
 		If _list = Null Then Return Null
 		If _list.count() > 0
 			Local movie:TProgramme = TProgramme(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			If movie <> Null
-				movie.owner = playerID
-				Return  movie
-			EndIf
+			If movie <> Null then return movie
 		EndIf
 		Print "ProgrammeList empty - wrong filter ?"
 		Return Null
 	End Function
 
-	Function GetRandomMovie:TProgramme(playerID:Int = -1)
+	Function GetRandomMovie:TProgramme()
 		'filter to entries we need
 		Local movie:TProgramme
 		Local resultList:TList = CreateList()
 		For movie = EachIn ProgMovieList
-			If movie.owner = 0 And movie.isMovie() Then resultList.addLast(movie)
+			'ignore if filtered out
+			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
+			If movie.owner <> 0 or not movie.isReleased() Then continue
+
+			'if available (unbought, released..), add it to candidates list
+			if movie.isMovie() then resultList.addLast(movie)
 		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList, playerID)
+		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
 
-	Function GetRandomMovieWithMinPrice:TProgramme(MinPrice:Int, playerID:Int = -1)
+	Function GetRandomMovieWithMinPrice:TProgramme(MinPrice:Int)
 		'filter to entries we need
 		Local movie:TProgramme
 		Local resultList:TList = CreateList()
 		For movie = EachIn ProgMovieList
-			If movie.getPrice() >= MinPrice And  movie.owner = 0 And movie.isMovie() Then resultList.addLast(movie)
+			'ignore if filtered out
+			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
+			If movie.owner <> 0 or not movie.isReleased() Then continue
+
+			'if available (unbought, released..), add it to candidates list
+			If movie.getPrice() >= MinPrice and movie.isMovie() Then resultList.addLast(movie)
 		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList, playerID)
+		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
 
-	Function GetRandomProgrammeByGenre:TProgramme(genre:Int = 0, playerID:Int = -1)
+	Function GetRandomProgrammeByGenre:TProgramme(genre:Int = 0)
 		Local movie:TProgramme
 		Local resultList:TList = CreateList()
 		For movie = EachIn ProgList
-			If movie.genre = genre And movie.episodeNumber <= 0 And movie.owner = 0 Then resultList.addLast(movie)
+			'ignore if filtered out
+			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
+			If movie.owner <> 0 or not movie.isReleased() Then continue
+
+			'if available (unbought, released..), add it to candidates list
+			If movie.genre = genre And movie.episodeNumber <= 0 Then resultList.addLast(movie)
 		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList, playerID)
+		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
 
-	Function GetRandomSerie:TProgramme(playerID:Int = -1)
+	Function GetRandomSerie:TProgramme()
 		Local movie:TProgramme
 		Local resultList:TList = CreateList()
 		For movie = EachIn ProgSeriesList
-			If movie.owner = 0 And movie.episodeNumber <= 0 And Not movie.isMovie() Then resultList.addLast(movie)
+			'ignore if filtered out
+			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
+			If movie.owner <> 0 or not movie.isReleased() Then continue
+
+			'if available (unbought, released..), add it to candidates list
+			If movie.episodeNumber <= 0 And Not movie.isMovie() Then resultList.addLast(movie)
 		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList, playerID)
+		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
 
 	Method GetAttractiveness:Float() {_exposeToLua}
@@ -1589,123 +1649,62 @@ endrem
  End Type
 
 Type TNews Extends TProgrammeElement {_exposeToLua="selected"}
-  Field Genre:Int
-  Field quality:Int
-  Field price:Int
-  Field episodecount:Int = 0
-  Field episode:Int = 0
-  Field episodeList:TList 	{saveload="special"}
-  Field happenedtime:Double = -1
-  Field parent:TNews = Null
-  Field used : Int = 0  										'event happened, so this news is not repeated until every else news is used
-  Global LastUniqueID:Int = 0 {saveload="special"}
-  Global List:TList = CreateList()								'holding only first chain of news (start)
-  Global NewsList:TList = CreateList()  {saveload="special"}	'holding all news
+	Field genre:Int				= 0
+	Field quality:Int			= 0
+	Field price:Int				= 0
+	Field episode:Int			= 0
+	Field episodes:TList		= CreateList()
+	Field happenedTime:Double	= -1
+	Field happenDelayData:int[]	= [5,0,0,0]			'different params for delay generation
+	Field happenDelayType:int	= 2					'what kind of delay do we have? 2 = hours
+	Field parent:TNews			= Null				'is this news a child of a chain?
 
+	Global usedList:TList		= CreateList()		'holding already announced news
+	Global List:TList			= CreateList()		'holding single news and first/parent of news-chains (start)
 
 	Function Load:TNews(pnode:txmlNode, isEpisode:Int = 0, origowner:Int = 0)
 Print "implement load:TNews"
 Return Null
-Rem
-		Local News:TNews = New TNews
-		Local ParentNewsID:Int = -1
-		News.episodeList = CreateList() ' TObjectList.Create(100)
-
-		Local NODE:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-			Local typ:TTypeId = TTypeId.ForObject(News)
-			For Local t:TField = EachIn typ.EnumFields()
-				If (t.MetaData("saveload") <> "nosave" And t.MetaData("saveload") <> "special") And Upper(t.name()) = NODE.name
-					t.Set(News, nodevalue)
-				EndIf
-			Next
-			Select NODE.name
-				Case "LASTUNIQUEID"	TNews.LastUniqueID = Int(node.Attribute("var").Value)
-				Case "PARENTNEWSID"	ParentNewsID = Int(node.Attribute("var").Value)
-				Case "EPISODE"		News.EpisodeList.AddLast(TNews.Load(NODE, 1))
-			End Select
-			NODE = NODE.nextSibling()
-		Wend
-	  	If ParentNewsID >= 0 Then news.parent = TNews.GetNews(parentNewsID)
-   	    TNews.NewsList.AddLast(news)
-		If Not IsEpisode Then TNews.List.AddLast(news)
-		Return news
-endrem
 	End Function
 
 	Function LoadAll()
 Print "implement TNews.LoadAll()"
 Return
-Rem
-		PrintDebug("TNews.LoadAll()", "Lade News", DEBUG_SAVELOAD)
-		TNews.List.Clear()
-	    TNews.NewsList.Clear()
-		Local Children:TList = LoadSaveFile.NODE.ChildList
-		For Local node:xmlNode = EachIn Children
-			If NODE.name = "ALLNEWS"
-			      TNews.Load(NODE)
-			End If
-		Next
-endrem
 	End Function
 
 	Function SaveAll()
-		Local i:Int = 0
-		LoadSaveFile.xmlBeginNode("ALLNEWS")
-			LoadSaveFile.xmlWrite("LASTUNIQUEID",	TNews.LastUniqueID)
-			For i = 0 To TNews.List.Count()-1
-				Local news:TNews = TNews(TNews.List.ValueAtIndex(i))
-				If news <> Null Then news.Save()
-			Next
-		LoadSaveFile.xmlCloseNode()
+Print "implement TNews.SaveAll()"
+Return
 	End Function
 
 	Method Save(isEpisode:Int=0)
-	    If Not isepisode Then LoadSaveFile.xmlBeginNode("NEWS")
-			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") <> "special" Or t.MetaData("saveload") = "normal"
-					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-				EndIf
-			Next
-			If Not isepisode
-				For Local j:Int = 0 To Self.episodeList.Count()-1
-					LoadSaveFile.xmlBeginNode("EPISODE")
-						TNews(Self.episodeList.ValueAtIndex(j)).Save(True)
-					LoadSaveFile.xmlCloseNode()
-				Next
-			EndIf
-		If Not isepisode Then LoadSaveFile.xmlCloseNode()
+Print "implement save:TNews"
 	End Method
 
-
-	Function CountGenre:Int(Genre:Int, Liste:TList)
-		Local genrecount:Int=0
-		For Local news:TNews= EachIn Liste
-			If news.Genre = Genre genrecount:+1
+	Function SetOldNewsUnused(daysAgo:int=1)
+		For local news:TNews = eachin TNews.usedList
+			if abs(Game.GetDay(news.happenedTime) - Game.GetDay()) >= daysAgo
+				TNews.usedList.Remove(news)
+				TNews.list.addLast(news)
+				news.happenedTime = -1
+			endif
 		Next
-		Return genrecount
 	End Function
 
 	Function GetRandomNews:TNews()
-		Local news:TNews = Null
-		Local allsent:Int = 0
-		Repeat news = TNews(List.ValueAtIndex((randRange(0, List.Count() - 1))))
-			allsent:+1
-		Until news.used = 0 Or allsent > 250
-		If allsent > 250
-			For Local i:Int = 0 To List.Count()-1
-				news = TNews(List.ValueAtIndex(i))
-				If news <> Null Then news.used = 0
-			Next
-			Print "NEWS: allsent > 250... reset"
-			news = TNews(List.ValueAtIndex((randRange(0, List.Count() - 1))))
-		EndIf
-		news.happenedtime = game.timeGone
-		news.used = 1
-		Print "get random news: "+news.title
+		'if no news is available, make older ones available again
+		if List.Count() = 0 then TNews.SetOldNewsUnused(7)
+		'if there is still nothing - also accept younger ones
+		if List.Count() = 0 then TNews.SetOldNewsUnused(2)
+
+		if List.Count() = 0 then print "NO ELEMENTS IN NEWS LIST!!"
+
+		'fetch a random news
+		Local news:TNews = TNews(List.ValueAtIndex((randRange(0, List.Count() - 1))))
+
+		news.doHappen()
+
+		Print "get random news: "+news.title + " ("+news.episode+"/"+news.getEpisodesCount()+")"
 		Return news
 	End Function
 
@@ -1718,8 +1717,43 @@ endrem
 		Return Genre+ " unbekannt"
 	End Function
 
+	Method getHappenDelay:int()
+		'data is days from now
+		if self.happenDelayType = 1 then return self.happenDelayData[0]*60*24
+		'data is hours from now
+		if self.happenDelayType = 2 then return self.happenDelayData[0]*60
+		'data is days from now at X:00
+		if self.happenDelayType = 3
+			local time:int = Game.MakeTime(Game.GetYear(), Game.GetDayOfYear() + self.happenDelayData[0], self.happenDelayData[1],0)
+			return time - Game.getTimeGone()
+		endif
+
+		return 0
+	End Method
+
+
+	Method doHappen(time:int = 0)
+		'nothing set - use "now"
+		if time = 0 then time = Game.timegone
+
+		self.happenedtime = time
+		if not self.parent
+			self.usedList.addLast(self)
+			self.list.remove(self)
+		endif
+	End Method
+
+	Method getEpisodesCount:int()
+		if self.parent then return self.parent.episodes.Count()
+		return self.episodes.Count()
+	End Method
+
+	Method isLastEpisode:int()
+		return self.parent<>null and self.episode = self.parent.episodes.count()
+	End Method
+
 	Method ComputeTopicality:Float()
-		Return Max(0, Int(255-10*(Game.timeGone - self.happenedtime))) 'simplest form ;D
+		Return Max(0, Int(255-10*(Game.timeGone - self.happenedTime))) 'simplest form ;D
 	End Method
 
 	Method GetAttractiveness:Float() {_exposeToLua}
@@ -1738,19 +1772,17 @@ endrem
 		Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
 	End Method
 
-	Function Create:TNews(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0, id:Int=0)
+	Function Create:TNews(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0)
 		Local obj:TNews =New TNews
 		obj.BaseInit(title, description, TYPE_NEWS)
 		obj.title       = title
 		obj.description = description
-		obj.Genre       = Genre
+		obj.genre       = Genre
 		obj.episode     = 0
 		obj.quality     = quality
-		obj.price       = RandRange(80,100)
+		obj.price       = price
 
-		obj.episodeList = CreateList()
 		List.AddLast(obj)
-		NewsList.AddLast(obj)
 		Return obj
 	End Function
 
@@ -1761,58 +1793,50 @@ endrem
 		obj.quality     = quality
 		obj.price       = price
 
-		Self.episodecount :+ 1
 	    obj.episode     = episode
 		obj.parent		= Self
 
-		Self.episodeList.AddLast(obj)
-		SortList(Self.episodeList)
-		NewsList.AddLast(obj)
+		obj.happenDelayType		= 2 'data is hours
+		obj.happenDelayData[0]	= 5 '5hrs default
+		'add to parent
+		Self.episodes.AddLast(obj)
+		SortList(Self.episodes)
+
+		'list.AddLast(obj)
 		Return obj
 	End Method
 
-	'returns Parent (first) of a random NewsChain	(genre -1 is random)
-	'Important: only unused (happenedtime = -1 or older than X days)
-	Function GetRandomChainParent:TNews(Genre:Int=-1)
-		Local allsent:Int =0
+	'returns the next news out of a chain
+	Method GetNextNewsFromChain:TNews()
 		Local news:TNews=Null
-		Repeat news = TNews(List.ValueAtIndex(randRange(0, List.Count() - 1)))
-			allsent:+1
-		Until news.used = 0 Or allsent > 250
-		If allsent > 250 Then news = TNews(List.ValueAtIndex(randRange(0, List.Count() - 1)))
-
-		news.happenedtime	= game.timeGone
-		news.used			= 1
-		Return news
-	EndFunction
-
-  'returns the next news out of a chain, params are the currentnews
-  'Important: only unused (happenedtime = -1 or older than X days)
-  Function GetNextInNewsChain:TNews(currentNews:TNews, isParent:Int=0)
-    Local news:TNews=Null
-    If currentNews <> Null
-      If Not isParent Then news = TNews(currentNews.parent.episodeList.ValueAtIndex(currentnews.episode -1))
-      If     isParent Then news = TNews(currentNews.episodeList.ValueAtIndex(0))
-      news.happenedtime	= game.timeGone
-      news.used			= 1
-      Return news
-    EndIf
-  EndFunction
-
- Function GetNews:TNews(number:Int)
-   Local news:TNews = Null
-   For Local i:Int = 0 To TNews.List.Count()-1
-     news = TNews(TNews.List.ValueAtIndex(i))
-'     news = TNews(TNews.List.Items[ i ])
-	 If news <> Null
-  	   If news.id = number
-			news.happenedtime = game.timeGone
+		'if element is an episode of a chain
+		If self.parent
+			news = TNews(self.parent.episodes.ValueAtIndex(Max(0,self.episode -1)))
+		'if it is the parent of a chain
+		elseif self.episodes.count() > 0
+			news = TNews(self.episodes.ValueAtIndex(0))
+		endif
+		if news
+			news.doHappen()
 			Return news
-	   EndIf
-	 EndIf
-   Next
-   Return Null
- End Function
+		endif
+		'if something strange happens - better return self than nothing
+		return self
+	End Method
+
+
+	Function GetNews:TNews(number:Int)
+		Local news:TNews = Null
+		For Local i:Int = 0 To TNews.List.Count()-1
+			news = TNews(TNews.List.ValueAtIndex(i))
+			'news = TNews(TNews.List.Items[ i ])
+			If news and news.id = number
+				news.doHappen()
+				Return news
+			endif
+		Next
+		Return Null
+	End Function
 End Type
 
 Type TDatabase
@@ -2020,7 +2044,7 @@ Type TDatabase
 				genre		= xml.FindValueInt(nodeChild,"genre", 0)
 				quality		= xml.FindValueInt(nodeChild,"topicality", 0)
 				price		= xml.FindValueInt(nodeChild,"price", 0)
-				Local parentNews:TNews = TNews.Create(title, description, Genre, quality, price, Database.totalnewscount)
+				Local parentNews:TNews = TNews.Create(title, description, Genre, quality, price)
 
 				'load episodes
 				Local EpisodeNum:Int = 0
@@ -2034,7 +2058,7 @@ Type TDatabase
 							genre			= xml.FindValueInt(nodeEpisode,"genre", genre)
 							quality			= xml.FindValueInt(nodeEpisode,"topicality", quality)
 							price			= xml.FindValueInt(nodeEpisode,"price", price)
-							parentNews.AddEpisode(title,description, Genre, EpisodeNum,quality, price, Database.totalnewscount)
+							parentNews.AddEpisode(title,description, Genre, EpisodeNum,quality, price)
 							Database.totalnewscount :+1
 						EndIf
 					Next
@@ -3473,9 +3497,9 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 				obj.owner		= 0
 				obj.dragable	= 1
 				If obj.Programme.isMovie()
-					obj.Programme = TProgramme.GetRandomMovie(-1)
+					obj.Programme = TProgramme.GetRandomMovie()
 				Else
-					obj.Programme = TProgramme.GetRandomSerie(-1)
+					obj.Programme = TProgramme.GetRandomSerie()
 				EndIf
 			EndIf
 		Next
