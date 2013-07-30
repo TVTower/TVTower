@@ -22,6 +22,9 @@ Next
 Type TMouseManager
 	Field LastMouseX:Int		= 0
 	Field LastMouseY:Int		= 0
+	Field x:float				= 0.0
+	Field y:float				= 0.0
+
 	Field hasMoved:int			= 0
 	Field errorboxes:Int		= 0
 	Field _iKeyStatus:Int[]		= [0,0,0,0]
@@ -70,11 +73,13 @@ Type TMouseManager
 	Method changeStatus(_errorboxes:Int=0)
 		errorboxes = _errorboxes
 		hasMoved = False
-		If LastMouseX <> MouseX() Or LastMouseY <> MouseY()
+		If LastMouseX <> int(MouseX()) Or LastMouseY <> int(MouseY())
 			hasMoved = True
 			LastMouseX = MouseX()
 			LastMouseY = MouseY()
 		endif
+		self.x = MouseX()
+		self.y = MouseY()
 
 		For Local i:Int = 1 To 3
 			If _iKeyStatus[ i ] = KEY_STATE_NORMAL

@@ -142,7 +142,8 @@ Type TApp
 				?
 				Case -1 SetGraphicsDriver GLMax2DDriver()
 				?Linux
-				Default SetGraphicsDriver BufferedGLMax2DDriver()
+				Default SetGraphicsDriver GLMax2DDriver()
+'				Default SetGraphicsDriver BufferedGLMax2DDriver()
 				?
 				?Not Linux
 				Default SetGraphicsDriver GLMax2DDriver()
@@ -221,7 +222,7 @@ Type TApp
 			SetColor 255, 255, 255
 
 			'base cursor
-			Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
+			Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y	,0)
 
 			Flip 0
 		EndIf
@@ -2567,10 +2568,10 @@ Function Menu_GameSettings()
 		For Local obj:TColor = EachIn TColor.List
 			'only for unused colors
 			If obj.ownerID = 0
-				If functions.IsIn(MouseX(), MouseY(), 26 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[1].Figure.ControlledByID = Game.playerID Or (Game.Players[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[1].RecolorFigure(obj)
-				If functions.IsIn(MouseX(), MouseY(), 216 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[2].Figure.ControlledByID = Game.playerID Or (Game.Players[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[2].RecolorFigure(obj)
-				If functions.IsIn(MouseX(), MouseY(), 406 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[3].Figure.ControlledByID = Game.playerID Or (Game.Players[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[3].RecolorFigure(obj)
-				If functions.IsIn(MouseX(), MouseY(), 596 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[4].Figure.ControlledByID = Game.playerID Or (Game.Players[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[4].RecolorFigure(obj)
+				If functions.IsIn(MouseManager.x, MouseManager.y, 26 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[1].Figure.ControlledByID = Game.playerID Or (Game.Players[1].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[1].RecolorFigure(obj)
+				If functions.IsIn(MouseManager.x, MouseManager.y, 216 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[2].Figure.ControlledByID = Game.playerID Or (Game.Players[2].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[2].RecolorFigure(obj)
+				If functions.IsIn(MouseManager.x, MouseManager.y, 406 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[3].Figure.ControlledByID = Game.playerID Or (Game.Players[3].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[3].RecolorFigure(obj)
+				If functions.IsIn(MouseManager.x, MouseManager.y, 596 + 40 + i * 10, 92 + 68, 7, 9) And (Game.Players[4].Figure.ControlledByID = Game.playerID Or (Game.Players[4].Figure.ControlledByID = 0 And Game.playerID = 1)) Then modifiedPlayers=True;Game.Players[4].RecolorFigure(obj)
 				i:+1
 			EndIf
 		Next
@@ -2974,11 +2975,10 @@ Function DrawMenu(tweenValue:Float=1.0)
 			Menu_StartMultiplayer_Draw()
 	EndSelect
 
-	If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
-	If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()-4	,1)
-	If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-10,	MouseY()-12	,2)
+	If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y		,0)
+	If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y-4	,1)
+	If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-10,	MouseManager.y-12	,2)
 End Function
-
 
 
 Function Init_Creation()
@@ -3131,8 +3131,8 @@ Function UpdateMain(deltaTime:Float = 1.0)
 
 	If Game.Players[Game.playerID].Figure.inRoom = Null
 		If MOUSEMANAGER.IsDown(1)
-			If functions.IsIn(MouseX(), MouseY(), 20, 10, 760, 373)
-				Game.Players[Game.playerID].Figure.ChangeTarget(MouseX(), MouseY())
+			If functions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
+				Game.Players[Game.playerID].Figure.ChangeTarget(MouseManager.x, MouseManager.y)
 			EndIf
 			MOUSEMANAGER.resetKey(1)
 		EndIf

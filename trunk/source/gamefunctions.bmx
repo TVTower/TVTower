@@ -761,17 +761,17 @@ Type TgfxProgrammelist extends TPlannerList
 		Local locy:Int = Pos.y + 5 + gfxmovies.h - 4 -12 '-4 as displacement for displaced the background
 		local font:TBitmapFont = Assets.GetFont("Default", 8)
 
-		For Local i:Int = 0 To series.episodelist.Count()-1
-			Local episode:TProgramme = TProgramme(series.episodeList.ValueAtIndex(i))   'all programmes of one player
-			If episode <> Null
+		For Local i:Int = 0 To series.episodes.Count()-1
+			Local programme:TProgramme = TProgramme(series.episodes.ValueAtIndex(i))   'all programmes of one player
+			If programme <> Null
 				locy :+ 12
 				SetAlpha 1.0
 				gfxtapeepisodes.Draw(locx, locy)
-				font.drawBlock("(" + episode.episodeNumber + "/" + series.episodeList.count() + ") " + episode.title, locx + 10, locy + 1, 85, 12, 0, 0, 0, 0, True)
-				If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
+				font.drawBlock("(" + programme.episode + "/" + series.episodes.count() + ") " + programme.title, locx + 10, locy + 1, 85, 12, 0, 0, 0, 0, True)
+				If functions.IsIn(MouseManager.x,MouseManager.y, locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
 					Game.cursorstate = 1
 					SetAlpha 0.2;DrawRect(locx, locy, gfxtapeepisodes.w, gfxtapeepisodes.h) ;SetAlpha 1.0
-					If Not MOUSEMANAGER.IsHit(1) then episode.ShowSheet(30,20, -1, series)
+					If Not MOUSEMANAGER.IsHit(1) then programme.ShowSheet(30,20, -1, series)
 				EndIf
 			EndIf
 		Next
@@ -782,12 +782,12 @@ Type TgfxProgrammelist extends TPlannerList
 		Local tapecount:Int = 0
 		Local locx:Int = Pos.x - gfxepisodes.w + 8
 		Local locy:Int = Pos.y + 5 + gfxmovies.h - 4 -12 '-4 as displacement for displaced the background
-		For local episode:TProgramme = eachin  series.episodelist
-			If episode <> Null
+		For local programme:TProgramme = eachin series.episodes
+			If programme <> Null
 				locy :+ 12
 				tapecount :+ 1
-				If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
-					TProgrammeBlock.CreateDragged(episode)
+				If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseManager.x,MouseManager.y, locx,locy, gfxtapeepisodes.w, gfxtapeepisodes.h)
+					TProgrammeBlock.CreateDragged(programme)
 					SetOpen(0)
 					MOUSEMANAGER.resetKey(1)
 				EndIf
@@ -801,9 +801,9 @@ Type TgfxProgrammelist extends TPlannerList
 				SetOpen(0)
 				MOUSEMANAGER.resetKey(2)
 			EndIf
-			If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseX(),MouseY(), Pos.x,Pos.y, Assets.GetSprite("genres_entry0").w, Assets.GetSprite("genres_entry0").h*self.MaxGenres)
+			If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseManager.x,MouseManager.y, Pos.x,Pos.y, Assets.GetSprite("genres_entry0").w, Assets.GetSprite("genres_entry0").h*self.MaxGenres)
 				SetOpen(2)
-				currentgenre = Floor((MouseY() - Pos.y - 1) / Assets.GetSprite("genres_entry0").h)
+				currentgenre = Floor((MouseManager.y - Pos.y - 1) / Assets.GetSprite("genres_entry0").h)
 			EndIf
 
 			If self.openState >=2
@@ -853,7 +853,7 @@ Type TgfxContractlist extends TPlannerList
 			gfxtape.Draw(locx, locy)
 
 			font.drawBlock(contract.contractBase.title, locx + 13,locy + 3, 139,16,0,0,0,0,True)
-			If functions.IsIn(MouseX(),MouseY(), locx,locy, gfxtape.w, gfxtape.h)
+			If functions.IsIn(MouseManager.x,MouseManager.y, locx,locy, gfxtape.w, gfxtape.h)
 				Game.cursorstate = 1
 				SetAlpha 0.2;DrawRect(locx, locy, gfxtape.w, gfxtape.h) ;SetAlpha 1.0
 				If MOUSEMANAGER.IsHit(1)
@@ -1031,7 +1031,7 @@ Type TTooltip extends TRenderableChild
   Global List:TList = CreateList()
   Global startFadeTime:float = 0.2 '200ms after no-hover - fade away
 
-	Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 250)
+	Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 300)
 		Local tooltip:TTooltip = New TTooltip
 		tooltip.title			= title
 		tooltip.oldtitle		= title
@@ -1041,6 +1041,7 @@ Type TTooltip extends TRenderableChild
 		tooltip.width			= width
 		tooltip.height			= height
 		tooltip.startlifetime	= float(lifetime) / 1000.0
+		tooltip.startFadeTime	= 0.2 '0.5 * tooltip.startlifetime
 		tooltip.Hover()
 		If not List Then List	= CreateList()
 		List.AddLast(tooltip)
@@ -1621,7 +1622,7 @@ Type TInterface
 			NoiseAlpha = 0.45 - (Rand(0,10)*0.01)
 		EndIf
 
-		If functions.IsIn(MouseX(),MouseY(),20,385,280,200)
+		If functions.IsIn(MouseManager.x,MouseManager.y,20,385,280,200)
 			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
 			If ShowChannel <> 0
 				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
@@ -1631,13 +1632,13 @@ Type TInterface
 			CurrentProgrammeToolTip.enabled 	= 1
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
-		If functions.IsIn(MouseX(),MouseY(),355,468,130,30)
+		If functions.IsIn(MouseManager.x,MouseManager.y,355,468,130,30)
 			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
 			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 		EndIf
-		If functions.IsIn(MouseX(),MouseY(),355,533,130,45)
+		If functions.IsIn(MouseManager.x,MouseManager.y,355,533,130,45)
 			CurrentTimeToolTip.title 	= getLocale("GAME_TIME")+": "
 			CurrentTimeToolTip.text  	= Game.GetFormattedTime()+" "+getLocale("DAY")+" "+Game.GetDayOfYear()+"/"+Game.daysPerYear+" "+Game.GetYear()
 			CurrentTimeToolTip.enabled 	= 1
@@ -1645,7 +1646,7 @@ Type TInterface
 			'force redraw
 			CurrentTimeToolTip.dirtyImage = true
 		EndIf
-		If functions.IsIn(MouseX(),MouseY(),355,415,130,30)
+		If functions.IsIn(MouseManager.x,MouseManager.y,355,415,130,30)
 			MoneyToolTip.title 	= getLocale("MONEY")
 			MoneyTooltip.text	= getLocale("MONEY")+": "+Game.Players[Game.playerID].GetMoney() + getLocale("CURRENCY")
 			Moneytooltip.text	= MoneyTooltip.text + Chr(13)
@@ -1655,7 +1656,7 @@ Type TInterface
 			'force redraw
 			MoneyToolTip.dirtyImage = true
 		EndIf
-		If functions.IsIn(MouseX(),MouseY(),355,510,130,15)
+		If functions.IsIn(MouseManager.x,MouseManager.y,355,510,130,15)
 			BettyToolTip.title	 	= getLocale("BETTY_FEELINGS")
 			BettyToolTip.text 	 	= "0 %"
 			BettyToolTip.enabled 	= 1
@@ -1749,9 +1750,9 @@ Type TInterface
 	    GUIManager.Draw("InGame")
 
 		If Game.error >=1 Then TError.DrawErrors()
-		If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()	,0)
-		If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-7, 	MouseY()-4	,1)
-		If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseX()-10,	MouseY()-12	,2)
+		If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y		,0)
+		If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y-4	,1)
+		If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-10,	MouseManager.y-12	,2)
 	End Method
 
 End Type
@@ -2081,7 +2082,7 @@ endrem
 		If action = 1
 			Local pos:TPoint = TPoint.Create(0,0)
 			If MOUSEMANAGER.hasMoved
-				pos.setXY( MouseX() -20, MouseY() -10)
+				pos.setXY( MouseManager.x -20, MouseManager.y -10)
 
 				lastStation.reach = Self.CalculateStationRange(pos.X, pos.Y)
 				If lastStation.reach > 0
@@ -2110,7 +2111,7 @@ endrem
 				Bundesland = ""
 				For local section:TStationMapSection = eachin TStationMapSection.sections
 					if TFunctions.MouseIn(section.pos.x, section.pos.y, section.sprite.w, section.sprite.h)
-						if section.sprite.PixelIsOpaque(MouseX()-section.pos.x, MouseY()-section.pos.y) > 0
+						if section.sprite.PixelIsOpaque(MouseManager.x-section.pos.x, MouseManager.y-section.pos.y) > 0
 							'print "	found "+section.name
 							Bundesland = Localization.GetString("MAP_COUNTRY_"+section.name)
 							exit
@@ -2144,9 +2145,9 @@ endrem
 		DrawStations()
 		If action = 1 And Not Self.outsideLand 'placing a new station
 			SetAlpha 0.5
-			DrawOval( MouseX()- radius,MouseY()-radius,2*radius,2*radius )
+			DrawOval( MouseManager.x- radius,MouseManager.y-radius,2*radius,2*radius )
 			SetAlpha 0.9
-			baseStationSprite.draw(MouseX(), MouseY() +radius -baseStationSprite.h-2, -1,0,0.5)
+			baseStationSprite.draw(MouseManager.x, MouseManager.y +radius -baseStationSprite.h-2, -1,0,0.5)
 			SetAlpha 1.0
 		EndIf
 		local font:TBitmapFont = Assets.fonts.baseFont
@@ -2176,7 +2177,7 @@ endrem
 		if game.DebugMode
 			For local section:TStationMapSection = eachin TStationMapSection.sections
 				if TFunctions.MouseIn(section.pos.x, section.pos.y, section.sprite.w, section.sprite.h)
-					if section.sprite.PixelIsOpaque(MouseX()-section.pos.x, MouseY()-section.pos.y) > 0
+					if section.sprite.PixelIsOpaque(MouseManager.x-section.pos.x, MouseManager.y-section.pos.y) > 0
 						section.sprite.Draw(section.pos.x, section.pos.y)
 						exit
 					endif
@@ -2276,7 +2277,7 @@ endrem
         Local x:Int = 0, y:Int = 0, posX:Int = 0, posY:Int = 0
 
 		'add "new" station which may be bought
-		If _x = 0 And _y = 0 Then _x = MouseX() - 20; _y = MouseY() - 10
+		If _x = 0 And _y = 0 Then _x = MouseManager.x - 20; _y = MouseManager.y - 10
 		self._FillPoints(Points, _x,_y, ARGB_Color(255, 0, 255, 255))
 
 		'overwrite with stations owner already has - red pixels get overwritten with white,

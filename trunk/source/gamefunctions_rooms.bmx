@@ -73,7 +73,7 @@ Type TRooms  {_exposeToLua="selected"}
 			EndIf
 
 			'only show tooltip if not "empty" and mouse in door-rect
-			If obj.desc <> "" and Game.Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseX(), MouseY(), obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
+			If obj.desc <> "" and Game.Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseManager.x, MouseManager.y, obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
 				If obj.tooltip <> null
 					obj.tooltip.Hover()
 				else
@@ -462,7 +462,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		Game.Players[game.playerID].figure.fromroom = Null
 		If MouseManager.IsHit(1)
-			If functions.IsIn(MouseX(),MouseY(),25,40,150,295)
+			If functions.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
 				Game.Players[Game.playerID].Figure.LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
@@ -470,7 +470,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		Game.cursorstate = 0
 		'safe - reachable for all
-		If functions.IsIn(MouseX(), MouseY(), 165,85,70,100)
+		If functions.IsIn(MouseManager.x, MouseManager.y, 165,85,70,100)
 			If SafeToolTip = Null Then SafeToolTip = TTooltip.Create("Safe", "Laden und Speichern", 140, 100, 0, 0)
 			SafeToolTip.enabled = 1
 			SafeToolTip.Hover()
@@ -484,7 +484,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 
 		'planner - reachable for all
-		If functions.IsIn(MouseX(), MouseY(), 600,140,128,210)
+		If functions.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
 			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
@@ -498,7 +498,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'station map - only reachable for owner
 		If room.owner = Game.playerID
-			If functions.IsIn(MouseX(), MouseY(), 732,45,160,170)
+			If functions.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
 				If not StationsToolTip Then StationsToolTip = TTooltip.Create("Senderkarte", "Kauf und Verkauf", 650, 80, 0, 0)
 				StationsToolTip.enabled = 1
 				StationsToolTip.Hover()
@@ -652,20 +652,20 @@ Type RoomHandler_Office extends TRoomHandler
 			If PPprogrammeList.GetOpen() = 0 And PPcontractList.GetOpen() = 0
 				For Local ProgrammeBlock:TProgrammeBlock = EachIn Game.Players[room.owner].ProgrammePlan.ProgrammeBlocks
 					If ProgrammeBlock.sendHour >= Game.daytoplan*24 AND ProgrammeBlock.sendHour <= Game.daytoplan*24+24 And..
-					   functions.IsIn(MouseX(),MouseY(), ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.rect.GetW(), ProgrammeBlock.rect.GetH()*ProgrammeBlock.programme.blocks)
+					   functions.IsIn(MouseManager.x,MouseManager.y, ProgrammeBlock.StartPos.x, ProgrammeBlock.StartPos.y, ProgrammeBlock.rect.GetW(), ProgrammeBlock.rect.GetH()*ProgrammeBlock.programme.blocks)
 						If Programmeblock.sendHour > game.getDay()*24 + game.GetHour()
 							Game.cursorstate = 1
 						EndIf
 						local showOnRightSide:int = 0
-						if MouseX() < 390 then showOnrightSide = 1
+						if MouseManager.x < 390 then showOnrightSide = 1
 						ProgrammeBlock.Programme.ShowSheet(30+328*showOnRightside,20,-1, ProgrammeBlock.programme.parent)
 						Exit
 					EndIf
 				Next
 				For Local AdBlock:TAdBlock = EachIn Game.Players[ room.owner ].ProgrammePlan.AdBlocks
-					If AdBlock.senddate = Game.daytoplan And functions.IsIn(MouseX(),MouseY(), AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.rect.GetW(), AdBlock.rect.GetH())
+					If AdBlock.senddate = Game.daytoplan And functions.IsIn(MouseManager.x,MouseManager.y, AdBlock.StartPos.x, AdBlock.StartPos.y, AdBlock.rect.GetW(), AdBlock.rect.GetH())
 						Game.cursorstate = 1
-						If MouseX() <= 400 then AdBlock.ShowSheet(358,20);Exit else AdBlock.ShowSheet(30,20);Exit
+						If MouseManager.x <= 400 then AdBlock.ShowSheet(358,20);Exit else AdBlock.ShowSheet(30,20);Exit
 					EndIf
 				Next
 			EndIf 'if no programmeList is open
@@ -682,7 +682,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		Game.cursorstate = 0
 
-		If functions.IsIn(MouseX(), MouseY(), 759,17,14,15)
+		If functions.IsIn(MouseManager.x, MouseManager.y, 759,17,14,15)
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsHit(1)
 				MOUSEMANAGER.resetKey(1)
@@ -690,7 +690,7 @@ Type RoomHandler_Office extends TRoomHandler
 				Game.daytoplan :+ 1
 			endif
 		EndIf
-		If functions.IsIn(MouseX(), MouseY(), 670,17,14,15)
+		If functions.IsIn(MouseManager.x, MouseManager.y, 670,17,14,15)
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsHit(1)
 				MOUSEMANAGER.resetKey(1)
@@ -708,7 +708,9 @@ Type RoomHandler_Office extends TRoomHandler
 		Game.Players[room.owner].ProgrammePlan.UpdateAllProgrammeBlocks(listsOpened)
 
 		If room.owner = Game.playerID
-			If TProgrammeBlock.AdditionallyDragged > 0 OR TADblock.AdditionallyDragged > 0 Then Game.cursorstate=2
+			'change mouse cursor
+			If Game.Players[room.owner].ProgrammePlan.AdditionallyDraggedProgrammeBlocks > 0 then Game.cursorstate=2
+			If TADblock.AdditionallyDragged > 0 Then Game.cursorstate=2
 			PPprogrammeList.Update()
 			PPcontractList.Update()
 		EndIf
@@ -949,8 +951,8 @@ Type RoomHandler_Office extends TRoomHandler
 		If evt<>Null
 			Local obj:TGUIButton = TGUIButton(evt._sender)
 
-			If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseX() < 570
-				local ClickPos:TPoint = TPoint.Create( MouseX() - 20, MouseY() - 10 )
+			If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseManager.x < 570
+				local ClickPos:TPoint = TPoint.Create( MouseManager.x - 20, MouseManager.y - 10 )
 				If StationMap.LastStation.pos.isSame( ClickPos )
 					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
 				Else
@@ -1036,7 +1038,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			'skip problematic ones
 			if not obj.Programme then continue
 
-			If obj.rect.containsXY( MouseX(), MouseY() )
+			If obj.rect.containsXY( MouseManager.x, MouseManager.y )
 				If obj.dragged = 0 then obj.Programme.ShowSheet(30,20)
 				Exit
 			EndIf
@@ -1052,7 +1054,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		Game.Players[Game.playerID].Figure.fromRoom = Null
 
 		If ArchiveProgrammeList.GetOpen() = 0
-			if functions.IsIn(MouseX(), MouseY(), 605,65,120,90) Or functions.IsIn(MouseX(), MouseY(), 525,155,240,225)
+			if functions.IsIn(MouseManager.x, MouseManager.y, 605,65,120,90) Or functions.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
 				Game.cursorstate = 1
 				If MOUSEMANAGER.IsHit(1)
 					MOUSEMANAGER.resetKey(1)
@@ -1068,7 +1070,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			'skip problematic ones
 			if not obj.Programme then exit
 
-			If obj.rect.containsXY( MouseX(), MouseY() )
+			If obj.rect.containsXY( MouseManager.x, MouseManager.y )
 				If obj.dragged = 0 then game.cursorstate = 1 else game.cursorstate = 2
 				Exit
 			EndIf
@@ -1099,7 +1101,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'===================================
 
 	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
-		If functions.IsIn(MouseX(), MouseY(), 210,220,140,60) then Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+		If functions.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60) then Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
 
 		If twinkerTimer.doAction() then Assets.GetSprite("gfx_gimmick_rooms_movieagency").Draw(10,60)
 
@@ -1126,7 +1128,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			If obj.owner > 0 and obj.owner <> Game.playerID then continue
             If not obj.Programme then continue
 
-			If obj.dragged OR obj.rect.containsXY( MouseX(), MouseY() )
+			If obj.dragged OR obj.rect.containsXY( MouseManager.x, MouseManager.y )
 				If obj.dragged Then game.cursorstate = 2 Else Game.cursorstate = 1
 				SetColor 0,0,0
 				SetAlpha 0.2
@@ -1149,7 +1151,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		Game.cursorstate = 0
 
-		If functions.IsIn(MouseX(), MouseY(), 210,220,140,60)
+		If functions.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
 			If not AuctionToolTip Then AuctionToolTip = TTooltip.Create("Auktion", "Film- und Serienauktion", 200, 180, 0, 0)
 			AuctionToolTip.enabled = 1
 			AuctionToolTip.Hover()
@@ -1226,11 +1228,6 @@ Type RoomHandler_News extends TRoomHandler
 			EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsGenreButtons, NewsGenreButtons[i] )
 		Next
 
-		'we want to recognize the current room - so we need to hook into all 4 news rooms
-		for local i:int = 0 to 3
-		'	EventManager.registerListenerFunction( "rooms.onUpdate", onUpdateRoom, TRooms.GetRoomByDetails("news", i) )
-		Next
-
 		'create the lists in the news planner
 		for local i:int = 1 to 4
 			NewsBlockListAvailable[i] = new TGUIListBase.Create(34,20,Assets.getSprite("gfx_news_sheet0").w, 356,"Newsplanner"+i)
@@ -1283,7 +1280,7 @@ Type RoomHandler_News extends TRoomHandler
 		If PlannerToolTip Then PlannerToolTip.Update(App.Timer.getDeltaTime())
 		If NewsGenreTooltip Then NewsGenreTooltip.Update(App.Timer.getDeltaTime())
 
-		If functions.IsIn(MouseX(), MouseY(), 167,60,240,160)
+		If functions.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
 			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
@@ -1311,10 +1308,12 @@ Type RoomHandler_News extends TRoomHandler
 			if button = NewsGenreButtons[i] then level = Game.Players[ room.owner ].GetNewsAbonnement(i);exit
 		Next
 
-		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 180,100, 0, 0)
+		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 180,100 )
 		NewsGenreTooltip.enabled = 1
 		'refresh lifetime
 		NewsGenreTooltip.Hover()
+'		NewsGenreTooltip.lifetime :+ 1 'on slow systems this avoids flickering
+
 		'move the tooltip
 		NewsGenreTooltip.pos.SetXY(Max(21,button.rect.GetX()), button.rect.GetY()-30)
 
@@ -1614,7 +1613,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		TContractBlock.DrawAll(True)
 		For Local LocObject:TContractBlock= EachIn TContractBlock.List
 			If locobject.owner <=0 Or locobject.owner=Game.playerID And..
-			   LocObject.rect.containsXY( MouseX(), MouseY() )
+			   LocObject.rect.containsXY( MouseManager.x, MouseManager.y )
 				If LocObject.contract <> Null
 					If LocObject.contract.owner <> 0
 						Local block:TAdBlock = TAdblock.GetBlockByContract(LocObject.contract)
@@ -1676,7 +1675,7 @@ Type RoomHandler_Elevator extends TRoomHandler
 				playerFigure.clickedToRoom	= Null
 				building.elevator.UsePlan(playerFigure)
 			else if mouseHit
-				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseX(),MouseY())
+				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseManager.x,MouseManager.y)
 				if clickedRoom
 					playerFigure.ChangeTarget(clickedroom.Pos.x, Building.pos.y + Building.GetFloorY(clickedroom.Pos.y))
 					If Building.Elevator.EnterTheElevator(playerFigure) 'das Ziel hier nicht angeben, sonst kommt es zu einer Einsteigeprüfung die den Spieler eventuell wieder rauswirft.
@@ -1878,12 +1877,12 @@ Type TRoomSigns Extends TBlockMoveable
 						'search for underlaying block (we have a block dragged already)
 						If locObj.dragged
 							'obj over old position - drop ?
-							If functions.IsIn(MouseX(),MouseY(),LocObj.StartPosBackup.x,locobj.StartPosBackup.y,locobj.rect.GetW(),locobj.rect.GetH())
+							If functions.IsIn(MouseManager.x,MouseManager.y,LocObj.StartPosBackup.x,locobj.StartPosBackup.y,locobj.rect.GetW(),locobj.rect.GetH())
 								locObj.dragged = False
 							EndIf
 
 							'want to drop in origin-position
-							If locObj.containsCoord(MouseX(), MouseY())
+							If locObj.containsCoord(MouseManager.x, MouseManager.y)
 								locObj.dragged = False
 								MouseManager.resetKey(1)
 								If Self.DebugMode=1 Then Print "roomboard: dropped to original position"
@@ -1891,7 +1890,7 @@ Type TRoomSigns Extends TBlockMoveable
 							Else
 								For Local OtherLocObj:TRoomSigns = EachIn TRoomSigns.List
 									If OtherLocObj <> Null
-										If OtherLocObj.containsCoord(MouseX(), MouseY()) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
+										If OtherLocObj.containsCoord(MouseManager.x, MouseManager.y) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
 '											If game.networkgame Then
 '												Network.SendMovieAgencyChange(Network.NET_SWITCH, Game.playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
 '			  								End If
@@ -1904,7 +1903,7 @@ Type TRoomSigns Extends TBlockMoveable
 								Next
 							EndIf		'end: drop in origin or search for other obj underlaying
 						Else			'end: an obj is dragged
-							If LocObj.containsCoord(MouseX(), MouseY())
+							If LocObj.containsCoord(MouseManager.x, MouseManager.y)
 								locObj.dragged = 1
 								MouseManager.resetKey(1)
 							EndIf
@@ -1917,7 +1916,7 @@ Type TRoomSigns Extends TBlockMoveable
 			If locObj.dragged = 1
 				TRoomSigns.AdditionallyDragged :+1
 				Local displacement:Int = TRoomSigns.AdditionallyDragged *5
-				locObj.setCoords(MouseX() - locObj.rect.GetW()/2 - displacement, 11+ MouseY() - locObj.rect.GetH()/2 - displacement)
+				locObj.setCoords(MouseManager.x - locObj.rect.GetW()/2 - displacement, 11+ MouseManager.y - locObj.rect.GetH()/2 - displacement)
 			Else
 				locObj.SetCoords(locObj.StartPos.x, locObj.StartPos.y)
 			EndIf
@@ -1941,7 +1940,7 @@ Type TRoomSigns Extends TBlockMoveable
 
 		For Local room:TRoomSigns = EachIn TRoomSigns.List
 			If room.rect.GetX() >= 0
-				Local signfloor:Int = (13 - Ceil((MouseY() -41) / 23))
+				Local signfloor:Int = (13 - Ceil((MouseManager.y -41) / 23))
 				Local xpos:Int = 0
 				If room.rect.GetX() = 26 Then xpos = 1
 				If room.rect.GetX() = 208 Then xpos = 2

@@ -255,7 +255,7 @@ Type TGUIManager
 
 				'if nothing of the obj is visible or the mouse is not in
 				'the visible part - reset the mouse states
-				If not screenRect OR not screenRect.containsXY( MouseX(), MouseY() )
+				If not screenRect OR not screenRect.containsXY( MouseManager.x, MouseManager.y )
 					obj.mouseIsDown		= null
 					obj.mouseIsClicked	= null
 					obj.mouseover		= 0
@@ -272,7 +272,7 @@ Type TGUIManager
 				'c) and the mouse is within its rect
 				'-> only react to dragged obj or all if none is dragged
 				If( (not foundDraggedObject OR obj.isDragged()) ..
-				    AND screenRect AND screenRect.containsXY( MouseX(), MouseY() )  )
+				    AND screenRect AND screenRect.containsXY( MouseManager.x, MouseManager.y )  )
 
 					'activate objects - or skip if if one gets active
 					If mouseButtonDown[1] And obj._flags & GUI_OBJECT_ENABLED
@@ -280,7 +280,7 @@ Type TGUIManager
 						if obj.MouseIsDown = null 'if self.getActive() <> obj._id
 							self.setActive(obj._id)
 							obj.EnterPressed = 1
-							obj.MouseIsDown = TPoint.Create( MouseX(), MouseY() )
+							obj.MouseIsDown = TPoint.Create( MouseManager.x, MouseManager.y )
 						endif
 
 						'we found a gui element which can accept clicks
@@ -330,7 +330,7 @@ Type TGUIManager
 						'do not use the cached mousebuttons when checking for "not pressed"
 						If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
 							if not foundClickObject and obj._flags & GUI_OBJECT_ENABLED
-								obj.mouseIsClicked = TPoint.Create( MouseX(), MouseY() )
+								obj.mouseIsClicked = TPoint.Create( MouseManager.x, MouseManager.y )
 
 								'fire onClickEvent
 								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), obj ) )
@@ -557,7 +557,7 @@ Type TGUIobject
 	Method drop:int(coord:TPoint=Null)
 		if not self.isDragged() then return FALSE
 
-		if coord and coord.getX()=-1 then coord = TPoint.Create(MouseX(), MouseY())
+		if coord and coord.getX()=-1 then coord = TPoint.Create(MouseManager.x, MouseManager.y)
 
 		'fire an event - if the event has a veto afterwards, do not drag!
 		local event:TEventSimple = TEventSimple.Create( "guiobject.onDrop", TData.Create().AddObject("coord", coord), self )
@@ -618,7 +618,7 @@ Type TGUIobject
 	'adds parent position
 	Method GetScreenX:float()
 		'maybe use a dragX, dragY-value instead of center point
-		if self._flags & GUI_OBJECT_DRAGGED then return MouseX() - self.GetScreenWidth()/2
+		if self._flags & GUI_OBJECT_DRAGGED then return MouseManager.x - self.GetScreenWidth()/2
 
 		'only integrate parent if parent is set, or object not positioned "absolute"
 		if self._parent <> null AND not(self._flags & GUI_OBJECT_POSITIONABSOLUTE)
@@ -630,7 +630,7 @@ Type TGUIobject
 	End Method
 
 	Method GetScreenY:float()
-		if self._flags & GUI_OBJECT_DRAGGED then return MouseY() - self.getScreenHeight()/2
+		if self._flags & GUI_OBJECT_DRAGGED then return MouseManager.y - self.getScreenHeight()/2
 
 		'only integrate parent if parent is set, or object not positioned "absolute"
 		if self._parent <> null AND not(self._flags & GUI_OBJECT_POSITIONABSOLUTE)
@@ -1118,7 +1118,7 @@ Type TGUISlider Extends TGUIobject
 		Local difference:Int = actvalueX '+ PixelPerValue / 2
 
 		If self.mouseIsDown
-			difference = MouseX() - Self.rect.position.x + PixelPerValue / 2
+			difference = MouseManager.x - Self.rect.position.x + PixelPerValue / 2
 			actvalue = Float(difference) / PixelPerValue
 			If actvalue > maxvalue Then actvalue = maxvalue
 			If actvalue < minvalue Then actvalue = minvalue
@@ -2067,7 +2067,7 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 	Method Update()
-		self._mouseOverArea = TRectangle.create( self.GetScreenX(), self.GetScreenY(), self.rect.GetW(), self.rect.GetH()).containsXY( MouseX(), MouseY() )
+		self._mouseOverArea = TRectangle.create( self.GetScreenX(), self.GetScreenY(), self.rect.GetW(), self.rect.GetH()).containsXY( MouseManager.x, MouseManager.y )
 
 		if self.autoHideScroller
 			if not self._mouseOverArea

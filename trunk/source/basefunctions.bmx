@@ -671,6 +671,15 @@ Function isMonochrome:int(argb:Int)
 End Function
 
 
+Function MergeLists:TList(a:TList,b:TList)
+	local list:TList = a.copy()
+	for local obj:object = eachin b
+		list.addLast(obj)
+	next
+	return list
+End Function
+
+
 Type TStringHelper
    Function FirstPart:String(txt:String,trenn:Byte=32)
       Local i:Short
@@ -939,7 +948,7 @@ End Type
 'collection of useful functions
 Type TFunctions
 	Function MouseIn:int(x:float,y:float,w:float,h:float)
-		return TFunctions.IsIn(MouseX(), MouseY(), x,y,w,h)
+		return TFunctions.IsIn(MouseManager.x, MouseManager.y, x,y,w,h)
 	End Function
 
 	Function DoMeet:int(startA:float, endA:float, startB:float, endB:float)

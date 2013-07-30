@@ -147,7 +147,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 					Local DoNotDrag:Int = 0
 					If gfxListenabled = 0 And MOUSEMANAGER.IsHit(1) And block.State = 0
 						For Local DragAndDrop:TDragAndDrop = EachIn block.DragAndDropList  					'loop through DnDs
-							If DragAndDrop.CanDrop(MouseX(),MouseY(), "programmeblock")						'mouse within dnd-rect
+							If DragAndDrop.CanDrop(MouseManager.x,MouseManager.y, "programmeblock")						'mouse within dnd-rect
 								For Local Otherblock:TProgrammeBlock = EachIn Self.ProgrammeBlocks   		'loop through other pblocks
 									'is there a block positioned at the desired place?
 
@@ -185,6 +185,18 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 						If block.IsAtStartPos() And DoNotDrag = 0 And (Game.GetDay() < Game.dayToPlan Or (Game.GetDay() = Game.dayToPlan And Game.GetHour() < block.GetHourOfBlock(1,block.StartPos)))
 							block.Drop()
 							block.rect.position.SetPos(block.StartPos)
+
+							'pressing shift tries to get the next episode
+							if KEYMANAGER.IsDown(KEY_LSHIFT) OR KEYMANAGER.IsDown(KEY_RSHIFT)
+								TProgrammeblock.CreateDragged(block.programme.GetNextEpisode() )
+							endif
+
+							'pressing ctrl makes the programme placeable again
+							if KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
+								TProgrammeblock.CreateDragged(block.programme)
+								'MOUSEMANAGER.resetKey(1)
+							endif
+
 						EndIf
 					EndIf
 				EndIf
@@ -193,7 +205,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			If block.dragged = 1
 				Self.AdditionallyDraggedProgrammeBlocks :+1
 				Local displace:Int = Self.AdditionallyDraggedProgrammeBlocks *5
-				block.rect.position.SetXY(MouseX() - block.rect.GetW()/2 - displace, MouseY() - block.rect.GetH()/2 - displace)
+				block.rect.position.SetXY(MouseManager.x - block.rect.GetW()/2 - displace, MouseManager.y - block.rect.GetH()*0.25 - displace)
 			EndIf
 		Next
     End Method
@@ -349,6 +361,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		self.AdBlocks.sort(True, TAdblock.sort)
 	End Method
 
+	'remove a block from the plan's list
 	Method RemoveAdBlock(block:TAdBlock)
 		Self.AdBlocks.remove(block)
 		'sort my adblocks
@@ -1002,8 +1015,8 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field speed:Float			= 0
 	Field relPrice:Int			= 0
 	Field Genre:Int				= 0
-	Field episodeNumber:Int		= 0
-	Field episodeList:TList		= CreateList()
+	Field episode:Int			= 0
+	Field episodes:TList		= CreateList()
 	Field blocks:Int			= 1
 	Field fsk18:Int				= 0
 	Field _isMovie:Int			= 1
@@ -1094,7 +1107,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 			ProgMovieList.AddLast(obj)
 		EndIf
 
-		obj.episodeNumber = episode
+		obj.episode		= episode
 		obj.refreshModifier = Max(0.0, refreshModifier)
 		obj.wearoffModifier = Max(0.0, wearoffModifier)
 		obj.review      = Max(0,review)
@@ -1118,7 +1131,6 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		ProgList.AddLast(obj)
 		Return obj
 	End Function
-
 
 	Method AddEpisode:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=null, wearoffModifier:float=null, episode:Int=0, id:Int=0)
 		Local obj:TProgramme = New TProgramme
@@ -1144,10 +1156,10 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 
 		obj.fsk18       	= fsk18
 		obj._isMovie     	= 0
-		If episode = 0 Then episode = Self.episodeList.count()+1
-		obj.episodeNumber	= episode
+		If episode = 0 Then episode = Self.episodes.count()+1
+		obj.episode			= episode
 		obj.parent			= Self
-		Self.episodeList.AddLast(obj)
+		Self.episodes.AddLast(obj)
 		ProgList.AddLast(obj)
 		Return obj
 	End Method
@@ -1157,7 +1169,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		Return Null
 Rem
 		Local Programme:TProgramme = New TProgramme
-		Programme.episodeList = CreateList() ' TObjectList.Create(100)
+		Programme.episodes = CreateList() ' TObjectList.Create(100)
 
 		Local NODE:xmlNode = pnode.FirstChild()
 		While NODE <> Null
@@ -1170,11 +1182,11 @@ Rem
 				EndIf
 			Next
 			Select NODE.name
-				Case "EPISODE" Programme.EpisodeList.AddLast(TProgramme.Load(NODE, 1, Programme.owner))
+				Case "EPISODE" Programme.episodes.AddLast(TProgramme.Load(NODE, 1, Programme.owner))
 			End Select
 			NODE = NODE.nextSibling()
 		Wend
-		If Programme.episodeList.count() > 0 And Not isEpisode
+		If Programme.episodes.count() > 0 And Not isEpisode
 			' Print "loaded series: "+Programme.title
 			TProgramme.ProgSeriesList.AddLast(Programme)
 		Else If Not isEpisode
@@ -1234,12 +1246,12 @@ endrem
 					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
 				EndIf
 			Next
-			'SaveFile.WriteInt(Programme.episodeList.Count()-1)
+			'SaveFile.WriteInt(Programme.episodes.Count()-1)
 			If Not isepisode
-				For Local j:Int = 0 To Self.episodeList.Count()-1
+				For Local j:Int = 0 To Self.episodes.Count()-1
 					LoadSaveFile.xmlBeginNode("EPISODE")
-						TProgramme(Self.episodeList.ValueAtIndex(j)).Save(True)
-'						TProgramme(Self.episodeList.Items[j] ).Save(True)
+						TProgramme(Self.episodes.ValueAtIndex(j)).Save(True)
+'						TProgramme(Self.episodes.Items[j] ).Save(True)
 					LoadSaveFile.xmlCloseNode()
 				Next
 			EndIf
@@ -1249,6 +1261,13 @@ endrem
 	Method GetParent:TProgramme()
 		if not self.parent then return self
 		return self.parent
+	End Method
+
+	Method GetNextEpisode:TProgramme()
+		local episode:TProgramme = self.GetParent().GetEpisode(self.episode+1)
+		if episode then return episode
+		'if no next episode was found - return self
+		return self
 	End Method
 
 	Method Buy()
@@ -1366,7 +1385,7 @@ endrem
 			If movie.owner <> 0 or not movie.isReleased() Then continue
 
 			'if available (unbought, released..), add it to candidates list
-			If movie.genre = genre And movie.episodeNumber <= 0 Then resultList.addLast(movie)
+			If movie.genre = genre And movie.episode <= 0 Then resultList.addLast(movie)
 		Next
 		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
@@ -1380,7 +1399,7 @@ endrem
 			If movie.owner <> 0 or not movie.isReleased() Then continue
 
 			'if available (unbought, released..), add it to candidates list
-			If movie.episodeNumber <= 0 And Not movie.isMovie() Then resultList.addLast(movie)
+			If movie.episode <= 0 And Not movie.isMovie() Then resultList.addLast(movie)
 		Next
 		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
@@ -1454,7 +1473,7 @@ endrem
 	End Method
 
 	Method GetEpisodeCount:int() {_exposeToLua}
-		return self.episodeList.count()
+		return self.episodes.count()
 	End Method
 
 	'Manuel: Wird nur in der Lua-KI verwendet
@@ -1480,16 +1499,20 @@ endrem
 
 	'returns array of all episodes or an empty array if no episodes are found
 	Method GetEpisodes:Object[]() {_exposeToLua}
-		If Self.episodeList
-			Return Self.episodeList.toArray()
+		If Self.episodes
+			Return Self.episodes.toArray()
 		Else
 			Return CreateList().toArray()
 		EndIf
 	End Method
 
 	'returns episode if found
-	Method GetEpisode:TProgramme(number:Int) {_exposeToLua}
-		If TProgramme(Self.episodeList.ValueAtIndex(number)) <> Null Then Return TProgramme(Self.episodeList.ValueAtIndex(number))
+	'episode starts with 1 not 0 !
+	Method GetEpisode:TProgramme(episodeNumber:Int) {_exposeToLua}
+		if self.episodes.count() < episodeNumber then return Null
+
+		If TProgramme(Self.episodes.ValueAtIndex(Max(0,episodeNumber-1))) <> Null Then Return TProgramme(Self.episodes.ValueAtIndex(Max(0,episodeNumber-1)))
+
 		Return Null
 	End Method
 
@@ -1497,12 +1520,12 @@ endrem
 		Local value:Int = 0
 
 		'parent of serie called
-		If Self.episodeList.count() > 0
-			For Local episode:TProgramme = EachIn Self.episodeList
+		If Self.episodes.count() > 0
+			For Local episode:TProgramme = EachIn Self.episodes
 				episode.topicality = episode.ComputeTopicality()
 				value :+ episode.topicality
 			Next
-			topicality = value / Self.episodeList.count()
+			topicality = value / Self.episodes.count()
 		ElseIf topicality < 0
 			topicality = Max(0, 255 - 2 * Max(0, Game.GetYear() - year) )   'simplest form ;D
 		EndIf
@@ -1565,8 +1588,8 @@ endrem
 		Local tmpreview:Float
 		Local tmpspeed:Float
 
-		If Self.episodeList.count() > 0
-			For Local episode:TProgramme = EachIn Self.episodeList
+		If Self.episodes.count() > 0
+			For Local episode:TProgramme = EachIn Self.episodes
 				value :+ episode.getPrice()
 			Next
 			value :* 0.75
@@ -1606,10 +1629,10 @@ endrem
 			'episode display
 			If series <> Null
 				Assets.fonts.basefontBold.drawBlock(series.title, x + 10, y + 11, 278, 20)
-				normalFont.drawBlock("(" + episodeNumber + "/" + series.episodeList.count() + ") " + title, x + 10, y + 34, 278, 20, 0)  'prints programmedescription on moviesheet
+				normalFont.drawBlock("(" + episode + "/" + series.episodes.count() + ") " + title, x + 10, y + 34, 278, 20, 0)  'prints programmedescription on moviesheet
 			Else
 				Assets.fonts.basefontBold.drawBlock(title, x + 10, y + 11, 278, 20)
-				normalFont.drawBlock(episodeList.count()+" "+GetLocale("MOVIE_EPISODES") , x+10,  y+34 , 278, 20,0) 'prints programmedescription on moviesheet
+				normalFont.drawBlock(episodes.count()+" "+GetLocale("MOVIE_EPISODES") , x+10,  y+34 , 278, 20,0) 'prints programmedescription on moviesheet
 			EndIf
 
 			dy :+ 22
@@ -2086,6 +2109,8 @@ Type TAdBlock Extends TBlockGraphical
     Global DragAndDropList:TList	= CreateList()
     Global spriteBaseName:String	= "pp_adblock1"
 
+    Global draggedList:TList		= CreateList() 'so it can get managed again
+
 	Function LoadAll(loadfile:TStream)
 		print "Implement TAdblock.Loadall - in TPlayerProgrammePlan"
 	End Function
@@ -2123,7 +2148,6 @@ Type TAdBlock Extends TBlockGraphical
 		obj.SetDragable(1)
 		obj.senddate	= Game.daytoplan
 		obj.sendtime	= obj.GetTimeOfBlock()
-		'self.sendtime	= Int(Floor((obj.StartPos.y - 17) / 30))
 
 		If not contract then contract = Game.Players[owner].ProgrammeCollection.GetRandomContract()
 		obj.contract	= contract
@@ -2134,10 +2158,15 @@ Type TAdBlock Extends TBlockGraphical
 	End Function
 
 	Function CreateDragged:TAdBlock(contract:TContract, owner:Int=-1)
-		Local obj:TAdBlock = TAdBlock.Create(contract, MouseX(), MouseY(), owner)
+		Local obj:TAdBlock = TAdBlock.Create(contract, MouseManager.x, MouseManager.y, owner)
+
+		'remove from managed
+		Game.Players[obj.owner].ProgrammePlan.RemoveAdblock(obj)
+		'and add to dragged-manage
+		obj.draggedList.addLast(obj)
+
 		'things differing from normal
 		obj.StartPos		= TPoint.Create(0, 0)
-		obj.senddate 		= Game.daytoplan
 		obj.sendtime 		= 100
 		obj.dragged			= 1
 		Return obj
@@ -2229,9 +2258,10 @@ Type TAdBlock Extends TBlockGraphical
 	Function DrawAll(owner:Int =-1)
 		if owner = -1 then owner = game.playerID
 
-		Game.Players[ owner ].ProgrammePlan.AdBlocks.sort(True, TAdblock.sort)
+		local AdBlockList:TList = MergeLists( Game.Players[ owner ].ProgrammePlan.AdBlocks, TAdBlock.draggedList )
+		AdBlockList.sort(True, TAdblock.sort)
 
-		For Local AdBlock:TAdBlock = EachIn Game.Players[ owner ].ProgrammePlan.AdBlocks
+		For Local AdBlock:TAdBlock = EachIn AdBlockList
 			AdBlock.Draw()
 		Next
 	End Function
@@ -2274,7 +2304,7 @@ Type TAdBlock Extends TBlockGraphical
 
 		if owner = -1 then owner = game.playerID
 
-		local AdBlockList:TList = Game.Players[ owner ].ProgrammePlan.AdBlocks
+		local AdBlockList:TList = MergeLists( Game.Players[ owner ].ProgrammePlan.AdBlocks, TAdBlock.draggedList )
 		AdBlockList.sort(True, TAdblock.sort)
 
 		'get current states
@@ -2282,7 +2312,8 @@ Type TAdBlock Extends TBlockGraphical
 			AdBlock.Update()
 		Next
 
-
+'RON
+		TAdBlock.AdditionallyDragged = 0
 		For Local AdBlock:TAdBlock = EachIn AdBlockList
 			number :+ 1
 			If AdBlock.dragged = 1
@@ -2290,6 +2321,7 @@ Type TAdBlock Extends TBlockGraphical
 			endif
 			If not programmeListOpen And MOUSEMANAGER.IsHit(2) And AdBlock.dragged = 1
 				'Game.IsMouseRightHit = 0
+				'print "rightclick adblock.removeFromPlan"
 				Adblock.RemoveFromPlan()
 				havetosort = 1
 				MOUSEMANAGER.resetKey(2)
@@ -2303,7 +2335,7 @@ Type TAdBlock Extends TBlockGraphical
 			If not gfxListenabled And MOUSEMANAGER.IsHit(1)
 				If AdBlock.dragged = 0 And AdBlock.dragable = 1 And not Adblock.isAired()
 					If Adblock.senddate = game.daytoplan
-						If AdBlock.rect.containsXY( MouseX(), MouseY() )
+						If AdBlock.rect.containsXY( MouseManager.x, MouseManager.y )
 							AdBlock.dragged = 1
 							For Local OtherlocObject:TAdBlock = EachIn AdBlockList
 								If OtherLocObject.dragged And OtherLocObject <> Adblock
@@ -2314,8 +2346,12 @@ Type TAdBlock Extends TBlockGraphical
 									EndIf
 								End If
 							Next
-							'just removes the contract from the plan, the adblock still exists
+							'removes the whole adblock from the plan
+							'but it also sets it unmanaged
+							'print "Adblock.RemoveFromPlan: "+Adblock.contract.contractBase.title
 							Adblock.RemoveFromPlan()
+							'that is why we add it to a special list
+							TAdblock.draggedList.addLast(Adblock)
 						EndIf
 					EndIf
 				Else
@@ -2324,7 +2360,7 @@ Type TAdBlock Extends TBlockGraphical
 						'Print ("X:"+Adblock.x+ " Y:"+Adblock.y+" time:"+Adblock.GetTimeOfBlock(Adblock.x,Adblock.y))' > game.GetHour())
 						AdBlock.dragged = 0
 						For Local DragAndDrop:TDragAndDrop = EachIn TAdBlock.DragAndDropList
-							If DragAndDrop.CanDrop(MouseX(),MouseY(),"adblock")
+							If DragAndDrop.CanDrop(MouseManager.x,MouseManager.y,"adblock")
 								For Local OtherAdBlock:TAdBlock = EachIn AdBlockList
 									'is there a Adblock positioned at the desired place?
 									If MOUSEMANAGER.IsHit(1) And OtherAdBlock.dragable = 1 And OtherAdBlock.rect.getX() = DragAndDrop.pos.getX()
@@ -2332,7 +2368,14 @@ Type TAdBlock Extends TBlockGraphical
 											If OtherAdBlock.rect.GetY() = DragAndDrop.pos.getY()
 												If not OtherAdBlock.isAired()
 													OtherAdBlock.dragged = 1
+
+													'print "otherAdblock.RemoveFromPlan: "+otherAdblock.contract.contractBase.title
+													'removes the whole adblock from the plan
+													'but it also sets it unmanaged
 													otherAdblock.RemoveFromPlan()
+													'that is why we add it to a special list
+													TAdblock.draggedList.addLast(otherAdblock)
+
 													havetosort = 1
 												Else
 													DoNotDrag = 1
@@ -2364,7 +2407,18 @@ Type TAdBlock Extends TBlockGraphical
 							AdBlock.dragged 	= 0
 							AdBlock.sendtime	= Adblock.GetTimeOfBlock()
 							AdBlock.senddate	= Game.daytoplan
+							'print "Adblock.AddToPlan: "+Adblock.contract.contractBase.title
+							'remove it from the special list, block is
+							'getting managed again
+							TAdblock.draggedList.remove(adblock)
+
 							Adblock.AddToPlan()
+							'if a special key is pressed, create another
+							'dragged block - so we can "plan" faster
+							if KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
+								TAdBlock.CreateDragged(Adblock.contract)
+								'MOUSEMANAGER.resetKey(1)
+							endif
 						EndIf
 					EndIf
 				EndIf
@@ -2372,10 +2426,10 @@ Type TAdBlock Extends TBlockGraphical
 
 			If AdBlock.dragged = 1
 				Adblock.airedState = 0
-				TAdBlock.AdditionallyDragged = TAdBlock.AdditionallyDragged +1
+				TAdBlock.AdditionallyDragged:+1
 				AdBlock.rect.position.SetXY(..
-					MouseX() - AdBlock.rect.GetW()/2 - TAdBlock.AdditionallyDragged *5, ..
-					MouseY() - AdBlock.rect.GetW()/2 - TAdBlock.AdditionallyDragged *5..
+					MouseManager.x - AdBlock.rect.GetW()/2 - TAdBlock.AdditionallyDragged *5, ..
+					MouseManager.y - AdBlock.rect.GetH()*0.25 - TAdBlock.AdditionallyDragged *5..
 				)
 			EndIf
 			If AdBlock.dragged = 0
@@ -2387,7 +2441,6 @@ Type TAdBlock Extends TBlockGraphical
 				EndIf
 			EndIf
 		Next
-		TAdBlock.AdditionallyDragged = 0
     End Function
 
 	'remove adblocks not needed (contract successful before)
@@ -2554,7 +2607,11 @@ Type TProgrammeBlock Extends TBlockGraphical
 	Function CreateDragged:TProgrammeBlock(movie:TProgramme, owner:Int =-1)
 		If owner < 0 Then owner = game.playerID
 		Local obj:TProgrammeBlock=New TProgrammeBlock
-		obj.SetStartConfig(MouseX(),MouseY(),owner, 0)
+
+		local x:float = MouseManager.x - obj.rect.GetW()/2 - TAdblock.AdditionallyDragged *5
+		local y:float = MouseManager.y - obj.rect.GetH()*0.25 - TAdblock.AdditionallyDragged *5
+		obj.SetStartConfig(x,y,owner, 0)
+
 		obj.dragged		= 1
 		obj.Programme	= movie
 		obj.sendHour	= TPlayerProgrammePlan.getPlanHour(obj.GetHourOfBlock(1, obj.StartPos), Game.daytoplan)
@@ -2672,8 +2729,8 @@ Type TProgrammeBlock Extends TBlockGraphical
 		local titleAppend:string = ""
 		If Not Self.programme.isMovie()
 			title = Self.programme.GetParent().title
-			'uncomment if you wish episodenumber in title
-			'titleAppend = " (" + Self.programme.episodeNumber + "/" + Self.programme.GetParent().episodeList.count() + ")"
+			'uncomment if you wish episode number in title
+			'titleAppend = " (" + Self.programme.episode + "/" + Self.programme.GetParent().episodes.count() + ")"
 		EndIf
 
 		While Assets.fonts.basefontBold.getWidth(title+titleAppend) > maxWidth And title.length > 4
@@ -2687,7 +2744,7 @@ Type TProgrammeBlock Extends TBlockGraphical
 		Local useFont:TBitmapFont = Assets.GetFont("Default", 11, ITALICFONT)
 		If programme.parent <> Null
 			useFont.draw(Self.Programme.getGenreString()+"-Serie",_pos.x+5,_pos.y+18)
-			useFont.draw("Teil: " + Self.Programme.episodeNumber + "/" + Self.programme.parent.episodeList.count(), _pos.x + 138, _pos.y + 18)
+			useFont.draw("Teil: " + Self.Programme.episode + "/" + Self.programme.parent.episodes.count(), _pos.x + 138, _pos.y + 18)
 		Else
 			useFont.draw(Self.Programme.getGenreString(),_pos.x+5,_pos.y+18)
 			If Self.programme.fsk18 <> 0 Then useFont.draw("FSK 18!",_pos.x+138,_pos.y+18)
@@ -3163,7 +3220,7 @@ endrem
 				If MOUSEMANAGER.IsHit(1)
 					'drag
 					If obj.dragged = 0 And obj.dragable = 1
-						If obj.rect.containsXY( MouseX(), MouseY() )
+						If obj.rect.containsXY( MouseManager.x, MouseManager.y )
 							obj.dragged = 1
 							For Local otherObj:TContractBlock = EachIn TContractBlock.List
 								If otherObj.dragged And otherObj <> obj
@@ -3179,7 +3236,7 @@ endrem
 						obj.dragged = 0
 
 						For Local DragAndDrop:TDragAndDrop = EachIn TContractBlock.DragAndDropList
-							If DragAndDrop.CanDrop(MouseX(), MouseY()) = 1 And (DragAndDrop.pos.x < 550 Or DragAndDrop.pos.x > 550 + Assets.GetSprite(obj.imageBaseName).w * (localslot - 1))
+							If DragAndDrop.CanDrop(MouseManager.x, MouseManager.y) = 1 And (DragAndDrop.pos.x < 550 Or DragAndDrop.pos.x > 550 + Assets.GetSprite(obj.imageBaseName).w * (localslot - 1))
 								'limit contracts in suitcase
 								If localslot >= Game.maxContractsAllowed Then Exit
 
@@ -3210,8 +3267,8 @@ endrem
 				If obj.dragged = 1
 					TContractBlock.AdditionallyDragged :+1
 					obj.rect.position.SetXY(..
-						MouseX() - obj.rect.GetW()/2 - TContractBlock.AdditionallyDragged *5,..
-						MouseY() - obj.rect.GetH()/2 - TContractBlock.AdditionallyDragged *5 ..
+						MouseManager.x - obj.rect.GetW()/2 - TContractBlock.AdditionallyDragged *5,..
+						MouseManager.y - obj.rect.GetH()*0.25 - TContractBlock.AdditionallyDragged *5 ..
 					)
 				Else
 					obj.rect.position.SetPos(obj.StartPos)
@@ -3276,7 +3333,7 @@ Type TGUIProgrammeCoverBlock extends TGUIListItem
 
 		If self.mouseover
 			local sheetY:float = 20
-			local sheetX:float = 30 + 360*(MouseX() < 400)
+			local sheetX:float = 30 + 360*(MouseManager.x < 400)
 
 			SetColor 0,0,0
 			SetAlpha 0.2
@@ -3629,7 +3686,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 							'block over rect of programme-shelf
 							If functions.IsIn(locObj.rect.GetX(), locObj.rect.GetY(), 590,30, 190,280)
 								'want to drop in origin-position
-								If locObj.containsCoord(MouseX(), MouseY())
+								If locObj.containsCoord(MouseManager.x, MouseManager.y)
 									locObj.dragged = False
 									MouseManager.resetKey(1)
 									'Print "movieagency: dropped to original position"
@@ -3637,7 +3694,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 								Else
 									For Local OtherLocObj:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
 										If OtherLocObj <> Null
-											If OtherLocObj.containsCoord(MouseX(), MouseY()) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
+											If OtherLocObj.containsCoord(MouseManager.x, MouseManager.y) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
 												If locObj.Programme.isMovie() = OtherLocObj.Programme.isMovie()
 													locObj.SwitchBlock(otherLocObj)
 													Exit	'exit enclosing for-loop (stop searching for other underlaying blocks)
@@ -3649,7 +3706,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 								EndIf	'end: drop in origin or search for other obj underlaying
 							EndIf 		'end: block over programme-shelf
 						Else			'end: an obj is dragged
-							If LocObj.containsCoord(MouseX(), MouseY())
+							If LocObj.containsCoord(MouseManager.x, MouseManager.y)
 								locObj.dragged = 1
 								MouseManager.resetKey(1)
 							EndIf
@@ -3662,7 +3719,7 @@ Type TMovieAgencyBlocks Extends TSuitcaseProgrammeBlocks
 			If locObj.dragged = 1
 				TMovieAgencyBlocks.AdditionallyDragged :+1
 				Local displacement:Int = TMovieAgencyBlocks.AdditionallyDragged *5
-				locObj.setCoords(MouseX() - locObj.rect.GetW()/2 - displacement, MouseY() - locObj.rect.GetH()/2 - displacement)
+				locObj.setCoords(MouseManager.x - locObj.rect.GetW()/2 - displacement, MouseManager.y - locObj.rect.GetH()/2 - displacement)
 			Else
 				locObj.SetCoords(locObj.StartPos.x, locObj.StartPos.y)
 			EndIf
@@ -3840,7 +3897,11 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
     'erstellt einen gedraggten Programmblock (genutzt von der Film- und Serienauswahl)
 	Function CreateDragged:TArchiveProgrammeBlock(programme:TProgramme, owner:Int =-1)
 		Local obj:TArchiveProgrammeBlock= TArchiveProgrammeBlock.Create(programme, 0, owner)
-		obj.rect.position	= TPoint.Create(MouseX(), MouseY())
+
+		local x:float = MouseManager.x - obj.rect.GetW()/2 - TAdblock.AdditionallyDragged *5
+		local y:float = MouseManager.y - obj.rect.GetH()*0.25 - TAdblock.AdditionallyDragged *5
+		obj.rect.position	= TPoint.Create(x, y)
+
 		obj.StartPos		= TPoint.Create(0, 0) 'ProgrammeBlock.x, ProgrammeBlock.y
 		'dragged
 		obj.dragged	= 1
@@ -3880,7 +3941,7 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 
 				If MOUSEMANAGER.IsHit(1)
 					If locObject.dragged = 0 And locObject.dragable = 1
-						If locObject.rect.containsXY( MouseX(), MouseY() )
+						If locObject.rect.containsXY( MouseManager.x, MouseManager.y )
 							locObject.dragged = 1
 						EndIf
 					ElseIf locobject.dragable = 1
@@ -3890,7 +3951,7 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 							realDNDfound = 0
 							For Local DragAndDrop:TDragAndDrop = EachIn TArchiveProgrammeBlock.DragAndDropList
 								'don't allow dragging of series into the agencies movie-row and wise versa
-								If DragAndDrop.CanDrop(MouseX(),MouseY(), "archiveprogrammeblock") = 1 And (DragAndDrop.pos.x < 50+200 Or DragAndDrop.pos.x > 50+Assets.GetSprite("gfx_movie0").w*(localslot-1))
+								If DragAndDrop.CanDrop(MouseManager.x,MouseManager.y, "archiveprogrammeblock") = 1 And (DragAndDrop.pos.x < 50+200 Or DragAndDrop.pos.x > 50+Assets.GetSprite("gfx_movie0").w*(localslot-1))
 									For Local OtherlocObject:TArchiveProgrammeBlock= EachIn TArchiveProgrammeBlock.List
 										If DraggingAllowed And otherlocobject.owner <= 0 'on plan and not in elevator
 											'is there a NewsBlock positioned at the desired place?
@@ -3907,7 +3968,7 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 								EndIf
 							Next
 							'suitcase as dndzone
-							If Not realDNDfound And functions.IsIn(MouseX(),MouseY(),50-10,280-20,200+2*10,100+2*20)
+							If Not realDNDfound And functions.IsIn(MouseManager.x,MouseManager.y,50-10,280-20,200+2*10,100+2*20)
 								For Local DragAndDrop:TDragAndDrop = EachIn TArchiveProgrammeBlock.DragAndDropList
 									If functions.IsIn(DragAndDrop.pos.x, DragAndDrop.pos.y, 50,280,200,100)
 										If DragAndDrop.pos.x >= 55 + Assets.GetSprite("gfx_contracts_base").w * (localslot)
@@ -3930,8 +3991,8 @@ Type TArchiveProgrammeBlock Extends TSuitcaseProgrammeBlocks
 				If locObject.dragged = 1
 					TArchiveProgrammeBlock.AdditionallyDragged :+1
 					LocObject.rect.position.SetXY( ..
-						MouseX() - locObject.rect.GetW()/2 - TArchiveProgrammeBlock.AdditionallyDragged *5,..
-						MouseY() - locObject.rect.GetH()/2 - TArchiveProgrammeBlock.AdditionallyDragged *5 ..
+						MouseManager.x - locObject.rect.GetW()/2 - TArchiveProgrammeBlock.AdditionallyDragged *5,..
+						MouseManager.y - locObject.rect.GetH()*0.25 - TArchiveProgrammeBlock.AdditionallyDragged *5 ..
 					)
 				EndIf
 				If locObject.dragged = 0
@@ -4135,7 +4196,7 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 
 		'draw sheets (must be afterwards to avoid overlapping (itemA Sheet itemB itemC) )
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-			if functions.IsIn(MouseX(), MouseY(), obj.Pos.x, obj.Pos.y, obj.dim.x, obj.dim.y)
+			if functions.IsIn(MouseManager.x, MouseManager.y, obj.Pos.x, obj.Pos.y, obj.dim.x, obj.dim.y)
 				if obj.pos.x+obj.dim.x > App.settings.width/2
 					obj.Programme.ShowSheet(90,50)
 				else
@@ -4198,7 +4259,7 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 		if not MouseHit then return 0
 
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-			if obj.Bid[0] <> game.playerID And functions.IsIn(MouseX(), MouseY(), obj.pos.x, obj.pos.y, obj.dim.x, obj.dim.y)
+			if obj.Bid[0] <> game.playerID And functions.IsIn(MouseManager.x, MouseManager.y, obj.pos.x, obj.pos.y, obj.dim.x, obj.dim.y)
 				If game.networkgame Then NetworkHelper.SendMovieAgencyChange(NET_BID, game.playerID, obj.GetNextBid(), -1, obj.Programme)
 				obj.SetBid( game.playerID )  'set the bid
 			EndIf
