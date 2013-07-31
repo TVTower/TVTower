@@ -1776,13 +1776,47 @@ Print "implement save:TNews"
 	End Method
 
 	Method ComputeTopicality:Float()
-		Return Max(0, Int(255-10*(Game.timeGone - self.happenedTime))) 'simplest form ;D
+		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
+		'means: after 20 hrs, the topicality is 0
+		local ageHours:int = floor( float(Game.GetTimeGone() - self.happenedTime)/60.0 )
+		Local age:float = Max(0,100-5*Max(0, ageHours) )
+		return age*2.55 ',max is 255
 	End Method
 
 	Method GetAttractiveness:Float() {_exposeToLua}
-		Return 0.35*((quality+5)/255) + 0.5*ComputeTopicality()/255 + 0.15
+		Return 0.30*((quality+5)/255) + 0.4*ComputeTopicality()/255 + 0.2*price/255 + 0.1
 	End Method
 
+
+	'base quote of a programme
+	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
+		Local quality:Float		= 0.0
+
+		quality	=	 0.10	*Float(lastquote)..
+					+0.40	*Float(self.ComputeTopicality())/255.0..
+					+0.30	*Float(quality)/255.0..
+					+0.20	*Float(price)/255.0
+
+		'no minus quote
+		Return Max(0, quality)
+	End Method
+
+	'computes a percentage which could be multiplied with maxaudience
+	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1) {_exposeToLua}
+		Local quote:Float		= self.getBaseAudienceQuote(lastquote)
+		'a bit of luck :D
+		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
+
+		If maxAudiencePercentage = -1
+			quote :* Game.maxAudiencePercentage
+		Else
+			quote :* maxAudiencePercentage
+		EndIf
+
+		'no minus quote
+		Return Max(0, quote)
+	End Method
+rem
 	'computes a percentage which could be multiplied with maxaudience
 	Method ComputeAudienceQuote:Float(lastquote:Float=0)
 		Local quote:Float =0.0
@@ -1790,6 +1824,7 @@ Print "implement save:TNews"
 			quote = 0.1*lastquote + 0.35*((quality+5)/255) + 0.5*ComputeTopicality()/255 + 0.05*(rand(0,254)+1)/255
 		Return quote * Game.maxAudiencePercentage
 	End Method
+endrem
 
 	Method ComputePrice:Int() {_exposeToLua}
 		Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
@@ -2321,8 +2356,13 @@ Type TAdBlock Extends TBlockGraphical
 			endif
 			If not programmeListOpen And MOUSEMANAGER.IsHit(2) And AdBlock.dragged = 1
 				'Game.IsMouseRightHit = 0
-				'print "rightclick adblock.removeFromPlan"
+				'should not be needed as long as DRAGGED objects
+				'are already removed
+				print "rightclick adblock.removeFromPlan"
 				Adblock.RemoveFromPlan()
+
+				self.draggedList.remove(Adblock)
+
 				havetosort = 1
 				MOUSEMANAGER.resetKey(2)
 			EndIf

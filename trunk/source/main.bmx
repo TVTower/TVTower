@@ -1048,7 +1048,7 @@ endrem
 				AdBlock.contract.spotsSent:+1
 
 				'successful sent all needed spots?
-				If Adblock.contract.GetSpotsSent() >= Adblock.contract.GetSpotsToSend()
+				If Adblock.contract.GetSpotsToSend()<=0
 					'set contract fulfilled
 					Adblock.contract.state = 1
 
@@ -1130,16 +1130,15 @@ print "RON: ComputeAudience - luck: "+(Float(RandRange(-10,10))/1000.0)
 	Function ComputeNewsAudience()
 		Local newsBlock:TNewsBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
-			Player.audience = 0
 			Local audience:Int = 0
-			For Local i:Int = 1 To 3
+			For Local i:Int = 0 To 2
 				newsBlock = Player.ProgrammePlan.GetNewsBlockFromSlot(i)
 				If newsBlock <> Null And Player.maxaudience <> 0
-					audience :+ Floor(Player.maxaudience * NewsBlock.news.ComputeAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
+					audience :+ Floor(Player.maxaudience * NewsBlock.news.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 					'If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
 				EndIf
 			Next
-			Player.audience= Ceil(audience / 3)
+			Player.audience= Ceil(float(audience) / 3.0)
 			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
 		Next
 	End Function
@@ -1976,7 +1975,7 @@ Type TNewsAgency
 			description = self._ReplaceMovieData(description, movie)
 
 			'quality and price are based on the movies data
-			Local News:TNews = TNews.Create(title, description, 1, movie.review, movie.outcome)
+			Local News:TNews = TNews.Create(title, description, 1, movie.review/2.0, movie.outcome/3.0)
 			'remove news from TNews-list as we do not want to have them repeated :D
 			News.list.remove(News)
 
@@ -2486,26 +2485,33 @@ Function Menu_GameSettings()
 	Local modifiedPlayers:Int = False
 	Local ChangesAllowed:Byte[4]
 
+	if Game.networkgame
+		GameSettingsOkButton_Announce.show()
+		GameSettingsGameTitle.show()
 
-	If GameSettingsOkButton_Announce.crossed And Game.isGameLeader()
-		GameSettingsOkButton_Announce.enable()
-		GameSettingsGameTitle.disable()
-		If GameSettingsGameTitle.Value = "" Then GameSettingsGameTitle.Value = "no title"
-		Game.title = GameSettingsGameTitle.Value
-	Else
-		GameSettingsGameTitle.enable()
-	EndIf
-	If not Game.isGameLeader()
-		GameSettingsGameTitle.disable()
-		GameSettingsOkButton_Announce.disable()
-	EndIf
+		If GameSettingsOkButton_Announce.crossed And Game.isGameLeader()
+			GameSettingsOkButton_Announce.enable()
+			GameSettingsGameTitle.disable()
+			If GameSettingsGameTitle.Value = "" Then GameSettingsGameTitle.Value = "no title"
+			Game.title = GameSettingsGameTitle.Value
+		Else
+			GameSettingsGameTitle.enable()
+		EndIf
+		If not Game.isGameLeader()
+			GameSettingsGameTitle.disable()
+			GameSettingsOkButton_Announce.disable()
+		EndIf
 
-	'disable/enable announcement on lan/online
-	if GameSettingsOkButton_Announce.crossed
-		Network.client.playerName = Game.Players[ Game.playerID ].name
-		if not Network.announceEnabled then Network.StartAnnouncing(Game.title)
+		'disable/enable announcement on lan/online
+		if GameSettingsOkButton_Announce.crossed
+			Network.client.playerName = Game.Players[ Game.playerID ].name
+			if not Network.announceEnabled then Network.StartAnnouncing(Game.title)
+		else
+			Network.StopAnnouncing()
+		endif
 	else
-		Network.StopAnnouncing()
+		GameSettingsOkButton_Announce.hide()
+		GameSettingsGameTitle.hide()
 	endif
 
 	For Local i:Int = 0 To 3
@@ -3116,7 +3122,7 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	If Game.Players[Game.playerID].Figure.inRoom <> Null Then Game.Players[Game.playerID].Figure.inRoom.Update()
 
 	'ingamechat
-	If KEYMANAGER.IsHit(KEY_ENTER)
+	If Game.networkgame AND KEYMANAGER.IsHit(KEY_ENTER)
 		If Not GUIManager.isActive(InGame_Chat.guiInput._id)
 			If InGame_Chat.antiSpamTimer < MilliSecs()
 				GUIManager.setActive( InGame_Chat.guiInput._id )
@@ -3374,7 +3380,11 @@ Type TEventListenerOnAppUpdate Extends TEventListenerBase
 			KEYMANAGER.changeStatus()
 			?
 
-			If Not GUIManager.getActive()
+'			If Not GUIManager.getActive()
+'only ignore when chat is active
+if GameSettings_Chat.guiInput.isActive() then print "settingschat active"
+if Ingame_chat.guiInput.isActive() then print "ingamechat active"
+			If not GameSettings_Chat.guiInput.isActive() AND not InGame_Chat.guiInput.isActive()
 				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.10
 				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.10, 0)
 

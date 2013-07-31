@@ -1031,6 +1031,8 @@ Type TTooltip extends TRenderableChild
   Global List:TList = CreateList()
   Global startFadeTime:float = 0.2 '200ms after no-hover - fade away
 
+  Global imgCacheEnabled:int = TRUE
+
 	Function Create:TTooltip(title:String = "", text:String = "unknown", x:Int = 0, y:Int = 0, width:Int = -1, Height:Int = -1, lifetime:Int = 300)
 		Local tooltip:TTooltip = New TTooltip
 		tooltip.title			= title
@@ -1094,17 +1096,17 @@ Type TTooltip extends TRenderableChild
 	End Method
 
 	Method Draw:Int(tweenValue:float=1.0)
+		If Not enabled Then Return 0
 rem
-		DrawRect(200,50,20, 20)
+		DrawRect(200,50,200, 20)
 		SetColor 0,0,0
-		DrawText(self.pos.x + " " +self.pos.y, 200,50)
+		DrawText("x:"+self.pos.x + " y:" +self.pos.y, 200,50)
 		SetColor 255,255,255
 endrem
-		If Not enabled Then Return 0
 
 		If Title <> oldTitle then self.DirtyImage = True
 
-		If Self.DirtyImage = True Or Self.Image = Null
+		If Self.DirtyImage = True Or Self.Image = Null OR not self.imgCacheEnabled
 			Local boxWidth:Int		= self.width
 			Local boxHeight:Int		= Self.height
 
@@ -1152,13 +1154,16 @@ endrem
 			SetColor 90,90,90
 			'text
 			If text <> "" Then self.Usefont.draw(text, self.pos.x+5,self.pos.y+Self.TooltipHeader.h + 7)
-			If self.pos.x > 20 And self.pos.y > 10 And self.pos.x + boxWidth < 760 And self.pos.y + boxHeight < 800 '383 'And lifetime = startlifetime
+
+			'limit to visible areas
+			self.pos.x = Max(21, Min(self.pos.x, 759 - boxWidth))
+			'limit to screen too
+			self.pos.y = Max(10, Min(self.pos.y, 600 - boxHeight))
+
+			If self.imgCacheEnabled 'And lifetime = startlifetime
 				Image = TImage.Create(boxWidth, boxHeight, 1, 0, 255, 0, 255)
 				image.pixmaps[0] = GrabPixmap(self.pos.x, self.pos.y, boxWidth, boxHeight)
 				DirtyImage = False
-			Else
-				self.pos.x = Max(21,self.pos.x)
-				If self.pos.x + boxWidth < 760 Then self.pos.x = 759 - boxWidth
 			EndIf
 			oldTitle = title
 			SetColor 255, 255, 255
@@ -1631,12 +1636,16 @@ Type TInterface
 			EndIf
 			CurrentProgrammeToolTip.enabled 	= 1
 			CurrentProgrammeToolTip.Hover()
+			'force redraw
+			CurrentTimeToolTip.dirtyImage = true
 	    EndIf
 		If functions.IsIn(MouseManager.x,MouseManager.y,355,468,130,30)
 			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
 			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
+			'force redraw
+			CurrentTimeToolTip.dirtyImage = true
 		EndIf
 		If functions.IsIn(MouseManager.x,MouseManager.y,355,533,130,45)
 			CurrentTimeToolTip.title 	= getLocale("GAME_TIME")+": "
