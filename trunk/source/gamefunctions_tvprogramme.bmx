@@ -1094,7 +1094,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 												1.4 .. 		'paid programming
 											]
 
-	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, episode:Int=-1)
+	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, episode:Int=0)
 		Local obj:TProgramme =New TProgramme
 		If episode >= 0
 			obj.BaseInit(title, description, TYPE_SERIE)
@@ -1264,6 +1264,7 @@ endrem
 	End Method
 
 	Method GetNextEpisode:TProgramme()
+	print "GetNextEpisode "+self.episode
 		local episode:TProgramme = self.GetParent().GetEpisode(self.episode+1)
 		if episode then return episode
 		'if no next episode was found - return self
@@ -1509,6 +1510,8 @@ endrem
 	'returns episode if found
 	'episode starts with 1 not 0 !
 	Method GetEpisode:TProgramme(episodeNumber:Int) {_exposeToLua}
+		'ignore episodes which cannot exist
+		if episodeNumber<=0 then return Null
 		if self.episodes.count() < episodeNumber then return Null
 
 		If TProgramme(Self.episodes.ValueAtIndex(Max(0,episodeNumber-1))) <> Null Then Return TProgramme(Self.episodes.ValueAtIndex(Max(0,episodeNumber-1)))

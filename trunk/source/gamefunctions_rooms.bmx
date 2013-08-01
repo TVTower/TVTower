@@ -697,8 +697,14 @@ Type RoomHandler_Office extends TRoomHandler
 				Game.cursorstate = 0
 				Game.daytoplan :- 1
 			endif
-			If Game.daytoplan < Game.GetDay(Game.timeStart) Then Game.daytoplan = Game.GetDay(Game.timeStart)
 		EndIf
+		'fast movement is possible with keys
+		if KEYMANAGER.isDown(KEY_PAGEUP) then Game.daytoplan :-1
+		if KEYMANAGER.isDown(KEY_PAGEDOWN) then Game.daytoplan :+1
+
+
+		'limit to start day
+		If Game.daytoplan < Game.GetDay(Game.timeStart) Then Game.daytoplan = Game.GetDay(Game.timeStart)
 
 		GUIManager.Update("programmeplanner")
 
@@ -1312,7 +1318,8 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreTooltip.enabled = 1
 		'refresh lifetime
 		NewsGenreTooltip.Hover()
-'		NewsGenreTooltip.lifetime :+ 1 'on slow systems this avoids flickering
+		'RON: test for sjaele
+		NewsGenreTooltip.dirtyImage = True
 
 		'move the tooltip
 		NewsGenreTooltip.pos.SetXY(Max(21,button.rect.GetX()), button.rect.GetY()-30)

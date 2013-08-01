@@ -1131,14 +1131,29 @@ print "RON: ComputeAudience - luck: "+(Float(RandRange(-10,10))/1000.0)
 		Local newsBlock:TNewsBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Local audience:Int = 0
-			For Local i:Int = 0 To 2
-				newsBlock = Player.ProgrammePlan.GetNewsBlockFromSlot(i)
-				If newsBlock <> Null And Player.maxaudience <> 0
-					audience :+ Floor(Player.maxaudience * NewsBlock.news.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
+
+			if Player.maxaudience > 0
+				local leadinAudience:int = 0
+				local slotaudience:int[] = [Player.audience,0,0,0]
+				'in the "0"-position of the index, we store the previous audience
+				'so that the result of each news is based on a leadin of the previous
+				'so "holes" cut the news reach :D
+				for local i:int = 1 to 3
+					newsBlock = Player.ProgrammePlan.GetNewsBlockFromSlot(i-1)
+					If newsBlock <> Null
+						leadinAudience = 0.5 * Player.audience + 0.5 * slotaudience[i-1]
+						slotaudience[i] = Floor(Player.maxaudience * NewsBlock.news.getAudienceQuote(leadinAudience/Player.maxaudience)  / 1000)*1000
+						'print "leadinAudience "+i+": "+leadinAudience + " slotaudience:"+slotaudience[i]
+					endif
+
+					'different weight for news slots
+					if i=1 then audience :+ 0.5 * slotaudience[i]
+					if i=2 then audience :+ 0.3 * slotaudience[i]
+					if i=3 then audience :+ 0.2 * slotaudience[i]
 					'If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
-				EndIf
-			Next
-			Player.audience= Ceil(float(audience) / 3.0)
+				Next
+			Endif
+			Player.audience= Ceil(audience)
 			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
 		Next
 	End Function
@@ -3296,7 +3311,8 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 				For Local player:TPlayer = EachIn TPlayer.list
 					Local block:TProgrammeBlock = player.ProgrammePlan.GetCurrentProgrammeBlock()
 					If block<>Null And block.programme.genre = GENRE_CALLINSHOW
-						Local revenue:Int = player.audience * float(RandRange(5, 2))/100.0
+						Local revenue:Int = player.audience * float(RandRange(2, 5))/100.0
+						'print "audience: "+player.audience + " revenue:"+revenue + " rand:"+RandRange(2,5)
 						player.finances[Game.getWeekday()].earnCallerRevenue(revenue)
 					EndIf
 				Next
