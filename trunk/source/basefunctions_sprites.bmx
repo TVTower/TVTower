@@ -425,59 +425,178 @@ Type TBitmapFont
 		self.drawToPixmap = LockImage(image)
 	End Method
 
+	Method TextToMultiLine:string[](text:string,w:float,h:float, lineHeight:float)
+		Local fittingChars:int	= 0
+		Local processedChars:Int= 0
+		Local paragraphs:string[]	= text.replace(chr(13), "~n").split("~n")
+		'the lines to output at the end
+		Local lines:string[]= null
+		'how many space is left to draw?
+		local heightLeft:float	= h
+
+		'for each line/paragraph
+		For Local i:Int= 0 To paragraphs.length-1
+			local line:string = paragraphs[i]
+
+			'process each line - and if needed add a line break
+			repeat
+				'the part of the line which has to get processed at that moment
+				local linePartial:string = line
+				local breakPosition:int = line.length
+				'whether to skip the next char of a new line
+				local skipNextChar:int	= FALSE
+
+				'copy the line to do processing and shortening
+				linePartial = line
+
+				'as long as the part of the line does not fit into
+				'the given width, we have to search for linebreakers
+				while self.getWidth(linePartial) >= w and linePartial.length >0
+					'whether we found a break position by a rule
+					local FoundBreakPosition:int = FALSE
+
+					'search for the "most right" position of a linebreak
+					For local charPos:int = 0 To linePartial.length-1
+						'special line break rules (spaces, -, ...)
+						If linePartial[charPos] = Asc(" ")
+							breakPosition = charPos
+							FoundBreakPosition=TRUE
+						endif
+						If linePartial[charPos] = Asc("-")
+							breakPosition = charPos
+							FoundBreakPosition=TRUE
+						endif
+					Next
+					'if no line break rule hit, use a "cut" in the middle of a word
+					if not FoundBreakPosition then breakPosition = Max(0, linePartial.length-1 -1)
+
+					'if it is a " "-space, we have to skip it
+					if linePartial[breakPosition] = ASC(" ")
+						skipNextChar = TRUE 'aka delete the " "
+					endif
+
+
+					'cut off the part AFTER the breakposition
+					linePartial = linePartial[..breakPosition]
+				wend
+				'add that line to the lines to draw
+				lines = lines[..lines.length +1]
+				lines[lines.length-1] = linePartial
+
+				heightLeft :- lineHeight
+
+
+				'strip the processed part from the original line
+				line = line[linePartial.length..]
+				if skipNextChar then line = line[Min(1, line.length)..]
+			'until no text left, or no space left for another line
+			until line.length = 0  or heightLeft < lineHeight
+
+			'if the height was not enough - add a "..."
+			if line.length > 0
+				'get the line BEFORE
+				local currentLine:string = lines[lines.length-1]
+				'check whether we have to subtract some chars for the "..."
+				if self.getWidth(currentLine+"...") > w
+					currentLine = currentLine[.. currentLine.length-3] + "..."
+				else
+					currentLine = currentLine[.. currentLine.length] + "..."
+				endif
+				lines[lines.length-1] = currentLine
+			endif
+		Next
+
+		return lines
+	End Method
+
+
+	'ACHTUNG: "Nolinebreak" noch entfernen - wer sowas will,
+	'         kann vorher ja die "~n" entfernen
 	Method drawBlock:TPoint(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0)
-		Local charcount:Int		= 0
-		Local deletedchars:Int	= 0
-		Local charpos:Int		= 0
+		'use special chars (instead of text) for same height on all lines
+		Local alignedX:float	= 0.0
+		local lineHeight:float	= self.getHeight("gQ'_")
+		local lines:string[]	= self.TextToMultiLine(text,w,h,lineHeight)
+'SetColor 255,200,200
+'DrawRect(x,y,w,h)
+		'actually draw
+		If doDraw
+			for local i:int = 0 to lines.length-1
+				If align = 0 Then alignedX = x
+				If align = 1 Then alignedX = x + (w - self.getWidth(lines[i])) / 2
+				If align = 2 Then alignedX = x + (w - self.getWidth(lines[i]))
+				self.drawStyled( lines[i], alignedX, y + i*lineHeight, cR, cG, cB, style, 1,special)
+			Next
+		endif
+'SetColor 255,100,100
+'DrawRect(x-10,y,10,lines.length*lineHeight)
+		return TPoint.Create(w, h - lines.length*lineHeight)
+	End Method
+
+	Method drawBlock2:TPoint(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0)
+		local fittingChars:int	= 0
+		Local processedChars:Int= 0
+		Local charPos:Int		= 0
 		Local linetxt:String	= text
 		Local spaceAvailable:Float = h
 		Local alignedx:Int		= 0
 		Local usedHeight:Int	= 0
-'not needed as drawStyled is called with params for color
-'		local oldColor:TColor	= TColor.Create()
-'		If doDraw then oldcolor.get(); SetColor(cR,cG,cB)
 
 		If NoLineBreak = False
-			Repeat
-				charcount = 0
-				'line to wide for box - shorten it
-				while self.getWidth(linetxt) >= w
-					'if cant get shortened: CharCount = 0 -> line deleted
-					For charpos = 0 To Len(linetxt) - 1
-						If linetxt[charpos] = Asc(" ") Then CharCount = charpos
-						If linetxt[charpos] = Asc("-") Then CharCount = charpos' - 1
-						If linetxt[charpos] = Asc(Chr(13)) Then CharCount = charpos;charpos = Len(Linetxt) - 1
-					Next
-					linetxt = linetxt[..CharCount]
-				Wend
+			'use special chars for same height on all lines
+			'else some lines will be less tall than others
+			local lineHeight:float = self.getHeight("gQ'_")
+			linetxt = linetxt.replace(chr(13), "~n")
+			local paragraphs:string[] = linetxt.split("~n")
 
-				'place (truncated) line
-				local drawLine:string = linetxt
+			'for each line/paragraph
+			For Local i:Int= 0 To paragraphs.length-1
+				'set current text to the current paragraph
+				linetxt = paragraphs[i]
+				'do automatically word-wrapping if needed
+				Repeat
+					'the amount of characters to keep until linebreak
+					fittingChars = 0
 
-				'no space left, we have finally to truncate and delete rest...
-				If 2 * self.getHeight(linetxt) > spaceAvailable And linetxt <> text[deletedchars..]
-					drawLine = linetxt[..Len(linetxt) - 3] + " ..."
-					charcount = 0
-				EndIf
+					'line to wide for box - shorten it
+					while self.getWidth(linetxt) >= w
+						'if cant get shortened: CharCount = 0 -> line deleted
+						For charPos = 0 To Len(linetxt) - 1
+							If linetxt[charPos] = Asc(" ") Then fittingChars = charPos
+							If linetxt[charPos] = Asc("-") Then fittingChars = charPos '- 1
+						Next
+						linetxt = linetxt[..fittingChars]
+					Wend
 
-				If doDraw
-					If align = 0 Then alignedx = x
-					If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
-					If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
-					self.drawStyled(drawLine, alignedx, y + h - spaceAvailable, cR, cG, cB, style, 1,special)
-				endif
+					'no space left, we have finally to truncate and delete rest...
+'					If 2 * lineHeight > spaceAvailable And linetxt <> text[deletedchars..]
+					If 2 * lineHeight > spaceAvailable And linetxt <> paragraphs[i][processedChars..]
+						linetxt = linetxt[..Len(linetxt) - 3] + " ..."
+						fittingChars = 0
+					EndIf
 
-				spaceAvailable :- self.getHeight(linetxt)
-				deletedchars :+ (charcount+1)
-				linetxt = text[Deletedchars..]
-			Until charcount = 0
-			usedheight = h - spaceAvailable
+					If doDraw
+						If align = 0 Then alignedx = x
+						If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
+						If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
+						self.drawStyled(linetxt, alignedx, y + h - spaceAvailable, cR, cG, cB, style, 1,special)
+					endif
+
+					spaceAvailable :- lineHeight
+					processedChars :+ (fittingChars+1)
+					linetxt = paragraphs[i][processedChars..]
+				Until fittingChars = 0
+				usedheight = h - spaceAvailable
+
+				'next line... -- not needed as it would "double add" a linewrap
+				'spaceAvailable :- lineHeight
+			Next
 		Else 'no linebreak allowed
 			If self.getWidth(linetxt) >= w
-				charcount = Len(linetxt)-1
+				fittingChars = Len(linetxt)-1
 				While self.getWidth(linetxt) >= w
-					linetxt = linetxt[..charcount]
-					charcount:-1
+					linetxt = linetxt[..fittingChars]
+					fittingChars:-1
 				Wend
 				If align = 0 Then alignedx = x
 				If align = 1 Then alignedx = x+(w - self.getWidth(linetxt$))/2

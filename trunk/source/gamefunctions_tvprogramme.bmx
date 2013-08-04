@@ -1018,7 +1018,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field episode:Int			= 0
 	Field episodes:TList		= CreateList()
 	Field blocks:Int			= 1
-	Field fsk18:Int				= 0
+	Field xrated:Int				= 0
 	Field _isMovie:Int			= 1
 	Field topicality:Int		= -1 				'how "attractive" a movie is (the more shown, the less this value)
 	Field maxtopicality:Int 	= 255
@@ -1094,7 +1094,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 												1.4 .. 		'paid programming
 											]
 
-	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, episode:Int=0)
+	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, episode:Int=0)
 		Local obj:TProgramme =New TProgramme
 		If episode >= 0
 			obj.BaseInit(title, description, TYPE_SERIE)
@@ -1116,7 +1116,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		obj.Outcome	    = Max(0,Outcome)
 		obj.Genre       = Max(0,Genre)
 		obj.blocks      = Max(1,blocks)
-		obj.fsk18       = fsk18
+		obj.xrated       = xrated
 		obj.actors 		= actors
 		obj.director    = director
 		obj.country     = country
@@ -1132,7 +1132,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		Return obj
 	End Function
 
-	Method AddEpisode:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, fsk18:Int, refreshModifier:float=null, wearoffModifier:float=null, episode:Int=0, id:Int=0)
+	Method AddEpisode:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=null, wearoffModifier:float=null, episode:Int=0, id:Int=0)
 		Local obj:TProgramme = New TProgramme
 		obj.BaseInit( title, description, TYPE_SERIE | TYPE_EPISODE)
 		If review < 0 Then obj.review = Self.review Else obj.review = review
@@ -1154,7 +1154,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		obj.topicality		= obj.ComputeTopicality()
 		obj.maxtopicality	= obj.topicality
 
-		obj.fsk18       	= fsk18
+		obj.xrated       	= xrated
 		obj._isMovie     	= 0
 		If episode = 0 Then episode = Self.episodes.count()+1
 		obj.episode			= episode
@@ -1454,7 +1454,7 @@ endrem
 	End Method
 
 	Method GetXRated:int() {_exposeToLua}
-		return (self.fsk18 <> "")
+		return (self.xrated <> "")
 	End Method
 
 	Method GetOutcome:int() {_exposeToLua}
@@ -1640,7 +1640,7 @@ endrem
 
 			dy :+ 22
 		EndIf
-		If Self.fsk18 <> 0 Then normalFont.drawBlock(GetLocale("MOVIE_XRATED") , x+240 , y+dY+34 , 50, 20,0) 'prints pg-rating
+		If Self.xrated <> 0 Then normalFont.drawBlock(GetLocale("MOVIE_XRATED") , x+240 , y+dY+34 , 50, 20,0) 'prints pg-rating
 
 		normalFont.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", x+10 , y+dY+135, 280, 16,0)
 		normalFont.drawBlock(GetLocale("MOVIE_SPEED")       , x+222, y+dY+187, 280, 16,0)
@@ -1830,7 +1830,9 @@ rem
 endrem
 
 	Method ComputePrice:Int() {_exposeToLua}
-		Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
+		'price ranges from 0-10.000
+		Return 100 * ceil( 100 * float(0.6*quality + 0.3*price + 0.1*self.ComputeTopicality())/255.0 )
+		'Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
 	End Method
 
 	Function Create:TNews(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0)
@@ -1930,7 +1932,7 @@ Type TDatabase
 		Local year:Int
 		Local Genre:Int
 		Local duration:Int
-		Local fsk18:Int
+		Local xrated:Int
 		Local price:Int
 		Local review:Int
 		Local speed:Int
@@ -1979,7 +1981,7 @@ Type TDatabase
 					year 		= xml.FindValueInt(nodeChild,"year", 1900)
 					Genre 		= xml.FindValueInt(nodeChild,"genre", 0 )
 					duration    = xml.FindValueInt(nodeChild,"blocks", 2)
-					fsk18 		= xml.FindValueInt(nodeChild,"xrated", 0)
+					xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
 					price 		= xml.FindValueInt(nodeChild,"price", 0)
 					review 		= xml.FindValueInt(nodeChild,"critics", 0)
 					speed 		= xml.FindValueInt(nodeChild,"speed", 0)
@@ -1988,7 +1990,7 @@ Type TDatabase
 					refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
 					wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 					If duration < 0 Or duration > 12 Then duration =1
-					TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, refreshModifier, wearoffModifier, -1)
+					TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, -1)
 					'print "film: "+title+ " " + Database.totalmoviescount
 					Database.totalmoviescount :+ 1
 				EndIf
@@ -2016,7 +2018,7 @@ Type TDatabase
 				year 		= xml.FindValueInt(nodeChild,"year", 1900)
 				Genre 		= xml.FindValueInt(nodeChild,"genre", 0)
 				duration    = xml.FindValueInt(nodeChild,"blocks", 2)
-				fsk18 		= xml.FindValueInt(nodeChild,"xrated", 0)
+				xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
 				price 		= xml.FindValueInt(nodeChild,"price", -1)
 				review 		= xml.FindValueInt(nodeChild,"critics", -1)
 				speed 		= xml.FindValueInt(nodeChild,"speed", -1)
@@ -2025,7 +2027,7 @@ Type TDatabase
 				refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
 				wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 				If duration < 0 Or duration > 12 Then duration =1
-				Local parent:TProgramme = TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, refreshModifier, wearoffModifier, 0)
+				Local parent:TProgramme = TProgramme.Create(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, 0)
 				Database.seriescount :+ 1
 
 				'load episodes
@@ -2043,7 +2045,7 @@ Type TDatabase
 							year 		= xml.FindValueInt(nodeEpisode,"year", -1)
 							Genre 		= xml.FindValueInt(nodeEpisode,"genre", -1)
 							duration    = xml.FindValueInt(nodeEpisode,"blocks", -1)
-							fsk18 		= xml.FindValueInt(nodeEpisode,"xrated", fsk18)
+							xrated 		= xml.FindValueInt(nodeEpisode,"xrated", xrated)
 							price 		= xml.FindValueInt(nodeEpisode,"price", -1)
 							review 		= xml.FindValueInt(nodeEpisode,"critics", -1)
 							speed 		= xml.FindValueInt(nodeEpisode,"speed", -1)
@@ -2053,7 +2055,7 @@ Type TDatabase
 							wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 							'add episode to last added serie
 							'print "serie: --- episode:"+duration + " " + title
-							parent.AddEpisode(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, fsk18, refreshModifier, wearoffModifier, EpisodeNum)
+							parent.AddEpisode(title,description,actors, director,land, year, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, EpisodeNum)
 						EndIf
 					Next
 				EndIf
@@ -2277,7 +2279,7 @@ Type TAdBlock Extends TBlockGraphical
 			'draw graphic
 
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.drawBlock(Self.contract.contractBase.title, rect.GetX()+3, rect.GetY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
+			Assets.fonts.basefontBold.drawBlock(Self.contract.contractBase.title, rect.position.GetIntX()+3, rect.position.GetIntY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
 			SetColor 80,80,80
 			local spotNumber:int	= self.GetSpotNumber()
 			local spotCount:int		= self.contract.GetSpotCount()
@@ -2287,7 +2289,7 @@ Type TAdBlock Extends TBlockGraphical
 			ElseIf self.isBotched()
 				text = "------"
 			EndIf
-			Assets.fonts.baseFont.draw(text ,rect.GetX()+5,rect.GetY()+18)
+			Assets.fonts.baseFont.draw(text ,rect.position.GetIntX()+5,rect.position.GetIntY()+18)
 			SetColor 255,255,255 'eigentlich alte Farbe wiederherstellen
 			SetAlpha 1.0
 		EndIf 'same day or dragged
@@ -2782,15 +2784,15 @@ Type TProgrammeBlock Extends TBlockGraphical
 		'add "(1/10)"
 		title = title + titleAppend
 
-		Assets.fonts.basefontBold.drawBlock(title, _pos.x + 5, _pos.y +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
+		Assets.fonts.basefontBold.drawBlock(title, _pos.GetIntX() + 5, _pos.GetIntY() +2, Self.image.w - 10, 18, 0, 0, 0, 0, True)
 		If color <> Null Then color.set()
 		Local useFont:TBitmapFont = Assets.GetFont("Default", 11, ITALICFONT)
 		If programme.parent <> Null
-			useFont.draw(Self.Programme.getGenreString()+"-Serie",_pos.x+5,_pos.y+18)
-			useFont.draw("Teil: " + Self.Programme.episode + "/" + Self.programme.parent.episodes.count(), _pos.x + 138, _pos.y + 18)
+			useFont.draw(Self.Programme.getGenreString()+"-Serie",_pos.GetIntX()+5,_pos.GetIntY()+18)
+			useFont.draw("Teil: " + Self.Programme.episode + "/" + Self.programme.parent.episodes.count(), _pos.GetIntX() + 138, _pos.GetIntY() + 18)
 		Else
-			useFont.draw(Self.Programme.getGenreString(),_pos.x+5,_pos.y+18)
-			If Self.programme.fsk18 <> 0 Then useFont.draw("FSK 18!",_pos.x+138,_pos.y+18)
+			useFont.draw(Self.Programme.getGenreString(),_pos.GetIntX()+5,_pos.GetIntY()+18)
+			If Self.programme.xrated <> 0 Then useFont.draw("FSK 18!",_pos.GetIntX()+138,_pos.GetIntY()+18)
 		EndIf
 		SetColor 255,255,255
 	End Method
@@ -2966,9 +2968,6 @@ Type TGUINewsBlock extends TGUIListItem
 
 			'background - no "_dragged" to add to name
 			Assets.GetSprite(Self.imageBaseName+parentNewsBlock.news.genre).Draw(screenX, screenY)
-
-			'paid state
-			If self.parentNewsBlock.paid Then Assets.GetFont("Default", 9).drawBlock(CURRENCYSIGN+" OK", screenX + 1, screenY + 65, 14, 25, 1, 50, 50, 50)
 
 			'default texts (title, text,...)
 			Assets.fonts.basefontBold.drawBlock(parentNewsBlock.news.title, screenX + 15, screenY + 4, 290, 15 + 8, 0, 20, 20, 20)

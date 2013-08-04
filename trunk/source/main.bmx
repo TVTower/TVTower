@@ -1096,9 +1096,6 @@ endrem
 	Function ComputeAudience(recompute:Int = 0)
 		Local block:TProgrammeBlock
 
-'should be same on all connected clients
-print "RON: ComputeAudience - luck: "+(Float(RandRange(-10,10))/1000.0)
-
 		For Local Player:TPlayer = EachIn TPlayer.List
 			block = Player.ProgrammePlan.GetCurrentProgrammeBlock()
 			Player.audience = 0
@@ -2252,17 +2249,22 @@ tempfigur.target.setX(550)
 tempfigur.updatefunc_	= UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
 
-tempfigur				= New TFigures.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
-tempfigur.rect.dimension.SetX(12)
-tempfigur.target.setX(550)
-tempfigur.updatefunc_	= UpdateBote
+'RON
+local haveNPCs:int = FALSE
+if haveNPCs
+	tempfigur				= New TFigures.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
+	tempfigur.rect.dimension.SetX(12)
+	tempfigur.target.setX(550)
+	tempfigur.updatefunc_	= UpdateBote
 
-tempfigur				= New TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 1,-65,0)
-tempfigur.rect.dimension.SetX(12)
-tempfigur.target.setX(550)
-tempfigur.updatefunc_	= UpdateBote
+	tempfigur				= New TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 1,-65,0)
+	tempfigur.rect.dimension.SetX(12)
+	tempfigur.target.setX(550)
+	tempfigur.updatefunc_	= UpdateBote
+endif
 
 tempfigur = Null
+
 
 Global MenuPlayerNames:TGUIinput[4]
 Global MenuChannelNames:TGUIinput[4]
@@ -2636,6 +2638,30 @@ TestList.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite(
 TestList.SetAcceptDrop("TGUIProgrammeCoverBlock")
 TestList.SetAutofillSlots(FALSE)
 
+Global TestWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,200, "")
+TestWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
+TestWindow.background.valueColor = TColor.Create(235,235,235)
+TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionstüchtigkeit bereit, auch ist es möglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dass alles einleuchtet und Du das akzeptierst... wünschen wir Dir viel Spaß mit TVTower Version ~q"+VersionDate+"~q")
+
+Global StartTips:TList = CreateList()
+StartTips.addLast( ["Tip: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tip: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
+StartTips.addLast( ["Tip: Werbeverträge", "Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen."] )
+
+Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
+local tipNumber:int = rand(0, StartTips.count()-1)
+local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
+StartTipWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
+StartTipWindow.background.valueColor = TColor.Create(235,235,235)
+StartTipWindow.setText( tip[0], tip[1] )
+'TestWindow.setText( tip[0], tip[1] )
+
+rem
+Global TestDrop:TGUIDropDown = new TGUIDropDown.Create(600,20, 100, "Startjahr", "MainMenu")
+for local i:int = 0 to 10
+	TestDrop.addEntry(1980+i)
+Next
+endrem
 
 Global TestKoffer:TGUISlotList = new TGUISlotList.Create(400,20,300,80, "MainMenu")
 TestKoffer.SetItemLimit(10)
@@ -3136,6 +3162,9 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	Game.cursorstate = 0
 	If Game.Players[Game.playerID].Figure.inRoom <> Null Then Game.Players[Game.playerID].Figure.inRoom.Update()
 
+	'check for clicks on items BEFORE others check and use it
+	GUIManager.Update("InGame")
+
 	'ingamechat
 	If Game.networkgame AND KEYMANAGER.IsHit(KEY_ENTER)
 		If Not GUIManager.isActive(InGame_Chat.guiInput._id)
@@ -3147,15 +3176,12 @@ Function UpdateMain(deltaTime:Float = 1.0)
 		EndIf
 	EndIf
 
-	'check for clicks on items BEFORE others check and use it
-	GUIManager.Update("InGame")
-
 	If Game.Players[Game.playerID].Figure.inRoom = Null
-		If MOUSEMANAGER.IsDown(1)
+		If MOUSEMANAGER.isClicked(1) and not GUIManager.modalActive
 			If functions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
 				Game.Players[Game.playerID].Figure.ChangeTarget(MouseManager.x, MouseManager.y)
+				MOUSEMANAGER.resetKey(1)
 			EndIf
-			MOUSEMANAGER.resetKey(1)
 		EndIf
 	EndIf
 	'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof

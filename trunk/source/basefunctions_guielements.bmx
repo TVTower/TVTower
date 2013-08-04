@@ -47,6 +47,8 @@ Type TGUIManager
 	Field List:TList			= CreateList()
 	Field ListReverse:TList		= CreateList()
 	Field draggedObjects:int	= 0
+	Field _ignoreMouse:int		= FALSE
+	Field modalActive:int		= FALSE			'modal dialogues will block every click etc.
 	global viewportX:int=0,viewportY:int=0,viewportW:int=0,viewportH:int=0
 
 	Function Create:TGUIManager()
@@ -239,6 +241,11 @@ Type TGUIManager
 		local screenRect:TRectangle = Null
 
 		GUIManager.draggedObjects = 0
+		GUIManager.modalActive = FALSE
+
+		'ignoreMouse can be useful for objects which know, that nothing
+		'else should take care of mouse movement/clicks
+		self._ignoreMouse = FALSE
 
 		For Local obj:TGUIobject = EachIn Self.ListReverse 'from top to bottom
 			'maybe move "below haveToHandleCheck" - so only "visible" objects are counted
@@ -249,7 +256,7 @@ Type TGUIManager
 
 			if not self.haveToHandleObject(obj,State,fromZ,toZ) then continue
 
-			if obj._flags & GUI_OBJECT_CLICKABLE
+			if obj._flags & GUI_OBJECT_CLICKABLE and not self._ignoreMouse
 				'store screenRect to save multiple calculations
 				screenRect = obj.GetScreenRect()
 
@@ -386,6 +393,7 @@ Type TGUIobject
 	Field data:TData				= TData.Create() 'storage for additional data
 	Field zIndex:Int
 	Field scale:Float				= 1.0
+	Field alpha:Float				= 1.0
 	Field align:Int					= 0 			'alignment of object
 	Field valign:Int				= 0 			'vertical-alignment of object
 	Field state:String				= ""
@@ -830,7 +838,10 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 	Method Draw()
+		local oldAlpha:float = GetAlpha()
 		SetColor 255, 255, 255
+
+		SetAlpha oldAlpha * self.alpha
 
 		self.DrawBaseForm( "gfx_gui_button"+Self.state, Self.GetScreenX(),Self.GetScreenY() )
 
@@ -839,6 +850,8 @@ Type TGUIButton Extends TGUIobject
 		If textalign = 1 Then TextX = Ceil(Self.GetScreenX() + (Self.GetScreenWidth() - Self.useFont.getWidth(value)) / 2)
 
 		self.DrawBaseFormText(value, TextX, TextY)
+
+		SetAlpha oldAlpha
 	End Method
 
 End Type
@@ -877,6 +890,51 @@ Type TGUILabel extends TGUIobject
 
 	Method Draw:int()
 		usefont.drawStyled(text, floor(rect.GetX() + alignment*(rect.GetW() - usefont.getWidth(text))) + self.displacement.GetX(), floor(rect.GetY() + self.displacement.GetY()), color.r, color.g, color.b, 1)
+	End Method
+
+End Type
+
+
+Type TGUITextBox extends TGUIobject
+	Field text:string = ""
+	Field displacement:TPoint = TPoint.Create(0,0)
+	Field color:TColor = TColor.Create(0,0,0)
+	field alignment:float = 0 '0 = left, 1 = center, 2 = right
+	Field autoAdjustHeight:int = false
+
+	'will be added to general GuiManager
+	'-- use CreateSelfContained to get a unmanaged object
+	Method Create:TGUITextBox(x:int,y:int, w:int,h:int, text:string, color:TColor=null, displacement:TPoint = null, limitState:string="")
+		super.CreateBase(x,y, limitState, null)
+		self.resize(w,h)
+
+		self.text = text
+		if color then self.color = color
+		if displacement then self.displacement = displacement
+
+		GUIManager.Add( self )
+		return self
+	End Method
+
+	Method GetHeight:int()
+		if self.autoAdjustHeight
+			local limitHeight:int = 600
+			local spaceLeft:TPoint = usefont.drawBlock(text, self.GetScreenX(),self.GetScreenY(),rect.GetW(),limitHeight, alignment, color.r, color.g, color.b, 0, 1, 0)
+			return (limitHeight - spaceLeft.getY())
+		else
+			return self.rect.dimension.getY()
+		endif
+	End Method
+
+	Method Update:int()
+	End Method
+
+	Method SetAlignLeft:int(); self.alignment = 0; End Method
+	Method SetAlignCenter:int(); self.alignment = 1; End Method
+	Method SetAlignRight:int(); self.alignment = 2; End Method
+
+	Method Draw:int()
+		usefont.drawBlock(text, floor(self.GetScreenX()),floor(self.GetScreenY()),rect.GetW(),rect.GetH(), alignment, color.r, color.g, color.b, 0, 1, 1, 0.25)
 	End Method
 
 End Type
@@ -960,6 +1018,7 @@ Type TGUIBackgroundBox Extends TGUIobject
    ' Global List:Tlist
 	Field textalign:Int = 0
 	Field manualState:Int = 0
+	Field valueColor:TColor = TColor.Create(200,200,200)
 
 	Method Create:TGUIBackgroundBox(x:Int, y:Int, width:Int = 100, height:Int= 100, State:String = "")
 		super.CreateBase(x,y, State, null)
@@ -1010,11 +1069,11 @@ Type TGUIBackgroundBox Extends TGUIobject
 		If Self.scale <> 1.0 Then SetScale 1.0,1.0
 
 		Local TextX:Float = Ceil( drawPos.x + 10)
-		Local TextY:Float = Ceil( drawPos.y + 5 - (Self.useFont.getHeight(value) - Assets.GetSprite("gfx_gui_box_context.TL").h * Self.scale) / 2 )
+		Local TextY:Float = Ceil( drawPos.y + 3 - (Self.useFont.getHeight(value) - Assets.GetSprite("gfx_gui_box_context.TL").h * Self.scale) / 2 )
 
 		If textalign = 1 Then TextX = Ceil( drawPos.x + (self.GetScreenWidth() - Self.useFont.getWidth(value)) / 2 )
 
-		self.UseFont.drawStyled(value,TextX,TextY, 200,200,200, 2, 1, 0.75)
+		self.UseFont.drawStyled(value,TextX,TextY, valueColor.r,valueColor.g,valueColor.b, 2, 1, 0.75)
 
 		SetColor 255,255,255
 	End Method
@@ -1335,8 +1394,8 @@ Type TGUIDropDown Extends TGUIobject
 	Field textalign:Int = 0
 	Field heightIfOpen:float = 0
 
-	Method Create:TGUIDropDown(x:Int, y:Int, width:Int = -1, on:Byte = 0, value:String, State:String = "", UseFont:TBitmapFont = Null)
-		super.CreateBase(x,y,State,UseFont)
+	Method Create:TGUIDropDown(x:Int, y:Int, width:Int = -1, value:String, limitState:String = "")
+		super.CreateBase(x,y,limitState,null)
 
 		If width < 0 Then width = self.useFont.getWidth(value) + 8
 		self.Resize( width, Assets.GetSprite("gfx_gui_dropdown.L").frameh * self.scale)
@@ -1514,6 +1573,200 @@ Type TGUIOkButton Extends TGUIobject
 		if not(self._flags & GUI_OBJECT_ENABLED) then col = TColor.create(150,150,150)
 
 		Self.useFont.drawStyled( value, self.GetScreenX()+Self.assetWidth*Self.scale + textDisplaceX, self.GetScreenY() - (dim.getY() - self.GetScreenHeight()) / 2, col.r, col.g, col.b, 1 )
+	End Method
+
+End Type
+
+
+Type TGUIModalWindow Extends TGUIPanel
+	field DarkenedArea:TRectangle	= Null
+	field textbox:TGUITextBox
+	field textboxPadding:TRectangle	= null
+	field textboxPaddingTop:int		= 50
+	field textboxPaddingBottom:int	= 50
+	field buttons:TGUIButton[]
+	field autoAdjustHeight:int		= TRUE
+	'variables for closing animation
+	field moveAcceleration:float	= 1.2
+	field moveDY:float				= -1.0
+	field move:TPoint				= TPoint.Create(0,0)
+	field fadeValue:float			= 1.0
+	field fadeFactor:float			= 0.9
+	field fadeActive:float			= FALSE
+	field isSetToClose:int			= FALSE
+
+	Method Create:TGUIModalWindow(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
+		Super.Create(x,y,width,height,limitState)
+
+		self.setZIndex(10000)
+
+		'the window itself
+		self.background = New TGUIBackgroundBox.Create(0,0,width,height,"")
+		self.background.value	= "Window"
+		self.background.usefont	= Assets.GetFont("Default", 16, BOLDFONT)
+		self.background.SetTextalign("CENTER")
+		'we want to call draw/update for the background
+		self.background.remove()
+		self.background.setParent(self)
+
+		self.textboxPadding = TRectangle.Create(45,10,50,10) 'top,left,bottom,right
+
+		self.textbox = New TGUITextBox.Create(self.textboxPadding.GetLeft(),self.textboxPadding.GetTop(),0,0, "", null, null, "")
+		self.textbox.autoAdjustHeight = true
+		self.textbox.setParent(self)
+		GUIManager.remove(self.textbox)
+		self.addElement(self.textbox)
+
+		'a default button
+		self.buttons = self.buttons[..1]
+		self.buttons[0] = New TGUIButton.Create(TPoint.Create(0, 0), 120, "OK")
+		self.buttons[0].setParent(self)
+
+		self.resize(width,height)
+
+		'we want to know if one clicks on a windows buttons
+		EventManager.registerListenerMethod( "guiobject.onClick", self, "onButtonClick" )
+
+		return self
+	End Method
+
+	Method Resize(w:float=Null,h:float=Null)
+		if not w then w = self.rect.getW()
+		if not h then h = self.rect.getH()
+
+		'resize self
+		self.rect.dimension.setXY(ceil(w),ceil(h))
+
+		'move button
+		self.buttons[0].rect.position.setXY(w/2 -120/2, h-50)
+		'move textbox
+		self.textbox.resize(w- self.textboxPadding.getLeft() - self.textboxPadding.GetRight(),h-self.textboxPadding.GetTop()-self.textboxPadding.GetBottom())
+		'move background
+		self.background.resize(w,h)
+
+		self.Recenter()
+	End Method
+
+	Method Recenter()
+		'center the window
+		local centerX:float=0.0
+		local centerY:float=0.0
+		if not darkenedArea
+			centerX = GraphicsWidth()/2
+			centerY = GraphicsHeight()/2
+		else
+			centerX = DarkenedArea.getX() + DarkenedArea.GetW()/2
+			centerY = DarkenedArea.getY() + DarkenedArea.GetH()/2
+		endif
+		self.rect.position.setXY(centerX - self.rect.getW()/2 + move.getX(),centerY - self.rect.getH()/2 + move.getY() )
+	End Method
+
+	'cleanup function
+	Method Remove()
+		GUIManager.remove(self)
+		'button is managed from guimanager
+		'so we have to delete that separately
+		self.buttons[0].remove()
+	End Method
+
+	'close the window (eg. with an animation)
+	Method Close:int()
+		self.isSetToClose = TRUE
+
+		'no animation just calls "remove"
+		'but we want a nice fadeout
+		self.fadeActive = TRUE
+	End Method
+
+	Method canClose:int()
+		if self.fadeActive then return FALSE
+
+		return TRUE
+	end Method
+
+	Method SetText:TGUIModalWindow(caption:string="", text:string="")
+		self.background.value = caption
+		self.textbox.text = text
+
+		local oldTextboxHeight:float = self.textbox.rect.GetH()
+		local newTextboxHeight:float = self.textbox.getHeight()
+		'resize window
+		self.resize(0, self.rect.getH() + newTextboxHeight-oldTextboxHeight )
+		return self
+	End Method
+
+	'handle clicks on the up/down-buttons and inform others about changes
+	Method onButtonClick:int( triggerEvent:TEventBase )
+		local sender:TGUIButton = TGUIButton(triggerEvent.GetSender())
+		if sender = Null then return FALSE
+
+		For local i:int = 0 to self.buttons.length
+			if self.buttons[i] <> sender then continue
+
+			'close window
+			if i = 0 then self.close()
+		Next
+	End Method
+
+
+	Method Update:int()
+		'remove the window as soon as there is no animation active
+		if self.isSetToClose
+			if self.canClose()
+				self.remove()
+				return FALSE
+			else
+				if self.fadeActive then self.fadeValue :* self.fadeFactor
+				'buttons are managed by guimanager, so we have to set
+				'their alpha here so they can draw correctly
+				for local i:int = 0 to self.buttons.length-1
+					self.buttons[i].alpha = self.fadeValue
+				Next
+				'quit fading when nearly zero
+				if self.fadeValue < 0.05 then self.fadeActive = FALSE
+
+				'move the dialogue too
+				'- first increase the speed
+				self.moveDY :* self.moveAcceleration
+				'- now displace the objects
+				self.move.moveXY(0, self.moveDY)
+			endif
+		endif
+
+		self.recenter()
+
+		GUIManager.modalActive = TRUE
+
+		'update added elements
+		For local obj:TGUIobject = eachin self.elements
+			obj.update()
+		Next
+
+
+		'deactivate mousehandling for other underlying objects
+		GUIManager._ignoreMouse = TRUE
+	End Method
+
+	Method Draw()
+		SetAlpha Max(0, 0.5 * self.fadeValue)
+		SetColor 0,0,0
+		if not DarkenedArea
+			DrawRect(0,0,GraphicsWidth(), GraphicsHeight())
+		else
+			DrawRect(DarkenedArea.getX(),DarkenedArea.getY(),DarkenedArea.getW(), DarkenedArea.getH())
+		endif
+		SetAlpha Max(0, 1.0 * self.fadeValue)
+		SetColor 255,255,255
+
+		'draw the window
+		self.background.draw()
+
+		'draw added elements
+		For local obj:TGUIobject = eachin self.elements
+			obj.draw()
+		Next
+
+		SetAlpha 1.0
 	End Method
 
 End Type

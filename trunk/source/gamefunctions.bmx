@@ -1043,7 +1043,7 @@ Type TTooltip extends TRenderableChild
 		tooltip.width			= width
 		tooltip.height			= height
 		tooltip.startlifetime	= float(lifetime) / 1000.0
-		tooltip.startFadeTime	= 0.2 '0.5 * tooltip.startlifetime
+		tooltip.startFadeTime	= Min(tooltip.startlifetime/2.0, 0.2) '0.5 * tooltip.startlifetime
 		tooltip.Hover()
 		If not List Then List	= CreateList()
 		List.AddLast(tooltip)

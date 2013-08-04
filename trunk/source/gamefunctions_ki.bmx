@@ -295,7 +295,7 @@ Type TLuaFunctions {_exposeToLua}
 	End Function
 
 	Method PrintOut:Int(text:String)
-		Print text
+		Print "[AI "+self.ME+"] "+text
 		Return self.RESULT_OK
 	EndMethod
 

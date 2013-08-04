@@ -378,6 +378,10 @@ Type RoomHandler_Office extends TRoomHandler
 	global PPprogrammeList:TgfxProgrammelist
 	global PPcontractList:TgfxContractlist
 
+	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
+	Global fastNavigateInitialTimer:int = 250
+	Global fastNavigationUsedContinuously:int = FALSE
+
 	Function Init()
 		'add gfx to background image
 		If Not DrawnOnProgrammePlannerBG then InitProgrammePlannerBackground()
@@ -698,9 +702,27 @@ Type RoomHandler_Office extends TRoomHandler
 				Game.daytoplan :- 1
 			endif
 		EndIf
+		'RON
 		'fast movement is possible with keys
-		if KEYMANAGER.isDown(KEY_PAGEUP) then Game.daytoplan :-1
-		if KEYMANAGER.isDown(KEY_PAGEDOWN) then Game.daytoplan :+1
+		'we use doAction as this allows a decreasing time
+		'while keeping the original interval backupped
+		if self.fastNavigateTimer.isExpired()
+			if not KEYMANAGER.isDown(KEY_PAGEUP) and not KEYMANAGER.isDown(KEY_PAGEDOWN)
+				self.fastNavigationUsedContinuously = FALSE
+			endif
+			if KEYMANAGER.isDown(KEY_PAGEUP) then Game.daytoplan :-1;self.fastNavigationUsedContinuously = TRUE
+			if KEYMANAGER.isDown(KEY_PAGEDOWN) then Game.daytoplan :+1;self.fastNavigationUsedContinuously = TRUE
+
+
+			'modify action time AND reset timer
+			if self.fastNavigationUsedContinuously
+				'decrease action time each time a bit more...
+				self.fastNavigateTimer.setInterval( Max(50, self.fastNavigateTimer.GetInterval() * 0.9), true )
+			else
+				'set to initial value
+				self.fastNavigateTimer.setInterval( self.fastNavigateInitialTimer, true )
+			endif
+		endif
 
 
 		'limit to start day
@@ -1947,7 +1969,7 @@ Type TRoomSigns Extends TBlockMoveable
 
 		For Local room:TRoomSigns = EachIn TRoomSigns.List
 			If room.rect.GetX() >= 0
-				Local signfloor:Int = (13 - Ceil((MouseManager.y -41) / 23))
+				Local signfloor:Int = 14 - Ceil( (MouseManager.y -41) / 23)
 				Local xpos:Int = 0
 				If room.rect.GetX() = 26 Then xpos = 1
 				If room.rect.GetX() = 208 Then xpos = 2
@@ -1955,8 +1977,10 @@ Type TRoomSigns Extends TBlockMoveable
 				If room.rect.GetX() = 599 Then xpos = 4
 				If functions.IsIn(_x, _y, room.rect.GetX(), room.rect.GetY(), _width, _height)
 					Local clickedroom:TRooms = TRooms.GetRoomFromMapPos(xpos, signfloor)
-					print "GetRoomFromXY : "+clickedroom.name
-					return clickedroom
+					if clickedroom
+						'print "GetRoomFromXY : "+clickedroom.name
+						return clickedroom
+					endif
 				EndIf
 			EndIf
 		Next

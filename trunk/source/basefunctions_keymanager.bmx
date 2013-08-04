@@ -14,6 +14,7 @@ Const KEY_STATE_HIT:int			= 1
 Const KEY_STATE_DOWN:int		= 2
 Const KEY_STATE_UP:int			= 3
 Const KEY_STATE_DOUBLEHIT:int	= 4
+Const KEY_STATE_CLICKED:int		= 5
 
 For local i:int = 0 To 255
 	KEYWRAPPER.allowKey(i,KEYWRAP_ALLOW_BOTH,600,200)
@@ -40,11 +41,15 @@ Type TMouseManager
 
 	Method IsHit:Int( iKey:Int, ignoreDoubleClicks:int=TRUE)
 		if ignoreDoubleClicks then return Self._iKeyStatus[ iKey ] = KEY_STATE_HIT
-		return (Self._iKeyStatus[ iKey ] = KEY_STATE_HIT) or (Self._iKeyStatus[ iKey ] = KEY_STATE_DOUBLEHIT)
+		return (Self._iKeyStatus[ iKey ] = KEY_STATE_HIT) or (Self._iKeyStatus[ iKey ] = KEY_STATE_DOUBLEHIT) or (Self._iKeyStatus[ iKey ] = KEY_STATE_CLICKED)
 	EndMethod
 
 	Method IsDoubleHit:Int( iKey:Int)
 		return Self._iKeyStatus[ iKey ] = KEY_STATE_DOUBLEHIT
+	EndMethod
+
+	Method IsClicked:Int( iKey:Int )
+		return Self._iKeyStatus[ iKey ] = KEY_STATE_CLICKED
 	EndMethod
 
 	Method IsDown:Int( iKey:Int )
@@ -102,7 +107,7 @@ Type TMouseManager
 					endif
 
 				endif
-			ElseIf _iKeyStatus[ i ] = KEY_STATE_HIT or _iKeyStatus[ i ] = KEY_STATE_DOUBLEHIT
+			ElseIf _iKeyStatus[ i ] = KEY_STATE_HIT or _iKeyStatus[ i ] = KEY_STATE_DOUBLEHIT or _iKeyStatus[ i ] = KEY_STATE_CLICKED
 				If MouseDown( i ) Then _iKeyStatus[ i ] = KEY_STATE_DOWN Else _iKeyStatus[ i ] = KEY_STATE_UP
 			ElseIf _iKeyStatus[ i ] = KEY_STATE_DOWN
 				If Not MouseDown( i ) Then _iKeyStatus[ i ] = KEY_STATE_UP
@@ -114,6 +119,7 @@ Type TMouseManager
 				'store time when first mousedown happened
 				if self._iKeyDownTime[i] = 0 then self._iKeyDownTime[i] = millisecs()
 			Else
+				if self._iKeyDownTime[i] > 0 then _iKeyStatus[ i ] = KEY_STATE_CLICKED
 				'reset time - mousedown no longer happening
 				self._iKeyDownTime[i] = 0
 			endif
@@ -121,6 +127,7 @@ Type TMouseManager
 	EndMethod
 
 	Method resetKey:Int( iKey:Int )
+		_iKeyDownTime[ iKey ] = 0
 		_iKeyStatus[ iKey ] = KEY_STATE_UP
 		Return KEY_STATE_UP
 	EndMethod
