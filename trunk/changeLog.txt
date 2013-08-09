@@ -1,3 +1,43 @@
+2013-08-04 14:04  ronny
+
+	  - Unscharfe Schrift bei Programmplanung entfernt (int-XY beim
+	  Zeichnen)
+	  - DefaultAIPlayer.lua - Lua-Error entfernt, der auftreten konnte,
+	  falls die KI das Programm zu einer spezifischen Zeit abrufen
+	  wollte, aber dort keines gesetzt ist
+	  - Zeilenumbruch bei bitmapfont.drawBlock korrigiert (vorher wurde
+	  er nur registriert, wenn die Zeile "davor" zu lang/breit war).
+	  Engine reagiert nun auf Blitz-Internes "~n" was dem
+	  systeminternen Zeilenumbruch entspricht
+	  - TGUIModalWindow - fuer Spielmeldungen, Fenster laesst andere
+	  GUI-Elemente die Mausbewegungen/-klicks ignorieren (bzw markiert,
+	  dass ein Modalfenster vorhanden ist). Simple Fadeout-Animation
+	  eingebunden
+	  - Bild-Auf/-Ab im Programmplaner wird nun "immer schneller" wenn
+	  die Taste gedrueckt gelassen wird
+	  - Klicks in der Raumuebersicht (Fahrstuhl) werden nun korrekt
+	  ausgewertet
+	  - Tooltip-"Fadeout"-Zeiten haben nun als Minimumwert die Haelfte
+	  der Darstellungszeit - verhindert "Tooltip blendet schon von
+	  Anfang an aus"
+	  - LUA-Docs erneuert
+	  - TMouseManager: neue Methode "isClicked". Reagiert erst bei
+	  Loslassen des Mousebuttons, statt schon beim Druecken
+	  
+	  trunk/TVTower, trunk/TVTower.bmx, trunk/TVTower.exe,
+	  trunk/changeLog.txt, trunk/doc.html, trunk/docLuaOnly.html,
+	  trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
 2013-08-01 07:31  ronny
 
 	  - Callin-Gewinn wird nun korrekt berechnet (RandRange(5,2) <>

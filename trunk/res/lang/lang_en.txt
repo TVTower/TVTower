@@ -100,6 +100,7 @@ AUDIENCE_RATING			= audience rating
 MAX_AUDIENCE_RATING		= max. audience rating
 
 AD_PROFIT				= profit
+AD_PLANNED				= planned
 AD_TOSEND				= to send
 AD_PENALTY				= penalty
 AD_MIN_AUDIENCE			= min. audience

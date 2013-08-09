@@ -369,7 +369,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 
 
-
+	'return a value how often a successfull/planned adblock was placed
 	global sentBroadcastHint:int = 0
 	Method GetContractBroadcastCount:Int(_contractId:int, successful:int = 1, planned:int = 0) {_exposeToLua} 'successful & planned sind bool-Werte
 		if not sentBroadcastHint
@@ -894,25 +894,32 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		font.drawBlock(self.contractBase.description   		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "	, x+10 , y+94 , 130, 16)
 		font.drawBlock(functions.convertValue(String( self.getProfit() ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
-		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		font.drawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+94 , 127, 16,2)
-
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
 		font.drawBlock(functions.convertValue(String( self.GetPenalty() ), 2, 0)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,2)
-		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+150, y+117, 127, 16)
-		font.drawBlock(functions.convertValue(String( GetMinAudience( playerID ) ), 2, 0), x+150, y+117, 127, 16,2)
-		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+self.GetTargetgroupString()   , x+10 , y+140 , 270, 16)
+		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+10, y+140, 127, 16)
+		font.drawBlock(functions.convertValue(String( GetMinAudience( playerID ) ), 2, 0), x+10, y+140, 127, 16,2)
+
+		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
+		font.drawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+94 , 127, 16,2)
+		font.drawBlock(getLocale("AD_PLANNED")+": "    , x+150, y+117 , 127, 16)
+		if self.owner > 0
+			font.drawBlock( Game.players[self.owner].ProgrammePlan.GetContractBroadcastCount(self.id, FALSE, TRUE)+"/"+self.GetSpotCount() , x+150, y+117 , 127, 16,2)
+		else
+			font.drawBlock( "-" , x+150, y+117 , 127, 16,2)
+		endif
+
+		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+self.GetTargetgroupString()   , x+10 , y+163 , 270, 16)
 		If owner <= 0
 			If self.GetDaysToFinish() > 1
-				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() + getLocale("DAYS"), x+86 , y+163 , 122, 16)
+				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() +" "+ getLocale("DAYS"), x+86 , y+186 , 122, 16)
 			Else
-				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() + getLocale("DAY"), x+86 , y+163 , 122, 16)
+				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() +" "+ getLocale("DAY"), x+86 , y+186 , 122, 16)
 			EndIf
 		Else
 			Select self.GetDaysLeft()
-				Case 0	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TODAY") , x+86 , y+163 , 126, 16)
-				Case 1	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOMORROW") , x+86 , y+163 , 126, 16)
-				Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysLeft()), x+86 , y+163 , 122, 16)
+				Case 0	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TODAY") , x+86 , y+186 , 126, 16)
+				Case 1	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOMORROW") , x+86 , y+186 , 126, 16)
+				Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysLeft()), x+86 , y+186 , 122, 16)
 			EndSelect
 		EndIf
 	End Method

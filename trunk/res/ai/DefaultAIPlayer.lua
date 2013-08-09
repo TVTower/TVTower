@@ -210,6 +210,9 @@ function BusinessStats:AddSpot(spot)
 end
 
 function BusinessStats:AddMovie(movie)
+--RON
+TVT.PrintOut("RON: AddMovie")
+
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
 	if (CheckMovieBuyConditions(movie, maxPrice)) then -- Preisgrenze
 		if (movie.IsMovie()) then

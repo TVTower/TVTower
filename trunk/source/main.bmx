@@ -2641,7 +2641,7 @@ TestList.SetAutofillSlots(FALSE)
 Global TestWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,200, "")
 TestWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
 TestWindow.background.valueColor = TColor.Create(235,235,235)
-TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionstüchtigkeit bereit, auch ist es möglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dass alles einleuchtet und Du das akzeptierst... wünschen wir Dir viel Spaß mit TVTower Version ~q"+VersionDate+"~q")
+TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionstüchtigkeit bereit, auch ist es möglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... wünschen wir Dir viel Spaß mit TVTower Version ~q"+VersionDate+"~q")
 
 Global StartTips:TList = CreateList()
 StartTips.addLast( ["Tip: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )

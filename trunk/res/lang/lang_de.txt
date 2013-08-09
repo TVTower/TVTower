@@ -98,12 +98,13 @@ TV_TURN_IT_ON       = Du solltest sie wieder anschalten ;D
 AUDIENCE_RATING     = Einschaltquote
 MAX_AUDIENCE_RATING = maximale Zuschauerzahl
 
-AD_PROFIT      = Gewinn
-AD_TOSEND      = zu senden
-AD_PENALTY     = Strafe
+AD_PROFIT		= Gewinn
+AD_PLANNED		= eingeplant
+AD_TOSEND		= zu senden
+AD_PENALTY		= Strafe
 AD_MIN_AUDIENCE= Mindestz.
 AD_TARGETGROUP = Zielgruppe
-AD_TILL_TODAY    = bis Heute Abend!!
+AD_TILL_TODAY    = bis heute Abend!!
 AD_TILL_TOMORROW  = bis Morgen!
 AD_STILL_X_DAYS= noch %1 Tage
 AD_TIME        = Zeit
