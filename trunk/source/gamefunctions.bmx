@@ -1631,6 +1631,31 @@ Type TInterface
 			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
 			If ShowChannel <> 0
 				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
+
+				'show additional information if channel is player's channel
+				if ShowChannel = Game.playerID
+					If Game.GetMinute() >= 5 and Game.GetMinute() < 55
+						Local adblock:TAdBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentAdBlock()
+						if adblock
+							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + adblock.contract.contractBase.title+" (Mindestz.: "+functions.convertValue(String( adblock.contract.GetMinAudience() ))+")"
+						else
+							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
+						endif
+					elseif Game.GetMinute()>=55 OR Game.GetMinute()<5
+						Local programmeblock:TProgrammeBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentProgrammeBlock()
+						if programmeblock
+							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~n"
+							if programmeblock.programme.parent <> null
+								CurrentProgrammeToolTip.text :+ programmeblock.programme.parent.title + ": "+ programmeblock.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(programmeblock.sendhour - game.GetDay()*24))+"/"+programmeblock.Programme.blocks+")"
+							else
+								CurrentProgrammeToolTip.text :+ programmeblock.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(programmeblock.sendhour - game.GetDay()*24))+"/"+programmeblock.Programme.blocks+")"
+							endif
+						else
+							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+": nicht gesetzt!"
+						endif
+					endif
+				endif
+
 			Else
 				CurrentProgrammeToolTip.text	= getLocale("TV_TURN_IT_ON")
 			EndIf
@@ -1658,8 +1683,8 @@ Type TInterface
 		If functions.IsIn(MouseManager.x,MouseManager.y,355,415,130,30)
 			MoneyToolTip.title 	= getLocale("MONEY")
 			MoneyTooltip.text	= getLocale("MONEY")+": "+Game.Players[Game.playerID].GetMoney() + getLocale("CURRENCY")
-			Moneytooltip.text	= MoneyTooltip.text + Chr(13)
-			Moneytooltip.text	= MoneyTooltip.text + getLocale("DEBT")+": "+ Game.Players[Game.playerID].GetCreditCurrent() + getLocale("CURRENCY")
+			Moneytooltip.text	:+ "~n"
+			Moneytooltip.text	:+ getLocale("DEBT")+": "+ Game.Players[Game.playerID].GetCreditCurrent() + getLocale("CURRENCY")
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()
 			'force redraw

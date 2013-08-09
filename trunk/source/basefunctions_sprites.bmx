@@ -690,14 +690,17 @@ Type TBitmapFont
 	Method draw:TPoint(text:String,x:Float,y:Float, doDraw:int = 1)
 		local width:float = 0.0
 		local height:float = 0.0
-		local textLines:string[]	= text.split(chr(13))
+		local textLines:string[]	= text.replace(chr(13), "~n").split("~n")
 		local currentLine:int = 0
 
 		local color:TColor = new TColor.Get()
+		'set the lineHeight before the "for-loop" so it has a set
+		'value if a line "in the middle" just consists of spaces or nothing
+		'-> allows double-linebreaks
+		local lineHeight:int = 0
 		For text:string = eachin textLines
 			currentLine:+1
 
-			local lineHeight:int = 0
 			local lineWidth:int = 0
 			local rotation:int = GetRotation()
 			For Local i:Int = 0 Until text.length

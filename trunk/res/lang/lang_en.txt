@@ -98,6 +98,11 @@ TV_OFF					= the TV is off!
 TV_TURN_IT_ON			= You should turn it on again;D
 AUDIENCE_RATING			= audience rating
 MAX_AUDIENCE_RATING		= max. audience rating
+NEXT_ADBLOCK			= next adblock
+NEXT_PROGRAMME			= next programme
+NEXT_NOTHINGSET			= not set!
+
+
 
 AD_PROFIT				= profit
 AD_PLANNED				= planned

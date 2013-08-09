@@ -2276,6 +2276,9 @@ Type TAdBlock Extends TBlockGraphical
 			If airedState = 2 Then SetColor 250,230,120 'running
 			If airedState = 4 Then SetColor 255,255,255 'old day
 
+			'if botched - set to red
+			If self.isAired() and self.isBotched() then SetColor 255, 200, 200
+
 			Local variant:String = ""
 			If dragged = 1 And not self.isAired()
 				If TAdBlock.AdditionallyDragged >0 Then SetAlpha 1- (1/TAdBlock.AdditionallyDragged * 0.25)
