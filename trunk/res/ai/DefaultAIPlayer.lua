@@ -62,10 +62,13 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
 	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
 	self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
+	
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
 	--self.TaskList[TASK_ARCHIVE]			= TVTArchive:new()
+	
+	--TODO: WarteTask erstellen. Gehört aber in AIEngine
 end
 
 function DefaultAIPlayer:TickAnalyse()
@@ -211,7 +214,7 @@ end
 
 function BusinessStats:AddMovie(movie)
 --RON
-TVT.PrintOut("RON: AddMovie")
+--TVT.PrintOut("RON: AddMovie")
 
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
 	if (CheckMovieBuyConditions(movie, maxPrice)) then -- Preisgrenze
@@ -266,7 +269,7 @@ end
 
 function OnReachRoom(roomId)
 	if (aiIsActive) then
-		getAIPlayer():OnReachRoom()
+		getAIPlayer():OnReachRoom(roomId)
 	end
 end
 
@@ -282,7 +285,7 @@ function FixDayAndHour2(day, hour)
 	return newDay, moduloHour
 end
 
-function OnMinute(number)
+function OnMinute(number)	
 	if (aiIsActive) then
 		getAIPlayer():Tick()
 	end

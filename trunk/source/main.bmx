@@ -1942,7 +1942,7 @@ endrem
 		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
 
-	Method getFloorByPixelExactPoint:Int(point:TPoint) 'y ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000
+	Method getFloorByPixelExactPoint:Int(point:TPoint) 'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000
 		For Local i:Int = 0 To 13
 			If Building.GetFloorY(i) < point.y Then Return i
 		Next
@@ -2644,9 +2644,9 @@ TestWindow.background.valueColor = TColor.Create(235,235,235)
 TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionstüchtigkeit bereit, auch ist es möglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... wünschen wir Dir viel Spaß mit TVTower Version ~q"+VersionDate+"~q")
 
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tip: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tip: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
-StartTips.addLast( ["Tip: Werbeverträge", "Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: Werbeverträge", "Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)

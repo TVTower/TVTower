@@ -359,6 +359,26 @@ endrem
 		Next
  		If room <> Null Then Self.ChangeTarget(room.Pos.x + 5, Building.pos.y + Building.getfloorY(room.Pos.y) - 5)
 	End Method
+	
+	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
+		'leave "subrooms"
+		For Local i:Int = 0 To 4
+			If Self.inRoom <> Null
+				'Print "leaving room " + Self.inroom.name
+				Self.LeaveRoom()
+			Else
+				Exit
+			EndIf
+		Next
+		
+		Local newX:Int = Self.rect.GetX() + relX
+		Local newY:Int = Building.pos.y + Building.getfloorY(self.GetFloor() + relYFloor) - 5
+
+		if (newX < 150) then newX = 150 end
+		if (newX > 580) then newX = 580 end		
+						
+ 		Self.ChangeTarget(newX, newY)
+	End Method	
 
 	Function GetByID:TFigures(id:Int)
 		For Local Figure:TFigures = EachIn TFigures.List

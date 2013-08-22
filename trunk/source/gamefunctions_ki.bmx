@@ -387,6 +387,24 @@ Type TLuaFunctions {_exposeToLua}
 		If Room <> Null Then Game.Players[ Self.ME ].Figure.SendToRoom(Room)
 	    Return self.RESULT_OK
 	End Method
+	
+	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstützt. Negativ: Nach links; Positiv: nach rechts
+		Game.Players[ Self.ME ].Figure.GoToCoordinatesRelative(relX, relYFloor)
+		Return self.RESULT_OK
+	End Method
+	
+	Method isRoomUnused:Int(roomId:Int = 0)
+		Local Room:TRooms = TRooms.GetRoom(roomId)
+		If Room <> Null
+			If Room.used >= 0 And Room.used <> Self.ME
+				Return -1
+			Else
+				Return self.RESULT_OK
+			Endif
+		Else
+			Return self.RESULT_NOTFOUND
+		Endif
+	End Method
 
 	Method getMillisecs:Int()
 		Return MilliSecs()
@@ -654,8 +672,9 @@ Type TLuaFunctions {_exposeToLua}
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		If ArrayID >= TMovieAgencyBlocks.List.Count() Or arrayID < 0 Then Return -2
-		Local Block:TMovieAgencyBlocks = TMovieAgencyBlocks(TMovieAgencyBlocks.List.ValueAtIndex(ArrayID))
-		If Block Then Return Block.Programme.id Else Return self.RESULT_NOTFOUND
+		Local Block:TMovieAgencyBlocks = TMovieAgencyBlocks(TMovieAgencyBlocks.List.ValueAtIndex(ArrayID))		
+		If Block Then If Block.Programme Then Return Block.Programme.id		
+		Return self.RESULT_NOTFOUND 'Nur wenn nichts gefunden wurde
 	End Method
 
 	Method md_doBuyMovie:Int(ObjektID:Int = -1)

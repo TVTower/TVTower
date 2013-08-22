@@ -148,7 +148,7 @@ function JobAppraiseMovies:AppraiseMovie(movie)
 	local pricePerBlockStats = nil
 	local qualityStats = nil
 --RON
-TVT.PrintOut("RON: AppraiseMovie")
+--TVT.PrintOut("RON: AppraiseMovie")
 	--Allgemeine Minimalvorraussetzungen erfüllt?
 	if (movie.IsMovie()) then
 		if (CheckMovieBuyConditions(movie, self.MovieMaxPrice, self.DayMovieMinQuality)) then

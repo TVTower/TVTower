@@ -1699,8 +1699,8 @@ Type TGUIModalWindow Extends TGUIPanel
 	Method onButtonClick:int( triggerEvent:TEventBase )
 		local sender:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		if sender = Null then return FALSE
-
-		For local i:int = 0 to self.buttons.length
+		
+		For local i:int = 0 to self.buttons.length - 1
 			if self.buttons[i] <> sender then continue
 
 			'close window

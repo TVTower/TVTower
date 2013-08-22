@@ -23,11 +23,13 @@ TASK_STATUS_OPEN	= "T_open"
 TASK_STATUS_PREPARE	= "T_prepare"
 TASK_STATUS_RUN		= "T_run"
 TASK_STATUS_DONE	= "T_done"
+TASK_STATUS_CANCEL	= "T_cancel"
 
 JOB_STATUS_NEW		= "J_new"
 JOB_STATUS_REDO		= "J_redo"
 JOB_STATUS_RUN		= "J_run"
 JOB_STATUS_DONE		= "J_done"
+JOB_STATUS_CANCEL	= "J_cancel"
 
 -- ##### KLASSEN #####
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -71,10 +73,10 @@ end
 function AIPlayer:Tick()
 	self:TickAnalyse()
 
-	if (self.CurrentTask == nil) or (self.CurrentTask.Status == JOB_STATUS_DONE) then
+	if (self.CurrentTask == nil)  then
 		self:BeginNewTask()
 	else
-		if self.CurrentTask.Status == TASK_STATUS_DONE then
+		if self.CurrentTask.Status == TASK_STATUS_DONE or self.CurrentTask.Status == TASK_STATUS_CANCEL then
 			self:BeginNewTask()
 		else
 			self.CurrentTask:Tick()
@@ -87,6 +89,7 @@ function AIPlayer:TickAnalyse()
 end
 
 function AIPlayer:BeginNewTask()
+	--TODO: Warte-Task einfügen, wenn sich ein Task wiederholt
 	self.CurrentTask = self:SelectTask()
 	if self.CurrentTask == nil then
 		debugMsg("AIPlayer:BeginNewTask - task is nil... " )
@@ -115,8 +118,8 @@ function AIPlayer:OnDayBegins()
 	--Zum überschreiben
 end
 
-function AIPlayer:OnReachRoom()
-	self.CurrentTask:OnReachRoom()
+function AIPlayer:OnReachRoom(roomId)
+	self.CurrentTask:OnReachRoom(roomId)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -126,8 +129,8 @@ AITask = KIDataObjekt:new{
 	Id = nil; -- Der eindeutige Name des Tasks
 	Status = TASK_STATUS_OPEN; -- Der Status der Aufgabe
 	CurrentJob = nil; -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
-	BasePriority = 0; -- Grundlegende Priorität der Aufgabe
-	SituationPriority = 0; -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert
+	BasePriority = 0; -- Grundlegende Priorität der Aufgabe (zwischen 1 und 10)
+	SituationPriority = 0; -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert. Üblicherweise zwischen 0 und 10. Hat aber kein Maximum
 	CurrentPriority = 0; -- Berechnet: Aktuelle Priorität dieser Aufgabe
 	LastDone = 0; -- Zeit, wann der Task zuletzt abgeschlossen wurde
 	StartTask = 0; -- Zeit, wann der Task zuletzt gestartet wurde
@@ -166,7 +169,7 @@ function AITask:StartNextJob()
 		self.TickCounter = 0;
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
-		if (self.Status == TASK_STATUS_DONE) then
+		if (self.Status == TASK_STATUS_DONE) or (self.Status == TASK_STATUS_CANCEL) then
 			return
 		end
 	end
@@ -183,7 +186,11 @@ function AITask:Tick()
 		--debugMsg("----- Kein Job da - Neuen Starten")
 		self:StartNextJob() --Von vorne anfangen
 	else
-		if self.CurrentJob.Status == JOB_STATUS_DONE then
+		if self.CurrentJob.Status == JOB_STATUS_CANCEL then
+			self.CurrentJob = nil
+			self:SetCancel()
+			return
+		elseif self.CurrentJob.Status == JOB_STATUS_DONE then
 			self.CurrentJob = nil
 			--debugMsg("----- Alter Job ist fertig - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
@@ -201,17 +208,25 @@ end
 
 function AITask:getGotoJob()
 	local aJob = AIJobGoToRoom:new()
-	aJob.TargetRoom = self.TargetRoom
+	aJob.Task = self
+	aJob.TargetRoom = self.TargetRoom	
 	return aJob
 end
 
 function AITask:RecalcPriority()
-	local Ran1 = math.random(4)
-	local Ran2 = math.random(4)
-	local TimeDiff = Game.GetTimeGone() - self.LastDone	
+	if (self.LastDone == 0) then self.LastDone = Game.GetTimeGone() end
+
+	local Ran1 = math.random(75, 125) / 100
+	local TimeDiff = math.round(Game.GetTimeGone() - self.LastDone)
 	local player = _G["globalPlayer"]	
-	local requisitionPriority = player:GetRequisitionPriority(self.Id)
-	self.CurrentPriority = requisitionPriority + self.SituationPriority + (self.BasePriority * (8+Ran1)) + (TimeDiff / 10 * (self.BasePriority - 2 + Ran2))
+	local requisitionPriority = player:GetRequisitionPriority(self.Id)		
+	
+	local calcPriority = (self.BasePriority + self.SituationPriority) * Ran1 + requisitionPriority
+	local timeFactor = (20 + TimeDiff) / 20
+	
+	self.CurrentPriority = calcPriority * timeFactor
+		
+	debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")	
 end
 
 function AITask:SetDone()
@@ -221,10 +236,16 @@ function AITask:SetDone()
 	self.LastDone = Game.GetTimeGone()
 end
 
-function AITask:OnReachRoom()
+function AITask:SetCancel()
+	debugMsg("<<< Task abgebrochen!")
+	self.Status = TASK_STATUS_CANCEL
+	self.SituationPriority = self.SituationPriority / 2
+end
+
+function AITask:OnReachRoom(roomId)
 	--debugMsg("OnReachRoom!")
 	if (self.CurrentJob ~= nil) then
-		self.CurrentJob:OnReachRoom()
+		self.CurrentJob:OnReachRoom(roomId)
 	end
 end
 
@@ -270,23 +291,63 @@ function AIJob:ReDoCheck(pWait)
 	end
 end
 
-function AIJob:OnReachRoom()
+function AIJob:OnReachRoom(roomId)
 	--Kann überschrieben werden
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 AIJobGoToRoom = AIJob:new{
-	TargetRoom = 0
+	Task = nil;
+	TargetRoom = 0;
+	IsWaiting = false;
+	WaitSince = -1;
+	WaitTill = -1;
 }
 
 function AIJobGoToRoom:typename()
 	return "AIJobGoToRoom"
 end
 
-function AIJobGoToRoom:OnReachRoom()
-	--debugMsg("AIJobGoToRoom DONE!")
-	self.Status = JOB_STATUS_DONE
+function AIJobGoToRoom:OnReachRoom(roomId)
+	if (roomId == "-32" or roomId == -32) then --RESULT_INUSE
+		if (self.IsWaiting) then
+			debugMsg("Okay... aber nur noch 'n kleines bisschen...")
+		elseif (self:ShouldIWait()) then
+			debugMsg("Dann wart ich eben...")
+			self.IsWaiting = true		
+			self.WaitSince = Game.GetTimeGone()
+			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
+			if ((self.WaitTill - self.WaitSince) > 20) then
+				self.WaitTill = self.WaitSince + 20
+			end
+			local rand = math.random(50, 75)
+			debugMsg("Gehe etwas zur Seite: " .. rand)
+			TVT.doGoToRelative(rand)		
+		else
+			debugMsg("Ne ich warte nicht!")
+			self.Status = JOB_STATUS_CANCEL
+		end
+	else
+		--debugMsg("AIJobGoToRoom DONE!")
+		self.Status = JOB_STATUS_DONE	
+	end
+end
+
+function AIJobGoToRoom:ShouldIWait()
+	debugMsg("ShouldIWait Prio: " .. self.Task.CurrentPriority)
+	if (self.Task.CurrentPriority >= 60) then
+		return true
+	elseif (self.Task.CurrentPriority >= 30) then
+		local randVal = math.random(0, self.Task.CurrentPriority)
+		if (randVal >= 20) then
+			return true
+		else
+			return false
+		end
+	else
+		return false
+	end
 end
 
 function AIJobGoToRoom:Prepare(pParams)
@@ -297,9 +358,18 @@ function AIJobGoToRoom:Prepare(pParams)
 end
 
 function AIJobGoToRoom:Tick()
-	if (self.Status ~= JOB_STATUS_DONE) then
+	if (self.IsWaiting) then
+		--TODO: Einfach versuchen, wenn der Raum leer wurde
+		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
+			debugMsg("Jetzt ist frei!")
+			TVT.DoGoToRoom(self.TargetRoom)
+		elseif ((self.WaitTill - Game.GetTimeGone()) <= 0) then
+			debugMsg("Ach... ich geh...")
+			self.Status = JOB_STATUS_CANCEL
+		end			
+	elseif (self.Status ~= JOB_STATUS_DONE) then
 		self:ReDoCheck(10)
-	end
+	end		
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
