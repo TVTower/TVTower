@@ -27,12 +27,14 @@ Const NET_GAMESETTINGS:Int				= 120				' SERVER: send extra settings (random see
 
 Const NET_DELETE:Int					= 0
 Const NET_ADD:Int						= 1000
-Const NET_READD:Int						= 2000
+
 Const NET_CHANGE:Int					= 3000
 Const NET_BUY:Int						= 4000
 Const NET_SELL:Int						= 5000
 Const NET_BID:Int						= 6000
 Const NET_SWITCH:Int					= 7000
+Const NET_TOSUITCASE:Int				= 8000
+Const NET_FROMSUITCASE:Int				= 9000
 
 Network.callbackServer		= ServerEventHandler
 Network.callbackClient		= ClientEventHandler
@@ -144,6 +146,8 @@ Type TNetworkHelper
 		EventManager.registerListenerFunction( "programmecollection.addProgramme",		TNetworkHelper.onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeContract",	TNetworkHelper.onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.addContract",		TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeProgrammeFromSuitcase",	TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.addProgrammeToSuitcase",		TNetworkHelper.onChangeProgrammeCollection )
 
 		registeredEvents = true
 	End Method
@@ -179,21 +183,38 @@ Type TNetworkHelper
 		'do not allow events from players for other players objects
 		if owner <> Game.playerID and not Game.isGameLeader() then return FALSE
 
+		select triggerEvent.getTrigger()
+			case "programmecollection.removeprogramme"
+					local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
+					local sell:int = triggerEvent.GetData().getInt("sell",FALSE)
+					if sell
+						NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_SELL)
+					else
+						NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_DELETE)
+					endif
+			case "programmecollection.addprogramme"
+					local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
+					local buy:int = triggerEvent.GetData().getInt("buy",FALSE)
+					if buy
+						NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_BUY)
+					else
+						NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_ADD)
+					endif
 
-		if triggerEvent.isTrigger("programmecollection.removeProgramme")
-			local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
-			NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_DELETE)
-		elseif triggerEvent.isTrigger("programmecollection.addProgramme")
-			local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
-			NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_ADD)
+			case "programmecollection.addprogrammetosuitcase"
+					local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
+					NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_TOSUITCASE)
+			case "programmecollection.removeprogrammefromsuitcase"
+					local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
+					NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_FROMSUITCASE)
 
-		elseif triggerEvent.isTrigger("programmecollection.removeContract")
-			local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
-			NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_DELETE)
-		elseif triggerEvent.isTrigger("programmecollection.AddContract")
-			local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
-			NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_ADD)
-		endif
+			case "programmecollection.removecontract"
+					local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
+					NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_DELETE)
+			case "programmecollection.addcontract"
+					local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
+					NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_ADD)
+		end select
 
 		return FALSE
 	End Function
@@ -525,25 +546,6 @@ print "[NET] ReceiveGameReady"
 		Local tmpID:Int = -1
 		Local oldX:Int, oldY:Int
 		Select methodtype
-			Case NET_SWITCH
-								Local tmpBlock:TMovieAgencyBlocks[3]
-								For Local locObj:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
-									If not locObj.Programme then continue
-									If locObj.Programme.id = ProgrammeID then tmpBlock[0] = locObj
-									If locObj.Programme.id = newID then tmpBlock[1] = locObj
-								Next
-								Print "had to switch ID"+ProgrammeID+ " with ID"+newID+"/"+tmpBlock[1].programme.id
-								If tmpBlock[0] <> Null And tmpBlock[1] <> Null then tmpBlock[0].SwitchBlock(tmpBlock[1])
-			Case NET_BUY, NET_SELL
-								For Local locObj:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
-									If not locObj.Programme then continue
-									If locObj.Programme.id = ProgrammeID
-										if methodtype = NET_BUY then locObj.Buy( playerID, true)
-										if methodtype = NET_SELL then locObj.Sell( playerID, true)
-										print "[NET] MovieAgency "+methodtype+" obj:"+locobj.programme.title
-										exit
-									EndIf
-								Next
 			Case NET_BID
 								For Local locObj:TAuctionProgrammeBlocks  = EachIn TAuctionProgrammeBlocks.List
 									If not locObj.Programme then continue
@@ -599,21 +601,24 @@ print "[NET] ReceiveGameReady"
 
 					select action
 						case NET_ADD
-								Game.Players[ playerID ].ProgrammeCollection.AddProgramme( programme )
+								Game.Players[ playerID ].ProgrammeCollection.AddProgramme( programme, FALSE )
 								print "[NET] PCollection"+playerID+" - add programme "+programme.title
-						case NET_READD
-								Game.Players[ playerID ].ProgrammeCollection.AddProgramme( programme )
-								TMovieAgencyBlocks.RemoveBlockByProgramme(programme, playerID)
-								print "[NET] PCollection"+playerID+" - readd programme "+programme.title
-						case NET_SELL
-								Game.Players[ playerID ].finances[Game.getWeekday()].SellMovie(programme.getPrice())
-								Game.Players[ playerID ].ProgrammeCollection.RemoveProgramme( programme )
-								'TMovieAgencyBlocks.RemoveBlockByProgramme(programme, playerID)
-								print "[NET] PCollection"+playerID+" - sell programme "+programme.title
 						'remove from Collection (Archive - RemoveProgramme)
 						case NET_DELETE
-								Game.Players[ playerID ].ProgrammeCollection.RemoveProgramme( programme )
+								Game.Players[ playerID ].ProgrammeCollection.RemoveProgramme( programme, FALSE )
 								print "[NET] PCollection"+playerID+" - remove programme "+programme.title
+						case NET_BUY
+								Game.Players[ playerID ].ProgrammeCollection.AddProgramme( programme, TRUE )
+								print "[NET] PCollection"+playerID+" - buy programme "+programme.title
+						case NET_SELL
+								Game.Players[ playerID ].ProgrammeCollection.RemoveProgramme( programme, TRUE )
+								print "[NET] PCollection"+playerID+" - sell programme "+programme.title
+						case NET_TOSUITCASE
+								Game.Players[ playerID ].ProgrammeCollection.AddProgrammeToSuitcase( programme )
+								print "[NET] PCollection"+playerID+" - to suitcase - programme "+programme.title
+						case NET_FROMSUITCASE
+								Game.Players[ playerID ].ProgrammeCollection.RemoveProgrammeFromSuitcase( programme )
+								print "[NET] PCollection"+playerID+" - from suitcase - programme "+programme.title
 					EndSelect
 
 					TPlayerProgrammeCollection.fireEvents = TRUE

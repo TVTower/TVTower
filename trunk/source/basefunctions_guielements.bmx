@@ -70,7 +70,7 @@ Type TGUIManager
 
 		'find out if it hit a list...
 		local coord:TPoint = TPoint( data.get("coord") )
-		local dropTarget:TGuiObject = GUIManager.GetObjectByPos( coord, guiobject.GetLimitToState(), TRUE, GUI_OBJECT_ACCEPTS_DROP )
+		local dropTarget:TGuiObject = GUIManager.GetObjectByPos( coord, GUIManager.currentState, TRUE, GUI_OBJECT_ACCEPTS_DROP )
 
 		'if we found a dropTarget - emit an event
 		if dropTarget<>Null
@@ -267,13 +267,14 @@ Type TGUIManager
 					obj.mouseIsClicked	= null
 					obj.mouseover		= 0
 					obj.setState("")
+
 					'mouseclick somewhere - should deactivate active object
 					'no need to use the cached mouseButtonDown[] as we want the
 					'general information about a click
 					If MOUSEMANAGER.isHit(1,FALSE) And obj.isActive() then self.setActive(0)
 				EndIf
 
-				'only do something if
+					'only do something if
 				'a) there is NO dragged object
 				'b) we handle the dragged object
 				'c) and the mouse is within its rect
@@ -310,7 +311,6 @@ Type TGUIManager
 							endif
 							'onmousemove
 							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseOver", TData.Create(), obj ) )
-
 							foundHoverObject = TRUE
 						endif
 
@@ -325,13 +325,13 @@ Type TGUIManager
 
 						'inform others about a right guiobject click
 						If mouseButtonHit[2]
-							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",2), obj ) )
+							EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",2), obj ) )
 							'reset Button
 							mouseButtonHit[2] = FALSE
 						endif
 
 						if MOUSEMANAGER.isDoubleHit(1)
-							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK).AddNumber("button",1), obj ) )
+							EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK).AddNumber("button",1), obj ) )
 						endif
 
 						'do not use the cached mousebuttons when checking for "not pressed"
@@ -340,7 +340,7 @@ Type TGUIManager
 								obj.mouseIsClicked = TPoint.Create( MouseManager.x, MouseManager.y )
 
 								'fire onClickEvent
-								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), obj ) )
+								EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), obj ) )
 
 								'added for imagebutton and arrowbutton not being reset when mouse standing still
 								obj.MouseIsDown = null
@@ -389,6 +389,7 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 
 Type TGUIobject
 	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
+	Field positionBackup:TPoint		= null
 	Field padding:TRectangle		= TRectangle.Create(0,0,0,0)
 	Field data:TData				= TData.Create() 'storage for additional data
 	Field zIndex:Int
@@ -549,6 +550,8 @@ Type TGUIobject
 	Method drag:int(coord:TPoint=Null)
 		if not self.isDragable() or self.isDragged() then return FALSE
 
+		self.positionBackup = TPoint.Create( self.GetScreenX(), self.GetScreenY() )
+
 		'trigger an event immediately - if the event has a veto afterwards, do not drag!
 		local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", TData.Create().AddObject("coord", coord), self )
 		EventManager.triggerEvent( event )
@@ -562,19 +565,28 @@ Type TGUIobject
 		return TRUE
 	End Method
 
-	Method drop:int(coord:TPoint=Null)
+	'forcefully drops an item back to the position when dragged
+	Method dropBackToOrigin:int()
+		if not self.positionBackup then return FALSE
+		self.drop(self.positionBackup, TRUE)
+		return true
+	End Method
+
+	Method drop:int(coord:TPoint=Null, force:int=FALSE)
 		if not self.isDragged() then return FALSE
 
 		if coord and coord.getX()=-1 then coord = TPoint.Create(MouseManager.x, MouseManager.y)
 
 		'fire an event - if the event has a veto afterwards, do not drag!
+		'exception is, if the action is forced
 		local event:TEventSimple = TEventSimple.Create( "guiobject.onDrop", TData.Create().AddObject("coord", coord), self )
 		EventManager.triggerEvent( event )
-		if event.isVeto() then return FALSE
+		if not force and event.isVeto() then return FALSE
 
 		'nobody said no to "drop", so do it
 		self.setOption(GUI_OBJECT_DRAGGED, FALSE)
 		GUIManager.SortList()
+
 		return TRUE
 	End Method
 
@@ -682,11 +694,7 @@ Type TGUIobject
 
 	'get a rectangle describing the objects area on the screen
 	Method GetScreenRect:TRectangle()
-		'no other limiting object - just return the object's area
-		'(no move needed as it is already oriented to screen 0,0)
-		if not self._parent then return self.rect
-
-		'dragged items ignore parents
+		'dragged items ignore parents but take care of mouse position...
 		if self.isDragged()
 			return TRectangle.Create( ..
 					self.GetScreenX(),..
@@ -695,6 +703,11 @@ Type TGUIobject
 					self.GetScreenHeight() )
 
 		endif
+
+		'no other limiting object - just return the object's area
+		'(no move needed as it is already oriented to screen 0,0)
+		if not self._parent then return self.rect
+
 
 		local resultRect:TRectangle = self._parent.GetScreenRect()
 		'only try to intersect if the parent gaves back an intersection (or self if no parent)
@@ -1652,8 +1665,8 @@ Type TGUIModalWindow Extends TGUIPanel
 		local centerX:float=0.0
 		local centerY:float=0.0
 		if not darkenedArea
-			centerX = GraphicsWidth()/2
-			centerY = GraphicsHeight()/2
+			centerX = VirtualWidth()/2
+			centerY = VirtualHeight()/2
 		else
 			centerX = DarkenedArea.getX() + DarkenedArea.GetW()/2
 			centerY = DarkenedArea.getY() + DarkenedArea.GetH()/2
@@ -2016,6 +2029,15 @@ Type TGUIListBase Extends TGUIobject
 
 		GUIManager.Add( self )
 		Return self
+	End Method
+
+	Method EmptyList:int()
+		for local obj:TGUIobject = eachin self.entries
+			'call the objects cleanup-method
+			obj.remove()
+		Next
+		'overwrite the list with a new one
+		self.entries = CreateList()
 	End Method
 
 	Method SetEntryDisplacement(x:float=0.0, y:float=0.0)
@@ -2394,6 +2416,34 @@ Type TGUISlotList Extends TGUIListBase
 		return self
 	End Method
 
+	Method EmptyList:int()
+		super.EmptyList()
+
+		For local i:int = 0 to self._slots.length-1
+			'call the objects cleanup-method
+			if self._slots[i]
+				self._slots[i].remove()
+				'unset
+				self._slots[i] = null
+			endif
+		Next
+	End Method
+
+	'returns how many slots that list has at all
+	Method GetSlotAmount:int()
+		return self._slotAmount
+	End Method
+
+	'returns how many slots of that list are not occupied
+	Method GetUnusedSlotAmount:int()
+		local amount:int = 0
+		For local i:int = 0 to self._slots.length-1
+			if self._slots[i] then amount:+1
+		Next
+		return amount
+	End Method
+
+
 	Method SetAutofillSlots(bool:int=TRUE)
 		self._autofillSlots = bool
 	End Method
@@ -2531,8 +2581,8 @@ Type TGUISlotList Extends TGUIListBase
 		if itemSlot >= 0 then self._slots[itemSlot] = Null
 
 		self._slots[slot] = item
-		item.setParent(self)
-
+'		item.setParent(self)
+		item.setParent(self.guiEntriesPanel)
 		self.RecalculateElements()
 
 		return TRUE
@@ -2545,6 +2595,9 @@ Type TGUISlotList Extends TGUIListBase
 
 		'search for first free slot
 		if self._autofillSlots then addToSlot = self.getFreeSlot()
+
+		'auto slot requested
+		if addToSlot = -1 then addToSlot = self.getFreeSlot()
 
 		'no free slot or none given? find out on which slot we are dropping
 		'if possible, drag the other one and drop the new
@@ -2699,6 +2752,7 @@ Type TGUIListItem Extends TGUIobject
 		'also remove itself from the list it may belong to
 		local parent:TGUIobject = self._parent
 		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
+		if TGUIScrollablePanel(parent) then parent = TGUIScrollablePanel(parent)._parent
 		if TGUIListBase(parent) then TGUIListBase(parent).RemoveItem(self)
 	End Method
 
@@ -3014,3 +3068,27 @@ Type TGUIList Extends TGUIobject 'should extend TGUIPanel if Background - or gui
 
 End Type
 
+
+
+'simple gui object helper - so non-gui-objects may receive events...
+Type TGUISimpleRect Extends TGUIobject
+	Method Create:TGUISimpleRect(rect:TRectangle, limitState:string="")
+		super.CreateBase(rect.GetX(),rect.GetY(), limitState, null)
+		self.Resize(rect.GetW(), rect.GetH() )
+
+    	GUIManager.Add( self )
+		Return self
+	End Method
+
+	Method Update()
+	End Method
+
+	Method Draw()
+	rem debug
+		SetAlpha 0.5
+		DrawRect(self.GetScreenX(), self.GetScreenY(), self.GetScreenWidth(), self.GetScreenHeight())
+		SetAlpha 1.0
+	endrem
+	End Method
+
+End Type

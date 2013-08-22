@@ -25,12 +25,14 @@ Type TRooms  {_exposeToLua="selected"}
     Global LastID:Int			= 1
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
+
 	Method getDoorType:int()
 		If name = "supermarket"
 			'if self.DoorTimer.isExpired() then print "getDoorType: " + self.doortype else print "getDoorType: " + 5
 		endif
 		if self.DoorTimer.isExpired() then return self.doortype else return 5
 	End Method
+
 
     Method CloseDoor(figure:TFigures)
 		'timer finished
@@ -40,6 +42,7 @@ Type TRooms  {_exposeToLua="selected"}
 		Endif
     End Method
 
+
     Method OpenDoor(figure:TFigures)
 		'timer ticks again
 		If DoorTimer.isExpired()
@@ -48,17 +51,20 @@ Type TRooms  {_exposeToLua="selected"}
 		self.DoorTimer.reset()
     End Method
 
+
 	Function CloseAllDoors()
 		For Local room:TRooms = EachIn TRooms.RoomList
 			room.CloseDoor(null)
 		Next
 	End Function
 
+
     Function DrawDoorToolTips:Int()
 		For Local obj:TRooms = EachIn RoomList
 			If obj.tooltip and obj.tooltip.enabled Then obj.tooltip.Draw()
 		Next
 	End Function
+
 
     Function UpdateDoorToolTips:Int(deltaTime:float)
 		For Local obj:TRooms = EachIn TRooms.RoomList
@@ -95,6 +101,7 @@ Type TRooms  {_exposeToLua="selected"}
 		Next
     End Function
 
+
 	Function DrawDoorsOnBackground:Int()
 		'do nothing if already done
 		If DoorsDrawnToBackground then return 0
@@ -125,6 +132,7 @@ Type TRooms  {_exposeToLua="selected"}
 		DoorsDrawnToBackground = True
 	End Function
 
+
 	Function DrawDoors:Int()
 		For Local obj:TRooms = EachIn TRooms.RoomList
 			'skip invisible rooms (without door)
@@ -139,13 +147,26 @@ Type TRooms  {_exposeToLua="selected"}
 		Next
     End Function
 
+
 	'leave with Open/close-animation (black)
-	Method LeaveAnimated:Int(dontleave:Int)
+	Method LeaveAnimated:Int()
 		'roomboard left without animation as soon as something dragged but leave forced
-        If Self.name = "roomboard" 	AND TRoomSigns.AdditionallyDragged > 0 Then return True
+        If Self.name = "roomboard" 	AND TRoomSigns.AdditionallyDragged > 0 Then return TRUE
         If Self.name = "adagency"		Then TContractBlock.ContractsToPlayer(Game.playerID)
-        If Self.name = "movieagency"	Then TMovieAgencyBlocks.ProgrammeToPlayer(Game.playerID)
-        If Self.name = "archive"		Then TArchiveProgrammeBlock.ProgrammeToSuitcase(Game.playerID)
+        If Self.name = "movieagency"
+			'do not allow leaving as long as we have a dragged block
+			if RoomHandler_MovieAgency.draggedGuiProgrammeCoverBlock
+				return FALSE
+			else
+				RoomHandler_MovieAgency.ProgrammeToPlayer(Game.playerID)
+			endif
+		endif
+        If Self.name = "archive"
+			'do not allow leaving as long as we have a dragged block
+			if RoomHandler_Archive.draggedGuiProgrammeCoverBlock
+				return FALSE
+			endif
+		endif
 
 		If GetDoorType() >= 0
 			Fader.Enable() 'room fading
@@ -158,6 +179,7 @@ Type TRooms  {_exposeToLua="selected"}
 		EndIf
 		Return false
 	End Method
+
 
     'draw Room
 	Method Draw:int()
@@ -174,15 +196,14 @@ Type TRooms  {_exposeToLua="selected"}
 		return 0
 	End Method
 
+
     'process special functions of this room. Is there something to click on?
     'animated gimmicks? draw within this function.
 	Method Update:Int()
 		If Fader.fadeenabled And FadeAnimationActive
 			If Fader.fadecount >= 20 And not Fader.fadeout
 				Fader.EnableFadeout()
-				print "Room.Update - CloseDoor1"
 				CloseDoor(Game.Players[Game.playerID].Figure)
-				print "Room.Update - CloseDoor2"
 				FadeAnimationActive = False
  			    Game.Players[Game.playerID].Figure.LeaveRoom()
 				Return 0
@@ -214,7 +235,7 @@ Type TRooms  {_exposeToLua="selected"}
 		else
 			'TODO: [RON] change this to OnLeave event too
 			'something blocks leaving? - check it
-			If MOUSEMANAGER.IsHit(2) AND not Self.LeaveAnimated(0) then MOUSEMANAGER.resetKey(2)
+			If MOUSEMANAGER.IsHit(2) AND not Self.LeaveAnimated() then MOUSEMANAGER.resetKey(2)
 		endif
 
 
@@ -223,6 +244,7 @@ Type TRooms  {_exposeToLua="selected"}
 		return 0
 
 	End Method
+
 
 	Method BaseSetup:TRooms(screenManager:TScreenManager, name:string, desc:string, owner:int)
 		self.screenManager = screenManager
@@ -236,6 +258,7 @@ Type TRooms  {_exposeToLua="selected"}
 
 		return self
 	End Method
+
 
     'create room and use preloaded image
     'Raum erstellen und bereits geladenes Bild nutzen
@@ -261,6 +284,7 @@ Type TRooms  {_exposeToLua="selected"}
 
 		Return obj
 	End Function
+
 
     'create room and use preloaded image
     'Raum erstellen und bereits geladenes Bild nutzen
@@ -348,8 +372,8 @@ Type TRoomHandler
 
 	Function _RegisterHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), room:TRooms = null)
 		if room
-		EventManager.registerListenerFunction( "rooms.onUpdate", updateFunc, room )
-		EventManager.registerListenerFunction( "rooms.onDraw", drawFunc, room )
+			EventManager.registerListenerFunction( "rooms.onUpdate", updateFunc, room )
+			EventManager.registerListenerFunction( "rooms.onDraw", drawFunc, room )
 		endif
 	End Function
 
@@ -809,23 +833,23 @@ Type RoomHandler_Office extends TRoomHandler
 		font12.drawBlock(finances.sold_total+getLocale("CURRENCY")		,640,148+line*0,100,20,2,50,50,50)
 		font12.drawBlock(finances.paid_total+getLocale("CURRENCY")		,640,148+line*1,100,20,2,120,120,120)
 		font12.drawBlock(finances.revenue_interest+getLocale("CURRENCY"),640,148+line*2,100,20,2,50,50,50)
-		font13.drawBlock(finances.money+getLocale("CURRENCY")			,640,193,100,20,2,30,30,30)
+		font13.drawBlock(finances.revenue_after+getLocale("CURRENCY")	,640,193,100,20,2,30,30,30)
 
-		font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_MOVIES")   ,55, 49+line*0,330,20,0,50,50,50)
-		font12.drawBlock(Localization.GetString("FINANCES_BOUGHT_STATIONS") ,55, 49+line*1,330,20,0,120,120,120)
-		font12.drawBlock(Localization.GetString("FINANCES_SCRIPTS")         ,55, 49+line*2,330,20,0,50,50,50)
-		font12.drawBlock(Localization.GetString("FINANCES_ACTORS_STAGES")   ,55, 49+line*3,330,20,0,120,120,120)
-		font12.drawBlock(Localization.GetString("FINANCES_PENALTIES")       ,55, 49+line*4,330,20,0,50,50,50)
-		font12.drawBlock(Localization.GetString("FINANCES_STUDIO_RENT")     ,55, 49+line*5,330,20,0,120,120,120)
-		font12.drawBlock(Localization.GetString("FINANCES_NEWS")            ,55, 49+line*6,330,20,0,50,50,50)
-		font12.drawBlock(Localization.GetString("FINANCES_NEWSAGENCIES")    ,55, 49+line*7,330,20,0,120,120,120)
-		font12.drawBlock(Localization.GetString("FINANCES_STATION_COSTS")   ,55, 49+line*8,330,20,0,50,50,50)
-		font12.drawBlock(Localization.GetString("FINANCES_MISC_COSTS")     	,55, 49+line*9,330,20,0,120,120,120)
-		font12.drawBlock(finances.paid_movies+getLocale("CURRENCY")          ,280, 49+line*0,100,20,2,50,50,50)
-		font12.drawBlock(finances.paid_stations+getLocale("CURRENCY")        ,280, 49+line*1,100,20,2,120,120,120)
-		font12.drawBlock(finances.paid_scripts+getLocale("CURRENCY")         ,280, 49+line*2,100,20,2,50,50,50)
-		font12.drawBlock(finances.paid_productionstuff+getLocale("CURRENCY") ,280, 49+line*3,100,20,2,120,120,120)
-		font12.drawBlock(finances.paid_penalty+getLocale("CURRENCY")         ,280, 49+line*4,100,20,2,50,50,50)
+		font12.drawBlock(getLocale("FINANCES_BOUGHT_MOVIES")				,55, 49+line*0,330,20,0,50,50,50)
+		font12.drawBlock(getLocale("FINANCES_BOUGHT_STATIONS")				,55, 49+line*1,330,20,0,120,120,120)
+		font12.drawBlock(getLocale("FINANCES_SCRIPTS")						,55, 49+line*2,330,20,0,50,50,50)
+		font12.drawBlock(getLocale("FINANCES_ACTORS_STAGES")				,55, 49+line*3,330,20,0,120,120,120)
+		font12.drawBlock(getLocale("FINANCES_PENALTIES")					,55, 49+line*4,330,20,0,50,50,50)
+		font12.drawBlock(getLocale("FINANCES_STUDIO_RENT")					,55, 49+line*5,330,20,0,120,120,120)
+		font12.drawBlock(getLocale("FINANCES_NEWS")							,55, 49+line*6,330,20,0,50,50,50)
+		font12.drawBlock(getLocale("FINANCES_NEWSAGENCIES")					,55, 49+line*7,330,20,0,120,120,120)
+		font12.drawBlock(getLocale("FINANCES_STATION_COSTS")				,55, 49+line*8,330,20,0,50,50,50)
+		font12.drawBlock(getLocale("FINANCES_MISC_COSTS")					,55, 49+line*9,330,20,0,120,120,120)
+		font12.drawBlock(finances.paid_movies+getLocale("CURRENCY")			,280, 49+line*0,100,20,2,50,50,50)
+		font12.drawBlock(finances.paid_stations+getLocale("CURRENCY")		,280, 49+line*1,100,20,2,120,120,120)
+		font12.drawBlock(finances.paid_scripts+getLocale("CURRENCY")		,280, 49+line*2,100,20,2,50,50,50)
+		font12.drawBlock(finances.paid_productionstuff+getLocale("CURRENCY"),280, 49+line*3,100,20,2,120,120,120)
+		font12.drawBlock(finances.paid_penalty+getLocale("CURRENCY")		,280, 49+line*4,100,20,2,50,50,50)
 		font12.drawBlock(finances.paid_rent+getLocale("CURRENCY")            ,280, 49+line*5,100,20,2,120,120,120)
 		font12.drawBlock(finances.paid_news+getLocale("CURRENCY")            ,280, 49+line*6,100,20,2,50,50,50)
 		font12.drawBlock(finances.paid_newsagencies+getLocale("CURRENCY")    ,280, 49+line*7,100,20,2,120,120,120)
@@ -837,8 +861,12 @@ Type RoomHandler_Office extends TRoomHandler
 		Local maxvalue:float	= 0.0
 		Local barrenheight:Float= 0
 		For local day:Int = 0 To 6
+			'special handling for the first days in a game
+			'-> the days which did not happen yet, exception is current day
+			if day>0 and day > Game.getDaysPlayed() then continue
+
 			For Local obj:TPlayer = EachIn TPlayer.List
-				maxValue = max(maxValue, obj.finances[6 - day].money)
+				maxValue = max(maxValue, obj.finances[day].money)
 			Next
 		Next
 		SetColor 200, 200, 200
@@ -847,14 +875,37 @@ Type RoomHandler_Office extends TRoomHandler
 		SetColor 255, 255, 255
 		TPlayer.List.Sort(False)
 		For local day:Int = 0 To 6
+			'draw a background for the current day
+			if day = Game.GetWeekday()
+				SetAlpha 0.25
+				SetColor 180,120,30
+				DrawRect (60 + 65 * (day), 265, 65,100)
+				SetAlpha 1.0
+				SetColor 255,255,255
+			endif
+
+			'game day
+			if day = Game.GetWeekday()
+				font12.drawBlock(Game.GetDayName(day) ,60+65*day , 255,65,20,1,0,0,0)
+			else
+				font12.drawBlock(Game.GetDayName(day) ,60+65*day , 255,65,20,1,180,180,180)
+			endif
+
+			'special handling for the first days in a game
+			'-> the days which did not happen yet
+			if day > Game.getDaysPlayed() then continue
+
 			For Local locObject:TPlayer = EachIn TPlayer.List
 				barrenheight = 0 + (maxvalue > 0) * Floor((Float(locobject.finances[day].money) / maxvalue) * 100)
-				Assets.getSprite("gfx_financials_barren"+locObject.playerID).drawClipped(450 - 65 * (day) + (locObject.playerID) * 9, 365 - barrenheight, 450 - + 65 * (day) + (locObject.playerID) * 9, 265, 21, 100)
+				if barrenheight > 0
+					Assets.getSprite("gfx_financials_barren"+locObject.playerID).drawClipped(60 + 65 * (day) + (locObject.playerID) * 9, 365 - barrenheight, 60 + 65 * (day) + (locObject.playerID) * 9, 265, 21, 100)
+				endif
 			Next
+
 		Next
 		'coord descriptor
-		font12.drawBlock(functions.convertValue(maxvalue,2,0)       ,478 , 265,100,20,2,180,180,180)
-		font12.drawBlock(functions.convertValue(Int(maxvalue/2),2,0),478 , 315,100,20,2,180,180,180)
+		font12.drawBlock(functions.convertValue(maxvalue,2,0)       ,478-1 , 265+1,100,20,2,180,180,180)
+		font12.drawBlock(functions.convertValue(Int(maxvalue/2),2,0),478-1 , 315+1,100,20,2,180,180,180)
 	End Function
 
 	Function onUpdateFinancials:int( triggerEvent:TEventBase )
@@ -1040,74 +1091,224 @@ End Type
 
 'Archive: handling of players programmearchive - for selling it later, ...
 Type RoomHandler_Archive extends TRoomHandler
+	Global hoveredGuiProgrammeCoverBlock:TGuiProgrammeCoverBlock = null
+	Global draggedGuiProgrammeCoverBlock:TGuiProgrammeCoverBlock = null
+
+	Global GuiListSuitcase:TGUIProgrammeSlotList = null
+	Global DudeArea:TGUISimpleRect	'allows registration of drop-event
+
+	'configuration
+	Global suitcasePos:TPoint				= TPoint.Create(40,270)
+	Global suitcaseGuiListDisplace:TPoint	= TPoint.Create(17,27)
+
 
 	Function Init()
+		GuiListSuitcase	= new TGUIProgrammeSlotList.Create(suitcasePos.GetX()+suitcaseGuiListDisplace.GetX(),suitcasePos.GetY()+suitcaseGuiListDisplace.GetY(),200,80, "archive")
+		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
+		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+		GuiListSuitcase.acceptType		= TGUIProgrammeSlotList.acceptAll
+		GuiListSuitcase.SetItemLimit( TPlayerProgrammeCollection.SuitcaseProgrammeLimit )
+		GuiListSuitcase.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
+		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeCoverBlock")
+
+		DudeArea = new TGUISimpleRect.Create(TRectangle.Create(600,100, 200, 350), "archive" )
+		'dude should accept drop - else no recognition
+		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+		'we want to know if we hover a specific block - to show a datasheet
+		EventManager.registerListenerFunction( "TGUIProgrammeCoverBlock.OnMouseOver", onMouseOverProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
+		'drop programme ... so sell/buy the thing
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
+		'drop programme on dude - add back to player's collection
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlockOnDude, "TGUIProgrammeCoverBlock" )
+		'check right clicks on a gui block
+		EventManager.registerListenerFunction( "guiobject.onClick", onClickProgrammeBlock, "TGUIProgrammeCoverBlock" )
+
 		'register self for all archives-rooms
 		For local i:int = 1 to 4
 			local room:TRooms = TRooms.GetRoomByDetails("archive", i)
-			if room then super._RegisterHandler(Update, Draw, room)
+			if room then super._RegisterHandler(onUpdate, onDraw, room)
+
+			'figure enters room - reset the suitcase's guilist, limit listening to the 4 rooms
+			EventManager.registerListenerFunction( "rooms.onEnter", onRoomEnter, TRooms.GetRoomByDetails("archive",i) )
 		Next
+
 	End Function
 
-	Function Draw:int( triggerEvent:TEventBase )
+
+	Function CheckPlayerInRoom:int()
+		'check if we are in the correct room
+		if not Game.getPlayer().figure.inRoom then return FALSE
+		if Game.getPlayer().figure.inRoom.name <> "archive" then return FALSE
+
+		return TRUE
+	End Function
+
+	'in case of right mouse button click we want to add back the
+	'dragged block to the player's programmeCollection
+	Function onClickProgrammeBlock:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+		'only react if the click came from the right mouse button
+		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+
+		local guiBlock:TGUIProgrammeCoverBlock=TGUIProgrammeCoverBlock(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		if not guiBlock or not guiBlock.isDragged() then return FALSE
+
+		'add back to collection if already dropped it to suitcase before
+		if not Game.GetPlayer().programmeCollection.GetProgramme(guiBlock.programme.id)
+			Game.GetPlayer().programmeCollection.RemoveProgrammeFromSuitcase(guiBlock.Programme)
+		endif
+		'remove the gui element
+		guiBlock.remove()
+		guiBlock = null
+	End Function
+
+	'normally we should split in two parts:
+	' OnDrop - check money etc, veto if needed
+	' OnDropAccepted - do all things to finish the action
+	'but this should be kept simple...
+	Function onDropProgrammeCoverBlock:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local guiBlock:TGUIProgrammeCoverBlock = TGUIProgrammeCoverBlock( triggerEvent._sender )
+		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
+		if not guiBlock or not receiverList then return FALSE
+
+		local owner:int = guiBlock.programme.owner
+
+		select receiverList
+			case GuiListSuitcase
+				'check if still in collection - if so, remove
+				'from collection and add to suitcase
+				if Game.GetPlayer().programmeCollection.GetProgramme(guiBlock.programme.id)
+					'remove gui - a new one will be generated automatically
+					'as soon as added to the suitcase and the room's update
+					guiBlock.remove()
+
+					'if not able to add to suitcase (eg. full), cancel
+					'the drop-event
+					if not Game.GetPlayer().programmeCollection.AddProgrammeToSuitcase(guiBlock.programme)
+						triggerEvent.setVeto()
+					endif
+				endif
+
+				'else it is just a "drop back"
+				return TRUE
+		end select
+
+		return TRUE
+	End Function
+
+
+	'handle cover block drops on the dude
+	Function onDropProgrammeCoverBlockOnDude:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local guiBlock:TGUIProgrammeCoverBlock = TGUIProgrammeCoverBlock( triggerEvent._sender )
+		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		if not guiBlock or not receiver then return FALSE
+		if receiver <> DudeArea then return FALSE
+
+		'add back to collection
+		Game.GetPlayer().programmeCollection.RemoveProgrammeFromSuitcase(guiBlock.Programme)
+		'remove the gui element
+		guiBlock.remove()
+		guiBlock = null
+
+		return TRUE
+	End function
+
+
+	Function onMouseOverProgrammeCoverBlock:int( triggerEvent:TEventBase )
+		local item:TGUIProgrammeCoverBlock = TGUIProgrammeCoverBlock(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		hoveredGuiProgrammeCoverBlock = item
+		if item.isDragged()
+			draggedGuiProgrammeCoverBlock = item
+			'if we have an item dragged... we cannot have a menu open
+			ArchiveprogrammeList.SetOpen(0)
+		endif
+
+		return TRUE
+	End Function
+
+	'clear the guilist for the suitcase if a player enters
+	Function onRoomEnter:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent.GetSender())
+		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
+		if not room or not figure then return FALSE
+
+		'we are not interested in other figures than our player's
+		if not figure.IsActivePlayer() then return FALSE
+
+		'empty the guilist / delete gui elements
+		'- the real list still may contain elements with gui-references
+		self.guiListSuitcase.EmptyList()
+
+	End Function
+
+
+
+	Function onDraw:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return 0
+		if room.owner <> Game.playerID then return FALSE
+
+		ArchiveprogrammeList.Draw(False)
+
+		'make suitcase/vendor glow if needed
+		local glowSuitcase:string = ""
+		if draggedGuiProgrammeCoverBlock then glowSuitcase = "_glow"
+		'draw suitcase
+		Assets.GetSprite("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
+		GUIManager.Draw("archive")
+
+		if hoveredGuiProgrammeCoverBlock
+			'draw the current sheet
+			hoveredGuiProgrammeCoverBlock.DrawSheet()
+		endif
+	End Function
+
+
+	Function onUpdate:int( triggerEvent:TEventBase )
 		local room:TRooms = TRooms(triggerEvent._sender)
 		if not room then return 0
 
-		Assets.GetSprite("gfx_suitcase").Draw(40, 270)
-
-		If room.owner = Game.playerID
-			TArchiveProgrammeBlock.DrawAll(room.owner)
-			ArchiveprogrammeList.Draw(False)
-		EndIf
-
-		For Local obj:TArchiveProgrammeBlock= EachIn TArchiveProgrammeBlock.List
-			'skip other players
-			If obj.owner > 0 and obj.owner<>Game.playerID then continue
-			'skip problematic ones
-			if not obj.Programme then continue
-
-			If obj.rect.containsXY( MouseManager.x, MouseManager.y )
-				If obj.dragged = 0 then obj.Programme.ShowSheet(30,20)
-				Exit
-			EndIf
-		Next
-	End Function
-
-	Function Update:int( triggerEvent:TEventBase )
-		local room:TRooms = TRooms(triggerEvent._sender)
-		if not room then return 0
+		if room.owner <> game.playerID then return FALSE
 
 		Game.cursorstate = 0
 
-		Game.Players[Game.playerID].Figure.fromRoom = Null
-
-		If ArchiveProgrammeList.GetOpen() = 0
-			if functions.IsIn(MouseManager.x, MouseManager.y, 605,65,120,90) Or functions.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
-				Game.cursorstate = 1
-				If MOUSEMANAGER.IsHit(1)
-					MOUSEMANAGER.resetKey(1)
-					Game.cursorstate = 0
-					ArchiveProgrammeList.SetOpen(1)
-				endif
-			EndIf
+		'open list when clicking dude
+		if not draggedGuiProgrammeCoverBlock
+			If ArchiveProgrammeList.GetOpen() = 0
+				if functions.IsIn(MouseManager.x, MouseManager.y, 605,65,120,90) Or functions.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
+					Game.cursorstate = 1
+					If MOUSEMANAGER.IsHit(1)
+						MOUSEMANAGER.resetKey(1)
+						Game.cursorstate = 0
+						ArchiveProgrammeList.SetOpen(1)
+					endif
+				EndIf
+			endif
+			ArchiveprogrammeList.Update(False)
 		endif
 
-		For Local obj:TArchiveProgrammeBlock= EachIn TArchiveProgrammeBlock.List
-			'skip other players
-			If obj.owner > 0 and obj.owner<>Game.playerID then exit
-			'skip problematic ones
-			if not obj.Programme then exit
-
-			If obj.rect.containsXY( MouseManager.x, MouseManager.y )
-				If obj.dragged = 0 then game.cursorstate = 1 else game.cursorstate = 2
-				Exit
-			EndIf
+		'create missing gui elements for the current suitcase
+		For local programme:TProgramme = eachin Game.getPlayer().ProgrammeCollection.SuitcaseProgrammeList
+			if guiListSuitcase.ContainsProgramme(programme) then continue
+			guiListSuitcase.addItem( new TGuiProgrammeCoverBlock.CreateWithProgramme(programme),"-1" )
 		Next
 
-		If room.owner = Game.playerID
-			TArchiveProgrammeBlock.UpdateAll(room.owner)
-			ArchiveprogrammeList.Update(False)
-		EndIf
+		'reset hovered block - will get set automatically on gui-update
+		hoveredGuiProgrammeCoverBlock = null
+		'reset dragged block too
+		draggedGuiProgrammeCoverBlock = null
+
+		GUIManager.Update("archive")
+
 	End Function
 
 End Type
@@ -1118,58 +1319,431 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global twinkerTimer:TIntervalTimer = TIntervalTimer.Create(6000,250)
 	Global AuctionToolTip:TTooltip
 
+	Global VendorArea:TGUISimpleRect	'allows registration of drop-event
+
+	Global hoveredGuiProgrammeCoverBlock:TGuiProgrammeCoverBlock = null
+	Global draggedGuiProgrammeCoverBlock:TGuiProgrammeCoverBlock = null
+
+	'arrays holding the different blocks
+	'we use arrays to find "free slots" and set to a specific slot
+	Global listMoviesGood:TProgramme[]
+	Global listMoviesCheap:TProgramme[]
+	Global listSeries:TProgramme[]
+
+	'graphical lists for interaction with blocks
+	Global GuiListMoviesGood:TGUIProgrammeSlotList = null
+	Global GuiListMoviesCheap:TGUIProgrammeSlotList = null
+	Global GuiListSeries:TGUIProgrammeSlotList = null
+	Global GuiListSuitcase:TGUIProgrammeSlotList = null
+
+	'configuration
+	Global suitcasePos:TPoint				= TPoint.Create(350,130)
+	Global suitcaseGuiListDisplace:TPoint	= TPoint.Create(17,27)
+	Global programmesPerLine:int			= 12
+	Global movieCheapMaximum:int			= 50000
+
+
 	Function Init()
+		'resize arrays
+		listMoviesGood	= listMoviesGood[..programmesPerLine]
+		listMoviesCheap	= listMoviesCheap[..programmesPerLine]
+		listSeries		= listSeries[..programmesPerLine]
+
+		GuiListMoviesGood	= new TGUIProgrammeSlotList.Create(596,50,200,80, "movieagency")
+		GuiListMoviesCheap	= new TGUIProgrammeSlotList.Create(596,148,200,80, "movieagency")
+		GuiListSeries		= new TGUIProgrammeSlotList.Create(596,246,200,80, "movieagency")
+		GuiListSuitcase		= new TGUIProgrammeSlotList.Create(suitcasePos.GetX()+suitcaseGuiListDisplace.GetX(),suitcasePos.GetY()+suitcaseGuiListDisplace.GetY(),200,80, "movieagency")
+
+		GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
+		GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
+		GuiListSeries.guiEntriesPanel.minSize.SetXY(200,80)
+		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
+
+		GuiListMoviesGood.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+		GuiListMoviesCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+		GuiListSeries.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
+
+		GuiListMoviesGood.acceptType	= TGUIProgrammeSlotList.acceptMovies
+		GuiListMoviesCheap.acceptType	= TGUIProgrammeSlotList.acceptMovies
+		GuiListSeries.acceptType		= TGUIProgrammeSlotList.acceptSeries
+		GuiListSuitcase.acceptType		= TGUIProgrammeSlotList.acceptAll
+
+		GuiListMoviesGood.SetItemLimit( listMoviesGood.length )
+		GuiListMoviesCheap.SetItemLimit( listMoviesCheap.length )
+		GuiListSeries.SetItemLimit( listSeries.length )
+		GuiListSuitcase.SetItemLimit( TPlayerProgrammeCollection.SuitcaseProgrammeLimit )
+
+		GuiListMoviesGood.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
+		GuiListMoviesCheap.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
+		GuiListSeries.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
+		GuiListSuitcase.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
+
+		GuiListMoviesGood.SetAcceptDrop("TGUIProgrammeCoverBlock")
+		GuiListMoviesCheap.SetAcceptDrop("TGUIProgrammeCoverBlock")
+		GuiListSeries.SetAcceptDrop("TGUIProgrammeCoverBlock")
+		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeCoverBlock")
+
+		VendorArea = new TGUISimpleRect.Create(TRectangle.Create(20,60, Assets.GetSprite("gfx_hint_rooms_movieagency").w, Assets.GetSprite("gfx_hint_rooms_movieagency").h), "movieagency" )
+		'vendor should accept drop - else no recognition
+		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+		'drop ... so sell/buy the thing
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
+		'is dragging even allowed? - eg. intercept if not enough money
+		EventManager.registerListenerFunction( "guiobject.onDrag", onDragProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
+		'we want to know if we hover a specific block - to show a datasheet
+		EventManager.registerListenerFunction( "TGUIProgrammeCoverBlock.OnMouseOver", onMouseOverProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
+		'drop on vendor - sell things
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlockOnVendor, "TGUIProgrammeCoverBlock" )
+		'figure enters room - reset the suitcase's guilist, limit listening to this room
+		EventManager.registerListenerFunction( "rooms.onEnter", onRoomEnter, TRooms.GetRoomByDetails("movieagency",0) )
+
+
 		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, TScreen.GetScreen("screen_movieagency") )
 		super._RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, TScreen.GetScreen("screen_movieauction") )
 	End Function
+
+
+
+	'===================================
+	'Movie Agency: common functions
+	'===================================
+
+	Function GetProgrammesInStock:int()
+		Local ret:Int = 0
+		local lists:TProgramme[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For local j:int = 0 to lists.length-1
+			For Local programme:TProgramme = EachIn lists[j]
+				if programme Then ret:+1
+			Next
+		Next
+		return ret
+	End Function
+
+
+	Function GetProgrammeByPosition:TProgramme(position:int)
+		if position > GetProgrammesInStock() then return null
+		local currentPosition:int = 0
+		local lists:TProgramme[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For local j:int = 0 to lists.length-1
+			For Local programme:TProgramme = EachIn lists[j]
+				if programme
+					if currentPosition = position then return programme
+					currentPosition:+1
+				endif
+			Next
+		Next
+		return null
+	End Function
+
+	Function HasProgramme:int(programme:TProgramme)
+		local lists:TProgramme[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For local j:int = 0 to lists.length-1
+			For Local prog:TProgramme = EachIn lists[j]
+				if prog = programme then return TRUE
+			Next
+		Next
+		return FALSE
+	End Function
+
+	Function GetProgrammeByProgrammeID:TProgramme(programmeID:int)
+		local lists:TProgramme[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For local j:int = 0 to lists.length-1
+			For Local programme:TProgramme = EachIn lists[j]
+				if programme and programme.id = programmeID then return programme
+			Next
+		Next
+		return null
+	End Function
+
+
+	Function SellProgrammeToPlayer:int(programme:TProgramme, playerID:int)
+		if programme.owner = playerID then return FALSE
+
+		if not Game.isPlayer(playerID) then return FALSE
+
+		'try to add to suitcase of player
+		if not Game.Players[ playerID ].ProgrammeCollection.AddProgrammeToSuitcase(programme)
+			return FALSE
+		endif
+
+		'remove from agency's lists
+		local lists:TProgramme[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		For local j:int = 0 to lists.length-1
+			For local i:int = 0 to lists[j].length-1
+				if lists[j][i] = programme then lists[j][i] = null
+			Next
+		Next
+
+		return TRUE
+	End Function
+
+
+	Function BuyProgrammeFromPlayer:int(programme:TProgramme)
+		local buy:int = (programme.owner > 0)
+
+		'remove from player (lists and suitcase) - and give him money
+		if Game.isPlayer(programme.owner)
+			print "remove from player "+programme.owner
+			Game.Players[ programme.owner ].ProgrammeCollection.RemoveProgramme(programme, TRUE)
+		endif
+
+		'add to agency's lists - if not existing yet
+		if not HasProgramme(programme) then AddProgramme(programme)
+
+		return TRUE
+	End Function
+
+
+	Function AddProgramme:int(programme:TProgramme)
+		'try to fill the program into the corresponding list
+		'we use multiple lists - if the first is full, try second
+		local lists:TProgramme[][]
+
+		if programme.isMovie()
+			if programme.getPrice() < movieCheapMaximum
+				lists = [listMoviesCheap,listMoviesGood]
+			else
+				lists = [listMoviesGood,listMoviesCheap]
+			endif
+		else
+			lists = [listSeries]
+		endif
+
+		'loop through all lists - as soon as we find a spot
+		'to place the programme - do so and return
+		for local j:int = 0 to lists.length-1
+			for local i:int = 0 to lists[j].length-1
+				if lists[j][i] then continue
+				programme.owner = -1
+				lists[j][i] = programme
+				'print "added programme "+programme.title+" to list "+j+" at spot:"+i
+				return TRUE
+			Next
+		Next
+
+		'there was no empty slot to place that programme
+		'so just give it back to the pool
+		programme.owner = 0
+
+		return FALSE
+	End Function
+
+
+
+	'refills slots in the movie agency
+	Function ReFillBlocks:Int()
+		local lists:TProgramme[][] = [listMoviesGood,listMoviesCheap,listSeries]
+		local programme:TProgramme = null
+
+		for local j:int = 0 to lists.length-1
+			for local i:int = 0 to lists[j].length-1
+				'if exists...skip it
+				if lists[j][i] then continue
+
+				if lists[j] = listMoviesGood then programme = TProgramme.GetRandomMovie()
+				if lists[j] = listMoviesCheap then programme = TProgramme.GetRandomMovie()
+				if lists[j] = listSeries then programme = TProgramme.GetRandomSerie()
+
+				'add new programme at slot
+				if programme
+					programme.owner = -1
+					lists[j][i] = programme
+				else
+					print "ERROR: Not enough programmes to fill movie agency in list "+i
+				endif
+			Next
+		Next
+	End Function
+
+
+	Function ProgrammeToPlayer:Int(playerID:Int)
+		Game.Players[playerID].ProgrammeCollection.ReaddProgrammesFromSuitcase()
+
+		'fill all open slots in the agency
+		ReFillBlocks()
+	End Function
+
+	Function CheckPlayerInRoom:int()
+		'check if we are in the correct room
+		if not Game.getPlayer().figure.inRoom then return FALSE
+		if Game.getPlayer().figure.inRoom.name <> "movieagency" then return FALSE
+
+		return TRUE
+	End Function
+
 
 
 	'===================================
 	'Movie Agency: Room screen
 	'===================================
 
-	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
-		If functions.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60) then Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+	'clear the guilist for the suitcase if a player enters
+	Function onRoomEnter:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent.GetSender())
+		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
+		if not room or not figure then return FALSE
 
-		If twinkerTimer.doAction() then Assets.GetSprite("gfx_gimmick_rooms_movieagency").Draw(10,60)
+		'we are not interested in other figures than our player's
+		if not figure.IsActivePlayer() then return FALSE
 
-		local glow:string = ""
-		For Local obj:TMovieAgencyBlocks= EachIn TMovieAgencyBlocks.List
-			If obj.owner <=0 and obj.dragged
-				glow = "_glow"
-				exit
+		'empty the guilist / delete gui elements
+		'- the real list still may contain elements with gui-references
+		self.guiListSuitcase.EmptyList()
+	End Function
+
+
+	Function onMouseOverProgrammeCoverBlock:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local item:TGUIProgrammeCoverBlock = TGUIProgrammeCoverBlock(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		hoveredGuiProgrammeCoverBlock = item
+		if item.isDragged() then draggedGuiProgrammeCoverBlock = item
+
+		return TRUE
+	End Function
+
+
+	'check if we are allowed to drag that programmeblock
+	Function onDragProgrammeCoverBlock:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local item:TGUIProgrammeCoverBlock = TGUIProgrammeCoverBlock(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		local owner:int = item.programme.owner
+
+		'do not allow dragging items from other players
+		if owner > 0 and owner <> Game.playerID
+			triggerEvent.setVeto()
+			return FALSE
+		endif
+
+		'check whether a player could afford the programme
+		if owner <= 0
+			if not Game.getPlayer().getFinancial().canAfford(item.programme.getPrice())
+				triggerEvent.setVeto()
+				return FALSE
 			endif
-		Next
-		Assets.GetSprite("gfx_suitcase"+glow).Draw(530, 240)
+		endif
+
+		return TRUE
+	End Function
+
+
+	'normally we should split in two parts:
+	' OnDrop - check money etc, veto if needed
+	' OnDropAccepted - do all things to finish the action
+	'but this should be kept simple...
+	Function onDropProgrammeCoverBlock:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local guiBlock:TGUIProgrammeCoverBlock = TGUIProgrammeCoverBlock( triggerEvent._sender )
+		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
+		if not guiBlock or not receiverList then return FALSE
+
+		local owner:int = guiBlock.programme.owner
+
+		select receiverList
+			case GuiListMoviesGood, GuiListMoviesCheap, GuiListSeries
+				'no problem when dropping vendor programme on vendor shelf..
+				if guiBlock.programme.owner <= 0 then return TRUE
+
+				if not BuyProgrammeFromPlayer(guiBlock.programme)
+					triggerEvent.setVeto()
+					return TRUE
+				endif
+			case GuiListSuitcase
+				'no problem when dropping own programme to suitcase..
+				if guiBlock.programme.owner = Game.playerID then return TRUE
+
+				if not SellProgrammeToPlayer(guiBlock.programme, Game.playerID)
+					triggerEvent.setVeto()
+					'try to drop back to old list - which triggers
+					'this function again... but with a differing list..
+					guiBlock.dropBackToOrigin()
+				endif
+		end select
+
+		return TRUE
+	End Function
+
+
+	'handle cover block drops on the vendor ... only sell if from the player
+	Function onDropProgrammeCoverBlockOnVendor:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local guiBlock:TGUIProgrammeCoverBlock = TGUIProgrammeCoverBlock( triggerEvent._sender )
+		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
+		if not guiBlock or not receiver then return FALSE
+		if receiver <> VendorArea then return FALSE
+
+		'do not accept blocks from the vendor itself
+		if guiBlock.programme.owner <=0
+			triggerEvent.setVeto()
+			return FALSE
+		endif
+
+		if not BuyProgrammeFromPlayer(guiBlock.programme)
+			triggerEvent.setVeto()
+			return FALSE
+		else
+			'successful - delete that gui block
+			guiBlock.remove()
+			'remove the whole block too
+			guiBlock = null
+		endif
+
+		return TRUE
+	End function
+
+
+	Function onDrawMovieAgency:int( triggerEvent:TEventBase )
+		'make suitcase/vendor glow if needed
+		local glowSuitcase:string = ""
+		local glowVendor:string = ""
+		if draggedGuiProgrammeCoverBlock
+			if draggedGuiProgrammeCoverBlock.programme.owner <= 0
+				glowSuitcase = "_glow"
+			else
+				glowVendor = "_glow"
+			endif
+		endif
+
+		'let the vendor glow if over auction hammer
+		'or if a player's block is dragged
+		if not draggedGuiProgrammeCoverBlock
+			If functions.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
+				Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+			endif
+		else
+			if glowVendor="_glow"
+				Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+			endif
+		endif
+		'let the vendor twinker sometimes...
+		If twinkerTimer.doAction() then Assets.GetSprite("gfx_gimmick_rooms_movieagency").Draw(10,60)
+		'draw suitcase
+		Assets.GetSprite("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		SetAlpha 0.5
-		Assets.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
-		Assets.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
+		Assets.GetFont("Default",12, BOLDFONT).drawBlock("Filme",		642,  27+3, 108,20, 1, 50,50,50,0,1)
+		Assets.GetFont("Default",12, BOLDFONT).drawBlock("Ramschkiste",	642, 125+3, 108,20, 1, 50,50,50,0,1)
+		Assets.GetFont("Default",12, BOLDFONT).drawBlock("Serien", 		642, 223+3, 108,20, 1, 50,50,50,0,1)
 		SetAlpha 1.0
 
-		TMovieAgencyBlocks.DrawAll(True)
+		GUIManager.Draw("movieagency")
+
+		if hoveredGuiProgrammeCoverBlock
+			'draw the current sheet
+			hoveredGuiProgrammeCoverBlock.DrawSheet()
+		endif
+
 
 		If AuctionToolTip Then AuctionToolTip.Draw()
-
-		ReverseList(TMovieAgencyBlocks.List)
-        For Local obj:TMovieAgencyBlocks= EachIn TMovieAgencyBlocks.List
-			If obj.owner > 0 and obj.owner <> Game.playerID then continue
-            If not obj.Programme then continue
-
-			If obj.dragged OR obj.rect.containsXY( MouseManager.x, MouseManager.y )
-				If obj.dragged Then game.cursorstate = 2 Else Game.cursorstate = 1
-				SetColor 0,0,0
-				SetAlpha 0.2
-				Local x:Float = 120 + Assets.GetSprite("gfx_datasheets_movie").w - 20
-				Local tri:Float[]=[x,45.0,x,90.0,obj.rect.GetX()+obj.rect.GetW()/2.0+3,obj.rect.GetY()+obj.rect.getH()/2.0]
-				DrawPoly(tri)
-				SetColor 255,255,255
-				SetAlpha 1.0
-				obj.Programme.ShowSheet(120,30)
-				Exit
-            EndIf
-        Next
-		ReverseList(TMovieAgencyBlocks.List)
 	End Function
 
 	Function onUpdateMovieAgency:int( triggerEvent:TEventBase )
@@ -1179,21 +1753,47 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		Game.cursorstate = 0
 
-		If functions.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
-			If not AuctionToolTip Then AuctionToolTip = TTooltip.Create("Auktion", "Film- und Serienauktion", 200, 180, 0, 0)
-			AuctionToolTip.enabled = 1
-			AuctionToolTip.Hover()
-			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
-				MOUSEMANAGER.resetKey(1)
-				Game.cursorstate = 0
-				room.screenManager.GoToSubScreen("screen_movieauction")
-			endif
-		EndIf
+		'show a auction-tooltip (but not if we dragged a block)
+		if not hoveredGuiProgrammeCoverBlock
+			If functions.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
+				If not AuctionToolTip Then AuctionToolTip = TTooltip.Create("Auktion", "Film- und Serienauktion", 200, 180, 0, 0)
+				AuctionToolTip.enabled = 1
+				AuctionToolTip.Hover()
+				Game.cursorstate = 1
+				If MOUSEMANAGER.IsHit(1)
+					MOUSEMANAGER.resetKey(1)
+					Game.cursorstate = 0
+					room.screenManager.GoToSubScreen("screen_movieauction")
+				endif
+			EndIf
+		endif
 
 		If twinkerTimer.isExpired() then twinkerTimer.Reset()
 
-		TMovieAgencyBlocks.UpdateAll(True)
+
+		'create missing gui elements for all programme-lists
+		local lists:TProgramme[][]				= [	listMoviesGood,listMoviesCheap,listSeries ]
+		local guiLists:TGUIProgrammeSlotList[]	= [	guiListMoviesGood, guiListMoviesCheap, guiListSeries ]
+		For local j:int = 0 to lists.length-1
+			For local programme:TProgramme = eachin lists[j]
+				if not programme then continue
+				if guiLists[j].ContainsProgramme(programme) then continue
+				guiLists[j].addItem( new TGuiProgrammeCoverBlock.CreateWithProgramme(programme),"-1" )
+			Next
+		Next
+		'create missing gui elements for the current suitcase
+
+		For local programme:TProgramme = eachin Game.getPlayer().ProgrammeCollection.SuitcaseProgrammeList
+			if guiListSuitcase.ContainsProgramme(programme) then continue
+			guiListSuitcase.addItem( new TGuiProgrammeCoverBlock.CreateWithProgramme(programme),"-1" )
+		Next
+
+		'reset hovered block - will get set automatically on gui-update
+		hoveredGuiProgrammeCoverBlock = null
+		'reset dragged block too
+		draggedGuiProgrammeCoverBlock = null
+		GUIManager.Update("movieagency")
+
 		If AuctionToolTip Then AuctionToolTip.Update( App.timer.getDeltaTime() )
 	End Function
 
@@ -1204,12 +1804,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'===================================
 
 	Function onDrawMovieAuction:int( triggerEvent:TEventBase )
-		Assets.GetSprite("gfx_suitcase").Draw(530, 240)
+		Assets.GetSprite("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+
 		SetAlpha 0.5
-		Assets.GetFont("Default",12).drawBlock("Filme", 640, 28, 110,25, 1, 50,50,50)
-		Assets.GetFont("Default",12).drawBlock("Serien", 640, 139, 110,25, 1, 50,50,50)
+		Assets.GetFont("Default",12, BOLDFONT).drawBlock("Filme",		642,  27+3, 108,20, 1, 50,50,50,0,1)
+		Assets.GetFont("Default",12, BOLDFONT).drawBlock("Ramschkiste",	642, 125+3, 108,20, 1, 50,50,50,0,1)
+		Assets.GetFont("Default",12, BOLDFONT).drawBlock("Serien", 		642, 223+3, 108,20, 1, 50,50,50,0,1)
 		SetAlpha 1.0
-		TMovieAgencyBlocks.DrawAll(True)
+
+		GUIManager.Draw("movieagency")
 		SetAlpha 0.5;SetColor 0,0,0
 		DrawRect(20,10,760,373)
 		SetAlpha 1.0;SetColor 255,255,255
@@ -1261,12 +1864,16 @@ Type RoomHandler_News extends TRoomHandler
 			NewsBlockListAvailable[i] = new TGUIListBase.Create(34,20,Assets.getSprite("gfx_news_sheet0").w, 356,"Newsplanner"+i)
 			NewsBlockListAvailable[i].SetAcceptDrop("TGUINewsBlock")
 			NewsBlockListAvailable[i].Resize(NewsBlockListAvailable[i].rect.GetW() + NewsBlockListAvailable[i].guiScroller.rect.GetW() + 3,NewsBlockListAvailable[i].rect.GetH())
+			NewsBlockListAvailable[i].guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").w,356)
+
 
 			NewsBlockListUsed[i] = new TGUISlotList.Create(444,105,Assets.getSprite("gfx_news_sheet0").w, 3*Assets.getSprite("gfx_news_sheet0").h,"Newsplanner"+i)
 			NewsBlockListUsed[i].SetItemLimit(3)
 			NewsBlockListUsed[i].SetAcceptDrop("TGUINewsBlock")
 			NewsBlockListUsed[i].SetSlotMinDimension(0,Assets.getSprite("gfx_news_sheet0").h)
 			NewsBlockListUsed[i].SetAutofillSlots(false)
+			NewsBlockListUsed[i].guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").w,3*Assets.getSprite("gfx_news_sheet0").h)
+
 		Next
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
@@ -1313,7 +1920,7 @@ Type RoomHandler_News extends TRoomHandler
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 				room.screenManager.GoToSubScreen("screen_news_newsplanning")
@@ -1341,7 +1948,7 @@ Type RoomHandler_News extends TRoomHandler
 		'refresh lifetime
 		NewsGenreTooltip.Hover()
 		'RON: test for sjaele
-		NewsGenreTooltip.dirtyImage = True
+'		NewsGenreTooltip.dirtyImage = True
 
 		'move the tooltip
 		NewsGenreTooltip.pos.SetXY(Max(21,button.rect.GetX()), button.rect.GetY()-30)
@@ -1425,7 +2032,7 @@ Type RoomHandler_News extends TRoomHandler
 		For Local block:TNewsBlock = EachIn Game.Players[ room.owner ].ProgrammePlan.NewsBlocks
 			if not block.guiBlock
 				block.guiBlock = new TGUINewsBlock.Create(block.news.title)
-				block.guiBlock.SetParentNewsBlock(block)
+				block.guiBlock.SetNewsBlock(block)
 				if block.slot >= 0
 					NewsBlockListUsed[ room.owner ].AddItem(block.guiBlock, string(block.slot))
 				else
@@ -1466,13 +2073,15 @@ Type RoomHandler_News extends TRoomHandler
 	'block from the player's programmePlan
 	Function onClickNewsBlock:int( triggerEvent:TEventBase )
 		'only react if the click came from the right mouse button
-		if triggerEvent.GetData().getInt("type",0) <> 2 then return TRUE
+		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
 
-		local guiNewsBlock:TGUINewsBlock= TGUINewsBlock(triggerEvent._sender)
+		local guiBlock:TGUINewsBlock= TGUINewsBlock(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		if not guiBlock or not guiBlock.isDragged() then return FALSE
 
 		'delete the newsblock of that guinewsblock from the owners programmeplan
 		' - this also removes the guiblock
-		Game.Players[ guiNewsBlock.parentNewsBlock.owner ].ProgrammePlan.RemoveNewsBlock( guiNewsBlock.parentNewsBlock )
+		Game.Players[ guiBlock.newsBlock.owner ].ProgrammePlan.RemoveNewsBlock( guiBlock.newsBlock )
 
 	End Function
 
@@ -1481,13 +2090,13 @@ Type RoomHandler_News extends TRoomHandler
 		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
 		if not guiNewsBlock or not receiverList then return FALSE
 
-		local owner:int = guiNewsBlock.parentNewsBlock.owner
+		local owner:int = guiNewsBlock.newsBlock.owner
 
 		if receiverList = NewsBlockListAvailable[owner]
-			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, -1)
+			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.newsBlock, -1)
 		elseif receiverList = NewsBlockListUsed[owner]
 			local slot:int = NewsBlockListUsed[owner].getSlot(guiNewsBlock)
-			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.parentNewsBlock, slot)
+			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.newsBlock, slot)
 		endif
 	End Function
 
@@ -1607,7 +2216,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		For Local dialog:TDialogue = EachIn room.Dialogues
 			If dialog.Update(MOUSEMANAGER.IsHit(1)) = 0
-				room.LeaveAnimated(0)
+				room.LeaveAnimated()
 				room.Dialogues.Remove(dialog)
 			endif
 		Next

@@ -249,6 +249,10 @@ Type TEventBase
 		return TData(self._data)
 	End Method
 
+	Method getTrigger:string()
+		return lower(_trigger)
+	End Method
+
 	'returns wether trigger is the same
 	Method isTrigger:int(trigger:string)
 		return _trigger = lower(trigger)

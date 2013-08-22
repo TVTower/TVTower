@@ -135,8 +135,7 @@ endrem
 	End Method
 
 	Method IsActivePlayer:Int()
-		If id = 1 Then Return True 'TODO: Man müsste hier noch prüfen, ob andere Spieler gesteuert werden außer id = 1
-		Return False
+		return (self.parentPlayer and self.parentPlayer.playerID = Game.playerID)
 	End Method
 
 	Method FigureMovement(deltaTime:Float=1.0)
@@ -228,12 +227,19 @@ endrem
 
 	'player is now in room "room"
 	Method _SetInRoom:Int(room:TRooms)
-		If room <> Null
-			room.CloseDoor(Game.Players[Game.playerID].Figure)
-			room.used = Self.id
-		EndIf
+		'in all cases: close the door (even if we cannot enter)
+		If room <> Null then room.CloseDoor(Game.Players[Game.playerID].Figure)
 
+		'inform others that we enter a room
+		local event:TEventSimple = TEventSimple.Create("rooms.OnEnter", TData.Create().Add("room", room).add("figure", self) , room )
+		EventManager.triggerEvent( event )
+		'RON: debug: if room then print "trigger rooms.OnEnter "+room.name
+		'someone does not want the figure to enter that room...
+		if event.isVeto() then return FALSE
+
+		If room <> Null then room.used = Self.id
 	 	inRoom = room
+
 	 	'only call if it is a player's figure - and AI
 		If ParentPlayer <> Null And Self.isAI()
 			If room Then ParentPlayer.PlayerKI.CallOnReachRoom(room.id) Else ParentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_NOTFOUND)
@@ -326,7 +332,7 @@ endrem
 				If Game.Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom <> Null
 					'Print "LeaveRoom:"+Game.Players[ParentPlayer.PlayerKI.playerId].Figure.inRoom.name
 					If Game.Players[ParentPlayer.PlayerKI.playerId].figure.inRoom.name = "movieagency"
-						 TMovieAgencyBlocks.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
+						 RoomHandler_MovieAgency.ProgrammeToPlayer(ParentPlayer.PlayerKI.playerId)
 						 'Print "movieagency left: programmes bought"
 					EndIf
 				EndIf

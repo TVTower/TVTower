@@ -134,6 +134,9 @@ Type TApp
 	End Method
 
 	Method InitGraphics:Int()
+		'virtual resolution
+		InitVirtualGraphics()
+
 		Try
 			Select Settings.directx
 				?Win32
@@ -149,12 +152,12 @@ Type TApp
 				Default SetGraphicsDriver GLMax2DDriver()
 				?
 			EndSelect
-			g = Graphics(Settings.width, Settings.height, Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
+			g = Graphics(Settings.realWidth, Settings.realHeight, Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
 			If g = Null
 			?Win32
 				Throw "Graphics initiation error! The game will try to open in windowed DirectX 7 mode."
 				SetGraphicsDriver D3D7Max2DDriver()
-				g = Graphics(Settings.width, Settings.height, 0, Settings.Hertz)
+				g = Graphics(Settings.realWidth, Settings.realHeight, 0, Settings.Hertz)
 			?Not Win32
 				Throw "Graphics initiation error! no OpenGL available."
 			?
@@ -163,6 +166,9 @@ Type TApp
 		SetBlend ALPHABLEND
 		SetMaskColor 0, 0, 0
 		HideMouse()
+
+		'virtual resolution
+		SetVirtualGraphics(settings.designedWidth, settings.designedHeight, false)
 	End Method
 
 	Function onFinishParsingXML( triggerEvent:TEventBase )
@@ -197,7 +203,7 @@ Type TApp
 
 			If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
 			SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
-			Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.width/2 - Assets.GetSprite("gfx_startscreen_logo").w / 2, 100)
+			Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.getWidth()/2 - Assets.GetSprite("gfx_startscreen_logo").w / 2, 100)
 			SetAlpha 1.0
 			Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, 0, 0.5)
 
@@ -351,8 +357,6 @@ endrem
 		TProgrammeBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TAdBlock.SaveAll();					TError.DrawErrors();Flip 0  'XML
 		TNewsBlock.SaveAll();				TError.DrawErrors();Flip 0  'XML
-		TMovieAgencyBlocks.SaveAll();		TError.DrawErrors();Flip 0  'XML
-		TArchiveProgrammeBlock.SaveAll();	TError.DrawErrors();Flip 0  'XML
 		Building.Elevator.Save();			TError.DrawErrors();Flip 0  'XML
 		'Delay(50)
 		LoadSaveFile.xmlWrite("ENDSAVEGAME", "CHECKSUM")
@@ -543,6 +547,12 @@ endrem
 		EndSelect
 	End Method
 
+	Method GetPlayer:TPlayer(playerID:int=-1)
+		if playerID=-1 then playerID=self.playerID
+		if not Game.isPlayer(playerID) then return Null
+
+		return self.players[playerID]
+	End Method
 
 
 	Method GetMaxAudience:Int(playerID:Int=-1)
@@ -728,6 +738,11 @@ endrem
 		Return (Self.GetDay() - Self.GetYear()*Self.daysPerYear)
 	End Method
 
+	'get the amount of days played (completed! - that's why "-1")
+	Method GetDaysPlayed:int() {_exposeToLua}
+		return self.GetDay(self.timeGone - Self.timeStart) - 1
+	End Method
+
 	Method GetDay:Int(_time:Double = 0) {_exposeToLua}
 		If _time = 0 Then _time = Self.timeGone
 		_time = Floor(_time / (24 * 60))
@@ -878,6 +893,10 @@ endrem
 		Return Self.figure.IsAI()
 	End Method
 
+	Method GetFinancial:TFinancials(weekday:int=-1)
+		return self.finances[Game.GetWeekday(weekday)]
+	End Method
+
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
@@ -893,8 +912,6 @@ endrem
 		Player.Figure.ParentPlayer	= Player
 		For Local i:Int = 0 To 6
 			Player.finances[i] = TFinancials.Create(Player.playerID, 550000, 250000)
-			Player.finances[i].revenue_before = 550000
-			Player.finances[i].revenue_after  = 550000
 		Next
 		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
 		Player.ProgrammePlan		= TPlayerProgrammePlan.Create(Player)
@@ -1069,9 +1086,9 @@ endrem
 
 	'end of day - take over money for next day
 	Function TakeOverMoney()
-		Local dayBefore:Int = Max(0, Game.getWeekday()-1)
+		Local dayBefore:Int = Game.getWeekday( Game.getDay()-1 )
 		For Local Player:TPlayer = EachIn TPlayer.List
-			Player.finances[Game.getWeekday()].takeOverFromDayBefore(Player.finances[ dayBefore ])
+			TFinancials.TakeOverFinances( Player.finances[ dayBefore ], Player.finances[Game.getWeekday()] )
 		Next
 	End Function
 
@@ -1221,10 +1238,10 @@ Type TFinancials
 	Field sold_ads:Int 				= 0
 	Field callerRevenue:Int			= 0
 	Field sold_misc:Int				= 0
-	Field sold_total:Int = 0
-	Field sold_stations:Int = 0
-	Field revenue_interest:Int = 0
-	Field revenue_before:Int 		=-1
+	Field sold_total:Int			= 0
+	Field sold_stations:Int			= 0
+	Field revenue_interest:Int		= 0
+	Field revenue_before:Int 		= 0
 	Field revenue_after:Int 		= 0
 	Field money:Int					= 0
 	Field credit:Int 				= 0
@@ -1290,16 +1307,27 @@ endrem
 
 	Function Create:TFinancials(playerID:Int, startmoney:Int=550000, startcredit:Int = 250000)
 		Local finances:TFinancials = New TFinancials
-		finances.money		= startmoney
-		finances.credit		= startcredit
-		finances.playerID	= playerID
-		finances.ListLink	= List.AddLast(finances)
+		finances.money			= startmoney
+		finances.revenue_before	= startmoney
+		finances.revenue_after	= startmoney
+
+		finances.credit			= startcredit
+		finances.playerID		= playerID
+		finances.ListLink		= List.AddLast(finances)
 		Return finances
 	End Function
 
-	Method TakeOverFromDayBefore:Int(otherFinances:TFinancials)
-		Self.money = otherFinances.money
-		Self.credit = otherFinances.credit
+	'take the current balance (money and credit) to the next day
+	Function TakeOverFinances:Int(dayBeforeFinance:TFinancials, currentFinance:TFinancials var)
+		'remove current finance from financials.list as we create a new one
+		currentFinance.ListLink.remove()
+		'create the new financial but give the yesterdays money/credit
+		currentFinance = TFinancials.Create(dayBeforeFinance.playerID, dayBeforeFinance.money, dayBeforeFinance.credit)
+	End Function
+
+	'returns whether the finances allow the given transaction
+	Method CanAfford:int(_money:int=0)
+		return (self.money > 0 AND self.money >= _money)
 	End Method
 
 	'refreshs stats about misc sells
@@ -1319,6 +1347,7 @@ endrem
 
 	Method ChangeMoney(_moneychange:Int)
 		money:+_moneychange
+		revenue_after:+_moneychange
 		'change to event?
 		If Game.isGameLeader() and Game.Players[ Self.playerID ].isAI() Then Game.Players[ Self.playerID ].PlayerKI.CallOnMoneyChanged()
 		If Self.playerID = Game.playerID Then Interface.BottomImgDirty = True
@@ -1494,18 +1523,6 @@ End Type
 'create just one drop-zone-grid for all programme blocks instead the whole set for every block..
 Function CreateDropZones:Int()
 	Local i:Int = 0
-	'Archive: Movie DND-zones in suitcase
-	For i = 0 To Game.maxMoviesInSuitcaseAllowed-1
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-		DragAndDrop.slot = i
-		DragAndDrop.typ = "archiveprogrammeblock"
-		DragAndDrop.pos.setXY(57+Assets.GetSprite("gfx_movie0").w*i, 297)
-		DragAndDrop.w = Assets.GetSprite("gfx_movie0").w
-		DragAndDrop.h = Assets.GetSprite("gfx_movie0").h
-		If Not TArchiveProgrammeBlock.DragAndDropList Then TArchiveProgrammeBlock.DragAndDropList = CreateList()
-		TArchiveProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
-		SortList TArchiveProgrammeBlock.DragAndDropList
-	Next
 
 	'AdAgency: Contract DND-zones
 	For i = 0 To Game.maxContractsAllowed-1
@@ -2093,7 +2110,7 @@ Type TNewsAgency
 			'only add news if there are players wanting the news, else save them
 			'for later stages
 			If Not NoOneSubscribed
-				Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+Game.getDay(news.happenedtime)+", time="+Game.GetFormattedTime(news.happenedtime)
+				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+Game.getDay(news.happenedtime)+", time="+Game.GetFormattedTime(news.happenedtime)
 				self.announceNews(news, Game.timeGone + delayAnnouncement)
 			EndIf
 		EndIf
@@ -2389,12 +2406,6 @@ StationMap.AddStation(310, 260, 4, Game.Players[4].maxaudience)
 
 SetColor 255,255,255
 
-For Local i:Int = 0 To 9
-	Local contract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.15) )
-	TContractBlock.Create(contract, i, 0)
-	TMovieAgencyBlocks.Create(TProgramme.GetRandomMovie(),i,0)
-	If i > 0 And i < 9 Then TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithMinPrice(200000),i)
-Next
 
 Global PlayerDetailsTimer:Int
 'Menuroutines... Submenus and so on
@@ -2627,7 +2638,9 @@ End Function
 
 
 'test objects
-TGUIObject._debugMode = TRUE
+TGUIObject._debugMode = FALSE
+print "TGUIObject._debugMode is set to FALSE"
+rem
 Global TestList:TGUISlotList = new TGUISlotList.Create(20,20,300,200, "MainMenu")
 TestList.SetItemLimit(10)
 TestList.SetEntryDisplacement(10,8)
@@ -2637,12 +2650,17 @@ TestList.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 TestList.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
 TestList.SetAcceptDrop("TGUIProgrammeCoverBlock")
 TestList.SetAutofillSlots(FALSE)
-
+endrem
+rem
 Global TestWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,200, "")
 TestWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
 TestWindow.background.valueColor = TColor.Create(235,235,235)
 TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionstüchtigkeit bereit, auch ist es möglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... wünschen wir Dir viel Spaß mit TVTower Version ~q"+VersionDate+"~q")
+endrem
 
+
+
+rem
 Global StartTips:TList = CreateList()
 StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
 StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
@@ -2654,28 +2672,7 @@ local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
 StartTipWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
 StartTipWindow.background.valueColor = TColor.Create(235,235,235)
 StartTipWindow.setText( tip[0], tip[1] )
-'TestWindow.setText( tip[0], tip[1] )
-
-rem
-Global TestDrop:TGUIDropDown = new TGUIDropDown.Create(600,20, 100, "Startjahr", "MainMenu")
-for local i:int = 0 to 10
-	TestDrop.addEntry(1980+i)
-Next
 endrem
-
-Global TestKoffer:TGUISlotList = new TGUISlotList.Create(400,20,300,80, "MainMenu")
-TestKoffer.SetItemLimit(10)
-TestKoffer.SetEntryDisplacement(0,0)
-TestKoffer.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
-TestKoffer.guiEntriesPanel.minSize.SetXY(300,80)
-TestKoffer.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").w, Assets.GetSprite("gfx_movie0").h)
-TestKoffer.SetAcceptDrop("TGUIProgrammeCoverBlock")
-TestKoffer.SetAutofillSlots(TRUE)
-
-local item:TGUIProgrammeCoverBlock = new TGUIProgrammeCoverBlock.Create()
-item.setProgramme( TProgramme.GetRandomMovie() )
-print item.programme.title
-TestKoffer.addItem(item)
 
 
 Global MenuPreviewPicTimer:Int = 0
@@ -2684,7 +2681,7 @@ Global MenuPreviewPic:TGW_Sprites = Null
 Function Menu_Main_Draw()
 	SetColor 190,220,240
 	SetAlpha 0.5
-	DrawRect(0,0,App.settings.width,App.settings.Height)
+	DrawRect(0,0,App.settings.GetWidth(),App.settings.GetHeight())
 	SetAlpha 1.0
 	SetColor 255, 255, 255
 
@@ -2708,13 +2705,14 @@ Function Menu_Main_Draw()
 	DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 50, 260, ScaledRoomWidth + 20, 210)
 
 	DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 575, 260, 170, 210)
+
 	GUIManager.Draw("MainMenu")
 End Function
 
 Function Menu_NetworkLobby_Draw()
 	SetColor 190,220,240
 	SetAlpha 0.5
-	DrawRect(0,0,App.settings.width,App.settings.height)
+	DrawRect(0,0,App.settings.GetWidth(),App.settings.GetHeight())
 	SetAlpha 1.0
 	SetColor 255,255,255
 
@@ -2731,7 +2729,7 @@ End Function
 Function Menu_GameSettings_Draw()
 	SetColor 190,220,240
 	SetAlpha 0.5
-	DrawRect(0,0,App.settings.width,App.settings.height)
+	DrawRect(0,0,App.settings.GetWidth(),App.settings.GetHeight())
 	SetAlpha 1.0
 	SetColor 255,255,255
 
@@ -3050,11 +3048,21 @@ Function Init_Creation()
 		Next
 	endif
 
-	Local lastblocks:Int = 0
-	'Local lastprogramme:TProgrammeBlock = New TProgrammeBlock
-	For Local i:Int = 0 To 5
-		TMovieAgencyBlocks.Create(TProgramme.GetRandomSerie(),20+i,0)
+	'create series/movies in movie agency
+	RoomHandler_MovieAgency.ReFillBlocks()
+
+	'8 auctionable movies
+	For local i:Int = 0 to 7
+		TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithMinPrice(200000),i,-1)
 	Next
+
+
+	'create ad agency contracts
+	For Local i:Int = 0 To 9
+		Local contract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.15) )
+		TContractBlock.Create(contract, i, 0)
+	Next
+
 
 	'create random programmes and so on - but only if local game
 	If Not Game.networkgame
@@ -3088,6 +3096,7 @@ Function Init_Creation()
 		Next
 	Next
 
+	local lastblocks:int=0
 	'creation of blocks for players rooms
 	For Local playerids:Int = 1 To 4
 		lastblocks = 0
@@ -3178,10 +3187,13 @@ Function UpdateMain(deltaTime:Float = 1.0)
 
 	If Game.Players[Game.playerID].Figure.inRoom = Null
 		If MOUSEMANAGER.isClicked(1) and not GUIManager.modalActive
-			If functions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
-				Game.Players[Game.playerID].Figure.ChangeTarget(MouseManager.x, MouseManager.y)
-				MOUSEMANAGER.resetKey(1)
-			EndIf
+			'do not allow movement on fadeIn (when going in a room)
+			if not Fader.fadeenabled or (Fader.fadeenabled and Fader.fadeout)
+				If functions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
+					Game.Players[Game.playerID].Figure.ChangeTarget(MouseManager.x, MouseManager.y)
+					MOUSEMANAGER.resetKey(1)
+				EndIf
+			endif
 		EndIf
 	EndIf
 	'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
@@ -3434,19 +3446,33 @@ if Ingame_chat.guiInput.isActive() then print "ingamechat active"
 				If KEYMANAGER.IsHit(KEY_2) Game.playerID = 2
 				If KEYMANAGER.IsHit(KEY_3) Game.playerID = 3
 				If KEYMANAGER.IsHit(KEY_4) Game.playerID = 4
-				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 60.0	'30 minutes per second
-				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 1.0	'1 minute per second
-
+				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
+				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
+				If KEYMANAGER.IsHit(KEY_7) Then game.speed = 360.0	'180 minutes per second
+				If KEYMANAGER.IsHit(KEY_8) Then game.speed = 480.0	'240 minute per second
+				If KEYMANAGER.IsHit(KEY_9) Then game.speed = 1.0	'1 minute per second
+rem
+				if KEYMANAGER.IsHit(KEY_LALT) then Game.getPlayer().getFinancial().ChangeMoney(-50000)
+				if KEYMANAGER.IsHit(KEY_SPACE)
+					local block:TProgramme = null
+					for local i:int = 0 to RoomHandler_MovieAgency.GetProgrammesInStock()-1
+						local programme:TProgramme = RoomHandler_MovieAgency.GetProgrammeByPosition(i)
+						if programme
+							RoomHandler_MovieAgency.SellProgrammeToPlayer(programme, game.playerID)
+							exit
+						endif
+					Next
+				endif
+endrem
 				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
-				If KEYMANAGER.IsHit(KEY_W) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("adagency", 0)
-				If KEYMANAGER.IsHit(KEY_A) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("archive", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_B) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("betty", 0)
-				If KEYMANAGER.IsHit(KEY_K) TFigures.GetByID(5).KickFigureFromRoom(Game.Players[Game.playerID].Figure, Game.Players[Game.playerID].Figure.inRoom)
-				If KEYMANAGER.IsHit(KEY_F) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("movieagency", 0)
-				If KEYMANAGER.IsHit(KEY_O) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("office", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_C) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("chief", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_N) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("news", Game.playerID)
-				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure.inRoom = TRooms.GetRoomByDetails("roomboard", -1)
+				If KEYMANAGER.IsHit(KEY_W) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("adagency", 0) )
+				If KEYMANAGER.IsHit(KEY_A) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("archive", Game.playerID) )
+				If KEYMANAGER.IsHit(KEY_B) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("betty", 0) )
+				If KEYMANAGER.IsHit(KEY_F) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("movieagency", 0) )
+				If KEYMANAGER.IsHit(KEY_O) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("office", Game.playerID) )
+				If KEYMANAGER.IsHit(KEY_C) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("chief", Game.playerID) )
+				If KEYMANAGER.IsHit(KEY_N) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("news", Game.playerID) )
+				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("roomboard", -1) )
 				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].maxaudience = Stationmap.einwohner
 
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
@@ -3505,7 +3531,7 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			Assets.fonts.baseFont.draw("FPS:"+App.Timer.currentFps + " UPS:" + Int(App.Timer.currentUps), 150,0)
 			Assets.fonts.baseFont.draw("looptime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
 			If game.networkgame and Network.client Then Assets.fonts.baseFont.draw("ping "+Int(Network.client.latency)+"ms", 375,0)
-			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.width - 10, 10, 0, 1)
+			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.GetWidth() - 10, 10, 0, 1)
 
 			TProfiler.Enter("Draw-Flip")
 				Flip App.limitFrames

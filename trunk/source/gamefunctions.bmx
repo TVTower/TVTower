@@ -747,7 +747,9 @@ Type TgfxProgrammelist extends TPlannerList
 						EndIf
 						MOUSEMANAGER.resetKey(1)
 					Else
-						TArchiveProgrammeBlock.CreateDragged(movie, Game.playerID)
+						'create a dragged block
+						new TGUIProgrammeCoverBlock.CreateWithProgramme(movie).drag()
+
 						SetOpen(0)
 					EndIf
 					Exit 'exit for local movie
@@ -1162,7 +1164,7 @@ endrem
 
 			If self.imgCacheEnabled 'And lifetime = startlifetime
 				Image = TImage.Create(boxWidth, boxHeight, 1, 0, 255, 0, 255)
-				image.pixmaps[0] = GrabPixmap(self.pos.x, self.pos.y, boxWidth, boxHeight)
+				image.pixmaps[0] = VirtualGrabPixmap(self.pos.x, self.pos.y, boxWidth, boxHeight)
 				DirtyImage = False
 			EndIf
 			oldTitle = title
@@ -1713,7 +1715,7 @@ Type TInterface
 
 			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
-			Assets.GetSprite("gfx_interface_bottom").Draw(0,App.settings.Height,0,1)
+			Assets.GetSprite("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0,1)
 
 			If ShowChannel <> 0 Then Assets.GetSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND

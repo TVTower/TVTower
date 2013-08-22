@@ -289,7 +289,7 @@ Type TBitmapFont
 	Field uniqueID		:string =""
 	Field displaceY		:float=100.0
 	Field lineHeightModifier:float = 0.2	'modifier * lineheight gets added at the end
-
+	Field drawAtFixedPoints:int = true		'whether to use ints or floats for coords
 	Field drawToPixmap:TPixmap = null
 
 	global ImageCaches:TMap = CreateMap()
@@ -533,91 +533,13 @@ Type TBitmapFont
 		return TPoint.Create(w, h - lines.length*lineHeight)
 	End Method
 
-	Method drawBlock2:TPoint(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0)
-		local fittingChars:int	= 0
-		Local processedChars:Int= 0
-		Local charPos:Int		= 0
-		Local linetxt:String	= text
-		Local spaceAvailable:Float = h
-		Local alignedx:Int		= 0
-		Local usedHeight:Int	= 0
-
-		If NoLineBreak = False
-			'use special chars for same height on all lines
-			'else some lines will be less tall than others
-			local lineHeight:float = self.getHeight("gQ'_")
-			linetxt = linetxt.replace(chr(13), "~n")
-			local paragraphs:string[] = linetxt.split("~n")
-
-			'for each line/paragraph
-			For Local i:Int= 0 To paragraphs.length-1
-				'set current text to the current paragraph
-				linetxt = paragraphs[i]
-				'do automatically word-wrapping if needed
-				Repeat
-					'the amount of characters to keep until linebreak
-					fittingChars = 0
-
-					'line to wide for box - shorten it
-					while self.getWidth(linetxt) >= w
-						'if cant get shortened: CharCount = 0 -> line deleted
-						For charPos = 0 To Len(linetxt) - 1
-							If linetxt[charPos] = Asc(" ") Then fittingChars = charPos
-							If linetxt[charPos] = Asc("-") Then fittingChars = charPos '- 1
-						Next
-						linetxt = linetxt[..fittingChars]
-					Wend
-
-					'no space left, we have finally to truncate and delete rest...
-'					If 2 * lineHeight > spaceAvailable And linetxt <> text[deletedchars..]
-					If 2 * lineHeight > spaceAvailable And linetxt <> paragraphs[i][processedChars..]
-						linetxt = linetxt[..Len(linetxt) - 3] + " ..."
-						fittingChars = 0
-					EndIf
-
-					If doDraw
-						If align = 0 Then alignedx = x
-						If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
-						If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
-						self.drawStyled(linetxt, alignedx, y + h - spaceAvailable, cR, cG, cB, style, 1,special)
-					endif
-
-					spaceAvailable :- lineHeight
-					processedChars :+ (fittingChars+1)
-					linetxt = paragraphs[i][processedChars..]
-				Until fittingChars = 0
-				usedheight = h - spaceAvailable
-
-				'next line... -- not needed as it would "double add" a linewrap
-				'spaceAvailable :- lineHeight
-			Next
-		Else 'no linebreak allowed
-			If self.getWidth(linetxt) >= w
-				fittingChars = Len(linetxt)-1
-				While self.getWidth(linetxt) >= w
-					linetxt = linetxt[..fittingChars]
-					fittingChars:-1
-				Wend
-				If align = 0 Then alignedx = x
-				If align = 1 Then alignedx = x+(w - self.getWidth(linetxt$))/2
-				If align = 2 Then alignedx = x+(w - self.getWidth(linetxt$))
-				spaceAvailable = spaceAvailable - self.getHeight(linetxt$[..Len(linetxt$)-2]+"..")
-				If doDraw Then self.drawStyled(linetxt[..Len(linetxt) - 2] + "..", alignedx, y, cR, cG, cB, style, 1, special)
-			Else
-				If align = 0 Then alignedx = x
-				If align = 1 Then alignedx = x + (w - self.getWidth(linetxt)) / 2
-				If align = 2 Then alignedx = x + (w - self.getWidth(linetxt))
-				spaceAvailable :- self.getHeight(linetxt)
-				If doDraw Then self.drawStyled(linetxt, alignedx, y, cR, cG, cB, style, 1, special)
-			EndIf
-			usedheight = self.getHeight(linetxt)
-		EndIf
-
-'		If doDraw then oldColor.set()
-		return TPoint.Create(w, usedheight)
-	End Method
 
 	Method drawStyled:TPoint(text:String,x:Float,y:Float, cr:int=0, cg:int=0, cb:int=0, style:int=0, doDraw:int=1, special:float=-1.0)
+		if self.drawAtFixedPoints
+			x = int(x)
+			y = int(y)
+		endif
+
 		local height:float = 0.0
 		local width:float = 0.0
 		local oldR:int, oldG:int, oldB:int

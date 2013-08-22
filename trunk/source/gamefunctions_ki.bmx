@@ -661,37 +661,34 @@ Type TLuaFunctions {_exposeToLua}
 	Method md_getMovieCount:Int()
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		Local ret:Int = 0
-		For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
-			If Block.owner <> Self.ME Then ret:+1
-		Next
-		Return ret
+		Return RoomHandler_MovieAgency.GetProgrammesInStock()
 	End Method
 
-	Method md_getMovie:Int(ArrayID:Int = -1)
+	Method md_getMovie:Int(position:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		If ArrayID >= TMovieAgencyBlocks.List.Count() Or arrayID < 0 Then Return -2
-		Local Block:TMovieAgencyBlocks = TMovieAgencyBlocks(TMovieAgencyBlocks.List.ValueAtIndex(ArrayID))		
-		If Block Then If Block.Programme Then Return Block.Programme.id		
-		Return self.RESULT_NOTFOUND 'Nur wenn nichts gefunden wurde
+		'out of bounds?
+		If position >= RoomHandler_MovieAgency.GetProgrammesInStock() Or position < 0 Then Return -2
+
+		local programme:TProgramme = RoomHandler_MovieAgency.GetProgrammeByPosition(position)
+		If programme Then Return programme.id Else Return self.RESULT_NOTFOUND
 	End Method
 
-	Method md_doBuyMovie:Int(ObjektID:Int = -1)
+	Method md_doBuyMovie:Int(programmeID:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
-			If Block.Programme.id = ObjektID Then Return Block.Buy( Self.ME )
-		Next
+		local programme:TProgramme = RoomHandler_MovieAgency.GetProgrammeByProgrammeID(programmeID)
+		if programme then return RoomHandler_MovieAgency.SellProgrammeToPlayer( programme, self.ME )
+
 		Return self.RESULT_NOTFOUND
 	End Method
 
 'untested
-	Method md_doSellMovie:Int(ObjektID:Int = -1)
+	Method md_doSellMovie:Int(programmeID:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		For Local Block:TMovieAgencyBlocks = EachIn TMovieAgencyBlocks.List
-			If Block.Programme.id = ObjektID Then Return Block.Sell( Self.ME )
+		For local programme:TProgramme = eachin Game.players[self.ME].ProgrammeCollection.SuitcaseProgrammeList
+			if programme.id = programmeID then return RoomHandler_MovieAgency.BuyProgrammeFromPlayer( programme )
 		Next
 		Return self.RESULT_NOTFOUND
 	End Method

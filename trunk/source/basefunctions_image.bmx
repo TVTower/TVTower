@@ -222,14 +222,14 @@ Function DrawTextOnPixmap(Text:String, x:Int, y:Int, Pixmap:TPixmap, blur:Byte=0
 		DrawText(Text,x,y)
 	EndIf
 		Local TxtWidth:Int   = TextWidth(Text)
-		Local Source:TPixmap = GrabPixmap(x-2,y-2,TxtWidth+4,TextHeight(Text)+4)
+		Local Source:TPixmap = VirtualGrabPixmap(x-2,y-2,TxtWidth+4,TextHeight(Text)+4)
 		Source = ConvertPixmap(Source, PF_RGB888)
 	If blur
 		blurPixmap(Source, 0.5)
 		Source = ConvertPixmap(Source, PF_RGB888)
 		DrawPixmap(Source, x-2,y-2)
 		DrawText(Text,x,y)
-		Source = GrabPixmap(x-2,y-2,TxtWidth+4,TextHeight(Text)+4)
+		Source = VirtualGrabPixmap(x-2,y-2,TxtWidth+4,TextHeight(Text)+4)
 		Source = ConvertPixmap(Source, PF_RGB888)
 	EndIf
 	DrawPixmapOnPixmap(Source, Pixmap,x-20,y-10)
