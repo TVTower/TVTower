@@ -1,0 +1,1213 @@
+2013-08-09 16:06  ronny
+
+	  - Werbebloecke mit zuwenig Zuschauern werden nun in rot
+	  dargestellt
+	  - Tooltip fuer aktuelles Programm/Werbung enthaelt nun Hinweis
+	  auf Folgeprogramm/Werbung
+	  
+	  trunk/TVTower, trunk/TVTower.exe, trunk/res/lang/lang_de.txt,
+	  trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-08-09 15:26  ronny
+
+	  - Werbe-Datenblatt zeigt nun an, wieviele Bloecke dieser Werbung
+	  bereits eingeplant worden sind (inklusive Aktualisierung der
+	  Datenblattgrafik)
+	  
+	  trunk/TVTower, trunk/changeLog.txt,
+	  trunk/grafiken/datenblaetter/newsplanung_news.png,
+	  trunk/grafiken/datenblaetter/tv_werbeblatt.png,
+	  trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-08-04 14:04  ronny
+
+	  - Unscharfe Schrift bei Programmplanung entfernt (int-XY beim
+	  Zeichnen)
+	  - DefaultAIPlayer.lua - Lua-Error entfernt, der auftreten konnte,
+	  falls die KI das Programm zu einer spezifischen Zeit abrufen
+	  wollte, aber dort keines gesetzt ist
+	  - Zeilenumbruch bei bitmapfont.drawBlock korrigiert (vorher wurde
+	  er nur registriert, wenn die Zeile "davor" zu lang/breit war).
+	  Engine reagiert nun auf Blitz-Internes "~n" was dem
+	  systeminternen Zeilenumbruch entspricht
+	  - TGUIModalWindow - fuer Spielmeldungen, Fenster laesst andere
+	  GUI-Elemente die Mausbewegungen/-klicks ignorieren (bzw markiert,
+	  dass ein Modalfenster vorhanden ist). Simple Fadeout-Animation
+	  eingebunden
+	  - Bild-Auf/-Ab im Programmplaner wird nun "immer schneller" wenn
+	  die Taste gedrueckt gelassen wird
+	  - Klicks in der Raumuebersicht (Fahrstuhl) werden nun korrekt
+	  ausgewertet
+	  - Tooltip-"Fadeout"-Zeiten haben nun als Minimumwert die Haelfte
+	  der Darstellungszeit - verhindert "Tooltip blendet schon von
+	  Anfang an aus"
+	  - LUA-Docs erneuert
+	  - TMouseManager: neue Methode "isClicked". Reagiert erst bei
+	  Loslassen des Mousebuttons, statt schon beim Druecken
+	  
+	  trunk/TVTower, trunk/TVTower.bmx, trunk/TVTower.exe,
+	  trunk/changeLog.txt, trunk/doc.html, trunk/docLuaOnly.html,
+	  trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-08-01 07:31  ronny
+
+	  - Callin-Gewinn wird nun korrekt berechnet (RandRange(5,2) <>
+	  RandRange(2,5))
+	  - Film-Shift-Shortcut-Fehler behoben (GetNextEpisode checkt nun
+	  <0)
+	  - Der aktuelle Programmplanertag laesst sich mit PageUp/Down
+	  steuern
+	  - Nachrichtenquote wurde ueberarbeitet (die News bilden nun
+	  jeweils einen Leadin fuer den Nachfolger - Luecken sind von nun
+	  an boese :D)
+	  
+	  trunk/TVTower, trunk/TVTower.exe,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-07-31 07:53  ronny
+
+	  - EXCEPTION_ACCESS_VIOLATION bei Spieleinstellungen behoben
+	  - Tooltips - sollten nun korrekt positioniert sein
+	  (Sichtbarkeit-Limitierung war fehlerhaft)
+	  - Dev-Shortcuts nun nur noch gesperrt, wenn ein Chat-Eingabefeld
+	  aktiv ist
+	  - Programmplanung: Werbung - Rechtsklick wieder aktiviert
+	  - Einnahmen der Werbung korrigiert: "GetSpotsToSend" =/=
+	  "GetSpotsCount"
+	  - Nachrichtenquoten: Berechnung nun wie bei Filmen
+	  
+	  trunk/TVTower, trunk/TVTower.exe, trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-07-30 08:20  ronny
+
+	  - Adblockhandling korrigiert
+	  - Werbebloecke und Programmfolgen koennen nun mittels Strg/Ctrl
+	  gesetzt werden. Shift versucht die naechste Episode, Ctrl die
+	  gleiche Episode zu setzen
+	  
+	  trunk/TVTower, trunk/TVTower.exe, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-07-28 18:08  ronny
+
+	  - Nachrichtenagentur bringt nun Filmnachrichten
+	  - Nachrichtenketten sind nun effizienter verwaltet,
+	  Wiederholungen sollten nun seltener auftreten
+	  
+	  trunk/TVTower, trunk/res/lang/lang_de.txt,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-07-28 14:27  ronny
+
+	  - Tooltips fuer Geld und Betty integriert
+	  - Finanzueberblick korrigiert
+	  - erste Codezeilen fuer neues Videohuellen-Handling
+	  
+	  trunk/TVTower, trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/grafiken/buero/finanzen.png, trunk/res/lang/lang_de.txt,
+	  trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-07-08 15:13  ronny
+
+	  - Chat sitzt nun "unten rechts" (und nur im Netzwerk sichtbar)
+	  - Ufo und Mond bewegen sich nun wieder korrekt
+	  - Neuer Pfad: TCatmullromspline (fuer Mond und Ufo benutzt)
+	  - Hintergrundhaeuser sind nun nachts etwas heller
+	  - Spielfiguren nun an anderen Startpunkten
+	  - GuiElemente - alte TGUIList entfernt
+	  - Ufografik hat im Hochhauspack nun mehr Abstand (verhindert
+	  "flickern")
+	  - Wolken haben nun leichte Alpha und Helligkeitsunterschiede
+	  - Netzwerk: weitere Bereiche korrigiert und ueberprueft (einige
+	  Dinge wie "SendProgramme" entfallen nun, da sie von
+	  ProgrammeCollectionChange integriert werden)
+	  
+	  trunk/TVTower, trunk/TVTower.exe, trunk/config/gfx_hochhaus.xml,
+	  trunk/grafiken/hochhaus/hochhauspack.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-27 07:30  ronny
+
+	  - Die Newsverteilung im Netzwerk an GUI-Events angeknuepft
+	  - Packaging-Code der Netzwerpakete gefixt
+	  (Blitzmax-Integer/strings/floats kennen kein richtiges "NULL" -
+	  sind dort 0,0.0 und "")
+	  - Abfrage der KI-Kontrolle geaendert (da Netzwerkspieler keine AI
+	  laden gab es dort Zugriffe auf Null-PlayerKI)
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions_network.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-26 20:01  starscrazy
+
+	  Achtung: Der Kommentar ist alt... ich hoffe die Hälfte stimmt
+	  noch..
+	  
+	  - Beim füllen des Programmplanes werden nun Spot-Engpässe zu
+	  Anforderungen an die AdAgency gestellt
+	  - Die AdAgency versucht die Anforderungen zu erfüllen und stellt
+	  wiederum Anforderungen an die Programmplanung die dann erfüllt
+	  werden.
+	  - Es wird nun versucht, dass sich Programmausstrahlungen sich
+	  nicht so oft wiederholen... allerdings ist dies manchmal
+	  unabdingbar (dafür auch die Methode "HowOftenProgrammeInPlan")
+	  - Das Ersetzen von Werbesendungen funktioniert nun einigermaßen.
+	  Da gibt's wohl noch nen Bug im BlitzMax-Code
+	  - Das SLF um ein paar nützliche table-Funktionen erweitert
+	  - BUG gefunden: Die Darstellung der gesendeten Werbeblöcke im
+	  Programmplan ist fehlerhaft... die Sendezahlen (Numerierung)
+	  stimmen nicht.
+	  - BUG gefunden: So wie es aussieht wird die Zahl der
+	  Werbeeinnahmen in der Bilanz wird um den Faktor 10 zu hoch
+	  angezeigt. Also statt 1.500 kommt 15.000
+	  - BUG gefunden: "of_doSpotInPlan" setzt keine Spots die am
+	  nächsten Tag gesendet werden sollen. Filme funktionieren aber -
+	  Spots nicht.
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/BudgetManager.lua,
+	  trunk/res/ai/CommonObjects.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/SLF.lua, trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx, trunk/source/main.bmx
+	  
+
+2013-06-26 18:20  ronny
+
+	  - ThreadedBuilds etwas ueberarbeitet, so sollte zumindest der
+	  Win32-Build ueber das Hauptmenue kommen
+	  - TProfiler sollte an den kritischen Stellen nun Threadsafe sein
+	  - Events koennen einen "channel" haben (die 1 ist fuer
+	  system-events, werden diese von einem subthread direkt
+	  getriggert, kommen sie ans Ende der normal abzuarbeitenden Liste)
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-26 12:19  ronny
+
+	  - Beim Mehrspielermodus wird beim Join nun der Zufalls-"Seed"
+	  gesetzt
+	  - Programme/Genres haben nun individuelle
+	  Abnutzungs-/Auffrischungsfaktoren (nun kann fast den ganzen Tag
+	  Trash gesendet werden :D)
+	  - globale Variable "Players" sitzt nun im TGame-Objekt
+	  
+	  trunk/TVTower, trunk/source/basefunctions.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-24 20:35  ronny
+
+	  - Netzwerk funktioniert wieder (in Grenzen :D - aber starten und
+	  rumlaufen etc. funzt)
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx,
+	  trunk/source/basefunctions_network.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-24 07:29  ronny
+
+	  - TTimer in TIntervalTimer umbenannt (TTimer wird von Blitzmax
+	  schon benutzt - fuer Systemtimer)
+	  - Linux nutzt nun BufferedGL
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-24 06:20  ronny
+
+	  - Threaded builds sollten nun auch korrekt die FPS limitieren
+	  
+	  trunk/TVTower, trunk/TVTower.exe, trunk/TVTower.mt.exe,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_ki.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-23 20:09  ronny
+
+	  - Eventsystem unterstuetzt nun auch Methoden-Listener (->
+	  verschiedene Chat-Listener)
+	  - Chats nutzen nun neue GUI-Systeme
+	  - InGame-Chat ueberarbeitet
+	  
+	  trunk/TVTower, trunk/TVTower.mt.exe, trunk/config/gui.xml,
+	  trunk/grafiken/gui/gui2011.png, trunk/grafiken/gui/packtest.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-21 16:57  ronny
+
+	  - Chat-Guiobject angelegt (aber kein gui-basiselement, deswegen
+	  in gamefunctions)
+	  - Changelog-Script eingefuegt
+	  - Rueckgabewerte bei bitmapfont-Zeichenfunktionen generalisiert
+	  auf TPoint (erspart returnValue-parameter und unsichere Castings)
+	  
+	  trunk/changeLog.sh, trunk/changeLog.txt, trunk/changeLog.xsl,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/external/svn2cl-0.13.tar.gz,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-19 20:30  ronny
+
+	  -/-
+	  
+	  trunk/TVTower.exe
+	  
+
+2013-06-19 20:29  ronny
+
+	  -win build
+	  
+	  trunk/TVTower, trunk/TVTower.mt.exe, trunk/audiotest.bmx,
+	  trunk/res/database.xml, trunk/source/version.txt
+	  
+
+2013-06-14 07:23  ronny
+
+	  - Sichtbarkeit der Newsbloecke limitieren
+	  
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-13 20:44  ronny
+
+	  - Umstellung des Newsblock-Handlings (Events...)
+	  - neue Events
+	  - Ueberarbeitung der Newsblockgrafik
+	  
+	  trunk/config/gfx.xml, trunk/grafiken/news/newsplanung_button.png,
+	  trunk/grafiken/news/newsplanung_news.png, trunk/res/database.xml,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-06 21:17  ronny
+
+	  - Fix fuer GUI - TGuiScrollablePanel verwalten nun virtuelle
+	  Flaechen - Klicks auf Kinderelemente dieser Panele werden nun
+	  korrekt registriert bzw ignoriert
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-05 17:18  ronny
+
+	  - GUIListItem-Sortierung
+	  
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-06-05 15:59  ronny
+
+	  - Gui-Elemente angepasst (DnD-Events) und unnoetige Felder
+	  entfernt
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-02 09:06  ronny
+
+	  - Fehler in der Newsblock-Routine behoben (Bezahlung, korrigierte
+	  Slotnummer)
+	  - News koennen nun in der Vergangenheit entstehen (genutzt in
+	  neuem "Game.onStart"-Event um Nachrichten zum Spielstart
+	  bereitzustellen)
+	  
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-01 13:51  ronny
+
+	  - weiteres Coderefactoring (Actual*->Current*), eigentlich nicht
+	  notwendige Felder (Game.day,hour,minute...) entfernt und
+	  entsprechende Getter angepasst
+	  - LUA kann nun per TVT.addLog(text) eigene AI-Logs ausfuellen
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/basefunctions.bmx, trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-06-01 12:55  starscrazy
+
+	  - Kleine KI-Fixes im Scheduling
+	  - KI-Pause-Funktion
+	  
+	  trunk/res/ai/TaskAdAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/gamefunctions_ki.bmx, trunk/source/main.bmx
+	  
+
+2013-06-01 00:52  starscrazy
+
+	  Die grundlegende KI funktioniert!!!
+	  Zumindest alle 4 grundlegenden Elemente:
+	  - Filme kaufen
+	  - Nachrichtenagentur
+	  - Werbeverträge schließen
+	  - Filme und Werbespots in den Programmplan setzten
+	  Spieler 2 arbeitet diese 4 Aufgaben der Priorität folgend ab. Ob
+	  der Spieler so schon überlebensfähig ist, wird sich zeigen. Aber
+	  der jetzige Stand ist auf jeden Fall ein Erfolg!
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/CalculateBudget.lua,
+	  trunk/res/ai/CommonObjects.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/res/ai/UnitTests.lua,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2013-05-31 20:45  ronny
+
+	  - Refactoring: Programme/News/Ad-Block basieren nun auf
+	  TBlockMoveable was X,Y,Width,Height nun in TRectangle abkapselt
+	  (und deren Hilfsfunktionen nutzen kann).
+	  
+	  trunk/source/basefunctions.bmx, trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-05-31 20:07  starscrazy
+
+	  -/-
+	  
+	  trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskNewsAgency.lua,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx, trunk/source/main.bmx
+	  
+
+2013-05-31 09:21  ronny
+
+	  - Docs aktualisiert
+	  - Dateien weiter aufgeraeumt
+	  
+	  trunk/doc.html, trunk/docLuaOnly.html,
+	  trunk/source/external/bufferedglmax2d/.bmx,
+	  trunk/source/external/bufferedglmax2d/.bmx/bufferedglmax2d.bmx.release.linux.x86.s
+	  
+
+2013-05-31 09:12  ronny
+
+	  - Fix Threadedbuild
+	  
+	  trunk/source/basefunctions_lua.bmx, trunk/source/version.txt
+	  
+
+2013-05-31 08:49  ronny
+
+	  - Anpassungen zum "News setzen" durch die KI (ungetestet)
+	  - Bugfix: In fremden Newsraeumen bekam man keine News angezeigt
+	  (vom Update-Handling ausgesperrt)
+	  
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-05-30 23:03  starscrazy
+
+	  - Ein paar kleine Fixes an SFX und Musik
+	  - Vorbereitungen für NewsAgency-Unterstützung der KI
+	  
+	  trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx, trunk/source/main.bmx
+	  
+
+2013-05-30 19:27  starscrazy
+
+	  Merge mit Sound-branch
+	  
+	  trunk, trunk/TVTower, trunk/TVTower.bmx, trunk/TVTower.exe,
+	  trunk/audiotest.bmx, trunk/compilation_guide.txt,
+	  trunk/res/music, trunk/res/sfx, trunk/source,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/external/maxmod2_lite-win32.mod.zip,
+	  trunk/source/external/maxmod2_lite.mod.zip,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx, trunk/source/main.bmx
+	  
+
+2013-05-30 18:50  starscrazy
+
+	  -/-
+	  
+	  trunk/res/ai/AIEngine.lua
+	  
+
+2013-05-30 16:22  ronny
+
+	  - Aufraeumarbeiten
+	  - Datenbank-Export enthaelt nur eigene Daten und Fakedaten
+	  - Anzeigefehler bei Werbevertraegen behoben
+	  
+	  trunk/TVTower, trunk/TVTower.bmx,
+	  trunk/grafiken/buero/BueroPack.ini,
+	  trunk/grafiken/buero/filmmenu.txt,
+	  trunk/grafiken/buero/raum_buero.txt, trunk/res/database.xml,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-05-30 13:05  ronny
+
+	  - Standard "Frontansicht" bei den Figuren wieder eingebunden
+	  (sonst konnte man den Moonwalk bei einigen Figuren erleben)
+	  
+	  trunk/TVTower, trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions_figures.bmx, trunk/source/version.txt
+	  
+
+2012-12-23 09:39  ronny
+
+	  - Persistence-Modul nochmal aktualisiert (1.00-Release vom Autor)
+	  - Bugfix bei grossen Objekten (signed, unsigned int)
+	  
+	  trunk/source/external/persistence.mod/persistence.bmx,
+	  trunk/source/external/persistence.mod/persistence_module.bmx
+	  
+
+2012-12-22 12:44  ronny
+
+	  - Persistence-Modul aktualisiert
+	  
+	  trunk/source/external/persistence.mod/persistence.bmx,
+	  trunk/source/external/persistence.mod/persistence_module.bmx
+	  
+
+2012-12-12 21:57  starscrazy
+
+	  Kleinen verflixten Bug in _SetInRoom gefixt ;)
+	  
+	  trunk/source/gamefunctions_figures.bmx
+	  
+
+2012-11-19 23:15  ronny
+
+	  - Aufraeumarbeiten
+	  - Figuren die einen eigenen baer besetzten Raum betreten, kicken
+	  die andere Figur nun per "TFigures.KickFigureFromRoom" raus ->
+	  hier Soundansatz moeglich, alternativ an das
+	  "room.kickFigure"-Event anhaengen
+	  
+	  trunk/TVTower, trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-11-19 22:57  ronny
+
+	  - Raumplaner wieder "erreichbar"
+	  - Alle derzeitigen Raeume auf RoomHandler umgestellt (Raeume mit
+	  Unterraeumen benutzen die Screen-Events statt der Room-Events)
+	  - Raumdefinitionen fast komplett auf XML ausgelagert
+	  
+	  trunk/TVTower, trunk/config/rooms.xml,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/version.txt
+	  
+
+2012-11-19 21:53  ronny
+
+	  - weitere Raeume auf Events umgestellt
+	  - GUI-Elemente triggern nun mehr Events (onDraw etc.)
+	  - NewsButtons mit normalen TGUIImageButtons ersetzt -> Events zu
+	  Verarbeitung genutzt
+	  - kleinere Hilfsfunktionen eingebaut
+	  
+	  trunk/TVTower.bmx, trunk/config/rooms.xml,
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-11-19 19:30  ronny
+
+	  - Neue Objekte "TScene" und "TSceneManager" loesen
+	  TRooms.background ab -> es soll keine "Unterraeume" mehr geben,
+	  jeder Raum kann seine Szenen managen lassen -> Ein Raum bleibt
+	  besetzt, auch wenn ein "Unterscreen" besucht wird
+	  ---> die Szenen emittieren Events auf die dann eigene Handler
+	  aufbauen koennen (bspweise onDrawOffice - um tooltips auf das
+	  Szenenbild zu zeichnen)
+	  - GUIImageButton um Label und anderes erweitert
+	  - TPPButton mit GUIImageButton ersetzt
+	  - weitere kleine Aenderungen
+	  
+	  trunk/config/gfx_officepack.xml, trunk/config/rooms.xml,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_screens.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-11-18 19:43  ronny
+
+	  - Beim Aussteigen laufen die Personen im Fahrstuhl nun auch
+	  wieder zur "Mitte"
+	  - Tooltips: da hat jemand im Fahrstuhl die Raumtooltips
+	  deaktiviert...tztztzt :D hab sie in die
+	  Building-Update/Draw-Methoden reintegriert
+	  - Tooltiphandling-Fehler bei den Raeumen behoben (Abbruch der
+	  Forloop sobald das gehoverte gefunden wurde...verhindert Update
+	  der anderen aktiven)
+	  - Raeume koennen nun besetzt sein. Ist man Besitzer des Raumes
+	  und der eigene Raum ist von einem anderen Spieler besetzt,
+	  schmeisst man diesen hinaus
+	  SUB-Raeume muessen sich selbst drum kuemmern, ihren Elternraum
+	  als "besetzt" zu markieren.
+	  
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-11-18 15:27  ronny
+
+	  - Elevator.waitAtFloorTime(r) in einen TTimer umgewandelt
+	  - neue TTimer-Methode: getTimeUntilExpire
+	  
+	  trunk/TVTower, trunk/source/basefunctions.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/version.txt
+	  
+
+2012-11-18 15:03  ronny
+
+	  - Figuren bewegen sich nun im Fahrstuhl statt zu "schweben"
+	  
+	  trunk/TVTower, trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx, trunk/source/version.txt
+	  
+
+2012-11-18 14:32  starscrazy
+
+	  Reintegrate vom NewElevator-branch durchgeführt.
+	  
+	  trunk, trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx
+	  
+
+2012-11-18 14:31  starscrazy
+
+	  Die Prints von AIEngine temporär deaktiviert
+	  
+	  trunk/res/ai/AIEngine.lua
+	  
+
+2012-11-18 11:30  ronny
+
+	  - Roomhandling vom Buero ueberarbeitet:
+	  EventHandling-Registrierung vereinfacht, Safe hinzugefuegt,
+	  Image/Financials wieder aktiviert (war auf "Hintergrundbild
+	  zeichnen" statt Individualhandling)
+	  
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/version.txt
+	  
+
+2012-11-18 10:58  ronny
+
+	  - wird mal Zeit
+	  
+	  trunk/source/changelog.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-11-16 17:06  ronny
+
+	  - Werbepreisberechnung etwas ueberarbeitet ("bessere Preise")
+	  - Bug mit dem Raumplaner (FahrstuhlI) behoben
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-11-16 11:02  ronny
+
+	  - Fix in TAnimation und den entsprechenden Spriteobjekten -
+	  verhindert "flackern" wenn die Animation nur aus einem Frame
+	  besteht (bspweise DoorOpen beim Fahrstuhl)
+	  
+	  trunk/source/basefunctions_sprites.bmx
+	  
+
+2012-11-11 20:42  starscrazy
+
+	  Nochmal Fahrstuhl-Fix. Jetzt wird direkt die Fahrstuhlliste
+	  überprüft ob die Person auch wirklich drin ist.
+	  
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx
+	  
+
+2012-11-11 17:51  ronny
+
+	  - TContract anders konzipiert
+	  -> Datenbank-Eintraege nun in TContractBase
+	  -> Contract referenziert diese Eintraege, beim Unterschreiben
+	  werden Base-Werte genutzt
+	  -> Adblocks nutzen die TContract-Vertraege
+	  - einige Eigenschaften fuer Lua verfuegbar gemacht (evtl auf
+	  Getter umstellen wenn gewuenscht)
+	  - Anpassungen in den LUA-Scripts durchgefuehrt (fuer
+	  AdBlock-Aenderungen)
+	  
+	  trunk/res/ai/TaskSchedule.lua, trunk/res/ai/test_base.lua,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-11-11 13:43  starscrazy
+
+	  - CheckElevatorStatus nachgebessert
+	  - Überlegungen zur Optimierung des Fahrstuhls
+	  
+	  trunk/source/gamefunctions_figures.bmx, trunk/source/main.bmx
+	  
+
+2012-11-11 12:16  starscrazy
+
+	  Fahrstuhl-Fix: CheckElevatorStatus
+	  
+	  trunk/source/gamefunctions_figures.bmx
+	  
+
+2012-11-09 18:54  ronny
+
+	  - Rueckgabewerte der KI-Funktionen (sa_dogetspot...) liefern nun
+	  Konstanten zurueck (TVT.RESULT_OK, TVT.RESULT_WRONGROOM,
+	  TVT.RESULT_NOTALLOWED ...)
+	  - "Errorwerte" sind immer negativ (da ID-Rueckgaben etc positiv
+	  sind).
+	  
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-11-09 00:30  starscrazy
+
+	  - Das Setzen der Werbeblöcke optimiert
+	  - Fixmethode für Stunden (und Tage) die hochgezählt werden. Also
+	  25. Stunde => 1 Stunde +1 Tag
+	  - TPlayerProgrammePlan.GetContractBroadcastCount realisiert
+	  - Lua-UnitTests erweitert
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskSchedule.lua, trunk/res/ai/UnitTests.lua,
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2012-11-08 22:53  ronny
+
+	  - kleinere Korrekturen am vorherigen Commit, TFigures benutzt nun
+	  weniger Felder (und mehr von denen aus der Elternklasse)
+	  
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions_figures.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-11-08 21:14  ronny
+
+	  - weiteres Refactoring
+	  - TFigures basiert nun auf dem neuen TMoveableAnimSprite, was
+	  wiederum auf TAnimSprite basiert -> Animationssets koennen
+	  bequemer konfiguriert werden (idle-Animationen etc.)
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-11-08 11:24  ronny
+
+	  - Refactoring von TPosition (TPoint und TRectangle mit
+	  entsprechenden Hilfsfunktionen)
+	  
+	  trunk/res/ai/test_base.lua, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-11-07 22:38  starscrazy
+
+	  - Jetzt wird auch Werbung in den Programmplan gesetzt
+	  (Notfallmodus)
+	  
+	  trunk/res/ai/TaskSchedule.lua, trunk/source/gamefunctions_ki.bmx
+	  
+
+2012-11-06 23:24  starscrazy
+
+	  - TPlayerProgrammePlan in Lua verfügbar gemacht
+	  - Einige weitere Funktionen in Lua verfügbar gemacht
+	  - Neue Methoden in TContract: GetAcuteness,
+	  SendMinimalBlocksToday, SendOptimalBlocksToday
+	  - Ein Problem in basefunctions_lua.bmx gefixt, dass im Falle von
+	  Null-Werten auftrat.
+	  - TaskSchedule kann nun die ersten Filme in den Programmplan
+	  setzten. Dies passiert in JobEmergencySchedule -> Das ist
+	  sozusagen das Notfallprogramm
+	  
+	  trunk/res/ai/DefaultAIPlayer.lua, trunk/res/ai/SLF.lua,
+	  trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/basefunctions_lua.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2012-11-06 18:58  ronny
+
+	  aktuelle LinuxBinary (svn-write-Test)
+	  
+	  trunk/TVTower
+	  
+
+2012-10-19 09:49  ronny
+
+	  - Schriften ausgelagert
+	  - Tooltip im Hochhaus korrigiert (kurzzeitig verschoben gehabt)
+	  - Raeume-Behandlung in eigene Klassen ausgelagert
+	  - Chef-Dialoge in Lang-Dateien ausgelagert
+	  
+	  trunk/TVTower, trunk/TVTower.bmx, trunk/config/fonts.xml,
+	  trunk/config/resources.xml, trunk/config/rooms.xml,
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_localization.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-10-12 07:59  ronny
+
+	  - Manuels neue Funktionen zu Methoden umgebaut, etwas gekuerzt
+	  und gegen div 0 geschuetzt
+	  - die neuen Funktionen LUA bereitgestellt
+	  - Events koennen "veto" setzen
+	  - Refactoringbeginn (uniqueID-Felder zu "id", hookFunktionen
+	  werden zu Events ...)
+	  
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-10-11 21:28  starscrazy
+
+	  -/-
+	  
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2012-10-11 21:27  starscrazy
+
+	  Aufräumarbeiten für das Spot-Objekt
+	  
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2012-10-11 21:22  starscrazy
+
+	  Aufräumarbeiten für das Spot-Objekt
+	  
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2012-10-11 21:21  starscrazy
+
+	  Aufräumarbeiten für das Spot-Objekt
+	  
+	  trunk/res/ai/CommonObjects.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskAdAgency.lua
+	  
+
+2012-09-27 21:00  ronny
+
+	  - Tuer-Offen-Zustand korrigiert (wenn ins Zimmer rein - und nun
+	  auch wenn raus :D)
+	  - Filmwertberechnung ueberarbeitet
+	  - generelle TTimer-Klasse angefangen und an TRooms ausprobiert
+	  (Tuer-Offen-Timer)
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-09-27 16:11  ronny
+
+	  - TProgramme enthaelt nun neue Eigenschaft "refreshModifier" -
+	  Multiplikator fuer Erholung bzw Teiler bei Senden von Programmen
+	  -> Prog.GetRefreshModifier()
+	  - TProgramme enthaelt nun GenreRefreshModifier, gleiches wie
+	  refreshModifier nur zusaetzlich und auf Genre-Basis (Komoedien
+	  erholen sich schneller) -> Prog.GetGenreRefreshModifier(genre=-1)
+	  - Doc aktualisiert
+	  
+	  trunk/doc.html, trunk/docLuaOnly.html,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-09-27 15:40  ronny
+
+	  - Auktionstooltip und Hinweistext in Sprachdateien ausgelagert
+	  - ShowSheet fuer TAuctionProgrammeBlock integriert
+	  - Auktionsfenster zeigt nun Filminformationen fuer
+	  Auktionsprogramme an
+	  - Darsteller werden bei Filminformationen ausgeblendet wenn nicht
+	  vorhanden (inkl. "Darsteller:")
+	  - Zeilenabstaende der TBitmapFont nun per obj.lineHeightModifier
+	  einstellbar
+	  - Zeilenabstaende bei allen Texten auf 0.2*Zeilenhoehe verringert
+	  (von 0.4)
+	  
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-09-27 13:04  ronny
+
+	  - Freigabe TProgramme.GetEpisodes() und .GetEpisode fuer LUA
+	  
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2012-09-27 12:57  ronny
+
+	  - Fehler im "DrawPixmapOnPixmap" behoben (floats und ints zu
+	  mischen birgt Gefahren :D)
+	  - kleinere Anpassung bei den "Text"-Spritecaches, und TBitmapFont
+	  hat nun drawToPixmap-Eigenschaft (Renderziel)
+	  - CopyImage2 - kopiert ein Bild (neue handles, refcounter etc)
+	  - "Colors" und "Color"-Resourcen werden nun von einem Loader
+	  verwaltet
+	  - TColor liefert bei vielen Methoden sich selbst zurueck (fuer
+	  Create(r,g,b).addList().setRGB() etc.)
+	  
+	  trunk/res/ai/test_base.lua, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_image.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-09-26 22:32  starscrazy
+
+	  Noch mehr Aufräumarbeiten und Modernisierungen. Die
+	  LUA-Movie-Klasse ist rausgeflogen... alle Funktionen verwenden
+	  jetzt die BlitzMax-TProgramme-Klasse. Dazu habe ich noch ein paar
+	  kleine Erweiterungen an TProgramme vorgenommen
+	  
+	  trunk/res/ai/CommonObjects.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/gamefunctions_tvprogramme.bmx
+	  
+
+2012-09-26 21:07  starscrazy
+
+	  -/-
+	  
+	  trunk/res/ai/CommonObjects.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskAdAgency.lua
+	  
+
+2012-09-26 19:07  ronny
+
+	  - von Todo: Stationmap-Konfiguration in xml "stationmap.xml"
+	  ausgelagert (Bundeslaender, Dichtekarte)
+	  - Resourcenmanager: defaultName fuer LoadPixmapResource und
+	  LoadImageResource macht Name setzbar fuer Module die Resourcen
+	  laden wollen
+	  
+	  trunk/TVTower.bmx, trunk/config/settings_colors.xml,
+	  trunk/config/stationmap.xml, trunk/res/ai/test_base.lua,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/gamefunctions.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-09-26 18:24  ronny
+
+	  - von ToDo: TPlayerColor-creation in XML auslagern
+	  - Colors/Color als Resourcentyp eingebunden, Colors werden als
+	  Liste in den Assets gespeichert
+	  
+	  trunk/TVTower.bmx, trunk/config/resources.xml,
+	  trunk/config/settings_colors.xml,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-09-26 17:13  ronny
+
+	  - Kolorisierungsfunktionen erwarten nun TColor statt R,G,B
+	  - Kolorisierungsfunktion ColorizeTImage korrigiert (RGBA-Farbe
+	  statt ARGB) und reduziert ( = schneller)
+	  - Kolorisierungsfunktion ColorizedImage entfernt (gleich zu
+	  ColorizeTImage)
+	  - RenderToTexture entfernt (war nur fuer DirectX moeglich)
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_image.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2012-09-26 13:27  ronny
+
+	  - TPlayerColor mit TColor verschmolzen (und einmalig genutzte
+	  Funktionen umschrieben)
+	  - TPlayerColor entfernt
+	  
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-09-23 20:13  ronny
+
+	  - GUIElemente ueberarbeitet (GUIPanel, GUIBackground, GUI...)
+	  - GUIElemente koennen nun parenten, sortieren sich nun korrekt
+	  - weitere GUIElemente-Events
+	  - Chat-GUI-Integration umgeschrieben
+	  - Events haben "veto"-Moeglichkeit (wenn sie false zurueckgeben,
+	  dann ist Stopp)
+	  - Sprachdateien angepasst (avaiable = available)
+	  - AI-Fehler in der test-AI behoben
+	  - ...
+	  
+	  trunk/res/ai/test_base.lua, trunk/res/lang/lang_de.txt,
+	  trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2012-09-19 19:44  starscrazy
+
+	  -/-
+	  
+	  trunk/source/external/bnetex
+	  
+
+2012-09-19 19:43  starscrazy
+
+	  -/-
+	  
+	  trunk
+	  
+
+2012-09-19 19:40  starscrazy
+
+	  -/-
+	  
+	  Log.txt, TVTower, TVTower.bmx, TVTower.mt.exe,
+	  TVTowerProject.blide, _extra, branches, config, doc.html,
+	  docLuaOnly.html, grafiken, res, savegame.zip, source,
+	  trunk/Log.txt, trunk/TVTower, trunk/TVTower.bmx,
+	  trunk/TVTower.mt.exe, trunk/TVTowerProject.blide, trunk/_extra,
+	  trunk/config, trunk/doc.html, trunk/docLuaOnly.html,
+	  trunk/grafiken, trunk/res, trunk/savegame.zip, trunk/source,
+	  trunk/tvtower.ico, tvtower.ico
+	  
+
+2012-09-19 19:13  starscrazy
+
+	  -/-
+	  
+	  trunk
+	  
+

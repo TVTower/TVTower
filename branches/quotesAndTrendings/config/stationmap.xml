@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<stationmap>
+			<!-- map with graytone values of population density -->
+			<densitymap url="grafiken/senderkarte/senderkarte_bevoelkerungsdichte.png" />
+			<states>
+				<state name="bremen"			x="207" y="91"	sprite="gfx_officepack_topo_bremen" />
+				<state name="berlin"			x="452" y="118"	sprite="gfx_officepack_topo_berlin" />
+				<state name="hamburg"			x="270" y="69"	sprite="gfx_officepack_topo_hamburg" />
+				<state name="bawue"				x="129" y="258"	sprite="gfx_officepack_topo_bawue" />
+				<state name="bayern"			x="223" y="221"	sprite="gfx_officepack_topo_bayern" />
+				<state name="saarland"			x="69"  y="263"	sprite="gfx_officepack_topo_saarland" />
+				<state name="rheinlandpfalz"	x="59"  y="203" sprite="gfx_officepack_topo_rheinlandpfalz" />
+				<state name="hessen"			x="155" y="169"	sprite="gfx_officepack_topo_hessen" />
+				<state name="thueringen"		x="276" y="169"	sprite="gfx_officepack_topo_thueringen" />
+				<state name="sachsen"			x="388" y="167"	sprite="gfx_officepack_topo_sachsen" />
+				<state name="sachsenanhalt"		x="314" y="103" sprite="gfx_officepack_topo_sachsenanhalt" />
+				<state name="niedersachsen"		x="104" y="61"	sprite="gfx_officepack_topo_niedersachsen" />
+				<state name="schleswigholstein"	x="213" y="12"	sprite="gfx_officepack_topo_schleswigholstein" />
+				<state name="brandenburg"		x="359" y="78"	sprite="gfx_officepack_topo_brandenburg" />
+				<state name="nrw"				x="55"  y="127"	sprite="gfx_officepack_topo_nrw" />
+				<state name="meckpom"			x="318" y="21"	sprite="gfx_officepack_topo_meckpom" />
+			</states>
+		</stationmap>
+	</resources>
+</tvt>

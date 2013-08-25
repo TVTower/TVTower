@@ -1,0 +1,41 @@
+#!BMK
+
+@define echo
+	print(arg0)
+@end
+
+@define include
+	bmk.LoadBMK(arg1)
+@end
+
+@define push
+	globals.Push(arg1)
+@end
+
+@define pop
+	globals.Pop(arg1)
+@end
+
+@define pushall
+	globals.PushAll()
+@end
+
+@define popall
+	globals.PopAll()
+@end
+
+@define notify
+	sys.Notify(arg0)
+@end
+
+@define openurl
+	sys.OpenURL(arg1)
+@end
+
+@define addarg
+	local option = nvl(arg1, "")
+	local extra = nvl(arg2, "")
+	if option ~= "" then
+		bmk.AddArg(option, extra)
+	end
+@end

@@ -1,0 +1,56 @@
+HochhausPack.png
+{
+	hochhaus_ebene3l
+	0
+	0
+	127
+	228
+	0
+	0
+	0
+	0
+}
+{
+	hochhaus_ebene3r
+	127
+	0
+	126
+	221
+	0
+	0
+	0
+	0
+}
+{
+	hochhaus_ebene1l
+	0
+	228
+	127
+	157
+	0
+	0
+	0
+	0
+}
+{
+	hochhaus_dach
+	0
+	450
+	507
+	51
+	0
+	0
+	0
+	0
+}
+{
+	hochhaus_ebene2r
+	127
+	221
+	123
+	139
+	0
+	0
+	0
+	0
+}
