@@ -43,6 +43,7 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
+Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
@@ -245,8 +246,11 @@ Const GAMESTATE_INIZIALIZEGAME:int			= 5		'mode when date needed for game (names
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame {_exposeToLua="selected"}
-	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...
+	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...		
 	Const maxAbonnementLevel:Int		= 3
+	
+	Field Quotes:TQuotes = null
+	Field PopularityManager:TPopularityManager = null
 
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
 	Field maxContractsAllowed:Int 		= 8		{nosave}	'how many contracts a player can possess
@@ -453,6 +457,9 @@ endrem
 		Game.title				= "unknown"
 
 		Game.SetRandomizerBase( Millisecs() )
+		
+		Game.PopularityManager = TPopularityManager.Create()		
+		Game.Quotes = TQuotes.Create()
 
 		Return Game
 	End Function
@@ -477,6 +484,12 @@ endrem
 		print "setRandomizerBase - first random is: "+RandRange(0,10000)
 	End Method
 
+	Method Initialize()
+		Game.PopularityManager.Initialize()
+		Game.Quotes.Initialize()
+		
+		CreateInitialPlayers()
+	End Method
 
 	Method CreateInitialPlayers()
 		'Creating PlayerColors - could also be done "automagically"
@@ -536,7 +549,7 @@ endrem
 					'Begin Game - create Events
 					EventManager.registerEvent( TEventOnTime.Create("Game.OnMinute", game.GetMinute()) )
 					EventManager.registerEvent( TEventOnTime.Create("Game.OnHour", game.GetHour()) )
-					EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )
+					EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )					
 
 					'so we could add news etc.
 					EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
@@ -2255,7 +2268,7 @@ Global Building:TBuilding		= TBuilding.Create()
 EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
 
-Game.CreateInitialPlayers()
+Game.Initialize() 'Game.CreateInitialPlayers()
 
 Local tempfigur:TFigures= New TFigures.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
 tempfigur.InsertAnimation("cleanRight", TAnimation.Create([ [11,130], [12,130] ], -1, 0) )
@@ -3032,8 +3045,10 @@ Function Init_Creation()
 		InGame_Chat.hide()
 	else
 		InGame_Chat.show()
-	endif
+	endif		
 
+	'Eigentlich gehört das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
+	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
 	if Game.isGameLeader()
@@ -3567,6 +3582,7 @@ End Type
 EventManager.registerListener( "Game.OnDay", 	TEventListenerOnDay.Create() )
 EventManager.registerListener( "Game.OnMinute",	TEventListenerOnMinute.Create() )
 EventManager.registerListenerFunction( "Game.OnStart",	TGame.onStart )
+
 rem
 'we do not want them to happen in each timer loop but on request...
 EventManager.registerListenerFunction( "App.UpdateKeymanager",	UpdateKeymanager )
