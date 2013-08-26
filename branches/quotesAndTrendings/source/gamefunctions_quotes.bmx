@@ -198,7 +198,7 @@ Type TPopulartity
 				Trend = Trend/2
 			Endif		
 		
-			local distance:float = Round((Float(LongTermPopularity) - Float(Popularity)) / TrendAdjustDivider, .1)
+			local distance:float = (Float(LongTermPopularity) - Float(Popularity)) / TrendAdjustDivider
 			Trend = Max(TrendLowerBound, Min(TrendUpperBound, Trend + distance + Float(RandRange(TrendRandRangLower, TrendRandRangUpper )/TrendAdjustDivider )))
 		Endif
 	End Method
