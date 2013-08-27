@@ -92,7 +92,7 @@ Type TGUIChat extends TGUIObject
 	End Method
 
 	Function onInputChange:int( triggerEvent:TEventBase )
-		local guiInput:TGUIInput = TGUIInput(triggerEvent.GetSender())
+		local guiInput:TGUIInput = TGUIInput(triggerEvent.getSender())
 		if guiInput = Null then return FALSE
 
 		local guiChat:TGUIChat = TGUIChat(guiInput._parent)
@@ -100,7 +100,7 @@ Type TGUIChat extends TGUIObject
 
 		'emit event : chats should get a new line
 		'- step A) is to get what channels we want to announce to
-		local sendToChannels:int = guiChat.GetChannelsFromText(guiInput.value)
+		local sendToChannels:int = guiChat.getChannelsFromText(guiInput.value)
 		'- step B) is emitting the event "for all"
 		'  (the listeners have to handle if they want or ignore the line
 		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", Game.playerID).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
@@ -119,25 +119,25 @@ Type TGUIChat extends TGUIObject
 	End Function
 
 	Method onAddEntry:int( triggerEvent:TEventBase )
-		local guiChat:TGUIChat = TGUIChat(triggerEvent.GetReceiver())
+		local guiChat:TGUIChat = TGUIChat(triggerEvent.getReceiver())
 		'if event has a specific receiver and this is not a chat - we are not interested
-		if triggerEvent.GetReceiver() AND not guiChat then return FALSE
+		if triggerEvent.getReceiver() AND not guiChat then return FALSE
 		'found a chat - but it is another chat
 		if guiChat and guiChat <> self then return FALSE
 
 		'here we could add code to exlude certain other chat channels
-		local sendToChannels:int = triggerEvent.GetData().getInt("channels", 0)
+		local sendToChannels:int = triggerEvent.getData().getInt("channels", 0)
 		if self.isListeningToChannel(sendToChannels)
-			self.AddEntryFromData( triggerEvent.GetData() )
+			self.AddEntryFromData( triggerEvent.getData() )
 		else
 			print "onAddEntry - unknown channel, not interested"
 		endif
 	End Method
 
 
-	Function GetChannelsFromText:int(text:string)
+	Function getChannelsFromText:int(text:string)
 		local sendToChannels:int = 0 'by default send to no channel
-		Select GetSpecialCommandFromText("/w ronny hi")
+		Select getSpecialCommandFromText("/w ronny hi")
 			case CHAT_COMMAND_WHISPER
 				sendToChannels :| CHAT_CHANNEL_PRIVATE
 			default
@@ -146,7 +146,7 @@ Type TGUIChat extends TGUIObject
 		return SendToChannels
 	End Function
 
-	Function GetSpecialCommandFromText:int(text:string)
+	Function getSpecialCommandFromText:int(text:string)
 		text = text.trim()
 
 		if Left( text,1 ) <> "/" then return CHAT_COMMAND_NONE
@@ -177,9 +177,9 @@ Type TGUIChat extends TGUIObject
 	End Method
 
 	Method AddEntryFromData( data:TData )
-		local text:string		= data.GetString("text", "")
-		local textColor:TColor	= TColor( data.Get("textColor") )
-		local senderID:int		= data.GetInt("senderID", 0)
+		local text:string		= data.getString("text", "")
+		local textColor:TColor	= TColor( data.get("textColor") )
+		local senderID:int		= data.getInt("senderID", 0)
 		local senderName:string	= ""
 		local senderColor:TColor= Null
 
@@ -279,22 +279,22 @@ Type TGUIChatEntry extends TGUIListItem
 		return self
 	End Method
 
-	Method GetDimension:TPoint()
+	Method getDimension:TPoint()
 		local move:TPoint = TPoint.Create(0,0)
 		if self.Data.getString("senderName",null)
 			local senderColor:TColor = TColor(self.Data.get("senderColor"))
 			if not senderColor then senderColor = TColor.Create(0,0,0)
-			move = Assets.fonts.baseFontBold.drawStyled(self.Data.getString("senderName")+":", self.GetScreenX(), self.GetScreenY(), senderColor.r, senderColor.g, senderColor.b, 2, 0)
+			move = Assets.fonts.baseFontBold.drawStyled(self.Data.getString("senderName")+":", self.getScreenX(), self.getScreenY(), senderColor.r, senderColor.g, senderColor.b, 2, 0)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
 		endif
 		'available width is parentsDimension minus startingpoint
 		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
-		local maxWidth:int = parentPanel.GetContentScreenWidth()-self.rect.GetX()
+		local maxWidth:int = parentPanel.getContentScreenWidth()-self.rect.getX()
 		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
 
-		local dimension:TPoint = Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, 255, 255, 255, 0, 2, 0)
+		local dimension:TPoint = Assets.fonts.baseFont.drawBlock(self.label, self.getScreenX()+move.x, self.getScreenY()+move.y, maxWidth-move.X, maxHeight, 0, 255, 255, 255, 0, 2, 0)
 
 		'add padding
 		dimension.moveXY(0, self.paddingBottom)
@@ -317,14 +317,14 @@ Type TGUIChatEntry extends TGUIListItem
 		if senderColor then self.Data.Add("senderColor", senderColor)
 	End Method
 
-	Method GetParentWidth:float(parentClassName:string="toplevelparent")
-		if not self._parent then return self.rect.GetW()
-		return self.getParent(parentClassName).rect.GetW()
+	Method getParentWidth:float(parentClassName:string="toplevelparent")
+		if not self._parent then return self.rect.getW()
+		return self.getParent(parentClassName).rect.getW()
 	End Method
 
-	Method GetParentHeight:float(parentClassName:string="toplevelparent")
-		if not self._parent then return self.rect.GetH()
-		return self.getParent(parentClassName).rect.GetH()
+	Method getParentHeight:float(parentClassName:string="toplevelparent")
+		if not self._parent then return self.rect.getH()
+		return self.getParent(parentClassName).rect.getH()
 	End Method
 
 	Method Draw:int()
@@ -333,21 +333,21 @@ Type TGUIChatEntry extends TGUIListItem
 		if self.showtime <> Null then setAlpha float(self.showtime-Millisecs())/500.0
 		'available width is parentsDimension minus startingpoint
 		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
-		local maxWidth:int = parentPanel.GetContentScreenWidth()-self.rect.GetX()
+		local maxWidth:int = parentPanel.getContentScreenWidth()-self.rect.getX()
 
-		'local maxWidth:int = self.GetParentWidth("tguiscrollablepanel")-self.rect.GetX()
+		'local maxWidth:int = self.getParentWidth("tguiscrollablepanel")-self.rect.getX()
 		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
 
 		local move:TPoint = TPoint.Create(0,0)
 		if self.Data.getString("senderName",null)
 			local senderColor:TColor = TColor(self.Data.get("senderColor"))
 			if not senderColor then senderColor = TColor.Create(0,0,0)
-			move = Assets.fonts.baseFontBold.drawStyled(self.Data.getString("senderName", "")+":", self.GetScreenX(), self.GetScreenY(), senderColor.r, senderColor.g, senderColor.b, 2, 1)
+			move = Assets.fonts.baseFontBold.drawStyled(self.Data.getString("senderName", "")+":", self.getScreenX(), self.getScreenY(), senderColor.r, senderColor.g, senderColor.b, 2, 1)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
 		endif
-		Assets.fonts.baseFont.drawBlock(self.label, self.GetScreenX()+move.x, self.GetScreenY()+move.y, maxWidth-move.X, maxHeight, 0, self.labelColor.r, self.labelColor.g, self.labelColor.b, 0, 2, 1, 0.5)
+		Assets.fonts.baseFont.drawBlock(self.label, self.getScreenX()+move.x, self.getScreenY()+move.y, maxWidth-move.X, maxHeight, 0, self.labelColor.r, self.labelColor.g, self.labelColor.b, 0, 2, 1, 0.5)
 
 		setAlpha 1.0
 
@@ -358,32 +358,25 @@ End Type
 
 
 'create a custom type so we can check for doublettes on add
-Type TGUIGameList Extends TGUIListBase
-	field selectedEntry:TGUIobject = null
+Type TGUIGameList Extends TGUISelectList
 
     Method Create:TGUIGameList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
 		super.Create(x,y,width,height, State)
 
-		'we want to know about clicks
-		EventManager.registerListenerMethod( "guiobject.onClick",	self, "onClickOnEntry", "TGUIGameEntry" )
-
 		return self
 	end Method
 
-	Method onClickOnEntry:Int(triggerEvent:TEventBase)
-		local entry:TGUIGameEntry = TGUIGameEntry( triggerEvent.GetSender() )
-		if not entry then return FALSE
-
-		'only mark selected if we are owner of that entry
-		if self.HasItem(entry)
-			if TGUIGameEntry(self.selectedEntry) then TGUIGameEntry(self.selectedEntry).selected = false
-			self.selectedEntry = entry
-			if TGUIGameEntry(self.selectedEntry) then TGUIGameEntry(self.selectedEntry).selected = true
-		endif
+	'override default
+	Method RegisterListeners:int()
+		'we want to know about clicks
+		EventManager.registerListenerMethod( "guiobject.onClick",	self, "onClickOnEntry", "TGUIGameEntry" )
 	End Method
 
-	Method GetSelectedEntry:TGUIobject()
-		return self.selectedEntry
+	Method onClickOnEntry:Int(triggerEvent:TEventBase)
+		local entry:TGUIGameEntry = TGUIGameEntry( triggerEvent.getSender() )
+		if not entry then return FALSE
+
+		return super.onClickOnEntry(triggerEvent)
 	End Method
 
 	Method AddItem:int(item:TGUIobject, extra:object=null)
@@ -400,10 +393,9 @@ Type TGUIGameList Extends TGUIListBase
 	End Method
 End Type
 
-Type TGUIGameEntry extends TGUIListItem
+Type TGUIGameEntry extends TGUISelectListItem
 	field paddingBottom:int		= 3
 	field paddingTop:int		= 2
-	field selected:int			= FALSE
 
 	Method CreateSimple:TGUIGameEntry(_hostIP:string, _hostPort:int, _hostName:string="", gameTitle:string="", slotsUsed:int, slotsMax:int)
 		'make it "unique" enough
@@ -433,14 +425,14 @@ Type TGUIGameEntry extends TGUIListItem
 		return self
 	End Method
 
-	Method GetDimension:TPoint()
+	Method getDimension:TPoint()
 		'available width is parentsDimension minus startingpoint
 		local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(self.getParent("tguiscrollablepanel"))
-		local maxWidth:int = parentPanel.GetContentScreenWidth()-self.rect.GetX()
+		local maxWidth:int = parentPanel.getContentScreenWidth()-self.rect.getX()
 		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
 
 		local text:string = self.Data.getString("gameTitle","#unknowngametitle#")+" by "+ self.Data.getString("hostName","#unknownhostname#") + " ("+self.Data.getInt("slotsUsed",1)+"/"+self.Data.getInt("slotsMax",4)
-		local dimension:TPoint = Assets.fonts.baseFont.drawBlock(text, self.GetScreenX(), self.GetScreenY(), maxWidth, maxHeight, 0, 255, 255, 255, 0, 2, 0)
+		local dimension:TPoint = Assets.fonts.baseFont.drawBlock(text, self.getScreenX(), self.getScreenY(), maxWidth, maxHeight, 0, 255, 255, 255, 0, 2, 0)
 
 		'add padding
 		dimension.moveXY(0, self.paddingBottom)
@@ -461,21 +453,9 @@ Type TGUIGameEntry extends TGUIListItem
 		self.getParent("tguigamelist").RestrictViewPort()
 
 		if self.showtime <> Null then setAlpha float(self.showtime-Millisecs())/500.0
-		'available width is parentsDimension minus startingpoint
-		local maxWidth:int = TGUIobject(self.getParent("topitem")).GetContentScreenWidth()-self.rect.GetX()
-		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
 
-		if self.mouseover
-			SetColor 250,210,100
-			DrawRect(self.GetScreenX(), self.GetScreenY(), maxWidth, self.rect.GetH())
-			SetColor 255,255,255
-		elseif self.selected
-			SetAlpha GetAlpha()*0.5
-			SetColor 250,210,100
-			DrawRect(self.GetScreenX(), self.GetScreenY(), maxWidth, self.rect.GetH())
-			SetColor 255,255,255
-			SetAlpha GetAlpha()*2.0
-		endif
+		'draw highlight-background etc
+		Super.Draw()
 
 		'draw text
 		local move:TPoint = TPoint.Create(0, self.paddingTop)
@@ -486,17 +466,17 @@ Type TGUIGameEntry extends TGUIListItem
 
 		text 		= self.Data.getString("gameTitle","#unknowngametitle#")
 		textColor	= TColor(self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
-		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.GetScreenX() + move.x, self.GetScreenY() + move.y, textColor.r, textColor.g, textColor.b, 2, 1,0.5)
+		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.getScreenX() + move.x, self.getScreenY() + move.y, textColor.r, textColor.g, textColor.b, 2, 1,0.5)
 		move.moveXY(textDim.x,1)
 
 		text 		= " by "+self.Data.getString("hostName","#unknownhostname#")
 		textColor	= TColor(self.Data.get("hostNameColor", TColor.Create(50,50,150)) )
-		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.GetScreenX() + move.x, self.GetScreenY() + move.y, textColor.r, textColor.g, textColor.b)
+		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.getScreenX() + move.x, self.getScreenY() + move.y, textColor.r, textColor.g, textColor.b)
 		move.moveXY(textDim.x,0)
 
 		text 		= " ("+self.Data.getInt("slotsUsed",1)+"/"++self.Data.getInt("slotsMax",4)+")"
 		textColor	= TColor(self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
-		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.GetScreenX() + move.x, self.GetScreenY() + move.y, textColor.r, textColor.g, textColor.b)
+		textDim		= Assets.fonts.baseFontBold.drawStyled(text, self.getScreenX() + move.x, self.getScreenY() + move.y, textColor.r, textColor.g, textColor.b)
 		move.moveXY(textDim.x,0)
 
 		setAlpha 1.0
@@ -579,14 +559,14 @@ Type TSaveFile
 								Print "array '" + t.Name() + " - " + fieldtype.Name() + "'"
 							EndIf
 						End If
-						If TList(t.Get(obj)) <> Null
-							Local liste:TList = TList(t.Get(obj))
+						If TList(t.get(obj)) <> Null
+							Local liste:TList = TList(t.get(obj))
 							For Local childobj:Object = EachIn liste
 								Print "saving list children..."
 								Self.SaveObject(childobj, nodename + "_CHILD", _addfunc)
 							Next
 						Else
-							Self.xmlWrite(Upper(t.name()), String(t.Get(obj)))
+							Self.xmlWrite(Upper(t.name()), String(t.get(obj)))
 						End If
 					EndIf
 				Next
@@ -628,7 +608,7 @@ Type TPlannerList
 	Field enabled:Int				= 0
 	Field Pos:TPoint 				= TPoint.Create()
 
-	Method GetOpen:Int()
+	Method getOpen:Int()
 		return self.openState
 	End Method
 End Type
@@ -646,11 +626,11 @@ Type TgfxProgrammelist extends TPlannerList
 
 	Function Create:TgfxProgrammelist(x:Int, y:Int, maxGenres:int)
 		Local Obj:TgfxProgrammelist =New TgfxProgrammelist
-		Obj.gfxmovies		= Assets.GetSprite("pp_menu_werbung")   'Assets.GetSprite("") '  = gfxmovies
-		Obj.gfxtape			= Assets.GetSprite("pp_cassettes_movies")
-		Obj.gfxtapeseries	= Assets.GetSprite("pp_cassettes_series")
-		Obj.gfxtapeepisodes	= Assets.GetSprite("pp_cassettes_episodes")
-		Obj.gfxepisodes		= Assets.GetSprite("episodes")
+		Obj.gfxmovies		= Assets.getSprite("pp_menu_werbung")   'Assets.getSprite("") '  = gfxmovies
+		Obj.gfxtape			= Assets.getSprite("pp_cassettes_movies")
+		Obj.gfxtapeseries	= Assets.getSprite("pp_cassettes_series")
+		Obj.gfxtapeepisodes	= Assets.getSprite("pp_cassettes_episodes")
+		Obj.gfxepisodes		= Assets.getSprite("episodes")
 		Obj.Pos.SetXY(x, y)
 		Obj.maxGenres = maxGenres
 		Return Obj
@@ -668,16 +648,16 @@ Type TgfxProgrammelist extends TPlannerList
 		EndIf
 		If self.openState >=1
 			local currY:float = Pos.y
-			Assets.GetSprite("genres_top").draw(Pos.x,currY)
-			currY:+Assets.GetSprite("genres_top").h
+			Assets.getSprite("genres_top").draw(Pos.x,currY)
+			currY:+Assets.getSprite("genres_top").h
 
 '			gfxgenres.Draw(Pos.x, Pos.y)
 			For local genres:int = 0 To self.maxGenres-1 		'21 genres
 				local lineHeight:int =0
 				local entryNum:string = (genres mod 2)
 				if genres = 0 then entryNum = "First"
-				Assets.GetSprite("genres_entry"+entryNum).draw(Pos.x,currY)
-				lineHeight = Assets.GetSprite("genres_entry"+entryNum).h
+				Assets.getSprite("genres_entry"+entryNum).draw(Pos.x,currY)
+				lineHeight = Assets.getSprite("genres_entry"+entryNum).h
 
 				Local genrecount:Int = TProgramme.CountGenre(genres, Game.Players[Game.playerID].ProgrammeCollection.List)
 
@@ -696,7 +676,7 @@ Type TgfxProgrammelist extends TPlannerList
 				SetColor 255, 255, 255
 				currY:+ lineHeight
 			Next
-			Assets.GetSprite("genres_bottom").draw(Pos.x,currY)
+			Assets.getSprite("genres_bottom").draw(Pos.x,currY)
 		EndIf
 	End Method
 
@@ -704,7 +684,7 @@ Type TgfxProgrammelist extends TPlannerList
 		Local locx:Int = Pos.x - gfxmovies.w + 25
 		Local locy:Int = Pos.y+7 -19
 
-		local font:TBitmapFont = Assets.GetFont("Font10")
+		local font:TBitmapFont = Assets.getFont("Font10")
 		For Local movie:TProgramme = EachIn Game.Players[Game.playerID].ProgrammeCollection.List 'all programmes of one player
 			If movie.genre = genre
 				locy :+ 19
@@ -761,7 +741,7 @@ Type TgfxProgrammelist extends TPlannerList
 	Method DrawEpisodeTapes:Int(series:TProgramme, createProgrammeblock:Int=1)
 		Local locx:Int = Pos.x - gfxepisodes.w + 8
 		Local locy:Int = Pos.y + 5 + gfxmovies.h - 4 -12 '-4 as displacement for displaced the background
-		local font:TBitmapFont = Assets.GetFont("Default", 8)
+		local font:TBitmapFont = Assets.getFont("Default", 8)
 
 		For Local i:Int = 0 To series.episodes.Count()-1
 			Local programme:TProgramme = TProgramme(series.episodes.ValueAtIndex(i))   'all programmes of one player
@@ -803,9 +783,9 @@ Type TgfxProgrammelist extends TPlannerList
 				SetOpen(0)
 				MOUSEMANAGER.resetKey(2)
 			EndIf
-			If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseManager.x,MouseManager.y, Pos.x,Pos.y, Assets.GetSprite("genres_entry0").w, Assets.GetSprite("genres_entry0").h*self.MaxGenres)
+			If MOUSEMANAGER.IsHit(1) AND functions.IsIn(MouseManager.x,MouseManager.y, Pos.x,Pos.y, Assets.getSprite("genres_entry0").w, Assets.getSprite("genres_entry0").h*self.MaxGenres)
 				SetOpen(2)
-				currentgenre = Floor((MouseManager.y - Pos.y - 1) / Assets.GetSprite("genres_entry0").h)
+				currentgenre = Floor((MouseManager.y - Pos.y - 1) / Assets.getSprite("genres_entry0").h)
 			EndIf
 
 			If self.openState >=2
@@ -832,8 +812,8 @@ Type TgfxContractlist extends TPlannerList
 
 	Function Create:TgfxContractlist(x:Int, y:Int)
 		Local NewObject:TgfxContractlist =New TgfxContractlist
-		NewObject.gfxcontracts	= Assets.GetSprite("pp_menu_werbung")
-		NewObject.gfxtape 		= Assets.GetSprite("pp_cassettes_movies")
+		NewObject.gfxcontracts	= Assets.getSprite("pp_menu_werbung")
+		NewObject.gfxtape 		= Assets.getSprite("pp_cassettes_movies")
 		NewObject.Pos.SetXY(x, y)
 		Return NewObject
 	End Function
@@ -849,7 +829,7 @@ Type TgfxContractlist extends TPlannerList
 		local boxHeight:int			= gfxtape.h + 1
 		Local locx:Int 				= Pos.x - gfxcontracts.w + 10
 		Local locy:Int 				= Pos.y+7 - boxHeight
-		local font:TBitmapFont 		= Assets.GetFont("Default", 10)
+		local font:TBitmapFont 		= Assets.getFont("Default", 10)
 		For Local contract:TContract = EachIn Game.Players[Game.playerID].ProgrammeCollection.ContractList 'all contracts of one player
 			locy :+ boxHeight
 			gfxtape.Draw(locx, locy)
@@ -949,25 +929,28 @@ endrem
 			Local typ:TTypeId = TTypeId.ForObject(Self)
 			For Local t:TField = EachIn typ.EnumFields()
 				If t.MetaData("saveload") <> "nosave" Or t.MetaData("saveload") = "normal"
-					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
+					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.get(Self)))
 				EndIf
 			Next
 		LoadSaveFile.xmlCloseNode()
 	End Method
 
 
-  Function Create:TAudienceQuotes(title:String, audience:Double, audiencepercentage:Int, sendhour:Int, sendminute:Int,senddate:Int, playerID:Int)
-    Local locObject:TAudienceQuotes = New TAudienceQuotes
-	locObject.title    = title
-	locObject.audience = audience
-	locObject.audiencepercentage = Int(audiencepercentage)
-	locObject.sendhour = sendhour
-	locObject.sendminute = sendminute
-	locObject.senddate = senddate
-	locObject.playerID = playerID
-	List.AddLast(locObject)
-	Return locObject
-  End Function
+	Function Create:TAudienceQuotes(title:String, audience:Double, sendhour:Int, sendminute:Int,senddate:Int, playerID:Int)
+		Local obj:TAudienceQuotes = New TAudienceQuotes
+		obj.title    = title
+		obj.audience = audience
+		obj.audiencepercentage = 0
+		if Game.getMaxAudience(playerID) > 0 then obj.audiencepercentage = Floor( audience*1000 / Game.getMaxAudience(playerID) )
+
+		obj.sendhour = sendhour
+		obj.sendminute = sendminute
+		obj.senddate = senddate
+		obj.playerID = playerID
+
+		List.AddLast(obj)
+		Return obj
+	End Function
 
   Method ShowSheet(x:Int, y:Int)
 	If Sheet = Null
@@ -983,7 +966,7 @@ endrem
 	End If
   End Method
 
-	Function GetAudienceOfDate:TAudienceQuotes(playerID:int, day:Int, hour:Int, minute:Int)
+	Function getAudienceOfDate:TAudienceQuotes(playerID:int, day:Int, hour:Int, minute:Int)
 		Local locObject:TAudienceQuotes
 		For Local obj:TAudienceQuotes = EachIn TAudienceQuotes.List
 			If obj.playerID = playerID And obj.senddate = day And obj.sendhour = hour And obj.sendminute = minute Then Return obj
@@ -991,7 +974,7 @@ endrem
 		Return Null
 	End Function
 
-  Function GetAudienceOfDay:TAudienceQuotes[](playerID:Int, day:Int)
+  Function getAudienceOfDay:TAudienceQuotes[](playerID:Int, day:Int)
     Local locObjects:TAudienceQuotes[]
 	Local locObject:TAudienceQuotes
 
@@ -1077,7 +1060,7 @@ Type TTooltip extends TRenderableChild
 		EndIf
 	End Method
 
-	Method GetWidth:Int()
+	Method getWidth:Int()
 		local txtWidth:int = self.useFontBold.getWidth(title)+6
 		If tooltipimage >=0 Then txtwidth:+ TTooltip.ToolTipIcons.framew+ 2
 		If txtwidth < self.useFont.getWidth(text)+6 Then txtwidth = self.useFont.getWidth(text)+6
@@ -1086,14 +1069,14 @@ Type TTooltip extends TRenderableChild
 
 	Method DrawShadow(_width:float, _height:float)
 		SetColor 0, 0, 0
-		SetAlpha self.GetFadeAmount()-0.8
+		SetAlpha self.getFadeAmount()-0.8
 		DrawRect(self.pos.x+2,self.pos.y+2,_width,_height)
 
-		SetAlpha self.GetFadeAmount()-0.5
+		SetAlpha self.getFadeAmount()-0.5
 		DrawRect(self.pos.x+1,self.pos.y+1,_width,_height)
 	End Method
 
-	Method GetFadeAmount:float()
+	Method getFadeAmount:float()
 		return Float(100*self.fadeTime / self.startFadeTime) / 100.0
 	End Method
 
@@ -1131,7 +1114,7 @@ endrem
 			endif
 			self.DrawShadow(boxWidth,boxHeight)
 
-			SetAlpha self.GetFadeAmount()
+			SetAlpha self.getFadeAmount()
 			DrawRect(self.pos.x,self.pos.y, boxWidth,boxHeight)
 
 			SetColor 255,255,255
@@ -1150,7 +1133,7 @@ endrem
 				displaceX = TTooltip.ToolTipIcons.framew
 			endif
 
-			SetAlpha self.GetFadeAmount()
+			SetAlpha self.getFadeAmount()
 			'caption
 			self.useFontBold.drawStyled(title, self.pos.x+5+displaceX, self.pos.y+Self.TooltipHeader.h/2 - self.useFontBold.getHeight("ABC")/2 +2 , 50,50,50, 2, 1, 0.1)
 			SetColor 90,90,90
@@ -1172,7 +1155,7 @@ endrem
 			SetAlpha 1.0
 		Else 'not dirty
 			self.DrawShadow(ImageWidth(image),ImageHeight(image))
-			SetAlpha self.GetFadeAmount()
+			SetAlpha self.getFadeAmount()
 			SetColor 255,255,255
 			DrawImage(image, self.pos.x, self.pos.y)
 			SetAlpha 1.0
@@ -1183,7 +1166,7 @@ End Type
 
 	Function DrawDialog(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TBitmapFont = Null)
 		Local dx:Float, dy:Float
-		Local DialogSprite:TGW_Sprites = gfx_Rect.GetSprite(DialogStart)
+		Local DialogSprite:TGW_Sprites = gfx_Rect.getSprite(DialogStart)
 		If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + (Height - DialogSprite.h)/2 + DialogStartMove;width:-48
 		If DialogStart = "StartRightDown" Then dx = x + width - 12;dy = y + (Height - DialogSprite.h)/2 + DialogStartMove;width:-48
 		If DialogStart = "StartDownRight" Then dx = x + (width - DialogSprite.w)/2 + DialogStartMove;dy = y + Height - 12;Height:-53
@@ -1197,16 +1180,16 @@ End Type
 
 	'draws a rounded rectangle (blue border) with alphashadow
 	Function DrawGFXRect(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:string="gfx_gui_rect_")
-		gfx_Rect.GetSprite(nameBase+"TopLeft").Draw(x, y)
-		gfx_Rect.GetSprite(nameBase+"TopRight").Draw(x + width, y,-1,0,1)
-		gfx_Rect.GetSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1,1)
-		gfx_Rect.GetSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, 1,1)
+		gfx_Rect.getSprite(nameBase+"TopLeft").Draw(x, y)
+		gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1,0,1)
+		gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1,1)
+		gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, 1,1)
 
-		gfx_Rect.GetSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, gfx_Rect.GetSprite(nameBase+"BorderLeft").w, Height - gfx_Rect.GetSprite(nameBase+"BottomLeft").h - gfx_Rect.GetSprite(nameBase+"TopLeft").h)
-		gfx_Rect.GetSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.GetSprite(nameBase+"BorderRight").w, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, gfx_Rect.GetSprite(nameBase+"BorderRight").w, Height - gfx_Rect.GetSprite(nameBase+"BottomRight").h - gfx_Rect.GetSprite(nameBase+"TopRight").h)
-		gfx_Rect.GetSprite(nameBase+"BorderTop").TileDraw(x + gfx_Rect.GetSprite(nameBase+"TopLeft").w, y, width - gfx_Rect.GetSprite(nameBase+"TopLeft").w - gfx_Rect.GetSprite(nameBase+"TopRight").w, gfx_Rect.GetSprite(nameBase+"BorderTop").h)
-		gfx_Rect.GetSprite(nameBase+"BorderBottom").TileDraw(x + gfx_Rect.GetSprite(nameBase+"BottomLeft").w, y + Height - gfx_Rect.GetSprite(nameBase+"BorderBottom").h, width - gfx_Rect.GetSprite(nameBase+"BottomLeft").w - gfx_Rect.GetSprite(nameBase+"BottomRight").w, gfx_Rect.GetSprite(nameBase+"BorderBottom").h)
-		gfx_Rect.GetSprite(nameBase+"Back").TileDraw(x + gfx_Rect.GetSprite(nameBase+"TopLeft").w, y + gfx_Rect.GetSprite(nameBase+"TopLeft").h, width - gfx_Rect.GetSprite(nameBase+"TopLeft").w - gfx_Rect.GetSprite(nameBase+"TopRight").w, Height - gfx_Rect.GetSprite(nameBase+"TopLeft").h - gfx_Rect.GetSprite(nameBase+"BottomLeft").h)
+		gfx_Rect.getSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.getSprite(nameBase+"TopLeft").h, gfx_Rect.getSprite(nameBase+"BorderLeft").w, Height - gfx_Rect.getSprite(nameBase+"BottomLeft").h - gfx_Rect.getSprite(nameBase+"TopLeft").h)
+		gfx_Rect.getSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.getSprite(nameBase+"BorderRight").w, y + gfx_Rect.getSprite(nameBase+"TopLeft").h, gfx_Rect.getSprite(nameBase+"BorderRight").w, Height - gfx_Rect.getSprite(nameBase+"BottomRight").h - gfx_Rect.getSprite(nameBase+"TopRight").h)
+		gfx_Rect.getSprite(nameBase+"BorderTop").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").w, y, width - gfx_Rect.getSprite(nameBase+"TopLeft").w - gfx_Rect.getSprite(nameBase+"TopRight").w, gfx_Rect.getSprite(nameBase+"BorderTop").h)
+		gfx_Rect.getSprite(nameBase+"BorderBottom").TileDraw(x + gfx_Rect.getSprite(nameBase+"BottomLeft").w, y + Height - gfx_Rect.getSprite(nameBase+"BorderBottom").h, width - gfx_Rect.getSprite(nameBase+"BottomLeft").w - gfx_Rect.getSprite(nameBase+"BottomRight").w, gfx_Rect.getSprite(nameBase+"BorderBottom").h)
+		gfx_Rect.getSprite(nameBase+"Back").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").w, y + gfx_Rect.getSprite(nameBase+"TopLeft").h, width - gfx_Rect.getSprite(nameBase+"TopLeft").w - gfx_Rect.getSprite(nameBase+"TopRight").w, Height - gfx_Rect.getSprite(nameBase+"TopLeft").h - gfx_Rect.getSprite(nameBase+"BottomLeft").h)
 	End Function
 
 Type TBlockGraphical extends TBlockMoveable
@@ -1263,7 +1246,7 @@ Type TBlockMoveable extends TGameObject
 
 	'checks if x, y are within startPoint+dimension
 	Method containsCoord:Byte(x:Int, y:Int)
-		return TFunctions.IsIn( x,y, Self.StartPos.GetX(), Self.StartPos.GetY(), Self.rect.GetW(), Self.rect.getH() )
+		return TFunctions.IsIn( x,y, Self.StartPos.getX(), Self.StartPos.getY(), Self.rect.getW(), Self.rect.getH() )
 	End Method
 
 	Method SetCoords(x:Int=NULL, y:Int=NULL, startx:Int=NULL, starty:Int=NULL)
@@ -1349,7 +1332,7 @@ Type TError
 		obj.message	= message
 		obj.id		= LastID
 		LastID :+1
-		if obj.sprite = null then obj.sprite = Assets.GetSprite("gfx_errorbox")
+		if obj.sprite = null then obj.sprite = Assets.getSprite("gfx_errorbox")
 		obj.pos		= TPoint.Create(400-obj.sprite.w/2 +6, 200-obj.sprite.h/2 +6)
 		obj.link	= List.AddLast(obj)
 		Game.error:+1
@@ -1376,7 +1359,7 @@ Type TError
 
 	Method Update()
 		MouseManager.resetKey(2) 'no right clicking allowed as long as "error notice is active"
-		If Mousemanager.IsHit(1)
+		If Mousemanager.IsClicked(1)
 			If functions.MouseIn(pos.x,pos.y, sprite.w, sprite.h)
 				link.Remove()
 				Game.error :-1
@@ -1399,8 +1382,8 @@ Type TError
 		Game.cursorstate = 0
 		SetColor 255,255,255
 		sprite.Draw(pos.x,pos.y)
-		Assets.GetFont("Default", 15, BOLDFONT).drawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.w - 60, 40, 0, 150, 50, 50)
-		Assets.GetFont("Default", 12).drawBlock(message, pos.x+12+6,pos.y+50,sprite.w-40, sprite.h-60,0,50,50,50)
+		Assets.getFont("Default", 15, BOLDFONT).drawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.w - 60, 40, 0, 150, 50, 50)
+		Assets.getFont("Default", 12).drawBlock(message, pos.x+12+6,pos.y+50,sprite.w-40, sprite.h-60,0,50,50,50)
   End Method
 End Type
 
@@ -1425,7 +1408,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		self._highlighted = 0
-		If functions.MouseIn( x, y, w, Assets.GetFont("Default", 12).getBlockHeight(Self._text, w, h))
+		If functions.MouseIn( x, y, w, Assets.getFont("Default", 12).getBlockHeight(Self._text, w, h))
 			self._highlighted = 1
 			If clicked
 				If _func <> Null Then _func(Self._funcparam)
@@ -1439,11 +1422,11 @@ Type TDialogueAnswer
 		if self._highlighted
 			SetColor 200,100,100
 			DrawOval(x, y +3, 6, 6)
-			Assets.GetFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h,0, 0, 0, 0)
+			Assets.getFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h,0, 0, 0, 0)
 		else
 			SetColor 0,0,0
 			DrawOval(x, y +3, 6, 6)
-			Assets.GetFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h,0, 100, 100, 100)
+			Assets.getFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h,0, 100, 100, 100)
 		endif
 	End Method
 End Type
@@ -1465,24 +1448,24 @@ Type TDialogueTexts
 	End Method
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
-		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
+		Local ydisplace:Float = Assets.getFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			Local returnValue:Int = answer.Update(x + 9, y + ydisplace, w - 9, h, clicked)
 			If returnValue <> - 1 Then _goTo = returnValue
-			ydisplace:+Assets.GetFont("Default", 14).getHeight(answer._text) + 2
+			ydisplace:+Assets.getFont("Default", 14).getHeight(answer._text) + 2
 		Next
 		Return _goTo
 	End Method
 
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		Local ydisplace:Float = Assets.GetFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
+		Local ydisplace:Float = Assets.getFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			answer.Draw(x, y + ydisplace, w, h)
-			ydisplace:+Assets.GetFont("Default", 14).getHeight(answer._text) + 2
+			ydisplace:+Assets.getFont("Default", 14).getHeight(answer._text) + 2
 		Next
 	End Method
 End Type
@@ -1509,7 +1492,7 @@ Type TDialogue
 		Local nextText:Int = _currentText
 		If Self._texts.Count() > 0
 
-			Local returnValue:Int = TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Update(self._rect.GetX() + 10, self._rect.GetY() + 10, self._rect.GetW() - 60, self._rect.GetH(), clicked)
+			Local returnValue:Int = TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Update(self._rect.getX() + 10, self._rect.getY() + 10, self._rect.getW() - 60, self._rect.getH(), clicked)
 			If returnValue <> - 1 Then nextText = returnValue
 		EndIf
 		_currentText = nextText
@@ -1519,9 +1502,9 @@ Type TDialogue
 
 	Method Draw()
 		SetColor 255, 255, 255
-	    DrawDialog(Assets.GetSpritePack("gfx_dialog"), self._rect.GetX(), self._rect.GetY(), self._rect.GetW(), self._rect.GetH(), "StartLeftDown", 0, "", Assets.GetFont("Default", 14))
+	    DrawDialog(Assets.getSpritePack("gfx_dialog"), self._rect.getX(), self._rect.getY(), self._rect.getW(), self._rect.getH(), "StartLeftDown", 0, "", Assets.getFont("Default", 14))
 		SetColor 0, 0, 0
-		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(self._rect.GetX() + 10, self._rect.GetY() + 10, self._rect.GetW() - 60, self._rect.GetH())
+		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(self._rect.getX() + 10, self._rect.getY() + 10, self._rect.getW() - 60, self._rect.getH())
 		SetColor 255, 255, 255
 	End Method
 End Type
@@ -1550,8 +1533,8 @@ Type TInterface
 	'creates and returns an interface
 	Function Create:TInterface()
 		Local Interface:TInterface = New TInterface
-		Interface.CurrentNoise				= Assets.GetSprite("gfx_interface_TVprogram_noise1")
-		Interface.CurrentProgramme			= Assets.GetSprite("gfx_interface_TVprogram_none")
+		Interface.CurrentNoise				= Assets.getSprite("gfx_interface_TVprogram_noise1")
+		Interface.CurrentProgramme			= Assets.getSprite("gfx_interface_TVprogram_none")
 		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
 		Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
 		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 355, 495)
@@ -1565,9 +1548,9 @@ Type TInterface
 
 	Method Update(deltaTime:float=1.0)
 		If ShowChannel <> 0
-			If Game.GetMinute() >= 55
-				Local adblock:TAdBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentAdBlock()
-				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_ads")
+			If Game.getMinute() >= 55
+				Local adblock:TAdBlock = Game.Players[ShowChannel].ProgrammePlan.getCurrentAdBlock()
+				Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_ads")
 			    If adblock <> Null
 					CurrentProgrammeToolTip.TitleBGtype = 1
 					CurrentProgrammeText 				= getLocale("ADVERTISMENT")+": "+adblock.contract.contractBase.title
@@ -1576,23 +1559,23 @@ Type TInterface
 					CurrentProgrammeText				= getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			Else
-				Local block:TProgrammeBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentProgrammeBlock()
-				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_none")
+				Local block:TProgrammeBlock = Game.Players[ShowChannel].ProgrammePlan.getCurrentProgrammeBlock()
+				Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_none")
 				If block <> Null
-					Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
+					Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_" + block.Programme.genre, "gfx_interface_TVprogram_none")
 					CurrentProgrammeToolTip.TitleBGtype	= 0
 					if block.programme.parent <> null
-						CurrentProgrammeText = block.programme.parent.title + ": "+ block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.GetDay()*24))+"/"+block.Programme.blocks+")"
+						CurrentProgrammeText = block.programme.parent.title + ": "+ block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.getHour()-(block.sendhour - game.getDay()*24))+"/"+block.Programme.blocks+")"
 					else
-						CurrentProgrammeText = block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(block.sendhour - game.GetDay()*24))+"/"+block.Programme.blocks+")"
+						CurrentProgrammeText = block.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.getHour()-(block.sendhour - game.getDay()*24))+"/"+block.Programme.blocks+")"
 					endif
 				Else
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText 				= getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			EndIf
-			If Game.GetMinute() <= 5
-				Interface.CurrentProgramme = Assets.GetSprite("gfx_interface_TVprogram_news")
+			If Game.getMinute() <= 5
+				Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_news")
 				CurrentProgrammeToolTip.TitleBGtype	= 3
 				CurrentProgrammeText				= getLocale("NEWS")
 			EndIf
@@ -1621,10 +1604,10 @@ Type TInterface
 		ChangeNoiseTimer :+ deltaTime
 		If ChangeNoiseTimer >= 0.20
 		    Local randomnoise:Int = Rand(0,3)
-			If randomnoise = 0 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise1")
-			If randomnoise = 1 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise2")
-			If randomnoise = 2 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise3")
-			If randomnoise = 3 Then CurrentNoise = Assets.GetSprite("gfx_interface_TVprogram_noise4")
+			If randomnoise = 0 Then CurrentNoise = Assets.getSprite("gfx_interface_TVprogram_noise1")
+			If randomnoise = 1 Then CurrentNoise = Assets.getSprite("gfx_interface_TVprogram_noise2")
+			If randomnoise = 2 Then CurrentNoise = Assets.getSprite("gfx_interface_TVprogram_noise3")
+			If randomnoise = 3 Then CurrentNoise = Assets.getSprite("gfx_interface_TVprogram_noise4")
 			ChangeNoiseTimer = 0.0
 			NoiseAlpha = 0.45 - (Rand(0,10)*0.01)
 		EndIf
@@ -1632,25 +1615,25 @@ Type TInterface
 		If functions.IsIn(MouseManager.x,MouseManager.y,20,385,280,200)
 			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
 			If ShowChannel <> 0
-				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].GetRelativeAudiencePercentage(),2)+"%)"
+				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].getRelativeAudiencePercentage(),2)+"%)"
 
 				'show additional information if channel is player's channel
 				if ShowChannel = Game.playerID
-					If Game.GetMinute() >= 5 and Game.GetMinute() < 55
-						Local adblock:TAdBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentAdBlock()
+					If Game.getMinute() >= 5 and Game.getMinute() < 55
+						Local adblock:TAdBlock = Game.Players[ShowChannel].ProgrammePlan.getCurrentAdBlock()
 						if adblock
-							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + adblock.contract.contractBase.title+" (Mindestz.: "+functions.convertValue(String( adblock.contract.GetMinAudience() ))+")"
+							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + adblock.contract.contractBase.title+" (Mindestz.: "+functions.convertValue(String( adblock.contract.getMinAudience() ))+")"
 						else
 							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
 						endif
-					elseif Game.GetMinute()>=55 OR Game.GetMinute()<5
-						Local programmeblock:TProgrammeBlock = Game.Players[ShowChannel].ProgrammePlan.GetCurrentProgrammeBlock()
+					elseif Game.getMinute()>=55 OR Game.getMinute()<5
+						Local programmeblock:TProgrammeBlock = Game.Players[ShowChannel].ProgrammePlan.getCurrentProgrammeBlock()
 						if programmeblock
 							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~n"
 							if programmeblock.programme.parent <> null
-								CurrentProgrammeToolTip.text :+ programmeblock.programme.parent.title + ": "+ programmeblock.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(programmeblock.sendhour - game.GetDay()*24))+"/"+programmeblock.Programme.blocks+")"
+								CurrentProgrammeToolTip.text :+ programmeblock.programme.parent.title + ": "+ programmeblock.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.getHour()-(programmeblock.sendhour - game.getDay()*24))+"/"+programmeblock.Programme.blocks+")"
 							else
-								CurrentProgrammeToolTip.text :+ programmeblock.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.GetHour()-(programmeblock.sendhour - game.GetDay()*24))+"/"+programmeblock.Programme.blocks+")"
+								CurrentProgrammeToolTip.text :+ programmeblock.Programme.title + " ("+getLocale("BLOCK")+" "+(1+Game.getHour()-(programmeblock.sendhour - game.getDay()*24))+"/"+programmeblock.Programme.blocks+")"
 							endif
 						else
 							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+": nicht gesetzt!"
@@ -1667,8 +1650,8 @@ Type TInterface
 			CurrentTimeToolTip.dirtyImage = true
 	    EndIf
 		If functions.IsIn(MouseManager.x,MouseManager.y,355,468,130,30)
-			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].GetFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].GetRelativeAudiencePercentage(),2)+"%)"
-			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience)),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
+			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].getRelativeAudiencePercentage(),2)+"%)"
+			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience())),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 			'force redraw
@@ -1676,7 +1659,7 @@ Type TInterface
 		EndIf
 		If functions.IsIn(MouseManager.x,MouseManager.y,355,533,130,45)
 			CurrentTimeToolTip.title 	= getLocale("GAME_TIME")+": "
-			CurrentTimeToolTip.text  	= Game.GetFormattedTime()+" "+getLocale("DAY")+" "+Game.GetDayOfYear()+"/"+Game.daysPerYear+" "+Game.GetYear()
+			CurrentTimeToolTip.text  	= Game.getFormattedTime()+" "+getLocale("DAY")+" "+Game.getDayOfYear()+"/"+Game.daysPerYear+" "+Game.getYear()
 			CurrentTimeToolTip.enabled 	= 1
 			CurrentTimeToolTip.Hover()
 			'force redraw
@@ -1684,9 +1667,9 @@ Type TInterface
 		EndIf
 		If functions.IsIn(MouseManager.x,MouseManager.y,355,415,130,30)
 			MoneyToolTip.title 	= getLocale("MONEY")
-			MoneyTooltip.text	= getLocale("MONEY")+": "+Game.Players[Game.playerID].GetMoney() + getLocale("CURRENCY")
+			MoneyTooltip.text	= getLocale("MONEY")+": "+Game.Players[Game.playerID].getMoney() + getLocale("CURRENCY")
 			Moneytooltip.text	:+ "~n"
-			Moneytooltip.text	:+ getLocale("DEBT")+": "+ Game.Players[Game.playerID].GetCreditCurrent() + getLocale("CURRENCY")
+			Moneytooltip.text	:+ getLocale("DEBT")+": "+ Game.Players[Game.playerID].getCreditCurrent() + getLocale("CURRENCY")
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()
 			'force redraw
@@ -1705,67 +1688,67 @@ Type TInterface
 
 	'draws the interface
 	Method Draw(tweenValue:float=1.0)
-		Assets.GetSprite("gfx_interface_top").Draw(0,0)
-		Assets.GetSprite("gfx_interface_leftright").DrawClipped(0, 20, 0, 20, 27, 363, 0, 0)
+		Assets.getSprite("gfx_interface_top").Draw(0,0)
+		Assets.getSprite("gfx_interface_leftright").DrawClipped(0, 20, 0, 20, 27, 363, 0, 0)
 		SetBlend SOLIDBLEND
-		Assets.GetSprite("gfx_interface_leftright").DrawClipped(780 - 27, 20, 780, 20, 20, 363, 0, 0)
+		Assets.getSprite("gfx_interface_leftright").DrawClipped(780 - 27, 20, 780, 20, 20, 363, 0, 0)
 
 		If BottomImgDirty
 			Local NoDX9moveY:Int = 383
 
 			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
-			Assets.GetSprite("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0,1)
+			Assets.getSprite("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0,1)
 
-			If ShowChannel <> 0 Then Assets.GetSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
+			If ShowChannel <> 0 Then Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
 		    For Local i:Int = 0 To 4
 				If i = ShowChannel
-					Assets.GetSprite("gfx_interface_channelbuttons_on"+i).Draw(75 + i * 33, 171 + NoDX9moveY, i)
+					Assets.getSprite("gfx_interface_channelbuttons_on"+i).Draw(75 + i * 33, 171 + NoDX9moveY, i)
 				Else
-					Assets.GetSprite("gfx_interface_channelbuttons_off"+i).Draw(75 + i * 33, 171 + NoDX9moveY, i)
+					Assets.getSprite("gfx_interface_channelbuttons_off"+i).Draw(75 + i * 33, 171 + NoDX9moveY, i)
 				EndIf
 		    Next
 			If ShowChannel <> 0
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
-				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience / Float(Game.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience))
+				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience / Float(Game.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience()))
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0
-				If audiencerate > 0.4 And (Game.GetHour() < 21 And Game.GetHour() > 6) Then girl_on = True
+				If audiencerate > 0.4 And (Game.getHour() < 21 And Game.getHour() > 6) Then girl_on = True
 				If audiencerate > 0.1 Then grandpa_on = True
-		  		If audiencerate > 0.3 And (Game.GetHour() < 2 Or Game.GetHour() > 11) Then teen_on = True
+		  		If audiencerate > 0.3 And (Game.getHour() < 2 Or Game.getHour() > 11) Then teen_on = True
 				If teen_on And grandpa_on
-					Assets.GetSprite("gfx_interface_audience_teen").Draw(570, 419 - 383 + NoDX9moveY)    'teen
-					Assets.GetSprite("gfx_interface_audience_grandpa").Draw(650, 419 - 383 + NoDX9moveY)      'teen
+					Assets.getSprite("gfx_interface_audience_teen").Draw(570, 419 - 383 + NoDX9moveY)    'teen
+					Assets.getSprite("gfx_interface_audience_grandpa").Draw(650, 419 - 383 + NoDX9moveY)      'teen
 				ElseIf grandpa_on And girl_on And Not teen_on
-					Assets.GetSprite("gfx_interface_audience_girl").Draw(570, 419 - 383 + NoDX9moveY)      'teen
-					Assets.GetSprite("gfx_interface_audience_grandpa").Draw(650, 419 - 383 + NoDX9moveY)       'teen
+					Assets.getSprite("gfx_interface_audience_girl").Draw(570, 419 - 383 + NoDX9moveY)      'teen
+					Assets.getSprite("gfx_interface_audience_grandpa").Draw(650, 419 - 383 + NoDX9moveY)       'teen
 				Else
-					If teen_on Then Assets.GetSprite("gfx_interface_audience_teen").Draw(670, 419 - 383 + NoDX9moveY)
-					If girl_on Then Assets.GetSprite("gfx_interface_audience_girl").Draw(550, 419 - 383 + NoDX9moveY)
-					If grandpa_on Then Assets.GetSprite("gfx_interface_audience_grandpa").Draw(610, 419 - 383 + NoDX9moveY)
+					If teen_on Then Assets.getSprite("gfx_interface_audience_teen").Draw(670, 419 - 383 + NoDX9moveY)
+					If girl_on Then Assets.getSprite("gfx_interface_audience_girl").Draw(550, 419 - 383 + NoDX9moveY)
+					If grandpa_on Then Assets.getSprite("gfx_interface_audience_grandpa").Draw(610, 419 - 383 + NoDX9moveY)
 					If Not grandpa_on And Not girl_on And Not teen_on
 						SetColor 50, 50, 50
 						SetBlend MASKBLEND
-						Assets.GetSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
+						Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
 						SetColor 255, 255, 255
 		    	    EndIf
 				EndIf
 			EndIf 'showchannel <>0
 
 	  		SetBlend MASKBLEND
-	     	Assets.GetSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
+	     	Assets.getSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
-			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].GetMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
-			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].GetFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
-		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
+			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
+			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
+		 	Assets.getFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
-		Assets.GetSprite("gfx_interface_antenna").Draw(111,329)
+		Assets.getSprite("gfx_interface_antenna").Draw(111,329)
 
 		If ShowChannel <> 0
 			SetAlpha NoiseAlpha
@@ -1774,9 +1757,9 @@ Type TInterface
 			SetAlpha 1.0
 		EndIf
 		SetAlpha 0.25
-		Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime() + " Uhr", 366, 542, 120, 25, 1, 180, 180, 180)
+		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime() + " Uhr", 366, 542, 120, 25, 1, 180, 180, 180)
 		SetAlpha 0.9
-		Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetFormattedTime()+ " Uhr", 365,541,120,25,1, 40,40,40)
+		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime()+ " Uhr", 365,541,120,25,1, 40,40,40)
 		SetAlpha 1.0
    		CurrentProgrammeToolTip.Draw()
 	    CurrentAudienceToolTip.Draw()
@@ -1786,9 +1769,9 @@ Type TInterface
 	    GUIManager.Draw("InGame")
 
 		If Game.error >=1 Then TError.DrawErrors()
-		If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y		,0)
-		If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y-4	,1)
-		If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-10,	MouseManager.y-12	,2)
+		If Game.cursorstate = 0 Then Assets.getSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y		,0)
+		If Game.cursorstate = 1 Then Assets.getSprite("gfx_mousecursor").Draw(MouseManager.x-7, 	MouseManager.y-4	,1)
+		If Game.cursorstate = 2 Then Assets.getSprite("gfx_mousecursor").Draw(MouseManager.x-10,	MouseManager.y-12	,2)
 	End Method
 
 End Type
@@ -1805,108 +1788,210 @@ End Type
 'provides the option to buy new stations
 'functions are calculation of audiencesums and drawing of stations
 
-Type TStation
-	field pos:TPoint
-	Field reach:Int=0
-	Field price:Int
-	Field owner:Int = 0
-	Field id:Int = 0
-	Global lastID:Int = 0
+Type TStation extends TGameObject {_exposeToLua="selected"}
+	Field pos:TPoint
+	Field reach:Int				= -1
+	Field reachIncrease:Int		= -1		'increase of reach at when bought
+	Field price:Int				= -1
+	Field fixedPrice:int		= FALSE		'fixed prices are kept during refresh
+	Field owner:Int				= 0
+	Field paid:Int				= FALSE
+	Field built:int				= 0			'time at which the
+	Field radius:int			= 0
+	Field federalState:string	= ""
 
-
-	Function Create:TStation(x:Int,y:Int, reach:Int, price:Int, owner:Int)
+	Function Create:TStation( pos:TPoint, price:Int=-1, radius:int, owner:Int)
 		Local obj:TStation = New TStation
-		obj.pos = TPoint.Create(x,y)
-		obj.reach = reach
-		obj.price = price
-		obj.owner = owner
-		obj.id = obj.GetNewID()
+		obj.owner		= owner
+		obj.pos			= pos
+		obj.price		= price
+		obj.radius		= radius
+		obj.built		= Game.getTimeGone()
+
+		obj.fixedPrice	= (price <> -1)
+		obj.refreshData()
+		'print "pos "+pos.getIntX()+","+pos.getIntY()+" preis:"+obj.getPrice()+" reach:"+obj.getReach()
 		Return obj
 	End Function
 
-	Method GetNewID:Int()
-		Self.lastID:+1
-		Return Self.lastID
-	End Method
-
-	Method Reset()
-		self.reach = 0
-		self.pos.SetXY(-1,-1)
-		self.owner = -1
-		self.price = 0
-	End Method
-
-	Method getPrice:int()
-		self.price = self.calculatePrice(self.reach)
-		return self.price
-	End Method
-
-	Function calculatePrice:Int(summe:Int)
-		return Max( 25000, Int(Ceil(summe / 10000)) * 25000 )
+	Function Load:TStation(pnode:TxmlNode)
+		print "implement Load:TStation"
+		return null
 	End Function
 
-	Function Load:TStation(pnode:TxmlNode)
-print "implement Load:TStation"
-return null
-rem
-		Local station:TStation= New TStation
-		Local NODE:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-			Local typ:TTypeId = TTypeId.ForObject(Station)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") <> "extra" And Upper(t.name()) = NODE.name
-					t.Set(Station, nodevalue)
-				EndIf
-			Next
-			Node = Node.NextSibling()
-		Wend
-	Return station
-endrem
-  End Function
-
-
 	Method Save()
-		LoadSaveFile.xmlBeginNode("STATION")
-			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") <> "extra" Then LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-			Next
-		LoadSaveFile.xmlCloseNode()
-  End Method
+		print "implement Save:TStation"
+	End Method
 
-	Method Draw()
-		Local antennaNr:string = ""
-		Local radius:Int = StationMap.radius
-		SetAlpha 0.3
-		Select owner
-			Case 1,2,3,4	Game.Players[owner].color.SetRGB()
-							antennaNr = "stationmap_antenna"+owner
-			Default			SetColor 255, 255, 255
-							antennaNr = "stationmap_antenna0"
-		End Select
-		DrawOval(pos.x - radius + 20, pos.y - radius + 10, 2 * radius, 2 * radius)
+	'refresh the station data
+	Method refreshData() {_exposeToLua}
+		getReach(true)
+		getReachIncrease(true)
+		getPrice( not fixedPrice )
+	End Method
+
+	'returns the age in days
+	Method getAge:int()
+		return Game.GetDay() - Game.GetDay(self.built)
+	End Method
+
+	'get the reach of that station
+	Method getReach:int(refresh:int=FALSE) {_exposeToLua}
+		if reach >= 0 and not refresh then return reach
+		reach = TStationMap.CalculateStationReach(pos.x, pos.y)
+
+		return reach
+	End Method
+
+	Method getReachIncrease:int(refresh:int=FALSE) {_exposeToLua}
+		if reachIncrease >= 0 and not refresh then return reachIncrease
+
+		if not Game.isPlayer(owner)
+			print "getReachIncrease: owner is not a player."
+			return 0
+		endif
+
+		reachIncrease = Game.Players[owner].StationMap.CalculateAudienceIncrease(pos.x, pos.y)
+
+		return reachIncrease
+	End Method
+
+	Method getFederalState:string(refresh:int=FALSE) {_exposeToLua}
+		if federalState <> "" and not refresh then return federalState
+
+		local hoveredSection:TStationMapSection = TStationMapSection.get(self.pos.x, self.pos.y)
+		if hoveredSection then federalState = hoveredSection.name
+
+		return federalState
+	End Method
+
+	Method getSellPrice:int(refresh:int=FALSE) {_exposeToLua}
+		'price is multiplied by an age factor of 0.75-0.95
+		local factor:float = Max(0.75, 0.95 - float(getAge())/1.0)
+		if price >= 0 and not refresh then return int(price * factor / 10000) * 10000
+
+		return int( getPrice(refresh) * factor / 10000) * 10000
+	End Method
+
+	Method getPrice:int(refresh:int=FALSE) {_exposeToLua}
+		if price >= 0 and not refresh then return price
+		price = Max( 25000, Int(Ceil(getReach() / 10000)) * 25000 )
+
+		return price
+	End Method
+
+	Method Sell:int()
+		if not Game.IsPlayer(owner) then return FALSE
+
+		If Game.Players[owner].finances[Game.getWeekday()].SellStation( getSellPrice() )
+			owner = 0
+			return TRUE
+		EndIf
+		return FALSE
+	End Method
+
+	Method Buy:int( playerID:int=-1 )
+		If playerID = -1 Then playerID = Game.playerID
+		if not Game.IsPlayer(playerID) then return FALSE
+
+		if paid then return TRUE
+
+		If Game.Players[playerID].finances[Game.getWeekday()].PayStation( getPrice() )
+			owner = playerID
+			paid = TRUE
+			return TRUE
+		EndIf
+		return FALSE
+	End Method
+
+	Method DrawInfoTooltip()
+		local textH:int =  Assets.fonts.baseFontBold.getHeight( "Tg" )
+		local tooltipW:int = 180
+		local tooltipH:int = textH * 4 + 10 + 5
+		local tooltipX:int = pos.x +20 - tooltipW/2
+		local tooltipY:int = pos.y - radius - tooltipH
+
+		'move below station if at screen top
+		if tooltipY < 20 then tooltipY = pos.y+radius + 10 +10
+		tooltipX = Max(20,tooltipX)
+		tooltipX = Min(585-tooltipW,tooltipX)
+
+		SetAlpha 0.5
+		SetColor 0,0,0
+		DrawRect(tooltipX,tooltipY,tooltipW,tooltipH)
 		SetColor 255,255,255
 		SetAlpha 1.0
-		Assets.GetSprite(antennaNr).Draw(pos.x + 20, pos.y + 10 + radius - Assets.GetSprite(antennaNr).h - 2, -1,0,0.5)
+
+		local textY:int = tooltipY+5
+		local textX:int = tooltipX+5
+		local textW:int = tooltipW-10
+		Assets.fonts.baseFontBold.drawStyled( getLocale("MAP_COUNTRY_"+getFederalState()), textX, textY, 255,255,0, 2)
+		textY:+ textH + 5
+
+		Assets.fonts.baseFont.draw("Reichweite: ", textX, textY)
+		Assets.fonts.baseFontBold.drawBlock(functions.convertValue(String(getReach()), 2, 0), textX, textY, textW, 20, 2, 255,255,255)
+		textY:+ textH
+
+		Assets.fonts.baseFont.draw("Zuwachs: ", textX, textY)
+		Assets.fonts.baseFontBold.drawBlock(functions.convertValue(String(getReachIncrease()), 2, 0), textX, textY, textW, 20, 2, 255,255,255)
+		textY:+ textH
+
+		Assets.fonts.baseFont.draw("Preis: ", textX, textY)
+		Assets.fonts.baseFontBold.drawBlock(functions.convertValue(getPrice(), 2, 0), textX, textY, textW, 20, 2, 255,255,255)
 	End Method
 
 
+	Method Draw(selected:int=FALSE)
+		Local sprite:TGW_Sprites = Null
+		local oldAlpha:float = getAlpha()
+
+		if selected
+			'white border around the colorized circle
+			SetAlpha 0.25 * oldAlpha
+			DrawOval(pos.x - radius+20 -2, pos.y - radius+10 -2 ,radius*2+4,radius*2+4)
+
+			SetAlpha Min(0.9, Max(0,sin(Millisecs()/3)) + 0.5 ) * oldAlpha
+		else
+			SetAlpha 0.4 * oldAlpha
+		endif
+
+		Select owner
+			Case 1,2,3,4	Game.Players[owner].color.SetRGB()
+							sprite = Assets.getSprite("stationmap_antenna"+owner)
+			Default			SetColor 255, 255, 255
+							sprite = Assets.getSprite("stationmap_antenna0")
+		End Select
+		DrawOval(pos.x - radius + 20, pos.y - radius + 10, 2 * radius, 2 * radius)
+
+		SetColor 255,255,255
+		SetAlpha OldAlpha
+		sprite.Draw(pos.x + 20, pos.y + 10 + radius - sprite.h - 2, -1,0,0.5)
+	End Method
 End Type
 
 Type TStationMapSection
-	field pos:TPoint
+	field rect:TRectangle
 	field sprite:TGW_Sprites
 	field name:string
 	global sections:TList = CreateList()
 
 	Method Create:TStationMapSection(pos:TPoint, name:string, sprite:TGW_Sprites)
-		self.pos = pos
+		self.rect = TRectangle.Create(pos.x,pos.y, sprite.w, sprite.h)
 		self.name = name
 		self.sprite = sprite
 		return self
 	End Method
+
+	Function get:TStationMapSection(x:int,y:int)
+		For local section:TStationMapSection = eachin sections
+			if section.rect.containsXY(x,y)
+				if section.sprite.PixelIsOpaque(x-section.rect.getX(), y-section.rect.getY()) > 0
+					return section
+				endif
+			endif
+		Next
+		return Null
+	End Function
 
 	Method Add()
 		self.sections.addLast(self)
@@ -1926,107 +2011,86 @@ Type TStationPoint
 End Type
 
 EventManager.registerListener( "LoadResource.STATIONMAP",	TEventListenerRunFunction.Create(TStationMap.onLoadStationMapConfiguration)  )
-Type TStationMap
-	Field StationList:TList	= CreateList()
-	Field radius:Int		= 15		{saveload = "normal"}
-	Field einwohner:Int		= 0			{saveload = "normal"}
-	Field LastStation:TStation			{saveload = "normal"}
-	Field LastCalculatedAudienceIncrease:int = -1
-	Field action:Int		= 0			{saveload = "normal"}	'2= station buying (another click on the map buys the station)
-																'1= searching a station
-	Field populationmap:Int[5,5]
-	field populationMapSize:TPoint = TPoint.Create()
-	Field bundesland:String = "" {saveload = "normal"}	'mouse over state
-	Field outsideLand:Int = 0
+Type TStationMap {_exposeToLua="selected"}
+	Field showStations:Int[4]						'select whose players stations we want to see
+	Field reach:int					= 0				'maximum audience possible
 
-	Field sellStation:TStation[5]
-	Field buyStation:TStation[5]
-	Field filter_ShowStations:Int[5]
-	Field StationShare:Int[4, 3]
+	Field mouseoverStation:TStation	= null			'for showing details for current mouse position
+	Field selectedStation:TStation	= null			'for sale or buy
+	Field userAction:int			= 0				'state
+	Field parent:TPlayer			= null
+	Field stations:TList			= CreateList()	'all stations of all map
 
-    field baseStationSprite:TGW_Sprites
 
-	Global List:TList = CreateList()
+	Global StationShare:Int[4,3]
+	Global stationRadius:Int		= 15		{saveload = "normal"}
+	Global population:Int			= 0			{saveload = "normal"}
+	Global populationmap:Int[,]
+	Global populationMapSize:TPoint	= TPoint.Create()
 
-	Function Load:TStationmap(pnode:TxmlNode)
-print "implement Load:TStationmap"
-return null
-rem
-		Local StationMap:TStationMap = New TStationMap
-		Local NODE:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-			Local typ:TTypeId = TTypeId.ForObject(StationMap)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") = "normal" And Upper(t.name()) = NODE.name
-					t.Set(StationMap, nodevalue)
-				EndIf
-			Next
-			Select NODE.name
-				Case "STATION"
-							    Local station:TStation = TStation.Load(NODE)
-		    					If station <> Null Then PrintDebug("TStationmap.load()", "Station zur Stationmap hinzugefuegt", DEBUG_SAVELOAD) ;StationMap.StationList.AddLast(station)
-			End Select
-			NODE = NODE.nextSibling()
-		Wend
-endrem
-  End Function
+	Global List:TList				= CreateList()	'all stationmaps (currently: only one)
+	Global fireEvents:int			= TRUE			'FALSE to avoid recursive handling (network)
+	Global initDone:int				= FALSE			'map init already done?
+
+	Method Load:TStationmap(pnode:TxmlNode)
+		print "implement Load:TStationmap"
+		return null
+	End Method
 
 	Function LoadAll()
-		PrintDebug("TStationMap.LoadAll()", "Lade StationMaps", DEBUG_SAVELOAD)
-		TStationMap.List.Clear()
-		Local Children:TList = LoadSaveFile.NODE.getChildren()
-		For Local node:txmlNode = EachIn Children
-			If NODE.getName() = "STATIONMAP"
-			      TStationMap.Load(NODE)
-			EndIf
-		Next
+		print "implement loadall:TStationmap"
 	End Function
 
 	Function SaveAll()
-		LoadSaveFile.xmlBeginNode("ALLSTATIONMAPS")
-			For Local StationMap:TStationMap = EachIn TStationMap.List
-				LoadSaveFile.xmlBeginNode("STATIONMAP")
-		 			Local typ:TTypeId = TTypeId.ForObject(StationMap)
-					For Local t:TField = EachIn typ.EnumFields()
-						If t.MetaData("saveload") = "normal" Then LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(StationMap)))
-					Next
-					For Local station:TStation = EachIn StationMap.StationList
-						If station <> Null Then station.Save()
-					Next
-				LoadSaveFile.xmlCloseNode()
-		    Next
-		LoadSaveFile.xmlCloseNode()
+		print "implement saveall:TStationmap"
 	End Function
 
-	Function Create:TStationMap()
-		Local obj:TStationMap=New TStationMap
+	Function InitMapData:int()
+		if initDone then return TRUE
+
 		local start:int = Millisecs()
 		local i:int, j:int
 
-		local pix:TPixmap = Assets.GetPixmap("stationmap_populationDensity")
+		'calculate population
+		local pix:TPixmap = Assets.getPixmap("stationmap_populationDensity")
 		local map:int[pix.width + 20, pix.height + 20]
-		obj.populationMap = map
-		obj.populationMapSize.SetX(pix.width)
-		obj.populationMapSize.SetY(pix.height)
+		populationMap = map
+		populationMapSize.SetXY(pix.width, pix.height)
 
 		'read all inhabitants of the map
 		For i = 0 To pix.width-1
 			For j = 0 To pix.height-1
-				obj.populationmap[i, j] = obj.getPopulationForBrightness( ARGB_RED(pix.ReadPixel(i, j)) )
-				obj.einwohner:+ obj.populationmap[i, j]
+				if ARGB_ALPHA(pix.ReadPixel(i, j)) = 0 then continue
+				populationmap[i, j] = getPopulationForBrightness( ARGB_RED(pix.ReadPixel(i, j)) )
+				population:+ populationmap[i, j]
 			Next
 		Next
-		Print "StationMap: alle Pixel eingelesen - Einwohner:" + obj.einwohner + " zeit: "+(Millisecs()-start)+"ms"
+		Print "StationMap: calculated a population of:" + population + " in "+(Millisecs()-start)+"ms"
 		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Stationmap").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 
-		obj.baseStationSprite	= Assets.GetSprite("stationmap_antenna0")
-		obj.LastStation			= TStation.Create(-1,-1, 0, 0, -1)
+		initDone = true
+		return TRUE
+	End Function
 
-		List.AddLast(obj)
-		SortList List
+
+	Function Create:TStationMap(player:TPlayer)
+		Local obj:TStationMap = New TStationMap
+		obj.parent = player
+
+		if not InitDone then obj.InitMapData()
+
+		list.AddLast(obj)
 		Return obj
+	End Function
+
+	'return the stationmap of other players
+	'do not expose to Lua... else they get access to buy/sell
+	Function getStationMap:TStationMap(playerID:int=-1)
+		If playerID <= 0 Then playerID = Game.playerID
+
+		if list.count() < playerID then return Null
+
+		return TStationMap(self.list.ValueAtIndex(playerID-1))
 	End Function
 
 	'external xml configuration of map and states
@@ -2043,202 +2107,223 @@ endrem
 		local statesNode:TXmlNode = xmlLoader.xml.FindChild(childNode, "states")
 		if statesNode = null then Throw("StationMap: states definition missing in XML files.")
 
-		For Local child:TxmlNode = EachIn statesNode.GetChildren()
+		For Local child:TxmlNode = EachIn statesNode.getChildren()
 			local name:string	= xmlLoader.xml.FindValue(child, "name", "")
 			local sprite:string	= xmlLoader.xml.FindValue(child, "sprite", "")
 			local pos:TPoint	= TPoint.Create( xmlLoader.xml.FindValueInt(child, "x", 0), xmlLoader.xml.FindValueInt(child, "y", 0) )
 			'add state section if data is ok
-			if name<>"" and sprite<>"" then new TStationMapSection.Create(pos,name, Assets.GetSprite(sprite)).add()
+			if name<>"" and sprite<>"" then new TStationMapSection.Create(pos,name, Assets.getSprite(sprite)).add()
 		Next
 
 	End Function
 
-
-	Method AddStation(x:Int, y:Int, playerid:Int, valuetorefresh:Int Var)
-		Local reach:Int = Self.CalculateAudienceIncrease(playerid, x, y)
-
-		'print "StationMap: added station to "+playerID+" reach:"+reach
-		StationList.AddLast(TStation.Create(x, y, reach, TStation.calculatePrice(reach), playerid))
-		valuetorefresh = CalculateAudienceSum(playerid)
+	'returns the maximum reach of the stations on that map
+	Method getReach:int() {_exposeToLua}
+		return self.reach
 	End Method
 
-    Method Buy(x:Float, y:Float, playerid:Int = 1, fromNetwork:int = false)
-		If Game.Players[playerid].finances[Game.getWeekday()].PayStation(self.LastStation.getPrice() )
-			Local station:TStation = TStation.Create(LastStation.pos.x,LastStation.pos.y, self.LastStation.reach, self.LastStation.getPrice(), playerid)
-			StationList.AddLast(station)
-			Print "Player" + playerid + " kauft Station für " + station.price + " Euro (" + station.reach + " Einwohner)"
-			Game.Players[playerid].maxaudience = CalculateAudienceSum(playerid)
-			'network
-			if game.networkgame Then NetworkHelper.SendStationChange(game.playerid, station, Game.Players[game.playerID].maxaudience, 1)
-			self.LastStation.Reset()
-			Self.buyStation[playerid] = Null
-		EndIf
-    End Method
+	Method getCoverage:float() {_exposeToLua}
+		return float(self.reach) / float(self.population)
+	End Method
 
-	Method SellByPos(pos:TPoint, reach:int, playerID:int)
-		for local station:TStation = eachin self.StationList
-			if station.pos.isSame(pos) and station.reach = station.reach and station.owner = playerID
-				self.sell(station)
-				exit
-			endif
+
+	'returns a station-object wich can be used for further
+	'information getting (share etc)
+	Method getTemporaryStation:TStation(x:int,y:int)  {_exposeToLua}
+		return TStation.Create(TPoint.Create(x,y),-1, self.stationRadius, self.parent.playerID)
+	End Method
+
+	'return a station at the given coordinates (eg. used by network)
+	Method getStation:TStation(x:int=0,y:int=0) {_exposeToLua}
+		local pos:TPoint = TPoint.Create(x,y)
+		For local station:TStation = eachin self.stations
+			if not station.pos.isSame(pos) then continue
+			return station
 		Next
+		return Null
 	End Method
 
-	Method Sell(station:TStation)
-		If Game.Players[station.owner].finances[Game.getWeekday()].SellStation(Floor(station.price * 0.75))
-			StationList.Remove(station)
-	        Print "Player" + station.owner + " verkauft Station für " + (station.price * 0.75) + " Euro (" + station.reach + " Einwohner)"
-			Game.Players[station.owner].maxaudience = CalculateAudienceSum(station.owner) 'auf entsprechenden Player umstellen
-			'events ...
-			'network
-			If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendStationChange(station.owner, station, Game.Players[station.owner].maxaudience, 0)
-			LastStation.reset()
-			'when station is sold, audience will decrease, atm buy =/= increase ;D
-			Game.Players[station.owner].ComputeAudience(1)
-		EndIf
+	'returns a station of a player at a given position in the list
+	Method getStationFromList:TStation(playerID:int=-1, position:int=0) {_exposeToLua}
+		local stationMap:TStationMap = self.getStationMap(playerID)
+		if not stationMap then return Null
+		'out of bounds?
+		If position<0 OR position >= stationMap.stations.count() Then Return NULL
+
+		return TStation( stationMap.stations.ValueAtIndex(position) )
+	End Method
+
+	'returns the amount of stations a player has
+	Method getStationCount:Int(playerID:int=-1) {_exposeToLua}
+		if playerID = self.parent.playerID then Return stations.count()
+
+		local stationMap:TStationMap = self.getStationMap(playerID)
+		if not stationMap then return Null
+
+		return stationMap.getStationCount(playerID)
+	End Method
+
+
+	'buy a new station at the given coordinates
+	'only possible when in office+subrooms
+	Method BuyStation:int(x:int,y:int) {_exposeToLua}
+		if not self.parent.isInRoom("office", True) then return FALSE
+
+		return self.AddStation( getTemporaryStation( x, y ), TRUE )
+	End Method
+
+	'sell a station at the given position in the list
+	'only possible when in office+subrooms
+	Method SellStation:int(position:int) {_exposeToLua}
+		if not self.parent.isInRoom("office", True) then return FALSE
+
+		local station:TStation = self.getStationFromList(position)
+		if station then return self.RemoveStation(station, true)
+	End Method
+
+
+	Method AddStation:int(station:TStation, buy:int=FALSE)
+		if not station then return FALSE
+
+		'try to buy it (does nothing if already done)
+		if buy and not station.Buy(parent.playerID) then return FALSE
+		'set to paid in all cases
+		station.paid = true
+
+		stations.AddLast(station)
+
+		'recalculate audience of channel
+		RecalculateAudienceSum()
+
+		Print "Player" + parent.playerID + " kauft Station fuer " + station.price + " Euro (" + station.reach + " Einwohner)"
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "stationmap.addStation", TData.Create().add("station", station), self ) )
+
+		return TRUE
+	End Method
+
+
+	Method RemoveStation:int(station:TStation, sell:int=FALSE)
+		if not station then return FALSE
+
+		'check if we try to sell our last station...
+		if self.stations.count() = 1
+			'if we are the player in front of the screen
+			'inform about the situation
+			if parent.playerID = Game.playerID
+				TError.Create( getLocale("ERROR_NOT_POSSIBLE"), getLocale("ERROR_NOT_ABLE_TO_SELL_LAST_STATION") )
+			endif
+			return FALSE
+		endif
+
+		if sell and not station.sell() then return FALSE
+
+		stations.Remove(station)
+
+		if sell
+			Print "Player" + parent.playerID + " verkauft Station fuer " + ( station.getSellPrice() ) + " Euro (" + station.reach + " Einwohner)"
+		else
+			Print "Player" + parent.playerID + " verschrottet Station fuer 0 Euro (" + station.reach + " Einwohner)"
+		endif
+
+		'recalculate audience of channel
+		RecalculateAudienceSum()
+
+		'when station is sold, audience will decrease,
+		'while a buy will not increase the current audience but the next block
+		parent.ComputeAudience( TRUE )
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "stationmap.removeStation", TData.Create().add("station", station), self ) )
+
+		return TRUE
     End Method
+
 
 	Method CalculateStationCosts:Int(owner:Int=0)
 		Local costs:Int = 0
-		For Local Station:TStation = EachIn StationList
+		For Local Station:TStation = EachIn stations
 			If station.owner = owner Then costs:+1000 * Ceil(station.price / 50000) ' price / 50 = cost
 		Next
 		Return costs
 	End Method
 
 	Method Update()
-
-		If action = 4 'sell finished?
-			If Self.sellStation[Game.playerID] <> Null Then Self.Sell(Self.sellStation[Game.playerID])
-			action = 0
-		EndIf
-
-		'buying stations
+rem
+		'buying stations using the mouse
 		'1. searching
-		If action = 1
-			Local pos:TPoint = TPoint.Create(0,0)
-			If MOUSEMANAGER.hasMoved
-				pos.setXY( MouseManager.x -20, MouseManager.y -10)
+		If userAction = 1
+			'create a temporary station if not done yet
+			if not mouseoverStation then mouseoverStation = getTemporaryStation( MouseManager.x -20, MouseManager.y -10 )
+			local mousePos:TPoint = TPoint.Create( MouseManager.x -20, MouseManager.y -10)
 
-				lastStation.reach = Self.CalculateStationRange(pos.X, pos.Y)
-				If lastStation.reach > 0
-					Self.outsideLand = False 'no antennagraphic in foreign countries
-					LastCalculatedAudienceIncrease = CalculateAudienceIncrease(Game.playerid, pos.X, pos.Y)
-				else
-					pos.setXY( LastStation.pos.X + 20, LastStation.pos.Y + 10)
-					Self.outsideLand = True
-					LastStation.reach = Self.CalculateStationRange(pos.X, pos.Y)
-				EndIf
-			Else
-				pos.setXY( LastStation.pos.X + 20, LastStation.pos.Y + 10)
-			EndIf
-		endif
-		'2. actually buy it
-		If action = 2 And LastStation.pos.X <> 0 And LastStation.pos.y <> 0
-			If MOUSEMANAGER.hasMoved Then LastStation.reach = Self.CalculateStationRange(LastStation.pos.X + 20, LastStation.pos.Y + 10)
-			Buy(LastStation.pos.X, LastStation.pos.Y, Game.playerID)
-			LastStation.Reset()
-			action = 0
-		EndIf
-
-		If action = 1 'placing a new station
-			'only find new if mouse was moved - saves unneeded pixel reads
-			if MOUSEMANAGER.hasMoved
-				Bundesland = ""
-				For local section:TStationMapSection = eachin TStationMapSection.sections
-					if TFunctions.MouseIn(section.pos.x, section.pos.y, section.sprite.w, section.sprite.h)
-						if section.sprite.PixelIsOpaque(MouseManager.x-section.pos.x, MouseManager.y-section.pos.y) > 0
-							'print "	found "+section.name
-							Bundesland = Localization.GetString("MAP_COUNTRY_"+section.name)
-							exit
-						endif
-					endif
-				Next
+			'if the mouse has moved - refresh the station data and move station
+			if not mouseoverStation.pos.isSame( mousePos )
+				mouseoverStation.pos.SetPos(mousePos)
+				mouseoverStation.refreshData()
+				'refresh state information
+				mouseoverStation.getFederalState(true)
 			endif
-		EndIf
 
-  End Method
+			'if mouse gets clicked, we store that position in a separate station
+			if MOUSEMANAGER.isClicked(1) and mouseoverStation.getReach()>0
+				selectedStation = getTemporaryStation( mouseoverStation.pos.x, mouseoverStation.pos.y )
+			endif
+
+			'no antennagraphic in foreign countries
+			'-> remove the station so it wont get displayed
+			if mouseoverStation.getReach() <= 0 then mouseoverStation = null
+			if selectedStation and selectedStation.getReach() <= 0 then selectedStation = null
+		endif
+endrem
+		'2. actually buy it - when doubleclicking
+rem
+		If userAction = 2 And selectedStation and selectedStation.getReach() > 0
+			'add the station (and buy it)
+			AddStation(selectedStation, TRUE)
+			'remove selection
+			selectedStation = null
+
+			userAction = 0
+		EndIf
+endrem
+	End Method
+
 
 	Method DrawStations()
-		For Local _Station:TStation = EachIn StationList
-			If Self.filter_ShowStations[_Station.owner] Then _Station.Draw()
+		For Local _Station:TStation = EachIn stations
+			if _station = selectedStation then continue
+			_Station.Draw()
 		Next
-		If LastStation.pos.X <> 0 and LastStation.pos.Y <> 0
-			SetAlpha 0.2
-			SetColor 0,0,0 'replace with a playercolor
-			DrawOval(  LastStation.pos.X+20- radius +1, LastStation.pos.Y+10-radius,2*radius,2*radius +1)
-			SetAlpha 0.5
-			SetColor 255,255,255 'replace with a playercolor
-			DrawOval(  LastStation.pos.X+20- radius, LastStation.pos.Y+10-radius,2*radius,2*radius )
-			SetAlpha 0.9
-			baseStationSprite.draw(LastStation.pos.X+20,LastStation.pos.Y+10+radius-baseStationSprite.h-2, -1,0,0.5)
-			SetAlpha 1.0
-		EndIf
 	End Method
 
 	Method Draw()
 		SetColor 255,255,255
-		DrawStations()
-		If action = 1 And Not Self.outsideLand 'placing a new station
-			SetAlpha 0.5
-			DrawOval( MouseManager.x- radius,MouseManager.y-radius,2*radius,2*radius )
-			SetAlpha 0.9
-			baseStationSprite.draw(MouseManager.x, MouseManager.y +radius -baseStationSprite.h-2, -1,0,0.5)
-			SetAlpha 1.0
-		EndIf
-		local font:TBitmapFont = Assets.fonts.baseFont
-		If action = 1
-			SetColor(0, 0, 0)
-			font.draw(bundesland, 595, 35)
-			font.draw("Reichweite: ", 595, 52)
-				font.drawBlock(functions.convertValue(String(self.LastStation.reach), 2, 0), 660, 52, 102, 20, 0.5)
-			font.draw("Zuwachs: ", 595, 69)
-				font.drawBlock(functions.convertValue(String(LastCalculatedAudienceIncrease), 2, 0), 660, 69, 102, 20, 2)
-			font.draw("Preis: ", 595, 86)
-				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(self.LastStation.GetPrice(), 2, 0), 660, 86, 102, 20, 2)
-			SetColor(180, 180, 255)
-			font.draw(bundesland, 594, 34)
-			SetColor(255,255,255)
-		EndIf
-
-		If Self.sellStation[Game.playerID] <> Null
-			SetColor(0, 0, 0)
-			font.draw("Reichweite: ", 595, 197)
-				font.drawBlock(functions.convertValue(Self.sellStation[Game.playerID].reach, 2, 0), 660, 197, 102, 20, 2)
-			font.draw("Preis: ", 595, 214)
-				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(Self.sellStation[Game.playerID].price, 2, 0), 660, 214, 102, 20, 2)
-			SetColor(255, 255, 255)
-		EndIf
-
-		if game.DebugMode
-			For local section:TStationMapSection = eachin TStationMapSection.sections
-				if TFunctions.MouseIn(section.pos.x, section.pos.y, section.sprite.w, section.sprite.h)
-					if section.sprite.PixelIsOpaque(MouseManager.x-section.pos.x, MouseManager.y-section.pos.y) > 0
-						section.sprite.Draw(section.pos.x, section.pos.y)
-						exit
-					endif
-				endif
-			Next
-		endif
-
-  End Method
-
-	'summary: returns calculated distance between 2 points
-	Method calculateDistance:Double(x1:Int, x2:Int)
-		Return Sqr((x1*x1) + (x2*x2))
+		For local i:int = 1 to Game.Players.length-1
+			If not Self.showStations[i] then continue
+			GetStationMap(i).DrawStations()
+		Next
 	End Method
 
-	Method getPopulationForBrightness:int(value:int)
+	'summary: returns calculated distance between 2 points
+	Function calculateDistance:Double(x1:Int, x2:Int)
+		Return Sqr((x1*x1) + (x2*x2))
+	End Function
+
+	Function getPopulationForBrightness:int(value:int)
 		value = Max(5, 255-value)
 		value = (value*value)/255 '2 times so low values are getting much lower
-		value = (value*value)/255
+'		value = (value*value)/255
+		value:* 0.649
+'		If value < 50 Then value :* 1.5
 
 		If value > 110 Then value :* 2.0
 		If value > 140 Then value :* 1.9
 		If value > 180 Then value :* 1.3
 		If value > 220 Then value :* 1.1	'population in big cities
 		return 26.0 * value					'population in general
-	End Method
+	End Function
 
 	Method CalculateShareNOTFINISHED:Int(playerA:Int, playerB:Int)
 		Local Points:TMap = New TMap
@@ -2248,12 +2333,12 @@ endrem
         Local x:Int = 0, y:Int = 0, posX:Int = 0, posY:Int = 0
 
 		'add Stations of both players to their corresponding map
-		For Local _Station:TStation = EachIn StationList
+		For Local _Station:TStation = EachIn stations
 			If _Station.owner = playerA Or _Station.owner = playerB
-				For posX = _Station.pos.x - radius To _Station.pos.x + radius
-					For posY = _Station.pos.y - radius To _Station.pos.y + radius
+				For posX = _Station.pos.x - stationRadius To _Station.pos.x + stationRadius
+					For posY = _Station.pos.y - stationRadius To _Station.pos.y + stationRadius
 						' noch innerhalb des Kreises?
-						If Sqr((posX - _Station.pos.x) ^ 2 + (posY - _Station.pos.y) ^ 2) <= radius
+						If Sqr((posX - _Station.pos.x) ^ 2 + (posY - _Station.pos.y) ^ 2) <= stationRadius
 							If _Station.owner = playerA
 								pointsA.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 255, 255, 255)))
 							Else
@@ -2292,21 +2377,18 @@ endrem
 		local posY:int=0
 		x = Max(0,x)
 		y = Max(0,y)
-'print "given: x"+x+" y"+y
-'print "for posX = "+Max(x - radius,radius)+" To "+Min(x + radius, stationmap_mainpix.width-radius)
-'print "	For posY = "+Max(y - radius,radius)+" To "+Min(y + radius, stationmap_mainpix.height-radius)
 		' innerhalb des Bildes?
-		For posX = Max(x - radius,radius) To Min(x + radius, self.populationMapSize.x-radius)
-			For posY = Max(y - radius,radius) To Min(y + radius, self.populationMapSize.y-radius)
+		For posX = Max(x - stationRadius,stationRadius) To Min(x + stationRadius, self.populationMapSize.x-stationRadius)
+			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, self.populationMapSize.y-stationRadius)
 				' noch innerhalb des Kreises?
-				If self.calculateDistance( posX - x, posY - y ) <= radius
+				If self.calculateDistance( posX - x, posY - y ) <= stationRadius
 					map.Insert(String((posX) + "," + (posY)), TStationPoint.Create((posX) , (posY), color ))
 				EndIf
 			Next
 		Next
 	End Method
 
-	Method CalculateAudienceIncrease:Int(owner:Int = 0, _x:Int, _y:Int)
+	Method CalculateAudienceIncrease:Int(_x:Int, _y:Int)
 		Local start:Int = MilliSecs()
 		Local Points:TMap = New TMap
 		Local returnValue:Int = 0
@@ -2318,11 +2400,9 @@ endrem
 
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
-		For Local _Station:TStation = EachIn StationList
-			If _Station.owner = owner
-				If functions.IsIn(_x,_y, _station.pos.x - 2*radius, _station.pos.y - 2 * radius, 4*radius, 4*radius)
-					self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
-				EndIf
+		For Local _Station:TStation = EachIn stations
+			If functions.IsIn(_x,_y, _station.pos.x - 2*stationRadius, _station.pos.y - 2 * stationRadius, 4*stationRadius, 4*stationRadius)
+				self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
 
@@ -2335,40 +2415,39 @@ endrem
 	End Method
 
 	'summary: returns maximum audience a player has
-	Method CalculateAudienceSum:Int(owner:Int = 0)
+	Method RecalculateAudienceSum:Int()
 		Local start:Int = MilliSecs()
 		Local Points:TMap = New TMap
         Local x:Int = 0, y:Int = 0, posX:Int = 0, posY:Int = 0
-		For Local _Station:TStation = EachIn StationList
-			If _Station.owner = owner
-				self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
-			EndIf
+		For Local _Station:TStation = EachIn stations
+			self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
 		Next
-		Local returnvalue:Int = 0
+		Local returnValue:Int = 0
 
 		For Local point:TStationPoint = EachIn points.Values()
 			If ARGB_Red(point.color) = 255 And ARGB_Blue(point.color) = 255
-				returnvalue:+ populationmap[point.pos.x, point.pos.y]
+				returnValue:+ populationmap[point.pos.x, point.pos.y]
 			EndIf
 		Next
-		Return returnvalue
+		self.reach = returnValue
+		Return returnValue
 	End Method
 
 	'summary: returns a stations maximum audience reach
-	Method CalculateStationRange:Int(x:Int, y:Int)
+	Function CalculateStationReach:Int(x:Int, y:Int)
 		Local posX:Int, posY:Int
 		Local returnValue:Int = 0
 		' für die aktuelle Koordinate die summe berechnen
 		' min/max = immer innerhalb des Bildes
-		For posX = Max(x - radius,radius) To Min(x + radius, self.populationMapSize.x-radius)
-			For posY = Max(y - radius,radius) To Min(y + radius, self.populationMapSize.y-radius)
+		For posX = Max(x - stationRadius,stationRadius) To Min(x + stationRadius, self.populationMapSize.x-stationRadius)
+			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, self.populationMapSize.y-stationRadius)
 				' noch innerhalb des Kreises?
-				If self.calculateDistance( posX - x, posY - y ) <= radius
+				If self.calculateDistance( posX - x, posY - y ) <= stationRadius
 					returnvalue:+ populationmap[posX, posY]
 				EndIf
 			Next
 		Next
 		Return returnValue
-	End Method
+	End Function
 
 End Type

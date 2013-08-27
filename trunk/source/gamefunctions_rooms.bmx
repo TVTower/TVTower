@@ -401,6 +401,14 @@ Type RoomHandler_Office extends TRoomHandler
 	global ProgrammePlannerButtons:TGUIImageButton[6]
 	global PPprogrammeList:TgfxProgrammelist
 	global PPcontractList:TgfxContractlist
+	global currentSubRoom:TRooms = null
+	global lastSubRoom:TRooms = null
+
+	global stationList:TGUISelectList
+	global stationMapMode:int				= 0	'1=searchBuy,2=buy,3=sell
+	global stationMapActionConfirmed:int	= FALSE
+	global stationMapSelectedStation:TStation
+	global stationMapMouseoverStation:TStation
 
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
 	Global fastNavigateInitialTimer:int = 250
@@ -489,12 +497,12 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		Game.Players[game.playerID].figure.fromroom = Null
-		If MouseManager.IsHit(1)
+		If MOUSEMANAGER.IsClicked(1)
 			If functions.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
 				Game.Players[Game.playerID].Figure.LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
-			EndIf
+		EndIf
 
 		Game.cursorstate = 0
 		'safe - reachable for all
@@ -503,7 +511,7 @@ Type RoomHandler_Office extends TRoomHandler
 			SafeToolTip.enabled = 1
 			SafeToolTip.Hover()
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 
@@ -517,7 +525,7 @@ Type RoomHandler_Office extends TRoomHandler
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 				room.screenManager.GoToSubScreen("screen_office_pplanning")
@@ -531,7 +539,7 @@ Type RoomHandler_Office extends TRoomHandler
 				StationsToolTip.enabled = 1
 				StationsToolTip.Hover()
 				Game.cursorstate = 1
-				If MOUSEMANAGER.IsHit(1)
+				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
 					Game.cursorstate = 0
 					room.screenManager.GoToSubScreen("screen_office_stationmap")
@@ -712,7 +720,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		If functions.IsIn(MouseManager.x, MouseManager.y, 759,17,14,15)
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 				Game.daytoplan :+ 1
@@ -720,7 +728,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 		If functions.IsIn(MouseManager.x, MouseManager.y, 670,17,14,15)
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 				Game.daytoplan :- 1
@@ -930,7 +938,7 @@ Type RoomHandler_Office extends TRoomHandler
 		Assets.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
 
 		Assets.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
-		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Game.Players[room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
+		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Game.Players[room.owner].StationMap.getCoverage(), 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	End Function
 
 	Function onUpdateImage:int( triggerEvent:TEventBase )
@@ -950,20 +958,24 @@ Type RoomHandler_Office extends TRoomHandler
 	Function InitStationMap()
 		'StationMap-GUIcomponents
 		Local button:TGUIButton
-		button = new TGUIButton.Create(TPoint.Create(610, 110), 155, "Neue Station", "STATIONMAP")
+		button = new TGUIButton.Create(TPoint.Create(610, 110), 155, "Sendemast kaufen", "STATIONMAP")
 		button.SetTextalign("CENTER")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
 
-		button = new TGUIButton.Create(TPoint.Create(610, 345), 155, "Station verkaufen", "STATIONMAP")
+		button = new TGUIButton.Create(TPoint.Create(610, 345), 155, "Sendemast verkaufen", "STATIONMAP")
 		button.disable()
 		button.SetTextalign("CENTER")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, button )
 
-		Local stationlist:TGUIList = new TGUIList.Create(588, 233, 190, 100, 40, "STATIONMAP")
-		stationlist.SetControlState(1)
-		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapList, stationlist )
+		'we have to refresh the gui station list as soon as we remove or add a station
+		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
+		EventManager.registerListenerFunction( "stationmap.addStation",	OnChangeStationMapStation )
+
+		stationList = new TGUISelectList.Create(595,233,185,100, "STATIONMAP")
+		EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList )
+
 		For Local i:Int = 0 To 3
 			local button:TGUIOkbutton = new TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, String(i + 1), "STATIONMAP", Assets.GetFont("Default", 11, BOLDFONT))
 			EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapFilters, button )
@@ -975,9 +987,8 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		StationMap.Draw()
 		GUIManager.Draw("STATIONMAP")
-		Assets.fonts.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
+
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
 			DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 15, 18)
@@ -985,6 +996,46 @@ Type RoomHandler_Office extends TRoomHandler
 			DrawRect(565, 33 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 13, 16)
 		Next
 		SetColor 255, 255, 255
+		Assets.fonts.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
+
+		'draw stations and tooltips
+		Game.Players[room.owner].StationMap.Draw()
+
+		'also draw the station used for buying/searching
+		If stationMapMouseoverStation then stationMapMouseoverStation.Draw()
+		'also draw the station used for buying/searching
+		If stationMapSelectedStation then stationMapSelectedStation.Draw(true)
+
+		local font:TBitmapFont = Assets.fonts.baseFont
+		Assets.fonts.baseFontBold.drawStyled( "Einkauf", 595, 18, 0,0,0, 1, 1, 0.5)
+		Assets.fonts.baseFontBold.drawStyled( "Deine Sendemasten", 595, 178, 0,0,0, 1, 1, 0.5)
+
+		'draw a kind of tooltip over a mouseoverStation
+		if stationMapMouseoverStation then stationMapMouseoverStation.DrawInfoTooltip()
+
+		If stationMapMode = 1 and stationMapSelectedStation
+			SetColor(80, 80, 0)
+			Assets.fonts.baseFontBold.draw( getLocale("MAP_COUNTRY_"+stationMapSelectedStation.getFederalState()), 595, 37)
+
+			SetColor(0, 0, 0)
+			font.draw("Reichweite: ", 595, 55)
+				font.drawBlock(functions.convertValue(String(stationMapSelectedStation.getReach()), 2, 0), 660, 55, 102, 20, 2)
+			font.draw("Zuwachs: ", 595, 72)
+				font.drawBlock(functions.convertValue(String(stationMapSelectedStation.getReachIncrease()), 2, 0), 660, 72, 102, 20, 2)
+			font.draw("Preis: ", 595, 89)
+				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, 2)
+			SetColor(255,255,255)
+		EndIf
+
+		If stationMapSelectedStation and stationMapSelectedStation.paid
+			SetColor(0, 0, 0)
+			font.draw("Reichweite: ", 595, 200)
+				font.drawBlock(functions.convertValue(stationMapSelectedStation.reach, 2, 0), 660, 200, 102, 20, 2)
+			font.draw("Wert: ", 595, 216)
+				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, 2)
+			SetColor(255, 255, 255)
+		EndIf
+
 	End Function
 
 	Function onUpdateStationMap:int( triggerEvent:TEventBase )
@@ -992,99 +1043,192 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		StationMap.Update()
+		'backup room if it changed
+		if currentSubRoom <> lastSubRoom
+			lastSubRoom = currentSubRoom
+			'if we changed the room meanwhile - we have to rebuild the stationList
+			RefreshStationMapStationList()
+		endif
+
+		currentSubRoom = room
+
+		Game.Players[room.owner].StationMap.Update()
+
+		'process right click
+		if MOUSEMANAGER.isHit(2)
+			local reset:int = (stationMapSelectedStation or stationMapMouseoverStation)
+
+			ResetStationMapAction(0)
+
+			if reset then MOUSEMANAGER.ResetKey(2)
+
+		Endif
+
+
+		'buying stations using the mouse
+		'1. searching
+		If stationMapMode = 1
+			'create a temporary station if not done yet
+			if not StationMapMouseoverStation then StationMapMouseoverStation = TStationMap.getStationMap(room.owner).getTemporaryStation( MouseManager.x -20, MouseManager.y -10 )
+			local mousePos:TPoint = TPoint.Create( MouseManager.x -20, MouseManager.y -10)
+
+			'if the mouse has moved - refresh the station data and move station
+			if not StationMapMouseoverStation.pos.isSame( mousePos )
+				StationMapMouseoverStation.pos.SetPos(mousePos)
+				StationMapMouseoverStation.refreshData()
+				'refresh state information
+				StationMapMouseoverStation.getFederalState(true)
+			endif
+
+			'if mouse gets clicked, we store that position in a separate station
+			if MOUSEMANAGER.isClicked(1) and StationMapMouseoverStation.getReach()>0
+				StationMapSelectedStation = TStationMap.getStationMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
+			endif
+
+			'no antennagraphic in foreign countries
+			'-> remove the station so it wont get displayed
+			if StationMapMouseoverStation.getReach() <= 0 then StationMapMouseoverStation = null
+			if StationMapSelectedStation and StationMapSelectedStation.getReach() <= 0 then StationMapSelectedStation = null
+		endif
+
 		GUIManager.Update("STATIONMAP")
 	End Function
 
-	Function OnClick_StationMapSell(triggerEvent:TEventBase)
+	Function OnChangeStationMapStation:int( triggerEvent:TEventBase )
+		'do nothing when not in a room
+		if not currentSubRoom then return FALSE
+
+		RefreshStationMapStationList( currentSubRoom.owner )
+	End Function
+
+	Function ResetStationMapAction(mode:int=0)
+		stationMapMode = mode
+		stationMapActionConfirmed = FALSE
+		'remove selection
+		stationMapSelectedStation = null
+		stationMapMouseoverStation = Null
+
+		'reset gui list
+		stationList.deselectEntry()
+	End Function
+
+
+	'===================================
+	'Stationmap: Connect GUI elements
+	'===================================
+
+	Function OnUpdate_StationMapBuy:int(triggerEvent:TEventBase)
+		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		if stationMapMode=1
+			button.value = "Kauf bestätigen"
+		else
+			button.value = "Sendemast kaufen"
+		endif
+	End Function
+
+	Function OnClick_StationMapBuy:int(triggerEvent:TEventBase)
 		local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If button <> Null
-			if StationMap.action <> 3
-				button.value = "Wirklich verkaufen"
-				StationMap.action = 3 'selling of stations
-			else
-				 button.value = "Verkaufen"
-				 StationMap.action = 4 'finished selling
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'coming from somewhere else... reset first
+		if stationMapMode<>1 then ResetStationMapAction(1)
+
+		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
+			'add the station (and buy it)
+			if Game.Players[currentSubRoom.owner].Stationmap.AddStation(stationMapSelectedStation, TRUE)
+				ResetStationMapAction(0)
 			endif
+		EndIf
+	End Function
+
+
+	Function OnClick_StationMapSell:int(triggerEvent:TEventBase)
+		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'coming from somewhere else... reset first
+		if stationMapMode<>2 then ResetStationMapAction(2)
+
+		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
+			'remove the station (and sell it)
+			if Game.Players[currentSubRoom.owner].Stationmap.RemoveStation(stationMapSelectedStation, TRUE)
+				ResetStationMapAction(0)
+			endif
+		EndIf
+	End Function
+
+	'enables/disables the button depending on selection
+	'sets button label depending on userAction
+	Function OnUpdate_StationMapSell:int(triggerEvent:TEventBase)
+		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'different owner or not paid
+		if stationMapSelectedStation.owner <> Game.playerID or not stationMapSelectedStation.paid
+			button.disable()
+		else
+			button.enable()
+		endif
+
+		if stationMapMode=2
+			button.value = "Verkauf bestätigen"
+		else
+			button.value = "Sendemast verkaufen"
 		endif
 	End Function
 
-	Function OnClick_StationMapBuy(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local button:TGUIButton = TGUIButton(evt._sender)
-			If button <> Null
-				if StationMap.action <> 1
-					button.value		= "Kaufen"
-					StationMap.action	= 1			'enables buying of stations
-				else
-					button.value		= "Neue Station"
-					StationMap.action 	= 2			'tries to buy
-				endif
-			EndIf
+
+	'rebuild the stationList - eg. when changed the room (other office)
+	Function RefreshStationMapStationList(playerID:int=-1)
+		If playerID <= 0 Then playerID = Game.playerID
+
+		'first fill of stationlist
+		stationList.EmptyList()
+		'remove potential highlighted item
+		stationList.deselectEntry()
+
+		For Local station:TStation = EachIn Game.Players[playerID].StationMap.Stations
+			local item:TGUISelectListItem = new TGUISelectListItem.Create("Sendemast (" + functions.convertValue(station.reach, 2, 0) + ")",0,0,100,20)
+			'link the station to the item
+			item.data.Add("station", station)
+			stationList.AddItem( item )
+		Next
+	End Function
+
+	'an entry was selected - make the linked station the currently selected station
+	Function OnSelectEntry_StationMapStationList:int(triggerEvent:TEventBase)
+		Local senderList:TGUISelectList = TGUISelectList(triggerEvent._sender)
+		If not senderList then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'set the linked station as selected station
+		'also set the stationmap's userAction so the map knows we want to sell
+		local item:TGUISelectListItem = TGUISelectListItem(senderList.getSelectedEntry())
+		if item
+			stationMapSelectedStation = TStation(item.data.get("station"))
+			stationMapMode = 2 'sell
 		endif
 	End Function
 
-	Function OnUpdate_StationMapBuy(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIButton = TGUIButton(evt._sender)
+	Function OnUpdate_StationMapFilters:int(triggerEvent:TEventBase)
+		Local button:TGUIOkbutton = TGUIOkbutton(triggerEvent._sender)
+		if not button then return FALSE
 
-			If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseManager.x < 570
-				local ClickPos:TPoint = TPoint.Create( MouseManager.x - 20, MouseManager.y - 10 )
-				If StationMap.LastStation.pos.isSame( ClickPos )
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
-				Else
-					StationMap.LastStation.pos.setPos(clickPos)
-				EndIf
-				MouseManager.resetKey(1)
-				If StationMap.action > 1
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
-				endif
-			EndIf
-		EndIf
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		Game.Players[currentSubRoom.owner].StationMap.showStations[Int(button.value)] = button.crossed
 	End Function
-
-	Function OnUpdate_StationMapSell(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIButton = TGUIButton(evt._sender)
-			If obj <> Null
-				If StationMap.sellStation[Game.playerID] <> Null Then obj.enable() Else obj.disable()
-			EndIf
-		EndIf
-	End Function
-
-	Function OnUpdate_StationMapList(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIList = TGUIList(evt._sender)
-			If obj <> Null
-				'first fill of stationlist
-				obj.ClearEntries()
-				Local counter:Int = 0
-				For Local station:TStation = EachIn StationMap.StationList
-					If Game.playerID = station.owner
-						obj.AddEntry("", "Station (" + functions.convertValue(station.reach, 2, 0) + ")", 0, 0, 0, MilliSecs())
-						If obj.ListPosClicked = counter
-							StationMap.sellStation[Game.playerID] = station
-						EndIf
-						counter:+1
-					EndIf
-				Next
-			EndIf
-		Endif
-	End Function
-
-	Function OnUpdate_StationMapFilters(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIOkbutton = TGUIOkbutton(evt._sender)
-			If obj <> Null then StationMap.filter_ShowStations[Int(obj.value)] = obj.crossed
-		EndIf
-	End Function
-
-
 End Type
 
 
@@ -1286,7 +1430,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			If ArchiveProgrammeList.GetOpen() = 0
 				if functions.IsIn(MouseManager.x, MouseManager.y, 605,65,120,90) Or functions.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
 					Game.cursorstate = 1
-					If MOUSEMANAGER.IsHit(1)
+					If MOUSEMANAGER.IsClicked(1)
 						MOUSEMANAGER.resetKey(1)
 						Game.cursorstate = 0
 						ArchiveProgrammeList.SetOpen(1)
@@ -1760,7 +1904,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				AuctionToolTip.enabled = 1
 				AuctionToolTip.Hover()
 				Game.cursorstate = 1
-				If MOUSEMANAGER.IsHit(1)
+				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
 					Game.cursorstate = 0
 					room.screenManager.GoToSubScreen("screen_movieauction")

@@ -502,8 +502,6 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		'if owner differs, check if we have to buy
 		if parent.playerID<>programme.owner
 			if not programme.buy(parent.playerID) then return FALSE
-			'set new owner
-			programme.owner = parent.playerID
 		endif
 
 		List.remove(programme)
@@ -559,8 +557,6 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		'at program start or through special event...
 		if parent.playerID<>programme.owner
 			if buy and not programme.buy(parent.playerID) then return FALSE
-			'set new owner
-			programme.owner = parent.playerID
 		endif
 
 		'Print "RON: PlayerCollection.AddProgramme: buy="+buy+" title="+programme.title
@@ -894,15 +890,9 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 
 		local useAudience:int = 0
 
-		If Game.isPlayer(playerID)
-			useAudience = Game.Players[ playerID ].maxaudience
-		else
-			'in case of "playerID = -1" we use the avg value
-			For Local i:Int = 1 To 4
-				useAudience :+ Game.Players[ i ].maxaudience
-			Next
-			useAudience:/4
-		EndIf
+		'in case of "playerID = -1" we get the avg value
+		useAudience = Game.GetMaxaudience(playerID)
+
 		'0.5 = more than 50 percent of whole germany wont watch TV the same time
 		'therefor: maximum of half the audience can be "needed"
 		Return TFunctions.RoundToBeautifulValue( Floor(useAudience*0.5 * Self.GetMinAudiencePercentage()) )
@@ -1372,9 +1362,9 @@ endrem
 
 		If Game.Players[playerID].finances[Game.getWeekday()].PayMovie(self.getPrice())
 			self.owner = playerID
-			Return 1
+			Return TRUE
 		EndIf
-		Return 0
+		Return FALSE
 	End Method
 
 

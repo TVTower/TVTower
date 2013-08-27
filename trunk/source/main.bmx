@@ -37,6 +37,10 @@ AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 Global App:TApp = TApp.Create(60,60) 'create with 60fps for physics and graphics
 App.LoadResources("config/resources.xml")
 
+'RON: precalc here until we have abilities to use different maps during
+'     start settings setup
+TStationMap.InitMapData()
+
 GUIManager.globalScale	= 1.00
 GUIManager.defaultFont	= Assets.GetFont("Default", 12)
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -559,12 +563,12 @@ endrem
 		If Not Game.isPlayer(playerID)
 			Local avg:Int = 0
 			For Local i:Int = 1 To 4
-				avg :+ Players[ i ].maxaudience
+				avg :+ Players[ i ].GetMaxAudience()
 			Next
 			avg:/4
 			Return avg
 		EndIf
-		Return Players[ playerID ].maxaudience
+		Return Players[ playerID ].GetMaxAudience()
 	End Method
 
 	Method GetDayName:String(day:Int, longVersion:Int=0) {_exposeToLua}
@@ -780,9 +784,9 @@ Type TPlayer {_exposeToLua="selected"}
 	Field channelname:String 								{saveload = "normal"} 		'name of the channel
 	Field finances:TFinancials[7]														'One week of financial stats about credit, money, payments ...
 	Field audience:Int 			= 0 						{saveload = "normal"}		'general audience
-	Field maxaudience:Int 		= 0 						{saveload = "normal"}		'maximum possible audience
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
 	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
+	Field StationMap:TStationMap							{_exposeToLua}
 	Field Figure:TFigures									{_exposeToLua}				'actual figure the player uses
 	Field playerID:Int 			= 0							{saveload = "normal"}		'global used ID of the player
 	Field color:TColor																	'the color used to colorize symbols and figures
@@ -897,6 +901,19 @@ endrem
 		return self.finances[Game.GetWeekday(weekday)]
 	End Method
 
+	Method GetMaxAudience:int() {_exposeToLua}
+		return self.Stationmap.GetReach()
+	End Method
+
+	Method isInRoom:int(roomName:string="", checkFromRoom:int=FALSE) {_exposeToLua}
+		If checkFromRoom
+			'from room has to be set AND inroom <> null (no building!)
+			Return (Figure.inRoom And Figure.inRoom.Name.toLower() = roomname.toLower()) Or (Figure.inRoom And Figure.fromRoom And Figure.fromRoom.Name.toLower() = roomname.toLower())
+		Else
+			Return (Figure.inRoom And Figure.inRoom.Name.toLower() = roomname.toLower())
+		EndIf
+	End Method
+
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
@@ -915,6 +932,7 @@ endrem
 		Next
 		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
 		Player.ProgrammePlan		= TPlayerProgrammePlan.Create(Player)
+		Player.StationMap			= TStationMap.Create(Player)
 '		Player.RecolorFigure(Player.color.GetUnusedColor(globalID))
 		Player.RecolorFigure(Player.color)
 		Player.UpdateFigureBase(0)
@@ -993,8 +1011,8 @@ endrem
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetAudiencePercentage:Float() {_exposeToLua}
-		If maxaudience > 0 And audience > 0
-			Return Float(audience * 100) / Float(maxaudience)
+		If GetMaxaudience() > 0 And audience > 0
+			Return Float(audience * 100) / Float( GetMaxaudience() )
 		EndIf
 		Return 0.0
 	End Method
@@ -1033,7 +1051,7 @@ endrem
 		Local playerID:Int = 1
 		For Local Player:TPlayer = EachIn TPlayer.List
 			'stationfees
-			Player.finances[Game.getWeekday()].PayStationFees(StationMap.CalculateStationCosts(playerID))
+			Player.finances[Game.getWeekday()].PayStationFees( Player.StationMap.CalculateStationCosts(playerID))
 
 			'newsagencyfees
 			Local newsagencyfees:Int =0
@@ -1110,25 +1128,25 @@ endrem
 
 	'computes audience depending on ComputeAudienceQuote and if the time is the same
 	'as for the last block of a programme, it decreases the topicality of that programme
-	Function ComputeAudience(recompute:Int = 0)
+	Function ComputeAudience(recompute:Int = FALSE)
 		Local block:TProgrammeBlock
 
 		For Local Player:TPlayer = EachIn TPlayer.List
 			block = Player.ProgrammePlan.GetCurrentProgrammeBlock()
 			Player.audience = 0
 
-			If block And block.programme And Player.maxaudience <> 0
-				Player.audience = Floor(Player.maxaudience * block.Programme.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
-				AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience)) + ") * 1000"
+			If block And block.programme And Player.GetMaxaudience() > 0
+				Player.audience = Floor(Player.GetMaxaudience() * block.Programme.getAudienceQuote(Player.audience/Player.GetMaxaudience()) / 1000)*1000
+				AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.GetMaxaudience() + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.GetMaxaudience())) + ") * 1000"
 				'maybe someone sold a station
 				If recompute
 					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())
 					If quote <> Null
 						quote.audience = Player.audience
-						quote.audiencepercentage = Int(Floor(Player.audience * 1000 / Player.maxaudience))
+						quote.audiencepercentage = Int(Floor(Player.audience * 1000 / Player.GetMaxaudience()))
 					EndIf
 				Else
-					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
+					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
 				EndIf
 				If block.sendHour - (Game.GetDay()*24) + block.Programme.blocks <= Game.getNextHour()
 					If Not recompute
@@ -1146,7 +1164,7 @@ endrem
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Local audience:Int = 0
 
-			if Player.maxaudience > 0
+			if Player.GetMaxaudience() > 0
 				local leadinAudience:int = 0
 				local slotaudience:int[] = [Player.audience,0,0,0]
 				'in the "0"-position of the index, we store the previous audience
@@ -1156,7 +1174,7 @@ endrem
 					newsBlock = Player.ProgrammePlan.GetNewsBlockFromSlot(i-1)
 					If newsBlock <> Null
 						leadinAudience = 0.5 * Player.audience + 0.5 * slotaudience[i-1]
-						slotaudience[i] = Floor(Player.maxaudience * NewsBlock.news.getAudienceQuote(leadinAudience/Player.maxaudience)  / 1000)*1000
+						slotaudience[i] = Floor(Player.GetMaxaudience() * NewsBlock.news.getAudienceQuote(leadinAudience/Player.GetMaxaudience())  / 1000)*1000
 						'print "leadinAudience "+i+": "+leadinAudience + " slotaudience:"+slotaudience[i]
 					endif
 
@@ -1168,7 +1186,7 @@ endrem
 				Next
 			Endif
 			Player.audience= Ceil(audience)
-			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
+			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
 		Next
 	End Function
 
@@ -1198,10 +1216,6 @@ endrem
 
 	Method GetAudience:Int() {_exposeToLua}
 		Return Self.audience
-	End Method
-
-	Method GetMaxAudience:Int() {_exposeToLua}
-		Return Self.maxaudience
 	End Method
 
 
@@ -1891,8 +1905,8 @@ endrem
 			SetBlend ALPHABLEND
 
 			local moonPos:TPoint = Moon_Path.GetTweenPoint( Moon_PathCurrentDistance, TRUE )
-			'Assets.GetSprite("gfx_building_BG_moon").DrawInViewPort(moonPos.x, 0.10 * (pos.y) + moonPos.y, 0, Game.GetDay() Mod 12)
-			Assets.GetSprite("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (pos.y) + moonPos.y, Game.GetDay() Mod 12)
+			'draw moon - frame is from +6hrs (so day has already changed at 18:00)
+			Assets.GetSprite("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (pos.y) + moonPos.y, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
 		EndIf
 
 		For Local i:Int = 0 To Building.Clouds.length - 1
@@ -2246,7 +2260,6 @@ SoundManager.LoadSoundFiles()
 
 
 '#Region: Globals, Player-Creation
-Global StationMap:TStationMap	= TStationMap.Create()
 Global Interface:TInterface		= TInterface.Create()
 Global Game:TGame	  			= TGame.Create()
 Global Building:TBuilding		= TBuilding.Create()
@@ -2398,11 +2411,6 @@ Next
 
 CreateDropZones()
 Global Database:TDatabase = TDatabase.Create(); Database.Load(Game.userdb) 'load all movies, news, series and ad-contracts
-
-StationMap.AddStation(310, 260, 1, Game.Players[1].maxaudience)
-StationMap.AddStation(310, 260, 2, Game.Players[2].maxaudience)
-StationMap.AddStation(310, 260, 3, Game.Players[3].maxaudience)
-StationMap.AddStation(310, 260, 4, Game.Players[4].maxaudience)
 
 SetColor 255,255,255
 
@@ -2640,6 +2648,7 @@ End Function
 'test objects
 TGUIObject._debugMode = FALSE
 print "TGUIObject._debugMode is set to FALSE"
+
 rem
 Global TestList:TGUISlotList = new TGUISlotList.Create(20,20,300,200, "MainMenu")
 TestList.SetItemLimit(10)
@@ -2844,7 +2853,7 @@ Function Menu_StartMultiplayer:Int()
 			Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgrammeByGenre(20) )
 
 			For Local j:Int = 0 To Game.startAdAmount-1
-				local contract:TContract = TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].maxaudience, 0.10))
+				local contract:TContract = TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].GetMaxaudience(), 0.10))
 				Game.Players[ playerids ].ProgrammeCollection.AddContract( contract )
 			Next
 		Next
@@ -3027,6 +3036,12 @@ End Function
 
 
 Function Init_Creation()
+	'create base stations
+	for local playerID:int = 1 to 4
+		Game.Players[playerID].StationMap.AddStation( TStation.Create( TPoint.Create(310, 260),-1, TStationMap.stationRadius, playerID ), FALSE )
+	Next
+
+
 	'disable chat if not networkgaming
 	if not game.networkgame
 		InGame_Chat.hide()
@@ -3079,7 +3094,7 @@ Function Init_Creation()
 			Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			For Local i:Int = 0 To 2
-				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].maxaudience, 0.10)) )
+				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].GetMaxaudience(), 0.10)) )
 			Next
 		Next
 		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
@@ -3473,7 +3488,7 @@ endrem
 				If KEYMANAGER.IsHit(KEY_C) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("chief", Game.playerID) )
 				If KEYMANAGER.IsHit(KEY_N) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("news", Game.playerID) )
 				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("roomboard", -1) )
-				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].maxaudience = Stationmap.einwohner
+				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].Stationmap.reach = Game.Players[Game.playerID].Stationmap.population
 
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
 				if Game.isGameLeader()
