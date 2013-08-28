@@ -1654,7 +1654,7 @@ endrem
 
 		'no minus quote
 		Return Max(0, quality)
-	End Method
+	End Method		
 
 	'computes a percentage which could be multiplied with maxaudience
 	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1) {_exposeToLua}
@@ -1663,7 +1663,7 @@ endrem
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.maxAudiencePercentage
+			quote :* Game.Quotes.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf
@@ -1916,7 +1916,7 @@ Print "implement save:TNews"
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.maxAudiencePercentage
+			quote :* Game.Quotes.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf

@@ -251,8 +251,7 @@ Type TGame {_exposeToLua="selected"}
 	
 	Field Quotes:TQuotes = null
 	Field PopularityManager:TPopularityManager = null
-
-	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
+	
 	Field maxContractsAllowed:Int 		= 8		{nosave}	'how many contracts a player can possess
 	Field maxMoviesInSuitcaseAllowed:Int= 12	{nosave}	'how many movies can be carried in suitcase
 	Field startMovieAmount:Int 			= 5		{nosave}	'how many movies does a player get on a new game
@@ -614,41 +613,6 @@ endrem
 		Self.userfallbackip		= xml.FindValue(node,"fallbacklocalip", "192.168.0.1")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'fallbacklocalip' fehlt, setze Defaultwert: '192.168.0.1'", DEBUG_LOADING)
 	End Method
 
-	Method calculateMaxAudiencePercentage:Float(forHour:Int= -1)
-		If forHour <= 0 Then forHour = Self.GetHour()
-
-		'based on weekday (thursday) in march 2011 - maybe add weekend
-		Select Self.GetHour()
-			Case 0	game.maxAudiencePercentage = 11.40 + Float(RandRange( -6, 6))/ 100.0 'Germany ~9 Mio
-			Case 1	game.maxAudiencePercentage =  6.50 + Float(RandRange( -4, 4))/ 100.0 'Germany ~5 Mio
-			Case 2	game.maxAudiencePercentage =  3.80 + Float(RandRange( -3, 3))/ 100.0
-			Case 3	game.maxAudiencePercentage =  3.60 + Float(RandRange( -3, 3))/ 100.0
-			Case 4	game.maxAudiencePercentage =  2.25 + Float(RandRange( -2, 2))/ 100.0
-			Case 5	game.maxAudiencePercentage =  3.45 + Float(RandRange( -2, 2))/ 100.0 'workers awake
-			Case 6	game.maxAudiencePercentage =  3.25 + Float(RandRange( -2, 2))/ 100.0 'some go to work
-			Case 7	game.maxAudiencePercentage =  4.45 + Float(RandRange( -3, 3))/ 100.0 'more awake
-			Case 8	game.maxAudiencePercentage =  5.05 + Float(RandRange( -4, 4))/ 100.0
-			Case 9	game.maxAudiencePercentage =  5.60 + Float(RandRange( -4, 4))/ 100.0
-			Case 10	game.maxAudiencePercentage =  5.85 + Float(RandRange( -4, 4))/ 100.0
-			Case 11	game.maxAudiencePercentage =  6.70 + Float(RandRange( -4, 4))/ 100.0
-			Case 12	game.maxAudiencePercentage =  7.85 + Float(RandRange( -4, 4))/ 100.0
-			Case 13	game.maxAudiencePercentage =  9.10 + Float(RandRange( -5, 5))/ 100.0
-			Case 14	game.maxAudiencePercentage = 10.20 + Float(RandRange( -5, 5))/ 100.0
-			Case 15	game.maxAudiencePercentage = 10.90 + Float(RandRange( -5, 5))/ 100.0
-			Case 16	game.maxAudiencePercentage = 11.45 + Float(RandRange( -6, 6))/ 100.0
-			Case 17	game.maxAudiencePercentage = 14.10 + Float(RandRange( -7, 7))/ 100.0 'people come home
-			Case 18	game.maxAudiencePercentage = 22.95 + Float(RandRange( -8, 8))/ 100.0 'meal + worker coming home
-			Case 19	game.maxAudiencePercentage = 33.45 + Float(RandRange(-10,10))/ 100.0
-			Case 20	game.maxAudiencePercentage = 38.70 + Float(RandRange(-15,15))/ 100.0
-			Case 21	game.maxAudiencePercentage = 37.60 + Float(RandRange(-15,15))/ 100.0
-			Case 22	game.maxAudiencePercentage = 28.60 + Float(RandRange( -9, 9))/ 100.0 'bed time starts
-			Case 23	game.maxAudiencePercentage = 18.80 + Float(RandRange( -7, 7))/ 100.0
-		EndSelect
-		game.maxAudiencePercentage :/ 100.0
-
-		Return game.maxAudiencePercentage
-	End Method
-
 	Method GetNextHour:Int() {_exposeToLua}
 		Local nextHour:Int = Self.GetHour()+1
 		If nextHour > 24 Then Return nextHour - 24
@@ -794,6 +758,7 @@ Type TPlayer {_exposeToLua="selected"}
 	Field finances:TFinancials[7]														'One week of financial stats about credit, money, payments ...
 	Field audience:Int 			= 0 						{saveload = "normal"}		'general audience
 	Field maxaudience:Int 		= 0 						{saveload = "normal"}		'maximum possible audience
+	Field maxAudience2:TAudience
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
 	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
 	Field Figure:TFigures									{_exposeToLua}				'actual figure the player uses
@@ -1014,8 +979,8 @@ endrem
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetRelativeAudiencePercentage:Float() {_exposeToLua}
-		If game.maxAudiencePercentage > 0
-			Return Float(GetAudiencePercentage() / game.maxAudiencePercentage)
+		If game.Quotes.maxAudiencePercentage > 0
+			Return Float(GetAudiencePercentage() / game.Quotes.maxAudiencePercentage)
 		EndIf
 		Return 0.0
 	End Method
@@ -1124,6 +1089,9 @@ endrem
 	'computes audience depending on ComputeAudienceQuote and if the time is the same
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = 0)
+		Local audience:TAudience = Game.Quotes.ComputeAudiencePlayerOne(recompute)
+		
+	rem
 		Local block:TProgrammeBlock
 
 		For Local Player:TPlayer = EachIn TPlayer.List
@@ -1151,6 +1119,9 @@ endrem
 				EndIf
 			EndIf
 		Next
+	endrem
+		
+		
 	End Function
 
 	'computes newsshow-audience
@@ -3373,7 +3344,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			ElseIf minute = 55
 				TPlayer.ComputeAds()
 			ElseIf minute = 0
-				Game.calculateMaxAudiencePercentage(hour)
+				Game.Quotes.calculateMaxAudiencePercentage(hour)
 				TPlayer.ComputeNewsAudience()
  			EndIf
  			If minute = 5 Or minute = 55 Or minute=0 Then Interface.BottomImgDirty = True
