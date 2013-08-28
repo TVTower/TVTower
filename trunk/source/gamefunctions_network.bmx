@@ -336,9 +336,8 @@ Type TNetworkHelper
 		obj.SetFloat(	4, figure.target.x )
 		obj.SetFloat(	5, figure.target.y )
 		if figure.inRoom <> null 			then obj.setInt( 6, figure.inRoom.id)
-		if figure.clickedToRoom <> null		then obj.setInt( 7, figure.clickedToRoom.id)
-		if figure.toRoom <> null 			then obj.setInt( 8, figure.toRoom.id)
-		if figure.fromRoom <> null 			then obj.setInt( 9, figure.fromRoom.id)
+		if figure.targetRoom <> null		then obj.setInt( 7, figure.targetRoom.id)
+		if figure.fromRoom <> null 			then obj.setInt( 8, figure.fromRoom.id)
 		Network.BroadcastNetworkObject( obj )
 	End Method
 
@@ -352,9 +351,8 @@ Type TNetworkHelper
 		local targetX:Float			= obj.getFloat(4)
 		local targetY:Float			= obj.getFloat(5)
 		local inRoomID:int			= obj.getInt(6, -1,TRUE)
-		local clickedRoomID:int		= obj.getInt(7, -1,TRUE)
-		local toRoomID:int			= obj.getInt(8, -1,TRUE)
-		local fromRoomID:int		= obj.getInt(9, -1,TRUE)
+		local targetRoomID:int		= obj.getInt(7, -1,TRUE)
+		local fromRoomID:int		= obj.getInt(8, -1,TRUE)
 
 		If not figure.IsInElevator()
 			'only set X if wrong floor or x differs > 10 pixels
@@ -374,11 +372,7 @@ Type TNetworkHelper
 			EndIf
 		EndIf
 
-		If clickedRoomID <= 0 Then figure.clickedToRoom = Null
-		If clickedRoomID > 0 Then figure.clickedToRoom = TRooms.GetRoom( clickedRoomID )
-
-		If toRoomID <= 0 Then figure.toRoom = Null
-		If toRoomID > 0 Then figure.toRoom = TRooms.GetRoom( toRoomID )
+		figure.targetRoom = TRooms.GetRoom( targetRoomID )
 
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom <> Null

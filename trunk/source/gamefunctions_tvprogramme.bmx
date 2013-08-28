@@ -1080,6 +1080,8 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field year:Int				= 1900
 	Field releaseDay:Int		= 1					'at which day was the programme released?
 	Field releaseAnnounced:int	= FALSE				'announced in news etc?
+	Field timesAired:int		= 0					'how many times that programme was run
+	Field targetGroup:int		= 0					'special targeted audience?
 	Field refreshModifier:float	= 1.0				'changes how much a programme "regenerates" (multiplied with genreModifier)
 	Field wearoffModifier:Float	= 1.0				'changes how much a programme loses during sending it
 	Field livehour:Int			= 0
@@ -1662,15 +1664,26 @@ endrem
 		Return Max(0, quote)
 	End Method
 
-	Method CutTopicality:Int()
+	Method CutTopicality:Int(cutFactor:float=1.0)
+		'cutFactor can be used to manipulate the resulting cut
+		'eg for night times
+
 		'cut of by an individual cutoff factor - do not allow values > 1.0 (refresh instead of cut)
 		'the value : default * invidual * individualGenre
-		topicality:* Min(1.0, self.wearoffFactor * self.GetGenreWearoffModifier() * self.GetWearoffModifier() )
+		topicality:* Min(1.0,  cutFactor * self.wearoffFactor * self.GetGenreWearoffModifier() * self.GetWearoffModifier() )
 	End Method
 
 	Method RefreshTopicality:Int()
 		topicality = Min(maxtopicality, topicality*self.refreshFactor*self.GetGenreRefreshModifier()*self.GetRefreshModifier())
 		Return topicality
+	End Method
+
+	Method getTargetGroup:int() {_exposeToLua}
+		return self.targetGroup
+	End Method
+
+	Method GetTimesAired:Int() {_exposeToLua}
+		return self.timesAired
 	End Method
 
 	Method GetPrice:Int() {_exposeToLua}

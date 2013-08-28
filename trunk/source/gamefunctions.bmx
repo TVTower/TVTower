@@ -1280,24 +1280,43 @@ Type TFader
 	Field fadecount:Double	= 0
 	Field fadeout:Int 		= False
 	Field fadeenabled:Int	= False
+	Field fadeStarted:int	= FALSE
 
-	Method Enable()
+	Method Start()
+		self.fadeStarted = TRUE
 		Self.fadecount = 1
-		Self.fadeenabled = True
 		Self.fadeout = False
 	End Method
 
-	Method EnableFadeout()
-		Self.fadecount = 20
+	Method Stop()
+		self.fadeStarted = FALSE
+	End Method
+
+	Method Enable()
 		Self.fadeenabled = True
+	End Method
+
+	Method Disable()
+		Self.fadeenabled = FALSE
+	End Method
+
+	Method StartFadeout()
+		self.Start()
+		Self.fadecount = 20
 		Self.fadeout = True
 	End Method
 
-	Method Update(deltaTime:float=1.0)
+	Method Update:int(deltaTime:float=1.0)
+		if not self.fadeStarted then return FALSE
+
 		If Self.fadecount > 20
 			Self.fadecount = 20
 		ElseIf Self.fadecount >= 0 And Self.fadeenabled
-			Self.fadecount:+(0.75 - 1.5 * Self.fadeout)
+			if self.fadeOut
+				Self.fadecount:-1.3
+			else
+				Self.fadecount:+1.3
+			endif
 		ElseIf Self.fadecount < 0
 			Self.fadecount = -1
 			Self.fadeenabled = False
@@ -1306,12 +1325,12 @@ Type TFader
 
 	Method Draw(deltaTime:float=1.0)
 		If Self.fadecount >= 0 And Self.fadeenabled
-			SetColor 0, 0, 0;SetAlpha Self.fadecount / 20
+			SetColor 0, 0, 0;SetAlpha float(Self.fadecount) / 20.0
 			DrawRect(20,10,380-(20-Self.fadecount)*19,190-(20-Self.fadecount)*19)
 			DrawRect(400+(20-Self.fadecount)*19,10,380-(20-Self.fadecount)*19,190-(20-Self.fadecount)*19)
 			DrawRect(20,195+(20-Self.fadecount)*19,380-(20-Self.fadecount)*19,190-(20-Self.fadecount)*19)
 			DrawRect(400+(20-Self.fadecount)*19,195+(20-Self.fadecount)*19,380-(20-Self.fadecount)*19,190-(20-Self.fadecount)*19)
-			SetColor 255,255,255;SetAlpha 1
+			SetColor 255,255,255;SetAlpha 1.0
 		EndIf
 	End Method
 End Type

@@ -346,7 +346,7 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 	Method getPlayerTargetRoom:Int()
-		Local room:TRooms = Game.Players[ Self.ME ].figure.toRoom
+		Local room:TRooms = Game.Players[ Self.ME ].figure.targetRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -373,15 +373,12 @@ Type TLuaFunctions {_exposeToLua}
 
 	Method isRoomUnused:Int(roomId:Int = 0)
 		Local Room:TRooms = TRooms.GetRoom(roomId)
-		If Room <> Null
-			If Room.used >= 0 And Room.used <> Self.ME
-				Return -1
-			Else
-				Return self.RESULT_OK
-			Endif
-		Else
-			Return self.RESULT_NOTFOUND
-		Endif
+		If not Room then return self.RESULT_NOTFOUND
+		if not Room.occupant then return self.RESULT_OK
+
+		If Room.occupant.parentPlayer and Room.occupant.parentPlayer.playerID <> Self.ME
+			Return -1
+		endif
 	End Method
 
 	Method getMillisecs:Int()

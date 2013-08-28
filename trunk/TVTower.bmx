@@ -20,9 +20,6 @@ Todo
 ----
 - Einzelspielerchat
 - Abnutzung anhand der erreichten Zuschauer-Prozente berechnen "potenzial"
-- neues TProgramme-Feld:
-  targetGroup - fuer Auf- und Abwertungen
-  timesAired
 - Werbehaendler: 2 "Billigwerbungen" die nur ab und an "erneuert" werden,
   wenn leer, dann leer
 - Werbung:

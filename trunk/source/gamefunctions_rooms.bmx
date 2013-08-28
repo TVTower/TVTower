@@ -1,35 +1,26 @@
 ﻿'Basictype of all rooms
-Type TRooms  {_exposeToLua="selected"}
-	Field screenManager:TScreenManager		= null					'screenmanager - controls what scene to show
+Type TRooms extends TGameObject  {_exposeToLua="selected"}
+	Field screenManager:TScreenManager		= null		'screenmanager - controls what scene to show
 	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
     Field desc:String			= ""					'description, eg. "Bettys bureau" (used for tooltip)
     Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
     Field tooltip:TTooltip		= null					'uses description
 
-	Field DoorTimer:TIntervalTimer		= TIntervalTimer.Create(500)'500
+	Field DoorTimer:TIntervalTimer	= TIntervalTimer.Create(500)
 	Field Pos:TPoint									'x of the rooms door in the building, y as floornumber
     Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
-    Field doorwidth:Int			= 38
-    Field doorHeight:Int		= 52
+    Field doorDimension:TPoint	= TPoint.Create(38,52)
     Field RoomSign:TRoomSigns
     Field owner:Int				=-1						'to draw the logo/symbol of the owner
-    Field used:int				=-1						'>0 is user id
-    Field id:Int				= 1		 {_exposeToLua}
-	Field FadeAnimationActive:Int = 0
-	Field RoomBoardX:Int		= 0
-	Field Dialogues:TList		= CreateList()
+    Field occupant:TFigures		= null					'figure currently in this room
 	Field SoundSource:TDoorSoundSource = TDoorSoundSource.Create(self)
 
     Global RoomList:TList		= CreateList()			'global list of rooms
-    Global LastID:Int			= 1
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
 
 	Method getDoorType:int()
-		If name = "supermarket"
-			'if self.DoorTimer.isExpired() then print "getDoorType: " + self.doortype else print "getDoorType: " + 5
-		endif
 		if self.DoorTimer.isExpired() then return self.doortype else return 5
 	End Method
 
@@ -79,14 +70,14 @@ Type TRooms  {_exposeToLua="selected"}
 			EndIf
 
 			'only show tooltip if not "empty" and mouse in door-rect
-			If obj.desc <> "" and Game.Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseManager.x, MouseManager.y, obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
+			If obj.desc <> "" and Game.Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseManager.x, MouseManager.y, obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - obj.doorDimension.y, obj.doorDimension.x, obj.doorDimension.y)
 				If obj.tooltip <> null
 					obj.tooltip.Hover()
 				else
 					obj.tooltip = TTooltip.Create(obj.desc, obj.descTwo, 100, 140, 0, 0)
 				endif
 				obj.tooltip.pos.y	= Building.pos.y + Building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
-				obj.tooltip.pos.x	= obj.Pos.x + obj.doorwidth/2 - obj.tooltip.GetWidth()/2
+				obj.tooltip.pos.x	= obj.Pos.x + obj.doorDimension.x/2 - obj.tooltip.GetWidth()/2
 				obj.tooltip.enabled	= 1
 				If obj.name = "chief"					Then obj.tooltip.tooltipimage = 2
 				If obj.name = "news"					Then obj.tooltip.tooltipimage = 4
@@ -101,6 +92,53 @@ Type TRooms  {_exposeToLua="selected"}
 		Next
     End Function
 
+
+	'a figure wants to leave that room
+    Method Leave:int( figure:TFigures=null )
+		if not figure then figure = Game.getPlayer().figure
+
+		'figure isn't in that room - so just leave
+		if not self.occupant then return TRUE
+		if self.occupant <> figure then return TRUE
+
+		'ask if leave possible
+		'=====================
+		'emit event that someone wants to leave a room
+		local event:TEventSimple = TEventSimple.Create("room.onTryLeave", TData.Create().Add("figure", figure) , self )
+		EventManager.triggerEvent( Event )
+		if event.isVeto() then return FALSE
+
+
+		'leave is allowed
+		'================
+		'finally inform that the figure leaves the room - eg for AI-scripts
+		EventManager.triggerEvent( TEventSimple.Create("room.onLeave", TData.Create().Add("figure", figure) , self ) )
+
+		'open the door
+		If GetDoorType() >= 0 then OpenDoor(self.occupant)
+
+		'set the room unused
+		self.occupant = null
+
+		return TRUE
+	End Method
+
+
+	'gets called if somebody tries to leave that room
+	'generic handler - could be done individual (in room handlers...)
+	Method onTryLeave:int( triggerEvent:TEventBase )
+
+		'only pay attention to players
+		if self.occupant.ParentPlayer
+			'roomboard left without animation as soon as something dragged but leave forced
+			If Self.name = "roomboard" 	AND TRoomSigns.AdditionallyDragged > 0
+				triggerEvent.setVeto()
+				return FALSE
+			endif
+		endif
+
+		return TRUE
+	End Method
 
 	Function DrawDoorsOnBackground:Int()
 		'do nothing if already done
@@ -148,39 +186,6 @@ Type TRooms  {_exposeToLua="selected"}
     End Function
 
 
-	'leave with Open/close-animation (black)
-	Method LeaveAnimated:Int()
-		'roomboard left without animation as soon as something dragged but leave forced
-        If Self.name = "roomboard" 	AND TRoomSigns.AdditionallyDragged > 0 Then return TRUE
-        If Self.name = "adagency"		Then TContractBlock.ContractsToPlayer(Game.playerID)
-        If Self.name = "movieagency"
-			'do not allow leaving as long as we have a dragged block
-			if RoomHandler_MovieAgency.draggedGuiProgrammeCoverBlock
-				return FALSE
-			else
-				RoomHandler_MovieAgency.ProgrammeToPlayer(Game.playerID)
-			endif
-		endif
-        If Self.name = "archive"
-			'do not allow leaving as long as we have a dragged block
-			if RoomHandler_Archive.draggedGuiProgrammeCoverBlock
-				return FALSE
-			endif
-		endif
-
-		If GetDoorType() >= 0
-			Fader.Enable() 'room fading
-			OpenDoor(Game.Players[Game.playerID].Figure)
-			FadeAnimationActive = True
-		Else
-			print "LeaveAnimated - CloseDoor"
-			CloseDoor(Game.Players[Game.playerID].Figure)
-			Game.Players[Game.playerID].Figure.LeaveRoom()
-		EndIf
-		Return false
-	End Method
-
-
     'draw Room
 	Method Draw:int()
 		if not self.screenManager then Throw "ERROR: room.draw() - screenManager missing";return 0
@@ -188,10 +193,10 @@ Type TRooms  {_exposeToLua="selected"}
 		'draw rooms current screen
 		self.screenManager.Draw()
 		'emit event so custom functions can run after screen draw, sender = screen
-		EventManager.triggerEvent( TEventSimple.Create("rooms.onScreenDraw", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onScreenDraw", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
 
 		'emit event so custom draw functions can run
-		EventManager.triggerEvent( TEventSimple.Create("rooms.onDraw", TData.Create().AddNumber("type", 1), self) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", TData.Create().AddNumber("type", 1), self) )
 
 		return 0
 	End Method
@@ -200,25 +205,15 @@ Type TRooms  {_exposeToLua="selected"}
     'process special functions of this room. Is there something to click on?
     'animated gimmicks? draw within this function.
 	Method Update:Int()
-		If Fader.fadeenabled And FadeAnimationActive
-			If Fader.fadecount >= 20 And not Fader.fadeout
-				Fader.EnableFadeout()
-				CloseDoor(Game.Players[Game.playerID].Figure)
-				FadeAnimationActive = False
- 			    Game.Players[Game.playerID].Figure.LeaveRoom()
-				Return 0
-			EndIf
-		End If
-
-
 		'update rooms current screen
 		self.screenManager.Update(App.timer.getDeltaTime())
 		'emit event so custom functions can run after screen update, sender = screen
-		EventManager.triggerEvent( TEventSimple.Create("rooms.onScreenUpdate", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
+		'also this event has "room" as payload
+		EventManager.triggerEvent( TEventSimple.Create("room.onScreenUpdate", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
 
 		'emit event so custom updaters can handle
-		'store amount of listeners
-		local listeners:int = EventManager.triggerEvent( TEventSimple.Create("rooms.onUpdate", TData.Create().AddNumber("type", 0), self) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", TData.Create().AddNumber("type", 0), self) )
+
 
 		'handle normal right click - check subrooms
 		'only leave a room if not in a subscreen
@@ -233,16 +228,10 @@ Type TRooms  {_exposeToLua="selected"}
 				endif
 			endif
 		else
-			'TODO: [RON] change this to OnLeave event too
-			'something blocks leaving? - check it
-			If MOUSEMANAGER.IsHit(2) AND not Self.LeaveAnimated() then MOUSEMANAGER.resetKey(2)
+			If MOUSEMANAGER.IsHit(2) AND not Game.Players[game.playerID].figure.LeaveRoom() then MOUSEMANAGER.resetKey(2)
 		endif
 
-
-		'room got no special handling ...
-		if listeners = 0 then Game.Players[game.playerID].figure.fromroom = Null
 		return 0
-
 	End Method
 
 
@@ -256,6 +245,9 @@ Type TRooms  {_exposeToLua="selected"}
 
 		self.RoomList.AddLast(self)
 
+		EventManager.registerListenerMethod( "room.onTryLeave", self, "onTryLeave", self )
+
+
 		return self
 	End Method
 
@@ -268,7 +260,7 @@ Type TRooms  {_exposeToLua="selected"}
 		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
 
 		obj.descTwo		= descTwo
-		obj.doorwidth	= Assets.GetSprite("gfx_building_Tueren").framew
+		obj.doorDimension.SetX( Assets.GetSprite("gfx_building_Tueren").framew )
 		obj.xpos		= x
 		obj.Pos			= TPoint.Create(0,y)
 		If x <=4
@@ -278,7 +270,6 @@ Type TRooms  {_exposeToLua="selected"}
 			If x = 3 Then obj.Pos.x = 469
 			If x = 4 Then obj.Pos.x = 557
 		EndIf
-		obj.RoomBoardX	= x
 		obj.doortype	= doortype
 		If createATooltip then obj.CreateRoomsign(x)
 
@@ -290,11 +281,10 @@ Type TRooms  {_exposeToLua="selected"}
     'Raum erstellen und bereits geladenes Bild nutzen
 	Function CreateWithPos:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", x:Int = 0, xpos:Int = 0, width:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
 		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
-		obj.doorwidth	= width
+		obj.doorDimension.SetX( width )
 		obj.xpos		= xpos
 		obj.Pos			= TPoint.Create(x,y)
 		obj.doortype	= doortype
-		obj.RoomBoardX	= obj.xpos
 
 		If CreateAToolTip then obj.CreateRoomsign(xpos)
 
@@ -305,7 +295,7 @@ Type TRooms  {_exposeToLua="selected"}
 	Method CreateRoomsign:int(myx:Int = 0)
 		If doortype < 0 then return 0
 
-		Local signx:Int = Self.RoomBoardX
+		local signx:int = self.xpos
 		Local signy:Int = 41 + (13 - Pos.y) * 23
 		select signx
 			case 1	signx = 26
@@ -321,8 +311,8 @@ Type TRooms  {_exposeToLua="selected"}
     Function GetTargetRoom:TRooms(x:int, y:int)
 		For Local room:TRooms = EachIn TRooms.RoomList
 			If room.doortype >= 0
-				If room.name = "roomboard" Then room.doorwidth = 59
-				If functions.IsIn(x, y, room.Pos.x, Building.pos.y + Building.GetFloorY(room.pos.y) - Assets.GetSprite("gfx_building_Tueren").h, room.doorwidth, 54)
+				If room.name = "roomboard" Then room.doorDimension.SetX(59)
+				If functions.IsIn(x, y, room.Pos.x, Building.pos.y + Building.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
 					Return room
 				EndIf
 			EndIf
@@ -368,12 +358,11 @@ Type TRooms  {_exposeToLua="selected"}
 End Type
 
 Type TRoomHandler
-	'unused atm global playerID:int
 
 	Function _RegisterHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), room:TRooms = null)
 		if room
-			EventManager.registerListenerFunction( "rooms.onUpdate", updateFunc, room )
-			EventManager.registerListenerFunction( "rooms.onDraw", drawFunc, room )
+			EventManager.registerListenerFunction( "room.onUpdate", updateFunc, room )
+			EventManager.registerListenerFunction( "room.onDraw", drawFunc, room )
 		endif
 	End Function
 
@@ -381,8 +370,8 @@ Type TRoomHandler
 	'screens.onScreenUpdate/Draw is more general purpose
 	Function _RegisterScreenHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), screen:TScreen)
 		if screen
-			EventManager.registerListenerFunction( "rooms.onScreenUpdate", updateFunc, screen )
-			EventManager.registerListenerFunction( "rooms.onScreenDraw", drawFunc, screen )
+			EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen )
+			EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen )
 		endif
 	End Function
 
@@ -1274,9 +1263,23 @@ Type RoomHandler_Archive extends TRoomHandler
 			if room then super._RegisterHandler(onUpdate, onDraw, room)
 
 			'figure enters room - reset the suitcase's guilist, limit listening to the 4 rooms
-			EventManager.registerListenerFunction( "rooms.onEnter", onRoomEnter, TRooms.GetRoomByDetails("archive",i) )
+			EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, TRooms.GetRoomByDetails("archive",i) )
+			EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRooms.GetRoomByDetails("archive",i) )
 		Next
 
+	End Function
+
+	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
+		'non players can always leave
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure or not figure.parentPlayer then return FALSE
+
+		'do not allow leaving as long as we have a dragged block
+		if draggedGuiProgrammeCoverBlock
+			triggerEvent.setVeto()
+			return FALSE
+		endif
+		return TRUE
 	End Function
 
 
@@ -1379,18 +1382,14 @@ Type RoomHandler_Archive extends TRoomHandler
 	End Function
 
 	'clear the guilist for the suitcase if a player enters
-	Function onRoomEnter:int( triggerEvent:TEventBase )
-		local room:TRooms = TRooms(triggerEvent.GetSender())
-		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
-		if not room or not figure then return FALSE
-
+	Function onEnterRoom:int( triggerEvent:TEventBase )
 		'we are not interested in other figures than our player's
-		if not figure.IsActivePlayer() then return FALSE
+		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
+		if not figure or not figure.IsActivePlayer() then return FALSE
 
 		'empty the guilist / delete gui elements
 		'- the real list still may contain elements with gui-references
 		self.guiListSuitcase.EmptyList()
-
 	End Function
 
 
@@ -1541,13 +1540,68 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlockOnVendor, "TGUIProgrammeCoverBlock" )
 		'figure enters room - reset the suitcase's guilist, limit listening to this room
-		EventManager.registerListenerFunction( "rooms.onEnter", onRoomEnter, TRooms.GetRoomByDetails("movieagency",0) )
-
+		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, TRooms.GetRoomByDetails("movieagency",0) )
+		'figure leaves room - only without dragged blocks
+		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRooms.GetRoomByDetails("movieagency",0) )
+		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, TRooms.GetRoomByDetails("movieagency",0) )
 
 		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, TScreen.GetScreen("screen_movieagency") )
 		super._RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, TScreen.GetScreen("screen_movieauction") )
 	End Function
 
+	'clear the guilist for the suitcase if a player enters
+	Function onEnterRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent.GetSender())
+		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
+		if not room or not figure then return FALSE
+
+		'we are not interested in other figures than our player's
+		if not figure.IsActivePlayer() then return FALSE
+
+		'empty guilists / delete gui elements
+		'- the real list still may contain elements with gui-references
+		'- this avoids zombies when watching players..
+		GuiListMoviesGood.EmptyList()
+		GuiListMoviesCheap.EmptyList()
+		GuiListSeries.EmptyList()
+		GuiListSuitcase.EmptyList()
+	End Function
+
+
+	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		'non players can always leave
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure or not figure.parentPlayer then return FALSE
+
+		'do not allow leaving as long as we have a dragged block
+		if draggedGuiProgrammeCoverBlock
+			triggerEvent.setVeto()
+			return FALSE
+		endif
+		return TRUE
+	End Function
+
+
+	'add back the programmes from the suitcase
+	'also fill empty blocks, remove gui elements
+	Function onLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		'non players can always leave
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure or not figure.parentPlayer then return FALSE
+
+		figure.parentPlayer.ProgrammeCollection.ReaddProgrammesFromSuitcase()
+
+		'fill all open slots in the agency
+		ReFillBlocks()
+
+		return TRUE
+	End Function
 
 
 	'===================================
@@ -1702,13 +1756,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Function
 
 
-	Function ProgrammeToPlayer:Int(playerID:Int)
-		Game.Players[playerID].ProgrammeCollection.ReaddProgrammesFromSuitcase()
-
-		'fill all open slots in the agency
-		ReFillBlocks()
-	End Function
-
 	Function CheckPlayerInRoom:int()
 		'check if we are in the correct room
 		if not Game.getPlayer().figure.inRoom then return FALSE
@@ -1722,20 +1769,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'===================================
 	'Movie Agency: Room screen
 	'===================================
-
-	'clear the guilist for the suitcase if a player enters
-	Function onRoomEnter:int( triggerEvent:TEventBase )
-		local room:TRooms = TRooms(triggerEvent.GetSender())
-		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
-		if not room or not figure then return FALSE
-
-		'we are not interested in other figures than our player's
-		if not figure.IsActivePlayer() then return FALSE
-
-		'empty the guilist / delete gui elements
-		'- the real list still may contain elements with gui-references
-		self.guiListSuitcase.EmptyList()
-	End Function
 
 
 	Function onMouseOverProgrammeCoverBlock:int( triggerEvent:TEventBase )
@@ -1926,7 +1959,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			Next
 		Next
 		'create missing gui elements for the current suitcase
-
 		For local programme:TProgramme = eachin Game.getPlayer().ProgrammeCollection.SuitcaseProgrammeList
 			if guiListSuitcase.ContainsProgramme(programme) then continue
 			guiListSuitcase.addItem( new TGuiProgrammeCoverBlock.CreateWithProgramme(programme),"-1" )
@@ -2265,6 +2297,7 @@ Type RoomHandler_Chief extends TRoomHandler
 	'smoke effect
 	Global part_array:TGW_SpritesParticle[100]
 	Global spawn_delay:Int = 15
+	Global Dialogues:TList
 
 	Function Init()
 		'create smoke effect particles
@@ -2291,7 +2324,7 @@ Type RoomHandler_Chief extends TRoomHandler
 		For Local i:Int = 1 To Len(part_array)-1
 			part_array[i].Draw()
 		Next
-		For Local dialog:TDialogue = EachIn room.Dialogues
+		For Local dialog:TDialogue = EachIn Dialogues
 			dialog.Draw()
 		Next
 	End Function
@@ -2302,7 +2335,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		Game.Players[game.playerID].figure.fromroom = Null
 
-		If room.Dialogues.Count() <= 0
+		If Dialogues.Count() <= 0
 			Local ChefDialoge:TDialogueTexts[5]
 			ChefDialoge[0] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_WELCOME").replace("%1", Game.Players[Game.playerID].name) )
 			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
@@ -2339,7 +2372,7 @@ Type RoomHandler_Chief extends TRoomHandler
 			ChefDialog.AddText(Chefdialoge[1])
 			ChefDialog.AddText(Chefdialoge[2])
 			ChefDialog.AddText(Chefdialoge[3])
-			room.Dialogues.AddLast(ChefDialog)
+			Dialogues.AddLast(ChefDialog)
 		EndIf
 
 		spawn_delay:-1
@@ -2358,10 +2391,10 @@ Type RoomHandler_Chief extends TRoomHandler
 			part_array[i].Update(App.timer.getDeltaTime())
 		Next
 
-		For Local dialog:TDialogue = EachIn room.Dialogues
+		For Local dialog:TDialogue = EachIn Dialogues
 			If dialog.Update(MOUSEMANAGER.IsHit(1)) = 0
-				room.LeaveAnimated()
-				room.Dialogues.Remove(dialog)
+				room.Leave()
+				Dialogues.Remove(dialog)
 			endif
 		Next
 	End Function
@@ -2384,7 +2417,32 @@ End Type
 Type RoomHandler_AdAgency extends TRoomHandler
 	Function Init()
 		super._RegisterHandler(onUpdate, onDraw, TRooms.GetRoomByDetails("adagency",0))
+
+		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRooms.GetRoomByDetails("adagency",0) )
+		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, TRooms.GetRoomByDetails("adagency",0) )
 	End Function
+
+	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure then return FALSE
+
+print "TODO: TryLeaveRoom: include dragged contractblocks check"
+	End Function
+
+	'set contracts to player
+	Function onLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure then return FALSE
+
+		if figure.parentPlayer then TContractBlock.ContractsToPlayer(figure.parentPlayer.playerID)
+	End Function
+
 
 	Function onDraw:int( triggerEvent:TEventBase )
 		local room:TRooms = TRooms(triggerEvent._sender)
@@ -2453,8 +2511,8 @@ Type RoomHandler_Elevator extends TRoomHandler
 			if Building.Elevator.waitAtFloorTimer.IsExpired()
 				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl"
 				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritts
-				playerFigure.inRoom			= Null
-				playerFigure.clickedToRoom	= Null
+				playerFigure.inRoom		= Null
+				playerFigure.targetRoom	= Null
 				building.elevator.UsePlan(playerFigure)
 			else if mouseHit
 				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseManager.x,MouseManager.y)

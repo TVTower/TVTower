@@ -1150,11 +1150,21 @@ endrem
 				EndIf
 				If block.sendHour - (Game.GetDay()*24) + block.Programme.blocks <= Game.getNextHour()
 					If Not recompute
-						block.Programme.CutTopicality()
-						block.Programme.getPrice()
+						'during nighttimes 0-5, the cut should be lower
+						'so we increase the cutFactor to 1.5
+						if Game.getNextHour()-1 <= 5
+							block.Programme.CutTopicality(1.5)
+						elseif Game.getNextHour()-1 <= 12
+							block.Programme.CutTopicality(1.25)
+						else
+							block.Programme.CutTopicality(1.0)
+						endif
 					EndIf
 				EndIf
-			EndIf
+
+				'if someone can watch that movie, increase the aired amount
+				If Game.GetHour(60*block.sendHour) = Game.getHour() and Not recompute then block.Programme.timesAired:+1
+			endif
 		Next
 	End Function
 
@@ -1956,7 +1966,7 @@ endrem
 	Method CreateRoomUsedTooltip:Int(room:TRooms)
 		roomUsedTooltip			= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
 		roomUsedTooltip.pos.y	= pos.y + GetFloorY(room.Pos.y)
-		roomUsedTooltip.pos.x	= room.Pos.x + room.doorwidth/2 - roomUsedTooltip.GetWidth()/2
+		roomUsedTooltip.pos.x	= room.Pos.x + room.doorDimension.x/2 - roomUsedTooltip.GetWidth()/2
 		roomUsedTooltip.enabled = 1
 	End Method
 
@@ -2163,7 +2173,7 @@ Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if
 			EndIf
 		EndIf
 	EndIf
-	If figure.inRoom = Null And figure.clickedToRoom = Null And figure.vel.GetX() = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
+	If not figure.inRoom And not figure.targetRoom And figure.vel.GetX() = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
 		Local room:TRooms
 		Repeat
 			room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
@@ -2280,7 +2290,7 @@ tempfigur.updatefunc_	= UpdateHausmeister
 Global figure_HausmeisterID:Int = tempfigur.id
 
 'RON
-local haveNPCs:int = FALSE
+local haveNPCs:int = TRUE
 if haveNPCs
 	tempfigur				= New TFigures.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
 	tempfigur.rect.dimension.SetX(12)
@@ -3228,7 +3238,36 @@ End Function
 
 'inGame
 Function DrawMain(tweenValue:Float=1.0)
-	If Game.Players[Game.playerID].Figure.inRoom = Null
+	local drawRoom:TRooms = Game.Players[Game.playerID].Figure.inRoom
+
+	'if we have to draw a fading animation, just draw the "old"
+	'one until halftime
+	if Game.Players[Game.playerID].Figure.changingRoom
+		'if timer is still running
+		if Game.Players[Game.playerID].Figure.changingRoomTimer + Game.Players[Game.playerID].Figure.changingRoomTime > Millisecs()
+
+			'if timer did not reach halftime yet
+			if Game.Players[Game.playerID].Figure.changingRoomTimer + ceil(Game.Players[Game.playerID].Figure.changingRoomTime/2) > Millisecs()
+				drawRoom = Game.Players[Game.playerID].Figure.fromRoom
+				if not Fader.fadeStarted
+					Fader.Start()
+					Fader.Enable()
+				endif
+			'if timer did reach halftime
+			else
+				drawRoom = Game.Players[Game.playerID].Figure.inRoom
+				if not Fader.fadeout
+					Fader.StartFadeout()
+					Fader.Enable()
+				endif
+			endif
+		endif
+	else
+		Fader.Disable()
+		Fader.Stop()
+	endif
+
+	If not drawRoom
 		TProfiler.Enter("Draw-Building")
 		SetColor Int(190 * Building.timecolor), Int(215 * Building.timecolor), Int(230 * Building.timecolor)
 		DrawRect(20, 10, 140, 373)
@@ -3239,7 +3278,7 @@ Function DrawMain(tweenValue:Float=1.0)
 		TProfiler.Leave("Draw-Building")
 	Else
 		TProfiler.Enter("Draw-Room")
-		Game.Players[Game.playerID].Figure.inRoom.Draw()		'draw the room
+		drawRoom.Draw()
 		TProfiler.Leave("Draw-Room")
 	EndIf
 
@@ -3480,14 +3519,14 @@ rem
 				endif
 endrem
 				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
-				If KEYMANAGER.IsHit(KEY_W) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("adagency", 0) )
-				If KEYMANAGER.IsHit(KEY_A) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("archive", Game.playerID) )
-				If KEYMANAGER.IsHit(KEY_B) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("betty", 0) )
-				If KEYMANAGER.IsHit(KEY_F) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("movieagency", 0) )
-				If KEYMANAGER.IsHit(KEY_O) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("office", Game.playerID) )
-				If KEYMANAGER.IsHit(KEY_C) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("chief", Game.playerID) )
-				If KEYMANAGER.IsHit(KEY_N) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("news", Game.playerID) )
-				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure._setInRoom( TRooms.GetRoomByDetails("roomboard", -1) )
+				If KEYMANAGER.IsHit(KEY_W) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("adagency", 0), TRUE )
+				If KEYMANAGER.IsHit(KEY_A) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("archive", Game.playerID), TRUE )
+				If KEYMANAGER.IsHit(KEY_B) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("betty", 0), TRUE )
+				If KEYMANAGER.IsHit(KEY_F) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("movieagency", 0), TRUE )
+				If KEYMANAGER.IsHit(KEY_O) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("office", Game.playerID), TRUE )
+				If KEYMANAGER.IsHit(KEY_C) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("chief", Game.playerID), TRUE )
+				If KEYMANAGER.IsHit(KEY_N) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("news", Game.playerID), TRUE )
+				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("roomboard", -1), TRUE )
 				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].Stationmap.reach = Game.Players[Game.playerID].Stationmap.population
 
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
