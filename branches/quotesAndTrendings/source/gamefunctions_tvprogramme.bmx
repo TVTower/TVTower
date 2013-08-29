@@ -1631,7 +1631,12 @@ endrem
 		EndIf
 		Return topicality
 	End Method
-
+rem
+	Method GetBaseAudienceAttraction:TAudienceAttraction()
+		local definition:TGenreDefinition = Game.Quotes.GetGenreDefinition(Genre)		
+		Return definition.GetAudienceAttractionForProgramme(self)
+	End Method	
+endrem
 	'base quote of a programme
 	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
 		Local quality:Float		= 0.0

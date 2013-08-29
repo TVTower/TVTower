@@ -1730,7 +1730,7 @@ Type TInterface
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
-				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience / Float(Game.Quotes.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience))
+				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience2.GetSum() / Float(Game.Quotes.maxAudiencePercentage * Game.Players[Game.playerID].maxaudience))
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0

@@ -756,7 +756,8 @@ Type TPlayer {_exposeToLua="selected"}
 	Field Name:String 										{saveload = "normal"}		'playername
 	Field channelname:String 								{saveload = "normal"} 		'name of the channel
 	Field finances:TFinancials[7]														'One week of financial stats about credit, money, payments ...
-	Field audience:Int 			= 0 						{saveload = "normal"}		'general audience
+	'Field audience:Int 			= 0 						{saveload = "normal"}		'general audience
+	Field audience2:TAudience	= new TAudience
 	Field maxaudience:Int 		= 0 						{saveload = "normal"}		'maximum possible audience
 	Field maxAudience2:TAudience
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
@@ -971,8 +972,8 @@ endrem
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetAudiencePercentage:Float() {_exposeToLua}
-		If maxaudience > 0 And audience > 0
-			Return Float(audience * 100) / Float(maxaudience)
+		If maxaudience > 0 And audience2.GetSum() > 0
+			Return Float(audience2.GetSum() * 100) / Float(maxaudience)
 		EndIf
 		Return 0.0
 	End Method
@@ -1034,7 +1035,7 @@ endrem
 			If Not Adblock Then Continue
 
 			'ad failed (audience lower than needed)
-			If Player.audience < Adblock.contract.GetMinAudience()
+			If Player.audience2.GetSum() < Adblock.contract.GetMinAudience()
 				Adblock.SetBotched(1)
 			'ad is ok
 			Else
@@ -1089,8 +1090,9 @@ endrem
 	'computes audience depending on ComputeAudienceQuote and if the time is the same
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = 0)
-		Local audience:TAudience = Game.Quotes.ComputeAudiencePlayerOne(recompute)
-		
+		Game.Quotes.ComputeAudienceForAllPlayers(recompute)
+	
+
 	rem
 		Local block:TProgrammeBlock
 
@@ -1099,6 +1101,7 @@ endrem
 			Player.audience = 0
 
 			If block And block.programme And Player.maxaudience <> 0
+				debugstop
 				Player.audience = Floor(Player.maxaudience * block.Programme.getAudienceQuote(Player.audience/Player.maxaudience) / 1000)*1000
 				AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience)) + ") * 1000"
 				'maybe someone sold a station
@@ -1132,14 +1135,14 @@ endrem
 
 			if Player.maxaudience > 0
 				local leadinAudience:int = 0
-				local slotaudience:int[] = [Player.audience,0,0,0]
+				local slotaudience:int[] = [Player.audience2.GetSum(),0,0,0]
 				'in the "0"-position of the index, we store the previous audience
 				'so that the result of each news is based on a leadin of the previous
 				'so "holes" cut the news reach :D
 				for local i:int = 1 to 3
 					newsBlock = Player.ProgrammePlan.GetNewsBlockFromSlot(i-1)
 					If newsBlock <> Null
-						leadinAudience = 0.5 * Player.audience + 0.5 * slotaudience[i-1]
+						leadinAudience = 0.5 * Player.audience2.GetSum() + 0.5 * slotaudience[i-1]
 						slotaudience[i] = Floor(Player.maxaudience * NewsBlock.news.getAudienceQuote(leadinAudience/Player.maxaudience)  / 1000)*1000
 						'print "leadinAudience "+i+": "+leadinAudience + " slotaudience:"+slotaudience[i]
 					endif
@@ -1151,8 +1154,8 @@ endrem
 					'If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
 				Next
 			Endif
-			Player.audience= Ceil(audience)
-			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Int(Floor(Player.audience*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
+			Player.audience2 = TAudience.CreateWithBreakdown(Ceil(audience))
+			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience2.GetSum()), Int(Floor(Player.audience2.GetSum()*1000/Player.maxaudience)),Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
 		Next
 	End Function
 
@@ -1181,7 +1184,7 @@ endrem
 	End Method
 
 	Method GetAudience:Int() {_exposeToLua}
-		Return Self.audience
+		Return Self.audience2.GetSum()
 	End Method
 
 	Method GetMaxAudience:Int() {_exposeToLua}
@@ -1192,7 +1195,7 @@ endrem
 	'returns formatted value of actual audience
 	'gibt einen formatierten Wert der aktuellen Zuschauer zurueck
 	Method GetFormattedAudience:String() {_exposeToLua}
-		Return functions.convertValue(String(Self.audience), 2, 0)
+		Return functions.convertValue(String(Self.audience2.GetSum()), 2, 0)
 	End Method
 
 	Method Compare:Int(otherObject:Object)
@@ -3335,7 +3338,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 				For Local player:TPlayer = EachIn TPlayer.list
 					Local block:TProgrammeBlock = player.ProgrammePlan.GetCurrentProgrammeBlock()
 					If block<>Null And block.programme.genre = GENRE_CALLINSHOW
-						Local revenue:Int = player.audience * float(RandRange(2, 5))/100.0
+						Local revenue:Int = player.audience2.GetSum() * float(RandRange(2, 5))/100.0
 						'print "audience: "+player.audience + " revenue:"+revenue + " rand:"+RandRange(2,5)
 						player.finances[Game.getWeekday()].earnCallerRevenue(revenue)
 					EndIf

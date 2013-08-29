@@ -5,6 +5,12 @@ Type TQuotes
 	
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
 
+	Const FEATURE_AUDIENCE_FLOW:int = 1
+	Const FEATURE_GENRE_ATTRIB_CALC:int = 1
+	Const FEATURE_GENRE_TIME_MOD:int = 1	
+	Const FEATURE_GENRE_TARGETGROUP_MOD:int = 1
+	Const FEATURE_TARGETGROUP_TIME_MOD:int = 1
+
 	'Konstanten	
 	
 	Const MOVIE_GENRE_ACTION:Int = 0
@@ -143,12 +149,51 @@ endrem
 		Return audience
 	End Method
 	
+	Method GetPotentialAudienceThisHourFallback:TAudience(maxAudience:TAudience, forHour:Int= -1)
+		If forHour <= 0 Then forHour = Game.GetHour()
+
+		Local maxAudienceReturn:TAudience = maxAudience.GetNewInstance()
+		Local modi:float
+
+		'based on weekday (thursday) in march 2011 - maybe add weekend
+		Select forHour
+			Case 0	modi = 11.40
+			Case 1	modi =  6.50
+			Case 2	modi =  3.80
+			Case 3	modi =  3.60
+			Case 4	modi =  2.25
+			Case 5	modi =  3.45
+			Case 6	modi =  3.25
+			Case 7	modi =  4.45
+			Case 8	modi =  5.05
+			Case 9	modi =  5.60
+			Case 10	modi =  5.85
+			Case 11	modi =  6.70
+			Case 12	modi =  7.85
+			Case 13	modi =  9.10
+			Case 14	modi = 10.20
+			Case 15	modi = 10.90
+			Case 16	modi = 11.45
+			Case 17	modi = 14.10
+			Case 18	modi = 22.95
+			Case 19	modi = 33.45
+			Case 20	modi = 38.70
+			Case 21	modi = 37.60
+			Case 22	modi = 28.60
+			Case 23	modi = 18.80
+		EndSelect
+		modi :/ 100.0
+		
+		maxAudienceReturn.MultiplyFactor(modi)
+		Return maxAudienceReturn
+	End Method	
+	
 	Method GetPotentialAudienceThisHour:TAudience(maxAudience:TAudience, forHour:Int= -1)
 		If forHour <= 0 Then forHour = Game.GetHour()
 	
 		local maxAudienceReturn:TAudience = maxAudience.GetNewInstance()
 		local modi:TAudience = null
-	
+			
 		Select forHour
 			Case 0 modi = TAudience.CreateAndInit(2, 6, 16, 11, 21, 19, 23, 100, 100)
 			Case 1 modi = TAudience.CreateAndInit(0.5, 4, 7, 7, 15, 9, 13, 100, 100)
@@ -180,6 +225,90 @@ endrem
 		Return maxAudienceReturn
 	End Method
 
+	Method ComputeAudienceForAllPlayers(recompute:Int = 0)
+		Local block:TProgrammeBlock
+
+		For Local player:TPlayer = EachIn TPlayer.List
+			block = player.ProgrammePlan.GetCurrentProgrammeBlock()
+			
+			'Hier AudienceFlow-Zeug
+				'Local audienceFlow:TAudience = GetAudienceFlowQuote()			
+				'Local lastQuoteForAudienceFlow:float = Player.audience/Player.maxaudience			
+			
+			'player.audience = 0
+			player.audience2 = new TAudience
+			
+			'1. Alle erreichbaren Zuschauer, wenn alle ihren TV anschalten			
+			Local maxAudience:TAudience = TAudience.CreateWithBreakdown(Player.maxaudience)  ''Local maxAudience:TAudience = GetMaxAudience()
+
+			If block And block.programme And maxAudience.GetSum() > 0				
+				Local playerAudience:TAudience = ComputeAudienceForPlayer(player, block, maxAudience)
+				'player.audience = Floor(playerAudience.GetSum())
+				player.audience2 = playerAudience
+
+				'AiLog[1].AddLog("BM-Audience : " + player.audience + " = maxaudience (" + player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(player.audience/player.maxaudience)) + ") * 1000"
+				'maybe someone sold a station
+				If recompute
+					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())
+					If quote <> Null
+						quote.audience = player.audience2.GetSum()
+						quote.audiencepercentage = Int(Floor(player.audience2.GetSum() * 1000 / player.maxaudience))
+					EndIf
+				Else
+					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(player.audience2.GetSum()), Int(Floor(player.audience2.GetSum() * 1000 / player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
+				EndIf
+				If block.sendHour - (Game.GetDay()*24) + block.Programme.blocks <= Game.getNextHour()
+					If Not recompute
+						block.Programme.CutTopicality()
+						block.Programme.getPrice()
+					EndIf
+				EndIf
+			EndIf
+		Next	
+	End Method
+	
+	'Alle Daten müssen vom vorherigen Film stammen
+	Method GetAudienceFlowQuote:TAudience(audienceQuote:TAudience, genreId:int)
+		Local audienceFlow:TAudience = audienceQuote.GetNewInstance()
+		audienceFlow.MultiplyFactor(0.4) 'Faktor hängt davon ab wie gut die Genre zusammen passen
+		Return audienceFlow
+	End Method
+	
+	Method ComputeAudienceForPlayer:TAudience(player:TPlayer, block:TProgrammeBlock, maxAudience:TAudience )
+		Local potentialAudienceThisHour:TAudience
+		
+		print "1: " + maxAudience.ToString()
+		
+		'2. Alle potentiellen Zuschauer / alle TV-Geräte / die gesamte Reichweite
+		
+		If Game.Quotes.FEATURE_TARGETGROUP_TIME_MOD = 1
+			potentialAudienceThisHour = GetPotentialAudienceThisHour(maxAudience, Game.GetHour())
+		Else
+			potentialAudienceThisHour = GetPotentialAudienceThisHourFallback(maxAudience, Game.GetHour())
+		Endif
+		print "2: " + potentialAudienceThisHour.ToString()
+		
+		'3. Qualität meines Programmes
+		'Local genreDefintion:TGenreDefinition = GetGenreDefinition(block.programme.Genre)
+		Local genreDefintion:TGenreDefinition = GetGenreDefinition(0)
+		
+		Local attraction:TAudience = genreDefintion.CalculateAudienceAttraction(block.programme, Game.GetHour())
+		print "3 - Attr: " + attraction.ToString()
+		
+						
+		potentialAudienceThisHour.Multiply(attraction)		
+		
+		print "3: " + potentialAudienceThisHour.ToString()
+		
+
+'		print "3.1: " + potentialAudienceThisHour.GetSum()
+		'player.audience = potentialAudienceThisHour.GetSum()
+		'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
+'print "4"
+
+		Return potentialAudienceThisHour		
+	End Method
+
 	Method ComputeAudiencePlayerOne:TAudience(recompute:Int = 0)
 		Local player:TPlayer = TPlayer(TPlayer.List.First())
 
@@ -205,10 +334,10 @@ endrem
 		print "3: " + potentialAudienceThisHour.ToString()
 		
 
-		print "3.1: " + potentialAudienceThisHour.GetSum()
-		player.audience = potentialAudienceThisHour.GetSum()
-		TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
-print "4"
+'		print "3.1: " + potentialAudienceThisHour.GetSum()
+		'player.audience = potentialAudienceThisHour.GetSum()
+		'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
+'print "4"
 
 Return potentialAudienceThisHour
 
@@ -304,10 +433,6 @@ rem
 endrem	
 	Method GetGenreDefinition:TGenreDefinition(genreId:int)
 		Return genreDefinitions[genreId]
-	End Method
-	
-	Method GeTAudienceMultiplierForHour:TAudienceMultiplier(forHour:Int= -1)
-		Return new TAudienceMultiplier
 	End Method
 	
 	'===== Hilfsmethoden =====
@@ -422,13 +547,9 @@ Type TGenreDefinition
 		
 	Method GetProgrammeQuality:float(programme:TProgramme)
 		Local quality:Float		= 0.0				
-		
-		'quality =	Float(programme.Outcome) / 255.0 * OutcomeMod..
-		'			Float(programme.review) / 255.0 * ReviewMod..
-		'			Float(programme.speed) / 255.0 * SpeedMod..
-
-		quality =	Float(programme.Outcome) / 255.0 * OutcomeMod
-
+		quality =	Float(programme.Outcome) / 255.0 * OutcomeMod..
+					+ Float(programme.review) / 255.0 * ReviewMod..
+					+ Float(programme.speed) / 255.0 * SpeedMod..
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
 		Local age:Int = Max(0,100-Max(0,game.GetYear() - programme.year))
@@ -442,24 +563,61 @@ Type TGenreDefinition
 		Return quality 		
 	End Method
 	
+	Method GetProgrammeQualityFallback:float(programme:TProgramme)
+		Local quality:Float		= 0.0				
+		If programme.outcome > 0
+			quality	=	Float(programme.Outcome) / 255.0 * 0.5..
+						+Float(programme.review) / 255.0 * 0.3..
+						+Float(programme.speed) / 255.0 * 0.2..
+		Else 'tv shows
+			quality	=	Float(programme.review) / 255.0 * 0.6..
+						+Float(programme.speed) / 255.0 * 0.4..
+		EndIf					
+
+		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
+		Local age:Int = Max(0,100-Max(0,game.GetYear() - programme.year))
+		quality :* Max(0.10, (age/ 100.0))
+		
+		'repetitions wont be watched that much
+		quality	:*	(programme.ComputeTopicality()/255.0)^2
+
+		'no minus quote
+		quality = Max(0, quality)		
+		Return quality 		
+	End Method	
 	
 
 	Method CalculateAudienceAttraction:TAudience(programme:TProgramme, hour:int)
-		Local quality:float = GetProgrammeQuality(programme)
-		print "   calc1: " + quality
+		Local quality:float = 0
+		Local result:TAudience = null
 		
-		'Wie gut passt der Sendeplatz zum Genre
-		print "   calc2-mod: " + TimeMods[hour]
-
-		quality = quality * TimeMods[hour] 'Genre/Zeit-Mod		
+		
+		If Game.Quotes.FEATURE_GENRE_ATTRIB_CALC = 1 'Die Gewichtung der Attribute bei der Berechnung der Filmqualität hängt vom Genre ab
+			quality = GetProgrammeQuality(programme)
+		Else
+			quality = GetProgrammeQualityFallback(programme)
+		Endif
+		print "   Quality 1: " + quality
+		
+		
+		If Game.Quotes.FEATURE_GENRE_TIME_MOD = 1 'Wie gut passt der Sendeplatz zum Genre		
+			quality = quality * TimeMods[hour] 'Genre/Zeit-Mod		
+		Endif
+		
+		
 		quality = Max(0, Min(98, quality))
-		print "   calc3: " + quality
+		print "   Quality 2: " + quality
 	
-		'Wie gut kommt das Genre bei den Zielgruppen an
-		Local result:TAudience = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
+		
+		If Game.Quotes.FEATURE_GENRE_TARGETGROUP_MOD = 1 'Wie gut kommt das Genre bei den Zielgruppen an
+			result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
+		Else
+			result = TAudience.CreateAndInit:TAudience(quality, quality, quality, quality, quality, quality, quality, quality, quality)
+		Endif
 				
-		Return result			
+		Return result					
 	End Method
+	
 		rem
 	Method GeTAudienceMultiplierForProgramme:TAudienceMultiplier(programme:TProgramme)
 		Local result:TAudience = AudienceAttraction.GetNewInstance()
@@ -500,7 +658,7 @@ Type TGenreDefinition
 		Return result
 	End Method
 End Type
-
+rem
 Type TAudienceMultiplier
 	'Werte 0 bis 100
 	Field Audience_Group_0:float = 1 'Kinder 
@@ -568,7 +726,7 @@ Type TAudienceMultiplier
 		Return (-x) * y + x + y
 	End Method		
 End Type
-
+endrem
 
 Type TAudience
 	Field Group_0:float 'Kinder 
@@ -639,6 +797,18 @@ Type TAudience
 		SubGroup_0 :* audienceMultiplier.SubGroup_0 / dividorBase
 		SubGroup_1 :* audienceMultiplier.SubGroup_1 / dividorBase
 	End Method
+	
+	Method MultiplyFactor(factor:float)
+		Group_0 :* factor
+		Group_1 :* factor
+		Group_2 :* factor
+		Group_3 :* factor
+		Group_4 :* factor
+		Group_5 :* factor
+		Group_6 :* factor
+		SubGroup_0 :* factor
+		SubGroup_1 :* factor
+	End Method	
 	
 	Method ToString:string()
 		Return "Sum: " + GetSum() + "  ( 0: " + Group_0 + "  - 1: " + Group_1 + "  - 2: " + Group_2 + "  - 3: " + Group_3 + "  - 4: " + Group_4 + "  - 5: " + Group_5 + "  - 6: " + Group_6 + ")"

@@ -349,7 +349,7 @@ Type TLuaFunctions {_exposeToLua}
 
 	Method getPlayerAudience:Int()
 		Print "VERALTET: TVT.getPlayerAudience() -> MY.GetAudience()"
-		Return Game.Players[ Self.ME ].audience
+		Return Game.Players[ Self.ME ].audience2.GetSum()
 	End Method
 
 	Method getPlayerCredit:Int()

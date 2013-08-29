@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvt>
+	<genres>
+		<genre id="0" name="action">
+			<timeMods>
+				<timeMod time="0" value="100"/>
+				<timeMod time="1" value="100"/>
+				<timeMod time="2" value="90"/>
+				<timeMod time="3" value="80"/>
+				<timeMod time="4" value="80"/>
+				<timeMod time="5" value="60"/>
+				<timeMod time="6" value="60"/>
+				<timeMod time="7" value="60"/>
+				<timeMod time="8" value="60"/>
+				<timeMod time="9" value="60"/>
+				<timeMod time="10" value="60"/>
+				<timeMod time="11" value="60"/>
+				<timeMod time="12" value="60"/>
+				<timeMod time="13" value="60"/>
+				<timeMod time="14" value="60"/>
+				<timeMod time="15" value="60"/>
+				<timeMod time="16" value="70"/>
+				<timeMod time="17" value="70"/>
+				<timeMod time="18" value="80"/>
+				<timeMod time="19" value="80"/>
+				<timeMod time="20" value="100"/>
+				<timeMod time="21" value="120"/>
+				<timeMod time="22" value="110"/>
+				<timeMod time="23" value="100"/>
+			</timeMods>
+			<audienceAttractions>
+				<audienceAttraction type="Group" id="0" value="40" />
+				<audienceAttraction type="Group" id="1" value="90" />
+				<audienceAttraction type="Group" id="2" value="20" />
+				<audienceAttraction type="Group" id="3" value="60" />
+				<audienceAttraction type="Group" id="4" value="70" />
+				<audienceAttraction type="Group" id="5" value="30" />
+				<audienceAttraction type="Group" id="6" value="10" />
+				<audienceAttraction type="SubGroup" id="1" value="50" />
+				<audienceAttraction type="SubGroup" id="2" value="80" />
+			</audienceAttractions>			
+		</genre>	
+	</genres>
+</tvt>
