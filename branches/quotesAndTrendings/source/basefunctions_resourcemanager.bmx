@@ -761,12 +761,15 @@ Type TResourceLoaders
 
 			genre.Insert("id",		String(id))
 			genre.Insert("name",	name)
+			genre.Insert("outcomeMod",	string(xmlLoader.xml.FindValueFloat(child, "outcome-mod", -1)))
+			genre.Insert("reviewMod",	string(xmlLoader.xml.FindValueFloat(child, "review-mod", -1)))
+			genre.Insert("speedMod",	string(xmlLoader.xml.FindValueFloat(child, "speed-mod", -1)))						 
 			
 			local subNode:TxmlNode = null
 			subNode = xmlLoader.xml.FindChild(child, "timeMods")
 			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
 				local time:String = xmlLoader.xml.FindValue(subNodeChild, "time", "-1")			
-				genre.Insert("subNode_" + time, 	xmlLoader.xml.FindValue(subNodeChild, "value", "") )				
+				genre.Insert("timeMod_" + time, 	xmlLoader.xml.FindValue(subNodeChild, "value", "") )				
 			Next
 			
 			

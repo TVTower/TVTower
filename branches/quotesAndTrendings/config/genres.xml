@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvt>
 	<genres>
-		<genre id="0" name="action">
+		<genre id="0" name="action" outcome-mod="0.5" review-mod="0.3" speed-mod="0.2">
 			<timeMods>
-				<timeMod time="0" value="100"/>
-				<timeMod time="1" value="100"/>
-				<timeMod time="2" value="90"/>
-				<timeMod time="3" value="80"/>
-				<timeMod time="4" value="80"/>
-				<timeMod time="5" value="60"/>
-				<timeMod time="6" value="60"/>
-				<timeMod time="7" value="60"/>
-				<timeMod time="8" value="60"/>
-				<timeMod time="9" value="60"/>
-				<timeMod time="10" value="60"/>
-				<timeMod time="11" value="60"/>
-				<timeMod time="12" value="60"/>
-				<timeMod time="13" value="60"/>
-				<timeMod time="14" value="60"/>
-				<timeMod time="15" value="60"/>
-				<timeMod time="16" value="70"/>
-				<timeMod time="17" value="70"/>
-				<timeMod time="18" value="80"/>
-				<timeMod time="19" value="80"/>
-				<timeMod time="20" value="100"/>
-				<timeMod time="21" value="120"/>
-				<timeMod time="22" value="110"/>
-				<timeMod time="23" value="100"/>
+				<timeMod time="0" value="1"/>
+				<timeMod time="1" value="1"/>
+				<timeMod time="2" value="0.9"/>
+				<timeMod time="3" value="0.8"/>
+				<timeMod time="4" value="0.8"/>
+				<timeMod time="5" value="0.6"/>
+				<timeMod time="6" value="0.6"/>
+				<timeMod time="7" value="0.6"/>
+				<timeMod time="8" value="0.6"/>
+				<timeMod time="9" value="0.6"/>
+				<timeMod time="10" value="0.6"/>
+				<timeMod time="11" value="0.6"/>
+				<timeMod time="12" value="0.6"/>
+				<timeMod time="13" value="0.6"/>
+				<timeMod time="14" value="0.6"/>
+				<timeMod time="15" value="0.6"/>
+				<timeMod time="16" value="0.7"/>
+				<timeMod time="17" value="0.7"/>
+				<timeMod time="18" value="0.8"/>
+				<timeMod time="19" value="0.8"/>
+				<timeMod time="20" value="1"/>
+				<timeMod time="21" value="1.2"/>
+				<timeMod time="22" value="1.1"/>
+				<timeMod time="23" value="1"/>
 			</timeMods>
 			<audienceAttractions>
-				<audienceAttraction type="Group" id="0" value="40" />
-				<audienceAttraction type="Group" id="1" value="90" />
-				<audienceAttraction type="Group" id="2" value="20" />
-				<audienceAttraction type="Group" id="3" value="60" />
-				<audienceAttraction type="Group" id="4" value="70" />
-				<audienceAttraction type="Group" id="5" value="30" />
-				<audienceAttraction type="Group" id="6" value="10" />
-				<audienceAttraction type="SubGroup" id="1" value="50" />
-				<audienceAttraction type="SubGroup" id="2" value="80" />
+				<audienceAttraction type="group" id="0" value="0.4" />
+				<audienceAttraction type="group" id="1" value="0.9" />
+				<audienceAttraction type="group" id="2" value="0.2" />
+				<audienceAttraction type="group" id="3" value="0.6" />
+				<audienceAttraction type="group" id="4" value="0.7" />
+				<audienceAttraction type="group" id="5" value="0.3" />
+				<audienceAttraction type="group" id="6" value="0.1" />
+				<audienceAttraction type="subgroup" id="1" value="0.5" />
+				<audienceAttraction type="subgroup" id="2" value="0.8" />
 			</audienceAttractions>			
 		</genre>	
 	</genres>

@@ -47,6 +47,7 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
+Include "gamefunctions_popularity.bmx"			'Popularitäten und Trends
 Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 
 

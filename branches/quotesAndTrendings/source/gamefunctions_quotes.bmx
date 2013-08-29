@@ -1,20 +1,19 @@
 Type TQuotes
 	'Referenzen
-	Field GenrePopulartities:TGenrePopulartity[]
 	Field GenreDefinitions:TGenreDefinition[]
+	Field GenrePopulartities:TGenrePopulartity[]	
 	
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
 
+	'Konstanten	
 	Const FEATURE_AUDIENCE_FLOW:int = 1
 	Const FEATURE_GENRE_ATTRIB_CALC:int = 1
 	Const FEATURE_GENRE_TIME_MOD:int = 1	
 	Const FEATURE_GENRE_TARGETGROUP_MOD:int = 1
 	Const FEATURE_TARGETGROUP_TIME_MOD:int = 1
 
-	'Konstanten	
 	
 	Const MOVIE_GENRE_ACTION:Int = 0
-	rem
 	Const MOVIE_GENRE_THRILLER:Int = 1
 	Const MOVIE_GENRE_SCIFI:Int = 2
 	Const MOVIE_GENRE_COMEDY:Int = 3
@@ -33,7 +32,6 @@ Type TQuotes
 	Const MOVIE_GENRE_NEWS:Int = 16
 	Const MOVIE_GENRE_SHOW:Int = 17
 	Const MOVIE_GENRE_MONUMENTAL:Int = 18	
-	endrem
 
 	'===== Konstrukor, Speichern, Laden =====
 
@@ -43,55 +41,18 @@ Type TQuotes
 	End Function	
 	
 	Method Initialize()
-		GenrePopulartities = GenrePopulartities[..19]
-		rem
-		AddGenrePopulartity(MOVIE_GENRE_ACTION)
-		AddGenrePopulartity(MOVIE_GENRE_THRILLER)
-		AddGenrePopulartity(MOVIE_GENRE_SCIFI)
-		AddGenrePopulartity(MOVIE_GENRE_COMEDY)
-		AddGenrePopulartity(MOVIE_GENRE_HORROR)
-		AddGenrePopulartity(MOVIE_GENRE_LOVE)
-		AddGenrePopulartity(MOVIE_GENRE_EROTIC)
-		AddGenrePopulartity(MOVIE_GENRE_WESTERN)
-		AddGenrePopulartity(MOVIE_GENRE_LIVE)
-		AddGenrePopulartity(MOVIE_GENRE_KIDS)
-		AddGenrePopulartity(MOVIE_GENRE_CARTOON)
-		AddGenrePopulartity(MOVIE_GENRE_MUSIC)
-		AddGenrePopulartity(MOVIE_GENRE_SPORT)
-		AddGenrePopulartity(MOVIE_GENRE_CULTURE)
-		AddGenrePopulartity(MOVIE_GENRE_FANTASY)
-		AddGenrePopulartity(MOVIE_GENRE_YELLOWPRESS)
-		AddGenrePopulartity(MOVIE_GENRE_NEWS)
-		AddGenrePopulartity(MOVIE_GENRE_SHOW)
-		AddGenrePopulartity(MOVIE_GENRE_MONUMENTAL)
+		GenrePopulartities = GenrePopulartities[..19]		
+		For Local i:Int = 0 To 18 '18 = Wert des höchsten Genres
+			AddGenrePopulartity(i)
+		Next		
 		
-		
-		'AddGenrePopulartity(MOVIE_GENRE_ACTION)
-		endrem
-		GenreDefinitions = GenreDefinitions[..19]
-		local definition:TGenreDefinition = TGenreDefinition.Create(MOVIE_GENRE_ACTION)
-		GenreDefinitions[MOVIE_GENRE_ACTION] = definition
-		
-rem
-		AddGenrePopulartity(MOVIE_GENRE_THRILLER)
-		AddGenrePopulartity(MOVIE_GENRE_SCIFI)
-		AddGenrePopulartity(MOVIE_GENRE_COMEDY)
-		AddGenrePopulartity(MOVIE_GENRE_HORROR)
-		AddGenrePopulartity(MOVIE_GENRE_LOVE)
-		AddGenrePopulartity(MOVIE_GENRE_EROTIC)
-		AddGenrePopulartity(MOVIE_GENRE_WESTERN)
-		AddGenrePopulartity(MOVIE_GENRE_LIVE)
-		AddGenrePopulartity(MOVIE_GENRE_KIDS)
-		AddGenrePopulartity(MOVIE_GENRE_CARTOON)
-		AddGenrePopulartity(MOVIE_GENRE_MUSIC)
-		AddGenrePopulartity(MOVIE_GENRE_SPORT)
-		AddGenrePopulartity(MOVIE_GENRE_CULTURE)
-		AddGenrePopulartity(MOVIE_GENRE_FANTASY)
-		AddGenrePopulartity(MOVIE_GENRE_YELLOWPRESS)
-		AddGenrePopulartity(MOVIE_GENRE_NEWS)
-		AddGenrePopulartity(MOVIE_GENRE_SHOW)
-		AddGenrePopulartity(MOVIE_GENRE_MONUMENTAL)	
-endrem	
+		GenreDefinitions= GenreDefinitions[..19]
+		Local genreMap:TMap = Assets.GetMap("genres")
+		For Local asset:TAsset = EachIn genreMap.Values()			
+			Local definition:TGenreDefinition = new TGenreDefinition
+			definition.LoadFromAssert(asset)
+			GenreDefinitions[definition.GenreId] = definition			
+		Next		
 	End Method	
 
 	Method Save()
@@ -496,6 +457,8 @@ Type TAudienceCompetition
 	End Method
 End Type
 endrem
+
+
 Type TGenreDefinition
 	Field GenreId:int
 	Field AudienceAttraction:TAudience
@@ -505,47 +468,31 @@ Type TGenreDefinition
 	Field ReviewMod:float = 0.3
 	Field SpeedMod:float = 0.2
 	
-	Function Create:TGenreDefinition(genreId:int)
-		Local obj:TGenreDefinition = New TGenreDefinition
-		obj.TimeMods = obj.TimeMods [..24]
-		obj.TimeMods[0] = 1
-		obj.TimeMods[1] = 1
-		obj.TimeMods[2] = 0.9
-		obj.TimeMods[3] = 0.8
-		obj.TimeMods[4] = 0.8
-		obj.TimeMods[5] = 0.6
-		obj.TimeMods[6] = 0.6
-		obj.TimeMods[7] = 0.6
-		obj.TimeMods[8] = 0.6
-		obj.TimeMods[9] = 0.6
-		obj.TimeMods[10] = 0.6
-		obj.TimeMods[11] = 0.6
-		obj.TimeMods[12] = 0.6
-		obj.TimeMods[13] = 0.6
-		obj.TimeMods[14] = 0.6
-		obj.TimeMods[15] = 0.6
-		obj.TimeMods[16] = 0.7
-		obj.TimeMods[17] = 0.7
-		obj.TimeMods[18] = 0.8
-		obj.TimeMods[19] = 0.8
-		obj.TimeMods[20] = 1
-		obj.TimeMods[21] = 1.2
-		obj.TimeMods[22] = 1.1
-		obj.TimeMods[23] = 1
+	Method LoadFromAssert(asset:TAsset)	
+		local data:TMap = TMap(asset._object)
+		GenreId = string(data.ValueForKey("id")).ToInt()
+		OutcomeMod = string(data.ValueForKey("outcomeMod")).ToFloat()
+		ReviewMod = string(data.ValueForKey("reviewMod")).ToFloat()
+		SpeedMod = string(data.ValueForKey("speedMod")).ToFloat()
 		
-		obj.AudienceAttraction= new TAudience
-		obj.AudienceAttraction.Group_0 = 40 'Kinder 
-		obj.AudienceAttraction.Group_1 = 80 'Teenagers
-		obj.AudienceAttraction.Group_2 = 20 'Hausfrauen 
-		obj.AudienceAttraction.Group_3 = 60 'Employees
-		obj.AudienceAttraction.Group_4 = 70 'Unemployed
-		obj.AudienceAttraction.Group_5 = 30 'Manager
-		obj.AudienceAttraction.Group_6 = 10 'Rentner
-		obj.AudienceAttraction.SubGroup_0 = 50 'Women
-		obj.AudienceAttraction.SubGroup_1 = 80 'Men
-					
-		Return obj
-	End Function		
+		TimeMods = TimeMods [..24]		
+		For Local i:Int = 0 To 23
+			TimeMods[i] = string(data.ValueForKey("timeMod_" + i)).ToFloat()
+		Next
+
+		AudienceAttraction= new TAudience		
+		AudienceAttraction.Group_0 = string(data.ValueForKey("group_0")).ToFloat()
+		AudienceAttraction.Group_1 = string(data.ValueForKey("group_1")).ToFloat()
+		AudienceAttraction.Group_2 = string(data.ValueForKey("group_2")).ToFloat()
+		AudienceAttraction.Group_3 = string(data.ValueForKey("group_3")).ToFloat()
+		AudienceAttraction.Group_4 = string(data.ValueForKey("group_4")).ToFloat()
+		AudienceAttraction.Group_5 = string(data.ValueForKey("group_5")).ToFloat()
+		AudienceAttraction.Group_6 = string(data.ValueForKey("group_6")).ToFloat()
+		AudienceAttraction.SubGroup_0 = string(data.ValueForKey("subgroup_1")).ToFloat()
+		AudienceAttraction.SubGroup_1 = string(data.ValueForKey("subgroup_2")).ToFloat()		
+		
+		debugstop
+	End Method
 		
 	Method GetProgrammeQuality:float(programme:TProgramme)
 		Local quality:Float		= 0.0				
@@ -647,88 +594,18 @@ Type TGenreDefinition
 	
 	Method CalculateQuoteForGroup:Float(quality:float, targetGroupAttendance:float)
 		Local result:float = 0
-		Local qualityTemp:float = quality * 100
 		
 		If (quality <= targetGroupAttendance)
-			result = qualityTemp + (targetGroupAttendance - qualityTemp) * qualityTemp / 100
+			result = quality + (targetGroupAttendance - quality) * quality
 		Else
-			result = targetGroupAttendance + (qualityTemp - targetGroupAttendance) / 5
+			result = targetGroupAttendance + (quality - targetGroupAttendance) / 5
 		EndIf
-		result = result / 100
-		print "     Gr: " + result + " (quality: " + qualityTemp + " / targetGroupAttendance: " + targetGroupAttendance + ")"
+		print "     Gr: " + result + " (quality: " + quality + " / targetGroupAttendance: " + targetGroupAttendance + ")"
 		
 		Return result
 	End Method
 End Type
-rem
-Type TAudienceMultiplier
-	'Werte 0 bis 100
-	Field Audience_Group_0:float = 1 'Kinder 
-	Field Audience_Group_1:float = 1 'Teenagers
-	Field Audience_Group_2:float = 1 'Hausfrauen 
-	Field Audience_Group_3:float = 1 'Employees
-	Field Audience_Group_4:float = 1 'Unemployed
-	Field Audience_Group_5:float = 1 'Manager
-	Field Audience_Group_6:float = 1 'Rentner
-	Field Audience_SubGroup_0:float = 1 'Women
-	Field Audience_SubGroup_1:float = 1 'Men	
-	
-	Method MultiplyFactor(factor:float)
-		Audience_Group_0 = Audience_Group_0 * factor
-		Audience_Group_1 = Audience_Group_1 * factor
-		Audience_Group_2 = Audience_Group_2 * factor
-		Audience_Group_3 = Audience_Group_3 * factor
-		Audience_Group_4 = Audience_Group_4 * factor
-		Audience_Group_5 = Audience_Group_5 * factor
-		Audience_Group_6 = Audience_Group_6 * factor
-		Audience_SubGroup_0 = Audience_SubGroup_0 * factor
-		Audience_SubGroup_1 = Audience_SubGroup_1 * factor
-	End Method
-	
-	Method MultiplyWith(audienceAttraction:TAudienceMultiplier)
-		Audience_Group_0 = Audience_Group_0 * audienceAttraction.Audience_Group_0
-		Audience_Group_1 = Audience_Group_1 * audienceAttraction.Audience_Group_1
-		Audience_Group_2 = Audience_Group_2 * audienceAttraction.Audience_Group_2
-		Audience_Group_3 = Audience_Group_3 * audienceAttraction.Audience_Group_3
-		Audience_Group_4 = Audience_Group_4 * audienceAttraction.Audience_Group_4
-		Audience_Group_5 = Audience_Group_5 * audienceAttraction.Audience_Group_5
-		Audience_Group_6 = Audience_Group_6 * audienceAttraction.Audience_Group_6
-		Audience_SubGroup_0 = Audience_SubGroup_0 * audienceAttraction.Audience_SubGroup_0
-		Audience_SubGroup_1 = Audience_SubGroup_1 * audienceAttraction.Audience_SubGroup_1
-	End Method
-	
-	Method GetInstanceCopy:TAudienceMultiplier()
-		local result:TAudienceMultiplier = new TAudienceMultiplier
-		result.Audience_Group_0 = Audience_Group_0
-		result.Audience_Group_1 = Audience_Group_1
-		result.Audience_Group_2 = Audience_Group_2
-		result.Audience_Group_3 = Audience_Group_3
-		result.Audience_Group_4 = Audience_Group_4
-		result.Audience_Group_5 = Audience_Group_5
-		result.Audience_Group_6 = Audience_Group_6
-		result.Audience_SubGroup_0 = Audience_SubGroup_0
-		result.Audience_SubGroup_1 = Audience_SubGroup_1
-		Return result
-	End Method
-	
-	Method AudienceFactorSum(audienceAttraction:TAudienceMultiplier)
-		Audience_Group_0 = AudienceFactorSumFormula(Audience_Group_0, audienceAttraction.Audience_Group_0)
-		Audience_Group_1 = AudienceFactorSumFormula(Audience_Group_1, audienceAttraction.Audience_Group_1)
-		Audience_Group_2 = AudienceFactorSumFormula(Audience_Group_2, audienceAttraction.Audience_Group_2)
-		Audience_Group_3 = AudienceFactorSumFormula(Audience_Group_3, audienceAttraction.Audience_Group_3)
-		Audience_Group_4 = AudienceFactorSumFormula(Audience_Group_4, audienceAttraction.Audience_Group_4)
-		Audience_Group_5 = AudienceFactorSumFormula(Audience_Group_5, audienceAttraction.Audience_Group_5)
-		Audience_Group_6 = AudienceFactorSumFormula(Audience_Group_6, audienceAttraction.Audience_Group_6)
-		Audience_SubGroup_0 = AudienceFactorSumFormula(Audience_SubGroup_0, audienceAttraction.Audience_SubGroup_0)
-		Audience_SubGroup_1 = AudienceFactorSumFormula(Audience_SubGroup_1, audienceAttraction.Audience_SubGroup_1)
-	End Method
-	
-	Method AudienceFactorSumFormula:float(x:float, y:float)
-		'Diese Formel nähert den Wert an 1 an.
-		Return (-x) * y + x + y
-	End Method		
-End Type
-endrem
+
 
 Type TAudience
 	Field Group_0:float 'Kinder 
@@ -815,239 +692,4 @@ Type TAudience
 	Method ToString:string()
 		Return "Sum: " + GetSum() + "  ( 0: " + Group_0 + "  - 1: " + Group_1 + "  - 2: " + Group_2 + "  - 3: " + Group_3 + "  - 4: " + Group_4 + "  - 5: " + Group_5 + "  - 6: " + Group_6 + ")"
 	End Method
-End Type
-
-rem
-Type TAudienceOld
-	Field Audience_Group_0:int 'Kinder 
-	Field Audience_Group_1:int 'Teenagers
-	Field Audience_Group_2:int 'Hausfrauen 
-	Field Audience_Group_3:int 'Employees
-	Field Audience_Group_4:int 'Unemployed
-	Field Audience_Group_5:int 'Manager
-	Field Audience_Group_6:int 'Rentner
-
-	Field Audience_SubGroup_0:int 'Women
-	Field Audience_SubGroup_1:int 'Men
-	
-	Function Create:TAudienceOld(audience:int)
-		Local obj:TAudienceOld = New TAudienceOld
-		obj.Audience_Group_0 = audience * 0.1 'Kinder (10%)
-		obj.Audience_Group_1 = audience * 0.1 'Teenager (10%)
-		'Erwachsene 60%
-		obj.Audience_Group_2 = audience * 0.12 'Hausfrauen (20% von 60% Erwachsenen = 12%)
-		obj.Audience_Group_3 = audience * 0.405 'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
-		obj.Audience_Group_4 = audience * 0.045 'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
-		obj.Audience_Group_5 = audience * 0.03 'Manager (5% von 60% Erwachsenen = 3%)
-		obj.Audience_Group_6 = audience * 0.2 'Rentner (20%)
-		
-		'Frauen
-		obj.Audience_SubGroup_0 = Audience_SubGroup_0 * 0.5 + obj.Audience_Group_1 * 0.5 + obj.Audience_Group_2 * 0.9 + obj.Audience_Group_3 * 0.4 + obj.Audience_Group_4 * 0.4 + obj.Audience_Group_5 * 0.25 + obj.Audience_Group_6 * 0.55		
-		'Männer
-		obj.Audience_SubGroup_1 = Audience_SubGroup_0 * 0.5 + obj.Audience_Group_1 * 0.5 + obj.Audience_Group_2 * 0.1 + obj.Audience_Group_3 * 0.6 + obj.Audience_Group_4 * 0.6 + obj.Audience_Group_5 * 0.75 + obj.Audience_Group_6 * 0.45
-
-		Return obj
-	End Function
-	
-	Method GetAudienceSum()
-		Return obj.Audience_Group_0 + obj.Audience_Group_1 + obj.Audience_Group_2 + obj.Audience_Group_3 + obj.Audience_Group_4 + obj.Audience_Group_5 + obj.Audience_Group_6
-	End Method
-	
-	Method CopyTo:TAudienceOld(audience:TAudienceOld)
-		audience.Audience_Group_0 = self.Audience_Group_0
-		audience.Audience_Group_1 = self.Audience_Group_1
-		audience.Audience_Group_2 = self.Audience_Group_2
-		audience.Audience_Group_3 = self.Audience_Group_3
-		audience.Audience_Group_4 = self.Audience_Group_4
-		audience.Audience_Group_5 = self.Audience_Group_5
-		audience.Audience_Group_6 = self.Audience_Group_6
-		
-		audience.Audience_SubGroup_0 = self.Audience_SubGroup_0
-		audience.Audience_SubGroup_1 = self.Audience_SubGroup_1
-		
-		Return audience
-	End Method
-	
-	Method GetNewInstance:TAudienceOld()
-		Return CopyTo(new TAudienceOld)
-	End Method
-	
-	Method Multiply(audienceMultiplier:TAudienceMultiplier)
-	'quote :* ddd
-		Audience_Group_0 = Audience_Group_0 * audienceMultiplier.Audience_Group_0
-		Audience_Group_1 = Audience_Group_1 * audienceMultiplier.Audience_Group_1
-		Audience_Group_2 = Audience_Group_2 * audienceMultiplier.Audience_Group_2
-		Audience_Group_3 = Audience_Group_3 * audienceMultiplier.Audience_Group_3
-		Audience_Group_4 = Audience_Group_4 * audienceMultiplier.Audience_Group_4
-		Audience_Group_5 = Audience_Group_5 * audienceMultiplier.Audience_Group_5
-		Audience_Group_6 = Audience_Group_6 * audienceMultiplier.Audience_Group_6
-		
-		Audience_SubGroup_0 = Audience_SubGroup_0 * audienceMultiplier.Audience_SubGroup_0
-		Audience_SubGroup_1 = Audience_SubGroup_1 * audienceMultiplier.Audience_SubGroup_1
-	End Method
-End Type
-endrem
-
-Type TPopularityManager
-	Field Populartities:TList = CreateList()
-	
-	Function Create:TPopularityManager()
-		Local obj:TPopularityManager = New TPopularityManager
-		Return obj
-	End Function
-	
-	Method Initialize()
-	End Method
-
-	Method Update:Int(triggerEvent:TEventBase)	
-		For Local popularity:TPopulartity = EachIn Self.Populartities
-			popularity.UpdatePopularity()
-			popularity.AdjustTrendDirectionRandomly()
-			popularity.UpdateTrend()
-			'print popularity.ContentId + ": " + popularity.Popularity + " - L: " + popularity.LongTermPopularity + " - T: " + popularity.Trend + " - S: " + popularity.Surfeit
-		Next		
-	End Method
-	
-	Method AddPopularity(popularity:TPopulartity)
-		Populartities.addLast(popularity)
-	ENd Method
-End Type
-
-
-Type TPopulartity
-	Field ContentId:Int
-	Field LongTermPopularity:Float				'Zu welchem Wert entwickelt sich die Popularität langfristig ohne den Spielereinfluss (-50 bis +50)
-	Field Popularity:Float						'Wie populär ist das Genre. Ein Wert üblicherweise zwischen -50 und +100 (es kann aber auch mehr oder weniger werden...)
-	Field Trend:Float							'Wie entwicklet sich die Popularität
-	Field Surfeit:Int							'1 = Übersättigung des Trends
-	Field SurfeitCounter:Int					'Wenn bei 3, dann ist er übersättigt
-	
-	Field LongTermPopularityLowerBound:Int		'Untere Grenze der LongTermPopularity
-	Field LongTermPopularityUpperBound:Int		'Obere Grenze der LongTermPopularity
-	
-	Field SurfeitLowerBoundAdd:Int				'Surfeit wird erreicht, wenn Popularity > (LongTermPopularity + SurfeitUpperBoundAdd)
-	Field SurfeitUpperBoundAdd:Int				'Surfeit wird zurückgesetzt, wenn Popularity <= (LongTermPopularity + SurfeitLowerBoundAdd)
-	Field SurfeitTrendMalus:Int					'Für welchen Abzug sorgt die Übersättigung
-	Field SurfeitCounterUpperBoundAdd:Int		'Wie viel darf die Popularity über LongTermPopularity um angezählt zu werden?
-	
-	Field TrendLowerBound:Int					'Untergrenze für den Bergabtrend
-	Field TrendUpperBound:Int					'Obergrenze für den Bergauftrend
-	Field TrendAdjustDivider:Int				'Um welchen Teiler wird der Trend angepasst?
-	Field TrendRandRangLower:Int				'Untergrenze für Zufallsänderungen des Trends
-	Field TrendRandRangUpper:Int				'Obergrenze für Zufallsänderungen des Trends
-	
-	Field ChanceToChangeCompletely:Int			'X%-Chance das sich die LongTermPopularity komplett wendet
-	Field ChanceToChange:Int					'X%-Chance das sich die LongTermPopularity um einen Wert zwischen ChangeLowerBound und ChangeUpperBound ändert
-	Field ChanceToAdjustLongTermPopulartiy:Int	'X%-Chance das sich die LongTermPopularity an den aktuellen Populartywert + Trend anpasst
-	
-	Field ChangeLowerBound:Int					'Untergrenze für Wertänderung wenn ChanceToChange eintritt
-	Field ChangeUpperBound:Int					'Obergrenze für Wertänderung wenn ChanceToChange eintritt
-
-	Function Create:TPopulartity(contentId:Int, populartiy:Float = 0.0, longTermPopularity:Float = 0.0)
-		Local obj:TPopulartity = New TPopulartity
-		obj.ContentId = contentId
-		obj.SetPopularity(populartiy)
-		obj.SetLongTermPopularity(longTermPopularity)
-		Return obj
-	End Function
-
-	'Die Popularität wird üblicherweise am Ende des Tages aktualisiert, entsprechend des gesammelten Trend-Wertes
-	Method UpdatePopularity()
-		Popularity = Popularity + Trend
-		If Popularity > (LongTermPopularity + SurfeitUpperBoundAdd) Then
-			Surfeit = 1
-			SurfeitCounter = 0
-		Elseif Popularity <= (LongTermPopularity + SurfeitLowerBoundAdd) Then
-			Surfeit = 0
-		Elseif Popularity > (LongTermPopularity + SurfeitCounterUpperBoundAdd) Then
-			SurfeitCounter = SurfeitCounter + 1 'Wird angezählt
-		Else
-			SurfeitCounter = 0
-		Endif
-		
-		If SurfeitCounter > 2 Then
-			Surfeit = 1
-			SurfeitCounter = 0
-		Endif
-	End Method
-	
-	'Passt die LongTermPopularity mit einigen Wahrscheinlichkeiten an oder ändert sie komplett
-	Method AdjustTrendDirectionRandomly()
-		If RandRange(1,100) <= ChanceToChangeCompletely Then '2%-Chance das der langfristige Trend komplett umschwenkt
-			SetLongTermPopularity(RandRange(LongTermPopularityLowerBound, LongTermPopularityUpperBound))
-		ElseIf RandRange(1,100) <= ChanceToChange Then '10%-Chance das der langfristige Trend umschwenkt
-			SetLongTermPopularity(LongTermPopularity + RandRange(ChangeLowerBound, ChangeUpperBound))
-		Elseif RandRange(1,100) <= ChanceToAdjustLongTermPopulartiy Then '25%-Chance das sich die langfristige Popularität etwas dem aktuellen Trend/Popularität anpasst				
-			SetLongTermPopularity(LongTermPopularity + ((Popularity-LongTermPopularity)/4) + Trend)
-		Endif		
-	End Method	
-	
-	'Der Trend wird am Anfang des Tages aktualisiert, er versucht die Populartiy an die LongTermPopularity anzugleichen.
-	Method UpdateTrend()
-		If (Surfeit = 1) Then
-			Trend = Trend - SurfeitTrendMalus
-		Else
-			If (Popularity < LongTermPopularity And Trend < 0) Or (Popularity > LongTermPopularity And Trend > 0) Then
-				Trend = 0
-			ElseIf Trend <> 0 Then
-				Trend = Trend/2
-			Endif		
-		
-			local distance:float = (Float(LongTermPopularity) - Float(Popularity)) / TrendAdjustDivider
-			Trend = Max(TrendLowerBound, Min(TrendUpperBound, Trend + distance + Float(RandRange(TrendRandRangLower, TrendRandRangUpper )/TrendAdjustDivider )))
-		Endif
-	End Method
-	
-	'Jede Ausstrahlung dieses Genres steigert den Trend, es sei denn es ist bereits eine Übersättigung ist eingetreten.
-	Method ChangeTrend(changeValue:Float, adjustLongTermPopulartiy:float=0)		
-		If Surfeit Then
-			Trend = Trend - changeValue
-		Else
-			Trend = Trend + changeValue		
-		Endif
-		
-		SetLongTermPopularity(LongTermPopularity + adjustLongTermPopulartiy)
-	End Method
-	
-	Method SetPopularity(value:float)
-		Popularity = value
-	End Method	
-	
-	Method SetLongTermPopularity(value:float)
-		LongTermPopularity = Max(LongTermPopularityLowerBound, Min(LongTermPopularityUpperBound, value))		
-	End Method
-End Type
-
-
-Type TGenrePopulartity Extends TPopulartity
-	Function Create:TGenrePopulartity(contentId:Int, populartiy:Float = 0.0, longTermPopularity:Float = 0.0)
-		Local obj:TGenrePopulartity = New TGenrePopulartity
-		
-		obj.LongTermPopularityLowerBound		= -50
-		obj.LongTermPopularityUpperBound		= 50
-
-		obj.SurfeitLowerBoundAdd				= -30
-		obj.SurfeitUpperBoundAdd				= 35
-		obj.SurfeitTrendMalus					= 5
-		obj.SurfeitCounterUpperBoundAdd			= 3
-	
-		obj.TrendLowerBound						= -10	
-		obj.TrendUpperBound						= 10
-		obj.TrendAdjustDivider					= 5
-		obj.TrendRandRangLower					= -15
-		obj.TrendRandRangUpper					= 15
-		
-		obj.ChanceToChangeCompletely			= 2
-		obj.ChanceToChange						= 10
-		obj.ChanceToAdjustLongTermPopulartiy	= 25
-		
-		obj.ChangeLowerBound					= -25
-		obj.ChangeUpperBound					= 25	
-		
-		obj.ContentId = contentId
-		obj.SetPopularity(populartiy)
-		obj.SetLongTermPopularity(longTermPopularity)			
-		
-		Return obj
-	End Function	
 End Type
