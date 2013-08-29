@@ -502,8 +502,6 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		'if owner differs, check if we have to buy
 		if parent.playerID<>programme.owner
 			if not programme.buy(parent.playerID) then return FALSE
-			'set new owner
-			programme.owner = parent.playerID
 		endif
 
 		List.remove(programme)
@@ -559,8 +557,6 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		'at program start or through special event...
 		if parent.playerID<>programme.owner
 			if buy and not programme.buy(parent.playerID) then return FALSE
-			'set new owner
-			programme.owner = parent.playerID
 		endif
 
 		'Print "RON: PlayerCollection.AddProgramme: buy="+buy+" title="+programme.title
@@ -894,15 +890,9 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 
 		local useAudience:int = 0
 
-		If Game.isPlayer(playerID)
-			useAudience = Game.Players[ playerID ].maxaudience
-		else
-			'in case of "playerID = -1" we use the avg value
-			For Local i:Int = 1 To 4
-				useAudience :+ Game.Players[ i ].maxaudience
-			Next
-			useAudience:/4
-		EndIf
+		'in case of "playerID = -1" we get the avg value
+		useAudience = Game.GetMaxaudience(playerID)
+
 		'0.5 = more than 50 percent of whole germany wont watch TV the same time
 		'therefor: maximum of half the audience can be "needed"
 		Return TFunctions.RoundToBeautifulValue( Floor(useAudience*0.5 * Self.GetMinAudiencePercentage()) )
@@ -1090,6 +1080,8 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field year:Int				= 1900
 	Field releaseDay:Int		= 1					'at which day was the programme released?
 	Field releaseAnnounced:int	= FALSE				'announced in news etc?
+	Field timesAired:int		= 0					'how many times that programme was run
+	Field targetGroup:int		= 0					'special targeted audience?
 	Field refreshModifier:float	= 1.0				'changes how much a programme "regenerates" (multiplied with genreModifier)
 	Field wearoffModifier:Float	= 1.0				'changes how much a programme loses during sending it
 	Field livehour:Int			= 0
@@ -1372,9 +1364,9 @@ endrem
 
 		If Game.Players[playerID].finances[Game.getWeekday()].PayMovie(self.getPrice())
 			self.owner = playerID
-			Return 1
+			Return TRUE
 		EndIf
-		Return 0
+		Return FALSE
 	End Method
 
 
@@ -1677,15 +1669,26 @@ endrem
 		Return Max(0, quote)
 	End Method
 
-	Method CutTopicality:Int()
+	Method CutTopicality:Int(cutFactor:float=1.0)
+		'cutFactor can be used to manipulate the resulting cut
+		'eg for night times
+
 		'cut of by an individual cutoff factor - do not allow values > 1.0 (refresh instead of cut)
 		'the value : default * invidual * individualGenre
-		topicality:* Min(1.0, self.wearoffFactor * self.GetGenreWearoffModifier() * self.GetWearoffModifier() )
+		topicality:* Min(1.0,  cutFactor * self.wearoffFactor * self.GetGenreWearoffModifier() * self.GetWearoffModifier() )
 	End Method
 
 	Method RefreshTopicality:Int()
 		topicality = Min(maxtopicality, topicality*self.refreshFactor*self.GetGenreRefreshModifier()*self.GetRefreshModifier())
 		Return topicality
+	End Method
+
+	Method getTargetGroup:int() {_exposeToLua}
+		return self.targetGroup
+	End Method
+
+	Method GetTimesAired:Int() {_exposeToLua}
+		return self.timesAired
 	End Method
 
 	Method GetPrice:Int() {_exposeToLua}

@@ -161,6 +161,11 @@ MOVIE_CALLINSHOW		= You earn 0.5-2% of audience in €.
 
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Click on movie or series to place a bid.
 
+ERROR_NOT_POSSIBLE					= Not possible!
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = It is not possible to sell the last station.
+ERROR_NOT_ENOUGH_MONEY		      	= Not enough money!
+ERROR_NOT_ENOUGH_MONEY_TEXT 		= You do not own enough money to finish this action.
+
 
 FINANCES_OVERVIEW     = financial overview
 FINANCES_COSTS        = costs

@@ -222,15 +222,22 @@ function JobFulfillRequisition:Prepare(pParams)
 end
 
 function JobFulfillRequisition:Tick()
+	local gameDay = Game.GetDay()
+	local gameHour = Game.GetHour()
+	
 	for key, value in pairs(self.SpotSlotRequisitions) do
 		if (value.ContractId ~= -1) then
 			debugMsg("Setze Werbung in Programmplan: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId)
-			--TODO: Prüfen ob überhaupt noch Änderungen erlaubt sind
-			local result = TVT.of_doSpotInPlan(value.Day, value.Hour, 0) --Löscht den alten Eintrag
-			if (result < 0) then debugMsg("###### ERROR 1: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId .. "   Result: " .. result) end
-			result = TVT.of_doSpotInPlan(value.Day, value.Hour, value.ContractId) --Setzt den neuen Eintrag
-			if (result < 0) then debugMsg("###### ERROR 2: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId .. "   Result: " .. result) end
-			value:Complete()
+								
+			if (value.Day > gameDay or ( value.Day == gameDay and value.Hour > gameHour)) then
+				local result = TVT.of_doSpotInPlan(value.Day, value.Hour, 0) --Löscht den alten Eintrag
+				if (result < 0) then debugMsg("###### ERROR 1: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId .. "   Result: " .. result) end
+				result = TVT.of_doSpotInPlan(value.Day, value.Hour, value.ContractId) --Setzt den neuen Eintrag
+				if (result < 0) then debugMsg("###### ERROR 2: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId .. "   Result: " .. result) end				
+			else
+				debugMsg("Zu spät dran: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId)
+			end
+			value:Complete()			
 		end
 	end		
 		
@@ -324,7 +331,7 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	local level = self.ScheduleTask:GetQualityLevel(fixedHour)
 	local guessedAudience = self.ScheduleTask:GuessedAudienceForHourAndLevel(fixedHour)	
 
-	local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, day, hour)
+	local currentSpotList = self:GetFittingSpotList(guessedAudience, false, true, level, fixedDay, fixedHour)
 	if (table.count(currentSpotList) == 0) then
 		--Neue Anfoderung stellen: Passenden Werbevertrag abschließen (für die Zukunft)
 	--	debugMsg("Melde Bedarf für Spots bis " .. guessedAudience .. " Zuschauer an.")

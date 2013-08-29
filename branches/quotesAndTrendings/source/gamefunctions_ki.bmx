@@ -223,20 +223,8 @@ Type TLuaFunctions {_exposeToLua}
 	Field ROOM_OFFICE_PLAYER4:Int
 	Field ROOM_STUDIOSIZE_PLAYER4:Int
 
-
-	Method getPlayerID:Int()
-		print "VERALTET: TVT.getPlayerID -> MY.GetPlayerID()"
-
-		Return Self.ME
-	End Method
-
 	Method _PlayerInRoom:Int(roomname:String, checkFromRoom:Int = False)
-		If checkFromRoom
-			'from room has to be set AND inroom <> null (no building!)
-			Return (Game.Players[ Self.ME ].Figure.inRoom And Game.Players[ Self.ME ].Figure.inRoom.Name = roomname) Or (Game.Players[ Self.ME ].Figure.inRoom And Game.Players[ Self.ME ].Figure.fromRoom And Game.Players[ Self.ME ].Figure.fromRoom.Name = roomname)
-		Else
-			Return (Game.Players[ Self.ME ].Figure.inRoom And Game.Players[ Self.ME ].Figure.inRoom.Name = roomname)
-		EndIf
+		Return Game.Players[ Self.ME ].isInRoom(roomname, checkFromRoom)
 	End Method
 
 	Function Create:TLuaFunctions(pPlayerId:Int)
@@ -342,16 +330,6 @@ Type TLuaFunctions {_exposeToLua}
 		If Not Game.isPlayer( PlayerID ) OR Not Game.Players[PlayerID].isAi() Then Return self.RESULT_NOTALLOWED Else Return Game.Players[PlayerID].figure.changeTarget(newTargetX,Null)
 	End Method
 
-	Method getPlayerMaxAudience:Int()
-		Print "VERALTET: TVT.getPlayerMaxAudience() -> MY.GetMaxAudience()"
-		Return Game.Players[ Self.ME ].maxaudience
-	End Method
-
-	Method getPlayerAudience:Int()
-		Print "VERALTET: TVT.getPlayerAudience() -> MY.GetAudience()"
-		Return Game.Players[ Self.ME ].audience2.GetSum()
-	End Method
-
 	Method getPlayerCredit:Int()
 		Print "VERALTET: TVT.getPlayerCredit() -> MY.GetCredit()"
 		Return Game.Players[ Self.ME ].finances[Game.getWeekday()].credit
@@ -368,7 +346,7 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 	Method getPlayerTargetRoom:Int()
-		Local room:TRooms = Game.Players[ Self.ME ].figure.toRoom
+		Local room:TRooms = Game.Players[ Self.ME ].figure.targetRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -387,23 +365,20 @@ Type TLuaFunctions {_exposeToLua}
 		If Room <> Null Then Game.Players[ Self.ME ].Figure.SendToRoom(Room)
 	    Return self.RESULT_OK
 	End Method
-	
+
 	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstützt. Negativ: Nach links; Positiv: nach rechts
 		Game.Players[ Self.ME ].Figure.GoToCoordinatesRelative(relX, relYFloor)
 		Return self.RESULT_OK
 	End Method
-	
+
 	Method isRoomUnused:Int(roomId:Int = 0)
 		Local Room:TRooms = TRooms.GetRoom(roomId)
-		If Room <> Null
-			If Room.used >= 0 And Room.used <> Self.ME
-				Return -1
-			Else
-				Return self.RESULT_OK
-			Endif
-		Else
-			Return self.RESULT_NOTFOUND
-		Endif
+		If not Room then return self.RESULT_NOTFOUND
+		if not Room.occupant then return self.RESULT_OK
+
+		If Room.occupant.parentPlayer and Room.occupant.parentPlayer.playerID <> Self.ME
+			Return -1
+		endif
 	End Method
 
 	Method getMillisecs:Int()
@@ -525,7 +500,7 @@ Type TLuaFunctions {_exposeToLua}
 			Obj.RemoveFromPlan()
 			Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 			If not (Obj = null)
-				print "TODO: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.contractBase.title
+				print "TODO fuer Ron: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.contractBase.title
 				Obj.RemoveFromPlan()
 				Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 				If not (Obj = null)
@@ -603,17 +578,7 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 
-	'
-	'LUA_br_getPlayerStationcount
-	'LUA_br_getPlayerStation
-	'LUA_br_getStationIdX
-	'LUA_br_getStationIdY
 
-	'LUA_br_getStationAudience
-	'LUA_br_getStationAudienceIncrease
-	'LUA_br_getStationPrice
-	'LUA_Kaufe Sender
-	'LUA_Verkaufe Sender
 	'
 	'LUA_be_getSammyPoints
 	'LUA_be_getBettyLove

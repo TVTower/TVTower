@@ -261,6 +261,7 @@ function OnChat(message)
 end
 
 function OnDayBegins()
+	TVT.addToLog("OnDayBegins")
 	if (aiIsActive) then
 		debugMsg("OnDayBegins!")
 		getAIPlayer():OnDayBegins()
@@ -290,7 +291,7 @@ function OnMinute(number)
 		getAIPlayer():Tick()
 	end
 
-	if (number == "57") then
+	if (number == "4") then
 		local task = getAIPlayer().TaskList[TASK_SCHEDULE]
 		local guessedAudience = task:GuessedAudienceForHourAndLevel(Game.GetHour())
 
@@ -312,7 +313,7 @@ function OnMinute(number)
 
 		--TVT.addToLog("LUA-Audience : " .. guessedAudience2 .. " = MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ") * averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ")")
 
-		TVT.addToLog("LUA-Audience : " .. guessedAudience2 .. " = MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ") * AudienceQuote (" .. (averageMovieQualityByLevel * globalPercentageByHour) .. ")")
+		TVT.addToLog("LUA-Audience (" .. programme.GetID() .. ") : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
 
 		--TVT.addToLog("Base: " .. programme.GetBaseAudienceQuote() .. " / Berechnet: " .. (averageMovieQualityByLevel))
 

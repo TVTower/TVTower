@@ -1712,7 +1712,7 @@ Type TGUIModalWindow Extends TGUIPanel
 	Method onButtonClick:int( triggerEvent:TEventBase )
 		local sender:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		if sender = Null then return FALSE
-		
+
 		For local i:int = 0 to self.buttons.length - 1
 			if self.buttons[i] <> sender then continue
 
@@ -2012,6 +2012,8 @@ Type TGUIListBase Extends TGUIobject
 
 		self.guiEntriesPanel = new TGUIScrollablePanel.Create(0,0, width-self.guiScroller.rect.getW(), height,state)
 		self.guiEntriesPanel.setParent(self)
+		'RON: already set this on create
+		self.guiEntriesPanel.minSize.SetXY(100,100)
 
 		'by default all lists accept drop
 		self.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
@@ -2402,6 +2404,95 @@ endrem
 	End Method
 End Type
 
+Type TGUISelectListItem extends TGUIListItem
+	field selected:int			= FALSE
+
+    Method Create:TGUISelectListItem(text:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		'no "super.Create..." as we do not need events and dragable and...
+   		super.CreateBase(x,y,"",null)
+
+		self.SetLabel(text, TColor.Create(0,0,0))
+		self.Resize( width, height )
+
+		GUIManager.add(self)
+
+		return self
+	End Method
+
+	Method Draw:int()
+		self.getParent("topitem").RestrictViewPort()
+
+		'available width is parentsDimension minus startingpoint
+		local maxWidth:int = TGUIobject(self.getParent("topitem")).getContentScreenWidth()-self.rect.getX()
+		local maxHeight:int = 2000 'more than 2000 pixel is a really long text
+
+		if self.mouseover
+			SetColor 250,210,100
+			DrawRect(self.getScreenX(), self.getScreenY(), maxWidth, self.rect.getH())
+			SetColor 255,255,255
+		elseif self.selected
+			SetAlpha getAlpha()*0.5
+			SetColor 250,210,100
+			DrawRect(self.getScreenX(), self.getScreenY(), maxWidth, self.rect.getH())
+			SetColor 255,255,255
+			SetAlpha getAlpha()*2.0
+		endif
+
+		'draw label
+		'Assets.fonts.baseFontBold.drawStyled(text, self.getScreenX() + move.x, self.getScreenY() + move.y, textColor.r, textColor.g, textColor.b, 2, 1,0.5)
+		self.labelColor.set()
+		useFont.draw(self.label, self.GetScreenX() + 5, self.GetScreenY() + 2+ 0.5*(self.rect.getH()- self.useFont.getHeight(self.label)))
+		SetColor 255,255,255
+
+		self.getParent("topitem").ResetViewPort()
+	End Method
+End Type
+
+Type TGUISelectList Extends TGUIListBase
+	field selectedEntry:TGUIobject = null
+
+    Method Create:TGUISelectList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+		super.Create(x,y,width,height, State)
+
+		RegisterListeners:int()
+
+		return self
+	end Method
+
+	'overrideable
+	Method RegisterListeners:int()
+		'we want to know about clicks
+		EventManager.registerListenerMethod( "guiobject.onClick",	self, "onClickOnEntry", "TGUISelectListItem" )
+	End Method
+
+	Method onClickOnEntry:Int(triggerEvent:TEventBase)
+		local entry:TGUISelectListItem = TGUISelectListItem( triggerEvent.getSender() )
+		if not entry then return FALSE
+
+		'only mark selected if we are owner of that entry
+		if self.HasItem(entry)
+			'remove old entry
+			self.deselectEntry()
+			self.selectedEntry = entry
+			if TGUISelectListItem(self.selectedEntry) then TGUISelectListItem(self.selectedEntry).selected = true
+
+			'inform others: we successfully selected an item
+			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", TData.Create().AddObject("entry", entry) , self ) )
+		endif
+	End Method
+
+	Method deselectEntry:int()
+		if TGUISelectListItem(self.selectedEntry)
+			TGUISelectListItem(self.selectedEntry).selected = FALSE
+			self.selectedEntry = null
+		endif
+	End Method
+
+	Method getSelectedEntry:TGUIobject()
+		return self.selectedEntry
+	End Method
+
+End Type
 
 Type TGUISlotList Extends TGUIListBase
 	Field _slotMinDimension:TPoint = TPoint.Create(0,0)
@@ -2836,8 +2927,7 @@ Type TGUIListItem Extends TGUIobject
 			DrawRect(self.GetScreenX()+1, self.GetScreenY()+1, self.rect.GetW()-2, self.rect.GetH()-2 )
 
 			self.labelColor.set()
-			DrawText(self.label + " ["+self._id+"]", self.GetScreenX() + 5, self.GetScreenY() + 2+ 0.5*(self.rect.getH()-TextHeight(self.label)))
-
+			self.useFont.draw(self.label + " ["+self._id+"]", self.GetScreenX() + 5, self.GetScreenY() + 2+ 0.5*(self.rect.getH()-self.useFont.getHeight(self.label)))
 			SetColor 255,255,255
 		endif
 		if not(self._flags & GUI_OBJECT_DRAGGED) and TGUIListBase(parent)

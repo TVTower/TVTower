@@ -1,3 +1,83 @@
+2013-08-22 13:49  ronny
+
+	  - Newsbloecke koennen nun wie angedacht mit Rechtsklick geloescht
+	  werden
+	  - Gui-Elemente: GetScreenRect beachtet nun den "dragged"-Status
+	  bei Objekten ohne Elternelement
+	  - Spielfiguren koennen waehrend der "Raumwechselanimation" (in
+	  einen Raum) nicht mehr bewegt werden
+	  - Finanzen uebernehmen beim Tagwechsel nun korrekt die Daten vom
+	  Vortag
+	  - Klick-Events von Gui-Elementen werden nun direkt getriggert
+	  statt "irgendwann" beim naechsten Event-Update verarbeit zu
+	  werden
+	  - Gui-Listen-Methode SetItemToSlot setzt "parent" nun auf
+	  ScrollPanel statt Listen-Gruppe
+	  - Ist ein Programm zu teuer, wird der Preis nun hervorgehoben
+	  - Archiv und Filmhaendler - Handling der Programmbloecke nutzen
+	  nun GUI-Listensystem und Events.
+	  - Filmhaendler- nicht bezahlbare Programme koennen gar nicht erst
+	  aufgenommen werden. Wird waehrend des "aufgehoben"-Zustandes das
+	  Geld knapp, kommt beim Versuch des Kaufens die bereits bekannte
+	  Geld-Reicht-Nicht-Meldung und das Objekt wird wieder im Regal
+	  verstaut
+	  - Filmhaendler - Filme koennen nun mit einem "Drop" auf das Regal
+	  oder den Haendler verkauft werden (der Haendler wird in diesem
+	  Fall "hervorgehoben")
+	  - Archiv - Filme koennen nun mit einem "Drop" auf den Typen
+	  zurueck in die Spieler-Programmsammlung genommen werden
+	  - Serien-Videohuellen haben nun eine eigene Farbe um etwas mehr
+	  Uebersicht zu erlauben
+	  - Figuren erzeugen nun rooms.onEnter-Event wenn sie einen Raum
+	  betreten, dadurch ist der Vorgang unterbrechbar
+	  
+	  trunk/TVTower, trunk/TVTower.bmx, trunk/TVTower.exe,
+	  trunk/changeLog.txt, trunk/config/gfx.xml,
+	  trunk/grafiken/filmverleiher/raum_filmverleiher.png,
+	  trunk/grafiken/filmverleiher/raum_filmverleiher_extras.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_image.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-08-22 12:23  starscrazy
+
+	  Neues Feature:
+	  - KI: Die KI wartet nun eventuell (abhängig von der Prio der
+	  Aufgabe) ein paar Sekunden vor einem Raum (sie bewegt sich ein
+	  paar Pixel zur Seite neben die Türe). Bricht die Warterei aber
+	  dann auch eventuell wieder ab.
+	  
+	  Gefixt:
+	  - KI: Es wird nun darauf reagiert, dass ein Raum besetzt sein
+	  kann.
+	  - BM: Messagebox hat beim schließen nen Fehler geliefert
+	  - BM: md_getMovie - es wird geprüft ob Block.Programme existiert
+	  um ggf. nen Fehlercode zurück zu schicken
+	  - BM: Rechtschreibfehler
+	  
+	  Neue Methoden:
+	  - BM: GoToCoordinatesRelative / doGoToRelative - um die Figur
+	  relativ zu ihrer Position ein paar Pixel zu bewegen
+	  - BM: isRoomUnused - damit eine wartende Figur prüfen kann, ob
+	  der Raum jetzt leer ist.
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx, trunk/source/main.bmx
+	  
+
 2013-08-09 16:06  ronny
 
 	  - Werbebloecke mit zuwenig Zuschauern werden nun in rot

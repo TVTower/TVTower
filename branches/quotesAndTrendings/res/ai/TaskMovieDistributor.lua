@@ -64,6 +64,7 @@ end
 function JobCheckMovies:Tick()
 	self:CheckMovie()
 	self:CheckMovie()
+	self:CheckMovie()
 end
 
 function JobCheckMovies:CheckMovie()
@@ -105,6 +106,7 @@ function JobAppraiseMovies:Prepare(pParams)
 end
 
 function JobAppraiseMovies:Tick()
+	self:AppraiseCurrentMovie()
 	self:AppraiseCurrentMovie()
 	self:AppraiseCurrentMovie()
 end

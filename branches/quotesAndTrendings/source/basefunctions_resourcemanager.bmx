@@ -566,6 +566,7 @@ Type TResourceLoaders
 		EventManager.registerListener( "LoadResource.SCREENS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadScreens)  )
 		EventManager.registerListener( "LoadResource.COLORS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
 		EventManager.registerListener( "LoadResource.COLOR",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
+		EventManager.registerListener( "LoadResource.GENRES",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadGenres)  )
 
 		return new TResourceLoaders
 	End Function
@@ -740,5 +741,50 @@ Type TResourceLoaders
 			Next
 		endif
 	End Function
+	
+	Function onLoadGenres:int( triggerEvent:TEventBase )
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+
+
+		'for every single room
+		Local values_genre:TMap = TMap(xmlLoader.values.ValueForKey("genres"))
+		If values_genre = Null Then values_genre = CreateMap() ;
+
+		For Local child:TxmlNode = EachIn childNode.GetChildren()
+'			if child.getType() <> XML_ELEMENT_NODE then continue
+			Local genre:TMap		= CreateMap()
+			
+			Local id:Int		= xmlLoader.xml.FindValueInt(child, "id", -1)
+			Local name:String	= xmlLoader.xml.FindValue(child, "name", "unknown")
+
+			genre.Insert("id",		String(id))
+			genre.Insert("name",	name)
+			
+			local subNode:TxmlNode = null
+			subNode = xmlLoader.xml.FindChild(child, "timeMods")
+			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
+				local time:String = xmlLoader.xml.FindValue(subNodeChild, "time", "-1")			
+				genre.Insert("subNode_" + time, 	xmlLoader.xml.FindValue(subNodeChild, "value", "") )				
+			Next
+			
+			
+			subNode = xmlLoader.xml.FindChild(child, "audienceAttractions")
+			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
+				local groupType:String = xmlLoader.xml.FindValue(subNodeChild, "type", "-1")				
+				local id:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
+				local value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "70")
+				
+				genre.Insert(groupType + "_" + id, 	value)				
+			Next			
+			
+			values_genre.Insert(String(id), TAsset.CreateBaseAsset(genre, "GENREDATA"))
+			PrintDebug("XmlLoader.onLoadGenres:", "inserted genre: " + name, DEBUG_LOADING)
+		Next
+
+		Assets.Add("genres", TAsset.CreateBaseAsset(values_genre, "TMAP"))
+
+	End Function	
 End Type
 TResourceLoaders.Create()

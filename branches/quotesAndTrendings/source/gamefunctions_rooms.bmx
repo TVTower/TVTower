@@ -1,35 +1,26 @@
 ﻿'Basictype of all rooms
-Type TRooms  {_exposeToLua="selected"}
-	Field screenManager:TScreenManager		= null					'screenmanager - controls what scene to show
+Type TRooms extends TGameObject  {_exposeToLua="selected"}
+	Field screenManager:TScreenManager		= null		'screenmanager - controls what scene to show
 	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
     Field desc:String			= ""					'description, eg. "Bettys bureau" (used for tooltip)
     Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
     Field tooltip:TTooltip		= null					'uses description
 
-	Field DoorTimer:TIntervalTimer		= TIntervalTimer.Create(500)'500
+	Field DoorTimer:TIntervalTimer	= TIntervalTimer.Create(500)
 	Field Pos:TPoint									'x of the rooms door in the building, y as floornumber
     Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
-    Field doorwidth:Int			= 38
-    Field doorHeight:Int		= 52
+    Field doorDimension:TPoint	= TPoint.Create(38,52)
     Field RoomSign:TRoomSigns
     Field owner:Int				=-1						'to draw the logo/symbol of the owner
-    Field used:int				=-1						'>0 is user id
-    Field id:Int				= 1		 {_exposeToLua}
-	Field FadeAnimationActive:Int = 0
-	Field RoomBoardX:Int		= 0
-	Field Dialogues:TList		= CreateList()
+    Field occupant:TFigures		= null					'figure currently in this room
 	Field SoundSource:TDoorSoundSource = TDoorSoundSource.Create(self)
 
     Global RoomList:TList		= CreateList()			'global list of rooms
-    Global LastID:Int			= 1
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
 
 	Method getDoorType:int()
-		If name = "supermarket"
-			'if self.DoorTimer.isExpired() then print "getDoorType: " + self.doortype else print "getDoorType: " + 5
-		endif
 		if self.DoorTimer.isExpired() then return self.doortype else return 5
 	End Method
 
@@ -79,14 +70,14 @@ Type TRooms  {_exposeToLua="selected"}
 			EndIf
 
 			'only show tooltip if not "empty" and mouse in door-rect
-			If obj.desc <> "" and Game.Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseManager.x, MouseManager.y, obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, obj.doorwidth, 54)
+			If obj.desc <> "" and Game.Players[Game.playerID].Figure.inRoom = Null And functions.IsIn(MouseManager.x, MouseManager.y, obj.Pos.x, Building.pos.y  + building.GetFloorY(obj.Pos.y) - obj.doorDimension.y, obj.doorDimension.x, obj.doorDimension.y)
 				If obj.tooltip <> null
 					obj.tooltip.Hover()
 				else
 					obj.tooltip = TTooltip.Create(obj.desc, obj.descTwo, 100, 140, 0, 0)
 				endif
 				obj.tooltip.pos.y	= Building.pos.y + Building.GetFloorY(obj.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h - 20
-				obj.tooltip.pos.x	= obj.Pos.x + obj.doorwidth/2 - obj.tooltip.GetWidth()/2
+				obj.tooltip.pos.x	= obj.Pos.x + obj.doorDimension.x/2 - obj.tooltip.GetWidth()/2
 				obj.tooltip.enabled	= 1
 				If obj.name = "chief"					Then obj.tooltip.tooltipimage = 2
 				If obj.name = "news"					Then obj.tooltip.tooltipimage = 4
@@ -101,6 +92,53 @@ Type TRooms  {_exposeToLua="selected"}
 		Next
     End Function
 
+
+	'a figure wants to leave that room
+    Method Leave:int( figure:TFigures=null )
+		if not figure then figure = Game.getPlayer().figure
+
+		'figure isn't in that room - so just leave
+		if not self.occupant then return TRUE
+		if self.occupant <> figure then return TRUE
+
+		'ask if leave possible
+		'=====================
+		'emit event that someone wants to leave a room
+		local event:TEventSimple = TEventSimple.Create("room.onTryLeave", TData.Create().Add("figure", figure) , self )
+		EventManager.triggerEvent( Event )
+		if event.isVeto() then return FALSE
+
+
+		'leave is allowed
+		'================
+		'finally inform that the figure leaves the room - eg for AI-scripts
+		EventManager.triggerEvent( TEventSimple.Create("room.onLeave", TData.Create().Add("figure", figure) , self ) )
+
+		'open the door
+		If GetDoorType() >= 0 then OpenDoor(self.occupant)
+
+		'set the room unused
+		self.occupant = null
+
+		return TRUE
+	End Method
+
+
+	'gets called if somebody tries to leave that room
+	'generic handler - could be done individual (in room handlers...)
+	Method onTryLeave:int( triggerEvent:TEventBase )
+
+		'only pay attention to players
+		if self.occupant.ParentPlayer
+			'roomboard left without animation as soon as something dragged but leave forced
+			If Self.name = "roomboard" 	AND TRoomSigns.AdditionallyDragged > 0
+				triggerEvent.setVeto()
+				return FALSE
+			endif
+		endif
+
+		return TRUE
+	End Method
 
 	Function DrawDoorsOnBackground:Int()
 		'do nothing if already done
@@ -148,39 +186,6 @@ Type TRooms  {_exposeToLua="selected"}
     End Function
 
 
-	'leave with Open/close-animation (black)
-	Method LeaveAnimated:Int()
-		'roomboard left without animation as soon as something dragged but leave forced
-        If Self.name = "roomboard" 	AND TRoomSigns.AdditionallyDragged > 0 Then return TRUE
-        If Self.name = "adagency"		Then TContractBlock.ContractsToPlayer(Game.playerID)
-        If Self.name = "movieagency"
-			'do not allow leaving as long as we have a dragged block
-			if RoomHandler_MovieAgency.draggedGuiProgrammeCoverBlock
-				return FALSE
-			else
-				RoomHandler_MovieAgency.ProgrammeToPlayer(Game.playerID)
-			endif
-		endif
-        If Self.name = "archive"
-			'do not allow leaving as long as we have a dragged block
-			if RoomHandler_Archive.draggedGuiProgrammeCoverBlock
-				return FALSE
-			endif
-		endif
-
-		If GetDoorType() >= 0
-			Fader.Enable() 'room fading
-			OpenDoor(Game.Players[Game.playerID].Figure)
-			FadeAnimationActive = True
-		Else
-			print "LeaveAnimated - CloseDoor"
-			CloseDoor(Game.Players[Game.playerID].Figure)
-			Game.Players[Game.playerID].Figure.LeaveRoom()
-		EndIf
-		Return false
-	End Method
-
-
     'draw Room
 	Method Draw:int()
 		if not self.screenManager then Throw "ERROR: room.draw() - screenManager missing";return 0
@@ -188,10 +193,10 @@ Type TRooms  {_exposeToLua="selected"}
 		'draw rooms current screen
 		self.screenManager.Draw()
 		'emit event so custom functions can run after screen draw, sender = screen
-		EventManager.triggerEvent( TEventSimple.Create("rooms.onScreenDraw", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onScreenDraw", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
 
 		'emit event so custom draw functions can run
-		EventManager.triggerEvent( TEventSimple.Create("rooms.onDraw", TData.Create().AddNumber("type", 1), self) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", TData.Create().AddNumber("type", 1), self) )
 
 		return 0
 	End Method
@@ -200,25 +205,15 @@ Type TRooms  {_exposeToLua="selected"}
     'process special functions of this room. Is there something to click on?
     'animated gimmicks? draw within this function.
 	Method Update:Int()
-		If Fader.fadeenabled And FadeAnimationActive
-			If Fader.fadecount >= 20 And not Fader.fadeout
-				Fader.EnableFadeout()
-				CloseDoor(Game.Players[Game.playerID].Figure)
-				FadeAnimationActive = False
- 			    Game.Players[Game.playerID].Figure.LeaveRoom()
-				Return 0
-			EndIf
-		End If
-
-
 		'update rooms current screen
 		self.screenManager.Update(App.timer.getDeltaTime())
 		'emit event so custom functions can run after screen update, sender = screen
-		EventManager.triggerEvent( TEventSimple.Create("rooms.onScreenUpdate", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
+		'also this event has "room" as payload
+		EventManager.triggerEvent( TEventSimple.Create("room.onScreenUpdate", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() ) )
 
 		'emit event so custom updaters can handle
-		'store amount of listeners
-		local listeners:int = EventManager.triggerEvent( TEventSimple.Create("rooms.onUpdate", TData.Create().AddNumber("type", 0), self) )
+		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", TData.Create().AddNumber("type", 0), self) )
+
 
 		'handle normal right click - check subrooms
 		'only leave a room if not in a subscreen
@@ -233,16 +228,10 @@ Type TRooms  {_exposeToLua="selected"}
 				endif
 			endif
 		else
-			'TODO: [RON] change this to OnLeave event too
-			'something blocks leaving? - check it
-			If MOUSEMANAGER.IsHit(2) AND not Self.LeaveAnimated() then MOUSEMANAGER.resetKey(2)
+			If MOUSEMANAGER.IsHit(2) AND not Game.Players[game.playerID].figure.LeaveRoom() then MOUSEMANAGER.resetKey(2)
 		endif
 
-
-		'room got no special handling ...
-		if listeners = 0 then Game.Players[game.playerID].figure.fromroom = Null
 		return 0
-
 	End Method
 
 
@@ -256,6 +245,9 @@ Type TRooms  {_exposeToLua="selected"}
 
 		self.RoomList.AddLast(self)
 
+		EventManager.registerListenerMethod( "room.onTryLeave", self, "onTryLeave", self )
+
+
 		return self
 	End Method
 
@@ -268,7 +260,7 @@ Type TRooms  {_exposeToLua="selected"}
 		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
 
 		obj.descTwo		= descTwo
-		obj.doorwidth	= Assets.GetSprite("gfx_building_Tueren").framew
+		obj.doorDimension.SetX( Assets.GetSprite("gfx_building_Tueren").framew )
 		obj.xpos		= x
 		obj.Pos			= TPoint.Create(0,y)
 		If x <=4
@@ -278,7 +270,6 @@ Type TRooms  {_exposeToLua="selected"}
 			If x = 3 Then obj.Pos.x = 469
 			If x = 4 Then obj.Pos.x = 557
 		EndIf
-		obj.RoomBoardX	= x
 		obj.doortype	= doortype
 		If createATooltip then obj.CreateRoomsign(x)
 
@@ -290,11 +281,10 @@ Type TRooms  {_exposeToLua="selected"}
     'Raum erstellen und bereits geladenes Bild nutzen
 	Function CreateWithPos:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", x:Int = 0, xpos:Int = 0, width:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
 		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
-		obj.doorwidth	= width
+		obj.doorDimension.SetX( width )
 		obj.xpos		= xpos
 		obj.Pos			= TPoint.Create(x,y)
 		obj.doortype	= doortype
-		obj.RoomBoardX	= obj.xpos
 
 		If CreateAToolTip then obj.CreateRoomsign(xpos)
 
@@ -305,7 +295,7 @@ Type TRooms  {_exposeToLua="selected"}
 	Method CreateRoomsign:int(myx:Int = 0)
 		If doortype < 0 then return 0
 
-		Local signx:Int = Self.RoomBoardX
+		local signx:int = self.xpos
 		Local signy:Int = 41 + (13 - Pos.y) * 23
 		select signx
 			case 1	signx = 26
@@ -321,8 +311,8 @@ Type TRooms  {_exposeToLua="selected"}
     Function GetTargetRoom:TRooms(x:int, y:int)
 		For Local room:TRooms = EachIn TRooms.RoomList
 			If room.doortype >= 0
-				If room.name = "roomboard" Then room.doorwidth = 59
-				If functions.IsIn(x, y, room.Pos.x, Building.pos.y + Building.GetFloorY(room.pos.y) - Assets.GetSprite("gfx_building_Tueren").h, room.doorwidth, 54)
+				If room.name = "roomboard" Then room.doorDimension.SetX(59)
+				If functions.IsIn(x, y, room.Pos.x, Building.pos.y + Building.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
 					Return room
 				EndIf
 			EndIf
@@ -368,12 +358,11 @@ Type TRooms  {_exposeToLua="selected"}
 End Type
 
 Type TRoomHandler
-	'unused atm global playerID:int
 
 	Function _RegisterHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), room:TRooms = null)
 		if room
-			EventManager.registerListenerFunction( "rooms.onUpdate", updateFunc, room )
-			EventManager.registerListenerFunction( "rooms.onDraw", drawFunc, room )
+			EventManager.registerListenerFunction( "room.onUpdate", updateFunc, room )
+			EventManager.registerListenerFunction( "room.onDraw", drawFunc, room )
 		endif
 	End Function
 
@@ -381,8 +370,8 @@ Type TRoomHandler
 	'screens.onScreenUpdate/Draw is more general purpose
 	Function _RegisterScreenHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), screen:TScreen)
 		if screen
-			EventManager.registerListenerFunction( "rooms.onScreenUpdate", updateFunc, screen )
-			EventManager.registerListenerFunction( "rooms.onScreenDraw", drawFunc, screen )
+			EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen )
+			EventManager.registerListenerFunction( "room.onScreenDraw", drawFunc, screen )
 		endif
 	End Function
 
@@ -401,6 +390,14 @@ Type RoomHandler_Office extends TRoomHandler
 	global ProgrammePlannerButtons:TGUIImageButton[6]
 	global PPprogrammeList:TgfxProgrammelist
 	global PPcontractList:TgfxContractlist
+	global currentSubRoom:TRooms = null
+	global lastSubRoom:TRooms = null
+
+	global stationList:TGUISelectList
+	global stationMapMode:int				= 0	'1=searchBuy,2=buy,3=sell
+	global stationMapActionConfirmed:int	= FALSE
+	global stationMapSelectedStation:TStation
+	global stationMapMouseoverStation:TStation
 
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
 	Global fastNavigateInitialTimer:int = 250
@@ -489,12 +486,12 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		Game.Players[game.playerID].figure.fromroom = Null
-		If MouseManager.IsHit(1)
+		If MOUSEMANAGER.IsClicked(1)
 			If functions.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
 				Game.Players[Game.playerID].Figure.LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
-			EndIf
+		EndIf
 
 		Game.cursorstate = 0
 		'safe - reachable for all
@@ -503,7 +500,7 @@ Type RoomHandler_Office extends TRoomHandler
 			SafeToolTip.enabled = 1
 			SafeToolTip.Hover()
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 
@@ -517,7 +514,7 @@ Type RoomHandler_Office extends TRoomHandler
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 				room.screenManager.GoToSubScreen("screen_office_pplanning")
@@ -531,7 +528,7 @@ Type RoomHandler_Office extends TRoomHandler
 				StationsToolTip.enabled = 1
 				StationsToolTip.Hover()
 				Game.cursorstate = 1
-				If MOUSEMANAGER.IsHit(1)
+				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
 					Game.cursorstate = 0
 					room.screenManager.GoToSubScreen("screen_office_stationmap")
@@ -712,7 +709,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		If functions.IsIn(MouseManager.x, MouseManager.y, 759,17,14,15)
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 				Game.daytoplan :+ 1
@@ -720,7 +717,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 		If functions.IsIn(MouseManager.x, MouseManager.y, 670,17,14,15)
 			Game.cursorstate = 1
-			If MOUSEMANAGER.IsHit(1)
+			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
 				Game.daytoplan :- 1
@@ -930,7 +927,7 @@ Type RoomHandler_Office extends TRoomHandler
 		Assets.GetFont("Default",13).drawBlock(Localization.GetString("IMAGE_REACH") , 55, 233, 330, 20, 0, 50, 50, 50)
 
 		Assets.GetFont("Default",12).drawBlock(Localization.GetString("IMAGE_SHARETOTAL") , 55, 45, 330, 20, 0, 50, 50, 50)
-		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Game.Players[room.owner].maxaudience / StationMap.einwohner, 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
+		Assets.GetFont("Default",12).drawBlock(functions.convertPercent(100.0 * Game.Players[room.owner].StationMap.getCoverage(), 2) + "%", 280, 45, 93, 20, 2, 50, 50, 50)
 	End Function
 
 	Function onUpdateImage:int( triggerEvent:TEventBase )
@@ -950,20 +947,24 @@ Type RoomHandler_Office extends TRoomHandler
 	Function InitStationMap()
 		'StationMap-GUIcomponents
 		Local button:TGUIButton
-		button = new TGUIButton.Create(TPoint.Create(610, 110), 155, "Neue Station", "STATIONMAP")
+		button = new TGUIButton.Create(TPoint.Create(610, 110), 155, "Sendemast kaufen", "STATIONMAP")
 		button.SetTextalign("CENTER")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
 
-		button = new TGUIButton.Create(TPoint.Create(610, 345), 155, "Station verkaufen", "STATIONMAP")
+		button = new TGUIButton.Create(TPoint.Create(610, 345), 155, "Sendemast verkaufen", "STATIONMAP")
 		button.disable()
 		button.SetTextalign("CENTER")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, button )
 
-		Local stationlist:TGUIList = new TGUIList.Create(588, 233, 190, 100, 40, "STATIONMAP")
-		stationlist.SetControlState(1)
-		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapList, stationlist )
+		'we have to refresh the gui station list as soon as we remove or add a station
+		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
+		EventManager.registerListenerFunction( "stationmap.addStation",	OnChangeStationMapStation )
+
+		stationList = new TGUISelectList.Create(595,233,185,100, "STATIONMAP")
+		EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList )
+
 		For Local i:Int = 0 To 3
 			local button:TGUIOkbutton = new TGUIOkButton.Create(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 1, String(i + 1), "STATIONMAP", Assets.GetFont("Default", 11, BOLDFONT))
 			EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapFilters, button )
@@ -975,9 +976,8 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		StationMap.Draw()
 		GUIManager.Draw("STATIONMAP")
-		Assets.fonts.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
+
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
 			DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 15, 18)
@@ -985,6 +985,46 @@ Type RoomHandler_Office extends TRoomHandler
 			DrawRect(565, 33 + i * Assets.GetSprite("gfx_gui_ok_off").h*GUIManager.globalScale, 13, 16)
 		Next
 		SetColor 255, 255, 255
+		Assets.fonts.baseFont.drawBlock("zeige Spieler:", 480, 15, 100, 20, 2)
+
+		'draw stations and tooltips
+		Game.Players[room.owner].StationMap.Draw()
+
+		'also draw the station used for buying/searching
+		If stationMapMouseoverStation then stationMapMouseoverStation.Draw()
+		'also draw the station used for buying/searching
+		If stationMapSelectedStation then stationMapSelectedStation.Draw(true)
+
+		local font:TBitmapFont = Assets.fonts.baseFont
+		Assets.fonts.baseFontBold.drawStyled( "Einkauf", 595, 18, 0,0,0, 1, 1, 0.5)
+		Assets.fonts.baseFontBold.drawStyled( "Deine Sendemasten", 595, 178, 0,0,0, 1, 1, 0.5)
+
+		'draw a kind of tooltip over a mouseoverStation
+		if stationMapMouseoverStation then stationMapMouseoverStation.DrawInfoTooltip()
+
+		If stationMapMode = 1 and stationMapSelectedStation
+			SetColor(80, 80, 0)
+			Assets.fonts.baseFontBold.draw( getLocale("MAP_COUNTRY_"+stationMapSelectedStation.getFederalState()), 595, 37)
+
+			SetColor(0, 0, 0)
+			font.draw("Reichweite: ", 595, 55)
+				font.drawBlock(functions.convertValue(String(stationMapSelectedStation.getReach()), 2, 0), 660, 55, 102, 20, 2)
+			font.draw("Zuwachs: ", 595, 72)
+				font.drawBlock(functions.convertValue(String(stationMapSelectedStation.getReachIncrease()), 2, 0), 660, 72, 102, 20, 2)
+			font.draw("Preis: ", 595, 89)
+				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, 2)
+			SetColor(255,255,255)
+		EndIf
+
+		If stationMapSelectedStation and stationMapSelectedStation.paid
+			SetColor(0, 0, 0)
+			font.draw("Reichweite: ", 595, 200)
+				font.drawBlock(functions.convertValue(stationMapSelectedStation.reach, 2, 0), 660, 200, 102, 20, 2)
+			font.draw("Wert: ", 595, 216)
+				Assets.fonts.baseFontBold.drawBlock(functions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, 2)
+			SetColor(255, 255, 255)
+		EndIf
+
 	End Function
 
 	Function onUpdateStationMap:int( triggerEvent:TEventBase )
@@ -992,99 +1032,192 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		StationMap.Update()
+		'backup room if it changed
+		if currentSubRoom <> lastSubRoom
+			lastSubRoom = currentSubRoom
+			'if we changed the room meanwhile - we have to rebuild the stationList
+			RefreshStationMapStationList()
+		endif
+
+		currentSubRoom = room
+
+		Game.Players[room.owner].StationMap.Update()
+
+		'process right click
+		if MOUSEMANAGER.isHit(2)
+			local reset:int = (stationMapSelectedStation or stationMapMouseoverStation)
+
+			ResetStationMapAction(0)
+
+			if reset then MOUSEMANAGER.ResetKey(2)
+
+		Endif
+
+
+		'buying stations using the mouse
+		'1. searching
+		If stationMapMode = 1
+			'create a temporary station if not done yet
+			if not StationMapMouseoverStation then StationMapMouseoverStation = TStationMap.getStationMap(room.owner).getTemporaryStation( MouseManager.x -20, MouseManager.y -10 )
+			local mousePos:TPoint = TPoint.Create( MouseManager.x -20, MouseManager.y -10)
+
+			'if the mouse has moved - refresh the station data and move station
+			if not StationMapMouseoverStation.pos.isSame( mousePos )
+				StationMapMouseoverStation.pos.SetPos(mousePos)
+				StationMapMouseoverStation.refreshData()
+				'refresh state information
+				StationMapMouseoverStation.getFederalState(true)
+			endif
+
+			'if mouse gets clicked, we store that position in a separate station
+			if MOUSEMANAGER.isClicked(1) and StationMapMouseoverStation.getReach()>0
+				StationMapSelectedStation = TStationMap.getStationMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
+			endif
+
+			'no antennagraphic in foreign countries
+			'-> remove the station so it wont get displayed
+			if StationMapMouseoverStation.getReach() <= 0 then StationMapMouseoverStation = null
+			if StationMapSelectedStation and StationMapSelectedStation.getReach() <= 0 then StationMapSelectedStation = null
+		endif
+
 		GUIManager.Update("STATIONMAP")
 	End Function
 
-	Function OnClick_StationMapSell(triggerEvent:TEventBase)
+	Function OnChangeStationMapStation:int( triggerEvent:TEventBase )
+		'do nothing when not in a room
+		if not currentSubRoom then return FALSE
+
+		RefreshStationMapStationList( currentSubRoom.owner )
+	End Function
+
+	Function ResetStationMapAction(mode:int=0)
+		stationMapMode = mode
+		stationMapActionConfirmed = FALSE
+		'remove selection
+		stationMapSelectedStation = null
+		stationMapMouseoverStation = Null
+
+		'reset gui list
+		stationList.deselectEntry()
+	End Function
+
+
+	'===================================
+	'Stationmap: Connect GUI elements
+	'===================================
+
+	Function OnUpdate_StationMapBuy:int(triggerEvent:TEventBase)
+		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		if stationMapMode=1
+			button.value = "Kauf bestätigen"
+		else
+			button.value = "Sendemast kaufen"
+		endif
+	End Function
+
+	Function OnClick_StationMapBuy:int(triggerEvent:TEventBase)
 		local button:TGUIButton = TGUIButton(triggerEvent._sender)
-		If button <> Null
-			if StationMap.action <> 3
-				button.value = "Wirklich verkaufen"
-				StationMap.action = 3 'selling of stations
-			else
-				 button.value = "Verkaufen"
-				 StationMap.action = 4 'finished selling
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'coming from somewhere else... reset first
+		if stationMapMode<>1 then ResetStationMapAction(1)
+
+		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
+			'add the station (and buy it)
+			if Game.Players[currentSubRoom.owner].Stationmap.AddStation(stationMapSelectedStation, TRUE)
+				ResetStationMapAction(0)
 			endif
+		EndIf
+	End Function
+
+
+	Function OnClick_StationMapSell:int(triggerEvent:TEventBase)
+		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'coming from somewhere else... reset first
+		if stationMapMode<>2 then ResetStationMapAction(2)
+
+		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
+			'remove the station (and sell it)
+			if Game.Players[currentSubRoom.owner].Stationmap.RemoveStation(stationMapSelectedStation, TRUE)
+				ResetStationMapAction(0)
+			endif
+		EndIf
+	End Function
+
+	'enables/disables the button depending on selection
+	'sets button label depending on userAction
+	Function OnUpdate_StationMapSell:int(triggerEvent:TEventBase)
+		Local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		If not button then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'different owner or not paid
+		if stationMapSelectedStation.owner <> Game.playerID or not stationMapSelectedStation.paid
+			button.disable()
+		else
+			button.enable()
+		endif
+
+		if stationMapMode=2
+			button.value = "Verkauf bestätigen"
+		else
+			button.value = "Sendemast verkaufen"
 		endif
 	End Function
 
-	Function OnClick_StationMapBuy(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local button:TGUIButton = TGUIButton(evt._sender)
-			If button <> Null
-				if StationMap.action <> 1
-					button.value		= "Kaufen"
-					StationMap.action	= 1			'enables buying of stations
-				else
-					button.value		= "Neue Station"
-					StationMap.action 	= 2			'tries to buy
-				endif
-			EndIf
+
+	'rebuild the stationList - eg. when changed the room (other office)
+	Function RefreshStationMapStationList(playerID:int=-1)
+		If playerID <= 0 Then playerID = Game.playerID
+
+		'first fill of stationlist
+		stationList.EmptyList()
+		'remove potential highlighted item
+		stationList.deselectEntry()
+
+		For Local station:TStation = EachIn Game.Players[playerID].StationMap.Stations
+			local item:TGUISelectListItem = new TGUISelectListItem.Create("Sendemast (" + functions.convertValue(station.reach, 2, 0) + ")",0,0,100,20)
+			'link the station to the item
+			item.data.Add("station", station)
+			stationList.AddItem( item )
+		Next
+	End Function
+
+	'an entry was selected - make the linked station the currently selected station
+	Function OnSelectEntry_StationMapStationList:int(triggerEvent:TEventBase)
+		Local senderList:TGUISelectList = TGUISelectList(triggerEvent._sender)
+		If not senderList then return FALSE
+
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		'set the linked station as selected station
+		'also set the stationmap's userAction so the map knows we want to sell
+		local item:TGUISelectListItem = TGUISelectListItem(senderList.getSelectedEntry())
+		if item
+			stationMapSelectedStation = TStation(item.data.get("station"))
+			stationMapMode = 2 'sell
 		endif
 	End Function
 
-	Function OnUpdate_StationMapBuy(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIButton = TGUIButton(evt._sender)
+	Function OnUpdate_StationMapFilters:int(triggerEvent:TEventBase)
+		Local button:TGUIOkbutton = TGUIOkbutton(triggerEvent._sender)
+		if not button then return FALSE
 
-			If MOUSEMANAGER.IsHit(1) And StationMap.action = 1 And MouseManager.x < 570
-				local ClickPos:TPoint = TPoint.Create( MouseManager.x - 20, MouseManager.y - 10 )
-				If StationMap.LastStation.pos.isSame( ClickPos )
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
-				Else
-					StationMap.LastStation.pos.setPos(clickPos)
-				EndIf
-				MouseManager.resetKey(1)
-				If StationMap.action > 1
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnClick", null, obj ) )
-				endif
-			EndIf
-		EndIf
+		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+
+		Game.Players[currentSubRoom.owner].StationMap.showStations[Int(button.value)] = button.crossed
 	End Function
-
-	Function OnUpdate_StationMapSell(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIButton = TGUIButton(evt._sender)
-			If obj <> Null
-				If StationMap.sellStation[Game.playerID] <> Null Then obj.enable() Else obj.disable()
-			EndIf
-		EndIf
-	End Function
-
-	Function OnUpdate_StationMapList(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIList = TGUIList(evt._sender)
-			If obj <> Null
-				'first fill of stationlist
-				obj.ClearEntries()
-				Local counter:Int = 0
-				For Local station:TStation = EachIn StationMap.StationList
-					If Game.playerID = station.owner
-						obj.AddEntry("", "Station (" + functions.convertValue(station.reach, 2, 0) + ")", 0, 0, 0, MilliSecs())
-						If obj.ListPosClicked = counter
-							StationMap.sellStation[Game.playerID] = station
-						EndIf
-						counter:+1
-					EndIf
-				Next
-			EndIf
-		Endif
-	End Function
-
-	Function OnUpdate_StationMapFilters(triggerEvent:TEventBase)
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			Local obj:TGUIOkbutton = TGUIOkbutton(evt._sender)
-			If obj <> Null then StationMap.filter_ShowStations[Int(obj.value)] = obj.crossed
-		EndIf
-	End Function
-
-
 End Type
 
 
@@ -1130,9 +1263,23 @@ Type RoomHandler_Archive extends TRoomHandler
 			if room then super._RegisterHandler(onUpdate, onDraw, room)
 
 			'figure enters room - reset the suitcase's guilist, limit listening to the 4 rooms
-			EventManager.registerListenerFunction( "rooms.onEnter", onRoomEnter, TRooms.GetRoomByDetails("archive",i) )
+			EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, TRooms.GetRoomByDetails("archive",i) )
+			EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRooms.GetRoomByDetails("archive",i) )
 		Next
 
+	End Function
+
+	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
+		'non players can always leave
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure or not figure.parentPlayer then return FALSE
+
+		'do not allow leaving as long as we have a dragged block
+		if draggedGuiProgrammeCoverBlock
+			triggerEvent.setVeto()
+			return FALSE
+		endif
+		return TRUE
 	End Function
 
 
@@ -1235,18 +1382,14 @@ Type RoomHandler_Archive extends TRoomHandler
 	End Function
 
 	'clear the guilist for the suitcase if a player enters
-	Function onRoomEnter:int( triggerEvent:TEventBase )
-		local room:TRooms = TRooms(triggerEvent.GetSender())
-		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
-		if not room or not figure then return FALSE
-
+	Function onEnterRoom:int( triggerEvent:TEventBase )
 		'we are not interested in other figures than our player's
-		if not figure.IsActivePlayer() then return FALSE
+		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
+		if not figure or not figure.IsActivePlayer() then return FALSE
 
 		'empty the guilist / delete gui elements
 		'- the real list still may contain elements with gui-references
 		self.guiListSuitcase.EmptyList()
-
 	End Function
 
 
@@ -1286,7 +1429,7 @@ Type RoomHandler_Archive extends TRoomHandler
 			If ArchiveProgrammeList.GetOpen() = 0
 				if functions.IsIn(MouseManager.x, MouseManager.y, 605,65,120,90) Or functions.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
 					Game.cursorstate = 1
-					If MOUSEMANAGER.IsHit(1)
+					If MOUSEMANAGER.IsClicked(1)
 						MOUSEMANAGER.resetKey(1)
 						Game.cursorstate = 0
 						ArchiveProgrammeList.SetOpen(1)
@@ -1397,13 +1540,68 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlockOnVendor, "TGUIProgrammeCoverBlock" )
 		'figure enters room - reset the suitcase's guilist, limit listening to this room
-		EventManager.registerListenerFunction( "rooms.onEnter", onRoomEnter, TRooms.GetRoomByDetails("movieagency",0) )
-
+		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, TRooms.GetRoomByDetails("movieagency",0) )
+		'figure leaves room - only without dragged blocks
+		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRooms.GetRoomByDetails("movieagency",0) )
+		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, TRooms.GetRoomByDetails("movieagency",0) )
 
 		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, TScreen.GetScreen("screen_movieagency") )
 		super._RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, TScreen.GetScreen("screen_movieauction") )
 	End Function
 
+	'clear the guilist for the suitcase if a player enters
+	Function onEnterRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent.GetSender())
+		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
+		if not room or not figure then return FALSE
+
+		'we are not interested in other figures than our player's
+		if not figure.IsActivePlayer() then return FALSE
+
+		'empty guilists / delete gui elements
+		'- the real list still may contain elements with gui-references
+		'- this avoids zombies when watching players..
+		GuiListMoviesGood.EmptyList()
+		GuiListMoviesCheap.EmptyList()
+		GuiListSeries.EmptyList()
+		GuiListSuitcase.EmptyList()
+	End Function
+
+
+	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		'non players can always leave
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure or not figure.parentPlayer then return FALSE
+
+		'do not allow leaving as long as we have a dragged block
+		if draggedGuiProgrammeCoverBlock
+			triggerEvent.setVeto()
+			return FALSE
+		endif
+		return TRUE
+	End Function
+
+
+	'add back the programmes from the suitcase
+	'also fill empty blocks, remove gui elements
+	Function onLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		'non players can always leave
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure or not figure.parentPlayer then return FALSE
+
+		figure.parentPlayer.ProgrammeCollection.ReaddProgrammesFromSuitcase()
+
+		'fill all open slots in the agency
+		ReFillBlocks()
+
+		return TRUE
+	End Function
 
 
 	'===================================
@@ -1558,13 +1756,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Function
 
 
-	Function ProgrammeToPlayer:Int(playerID:Int)
-		Game.Players[playerID].ProgrammeCollection.ReaddProgrammesFromSuitcase()
-
-		'fill all open slots in the agency
-		ReFillBlocks()
-	End Function
-
 	Function CheckPlayerInRoom:int()
 		'check if we are in the correct room
 		if not Game.getPlayer().figure.inRoom then return FALSE
@@ -1578,20 +1769,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'===================================
 	'Movie Agency: Room screen
 	'===================================
-
-	'clear the guilist for the suitcase if a player enters
-	Function onRoomEnter:int( triggerEvent:TEventBase )
-		local room:TRooms = TRooms(triggerEvent.GetSender())
-		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
-		if not room or not figure then return FALSE
-
-		'we are not interested in other figures than our player's
-		if not figure.IsActivePlayer() then return FALSE
-
-		'empty the guilist / delete gui elements
-		'- the real list still may contain elements with gui-references
-		self.guiListSuitcase.EmptyList()
-	End Function
 
 
 	Function onMouseOverProgrammeCoverBlock:int( triggerEvent:TEventBase )
@@ -1760,7 +1937,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				AuctionToolTip.enabled = 1
 				AuctionToolTip.Hover()
 				Game.cursorstate = 1
-				If MOUSEMANAGER.IsHit(1)
+				If MOUSEMANAGER.IsClicked(1)
 					MOUSEMANAGER.resetKey(1)
 					Game.cursorstate = 0
 					room.screenManager.GoToSubScreen("screen_movieauction")
@@ -1782,7 +1959,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			Next
 		Next
 		'create missing gui elements for the current suitcase
-
 		For local programme:TProgramme = eachin Game.getPlayer().ProgrammeCollection.SuitcaseProgrammeList
 			if guiListSuitcase.ContainsProgramme(programme) then continue
 			guiListSuitcase.addItem( new TGuiProgrammeCoverBlock.CreateWithProgramme(programme),"-1" )
@@ -2121,6 +2297,7 @@ Type RoomHandler_Chief extends TRoomHandler
 	'smoke effect
 	Global part_array:TGW_SpritesParticle[100]
 	Global spawn_delay:Int = 15
+	Global Dialogues:TList
 
 	Function Init()
 		'create smoke effect particles
@@ -2147,7 +2324,7 @@ Type RoomHandler_Chief extends TRoomHandler
 		For Local i:Int = 1 To Len(part_array)-1
 			part_array[i].Draw()
 		Next
-		For Local dialog:TDialogue = EachIn room.Dialogues
+		For Local dialog:TDialogue = EachIn Dialogues
 			dialog.Draw()
 		Next
 	End Function
@@ -2158,7 +2335,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		Game.Players[game.playerID].figure.fromroom = Null
 
-		If room.Dialogues.Count() <= 0
+		If Dialogues.Count() <= 0
 			Local ChefDialoge:TDialogueTexts[5]
 			ChefDialoge[0] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_WELCOME").replace("%1", Game.Players[Game.playerID].name) )
 			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
@@ -2195,7 +2372,7 @@ Type RoomHandler_Chief extends TRoomHandler
 			ChefDialog.AddText(Chefdialoge[1])
 			ChefDialog.AddText(Chefdialoge[2])
 			ChefDialog.AddText(Chefdialoge[3])
-			room.Dialogues.AddLast(ChefDialog)
+			Dialogues.AddLast(ChefDialog)
 		EndIf
 
 		spawn_delay:-1
@@ -2214,10 +2391,10 @@ Type RoomHandler_Chief extends TRoomHandler
 			part_array[i].Update(App.timer.getDeltaTime())
 		Next
 
-		For Local dialog:TDialogue = EachIn room.Dialogues
+		For Local dialog:TDialogue = EachIn Dialogues
 			If dialog.Update(MOUSEMANAGER.IsHit(1)) = 0
-				room.LeaveAnimated()
-				room.Dialogues.Remove(dialog)
+				room.Leave()
+				Dialogues.Remove(dialog)
 			endif
 		Next
 	End Function
@@ -2240,7 +2417,32 @@ End Type
 Type RoomHandler_AdAgency extends TRoomHandler
 	Function Init()
 		super._RegisterHandler(onUpdate, onDraw, TRooms.GetRoomByDetails("adagency",0))
+
+		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRooms.GetRoomByDetails("adagency",0) )
+		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, TRooms.GetRoomByDetails("adagency",0) )
 	End Function
+
+	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure then return FALSE
+
+print "TODO: TryLeaveRoom: include dragged contractblocks check"
+	End Function
+
+	'set contracts to player
+	Function onLeaveRoom:int( triggerEvent:TEventBase )
+		local room:TRooms = TRooms(triggerEvent._sender)
+		if not room then return FALSE
+
+		local figure:TFigures = TFigures(triggerEvent.getData().get("figure"))
+		if not figure then return FALSE
+
+		if figure.parentPlayer then TContractBlock.ContractsToPlayer(figure.parentPlayer.playerID)
+	End Function
+
 
 	Function onDraw:int( triggerEvent:TEventBase )
 		local room:TRooms = TRooms(triggerEvent._sender)
@@ -2309,8 +2511,8 @@ Type RoomHandler_Elevator extends TRoomHandler
 			if Building.Elevator.waitAtFloorTimer.IsExpired()
 				Print "Schmeisse Figur " +  playerFigure.Name + " aus dem Fahrstuhl"
 				'waitatfloortimer synchronisieren, wenn spieler fahrstuhlplan betritts
-				playerFigure.inRoom			= Null
-				playerFigure.clickedToRoom	= Null
+				playerFigure.inRoom		= Null
+				playerFigure.targetRoom	= Null
 				building.elevator.UsePlan(playerFigure)
 			else if mouseHit
 				local clickedRoom:TRooms = TRoomSigns.GetRoomFromXY(MouseManager.x,MouseManager.y)

@@ -157,8 +157,11 @@ MOVIE_CALLINSHOW= Du verdienst 0.5-2% der Zuschauerzahl in €.
 
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Zum Bieten auf Film oder Serie klicken.
 
-ERROR_NOT_ENOUGH_MONEY      = Nicht genügend Geld!
-ERROR_NOT_ENOUGH_MONEY_TEXT = Du besitzt nicht genügend finanzielle Mittel um diese Aktion durchzuführen.
+
+ERROR_NOT_POSSIBLE					= Nicht möglich!
+ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Es ist nicht möglich den letzten verbliebenen Sendemast zu verkaufen.
+ERROR_NOT_ENOUGH_MONEY		      	= Nicht genügend Geld!
+ERROR_NOT_ENOUGH_MONEY_TEXT 		= Du besitzt nicht genügend finanzielle Mittel um diese Aktion durchzuführen.
 
 FINANCES_OVERVIEW     = Finanzüberblick
 FINANCES_COSTS        = Ausgaben

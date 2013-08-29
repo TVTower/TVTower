@@ -239,7 +239,7 @@ endrem
 			player.audience2 = new TAudience
 			
 			'1. Alle erreichbaren Zuschauer, wenn alle ihren TV anschalten			
-			Local maxAudience:TAudience = TAudience.CreateWithBreakdown(Player.maxaudience)  ''Local maxAudience:TAudience = GetMaxAudience()
+			Local maxAudience:TAudience = TAudience.CreateWithBreakdown(Player.GetMaxAudience())  ''Local maxAudience:TAudience = GetMaxAudience()
 
 			If block And block.programme And maxAudience.GetSum() > 0				
 				Local playerAudience:TAudience = ComputeAudienceForPlayer(player, block, maxAudience)
@@ -252,10 +252,12 @@ endrem
 					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())
 					If quote <> Null
 						quote.audience = player.audience2.GetSum()
-						quote.audiencepercentage = Int(Floor(player.audience2.GetSum() * 1000 / player.maxaudience))
+						quote.audiencepercentage = Int(Floor(player.audience2.GetSum() * 1000 / player.GetMaxAudience()))
 					EndIf
 				Else
-					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(player.audience2.GetSum()), Int(Floor(player.audience2.GetSum() * 1000 / player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
+					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience2.GetSum()), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
+					'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(player.audience2.GetSum()), Int(Floor(player.audience2.GetSum() * 1000 / player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
+					'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(player.audience2.GetSum()), Int(Floor(player.audience2.GetSum() * 1000 / player.GetMaxAudience())), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
 				EndIf
 				If block.sendHour - (Game.GetDay()*24) + block.Programme.blocks <= Game.getNextHour()
 					If Not recompute
@@ -314,7 +316,7 @@ endrem
 
 		'1. Alle erreichbaren Zuschauer, wenn alle ihren TV anschalten
 		'Local maxAudience:TAudience = GetMaxAudience()
-		Local maxAudience:TAudience = TAudience.CreateWithBreakdown(Player.maxaudience)
+		Local maxAudience:TAudience = TAudience.CreateWithBreakdown(Player.GetMaxAudience())
 		print "1: " + maxAudience.ToString()
 
 		'2. Alle potentiellen Zuschauer / alle TV-Geräte / die gesamte Reichweite

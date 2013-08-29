@@ -16,6 +16,17 @@ Incbin "source/version.txt"
 
 REM
 
+Todo
+----
+- Einzelspielerchat
+- Abnutzung anhand der erreichten Zuschauer-Prozente berechnen "potenzial"
+- Werbehaendler: 2 "Billigwerbungen" die nur ab und an "erneuert" werden,
+  wenn leer, dann leer
+- Werbung:
+  - Imageverlust moeglich
+  - Zeitrahmen
+  - FSK18
+
 
 * Schauspieler + Regisseur-Datenbank
   - Anhand der "fruehsten" und "spaetesten" Filme kann eine
@@ -23,6 +34,7 @@ REM
     wenn bspweise jemand gestorben ist)
   - News koennen ueber die Person innerhalb der Aktivitaetenzeit geschrieben
     werden
+-> bei fiktiven Personen: Eignung als Newssprecher, Moderatoren, Darsteller, ...
 
 * SaveLoad als Events "Movie.onLoad"
 
