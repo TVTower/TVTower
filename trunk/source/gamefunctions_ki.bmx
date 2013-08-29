@@ -500,7 +500,7 @@ Type TLuaFunctions {_exposeToLua}
 			Obj.RemoveFromPlan()
 			Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 			If not (Obj = null)
-				print "TODO: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.contractBase.title
+				print "TODO fuer Ron: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.contractBase.title
 				Obj.RemoveFromPlan()
 				Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 				If not (Obj = null)

@@ -1135,9 +1135,11 @@ endrem
 			block = Player.ProgrammePlan.GetCurrentProgrammeBlock()
 			Player.audience = 0
 
-			If block And block.programme And Player.GetMaxaudience() > 0
-				Player.audience = Floor(Player.GetMaxaudience() * block.Programme.getAudienceQuote(Player.audience/Player.GetMaxaudience()) / 1000)*1000
-				AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.GetMaxaudience() + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.GetMaxaudience())) + ") * 1000"
+			If block And block.programme And Player.GetMaxAudience() <> 0
+				Player.audience = Floor(Player.GetMaxAudience() * block.Programme.getAudienceQuote(Player.audience/Player.GetMaxAudience()) / 1000)*1000
+				If Player.playerID = 2 Then
+					AiLog[1].AddLog("BM-Audience (" + block.Programme.GetID() + "): " + Player.audience + " => averageMovieQualityByLevel (" + block.Programme.getBaseAudienceQuote() + ") ; globalPercentageByHour (" + Game.maxAudiencePercentage + ")    ### " + block.Programme.getAudienceQuote(Player.audience/Player.GetMaxAudience()) )
+				Endif
 				'maybe someone sold a station
 				If recompute
 					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())
