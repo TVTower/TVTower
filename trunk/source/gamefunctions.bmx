@@ -1426,9 +1426,9 @@ Type TDialogueAnswer
 	End Function
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
-		self._highlighted = 0
-		If functions.MouseIn( x, y, w, Assets.getFont("Default", 12).getBlockHeight(Self._text, w, h))
-			self._highlighted = 1
+		self._highlighted = FALSE
+		If functions.MouseIn( x, y-2, w, Assets.getFont("Default", 12).getBlockHeight(Self._text, w, h))
+			self._highlighted = TRUE
 			If clicked
 				If _func <> Null Then _func(Self._funcparam)
 				Return _leadsTo
@@ -1482,9 +1482,11 @@ Type TDialogueTexts
 		Local ydisplace:Float = Assets.getFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 
+		local lineHeight:int = 2 + Assets.getFont("Default", 14).getHeight("QqT") 'high chars, low chars
+
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			answer.Draw(x, y + ydisplace, w, h)
-			ydisplace:+Assets.getFont("Default", 14).getHeight(answer._text) + 2
+			ydisplace:+ lineHeight
 		Next
 	End Method
 End Type

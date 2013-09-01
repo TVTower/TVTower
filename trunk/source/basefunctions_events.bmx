@@ -20,13 +20,13 @@ Type TEventManager
 	' call after all events have been registered
 	Method Init()
 		Assert _ticks = -1, "TEventManager: preparing to start event manager while already started"
-		self._events.Sort()		'sort by age
-		self._ticks = 0 		'begin
+		self._events.Sort()				'sort by age
+		self._ticks = Millisecs()		'begin
 		print "TEventManager.Init()"
 	End Method
 
 	Method isStarted:Int()
-		Return self._ticks <> -1
+		Return self._ticks > -1
 	End Method
 
 	Method isFinished:Int()
@@ -99,7 +99,7 @@ Type TEventManager
 	Method update(onlyChannel:int=null)
 		Assert self._ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
 		self._processEvents(onlyChannel)
-		self._ticks :+ 1
+		self._ticks = Millisecs()
 	End Method
 
 	Method _processEvents(onlyChannel:int=null)
@@ -115,9 +115,8 @@ Type TEventManager
 					?
 				endif
 
-				Local startTime:int = event.getStartTime()
 '				Assert startTime >= self._ticks, "TEventManager: an future event didn't get triggered in time"
-				If startTime <= _ticks						' is it time for this event?
+				If event.getStartTime() <= _ticks			' is it time for this event?
 					event.onEvent()							' start event
 					if event._trigger <> ""					' only trigger event if _trigger is set
 						self.triggerEvent( event )
@@ -231,6 +230,17 @@ Type TEventBase
 		Return self._startTime
 	End Method
 
+	Method setStartTime:TEventBase(newStartTime:int=0)
+		self._startTime = newStartTime
+		return self
+	End Method
+
+	Method delayStart:TEventBase(delayMilliseconds:int=0)
+		self._startTime:+delayMilliseconds
+
+		return self
+	End Method
+
 	Method setVeto(); self._veto = true; End Method
 	Method isVeto:int(); return (_veto=true); End Method
 
@@ -282,6 +292,7 @@ Type TEventSimple extends TEventBase
 		obj._sender		= sender
 		obj._receiver	= receiver
 		obj._channel	= channel
+		obj.setStartTime( EventManager.getTicks() )
 		return obj
 	End Function
 End Type

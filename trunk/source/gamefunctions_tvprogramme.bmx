@@ -1451,7 +1451,7 @@ endrem
 		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
 
-	Function GetRandomMovieWithMinPrice:TProgramme(MinPrice:Int)
+	Function GetRandomMovieWithPrice:TProgramme(MinPrice:int=0, MaxPrice:Int=-1)
 		'filter to entries we need
 		Local movie:TProgramme
 		Local resultList:TList = CreateList()
@@ -1460,11 +1460,15 @@ endrem
 			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
 			If movie.owner <> 0 or not movie.isReleased() Then continue
 
+			'skip if to expensive
+			if MaxPrice > 0 and movie.getPrice() > MaxPrice then continue
+
 			'if available (unbought, released..), add it to candidates list
 			If movie.getPrice() >= MinPrice and movie.isMovie() Then resultList.addLast(movie)
 		Next
 		Return TProgramme.GetRandomProgrammeFromList(resultList)
 	End Function
+
 
 	Function GetRandomProgrammeByGenre:TProgramme(genre:Int = 0)
 		Local movie:TProgramme
@@ -1699,16 +1703,16 @@ endrem
 		Else
 			If Outcome > 0 'movies
 				value = 0.55 * 255 * Outcome + 0.25 * 255 * review + 0.2 * 255 * speed
-				If (maxTopicality >= 220) Then value:*1.3
-				If (maxTopicality >= 240) Then value:*1.3
-				If (maxTopicality >= 250) Then value:*1.4
-				If (maxTopicality > 253)  Then value:*1.5 'the more current the more expensive
+				If (maxTopicality >= 230) Then value:*1.4
+				If (maxTopicality >= 240) Then value:*1.6
+				If (maxTopicality >= 250) Then value:*1.8
+				If (maxTopicality > 253)  Then value:*2.1 'the more current the more expensive
 			Else 'shows, productions, series...
 				If (review > 0.5 * 255) Then tmpreview = 255 - 2.5 * (review - 0.5 * 255) else tmpreview = 1.6667 * review
 				If (speed > 0.6 * 255) Then tmpspeed = 255 - 2.5 * (speed - 0.6 * 255) else tmpspeed = 1.6667 * speed
-				value = 0.8 * ( 0.45 * 255 * tmpreview + 0.55 * 255 * tmpspeed )
+				value = 1.3 * ( 0.45 * 255 * tmpreview + 0.55 * 255 * tmpspeed )
 			EndIf
-			value:*(3.0 * ComputeTopicality() / 255)
+			value:*(1.5 * ComputeTopicality() / 255)
 			value = Int(Floor(value / 1000) * 1000)
 		EndIf
 		Return value
@@ -3618,7 +3622,7 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 				Game.Players[locobject.Bid[0]].ProgrammeCollection.AddProgramme(locobject.Programme)
 				Print "player "+Game.Players[locobject.Bid[0]].name + " won the auction for: "+locobject.Programme.title
 				Repeat
-					LocObject.Programme = TProgramme.GetRandomMovieWithMinPrice(250000)
+					LocObject.Programme = TProgramme.GetRandomMovieWithPrice(200000)
 				Until LocObject.Programme <> Null
 				locObject.imageWithText = Null
 				For Local i:Int = 0 To 4

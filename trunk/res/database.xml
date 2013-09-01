@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
-	<version value="2" comment="second BlitzMax DB-version" exportDate="19.06.2013 09:16" />
+	<version value="2" comment="second BlitzMax DB-version" exportDate="01.09.2013 15:50" />
 	<allmovies>
 		<movie>
 			<title>...sie waren sich der Konsequenzen nicht bewusst</title>
@@ -221,11 +221,8 @@ Nach der erfolgreichen Serie</description>
 		<movie>
 			<title>Kurz nach Mitternacht auf der Reeperbahn</title>
 			<description>Kurz nach Mitternacht auf der Reeperbahn,
-
 ob du'n Mädel hast oder hast keins,
-
 amüsierst du dich, denn das findet sich
-
 auf der Reeperbahn nachts um halb eins.</description>
 			<data  actors="Hans Albert, Heins Rührtmann" director="Alan Smithee" country="D" year="1954" genre="3"  blocks="2" time="0" price="150" critics="96" speed="84" outcome="120" />
 		</movie>
@@ -3300,5 +3297,5 @@ Aber nur mit Ulbricht Umzüge!</description>
 		</ad>
 	</allads>
 	<exportOptions onlyFakes="true" onlyCustom="false"/>
-	<time value="7074.62ms" />
+	<time value="5229.5ms" />
 </tvgdb>
