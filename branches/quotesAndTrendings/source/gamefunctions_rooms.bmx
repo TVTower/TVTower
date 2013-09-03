@@ -1,4 +1,5 @@
 ﻿'Basictype of all rooms
+'Basictype of all rooms
 Type TRooms extends TGameObject  {_exposeToLua="selected"}
 	Field screenManager:TScreenManager		= null		'screenmanager - controls what scene to show
 	Field name:String			= ""  					'name of the room, eg. "archive" for archive room
@@ -6,7 +7,7 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
     Field descTwo:String		= ""					'description, eg. "name of the owner" (used for tooltip)
     Field tooltip:TTooltip		= null					'uses description
 
-	Field DoorTimer:TIntervalTimer	= TIntervalTimer.Create(500)
+	Field DoorTimer:TIntervalTimer	= TIntervalTimer.Create(1) 'time is set in basecreate depending on changeRoomSpeed..
 	Field Pos:TPoint									'x of the rooms door in the building, y as floornumber
     Field xpos:Int				= 0						'door 1-4 on floor
     Field doortype:Int			=-1
@@ -16,9 +17,71 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
     Field occupant:TFigures		= null					'figure currently in this room
 	Field SoundSource:TDoorSoundSource = TDoorSoundSource.Create(self)
 
+	Global ChangeRoomSpeed:int	= 600					'time the change of a room needs (1st half is opening, 2nd closing the door)
     Global RoomList:TList		= CreateList()			'global list of rooms
 	Global DoorsDrawnToBackground:Int = 0   			'doors drawn to Pixmap of background
 
+
+    'create room and use preloaded image
+    'Raum erstellen und bereits geladenes Bild nutzen
+    'x = 1-4
+    'y = floor
+	Function Create:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", descTwo:String = "", x:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
+		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
+
+		obj.descTwo		= descTwo
+		obj.doorDimension.SetX( Assets.GetSprite("gfx_building_Tueren").framew )
+		obj.xpos		= x
+		obj.Pos			= TPoint.Create(0,y)
+		If x <=4
+			If x = 0 Then obj.Pos.x = -10
+			If x = 1 Then obj.Pos.x = 206
+			If x = 2 Then obj.Pos.x = 293
+			If x = 3 Then obj.Pos.x = 469
+			If x = 4 Then obj.Pos.x = 557
+		EndIf
+		obj.doortype	= doortype
+		If createATooltip then obj.CreateRoomsign(x)
+
+		Return obj
+	End Function
+
+
+    'create room and use preloaded image
+    'Raum erstellen und bereits geladenes Bild nutzen
+	Function CreateWithPos:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", x:Int = 0, xpos:Int = 0, width:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
+		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
+		obj.doorDimension.SetX( width )
+		obj.xpos		= xpos
+		obj.Pos			= TPoint.Create(x,y)
+		obj.doortype	= doortype
+
+		If CreateAToolTip then obj.CreateRoomsign(xpos)
+
+		Return obj
+	End Function
+
+
+	Method BaseSetup:TRooms(screenManager:TScreenManager, name:string, desc:string, owner:int)
+		self.screenManager = screenManager
+		self.name		= name
+		self.desc		= desc
+		self.owner		= owner
+		self.LastID:+1
+		self.id			= self.LastID
+
+		self.DoorTimer.setInterval( ChangeRoomSpeed )
+
+		self.RoomList.AddLast(self)
+
+		EventManager.registerListenerMethod( "room.onTryLeave", self, "onTryLeave", self )
+		EventManager.registerListenerMethod( "room.onLeave", self, "onLeave", self )
+		EventManager.registerListenerMethod( "room.onTryEnter", self, "onTryEnter", self )
+		EventManager.registerListenerMethod( "room.onEnter", self, "onEnter", self )
+
+
+		return self
+	End Method
 
 	Method getDoorType:int()
 		if self.DoorTimer.isExpired() then return self.doortype else return 5
@@ -93,6 +156,91 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
     End Function
 
 
+	Method Enter:int( figure:TFigures=null, forceEnter:int )
+		'figure is already in that room - so just enter
+		if self.occupant and self.occupant = figure then return TRUE
+
+		'ask if enter possible
+		'=====================
+		'emit event that someone wants to enter a room + param forceEnter
+		local event:TEventSimple = TEventSimple.Create("room.onTryEnter", TData.Create().Add("figure", figure).AddNumber("forceEnter", forceEnter) , self )
+		EventManager.triggerEvent( Event )
+		if event.isVeto()
+			'maybe someone wants to know that ...eg. for closing doors
+			EventManager.triggerEvent( TEventSimple.Create("room.onCancelEnter", TData.Create().Add("figure", figure) , self ) )
+			return FALSE
+		endif
+
+if figure.id = 1 then print "2/4 | room: onTryEnter | room: "+self.name
+
+		'enter is allowed
+		'================
+		figure.isChangingRoom = true
+
+		'inform others that we start going into the room (eg. for animations)
+		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", TData.Create().Add("figure", figure) , self ) )
+
+		'finally inform that the figure enters the room - eg for AI-scripts
+		'but delay that by ChangeRoomSpeed/2 - so the real entering takes place later
+		event = TEventSimple.Create("room.onEnter", TData.Create().Add("figure", figure) , self )
+		event.delayStart(ChangeRoomSpeed/2)
+		EventManager.registerEvent( event )
+
+		return TRUE
+	End Method
+
+
+	'gets called if somebody tries to enter that room
+	'also kicks figures in rooms if the owner tries to enter
+	Method onTryEnter:int( triggerEvent:TEventBase )
+		local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
+		if not figure then return FALSE
+
+		local forceEnter:int = triggerEvent.getData().getInt("forceEnter",FALSE)
+
+		'besetzt - und jemand anderes ?
+		If occupant And occupant <> figure
+			'nur richtige Spieler benoetigen spezielle Behandlung (events etc.)
+			If figure.parentPlayer
+				'andere rausschmeissen
+				If figure.parentPlayer.playerID = owner OR forceEnter
+					'andere rausschmeissen (falls vorhanden)
+					figure.KickFigureFromRoom(self.occupant, self)
+				'Besetztzeichen ausgeben / KI informieren
+				Else
+					'Spieler-KI benachrichtigen
+					If figure.isAI() then figure.parentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_INUSE)
+					'tooltip only for active user
+					If figure.isActivePlayer() then Building.CreateRoomUsedTooltip(self)
+
+					triggerEvent.setVeto()
+					return FALSE
+				EndIf
+			EndIf
+		EndIf
+
+		return TRUE
+	End Method
+
+
+	'gets called when the figure really enters the room (fadeout animation finished etc)
+	Method onEnter:int( triggerEvent:TEventBase )
+		local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
+		if not figure then return FALSE
+
+		'set the room used
+		self.occupant = figure
+
+if occupant.id = 1 then print "3/4 | room: onEnter | room: "+self.name+ " | triggering figure.onEnterRoom"
+		'inform others that a figure enters the room
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", TData.Create().Add("room", self) , self.occupant ) )
+
+		'close the door
+		If GetDoorType() >= 0 then CloseDoor(self.occupant)
+	End Method
+
+
+
 	'a figure wants to leave that room
     Method Leave:int( figure:TFigures=null )
 		if not figure then figure = Game.getPlayer().figure
@@ -106,19 +254,25 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
 		'emit event that someone wants to leave a room
 		local event:TEventSimple = TEventSimple.Create("room.onTryLeave", TData.Create().Add("figure", figure) , self )
 		EventManager.triggerEvent( Event )
-		if event.isVeto() then return FALSE
+		if event.isVeto()
+			EventManager.triggerEvent( TEventSimple.Create("room.onCancelLeave", TData.Create().Add("figure", figure) , self ) )
+			return FALSE
+		endif
 
+if figure.id = 1 then print "2/4 | room: onTryLeave | room: "+self.name
 
 		'leave is allowed
 		'================
+		figure.isChangingRoom = true
+
+		'inform others that we start going out of that room (eg. for animations)
+		EventManager.triggerEvent( TEventSimple.Create("room.onBeginLeave", TData.Create().Add("figure", figure) , self ) )
+
 		'finally inform that the figure leaves the room - eg for AI-scripts
-		EventManager.triggerEvent( TEventSimple.Create("room.onLeave", TData.Create().Add("figure", figure) , self ) )
-
-		'open the door
-		If GetDoorType() >= 0 then OpenDoor(self.occupant)
-
-		'set the room unused
-		self.occupant = null
+		'but delay that ChangeRoomSpeed/2 - so the real leaving takes place later
+		event = TEventSimple.Create("room.onLeave", TData.Create().Add("figure", figure) , self )
+		event.delayStart(ChangeRoomSpeed/2)
+		EventManager.registerEvent( event )
 
 		return TRUE
 	End Method
@@ -139,6 +293,22 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
 
 		return TRUE
 	End Method
+
+
+	'gets called when the figure really leaves the room (fadein animation finished etc)
+	Method onLeave:int( triggerEvent:TEventBase )
+if self.occupant.id = 1 then print "3/4 | room: onLeave | room: "+self.name+ " | triggering figure.onLeaveRoom"
+		'inform others that a figure leaves the room
+		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", TData.Create().Add("room", self) , self.occupant ) )
+
+		'open the door
+		If GetDoorType() >= 0 then OpenDoor(self.occupant)
+
+		'set the room unused
+		self.occupant = null
+	End Method
+
+
 
 	Function DrawDoorsOnBackground:Int()
 		'do nothing if already done
@@ -233,63 +403,6 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
 
 		return 0
 	End Method
-
-
-	Method BaseSetup:TRooms(screenManager:TScreenManager, name:string, desc:string, owner:int)
-		self.screenManager = screenManager
-		self.name		= name
-		self.desc		= desc
-		self.owner		= owner
-		self.LastID:+1
-		self.id			= self.LastID
-
-		self.RoomList.AddLast(self)
-
-		EventManager.registerListenerMethod( "room.onTryLeave", self, "onTryLeave", self )
-
-
-		return self
-	End Method
-
-
-    'create room and use preloaded image
-    'Raum erstellen und bereits geladenes Bild nutzen
-    'x = 1-4
-    'y = floor
-	Function Create:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", descTwo:String = "", x:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
-		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
-
-		obj.descTwo		= descTwo
-		obj.doorDimension.SetX( Assets.GetSprite("gfx_building_Tueren").framew )
-		obj.xpos		= x
-		obj.Pos			= TPoint.Create(0,y)
-		If x <=4
-			If x = 0 Then obj.Pos.x = -10
-			If x = 1 Then obj.Pos.x = 206
-			If x = 2 Then obj.Pos.x = 293
-			If x = 3 Then obj.Pos.x = 469
-			If x = 4 Then obj.Pos.x = 557
-		EndIf
-		obj.doortype	= doortype
-		If createATooltip then obj.CreateRoomsign(x)
-
-		Return obj
-	End Function
-
-
-    'create room and use preloaded image
-    'Raum erstellen und bereits geladenes Bild nutzen
-	Function CreateWithPos:TRooms(screenManager:TScreenManager, name:String = "unknown", desc:String = "unknown", x:Int = 0, xpos:Int = 0, width:Int = 0, y:Int = 0, doortype:Int = -1, owner:Int = -1, createATooltip:Int = 0)
-		Local obj:TRooms=New TRooms.BaseSetup(screenManager, name, desc, owner)
-		obj.doorDimension.SetX( width )
-		obj.xpos		= xpos
-		obj.Pos			= TPoint.Create(x,y)
-		obj.doortype	= doortype
-
-		If CreateAToolTip then obj.CreateRoomsign(xpos)
-
-		Return obj
-	End Function
 
 
 	Method CreateRoomsign:int(myx:Int = 0)
@@ -434,14 +547,6 @@ Type RoomHandler_Office extends TRoomHandler
 		'we are interested in the programmeplanner buttons
 		EventManager.registerListenerFunction( "guiobject.onClick", onProgrammePlannerButtonClick )
 
-		For local i:int = 1 to 4
-			'we are interested if a figure gets kicked out of the office
-			'-> we can kick the figure out of the subrooms too
-			EventManager.registerListenerFunction( "room.kickFigure",	onRoomKickFigure, TRooms.GetRoomByDetails("office", i) )
-
-			'we don't want to handle room drawing
-			'super._RegisterHandler(Update, Draw, TRooms.GetRoomByDetails("office", i))
-		Next
 		'no need for individual screens, all can be handled by one function (room is param)
 		super._RegisterScreenHandler( onUpdateOffice, onDrawOffice, TScreen.GetScreen("screen_office") )
 		super._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, TScreen.GetScreen("screen_office_pplanning") )
@@ -450,14 +555,6 @@ Type RoomHandler_Office extends TRoomHandler
 		super._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, TScreen.GetScreen("screen_office_stationmap") )
 
 	End Function
-
-	Function onRoomKickFigure:Int(triggerEvent:TEventBase)
-		local room:TRooms = TRooms(triggerEvent._sender)
-		if not room then return 0
-
-		local kickFigure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
-		kickFigure.LeaveToBuilding()
-	End function
 
 
 '===================================
@@ -1740,8 +1837,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listMoviesGood then programme = TProgramme.GetRandomMovie()
-				if lists[j] = listMoviesCheap then programme = TProgramme.GetRandomMovie()
+				if lists[j] = listMoviesGood then programme = TProgramme.GetRandomMovieWithPrice(75000)
+				if lists[j] = listMoviesCheap then programme = TProgramme.GetRandomMovieWithPrice(0,75000)
 				if lists[j] = listSeries then programme = TProgramme.GetRandomSerie()
 
 				'add new programme at slot
@@ -2297,7 +2394,7 @@ Type RoomHandler_Chief extends TRoomHandler
 	'smoke effect
 	Global part_array:TGW_SpritesParticle[100]
 	Global spawn_delay:Int = 15
-	Global Dialogues:TList
+	Global Dialogues:TList = CreateList()
 
 	Function Init()
 		'create smoke effect particles
@@ -2375,6 +2472,7 @@ Type RoomHandler_Chief extends TRoomHandler
 			Dialogues.AddLast(ChefDialog)
 		EndIf
 
+		'cigar particles
 		spawn_delay:-1
 		If spawn_delay<0
 			spawn_delay=5

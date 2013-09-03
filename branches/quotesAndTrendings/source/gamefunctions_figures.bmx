@@ -10,9 +10,7 @@ Type TFigures Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field PosOffset:TPoint		= TPoint.Create(0,0)
 	Field boardingState:Int		= 0				'0=no boarding, 1=boarding, -1=deboarding
 
-	Field changingRoom:int		= FALSE			'in the middle of changing a room?
-	Field changingRoomTime:int	= 250			'ms a change takes...
-	Field changingRoomTimer:int	= 0				'ms a change takes...
+	Field isChangingRoom:int	= FALSE			'active as soon as figure leaves/enters rooms
 	Field targetRoom:TRooms			= Null			{sl = "no"}
 	Field fromRoom:TRooms		= Null			{sl = "no"}
 	Field inRoom:TRooms			= Null			{sl = "no"}
@@ -34,10 +32,47 @@ Type TFigures Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Global List:TList			= CreateList()
 
 
+	Method CreateFigure:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
+		Super.Create(sprite, 4, 130)
+
+		Self.insertAnimation("default", TAnimation.Create([ [8,1000] ], -1, 0 ) )
+
+		Self.insertAnimation("walkRight", TAnimation.Create([ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
+		Self.insertAnimation("walkLeft", TAnimation.Create([ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
+		Self.insertAnimation("standFront", TAnimation.Create([ [8,2500], [9,150] ], -1, 0, 500) )
+		Self.insertAnimation("standBack", TAnimation.Create([ [10,1000] ], -1, 0 ) )
+
+		Self.name 			= Figurename
+		Self.rect			= TRectangle.Create(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
+		Self.target.setX(x)
+		Self.vel.SetX(dx)
+		Self.initialdx		= dx
+		Self.Sprite			= sprite
+		Self.ControlledByID	= ControlledByID
+
+		'instead of "room.onLeave" we listen to figure.onLeaveRoom as it has
+		'the figure as sender - so we can filter
+		EventManager.registerListenerMethod( "figure.onLeaveRoom", self, "onLeaveRoom", self )
+		'same for onEnterRoom
+		EventManager.registerListenerMethod( "figure.onEnterRoom", self, "onEnterRoom", self )
+
+		Return Self
+	End Method
+
+
+	Method New()
+		LastID:+1
+		id		= LastID
+		ListLink= List.AddLast(Self)
+		List.Sort()
+	End Method
+
+
 	Function Load:TFigures(pnode:txmlNode, figure:TFigures)
 Print "implement Load:TFigures"
 Return Null
 	End Function
+
 
 	Function LoadAll()
 		Local figureID:Int = 1
@@ -53,10 +88,12 @@ Return Null
 		'Print "loaded figure informations"
 	End Function
 
+
 	Function AdditionalLoad(obj:Object, node:txmlNode)
 Print "implement additionalLoad"
 Return
 	End Function
+
 
 	Function AdditionalSave(obj:Object)
 		Local figure:TFigures = TFigures(obj)
@@ -67,9 +104,11 @@ Return
 		EndIf
 	End Function
 
+
 	Method HasToChangeFloor:Int()
 		Return Building.getFloor(Building.pos.y + target.GetY() ) <> Building.getFloor(Building.pos.y + Self.rect.GetY() )
 	End Method
+
 
 	Method GetFloor:Int(_pos:TPoint = Null)
 		If _pos = Null Then _pos = Self.rect.position
@@ -77,39 +116,49 @@ Return
 		Return Building.getFloor( Building.pos.y + _pos.y )
 	End Method
 
+
 	Method GetTargetFloor:Int()
 		Return Building.getFloor( Building.pos.y + target.y)
 	End Method
+
 
 	Method IsOnFloor:Byte()
 		Return rect.GetY() = Building.GetFloorY(GetFloor())
 	End Method
 
+
 	Method GetCenterX:Int()
 		Return Ceil(Self.rect.GetX() + Self.rect.GetW()/2)
 	End Method
+
 
 	'ignores y
 	Method IsAtElevator:Byte()
 		Return Building.Elevator.IsFigureInFrontOfDoor(Self)
 	End Method
 
+
 	Method IsInElevator:Byte()
 		Return Building.Elevator.IsFigureInElevator(Self)
 	End Method
 
+
 	Method IsAI:Int()
 		If id > 4 Then Return True
-	'	If Game.networkgame Then If id < 4 Then If Network.IP[id - 1] = Null Then Return True
 		If Self.ControlledByID = 0 or (self.parentPlayer and self.parentPlayer.playerKI) Then Return True
 		Return False
 	End Method
+
 
 	Method IsActivePlayer:Int()
 		return (self.parentPlayer and self.parentPlayer.playerID = Game.playerID)
 	End Method
 
-	Method FigureMovement(deltaTime:Float=1.0)
+
+	Method FigureMovement:int(deltaTime:Float=1.0)
+		'stop movement if changing rooms
+		if isChangingRoom then return FALSE
+
 		Local targetX:Int = Floor(Self.target.x)
 		If target.y=-1 Then target.setPos(Self.rect.position)
 
@@ -147,7 +196,8 @@ Return
 	    If Floor(Self.rect.GetX()) >= 579 Then rect.position.setX(579);target.setX(579)
 	End Method
 
-	Method FigureAnimation(deltaTime:Float=1.0)
+
+	Method FigureAnimation:int(deltaTime:Float=1.0)
 		'if standing
 		If Self.vel.GetX() = 0
 				'default - no movement needed
@@ -175,6 +225,7 @@ Return
 		EndIf
 	End Method
 
+
 	Method GetPeopleOnSameFloor()
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.rect.GetY() = Self.rect.GetY() And Figure <> Self
@@ -196,22 +247,11 @@ Return
 		Next
 	End Method
 
+
 	'player is now in room "room"
-	Method _SetInRoom:Int(room:TRooms, canShowFadeAnimation:int=TRUE)
+	Method _SetInRoom:Int(room:TRooms)
 		'in all cases: close the door (even if we cannot enter)
-		If room then room.CloseDoor(Game.Players[Game.playerID].Figure)
-
-		'inform others that we enter a room
-		local event:TEventSimple = TEventSimple.Create("room.OnEnter", TData.Create().Add("room", room).add("figure", self) , room )
-		EventManager.triggerEvent( event )
-		'someone does not want the figure to enter that room...
-		if event.isVeto() then return FALSE
-
-		'yes we are changing the room - so fade animation can take place
-		if canShowFadeAnimation and self.parentPlayer and self.parentPlayer.playerID = Game.playerID
-			changingRoom = TRUE
-			changingRoomTimer = Millisecs() + changingRoomTime
-		endif
+		If room then room.CloseDoor(self)
 
 		If room <> Null then room.occupant = Self
 
@@ -221,12 +261,24 @@ Return
 		'set new room
 	 	inRoom = room
 
-	 	'only call if it is a player's figure - and AI
-		If ParentPlayer <> Null And Self.isAI()
+		'room change finished
+		isChangingRoom = FALSE
+
+if self.id = 1
+	if room
+		print "set "+self.id+" to room "+room.name
+	else
+		print "set "+self.id+" to building"
+	endif
+endif
+	 	'inform AI that we reached a room
+	 	If ParentPlayer <> Null And Self.isAI()
 			If room Then ParentPlayer.PlayerKI.CallOnReachRoom(room.id) Else ParentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_NOTFOUND)
 		EndIf
+
 		If Game.networkgame And Network.IsConnected Then Self.Network_SendPosition()
 	End Method
+
 
     Method CanEnterRoom:Int(room:TRooms)
 		If Not room Then Return False
@@ -256,82 +308,87 @@ Return
 		Return True
 	End Method
 
-	'enter a room, if forceEnter is true, we are able to kick without
-	'being the room owner
+
+	'figure wants to enter a room
+	'"onEnterRoom" is called when successful
+	'@param room					room to enter
+	'@param forceEnter				kick without being the room owner
+	'@param canShowFadeAnimation	are we allowed to show a fader?
 	Method EnterRoom:Int(room:TRooms, forceEnter:int=FALSE, canShowFadeAnimation:int=TRUE)
-		'no room = going to building
-		If Not room Then Return _SetInRoom(Null, canShowFadeAnimation)
+		'skip command if we already are entering/leaving
+		if self.isChangingRoom then return TRUE
 
 		'npcs wie Boten koennen einfach rein
-		If Not ParentPlayer Then _SetInRoom(room, canShowFadeAnimation)
+		If Not ParentPlayer
+			_SetInRoom(room)
+			return TRUE
+		endif
 
-		'besetzt - und jemand anderes ?
-		If room.occupant And room.occupant <> Self
-			'nur richtige Spieler benoetigen spezielle Behandlung (events etc.)
-			If ParentPlayer
-				'andere rausschmeissen
-				If Self.parentPlayer.playerID = room.owner OR forceEnter
-					'andere rausschmeissen (falls vorhanden)
-					Self.KickFigureFromRoom(room.occupant, room)
+		self.isChangingRoom = true
 
-					_SetInRoom(room, canShowFadeAnimation)
-				'Besetztzeichen ausgeben / KI informieren
-				Else
-					'ziel entfernen
-					Self.targetRoom = Null
+if self.id=1 then print "1/4 | figure: EnterRoom | figure.id:"+self.id
 
-					'Spieler benachrichtigen
-					If Self.isAI()
-						ParentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_INUSE)
-					Else
-						'tooltip only for user
-						If Self.parentPlayer.playerID = Game.playerID
-							Building.CreateRoomUsedTooltip(room)
-						EndIf
-					EndIf
-				EndIf
-			EndIf
-		Else
-			_SetInRoom(room, canShowFadeAnimation)
-		EndIf
+		'this sends out an event that we want to enter a room
+		'if successfull, event "room.onEnter" will get triggered - which we listen to
+		room.Enter( self, forceEnter )
 	End Method
 
-	Method LeaveToBuilding:Int()
-		Self.inRoom = Null
+
+	'gets called when the figure really enters the room (animation finished etc)
+	Method onEnterRoom:int( triggerEvent:TEventBase )
+		local figure:TFigures = TFigures( triggerEvent._sender )
+		if not figure or figure <> self then return FALSE
+		local room:TRooms = TRooms( triggerEvent.getData().get("room") )
+
+if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
+
+		_setInRoom(room)
+
+		return TRUE
 	End Method
 
+
+	'command to leave a room - "onLeaveRoom" is called when successful
 	Method LeaveRoom:Int()
+		'skip command if we already are leaving
+		if self.isChangingRoom then return TRUE
+
+if self.id=1 then print "1/4 | figure: LeaveRoom | figure.id:"+self.id
+
 		If not Self.inRoom
 			'also reset from (from nothing to nothing :D)
 			EnterRoom(null)
 			return TRUE
 		endif
+		'this sends out an event that we want to leave the room
+		'if successfull, event "room.onLeave" will get triggered - which we listen to
+		self.inRoom.Leave( self )
+	End Method
 
-		if not self.inRoom.Leave( self ) then return FALSE
+
+	'gets called when the figure really leaves the room (animation finished etc)
+	Method onLeaveRoom:int( triggerEvent:TEventBase )
+		local figure:TFigures = TFigures( triggerEvent._sender )
+		if not figure or figure <> self then return FALSE
+
+if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
 
 		If ParentPlayer And Self.isAI() then ParentPlayer.PlayerKI.CallOnLeaveRoom()
 
-		'enter target
-		EnterRoom( null )
+		'enter target -> null = building
+		_setInRoom( null )
 
 		targetRoom = Null
 
-		If inRoom = Null Then Self.rect.position.setX(target.x)
+		Self.rect.position.setX(target.x)
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(Self)
-		'EndIf
 	End Method
 
+
+
 	Method SendToRoom:Int(room:TRooms)
-		'leave "subrooms"
-		For Local i:Int = 0 To 4
-			If Self.inRoom <> Null
-				'Print "leaving room " + Self.inroom.name
-				Self.LeaveRoom()
-			Else
-				Exit
-			EndIf
-		Next
- 		If room <> Null Then Self.ChangeTarget(room.Pos.x + 5, Building.pos.y + Building.getfloorY(room.Pos.y) - 5)
+		If Self.inRoom <> Null then Self.LeaveRoom()
+ 		If room Then Self.ChangeTarget(room.Pos.x + 5, Building.pos.y + Building.getfloorY(room.Pos.y) - 5)
 	End Method
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
@@ -361,39 +418,7 @@ Return
 		Return Null
 	End Function
 
-	Method New()
-		LastID:+1
-		id		= LastID
-		ListLink= List.AddLast(Self)
-		List.Sort()
-	End Method
 
-	Method CreateFigure:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
-		Super.Create(sprite, 4, 130)
-
-		Self.insertAnimation("default", TAnimation.Create([ [8,1000] ], -1, 0 ) )
-
-		Self.insertAnimation("walkRight", TAnimation.Create([ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
-		Self.insertAnimation("walkLeft", TAnimation.Create([ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
-		Self.insertAnimation("standFront", TAnimation.Create([ [8,2500], [9,150] ], -1, 0, 500) )
-		Self.insertAnimation("standBack", TAnimation.Create([ [10,1000] ], -1, 0 ) )
-
-
-		Self.name 			= Figurename
-		Self.rect			= TRectangle.Create(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
-		Self.target.setX(x)
-		Self.vel.SetX(dx)
-		Self.initialdx		= dx
-		Self.Sprite			= sprite
-		Self.ControlledByID	= ControlledByID
-
-		'figure wants to know when it leaves a room (kicked or wanted)
-'not needed - we call the method directly
-'		EventManager.registerListenerMethod( "figure.onRoomLeave", self, "onRoomLeave", self )
-
-
-		Return Self
-	End Method
 
 	Method CallElevator:Int()
 		'ego nur ich selbst
@@ -447,7 +472,7 @@ Return
 		'center figure to target
 		target.setX(target.x - Self.rect.GetW()/2)
 
-		inRoom = Null
+'ron290813		inRoom = Null
 		'change to event
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(Self)
 	End Method
@@ -470,16 +495,11 @@ Return
 		Return False
 	End Method
 
-	Method Update(deltaTime:Float)
+	Method Update:int(deltaTime:Float)
 		'update parent class (anim pos)
 		Super.Update(deltaTime)
 
 		Self.alreadydrawn = 0
-
-		'check if we are still changing room
-		if changingRoom
-			changingRoom = ( changingRoomTimer + changingRoomTime > Millisecs() )
-		endif
 
 		If updatefunc_ <> Null
 			updatefunc_(ListLink, deltaTime)

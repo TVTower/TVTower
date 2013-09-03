@@ -3071,7 +3071,7 @@ Function Init_Creation()
 
 	'8 auctionable movies
 	For local i:Int = 0 to 7
-		TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithMinPrice(200000),i,-1)
+		TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithPrice(200000),i,-1)
 	Next
 
 
@@ -3229,36 +3229,10 @@ Function UpdateMain(deltaTime:Float = 1.0)
 	If Game.networkgame Then Network.Update()
 End Function
 
+
 'inGame
 Function DrawMain(tweenValue:Float=1.0)
 	local drawRoom:TRooms = Game.Players[Game.playerID].Figure.inRoom
-
-	'if we have to draw a fading animation, just draw the "old"
-	'one until halftime
-	if Game.Players[Game.playerID].Figure.changingRoom
-		'if timer is still running
-		if Game.Players[Game.playerID].Figure.changingRoomTimer + Game.Players[Game.playerID].Figure.changingRoomTime > Millisecs()
-
-			'if timer did not reach halftime yet
-			if Game.Players[Game.playerID].Figure.changingRoomTimer + ceil(Game.Players[Game.playerID].Figure.changingRoomTime/2) > Millisecs()
-				drawRoom = Game.Players[Game.playerID].Figure.fromRoom
-				if not Fader.fadeStarted
-					Fader.Start()
-					Fader.Enable()
-				endif
-			'if timer did reach halftime
-			else
-				drawRoom = Game.Players[Game.playerID].Figure.inRoom
-				if not Fader.fadeout
-					Fader.StartFadeout()
-					Fader.Enable()
-				endif
-			endif
-		endif
-	else
-		Fader.Disable()
-		Fader.Stop()
-	endif
 
 	If not drawRoom
 		TProfiler.Enter("Draw-Building")
@@ -3280,7 +3254,6 @@ Function DrawMain(tweenValue:Float=1.0)
 	Interface.Draw()
 	TProfiler.Leave("Draw-Interface")
 
-	Assets.fonts.baseFont.draw( "Netstate:" + Game.Players[Game.playerID].networkstate + " Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), 0, 0)
 
 	If Game.DebugInfos
 		SetColor 0,0,0
@@ -3575,9 +3548,21 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			Else
 				DrawMenu()
 			EndIf
-			Assets.fonts.baseFont.draw("FPS:"+App.Timer.currentFps + " UPS:" + Int(App.Timer.currentUps), 150,0)
-			Assets.fonts.baseFont.draw("looptime "+Int(1000*App.Timer.loopTime)+"ms", 275,0)
-			If game.networkgame and Network.client Then Assets.fonts.baseFont.draw("ping "+Int(Network.client.latency)+"ms", 375,0)
+			local textX:int = 10
+			Assets.fonts.baseFont.draw(	"Netstate: " + Game.Players[Game.playerID].networkstate, textX,0)
+			textX:+80
+			Assets.fonts.baseFont.draw(	"Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
+			textX:+80
+			Assets.fonts.baseFont.draw("FPS: "+App.Timer.currentFps, textX, 0)
+			textX:+60
+			Assets.fonts.baseFont.draw("UPS: " + Int(App.Timer.currentUps), textX,0)
+			textX:+60
+			Assets.fonts.baseFont.draw("looptime "+Int(1000*App.Timer.loopTime)+"ms", textX,0)
+			textX:+90
+			'RON: debug purpose - see if the guielements list increase over time
+			Assets.fonts.baseFont.draw("(managed) GUI objects: "+ GUIManager.list.count() , textX,0)
+			textX:+120
+			If game.networkgame and Network.client Then Assets.fonts.baseFont.draw("ping: "+Int(Network.client.latency)+"ms", textX,0)
 			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.GetWidth() - 10, 10, 0, 1)
 
 			TProfiler.Enter("Draw-Flip")
@@ -3608,6 +3593,35 @@ Type TEventListenerOnSoundUpdate Extends TEventListenerBase
 		Return True
 	End Method
 End Type
+
+
+
+'=======
+' SCREEN FADE IN/OUT for active player
+' - we just register for figures changing the room
+'=======
+'fade IN when entering or leaving a room
+Function onFigureBeginChangeRoom:int( triggerEvent:TEventBase )
+	local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
+	if not figure or not figure.isActivePlayer() then return FALSE
+	Fader.Start()
+	Fader.Enable()
+End Function
+'fade OUT when really entering the room (background changed etc.)
+Function onFigureChangeRoom:int( triggerEvent:TEventBase )
+	local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
+	if not figure then return FALSE
+	if not figure or not figure.isActivePlayer() then return FALSE
+	Fader.StartFadeout()
+	Fader.Enable()
+End Function
+'for entering and leaving the room
+EventManager.registerListenerFunction( "room.OnBeginEnter", onFigureBeginChangeRoom )
+EventManager.registerListenerFunction( "room.OnBeginLeave", onFigureBeginChangeRoom )
+EventManager.registerListenerFunction( "room.OnEnter", onFigureChangeRoom )
+EventManager.registerListenerFunction( "room.OnLeave", onFigureChangeRoom )
+'=======
+
 
 '__________________________________________
 'events

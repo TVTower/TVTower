@@ -530,7 +530,8 @@ Type TBitmapFont
 		endif
 'SetColor 255,100,100
 'DrawRect(x-10,y,10,lines.length*lineHeight)
-		return TPoint.Create(w, h - lines.length*lineHeight)
+'		return TPoint.Create(w, h - lines.length*lineHeight)
+		return TPoint.Create(w, lines.length*lineHeight)
 	End Method
 
 
