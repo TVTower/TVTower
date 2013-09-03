@@ -3071,7 +3071,10 @@ Function Init_Creation()
 
 	'8 auctionable movies
 	For local i:Int = 0 to 7
-		TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithPrice(200000),i,-1)
+		Local programme:TProgramme = TProgramme.GetRandomMovieWithPrice(200000)
+		If programme <> null Then
+			TAuctionProgrammeBlocks.Create(programme,i,-1)
+		Endif
 	Next
 
 

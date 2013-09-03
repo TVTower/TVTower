@@ -1088,6 +1088,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field Outcome:Float			= 0
 	Field review:Float			= 0
 	Field speed:Float			= 0
+	Field betty:Float			= 0					'Wert wie viel Eindruck man bei Betty macht
 	Field relPrice:Int			= 0
 	Field Genre:Int				= 0
 	Field episode:Int			= 0

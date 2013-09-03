@@ -774,12 +774,11 @@ Type TResourceLoaders
 			
 			
 			subNode = xmlLoader.xml.FindChild(child, "audienceAttractions")
-			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
-				local groupType:String = xmlLoader.xml.FindValue(subNodeChild, "type", "-1")				
+			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()		
 				local id:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
 				local value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "70")
 				
-				genre.Insert(groupType + "_" + id, 	value)				
+				genre.Insert(id, value)
 			Next			
 			
 			values_genre.Insert(String(id), TAsset.CreateBaseAsset(genre, "GENREDATA"))

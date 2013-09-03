@@ -1,7 +1,7 @@
 Type TQuotes
 	'Referenzen
 	Field GenreDefinitions:TGenreDefinition[]
-	Field GenrePopulartities:TGenrePopulartity[]	
+	'Field GenrePopulartities:TGenrePopulartity[]	
 	
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
 
@@ -31,7 +31,9 @@ Type TQuotes
 	Const MOVIE_GENRE_YELLOWPRESS:Int = 15
 	Const MOVIE_GENRE_NEWS:Int = 16
 	Const MOVIE_GENRE_SHOW:Int = 17
-	Const MOVIE_GENRE_MONUMENTAL:Int = 18	
+	Const MOVIE_GENRE_MONUMENTAL:Int = 18
+	Const MOVIE_GENRE_FILLER:Int = 19
+	Const MOVIE_GENRE_PAIDPROGRAMMING:Int = 20
 
 	'===== Konstrukor, Speichern, Laden =====
 
@@ -41,12 +43,12 @@ Type TQuotes
 	End Function	
 	
 	Method Initialize()
-		GenrePopulartities = GenrePopulartities[..19]		
-		For Local i:Int = 0 To 18 '18 = Wert des höchsten Genres
-			AddGenrePopulartity(i)
-		Next		
+		'GenrePopulartities = GenrePopulartities[..20]		
+		'For Local i:Int = 0 To 18 '18 = Wert des höchsten Genres
+		'	AddGenrePopulartity(i)
+		'Next		
 		
-		GenreDefinitions= GenreDefinitions[..19]
+		GenreDefinitions= GenreDefinitions[..21]
 		Local genreMap:TMap = Assets.GetMap("genres")
 		For Local asset:TAsset = EachIn genreMap.Values()			
 			Local definition:TGenreDefinition = new TGenreDefinition
@@ -244,7 +246,7 @@ rem
 	endrem
 	Method ComputeAudienceAttractionForPlayer:TAudience(player:TPlayer, block:TProgrammeBlock )
 		'3. Qualität meines Programmes
-		Local genreDefintion:TGenreDefinition = GetGenreDefinition(0)		
+		Local genreDefintion:TGenreDefinition = GetGenreDefinition(block.programme.Genre)		
 		Local attraction:TAudience = genreDefintion.CalculateAudienceAttraction(block.programme, Game.GetHour())								
 		Return attraction		
 	End Method
@@ -302,13 +304,13 @@ endrem
 	End Method
 	
 	'===== Hilfsmethoden =====
-	
+	rem
 	Method AddGenrePopulartity(genreId:int)
 		local popularity:TGenrePopulartity = TGenrePopulartity.Create(genreId, RandRange(-10,10), RandRange(-25,25))
 		GenrePopulartities[genreId] = popularity
 		Game.PopularityManager.AddPopularity(popularity)
 	End Method
-	
+	endrem
 	'===== Events =====
 
 	'===== Netzwerk-Methoden =====
@@ -337,10 +339,10 @@ Type TAudienceCompetition
 		Local market1:TAudienceMarket = new TAudienceMarket
 		Local player:TPlayer = TPlayer(TPlayer.List.First())
 		market1.MaxAudience = TAudience.CreateWithBreakdown(player.GetMaxAudience())
-'		market1.AddPlayer(0)
 		market1.AddPlayer(1)
 		market1.AddPlayer(2)
-'		market1.AddPlayer(3)		
+		market1.AddPlayer(3)
+		market1.AddPlayer(4)
 		AudienceMarkets.AddLast(market1)	
 	End Method
 	
@@ -396,7 +398,7 @@ Type TAudienceMarket
 			potentialAudienceThisHour = Game.Quotes.GetPotentialAudienceThisHourFallback(MaxAudience, forHour)
 		Endif
 		
-		Print "TV-Interessierte zu dieser Stunde: " + MaxAudience.ToString()
+		Print "TV-Interessierte zu dieser Stunde: " + potentialAudienceThisHour.ToString()
 			
 	
 		Local sum:TAudience = null
@@ -414,16 +416,16 @@ Type TAudienceMarket
 			If range = null Then
 				range = attraction.GetNewInstance()
 			Else
-				range.Group_0 = range.Group_0 + (1 - range.Group_0) * attraction.Group_0
-				range.Group_1 = range.Group_1 + (1 - range.Group_1) * attraction.Group_1
-				range.Group_2 = range.Group_2 + (1 - range.Group_2) * attraction.Group_2
-				range.Group_3 = range.Group_3 + (1 - range.Group_3) * attraction.Group_3
-				range.Group_4 = range.Group_4 + (1 - range.Group_4) * attraction.Group_4
-				range.Group_5 = range.Group_5 + (1 - range.Group_5) * attraction.Group_5
-				range.Group_6 = range.Group_6 + (1 - range.Group_6) * attraction.Group_6
+				range.Children = range.Children + (1 - range.Children) * attraction.Children
+				range.Teenagers = range.Teenagers + (1 - range.Teenagers) * attraction.Teenagers
+				range.HouseWifes = range.HouseWifes + (1 - range.HouseWifes) * attraction.HouseWifes
+				range.Employees = range.Employees + (1 - range.Employees) * attraction.Employees
+				range.Unemployed = range.Unemployed + (1 - range.Unemployed) * attraction.Unemployed
+				range.Manager = range.Manager + (1 - range.Manager) * attraction.Manager
+				range.Pensioners = range.Pensioners + (1 - range.Pensioners) * attraction.Pensioners
 				
-				range.SubGroup_0 = range.SubGroup_0 + (1 - range.SubGroup_0) * attraction.SubGroup_0
-				range.SubGroup_1 = range.SubGroup_1 + (1 - range.SubGroup_1) * attraction.SubGroup_1
+				range.Women = range.Women + (1 - range.Women) * attraction.Women
+				range.Men = range.Men + (1 - range.Men) * attraction.Men
 			Endif
 		Next
 		
@@ -445,16 +447,16 @@ rem
 			
 			print key + " - d1: " + attraction.ToString()			
 						
-			effectiveAttraction.Group_0 = attraction.Group_0 / sum.Group_0
-			effectiveAttraction.Group_1 = attraction.Group_1 / sum.Group_1
-			effectiveAttraction.Group_2 = attraction.Group_2 / sum.Group_2
-			effectiveAttraction.Group_3 = attraction.Group_3 / sum.Group_3
-			effectiveAttraction.Group_4 = attraction.Group_4 / sum.Group_4
-			effectiveAttraction.Group_5 = attraction.Group_5 / sum.Group_5
-			effectiveAttraction.Group_6 = attraction.Group_6 / sum.Group_6
+			effectiveAttraction.Children = attraction.Children / sum.Children
+			effectiveAttraction.Teenagers = attraction.Teenagers / sum.Teenagers
+			effectiveAttraction.HouseWifes = attraction.HouseWifes / sum.HouseWifes
+			effectiveAttraction.Employees = attraction.Employees / sum.Employees
+			effectiveAttraction.Unemployed = attraction.Unemployed / sum.Unemployed
+			effectiveAttraction.Manager = attraction.Manager / sum.Manager
+			effectiveAttraction.Pensioners = attraction.Pensioners / sum.Pensioners
 			
-			effectiveAttraction.SubGroup_0 = attraction.SubGroup_0 / sum.SubGroup_0
-			effectiveAttraction.SubGroup_1 = attraction.SubGroup_1 / sum.SubGroup_1
+			effectiveAttraction.Women = attraction.Women / sum.Women
+			effectiveAttraction.Men = attraction.Men / sum.Men
 	endrem								
 			print "Effective attraction for " + key + ": " + effectiveAttraction.ToString()
 			
@@ -507,6 +509,7 @@ Type TGenreDefinition
 	Field GenreId:int
 	Field AudienceAttraction:TAudience
 	Field TimeMods:float[]
+	Field Popularity:TGenrePopulartity
 	
 	Field OutcomeMod:float = 0.5
 	Field ReviewMod:float = 0.3
@@ -525,22 +528,34 @@ Type TGenreDefinition
 		Next
 
 		AudienceAttraction= new TAudience		
-		AudienceAttraction.Group_0 = string(data.ValueForKey("group_0")).ToFloat()
-		AudienceAttraction.Group_1 = string(data.ValueForKey("group_1")).ToFloat()
-		AudienceAttraction.Group_2 = string(data.ValueForKey("group_2")).ToFloat()
-		AudienceAttraction.Group_3 = string(data.ValueForKey("group_3")).ToFloat()
-		AudienceAttraction.Group_4 = string(data.ValueForKey("group_4")).ToFloat()
-		AudienceAttraction.Group_5 = string(data.ValueForKey("group_5")).ToFloat()
-		AudienceAttraction.Group_6 = string(data.ValueForKey("group_6")).ToFloat()
-		AudienceAttraction.SubGroup_0 = string(data.ValueForKey("subgroup_1")).ToFloat()
-		AudienceAttraction.SubGroup_1 = string(data.ValueForKey("subgroup_2")).ToFloat()		
+		AudienceAttraction.Children = string(data.ValueForKey("Children")).ToFloat()
+		AudienceAttraction.Teenagers = string(data.ValueForKey("Teenagers")).ToFloat()
+		AudienceAttraction.HouseWifes = string(data.ValueForKey("HouseWifes")).ToFloat()
+		AudienceAttraction.Employees = string(data.ValueForKey("Employees")).ToFloat()
+		AudienceAttraction.Unemployed = string(data.ValueForKey("Unemployed")).ToFloat()
+		AudienceAttraction.Manager = string(data.ValueForKey("Manager")).ToFloat()
+		AudienceAttraction.Pensioners = string(data.ValueForKey("Pensioners")).ToFloat()
+		AudienceAttraction.Women = string(data.ValueForKey("Women")).ToFloat()
+		AudienceAttraction.Men = string(data.ValueForKey("Men")).ToFloat()	
+				
+		Popularity = TGenrePopulartity.Create(GenreId, RandRange(-10,10), RandRange(-25,25))
+		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufügen		
+		
+		print "Load " + GenreId + ": " + AudienceAttraction.ToString()
+		print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod 
 	End Method
 		
-	Method GetProgrammeQuality:float(programme:TProgramme)
-		Local quality:Float		= 0.0				
-		quality =	Float(programme.Outcome) / 255.0 * OutcomeMod..
-					+ Float(programme.review) / 255.0 * ReviewMod..
-					+ Float(programme.speed) / 255.0 * SpeedMod..
+	Method GetProgrammeQuality:float(programme:TProgramme, luckFactor:int = 1)
+		Local quality:Float		= 0.0
+		
+		If OutcomeMod > 0.0 Then
+			quality =	Float(programme.Outcome) / 255.0 * OutcomeMod..
+						+ Float(programme.review) / 255.0 * ReviewMod..
+						+ Float(programme.speed) / 255.0 * SpeedMod
+		Else
+			quality =	Float(programme.review) / 255.0 * ReviewMod..
+						+ Float(programme.speed) / 255.0 * SpeedMod´
+		Endif
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
 		Local age:Int = Max(0,100-Max(0,game.GetYear() - programme.year))
@@ -549,6 +564,12 @@ Type TGenreDefinition
 		'repetitions wont be watched that much
 		quality	:*	(programme.ComputeTopicality()/255.0)^2
 
+		If luckFactor = 1 Then
+			quality = quality * 0.98 + Float(RandRange(10,20))/1000.0 '1%-Punkte bis 2%-Punkte Basis-Qualität
+		Else
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
+		Endif
+		
 		'no minus quote
 		quality = Max(0, quality)		
 		Return quality 		
@@ -596,7 +617,7 @@ Type TGenreDefinition
 		Endif				
 		quality = Max(0, Min(98, quality))
 				
-		print "   Programm-Qualität: " + quality + " (ohne Zeit-Mod: " + rawQuality + ")"	
+		print "G" + GenreId + "   Programm-Qualität: " + quality + " (ohne Zeit-Mod: " + rawQuality + ")"	
 		
 		If Game.Quotes.FEATURE_GENRE_TARGETGROUP_MOD = 1 'Wie gut kommt das Genre bei den Zielgruppen an
 			result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
@@ -604,7 +625,7 @@ Type TGenreDefinition
 			result = TAudience.CreateAndInit:TAudience(quality, quality, quality, quality, quality, quality, quality, quality, quality)
 		Endif
 				
-		print "   Quali. nach Zielg.: " + result.ToStringAverage() + " (Einfluss je nach Genre)"
+		print "G" + GenreId + "   Quali. nach Zielg.: " + result.ToStringAverage() + " (Einfluss je nach Genre)"
 				
 		Return result					
 	End Method
@@ -618,19 +639,19 @@ Type TGenreDefinition
 	endrem
 	Method CalculateQuotes:TAudience(quality:float)
 		'Zielgruppe / 50 * Qualität
-		'Local temp:float = Audience_Group_0 / 50 * quality
+		'Local temp:float = Audience_Children / 50 * quality
 		'Local extraAudience = temp/15 * temp/15
 		
 		Local result:TAudience = new TAudience
-		result.Group_0 = CalculateQuoteForGroup(quality, AudienceAttraction.Group_0)
-		result.Group_1 = CalculateQuoteForGroup(quality, AudienceAttraction.Group_1)
-		result.Group_2 = CalculateQuoteForGroup(quality, AudienceAttraction.Group_2)
-		result.Group_3 = CalculateQuoteForGroup(quality, AudienceAttraction.Group_3)
-		result.Group_4 = CalculateQuoteForGroup(quality, AudienceAttraction.Group_4)
-		result.Group_5 = CalculateQuoteForGroup(quality, AudienceAttraction.Group_5)
-		result.Group_6 = CalculateQuoteForGroup(quality, AudienceAttraction.Group_6)
-		result.SubGroup_0 = CalculateQuoteForGroup(quality, AudienceAttraction.SubGroup_0)
-		result.SubGroup_1 = CalculateQuoteForGroup(quality, AudienceAttraction.SubGroup_1)
+		result.Children = CalculateQuoteForGroup(quality, AudienceAttraction.Children)
+		result.Teenagers = CalculateQuoteForGroup(quality, AudienceAttraction.Teenagers)
+		result.HouseWifes = CalculateQuoteForGroup(quality, AudienceAttraction.HouseWifes)
+		result.Employees = CalculateQuoteForGroup(quality, AudienceAttraction.Employees)
+		result.Unemployed = CalculateQuoteForGroup(quality, AudienceAttraction.Unemployed)
+		result.Manager = CalculateQuoteForGroup(quality, AudienceAttraction.Manager)
+		result.Pensioners = CalculateQuoteForGroup(quality, AudienceAttraction.Pensioners)
+		result.Women = CalculateQuoteForGroup(quality, AudienceAttraction.Women)
+		result.Men = CalculateQuoteForGroup(quality, AudienceAttraction.Men)
 		Return result
 	End Method
 	
@@ -650,29 +671,29 @@ End Type
 
 
 Type TAudience
-	Field Group_0:float 'Kinder 
-	Field Group_1:float 'Teenagers
-	Field Group_2:float 'Hausfrauen 
-	Field Group_3:float 'Employees
-	Field Group_4:float 'Unemployed
-	Field Group_5:float 'Manager
-	Field Group_6:float 'Rentner
+	Field Children:float 'Kinder 
+	Field Teenagers:float 'Teenagers
+	Field HouseWifes:float 'Hausfrauen 
+	Field Employees:float 'Employees
+	Field Unemployed:float 'Unemployed
+	Field Manager:float 'Manager
+	Field Pensioners:float 'Rentner
 
-	Field SubGroup_0:float 'Women
-	Field SubGroup_1:float 'Men
+	Field Women:float 'Women
+	Field Men:float 'Men
 	
 	Function CreateWithBreakdown:TAudience(audience:int)
 		Local obj:TAudience = New TAudience
-		obj.Group_0 = audience * 0.1 'Kinder (10%)
-		obj.Group_1 = audience * 0.1 'Teenager (10%)
+		obj.Children = audience * 0.1 'Kinder (10%)
+		obj.Teenagers = audience * 0.1 'Teenager (10%)
 		'Erwachsene 60%
-		obj.Group_2 = audience * 0.12 'Hausfrauen (20% von 60% Erwachsenen = 12%)
-		obj.Group_3 = audience * 0.405 'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
-		obj.Group_4 = audience * 0.045 'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
-		obj.Group_5 = audience * 0.03 'Manager (5% von 60% Erwachsenen = 3%)
-		obj.Group_6 = audience * 0.2 'Rentner (20%)
-		obj.SubGroup_0 = obj.Group_0 * 0.5 + obj.Group_1 * 0.5 + obj.Group_2 * 0.9 + obj.Group_3 * 0.4 + obj.Group_4 * 0.4 + obj.Group_5 * 0.25 + obj.Group_6 * 0.55		
-		obj.SubGroup_1 = obj.Group_0 * 0.5 + obj.Group_1 * 0.5 + obj.Group_2 * 0.1 + obj.Group_3 * 0.6 + obj.Group_4 * 0.6 + obj.Group_5 * 0.75 + obj.Group_6 * 0.45
+		obj.HouseWifes = audience * 0.12 'Hausfrauen (20% von 60% Erwachsenen = 12%)
+		obj.Employees = audience * 0.405 'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
+		obj.Unemployed = audience * 0.045 'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
+		obj.Manager = audience * 0.03 'Manager (5% von 60% Erwachsenen = 3%)
+		obj.Pensioners = audience * 0.2 'Rentner (20%)
+		obj.Women = obj.Children * 0.5 + obj.Teenagers * 0.5 + obj.HouseWifes * 0.9 + obj.Employees * 0.4 + obj.Unemployed * 0.4 + obj.Manager * 0.25 + obj.Pensioners * 0.55		
+		obj.Men = obj.Children * 0.5 + obj.Teenagers * 0.5 + obj.HouseWifes * 0.1 + obj.Employees * 0.6 + obj.Unemployed * 0.6 + obj.Manager * 0.75 + obj.Pensioners * 0.45
 		Return obj
 	End Function	
 	
@@ -687,95 +708,95 @@ Type TAudience
 	End Method
 	
 	Method CopyTo:TAudience(audience:TAudience)
-		audience.SetValues(Group_0, Group_1, Group_2, Group_3, Group_4, Group_5, Group_6, SubGroup_0, SubGroup_1)		
+		audience.SetValues(Children, Teenagers, HouseWifes, Employees, Unemployed, Manager, Pensioners, Women, Men)		
 		Return audience
 	End Method	
 	
 	Method SetValues(group0:float, group1:float, group2:float, group3:float, group4:float, group5:float, group6:float, subgroup0:float, subgroup1:float)
-		Group_0 = group0
-		Group_1 = group1
-		Group_2 = group2
-		Group_3 = group3
-		Group_4 = group4
-		Group_5 = group5
-		Group_6 = group6
-		SubGroup_0 = subgroup0
-		SubGroup_1 = subgroup1
+		Children = group0
+		Teenagers = group1
+		HouseWifes = group2
+		Employees = group3
+		Unemployed = group4
+		Manager = group5
+		Pensioners = group6
+		Women = subgroup0
+		Men = subgroup1
 	End Method
 	
 	Method GetSum:int()
-		Return Group_0 + Group_1 + Group_2 + Group_3 + Group_4 + Group_5 + Group_6
+		Return Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners
 	End Method
 	
 	Method GetSumFloat:float()
-		Return Group_0 + Group_1 + Group_2 + Group_3 + Group_4 + Group_5 + Group_6
+		Return Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners
 	End Method	
 		
 	Method Add(audience:TAudience)
-		Group_0 :+ audience.Group_0
-		Group_1 :+ audience.Group_1
-		Group_2 :+ audience.Group_2
-		Group_3 :+ audience.Group_3
-		Group_4 :+ audience.Group_4
-		Group_5 :+ audience.Group_5
-		Group_6 :+ audience.Group_6
-		SubGroup_0 :+ audience.SubGroup_0
-		SubGroup_1 :+ audience.SubGroup_1
+		Children :+ audience.Children
+		Teenagers :+ audience.Teenagers
+		HouseWifes :+ audience.HouseWifes
+		Employees :+ audience.Employees
+		Unemployed :+ audience.Unemployed
+		Manager :+ audience.Manager
+		Pensioners :+ audience.Pensioners
+		Women :+ audience.Women
+		Men :+ audience.Men
 	End Method	
 	
 	Method Multiply(audienceMultiplier:TAudience, dividorBase:float=1)
-		Group_0 :* audienceMultiplier.Group_0 / dividorBase
-		Group_1 :* audienceMultiplier.Group_1 / dividorBase
-		Group_2 :* audienceMultiplier.Group_2 / dividorBase
-		Group_3 :* audienceMultiplier.Group_3 / dividorBase
-		Group_4 :* audienceMultiplier.Group_4 / dividorBase
-		Group_5 :* audienceMultiplier.Group_5 / dividorBase
-		Group_6 :* audienceMultiplier.Group_6 / dividorBase
-		SubGroup_0 :* audienceMultiplier.SubGroup_0 / dividorBase
-		SubGroup_1 :* audienceMultiplier.SubGroup_1 / dividorBase
+		Children :* audienceMultiplier.Children / dividorBase
+		Teenagers :* audienceMultiplier.Teenagers / dividorBase
+		HouseWifes :* audienceMultiplier.HouseWifes / dividorBase
+		Employees :* audienceMultiplier.Employees / dividorBase
+		Unemployed :* audienceMultiplier.Unemployed / dividorBase
+		Manager :* audienceMultiplier.Manager / dividorBase
+		Pensioners :* audienceMultiplier.Pensioners / dividorBase
+		Women :* audienceMultiplier.Women / dividorBase
+		Men :* audienceMultiplier.Men / dividorBase
 	End Method
 	
 	Method MultiplyFactor(factor:float)
-		Group_0 :* factor
-		Group_1 :* factor
-		Group_2 :* factor
-		Group_3 :* factor
-		Group_4 :* factor
-		Group_5 :* factor
-		Group_6 :* factor
-		SubGroup_0 :* factor
-		SubGroup_1 :* factor
+		Children :* factor
+		Teenagers :* factor
+		HouseWifes :* factor
+		Employees :* factor
+		Unemployed :* factor
+		Manager :* factor
+		Pensioners :* factor
+		Women :* factor
+		Men :* factor
 	End Method
 	
 	Method Divide(audienceDividor:TAudience)
-		Group_0 :/ audienceDividor.Group_0
-		Group_1 :/ audienceDividor.Group_1
-		Group_2 :/ audienceDividor.Group_2
-		Group_3 :/ audienceDividor.Group_3
-		Group_4 :/ audienceDividor.Group_4
-		Group_5 :/ audienceDividor.Group_5
-		Group_6 :/ audienceDividor.Group_6
-		SubGroup_0 :/ audienceDividor.SubGroup_0
-		SubGroup_1 :/ audienceDividor.SubGroup_1
+		Children :/ audienceDividor.Children
+		Teenagers :/ audienceDividor.Teenagers
+		HouseWifes :/ audienceDividor.HouseWifes
+		Employees :/ audienceDividor.Employees
+		Unemployed :/ audienceDividor.Unemployed
+		Manager :/ audienceDividor.Manager
+		Pensioners :/ audienceDividor.Pensioners
+		Women :/ audienceDividor.Women
+		Men :/ audienceDividor.Men
 	End Method	
 	
 	Method Round()
-		Group_0 = Ceil(Group_0)
-		Group_1 = Ceil(Group_1)
-		Group_2 = Ceil(Group_2)
-		Group_3 = Ceil(Group_3)
-		Group_4 = Ceil(Group_4)
-		Group_5 = Ceil(Group_5)
-		Group_6 = Ceil(Group_6)
-		SubGroup_0 = Ceil(SubGroup_0)
-		SubGroup_1 = Ceil(SubGroup_1)
+		Children = Ceil(Children)
+		Teenagers = Ceil(Teenagers)
+		HouseWifes = Ceil(HouseWifes)
+		Employees = Ceil(Employees)
+		Unemployed = Ceil(Unemployed)
+		Manager = Ceil(Manager)
+		Pensioners = Ceil(Pensioners)
+		Women = Ceil(Women)
+		Men = Ceil(Men)
 	End Method
 	
 	Method ToString:string()
-		Return "Sum: " + Ceil(GetSum()) + "  ( 0: " + Group_0 + "  - 1: " + Group_1 + "  - 2: " + Group_2 + "  - 3: " + Group_3 + "  - 4: " + Group_4 + "  - 5: " + Group_5 + "  - 6: " + Group_6 + ")"
+		Return "Sum: " + Ceil(GetSum()) + "  ( 0: " + Children + "  - 1: " + Teenagers + "  - 2: " + HouseWifes + "  - 3: " + Employees + "  - 4: " + Unemployed + "  - 5: " + Manager + "  - 6: " + Pensioners + ")"
 	End Method
 	
 	Method ToStringAverage:string()
-		Return "Ave: " + GetSumFloat()/7 + "  ( 0: " + Group_0 + "  - 1: " + Group_1 + "  - 2: " + Group_2 + "  - 3: " + Group_3 + "  - 4: " + Group_4 + "  - 5: " + Group_5 + "  - 6: " + Group_6 + ")"
+		Return "Ave: " + GetSumFloat()/7 + "  ( 0: " + Children + "  - 1: " + Teenagers + "  - 2: " + HouseWifes + "  - 3: " + Employees + "  - 4: " + Unemployed + "  - 5: " + Manager + "  - 6: " + Pensioners + ")"
 	End Method
 End Type
