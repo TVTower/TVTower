@@ -1109,8 +1109,10 @@ endrem
 	'computes audience depending on ComputeAudienceQuote and if the time is the same
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = FALSE)
-		Game.Quotes.ComputeAudienceForAllPlayers(recompute)
-	
+		'Game.Quotes.ComputeAudienceForAllPlayers(recompute)
+		Game.Quotes.ComputeAudienceForAllPlayersMarket(recompute)
+
+			
 
 	rem
 		Local block:TProgrammeBlock
@@ -1165,7 +1167,7 @@ endrem
 
 			if Player.GetMaxaudience() > 0
 				local leadinAudience:int = 0
-				local slotaudience:int[] = [Player.audience2.GetSum(),0,0,0]
+				local slotaudience:int[] = [int(Player.audience2.GetSum()),0,0,0]
 				'in the "0"-position of the index, we store the previous audience
 				'so that the result of each news is based on a leadin of the previous
 				'so "holes" cut the news reach :D
@@ -3403,7 +3405,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			ElseIf minute = 55
 				TPlayer.ComputeAds()
 			ElseIf minute = 0
-				Game.Quotes.calculateMaxAudiencePercentage(hour)
+				'Game.Quotes.calculateMaxAudiencePercentage(hour)
 				TPlayer.ComputeNewsAudience()
  			EndIf
  			If minute = 5 Or minute = 55 Or minute=0 Then Interface.BottomImgDirty = True
