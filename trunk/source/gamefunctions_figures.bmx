@@ -6,18 +6,18 @@ Type TFigures Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 	Field Name:String			= "unknown"
 	Field initialdx:Float		= 0.0 'backup of self.vel.x
-	Field target:TPoint			= TPoint.Create(-1,-1) {_exposeToLua}
 	Field PosOffset:TPoint		= TPoint.Create(0,0)
 	Field boardingState:Int		= 0				'0=no boarding, 1=boarding, -1=deboarding
 
+	Field target:TPoint			= Null {_exposeToLua}
+	Field targetRoom:TRooms		= Null			'targetting a special room?
+	Field targetHotspot:THotspot= Null			'targetting a special hotspot?
 	Field isChangingRoom:int	= FALSE			'active as soon as figure leaves/enters rooms
-	Field targetRoom:TRooms			= Null			{sl = "no"}
-	Field fromRoom:TRooms		= Null			{sl = "no"}
-	Field inRoom:TRooms			= Null			{sl = "no"}
+	Field fromRoom:TRooms		= Null
+	Field inRoom:TRooms			= Null
 	Field id:Int				= 0
 	Field Visible:Int			= 1
 
-	Field SpecialTimer:TIntervalTimer	= TIntervalTimer.Create(1500)
 	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(25000)
 	Field SyncTimer:TIntervalTimer		= TIntervalTimer.Create(2500) 'network sync position timer
 
@@ -27,26 +27,27 @@ Type TFigures Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field ListLink:TLink						{sl = "no"}
 	Field ParentPlayer:TPlayer	= Null			{sl = "no"}
 	Field SoundSource:TFigureSoundSource = TFigureSoundSource.Create(Self)
+	Field moveable:int			= TRUE	'whether this figure can move or not (eg. for debugging)
 
 	Global LastID:Int			= 0				{sl = "no"}
 	Global List:TList			= CreateList()
 
 
-	Method CreateFigure:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, dx:Int, ControlledByID:Int = -1)
+	Method CreateFigure:TFigures(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
 		Super.Create(sprite, 4, 130)
 
 		Self.insertAnimation("default", TAnimation.Create([ [8,1000] ], -1, 0 ) )
 
 		Self.insertAnimation("walkRight", TAnimation.Create([ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
 		Self.insertAnimation("walkLeft", TAnimation.Create([ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
-		Self.insertAnimation("standFront", TAnimation.Create([ [8,2500], [9,150] ], -1, 0, 500) )
+		Self.insertAnimation("standFront", TAnimation.Create([ [8,2500], [9,250] ], -1, 0, 500) )
 		Self.insertAnimation("standBack", TAnimation.Create([ [10,1000] ], -1, 0 ) )
 
 		Self.name 			= Figurename
 		Self.rect			= TRectangle.Create(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
-		Self.target.setX(x)
-		Self.vel.SetX(dx)
-		Self.initialdx		= dx
+'		Self.vel.SetX(speed)
+		Self.vel.SetX(0)
+		Self.initialdx		= speed
 		Self.Sprite			= sprite
 		Self.ControlledByID	= ControlledByID
 
@@ -106,39 +107,29 @@ Return
 
 
 	Method HasToChangeFloor:Int()
-		Return Building.getFloor(Building.pos.y + target.GetY() ) <> Building.getFloor(Building.pos.y + Self.rect.GetY() )
+		if not self.target then return FALSE
+		Return GetFloor(self.target) <> GetFloor()
 	End Method
 
 
 	Method GetFloor:Int(_pos:TPoint = Null)
-		If _pos = Null Then _pos = Self.rect.position
-		'print self.name + " is on floor: " + Building.getFloor( Building.pos.y + pos.y + sprite.h )
+		'if we have no floor set in the pos, we return the current floor
+		If not _pos Then _pos = Self.rect.position
 		Return Building.getFloor( Building.pos.y + _pos.y )
 	End Method
 
-
-	Method GetTargetFloor:Int()
-		Return Building.getFloor( Building.pos.y + target.y)
-	End Method
-
-
-	Method IsOnFloor:Byte()
+	Method IsOnFloor:Int()
 		Return rect.GetY() = Building.GetFloorY(GetFloor())
 	End Method
 
 
-	Method GetCenterX:Int()
-		Return Ceil(Self.rect.GetX() + Self.rect.GetW()/2)
-	End Method
-
-
 	'ignores y
-	Method IsAtElevator:Byte()
+	Method IsAtElevator:int()
 		Return Building.Elevator.IsFigureInFrontOfDoor(Self)
 	End Method
 
 
-	Method IsInElevator:Byte()
+	Method IsInElevator:int()
 		Return Building.Elevator.IsFigureInElevator(Self)
 	End Method
 
@@ -155,74 +146,118 @@ Return
 	End Method
 
 
+
 	Method FigureMovement:int(deltaTime:Float=1.0)
+		'figure is in a room, do not move...
+		if inRoom then return FALSE
+
+		if not moveable then return FALSE
+
 		'stop movement if changing rooms
 		if isChangingRoom then return FALSE
 
-		Local targetX:Int = Floor(Self.target.x)
-		If target.y=-1 Then target.setPos(Self.rect.position)
+		'stop movement, will get set to a value if we have a target to move to
+		self.vel.setX(0)
 
-		'do we have to change the floor?
-		If Self.HasToChangeFloor() Then targetX = Building.Elevator.GetDoorCenterX() - Self.rect.GetW()/2 '-GetW/2 to center figure
+		'we have a target to move to
+		if target
+			'get a temporary target coordinate so we can manipulate that safely
+			Local targetX:Int = Self.target.getIntX()
 
-		If targetX < Floor(Self.rect.GetX())
-			Self.vel.SetX( -(Abs(Self.initialdx)))
+			'do we have to change the floor?
+			'if that is the case - change temporary target to elevator
+			If Self.HasToChangeFloor() Then targetX = Building.Elevator.GetDoorCenterX()
+
+			'check whether the target is left or right side of the figure
+			If targetX < Self.rect.GetX()
+				Self.vel.SetX( -(Abs(Self.initialdx)))
+			ElseIf targetX > Self.rect.GetX()
+				Self.vel.SetX(  (Abs(Self.initialdx)))
+			EndIf
+
+
+			'does the center of the figure will reach the target during?
+			local dx:float = deltaTime * Self.vel.GetX()
+			local reachTemporaryTarget:int = FALSE
+			'move to right and next step is more right than target
+			if dx > 0 and ceil(self.rect.getX())+dx >= targetX then reachTemporaryTarget=true
+			'move to left and next step is more left than target
+			if dx < 0 and ceil(self.rect.getX())+dx <= targetX then reachTemporaryTarget=true
+			'we stand in front of the target
+			if dx = 0 and abs(self.rect.getX() - targetX)<1.0 then reachTemporaryTarget=true
+
+			'we reached our current target (temp or real)
+			If reachTemporaryTarget
+				'we reached our real target
+				if not Self.HasToChangeFloor()
+					self.reachTarget()
+				else
+					'set to elevator-targetx
+					rect.position.setX( targetX )
+				endif
+			endif
+		endif
+
+		'decide if we have to play sound
+		if self.vel.getX() <> 0 and not IsInElevator()
 			SoundSource.PlayOrContinueSFX(SFX_STEPS)
-		EndIf
-		If targetX > Floor(Self.rect.GetX())
-			Self.vel.SetX(  (Abs(Self.initialdx)))
-			SoundSource.PlayOrContinueSFX(SFX_STEPS)
-		EndIf
-
- 		If Abs( Floor(targetX) - Floor(Self.rect.GetX()) ) < Abs(deltaTime*Self.vel.GetX())
-			Self.vel.SetX(0)
-			Self.rect.position.setX(targetX)
+		else
 			SoundSource.Stop(SFX_STEPS)
 		EndIf
 
+		'do real moving
+		doMove(deltaTime)
+	End Method
+
+	Method doMove(deltaTime:float)
 		If Not Self.IsInElevator()
 			Self.rect.position.MoveXY(deltaTime * Self.vel.GetX(), 0)
 			If Not Self.IsOnFloor() Then Self.rect.position.setY( Building.GetFloorY(Self.GetFloor()) )
 		Else
 			Self.vel.SetX(0)
-			SoundSource.Stop(SFX_STEPS)
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		If Self.rect.GetY() < Building.GetFloorY(13) Then Self.rect.position.setY( Building.GetFloorY(13) ) 'beim Vergleich oben nicht "self.sprite.h" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
 		If Self.rect.GetY() - Self.sprite.h > Building.GetFloorY( 0) Then Self.rect.position.setY( Building.GetFloorY(0) )
 		'limit player position horizontally
-	    If Floor(Self.rect.GetX()) <= 200 Then rect.position.setX(200);target.setX(200)
-	    If Floor(Self.rect.GetX()) >= 579 Then rect.position.setX(579);target.setX(579)
+	    If Floor(Self.rect.GetX()) <= 200 Then self.changeTarget(200);self.reachTarget()
+	    If Floor(Self.rect.GetX()) >= 579 Then self.changeTarget(579);self.reachTarget()
 	End Method
 
-
-	Method FigureAnimation:int(deltaTime:Float=1.0)
+	'returns what animation has to get played in that moment
+	Method getAnimationToUse:string()
+		local result:string = "standFront"
 		'if standing
-		If Self.vel.GetX() = 0
-				'default - no movement needed
-				If Self.boardingState = 0
-					Self.setCurrentAnimation("standFront",True)
-				'boarding/deboarding movement
-				Else
-					'multiply boardingState : if boarding it is 1, if deboarding it is -1
-					'so multiplying negates value if needed
-					If Self.boardingState * Self.PosOffset.GetX() > 0 Then Self.setCurrentAnimation("walkRight", True)
-					If Self.boardingState * Self.PosOffset.GetX() < 0 Then Self.setCurrentAnimation("walkLeft", True)
-				EndIf
+		If Self.vel.GetX() = 0 or not self.moveable
+			'default - no movement needed
+			If Self.boardingState = 0
+				result = "standFront"
+			'boarding/deboarding movement
+			Else
+				'multiply boardingState : if boarding it is 1, if deboarding it is -1
+				'so multiplying negates value if needed
+				If Self.boardingState * Self.PosOffset.GetX() > 0 Then result = "walkRight"
+				If Self.boardingState * Self.PosOffset.GetX() < 0 Then result = "walkLeft"
+			EndIf
 
 			'show the backside if at elevator
 			If Self.hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
-				Self.setCurrentAnimation("standBack",True)
+				result = "standBack"
+			'going into a room
+			ElseIf isChangingRoom and targetRoom
+				result = "standBack"
 			'show front
 			Else
-				Self.setCurrentAnimation("standFront",True)
+				result = "standFront"
 			EndIf
 		'if moving
 		Else
-			If Self.vel.GetX() > 0 Then Self.setCurrentAnimation("walkRight", True)
-			If Self.vel.GetX() < 0 Then Self.setCurrentAnimation("walkLeft", True)
+			If Self.vel.GetX() > 0 Then result = "walkRight"
+			If Self.vel.GetX() < 0 Then result = "walkLeft"
 		EndIf
+
+		return result
 	End Method
 
 
@@ -234,13 +269,8 @@ Return
 						If Figure.rect.GetX() > Self.rect.GetX() And Self.vel.GetX() > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() + rect.GetW(), Building.pos.y + Self.rect.GetY() - Self.sprite.h - 8, 0)
 						If Figure.rect.GetX() < Self.rect.GetX() And Self.vel.GetX() < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX()-18,Building.pos.y + Self.rect.GetY() - Self.sprite.h - 8, 3)
 					Else
-						If Self.id = figure_HausmeisterID
-							If Figure.rect.GetX() > Self.rect.GetX() And Self.vel.GetX() > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() - 8 + Self.rect.GetW(), Building.pos.y + Self.rect.GetY() - Self.sprite.h - 8, 1)
-							If Figure.rect.GetX() < Self.rect.GetX() And Self.vel.GetX() < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() -18+13,Building.pos.y + Self.rect.GetY() - Self.sprite.h-8, 4)
-						Else
-							If Figure.rect.GetX() > Self.rect.GetX() And Self.vel.GetX() > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() + Self.rect.GetW(), Building.pos.y + Self.rect.GetY() - Self.sprite.h - 8, 1)
-							If Figure.rect.GetX() < Self.rect.GetX() And Self.vel.GetX() < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() - 18, Building.pos.y + Self.rect.GetY() - Self.sprite.h - 8, 4)
-						EndIf
+						If Figure.rect.GetX() > Self.rect.GetX() And Self.vel.GetX() > 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() + Self.rect.GetW(), Building.pos.y + Self.rect.GetY() - Self.sprite.h - 8, 1)
+						If Figure.rect.GetX() < Self.rect.GetX() And Self.vel.GetX() < 0 Then Assets.GetSprite("gfx_building_textballons").Draw(Self.rect.GetX() - 18, Building.pos.y + Self.rect.GetY() - Self.sprite.h - 8, 4)
 					EndIf
 				EndIf
 			EndIf
@@ -253,7 +283,10 @@ Return
 		'in all cases: close the door (even if we cannot enter)
 		If room then room.CloseDoor(self)
 
-		If room <> Null then room.occupant = Self
+		If room then room.addOccupant(Self)
+
+		'remove target Room if we are going in a room
+		if room then targetRoom = null
 
 		'backup old room as origin
 		fromRoom = inRoom
@@ -264,13 +297,6 @@ Return
 		'room change finished
 		isChangingRoom = FALSE
 
-if self.id = 1
-	if room
-		print "set "+self.id+" to room "+room.name
-	else
-		print "set "+self.id+" to building"
-	endif
-endif
 	 	'inform AI that we reached a room
 	 	If ParentPlayer <> Null And Self.isAI()
 			If room Then ParentPlayer.PlayerKI.CallOnReachRoom(room.id) Else ParentPlayer.PlayerKI.CallOnReachRoom(TLuaFunctions.RESULT_NOTFOUND)
@@ -283,7 +309,7 @@ endif
     Method CanEnterRoom:Int(room:TRooms)
 		If Not room Then Return False
 		'nicht besetzt: enter moeglich
-		If not room.occupant Then Return True
+		If not room.hasOccupant() Then Return True
 
 		'sonstige spielfiguren (keine spieler) koennen niemanden rausschmeissen
 		'aber auch einfach ueberall rein egal ob wer drin ist
@@ -318,15 +344,9 @@ endif
 		'skip command if we already are entering/leaving
 		if self.isChangingRoom then return TRUE
 
-		'npcs wie Boten koennen einfach rein
-		If Not ParentPlayer
-			_SetInRoom(room)
-			return TRUE
-		endif
-
 		self.isChangingRoom = true
 
-if self.id=1 then print "1/4 | figure: EnterRoom | figure.id:"+self.id
+'RON: if self.id=1 then print "1/4 | figure: EnterRoom | figure.id:"+self.id
 
 		'this sends out an event that we want to enter a room
 		'if successfull, event "room.onEnter" will get triggered - which we listen to
@@ -340,7 +360,7 @@ if self.id=1 then print "1/4 | figure: EnterRoom | figure.id:"+self.id
 		if not figure or figure <> self then return FALSE
 		local room:TRooms = TRooms( triggerEvent.getData().get("room") )
 
-if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
+'RON: if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
 
 		_setInRoom(room)
 
@@ -353,7 +373,7 @@ if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
 		'skip command if we already are leaving
 		if self.isChangingRoom then return TRUE
 
-if self.id=1 then print "1/4 | figure: LeaveRoom | figure.id:"+self.id
+'RON: if self.id=1 then print "1/4 | figure: LeaveRoom | figure.id:"+self.id
 
 		If not Self.inRoom
 			'also reset from (from nothing to nothing :D)
@@ -371,37 +391,24 @@ if self.id=1 then print "1/4 | figure: LeaveRoom | figure.id:"+self.id
 		local figure:TFigures = TFigures( triggerEvent._sender )
 		if not figure or figure <> self then return FALSE
 
-if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
+'RON: if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
 
 		If ParentPlayer And Self.isAI() then ParentPlayer.PlayerKI.CallOnLeaveRoom()
 
 		'enter target -> null = building
 		_setInRoom( null )
 
-		targetRoom = Null
 
-		Self.rect.position.setX(target.x)
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(Self)
 	End Method
 
 
 
 	Method SendToRoom:Int(room:TRooms)
-		If Self.inRoom <> Null then Self.LeaveRoom()
  		If room Then Self.ChangeTarget(room.Pos.x + 5, Building.pos.y + Building.getfloorY(room.Pos.y) - 5)
 	End Method
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
-		'leave "subrooms"
-		For Local i:Int = 0 To 4
-			If Self.inRoom <> Null
-				'Print "leaving room " + Self.inroom.name
-				Self.LeaveRoom()
-			Else
-				Exit
-			EndIf
-		Next
-
 		Local newX:Int = Self.rect.GetX() + relX
 		Local newY:Int = Building.pos.y + Building.getfloorY(self.GetFloor() + relYFloor) - 5
 
@@ -411,13 +418,13 @@ if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
  		Self.ChangeTarget(newX, newY)
 	End Method
 
+
 	Function GetByID:TFigures(id:Int)
 		For Local Figure:TFigures = EachIn TFigures.List
 			If Figure.id = id Then Return Figure
 		Next
 		Return Null
 	End Function
-
 
 
 	Method CallElevator:Int()
@@ -428,53 +435,57 @@ if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
 
 		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss überprüft werden
 		If Building.Elevator.CurrentFloor = GetFloor() And IsAtElevator() Then Return False
-		If IsAtElevator() Then 'Fahrstuhl darf man nur rufen, wenn man davor steht
-			Building.Elevator.CallElevator(Self)
-		EndIf
+
+		'Fahrstuhl darf man nur rufen, wenn man davor steht
+		If IsAtElevator() Then Building.Elevator.CallElevator(Self)
 	End Method
 
+
 	Method GoOnBoardAndSendElevator:Int()
+		if not target then return FALSE
 		If Building.Elevator.EnterTheElevator(Self, Self.getFloor(target))
 			Building.Elevator.SendElevator(Self.getFloor(target), Self)
 		EndIf
 	End Method
 
-	Method ChangeTarget:Int(x:Int=Null, y:Int=Null) {_exposeToLua}
-		'ego nur ich selbst
-		'if not self.parentPlayer or self.parentPlayer.playerID <> 1 then return false
 
-		'needed for AI like post dude
-		If Self.inRoom <> Null Then Self.LeaveRoom()
-
-		'only change target if its your figure or you are game leader
-		If id <> Game.Players[ game.playerID ].figure.id And Not Game.isGameLeader() Then Return False
-
-		If x=Null Then x=target.x
-		If y=Null Then y=target.y
-
+	Method ChangeTarget:Int(x:Int=-1, y:Int=-1) {_exposeToLua}
 		'if player is in elevator dont accept changes
 		If Building.Elevator.passengers.Contains(Self) Then Return False
+
+		'only change target if it's your figure or you are game leader
+		If self <> Game.GetPlayer().figure And Not Game.isGameLeader() Then Return False
+
+		'needed for AI like post dude
+		If Self.inRoom Then Self.LeaveRoom()
+
+		'only a partial target was given
+		if x=-1 or y=-1
+			'change current target
+			if target
+				If x<>-1 Then x = target.x
+				If y<>-1 Then y = target.y
+			'create a new target
+			else
+				If x=-1 Then x = rect.position.x
+				If y=-1 Then y = rect.position.y
+			endif
+		endif
 
 		'y is not of floor 0 -13
 		If Building.GetFloor(y) < 0 Or Building.GetFloor(y) > 13 Then Return False
 
-		'set target x so, that center of figure moves to there
-		'set target y to "basement" y of that floor
-		target.setXY( x,Building.GetFloorY(Building.GetFloor(y)) )
+		'set new target, y is recalculated to "basement"-y of that floor
+		target = TPoint.Create(x, Building.GetFloorY(Building.GetFloor(y)) )
 
-		'targeting a room ? - add building displace
-		Self.targetRoom = TRooms.GetTargetroom(target.x, Building.pos.y + target.y)
-		If Self.targetRoom
-			'print "clicked to room: "+self.clickedToRoom.name + " "+self.clickedToRoom.pos.x
-			target.setX(Self.targetRoom.pos.x +  (Self.targetRoom.name <> "elevator")*Assets.GetSprite("gfx_building_Tueren").framew/2 )
-		EndIf
+		'when targeting a room, set target to center of door
+		targetRoom = TRooms.GetTargetroom(target.x, Building.pos.y + target.y)
+		If targetRoom then target.setX( targetRoom.pos.x + ceil(targetRoom.doorDimension.x/2) )
 
-		'center figure to target
-		target.setX(target.x - Self.rect.GetW()/2)
-
-'ron290813		inRoom = Null
 		'change to event
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(Self)
+
+		return TRUE
 	End Method
 
 	Method IsGameLeader:Int()
@@ -495,83 +506,76 @@ if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
 		Return False
 	End Method
 
+
+	Method reachTarget:int()
+		vel.SetX(0)
+		'set target as current position - so we are exactly there we want to be
+		if target then rect.position.setX( target.getX() )
+		'remove target
+		target = null
+
+		'hotspots are "overlaying" rooms - so more important
+		if targetHotspot
+			'emit an event
+			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", TData.Create().Add("hotspot", targetHotspot), self ) )
+
+			'remove targeted hotspot
+			targetHotspot = null
+		endif
+
+		'figure wants to change room
+		If not targetHotspot and targetRoom 'and not inRoom
+			'emit an event
+			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", TData.Create().Add("room", targetRoom), self ) )
+
+			If targetRoom.doortype >= 0 And targetRoom.getDoorType() <> 5 And inRoom <> targetRoom
+				targetRoom.OpenDoor(Self)
+			endif
+
+			'do not remove the target room as it is done during "entering the room"
+			'(which can be animated and so we just trust the method to do it)
+			EnterRoom(targetRoom)
+		EndIf
+	End Method
+
+
+	Method UpdateCustom:int(deltaTime:Float)
+		'empty by default
+	End Method
+
+
 	Method Update:int(deltaTime:Float)
+
 		'update parent class (anim pos)
 		Super.Update(deltaTime)
 
 		Self.alreadydrawn = 0
 
-		If updatefunc_ <> Null
-			updatefunc_(ListLink, deltaTime)
-		Else
-			If id = Game.playerID
-				If Self.rect.position.isSame(target)
-					If Game.networkgame And Self.SyncTimer.isExpired()
-						NetworkHelper.SendFigurePosition(Self)
-						Self.SyncTimer.Reset()
-					EndIf
-				EndIf
-			EndIf
-			Self.FigureMovement(deltaTime)
-			Self.FigureAnimation(deltaTime)
-		EndIf
-		'figure wants to change room
-		If targetRoom 'And targetRoom <> fromRoom
-			Local doorCenter:Int = (targetRoom.name <> "elevator")*Assets.GetSprite("gfx_building_Tueren").framew/2
+		'movement is not done when in a room
+		FigureMovement(deltaTime)
 
-			If Self.ControlledByID >= 0 And Self.id <> figure_HausmeisterID 'in multiplayer to be checked if its the player or not
-				'figure center is within 4px wide frame of room "spot" ?
-				'if self.ControlledByID = 1 then print "targetx="+target.x+" x="+(pos.x + framewidth/2)+", y="+(Building.pos.y + Building.GetFloorY(toFloor) - 5)+", wx:"+(targetRoom.Pos.x + doorCenter -2)+", wy:"+(Building.pos.y + Building.GetFloorY(targetRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h)+" w:"+4+" h:"+54
-				If inRoom = Null And functions.IsIn(rect.GetX() + rect.GetW()/2, Building.pos.y + rect.GetY() - 5, targetRoom.Pos.x + doorCenter -2, Building.pos.y + Building.GetFloorY(targetRoom.Pos.y) - Assets.GetSprite("gfx_building_Tueren").h, 4, 54)
+		'set the animation
+		setCurrentAnimation( getAnimationToUse() )
 
-					If targetRoom.doortype >= 0 And targetRoom.getDoorType() <> 5 And inRoom <> targetRoom
-						targetRoom.OpenDoor(Self)
-						Self.SetCurrentAnimation("standBack")
-					Else
-						'RON: show me the back when going into a room
-						Self.SetCurrentAnimation("standBack")
-						'Self.SetCurrentAnimation("standFront")
-					EndIf
-					'if open, timer started and reached halftime --> "wait a moment" before entering
-					If targetRoom.getDoorType() = 5 And Not targetRoom.DoorTimer.isExpired() And targetRoom.DoorTimer.reachedHalftime()
-						targetRoom.CloseDoor(Self)
-						EnterRoom(targetRoom)
+		'this could be overwritten by extended types
+		self.UpdateCustom(deltaTime)
 
-					ElseIf targetRoom.getDoorType() <> 5 '5 is an open door
-					'we stand in front of elevator - and clicked on it (to go to other floors)
-						If targetRoom.name = "elevator" And targetRoom.Pos.y = GetFloor() And IsAtElevator()
-							'elevator is in our floor and open
-							If Building.Elevator.CurrentFloor = targetRoom.Pos.y And Building.Elevator.DoorStatus = 1 'offen
-						EnterRoom(targetRoom)
-						Building.Elevator.UsePlan(Self)
-							'not here or closed
-							Else
-								CallElevator()
-							EndIf
-						EndIf
-					EndIf
-				EndIf
-			EndIf
-		EndIf
 
-		If Visible And (inRoom = Null Or inRoom.name = "elevator")
-			If Self.HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
-				Local elevator:TElevator = Building.Elevator
-
+		If Visible And (not inRoom Or inRoom.name = "elevatorplaner")
+			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
 
 				'Ist der Fahrstuhl da? Kann ich einsteigen?
-				If elevator.CurrentFloor = GetFloor() And elevator.ReadyForBoarding
+				If Building.Elevator.CurrentFloor = GetFloor() And Building.Elevator.ReadyForBoarding
 					GoOnBoardAndSendElevator()
 				Else 'Ansonsten ruf ich ihn halt
 					CallElevator()
 				EndIf
 			EndIf
 
-			If IsInElevator() 'And elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then
-				Local elevator:TElevator = Building.Elevator
-				If elevator.CurrentFloor = GetTargetFloor() And elevator.ReadyForBoarding Then
-					elevator.LeaveTheElevator(Self)
+			If IsInElevator() and Building.Elevator.ReadyForBoarding
+				If (not target OR Building.Elevator.CurrentFloor = GetFloor(target))
+					Building.Elevator.LeaveTheElevator(Self)
 				EndIf
 			EndIf
 		EndIf
@@ -593,11 +597,12 @@ if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
 		Next
 	End Function
 
-	Method Draw(_x:Float= -10000, _y:Float = -10000, overwriteAnimation:String="")
-		If Visible And (inRoom = Null Or inRoom.name = "elevator")
-			If Sprite <> Null
-				Super.Draw(Self.rect.GetX() + PosOffset.getX(), Building.pos.y + Self.rect.GetY() - Self.sprite.h + PosOffset.getY())
-			EndIf
+	Method Draw:int (_x:Float= -10000, _y:Float = -10000, overwriteAnimation:String="")
+		if not sprite or not Visible then return FALSE
+
+		If (not inRoom Or inRoom.name = "elevatorplaner")
+			'draw x-centered at current position
+			Super.Draw( rect.getX() - ceil(rect.GetW()/2) + PosOffset.getX(), Building.pos.y + Self.rect.GetY() - Self.sprite.h + PosOffset.getY())
 		EndIf
 		Self.GetPeopleOnSameFloor()
 	End Method

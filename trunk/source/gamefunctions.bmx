@@ -487,6 +487,71 @@ Type TGUIGameEntry extends TGUISelectListItem
 End Type
 
 
+Type THotspot
+	Field area:TRectangle			= TRectangle.Create(0,0,0,0)
+	Field name:string				= ""
+	Field tooltip:TTooltip			= null
+	Field tooltipText:string		= ""
+	Field tooltipDescription:string	= ""
+	Field hovered:int				= FALSE
+
+	Method Create:THotSpot(name:string, x:int,y:int,w:int,h:int)
+		self.area = TRectangle.Create(x,y,w,h)
+		self.name = name
+		return self
+	End Method
+
+	Method setTooltipText( text:string="", description:string="" )
+		self.tooltipText		= text
+		self.tooltipDescription = description
+	End Method
+
+	Method Update:int(offsetX:int=0,offsetY:int=0)
+		'update tooltip
+		'handle clicks -> send events so eg can send figure to it
+
+		local adjustedArea:TRectangle = area.copy()
+		adjustedArea.position.moveXY(offsetX, offsetY)
+
+		if adjustedArea.containsXY(MOUSEMANAGER.x, MOUSEMANAGER.y)
+			hovered = TRUE
+			if MOUSEMANAGER.isClicked(1)
+				EventManager.triggerEvent( TEventSimple.Create("hotspot.onClick", TData.Create() , self ) )
+			endif
+		else
+			hovered = FALSE
+		endif
+
+		if hovered
+			if tooltip
+				tooltip.Hover()
+			elseif tooltipText<>""
+				tooltip = TTooltip.Create(tooltipText, tooltipDescription, 100, 140, 0, 0)
+				tooltip.enabled = true
+			endif
+		endif
+
+		If tooltip AND tooltip.enabled
+			tooltip.pos.SetXY( adjustedArea.getX() + adjustedArea.getW()/2 - tooltip.GetWidth()/2, adjustedArea.getY() - tooltip.GetHeight())
+			tooltip.Update( App.Timer.getDeltaTime() )
+			'delete old tooltips
+			if tooltip.lifetime < 0 then tooltip = null
+		EndIf
+
+	End Method
+
+	Method Draw:int(offsetX:int=0,offsetY:int=0)
+		if tooltip then tooltip.draw()
+rem
+		'draw tooltip
+		SetAlpha 0.5
+		DrawRect(offsetX + area.getX(), offsetY + area.getY(), area.getW(), area.getH() )
+		SetAlpha 1.0
+endrem
+	End Method
+
+End Type
+
 Type TSaveFile
   Field xml:TXmlHelper
   Field node:TxmlNode
@@ -1065,6 +1130,19 @@ Type TTooltip extends TRenderableChild
 		If tooltipimage >=0 Then txtwidth:+ TTooltip.ToolTipIcons.framew+ 2
 		If txtwidth < self.useFont.getWidth(text)+6 Then txtwidth = self.useFont.getWidth(text)+6
 		Return txtwidth
+	End Method
+
+	Method getHeight:int()
+		If not DirtyImage and Image and imgCacheEnabled then return image.height
+
+		Local boxHeight:Int	= height
+		if height <= 0
+			boxHeight = TooltipHeader.h
+			If Len(text)>1 Then boxHeight :+ (UseFont.getHeight(text)+8)
+			If tooltipimage >= 0 Then boxHeight :+ 2
+		endif
+
+		return boxHeight
 	End Method
 
 	Method DrawShadow(_width:float, _height:float)

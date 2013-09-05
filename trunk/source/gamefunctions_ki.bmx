@@ -295,8 +295,8 @@ Type TLuaFunctions {_exposeToLua}
 		return TContract.getContract( id )
 	End Method
 
-	Method GetRoomByDetails:TRooms(roomName:String, playerID:Int)
-		return TRooms.GetRoomByDetails(roomName, playerID, 0) '0 = not strict
+	Method GetRoomByDetails:TRooms(roomName:String, owner:Int)
+		return TRooms.GetRoomByDetails(roomName, owner)
 	End Method
 
 	Method GetRoom:TRooms(id:int)
@@ -374,11 +374,10 @@ Type TLuaFunctions {_exposeToLua}
 	Method isRoomUnused:Int(roomId:Int = 0)
 		Local Room:TRooms = TRooms.GetRoom(roomId)
 		If not Room then return self.RESULT_NOTFOUND
-		if not Room.occupant then return self.RESULT_OK
+		if not Room.hasOccupant() then return self.RESULT_OK
 
-		If Room.occupant.parentPlayer and Room.occupant.parentPlayer.playerID <> Self.ME
-			Return -1
-		endif
+		If Room.isOccupant( Game.GetPlayer(Self.ME).figure ) then Return -1
+		Return self.RESULT_INUSE
 	End Method
 
 	Method getMillisecs:Int()

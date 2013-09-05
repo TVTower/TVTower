@@ -1619,9 +1619,10 @@ Include "gamefunctions_figures.bmx"
 'Summary: Type of building, area around it and doors,...
 Type TBuilding Extends TRenderable
 	Field pos:TPoint = TPoint.Create(20,0)
-	Field borderright:Int 			= 127 + 40 + 429
-	Field borderleft:Int			= 127 + 40
-	Field skycolor:Float = 0
+	Field buildingDisplaceX:int = 127			'px at which the building starts (leftside added is the door)
+	Field innerLeft:Int			= 127 + 40
+	Field innerRight:Int		= 127 + 468
+	Field skycolor:Float 		= 0
 	Field ufo_normal:TMoveableAnimSprites = New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo"), 9, 100).SetupMoveable(0, 100, 0,0)
 	Field ufo_beaming:TMoveableAnimSprites = New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo2"), 9, 100).SetupMoveable(0, 100, 0,0)
 	Field Elevator:TElevator
@@ -1644,12 +1645,14 @@ Type TBuilding Extends TRenderable
 	Field TimeColor:Double
 	Field DezimalTime:Float
 	Field ActHour:Int
-	Field ItemsDrawnToBackground:Byte 	= 0
+	Field initDone:int					= FALSE
 	Field gfx_bgBuildings:TGW_Sprites[6]
 	Field gfx_building:TGW_Sprites
 	Field gfx_buildingEntrance:TGW_Sprites
 	Field gfx_buildingRoof:TGW_Sprites
 	Field gfx_buildingWall:TGW_Sprites
+
+	Field room:TRooms					= Null		'the room used for the building
 
 	Field roomUsedTooltip:TTooltip		= Null
 
@@ -1729,33 +1732,122 @@ endrem
 		pos.y = Clamp(pos.y, - 637, 88)
 		UpdateBackground(deltaTime)
 
+
+		'update hotspot tooltips
+		if room
+			for local hotspot:THotspot = eachin room.hotspots
+				hotspot.update(self.pos.x, self.pos.y)
+			Next
+		endif
+
+
 		If Self.roomUsedTooltip <> Null Then Self.roomUsedTooltip.Update(deltaTime)
+
+
+		'handle player target changes
+		If not Game.GetPlayer().Figure.inRoom
+			If MOUSEMANAGER.isClicked(1) and not GUIManager.modalActive
+				'do not allow movement on fadeIn (when going in a room)
+				if not Fader.fadeenabled or (Fader.fadeenabled and Fader.fadeout)
+					If functions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
+						Game.GetPlayer().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
+						MOUSEMANAGER.resetKey(1)
+					EndIf
+				endif
+			EndIf
+		EndIf
 	End Method
 
-	Method DrawItemsToBackground:Int()
+	Method Init:Int()
+		if initDone then return TRUE
+
 		Local locy13:Int	= GetFloorY(13)
 		Local locy3:Int		= GetFloorY(3)
 		Local locy0:Int		= GetFloorY(0)
 		Local locy12:Int	= GetFloorY(12)
-		If Not ItemsDrawnToBackground
-			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
-			'	  Local Pix:TPixmap = gfx_building_skyscraper.RestorePixmap()
 
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze4").GetImage(), 0, Pix, 127 + borderleft + 40, locy12 - Assets.GetSprite("gfx_building_Pflanze4").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze6").GetImage(), 0, Pix, 127 + borderright - 95, locy12 - Assets.GetSprite("gfx_building_Pflanze6").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze2").GetImage(), 0, Pix, 127 + borderleft + 105, locy13 - Assets.GetSprite("gfx_building_Pflanze2").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze3").GetImage(), 0, Pix, 127 + borderright - 105, locy13 - Assets.GetSprite("gfx_building_Pflanze3").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 145, locy0 - Assets.GetSprite("gfx_building_Wandlampe").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 506 - 145 - Assets.GetSprite("gfx_building_Wandlampe").w, locy0 - Assets.GetSprite("gfx_building_Wandlampe").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 145, locy13 - Assets.GetSprite("gfx_building_Wandlampe").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 506 - 145 - Assets.GetSprite("gfx_building_Wandlampe").w, locy13 - Assets.GetSprite("gfx_building_Wandlampe").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 145, locy3 - Assets.GetSprite("gfx_building_Wandlampe").h)
-			DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, 506 - 145 - Assets.GetSprite("gfx_building_Wandlampe").w, locy3 - Assets.GetSprite("gfx_building_Wandlampe").h)
-			UnlockImage(gfx_building.parent.image)
-			Pix = Null
-			ItemsDrawnToBackground = True
-		EndIf
+		Local Pix:TPixmap = LockImage(gfx_building.parent.image)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze4").GetImage(), 0, Pix, -buildingDisplaceX + innerleft + 40, locy12 - Assets.GetSprite("gfx_building_Pflanze4").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze6").GetImage(), 0, Pix, -buildingDisplaceX + innerRight - 95, locy12 - Assets.GetSprite("gfx_building_Pflanze6").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze2").GetImage(), 0, Pix, -buildingDisplaceX + innerleft + 105, locy13 - Assets.GetSprite("gfx_building_Pflanze2").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Pflanze3").GetImage(), 0, Pix, -buildingDisplaceX + innerRight - 105, locy13 - Assets.GetSprite("gfx_building_Pflanze3").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, -buildingDisplaceX + innerleft + 125, locy0 - Assets.GetSprite("gfx_building_Wandlampe").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").w, locy0 - Assets.GetSprite("gfx_building_Wandlampe").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, -buildingDisplaceX + innerleft + 125, locy13 - Assets.GetSprite("gfx_building_Wandlampe").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").w, locy13 - Assets.GetSprite("gfx_building_Wandlampe").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, -buildingDisplaceX + innerleft + 125, locy3 - Assets.GetSprite("gfx_building_Wandlampe").h)
+		DrawOnPixmap(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), 0, Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").w, locy3 - Assets.GetSprite("gfx_building_Wandlampe").h)
+		UnlockImage(gfx_building.parent.image)
+		Pix = Null
+
+		'assign room
+		room = TRooms.getRoomByDetails("building",0)
+
+		'move elevatorplan hotspots to the elevator
+		For Local hotspot:THotspot = EachIn room.hotspots
+			If hotspot.name = "elevatorplan"
+				hotspot.area.position.setX( Elevator.pos.getX() )
+				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
+			endif
+		Next
+
+rem
+		'move elevatorplan rooms to the elevator
+		For Local room:TRooms = EachIn TRooms.RoomList
+			If room.name = "elevatorplan"
+				room.Pos.x = pos.x + Elevator.pos.getX()
+				room.doorDimension.setXY( Elevator.GetDoorWidth(), 58 )
+				print room.Pos.x+" w="+Elevator.GetDoorWidth()
+			endif
+		Next
+endrem
+
+		'register events
+		'register each hotspot separately - avoids spamm of other clicked spots
+		for local hotspot:THotspot = eachin room.hotspots
+			EventManager.registerListenerMethod( "hotspot.onClick", self, "onClickHotspot", hotspot )
+		Next
+
+		'we want to get information about figures reaching their desired target
+		'(this can be "room", "hotspot" ... )
+		EventManager.registerListenerMethod( "figure.onReachTarget", self, "onReachTarget" )
+
+		initDone = True
 	End Method
+
+
+	Method onReachTarget:int( triggerEvent:TEventBase )
+		local figure:TFigures = TFigures( triggerEvent._sender )
+		if not figure then return FALSE
+
+		local hotspot:THotspot = THotspot( triggerEvent.getData().get("hotspot") )
+		'we are only interested in hotspots
+		if not hotspot then return FALSE
+
+
+		if hotspot.name = "elevatorplan"
+			print "figure "+figure.name+" reached elevatorplan"
+
+			local room:TRooms = TRooms.getRoomByDetails("elevatorplan",0)
+			if not room then print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";return FALSE
+
+			figure.EnterRoom(room)
+			return TRUE
+		endif
+
+		return FALSE
+	End Method
+
+	Method onClickHotspot:int( triggerEvent:TEventBase )
+		local hotspot:THotspot = THotspot( triggerEvent._sender )
+		if not hotspot then return FALSE 'or hotspot.name <> "elevatorplan" then return FALSE
+
+		Game.getPlayer().figure.changeTarget( pos.x + hotspot.area.getX() + hotspot.area.getW()/2, pos.y + hotspot.area.getY() )
+		Game.getPlayer().figure.targetHotspot = hotspot
+
+		MOUSEMANAGER.resetKey(1)
+	End Method
+
 
 	Method Draw(tweenValue:Float=1.0)
 		TProfiler.Enter("Draw-Building-Background")
@@ -1765,16 +1857,16 @@ endrem
 		If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
 			Building.gfx_buildingEntrance.Draw(pos.x, pos.y + 1024 - Building.gfx_buildingEntrance.h - 3)
-			Building.gfx_buildingWall.Draw(pos.x + 127 + 507, pos.y + 1024 - Building.gfx_buildingWall.h - 3)
+			Building.gfx_buildingWall.Draw(pos.x + buildingDisplaceX + 507, pos.y + 1024 - Building.gfx_buildingWall.h - 3)
 		Else If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) >= 8
 			SetColor 255, 255, 255
 			SetBlend ALPHABLEND
-			Building.gfx_buildingRoof.Draw(pos.x + 127, pos.y - Building.gfx_buildingRoof.h)
+			Building.gfx_buildingRoof.Draw(pos.x + buildingDisplaceX, pos.y - Building.gfx_buildingRoof.h)
 		EndIf
 		SetBlend MASKBLEND
 		elevator.DrawFloorDoors()
 
-		Assets.GetSprite("gfx_building").draw(pos.x + 127, pos.y)
+		Assets.GetSprite("gfx_building").draw(pos.x + buildingDisplaceX, pos.y)
 
 		SetBlend MASKBLEND
 
@@ -1789,22 +1881,26 @@ endrem
 			If Not Figure.alreadydrawn Then Figure.Draw()
 		Next
 
-
-		SetBlend MASKBLEND
 		Local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 130, pos.y + GetFloorY(9), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(13), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 110, pos.y + GetFloorY(9), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(6), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze6").Draw(pos.x + borderright - 85, pos.y + GetFloorY(8), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(1), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + borderleft + 60, pos.y + GetFloorY(12), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + borderleft + 150, pos.y + GetFloorY(12), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + borderright - 70, pos.y + GetFloorY(3), - 1, 1)
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + borderright - 75, pos.y + GetFloorY(12), - 1, 1)
-		SetBlend ALPHABLEND
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 130, pos.y + GetFloorY(9), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(13), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 110, pos.y + GetFloorY(9), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(6), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze6").Draw(pos.x + innerRight - 85, pos.y + GetFloorY(8), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(1), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(12), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(12), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 70, pos.y + GetFloorY(3), - 1, 1)
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 75, pos.y + GetFloorY(12), - 1, 1)
+
 		TRooms.DrawDoorToolTips()
-		If Self.roomUsedTooltip <> Null Then Self.roomUsedTooltip.Draw()
+
+		'draw hotspot tooltips
+		for local hotspot:THotspot = eachin room.hotspots
+			hotspot.draw( self.pos.x, self.pos.y)
+		next
+
+		If Self.roomUsedTooltip Then Self.roomUsedTooltip.Draw()
 
 	End Method
 
@@ -1977,9 +2073,9 @@ endrem
 	End Method
 
 	'Summary: returns y which has to be added to building.y, so its the difference
-	Method GetFloorY:Int(floornumber:Int)
+	Function GetFloorY:Int(floornumber:Int)
 		Return (66 + 1 + (13 - floornumber) * 73)		  ' +10 = interface
-	End Method
+	End Function
 
 	Method GetFloor:Int(_y:Int)
 		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
@@ -2150,56 +2246,91 @@ Type TNewsAgency
 End Type
 
 
+Type TFigurePostman extends TFigures
+	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500,0,1000)
 
-Function UpdateBote:Int(ListLink:TLink, deltaTime:Float=1.0) 'SpecialTime = 1 if letter in hand
-	Local Figure:TFigures = TFigures(ListLink.value())
-	Figure.FigureMovement(deltaTime)
-	Figure.FigureAnimation(deltaTime)
-	If figure.inRoom <> Null
-		If figure.SpecialTimer.isExpired()
-			Figure.SpecialTimer.Reset()
-			'sometimes wait a bit longer
-			If Rand(0,100) < 20
-				Local room:TRooms
-				Repeat
-					room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
-				Until room.doortype >0 And room <> Figure.inRoom
+	'we need to overwrite it to have a custom type - with custom update routine
+	Method CreateFigure:TFigurePostman(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+		super.CreateFigure(FigureName, sprite, x, onFloor, speed, ControlledByID)
+		return self
+	End Method
 
-				If Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
-					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
-				Else
-					Figure.sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
-				EndIf
-				'Print "Bote: war in Raum -> neues Ziel gesucht"
-				Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
+	Method UpdateCustom:int(deltaTime:float)
+		If inRoom and nextActionTimer.isExpired()
+			nextActionTimer.Reset()
+			'switch "with" and "without" letter
+			If sprite.spriteName = "BotePost"
+				sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
+			Else
+				sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
 			EndIf
+
+			'leave that room so we can find a new target
+			leaveRoom()
 		EndIf
-	EndIf
-	If not figure.inRoom And not figure.targetRoom And figure.vel.GetX() = 0 And Not (Figure.IsAtElevator() Or Figure.IsInElevator()) 'not moving but not in/at elevator
-		Local room:TRooms
-		Repeat
-			room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
-		Until room.doortype >0 And room.name = "supermarket"
-		'Print "Bote: steht rum -> neues Ziel gesucht"
-		Figure.ChangeTarget(room.Pos.x + 13, Building.pos.y + Building.GetFloorY(room.Pos.y) - figure.sprite.h)
-	EndIf
-End Function
 
-Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
-	Local Figure:TFigures = TFigures(ListLink.value())
+		'figure is in building and without target waiting for orders
+		If not inRoom And not target
+			Local room:TRooms
+			Repeat
+				room = TRooms(TRooms.RoomList.ValueAtIndex(Rand(TRooms.RoomList.Count() - 1)))
+			Until room.doortype >0
+			Print "[DEV AI] "+name+" steht rum -> neues Ziel gesucht " + room.name
+			SendToRoom(room)
+		EndIf
+	End Method
+End Type
 
-	'waited to long - change target
-	If figure.hasToChangeFloor() And figure.WaitAtElevatorTimer.isExpired()
-		figure.WaitAtElevatorTimer.Reset()
-		Figure.ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
-	EndIf
 
-	'reached target
-	If Int(Figure.rect.GetX()) = Int(Figure.target.x) And Not Figure.IsInElevator() And Not figure.hasToChangeFloor()
-		'do something special
-		If figure.SpecialTimer.isExpired()
+Type TFigureJanitor extends TFigures
+	Field currentAction:int	= 0		'0=nothing,1=cleaning,...
+	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500)
+
+	'we need to overwrite it to have a custom type - with custom update routine
+	Method CreateFigure:TFigureJanitor(FigureName:String, sprite:TGW_Sprites, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+		super.CreateFigure(FigureName, sprite, x, onFloor, speed, ControlledByID)
+		self.rect.dimension.setX(14)
+
+		Self.insertAnimation("cleanLeft", TAnimation.Create([ [11,130], [12,130] ], -1, 0) )
+		Self.insertAnimation("cleanRight", TAnimation.Create([ [13,130], [14,130] ], -1, 0) )
+
+		return self
+	End Method
+
+	'overwrite original method
+	Method getAnimationToUse:string()
+		local result:string = super.getAnimationToUse()
+
+		if currentAction = 1
+			If result = "walkright" then result = "cleanRight" else result="cleanLeft"
+		endif
+		return result
+	End Method
+
+	'overwrite basic doMove and stop movement if needed
+	Method doMove(deltaTime:float)
+		if currentAction = 1
+			local backupSpeed:int = vel.getX()
+			vel.setX(0)
+			super.doMove(deltaTime)
+			vel.setX(backupSpeed)
+		else
+			super.doMove(deltaTime)
+		endif
+	End Method
+
+	Method UpdateCustom:int(deltaTime:float)
+		'waited to long - change target (returns false while in elevator)
+		If hasToChangeFloor() And WaitAtElevatorTimer.isExpired()
+			if ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(GetFloor()))
+				WaitAtElevatorTimer.Reset()
+			endif
+		EndIf
+
+		'reached target - and time to do something
+		If not target and nextActionTimer.isExpired()
 			'reset is done later - we want to catch isExpired there too
-			'figure.SpecialTimer.Reset()
+			'nextActionTimer.Reset()
 
 			Local zufall:Int = Rand(0, 100)	'what to do?
 			Local zufallx:Int = Rand(150, 580)	'where to go?
@@ -2207,63 +2338,35 @@ Function UpdateHausmeister:Int(ListLink:TLink, deltaTime:Float=1.0)
 			'move to a spot further away than just some pixels
 			Repeat
 				zufallx = Rand(150, 580)
-			Until Abs(figure.rect.GetX() - zufallx) > 15
+			Until Abs(rect.GetX() - zufallx) > 15
 
-			'move to a different floor
-			If zufall > 80 And Not figure.IsAtElevator() And Not figure.hasToChangeFloor()
-				Local sendToFloor:Int = figure.GetFloor() + 1
-				If sendToFloor > 13 Then sendToFloor = 0
-				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor) - figure.sprite.h)
-				Figure.WaitAtElevatorTimer.Reset()
-
-			'move to a different X on same floor
-			Else If zufall <= 80 And Not figure.hasToChangeFloor()
-				Figure.ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(figure.GetFloor()) - figure.sprite.h)
-			EndIf
-		EndIf
-	EndIf
-	'do default Movement (limit borders, move in elevator...)
-	Figure.FigureMovement(deltaTime)
-
-	'get next sprite frame number
-	If Figure.vel.GetX() = 0
-		'show the backside if at elevator
-		If Figure.hasToChangeFloor() And Not Figure.IsInElevator() And Figure.IsAtElevator()
-			Figure.setCurrentAnimation("standBack",True)
-		'show front or custom idle/specials
-		Else
-			'stopping from movement -> do special
-			If Figure.getCurrentAnimationName() = "walkright" Or Figure.getCurrentAnimationName() = "walkright"
-				Figure.SpecialTimer.expire()
-			EndIf
-
-			'maybe something special?
-			If Figure.SpecialTimer.isExpired()
-				Figure.SpecialTimer.Reset()
-
-				'only clean with a chance of 30%
-				If Rand(0,100) < 30
-					'clean to the right
-					If Figure.getCurrentAnimationName() = "walkright"
-						Figure.setCurrentAnimation("cleanRight")
-					'clean to the left
-					Else
-						Figure.setCurrentAnimation("cleanLeft")
-					EndIf
+			if not hasToChangeFloor()
+				'move to a different floor (only if doing nothing special)
+				If currentAction=0 and zufall > 80 And Not IsAtElevator()
+					Local sendToFloor:Int = GetFloor() + 1
+					If sendToFloor > 13 Then sendToFloor = 0
+					ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor))
+					WaitAtElevatorTimer.Reset()
+				'move to a different X on same floor
 				Else
-					Figure.setCurrentAnimation("standFront")
+					ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(GetFloor()))
 				EndIf
-			EndIf
+			Endif
 		EndIf
-	EndIf
-	If Figure.vel.GetX() > 0 Then Figure.setCurrentAnimation("walkRight")
-	If Figure.vel.GetX() < 0 Then Figure.setCurrentAnimation("walkLeft")
+
+		If nextActionTimer.isExpired() and not hasToChangeFloor()
+			nextActionTimer.Reset()
+			self.currentAction = 0
+			'chose actions
+			'only clean with a chance of 30%
+			If Rand(0,100) < 30
+				self.currentAction = 1
+			endif
+		Endif
+	End Method
+End Type
 
 
-	'limit position to left and right border of building
-	If Floor(Figure.rect.GetX()) <= 200 Then Figure.rect.position.setX(200);Figure.target.setX(200)
-	If Floor(Figure.rect.GetX()) >= 579 Then Figure.rect.position.setX(579);Figure.target.setX(579)
-End Function
 
 
 'Sound-Files einlesen - da es lange dauert eventuell nur bei Bedarf oder in einem anderen Thread laden.
@@ -2282,30 +2385,13 @@ Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this m
 
 Game.CreateInitialPlayers()
 
-Local tempfigur:TFigures= New TFigures.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2,60,0)
-tempfigur.InsertAnimation("cleanRight", TAnimation.Create([ [11,130], [12,130] ], -1, 0) )
-tempfigur.InsertAnimation("cleanLeft", TAnimation.Create([ [13,130], [14,130] ], -1, 0) )
-
-tempfigur.rect.dimension.SetX(12) 'overwriting
-tempfigur.target.setX(550)
-tempfigur.updatefunc_	= UpdateHausmeister
-Global figure_HausmeisterID:Int = tempfigur.id
-
 'RON
 local haveNPCs:int = TRUE
 if haveNPCs
-	tempfigur				= New TFigures.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
-	tempfigur.rect.dimension.SetX(12)
-	tempfigur.target.setX(550)
-	tempfigur.updatefunc_	= UpdateBote
-
-	tempfigur				= New TFigures.CreateFigure("Bote2", Assets.GetSpritePack("figures").GetSprite("BotePost"), 410, 1,-65,0)
-	tempfigur.rect.dimension.SetX(12)
-	tempfigur.target.setX(550)
-	tempfigur.updatefunc_	= UpdateBote
+	New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2, 65)
+	New TFigurePostman.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
+	New TFigurePostman.CreateFigure("Bote2", Assets.GetSprite("BoteLeer"), 410, 1, -65, 0)
 endif
-
-tempfigur = Null
 
 
 Global MenuPlayerNames:TGUIinput[4]
@@ -3109,10 +3195,6 @@ Function Init_Creation()
 				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].GetMaxaudience(), 0.10)) )
 			Next
 		Next
-		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = UpdateHausmeister
-	Else
-		'remote should control the figure
-		TFigures.GetByID(figure_HausmeisterID).updatefunc_ = Null
 	EndIf
 	'abonnement for each newsgroup = 1
 
@@ -3186,8 +3268,9 @@ Function Init_All()
 	PrintDebug ("  TRooms.DrawDoorsOnBackground()", "drawing door-sprites on the building-sprite", DEBUG_START)
 	TRooms.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
 
-	PrintDebug ("  Building.DrawItemsToBackground()", "drawing plants and lights on the building-sprite", DEBUG_START)
-	Building.DrawItemsToBackground()	'draws plants and lights which are behind the figures
+	PrintDebug ("  Building.Init()", "drawing plants and lights on the building-sprite", DEBUG_START)
+	Building.Init()	'draws additional gfx in the sprite, registers events...
+
 	PrintDebug ("Init_All()", "complete", DEBUG_START)
 End Function
 
@@ -3212,17 +3295,6 @@ Function UpdateMain(deltaTime:Float = 1.0)
 		EndIf
 	EndIf
 
-	If Game.Players[Game.playerID].Figure.inRoom = Null
-		If MOUSEMANAGER.isClicked(1) and not GUIManager.modalActive
-			'do not allow movement on fadeIn (when going in a room)
-			if not Fader.fadeenabled or (Fader.fadeenabled and Fader.fadeout)
-				If functions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
-					Game.Players[Game.playerID].Figure.ChangeTarget(MouseManager.x, MouseManager.y)
-					MOUSEMANAGER.resetKey(1)
-				EndIf
-			endif
-		EndIf
-	EndIf
 	'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
 	If Game.Players[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Game.Players[Game.playerID].Figure.rect.GetY()  'working for player as center
 	Fader.Update(deltaTime)
@@ -3303,9 +3375,14 @@ Function DrawMain(tweenValue:Float=1.0)
 
 		Local callType:String = ""
 
-		Assets.fonts.baseFont.draw("tofloor:" + Building.elevator.TargetFloor, 25, startY)
+		local debugString:string =	"to:" + Building.elevator.TargetFloor +..
+									" on:" + Building.elevator.currentFloor +..
+									" dir:" + Building.elevator.Direction +..
+									" status:"+Building.elevator.ElevatorStatus
 
-		Assets.fonts.baseFont.draw("Status:" + Building.elevator.ElevatorStatus, 100, startY)
+		Assets.fonts.baseFont.draw(debugString, 25, startY)
+
+
 		If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
 			For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
 				If floorroute.call = 0 Then callType = " 'senden' " Else callType= " 'holen' "
@@ -3517,11 +3594,29 @@ endrem
 
 				If KEYMANAGER.Ishit(Key_F9)
 					If (KIRunning)
+						print "[DEV] AI deactivated"
 						KIRunning = False
 					Else
+						print "[DEV] AI activated"
 						KIRunning = True
 					EndIf
 				EndIf
+				If KEYMANAGER.Ishit(Key_F10)
+					If (KIRunning)
+						for local fig:TFigures = eachin TFigures.list
+							if not fig.isActivePlayer() then fig.moveable = false
+						Next
+						KIRunning = False
+						print "[DEV] AI FIGURES deactivated"
+					Else
+						for local fig:TFigures = eachin TFigures.list
+							if not fig.isActivePlayer() then fig.moveable = true
+						Next
+						KIRunning = True
+						print "[DEV] AI activated"
+					EndIf
+				endif
+
 			EndIf
 
 
@@ -3567,11 +3662,20 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			Assets.fonts.baseFont.draw("UPS: " + Int(App.Timer.currentUps), textX,0)
 			textX:+60
 			Assets.fonts.baseFont.draw("looptime "+Int(1000*App.Timer.loopTime)+"ms", textX,0)
-			textX:+90
-			'RON: debug purpose - see if the guielements list increase over time
-			Assets.fonts.baseFont.draw("(managed) GUI objects: "+ GUIManager.list.count() , textX,0)
+			textX:+100
+			'RON: debug purpose - see if the managed guielements list increase over time
+			Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count() , textX,0)
 			textX:+120
-			If game.networkgame and Network.client Then Assets.fonts.baseFont.draw("ping: "+Int(Network.client.latency)+"ms", textX,0)
+			If game.networkgame and Network.client
+				Assets.fonts.baseFont.draw("ping: "+Int(Network.client.latency)+"ms", textX,0)
+				textX:+50
+			endif
+			local inRoomName:string = "building"
+			local targetRoomName:string = "building"
+			if Game.getPlayer().figure.inRoom then inRoomName = Game.getPlayer().figure.inRoom.name
+			if Game.getPlayer().figure.targetRoom then targetRoomName = Game.getPlayer().figure.targetRoom.name
+			Assets.fonts.baseFont.draw("rooms: in="+ inRoomName+" to="+targetRoomName , textX,0)
+
 			If App.prepareScreenshot = 1 Then Assets.GetSprite("gfx_startscreen_logoSmall").Draw(App.settings.GetWidth() - 10, 10, 0, 1)
 
 			TProfiler.Enter("Draw-Flip")
@@ -3611,16 +3715,25 @@ End Type
 '=======
 'fade IN when entering or leaving a room
 Function onFigureBeginChangeRoom:int( triggerEvent:TEventBase )
+	local room:TRooms = TRooms( triggerEvent._sender )
+
+	if not room or room.name="elevator" then return FALSE
+
 	local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
 	if not figure or not figure.isActivePlayer() then return FALSE
+
 	Fader.Start()
 	Fader.Enable()
 End Function
 'fade OUT when really entering the room (background changed etc.)
 Function onFigureChangeRoom:int( triggerEvent:TEventBase )
+	local room:TRooms = TRooms( triggerEvent._sender )
+	if not room or room.name="elevator" then return FALSE
+
 	local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
 	if not figure then return FALSE
 	if not figure or not figure.isActivePlayer() then return FALSE
+
 	Fader.StartFadeout()
 	Fader.Enable()
 End Function
@@ -3649,6 +3762,20 @@ Function UpdateMousemanager:int( triggerEvent:TEventBase )
 	MOUSEMANAGER.ChangeStatus()
 End Function
 endrem
+
+rem
+print "ALLE SPIELER DEAKTIVIERT"
+print "ALLE SPIELER DEAKTIVIERT"
+print "ALLE SPIELER DEAKTIVIERT"
+print "ALLE SPIELER DEAKTIVIERT"
+print "ALLE SPIELER DEAKTIVIERT"
+for local fig:TFigures = eachin TFigures.list
+	if not fig.isActivePlayer() then fig.moveable = false
+Next
+KIRunning = False
+print "[DEV] AI FIGURES deactivated"
+endrem
+
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 

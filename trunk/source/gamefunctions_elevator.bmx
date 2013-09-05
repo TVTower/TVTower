@@ -17,21 +17,18 @@ Type TElevator
 	Field SoundSource:TElevatorSoundSource	= TElevatorSoundSource.Create(self, true)
 
 	'Aktueller Status (zu speichern)
-	Field ElevatorStatus:Int				= 0			'0 = warte auf nächsten Auftrag, 1 = Türen schließen, 2 = Fahren, 3 = Türen öffnen, 4 = entladen/beladen, 5 = warte auf Nutzereingabe (für den Plan)
+	Field ElevatorStatus:Int				= 0			'0 = warte auf nächsten Auftrag, 1 = Türen schließen, 2 = Fahren, 3 = Türen öffnen, 4 = entladen/beladen
 	Field DoorStatus:Int 					= 0    		'0 = closed, 1 = open, 2 = opening, 3 = closing
 	Field CurrentFloor:Int					= 0			'Aktuelles Stockwerk
 	Field TargetFloor:Int					= 0			'Hier fährt der Fahrstuhl hin
 	Field Direction:Int						= 1			'Aktuelle/letzte Bewegungsrichtung: -1 = nach unten; +1 = nach oben; 0 = gibt es nicht
 	Field ReadyForBoarding:int				= false		'während der ElevatorStatus 4, 5 und 0 möglich.
-	Field BlockedByFigureUsingPlan:Int		= -1		'player using plan / Spieler-ID oder -1
 	Field Pos:TPoint						= TPoint.Create(131+230,115) 	'Aktuelle Position - difference to x/y of building
-	Field FiguresUsingPlan:TList			= CreateList() 'Für das Netzwerkspiel... da können mehrere Spieler ein Ziel im Plan auswählen
 
 	'Einstellungen
 	Field Speed:Float 						= 120		'pixels per second ;D
 
 	'Timer
-	Field PlanTime:Int						= 4000 		'Zeit die ein Spieler im Raumplan verbringen kann bis er rausgeschmissen wird
 	Field WaitAtFloorTimer:TIntervalTimer	= null 		'Wie lange (Millisekunden) werden die Türen offen gelassen (alt: 650)
 	Field WaitAtFloorTime:Int				= 1700		'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
 
@@ -111,26 +108,14 @@ Type TElevator
 		Passengers.remove(figure)		'Aus der Passagierliste entfernen
 	End Method
 
-	Method UsePlan(figure:TFigures)
-		ElevatorStatus = 5 'Den Wartestatus setzen
-		If Not FiguresUsingPlan.Contains(figure)
-			'Die Zeit zurücksetzen/verlängern
-			waitAtFloorTimer.SetInterval(self.PlanTime, true)
-			FiguresUsingPlan.AddLast(figure)
-		Endif
-	End Method
-
-	Method PlanningFinished(figure:TFigures)
-		FiguresUsingPlan.Remove(figure)
-	End Method
 
 	'===== Externe Hilfsmethoden für Figuren =====
 
 	Method IsFigureInFrontOfDoor:Int(figure:TFigures)
-		Return (GetDoorCenterX() = figure.GetCenterX())
+		Return (GetDoorCenterX() = figure.rect.getX())
 	End Method
 
-	Method IsFigureInElevator:Byte(figure:TFigures)
+	Method IsFigureInElevator:Int(figure:TFigures)
 		Return passengers.Contains(figure)
 	End Method
 
@@ -316,8 +301,9 @@ Type TElevator
 
 			if CurrentFloor = TargetFloor 'Ist der Fahrstuhl da/angekommen, aber die Türen sind noch geschlossen? Dann öffnen!
 				ElevatorStatus = 3 'Türen öffnen
+'				Direction = 0
 			Else
-				If (CurrentFloor < TargetFloor) Then Direction = 1 Else Direction = -1
+				If (CurrentFloor < TargetFloor) then Direction = 1 else Direction = -1
 
 				'Fahren - Position ändern
 				If Direction = 1
@@ -355,15 +341,12 @@ Type TElevator
 			EndIf
 		Endif
 
-		If ElevatorStatus = 4 Or ElevatorStatus = 5 '4 = entladen / einsteigen UND 5 = warte auf Nutzereingabe (für den Plan)
+		If ElevatorStatus = 4 '4 = entladen / einsteigen
 			If ReadyForBoarding = false
 				ReadyForBoarding = true
 			Else 'ist im Else-Zweig damit die Update-Loop nochmal zu den Figuren wechseln kann um ein-/auszusteigen
-				'Eventuell die Wartezeit vorab beenden, wenn die Auswahl getätigt wurde. Aber nur wenn auch wirklich im Wartemodus
-				If ElevatorStatus = 5 And FiguresUsingPlan.IsEmpty() Then waitAtFloorTimer.expire()
 				'Wenn die Wartezeit um ist, dann nach nem neuen Ziel suchen
 				If waitAtFloorTimer.isExpired()
-					FiguresUsingPlan.Clear() 'Alle Figuren die den Plan genutzt haben werden jetzt rausgeworfen
 					RemoveIgnoredRoutes() 'Entferne nicht wahrgenommene routen
 					ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
 					RouteLogic.BoardingDone()
@@ -415,7 +398,7 @@ Type TElevator
 
 
 		'Zeichne Figuren
-		If Not passengers.IsEmpty() Then
+		If Not passengers.IsEmpty()
 			For Local passenger:TFigures = EachIn passengers
 				passenger.Draw()
 				passenger.alreadydrawn = 1
@@ -529,9 +512,18 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 		'Man darf auch einsteigen wenn man eigentlich in ne andere Richtung wollte... ist der Parameter aber dabei, dann wird geprüft
 		If myTargetFloor = -1 Then Return True
 		local e:TElevator = Elevator
-		If (e.Direction = CalcDirection(e.CurrentFloor, myTargetFloor) Or (e.CurrentFloor = TopTurningPointForSort And e.Direction = 1) Or (e.CurrentFloor = BottomTurningPointForSort And e.Direction = -1))
-			Return True
-		Endif
+		'ron: if the elevator moves to nowhere... the calculated direction
+		'     should not matter. Prior you were not able to enter the elevator
+		'     if it stopped at your floor but was in a "different direction mode".
+		'     Now we only check direction if we are on a route
+		if Elevator.FloorRouteList.count()=0 then return TRUE
+		'temporaryRouteList gets emptied on route change... so better use floorroutelist
+		'if not TemporaryRouteList or TemporaryRouteList.count()=0 then return TRUE
+
+		If e.Direction = CalcDirection(e.CurrentFloor, myTargetFloor) then return TRUE
+		If e.CurrentFloor = TopTurningPointForSort And e.Direction = 1 then return TRUE
+		if e.CurrentFloor = BottomTurningPointForSort And e.Direction = -1 then return TRUE
+
 		Return False
 	End Method
 
@@ -591,6 +583,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 
 	Method FixDirection()
 		'Das oberste und unterste Stockwerk legen fest ob ein Richtungswechsel ansteht... das zu wissen ist für die aktuelle Berechnung
+
 		If Elevator.CurrentFloor >= TopTurningPointForSort Then Elevator.Direction = -1
 		If Elevator.CurrentFloor <= BottomTurningPointForSort Then Elevator.Direction = 1
 	End Method

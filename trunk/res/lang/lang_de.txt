@@ -49,6 +49,7 @@ PLANNER_FINANCES  = Finanzen
 PLANNER_IMAGE     = Image
 PLANNER_MESSAGES  = Mitteilungen
 
+ROOM_ELEVATORPLAN		= Fahrstuhlziel-Planer
 ROOM_NEWSPLANNER		= Newsplaner
 ROOM_FINANCES			= Finanzen
 ROOM_SAFE				= Speichern und Laden

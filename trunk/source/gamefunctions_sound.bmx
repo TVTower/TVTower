@@ -160,7 +160,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 					If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
 						IsGamePlayerAction = True 'Den Modus starten
 						If Game.Players[Game.playerID].Figure.inRoom = Null 'von draußen (Flur) nach drinen (Raum)
-							If Room.occupant Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
+							If Room.hasOccupant() Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
 							PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 						Else 'von drinnen (Raum) nach draußen (Flur)
 							PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
