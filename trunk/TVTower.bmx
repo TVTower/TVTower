@@ -15,6 +15,14 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 
 REM
+DONE
+- Werbemakler hat nun auch "billige" Werbung im Angebot
+- Handling beim Werbemakler auf GUI-Objekte umgestellt und entsprechende Events verknuepft
+- Neues Event "onTryDropOnTarget", damit kann schon der Versuch unterbunden werden
+- TGUICoverBlock angelegt, von diesem leiten sich dann TGUIProgrammeCoverBlock etc ab.
+- die Nutzung der Dev-Kuerzel zum Raumwechsel konnte buggy sein, wenn von Raum zu Raum gesprungen worden ist... nun verlaesst eine Figur erst den Raum, sofern sie in einem war, um zum naechsten zu springen
+- alte TGUIList entfernt
+
 
 Todo
 ----

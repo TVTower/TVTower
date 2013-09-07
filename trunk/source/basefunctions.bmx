@@ -780,6 +780,12 @@ Type TPoint {_exposeToLua="selected"}
 		Self.SetY(_y)
 	End Method
 
+	Method SetXYZ(_x:Float, _y:Float, _z:Float)
+		Self.SetX(_x)
+		Self.SetY(_y)
+		Self.SetZ(_z)
+	End Method
+
 	Method SetPos(otherPos:TPoint)
 		Self.SetX(otherPos.x)
 		Self.SetY(otherPos.y)

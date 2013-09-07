@@ -1,3 +1,51 @@
+2013-09-05 09:48  ronny
+
+	  - genau positionierte Raeume (Pfoertner, Credits, Raumplaner) in
+	  die XML ausgelagert, TRooms.CreateWithPos entfernt, Variablen
+	  genauer benannt
+	  - Raum-Auswahl vom Fahrstuhl umgebaut. Nun: Fahrstuhltuer in
+	  eigener Etage fuehrt zu Zielplaner. Dies verhindert einen
+	  blockierten Fahrstuhl und Zeitdruck bei unerfahreneren Spielern
+	  - Raeume koennen nun mehrere Spieler erfassen (bei Bueros,
+	  Filmhaendler etc werden dann halt alle anderen gekickt :D)
+	  - NPCs muessen nun ebenfalls eine gewisse Zeit an Tueren warten
+	  und koennen sich nur bewegen wenn dies fuer Figuren moeglich ist
+	  - Man kann den Fahrstuhl nun auch "betreten", wenn dieser gerade
+	  keine weitere Route hat und man entgegen der vorherigen Richtung
+	  unterwegs sein moechte
+	  - Figur-Raum-Handling ueberarbeitet, nicht laenger noetige
+	  Methoden entfernt
+	  - Figuren "Koordinate" ist nun zentriert auf die Figur
+	  - Figuren zeigen nun korrekt den Ruecken, wenn sie einen Raum
+	  betreten
+	  - TAnimations-Klasse hatte Fehler, die den letzten Frame einer
+	  Animation unterschlug - dadurch fehlte bspweise das Zwinkern der
+	  Figuren (oder das letzte Bild der Laufbewegung)
+	  - Verhalten von Postboten und Hausmeister ueberarbeitet, der
+	  Hausmeister wischt jetzt endlich wiederden Boden!
+	  - Raum-Schilder im Planer werden nun besser erfasst ("besser
+	  klickbar")
+	  - Neues Objekt "THotspot" um spezielle Bereiche auf dem
+	  Bildschirm markieren zu koennen. Derzeit genutzt fuer
+	  "Fahrstuhlklicks". Ist generischer als auf Spriteklicks zu
+	  reagieren.
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/config/gfx_hochhaus.xml, trunk/config/rooms.xml,
+	  trunk/grafiken/hochhaus/hochhauspack.png,
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
 2013-09-01 13:59  ronny
 
 	  - Events koennen nun auf die Zukunft datiert werden (-> spaeter

@@ -253,7 +253,7 @@ Type TGame {_exposeToLua="selected"}
 	Const maxAbonnementLevel:Int		= 3
 
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
-	Field maxContractsAllowed:Int 		= 8		{nosave}	'how many contracts a player can possess
+	Field maxContractsAllowed:Int 		= 12	{nosave}	'how many contracts a player can possess
 	Field maxMoviesInSuitcaseAllowed:Int= 12	{nosave}	'how many movies can be carried in suitcase
 	Field startMovieAmount:Int 			= 5		{nosave}	'how many movies does a player get on a new game
 	Field startSeriesAmount:Int			= 1		{nosave}	'how many series does a player get on a new game
@@ -357,7 +357,6 @@ endrem
 		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
 		TContract.SaveAll();	  			TError.DrawErrors();Flip 0  'XML
 		TNews.SaveAll();	  				TError.DrawErrors();Flip 0  'XML
-		TContractBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TProgrammeBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TAdBlock.SaveAll();					TError.DrawErrors();Flip 0  'XML
 		TNewsBlock.SaveAll();				TError.DrawErrors();Flip 0  'XML
@@ -1095,7 +1094,6 @@ endrem
 
 					'remove contract from collection (and suitcase)
 					'contract is still stored within adblocks (until they get deleted)
-					TContractBlock.RemoveContractFromSuitcase(Adblock.contract)
 					Player.ProgrammeCollection.RemoveContract(Adblock.contract)
 				EndIf
 			EndIf
@@ -1549,18 +1547,6 @@ End Type
 'create just one drop-zone-grid for all programme blocks instead the whole set for every block..
 Function CreateDropZones:Int()
 	Local i:Int = 0
-
-	'AdAgency: Contract DND-zones
-	For i = 0 To Game.maxContractsAllowed-1
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-		DragAndDrop.slot = i
-		DragAndDrop.pos.setXY(550 + Assets.GetSprite("gfx_contracts_base").w * i, 87)
-		DragAndDrop.w = Assets.GetSprite("gfx_contracts_base").w - 1
-		DragAndDrop.h = Assets.GetSprite("gfx_contracts_base").h
-		If Not TContractBlock.DragAndDropList Then TContractBlock.DragAndDropList = CreateList()
-		TContractBlock.DragAndDropList.AddLast(DragAndDrop)
-		SortList TContractBlock.DragAndDropList
-	Next
 
 	'adblock
 	For i = 0 To 11
@@ -2951,7 +2937,7 @@ Function Menu_StartMultiplayer:Int()
 			Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgrammeByGenre(20) )
 
 			For Local j:Int = 0 To Game.startAdAmount-1
-				local contract:TContract = TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].GetMaxaudience(), 0.10))
+				local contract:TContract = TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0.0, 0.10))
 				Game.Players[ playerids ].ProgrammeCollection.AddContract( contract )
 			Next
 		Next
@@ -3170,13 +3156,6 @@ Function Init_Creation()
 	Next
 
 
-	'create ad agency contracts
-	For Local i:Int = 0 To 9
-		Local contract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.15) )
-		TContractBlock.Create(contract, i, 0)
-	Next
-
-
 	'create random programmes and so on - but only if local game
 	If Not Game.networkgame
 		For Local playerids:Int = 1 To 4
@@ -3192,7 +3171,7 @@ Function Init_Creation()
 			Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			For Local i:Int = 0 To 2
-				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].GetMaxaudience(), 0.10)) )
+				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0, 0.10)) )
 			Next
 		Next
 	EndIf

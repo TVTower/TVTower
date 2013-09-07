@@ -588,36 +588,56 @@ Type TLuaFunctions {_exposeToLua}
 ' Spot Agency
 '- - - - - -
 'untested
-	Method sa_doBuySpot:Int(ObjektID:Int = -1)
-		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
-
-		For Local Block:TContractBlock = EachIn TContractBlock.list
-			If Block.contract.id = ObjektID And Block.owner <= 0
-				Block.SignContract( Self.ME )
-				Return self.RESULT_OK
-			endif
-		Next
-		Return self.RESULT_NOTFOUND
-	End Method
-
 	Method sa_getSpotCount:Int()
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local ret:int = 0
-		For Local Block:TContractBlock = EachIn TContractBlock.List
-			If Block.owner <= 0 Then ret:+1
-		Next
-		Return ret
+		Return RoomHandler_AdAgency.GetContractsInStock()
 	End Method
 
-	Method sa_getSpot:Int(ArrayID:Int = -1)
+	Method sa_getSpot:Int(position:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		If ArrayID >= TContractBlock.List.Count() Or ArrayID < 0 Then Return self.RESULT_NOTFOUND
+		'out of bounds?
+		If position >= RoomHandler_AdAgency.GetContractsInStock() Or position < 0 Then Return -2
 
-		Local Block:TContractBlock = TContractBlock(TContractBlock.List.ValueAtIndex(ArrayID))
-		If Block Then Return Block.contract.id Else Return self.RESULT_NOTFOUND
+		local contract:TContract = RoomHandler_AdAgency.GetContractByPosition(position)
+		If contract Then Return contract.id Else Return self.RESULT_NOTFOUND
 	End Method
+
+	Method sa_doBuySpot:Int(contractID:Int = -1)
+		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
+
+		local contract:TContract = RoomHandler_AdAgency.GetContractByID(contractID)
+		'this DOES sign in that moment
+		if contract and RoomHandler_AdAgency.GiveContractToPlayer( contract, self.ME, TRUE )
+			return self.RESULT_OK
+		endif
+		Return self.RESULT_NOTFOUND
+	End Method
+
+
+	Method sa_doTakeSpot:Int(contractID:Int = -1)
+		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
+
+		local contract:TContract = RoomHandler_AdAgency.GetContractByID(contractID)
+		'this DOES NOT sign - signing is done when leaving the room!
+		if contract and RoomHandler_AdAgency.GiveContractToPlayer( contract, self.ME )
+			return self.RESULT_OK
+		endif
+		Return self.RESULT_NOTFOUND
+	End Method
+
+	Method sa_doGiveBackSpot:Int(contractID:Int = -1)
+		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
+
+		local contract:TContract = Game.getPlayer(self.ME).ProgrammeCollection.GetUnsignedContractFromSuitcase(contractID)
+		'this does not sign - signing is done when leaving the room!
+		if contract and RoomHandler_AdAgency.TakeContractFromPlayer( contract, self.ME )
+			return self.RESULT_OK
+		endif
+		Return self.RESULT_NOTFOUND
+	End Method
+
 
 '- - - - - -
 ' Movie Dealer - Movie Agency
