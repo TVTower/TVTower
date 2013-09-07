@@ -1110,7 +1110,7 @@ endrem
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = FALSE)
 		'Game.Quotes.ComputeAudienceForAllPlayers(recompute)
-		Game.Quotes.ComputeAudienceForAllPlayersMarket(recompute)
+		Game.Quotes.ComputeAudience(recompute)
 
 			
 

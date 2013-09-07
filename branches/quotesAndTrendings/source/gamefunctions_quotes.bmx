@@ -1,7 +1,6 @@
 Type TQuotes
 	'Referenzen
-	Field GenreDefinitions:TGenreDefinition[]
-	'Field GenrePopulartities:TGenrePopulartity[]	
+	Field GenreDefinitions:TGenreDefinition[]	
 	
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
 
@@ -43,11 +42,6 @@ Type TQuotes
 	End Function	
 	
 	Method Initialize()
-		'GenrePopulartities = GenrePopulartities[..20]		
-		'For Local i:Int = 0 To 18 '18 = Wert des höchsten Genres
-		'	AddGenrePopulartity(i)
-		'Next		
-		
 		GenreDefinitions= GenreDefinitions[..21]
 		Local genreMap:TMap = Assets.GetMap("genres")
 		For Local asset:TAsset = EachIn genreMap.Values()			
@@ -72,7 +66,8 @@ Type TQuotes
 	
 		local maxAudienceReturn:TAudience = maxAudience.GetNewInstance()
 		local modi:TAudience = null
-			
+		
+		'TODO: Eventuell auch in ein config-File auslagern
 		Select forHour
 			Case 0 modi = TAudience.CreateAndInit(2, 6, 16, 11, 21, 19, 23, 100, 100)
 			Case 1 modi = TAudience.CreateAndInit(0.5, 4, 7, 7, 15, 9, 13, 100, 100)
@@ -144,15 +139,11 @@ Type TQuotes
 		Return maxAudienceReturn
 	End Method	
 
-	Method GetAudienceCompetition:TAudienceCompetition ()
-		Local result:TAudienceCompetition = new TAudienceCompetition
-		result.SetPlayerMarkets()		
-		Return result
-	End Method
-	
-	Method ComputeAudienceForAllPlayersMarket(recompute:Int = 0)
+	Method ComputeAudience(recompute:Int = 0)
 		Local block:TProgrammeBlock
-		Local competition:TAudienceCompetition = GetAudienceCompetition()
+		Local competition:TAudienceBroadcastCalculation = new TAudienceBroadcastCalculation
+		competition.AscertainPlayerMarkets()
+		
 		Print "Starte Berechnung"
 		For Local player:TPlayer = EachIn TPlayer.List
 			block = player.ProgrammePlan.GetCurrentProgrammeBlock()
@@ -160,7 +151,7 @@ Type TQuotes
 			If block And block.programme			
 				Print "=== Spieler " + player.playerID + " ==="
 				Local attraction:TAudience = ComputeAudienceAttractionForPlayer(player, block)
-				competition.AddProgrammeAttraction(player.playerID, attraction)
+				competition.SetPlayersProgrammeAttraction(player.playerID, attraction)
 			Endif						
 		Next
 		
@@ -199,98 +190,9 @@ Type TQuotes
 				
 	End Method
 
-rem
-	Method ComputeAudienceForAllPlayers(recompute:Int = 0)
-		Local block:TProgrammeBlock
 
-		For Local player:TPlayer = EachIn TPlayer.List
-			block = player.ProgrammePlan.GetCurrentProgrammeBlock()
-			
-			'Hier AudienceFlow-Zeug
-				'Local audienceFlow:TAudience = GetAudienceFlowQuote()			
-				'Local lastQuoteForAudienceFlow:float = Player.audience/Player.maxaudience			
-			
-			'player.audience = 0
-			player.audience2 = new TAudience
-			
-			'1. Alle erreichbaren Zuschauer, wenn alle ihren TV anschalten			
-			Local maxAudience:TAudience = TAudience.CreateWithBreakdown(Player.GetMaxAudience())  ''Local maxAudience:TAudience = GetMaxAudience()
 
-			If block And block.programme And maxAudience.GetSum() > 0				
-				Local playerAudience:TAudience = ComputeAudienceForPlayer(player, block, maxAudience)
-				'player.audience = Floor(playerAudience.GetSum())
-				player.audience2 = playerAudience
-
-				'AiLog[1].AddLog("BM-Audience : " + player.audience + " = maxaudience (" + player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(player.audience/player.maxaudience)) + ") * 1000"
-				'maybe someone sold a station
-				If recompute
-					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())
-					If quote <> Null
-						quote.audience = player.audience2.GetSum()
-						quote.audiencepercentage = Int(Floor(player.audience2.GetSum() * 1000 / player.GetMaxAudience()))
-					EndIf
-				Else
-					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience2.GetSum()), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
-					'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(player.audience2.GetSum()), Int(Floor(player.audience2.GetSum() * 1000 / player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
-					'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(player.audience2.GetSum()), Int(Floor(player.audience2.GetSum() * 1000 / player.GetMaxAudience())), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
-				EndIf
-				If block.sendHour - (Game.GetDay()*24) + block.Programme.blocks <= Game.getNextHour()
-					If Not recompute
-						block.Programme.CutTopicality()
-						block.Programme.getPrice()
-					EndIf
-				EndIf
-			EndIf
-		Next	
-	End Method
-	endrem
-	Method ComputeAudienceAttractionForPlayer:TAudience(player:TPlayer, block:TProgrammeBlock )
-		'3. Qualität meines Programmes
-		Local genreDefintion:TGenreDefinition = GetGenreDefinition(block.programme.Genre)		
-		Local attraction:TAudience = genreDefintion.CalculateAudienceAttraction(block.programme, Game.GetHour())								
-		Return attraction		
-	End Method
-
-	rem
-	Method ComputeAudienceForPlayer:TAudience(player:TPlayer, block:TProgrammeBlock, maxAudience:TAudience )
-		Local potentialAudienceThisHour:TAudience
-		
-		print "1: " + maxAudience.ToString()
-		
-		'2. Alle potentiellen Zuschauer / alle TV-Geräte / die gesamte Reichweite
-		
-		If Game.Quotes.FEATURE_TARGETGROUP_TIME_MOD = 1
-			potentialAudienceThisHour = GetPotentialAudienceThisHour(maxAudience, Game.GetHour())
-		Else
-			potentialAudienceThisHour = GetPotentialAudienceThisHourFallback(maxAudience, Game.GetHour())
-		Endif
-		print "2: " + potentialAudienceThisHour.ToString()
-		
-		'3. Qualität meines Programmes
-		'Local genreDefintion:TGenreDefinition = GetGenreDefinition(block.programme.Genre)
-'		Local genreDefintion:TGenreDefinition = GetGenreDefinition(0)
-		
-		
-		Local attraction:TAudience = ComputeAudienceAttractionForPlayer(player, block)
-		
-'		Local attraction:TAudience = genreDefintion.CalculateAudienceAttraction(block.programme, Game.GetHour())
-'		print "3 - Attr: " + attraction.ToString()
-		
-						
-		potentialAudienceThisHour.Multiply(attraction)		
-		
-		print "3: " + potentialAudienceThisHour.ToString()
-		
-
-'		print "3.1: " + potentialAudienceThisHour.GetSum()
-		'player.audience = potentialAudienceThisHour.GetSum()
-		'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Int(Floor(Player.audience * 1000 / Player.maxaudience)), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
-'print "4"
-
-		Return potentialAudienceThisHour		
-	End Method
-endrem
-
+	
 	'Alle Daten müssen vom vorherigen Film stammen
 	Method GetAudienceFlowQuote:TAudience(audienceQuote:TAudience, genreId:int)
 		Local audienceFlow:TAudience = audienceQuote.GetNewInstance()
@@ -298,19 +200,19 @@ endrem
 		Return audienceFlow
 	End Method
 
-
 	Method GetGenreDefinition:TGenreDefinition(genreId:int)
 		Return genreDefinitions[genreId]
 	End Method
 	
 	'===== Hilfsmethoden =====
-	rem
-	Method AddGenrePopulartity(genreId:int)
-		local popularity:TGenrePopulartity = TGenrePopulartity.Create(genreId, RandRange(-10,10), RandRange(-25,25))
-		GenrePopulartities[genreId] = popularity
-		Game.PopularityManager.AddPopularity(popularity)
+
+	Method ComputeAudienceAttractionForPlayer:TAudience(player:TPlayer, block:TProgrammeBlock )
+		'3. Qualität meines Programmes
+		Local genreDefintion:TGenreDefinition = GetGenreDefinition(block.programme.Genre)		
+		Local attraction:TAudience = genreDefintion.CalculateAudienceAttraction(block.programme, Game.GetHour())								
+		Return attraction		
 	End Method
-	endrem
+
 	'===== Events =====
 
 	'===== Netzwerk-Methoden =====
@@ -332,81 +234,118 @@ endrem
 	End Method
 End Type
 
-Type TAudienceCompetition
+'In dieser Klasse und in TAudienceMarketCalculation findet die eigentliche Quotenberechnung statt und es wird das Ergebnis gecached, so dass man die Calculation einige Zeit aufbewahren kann.
+Type TAudienceBroadcastCalculation
 	Field AudienceMarkets:TList = CreateList()
 	
-	Method SetPlayerMarkets()
-		Local market1:TAudienceMarket = new TAudienceMarket
-		Local player:TPlayer = TPlayer(TPlayer.List.First())
-		market1.MaxAudience = TAudience.CreateWithBreakdown(player.GetMaxAudience())
-		market1.AddPlayer(1)
-		market1.AddPlayer(2)
-		market1.AddPlayer(3)
-		market1.AddPlayer(4)
-		AudienceMarkets.AddLast(market1)	
+	'===== Öffentliche Methoden =====
+	
+	Method AscertainPlayerMarkets()	
+		'Hier werden alle Märkte in denen verschiedenen Spieler miteinander konkurrieren initialisiert.
+		'So legt man fest um wie viel Zuschauer sich Spieler 2 und Spieler 4 streiten oder wie viel Zuschauer Spieler 3 alleine bedient
+	
+		'TODO Ron: Die einzelnen Märkte aus der Station-Map füllen!
+	
+		Local player:TPlayer = TPlayer(TPlayer.List.First()) 'Erstmal alle... nachher aus der Stationmap
+		
+		AddMarket(TAudience.CreateWithBreakdown(player.GetMaxAudience()), true, true, true, true)	'1 & 2 & 3 & 4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), true, true, true, false) '1 & 2 & 3
+		'AddMarket(TAudience.CreateWithBreakdown(1000), true, true, false, true) '1 & 2 & 4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), true, true, false, false) '1 & 2
+		
+		'AddMarket(TAudience.CreateWithBreakdown(1000), true, false, true, true) '1 & 3 & 4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), true, false, true, false) '1 & 3
+		'AddMarket(TAudience.CreateWithBreakdown(1000), true, false, false, true) '1 & 4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), true, false, false, false) '1
+		
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, true, true, true) '2 & 3 & 4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, true, true, false) '2 & 3
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, true, false, true) '2 & 4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, true, false, false) '2
+		
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, false, true, true) '3 & 4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, false, true, false) '3
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, false, false, true) '4
+		'AddMarket(TAudience.CreateWithBreakdown(1000), false, false, false, false) 'macht keinen Sinn
 	End Method
 	
-	Method AddProgrammeAttraction(playerId:string, programmeAttraction:TAudience)
-		For Local market:TAudienceMarket = EachIn AudienceMarkets
+	Method SetPlayersProgrammeAttraction(playerId:string, programmeAttraction:TAudience)
+		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			If market.Players.Contains(playerId) Then
-				market.AddProgrammeAttraction(playerId, programmeAttraction)
+				market.SetPlayersProgrammeAttraction(playerId, programmeAttraction)
 			Endif
 		Next		
-	End Method	
+	End Method
 	
 	Method ComputeAudience(forHour:int = -1)
-		For Local market:TAudienceMarket = EachIn AudienceMarkets
+		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			market.ComputeAudience(forHour)
 		Next
-	End Method
+	End Method	
 	
 	Method GetAudienceForPlayer:TAudience(playerId:string)
 		Local result:TAudience = new TAudience
-		For Local market:TAudienceMarket = EachIn AudienceMarkets
+		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			If market.Players.Contains(playerId) Then
 				result.Add(market.GetAudienceForPlayer(playerId))
 			Endif
 		Next
 		Return result	
-	End Method
+	End Method	
+	
+	'===== Hilfsmethoden =====
+	
+	Method AddMarket(maxAudience:TAudience, player1:int, player2:int, player3:int, player4:int)
+		Local market:TAudienceMarketCalculation = new TAudienceMarketCalculation
+		market.MaxAudience = maxAudience
+		If player1 Then market.AddPlayer(1)
+		If player2 Then market.AddPlayer(2)
+		If player3 Then market.AddPlayer(3)
+		If player4 Then market.AddPlayer(4)
+		AudienceMarkets.AddLast(market)			
+	End Method		
 End Type
 
-Type TAudienceMarket
-	Field MaxAudience:TAudience 'Zuschauerzahlen
-	Field AudienceAttractions:TMap = CreateMap()
-	Field AudienceResult:TMap = CreateMap()
-	Field Players:TList = CreateList()
+
+'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurieren.
+'
+Type TAudienceMarketCalculation
+	Field MaxAudience:TAudience						'Die Einwohnerzahl (max. Zuschauer) in diesem Markt
+	Field AudienceAttractions:TMap = CreateMap()	'Die Attraktivität des Programmes nach Zielgruppen. Für jeden Spieler der um diesen Markt mitkämpft gibt's einen Eintrag in der Liste
+	Field AudienceResult:TMap = CreateMap()			'Das Ergebnis der Berechnung. Pro Spieler gibt's ein Ergebnis
+	Field Players:TList = CreateList()				'Die Liste der Spieler die um diesen Markt kämpfen
 	
+	'===== Öffentliche Methoden =====
+		
 	Method AddPlayer(playerId:string)
 		Players.AddLast(playerId)
 	End Method	
 	
-	Method AddProgrammeAttraction(playerId:string, audienceAttraction:TAudience)
+	Method SetPlayersProgrammeAttraction(playerId:string, audienceAttraction:TAudience)
 		AudienceAttractions.insert(playerId, audienceAttraction)
 	End Method
 	
+	Method GetAudienceForPlayer:TAudience(playerId:string)
+		Return TAudience(MapValueForKey(AudienceResult, playerId))
+	End Method	
+	
 	Method ComputeAudience(forHour:int = -1)
-		If forHour <= 0 Then forHour = Game.GetHour()
-		
+		If forHour <= 0 Then forHour = Game.GetHour()		
 		Local potentialAudienceThisHour:TAudience
-		
-		Print "Max. erreichbare Zuschauer: " + MaxAudience.ToString()
-		
+						
 		If Game.Quotes.FEATURE_TARGETGROUP_TIME_MOD = 1
 			potentialAudienceThisHour = Game.Quotes.GetPotentialAudienceThisHour(MaxAudience, forHour)
 		Else
 			potentialAudienceThisHour = Game.Quotes.GetPotentialAudienceThisHourFallback(MaxAudience, forHour)
 		Endif
 		
+		Print "Max. erreichbare Zuschauer (Einwohner): " + MaxAudience.ToString()
 		Print "TV-Interessierte zu dieser Stunde: " + potentialAudienceThisHour.ToString()
-			
-	
+				
 		Local sum:TAudience = null
 		Local range:TAudience = null
-		print "Durchlaufe"
 
-		For Local attraction:TAudience = EachIn AudienceAttractions.Values()
-			print "Runde: " + attraction.ToString()
+		For Local attraction:TAudience = EachIn AudienceAttractions.Values()			
 			If sum = null Then
 				sum = attraction.GetNewInstance()
 			Else
@@ -429,81 +368,27 @@ Type TAudienceMarket
 			Endif
 		Next
 		
-		print "Summe: " + sum.ToString()
-		print "Range: " + range.ToString()
+		print "Summe aller Werte: " + sum.ToString()
+		print "Quote der Zapper die dranbleiben (diese werden verteilt): " + range.ToString()
 		
 		Local reduceFactor:TAudience = range.GetNewInstance()
-		reduceFactor.Divide(sum)
-		
-		'Local audienceToShare:TAudience = potentialAudienceThisHour.GetNewInstance()
-		'audienceToShare.Multiply(range)	
+		reduceFactor.Divide(sum)			
 		
 		For Local key:string = EachIn AudienceAttractions.Keys()			
 			Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, key))						
 			Local effectiveAttraction:TAudience = attraction.GetNewInstance()
-			effectiveAttraction.Multiply(reduceFactor)
-rem
-			Local effectiveAttraction:TAudience = new TAudience
-			
-			print key + " - d1: " + attraction.ToString()			
-						
-			effectiveAttraction.Children = attraction.Children / sum.Children
-			effectiveAttraction.Teenagers = attraction.Teenagers / sum.Teenagers
-			effectiveAttraction.HouseWifes = attraction.HouseWifes / sum.HouseWifes
-			effectiveAttraction.Employees = attraction.Employees / sum.Employees
-			effectiveAttraction.Unemployed = attraction.Unemployed / sum.Unemployed
-			effectiveAttraction.Manager = attraction.Manager / sum.Manager
-			effectiveAttraction.Pensioners = attraction.Pensioners / sum.Pensioners
-			
-			effectiveAttraction.Women = attraction.Women / sum.Women
-			effectiveAttraction.Men = attraction.Men / sum.Men
-	endrem								
-			print "Effective attraction for " + key + ": " + effectiveAttraction.ToString()
+			effectiveAttraction.Multiply(reduceFactor)										
 			
 			Local playerAudienceResult:TAudience = potentialAudienceThisHour.GetNewInstance()			
 			playerAudienceResult.Multiply(effectiveAttraction)		
 			playerAudienceResult.Round()
 			AudienceResult.insert(key, playerAudienceResult)
-			print "Audience for " + key + ": " + playerAudienceResult.ToString()
+			
+			print "Effektive Quote für " + key + ": " + effectiveAttraction.ToString()
+			print "Zuschauer fuer " + key + ": " + playerAudienceResult.ToString()
 		Next
 	End Method	
-	
-	Method GetAudienceForPlayer:TAudience(playerId:string)
-		Return TAudience(MapValueForKey(AudienceResult, playerId))
-	End Method
 End Type
-rem
-Type TAudienceCompetition
-	Field Audience:TAudienceOld
-	Field AudienceAttractions:TMap = CreateMap()
-	
-	Function Create:TAudienceCompetition(audience:TAudienceOld)
-		Local obj:TAudienceCompetition = New TAudienceCompetition
-		obj.Audience = audience
-		Return obj
-	End Function	
-	
-	Method AddPlayer(playerId:int, audienceAttraction:TAudienceMultiplier)
-		AudienceAttractions.insert(string(playerId), audienceAttraction)
-	End Method
-	
-	Method ComputeAudience()
-		Local sum:TAudienceMultiplier = null
-						
-		For Local attraction:TAudienceMultiplier = EachIn AudienceAttractions.Values()
-			If sum = null Then
-				sum = attraction
-			Else
-				sum.AudienceFactorSum(attraction)
-			EndIf		
-		Next
-		
-		'TODO!!!!!
-			
-	End Method
-End Type
-endrem
-
 
 Type TGenreDefinition
 	Field GenreId:int
