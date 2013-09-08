@@ -371,17 +371,8 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
 
 		'elevator border
 		Local elevatorBorder:TGW_Sprites= Assets.GetSprite("gfx_building_Fahrstuhl_Rahmen")
-		'elevator room plan sign - maybe design "multiple", so it does not look the
-		'same everytime
-		Local elevatorPlan:TGW_Sprites= Assets.GetSprite("gfx_building_ElevatorPlan")
 		For Local i:Int = 0 To 13
 			DrawOnPixmap(elevatorBorder.getImage(), 0, Pix, 230, 67 - elevatorBorder.h + 73*i)
-
-			local room:TRooms = TRooms.getRoomByDetails("elevatorplan",0,i)
-			if room
-				'we have to take care of building.position
-				DrawOnPixmap(elevatorPlan.getImage(), 0, Pix, room.pos.x - building.pos.x - building.buildingDisplaceX, 67 - elevatorPlan.h + 73*(13-i) )
-			endif
 		Next
 
 		local doorSprite:TGW_Sprites = Assets.GetSprite("gfx_building_Tueren")
@@ -2644,6 +2635,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
+		'to react on changes in the programmeCollection (eg. contract finished)
+		EventManager.registerListenerFunction( "programmecollection.addContract", onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeContract", onChangeProgrammeCollection )
+
+
 		'to change the asset - we intercept in dragging events
 		EventManager.registerListenerFunction( "guiobject.onDrag", onDragContract, "TGUIContractCoverBlock" )
 		'begin drop - to intercept if dropping to wrong list
@@ -2923,6 +2919,19 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'===================================
 	'Ad Agency: Room screen
 	'===================================
+
+
+	'if players are in the agency during changes
+	'to their programme collection, react to...
+	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
+		if not figure and not figure.isActivePlayer() then return FALSE
+
+		'empty the suitcase for rebuilding in update call
+		GuiListSuitcase.EmptyList()
+	End Function
 
 
 	Function onMouseOverContract:int( triggerEvent:TEventBase )

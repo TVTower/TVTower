@@ -61,7 +61,7 @@
 				<child name="gfx_building_Wandlampe"		x="430" y="189"	w="60"	h="54"	id="30" />
 				<child name="gfx_building_Tueren"		x="215" y="458"	w="228"	h="54"	frames="6"	id="31" />
 
-				<child name="gfx_building_ElevatorPlan" 	x="448" y="463"	w="20"	h="50"	id="31" />
+				<child name="gfx_building_ElevatorPlan" 	x="448" y="463"	w="20"	h="48"	id="31" />
 
 				<child name="gfx_building_BG_ufo"	x="0" y="229" w="207"	h="13"	f="9"	id="33" />
 				<child name="gfx_building_BG_ufo2"	x="0" y="243" w="207"	h="40"	f="9"	id="34" />

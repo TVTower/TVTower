@@ -477,7 +477,9 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method AddContract:Int(contract:TContract)
 		If not contract then return FALSE
 
+
 		if contract.sign( self.parent.playerID ) and not ContractList.contains(contract)
+print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.contractBase.title
 			ContractList.AddLast(contract)
 
 			'emit an event so eg. network can recognize the change
@@ -2338,6 +2340,7 @@ Type TAdBlock Extends TBlockGraphical
 		LoadSavefile.xmlCloseNode()
 	End Method
 
+
 	Function Create:TAdBlock(contract:TContract = Null, x:Int, y:Int, owner:Int)
 		If owner < 0 Then owner = game.playerID
 
@@ -2359,6 +2362,7 @@ Type TAdBlock Extends TBlockGraphical
 		Return obj
 	End Function
 
+
 	Function CreateDragged:TAdBlock(contract:TContract, owner:Int=-1)
 		Local obj:TAdBlock = TAdBlock.Create(contract, MouseManager.x, MouseManager.y, owner)
 
@@ -2374,9 +2378,11 @@ Type TAdBlock Extends TBlockGraphical
 		Return obj
 	End Function
 
+
 	Method SetDragable(_dragable:Int = 1)
 		dragable = _dragable
 	End Method
+
 
 	Function Sort:Int(o1:Object, o2:Object)
 		Local s1:TAdBlock = TAdBlock(o1)
@@ -2384,6 +2390,7 @@ Type TAdBlock Extends TBlockGraphical
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
         Return (10000*s1.dragged + (s1.sendtime + 25*s1.senddate))-(10000*s2.dragged + (s2.sendtime + 25*s2.senddate))
 	End Function
+
 
 	Function GetBlockX:Int(time:Int)
 		If time < 12 Then Return 67 + Assets.GetSprite("pp_programmeblock1").w
@@ -2444,11 +2451,11 @@ Type TAdBlock Extends TBlockGraphical
 			'draw graphic
 
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.drawBlock(Self.contract.contractBase.title, rect.position.GetIntX()+3, rect.position.GetIntY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
+			Assets.fonts.basefontBold.drawBlock(contract.contractBase.title, rect.position.GetIntX()+3, rect.position.GetIntY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
 			SetColor 80,80,80
 			local spotNumber:int	= self.GetSpotNumber()
 			local spotCount:int		= self.contract.GetSpotCount()
-			Local text:String		= spotNumber + "/" + spotCount
+			Local text:String		= spotNumber + "/" + spotCount + "  ["+contract.id+"] "
 			If self.isAired() and not self.isBotched() And spotNumber = spotCount
 				text = "- OK -"
 			ElseIf self.isBotched()

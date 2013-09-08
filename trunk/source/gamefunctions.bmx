@@ -2118,10 +2118,11 @@ Type TStationMap {_exposeToLua="selected"}
 	Field selectedStation:TStation	= null			'for sale or buy
 	Field userAction:int			= 0				'state
 	Field parent:TPlayer			= null
-	Field stations:TList			= CreateList()	'all stations of all map
+	Field stations:TList			= CreateList()	'all stations of the map owner
 
+	Global shareMap:TMap			= Null			'map containing bitmask-coded information for "used" pixels
+	Global shareCache:TMap			= Null
 
-	Global StationShare:Int[4,3]
 	Global stationRadius:Int		= 15		{saveload = "normal"}
 	Global population:Int			= 0			{saveload = "normal"}
 	Global populationmap:Int[,]
@@ -2167,6 +2168,10 @@ Type TStationMap {_exposeToLua="selected"}
 		Print "StationMap: calculated a population of:" + population + " in "+(Millisecs()-start)+"ms"
 		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Stationmap").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 
+		'to refresh share map on buy/sell of stations
+		EventManager.registerListenerFunction( "stationmap.addStation",	onChangeStations )
+		EventManager.registerListenerFunction( "stationmap.removeStation",	onChangeStations )
+
 		initDone = true
 		return TRUE
 	End Function
@@ -2190,6 +2195,11 @@ Type TStationMap {_exposeToLua="selected"}
 		if list.count() < playerID then return Null
 
 		return TStationMap(self.list.ValueAtIndex(playerID-1))
+	End Function
+
+	'someone sold or bought a station, call shareMap-Generator
+	Function onChangeStations:int( triggerEvent:TEventBase )
+		GenerateShareMap()
 	End Function
 
 	'external xml configuration of map and states
@@ -2349,44 +2359,6 @@ Type TStationMap {_exposeToLua="selected"}
 	End Method
 
 	Method Update()
-rem
-		'buying stations using the mouse
-		'1. searching
-		If userAction = 1
-			'create a temporary station if not done yet
-			if not mouseoverStation then mouseoverStation = getTemporaryStation( MouseManager.x -20, MouseManager.y -10 )
-			local mousePos:TPoint = TPoint.Create( MouseManager.x -20, MouseManager.y -10)
-
-			'if the mouse has moved - refresh the station data and move station
-			if not mouseoverStation.pos.isSame( mousePos )
-				mouseoverStation.pos.SetPos(mousePos)
-				mouseoverStation.refreshData()
-				'refresh state information
-				mouseoverStation.getFederalState(true)
-			endif
-
-			'if mouse gets clicked, we store that position in a separate station
-			if MOUSEMANAGER.isClicked(1) and mouseoverStation.getReach()>0
-				selectedStation = getTemporaryStation( mouseoverStation.pos.x, mouseoverStation.pos.y )
-			endif
-
-			'no antennagraphic in foreign countries
-			'-> remove the station so it wont get displayed
-			if mouseoverStation.getReach() <= 0 then mouseoverStation = null
-			if selectedStation and selectedStation.getReach() <= 0 then selectedStation = null
-		endif
-endrem
-		'2. actually buy it - when doubleclicking
-rem
-		If userAction = 2 And selectedStation and selectedStation.getReach() > 0
-			'add the station (and buy it)
-			AddStation(selectedStation, TRUE)
-			'remove selection
-			selectedStation = null
-
-			userAction = 0
-		EndIf
-endrem
 	End Method
 
 
@@ -2410,6 +2382,14 @@ endrem
 		Return Sqr((x1*x1) + (x2*x2))
 	End Function
 
+	Function getMaskIndex:int(number:int)
+		Local t:int = 1
+		for local i:int = 1 to number-1
+			t:*2
+		Next
+		Return t
+	End Function
+
 	Function getPopulationForBrightness:int(value:int)
 		value = Max(5, 255-value)
 		value = (value*value)/255 '2 times so low values are getting much lower
@@ -2423,6 +2403,119 @@ endrem
 		If value > 220 Then value :* 1.1	'population in big cities
 		return 26.0 * value					'population in general
 	End Function
+
+	Function GetShareMap:TMap()
+		if not shareMap then GenerateShareMap()
+		return shareMap
+	End Function
+
+	Function GetShare:float(playerIDs:int[])
+		'i share with myself 100%
+		if playerIDs.length <=1 then return 1.0
+
+		local cacheKey:string = ""
+		for local i:int = 0 to playerIDs.length-1
+			cacheKey		= cacheKey + "_"+playerIDs[i]
+		Next
+
+		'if already cached, save time...
+		if shareCache and shareCache.contains(cacheKey) then return float(string(shareMap.ValueForKey(cacheKey)))
+
+		local map:TMap				= GetShareMap()
+		local result:float			= 0.0
+		local share:int				= 0
+		local total:int				= 0
+		local playerFlags:int[]
+		local allFlag:int			= 0
+		playerFlags					= playerFlags[.. playerIDs.length]
+
+		for local i:int = 0 to playerIDs.length-1
+			'player 1=1, 2=2, 3=4, 4=8 ...
+			playerFlags[i]	= getMaskIndex( playerIDs[i] )
+			allFlag :| playerFlags[i]
+		Next
+
+		local someoneUsesPoint:int	= FALSE
+		local allUsePoint:int		= FALSE
+		For Local mapValue:TStationPoint = EachIn map.Values()
+			someoneUsesPoint= FALSE
+			allUsePoint		= FALSE
+			'as we have multiple flags stored in AllFlag, we have to
+			'compare the result to see if all of them hit,
+			'if only one of it hits, we just check for <>0
+			if (mapValue.color & allFlag) = allFlag
+				allUsePoint = true
+				someoneUsesPoint = true
+			else
+				for local i:int = 0 to playerFlags.length-1
+					print i+": "+mapValue.color+" & "+playerFlags[i]+" = "+(mapValue.color & playerFlags[i])
+					if mapValue.color & playerFlags[i] then someoneUsesPoint = true;exit
+				Next
+			endif
+			'someone has a station there
+			if someoneUsesPoint then total:+ populationmap[mapValue.pos.x, mapValue.pos.y]
+			'all searched have a station there
+			if allUsePoint then share:+ populationmap[mapValue.pos.x, mapValue.pos.y]
+		Next
+		if total = 0 then result = 0.0 else result = float(share)/float(total)
+rem debug
+		print "total: "+total
+		print "share:"+share
+		print "result:"+result
+		print "allFlag:"+allFlag
+		print "cache:"+cacheKey
+		print "--------"
+endrem
+		'add to cache...
+		shareCache.insert(cacheKey, string(result) )
+
+		return result
+	End Function
+
+
+	Function GenerateShareMap:int()
+		'reset values
+		shareMap = new TMap
+		'reset cache here too
+		shareCache = new TMap
+
+		'define locals outside of that for loops...
+		local posX:int		= 0
+		local posY:int		= 0
+		local stationX:int	= 0
+		local stationY:int	= 0
+		local mapKey:string	= ""
+		local mapValue:TStationPoint = null
+		local rect:TRectangle = TRectangle.Create(0,0,0,0)
+		For local stationmap:TStationMap = eachin List
+			For local station:TStation = EachIn stationmap.stations
+				'mark the area within the stations circle
+				posX = 0
+				posY = 0
+				stationX = Max(0, station.pos.x)
+				stationY = Max(0, station.pos.y)
+				Rect.position.SetXY( Max(stationX - stationRadius,stationRadius), Max(stationY - stationRadius,stationRadius) )
+				Rect.dimension.SetXY( Min(stationX + stationRadius, self.populationMapSize.x-stationRadius), Min(stationY + stationRadius, self.populationMapSize.y-stationRadius) )
+
+				For posX = Rect.getX() To Rect.getW()
+					For posY = Rect.getY() To Rect.getH()
+						' left the circle?
+						If self.calculateDistance( posX - stationX, posY - stationY ) > stationRadius then continue
+
+						'insert the players bitmask-number into the field
+						'and if there is already one ... add the number
+						mapKey = posX+","+posY
+						mapValue = TStationPoint.Create(posX,posY, getMaskIndex(stationmap.parent.playerID) )
+						If shareMap.Contains(mapKey)
+							mapValue.color :| TStationPoint(shareMap.ValueForKey(mapKey)).color
+						endif
+						shareMap.Insert(mapKey, mapValue)
+					Next
+				Next
+			Next
+		Next
+	End Function
+
 
 	Method CalculateShareNOTFINISHED:Int(playerA:Int, playerB:Int)
 		Local Points:TMap = New TMap

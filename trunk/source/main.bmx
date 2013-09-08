@@ -2937,7 +2937,7 @@ Function Menu_StartMultiplayer:Int()
 			Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgrammeByGenre(20) )
 
 			For Local j:Int = 0 To Game.startAdAmount-1
-				local contract:TContract = TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0.0, 0.10))
+				local contract:TContract = TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0.0, 0.15))
 				Game.Players[ playerids ].ProgrammeCollection.AddContract( contract )
 			Next
 		Next
@@ -3171,7 +3171,7 @@ Function Init_Creation()
 			Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			For Local i:Int = 0 To 2
-				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0, 0.10)) )
+				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
 			Next
 		Next
 	EndIf
@@ -3560,6 +3560,16 @@ endrem
 				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("roomboard", -1), TRUE )
 				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].Stationmap.reach = Game.Players[Game.playerID].Stationmap.population
 
+				If KEYMANAGER.IsHit(KEY_Y)
+					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
+					print "Share 1,3: "+Game.Players[Game.playerID].Stationmap.GetShare([1,3])
+				endif
+				If KEYMANAGER.IsHit(KEY_X)
+					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
+					print "Share 2,3,4: "+Game.Players[Game.playerID].Stationmap.GetShare([2,3,4])
+				endif
+
+
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
 				if Game.isGameLeader()
 					If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
@@ -3742,7 +3752,7 @@ Function UpdateMousemanager:int( triggerEvent:TEventBase )
 End Function
 endrem
 
-rem
+'rem
 print "ALLE SPIELER DEAKTIVIERT"
 print "ALLE SPIELER DEAKTIVIERT"
 print "ALLE SPIELER DEAKTIVIERT"
@@ -3753,7 +3763,7 @@ for local fig:TFigures = eachin TFigures.list
 Next
 KIRunning = False
 print "[DEV] AI FIGURES deactivated"
-endrem
+'endrem
 
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
