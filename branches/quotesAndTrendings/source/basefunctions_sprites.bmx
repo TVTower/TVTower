@@ -1164,7 +1164,7 @@ Type TAnimation
 	field randomness:int		= 0
 
 
-	Function Create:TAnimation(framesArray:int[][], repeatTimes:int=0, paused:byte=0, randomness:int = 0)
+	Function Create:TAnimation(framesArray:int[][], repeatTimes:int=0, paused:int=0, randomness:int = 0)
 		local obj:TAnimation = new TAnimation
 		local framecount:int = len( framesArray )
 
@@ -1188,14 +1188,15 @@ Type TAnimation
 		if self.frameTimer = null then self.ResetFrameTimer()
 		self.frameTimer :- deltaTime
 		if self.frameTimer <= 0.0
+			local nextPos:int = self.currentFramePos + 1
 			'increase current frameposition but only if frame is set
 			'resets frametimer too
-			self.setCurrentFramePos(self.currentFramePos + 1)
+			self.setCurrentFramePos(nextPos)
 			'print self.currentFramePos + " -> "+ self.currentFrame
 
-			'reached end
-			If self.currentFramePos >= len(self.frames)-1
-				If self.repeatTimes = 0 then
+			'reached end? (use nextPos as setCurrentFramePos already limits value)
+			If nextPos >= len(self.frames)
+				If self.repeatTimes = 0
 					self.Pause()	'stop animation
 				Else
 					self.setCurrentFramePos( 0 )

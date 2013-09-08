@@ -426,8 +426,8 @@ Type TGenreDefinition
 		Popularity = TGenrePopulartity.Create(GenreId, RandRange(-10,10), RandRange(-25,25))
 		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufügen		
 		
-		print "Load " + GenreId + ": " + AudienceAttraction.ToString()
-		print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod 
+		'print "Load " + GenreId + ": " + AudienceAttraction.ToString()
+		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod 
 	End Method
 		
 	Method GetProgrammeQuality:float(programme:TProgramme, luckFactor:int = 1)

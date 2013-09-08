@@ -368,7 +368,6 @@ Type TNetworkHelper
 		If figure.inroom <> Null
 			If inRoomID > 0 and figure.inRoom.id <> inRoomID
 				figure.inRoom = TRooms.GetRoom(inRoomID)
-				If figure.inRoom.name = "elevator" then Building.Elevator.waitAtFloorTimer.SetInterval(Building.Elevator.PlanTime, true)
 			EndIf
 		EndIf
 

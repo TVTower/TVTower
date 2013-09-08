@@ -50,6 +50,7 @@ PLANNER_FINANCES		= finances
 PLANNER_IMAGE			= image
 PLANNER_MESSAGES		= messages
 
+ROOM_ELEVATORPLAN		= elevator target planner
 ROOM_NEWSPLANNER		= newsplanner
 ROOM_FINANCES			= finances
 ROOM_SAFE				= save and load

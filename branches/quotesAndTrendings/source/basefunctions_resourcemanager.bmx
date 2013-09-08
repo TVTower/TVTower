@@ -690,8 +690,11 @@ Type TResourceLoaders
 			room.Insert("name",		name + String(owner))
 			room.Insert("owner",	String(owner))
 			room.Insert("roomname", name)
+			room.Insert("fake", 	xmlLoader.xml.FindValue(child, "fake", "0") )
 			room.Insert("screen", 	xmlLoader.xml.FindValue(child, "screen", "screen_credits") )
 			local subNode:TxmlNode = null
+
+			'load tooltips
 			subNode = xmlLoader.xml.FindChild(child, "tooltip")
 			if subNode <> null
 				room.Insert("tooltip", 	xmlLoader.xml.FindValue(subNode, "text", "") )
@@ -700,15 +703,45 @@ Type TResourceLoaders
 				room.Insert("tooltip", 	"" )
 				room.Insert("tooltip2", "" )
 			endif
+
+			'hotspots
+			local hotSpots:TList = CreateList()
+			subNode = xmlLoader.xml.FindChild(child, "hotspots")
+			if subNode and subNode.GetChildren()
+				For Local hotSpotNode:TxmlNode = EachIn subNode.GetChildren()
+					if not hotSpotNode then continue
+					local hotspot:TMap = CreateMap()
+
+					hotspot.Insert("name", 					xmlLoader.xml.FindValue(hotSpotNode, "name", "") )
+					hotspot.Insert("tooltiptext", 			xmlLoader.xml.FindValue(hotSpotNode, "tooltiptext", "") )
+					hotspot.Insert("tooltipdescription", 	xmlLoader.xml.FindValue(hotSpotNode, "tooltipdescription", "") )
+					hotspot.Insert("x", 					xmlLoader.xml.FindValue(hotSpotNode, "x", -1) )
+					hotspot.Insert("y", 					xmlLoader.xml.FindValue(hotSpotNode, "x", -1) )
+					hotspot.Insert("floor", 				xmlLoader.xml.FindValue(hotSpotNode, "floor", -1) )
+					hotspot.Insert("width", 				xmlLoader.xml.FindValue(hotSpotNode, "width", 0) )
+					hotspot.Insert("height", 				xmlLoader.xml.FindValue(hotSpotNode, "height", 0) )
+					hotspot.Insert("bottomy", 				xmlLoader.xml.FindValue(hotSpotNode, "bottomy", 0) )
+
+					hotSpots.addLast(hotspot)
+				Next
+			endif
+			room.Insert("hotspots", hotSpots )
+
+			'load door settings
 			subNode = xmlLoader.xml.FindChild(child, "door")
 			if subNode
-				room.Insert("x", 		xmlLoader.xml.FindValue(subNode, "x", 0) )
-				room.Insert("y", 		xmlLoader.xml.FindValue(subNode, "y", 0) )
-				room.Insert("doortype", xmlLoader.xml.FindValue(subNode, "type", -1) )
+				room.Insert("x", 		xmlLoader.xml.FindValue(subNode, "x", -1) )
+				room.Insert("floor",	xmlLoader.xml.FindValue(subNode, "floor", -1) )
+				room.Insert("doorslot",	xmlLoader.xml.FindValue(subNode, "doorslot", -1) )
+				room.Insert("doortype", xmlLoader.xml.FindValue(subNode, "doortype", -1) )
+				room.Insert("doorwidth", xmlLoader.xml.FindValue(subNode, "doorwidth", -1) )
 			else
-				room.Insert("x", "0" )
-				room.Insert("y", "0" )
+				room.Insert("x", "-1" )
+				room.Insert("floor", "0" )
+				room.Insert("xpos", "-1")
+				room.Insert("doorslot",	"-1")
 				room.Insert("doortype", "-1")
+				room.Insert("doorwidth", "-1")
 			endif
 			values_room.Insert(Name + owner + id, TAsset.CreateBaseAsset(room, "ROOMDATA"))
 			PrintDebug("XmlLoader.LoadRooms:", "inserted room: " + Name, DEBUG_LOADING)
@@ -741,8 +774,9 @@ Type TResourceLoaders
 			Next
 		endif
 	End Function
-	
+
 	Function onLoadGenres:int( triggerEvent:TEventBase )
+
 		local childNode:TxmlNode = null
 		local xmlLoader:TXmlLoader = null
 		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
