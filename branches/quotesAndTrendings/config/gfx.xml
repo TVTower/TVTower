@@ -39,8 +39,10 @@
 		<spritepack name="gfx_suitcase_pack">
  			<url>grafiken/koffer.png</url>
 			<children>
-				<child name="gfx_suitcase" 		x="0" y="0"		w="220"	h="120"	/>
-				<child name="gfx_suitcase_glow"	x="0" y="120"	w="220"	h="120"	/>
+				<child name="gfx_suitcase" 			x="3"   y="0"   w="215" h="105"	/>
+				<child name="gfx_suitcase_glow"		x="3"   y="107"	w="215" h="105"	/>
+				<child name="gfx_suitcase_big" 		x="218" y="0"   w="245" h="105"	/>
+				<child name="gfx_suitcase_big_glow"	x="218" y="107"	w="245" h="105"	/>
 			</children>
 		</spritepack>
 		<resource name="gfx_news_btn_pack">

@@ -411,10 +411,9 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Field SeriesList:TList				= CreateList()
 	Field ContractList:TList			= CreateList()
 	Field SuitcaseProgrammeList:TList	= CreateList()	'objects not available directly but still owned
-	Field SuitcaseContractList:TList	= CreateList()
+	Field SuitcaseContractList:TList	= CreateList()	'objects in the suitcase but not signed
 	Field parent:TPlayer
 	Global fireEvents:int		= TRUE			'FALSE to avoid recursive handling (network)
-	Global SuitcaseProgrammeLimit:int	= 12
 
 
 	Function Create:TPlayerProgrammeCollection(player:TPlayer)
@@ -478,13 +477,57 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method AddContract:Int(contract:TContract)
 		If not contract then return FALSE
 
-		contract.sign( self.parent.playerID )
-		Self.ContractList.AddLast(contract)
-		TContractBlock.Create(contract, 1, self.parent.playerID )
+
+		if contract.sign( self.parent.playerID ) and not ContractList.contains(contract)
+print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.contractBase.title
+			ContractList.AddLast(contract)
+
+			'emit an event so eg. network can recognize the change
+			If fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addContract", TData.Create().add("contract", contract), self ) )
+			return TRUE
+		else
+			return FALSE
+		endif
+	End Method
+
+	Method GetUnsignedContractFromSuitcase:TContract(id:Int) {_exposeToLua}
+		For Local contract:TContract=EachIn SuitcaseContractList
+			If contract.id = id Then Return contract
+		Next
+		Return Null
+	End Method
+
+
+	Method HasUnsignedContractInSuitcase:int(contract:TContract)
+		If not contract then return FALSE
+		return SuitcaseContractList.Contains(contract)
+	End Method
+
+	'used when adding a contract to the suitcase
+	Method AddUnsignedContractToSuitcase:int(contract:TContract)
+		If not contract then return FALSE
+		'do not add if already "full"
+		if SuitcaseContractList.count() >= Game.maxContractsAllowed then return FALSE
+
+		'add a special block-object to the suitcase
+		SuitcaseContractList.AddLast( contract )
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addContract", TData.Create().add("contract", contract), self ) )
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addUnsignedContractToSuitcase", TData.Create().add("contract", contract), self ) )
+
+		return TRUE
 	End Method
+
+
+	Method RemoveUnsignedContractFromSuitcase:int(contract:TContract)
+		if not SuitcaseContractList.Contains(contract) then return FALSE
+		SuitcaseContractList.Remove(contract)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeUnsignedContractFromSuitcase", TData.Create().add("contract", contract), self ) )
+		return TRUE
+	End Method
+
 
 	'readd programmes from suitcase to player's list of available programmes
 	Method ReaddProgrammesFromSuitcase:int()
@@ -495,9 +538,10 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		return TRUE
 	End Method
 
+
 	Method AddProgrammeToSuitcase:int(programme:TProgramme)
 		'do not add if already "full"
-		if SuitcaseProgrammeList.count() >= self.SuitcaseProgrammeLimit then return FALSE
+		if SuitcaseProgrammeList.count() >= Game.maxMoviesInSuitcaseAllowed then return FALSE
 
 		'if owner differs, check if we have to buy
 		if parent.playerID<>programme.owner
@@ -522,7 +566,9 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	End Method
 
 
-	Method RemoveProgrammeFromSuitcase(programme:TProgramme)
+	Method RemoveProgrammeFromSuitcase:int(programme:TProgramme)
+		if not SuitcaseProgrammeList.Contains(programme) then return FALSE
+
 		If programme.isMovie() Then MovieList.AddLast(programme) Else SeriesList.AddLast(programme)
 		List.AddLast(programme)
 
@@ -530,6 +576,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeProgrammeFromSuitcase", TData.Create().add("programme", programme), self ) )
+		return TRUE
 	End Method
 
 
@@ -740,12 +787,12 @@ Type TContractBase Extends TProgrammeElement {_exposeToLua="selected"}
 		return Null
 	End Function
 
-	Function GetRandomWithMaxAudience:TContractBase(maxAudience:Int, maxAudienceQuote:Float=0.35)
+	Function GetRandomWithLimitedAudienceQuote:TContractBase(minAudienceQuote:float=0.0, maxAudienceQuote:Float=0.35)
 		'maxAudienceQuote - xx% market share as maximum
 		'filter to entries we need
 		Local resultList:TList = CreateList()
 		For local obj:TContractBase = EachIn TContractBase.list
-			If obj.minAudienceBase <= maxAudience*maxAudienceQuote
+			If obj.minAudienceBase >= minAudienceQuote AND obj.minAudienceBase <= maxAudienceQuote
 				resultList.addLast(obj)
 			EndIf
 		Next
@@ -806,13 +853,16 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 	End Function
 
 	'sign the contract -> calculate values and change owner
-	Method Sign(owner:int, day:int=-1)
+	Method Sign:int(owner:int, day:int=-1)
+		if self.owner = owner then return FALSE
+
 		If day < 0 Then day = game.GetDay()
 		self.daySigned		= day
 		self.owner			= owner
 		self.profit			= self.GetProfit()
 		self.penalty		= self.GetPenalty()
 		self.minAudience	= self.GetMinAudience(owner)
+		return TRUE
 	End Method
 
 	Function GetRandomFromList:TContract(_list:TList, playerID:Int =-1)
@@ -948,7 +998,9 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		EndIf
 	End Method
 
-	Method ShowSheet:Int(x:Int,y:Int)
+	Method ShowSheet:Int(x:Int,y:Int, align:int=0)
+		if align=1 then x :- Assets.GetSprite("gfx_datasheets_contract").w
+
 		Local playerID:Int = owner
 		'nobody owns it or unsigned contract
 		If playerID <= 0 or self.daySigned < 0 Then playerID = Game.playerID
@@ -1088,7 +1140,6 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field Outcome:Float			= 0
 	Field review:Float			= 0
 	Field speed:Float			= 0
-	Field betty:Float			= 0					'Wert wie viel Eindruck man bei Betty macht
 	Field relPrice:Int			= 0
 	Field Genre:Int				= 0
 	Field episode:Int			= 0
@@ -1628,12 +1679,7 @@ endrem
 		EndIf
 		Return topicality
 	End Method
-rem
-	Method GetBaseAudienceAttraction:TAudienceAttraction()
-		local definition:TGenreDefinition = Game.Quotes.GetGenreDefinition(Genre)		
-		Return definition.GetAudienceAttractionForProgramme(self)
-	End Method	
-endrem
+
 	'base quote of a programme
 	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
 		Local quality:Float		= 0.0
@@ -1656,7 +1702,7 @@ endrem
 
 		'no minus quote
 		Return Max(0, quality)
-	End Method		
+	End Method
 
 	'computes a percentage which could be multiplied with maxaudience
 	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1) {_exposeToLua}
@@ -1665,7 +1711,7 @@ endrem
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.Quotes.maxAudiencePercentage
+			quote :* Game.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf
@@ -1929,7 +1975,7 @@ Print "implement save:TNews"
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.Quotes.maxAudiencePercentage
+			quote :* Game.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf
@@ -2294,6 +2340,7 @@ Type TAdBlock Extends TBlockGraphical
 		LoadSavefile.xmlCloseNode()
 	End Method
 
+
 	Function Create:TAdBlock(contract:TContract = Null, x:Int, y:Int, owner:Int)
 		If owner < 0 Then owner = game.playerID
 
@@ -2315,6 +2362,7 @@ Type TAdBlock Extends TBlockGraphical
 		Return obj
 	End Function
 
+
 	Function CreateDragged:TAdBlock(contract:TContract, owner:Int=-1)
 		Local obj:TAdBlock = TAdBlock.Create(contract, MouseManager.x, MouseManager.y, owner)
 
@@ -2330,9 +2378,11 @@ Type TAdBlock Extends TBlockGraphical
 		Return obj
 	End Function
 
+
 	Method SetDragable(_dragable:Int = 1)
 		dragable = _dragable
 	End Method
+
 
 	Function Sort:Int(o1:Object, o2:Object)
 		Local s1:TAdBlock = TAdBlock(o1)
@@ -2340,6 +2390,7 @@ Type TAdBlock Extends TBlockGraphical
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
         Return (10000*s1.dragged + (s1.sendtime + 25*s1.senddate))-(10000*s2.dragged + (s2.sendtime + 25*s2.senddate))
 	End Function
+
 
 	Function GetBlockX:Int(time:Int)
 		If time < 12 Then Return 67 + Assets.GetSprite("pp_programmeblock1").w
@@ -2400,11 +2451,11 @@ Type TAdBlock Extends TBlockGraphical
 			'draw graphic
 
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.drawBlock(Self.contract.contractBase.title, rect.position.GetIntX()+3, rect.position.GetIntY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
+			Assets.fonts.basefontBold.drawBlock(contract.contractBase.title, rect.position.GetIntX()+3, rect.position.GetIntY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
 			SetColor 80,80,80
 			local spotNumber:int	= self.GetSpotNumber()
 			local spotCount:int		= self.contract.GetSpotCount()
-			Local text:String		= spotNumber + "/" + spotCount
+			Local text:String		= spotNumber + "/" + spotCount + "  ["+contract.id+"] "
 			If self.isAired() and not self.isBotched() And spotNumber = spotCount
 				text = "- OK -"
 			ElseIf self.isBotched()
@@ -3183,264 +3234,6 @@ Type TNewsBlock extends TGameObject {_exposeToLua="selected"}
 	End Method
 End Type
 
-'Contracts used in AdAgency
-Type TContractBlock Extends TBlockGraphical
-	Field contract:TContract						' which (signed) contract it is representing
-	Field slot:Int = 0								' slot at the moment
-	Field origSlot:Int = 0							' slot on table
-	Field dragAndDrop:TDragAndDrop					' local link to the dnd
-	Global DragAndDropList:TList = CreateList()
-	Global List:TList = CreateList()
-	Global AdditionallyDragged:Int =0
-
-	Function LoadAll(loadfile:TStream)
-		print "implement"
-	End Function
-
-	Function SaveAll()
-		Local ContractCount:Int = 0
-		LoadSaveFile.xmlBeginNode("ALLCONTRACTBLOCKS")
-			LoadSaveFile.xmlWRITE("ADDITIONALLYDRAGGED"		, TContractBlock.AdditionallyDragged)
-			For Local ContractBlock:TContractBlock= EachIn TContractBlock.List
-				If ContractBlock <> Null Then If ContractBlock.owner <= 0 Then ContractCount:+1
-		    Next
-			LoadSaveFile.xmlWRITE("CONTRACTCOUNT"				, ContractCount)
-			For Local ContractBlock:TContractBlock= EachIn TContractBlock.List
-				If ContractBlock <> Null Then ContractBlock.Save()
-			Next
-		LoadSaveFile.xmlCloseNode()
-	End Function
-
-	Method Save()
-		LoadSaveFile.xmlBeginNode("CONTRACTBLOCK")
-			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") = "normal" Or t.MetaData("saveload") = "normalExt" Or t.MetaData("saveload") = "normalExtB"
-					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-				EndIf
-			Next
-			If Self.contract <> Null
-				LoadSaveFile.xmlWrite("CONTRACTID",		Self.contract.id)
-			Else
-				LoadSaveFile.xmlWrite("CONTRACTID",		"-1")
-			EndIf
-		LoadSaveFile.xmlCloseNode()
-	End Method
-
-	'all contracts in the suitcase will get signed...
-	Function ContractsToPlayer:Int(playerID:Int)
-		TContractBlock.list.sort(True, TBlockMoveable.SortDragged)
-
-		For Local obj:TContractBlock = EachIn TContractBlock.List
-			'sign all on the suitcase side
-			If obj.rect.GetX() > 520 And obj.contract.owner <= 0 then obj.SignContract(playerID)
-		Next
-	End Function
-
-	'if botched or finished: remove the contract from the suitcase to
-	'gain space for other contracts
-	Function RemoveContractFromSuitcase(contract:TContract)
-		print "RO: cleanup RemoveContractFromSuitcase if working"
-		If contract <> Null
-			For Local obj:TContractBlock = EachIn TContractBlock.List
-				'If obj.contract.id = contract.id Then TContractBlock.list.remove(ContractBlock);Exit
-				If obj.contract = contract
-					TContractBlock.list.remove(obj)
-					Exit
-				endif
-			Next
-		EndIf
-	End Function
-
-	'adds the contract to a player, signs it and fetches a new one.
-	Method SignContract:Int(playerID:Int)
-		'adds a contract to the players collection
-		'contract gets signed THERE
-		Game.Players[playerID].ProgrammeCollection.AddContract(Self.contract)
-
-		'remove the now unused block
-		self.List.Remove(self)
-		'remove old DND-object
-		self.DragAndDropList.Remove(self.dragAndDrop)
-
-		'create a new ContractBlock at the original Position
-		local newContract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.30) )
-		self.Create(newContract, self.origSlot)
-
-
-		print "RO: cleanup TContractBlock.SignContract if working"
-rem
-		Self.slot	= Self.origSlot	'revert to original slot
-
-		Local x:Int = 285 + Self.slot * Assets.getSprite(Self.imageBaseName).w
-		Local y:Int = 300 - 10 - Assets.getSprite(Self.imageBaseName).h - Self.slot * 7
-		Self.Pos.SetXY(x, y)
-		Self.OrigPos.SetXY(x, y)
-		Self.StartPos.SetXY(x, y)
-		Self.dragable = 1
-		Self.contract = TContract.GetRandomContractWithMaxAudience(Game.getMaxAudience(-1), -1, 0.30)
-
-		If Self.contract <> Null
-			Local targetgroup:Int = Self.contract.targetgroup
-			If targetgroup > 9 Or targetgroup <0 Then targetgroup = 0
-			Self.imageBaseName = "gfx_contracts_"+targetgroup
-		EndIf
-		Self.owner = 0
-		Return True
-endrem
-	End Method
-
-
-	'if owner = 0 then its a block of the adagency, otherwise it's one of the player'
-	Function Create:TContractBlock(contract:TContract, slot:Int=0, owner:Int=0)
-		Local obj:TContractBlock=New TContractBlock
-		Local targetgroup:Int = contract.GetTargetGroup()
-		If targetgroup > 9 Or targetgroup <0 Then targetgroup = 0
-		obj.imageBaseName	= "gfx_contracts_"+targetgroup
-		local width:int = Assets.getSprite(obj.imageBaseName).w
-		local height:int = Assets.getSprite(obj.imageBaseName).h
-		Local x:Int = 285 + slot * width
-		Local y:Int = 300 - 10 - height - slot * 7
-		obj.rect		= TRectangle.Create(x, y, width, height)
-		obj.OrigPos		= TPoint.Create(x, y)
-		obj.StartPos	= TPoint.Create(x, y)
-		obj.slot 		= slot
-		obj.origSlot	= slot
-		obj.owner 		= owner
-		obj.dragable	= 1
-		obj.contract 	= contract
-
-		If owner = 0
-			obj.DragAndDrop 		= New TDragAndDrop
-			obj.DragAndDrop.slot 	= slot + 200
-			obj.DragAndDrop.pos.SetXY(x,y)
-			obj.DragAndDrop.w 		= obj.rect.GetW()
-			obj.DragAndDrop.h 		= obj.rect.GetH()
-			TContractBlock.DragAndDropList.AddLast(obj.DragAndDrop)
-		Else
-			obj.dragable = 0
-		EndIf
-
-		List.AddLast(obj)
-		TContractBlock.list.sort(True, TBlockMoveable.SortDragged)
-		Return obj
-	End Function
-
-	Method SetDragable(on:Int = 1)
-		dragable = on
-	End Method
-
-    'draw the Block inclusive text
-    'zeichnet den Block inklusive Text
-    Method Draw()
-		SetColor 255,255,255  'normal
-
-		If dragged = 1
-			If TContractBlock.AdditionallyDragged > 0 Then SetAlpha 1- 1/TContractBlock.AdditionallyDragged * 0.25
-			Assets.GetSprite(Self.imageBaseName+"_dragged").Draw(rect.GetX() + 6, rect.GetY())
-		Else
-			If rect.GetX() > 520
-				If dragable = 0 Then SetColor 200,200,200
-				Assets.GetSprite(Self.imageBaseName+"_dragged").Draw(rect.GetX(), rect.GetY())
-				If dragable = 0 Then SetColor 255,255,255
-			Else
-				Assets.GetSprite(Self.imageBaseName).Draw(rect.GetX(), rect.GetY())
-			EndIf
-		EndIf
-		SetAlpha 1
-	End Method
-
-	Function DrawAll(DraggingAllowed:Int)
-		TContractBlock.list.sort(True, TBlockMoveable.SortDragged)
-		For Local obj:TContractBlock = EachIn TContractBlock.List
-			if not obj.contract
-				TContractBlock.List.Remove(obj)
-				continue
-			endif
-			If obj.owner <= 0 Or obj.owner = Game.playerID then obj.Draw()
-		Next
-	End Function
-
-    Function UpdateAll(DraggingAllowed:Byte)
-		Local localslot:Int = 0 'slot in suitcase
-
-		TContractBlock.list.sort(True, TBlockMoveable.SortDragged)
-
-		For Local obj:TContractBlock = EachIn TContractBlock.List
-			If obj.owner = Game.playerID Or obj.startPos.x > 550
-				obj.rect.position.SetXY(550 + Assets.GetSprite(obj.imageBaseName).w*localslot, 87)
-				obj.StartPos.SetPos(obj.rect.position)
-				If obj.owner = game.playerID Then obj.SetDragable(0)
-				obj.slot = localslot
-				localslot:+1
-			EndIf
-			If DraggingAllowed And obj.owner <= 0
-				If MOUSEMANAGER.IsHit(2) And obj.dragged = 1
-					obj.rect.position.SetPos(obj.StartPos)
-					obj.dragged = 0
-					MOUSEMANAGER.resetKey(2)
-				EndIf
-				If MOUSEMANAGER.IsHit(1)
-					'drag
-					If obj.dragged = 0 And obj.dragable = 1
-						If obj.rect.containsXY( MouseManager.x, MouseManager.y )
-							obj.dragged = 1
-							For Local otherObj:TContractBlock = EachIn TContractBlock.List
-								If otherObj.dragged And otherObj <> obj
-									TPoint.SwitchPos(obj.StartPos, otherObj.StartPos)
-									otherObj.dragged = 0
-								EndIf
-							Next
-							MouseManager.resetKey(1)
-						EndIf
-					'drop
-					Else
-						Local realDNDfound:Int = 0
-						obj.dragged = 0
-
-						For Local DragAndDrop:TDragAndDrop = EachIn TContractBlock.DragAndDropList
-							If DragAndDrop.CanDrop(MouseManager.x, MouseManager.y) = 1 And (DragAndDrop.pos.x < 550 Or DragAndDrop.pos.x > 550 + Assets.GetSprite(obj.imageBaseName).w * (localslot - 1))
-								'limit contracts in suitcase
-								If localslot >= Game.maxContractsAllowed Then Exit
-
-								For Local otherObj:TContractBlock= EachIn TContractBlock.List
-									If DraggingAllowed And otherObj.owner <= 0
-										If MOUSEMANAGER.IsHit(1) And otherObj.dragable = 1 And otherObj.rect.position.isSame(DragAndDrop.pos)
-											otherObj.dragged = 1
-											MouseManager.resetKey(1)
-											Exit
-										EndIf
-									EndIf
-								Next
-								obj.rect.position.SetPos(DragAndDrop.pos)
-								obj.StartPos.SetPos(obj.rect.position)
-								realDNDfound =1
-								Exit 'exit loop-each-dragndrop, we've already found the right position
-							EndIf
-						Next
-
-						'no drop-area under Adblock (otherwise this part is not executed - "exit"), so reset position
-						If obj.IsAtStartPos()
-							obj.dragged = 0
-							obj.rect.position.SetPos(obj.StartPos)
-							TContractBlock.list.sort(True, TBlockMoveable.SortDragged)
-						EndIf
-					EndIf
-				EndIf
-				If obj.dragged = 1
-					TContractBlock.AdditionallyDragged :+1
-					obj.rect.position.SetXY(..
-						MouseManager.x - obj.rect.GetW()/2 - TContractBlock.AdditionallyDragged *5,..
-						MouseManager.y - obj.rect.GetH()*0.25 - TContractBlock.AdditionallyDragged *5 ..
-					)
-				Else
-					obj.rect.position.SetPos(obj.StartPos)
-				EndIf
-			EndIf
-		Next
-        TContractBlock.AdditionallyDragged = 0
-	End Function
-End Type
 
 
 Type TGUIProgrammeSlotList extends TGUISlotList
@@ -3494,40 +3287,76 @@ Type TGUIProgrammeSlotList extends TGUISlotList
 End Type
 
 
+
+Type TGUIContractSlotList extends TGUISlotList
+
+    Method Create:TGUIContractSlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+		Super.Create(x,y,width,height,state)
+		return self
+	End Method
+
+	Method ContainsContract:int(contract:TContract)
+		for local i:int = 0 to self.GetSlotAmount()-1
+			local block:TGUIContractCoverBlock = TGUIContractCoverBlock( self.GetItemBySlot(i) )
+			if block and block.contract = contract then return TRUE
+		Next
+		return FALSE
+	End Method
+
+	'override default event handler
+	Function onDropOnTarget:int( triggerEvent:TEventBase )
+		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		'ATTENTION:
+		'Item is still in dragged state!
+		'Keep this in mind when sorting the items
+
+		'only handle if coming from another list ?
+		local parent:TGUIobject = item._parent
+		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
+		local fromList:TGUIListBase = TGUIListBase(parent)
+		if not fromList then return FALSE
+
+		local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
+		if not toList then return FALSE
+
+		local data:TData = triggerEvent.getData()
+		if not data then return FALSE
+
+		'move item if possible
+		fromList.removeItem(item)
+		'try to add the item, if not able, readd
+		if not toList.addItem(item, data)
+			if fromList.addItem(item) then return TRUE
+
+			'not able to add to "toList" but also not to "fromList"
+			'so set veto and keep the item dragged
+			triggerEvent.setVeto()
+		endif
+
+
+		return TRUE
+	End Function
+End Type
+
+
 'a graphical representation of programmes/news/ads...
-Type TGUIProgrammeCoverBlock extends TGUIListItem
-	Field assetBaseName:string = "gfx_movie"
+Type TGUIBaseCoverBlock extends TGUIListItem
+	Field assetBaseName:string = "gfx_movie0"
 	Field asset:TGW_Sprites = null
-	Field programme:TProgramme
 
-    Method Create:TGUIProgrammeCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
-		'limit this blocks to nothing - as soon as we parent it, it will
-		'follow the parents limits
-   		super.CreateBase(x,y,"",null)
-   		self.InitAsset( self.assetBaseName )
+    Method Create:TGUIBaseCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		'creates base, registers click-event,...
+		Super.Create(label, x,y,width,height)
+   		self.InitAsset()
 
-		self.label = label
-
-		'make dragable by default
-		self.setOption(GUI_OBJECT_DRAGABLE, TRUE)
-
-		'register events
-		'- each item wants to know whether it was clicked
-		EventManager.registerListenerFunction( "guiobject.onClick",	onClick, self )
-
-		GUIManager.add(self)
 		return self
 	End Method
 
-	Method CreateWithProgramme:TGUIProgrammeCoverBlock(programme:TProgramme)
-		self.Create()
-		self.setProgramme(programme)
-		return self
-	End Method
-
-	Method InitAsset(assetBaseName:string)
-		self.assetBaseName = assetBaseName
-		self.asset = Assets.GetSprite(self.assetBaseName+"0")
+	Method InitAsset(assetName:string="")
+		if assetName = "" then assetName = self.assetBaseName
+		self.asset = Assets.GetSprite(assetName)
    		'resize to a default value
 		self.Resize( asset.w, asset.h )
 	End Method
@@ -3540,25 +3369,63 @@ Type TGUIProgrammeCoverBlock extends TGUIListItem
 		super.Remove()
 	End Method
 
+	Method Update()
+		if self.mouseover or self.isDragged()
+			EventManager.triggerEvent( TEventSimple.Create( "TGUIBaseCoverBlock.OnMouseOver", TData.Create(), self ) )
+		endif
+
+		if self.mouseover then Game.cursorstate = 1
+		if self.isDragged() then Game.cursorstate = 2
+	End Method
+
+	Method Draw()
+		asset.draw(self.GetScreenX(), self.GetScreenY())
+	End Method
+End Type
+
+
+'a graphical representation of programmes to buy/sell/archive...
+Type TGUIProgrammeCoverBlock extends TGUIBaseCoverBlock
+	Field programme:TProgramme
+	Field isAffordable:int = TRUE
+
+    Method Create:TGUIProgrammeCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		Super.Create(label,x,y,width,height)
+		return self
+	End Method
+
+	Method CreateWithProgramme:TGUIProgrammeCoverBlock(programme:TProgramme)
+		self.Create()
+		self.setProgramme(programme)
+		return self
+	End Method
+
 	Method SetProgramme:TGUIProgrammeCoverBlock(programme:TProgramme)
 		self.programme = programme
-		if not programme.isMovie() then self.InitAsset("gfx_serie")
 
 		'set to a nice asset image
-       	If programme.genre < 9 then self.asset = Assets.GetSprite(self.assetBaseName+programme.genre)
-		'now we can calculate the item dimensions
-		self.Resize( asset.w, asset.h )
-
-		'as the news inflicts the sorting algorithm - resort
-		GUIManager.sortList()
-
+       	If programme.genre < 15
+			if programme.isMovie() then self.InitAsset("gfx_movie"+programme.genre)
+			if not programme.isMovie() then self.InitAsset("gfx_serie"+programme.genre)
+		else
+			'now we can calculate the item dimensions
+			self.Resize( asset.w, asset.h )
+		endif
 		return self
 	End Method
 
 	Method Update()
-		if self.mouseover or self.isDragged()
-			EventManager.triggerEvent( TEventSimple.Create( "TGUIProgrammeCoverBlock.OnMouseOver", TData.Create(), self ) )
+		Super.Update()
+
+		self.isAffordable = Game.getPlayer().getFinancial().canAfford(programme.getPrice())
+
+
+		if programme.owner = Game.playerID or (programme.owner <= 0 and self.isAffordable)
+			'change cursor to if mouse over item or dragged
+			if self.mouseover then Game.cursorstate = 1
 		endif
+		'ignore affordability if dragged...
+		if isDragged() then Game.cursorstate = 2
 	End Method
 
 	Method DrawSheet(leftX:int=30, rightX:int=30)
@@ -3587,24 +3454,107 @@ Type TGUIProgrammeCoverBlock extends TGUIListItem
 	Method Draw()
 		SetColor 255,255,255
 
-		if self.programme.owner <> Game.playerID AND..
-		   not Game.getPlayer().getFinancial().canAfford(self.programme.getPrice())
-
-
-			SetAlpha 0.75
-			asset.draw(self.GetScreenX(), self.GetScreenY())
-			SetAlpha 1.0
-		else
-			'change cursor to if mouse over item or dragged
-			if self.mouseover then Game.cursorstate = 1
-			asset.draw(self.GetScreenX(), self.GetScreenY())
-		endif
-
-		'ignore affordability if dragged...
-		if self.isDragged() then Game.cursorstate = 2
+		'make faded as soon as not "dragable" for us
+		if programme.owner <> Game.playerID and (programme.owner<=0 and not isAffordable) then SetAlpha 0.75
+		Super.Draw()
+		SetAlpha 1.0
 	End Method
 End Type
 
+
+'a graphical representation of contracts at the ad-agency ...
+Type TGUIContractCoverBlock extends TGUIBaseCoverBlock
+	Field contract:TContract
+	field assetBaseName:string = "gfx_contracts_0"
+
+    Method Create:TGUIContractCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		Super.Create(label,x,y,width,height)
+
+		return self
+	End Method
+
+	Method CreateWithContract:TGUIContractCoverBlock(contract:TContract)
+		self.Create()
+		self.setContract(contract)
+		return self
+	End Method
+
+	Method SetContract:TGUIContractCoverBlock(contract:TContract)
+		self.contract		= contract
+		'targetgroup is between 0-9
+		self.InitAsset( GetAssetName( Min(9,Max(0,contract.GetTargetGroup())), FALSE ) )
+
+		return self
+	End Method
+
+	Method GetAssetName:string(targetGroup:int=-1, dragged:int=FALSE)
+		if targetGroup < 0 and contract then targetGroup = contract.GetTargetGroup()
+		local result:string = "gfx_contracts_" + Min(9,Max(0, targetGroup))
+		if dragged then result = result + "_dragged"
+		return result
+	End Method
+
+	Method Compare:int(Other:Object)
+		local otherBlock:TGUIContractCoverBlock = TGUIContractCoverBlock(Other)
+		If otherBlock
+			'both items are dragged - check id
+			if self.isDragged() AND otherBlock.isDragged()
+				if self._id < otherBlock._id then Return 1
+				if self._id > otherBlock._id then Return -1
+				return 0
+			endif
+
+			if not self.isDragged() and not otherBlock.isDragged()
+				if self.GetScreenY() > otherBlock.GetScreenY() then return -1
+				if self.GetScreenY() < otherBlock.GetScreenY() then return 1
+			endif
+		endif
+
+		return Super.Compare(Other)
+	End Method
+
+	Method Update()
+		Super.Update()
+
+		'set mouse to "hover"
+		if contract.owner = Game.playerID or contract.owner <= 0 and mouseover then Game.cursorstate = 1
+		'set mouse to "dragged"
+		if isDragged() then Game.cursorstate = 2
+	End Method
+
+	Method DrawSheet(leftX:int=30, rightX:int=30)
+		local sheetY:float 	= 20
+		local sheetX:float 	= leftX
+		local sheetAlign:int= 0
+		'if mouse on left side of screen - align sheet on right side
+		if MouseManager.x < App.settings.GetWidth()/2
+			sheetX = App.settings.GetWidth() - rightX
+			sheetAlign = 1
+		endif
+
+		SetColor 0,0,0
+		SetAlpha 0.2
+		Local x:Float = self.GetScreenX()
+		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+		DrawPoly(tri)
+		SetColor 255,255,255
+		SetAlpha 1.0
+
+		self.contract.ShowSheet(sheetX,sheetY, sheetAlign)
+	End Method
+
+
+	Method Draw()
+		SetColor 255,255,255
+
+		'make faded as soon as not "dragable" for us
+		if contract.owner <> Game.playerID and contract.owner>0 then SetAlpha 0.75
+		if not isDragable() then SetColor 200,200,200
+		Super.Draw()
+		SetAlpha 1.0
+		SetColor 255,255,255
+	End Method
+End Type
 
 
 

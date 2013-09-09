@@ -934,6 +934,7 @@ Type TGW_Sprites extends TRenderable
 	Field spriteName:String = ""
 	Field w:Float
 	Field h:Float
+	Field displacement:TPoint = TPoint.Create(0,0)
 	Field framew:Int
 	Field frameh:Int
 	Field animcount:Int
@@ -992,11 +993,11 @@ Type TGW_Sprites extends TRenderable
 	End Function
 
 	Method DrawOnImage(image:TImage, x:int, y:int, color:TColor=null)
-		DrawPixmapOnPixmap(self.getPixmap(), LockImage(image), x,y, color)
+		DrawPixmapOnPixmap(self.getPixmap(), LockImage(image), x + displacement.x, y + displacement.y, color)
 	End Method
 
 	Method DrawOnPixmap(pixmap:TPixmap, x:int,y:int, color:TColor=null)
-		DrawPixmapOnPixmap(self.getPixmap(), pixmap, x,y, color)
+		DrawPixmapOnPixmap(self.getPixmap(), pixmap, x + displacement.x, y + displacement.y, color)
 	End Method
 
 	'is only a reference to the memory block of the pixmap
@@ -1047,18 +1048,12 @@ Type TGW_Sprites extends TRenderable
 	End Method
 
 	Method PixelIsOpaque:int(x:int, y:int)
-'		x:- self.pos.x
-'		y:- self.pos.y
 		if x < 0 or y < 0 or x > self.framew or y > self.frameh then print "out of: "+x+", "+y;return 0
 
 		if self.pix = null then pix = LockImage(self.GetImage()) ';UnlockImage(self.parent.image) 'unlockimage does nothing in blitzmax (1.48)
 
 
-'		local pix:TPixmap = LockImage(self.parent.image)
 		Local sourcepixel:Int = ReadPixel(pix, x,y)
-'		UnlockImage(self.parent.image) 'unlockimage does nothing in blitzmax (1.48)
-
-'		print spriteName+": "+x+","+y+" a:"+ARGB_Alpha(sourcepixel)
 
 		return ARGB_Alpha(sourcepixel)
 	End Method
@@ -1067,18 +1062,18 @@ Type TGW_Sprites extends TRenderable
 		if ViewPortW < 0 then ViewPortW = self.w
 		if ViewPortH < 0 then ViewPortH = self.h
 
-		If imagex+framew>=ViewportX And imagex-framew<ViewportX+ViewportW And imagey+frameh>=ViewportY And imagey-frameh<ViewportY+ViewportH Then
-			Local startx#	= Max(0,ViewportX-imagex)
-			Local starty#	= Max(0,ViewportY-imagey)
-			Local endx#		= Max(0,(imagex+framew)-(ViewportX+ViewportW))
-			Local endy#		= Max(0,(imagey+frameh)-(ViewportY+ViewportH))
+		If imagex+framew>=ViewportX And imagex-framew<ViewportX+ViewportW And imagey+frameh>=ViewportY And imagey-frameh<ViewportY+ViewportH
+			Local startx#	= Max(0,ViewportX-imagex + displacement.x)
+			Local starty#	= Max(0,ViewportY-imagey + displacement.y)
+			Local endx#		= Max(0,(imagex+framew)-(ViewportX+ViewportW) + displacement.x)
+			Local endy#		= Max(0,(imagey+frameh)-(ViewportY+ViewportH) + displacement.y)
 
 			'calculate WHERE the frame is positioned in spritepack
 			If Self.framew <> 0
 				Local MaxFramesInCol:Int	= Ceil(w / framew)
 				Local framerow:Int			= Ceil(theframe / maxframesincol)
 				Local framecol:Int 			= theframe - (framerow * maxframesincol)
-				DrawImageArea(parent.image, imageX + startX + offsetx, imagey + starty + offsety, pos.x + framecol* framew + startx, pos.y + framerow * frameh + starty, framew - startx - endx, frameh - starty - endy, 0)
+				DrawImageArea(parent.image, imageX + startX + offsetx + displacement.x, imagey + starty + offsety + displacement.y, pos.x + framecol* framew + startx, pos.y + framerow * frameh + starty, framew - startx - endx, frameh - starty - endy, 0)
 			EndIf
 		EndIf
 	End Method
@@ -1099,7 +1094,7 @@ Type TGW_Sprites extends TRenderable
 
 		while widthLeft > 0
 			local widthPart:float = Min(self.framew, widthLeft) 'draw part of sprite or whole ?
-			DrawSubImageRect( parent.image, currentX, y, widthPart, self.h, self.pos.x + framePos.x, self.pos.y + framePos.y, widthPart, self.frameh, 0 )
+			DrawSubImageRect( parent.image, currentX + displacement.x, y + displacement.y, widthPart, self.h, self.pos.x + framePos.x, self.pos.y + framePos.y, widthPart, self.frameh, 0 )
 			'old variant (no frames)
 			'DrawSubImageRect( parent.image, currentX, y, widthPart, self.h, self.pos.x, self.pos.y, widthPart, self.h )
 			currentX :+ widthPart * scale
@@ -1112,7 +1107,7 @@ Type TGW_Sprites extends TRenderable
 		local currentY:float = y
 		while heightLeft >= 1
 			local heightPart:float = Min(self.h, heightLeft) 'draw part of sprite or whole ?
-			DrawSubImageRect( parent.image, x, currentY, self.w, ceil(heightPart), self.pos.x, self.pos.y, self.w, ceil(heightPart) )
+			DrawSubImageRect( parent.image, x + displacement.x, currentY + displacement.y, self.w, ceil(heightPart), self.pos.x, self.pos.y, self.w, ceil(heightPart) )
 			currentY :+ floor(heightPart * scale)
 			heightLeft :- (heightPart * scale)
 		Wend
@@ -1128,7 +1123,7 @@ Type TGW_Sprites extends TRenderable
 			local currentX:float	= x
 			while widthLeft > 0
 				local widthPart:float = Min(self.w, widthLeft) 'draw part of sprite or whole ?
-				DrawSubImageRect( parent.image, currentX, currentY, ceil(widthPart), ceil(heightPart), self.pos.x, self.pos.y, ceil(widthPart), ceil(heightPart) )
+				DrawSubImageRect( parent.image, currentX + displacement.x, currentY + displacement.y, ceil(widthPart), ceil(heightPart), self.pos.x, self.pos.y, ceil(widthPart), ceil(heightPart) )
 				currentX	:+ floor(widthPart * scale)
 				widthLeft	:- (widthPart * scale)
 			Wend
@@ -1142,12 +1137,12 @@ Type TGW_Sprites extends TRenderable
 
 	Method Draw(x:Float, y:Float, theframe:Int = -1, valign:float = 0.0, align:float=0.0, scale:float=1.0)
 		If theframe = -1 Or framew = 0
-			DrawImageArea(parent.image, x - align*w*scale , y - valign * h * scale, pos.x, pos.y, w, h, 0)
+			DrawImageArea(parent.image, x - align*w*scale + displacement.x*scale , y - valign*h*scale + displacement.y*scale, pos.x, pos.y, w, h, 0)
 		Else
 			Local MaxFramesInCol:Int	= Ceil(w / framew)
 			Local framerow:Int			= Ceil(theframe / MaxFramesInCol)
 			Local framecol:Int 			= theframe - (framerow * MaxFramesInCol)
-			DrawImageArea(parent.image, x - align*framew * scale, y - valign * frameh * scale, pos.x + framecol * framew, pos.y + framerow * frameh, framew, frameh, 0)
+			DrawImageArea(parent.image, x - align*framew*scale + displacement.x*scale, y - valign*frameh*scale + displacement.y*scale, pos.x + framecol * framew, pos.y + framerow * frameh, framew, frameh, 0)
 		EndIf
 	End Method
 

@@ -309,7 +309,7 @@ Return
     Method CanEnterRoom:Int(room:TRooms)
 		If Not room Then Return False
 		'nicht besetzt: enter moeglich
-		If not room.hasOccupant() Then Return True
+		If not room.hasOccupant() or room.allowMultipleOccupants Then Return True
 
 		'sonstige spielfiguren (keine spieler) koennen niemanden rausschmeissen
 		'aber auch einfach ueberall rein egal ob wer drin ist
@@ -344,7 +344,8 @@ Return
 		'skip command if we already are entering/leaving
 		if self.isChangingRoom then return TRUE
 
-		self.isChangingRoom = true
+		'if already in another room, leave that first
+		if self.inRoom then self.LeaveRoom()
 
 'RON: if self.id=1 then print "1/4 | figure: EnterRoom | figure.id:"+self.id
 

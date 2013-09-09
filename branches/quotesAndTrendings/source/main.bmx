@@ -251,13 +251,14 @@ Const GAMESTATE_INIZIALIZEGAME:int			= 5		'mode when date needed for game (names
 
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame {_exposeToLua="selected"}
-	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...		
+	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...
 	Const maxAbonnementLevel:Int		= 3
-	
+
 	Field Quotes:TQuotes = null
 	Field PopularityManager:TPopularityManager = null
-	
-	Field maxContractsAllowed:Int 		= 8		{nosave}	'how many contracts a player can possess
+
+	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
+	Field maxContractsAllowed:Int 		= 12		{nosave}	'how many contracts a player can possess
 	Field maxMoviesInSuitcaseAllowed:Int= 12	{nosave}	'how many movies can be carried in suitcase
 	Field startMovieAmount:Int 			= 5		{nosave}	'how many movies does a player get on a new game
 	Field startSeriesAmount:Int			= 1		{nosave}	'how many series does a player get on a new game
@@ -361,7 +362,6 @@ endrem
 		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
 		TContract.SaveAll();	  			TError.DrawErrors();Flip 0  'XML
 		TNews.SaveAll();	  				TError.DrawErrors();Flip 0  'XML
-		TContractBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TProgrammeBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
 		TAdBlock.SaveAll();					TError.DrawErrors();Flip 0  'XML
 		TNewsBlock.SaveAll();				TError.DrawErrors();Flip 0  'XML
@@ -461,8 +461,8 @@ endrem
 		Game.title				= "unknown"
 
 		Game.SetRandomizerBase( Millisecs() )
-		
-		Game.PopularityManager = TPopularityManager.Create()		
+
+		Game.PopularityManager = TPopularityManager.Create()
 		Game.Quotes = TQuotes.Create()
 
 		Return Game
@@ -491,7 +491,7 @@ endrem
 	Method Initialize()
 		Game.PopularityManager.Initialize()
 		Game.Quotes.Initialize()
-		
+
 		CreateInitialPlayers()
 	End Method
 
@@ -553,7 +553,7 @@ endrem
 					'Begin Game - create Events
 					EventManager.registerEvent( TEventOnTime.Create("Game.OnMinute", game.GetMinute()) )
 					EventManager.registerEvent( TEventOnTime.Create("Game.OnHour", game.GetHour()) )
-					EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )					
+					EventManager.registerEvent( TEventOnTime.Create("Game.OnDay", Game.GetDay()) )
 
 					'so we could add news etc.
 					EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
@@ -1075,7 +1075,6 @@ endrem
 
 					'remove contract from collection (and suitcase)
 					'contract is still stored within adblocks (until they get deleted)
-					TContractBlock.RemoveContractFromSuitcase(Adblock.contract)
 					Player.ProgrammeCollection.RemoveContract(Adblock.contract)
 				EndIf
 			EndIf
@@ -1112,7 +1111,7 @@ endrem
 		'Game.Quotes.ComputeAudienceForAllPlayers(recompute)
 		Game.Quotes.ComputeAudience(recompute)
 
-			
+
 
 	rem
 		Local block:TProgrammeBlock
@@ -1155,8 +1154,8 @@ endrem
 			endif
 		Next
 	endrem
-		
-		
+
+
 	End Function
 
 	'computes newsshow-audience
@@ -1539,17 +1538,6 @@ End Type
 Function CreateDropZones:Int()
 	Local i:Int = 0
 
-	'AdAgency: Contract DND-zones
-	For i = 0 To Game.maxContractsAllowed-1
-		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
-		DragAndDrop.slot = i
-		DragAndDrop.pos.setXY(550 + Assets.GetSprite("gfx_contracts_base").w * i, 87)
-		DragAndDrop.w = Assets.GetSprite("gfx_contracts_base").w - 1
-		DragAndDrop.h = Assets.GetSprite("gfx_contracts_base").h
-		If Not TContractBlock.DragAndDropList Then TContractBlock.DragAndDropList = CreateList()
-		TContractBlock.DragAndDropList.AddLast(DragAndDrop)
-		SortList TContractBlock.DragAndDropList
-	Next
 
 	'adblock
 	For i = 0 To 11
@@ -2940,7 +2928,7 @@ Function Menu_StartMultiplayer:Int()
 			Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgrammeByGenre(20) )
 
 			For Local j:Int = 0 To Game.startAdAmount-1
-				local contract:TContract = TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].GetMaxaudience(), 0.10))
+				local contract:TContract = TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0.0, 0.15))
 				Game.Players[ playerids ].ProgrammeCollection.AddContract( contract )
 			Next
 		Next
@@ -3134,7 +3122,7 @@ Function Init_Creation()
 		InGame_Chat.hide()
 	else
 		InGame_Chat.show()
-	endif		
+	endif
 
 	'Eigentlich gehört das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
 	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
@@ -3157,17 +3145,7 @@ Function Init_Creation()
 
 	'8 auctionable movies
 	For local i:Int = 0 to 7
-		Local programme:TProgramme = TProgramme.GetRandomMovieWithPrice(200000)
-		If programme <> null Then
-			TAuctionProgrammeBlocks.Create(programme,i,-1)
-		Endif
-	Next
-
-
-	'create ad agency contracts
-	For Local i:Int = 0 To 9
-		Local contract:TContract = TContract.Create( TContractBase.GetRandomWithMaxAudience(Game.getMaxAudience(-1), 0.15) )
-		TContractBlock.Create(contract, i, 0)
+		TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithPrice(200000),i,-1)
 	Next
 
 
@@ -3186,7 +3164,7 @@ Function Init_Creation()
 			Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			For Local i:Int = 0 To 2
-				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithMaxAudience(Game.Players[ playerids ].GetMaxaudience(), 0.10)) )
+				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
 			Next
 		Next
 	EndIf
@@ -3574,6 +3552,15 @@ endrem
 				If KEYMANAGER.IsHit(KEY_N) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("news", Game.playerID), TRUE )
 				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("roomboard", -1), TRUE )
 				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].Stationmap.reach = Game.Players[Game.playerID].Stationmap.population
+
+				If KEYMANAGER.IsHit(KEY_Y)
+					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
+					print "Share 1,3: "+Game.Players[Game.playerID].Stationmap.GetShare([1,3]).z
+				endif
+				If KEYMANAGER.IsHit(KEY_X)
+					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
+					print "Share 2,3,4: "+Game.Players[Game.playerID].Stationmap.GetShare([2,3,4]).z
+				endif
 
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
 				if Game.isGameLeader()
