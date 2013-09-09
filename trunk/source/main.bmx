@@ -3562,11 +3562,11 @@ endrem
 
 				If KEYMANAGER.IsHit(KEY_Y)
 					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
-					print "Share 1,3: "+Game.Players[Game.playerID].Stationmap.GetShare([1,3])
+					print "Share 1,3: "+Game.Players[Game.playerID].Stationmap.GetShare([1,3]).z
 				endif
 				If KEYMANAGER.IsHit(KEY_X)
 					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
-					print "Share 2,3,4: "+Game.Players[Game.playerID].Stationmap.GetShare([2,3,4])
+					print "Share 2,3,4: "+Game.Players[Game.playerID].Stationmap.GetShare([2,3,4]).z
 				endif
 
 

@@ -16,11 +16,6 @@ Incbin "source/version.txt"
 
 REM
 DONE
-- Fahrstuhl-Planer-Grafik neben Fahrstuhl wieder entfernt (momentan unnuetz :D)
-- alte Werbevertraege werden beim Betreten des Maklers mit in den Koffer gelegt
-- Spiel achtet nun darauf, den Werbevertragskoffer bei Änderungen an der Programmsammlung zu aktualisieren
-- Neue Funktion "TStationmap.GetShare([array playerids])" um herauszufinden wieviel Prozent man sich Spieler A mit Spieler B teilt
-- kleiner Fix in gfx_hochhaus.xml - man sollte nicht weiter als die Bilderpixelgrenzen definieren...
 
 
 Todo

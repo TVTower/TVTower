@@ -2097,18 +2097,6 @@ Type TStationMapSection
 	End Method
 end Type
 
-Type TStationPoint
-	field pos:TPoint
-	field color:Int
-
-	Function Create:TStationPoint(x:Int, y:Int, color:Int)
-		Local obj:TStationPoint = New TStationPoint
-		obj.pos = TPoint.Create(x,y)
-		obj.color = color
-		Return obj
-	End Function
-End Type
-
 EventManager.registerListener( "LoadResource.STATIONMAP",	TEventListenerRunFunction.Create(TStationMap.onLoadStationMapConfiguration)  )
 Type TStationMap {_exposeToLua="selected"}
 	Field showStations:Int[4]						'select whose players stations we want to see
@@ -2409,9 +2397,19 @@ Type TStationMap {_exposeToLua="selected"}
 		return shareMap
 	End Function
 
-	Function GetShare:float(playerIDs:int[])
-		'i share with myself 100%
-		if playerIDs.length <=1 then return 1.0
+	'returns the shared amount of audience between players
+	Function GetShareAudience:int(playerIDs:int[])
+		return GetShare(playerIDs).x
+	End Function
+
+	Function GetSharePercentage:float(playerIDs:int[])
+		return GetShare(playerIDs).z
+	End Function
+
+	'returns a share between players, encoded in a tpoint containing:
+	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
+	Function GetShare:TPoint(playerIDs:int[])
+		if playerIDs.length <1 then return TPoint.Create(0,0,0.0)
 
 		local cacheKey:string = ""
 		for local i:int = 0 to playerIDs.length-1
@@ -2419,10 +2417,10 @@ Type TStationMap {_exposeToLua="selected"}
 		Next
 
 		'if already cached, save time...
-		if shareCache and shareCache.contains(cacheKey) then return float(string(shareMap.ValueForKey(cacheKey)))
+		if shareCache and shareCache.contains(cacheKey) then return TPoint(shareMap.ValueForKey(cacheKey))
 
 		local map:TMap				= GetShareMap()
-		local result:float			= 0.0
+		local result:TPoint			= TPoint.Create(0,0,0.0)
 		local share:int				= 0
 		local total:int				= 0
 		local playerFlags:int[]
@@ -2437,37 +2435,36 @@ Type TStationMap {_exposeToLua="selected"}
 
 		local someoneUsesPoint:int	= FALSE
 		local allUsePoint:int		= FALSE
-		For Local mapValue:TStationPoint = EachIn map.Values()
+		For Local mapValue:TPoint	= EachIn map.Values()
 			someoneUsesPoint= FALSE
 			allUsePoint		= FALSE
 			'as we have multiple flags stored in AllFlag, we have to
 			'compare the result to see if all of them hit,
 			'if only one of it hits, we just check for <>0
-			if (mapValue.color & allFlag) = allFlag
+			if (int(mapValue.z) & allFlag) = allFlag
 				allUsePoint = true
 				someoneUsesPoint = true
 			else
 				for local i:int = 0 to playerFlags.length-1
-					print i+": "+mapValue.color+" & "+playerFlags[i]+" = "+(mapValue.color & playerFlags[i])
-					if mapValue.color & playerFlags[i] then someoneUsesPoint = true;exit
+					if int(mapValue.z) & playerFlags[i] then someoneUsesPoint = true;exit
 				Next
 			endif
 			'someone has a station there
-			if someoneUsesPoint then total:+ populationmap[mapValue.pos.x, mapValue.pos.y]
+			if someoneUsesPoint then total:+ populationmap[mapValue.x, mapValue.y]
 			'all searched have a station there
-			if allUsePoint then share:+ populationmap[mapValue.pos.x, mapValue.pos.y]
+			if allUsePoint then share:+ populationmap[mapValue.x, mapValue.y]
 		Next
-		if total = 0 then result = 0.0 else result = float(share)/float(total)
-rem debug
+		result.setXY(share, total)
+		if total = 0 then result.z = 0.0 else result.z = float(share)/float(total)
+
 		print "total: "+total
 		print "share:"+share
-		print "result:"+result
+		print "result:"+result.z
 		print "allFlag:"+allFlag
 		print "cache:"+cacheKey
 		print "--------"
-endrem
 		'add to cache...
-		shareCache.insert(cacheKey, string(result) )
+		shareCache.insert(cacheKey, result )
 
 		return result
 	End Function
@@ -2485,7 +2482,7 @@ endrem
 		local stationX:int	= 0
 		local stationY:int	= 0
 		local mapKey:string	= ""
-		local mapValue:TStationPoint = null
+		local mapValue:TPoint = null
 		local rect:TRectangle = TRectangle.Create(0,0,0,0)
 		For local stationmap:TStationMap = eachin List
 			For local station:TStation = EachIn stationmap.stations
@@ -2505,9 +2502,9 @@ endrem
 						'insert the players bitmask-number into the field
 						'and if there is already one ... add the number
 						mapKey = posX+","+posY
-						mapValue = TStationPoint.Create(posX,posY, getMaskIndex(stationmap.parent.playerID) )
+						mapValue = TPoint.Create(posX,posY, getMaskIndex(stationmap.parent.playerID) )
 						If shareMap.Contains(mapKey)
-							mapValue.color :| TStationPoint(shareMap.ValueForKey(mapKey)).color
+							mapValue.z = int(mapValue.z) | int(TPoint(shareMap.ValueForKey(mapKey)).z)
 						endif
 						shareMap.Insert(mapKey, mapValue)
 					Next
@@ -2516,53 +2513,6 @@ endrem
 		Next
 	End Function
 
-
-	Method CalculateShareNOTFINISHED:Int(playerA:Int, playerB:Int)
-		Local Points:TMap = New TMap
-		Local PointsA:TMap = New TMap
-		Local PointsB:TMap = New TMap
-		Local returnValue:Int = 0
-        Local x:Int = 0, y:Int = 0, posX:Int = 0, posY:Int = 0
-
-		'add Stations of both players to their corresponding map
-		For Local _Station:TStation = EachIn stations
-			If _Station.owner = playerA Or _Station.owner = playerB
-				For posX = _Station.pos.x - stationRadius To _Station.pos.x + stationRadius
-					For posY = _Station.pos.y - stationRadius To _Station.pos.y + stationRadius
-						' noch innerhalb des Kreises?
-						If Sqr((posX - _Station.pos.x) ^ 2 + (posY - _Station.pos.y) ^ 2) <= stationRadius
-							If _Station.owner = playerA
-								pointsA.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 255, 255, 255)))
-							Else
-								pointsB.Insert(String((posX - x) + "," + (posY - y)), TStationPoint.Create((posX - x) , (posY - y), ARGB_Color(255, 255, 255, 255)))
-							EndIf
-						EndIf
-					Next
-				Next
-			EndIf
-		Next
-		'combine both maps
-		For Local point:String = EachIn pointsA.Keys()
-			Local obj:Object = pointsB.ValueForKey(point)
-			If obj <> Null
-				points.Insert(point, obj)
-			EndIf
-		Next
-
-		Local pixel:Int
-		Local r:Int
-		Local g:Int
-		Local b:Int
-
-		'einmal "blaue farbe" einmal "rote" farbe nutzen
-
-		For Local point:TStationPoint = EachIn points.Values()
-			If ARGB_Red(point.color) = 0 And ARGB_Blue(point.color) = 255
-				returnvalue:+ populationmap[point.pos.x, point.pos.y]
-			EndIf
-		Next
-		Return returnvalue
-	End Method
 
 	Method _FillPoints(map:TMap var, x:int, y:int, color:int)
 		local posX:int=0
@@ -2574,7 +2524,7 @@ endrem
 			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, self.populationMapSize.y-stationRadius)
 				' noch innerhalb des Kreises?
 				If self.calculateDistance( posX - x, posY - y ) <= stationRadius
-					map.Insert(String((posX) + "," + (posY)), TStationPoint.Create((posX) , (posY), color ))
+					map.Insert(String((posX) + "," + (posY)), TPoint.Create((posX) , (posY), color ))
 				EndIf
 			Next
 		Next
@@ -2598,9 +2548,9 @@ endrem
 			EndIf
 		Next
 
-		For Local point:TStationPoint = EachIn points.Values()
-			If ARGB_Red(point.color) = 0 And ARGB_Blue(point.color) = 255
-				returnvalue:+ populationmap[point.pos.x, point.pos.y]
+		For Local point:TPoint = EachIn points.Values()
+			If ARGB_Red(point.z) = 0 And ARGB_Blue(point.z) = 255
+				returnvalue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
 		Return returnvalue
@@ -2616,9 +2566,9 @@ endrem
 		Next
 		Local returnValue:Int = 0
 
-		For Local point:TStationPoint = EachIn points.Values()
-			If ARGB_Red(point.color) = 255 And ARGB_Blue(point.color) = 255
-				returnValue:+ populationmap[point.pos.x, point.pos.y]
+		For Local point:TPoint = EachIn points.Values()
+			If ARGB_Red(point.z) = 255 And ARGB_Blue(point.z) = 255
+				returnValue:+ populationmap[point.x, point.y]
 			EndIf
 		Next
 		self.reach = returnValue

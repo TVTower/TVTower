@@ -2590,7 +2590,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global GuiListSuitcase:TGUIContractSlotList = null
 
 	'configuration
-	Global suitcasePos:TPoint					= TPoint.Create(550,100)
+	Global suitcasePos:TPoint					= TPoint.Create(520,100)
 	Global suitcaseGuiListDisplace:TPoint		= TPoint.Create(17,32)
 	Global contractsPerLine:int					= 4
 	Global contractsNormalAmount:int			= 12
@@ -3073,7 +3073,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 
 		'draw suitcase
-		Assets.GetSprite("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		Assets.GetSprite("gfx_suitcase_big"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		GUIManager.Draw("adagency")
 
