@@ -1,4 +1,4 @@
-'Application: TVGigant/TVTower
+Ôªø'Application: TVGigant/TVTower
 'Author: Ronny Otto
 
 SuperStrict
@@ -31,7 +31,7 @@ Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto & Manuel Vˆgele"
+Global CopyrightString:String	= "by Ronny Otto & Manuel V√∂gele"
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 
 Global App:TApp = TApp.Create(60,60) 'create with 60fps for physics and graphics
@@ -47,7 +47,7 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_popularity.bmx"			'Popularit‰ten und Trends
+Include "gamefunctions_popularity.bmx"			'Popularit√§ten und Trends
 Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 
 
@@ -254,7 +254,7 @@ Type TGame {_exposeToLua="selected"}
 	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...
 	Const maxAbonnementLevel:Int		= 3
 
-	Field Quotes:TQuotes = null
+	Field BroadcastManager:TBroadcastManager = null
 	Field PopularityManager:TPopularityManager = null
 
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
@@ -415,25 +415,25 @@ endrem
 						TError.DrawNewError("Lade Programme...")
 						TProgramme.LoadAll()
 					Case "ALLCONTRACTS"
-						TError.DrawNewError("Lade Werbevertr‰ge...")
+						TError.DrawNewError("Lade Werbevertr√§ge...")
 					'TContract.LoadAll()
 					Case "ALLNEWS"
 						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade Werbevertr‰geblˆcke...")
+						TError.DrawNewError("Lade Werbevertr√§gebl√∂cke...")
 					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade Programmblˆcke...")
+						TError.DrawNewError("Lade Programmbl√∂cke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade Werbeblˆcke...")
+						TError.DrawNewError("Lade Werbebl√∂cke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade Newsblˆcke...")
+						TError.DrawNewError("Lade Newsbl√∂cke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade Filmh‰ndlerblˆcke...")
+						TError.DrawNewError("Lade Filmh√§ndlerbl√∂cke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -463,7 +463,7 @@ endrem
 		Game.SetRandomizerBase( Millisecs() )
 
 		Game.PopularityManager = TPopularityManager.Create()
-		Game.Quotes = TQuotes.Create()
+		Game.BroadcastManager = TBroadcastManager.Create()
 
 		Return Game
 	End Function
@@ -490,7 +490,7 @@ endrem
 
 	Method Initialize()
 		Game.PopularityManager.Initialize()
-		Game.Quotes.Initialize()
+		Game.BroadcastManager.Initialize()
 
 		CreateInitialPlayers()
 	End Method
@@ -819,7 +819,7 @@ Rem
 		Game.Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI f¸r Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI f√ºr Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
@@ -999,8 +999,8 @@ endrem
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetRelativeAudiencePercentage:Float() {_exposeToLua}
-		If game.Quotes.maxAudiencePercentage > 0
-			Return Float(GetAudiencePercentage() / game.Quotes.maxAudiencePercentage)
+		If game.BroadcastManager.maxAudiencePercentage > 0
+			Return Float(GetAudiencePercentage() / game.BroadcastManager.maxAudiencePercentage)
 		EndIf
 		Return 0.0
 	End Method
@@ -1109,7 +1109,8 @@ endrem
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = FALSE)
 		'Game.Quotes.ComputeAudienceForAllPlayers(recompute)
-		Game.Quotes.ComputeAudience(recompute)
+		'Game.BroadcastManager.ComputeAudience(recompute)
+		Game.BroadcastManager.Broadcast()
 
 
 
@@ -1643,7 +1644,7 @@ Type TBuilding Extends TRenderable
 		Building.gfx_building	= Assets.GetSprite("gfx_building")
 		Building.pos.y			= 0 - Building.gfx_building.h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
 		Building.Elevator		= TElevator.Create(Building)
-		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heiﬂt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaﬂ
+		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 hei√üt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spa√ü
 
 
 		'set moon movement
@@ -2739,16 +2740,16 @@ rem
 Global TestWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,200, "")
 TestWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
 TestWindow.background.valueColor = TColor.Create(235,235,235)
-TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionst¸chtigkeit bereit, auch ist es mˆglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... w¸nschen wir Dir viel Spaﬂ mit TVTower Version ~q"+VersionDate+"~q")
+TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionst√ºchtigkeit bereit, auch ist es m√∂glich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... w√ºnschen wir Dir viel Spa√ü mit TVTower Version ~q"+VersionDate+"~q")
 endrem
 
 
 
 rem
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste kˆnnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat¸rlich Auswirkungen.~n~nEine Komˆdie kann h‰ufiger gesendet werden, als eine Live-‹bertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn¸pft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbevertr‰ge", "Werbevertr‰ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat¸rlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr‰ge abzuschlieﬂen."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste k√∂nnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat√ºrlich Auswirkungen.~n~nEine Kom√∂die kann h√§ufiger gesendet werden, als eine Live-√úbertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn√ºpft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: Werbevertr√§ge", "Werbevertr√§ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat√ºrlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr√§ge abzuschlie√üen."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
@@ -3124,7 +3125,7 @@ Function Init_Creation()
 		InGame_Chat.show()
 	endif
 
-	'Eigentlich gehˆrt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
+	'Eigentlich geh√∂rt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
 	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
@@ -3144,8 +3145,11 @@ Function Init_Creation()
 	RoomHandler_MovieAgency.ReFillBlocks()
 
 	'8 auctionable movies
-	For local i:Int = 0 to 7
-		TAuctionProgrammeBlocks.Create(TProgramme.GetRandomMovieWithPrice(200000),i,-1)
+	For Local i:Int = 0 To 7
+		Local programme:TProgramme = TProgramme.GetRandomMovieWithPrice(200000) ;
+		If programme <> Null Then					
+			TAuctionProgrammeBlocks.Create(programme, i, -1)
+		End If
 	Next
 
 

@@ -1750,7 +1750,7 @@ Type TInterface
 	    EndIf
 		If functions.IsIn(MouseManager.x,MouseManager.y,355,468,130,30)
 			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].getRelativeAudiencePercentage(),2)+"%)"
-			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.Quotes.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience())),2,0)+ " ("+(Int(Ceil(1000*Game.Quotes.maxAudiencePercentage)/10))+"%)"
+			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.BroadcastManager.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience())),2,0)+ " ("+(Int(Ceil(1000*Game.BroadcastManager.maxAudiencePercentage)/10))+"%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 			'force redraw
@@ -1812,7 +1812,7 @@ Type TInterface
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
-				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience2.GetSum() / Float(Game.Quotes.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience()))
+				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience2.GetSum() / Float(Game.BroadcastManager.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience()))
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0

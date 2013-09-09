@@ -1,4 +1,4 @@
-SuperStrict
+ï»¿SuperStrict
 Import brl.pngloader
 Import "basefunctions_zip.bmx"
 Import "basefunctions_localization.bmx"
@@ -728,7 +728,7 @@ End Type
 Type TPoint {_exposeToLua="selected"}
 	Field x:Float
 	Field y:Float
-	Field z:Float 'Tiefe des Raumes (für Audio) Minus-Werte = Hintergrund; Plus-Werte = Vordergrund
+	Field z:Float 'Tiefe des Raumes (fÃ¼r Audio) Minus-Werte = Hintergrund; Plus-Werte = Vordergrund
 
 	Function Create:TPoint(_x:Float=0.0,_y:Float=0.0,_z:Float=0.0)
 		Local tmpObj:TPoint = New TPoint
@@ -814,10 +814,10 @@ Type TPoint {_exposeToLua="selected"}
 		local distanceY:float = DistanceOfValues(y, otherPoint.y)
 		local distanceZ:float = DistanceOfValues(z, otherPoint.z)
 
-		local distanceXY:float = Sqr(distanceX * distanceX + distanceY * distanceY) 'Wurzel(a² + b²) = Hypotenuse von X und Y
+		local distanceXY:float = Sqr(distanceX * distanceX + distanceY * distanceY) 'Wurzel(aÂ² + bÂ²) = Hypotenuse von X und Y
 
 		If withZ and distanceZ <> 0
-			Return Sqr(distanceXY * distanceXY + distanceZ * distanceZ) 'Wurzel(a² + b²) = Hypotenuse von XY und Z
+			Return Sqr(distanceXY * distanceXY + distanceZ * distanceZ) 'Wurzel(aÂ² + bÂ²) = Hypotenuse von XY und Z
 		Else
 			Return distanceXY
 		Endif
@@ -1303,6 +1303,7 @@ endrem
 		Local values:String[] = value.split(".")
 		If values[1] <> Null Then Return values[0] + "." + Left(String(Ceil(Float(values[1]))), nachkomma) Else Return values[0]
 	End Function
+	
 End Type
 Global functions:TFunctions = New TFunctions
 
