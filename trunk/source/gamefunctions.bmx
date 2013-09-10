@@ -2360,7 +2360,9 @@ Type TStationMap {_exposeToLua="selected"}
 
 	Method Draw()
 		SetColor 255,255,255
-		For local i:int = 1 to Game.Players.length-1
+
+		'zero based
+		For local i:int = 0 to Game.playerCount-1
 			If not Self.showStations[i] then continue
 			GetStationMap(i).DrawStations()
 		Next
