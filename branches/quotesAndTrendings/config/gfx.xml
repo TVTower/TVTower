@@ -7,6 +7,14 @@
 		<image name="gfx_datasheets_contract"	url="grafiken/datenblaetter/tv_werbeblatt.png" />
 		<image name="gfx_datasheets_bar"		url="grafiken/datenblaetter/tv_balken.png" />
 
+		<spritepack name="gfx_room_adagency_pack">
+ 			<url>grafiken/werbeagentur/raum_werbeagentur_extras.png</url>
+			<children>
+				<child name="gfx_hint_rooms_adagency"				x="0"	y="0"	w="85"	h="120"	/>
+			</children>
+		</spritepack>
+
+
 		<spritepack name="gfx_room_filmverleiher_pack">
  			<url>grafiken/filmverleiher/raum_filmverleiher_extras.png</url>
 			<children>

@@ -2363,7 +2363,9 @@ Type TStationMap {_exposeToLua="selected"}
 
 	Method Draw()
 		SetColor 255,255,255
-		For local i:int = 1 to Game.Players.length-1
+
+		'zero based
+		For local i:int = 0 to Game.playerCount-1
 			If not Self.showStations[i] then continue
 			GetStationMap(i).DrawStations()
 		Next
@@ -2412,16 +2414,19 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'returns a share between players, encoded in a tpoint containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Function GetShare:TPoint(playerIDs:int[], withoutPlayerIDs:int[]=null)
-		if playerIDs.length <1 then return TPoint.Create(0,0,0.0)
+	Function GetShare:TPoint(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
+		If playerIDs.length <1 Then Return TPoint.Create(0,0,0.0)
 		if not withoutPlayerIDs then withoutPlayerIDs = new Int[0]
-		local cacheKey:string = ""
+		Local cacheKey:String = ""
+		'TODO für ron: Cachekey mach Probleme... einfach mal einkommentieren und starten
+		rem
 		for local i:int = 0 to playerIDs.length-1
 			cacheKey = cacheKey + "_"+playerIDs[i]
 		Next
 		for local i:int = 0 to withoutPlayerIDs.length-1
 			cacheKey = cacheKey + "_"+withoutPlayerIDs[i]
 		Next
+		endrem
 
 		'if already cached, save time...
 		if shareCache and shareCache.contains(cacheKey) then return TPoint(shareMap.ValueForKey(cacheKey))
@@ -2493,10 +2498,10 @@ Type TStationMap {_exposeToLua="selected"}
 		print "share:"+share
 		print "result:"+result.z
 		print "allFlag:"+allFlag
-		print "cache:"+cacheKey
+		'print "cache:"+cacheKey
 		print "--------"
 		'add to cache...
-		shareCache.insert(cacheKey, result )
+		'shareCache.insert(cacheKey, result )
 
 		return result
 	End Function

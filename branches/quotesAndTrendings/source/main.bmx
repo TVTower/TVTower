@@ -277,6 +277,7 @@ Type TGame {_exposeToLua="selected"}
 	Field userfallbackip:String			= "" 	{nosave}
 
 	Field Players:TPlayer[5]
+	Field playerCount:int			= 4
 
 	Field speed:Float				= 1.0 					'Speed of the game in "game minutes per real-time second"
 	Field oldspeed:Float			= 1.0 					'Speed of the game - used when saving a game ("pause")
@@ -528,7 +529,7 @@ endrem
 	End Method
 
 	Method IsPlayer:Int(number:Int)
-		Return (number>0 And number<Self.Players.length And Self.Players[number] <> Null)
+		Return (number>0 And number<=Self.playerCount And Self.Players[number] <> Null)
 	End Method
 
 	Method IsHumanPlayer:Int(number:Int)
@@ -2785,7 +2786,7 @@ Function Menu_GameSettings_Draw()
 		EndIf
 	EndIf
 	'background gui items
-	GUIManager.Draw("GameSettings",0, 0, 100)
+	GUIManager.Draw("GameSettings", 0, 100)
 
 	For Local i:Int = 0 To 3
 		SetColor 50,50,50

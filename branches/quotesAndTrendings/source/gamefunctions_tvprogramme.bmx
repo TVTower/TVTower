@@ -3149,9 +3149,6 @@ Type TGUINewsBlock extends TGUIListItem
 		return Super.Compare(Other)
 	End Method
 
-	Method Update()
-	End Method
-
 
 	Method Draw()
 		State = 0
@@ -3330,6 +3327,15 @@ Type TGUIContractSlotList extends TGUISlotList
 		return FALSE
 	End Method
 
+	'override to add sort
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		if super.AddItem(item, extra)
+			GUIManager.sortList()
+			return TRUE
+		endif
+		return FALSE
+	End Method
+
 	'override default event handler
 	Function onDropOnTarget:int( triggerEvent:TEventBase )
 		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
@@ -3388,15 +3394,10 @@ Type TGUIBaseCoverBlock extends TGUIListItem
 		self.Resize( asset.w, asset.h )
 	End Method
 
-	'cleanup function
-	Method Remove()
-		'if our element is managed (and referenced...) by the guimanager
-		GUIManager.remove(self)
+	'override default update-method
+	Method Update:int()
+		super.Update()
 
-		super.Remove()
-	End Method
-
-	Method Update()
 		if self.mouseover or self.isDragged()
 			EventManager.triggerEvent( TEventSimple.Create( "TGUIBaseCoverBlock.OnMouseOver", TData.Create(), self ) )
 		endif
@@ -3441,8 +3442,9 @@ Type TGUIProgrammeCoverBlock extends TGUIBaseCoverBlock
 		return self
 	End Method
 
-	Method Update()
-		Super.Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
 
 		self.isAffordable = Game.getPlayer().getFinancial().canAfford(programme.getPrice())
 
@@ -3521,27 +3523,9 @@ Type TGUIContractCoverBlock extends TGUIBaseCoverBlock
 		return result
 	End Method
 
-	Method Compare:int(Other:Object)
-		local otherBlock:TGUIContractCoverBlock = TGUIContractCoverBlock(Other)
-		If otherBlock
-			'both items are dragged - check id
-			if self.isDragged() AND otherBlock.isDragged()
-				if self._id < otherBlock._id then Return 1
-				if self._id > otherBlock._id then Return -1
-				return 0
-			endif
-
-			if not self.isDragged() and not otherBlock.isDragged()
-				if self.GetScreenY() > otherBlock.GetScreenY() then return -1
-				if self.GetScreenY() < otherBlock.GetScreenY() then return 1
-			endif
-		endif
-
-		return Super.Compare(Other)
-	End Method
-
-	Method Update()
-		Super.Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
 
 		'set mouse to "hover"
 		if contract.owner = Game.playerID or contract.owner <= 0 and mouseover then Game.cursorstate = 1
@@ -3578,6 +3562,7 @@ Type TGUIContractCoverBlock extends TGUIBaseCoverBlock
 		if contract.owner <> Game.playerID and contract.owner>0 then SetAlpha 0.75
 		if not isDragable() then SetColor 200,200,200
 		Super.Draw()
+		DrawText(zIndex, GetScreenx(), GetScreenY()-10)
 		SetAlpha 1.0
 		SetColor 255,255,255
 	End Method

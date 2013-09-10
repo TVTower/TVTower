@@ -107,10 +107,13 @@ Type TGUIManager
 		SetViewport(viewportX,viewportY,viewportW,viewportH)
 	End Method
 
-	Method Add(GUIobject:TGUIobject)
-		GUIobject.setOption(GUI_OBJECT_MANAGED, true)
-		Self.List.AddLast(GUIobject)
-		Self.ListReverse.AddFirst(GUIobject)
+	Method Add:int(obj:TGUIobject, skipCheck:int=FALSE)
+		obj.setOption(GUI_OBJECT_MANAGED, true)
+
+		if not skipCheck and self.list.contains(obj) then return TRUE
+
+		Self.List.AddLast(obj)
+		Self.ListReverse.AddFirst(obj)
 		Self.SortList()
 	End Method
 
@@ -179,7 +182,6 @@ Type TGUIManager
 
 		Self.List.remove(obj)
 		Self.ListReverse.remove(obj)
-
 		'no need to sort on removal as the order wont change then (just one less)
 		'Self.SortList()
 	End Method
@@ -234,148 +236,49 @@ Type TGUIManager
 	End Method
 
 
-	Method Update(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
-		self.currentState = State
-		local mouseButtonDown:int[] = MOUSEMANAGER.GetStatusDown()
-		local mouseButtonHit:int[] = MOUSEMANAGER.GetStatusHit() 'single and double clicks!
-
-		local foundClickObject:int = FALSE
-		local foundHoverObject:int = FALSE
-		'first in reverse list is maybe dragged (sort says: dragged at the top)
-		local foundDraggedObject:TGUIobject = TGUIobject(Self.ListReverse.first())
-		if not foundDraggedObject.isDragged() then foundDraggedObject = null
-		local screenRect:TRectangle = Null
-
-		GUIManager.draggedObjects = 0
-		GUIManager.modalActive = FALSE
-
-		'ignoreMouse can be useful for objects which know, that nothing
-		'else should take care of mouse movement/clicks
-		self._ignoreMouse = FALSE
-
-		For Local obj:TGUIobject = EachIn Self.ListReverse 'from top to bottom
-			'maybe move "below haveToHandleCheck" - so only "visible" objects are counted
-			if obj.isDragged() then GUIManager.draggedObjects :+ 1
-
-			'always be above parent
-			if obj._parent and obj._parent.zIndex >= obj.zIndex then obj.setZIndex(obj._parent.zIndex+10)
-
-			if not self.haveToHandleObject(obj,State,fromZ,toZ) then continue
-
-			if obj._flags & GUI_OBJECT_CLICKABLE and not self._ignoreMouse
-				'store screenRect to save multiple calculations
-				screenRect = obj.GetScreenRect()
-
-				'if nothing of the obj is visible or the mouse is not in
-				'the visible part - reset the mouse states
-				If not screenRect OR not screenRect.containsXY( MouseManager.x, MouseManager.y )
-					obj.mouseIsDown		= null
-					obj.mouseIsClicked	= null
-					obj.mouseover		= 0
-					obj.setState("")
-
-					'mouseclick somewhere - should deactivate active object
-					'no need to use the cached mouseButtonDown[] as we want the
-					'general information about a click
-					If MOUSEMANAGER.isHit(1,FALSE) And obj.isActive() then self.setActive(0)
-				EndIf
-
-					'only do something if
-				'a) there is NO dragged object
-				'b) we handle the dragged object
-				'c) and the mouse is within its rect
-				'-> only react to dragged obj or all if none is dragged
-				If( (not foundDraggedObject OR obj.isDragged()) ..
-				    AND screenRect AND screenRect.containsXY( MouseManager.x, MouseManager.y )  )
-
-					'activate objects - or skip if if one gets active
-					If mouseButtonDown[1] And obj._flags & GUI_OBJECT_ENABLED
-						'create a new "event"
-						if obj.MouseIsDown = null 'if self.getActive() <> obj._id
-							self.setActive(obj._id)
-							obj.EnterPressed = 1
-							obj.MouseIsDown = TPoint.Create( MouseManager.x, MouseManager.y )
-						endif
-
-						'we found a gui element which can accept clicks
-						'dont check further guiobjects for mousedown
-						mouseButtonDown[1] = FALSE
-						mouseButtonHit[1] = FALSE
-						'no underlaying clicks!
-						'attention: resetting a key from a non-mainthread ?!
-						'MOUSEMANAGER.ResetKey(1)
-					EndIf
-
-					if not foundHoverObject and obj._flags & GUI_OBJECT_ENABLED
-						'do not create "mouseover" for dragged objects
-						if not obj.isDragged()
-							'create events
-							'onmouseenter
-							if obj.mouseover = 0
-								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), obj ) )
-								obj.mouseover = 1
-							endif
-							'onmousemove
-							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseOver", TData.Create(), obj ) )
-							foundHoverObject = TRUE
-						endif
-
-'						If mouseButtonDown[1] Or obj.MouseIsDown
-						'somone decided to say the button is pressed above the object
-						If obj.MouseIsDown
-							obj.setState("active")
-							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseDown", TData.Create().AddNumber("button", 1), obj ) )
-						Else
-							obj.setState("hover")
-						endif
-
-						'inform others about a right guiobject click
-						If mouseButtonHit[2]
-							EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",2), obj ) )
-							'reset Button
-							mouseButtonHit[2] = FALSE
-						endif
-
-						if MOUSEMANAGER.isDoubleHit(1)
-							EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK).AddNumber("button",1), obj ) )
-						endif
-
-						'do not use the cached mousebuttons when checking for "not pressed"
-						If MOUSEMANAGER.isUp(1) And obj.MouseIsDown
-							if not foundClickObject and obj._flags & GUI_OBJECT_ENABLED
-								obj.mouseIsClicked = TPoint.Create( MouseManager.x, MouseManager.y )
-
-								'fire onClickEvent
-								EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), obj ) )
-
-								'added for imagebutton and arrowbutton not being reset when mouse standing still
-								obj.MouseIsDown = null
-								foundClickObject = TRUE
-							endif
-						EndIf
-					endif
-
-				EndIf
-			EndIf
-			If obj.value = "" Then obj.value = "  "
-			If obj.backupvalue = "x" Then obj.backupvalue = obj.value
-			If updatelanguage Or Chr(obj.value[0] ) = "_" Then If Chr(obj.backupvalue[0] ) = "_" Then obj.value = Localization.GetString(Right(obj.backupvalue, Len(obj.backupvalue) - 1))
-
-			'run custom guiobject update
-			obj.Update()
-
-			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", null, obj ) )
-		Next
-	End Method
-
 	Method DisplaceGUIobjects(State:String = "", x:Int = 0, y:Int = 0)
 		For Local obj:TGUIobject = EachIn Self.List
 			If State.toLower() = obj.GetLimitToState().toLower() then obj.rect.position.MoveXY( x,y )
 		Next
 	End Method
 
-	Method Draw:Int(State:String = "", updatelanguage:Int = 0, fromZ:Int=-1000, toZ:Int=-1000)
+
+	Field UpdateState_mouseButtonDown:int[]
+	Field UpdateState_mouseButtonHit:int[]
+	Field UpdateState_foundClickObject:int = FALSE
+	Field UpdateState_foundHoverObject:int = FALSE
+	Field UpdateState_foundDraggedObject:TGUIObject = Null
+
+	Method Update(State:String = "", fromZ:Int=-1000, toZ:Int=-1000)
+		self.currentState				= State
+		'ignoreMouse can be useful for objects which know, that nothing
+		'else should take care of mouse movement/clicks
+		self._ignoreMouse				= FALSE
+		self.draggedObjects				= 0
+		self.modalActive				= FALSE
+
+		UpdateState_mouseButtonDown		= MOUSEMANAGER.GetStatusDown()
+		UpdateState_mouseButtonHit		= MOUSEMANAGER.GetStatusHit() 'single and double clicks!
+		UpdateState_foundClickObject	= FALSE
+		UpdateState_foundHoverObject	= FALSE
+		'first in reverse list is maybe dragged (sort says: dragged at the top)
+		UpdateState_foundDraggedObject	= TGUIobject(ListReverse.first())
+		'unset if not really dragged
+		if not UpdateState_foundDraggedObject.isDragged() then UpdateState_foundDraggedObject = null
+
+
+		local screenRect:TRectangle = Null
+
+		For Local obj:TGUIobject = EachIn Self.ListReverse 'from top to bottom
+			if not haveToHandleObject(obj,State,fromZ,toZ) then continue
+			obj.Update()
+			'fire event
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", null, obj ) )
+		Next
+	End Method
+
+
+	Method Draw:Int(State:String = "", fromZ:Int=-1000, toZ:Int=-1000)
 		self.currentState = State
 
 		For Local obj:TGUIobject = EachIn Self.List
@@ -384,7 +287,7 @@ Type TGUIManager
 			obj.Draw()
 
 			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", TData.Create(), obj ) )
+			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", null, obj ) )
 		Next
 	End Method
 
@@ -410,6 +313,7 @@ Type TGUIobject
 	Field mouseIsDown:TPoint		= TPoint.Create(-1,-1)
 	Field EnterPressed:Int=0
 	Field mouseover:Int				= 0			'could be done with TPoint
+	Field children:TList			= null
 	Field _id:Int
 	Field _flags:int				= 0
 	Field _timeDragged:int			= 0			'time when item got dragged, maybe find a better name
@@ -444,7 +348,11 @@ Type TGUIobject
 	'cleanup function
 	Method Remove()
 		'just in case we have a managed one
+		'if _flags & GUI_OBJECT_MANAGED then
 		GUIManager.remove(self)
+
+		'maybe our parent takes care of us...
+		if _parent then _parent.RemoveChild(self, FALSE)
 	End Method
 
 	Method getClassName:string()
@@ -475,6 +383,38 @@ Type TGUIobject
 		self.rect.position.setXY( x,y )
 		self._limitToState = limitState
 	end Method
+
+
+	Method AddChild:int(child:TGUIobject, setUnmanaged:int=TRUE)
+		child.setParent( self )
+		if not children then children = CreateList()
+		if children.addLast(child) and setUnmanaged then GUIManager.Remove(child)
+	End Method
+
+	Method RemoveChild:int(child:TGUIobject, setManaged:int=TRUE)
+		if not children then return FALSE
+		if children.Remove(child) and setManaged then GUIManager.Add(child)
+	End Method
+
+	Method UpdateChildren:int()
+		if not children then return FALSE
+
+		'update added elements
+		For local obj:TGUIobject = eachin children
+			obj.update()
+		Next
+	End Method
+
+	Method DrawChildren:int()
+		if not children then return FALSE
+
+		'update added elements
+		For local obj:TGUIobject = eachin children
+			obj.draw()
+		Next
+	End Method
+
+
 
 	Method RestrictViewport:int()
 		local screenRect:TRectangle = self.GetScreenRect()
@@ -747,7 +687,109 @@ Type TGUIobject
 	End Method
 
 	Method Draw() Abstract
-	Method Update() Abstract
+
+	Method Update:int()
+		'maybe move "below haveToHandleCheck" - so only "visible" objects are counted
+		if isDragged() then GUIManager.draggedObjects :+ 1
+
+		'always be above parent
+		if _parent and _parent.zIndex >= zIndex then setZIndex(_parent.zIndex+10)
+
+		if _flags & GUI_OBJECT_CLICKABLE and not GUIManager._ignoreMouse
+			'store screenRect to save multiple calculations
+			local screenRect:TRectangle = GetScreenRect()
+
+			'if nothing of the obj is visible or the mouse is not in
+			'the visible part - reset the mouse states
+			If not screenRect OR not screenRect.containsXY( MouseManager.x, MouseManager.y )
+				mouseIsDown		= null
+				mouseIsClicked	= null
+				mouseover		= 0
+				setState("")
+
+				'mouseclick somewhere - should deactivate active object
+				'no need to use the cached mouseButtonDown[] as we want the
+				'general information about a click
+				If MOUSEMANAGER.isHit(1,FALSE) And isActive() then GUIManager.setActive(0)
+			EndIf
+
+			'only do something if
+			'a) there is NO dragged object
+			'b) we handle the dragged object
+			'c) and the mouse is within its rect
+			'-> only react to dragged obj or all if none is dragged
+			If( (not GUIManager.UpdateState_foundDraggedObject OR isDragged()) ..
+				AND screenRect AND screenRect.containsXY( MouseManager.x, MouseManager.y )  )
+
+				'activate objects - or skip if if one gets active
+				If GUIManager.UpdateState_mouseButtonDown[1] And _flags & GUI_OBJECT_ENABLED
+					'create a new "event"
+					if not MouseIsDown
+						GUImanager.setActive(_id)
+						EnterPressed = 1
+						MouseIsDown = TPoint.Create( MouseManager.x, MouseManager.y )
+					endif
+
+					'we found a gui element which can accept clicks
+					'dont check further guiobjects for mousedown
+					GUIManager.UpdateState_mouseButtonDown[1] = FALSE
+					GUIManager.UpdateState_mouseButtonHit[1] = FALSE
+					'no underlaying clicks!
+					'attention: resetting a key from a non-mainthread ?!
+					'MOUSEMANAGER.ResetKey(1)
+				EndIf
+
+				if not GUIManager.UpdateState_foundHoverObject and _flags & GUI_OBJECT_ENABLED
+					'do not create "mouseover" for dragged objects
+					if not isDragged()
+						'create events
+						'onmouseenter
+						if mouseover = 0
+							EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), self ) )
+							mouseover = 1
+						endif
+						'onmousemove
+						EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseOver", TData.Create(), self ) )
+						GUIManager.UpdateState_foundHoverObject = TRUE
+					endif
+
+					'somone decided to say the button is pressed above the object
+					If MouseIsDown
+						setState("active")
+						EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseDown", TData.Create().AddNumber("button", 1), self ) )
+					Else
+						setState("hover")
+					endif
+
+					'inform others about a right guiobject click
+					If GUIManager.UpdateState_mouseButtonHit[2]
+						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",2), self ) )
+						'reset Button
+						GUIManager.UpdateState_mouseButtonHit[2] = FALSE
+					endif
+
+					if MOUSEMANAGER.isDoubleHit(1)
+						EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK).AddNumber("button",1), self ) )
+					endif
+
+					'do not use the cached mousebuttons when checking for "not pressed"
+					If MOUSEMANAGER.isUp(1) And MouseIsDown
+						if not GUIManager.UpdateState_foundClickObject and _flags & GUI_OBJECT_ENABLED
+							mouseIsClicked = TPoint.Create( MouseManager.x, MouseManager.y )
+
+							'fire onClickEvent
+							EventManager.triggerEvent( TEventSimple.Create( "guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), self ) )
+
+							'added for imagebutton and arrowbutton not being reset when mouse standing still
+							MouseIsDown = null
+							GUIManager.UpdateState_foundClickObject = TRUE
+						endif
+					EndIf
+				endif
+
+			EndIf
+		EndIf
+	End Method
 
 	'eg. for buttons/inputfields/dropdownbase...
 	Method DrawBaseForm(identifier:string, x:float, y:float)
@@ -852,7 +894,10 @@ Type TGUIButton Extends TGUIobject
 		If aligntype.ToUpper() = "RIGHT" Then textalign = 2
 	End Method
 
-	Method Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
 		If not(self._flags & GUI_OBJECT_ENABLED)
 			self.mouseIsClicked = null
 			self.mouseover = null
@@ -905,9 +950,6 @@ Type TGUILabel extends TGUIobject
 		if font <> null then TGUILabel.defaultLabelFont = font
 	End Function
 
-	Method Update:int()
-	End Method
-
 	Method SetAlignLeft:int(); self.alignment = 0; End Method
 	Method SetAlignRight:int(); self.alignment = 1; End Method
 	Method SetAlignCenter:int(); self.alignment = 0.5; End Method
@@ -948,9 +990,6 @@ Type TGUITextBox extends TGUIobject
 		else
 			return self.rect.dimension.getY()
 		endif
-	End Method
-
-	Method Update:int()
 	End Method
 
 	Method SetAlignLeft:int(); self.alignment = 0; End Method
@@ -998,7 +1037,10 @@ Type TGUIImageButton Extends TGUIobject
 		if self.caption then return self.caption.text else return ""
 	End Method
 
-	Method Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
 		'button like behaviour
 		if self.mouseIsClicked then	GuiManager.SetActive(0)
 
@@ -1062,9 +1104,6 @@ Type TGUIBackgroundBox Extends TGUIobject
 		If aligntype.ToUpper() = "RIGHT" Then textalign = 2
 	End Method
 
-	Method Update()
-		'
-	End Method
 
 	Method Draw()
 		SetColor 255, 255, 255
@@ -1130,7 +1169,10 @@ Type TGUIArrowButton  Extends TGUIobject
 		Return self
 	End Method
 
-	Method Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
         If not(self._flags & GUI_OBJECT_ENABLED)
 			self.mouseIsClicked = null
 		endif
@@ -1166,10 +1208,6 @@ Type TGUISlider Extends TGUIobject
 
 		GUIMAnager.Add( self )
 		Return self
-	End Method
-
-	Method Update()
-		'
 	End Method
 
     Method EnableDrawValue:Int()
@@ -1288,7 +1326,10 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	Method Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
 		If self._flags & GUI_OBJECT_ENABLED
 			If EnterPressed >= 2
 				EnterPressed = 0
@@ -1441,10 +1482,13 @@ Type TGUIDropDown Extends TGUIobject
 		Self.value = TGUIEntry(Self.EntryList.ValueAtIndex(id)).getValue()
 	End Method
 
-	Method Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
         If not(self._flags & GUI_OBJECT_ENABLED) then self.mouseIsClicked = null
 
-		if not self.isActive() or not self.mouseIsDown then return
+		if not self.isActive() or not self.mouseIsDown then return FALSE
 
 		local currentAddY:Int = self.rect.GetH() 'ignore "if open"
 		local lineHeight:float = Assets.GetSprite("gfx_gui_dropdown_list_entry.L").h*self.scale
@@ -1563,7 +1607,10 @@ Type TGUIOkButton Extends TGUIobject
 		Return self
 	End Method
 
-	Method Update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
 		'button like behaviour
 		if self.mouseIsClicked then	GuiManager.SetActive(0)
 
@@ -1637,9 +1684,7 @@ Type TGUIModalWindow Extends TGUIPanel
 
 		self.textbox = New TGUITextBox.Create(self.textboxPadding.GetLeft(),self.textboxPadding.GetTop(),0,0, "", null, null, "")
 		self.textbox.autoAdjustHeight = true
-		self.textbox.setParent(self)
-		GUIManager.remove(self.textbox)
-		self.addElement(self.textbox)
+		self.addChild(self.textbox)
 
 		'a default button
 		self.buttons = self.buttons[..1]
@@ -1687,7 +1732,8 @@ Type TGUIModalWindow Extends TGUIPanel
 
 	'cleanup function
 	Method Remove()
-		GUIManager.remove(self)
+		super.remove()
+
 		'button is managed from guimanager
 		'so we have to delete that separately
 		self.buttons[0].remove()
@@ -1733,7 +1779,13 @@ Type TGUIModalWindow Extends TGUIPanel
 	End Method
 
 
+	'override default update-method
 	Method Update:int()
+		'maybe children intercept clicks...
+		UpdateChildren()
+
+		super.Update()
+
 		'remove the window as soon as there is no animation active
 		if self.isSetToClose
 			if self.canClose()
@@ -1761,12 +1813,6 @@ Type TGUIModalWindow Extends TGUIPanel
 
 		GUIManager.modalActive = TRUE
 
-		'update added elements
-		For local obj:TGUIobject = eachin self.elements
-			obj.update()
-		Next
-
-
 		'deactivate mousehandling for other underlying objects
 		GUIManager._ignoreMouse = TRUE
 	End Method
@@ -1785,10 +1831,7 @@ Type TGUIModalWindow Extends TGUIPanel
 		'draw the window
 		self.background.draw()
 
-		'draw added elements
-		For local obj:TGUIobject = eachin self.elements
-			obj.draw()
-		Next
+		DrawChildren()
 
 		SetAlpha 1.0
 	End Method
@@ -1797,7 +1840,6 @@ End Type
 
 
 Type TGUIPanel Extends TGUIObject
-	Field elements:TList				= CreateList()
 	Field background:TGUIBackgroundBox	= Null
 
 	Method Create:TGUIPanel(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
@@ -1808,21 +1850,12 @@ Type TGUIPanel Extends TGUIObject
 		Return self
 	End Method
 
-	Method AddElement(element:TGUIobject)
-		element.setParent( self )
-		self.elements.addLast(element)
-	End Method
-
 	Method disableBackground()
 		if self.background then self.background.disable()
 	End Method
 
 	Method enableBackground()
 		if self.background then self.background.enable()
-	End Method
-
-   	Method Update()
-		'
 	End Method
 
 	Method Draw()
@@ -1885,8 +1918,28 @@ Type TGUIScrollablePanel Extends TGUIPanel
 		endif
 	End Method
 
+	Method Update:int()
+		UpdateChildren()
+
+		Super.Update()
+	End Method
+
+	'overwrite the default drawChildren to only draw non-dragged ones
+	Method DrawChildren:int()
+		if not children then return FALSE
+
+		'update added elements
+		For local obj:TGUIobject = eachin children
+			'skip dragged ones - as we set them to managed by GUIManager for that time
+			if obj.isDragged() then continue
+			obj.draw()
+		Next
+	End Method
+
 	Method Draw()
-'
+		Super.Draw()
+
+		DrawChildren()
 	End Method
 
 End Type
@@ -1975,10 +2028,6 @@ Type TGUIScroller Extends TGUIobject
 		endif
 	End Function
 
-
-	Method Update:int()
-		'nothing special
-	End Method
 
 	Method Draw()
 		SetColor 125,125,125
@@ -2141,12 +2190,16 @@ Type TGUIListBase Extends TGUIobject
 '		if self.ReachedItemLimit() then return FALSE
 
 		'set parent of the item - so item is able to calculate position
-		item.setParent(self.guiEntriesPanel)
+		'item.setParent(self.guiEntriesPanel)
+		guiEntriesPanel.addChild(item)
 
 		'ŕecalculate dimensions as the item now knows its parent
 		'so a normal AddItem-handler can work with calculated dimensions from now on
 		local dimension:TPoint = item.getDimension()
 '		item.resize(dimension.x, dimension.y)
+
+		'reset zindex
+		item.setZIndex(self.zindex)
 
 		self.entries.addLast(item)
 
@@ -2157,9 +2210,9 @@ Type TGUIListBase Extends TGUIobject
 
 	'base handling of add item
 	Method _RemoveItem:int(item:TGUIobject)
-		'remove does remove the wrong ones...
-		'maybe because of custom sorting
 		if self.entries.Remove(item)
+			'remove from panel and item gets managed by guimanager
+			guiEntriesPanel.removeChild(item, FALSE)
 			return TRUE
 		else
 			print "not able to remove item "+item._id
@@ -2366,7 +2419,13 @@ Type TGUIListBase Extends TGUIobject
 		endif
 	End Method
 
-	Method Update()
+	'override default update-method
+	Method Update:int()
+		'first check if our children recognize that click
+		UpdateChildren()
+
+		super.Update()
+
 		self._mouseOverArea = TRectangle.create( self.GetScreenX(), self.GetScreenY(), self.rect.GetW(), self.rect.GetH()).containsXY( MouseManager.x, MouseManager.y )
 
 		if self.autoHideScroller
@@ -2396,6 +2455,8 @@ Type TGUIListBase Extends TGUIobject
 			Setalpha 1.0
 			SetColor 255,255,255
 		endif
+
+		DrawChildren()
 
 rem
 'debug purpose only
@@ -2694,8 +2755,8 @@ Type TGUISlotList Extends TGUIListBase
 		if itemSlot >= 0 then self._slots[itemSlot] = Null
 
 		self._slots[slot] = item
-'		item.setParent(self)
-		item.setParent(self.guiEntriesPanel)
+		guiEntriesPanel.addChild(item)
+
 		self.RecalculateElements()
 
 		return TRUE
@@ -2735,6 +2796,8 @@ Type TGUISlotList Extends TGUIListBase
 		For local i:int = 0 to self._slots.length-1
 			if self._slots[i] = item
 				self._slots[i] = null
+				'remove from panel
+				guiEntriesPanel.removeChild(item, FALSE)
 
 				self.RecalculateElements()
 				return TRUE
@@ -2782,6 +2845,8 @@ Type TGUISlotList Extends TGUIListBase
 				self.ResetViewPort()
 			endif
 		endif
+
+		DrawChildren()
 	End Method
 
 	Method RecalculateElements:int()
@@ -2929,8 +2994,18 @@ Type TGUIListItem Extends TGUIobject
 		endif
 	End Method
 
+	Method drag:int(coord:TPoint=Null)
+		if super.drag(coord)
+			GUIManager.add(self)
+			return TRUE
+		endif
+		return FALSE
+	End Method
 
+	'override default update-method
 	Method Update:int()
+		super.Update()
+
 		'if the item has a lifetime it will autoremove on death
 		if self.lifetime <> Null
 			if (Millisecs() > self.lifetime) then return self.Remove()
@@ -2938,6 +3013,10 @@ Type TGUIListItem Extends TGUIobject
 		if self.showtime <> Null and self.isVisible()
 			if (Millisecs() > self.showtime) then self.hide()
 		endif
+
+		'as soon as dragged we want the GUIManager to handle the item
+		'as we want to have it drawn above all
+	'	if not isDragged() and (_flags & GUI_OBJECT_MANAGED) then GUIManager.Remove(self)
 	End Method
 
 	Method Draw()
@@ -2982,9 +3061,6 @@ Type TGUISimpleRect Extends TGUIobject
 
     	GUIManager.Add( self )
 		Return self
-	End Method
-
-	Method Update()
 	End Method
 
 	Method Draw()
