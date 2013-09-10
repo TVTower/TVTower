@@ -1,4 +1,4 @@
-'**************************************************************************************************
+ï»¿'**************************************************************************************************
 ' This program was written with BLIde
 ' Application:
 ' Author:
@@ -176,7 +176,7 @@ Type TLuaFunctions {_exposeToLua}
 	Field NEWS_GENRE_SPORT:Int = 2
 	Field NEWS_GENRE_CURRENTS:Int = 4
 
-	'Die Räume werden alle initialisiert
+	'Die RÃ¤ume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
 	Field ROOM_ADAGENCY:Int
@@ -366,7 +366,7 @@ Type TLuaFunctions {_exposeToLua}
 	    Return self.RESULT_OK
 	End Method
 
-	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstützt. Negativ: Nach links; Positiv: nach rechts
+	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstÃ¼tzt. Negativ: Nach links; Positiv: nach rechts
 		Game.Players[ Self.ME ].Figure.GoToCoordinatesRelative(relX, relYFloor)
 		Return self.RESULT_OK
 	End Method
@@ -499,7 +499,7 @@ Type TLuaFunctions {_exposeToLua}
 			Obj.RemoveFromPlan()
 			Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 			If not (Obj = null)
-				print "TODO fuer Ron: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.contractBase.title
+				print "TODO fuer Ron: Wird aus irgend einem Grund nicht gleich gelÃ¶scht... nochmal lÃ¶schen: " + Obj.contract.contractBase.title
 				Obj.RemoveFromPlan()
 				Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 				If not (Obj = null)
@@ -525,14 +525,17 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, ObjectID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
-		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
-		Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
-		If Programme <> Null
-			Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
-			Print "quote:" + Quote + "%"
-			Return Quote
-		EndIf
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter kÃ¶nnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
+		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verÃ¤ndern) errechnen.
+		
+		Print "FÃ¼r KI wieder rein machen!"
+		
+		'Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
+		'If Programme <> Null
+		'	Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
+		'	Print "quote:" + Quote + "%"
+		'	Return Quote
+		'EndIf
 		'0 percent - no programme
 		return 0
 	End Method

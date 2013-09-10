@@ -1,4 +1,4 @@
-'Basictype of all rooms
+ï»¿'Basictype of all rooms
 'Basictype of all rooms
 Type TRooms extends TGameObject  {_exposeToLua="selected"}
 	Field screenManager:TScreenManager		= null		'screenmanager - controls what scene to show
@@ -239,7 +239,7 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
 		local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
 		if not figure then return FALSE
 
-		local forceEnter:int = triggerEvent.getData().getInt("forceEnter",FALSE)
+		local forceEnter:int 		= triggerEvent.getData().getInt("forceEnter",FALSE)
 
 		'no problem as soon as multiple figures are allowed
 		if allowMultipleOccupants then return TRUE
@@ -1266,7 +1266,7 @@ Type RoomHandler_Office extends TRoomHandler
 		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
 
 		if stationMapMode=1
-			button.value = "Kauf bestätigen"
+			button.value = "Kauf bestÃ¤tigen"
 		else
 			button.value = "Sendemast kaufen"
 		endif
@@ -1323,7 +1323,7 @@ Type RoomHandler_Office extends TRoomHandler
 		endif
 
 		if stationMapMode=2
-			button.value = "Verkauf bestätigen"
+			button.value = "Verkauf bestÃ¤tigen"
 		else
 			button.value = "Sendemast verkaufen"
 		endif
@@ -2247,7 +2247,7 @@ Type RoomHandler_News extends TRoomHandler
 		If NewsGenreTooltip Then NewsGenreTooltip.Update(App.Timer.getDeltaTime())
 
 		If functions.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
-			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
+			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "HinzufÃ¼gen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
@@ -2559,9 +2559,9 @@ Type RoomHandler_Chief extends TRoomHandler
 	  Local ChefText:String
 	  ChefText = "Was ist?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!"
 	  If Betty.LastAwardWinner <> Game.playerID And Betty.LastAwardWinner <> 0
-		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis für " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
+		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis fÃ¼r " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
 		If Betty.LastAwardType <> 0
-			ChefText = "Was fällt Ihnen ein den Award für " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis für " + Betty.GetAwardTypeString() + "."
+			ChefText = "Was fÃ¤llt Ihnen ein den Award fÃ¼r " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis fÃ¼r " + Betty.GetAwardTypeString() + "."
 		EndIf
 	  EndIf
 	  functions.DrawDialog(Assets.GetSpritePack("gfx_dialog"), 350, 60, 450, 120, "StartLeftDown", 0, ChefText, Font14)
@@ -2570,6 +2570,9 @@ Type RoomHandler_Chief extends TRoomHandler
 End Type
 
 
+
+
+'Movie agency
 Type RoomHandler_AdAgency extends TRoomHandler
 	Global hoveredGuiContractCoverBlock:TGuiContractCoverBlock = null
 	Global draggedGuiContractCoverBlock:TGuiContractCoverBlock = null
@@ -2681,6 +2684,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		ReFillBlocks()
 	End Function
 
+
 	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
 		local room:TRooms = TRooms(triggerEvent._sender)
 		if not room then return FALSE
@@ -2696,6 +2700,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 		return TRUE
 	End Function
+
 
 	'add back the programmes from the suitcase
 	'also fill empty blocks, remove gui elements
@@ -3130,7 +3135,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		draggedGuiContractCoverBlock = null
 		GUIManager.Update("adagency")
 	End Function
+
 End Type
+
 
 'Dies hier ist die Raumauswahl im Fahrstuhl.
 Type RoomHandler_ElevatorPlan extends TRoomHandler
@@ -3216,7 +3223,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			Game.Players[i].Figure.Sprite.DrawClipped(x, y, x, y, sprite.w, sprite.h-16,0,0,8)
 		Next
 
-		Local DlgText:String = "Na Du?" + Chr(13) + "Du könntest ruhig mal öfters bei mir vorbeischauen."
+		Local DlgText:String = "Na Du?" + Chr(13) + "Du kÃ¶nntest ruhig mal Ã¶fters bei mir vorbeischauen."
 		DrawDialog(Assets.GetSpritePack("gfx_dialog"), 430, 120, 280, 90, "StartLeftDown", 0, DlgText, Assets.GetFont("Default",14))
 	End Function
 

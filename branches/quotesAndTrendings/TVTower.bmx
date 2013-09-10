@@ -15,6 +15,8 @@ Import "source/main.bmx"
 Incbin "source/version.txt"
 
 REM
+DONE
+
 
 Todo
 ----

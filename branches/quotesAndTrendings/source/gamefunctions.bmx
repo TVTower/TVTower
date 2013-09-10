@@ -1,4 +1,4 @@
-'Import "basefunctions_image.bmx"
+﻿'Import "basefunctions_image.bmx"
 'Import "basefunctions_resourcemanager.bmx"
 
 global CHAT_CHANNEL_NONE:int	= 0
@@ -231,8 +231,9 @@ Type TGUIChat extends TGUIObject
 
 	End Method
 
-	Method Update()
-		'Super.update()
+	'override default update-method
+	Method Update:int()
+		super.Update()
 
 		'show items again if somone hovers over the list (-> reset timer)
 		if self.guiList._mouseOverArea
@@ -1714,7 +1715,7 @@ Type TInterface
 		If functions.IsIn(MouseManager.x,MouseManager.y,20,385,280,200)
 			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
 			If ShowChannel <> 0
-				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].getRelativeAudiencePercentage(),2)+"%)"
+				CurrentProgrammeToolTip.text	= GetLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
 				if ShowChannel = Game.playerID
@@ -1748,9 +1749,12 @@ Type TInterface
 			'force redraw
 			CurrentTimeToolTip.dirtyImage = true
 	    EndIf
-		If functions.IsIn(MouseManager.x,MouseManager.y,355,468,130,30)
-			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].getRelativeAudiencePercentage(),2)+"%)"
-			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.BroadcastManager.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience())),2,0)+ " ("+(Int(Ceil(1000*Game.BroadcastManager.maxAudiencePercentage)/10))+"%)"
+		If functions.IsIn(MOUSEMANAGER.x,MOUSEMANAGER.y,355,468,130,30)			
+			'Print "DebugInfo: " + TAudienceResult.Curr().ToString()
+			Local player:TPlayer = Game.Players[Game.playerID]
+			Local audienceResult:TAudienceResult = player.audience			
+			CurrentAudienceToolTip.title 	= GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+functions.convertPercent(player.GetAudiencePercentage() * 100,2)+"%)"
+			CurrentAudienceToolTip.text = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.MaxAudienceThisHour.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.MaxAudienceThisHourQuote.GetAverage()) / 10)) + "%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 			'force redraw
@@ -1812,7 +1816,7 @@ Type TInterface
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
-				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience2.GetSum() / Float(Game.BroadcastManager.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience()))
+				Local audiencerate:Float = Game.Players[ShowChannel].audience.AudienceQuote.GetAverage()
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0
@@ -2398,22 +2402,25 @@ Type TStationMap {_exposeToLua="selected"}
 	End Function
 
 	'returns the shared amount of audience between players
-	Function GetShareAudience:int(playerIDs:int[])
-		return GetShare(playerIDs).x
+	Function GetShareAudience:int(playerIDs:int[], withoutPlayerIDs:int[]=null)
+		return GetShare(playerIDs, withoutPlayerIDs).x
 	End Function
 
-	Function GetSharePercentage:float(playerIDs:int[])
-		return GetShare(playerIDs).z
+	Function GetSharePercentage:float(playerIDs:int[], withoutPlayerIDs:int[]=null)
+		return GetShare(playerIDs, withoutPlayerIDs).z
 	End Function
 
 	'returns a share between players, encoded in a tpoint containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Function GetShare:TPoint(playerIDs:int[])
+	Function GetShare:TPoint(playerIDs:int[], withoutPlayerIDs:int[]=null)
 		if playerIDs.length <1 then return TPoint.Create(0,0,0.0)
-
+		if not withoutPlayerIDs then withoutPlayerIDs = new Int[0]
 		local cacheKey:string = ""
 		for local i:int = 0 to playerIDs.length-1
-			cacheKey		= cacheKey + "_"+playerIDs[i]
+			cacheKey = cacheKey + "_"+playerIDs[i]
+		Next
+		for local i:int = 0 to withoutPlayerIDs.length-1
+			cacheKey = cacheKey + "_"+withoutPlayerIDs[i]
 		Next
 
 		'if already cached, save time...
@@ -2425,7 +2432,10 @@ Type TStationMap {_exposeToLua="selected"}
 		local total:int				= 0
 		local playerFlags:int[]
 		local allFlag:int			= 0
+		local withoutPlayerFlags:int[]
+		local withoutFlag:int		= 0
 		playerFlags					= playerFlags[.. playerIDs.length]
+		withoutPlayerFlags			= withoutPlayerFlags[.. withoutPlayerIDs.length]
 
 		for local i:int = 0 to playerIDs.length-1
 			'player 1=1, 2=2, 3=4, 4=8 ...
@@ -2433,11 +2443,33 @@ Type TStationMap {_exposeToLua="selected"}
 			allFlag :| playerFlags[i]
 		Next
 
-		local someoneUsesPoint:int	= FALSE
-		local allUsePoint:int		= FALSE
-		For Local mapValue:TPoint = EachIn map.Values()
-			someoneUsesPoint= FALSE
-			allUsePoint		= FALSE
+		for local i:int = 0 to withoutPlayerIDs.length-1
+			'player 1=1, 2=2, 3=4, 4=8 ...
+			withoutPlayerFlags[i]	= getMaskIndex( withoutPlayerIDs[i] )
+			withoutFlag :| withoutPlayerFlags[i]
+		Next
+
+
+		local someoneUsesPoint:int			= FALSE
+		local allUsePoint:int				= FALSE
+		For Local mapValue:TPoint	= EachIn map.Values()
+			someoneUsesPoint		= FALSE
+			allUsePoint				= FALSE
+
+			'we need to check if one on our ignore list is there
+				'no need to do this individual, we can just check the groupFlag
+				rem
+				local someoneUnwantedUsesPoint:int	= FALSE
+				for local i:int = 0 to withoutPlayerFlags.length-1
+					if int(mapValue.z) & withoutPlayerFlags[i]
+						someoneUnwantedUsesPoint = true
+						exit
+					endif
+				Next
+				if someoneUnwantedUsesPoint then continue
+				endrem
+			if int(mapValue.z) & withoutFlag then continue
+
 			'as we have multiple flags stored in AllFlag, we have to
 			'compare the result to see if all of them hit,
 			'if only one of it hits, we just check for <>0
@@ -2579,7 +2611,7 @@ Type TStationMap {_exposeToLua="selected"}
 	Function CalculateStationReach:Int(x:Int, y:Int)
 		Local posX:Int, posY:Int
 		Local returnValue:Int = 0
-		' für die aktuelle Koordinate die summe berechnen
+		' fÃ¼r die aktuelle Koordinate die summe berechnen
 		' min/max = immer innerhalb des Bildes
 		For posX = Max(x - stationRadius,stationRadius) To Min(x + stationRadius, self.populationMapSize.x-stationRadius)
 			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, self.populationMapSize.y-stationRadius)

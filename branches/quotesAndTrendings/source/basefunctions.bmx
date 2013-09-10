@@ -433,7 +433,6 @@ Function SortListArray(List:TList Var)
 	List = List.FromArray(arr)
 End Function
 
-
 Type TNumberCurveValue
 	Field _value:Int
 

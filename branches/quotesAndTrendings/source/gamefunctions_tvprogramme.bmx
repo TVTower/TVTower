@@ -1,4 +1,4 @@
-Const CURRENCYSIGN:string = Chr(8364) 'eurosign
+ï»¿Const CURRENCYSIGN:String = Chr(8364) 'eurosign
 
 Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field ProgrammeBlocks:TList = CreateList()
@@ -386,7 +386,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'Block erfolgreich gesendet
 			if successful = 1 And not block.isBotched() and block.isAired()
 				count :+1
-			'Block noch nicht gesendet / die sendtime- und senddate-Prüfung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
+			'Block noch nicht gesendet / die sendtime- und senddate-PrÃ¼fung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
 			Elseif planned = 1 And not block.isAired() and block.senddate <> -1 and block.sendtime <> -1
 				count :+1
 			EndIf
@@ -1062,20 +1062,20 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie hoch ist das finanzielle Gewicht pro Spot?
-	'Wird dafür gebraucht um die Wichtigkeit des Spots zu bewerten
+	'Wird dafÃ¼r gebraucht um die Wichtigkeit des Spots zu bewerten
 	Method GetFinanceWeight:float() {_exposeToLua}
 		Return (self.GetProfit() + self.GetPenalty()) / self.GetSpotCount()
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (Gesamt)
+	'Berechnet wie Zeitkritisch die ErfÃ¼llung des Vertrages ist (Gesamt)
 	Method GetPressure:float() {_exposeToLua}
 		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return self.GetSpotCount() / _daysToFinish * _daysToFinish
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)
+	'Berechnet wie Zeitkritisch die ErfÃ¼llung des Vertrages ist (tatsÃ¤chlich / aktuell)
 	Method GetCurrentPressure:float() {_exposeToLua}
 		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return self.GetSpotsToSend() / _daysToFinish * _daysToFinish
@@ -1629,7 +1629,7 @@ endrem
 
 	'Manuel: Wird nur in der Lua-KI verwendet
 	Method GetQualityLevel:Int() {_exposeToLua}
-		Local quality:Int = Self.GetBaseAudienceQuote() * 100
+		Local quality:Int = Self.GetQuality() * 100
 		If quality > 20
 			Return 5
 		ElseIf quality > 15
@@ -1679,7 +1679,20 @@ endrem
 		EndIf
 		Return topicality
 	End Method
-
+	
+	'Diese Methode ersetzt "GetBaseAudienceQuote"
+	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+		Local genreDefintion:TGenreDefinition = Game.BroadcastManager.GetGenreDefinition(Genre)
+		Return genreDefintion.GetProgrammeQuality(Self, luckFactor)
+	End Method
+	
+	'Diese Methode splittet GetQuality in die Zielgruppen auf und berÃ¼cksichtigt die Sendezeit
+	Method GetAudienceAttraction:TAudience(hour:Int, luckFactor:Int = 1) {_exposeToLua}
+		Local genreDefintion:TGenreDefinition = Game.BroadcastManager.GetGenreDefinition(Genre)
+		Return genreDefintion.CalculateAudienceAttraction(Self, hour, luckFactor)
+	End Method
+	
+	rem
 	'base quote of a programme
 	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
 		Local quality:Float		= 0.0
@@ -1711,7 +1724,7 @@ endrem
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.maxAudiencePercentage
+			quote:*Game.BroadcastManager.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf
@@ -1719,7 +1732,7 @@ endrem
 		'no minus quote
 		Return Max(0, quote)
 	End Method
-
+endrem
 	Method CutTopicality:Int(cutFactor:float=1.0)
 		'cutFactor can be used to manipulate the resulting cut
 		'eg for night times
@@ -1847,7 +1860,8 @@ Type TNews Extends TProgrammeElement {_exposeToLua="selected"}
 	Field happenedTime:Double	= -1
 	Field happenDelayData:int[]	= [5,0,0,0]			'different params for delay generation
 	Field happenDelayType:int	= 2					'what kind of delay do we have? 2 = hours
-	Field parent:TNews			= Null				'is this news a child of a chain?
+	Field parent:TNews 			= Null				'is this news a child of a chain?
+	Field timesAired:Int 		= 0					'how many times that programme was run
 
 	Global usedList:TList		= CreateList()		'holding already announced news
 	Global List:TList			= CreateList()		'holding single news and first/parent of news-chains (start)
@@ -1954,7 +1968,19 @@ Print "implement save:TNews"
 		Return 0.30*((quality+5)/255) + 0.4*ComputeTopicality()/255 + 0.2*price/255 + 0.1
 	End Method
 
+	'Diese Methode ersetzt "GetBaseAudienceQuote"
+	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+		Local genreDefintion:TNewsGenreDefinition = Game.BroadcastManager.GetNewsGenreDefinition(Genre)
+		Return genreDefintion.GetNewsQuality(Self, luckFactor)
+	End Method
+	
+	'Diese Methode splittet GetQuality in die Zielgruppen auf und berÃ¼cksichtigt die Sendezeit
+	Method GetAudienceAttraction:TAudience(hour:Int, luckFactor:Int = 1) {_exposeToLua}
+		Local genreDefintion:TNewsGenreDefinition = Game.BroadcastManager.GetNewsGenreDefinition(Genre)
+		Return genreDefintion.CalculateAudienceAttraction(Self, hour, luckFactor)
+	End Method
 
+	rem
 	'base quote of a programme
 	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
 		Local quality:Float		= 0.0
@@ -1975,7 +2001,7 @@ Print "implement save:TNews"
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.maxAudiencePercentage
+			quote :* Game.BroadcastManager.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf
@@ -1983,6 +2009,7 @@ Print "implement save:TNews"
 		'no minus quote
 		Return Max(0, quote)
 	End Method
+	endrem
 rem
 	'computes a percentage which could be multiplied with maxaudience
 	Method ComputeAudienceQuote:Float(lastquote:Float=0)

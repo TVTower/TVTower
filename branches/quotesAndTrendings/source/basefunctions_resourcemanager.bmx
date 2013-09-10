@@ -309,8 +309,8 @@ Type TXmlLoader
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
 
 
-			'some loaders might be interested - fire it so handler reacts immediately
-			EventManager.triggerEvent( TEventSimple.Create("LoadResource."+_type, TData.Create().AddObject("node", childNode).AddObject("xmlLoader", self) ) )
+			'some loaders might be interested - fire it so handler reacts immediately		
+			EventManager.triggerEvent(TEventSimple.Create("LoadResource." + _type, TData.Create().AddObject("node", childNode).AddObject("xmlLoader", Self)))
 
 			self.currentItemNumber:+1		'increase by each entry
 
@@ -565,7 +565,8 @@ Type TResourceLoaders
 		EventManager.registerListener( "LoadResource.ROOMS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadRooms)  )
 		EventManager.registerListener( "LoadResource.SCREENS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadScreens)  )
 		EventManager.registerListener( "LoadResource.COLORS",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
-		EventManager.registerListener( "LoadResource.COLOR",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors)  )
+		EventManager.registerListener("LoadResource.COLOR", TEventListenerRunFunction.Create(TResourceLoaders.onLoadColors))
+		EventManager.registerListener("LoadResource.NEWSGENRES", TEventListenerRunFunction.Create(TResourceLoaders.onLoadNewsGenres))
 		EventManager.registerListener( "LoadResource.GENRES",	TEventListenerRunFunction.Create(TResourceLoaders.onLoadGenres)  )
 
 		return new TResourceLoaders
@@ -775,15 +776,48 @@ Type TResourceLoaders
 		endif
 	End Function
 
+	Function onLoadNewsGenres:Int(triggerEvent:TEventBase)
+		local childNode:TxmlNode = null
+		local xmlLoader:TXmlLoader = null
+		If Not TResourceLoaders.assignBasics(triggerEvent, childNode, xmlLoader) Then Return 0
+
+		Local values_newsgenre:TMap = TMap(xmlLoader.Values.ValueForKey("newsgenres"))
+		If values_newsgenre = Null Then values_newsgenre = CreateMap() ;
+
+		For Local child:TxmlNode = EachIn childNode.GetChildren()
+'			if child.getType() <> XML_ELEMENT_NODE then continue
+			Local genre:TMap		= CreateMap()
+			
+			Local id:Int		= xmlLoader.xml.FindValueInt(child, "id", -1)
+			Local name:String	= xmlLoader.xml.FindValue(child, "name", "unknown")
+
+			genre.Insert("id",		String(id))
+			genre.Insert("name", Name)
+			
+			Local subNode:TxmlNode = Null
+			subNode = xmlLoader.xml.FindChild(child, "audienceAttractions")
+			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()		
+				Local attrId:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
+				Local Value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "0.7")
+				
+				genre.Insert(attrId, Value)
+			Next			
+			
+			values_newsgenre.Insert(String(id), TAsset.CreateBaseAsset(genre, "NEWSGENREDATA"))
+			PrintDebug("XmlLoader.onLoadNewsGenres:", "inserted newsgenre: " + Name, DEBUG_LOADING)
+		Next
+
+		Assets.Add("newsgenres", TAsset.CreateBaseAsset(values_newsgenre, "TMAP"))
+
+	End Function	
+	
 	Function onLoadGenres:int( triggerEvent:TEventBase )
 
 		local childNode:TxmlNode = null
 		local xmlLoader:TXmlLoader = null
 		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
 
-
-		'for every single room
-		Local values_genre:TMap = TMap(xmlLoader.values.ValueForKey("genres"))
+		Local values_genre:TMap = TMap(xmlLoader.Values.ValueForKey("genres"))
 		If values_genre = Null Then values_genre = CreateMap() ;
 
 		For Local child:TxmlNode = EachIn childNode.GetChildren()
@@ -810,7 +844,7 @@ Type TResourceLoaders
 			subNode = xmlLoader.xml.FindChild(child, "audienceAttractions")
 			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()		
 				local id:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
-				local value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "70")
+				Local Value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "0.7")
 				
 				genre.Insert(id, value)
 			Next			
