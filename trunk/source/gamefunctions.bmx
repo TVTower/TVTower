@@ -2416,10 +2416,11 @@ Type TStationMap {_exposeToLua="selected"}
 		if not withoutPlayerIDs then withoutPlayerIDs = new Int[0]
 		local cacheKey:string = ""
 		for local i:int = 0 to playerIDs.length-1
-			cacheKey = cacheKey + "_"+playerIDs[i]
+			cacheKey:+ "_"+playerIDs[i]
 		Next
+		cacheKey:+"_without_"
 		for local i:int = 0 to withoutPlayerIDs.length-1
-			cacheKey = cacheKey + "_"+withoutPlayerIDs[i]
+			cacheKey:+ "_"+withoutPlayerIDs[i]
 		Next
 
 		'if already cached, save time...
