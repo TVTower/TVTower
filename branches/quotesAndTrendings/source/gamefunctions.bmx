@@ -1749,10 +1749,10 @@ Type TInterface
 			'force redraw
 			CurrentTimeToolTip.dirtyImage = true
 	    EndIf
-		If functions.IsIn(MOUSEMANAGER.x,MOUSEMANAGER.y,355,468,130,30)			
+		If functions.IsIn(MOUSEMANAGER.x,MOUSEMANAGER.y,355,468,130,30)
 			'Print "DebugInfo: " + TAudienceResult.Curr().ToString()
 			Local player:TPlayer = Game.Players[Game.playerID]
-			Local audienceResult:TAudienceResult = player.audience			
+			Local audienceResult:TAudienceResult = player.audience
 			CurrentAudienceToolTip.title 	= GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+functions.convertPercent(player.GetAudiencePercentage() * 100,2)+"%)"
 			CurrentAudienceToolTip.text = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.MaxAudienceThisHour.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.MaxAudienceThisHourQuote.GetAverage()) / 10)) + "%)"
 			CurrentAudienceToolTip.enabled 	= 1
@@ -2418,15 +2418,14 @@ Type TStationMap {_exposeToLua="selected"}
 		If playerIDs.length <1 Then Return TPoint.Create(0,0,0.0)
 		if not withoutPlayerIDs then withoutPlayerIDs = new Int[0]
 		Local cacheKey:String = ""
-		'TODO für ron: Cachekey mach Probleme... einfach mal einkommentieren und starten
-		rem
+
 		for local i:int = 0 to playerIDs.length-1
-			cacheKey = cacheKey + "_"+playerIDs[i]
+			cacheKey:+ "_"+playerIDs[i]
 		Next
+		cacheKey:+"_without_"
 		for local i:int = 0 to withoutPlayerIDs.length-1
-			cacheKey = cacheKey + "_"+withoutPlayerIDs[i]
+			cacheKey:+ "_"+withoutPlayerIDs[i]
 		Next
-		endrem
 
 		'if already cached, save time...
 		if shareCache and shareCache.contains(cacheKey) then return TPoint(shareMap.ValueForKey(cacheKey))
