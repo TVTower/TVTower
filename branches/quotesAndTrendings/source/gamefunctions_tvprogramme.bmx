@@ -1666,12 +1666,12 @@ endrem
 
 	Method ComputeTopicality:Float()
 		Local value:Int = 0
-
+		'TODO: Nochmal auf mögliche Fehler überprüfen! Bei Serien wird jedes mal berechnet, bei Filmen nur initial UND niemand aktualisiert den Wert maxtopicality... das müsste aber beim Jahreswechsel geschehen oder jedes mal berechnet werden.
 		'parent of serie called
 		If Self.episodes.count() > 0
 			For Local episode:TProgramme = EachIn Self.episodes
-				episode.topicality = episode.ComputeTopicality()
-				value :+ episode.topicality
+				'episode.topicality = episode.ComputeTopicality() 'Diese Zuweisung muss raus!
+				value :+ episode.ComputeTopicality()
 			Next
 			topicality = value / Self.episodes.count()
 		ElseIf topicality < 0
@@ -1755,10 +1755,23 @@ endrem
 		return self.timesAired
 	End Method
 
+	Method MaxTopicalityPriceMod:Float()
+		Local value:float = float(maxTopicality) - 220.0
+		If (maxTopicality >= 220)			
+			Return value * value * 0.4 / 100.0
+		ElseIf (maxTopicality >= 250)
+			Return value * value * 0.55 / 100.0
+		ElseIf (maxTopicality >= 250)
+			Return value * value * 0.55 / 100.0
+		ElseIf (maxTopicality = 255)
+			Return value * value * 0.7 / 100.0					
+		Else
+			Return Max(0.5, float(maxTopicality) / 220.0)
+		Endif
+	End Method
+
 	Method GetPrice:Int() {_exposeToLua}
 		Local value:Float
-		Local tmpreview:Float
-		Local tmpspeed:Float
 
 		If Self.episodes.count() > 0
 			For Local episode:TProgramme = EachIn Self.episodes
@@ -1766,18 +1779,14 @@ endrem
 			Next
 			value :* 0.75
 		Else
-			If Outcome > 0 'movies
-				value = 0.55 * 255 * Outcome + 0.25 * 255 * review + 0.2 * 255 * speed
-				If (maxTopicality >= 230) Then value:*1.4
-				If (maxTopicality >= 240) Then value:*1.6
-				If (maxTopicality >= 250) Then value:*1.8
-				If (maxTopicality > 253)  Then value:*2.1 'the more current the more expensive
-			Else 'shows, productions, series...
-				If (review > 0.5 * 255) Then tmpreview = 255 - 2.5 * (review - 0.5 * 255) else tmpreview = 1.6667 * review
-				If (speed > 0.6 * 255) Then tmpspeed = 255 - 2.5 * (speed - 0.6 * 255) else tmpspeed = 1.6667 * speed
-				value = 1.3 * ( 0.45 * 255 * tmpreview + 0.55 * 255 * tmpspeed )
+			value = Self.GetQuality(False) * 65000; '65000 = Basispreis
+			value :* MaxTopicalityPriceMod()			'Maximal-Topicality ~ Erscheinungsjahr-Mod
+			Value :* (1.5 * ComputeTopicality() / 255)	'Gegenwärtige Aktualität... d.h. für neue Filme gibt's nochmal nen 1,5-Faktor
+			If relPrice > 0 Then
+				value = (value * relPrice / 255) + (value * 0.5) 'Die Hälfte des Preises kann mit relPrice manipuliert werden.
 			EndIf
-			value:*(1.5 * ComputeTopicality() / 255)
+			Value :* (0.7 + Self.blocks * 0.2) 'Block-Länge-Faktor: 1 Block = 0.9; 2 Block = 1.1; 3 Blocks = 1.3; 4 Blocks = 1.5
+			
 			value = Int(Floor(value / 1000) * 1000)
 		EndIf
 		Return value

@@ -1754,7 +1754,7 @@ Type TInterface
 			Local player:TPlayer = Game.Players[Game.playerID]
 			Local audienceResult:TAudienceResult = player.audience
 			CurrentAudienceToolTip.title 	= GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+functions.convertPercent(player.GetAudiencePercentage() * 100,2)+"%)"
-			CurrentAudienceToolTip.text = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.MaxAudienceThisHour.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.MaxAudienceThisHourQuote.GetAverage()) / 10)) + "%)"
+			CurrentAudienceToolTip.text = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.MaxAudienceThisHour.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.MaxAudienceThisHourQuote.Average) / 10)) + "%)"
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 			'force redraw
@@ -1816,7 +1816,7 @@ Type TInterface
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
-				Local audiencerate:Float = Game.Players[ShowChannel].audience.AudienceQuote.GetAverage()
+				Local audiencerate:Float = Game.Players[ShowChannel].audience.AudienceQuote.Average 
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0

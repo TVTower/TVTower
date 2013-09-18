@@ -1,4 +1,4 @@
-'Application: TVGigant/TVTower
+ï»¿'Application: TVGigant/TVTower
 'Author: Ronny Otto
 
 SuperStrict
@@ -31,7 +31,7 @@ Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
+Global CopyrightString:String	= "by Ronny Otto & Manuel VÃ¶gele"
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 
 Global App:TApp = TApp.Create(60,60) 'create with 60fps for physics and graphics
@@ -47,7 +47,7 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_popularity.bmx"			'Popularitäten und Trends
+Include "gamefunctions_popularity.bmx"			'PopularitÃ¤ten und Trends
 Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 
 
@@ -415,25 +415,25 @@ endrem
 						TError.DrawNewError("Lade Programme...")
 						TProgramme.LoadAll()
 					Case "ALLCONTRACTS"
-						TError.DrawNewError("Lade Werbeverträge...")
+						TError.DrawNewError("Lade WerbevertrÃ¤ge...")
 					'TContract.LoadAll()
 					Case "ALLNEWS"
 						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade Werbeverträgeblöcke...")
+						TError.DrawNewError("Lade WerbevertrÃ¤geblÃ¶cke...")
 					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade Programmblöcke...")
+						TError.DrawNewError("Lade ProgrammblÃ¶cke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade Werbeblöcke...")
+						TError.DrawNewError("Lade WerbeblÃ¶cke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade Newsblöcke...")
+						TError.DrawNewError("Lade NewsblÃ¶cke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade Filmhändlerblöcke...")
+						TError.DrawNewError("Lade FilmhÃ¤ndlerblÃ¶cke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -825,7 +825,7 @@ Rem
 		Game.Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI für Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI fÃ¼r Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
@@ -997,7 +997,7 @@ endrem
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetAudiencePercentage:Float() {_exposeToLua}
-		Return TAudienceResult.Curr(playerID).AudienceQuote.GetAverage()
+		Return TAudienceResult.Curr(playerID).AudienceQuote.Average
 		'Local audienceResult:TAudienceResult = TAudienceResult.Curr(playerID)	
 		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()		
 	End Method
@@ -1600,7 +1600,7 @@ Type TBuilding Extends TRenderable
 		Building.gfx_building	= Assets.GetSprite("gfx_building")
 		Building.pos.y			= 0 - Building.gfx_building.h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
 		Building.Elevator		= TElevator.Create(Building)
-		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
+		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heiÃŸt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich SpaÃŸ
 
 
 		'set moon movement
@@ -2696,16 +2696,16 @@ rem
 Global TestWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,200, "")
 TestWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
 TestWindow.background.valueColor = TColor.Create(235,235,235)
-TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionstüchtigkeit bereit, auch ist es möglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... wünschen wir Dir viel Spaß mit TVTower Version ~q"+VersionDate+"~q")
+TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf FunktionstÃ¼chtigkeit bereit, auch ist es mÃ¶glich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... wÃ¼nschen wir Dir viel SpaÃŸ mit TVTower Version ~q"+VersionDate+"~q")
 endrem
 
 
 
 rem
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbeverträge", "Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste kÃ¶nnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natÃ¼rlich Auswirkungen.~n~nEine KomÃ¶die kann hÃ¤ufiger gesendet werden, als eine Live-Ãœbertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknÃ¼pft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: WerbevertrÃ¤ge", "WerbevertrÃ¤ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natÃ¼rlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue WerbevertrÃ¤ge abzuschlieÃŸen."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
@@ -3081,7 +3081,7 @@ Function Init_Creation()
 		InGame_Chat.show()
 	endif		
 
-	'Eigentlich gehört das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
+	'Eigentlich gehÃ¶rt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
 	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
