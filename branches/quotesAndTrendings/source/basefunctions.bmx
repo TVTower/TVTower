@@ -631,20 +631,20 @@ Type TRectangle {_exposeToLua="selected"}
 
 	Method containsX:int(x:float) {_exposeToLua}
 		return (    x >= self.position.GetX()..
-		        And x <= self.position.GetX() + self.dimension.GetX() )
+		        And x < self.position.GetX() + self.dimension.GetX() )
 	End Method
 
 	Method containsY:int(y:float) {_exposeToLua}
 		return (    y >= self.position.GetY()..
-		        And y <= self.position.GetY() + self.dimension.GetY() )
+		        And y < self.position.GetY() + self.dimension.GetY() )
 	End Method
 
 	'does the rect overlap with the coordinates?
 	Method containsXY:int(x:float, y:float) {_exposeToLua}
 		return (    x >= self.position.GetX()..
-		        And x <= self.position.GetX() + self.dimension.GetX() ..
+		        And x < self.position.GetX() + self.dimension.GetX() ..
 		        And y >= self.position.GetY()..
-		        And y <= self.position.GetY() + self.dimension.GetY() )
+		        And y < self.position.GetY() + self.dimension.GetY() )
 	End Method
 
 	'rectangle names
@@ -747,6 +747,10 @@ Type TPoint {_exposeToLua="selected"}
 
 	Method GetIntY:int() {_exposeToLua}
 		return floor(self.y)
+	End Method
+
+	Method GetIntZ:int() {_exposeToLua}
+		return floor(self.z)
 	End Method
 
 

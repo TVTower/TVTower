@@ -22,8 +22,8 @@ Const NET_MOVIEAGENCYCHANGE:Int			= 115				' ALL: sends changes of programme in 
 Const NET_PROGRAMMECOLLECTIONCHANGE:Int = 116				' ALL:    programmecollection was changed (removed, sold...)
 Const NET_PLAN_PROGRAMMECHANGE:Int		= 117				' ALL:    playerprogramme has changed (added, removed and so on)
 Const NET_PLAN_ADCHANGE:Int				= 118				' ALL:    playerprogramme has changed (added, removed and so on)
-Const NET_PLAN_NEWSCHANGE:Int			= 119				' ALL: sends Changes of news in the players newsstudio
-Const NET_GAMESETTINGS:Int				= 120				' SERVER: send extra settings (random seed value etc.)
+Const NET_PLAN_SETNEWS:Int				= 119
+Const NET_GAMESETTINGS:Int				= 121				' SERVER: send extra settings (random seed value etc.)
 
 Const NET_DELETE:Int					= 0
 Const NET_ADD:Int						= 1000
@@ -100,7 +100,7 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 		case NET_STATIONMAPCHANGE			NetworkHelper.ReceiveStationmapChange( networkObject )
 
 		case NET_PLAN_PROGRAMMECHANGE		NetworkHelper.ReceivePlanProgrammeChange( networkObject )
-		case NET_PLAN_NEWSCHANGE			NetworkHelper.ReceivePlanNewsChange( networkObject )
+		case NET_PLAN_SETNEWS				NetworkHelper.ReceivePlanSetNews( networkObject )
 		case NET_PLAN_ADCHANGE				NetworkHelper.ReceivePlanAdChange( networkObject )
 
 		default 							if networkObject.evType>=100 then print "client got unused event:" + networkObject.evType
@@ -136,9 +136,7 @@ Type TNetworkHelper
 	Method RegisterEventListeners:int()
 		if registeredEvents then return FALSE
 
-		EventManager.registerListenerFunction( "programmeplan.SetNewsBlockSlot",	TNetworkHelper.onChangeNewsBlock )
-'		EventManager.registerListenerFunction( "programmeplan.addNewsBlock",		TNetworkHelper.onChangeNewsBlock )
-		EventManager.registerListenerFunction( "programmeplan.removeNewsBlock",		TNetworkHelper.onChangeNewsBlock )
+		EventManager.registerListenerFunction( "programmeplan.SetNews",			TNetworkHelper.onPlanSetNews )
 		'someone adds a chatline
 		EventManager.registerListenerFunction( "chat.onAddEntry",	TNetworkHelper.OnChatAddEntry )
 		'changes to the player's stationmap
@@ -148,8 +146,8 @@ Type TNetworkHelper
 		'changes to the player's programmecollection
 		EventManager.registerListenerFunction( "programmecollection.removeProgramme",	TNetworkHelper.onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.addProgramme",		TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.removeContract",	TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.addContract",		TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeAdContract",	TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.addAdContract",		TNetworkHelper.onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeProgrammeFromSuitcase",	TNetworkHelper.onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.addProgrammeToSuitcase",		TNetworkHelper.onChangeProgrammeCollection )
 
@@ -157,24 +155,19 @@ Type TNetworkHelper
 	End Method
 
 	'connect GUI with normal handling
-	Function onChangeNewsBlock:int( triggerEvent:TEventBase )
-		local newsBlock:TNewsBlock = TNewsBlock(triggerEvent._sender)
-		if not newsBlock then return 0
+	Function onPlanSetNews:int( triggerEvent:TEventBase )
+		local news:TNews = TNews(triggerEvent._sender)
+		if not news then return 0
 
-		local blockOwner:int = newsBlock.owner
+		local slot:int = triggerEvent.getData().getInt("slot",-1)
+		if slot < 0 then return 0
 
 		'ignore ai player's events if no gameleader
-		if Game.isAiPlayer(blockOwner) and not Game.isGameLeader() then return false
+		if Game.isAiPlayer(news.owner) and not Game.isGameLeader() then return false
 		'do not allow events from players for other players objects
-		if blockOwner <> Game.playerID and not Game.isGameLeader() then return FALSE
+		if news.owner <> Game.playerID and not Game.isGameLeader() then return FALSE
 
-		local action:int = -1
-		if triggerEvent.isTrigger("programmeplan.SetNewsBlockSlot") then action = NET_CHANGE
-'		if triggerEvent.isTrigger("programmeplan.addNewsBlock") then action = NET_ADD
-		if triggerEvent.isTrigger("programmeplan.removeNewsBlock") then action = NET_DELETE
-		if action = -1 then return FALSE
-
-		NetworkHelper.SendPlanNewsChange(Game.playerID, newsBlock, action)
+		NetworkHelper.SendPlanSetNews(Game.playerID, news, slot)
 	End Function
 
 
@@ -234,11 +227,11 @@ Type TNetworkHelper
 					local programme:TProgramme = TProgramme(triggerEvent.GetData().get("programme"))
 					NetworkHelper.SendProgrammeCollectionProgrammeChange(owner, programme, NET_FROMSUITCASE)
 
-			case "programmecollection.removecontract"
-					local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
+			case "programmecollection.removeadcontract"
+					local contract:TAdContract = TAdContract(triggerEvent.GetData().get("adcontract"))
 					NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_DELETE)
-			case "programmecollection.addcontract"
-					local contract:TContract = TContract(triggerEvent.GetData().get("contract"))
+			case "programmecollection.addadcontract"
+					local contract:TAdContract = TAdContract(triggerEvent.GetData().get("adcontract"))
 					NetworkHelper.SendProgrammeCollectionContractChange(owner, contract, NET_ADD)
 		end select
 
@@ -430,8 +423,8 @@ print "[NET] ReceiveGameReady"
 				allReady = false
 				exit
 			endif
-			if Game.Players[i].ProgrammeCollection.contractlist.count() < Game.startAdAmount
-				print "ad missing player("+i+") " + Game.Players[i].ProgrammeCollection.contractList.count() + " < " + Game.startAdAmount
+			if Game.Players[i].ProgrammeCollection.AdContractlist.count() < Game.startAdAmount
+				print "ad missing player("+i+") " + Game.Players[i].ProgrammeCollection.AdContractList.count() + " < " + Game.startAdAmount
 				allReady = false
 				exit
 			endif
@@ -550,12 +543,12 @@ print "[NET] ReceiveGameReady"
 	Method SendProgrammeCollectionProgrammeChange(playerID:int= -1, programme:TProgramme, action:int=0)
 		self.SendProgrammeCollectionChange(playerID, 1, programme.id, action)
 	End Method
-	Method SendProgrammeCollectionContractChange(playerID:int= -1, contract:TContract, action:int=0)
+	Method SendProgrammeCollectionContractChange(playerID:int= -1, contract:TAdContract, action:int=0)
 		local id:int = contract.id
 		'when adding a new contract, we do not send the contract id
 		'itself (it is useless for others)
 		'but the contractbase.id so the remote client can reconstruct
-		if action = NET_ADD then id = contract.contractBase.id
+		if action = NET_ADD then id = contract.base.id
 
 		self.SendProgrammeCollectionChange(playerID, 2, id, action)
 	End Method
@@ -610,7 +603,7 @@ print "[NET] ReceiveGameReady"
 					TPlayerProgrammeCollection.fireEvents = TRUE
 			'Contract
 			case 2
-					Local contractbase:TContractBase = TContractBase.Get( objectID )
+					Local contractbase:TAdContractBase = TAdContractBase.Get( objectID )
 					if not contractbase then return FALSE
 
 					'disable events - ignore it to avoid recursion
@@ -618,13 +611,13 @@ print "[NET] ReceiveGameReady"
 
 					select action
 						case NET_ADD
-								Game.Players[ playerID ].ProgrammeCollection.AddContract( TContract.Create(contractBase) )
+								Game.Players[ playerID ].ProgrammeCollection.AddAdContract( new TAdContract.Create(contractBase) )
 								print "[NET] PCollection"+playerID+" - add contract "+contractbase.title
 						case NET_DELETE
-								local contract:TContract = Game.Players[ playerID ].ProgrammeCollection.GetContractByBase( contractBase.id )
+								local contract:TAdContract = Game.Players[ playerID ].ProgrammeCollection.GetAdContractByBase( contractBase.id )
 								if contract
-									Game.Players[ playerID ].ProgrammeCollection.RemoveContract( contract )
-									print "[NET] PCollection"+playerID+" - remove contract "+contractbase.title
+									Game.Players[ playerID ].ProgrammeCollection.RemoveAdContract( contract )
+									print "[NET] PCollection"+playerID+" - remove contract "+contract.GetTitle()
 								endif
 					EndSelect
 
@@ -706,73 +699,40 @@ print "[NET] ReceiveGameReady"
 	End Method
 
 
-	Method SendPlanNewsChange(senderPlayerID:Int, block:TNewsBlock, action:int=0)
-		'actions: 0=add | 1=remove | 2=setslot/move
-
-		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_NEWSCHANGE )
+	Method SendPlanSetNews(senderPlayerID:Int, block:TNews, slot:int=0)
+		local obj:TNetworkObject = TNetworkObject.Create( NET_PLAN_SETNEWS )
 
 		obj.setInt(1, senderPlayerID)
-		obj.setInt(2, action)
-		obj.setInt(3, block.id)
-		obj.setInt(4, block.owner)
-		obj.setInt(8, block.news.happenedtime)
-		obj.setInt(9, block.news.id)
-		obj.setInt(10, block.slot)
+		obj.setInt(2, block.id)
+		obj.setInt(3, block.owner)
+		obj.setInt(4, slot)
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 
-		print "[NET] SendPlanNewsChange: senderPlayer="+senderPlayerID+", blockowner="+block.owner+", block="+block.id+", news="+block.news.id+", action="+action
+		print "[NET] SendPlanSetNews: senderPlayer="+senderPlayerID+", blockowner="+block.owner+", block="+block.id+" slot="+slot
 	End Method
 
-
-	Method ReceivePlanNewsChange:int( obj:TNetworkObject )
+	Method ReceivePlanSetNews:int( obj:TNetworkObject )
 		local sendingPlayerID:int = obj.getInt(1)
 
 		if not Game.isPlayer(sendingPlayerID) then return NULL
 
-		local action:int			= obj.getInt(2)
-		local blockID:int			= obj.getInt(3)
-		local blockOwnerID:int		= obj.getInt(4)
-		local newsHappenedtime:int	= obj.getInt(8)
-		local newsID:int			= obj.getInt(9)
-		local slot:int				= obj.getInt(10)
+		local blockID:int			= obj.getInt(2)
+		local blockOwnerID:int		= obj.getInt(3)
+		local slot:int				= obj.getInt(4)
 
-		Local newsBlock:TNewsblock = Game.Players[ blockOwnerID ].ProgrammePlan.getNewsBlock(blockID)
-		if not newsBlock or newsBlock.news.id <> newsID
-			'do not automagically create new blocks for others...
-			'all do it independently from each other (for intact randomizer base )
-			return TRUE
-
-			rem
-				'that block does not exist yet, create it (is new block)
-				'attention: normally a news will be send before but maybe it
-				'did not receive yet (udp...) so we may have to create a news too
-				local news:TNews = TNews.GetNews(newsID)
-				if not news
-					print "[NET] ReceivePlanNewsChange: NEWS DOES NOT EXIST: "+newsID
-					return FALSE
-				endif
-				'set time when news really happened
-				news.happenedtime = newsHappenedTime
-
-				'create the block
-				'-> would emit an addNewsBlock event - ignore it to avoid recursion
-				TPlayerProgrammePlan.fireEvents = FALSE
-				newsBlock = TNewsBlock.Create("", blockOwnerID, Game.Players[ blockOwnerID ].GetNewsAbonnementDelay(news.genre), news)
-				TPlayerProgrammePlan.fireEvents = TRUE
-			endrem
-		endif
+		Local news:TNews = Game.Players[ blockOwnerID ].ProgrammeCollection.getNews(blockID)
+		'do not automagically create new blocks for others...
+		'all do it independently from each other (for intact randomizer base )
+		if not news then return TRUE
 
 		'deactivate events for that moment - avoid recursion
 		TPlayerProgrammePlan.fireEvents = FALSE
 
-		'no need to react on "add" as this is automatically done if the block does not exist
-		'if action=NET_ADD then Game.Players[ playerID ].ProgrammePlan.addNewsBlock(newsBlock)
-		if action=NET_DELETE then Game.Players[ blockOwnerID ].ProgrammePlan.removeNewsBlock(newsBlock)
-		if action=NET_CHANGE then Game.Players[ blockOwnerID ].ProgrammePlan.SetNewsBlockSlot(newsBlock, slot)
+		Game.Players[ blockOwnerID ].ProgrammePlan.SetNews(news, slot)
 
 		TPlayerProgrammePlan.fireEvents = TRUE
 
-		print "[NET] ReceivePlanNewsChange: sendingPlayer="+sendingPlayerID+", blockowner="+blockOwnerID+", block="+newsBlock.id+", news="+newsBlock.news.id+", action="+action
+		print "[NET] ReceivePlanSetNewsSlot: sendingPlayer="+sendingPlayerID+", blockowner="+blockOwnerID+", block="+news.id+" slot="+slot
 	End Method
 
 
@@ -807,7 +767,7 @@ print "[NET] ReceiveGameReady"
 
 		Local Adblock:TAdBlock	= TAdBlock.getBlock( playerID, blockID )
 		if not Adblock
-			Local Contract:TContract = Game.Players[ playerID ].ProgrammeCollection.getContract( contractID )
+			Local Contract:TAdContract = Game.Players[ playerID ].ProgrammeCollection.getAdContract( contractID )
 			If not contract then return
 
 			Adblock = TAdblock.CreateDragged( Contract,playerID )

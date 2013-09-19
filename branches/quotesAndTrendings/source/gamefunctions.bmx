@@ -896,11 +896,11 @@ Type TgfxContractlist extends TPlannerList
 		Local locx:Int 				= Pos.x - gfxcontracts.w + 10
 		Local locy:Int 				= Pos.y+7 - boxHeight
 		local font:TBitmapFont 		= Assets.getFont("Default", 10)
-		For Local contract:TContract = EachIn Game.Players[Game.playerID].ProgrammeCollection.ContractList 'all contracts of one player
+		For Local contract:TAdContract = EachIn Game.Players[Game.playerID].ProgrammeCollection.AdContractList 'all contracts of one player
 			locy :+ boxHeight
 			gfxtape.Draw(locx, locy)
 
-			font.drawBlock(contract.contractBase.title, locx + 13,locy + 3, 139,16,0,0,0,0,True)
+			font.drawBlock(contract.GetTitle(), locx + 13,locy + 3, 139,16,0,0,0,0,True)
 			If functions.IsIn(MouseManager.x,MouseManager.y, locx,locy, gfxtape.w, gfxtape.h)
 				Game.cursorstate = 1
 				SetAlpha 0.2;DrawRect(locx, locy, gfxtape.w, gfxtape.h) ;SetAlpha 1.0
@@ -1281,22 +1281,23 @@ Type TBlockGraphical extends TBlockMoveable
 End Type
 
 Type TGameObject {_exposeToLua="selected"}
-	Field id:Int		= 0 	{_exposeToLua saveload = "normal"}
+	Field id:Int		= 0 	{_exposeToLua}
 	Global LastID:int	= 0
 
 	Method New()
-		self.GenerateID()
-	End Method
-
-	Method GenerateID()
+		'assign a new id
 		Self.id = Self.LastID
 		Self.LastID:+1
 	End Method
 
+	Method GetID:int() {_exposeToLua}
+		return self.id
+	End Method
+
+
 	'overrideable method for cleanup actions
 	Method Remove()
 	End Method
-
 End Type
 
 Type TBlockMoveable extends TGameObject
@@ -1653,7 +1654,7 @@ Type TInterface
 				Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_ads")
 			    If adblock <> Null
 					CurrentProgrammeToolTip.TitleBGtype = 1
-					CurrentProgrammeText 				= getLocale("ADVERTISMENT")+": "+adblock.contract.contractBase.title
+					CurrentProgrammeText 				= getLocale("ADVERTISMENT")+": "+adblock.contract.GetTitle()
 				Else
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText				= getLocale("BROADCASTING_OUTAGE")
@@ -1722,7 +1723,7 @@ Type TInterface
 					If Game.getMinute() >= 5 and Game.getMinute() < 55
 						Local adblock:TAdBlock = Game.Players[ShowChannel].ProgrammePlan.getCurrentAdBlock()
 						if adblock
-							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + adblock.contract.contractBase.title+" (Mindestz.: "+functions.convertValue(String( adblock.contract.getMinAudience() ))+")"
+							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + adblock.contract.GetTitle()+" (Mindestz.: "+functions.convertValue(String( adblock.contract.getMinAudience() ))+")"
 						else
 							CurrentProgrammeToolTip.text :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
 						endif

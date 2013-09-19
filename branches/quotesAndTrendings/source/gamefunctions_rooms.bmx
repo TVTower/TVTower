@@ -283,6 +283,10 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
 		'inform others that a figure enters the room
 		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", TData.Create().Add("room", self) , figure ) )
 
+		'also set the current screen when changing rooms
+		'although this is "null" this emits events etc.
+		if figure.isActivePlayer() then screenManager.GoToScreen(null)
+
 		'close the door
 		If GetDoorType() >= 0 then CloseDoor(figure)
 	End Method
@@ -443,10 +447,7 @@ Type TRooms extends TGameObject  {_exposeToLua="selected"}
 		'if in subscreen, go to parent one
 		if self.screenManager.GetCurrentScreen() <> self.screenManager.baseScreen
 			if MOUSEMANAGER.IsHit(2)
-				local event:TEventSimple = TEventSimple.Create("screens.OnLeave", TData.Create().Add("room", self) , self.screenManager.GetCurrentScreen() )
-				EventManager.triggerEvent( event )
-				if not event.isVeto()
-					self.screenManager.GoToParentScreen()
+				if self.screenManager.GoToParentScreen()
 					MOUSEMANAGER.ResetKey(2)
 				endif
 			endif
@@ -536,7 +537,7 @@ Type TRoomHandler
 	End Function
 
 	'special events for screens used in rooms - only this event has the room as sender
-	'screens.onScreenUpdate/Draw is more general purpose
+	'screen.onScreenUpdate/Draw is more general purpose
 	Function _RegisterScreenHandler(updateFunc(triggerEvent:TEventBase), drawFunc(triggerEvent:TEventBase), screen:TScreen)
 		if screen
 			EventManager.registerListenerFunction( "room.onScreenUpdate", updateFunc, screen )
@@ -1406,7 +1407,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "TGUIBaseCoverBlock.OnMouseOver", onMouseOverProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
+		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
 		'drop programme ... so sell/buy the thing
 		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
 		'drop programme on dude - add back to player's collection
@@ -1693,7 +1694,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'is dragging even allowed? - eg. intercept if not enough money
 		EventManager.registerListenerFunction( "guiobject.onDrag", onDragProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "TGUIBaseCoverBlock.OnMouseOver", onMouseOverProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
+		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverProgrammeCoverBlock, "TGUIProgrammeCoverBlock" )
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeCoverBlockOnVendor, "TGUIProgrammeCoverBlock" )
 		'figure enters room - reset the suitcase's guilist, limit listening to this room
@@ -1899,9 +1900,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listMoviesGood then programme = TProgramme.GetRandomMovieWithPrice(75000)
-				if lists[j] = listMoviesCheap then programme = TProgramme.GetRandomMovieWithPrice(0,75000)
-				if lists[j] = listSeries then programme = TProgramme.GetRandomSerie()
+				if lists[j] = listMoviesGood then programme = TProgramme.GetRandomProgrammeWithPrice(75000,-1, TProgramme.TYPE_MOVIE)
+				if lists[j] = listMoviesCheap then programme = TProgramme.GetRandomProgrammeWithPrice(0,75000, TProgramme.TYPE_MOVIE)
+				if lists[j] = listSeries then programme = TProgramme.GetRandomProgramme(TProgramme.TYPE_SERIE)
 
 				'add new programme at slot
 				if programme
@@ -2174,8 +2175,10 @@ Type RoomHandler_News extends TRoomHandler
 	Global currentRoom:TRooms					'holding the currently updated room (so genre buttons can access it)
 
 	'lists for visually placing news blocks
-	Global NewsBlockListAvailable:TGUIListBase[5]
-	Global NewsBlockListUsed:TGUISlotList[5]
+	Global haveToRefreshGuiElements:int = TRUE
+	Global guiNewsListAvailable:TGUINewsList
+	Global guiNewsListUsed:TGUINewsSlotList
+	Global draggedGuiNews:TGuiNews = null
 
 	Function Init()
 		'create genre buttons
@@ -2195,33 +2198,50 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		'create the lists in the news planner
-		for local i:int = 1 to 4
-			NewsBlockListAvailable[i] = new TGUIListBase.Create(34,20,Assets.getSprite("gfx_news_sheet0").w, 356,"Newsplanner"+i)
-			NewsBlockListAvailable[i].SetAcceptDrop("TGUINewsBlock")
-			NewsBlockListAvailable[i].Resize(NewsBlockListAvailable[i].rect.GetW() + NewsBlockListAvailable[i].guiScroller.rect.GetW() + 3,NewsBlockListAvailable[i].rect.GetH())
-			NewsBlockListAvailable[i].guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").w,356)
+		guiNewsListAvailable = new TGUINewsList.Create(34,20,Assets.getSprite("gfx_news_sheet0").w, 356,"Newsplanner")
+		guiNewsListAvailable.SetAcceptDrop("TGUINews")
+		guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScroller.rect.GetW() + 3,guiNewsListAvailable.rect.GetH())
+		guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").w,356)
 
+		guiNewsListUsed = new TGUINewsSlotList.Create(444,105,Assets.getSprite("gfx_news_sheet0").w, 3*Assets.getSprite("gfx_news_sheet0").h,"Newsplanner")
+		guiNewsListUsed.SetItemLimit(3)
+		guiNewsListUsed.SetAcceptDrop("TGUINews")
+		guiNewsListUsed.SetSlotMinDimension(0,Assets.getSprite("gfx_news_sheet0").h)
+		guiNewsListUsed.SetAutofillSlots(false)
+		guiNewsListUsed.guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").w,3*Assets.getSprite("gfx_news_sheet0").h)
 
-			NewsBlockListUsed[i] = new TGUISlotList.Create(444,105,Assets.getSprite("gfx_news_sheet0").w, 3*Assets.getSprite("gfx_news_sheet0").h,"Newsplanner"+i)
-			NewsBlockListUsed[i].SetItemLimit(3)
-			NewsBlockListUsed[i].SetAcceptDrop("TGUINewsBlock")
-			NewsBlockListUsed[i].SetSlotMinDimension(0,Assets.getSprite("gfx_news_sheet0").h)
-			NewsBlockListUsed[i].SetAutofillSlots(false)
-			NewsBlockListUsed[i].guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").w,3*Assets.getSprite("gfx_news_sheet0").h)
-
-		Next
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
-		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropNewsBlock, "TGUINewsBlock" )
+		EventManager.registerListenerFunction("guiobject.onDropOnTargetAccepted", onDropNews, "TGUINews" )
 		'this lists want to delete the item if a right mouse click happens...
-		EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsBlock, "TGUINewsBlock")
+		EventManager.registerListenerFunction("guiobject.onClick", onClickNews, "TGUINews")
+
+		'we want to get informed if the news situation changes for a user
+		EventManager.registerListenerFunction("programmeplan.SetNews", onChangeNews )
+		EventManager.registerListenerFunction("programmeplan.RemoveNews", onChangeNews )
+		EventManager.registerListenerFunction("programmecollection.addNews", onChangeNews )
+		EventManager.registerListenerFunction("programmecollection.removeNews", onChangeNews )
+		'we want to know if we hover a specific block
+		EventManager.registerListenerFunction("guiGameObject.OnMouseOver", onMouseOverNews, "TGUINews" )
+
+		'for all news rooms - register if someone goes into the planner
+		local screen:TScreen = TScreen.GetScreen("screen_news_newsplanning")
+		'figure enters screen - reset the guilists, limit listening to the 4 rooms
+		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterNewsPlannerScreen, screen)
 		'also we want to interrupt leaving a room with dragged items
-		EventManager.registerListenerFunction( "screens.OnLeave", onLeaveScreen )
-
-
+		EventManager.registerListenerFunction("screen.OnLeave", onLeaveNewsPlannerScreen, screen)
 
 		super._RegisterScreenHandler( onUpdateNews, onDrawNews, TScreen.GetScreen("screen_news") )
 		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, TScreen.GetScreen("screen_news_newsplanning") )
+	End Function
+
+
+	Function CheckPlayerInRoom:int()
+		'check if we are in the correct room
+		if not Game.getPlayer().figure.inRoom then return FALSE
+		if Game.getPlayer().isInRoom("newsagency") OR Game.getPlayer().isInRoom("newsplanner") then return FALSE
+
+		return TRUE
 	End Function
 
 
@@ -2229,12 +2249,14 @@ Type RoomHandler_News extends TRoomHandler
 	'News: room screen
 	'===================================
 
+
 	Function onDrawNews:int( triggerEvent:TEventBase )
 		GUIManager.Draw("newsroom")
 		If PlannerToolTip Then PlannerToolTip.Draw()
 		If NewsGenreTooltip then NewsGenreTooltip.Draw()
 
 	End Function
+
 
 	Function onUpdateNews:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
@@ -2262,6 +2284,7 @@ Type RoomHandler_News extends TRoomHandler
 			endif
 		endif
 	End Function
+
 
 	'could handle the buttons in one function ( by comparing triggerEvent._trigger )
 	'onHover: handle tooltip
@@ -2301,6 +2324,7 @@ Type RoomHandler_News extends TRoomHandler
 		EndIf
 	End Function
 
+
 	Function onClickNewsGenreButtons:int( triggerEvent:TEventBase )
 		local button:TGUIImageButton= TGUIImageButton(triggerEvent._sender)
 		local room:TRooms			= currentRoom
@@ -2315,6 +2339,7 @@ Type RoomHandler_News extends TRoomHandler
 			if button = NewsGenreButtons[i] then Game.Players[ Game.playerID ].IncreaseNewsAbonnement(i);exit
 		Next
 	End Function
+
 
 	Function onDrawNewsGenreButtons:int( triggerEvent:TEventBase )
 		local button:TGUIImageButton= TGUIImageButton(triggerEvent._sender)
@@ -2351,9 +2376,63 @@ Type RoomHandler_News extends TRoomHandler
 
 		SetColor 255,255,255  'normal
 		GUIManager.Draw("Newsplanner")
-		'player specific newsplanner elements
-		GUIManager.Draw("Newsplanner"+ room.owner )
 	End Function
+
+
+	Function onChangeNews:int( triggerEvent:TEventBase )
+		'something changed -- refresh  gui elements
+		RefreshGuiElements()
+	End Function
+
+
+	'deletes all gui elements (eg. for rebuilding)
+	Function RemoveAllGuiElements:int()
+		guiNewsListAvailable.emptyList()
+		guiNewsListUsed.emptyList()
+		For local guiNews:TGuiNews = eachin GuiManager.listDragged
+			guiNews.remove()
+		Next
+	End Function
+
+
+	Function RefreshGuiElements:int()
+		'remove gui elements with news the player does not have anylonger
+		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries
+			if not Game.getPlayer().ProgrammeCollection.hasNews(guiNews.news) then guiNews.remove()
+		Next
+		For local guiNews:TGuiNews = eachin guiNewsListUsed._slots
+			if not Game.getPlayer().ProgrammePlan.hasNews(guiNews.news) then guiNews.remove()
+		Next
+		'if removing "dragged" we also bug out the "replace"-mechanism when
+		'dropping on occupied slots
+		'so therefor this items should check itself for being "outdated"
+		'For local guiNews:TGuiNews = eachin GuiManager.ListDragged
+		'	if guiNews.news.isOutdated() then guiNews.remove()
+		'Next
+
+		'create gui element for news still missing them
+		For Local news:TNews = EachIn Game.getPlayer().ProgrammeCollection.news
+			if not guiNewsListAvailable.ContainsNews(news)
+				'only add for news NOT planned in the news show
+				if not Game.getPlayer().ProgrammePlan.HasNews(news)
+					local guiNews:TGUINews = new TGUINews.Create(news.title)
+					guiNews.SetNews(news)
+					guiNewsListAvailable.AddItem(guiNews)
+				endif
+			endif
+		Next
+		For Local i:int = 0 to Game.getPlayer().ProgrammePlan.news.length - 1
+			local news:TNews = Game.getPlayer().ProgrammePlan.GetNews(i)
+			if news and not guiNewsListUsed.ContainsNews(news)
+				local guiNews:TGUINews = new TGUINews.Create(news.title)
+				guiNews.SetNews(news)
+				guiNewsListUsed.AddItem(guiNews, string(i))
+			endif
+		Next
+
+		haveToRefreshGuiElements = FALSE
+	End Function
+
 
 	Function onUpdateNewsPlanner:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
@@ -2361,90 +2440,89 @@ Type RoomHandler_News extends TRoomHandler
 		if not room then return 0
 
 		Game.cursorstate = 0
-'		If TNewsBlock.AdditionallyDragged > 0 Then Game.cursorstate=2
 
-		'create Newsblock-guiBlocks if not done yet
-		For Local block:TNewsBlock = EachIn Game.Players[ room.owner ].ProgrammePlan.NewsBlocks
-			if not block.guiBlock
-				block.guiBlock = new TGUINewsBlock.Create(block.news.title)
-				block.guiBlock.SetNewsBlock(block)
-				if block.slot >= 0
-					NewsBlockListUsed[ room.owner ].AddItem(block.guiBlock, string(block.slot))
-				else
-					NewsBlockListAvailable[ room.owner ].AddItem(block.guiBlock)
-				endif
-			endif
-			'check if game logic changed slots - if so, update positions
-			'used-list has a special order, so we have to sync slot-numbers
-			if block.slot >= 0
-				'move to the other list if not done yet
-				if block.guiBlock.getParent("TGUIListBase") = NewsBlockListAvailable[ room.owner ]
-					if NewsBlockListAvailable[ room.owner ].RemoveItem(block.guiBlock)
-						NewsBlockListUsed[ room.owner].AddItem(block.guiBlock, string(block.slot) )
-					endif
-				'if it is already on the correct side ... just set the correct slot values
-				elseif block.guiBlock.getParent("TGUISlotList") = NewsBlockListUsed[ room.owner ]
-					NewsBlockListUsed[ room.owner ].SetItemToSlot(block.guiBlock, block.slot)
-				endif
-			endif
+		'delete unused and create new gui elements
+		if haveToRefreshGuiElements then RefreshGUIElements()
 
-			if block.slot < 0 AND block.guiBlock.getParent("TGUISlotList") = NewsBlockListUsed[ room.owner ]
-				if NewsBlockListUsed[ room.owner].RemoveItem(block.guiBlock)
-					NewsBlockListAvailable[ room.owner ].AddItem(block.guiBlock)
-					print "moved to left"
-				else
-					print "not able to remove from usedList"
-				endif
-			endif
-		Next
+		'reset dragged block - will get set automatically on gui-update
+		draggedGuiNews = null
 
 		'general newsplanner elements
 		GUIManager.Update("Newsplanner")
-		'player specific newsplanner elements
-		GUIManager.Update("Newsplanner"+ room.owner )
 	End Function
+
+
+	'we need to know whether we dragged or hovered an item - so we
+	'can react to right clicks ("forbid room leaving")
+	Function onMouseOverNews:int( triggerEvent:TEventBase )
+		if not CheckPlayerInRoom() then return FALSE
+
+		local item:TGUINews = TGUINews(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		if item.isDragged() then draggedGuiNews = item
+
+		return TRUE
+	End Function
+
 
 	'in case of right mouse button click we want to remove the
 	'block from the player's programmePlan
-	Function onClickNewsBlock:int( triggerEvent:TEventBase )
+	Function onClickNews:int(triggerEvent:TEventBase)
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
 
-		local guiBlock:TGUINewsBlock= TGUINewsBlock(triggerEvent._sender)
+		local guiNews:TGUINews= TGUINews(triggerEvent._sender)
 		'ignore wrong types and NON-dragged items
-		if not guiBlock or not guiBlock.isDragged() then return FALSE
+		if not guiNews or not guiNews.isDragged() then return FALSE
 
-		'delete the newsblock of that guinewsblock from the owners programmeplan
-		' - this also removes the guiblock
-		Game.Players[ guiBlock.newsBlock.owner ].ProgrammePlan.RemoveNewsBlock( guiBlock.newsBlock )
+		'remove from plan (with addBackToCollection=FALSE) and collection
+		Game.Players[guiNews.news.owner].ProgrammePlan.RemoveNews(guiNews.news, FALSE)
+		Game.Players[guiNews.news.owner].ProgrammeCollection.RemoveNews(guiNews.news)
+
+		'remove gui object
+		guiNews.remove()
 	End Function
 
-	Function onDropNewsBlock:int( triggerEvent:TEventBase )
-		local guiNewsBlock:TGUINewsBlock = TGUINewsBlock( triggerEvent._sender )
+
+	Function onDropNews:int(triggerEvent:TEventBase)
+		local guiNews:TGUINews = TGUINews( triggerEvent._sender )
 		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
-		if not guiNewsBlock or not receiverList then return FALSE
+		if not guiNews or not receiverList then return FALSE
 
-		local owner:int = guiNewsBlock.newsBlock.owner
+		local owner:int = guiNews.news.owner
 
-		if receiverList = NewsBlockListAvailable[owner]
-			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.newsBlock, -1)
-		elseif receiverList = NewsBlockListUsed[owner]
-			local slot:int = NewsBlockListUsed[owner].getSlot(guiNewsBlock)
-			Game.Players[ owner ].ProgrammePlan.SetNewsBlockSlot(guiNewsBlock.newsBlock, slot)
+		if receiverList = guiNewsListAvailable
+			Game.Players[owner].ProgrammePlan.RemoveNews(guiNews.news, TRUE)
+		elseif receiverList = guiNewsListUsed
+			local slot:int = -1
+			'check drop position
+			local coord:TPoint = TPoint(triggerEvent.getData().get("coord", TPoint.Create(-1,-1)))
+			if coord then slot = guiNewsListUsed.GetSlotByCoord(coord)
+			if slot = -1 then slot = guiNewsListUsed.getSlot(guiNews)
+
+			'this may also drag a news that occupied that slot before
+			Game.Players[owner].ProgrammePlan.SetNews(guiNews.news, slot)
 		endif
 	End Function
 
-	Function onLeaveScreen:int( triggerEvent:TEventBase )
-		local screen:TScreen = TScreen( triggerEvent._sender )
-		if screen.name <> "screen_news_newsplanning" return TRUE
 
-		'if there are some draggedObjects then do not leave
-		if GUIManager.draggedObjects > 0
+	'clear the guilist for the suitcase if a player enters
+	'screens are only handled by real players
+	Function onEnterNewsPlannerScreen:int(triggerEvent:TEventBase)
+		'empty the guilist / delete gui elements
+		RemoveAllGuiElements()
+		RefreshGUIElements()
+	End Function
+
+
+	Function onLeaveNewsPlannerScreen:int( triggerEvent:TEventBase )
+		'do not allow leaving as long as we have a dragged block
+		if draggedGuiNews
 			triggerEvent.setVeto()
 			return FALSE
-		else
-			return TRUE
 		endif
+		return TRUE
 	End Function
 End Type
 
@@ -2577,24 +2655,25 @@ End Type
 
 'Movie agency
 Type RoomHandler_AdAgency extends TRoomHandler
-	Global hoveredGuiContractCoverBlock:TGuiContractCoverBlock = null
-	Global draggedGuiContractCoverBlock:TGuiContractCoverBlock = null
+	Global hoveredGuiAdContract:TGuiAdContract = null
+	Global draggedGuiContractCoverBlock:TGuiAdContract = null
 
 	Global VendorArea:TGUISimpleRect	'allows registration of drop-event
 
 	'arrays holding the different blocks
 	'we use arrays to find "free slots" and set to a specific slot
-	Global listNormal:TContract[]
-	Global listCheap:TContract[]
+	Global listNormal:TAdContract[]
+	Global listCheap:TAdContract[]
 
 	'graphical lists for interaction with blocks
-	Global GuiListNormal:TGUIContractSlotList[]
-	Global GuiListCheap:TGUIContractSlotList = null
-	Global GuiListSuitcase:TGUIContractSlotList = null
+	Global haveToRefreshGuiElements:int = TRUE
+	Global GuiListNormal:TGUIAdContractSlotList[]
+	Global GuiListCheap:TGUIAdContractSlotList = null
+	Global GuiListSuitcase:TGUIAdContractSlotList = null
 
 	'configuration
 	Global suitcasePos:TPoint					= TPoint.Create(520,100)
-	Global suitcaseGuiListDisplace:TPoint		= TPoint.Create(17,32)
+	Global suitcaseGuiListDisplace:TPoint		= TPoint.Create(19,32)
 	Global contractsPerLine:int					= 4
 	Global contractsNormalAmount:int			= 12
 	Global contractsCheapAmount:int				= 4
@@ -2602,24 +2681,29 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Function Init()
-		'resize arrays
+		'===== CREATE/RESIZE LISTS =====
+
 		listNormal		= listNormal[..contractsNormalAmount]
 		listCheap		= listCheap[..contractsCheapAmount]
 
+
+		'===== CREATE GUI LISTS =====
+
 		GuiListNormal	= GuiListNormal[..3]
 		for local i:int = 0 to GuiListNormal.length-1
-			GuiListNormal[i] = new TGUIContractSlotList.Create(430-i*70,170+i*32, 200,140, "adagency")
+			GuiListNormal[i] = new TGUIAdContractSlotList.Create(430-i*70,170+i*32, 200,140, "adagency")
 			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListNormal[i].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
 			GuiListNormal[i].Resize(Assets.GetSprite("gfx_contracts_0").w * (contractsNormalAmount / GuiListNormal.length), Assets.GetSprite("gfx_contracts_0").h )
 			GuiListNormal[i].SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").w, Assets.GetSprite("gfx_contracts_0").h)
-			GuiListNormal[i].SetAcceptDrop("TGUIContractCoverBlock")
+			GuiListNormal[i].SetAcceptDrop("TGuiAdContract")
 			GuiListNormal[i].setZindex(i)
 		Next
 
-		GuiListSuitcase	= new TGUIContractSlotList.Create(suitcasePos.GetX()+suitcaseGuiListDisplace.GetX(),suitcasePos.GetY()+suitcaseGuiListDisplace.GetY(),200,80, "adagency")
+		GuiListSuitcase	= new TGUIAdContractSlotList.Create(suitcasePos.GetX()+suitcaseGuiListDisplace.GetX(),suitcasePos.GetY()+suitcaseGuiListDisplace.GetY(),200,80, "adagency")
+		GuiListSuitcase.SetAutofillSlots(true)
 
-		GuiListCheap	= new TGUIContractSlotList.Create(70,200,80,80, "adagency")
+		GuiListCheap	= new TGUIAdContractSlotList.Create(70,200,80,80, "adagency")
 		GuiListCheap.setEntriesBlockDisplacement(70,0)
 
 		GuiListCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
@@ -2631,64 +2715,61 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListCheap.SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").w, Assets.GetSprite("gfx_contracts_0").h)
 		GuiListSuitcase.SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").w, Assets.GetSprite("gfx_contracts_0").h)
 
-		GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 6)
-		GuiListSuitcase.SetEntryDisplacement( -1, 0)
+		GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
+		GuiListSuitcase.SetEntryDisplacement( 0, 0)
 
-		GuiListCheap.SetAcceptDrop("TGUIContractCoverBlock")
-		GuiListSuitcase.SetAcceptDrop("TGUIContractCoverBlock")
+		GuiListCheap.SetAcceptDrop("TGuiAdContract")
+		GuiListSuitcase.SetAcceptDrop("TGuiAdContract")
 
 		VendorArea = new TGUISimpleRect.Create(TRectangle.Create(286,110, Assets.GetSprite("gfx_hint_rooms_adagency").w, Assets.GetSprite("gfx_hint_rooms_adagency").h), "adagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
+
+		'===== REGISTER EVENTS =====
+
 		'to react on changes in the programmeCollection (eg. contract finished)
 		EventManager.registerListenerFunction( "programmecollection.addContract", onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeContract", onChangeProgrammeCollection )
 
+		'for all news rooms - register if someone goes into the agency
+		local screen:TScreen = TScreen.GetScreen("screen_adagency")
+		'figure enters screen - reset the guilists
+		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterAdAgencyScreen, screen)
 
-		'to change the asset - we intercept in dragging events
-		EventManager.registerListenerFunction( "guiobject.onDrag", onDragContract, "TGUIContractCoverBlock" )
 		'begin drop - to intercept if dropping to wrong list
-		EventManager.registerListenerFunction( "guiobject.onTryDropOnTarget", onTryDropContract, "TGUIContractCoverBlock" )
+		EventManager.registerListenerFunction( "guiobject.onTryDropOnTarget", onTryDropContract, "TGuiAdContract" )
 		'drop ... to vendor or suitcase
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropContract, "TGUIContractCoverBlock" )
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropContract, "TGuiAdContract" )
 		'drop on vendor - sell things
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropContractOnVendor, "TGUIContractCoverBlock" )
+		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropContractOnVendor, "TGuiAdContract" )
 		'we want to know if we hover a specific block - to show a datasheet
-		EventManager.registerListenerFunction( "TGUIBaseCoverBlock.OnMouseOver", onMouseOverContract, "TGUIContractCoverBlock" )
-		'figure enters room - reset the suitcase's guilist, limit listening to this room
-		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, TRooms.GetRoomByDetails("adagency",0) )
+		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
 		'figure leaves room - only without dragged blocks
 		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRooms.GetRoomByDetails("adagency",0) )
 		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, TRooms.GetRoomByDetails("adagency",0) )
+		'this lists want to delete the item if a right mouse click happens...
+		EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract")
 
 		super._RegisterScreenHandler( onUpdateAdAgency, onDrawAdAgency, TScreen.GetScreen("screen_adagency") )
 	End Function
 
 
 	'clear the guilist for the suitcase if a player enters
-	Function onEnterRoom:int( triggerEvent:TEventBase )
-		local room:TRooms = TRooms(triggerEvent.GetSender())
-		local figure:TFigures = TFigures(triggerEvent.GetData().Get("figure"))
-		if not room or not figure then return FALSE
+	'screens are only handled by real players
+	Function onEnterAdAgencyScreen:int(triggerEvent:TEventBase)
+		'fill all open slots in the agency - eg. when entering the first time
+		ReFillBlocks()
 
-		'we are not interested in other figures than our player's
-		if not figure.IsActivePlayer() then return FALSE
+		'==== EMPTY/DELETE GUI-ELEMENTS =====
 
-		'empty guilists / delete gui elements
-		'- the real list still may contain elements with gui-references
-		'- this avoids zombies when watching players..
-		hoveredGuiContractCoverBlock = null
+		hoveredGuiAdContract = null
 		draggedGuiContractCoverBlock = null
 
-		'reorders the contracts of the agency (not the suitcase)
-		'and also empties the corresponding gui list
+		'reorders contracts of agency and player - also empties gui lists
 		ResetContractOrder()
+		RefreshGUIElements()
 
-		GuiListSuitcase.EmptyList()
-
-		'fill all open slots in the agency - eg when entering the first time
-		ReFillBlocks()
 	End Function
 
 
@@ -2720,9 +2801,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if not figure or not figure.parentPlayer then return FALSE
 
 		'sign all new contracts
-		For Local contract:TContract = EachIn figure.parentPlayer.ProgrammeCollection.suitcaseContractList
+		For Local contract:TAdContract = EachIn figure.parentPlayer.ProgrammeCollection.suitcaseAdContractList
 			'adds a contract to the players collection (gets signed THERE)
-			figure.ParentPlayer.ProgrammeCollection.AddContract(contract)
+			figure.ParentPlayer.ProgrammeCollection.AddAdContract(contract)
 		Next
 
 		'fill all open slots in the agency
@@ -2738,9 +2819,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Function GetContractsInStock:int()
 		Local ret:Int = 0
-		local lists:TContract[][] = [listNormal,listCheap]
+		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
-			For Local contract:TContract = EachIn lists[j]
+			For Local contract:TAdContract = EachIn lists[j]
 				if contract Then ret:+1
 			Next
 		Next
@@ -2748,12 +2829,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Function
 
 
-	Function GetContractByPosition:TContract(position:int)
+	Function GetContractByPosition:TAdContract(position:int)
 		if position > GetContractsInStock() then return null
 		local currentPosition:int = 0
-		local lists:TContract[][] = [listNormal,listCheap]
+		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
-			For Local contract:TContract = EachIn lists[j]
+			For Local contract:TAdContract = EachIn lists[j]
 				if contract
 					if currentPosition = position then return contract
 					currentPosition:+1
@@ -2764,10 +2845,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Function
 
 
-	Function HasContract:int(contract:TContract)
-		local lists:TContract[][] = [listNormal,listCheap]
+	Function HasContract:int(contract:TAdContract)
+		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
-			For Local cont:TContract = EachIn lists[j]
+			For Local cont:TAdContract = EachIn lists[j]
 				if cont = contract then return TRUE
 			Next
 		Next
@@ -2775,27 +2856,27 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Function
 
 
-	Function GetContractByID:TContract(contractID:int)
-		local lists:TContract[][] = [listNormal,listCheap]
+	Function GetContractByID:TAdContract(contractID:int)
+		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
-			For Local contract:TContract = EachIn lists[j]
+			For Local contract:TAdContract = EachIn lists[j]
 				if contract and contract.id = contractID then return contract
 			Next
 		Next
 		return null
 	End Function
 
-	Function GiveContractToPlayer:int(contract:TContract, playerID:int, sign:int=FALSE)
-		if contract.owner = playerID then return FALSE
 
+	Function GiveContractToPlayer:int(contract:TAdContract, playerID:int, sign:int=FALSE)
+		if contract.owner = playerID then return FALSE
 		if not Game.isPlayer(playerID) then return FALSE
 
 		'try to add to suitcase of player
 		if not sign
-			if not Game.Players[ playerID ].ProgrammeCollection.AddUnsignedContractToSuitcase(contract) then return FALSE
+			if not Game.Players[ playerID ].ProgrammeCollection.AddUnsignedAdContractToSuitcase(contract) then return FALSE
 		'we do not need the suitcase, direkt sign pls (eg. for AI)
 		else
-			if not Game.Players[ playerID ].ProgrammeCollection.AddContract(contract) then return FALSE
+			if not Game.Players[ playerID ].ProgrammeCollection.AddAdContract(contract) then return FALSE
 		endif
 
 		'remove from agency's lists
@@ -2805,8 +2886,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Function
 
 
-	Function TakeContractFromPlayer:int(contract:TContract, playerID:int)
-		if Game.Players[ playerID ].ProgrammeCollection.RemoveUnsignedContractFromSuitcase(contract)
+	Function TakeContractFromPlayer:int(contract:TAdContract, playerID:int)
+		if Game.Players[ playerID ].ProgrammeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
 			'add to agency's lists - if not existing yet
 			if not HasContract(contract) then AddContract(contract)
 
@@ -2816,40 +2897,38 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 	End Function
 
-	Function isCheapContract:int(contract:TContract)
+
+	Function isCheapContract:int(contract:TAdContract)
 		return contract.GetMinAudiencePercentage() < contractCheapAudienceMaximum
 	End Function
 
+
 	Function ResetContractOrder:int()
 		local contracts:TList = CreateList()
-		for local contract:TContract = eachin listNormal
+		for local contract:TAdContract = eachin listNormal
 			contracts.addLast(contract)
 		Next
-		for local contract:TContract = eachin listCheap
+		for local contract:TAdContract = eachin listCheap
 			contracts.addLast(contract)
 		Next
-		listNormal = new TContract[listNormal.length]
-		listCheap = new TContract[listCheap.length]
+		listNormal = new TAdContract[listNormal.length]
+		listCheap = new TAdContract[listCheap.length]
 
 		contracts.sort()
 
 		'add again - so it gets sorted
-		for local contract:TContract = eachin contracts
+		for local contract:TAdContract = eachin contracts
 			AddContract(contract)
 		Next
 
-		'empty gui list - so it gets rebuild during update
-		for local i:int = 0 to GuiListNormal.length-1
-			if GuiListNormal[i] then GuiListNormal[i].EmptyList()
-		Next
-
-		if GuiListCheap then GuiListCheap.EmptyList()
+		RemoveAllGuiElements()
 	End Function
 
-	Function RemoveContract:int(contract:TContract)
+
+	Function RemoveContract:int(contract:TAdContract)
 		local foundContract:int = FALSE
 		'remove from agency's lists
-		local lists:TContract[][] = [listNormal,listCheap]
+		local lists:TAdContract[][] = [listNormal,listCheap]
 		For local j:int = 0 to lists.length-1
 			For local i:int = 0 to lists[j].length-1
 				if lists[j][i] = contract then lists[j][i] = null;foundContract=TRUE
@@ -2860,10 +2939,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Function
 
 
-	Function AddContract:int(contract:TContract)
+	Function AddContract:int(contract:TAdContract)
 		'try to fill the program into the corresponding list
 		'we use multiple lists - if the first is full, try second
-		local lists:TContract[][]
+		local lists:TAdContract[][]
 
 		if isCheapContract(contract)
 			lists = [listCheap,listNormal]
@@ -2891,18 +2970,141 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 
+
+	'deletes all gui elements (eg. for rebuilding)
+	Function RemoveAllGuiElements:int()
+		For local i:int = 0 to GuiListNormal.length-1
+			GuiListNormal[i].EmptyList()
+		Next
+		GuiListCheap.EmptyList()
+		GuiListSuitcase.EmptyList()
+		For local guiAdContract:TGuiAdContract = eachin GuiManager.listDragged
+			guiAdContract.remove()
+		Next
+
+		'to recreate everything during next update...
+		haveToRefreshGuiElements = TRUE
+	End Function
+
+
+	Function RefreshGuiElements:int()
+		'===== REMOVE UNUSED =====
+		'remove gui elements with contracts the player does not have any longer
+
+		'suitcase
+		For local guiAdContract:TGuiAdContract = eachin GuiListSuitcase._slots
+			'if the player has this contract in suitcase or list, skip deletion
+			if Game.getPlayer().ProgrammeCollection.HasAdContract(guiAdContract.contract) then continue
+			if Game.getPlayer().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract) then continue
+
+			'print "guiListSuitcase has obsolete contract: "+guiAdContract.contract.id
+			guiAdContract.remove()
+		Next
+		'agency lists
+		For local i:int = 0 to GuiListNormal.length-1
+			For local guiAdContract:TGuiAdContract = eachin GuiListNormal[i]._slots
+
+				if not HasContract(guiAdContract.contract) then print "REM guiListNormal"+i+" has obsolete contract: "+guiAdContract.contract.id
+				if not HasContract(guiAdContract.contract) then guiAdContract.remove()
+			Next
+		Next
+		For local guiAdContract:TGuiAdContract = eachin GuiListCheap._slots
+			'if not HasContract(guiAdContract.contract) then	print "REM guiListCheap has obsolete contract: "+guiAdContract.contract.id
+			if not HasContract(guiAdContract.contract) then guiAdContract.remove()
+		Next
+
+
+		'===== CREATE NEW =====
+		'create missing gui elements for all contract-lists
+
+		'normal list
+		For local contract:TAdContract = eachin listNormal
+			if not contract then continue
+			local contractAdded:int = FALSE
+
+			'search the contract in all of our lists...
+			local contractFound:int = FALSE
+			For local i:int = 0 to GuiListNormal.length-1
+				if contractFound then continue
+				if GuiListNormal[i].ContainsContract(contract) then contractFound=true
+			Next
+
+			'try to fill in one of the normalList-Parts
+			if not contractFound
+				For local i:int = 0 to GuiListNormal.length-1
+					if contractAdded then continue
+					if GuiListNormal[i].ContainsContract(contract) then contractAdded=true;continue
+					if GuiListNormal[i].getFreeSlot() < 0 then continue
+					local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+					'change look
+					block.InitAssets( block.getAssetName(-1, FALSE ), block.getAssetName(-1, TRUE ) )
+
+					'print "ADD guiListNormal"+i+" missed new contract: "+block.contract.id
+
+					GuiListNormal[i].addItem(block, "-1")
+					contractAdded = true
+				Next
+				if not contractAdded
+					print "[ERROR] AdAgency: contract exists but does not fit in GuiListNormal - contract removed."
+					RemoveContract(contract)
+				endif
+			endif
+		Next
+
+		'cheap list
+		For local contract:TAdContract = eachin listCheap
+			if not contract then continue
+			if GuiListCheap.ContainsContract(contract) then continue
+			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+			'change look
+			block.InitAssets( block.getAssetName(-1, FALSE ), block.getAssetName(-1, TRUE ) )
+
+			'print "ADD guiListCheap missed new contract: "+block.contract.id
+
+			GuiListCheap.addItem(block, "-1")
+		Next
+
+		'create missing gui elements for the players contracts
+		For local contract:TAdContract = eachin Game.getPlayer().ProgrammeCollection.AdContractList
+			if guiListSuitcase.ContainsContract(contract) then continue
+			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+			'change look
+			block.InitAssets( block.getAssetName(-1, TRUE ), block.getAssetName(-1, TRUE ) )
+
+			'print "ADD guiListSuitcase missed new (old) contract: "+block.contract.id
+
+			block.setOption(GUI_OBJECT_DRAGABLE, FALSE)
+			guiListSuitcase.addItem(block, "-1")
+		Next
+
+		'create missing gui elements for the current suitcase
+		For local contract:TAdContract = eachin Game.getPlayer().ProgrammeCollection.SuitcaseAdContractList
+			if guiListSuitcase.ContainsContract(contract) then continue
+			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
+			'change look
+			block.InitAssets( block.getAssetName(-1, TRUE ), block.getAssetName(-1, TRUE ) )
+
+			'print "guiListSuitcase missed new contract: "+block.contract.id
+
+			guiListSuitcase.addItem(block, "-1")
+		Next
+
+		haveToRefreshGuiElements = FALSE
+	End Function
+
+
 	'refills slots in the movie agency
 	Function ReFillBlocks:Int()
-		local lists:TContract[][] = [listNormal,listCheap]
-		local contract:TContract = null
+		local lists:TAdContract[][] = [listNormal,listCheap]
+		local contract:TAdContract = null
 
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listNormal then contract = TContract.Create( TContractBase.GetRandom() )
-				if lists[j] = listCheap then contract = TContract.Create( TContractBase.GetRandomWithLimitedAudienceQuote(0.0, contractCheapAudienceMaximum) )
+				if lists[j] = listNormal then contract = new TAdContract.Create( TAdContractBase.GetRandom() )
+				if lists[j] = listCheap then contract = new TAdContract.Create( TAdContractBase.GetRandomWithLimitedAudienceQuote(0.0, contractCheapAudienceMaximum) )
 
 				'add new contract to slot
 				if contract
@@ -2930,7 +3132,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'Ad Agency: Room screen
 	'===================================
 
-
 	'if players are in the agency during changes
 	'to their programme collection, react to...
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
@@ -2939,18 +3140,33 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local figure:TFigures = TFigures( triggerEvent.getData().get("figure") )
 		if not figure and not figure.isActivePlayer() then return FALSE
 
-		'empty the suitcase for rebuilding in update call
-		GuiListSuitcase.EmptyList()
+		RefreshGuiElements()
+	End Function
+
+
+	'in case of right mouse button click we want to remove the
+	'block from the player's programmePlan
+	Function onClickContract:int(triggerEvent:TEventBase)
+		'only react if the click came from the right mouse button
+		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
+
+		local guiAdContract:TGuiAdContract= TGUIAdContract(triggerEvent._sender)
+		'ignore wrong types and NON-dragged items
+		if not guiAdContract or not guiAdContract.isDragged() then return FALSE
+
+		'will automatically rebuild at correct spot
+		'remove gui object
+		guiAdContract.remove()
 	End Function
 
 
 	Function onMouseOverContract:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom() then return FALSE
 
-		local item:TGUIContractCoverBlock = TGUIContractCoverBlock(triggerEvent.GetSender())
+		local item:TGuiAdContract = TGuiAdContract(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
-		hoveredGuiContractCoverBlock = item
+		hoveredGuiAdContract = item
 		if item.isDragged() then draggedGuiContractCoverBlock = item
 
 		return TRUE
@@ -2961,13 +3177,13 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Function onDropContractOnVendor:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom() then return FALSE
 
-		local guiBlock:TGUIContractCoverBlock = TGUIContractCoverBlock( triggerEvent._sender )
+		local guiBlock:TGuiAdContract = TGuiAdContract( triggerEvent._sender )
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
 		if not guiBlock or not receiver or receiver <> VendorArea then return FALSE
 
 		local parent:TGUIobject = guiBlock._parent
 		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
-		local senderList:TGUIContractSlotList = TGUIContractSlotList(parent)
+		local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(parent)
 		if not senderList then return FALSE
 
 		'if coming from suitcase, try to remove it from the player
@@ -2981,20 +3197,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			RemoveContract(guiBlock.contract)
 			AddContract(guiBlock.contract)
 		endif
-		'reset gui element
+		'remove the block, will get recreated if needed
 		guiBlock.remove()
-		guiBlock = null
+
+		'something changed...refresh missing/obsolete...
+		RefreshGuiElements()
 
 		return TRUE
 	End function
-
-
-	'we intercept so we can change the used assed
-	Function onDragContract:int( triggerEvent:TEventBase )
-		local guiBlock:TGUIContractCoverBlock = TGUIContractCoverBlock( triggerEvent._sender )
-		'set to dragged
-		guiBlock.InitAsset( guiBlock.getAssetName(-1, TRUE ) )
-	End Function
 
 
 	'we intercept that event so we can avoid dropping from one
@@ -3002,13 +3212,13 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Function onTryDropContract:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom() then return FALSE
 
-		local guiBlock:TGUIContractCoverBlock = TGUIContractCoverBlock( triggerEvent._sender )
-		local receiverList:TGUIContractSlotList = TGUIContractSlotList( triggerEvent._receiver )
+		local guiBlock:TGuiAdContract = TGuiAdContract( triggerEvent._sender )
+		local receiverList:TGUIAdContractSlotList = TGUIAdContractSlotList( triggerEvent._receiver )
 		if not guiBlock or not receiverList then return FALSE
 
 		local parent:TGUIobject = guiBlock._parent
 		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
-		local senderList:TGUIContractSlotList = TGUIContractSlotList(parent)
+		local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(parent)
 		if not senderList then return FALSE
 
 		'just dropping back to origin - no problem
@@ -3030,60 +3240,61 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Function onDropContract:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom() then return FALSE
 
-		local guiBlock:TGUIContractCoverBlock = TGUIContractCoverBlock( triggerEvent._sender )
-		local receiverList:TGUIContractSlotList = TGUIContractSlotList( triggerEvent._receiver )
-		if not guiBlock or not receiverList then return FALSE
+		local guiAdContract:TGuiAdContract = TGuiAdContract(triggerEvent._sender)
+		local receiverList:TGUIAdContractSlotList = TGUIAdContractSlotList(triggerEvent._receiver)
+		if not guiAdContract or not receiverList then return FALSE
 
 		'get current owner of the contract, as the field "owner" is set
 		'during sign we cannot rely on it. So we check if the player has
 		'the contract in the suitcaseContractList
-		local owner:int = guiBlock.contract.owner
-		if owner <= 0 and Game.getPlayer().ProgrammeCollection.HasUnsignedContractInSuitcase(guiBlock.contract)
+		local owner:int = guiAdContract.contract.owner
+		if owner <= 0 and Game.getPlayer().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract)
 			owner = Game.playerID
 		endif
 
+		'find out if we sell it to the vendor or drop it to our suitcase
 		local toVendor:int = FALSE
 		for local i:int = 0 to GuiListNormal.length
 			if receiverList = GuiListNormal[i] then toVendor = true;exit
 		Next
-		if receiverList = GuiListcheap then toVendor = true
+		if receiverList = GuiListCheap then toVendor = true
 
 		if toVendor
-			guiBlock.InitAsset( guiBlock.getAssetName(-1, FALSE ) )
+			guiAdContract.InitAssets( guiAdContract.getAssetName(-1, FALSE ), guiAdContract.getAssetName(-1, TRUE ) )
 
 			'no problem when dropping vendor programme to vendor..
 			if owner <= 0 then return TRUE
-			if not TakeContractFromPlayer(guiBlock.contract, Game.getPlayer().playerID )
+			if not TakeContractFromPlayer(guiAdContract.contract, Game.playerID )
 				triggerEvent.setVeto()
 				return FALSE
 			endif
 
-			'in all cases - remove that contract and add again (so we drop automatically
-			'to the correct list)
-			guiBlock.remove()
-			RemoveContract(guiBlock.contract)
-			AddContract(guiBlock.contract)
+			'remove and add again (so we drop automatically to the correct list)
+			RemoveContract(guiAdContract.contract)
+			AddContract(guiAdContract.contract)
 		else
-			guiBlock.InitAsset( guiBlock.getAssetName(-1, TRUE ) )
+			guiAdContract.InitAssets(guiAdContract.getAssetName(-1, TRUE ), guiAdContract.getAssetName(-1, TRUE ))
 
 			'no problem when dropping own programme to suitcase..
 			if owner = Game.playerID then return TRUE
-			if not GiveContractToPlayer(guiBlock.contract, Game.playerID)
+			if not GiveContractToPlayer(guiAdContract.contract, Game.playerID)
 				triggerEvent.setVeto()
 				return FALSE
 			endif
-		EndIf
+		endIf
+
+		'something changed...refresh missing/obsolete...
+		RefreshGuiElements()
 
 		return TRUE
 	End Function
-
 
 
 	Function onDrawAdAgency:int( triggerEvent:TEventBase )
 		'make suitcase/vendor glow if needed
 		local glowSuitcase:string = ""
 		if draggedGuiContractCoverBlock
-			if not Game.getPlayer().ProgrammeCollection.HasUnsignedContractInSuitcase(draggedGuiContractCoverBlock.contract)
+			if not Game.getPlayer().ProgrammeCollection.HasUnsignedAdContractInSuitcase(draggedGuiContractCoverBlock.contract)
 				glowSuitcase = "_glow"
 			endif
 			Assets.GetSprite("gfx_hint_rooms_adagency").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
@@ -3094,9 +3305,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		GUIManager.Draw("adagency")
 
-		if hoveredGuiContractCoverBlock
+		if hoveredGuiAdContract
 			'draw the current sheet
-			hoveredGuiContractCoverBlock.DrawSheet()
+			hoveredGuiAdContract.DrawSheet()
 		endif
 
 	End Function
@@ -3107,73 +3318,21 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		Game.cursorstate = 0
 
-		'create missing gui elements for all contract-lists
-		'normal list
-		For local contract:TContract = eachin listNormal
-			if not contract then continue
-			local contractAdded:int = FALSE
-			local contractFound:int = FALSE
-			'check if in one of the gui lists
-			For local i:int = 0 to GuiListNormal.length-1
-				if contractFound then continue
-				if GuiListNormal[i].ContainsContract(contract)
-					contractFound = true
-				endif
-			Next
-			if not contractFound
-				'try to fill in one of them
-				For local i:int = 0 to GuiListNormal.length-1
-					if contractAdded then continue
-					if GuiListNormal[i].getFreeSlot() < 0 then continue
-					local block:TGuiContractCoverBlock = new TGuiContractCoverBlock.CreateWithContract(contract)
-					'change look
-					block.InitAsset( block.getAssetName(-1, FALSE) )
-					GuiListNormal[i].addItem( block ,"-1" )
-					contractAdded = true
-				Next
-				if not contractAdded
-					print "[ERORR] AdAgency: contract exists but does not fit in GuiListNormal - contract removed."
-					RemoveContract(contract)
-				endif
-			endif
-		Next
+		'delete unused and create new gui elements
+		if haveToRefreshGuiElements then RefreshGUIElements()
 
-		'cheap list
-		For local contract:TContract = eachin listCheap
-			if not contract then continue
-			if GuiListCheap.ContainsContract(contract) then continue
-			local block:TGuiContractCoverBlock = new TGuiContractCoverBlock.CreateWithContract(contract)
-			'change look
-			block.InitAsset( block.getAssetName(-1, FALSE) )
-			GuiListCheap.addItem( block ,"-1" )
-		Next
+if KeyManager.IsHit(KEY_X)
+	print "deleting gui"
+	RemoveAllGuiElements()
+EndIf
+if KeyManager.IsHit(KEY_Y)
+	print "refresh gui"
+	RefreshGuiElements()
+EndIf
 
-		'create missing gui elements for the players contracts
-		For local contract:TContract = eachin Game.getPlayer().ProgrammeCollection.ContractList
-			if guiListSuitcase.ContainsContract(contract) then continue
-			local block:TGuiContractCoverBlock = new TGuiContractCoverBlock.CreateWithContract(contract)
-			'change look
-			block.InitAsset( block.getAssetName(-1, TRUE) )
-			block.setOption(GUI_OBJECT_DRAGABLE, FALSE)
-			guiListSuitcase.addItem( block,"-1" )
-		Next
-
-		'create missing gui elements for the current suitcase
-		For local contract:TContract = eachin Game.getPlayer().ProgrammeCollection.SuitcaseContractList
-			if guiListSuitcase.ContainsContract(contract) then continue
-			local block:TGuiContractCoverBlock = new TGuiContractCoverBlock.CreateWithContract(contract)
-			'change look
-			block.InitAsset( block.getAssetName(-1, TRUE) )
-			guiListSuitcase.addItem( block,"-1" )
-
-		Next
-
-		if MOUSEMANAGER.isClicked(2) and draggedGuiContractCoverBlock
-			draggedGuiContractCoverBlock.remove() 'will automatically rebuild at correct spot
-		endif
 
 		'reset hovered block - will get set automatically on gui-update
-		hoveredGuiContractCoverBlock = null
+		hoveredGuiAdContract = null
 		'reset dragged block too
 		draggedGuiContractCoverBlock = null
 		GUIManager.Update("adagency")

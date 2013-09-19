@@ -1,4 +1,4 @@
-ï»¿Type TBroadcastManager
+Type TBroadcastManager
 	'Referenzen
 	Field genreDefinitions:TGenreDefinition[]
 	Field newsGenreDefinitions:TNewsGenreDefinition[]
@@ -41,14 +41,14 @@
 	End Method
 
 	Method Save()
-		'TODO: Ãœberarbeiten
+		'TODO: Überarbeiten
 	End Method
 
 	Method Load(loadfile:TStream)
-		'TODO: Ãœberarbeiten
+		'TODO: Überarbeiten
 	End Method
 
-	'===== Ã–ffentliche Methoden =====
+	'===== Öffentliche Methoden =====
 
 	Method BroadcastProgramme(recompute:Int = 0)
 		lastBroadcast = currentBroadcast
@@ -112,14 +112,14 @@
 	
 	Method BroadcastInternal:TBroadcast(recompute:Int = 0, broadcastAttraction:TBroadcastAttraction[])
 		Local bc:TBroadcast = New TBroadcast				
-		bc.AscertainPlayerMarkets()							'Aktuelle MÃ¤rkte (um die konkuriert wird) festlegen			
+		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen			
 		bc.PlayersBroadcastBlocks = broadcastAttraction		'Die Programmwahl der Spieler "einloggen"			
 		bc.ComputeAudience(lastBroadcast)					'Zuschauerzahl berechnen			
 		If Not recompute Then bc.BroadcastConsequences()	'Konsequenzen der Ausstrahlung berechnen/aktualisieren
 		Return bc
 	End Method		
 	
-	'Mit dieser Methode werden die aktuellen Programme der Spieler "eingelogt" fÃ¼r die Berechnung und die spÃ¤tere Begutachtung. 
+	'Mit dieser Methode werden die aktuellen Programme der Spieler "eingelogt" für die Berechnung und die spätere Begutachtung. 
 	Method GetPlayersProgrammes:TBroadcastAttraction[]()
 		Local result:TBroadcastAttraction[] = New TBroadcastAttraction[5]
 		Local block:TProgrammeBlock		
@@ -145,19 +145,19 @@
 	'===== Netzwerk-Methoden =====
 
 	Method Network_SendRouteChange(floornumber:Int, call:Int = 0, who:Int, First:Int = False)
-		'TODO: Wollte Ronny ja eh noch Ã¼berarbeiten
+		'TODO: Wollte Ronny ja eh noch überarbeiten
 	End Method
 
 	Method Network_ReceiveRouteChange(obj:TNetworkObject)
-		'TODO: Wollte Ronny ja eh noch Ã¼berarbeiten
+		'TODO: Wollte Ronny ja eh noch überarbeiten
 	End Method
 
 	Method Network_SendSynchronize()
-		'TODO: Wollte Ronny ja eh noch Ã¼berarbeiten
+		'TODO: Wollte Ronny ja eh noch überarbeiten
 	End Method
 
 	Method Network_ReceiveSynchronize(obj:TNetworkObject)
-		'TODO: Wollte Ronny ja eh noch Ã¼berarbeiten
+		'TODO: Wollte Ronny ja eh noch überarbeiten
 	End Method
 End Type
 
@@ -170,9 +170,9 @@ Type TBroadcast
 	Field Attractions:TAudience[5]
 	Field AudienceResults:TAudienceResult[5]
 	
-	'===== Ã–ffentliche Methoden =====
+	'===== Öffentliche Methoden =====
 	
-	'Hier werden alle MÃ¤rkte in denen verschiedene Spieler miteinander konkurrieren initialisiert. Diese Methode wird nur einmal aufgerufen!
+	'Hier werden alle Märkte in denen verschiedene Spieler miteinander konkurrieren initialisiert. Diese Methode wird nur einmal aufgerufen!
 	'So legt man fest um wie viel Zuschauer sich Spieler 2 und Spieler 4 streiten oder wie viel Zuschauer Spieler 3 alleine bedient
 	Method AscertainPlayerMarkets()
 		AddMarket([1]) '1
@@ -253,7 +253,7 @@ Type TBroadcast
 		For Local i:Int = 1 To 4
 			block = PlayersBroadcastBlocks[i]
 			If block
-				'3. QualitÃ¤t meines Programmes							
+				'3. Qualität meines Programmes							
 				Local attraction:TAudience = block.GetAudienceAttraction()
 				Attractions[i] = attraction
 
@@ -278,7 +278,7 @@ Type TBroadcast
 				block = PlayersBroadcastBlocks[i]
 				If block				
 					Print "Attraction-Average - " + i + ": " + block.GetAudienceAttraction().Average				
-					audienceFlowQuoteFactor:+ (block.GetAudienceAttraction().Average / 5) 'Wie gut ist das nÃ¤chste Programm (+0.0 bis +0.2)
+					audienceFlowQuoteFactor:+ (block.GetAudienceAttraction().Average / 5) 'Wie gut ist das nächste Programm (+0.0 bis +0.2)
 				EndIf
 				audienceFlowQuoteFactor:+ (RandRange(0, 10) / 100) 'Zufall (+0.0 bis +0.1)
 				audienceFlowQuoteFactor:* timeMod 'Time-Mod
@@ -352,18 +352,18 @@ Type TBroadcast
 End Type
 
 
-'Diese Klasse reprÃ¤sentiert einen Markt um den 1 bis 4 Spieler konkurieren.
+'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurieren.
 '
 Type TAudienceMarketCalculation
 	Field MaxAudience:TAudience						'Die Einwohnerzahl (max. Zuschauer) in diesem Markt
-	Field AudienceAttractions:TMap = CreateMap()	'Die AttraktivitÃ¤t des Programmes nach Zielgruppen. FÃ¼r jeden Spieler der um diesen Markt mitkÃ¤mpft gibt's einen Eintrag in der Liste
+	Field AudienceAttractions:TMap = CreateMap()	'Die Attraktivität des Programmes nach Zielgruppen. Für jeden Spieler der um diesen Markt mitkämpft gibt's einen Eintrag in der Liste
 	Field AudienceFlow:TMap = CreateMap()
 	'Field AudienceResult:TMap = CreateMap()			'Das Ergebnis der Berechnung. Pro Spieler gibt's ein Ergebnis
-	Field Players:TList = CreateList()				'Die Liste der Spieler die um diesen Markt kÃ¤mpfen
+	Field Players:TList = CreateList()				'Die Liste der Spieler die um diesen Markt kämpfen
 	
 	Field AudienceResults:TAudienceResult[5]
 	
-	'===== Ã–ffentliche Methoden =====
+	'===== Öffentliche Methoden =====
 	
 	Method GetId:String()
 		Local result:String
@@ -394,7 +394,7 @@ Type TAudienceMarketCalculation
 		If forHour <= 0 Then forHour = Game.GetHour()				
 			
 		'AudienceFlow aufsummieren -> Wie viele Zuschauer sind bereichts an bestimmte Sender gebunden?
-		'Diese gehÃ¶ren nicht mehr zur Durchzapper-Masse die es spÃ¤ter zu verteilen gilt.
+		'Diese gehören nicht mehr zur Durchzapper-Masse die es später zu verteilen gilt.
 		Local audienceFlowSum:TAudience	= Null
 		For Local audienceFlowQuote:TAudience = EachIn AudienceFlow.Values()		
 			If audienceFlowSum = Null Then
@@ -404,7 +404,7 @@ Type TAudienceMarketCalculation
 			EndIf
 		Next		
 		
-		'Die Anzahl der potentiellen/Ã¼blichen Zuschauer um diese Zeit
+		'Die Anzahl der potentiellen/üblichen Zuschauer um diese Zeit
 		Local potentialAudienceThisHour:TAudience				
 		If Game.BroadcastManager.FEATURE_TARGETGROUP_TIME_MOD = 1 'Targetgroup-Time-Mod-Feature
 			potentialAudienceThisHour = Game.BroadcastManager.GetPotentialAudienceForHour(MaxAudience, forHour)
@@ -412,10 +412,10 @@ Type TAudienceMarketCalculation
 			potentialAudienceThisHour = MaxAudience.GetNewInstance()
 			potentialAudienceThisHour.MultiplyFactor(0.2)
 		EndIf				
-		'potentialAudienceThisHour um 1/4 derer aus audienceFlowSum erhÃ¶hen. Dies simuliert diejenigen, die eigentlich ausschalten wollten, aber dennoch hÃ¤ngen geblieben sind.
+		'potentialAudienceThisHour um 1/4 derer aus audienceFlowSum erhöhen. Dies simuliert diejenigen, die eigentlich ausschalten wollten, aber dennoch hängen geblieben sind.
 		If audienceFlowSum <> Null Then potentialAudienceThisHour.Add(audienceFlowSum.GetNewInstance().MultiplyFactor(0.25))
 		
-		'audienceFlowSum vom potentialAudienceThisHour abziehen... dadurch erhÃ¤lt man die Zapper um die noch gekÃ¤mpft werden kann.
+		'audienceFlowSum vom potentialAudienceThisHour abziehen... dadurch erhält man die Zapper um die noch gekämpft werden kann.
 		Local audienceToShareThisHour:TAudience = potentialAudienceThisHour.GetNewInstance()		
 		If audienceFlowSum <> Null Then audienceToShareThisHour.Subtract(audienceFlowSum)			
 				
@@ -465,7 +465,7 @@ Type TAudienceMarketCalculation
 				Local effectiveAttraction:TAudience = attraction.GetNewInstance()
 				effectiveAttraction.Multiply(reduceFactor)
 				
-				'Zuschauerzahlen fÃ¼r den Spieler summieren
+				'Zuschauerzahlen für den Spieler summieren
 				Local playerAudienceResult:TAudience = audienceToShareThisHour.GetNewInstance()
 				playerAudienceResult.Multiply(effectiveAttraction)
 				playerAudienceResult.Add(TAudience(MapValueForKey(AudienceFlow, currKey))) 'Der AudienceFlow
@@ -481,7 +481,7 @@ Type TAudienceMarketCalculation
 				AudienceResults[currKeyInt].BroadcastAudienceAttraction = effectiveAttraction
 				AudienceResults[currKeyInt].Audience = playerAudienceResult				
 				
-				Print "Effektive Quote fÃ¼r " + currKey + ": " + effectiveAttraction.ToString()
+				Print "Effektive Quote für " + currKey + ": " + effectiveAttraction.ToString()
 				Print "Zuschauer fuer " + currKey + ": " + playerAudienceResult.ToString()
 			Next
 		End If
@@ -490,10 +490,10 @@ End Type
 
 
 Type TAudienceResult
-	Field PlayerId:Int									'Die Id des Spielers zu dem das Result gehÃ¶rt
-	Field Hour:Int										'Zu welcher Stunde gehÃ¶rt das Result
+	Field PlayerId:Int									'Die Id des Spielers zu dem das Result gehört
+	Field Hour:Int										'Zu welcher Stunde gehört das Result
 						
-	'Field BroadcastQuality:Float						'Die QualitÃ¤t der Sendung (Programm oder News)
+	'Field BroadcastQuality:Float						'Die Qualität der Sendung (Programm oder News)
 	Field BroadcastAudienceAttraction:TAudience			'Wie Attraktiv wirkt das Programm auf die einzelnen Zielgruppen
 						
 	Field WholeMarket:TAudience	= New TAudience			'Der Gesamtmarkt: Also wenn alle einschalten und man 100% erreicht ;)
@@ -542,7 +542,7 @@ Type TGenreDefinitionBase
 	Field Popularity:TGenrePopulartity	
 
 	Method CalculateQuotes:TAudience(quality:Float)
-		'Zielgruppe / 50 * QualitÃ¤t
+		'Zielgruppe / 50 * Qualität
 		'Local temp:float = Audience_Children / 50 * quality
 		'Local extraAudience = temp/15 * temp/15
 		
@@ -592,7 +592,7 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction.Men = String(data.ValueForKey("Men")).ToFloat()
 				
 		Popularity = TGenrePopulartity.Create(GenreId, RandRange(-10, 10), RandRange(-25, 25))
-		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufÃ¼gen		
+		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufügen		
 		
 		Print "Load newsgenre " + GenreId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
@@ -601,17 +601,17 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 	Method GetNewsQuality:Float(news:TNews, luckFactor:Int = 1)
 		Local quality:Float = 0.0
 		
-		quality = Float(news.ComputeTopicality()) / 255.0 * 0.45 ..
-			+ Float(news.quality) / 255.0 * 0.35 ..
-			+ Float(news.price) / 255.0 * 0.2
+		quality = Float(news.newsEvent.ComputeTopicality()) / 255.0 * 0.45 ..
+			+ Float(news.newsEvent.quality) / 255.0 * 0.35 ..
+			+ Float(news.newsEvent.price) / 255.0 * 0.2
 		
-		'ZusÃ¤tzlicher Bonus bei Erstausstrahlung	
+		'Zusätzlicher Bonus bei Erstausstrahlung	
 		If news.timesAired = 0 Then quality:*0.15
 
 		If luckFactor = 1 Then
-			quality = quality * 0.97 + Float(RandRange(10, 30)) / 1000.0 '1%-Punkte bis 3%-Punkte Basis-QualitÃ¤t
+			quality = quality * 0.97 + Float(RandRange(10, 30)) / 1000.0 '1%-Punkte bis 3%-Punkte Basis-Qualität
 		Else
-			quality = quality * 0.99 + 0.01 'Mindestens 1% QualitÃ¤t
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
 		EndIf
 		
 		'no minus quote
@@ -627,7 +627,7 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 									
 		result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
 		
-		Print "G" + GenreId + "   News-QualitÃ¤t: " + quality
+		Print "G" + GenreId + "   News-Qualität: " + quality
 		Print "G" + GenreId + "   Quali. nach Zielg.: " + result.ToStringAverage() + " (Einfluss je nach Genre)"
 				
 		Return result
@@ -666,7 +666,7 @@ Type TGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction.Men = String(data.ValueForKey("Men")).ToFloat()
 				
 		Popularity = TGenrePopulartity.Create(GenreId, RandRange(-10, 10), RandRange(-25, 25))
-		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufÃ¼gen		
+		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufügen		
 		
 		'print "Load " + GenreId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod 
@@ -681,7 +681,7 @@ Type TGenreDefinition Extends TGenreDefinitionBase
 				+ Float(programme.speed) / 255.0 * SpeedMod
 		Else
 			quality = Float(programme.review) / 255.0 * ReviewMod ..
-				+ Float(programme.speed) / 255.0 * SpeedModÂ´
+				+ Float(programme.speed) / 255.0 * SpeedMod´
 		EndIf
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
@@ -692,9 +692,9 @@ Type TGenreDefinition Extends TGenreDefinitionBase
 		quality:*(programme.ComputeTopicality() / 255.0) ^ 2
 
 		If luckFactor = 1 Then
-			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-QualitÃ¤t
+			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-Qualität
 		Else
-			quality = quality * 0.99 + 0.01 'Mindestens 1% QualitÃ¤t
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
 		EndIf
 		
 		'no minus quote
@@ -731,7 +731,7 @@ Type TGenreDefinition Extends TGenreDefinitionBase
 		Local quality:Float = 0
 		Local result:TAudience = Null		
 		
-		If Game.BroadcastManager.FEATURE_GENRE_ATTRIB_CALC = 1 'Die Gewichtung der Attribute bei der Berechnung der FilmqualitÃ¤t hÃ¤ngt vom Genre ab
+		If Game.BroadcastManager.FEATURE_GENRE_ATTRIB_CALC = 1 'Die Gewichtung der Attribute bei der Berechnung der Filmqualität hängt vom Genre ab
 			rawQuality = GetProgrammeQuality(programme, luckFactor)
 		Else
 			rawQuality = GetProgrammeQualityFallback(programme)
@@ -743,7 +743,7 @@ Type TGenreDefinition Extends TGenreDefinitionBase
 		EndIf
 		quality = Max(0, Min(98, quality))
 				
-		Print "G" + GenreId + "   Programm-QualitÃ¤t: " + quality + " (ohne Zeit-Mod: " + rawQuality + ")"
+		Print "G" + GenreId + "   Programm-Qualität: " + quality + " (ohne Zeit-Mod: " + rawQuality + ")"
 		
 		If Game.BroadcastManager.FEATURE_GENRE_TARGETGROUP_MOD = 1 'Wie gut kommt das Genre bei den Zielgruppen an
 			result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
@@ -961,7 +961,7 @@ Type TProgrammeBroadcastAttraction Extends TBroadcastAttraction
 	
 	Method CheckConsequences(player:TPlayer)
 		If block.programme Then
-			'TODO: Visuelle Darstellung und Historie. SpÃ¤ter vereinheitlichen			
+			'TODO: Visuelle Darstellung und Historie. Später vereinheitlichen			
 			TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay() * 24)) + "/" + block.Programme.blocks, Int(player.audience.Audience.GetSum()), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
 		
 			'Wenn der letzte Teil des Programmes gesendet wurde, dann werden einige Eigenschaften aktualisiert
@@ -998,28 +998,28 @@ Type TNewsBroadcastAttraction Extends TBroadcastAttraction
 	End Function
 	
 	Method CheckConsequences(player:TPlayer)
-		Local block:TNewsBlock				
+		Local block:TNews
 		TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(player.audience.Audience.GetSum()), Game.GetHour(),Game.GetMinute(),Game.GetDay(), player.playerID)		
 		
 		For Local i:Int = 1 To 3
-			block = player.ProgrammePlan.GetNewsBlockFromSlot(i - 1)
+			block = player.ProgrammePlan.getNews(i - 1)
 			If block <> Null
-				block.news.timesAired:+1				
+				block.timesAired:+1				
 			EndIf
 		Next
 	End Method
 	
 	Method GetAudienceAttraction:TAudience()
 		Local genreDefintion:TNewsGenreDefinition
-		Local block:TNewsBlock
+		Local block:TNews
 		Local tempAudienceAttr:TAudience
 		Local resultAudienceAttr:TAudience = New TAudience
 	
 		For Local i:Int = 1 To 3
-			block = player.ProgrammePlan.GetNewsBlockFromSlot(i - 1)
+			block = player.ProgrammePlan.getNews(i - 1)
 			If block <> Null
-				genreDefintion = Game.BroadcastManager.GetNewsGenreDefinition(block.news.Genre)
-				tempAudienceAttr = genreDefintion.CalculateAudienceAttraction(block.news, Game.GetHour())	
+				genreDefintion = Game.BroadcastManager.GetNewsGenreDefinition(block.newsEvent.Genre)
+				tempAudienceAttr = genreDefintion.CalculateAudienceAttraction(block, Game.GetHour())	
 			Else
 				tempAudienceAttr = New TAudience				
 			EndIf
