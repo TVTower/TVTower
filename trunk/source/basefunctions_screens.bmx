@@ -17,32 +17,49 @@ Type TScreenManager
 		if self.currentScreen then return self.currentScreen else return self.baseScreen
 	End Method
 
-	Method GoToMainScreen()
-		self.Reset()
+	Method GoToScreen:int(screen:TScreen)
+		'trigger event so others can attach
+		local event:TEventSimple = TEventSimple.Create("screen.onLeave", TData.Create().Add("toScreen", screen), self.currentScreen)
+		EventManager.triggerEvent(event)
+		if not event.isVeto()
+			local event:TEventSimple = TEventSimple.Create("screen.onEnter", TData.Create().Add("fromScreen",self.currentScreen), screen)
+			EventManager.triggerEvent(event)
+			if not event.isVeto()
+				self.currentScreen = screen
+				return TRUE
+			endif
+		endif
+		return FALSE
 	End Method
 
-	Method GoToParentScreen()
-		self.currentScreen = self.GetCurrentScreen().parentScreen
+
+	Method GoToMainScreen:int()
+		return GoToScreen(null)
 	End Method
 
-	Method GoToSubScreen(name:string)
+
+	Method GoToParentScreen:int()
+		return GoToScreen(self.GetCurrentScreen().parentScreen)
+	End Method
+
+
+	Method GoToSubScreen:int (name:string)
 		local newScreen:TScreen = self.getCurrentScreen().GetSubScreen(name)
-		if newScreen then self.currentScreen = newScreen
+		if newScreen then return GoToScreen(newScreen)
+		return FALSE
 	End Method
 
-	'resets so we use default screen again
-	Method Reset()
-		self.currentScreen = null
-	End Method
 
 	Method Draw:int()
 		self.GetCurrentScreen().draw()
 	End Method
 
+
 	Method Update:int(deltaTime:float)
 		self.GetCurrentScreen().update(deltaTime)
 	End Method
 End Type
+
 
 Type TScreen
     Field background:TGW_Sprites    	   				'background, the image containing the whole room
@@ -104,7 +121,7 @@ Type TScreen
 		' ...
 
 		'trigger event so others can attach
-		EventManager.triggerEvent( TEventSimple.Create("screens.onUpdate", TData.Create().AddNumber("type", 0), self) )
+		EventManager.triggerEvent( TEventSimple.Create("screen.onUpdate", TData.Create().AddNumber("type", 0), self) )
 	End Method
 
 	Method Draw:int()
@@ -116,6 +133,6 @@ Type TScreen
 		SetBlend ALPHABLEND
 
 		'trigger event so others can attach
-		EventManager.triggerEvent( TEventSimple.Create("screens.onDraw", TData.Create().AddNumber("type", 1), self) )
+		EventManager.triggerEvent( TEventSimple.Create("screen.onDraw", TData.Create().AddNumber("type", 1), self) )
 	End Method
 End Type

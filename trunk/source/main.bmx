@@ -253,7 +253,7 @@ Type TGame {_exposeToLua="selected"}
 	Const maxAbonnementLevel:Int		= 3
 
 	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
-	Field maxContractsAllowed:Int 		= 12	{nosave}	'how many contracts a player can possess
+	Field maxContractsAllowed:Int 		= 10	{nosave}	'how many contracts a player can possess
 	Field maxMoviesInSuitcaseAllowed:Int= 12	{nosave}	'how many movies can be carried in suitcase
 	Field startMovieAmount:Int 			= 5		{nosave}	'how many movies does a player get on a new game
 	Field startSeriesAmount:Int			= 1		{nosave}	'how many series does a player get on a new game
@@ -355,12 +355,12 @@ endrem
 
 		TStationMap.SaveAll();				TError.DrawErrors();Flip 0  'XML
 		TAudienceQuotes.SaveAll();			TError.DrawErrors();Flip 0  'XML
-		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
-		TContract.SaveAll();	  			TError.DrawErrors();Flip 0  'XML
-		TNews.SaveAll();	  				TError.DrawErrors();Flip 0  'XML
+'		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
+'		TContract.SaveAll();	  			TError.DrawErrors();Flip 0  'XML
+'		TNews.SaveAll();	  				TError.DrawErrors();Flip 0  'XML
 		TProgrammeBlock.SaveAll();			TError.DrawErrors();Flip 0  'XML
-		TAdBlock.SaveAll();					TError.DrawErrors();Flip 0  'XML
-		TNewsBlock.SaveAll();				TError.DrawErrors();Flip 0  'XML
+'		TAdBlock.SaveAll();					TError.DrawErrors();Flip 0  'XML
+'		TNewsBlock.SaveAll();				TError.DrawErrors();Flip 0  'XML
 		Building.Elevator.Save();			TError.DrawErrors();Flip 0  'XML
 		'Delay(50)
 		LoadSaveFile.xmlWrite("ENDSAVEGAME", "CHECKSUM")
@@ -407,14 +407,14 @@ endrem
 					Case "ALLAUDIENCEQUOTES"
 						TError.DrawNewError("Lade Quotenarchiv...")
 						TAudienceQuotes.LoadAll()
-					Case "ALLPROGRAMMES"
-						TError.DrawNewError("Lade Programme...")
-						TProgramme.LoadAll()
-					Case "ALLCONTRACTS"
-						TError.DrawNewError("Lade Werbeverträge...")
+'					Case "ALLPROGRAMMES"
+'						TError.DrawNewError("Lade Programme...")
+'						TProgramme.LoadAll()
+'					Case "ALLCONTRACTS"
+'						TError.DrawNewError("Lade Werbeverträge...")
 					'TContract.LoadAll()
-					Case "ALLNEWS"
-						TError.DrawNewError("Lade Nachrichten...")
+'					Case "ALLNEWS"
+'						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
 						TError.DrawNewError("Lade Werbeverträgeblöcke...")
@@ -505,9 +505,9 @@ endrem
 	Function onStart:Int(triggerEvent:TEventBase)
 		'create 3 starting news
 		If Game.IsGameLeader()
-			NewsAgency.AnnounceNewNews(-60)
-			NewsAgency.AnnounceNewNews(-120)
-			NewsAgency.AnnounceNewNews(-120)
+			NewsAgency.AnnounceNewNewsEvent(-60)
+			NewsAgency.AnnounceNewNewsEvent(-120)
+			NewsAgency.AnnounceNewNewsEvent(-120)
 		EndIf
 	End Function
 
@@ -653,8 +653,8 @@ endrem
 		Self.timeGone			:+ deltaTime * self.GetGameMinutesPerSecond()
 
 		'time for news ?
-		If NewsAgency.NextEventTime < Self.timeGone Then NewsAgency.AnnounceNewNews()
-		If NewsAgency.NextChainCheckTime < Self.timeGone Then NewsAgency.ProcessNewsChains()
+		If NewsAgency.NextEventTime < Self.timeGone Then NewsAgency.AnnounceNewNewsEvent()
+		If NewsAgency.NextChainCheckTime < Self.timeGone Then NewsAgency.ProcessNewsEventChains()
 
 		'send state to clients
 		If IsGameLeader() And Self.networkgame And Self.stateSyncTime < MilliSecs()
@@ -739,7 +739,7 @@ endrem
 	End Method
 
 	Method GetDayOfYear:Int(_time:Double = 0) {_exposeToLua}
-		Return (Self.GetDay() - Self.GetYear()*Self.daysPerYear)
+		Return (Self.GetDay(_time) - Self.GetYear(_time)*Self.daysPerYear)
 	End Method
 
 	'get the amount of days played (completed! - that's why "-1")
@@ -1095,7 +1095,7 @@ endrem
 
 					'remove contract from collection (and suitcase)
 					'contract is still stored within adblocks (until they get deleted)
-					Player.ProgrammeCollection.RemoveContract(Adblock.contract)
+					Player.ProgrammeCollection.RemoveAdContract(Adblock.contract)
 				EndIf
 			EndIf
 		Next
@@ -1112,12 +1112,12 @@ endrem
 	'computes penalties for expired ad-contracts
 	Function ComputeContractPenalties()
 		For Local Player:TPlayer = EachIn TPlayer.List
-			For Local Contract:TContract = EachIn Player.ProgrammeCollection.contractlist
+			For Local Contract:TAdContract = EachIn Player.ProgrammeCollection.AdContractlist
 				If Not contract Then Continue
 
 				If contract.GetDaysLeft() <= 0
 					Player.finances[Game.getWeekday()].PayPenalty(contract.GetPenalty() )
-					Player.ProgrammeCollection.RemoveContract(contract)
+					Player.ProgrammeCollection.RemoveAdContract(contract)
 					TAdBlock.RemoveAdblocks(contract, Game.GetDay())
 					'Print Player.name+" paid a penalty of "+contract.calculatedPenalty+" for contract:"+contract.title
 				EndIf
@@ -1171,7 +1171,7 @@ endrem
 
 	'computes newsshow-audience
 	Function ComputeNewsAudience()
-		Local newsBlock:TNewsBlock
+		Local news:TNews
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Local audience:Int = 0
 
@@ -1182,10 +1182,10 @@ endrem
 				'so that the result of each news is based on a leadin of the previous
 				'so "holes" cut the news reach :D
 				for local i:int = 1 to 3
-					newsBlock = Player.ProgrammePlan.GetNewsBlockFromSlot(i-1)
-					If newsBlock <> Null
+					news = Player.ProgrammePlan.GetNews(i-1)
+					If news
 						leadinAudience = 0.5 * Player.audience + 0.5 * slotaudience[i-1]
-						slotaudience[i] = Floor(Player.GetMaxaudience() * NewsBlock.news.getAudienceQuote(leadinAudience/Player.GetMaxaudience())  / 1000)*1000
+						slotaudience[i] = Floor(Player.GetMaxaudience() * news.newsEvent.getAudienceQuote(leadinAudience/Player.GetMaxaudience())  / 1000)*1000
 						'print "leadinAudience "+i+": "+leadinAudience + " slotaudience:"+slotaudience[i]
 					endif
 
@@ -2081,7 +2081,7 @@ End Type
 Type TNewsAgency
 	Field NextEventTime:Double		= 0
 	Field NextChainChecktime:Double	= 0
-	Field activeNewsChains:TList	= CreateList() 'holding chained news from the past hours/day
+	Field activeChains:TList		= CreateList() 'holding chained news from the past hours/day
 
 	Method Create:TNewsAgency()
 		'maybe do some initialization here
@@ -2089,7 +2089,7 @@ Type TNewsAgency
 		return self
 	End Method
 
-	Method GetMovieNews:TNews()
+	Method GetMovieNewsEvent:TNewsEvent()
 		local movie:TProgramme = self._GetAnnouncableMovie()
 		if movie
 			movie.releaseAnnounced = TRUE
@@ -2113,11 +2113,11 @@ Type TNewsAgency
 			description = self._ReplaceMovieData(description, movie)
 
 			'quality and price are based on the movies data
-			Local News:TNews = TNews.Create(title, description, 1, movie.review/2.0, movie.outcome/3.0)
+			Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, 1, movie.review/2.0, movie.outcome/3.0)
 			'remove news from TNews-list as we do not want to have them repeated :D
-			News.list.remove(News)
+			NewsEvent.list.remove(NewsEvent)
 
-			return News
+			return NewsEvent
 		endif
 		return Null
 	End Method
@@ -2153,24 +2153,24 @@ Type TNewsAgency
 		return null
 	End Method
 
-	Method GetSpecialNews:TNews()
+	Method GetSpecialNewsEvent:TNewsEvent()
 	End Method
 
 
 	'announces new news chain elements
-	Method ProcessNewsChains:int()
+	Method ProcessNewsEventChains:int()
 		local announced:int = 0
-		Local news:TNews = NULL
-		For Local chainElement:TNews = EachIn self.activeNewsChains
-			If not chainElement.isLastEpisode() then news = chainElement.GetNextNewsFromChain()
+		Local newsEvent:TNewsEvent = NULL
+		For Local chainElement:TNewsEvent = EachIn activeChains
+			If not chainElement.isLastEpisode() then newsEvent = chainElement.GetNextNewsEventFromChain()
 			'remove the "old" one, the new element will get added instead (if existing)
-			activeNewsChains.Remove(chainElement)
+			activeChains.Remove(chainElement)
 
 			'ignore if the chain ended already
-			if not news then continue
+			if not newsEvent then continue
 
-			If chainElement.happenedTime + news.getHappenDelay() < Game.timeGone
-				self.announceNews(news)
+			If chainElement.happenedTime + newsEvent.getHappenDelay() < Game.timeGone
+				announceNewsEvent(newsEvent)
 				announced:+1
 			endif
 		Next
@@ -2181,46 +2181,46 @@ Type TNewsAgency
 		return announced
 	End Method
 
-	Method AddNewsToPlayer:int(news:TNews, forPlayer:Int=-1, fromNetwork:Int=0)
+	Method AddNewsEventToPlayer:int(newsEvent:TNewsEvent, forPlayer:Int=-1, fromNetwork:Int=0)
 		'only add news/newsblock if player is Host/Player OR AI
 		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
-		If Game.Players[ forPlayer ].newsabonnements[news.genre] > 0
+		If Game.Players[ forPlayer ].newsabonnements[newsEvent.genre] > 0
 			'print "[LOCAL] AddNewsToPlayer: creating newsblock, player="+forPlayer
-			TNewsBlock.Create("", forPlayer, Game.Players[ forPlayer ].GetNewsAbonnementDelay(news.genre), news)
+			TNews.Create("", forPlayer, Game.Players[ forPlayer ].GetNewsAbonnementDelay(newsEvent.genre), newsEvent)
 		EndIf
 	End Method
 
-	Method announceNews(news:TNews, happenedTime:int=0)
-		news.doHappen(happenedTime)
+	Method announceNewsEvent:int(newsEvent:TNewsEvent, happenedTime:int=0)
+		newsEvent.doHappen(happenedTime)
 
 		For Local i:Int = 1 To 4
-			AddNewsToPlayer(news, i)
+			AddNewsEventToPlayer(newsEvent, i)
 		Next
 
-		if news.episodes.count() > 0 then activeNewsChains.AddLast(News)
+		if newsEvent.episodes.count() > 0 then activeChains.AddLast(newsEvent)
 	End Method
 
-	Method AnnounceNewNews:int(delayAnnouncement:Int=0)
+	Method AnnounceNewNewsEvent:int(delayAnnouncement:Int=0)
 		'no need to check for gameleader - ALL players
 		'will handle it on their own - so the randomizer stays intact
 		'if not Game.isGameLeader() then return FALSE
 
-		Local news:TNews = Null
+		Local newsEvent:TNewsEvent = Null
 		'try to load some movie news ("new movie announced...")
-		if not news and RandRange(1,100)<35 then news = self.GetMovieNews()
+		if not newsEvent and RandRange(1,100)<35 then newsEvent = self.GetMovieNewsEvent()
 
-		If not news Then news = TNews.GetRandomNews()
+		If not newsEvent Then newsEvent = TNewsEvent.GetRandom()
 
-		If news
+		If newsEvent
 			Local NoOneSubscribed:Int = True
 			For Local i:Int = 1 To 4
-				If Game.Players[i].newsabonnements[news.genre] > 0 Then NoOneSubscribed = False
+				If Game.Players[i].newsabonnements[newsEvent.genre] > 0 Then NoOneSubscribed = False
 			Next
 			'only add news if there are players wanting the news, else save them
 			'for later stages
 			If Not NoOneSubscribed
 				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+Game.getDay(news.happenedtime)+", time="+Game.GetFormattedTime(news.happenedtime)
-				self.announceNews(news, Game.timeGone + delayAnnouncement)
+				announceNewsEvent(newsEvent, Game.timeGone + delayAnnouncement)
 			EndIf
 		EndIf
 
@@ -2729,10 +2729,10 @@ Function Menu_GameSettings()
 	EndIf
 End Function
 
-
 'test objects
 TGUIObject._debugMode = FALSE
 print "TGUIObject._debugMode is set to FALSE"
+
 
 rem
 Global TestList:TGUISlotList = new TGUISlotList.Create(20,20,300,200, "MainMenu")
@@ -2886,7 +2886,7 @@ Function Menu_GameSettings_Draw()
 	Game.Players[4].Figure.Sprite.Draw(595 + 90 - Game.Players[4].Figure.Sprite.framew / 2, 159 - Game.Players[4].Figure.Sprite.h, 8)
 
 	'overlay gui items (higher zindex)
-	GUIManager.Draw("GameSettings",0, 101)
+	GUIManager.Draw("GameSettings", 101)
 End Function
 
 Function Menu_StartMultiplayer_Draw()
@@ -2928,18 +2928,18 @@ Function Menu_StartMultiplayer:Int()
 			Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
 			Local i:Int = 0
 			For i = 0 To Game.startMovieAmount-1
-				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomMovie() )
+				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgramme(TProgramme.TYPE_MOVIE) )
 			Next
 			'give series to each player
 			For i = 0 To Game.startSeriesAmount-1
-				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomSerie() )
+				Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgramme(TProgramme.TYPE_SERIE) )
 			Next
 			'give 1 call in
 			Game.Players[ playerids ].ProgrammeCollection.AddProgramme( TProgramme.GetRandomProgrammeByGenre(20) )
 
 			For Local j:Int = 0 To Game.startAdAmount-1
-				local contract:TContract = TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0.0, 0.15))
-				Game.Players[ playerids ].ProgrammeCollection.AddContract( contract )
+				local contract:TAdContract = new TAdContract.Create(TAdContractBase.GetRandomWithLimitedAudienceQuote(0.0, 0.15))
+				Game.Players[ playerids ].ProgrammeCollection.AddAdContract( contract )
 			Next
 		Next
 	EndIf
@@ -3151,9 +3151,9 @@ Function Init_Creation()
 	'create series/movies in movie agency
 	RoomHandler_MovieAgency.ReFillBlocks()
 
-	'8 auctionable movies
+	'8 auctionable movies/series
 	For local i:Int = 0 to 7
-		Local programme:TProgramme = TProgramme.GetRandomMovieWithPrice(200000)
+		Local programme:TProgramme = TProgramme.GetRandomProgrammeWithPrice(200000,-1)
 		If programme <> null Then
 			TAuctionProgrammeBlocks.Create(programme,i,-1)
 		Endif
@@ -3165,17 +3165,17 @@ Function Init_Creation()
 		For Local playerids:Int = 1 To 4
 			Local i:Int = 0
 			For i = 0 To Game.startMovieAmount-1
-				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomMovie())
+				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgramme(TProgramme.TYPE_MOVIE))
 			Next
 			'give series to each player
 			For i = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
-				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomSerie())
+				Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgramme(TProgramme.TYPE_SERIE))
 			Next
 			'give 1 call in
 			Game.Players[playerids].ProgrammeCollection.AddProgramme(TProgramme.GetRandomProgrammeByGenre(20))
 
 			For Local i:Int = 0 To 2
-				Game.Players[playerids].ProgrammeCollection.AddContract(TContract.Create(TContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
+				Game.Players[playerids].ProgrammeCollection.AddAdContract(new TAdContract.Create(TAdContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
 			Next
 		Next
 	EndIf
@@ -3188,18 +3188,33 @@ Function Init_Creation()
 		Next
 	Next
 
+Global TestPlan:TPlayerProgrammePlanNEW = new TPlayerProgrammePlanNEW.Create( Game.GetPlayer() )
+local TestProg:TProgramme = Game.getPlayer().programmeCollection.getRandomProgramme()
+TestPlan.AddProgramme( Game.getPlayer().programmeCollection.getRandomProgramme(), -1, 6)
+TestPlan.AddProgramme( TestProg, Game.Getday(), 23)
+TestPlan.AddProgramme( TestProg, Game.Getday()+1, 2)
+TestPlan.AddProgramme( TestProg, Game.Getday()+1, 6)
+TestPlan.AddProgramme( TestProg, Game.Getday()+1, 10)
+TestPlan.AddAdvertisement( new TAdvertisement.Create(Game.getPlayer().programmeCollection.GetRandomAdContract()), -1, 6)
+TestPlan.AddAdvertisement( new TAdvertisement.Create(Game.getPlayer().programmeCollection.GetRandomAdContract()), -1, 7)
+TestPlan.AddAdvertisement( new TAdvertisement.Create(Game.getPlayer().programmeCollection.GetRandomAdContract()), -1, 8)
+TestPlan.printOverview()
+'should return 5
+print "testprog is planned: "+TestPlan.HowOftenProgrammeInPlan(TestProg.id, Game.GetDay()+1, TRUE)+" times."
+
+
 	local lastblocks:int=0
 	'creation of blocks for players rooms
 	For Local playerids:Int = 1 To 4
 		lastblocks = 0
-		SortList(Game.Players[playerids].ProgrammeCollection.ContractList)
+		SortList(Game.Players[playerids].ProgrammeCollection.AdContractList)
 
 		Local addWidth:Int = Assets.GetSprite("pp_programmeblock1").w
 		Local addHeight:Int = Assets.GetSprite("pp_adblock1").h
 		Local playerCollection:TPlayerProgrammeCollection = Game.Players[playerids].ProgrammeCollection
-		TAdBlock.Create(playerCollection.GetRandomContract(), 67 + addWidth, 17 + 0 * addHeight, playerids)
-		TAdBlock.Create(playerCollection.GetRandomContract(), 67 + addWidth, 17 + 1 * addHeight, playerids)
-		TAdBlock.Create(playerCollection.GetRandomContract(), 67 + addWidth, 17 + 2 * addHeight, playerids)
+		TAdBlock.Create(playerCollection.GetRandomAdContract(), 67 + addWidth, 17 + 0 * addHeight, playerids)
+		TAdBlock.Create(playerCollection.GetRandomAdContract(), 67 + addWidth, 17 + 1 * addHeight, playerids)
+		TAdBlock.Create(playerCollection.GetRandomAdContract(), 67 + addWidth, 17 + 2 * addHeight, playerids)
 
 		Local lastprogramme:TProgrammeBlock
 		lastprogramme = TProgrammeBlock.Create(67, 17 + 0 * Assets.GetSprite("pp_programmeblock1").h, 0, playerids, 1)
@@ -3484,11 +3499,15 @@ Type TEventListenerOnDay Extends TEventListenerBase
 			TAuctionProgrammeBlocks.ProgrammeToPlayer() 'won auctions moved to programmecollection of player
 			'if new day, not start day
 			If evt.time > 0
+				'reset room signs each day to their normal position
 				TRoomSigns.ResetPositions()
+
+				'remove old news from the players (only unset ones)
 				For Local i:Int = 1 To 4
-					For Local NewsBlock:TNewsBlock = EachIn Game.Players[i].ProgrammePlan.NewsBlocks
-						If Game.GetDay() - Game.GetDay(Newsblock.news.happenedtime) >= 2
-							Game.Players[Newsblock.owner].ProgrammePlan.RemoveNewsBlock(NewsBlock)
+					local news:TNews
+					For news = EachIn Game.getPlayer(i).ProgrammeCollection.news
+						If Game.GetDay() - Game.GetDay(news.newsEvent.happenedtime) >= 2
+							Game.getPlayer(i).ProgrammePlan.RemoveNews(news)
 						EndIf
 					Next
 				Next
@@ -3563,7 +3582,7 @@ endrem
 				If KEYMANAGER.IsHit(KEY_N) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("news", Game.playerID), TRUE )
 				If KEYMANAGER.IsHit(KEY_R) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("roomboard", -1), TRUE )
 				If KEYMANAGER.IsHit(KEY_D) Game.Players[Game.playerID].Stationmap.reach = Game.Players[Game.playerID].Stationmap.population
-
+rem
 				If KEYMANAGER.IsHit(KEY_Y)
 					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
 					print "Share 1,3: "+Game.Players[Game.playerID].Stationmap.GetShare([1,3]).z
@@ -3572,7 +3591,7 @@ endrem
 					Game.Players[Game.playerID].Stationmap.GenerateShareMap()
 					print "Share 2,3,4: "+Game.Players[Game.playerID].Stationmap.GetShare([2,3,4]).z
 				endif
-
+endrem
 
 				If KEYMANAGER.IsHit(KEY_ESCAPE) ExitGame = 1				'ESC pressed, exit game
 				if Game.isGameLeader()
@@ -3582,7 +3601,7 @@ endrem
 					If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
 				endif
 
-				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNews()
+				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNewsEvent()
 				If KEYMANAGER.Ishit(Key_F6) Then Soundmanager.PlayMusic(MUSIC_MUSIC)
 
 				If KEYMANAGER.Ishit(Key_F9)
@@ -3657,8 +3676,8 @@ Type TEventListenerOnAppDraw Extends TEventListenerBase
 			Assets.fonts.baseFont.draw("looptime "+Int(1000*App.Timer.loopTime)+"ms", textX,0)
 			textX:+100
 			'RON: debug purpose - see if the managed guielements list increase over time
-			Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count() , textX,0)
-			textX:+120
+			Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
+			textX:+130
 			If game.networkgame and Network.client
 				Assets.fonts.baseFont.draw("ping: "+Int(Network.client.latency)+"ms", textX,0)
 				textX:+50
@@ -3756,7 +3775,7 @@ Function UpdateMousemanager:int( triggerEvent:TEventBase )
 End Function
 endrem
 
-'rem
+rem
 print "ALLE SPIELER DEAKTIVIERT"
 print "ALLE SPIELER DEAKTIVIERT"
 print "ALLE SPIELER DEAKTIVIERT"
@@ -3767,7 +3786,7 @@ for local fig:TFigures = eachin TFigures.list
 Next
 KIRunning = False
 print "[DEV] AI FIGURES deactivated"
-'endrem
+endrem
 
 
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)

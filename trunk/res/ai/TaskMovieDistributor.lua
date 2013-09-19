@@ -208,7 +208,7 @@ function JobBuyMovies:Tick()
 			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 				if (v.GetAttractiveness() > 1) then
 					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.getBaseAudienceQuote())
-					debugMsg("Kaufe Film: " .. v.title .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
+					debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 					TVT.md_doBuyMovie(v.GetId())
 					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v:GetPrice()
 					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()

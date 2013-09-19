@@ -1,8 +1,440 @@
 Const CURRENCYSIGN:string = Chr(8364) 'eurosign
 
+Type TPlayerProgrammePlanNEW {_exposeToLua="selected"}
+	Field programmes:TBroadcastMaterial[]		= new TBroadcastMaterial[0]
+	Field news:TNews[]							= new TNews[3]
+	Field advertisements:TBroadcastMaterial[]	= new TBroadcastMaterial[0]
+	Field parent:TPlayer						= null
+	Global skipHoursFromIndex:int				= -1		'amount of hours to substract from the arrays
+	Global fireEvents:int						= TRUE		'FALSE to avoid recursive handling (network)
+
+	const TYPE_PROGRAMME:int					= 1
+	const TYPE_ADVERTISEMENT:int				= 2
+
+
+	'===== common functions =====
+
+
+	Method Create:TPlayerProgrammePlanNEW(player:TPlayer)
+		self.parent = player
+		if skipHoursFromIndex = -1 then skipHoursFromIndex = Game.GetDaysPlayed() * 24
+		return self
+	End Method
+
+
+	'returns the index of an array to use for a given hour
+	Method GetArrayIndex:int(hour:int)
+		return hour - skipHoursFromIndex
+	End Method
+
+
+	'returns the Game-hour for a given array Index
+	Method GetHourFromArrayIndex:int(arrayIndex:int)
+		return arrayIndex + skipHoursFromIndex
+	End Method
+
+
+	'eg. for debugging
+	Method printOverview()
+		print "=== AD/PROGRAMME PLAN PLAYER "+parent.playerID+" ==="
+		For local i:int = 0 to Max(programmes.length - 1, advertisements.length - 1)
+			local currentHour:int = GetHourFromArrayIndex(i)
+			local time:int = Game.MakeTime(0, 0, currentHour, 0)
+			local adString:string = ""
+			local progString:string = ""
+
+			local advertisement:TAdvertisement = GetAdvertisement(0, currentHour)
+			if advertisement
+				local startHour:int = GetAdvertisementStartHour(0, currentHour)
+				adString = " -> " + advertisement.GetTitle() + " [" + (currentHour - startHour + 1) + "/" + advertisement.GetBlocks() + "]"
+			endif
+
+
+			local programme:TProgramme = GetProgramme(0, currentHour)
+			if programme
+				local startHour:int = GetProgrammeStartHour(0, currentHour)
+				progString = programme.title + " ["+ (currentHour - startHour + 1) + "/" + programme.GetBlocks() +"]"
+			endif
+
+			if adString <> "" or progString <> ""
+				if progString = "" then progString = "SENDEAUSFALL"
+				if adString = "" then adString = " -> WERBEAUSFALL"
+				print "[" + GetArrayIndex(time / 60) + "] " + Game.GetYear(time) + " " + Game.GetDayOfYear(time) + ".Tag " + Game.GetHour(currentHour * 60) + ":00 : " + progString + adString
+			endif
+		Next
+		For local i:int = 0 to programmes.length - 1
+		Next
+		print "=== ----------------------- ==="
+	End Method
+
+
+
+
+	'===== common function for managed objects =====
+
+
+	'sets the given array to the one requested through objectType
+	Method GetObjectArray:TBroadcastMaterial[](objectType:int=0)
+		if objectType = TYPE_PROGRAMME then return programmes
+		if objectType = TYPE_ADVERTISEMENT then return advertisements
+
+		return new TBroadcastMaterial[0]
+	End Method
+
+
+	'make the resizing more generic so the functions do not have to know the
+	'underlying array
+	Method ResizeObjectArray:int(objectType:int=0, newSize:int=0)
+		Select objectType
+			case TYPE_PROGRAMME
+					programmes = programmes[..newSize]
+					return TRUE
+			case TYPE_ADVERTISEMENT
+					advertisements = advertisements[..newSize]
+					return true
+		End Select
+
+		return FALSE
+	End Method
+
+
+	'returns a programme (or null) for the given array index
+	Method GetObjectAtIndex:TBroadcastMaterial(objectType:int=0, arrayIndex:int)
+		local array:TBroadcastMaterial[] = GetObjectArray(objectType)
+		if arrayIndex > 0 and array.length > arrayIndex
+			return array[arrayIndex]
+		else
+			return Null
+		endif
+	End Method
+
+
+	Method GetObject:TBroadcastMaterial(objectType:int=0, day:int=-1, hour:Int=-1)
+		local startHour:int = GetObjectStartHour(objectType, day, hour)
+		if startHour < 0 then return Null
+
+		return GetObjectAtIndex(objectType, GetArrayIndex(startHour))
+	End Method
+
+
+	'returns the hour a object at the given time slot really starts
+	'attention: that is not a gamedayHour from 0-24 but in hours since day0
+	'returns -1 if no object was found
+	Method GetObjectStartHour:int(objectType:int=0, day:int=-1, hour:int=-1) {_exposeToLua}
+		if day = -1 then day = Game.getDay()
+		if hour = -1 then hour = Game.getHour()
+		local arrayIndex:int = GetArrayIndex(day * 24 + hour)
+
+		'out of bounds?
+		if arrayIndex < 0 then return -1
+
+		local array:TBroadcastMaterial[] = GetObjectArray(objectType)
+
+		'check if the current hour is the start of an object
+		if arrayIndex < array.length AND array[arrayIndex] then return GetHourFromArrayIndex(arrayIndex)
+
+		'search the past for the previous programme
+		'then check if start+blocks is still our time
+		local searchIndex:int = arrayIndex
+		while searchIndex >= 0
+			if searchIndex < array.length AND array[searchIndex]
+				if searchIndex + TBroadcastMaterial(array[searchIndex]).GetBlocks() - 1 >= arrayIndex
+					return GetHourFromArrayIndex(searchIndex)
+				else
+					return -1
+				endif
+			endif
+			searchIndex:-1
+		wend
+		return -1
+	End Method
+
+
+	Method AddObject:int(objectType:int=0, obj:TBroadcastMaterial, day:int=-1, hour:int=-1)
+		if day = -1 then day=game.getDay()
+		if hour = -1 then hour=game.getHour()
+		local arrayIndex:int = GetArrayIndex(day * 24 + hour)
+
+		'do not allow adding in the past
+		Local currentHour:Int = game.GetDay() * 24 + game.GetHour()
+		if game.getMinute() >= 5 and currentHour >= day * 24 + hour
+			print "ProgrammePlan.AddObject failed: time is in the past"
+			return FALSE
+		endif
+
+		'clear a potential overlapping obj in the PAST
+		ClearObjectSlot(objectType, day, hour)
+		'clear a potential overlapping obj in the FUTURE
+		ClearObjectSlot(objectType, day, hour + obj.GetBlocks() - 1)
+
+
+		'resize array if needed
+		if arrayIndex >= GetObjectArray(objectType).length then ResizeObjectArray(objectType, arrayIndex + 1 + obj.GetBlocks() - 1)
+
+		local array:TBroadcastMaterial[] = GetObjectArray(objectType)
+
+		array[arrayIndex] = obj
+
+		return TRUE
+	End Method
+
+
+	'Removes all not-yet-run instances of the given programme from the
+	'plan's list.
+	'If removeCurrentRunning is true, also the current block can be affected
+	Method RemoveObjectInstances:int(objectType:int=0, obj:TBroadcastMaterial, removeCurrentRunning:Int=FALSE)
+		Local currentHour:Int = game.GetDay() * 24 + game.GetHour()
+		Local earliestHour:int = Max(0, currentHour - obj.GetBlocks())
+		Local array:TBroadcastMaterial[] = GetObjectArray(objectType)
+		Local latestHour:int = Min(obj.GetBlocks(), Max(0, array.length - 1))
+		Local foundAnInstance:int = FALSE
+
+		'lock back in the history (programme may have started some blocks ago and is
+		'still running
+		For local i:int = earliestHour to latestHour
+			'skip other programmes
+			If not TBroadcastMaterial(array[GetArrayIndex(i)]) then continue
+			if array[GetArrayIndex(i)].GetReferenceID() <> obj.GetReferenceID() then continue
+
+			'only remove if sending is planned in the future or param allows current one
+			If i + removeCurrentRunning * obj.GetBlocks() > currentHour
+				for local j:int = 0 to obj.GetBlocks()-1
+					array[i + j] = null
+				next
+				foundAnInstance = TRUE
+			Endif
+		Next
+
+		If foundAnInstance
+			If fireEvents then EventManager.registerEvent(TEventSimple.Create("programmeplan.removeObjectInstances", TData.Create().add("object", obj).addNumber("objectType", objectType).addNumber("removeCurrentRunning", removeCurrentRunning), self))
+			return TRUE
+		Else
+			return FALSE
+		EndIf
+	End Method
+
+
+	'clear a slot so others can get placed without trouble
+	Method ClearObjectSlot:int(objectType:int=0, day:int=-1, hour:int=-1)
+		local startHour:int = GetObjectStartHour(objectType, day, hour)
+		local arrayIndex:int = GetArrayIndex(startHour)
+		if startHour < 0 then return FALSE
+
+		Local currentHour:Int = game.GetDay() * 24 + game.GetHour()
+		if game.getMinute() >= 5 and currentHour >= startHour
+			print "ClearObjectSlot failed: time is in the past"
+			return FALSE
+		endif
+
+		local array:TBroadcastMaterial[] = GetObjectArray(objectType)
+
+		'out of bounds?
+		if arrayIndex < 0 OR arrayIndex > array.length then return FALSE
+
+		if array[arrayIndex]
+			array[arrayIndex] = null
+
+			'emit an event so eg. network can recognize the change
+			If fireEvents then EventManager.registerEvent(TEventSimple.Create("programmeplan.clearObjectSlot", TData.Create().addNumber("hour", startHour).addNumber("objectType", objectType), self))
+			return TRUE
+		endif
+		return FALSE
+	End Method
+
+
+	'Returns whether an object could be placed at the given day/time
+	Method ObjectPlaceable:Int(objectType:int=0, obj:TBroadcastMaterial, day:Int=-1, hour:int=-1)
+		If not obj Then Return 0
+		if day = -1 then day = game.getDay()
+		if hour = -1 then hour = game.getHour()
+
+		'check all slots the obj will occupy...
+		For local i:int = 0 to obj.GetBlocks() - 1
+			'... and if there is already an object, return the information
+			if GetObject(day, hour + i) then return FALSE
+		Next
+
+		Return TRUE
+	End Method
+
+
+
+
+	'===== programme functions =====
+	'mostly wrapping the commong object functions
+
+
+	'returns the hour a programme at the given time slot really starts
+	'attention: that is not a gamedayHour from 0-24 but in hours since day0
+	'returns -1 if no programme was found
+	Method GetProgrammeStartHour:int(day:int=-1, hour:int=-1) {_exposeToLua}
+		return GetObjectStartHour(TYPE_PROGRAMME, day, hour)
+	End Method
+
+
+	'clear a slot so others can get placed without trouble
+	Method ClearProgrammeSlot:int(day:int=-1, hour:int=-1) {_exposeToLua}
+		if ClearObjectSlot(TYPE_PROGRAMME, day, hour)
+			If fireEvents
+				local startHour:int = GetObjectStartHour(TYPE_PROGRAMME, day, hour)
+				EventManager.registerEvent(TEventSimple.Create("programmeplan.clearProgrammeSlot", TData.Create().addNumber("hour", startHour), self))
+			endif
+		endif
+		return FALSE
+	End Method
+
+
+	'Removes all not-yet-run instances of the given programme from the
+	'plan's list.
+	'If removeCurrentRunning is true, also the current block can be affected
+	Method RemoveProgrammeInstances:int(programme:TProgramme, removeCurrentRunning:Int=FALSE)
+		if RemoveObjectInstances(TYPE_PROGRAMME, programme, removeCurrentRunning)
+			'emit an event so eg. network can recognize the change
+			If fireEvents then EventManager.registerEvent(TEventSimple.Create("programmeplan.removeProgrammeInstances", TData.Create().add("programme", programme).addNumber("removeCurrentRunning", removeCurrentRunning), self))
+			return TRUE
+		else
+			return FALSE
+		endif
+	End Method
+
+
+	'Returns the programme for the given day/time
+	Method GetProgramme:TProgramme(day:int=-1, hour:Int=-1) {_exposeToLua}
+		return TProgramme(GetObject(TYPE_PROGRAMME, day, hour))
+	End Method
+
+
+	'Add a programme to the player's programme plan
+	Method AddProgramme:int(programme:TProgramme, day:int=-1, hour:int=-1) {_exposeToLua}
+		if not programme then return FALSE
+		'do not add programmes the players does not control
+		if not parent.programmeCollection.hasProgramme(programme) then return FALSE
+
+		return AddObject(TYPE_PROGRAMME, programme, day, hour)
+	End Method
+
+
+	'Returns whether a programme can be placed at the given day/time
+	Method ProgrammePlaceable:Int(programme:TProgramme, time:Int=-1, day:Int=-1)
+		return ObjectPlaceable(TYPE_PROGRAMME, programme, time, day)
+	End Method
+
+
+	'AI helper .. should be made available through "TVT."
+	'counts how many times a programme is Planned
+	Method HowOftenProgrammeInPlan:Int(programmeId:Int, day:Int=-1, includePlanned:Int=FALSE, includeStartedYesterday:int=TRUE) {_exposeToLua}
+		If day = -1 Then day = Game.GetDay()
+		'no filter for other days than today ... would be senseless
+		if day <> Game.getDay() then includePlanned = TRUE
+		Local count:Int = 0
+		Local minHour:Int = 0
+		Local maxHour:Int = 23
+		local programme:TProgramme = null
+
+		'include programmes which may not be run yet?
+		'else we stop at the current time of the day...
+		if not includePlanned then maxhour = Game.GetHour()
+
+		'debug
+		'print "HowOftenProgrammeInPlan: day="+day+" GameDay="+Game.getDay()+" minHour="+minHour+" maxHour="+maxHour + " includeYesterday="+includeStartedYesterday
+
+		'only programmes with more than 1 block can start the day before
+		'and still run the next day - so we have to check that too
+		if includeStartedYesterday
+			'we just compare the programme started 23:00 or earlier the day before
+			programme = GetProgramme(day - 1, 23)
+			if programme and programme.id = programmeId and programme.GetBlocks() > 1
+				count:+1
+				'add the hours the programme "takes over" to the next day
+				minHour = (GetProgrammeStartHour(day - 1, 23) + programme.GetBlocks()) mod 24
+			endif
+		endif
+
+		local midnightIndex:int = GetArrayIndex(day * 24)
+		For local i:int = minHour to maxHour
+			programme = TProgramme(GetObjectAtIndex(TYPE_PROGRAMME, midnightIndex + i))
+			'no need to skip blocks as only the first block of a programme
+			'is stored in the array
+			if programme and programme.id = programmeId then count:+1
+		Next
+
+		Return count
+	End Method
+
+
+
+	'===== Advertisement contract functions =====
+
+
+	'returns the hour a advertisement at the given time slot really starts
+	'returns -1 if no ad was found
+	Method GetAdvertisementStartHour:int(day:int=-1, hour:int=-1) {_exposeToLua}
+		return GetObjectStartHour(TYPE_ADVERTISEMENT, day, hour)
+	End Method
+
+
+	'clear a slot so others can get placed without trouble
+	Method ClearAdvertisementSlot:int(day:int=-1, hour:int=-1) {_exposteTuLua}
+		if ClearObjectSlot(TYPE_ADVERTISEMENT, day, hour)
+			If fireEvents
+				local startHour:int = GetObjectStartHour(TYPE_ADVERTISEMENT, day, hour)
+				EventManager.registerEvent(TEventSimple.Create("programmeplan.clearAdvertisementSlot", TData.Create().addNumber("hour", startHour), self))
+			endif
+			return TRUE
+		endif
+		return FALSE
+	End Method
+
+
+	'Removes all not-yet-run sisters of the given ad from the plan's list.
+	'If removeCurrentRunning is true, also the current block can be affected
+	Method RemoveAdvertisementInstances:int(advertisement:TAdvertisement, removeCurrentRunning:Int=FALSE)
+		if RemoveObjectInstances(TYPE_ADVERTISEMENT, advertisement, removeCurrentRunning)
+			'emit an event so eg. network can recognize the change
+			If fireEvents then EventManager.registerEvent(TEventSimple.Create("programmeplan.removeAdvertisementInstances", TData.Create().add("advertisement", advertisement).addNumber("removeCurrentRunning", removeCurrentRunning), self))
+			return TRUE
+		else
+			return FALSE
+		endif
+	End Method
+
+
+	'Returns the ad for the given day/time
+	Method GetAdvertisement:TAdvertisement(day:int=-1, hour:Int=-1) {_exposeToLua}
+		return TAdvertisement(GetObject(TYPE_ADVERTISEMENT, day, hour))
+	End Method
+
+
+	'Add a advertisement to the player's programme plan
+	Method AddAdvertisement:int(advertisement:TAdvertisement, day:int=-1, hour:int=-1) {_exposeToLua}
+		if not advertisement then return FALSE
+		'do not add ads the players does have contracts for
+		if not parent.programmeCollection.hasAdContract(advertisement.contract) then return FALSE
+
+		return AddObject(TYPE_ADVERTISEMENT, advertisement, day, hour)
+	End Method
+
+
+	'Returns whether a programme can be placed at the given day/time
+	Method AdvertisementPlaceable:Int(advertisement:TAdvertisement, time:int=-1, day:int=-1)
+		return ObjectPlaceable(TYPE_ADVERTISEMENT, advertisement, time, day)
+	End Method
+
+
+
+
+	'===== news functions =====
+
+
+End Type
+
+
+
+
+
 Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field ProgrammeBlocks:TList = CreateList()
-	Field NewsBlocks:TList		= CreateList()
+	Field news:TNews[]			= new TNews[3]
 	Field AdBlocks:TList		= CreateList()
 
 	Field AdditionallyDraggedProgrammeBlocks:Int = 0
@@ -22,7 +454,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Method ClearLists:int()
 		ProgrammeBlocks.Clear()
 		AdBlocks.Clear()
-		NewsBlocks.Clear()
+		'create a new array
+		news = news[..]
 	End Method
 
 
@@ -56,15 +489,21 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveProgramme(programme:TProgramme, removeCurrentRunning:Int = 0)
 		Local currentHour:Int = game.GetDay()*24 + game.GetHour()
+		local removedProgramme:int = FALSE
 		For Local block:TProgrammeBlock = EachIn Self.ProgrammeBlocks
 			'skip other programmes
 			If block.programme <> programme then continue
 			'only remove if sending is planned in the future or param allows current one
-			If block.sendhour +removeCurrentRunning*block.programme.blocks > currentHour Then Self.ProgrammeBlocks.remove(block)
+			If block.sendhour +removeCurrentRunning*block.programme.blocks > currentHour
+				programmeBlocks.remove(block)
+				removedProgramme=TRUE
+			endif
 		Next
 
-		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.removeProgramme", TData.Create().add("programme", programme).addNumber("removeCurrentRunning", removeCurrentRunning), self ) )
+		if removedProgramme
+			'emit an event so eg. network can recognize the change
+			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.removeProgramme", TData.Create().add("programme", programme).addNumber("removeCurrentRunning", removeCurrentRunning), self ) )
+		endif
 	End Method
 
 
@@ -76,6 +515,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		return Null
 	End Method
 
+
+
+
+'== GUI ==
 
 	'Add a ProgrammeBlock to the player's ProgrammePlan
 	Method AddProgrammeBlock:TLink(block:TProgrammeBlock)
@@ -210,109 +653,121 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
     End Method
 
+'== GUI ENDE ==
+
+
+
+
 	Method HowOftenProgrammeInPlan:Int(programmeId:Int, day:Int=-1, withPlanned:Int=0) {_exposeToLua}
 		If (day = -1) Then day = Game.GetDay()
 
 		Local currentHour:Int = Game.GetHour()
 		Local count:Int = 0
 
+		local programme:TProgramme = null
 		For Local i:Int = 0 To 23
 			If currentHour > i Or withPlanned = 1
-				local currentPro:TProgramme = Self.GetCurrentProgramme(i, day)
-				If (not (currentPro = null)) and currentPro.GetID() = programmeId
-					count = count + 1
-				Endif
+				programme = GetCurrentProgramme(i, day)
+				If programme and programme.GetID() = programmeId then count:+1
 			Endif
 		Next
 
 		Return count
 	End Method
 
+
+REM
+EVENTUELL newsblock so umschreiben, dass er eher wird wie Werbung:
+TNewsTicker (die Basisdaten)
+TNews extends TBroadcastMaterial ("Sendematerial")
+ENDREM
+
 	'NewsBlock
 	'=========
 
 	'set the slot of the given newsblock
 	'if not paid yet, it will only continue if pay is possible
-    Method SetNewsBlockSlot:int(newsblock:TNewsBlock, slot:int) {_exposeToLua}
-		'only if not done already
-		if newsblock.slot = slot then return TRUE
+    Method SetNews:int(newsObject:TNews, slot:int) {_exposeToLua}
+		'out of bounds check
+		if slot < 0 OR slot >= news.length then return FALSE
 
-		'move to the right
-		if slot>=0
-			If Not newsblock.paid
-				'do not continue if pay not possible
-				if not NewsBlock.Pay() then return FALSE
-			endif
+		'only if not added already
+		'if HasNews(newsObject) then return TRUE
+		'--
+		'or better just remove old ones
+		RemoveNews(newsObject)
 
-			'is there an other newsblock, move that back to -1
-			local otherBlock:TNewsBlock = self.GetNewsBlockFromSlot(slot)
-			if otherBlock and otherBlock <> newsblock then self.SetNewsBlockSlot(otherBlock,-1)
-		EndIf
+
+		If Not newsObject.paid
+			'do not continue if pay not possible
+			if not newsObject.Pay() then return FALSE
+		endif
+
+		'is there an other newsblock, remove that first
+		'if news[slot] then ClearSlot(slot)
+		if news[slot] then RemoveNews(news[slot], FALSE)
 
 		'nothing is against using that slot (payment, ...) - so assign it
-		newsblock.slot = slot
+		news[slot] = newsObject
+
+		'remove that news from the collection
+		parent.ProgrammeCollection.RemoveNews(newsObject)
+
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.SetNewsBlockSlot", TData.Create().AddNumber("slot", slot), newsblock ) )
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmeplan.SetSlot", TData.Create().AddNumber("slot", slot), newsObject))
 
 		return TRUE
     End Method
 
 
-	'sets a item at the given slot back to unassigned (back to "available list")
-	Method ClearNewsBlockSlot:int(slot:int) {_exposeToLua}
-		Local NewsBlock:TNewsBlock = GetNewsBlockFromSlot(slot)
-		if NewsBlock then self.SetNewsBlockSlot(NewsBlock,-1)
-	End Method
-
-
-	'returns the amount of news currently available
-	Method GetNewsCount:Int() {_exposeToLua}
-		Return Self.NewsBlocks.count()
-	End Method
-
-
-	'returns the block with the given id
-	Method GetNewsBlock:TNewsBlock(id:Int) {_exposeToLua}
-		For Local obj:TNewsBlock = EachIn Self.NewsBlocks
-			If obj.id = id Then Return obj
+	'Remove the news from the plan
+	'by default the news gets added back to the collection, this can
+	'be controlled with the second param "addToCollection"
+	Method RemoveNews:int(newsObject:TNews, addToCollection:int=TRUE) {_exposeToLua}
+		For local slot:int = 0 to news.length-1
+			if GetNews(slot) = newsObject and ClearSlot(slot, addToCollection)
+				if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmeplan.RemoveNews", TData.Create().AddNumber("slot", slot), newsObject))
+				return TRUE
+			endif
 		Next
-		Return Null
-	EndMethod
-
-
-	'returns the newsblock at a specific position in the list
-	Method GetNewsFromList:TNewsBlock(pos:Int=0) {_exposeToLua}
-		Return TNewsBlock( NewsBlocks.ValueAtIndex(pos) )
+		return FALSE
 	End Method
 
 
-	'returns the newsblock at the given slot
-	Method GetNewsBlockFromSlot:TNewsBlock(slot:Int=0) {_exposeToLua}
-		For Local NewsBlock:TNewsBlock = EachIn Self.NewsBlocks
-			If NewsBlock.slot = slot then return NewsBlock
+	Method ClearSlot:int(slot:int, addToCollection:int=TRUE) {_exposeToLua}
+		'out of bounds check
+		if slot < 0 OR slot >= news.length then return FALSE
+
+		if not news[slot]
+			return FALSE
+		else
+			'add that news back to the collection
+			if addToCollection then parent.ProgrammeCollection.AddNews(news[slot])
+
+			'empty the slot
+			news[slot] = null
+
+			'emit an event so eg. network can recognize the change
+			if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmeplan.ClearSlot", TData.Create().AddNumber("slot", slot), self))
+			return TRUE
+		endif
+	End Method
+
+
+	Method GetNews:TNews(slot:int) {_exposeToLua}
+		'out of bounds check
+		if slot < 0 OR slot >= news.length then return null
+
+		return news[slot]
+	End Method
+
+
+	Method HasNews:int(newsObject:TNews) {_exposeToLua}
+		For local i:int = 0 to news.length-1
+			if GetNews(i) = newsObject then return TRUE
 		Next
-		Return Null
-	End Method
-
-
-	'add a newsblock to the player's programmeplan
-	Method AddNewsBlock(block:TNewsBlock)
-		block.owner = self.parent.playerID
-		Self.NewsBlocks.AddLast(block)
-
-		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.addNewsBlock", TData.Create(), block ) )
-	End Method
-
-	Method RemoveNewsBlock(block:TNewsBlock)
-		'run cleanup from block
-		block.Remove()
-		'remove from list
-		Self.NewsBlocks.remove(block)
-
-		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmeplan.removeNewsBlock", TData.Create(), block ) )
+		return FALSE
 	End Method
 
 
@@ -371,7 +826,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'return a value how often a successfull/planned adblock was placed
 	global sentBroadcastHint:int = 0
-	Method GetContractBroadcastCount:Int(_contractId:int, successful:int = 1, planned:int = 0) {_exposeToLua} 'successful & planned sind bool-Werte
+	Method GetAdContractBroadcastCount:Int(_contractId:int, successful:int = 1, planned:int = 0) {_exposeToLua} 'successful & planned sind bool-Werte
 		if not sentBroadcastHint
 			'TODO?
 			'print "GetContractBroadcastCount:"
@@ -395,23 +850,25 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	End Method
 End Type
 
+
 Global GENRE_CALLINSHOW:Int	= 20
 Global TYPE_MOVIE:Int		= 1
 Global TYPE_SERIE:Int		= 2
 Global TYPE_EPISODE:Int		= 4
 Global TYPE_CONTRACT:Int	= 8
-Global TYPE_CONTRACTBASE:Int= 16
 Global TYPE_AD:Int 			= 32
 Global TYPE_NEWS:Int 		= 64
+
 
 'holds all Programmes a player possesses
 Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Field List:TList					= CreateList()	'no need to add {_private} as expose is selected
 	Field MovieList:TList				= CreateList()
 	Field SeriesList:TList				= CreateList()
-	Field ContractList:TList			= CreateList()
+	Field News:TList				= CreateList()
+	Field AdContractList:TList			= CreateList()
 	Field SuitcaseProgrammeList:TList	= CreateList()	'objects not available directly but still owned
-	Field SuitcaseContractList:TList	= CreateList()	'objects in the suitcase but not signed
+	Field SuitcaseAdContractList:TList	= CreateList()	'objects in the suitcase but not signed
 	Field parent:TPlayer
 	Global fireEvents:int		= TRUE			'FALSE to avoid recursive handling (network)
 
@@ -427,104 +884,91 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		List.Clear()
 		MovieList.Clear()
 		SeriesList.Clear()
-		ContractList.Clear()
+		AdContractList.Clear()
 	End Method
 
 
 	Method GetMovieCount:Int() {_exposeToLua}
-		Return Self.MovieList.count()
+		Return MovieList.count()
 	End Method
 
 
 	Method GetSeriesCount:Int() {_exposeToLua}
-		Return Self.SeriesList.count()
+		Return SeriesList.count()
 	End Method
 
 
 	Method GetProgrammeCount:Int() {_exposeToLua}
-		Return Self.List.count()
+		Return List.count()
 	End Method
 
 
-	Method GetContractCount:Int() {_exposeToLua}
-		Return Self.ContractList.count()
+	Method GetAdContractCount:Int() {_exposeToLua}
+		Return AdContractList.count()
 	End Method
 
 
-	'removes Contract from Collection (Advertising-Menu in Programmeplanner)
-	Method RemoveContract:int(contract:TContract)
+	'removes AdContract from Collection (Advertising-Menu in Programmeplanner)
+	Method RemoveAdContract:int(contract:TAdContract)
 		If not contract then return False
-		self.ContractList.Remove(contract)
-
-		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeContract", TData.Create().add("contract", contract), self ) )
-
-
-		print "RON: cleanup RemoveContract if working."
-		rem
-			wird nicht mehr gebraucht
-		For Local contract:TContract = EachIn self.ContractList
-			If contract.id = _contract.id And contract.clone = 0
-				'Print "removing contract:"+contract.title + " id:"+contract.id+"="+_contract.id
-				ContractList.Remove(contract)
-				Exit
-			EndIf
-		Next
-		endrem
+		if AdContractList.Remove(contract)
+			'emit an event so eg. network can recognize the change
+			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeAdContract", TData.Create().add("adcontract", contract), self ) )
+		endif
 	End Method
 
 
-	Method AddContract:Int(contract:TContract)
+	Method AddAdContract:Int(contract:TAdContract)
 		If not contract then return FALSE
 
-
-		if contract.sign( self.parent.playerID ) and not ContractList.contains(contract)
-print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.contractBase.title
-			ContractList.AddLast(contract)
+		if contract.sign( self.parent.playerID ) and not AdContractList.contains(contract)
+print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.GetTitle()
+			AdContractList.AddLast(contract)
 
 			'emit an event so eg. network can recognize the change
-			If fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addContract", TData.Create().add("contract", contract), self ) )
+			If fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addAdContract", TData.Create().add("adcontract", contract), self ) )
 			return TRUE
 		else
 			return FALSE
 		endif
 	End Method
 
-	Method GetUnsignedContractFromSuitcase:TContract(id:Int) {_exposeToLua}
-		For Local contract:TContract=EachIn SuitcaseContractList
+
+	Method GetUnsignedAdContractFromSuitcase:TAdContract(id:Int) {_exposeToLua}
+		For Local contract:TAdContract=EachIn SuitcaseAdContractList
 			If contract.id = id Then Return contract
 		Next
 		Return Null
 	End Method
 
 
-	Method HasUnsignedContractInSuitcase:int(contract:TContract)
+	Method HasUnsignedAdContractInSuitcase:int(contract:TAdContract)
 		If not contract then return FALSE
-		return SuitcaseContractList.Contains(contract)
+		return SuitcaseAdContractList.Contains(contract)
 	End Method
 
 	'used when adding a contract to the suitcase
-	Method AddUnsignedContractToSuitcase:int(contract:TContract)
+	Method AddUnsignedAdContractToSuitcase:int(contract:TAdContract)
 		If not contract then return FALSE
 		'do not add if already "full"
-		if SuitcaseContractList.count() >= Game.maxContractsAllowed then return FALSE
+		if SuitcaseAdContractList.count() >= Game.maxContractsAllowed then return FALSE
 
 		'add a special block-object to the suitcase
-		SuitcaseContractList.AddLast( contract )
+		SuitcaseAdContractList.AddLast( contract )
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addUnsignedContractToSuitcase", TData.Create().add("contract", contract), self ) )
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addUnsignedAdContractToSuitcase", TData.Create().add("adcontract", contract), self ) )
 
 		return TRUE
 	End Method
 
 
-	Method RemoveUnsignedContractFromSuitcase:int(contract:TContract)
-		if not SuitcaseContractList.Contains(contract) then return FALSE
-		SuitcaseContractList.Remove(contract)
+	Method RemoveUnsignedAdContractFromSuitcase:int(contract:TAdContract)
+		if not SuitcaseAdContractList.Contains(contract) then return FALSE
+		SuitcaseAdContractList.Remove(contract)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeUnsignedContractFromSuitcase", TData.Create().add("contract", contract), self ) )
+		if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeUnsignedAdContractFromSuitcase", TData.Create().add("adcontract", contract), self ) )
 		return TRUE
 	End Method
 
@@ -626,19 +1070,21 @@ print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.contractBase.titl
 	End Method
 
 	Method GetRandomMovie:TProgramme() {_exposeToLua}
+		if MovieList.count() = 0 then return NULL
 		'randrange is Mersenne - which is only used for across-Network-sync values
 		'Return TProgramme(MovieList.ValueAtIndex(randRange(0, MovieList.count()-1)))
 		Return TProgramme(MovieList.ValueAtIndex(rand(0, MovieList.count()-1)))
 	End Method
 
 	Method GetRandomSerie:TProgramme() {_exposeToLua}
+		if SeriesList.count() = 0 then return NULL
 		'randrange is Mersenne - which is only used for across-Network-sync values
 		'Return TProgramme(SeriesList.ValueAtIndex(randRange(0, SeriesList.count()-1)))
 		Return TProgramme(SeriesList.ValueAtIndex(rand(0, SeriesList.count()-1)))
 	End Method
 
-	Method GetRandomContract:TContract() {_exposeToLua}
-		Return TContract(ContractList.ValueAtIndex(rand(0, ContractList.count()-1)))
+	Method GetRandomAdContract:TAdContract() {_exposeToLua}
+		Return TAdContract(AdContractList.ValueAtIndex(rand(0, AdContractList.count()-1)))
 	End Method
 
 
@@ -658,8 +1104,21 @@ print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.contractBase.titl
 	End Method
 
 	'get contract by index number in list - useful for lua-scripts
-	Method GetContractFromList:TContract(pos:Int=0) {_exposeToLua}
-		Return TContract( ContractList.ValueAtIndex(pos) )
+	Method GetAdContractFromList:TAdContract(pos:Int=0) {_exposeToLua}
+		Return TAdContract( AdContractList.ValueAtIndex(pos) )
+	End Method
+
+	Method HasProgramme:int(programme:TProgramme) {_exposeToLua}
+		return list.contains(programme)
+	End Method
+
+	Method HasAdContract:int(Contract:TAdContract) {_exposeToLua}
+		return AdContractList.contains(contract)
+	End Method
+
+
+	Method HasNews:int(newsObject:TNews) {_exposeToLua}
+		return news.contains(newsObject)
 	End Method
 
 
@@ -670,16 +1129,16 @@ print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.contractBase.titl
 		Return Null
 	End Method
 
-	Method GetContract:TContract(id:Int) {_exposeToLua}
-		For Local contract:TContract=EachIn Self.ContractList
+	Method GetAdContract:TAdContract(id:Int) {_exposeToLua}
+		For Local contract:TAdContract=EachIn Self.AdContractList
 			If contract.id = id Then Return contract
 		Next
 		Return Null
 	End Method
 
-	Method GetContractByBase:TContract(contractBaseID:Int) {_exposeToLua}
-		For Local contract:TContract=EachIn Self.ContractList
-			If contract.contractBase.id = contractBaseID Then Return contract
+	Method GetAdContractByBase:TAdContract(id:Int) {_exposeToLua}
+		For Local contract:TAdContract=EachIn Self.AdContractList
+			If contract.base.id = id Then Return contract
 		Next
 		Return Null
 	End Method
@@ -697,56 +1156,95 @@ print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.contractBase.titl
 	End Method
 
 	Method GetContracts:Object[]() {_exposeToLua}
-		Return Self.ContractList.toArray()
+		Return Self.AdContractList.toArray()
 	End Method
+
+
+	'returns the amount of news currently available
+	Method GetNewsCount:Int() {_exposeToLua}
+		Return news.count()
+	End Method
+
+
+	'returns the block with the given id
+	Method GetNews:TNews(id:Int) {_exposeToLua}
+		For Local obj:TNews = EachIn news
+			If obj.id = id Then Return obj
+		Next
+		Return Null
+	End Method
+
+
+	'returns the newsblock at a specific position in the list
+	Method GetNewsAtIndex:TNews(arrayIndex:Int=0) {_exposeToLua}
+		'out of bounds?
+		if arrayIndex < 0 OR arrayIndex > news.count()-1 then return Null
+
+		Return TNews( news.ValueAtIndex(arrayIndex) )
+	End Method
+
+
+	Method AddNews:int(newsObject:TNews) {_private} 'do not expose to Lua.
+		'skip adding if existing already
+		if news.contains(newsObject)
+			print "AddNews: already containing. "+newsObject.getTitle();
+			return FALSE
+		endif
+
+		newsObject.owner = parent.playerID
+		news.AddLast(newsObject)
+
+		'emit an event so eg. network can recognize the change
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addNews", TData.Create(), newsObject))
+
+		return TRUE
+	End Method
+
+
+	Method RemoveNews:int(newsObject:TNews) {_exposeToLua}
+		'remove from list
+		if news.remove(newsObject)
+			'run cleanup
+			newsObject.Remove()
+
+			'emit an event so eg. network can recognize the change
+			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeNews", TData.Create(), newsObject ) )
+			return TRUE
+		endif
+		return FALSE
+	End Method
+
 End Type
 
-Type TProgrammeElementBase {_exposeToLua="selected"}
-	Field programmeType:Int = 0
-	Field id:Int			= 0		 {_exposeToLua}
-	Global LastID:Int = 0
-
-	Method GenerateID:int()
-		Self.LastID :+1
-		self.id = self.LastID
-		'print "ID:"+self.LastID+" ... " +title
-		return self.LastID
-	End Method
-
-	Method GetID:int() {_exposeToLua}
-		return self.id
-	End Method
-
-End Type
-
-Type TProgrammeElement extends TProgrammeElementBase {_exposeToLua="selected"}
-	Field title:String			{_exposeToLua}
-	Field description:String	{_exposeToLua}
-
-	Method BaseInit(title:String, description:String, programmeType:Int = 0)
-		Self.title = title
-		Self.description = description
-		Self.programmeType = programmeType
-		Self.id = Self.GenerateID()
-	End Method
-
-	'get the title
-	Method GetDescription:string() {_exposeToLua}
-		Return self.description
-	End Method
-
-	'get the title
-	Method GetTitle:string() {_exposeToLua}
-		Return self.title
-	End Method
-
-End Type
 
 
-'contract base - straight from the DB
-Type TContractBase Extends TProgrammeElement {_exposeToLua="selected"}
+
+REM
+	Contracts:
+	As we have to know individual broadcast states (eg. "this spot
+	failed/run OK"), we have to create individual "TAdvertisement"/spots.
+	This way these objects can store that states.
+
+	Another benefit is: TAdvertisement is "TBroadcastMaterial" which would
+	make it exchangeable with other material... This could be eg. used
+	to make them placeable as "programme" - which creates shoppingprogramme
+	or other things. (while programme as advertisement could generate Trailers)
+
+	The normal contract data is splitted into "contractBase" and "contract".
+	So the resulting contract can differe to the raw database contract
+	(eg. discounts, special prices...). Also you can have the same contract
+	data with different ids ... so multiple incarnations of a contract are
+	possible.
+ENDREM
+
+'contracts bases for advertisement - straight from the DB
+'they just contain data to base new contracts of
+Type TAdContractBase Extends TGameObject {_exposeToLua}
+	Field title:string			= ""
+	Field description:string	= ""
 	Field daysToFinish:Int					' days to fullfill a (signed) contract
 	Field spotCount:Int						' spots to send
+	Field blocks:int = 1					' blocklength
 	Field targetGroup:Int					' target group of the spot
 	Field minAudienceBase:Float				' minimum audience (real value calculated on sign)
 	Field minImageBase:Float				' minimum image base value (real value calculated on sign)
@@ -755,102 +1253,115 @@ Type TContractBase Extends TProgrammeElement {_exposeToLua="selected"}
 	Field penaltyBase:Float					' base of penalty (real value calculated on sign)
 	global List:TList = CreateList()		' holding all TContractBases
 
-	Function Create:TContractBase(title:String, description:String, daystofinish:Int, spotcount:Int, targetgroup:Int, minaudience:Int, minimage:Int, fixedPrice:Int, profit:Int, penalty:Int)
-		Local obj:TContractBase = New TContractBase
-		obj.BaseInit(title, description, TYPE_CONTRACTBASE)
-		obj.daysToFinish	= daystofinish
-		obj.spotCount		= spotcount
-		obj.targetGroup		= targetgroup
-		obj.minAudienceBase	= Float(minaudience) / 10.0
-		obj.minImageBase	= Float(minimage) / 10.0
-		obj.hasFixedPrice	= fixedPrice
-		obj.profitBase		= Float(profit)
-		obj.penaltyBase    	= Float(penalty)
-		obj.List.AddLast(obj)
-		Return obj
-	End Function
 
-	Function Get:TContractBase(id:Int)
-		For Local contractbase:TContractbase = EachIn List
-			If contractbase.id = id Then Return contractbase
+	Method Create:TAdContractBase(title:String, description:String, daystofinish:Int, spotcount:Int, targetgroup:Int, minaudience:Int, minimage:Int, fixedPrice:Int, profit:Int, penalty:Int)
+		self.title			= title
+		self.description	= description
+		self.daysToFinish	= daystofinish
+		self.spotCount		= spotcount
+		self.targetGroup	= targetgroup
+		self.minAudienceBase= Float(minaudience) / 10.0
+		self.minImageBase	= Float(minimage) / 10.0
+		self.hasFixedPrice	= fixedPrice
+		self.profitBase		= Float(profit)
+		self.penaltyBase 	= Float(penalty)
+
+		List.AddLast(self)
+		Return self
+	End Method
+
+
+	Function Get:TAdContractBase(id:Int) {_exposeToLua}
+		For Local obj:TAdContractBase = EachIn List
+			If obj.id = id Then Return obj
 		Next
 		Return Null
 	End Function
 
-	Function GetRandom:TContractBase(_list:TList = null)
-		if _list = Null then _list = TContractBase.list
+
+	Function GetRandom:TAdContractBase(_list:TList = null)
+		if _list = Null then _list = List
 		If _list = Null Then Return Null
 		If _list.count() > 0
-			Local obj:TContractBase = TContractBase(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
+			Local obj:TAdContractBase = TAdContractBase(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
 			if obj then return obj
 		endif
 		return Null
 	End Function
 
-	Function GetRandomWithLimitedAudienceQuote:TContractBase(minAudienceQuote:float=0.0, maxAudienceQuote:Float=0.35)
+
+	Function GetRandomWithLimitedAudienceQuote:TAdContractBase(minAudienceQuote:float=0.0, maxAudienceQuote:Float=0.35)
 		'maxAudienceQuote - xx% market share as maximum
 		'filter to entries we need
 		Local resultList:TList = CreateList()
-		For local obj:TContractBase = EachIn TContractBase.list
+		For local obj:TAdContractBase = EachIn TAdContractBase.list
 			If obj.minAudienceBase >= minAudienceQuote AND obj.minAudienceBase <= maxAudienceQuote
 				resultList.addLast(obj)
 			EndIf
 		Next
-		Return TContractBase.GetRandom(resultList)
+		Return TAdContractBase.GetRandom(resultList)
 	End Function
 
-End Type
 
-'ad-contracts
-Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
-	Field contractBase:TContractBase= Null	{_exposeToLua}	' holds real contract data
-	Field spotsSent:Int				= 0						' how many spots were succesfully sent up to now
-	Field state:Int					= 0						' 1 = finished, -1 = botched
-	Field owner:Int					= 0
-	Field daySigned:Int				= -1					' day the contract has been taken from the advertiser-room
-	Field profit:Int				= -1					' calculated profit value (on sign)
-	Field penalty:Int				= -1					' calculated penalty value (on sign)
-	Field minAudience:Int		 	= -1					' calculated minimum audience value (on sign)
-	Field attractiveness:Float		= -1					' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
-	global List:TList = CreateList()						' holding all Tcontracts
-
-
-	Function Load:TContract(pnode:TxmlNode)
-		Print "implement load contracts"
-	End Function
-
-	Function LoadAll()
-		Print "TContract.LoadAll()"
-		Return
-	End Function
-
-	Function SaveAll()
-		LoadSaveFile.xmlBeginNode("ALLCONTRACTS")
-   			For Local Contract:TContract = EachIn TContract.List
-     			Contract.Save()
-   			Next
-   		LoadSaveFile.xmlCloseNode()
-	End Function
-
-	Method Save()
-		LoadSaveFile.xmlBeginNode("CONTRACT")
- 			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") <> "special" Then LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-			Next
-		LoadSaveFile.xmlCloseNode()
+	Method GetTitle:string() {_exposeToLua}
+		return self.title
 	End Method
 
-	'create UNSIGNED (adagency)
-	Function Create:TContract(contractBase:TContractBase)
-		Local obj:TContract = New TContract
-		obj.GenerateID()
-		obj.programmeType	= TYPE_CONTRACT
-		obj.contractBase	= contractBase
 
-		obj.List.AddLast(obj)
-		Return obj
-	End Function
+	Method GetDescription:string() {_exposeToLua}
+		return self.description
+	End Method
+
+
+	Method GetBlocks:string() {_exposeToLua}
+		return self.blocks
+	End Method
+End Type
+
+
+
+
+'the useable contract for advertisements used in the playercollections
+Type TAdContract extends TGameObject {_exposeToLua="selected"}
+	Field base:TAdContractBase			= Null					' holds raw contract data
+	Field spotsSent:Int					= 0						' how many spots were succesfully sent up to now
+	Field state:Int						= 0						' 1 = finished, -1 = botched
+	Field owner:Int						= 0
+	Field daySigned:Int					= -1					' day the contract has been taken from the advertiser-room
+	Field profit:Int					= -1					' calculated profit value (on sign)
+	Field penalty:Int					= -1					' calculated penalty value (on sign)
+	Field minAudience:Int		 		= -1					' calculated minimum audience value (on sign)
+	Field attractiveness:Float			= -1					' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
+
+	global List:TList					= CreateList()			' holding all Tcontracts
+
+
+	'create UNSIGNED (adagency)
+	Method Create:TAdContract(baseContract:TAdContractBase)
+		self.base = baseContract
+
+		List.AddLast(self)
+		Return self
+	End Method
+
+
+	'overwrite method from base
+	Method GetTitle:string() {_exposeToLua}
+		Return base.GetTitle()
+	End Method
+
+
+	'overwrite method from base
+	Method GetDescription:string() {_exposeToLua}
+		Return base.GetDescription()
+	End Method
+
+
+	'overwrite method from base
+	Method GetBlocks:string() {_exposeToLua}
+		Return base.GetBlocks()
+	End Method
+
 
 	'sign the contract -> calculate values and change owner
 	Method Sign:int(owner:int, day:int=-1)
@@ -859,34 +1370,38 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		If day < 0 Then day = game.GetDay()
 		self.daySigned		= day
 		self.owner			= owner
-		self.profit			= self.GetProfit()
-		self.penalty		= self.GetPenalty()
-		self.minAudience	= self.GetMinAudience(owner)
+		self.profit			= GetProfit()
+		self.penalty		= GetPenalty()
+		self.minAudience	= GetMinAudience(owner)
 		return TRUE
 	End Method
 
-	Function GetRandomFromList:TContract(_list:TList, playerID:Int =-1)
+
+	Function GetRandomFromList:TAdvertisement(_list:TList, playerID:Int =-1)
 		If _list = Null Then Return Null
 		If _list.count() > 0
-			Local obj:TContract = TContract(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
+			Local obj:TAdvertisement = TAdvertisement(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
 			If obj <> Null
 				obj.owner = playerID
 				Return obj
 			EndIf
 		EndIf
-		Print "contract list empty - wrong filter ?"
+		Print "TAdvertisement list empty - wrong filter ?"
 		Return Null
 	End Function
 
-	Method IsAvailableToSign:Int()  {_exposeToLua}
+
+	Method IsAvailableToSign:Int() {_exposeToLua}
 		Return (self.owner <= 0 and self.daySigned = -1)
 	End Method
 
+
 	'percents = 0.0 - 1.0 (0-100%)
-	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1)  {_exposeToLua}
-		If dbvalue < 0 Then dbvalue = Self.contractBase.minAudienceBase
+	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1) {_exposeToLua}
+		If dbvalue < 0 Then dbvalue = Self.base.minAudienceBase
 		Return Max(0.0, Min(1.0, dbvalue / 100.0)) 'from 75% to 0.75
 	End Method
+
 
 	'multiplies basevalues of prices, values are from 0 to 255 for 1 spot... per 1000 people in audience
 	'if targetgroup is set, the price is doubled
@@ -895,27 +1410,29 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		If Self.profit >= 0 Then Return Self.profit
 
 		'calculate
-		if baseValue = -1 then baseValue = self.contractBase.profitBase
+		if baseValue = -1 then baseValue = self.base.profitBase
 		if playerID = -1 then playerID = self.owner
 		Return CalculatePrices(baseValue, playerID)
 	End Method
+
 
 	Method GetPenalty:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
 		'already calculated
 		If Self.penalty >= 0 Then Return Self.penalty
 
 		'calculate
-		if baseValue = -1 then baseValue = self.contractBase.penaltyBase
+		if baseValue = -1 then baseValue = self.base.penaltyBase
 		if playerID = -1 then playerID = self.owner
 		Return CalculatePrices(baseValue, playerID)
 	End Method
 
-	Method CalculatePrices:Int(baseprice:Int=0, playerID:Int=-1)
+
+	Method CalculatePrices:Int(baseprice:Int=0, playerID:Int=-1) {_exposeToLua}
 		'price is for each spot
 		Local price:Float = baseprice * Float( self.GetSpotCount() )
 
 		'ad is with fixed price - only avaible without minimum restriction
-		If Self.contractBase.hasFixedPrice
+		If Self.base.hasFixedPrice
 			'print self.contractBase.title + " has fixed price : "+ price + " base:"+baseprice + " profitbase:"+self.contractBase.profitBase
 			Return price
 		endif
@@ -930,6 +1447,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		'return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)
 	End Method
+
 
 	'gets audience in numbers (not percents)
 	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
@@ -948,48 +1466,51 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		Return TFunctions.RoundToBeautifulValue( Floor(useAudience*0.5 * Self.GetMinAudiencePercentage()) )
 	End Method
 
+
 	'days left for sending all contracts from today
 	Method GetDaysLeft:Int() {_exposeToLua}
-		Return ( self.contractBase.daysToFinish - (Game.GetDay() - self.daySigned) )
+		Return ( self.base.daysToFinish - (Game.GetDay() - self.daySigned) )
 	End Method
 
-	'get the contractBase (to access its ID or title by its GetXXX() )
-	Method GetContractBase:TContractBase() {_exposeToLua}
-		Return self.contractBase
+
+	'get the contract (to access its ID or title by its GetXXX() )
+	Method GetBase:TAdContractBase() {_exposeToLua}
+		Return self.base
 	End Method
 
-	'get the title (differing from other programmeObjects: inherits from contractBase)
-	Method GetTitle:string() {_exposeToLua}
-		Return self.contractBase.title
-	End Method
 
 	'amount of spots still missing
 	Method GetSpotsToSend:int() {_exposeToLua}
-		Return ( self.contractBase.spotCount - self.spotsSent )
+		Return ( self.base.spotCount - self.spotsSent )
 	End Method
+
 
 	'amount of spots which have already been successfully broadcasted
 	Method GetSpotsSent:int() {_exposeToLua}
 		Return self.spotsSent
 	End Method
 
+
 	'amount of total spots to send
 	Method GetSpotCount:Int() {_exposeToLua}
-		Return self.contractBase.spotCount
+		Return self.base.spotCount
 	End Method
+
 
 	'total days to send contract from date of sign
 	Method GetDaysToFinish:Int() {_exposeToLua}
-		Return self.contractBase.daysToFinish
+		Return self.base.daysToFinish
 	End Method
 
+
 	Method GetTargetGroup:Int() {_exposeToLua}
-		Return self.contractBase.targetGroup
+		Return self.base.targetGroup
 	End Method
+
 
 	Method GetTargetGroupString:String(group:Int=-1) {_exposeToLua}
 		'if no group given, use the one of the object
-		if group < 0 then group = self.contractBase.targetGroup
+		if group < 0 then group = self.base.targetGroup
 
 		If group >= 1 And group <=9
 			Return GetLocale("AD_GENRE_"+group)
@@ -997,6 +1518,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 			Return GetLocale("AD_GENRE_NONE")
 		EndIf
 	End Method
+
 
 	Method ShowSheet:Int(x:Int,y:Int, align:int=0)
 		if align=1 then x :- Assets.GetSprite("gfx_datasheets_contract").w
@@ -1008,10 +1530,10 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		Assets.GetSprite("gfx_datasheets_contract").Draw(x,y)
 
 		Local font:TBitmapFont = Assets.fonts.basefont
-		Assets.fonts.basefontBold.drawBlock(self.contractBase.title	, x+10 , y+11 , 270, 70,0, 0,0,0, 0,0)
-		font.drawBlock(self.contractBase.description   		 		, x+10 , y+33 , 270, 70)
+		Assets.fonts.basefontBold.drawBlock(self.GetTitle()	, x+10 , y+11 , 270, 70,0, 0,0,0, 0,0)
+		font.drawBlock(self.GetDescription()   		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "	, x+10 , y+94 , 130, 16)
-		font.drawBlock(functions.convertValue(String( self.getProfit() ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
+		font.drawBlock(functions.convertValue(String( self.GetProfit() ), 2, 0)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,2)
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
 		font.drawBlock(functions.convertValue(String( self.GetPenalty() ), 2, 0)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,2)
 		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+10, y+140, 127, 16)
@@ -1021,7 +1543,7 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		font.drawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+94 , 127, 16,2)
 		font.drawBlock(getLocale("AD_PLANNED")+": "    , x+150, y+117 , 127, 16)
 		if self.owner > 0
-			font.drawBlock( Game.players[self.owner].ProgrammePlan.GetContractBroadcastCount(self.id, FALSE, TRUE)+"/"+self.GetSpotCount() , x+150, y+117 , 127, 16,2)
+			font.drawBlock( Game.players[self.owner].ProgrammePlan.GetAdContractBroadcastCount(self.id, FALSE, TRUE)+"/"+self.GetSpotCount() , x+150, y+117 , 127, 16,2)
 		else
 			font.drawBlock( "-" , x+150, y+117 , 127, 16,2)
 		endif
@@ -1042,9 +1564,10 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 		EndIf
 	End Method
 
-	Function GetContract:TContract(number:Int)
-		For Local contract:TContract = EachIn List
-			If contract.id = number Then Return contract
+
+	Function Get:TAdContract(id:Int)
+		For Local contract:TAdContract = EachIn List
+			If contract.id = id Then Return contract
 		Next
 		Return Null
 	End Function
@@ -1122,10 +1645,83 @@ Type TContract Extends TProgrammeElementBase {_exposeToLua="selected"}
 			return Int(spotsToBroadcast / daysLeft)  'int rundet
 		Endif
 	End Method
+
 End Type
 
 
-Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent of movies, series and so on
+
+
+'Base type for programmes, advertisements...
+Type TBroadcastMaterial	extends TGameObject {exposeToLua="selected"}
+	Field title:string			= ""
+	Field description:string	= ""
+	Field blocks:int			= 1		'length in blocks (eg. "hours")
+	Field state:int				= 0		'by default the state is "normal"
+	Field owner:int				= 0		'owner of that element
+
+	'states a program can be in
+	const STATE_NORMAL:int		= 0
+	const STATE_OK:int			= 1
+	const STATE_FAILED:int		= 2
+	const STATE_RUN:int			= 3
+
+
+	'get the title
+	Method GetDescription:string() {_exposeToLua}
+		Return self.description
+	End Method
+
+
+	'get the title
+	Method GetTitle:string() {_exposeToLua}
+		Return self.title
+	End Method
+
+
+	Method GetBlocks:int() {_exposeToLua}
+		Return self.blocks
+	End Method
+
+
+	'by default this is the normal ID, but could be the contracts id or so...
+	Method GetReferenceID:int() {_exposeToLua}
+		return self.id
+	End Method
+End Type
+
+
+'ad spot
+Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
+	Field contract:TAdContract	= Null
+	Field state:int				= 0				'botched, run ok, running
+	'Eventuell den "state" hier als reine visuelle Hilfe nehmen.
+	'Dinge wie "Spot X von Y" koennen auch dynamisch erfragt werden
+	'
+	'Auch sollte ein AdContract einen Event aussenden, wenn erfolgreich
+	'gesendet worden ist ... dann koennen die "GUI"-Bloecke darauf reagieren
+	'und ihre Werte aktualisieren
+
+	Global List:TList			= CreateList()
+
+
+	Method Create:TAdvertisement(contract:TAdContract)
+		self.contract = contract
+
+		List.AddLast(self)
+		Return self
+	End Method
+
+	'override default getter to make contract id the reference id
+	Method GetReferenceID:int() {_exposeToLua}
+		return self.contract.id
+	End Method
+End Type
+
+
+
+
+'parent of movies, series and so on
+Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field actors:String			= ""
 	Field director:String		= ""
 	Field country:String		= "UNK"
@@ -1136,41 +1732,30 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 	Field targetGroup:int		= 0					'special targeted audience?
 	Field refreshModifier:float	= 1.0				'changes how much a programme "regenerates" (multiplied with genreModifier)
 	Field wearoffModifier:Float	= 1.0				'changes how much a programme loses during sending it
-	Field livehour:Int			= 0
-	Field Outcome:Float			= 0
+	Field liveHour:Int			= 0
+	Field outcome:Float			= 0
 	Field review:Float			= 0
 	Field speed:Float			= 0
 	Field relPrice:Int			= 0
-	Field Genre:Int				= 0
+	Field genre:Int				= 0
 	Field episode:Int			= 0
 	Field episodes:TList		= CreateList()
-	Field blocks:Int			= 1
-	Field xrated:Int				= 0
-	Field _isMovie:Int			= 1
+	Field xrated:Int			= 0
 	Field topicality:Int		= -1 				'how "attractive" a movie is (the more shown, the less this value)
 	Field maxtopicality:Int 	= 255
 	Field parent:TProgramme		= Null
-	Field owner:Int = 0
-	Field attractiveness:Float	= -1 'Wird nur in der Lua-KI verwendet du die Filme zu bewerten
-	'holding all programmes
-	Global ProgList:TList		= CreateList()	{saveload = "nosave"}
-	Global ProgMovieList:TList	= CreateList()	{saveload = "nosave"}
-	Global ProgSeriesList:TList	= CreateList()	{saveload = "nosave"}
+	Field attractiveness:Float	= -1				'Wird nur in der Lua-KI verwendet du die Filme zu bewerten
+	Field programmeType:Int		= 1					'0 = serie, 1 = movie, ...?
+	Global ProgList:TList			= CreateList()	'holding all programmes
+	Global ProgMovieList:TList		= CreateList()	'holding only movies
+	Global ProgSeriesList:TList		= CreateList()	'holding only series
 
-	Global wearoffFactor:float = 0.65 	'factor by what a programmes topicality DECREASES by sending it
-	Global refreshFactor:float = 1.5	'factor by what a programmes topicality INCREASES by a day switch
-
-	Global releaseDayCounter:int = 0
-
+	Global wearoffFactor:float		= 0.65			'factor by what a programmes topicality DECREASES by sending it
+	Global refreshFactor:float		= 1.5			'factor by what a programmes topicality INCREASES by a day switch
+	Global releaseDayCounter:int	= 0
 	Global ignoreUnreleasedProgrammes:int	= TRUE	'hide movies of 2012 when in 1985?
 	Global _filterReleaseDateStart:int		= 1900
 	Global _filterReleaseDateEnd:int		= 2100
-
-	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=0, releaseEnd:int=0)
-		TProgramme.ignoreUnreleasedProgrammes = ignore
-		TProgramme._filterReleaseDateStart = releaseStart
-		TProgramme._filterReleaseDateEnd = releaseEnd
-	End Function
 
 	'values get multiplied with the refresh factor
 	'so this means: higher values increase the resulting topicality win
@@ -1221,36 +1806,42 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 												1.4 .. 		'paid programming
 											]
 
+	const TYPE_SERIE:int			= 0
+	const TYPE_MOVIE:int			= 1
+
+
+
 	Function Create:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, episode:Int=0)
 		Local obj:TProgramme =New TProgramme
+
 		If episode >= 0
-			obj.BaseInit(title, description, TYPE_SERIE)
-			obj._isMovie     = 0
+			obj.programmeType = TYPE_SERIE
 			'only add parent of series
 			If episode = 0 Then ProgSeriesList.AddLast(obj)
 		Else
-			obj.BaseInit(title, description, TYPE_MOVIE)
-			obj._isMovie     = 1
+			obj.programmeType = TYPE_MOVIE
 			ProgMovieList.AddLast(obj)
 		EndIf
 
+		obj.title		= title
+		obj.description = description
 		obj.episode		= episode
 		obj.refreshModifier = Max(0.0, refreshModifier)
 		obj.wearoffModifier = Max(0.0, wearoffModifier)
 		obj.review      = Max(0,review)
 		obj.speed       = Max(0,speed)
 		obj.relPrice    = Max(0,relPrice)
-		obj.Outcome	    = Max(0,Outcome)
-		obj.Genre       = Max(0,Genre)
+		obj.outcome	    = Max(0,Outcome)
+		obj.genre       = Max(0,Genre)
 		obj.blocks      = Max(1,blocks)
 		obj.xrated       = xrated
 		obj.actors 		= actors
 		obj.director    = director
 		obj.country     = country
 		obj.year        = year
-		obj.livehour    = Max(-1,livehour)
+		obj.liveHour    = Max(-1,livehour)
 		obj.topicality  = obj.ComputeTopicality()
-		obj.maxtopicality = obj.topicality
+		obj.maxTopicality = obj.topicality
 
 		obj.releaseDay = obj.releaseDayCounter mod TGame.daysPerYear
 		obj.releaseDaycounter:+1
@@ -1259,9 +1850,13 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		Return obj
 	End Function
 
+
 	Method AddEpisode:TProgramme(title:String, description:String, actors:String, director:String, country:String, year:Int, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=null, wearoffModifier:float=null, episode:Int=0, id:Int=0)
 		Local obj:TProgramme = New TProgramme
-		obj.BaseInit( title, description, TYPE_SERIE | TYPE_EPISODE)
+
+		obj.title = title
+		obj.description = description
+		obj.programmeType = TYPE_SERIE | TYPE_EPISODE
 		If review < 0 Then obj.review = Self.review Else obj.review = review
 		If speed < 0 Then obj.speed = Self.speed Else obj.speed = speed
 		If relPrice < 0 Then obj.relPrice = Self.relPrice Else obj.relPrice = relPrice
@@ -1282,7 +1877,7 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		obj.maxtopicality	= obj.topicality
 
 		obj.xrated       	= xrated
-		obj._isMovie     	= 0
+		obj.programmeType  	= TYPE_SERIE | TYPE_EPISODE
 		If episode = 0 Then episode = Self.episodes.count()+1
 		obj.episode			= episode
 		obj.parent			= Self
@@ -1291,104 +1886,19 @@ Type TProgramme Extends TProgrammeElement {_exposeToLua="selected"} 			'parent o
 		Return obj
 	End Method
 
-	Function Load:TProgramme(pnode:txmlNode, isEpisode:Int = 0, origowner:Int = 0)
-		Print "implement Load:TProgramme"
-		Return Null
-Rem
-		Local Programme:TProgramme = New TProgramme
-		Programme.episodes = CreateList() ' TObjectList.Create(100)
 
-		Local NODE:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-			Local typ:TTypeId = TTypeId.ForObject(Programme)
-			For Local t:TField = EachIn typ.EnumFields()
-				If (t.MetaData("saveload") <> "nosave" Or t.MetaData("saveload") = "normal") And Upper(t.name()) = NODE.name
-					t.Set(Programme, nodevalue)
-				EndIf
-			Next
-			Select NODE.name
-				Case "EPISODE" Programme.episodes.AddLast(TProgramme.Load(NODE, 1, Programme.owner))
-			End Select
-			NODE = NODE.nextSibling()
-		Wend
-		If Programme.episodes.count() > 0 And Not isEpisode
-			' Print "loaded series: "+Programme.title
-			TProgramme.ProgSeriesList.AddLast(Programme)
-		Else If Not isEpisode
-			TProgramme.ProgMovieList.AddLast(Programme)
-			'Print "loaded  movie: "+Programme.title
-		EndIf
-		TProgramme.ProgList.AddLast(Programme)
-
-		if Programme.owner > 0
-			'Print "added to player:"+Programme.used + " ("+Programme.title+") Clone:"+Programme.clone + " Time:"+Programme.sendtime
-			Game.Players[Programme.owner].ProgrammeCollection.AddProgramme(Programme)
-		elseIf isEpisode And origowner > 0
-			Game.Players[origowner].ProgrammeCollection.AddProgramme(Programme)
-			'Print "added to player:"+Programme.used
-		EndIf
-		Return programme
-endrem
+	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=0, releaseEnd:int=0)
+		TProgramme.ignoreUnreleasedProgrammes = ignore
+		TProgramme._filterReleaseDateStart = releaseStart
+		TProgramme._filterReleaseDateEnd = releaseEnd
 	End Function
 
-	Function LoadAll()
-Print "implement TProgramme.LoadAll()"
-Return
-Rem
-		PrintDebug("TProgramme.LoadAll()", "Lade Programme", DEBUG_SAVELOAD)
-		ProgList.Clear()
-		ProgMovieList.Clear()
-		ProgSeriesList.Clear()
-		Local Children:TList = LoadSaveFile.NODE.ChildList
-		For Local NODE:xmlNode = EachIn Children
-			If NODE.name = "PROGRAMME" then TProgramme.Load(NODE)
-		Next
-endrem
-	End Function
-
-	Function SaveAll()
-		Local Programme:TProgramme
-		Local i:Int = 0
-		LoadSaveFile.xmlBeginNode("ALLPROGRAMMES")
-			For i = 0 To TProgramme.ProgMovieList.Count()-1
-				Programme = TProgramme(TProgramme.ProgMovieList.ValueAtIndex(i))
-'				Programme = TProgramme(TProgramme.ProgMovieList.Items[i] )
-				If Programme <> Null Then Programme.Save()
-			Next
-			For i = 0 To TProgramme.ProgSeriesList.Count()-1
-'				Programme = TProgramme(TProgramme.ProgSeriesList.Items[i])
-				Programme = TProgramme(TProgramme.ProgSeriesList.ValueAtIndex(i))
-				If Programme <> Null Then Programme.Save()
-			Next
-	 	LoadSaveFile.xmlCloseNode()
-	End Function
-
-	Method Save(isepisode:Int=0)
-	    If Not isepisode Then LoadSaveFile.xmlBeginNode("PROGRAMME")
-			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") <> "nosave" Or t.MetaData("saveload") = "normal"
-					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-				EndIf
-			Next
-			'SaveFile.WriteInt(Programme.episodes.Count()-1)
-			If Not isepisode
-				For Local j:Int = 0 To Self.episodes.Count()-1
-					LoadSaveFile.xmlBeginNode("EPISODE")
-						TProgramme(Self.episodes.ValueAtIndex(j)).Save(True)
-'						TProgramme(Self.episodes.Items[j] ).Save(True)
-					LoadSaveFile.xmlCloseNode()
-				Next
-			EndIf
-		If Not isepisode Then LoadSaveFile.xmlCloseNode()
-	End Method
 
 	Method GetParent:TProgramme()
 		if not self.parent then return self
 		return self.parent
 	End Method
+
 
 	Method GetNextEpisode:TProgramme()
 	print "GetNextEpisode "+self.episode
@@ -1408,6 +1918,7 @@ endrem
 		'DebugLog "Programme "+title +" sold"
 		return TRUE
 	End Method
+
 
 	'buy means pay and set owner, but in players collection only if left the room!!
 	Method Buy:Int(playerID:Int = -1)
@@ -1429,12 +1940,14 @@ endrem
 		return _array[0]
 	End Method
 
+
 	Method GetDirector:string(number:int=1)
 		number = max(1,number)
 		local _array:string[] = self.director.split(",")
 		if _array.length >= number then return _array[number-1].trim()
 		return _array[0]
 	End Method
+
 
 	Method isReleased:int()
 		if not self.ignoreUnreleasedProgrammes then return TRUE
@@ -1453,114 +1966,109 @@ endrem
 		Return genrecount
 	End Function
 
-	Function GetProgramme:TProgramme(id:Int)
-		For Local i:Int = 0 To ProgList.Count() - 1
-			If TProgramme(ProgList.ValueAtIndex(i)) <> Null
-				If TProgramme(ProgList.ValueAtIndex(i)).id = id Then Return TProgramme(ProgList.ValueAtIndex(i))
-			EndIf
+
+	'returns the list to use for the given type
+	'this is just important for "random" access as we could
+	'also just access "progList" in all cases...
+	Function _GetList:TList(programmeType:int=0)
+		Select programmeType
+			case 1	return ProgMovieList
+			case 2	return ProgSeriesList
+			default	return ProgList
+		End Select
+	End Function
+
+
+	Function GetProgramme:TProgramme(id:Int, programmeType:int=0)
+		local list:TList = _GetList(programmeType)
+		local programme:TProgramme = null
+
+		For Local i:Int = 0 To list.Count() - 1
+			programme = TProgramme(list.ValueAtIndex(i))
+			if programme and programme.id = id Then Return programme
 		Next
 		Return Null
 	End Function
 
-	Function GetMovie:TProgramme(id:Int)
-		For Local i:Int = 0 To ProgMovieList.Count() - 1
-			If TProgramme(ProgMovieList.ValueAtIndex(i)) <> Null
-				If TProgramme(ProgMovieList.ValueAtIndex(i)).id = id Then Return TProgramme(ProgMovieList.ValueAtIndex(i))
-			EndIf
-		Next
-		Return Null
-	End Function
-
-	Function GetSeries:TProgramme(id:Int)
-		For Local i:Int = 0 To ProgSeriesList.Count() - 1
-			If TProgramme(ProgSeriesList.ValueAtIndex(i)).id = id Then Return TProgramme(ProgSeriesList.ValueAtIndex(i))
-		Next
-		Return Null
-	End Function
 
 	Function GetRandomProgrammeFromList:TProgramme(_list:TList)
 		If _list = Null Then Return Null
 		If _list.count() > 0
-			Local movie:TProgramme = TProgramme(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			If movie <> Null then return movie
+			Local prog:TProgramme = TProgramme(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
+			If prog then return prog
 		EndIf
 		Print "ProgrammeList empty - wrong filter ?"
 		Return Null
 	End Function
 
-	Function GetRandomMovie:TProgramme()
+
+	Function GetRandomProgramme:TProgramme(programmeType:int=0)
 		'filter to entries we need
-		Local movie:TProgramme
+		Local prog:TProgramme
+		Local sourceList:TList = _GetList(programmeType)
 		Local resultList:TList = CreateList()
-		For movie = EachIn ProgMovieList
+		For prog = EachIn sourceList
 			'ignore if filtered out
-			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
-			If movie.owner <> 0 or not movie.isReleased() Then continue
+			if not prog.ignoreUnreleasedProgrammes AND prog.year < _filterReleaseDateStart OR prog.year > _filterReleaseDateEnd then continue
+			If prog.owner <> 0 or not prog.isReleased() Then continue
 
 			'if available (unbought, released..), add it to candidates list
-			if movie.isMovie() then resultList.addLast(movie)
+			resultList.addLast(prog)
 		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList)
+		Return GetRandomProgrammeFromList(resultList)
 	End Function
 
-	Function GetRandomMovieWithPrice:TProgramme(MinPrice:int=0, MaxPrice:Int=-1)
+
+	Function GetRandomProgrammeWithPrice:TProgramme(MinPrice:int=0, MaxPrice:Int=-1, programmeType:int=0)
 		'filter to entries we need
-		Local movie:TProgramme
+		Local prog:TProgramme
+		Local sourceList:TList = _GetList(programmeType)
 		Local resultList:TList = CreateList()
-		For movie = EachIn ProgMovieList
+		For prog = EachIn sourceList
 			'ignore if filtered out
-			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
-			If movie.owner <> 0 or not movie.isReleased() Then continue
+			if not prog.ignoreUnreleasedProgrammes AND prog.year < _filterReleaseDateStart OR prog.year > _filterReleaseDateEnd then continue
+			If prog.owner <> 0 or not prog.isReleased() Then continue
 
 			'skip if to expensive
-			if MaxPrice > 0 and movie.getPrice() > MaxPrice then continue
+			if MaxPrice > 0 and prog.getPrice() > MaxPrice then continue
 
 			'if available (unbought, released..), add it to candidates list
-			If movie.getPrice() >= MinPrice and movie.isMovie() Then resultList.addLast(movie)
+			If prog.getPrice() >= MinPrice Then resultList.addLast(prog)
 		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList)
+		Return GetRandomProgrammeFromList(resultList)
 	End Function
 
 
-	Function GetRandomProgrammeByGenre:TProgramme(genre:Int = 0)
-		Local movie:TProgramme
+	Function GetRandomProgrammeByGenre:TProgramme(genre:Int = 0, programmeType:int=0)
+		Local prog:TProgramme
+		Local sourceList:TList = _GetList(programmeType)
 		Local resultList:TList = CreateList()
-		For movie = EachIn ProgList
+		For prog = EachIn sourceList
 			'ignore if filtered out
-			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
-			If movie.owner <> 0 or not movie.isReleased() Then continue
+			if not prog.ignoreUnreleasedProgrammes AND prog.year < _filterReleaseDateStart OR prog.year > _filterReleaseDateEnd then continue
+			If prog.owner <> 0 or not prog.isReleased() Then continue
 
 			'if available (unbought, released..), add it to candidates list
-			If movie.genre = genre And movie.episode <= 0 Then resultList.addLast(movie)
+			If prog.genre = genre And prog.episode <= 0 Then resultList.addLast(prog)
 		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList)
+		Return GetRandomProgrammeFromList(resultList)
 	End Function
 
-	Function GetRandomSerie:TProgramme()
-		Local movie:TProgramme
-		Local resultList:TList = CreateList()
-		For movie = EachIn ProgSeriesList
-			'ignore if filtered out
-			if not movie.ignoreUnreleasedProgrammes AND movie.year < movie._filterReleaseDateStart OR movie.year > movie._filterReleaseDateEnd then continue
-			If movie.owner <> 0 or not movie.isReleased() Then continue
-
-			'if available (unbought, released..), add it to candidates list
-			If movie.episode <= 0 And Not movie.isMovie() Then resultList.addLast(movie)
-		Next
-		Return TProgramme.GetRandomProgrammeFromList(resultList)
-	End Function
 
 	Method GetAttractiveness:Float() {_exposeToLua}
 		Return Self.attractiveness
 	End Method
 
+
 	Method SetAttractiveness(value:Float) {_exposeToLua}
 		Self.attractiveness = value
 	End Method
 
+
 	Method GetRefreshModifier:float() {_exposeToLua}
 		return self.refreshModifier
 	End Method
+
 
 	Method GetGenreRefreshModifier:float(genre:int=-1) {_exposeToLua}
 		if genre = -1 then genre = self.genre
@@ -1574,6 +2082,7 @@ endrem
 		return self.wearoffModifier
 	End Method
 
+
 	Method GetGenreWearoffModifier:float(genre:int=-1) {_exposeToLua}
 		if genre = -1 then genre = self.genre
 		if genre < self.genreWearoffModifier.length then return self.genreWearoffModifier[genre]
@@ -1581,51 +2090,58 @@ endrem
 		return 1.0
 	End Method
 
+
 	Method GetGenre:int() {_exposeToLua}
 		return self.genre
 	End Method
+
 
 	Method GetGenreString:String(_genre:Int=-1) {_exposeToLua}
 		If _genre > 0 Then Return GetLocale("MOVIE_GENRE_" + _genre)
 		Return GetLocale("MOVIE_GENRE_" + Self.genre)
 	End Method
 
+
 	Method isMovie:int() {_exposeToLua}
-		return self._isMovie
+		return self.programmeType = TYPE_MOVIE
 	End Method
 
-	Method GetBlocks:int() {_exposeToLua}
-		return self.blocks
-	End Method
 
 	Method GetXRated:int() {_exposeToLua}
 		return (self.xrated <> "")
 	End Method
 
+
 	Method GetOutcome:int() {_exposeToLua}
 		return self.outcome
 	End Method
+
 
 	Method GetSpeed:int() {_exposeToLua}
 		return self.speed
 	End Method
 
+
 	Method GetReview:int() {_exposeToLua}
 		return self.review
 	End Method
+
 
 	Method GetTopicality:int() {_exposeToLua}
 		return self.topicality
 	End Method
 
+
 	Method GetEpisodeCount:int() {_exposeToLua}
 		return self.episodes.count()
 	End Method
+
 
 	'Manuel: Wird nur in der Lua-KI verwendet
 	Method GetPricePerBlock:Int() {_exposeToLua}
 		Return Self.GetPrice() / Self.GetBlocks()
 	End Method
+
 
 	'Manuel: Wird nur in der Lua-KI verwendet
 	Method GetQualityLevel:Int() {_exposeToLua}
@@ -1643,6 +2159,7 @@ endrem
 		EndIf
 	End Method
 
+
 	'returns array of all episodes or an empty array if no episodes are found
 	Method GetEpisodes:Object[]() {_exposeToLua}
 		If Self.episodes
@@ -1651,6 +2168,7 @@ endrem
 			Return CreateList().toArray()
 		EndIf
 	End Method
+
 
 	'returns episode if found
 	'episode starts with 1 not 0 !
@@ -1663,6 +2181,7 @@ endrem
 
 		Return Null
 	End Method
+
 
 	Method ComputeTopicality:Float()
 		Local value:Int = 0
@@ -1679,6 +2198,7 @@ endrem
 		EndIf
 		Return topicality
 	End Method
+
 
 	'base quote of a programme
 	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
@@ -1704,6 +2224,7 @@ endrem
 		Return Max(0, quality)
 	End Method
 
+
 	'computes a percentage which could be multiplied with maxaudience
 	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1) {_exposeToLua}
 		Local quote:Float		= self.getBaseAudienceQuote(lastquote)
@@ -1720,6 +2241,7 @@ endrem
 		Return Max(0, quote)
 	End Method
 
+
 	Method CutTopicality:Int(cutFactor:float=1.0)
 		'cutFactor can be used to manipulate the resulting cut
 		'eg for night times
@@ -1729,18 +2251,22 @@ endrem
 		topicality:* Min(1.0,  cutFactor * self.wearoffFactor * self.GetGenreWearoffModifier() * self.GetWearoffModifier() )
 	End Method
 
+
 	Method RefreshTopicality:Int()
 		topicality = Min(maxtopicality, topicality*self.refreshFactor*self.GetGenreRefreshModifier()*self.GetRefreshModifier())
 		Return topicality
 	End Method
 
+
 	Method getTargetGroup:int() {_exposeToLua}
 		return self.targetGroup
 	End Method
 
+
 	Method GetTimesAired:Int() {_exposeToLua}
 		return self.timesAired
 	End Method
+
 
 	Method GetPrice:Int() {_exposeToLua}
 		Local value:Float
@@ -1769,6 +2295,7 @@ endrem
 		EndIf
 		Return value
 	End Method
+
 
 	Method ShowSheet:Int(x:Int,y:Int, plannerday:Int = -1, series:TProgramme=Null, align:int=0)
 		Local widthbarspeed:Float		= Float(speed / 255)
@@ -1836,9 +2363,11 @@ endrem
 		SetAlpha 1.0
 		If widthbartopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(x+115 - 200 + widthbartopicality*100,y+280,	x+115, y+279, 100,12)
 	End Method
- End Type
+End Type
 
-Type TNews Extends TProgrammeElement {_exposeToLua="selected"}
+
+
+Type TNewsEvent Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field genre:Int				= 0
 	Field quality:Int			= 0
 	Field price:Int				= 0
@@ -1847,56 +2376,106 @@ Type TNews Extends TProgrammeElement {_exposeToLua="selected"}
 	Field happenedTime:Double	= -1
 	Field happenDelayData:int[]	= [5,0,0,0]			'different params for delay generation
 	Field happenDelayType:int	= 2					'what kind of delay do we have? 2 = hours
-	Field parent:TNews			= Null				'is this news a child of a chain?
+	Field parent:TNewsEvent		= Null				'is this news a child of a chain?
 
 	Global usedList:TList		= CreateList()		'holding already announced news
 	Global List:TList			= CreateList()		'holding single news and first/parent of news-chains (start)
 
-	Function Load:TNews(pnode:txmlNode, isEpisode:Int = 0, origowner:Int = 0)
-Print "implement load:TNews"
-Return Null
+
+	Function Create:TNewsEvent(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0)
+		Local obj:TNewsEvent =New TNewsEvent
+		obj.title       = title
+		obj.description = description
+		obj.genre       = Genre
+		obj.episode     = 0
+		obj.quality     = quality
+		obj.price       = price
+
+		List.AddLast(obj)
+		Return obj
 	End Function
 
-	Function LoadAll()
-Print "implement TNews.LoadAll()"
-Return
-	End Function
+	Method AddEpisode:TNewsEvent(title:String, description:String, Genre:Int, episode:Int=0,quality:Int=0, price:Int=0, id:Int=0)
+		Local obj:TNewsEvent =New TNewsEvent
+		obj.title       = title
+		obj.description = description
+		obj.Genre       = Genre
+		obj.quality     = quality
+		obj.price       = price
 
-	Function SaveAll()
-Print "implement TNews.SaveAll()"
-Return
-	End Function
+	    obj.episode     = episode
+		obj.parent		= Self
 
-	Method Save(isEpisode:Int=0)
-Print "implement save:TNews"
+		obj.happenDelayType		= 2 'data is hours
+		obj.happenDelayData[0]	= 5 '5hrs default
+		'add to parent
+		Self.episodes.AddLast(obj)
+		SortList(Self.episodes)
+
+		'list.AddLast(obj)
+		Return obj
 	End Method
 
+	'returns the next news out of a chain
+	Method GetNextNewsEventFromChain:TNewsEvent()
+		Local news:TNewsEvent=Null
+		'if element is an episode of a chain
+		If self.parent
+			news = TNewsEvent(self.parent.episodes.ValueAtIndex(Max(0,self.episode -1)))
+		'if it is the parent of a chain
+		elseif self.episodes.count() > 0
+			news = TNewsEvent(self.episodes.ValueAtIndex(0))
+		endif
+		if news
+			news.doHappen()
+			Return news
+		endif
+		'if something strange happens - better return self than nothing
+		return self
+	End Method
+
+
+	Function Get:TNewsEvent(id:Int)
+		Local news:TNewsEvent = Null
+		For Local i:Int = 0 To List.Count()-1
+			news = TNewsEvent(List.ValueAtIndex(i))
+			If news and news.id = id
+				news.doHappen()
+				Return news
+			endif
+		Next
+		Return Null
+	End Function
+
+
 	Function SetOldNewsUnused(daysAgo:int=1)
-		For local news:TNews = eachin TNews.usedList
+		For local news:TNewsEvent = eachin usedList
 			if abs(Game.GetDay(news.happenedTime) - Game.GetDay()) >= daysAgo
-				TNews.usedList.Remove(news)
-				TNews.list.addLast(news)
+				usedList.Remove(news)
+				list.addLast(news)
 				news.happenedTime = -1
 			endif
 		Next
 	End Function
 
-	Function GetRandomNews:TNews()
-		'if no news is available, make older ones available again
-		if List.Count() = 0 then TNews.SetOldNewsUnused(7)
-		'if there is still nothing - also accept younger ones
-		if List.Count() = 0 then TNews.SetOldNewsUnused(2)
 
-		if List.Count() = 0 then print "NO ELEMENTS IN NEWS LIST!!"
+	Function GetRandom:TNewsEvent()
+		'if no news is available, make older ones available again
+		if List.Count() = 0 then SetOldNewsUnused(7)
+		'if there is still nothing - also accept younger ones
+		if List.Count() = 0 then SetOldNewsUnused(2)
+
+		if List.Count() = 0 then print "NO ELEMENTS IN NEWSEVENT LIST!!"
 
 		'fetch a random news
-		Local news:TNews = TNews(List.ValueAtIndex((randRange(0, List.Count() - 1))))
+		Local news:TNewsEvent = TNewsEvent(List.ValueAtIndex((randRange(0, List.Count() - 1))))
 
 		news.doHappen()
 
 		'Print "get random news: "+news.title + " ("+news.episode+"/"+news.getEpisodesCount()+")"
 		Return news
 	End Function
+
 
 	Function GetGenreString:String(Genre:Int)
 		If Genre = 0 Then Return GetLocale("NEWS_POLITICS_ECONOMY")
@@ -1906,6 +2485,7 @@ Print "implement save:TNews"
 		If Genre = 4 Then Return GetLocale("NEWS_CURRENTAFFAIRS")
 		Return Genre+ " unbekannt"
 	End Function
+
 
 	Method getHappenDelay:int()
 		'data is days from now
@@ -1933,14 +2513,17 @@ Print "implement save:TNews"
 		endif
 	End Method
 
+
 	Method getEpisodesCount:int()
 		if self.parent then return self.parent.episodes.Count()
 		return self.episodes.Count()
 	End Method
 
+
 	Method isLastEpisode:int()
 		return self.parent<>null and self.episode = self.parent.episodes.count()
 	End Method
+
 
 	Method ComputeTopicality:Float()
 		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
@@ -1949,6 +2532,7 @@ Print "implement save:TNews"
 		Local age:float = Max(0,100-5*Max(0, ageHours) )
 		return age*2.55 ',max is 255
 	End Method
+
 
 	Method GetAttractiveness:Float() {_exposeToLua}
 		Return 0.30*((quality+5)/255) + 0.4*ComputeTopicality()/255 + 0.2*price/255 + 0.1
@@ -1967,6 +2551,7 @@ Print "implement save:TNews"
 		'no minus quote
 		Return Max(0, quality)
 	End Method
+
 
 	'computes a percentage which could be multiplied with maxaudience
 	Method GetAudienceQuote:Float(lastquote:Float=0, maxAudiencePercentage:Float=-1) {_exposeToLua}
@@ -1993,78 +2578,14 @@ rem
 	End Method
 endrem
 
+
 	Method ComputePrice:Int() {_exposeToLua}
 		'price ranges from 0-10.000
 		Return 100 * ceil( 100 * float(0.6*quality + 0.3*price + 0.1*self.ComputeTopicality())/255.0 )
 		'Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
 	End Method
-
-	Function Create:TNews(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0)
-		Local obj:TNews =New TNews
-		obj.BaseInit(title, description, TYPE_NEWS)
-		obj.title       = title
-		obj.description = description
-		obj.genre       = Genre
-		obj.episode     = 0
-		obj.quality     = quality
-		obj.price       = price
-
-		List.AddLast(obj)
-		Return obj
-	End Function
-
-	Method AddEpisode:TNews(title:String, description:String, Genre:Int, episode:Int=0,quality:Int=0, price:Int=0, id:Int=0)
-		Local obj:TNews =New TNews
-		obj.BaseInit(title, description, TYPE_NEWS)
-		obj.Genre       = Genre
-		obj.quality     = quality
-		obj.price       = price
-
-	    obj.episode     = episode
-		obj.parent		= Self
-
-		obj.happenDelayType		= 2 'data is hours
-		obj.happenDelayData[0]	= 5 '5hrs default
-		'add to parent
-		Self.episodes.AddLast(obj)
-		SortList(Self.episodes)
-
-		'list.AddLast(obj)
-		Return obj
-	End Method
-
-	'returns the next news out of a chain
-	Method GetNextNewsFromChain:TNews()
-		Local news:TNews=Null
-		'if element is an episode of a chain
-		If self.parent
-			news = TNews(self.parent.episodes.ValueAtIndex(Max(0,self.episode -1)))
-		'if it is the parent of a chain
-		elseif self.episodes.count() > 0
-			news = TNews(self.episodes.ValueAtIndex(0))
-		endif
-		if news
-			news.doHappen()
-			Return news
-		endif
-		'if something strange happens - better return self than nothing
-		return self
-	End Method
-
-
-	Function GetNews:TNews(number:Int)
-		Local news:TNews = Null
-		For Local i:Int = 0 To TNews.List.Count()-1
-			news = TNews(TNews.List.ValueAtIndex(i))
-			'news = TNews(TNews.List.Items[ i ])
-			If news and news.id = number
-				news.doHappen()
-				Return news
-			endif
-		Next
-		Return Null
-	End Function
 End Type
+
 
 Type TDatabase
 	Field file:String
@@ -2248,7 +2769,7 @@ Type TDatabase
 				penalty		= xml.FindValueInt(nodeChild,"penalty", 0)
 				daystofinish= xml.FindValueInt(nodeChild,"duration", 1)
 
-				TContractBase.Create(title, description, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
+				new TAdContractBase.Create(title, description, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
 				'print "contract: "+title+ " " + Database.contractscount
 				Database.contractscount :+ 1
 			EndIf
@@ -2271,7 +2792,7 @@ Type TDatabase
 				genre		= xml.FindValueInt(nodeChild,"genre", 0)
 				quality		= xml.FindValueInt(nodeChild,"topicality", 0)
 				price		= xml.FindValueInt(nodeChild,"price", 0)
-				Local parentNews:TNews = TNews.Create(title, description, Genre, quality, price)
+				Local parentNewsEvent:TNewsEvent = TNewsEvent.Create(title, description, Genre, quality, price)
 
 				'load episodes
 				Local EpisodeNum:Int = 0
@@ -2285,7 +2806,7 @@ Type TDatabase
 							genre			= xml.FindValueInt(nodeEpisode,"genre", genre)
 							quality			= xml.FindValueInt(nodeEpisode,"topicality", quality)
 							price			= xml.FindValueInt(nodeEpisode,"price", price)
-							parentNews.AddEpisode(title,description, Genre, EpisodeNum,quality, price)
+							parentNewsEvent.AddEpisode(title,description, Genre, EpisodeNum,quality, price)
 							Database.totalnewscount :+1
 						EndIf
 					Next
@@ -2309,43 +2830,17 @@ Type TAdBlock Extends TBlockGraphical
     Field botched:int				= 0			'did the block run successful or failed it?
     Field senddate:Int				=-1			'which day this ad is planned to be send?
     Field sendtime:Int				=-1			'which time this ad is planned to be send?
-    Field contract:TContract		= Null		{_exposeToLua}
+    Field contract:TAdContract		= Null		{_exposeToLua}
     Global DragAndDropList:TList	= CreateList()
     Global spriteBaseName:String	= "pp_adblock1"
 
     Global draggedList:TList		= CreateList() 'so it can get managed again
 
-	Function LoadAll(loadfile:TStream)
-		print "Implement TAdblock.Loadall - in TPlayerProgrammePlan"
-	End Function
 
-	Function SaveAll()
-		print "Implement TAdblock.Saveall - in TPlayerProgrammePlan"
-	End Function
-
-	Method Save()
-		LoadSaveFile.xmlBeginNode("ADBLOCK")
-			Local typ:TTypeId = TTypeId.ForObject(Self)
-			For Local t:TField = EachIn typ.EnumFields()
-				If t.MetaData("saveload") = "normal"
-					LoadSaveFile.xmlWrite(Upper(t.name()), String(t.Get(Self)))
-				EndIf
-			Next
-			If Self.contract <> Null
-				LoadSaveFile.xmlWrite("CONTRACTID", 	Self.contract.id)
-				Self.contract.Save()
-			Else
-				LoadSaveFile.xmlWrite("CONTRACTID", 	"-1")
-			EndIf
-		LoadSavefile.xmlCloseNode()
-	End Method
-
-
-	Function Create:TAdBlock(contract:TContract = Null, x:Int, y:Int, owner:Int)
+	Function Create:TAdBlock(contract:TAdContract = Null, x:Int, y:Int, owner:Int)
 		If owner < 0 Then owner = game.playerID
 
 		local obj:TAdBlock = new TAdBlock
-		obj.GenerateID()
 		obj.rect 		= TRectangle.Create(x, y, Assets.GetSprite("pp_adblock1").w, Assets.GetSprite("pp_adblock1").h)
 		obj.StartPos	= TPoint.Create(x, y)
 		obj.owner		= owner
@@ -2354,7 +2849,7 @@ Type TAdBlock Extends TBlockGraphical
 		obj.senddate	= Game.daytoplan
 		obj.sendtime	= obj.GetTimeOfBlock()
 
-		If not contract then contract = Game.Players[owner].ProgrammeCollection.GetRandomContract()
+		If not contract then contract = Game.Players[owner].ProgrammeCollection.GetRandomAdContract()
 		obj.contract	= contract
 
 		'store the object in the players plan
@@ -2363,7 +2858,7 @@ Type TAdBlock Extends TBlockGraphical
 	End Function
 
 
-	Function CreateDragged:TAdBlock(contract:TContract, owner:Int=-1)
+	Function CreateDragged:TAdBlock(contract:TAdContract, owner:Int=-1)
 		Local obj:TAdBlock = TAdBlock.Create(contract, MouseManager.x, MouseManager.y, owner)
 
 		'remove from managed
@@ -2451,7 +2946,7 @@ Type TAdBlock Extends TBlockGraphical
 			'draw graphic
 
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.drawBlock(contract.contractBase.title, rect.position.GetIntX()+3, rect.position.GetIntY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
+			Assets.fonts.basefontBold.drawBlock(contract.GetTitle(), rect.position.GetIntX()+3, rect.position.GetIntY()+2, rect.GetW()-5, 18, 0, 0, 0, 0, True)
 			SetColor 80,80,80
 			local spotNumber:int	= self.GetSpotNumber()
 			local spotCount:int		= self.contract.GetSpotCount()
@@ -2565,7 +3060,7 @@ Type TAdBlock Extends TBlockGraphical
 							Next
 							'removes the whole adblock from the plan
 							'but it also sets it unmanaged
-							'print "Adblock.RemoveFromPlan: "+Adblock.contract.contractBase.title
+							'print "Adblock.RemoveFromPlan: "+Adblock.contract.contract.title
 							Adblock.RemoveFromPlan()
 							'that is why we add it to a special list
 							TAdblock.draggedList.addLast(Adblock)
@@ -2586,7 +3081,7 @@ Type TAdBlock Extends TBlockGraphical
 												If not OtherAdBlock.isAired()
 													OtherAdBlock.dragged = 1
 
-													'print "otherAdblock.RemoveFromPlan: "+otherAdblock.contract.contractBase.title
+													'print "otherAdblock.RemoveFromPlan: "+otherAdblock.contract.contract.title
 													'removes the whole adblock from the plan
 													'but it also sets it unmanaged
 													otherAdblock.RemoveFromPlan()
@@ -2624,7 +3119,7 @@ Type TAdBlock Extends TBlockGraphical
 							AdBlock.dragged 	= 0
 							AdBlock.sendtime	= Adblock.GetTimeOfBlock()
 							AdBlock.senddate	= Game.daytoplan
-							'print "Adblock.AddToPlan: "+Adblock.contract.contractBase.title
+							'print "Adblock.AddToPlan: "+Adblock.contract.contract.title
 							'remove it from the special list, block is
 							'getting managed again
 							TAdblock.draggedList.remove(adblock)
@@ -2680,7 +3175,7 @@ Type TAdBlock Extends TBlockGraphical
 
 	'removes Adblocks which are supposed to be deleted for its contract being obsolete (expired)
 	'BeginDay: AdBlocks with contracts ending before that day get removed
-	Function RemoveAdblocks:Int(Contract:TContract, BeginDay:Int=0)
+	Function RemoveAdblocks:Int(Contract:TAdContract, BeginDay:Int=0)
 		For Local otherBlock:TAdBlock= EachIn Game.Players[ contract.owner ].ProgrammePlan.Adblocks
 			'skip other contracts
 			If otherBlock.contract <> contract then continue
@@ -2708,7 +3203,7 @@ Type TAdBlock Extends TBlockGraphical
 		If game.networkgame Then NetworkHelper.SendPlanAdChange(self.owner, Self, 1)
     End Method
 
-    Function GetBlockByContract:TAdBlock(contract:TContract)
+    Function GetBlockByContract:TAdBlock(contract:TAdContract)
 		For Local _AdBlock:TAdBlock = EachIn Game.Players[ contract.owner ].ProgrammePlan.Adblocks
 			if contract = _Adblock.contract then return _Adblock
 		Next
@@ -3058,45 +3553,35 @@ Type TProgrammeBlock Extends TBlockGraphical
     End Method
 End Type
 
+
+
 'a graphical representation of programmes/news/ads...
-Type TGUINewsBlock extends TGUIListItem
-	Field newsBlock:TNewsBlock = Null
+Type TGUINews extends TGUIGameObject
+	Field news:TNews = Null
 	Field imageBaseName:string = "gfx_news_sheet"
 
-    Method Create:TGUINewsBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
-		'limit this blocks to the room "NewsPlannerXXX"
-   		super.CreateBase(x,y,"NewsplannerXXX",null)
-		self.Resize( width, height )
-		self.label = label
 
-		'make dragable by default
-		self.setOption(GUI_OBJECT_DRAGABLE, TRUE)
+    Method Create:TGUINews(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+		Super.Create(label,x,y,width,height)
 
-		'register events
-		'- each item wants to know whether it was clicked
-		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIListItem.onClick, self )
-
-		GUIManager.add(self)
 		return self
 	End Method
 
-	Method SetNewsBlock:int(block:TNewsBlock)
-		self.newsBlock = block
-		if block
+	Method SetNews:int(news:TNews)
+		self.news = news
+		if news
 			'now we can calculate the item width
-			self.Resize( Assets.GetSprite(Self.imageBaseName+newsBlock.news.genre).w, Assets.GetSprite(Self.imageBaseName+newsBlock.news.genre).h )
+			self.Resize( Assets.GetSprite(Self.imageBaseName+news.newsEvent.genre).w, Assets.GetSprite(Self.imageBaseName+news.newsEvent.genre).h )
 		endif
-
-		'so it is only handled in the correct players newsplanner
-		'eg. "Newsplanner1" for player 1
-		self.SetLimitToState("Newsplanner"+block.owner)
+		'self.SetLimitToState("Newsplanner")
 
 		'as the news inflicts the sorting algorithm - resort
 		GUIManager.sortList()
 	End Method
 
+
 	Method Compare:int(Other:Object)
-		local otherBlock:TGUINewsBlock = TGUINewsBlock(Other)
+		local otherBlock:TGUINews = TGUINews(Other)
 		If otherBlock<>null
 			'both items are dragged - check time
 			if self._flags & GUI_OBJECT_DRAGGED AND otherBlock._flags & GUI_OBJECT_DRAGGED
@@ -3106,8 +3591,8 @@ Type TGUINewsBlock extends TGUIListItem
 				return 0
 			endif
 
-			if self.newsBlock and otherBlock.newsBlock
-				local publishDifference:int = self.newsBlock.GetPublishTime() - otherBlock.newsBlock.GetPublishTime()
+			if self.news and otherBlock.news
+				local publishDifference:int = self.news.GetPublishTime() - otherBlock.news.GetPublishTime()
 
 				'self is newer ("later") than other
 				if publishDifference>0 then return -1
@@ -3123,112 +3608,211 @@ Type TGUINewsBlock extends TGUIListItem
 	End Method
 
 
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
+		'set mouse to "hover"
+		if news.owner = Game.playerID or news.owner <= 0 and mouseover then Game.cursorstate = 1
+		'set mouse to "dragged"
+		if isDragged() then Game.cursorstate = 2
+
+		if isDragged() AND 1=5
+			print "."
+			print "----DEBUG"
+			print "gui "+_id+" listed in:"
+			'if self = RoomHandler_News.hoveredGuiNews then print "hoveredGuiNews"
+			'if self = RoomHandler_News.draggedGuiNews then print "draggedGuiNews"
+			for local obj:TGUINews = eachin GUIManager.list
+				if self = obj then print "GUIManager"
+			Next
+
+			for local obj:TGUINews = eachin RoomHandler_News.guiNewsListAvailable.entries
+				if self = obj then print "guiNewsListAvailable"
+			Next
+			for local obj:TGUINews = eachin RoomHandler_News.guiNewsListAvailable.guiEntriesPanel.children
+				if self = obj then print "guiNewsAvailable.CHILDREN"
+			Next
+			for local i:int = 0 to RoomHandler_News.guiNewsListUsed._slots.length-1
+				local obj:TGUINews = TGUINews(RoomHandler_News.guiNewsListUsed._slots[i])
+				if self = obj then print "guiNewsListUsed"
+			Next
+			if RoomHandler_News.guiNewsListUsed.guiEntriesPanel.children
+				for local obj:TGUINews = eachin RoomHandler_News.guiNewsListUsed.guiEntriesPanel.children
+					if self = obj then print "guiNewsListUsed.CHILDREN"
+				Next
+			endif
+		endif
+
+	End Method
+
+
 	Method Draw()
 		State = 0
 		SetColor 255,255,255
 
 		if self.RestrictViewPort()
-			'cache calculation
-			'local screenX:float = self.GetScreenX()
-			'local screenY:float = self.GetScreenY()
-			'cache calculation and clamp to int
 			local screenX:float = int(self.GetScreenX())
 			local screenY:float = int(self.GetScreenY())
+			local oldAlpha:float = GetAlpha()
+			local itemAlpha:float = 1.0
+			'fade out dragged
+			if isDragged() then itemAlpha = 0.25 + 0.5^GuiManager.GetDraggedNumber(self)
 
+			SetAlpha oldAlpha*itemAlpha
 			'background - no "_dragged" to add to name
-			Assets.GetSprite(Self.imageBaseName+newsBlock.news.genre).Draw(screenX, screenY)
+			Assets.GetSprite(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 
 			'default texts (title, text,...)
-			Assets.fonts.basefontBold.drawBlock(newsBlock.news.title, screenX + 15, screenY + 4, 290, 15 + 8, 0, 20, 20, 20)
-			Assets.fonts.baseFont.drawBlock(newsBlock.news.description, screenX + 15, screenY + 19, 300, 50 + 8, 0, 100, 100, 100)
-			SetAlpha 0.3
-			'SetRotation(-90)
-			'Assets.GetFont("Default", 9).drawBlock(newsBlock.news.GetGenreString(newsBlock.news.Genre), screenX + 3, screenY + 72, 120, 120, 0, 0, 0, 0)
-			'SetRotation(0)
-			Assets.GetFont("Default", 9).drawBlock(newsBlock.news.GetGenreString(newsBlock.news.Genre), screenX + 15, screenY + 74, 120, 15, 0, 0, 0, 0)
-			SetAlpha 1.0
-			Assets.GetFont("Default", 12).drawBlock(newsBlock.news.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, 2, 0, 0, 0)
+			Assets.fonts.basefontBold.drawBlock(news.GetTitle(), screenX + 15, screenY + 4, 290, 15 + 8, 0, 20, 20, 20)
+			Assets.fonts.baseFont.drawBlock(news.GetDescription(), screenX + 15, screenY + 19, 300, 50 + 8, 0, 100, 100, 100)
+			SetAlpha 0.3*oldAlpha*itemAlpha
+			Assets.GetFont("Default", 9).drawBlock(news.GetGenreString(), screenX + 15, screenY + 74, 120, 15, 0, 0, 0, 0)
+			SetAlpha 1.0*oldAlpha*itemAlpha
+			if not news.paid
+				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, 2, 0, 0, 0)
+			else
+				Assets.GetFont("Default", 12).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, 2, 50, 50, 50)
+			endif
 
-			Select Game.getDay() - Game.GetDay(newsBlock.news.happenedtime)
-				case 0	Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedTime(newsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
-				case 1	Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedTime(newsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
-				case 2	Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedTime(newsBlock.news.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+			Select Game.getDay() - Game.GetDay(news.newsEvent.happenedtime)
+				case 0	Assets.fonts.baseFont.drawBlock("Heute " + Game.GetFormattedTime(news.newsEvent.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+				case 1	Assets.fonts.baseFont.drawBlock("(Alt) Gestern " + Game.GetFormattedTime(news.newsEvent.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
+				case 2	Assets.fonts.baseFont.drawBlock("(Alt) Vorgestern " + Game.GetFormattedTime(news.newsEvent.happenedtime) + " Uhr", screenX + 90, screenY + 74, 140, 15, 2, 0, 0, 0)
 			End Select
 			SetColor 255, 255, 255
-			SetAlpha 1.0
-
+			SetAlpha oldAlpha
 			self.resetViewport()
 		endif
 	End Method
 End Type
 
 
-'This object stores a players newsblocks.
-'If needed, it creates a guiBlock to make it controllable visually
-Type TNewsBlock extends TGameObject {_exposeToLua="selected"}
-    Field slot:Int	 			= -1 	{saveload = "normal"} 'which of the available slots is the news using
-    Field publishDelay:Int 		= 0		{saveload = "normal"} 'delay the news for a certain time (depending on the abonnement-level)
-    Field paid:Byte 			= 0 	{saveload = "normal"}
-    Field news:TNews			= Null	{_exposeToLua}
-    Field owner:int				= 0		{_exposeToLua} 			'whose block is this?
-    Field guiBlock:TGUINewsBlock= Null
 
 
-	Function LoadAll(loadfile:TStream)
-		print "implement TNewsBlock.LoadAll"
-	End Function
+'This object stores a players news.
+Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
+    Field newsEvent:TNewsEvent	= Null	{_exposeToLua}
+    Field publishDelay:Int 		= 0						'delay the news for a certain time (depending on the abonnement-level)
+    Field paid:int	 			= 0
 
-	Function SaveAll()
-		print "implement TNewsBlock.SaveAll"
-	End Function
 
-	Method Save()
-		print "implement TNewsBlock.Save"
-	End Method
+	Function Create:TNews(text:String="unknown", owner:Int=1, publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
+		If not useNewsEvent
+			print"News.Create - RandomNews"
+			useNewsEvent = TNewsEvent.GetRandom()
+		endif
 
-	Function Create:TNewsBlock(text:String="unknown", owner:Int=1, publishdelay:Int=0, usenews:TNews=Null)
-		If usenews = Null Then print"NewsBlock.Create - RandomNews";usenews = TNews.GetRandomNews()
 		'if no happened time is set, use the Game time
-		if usenews.happenedtime <= 0 then usenews.happenedtime = Game.GetTimeGone()
+		if useNewsEvent.happenedtime <= 0 then useNewsEvent.happenedtime = Game.GetTimeGone()
 
-		Local obj:TNewsBlock = New TNewsBlock
+		Local obj:TNews = New TNews
 		obj.publishDelay= publishdelay
-		'hier noch als variablen uebernehmen
-		obj.slot		= -1
-		obj.news		= usenews
+		obj.newsEvent	= useNewsEvent
 
 		'add to list and also set owner
-		Game.Players[owner].ProgrammePlan.AddNewsBlock(obj)
+		Game.Players[owner].ProgrammeCollection.AddNews(obj)
 		Return obj
 	End Function
 
-	'clean up instructions
-	Method Remove()
-		'if there was a gui block created, we should take care of it...
-		if self.guiBlock then self.guiBlock.Remove()
-	End Method
 
     Method Pay:int()
 		'only pay if not already done
-		if not self.paid then self.paid = Game.Players[self.owner].finances[Game.getWeekday()].PayNews(news.ComputePrice())
-		return self.paid
+		if not paid then paid = Game.Players[owner].finances[Game.getWeekday()].PayNews(newsEvent.ComputePrice())
+		return paid
     End Method
 
-    Method GetSlot:Int()
-		return self.slot
+
+	'override default
+    Method GetTitle:string() {_exposeToLua}
+		return newsEvent.GetTitle()
     End Method
+
+
+	'override default
+    Method GetDescription:string() {_exposeToLua}
+		return newsEvent.GetDescription()
+    End Method
+
 
     Method GetPublishTime:int() {_exposeToLua}
-		return self.news.happenedtime + self.publishdelay
+		return newsEvent.happenedtime + publishdelay
     End Method
 
+
 	Method IsReadyToPublish:Int() {_exposeToLua}
-		Return (self.news.happenedtime + self.publishDelay <= Game.timeGone)
+		Return (newsEvent.happenedtime + publishDelay <= Game.GetTimeGone())
 	End Method
 
-	Method IsInProgramme:Int() {_exposeToLua}
-		Return self.GetSlot()>0
+
+	Method GetGenre:int() {_exposeToLua}
+		return newsEvent.genre
 	End Method
+
+
+	Method GetGenreString:string() {_exposeToLua}
+		return TNewsEvent.GetGenreString(newsEvent.genre)
+	End Method
+
+
+	Method IsInProgramme:Int() {_exposeToLua}
+		Return Game.getPlayer(owner).ProgrammePlan.HasNews(self)
+	End Method
+End Type
+
+
+Type TGUINewsList extends TGUIListBase
+
+    Method Create:TGUINewsList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+		Super.Create(x,y,width,height,state)
+		return self
+	End Method
+
+	Method ContainsNews:int(news:TNews)
+		for local guiNews:TGUINews = eachin entries
+			if guiNews.news = news then return TRUE
+		Next
+		return FALSE
+	End Method
+rem
+	'override default to check against duplicate
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		'if we find a duplicate, just return succesful without
+		'adding the item again
+		if TGUINews(item) and ContainsNews(TGUINews(item).news)
+			print "ListContainsNews - fake ADD"
+			return TRUE
+		endif
+		return Super.AddItem(item,extra)
+	End Method
+endrem
+End Type
+
+
+Type TGUINewsSlotList extends TGUISlotList
+
+    Method Create:TGUINewsSlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+		Super.Create(x,y,width,height,state)
+		return self
+	End Method
+
+	Method ContainsNews:int(news:TNews)
+		for local i:int = 0 to self.GetSlotAmount()-1
+			local guiNews:TGUINews = TGUINews( self.GetItemBySlot(i) )
+			if guiNews and guiNews.news = news then return TRUE
+		Next
+		return FALSE
+	End Method
+rem
+	'override default to check against doublettes
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		if TGUINews(item) and ContainsNews(TGUINews(item).news)
+			print "SlotListContainsNews";
+			return TRUE
+		endif
+		return Super.AddItem(item,extra)
+	End Method
+endrem
 End Type
 
 
@@ -3285,16 +3869,16 @@ End Type
 
 
 
-Type TGUIContractSlotList extends TGUISlotList
+Type TGUIAdContractSlotList extends TGUISlotList
 
-    Method Create:TGUIContractSlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
+    Method Create:TGUIAdContractSlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
 		Super.Create(x,y,width,height,state)
 		return self
 	End Method
 
-	Method ContainsContract:int(contract:TContract)
+	Method ContainsContract:int(contract:TAdContract)
 		for local i:int = 0 to self.GetSlotAmount()-1
-			local block:TGUIContractCoverBlock = TGUIContractCoverBlock( self.GetItemBySlot(i) )
+			local block:TGuiAdContract = TGuiAdContract( self.GetItemBySlot(i) )
 			if block and block.contract = contract then return TRUE
 		Next
 		return FALSE
@@ -3348,36 +3932,63 @@ End Type
 
 
 'a graphical representation of programmes/news/ads...
-Type TGUIBaseCoverBlock extends TGUIListItem
-	Field assetBaseName:string = "gfx_movie0"
+Type TGUIGameObject extends TGUIListItem
+	Field assetNameDefault:string = "gfx_movie0"
+	Field assetNameDragged:string = "gfx_movie0"
 	Field asset:TGW_Sprites = null
+	Field assetDefault:TGW_Sprites = null
+	Field assetDragged:TGW_Sprites = null
 
-    Method Create:TGUIBaseCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+    Method Create:TGUIGameObject(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
 		'creates base, registers click-event,...
 		Super.Create(label, x,y,width,height)
-   		self.InitAsset()
+
+   		self.InitAssets()
+   		self.SetAsset()
 
 		return self
 	End Method
 
-	Method InitAsset(assetName:string="")
-		if assetName = "" then assetName = self.assetBaseName
-		self.asset = Assets.GetSprite(assetName)
-   		'resize to a default value
-		self.Resize( asset.w, asset.h )
+
+	Method InitAssets(nameDefault:string="", nameDragged:string="")
+		if nameDefault = "" then nameDefault = self.assetNameDefault
+		if nameDragged = "" then nameDragged = self.assetNameDragged
+
+		self.assetNameDefault = nameDefault
+		self.assetNameDragged = nameDragged
+		self.assetDefault = Assets.GetSprite(nameDefault)
+		self.assetDragged = Assets.GetSprite(nameDragged)
+
+		self.SetAsset(self.assetDefault)
 	End Method
+
+
+	Method SetAsset(sprite:TGW_Sprites=null)
+		if not sprite then sprite = self.assetDefault
+
+		'only resize if not done already
+		if self.asset <> sprite
+			self.asset = sprite
+			self.Resize(sprite.w, sprite.h)
+		endif
+	End Method
+
 
 	'override default update-method
 	Method Update:int()
 		super.Update()
 
 		if self.mouseover or self.isDragged()
-			EventManager.triggerEvent( TEventSimple.Create( "TGUIBaseCoverBlock.OnMouseOver", TData.Create(), self ) )
+			EventManager.triggerEvent(TEventSimple.Create("guiGameObject.OnMouseOver", TData.Create(), self))
 		endif
 
 		if self.mouseover then Game.cursorstate = 1
-		if self.isDragged() then Game.cursorstate = 2
+		if self.isDragged()
+			self.SetAsset(self.assetDragged)
+			Game.cursorstate = 2
+		endif
 	End Method
+
 
 	Method Draw()
 		asset.draw(self.GetScreenX(), self.GetScreenY())
@@ -3386,14 +3997,16 @@ End Type
 
 
 'a graphical representation of programmes to buy/sell/archive...
-Type TGUIProgrammeCoverBlock extends TGUIBaseCoverBlock
+Type TGUIProgrammeCoverBlock extends TGUIGameObject
 	Field programme:TProgramme
 	Field isAffordable:int = TRUE
+
 
     Method Create:TGUIProgrammeCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
 		Super.Create(label,x,y,width,height)
 		return self
 	End Method
+
 
 	Method CreateWithProgramme:TGUIProgrammeCoverBlock(programme:TProgramme)
 		self.Create()
@@ -3401,19 +4014,20 @@ Type TGUIProgrammeCoverBlock extends TGUIBaseCoverBlock
 		return self
 	End Method
 
+
 	Method SetProgramme:TGUIProgrammeCoverBlock(programme:TProgramme)
 		self.programme = programme
 
+		local genre:int = 0
+		if programme.genre < 15 then genre = programme.genre
+
 		'set to a nice asset image
-       	If programme.genre < 15
-			if programme.isMovie() then self.InitAsset("gfx_movie"+programme.genre)
-			if not programme.isMovie() then self.InitAsset("gfx_serie"+programme.genre)
-		else
-			'now we can calculate the item dimensions
-			self.Resize( asset.w, asset.h )
-		endif
+		if programme.isMovie() then self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
+		if not programme.isMovie() then self.InitAssets("gfx_serie" + genre, "gfx_serie" + genre + "_dragged")
+
 		return self
 	End Method
+
 
 	'override default update-method
 	Method Update:int()
@@ -3429,6 +4043,7 @@ Type TGUIProgrammeCoverBlock extends TGUIBaseCoverBlock
 		'ignore affordability if dragged...
 		if isDragged() then Game.cursorstate = 2
 	End Method
+
 
 	Method DrawSheet(leftX:int=30, rightX:int=30)
 '		self.parentBlock.DrawSheet()
@@ -3465,29 +4080,35 @@ End Type
 
 
 'a graphical representation of contracts at the ad-agency ...
-Type TGUIContractCoverBlock extends TGUIBaseCoverBlock
-	Field contract:TContract
-	field assetBaseName:string = "gfx_contracts_0"
+Type TGuiAdContract extends TGUIGameObject
+	Field contract:TAdContract
 
-    Method Create:TGUIContractCoverBlock(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
+
+    Method Create:TGuiAdContract(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
 		Super.Create(label,x,y,width,height)
+
+		self.assetNameDefault = "gfx_contracts_0"
+		self.assetNameDragged = "gfx_contracts_0_dragged"
 
 		return self
 	End Method
 
-	Method CreateWithContract:TGUIContractCoverBlock(contract:TContract)
+
+	Method CreateWithContract:TGuiAdContract(contract:TAdContract)
 		self.Create()
 		self.setContract(contract)
 		return self
 	End Method
 
-	Method SetContract:TGUIContractCoverBlock(contract:TContract)
+
+	Method SetContract:TGuiAdContract(contract:TAdContract)
 		self.contract		= contract
 		'targetgroup is between 0-9
-		self.InitAsset( GetAssetName( Min(9,Max(0,contract.GetTargetGroup())), FALSE ) )
+		self.InitAssets(GetAssetName(contract.GetTargetGroup(), FALSE), GetAssetName(contract.GetTargetGroup(), TRUE))
 
 		return self
 	End Method
+
 
 	Method GetAssetName:string(targetGroup:int=-1, dragged:int=FALSE)
 		if targetGroup < 0 and contract then targetGroup = contract.GetTargetGroup()
@@ -3495,6 +4116,7 @@ Type TGUIContractCoverBlock extends TGUIBaseCoverBlock
 		if dragged then result = result + "_dragged"
 		return result
 	End Method
+
 
 	'override default update-method
 	Method Update:int()
@@ -3505,6 +4127,7 @@ Type TGUIContractCoverBlock extends TGUIBaseCoverBlock
 		'set mouse to "dragged"
 		if isDragged() then Game.cursorstate = 2
 	End Method
+
 
 	Method DrawSheet(leftX:int=30, rightX:int=30)
 		local sheetY:float 	= 20
@@ -3528,15 +4151,30 @@ Type TGUIContractCoverBlock extends TGUIBaseCoverBlock
 	End Method
 
 
+	Method DrawGhost()
+		'by default a shaded version of the gui element is drawn at the original position
+		self.SetOption(GUI_OBJECT_IGNOREPOSITIONMODIFIERS, TRUE)
+		SetAlpha 0.5
+
+		local backupAssetName:string = self.asset.getName()
+		self.asset = Assets.GetSprite(assetNameDefault)
+		self.Draw()
+		self.asset = Assets.GetSprite(backupAssetName)
+
+		SetAlpha 1.0
+		self.SetOption(GUI_OBJECT_IGNOREPOSITIONMODIFIERS, FALSE)
+	End Method
+
+
 	Method Draw()
 		SetColor 255,255,255
+		local oldAlpha:float = GetAlpha()
 
 		'make faded as soon as not "dragable" for us
-		if contract.owner <> Game.playerID and contract.owner>0 then SetAlpha 0.75
+		if contract.owner <> Game.playerID and contract.owner>0 then SetAlpha 0.75*oldAlpha
 		if not isDragable() then SetColor 200,200,200
 		Super.Draw()
-		DrawText(zIndex, GetScreenx(), GetScreenY()-10)
-		SetAlpha 1.0
+		SetAlpha oldalpha
 		SetColor 255,255,255
 	End Method
 End Type
@@ -3563,7 +4201,7 @@ Type TAuctionProgrammeBlocks {_exposeToLua="selected"}
 				Game.Players[locobject.Bid[0]].ProgrammeCollection.AddProgramme(locobject.Programme)
 				Print "player "+Game.Players[locobject.Bid[0]].name + " won the auction for: "+locobject.Programme.title
 				Repeat
-					LocObject.Programme = TProgramme.GetRandomMovieWithPrice(200000)
+					LocObject.Programme = TProgramme.GetRandomProgrammeWithPrice(200000,-1)
 				Until LocObject.Programme <> Null
 				locObject.imageWithText = Null
 				For Local i:Int = 0 To 4

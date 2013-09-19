@@ -291,8 +291,8 @@ Type TLuaFunctions {_exposeToLua}
 		return TProgramme.getProgramme( id )
 	End Method
 
-	Method GetContract:TContract( id:int ) {_exposeToLua}
-		return TContract.getContract( id )
+	Method GetContract:TAdContract( id:int ) {_exposeToLua}
+		return TAdContract.Get( id )
 	End Method
 
 	Method GetRoomByDetails:TRooms(roomName:String, owner:Int)
@@ -411,15 +411,15 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getPlayerSpotCount:Int()
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Return Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.ContractList.Count() - 1
+		Return Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.AdContractList.Count() - 1
 	End Method
 
 	Method of_getPlayerSpot:Int(arraynumber:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
 		Local owner:Int = Game.Players[ Self.ME ].Figure.inRoom.owner
-		If arraynumber >= 0 And arraynumber <= Game.Players[ owner ].ProgrammeCollection.ContractList.Count() - 1
-			Local obj:TContract = TContract(Game.Players[ owner ].ProgrammeCollection.ContractList.ValueAtIndex(arraynumber))
+		If arraynumber >= 0 And arraynumber <= Game.Players[ owner ].ProgrammeCollection.AdContractList.Count() - 1
+			Local obj:TAdContract = TAdContract(Game.Players[ owner ].ProgrammeCollection.AdContractList.ValueAtIndex(arraynumber))
 			If obj Then Return obj.id Else Return self.RESULT_NOTFOUND
 		EndIf
 	End Method
@@ -434,7 +434,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getSpotBeenSent:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local contractObj:TContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetContract(contractID)
+		Local contractObj:TAdContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetAdContract(contractID)
 		If Not contractObj Then Return self.RESULT_NOTFOUND
 
 		Local obj:TAdBlock = TAdBlock.GetBlockByContract( contractObj )
@@ -444,7 +444,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method of_getSpotDaysLeft:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local contractObj:TContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetContract(contractID)
+		Local contractObj:TAdContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetAdContract(contractID)
 		If contractObj Then Return contractobj.getDaysLeft() Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -499,7 +499,7 @@ Type TLuaFunctions {_exposeToLua}
 			Obj.RemoveFromPlan()
 			Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 			If not (Obj = null)
-				print "TODO fuer Ron: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.contractBase.title
+				print "TODO fuer Ron: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.GetTitle()
 				Obj.RemoveFromPlan()
 				Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
 				If not (Obj = null)
@@ -509,7 +509,7 @@ Type TLuaFunctions {_exposeToLua}
 
 			Return self.RESULT_OK
 		Else
-			Local contract:TContract = Game.Players[ self.ME ].ProgrammeCollection.GetContract(ObjectID)
+			Local contract:TAdContract = Game.Players[ self.ME ].ProgrammeCollection.GetAdContract(ObjectID)
 			if not contract then Return self.RESULT_NOTFOUND
 			If Game.Players[ self.ME ].ProgrammePlan.AdBlockPlaceable(hour, day)
 				Local obj:TAdBlock = TAdBlock.create(contract, TAdBlock.GetBlockX(hour),TAdBlock.GetBlockY(hour), self.ME)
@@ -558,19 +558,18 @@ Type TLuaFunctions {_exposeToLua}
 
 		'Es ist egal ob ein Spieler einen Schluessel fuer den Raum hat,
 		'Es ist nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> Game.Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
+		If Self.ME <> Game.Players[self.ME].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'News bei slotID loeschen
-			Local Obj:TNewsBlock = Game.Players[ self.ME ].ProgrammePlan.GetNewsBlockFromSlot(slot)
-			If not Obj then Return self.RESULT_NOTFOUND
-
-			'Game.Players[ self.ME ].ProgrammePlan.RemoveNewsBlock(obj)
-
-			Return self.RESULT_OK
+			if Game.Players[self.ME].ProgrammePlan.ClearSlot(slot)
+				Return self.RESULT_OK
+			else
+				Return self.RESULT_NOTFOUND
+			endif
 		Else
-			Local obj:TNewsBlock = Game.Players[ self.ME ].ProgrammePlan.GetNewsBlock(ObjectID)
-			If not obj then Return self.RESULT_NOTFOUND
-			Game.Players[ self.ME ].ProgrammePlan.SetNewsBlockSlot(obj, slot)
+			Local news:TNews = Game.Players[self.ME].ProgrammeCollection.GetNews(ObjectID)
+			If not news then Return self.RESULT_NOTFOUND
+			Game.Players[self.ME].ProgrammePlan.SetNews(news, slot)
 
 			Return self.RESULT_OK
 		EndIf
@@ -600,14 +599,14 @@ Type TLuaFunctions {_exposeToLua}
 		'out of bounds?
 		If position >= RoomHandler_AdAgency.GetContractsInStock() Or position < 0 Then Return -2
 
-		local contract:TContract = RoomHandler_AdAgency.GetContractByPosition(position)
+		local contract:TAdContract = RoomHandler_AdAgency.GetContractByPosition(position)
 		If contract Then Return contract.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 	Method sa_doBuySpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TContract = RoomHandler_AdAgency.GetContractByID(contractID)
+		local contract:TAdContract = RoomHandler_AdAgency.GetContractByID(contractID)
 		'this DOES sign in that moment
 		if contract and RoomHandler_AdAgency.GiveContractToPlayer( contract, self.ME, TRUE )
 			return self.RESULT_OK
@@ -619,7 +618,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_doTakeSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TContract = RoomHandler_AdAgency.GetContractByID(contractID)
+		local contract:TAdContract = RoomHandler_AdAgency.GetContractByID(contractID)
 		'this DOES NOT sign - signing is done when leaving the room!
 		if contract and RoomHandler_AdAgency.GiveContractToPlayer( contract, self.ME )
 			return self.RESULT_OK
@@ -630,7 +629,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_doGiveBackSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TContract = Game.getPlayer(self.ME).ProgrammeCollection.GetUnsignedContractFromSuitcase(contractID)
+		local contract:TAdContract = Game.getPlayer(self.ME).ProgrammeCollection.GetUnsignedAdContractFromSuitcase(contractID)
 		'this does not sign - signing is done when leaving the room!
 		if contract and RoomHandler_AdAgency.TakeContractFromPlayer( contract, self.ME )
 			return self.RESULT_OK
