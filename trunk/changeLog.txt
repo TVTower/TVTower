@@ -1,3 +1,161 @@
+2013-09-19 14:57  ronny
+
+	  - Anpassung AI-Dateien an Aenderungen
+	  - TRectangle.containsXY etc ziehen nun von Breite/Hoehe einen
+	  Pixel ab, da ja 0,0 auch inkludiert wird
+	  - "Saarland"-Kollisionssprite war 2 Pixel zu niedrig
+	  - Game.GetDayOfYear() ignorierter bisher die uebermittelten
+	  Zeitdaten
+	  - TGUI-Listen: beim Hinzufuegen eines Items an einen speziellen
+	  Slot (oder beim Drop-Event) wird nun geprueft ob das
+	  darunterliegende Element gedraggt werden kann
+	  - TGUIBaseCoverBlock umbenannt in TGUIGameObject
+	  - Newsticker haben nun die korrekten Genrefarben (0-4 statt 1-5)
+	  - Unbezahlte Newsticker haben "fettgedruckten" Preis
+	  - Es koennen nun mehrere GUI-Objekte zugleich "dragged" sein
+	  - GUIObject: zIndex entfernt (bereits in "rect.pos.z" enthalten)
+	  - Screenmanager-Funktionen emitieren nun Event beim
+	  Screenwechsel, dadurch kann bspweise die Nachrichtenagentur die
+	  GUI-Elente loeschen, wenn man den Planer betritt
+	  - Kinder-GUI-Elemente (also bspw. Listeneintraege) koennen nun
+	  ein "schemenartiges" Abbild ihrer selbst an die urspruengliche
+	  Stelle zeichnen ("drawGhost")
+	  - Newsbloecke nutzten nun Feature
+	  - Werbevertraege ebenso
+	  - TPlayerProgrammePlan komplett erneuert und Fehler entfernt.
+	  - "GUI"-Handling entfernt (gehoert zum roomHandler_office...)
+	  - Werbung und Programm vereinheitlicht (nutzen gleiche
+	  Basisfunktionen), dies ermoeglicht nun auch mehrbloeckige
+	  Werbung, (theoretisch) das Platzieren von Werbung auf
+	  Programmplaetzen etc.
+	  
+	  trunk/TVTower.bmx, trunk/config/gfx.xml,
+	  trunk/config/gfx_officepack.xml,
+	  trunk/grafiken/buero/officepack.png,
+	  trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_screens.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-09-12 18:22  ronny
+
+	  - cacheKey-Zusammensetzung in TStationMap.GetShare() korrigiert
+	  (Trennzeichen zwischen "MitSpieler" und "OhneSpieler"-Auflistung
+	  da sonst andere Werte ueberschrieben werden konnten
+	  
+	  trunk/source/gamefunctions.bmx
+	  
+
+2013-09-10 12:40  ronny
+
+	  - einige "out of bounds"-Fehler im Zusammenhang mit
+	  "players.length" entfernt
+	  - Werbeagentur hat nun "hover"-Effekt auf dem Haendler
+	  - kleinere Arbeiten an den GUI-Elementen
+	  
+	  trunk/config/gfx.xml,
+	  trunk/grafiken/werbeagentur/raum_werbeagentur_extras.png,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-09-09 18:39  starscrazy
+
+	  merge
+	  
+	  trunk/source/main.bmx
+	  
+
+2013-09-09 18:30  ronny
+
+	  - GetShare/Audience/Percentage akzeptieren nun noch eine
+	  "without"-Liste
+	  
+	  trunk/source/gamefunctions.bmx
+	  
+
+2013-09-09 07:51  ronny
+
+	  - TStationPoint mit TPoint ersetzt
+	  - Funktion TStationMap.GetShare liefert nun TPoint zurueck:
+	  x=share,y=audience,z=percentage
+	  - neue Funktionen TStationMap.GetShareAudience([array playerIDs])
+	  fuer Menge an Zuschauern
+	  - neue Funktionen TStationMap.GetSharePercentage([array
+	  playerIDs]) fuer prozentualen Anteil an Zuschauern
+	  - einige alte Grafiken entfernt
+	  - testweise breiteren Koffer hinzugefuegt
+	  
+	  trunk/TVTower.bmx, trunk/config/gfx.xml,
+	  trunk/grafiken/editor_start.png, trunk/grafiken/koffer.png,
+	  trunk/grafiken/koffer_alpha.png,
+	  trunk/grafiken/koffer_alpha_glow.png,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2013-09-08 15:44  ronny
+
+	  - Fahrstuhl-Planer-Grafik neben Fahrstuhl wieder entfernt
+	  (momentan unnuetz :D)
+	  - alte Werbevertraege werden beim Betreten des Maklers mit in den
+	  Koffer gelegt
+	  - Spiel achtet nun darauf, den Werbevertragskoffer bei Änderungen
+	  an der Programmsammlung zu aktualisieren
+	  - Neue Funktion "TStationmap.GetShare([array playerids])" um
+	  herauszufinden wieviel Prozent man sich Spieler A mit Spieler B
+	  teilt
+	  - kleiner Fix in gfx_hochhaus.xml - man sollte nicht weiter als
+	  die Bilderpixelgrenzen definieren...
+	  
+	  trunk/TVTower.bmx, trunk/config/gfx_hochhaus.xml,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-09-07 18:12  ronny
+
+	  - weitere Filmcovers
+	  - Werbemakler hat nun auch "billige" Werbung im Angebot
+	  - Handling beim Werbemakler auf GUI-Objekte umgestellt und
+	  entsprechende Events verknuepft
+	  - Neues Event "onTryDropOnTarget", damit kann schon der Versuch
+	  unterbunden werden
+	  - TGUICoverBlock angelegt, von diesem leiten sich dann
+	  TGUIProgrammeCoverBlock etc ab
+	  - die Nutzung der Dev-Kuerzel zum Raumwechsel konnte buggy sein,
+	  wenn von Raum zu Raum gesprungen worden ist... nun verlaesst eine
+	  Figur erst den Raum, sofern sie in einem war, um zum naechsten zu
+	  springen
+	  - alte TGUIList entfernt
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt, trunk/config/gfx.xml,
+	  trunk/grafiken/filmverleiher/raum_filmverleiher_extras.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
 2013-09-05 09:48  ronny
 
 	  - genau positionierte Raeume (Pfoertner, Credits, Raumplaner) in

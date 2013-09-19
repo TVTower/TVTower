@@ -3188,6 +3188,7 @@ Function Init_Creation()
 		Next
 	Next
 
+rem
 Global TestPlan:TPlayerProgrammePlanNEW = new TPlayerProgrammePlanNEW.Create( Game.GetPlayer() )
 local TestProg:TProgramme = Game.getPlayer().programmeCollection.getRandomProgramme()
 TestPlan.AddProgramme( Game.getPlayer().programmeCollection.getRandomProgramme(), -1, 6)
@@ -3201,7 +3202,7 @@ TestPlan.AddAdvertisement( new TAdvertisement.Create(Game.getPlayer().programmeC
 TestPlan.printOverview()
 'should return 5
 print "testprog is planned: "+TestPlan.HowOftenProgrammeInPlan(TestProg.id, Game.GetDay()+1, TRUE)+" times."
-
+endrem
 
 	local lastblocks:int=0
 	'creation of blocks for players rooms

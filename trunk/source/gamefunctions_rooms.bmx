@@ -2715,7 +2715,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListCheap.SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").w, Assets.GetSprite("gfx_contracts_0").h)
 		GuiListSuitcase.SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").w, Assets.GetSprite("gfx_contracts_0").h)
 
-		GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 6)
+		GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
 		GuiListSuitcase.SetEntryDisplacement( 0, 0)
 
 		GuiListCheap.SetAcceptDrop("TGuiAdContract")
@@ -3026,7 +3026,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			local contractFound:int = FALSE
 			For local i:int = 0 to GuiListNormal.length-1
 				if contractFound then continue
-				if GuiListNormal[i].ContainsContract(contract) then contractAdded=true
+				if GuiListNormal[i].ContainsContract(contract) then contractFound=true
 			Next
 
 			'try to fill in one of the normalList-Parts
@@ -3197,8 +3197,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			RemoveContract(guiBlock.contract)
 			AddContract(guiBlock.contract)
 		endif
-		'reset gui elements asset
-		guiBlock.InitAssets(guiBlock.getAssetName(-1, FALSE ), guiBlock.getAssetName(-1, TRUE ))
+		'remove the block, will get recreated if needed
+		guiBlock.remove()
 
 		'something changed...refresh missing/obsolete...
 		RefreshGuiElements()

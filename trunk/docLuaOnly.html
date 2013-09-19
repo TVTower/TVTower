@@ -1,6 +1,5 @@
-
-<!-- saved from url=(0176)http://gwron.kicks-ass.net/doc/?mainfile=%2Fhome%2Fronny%2FArbeit%2FProgrammieren%2FProjekte%2FApps%2FTVTower.WorkingCopy%2FTVTower%2Ftrunk%2FTVTower.bmx&onlyLua=1&action=build -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
 	<style>
 		body					{ font-family: Sans-Serif; font-size:13px;}
 		#type					{ border: 1px solid #ddf; margin-bottom:1.5em; }
@@ -19,3051 +18,1885 @@
 		.clear					{ clear:both; }
 		#element>#comment		{ padding-left: 3.8em; padding-bottom:1em;}
 	</style>
-<style type="text/css"></style></head>
+</head>
 <body>
-		<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TGame</span>		<span id="comment">Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)</span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetDay</span>
-						<span id="returns">:Int</span>
-						<span id="params">( _time:Double = 0 )</span>
-						<div class="clear"></div>
+		</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TGame</span>		<span id='comment'>Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)</span>	</div>	<div id='elements'>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDay</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( _time:Double = 0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetDayName</span>
-						<span id="returns">:String</span>
-						<span id="params">( day:Int, longVersion:Int=0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDayName</span>
+						<span id='returns'>:String</span>
+						<span id='params'>( day:Int, longVersion:Int=0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetDayOfYear</span>
-						<span id="returns">:Int</span>
-						<span id="params">( _time:Double = 0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDayOfYear</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( _time:Double = 0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetFormattedDay</span>
-						<span id="returns">:String</span>
-						<span id="params">( _day:Int = -5 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDaysPlayed</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetFormattedDayLong</span>
-						<span id="returns">:String</span>
-						<span id="params">( _day:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetFormattedDay</span>
+						<span id='returns'>:String</span>
+						<span id='params'>( _day:Int = -5 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetFormattedTime</span>
-						<span id="returns">:String</span>
-						<span id="params">( time:Double=0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetFormattedDayLong</span>
+						<span id='returns'>:String</span>
+						<span id='params'>( _day:Int = -1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetHour</span>
-						<span id="returns">:Int</span>
-						<span id="params">( _time:Double = 0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetFormattedTime</span>
+						<span id='returns'>:String</span>
+						<span id='params'>( time:Double=0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMinute</span>
-						<span id="returns">:Int</span>
-						<span id="params">( _time:Double = 0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetHour</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( _time:Double = 0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNextHour</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetMinute</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( _time:Double = 0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetTimeGone</span>
-						<span id="returns">:Double</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetNextHour</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetTimeStart</span>
-						<span id="returns">:Double</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTimeGone</span>
+						<span id='returns'>:Double</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetWeekday</span>
-						<span id="returns">:Int</span>
-						<span id="params">( _day:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTimeStart</span>
+						<span id='returns'>:Double</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetYear</span>
-						<span id="returns">:Int</span>
-						<span id="params">( _time:Double = 0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetWeekday</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( _day:Int = -1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">MakeTime</span>
-						<span id="returns">:Double</span>
-						<span id="params">( year:Int,day:Int,hour:Int,minute:Int )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetYear</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( _time:Double = 0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-			</div></div>	<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayer</span>		<span id="comment">class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player</span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">Figure</span>
-						<span id="varType">:TFigures</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">actual figure the player uses<br></div>
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAudience</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAudiencePercentage</span>
-						<span id="returns">:Float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetCredit</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetCreditAvailable</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetCreditCurrent</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetFormattedAudience</span>
-						<span id="returns">:String</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMaxAudience</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMoney</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNewsAbonnement</span>
-						<span id="returns">:Int</span>
-						<span id="params">( genre:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNewsAbonnementDelay</span>
-						<span id="returns">:int</span>
-						<span id="params">( genre:int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPlayerID</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRelativeAudiencePercentage</span>
-						<span id="returns">:Float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">IncreaseNewsAbonnement</span>
-						<span id="returns"></span>
-						<span id="params">( genre:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">IsAI</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ProgrammeCollection</span>
-						<span id="varType">:TPlayerProgrammeCollection</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ProgrammePlan</span>
-						<span id="varType">:TPlayerProgrammePlan</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SetNewsAbonnement</span>
-						<span id="returns"></span>
-						<span id="params">( genre:Int, level:Int, sendToNetwork:Int = True )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div>																								<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TRectangle</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">containsPoint</span>
-						<span id="returns">:int</span>
-						<span id="params">( point:TPoint )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">containsX</span>
-						<span id="returns">:int</span>
-						<span id="params">( x:float )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">containsXY</span>
-						<span id="returns">:int</span>
-						<span id="params">( x:float, y:float )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">containsY</span>
-						<span id="returns">:int</span>
-						<span id="params">( y:float )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">IntersectRect</span>
-						<span id="returns">:TRectangle</span>
-						<span id="params">( rectB:TRectangle )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">Intersects</span>
-						<span id="returns">:int</span>
-						<span id="params">( rect:TRectangle )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">global helper variables should be faster than allocating locals each time (in huge amount)<br></div>
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPoint</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetIntX</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetIntY</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetX</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetY</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetZ</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">isSame</span>
-						<span id="returns">:int</span>
-						<span id="params">( otherPos:TPoint, round:int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div>																																																<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TMoveableAnimSprites</span>		<span id="comment">makes anim sprites moveable</span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">rect</span>
-						<span id="varType">:TRectangle</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">vel</span>
-						<span id="varType">:TPoint</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div>																																			<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TGameObject</span>		<span id="comment"></span>	</div>	<div id="elements">	</div></div>											<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayerProgrammePlan</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">ClearNewsBlockSlot</span>
-						<span id="returns">:int</span>
-						<span id="params">( slot:int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContractBroadcastCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">( _contractId:int, successful:int = 1, planned:int = 0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetCurrentAdBlock</span>
-						<span id="returns">:TAdBlock</span>
-						<span id="params">( time:Int = -1, day:Int = - 1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetCurrentProgramme</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">( time:Int = -1, day:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNewsBlock</span>
-						<span id="returns">:TNewsBlock</span>
-						<span id="params">( id:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNewsBlockFromSlot</span>
-						<span id="returns">:TNewsBlock</span>
-						<span id="params">( slot:Int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNewsCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNewsFromList</span>
-						<span id="returns">:TNewsBlock</span>
-						<span id="params">( pos:Int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">HowOftenProgrammeInPlan</span>
-						<span id="returns">:Int</span>
-						<span id="params">( programmeId:Int, day:Int=-1, withPlanned:Int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">NewsBlock =========<br></div>
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SetNewsBlockSlot</span>
-						<span id="returns">:int</span>
-						<span id="params">( newsblock:TNewsBlock, slot:int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TPlayerProgrammeCollection</span>		<span id="comment">holds all Programmes a player possesses</span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContract</span>
-						<span id="returns">:TContract</span>
-						<span id="params">( id:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContractByBase</span>
-						<span id="returns">:TContract</span>
-						<span id="params">( contractBaseID:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContractCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContractFromList</span>
-						<span id="returns">:TContract</span>
-						<span id="params">( pos:Int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContracts</span>
-						<span id="returns">:Object[]</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMovieCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMovieFromList</span>
-						<span id="returns">:Tprogramme</span>
-						<span id="params">( pos:Int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMovies</span>
-						<span id="returns">:Object[]</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetProgramme</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">( id:Int )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetProgrammeCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetProgrammeFromList</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">( pos:Int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetProgrammes</span>
-						<span id="returns">:Object[]</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRandomContract</span>
-						<span id="returns">:TContract</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRandomMovie</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRandomProgramme</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">( serie:Int = 0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRandomSerie</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetSeries</span>
-						<span id="returns">:Object[]</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetSeriesCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetSeriesFromList</span>
-						<span id="returns">:Tprogramme</span>
-						<span id="params">( pos:Int=0 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TProgrammeElementBase</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetID</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">id</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TProgrammeElement</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">description</span>
-						<span id="varType">:String</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetDescription</span>
-						<span id="returns">:string</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetTitle</span>
-						<span id="returns">:string</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">title</span>
-						<span id="varType">:String</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TContractBase</span>		<span id="comment">contract base - straight from the DB</span>	</div>	<div id="elements">	</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TContract</span>		<span id="comment">ad-contracts</span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">contractBase</span>
-						<span id="varType">:TContractBase</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment"> holds real contract data<br></div>
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAcuteness</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAttractiveness</span>
-						<span id="returns">:Float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContractBase</span>
-						<span id="returns">:TContractBase</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetCurrentPressure</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetDaysLeft</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetDaysToFinish</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetFinanceWeight</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMinAudience</span>
-						<span id="returns">:Int</span>
-						<span id="params">( playerID:Int=-1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetMinAudiencePercentage</span>
-						<span id="returns">:Float</span>
-						<span id="params">( dbvalue:Float = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPenalty</span>
-						<span id="returns">:Int</span>
-						<span id="params">( baseValue:Int= -1, playerID:Int=-1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPressure</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetProfit</span>
-						<span id="returns">:Int</span>
-						<span id="params">( baseValue:Int= -1, playerID:Int=-1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetSpotCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetSpotsSent</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetSpotsToSend</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetTargetGroup</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetTargetGroupString</span>
-						<span id="returns">:String</span>
-						<span id="params">( group:Int=-1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetTitle</span>
-						<span id="returns">:string</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">IsAvailableToSign</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SendMinimalBlocksToday</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>MakeTime</span>
+						<span id='returns'>:Double</span>
+						<span id='params'>( year:Int,day:Int,hour:Int,minute:Int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SendOptimalBlocksToday</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TPlayer</span>		<span id='comment'>class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player</span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>Figure</span>
+						<span id='varType'>:TFigures</span>
+						<div class='clear'></div>
 					</div>
 				</div>
-				
+				<div id='comment'>actual figure the player uses<br /></div>
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SetAttractiveness</span>
-						<span id="returns"></span>
-						<span id="params">( value:Float )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TProgramme</span>		<span id="comment">parent of movies, series and so on</span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAttractiveness</span>
-						<span id="returns">:Float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAudience</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAudienceQuote</span>
-						<span id="returns">:Float</span>
-						<span id="params">( lastquote:Float=0, maxAudiencePercentage:Float=-1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAudiencePercentage</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetBaseAudienceQuote</span>
-						<span id="returns">:Float</span>
-						<span id="params">( lastquote:Float=0.1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetCredit</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetBlocks</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetCreditAvailable</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetEpisode</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">( episodeNumber:Int )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetCreditCurrent</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetEpisodeCount</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetFormattedAudience</span>
+						<span id='returns'>:String</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetEpisodes</span>
-						<span id="returns">:Object[]</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetMaxAudience</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetGenre</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetMoney</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetGenreRefreshModifier</span>
-						<span id="returns">:float</span>
-						<span id="params">( genre:int=-1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetNewsAbonnement</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( genre:Int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetGenreString</span>
-						<span id="returns">:String</span>
-						<span id="params">( _genre:Int=-1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetNewsAbonnementDelay</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( genre:int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetGenreWearoffModifier</span>
-						<span id="returns">:float</span>
-						<span id="params">( genre:int=-1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetPlayerID</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetOutcome</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetRelativeAudiencePercentage</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPrice</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>IncreaseNewsAbonnement</span>
+						<span id='returns'></span>
+						<span id='params'>( genre:Int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPricePerBlock</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>IsAI</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetQualityLevel</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>isInRoom</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( roomName:string="", checkFromRoom:int=FALSE )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRefreshModifier</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>ProgrammeCollection</span>
+						<span id='varType'>:TPlayerProgrammeCollection</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetReview</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>ProgrammePlan</span>
+						<span id='varType'>:TPlayerProgrammePlan</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetSpeed</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>SetNewsAbonnement</span>
+						<span id='returns'></span>
+						<span id='params'>( genre:Int, level:Int, sendToNetwork:Int = True )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetTopicality</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>StationMap</span>
+						<span id='varType'>:TStationMap</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetWearoffModifier</span>
-						<span id="returns">:float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TRectangle</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>containsPoint</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( point:TPoint )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetXRated</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>containsX</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( x:float )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">isMovie</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>containsXY</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( x:float, y:float )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SetAttractiveness</span>
-						<span id="returns"></span>
-						<span id="params">( value:Float )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>containsY</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( y:float )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-			</div></div><div id="type">	<div id="header">		<span id="name" class="LuaSelected">TNews</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">ComputePrice</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAttractiveness</span>
-						<span id="returns">:Float</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>IntersectRect</span>
+						<span id='returns'>:TRectangle</span>
+						<span id='params'>( rectB:TRectangle )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetAudienceQuote</span>
-						<span id="returns">:Float</span>
-						<span id="params">( lastquote:Float=0, maxAudiencePercentage:Float=-1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">'computes a percentage which could be multiplied with maxaudience Method ComputeAudienceQuote:Float(lastquote:Float=0) Local quote:Float =0.0 If lastquote &lt; 0 Then lastquote = 0 quote = 0.1*lastquote + 0.35*((quality+5)/255) + 0.5*ComputeTopicality()/255 + 0.05*(rand(0,254)+1)/255 Return quote * Game.maxAudiencePercentage End Method<br></div>
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetBaseAudienceQuote</span>
-						<span id="returns">:Float</span>
-						<span id="params">( lastquote:Float=0.1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>Intersects</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( rect:TRectangle )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
-				
+				<div id='comment'>global helper variables should be faster than allocating locals each time (in huge amount)<br /></div>
 			</div>
-			</div></div>			<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TNewsBlock</span>		<span id="comment">This object stores a players newsblocks. If needed, it creates a guiBlock to make it controllable visually</span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPublishTime</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TPoint</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetIntX</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">IsInProgramme</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetIntY</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">IsReadyToPublish</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetIntZ</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">news</span>
-						<span id="varType">:TNews</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetX</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">owner</span>
-						<span id="varType">:int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">whose block is this?<br></div>
-			</div>
-			</div></div>				<div id="type">	<div id="header">		<span id="name" class="LuaSelected">TAuctionProgrammeBlocks</span>		<span id="comment">Programmeblocks used in Archive</span>	</div>	<div id="elements">
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetHighestBidder</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetY</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetNextBid</span>
-						<span id="returns">:int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetZ</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetProgramme</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				
-			</div>
-			</div></div>												<div id="type">	<div id="header">		<span id="name" class="LuaAll">TLuaFunctions</span>		<span id="comment"></span>	</div>	<div id="elements">
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">addToLog</span>
-						<span id="returns">:int</span>
-						<span id="params">( text:string )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>isSame</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( otherPos:TPoint, round:int=0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">function</span>
-						<span id="name">Create</span>
-						<span id="returns">:TLuaFunctions</span>
-						<span id="params">( pPlayerId:Int )</span>
-						<div class="clear"></div>
+			</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TMoveableAnimSprites</span>		<span id='comment'>makes anim sprites moveable</span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>rect</span>
+						<span id='varType'>:TRectangle</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">doGoToRoom</span>
-						<span id="returns">:Int</span>
-						<span id="params">( roomId:Int = 0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>vel</span>
+						<span id='varType'>:TPoint</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetContract</span>
-						<span id="returns">:TContract</span>
-						<span id="params">(  id:int  )</span>
-						<div class="clear"></div>
+			</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TGameObject</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetID</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getEvaluatedAudienceQuote</span>
-						<span id="returns">:Int</span>
-						<span id="params">( hour:Int = -1, ObjectID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>id</span>
+						<span id='varType'>:Int</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getMillisecs</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TStation</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getFederalState</span>
+						<span id='returns'>:string</span>
+						<span id='params'>( refresh:int=FALSE )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerAudience</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getPrice</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( refresh:int=FALSE )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerCredit</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getReach</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( refresh:int=FALSE )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerFloor</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getReachIncrease</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( refresh:int=FALSE )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerID</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getSellPrice</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( refresh:int=FALSE )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerMaxAudience</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>refreshData</span>
+						<span id='returns'></span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerMoney</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TStationMap</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>BuyStation</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( x:int,y:int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPlayerPosX</span>
-						<span id="returns">:Int</span>
-						<span id="params">( PlayerID:Int = Null )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getCoverage</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerRoom</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getReach</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetPlayerTargetPosX</span>
-						<span id="returns">:Int</span>
-						<span id="params">( PlayerID:Int = Null )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getStation</span>
+						<span id='returns'>:TStation</span>
+						<span id='params'>( x:int=0,y:int=0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getPlayerTargetRoom</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getStationCount</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( playerID:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetProgramme</span>
-						<span id="returns">:TProgramme</span>
-						<span id="params">(  id:int  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getStationFromList</span>
+						<span id='returns'>:TStation</span>
+						<span id='params'>( playerID:int=-1, position:int=0 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRoom</span>
-						<span id="returns">:TRooms</span>
-						<span id="params">( id:int )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getTemporaryStation</span>
+						<span id='returns'>:TStation</span>
+						<span id='params'>( x:int,y:int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">GetRoomByDetails</span>
-						<span id="returns">:TRooms</span>
-						<span id="params">( roomName:String, playerID:Int )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>SellStation</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( position:int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">getRoomFloor</span>
-						<span id="returns">:Int</span>
-						<span id="params">( roomId:Int = 0 )</span>
-						<div class="clear"></div>
+			</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TPlayerProgrammePlanNEW</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>AddAdvertisement</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( advertisement:TAdvertisement, day:int=-1, hour:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">MAXMOVIES</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>AddProgramme</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( programme:TProgramme, day:int=-1, hour:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">MAXMOVIESPARGENRE</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>ClearProgrammeSlot</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( day:int=-1, hour:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">MAXSPOTS</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAdvertisement</span>
+						<span id='returns'>:TAdvertisement</span>
+						<span id='params'>( day:int=-1, hour:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_doBidAuctionMovie</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ArrayID:int= -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAdvertisementStartHour</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( day:int=-1, hour:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_doBuyMovie</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ObjektID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetObjectStartHour</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( objectType:int=0, day:int=-1, hour:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_doSellMovie</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ObjektID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetProgramme</span>
+						<span id='returns'>:TProgramme</span>
+						<span id='params'>( day:int=-1, hour:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_getAuctionMovie</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ArrayID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetProgrammeStartHour</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( day:int=-1, hour:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_getAuctionMovieBlock</span>
-						<span id="returns">:TAuctionProgrammeBlocks</span>
-						<span id="params">( ArrayID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>HowOftenProgrammeInPlan</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( programmeId:Int, day:Int=-1, includePlanned:Int=FALSE, includeStartedYesterday:int=TRUE )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_getAuctionMovieCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TPlayerProgrammePlan</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>function</span>
+						<span id='name'>Get</span>
+						<span id='returns'>:TAdContractBase</span>
+						<span id='params'>( id:Int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_GetAuctionMovieHighestBidder</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ArrayID:int= -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetBlocks</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_GetAuctionMovieNextBid</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ArrayID:int= -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDescription</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_getMovie</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ArrayID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTitle</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">md_getMovieCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>SetNews</span>
+						<span id='returns'>:int</span>
+						<span id='params'>( newsObject:TNews, slot:int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
-				
+				<div id='comment'>contracts bases for advertisement - straight from the DB they just contain data to base new contracts of<br /></div>
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ME</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TAdContract</span>		<span id='comment'>the useable contract for advertisements used in the playercollections</span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>CalculatePrices</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( baseprice:Int=0, playerID:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">NEWS_GENRE_CURRENTS</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAcuteness</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">NEWS_GENRE_POLITICS</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAttractiveness</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">NEWS_GENRE_SHOWBIZ</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetBase</span>
+						<span id='returns'>:TAdContractBase</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">NEWS_GENRE_SPORT</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetBlocks</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">NEWS_GENRE_TECHNICS</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetCurrentPressure</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
-			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">ne_doNewsInPlan</span>
-						<span id="returns">:Int</span>
-						<span id="params">( slot:int=1, ObjectID:Int = -1 )</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">LUA_br_getStationAudience LUA_br_getStationAudienceIncrease LUA_br_getStationPrice LUA_Kaufe Sender LUA_Verkaufe Sender  LUA_be_getSammyPoints LUA_be_getBettyLove LUA_be_getSammyGenre<br></div>
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_doMovieInPlan</span>
-						<span id="returns">:Int</span>
-						<span id="params">( day:Int = -1, hour:Int = -1, ObjectID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDaysLeft</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_doSpotInPlan</span>
-						<span id="returns">:Int</span>
-						<span id="params">( day:Int = -1, hour:Int = -1, ObjectID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDaysToFinish</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_getMovie</span>
-						<span id="returns">:Int</span>
-						<span id="params">( day:Int = -1, hour:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDescription</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_getPlayerSpot</span>
-						<span id="returns">:Int</span>
-						<span id="params">( arraynumber:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetFinanceWeight</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_getPlayerSpotCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetMinAudience</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( playerID:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_getSpot</span>
-						<span id="returns">:Int</span>
-						<span id="params">( day:Int = -1, hour:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetMinAudiencePercentage</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>( dbvalue:Float = -1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_getSpotBeenSent</span>
-						<span id="returns">:Int</span>
-						<span id="params">( contractID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetPenalty</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( baseValue:Int= -1, playerID:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_getSpotDaysLeft</span>
-						<span id="returns">:Int</span>
-						<span id="params">( contractID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetPressure</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">of_getSpotWillBeSent</span>
-						<span id="returns">:Int</span>
-						<span id="params">( day:Int = -1, hour:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetProfit</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>( baseValue:Int= -1, playerID:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">PLAYER1</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetSpotCount</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">PLAYER2</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetSpotsSent</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">PLAYER3</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetSpotsToSend</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">PLAYER4</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTargetGroup</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">PrintOut</span>
-						<span id="returns">:Int</span>
-						<span id="params">( text:String )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTargetGroupString</span>
+						<span id='returns'>:String</span>
+						<span id='params'>( group:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ADAGENCY</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTitle</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ARCHIVE_PLAYER1</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>IsAvailableToSign</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ARCHIVE_PLAYER2</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>SendMinimalBlocksToday</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ARCHIVE_PLAYER3</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>SendOptimalBlocksToday</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ARCHIVE_PLAYER4</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>SetAttractiveness</span>
+						<span id='returns'></span>
+						<span id='params'>( value:Float )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ARCHIVE_PLAYER_ME</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TAdvertisement</span>		<span id='comment'>ad spot</span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetReferenceID</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_BETTY</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TProgramme</span>		<span id='comment'>parent of movies, series and so on</span>	</div>	<div id='elements'>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAttractiveness</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_BOSS_PLAYER1</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAudienceQuote</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>( lastquote:Float=0, maxAudiencePercentage:Float=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_BOSS_PLAYER2</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetBaseAudienceQuote</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>( lastquote:Float=0.1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_BOSS_PLAYER3</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetEpisode</span>
+						<span id='returns'>:TProgramme</span>
+						<span id='params'>( episodeNumber:Int )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_BOSS_PLAYER4</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetEpisodeCount</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_BOSS_PLAYER_ME</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetEpisodes</span>
+						<span id='returns'>:Object[]</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_FRDUBAN</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetGenre</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_GUNSAGENCY</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetGenreRefreshModifier</span>
+						<span id='returns'>:float</span>
+						<span id='params'>( genre:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_MOVIEAGENCY</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetGenreString</span>
+						<span id='returns'>:String</span>
+						<span id='params'>( _genre:Int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_NEWSAGENCY_PLAYER1</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetGenreWearoffModifier</span>
+						<span id='returns'>:float</span>
+						<span id='params'>( genre:int=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_NEWSAGENCY_PLAYER2</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetOutcome</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_NEWSAGENCY_PLAYER3</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetPrice</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_NEWSAGENCY_PLAYER4</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetPricePerBlock</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_NEWSAGENCY_PLAYER_ME</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetQualityLevel</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_NOTOBACCO</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetRefreshModifier</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_OFFICE_PLAYER1</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetReview</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_OFFICE_PLAYER2</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetSpeed</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_OFFICE_PLAYER3</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>getTargetGroup</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_OFFICE_PLAYER4</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTimesAired</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_OFFICE_PLAYER_ME</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTopicality</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_PEACEBROTHERS</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetWearoffModifier</span>
+						<span id='returns'>:float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_PORTER</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetXRated</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ROOMAGENCY</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>isMovie</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_ROOMBOARD</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>SetAttractiveness</span>
+						<span id='returns'></span>
+						<span id='params'>( value:Float )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_SCRIPTAGENCY</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TNewsEvent</span>		<span id='comment'></span>	</div>	<div id='elements'>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>ComputePrice</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
-				
+				<div id='comment'>Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000<br /></div>
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_STUDIOSIZE1_PLAYER_ME</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAttractiveness</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_STUDIOSIZE_PLAYER1</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetAudienceQuote</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>( lastquote:Float=0, maxAudiencePercentage:Float=-1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_STUDIOSIZE_PLAYER2</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetBaseAudienceQuote</span>
+						<span id='returns'>:Float</span>
+						<span id='params'>( lastquote:Float=0.1 )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_STUDIOSIZE_PLAYER3</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			</div></div>	</div></div>	</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TNews</span>		<span id='comment'>This object stores a players news.</span>	</div>	<div id='elements'>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetDescription</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_STUDIOSIZE_PLAYER4</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetGenre</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_SUPERMARKET</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetGenreString</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_TOBACCOLOBBY</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetPublishTime</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
-			</div>
-		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_TOWER</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
-					</div>
-				</div>
-				<div id="comment">Die R�ume werden alle initialisiert<br></div>
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">var</span>
-						<span id="name">ROOM_VRDUBAN</span>
-						<span id="varType">:Int</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetTitle</span>
+						<span id='returns'>:string</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">sa_doBuySpot</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ObjektID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>IsInProgramme</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">sa_getSpot</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ArrayID:Int = -1 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>IsReadyToPublish</span>
+						<span id='returns'>:Int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">sa_getSpotCount</span>
-						<span id="returns">:Int</span>
-						<span id="params">(  )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>var</span>
+						<span id='name'>newsEvent</span>
+						<span id='varType'>:TNewsEvent</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SendToChat</span>
-						<span id="returns">:Int</span>
-						<span id="params">( ChatText:String )</span>
-						<div class="clear"></div>
+			</div></div>	</div></div>	</div></div>	</div></div>	</div></div><div id='type'>	<div id='header'>		<span id='name' class='LuaSelected'>TAuctionProgrammeBlocks</span>		<span id='comment'>Programmeblocks used in Archive</span>	</div>	<div id='elements'>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetHighestBidder</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even1">
-				<div id="header" class="even1">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">SetPlayerTargetPosX</span>
-						<span id="returns">:Int</span>
-						<span id="params">( PlayerID:Int = Null, newTargetX:Int = 0 )</span>
-						<div class="clear"></div>
+			<div id='element' class='even1'>
+				<div id='header' class='even1'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetNextBid</span>
+						<span id='returns'>:int</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
 		
-			<div id="element" class="even0">
-				<div id="header" class="even0">
-					<div id="wrapper" class="LuaAll">
-						<span id="typeString">method</span>
-						<span id="name">_PlayerInRoom</span>
-						<span id="returns">:Int</span>
-						<span id="params">( roomname:String, checkFromRoom:Int = False )</span>
-						<div class="clear"></div>
+			<div id='element' class='even0'>
+				<div id='header' class='even0'>
+					<div id='wrapper' class='LuaAll'>
+						<span id='typeString'>method</span>
+						<span id='name'>GetProgramme</span>
+						<span id='returns'>:TProgramme</span>
+						<span id='params'>(  )</span>
+						<div class='clear'></div>
 					</div>
 				</div>
 				
 			</div>
-			</div></div>							
-
-</body><div id="Q_esjgkBDLia7ouk" class="fxys7dGSE6ImulP3TL7Rz" style="display: none;"></div><div id="mb7aps8t_kVOu3MY1COhi" class="fxys7dGSE6ImulP3TL7Rz" style="display: none;"></div><div id="Ahg9VAQNB4VBxKi8NK" class="fxys7dGSE6ImulP3TL7Rz" style="display: none;"></div></html>
+			</div></div>	</div></div>	</div></div>	</div></div>	</div></div>
+</body>
+</html>

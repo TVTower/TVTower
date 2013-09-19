@@ -922,7 +922,6 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		If not contract then return FALSE
 
 		if contract.sign( self.parent.playerID ) and not AdContractList.contains(contract)
-print "[ProgColl."+parent.playerID+"] Add Contract: "+contract.GetTitle()
 			AdContractList.AddLast(contract)
 
 			'emit an event so eg. network can recognize the change

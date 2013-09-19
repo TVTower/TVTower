@@ -750,6 +750,10 @@ Type TPoint {_exposeToLua="selected"}
 		return floor(self.y)
 	End Method
 
+	Method GetIntZ:int() {_exposeToLua}
+		return floor(self.z)
+	End Method
+
 
 	Method GetX:float() {_exposeToLua}
 		return self.x
