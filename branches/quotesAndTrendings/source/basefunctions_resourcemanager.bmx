@@ -625,6 +625,8 @@ Type TResourceLoaders
 					Assets.fonts.baseFontBold = font.FFont
 				elseif flags & ITALICFONT
 					Assets.fonts.baseFontItalic = font.FFont
+				ElseIf name = "smalldefault"
+					Assets.fonts.baseFontSmall = font.FFont					
 				else
 					Assets.fonts.baseFont = font.FFont
 				endif

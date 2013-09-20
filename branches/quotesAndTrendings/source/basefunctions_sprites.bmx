@@ -699,7 +699,8 @@ Type TGW_FontManager
 	Field DefaultFont:TGW_Font = null
 	Field baseFont:TBitmapFont		= null
 	Field baseFontBold:TBitmapFont	= null
-	Field baseFontItalic:TBitmapFont= null
+	Field baseFontItalic:TBitmapFont= Null
+	Field baseFontSmall:TBitmapFont= Null	
 	Field List:TList = CreateList()
 
 	Function Create:TGW_FontManager()

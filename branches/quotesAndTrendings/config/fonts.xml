@@ -4,5 +4,6 @@
 		<font name="default" url="res/fonts/Vera.ttf" size="11" default="1" />
 		<font name="default" url="res/fonts/VeraBd.ttf" size="11" flags="BOLDFONT" default="1"/>
 		<font name="default" url="res/fonts/VeraIt.ttf" size="11" flags="ITALICFONT" default="1" />
+		<font name="smalldefault" url="res/fonts/Vera.ttf" size="9" default="1" />
 	</fonts>
 </tvt>

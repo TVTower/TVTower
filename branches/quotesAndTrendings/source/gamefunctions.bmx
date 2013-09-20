@@ -1847,8 +1847,8 @@ Type TInterface
 	     	Assets.getSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
 			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
-			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
-		 	Assets.getFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
+		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND

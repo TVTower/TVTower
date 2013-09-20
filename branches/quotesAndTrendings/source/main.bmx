@@ -1,4 +1,4 @@
-'Application: TVGigant/TVTower
+Ôªø'Application: TVGigant/TVTower
 'Author: Ronny Otto
 
 SuperStrict
@@ -31,7 +31,7 @@ Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto & Manuel Vˆgele"
+Global CopyrightString:String	= "by Ronny Otto & Manuel V√∂gele"
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 
 Global App:TApp = TApp.Create(60,60) 'create with 60fps for physics and graphics
@@ -47,7 +47,7 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_popularity.bmx"			'Popularit‰ten und Trends
+Include "gamefunctions_popularity.bmx"			'Popularit√§ten und Trends
 Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 
 
@@ -264,6 +264,7 @@ Type TGame {_exposeToLua="selected"}
 	Field startAdAmount:Int				= 3		{nosave}	'how many contracts a player gets on a new game
 	Field debugmode:Byte				= 0		{nosave}	'0=no debug messages; 1=some debugmessages
 	Field DebugInfos:Byte				= 0		{nosave}
+	Field DebugQuoteInfos:Byte			= 0		{nosave}	
 
 	Field daynames:String[]						{nosave}	'array of abbreviated (short) daynames
 	Field daynamesLong:String[] 				{nosave}	'array of daynames (long version)
@@ -415,25 +416,25 @@ endrem
 '						TError.DrawNewError("Lade Programme...")
 '						TProgramme.LoadAll()
 '					Case "ALLCONTRACTS"
-'						TError.DrawNewError("Lade Werbevertr‰ge...")
+'						TError.DrawNewError("Lade Werbevertr√§ge...")
 					'TContract.LoadAll()
 '					Case "ALLNEWS"
 '						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade Werbevertr‰geblˆcke...")
+						TError.DrawNewError("Lade Werbevertr√§gebl√∂cke...")
 					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade Programmblˆcke...")
+						TError.DrawNewError("Lade Programmbl√∂cke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade Werbeblˆcke...")
+						TError.DrawNewError("Lade Werbebl√∂cke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade Newsblˆcke...")
+						TError.DrawNewError("Lade Newsbl√∂cke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade Filmh‰ndlerblˆcke...")
+						TError.DrawNewError("Lade Filmh√§ndlerbl√∂cke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -825,7 +826,7 @@ Rem
 		Game.Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI f¸r Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI f√ºr Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
@@ -1600,7 +1601,7 @@ Type TBuilding Extends TRenderable
 		Building.gfx_building	= Assets.GetSprite("gfx_building")
 		Building.pos.y			= 0 - Building.gfx_building.h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
 		Building.Elevator		= TElevator.Create(Building)
-		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heiﬂt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaﬂ
+		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 hei√üt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spa√ü
 
 
 		'set moon movement
@@ -2696,16 +2697,16 @@ rem
 Global TestWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,200, "")
 TestWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
 TestWindow.background.valueColor = TColor.Create(235,235,235)
-TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionst¸chtigkeit bereit, auch ist es mˆglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... w¸nschen wir Dir viel Spaﬂ mit TVTower Version ~q"+VersionDate+"~q")
+TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionst√ºchtigkeit bereit, auch ist es m√∂glich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... w√ºnschen wir Dir viel Spa√ü mit TVTower Version ~q"+VersionDate+"~q")
 endrem
 
 
 
 rem
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste kˆnnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat¸rlich Auswirkungen.~n~nEine Komˆdie kann h‰ufiger gesendet werden, als eine Live-‹bertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn¸pft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbevertr‰ge", "Werbevertr‰ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat¸rlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr‰ge abzuschlieﬂen."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste k√∂nnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat√ºrlich Auswirkungen.~n~nEine Kom√∂die kann h√§ufiger gesendet werden, als eine Live-√úbertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn√ºpft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: Werbevertr√§ge", "Werbevertr√§ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat√ºrlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr√§ge abzuschlie√üen."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
@@ -3081,7 +3082,7 @@ Function Init_Creation()
 		InGame_Chat.show()
 	endif		
 
-	'Eigentlich gehˆrt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
+	'Eigentlich geh√∂rt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
 	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
@@ -3343,6 +3344,188 @@ Function DrawMain(tweenValue:Float=1.0)
 
 
 	EndIf
+	
+	If Game.DebugQuoteInfos
+		SetColor 0,0,0
+		DrawRect(20,10,760,373)
+		SetColor 255, 255, 255
+		
+		Local startY:Int = 25		
+
+		'Assets.fonts.baseFont.Draw("Bev√∂lkerung", 25, startY)
+		
+		Local audienceResult:TAudienceResult = TPlayer.Current().audience
+		
+		Local x:Int = 200
+		Local y:Int = 25
+		Local font:TBitmapFont = Assets.fonts.baseFontSmall
+
+		font.drawBlock("Gesamt", x, y, 65, 25, 2, 255, 0, 0)		
+		font.drawBlock("Kinder", x + (70*1), y, 65, 25, 2, 255, 255, 255)
+		font.drawBlock("Jugenliche", x + (70*2), y, 65, 25, 2, 255, 255, 255)	
+		font.drawBlock("Hausfrau.", x + (70*3), y, 65, 25, 2, 255, 255, 255)	
+		font.drawBlock("Arbeitneh.", x + (70*4), y, 65, 25, 2, 255, 255, 255)	
+		font.drawBlock("Arbeitslose", x + (70*5), y, 65, 25, 2, 255, 255, 255)	
+		font.drawBlock("Manager", x + (70*6), y, 65, 25, 2, 255, 255, 255)	
+		font.drawBlock("Rentner", x + (70*7), y, 65, 25, 2, 255, 255, 255)				
+		
+		
+		Local wholeMarket:TAudience = audienceResult.WholeMarket
+		font.Draw("Bev√∂lkerung", 25, 50);
+		DrawAudience(wholeMarket, 200, 50);	
+
+		Local maxAudienceThisHour:TAudience = audienceResult.MaxAudienceThisHour
+		Local percent:String = functions.convertPercent(audienceResult.MaxAudienceThisHourQuote.Average*100,2) + "%"		
+		font.Draw("Potentielle Zuschauer", 25, 75);
+		font.Draw(percent, 175, 75);
+		DrawAudience(maxAudienceThisHour, 200, 75);
+
+		Local boundAudience:TAudience = audienceResult.BoundAudience		
+		font.drawStyled("      davon gebunden (Audience Flow)", 25, 90, 75, 75, 75);		
+		DrawAudience(boundAudience, 200, 90, true);		
+		
+		Local audienceToShare:TAudience = audienceResult.AudienceToShare		
+		font.drawStyled("      davon Zapper", 25, 105, 75, 75, 75);		
+		DrawAudience(audienceToShare, 200, 105, true);			
+		
+		
+		Local audience:TAudience = audienceResult.Audience 		
+		font.Draw("Aktuelle Zuschauerzahl", 25, 130);		
+		percent = functions.convertPercent(audienceResult.AudienceQuote.Average*100,2)		
+		font.Draw(percent, 175, 130);
+		DrawAudience(audience, 200, 130);
+		
+		
+		
+		Local attraction:TAudienceAdv = audienceResult.ProgrammeAttraction
+		Local genre:String = "kein Genre"
+		If (attraction.AudienceAttraction <> Null) Then
+			genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
+		Endif				
+		
+		
+		Assets.fonts.baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, 170, 255, 0, 0);
+		
+		
+			
+		font.Draw("Basis-Programmattraktivit√§t", 25, 190);
+		percent = functions.convertPercent(attraction.RawQuality * 100,2) + "%"
+		font.drawBlock(percent, 200, 190, 65, 25, 2, 255, 0, 0)
+		
+		font.Draw("Genre-Popularit√§t", 25, 215);			
+		Local genrePopularityMod:string = functions.convertPercent(attraction.GenrePopularityMod  * 100,0) + "%"
+		Local genrePopularityQuality:string = functions.convertPercent(attraction.GenrePopularityQuality * 100,2) + "%"
+		font.Draw(genrePopularityMod, 175, 215);
+		font.drawBlock(genrePopularityQuality, 200, 215, 65, 25, 2, 255, 0, 0)	
+
+		font.Draw("Genre <> Sendezeit", 25, 240);			
+		Local genreTimeMod:string = functions.convertPercent(attraction.GenreTimeMod  * 100,0) + "%"
+		Local genreTimeQuality:string = functions.convertPercent(attraction.GenreTimeQuality * 100,2) + "%"
+		font.Draw(genreTimeMod, 175, 240);
+		font.drawBlock(genreTimeQuality, 200, 240, 65, 25, 2, 255, 0, 0)			
+				
+		font.Draw("Genre <> Zielgruppe", 25, 260);
+		DrawAudiencePercent(attraction, 200, 260);
+		If (attraction.AudienceAttraction <> Null) Then
+			font.drawBlock(genre, 60, 275, 205, 25, 2, 75, 75, 75 )			
+			DrawAudiencePercent(attraction.AudienceAttraction, 200, 275, true, true);
+		Endif		
+		
+		font.Draw("Image", 25, 295);	
+		font.Draw("100%", 175, 295);
+		DrawAudiencePercent(attraction, 200, 295);	
+		
+		font.Draw("Effektive Attraktivit√§t", 25, 325);	
+		DrawAudiencePercent(attraction, 200, 325);	
+	EndIf	
+End Function
+
+Function DrawAudience(audience:TAudience, x:Int, y:Int, gray:Int = false)
+	Local val:String
+	Local x2:Int = x + 70
+	Local font:TBitmapFont = Assets.fonts.baseFontSmall
+	Local cr:Int = 255
+	Local cg:Int = 255
+	Local cb:Int = 255
+		
+	If gray Then
+		cr = 75
+		cg = 75
+		cb = 75
+	End If
+	
+	val = functions.convertValue(String(Int(audience.GetSum())), 2, 0)
+	If gray Then
+		font.drawBlock(val, x, y, 65, 25, 2, 150, 80, 80)
+	Else	
+		font.drawBlock(val, x, y, 65, 25, 2, 255, 0, 0)
+	End If
+	
+	val = functions.convertValue(String(Int(audience.Children)), 2, 0)
+	font.drawBlock(val, x2, y, 65, 25, 2, cr, cg, cb)
+	
+	val = functions.convertValue(String(Int(audience.Teenagers)), 2, 0)
+	font.drawBlock(val, x2 + (70*1), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertValue(String(Int(audience.HouseWifes)), 2, 0)
+	font.drawBlock(val, x2 + (70*2), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertValue(String(Int(audience.Employees)), 2, 0)
+	font.drawBlock(val, x2 + (70*3), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertValue(String(Int(audience.Unemployed)), 2, 0)
+	font.drawBlock(val, x2 + (70*4), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertValue(String(Int(audience.Manager)), 2, 0)
+	font.drawBlock(val, x2 + (70*5), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertValue(String(Int(audience.Pensioners)), 2, 0)
+	font.drawBlock(val, x2 + (70*6), y, 65, 25, 2, cr, cg, cb)	
+End Function
+
+Function DrawAudiencePercent(audience:TAudience, x:Int, y:Int, gray:Int = false, hideAverage:Int = false)
+	Local val:String
+	Local x2:Int = x + 70
+	Local font:TBitmapFont = Assets.fonts.baseFontSmall
+	Local cr:Int = 255
+	Local cg:Int = 255
+	Local cb:Int = 255
+		
+	If gray Then
+		cr = 75
+		cg = 75
+		cb = 75
+	End If	
+	
+	If Not hideAverage Then
+		val = functions.convertPercent(audience.Average * 100,2) + "%"	
+		If gray Then
+			font.drawBlock(val, x, y, 65, 25, 2, 150, 80, 80)
+		Else	
+			font.drawBlock(val, x, y, 65, 25, 2, 255, 0, 0)
+		End If		
+	End if
+	
+	val = functions.convertPercent(audience.Children * 100,2) + "%"
+	font.drawBlock(val, x2, y, 65, 25, 2, cr, cg, cb)
+	
+	val = functions.convertPercent(audience.Teenagers * 100,2) + "%"
+	font.drawBlock(val, x2 + (70*1), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertPercent(audience.HouseWifes * 100,2) + "%"
+	font.drawBlock(val, x2 + (70*2), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertPercent(audience.Employees * 100,2) + "%"
+	font.drawBlock(val, x2 + (70*3), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertPercent(audience.Unemployed * 100,2) + "%"
+	font.drawBlock(val, x2 + (70*4), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertPercent(audience.Manager * 100,2) + "%"
+	font.drawBlock(val, x2 + (70*5), y, 65, 25, 2, cr, cg, cb)	
+	
+	val = functions.convertPercent(audience.Pensioners * 100,2) + "%"
+	font.drawBlock(val, x2 + (70*6), y, 65, 25, 2, cr, cg, cb)	
 End Function
 
 
@@ -3523,6 +3706,7 @@ rem
 				endif
 endrem
 				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
+				If KEYMANAGER.IsHit(KEY_Q) Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				If KEYMANAGER.IsHit(KEY_W) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("adagency", 0), TRUE )
 				If KEYMANAGER.IsHit(KEY_A) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("archive", Game.playerID), TRUE )
 				If KEYMANAGER.IsHit(KEY_B) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("betty", 0), TRUE )
