@@ -359,7 +359,7 @@ endrem
 		LoadSaveFile.SaveObject(TPlayer.List, "PLAYERS", TFigures.AdditionalSave) ; TError.DrawErrors() ;Flip 0  'XML
 
 		TStationMap.SaveAll();				TError.DrawErrors();Flip 0  'XML
-		TAudienceQuotes.SaveAll();			TError.DrawErrors();Flip 0  'XML
+'		TAudienceQuotes.SaveAll();			TError.DrawErrors();Flip 0  'XML
 '		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
 '		TContract.SaveAll();	  			TError.DrawErrors();Flip 0  'XML
 '		TNews.SaveAll();	  				TError.DrawErrors();Flip 0  'XML
@@ -409,9 +409,9 @@ endrem
 					Case "ALLSTATIONMAPS"
 						TError.DrawNewError("Lade Senderkarten...")
 						TStationMap.LoadAll()
-					Case "ALLAUDIENCEQUOTES"
-						TError.DrawNewError("Lade Quotenarchiv...")
-						TAudienceQuotes.LoadAll()
+'					Case "ALLAUDIENCEQUOTES"
+'						TError.DrawNewError("Lade Quotenarchiv...")
+'						TAudienceQuotes.LoadAll()
 '					Case "ALLPROGRAMMES"
 '						TError.DrawNewError("Lade Programme...")
 '						TProgramme.LoadAll()

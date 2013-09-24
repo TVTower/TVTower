@@ -1025,7 +1025,7 @@ Type TProgrammeBroadcastAttraction Extends TBroadcastAttraction
 	Method CheckConsequences(player:TPlayer)
 		If block.programme Then
 			'TODO: Visuelle Darstellung und Historie. Später vereinheitlichen			
-			TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay() * 24)) + "/" + block.Programme.blocks, Int(player.audience.Audience.GetSum()), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
+			'TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay() * 24)) + "/" + block.Programme.blocks, Int(player.audience.Audience.GetSum()), Game.GetHour(), Game.GetMinute(), Game.GetDay(), player.playerID)
 		
 			'Wenn der letzte Teil des Programmes gesendet wurde, dann werden einige Eigenschaften aktualisiert
 			If block.sendHour - (Game.GetDay() * 24) + block.Programme.blocks <= Game.getNextHour()
@@ -1066,7 +1066,7 @@ Type TNewsBroadcastAttraction Extends TBroadcastAttraction
 	
 	Method CheckConsequences(player:TPlayer)
 		Local block:TNews
-		TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(player.audience.Audience.GetSum()), Game.GetHour(),Game.GetMinute(),Game.GetDay(), player.playerID)		
+		'TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(player.audience.Audience.GetSum()), Game.GetHour(),Game.GetMinute(),Game.GetDay(), player.playerID)		
 		
 		For Local i:Int = 1 To 3
 			block = player.ProgrammePlan.getNews(i - 1)

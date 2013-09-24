@@ -1287,7 +1287,7 @@ endrem
 
 		local dottedValue:string = ""
 		if int(value) < 1000000 then dottedValue = int(floor(int(value) / 1000))+"."+Left( int((int(value) - int(floor(int(value) / 1000)*1000))) +"000",3)
-		if int(value) < 1000 then dottedValue = value
+		if int(value) < 1000 then dottedValue = round(value)
 
 		select typ
 '			case -1		Return "0"
@@ -1314,7 +1314,11 @@ endrem
 		Else		
 			Return values[0]
 		Endif					
-	End Function		
+	End Function
+	
+	Function round:string(value:String)
+		Return string(int(Float(value) + .5))
+	End Function
 End Type
 Global functions:TFunctions = New TFunctions
 

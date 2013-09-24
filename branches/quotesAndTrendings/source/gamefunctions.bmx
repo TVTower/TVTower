@@ -933,7 +933,7 @@ Type TgfxContractlist extends TPlannerList
 End Type
 
 
-
+rem
 Type TAudienceQuotes
   Field title:String
   Field audience:Int
@@ -947,25 +947,8 @@ Type TAudienceQuotes
 
 
 	Function Load:TAudienceQuotes(pnode:TxmlNode)
-print "implement Load:TAudienceQuotes"
-return null
-rem
-  		Local audience:TAudienceQuotes = New TAudienceQuotes
-		Local NODE:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-			Local typ:TTypeId = TTypeId.ForObject(audience)
-			For Local t:TField = EachIn typ.EnumFields()
-				If (t.MetaData("saveload") <> "nosave" Or t.MetaData("saveload") = "normal") And Upper(t.name()) = NODE.name
-					t.Set(audience, nodevalue)
-				EndIf
-			Next
-			NODE = NODE.nextSibling()
-		Wend
-		TAudienceQuotes.List.AddLast(audience)
-		Return audience
-endrem
+		print "implement Load:TAudienceQuotes"
+		return null
 	End Function
 
 	Function LoadAll()
@@ -1019,11 +1002,13 @@ endrem
 	End Function
 
   Method ShowSheet(x:Int, y:Int)
+  	Local text:String = getLocale("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" (MA: "+(audiencepercentage/10)+"%)"
+  	
 	If Sheet = Null
-	  Sheet = TTooltip.Create(title, getLocale("AUDIENCE_RATING") + ": " + functions.convertValue(String(audience), 2, 0) + " (MA: " + audiencepercentage + "%)", x, y, 200, 20)
+	  Sheet = TTooltip.Create(title, text, x, y, 200, 20)
     Else
 	  Sheet.title = title
-	  Sheet.text = getLocale("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" (MA: "+(audiencepercentage/10)+"%)"
+	  Sheet.text = text
 	  Sheet.enabled = 1
 	  Sheet.pos.setXY(x,y)
 	  Sheet.width = 0
@@ -1056,7 +1041,7 @@ endrem
 	Return locObjects
   End Function
 End Type
-
+endrem
 'tooltips containing headline and text, updated and drawn by Tinterface
 'extends TRenderableChild - could get attached to sprites
 Type TTooltip extends TRenderableChild
@@ -1637,7 +1622,8 @@ Type TInterface
 		Interface.CurrentNoise				= Assets.getSprite("gfx_interface_TVprogram_noise1")
 		Interface.CurrentProgramme			= Assets.getSprite("gfx_interface_TVprogram_none")
 		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
-		Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
+		'Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
+		Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 500, 415)
 		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 355, 495)
 		Interface.MoneyToolTip				= TTooltip.Create("", "", 355, 365)
 		Interface.BettyToolTip				= TTooltip.Create("", "", 355, 465)
@@ -1754,8 +1740,27 @@ Type TInterface
 			'Print "DebugInfo: " + TAudienceResult.Curr().ToString()
 			Local player:TPlayer = Game.Players[Game.playerID]
 			Local audienceResult:TAudienceResult = player.audience
+			
+			'TODO Ronny: Das kannst du bestimmt schöner präsentieren. Es gibt ja noch die zielgruppen.png.
+			Local text:String = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.MaxAudienceThisHour.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.MaxAudienceThisHourQuote.Average) / 10)) + "%)"
+			text :+ "~n"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_1") + ": " + functions.convertValue(String(audienceResult.Audience.Children), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Children * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_2") + ": " + functions.convertValue(String(audienceResult.Audience.Teenagers), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Teenagers * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_3") + ": " + functions.convertValue(String(audienceResult.Audience.HouseWifes), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.HouseWifes * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_4") + ": " + functions.convertValue(String(audienceResult.Audience.Employees), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Employees * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_5") + ": " + functions.convertValue(String(audienceResult.Audience.Unemployed), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Unemployed * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_6") + ": " + functions.convertValue(String(audienceResult.Audience.Manager), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Manager * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_7") + ": " + functions.convertValue(String(audienceResult.Audience.Pensioners), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Pensioners * 100,2)+"%)"
+			
 			CurrentAudienceToolTip.title 	= GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+functions.convertPercent(player.GetAudiencePercentage() * 100,2)+"%)"
-			CurrentAudienceToolTip.text = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.MaxAudienceThisHour.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.MaxAudienceThisHourQuote.Average) / 10)) + "%)"
+			CurrentAudienceToolTip.text = text
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 			'force redraw
