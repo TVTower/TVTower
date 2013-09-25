@@ -1,4 +1,4 @@
-Const CURRENCYSIGN:string = Chr(8364) 'eurosign
+ÔªøConst CURRENCYSIGN:string = Chr(8364) 'eurosign
 
 Type TPlayerProgrammePlanNEW {_exposeToLua="selected"}
 	Field programmes:TBroadcastMaterial[]		= new TBroadcastMaterial[0]
@@ -841,7 +841,7 @@ ENDREM
 			'Block erfolgreich gesendet
 			if successful = 1 And not block.isBotched() and block.isAired()
 				count :+1
-			'Block noch nicht gesendet / die sendtime- und senddate-Pr¸fung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
+			'Block noch nicht gesendet / die sendtime- und senddate-Pr√ºfung ist da, damit auch wirklich sicher ist, dass es sich um einen Geplanten handelt.
 			Elseif planned = 1 And not block.isAired() and block.senddate <> -1 and block.sendtime <> -1
 				count :+1
 			EndIf
@@ -1584,20 +1584,20 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie hoch ist das finanzielle Gewicht pro Spot?
-	'Wird daf¸r gebraucht um die Wichtigkeit des Spots zu bewerten
+	'Wird daf√ºr gebraucht um die Wichtigkeit des Spots zu bewerten
 	Method GetFinanceWeight:float() {_exposeToLua}
 		Return (self.GetProfit() + self.GetPenalty()) / self.GetSpotCount()
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Berechnet wie Zeitkritisch die Erf¸llung des Vertrages ist (Gesamt)
+	'Berechnet wie Zeitkritisch die Erf√ºllung des Vertrages ist (Gesamt)
 	Method GetPressure:float() {_exposeToLua}
 		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return self.GetSpotCount() / _daysToFinish * _daysToFinish
 	End Method
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Berechnet wie Zeitkritisch die Erf¸llung des Vertrages ist (tats‰chlich / aktuell)
+	'Berechnet wie Zeitkritisch die Erf√ºllung des Vertrages ist (tats√§chlich / aktuell)
 	Method GetCurrentPressure:float() {_exposeToLua}
 		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return self.GetSpotsToSend() / _daysToFinish * _daysToFinish
@@ -2198,16 +2198,40 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Return topicality
 	End Method
 
-	'Diese Methode ersetzt "GetBaseAudienceQuote"
-	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
-		Local genreDefintion:TGenreDefinition = Game.BroadcastManager.GetGenreDefinition(Genre)
-		Return genreDefintion.GetProgrammeQuality(Self, luckFactor)
-	End Method
+	Method GetGenreDefinition:TMovieGenreDefinition()
+		Return Game.BroadcastManager.GetMovieGenreDefinition(Genre)
+	End Method	
 	
-	'Diese Methode splittet GetQuality in die Zielgruppen auf und ber¸cksichtigt die Sendezeit
-	Method GetAudienceAttraction:TAudience(hour:Int, luckFactor:Int = 1) {_exposeToLua}
-		Local genreDefintion:TGenreDefinition = Game.BroadcastManager.GetGenreDefinition(Genre)
-		Return genreDefintion.CalculateAudienceAttraction(Self, hour, luckFactor)
+	'Diese Methode ersetzt "GetBaseAudienceQuote"
+	Method GetQuality:Float(luckFactor:Int = 1)
+		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
+		Local quality:Float = 0.0
+		
+		If genreDef.OutcomeMod > 0.0 Then
+			quality = Float(Outcome) / 255.0 * genreDef.OutcomeMod ..
+				+ Float(review) / 255.0 * genreDef.ReviewMod ..
+				+ Float(speed) / 255.0 * genreDef.SpeedMod
+		Else
+			quality = Float(review) / 255.0 * genreDef.ReviewMod ..
+				+ Float(speed) / 255.0 * genreDef.SpeedMod
+		EndIf
+
+		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
+		Local age:Int = Max(0, 100 - Max(0, game.GetYear() - year))
+		quality:*Max(0.10, (age / 100.0))
+		
+		'repetitions wont be watched that much
+		quality:*(ComputeTopicality() / 255.0) ^ 2
+
+		If luckFactor = 1 Then
+			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-Qualit√§t
+		Else
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualit√§t
+		EndIf
+		
+		'no minus quote
+		quality = Max(0, quality)
+		Return quality
 	End Method
 
 	rem
@@ -3771,6 +3795,27 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method IsInProgramme:Int() {_exposeToLua}
 		Return Game.getPlayer(owner).ProgrammePlan.HasNews(self)
 	End Method
+	
+	
+	Method GetQuality:Float(luckFactor:Int = 1)
+		Local quality:Float = 0.0
+		
+		quality = Float(newsEvent.ComputeTopicality()) / 255.0 * 0.45 ..
+			+ Float(newsEvent.quality) / 255.0 * 0.35 ..
+			+ Float(newsEvent.price) / 255.0 * 0.2
+		
+		'Zus√§tzlicher Bonus bei Erstausstrahlung	
+		If timesAired = 0 Then quality:*0.15
+
+		If luckFactor = 1 Then
+			quality = quality * 0.97 + Float(RandRange(10, 30)) / 1000.0 '1%-Punkte bis 3%-Punkte Basis-Qualit√§t
+		Else
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualit√§t
+		EndIf
+		
+		'no minus quote
+		Return Max(0, quality)
+	End Method	
 End Type
 
 

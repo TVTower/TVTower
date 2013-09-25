@@ -48,6 +48,7 @@ Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_popularity.bmx"			'Popularitäten und Trends
+Include "gamefunctions_genre.bmx"				'Genre-Definitionen
 Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 
 
@@ -3397,7 +3398,7 @@ Function DrawMain(tweenValue:Float=1.0)
 		
 		
 		
-		Local attraction:TAudienceAdv = audienceResult.ProgrammeAttraction
+		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
 		If (attraction.AudienceAttraction <> Null) Then
 			genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
