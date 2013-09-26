@@ -2144,7 +2144,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 	'Manuel: Wird nur in der Lua-KI verwendet
 	Method GetQualityLevel:Int() {_exposeToLua}
-		Local quality:Int = Self.GetBaseAudienceQuote() * 100
+		Local quality:Int = Self.GetQuality() * 100
 		If quality > 20
 			Return 5
 		ElseIf quality > 15
@@ -2198,7 +2198,43 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Return topicality
 	End Method
 
+	Method GetGenreDefinition:TMovieGenreDefinition()
+		Return Game.BroadcastManager.GetMovieGenreDefinition(Genre)
+	End Method	
+	
+	'Diese Methode ersetzt "GetBaseAudienceQuote"
+	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
+		Local quality:Float = 0.0
+		
+		If genreDef.OutcomeMod > 0.0 Then
+			quality = Float(Outcome) / 255.0 * genreDef.OutcomeMod ..
+				+ Float(review) / 255.0 * genreDef.ReviewMod ..
+				+ Float(speed) / 255.0 * genreDef.SpeedMod
+		Else
+			quality = Float(review) / 255.0 * genreDef.ReviewMod ..
+				+ Float(speed) / 255.0 * genreDef.SpeedMod
+		EndIf
 
+		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
+		Local age:Int = Max(0, 100 - Max(0, game.GetYear() - year))
+		quality:*Max(0.10, (age / 100.0))
+		
+		'repetitions wont be watched that much
+		quality:*(ComputeTopicality() / 255.0) ^ 2
+
+		If luckFactor = 1 Then
+			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-Qualität
+		Else
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
+		EndIf
+		
+		'no minus quote
+		quality = Max(0, quality)
+		Return quality
+	End Method
+
+	rem
 	'base quote of a programme
 	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
 		Local quality:Float		= 0.0
@@ -2231,7 +2267,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.maxAudiencePercentage
+			quote :* Game.BroadcastManager.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf
@@ -2239,7 +2275,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'no minus quote
 		Return Max(0, quote)
 	End Method
-
+endrem
 
 	Method CutTopicality:Int(cutFactor:float=1.0)
 		'cutFactor can be used to manipulate the resulting cut
@@ -2371,7 +2407,7 @@ Type TNewsEvent Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field quality:Int			= 0
 	Field price:Int				= 0
 	Field episode:Int			= 0
-	Field episodes:TList		= CreateList()
+	Field episodes:TList		= CreateList()	
 	Field happenedTime:Double	= -1
 	Field happenDelayData:int[]	= [5,0,0,0]			'different params for delay generation
 	Field happenDelayType:int	= 2					'what kind of delay do we have? 2 = hours
@@ -2537,7 +2573,7 @@ Type TNewsEvent Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Return 0.30*((quality+5)/255) + 0.4*ComputeTopicality()/255 + 0.2*price/255 + 0.1
 	End Method
 
-
+	rem
 	'base quote of a programme
 	Method GetBaseAudienceQuote:Float(lastquote:Float=0.1) {_exposeToLua}
 		Local quality:Float		= 0.0
@@ -2559,7 +2595,7 @@ Type TNewsEvent Extends TBroadcastMaterial {_exposeToLua="selected"}
 		quote	:+ Float(RandRange(-10,10))/1000.0 ' +/- 0.1-1%
 
 		If maxAudiencePercentage = -1
-			quote :* Game.maxAudiencePercentage
+			quote :* Game.BroadcastManager.maxAudiencePercentage
 		Else
 			quote :* maxAudiencePercentage
 		EndIf
@@ -2567,6 +2603,7 @@ Type TNewsEvent Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'no minus quote
 		Return Max(0, quote)
 	End Method
+	endrem
 rem
 	'computes a percentage which could be multiplied with maxaudience
 	Method ComputeAudienceQuote:Float(lastquote:Float=0)
@@ -3694,6 +3731,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
     Field newsEvent:TNewsEvent	= Null	{_exposeToLua}
     Field publishDelay:Int 		= 0						'delay the news for a certain time (depending on the abonnement-level)
     Field paid:int	 			= 0
+	Field timesAired:int		= 0					'how many times that programme was run
 
 
 	Function Create:TNews(text:String="unknown", owner:Int=1, publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
@@ -3757,6 +3795,27 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method IsInProgramme:Int() {_exposeToLua}
 		Return Game.getPlayer(owner).ProgrammePlan.HasNews(self)
 	End Method
+	
+	
+	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+		Local quality:Float = 0.0
+		
+		quality = Float(newsEvent.ComputeTopicality()) / 255.0 * 0.45 ..
+			+ Float(newsEvent.quality) / 255.0 * 0.35 ..
+			+ Float(newsEvent.price) / 255.0 * 0.2
+		
+		'Zusätzlicher Bonus bei Erstausstrahlung	
+		If timesAired = 0 Then quality:*0.15
+
+		If luckFactor = 1 Then
+			quality = quality * 0.97 + Float(RandRange(10, 30)) / 1000.0 '1%-Punkte bis 3%-Punkte Basis-Qualität
+		Else
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
+		EndIf
+		
+		'no minus quote
+		Return Max(0, quality)
+	End Method	
 End Type
 
 

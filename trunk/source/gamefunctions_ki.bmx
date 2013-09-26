@@ -527,14 +527,17 @@ Type TLuaFunctions {_exposeToLua}
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, ObjectID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
 		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
 		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
-		Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
-		If Programme <> Null
-			Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
-			Print "quote:" + Quote + "%"
-			Return Quote
-		EndIf
+		
+		Print "Für KI wieder rein machen!"
+		'Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
+		'If Programme <> Null
+		'	Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
+		'	Print "quote:" + Quote + "%"
+		'	Return Quote
+		'EndIf
 		'0 percent - no programme
-		return 0
+		'return 0
+
 	End Method
 
 	'

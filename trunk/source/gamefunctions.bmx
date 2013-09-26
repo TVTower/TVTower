@@ -1,4 +1,4 @@
-'Import "basefunctions_image.bmx"
+﻿'Import "basefunctions_image.bmx"
 'Import "basefunctions_resourcemanager.bmx"
 
 global CHAT_CHANNEL_NONE:int	= 0
@@ -933,7 +933,7 @@ Type TgfxContractlist extends TPlannerList
 End Type
 
 
-
+rem
 Type TAudienceQuotes
   Field title:String
   Field audience:Int
@@ -947,25 +947,8 @@ Type TAudienceQuotes
 
 
 	Function Load:TAudienceQuotes(pnode:TxmlNode)
-print "implement Load:TAudienceQuotes"
-return null
-rem
-  		Local audience:TAudienceQuotes = New TAudienceQuotes
-		Local NODE:xmlNode = pnode.FirstChild()
-		While NODE <> Null
-			Local nodevalue:String = ""
-			If node.HasAttribute("var", False) Then nodevalue = node.Attribute("var").value
-			Local typ:TTypeId = TTypeId.ForObject(audience)
-			For Local t:TField = EachIn typ.EnumFields()
-				If (t.MetaData("saveload") <> "nosave" Or t.MetaData("saveload") = "normal") And Upper(t.name()) = NODE.name
-					t.Set(audience, nodevalue)
-				EndIf
-			Next
-			NODE = NODE.nextSibling()
-		Wend
-		TAudienceQuotes.List.AddLast(audience)
-		Return audience
-endrem
+		print "implement Load:TAudienceQuotes"
+		return null
 	End Function
 
 	Function LoadAll()
@@ -1019,11 +1002,13 @@ endrem
 	End Function
 
   Method ShowSheet(x:Int, y:Int)
+  	Local text:String = getLocale("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" (MA: "+(audiencepercentage/10)+"%)"
+  	
 	If Sheet = Null
-	  Sheet = TTooltip.Create(title, getLocale("AUDIENCE_RATING") + ": " + functions.convertValue(String(audience), 2, 0) + " (MA: " + audiencepercentage + "%)", x, y, 200, 20)
+	  Sheet = TTooltip.Create(title, text, x, y, 200, 20)
     Else
 	  Sheet.title = title
-	  Sheet.text = getLocale("AUDIENCE_RATING")+": "+functions.convertValue(String(audience), 2, 0)+" (MA: "+(audiencepercentage/10)+"%)"
+	  Sheet.text = text
 	  Sheet.enabled = 1
 	  Sheet.pos.setXY(x,y)
 	  Sheet.width = 0
@@ -1056,7 +1041,7 @@ endrem
 	Return locObjects
   End Function
 End Type
-
+endrem
 'tooltips containing headline and text, updated and drawn by Tinterface
 'extends TRenderableChild - could get attached to sprites
 Type TTooltip extends TRenderableChild
@@ -1637,7 +1622,8 @@ Type TInterface
 		Interface.CurrentNoise				= Assets.getSprite("gfx_interface_TVprogram_noise1")
 		Interface.CurrentProgramme			= Assets.getSprite("gfx_interface_TVprogram_none")
 		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
-		Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
+		'Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
+		Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 500, 415)
 		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 355, 495)
 		Interface.MoneyToolTip				= TTooltip.Create("", "", 355, 365)
 		Interface.BettyToolTip				= TTooltip.Create("", "", 355, 465)
@@ -1716,7 +1702,7 @@ Type TInterface
 		If functions.IsIn(MouseManager.x,MouseManager.y,20,385,280,200)
 			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
 			If ShowChannel <> 0
-				CurrentProgrammeToolTip.text	= getLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].getRelativeAudiencePercentage(),2)+"%)"
+				CurrentProgrammeToolTip.text	= GetLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[ShowChannel].GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
 				if ShowChannel = Game.playerID
@@ -1750,9 +1736,31 @@ Type TInterface
 			'force redraw
 			CurrentTimeToolTip.dirtyImage = true
 	    EndIf
-		If functions.IsIn(MouseManager.x,MouseManager.y,355,468,130,30)
-			CurrentAudienceToolTip.title 	= getLocale("AUDIENCE_RATING")+": "+Game.Players[Game.playerID].getFormattedAudience()+ " (MA: "+functions.convertPercent(Game.Players[Game.playerID].getRelativeAudiencePercentage(),2)+"%)"
-			CurrentAudienceToolTip.text  	= getLocale("MAX_AUDIENCE_RATING")+": "+functions.convertValue(Int((Game.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience())),2,0)+ " ("+(Int(Ceil(1000*Game.maxAudiencePercentage)/10))+"%)"
+		If functions.IsIn(MOUSEMANAGER.x,MOUSEMANAGER.y,355,468,130,30)
+			'Print "DebugInfo: " + TAudienceResult.Curr().ToString()
+			Local player:TPlayer = Game.Players[Game.playerID]
+			Local audienceResult:TAudienceResult = player.audience
+			
+			'TODO Ronny: Das kannst du bestimmt schöner präsentieren. Es gibt ja noch die zielgruppen.png.
+			Local text:String = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.PotentialMaxAudience.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.PotentialMaxAudienceQuote.Average) / 10)) + "%)"
+			text :+ "~n"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_1") + ": " + functions.convertValue(String(audienceResult.Audience.Children), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Children * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_2") + ": " + functions.convertValue(String(audienceResult.Audience.Teenagers), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Teenagers * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_3") + ": " + functions.convertValue(String(audienceResult.Audience.HouseWifes), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.HouseWifes * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_4") + ": " + functions.convertValue(String(audienceResult.Audience.Employees), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Employees * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_5") + ": " + functions.convertValue(String(audienceResult.Audience.Unemployed), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Unemployed * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_6") + ": " + functions.convertValue(String(audienceResult.Audience.Manager), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Manager * 100,2)+"%)"
+			text :+ "~n"
+			text :+ getLocale("AD_GENRE_7") + ": " + functions.convertValue(String(audienceResult.Audience.Pensioners), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Pensioners * 100,2)+"%)"
+			
+			CurrentAudienceToolTip.title 	= GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+functions.convertPercent(player.GetAudiencePercentage() * 100,2)+"%)"
+			CurrentAudienceToolTip.text = text
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 			'force redraw
@@ -1814,7 +1822,7 @@ Type TInterface
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				CurrentProgramme.Draw(49, 403 - 383 + NoDX9moveY)
 
-				Local audiencerate:Float	= Float(Game.Players[ShowChannel].audience / Float(Game.maxAudiencePercentage * Game.Players[Game.playerID].getMaxaudience()))
+				Local audiencerate:Float = Game.Players[ShowChannel].audience.AudienceQuote.Average 
 				Local girl_on:Int 			= 0
 				Local grandpa_on:Int		= 0
 				Local teen_on:Int 			= 0
@@ -1844,8 +1852,8 @@ Type TInterface
 	     	Assets.getSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
 			SetBlend ALPHABLEND
 			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, 2, 200,230,200, 0, 2)
-			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
-		 	Assets.getFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.Players[Game.playerID].getFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, 2, 200,200,230, 0, 2)
+		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, 1, 180,180,180, 0, 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
@@ -2412,10 +2420,11 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'returns a share between players, encoded in a tpoint containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Function GetShare:TPoint(playerIDs:int[], withoutPlayerIDs:int[]=null)
-		if playerIDs.length <1 then return TPoint.Create(0,0,0.0)
+	Function GetShare:TPoint(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
+		If playerIDs.length <1 Then Return TPoint.Create(0,0,0.0)
 		if not withoutPlayerIDs then withoutPlayerIDs = new Int[0]
-		local cacheKey:string = ""
+		Local cacheKey:String = ""
+
 		for local i:int = 0 to playerIDs.length-1
 			cacheKey:+ "_"+playerIDs[i]
 		Next
@@ -2494,10 +2503,10 @@ Type TStationMap {_exposeToLua="selected"}
 		print "share:"+share
 		print "result:"+result.z
 		print "allFlag:"+allFlag
-		print "cache:"+cacheKey
+		'print "cache:"+cacheKey
 		print "--------"
 		'add to cache...
-		shareCache.insert(cacheKey, result )
+		'shareCache.insert(cacheKey, result )
 
 		return result
 	End Function
@@ -2612,7 +2621,7 @@ Type TStationMap {_exposeToLua="selected"}
 	Function CalculateStationReach:Int(x:Int, y:Int)
 		Local posX:Int, posY:Int
 		Local returnValue:Int = 0
-		' für die aktuelle Koordinate die summe berechnen
+		' fÃ¼r die aktuelle Koordinate die summe berechnen
 		' min/max = immer innerhalb des Bildes
 		For posX = Max(x - stationRadius,stationRadius) To Min(x + stationRadius, self.populationMapSize.x-stationRadius)
 			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, self.populationMapSize.y-stationRadius)

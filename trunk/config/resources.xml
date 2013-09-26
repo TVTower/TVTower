@@ -12,5 +12,7 @@
 		<file name="resource_stationmap" url="config/stationmap.xml" />
 		<file name="resource_colors" url="config/settings_colors.xml" />
 		<file name="resource_fonts" url="config/fonts.xml" />
+		<file name="resource_newsgenres" url="config/newsgenres.xml" />
+		<file name="resource_genres" url="config/genres.xml" />
 	</resources>
 </tvt>

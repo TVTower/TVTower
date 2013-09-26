@@ -1,4 +1,4 @@
-'Application: TVGigant/TVTower
+Ôªø'Application: TVGigant/TVTower
 'Author: Ronny Otto
 
 SuperStrict
@@ -31,7 +31,7 @@ Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto & Manuel Vˆgele"
+Global CopyrightString:String	= "by Ronny Otto & Manuel V√∂gele"
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 
 Global App:TApp = TApp.Create(60,60) 'create with 60fps for physics and graphics
@@ -47,6 +47,10 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
+Include "gamefunctions_popularity.bmx"			'Popularit√§ten und Trends
+Include "gamefunctions_genre.bmx"				'Genre-Definitionen
+Include "gamefunctions_quotes.bmx"				'Quotenberechnung
+Include "gamefunctions_debug.bmx"
 
 
 Global ArchiveProgrammeList:TgfxProgrammelist	= TgfxProgrammelist.Create(575, 16, 21)
@@ -251,8 +255,10 @@ Const GAMESTATE_INIZIALIZEGAME:int			= 5		'mode when date needed for game (names
 Type TGame {_exposeToLua="selected"}
 	''rename CONFIG-vars ... config_DoorOpenTime... config_gameSpeed ...
 	Const maxAbonnementLevel:Int		= 3
-
-	Field maxAudiencePercentage:Float 	= 0.3	{nosave}	'how many 0.0-1.0 (100%) audience is maximum reachable
+	
+	Field BroadcastManager:TBroadcastManager = null
+	Field PopularityManager:TPopularityManager = null
+	
 	Field maxContractsAllowed:Int 		= 10	{nosave}	'how many contracts a player can possess
 	Field maxMoviesInSuitcaseAllowed:Int= 12	{nosave}	'how many movies can be carried in suitcase
 	Field startMovieAmount:Int 			= 5		{nosave}	'how many movies does a player get on a new game
@@ -260,6 +266,7 @@ Type TGame {_exposeToLua="selected"}
 	Field startAdAmount:Int				= 3		{nosave}	'how many contracts a player gets on a new game
 	Field debugmode:Byte				= 0		{nosave}	'0=no debug messages; 1=some debugmessages
 	Field DebugInfos:Byte				= 0		{nosave}
+	Field DebugQuoteInfos:Byte			= 0		{nosave}	
 
 	Field daynames:String[]						{nosave}	'array of abbreviated (short) daynames
 	Field daynamesLong:String[] 				{nosave}	'array of daynames (long version)
@@ -354,7 +361,7 @@ endrem
 		LoadSaveFile.SaveObject(TPlayer.List, "PLAYERS", TFigures.AdditionalSave) ; TError.DrawErrors() ;Flip 0  'XML
 
 		TStationMap.SaveAll();				TError.DrawErrors();Flip 0  'XML
-		TAudienceQuotes.SaveAll();			TError.DrawErrors();Flip 0  'XML
+'		TAudienceQuotes.SaveAll();			TError.DrawErrors();Flip 0  'XML
 '		TProgramme.SaveAll();	 			TError.DrawErrors();Flip 0  'XML
 '		TContract.SaveAll();	  			TError.DrawErrors();Flip 0  'XML
 '		TNews.SaveAll();	  				TError.DrawErrors();Flip 0  'XML
@@ -404,32 +411,32 @@ endrem
 					Case "ALLSTATIONMAPS"
 						TError.DrawNewError("Lade Senderkarten...")
 						TStationMap.LoadAll()
-					Case "ALLAUDIENCEQUOTES"
-						TError.DrawNewError("Lade Quotenarchiv...")
-						TAudienceQuotes.LoadAll()
+'					Case "ALLAUDIENCEQUOTES"
+'						TError.DrawNewError("Lade Quotenarchiv...")
+'						TAudienceQuotes.LoadAll()
 '					Case "ALLPROGRAMMES"
 '						TError.DrawNewError("Lade Programme...")
 '						TProgramme.LoadAll()
 '					Case "ALLCONTRACTS"
-'						TError.DrawNewError("Lade Werbevertr‰ge...")
+'						TError.DrawNewError("Lade Werbevertr√§ge...")
 					'TContract.LoadAll()
 '					Case "ALLNEWS"
 '						TError.DrawNewError("Lade Nachrichten...")
 					'TNews.LoadAll()
 					Case "ALLCONTRACTBLOCKS"
-						TError.DrawNewError("Lade Werbevertr‰geblˆcke...")
+						TError.DrawNewError("Lade Werbevertr√§gebl√∂cke...")
 					'TContractBlock.LoadAll()
 					Case "ALLPROGRAMMEBLOCKS"
-						TError.DrawNewError("Lade Programmblˆcke...")
+						TError.DrawNewError("Lade Programmbl√∂cke...")
 					'TProgrammeBlock.LoadAll()
 					Case "ALLADBLOCKS"
-						TError.DrawNewError("Lade Werbeblˆcke...")
+						TError.DrawNewError("Lade Werbebl√∂cke...")
 					'TAdBlock.LoadAll()
 					Case "ALLNEWSBLOCKS"
-						TError.DrawNewError("Lade Newsblˆcke...")
+						TError.DrawNewError("Lade Newsbl√∂cke...")
 					'TNewsBlock.LoadAll()
 					Case "ALLMOVIEAGENCYBLOCKS"
-						TError.DrawNewError("Lade Filmh‰ndlerblˆcke...")
+						TError.DrawNewError("Lade Filmh√§ndlerbl√∂cke...")
 					'TMovieAgencyBlocks.LoadAll()
 					Case "ELEVATOR"
 						TError.DrawNewError("Lade Fahrstuhl...")
@@ -457,6 +464,9 @@ endrem
 		Game.title				= "unknown"
 
 		Game.SetRandomizerBase( Millisecs() )
+		
+		Game.PopularityManager = TPopularityManager.Create()		
+		Game.BroadcastManager = TBroadcastManager.Create()
 
 		Return Game
 	End Function
@@ -481,6 +491,12 @@ endrem
 		print "setRandomizerBase - first random is: "+RandRange(0,10000)
 	End Method
 
+	Method Initialize()
+		Game.PopularityManager.Initialize()
+		Game.BroadcastManager.Initialize()
+		
+		CreateInitialPlayers()
+	End Method
 
 	Method CreateInitialPlayers()
 		'Creating PlayerColors - could also be done "automagically"
@@ -603,41 +619,6 @@ endrem
 		Self.userdb				= xml.FindValue(node,"database", "res/database.xml")	'Print "settings.xml - missing 'database' - set to default: 'database.xml'"
 		Self.title				= xml.FindValue(node,"defaultgamename", "MyGame")		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'defaultgamename' fehlt, setze Defaultwert: 'MyGame'", DEBUG_LOADING)
 		Self.userfallbackip		= xml.FindValue(node,"fallbacklocalip", "192.168.0.1")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'fallbacklocalip' fehlt, setze Defaultwert: '192.168.0.1'", DEBUG_LOADING)
-	End Method
-
-	Method calculateMaxAudiencePercentage:Float(forHour:Int= -1)
-		If forHour <= 0 Then forHour = Self.GetHour()
-
-		'based on weekday (thursday) in march 2011 - maybe add weekend
-		Select Self.GetHour()
-			Case 0	game.maxAudiencePercentage = 11.40 + Float(RandRange( -6, 6))/ 100.0 'Germany ~9 Mio
-			Case 1	game.maxAudiencePercentage =  6.50 + Float(RandRange( -4, 4))/ 100.0 'Germany ~5 Mio
-			Case 2	game.maxAudiencePercentage =  3.80 + Float(RandRange( -3, 3))/ 100.0
-			Case 3	game.maxAudiencePercentage =  3.60 + Float(RandRange( -3, 3))/ 100.0
-			Case 4	game.maxAudiencePercentage =  2.25 + Float(RandRange( -2, 2))/ 100.0
-			Case 5	game.maxAudiencePercentage =  3.45 + Float(RandRange( -2, 2))/ 100.0 'workers awake
-			Case 6	game.maxAudiencePercentage =  3.25 + Float(RandRange( -2, 2))/ 100.0 'some go to work
-			Case 7	game.maxAudiencePercentage =  4.45 + Float(RandRange( -3, 3))/ 100.0 'more awake
-			Case 8	game.maxAudiencePercentage =  5.05 + Float(RandRange( -4, 4))/ 100.0
-			Case 9	game.maxAudiencePercentage =  5.60 + Float(RandRange( -4, 4))/ 100.0
-			Case 10	game.maxAudiencePercentage =  5.85 + Float(RandRange( -4, 4))/ 100.0
-			Case 11	game.maxAudiencePercentage =  6.70 + Float(RandRange( -4, 4))/ 100.0
-			Case 12	game.maxAudiencePercentage =  7.85 + Float(RandRange( -4, 4))/ 100.0
-			Case 13	game.maxAudiencePercentage =  9.10 + Float(RandRange( -5, 5))/ 100.0
-			Case 14	game.maxAudiencePercentage = 10.20 + Float(RandRange( -5, 5))/ 100.0
-			Case 15	game.maxAudiencePercentage = 10.90 + Float(RandRange( -5, 5))/ 100.0
-			Case 16	game.maxAudiencePercentage = 11.45 + Float(RandRange( -6, 6))/ 100.0
-			Case 17	game.maxAudiencePercentage = 14.10 + Float(RandRange( -7, 7))/ 100.0 'people come home
-			Case 18	game.maxAudiencePercentage = 22.95 + Float(RandRange( -8, 8))/ 100.0 'meal + worker coming home
-			Case 19	game.maxAudiencePercentage = 33.45 + Float(RandRange(-10,10))/ 100.0
-			Case 20	game.maxAudiencePercentage = 38.70 + Float(RandRange(-15,15))/ 100.0
-			Case 21	game.maxAudiencePercentage = 37.60 + Float(RandRange(-15,15))/ 100.0
-			Case 22	game.maxAudiencePercentage = 28.60 + Float(RandRange( -9, 9))/ 100.0 'bed time starts
-			Case 23	game.maxAudiencePercentage = 18.80 + Float(RandRange( -7, 7))/ 100.0
-		EndSelect
-		game.maxAudiencePercentage :/ 100.0
-
-		Return game.maxAudiencePercentage
 	End Method
 
 	Method GetNextHour:Int() {_exposeToLua}
@@ -783,7 +764,11 @@ Type TPlayer {_exposeToLua="selected"}
 	Field Name:String 										{saveload = "normal"}		'playername
 	Field channelname:String 								{saveload = "normal"} 		'name of the channel
 	Field finances:TFinancials[7]														'One week of financial stats about credit, money, payments ...
-	Field audience:Int 			= 0 						{saveload = "normal"}		'general audience
+	'Field audience:Int 			= 0 						{saveload = "normal"}		'general audience
+	'Field audience2:TAudience	= new TAudience
+	'Field maxAudience2:TAudience
+	Field audience:TAudienceResult	
+	
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
 	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
 	Field StationMap:TStationMap							{_exposeToLua}
@@ -804,6 +789,10 @@ Type TPlayer {_exposeToLua="selected"}
 			If playerID = player.playerID Then Return player
 		Next
 		Return Null
+	End Function
+	
+	Function Current:TPlayer()
+		Return TPlayer.getByID(Game.playerID)
 	End Function
 
 	Function Load:Tplayer(pnode:TxmlNode)
@@ -839,7 +828,7 @@ Rem
 		Game.Players[Player.playerID] = Player  '.player is player in root-scope
 		Player.Figure = TFigures.GetByID( FigureID )
 		If Player.figure.controlledByID = 0 And Game.playerID = 1 Then
-			PrintDebug("TPlayer.Load()", "Lade AI f¸r Spieler" + Player.playerID, DEBUG_SAVELOAD)
+			PrintDebug("TPlayer.Load()", "Lade AI f√ºr Spieler" + Player.playerID, DEBUG_SAVELOAD)
 			Player.playerKI = KI.Create(Player.playerID, "res/ai/DefaultAIPlayer.lua")
 		EndIf
 		Player.Figure.ParentPlayer = Player
@@ -1011,20 +1000,16 @@ endrem
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetAudiencePercentage:Float() {_exposeToLua}
-		If GetMaxaudience() > 0 And audience > 0
-			Return Float(audience * 100) / Float( GetMaxaudience() )
-		EndIf
-		Return 0.0
+		Return TAudienceResult.Curr(playerID).AudienceQuote.Average
+		'Local audienceResult:TAudienceResult = TAudienceResult.Curr(playerID)	
+		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()		
 	End Method
-
+rem
 	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetRelativeAudiencePercentage:Float() {_exposeToLua}
-		If game.maxAudiencePercentage > 0
-			Return Float(GetAudiencePercentage() / game.maxAudiencePercentage)
-		EndIf
-		Return 0.0
+	Method GetRelativeAudiencePercentage:Float(playerID:Int) {_exposeToLua}		
+		Return TAudienceResult.Curr(playerID).AudienceQuote.GetAverage()
 	End Method
-
+endrem
 
 	'returns value chief will give as credit
 	Method GetCreditAvailable:Int() {_exposeToLua}
@@ -1074,7 +1059,7 @@ endrem
 			If Not Adblock Then Continue
 
 			'ad failed (audience lower than needed)
-			If Player.audience < Adblock.contract.GetMinAudience()
+			If Player.audience.Audience.GetSum() < Adblock.contract.GetMinAudience()
 				Adblock.SetBotched(1)
 			'ad is ok
 			Else
@@ -1128,63 +1113,27 @@ endrem
 	'computes audience depending on ComputeAudienceQuote and if the time is the same
 	'as for the last block of a programme, it decreases the topicality of that programme
 	Function ComputeAudience(recompute:Int = FALSE)
-		Local block:TProgrammeBlock
-
-		For Local Player:TPlayer = EachIn TPlayer.List
-			block = Player.ProgrammePlan.GetCurrentProgrammeBlock()
-			Player.audience = 0
-
-			If block And block.programme And Player.GetMaxAudience() <> 0
-				Player.audience = Floor(Player.GetMaxAudience() * block.Programme.getAudienceQuote(Player.audience/Player.GetMaxAudience()) / 1000)*1000
-				If Player.playerID = 2 Then
-					AiLog[1].AddLog("BM-Audience (" + block.Programme.GetID() + "): " + Player.audience + " => averageMovieQualityByLevel (" + block.Programme.getBaseAudienceQuote() + ") ; globalPercentageByHour (" + Game.maxAudiencePercentage + ")    ### " + block.Programme.getAudienceQuote(Player.audience/Player.GetMaxAudience()) )
-				Endif
-				'maybe someone sold a station
-				If recompute
-					Local quote:TAudienceQuotes = TAudienceQuotes.GetAudienceOfDate(Player.playerID, Game.GetDay(), Game.GetHour(), Game.GetMinute())
-					If quote <> Null
-						quote.audience = Player.audience
-						quote.audiencepercentage = Int(Floor(Player.audience * 1000 / Player.GetMaxaudience()))
-					EndIf
-				Else
-					TAudienceQuotes.Create(block.Programme.title + " (" + GetLocale("BLOCK") + " " + (1 + Game.GetHour() - (block.sendhour - Game.GetDay()*24)) + "/" + block.Programme.blocks, Int(Player.audience), Game.GetHour(), Game.GetMinute(), Game.GetDay(), Player.playerID)
-				EndIf
-				If block.sendHour - (Game.GetDay()*24) + block.Programme.blocks <= Game.getNextHour()
-					If Not recompute
-						'during nighttimes 0-5, the cut should be lower
-						'so we increase the cutFactor to 1.5
-						if Game.getNextHour()-1 <= 5
-							block.Programme.CutTopicality(1.5)
-						elseif Game.getNextHour()-1 <= 12
-							block.Programme.CutTopicality(1.25)
-						else
-							block.Programme.CutTopicality(1.0)
-						endif
-					EndIf
-				EndIf
-
-				'if someone can watch that movie, increase the aired amount
-				If Game.GetHour(60*block.sendHour) = Game.getHour() and Not recompute then block.Programme.timesAired:+1
-			endif
-		Next
+		Game.BroadcastManager.BroadcastProgramme()
 	End Function
 
 	'computes newsshow-audience
 	Function ComputeNewsAudience()
-		Local news:TNews
+		Game.BroadcastManager.BroadcastNews()
+	rem
+		Local newsBlock:TNewsBlock
 		For Local Player:TPlayer = EachIn TPlayer.List
 			Local audience:Int = 0
 
 			if Player.GetMaxaudience() > 0
 				local leadinAudience:int = 0
-				local slotaudience:int[] = [Player.audience,0,0,0]
+				local slotaudience:int[] = [int(Player.audience2.GetSum()),0,0,0]
 				'in the "0"-position of the index, we store the previous audience
 				'so that the result of each news is based on a leadin of the previous
 				'so "holes" cut the news reach :D
 				for local i:int = 1 to 3
 					news = Player.ProgrammePlan.GetNews(i-1)
 					If news
-						leadinAudience = 0.5 * Player.audience + 0.5 * slotaudience[i-1]
+						leadinAudience = 0.5 * Player.audience2.GetSum() + 0.5 * slotaudience[i-1]
 						slotaudience[i] = Floor(Player.GetMaxaudience() * news.newsEvent.getAudienceQuote(leadinAudience/Player.GetMaxaudience())  / 1000)*1000
 						'print "leadinAudience "+i+": "+leadinAudience + " slotaudience:"+slotaudience[i]
 					endif
@@ -1196,9 +1145,10 @@ endrem
 					'If Player.playerID = 1 Print "Newsaudience for News: "+i+" - "+audience
 				Next
 			Endif
-			Player.audience= Ceil(audience)
-			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience), Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
+			Player.audience2 = TAudience.CreateWithBreakdown(Ceil(audience))
+			TAudienceQuotes.Create("News: "+ Game.GetHour()+":00", Int(Player.audience2.GetSum()), Game.GetHour(),Game.GetMinute(),Game.GetDay(), Player.playerID)
 		Next
+		endrem
 	End Function
 
 	'nothing up to now
@@ -1226,14 +1176,14 @@ endrem
 	End Method
 
 	Method GetAudience:Int() {_exposeToLua}
-		Return Self.audience
+		Return Self.audience.Audience.GetSum()
 	End Method
 
 
 	'returns formatted value of actual audience
 	'gibt einen formatierten Wert der aktuellen Zuschauer zurueck
 	Method GetFormattedAudience:String() {_exposeToLua}
-		Return functions.convertValue(String(Self.audience), 2, 0)
+		Return functions.convertValue(String(Self.audience.Audience.GetSum()), 2, 0)
 	End Method
 
 	Method Compare:Int(otherObject:Object)
@@ -1653,7 +1603,7 @@ Type TBuilding Extends TRenderable
 		Building.gfx_building	= Assets.GetSprite("gfx_building")
 		Building.pos.y			= 0 - Building.gfx_building.h + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
 		Building.Elevator		= TElevator.Create(Building)
-		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heiﬂt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaﬂ
+		Building.Elevator.RouteLogic = TElevatorSmartLogic.Create(Building.Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 hei√üt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spa√ü
 
 
 		'set moon movement
@@ -2370,7 +2320,7 @@ Global Building:TBuilding		= TBuilding.Create()
 EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
 
-Game.CreateInitialPlayers()
+Game.Initialize() 'Game.CreateInitialPlayers()
 
 'RON
 local haveNPCs:int = TRUE
@@ -2749,16 +2699,16 @@ rem
 Global TestWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,200, "")
 TestWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
 TestWindow.background.valueColor = TColor.Create(235,235,235)
-TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionst¸chtigkeit bereit, auch ist es mˆglich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... w¸nschen wir Dir viel Spaﬂ mit TVTower Version ~q"+VersionDate+"~q")
+TestWindow.setText("Willkommen bei TVTower", "Es handelt sich hier um eine Testversion.~nEs ist keine offizielle Demoversion die ausserhalb der Websites des Teams angeboten werden darf.~n~nSie stellt keinerlei Garantie auf Funktionst√ºchtigkeit bereit, auch ist es m√∂glich, dass das Spiel auf deinem Rechner nicht richtig funktioniert, die Grafikkarte zum Platzen bringt oder Du danach den PC als Grill benutzen kannst.~n~nFalls Dir dies alles einleuchtet und Du es akzeptierst... w√ºnschen wir Dir viel Spa√ü mit TVTower Version ~q"+VersionDate+"~q")
 endrem
 
 
 
 rem
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste kˆnnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat¸rlich Auswirkungen.~n~nEine Komˆdie kann h‰ufiger gesendet werden, als eine Live-‹bertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn¸pft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbevertr‰ge", "Werbevertr‰ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat¸rlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr‰ge abzuschlieﬂen."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste k√∂nnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat√ºrlich Auswirkungen.~n~nEine Kom√∂die kann h√§ufiger gesendet werden, als eine Live-√úbertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn√ºpft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: Werbevertr√§ge", "Werbevertr√§ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat√ºrlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr√§ge abzuschlie√üen."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
@@ -3132,8 +3082,10 @@ Function Init_Creation()
 		InGame_Chat.hide()
 	else
 		InGame_Chat.show()
-	endif
+	endif		
 
+	'Eigentlich geh√∂rt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
+	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
 	if Game.isGameLeader()
@@ -3394,6 +3346,10 @@ Function DrawMain(tweenValue:Float=1.0)
 
 
 	EndIf
+	
+	If Game.DebugQuoteInfos
+		TDebugQuoteInfos.Draw()
+	EndIf	
 End Function
 
 
@@ -3454,7 +3410,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 				For Local player:TPlayer = EachIn TPlayer.list
 					Local block:TProgrammeBlock = player.ProgrammePlan.GetCurrentProgrammeBlock()
 					If block<>Null And block.programme.genre = GENRE_CALLINSHOW
-						Local revenue:Int = player.audience * float(RandRange(2, 5))/100.0
+						Local revenue:Int = player.audience.Audience.GetSum() * float(RandRange(2, 5))/100.0
 						'print "audience: "+player.audience + " revenue:"+revenue + " rand:"+RandRange(2,5)
 						player.finances[Game.getWeekday()].earnCallerRevenue(revenue)
 					EndIf
@@ -3463,7 +3419,7 @@ Type TEventListenerOnMinute Extends TEventListenerBase
 			ElseIf minute = 55
 				TPlayer.ComputeAds()
 			ElseIf minute = 0
-				Game.calculateMaxAudiencePercentage(hour)
+				'Game.Quotes.calculateMaxAudiencePercentage(hour)
 				TPlayer.ComputeNewsAudience()
  			EndIf
  			If minute = 5 Or minute = 55 Or minute=0 Then Interface.BottomImgDirty = True
@@ -3574,6 +3530,7 @@ rem
 				endif
 endrem
 				If KEYMANAGER.IsHit(KEY_TAB) Game.DebugInfos = 1 - Game.DebugInfos
+				If KEYMANAGER.IsHit(KEY_Q) Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				If KEYMANAGER.IsHit(KEY_W) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("adagency", 0), TRUE )
 				If KEYMANAGER.IsHit(KEY_A) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("archive", Game.playerID), TRUE )
 				If KEYMANAGER.IsHit(KEY_B) Game.Players[Game.playerID].Figure.EnterRoom( TRooms.GetRoomByDetails("betty", 0), TRUE )
