@@ -1303,17 +1303,14 @@ endrem
 
 	Function convertPercent:String(value:String, nachkomma:Int)
 		'mv: Die alte Methode hat nicht funktioniert, deswegen hab ich sie umgebaut. Wenn man z.B. 19.0575913 runden wollte, kam 19.57 raus. Richtig wäre aber 19,06!
-		if float(value) = 0 then return "0"
-		Local values:String[] = value.split(".")		
-		If values[1] <> Null Then
-			local length:int = string(values[0]).length
-			local potenz:int = 10^nachkomma
-			local temp:string = Left(String(int((Float(value) * potenz) + .5)), nachkomma + length) 'Thema runden: http://www.blitzbasic.com/Community/posts.php?topic=51753			
-			local result:string = Left(temp, length) + "." + Mid(temp, length+1)
-			Return result
-		Else		
-			Return values[0]
-		Endif					
+		If float(value) = 0 then return "0"		
+		Local values:String[] = value.split(".")
+		
+		local length:int = string(values[0]).length
+		local potenz:int = 10^nachkomma
+		local temp:string = Left(String(int((Float(value) * potenz) + .5)) + "00000000000", nachkomma + length) 'Thema runden: http://www.blitzbasic.com/Community/posts.php?topic=51753			
+		local result:string = Left(temp, length) + "." + Mid(temp, length+1)
+		Return result
 	End Function
 	
 	Function round:string(value:String)

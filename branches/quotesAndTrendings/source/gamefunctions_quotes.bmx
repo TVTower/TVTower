@@ -397,10 +397,15 @@ Type TAudienceMarketCalculation
 	Field MaxAudience:TAudience						'Die Einwohnerzahl (max. Zuschauer) in diesem Markt
 	Field AudienceAttractions:TMap = CreateMap()	'Die Attraktivität des Programmes nach Zielgruppen. Für jeden Spieler der um diesen Markt mitkämpft gibt's einen Eintrag in der Liste
 	Field AudienceFlow:TMap = CreateMap()
-	Field FixAudience:TMap = CreateMap()
+	Field ExclusiveAudience:TMap = CreateMap()
 	'Field AdditionalAudience:TMap = CreateMap()	
 	'Field AudienceResult:TMap = CreateMap()		'Das Ergebnis der Berechnung. Pro Spieler gibt's ein Ergebnis
 	Field Players:TList = CreateList()				'Die Liste der Spieler die um diesen Markt kämpfen
+	
+	Field PotentialChannelSurfer:TAudience
+	Field ExclusiveAudienceSum:TAudience
+	Field AudienceFlowSum:TAudience
+	Field ChannelSurferToShare:TAudience
 	
 	Field AudienceResults:TAudienceResult[5]
 	
@@ -422,8 +427,8 @@ Type TAudienceMarketCalculation
 		AudienceAttractions.insert(playerId, audienceAttraction)
 	End Method
 	
-	Method SetPlayersFixAudience(playerId:String, fixAudienceValue:TAudience)
-		FixAudience.Insert(playerId, fixAudienceValue)
+	Method SetPlayersExclusiveAudience(playerId:String, exclusiveAudienceValue:TAudience)
+		ExclusiveAudience.Insert(playerId, exclusiveAudienceValue)
 	End Method	
 	
 	Method SetPlayersAudienceFlow(playerId:String, audienceFlowValue:TAudience)		
@@ -435,147 +440,141 @@ Type TAudienceMarketCalculation
 		'Return TAudience(MapValueForKey(AudienceResult, playerId))
 	End Method
 	
+	Method ComputeExklusiveAudience()
+		'Kultwerte und Exklusivzuschauer addieren
+		For Local playerId:string = EachIn Players
+			Local audienceAttractionTemp:TAudienceAttraction = TAudienceAttraction(MapValueForKey(AudienceAttractions, playerId))
+			If audienceAttractionTemp <> Null Then
+			
+				'Wenn der GenrePopularityMod über 1 ist generiert er zusätzliche exklusive Zuschauer
+				If (audienceAttractionTemp.GenrePopularityMod > 1) Then
+					Local exclusiveAud:TAudience = PotentialChannelSurfer.GetNewInstance()
+					exclusiveAud.MultiplyFactor((audienceAttractionTemp.GenrePopularityMod - 1) / 5)			
+					ExclusiveAudience.Insert(playerId, exclusiveAud.Round() ) 'TODO... nicht kompatibel mit dem anderen FixAudience von außen (SetPlayersFixAudience)
+				Endif
+			Endif
+		Next		
+		
+		'Leute die Extra für dieses Programm einschalten aufsummieren
+		For Local exclusiveAudience:TAudience = EachIn ExclusiveAudience.Values()
+			If ExclusiveAudienceSum = null Then ExclusiveAudienceSum = New TAudience
+			ExclusiveAudienceSum.Add(exclusiveAudience)
+		Next				
+	End Method
+	
+	Method ComputeAudienceFlow()		
+		'AudienceFlow aufsummieren -> Wie viele Zuschauer sind bereichts an bestimmte Sender gebunden?
+		'Diese gehören nicht mehr zur Durchzapper-Masse die es später zu verteilen gilt.
+		For Local audienceFlow:TAudience = EachIn AudienceFlow.Values()
+			If AudienceFlowSum = null Then AudienceFlowSum = New TAudience
+			AudienceFlowSum.Add(audienceFlow)
+		Next				
+	End Method
+	
 	Method ComputeAudience(forHour:Int = -1)	
 		If forHour <= 0 Then forHour = Game.GetHour()			
 		
 		MaxAudience.Round()				
 				
 		'Die Anzahl der potentiellen/üblichen Zuschauer um diese Zeit
-		Local potentialZapperThisHour:TAudience				
-		If Game.BroadcastManager.FEATURE_TARGETGROUP_TIME_MOD = 1 'Targetgroup-Time-Mod-Feature
-			potentialZapperThisHour = TBroadcast.GetPotentialAudienceForHour(MaxAudience, forHour)
-		Else
-			potentialZapperThisHour = MaxAudience.GetNewInstance()
-			potentialZapperThisHour.MultiplyFactor(0.2)
-		EndIf		
+		PotentialChannelSurfer = TBroadcast.GetPotentialAudienceForHour(MaxAudience, forHour)
 		
-		'Kultwerte und Exklusivzuschauer addieren
-		For Local playerId:string = EachIn Players
-			Local audienceAttractionTemp:TAudienceAttraction = TAudienceAttraction(MapValueForKey(AudienceAttractions, playerId))
-			If audienceAttractionTemp <> Null Then
-				Local additionalFixAudienceMod:float = audienceAttractionTemp.GenrePopularityMod - 1
-				If (additionalFixAudienceMod > 0) Then
-				Print "UUUUUUUUUUUUUUUUUUUUU: " + additionalFixAudienceMod
-					Local fixAud:TAudience = potentialZapperThisHour.GetNewInstance()
-					fixAud.MultiplyFactor(additionalFixAudienceMod / 5)			
-					'local fixAud:Float = potentialZapperThisHour * (additionalFixAudienceMod / 10)
-					FixAudience.Insert(playerId, fixAud.Round() ) 'TODO... nicht kompatibel mit dem anderen FixAudience von außen (SetPlayersFixAudience)
-				Endif
-			Endif
-		Next		
+		'Berechne wie viele Leute extra für dieses Programm einschalten
+		ComputeExklusiveAudience() 'benötigt ein gefülltes PotentialChannelSurfer
 		
+		'Berechne den AudienceFlow
+		ComputeAudienceFlow()		
+						
+		'PotentialChannelSurfer um 1/4 derer aus audienceFlowSum erhöhen.
+		'Dies simuliert diejenigen, die eigentlich ausschalten wollten, aber dennoch hängen geblieben sind.
+		'Es erhöht sich die Gesamtanzahl der Zuschauer etwas.
+		If AudienceFlowSum <> Null Then PotentialChannelSurfer.Add(AudienceFlowSum.GetNewInstance().MultiplyFactor(0.25))
 		
-		'Leute die Extra für dieses Programm einschalten
-		Local fixAudienceSum:TAudience = null
-		For Local fixAudience:TAudience = EachIn FixAudience.Values()
-			Print "fixAudienceX: " + fixAudience.ToString()
-			If fixAudienceSum = Null Then
-				fixAudienceSum = fixAudience.GetNewInstance()
-			Else
-				fixAudienceSum.Add(fixAudience)
-			EndIf
-		Next		
+		'AudienceFlowSum vom PotentialChannelSurfer abziehen... dadurch erhält man die übrigen Zapper, um die noch gekämpft werden kann.		
+		Local ChannelSurferToShare:TAudience = PotentialChannelSurfer.GetNewInstance()		
+		If AudienceFlowSum <> Null Then ChannelSurferToShare.Subtract(AudienceFlowSum)
+		ChannelSurferToShare.Round()
 		
-		'AudienceFlow aufsummieren -> Wie viele Zuschauer sind bereichts an bestimmte Sender gebunden?
-		'Diese gehören nicht mehr zur Durchzapper-Masse die es später zu verteilen gilt.
-		Local audienceFlowSum:TAudience	= Null
-		For Local audienceFlow:TAudience = EachIn AudienceFlow.Values()
-			Print "audienceFlowQuoteX: " + audienceFlow.ToString()
-			If audienceFlowSum = Null Then
-				audienceFlowSum = audienceFlow.GetNewInstance()
-			Else
-				audienceFlowSum.Add(audienceFlow)
-			EndIf
-		Next		
-		
+		'Gesamtzuschauerzahl aufsummieren. Entspricht den 100% bei der Einschaltquote.
+		'Eigentlich müssten davon noch jene Zapper abgezogen die sich für kein Programm entscheiden, dies wie Spieldesigntechnisch aber erstmal
+		'abgelehnt, da ein Spieler sonst in einem Sendegebiet in dem nur er ist 100% Quote hat. Das wäre zwar im Realen korrekt aber nicht in der MadTV-Tradition
+		Local potentialMaxAudience:TAudience = new TAudience
+		potentialMaxAudience.Add(ChannelSurferToShare)
+		potentialMaxAudience.Add(ExclusiveAudienceSum)
+		potentialMaxAudience.Add(AudienceFlowSum)
 				
-		'potentialAudienceThisHour um 1/4 derer aus audienceFlowSum erhöhen. Dies simuliert diejenigen, die eigentlich ausschalten wollten, aber dennoch hängen geblieben sind.
-		If audienceFlowSum <> Null Then potentialZapperThisHour.Add(audienceFlowSum.GetNewInstance().MultiplyFactor(0.25))
 		
-		'audienceFlowSum vom potentialZapperThisHour abziehen... dadurch erhält man die Zapper um die noch gekämpft werden kann.
-		Local audienceToShareThisHour:TAudience = potentialZapperThisHour.GetNewInstance()		
-		If audienceFlowSum <> Null Then audienceToShareThisHour.Subtract(audienceFlowSum)
-		audienceToShareThisHour.Round()
-		
-		'Aufsummieren
-		Local potentialMaxAudience:TAudience = audienceToShareThisHour.GetNewInstance()
-		potentialMaxAudience.Add(fixAudienceSum)
-		potentialMaxAudience.Add(audienceFlowSum)
-				
-		'Print "Max. erreichbare Zuschauer (Einwohner): " + MaxAudience.ToString()
-		'Print "TV-Interessierte zu dieser Stunde (gesamt): " + potentialAudienceThisHour.ToString()
-		'If audienceFlowSum <> Null Then Print "TV-Interessierte Gebundene: " + audienceFlowSum.ToString()
-		'Print "TV-Interessierte Zapper: " + audienceToShareThisHour.ToString()
-				
-		Local sum:TAudience = Null
-		Local range:TAudience = Null	
+		'Ermittle wie viel ein Attractionpunkt auf Grund der Konkurrenzsituation wert ist bzw. Quote bringt.
+					
+		Local attrSum:TAudience = Null	'Die Summe aller Attractionwerte
+		Local attrRange:TAudience = Null	'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm 
 		
 		For Local attraction:TAudienceAttraction = EachIn AudienceAttractions.Values()
-			If sum = Null Then
-				sum = attraction.GetNewInstance()
+			If attrSum = Null Then
+				attrSum = attraction.GetNewInstance()
 			Else
-				sum.Add(attraction)
+				attrSum.Add(attraction)
 			EndIf
 		
-			If range = Null Then
-				range = attraction.GetNewInstance()
+			If attrRange = Null Then
+				attrRange = attraction.GetNewInstance()
 			Else
-				range.Children = range.Children + (1 - range.Children) * attraction.Children
-				range.Teenagers = range.Teenagers + (1 - range.Teenagers) * attraction.Teenagers
-				range.HouseWifes = range.HouseWifes + (1 - range.HouseWifes) * attraction.HouseWifes
-				range.Employees = range.Employees + (1 - range.Employees) * attraction.Employees
-				range.Unemployed = range.Unemployed + (1 - range.Unemployed) * attraction.Unemployed
-				range.Manager = range.Manager + (1 - range.Manager) * attraction.Manager
-				range.Pensioners = range.Pensioners + (1 - range.Pensioners) * attraction.Pensioners
+				attrRange.Children = attrRange.Children + (1 - attrRange.Children) * attraction.Children
+				attrRange.Teenagers = attrRange.Teenagers + (1 - attrRange.Teenagers) * attraction.Teenagers
+				attrRange.HouseWifes = attrRange.HouseWifes + (1 - attrRange.HouseWifes) * attraction.HouseWifes
+				attrRange.Employees = attrRange.Employees + (1 - attrRange.Employees) * attraction.Employees
+				attrRange.Unemployed = attrRange.Unemployed + (1 - attrRange.Unemployed) * attraction.Unemployed
+				attrRange.Manager = attrRange.Manager + (1 - attrRange.Manager) * attraction.Manager
+				attrRange.Pensioners = attrRange.Pensioners + (1 - attrRange.Pensioners) * attraction.Pensioners
 				
-				range.Women = range.Women + (1 - range.Women) * attraction.Women
-				range.Men = range.Men + (1 - range.Men) * attraction.Men
+				attrRange.Women = attrRange.Women + (1 - attrRange.Women) * attraction.Women
+				attrRange.Men = attrRange.Men + (1 - attrRange.Men) * attraction.Men
 			EndIf
 		Next
 		
-		If sum Then				
-			'Print "Summe aller Werte: " + sum.ToString()
-			'Print "Quote der Zapper die dranbleiben (diese werden verteilt): " + range.ToString()
+		If attrSum Then					
+			Local reduceFactor:TAudience = attrRange.GetNewInstance()
 			
-			Local reduceFactor:TAudience = Range.GetNewInstance()
-			
-			If reduceFactor.GetSumFloat() > 0 And sum.GetSumFloat() > 0 Then			
-				reduceFactor.Divide(sum)
+			If reduceFactor.GetSumFloat() > 0 And attrSum.GetSumFloat() > 0 Then			
+				reduceFactor.Divide(attrSum)
 			EndIf
 			
 			For Local currKey:String = EachIn AudienceAttractions.Keys()
-				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey))
-				Local effectiveAttraction:TAudience = attraction.GetNewInstance()
-				effectiveAttraction.Multiply(reduceFactor)
+				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey)) 'Die außerhalb berechnete Attraction
+				Local effectiveAttraction:TAudience = attraction.GetNewInstance().Multiply(reduceFactor) 'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!											
+				Local channelSurfer:TAudience = ChannelSurferToShare.GetNewInstance().Multiply(effectiveAttraction)	'Anteil an der "erbeuteten" Zapper berechnen 
+				channelSurfer.Round()
 				
 				'Zuschauerzahlen für den Spieler summieren
-				Local playerAudienceResult:TAudience = audienceToShareThisHour.GetNewInstance()
-				playerAudienceResult.Multiply(effectiveAttraction)
+				Local playerAudienceResult:TAudience = new TAudience
+				playerAudienceResult.Add(TAudience(MapValueForKey(ExclusiveAudience, currKey))) 'Die festen Zuschauer
+				playerAudienceResult.Add(TAudience(MapValueForKey(AudienceFlow, currKey))) 		'Der AudienceFlow
+				playerAudienceResult.Add(channelSurfer)											'Die Zapper				
 				playerAudienceResult.Round()
-				Local zapperAudience:TAudience = playerAudienceResult.GetNewInstance()
-				playerAudienceResult.Add(TAudience(MapValueForKey(FixAudience, currKey))) 'Die festen Zuschauer
-				playerAudienceResult.Add(TAudience(MapValueForKey(AudienceFlow, currKey))) 'Der AudienceFlow
-				playerAudienceResult.Round()
-											
-				Local currKeyInt:Int = currKey.ToInt()
-				'Ergebnis schreiben
+														
+				'Ergebnis in das AudienceResult schreiben
+				Local currKeyInt:Int = currKey.ToInt()				
 				AudienceResults[currKeyInt] = New TAudienceResult
 				AudienceResults[currKeyInt].PlayerId = currKeyInt		
 				AudienceResults[currKeyInt].Hour = forHour	
-				AudienceResults[currKeyInt].WholeMarket = MaxAudience				
-				AudienceResults[currKeyInt].ZapperThisHour = zapperAudience	
-				AudienceResults[currKeyInt].MaxZapperThisHour = potentialZapperThisHour	
-				AudienceResults[currKeyInt].PotentialMaxAudienceThisHour = potentialMaxAudience
+				
+				AudienceResults[currKeyInt].WholeMarket = MaxAudience			
+				AudienceResults[currKeyInt].PotentialMaxAudience = potentialMaxAudience 'die 100% der Quote				
+				AudienceResults[currKeyInt].Audience = playerAudienceResult 'Die tatsächliche Zuschauerzahl				
+				
+				'Teilmengen der Zuschauerzahl: Exklusive, Audience Flow und Zapper
+				AudienceResults[currKeyInt].ExclusiveAudience = TAudience(MapValueForKey(ExclusiveAudience, currKey))					
 				AudienceResults[currKeyInt].AudienceFlow = TAudience(MapValueForKey(AudienceFlow, currKey))
-				AudienceResults[currKeyInt].FixAudience = TAudience(MapValueForKey(FixAudience, currKey))				
+				AudienceResults[currKeyInt].ChannelSurfer = channelSurfer
+				
+				AudienceResults[currKeyInt].ExclusiveAudienceSum = ExclusiveAudienceSum
 				AudienceResults[currKeyInt].AudienceFlowSum = audienceFlowSum
-				AudienceResults[currKeyInt].FixAudienceSum = fixAudienceSum
-				AudienceResults[currKeyInt].AudienceToShare = audienceToShareThisHour					
-				AudienceResults[currKeyInt].BroadcastAudienceAttraction = effectiveAttraction
-				AudienceResults[currKeyInt].Audience = playerAudienceResult		
-				AudienceResults[currKeyInt].AudienceAttraction = TAudienceAttraction(MapValueForKey(AudienceAttractions, currKey))		
-				
-				
+				'Keine ChannelSurferSum, dafür
+				AudienceResults[currKeyInt].ChannelSurferToShare = ChannelSurferToShare
+					
+				AudienceResults[currKeyInt].AudienceAttraction = TAudienceAttraction(MapValueForKey(AudienceAttractions, currKey))	
+				AudienceResults[currKeyInt].EffectiveAudienceAttraction	= effectiveAttraction
+								
 				'Print "Effektive Quote für " + currKey + ": " + effectiveAttraction.ToString()
 				'Print "Zuschauer fuer " + currKey + ": " + playerAudienceResult.ToString()
 			Next
@@ -586,28 +585,32 @@ End Type
 
 'Das TAudienceResult ist sowas wie das zusammengefasste Ergebnis einer TBroadcast- und/oder TAudienceMarketCalculation-Berechnung.
 Type TAudienceResult
-	Field PlayerId:Int									'Die Id des Spielers zu dem das Result gehört
-	Field Hour:Int										'Zu welcher Stunde gehört das Result
-	Field Title:String									'Der Titel des Programmes
-						
-	Field BroadcastAudienceAttraction:TAudience			'Wie Attraktiv wirkt das Programm auf die einzelnen Zielgruppen
-						
-	Field WholeMarket:TAudience	= New TAudience			'Der Gesamtmarkt: Also wenn alle einschalten und man 100% erreicht ;)
-	Field ZapperThisHour:TAudience = New TAudience
-	Field MaxZapperThisHour:TAudience	= New TAudience
-	Field PotentialMaxAudienceThisHour:TAudience = New TAudience	'Die Gesamtzuschauerzahl die in dieser Stunde den TV angeschaltet hat	
-	Field AudienceFlow:TAudience = New TAudience
-	Field FixAudience:TAudience = New TAudience
-	Field AudienceFlowSum:TAudience = New TAudience
-	Field FixAudienceSum:TAudience = New TAudience	
-	Field AudienceToShare:TAudience = New TAudience		'Die Zapper
-	Field MaxAudienceThisHourQuote:TAudience			'Wie viel Prozent schalten ein. Basis ist WholeMarket
-	Field Audience:TAudience = New TAudience			'Die absolute Zahl der Zuschauer die erreicht wurden
-						
-	Field AudienceQuote:TAudience						'Die Zuschauerquote, relativ zu MaxAudienceThisHour	
-	Field MarketShare:Float								'Die reale Zuschauerquote, die aber noch nicht verwendet wird.
+	Field PlayerId:Int										'Die Id des Spielers zu dem das Result gehört
+	Field Hour:Int											'Zu welcher Stunde gehört das Result
+	Field Title:String										'Der Titel des Programmes
 	
-	Field AudienceAttraction:TAudienceAttraction
+	Field WholeMarket:TAudience	= New TAudience				'Der Gesamtmarkt: Also wenn alle die einen TV haben.
+	Field PotentialMaxAudience:TAudience = New TAudience	'Die Gesamtzuschauerzahl die in dieser Stunde den TV angeschaltet hat! Also 100%-Quote! Summe aus allen Exklusiven, Flow-Leuten und Zappern
+	Field Audience:TAudience = New TAudience				'Die Zahl der Zuschauer die erreicht wurden. Sozusagen das Ergenis das zählt und angezeigt wird.
+
+	'Das sind die drei Teilmengen von Audience (also der Zuschauerzahl)
+	Field ExclusiveAudience:TAudience = New TAudience		'Zuschauer die nur wegen meinem Programm
+	Field AudienceFlow:TAudience = New TAudience			'Zuschauer die aus dem vorangegangenen Programmblock drangeblieben sind
+	Field ChannelSurfer:TAudience = New TAudience			'Zuschauer die reingezappt haben und hängen geblieben sind.
+
+	'Aufsummierung der Zuschauerwerte ALLER Spieler... nicht nur meiner!
+	Field ExclusiveAudienceSum:TAudience = New TAudience	'Summe aller Exklusiven
+	Field AudienceFlowSum:TAudience = New TAudience			'Summe aller aus dem Audience Flow
+	Field ChannelSurferToShare:TAudience = New TAudience	'Summe der Zapper die es zu verteilen gilt (ist nicht gleich eines ChannelSurferSum)
+		
+	Field AudienceAttraction:TAudienceAttraction			'Die ursprüngliche Attraktivität des Programmes
+	Field EffectiveAudienceAttraction:TAudience				'Die effektive Attraktivität des Programmes auf Grund der Konkurrenzsituation
+											
+	'Werden beim Refresh berechnet	
+	Field AudienceQuote:TAudience							'Die Zuschauerquote, relativ zu MaxAudienceThisHour	
+	Field PotentialMaxAudienceQuote:TAudience				'Die Quote von PotentialMaxAudience. Wie viel Prozent schalten ein und checken das Programm. Basis ist WholeMarket
+							
+	'Field MarketShare:Float								'Die reale Zuschauerquote, die aber noch nicht verwendet wird.
 	
 	'Das Ergebis des aktuellen Spielers zu aktuellen Zeit
 	Function Curr:TAudienceResult(playerId:Int = -1) 
@@ -620,14 +623,13 @@ Type TAudienceResult
 	
 	Method AddResult(res:TAudienceResult)
 		WholeMarket.Add(res.WholeMarket)
-		ZapperThisHour.Add(res.ZapperThisHour)
-		MaxZapperThisHour.Add(res.MaxZapperThisHour)
-		PotentialMaxAudienceThisHour.Add(res.PotentialMaxAudienceThisHour)
+		ChannelSurfer.Add(res.ChannelSurfer)
+		PotentialMaxAudience.Add(res.PotentialMaxAudience)
 		AudienceFlow.Add(res.AudienceFlow)
-		FixAudience.Add(res.FixAudience)
+		ExclusiveAudience.Add(res.ExclusiveAudience)
 		AudienceFlowSum.Add(res.AudienceFlowSum)
-		FixAudienceSum.Add(res.FixAudienceSum)
-		AudienceToShare.Add(res.AudienceToShare)
+		ExclusiveAudienceSum.Add(res.ExclusiveAudienceSum)
+		ChannelSurferToShare.Add(res.ChannelSurferToShare)
 		Audience.Add(res.Audience)
 		
 		AudienceAttraction = res.AudienceAttraction 'Ist immer gleich, deswegen einfach zuweisen
@@ -636,19 +638,13 @@ Type TAudienceResult
 	'Berechnet die Quoten neu. Muss mindestens einmal aufgerufen werden.
 	Method Refresh()
 		AudienceQuote = Audience.GetNewInstance()
-		AudienceQuote.Divide(PotentialMaxAudienceThisHour)
-		MaxAudienceThisHourQuote = PotentialMaxAudienceThisHour.GetNewInstance()
-		MaxAudienceThisHourQuote.Divide(WholeMarket)
-		
-		'Print "TAudienceResult.Refresh1: " + AudienceQuote.ToStringAverage()
-		'Print "TAudienceResult.Refresh-Audience: " + Audience.ToString()
-		'Print "TAudienceResult.Refresh-MaxAudienceThisHour: " + MaxAudienceThisHour.ToString()
-		
-		'Print "Audience - Sum: " + Audience.GetSum() + " --- " + MaxAudienceThisHour.GetSum() + ": " + (Float(Audience.GetSum()) / Float(MaxAudienceThisHour.GetSum()))
+		AudienceQuote.Divide(PotentialMaxAudience)
+		PotentialMaxAudienceQuote = PotentialMaxAudience.GetNewInstance()
+		PotentialMaxAudienceQuote.Divide(WholeMarket)
 	End Method
 	
 	Method ToString:String()
-		Return Audience.GetSum() + " / " + PotentialMaxAudienceThisHour.GetSum() + " / " + WholeMarket.GetSum() + "      Q: " + AudienceQuote.ToStringAverage() 
+		Return Audience.GetSum() + " / " + PotentialMaxAudience.GetSum() + " / " + WholeMarket.GetSum() + "      Q: " + AudienceQuote.ToStringAverage() 
 	End Method	
 End Type
 

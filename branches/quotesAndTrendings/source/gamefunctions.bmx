@@ -1742,7 +1742,7 @@ Type TInterface
 			Local audienceResult:TAudienceResult = player.audience
 			
 			'TODO Ronny: Das kannst du bestimmt schöner präsentieren. Es gibt ja noch die zielgruppen.png.
-			Local text:String = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.PotentialMaxAudienceThisHour.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.MaxAudienceThisHourQuote.Average) / 10)) + "%)"
+			Local text:String = GetLocale("MAX_AUDIENCE_RATING") + ": " + audienceResult.PotentialMaxAudience.GetSum() + " (" + (Int(Ceil(1000 * audienceResult.PotentialMaxAudienceQuote.Average) / 10)) + "%)"
 			text :+ "~n"
 			text :+ "~n"
 			text :+ getLocale("AD_GENRE_1") + ": " + functions.convertValue(String(audienceResult.Audience.Children), 0, 0) + " ("+functions.convertPercent(audienceResult.AudienceQuote.Children * 100,2)+"%)"

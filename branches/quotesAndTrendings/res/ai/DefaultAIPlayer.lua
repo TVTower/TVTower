@@ -218,7 +218,6 @@ function BusinessStats:AddMovie(movie)
 
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
 	if (CheckMovieBuyConditions(movie, maxPrice)) then -- Preisgrenze
-		debugMsg("zz2")
 		local quality = movie.GetQuality(0)
 		if (movie.IsMovie()) then
 			self.MovieQualityAcceptable:AddValue(quality)
