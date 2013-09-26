@@ -159,6 +159,11 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 			rawQuality = GetProgrammeQualityFallback(programme)
 		EndIf
 		quality = rawQuality 
+		
+		'Popularitäts-Mod+
+		Local popularityFactor:Float = (100.0 + Popularity.Popularity) / 100.0 'Popularity => Wert zwischen -50 und +50
+		Local popularityQuality:Float = quality * popularityFactor
+		quality = popularityQuality
 						
 		If Game.BroadcastManager.FEATURE_GENRE_TIME_MOD = 1 'Wie gut passt der Sendeplatz zum Genre
 			timeMod = TimeMods[hour] 'Genre/Zeit-Mod	
@@ -178,8 +183,8 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		Print "G" + GenreId + "   Quali. nach Zielg.: " + result.ToStringAverage() + " (Einfluss je nach Genre)"
 		
 		result.RawQuality = rawQuality
-		result.GenrePopularityMod = 1 'TODO 
-		result.GenrePopularityQuality = rawQuality 'TODO
+		result.GenrePopularityMod = popularityFactor 'TODO 
+		result.GenrePopularityQuality = popularityQuality 'TODO
 		result.GenreTimeMod = timeMod
 		result.GenreTimeQuality = genreTimeQuality
 		

@@ -3375,26 +3375,46 @@ Function DrawMain(tweenValue:Float=1.0)
 		font.Draw("Bevölkerung", 25, 50);
 		DrawAudience(wholeMarket, 200, 50);	
 
-		Local maxAudienceThisHour:TAudience = audienceResult.MaxAudienceThisHour
+		Local maxAudienceThisHour:TAudience = audienceResult.PotentialMaxAudienceThisHour
 		Local percent:String = functions.convertPercent(audienceResult.MaxAudienceThisHourQuote.Average*100,2) + "%"		
 		font.Draw("Potentielle Zuschauer", 25, 75);
 		font.Draw(percent, 175, 75);
 		DrawAudience(maxAudienceThisHour, 200, 75);
 
-		Local boundAudience:TAudience = audienceResult.BoundAudience		
-		font.drawStyled("      davon gebunden (Audience Flow)", 25, 90, 75, 75, 75);		
-		DrawAudience(boundAudience, 200, 90, true);		
+		Local fixAudienceSum:TAudience = audienceResult.FixAudienceSum
+		font.drawStyled("      davon Exklusive", 25, 90, 75, 75, 75);
+		DrawAudience(fixAudienceSum, 200, 90, true);		
+		
+		Local audienceFlowSum:TAudience = audienceResult.AudienceFlowSum
+		font.drawStyled("      davon gebunden (Audience Flow)", 25, 105, 75, 75, 75);	
+		DrawAudience(audienceFlowSum, 200, 105, true);
 		
 		Local audienceToShare:TAudience = audienceResult.AudienceToShare		
-		font.drawStyled("      davon Zapper", 25, 105, 75, 75, 75);		
-		DrawAudience(audienceToShare, 200, 105, true);			
+		font.drawStyled("      davon Zapper", 25, 120, 75, 75, 75);		
+		DrawAudience(audienceToShare, 200, 120, true);			
 		
 		
 		Local audience:TAudience = audienceResult.Audience 		
-		font.Draw("Aktuelle Zuschauerzahl", 25, 130);		
+		font.Draw("Aktuelle Zuschauerzahl", 25, 140);		
 		percent = functions.convertPercent(audienceResult.AudienceQuote.Average*100,2)		
-		font.Draw(percent, 175, 130);
-		DrawAudience(audience, 200, 130);
+		font.Draw(percent, 175, 140);
+		DrawAudience(audience, 200, 140);
+		
+		Local fixAudience:TAudience = audienceResult.FixAudience
+		font.drawStyled("      davon Exklusive", 25, 155, 75, 75, 75);
+		DrawAudience(fixAudience, 200, 155, true);		
+		
+		Local audienceFlow:TAudience = audienceResult.AudienceFlow
+		font.drawStyled("      davon gebunden (Audience Flow)", 25, 170, 75, 75, 75);	
+		DrawAudience(audienceFlow, 200, 170, true);
+		
+		Local zapper:TAudience = audienceResult.ZapperThisHour		
+		font.drawStyled("      davon Zapper", 25, 185, 75, 75, 75);		
+		DrawAudience(zapper, 200, 185, true);			
+		
+		
+		
+		
 		
 		
 		
@@ -3404,40 +3424,41 @@ Function DrawMain(tweenValue:Float=1.0)
 			genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
 		Endif				
 		
+		Local offset:Int = 40
 		
-		Assets.fonts.baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, 170, 255, 0, 0);
+		Assets.fonts.baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, offset + 170, 255, 0, 0);
 		
 		
 			
-		font.Draw("Basis-Programmattraktivität", 25, 190);
+		font.Draw("Basis-Programmattraktivität", 25, offset+190);
 		percent = functions.convertPercent(attraction.RawQuality * 100,2) + "%"
-		font.drawBlock(percent, 200, 190, 65, 25, 2, 255, 0, 0)
+		font.drawBlock(percent, 200, offset+190, 65, 25, 2, 255, 0, 0)
 		
-		font.Draw("Genre-Popularität", 25, 215);			
+		font.Draw("Genre-Popularität", 25, offset+215);			
 		Local genrePopularityMod:string = functions.convertPercent(attraction.GenrePopularityMod  * 100,0) + "%"
 		Local genrePopularityQuality:string = functions.convertPercent(attraction.GenrePopularityQuality * 100,2) + "%"
-		font.Draw(genrePopularityMod, 175, 215);
-		font.drawBlock(genrePopularityQuality, 200, 215, 65, 25, 2, 255, 0, 0)	
+		font.Draw(genrePopularityMod, 175, offset+215);
+		font.drawBlock(genrePopularityQuality, 200, offset+215, 65, 25, 2, 255, 0, 0)	
 
-		font.Draw("Genre <> Sendezeit", 25, 240);			
+		font.Draw("Genre <> Sendezeit", 25, offset+240);			
 		Local genreTimeMod:string = functions.convertPercent(attraction.GenreTimeMod  * 100,0) + "%"
 		Local genreTimeQuality:string = functions.convertPercent(attraction.GenreTimeQuality * 100,2) + "%"
-		font.Draw(genreTimeMod, 175, 240);
-		font.drawBlock(genreTimeQuality, 200, 240, 65, 25, 2, 255, 0, 0)			
+		font.Draw(genreTimeMod, 175, offset+240);
+		font.drawBlock(genreTimeQuality, 200, offset+240, 65, 25, 2, 255, 0, 0)			
 				
-		font.Draw("Genre <> Zielgruppe", 25, 260);
-		DrawAudiencePercent(attraction, 200, 260);
+		font.Draw("Genre <> Zielgruppe", 25, offset+260);
+		DrawAudiencePercent(attraction, 200, offset+260);
 		If (attraction.AudienceAttraction <> Null) Then
-			font.drawBlock(genre, 60, 275, 205, 25, 2, 75, 75, 75 )			
-			DrawAudiencePercent(attraction.AudienceAttraction, 200, 275, true, true);
+			font.drawBlock(genre, 60, offset+275, 205, 25, 2, 75, 75, 75 )			
+			DrawAudiencePercent(attraction.AudienceAttraction, 200, offset+275, true, true);
 		Endif		
 		
-		font.Draw("Image", 25, 295);	
-		font.Draw("100%", 175, 295);
-		DrawAudiencePercent(attraction, 200, 295);	
+		font.Draw("Image", 25, offset+295);	
+		font.Draw("100%", 175, offset+295);
+		DrawAudiencePercent(attraction, 200, offset+295);	
 		
-		font.Draw("Effektive Attraktivität", 25, 325);	
-		DrawAudiencePercent(attraction, 200, 325);	
+		font.Draw("Effektive Attraktivität", 25, offset+325);	
+		DrawAudiencePercent(attraction, 200, offset+325);	
 	EndIf	
 End Function
 

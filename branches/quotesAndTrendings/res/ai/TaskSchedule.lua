@@ -112,6 +112,7 @@ function TaskSchedule:GuessedAudienceForHourAndLevel(hour)
 	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 
 	--Formel: Filmqualität * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
+	--TODO: Auchtung! Muss eventuell an die neue Quotenberechnung angepasst werden
 	local guessedAudience = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 	--debugMsg("GuessedAudienceForHourAndLevel - Hour: " .. hour .. "  Level: " .. level .. "  globalPercentageByHour: " .. globalPercentageByHour .. "  averageMovieQualityByLevel: " .. averageMovieQualityByLevel .. "  guessedAudience: " .. guessedAudience)
 	return guessedAudience
@@ -401,7 +402,7 @@ function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
 	end
 
 	if (choosenProgramme ~= nil) then
-		debugMsg("Setze Film! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Programm: " .. choosenProgramme.title .. "  quality: " .. choosenProgramme.GetBaseAudienceQuote())
+		debugMsg("Setze Film! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Programm: " .. choosenProgramme.title .. "  quality: " .. choosenProgramme.GetQuality(0))
 		TVT.of_doMovieInPlan(fixedDay, fixedHour, choosenProgramme.Id)
 	else
 		debugMsg("Keinen Film gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
@@ -417,7 +418,7 @@ function JobEmergencySchedule:GetProgrammeList(level, maxRerunsToday, day)
 			local sentAndPlannedToday = MY.ProgrammePlan.HowOftenProgrammeInPlan(programme.GetID(), day, 1)
 			--debugMsg("GetProgrammeList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)
 			if (sentAndPlannedToday <= maxRerunsToday) then
-				--debugMsg("Programme: " .. programme.title .. " - A:" .. programme.GetAttractiveness() .. " Qa:" .. programme.GetQualityLevel() .. " Qo:" .. programme.GetBaseAudienceQuote() .. " T:" .. programme.GetTopicality())
+				--debugMsg("Programme: " .. programme.title .. " - A:" .. programme.GetAttractiveness() .. " Qa:" .. programme.GetQualityLevel() .. " Qo:" .. programme.GetQuality(0) .. " T:" .. programme.GetTopicality())
 				table.insert(currentProgrammeList, programme)
 			end
 		end

@@ -1,5 +1,5 @@
-Type TPopularityManager
-	Field Populartities:TList = CreateList()
+ï»¿Type TPopularityManager
+	Field Populartities:TList = CreateList()	
 	
 	Function Create:TPopularityManager()
 		Local obj:TPopularityManager = New TPopularityManager
@@ -14,44 +14,44 @@ Type TPopularityManager
 			popularity.UpdatePopularity()
 			popularity.AdjustTrendDirectionRandomly()
 			popularity.UpdateTrend()
-			'print popularity.ContentId + ": " + popularity.Popularity + " - L: " + popularity.LongTermPopularity + " - T: " + popularity.Trend + " - S: " + popularity.Surfeit
+			print popularity.ContentId + ": " + popularity.Popularity + " - L: " + popularity.LongTermPopularity + " - T: " + popularity.Trend + " - S: " + popularity.Surfeit
 		Next		
 	End Method
 	
 	Method AddPopularity(popularity:TPopulartity)
 		Populartities.addLast(popularity)
-	ENd Method
+	End Method
 End Type
 
 
 Type TPopulartity
 	Field ContentId:Int
-	Field LongTermPopularity:Float				'Zu welchem Wert entwickelt sich die Popularität langfristig ohne den Spielereinfluss (-50 bis +50)
-	Field Popularity:Float						'Wie populär ist das Genre. Ein Wert üblicherweise zwischen -50 und +100 (es kann aber auch mehr oder weniger werden...)
-	Field Trend:Float							'Wie entwicklet sich die Popularität
-	Field Surfeit:Int							'1 = Übersättigung des Trends
-	Field SurfeitCounter:Int					'Wenn bei 3, dann ist er übersättigt
+	Field LongTermPopularity:Float				'Zu welchem Wert entwickelt sich die PopularitÃ¤t langfristig ohne den Spielereinfluss (-50 bis +50)
+	Field Popularity:Float						'Wie populÃ¤r ist das Genre. Ein Wert Ã¼blicherweise zwischen -50 und +100 (es kann aber auch mehr oder weniger werden...)
+	Field Trend:Float							'Wie entwicklet sich die PopularitÃ¤t
+	Field Surfeit:Int							'1 = ÃœbersÃ¤ttigung des Trends
+	Field SurfeitCounter:Int					'Wenn bei 3, dann ist er Ã¼bersÃ¤ttigt
 	
 	Field LongTermPopularityLowerBound:Int		'Untere Grenze der LongTermPopularity
 	Field LongTermPopularityUpperBound:Int		'Obere Grenze der LongTermPopularity
 	
 	Field SurfeitLowerBoundAdd:Int				'Surfeit wird erreicht, wenn Popularity > (LongTermPopularity + SurfeitUpperBoundAdd)
-	Field SurfeitUpperBoundAdd:Int				'Surfeit wird zurückgesetzt, wenn Popularity <= (LongTermPopularity + SurfeitLowerBoundAdd)
-	Field SurfeitTrendMalus:Int					'Für welchen Abzug sorgt die Übersättigung
-	Field SurfeitCounterUpperBoundAdd:Int		'Wie viel darf die Popularity über LongTermPopularity um angezählt zu werden?
+	Field SurfeitUpperBoundAdd:Int				'Surfeit wird zurÃ¼ckgesetzt, wenn Popularity <= (LongTermPopularity + SurfeitLowerBoundAdd)
+	Field SurfeitTrendMalus:Int					'FÃ¼r welchen Abzug sorgt die ÃœbersÃ¤ttigung
+	Field SurfeitCounterUpperBoundAdd:Int		'Wie viel darf die Popularity Ã¼ber LongTermPopularity um angezÃ¤hlt zu werden?
 	
-	Field TrendLowerBound:Int					'Untergrenze für den Bergabtrend
-	Field TrendUpperBound:Int					'Obergrenze für den Bergauftrend
+	Field TrendLowerBound:Int					'Untergrenze fÃ¼r den Bergabtrend
+	Field TrendUpperBound:Int					'Obergrenze fÃ¼r den Bergauftrend
 	Field TrendAdjustDivider:Int				'Um welchen Teiler wird der Trend angepasst?
-	Field TrendRandRangLower:Int				'Untergrenze für Zufallsänderungen des Trends
-	Field TrendRandRangUpper:Int				'Obergrenze für Zufallsänderungen des Trends
+	Field TrendRandRangLower:Int				'Untergrenze fÃ¼r ZufallsÃ¤nderungen des Trends
+	Field TrendRandRangUpper:Int				'Obergrenze fÃ¼r ZufallsÃ¤nderungen des Trends
 	
 	Field ChanceToChangeCompletely:Int			'X%-Chance das sich die LongTermPopularity komplett wendet
-	Field ChanceToChange:Int					'X%-Chance das sich die LongTermPopularity um einen Wert zwischen ChangeLowerBound und ChangeUpperBound ändert
+	Field ChanceToChange:Int					'X%-Chance das sich die LongTermPopularity um einen Wert zwischen ChangeLowerBound und ChangeUpperBound Ã¤ndert
 	Field ChanceToAdjustLongTermPopulartiy:Int	'X%-Chance das sich die LongTermPopularity an den aktuellen Populartywert + Trend anpasst
 	
-	Field ChangeLowerBound:Int					'Untergrenze für Wertänderung wenn ChanceToChange eintritt
-	Field ChangeUpperBound:Int					'Obergrenze für Wertänderung wenn ChanceToChange eintritt
+	Field ChangeLowerBound:Int					'Untergrenze fÃ¼r WertÃ¤nderung wenn ChanceToChange eintritt
+	Field ChangeUpperBound:Int					'Obergrenze fÃ¼r WertÃ¤nderung wenn ChanceToChange eintritt
 
 	Function Create:TPopulartity(contentId:Int, populartiy:Float = 0.0, longTermPopularity:Float = 0.0)
 		Local obj:TPopulartity = New TPopulartity
@@ -61,7 +61,7 @@ Type TPopulartity
 		Return obj
 	End Function
 
-	'Die Popularität wird üblicherweise am Ende des Tages aktualisiert, entsprechend des gesammelten Trend-Wertes
+	'Die PopularitÃ¤t wird Ã¼blicherweise am Ende des Tages aktualisiert, entsprechend des gesammelten Trend-Wertes
 	Method UpdatePopularity()
 		Popularity = Popularity + Trend
 		If Popularity > (LongTermPopularity + SurfeitUpperBoundAdd) Then
@@ -70,7 +70,7 @@ Type TPopulartity
 		Elseif Popularity <= (LongTermPopularity + SurfeitLowerBoundAdd) Then
 			Surfeit = 0
 		Elseif Popularity > (LongTermPopularity + SurfeitCounterUpperBoundAdd) Then
-			SurfeitCounter = SurfeitCounter + 1 'Wird angezählt
+			SurfeitCounter = SurfeitCounter + 1 'Wird angezÃ¤hlt
 		Else
 			SurfeitCounter = 0
 		Endif
@@ -81,13 +81,13 @@ Type TPopulartity
 		Endif
 	End Method
 	
-	'Passt die LongTermPopularity mit einigen Wahrscheinlichkeiten an oder ändert sie komplett
+	'Passt die LongTermPopularity mit einigen Wahrscheinlichkeiten an oder Ã¤ndert sie komplett
 	Method AdjustTrendDirectionRandomly()
 		If RandRange(1,100) <= ChanceToChangeCompletely Then '2%-Chance das der langfristige Trend komplett umschwenkt
 			SetLongTermPopularity(RandRange(LongTermPopularityLowerBound, LongTermPopularityUpperBound))
 		ElseIf RandRange(1,100) <= ChanceToChange Then '10%-Chance das der langfristige Trend umschwenkt
 			SetLongTermPopularity(LongTermPopularity + RandRange(ChangeLowerBound, ChangeUpperBound))
-		Elseif RandRange(1,100) <= ChanceToAdjustLongTermPopulartiy Then '25%-Chance das sich die langfristige Popularität etwas dem aktuellen Trend/Popularität anpasst				
+		Elseif RandRange(1,100) <= ChanceToAdjustLongTermPopulartiy Then '25%-Chance das sich die langfristige PopularitÃ¤t etwas dem aktuellen Trend/PopularitÃ¤t anpasst				
 			SetLongTermPopularity(LongTermPopularity + ((Popularity-LongTermPopularity)/4) + Trend)
 		Endif		
 	End Method	
@@ -108,7 +108,7 @@ Type TPopulartity
 		Endif
 	End Method
 	
-	'Jede Ausstrahlung dieses Genres steigert den Trend, es sei denn es ist bereits eine Übersättigung ist eingetreten.
+	'Jede Ausstrahlung dieses Genres steigert den Trend, es sei denn es ist bereits eine ÃœbersÃ¤ttigung ist eingetreten.
 	Method ChangeTrend(changeValue:Float, adjustLongTermPopulartiy:float=0)		
 		If Surfeit Then
 			Trend = Trend - changeValue
@@ -116,7 +116,9 @@ Type TPopulartity
 			Trend = Trend + changeValue		
 		Endif
 		
-		SetLongTermPopularity(LongTermPopularity + adjustLongTermPopulartiy)
+		If (adjustLongTermPopulartiy <> 0) Then
+			SetLongTermPopularity(LongTermPopularity + adjustLongTermPopulartiy)
+		Endif
 	End Method
 	
 	Method SetPopularity(value:float)
@@ -159,5 +161,27 @@ Type TGenrePopulartity Extends TPopulartity
 		obj.SetLongTermPopularity(longTermPopularity)			
 		
 		Return obj
-	End Function	
+	End Function
+	
+	Method BroadcastProgramme(audienceResult:TAudienceResult, blocks:Int)
+		Local quality:Float = audienceResult.AudienceAttraction.RawQuality
+		Local audienceFactor:Float = audienceResult.Audience.GetSum() / (Game.BroadcastManager.TopAudienceCount * 0.75)
+		audienceFactor = Min(Max(audienceFactor, 0.1), 1)
+		
+		Local changeVal:Float = quality * audienceFactor
+		If blocks = 1 Then
+			changeVal :* 1
+		Elseif blocks = 2 Then
+			changeVal :* 1.4
+		Elseif blocks = 3 Then
+			changeVal :* 1.6
+		Else
+			changeVal :* 1.8
+		End If
+				
+		changeVal = Min(Max(changeVal, 0.25), 1.5)
+		
+		ChangeTrend(changeVal)
+		Print "Change Trend '" + GetLocale("MOVIE_GENRE_" + audienceResult.AudienceAttraction.Genre) + "': " + changeVal
+	End Method
 End Type

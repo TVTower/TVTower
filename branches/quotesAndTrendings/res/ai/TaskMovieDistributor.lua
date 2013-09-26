@@ -174,7 +174,8 @@ function JobAppraiseMovies:AppraiseMovie(movie)
 	--debugMsg("movie.GetPricePerBlock: " .. movie.GetPricePerBlock() .. " ; pricePerBlockStats.AverageValue: " .. pricePerBlockStats.AverageValue)
 
 	-- Je qualitativ hochwertiger desto besser
-	local qualityFactor = movie:getBaseAudienceQuote() / qualityStats.AverageValue
+	debugMsg("zz4")
+	local qualityFactor = movie:GetQuality(0) / qualityStats.AverageValue
 	qualityFactor = CutFactor(qualityFactor, 0.2, 2)
 	--debugMsg("movie.Quality: " .. movie.Quality .. " ; qualityStats.AverageValue: " .. qualityStats.AverageValue)
 	movie.SetAttractiveness(financeFactor * qualityFactor)
@@ -207,7 +208,7 @@ function JobBuyMovies:Tick()
 		if (v:GetPrice() <= self.MovieDistributorTask.CurrentBudget) then
 			if (v:GetPrice() <= self.MovieDistributorTask.CurrentBargainBudget) then -- Tagesbudget für gute Angebote ohne konkreten Bedarf
 				if (v.GetAttractiveness() > 1) then
-					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.getBaseAudienceQuote())
+					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.GetQuality(0))
 					debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
 					TVT.md_doBuyMovie(v.GetId())
 					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v:GetPrice()

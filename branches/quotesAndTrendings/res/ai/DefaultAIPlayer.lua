@@ -218,11 +218,13 @@ function BusinessStats:AddMovie(movie)
 
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
 	if (CheckMovieBuyConditions(movie, maxPrice)) then -- Preisgrenze
+		debugMsg("zz2")
+		local quality = movie.GetQuality(0)
 		if (movie.IsMovie()) then
-			self.MovieQualityAcceptable:AddValue(movie.getBaseAudienceQuote())
+			self.MovieQualityAcceptable:AddValue(quality)
 			self.MoviePricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
 		else
-			self.SeriesQualityAcceptable:AddValue(movie.getBaseAudienceQuote())
+			self.SeriesQualityAcceptable:AddValue(quality)
 			self.SeriesPricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
 		end
 	end
@@ -301,7 +303,7 @@ function OnMinute(number)
 		-- RON: changed as "programme" is NIL if not existing/placed
 		local averageMovieQualityByLevel = 0
 		if ( programme ~= nil) then
-			averageMovieQualityByLevel = programme.GetBaseAudienceQuote() -- Die Durchschnittsquote dieses Qualitätslevels
+			averageMovieQualityByLevel = programme.GetQuality(0) -- Die Durchschnittsquote dieses Qualitätslevels
 		end
 
 		local level = task:GetQualityLevel(Game.GetHour()) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
@@ -315,7 +317,7 @@ function OnMinute(number)
 
 		TVT.addToLog("LUA-Audience (" .. programme.GetID() .. ") : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
 
-		--TVT.addToLog("Base: " .. programme.GetBaseAudienceQuote() .. " / Berechnet: " .. (averageMovieQualityByLevel))
+		--TVT.addToLog("Base: " .. programme.GetQuality(0) .. " / Berechnet: " .. (averageMovieQualityByLevel))
 
 		--TVT.addToLog( "Werbeblock " .. Game.GetHour() .. "    Besucher: " .. TVT.getPlayerAudience() .. " (" .. guessedAudience .. ")" )
 
@@ -326,7 +328,7 @@ function OnMinute(number)
 
 		--AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience)) + ") * 1000"
 
-		--GetBaseAudienceQuote()
+		--GetQuality(0)
 
 		--TVT.addToLog("LUA-Audience : " + guessedAudience2 + " = maxaudience (" + MY.GetMaxAudience() + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience))
 
