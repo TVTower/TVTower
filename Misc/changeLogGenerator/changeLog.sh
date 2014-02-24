@@ -1,0 +1,1 @@
+./git2log.sh --since=2008-01-01 > changeLog.txt

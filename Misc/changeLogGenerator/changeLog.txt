@@ -1,0 +1,1531 @@
+2014-02-24  Ronny Otto  <github_ron@gamezworld.de>
+
+	Add missing Logs from Rev306-346 (Reposerver got faulty) 2014-02-22 11:05  Ronny - Werbespotdetails im Programmplaner werden wieder angezeigt (hatten vorher noch vom Textbox-Bug profitiert)
+	2014-02-21 15:41  Ronny
+	- "Makler" hat nun seine eigene Grafik
+	- Es werden Zinsen faellig und gezahlt (5% auf derzeitigen Kredit und 1% fuer derzeitiges Guthaben)
+
+	2014-02-20 14:55  Ronny
+	- KI wird nun ueber Speichern/Laden informiert. Ein beim Speichern zurueckgegebener Textwert wird beim Laden uebermittelt und ermoeglicht so, der KI, ihren Status zu restaurieren.
+
+	2014-02-20 11:16  Ronny
+	- Lua-Fehlermeldungen werden nun ebenfalls in die Logdateien geschrieben
+	- Textbox-Berechnungen: Bei mehrparagrafigen Texten (mit manuellen Zeilenumbruechen) wird nun nicht mehr der noch verfuegbare Platz ignoriert (Behebt von "Kurt TV" gemeldeten Textbox-Bug) .
+	- Datenblaetter von Filmen/Serien: Inhaltstextbox um wenige Pixel vergroessert
+	- Weitere Debugmeldungen von "print" in "TDevHelper.Log" umgeschrieben (dadurch Ausgabe in Logdatei)
+
+	2014-02-20 11:03  starscrazy
+	- noch n kleiner fix (AI)
+
+	2014-02-20 10:56  starscrazy
+	- KI für's erste Speichern vorbereitet
+
+	2014-02-20 10:34  starscrazy
+	- TGenreDefinitionBase aufgeräumt
+
+	2014-02-20 00:28  starscrazy
+	- Schnelle vorrübergehende Lösung für die Trailer. Es gibt nun einen festen Faktor: 1x = 1,25 ; 2x = 1,4 ; 3x = 1,5 ; 4x = 1,55; 5x und mehr = 1,6. Das soll später wieder geändert werden. Das ganze ist auch in der Quoten-Debug-Ansicht "Q" zu finden... wenn auch erstmal "reingequetscht".
+
+	2014-02-19 23:26  starscrazy
+	- KI: Die eigentlichen KI-Aufgaben und Berechnungen aller AITasks werden nun innerhalb der ersten 1 bis 5 Ticks im entsprechenden Raum abgearbeitet.
+	- KI: Deshalb konnte nun die Verweildauer genauer festgelegt werden: Sie liegt künstlich zwischen 10 und 18 Ticks (Zufall).
+
+	2014-02-13 12:58  starscrazy
+	- Code-Vereinfachung: Vorbereitung für Trailer (später mehr dazu)
+
+	2014-02-12 14:31  Ronny
+	- TBuilding: Hotspot-Click-Events werden nun mittels RegisterListenerFunction generisch abgehandelt statt dies als ListenerMethod instanzspezifisch zu machen (entfernt Bug, dass nach Laden der Fahrstuhl-Raumplan nicht erreichbar war)
+	- TSoundManager: MuteSfx(bool), MuteMusic(bool), HasMutedMusic:bool, HasMutedSfx:bool eingefuehrt
+	- Neue Tastenkuerzel: Shift+M und Strg+M um Soundeffekte und Musik an/auszuschalten.
+	- Bei Raumwechseln wird nun auch versucht die Playlist zu wechseln, beim Verlassen wird zur Standardplaylist zurueckgewechselt (falls die momentane Playlist davon abweicht).
+
+	2014-02-04 13:17  starscrazy
+	- Der Männer/Frauen-Anteil an der Quote sollte nun korrekt dargestellt werden (muss noch getestet werden, wenn ich wieder kompilieren kann)
+
+	2014-02-04 13:03  Ronny
+	- gamefunctions_screens.bmx hinzugefuegt
+
+	2014-02-02 19:31  Ronny
+	- TElevator: sprites werden nun beim Laden neuinitialisiert
+	- TGame: Events fuer onBeginSave und onLoad eingebunden
+	- TInGameScreen_Room ueberarbeitet (da bei der Wechselanimation figure.inRoom vorzeitig genullt wird)
+
+	2014-02-02 13:39  Ronny
+	- Entwicklerfunktion: Spielerwechsel (Taste 1-4) setzt nun auch den aktuell genutzten TScreen
+	- TPersistence (Spieldaten als XML speichern): Strings werden nun korrekt enkodiert (XML-Spezialzeichen werden umgeschrieben)
+	- Codestellen fuer STRG/Shift-Behandlung im Programmplaner zu einer Funktion zusammengefuehrt
+	- Laden / Speichern erweitert (da fehlt noch einiges)
+	- wichtige Spielobjekte werden nun gespeichert/geladen (Filmhaendler, Werbemakler)
+	- alte GUIObjekte werden nun vor dem Laden der Daten (Event SaveGame.onBeginLoad) entfernt (Programmplaner, Nachrichten, Archiv)
+	- Die Schilder die Raumbesitzer anzeigen werden nun nicht mehr einmal auf die Hochhausgrafik gezeichnet sondern bei jedem
+	  Zeichenvorgang. Erzeugt mehr Zeichenaufrufe, ist aber notwendig um auf Raumwechsel oder andere Spielerfarben (Speicherstaende) reagieren zu koennen
+	- Figurenspezifischen onEnterRoom/onLeaveRoom mit generischen Events fuer alle Figuren ersetzt (erspart Eventbearbeitung bei Laden/Speichern)
+	- Eventsystem: Sender/Receiver-Limit-Ueberpruefung in eigene Funktion ObjectsAreEqual ausgelagert (da nun noch von UnregisterAllListeners()-Funktion genutzt)
+	- Eventsystem: Neue funktion unregisterListenerByLimit erlaubt das spezifische Loeschen von EventListener fuer einzelne Objekte
+	- RoomHandler_Archive: Methode RefreshGUIElements() eingefuegt
+	- TDeltaTimer ueberarbeitet - Delta-Werte sollten nun eher der Realitaet entsprechen
+	- TScreen/TScreenCollection ueberarbeitet, neue Klassen TGameScreen, TInGameScreen etc. angelegt. Handling von Screens in Verbindung mit Raeumen komplett ueberarbeitet.
+	- TFaderklasse entfernt (von TScreenChangeEffect abgeloest)
+	- TV-Overlaygrafik ueberarbeitet (links und rechts jeweils 5px abgeknappst)
+	- TRooms: SoundSource als {nosave} gesetzt. Objekt wird in der Methode GetSoundSource() automatisch regeneriert wenn fehlend
+	- TStationMap: nun unbenutzte Variablen entfernt, Checkbox-Ueberwachung von "onUpdate" auf "onSetChecked" geaendert
+	- TStationMap: Nun Anzeigefilter bei Start auf "alle anzeigen" gesetzt
+	- TPlayer: Eigenschaft "stationmap" entfernt. Spieler-Stationmap kann nun mittels Player.GetStationMap() abgerufen werden
+	- AdAgency: Beim Betreten des Raumes werden die GUI-Objekte nun erneuert, Sortierung der Vertraege wird ebenfalls zurueckgesetzt. Event "onScreenEnter" entfernt
+
+	2014-01-18 18:29  Ronny
+	- Werbevertraege laufen nun korrekt nach Ablauf der Vertragszeit ab (statt einen Tag vorher)
+	- Programmplanung: platzierte Programme koennen nun auch mit STRG und SHIFT benutzt werden (erzeugt Kopien/naechste Episode)
+	- einige Debugmeldungen fuer Werbevertraege eingebunden
+
+	2014-01-16 16:14  Ronny
+	- weitere deutsche Texte in die Sprachdateien ausgelagert
+	- DeltaTimer: sollte kein FPS-Limit gesetzt sein, wird auch keine kuenstliche Pause (zum CPU-Zeit sparen) eingelegt. Nur nuetzlich fuer "Performance-Checks"
+	- TGUIListen: Mehrspaltigkeit eingebunden
+	- TGUIListen: Mausscrollradbehandlung ueberarbeitet (nun von Listen statt ScrollablePanel verarbeitet)
+	- TGUIGameShoppingList und TGUIGameShoppingListItem angelegt
+	- Events: Sender und Receiver ueberpruefen nun auch, ob sie von der angefragten Klasse abstammen (extends...)
+	- Taste "M" schaelt nun Musik an/aus (per "settings.xml <sound>TRUE/FALSE</sound> Voreinstellung treffbar)
+	- "SimpleSFX"-Lautstaerke um 30% angehoben (Bspweise Raum-Kick, Exitdialog)
+	- Raumanzeige: Schrift auf Schildern 1 Pixel nach unten versetzt
+	- Raumanzeige: Kurt TV hat der Grafik perfekt sitzende Etagennummern verpasst. Danke!
+	- alle Grafiken neu komprimiert (spart ein paar hundert KB), bei Nicht-Raumgrafiken (also weniger komplexen) waren Einsparungen zwischen 40-50% zu verzeichnen
+	- Grafikenverzeichnis nach von /grafiken nach /res/grafiken verschoben, XML-Dateien angepasst
+
+	2014-01-16 09:08  starscrazy
+	- Quellenangabe korrigiert (/res/music/Quellen.txt)
+
+	2014-01-15 23:29  starscrazy
+	- Files des Musikstücke umbenannt
+	- 5 neue Musikstücke hinzugefügt
+	- Quellen.txt aktualisiert
+
+	2014-01-15 21:51  starscrazy
+	- Rohe Klassen für Filmproduktion
+
+	2014-01-03 19:25  Ronny
+	- Screenshots koennen nun in allen Spielbereichen mittels F12 erstellt werden
+	- Werbe-Fernseher-Grafik ueberarbeitet
+	- Standardwert fuer geladene Musik ist nun loop=false, entfernt Bug, ein Musikstueck immer wieder von vorn begann (falls kein anderer Titel erzwungen wurde)
+	- "STRG"/"Shift"-Behandlung im Programmplaner wurde an zwei Stellen durchgefuehrt - fuehrte zu Dopplungen. Fehler behoben
+	- xRated-Markierung bei Programmbloecken wieder an der richtigen Stelle
+	- GUIObjekte: AddChild/RemoveChild - Parameter "setManaged" entfernt. Dies ist nun "per Default" der Fall.
+	- Figuren koennen nur noch im Erdgeschoss "raus laufen" (falsche Variable fuer Etagencheck genommen)
+	- TGUIProgrammePlanElement.CreateWithBroadcastMaterial - neuer Parameter "limitToState" verhindert mehrmaliges Zeichnen von neu erzeugten (und keiner Liste zugeordneten) Programmbloecken
+	- Filmhaendler: "nicht bezahlbare" Filme werden nun korrekt (visuell) in das Regal zurueckgelegt. Die Ueberpruefung ob ein "darunterliegendes" Element bezahlbar ist, wird nun im TryDrop-Event durchgefuehrt statt erst im Drop-Event selbst.
+	- Programmdatenblaetter: groessere Textbereiche werden nun als gecached (aehnlich Newsbloecken), verringert GPU-Auslastung (weniger Drawcalls)
+	- "Fader" der Tooltips ueberarbeitet (entfernt leichtes "Flackern" bei einigen Tooltips durch Rundungsfehler)
+
+	2013-12-31 15:15  Ronny
+	- Fernseher im unteren Bildbereich:
+	- braucht nun nur noch eine Rauschen-Grafik (die wird nun zufaellig verschoben)
+	- Genrebilder des Fernsehers brauchen nun nicht mehr der Bildschirmform angepasst werden (werden mittels "overlay"-Bild abgedeckt)
+	- Genrebilder ueberarbeitet/erneuert (hingezugekommen: Horror und Sport)
+	- Menues und InGame-Bereich in TScreen-Objekte umgewandelt, alle entsprechenden GUI-Objekte in die Typen umgelagert
+	- Fehler in der News-Planung behoben (falscher Event-Schluessel fuehrte zu Verschwinden von GUI-Elementen)
+	- TPoint - CreateFromPos(pos) entfernt, copy() hinzugefuegt
+	- GUIObjekte:
+	  - auf neues TGW_NinePatchSprite umgestellt: TGUIInput, TGUIButton
+	  - Eigenschaft "alignment" entfernt, "handlePosition" und "contentPosition" (inkl. Hilfsfunktionen) hinzugefuegt. Eigenschaft dient der Anordnung von Inhalt und Objekt (horizontal und vertikal)
+	  - TGUIInput-Zeichenroutine aufgeraeumt
+	  - "SetFocus" und "RemoveFocus"-Methoden fuer Objekte hinzugefuegt
+	  - TGUIInput sichert nun korrekt den Vor-Bearbeitungs-Wertung fuer den Fall von "Escape" (Zurueck zum alten Wert)
+	- neue Grafiken erstellt
+	- XML-Loader hat nun eine ConvertURI-Funktion um relative Pfadangaben veraendern zu koennen
+	- TAssetManager aufgeraeumt (Getter-Funktionen, Checks optimiert). Fuer einige Objekttypen "Default"-Eintraege angelegt (Bsp.: fehlt eine Gui-Grafik, wird sie schick mit einer "rot-weiss"-Grafik ersetzt)
+	- Textbloecke koennen nun auch vertikal ausgerichtet werden
+	- Newsblock-Haupttexte werden nun als TImage gecached (Das Rendern vieler einzelner Buchstaben - auch mit Hilfe eines Texturatlas - ist langsamer als das eines groesseren Bildes, DrawCalls vs VRAM)
+	- Spieloptionen in "Vor-Spielstart"-Bereich eingebunden. Verfuegbare Einstellung ist "Erscheinungsjahr"-Filter
+	- TVTower-Icon auch als tvtower.png bereitgestellt (fuer Linuxverknuepfungen)
+	- Betty-Code in gamefunctions_betty.bmx ausgelagert
+
+	2013-11-30 22:18  Ronny
+	- Lua-Skripte koennen nun zusaetzlich zu Methoden und Feldern auch auf Konstanten und Funktionen zugreifen. Generell: das gesuchte Objekt nicht fuer Lua freigegeben wird ein LOG_ERROR-Text ausgegeben.
+	- TPersistence ueberspringt nun beim laden als "nosave"-deklarierte Objekteigenschaften
+	- Nun 13 statt 12 Spielfigurenmodelle zur Auswahl (hab tatsaechlich eine Frau uebersehen ;-D)
+	- TGW_Sprite-Code ueberarbeitet (Funktionen vereinfacht, veraltete entfernt,...)
+	- Fernsehbuttons: Nun pro Farbe nur noch ein Button eingefaerbt statt aller 5
+	- Neue Klasse TGW_NinePatchSprite: verarbeitet "9Patch"-Grafiken wie von Android bekannt (erste sowie letzte Pixelreihen und -zeilen enthalten Informationen ueber Skalierbarkeit und Inhaltsgrenzen). Vor allem fuer GUI nuetzlich
+	- Wrapper "TGW_Font" entfernt und Fontinformationen in den Typ TGW_BitmapFont eingefuegt
+	- TGW_BitmapFont ueberarbeitet und Erstellung des Charmap-SpriteAtlas fuer die Schriften in einzelne Methoden ausgelagert. Erleichtert Einbindung von Effekten wie Schatten/Farbverlaeufe
+	- DrawImageOnImage ueberarbeitet (Code fuer RGBA-Multiply - also das Mischen von semitransparenten Bildern). Schrift-Funktion DrawCharPixmapOnPixmap entfernt (durch DrawImageOnImage ersetzt).
+	- Senderzeichen neben den Tueren werden wieder korrekt eingefaerbt (Fehler in ColorizePixmap - IsMonochrome() erwartete ARGB, bekam aber RGBA)
+	- Es kann nun rudimentaer der Text formatiert werden (Farben, Fett, Kursiv)
+	- Ort des Spielers von "oberer Leiste" in das Debugfenster (Taste D) umgelagertf
+	- TGuiSlotList.GetSlotOrCoord() ueberarbeitet (nutzt nun RecalculateElements-Code, behebt Fehler mit "displaced"-Objekten, wie den diagonal verlaufenden Werbevertragsordnern)
+	- TGW_BitmapFont.DrawBlock() hat nun Bool-Parameter "singleLine". Damit koennen Zeilenumbrueche ausgeschalten werden. Nuetzlich um einem Einzeiler-Textblock das "abkuerz..." beizubringen
+	- TSoundManager erweitert.
+	- Sounddateien werden nun mittels soundfiles.xml in "Playlists" eingelesen. Diese Listen definieren, welche Musik in welchem Bereich gespielt werden kann.
+	- neue Funktionen "PlayRandomSfx(playlist)" und "PlayRandomMusicStream(playlist)"
+
+	2013-11-20 09:13  Ronny
+	- Bug in Update-Loop entfernt (falsche Tag-Variable an die Events weitergegeben -> Programmbloecke wurden nicht eingefaerbt und korrekt gesendet)
+	- Bug behoben der bei schnellen "drag-drop-drag"-Programmaustausch-Klicks im Programmplaner zu Abstuerzen fuehren konnte (Variable nicht auf "Null" gecheckt)
+
+	2013-11-17 18:53  Ronny
+	- "DeltaTimer"-Klasse ueberarbeitet
+	- VSync aktiviert, Spiel sollte also nun mit Bildschirmwiederholrate dargestellt werden
+	- Physikupdates von 60 auf 30 verringert (spart ein wenig CPU-Zeit).
+	- Figuren:
+	  - nutzen zusaetzlich noch tweening (=Ueberblendung von PositionAlt zu PositionNeu - vermindert "ruckelnde" Bewegungen)
+	  - werden genauso wie ihre Sprechblasen nun an Ganzzahlenpositionen gezeichnet, macht die kleine Schrift besser lesbar und verhindert flimmern der Spielfiguraugen
+	  - "Tab"-Debuganzeige auf Taste "D" umgelegt
+	  - Wenn ein Raum unbesetzt ist, wird der "Besetzer" nun schon beim Versuch des Betretens gesetzt - um zu verhindern, dass mehrere Personen die Tuer oeffnen und hineingelangen koennen
+	  - KeyManager: einige Sonderzeichen unter Linux eingebunden (Umlaute), Tasten koennen nun fuer gewisse Zeit blockiert werden (Doppel-Escape usw.)
+	- GUIObjekte:
+	  - Eingabefelder ueberarbeitet (wann sie Eingaben annehmen usw.). Die Escape-Taste setzt Eingabefelder wieder auf ihren vorherigen Wert zurueck
+	  - GUIManager.StartUpdates() und EndUpdates() verringern Anfragen an Key- und MouseManager
+	  - Modalfenster sowie die Eigenschaft _ignoreMouse sorgen nun wirklich fuer das Ignorieren anderer Objekte
+	- Startjahre < 1985 (bzw dem voreingestellten Jahr) sind nun moeglich ohne dass das Spiel abstuerzt
+	- "Anderes" Einkommen erhoeht nun nicht mehr das Einkommen durch Werbung (reine Statistik-Kosmetik)
+	- TFinancial ueberarbeitet. Nutzen nun generische Income/Expense-Setters, heissen nun "TFinance" und werden mittels TPlayer.GetFinance(day) erstellt/uebernommen
+	- "Mond"-Flackern beseitigt (nur im Schnelldurchlauf wirklich ersichtlich)
+	- generische GetTweenResult-Funktion hinzugefuegt (Faktor muss bei AppDraw-Aufruf aktualisiert werden)
+	- Darstellungsfehler bei "aufgehuebschten" negativen Zahlen korrigiert (-24.900 wurde als -24.-90 dargestellt)
+	- neue Klasse TSimpleSoundSource ermoeglicht "freies" abspielen von Soundeffekten (bei GUI u.a.)
+	- Test fuer 2 SFX: Wirklich-Beenden-Dialog
+	- Filmnews kommen nun fuer Filme die "bis zu ein Jahr" nach "heute" erscheinen (statt vorher 6 Tage). Dies wird angepasst,  wenn die Datenbank gefuellter ist
+
+	2013-11-10 18:44  Ronny
+	- Werbe-Datenblatt zeigt nun die Anzahl "eingeplanter" Werbungen korrekt an.
+	- Senderkarte zeigt nun wieder korrekt Reichweitenzuwachs an und Population und Topografie sollten nun wieder uebereinander liegen (Berlin > 4Mio EW :D)
+	- Enable()/Disable() bei GuiObjekten fuehrt keine Listensortierung mehr durch, falls bereits en-/disabled. (fuehrt im Debugmode bei der Spieleinstellung zu Rucklern)
+	- Tastenkuerzel "D" (maximale Reichweite) entfernt, da die Reichweitenberechnung von Manuel diesen einfachen Cheat nicht mehr ermoeglicht
+	- Werbung beim Werbemakler wird nun korrekt aus der internen "Kofferliste" entfernt sobald sie der normalen Liste hinzugefuegt werden konnte ("nach Unterzeichnung")
+	- Credit-Bildschirm ueberarbeitet
+	- Anzeige des "Programm im Sendeplan" ueberarbeitet
+
+	2013-11-09 14:24  Ronny
+	- Werbevertraege werden nun korrekt (visuell) aus dem Koffer entfernt, wenn man bei Abschluss beim Makler steht
+	- Programmplanerbuttons haben nun "Hover"-Effekt
+	- Hausmeister laeuft nicht mehr in die linke Hauswand, putzt nun auch nach links (mit korrekter Animation links bzw rechts) und geht nicht waehrend dem Putzen in Raeume.
+	- Werbung: Profit und Strafe auf 200% gesetzt
+	- Es werden nun wieder 8 Filmauktionen angezeigt (entfernt "gezahlt und trotzdem nicht Hoechstbietender"-Bug)
+
+	2013-11-08 16:31  Ronny
+	- TProgrammeData.ComputeTopicality() entfernt. Wird nun erstmals bei GetTopicality() erechnet. Verhindet "Keine Abnutzung"-Bug durch Einsatz in GetQuality().
+	- TProgrammeLicence: neue Methode "IsPlanned" als Alternative zur dynamischen Abfrage des ProgrammePlans um festzustellen ob ein Programm geplant ist.
+	- Rechtsklicks bei gedraggtem Elementen bei Programmplaner, Newsplaner, Filmhaendler und Werbeagentur setzen nun korrekt den Mausbuttonstatus zurueck
+	- Fahrstuhl-Raumuebersicht: Figur wird nun erst beim "klicken" (loslassen) der Maustaste losgeschickt, anstatt schon beim "Button druecken"
+	- Kontrolle korrigiert, dass Figuren nicht ueber den Etagenrand laufen.
+	- Figuren koennen nun das Haus verlassen (und werden farbig entsprechend angepasst bei Dunkelheit)
+	- TColor.AdjustRelative(percentage) um Abweichend von 0 die Farbe aufzuhellen oder abzudunkeln
+	- Figuren sagen nun korrekt "grr" "hi" etc. - und ignorieren Personen in Raeumen
+
+	2013-11-07 13:57  Ronny
+	- Debugeinfaerbung beim Mitternachtsprogramm entfernt
+	- interne Verschiebung der Sendemasten entfernt
+	- Screenshots entfernen nun korrekt den Alphakanal aus den Bildern
+	- Bug mit TGUIobjekten (News, TV etc) entfernt: GetScreenRect() konnte "null" zurueckliefern, was zu Abstuerzen fuehrte, sobald ungeprueft darauf zugegriffen wurde
+	- Filmhaendler: Typ kauft nun wieder Filme in dem man sie auf ihm fallen laesst (TGUIObject.onDrop achtet nun auf den Flag "accepts_drop")
+	- TFunctions.ConvertValue liefert nun korrekte Werte fuer Werte > 1Mio
+
+	2013-11-05 22:56  Ronny
+	- GetQuality()-Funktion wird nun von allen TBroadcastMaterial vorausgesetzt
+	- leichte Aufraeumarbeiten in Manuels Popularity-Code (Vereinfachung, Code-Formatierung angepasst)
+	- Quotentooltip ueberarbeitet
+	- Text-Zeichenmethoden nehmen nun TColor statt r,g,b als Parameter an
+	- settings_colors.xml: Alphawerte sind nun als Float anzugeben (statt 0-255)
+	- Datenblaetter von Vertraegen und Programmen werden in der Liste wieder angezeigt (Fehler im "Alt"-Tauscher)
+	- Auch bei schneller Geschwindigkeit (3-4Spielstunden pro Sekunde) werden nun keine Werbungen und Programme-Bloecke im Planer mehr uebersprungen
+	- Bei gedraggten Elementen wird nun korrekt dass oberste "gehovert"
+	- Programme die ueber "Mitternacht" platziert werden, erzeugen nun korrekt GUI-Bloecke fuer dafuer am naechsten Tag geloeschte Programme
+	- die "ESC"-Taste fragt nun vorher mittels Dialog ab, ob wirklich beendet werden soll, ausserdem dient das ESC nun auch als "Pause" im Einzelspieler
+
+	2013-11-03 12:00  Ronny
+	- Fehler in KI-Scripten entfernt (umgelagerte Funktionen innerhalb der BroadcastMaterial-Klassen)
+	- nur-KI-Funktionen innerhalb der Medienobjekte (News,Programme,Werbung,...) gruppiert
+
+	2013-11-02 16:31  Ronny
+	- Merge der Aenderungen von Manuel und mir
+	- Neues Return-Objekt fuer Lua-Funktionen: TLuaFunctionResult, beinhaltet result-Integer (fuer Ergebnis-Kennungs-ID)) plus ein data-object
+	- TLuaFunctions nutzt nun keine Konstanten mehr (nicht erreichbar fuer Lua-Skripte)
+	- Statt "TProgramme" existieren nun "TProgrammeData", "TProgrammeLicence" und "TProgramme", dies ermoeglicht "Lizenzpakete" (Lizenz mit Unterlizenzen)
+	- Neue Klasse "TProgrammePerson" - enthaelt Regisseure, Schauspieler etc
+	- TGUIobjects:
+	  - haben nun Basismethode "onDrop", als Standard ignorieren sie an sich gerichtete onDrop-Events. Ist ein Objekt aber interessiert, muss die Methode ueberschrieben und das Event angepasst (setAccepted()) werden
+	  - haben nun "handle:TPoint", ist das handle nicht NULL, ist dies der Offset vom Mauszeiger, andernfalls ist das Objekt zentriert zur Maus
+	  - haben nun Basismethode "containsXY" die zurueckgibt ob eine Koordinate innerhalb des Objektes (_und_ seines Elternelements) liegt (nuetzlich bei "gesplitteten Objekten")
+	  - versenden nun Events "onFinishDrop" und "onFinshDrag" wenn ein Drag- bzw. Drop-Vorgang abgeschlossen ist (und das item auch in der Logik "gedraggt"/"gedroppt" ist)
+	- TGW_Sprites aufgeraeumt (area statt pos+w+h, offset ist nun Rectangle statt nur Point) -> koennen nun mit Offsets umgehen (nur partiell integriert)
+	- Programmplaner:
+	  - FSK18 wird nun durch eine farbige Markierung am Programmblock angezeigt (spart Platz bei ansonsten vorkommenden Texten wie "FSK18-Tailer" )
+	  - Der "gehoverte" Programmblock wird nun farbig hervorgehoben, andere Programmierungen dieses Films, dieser Werbung, ... werden ebenfalls leicht hervorgehoben
+	  - Das ausgewaehlte Genre bei der Programmauswahl wird nun farbig hervorgehoben, gleiches gilt fuer das unter dem Mauscursor liegende Genre
+	  - Shortcuts: SHIFT - naechste Episode, STRG - Kopie, ALT - alternative Anzeige (Programm->Trailer, Werbung->Dauerwerbesendung)
+	  - jeder weitere Schauspieler (nach dem ersten) hat nun korrekt einen Vor- und Nachnamen (statt Vornamenachname)
+	- Filmhaendler - Auktionsklasse:
+	  - entschlackt (unnoetiges entfernt)
+	  - per Eventsystem mit Netzwerk verknuepft
+	  - Auktionen haben nun einen Rabattwert auf ihr Startgebot, dieser sinkt pro Tag um 5%. Ist ein Minimalwert (50%) erreicht und die Auktion hat keinen Bieter so wird das Programm ausgetauscht.
+	  - Generell werden nun Bloecke (Filmhaendler - Huellen und Auktionen, Werbevertraege) hervorgehoben wenn die Maus darueber schwebt
+
+2014-02-24  Ronny Otto  <github_ron@gamezworld.de>
+
+	- removed svn-branches
+
+	- initial import from svn
+
+2013-09-26  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Reintegrate des branches "quotesAndTrendings".
+	Hauptfeatures und Änderungen:
+	- Komplett neue Berechnung für die Filmattraktivität
+	- Komplett neue Zuschauerberechnung und Erweiterung um Zielgruppen
+	- Anpassungen bei der Filmpreisberechnung
+	- Neues Popularitäts und Trendsystem (aktuell nur für Genre)
+	- Es gibt nun eine Genre-Definition (genres.xml und newsgenres.xml) um verschiedene Parameter pro Genre zu gewichten und modifizieren.
+	- Grundlegende Fixes in der KI damit es zu keinen Fehlern kommt mit den Neuentwicklungen kommt
+	- Darstellungsproblem in "convertPercent" gefixt.
+
+	Features der neuen Filmattraktivitätsberechnung:
+	- Bei der Berechnung der Programmattraktivität werden die Film-Attribute pro Genre anders gewichtet.
+	- "Genre-Popularität": Es gibt nun eine Genre-Popularität die einem Trend folgt, steigt und sinkt. Sie hat Einfluss auf die Programmattraktivität. Der Trend kann von den Spielern durch Ausstrahlung eines bestimmten Genres positiv beeinflusst werden.
+	- "Genre <> Sendezeit": Die Attraktivität von Filmen eines Genres hängt nun von der Tageszeit ab... z.B. sind Horrorfilm im Spätprogramm erfolgreicher als Vormittags
+	- "Genre <> Zielgruppe": Jedes Genre ist bei jeder Zielgruppe anders beliebt. Dies wird nun berücksichtigt.
+
+	Features der neuen Zuschauerberechnung:
+	- Es gibt nun 7 Zielgruppen: Kinder, Jugendliche, Hausfrauen, Arbeitnehmer, Arbeitslose, Intellektuelle und Pensionäre.
+	- Die Kanäle konkurrieren nun tatsächlich um die gleichen Zuschauer, je nachdem welche Kanäle sich welche Zuschauer teilen. Deshalb erreicht man in Gebieten die man exklusiv bedient eine höhere Quote als in Gebieten mit viel Konkurrenz.
+	- Das Zuschauermenge ergibt sich nun aus drei Teilmengen: Exklusive Zuschauer (die nur wegen deinem tollen Programm den TV einschalten), Zuschauer aus dem Audience Flow-Effekt (Leute die einfach dran bleiben, weil ihnen das Folgeprogramm gefällt) und überzeugte Zapper (Zuschauer die einfach hängen bleiben)
+
+
+	Aktuelle Zahlen zu diesen Berechnungen findet man in der neuen Entwickler-Anzeige die man mit der Taste "Q" (für Quote) erreicht.
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@306 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-26  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@305 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	merge
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@304 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@303 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Vorläufiger Stand der zurück in den trunk kann
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@302 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Zwischenstand vor weiteren Umbauarbeiten sichern
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@301 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-25  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Code aufgeräumt und kommentiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@300 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-24  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Zuschauergruppen werden jetzt im Tooltip angezeigt. Vielleicht kann Ron das mit seinen Möglichkeiten auch in der Variante "Schön" umsetzen ;)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@299 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-20  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Mit der Taste "q" kann man jetzt ne Debugkonsole für die Quoten einblenden.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@298 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-20  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Cleanup
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@297 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-19  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Mit dem trunk gemerged (der Rest)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@296 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Mit dem trunk gemerged
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@295 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-19  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- TPoint.GetIntZ() hinzugefuegt - Werbemakler: kleine Fehler ausgebuegelt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@294 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Anpassung AI-Dateien an Aenderungen - TRectangle.containsXY etc ziehen nun von Breite/Hoehe einen Pixel ab, da ja 0,0 auch inkludiert wird - "Saarland"-Kollisionssprite war 2 Pixel zu niedrig - Game.GetDayOfYear() ignorierter bisher die uebermittelten Zeitdaten - TGUI-Listen: beim Hinzufuegen eines Items an einen speziellen Slot (oder beim Drop-Event) wird nun geprueft ob das darunterliegende Element gedraggt werden kann - TGUIBaseCoverBlock umbenannt in TGUIGameObject - Newsticker haben nun die korrekten Genrefarben (0-4 statt 1-5) - Unbezahlte Newsticker haben "fettgedruckten" Preis - Es koennen nun mehrere GUI-Objekte zugleich "dragged" sein - GUIObject: zIndex entfernt (bereits in "rect.pos.z" enthalten) - Screenmanager-Funktionen emitieren nun Event beim Screenwechsel, dadurch kann bspweise die Nachrichtenagentur die GUI-Elente loeschen, wenn man den Planer betritt - Kinder-GUI-Elemente (also bspw. Listeneintraege) koennen nun ein "schemenartiges" Abbild ihrer selbst an die urspruengliche Stelle zeichnen ("drawGhost")   - Newsbloecke nutzten nun Feature   - Werbevertraege ebenso - TPlayerProgrammePlan komplett erneuert und Fehler entfernt.   - "GUI"-Handling entfernt (gehoert zum roomHandler_office...)   - Werbung und Programm vereinheitlicht (nutzen gleiche Basisfunktionen), dies ermoeglicht nun auch mehrbloeckige Werbung, (theoretisch) das Platzieren von Werbung auf Programmplaetzen etc.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@293 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-19  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@292 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Kleine Anpassungen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@291 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Zwischenstand sichern - Grundlagen des Audience Flows eingebaut
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@290 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-12  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- merge
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@289 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- cacheKey-Zusammensetzung in TStationMap.GetShare() korrigiert (Trennzeichen zwischen "MitSpieler" und "OhneSpieler"-Auflistung da sonst andere Werte ueberschrieben werden konnten
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@288 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-11  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Merge - Berechnung um ein AudienceResult erweitert - TODO ron: Der cache in der StationMap macht Probleme... einfach nochmal einkommentieren Gute Nacht ;)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@287 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Zur Sicherheit commiten... langsam macht das Marging Probleme
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@286 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-10  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- einige "out of bounds"-Fehler im Zusammenhang mit "players.length" entfernt - Werbeagentur hat nun "hover"-Effekt auf dem Haendler - kleinere Arbeiten an den GUI-Elementen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@285 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-09  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Nochmal commit vor merge
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@284 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	merge
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@283 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-09  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- GetShare/Audience/Percentage akzeptieren nun noch eine "without"-Liste
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@282 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-09  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Aktuellen Stand mal wieder sichern
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@281 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-09  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Merge mit Trunk - Integration von TStationMap.getShareAudience(...) - einige Grafiken die geloescht worden sind - "bleiben im Konflikt"
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@280 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TStationPoint mit TPoint ersetzt - Funktion TStationMap.GetShare liefert nun TPoint zurueck: x=share,y=audience,z=percentage - neue Funktionen TStationMap.GetShareAudience([array playerIDs]) fuer Menge an Zuschauern - neue Funktionen TStationMap.GetSharePercentage([array playerIDs]) fuer prozentualen Anteil an Zuschauern - einige alte Grafiken entfernt - testweise breiteren Koffer hinzugefuegt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@279 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-08  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Fahrstuhl-Planer-Grafik neben Fahrstuhl wieder entfernt (momentan unnuetz :D) - alte Werbevertraege werden beim Betreten des Maklers mit in den Koffer gelegt - Spiel achtet nun darauf, den Werbevertragskoffer bei Änderungen an der Programmsammlung zu aktualisieren - Neue Funktion "TStationmap.GetShare([array playerids])" um herauszufinden wieviel Prozent man sich Spieler A mit Spieler B teilt - kleiner Fix in gfx_hochhaus.xml - man sollte nicht weiter als die Bilderpixelgrenzen definieren...
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@278 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-08  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Merged
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@277 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-07  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- weitere Filmcovers - Werbemakler hat nun auch "billige" Werbung im Angebot - Handling beim Werbemakler auf GUI-Objekte umgestellt und entsprechende Events verknuepft - Neues Event "onTryDropOnTarget", damit kann schon der Versuch unterbunden werden - TGUICoverBlock angelegt, von diesem leiten sich dann TGUIProgrammeCoverBlock etc ab - die Nutzung der Dev-Kuerzel zum Raumwechsel konnte buggy sein, wenn von Raum zu Raum gesprungen worden ist... nun verlaesst eine Figur erst den Raum, sofern sie in einem war, um zum naechsten zu springen - alte TGUIList entfernt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@276 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-07  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Aktuellen Stand vor dem merge commiten
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@275 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-05  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- genau positionierte Raeume (Pfoertner, Credits, Raumplaner) in die XML ausgelagert, TRooms.CreateWithPos entfernt, Variablen genauer benannt - Raum-Auswahl vom Fahrstuhl umgebaut. Nun: Fahrstuhltuer in eigener Etage fuehrt zu Zielplaner. Dies verhindert einen blockierten Fahrstuhl und Zeitdruck bei unerfahreneren Spielern - Raeume koennen nun mehrere Spieler erfassen (bei Bueros, Filmhaendler etc werden dann halt alle anderen gekickt :D) - NPCs muessen nun ebenfalls eine gewisse Zeit an Tueren warten und koennen sich nur bewegen wenn dies fuer Figuren moeglich ist - Man kann den Fahrstuhl nun auch "betreten", wenn dieser gerade keine weitere Route hat und man entgegen der vorherigen Richtung unterwegs sein moechte - Figur-Raum-Handling ueberarbeitet, nicht laenger noetige Methoden entfernt - Figuren "Koordinate" ist nun zentriert auf die Figur - Figuren zeigen nun korrekt den Ruecken, wenn sie einen Raum betreten - TAnimations-Klasse hatte Fehler, die den letzten Frame einer Animation unterschlug - dadurch fehlte bspweise das Zwinkern der Figuren (oder das letzte Bild der Laufbewegung) - Verhalten von Postboten und Hausmeister ueberarbeitet, der Hausmeister wischt jetzt endlich wiederden Boden! - Raum-Schilder im Planer werden nun besser erfasst ("besser klickbar") - Neues Objekt "THotspot" um spezielle Bereiche auf dem Bildschirm markieren zu koennen. Derzeit genutzt fuer "Fahrstuhlklicks". Ist generischer als auf Spriteklicks zu reagieren.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@274 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-04  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Genredefinitionen fertiggestellt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@273 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-03  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Merge aus dem trunk
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@272 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Justierungen an der Quotenberechnung - Debugbarkeit und Konsolenausgaben verbessert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@271 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-09-01  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Events koennen nun auf die Zukunft datiert werden (-> spaeter ausloesen) - Tuer-Offen-Zu-Geschwindigkeit anpassbar (Fader wird automatisch daran gekoppelt) - Fader reagiert nun auf Raum-Events (onBeginEnter, onEnter ...) - Dialoge (wie beim Chef) nutzen bei den Antworten nun eine konstante Zeilenhoehe - Der Filmhaendler verkauft im "Ramschregal" nur noch billige Filme - Preise von Filmen/Serien etwas abgesenkt, alte Filme werden noch guenstiger
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@270 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-29  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- etwas aufräumen - Genre-Definition als Config-Datei zur Verfügung stellen - Popularity (Trend) in ne extre Datei auslagern
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@269 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Merge mit dem trunk
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@268 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Grundlagen der neuen Quotenberechnung
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@267 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- kleine KI-Fixes für die Programmplanung
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@266 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-28  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@265 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-28  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Dev-Shortcuts nutzten nun offiziellen Weg um in Raeume zu kommen, somit kicken sie andeare Spieler aus dem Raum, falls notwendig. Dies verhindert Fehler bei "Raumverlassen"-Aktionen (Filmkoffer etc.) - GUI-Elemente beim Filmhaendler werden geloescht, sobald die aktive Spielfigur den Raum betritt - Events beim Raumverlassen eingebunden - Figuren drehen korrekt den Ruecken zu, wenn sie in einen Raum wollen - Aufraeumarbeiten im Roomhandling - Werbeagentur-Verlassencheck in room.onTryLeave-Event ausgelagert - Programme haben nun Eigenschaft "timesAired", die aussagt, wie oft das Programm bereits ausgestrahlt worden ist ("Erstaustrahlung") - Programme haben nun Eigenschaft "targetGroup", die aussagt, ob das Programm fuer eine bestimmte Zielgruppe ausgelegt ist (Wirtschaftssondersendung, Seniorenmagazin...) - Programme haben in der Nachtzeit (0-5) sowie Vormittags (5-12) eine verringerte Abnutzung - Raumwechsel und "Schwarz-Fader" ueberarbeitet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@264 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-27  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Senderkarte:   - Sendemasten altern und verlieren an Verkaufswert   - TStation speichern nun ihren Radius (Vorbereitung fuer verschiedene Sendemasttypen)   - es kann nun korrekt ge- und verkauft werden   - Extratooltip fuer "mouseover"-Sendemasten   - Fehler behoben (es wurden auch Bereiche ausserhalb der Grenzen berechnet ... "Muellpixel") - Formel angepasst - Einige Hotspots in Raeumen reagieren nun auf MouseManager.isClicked statt "isHit" (sprich, nach "loslassen" der Taste), verhindert fehlerhafte Erkennung von Klicks im naechsten Unterraum - Mondphasen korrigiert - Neue Methoden fuer die KI:    Player.StationMap.getStation(x,y)     ... liefert TStation zurueck, falls vorhanden     Player.StationMap.getTemporaryStation(x,y)     ... liefert TStation zurueck, nuetzlich fuer Informationsabfrage     Player.StationMap.getReach()     ... die derzeitig maximale Reichweite des Spielersenders     Player.StationMap.getCoverage()     ... der derzeitige Deckungsgrad zur Gesamtbevoelkerung     Player.StationMap.getStationFromList(playerID,position)     ... liefert TStation zurueck, fuer Informationsabfrage     Player.StationMap.getStationCount(playerID)     ... liefert Anzahl an Stationen des Spielers zurueck     Player.StationMap.buyStation(x,y)     Player.StationMap.sellStation(position)   - TStation.getPrice()     TStation.getSellPrice()     TStation.getReach()     TStation.getReachIncrease()     TStation.refreshData()
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@263 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-26  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@262 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Erste Version von TPopulartity und TPopularityManager
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@261 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-25  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@260 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-22  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Newsbloecke koennen nun wie angedacht mit Rechtsklick geloescht werden - Gui-Elemente: GetScreenRect beachtet nun den "dragged"-Status bei Objekten ohne Elternelement - Spielfiguren koennen waehrend der "Raumwechselanimation" (in einen Raum) nicht mehr bewegt werden - Finanzen uebernehmen beim Tagwechsel nun korrekt die Daten vom Vortag - Klick-Events von Gui-Elementen werden nun direkt getriggert statt "irgendwann" beim naechsten Event-Update verarbeit zu werden - Gui-Listen-Methode SetItemToSlot setzt "parent" nun auf ScrollPanel statt Listen-Gruppe - Ist ein Programm zu teuer, wird der Preis nun hervorgehoben - Archiv und Filmhaendler - Handling der Programmbloecke nutzen nun GUI-Listensystem und Events. - Filmhaendler- nicht bezahlbare Programme koennen gar nicht erst aufgenommen werden. Wird waehrend des "aufgehoben"-Zustandes das Geld knapp, kommt beim Versuch des Kaufens die bereits bekannte Geld-Reicht-Nicht-Meldung und das Objekt wird wieder im Regal verstaut - Filmhaendler - Filme koennen nun mit einem "Drop" auf das Regal oder den Haendler verkauft werden (der Haendler wird in diesem Fall "hervorgehoben") - Archiv - Filme koennen nun mit einem "Drop" auf den Typen zurueck in die Spieler-Programmsammlung genommen werden - Serien-Videohuellen haben nun eine eigene Farbe um etwas mehr Uebersicht zu erlauben - Figuren erzeugen nun rooms.onEnter-Event wenn sie einen Raum betreten, dadurch ist der Vorgang unterbrechbar
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@259 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-22  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Neues Feature: - KI: Die KI wartet nun eventuell (abhängig von der Prio der Aufgabe) ein paar Sekunden vor einem Raum (sie bewegt sich ein paar Pixel zur Seite neben die Türe). Bricht die Warterei aber dann auch eventuell wieder ab.
+	Gefixt:
+	- KI: Es wird nun darauf reagiert, dass ein Raum besetzt sein kann.
+	- BM: Messagebox hat beim schließen nen Fehler geliefert
+	- BM: md_getMovie - es wird geprüft ob Block.Programme existiert um ggf. nen Fehlercode zurück zu schicken
+	- BM: Rechtschreibfehler
+
+	Neue Methoden:
+	- BM: GoToCoordinatesRelative / doGoToRelative - um die Figur relativ zu ihrer Position ein paar Pixel zu bewegen
+	- BM: isRoomUnused - damit eine wartende Figur prüfen kann, ob der Raum jetzt leer ist.
+
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@258 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-09  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Werbebloecke mit zuwenig Zuschauern werden nun in rot dargestellt - Tooltip fuer aktuelles Programm/Werbung enthaelt nun Hinweis auf Folgeprogramm/Werbung
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@257 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Werbe-Datenblatt zeigt nun an, wieviele Bloecke dieser Werbung bereits eingeplant worden sind (inklusive Aktualisierung der Datenblattgrafik)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@256 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-04  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Unscharfe Schrift bei Programmplanung entfernt (int-XY beim Zeichnen) - DefaultAIPlayer.lua - Lua-Error entfernt, der auftreten konnte, falls die KI das Programm zu einer spezifischen Zeit abrufen wollte, aber dort keines gesetzt ist - Zeilenumbruch bei bitmapfont.drawBlock korrigiert (vorher wurde er nur registriert, wenn die Zeile "davor" zu lang/breit war). Engine reagiert nun auf Blitz-Internes "~n" was dem systeminternen Zeilenumbruch entspricht - TGUIModalWindow - fuer Spielmeldungen, Fenster laesst andere GUI-Elemente die Mausbewegungen/-klicks ignorieren (bzw markiert, dass ein Modalfenster vorhanden ist). Simple Fadeout-Animation eingebunden - Bild-Auf/-Ab im Programmplaner wird nun "immer schneller" wenn die Taste gedrueckt gelassen wird - Klicks in der Raumuebersicht (Fahrstuhl) werden nun korrekt ausgewertet - Tooltip-"Fadeout"-Zeiten haben nun als Minimumwert die Haelfte der Darstellungszeit - verhindert "Tooltip blendet schon von Anfang an aus" - LUA-Docs erneuert - TMouseManager: neue Methode "isClicked". Reagiert erst bei Loslassen des Mousebuttons, statt schon beim Druecken
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@255 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-08-01  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Callin-Gewinn wird nun korrekt berechnet (RandRange(5,2) <> RandRange(2,5)) - Film-Shift-Shortcut-Fehler behoben (GetNextEpisode checkt nun <0) - Der aktuelle Programmplanertag laesst sich mit PageUp/Down steuern - Nachrichtenquote wurde ueberarbeitet (die News bilden nun jeweils einen Leadin fuer den Nachfolger - Luecken sind von nun an boese :D)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@254 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-07-31  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- EXCEPTION_ACCESS_VIOLATION bei Spieleinstellungen behoben - Tooltips - sollten nun korrekt positioniert sein (Sichtbarkeit-Limitierung war fehlerhaft) - Dev-Shortcuts nun nur noch gesperrt, wenn ein Chat-Eingabefeld aktiv ist - Programmplanung: Werbung - Rechtsklick wieder aktiviert - Einnahmen der Werbung korrigiert: "GetSpotsToSend" =/= "GetSpotsCount" - Nachrichtenquoten: Berechnung nun wie bei Filmen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@253 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-07-30  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Adblockhandling korrigiert - Werbebloecke und Programmfolgen koennen nun mittels Strg/Ctrl gesetzt werden. Shift versucht die naechste Episode, Ctrl die gleiche Episode zu setzen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@252 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-07-28  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Nachrichtenagentur bringt nun Filmnachrichten - Nachrichtenketten sind nun effizienter verwaltet, Wiederholungen sollten nun seltener auftreten
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@251 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Tooltips fuer Geld und Betty integriert - Finanzueberblick korrigiert - erste Codezeilen fuer neues Videohuellen-Handling
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@250 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-07-08  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Chat sitzt nun "unten rechts" (und nur im Netzwerk sichtbar) - Ufo und Mond bewegen sich nun wieder korrekt - Neuer Pfad: TCatmullromspline (fuer Mond und Ufo benutzt) - Hintergrundhaeuser sind nun nachts etwas heller - Spielfiguren nun an anderen Startpunkten - GuiElemente - alte TGUIList entfernt - Ufografik hat im Hochhauspack nun mehr Abstand (verhindert "flickern") - Wolken haben nun leichte Alpha und Helligkeitsunterschiede - Netzwerk: weitere Bereiche korrigiert und ueberprueft (einige Dinge wie "SendProgramme" entfallen nun, da sie von ProgrammeCollectionChange integriert werden)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@249 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-27  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Die Newsverteilung im Netzwerk an GUI-Events angeknuepft - Packaging-Code der Netzwerpakete gefixt (Blitzmax-Integer/strings/floats kennen kein richtiges  "NULL" - sind dort 0,0.0 und "") - Abfrage der KI-Kontrolle geaendert (da Netzwerkspieler keine AI laden gab es dort Zugriffe auf Null-PlayerKI)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@248 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-26  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Achtung: Der Kommentar ist alt... ich hoffe die Hälfte stimmt noch..
+	- Beim füllen des Programmplanes werden nun Spot-Engpässe zu Anforderungen an die AdAgency gestellt
+	- Die AdAgency versucht die Anforderungen zu erfüllen und stellt wiederum Anforderungen an die Programmplanung die dann erfüllt werden.
+	- Es wird nun versucht, dass sich Programmausstrahlungen sich nicht so oft wiederholen... allerdings ist dies manchmal unabdingbar (dafür auch die Methode "HowOftenProgrammeInPlan")
+	- Das Ersetzen von Werbesendungen funktioniert nun einigermaßen. Da gibt's wohl noch nen Bug im BlitzMax-Code
+	- Das SLF um ein paar nützliche table-Funktionen erweitert
+	- BUG gefunden: Die Darstellung der gesendeten Werbeblöcke im Programmplan ist fehlerhaft... die Sendezahlen (Numerierung) stimmen nicht.
+	- BUG gefunden: So wie es aussieht wird die Zahl der Werbeeinnahmen in der Bilanz wird um den Faktor 10 zu hoch angezeigt. Also statt 1.500 kommt 15.000
+	- BUG gefunden: "of_doSpotInPlan" setzt keine Spots die am nächsten Tag gesendet werden sollen. Filme funktionieren aber - Spots nicht.
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@247 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-26  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- ThreadedBuilds etwas ueberarbeitet, so sollte zumindest der Win32-Build ueber das Hauptmenue kommen - TProfiler sollte an den kritischen Stellen nun Threadsafe sein - Events koennen einen "channel" haben (die 1 ist fuer system-events, werden diese von einem subthread direkt getriggert, kommen sie ans Ende der normal abzuarbeitenden Liste)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@246 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Beim Mehrspielermodus wird beim Join nun der Zufalls-"Seed" gesetzt - Programme/Genres haben nun individuelle Abnutzungs-/Auffrischungsfaktoren (nun kann fast den ganzen Tag Trash gesendet werden :D) - globale Variable "Players" sitzt nun im TGame-Objekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@245 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-24  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Netzwerk funktioniert wieder (in Grenzen :D - aber starten und rumlaufen etc. funzt)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@244 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TTimer in TIntervalTimer umbenannt (TTimer wird von Blitzmax schon benutzt - fuer Systemtimer) - Linux nutzt nun BufferedGL
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@243 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Threaded builds sollten nun auch korrekt die FPS limitieren
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@242 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-23  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Eventsystem unterstuetzt nun auch Methoden-Listener (-> verschiedene Chat-Listener) - Chats nutzen nun neue GUI-Systeme - InGame-Chat ueberarbeitet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@241 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-21  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Chat-Guiobject angelegt (aber kein gui-basiselement, deswegen in gamefunctions) - Changelog-Script eingefuegt - Rueckgabewerte bei bitmapfont-Zeichenfunktionen generalisiert auf TPoint (erspart returnValue-parameter und unsichere Castings)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@240 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-19  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@239 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	-win build
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@238 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-14  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Sichtbarkeit der Newsbloecke limitieren
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@237 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-13  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Umstellung des Newsblock-Handlings (Events...) - neue Events - Ueberarbeitung der Newsblockgrafik
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@236 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-06  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Fix fuer GUI - TGuiScrollablePanel verwalten nun virtuelle Flaechen - Klicks auf Kinderelemente dieser Panele werden nun korrekt registriert bzw ignoriert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@235 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-05  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- GUIListItem-Sortierung
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@234 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Gui-Elemente angepasst (DnD-Events) und unnoetige Felder entfernt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@233 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-02  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Fehler in der Newsblock-Routine behoben (Bezahlung, korrigierte Slotnummer) - News koennen nun in der Vergangenheit entstehen (genutzt in neuem "Game.onStart"-Event um Nachrichten zum Spielstart bereitzustellen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@232 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-01  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- weiteres Coderefactoring (Actual*->Current*), eigentlich nicht notwendige Felder (Game.day,hour,minute...) entfernt und entsprechende Getter angepasst - LUA kann nun per TVT.addLog(text) eigene AI-Logs ausfuellen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@231 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-06-01  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Kleine KI-Fixes im Scheduling - KI-Pause-Funktion
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@230 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Die grundlegende KI funktioniert!!! Zumindest alle 4 grundlegenden Elemente: - Filme kaufen - Nachrichtenagentur - Werbeverträge schließen - Filme und Werbespots in den Programmplan setzten Spieler 2 arbeitet diese 4 Aufgaben der Priorität folgend ab. Ob der Spieler so schon überlebensfähig ist, wird sich zeigen. Aber der jetzige Stand ist auf jeden Fall ein Erfolg!
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@229 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-05-31  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Refactoring: Programme/News/Ad-Block basieren nun auf TBlockMoveable was X,Y,Width,Height nun in TRectangle abkapselt (und deren Hilfsfunktionen nutzen kann).
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@228 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-05-31  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@227 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@226 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-05-31  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Docs aktualisiert - Dateien weiter aufgeraeumt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@225 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	-  Fix Threadedbuild
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@224 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Anpassungen zum "News setzen" durch die KI (ungetestet) - Bugfix: In fremden Newsraeumen bekam man keine News angezeigt (vom Update-Handling ausgesperrt)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@223 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-05-31  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Ein paar kleine Fixes an SFX und Musik - Vorbereitungen für NewsAgency-Unterstützung der KI
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@222 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-05-30  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Merge mit Sound-branch
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@221 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@220 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@219 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Für noch ungenutzte Files die im trunk oder brunch stören
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@218 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@217 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@216 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@215 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@214 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2013-05-30  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Aufraeumarbeiten - Datenbank-Export enthaelt nur eigene Daten und Fakedaten - Anzeigefehler bei Werbevertraegen behoben
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@213 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Standard "Frontansicht" bei den Figuren wieder eingebunden (sonst konnte man den Moonwalk bei einigen Figuren erleben)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@212 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-12-23  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Persistence-Modul nochmal aktualisiert (1.00-Release vom Autor) - Bugfix bei grossen Objekten (signed, unsigned int)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@211 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-12-22  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Persistence-Modul aktualisiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@210 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-12-12  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Kleinen verflixten Bug in _SetInRoom gefixt ;)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@209 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Merge
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@208 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-30  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Weitere Verbesserung des Türsounds - Das Laufen hat nun einen Sound
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@207 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-23  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Neue Türsounds und Problemeatik mit besetzten Räumen behoben (Soundtechnisch)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@206 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-20  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Türe öffnen und schließen sollte jetzt korrekte Soundeffekte haben
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@205 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-20  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Aufraeumarbeiten - Figuren die einen eigenen baer besetzten Raum betreten, kicken die andere Figur nun per "TFigures.KickFigureFromRoom" raus -> hier Soundansatz moeglich, alternativ an das "room.kickFigure"-Event anhaengen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@204 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-19  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Raumplaner wieder "erreichbar" - Alle derzeitigen Raeume auf RoomHandler umgestellt (Raeume mit Unterraeumen benutzen die Screen-Events statt der Room-Events) - Raumdefinitionen fast komplett auf XML ausgelagert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@203 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- weitere Raeume auf Events umgestellt - GUI-Elemente triggern nun mehr Events (onDraw etc.) - NewsButtons mit normalen TGUIImageButtons ersetzt -> Events zu Verarbeitung genutzt - kleinere Hilfsfunktionen eingebaut
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@202 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-19  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Erste Tests mit dem Türsoundeffekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@201 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-19  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Neue Objekte "TScene" und "TSceneManager" loesen TRooms.background ab -> es soll keine "Unterraeume" mehr geben, jeder Raum kann seine Szenen managen lassen -> Ein Raum bleibt besetzt, auch wenn ein "Unterscreen" besucht wird ---> die Szenen emittieren Events auf die dann eigene Handler aufbauen koennen (bspweise onDrawOffice - um tooltips auf das Szenenbild zu zeichnen) - GUIImageButton um Label und anderes erweitert - TPPButton mit GUIImageButton ersetzt - weitere kleine Aenderungen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@200 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Beim Aussteigen laufen die Personen im Fahrstuhl nun auch wieder zur "Mitte" - Tooltips: da hat jemand im Fahrstuhl die Raumtooltips deaktiviert...tztztzt :D hab sie in die Building-Update/Draw-Methoden reintegriert - Tooltiphandling-Fehler bei den Raeumen behoben (Abbruch der Forloop sobald das gehoverte gefunden wurde...verhindert Update der anderen aktiven) - Raeume koennen nun besetzt sein. Ist man Besitzer des Raumes und der eigene Raum ist von einem anderen Spieler besetzt, schmeisst man diesen hinaus SUB-Raeume muessen sich selbst drum kuemmern, ihren Elternraum als "besetzt" zu markieren.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@199 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Testcommit
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@198 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Elevator.waitAtFloorTime(r) in einen TTimer umgewandelt - neue TTimer-Methode: getTimeUntilExpire
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@197 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Merge aus dem trunk
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@196 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Figuren bewegen sich nun im Fahrstuhl statt zu "schweben"
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@195 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Reintegrate vom NewElevator-branch durchgeführt.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@194 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Die Prints von AIEngine temporär deaktiviert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@193 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Das unnötige Copy in RemoveIgnoredRoutes entfernt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@192 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Türe des Fahrstuhls bleibt jetzt länger auf
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@191 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Aktualisierung aus dem trunk
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@190 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@189 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Versucht etwas Sturktur in basefunctions_sound.bmx rein bringen... naja... bisher nur "versucht" ;) Da gehlt noch etwas. - TSfxChannel realisiert... eine Art Wrapper für einen TChannel der um weitere Funktionen und Status-Felder erweitert wurde. Vereinfacht die Datenhaltung von zusätzlichen Infos zu TChannel. Man könnte noch prüfen ob man von TChannel ableiten darf - TDynamicSfxChannel ist eine Ableitung von TSfxChannel und beinhaltet die Logik für die räumlichen Soundeffekte. - Von TSoundSourceElement müssen alle Soundquellen ableiten welche die räumlichen Soundeffekte nutzen möchten.
+	Später eventuell noch ne gamefunctions_sound erstellen in welcher die TVTower-spezifischen Soundklassen sind anstatt sie überall zu verteilen.
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@188 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Aktualisierung aus dem trunk
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@187 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-18  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Roomhandling vom Buero ueberarbeitet: EventHandling-Registrierung vereinfacht, Safe hinzugefuegt, Image/Financials wieder aktiviert (war auf "Hintergrundbild zeichnen" statt Individualhandling)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@186 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- wird mal Zeit
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@185 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-17  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Elevator aufgeräumt und getestet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@184 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-16  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Aktualisierung (Merge) aus dem trunk
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@183 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Aktualisierung (Merge) aus dem trunk
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@182 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-16  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Werbepreisberechnung etwas ueberarbeitet ("bessere Preise") - Bug mit dem Raumplaner (FahrstuhlI) behoben
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@181 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Fix in TAnimation und den entsprechenden Spriteobjekten - verhindert "flackern" wenn die Animation nur aus einem Frame besteht (bspweise DoorOpen beim Fahrstuhl)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@180 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-16  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Aufräumarbeiten im Elevator - Fix in basefunctions_sprites.bmx ... die Animation (TAnimation) hat ne neue Option mit welcher der letzte Frame eingefroren werden kann, dadurch lässt sich Flackern durch das Zeichnen von falschen Frames verhindern. Ist praktisch wenn zwischen dem Ende der Animation und dem Start einer Neuen Draw aufgerufen wird.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@179 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-15  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Erste einigermaßen lauffähige Version der neuen Elevatorklasse. Muss aber noch aufgeräumt und optimiert werden.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@178 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-14  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@177 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@176 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-13  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- LibPulse fuer Linux noch importiert - dann klappts auch mit dem Kompilieren (und Ton D:)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@175 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- anpassungen am sound + windows module
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@174 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-12  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- maxmod2-mod aktualisiert (um PulseAudio-Support erweitert, automatische Initialisierung entfernt - damit kein FreeAudio "versucht" wird und bei gleichzeitiger Musikwiedergabe den Ablauf sperrt) - Code angepasst um wieder alles lauffaehig zu gestalten
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@173 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- MaxMod2.mod -Modul integriert (bitte compilation_guide.txt folgen) - TMusicStream-Objekt ermoeglicht streamen von OGG-Dateien (Pfad -> von HDD, per LoadBank vom RAM)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@172 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-11  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Nochmal Fahrstuhl-Fix. Jetzt wird direkt die Fahrstuhlliste überprüft ob die Person auch wirklich drin ist.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@171 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Sound in ein eigenes File ausgelagert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@170 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@169 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Fahrstuhlgeräusch hinzugefügt - Neues Feature: bewegliche Geräuschquellen aktualisieren sich - rudimentäre 3D-Verortung der Geräuschquelle. Dies beeinflusst ober die Geräusche von links oder rechts kommen... aber auch die Raumtiefe (für 3D-Sound) Depth - TPoint habe ich eine Z-Koordinate hinzugefügt, welche ich für die Geräuschquellen verwende. Wird jetzt beim Fahrstuhl verwendet: Dieser liegt jetzt geräuschtechnisch in der Tiefe/Hintergrund. Ist aber auch für das UFO einsetzbar, dass wenn es hinter oder vor dem Hochhaus schwebt für andere Depth-Werte sorgt.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@168 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-11  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- TContract anders konzipiert -> Datenbank-Eintraege nun in TContractBase -> Contract referenziert diese Eintraege, beim Unterschreiben werden Base-Werte genutzt -> Adblocks nutzen die TContract-Vertraege - einige Eigenschaften fuer Lua verfuegbar gemacht (evtl auf Getter umstellen wenn gewuenscht) - Anpassungen in den LUA-Scripts durchgefuehrt (fuer AdBlock-Aenderungen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@167 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-11  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- CheckElevatorStatus nachgebessert - Überlegungen zur Optimierung des Fahrstuhls
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@166 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Fahrstuhl-Fix: CheckElevatorStatus
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@165 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-10  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Erste Implementierung von Musik und SFX (nur Fahrstuhl-Bing) ;)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@164 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-09  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Rueckgabewerte der KI-Funktionen (sa_dogetspot...) liefern nun Konstanten zurueck (TVT.RESULT_OK, TVT.RESULT_WRONGROOM, TVT.RESULT_NOTALLOWED ...) - "Errorwerte" sind immer negativ (da ID-Rueckgaben etc positiv sind).
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@163 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-09  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@162 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@161 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@160 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Das Setzen der Werbeblöcke optimiert - Fixmethode für Stunden (und Tage) die hochgezählt werden. Also 25. Stunde => 1 Stunde +1 Tag - TPlayerProgrammePlan.GetContractBroadcastCount realisiert - Lua-UnitTests erweitert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@159 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-08  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- kleinere Korrekturen am vorherigen Commit, TFigures benutzt nun weniger Felder (und mehr von denen aus der Elternklasse)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@158 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- weiteres Refactoring - TFigures basiert nun auf dem neuen TMoveableAnimSprite, was wiederum auf TAnimSprite basiert -> Animationssets koennen bequemer konfiguriert werden (idle-Animationen etc.)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@157 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Refactoring von TPosition (TPoint und TRectangle mit entsprechenden Hilfsfunktionen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@156 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-07  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Jetzt wird auch Werbung in den Programmplan gesetzt (Notfallmodus)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@155 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TPlayerProgrammePlan in Lua verfügbar gemacht - Einige weitere Funktionen in Lua verfügbar gemacht - Neue Methoden in TContract: GetAcuteness, SendMinimalBlocksToday, SendOptimalBlocksToday - Ein Problem in basefunctions_lua.bmx gefixt, dass im Falle von Null-Werten auftrat. - TaskSchedule kann nun die ersten Filme in den Programmplan setzten. Dies passiert in JobEmergencySchedule -> Das ist sozusagen das Notfallprogramm
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@154 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-11-06  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	aktuelle LinuxBinary (svn-write-Test)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@153 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-10-19  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Schriften ausgelagert - Tooltip im Hochhaus korrigiert (kurzzeitig verschoben gehabt) - Raeume-Behandlung in eigene Klassen ausgelagert - Chef-Dialoge in Lang-Dateien ausgelagert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@152 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-10-12  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Manuels neue Funktionen zu Methoden umgebaut, etwas gekuerzt und gegen div 0 geschuetzt - die neuen Funktionen LUA bereitgestellt - Events koennen "veto" setzen - Refactoringbeginn (uniqueID-Felder zu "id", hookFunktionen werden zu Events ...)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@151 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-10-11  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@150 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Aufräumarbeiten für das Spot-Objekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@149 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Aufräumarbeiten für das Spot-Objekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@148 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Aufräumarbeiten für das Spot-Objekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@147 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-27  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Tuer-Offen-Zustand korrigiert (wenn ins Zimmer rein - und nun auch wenn raus :D) - Filmwertberechnung ueberarbeitet - generelle TTimer-Klasse angefangen und an TRooms ausprobiert (Tuer-Offen-Timer)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@146 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TProgramme enthaelt nun neue Eigenschaft "refreshModifier" - Multiplikator fuer Erholung bzw Teiler bei Senden von Programmen -> Prog.GetRefreshModifier() - TProgramme enthaelt nun GenreRefreshModifier, gleiches wie refreshModifier nur zusaetzlich und auf Genre-Basis (Komoedien erholen sich schneller) -> Prog.GetGenreRefreshModifier(genre=-1) - Doc aktualisiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@145 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Auktionstooltip und Hinweistext in Sprachdateien ausgelagert - ShowSheet fuer TAuctionProgrammeBlock integriert - Auktionsfenster zeigt nun Filminformationen fuer Auktionsprogramme an - Darsteller werden bei Filminformationen ausgeblendet wenn nicht vorhanden (inkl. "Darsteller:") - Zeilenabstaende der TBitmapFont nun per obj.lineHeightModifier einstellbar - Zeilenabstaende bei allen Texten auf 0.2*Zeilenhoehe verringert (von 0.4)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@144 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Freigabe TProgramme.GetEpisodes() und .GetEpisode fuer LUA
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@143 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Fehler im "DrawPixmapOnPixmap" behoben (floats und ints zu mischen birgt Gefahren :D) - kleinere Anpassung bei den "Text"-Spritecaches, und TBitmapFont hat nun drawToPixmap-Eigenschaft (Renderziel) - CopyImage2 - kopiert ein Bild (neue handles, refcounter etc) - "Colors" und "Color"-Resourcen werden nun von einem Loader verwaltet - TColor liefert bei vielen Methoden sich selbst zurueck (fuer Create(r,g,b).addList().setRGB() etc.)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@142 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-27  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Noch mehr Aufräumarbeiten und Modernisierungen. Die LUA-Movie-Klasse ist rausgeflogen... alle Funktionen verwenden jetzt die BlitzMax-TProgramme-Klasse. Dazu habe ich noch ein paar kleine Erweiterungen an TProgramme vorgenommen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@141 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-26  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@140 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-26  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- von Todo: Stationmap-Konfiguration in xml "stationmap.xml" ausgelagert (Bundeslaender, Dichtekarte) - Resourcenmanager: defaultName fuer LoadPixmapResource und LoadImageResource macht Name setzbar fuer Module die Resourcen laden wollen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@139 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- von ToDo: TPlayerColor-creation in XML auslagern - Colors/Color als Resourcentyp eingebunden, Colors werden als Liste in den Assets gespeichert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@138 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Kolorisierungsfunktionen erwarten nun TColor statt R,G,B - Kolorisierungsfunktion ColorizeTImage korrigiert (RGBA-Farbe statt ARGB) und reduziert ( = schneller) - Kolorisierungsfunktion ColorizedImage entfernt (gleich zu ColorizeTImage) - RenderToTexture entfernt (war nur fuer DirectX moeglich)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@137 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TPlayerColor mit TColor verschmolzen (und einmalig genutzte Funktionen umschrieben) - TPlayerColor entfernt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@136 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-23  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- GUIElemente ueberarbeitet (GUIPanel, GUIBackground, GUI...) - GUIElemente koennen nun parenten, sortieren sich nun korrekt - weitere GUIElemente-Events - Chat-GUI-Integration umgeschrieben - Events haben "veto"-Moeglichkeit (wenn sie false zurueckgeben, dann ist Stopp) - Sprachdateien angepasst (avaiable = available) - AI-Fehler in der test-AI behoben - ...
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@135 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-19  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@134 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@133 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@132 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@131 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Aufräumarbeiten
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@130 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-19  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Docs aktualisiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@129 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-09-18  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Ladebildschirm ueberarbeitet (Ladezeit verkuerzt da fuer jeden "Ladevorgang" ein GFX-Flip stattfand) - Ladescreen per Event eingebunden - Guielemente weiter ueberarbeitet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@128 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Vereinfachungen im Datenhandling eingefuehrt, GUIObjekte etwas aufgeraeumt (da fehlt noch einiges an Ueberarbeitung)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@127 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-08-08  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Quellcode vom Keymanager und von den GUIElementen ueberarbeitet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@126 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-08-06  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Gui-Elemente nutzen nun Eventsystem fuer clicks
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@125 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-28  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Loop ueberarbeitet - Threaded-Compile war nicht moeglich (bbGCfree undefined) - irgendwie fehlt den .c-Dateien die Threadedinformationen in meiner Lua-Klasse (maxLua ist baugleich, aber Module scheinen die Information zu haben).
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@124 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TDeltaTimer und Loop ueberarbeitet (limitiere FPS nun per App.Create(ups,maxFps), ist maxFPS < 0 dann ohne Limit).
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@123 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-26  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Stationmap-Konfiguration ausgelagert (Vorbereitung um das Land in dem gesendet wird mod-bar zu machen) - AssetManager beinhaltet nun den Fontmanager als "fonts" - AssetManager.GetPixmap und .GetFont implementiert - FontManager setzt nun defaultFont/baseFont beim ersten Einsatz von AddFont
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@122 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-25  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Resourcen umsortiert (hochhaus gfx in gfx_hochhaus.xml) - CheckLoadImage entfernt (wird nicht mehr genutzt) - Ladebildschirm nutzt nun schon inGame-Mauszeiger
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@121 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- EventManager.TriggerEvent braucht nun keinen "triggerstring" mehr (es wird der vom getriggerten Event genutzt). - Vorbereitung fuer Auslagerung der Resourcen-Loader in ihre Typen (weg vom generischen Loader)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@120 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- flip auf flip 0 im ladebildschirm gesetzt (sonst maximal 60 "lade informationen" pro sekunde - bei 350 objekten sind das 6 sekunden ladezeit statt 1-2 bei ohne Limit) - mehr Ladeinformationen eingebunden
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@119 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-24  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Ladescreen ueberarbeitet (barsprite) - "CheckLoadImage" triggert nun einen Event genauso wie der Resourcenloader - TApp hoert auf diese und bringt einen Ladebildschirm.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@118 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-23  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Datenbank erweitert - weitere Vorbereitung fuer Einsatz Eventsystem
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@117 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- ResourceManager auf EventSystem vorbereitet (Gartenarbeit :D)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@116 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TProgramme.ShowSheet hatte den Beschreibungstext 2x gedruckt (einmal ohne Hoehenbeschraenkung) -> FPS-Vergeudung
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@115 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Localization - alle keys lowercase bei insert und get - stationmap: imageCollide entfernt und mit pixel-check nach rectangle-check ersetzt (und nur bei Mausbewegung) - ermoeglicht bequemen Einsatz von TGW_Sprites - kleinere fixes/Anpassungen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@114 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-22  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- AIEngine.lua task-error per nil-Check entfernt (entfernen wenn wieder funktionstuechtig @ Manuel) - Rauchpartikel beim Chefraum - nun Textur statt dynamischer Grafik - files.bmx-Inhalt in main.bmx geraeumt (teils in Tapp)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@113 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-19  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Neue KI-Methoden überprüft und paar kleine Bugs korrigiert.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@112 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-15  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- docLuaOnly.html hinzugefuegt (exportiert nur fuer Lua erreichbare Felder)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@111 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- leicht gefilterte "Dokumentation" hinzugefuegt (/doc.html)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@110 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- LUA: wenn man Objekt-Eigenschaften ueberschreiben will, ist dies nun nur noch moeglich wenn diese die Metadaten {_exposeToLua="rw"} besitzt, ansonsten ist nur Leserecht eingeraeumt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@109 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TVT.md_getAuctionMovieBlock(ArrayID) eingefuegt, ermoeglicht direkten Zugriff auf obj.GetProgramme() obj.GetHighestBidder() obj.GetNextBid() obj.SetBid() --- Ersatz fuer TVT.md_GetAuctionMovieHighestBidder() etc.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@108 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-15  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- TTooltip-Handling korrigiert, die Lifetime ist nun die Lebenszeit inklusive einer globalen "Fadetime" (derzeit 200ms) - behebt Fehler von "fehlenden" Tooltips bei Filmhaendler etc. - "Zwinkern" beim Filmhaendler + "Glow" von diesem gefixt - Auktions-Handling korrigiert (SetBid) und neue Hilfsfunktionen eingebunden (getHighestBidder, getNextBid,...) - Vereinheitlichung bei TRooms:  getRoom->getRoomByDetails und getRoomByID->getRoom - "eurozeichen" mit Constant CURRENCYSIGN:string = Chr(8364) ersetzt da sonst nur mit UTF16 (und somit BOM im Dateiname) ein korrektes Eurozeichen genutzt wurde. LINUX-tested (evtl unter Windows anderer Code ?) - Lua-Hilfsfunktionen angepasst conObj = TVT.getContract(id) TVT.SpotAudience(spotID)	-> conObj.GetMinAudience(overwriteOwnerID) TVT.SpotToSend(spotID)		-> conObj.GetSpotCount() TVT.SpotMaxDays(spotID)		-> conObj.GetDaysToFinish() TVT.SpotProfit(spotID)		-> conObj.GetProfit(overwriteBaseValue=-1,otherPlayerID=-1) TVT.SpotPenalty(spotID)		-> conObj.GetPenalty(overwriteBaseValue=-1,otherPlayerID=-1) TVT.SpotTargetgroup(spotID)	-> conObj.GetTargetGroup() (... bzw GetTargetGroupString(overwriteGroup) fuer Text) - neue Lua-Hilfsfunktionen: TVT.md_doSellMovie(id), TVT.md_getAuctionMovie(ArrayID), TVT.md_getAuctionMovieCount(), TVT.md_doBidAuctionMovie(ArrayID), TVT.md_GetAuctionMovieNextBid(ArrayID), TVT.md_GetAuctionMovieHighestBidder(ArrayID)
+	- AI-Scripte darauf angepasst
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@107 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-15  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- LUA-Objekt "DB" mit "TVT" ersetzt (globale Programme: TVT.GetProgramme statt DB.GetProgramme) - denke es erspart eine weitere Globale
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@106 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-14  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Manche Dateien hatten schon wieder den falschen Mimetyp... ihr wollt mich aergern!
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@105 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Dateitypen korrigiert (es war teilweise unicode BOM geschrieben und damit die Kodierung fehlerhaft)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@104 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TVT-AI-Helferfunktionen mit den Objekteigenen ausgetauscht - weitere Objekteigenschaften fuer LUA freigegeben - einige Hilfsfunktionen umbenannt (getActualHour -> getHour, ...)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@103 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-13  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	MimeType korrigiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@102 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-07-13  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- KI übt die Programmplanung - Kleine Erweiterung in ComputeAudienceQuote - Neu: ComputeQuality bei den Filmen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@101 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-06-27  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Weitere Freigaben fuer Lua - neue Funktionen fuer die ProgrammeCollection
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@100 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Lua-Anbindung ueberarbeitet (_exposeToLua) - relevante TPlayer-Felder/Methoden fuer Lua freigegeben
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@99 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-06-26  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- basefunctions_lists.bmx (TObjectList) entfernt, Performancegewinn vgl. mit TList kann anderweitig erreicht werden
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@98 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-06-22  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	commit test (+ doc-tool Kommentare)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@97 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-05-23  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	KI kauft jetzt Filme ein *yeah* ;)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@96 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-28  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Weitere Anpassungen an den Objekten die fuer Lua freigegeben werden + neue Methoden fuer getEpisode/getEpisodes/getProgramme ... siehe test_base.lua
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@95 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	-  Lua-Engine kann nun Array-Ergebnisse von Blitzmax-Funktionen verarbeiten - LUA: MY.ProgrammeCollection.getContracts() liefert eine Lua-Tabelle (zero based) mit Vertraegen zurueck
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@94 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-27  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Anpassungen an der LUA-Engine, Vorbereitung an "private"-Deklaration und kompletter Freigabe von Objekten an die Scripte
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@93 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-27  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Hausmeister korrigiert (Update-Routine) - er nutzt nun wieder den Fahrstuhl
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@92 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-26  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Erste Version des TaskMovieDistributor. Grundlegende Filmberwertung realisiert.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@91 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-25  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@90 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-20  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Fahrstuhl: Raumplaner auf neue Methodik umgestellt (blockiert Fahrstuhl -> fuer Netzwerk notwendig) - Fahrstuhl: Eine sendende Figur sollte keine Routen von der gleichen Etage mehr entfernen - Reihenfolge der Positionskorrektur einer Figur im Fahrstuhl angepasst (erst Fahrstuhl-Y, dann Figur :D)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@89 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-20  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Die Bewertungslogik der AdAgency ausgetüftelt. Diese muss jetzt noch im Praxistest überprüft werden.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@88 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-12  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Fahrstuhl-Route korrigiert (letzter Eintrag wurde ueberschrieben wenn Zieletage gleich war - unabhaengig von Person)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@87 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- sa_getspotcount - liefer nur noch die zurueck, die owner = -1 haben (makler) - sa_dobuyspot - reagiert nur, wenn owner < 0
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@86 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-12  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Es wird nun für Player 2 wieder meine DefaultPlayer-KI geladen - Lua-Script wieder zum laufen gebracht - Erste Implementierung der Spotbewertung - TaskAdAgency um erste Entscheidungslogiken erweitert - Alte Doku herausgesucht und committed - StatisticEvaluator "herausdestilliert" und in AIEngine eingefügt - Fehler im Zusammenhang mit den Job-Status  und Jobabarbeitung korrigiert - OnDayBegins grundlegend integriert - In Blitzmax die Lua-Fehlerausgabe deutlicher hervorgehoben
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@85 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-08  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Dialog-Funktionen ueberarbeitet und "MouseOver-Displace"-Bug entfernt - Sprite-Font-getBlockHeight-Funktion korrigiert - Netzwerk-Disconnect-Debugprint implementiert (Netzwerk-Dropn nach X Minuten ohne "Grund")
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@84 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-07  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Werbemakler: Refill-Bloecke hatten falsche Slots (Vertrag im Koffer "schwappt" zurueck auf den Tisch, neuer Vertrag im Koffer wird angelegt -> ermoeglicht einfaches hinzufuegen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@83 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Schnelle Spielgeschwindigkeiten oder unguenstige "Minuten-Fliesszahlen" konnten dafuer sorgen, dass Stunden-Events nicht gesendet wurden/Stunden erhoeht wurden (skip von 59 zu 01 an Minuten)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@82 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Kredite auch zum Folgetag uebernehmen (+ Methoden abstrahiert) und Kredit beim Nehmen in die Statistik aufnehmen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@81 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Finanzen wurden beim Tageswechsel nicht "uebernommen" - dadurch immer Reset auf Basiswerte...
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@80 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Werbung: Zum Werbemakler hinzugefuegte Werbungen sind fuer den Durchschnitt der 4 Spieler gedacht (Durchschnittsreichweite -> 35% MA von diesem als Maxima-Kriterium)  eventuell sollte aber jeder Spieler sein eigenes "Maklerangebot" bekommen (sonst kann ein "Pechvogel" nicht mehr aufholen, weil keine Werbung im Angebot)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@79 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@78 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- etwas realistischere Werbe-Preise/Strafen (auch wenn sie immernoch zu hoch vgl. zur Realitaet sind) - Datenbank enthaelt bei Werbung noch die "fixedPrice"-Variable (fuer Festpreiswerbung) - Sprachdateien angepasst (Tag, Tage... Anzeige bei Werbevertraegen) - runden von Werten angepasst (<1 Mio macht 100.122 - also Punkte in die Tausender) -2 KI-Events an neue Werbevertragsmethoden angepasst
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@77 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Tooltips im Nachrichtenraum gefixt (erst updaten, dann lifetime resetten wenn mouseover) - Abo-Buttons im Nachrichtenraum reagieren nun korrekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@76 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-06  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- activeKI entfernt - ki.inroom entfernt (ueber spieler erreichbar und bisher ungenutzt) - KI-Events aktiviert : CallOnMoneyChanged(), CallOnDayBegins(), CallOnLeaveRoom(), CallOnReachRoom
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@75 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-05  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- "_" zuviel des Guten - entfernt - Debugausgabe fuer ContractsToPlayer rausgenommen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@74 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Neue LuaEngine gebastelt (jede KI eine eigene Instanz) - LUA-Funktionen fuer Spieler gekuerzt - Neue KI-Funktion fuer Werbeagentur: sa_doBuySpot( blockID ) andere Funktionen implementiere ich die Tage.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@73 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-05  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	TVT-Object für die KI gefixt. Die "berechneten Konstanten" (TVT.ME) sollten jetzt korrekt sein. Es muss noch geprüft werden ob das Programm auch wirklich sequentiell abläuft.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@72 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@71 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@70 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-04  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@69 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@68 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@67 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-04  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Netzwerk: Server sendet Statuspakete an Clients. Clients nutzen Ping/Pong um Zeitverzoegerung rauszurechnen (laeuft ziemlich synchron :D), "Verpasste Minuten" werden nachgeholt - Ping wird aller 4 Sekunden gesendet, Status aller 2 Sekunden
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@66 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Serienepisoden werden nun wieder korrekt eingelesen (copy paste beim xml-rework :D) - GetRandomProgramme/GetRandomSerie ... ueberarbeitet, Einzelepisoden werden nicht mehr uebergeben
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@65 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	"Random"-Funktionen auf Mersenne umgestellt - bei Multiplayer bekommen alle den gleichen "Zufall" und man erspart sich einge Uebertragungen - Netzwerk: Chatnachrichten, Spielfiguren in den Einstellungen und Hochhaus, Programmplanänderungen, Filmhaendler (einfacher Kauf, Auktionen fehlen noch) - andere Funktionen implementiert aber noch ungetestet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@64 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-02  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- multithreadingfähig gemacht - Unter Windows wird das Programm bzw der Hauptthread bei Verschieben des Programmfensters  angehalten - fehlende Events (eigene Figur bewegt sich nicht weiter etc).
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@63 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-04-01  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- basefunctions_xml.bmx mit libxml ersetzt (Probleme mit Multithreading - und natuerlich Vereinheitlichung) "config"-Dateien koennen nun etwas flexibler aufgebaut werden (egal ob Attribut oder neuer Node)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@62 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-30  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Falscher Dateiname
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@61 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	libiphlpap.a hinzugefuegt (bei mir im SVN wohl auf ignore)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@60 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-29  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@59 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-28  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Netzwerk-Broadcasting ueberarbeitet (Clients schicken an alle anderen Clients in dem sie dem Server das Paket schicken, die EventID enthaelt allerdings das "Relay"-Flag und der Server schickt es wiederum an alle anderen Clients wieder) - GuiElements - Click auf Inputfelder aktiviert dieses nun wieder korrekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@58 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-27  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Rewrite der Netzwerkfunktionen: Nutzt fuer InGame-Pakete nun ENET statt UDPStream * Enet bietet Reliable Packets, Sequential Packets, ... Problem bei Enet: client-server-Architektur - nix mit Broadcasts etc, deswegen derzeit noch fuer LAN-Broadcasts (LAN Spiele bekanntmachen) bnetex im Einsatz (UDP senden kein Ding, aber Broadcast empfangen sponn irgendwie - local und remote Port muss wohl festgelegt sein) - Netzwerkfunktionen: Basis in basefunctions_network.bmx, spielspezifisches (eventhandler) in gamefunctions_network.bmx)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@57 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-23  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Viele Anpassungen im Netzwerk (nicht final) - LUA-KI: Jeder Spieler kann nun eine individuelle "TVT"-Klasse ansprechen (intern ueber _OnAssignPlayer(playerID) geloest - wird jedem "Hauptscript" vorangestellt)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@56 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-20  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@55 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@54 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@53 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Windowsbuilt ermoeglicht, BufferedGL fuer Windows deaktiviert (gerade kein Inet/Telefon und "Glew" muesste da wohl aktualisiert werden)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@52 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@51 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-20  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Figurenbewegung + Fahrstuhlkontrolle ueberarbeitet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@50 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-18  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Konstanten fuer Sprite-Ausrichtung hinzugefuegt (VALIGN_TOP,ALIGN_LEFT...) - Funktionen fuer Figurenbewegung und Target-Erkennung vereinfacht und ueberarbeitet
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@49 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-16  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- "Method Compare" zum Sortieren von Listen zwecks Z-Order beim Zeichnen sorgte fuer Fehler wenn list.remove(obj) aufgerufen wurde. Derartige Listen im Programmplaner werden nun mit eigener Sort-Funktion aufgerufen - behebt Fehler "Rechtsklick loescht falschen Film"
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@48 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Zuschauer: Berechnung verbessert (Totale Zuschauerzahl im Tagesverlauf, Einbindung von Alter einer Sendung etc.)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@47 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Es koennen wieder Sendestationen gekauft werden - Funktionen dazu weiter optimiert - Collissionpixel entfernt (mit CollideRect ersetzt) - Senderkarte_bevoelkerungsdichte.png ueberarbeitet und Berechnungsformel angepasst. Dtl hat ca. 80 Mio Einwohner, Berlin und Umkreis entsprechen in etwa der Realitaet (gleiches fuer Hamburg und Muenchen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@46 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-15  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- LUA-Dateien werden nun mit LoadText eingelesen (UTF8) - Hausmeisterfigur per XML konfiguriert - TFigures vereinfacht - TProfiler aktiviert - TBuilding etwas optimiert (getSprite-Lookups)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@45 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-14  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	-Codeverzeichnis aufraeumen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@44 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Eurozeichen bei Bitmapfonts eingebunden (bzw "extra chars"-zeile) - und Umstellung von Array[256] auf TMap - um dynamisch Sonderzeichen zu ermöglichen. - Neues Programmgenre: Callin/Quizsendungen, am Ende eines Blockes erhaelt man 0.5-2% der Zuschauerzahl in Euro aufs Konto
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@43 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Aufraeumarbeiten continued - Programmplanung: Monumentalfilme wurden nie angezeigt - behoben - Programmplanung: Grafik fuer Genres reduziert auf 3 Zeilen - dynamische Hoehe - Programmplanung: 2 neue Genres (auch in Editor) : Lueckenfueller (SchundTV) und Callin/Dauerwerbesendungen
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@42 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-13  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- XMLparser ist casesensitive, fuer normale Nodes ignoriert dies "findChild" nun, fuer Attribute ist dies nicht ohne weiteres moeglich - Einlesen des "MinAudience"-Wertes fuer Werbung war fehlerhaft (dadurch immer 0)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@41 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-12  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Werbevertragsanzeige vereinheitlicht - Werbemakler - Dragndrop der Vertraehe funktionstuechtig gemacht
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@40 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- weitere Aufraeumarbeiten
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@39 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- weitere Aufraeumarbeiten: tvprogramme - 60kb code eingedampft, vereinfacht, umstrukturiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@38 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-10  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Aufraeumarbeiten :   - TMovie und TSeries mit Elternobjekt TPrograme zusammengelegt   - TProgrammeBlock nutzt nun title,genre etc von .Programme statt es selbst noch zu duplizieren
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@37 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- functions_file.bmx entfernt - button.png entfernt - Laden von Serien/Filmen dynamischer gestaltet (Episoden übernehmen Details von Eltern, erspart XML-Attribute wenn identisch) - neue XML-Asset-Option: addColorCopy
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@36 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-03-08  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	libxml
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@35 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- XML-Loader der Datenbank auf libxml umgestellt um UTF8 und somit Umlaute zu unterstützen - XML-Format der Datenbank etwas komprimiert - Hilfsfunktionen fuer XML-Verarbeitung
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@34 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-29  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Buero: Programmplanung - Finanzuebersicht aufgeraeumt und aktiviert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@33 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- News-DnD-Ziele korrigiert -> News koennen wieder platziert werden - News-Abos bei allen Spielern zum Start auf den Wert 1 gesetzt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@32 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- zwei neue Serien in die Datenbank integriert - ProgrammMenu im Planer: Anzahl-Anzeige verbessert (Ausbleichen und Position) - ein wenig die Programmblockfunktionen zusammengefasst (Datasheet-Anzeigen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@31 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- InGame-Chat führte zu Deadlock (ewiges Textkuerzen) .. behoben -Enter in leeren Ingamechat deaktiviert Eingabefeld nun korrekt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@30 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- gfx_building_skyscraper-TBigImage mit TGW_Sprites("gfx_building") ersetzt - falschen Tuerensprite-Bezeichner beim Abruf genutzt - TBitmapFont.draw() und getHeight/getWidth akzeptieren Multiline-Text (mit chr(13)) - TBitmapFont.draw gibt nun TPosition (X/Y-Pair) zurueck (bzw stringobject von x oder y	) - TBitmapFont.drawBlock - Blocksatz fuer Texte :D - TProgrammeBlock-Zeichenfunktion aufgeräumt - TGW_Sprites.drawClipped() , -1 Werte fuer W/H = automatisch - TColor (Tripel + Set/Get) - basefunctions.xml - StringSplit entfernt (gibt es in Blitzmax als string.split(delim))
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@29 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-28  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- AI - Pfade angepasst (Windows akzeptiert auch "/", Linux keine "\") - Events fuer Updates wieder aktiviert (wieso auch immer die raus waren, sicher beim Merge uebersehen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@28 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TGW_Sprites.GetImage - Standard-Flag genutzt statt 0 -> Raum-Schilder im Hochhaus wieder korrekt eingefaerbt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@27 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Spielfigur wird im Hochhaus wieder zentriert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@26 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Building.GetFloor - war irgendwie eine Etage verschoben...
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@25 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-26  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Newsabonnements werden wieder korrekt angezeigt (0-3 Balken)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@24 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- newsbuttons (Newsraum) per XML geladen (TGW_Sprites) und TButton/TNewsbutton-Klassen wieder brauchbar gemacht - Tooltips-Zeichenfunktion vereinfacht und Dimensionenberechnung verbessert - Funktionsvereinfachungen generell
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@23 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- TTooltip - header wird nun y-"zentriert" auf Headerbereich dargestellt - TProgrammePlan - Methoden aufgeraeumt, Player-Parameter entfernt und Parent-Feld hinzugefuegt (von dem die PlayerID ausgelesen werden kann)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@22 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Filmhaendler - Auktionen (Hammer) wieder aktiviert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@21 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-25  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- GuiElemente weiter auf Bitmapfont umgestellt (Input) - BitmapFont.drawStyled(text,x,y,cr,cg,cb,style) - embossed, shadow ermoeglicht - Bottom-Interface-Textdarstellungen auf Bitmapfont.drawStyled umgestellt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@20 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	* bufferedopengl * - Batchrendering (gleiche "Texturen" ersparen glbegin/glend) * - bufferedopngl - GrabPixmap gefixt (+ Koordinatenfix) * - eigene LoadTrueTypeFont-Funktion - fixt Bug mit TImageFont.load unter bufferedGL * -> FPS: Hochhaus von 130 auf 240 fps, supermarkt von 270 auf 430fps * basefunctions_image  - drawPixmapOnPixmap - Alpha vom Ziel mit beachten * basefunctions_sprites - enthaelt nun basefunctions_text * Truetype-Schriften nun auf eine Imagemap geladen statt pro Glyphe ein Bild - Vorteil fuer BufferedGL * - Eigene Schriftfunktionen TBitmapFont.draw ... (BitmapFont wird aus TTF generiert...)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@19 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-23  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Die Lua-Konstanten für die KI werden nun als Felder an das TVT-Objekt angehängt. Die Variante mit den einfachen, globalen Konstanten hat in hinzugeladenen Lua-Files nicht mehr funktioniert bzw. waren nicht mehr verfügbar.
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@18 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-22  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	Lua-Pfade korrigiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@17 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-22  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@16 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-22  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	working
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@15 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Mit F1-F4 koennen die Lua-Dateien der Spieler neugeladen werden
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@14 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- KI kann nun per TVT.GetRoom("archive", spielernr) die RaumID abfragen (spielernr = 0  fuer unverkaeufliche Raeume) (spielernr = -1 fuer "besetzte" Raeume die mal ein Studio werden koennen) Sowohl 0 als auch -1 werden bei der Abfrage gleichgesetzt (also nur fuer Spielernummern relevant)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@13 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-22  Ronny  <Ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Keymanager etwas angepasst - ich schaetze die Keycodes fuer Win/Linux differieren n bissl (sonderzeichen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@12 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-22  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- DrawGFXRect entschlackt (fuer eine Handvoll FPS :P)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@11 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Koffer-Grafiken zu einer Grafik zusammengefuehrt, per XML und von Koffer-Timage auf Asset umgestellt - Filmverleiher-Grafiken in eine Grafik gepackt und per XML geladen - TGW_SpritePack.colorizeSprite(spritename, r,g,b) hinzugefuegt - TGW_Sprites.colorize(r,g,b) hinzugefuegt (referenziert SpritePack) - gfx.xml - laedt nun auch Filmverleiher-Filmhuellen und faerbt diese ein - OnMinuteEventListener hoert nun auf OnMinute (und aktualisiert Zuschauerzahlen)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@10 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	source/.bmx entfernt
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@9 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- Fahrstuhl: Klicks auf Raeume wieder moeglich, Raumfinde-Funktion entschlackt - EventManager: wird nun initialisiert. Zukuenftige Events (wenn der "naechste" noch in der Zukunft liegt) werfen keinen Assert mehr
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@8 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-21  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	- Fahrstuhlschilder-Assetname in der Fahrstuhlraum-Funktion korrigiert (verhindert Absturz :D)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@7 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- KI aktiviert (EventManager.Update() sollte man in ner Loop schon aufrufen :p)
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@6 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- blitzmax-bmk integriert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@5 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	- basefunctions_guielements.bmx - Fehlerhafter Null-Check vom Input-Asset - basefunctions_image.bmx - DX-Frames auf SuperStrict angepasst - Windows-Build ermoeglicht und inkludiert
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@4 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-21  starscrazy  <starscrazy@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@3 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+2012-02-21  ronny  <ronny@c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539>
+
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@2 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539
+
+	Initialimport
+	git-svn-id: svn://gwron.kicks-ass.net/TVTower@1 c8c01e27-c2b2-4c14-9fc5-b7b90e2c6539

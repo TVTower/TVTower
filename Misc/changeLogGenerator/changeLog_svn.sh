@@ -1,0 +1,1 @@
+svn log --xml --verbose | xsltproc changeLog_svn.xsl - > changeLog_svn.txt
