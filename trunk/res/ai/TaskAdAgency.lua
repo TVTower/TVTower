@@ -46,7 +46,7 @@ function TaskAdAgency:GetNextJobInTargetRoom()
 		return self.SignContracts
 	end
 
-	self:SetDone()
+	self:SetWait()
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -68,20 +68,19 @@ function JobCheckSpots:Prepare(pParams)
 end
 
 function JobCheckSpots:Tick()
-	self:CheckSpot()
-	self:CheckSpot()
-	self:CheckSpot()
+	while self.Status ~= JOB_STATUS_DONE do
+		self:CheckSpot()
+	end
 end
 
 function JobCheckSpots:CheckSpot()
-	local spotId = TVT.sa_getSpot(self.CurrentSpotIndex)
-	if ((spotId == -2) or (spotId == -8)) then
+	local response = TVT.sa_getSpot(self.CurrentSpotIndex)
+	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end
 
-	local spot = TVT.GetContract(spotId)
-
+	local spot = TVT.convertToAdContract(response.data)
 	if (spot.IsAvailableToSign() == 1) then
 		--debugMsg("Signable")
 		local player = _G["globalPlayer"]
@@ -100,14 +99,19 @@ AppraiseSpots = AIJob:new{
 	AdAgencyTask = nil
 }
 
+function AppraiseSpots:typename()
+	return "AppraiseSpots"
+end
+
 function AppraiseSpots:Prepare(pParams)
 	debugMsg("Bewerte/Vergleiche Werbevertr‰ge")
 	self.CurrentSpotIndex = 0
 end
 
 function AppraiseSpots:Tick()
-	self:AppraiseCurrentSpot()
-	self:AppraiseCurrentSpot()
+	while self.Status ~= JOB_STATUS_DONE do
+		self:AppraiseCurrentSpot()
+	end
 end
 
 function AppraiseSpots:AppraiseCurrentSpot()
@@ -181,6 +185,10 @@ SignRequisitedContracts = AIJob:new{
 	CurrentSpotIndex = 0;
 	AdAgencyTask = nil
 }
+
+function SignRequisitedContracts:typename()
+	return "SignRequisitedContracts"
+end
 
 function SignRequisitedContracts:Prepare(pParams)
 	debugMsg("Unterschreibe benˆtigte Werbevertr‰ge")
@@ -272,6 +280,11 @@ SignContracts = AIJob:new{
 	CurrentSpotIndex = 0;
 	AdAgencyTask = nil
 }
+
+function SignContracts:typename()
+	return "SignContracts"
+end
+
 --self.SpotRequisition = self.Player:GetRequisitionsByOwner(_G["TASK_SCHEDULE"])
 function SignContracts:Prepare(pParams)
 	debugMsg("Unterschreibe lukrative Werbevertr‰ge")
@@ -289,9 +302,14 @@ function SignContracts:Tick()
 
 	local openSpots = self:GetCommonRequisition()
 	--debugMsg("openSpots: " .. openSpots)
-	if (openSpots > 0) then
+
+	-- only sign contracts if we haven't enough unsent ad-spots
+
+	--Ronny: umgestellt und "Notwendigkeitsfilter" von GetCommonRequisition hier eingebunden
+	--if (openSpots > 0) then
+	if (openSpots < 8) then
 		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-			if MY.ProgrammeCollection.GetAdContractCount() >= 8 then break end
+			if MY.ProgrammeCollection.GetAdContractCount() >= Game.maxContracts then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
 				debugMsg("Schlieﬂe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ")")
@@ -303,24 +321,29 @@ function SignContracts:Tick()
 	self.Status = JOB_STATUS_DONE
 end
 
+--returns amount of unsent adcontract-spots
 function SignContracts:GetCommonRequisition()
-	local unsendedSpots = 0
+	local unsentSpots = 0
 
 	for i = 0, MY.ProgrammeCollection.GetAdContractCount() - 1 do
-		local contract = MY.ProgrammeCollection.GetAdContractFromList(i)
-		local count = MY.ProgrammePlan.GetAdContractBroadcastCount(contract.id, 1, 0)
-		--debugMsg("GetMatchingSpotList: " .. contract.title .. " - " .. count)
-
-		if (count < contract.GetSpotCount()) then
-			unsendedSpots = unsendedSpots + (contract.GetSpotCount() - count)
+		local contract = MY.ProgrammeCollection.GetAdContractAtIndex(i)
+		if (contract.isSuccessful() ~= 1) then
+			unsentSpots = unsentSpots + contract.GetSpotsToSend()
 		end
 	end
-	--debugMsg("unsendedSpots: " .. unsendedSpots)
-	if (unsendedSpots > 8) then
-		return 0
-	else
-		return 8 - unsendedSpots
-	end
+	--debugMsg("unsentSpots: " .. unsentSpots)
+--RONNY:	Das ergibt wenig Sinn fuer mich, bei "weniger als 8" offenen
+--			Werbeaustrahlungen limitiert man die notwendigen Spots?
+--			Falls es so gemeint ist: Wenn ich mehr als 8 Spots habe, brauche
+--			ich keine neuen holen - dann sollte dies bei der entsprechenden
+--			Funktion gefiltert werden, nicht bei einem "counter"
+--	if (unsentSpots > 8) then
+--		return 0
+--	else
+--		return 8 - unsentSpots
+--	end
+--DESWEGEN:
+	return unsentSpots
 end
 
 

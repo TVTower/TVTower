@@ -1,10 +1,10 @@
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Movie ist jetzt nur noch ein Wrapper
 
-function CheckMovieBuyConditions(movie, maxPrice, minQuality)
-	if (movie.GetPrice() > maxPrice) then return false end	
+function CheckMovieBuyConditions(licence, maxPrice, minQuality)
+	if (licence.GetPrice() > maxPrice) then return false end
 	if (minQuality ~= nil) then
-		if (movie.GetQuality(0) < minQuality) then return false end
+		if (licence.GetQuality() < minQuality) then return false end
 	end
 	return true
 end
@@ -30,15 +30,15 @@ function SpotRequisition:CheckActuality()
 	local removeList = {}
 	for k,v in pairs(self.SlotReqs) do
 		if (v:CheckActuality() == false) then
-			table.insert(removeList, v)						
+			table.insert(removeList, v)
 		end
 	end
-	
+
 	for k,v in pairs(removeList) do
 		table.removeElement(self.SlotReqs, v)
 		self.Count = self.Count - 1
-	end	
-	
+	end
+
 	if (self.Count > 0) then
 		return true
 	else
@@ -57,7 +57,7 @@ function SpotRequisition:UseThisContract(contract)
 	--debugMsg("SpotRequisition:UseThisContract - Start")
 	--Als Folge der erfüllten Anforderung, werden nun Anforderungen an den Programmplan gestellt
 	local conCount = contract.GetSpotCount()
-	
+
 	local player = _G["globalPlayer"]
 	for k,v in pairs(self.SlotReqs) do
 		if (self.FulfilledCount >= self.Count) then --Es werden keine weiteren SpotSlots benötigt um die Anforderung zu erfüllen
@@ -65,14 +65,14 @@ function SpotRequisition:UseThisContract(contract)
 			self:Complete()
 			return
 		end
-				
+
 		v.TaskId = _G["TASK_SCHEDULE"]
 		v.TaskOwnerId = _G["TASK_ADAGENCY"]
 		--debugMsg("SpotRequisition:UseThisContract - id: " .. contract:GetID() .. " --- " .. v.Day .. "/" .. v.Hour .. " # " .. v.TaskId)
 		v.ContractId = contract:GetID()
 		player:AddRequisition(v)
-		self.FulfilledCount = self.FulfilledCount + 1		
-	end	
+		self.FulfilledCount = self.FulfilledCount + 1
+	end
 	--debugMsg("SpotRequisition:UseThisContract - End")
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -98,7 +98,7 @@ function SpotSlotRequisition:CheckActuality()
 	else
 		self:Complete()
 		return false
-	end	
+	end
 end
 
 function SpotSlotRequisition:Complete()
@@ -113,7 +113,7 @@ AIToolsClass = KIObjekt:new{
 }
 
 function AIToolsClass:typename()
-	return "AITools"
+	return "AIToolsClass"
 end
 
 function AIToolsClass:GetAverageMovieQualityByLevel(level)
@@ -130,8 +130,8 @@ function AIToolsClass:GetAverageMovieQualityByLevel(level)
 	end
 end
 
-function AIToolsClass:GetMaxAudiencePercentageByLevel(level)	
-	if level == 1 then		
+function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
+	if level == 1 then
 		return 0.0347
 	elseif level == 2 then
 		return 0.0666
@@ -144,17 +144,17 @@ function AIToolsClass:GetMaxAudiencePercentageByLevel(level)
 	end
 end
 
-function AIToolsClass:GuessedAudienceForLevel(level)	
+function AIToolsClass:GuessedAudienceForLevel(level)
 	--debugMsg("GuessedAudienceForLevel - level: " .. level)
 	local globalPercentageByHour = self:GetMaxAudiencePercentageByLevel(level) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
 	--debugMsg("globalPercentageByHour: " .. globalPercentageByHour)
 	local averageMovieQualityByLevel = self:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 
 	--Formel: Filmqualität * Potentielle Quote nach Uhrzeit (maxAudiencePercentage) * Echte Maximalzahl der Zuschauer
-	local guessedAudience = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()	
-	
+	local guessedAudience = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
+
 	--debugMsg("GuessedAudienceForLevel: " .. guessedAudience .. " = averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ") *  MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ")")
-	
+
 	return guessedAudience
 end
 

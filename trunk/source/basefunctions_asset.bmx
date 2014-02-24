@@ -9,45 +9,59 @@ Type TAsset
 	field _url:object
 	field _flags:int = 0
 
-	Function CreateBaseAsset:TAsset(obj:object, objtype:string)
+
+	Function CreateBaseAsset:TAsset(obj:object, objName:string, objType:string)
 		local tmpobj:TAsset = new TAsset
-		tmpobj._type = objtype
-		tmpobj._object = obj
+		tmpobj.SetObject(obj)
+		tmpobj.SetType(objType)
+		tmpobj.SetName(objName)
 		tmpobj._loaded = 0
 		return tmpobj
 	End Function
 
+
+	Method SetObject(obj:object)
+		_object = obj
+	end Method
+
+
 	Method GetName:string()
-		return self._name
+		return _name
 	End Method
 
-	Method SetName(name:string)
-		self._name = name
+
+	Method SetName(value:string)
+		_name = value.toLower()
 	end Method
+
 
 	Method GetUrl:object()
-		return self._url
+		return _url
 	End Method
+
 
 	Method SetUrl(url:object)
-		self._url = url
+		_url = url
 	end Method
+
 
 	Method GetType:string()
-		return self._type
+		return _type
 	End Method
 
-	Method SetType(name:string)
-		self._type = name
+
+	Method SetType(value:string)
+		_type = value
 	end Method
+
 
 	Method GetLoaded:int()
-		return self._loaded
+		return _loaded
 	End Method
 
-	Method SetLoaded(loaded:int)
-		self._loaded = loaded
-	end Method
 
+	Method SetLoaded(bool:int)
+		_loaded = bool
+	end Method
 End Type
 

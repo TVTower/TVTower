@@ -3,11 +3,11 @@
 	<resources>
 		<resource name="gfx_interface_leftright">
 			<type>image</type>
- 			<url>grafiken/interface/interface_lr.png</url>
+ 			<url>res/grafiken/interface/interface_lr.png</url>
 		</resource>
 		<resource name="gfx_interface_topbottom">
 			<type>SpritePack</type>
- 			<url>grafiken/interface/interface_ou.png</url>
+ 			<url>res/grafiken/interface/interface_ou.png</url>
 			<children>
 				<child name="gfx_interface_bottom"	x="0" y="0"		w="800"	h="217"	id="1" />
 				<child name="gfx_interface_top"		x="0" y="217"	w="800"	h="20"	id="2" />
@@ -15,91 +15,114 @@
 		</resource>
 		<resource name="gfx_interface_antenna">
 			<type>image</type>
- 			<url>grafiken/interface/interface_antenne_alpha.png</url>
+ 			<url>res/grafiken/interface/interface_antenne_alpha.png</url>
 		</resource>
 		<resource name="gfx_interface_channelbuttons_off">
 			<type>image</type>
- 			<url>grafiken/interface/channelbuttons_off.png</url>
+ 			<url>res/grafiken/interface/channelbuttons_off.png</url>
  			<frames>5</frames>
 		</resource>
 		<resource name="gfx_interface_channelbuttons_on">
 			<type>image</type>
- 			<url>grafiken/interface/channelbuttons_on.png</url>
+ 			<url>res/grafiken/interface/channelbuttons_on.png</url>
  			<frames>5</frames>
 		</resource>
 
 		<resource name="gfx_interface_audience">
 			<type>SpritePack</type>
- 			<url>grafiken/interface/audience.png</url>
+ 			<url>res/grafiken/interface/audience.png</url>
 			<children>
 				<child name="gfx_interface_audience_grandpa"	x="0" y="0"		w="60"	h="150"	id="1" />
 				<child name="gfx_interface_audience_girl"		x="0" y="150"	w="60"	h="150"	id="2" />
 				<child name="gfx_interface_audience_teen"		x="0" y="300"	w="60"	h="150"	id="3" />
 			</children>
 		</resource>
-
-		<resource name="gfx_interface_TVprogram_noise1">
+		<resource name="gfx_interface_tv_overlay">
 			<type>image</type>
- 			<url>grafiken/interface/programm_noise0.png</url>
-		</resource>
-		<resource name="gfx_interface_TVprogram_noise2">
-			<type>image</type>
- 			<url>grafiken/interface/programm_noise1.png</url>
-		</resource>
-		<resource name="gfx_interface_TVprogram_noise3">
-			<type>image</type>
- 			<url>grafiken/interface/programm_noise2.png</url>
-		</resource>
-		<resource name="gfx_interface_TVprogram_noise4">
-			<type>image</type>
- 			<url>grafiken/interface/programm_noise3.png</url>
+ 			<url>res/grafiken/interface/tv_overlay.png</url>
 		</resource>
 
+		<resource name="gfx_interface_tv_noise">
+			<type>image</type>
+ 			<url>res/grafiken/interface/tv_noise.png</url>
+		</resource>
+
+		<!--
+			0 = Action
+			1 = Krimi
+			2 = Sci-Fi
+			3 = Komödie
+			4 = Horror
+			5 = Liebe
+			6 = Erotik
+			7 = Western
+			8 = Liveübertragung
+			9 = Kinderfilme
+			10= Trickfilme
+			11= Musik
+			12= Sport
+			13= Kultur
+			14= Fantasy
+			15= Tratsch
+			16= Nachrichten
+			17= Show
+			18= Monumental
+			19= Lückenfüller
+			20= Call-In/Shopping
+		-->
 		<resource name="gfx_interface_TVprogram_0">
 			<type>image</type>
- 			<url>grafiken/interface/programm_none.png</url>
+ 			<url>res/grafiken/interface/tv_programme_none.png</url>
 		</resource>
 		<resource name="gfx_interface_TVprogram_1">
 			<type>image</type>
- 			<url>grafiken/interface/programm_thriller.png</url>
+ 			<url>res/grafiken/interface/tv_programme_thriller.png</url>
 		</resource>
 		<resource name="gfx_interface_TVprogram_2">
 			<type>image</type>
- 			<url>grafiken/interface/programm_scifi.png</url>
+ 			<url>res/grafiken/interface/tv_programme_scifi.png</url>
 		</resource>
 		<resource name="gfx_interface_TVprogram_3">
 			<type>image</type>
- 			<url>grafiken/interface/programm_comedy.png</url>
+ 			<url>res/grafiken/interface/tv_programme_comedy.png</url>
+		</resource>
+		<resource name="gfx_interface_TVprogram_4">
+			<type>image</type>
+ 			<url>res/grafiken/interface/tv_programme_horror.png</url>
 		</resource>
 		<resource name="gfx_interface_TVprogram_5">
 			<type>image</type>
- 			<url>grafiken/interface/programm_love.png</url>
+ 			<url>res/grafiken/interface/tv_programme_love.png</url>
 		</resource>
 		<resource name="gfx_interface_TVprogram_7">
 			<type>image</type>
- 			<url>grafiken/interface/programm_western.png</url>
+ 			<url>res/grafiken/interface/tv_programme_western.png</url>
+		</resource>
+		<resource name="gfx_interface_TVprogram_12">
+			<type>image</type>
+ 			<url>res/grafiken/interface/tv_programme_sports.png</url>
 		</resource>
 
-		<resource name="gfx_interface_TVprogram_none">
+		<resource name="gfx_interface_tv_programme_none">
 			<type>image</type>
- 			<url>grafiken/interface/programm_none.png</url>
+ 			<url>res/grafiken/interface/tv_programme_none.png</url>
 		</resource>
 		<resource name="gfx_interface_TVprogram_news">
 			<type>image</type>
- 			<url>grafiken/interface/programm_news.png</url>
+ 			<url>res/grafiken/interface/tv_programme_news.png</url>
 		</resource>
 		<resource name="gfx_interface_TVprogram_ads">
 			<type>image</type>
- 			<url>grafiken/interface/programm_ads.png</url>
+ 			<url>res/grafiken/interface/tv_programme_ads.png</url>
 		</resource>
 
 		<resource name="gfx_interface_audience_bg">
 			<type>image</type>
- 			<url>grafiken/interface/audience_bg.png</url>
+ 			<url>res/grafiken/interface/audience_bg.png</url>
 		</resource>
 		<resource name="gfx_interface_audience_overlay">
 			<type>image</type>
- 			<url>grafiken/interface/audience_overlay.png</url>
+ 			<url>res/grafiken/interface/audience_overlay.png</url>
 		</resource>
 	</resources>
 </tvt>

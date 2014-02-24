@@ -3,71 +3,75 @@
 	<resources>
 		<resource name="screen_bg_pplanning">
 			<type>image</type>
- 			<url>grafiken/buero/pplanung.png</url>
+ 			<url>res/grafiken/buero/pplanung.png</url>
 		</resource>
 		<resource name="screen_bg_financials">
 			<type>image</type>
- 			<url>grafiken/buero/finanzen.png</url>
+ 			<url>res/grafiken/buero/finanzen.png</url>
 		</resource>
 		<resource name="screen_bg_image">
 			<type>image</type>
- 			<url>grafiken/buero/image.png</url>
+ 			<url>res/grafiken/buero/image.png</url>
 		</resource>
 		<resource name="screen_bg_stationmap">
 			<type>image</type>
- 			<url>grafiken/senderkarte/raum_karte.png</url>
+ 			<url>res/grafiken/senderkarte/raum_karte.png</url>
 		</resource>
 		<resource name="screen_bg_bureau">
 			<type>image</type>
- 			<url>grafiken/buero/raum_buero.png</url>
+ 			<url>res/grafiken/buero/raum_buero.png</url>
 		</resource>
 		<resource name="screen_bg_chief">
 			<type>image</type>
- 			<url>grafiken/chef/raum_chef.png</url>
+ 			<url>res/grafiken/chef/raum_chef.png</url>
 		</resource>
 		<resource name="screen_bg_news">
 			<type>image</type>
- 			<url>grafiken/news/raum_news.png</url>
+ 			<url>res/grafiken/news/raum_news.png</url>
 		</resource>
 		<resource name="screen_bg_newsplanning">
 			<type>image</type>
- 			<url>grafiken/news/newsplanung.png</url>
+ 			<url>res/grafiken/news/newsplanung.png</url>
 		</resource>
 		<resource name="screen_bg_archive">
 			<type>image</type>
- 			<url>grafiken/archiv/raum_archiv.png</url>
+ 			<url>res/grafiken/archiv/raum_archiv.png</url>
 		</resource>
 		<resource name="screen_bg_adagency">
 			<type>image</type>
- 			<url>grafiken/werbeagentur/raum_werbeagentur.png</url>
+ 			<url>res/grafiken/werbeagentur/raum_werbeagentur.png</url>
 		</resource>
 		<resource name="screen_bg_movieagency">
 			<type>image</type>
- 			<url>grafiken/filmverleiher/raum_filmverleiher.png</url>
+ 			<url>res/grafiken/filmverleiher/raum_filmverleiher.png</url>
 		</resource>
 		<resource name="screen_bg_elevatorplan">
 			<type>image</type>
- 			<url>grafiken/hinweistafel/raum_hinweistafel.png</url>
+ 			<url>res/grafiken/hinweistafel/raum_hinweistafel.png</url>
 		</resource>
 		<resource name="screen_bg_credits">
 			<type>image</type>
- 			<url>grafiken/hochhaus/raum_credits.png</url>
+ 			<url>res/grafiken/hochhaus/raum_credits.png</url>
 		</resource>
 		<resource name="screen_bg_betty">
 			<type>image</type>
- 			<url>grafiken/betty/raum_betty.png</url>
+ 			<url>res/grafiken/betty/raum_betty.png</url>
 		</resource>
 		<resource name="screen_bg_supermarket">
 			<type>image</type>
- 			<url>grafiken/supermarkt/raum_supermarkt.png</url>
+ 			<url>res/grafiken/supermarkt/raum_supermarkt.png</url>
 		</resource>
 		<resource name="screen_bg_studio">
 			<type>image</type>
- 			<url>grafiken/studio/raum_studio.png</url>
+ 			<url>res/grafiken/studio/raum_studio.png</url>
 		</resource>
 		<resource name="screen_bg_safe">
 			<type>image</type>
- 			<url>grafiken/buero/raum_speichernladen.png</url>
+ 			<url>res/grafiken/buero/raum_speichernladen.png</url>
+		</resource>
+		<resource name="screen_bg_roomagency">
+			<type>image</type>
+ 			<url>res/grafiken/raummakler/raum_raummakler.png</url>
 		</resource>
 	</resources>
 	<screens>
@@ -80,6 +84,7 @@
 		<screen name="screen_elevatorplan" image="screen_bg_elevatorplan" />
 		<screen name="screen_credits" image="screen_bg_credits" />
 		<screen name="screen_roomboard" image="screen_bg_elevatorplan" />
+		<screen name="screen_roomagency" image="screen_bg_roomagency" />
 
 		<screen name="screen_movieagency" image="screen_bg_movieagency" />
 		<screen name="screen_movieauction" image="screen_bg_movieagency" parent="screen_movieagency" />
@@ -209,7 +214,7 @@
 			<tooltip text="ROOM_SCRIPT_OFFICE" description="ROOM_SCRIPT_OFFICE_OWNER" />
 			<door doorslot="3" floor="4" doortype="3" />
 		</room>
-		<room name="roomagency" owner="0" screen="screen_supermarket">
+		<room name="roomagency" owner="0" screen="screen_roomagency">
 			<tooltip text="ROOM_ROOMAGENCY" description="ROOM_ROOMAGENCY_OWNER" />
 			<door doorslot="2" floor="9" doortype="2" />
 		</room>

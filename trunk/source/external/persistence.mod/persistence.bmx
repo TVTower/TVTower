@@ -1,3 +1,10 @@
+REM
+	Modified by Ronny Otto for TVTower.
+
+	Includes "skip loading" for {nosave}-declared fields
+ENDREM
+
+
 ' Copyright (c) 2008-2012 Bruce A Henderson
 '
 ' Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -36,9 +43,14 @@ ModuleInfo "History: 1.00"
 ModuleInfo "History: Initial Release"
 endrem
 Import "../libxml/libxml.bmx" 'BaH.libxml
-Import BRL.Reflection
+'using custom to have support for const/function reflection
+'Import BRL.Reflection
+Import "../reflectionExtended/reflection.bmx"
 Import BRL.Map
 Import BRL.Stream
+
+'RONNY
+Import BRL.retro
 
 Rem
 bbdoc: Object Persistence.
@@ -200,7 +212,9 @@ Type TPersist
 						Case StringTypeId
 							' only if not empty
 							If String(aObj) Then
-								elementNode.setContent(String(aObj))
+								' escape special chars
+								Local s:String = doc.encodeEntities(String(aObj))
+								elementNode.setContent(s)
 							End If
 						Default
 							Local objRef:String = GetObjRef(aObj)
@@ -339,6 +353,8 @@ Type TPersist
 							' only if not empty
 							Local s:String = f.GetString(obj)
 							If s Then
+								'escape special chars
+								s = doc.encodeEntities(s)
 								fieldNode.setContent(s)
 							End If
 						Default
@@ -612,6 +628,11 @@ Type TPersist
 						If fieldNode.GetName() = "field" Then
 
 							Local fieldObj:TField = objType.FindField(fieldNode.getAttribute("name"))
+
+							'Ronny: skip loading elements having "nosave" metadata
+							If fieldObj.MetaData("nosave") Then
+								Continue
+							End If
 
 							Local fieldType:String = fieldNode.getAttribute("type")
 							Select fieldType

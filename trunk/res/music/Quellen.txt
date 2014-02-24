@@ -1,0 +1,13 @@
+Filename					Titel									Komponist				Lizenz						Quelle
+
+Chilledoutwithabeat.ogg		Chilledoutwithabeat						cameronmusic			(als "free" deklariert)		http://www.cameronmusic.co.uk/
+60s theme.ogg				60's theme 								cameronmusic			(als "free" deklariert)		http://www.cameronmusic.co.uk/
+Light banjo.ogg				Light banjo								cameronmusic			(als "free" deklariert)		http://www.cameronmusic.co.uk/
+Feelin Good.ogg				Feelin Good								Kevin MacLeod			CC BY 3.0					http://incompetech.com
+Chee Zee Beach.ogg			Chee Zee Beach							Kevin MacLeod			CC BY 3.0					http://incompetech.com
+Fastest Man on Earth.ogg	Fastest Man on Earth					Jahzzar					CC BY-SA 3.0				http://freemusicarchive.org/music/Jahzzar/Blinded_by_dust/Fastest_Man_on_Earth
+Honey Bee.ogg				Honey Bee								Kevin MacLeod			CC BY 3.0					http://incompetech.com
+Hustle.ogg					Hustle									Kevin MacLeod			CC BY 3.0					http://incompetech.com
+Peppy Pepe.ogg				Peppy Pepe								Kevin MacLeod			CC BY 3.0					http://incompetech.com
+Slow Ska Game.ogg			Slow Ska Game Loop						Kevin MacLeod			CC BY 3.0					http://incompetech.com
+Funk Game.ogg				Funk Game Loop							Kevin MacLeod			CC BY 3.0					http://incompetech.com

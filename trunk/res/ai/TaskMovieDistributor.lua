@@ -42,7 +42,7 @@ function TaskMovieDistributor:GetNextJobInTargetRoom()
 		return self.BuyMovies
 	end
 
-	self:SetDone()
+	self:SetWait()
 end
 
 function AITask:OnDayBegins()
@@ -56,29 +56,33 @@ JobCheckMovies = AIJob:new{
 	MovieDistributorTask = nil
 }
 
+function JobCheckMovies:typename()
+	return "JobCheckMovies"
+end
+
 function JobCheckMovies:Prepare(pParams)
 	debugMsg("Schaue Filmangebot an")
 	self.CurrentMovieIndex = 0
 end
 
 function JobCheckMovies:Tick()
-	self:CheckMovie()
-	self:CheckMovie()
-	self:CheckMovie()
+	while self.Status ~= JOB_STATUS_DONE do
+		self:CheckMovie()
+	end
 end
 
 function JobCheckMovies:CheckMovie()
-	local movieId = TVT.md_getMovie(self.CurrentMovieIndex)
-	if (movieId == -2) then
+	local response = TVT.md_getProgrammeLicence(self.CurrentMovieIndex)
+	if ((response.result == TVT.RESULT_WRONGROOM) or (response.result == TVT.RESULT_NOTFOUND)) then
 		self.Status = JOB_STATUS_DONE
 		return
 	end
 
-	local movie = TVT.GetProgramme(movieId)
+	local licence = TVT.convertToProgrammeLicence(response.data)
 	local player = _G["globalPlayer"]
-	self.MovieDistributorTask.MoviesAtDistributor[self.CurrentMovieIndex] = movie
+	self.MovieDistributorTask.MoviesAtDistributor[self.CurrentMovieIndex] = licence
 
-	player.Stats:AddMovie(movie)
+	player.Stats:AddMovie(licence)
 
 	self.CurrentMovieIndex = self.CurrentMovieIndex + 1
 end
@@ -99,6 +103,10 @@ JobAppraiseMovies = AIJob:new{
 	DaySeriesMinQuality = -1
 }
 
+function JobAppraiseMovies:typename()
+	return "JobAppraiseMovies"
+end
+
 function JobAppraiseMovies:Prepare(pParams)
 	debugMsg("Bewerte/Vergleiche Filme")
 	self.CurrentMovieIndex = 0
@@ -106,9 +114,9 @@ function JobAppraiseMovies:Prepare(pParams)
 end
 
 function JobAppraiseMovies:Tick()
-	self:AppraiseCurrentMovie()
-	self:AppraiseCurrentMovie()
-	self:AppraiseCurrentMovie()
+	while self.Status ~= JOB_STATUS_DONE do
+		self:AppraiseCurrentMovie()
+	end
 end
 
 function JobAppraiseMovies:AdjustMovieNiveau()
@@ -144,7 +152,7 @@ function JobAppraiseMovies:AppraiseCurrentMovie()
 	end
 end
 
-function JobAppraiseMovies:AppraiseMovie(movie)
+function JobAppraiseMovies:AppraiseMovie(licence)
 	local player = _G["globalPlayer"]
 	local stats = player.Stats
 	local pricePerBlockStats = nil
@@ -152,15 +160,15 @@ function JobAppraiseMovies:AppraiseMovie(movie)
 --RON
 --TVT.PrintOut("RON: AppraiseMovie")
 	--Allgemeine Minimalvorraussetzungen erfüllt?
-	if (movie.IsMovie()) then
-		if (CheckMovieBuyConditions(movie, self.MovieMaxPrice, self.DayMovieMinQuality)) then
+	if (licence.IsMovie()) then
+		if (CheckMovieBuyConditions(licence, self.MovieMaxPrice, self.DayMovieMinQuality)) then
 			pricePerBlockStats = stats.MoviePricePerBlockAcceptable
 			qualityStats = stats.MovieQualityAcceptable
 		else
 			return
 		end
 	else
-		if (CheckMovieBuyConditions(movie, self.SeriesMaxPrice, self.DaySeriesMinQuality)) then
+		if (CheckMovieBuyConditions(licence, self.SeriesMaxPrice, self.DaySeriesMinQuality)) then
 			pricePerBlockStats = stats.SeriesPricePerBlockAcceptable
 			qualityStats = stats.SeriesQualityAcceptable
 		else
@@ -169,17 +177,16 @@ function JobAppraiseMovies:AppraiseMovie(movie)
 	end
 
 	-- Je günstiger desto besser
-	local financeFactor = movie:GetPricePerBlock() / pricePerBlockStats.AverageValue
+	local financeFactor = licence:GetPricePerBlock() / pricePerBlockStats.AverageValue
 	financeFactor = CutFactor(financeFactor, 0.2, 2)
-	--debugMsg("movie.GetPricePerBlock: " .. movie.GetPricePerBlock() .. " ; pricePerBlockStats.AverageValue: " .. pricePerBlockStats.AverageValue)
+	--debugMsg("licence.GetPricePerBlock: " .. licence.GetPricePerBlock() .. " ; pricePerBlockStats.AverageValue: " .. pricePerBlockStats.AverageValue)
 
-	-- Je qualitativ hochwertiger desto besser
-	debugMsg("zz4")
-	local qualityFactor = movie:GetQuality(0) / qualityStats.AverageValue
+	-- Je qualitativ hochwertiger desto besser	
+	local qualityFactor = licence.GetQuality(0) / qualityStats.AverageValue
 	qualityFactor = CutFactor(qualityFactor, 0.2, 2)
-	--debugMsg("movie.Quality: " .. movie.Quality .. " ; qualityStats.AverageValue: " .. qualityStats.AverageValue)
-	movie.SetAttractiveness(financeFactor * qualityFactor)
-	--debugMsg("Movie-Attractiveness: ===== " .. movie.GetAttractiveness() .. " ===== ; financeFactor: " .. financeFactor .. " ; qualityFactor: " .. qualityFactor)
+	--debugMsg("licence.Quality: " .. licence.Quality .. " ; qualityStats.AverageValue: " .. qualityStats.AverageValue)
+	licence.SetAttractiveness(financeFactor * qualityFactor)
+	--debugMsg("MovieLicence-Attractiveness: ===== " .. licence.GetAttractiveness() .. " ===== ; financeFactor: " .. financeFactor .. " ; qualityFactor: " .. qualityFactor)
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -188,6 +195,10 @@ end
 JobBuyMovies = AIJob:new{
 	MovieDistributorTask = nil;
 }
+
+function JobBuyMovies:typename()
+	return "JobBuyMovies"
+end
 
 function JobBuyMovies:Prepare(pParams)
 	debugMsg("Kaufe Filme")
@@ -210,7 +221,7 @@ function JobBuyMovies:Tick()
 				if (v.GetAttractiveness() > 1) then
 					--debugMsg("Kaufe Film: " .. v.GetId() .. " - Attraktivität: ".. v.GetAttractiveness() .. " - Preis: " .. v:GetPrice() .. " - Qualität: " .. v.GetQuality(0))
 					debugMsg("Kaufe Film: " .. v.GetTitle() .. " (" .. v.GetId() .. ") - Preis: " .. v:GetPrice())
-					TVT.md_doBuyMovie(v.GetId())
+					TVT.md_doBuyProgrammeLicence(v.GetId())
 					self.MovieDistributorTask.CurrentBudget = self.MovieDistributorTask.CurrentBudget - v:GetPrice()
 					self.MovieDistributorTask.CurrentBargainBudget = self.MovieDistributorTask.CurrentBargainBudget - v:GetPrice()
 				end

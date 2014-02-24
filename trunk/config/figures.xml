@@ -3,37 +3,37 @@
 	<resources>
 		<resource name="figures">
 			<type>SpritePack</type>
- 			<url>grafiken/hochhaus/figuren.png</url>
+ 			<url>res/grafiken/hochhaus/figuren.png</url>
  			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
 			<children>
-				<child name="Man1"					x="0"	y="0"	w="253"	h="44"	f="11"	id="0" />
-				<child name="Man2"					x="0"	y="44"	w="253"	h="44"	f="11"	id="1" />
-				<child name="Man3"					x="0"	y="88"	w="253"	h="44"	f="11"	id="2" />
-				<child name="Man4"					x="0"	y="132"	w="253"	h="44"	f="11"	id="3" />
-				<child name="Man5"					x="0"	y="176"	w="253"	h="44"	f="11"	id="4" />
-				<child name="Man6"					x="0"	y="220"	w="253"	h="44"	f="11"	id="5" />
-				<child name="Woman1"				x="256"	y="0"	w="253"	h="44"	f="11"	id="6" />
-				<child name="Woman2"				x="256"	y="44"	w="253"	h="44"	f="11"	id="7" />
-				<child name="Woman3"				x="256"	y="88"	w="253"	h="44"	f="11"	id="8" />
-				<child name="Woman4"				x="256"	y="132"	w="253"	h="44"	f="11"	id="9" />
-				<child name="Woman5"				x="256"	y="176"	w="253"	h="44"	f="11"	id="10" />
-				<child name="Woman6"				x="256"	y="220"	w="253"	h="44"	f="11"	id="11" />
-				<child name="Woman6"				x="256"	y="264"	w="253"	h="44"	f="11"	id="12" />
-				<child name="Terrorist1"			x="0"	y="264"	w="253"	h="44"	f="11"	id="13" />
-				<child name="Terrorist2"			x="0"	y="308"	w="253"	h="44"	f="11"	id="14" />
-				<child name="HausmeisterOhneMopp"	x="256"	y="308"	w="253"	h="44"	f="11"	id="15" />
-				<child name="BoteLeer"				x="0"	y="352"	w="253"	h="44"	f="11"	id="16" />
-				<child name="BotePost"				x="256"	y="352"	w="253"	h="44"	f="11"	id="17" />
+				<child name="Man1"					x="0"	y="0"	w="253"	h="44"	f="11"	id="1" />
+				<child name="Man2"					x="0"	y="44"	w="253"	h="44"	f="11"	id="2" />
+				<child name="Man3"					x="0"	y="88"	w="253"	h="44"	f="11"	id="3" />
+				<child name="Man4"					x="0"	y="132"	w="253"	h="44"	f="11"	id="4" />
+				<child name="Man5"					x="0"	y="176"	w="253"	h="44"	f="11"	id="5" />
+				<child name="Man6"					x="0"	y="220"	w="253"	h="44"	f="11"	id="6" />
+				<child name="Woman1"				x="256"	y="0"	w="253"	h="44"	f="11"	id="7" />
+				<child name="Woman2"				x="256"	y="44"	w="253"	h="44"	f="11"	id="8" />
+				<child name="Woman3"				x="256"	y="88"	w="253"	h="44"	f="11"	id="9" />
+				<child name="Woman4"				x="256"	y="132"	w="253"	h="44"	f="11"	id="10" />
+				<child name="Woman5"				x="256"	y="176"	w="253"	h="44"	f="11"	id="11" />
+				<child name="Woman6"				x="256"	y="220"	w="253"	h="44"	f="11"	id="12" />
+				<child name="Woman7"				x="256"	y="264"	w="253"	h="44"	f="11"	id="13" />
+				<child name="Terrorist1"			x="0"	y="264"	w="253"	h="44"	f="11"	id="14" />
+				<child name="Terrorist2"			x="0"	y="308"	w="253"	h="44"	f="11"	id="15" />
+				<child name="HausmeisterOhneMopp"	x="256"	y="308"	w="253"	h="44"	f="11"	id="16" />
+				<child name="BoteLeer"				x="0"	y="352"	w="253"	h="44"	f="11"	id="17" />
+				<child name="BotePost"				x="256"	y="352"	w="253"	h="44"	f="11"	id="18" />
 
-				<child name="Player1"				x="0"	y="396"	w="253"	h="44"	f="11"	id="18" />
-				<child name="Player2"				x="256"	y="396"	w="253"	h="44"	f="11"	id="19" />
-				<child name="Player3"				x="0"	y="440"	w="253"	h="44"	f="11"	id="20" />
-				<child name="Player4"				x="256"	y="440"	w="253"	h="44"	f="11"	id="21" />
+				<child name="Player1"				x="0"	y="396"	w="253"	h="44"	f="11"	id="19" />
+				<child name="Player2"				x="256"	y="396"	w="253"	h="44"	f="11"	id="20" />
+				<child name="Player3"				x="0"	y="440"	w="253"	h="44"	f="11"	id="21" />
+				<child name="Player4"				x="256"	y="440"	w="253"	h="44"	f="11"	id="22" />
 			</children>
 		</resource>
 		<resource name="figure_HausmeisterPack">
 			<type>SpritePack</type>
- 			<url>grafiken/hochhaus/spielfigur_hausmeister.png</url>
+ 			<url>res/grafiken/hochhaus/spielfigur_hausmeister.png</url>
  			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
 			<children>
 				<child name="figure_Hausmeister"	x="0"	y="0"	w="765"	h="44"	f="15"	id="0" />

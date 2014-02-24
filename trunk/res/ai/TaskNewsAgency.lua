@@ -28,7 +28,7 @@ function TaskNewsAgency:GetNextJobInTargetRoom()
 		return self.NewsAgencyJob
 	end
 
-	self:SetDone()
+	self:SetWait()
 end
 
 function TaskNewsAgency:BudgetSetup()
@@ -44,6 +44,10 @@ JobNewsAgencyAbonnements = AIJob:new{
 	Task = nil
 }
 
+function JobNewsAgencyAbonnements:typename()
+	return "JobNewsAgencyAbonnements"
+end
+
 function JobNewsAgencyAbonnements:Prepare(pParams)
 	debugMsg("Prüfe/Schließe Nachrichtenabonnements")
 end
@@ -51,11 +55,11 @@ end
 function JobNewsAgencyAbonnements:Tick()
 	local abonnementCount = self.Task.AbonnementBudget / 10000
 
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_POLITICS, self:GetAbonnementLevel(abonnementCount, 1))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SHOWBIZ, self:GetAbonnementLevel(abonnementCount, 2))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SPORT, self:GetAbonnementLevel(abonnementCount, 3))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_TECHNICS, self:GetAbonnementLevel(abonnementCount, 4))
-	MY.SetNewsAbonnement(TVT.NEWS_GENRE_CURRENTS, self:GetAbonnementLevel(abonnementCount, 5))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_POLITICS, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_POLITICS))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SHOWBIZ, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_SHOWBIZ))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_SPORT, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_SPORT))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_TECHNICS, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_TECHNICS))
+	MY.SetNewsAbonnement(TVT.NEWS_GENRE_CURRENTS, self:GetAbonnementLevel(abonnementCount, TVT.NEWS_GENRE_CURRENTS))
 
 	--self.Task.CurrentBudget = self.Task.CurrentBudget - (abonnementCount * 10000)
 
@@ -81,6 +85,10 @@ JobNewsAgency = AIJob:new{
 	Newslist = null;
 	Task = nil
 }
+
+function JobNewsAgency:typename()
+	return "JobNewsAgency"
+end
 
 function JobNewsAgency:Prepare(pParams)
 	debugMsg("Bewerte/Kaufe Nachrichten")
@@ -132,7 +140,7 @@ function JobNewsAgency:GetNewsList()
 	end
 
 	local sortMethod = function(a, b)
-		return a.newsEvent.GetAttractiveness() > b.newsEvent.GetAttractiveness()
+		return a.GetAttractiveness() > b.GetAttractiveness()
 	end
 	table.sort(currentNewsList, sortMethod)
 

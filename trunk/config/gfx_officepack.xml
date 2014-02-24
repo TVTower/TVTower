@@ -1,17 +1,31 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources>
+		<resource name="gfx_pplaner_blocks">
+			<type>SpritePack</type>
+ 			<url>res/grafiken/buero/pplanung_blocks.png</url>
+			<children>
+				<child name="pp_adblock1"							x="208"	y="184"	w="75"	h="30" />
+				<child name="pp_adblock1_dragged"					x="0"	y="180"	w="84"	h="40" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_adblock2"							x="208"	y="114"	w="75"	h="60" />
+				<child name="pp_adblock2_dragged"					x="0"	y="110"	w="84"	h="70" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_programmeblock1"					x="208"	y="74"	w="195"	h="30" />
+				<child name="pp_programmeblock1_dragged"			x="0"	y="70"	w="204"	h="40" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_programmeblock2"					x="208"	y="4"	w="195"	h="60" />
+				<child name="pp_programmeblock2_dragged"			x="0"	y="0"	w="204"	h="70" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_xrated"								x="300"	y="114"	w="12"	h="12" />
+			</children>
+		</resource>
 		<resource name="gfx_officepack">
 			<type>SpritePack</type>
- 			<url>grafiken/buero/officepack.png</url>
+ 			<url>res/grafiken/buero/officepack.png</url>
 			<children>
-				<child name="genres_top"					x="604" 	y="400" 	w="149" h="1" />
-				<child name="genres_entryFirst"				x="604" 	y="401" 	w="149" h="17" />
-				<child name="genres_entry1"					x="604" 	y="418" 	w="149" h="17" />
-				<child name="genres_entry0"					x="604" 	y="435" 	w="149" h="17" />
-				<child name="genres_bottom"					x="604" 	y="452" 	w="149" h="7" />
+				<child name="genres_top"					x="604" 	y="400" 	w="146" h="1" />
+				<child name="genres_entryFirst"				x="604" 	y="401" 	w="146" h="17" />
+				<child name="genres_entry1"					x="604" 	y="418" 	w="146" h="17" />
+				<child name="genres_entry0"					x="604" 	y="435" 	w="146" h="17" />
+				<child name="genres_bottom"					x="604" 	y="452" 	w="146" h="3" />
 
-				<child name="episodes" 								x="0" 	y="348"	w="107" h="135" />
 				<child name="programmeplanner_btn_options"			x="318"	y="351"	w="98"	h="56" />
 				<child name="programmeplanner_btn_programme"		x="423"	y="416"	w="98"	h="56" />
 				<child name="programmeplanner_btn_financials"		x="839"	y="230"	w="98"	h="56" />
@@ -21,13 +35,8 @@
 				<child name="pp_cassettes_movies"					x="687"	y="107"	w="159"	h="18" />
 				<child name="pp_cassettes_episodes"					x="878"	y="109"	w="97"	h="11" />
 				<child name="pp_cassettes_series"					x="604"	y="376"	w="159"	h="18" />
-				<child name="pp_menu_werbung"						x="839"	y="287"	w="185"	h="210" />
-				<child name="pp_adblock1"							x="341"	y="267"	w="75"	h="30" />
-				<child name="pp_adblock1_dragged"					x="339"	y="161"	w="80"	h="35" />
-				<child name="pp_programmeblock1"					x="604"	y="290"	w="195"	h="30" />
-				<child name="pp_programmeblock1_dragged"			x="750"	y="193"	w="200"	h="35" />
-				<child name="pp_programmeblock2"					x="604"	y="230"	w="195"	h="60" />
-				<child name="pp_programmeblock2_dragged"			x="750"	y="128"	w="200"	h="65" />
+				<child name="pp_tapeBackground"						x="839"	y="287"	w="182"	h="207" />
+				<child name="pp_tapeEpisodesBackground"				x="0" 	y="348"	w="107" h="135" />
 				<child name="gfx_officepack_financials_barren"		x="107"	y="348"	w="22"	h="100" />
 				<child name="gfx_officepack_audiencenews_barren"	x="129"	y="348"	w="9"	h="100" />
 				<child name="gfx_officepack_audience_barren"		x="950"	y="128"	w="15"	h="100" />

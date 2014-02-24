@@ -1,7 +1,10 @@
 SuperStrict
 Import Pub.Lua
-Import BRL.Reflection
+'using custom to have support for const/function reflection
+'Import BRL.Reflection
+Import "external/reflectionExtended/reflection.bmx"
 Import brl.retro
+Import "basefunctions.bmx"
 'from maxlua
 ?threaded
 Import "basefunctions_lua_threaded.c"
@@ -32,6 +35,7 @@ Type TLuaEngine
 	Field _fenv:Int					'we store other objects in our metatable - we are responsible for them
 									'fenv should be known from Lua itself
 
+
 	Function Create:TLuaEngine( source:String )
 		Local obj:TLuaEngine = New TLuaEngine.SetSource( source )
 		'init fenv and register self
@@ -39,9 +43,10 @@ Type TLuaEngine
 		obj.lastID :+1
 		obj.id = obj.lastID
 
-		Self.list.addLast(obj)
+		list.addLast(obj)
 		Return obj
 	End Function
+
 
 	Method Delete()
 		luaL_unref( getLuaState(),LUA_REGISTRYINDEX, _fenv )
@@ -62,29 +67,35 @@ Type TLuaEngine
 		Return Null
 	End Function
 
+
 	Method getLuaState:Byte Ptr()
-		If Not Self._luaState
-			Self._luaState=luaL_newstate()
-			luaL_openlibs Self._luaState
+		If Not _luaState
+			_luaState = luaL_newstate()
+			luaL_openlibs(_luaState)
 		EndIf
-		Return Self._luaState
+		Return _luaState
 	End Method
+
 
 	Method getSource:String()
 		Return _source
 	End Method
 
+
 	Method SetSource:TLuaEngine( source:String )
-		_source=source
+		_source = source
+		'remove reference of old source
 		If _chunk
 			luaL_unref( getLuaState(),LUA_REGISTRYINDEX,_chunk )
-			_chunk=0
+			_chunk = 0
 		EndIf
 
-		Self.RegisterToLua()
+'do this by yourself
+'		Self.RegisterToLua()
 
 		Return Self
 	End Method
+
 
 	'we are parent of other registered objects
 	Method RegisterToLua:Int()
@@ -118,18 +129,18 @@ Type TLuaEngine
 		If lua_pcall( getLuaState(),0,0,0 ) Then DumpError()
 	End Method
 
+
 	Method DumpError()
-		Print "#################################"
-		WriteStdout "LUA ERROR in Engine "+Self.id+"~n"
-		WriteStdout lua_tostring( getLuaState(),-1 )+"~n"
-		Print "#################################"
+		TDevHelper.log("TLuaEngine", "#### ERROR #######################", LOG_ERROR)
+		TDevHelper.log("TLuaEngine", "Engine: "+self.id, LOG_ERROR)
+		TDevHelper.log("TLuaEngine", lua_tostring( getLuaState(),-1 ), LOG_ERROR)
 	End Method
 
 
 	Method lua_pushChunk:Int()
 		If Not _chunk
 			If luaL_loadstring( getLuaState(),_source )
-				WriteStdout "Error loading script :~n" + lua_tostring( getLuaState(),-1 ) + "~n"
+				DumpError()
 				lua_pop getLuaState(),1
 				Return False
 			EndIf
@@ -138,6 +149,7 @@ Type TLuaEngine
 		lua_rawgeti( getLuaState() ,LUA_REGISTRYINDEX,_chunk )
 		Return True
 	End Method
+
 
 	' create a table and load with array contents
 	Method lua_pushArray( obj:Object )
@@ -177,17 +189,20 @@ Type TLuaEngine
 		Next
 	End Method
 
+
 	'calls getobjmetatable
 	Method lua_pushobject( obj:Object )
 		If obj = null then 'mv 06.11.2012: Es ist nötig "null"-Werte in Lua-kompatible "nil"-Werte umzuwandeln.
 			lua_pushnil( getLuaState() )
-		Else		
+		Else
 			lua_boxobject( getLuaState(),obj )
 			lua_rawgeti( getLuaState(),LUA_REGISTRYINDEX, getObjMetaTable())
-			lua_setmetatable( getLuaState(),-2 )		
-		Endif		
+			lua_setmetatable( getLuaState(),-2 )
+		Endif
 	End Method
 
+
+	'===============
 	'from MaxLua
 	'but added _private / _expose ... checks
 			Method getObjMetaTable:Int()
@@ -212,57 +227,129 @@ Type TLuaEngine
 				Local typeId:TTypeId	= TTypeId.ForObject( obj )
 				Local ident:String		= lua_tostring( getLuaState(),2 )
 
-				'only expose if type set to get exposed
+				'only expose if type ("parent") is set to get exposed
 				if not typeId.MetaData("_exposeToLua") then return false
 				local exposeType:string = typeId.MetaData("_exposeToLua")
 
 			'	print "registering ... "+ident
 
-				'PRIVATE...do not add private functions/methods
-				'so method _myMethod() is private, same for _myField:int = 0
-				'lua constant/var to access global: _G
-				if Chr( ident[0] ) =  "_" and ident <> "_G" then return True
+				'===== SKIP PRIVATE THINGS =====
+				'each variable/function with an underscore is private
+				'eg.: function _myPrivateFunction
+				'eg.: field _myPrivateField
+				'
+				'but lua needs access to global: _G
+				if Chr( ident[0] ) =  "_" and ident <> "_G" then return FALSE
 
+				'===== CHECK PUSHED OBJECT IS A METHOD =====
 				Local mth:TMethod = typeId.FindMethod( ident )
 				'thing we have to push is a method
 				If mth
 					'PRIVATE...do not add private functions/methods
-					if mth.MetaData("_private") then return True
+					if mth.MetaData("_private")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						return false
+					endif
 					'only expose the children with explicit mention
-					if exposeType = "selected" AND not mth.MetaData("_exposeToLua") then return True
+					if exposeType = "selected" AND not mth.MetaData("_exposeToLua")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						return false
+					endif
 
 					lua_pushvalue( getLuaState(),1 )
 					lua_pushlightobject( getLuaState(),mth )
-					lua_pushcclosure( getLuaState(),Invoke,2 )
+					lua_pushcclosure( getLuaState(),Invoke,2)
 					Return True
 				EndIf
 
-				'thing we have to push is a field
+rem
+				'===== CHECK PUSHED OBJECT IS A FUNCTION =====
+				Local _function:TFunction = typeId.FindFunction( ident )
+				If _function
+					'PRIVATE...do not add private functions/methods
+					if _function.MetaData("_private")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR )
+						return false
+					endif
+					'only expose the children with explicit mention
+					if exposeType = "selected" AND not _function.MetaData("_exposeToLua")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						return false
+					endif
+
+					lua_pushvalue( getLuaState(),1 )
+					lua_pushlightobject( getLuaState(), _function )
+					lua_pushcclosure( getLuaState(),Invoke,2 )
+					Return True
+				EndIf
+endrem
+
+				'===== CHECK PUSHED OBJECT IS A CONSTANT =====
+				Local _constant:TConstant = typeId.FindConstant( ident )
+				If _constant
+					'PRIVATE...do not add private functions/methods
+					if _constant.MetaData("_private")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						return false
+					endif
+					'only expose the children with explicit mention
+					if exposeType = "selected" AND not _constant.MetaData("_exposeToLua")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						return false
+					endif
+
+					Select _constant.TypeId() ' BaH - added more types
+						Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
+							lua_pushinteger( getLuaState(),_constant.GetInt() )
+						Case FloatTypeId
+							lua_pushnumber( getLuaState(),_constant.GetFloat() )
+						Case DoubleTypeId
+							lua_pushnumber( getLuaState(),_constant.GetDouble() )
+						Case StringTypeId
+							Local t:String = _constant.GetString()
+							lua_pushlstring( getLuaState(),t,t.length )
+					End Select
+					return TRUE
+				endif
+
+
+				'===== CHECK PUSHED OBJECT IS A FIELD =====
 				Local fld:TField = typeId.FindField( ident )
-				If fld= Null Then Return False
+				If fld
+					'PRIVATE...do not add private functions/methods
+					'SELECTED...only expose the children with explicit mention
+					if fld.MetaData("_private")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						return false
+					endif
+					if exposeType = "selected" AND not fld.MetaData("_exposeToLua")
+						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						return false
+					endif
 
-				'PRIVATE...do not add private functions/methods
-				if fld.MetaData("_private") then return True
-				'only expose the children with explicit mention
-				if exposeType = "selected" AND not fld.MetaData("_exposeToLua") then return True
+					Select fld.TypeId() ' BaH - added more types
+						Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
+							lua_pushinteger( getLuaState(),fld.GetInt(obj) )
+						Case FloatTypeId
+							lua_pushnumber( getLuaState(),fld.GetFloat(obj) )
+						Case DoubleTypeId
+							lua_pushnumber( getLuaState(),fld.GetDouble(obj) )
+						Case StringTypeId
+							Local t:String = fld.GetString( obj )
+							lua_pushlstring( getLuaState(),t,t.length )
+						Case ArrayTypeId
+							lua_pushArray( fld.Get(obj) )
+						Default
+							lua_pushobject( fld.Get(obj) )
+					End Select
+					Return True
+				endif
 
-				Select fld.TypeId() ' BaH - added more types
-					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
-						lua_pushinteger( getLuaState(),fld.GetInt(obj) )
-					Case FloatTypeId
-						lua_pushnumber( getLuaState(),fld.GetFloat(obj) )
-					Case DoubleTypeId
-						lua_pushnumber( getLuaState(),fld.GetDouble(obj) )
-					Case StringTypeId
-						Local t:String = fld.GetString( obj )
-						lua_pushlstring( getLuaState(),t,t.length )
-					Case ArrayTypeId
-						lua_pushArray( fld.Get(obj) )
-					Default
-						lua_pushobject( fld.Get(obj) )
-				End Select
-				Return True
+
+				TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not have a property called ~q" + ident+"~q.", LOG_ERROR)
+				return FALSE
 			End Method
+
 
 			Method NewIndex:Int( )
 				Local obj:Object		= lua_unboxobject( getLuaState(),1 )
@@ -273,7 +360,9 @@ Type TLuaEngine
 				If mth Then Throw "newIndex ERROR"
 
 				'only expose if type set to get exposed
-				if not typeId.MetaData("_exposeToLua") then print "Lua: Type "+typeId.name()+" not exposed to Lua"; return false
+				if not typeId.MetaData("_exposeToLua")
+					TDevHelper.log("TLuaEngine", "Type "+typeId.name()+" not exposed to Lua.", LOG_ERROR)
+				endif
 				local exposeType:string = typeId.MetaData("_exposeToLua")
 
 
@@ -284,7 +373,10 @@ Type TLuaEngine
 					if fld.MetaData("_private") then return True
 					'only set values of children with explicit mention
 					if exposeType = "selected" AND not fld.MetaData("_exposeToLua") then return True
-					if fld.MetaData("_exposeToLua")<>"rw" then print "LUA: "+typeId.name()+"."+ident+" is read-only";return true
+					if fld.MetaData("_exposeToLua")<>"rw"
+						TDevHelper.log("TLuaEngine", "Object property "+typeId.name()+"."+ident+" is read-only.", LOG_ERROR)
+						return TRUE
+					endif
 
 					Select fld.TypeId()
 						Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
@@ -300,7 +392,7 @@ Type TLuaEngine
 					End Select
 					Return True
 				EndIf
-				Print "newindex: ident not found: "+ident
+				TDevHelper.log("TLuaEngine", "newindex: ident not found "+ident+".", LOG_ERROR)
 			End Method
 
 			'functions so we can push them to lua
@@ -340,7 +432,49 @@ Type TLuaEngine
 					Return engine._Invoke()
 				End Function
 
+rem
+			Method _InvokeFunction:Int()
+				Local obj:Object			= lua_unboxobject( getLuaState(),LUA_GLOBALSINDEX-1 )
+				Local _function:TFunction	= TFunction( lua_tolightobject( getLuaState(),LUA_GLOBALSINDEX-2 ) )
+				Local tys:TTypeId[]			= _function.ArgTypes()
+				Local args:Object[tys.length]
 
+				For Local i:Int = 0 Until args.length
+					Select tys[i]
+						Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
+							args[i]=String.FromInt( lua_tointeger( getLuaState(),i+1 ) )
+						Case FloatTypeId
+							args[i]=String.FromFloat( lua_tonumber( getLuaState(),i+1 ) )
+						Case DoubleTypeId
+							args[i]=String.FromDouble( lua_tonumber( getLuaState(),i+1 ) )
+						Case StringTypeId
+							args[i]=lua_tostring( getLuaState(),i+1 )
+						Default
+							args[i]=lua_unboxobject( getLuaState(),i+1 )
+					End Select
+				Next
+				Local t:Object = _function.Invoke( obj,args )
+				local typeId:TTypeID = _function.TypeId()
+				if object[](t).length > 0 then typeId = ArrayTypeId
+
+				Select typeId
+					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
+						lua_pushinteger( getLuaState(),t.ToString().ToInt() )
+					Case FloatTypeId
+						lua_pushnumber( getLuaState(),t.ToString().ToFloat() )
+					Case DoubleTypeId
+						lua_pushnumber( getLuaState(),t.ToString().ToDouble() )
+					Case StringTypeId
+						Local s:String = t.ToString()
+						lua_pushlstring( getLuaState(),s,s.length )
+					Case ArrayTypeId
+						lua_pushArray( t )
+					Default
+						lua_pushobject( t )
+				End Select
+				Return True
+			End Method
+endrem
 			Method _Invoke:Int()
 				Local obj:Object		= lua_unboxobject( getLuaState(),LUA_GLOBALSINDEX-1 )
 				Local meth:TMethod		= TMethod( lua_tolightobject( getLuaState(),LUA_GLOBALSINDEX-2 ) )
@@ -382,9 +516,8 @@ Type TLuaEngine
 				End Select
 				Return True
 			End Method
-
-' end maxlua import
-
+	'end maxlua import
+	'===============
 
 
 	Method CallLuaFunction:Object(name:String, args:Object[] = Null)
@@ -430,21 +563,21 @@ Type TLuaEngine
 	End Method
 
 
-
 	'Once registered, the object can be accessed from within Lua scripts using the @ObjName identifer.
 	Method RegisterBlitzmaxObject(Obj:Object, ObjName:String)
 		lua_pushobject( obj )
 		lua_setglobal( getLuaState(),ObjName )
 	End Method
 
+
 	Method RegisterInt( name:String, value:Int )
 		lua_pushinteger getLuaState(),value
 		lua_setfield getLuaState(),LUA_GLOBALSINDEX,name
 	End Method
 
+
 	Method RegisterFunction( name:String,value:Byte Ptr )
 		lua_pushcclosure( getLuaState(),value,0 )
 		lua_setfield( getLuaState(),LUA_GLOBALSINDEX,name )
 	End Method
-
 End Type

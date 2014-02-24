@@ -22,6 +22,7 @@ unitTestMode = true
 TASK_STATUS_OPEN	= "T_open"
 TASK_STATUS_PREPARE	= "T_prepare"
 TASK_STATUS_RUN		= "T_run"
+TASK_STATUS_WAIT	= "T_wait"
 TASK_STATUS_DONE	= "T_done"
 TASK_STATUS_CANCEL	= "T_cancel"
 
@@ -46,7 +47,7 @@ AIPlayer = KIDataObjekt:new{
 }
 
 function AIPlayer:typename()
-	return "KIPlayer"
+	return "AIPlayer"
 end
 
 function AIPlayer:initialize()
@@ -93,8 +94,8 @@ function AIPlayer:BeginNewTask()
 	self.CurrentTask = self:SelectTask()
 	if self.CurrentTask == nil then
 		debugMsg("AIPlayer:BeginNewTask - task is nil... " )
-	else
-		self.CurrentTask:Activate()
+	else			
+		self.CurrentTask:CallActivate()
 		self.CurrentTask:StartNextJob()
 	end
 end
@@ -135,6 +136,7 @@ AITask = KIDataObjekt:new{
 	LastDone = 0; -- Zeit, wann der Task zuletzt abgeschlossen wurde
 	StartTask = 0; -- Zeit, wann der Task zuletzt gestartet wurde
 	TickCounter = 0; -- Gibt die Anzahl der Ticks an seit dem der Task läuft
+	MaxTicks = 30; --Wie viele Ticks darf der Task maximal laufen?
 	TargetRoom = -1; -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
 	CurrentBudget = 0; -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
 	BudgetWholeDay = 0; -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
@@ -145,6 +147,12 @@ AITask = KIDataObjekt:new{
 
 function AITask:typename()
 	return "AITask"
+end
+
+function AITask:CallActivate()
+	self.MaxTicks = math.random(9, 17)
+	self.TickCounter = 0
+	self:Activate()
 end
 
 function AITask:Activate()
@@ -165,8 +173,7 @@ function AITask:StartNextJob()
 		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
-		self.StartTask = Game.GetTimeGone()
-		self.TickCounter = 0;
+		self.StartTask = Game.GetTimeGone()		
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
 		if (self.Status == TASK_STATUS_DONE) or (self.Status == TASK_STATUS_CANCEL) then
@@ -174,29 +181,37 @@ function AITask:StartNextJob()
 		end
 	end
 
-	self.CurrentJob:Start()
+	if self.CurrentJob ~= null then
+		self.CurrentJob:Start()
+	end
 end
 
 function AITask:Tick()
-	if (self.Status == TASK_STATUS_RUN) then
-		self.TickCounter = self.TickCounter + 1
-	end
+	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_WAIT)) then
+		self.TickCounter = self.TickCounter + 1		
+		--debugMsg("MaxTickCount: " .. self.TickCounter .. " > " .. self.MaxTicks)
+		if (self.TickCounter > self.MaxTicks) then
+			self:TooMuchTicks()
+		end	
+	end	
 
-	if (self.CurrentJob == nil) then
-		--debugMsg("----- Kein Job da - Neuen Starten")
-		self:StartNextJob() --Von vorne anfangen
-	else
-		if self.CurrentJob.Status == JOB_STATUS_CANCEL then
-			self.CurrentJob = nil
-			self:SetCancel()
-			return
-		elseif self.CurrentJob.Status == JOB_STATUS_DONE then
-			self.CurrentJob = nil
-			--debugMsg("----- Alter Job ist fertig - Neuen Starten")
+	if (self.Status == TASK_STATUS_RUN or (self.Status == TASK_STATUS_PREPARE)) then	
+		if (self.CurrentJob == nil) then
+			--debugMsg("----- Kein Job da - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
 		else
-			--debugMsg("----- Job-Tick")
-			self.CurrentJob:Tick() --Fortsetzen
+			if self.CurrentJob.Status == JOB_STATUS_CANCEL then
+				self.CurrentJob = nil
+				self:SetCancel()
+				return
+			elseif self.CurrentJob.Status == JOB_STATUS_DONE then
+				self.CurrentJob = nil
+				--debugMsg("----- Alter Job ist fertig - Neuen Starten")
+				self:StartNextJob() --Von vorne anfangen
+			else
+				--debugMsg("----- Job-Tick")
+				self.CurrentJob:CallTick() --Fortsetzen			
+			end
 		end
 	end
 end
@@ -209,7 +224,7 @@ end
 function AITask:getGotoJob()
 	local aJob = AIJobGoToRoom:new()
 	aJob.Task = self
-	aJob.TargetRoom = self.TargetRoom	
+	aJob.TargetRoom = self.TargetRoom
 	return aJob
 end
 
@@ -218,15 +233,25 @@ function AITask:RecalcPriority()
 
 	local Ran1 = math.random(75, 125) / 100
 	local TimeDiff = math.round(Game.GetTimeGone() - self.LastDone)
-	local player = _G["globalPlayer"]	
-	local requisitionPriority = player:GetRequisitionPriority(self.Id)		
-	
+	local player = _G["globalPlayer"]
+	local requisitionPriority = player:GetRequisitionPriority(self.Id)
+
 	local calcPriority = (self.BasePriority + self.SituationPriority) * Ran1 + requisitionPriority
 	local timeFactor = (20 + TimeDiff) / 20
 	
 	self.CurrentPriority = calcPriority * timeFactor
-		
-	debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")	
+
+	debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")
+end
+
+function AITask:TooMuchTicks()
+	debugMsg("<<< TooMuchTicks / Warten zuende!")
+	self:SetDone()
+end
+
+function AITask:SetWait()
+	debugMsg("<<< Task wait!")
+	self.Status = TASK_STATUS_WAIT
 end
 
 function AITask:SetDone()
@@ -260,6 +285,7 @@ AIJob = KIDataObjekt:new{
 	Status = JOB_STATUS_NEW;
 	StartJob = 0;
 	LastCheck = 0;
+	Ticks = 0;
 	StartParams = nil;
 }
 
@@ -271,11 +297,17 @@ function AIJob:Start(pParams)
 	self.StartParams = pParams
 	self.StartJob = Game.GetTimeGone()
 	self.LastCheck = Game.GetTimeGone()
+	self.Ticks = 0
 	self:Prepare(pParams)
 end
 
 function AIJob:Prepare(pParams)
 	debugMsg("Implementiere mich: " .. type(self))
+end
+
+function AIJob:CallTick()
+	self.Ticks = self.Ticks + 1
+	self:Tick()
 end
 
 function AIJob:Tick()
@@ -315,7 +347,7 @@ function AIJobGoToRoom:OnReachRoom(roomId)
 			debugMsg("Okay... aber nur noch 'n kleines bisschen...")
 		elseif (self:ShouldIWait()) then
 			debugMsg("Dann wart ich eben...")
-			self.IsWaiting = true		
+			self.IsWaiting = true
 			self.WaitSince = Game.GetTimeGone()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
 			if ((self.WaitTill - self.WaitSince) > 20) then
@@ -323,14 +355,14 @@ function AIJobGoToRoom:OnReachRoom(roomId)
 			end
 			local rand = math.random(50, 75)
 			debugMsg("Gehe etwas zur Seite: " .. rand)
-			TVT.doGoToRelative(rand)		
+			TVT.doGoToRelative(rand)
 		else
 			debugMsg("Ne ich warte nicht!")
 			self.Status = JOB_STATUS_CANCEL
 		end
 	else
 		--debugMsg("AIJobGoToRoom DONE!")
-		self.Status = JOB_STATUS_DONE	
+		self.Status = JOB_STATUS_DONE
 	end
 end
 
@@ -350,7 +382,7 @@ function AIJobGoToRoom:ShouldIWait()
 	end
 end
 
-function AIJobGoToRoom:Prepare(pParams)
+function AIJobGoToRoom:Prepare(pParams)	
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
 		TVT.DoGoToRoom(self.TargetRoom)
 		self.Status = JOB_STATUS_RUN
@@ -366,10 +398,10 @@ function AIJobGoToRoom:Tick()
 		elseif ((self.WaitTill - Game.GetTimeGone()) <= 0) then
 			debugMsg("Ach... ich geh...")
 			self.Status = JOB_STATUS_CANCEL
-		end			
+		end
 	elseif (self.Status ~= JOB_STATUS_DONE) then
 		self:ReDoCheck(10)
-	end		
+	end
 end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -389,11 +421,15 @@ StatisticEvaluator = SLFDataObject:new{
 	Values = 0;
 }
 
+function StatisticEvaluator:typename()
+	return "StatisticEvaluator"
+end
+
 function StatisticEvaluator:Adjust()
 	self.MinValueTemp = 100000000000000
 	self.AverageValueTemp = -1
 	self.MaxValueTemp = -1
-	self.Values = 0	
+	self.Values = 0
 end
 
 function StatisticEvaluator:AddValue(value)
@@ -438,7 +474,7 @@ end
 
 function debugMsg(pMessage)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
-		TVT.PrintOut(TVT.ME .. ": " .. pMessage)
+		TVT.PrintOut(pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
 	end
 end

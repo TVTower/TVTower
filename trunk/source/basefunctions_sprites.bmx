@@ -3,19 +3,29 @@ superstrict
 
 Import BRL.Max2D
 Import BRL.Random
-Import brl.reflection
 Import brl.FreeTypeFont
 'Import "basefunctions.bmx"
 Import "basefunctions_image.bmx"
 Import "basefunctions_events.bmx"
 Import "basefunctions_asset.bmx"
 
+rem
 CONST VALIGN_TOP:float		= 1
 CONST VALIGN_CENTER:float	= 0.5
 CONST VALIGN_BOTTOM:float	= 0
-CONST ALIGN_LEFT:float		= 1
+CONST ALIGN_LEFT:float		= 1.0
 CONST ALIGN_CENTER:float	= 0.5
 CONST ALIGN_RIGHT:float		= 0
+endrem
+
+
+CONST ALIGN_LEFT:FLOAT		= 0
+CONST ALIGN_CENTER:FLOAT	= 0.5
+CONST ALIGN_RIGHT:FLOAT		= 1.0
+CONST ALIGN_TOP:FLOAT		= 0
+CONST ALIGN_BOTTOM:FLOAT	= 1.0
+Global ALIGN_TOP_LEFT:TPoint = TPoint.Create(0, 0)
+
 
 Type TRenderManager
 	field list:TList = CreateList()
@@ -32,49 +42,38 @@ Type TRenderManager
 	end Method
 End Type
 
+
 Type TRenderable extends TAsset
-	field pos:TPoint = TPoint.Create(0,0)
+	Field children:TList	= CreateList()
+	Field area:TRectangle	= TRectangle.Create(0,0,0,0)
+	'the zIndex is LOCAL (when parented), higher values are on TOP
+	Field zIndex:int		= 0
 
-End Type
 
-'children get parent linked
-Type TRenderableChild extends TRenderable
-	field parent:TRenderable
-
-	Method Update(deltaTime:float=1.0) abstract
-	Method Draw(tweenValue:float=1.0) abstract
-End Type
-
-'manages children
-Type TRenderableChildrenManager extends TrenderableChild
-	field list:TList = CreateList()
-
-	Function Create:TRenderableChildrenManager(parent:TRenderable)
-		local obj:TRenderableChildrenManager = new TRenderableChildrenManager
-		obj.parent = parent
-		return obj
-	end Function
-
-	Method Attach(child:TRenderableChild)
-		self.list.addLast(child)
-	End Method
-
-	Method Detach(child:TRenderableChild)
-		self.list.remove(child)
-	endMethod
-
-	Method Update(deltaTime:float=1.0)
-		For local obj:TRenderableChild = eachin self.list
-			obj.update(deltaTime)
+	Method Update:int(deltaTime:float=1.0)
+		For local child:TRenderable = eachin children
+			child.Update(deltaTime)
 		Next
 	End Method
 
-	Method Draw(tweenValue:float=1.0)
-		For local obj:TRenderableChild = eachin self.list
-			obj.draw(tweenValue)
+
+	'implement it customized in each type
+	rem
+	Method Draw:int(tweenValue:float=1.0, minZIndex:int=-1, maxZIndex:int=-1)
+		For local child:TRenderable = eachin children
+			if minZIndex >=0 and child.zIndex < minZIndex then continue
+			if maxZIndex >=0 and child.zIndex > minZIndex then continue
+			child.Draw(tweenValue)
 		Next
 	End Method
+	endrem
+
+
+	Method AddChild:int(child:TRenderable)
+		self.children.AddLast(child)
+	End Method
 End Type
+
 
 
 
@@ -91,6 +90,8 @@ Function LoadTrueTypeFont:TImageFont( url:Object,size:int,style:int )
 
 	Return font
 End Function
+
+
 
 
 Type TSpriteAtlas
@@ -116,7 +117,7 @@ Type TSpriteAtlas
 				self.Repack()
 			endif
 		Wend
-		Self.elements.Insert(name, TBox.Create( freeArea.x, freeArea.y, w, h ) )
+		Self.elements.Insert(name, TRectangle.Create(freeArea.x, freeArea.y, w, h))
 	End Method
 
 	Method Repack()
@@ -127,8 +128,8 @@ Type TSpriteAtlas
 		ClearMap(self.elements)
 
 		for local name:string = eachin newElements.Keys()
-			local box:TBox = TBox(newElements.ValueForKey(name))
-			self.AddElement(name, box.w, box.h)
+			local rect:TRectangle = TRectangle(newElements.ValueForKey(name))
+			self.AddElement(name, rect.GetW(), rect.GetH())
 		next
 	End Method
 
@@ -136,8 +137,8 @@ Type TSpriteAtlas
 		setColor 255,100,100
 		DrawRect(x,y,self.w, self.h)
 		setColor 50,100,200
-		For local box:TBox = eachin self.elements.Values()
-			DrawRect(box.x+1, box.y+1, box.w-2, box.h-2)
+		For local rect:TRectangle = eachin self.elements.Values()
+			DrawRect(rect.GetX()+1, rect.GetY()+1, rect.GetW()-2, rect.GetH()-2)
 		Next
 	End Method
 
@@ -161,6 +162,9 @@ Type TSpriteAtlas
 	EndMethod
 End Type
 
+
+
+
 Type TSpritePacker
 	Field childNode1:TSpritePacker
 	Field childNode2:TSpritePacker
@@ -182,25 +186,26 @@ Type TSpritePacker
 	' recursively split area until it fits the desired size
 	Method pack:TSpritePacker(width:Int,height:Int)
 
-    	If (childNode1 = Null And childNode2 = Null) 'If we are a leaf node
+		 'If we are a leaf node
+		If (childNode1 = Null And childNode2 = Null)
 
-        	If occupied Or width > w Or height > h Return Null
+			If occupied Or width > w Or height > h then Return Null
 
-        	If width = w And height = h
+			If width = w And height = h
 				occupied = True
 				Return Self
 			Else
 				splitArea(width,height)
-   		     	Return childNode1.pack(width,height)
+				Return childNode1.pack(width,height)
 			EndIf
 
 		Else
-		    ' Try inserting into first child
-        	Local newNode:TSpritePacker = childNode1.pack(width,height)
-        	If newNode <> Null Return newNode
+			' Try inserting into first child
+			Local newNode:TSpritePacker = childNode1.pack(width,height)
+			If newNode <> Null then Return newNode
 
-        	'no room, insert into second
-        	Return childNode2.pack(width,height)
+			'no room, insert into second
+			Return childNode2.pack(width,height)
 		EndIf
 	End Method
 
@@ -212,7 +217,8 @@ Type TSpritePacker
         Local dw:Int = w - width
         Local dh:Int = h - height
 
-        If dw > dh Then ' split vertically
+        ' split vertically
+        If dw > dh
             childNode1.setRect(x,y,width,h)
             childNode2.setRect(x+width,y,dw,h)
 		Else ' split horizontally
@@ -224,25 +230,8 @@ Type TSpritePacker
 
 End Type
 
-Type TBox
-	Field x:Int,y:Int,w:Int,h:Int
 
-	function Create:TBox(x:int,y:int,w:int,h:int)
-		local obj:TBox = new TBox
-		obj.x = x
-		obj.y = y
-		obj.w = w
-		obj.h = h
-		return obj
-	End Function
 
-	Method Compare:Int(o:Object)
-		Local box:TBox = TBox(o)
-		If box.h*box.w < h*w Return -1
-		If box.h*box.w > h*w Return 1
-		Return 0
-	End Method
-End Type
 
 ' -------------------------------------
 Type TImageCache
@@ -265,165 +254,223 @@ Type TImageCache
 End Type
 
 
-Type TBitmapFontChar
-	field box:TBox
+
+
+Type TGW_BitmapFontChar
+	Field area:TRectangle
 	Field charWidth:float
 	Field img:TImage
 
-	Function Create:TBitmapFontChar(img:TImage, x:int,y:int,w:Int, h:int, charWidth:float)
-		Local obj:TBitmapFontChar = New TBitmapFontChar
+	Function Create:TGW_BitmapFontChar(img:TImage, x:int,y:int,w:Int, h:int, charWidth:float)
+		Local obj:TGW_BitmapFontChar = New TGW_BitmapFontChar
 		obj.img = img
-		obj.box = TBox.Create(x,y,w,h)
+		obj.area = TRectangle.Create(x,y,w,h)
 		obj.charWidth = charWidth
 		Return obj
 	End Function
 End Type
 
-Type TBitmapFont
-	Field chars:TMap	= CreateMap()
-	Field charsSprites:Tmap=CreateMap()
+
+Type TGW_BitmapFont
+	Field FName:string	= ""		'identifier
+	Field FFile:string	= ""		'source path
+	Field FSize:int		= 0			'size of this font
+	Field FStyle:int	= 0			'style used in this font
+	Field FImageFont:TImageFont		'the original imagefont
+
+	Field chars:TMap		= CreateMap()
+	Field charsSprites:Tmap	=CreateMap()
 	field spriteSet		:TGW_SpritePack
 	Field MaxSigns		:Int=256
-	Field ExtraChars	:string="€"
+	Field ExtraChars	:string="€…"
 	Field gfx			:TMax2dGraphics
 	Field uniqueID		:string =""
 	Field displaceY		:float=100.0
 	Field lineHeightModifier:float = 0.2	'modifier * lineheight gets added at the end
 	Field drawAtFixedPoints:int = true		'whether to use ints or floats for coords
-	Field drawToPixmap:TPixmap = null
+	Field _charsEffectFunc:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:string, char:TGW_BitmapFontChar, config:TData)[]
+	Field _charsEffectFuncConfig:TData[]
+	Field _pixmapFormat:int = PF_A8			'by default this is 8bit alpha only
+	Field _maxCharHeight:int = 0
 
+	global drawToPixmap:TPixmap = null
 	global ImageCaches:TMap = CreateMap()
 	global eventRegistered:int = 0
 
-	Function Create:TBitmapFont(url:String,size:Int, style:Int)
-		'listen to App-timer
-		EventManager.registerListener( "App.onUpdate", 	TEventListenerRunFunction.Create(TBitmapFont.onUpdateCaches) )
-
-
-
-
-		Local obj:TBitmapFont = New TBitmapFont
-
-		Local imgFont:TImageFont = LoadTrueTypeFont(url,size, style)
-		If imgfont=Null Return Null
-
-		local oldFont:TImageFont = getImageFont()
-		SetImageFont(imgfont)
-
-		obj.uniqueID = url+"_"+size+"_"+style
-
-		obj.gfx = tmax2dgraphics.Current()
-
+	Function Create:TGW_BitmapFont(name:String, url:String, size:Int, style:Int)
+		Local obj:TGW_BitmapFont = New TGW_BitmapFont
+		obj.FName		= name
+		obj.FFile		= url
+		obj.FSize		= size
+		obj.FStyle		= style
+		obj.uniqueID	= name+"_"+url+"_"+size+"_"+style
+		obj.gfx			= tmax2dgraphics.Current()
+		obj.FImageFont	= LoadTrueTypeFont(url, size, style)
+		If not obj.FImageFont
+			Throw ("TGW_BitmapFont.Create: font ~q"+url+"~q not found.")
+			Return Null 'font not found
+		endif
 		'create spriteset
-		obj.spriteSet = TGW_SpritePack.Create(null, obj.uniqueID+"_charmap")
+		obj.spriteSet	= TGW_SpritePack.Create(null, obj.uniqueID+"_charmap")
 
+		'generate a charmap containing packed rectangles where to store images
+		obj.InitFont()
 
-		local charmap:TSpriteAtlas = TSpriteAtlas.Create(64,64)
-		local spacer:int = 1
-		For Local i:Int = 0 Until obj.MaxSigns
-			Local n:Int = imgFont.CharToGlyph(i)
-			If n < 0 then Continue
-			Local glyph:TImageGlyph = imgFont.LoadGlyph(n)
-			If glyph
-				'base displacement calculated with A-Z (space between TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
-				if i >= 65 AND i < 95 then obj.displaceY = Min(obj.displaceY, glyph._y)
-				obj.chars.insert(string(i), TBitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
-				charmap.AddElement(i,glyph._w+spacer,glyph._h+spacer ) 'add box of char and package atlas
-			endif
-		Next
-		For Local charNum:Int = 0 Until obj.ExtraChars.length
-			Local n:Int = imgFont.CharToGlyph( obj.ExtraChars[charNum] )
-			Local glyph:TImageGlyph = imgFont.LoadGlyph(n)
-			If glyph
-				obj.chars.insert(string(obj.ExtraChars[charNum]) , TBitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
-				charmap.AddElement(obj.ExtraChars[charNum] ,glyph._w+spacer,glyph._h+spacer ) 'add box of char and package atlas
-			endif
-		Next
+		'listen to App-timer
+		EventManager.registerListener( "App.onUpdate", 	TEventListenerRunFunction.Create(TGW_BitmapFont.onUpdateCaches) )
 
-		'now we have final dimension of image
-		'create 8bit alpha'd image (grayscale with alpha ...)
-		local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, PF_A8) ; pix.ClearPixels(0)
-		'loop through atlax boxes and add chars
-		For local charKey:string = eachin charmap.elements.Keys()
-			local box:TBox = TBox(charmap.elements.ValueForKey(charKey))
-			'draw char image on charmap
-			if obj.chars.ValueForKey(charKey) <> null AND TBitmapFontChar(obj.chars.ValueForKey(charKey)).img <> null
-				'print "adding "+charKey + " = "+chr(int(charKey))
-				local charPix:TPixmap = LockImage(TBitmapFontChar(obj.chars.ValueForKey(charKey)).img)
-				If charPix.format <> 2 Then charPix.convert(PF_A8) 'make sure the pixmaps are 8bit alpha-format
-				self.DrawCharPixmapOnPixmap(charPix, pix, box.x,box.y, size, style)
-				UnlockImage(TBitmapFontChar(obj.chars.ValueForKey(charKey)).img)
-				' es fehlt noch charWidth - extraTyp?
-
-				obj.charsSprites.insert(charKey, TGW_Sprites.Create(obj.spriteSet, charKey, box.x, box.y, box.w, box.h, 0, int(charKey)))
-			endif
-		Next
-		'set image to sprite pack
-		obj.spriteSet.image = LoadImage(pix)
-
-		SetImageFont(oldFont)
 		Return obj
 	End Function
 
-	Function DrawCharPixmapOnPixmap(Source:TPixmap,Pixmap:TPixmap, x:Int, y:Int, fontSize:int, fontStyle:int =0)
-		For Local i:Int = 0 To Source.width-1
-			For Local j:Int = 0 To Source.height-1
-				If x+1 < pixmap.width And y+j < pixmap.height
-					Local sourcepixel:Int = ReadPixel(Source, i,j)
-					Local destpixel:Int = ReadPixel(pixmap, x+i,y+j)
-					Local sourceA:Int = ARGB_Alpha(sourcepixel)
-					If sourceA <> -1
-						If sourceA< -1 Then sourceA = -sourceA
-						Local SourceR:Int = Int( Float(sourceA/255.0) * ARGB_Red(Sourcepixel) ) + Int(Float((255-sourceA)/255.0) * ARGB_Red(destpixel) )
-						Local SourceG:Int = Int( Float(sourceA/255.0) * ARGB_Green(Sourcepixel) ) + Int(Float((255-sourceA)/255.0) * ARGB_Green(destpixel) )
-						Local SourceB:Int = Int( Float(sourceA/255.0) * ARGB_Blue(Sourcepixel)) + Int(Float((255-sourceA)/255.0) * ARGB_Blue(destpixel) )
-						'also mix alpha
-						if (not fontStyle & BOLDFONT) OR fontSize >= 10
-							sourceA = 0.6*(SourceA*SourceA)/255 + 0.4*SourceA
-						endif
-						'else
-						'	if sourceA >=200 then sourceA = 0.4*(SourceA*SourceA)/255 + 0.6*SourceA
-						'	if sourceA < 200 then sourceA = 0.5*(SourceA*SourceA)/255 + 0.5*SourceA
-						'endif
-						sourcepixel = ARGB_Color(sourceA, sourceR, sourceG, sourceB)
-					EndIf
-					If sourceA <> 0 Then WritePixel(Pixmap, x+i,y+j, sourcepixel)
-				EndIf
-			Next
-		Next
-	End Function
 
-	Method AddChar:TBitmapFontChar(charCode:int, img:timage, x:int, y:int, w:int, h:int, charWidth:float)
-		'paint on pixmap
-		self.spriteSet.CopyImageOnSpritePackImage(img, null, x,y)
-		self.chars.insert(string(charCode), TBitmapFontChar.Create(img, x,y,w,h, charWidth))
+	Method SetCharsEffectFunction(position:int, _func:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:string, char:TGW_BitmapFontChar, config:TData), config:TData=null)
+		position :-1 '0 based
+		if _charsEffectFunc.length <= position
+			_charsEffectFunc = _charsEffectFunc[..position+1]
+			_charsEffectFuncConfig = _charsEffectFuncConfig[..position+1]
+		endif
+		_charsEffectFunc[position] = _func
+		_charsEffectFuncConfig[position] = config
 	End Method
 
+
+	'overrideable method
+	Method ApplyCharsEffect(config:TData=null)
+		'if instead of overriding a function was provided - use this
+		if _charsEffectFunc.length > 0
+			for local charKey:string = eachin chars.keys()
+				local char:TGW_BitmapFontChar = TGW_BitmapFontChar(chars.ValueForKey(charKey))
+
+				'manipulate char
+				local _func:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:string, char:TGW_BitmapFontChar, config:TData)
+				local _config:TData
+				for local i:int = 0 to _charsEffectFunc.length-1
+					_func = _charsEffectFunc[i]
+					_config = _charsEffectFuncConfig[i]
+					if not _config then _config = config
+					char = _func(self, charKey, char, _config)
+				Next
+				'overwrite char
+				chars.Insert(charKey, char)
+			Next
+		endif
+
+		'else do nothing by default
+	End Method
+
+
+	'generate a charmap containing packed rectangles where to store images
+	Method InitFont(config:TData=null )
+		'1. load chars
+		LoadCharsFromImgFont()
+		'2. Process the characters (add shadow, gradients, ...)
+		ApplyCharsEffect(config)
+		'3. store them into a packed (optimized) charmap
+		'   -> creates a 8bit alpha'd image (grayscale with alpha ...)
+		CreateCharmapImage( CreateCharmap(1) )
+	End Method
+
+
+	'load glyphs of an imagefont as TGW_BitmapFontChar into a char-TMap
+	Method LoadCharsFromImgFont(imgFont:TImageFont=null)
+		if imgFont = null then imgFont = self.FImageFont
+		Local glyph:TImageGlyph
+		local n:int
+		For Local i:Int = 0 Until MaxSigns
+			n = imgFont.CharToGlyph(i)
+			If n < 0 then Continue
+			glyph = imgFont.LoadGlyph(n)
+			If not glyph then continue
+
+			'base displacement calculated with A-Z (space between TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
+			if i >= 65 AND i < 95 then displaceY = Min(displaceY, glyph._y)
+			chars.insert(string(i), TGW_BitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
+		Next
+		For Local charNum:Int = 0 Until ExtraChars.length
+			n = imgFont.CharToGlyph( ExtraChars[charNum] )
+			glyph = imgFont.LoadGlyph(n)
+			If not glyph then continue
+
+			chars.insert(string(ExtraChars[charNum]) , TGW_BitmapFontChar.Create(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance) )
+		Next
+	End Method
+
+
+	'create a charmap-atlas with information where to optimally store
+	'each char
+	Method CreateCharmap:TSpriteAtlas(spaceBetweenChars:int=0)
+		local charmap:TSpriteAtlas = TSpriteAtlas.Create(64,64)
+		local bitmapFontChar:TGW_BitmapFontChar
+		for local charKey:string = eachin chars.keys()
+			bitmapFontChar = TGW_BitmapFontChar(chars.ValueForKey(charKey))
+			if not bitmapFontChar then continue
+			charmap.AddElement(charKey, bitmapFontChar.area.GetW()+spaceBetweenChars,bitmapFontChar.area.GetH()+spaceBetweenChars ) 'add box of char and package atlas
+		Next
+		return charmap
+	End Method
+
+
+	'create an image containing all chars
+	'the charmap-atlas contains information where to store each character
+	Method CreateCharmapImage(charmap:TSpriteAtlas)
+		local pix:TPixmap = CreatePixmap(charmap.w,charmap.h, self._pixmapFormat) ; pix.ClearPixels(0)
+		'loop through atlas boxes and add chars
+		For local charKey:string = eachin charmap.elements.Keys()
+			local rect:TRectangle = TRectangle(charmap.elements.ValueForKey(charKey))
+			'skip missing data
+			if not chars.ValueForKey(charKey) then continue
+			if not TGW_BitmapFontChar(chars.ValueForKey(charKey)).img then continue
+
+			'draw char image on charmap
+			'print "adding "+charKey + " = "+chr(int(charKey))
+			local charPix:TPixmap = LockImage(TGW_BitmapFontChar(chars.ValueForKey(charKey)).img)
+'			If charPix.format <> 2 Then charPix.convert(PF_A8) 'make sure the pixmaps are 8bit alpha-format
+			DrawImageOnImage(charPix, pix, rect.GetX(), rect.GetY())
+			UnlockImage(TGW_BitmapFontChar(chars.ValueForKey(charKey)).img)
+			' es fehlt noch charWidth - extraTyp?
+
+			charsSprites.insert(charKey, new TGW_Sprite.Create(spriteSet, charKey, rect, null, 0, int(charKey)))
+		Next
+		'set image to sprite pack
+		spriteSet.image = LoadImage(pix)
+	End Method
+
+
+	Method getMaxCharHeight:int()
+		if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_")
+		return _maxCharHeight
+	End Method
+
+
 	Method getWidth:Float(text:String)
-		return self.draw(text,0,0,0).getX()
+		return draw(text,0,0,null,0).getX()
 	End Method
 
 	Method getHeight:Float(text:String)
-		return self.draw(text,0,0,0).getY()
+		return draw(text,0,0,null,0).getY()
 	End Method
 
 	Method getBlockHeight:Float(text:String, w:Float, h:Float)
-		return self.drawBlock(text, 0,0,w,h,0, 0,0,0,0,0,0).getY()
+		return drawBlock(text, 0,0,w,h, null, null, 0, 0).getY()
 	End Method
 
-	'render to screen
-	Method resetTarget()
-		self.drawToPixmap = null
-	End Method
 
-	'render to target pixmap
-	Method setTargetPixmap(pixmap:TPixmap)
-		self.drawToPixmap = pixmap
-	End Method
+	'render to target pixmap/image/screen
+	Function setRenderTarget:int(target:object=null)
+		'render to screen
+		if not target
+			drawToPixmap = null
+			return TRUE
+		endif
 
-	Method setTargetImage(image:TImage)
-		self.drawToPixmap = LockImage(image)
-	End Method
+		if TImage(target)
+			drawToPixmap = LockImage(TImage(target))
+		elseif TPixmap(target)
+			drawToPixmap = TPixmap(target)
+		endif
+	End Function
+
+
 
 	Method TextToMultiLine:string[](text:string,w:float,h:float, lineHeight:float)
 		Local fittingChars:int	= 0
@@ -436,6 +483,9 @@ Type TBitmapFont
 
 		'for each line/paragraph
 		For Local i:Int= 0 To paragraphs.length-1
+			'skip paragraphs if no space was left
+			if heightLeft < lineHeight then continue
+
 			local line:string = paragraphs[i]
 
 			'process each line - and if needed add a line break
@@ -497,10 +547,97 @@ Type TBitmapFont
 				'get the line BEFORE
 				local currentLine:string = lines[lines.length-1]
 				'check whether we have to subtract some chars for the "..."
-				if self.getWidth(currentLine+"...") > w
-					currentLine = currentLine[.. currentLine.length-3] + "..."
+				if self.getWidth(currentLine+chr(8230)) > w
+					currentLine = currentLine[.. currentLine.length-3] + chr(8230) ' "..."
 				else
-					currentLine = currentLine[.. currentLine.length] + "..."
+					currentLine = currentLine[.. currentLine.length] + chr(8230) ' "..."
+				endif
+				lines[lines.length-1] = currentLine
+			endif
+		Next
+
+		return lines
+	End Method
+
+	Method TextToMultiLineOLD:string[](text:string,w:float,h:float, lineHeight:float, singleLine:int=TRUE)
+		Local fittingChars:int	= 0
+		Local processedChars:Int= 0
+		Local paragraphs:string[]	= text.replace(chr(13), "~n").split("~n")
+		'the lines to output at the end
+		Local lines:string[]= null
+		'how many space is left to draw?
+		local heightLeft:float	= h
+
+		'for each line/paragraph
+		For Local i:Int= 0 To paragraphs.length-1
+			local line:string = paragraphs[i]
+
+			'process each line - and if needed add a line break
+			repeat
+				'the part of the line which has to get processed at that moment
+				local linePartial:string = line
+				local breakPosition:int = line.length
+				'whether to skip the next char of a new line
+				local skipNextChar:int	= FALSE
+
+				'copy the line to do processing and shortening
+				linePartial = line
+
+				'as long as the part of the line does not fit into
+				'the given width, we have to search for linebreakers
+				while self.getWidth(linePartial) >= w and linePartial.length >0
+					'whether we found a break position by a rule
+					local FoundBreakPosition:int = FALSE
+
+					if not singleLine
+						'search for the "most right" position of a linebreak
+						For local charPos:int = 0 To linePartial.length-1
+							'special line break rules (spaces, -, ...)
+							If linePartial[charPos] = Asc(" ")
+								breakPosition = charPos
+								FoundBreakPosition=TRUE
+							endif
+							If linePartial[charPos] = Asc("-")
+								breakPosition = charPos
+								FoundBreakPosition=TRUE
+							endif
+						Next
+					endif
+					'if no line break rule hit, use a "cut" in the middle of a word
+					if not FoundBreakPosition then breakPosition = Max(0, linePartial.length-1 -1)
+
+					'if it is a " "-space, we have to skip it
+					if linePartial[breakPosition] = ASC(" ")
+						skipNextChar = TRUE 'aka delete the " "
+					endif
+
+
+					'cut off the part AFTER the breakposition
+					linePartial = linePartial[..breakPosition]
+				wend
+				'add that line to the lines to draw
+				lines = lines[..lines.length +1]
+				lines[lines.length-1] = linePartial
+
+				heightLeft :- lineHeight
+
+
+				'strip the processed part from the original line
+				line = line[linePartial.length..]
+				if skipNextChar then line = line[Min(1, line.length)..]
+			'until no text left, or no space left for another line
+			until line.length = 0  or heightLeft < lineHeight
+
+
+			'if the height was not enough - add a "..."
+			if line.length > 0
+				'get the line BEFORE
+				local currentLine:string = lines[lines.length-1]
+				'check whether we have to subtract some chars for the "..."
+				if self.getWidth(currentLine+chr(8230)) > w
+					currentLine = currentLine[.. currentLine.length-3] + chr(8230) ' "..."
+				else
+					currentLine = currentLine[.. currentLine.length] + chr(8230) ' "..."
 				endif
 				lines[lines.length-1] = currentLine
 			endif
@@ -510,32 +647,39 @@ Type TBitmapFont
 	End Method
 
 
-	'ACHTUNG: "Nolinebreak" noch entfernen - wer sowas will,
-	'         kann vorher ja die "~n" entfernen
-	Method drawBlock:TPoint(text:String, x:Float,y:Float,w:Float,h:Float, align:Int=0, cR:Int=0, cG:Int=0, cB:Int=0, NoLineBreak:Byte = 0, style:int=0, doDraw:int = 1, special:float=1.0)
+	Method drawBlock:TPoint(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TPoint=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, singleLine:int=FALSE)
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float	= 0.0
-		local lineHeight:float	= self.getHeight("gQ'_")
-		local lines:string[]	= self.TextToMultiLine(text,w,h,lineHeight)
-'SetColor 255,200,200
-'DrawRect(x,y,w,h)
+		local lineHeight:float	= getHeight("gQ'_")
+		local lines:string[]	= TextToMultiLine(text, w, h, lineHeight)', singleLine)
+
+		'move along y according alignment
+		if alignment
+			'empty space = height - (..)
+			'so alignTop = add 0 of that space, alignBottom = add 100% of that space
+			if alignment.GetY() <> ALIGN_TOP
+				y :+ alignment.GetY() * (h - (lines.length-1)*lineHeight)
+			endif
+		endif
+
 		'actually draw
 		If doDraw
 			for local i:int = 0 to lines.length-1
-				If align = 0 Then alignedX = x
-				If align = 1 Then alignedX = x + (w - self.getWidth(lines[i])) / 2
-				If align = 2 Then alignedX = x + (w - self.getWidth(lines[i]))
-				self.drawStyled( lines[i], alignedX, y + i*lineHeight, cR, cG, cB, style, 1,special)
+				if alignment and alignment.GetX() <> ALIGN_LEFT
+					alignedX = x + alignment.GetX() * (w - getWidth(lines[i]))
+				else
+					alignedX = x
+				endif
+
+				drawStyled( lines[i], alignedX, y + i*lineHeight, color, style, 1,special)
 			Next
 		endif
-'SetColor 255,100,100
-'DrawRect(x-10,y,10,lines.length*lineHeight)
-'		return TPoint.Create(w, h - lines.length*lineHeight)
+
 		return TPoint.Create(w, lines.length*lineHeight)
 	End Method
 
 
-	Method drawStyled:TPoint(text:String,x:Float,y:Float, cr:int=0, cg:int=0, cb:int=0, style:int=0, doDraw:int=1, special:float=-1.0)
+	Method drawStyled:TPoint(text:String,x:Float,y:Float, color:TColor=null, style:int=0, doDraw:int=1, special:float=-1.0)
 		if self.drawAtFixedPoints
 			x = int(x)
 			y = int(y)
@@ -543,136 +687,251 @@ Type TBitmapFont
 
 		local height:float = 0.0
 		local width:float = 0.0
-		local oldR:int, oldG:int, oldB:int
-		GetColor(oldR, oldG, oldB)
+
+		'backup old color
+		local oldColor:TColor
+		if doDraw and color then oldColor = new TColor.Get()
 
 		'emboss
 		if style = 1
 			height:+ 1
 			if doDraw
-				local oldA:float = getAlpha()
 				if special <> -1.0
-					SetAlpha float(special*oldA)
+					SetAlpha float(special * oldColor.a)
 				else
-					SetAlpha float(0.75*oldA)
+					SetAlpha float(0.75 * oldColor.a)
 				endif
-				SetColor 250,250,250
-				self.draw(text, x,y+1)
-				SetAlpha oldA
+				self.draw(text, x, y+1, TColor.clWhite)
 			endif
 		'shadow
 		else if style = 2
 			height:+ 1
 			width:+1
 			if doDraw
-				local oldA:float = getAlpha()
-				if special <> -1.0 then SetAlpha special*oldA else SetAlpha 0.5*oldA
-				SetColor 0,0,0
-				self.draw(text, x+1,y+1)
-				SetAlpha oldA
+				if special <> -1.0 then SetAlpha special*oldColor.a else SetAlpha 0.5*oldColor.a
+				self.draw(text, x+1,y+1, TColor.clBlack)
 			endif
 		'glow
 		else if style = 3
 			if doDraw
-				local oldA:float = getAlpha()
 				SetColor 0,0,0
-				if special <> -1.0 then SetAlpha 0.5*special*oldA else SetAlpha 0.25*oldA
+				if special <> -1.0 then SetAlpha 0.5*oldColor.a else SetAlpha 0.25*oldColor.a
 				self.draw(text, x-2,y)
 				self.draw(text, x+2,y)
 				self.draw(text, x,y-2)
 				self.draw(text, x,y+2)
-				if special <> -1.0 then SetAlpha special*oldA else SetAlpha 0.5*oldA
+				if special <> -1.0 then SetAlpha special*oldColor.a else SetAlpha 0.5*oldColor.a
 				self.draw(text, x+1,y+1)
 				self.draw(text, x-1,y-1)
-				SetAlpha oldA
 			endif
 		endif
 
-		SetColor( cr,cg,cb )
-		local result:TPoint = self.draw(text,x,y, doDraw)
+		if oldColor then SetAlpha oldColor.a
+		local result:TPoint = self.draw(text,x,y, color, doDraw)
 
-		SetColor( oldR, oldG, oldB )
+		if oldColor then oldColor.SetRGBA()
 		return result
 	End Method
 
 
 	Method drawWithBG:TPoint(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:int=0)
 		Local OldAlpha:Float = GetAlpha()
-		Local color:TColor = TColor.Create()
-		color.get()
+		Local color:TColor = new TColor.Get()
+		local dimension:TPoint = self.drawStyled(value,0,0, null, style,0)
 		SetAlpha bgAlpha
 		SetColor bgCol, bgCol, bgCol
-		local dimension:TPoint = self.drawStyled(value,0,0, 0,0,0, style,0)
 		DrawRect(x, y, dimension.GetX(), dimension.GetY())
-		SetAlpha OldAlpha
-		color.set()
-		return self.drawStyled(value, x, y, color.r,color.g,color.b, style)
+		color.setRGBA()
+		return self.drawStyled(value, x, y, color, style)
 	End Method
 
 
-	Method draw:TPoint(text:String,x:Float,y:Float, doDraw:int = 1)
+	'can adjust used font or color
+	Method ProcessCommand:int(command:string, payload:string, font:TGW_BitmapFont var , color:TColor var , colorOriginal:TColor, styleDisplaceY:int var)
+		if color
+			if command = "color"
+				local colors:string[] = payload.split(",")
+				if colors.length >= 3
+					color.r = int(colors[0])
+					color.g = int(colors[1])
+					color.b = int(colors[2])
+					if colors.length >= 4
+						color.a = int(colors[3]) / 255.0
+					else
+						color.a = 1.0
+					endif
+				endif
+				color.SetRGBA()
+			endif
+			if command = "/color"
+				color.r = colorOriginal.r
+				color.g = colorOriginal.g
+				color.b = colorOriginal.b
+				color.a = colorOriginal.a
+				color.SetRGBA()
+			endif
+		endif
+
+		if command = "b" then font = TGW_FontManager.GetInstance().GetFont(self.FName, self.FSize, BOLDFONT)
+		if command = "/b" then font = self
+
+		if command = "bi" then font = TGW_FontManager.GetInstance().GetFont(self.FName, self.FSize, BOLDFONT | ITALICFONT)
+		if command = "/bi" then font = self
+
+		if command = "i" then font = TGW_FontManager.GetInstance().GetFont(self.FName, self.FSize, ITALICFONT)
+		if command = "/i" then font = self
+
+		'adjust line height if another font is selected
+		if font <> self
+			styleDisplaceY = (getMaxCharHeight() - font.getMaxCharHeight())
+		else
+			'reset displace
+			styleDisplaceY = 0
+		endif
+		if not font then font = self
+	End Method
+
+
+	Method draw:TPoint(text:String,x:Float,y:Float, color:TColor=null, doDraw:int=TRUE)
 		local width:float = 0.0
 		local height:float = 0.0
 		local textLines:string[]	= text.replace(chr(13), "~n").split("~n")
 		local currentLine:int = 0
+		local oldColor:TColor
+		if doDraw
+			oldColor = new TColor.Get()
+			if not color
+				color = oldColor.copy()
+			else
+				'when drawing to a pixmap, take screen alpha into consideration
+				if drawToPixmap
+					'create a copy to not modify the original
+					color = color.copy()
+					color.a :* oldColor.a
+				endif
+			endif
+			'black text is default
+'			if not color then color = TColor.Create(0,0,0)
+			if color then color.SetRGB()
 
-		local color:TColor = new TColor.Get()
+		endif
 		'set the lineHeight before the "for-loop" so it has a set
 		'value if a line "in the middle" just consists of spaces or nothing
 		'-> allows double-linebreaks
+
+		'control vars
+		local controlChar:int = asc("|")
+		local controlCharEscape:int = asc("\")
+		local controlCharStarted:int = FALSE
+		local currentControlCommandPayloadSeparator:string = "="
+		local currentControlCommand:string = ""
+		local currentControlCommandPayload:string = ""
+
 		local lineHeight:int = 0
+		local char:string = ""
+		local charBefore:int
+		local font:TGW_BitmapFont = self 'by default this font is responsible
+		local colorOriginal:TColor = null
+		local rotation:int = GetRotation()
+		local sprite:TGW_Sprite
+		local styleDisplaceY:int = 0
 		For text:string = eachin textLines
 			currentLine:+1
 
 			local lineWidth:int = 0
-			local rotation:int = GetRotation()
+
 			For Local i:Int = 0 Until text.length
-				Local bm:TBitmapFontChar = TBitmapFontChar( self.chars.ValueForKey(string(text[i])) )
+				char = text[i]
+
+
+				'check for controls
+				if controlCharStarted
+					'receiving command
+					if char <> controlChar
+						currentControlCommand:+ chr(int(char))
+					'receive stopper
+					else
+						controlCharStarted = FALSE
+						local commandData:string[] = currentControlCommand.split(currentControlCommandPayloadSeparator)
+						currentControlCommand = commandData[0]
+						if commandData.length>1 then currentControlCommandPayload = commandData[1]
+
+						if color and not colorOriginal then colorOriginal = color.copy()
+						ProcessCommand(currentControlCommand, currentControlCommandPayload, font, color, colorOriginal, styleDisplaceY)
+						'reset
+						currentControlCommand = ""
+						currentControlCommandPayload = ""
+					endif
+					'skip char
+					continue
+				endif
+
+				'someone wants style the font
+				if char = controlChar and charBefore <> controlCharEscape
+					controlCharStarted = 1 - controlCharStarted
+					'skip char
+					charBefore = int(char)
+					continue
+				endif
+				'skip drawing the escape char if we are escaping the command char
+				if char = controlCharEscape and i < text.length-1 and text[i+1] = controlChar
+					charBefore = int(char)
+					continue
+				endif
+
+				Local bm:TGW_BitmapFontChar = TGW_BitmapFontChar( font.chars.ValueForKey(char) )
 				if bm <> null
-					Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
-					Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
+					Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
+					Local ty:Float = bm.area.GetX() * gfx.tform_jx + bm.area.GetY() * gfx.tform_jy
 					'drawable ? (> 32)
 					if text[i] > 32
-						lineHeight = MAX(lineHeight, bm.box.h)
+						lineHeight = MAX(lineHeight, bm.area.GetH())
 						if doDraw
-							local sprite:TGW_Sprites = TGW_Sprites(self.charsSprites.ValueForKey(string(text[i])))
-							if sprite <> null
-								if self.drawToPixmap
-									sprite.DrawOnPixmap(self.drawToPixmap, x+lineWidth+tx,y+height+ty - self.displaceY, color)
+							sprite = TGW_Sprite(font.charsSprites.ValueForKey(char))
+							if sprite
+								if drawToPixmap
+									sprite.DrawOnImage(drawToPixmap, x+lineWidth+tx,y+height+ty+styleDisplaceY - font.displaceY, color)
 								else
-									sprite.Draw(x+lineWidth+tx,y+height+ty - self.displaceY)
+									sprite.Draw(x+lineWidth+tx,y+height+ty+styleDisplaceY - font.displaceY)
 								endif
 							endif
 						endif
 					endif
 					if rotation = -90
-						height:- MIN(lineHeight, bm.box.w)
+						height:- MIN(lineHeight, bm.area.GetW())
 					elseif rotation = 90
-						height:+ MIN(lineHeight, bm.box.w)
+						height:+ MIN(lineHeight, bm.area.GetW())
 					elseif rotation = 180
 						lineWidth :- bm.charWidth * gfx.tform_ix
 					else
 						lineWidth :+ bm.charWidth * gfx.tform_ix
 					endif
 				EndIf
+
+				charBefore = int(char)
 			Next
 			width = max(width, lineWidth)
 			height:+lineHeight
 			'except first line (maybe only one line) - add extra spacing between lines
-			if currentLine > 0 then height:+ ceil( lineHeight* self.lineHeightModifier )
+			if currentLine > 0 then height:+ ceil( lineHeight* font.lineHeightModifier )
 		Next
+
+		'restore color
+		if doDraw then oldColor.SetRGB()
+
 		return TPoint.Create(width, height)
 	End Method
 
+rem
 	Method drawfixed(text:String,x:Float,y:Float)
 		local color:TColor = new TColor.Get()
 
 		For Local i:Int = 0 Until text.length
-			Local bm:TBitmapFontChar = TBitmapFontChar(self.chars.ValueForKey(string(text[i]-32)))
+			Local bm:TGW_BitmapFontChar = TGW_BitmapFontChar(self.chars.ValueForKey(string(text[i]-32)))
 			if bm <> null
-				Local tx:Float = bm.box.x * gfx.tform_ix + bm.box.y * gfx.tform_iy
-				Local ty:Float = bm.box.x * gfx.tform_jx + bm.box.y * gfx.tform_jy
-				local sprite:TGW_Sprites = TGW_Sprites(self.charsSprites.ValueForKey(string(text[i]-32)))
+				Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
+				Local ty:Float = bm.area.GetX() * gfx.tform_jx + bm.area.GetY() * gfx.tform_jy
+				local sprite:TGW_Sprite = TGW_Sprite(self.charsSprites.ValueForKey(string(text[i]-32)))
 				if sprite <> null
 					if self.drawToPixmap
 						sprite.DrawOnPixmap(self.drawToPixmap, x+tx,y+ty, color)
@@ -684,87 +943,94 @@ Type TBitmapFont
 			endif
 		Next
 	End Method
+endrem
+
 
 	Function onUpdateCaches(triggerEvent:TEventBase)
-		For local key:string = eachin TBitmapFont.ImageCaches.Keys()
-			local cache:TImageCache = TImageCache(TBitmapFont.ImageCaches.ValueForKey(key))
-			if cache and not cache.isAlive() then TBitmapFont.ImageCaches.Remove(key)
+		For local key:string = eachin TGW_BitmapFont.ImageCaches.Keys()
+			local cache:TImageCache = TImageCache(TGW_BitmapFont.ImageCaches.ValueForKey(key))
+			if cache and not cache.isAlive() then TGW_BitmapFont.ImageCaches.Remove(key)
 		Next
 	End Function
 
 End Type
 
 
-Type TGW_FontManager
-	Field DefaultFont:TGW_Font = null
-	Field baseFont:TBitmapFont		= null
-	Field baseFontBold:TBitmapFont	= null
-	Field baseFontItalic:TBitmapFont= Null
-	Field baseFontSmall:TBitmapFont= Null	
-	Field List:TList = CreateList()
 
-	Function Create:TGW_FontManager()
-		Local tmpObj:TGW_FontManager = New TGW_FontManager
-		tmpObj.List = CreateList()
-		Return tmpObj
+CONST SHADOWFONT:INT = 256
+CONST GRADIENTFONT:INT = 512
+
+Type TGW_FontManager
+	Field DefaultFont:TGW_BitmapFont	= null
+	Field baseFont:TGW_BitmapFont		= null
+	Field baseFontBold:TGW_BitmapFont	= null
+	Field baseFontItalic:TGW_BitmapFont	= null
+	Field baseFontSmall:TGW_BitmapFont	= null
+	Field List:TList					= CreateList()
+	global instance:TGW_FontManager
+
+
+	Function GetInstance:TGW_FontManager()
+		if not instance then instance = new TGW_FontManager
+		return instance
 	End Function
 
-'	Method GW_GetFont:TImageFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
-	Method GetFont:TBitmapFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
-		_FName = lower(_FName)
-		If _FName = "default" And _FSize = -1 And _FStyle = -1 Then Return DefaultFont.FFont
-		If _FSize = -1 Then _FSize = DefaultFont.FSize
-		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle Else _FStyle = _FStyle | SMOOTHFONT
 
+	Method GetFont:TGW_BitmapFont(name:String, size:Int=-1, style:Int=-1)
+		name = lower(name)
+		style :| SMOOTHFONT
+		'no details given: return default font
+		If name = "default" And size = -1 And style = -1 Then Return DefaultFont
+		'no size given: use default font size
+		If size = -1 Then size = DefaultFont.FSize
+		'no style given: use default font style
+		If style = -1 Then style = DefaultFont.FStyle 'Else style = style | SMOOTHFONT
+
+		'if the font wasn't found, use the defaultFont-fontfile to load this style
 		Local defaultFontFile:String = DefaultFont.FFile
-		For Local Font:TGW_Font = EachIn Self.List
-			If Font.FName = _FName And Font.FStyle = _FStyle Then defaultFontFile = Font.FFile
-			If Font.FName = _FName And Font.FSize = _FSize And Font.FStyle = _FStyle Then Return Font.FFont
+		For Local Font:TGW_BitmapFont = EachIn Self.List
+			If Font.FName = name And Font.FStyle = style Then defaultFontFile = Font.FFile
+			If Font.FName = name And Font.FSize = size And Font.FStyle = style Then Return Font
 		Next
-		Return AddFont(_FName, defaultFontFile, _FSize, _FStyle).FFont
+		Return AddFont(name, defaultFontFile, size, style)
 	End Method
 
-	Method AddFont:TGW_Font(_FName:String, _FFile:String, _FSize:Int, _FStyle:Int)
-		_FName = lower(_FName)
 
-		If _FSize = -1 Then _FSize = DefaultFont.FSize
-		If _FStyle = -1 Then _FStyle = DefaultFont.FStyle
-		If _FFile = "" Then _FFile = DefaultFont.FFile
+	Method CopyFont:TGW_BitmapFont(sourceName:string, copyName:string, size:int=-1, style:int=-1)
+		local sourceFont:TGW_BitmapFont = GetFont(sourceName, size, style)
+		Local newFont:TGW_BitmapFont = TGW_BitmapFont.Create(sourceFont.fName, sourceFont.fFile, sourceFont.fSize, sourceFont.fStyle)
+		Self.List.AddLast(newFont)
+		return newFont
+	End Method
 
-		Local Font:TGW_Font = TGW_Font.Create(_FName, _FFile, _FSize, _FStyle)
+	Method AddFont:TGW_BitmapFont(name:String, file:String, size:Int, style:Int=0)
+		name = lower(name)
+		style :| SMOOTHFONT
+
+		If size = -1 Then size = DefaultFont.FSize
+		If style = -1 Then style = DefaultFont.FStyle
+		If file = "" Then file = DefaultFont.FFile
+
+		Local Font:TGW_BitmapFont = TGW_BitmapFont.Create(name, file, size, style)
 		Self.List.AddLast(Font)
 
+		'set default fonts if not done yet
 		if self.DefaultFont = null then self.DefaultFont = Font
-		if self.baseFont = null then self.baseFont = Font.ffont
+		if self.baseFont = null then self.baseFont = Font
 
 		Return Font
 	End Method
 End Type
 
-Type TGW_Font
-	Field FName:String
-	Field FFile:String
-	Field FSize:Int
-	Field FStyle:Int
-	'Field FFont:TImageFont
-	Field FFont:TBitmapFont
 
-	Function Create:TGW_Font(_FName:String, _FFile:String, _FSize:Int, _FStyle:Int)
-		Local tmpObj:TGW_Font = New TGW_Font
-		tmpObj.FName = _FName
-		tmpObj.FFile = _FFile
-		tmpObj.FSize = _FSize
-		tmpObj.FStyle = _FStyle
-		tmpObj.FFont = TBitmapFont.Create(_FFile, _FSize, _FStyle | SMOOTHFONT)
-		Return tmpObj
-	End Function
-End Type
 
 
 Type TGW_SpritePack extends TRenderable
 	Field image:TImage
-	Field sprites:TList = CreateList()
+	Field sprites:TGW_Sprite[]
+'	Field sprites:TList = CreateList()
 	Field LastSpriteID:Int = 0
+
 
 	Function Create:TGW_SpritePack(image:TImage, name:string)
 		Local Obj:TGW_SpritePack = New TGW_SpritePack
@@ -777,134 +1043,85 @@ Type TGW_SpritePack extends TRenderable
 		Return Obj
 	End Function
 
-	Method GetSpriteImage:TImage(spritename:String = "", SpriteID:Int = -1, loadAnimated:Int =1)
-		Local tmpObj:TGW_Sprites
-		If spritename <> ""
-			tmpObj = GetSprite(spritename)
-		Else
-			tmpObj = GetSpriteByID(SpriteID)
-		EndIf
-		Local DestPixmap:TPixmap = LockImage(image, 0, False, True).Window(tmpObj.Pos.x, tmpObj.Pos.y, tmpObj.w, tmpObj.h)
-		UnlockImage(image)
-		GCCollect() '<- FIX!
-		If tmpObj.animcount >1 And loadAnimated
-			Return TImage.LoadAnim(DestPixmap, tmpObj.framew, tmpObj.frameh, 0, tmpObj.animcount, 0, 255, 0, 255)
-		Else
-			Return TImage.Load(DestPixmap, 0, 255, 0, 255)
-		End If
-	End Method
 
-	Method GetSpriteFrameImage:TImage(spritename:String = "", SpriteID:Int = -1, framenr:Int = 0)
-		Local tmpObj:TGW_Sprites
-		If spritename <> ""
-			tmpObj = GetSprite(spritename)
-		Else
-			tmpObj = GetSpriteByID(SpriteID)
-		EndIf
-		Local DestPixmap:TPixmap = LockImage(image, 0, False, True).Window(tmpObj.Pos.x + framenr * tmpObj.framew, tmpObj.Pos.y, tmpObj.framew, tmpObj.h)
-		UnlockImage(image)
-		GCCollect() '<- FIX!
-		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
-	End Method
+	'returns the sprite defined by "spriteName"
+	'if no sprite was found, the first in the pack is returned to avoid errors
+	Method GetSprite:TGW_Sprite(spriteName:String = "")
+		spriteName = lower(spriteName)
+		For Local i:Int = 0 To sprites.length - 1
+			'skip missing or with wrong names
+			If not sprites[i] or lower(sprites[i].spritename) <> spriteName then continue
 
-	Method GetSprite:TGW_Sprites(spritename:String = "")
-		For Local i:Int = 0 To Self.sprites.Count() - 1
-			If lower(TGW_Sprites(Self.sprites.ValueAtIndex(i)).spritename) = lower(spritename) Then Return TGW_Sprites(Self.sprites.ValueAtIndex(i))
+			Return sprites[i]
 		Next
-		print "GetSprite: "+spritename+" not found"
-		Return TGW_Sprites(Self.sprites.ValueAtIndex(0))
+		print "GetSprite: "+spritename+" not found in Pack "+self.GetName()
+		Return sprites[0]
 	End Method
 
-	Method GetSpriteByID:TGW_Sprites(SpriteID:Int = 0)
-		For Local i:Int = 0 To Self.sprites.Count() - 1
-			If TGW_Sprites(Self.sprites.ValueAtIndex(i)).SpriteID = SpriteID Then Return TGW_Sprites(Self.sprites.ValueAtIndex(i))
+
+	'returns the sprite with "spriteID"
+	'if no sprite was found, the first in the pack is returned to avoid errors
+	Method GetSpriteByID:TGW_Sprite(spriteID:Int = 0)
+		For Local i:Int = 0 To sprites.length - 1
+			'skip missing or with  wrong ids
+			If not sprites[i] or sprites[i].spriteID <> spriteID Then continue
+
+			Return sprites[i]
 		Next
-		Return TGW_Sprites(Self.sprites.ValueAtIndex(0))
+		print "GetSpriteByID: "+spriteID+" not found in Pack "+self.GetName()
+		Return sprites[0]
 	End Method
 
-	Method AddSprite:TGW_Sprites(spritename:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, SpriteID:Int = -1)
-		Local sID:Int = SpriteID
-		If SpriteID < 0 Then LastSpriteID:+1;SpriteID = LastSpriteID;
-		local sprite:TGW_Sprites = TGW_Sprites.Create(Self, spritename, posx, posy, w, h, animcount, SpriteID)
-		Self.sprites.AddLast(sprite)
-		return sprite
+
+	Method GetNextSpriteID:int(spriteID:int=-1)
+		if spriteID < 0
+			LastSpriteID:+1
+			spriteID = LastSpriteID
+		endif
+		return spriteID
 	End Method
 
-	Method AddAnimSpriteMultiCol(spritename:String, posx:Float, posy:Float, w:Int, h:Int, spritew:Int, spriteh:Int, animcount:Int, SpriteID:Int = -1)
-		Local sID:Int = SpriteID
-		If SpriteID < 0 Then LastSpriteID:+1;SpriteID = LastSpriteID;
-		Self.sprites.AddLast(TGW_Sprites.Create(Self, spritename, posx, posy, w, h, animcount, SpriteID, spritew, spriteh))
+
+	Method AddSprite:int(sprite:TGW_Sprite, spriteID:int=-1)
+		sprite.spriteID = GetNextSpriteID(spriteID)
+		sprite.parent = self
+
+		sprites = sprites[..sprites.length+1]
+		sprites[sprites.length-1] = sprite
+		'sprites.AddLast(sprite)
+		return true
 	End Method
 
-	Method DrawSprite(spritename:String = "", x:Float, y:Float, animframe:Int = -1, spriteobj:TGW_Sprites = Null)
-		If spriteobj = Null
-			For Local i:Int = 0 To Self.sprites.Count() - 1
-				If TGW_Sprites(Self.sprites.ValueAtIndex(i)).spritename = spritename Then spriteobj = TGW_Sprites(Self.sprites.ValueAtIndex(i)) ;Exit
-			Next
-		End If
-		If spriteobj <> Null
-			DrawImageArea(Self.image, x, y, spriteobj.Pos.x + Max(0, animframe) * spriteobj.framew, spriteobj.Pos.y, spriteobj.framew, spriteobj.h, 0)
-		EndIf
-	End Method
 
+	'draws the whole spritesheet
 	Method Draw(tweenValue:float=1.0)
-		DrawImage(self.image, self.pos.x, self.pos.y)
+		DrawImage(self.image, self.area.GetX(), self.area.GetY())
 	End Method
 
-	Method DrawToViewPort(spritename:String = "", x:Float, y:Float, vx:Float, vy:Float, vw:Float, vh:Float, spriteobj:TGW_Sprites = Null)
-		If spriteobj = Null
-			For Local i:Int = 0 To Self.sprites.Count() - 1
-				If TGW_Sprites(Self.sprites.ValueAtIndex(i)).spritename = spritename Then spriteobj = TGW_Sprites(Self.sprites.ValueAtIndex(i)) ;Exit
-			Next
-		End If
-		If spriteobj <> Null Then ClipImageToViewport(Self.image, x - spriteobj.pos.x, y - spriteobj.pos.y, vx, vy, vw, vh, 0, 0)
-	End Method
-
-
-	Method ColorizeSpriteRGB(spriteName:String, colR:Int,colG:Int,colB:Int)
-		self.ColorizeSprite( spriteName, TColor.Create(colR,colG,colB) )
-	End Method
-
-	Method ColorizeSprite(spriteName:String, color:TColor)
-		'to access pos and dimension
-		Local tmpSprite:TGW_Sprites = Self.GetSprite(spriteName)
-		'store backup (we clean it before pasting colorized output
-		local tmpImg:TImage = ColorizeTImage(Self.GetSpriteImage(spriteName), color)
-		Local tmppix:TPixmap = LockImage(Self.image, 0)
-			tmppix.Window(tmpSprite.Pos.x, tmpSprite.pos.y, tmpSprite.w, tmpSprite.h).ClearPixels(0)
-			DrawOnPixmap(tmpImg, 0, tmppix, tmpSprite.pos.x, tmpSprite.pos.y)
-		UnlockImage(Self.image, 0)
-		GCCollect() '<- FIX!
-	End Method
-
-
-	Method CopySpriteRGB(spriteNameSrc:String, spriteNameDest:String, colR:Int,colG:Int,colB:Int)
-		self.CopySprite( spriteNameSrc, spriteNameDest, TColor.Create(colR,colG,colB) )
-	End Method
 
 	Method CopySprite(spriteNameSrc:String, spriteNameDest:String, color:TColor)
-		Local tmpSpriteDest:TGW_Sprites = Self.GetSprite(spriteNameDest)
+		Local tmpSpriteDest:TGW_Sprite = Self.GetSprite(spriteNameDest)
 		Local tmppix:TPixmap = LockImage(Self.image, 0)
-			tmppix.Window(tmpSpriteDest.Pos.x, tmpSpriteDest.pos.y, tmpSpriteDest.w, tmpSpriteDest.h).ClearPixels(0)
-			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), color), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
+			tmppix.Window(tmpSpriteDest.area.GetX(), tmpSpriteDest.area.GetY(), tmpSpriteDest.area.GetW(), tmpSpriteDest.area.GetH()).ClearPixels(0)
+			DrawImageOnImage(ColorizeImage(Self.GetSprite(spriteNameSrc).GetImage(), color), tmppix, tmpSpriteDest.area.GetX(), tmpSpriteDest.area.GetY())
 		UnlockImage(Self.image, 0)
 		GCCollect() '<- FIX!
 	End Method
 
-	Method AddCopySpriteRGB:TGW_Sprites(spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, colR:Int,colG:Int,colB:Int)
-		self.AddCopySprite( spriteNameSrc, spriteNameDest, posx, posy, w,h, animcount, TColor.Create(colR,colG,colB) )
-	End Method
 
-	Method AddCopySprite:TGW_Sprites(spriteNameSrc:String, spriteNameDest:String, posx:Float, posy:Float, w:Int, h:Int, animcount:int = 0, color:TColor)
-		local tmpSpriteDest:TGW_Sprites = self.AddSprite(spriteNameDest,posx, posy, w, h, animcount)
+	Method AddSpriteCopy:TGW_Sprite(spriteNameSrc:String, spriteNameDest:String, area:TRectangle, offset:TRectangle=null, animcount:int = 0, color:TColor)
+		local spriteCopy:TGW_Sprite = new TGW_Sprite.Create(self, spriteNameDest, area, offset, animcount)
 		Local tmppix:TPixmap = LockImage(Self.image, 0)
-			tmppix.Window(tmpSpriteDest.Pos.x, tmpSpriteDest.pos.y, tmpSpriteDest.w, tmpSpriteDest.h).ClearPixels(0)
-			DrawOnPixmap(ColorizeTImage(Self.GetSpriteImage(spriteNameSrc), color), 0, tmppix, tmpSpriteDest.pos.x, tmpSpriteDest.pos.y)
+			tmppix.Window(spriteCopy.area.GetX(), spriteCopy.area.GetY(), spriteCopy.area.GetW(), spriteCopy.area.GetH()).ClearPixels(0)
+			DrawImageOnImage(ColorizeImage(GetSprite(spriteNameSrc).GetImage(), color), tmppix, spriteCopy.area.GetX(), spriteCopy.area.GetY())
 		UnlockImage(Self.image, 0)
 		GCCollect() '<- FIX!
-		return tmpSpriteDest
-	End Method
+		'add the copy
+		self.addSprite(spriteCopy)
 
+		return spriteCopy
+	End Method
+rem
 	Method CopyImageOnSpritePackImage(src:object, dest:object = null, destX:float, destY:float)
 		local tmppix:TPixmap = null
 		local imgWidth:int = 0
@@ -928,50 +1145,49 @@ Type TGW_SpritePack extends TRenderable
 		if TImage(src)<> null then UnlockImage(TImage(src))
 		GCCollect() '<- FIX!
 	End Method
+endrem
 End Type
 
 
-Type TGW_Sprites extends TRenderable
+Type TGW_Sprite extends TRenderable
 	Field spriteName:String = ""
-	Field w:Float
-	Field h:Float
-	Field displacement:TPoint = TPoint.Create(0,0)
-	Field framew:Int
-	Field frameh:Int
-	Field animcount:Int
+	Field offset:TRectangle = TRectangle.Create(0,0,0,0)
+	Field frameW:Int
+	Field frameH:Int
+	Field animCount:Int
 	Field SpriteID:Int = -1
 	Field parent:TGW_SpritePack
-	field pix:TPixmap = null
+	Field _pix:TPixmap = null
 
-	Function Create:TGW_Sprites(spritepack:TGW_SpritePack=null, spritename:String, posx:Float, posy:Float, w:Int, h:Int, animcount:Int = 0, SpriteID:Int = -1, spritew:Int = 0, spriteh:Int = 0)
-		Local Obj:TGW_Sprites = New TGW_Sprites
-		Obj.spritename	= spritename
-		Obj.parent		= spritepack
-		Obj.Pos.setXY(posx, posy)
-		Obj.w = w
-		Obj.framew = w
-		obj.frameh = h
-		Obj.h			= h
-		Obj.SpriteID	= SpriteID
-		Obj.animcount	= animcount
-		If animcount > 0 Then
-			Obj.framew = ceil(w / animcount)
-			Obj.frameh = h
+
+	Method Create:TGW_Sprite(spritepack:TGW_SpritePack=null, spritename:String, area:TRectangle, offset:TRectangle, animcount:Int = 0, SpriteID:Int = -1, spriteDimension:TPoint=null)
+		self.spritename	= spritename
+		self.parent		= spritepack
+		self.area		= area.copy()
+		if offset then self.offset = offset.copy()
+		self.framew		= area.GetW()
+		self.frameh		= area.GetH()
+		self.SpriteID	= SpriteID
+		self.animcount	= animcount
+		If animcount > 0
+			self.framew = ceil(area.GetW() / animcount)
+			self.frameh = area.GetH()
 		End If
-		If spritew <> 0 And spriteh <> 0
-			Obj.framew = spritew
-			Obj.frameh = spriteh
+		If spriteDimension and spriteDimension.x<>0 and spriteDimension.y<>0
+			self.framew = spriteDimension.GetX()
+			self.frameh = spriteDimension.GetY()
 		End If
 
 		'asset
-		Obj.setName(spritename)
-		Obj.setUrl("NONE")
-		Obj.setType("SPRITE")
-		Return Obj
-	End Function
+		self.setName(spritename)
+		self.setUrl("NONE")
+		self.setType("SPRITE")
+		Return self
+	End Method
 
-	Function LoadFromAsset:TGW_Sprites(asset:object)
-		local obj:TGW_Sprites = TGW_Sprites(asset)
+
+	Function LoadFromAsset:TGW_Sprite(asset:object)
+		local obj:TGW_Sprite = TGW_Sprite(asset)
 
 		local spritepack:TGW_Spritepack = null
 		if obj.parent = null
@@ -990,103 +1206,190 @@ Type TGW_Sprites extends TRenderable
 		endif
 		if obj._flags & MASKEDIMAGE then SetMaskColor(0,0,0)
 
-		return TGW_Sprites.Create(spritepack, obj.getName(), 0,0, ImageWidth(spritepack.image), ImageHeight(spritepack.image), obj.animcount, -1, obj.framew, obj.frameh)
+		return new TGW_Sprite.Create(spritepack, obj.getName(), TRectangle.Create(0,0, ImageWidth(spritepack.image), ImageHeight(spritepack.image)), null, obj.animcount, -1, TPoint.Create(obj.framew, obj.frameh))
 	End Function
 
-	Method DrawOnImage(image:TImage, x:int, y:int, color:TColor=null)
-		DrawPixmapOnPixmap(self.getPixmap(), LockImage(image), x + displacement.x, y + displacement.y, color)
+
+	'returns the image of this sprite (reference, no copy)
+	'if the frame is 0+, only this frame is returned
+	Method GetImage:TImage(frame:int=-1)
+		'if a frame is requested, just return it (no need for "animated" check)
+		if frame >=0 then return GetFrameImage(frame)
+
+		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+		UnlockImage(parent.image)
+		GCCollect() '<- FIX!
+
+		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
 	End Method
 
-	Method DrawOnPixmap(pixmap:TPixmap, x:int,y:int, color:TColor=null)
-		DrawPixmapOnPixmap(self.getPixmap(), pixmap, x + displacement.x, y + displacement.y, color)
+
+	Method GetFrameImage:TImage(frame:Int=0)
+		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX() + frame * framew, area.GetY(), framew, area.GetH())
+		GCCollect() '<- FIX!
+		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
 	End Method
 
-	'is only a reference to the memory block of the pixmap
-	'NO REAL copy
-	Method GetPixmap:TPixmap(loadAnimated:int =1)
-		Local DestPixmap:TPixmap = LockImage(self.parent.image, 0, False, True).Window(self.Pos.x, self.Pos.y, self.w, self.h)
+
+	'return the pixmap of the sprite' image (reference, no copy)
+	Method GetPixmap:TPixmap()
+		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
 		'UnlockImage(self.parent.image)
 		'GCCollect() '<- FIX!
 		return DestPixmap
 	End Method
 
-	'is only a reference to the memory block of the images pixmap
-	'NO REAL copy
-	Method GetImage:TImage(loadAnimated:Int =1)
-		SetMaskColor(255,0,255)
-		If self.animcount >1 And loadAnimated
-			Return LoadAnimImage( self.GetPixmap(1), self.framew, self.frameh, 0, self.animcount)
-		Else
-			Return LoadImage( self.GetPixmap(0) )
-		EndIf
-	End Method
 
 	'creates a REAL copy (no reference) of an image
 	Method GetImageCopy:TImage(loadAnimated:int = 1)
 		SetMaskColor(255,0,255)
 		If self.animcount >1 And loadAnimated
-			Return LoadAnimImage( self.GetPixmap(1).copy(), self.framew, self.frameh, 0, self.animcount)
+			Return LoadAnimImage(self.GetPixmap().copy(), self.framew, self.frameh, 0, self.animcount)
 		Else
-			Return LoadImage( self.GetPixmap(0).copy() )
+			Return LoadImage(self.GetPixmap().copy())
 		EndIf
 	End Method
 
-	'let spritePack colorize the sprite
-	Method Colorize(color:TColor)
-		self.parent.ColorizeSprite(self.spriteName, Color)
+
+	Method GetColorizedImage:TImage(color:TColor, frame:int=-1)
+		return ColorizeImage(self.GetImage(frame), color)
 	End Method
 
-	Method GetColorizedImage:TImage(color:TColor)
-		return ColorizeTImage(self.GetImage(0), color, self.framew, self.frameh, 0, self.animcount, 0, 0)
-	End Method
 
-	Method GetFrameImage:TImage(framenr:Int = 0)
-		Local tmpObj:TGW_Sprites = self.parent.GetSprite(self.spritename)
-		Local DestPixmap:TPixmap = LockImage(self.parent.image, 0, False, True).Window(tmpObj.Pos.x + framenr * tmpObj.framew, tmpObj.Pos.y, tmpObj.framew, tmpObj.h)
-		UnlockImage(self.parent.image)
+	'removes the part of the sprite packs image occupied by the sprite
+	Method ClearImageData:int()
+		Local tmppix:TPixmap = LockImage(parent.image, 0)
+		tmppix.Window(area.GetX(), area.GetY(), area.GetW(), area.GetH()).ClearPixels(0)
 		GCCollect() '<- FIX!
-		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
 	End Method
 
-	Method PixelIsOpaque:int(x:int, y:int)
-		if x < 0 or y < 0 or x > self.framew or y > self.frameh then print "out of: "+x+", "+y;return 0
 
-		if self.pix = null then pix = LockImage(self.GetImage()) ';UnlockImage(self.parent.image) 'unlockimage does nothing in blitzmax (1.48)
-
-
-		Local sourcepixel:Int = ReadPixel(pix, x,y)
-
-		return ARGB_Alpha(sourcepixel)
+	Method GetWidth:int(includeOffset:int=TRUE)
+		if includeOffset
+			return area.GetW() - offset.GetLeft() - offset.GetRight()
+		else
+			return area.GetW()
+		endif
 	End Method
 
-	Method DrawClipped(imagex:Float, imagey:Float, ViewportX:Float, ViewPortY:Float, ViewPortW:Float, ViewPortH:Float, offsetx:Float = 0, offsety:Float = 0, theframe:Int = 0)
-		if ViewPortW < 0 then ViewPortW = self.w
-		if ViewPortH < 0 then ViewPortH = self.h
 
-		If imagex+framew>=ViewportX And imagex-framew<ViewportX+ViewportW And imagey+frameh>=ViewportY And imagey-frameh<ViewportY+ViewportH
-			Local startx#	= Max(0,ViewportX-imagex + displacement.x)
-			Local starty#	= Max(0,ViewportY-imagey + displacement.y)
-			Local endx#		= Max(0,(imagex+framew)-(ViewportX+ViewportW) + displacement.x)
-			Local endy#		= Max(0,(imagey+frameh)-(ViewportY+ViewportH) + displacement.y)
-
-			'calculate WHERE the frame is positioned in spritepack
-			If Self.framew <> 0
-				Local MaxFramesInCol:Int	= Ceil(w / framew)
-				Local framerow:Int			= Ceil(theframe / maxframesincol)
-				Local framecol:Int 			= theframe - (framerow * maxframesincol)
-				DrawImageArea(parent.image, imageX + startX + offsetx + displacement.x, imagey + starty + offsety + displacement.y, pos.x + framecol* framew + startx, pos.y + framerow * frameh + starty, framew - startx - endx, frameh - starty - endy, 0)
-			EndIf
-		EndIf
+	Method GetHeight:int(includeOffset:int=TRUE)
+		if includeOffset
+			return area.GetH() + offset.GetTop() + offset.GetBottom()
+		else
+			return area.GetH()
+		endif
 	End Method
 
-	Method getFramePos:TPoint(frame:int=-1)
+
+	Method GetFramePos:TPoint(frame:int=-1)
 		If frame < 0 then return TPoint.Create(0,0)
 
-		Local MaxFramesInCol:Int	= Ceil(w / framew)
+		Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
 		Local framerow:Int			= Ceil(frame / Max(1,MaxFramesInCol))
 		Local framecol:Int 			= frame - (framerow * MaxFramesInCol)
 		return TPoint.Create( framecol * self.framew, framerow * self.frameh )
 	End Method
+
+
+	'let spritePack colorize the sprite
+	Method Colorize(color:TColor)
+		'store backup (we have to clean the image data
+		'              before pasting colorized output)
+		local newImg:TImage = ColorizeImage(GetImage(), color)
+		'remove old image part
+		ClearImageData()
+		'draw now colorized image on the parent image
+		DrawImageOnImage(newImg, parent.image, area.GetX(), area.GetY())
+	End Method
+
+
+	Method PixelIsOpaque:int(x:int, y:int)
+		if x < 0 or y < 0 or x > self.framew or y > self.frameh then print "out of: "+x+", "+y;return 0
+
+		if not self._pix
+			self._pix = LockImage(self.GetImage())
+			'UnlockImage(self.parent.image) 'unlockimage does nothing in blitzmax (1.48)
+		endif
+
+		return ARGB_Alpha(ReadPixel(self._pix, x,y))
+	End Method
+
+
+	'draw the sprite onto a given image or pixmap
+	Method DrawOnImage(imageOrPixmap:object, x:int, y:int, modifyColor:TColor=null)
+		DrawImageOnImage(getPixmap(), imageOrPixmap, x + offset.GetLeft(), y + offset.GetTop(), modifyColor)
+	End Method
+
+
+	Method DrawResized(target:TRectangle, source:TRectangle, frame:int=-1)
+		'needed as "target" is a reference (changes original variable)
+		local targetCopy:TRectangle = target.Copy()
+
+		'we got a frame request - try to find it
+		'calculate WHERE the frame is positioned in spritepack
+		if frame >= 0 and self.framew > 0 and self.frameh > 0
+			Local MaxFramesInCol:Int	= floor(area.GetW() / framew)
+			local frameInRow:int		= floor(frame / MaxFramesInCol)	'0based
+			local frameInCol:int		= frame mod MaxFramesInCol		'0based
+			'move the source rect accordingly
+			source.position.SetXY(frameInCol*frameW, frameinRow*frameH)
+
+			'if no source dimension was given - use frame dimension
+			if source.GetW() <= 0 then source.dimension.setX(self.framew)
+			if source.GetH() <= 0 then source.dimension.setY(self.frameh)
+		else
+			'if no source dimension was given - use image dimension
+			if source.GetW() <= 0 then source.dimension.setX(area.GetW())
+			if source.GetH() <= 0 then source.dimension.setY(area.GetH())
+		endif
+		'receive source rect so it stays within the sprite's limits
+		source.dimension.SetX(Min(area.GetW(), source.GetW()))
+		source.dimension.SetY(Min(area.GetH(), source.GetH()))
+
+		'if no target dimension was given - use source dimension
+		if targetCopy.GetW() <= 0 then targetCopy.dimension.SetX(source.GetW())
+		if targetCopy.GetH() <= 0 then targetCopy.dimension.SetY(source.GetH())
+
+
+		'take care of offsets
+		if offset and (offset.position.x<>0 or offset.position.y<>0 or offset.dimension.x<>0 or offset.dimension.y<>0)
+			'top and left border also modify position to draw
+			'starting at the top border - so include that offset
+			if source.GetY() = 0
+				targetCopy.position.MoveY(-offset.GetTop())
+				targetCopy.dimension.MoveY(offset.GetTop())
+				source.dimension.MoveY(offset.GetTop())
+			else
+				source.position.MoveY(offset.GetTop())
+			endif
+			if source.GetX() = 0
+				targetCopy.position.MoveX(-offset.GetLeft())
+				targetCopy.dimension.MoveX(offset.GetLeft())
+				source.dimension.MoveX(offset.GetLeft())
+			else
+				source.position.MoveX(offset.GetLeft())
+			endif
+
+			'hitting bottom border - draw bottom offset
+			if (source.GetY() + source.GetH()) >= (area.GetH() - offset.GetBottom())
+				source.dimension.MoveY(offset.GetBottom())
+				targetCopy.dimension.MoveY(offset.GetBottom())
+			endif
+			'hitting right border - draw right offset
+'			if (source.GetX() + source.GetW()) >= (area.GetW() - offset.GetRight())
+'				source.dimension.MoveX(offset.GetRight())
+'			endif
+		endif
+
+		DrawSubImageRect(parent.image, targetCopy.GetX(), targetCopy.GetY(), targetCopy.GetW(), targetCopy.GetH(), area.GetX() + source.GetX(), area.GetY() + source.GetY(), source.GetW(), source.GetH())
+	End Method
+
+
+	Method DrawClipped(target:TPoint, source:TRectangle, frame:int=-1)
+		DrawResized(TRectangle.Create(target.GetX(),target.GetY()), source, frame)
+	End Method
+
 
 	Method TileDrawHorizontal(x:float, y:float, w:float, scale:float=1.0, theframe:int=-1)
 		local widthLeft:float	= w
@@ -1095,20 +1398,19 @@ Type TGW_Sprites extends TRenderable
 
 		while widthLeft > 0
 			local widthPart:float = Min(self.framew, widthLeft) 'draw part of sprite or whole ?
-			DrawSubImageRect( parent.image, currentX + displacement.x, y + displacement.y, widthPart, self.h, self.pos.x + framePos.x, self.pos.y + framePos.y, widthPart, self.frameh, 0 )
-			'old variant (no frames)
-			'DrawSubImageRect( parent.image, currentX, y, widthPart, self.h, self.pos.x, self.pos.y, widthPart, self.h )
+			DrawSubImageRect( parent.image, currentX + offset.GetLeft(), y + offset.GetTop(), widthPart, self.area.GetH(), self.area.GetX() + framePos.x, self.area.GetY() + framePos.y, widthPart, self.frameh, 0 )
 			currentX :+ widthPart * scale
 			widthLeft :- widthPart * scale
 		Wend
 	End Method
 
+
 	Method TileDrawVertical(x:float, y:float, h:float, scale:float=1.0)
 		local heightLeft:float = h
 		local currentY:float = y
 		while heightLeft >= 1
-			local heightPart:float = Min(self.h, heightLeft) 'draw part of sprite or whole ?
-			DrawSubImageRect( parent.image, x + displacement.x, currentY + displacement.y, self.w, ceil(heightPart), self.pos.x, self.pos.y, self.w, ceil(heightPart) )
+			local heightPart:float = Min(self.area.GetH(), heightLeft) 'draw part of sprite or whole ?
+			DrawSubImageRect( parent.image, x + offset.GetLeft(), currentY + offset.GetTop(), self.area.GetW(), ceil(heightPart), self.area.GetX(), self.area.GetY(), self.area.GetW(), ceil(heightPart) )
 			currentY :+ floor(heightPart * scale)
 			heightLeft :- (heightPart * scale)
 		Wend
@@ -1119,12 +1421,12 @@ Type TGW_Sprites extends TRenderable
 		local heightLeft:float = floor(h)
 		local currentY:float = y
 		while heightLeft >= 1
-			local heightPart:float	= Min(self.h, heightLeft) 'draw part of sprite or whole ?
+			local heightPart:float	= Min(self.area.GetH(), heightLeft) 'draw part of sprite or whole ?
 			local widthLeft:float	= w
 			local currentX:float	= x
 			while widthLeft > 0
-				local widthPart:float = Min(self.w, widthLeft) 'draw part of sprite or whole ?
-				DrawSubImageRect( parent.image, currentX + displacement.x, currentY + displacement.y, ceil(widthPart), ceil(heightPart), self.pos.x, self.pos.y, ceil(widthPart), ceil(heightPart) )
+				local widthPart:float = Min(self.area.GetW(), widthLeft) 'draw part of sprite or whole ?
+				DrawSubImageRect( parent.image, currentX + offset.GetLeft(), currentY + offset.GetTop(), ceil(widthPart), ceil(heightPart), self.area.GetX(), self.area.GetY(), ceil(widthPart), ceil(heightPart) )
 				currentX	:+ floor(widthPart * scale)
 				widthLeft	:- (widthPart * scale)
 			Wend
@@ -1133,21 +1435,165 @@ Type TGW_Sprites extends TRenderable
 		Wend
 	End Method
 
+
 	Method Update(deltaTime:float=1.0)
 	End Method
 
-	Method Draw(x:Float, y:Float, theframe:Int = -1, valign:float = 0.0, align:float=0.0, scale:float=1.0)
-		If theframe = -1 Or framew = 0
-			DrawImageArea(parent.image, x - align*w*scale + displacement.x*scale , y - valign*h*scale + displacement.y*scale, pos.x, pos.y, w, h, 0)
+
+	Method Draw(x:Float, y:Float, frame:Int=-1, alignment:TPoint=null, scale:float=1.0)
+		x:- offset.GetLeft()*scale
+		y:- offset.GetTop()*scale
+
+		rem
+			ALIGNMENT IS POSITION OF HANDLE !!
+
+			   TOPLEFT        TOPRIGHT
+			           .----.
+			           |    |
+			           '----'
+			BOTTOMLEFT        BOTTOMRIGHT
+		endrem
+
+
+		if not alignment then alignment = ALIGN_TOP_LEFT
+
+		If frame = -1 Or framew = 0
+			DrawSubImageRect(parent.image, x - alignment.GetX()*area.GetW()*scale , y - alignment.GetY()*area.GetH()*scale, area.GetW(), area.GetH(), area.GetX(), area.GetY(), area.GetW(), area.GetH(), 0, 0, 0)
+			'DrawImageArea(parent.image, x - (1.0-alignment.GetX())*area.GetW()*scale + offset.GetLeft()*scale , y - valign*area.GetH()*scale + offset.GetTop()*scale, area.GetX(), area.GetY(), area.GetW(), area.GetH(), 0)
 		Else
-			Local MaxFramesInCol:Int	= Ceil(w / framew)
-			Local framerow:Int			= Ceil(theframe / MaxFramesInCol)
-			Local framecol:Int 			= theframe - (framerow * MaxFramesInCol)
-			DrawImageArea(parent.image, x - align*framew*scale + displacement.x*scale, y - valign*frameh*scale + displacement.y*scale, pos.x + framecol * framew, pos.y + framerow * frameh, framew, frameh, 0)
+			Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
+			Local framerow:Int			= Ceil(frame / MaxFramesInCol)
+			Local framecol:Int 			= frame - (framerow * MaxFramesInCol)
+
+			DrawSubImageRect(parent.image,..
+							 x - alignment.GetX()*framew*scale,..
+							 y - alignment.GetY()*frameh*scale,..
+							 framew,..
+							 frameh,..
+							 area.GetX() + framecol * framew,..
+							 area.GetY() + framerow * frameh,..
+							 framew,..
+							 frameh,..
+							 0, 0, 0)
 		EndIf
 	End Method
-
 End Type
+
+
+
+
+Type TGW_NinePatchSprite extends TGW_Sprite
+	Field _middle:TPoint				'size of the middle parts (width, height)
+	Field _border:TRectangle			'size of TopLeft,TopRight,BottomLeft,BottomRight
+	Field _contentBorder:TRectangle		'limits for displaying content
+	Field _borderScale:float	= 1.0	'the scale of "non-stretchable" borders - rest will scale automatically through bigger dimensions
+	CONST MARKER_WIDTH:int		= 1		'subtract this amount of pixels on each side for markers
+
+
+	Method Create:TGW_NinePatchSprite(spritepack:TGW_SpritePack=null, spritename:String, area:TRectangle, offset:TRectangle, animcount:Int = 0, SpriteID:Int = -1, spriteDimension:TPoint=null)
+		super.Create(spritepack, spritename, area, offset, animcount, spriteID, spriteDimension)
+
+		'read markers in the image to get border and content sizes
+		_border			= ReadMarker(0)
+		_contentBorder	= ReadMarker(1)
+
+		_middle = TPoint.Create(..
+					area.GetW() - (_border.GetLeft() + _border.GetRight()), ..
+					area.GetH() - (_border.GetTop() + _border.GetBottom()) ..
+				  )
+
+		self.setType("NINEPATCHSPRITE")
+
+		'TDevHelper.log("NinePatchSprite", spritename+" border: "+int(_border.GetLeft())+","+int(_border.GetTop())+" -> "+int(_border.GetRight())+","+int(_border.GetBottom()), LOG_DEBUG)
+
+		return self
+	End Method
+
+
+	Function LoadFromAsset:TGW_NinePatchSprite(asset:object)
+		local gwSprite:TGW_Sprite = TGW_Sprite.LoadFromAsset(asset)
+		return new TGW_NinePatchSprite.Create(gwSprite.parent, gwSprite.getName(), gwSprite.area, null, gwSprite.animcount, -1, TPoint.Create(gwSprite.framew, gwSprite.frameh))
+	End Function
+
+
+	Method GetBorder:TRectangle()
+		return self._border
+	End Method
+
+	Method GetContentBorder:TRectangle()
+		return self._contentBorder
+	End Method
+
+
+	Method DrawArea(x:float, y:float, width:float=-1, height:float=-1, frame:int=-1)
+		if width=-1 then width = area.GetW()
+		if height=-1 then height = area.GetH()
+		'minimal dimension has to be same or bigger than all 4 borders + 0.5 of the stretch portion
+		width = Max(width, 0.5 + _borderScale*(_border.GetLeft()+_border.GetRight()))
+		height = Max(height, 0.5 + _borderScale*(_border.GetTop()+_border.GetBottom()))
+
+		'dimensions of the stretch-parts (the middle elements)
+		'adjusted by a potential border scale
+		Local stretchDestW:float = width - _borderScale*(_border.GetLeft()+_border.GetRight())
+		Local stretchDestH:float = height - _borderScale*(_border.GetTop()+_border.GetBottom())
+
+		'top
+		If _border.GetLeft() then DrawResized(TRectangle.Create(x, y, _border.GetLeft()*_borderScale, _border.GetTop()*_borderScale), TRectangle.Create(MARKER_WIDTH, MARKER_WIDTH, _border.GetLeft(), _border.GetTop()), frame)
+		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y, stretchDestW, _border.GetTop()*_borderScale), TRectangle.Create(_border.GetLeft(), MARKER_WIDTH, _middle.GetX(), _border.GetTop()), frame )
+		If _border.GetRight() then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y, _border.GetRight()*_borderScale, _border.GetTop()*_borderScale), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, MARKER_WIDTH, _border.GetRight(), _border.GetTop()), frame)
+		'middle
+		If _border.GetLeft() Then DrawResized(TRectangle.Create(x, y+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, stretchDestH), TRectangle.Create(MARKER_WIDTH, _border.GetTop(), _border.GetLeft(), _middle.GetY()), frame)
+		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), TRectangle.Create(MARKER_WIDTH+_border.GetLeft(), MARKER_WIDTH+_border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
+		If _border.GetRight() Then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, _border.GetRight()*_borderScale, stretchDestH), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, _border.GetTop(), _border.GetRight(), _middle.GetY()), frame)
+		'bottom
+		If _border.GetLeft() Then DrawResized(TRectangle.Create(x, y+stretchDestH+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, _border.GetBottom()*_borderScale), TRectangle.Create(MARKER_WIDTH, _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _border.GetLeft(), _border.GetBottom()), frame)
+		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+stretchDestH+_border.GetTop()*_borderScale, stretchDestW, _border.GetBottom()*_borderScale), TRectangle.Create(_border.GetLeft(), _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _middle.GetX(), _border.GetBottom()), frame)
+		If _border.GetRight() Then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y+stretchDestH+_border.GetTop()*_borderScale, _border.GetRight()*_borderScale, _border.GetBottom()*_borderScale), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _border.GetRight(), _border.GetBottom()), frame)
+	End Method
+
+
+
+	'read markers out of the sprites image data
+	'mode = 0: sprite borders
+	'mode = 1: content borders
+	Method ReadMarker:TRectangle(mode:int=0)
+		if not _pix then _pix = GetPixmap()
+		Local sourcepixel:Int
+		local sourceW:int = _pix.width - MARKER_WIDTH
+		local sourceH:int = _pix.height - MARKER_WIDTH
+		local result:TRectangle = TRectangle.Create(0,0,0,0)
+		local markerRow:int=0, markerCol:int=0, skipLines:int=0
+		'content is defined at the last pixmap row/col
+		if mode = 1
+			markerCol = sourceW
+			markerRow = sourceH
+			skipLines = 1
+		endif
+
+		'find left border: from 0 to first non-transparent pixel in row 0
+		For Local i:Int = skipLines To sourceW-1
+			if ARGB_Alpha(ReadPixel(_pix, i, markerCol)) > 0 then result.SetLeft(i - skipLines);exit
+		Next
+		'find right border: from left border the first non opaque pixel in row 0
+		For Local i:Int = result.GetLeft()+1 To sourceW-1
+			if ARGB_Alpha(ReadPixel(_pix, i, markerCol)) = 0 then result.SetRight(sourceW - i);exit
+		Next
+		'find top border: from 0 to first opaque pixel in col 0
+		For Local i:Int = skipLines To sourceH-1
+			if ARGB_Alpha(ReadPixel(_pix, markerRow, i)) > 0 then result.SetTop(i - skipLines);exit
+		Next
+		'find bottom border: from top border the first non opaque pixel in col 0
+		For Local i:Int = result.GetTop()+1 To sourceH-1
+			if ARGB_Alpha(ReadPixel(_pix, markerRow, i)) = 0 then result.SetBottom(sourceH - i);exit
+		Next
+
+		Return result
+	End Method
+End Type
+
+
+
+
 
 Type TAnimation
 	field repeatTimes:int		= 0		'how many times animation should repeat until finished
@@ -1253,14 +1699,17 @@ End Type
 
 'makes anim sprites moveable
 Type TMoveableAnimSprites extends TAnimSprites {_exposeToLua="selected"}
-	Field rect:TRectangle			= TRectangle.Create(0,0,0,0) {_exposeToLua}
-	Field vel:TPoint				= TPoint.Create(0,0) {_exposeToLua}
-	Field returnToStart:Int			= 0
+	Field rect:TRectangle	= TRectangle.Create(0,0,0,0) {_exposeToLua}
+	Field oldPos:TPoint		= TPoint.Create(0,0) 'for tweening
+	Field vel:TPoint		= TPoint.Create(0,0) {_exposeToLua}
+	Field returnToStart:Int	= 0
 
-	Method Create:TMoveableAnimSprites(sprite:TGW_Sprites, AnimCount:Int = 1, animTime:Int)
+
+	Method Create:TMoveableAnimSprites(sprite:TGW_Sprite, AnimCount:Int = 1, animTime:Int)
 		super.Create(sprite, AnimCount, animTime)
 		return self
 	End Method
+
 
 	'not able to override TAnimSprites-functions/methods
 	Method SetupMoveable:TMoveableAnimSprites(x:Int, y:Int, dx:Int, dy:int = 0)
@@ -1269,6 +1718,7 @@ Type TMoveableAnimSprites extends TAnimSprites {_exposeToLua="selected"}
 		self.vel.setXY(dx,dy)
 		return self
 	End Method
+
 
 	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
 		If visible
@@ -1279,9 +1729,14 @@ Type TMoveableAnimSprites extends TAnimSprites {_exposeToLua="selected"}
 		endif
 	End Method
 
+
 	Method UpdateMovement(deltaTime:float)
+		'backup for tweening
+		self.oldPos.SetXY(rect.position.x, rect.position.y)
+
 		self.rect.position.MoveXY( deltaTime * self.vel.x, deltaTime * self.vel.y )
 	End Method
+
 
 	Method Update(deltaTime:float)
 		'call AnimSprites.Update
@@ -1289,19 +1744,21 @@ Type TMoveableAnimSprites extends TAnimSprites {_exposeToLua="selected"}
 
 		self.UpdateMovement(deltaTime)
 	End Method
-
-
 End Type
+
+
+
 
 'base of animated sprites... contains timers and so on, supports reversed animations
 Type TAnimSprites
-	Field sprite:TGW_Sprites
+	Field sprite:TGW_Sprite
+	Field spriteName:string			= ""
 	Field visible:Int 				= 1
 	Field AnimationSets:TMap	 	= CreateMap()
 	Field currentAnimation:string	= "default"
 
-	Method Create:TAnimSprites(sprite:TGW_Sprites, AnimCount:Int = 1, animTime:Int)
-		self.sprite = sprite
+	Method Create:TAnimSprites(sprite:TGW_Sprite, AnimCount:Int = 1, animTime:Int)
+		SetSprite(sprite)
 
 		local framesArray:int[][2]
 		framesArray	= framesArray[..AnimCount] 'extend
@@ -1310,86 +1767,101 @@ Type TAnimSprites
 			framesArray[i][0]	= i
 			framesArray[i][1]	= animTime
 		Next
-		self.insertAnimation( "default", TAnimation.Create(framesArray,0,0) )
+		insertAnimation( "default", TAnimation.Create(framesArray,0,0) )
 
 		Return self
 	End Method
 
-	Method GetWidth:int()
-		return self.sprite.framew
+
+	Method SetSprite(newSprite:TGW_Sprite)
+		sprite = newSprite
+		spriteName = newSprite.spriteName
 	End Method
 
-	Method GetHeight:int()
-		return self.sprite.frameh
+
+	Method GetSprite:TGW_Sprite()
+		return sprite
 	End Method
+
+
+	Method GetWidth:int()
+		return sprite.framew
+	End Method
+
+
+	Method GetHeight:int()
+		return sprite.frameh
+	End Method
+
 
 	'insert a TAnimation with a certain Name
 	Method InsertAnimation(animationName:string, animation:TAnimation)
-		self.AnimationSets.insert(lower(animationName), animation)
-		if not self.AnimationSets.contains("default") then self.setCurrentAnimation(animationName, 0)
+		AnimationSets.insert(lower(animationName), animation)
+		if not AnimationSets.contains("default") then setCurrentAnimation(animationName, 0)
 	End Method
 
 	'Set a new Animation
 	'If it is a different animation name, the Animation will get reset (start from begin)
 	Method setCurrentAnimation(animationName:string, startAnimation:int = 1)
 		animationName = lower(animationName)
-		local reset:int = 1 - (self.currentAnimation = animationName)
-		self.currentAnimation = animationName
-		if reset then self.getCurrentAnimation().Reset()
-		if startAnimation then self.getCurrentAnimation().Playback()
+		local reset:int = 1 - (currentAnimation = animationName)
+		currentAnimation = animationName
+		if reset then getCurrentAnimation().Reset()
+		if startAnimation then getCurrentAnimation().Playback()
 	End Method
 
 	Method getCurrentAnimation:TAnimation()
-		local obj:TAnimation = TAnimation(self.AnimationSets.ValueForKey(self.currentAnimation))
-		if obj = null then obj = TAnimation(self.AnimationSets.ValueForKey("default"))
+		local obj:TAnimation = TAnimation(AnimationSets.ValueForKey(currentAnimation))
+		if obj = null then obj = TAnimation(AnimationSets.ValueForKey("default"))
 		return obj
 	End Method
 
 	Method getAnimation:TAnimation(animationName:string="default")
-		local obj:TAnimation = TAnimation(self.AnimationSets.ValueForKey(animationName))
-		if obj = null then obj = TAnimation(self.AnimationSets.ValueForKey("default"))
+		local obj:TAnimation = TAnimation(AnimationSets.ValueForKey(animationName))
+		if obj = null then obj = TAnimation(AnimationSets.ValueForKey("default"))
 		return obj
 	End Method
 
 
 	Method getCurrentAnimationName:string()
-		return self.currentAnimation
+		return currentAnimation
 	End Method
 
 
 	Method getCurrentFrame:int()
-		return self.getCurrentAnimation().getCurrentFrame()
+		return getCurrentAnimation().getCurrentFrame()
 	End Method
+
 
 	Method Draw(_x:float= -10000, _y:float = -10000, overwriteAnimation:string="")
 		If visible
 			if overwriteAnimation <> ""
-				sprite.Draw(_x,_y, self.getAnimation(overwriteAnimation).getCurrentFrame() )
+				sprite.Draw(_x,_y, getAnimation(overwriteAnimation).getCurrentFrame() )
 			else
-				sprite.Draw(_x,_y, self.getCurrentAnimation().getCurrentFrame() )
+				sprite.Draw(_x,_y, getCurrentAnimation().getCurrentFrame() )
 			endif
 		EndIf
 	End Method
 
 	Method Update(deltaTime:float)
-		self.getCurrentAnimation().Update(deltaTime)
+		getCurrentAnimation().Update(deltaTime)
 	End Method
 
 End Type
 
 
 
-Type TGW_SpritesParticle
-		Field x:Float,y:Float
-		Field xrange:Int,yrange:Int
-		Field vel:Float
-		Field angle:Float
-		Field image:TGW_Sprites
-		Field life:float
-		field startLife:float
-		Field is_alive:Int
-		Field alpha:Float
-		Field scale:Float
+Type TGW_SpriteParticle
+	Field x:Float,y:Float
+	Field xrange:Int,yrange:Int
+	Field vel:Float
+	Field angle:Float
+	Field image:TGW_Sprite
+	Field life:float
+	field startLife:float
+	Field is_alive:Int
+	Field alpha:Float
+	Field scale:Float
 
 
 		Method Spawn(px:Float,py:Float,pvel:Float,plife:Float,pscale:Float,pangle:Float,pxrange:Float,pyrange:Float)

@@ -5,6 +5,7 @@ Import Brl.Map
 Import Brl.Stream
 Import Brl.Retro
 Import "external/bnetex/bnetex.bmx"	'for direct udp messages
+Import "basefunctions_events.bmx"	'for event system
 
 Const NET_PACKET_RELIABLE:int	= 1
 CONST NET_PACKET_HEADER:int		= 1317
@@ -80,6 +81,8 @@ Extern "OS"
 		Function GetCurrentProcessId:Int() = "getpid"
 	?
 End Extern
+
+
 
 
 'all players wo take part in a game
@@ -647,7 +650,6 @@ Type TTVGNetwork
 	field fallbackip:String			= "192.168.0.3"
 
 	'to interact with clients/host
-	Field callbackInfoChannel(networkObject:TNetworkObject)
 	Field infoStream:TUDPStream		= Null
 	Field callbackClient(client:TNetworkClient,evType:Int,networkObject:TNetworkObject)
 	field client:TNetworkClient		= Null
@@ -708,7 +710,19 @@ Type TTVGNetwork
 		local packet:TNetworkPacket = self.ReceiveInfoPackets()
 		if packet <> null
 			local obj:TNetworkObject = TNetworkObject.FromPacket(packet)
-			if obj and callbackInfoChannel then callbackInfoChannel(obj)
+			if not obj then return
+
+			if obj.evType = NET_ANNOUNCEGAME
+				local evData:TData = TData.Create()
+				evData.AddNumber("slotsUsed", obj.getInt(1))
+				evData.AddNumber("slotsMax", obj.getInt(2))
+				evData.AddNumber("hostIP", obj.getInt(3)) 		'could differ from senderIP
+				evData.AddNumber("hostPort", obj.getInt(4)) 		'differs from senderPort (info channel)
+				evData.AddString("hostName", obj.getString(5))
+				evData.AddString("gameTitle", obj.getString(6))
+
+				EventManager.triggerEvent(TEventSimple.Create( "network.onReceiveAnnounceGame", evData, null))
+			endif
 		endif
 	End Method
 

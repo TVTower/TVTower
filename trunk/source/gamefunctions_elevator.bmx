@@ -10,11 +10,9 @@
 
 Type TElevator
 	'Referenzen
-	Field Building :TBuilding				= null		'Das Gebäude
-	Field Passengers:TList					= CreateList()	'Alle aktuellen Passagiere als TFigures
+	Field Passengers:TList					= CreateList()	'Alle aktuellen Passagiere als TFigure
 	Field RouteLogic:TElevatorRouteLogic	= null
 	Field FloorRouteList:TList				= CreateList() 'Die Liste mit allen Fahrstuhlanfragen und Sendekommandos in der Reihenfolge in der sie gestellt wurden
-	Field SoundSource:TElevatorSoundSource	= TElevatorSoundSource.Create(self, true)
 
 	'Aktueller Status (zu speichern)
 	Field ElevatorStatus:Int				= 0			'0 = warte auf nächsten Auftrag, 1 = Türen schließen, 2 = Fahren, 3 = Türen öffnen, 4 = entladen/beladen
@@ -34,64 +32,97 @@ Type TElevator
 
 	'Grafikelemente
 	Field SpriteDoor:TAnimSprites						'Das Türensprite und seine Animationen
-	Field SpriteInner:TGW_Sprites						'Das Sprite des Innenraums
+	Field SpriteInner:TGW_Sprite			{nosave}	'Das Sprite des Innenraums
 	Field PassengerOffset:TPoint[]						'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures ein paar Offsets im Fahrstuhl
-	Field PassengerPosition:TFigures[]					'Hier wird abgelegt, welches Offset schon in Benutzung ist und von welcher Figur
+	Field PassengerPosition:TFigure[]					'Hier wird abgelegt, welches Offset schon in Benutzung ist und von welcher Figur
+
+	'globals are not saved
+	Global _soundSource:TElevatorSoundSource
+	Global _initDone:int = FALSE
+	Global _instance:TElevator							'last created elevator
+
+	'===== Konstruktor, Speichern, Laden =====
+	Method New()
+		_instance = self
+	End Method
 
 
-
-	'===== Konstrukor, Speichern, Laden =====
-
-	Function Create:TElevator(building:TBuilding)
-		Local obj:TElevator = New TElevator
-		'create timer
-		obj.WaitAtFloorTimer = TIntervalTimer.Create( obj.WaitAtFloorTime )
-		'create sprite
-		obj.spriteDoor = new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
-		obj.spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
-		obj.spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
-		obj.spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
-		obj.spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
-		obj.spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
-		obj.spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
-
-		obj.PassengerPosition  = obj.PassengerPosition[..6]
-		obj.PassengerOffset    = obj.PassengerOffset[..6]
-		obj.PassengerOffset[0] = TPoint.Create(0, 0)
-		obj.PassengerOffset[1] = TPoint.Create(-12, 0)
-		obj.PassengerOffset[2] = TPoint.Create(-6, 0)
-		obj.PassengerOffset[3] = TPoint.Create(3, 0)
-		obj.PassengerOffset[4] = TPoint.Create(-3, 0)
-		obj.PassengerOffset[5] = TPoint.Create(-8, 0)
-
-		obj.Building = building
-		obj.Pos.SetY(building.GetFloorY(obj.CurrentFloor) - obj.spriteInner.h)
-
-		obj.spriteDoor.setCurrentAnimation("open")
-		obj.doorStatus = 1 'open
-		obj.ElevatorStatus	= 0
-		Return obj
+	Function GetInstance:TElevator()
+		if not _instance then _instance = new TElevator.Create()
+		return _instance
 	End Function
 
-	Method Save()
-		'TODO: Wollte Ronny ja eh noch überarbeiten
+
+
+	Method Create:TElevator()
+		'create timer
+		WaitAtFloorTimer = TIntervalTimer.Create(WaitAtFloorTime)
+
+		PassengerPosition  = PassengerPosition[..6]
+		PassengerOffset    = PassengerOffset[..6]
+		PassengerOffset[0] = TPoint.Create(0, 0)
+		PassengerOffset[1] = TPoint.Create(-12, 0)
+		PassengerOffset[2] = TPoint.Create(-6, 0)
+		PassengerOffset[3] = TPoint.Create(3, 0)
+		PassengerOffset[4] = TPoint.Create(-3, 0)
+		PassengerOffset[5] = TPoint.Create(-8, 0)
+
+		'create sprite
+		spriteDoor = new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
+		spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
+		spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
+		spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
+		spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
+		spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
+
+		InitSprites()
+
+		spriteDoor.setCurrentAnimation("open")
+		doorStatus = 1 'open
+		ElevatorStatus	= 0
+
+		if not _initDone
+			'handle savegame loading (assign sprites)
+			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			_initDone = TRUE
+		endif
+
+		Return self
 	End Method
 
-	Method Load(loadfile:TStream)
-		'TODO: Wollte Ronny ja eh noch überarbeiten
+
+	'run when loading finished
+	Function onSaveGameLoad(triggerEvent:TEventBase)
+		TDevHelper.Log("TElevator", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
+		'instance holds the object created when loading
+		GetInstance().InitSprites()
+	End Function
+
+
+	'should get run as soon as sprites might be invalid (loading, graphics reset)
+	Method InitSprites()
+		spriteDoor.SetSprite(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"))
+		spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
 	End Method
+
+
+	Method GetSoundSource:TElevatorSoundSource()
+		if not _soundSource then _soundSource = TElevatorSoundSource.Create(self, true)
+		return _soundSource
+	End Method
+
 
 	'===== Öffentliche Methoden damit die Figuren den Fahrstuhl steuern können =====
 
-	Method CallElevator(figure:TFigures)
+	Method CallElevator(figure:TFigure)
 		AddFloorRoute(figure.GetFloor(), 1, figure)
 	End Method
 
-	Method SendElevator(targetFloor:int, figure:TFigures)
+	Method SendElevator(targetFloor:int, figure:TFigure)
 		AddFloorRoute(targetFloor, 0, figure)
 	End Method
 
-	Method EnterTheElevator:int(figure:TFigures, myTargetFloor:int=-1) 'bzw. einsteigen
+	Method EnterTheElevator:int(figure:TFigure, myTargetFloor:int=-1) 'bzw. einsteigen
 		If Not IsAllowedToEnterToElevator(figure, myTargetFloor) Then Return False
 		If Not Passengers.Contains(figure)
 			Passengers.AddLast(figure)
@@ -102,7 +133,7 @@ Type TElevator
 		Return false
 	End Method
 
-	Method LeaveTheElevator(figure:TFigures) 'aussteigen
+	Method LeaveTheElevator(figure:TFigure) 'aussteigen
 		RemoveFigureOffset(figure)		'Das Offset auf jeden Fall zurücksetzen
 		RemoveRouteOfPlayer(figure, 0)  'Send-Route entfernen
 		Passengers.remove(figure)		'Aus der Passagierliste entfernen
@@ -111,11 +142,11 @@ Type TElevator
 
 	'===== Externe Hilfsmethoden für Figuren =====
 
-	Method IsFigureInFrontOfDoor:Int(figure:TFigures)
+	Method IsFigureInFrontOfDoor:Int(figure:TFigure)
 		Return (GetDoorCenterX() = figure.rect.getX())
 	End Method
 
-	Method IsFigureInElevator:Int(figure:TFigures)
+	Method IsFigureInElevator:Int(figure:TFigure)
 		Return passengers.Contains(figure)
 	End Method
 
@@ -129,14 +160,14 @@ Type TElevator
 
 	'===== Hilfsmethoden =====
 
-	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigures)
+	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigure)
 		If Not ElevatorCallIsDuplicate(floornumber, who) Then 'Prüfe auf Duplikate
 			FloorRouteList.AddLast(RouteLogic.CreateFloorRoute(floornumber, call, who))
 			RouteLogic.AddFloorRoute(floornumber, call, who)
 		EndIf
 	End Method
 
-	Method RemoveRouteOfPlayer(figure:TFigures, call:int)
+	Method RemoveRouteOfPlayer(figure:TFigure, call:int)
 		RemoveRoute(GetRouteByPassenger(figure, call))
 	End Method
 
@@ -159,18 +190,18 @@ Type TElevator
 		Next
 	End Method
 
-	Method IsAllowedToEnterToElevator:int(figure:TFigures, myTargetFloor:int=-1)
+	Method IsAllowedToEnterToElevator:int(figure:TFigure, myTargetFloor:int=-1)
 		Return RouteLogic.IsAllowedToEnterToElevator(figure, myTargetFloor)
 	End Method
 
-	Method ElevatorCallIsDuplicate:Int(floornumber:Int, who:TFigures)
+	Method ElevatorCallIsDuplicate:Int(floornumber:Int, who:TFigure)
 		For Local DupeRoute:TFloorRoute = EachIn FloorRouteList
 			If DupeRoute.who.id = who.id And DupeRoute.floornumber = floornumber Then Return True
 		Next
 		Return False
 	End Method
 
-	Method GetRouteByPassenger:TFloorRoute(passenger:TFigures, isCallRoute:int)
+	Method GetRouteByPassenger:TFloorRoute(passenger:TFigure, isCallRoute:int)
 		For Local route:TFloorRoute = EachIn FloorRouteList
 			If route.who = passenger And route.call = isCallRoute Then Return route
 		Next
@@ -187,13 +218,13 @@ Type TElevator
 
 	'===== Offset-Funktionen =====
 
-	Method SetFigureOffset(figure:TFigures)
+	Method SetFigureOffset(figure:TFigure)
 		for local i:int = 0 to len(PassengerOffset) -1
 			If PassengerPosition[i] = null Then PassengerPosition[i] = figure; Exit
 		next
 	End Method
 
-	Method RemoveFigureOffset(figure:TFigures)
+	Method RemoveFigureOffset(figure:TFigure)
 		for local i:int = 0 to len(PassengerOffset) -1
 			If PassengerPosition[i] = figure Then PassengerPosition[i] = null; Exit
 		next
@@ -202,7 +233,7 @@ Type TElevator
 
 	Method MovePassengerToPosition() 'Aktualisiert das Offset und bewegt die Figur an die richtige Position
 		for local i:int = 0 to len(PassengerPosition) - 1
-			local figure:TFigures = PassengerPosition[i]
+			local figure:TFigure = PassengerPosition[i]
 			If figure <> null
 				local offset:TPoint = PassengerOffset[i]
 				If figure.PosOffset.getX() <> offset.getX()
@@ -226,7 +257,7 @@ Type TElevator
 
 	Method MoveDeboardingPassengersToCenter() 'Aktualisiert das Offset und bewegt die Figur zum Ausgang
 		for local i:int = 0 to len(PassengerPosition) - 1
-			local figure:TFigures = PassengerPosition[i]
+			local figure:TFigure = PassengerPosition[i]
 			If figure <> null
 				If GetRouteByPassenger(figure, 0).floornumber = CurrentFloor 'Will die Person aussteigen?
 					If figure.PosOffset.getX() <> 0
@@ -253,14 +284,14 @@ Type TElevator
 	'===== Fahrstuhl steuern =====
 
 	Method OpenDoor()
-		SoundSource.PlaySfx(SFX_ELEVATOR_OPENDOOR)
-		Self.spriteDoor.setCurrentAnimation("opendoor", True)
+		GetSoundSource().PlayRandomSfx("elevator_door_open")
+		spriteDoor.setCurrentAnimation("opendoor", True)
 		DoorStatus = 2 'wird geoeffnet
 	End Method
 
 	Method CloseDoor()
-		SoundSource.PlaySfx(SFX_ELEVATOR_CLOSEDOOR)
-		Self.spriteDoor.setCurrentAnimation("closedoor", True)
+		GetSoundSource().PlayRandomSfx("elevator_door_close")
+		spriteDoor.setCurrentAnimation("closedoor", True)
 		DoorStatus = 3 'closing
 	End Method
 
@@ -268,10 +299,10 @@ Type TElevator
 
 	Method Update(deltaTime:Float=1.0)
 		'Aktualisierung des current floors - mv: da ich hier nicht durchblicke lass ich's so wie's ist ;)
-		If Abs(Building.GetFloorY(Building.GetFloor(Building.pos.y + Pos.y + spriteInner.h - 1)) - (Pos.y + spriteInner.h)) <= 1
+		If Abs(Building.GetFloorY(Building.GetFloor(Building.pos.y + Pos.y + spriteInner.area.GetH() - 1)) - (Pos.y + spriteInner.area.GetH())) <= 1
 			'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
 			'until the function returns the new one, instead of positioning it directly on the floorground
-			CurrentFloor = Building.GetFloor(Building.pos.y + Pos.y + spriteInner.h - 1)
+			CurrentFloor = Building.GetFloor(Building.pos.y + Pos.y + spriteInner.area.GetH() - 1)
 		EndIf
 
 		If ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
@@ -291,7 +322,7 @@ Type TElevator
 					spriteDoor.setCurrentAnimation("closed")
 					doorStatus = 0 'closed
 					ElevatorStatus = 2 '2 = Fahren
-					SoundSource.PlaySfx(SFX_ELEVATOR_ENGINE)
+					GetSoundSource().PlayRandomSfx("elevator_engine")
 				EndIf
 			EndIf
 		Endif
@@ -307,18 +338,18 @@ Type TElevator
 
 				'Fahren - Position ändern
 				If Direction = 1
-					Pos.y	= Max(Pos.y - deltaTime * Speed, Building.GetFloorY(TargetFloor) - spriteInner.h) 'hoch fahren
+					Pos.y	= Max(Pos.y - deltaTime * Speed, Building.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'hoch fahren
 				Else
-					Pos.y	= Min(Pos.y + deltaTime * Speed, Building.GetFloorY(TargetFloor) - spriteInner.h) 'runter fahren
+					Pos.y	= Min(Pos.y + deltaTime * Speed, Building.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'runter fahren
 				EndIf
 
 				'Begrenzungen: Nicht oben oder unten rausfahren ;)
-				If Pos.y + spriteInner.h < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(13) - spriteInner.h
-				If Pos.y + spriteInner.h > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.h
+				If Pos.y + spriteInner.area.GetH() < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(13) - spriteInner.area.GetH()
+				If Pos.y + spriteInner.area.GetH() > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.area.GetH()
 
 				'Die Figuren im Fahrstuhl mit der Kabine mitbewegen
-				For Local figure:TFigures = EachIn Passengers
-					figure.rect.position.setY( self.Pos.y + spriteInner.h)
+				For Local figure:TFigure = EachIn Passengers
+					figure.rect.position.setY( self.Pos.y + spriteInner.area.GetH())
 				Next
 			EndIf
 		Endif
@@ -369,7 +400,7 @@ Type TElevator
 
 		'Fahrstuhlanzeige über den Türen
 		For Local i:Int = 0 To 13
-			Local locy:Int = Building.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h - 8
+			Local locy:Int = Building.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.area.GetH() - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
 				DrawRect(Building.pos.x+Pos.x-4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
@@ -379,7 +410,7 @@ Type TElevator
 
 		'Fahrstuhlanzeige über den Türen
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			Local locy:Int = Building.pos.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.h + 23
+			Local locy:Int = Building.pos.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 23
 			'elevator is called to this floor					'elevator will stop there (destination)
 			If	 floorroute.call Then SetColor 200,220,20 	Else SetColor 100,220,20
 			DrawRect(Building.pos.x + Pos.x + 44, locy, 3,3)
@@ -399,7 +430,7 @@ Type TElevator
 
 		'Zeichne Figuren
 		If Not passengers.IsEmpty()
-			For Local passenger:TFigures = EachIn passengers
+			For Local passenger:TFigure = EachIn passengers
 				passenger.Draw()
 				passenger.alreadydrawn = 1
 			Next
@@ -407,7 +438,7 @@ Type TElevator
 
 		'Zeichne Türen in allen Stockwerken (außer im aktuellen)
 		For Local i:Int = 0 To 13
-			Local locy:Int = Building.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.h
+			Local locy:Int = Building.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.area.GetH()
 			If locy < 410 And locy > - 50 And i <> CurrentFloor Then
 				Self.spriteDoor.Draw(Building.pos.x + Pos.x, locy, "closed")
 			Endif
@@ -435,10 +466,10 @@ End Type
 
 
 Type TElevatorRouteLogic
-	Method CreateFloorRoute:TFloorRoute(floornumber:Int, call:Int=0, who:TFigures=null) abstract
-	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigures) abstract
+	Method CreateFloorRoute:TFloorRoute(floornumber:Int, call:Int=0, who:TFigure=null) abstract
+	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigure) abstract
 	Method RemoveRouteOfPlayer(currentRoute:TFloorRoute) abstract
-	Method IsAllowedToEnterToElevator:int(figure:TFigures, myTargetFloor:int=-1) abstract
+	Method IsAllowedToEnterToElevator:int(figure:TFigure, myTargetFloor:int=-1) abstract
 	Method CalculateNextTarget:int() abstract
 	Method BoardingDone() abstract
 	Method GetSortedRouteList:TList() abstract
@@ -450,7 +481,7 @@ Type TFloorRoute
 	Field elevator:TElevator
 	Field floornumber:Int
 	Field call:Int
-	Field who:TFigures
+	Field who:TFigure
 
 	Method Save()
 	End Method
@@ -458,7 +489,7 @@ Type TFloorRoute
 	Function Load:TFloorRoute(loadfile:TStream)
 	End Function
 
-	Function Create:TFloorRoute(elevator:TElevator, floornumber:Int, call:Int=0, who:TFigures=null)
+	Function Create:TFloorRoute(elevator:TElevator, floornumber:Int, call:Int=0, who:TFigure=null)
 		Local floorRoute:TFloorRoute = New TFloorRoute
 		floorRoute.elevator = elevator
 		floorRoute.floornumber = floornumber
@@ -496,11 +527,11 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 
 	'===== Externe Methoden =====
 
-	Method CreateFloorRoute:TFloorRoute(floornumber:Int, call:Int=0, who:TFigures=null)
+	Method CreateFloorRoute:TFloorRoute(floornumber:Int, call:Int=0, who:TFigure=null)
 		Return TSmartFloorRoute.Create(Elevator, floornumber, call, who)
 	End Method
 
-	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigures)
+	Method AddFloorRoute:Int(floornumber:Int, call:Int = 0, who:TFigure)
 		TemporaryRouteList = null 'Das null-setzten zwingt die Routenberechnung zur Aktualisierung
 	End Method
 
@@ -508,7 +539,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 		If TemporaryRouteList <> null Then TemporaryRouteList.remove(currentRoute)
 	End Method
 
-	Method IsAllowedToEnterToElevator:int(figure:TFigures, myTargetFloor:int=-1)
+	Method IsAllowedToEnterToElevator:int(figure:TFigure, myTargetFloor:int=-1)
 		'Man darf auch einsteigen wenn man eigentlich in ne andere Richtung wollte... ist der Parameter aber dabei, dann wird geprüft
 		If myTargetFloor = -1 Then Return True
 		local e:TElevator = Elevator
@@ -599,7 +630,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 		If fromFloor < toFloor Then Return 1 Else Return -1
 	End Method
 
-	Function GetRouteIndexOfFigure:int(figure:TFigures)
+	Function GetRouteIndexOfFigure:int(figure:TFigure)
 		local index:int = 0
 		For Local route:TFloorRoute = EachIn Building.Elevator.FloorRouteList
 			If route.who = figure Then Return index
@@ -666,7 +697,7 @@ Type TSmartFloorRoute Extends TFloorRoute
 	Function Load:TFloorRoute(loadfile:TStream)
 	End Function
 
-	Function Create:TSmartFloorRoute(elevator:TElevator, floornumber:Int, call:Int=0, who:TFigures=null)
+	Function Create:TSmartFloorRoute(elevator:TElevator, floornumber:Int, call:Int=0, who:TFigure=null)
 		Local floorRoute:TSmartFloorRoute = New TSmartFloorRoute
 		floorRoute.elevator = elevator
 		floorRoute.floornumber = floornumber

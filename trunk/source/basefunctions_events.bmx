@@ -14,52 +14,88 @@ Type TEventManager
 	Field _listeners:TMap	= CreateMap()	' trigger => list of eventhandlers waiting for trigger
 
 	Method getTicks:Int()
-		Return self._ticks
+		Return _ticks
 	End Method
 
-	' call after all events have been registered
+
 	Method Init()
-		Assert _ticks = -1, "TEventManager: preparing to start event manager while already started"
-		self._events.Sort()				'sort by age
-		self._ticks = Millisecs()		'begin
-		print "TEventManager.Init()"
+		'Assert _ticks = -1, "TEventManager: preparing to start event manager while already started"
+		if _ticks = -1
+			_events.Sort()				'sort by age
+			_ticks = Millisecs()		'begin
+			TDevHelper.log("TEventManager.Init()", "OK", LOG_LOADING)
+		endif
 	End Method
+
 
 	Method isStarted:Int()
-		Return self._ticks > -1
+		Return _ticks > -1
 	End Method
 
+
 	Method isFinished:Int()
-		Return self._events.IsEmpty()
+		Return _events.IsEmpty()
 	End Method
+
 
 	' add a new listener to a trigger
 	Method registerListener:TLink(trigger:string, eventListener:TEventListenerBase)
 		trigger = lower(trigger)
-		local listeners:TList = TList(self._listeners.ValueForKey(trigger))
+		local listeners:TList = TList(_listeners.ValueForKey(trigger))
 		if listeners = null									'if not existing, create a new list
 			listeners = CreateList()
-			self._listeners.Insert(trigger, listeners)
+			_listeners.Insert(trigger, listeners)
 		endif
 		return listeners.AddLast(eventListener)					'add to list of listeners
 	End Method
 
+
 	Method registerListenerFunction:TLink( trigger:string, _function(triggeredByEvent:TEventBase), limitToSender:object=null, limitToReceiver:object=null )
-		self.registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+		registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
+
 	Method registerListenerMethod:TLink( trigger:string, objectInstance:object, methodName:string, limitToSender:object=null, limitToReceiver:object=null )
-		self.registerListener( trigger,	TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+		registerListener( trigger,	TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
 	End Method
+
 
 	' remove an event from a trigger
 	Method unregisterListener(trigger:string, eventListener:TEventListenerBase)
-		local listeners:TList = TList(self._listeners.ValueForKey( lower(trigger) ))
+		local listeners:TList = TList(_listeners.ValueForKey( lower(trigger) ))
 		if listeners <> null then listeners.remove(eventListener)
 	End Method
 
-	Method unregisterAllListeners(trigger:string)
-		self._listeners.remove( lower(trigger) )
+
+	'remove all listeners having the given receiver or sender as limit
+	Method unregisterListenerByLimit(limitReceiver:object=null, limitSender:object=null)
+		for local list:TList = eachin _listeners
+			for local listener:TEventListenerBase = eachin list
+				'if one of both limits hits, remove that listener
+				if TFunctions.ObjectsAreEqual(listener._limitToSender, limitSender) or..
+				   TFunctions.ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
+					list.remove(listener)
+				endif
+			Next
+		Next
+	End Method
+
+
+	Method unregisterListenersByTrigger(trigger:string, limitReceiver:object=null, limitSender:object=null)
+		'remove all of that trigger
+		if not limitReceiver and not limitSender
+			_listeners.remove( lower(trigger) )
+		'remove all defined by limits
+		else
+			local triggerListeners:TList = TList(_listeners.ValueForKey( lower(trigger) ))
+			for local listener:TEventListenerBase = eachin triggerListeners
+				'if one of both limits hits, remove that listener
+				if TFunctions.ObjectsAreEqual(listener._limitToSender, limitSender) or..
+				   TFunctions.ObjectsAreEqual(listener._limitToReceiver, limitReceiver)
+					triggerListeners.remove(listener)
+				endif
+			Next
+		endif
 	End Method
 
 	Method unregisterListenerByLink(link:TLink)
@@ -67,11 +103,11 @@ Type TEventManager
 	End Method
 
 
-
 	' add a new event to the list
 	Method registerEvent(event:TEventBase)
-		self._events.AddLast(event)
+		_events.AddLast(event)
 	End Method
+
 
 	'runs all listeners NOW ...returns amount of listeners
 	Method triggerEvent:int(triggeredByEvent:TEventBase)
@@ -79,12 +115,12 @@ Type TEventManager
 		'if we have systemonly-event we cannot do it in a subthread
 		'instead we just add that event to the upcoming events list
 		if triggeredByEvent._channel = 1
-			If CurrentThread()<>MainThread() then self.registerEvent(triggeredByEvent)
+			If CurrentThread()<>MainThread() then registerEvent(triggeredByEvent)
 		endif
 		?
 
 
-		local listeners:TList = TList(self._listeners.ValueForKey( lower(triggeredByEvent._trigger) ))
+		local listeners:TList = TList(_listeners.ValueForKey( lower(triggeredByEvent._trigger) ))
 		if listeners
 			for local listener:TEventListenerBase = eachin listeners
 				listener.onEvent(triggeredByEvent)
@@ -96,15 +132,17 @@ Type TEventManager
 		return 0
 	End Method
 
+
 	Method update(onlyChannel:int=null)
-		Assert self._ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
-		self._processEvents(onlyChannel)
-		self._ticks = Millisecs()
+		Assert _ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
+		_processEvents(onlyChannel)
+		_ticks = Millisecs()
 	End Method
 
+
 	Method _processEvents(onlyChannel:int=null)
-		If Not self._events.IsEmpty()
-			Local event:TEventBase = TEventBase(self._events.First()) 			' get the next event
+		If Not _events.IsEmpty()
+			Local event:TEventBase = TEventBase(_events.First()) 			' get the next event
 			if event<> null
 				if onlyChannel<>null
 					'system
@@ -119,15 +157,16 @@ Type TEventManager
 				If event.getStartTime() <= _ticks			' is it time for this event?
 					event.onEvent()							' start event
 					if event._trigger <> ""					' only trigger event if _trigger is set
-						self.triggerEvent( event )
+						triggerEvent( event )
 					endif
-					self._events.RemoveFirst()			' remove from list
-					self._processEvents()				' another event may start on the same ticks - check again
-				End If
+					_events.RemoveFirst()			' remove from list
+					_processEvents()				' another event may start on the same ticks - check again
+				EndIf
 			endif
-		End If
+		EndIf
 	End Method
 End Type
+
 
 Type TEventListenerBase
 	field _limitToSender:object		= Null
@@ -136,33 +175,30 @@ Type TEventListenerBase
 	method OnEvent:int(triggeredByEvent:TEventBase) Abstract
 
 	'returns whether to ignore the incoming event (eg. limits...)
+	'an event can be ignored if the sender<>limitSender or receiver<>limitReceiver
 	Method ignoreEvent:int(triggerEvent:TEventBase)
 		if triggerEvent = null then return TRUE
 
 		'Check limit for "sender"
-		if self._limitToSender<>Null and triggerEvent._sender <> null
-			'is different classname / type
-			if string(self._limitToSender)<>null
-				if string(self._limitToSender).toLower() <> TTypeId.ForObject(triggerEvent._sender).Name().toLower()
-					return TRUE
-				endif
-			'different sender
-			elseif self._limitToSender <> triggerEvent._sender
-				return TRUE
-			endif
+		'if the listener wants a special sender but the event does not have one... ignore
+		'old if self._limitToSender and triggerEvent._sender
+		'new
+		if _limitToSender
+			'we want a sender but got none - ignore (albeit objects are NOT equal)
+			if not triggerEvent._sender then return TRUE
+
+			if not TFunctions.ObjectsAreEqual(triggerEvent._sender, _limitToSender) then return TRUE
 		endif
 
 		'Check limit for "receiver" - but only if receiver is set
-		if self._limitToReceiver<>Null and triggerEvent._receiver<>Null
-			'is different classname / type
-			if string(self._limitToReceiver)<>null
-				if string(self._limitToReceiver).toLower() <> TTypeId.ForObject(triggerEvent._receiver).Name().toLower()
-					return TRUE
-				endif
-			'different receiver
-			elseif self._limitToReceiver <> triggerEvent._receiver
-				return TRUE
-			endif
+		'if the listener wants a special receiver but the event does not have one... ignore
+		'old: if self._limitToReceiver and triggerEvent._receiver
+		'new
+		if _limitToReceiver
+			'we want a receiver but got none - ignore (albeit objects are NOT equal)
+			if not triggerEvent._receiver then return TRUE
+
+			if not TFunctions.ObjectsAreEqual(triggerEvent._receiver, _limitToReceiver) then return TRUE
 		endif
 
 		return FALSE
@@ -222,18 +258,24 @@ Type TEventBase
 	Field _trigger:string = ""
 	Field _sender:object = null
 	Field _receiver:object = null
-	field _data:object
-	field _veto:int = 0
-	field _channel:int = 0		'no special channel
+	Field _data:object
+	Field _status:int = 0
+	Field _channel:int = 0		'no special channel
+
+	Const STATUS_VETO:int = 1
+	Const STATUS_ACCEPTED:int = 2
+
 
 	Method getStartTime:Int()
 		Return self._startTime
 	End Method
 
+
 	Method setStartTime:TEventBase(newStartTime:int=0)
 		self._startTime = newStartTime
 		return self
 	End Method
+
 
 	Method delayStart:TEventBase(delayMilliseconds:int=0)
 		self._startTime:+delayMilliseconds
@@ -241,32 +283,65 @@ Type TEventBase
 		return self
 	End Method
 
-	Method setVeto(); self._veto = true; End Method
-	Method isVeto:int(); return (_veto=true); End Method
+
+	Method setStatus(status:int, enable:int=TRUE)
+		if enable
+			self._status :| status
+		else
+			self._status :& ~status
+		endif
+	End Method
+
+
+	Method setVeto(bool:int=TRUE)
+		setStatus(STATUS_VETO, bool)
+	End Method
+
+
+	Method isVeto:int()
+		return (_status & STATUS_VETO)
+	End Method
+
+
+	Method setAccepted(bool:int=TRUE)
+		setStatus(STATUS_ACCEPTED, bool)
+	End Method
+
+
+	Method isAccepted:int()
+		return (_status & STATUS_ACCEPTED)
+	End Method
+
 
 	Method onEvent()
 	End Method
+
 
 	Method getReceiver:object()
 		return self._receiver
 	End Method
 
+
 	Method getSender:object()
 		return self._sender
 	End Method
+
 
 	Method getData:TData()
 		return TData(self._data)
 	End Method
 
+
 	Method getTrigger:string()
 		return lower(_trigger)
 	End Method
+
 
 	'returns wether trigger is the same
 	Method isTrigger:int(trigger:string)
 		return _trigger = lower(trigger)
 	End Method
+
 
 	' to sort the event queue by time
 	Method Compare:Int(other:Object)
@@ -281,6 +356,9 @@ Type TEventBase
 		Else Return 0
 	End Method
 End Type
+
+
+
 
 Type TEventSimple extends TEventBase
 

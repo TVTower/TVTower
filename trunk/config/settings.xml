@@ -12,5 +12,7 @@
 		<fallbacklocalip>192.168.0.3</fallbacklocalip>
 		<directx>0</directx>
 		<colordepth>16</colordepth>
+		<sound_effects>TRUE</sound_effects>
+		<sound_music>TRUE</sound_music>
 	</settings>
 </game>

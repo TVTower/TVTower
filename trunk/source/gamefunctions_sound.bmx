@@ -59,11 +59,6 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		Return result
 	End Function
 
-	Method PlaySfx(sfx:String, sfxSettings:TSfxSettings=Null)
-		'print "aa1: " + GetCenter().x + "/" + GetCenter().y + " - " + Building.getFloorByPixelExactPoint(GetCenter())
-		Super.PlaySfx(sfx)
-	End Method
-
 	Method GetID:String()
 		Return "Elevator"
 	End Method
@@ -82,31 +77,30 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
+			Case "elevator_door_open"
 				Return GetSfxChannelByName("Door")
-			Case SFX_ELEVATOR_CLOSEDOOR
+			Case "elevator_door_close"
 				Return GetSfxChannelByName("Door")
-			Case SFX_ELEVATOR_ENGINE
+			Case "elevator_engine"
 				Return GetSfxChannelByName("Main")
 		EndSelect
 	End Method
 
 	Method GetSfxSettings:TSfxSettings(sfx:String)
 		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
+			Case "elevator_door_open"
 				Return GetDoorOptions()
-			Case SFX_ELEVATOR_CLOSEDOOR
+			Case "elevator_door_close"
 				Return GetDoorOptions()
-			Case SFX_ELEVATOR_ENGINE
+			Case "elevator_engine"
 				Return GetEngineOptions()
 		EndSelect
 	End Method
 
 	Method OnPlaySfx:Int(sfx:String)
 		Select sfx
-			Case SFX_ELEVATOR_OPENDOOR
-				Local engineChannel:TSfxChannel = GetChannelForSfx(SFX_ELEVATOR_ENGINE)
-				engineChannel.Stop()
+			Case "elevator_door_open"
+				GetChannelForSfx("elevator_engine").stop()
 		EndSelect
 
 		Return True
@@ -142,13 +136,15 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		Local result:TDoorSoundSource = New TDoorSoundSource
 		result.Room = _room
 
-		result.AddDynamicSfxChannel(SFX_OPEN_DOOR, True)
-		result.AddDynamicSfxChannel(SFX_CLOSE_DOOR, True)
+		'instead of pre-registering all events and channels, we do it
+		'during requesting a channel
+		'result.AddDynamicSfxChannel(SFX_OPEN_DOOR, True)
+		'result.AddDynamicSfxChannel(SFX_CLOSE_DOOR, True)
 
 		Return result
 	End Function
 
-	Method PlayDoorSfx(sfx:String, figure:TFigures)
+	Method PlayOpenDoorSfx(figure:TFigure)
 		'Die Türsound brauchen eine spezielle Behandlung wenn es sich dabei um einen Spieler handelt der einen Raum betritt oder verlässt.
 		'Diese spezielle Behandlung (der Modus) wird durch IsGamePlayerAction = true gekenntzeichnet.
 		'Ist dieser Modus aktiv wird ein Timer gestartet welcher das Schließen der Türe nach einiger Zeit abspielt (siehe Update).
@@ -156,35 +152,47 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 		If figure = Game.Players[Game.playerID].Figure 'Dieser Code nur für den aktiven Spieler
 			If Not IsGamePlayerAction 'Wenn wir uns noch nicht im Spezialmodus befinden, dann weiter prüfen ob man ihn gleich aktiv schalten muss
-				If sfx = SFX_OPEN_DOOR 'Nur der Open-Sound kann den Spezialmodus starten
-					If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
-						IsGamePlayerAction = True 'Den Modus starten
-						If Game.Players[Game.playerID].Figure.inRoom = Null 'von draußen (Flur) nach drinen (Raum)
-							If Room.hasOccupant() Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
-							PlaySfx(sfx, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
-						Else 'von drinnen (Raum) nach draußen (Flur)
-							PlaySfx(sfx, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
-						EndIf
-						DoorTimer.reset() 'den Close auf Timer setzen...
-					Else 'In dem Fall ist die Türe also noch offen
-						DoorTimer.reset() 'Den Schließen-Sound verschieben.
+				If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
+					IsGamePlayerAction = True 'Den Modus starten
+					If Game.Players[Game.playerID].Figure.inRoom = Null 'von draußen (Flur) nach drinen (Raum)
+						If Room.hasOccupant() Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
+						PlayRandomSfx("door_open", GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
+					Else 'von drinnen (Raum) nach draußen (Flur)
+						PlayRandomSfx("door_close", GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
 					EndIf
-				ElseIf sfx = SFX_CLOSE_DOOR
-					PlaySfx(sfx)
+					DoorTimer.reset() 'den Close auf Timer setzen...
+				Else 'In dem Fall ist die Türe also noch offen
+					DoorTimer.reset() 'Den Schließen-Sound verschieben.
 				EndIf
 			EndIf
 		Else
-			PlaySfx(sfx)
+			PlayRandomSfx("door_open")
 		EndIf
 	End Method
+
+
+	Method PlayCloseDoorSfx(figure:TFigure)
+		'Die Türsound brauchen eine spezielle Behandlung wenn es sich dabei um einen Spieler handelt der einen Raum betritt oder verlässt.
+		'Diese spezielle Behandlung (der Modus) wird durch IsGamePlayerAction = true gekenntzeichnet.
+		'Ist dieser Modus aktiv wird ein Timer gestartet welcher das Schließen der Türe nach einiger Zeit abspielt (siehe Update).
+		'Dies ist nötig da im normalen Codeablauf das "CloseDoor" von TRooms zu schnell kommt. Dieser Schließensound aus CloseDoor muss in diesem Modus abgefangen werden
+
+		 'Dieser Code nur für den aktiven Spieler
+		If figure = Game.Players[Game.playerID].Figure
+			If Not IsGamePlayerAction then PlayRandomSfx("door_close")
+		Else
+			PlayRandomSfx("door_close")
+		EndIf
+	End Method
+
 
 	Method Update()
 		If IsGamePlayerAction
 			If DoorTimer.isExpired() 'Wenn der Timer abgelaufen, dann den Türschließsound spielen
 				If Game.Players[Game.playerID].Figure.inRoom = Null
-					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
+					PlayRandomSfx("door_close", GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 				Else
-					PlaySfx(SFX_CLOSE_DOOR, GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
+					PlayRandomSfx("door_close", GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
 				EndIf
 				IsGamePlayerAction = False 'Modus beenden
 			EndIf
@@ -212,12 +220,12 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
-		Select sfx
-			Case SFX_OPEN_DOOR
-				Return GetSfxChannelByName(SFX_OPEN_DOOR)
-			Case SFX_CLOSE_DOOR
-				Return GetSfxChannelByName(SFX_CLOSE_DOOR)
-		EndSelect
+		local result:TSfxChannel = GetSfxChannelByName(sfx)
+		if result = null
+			'TDevHelper.log("TDoorSoundSource.GetChannelForSfx()", "SFX ~q"+sfx+"~q was not defined for room ~q"+self.room.name+"~q yet. Registered Channel for this SFX.", LOG_DEBUG)
+			result = self.AddDynamicSfxChannel(sfx, True)
+		endif
+		return result
 	End Method
 
 	Method GetSfxSettings:TSfxSettings(sfx:String)
@@ -262,12 +270,12 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 End Type
 
-Type TFigureSoundSource Extends TSoundSourceElement
-	Field Figure:TFigures
+Type TFigureoundSource Extends TSoundSourceElement
+	Field Figure:TFigure
 	Field ChannelInitialized:Int = 0
 
-	Function Create:TFigureSoundSource (_figure:TFigures)
-		Local result:TFigureSoundSource = New TFigureSoundSource
+	Function Create:TFigureoundSource (_figure:TFigure)
+		Local result:TFigureoundSource = New TFigureoundSource
 		result.Figure= ­_figure
 		'result.AddDynamicSfxChannel("Steps" + result.Figure.name)
 
@@ -292,7 +300,7 @@ Type TFigureSoundSource Extends TSoundSourceElement
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		Select sfx
-			Case SFX_STEPS
+			Case "steps"
 				If Not Self.ChannelInitialized
 					Self.AddDynamicSfxChannel("Steps" + Self.GetID()) 'Channel erst hier hinzufügen... am Anfang hat Figure noch keine id
 					Self.ChannelInitialized = True
@@ -304,7 +312,7 @@ Type TFigureSoundSource Extends TSoundSourceElement
 
 	Method GetSfxSettings:TSfxSettings(sfx:String)
 		Select sfx
-			Case SFX_STEPS
+			Case "steps"
 				Return GetStepsSettings()
 		EndSelect
 	End Method
@@ -325,4 +333,79 @@ Type TFigureSoundSource Extends TSoundSourceElement
 		result.minVolume = 0
 		Return result
 	End Method
+End Type
+
+
+
+Type TSimpleSoundSource extends TSoundSourceElement
+	Field SfxChannels:TMap = CreateMap()
+
+	Function Create:TSimpleSoundSource()
+		return New TSimpleSoundSource
+	End Function
+
+	Method GetSfxChannelByName:TSfxChannel(name:String)
+		Return TSfxChannel(MapValueForKey(SfxChannels, name))
+	End Method
+
+	'override default behaviour
+	Method PlaySfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:int=FALSE)
+		TSoundManager.GetInstance().RegisterSoundSource(Self)
+
+		'add channel if not done yet
+		if not TSfxChannel(SfxChannels.ValueForKey(name))
+			SfxChannels.insert(name, TSfxChannel.Create())
+		endif
+
+		Local channel:TSfxChannel = GetChannelForSfx(name)
+		Local settings:TSfxSettings = sfxSettings
+		If settings = Null Then settings = GetSfxSettings(name)
+
+		if playlistMode
+			channel.PlayRandomSfx(name, settings)
+		else
+			channel.PlaySfx(name, settings)
+		endif
+
+		'print GetID() + " # End PlaySfx: " + name
+	End Method
+
+
+	Method Stop(sfx:String)
+		Local channel:TSfxChannel = GetChannelForSfx(sfx)
+		channel.Stop()
+	End Method
+
+	Method GetSfxSettings:TSfxSettings(sfx:String)
+		local settings:TSfxSettings = TSfxSettings.Create()
+		settings.defaultVolume = 1.50
+		return settings
+	End Method
+
+
+	Method GetIsHearable:Int()
+		return true
+	End Method
+
+	Method GetChannelForSfx:TSfxChannel(sfx:String)
+		Return GetSfxChannelByName(sfx)
+	End Method
+
+	Method GetID:String()
+		Return "SimpleSfx"
+	End Method
+
+	Method GetCenter:TPoint()
+		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + Building.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
+		Return TPoint.Create(App.settings.GetWidth()/2, App.settings.GetHeight()/2)
+	End Method
+
+	Method IsMovable:Int()
+		Return False
+	End Method
+
+	Method OnPlaySfx:Int(sfx:String)
+		return TRUE
+	end Method
+
 End Type

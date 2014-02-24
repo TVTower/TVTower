@@ -14,76 +14,116 @@ Global KIRunning:Int = true
 
 'SuperStrict
 Type KI
-	Field playerId:Byte
-	Field LuaEngine:TLuaEngine
-	Field scriptName:String
-	Field scriptAsString:String = ""
-	Field scriptConstants:String
-	Field MyLuaState:Byte Ptr
-	Field LastErrorNumber:Int = 0
-
-	Field LuaFunctions:TLuaFunctions
+	Field playerID:int
+	Field LuaEngine:TLuaEngine {nosave}
+	Field scriptFileName:String
+	Field scriptSaveState:string 'contains the code used to reinitialize the AI
 
 
-	Function Create:KI(pId:Byte, script:String)
-		Local loadtime:Int = MilliSecs()
-		Local ret:KI = New KI
-		ret.playerId		= pId
-		ret.LuaFunctions	= TLuaFunctions.Create(pId)		'own functions for player
-		ret.LuaEngine		= TLuaEngine.Create("")			'register engine and functions
-		ret.scriptName		= script
-		ret.reloadScript()
-		Print "Player " + pId + " (ME:"+ret.LuaFunctions.ME+"): AI loaded in " + Float(MilliSecs() - loadtime) + "ms"
-		Return ret
-	End Function
+	Method Create:KI(playerID:Int, luaScriptFileName:String)
+		self.playerID		= playerID
+		self.scriptFileName = luaScriptFileName
+		Return self
+	End Method
+
 
 	Method OnCreate()
 		Local args:Object[1]
-		args[0] = String(Self.playerID)
-		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnCreate", args)
+		args[0] = String(playerID)
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnCreate", args)
 	End Method
+
+
+	Method Start()
+		'register engine and functions
+		if not LuaEngine then LuaEngine = TLuaEngine.Create("")
+
+		'load lua file
+		LoadScript(scriptFileName)
+
+		'==== LINK SPECIAL OBJECTS
+		'own functions for player
+		LuaEngine.RegisterBlitzmaxObject(TLuaFunctions.Create(PlayerID), "TVT")
+		'the player
+		LuaEngine.RegisterBlitzmaxObject(Game.GetPlayer(PlayerID), "MY")
+		'the game object
+		LuaEngine.RegisterBlitzmaxObject(Game, "Game")
+
+		'register source and available objects
+		LuaEngine.RegisterToLua()
+	End Method
+
 
 	Method Stop()
 '		scriptEnv.ShutDown()
 '		KI_EventManager.unregisterKI(Self)
 	End Method
 
-	Method reloadScript()
-		If Self.scriptAsString <> "" Then Print "Reloaded LUA AI for player "+Self.playerId
-		Self.scriptAsString = LoadText(scriptName)
 
-		'Print "LUA: Registering <LuaFunctions> as <TVT> AND <Player> as <MY>"
-		LuaEngine.RegisterBlitzmaxObject(LuaFunctions, "TVT")
+	'loads a .lua-file and registers needed objects
+	Method LoadScript:int(luaScriptFileName:string)
+		if luaScriptFileName <> "" then scriptFileName = luaScriptFileName
+		if scriptFileName = "" then return FALSE
 
-		If TPlayer.getById(Self.PlayerID) <> Null
-			'Print "LUA: Registering <Player> as <MY>"
-			LuaEngine.RegisterBlitzmaxObject(TPlayer.getById(Self.PlayerID), "MY")
-			LuaEngine.RegisterBlitzmaxObject(Game, "Game")
-		Else
-			Print "LUA: ERROR Registering <Player> as <MY> - player not found"
-		EndIf
-		Self.LuaEngine.setSource(scriptAsString)
+		'only load for existing players
+		If not Game.GetPlayer(PlayerID)
+			TDevHelper.log("KI.LoadScript()", "TPlayer "+PlayerID+" not found.", LOG_ERROR)
+			return FALSE
+		endif
+
+		Local loadtime:Int = MilliSecs()
+		'load content
+		LuaEngine.SetSource(LoadText(scriptFileName))
+
+		'if there is content set, print it
+		If LuaEngine.GetSource() <> ""
+			TDevHelper.log("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
+		else
+			TDevHelper.log("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
+		endif
 	End Method
 
-	Method CallOnLoad(savedluascript:String="")
-		Local args:Object[1]
-		args[0] = savedluascript
-		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnLoad", args)
-	'	Self.PrintErrors()
+
+	'loads the current file again
+	Method ReloadScript:int()
+		if scriptFileName="" then return FALSE
+		LoadScript(scriptFileName)
 	End Method
 
-	Method CallOnSave()
-		Local args:Object[1]
-		args[0] = "5.0"
-		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnSave", args)
-	'	Self.PrintErrors()
+
+	Method CallOnLoad()
+	    Try
+			Local args:Object[1]
+			args[0] = self.scriptSaveState
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnLoad", args)
+		Catch ex:Object
+			TDevHelper.log("KI.CallOnLoad", "Script "+scriptFileName+" does not contain function ~qOnLoad~q.", LOG_ERROR)
+		End Try
 	End Method
+
+
+	Method CallOnSave:string()
+		'reset (potential old) save state
+		scriptSaveState = ""
+
+	    Try
+			Local args:Object[1]
+			args[0] = string(Game.GetTimeGone())
+			if (KIRunning) then scriptSaveState = string(LuaEngine.CallLuaFunction("OnSave", args))
+		Catch ex:Object
+			TDevHelper.log("KI.CallOnSave", "Script "+scriptFileName+" does not contain function ~qOnSave~q.", LOG_ERROR)
+		End Try
+
+		return scriptSaveState
+	End Method
+
 
 	Method CallOnMinute(minute:Int=0)
 		Local args:Object[1]
 		args[0] = String(minute)
-		if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnMinute", args)
+		if (KIRunning) then LuaEngine.CallLuaFunction("OnMinute", args)
 	End Method
+
 
 	'eg. use this if one whispers to the AI
 	Method CallOnChat(fromID:int=0, text:String = "")
@@ -91,90 +131,102 @@ Type KI
 			Local args:Object[2]
 			args[0] = text
 			args[1] = string(fromID)
-			Self.LuaEngine.CallLuaFunction("OnChat", args)
+			LuaEngine.CallLuaFunction("OnChat", args)
 		Catch ex:Object
-		    Print "Script " + scriptName + " enthaelt die Funktion OnChat nicht"
+			TDevHelper.log("KI.CallOnChat", "Script "+scriptFileName+" does not contain function ~qOnChat~q.", LOG_ERROR)
 		End Try
 	End Method
+
 
 	Method CallOnReachRoom(roomId:Int)
 	    Try
 			Local args:Object[1]
 			args[0] = String(roomId)
-			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnReachRoom", args)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnReachRoom", args)
 		Catch ex:Object
-		    Print "Script " + scriptName + " enthaelt die Funktion OnReachRoom nicht"
+			TDevHelper.log("KI.CallOnReachRoom", "Script "+scriptFileName+" does not contain function ~qOnReachRoom~q.", LOG_ERROR)
 		End Try
 	End Method
 
 	Method CallOnLeaveRoom()
 	    Try
-			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnLeaveRoom", Null)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnLeaveRoom", Null)
 		Catch ex:Object
-		    Print "Script " + scriptName + " enthaelt die Funktion OnLeaveRoom nicht"
+			TDevHelper.log("KI.CallOnLeaveRoom", "Script "+scriptFileName+" does not contain function ~qOnLeaveRoom~q.", LOG_ERROR)
 		End Try
 	End Method
 
 	Method CallOnDayBegins()
 	    Try
-			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnDayBegins", Null)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnDayBegins", Null)
 		Catch ex:Object
-		    Print "Script " + scriptName + " enthaelt die Funktion OnDayBegins nicht"
+			TDevHelper.log("KI.CallOnDayBegins", "Script "+scriptFileName+" does not contain function ~qOnDayBegins~q.", LOG_ERROR)
 		End Try
 	End Method
 
 	Method CallOnMoneyChanged()
 	    Try
-			if (KIRunning) then Self.LuaEngine.CallLuaFunction("OnMoneyChanged", Null)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnMoneyChanged", Null)
 		Catch ex:Object
-		    Print "Script " + scriptName + " enthaelt die Funktion OnMoneyChanged nicht"
+			TDevHelper.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
 		End Try
 	End Method
 End Type
 
+
+'wrapper for result-type/ID + data
+Type TLuaFunctionResult {_exposeToLua}
+	Field result:int = 0
+	Field data:object
+
+	Function Create:TLuaFunctionResult(result:int, data:object)
+		local obj:TLuaFunctionResult = new TLuaFunctionResult
+		obj.result = result
+		obj.data = data
+		return obj
+	End Function
+End Type
+
+
 Type TLuaFunctions {_exposeToLua}
+	'have to do this as "field" because Lua cannot access const/globals
 	Const RESULT_OK:int				=   1
+	Const RESULT_FAILED:int			=   0
 	Const RESULT_WRONGROOM:int		=  -2
 	Const RESULT_NOKEY:int			=  -4
 	Const RESULT_NOTFOUND:int		=  -8
 	Const RESULT_NOTALLOWED:int		= -16
 	Const RESULT_INUSE:int			= -32
 
-	Field PLAYER1:Int = 1
-	Field PLAYER2:Int = 2
-	Field PLAYER3:Int = 3
-	Field PLAYER4:Int = 4
+	Const MOVIE_GENRE_ACTION:Int		= 0
+	Const MOVIE_GENRE_THRILLER:Int		= 1
+	Const MOVIE_GENRE_SCIFI:Int			= 2
+	Const MOVIE_GENRE_COMEDY:Int		= 3
+	Const MOVIE_GENRE_HORROR:Int		= 4
+	Const MOVIE_GENRE_LOVE:Int			= 5
+	Const MOVIE_GENRE_EROTIC:Int		= 6
+	Const MOVIE_GENRE_WESTERN:Int		= 7
+	Const MOVIE_GENRE_LIVE:Int			= 8
+	Const MOVIE_GENRE_KIDS:Int			= 9
+	Const MOVIE_GENRE_CARTOON:Int		= 10
+	Const MOVIE_GENRE_MUSIC:Int			= 11
+	Const MOVIE_GENRE_SPORT:Int			= 12
+	Const MOVIE_GENRE_CULTURE:Int		= 13
+	Const MOVIE_GENRE_FANTASY:Int		= 14
+	Const MOVIE_GENRE_YELLOWPRESS:Int	= 15
+	Const MOVIE_GENRE_NEWS:Int			= 16
+	Const MOVIE_GENRE_SHOW:Int			= 17
+	Const MOVIE_GENRE_MONUMENTAL:Int	= 18
+
+	Const NEWS_GENRE_POLITICS:Int		= 0
+	Const NEWS_GENRE_SHOWBIZ:Int		= 1
+	Const NEWS_GENRE_SPORT:Int			= 2
+	Const NEWS_GENRE_TECHNICS:Int		= 3
+	Const NEWS_GENRE_CURRENTS:Int		= 4
+
+
 	Field ME:Int 'Wird initialisiert
 
-	Field MAXMOVIES:Int = 50
-	Field MAXMOVIESPARGENRE:Int = 8
-	Field MAXSPOTS:Int 'Wird initialisiert
-
-	Const MOVIE_GENRE_ACTION:Int = 0
-	Const MOVIE_GENRE_THRILLER:Int = 1
-	Const MOVIE_GENRE_SCIFI:Int = 2
-	Const MOVIE_GENRE_COMEDY:Int = 3
-	Const MOVIE_GENRE_HORROR:Int = 4
-	Const MOVIE_GENRE_LOVE:Int = 5
-	Const MOVIE_GENRE_EROTIC:Int = 6
-	Const MOVIE_GENRE_WESTERN:Int = 7
-	Const MOVIE_GENRE_LIVE:Int = 8
-	Const MOVIE_GENRE_KIDS:Int = 9
-	Const MOVIE_GENRE_CARTOON:Int = 10
-	Const MOVIE_GENRE_MUSIC:Int = 11
-	Const MOVIE_GENRE_SPORT:Int = 12
-	Const MOVIE_GENRE_CULTURE:Int = 13
-	Const MOVIE_GENRE_FANTASY:Int = 14
-	Const MOVIE_GENRE_YELLOWPRESS:Int = 15
-	Const MOVIE_GENRE_NEWS:Int = 16
-	Const MOVIE_GENRE_SHOW:Int = 17
-	Const MOVIE_GENRE_MONUMENTAL:Int = 18
-
-	Field NEWS_GENRE_TECHNICS:Int = 3
-	Field NEWS_GENRE_POLITICS:Int = 0
-	Field NEWS_GENRE_SHOWBIZ:Int = 1
-	Field NEWS_GENRE_SPORT:Int = 2
-	Field NEWS_GENRE_CURRENTS:Int = 4
 
 	'Die Räume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
@@ -224,15 +276,19 @@ Type TLuaFunctions {_exposeToLua}
 	Field ROOM_STUDIOSIZE_PLAYER4:Int
 
 	Method _PlayerInRoom:Int(roomname:String, checkFromRoom:Int = False)
-		Return Game.Players[ Self.ME ].isInRoom(roomname, checkFromRoom)
+		Return Game.getPlayer(Self.ME).isInRoom(roomname, checkFromRoom)
 	End Method
+
+
+	Method _PlayerOwnsRoom:Int()
+		Return Self.ME = Game.getPlayer(Self.ME).Figure.inRoom.owner
+	End Method
+
 
 	Function Create:TLuaFunctions(pPlayerId:Int)
 		Local ret:TLuaFunctions = New TLuaFunctions
 
 		ret.ME = pPlayerId
-
-		ret.MAXSPOTS = Game.maxContractsAllowed
 
 		ret.ROOM_MOVIEAGENCY = TRooms.GetRoomByDetails("movieagency", 0).id
 		ret.ROOM_ADAGENCY = TRooms.GetRoomByDetails("adagency", 0).id
@@ -282,11 +338,22 @@ Type TLuaFunctions {_exposeToLua}
 		Return ret
 	End Function
 
+
 	Method PrintOut:Int(text:String)
-		Print "[AI "+self.ME+"] "+text
+		TDevHelper.log("AI "+self.ME, text, LOG_AI)
 		Return self.RESULT_OK
 	EndMethod
 
+
+	'only printed if TDevHelper.setPrintMode(LOG_AI | LOG_DEBUG) is set
+	Method PrintOutDebug:int(text:string)
+		TDevHelper.log("AI "+self.ME+" DEBUG", text, LOG_AI & LOG_DEBUG)
+		Return self.RESULT_OK
+	End Method
+
+rem
+	'do not give raw access to ALL programmes in the database
+	'AI has to use the normal "go into room, get data there" approach
 	Method GetProgramme:TProgramme( id:int ) {_exposeToLua}
 		return TProgramme.getProgramme( id )
 	End Method
@@ -294,6 +361,7 @@ Type TLuaFunctions {_exposeToLua}
 	Method GetContract:TAdContract( id:int ) {_exposeToLua}
 		return TAdContract.Get( id )
 	End Method
+endrem
 
 	Method GetRoomByDetails:TRooms(roomName:String, owner:Int)
 		return TRooms.GetRoomByDetails(roomName, owner)
@@ -313,52 +381,24 @@ Type TLuaFunctions {_exposeToLua}
 		Return 1
 	EndMethod
 
-	Method GetPlayerPosX:Int(PlayerID:Int = Null)
-		'oder beibehalten - dann kann die AI schauen ob eine Figur in der Naehe ist
-		'bspweise fuer Chat - "hey xy"
-		print "VERALTET: GetPlayerPosX -> math.floor( MY.Figure.Pos.GetX() ) ... floor fuer float->int"
-		If Not Game.isPlayer( PlayerID ) Then Return self.RESULT_NOTALLOWED Else Return Floor(Game.Players[ PlayerID ].figure.rect.GetX() )
-	End Method
-
-	Method GetPlayerTargetPosX:Int(PlayerID:Int = Null)
-		print "VERALTET: GetPlayerTargetPosX -> math.floor( MY.Figure.Target.GetIntX() ) ... bzw GetX() fuer float"
-		If Not Game.isPlayer( PlayerID ) Then Return self.RESULT_NOTALLOWED Else Return Floor(Game.Players[ PlayerID ].figure.target.GetX() )
-	End Method
-
-	Method SetPlayerTargetPosX:Int(PlayerID:Int = Null, newTargetX:Int = 0)
-		print "VERALTET: SetPlayerTargetPosX -> MY.Figure.changeTarget(x, y=null)"
-		If Not Game.isPlayer( PlayerID ) OR Not Game.Players[PlayerID].isAi() Then Return self.RESULT_NOTALLOWED Else Return Game.Players[PlayerID].figure.changeTarget(newTargetX,Null)
-	End Method
-
-	Method getPlayerCredit:Int()
-		Print "VERALTET: TVT.getPlayerCredit() -> MY.GetCredit()"
-		Return Game.Players[ Self.ME ].finances[Game.getWeekday()].credit
-	End Method
-
-	Method getPlayerMoney:Int()
-		Print "VERALTET: TVT.getPlayerMoney() -> MY.GetMoney()"
-		Return Game.Players[ Self.ME ].finances[Game.getWeekday()].money
-	End Method
 
 	Method getPlayerRoom:Int()
 		Local room:TRooms = Game.Players[ Self.ME ].figure.inRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
+
 	Method getPlayerTargetRoom:Int()
 		Local room:TRooms = Game.Players[ Self.ME ].figure.targetRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
-	Method getPlayerFloor:Int()
-		Print "VERALTET: TVT.getPlayerFloor() -> MY.Figure.GetFloor()"
-		Return Game.Players[ Self.ME ].figure.GetFloor()
-	End Method
 
 	Method getRoomFloor:Int(roomId:Int = 0)
 		Local Room:TRooms = TRooms.GetRoom(roomId)
 		If Room <> Null Then Return Room.Pos.y Else Return self.RESULT_NOTFOUND
 	End Method
+
 
 	Method doGoToRoom:Int(roomId:Int = 0)
 		Local Room:TRooms = TRooms.GetRoom(roomId)
@@ -366,10 +406,12 @@ Type TLuaFunctions {_exposeToLua}
 	    Return self.RESULT_OK
 	End Method
 
+
 	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstützt. Negativ: Nach links; Positiv: nach rechts
 		Game.Players[ Self.ME ].Figure.GoToCoordinatesRelative(relX, relYFloor)
 		Return self.RESULT_OK
 	End Method
+
 
 	Method isRoomUnused:Int(roomId:Int = 0)
 		Local Room:TRooms = TRooms.GetRoom(roomId)
@@ -380,164 +422,119 @@ Type TLuaFunctions {_exposeToLua}
 		Return self.RESULT_INUSE
 	End Method
 
+
 	Method getMillisecs:Int()
 		Return MilliSecs()
 	End Method
+
 
 	Method addToLog:int(text:string)
 		return AiLog[Self.ME-1].AddLog(text)
 	End Method
 
 
+	Method convertToAdContract:TAdContract(obj:object)
+		return TAdContract(obj)
+	End Method
+
+	Method convertToProgrammeLicence:TProgrammeLicence(obj:object)
+		return TProgrammeLicence(obj)
+	End Method
+
 
 
 '- - - - - -
 ' Office
 '- - - - - -
-	Method of_getMovie:Int(day:Int = -1, hour:Int = -1)
+	Method of_getAdvertisement:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TProgramme	= Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentProgramme(hour, day)
+		Local obj:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetAdvertisement(day, hour)
 		If obj Then Return obj.id Else Return self.RESULT_NOTFOUND
 	End Method
 
-	Method of_getSpot:Int(day:Int = -1, hour:Int = -1)
+
+	Method of_getAdContractCount:Int()
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local obj:TAdBlock = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
-		If obj Then Return obj.contract.id Else Return self.RESULT_NOTFOUND
+		Return Game.getPlayer(Self.ME).ProgrammeCollection.GetAdContractCount()
 	End Method
 
-	Method of_getPlayerSpotCount:Int()
+
+	Method of_getAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
+		If Not _PlayerInRoom("office", True) Then Return Null
+
+		Local obj:TAdContract = Game.getPlayer(Self.ME).ProgrammeCollection.GetAdContractAtIndex(arrayIndex)
+		If obj Then Return obj Else Return Null
+	End Method
+
+
+	'if adContractID is 0, that slot will get reset
+	Method of_addAdContractToPlan:Int(adContractID:int=-1, day:Int=-1, hour:Int=-1)
+		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+		'even if player has access to room, only owner can manage things here
+		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
+
+		'ignore invalid requests
+		If adContractID < 0 then Return self.RESULT_NOTFOUND
+
+		local contract:TAdContract = Game.getPlayer(self.ME).ProgrammeCollection.GetAdContract(adContractID)
+		if adContractID > 0 and not contract then Return self.RESULT_NOTFOUND
+
+		'adContractID=0 means, contract gets "null" which removes advertisement at day,hour
+		if Game.getPlayer(self.ME).ProgrammePlan.AddAdContract(contract, day, hour)
+			return self.RESULT_OK
+		else
+			return self.RESULT_NOTALLOWED
+		endif
+	End Method
+
+
+	Method of_getMovie:Int(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Return Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.AdContractList.Count() - 1
+		Local obj:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetProgramme(day, hour)
+		if obj and not TProgramme(obj) then print "geplantes Programm ist kein TProgramme (evtl Werbeshow) - bitte Ideen einbringen wie wir die Abfragen verallgemeinern koennen"
+		If obj and TProgramme(obj) and TProgramme(obj).licence Then Return TProgramme(obj).licence.id Else Return self.RESULT_NOTFOUND
 	End Method
 
-	Method of_getPlayerSpot:Int(arraynumber:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Local owner:Int = Game.Players[ Self.ME ].Figure.inRoom.owner
-		If arraynumber >= 0 And arraynumber <= Game.Players[ owner ].ProgrammeCollection.AdContractList.Count() - 1
-			Local obj:TAdContract = TAdContract(Game.Players[ owner ].ProgrammeCollection.AdContractList.ValueAtIndex(arraynumber))
-			If obj Then Return obj.id Else Return self.RESULT_NOTFOUND
-		EndIf
-	End Method
-
-	Method of_getSpotWillBeSent:Int(day:Int = -1, hour:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
-
-		Local obj:TAdBlock = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammePlan.GetCurrentAdBlock(hour, day)
-		If obj Then Return obj.GetSpotNumber() Else Return self.RESULT_NOTFOUND
-	End Method
-
-	Method of_getSpotBeenSent:Int(contractID:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
-
-		Local contractObj:TAdContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetAdContract(contractID)
-		If Not contractObj Then Return self.RESULT_NOTFOUND
-
-		Local obj:TAdBlock = TAdBlock.GetBlockByContract( contractObj )
-		If obj Then Return obj.contract.GetSpotsSent() Else Return self.RESULT_NOTFOUND
-	End Method
-
-	Method of_getSpotDaysLeft:Int(contractID:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
-
-		Local contractObj:TAdContract = Game.Players[ Game.Players[ Self.ME ].Figure.inRoom.owner ].ProgrammeCollection.GetAdContract(contractID)
-		If contractObj Then Return contractobj.getDaysLeft() Else Return self.RESULT_NOTFOUND
-	End Method
-
-	'Setzen/Entfernen von Programmobjekten im Planer
+	'Setzen/Entfernen von Lizenzen im Planer
 	'Rueckgabewerte: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
-	Method of_doMovieInPlan:Int(day:Int = -1, hour:Int = -1, ObjectID:Int = -1)
+	Method of_doMovieInPlan:Int(licenceID:Int=-1, day:Int=-1, hour:Int=-1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+		'even if player has access to room, only owner can manage things here
+		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
-		'wenn user schluessel fuer den Raum haben sollte,
-		'ist dies hier egal -> nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> Game.Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
+		'ignore invalid requests
+		If licenceID < 0 then Return self.RESULT_NOTFOUND
 
-		If ObjectID = 0 'Film bei Day,hour loeschen
-			If day = Game.GetDay() And hour = Game.GetHour() And Game.GetMinute() > 5 Then Return self.RESULT_INUSE
 
-			Local Obj:TProgrammeBlock = Game.Players[ self.ME ].ProgrammePlan.GetCurrentProgrammeBlock(hour, day)
-			if not Obj then Return self.RESULT_NOTFOUND
+		local licence:TProgrammeLicence = Game.getPlayer(self.ME).ProgrammeCollection.GetProgrammeLicence(licenceID)
+		if licenceID > 0 and not licence then Return self.RESULT_NOTFOUND
 
-			Obj.DeleteBlock()
-			Return self.RESULT_OK
-		'platzieren
-		Else
-			Local Obj:TProgramme = Game.Players[ self.ME ].ProgrammeCollection.GetProgramme(ObjectID)
-			if not Obj then Return self.RESULT_NOTFOUND
-
-			If Game.Players[ self.ME ].ProgrammePlan.ProgrammePlaceable(Obj, hour, day)
-				Local objBlock:TProgrammeBlock	= TProgrammeBlock.CreateDragged(obj, self.ME)
-				objBlock.sendHour				= day*24 + hour
-				objBlock.dragged				= 0
-				ObjBlock.SetBasePos(ObjBlock.GetSlotXY(hour))
-				Return self.RESULT_OK
-			Else
-				Return self.RESULT_NOTALLOWED
-			EndIf
-		EndIf
+		'licenceID=0 means, licence gets "null" which removes programme at day,hour
+		if Game.getPlayer(self.ME).ProgrammePlan.AddProgramme(TProgramme.Create(licence), day, hour)
+			return self.RESULT_OK
+		else
+			return self.RESULT_NOTALLOWED
+		endif
 	End Method
 
 
-	Method of_doSpotInPlan:Int(day:Int = -1, hour:Int = -1, ObjectID:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
-
-		'wenn user schluessel fuer den Raum haben sollte,
-		'ist dies hier egal -> nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> Game.Players[ Self.ME ].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
-
-		If ObjectID = 0 'Spot bei Day,hour loeschen
-			If day = Game.GetDay() And hour = Game.GetHour() Then Return -2
-
-			Local Obj:TAdBlock = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
-			If not Obj then Return self.RESULT_NOTFOUND
-
-			Obj.RemoveFromPlan()
-			Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
-			If not (Obj = null)
-				print "TODO fuer Ron: Wird aus irgend einem Grund nicht gleich gelöscht... nochmal löschen: " + Obj.contract.GetTitle()
-				Obj.RemoveFromPlan()
-				Obj = Game.Players[ self.ME ].ProgrammePlan.GetCurrentAdBlock(hour, day)
-				If not (Obj = null)
-					Return -64
-				endif
-			endif
-
-			Return self.RESULT_OK
-		Else
-			Local contract:TAdContract = Game.Players[ self.ME ].ProgrammeCollection.GetAdContract(ObjectID)
-			if not contract then Return self.RESULT_NOTFOUND
-			If Game.Players[ self.ME ].ProgrammePlan.AdBlockPlaceable(hour, day)
-				Local obj:TAdBlock = TAdBlock.create(contract, TAdBlock.GetBlockX(hour),TAdBlock.GetBlockY(hour), self.ME)
-				obj.senddate	= day
-				obj.sendtime	= hour
-				obj.AddToPlan()
-				Return self.RESULT_OK
-			Else
-				Return self.RESULT_NOTALLOWED
-			EndIf
-		EndIf
-	End Method
-
-
-	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, ObjectID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
+	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, licenceID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
 		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
 		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
-		
-		Print "Für KI wieder rein machen!"
-		'Local Programme:TProgramme = TProgramme.GetProgramme(ObjectID)
-		'If Programme <> Null
-		'	Local Quote:Int = Floor(Programme.getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
+
+		Print "MANUEL: Für KI wieder rein machen!"
+		'Local licence:TProgrammeLicence = TProgrammeLicence.Get(licenceID)
+		'If licence and licence.getData()
+		'	Local Quote:Int = Floor(licence.getData().getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
 		'	Print "quote:" + Quote + "%"
 		'	Return Quote
 		'EndIf
 		'0 percent - no programme
-		'return 0
-
+		return 0
 	End Method
 
 	'
@@ -564,15 +561,15 @@ Type TLuaFunctions {_exposeToLua}
 		If Self.ME <> Game.Players[self.ME].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'News bei slotID loeschen
-			if Game.Players[self.ME].ProgrammePlan.ClearSlot(slot)
+			if Game.getPlayer(self.ME).ProgrammePlan.RemoveNews(null, slot)
 				Return self.RESULT_OK
 			else
 				Return self.RESULT_NOTFOUND
 			endif
 		Else
-			Local news:TNews = Game.Players[self.ME].ProgrammeCollection.GetNews(ObjectID)
-			If not news then Return self.RESULT_NOTFOUND
-			Game.Players[self.ME].ProgrammePlan.SetNews(news, slot)
+			Local news:TBroadcastMaterial = Game.Players[self.ME].ProgrammeCollection.GetNews(ObjectID)
+			If not news or not TNews(news) then Return self.RESULT_NOTFOUND
+			Game.Players[self.ME].ProgrammePlan.SetNews(TNews(news), slot)
 
 			Return self.RESULT_OK
 		EndIf
@@ -593,25 +590,31 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_getSpotCount:Int()
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		Return RoomHandler_AdAgency.GetContractsInStock()
+		Return RoomHandler_AdAgency.GetInstance().GetContractsInStock()
 	End Method
 
-	Method sa_getSpot:Int(position:Int = -1)
-		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
+
+	Method sa_getSpot:TLuaFunctionResult(position:Int=-1)
+		If Not _PlayerInRoom("adagency") then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		'out of bounds?
-		If position >= RoomHandler_AdAgency.GetContractsInStock() Or position < 0 Then Return -2
+		If position >= RoomHandler_AdAgency.GetInstance().GetContractsInStock() Or position < 0 then Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
 
-		local contract:TAdContract = RoomHandler_AdAgency.GetContractByPosition(position)
-		If contract Then Return contract.id Else Return self.RESULT_NOTFOUND
+		local contract:TAdContract = RoomHandler_AdAgency.GetInstance().GetContractByPosition(position)
+		If contract
+			Return TLuaFunctionResult.Create(self.RESULT_OK, contract)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
 	End Method
+
 
 	Method sa_doBuySpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TAdContract = RoomHandler_AdAgency.GetContractByID(contractID)
+		local contract:TAdContract = RoomHandler_AdAgency.GetInstance().GetContractByID(contractID)
 		'this DOES sign in that moment
-		if contract and RoomHandler_AdAgency.GiveContractToPlayer( contract, self.ME, TRUE )
+		if contract and RoomHandler_AdAgency.GetInstance().GiveContractToPlayer( contract, self.ME, TRUE )
 			return self.RESULT_OK
 		endif
 		Return self.RESULT_NOTFOUND
@@ -621,9 +624,9 @@ Type TLuaFunctions {_exposeToLua}
 	Method sa_doTakeSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TAdContract = RoomHandler_AdAgency.GetContractByID(contractID)
+		local contract:TAdContract = RoomHandler_AdAgency.GetInstance().GetContractByID(contractID)
 		'this DOES NOT sign - signing is done when leaving the room!
-		if contract and RoomHandler_AdAgency.GiveContractToPlayer( contract, self.ME )
+		if contract and RoomHandler_AdAgency.GetInstance().GiveContractToPlayer( contract, self.ME )
 			return self.RESULT_OK
 		endif
 		Return self.RESULT_NOTFOUND
@@ -634,47 +637,54 @@ Type TLuaFunctions {_exposeToLua}
 
 		local contract:TAdContract = Game.getPlayer(self.ME).ProgrammeCollection.GetUnsignedAdContractFromSuitcase(contractID)
 		'this does not sign - signing is done when leaving the room!
-		if contract and RoomHandler_AdAgency.TakeContractFromPlayer( contract, self.ME )
-			return self.RESULT_OK
+		if contract and RoomHandler_AdAgency.GetInstance().TakeContractFromPlayer( contract, self.ME )
+			Return self.RESULT_OK
+		else
+			Return self.RESULT_NOTFOUND
 		endif
-		Return self.RESULT_NOTFOUND
 	End Method
 
 
 '- - - - - -
 ' Movie Dealer - Movie Agency
 '- - - - - -
-	Method md_getMovieCount:Int()
+	Method md_getProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		Return RoomHandler_MovieAgency.GetProgrammesInStock()
+		Return RoomHandler_MovieAgency.GetInstance().GetProgrammeLicencesInStock()
 	End Method
 
-	Method md_getMovie:Int(position:Int = -1)
-		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
+
+	Method md_getProgrammeLicence:TLuaFunctionResult(position:Int = -1)
+		If Not _PlayerInRoom("movieagency") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
 		'out of bounds?
-		If position >= RoomHandler_MovieAgency.GetProgrammesInStock() Or position < 0 Then Return -2
+		If position >= RoomHandler_MovieAgency.GetInstance().GetProgrammeLicencesInStock() Or position < 0 then Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
 
-		local programme:TProgramme = RoomHandler_MovieAgency.GetProgrammeByPosition(position)
-		If programme Then Return programme.id Else Return self.RESULT_NOTFOUND
+		local licence:TProgrammeLicence = RoomHandler_MovieAgency.GetInstance().GetProgrammeLicenceByPosition(position)
+		If licence
+			Return TLuaFunctionResult.Create(self.RESULT_OK, licence)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
 	End Method
 
-	Method md_doBuyMovie:Int(programmeID:Int = -1)
+
+	Method md_doBuyProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		local programme:TProgramme = RoomHandler_MovieAgency.GetProgrammeByProgrammeID(programmeID)
-		if programme then return RoomHandler_MovieAgency.SellProgrammeToPlayer( programme, self.ME )
+		local licence:TProgrammeLicence = RoomHandler_MovieAgency.GetInstance().GetProgrammeLicenceByID(licenceID)
+		if Licence then return RoomHandler_MovieAgency.GetInstance().SellProgrammeLicenceToPlayer(licence, self.ME)
 
 		Return self.RESULT_NOTFOUND
 	End Method
 
-'untested
-	Method md_doSellMovie:Int(programmeID:Int = -1)
+
+	Method md_doSellProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		For local programme:TProgramme = eachin Game.players[self.ME].ProgrammeCollection.SuitcaseProgrammeList
-			if programme.id = programmeID then return RoomHandler_MovieAgency.BuyProgrammeFromPlayer( programme )
+		For local licence:TProgrammeLicence = eachin Game.getPlayer(self.ME).ProgrammeCollection.suitcaseProgrammeLicences
+			if licence.id = licenceID then return RoomHandler_MovieAgency.GetInstance().BuyProgrammeLicenceFromPlayer(licence)
 		Next
 		Return self.RESULT_NOTFOUND
 	End Method
@@ -692,23 +702,23 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 'untested
-	Method md_getAuctionMovie:Int(ArrayID:Int = -1)
+	Method md_getAuctionProgrammeLicence:Int(ArrayID:Int = -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		If ArrayID >= TAuctionProgrammeBlocks.List.Count() Or arrayID < 0 Then Return -2
 		Local Block:TAuctionProgrammeBlocks = TAuctionProgrammeBlocks(TAuctionProgrammeBlocks.List.ValueAtIndex(ArrayID))
-		If Block Then Return Block.Programme.id Else Return self.RESULT_NOTFOUND
+		If Block Then Return Block.licence.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 'untested
-	Method md_getAuctionMovieCount:Int()
+	Method md_getAuctionProgrammeLicenceCount:Int()
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		return TAuctionProgrammeBlocks.List.count()
 	End Method
 
 'untested
-	Method md_doBidAuctionMovie:Int(ArrayID:int= -1)
+	Method md_doBidAuctionProgrammeLicence:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
@@ -716,7 +726,7 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 'untested
-	Method md_GetAuctionMovieNextBid:Int(ArrayID:int= -1)
+	Method md_GetAuctionProgrammeLicenceNextBid:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
@@ -724,11 +734,11 @@ Type TLuaFunctions {_exposeToLua}
 	End Method
 
 'untested
-	Method md_GetAuctionMovieHighestBidder:Int(ArrayID:int= -1)
+	Method md_GetAuctionProgrammeLicenceHighestBidder:Int(ArrayID:int= -1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
 		local Block:TAuctionProgrammeBlocks = self.md_getAuctionMovieBlock(ArrayID)
-		If Block then Return Block.GetHighestBidder() else Return self.RESULT_NOTFOUND
+		If Block then Return Block.bestBidder else Return self.RESULT_NOTFOUND
 	End Method
 
 
@@ -739,3 +749,5 @@ Type TLuaFunctions {_exposeToLua}
 	'
 	'LUA_bo_doPayCredit
 End Type
+
+Global LuaFunctions:TLuaFunctions = new TLuaFunctions

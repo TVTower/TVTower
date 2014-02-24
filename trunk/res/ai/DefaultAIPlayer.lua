@@ -62,12 +62,12 @@ function DefaultAIPlayer:initializeTasks()
 	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
 	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
 	self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
-	
+
 	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
 	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
 	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
 	--self.TaskList[TASK_ARCHIVE]			= TVTArchive:new()
-	
+
 	--TODO: WarteTask erstellen. Gehört aber in AIEngine
 end
 
@@ -212,19 +212,19 @@ function BusinessStats:AddSpot(spot)
 	self.SpotPenalty:AddValue(spot.GetPenalty())
 end
 
-function BusinessStats:AddMovie(movie)
+function BusinessStats:AddMovie(licence)
 --RON
 --TVT.PrintOut("RON: AddMovie")
 
 	local maxPrice = globalPlayer.TaskList[TASK_MOVIEDISTRIBUTOR].BudgetWholeDay / 2
-	if (CheckMovieBuyConditions(movie, maxPrice)) then -- Preisgrenze
-		local quality = movie.GetQuality(0)
-		if (movie.IsMovie()) then
+	if (CheckMovieBuyConditions(licence, maxPrice)) then -- Preisgrenze
+		local quality = licence.GetQuality(0)
+		if licence.getData() ~= nil and licence.IsMovie() then
 			self.MovieQualityAcceptable:AddValue(quality)
-			self.MoviePricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
+			self.MoviePricePerBlockAcceptable:AddValue(licence:GetPricePerBlock())
 		else
 			self.SeriesQualityAcceptable:AddValue(quality)
-			self.SeriesPricePerBlockAcceptable:AddValue(movie:GetPricePerBlock())
+			self.SeriesPricePerBlockAcceptable:AddValue(licence:GetPricePerBlock())
 		end
 	end
 end
@@ -278,6 +278,15 @@ end
 function OnLeaveRoom()
 end
 
+function OnSave()
+	SLFManager.StoreDefinition.Player = getAIPlayer()
+	return SLFManager.save()
+end
+
+function OnLoad(data)
+	SLFManager.load(data)
+end
+
 function FixDayAndHour2(day, hour)
 	local moduloHour = hour
 	if (hour > 23) then
@@ -287,17 +296,18 @@ function FixDayAndHour2(day, hour)
 	return newDay, moduloHour
 end
 
-function OnMinute(number)	
+function OnMinute(number)
 	if (aiIsActive) then
 		getAIPlayer():Tick()
 	end
 
+	--Zum Test
 	if (number == "4") then
 		local task = getAIPlayer().TaskList[TASK_SCHEDULE]
 		local guessedAudience = task:GuessedAudienceForHourAndLevel(Game.GetHour())
 
 		local fixedDay, fixedHour = FixDayAndHour2(Game.GetDay(), Game.GetHour())
-		local programme = MY.ProgrammePlan.GetCurrentProgramme(fixedHour, fixedDay)
+		local programme = MY.ProgrammePlan.GetProgramme(fixedDay, fixedHour)
 
 		-- RON: changed as "programme" is NIL if not existing/placed
 		local averageMovieQualityByLevel = 0
@@ -310,31 +320,11 @@ function OnMinute(number)
 		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 		local guessedAudience2 = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 
-		--TVT.addToLog("GuessedAudienceForLevel: " .. guessedAudience2 .. " = averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ") *  MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ")")
-
-		--TVT.addToLog("LUA-Audience : " .. guessedAudience2 .. " = MY.GetMaxAudience() (" .. MY.GetMaxAudience() .. ") * averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") * globalPercentageByHour (" .. globalPercentageByHour .. ")")
-
-		TVT.addToLog("LUA-Audience (" .. programme.GetID() .. ") : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
-
-		--TVT.addToLog("Base: " .. programme.GetQuality(0) .. " / Berechnet: " .. (averageMovieQualityByLevel))
-
-		--TVT.addToLog( "Werbeblock " .. Game.GetHour() .. "    Besucher: " .. TVT.getPlayerAudience() .. " (" .. guessedAudience .. ")" )
-
-		--TVT.addToLog( "BM-Audience : " .. guessedAudience .. " = maxAudience (" .. MY.GetMaxAudience() .. ") * AudienceQuote (" .. AudienceQuote .. ")" )
-
-
-
-
-		--AiLog[1].AddLog("BM-Audience : " + Player.audience + " = maxaudience (" + Player.maxaudience + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience)) + ") * 1000"
-
-		--GetQuality(0)
-
-		--TVT.addToLog("LUA-Audience : " + guessedAudience2 + " = maxaudience (" + MY.GetMaxAudience() + ") * AudienceQuote (" + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience))
-
-
-
-		--TVT.addToLog( "audience : " + Player.audience + "  # Player.maxaudience: " + Player.maxaudience + "  # Player.audience: " + Player.audience + "  # getAudienceQuote: " + block.Programme.getAudienceQuote(Player.audience/Player.maxaudience))
-
+		if ( programme ~= nil) then
+			TVT.addToLog("LUA-Audience (" .. programme.GetID() .. ") : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
+		else
+			TVT.addToLog("LUA-Audience (NO PROG) : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
+		end
 	end
 end
 

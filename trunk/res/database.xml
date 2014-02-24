@@ -309,7 +309,7 @@ Monumentaler Meilenstein</description>
 			<data  actors="Ivan MuckCracker" director="Riddle Irish" country="USA" year="2001" genre="0"  blocks="3" time="20" price="150" critics="132" speed="132" outcome="156" />
 		</movie>
 		<movie>
-			<title>Der Vampirjäger </title>
+			<title>Der Vampirjäger</title>
 			<description>Vampirjäger Der Vampirjäger  rettet die Erde mithilfe seiner außergewöhnlichen Stärken vor den blutdurstigen Vampiren.
 Blutiges Spektakel für Genre-Fans und Schwachköpfe</description>
 			<data  actors="Wesli Schnippes" director="Alan Smithee" country="USA" year="1998" genre="0"  blocks="3" xrated="1" time="20" price="150" critics="12" speed="132" outcome="132" />
@@ -1493,8 +1493,8 @@ Von den Kritikern lange Zeit verkannt</description>
 		</movie>
 		<movie>
 			<title>VHS im Test</title>
-			<description>Eine Generation die &amp;quot;Lehre&amp;quot; mit &amp;quot;Leere&amp;quot; um- und be- und schreibt. Keine Arbeit und Moos für alle!</description>
-			<data  actors="Königin Svetlana von Schweden und ein Arbeitsloser namens &amp;quot;Groggy&amp;quot;" director="Archie Arbeitslos" country="D" year="2004" genre="13"  blocks="1" time="0" price="0" critics="108" speed="120" outcome="0" />
+			<description>Eine Generation die &quot;Lehre&quot; mit &quot;Leere&quot; um- und be- und schreibt. Keine Arbeit und Moos für alle!</description>
+			<data  actors="Königin Svetlana von Schweden und ein Arbeitsloser namens &quot;Groggy&quot;" director="Archie Arbeitslos" country="D" year="2004" genre="13"  blocks="1" time="0" price="0" critics="108" speed="120" outcome="0" />
 		</movie>
 		<movie>
 			<title>Hack the Fog - Wenn die Pfote mit dem Köter wedelt</title>
@@ -1802,17 +1802,17 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 		</serie>
 		<serie>
 			<title>XXX</title>
-			<description>Nighttalk mit Kultmoderator XXX</description>
-			<data  actors="XXX" director="-" country="USA" year="2003" genre="17"  blocks="1" time="20" price="150" critics="120" speed="180" outcome="120" />
+			<description>Nighttalk mit Kultmoderator Jey Lenault</description>
+			<data  actors="Jey Lenault" director="-" country="USA" year="2003" genre="17"  blocks="1" time="20" price="150" critics="120" speed="180" outcome="120" />
 			<episode number="1">
 				<title>Ricardo Dream Handerson</title>
-				<description>Diesmal zu Gast bei XXX: MacGyver- und Sterngaed-Hauptdarsteller Ricardo Dream Handerson.</description>
-				<data  actors="Ricardo Dream Handerson" director="XXX" country="USA" year="2003" genre="0"  blocks="1"	time="20" />
+				<description>Diesmal zu Gast bei Jey Lenault: MaikGeifer- und Sterngaed-Hauptdarsteller Ricardo Dream Handerson.</description>
+				<data  actors="Ricardo Dream Handerson" director="Alan Smithee" country="USA" year="2003" genre="17"  blocks="1"	time="20" />
 			</episode>
 			<episode number="2">
 				<title>Arnold Weissenacker</title>
-				<description>Zu Gast bei XXX: Arnold Weissenacker, ein Freund des Late-Night-Talkers.</description>
-				<data  actors="Arnold Weissenacker" director="XXX" country="USA" year="2003" genre="0"  blocks="1"	time="20" />
+				<description>Zu Gast bei Jey Lenault: Arnold Weissenacker, ein Freund des Late-Night-Talkers.</description>
+				<data  actors="Arnold Weissenacker" director="Alan Smithee" country="USA" year="2003" genre="17"  blocks="1"	time="20" />
 			</episode>
 		</serie>
 		<serie>
@@ -2118,7 +2118,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 			<description>Eine ganze Armee teuflischer Viren befindet sich im Ansturm auf Rechner in aller Welt. Als besonders gefährlich gilt Virus π (Pi).</description>
 			<data genre="3" price="0" topicality="125" />
 			<episode number="1">
-				<title>Überall spukt &amp;#960; herum</title>
+				<title>Überall spukt &#960; herum</title>
 				<description>Das heimtückische Virus Pi verbreitet sich schneller als erwartet. Allein in Deutschland seien bereits über 100.000 PCs befallen.</description>
 				<data genre="3" price="0" topicality="100" />
 			</episode>

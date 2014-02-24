@@ -1,12 +1,17 @@
-LANG_DE = German
+﻿LANG_DE = German
 LANG_EN = English
 
 GAME_TIME = Game time
 BETTY_FEELINGS = Bettys feelings about you
 
+YES = Yes
+NO = No
 MONEY = Money
 DEBT = debt
-
+RANGE = Range
+INCREASE = Increase
+PRICE = Price
+VALUE = Value
 
 CURRENCY = €
 DAY = day
@@ -34,6 +39,8 @@ MENU_ONLINEGAME			= Online game
 MENU_JOIN				= Join
 MENU_CREATE_GAME		= Create game
 MENU_BACK				= Back
+MENU_SETTINGS			= Settings
+MENU_QUIT				= Quit game
 
 MENU_AVAILABLE_GAMES	= available games
 
@@ -126,6 +133,9 @@ AD_GENRE_6				= "Manager"
 AD_GENRE_7				= "Retired citizens"
 AD_GENRE_8				= "Women"
 AD_GENRE_9				= "Men"
+AD_INFOMERCIAL			= You get paid for airing infomercials. Income depends on audience.
+AD_INFOMERCIAL_NOT_AVAILABLE = There is no infomercial possible for this advertisement.
+AD_INFOMERCIAL_PROFIT	= Income: %1 per 1000 people watching
 
 
 MOVIE_DIRECTOR			= director
@@ -159,6 +169,7 @@ MOVIE_GENRE_18			= monumental
 MOVIE_GENRE_19			= fillers
 MOVIE_GENRE_20			= paid programing
 MOVIE_CALLINSHOW		= You earn 0.5-2% of audience in €.
+MOVIE_TRAILER			= Airing a trailer may increase interest in upcoming broadcastings of the promoted programme.
 
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Click on movie or series to place a bid.
 
@@ -214,6 +225,21 @@ MAP_COUNTRY_NRW					=	Nordrhein-Westfahlen
 MAP_COUNTRY_MECKPOM				=	Mecklenburg Vorpommern
 
 
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE	= New movie by and with %DIRECTORNAME1%
+NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION	= Director and main actor %DIRECTORNAME1% has new movie «%MOVIETITLE%» in the line.
+
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE	= Soon in the movies: «%MOVIETITLE%»
+NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION	= Director %DIRECTORNAME1% lands «%MOVIETITLE%» to a cinema near you.
+
+NEWS_ANNOUNCE_MOVIE_TITLE1	= New movie with %ACTORNAME1%
+NEWS_ANNOUNCE_MOVIE_TITLE2	= %DIRECTORNAME1% directs new movie
+
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION1	= Director %DIRECTORNAME1% and actor %ACTORNAME1% deliver «%MOVIETITLE%» to the screen.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION2	= Soon in the movies: %ACTORNAME1% in «%MOVIETITLE%». Actor %ACTORNAME2% is full of praise for the movie.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION3	= Latest works for movie «%MOVIETITLE%». %ACTORNAME1% is proud starring the movie.
+NEWS_ANNOUNCE_MOVIE_DESCRIPTION4	= First trailers for «%MOVIETITLE%» available. %DIRECTORNAME1%: "Best movie of the year".
+
+
 DIALOGUE_BOSS_WELCOME					=	What's up %1 ?!\nIs there nothing to do for you than eating up my time?\n \nBack to work or someone else will get your Job...!
 DIALOGUE_BOSS_WILLNOTDISTURB			=	Ah alright, Boss I will no longer disturb!
 DIALOGUE_BOSS_ASKFORCREDIT				=	I just *uhm* wanted to ask for credit.
@@ -232,3 +258,46 @@ DIALOGUE_BOSS_CREDIT_REPAY_ALL			=	Hmm, the whole credit which is %1€.
 DIALOGUE_BOSS_CHANGETOPIC				=	Can't we talk about something different?
 DIALOGUE_BOSS_BACKTOWORK				=	Okay %1, now back to work!
 DIALOGUE_BOSS_BACKTOWORK_OK				=	Aye sire, on my way.
+
+DIALOGUE_BETTY_WELCOME = Oh Hi?\nYou absolutely could come along more often.
+
+SHOW_PLAYERS = show players
+PURCHASE = Purchase
+STATION = Station
+YOUR_STATIONS = Your stations
+CONFIRM_PURCHASE = Confirm purchase
+CONFIRM_SALE = Confirm sale
+BUY_STATION = Buy station
+SELL_STATION = Sell station
+
+MOVIES = Movies
+SERIES = Series
+SERIES_SINGULAR = Series
+SPECIAL_BIN = Special bin
+AUCTION = Auction
+TRAILER = Trailer
+X_RATED = x-rated
+MOVIES_AND_SERIES_AUCTION = Movie and series auction
+
+OLD = Old
+TODAY = Today
+YESTERDAY = Yesterday
+TWO_DAYS_AGO = Two days ago
+
+INFOMERCIAL = Infomercial
+SPECIAL_NEWS_BROADCAST = Special news
+
+24_HOURS_GAMEDAY = 24 hours gameday
+ALLOW_TRAILERS_AND_INFOMERCIALS = Allow trailers/infomercials
+ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR = Allow movies with year of production > game year
+OPTION_ON = Option on
+OPTION_OFF = Option off
+AVAILABLE_GAMES = Available games
+ALREADY_OVER = Already over...?
+DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME = Do you really want to quit the game?
+
+HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressing "ALT"-key will show details.
+HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: copy programme | SHIFT+Click: next episode
+
+SYNCHRONIZING_START_CONDITIONS = Synchronizing start conditions
+STARTING_NETWORKGAME = Starting networkgame
