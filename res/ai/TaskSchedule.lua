@@ -1,16 +1,18 @@
+-- File: TaskSchedule
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-TaskSchedule = AITask:new{
-	TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME;
-	BudgetWeigth = 0;
-	BasePriority = 10;
-	TodayMovieSchedule = {};
-	TomorrowMovieSchedule = {};
-	TodaySpotSchedule = {};
-	TomorrowSpotSchedule = {};
-	SpotInventory = {};
-	SpotRequisition = {};
-	Player = nil;	
-}
+_G["TaskSchedule"] = class(AITask, function(c)
+	AITask.init(c)	-- must init base!
+	c.TargetRoom = TVT.ROOM_OFFICE_PLAYER_ME
+	c.BudgetWeigth = 0
+	c.BasePriority = 10
+	c.TodayMovieSchedule = {}
+	c.TomorrowMovieSchedule = {}
+	c.TodaySpotSchedule = {}
+	c.TomorrowSpotSchedule = {}
+	c.SpotInventory = {}
+	c.SpotRequisition = {}
+	c.Player = nil
+end)
 
 --Mögliche Probleme:
 --GetPreviousContractCountById vergleicht nur den Namen des Contracts. Es kann also sein, dass ein Contract der vor mehreren Tagen schon mal gesendet wurde da mit reingerechnet wird.
@@ -22,16 +24,16 @@ end
 function TaskSchedule:Activate()
 	debugMsg(">>> Starte Task 'TaskSchedule'")
 	-- Was getan werden soll:
-	self.AnalyzeScheduleJob = JobAnalyzeSchedule:new()
+	self.AnalyzeScheduleJob = JobAnalyzeSchedule()
 	self.AnalyzeScheduleJob.ScheduleTask = self
 
-	self.FulfillRequisitionJob = JobFulfillRequisition:new()
+	self.FulfillRequisitionJob = JobFulfillRequisition()
 	self.FulfillRequisitionJob.ScheduleTask = self
 
-	self.EmergencySchuduleJob = JobEmergencySchedule:new()
+	self.EmergencySchuduleJob = JobEmergencySchedule()
 	self.EmergencySchuduleJob.ScheduleTask = self
 
-	self.ScheduleJob = JobSchedule:new()
+	self.ScheduleJob = JobSchedule()
 	self.ScheduleJob.ScheduleTask = self
 
 	self.Player = _G["globalPlayer"]
@@ -149,7 +151,7 @@ function TaskSchedule:GetAverageMovieQualityByLevel(level)
 end
 
 function TaskSchedule:AddSpotRequisition(level, day, hour)
-	local slotReq = SpotSlotRequisition:new()
+	local slotReq = SpotSlotRequisition()
 	slotReq.Day = day;
 	slotReq.Hour = hour;
 
@@ -165,7 +167,7 @@ function TaskSchedule:AddSpotRequisition(level, day, hour)
 		end
 	end
 
-	local requisition = SpotRequisition:new()
+	local requisition = SpotRequisition()
 	requisition.TaskId = _G["TASK_ADAGENCY"]
 	requisition.TaskOwnerId = _G["TASK_SCHEDULE"]
 	requisition.Priority = 3
@@ -181,10 +183,11 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobAnalyzeSchedule = AIJob:new{
-	ScheduleTask = nil;
-	Step = 1
-}
+_G["JobAnalyzeSchedule"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.ScheduleTask = nil;
+	c.Step = 1
+end)
 
 function JobAnalyzeSchedule:typename()
 	return "JobAnalyzeSchedule"
@@ -214,10 +217,11 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobFulfillRequisition = AIJob:new{
-	ScheduleTask = nil,
-	SpotSlotRequisitions = nil
-}
+_G["JobFulfillRequisition"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.ScheduleTask = nil
+	c.SpotSlotRequisitions = nil
+end)
 
 function JobFulfillRequisition:typename()
 	return "JobFulfillRequisition"
@@ -253,11 +257,12 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobEmergencySchedule = AIJob:new{
-	ScheduleTask = nil,
-	SlotsToCheck = 8, --4,
-	testCase = 0
-}
+_G["JobEmergencySchedule"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.ScheduleTask = nil
+	c.SlotsToCheck = 8 --4,
+	c.testCase = 0
+end)
 
 function JobEmergencySchedule:typename()
 	return "JobEmergencySchedule"
@@ -346,7 +351,7 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	if (table.count(currentSpotList) == 0) then
 		--Neue Anfoderung stellen: Passenden Werbevertrag abschließen (für die Zukunft)
 	--	debugMsg("Melde Bedarf für Spots bis " .. guessedAudience .. " Zuschauer an.")
-	--	local requisition = SpotRequisition:new()
+	--	local requisition = SpotRequisition()
 	--	requisition.guessedAudience = guessedAudience
 	--	local player = _G["globalPlayer"]
 	--	player:AddRequisition(requisition)
@@ -522,9 +527,10 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobSchedule = AIJob:new{
-	ScheduleTask = nil
-}
+_G["JobSchedule"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.ScheduleTask = nil
+end)
 
 function JobSchedule:typename()
 	return "JobSchedule"

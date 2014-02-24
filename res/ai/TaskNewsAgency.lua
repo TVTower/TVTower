@@ -1,10 +1,12 @@
+-- File: TaskNewsAgency
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-TaskNewsAgency = AITask:new{
-	TargetRoom = TVT.ROOM_NEWSAGENCY_PLAYER_ME;
-	BudgetWeigth = 3;
-	BasePriority = 8;
-	AbonnementBudget = 0
-}
+_G["TaskNewsAgency"] = class(AITask, function(c)
+	AITask.init(c)	-- must init base!
+	c.TargetRoom = TVT.ROOM_NEWSAGENCY_PLAYER_ME
+	c.BudgetWeigth = 3
+	c.BasePriority = 8
+	c.AbonnementBudget = 0
+end)
 
 function TaskNewsAgency:typename()
 	return "TaskNewsAgency"
@@ -13,10 +15,10 @@ end
 function TaskNewsAgency:Activate()
 	debugMsg(">>> Starte Task 'TaskNewsAgency'")
 	-- Was getan werden soll:
-	self.NewsAgencyAbonnementsJob = JobNewsAgencyAbonnements:new()
+	self.NewsAgencyAbonnementsJob = JobNewsAgencyAbonnements()
 	self.NewsAgencyAbonnementsJob.Task = self
 
-	self.NewsAgencyJob = JobNewsAgency:new()
+	self.NewsAgencyJob = JobNewsAgency()
 	self.NewsAgencyJob.Task = self
 end
 
@@ -40,9 +42,10 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobNewsAgencyAbonnements = AIJob:new{
-	Task = nil
-}
+_G["JobNewsAgencyAbonnements"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Task = nil
+end)
 
 function JobNewsAgencyAbonnements:typename()
 	return "JobNewsAgencyAbonnements"
@@ -81,10 +84,11 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobNewsAgency = AIJob:new{
-	Newslist = null;
-	Task = nil
-}
+_G["JobNewsAgency"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Newslist = null
+	c.Task = nil
+end)
 
 function JobNewsAgency:typename()
 	return "JobNewsAgency"

@@ -1,17 +1,19 @@
+-- File: TaskMovieDistributor
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-TaskMovieDistributor = AITask:new{
-	MoviesAtDistributor = nil;
-	NiveauChecked = false;
-	MovieCount = 0;
-	CheckMode = 0;
-	BudgetWeigth = 7;
-	BasePriority = 8;
-	MovieList = nil;
-	TargetRoom = TVT.ROOM_MOVIEAGENCY;
-	CheckMoviesJob = nil;
-	AppraiseMovies = nil;
-	CurrentBargainBudget = 0
-}
+_G["TaskMovieDistributor"] = class(AITask, function(c)
+	AITask.init(c)	-- must init base!
+	c.MoviesAtDistributor = nil
+	c.NiveauChecked = false
+	c.MovieCount = 0
+	c.CheckMode = 0
+	c.BudgetWeigth = 7
+	c.BasePriority = 8
+	c.MovieList = nil
+	c.TargetRoom = TVT.ROOM_MOVIEAGENCY
+	c.CheckMoviesJob = nil
+	c.AppraiseMovies = nil
+	c.CurrentBargainBudget = 0
+end)
 
 function TaskMovieDistributor:typename()
 	return "TaskMovieDistributor"
@@ -21,13 +23,13 @@ function TaskMovieDistributor:Activate()
 	debugMsg(">>> Starte Task 'TaskMovieDistributor'")
 
 	-- Was getan werden soll:
-	self.CheckMoviesJob = JobCheckMovies:new()
+	self.CheckMoviesJob = JobCheckMovies()
 	self.CheckMoviesJob.MovieDistributorTask = self
 
-	self.AppraiseMovies = JobAppraiseMovies:new()
+	self.AppraiseMovies = JobAppraiseMovies()
 	self.AppraiseMovies.MovieDistributorTask = self
 
-	self.BuyMovies = JobBuyMovies:new()
+	self.BuyMovies = JobBuyMovies()
 	self.BuyMovies.MovieDistributorTask = self
 
 	self.MoviesAtDistributor = {}
@@ -51,10 +53,11 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobCheckMovies = AIJob:new{
-	CurrentMovieIndex = 0;
-	MovieDistributorTask = nil
-}
+_G["JobCheckMovies"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.CurrentMovieIndex = 0
+	c.MovieDistributorTask = nil
+end)
 
 function JobCheckMovies:typename()
 	return "JobCheckMovies"
@@ -90,18 +93,19 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobAppraiseMovies = AIJob:new{
-	CurrentMovieIndex = 0;
-	MovieDistributorTask = nil;
+_G["JobAppraiseMovies"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.CurrentMovieIndex = 0
+	c.MovieDistributorTask = nil
 
-	MovieMaxPrice = -1;
-	PrimetimeMovieMinQuality = -1;
-	DayMovieMinQuality = -1;
+	c.MovieMaxPrice = -1
+	c.PrimetimeMovieMinQuality = -1
+	c.DayMovieMinQuality = -1
 
-	SeriesMaxPrice = -1;
-	PrimetimeSeriesMinQuality = -1;
-	DaySeriesMinQuality = -1
-}
+	c.SeriesMaxPrice = -1
+	c.PrimetimeSeriesMinQuality = -1
+	c.DaySeriesMinQuality = -1
+end)
 
 function JobAppraiseMovies:typename()
 	return "JobAppraiseMovies"
@@ -192,9 +196,10 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobBuyMovies = AIJob:new{
-	MovieDistributorTask = nil;
-}
+_G["JobBuyMovies"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.MovieDistributorTask = nil
+end)
 
 function JobBuyMovies:typename()
 	return "JobBuyMovies"

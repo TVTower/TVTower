@@ -1,15 +1,17 @@
+-- File: BudgetManager
 TODAY_BUDGET		= "T"
 OLD_BUDGET_1		= "1"
 OLD_BUDGET_2		= "2"
 OLD_BUDGET_3		= "3"
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-BudgetManager = KIDataObjekt:new{
-	TodayStartAccountBalance = 0; -- Kontostand zu Beginn des Tages
-	BudgetMinimum = 0;  -- Minimalbetrag des Budgets
-	BudgetMaximum = 0;  -- Maximalbetrag des Budgets
-	BudgetHistory = {}; -- Die Budgets der letzten Tage
-}
+_G["BudgetManager"] = class(KIDataObjekt, function(c)
+	KIDataObjekt.init(c)	-- must init base!
+	c.TodayStartAccountBalance = 0 -- Kontostand zu Beginn des Tages
+	c.BudgetMinimum = 0  -- Minimalbetrag des Budgets
+	c.BudgetMaximum = 0  -- Maximalbetrag des Budgets
+	c.BudgetHistory = {} -- Die Budgets der letzten Tage	
+end)
 
 function BudgetManager:typename()
 	return "BudgetManager"

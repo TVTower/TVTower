@@ -1,14 +1,16 @@
+-- File: TaskAdAgency
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-TaskAdAgency = AITask:new{
-	TargetRoom = TVT.ROOM_ADAGENCY;
-	SpotsInAgency = nil;
-	BasePriority = 8;
-	BudgetWeigth = 0
+_G["TaskAdAgency"] = class(AITask, function(c)
+	AITask.init(c)	-- must init base!
+	c.TargetRoom = TVT.ROOM_ADAGENCY;
+	c.SpotsInAgency = nil;
+	c.BasePriority = 8;
+	c.BudgetWeigth = 0
 	-- zu Senden
 	-- Strafe
 	-- Zuschauer
 	-- Zeit
-}
+end)
 
 function TaskAdAgency:typename()
 	return "TaskAdAgency"
@@ -17,16 +19,16 @@ end
 function TaskAdAgency:Activate()
 	debugMsg(">>> Starte Task 'TaskAdAgency'")
 	-- Was getan werden soll:
-	self.CheckSpots = JobCheckSpots:new()
+	self.CheckSpots = JobCheckSpots()
 	self.CheckSpots.AdAgencyTask = self
 
-	self.AppraiseSpots = AppraiseSpots:new()
+	self.AppraiseSpots = AppraiseSpots()
 	self.AppraiseSpots.AdAgencyTask = self
 
-	self.SignRequisitedContracts = SignRequisitedContracts:new()
+	self.SignRequisitedContracts = SignRequisitedContracts()
 	self.SignRequisitedContracts.AdAgencyTask = self
 
-	self.SignContracts = SignContracts:new()
+	self.SignContracts = SignContracts()
 	self.SignContracts.AdAgencyTask = self
 
 	self.SpotsInAgency = {}
@@ -51,12 +53,12 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-JobCheckSpots = AIJob:new{
-	CurrentSpotIndex = 0;
-	AdAgencyTask = nil
-}
+_G["JobCheckSpots"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.CurrentSpotIndex = 0
+	c.AdAgencyTask = nil
+end)
 
 function JobCheckSpots:typename()
 	return "JobCheckSpots"
@@ -94,10 +96,11 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-AppraiseSpots = AIJob:new{
-	CurrentSpotIndex = 0;
-	AdAgencyTask = nil
-}
+_G["AppraiseSpots"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.CurrentSpotIndex = 0;
+	c.AdAgencyTask = nil
+end)
 
 function AppraiseSpots:typename()
 	return "AppraiseSpots"
@@ -181,10 +184,11 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-SignRequisitedContracts = AIJob:new{
-	CurrentSpotIndex = 0;
-	AdAgencyTask = nil
-}
+_G["SignRequisitedContracts"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.CurrentSpotIndex = 0
+	c.AdAgencyTask = nil
+end)
 
 function SignRequisitedContracts:typename()
 	return "SignRequisitedContracts"
@@ -276,10 +280,11 @@ end
 
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-SignContracts = AIJob:new{
-	CurrentSpotIndex = 0;
-	AdAgencyTask = nil
-}
+_G["SignContracts"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.CurrentSpotIndex = 0
+	c.AdAgencyTask = nil
+end)
 
 function SignContracts:typename()
 	return "SignContracts"

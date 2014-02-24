@@ -1,3 +1,10 @@
+-- File: DefaultAIPlayer
+-- ============================
+-- Autor: Manuel Vögele (STARS_crazy@gmx.de)
+-- Version: 22.02.2014
+
+APP_VERSION = "1.3"
+
 -- ##### INCLUDES #####
 -- use slash for directories - windows accepts it, linux needs it
 -- or maybe package.config:sub(1,1)
@@ -34,12 +41,13 @@ _G["TASK_BETTY"] = TASK_BETTY
 _G["TASK_BOSS"] = TASK_BOSS
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-DefaultAIPlayer = AIPlayer:new{
-	CurrentTask = nil;
-	Budget = nil;
-	Stats = nil;
-	Requisitions = nil
-}
+_G["DefaultAIPlayer"] = class(AIPlayer, function(c)
+	AIPlayer.init(c)	-- must init base!
+	c.CurrentTask = nil	
+	--c.Budget = nil  --darf nicht überschrieben werden
+	--c.Stats = nil  --darf nicht überschrieben werden
+	--c.Requisitions = nil  --darf nicht überschrieben werden
+end)
 
 function DefaultAIPlayer:typename()
 	return "DefaultAIPlayer"
@@ -47,26 +55,25 @@ end
 
 function DefaultAIPlayer:initializePlayer()
 	debugMsg("Initialisiere DefaultAIPlayer-KI ...")
-	self.Stats = BusinessStats:new()
+	self.Stats = BusinessStats()
 	self.Stats:Initialize()
-
-	self.Budget = BudgetManager:new()
+	self.Budget = BudgetManager()
 	self.Budget:Initialize()
-
 	self.Requisitions = {}
+	self.NameX = "zzz"
 end
 
 function DefaultAIPlayer:initializeTasks()
 	self.TaskList = {}
-	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor:new()
-	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency:new()
-	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency:new()
-	self.TaskList[TASK_SCHEDULE]		= TaskSchedule:new()
+	self.TaskList[TASK_MOVIEDISTRIBUTOR]	= TaskMovieDistributor()
+	self.TaskList[TASK_NEWSAGENCY]		= TaskNewsAgency()
+	self.TaskList[TASK_ADAGENCY]		= TaskAdAgency()
+	self.TaskList[TASK_SCHEDULE]		= TaskSchedule()
 
-	--self.TaskList[TASK_STATIONS]		= TVTStations:new()
-	--self.TaskList[TASK_BETTY]			= TVTBettyTask:new()
-	--self.TaskList[TASK_BOSS]			= TVTBossTask:new()
-	--self.TaskList[TASK_ARCHIVE]			= TVTArchive:new()
+	--self.TaskList[TASK_STATIONS]		= TVTStations()
+	--self.TaskList[TASK_BETTY]			= TVTBettyTask()
+	--self.TaskList[TASK_BOSS]			= TVTBossTask()
+	--self.TaskList[TASK_ARCHIVE]			= TVTArchive()
 
 	--TODO: WarteTask erstellen. Gehört aber in AIEngine
 end
@@ -134,44 +141,45 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-BusinessStats = SLFDataObject:new{
-	Audience = nil;
-	SpotProfit = nil;
-	SpotProfitPerSpot = nil;
-	SpotProfitPerSpotAcceptable = nil;
-	SpotPenalty = nil;
-	MoviePricePerBlockAcceptable = nil;
-	SeriesPricePerBlockAcceptable = nil;
-	MovieQualityAcceptable = nil;
-	SeriesQualityAcceptable = nil;
+_G["BusinessStats"] = class(SLFDataObject, function(c)
+	SLFDataObject.init(c)	-- must init base!
+	c.Audience = nil;
+	c.SpotProfit = nil;
+	c.SpotProfitPerSpot = nil;
+	c.SpotProfitPerSpotAcceptable = nil;
+	c.SpotPenalty = nil;
+	c.MoviePricePerBlockAcceptable = nil;
+	c.SeriesPricePerBlockAcceptable = nil;
+	c.MovieQualityAcceptable = nil;
+	c.SeriesQualityAcceptable = nil;
 
-	ProgramQualityLevel1 = nil;
-	ProgramQualityLevel2 = nil;
-	ProgramQualityLevel3 = nil;
-	ProgramQualityLevel4 = nil;
-	ProgramQualityLevel5 = nil;
-}
+	c.ProgramQualityLevel1 = nil;
+	c.ProgramQualityLevel2 = nil;
+	c.ProgramQualityLevel3 = nil;
+	c.ProgramQualityLevel4 = nil;
+	c.ProgramQualityLevel5 = nil;
+end)
 
 function BusinessStats:typename()
 	return "BusinessStats"
 end
 
 function BusinessStats:Initialize()
-	self.Audience = StatisticEvaluator:new()
-	self.SpotProfit = StatisticEvaluator:new()
-	self.SpotProfitPerSpot = StatisticEvaluator:new()
-	self.SpotProfitPerSpotAcceptable = StatisticEvaluator:new()
-	self.SpotPenalty = StatisticEvaluator:new()
-	self.MoviePricePerBlockAcceptable = StatisticEvaluator:new()
-	self.SeriesPricePerBlockAcceptable = StatisticEvaluator:new()
-	self.MovieQualityAcceptable = StatisticEvaluator:new()
-	self.SeriesQualityAcceptable = StatisticEvaluator:new()
+	self.Audience = StatisticEvaluator()
+	self.SpotProfit = StatisticEvaluator()
+	self.SpotProfitPerSpot = StatisticEvaluator()
+	self.SpotProfitPerSpotAcceptable = StatisticEvaluator()
+	self.SpotPenalty = StatisticEvaluator()
+	self.MoviePricePerBlockAcceptable = StatisticEvaluator()
+	self.SeriesPricePerBlockAcceptable = StatisticEvaluator()
+	self.MovieQualityAcceptable = StatisticEvaluator()
+	self.SeriesQualityAcceptable = StatisticEvaluator()
 
-	self.ProgramQualityLevel1 = StatisticEvaluator:new()
-	self.ProgramQualityLevel2 = StatisticEvaluator:new()
-	self.ProgramQualityLevel3 = StatisticEvaluator:new()
-	self.ProgramQualityLevel4 = StatisticEvaluator:new()
-	self.ProgramQualityLevel5 = StatisticEvaluator:new()
+	self.ProgramQualityLevel1 = StatisticEvaluator()
+	self.ProgramQualityLevel2 = StatisticEvaluator()
+	self.ProgramQualityLevel3 = StatisticEvaluator()
+	self.ProgramQualityLevel4 = StatisticEvaluator()
+	self.ProgramQualityLevel5 = StatisticEvaluator()
 end
 
 function BusinessStats:OnDayBegins()
@@ -241,7 +249,8 @@ end
 
 function getAIPlayer()
 	if globalPlayer == nil then
-		globalPlayer = DefaultAIPlayer:new()
+		globalPlayer = DefaultAIPlayer()
+		globalPlayer:initialize()
 		_G["globalPlayer"] = globalPlayer --Macht "GlobalPlayer" als globale Variable verfügbar auch in eingebundenen Dateien
 	end
 	return globalPlayer
@@ -254,15 +263,14 @@ end
 function OnChat(message)
 	if (message == "stop") then
 		aiIsActive = false
-		debugMsg("AI stopped!")
+		infoMsg("AI stopped!")
 	elseif (message == "start") then
 		aiIsActive = true
-		debugMsg("AI started!")
+		infoMsg("AI started!")
 	end
 end
 
 function OnDayBegins()
-	TVT.addToLog("OnDayBegins")
 	if (aiIsActive) then
 		debugMsg("OnDayBegins!")
 		getAIPlayer():OnDayBegins()
@@ -280,11 +288,17 @@ end
 
 function OnSave()
 	SLFManager.StoreDefinition.Player = getAIPlayer()
-	return SLFManager.save()
+	return SLFManager:save()
 end
 
 function OnLoad(data)
-	SLFManager.load(data)
+	SLFManager:load(data)
+	if SLFManager.LoadedData.Player:typename() == "DefaultAIPlayer" then
+		infoMsg("Successfully Loaded!")
+		_G["globalPlayer"] = SLFManager.LoadedData.Player
+	else
+		infoMsg("Loaded failed!")
+	end
 end
 
 function FixDayAndHour2(day, hour)
@@ -302,6 +316,7 @@ function OnMinute(number)
 	end
 
 	--Zum Test
+	--[[
 	if (number == "4") then
 		local task = getAIPlayer().TaskList[TASK_SCHEDULE]
 		local guessedAudience = task:GuessedAudienceForHourAndLevel(Game.GetHour())
@@ -326,6 +341,7 @@ function OnMinute(number)
 			TVT.addToLog("LUA-Audience (NO PROG) : " .. math.round(guessedAudience2) .. " => averageMovieQualityByLevel (" .. averageMovieQualityByLevel .. ") ; globalPercentageByHour (" .. globalPercentageByHour .. ")")
 		end
 	end
+	]]--
 end
 
 --TVTMoviePurchase

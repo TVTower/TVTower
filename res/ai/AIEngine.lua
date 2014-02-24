@@ -1,15 +1,10 @@
+-- File: AIEngine
 -- ============================
 -- === AI Engine ===
 -- ============================
 -- Autor: Manuel Vögele (STARS_crazy@gmx.de)
-
--- ##### HISTORY #####
--- 22.02.2012 Manuel
--- Ein paar Methoden umbenannt
--- 13.12.2007 Manuel
--- NEW: SLFDataObject eingefügt
--- 12.12.2007 Manuel
--- +++++ Library erstellt +++++
+-- Version: 22.02.2014
+-- Erstellt: 12.12.2007
 
 -- ##### INCLUDES #####
 dofile("res/ai/SLF.lua")
@@ -34,17 +29,22 @@ JOB_STATUS_CANCEL	= "J_cancel"
 
 -- ##### KLASSEN #####
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-KIObjekt = SLFObject:new()			-- Erbt aus dem Basic-Objekt des Frameworks
+_G["KIObjekt"] = class(SLFObject, function(c)		-- Erbt aus dem Basic-Objekt des Frameworks
+	SLFObject.init(c)	-- must init base!
+end)			
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-KIDataObjekt = SLFDataObject:new()	-- Erbt aus dem DataObjekt des Frameworks
+_G["KIDataObjekt"] = class(SLFDataObject, function(c)	-- Erbt aus dem DataObjekt des Frameworks
+	SLFDataObject.init(c)	-- must init base!
+end)
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-AIPlayer = KIDataObjekt:new{
-	CurrentTask = nil;
-}
+_G["AIPlayer"] = class(KIDataObjekt, function(c)
+	KIDataObjekt.init(c)	-- must init base!
+	--c.CurrentTask = nil
+end)
 
 function AIPlayer:typename()
 	return "AIPlayer"
@@ -126,27 +126,39 @@ end
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Ein Task repräsentiert eine zu erledigende KI-Aufgabe die sich üblicherweise wiederholt. Diese kann wiederum aus verschiedenen Jobs bestehen
-AITask = KIDataObjekt:new{
-	Id = nil; -- Der eindeutige Name des Tasks
-	Status = TASK_STATUS_OPEN; -- Der Status der Aufgabe
-	CurrentJob = nil; -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
-	BasePriority = 0; -- Grundlegende Priorität der Aufgabe (zwischen 1 und 10)
-	SituationPriority = 0; -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert. Üblicherweise zwischen 0 und 10. Hat aber kein Maximum
-	CurrentPriority = 0; -- Berechnet: Aktuelle Priorität dieser Aufgabe
-	LastDone = 0; -- Zeit, wann der Task zuletzt abgeschlossen wurde
-	StartTask = 0; -- Zeit, wann der Task zuletzt gestartet wurde
-	TickCounter = 0; -- Gibt die Anzahl der Ticks an seit dem der Task läuft
-	MaxTicks = 30; --Wie viele Ticks darf der Task maximal laufen?
-	TargetRoom = -1; -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
-	CurrentBudget = 0; -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
-	BudgetWholeDay = 0; -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
-	BudgetWeigth = 0; -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
-	NeededInvestmentBudget = -1; -- Wie viel Geld benötigt die KI für eine Großinvestition
-	InvestmentPriority = 0 -- Wie wahrscheinlich ist es, dass diese Aufgabe eine Großinvestition machen darf
-}
+_G["AITask"] = class(KIDataObjekt, function(c)
+	KIDataObjekt.init(c)	-- must init base!
+	c.Id = nil -- Der eindeutige Name des Tasks
+	c.Status = TASK_STATUS_OPEN -- Der Status der Aufgabe
+	c.CurrentJob = nil -- Welcher Job wird aktuell bearbeitet und bei jedem Tick benachrichtigt
+	c.BasePriority = 0 -- Grundlegende Priorität der Aufgabe (zwischen 1 und 10)
+	c.SituationPriority = 0 -- Dieser Wert kann sich ändern, wenn besondere Ereignisse auftreten, die von einer bestimmen Aufgabe eine höhere Priorität erfordert. Üblicherweise zwischen 0 und 10. Hat aber kein Maximum
+	c.CurrentPriority = 0 -- Berechnet: Aktuelle Priorität dieser Aufgabe
+	c.LastDone = 0 -- Zeit, wann der Task zuletzt abgeschlossen wurde
+	c.StartTask = 0 -- Zeit, wann der Task zuletzt gestartet wurde
+	c.TickCounter = 0 -- Gibt die Anzahl der Ticks an seit dem der Task läuft
+	c.MaxTicks = 30 --Wie viele Ticks darf der Task maximal laufen?
+	c.TargetRoom = -1 -- Wie lautet die ID des Standard-Zielraumes? !!! Muss überschrieben werden !!!
+	c.CurrentBudget = 0 -- Wie viel Geld steht der KI noch zur Verfügung um diese Aufgabe zu erledigen.
+	c.BudgetWholeDay = 0 -- Wie hoch war das Budget das die KI für diese Aufgabe an diesem Tag einkalkuliert hat.
+	c.BudgetWeigth = 0 -- Wie viele Budgetanteile verlangt diese Aufgabe vom Gesamtbudget?
+	c.NeededInvestmentBudget = -1 -- Wie viel Geld benötigt die KI für eine Großinvestition
+	c.InvestmentPriority = 0 -- Wie wahrscheinlich ist es, dass diese Aufgabe eine Großinvestition machen darf
+end)
 
 function AITask:typename()
 	return "AITask"
+end
+
+function AITask:resume()
+	if self.InvalidDataObject then
+		if self.Status == TASK_STATUS_PREPARE or self.Status == TASK_STATUS_RUN then
+			infoMsg(type(self) .. ": InvalidDataObject resume => TASK_STATUS_OPEN")
+			self.Status = TASK_STATUS_OPEN
+		end
+		self.InvalidDataObject = false
+		table.removeKey(self, "InvalidDataObject");
+	end
 end
 
 function AITask:CallActivate()
@@ -222,7 +234,7 @@ function AITask:GetNextJobInTargetRoom()
 end
 
 function AITask:getGotoJob()
-	local aJob = AIJobGoToRoom:new()
+	local aJob = AIJobGoToRoom()
 	aJob.Task = self
 	aJob.TargetRoom = self.TargetRoom
 	return aJob
@@ -280,17 +292,29 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-AIJob = KIDataObjekt:new{
-	Id = "";
-	Status = JOB_STATUS_NEW;
-	StartJob = 0;
-	LastCheck = 0;
-	Ticks = 0;
-	StartParams = nil;
-}
+_G["AIJob"] = class(KIDataObjekt, function(c)
+	KIDataObjekt.init(c)	-- must init base!
+	c.Id = ""
+	c.Status = JOB_STATUS_NEW
+	c.StartJob = 0
+	c.LastCheck = 0
+	c.Ticks = 0
+	c.StartParams = nil
+end)
 
 function AIJob:typename()
 	return "AIJob"
+end
+
+function AIJob:resume()
+	if self.InvalidDataObject then	
+		if self.Status == JOB_STATUS_REDO or self.Status == JOB_STATUS_RUN then
+			infoMsg(self:typename() .. ": InvalidDataObject resume => JOB_STATUS_NEW")
+			self.Status = JOB_STATUS_NEW
+		end		
+		self.InvalidDataObject = false
+		table.removeKey(self, "InvalidDataObject");		
+	end
 end
 
 function AIJob:Start(pParams)
@@ -329,13 +353,14 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-AIJobGoToRoom = AIJob:new{
-	Task = nil;
-	TargetRoom = 0;
-	IsWaiting = false;
-	WaitSince = -1;
-	WaitTill = -1;
-}
+_G["AIJobGoToRoom"] = class(AIJob, function(c)
+	AIJob.init(c)	-- must init base!
+	c.Task = nil
+	c.TargetRoom = 0
+	c.IsWaiting = false
+	c.WaitSince = -1
+	c.WaitTill = -1
+end)
 
 function AIJobGoToRoom:typename()
 	return "AIJobGoToRoom"
@@ -406,20 +431,20 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-StatisticEvaluator = SLFDataObject:new{
-	MinValue = -1;
-	AverageValue = -1;
-	MaxValue = -1;
+_G["StatisticEvaluator"] = class(SLFDataObject, function(c)
+	SLFDataObject.init(c)	-- must init base!
+	c.MinValue = -1
+	c.AverageValue = -1
+	c.MaxValue = -1
 
-	MinValueTemp = 100000000000000;
-	AverageValueTemp = -1;
-	MaxValueTemp = -1;
+	c.MinValueTemp = 100000000000000
+	c.AverageValueTemp = -1
+	c.MaxValueTemp = -1
 
-	TotalSum = 0;
-	Values = 0;
-}
+	c.TotalSum = 0
+	c.Values = 0
+end)
 
 function StatisticEvaluator:typename()
 	return "StatisticEvaluator"
@@ -451,12 +476,13 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-Requisition = SLFDataObject:new{
-	TaskId = nil,
-	TaskOwnerId = nil,
-	Priority = 0, -- 10 = hoch 1 = gering
-	Done = false
-}
+_G["Requisition"] = class(SLFDataObject, function(c)
+	SLFDataObject.init(c)	-- must init base!
+	c.TaskId = nil
+	c.TaskOwnerId = nil
+	c.Priority = 0 -- 10 = hoch 1 = gering
+	c.Done = false
+end)
 
 function Requisition:typename()
 	return "Requisition"
@@ -473,6 +499,14 @@ end
 
 
 function debugMsg(pMessage)
+	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
+		--TVT.PrintOutDebug(pMessage)
+		TVT.PrintOut(pMessage)
+		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)
+	end
+end
+
+function infoMsg(pMessage)
 	if TVT.ME == 2 then --Nur Debugausgaben von Spieler 2
 		TVT.PrintOut(pMessage)
 		--TVT.SendToChat(TVT.ME .. ": " .. pMessage)

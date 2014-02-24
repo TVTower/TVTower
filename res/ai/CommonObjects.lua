@@ -1,3 +1,4 @@
+-- File: CommonObjects
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 -- Movie ist jetzt nur noch ein Wrapper
 
@@ -11,14 +12,15 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-SpotRequisition = Requisition:new{
-	TaskId = _G["TASK_ADAGENCY"];
-	Priority = 5;
-	Count = 0;
-	FulfilledCount = 0;
-	Level = -1;
-	SlotReqs = nil
-}
+_G["SpotRequisition"] = class(Requisition, function(c)
+	Requisition.init(c)	-- must init base!
+	c.TaskId = _G["TASK_ADAGENCY"]
+	c.Priority = 5
+	c.Count = 0
+	c.FulfilledCount = 0
+	c.Level = -1
+	c.SlotReqs = nil
+end)
 
 function SpotRequisition:typename()
 	return "SpotRequisition"
@@ -78,13 +80,14 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-SpotSlotRequisition = Requisition:new{
-	TaskId = nil;
-	Priority = 3;
-	Day = -1;
-	Hour = -1;
-	ContractId = -1;
-}
+_G["SpotSlotRequisition"] = class(Requisition, function(c)
+	Requisition.init(c)	-- must init base!
+	c.TaskId = nil
+	c.Priority = 3
+	c.Day = -1
+	c.Hour = -1
+	c.ContractId = -1
+end)
 
 function SpotSlotRequisition:typename()
 	return "SpotSlotRequisition"
@@ -109,8 +112,7 @@ end
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-AIToolsClass = KIObjekt:new{
-}
+_G["AIToolsClass"] = class(KIObjekt)
 
 function AIToolsClass:typename()
 	return "AIToolsClass"
@@ -158,5 +160,5 @@ function AIToolsClass:GuessedAudienceForLevel(level)
 	return guessedAudience
 end
 
-AITools = AIToolsClass:new()
+AITools = AIToolsClass()
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
