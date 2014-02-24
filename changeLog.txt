@@ -1,3 +1,1141 @@
+2014-02-22 11:05  Ronny
+
+	  - Werbespotdetails im Programmplaner werden wieder angezeigt
+	  (hatten vorher noch vom Textbox-Bug profitiert)
+	  
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/version.txt
+	  
+
+2014-02-21 15:41  Ronny
+
+	  - "Makler" hat nun seine eigene Grafik
+	  - Es werden Zinsen faellig und gezahlt (5% auf derzeitigen Kredit
+	  und 1% fuer derzeitiges Guthaben)
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt, trunk/config/rooms.xml,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2014-02-20 14:55  Ronny
+
+	  - KI wird nun ueber Speichern/Laden informiert. Ein beim
+	  Speichern zurueckgegebener Textwert wird beim Laden uebermittelt
+	  und ermoeglicht so, der KI, ihren Status zu restaurieren.
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/res/ai/DefaultAIPlayer.lua, trunk/res/ai/SLF.lua,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_lua.bmx,
+	  trunk/source/gamefunctions_ki.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2014-02-20 11:16  Ronny
+
+	  - Lua-Fehlermeldungen werden nun ebenfalls in die Logdateien
+	  geschrieben
+	  - Textbox-Berechnungen: Bei mehrparagrafigen Texten (mit
+	  manuellen Zeilenumbruechen) wird nun nicht mehr der noch
+	  verfuegbare Platz ignoriert (Behebt von "Kurt TV" gemeldeten
+	  Textbox-Bug) .
+	  - Datenblaetter von Filmen/Serien: Inhaltstextbox um wenige Pixel
+	  vergroessert
+	  - Weitere Debugmeldungen von "print" in "TDevHelper.Log"
+	  umgeschrieben (dadurch Ausgabe in Logdatei)
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions_lua.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2014-02-20 11:03  starscrazy
+
+	  noch n kleiner fix
+	  
+	  trunk/res/ai/DefaultAIPlayer.lua
+	  
+
+2014-02-20 10:56  starscrazy
+
+	  KI für's erste Speichern vorbereitet
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/CommonObjects.lua,
+	  trunk/res/ai/DefaultAIPlayer.lua, trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua
+	  
+
+2014-02-20 10:34  starscrazy
+
+	  TGenreDefinitionBase aufgeräumt
+	  
+	  trunk/source/gamefunctions_genre.bmx
+	  
+
+2014-02-20 00:33  starscrazy
+
+	  -/-
+	  
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx
+	  
+
+2014-02-20 00:28  starscrazy
+
+	  - Schnelle vorrübergehende Lösung für die Trailer. Es gibt nun
+	  einen festen Faktor: 1x = 1,25 ; 2x = 1,4 ; 3x = 1,5 ; 4x = 1,55
+	  ; 5x und mehr = 1,6. Das soll später wieder geändert werden. Das
+	  ganze ist auch in der Quoten-Debug-Ansicht "Q" zu finden... wenn
+	  auch erstmal "reingequetscht".
+	  
+	  trunk/source/gamefunctions_debug.bmx,
+	  trunk/source/gamefunctions_genre.bmx,
+	  trunk/source/gamefunctions_quotes.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx
+	  
+
+2014-02-19 23:26  starscrazy
+
+	  - KI: Die eigentlichen KI-Aufgaben und Berechnungen aller AITasks
+	  werden nun innerhalb der ersten 1 bis 5 Ticks im entsprechenden
+	  Raum abgearbeitet.
+	  - KI: Deshalb konnte nun die Verweildauer genauer festgelegt
+	  werden: Sie liegt künstlich zwischen 10 und 18 Ticks (Zufall).
+	  
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua
+	  
+
+2014-02-13 12:58  starscrazy
+
+	  Code-Vereinfachung: Vorbereitung für Trailer (später mehr dazu)
+	  
+	  trunk/source/gamefunctions_genre.bmx
+	  
+
+2014-02-12 14:31  Ronny
+
+	  - TBuilding: Hotspot-Click-Events werden nun mittels
+	  RegisterListenerFunction generisch abgehandelt statt dies als
+	  ListenerMethod instanzspezifisch zu machen (entfernt Bug, dass
+	  nach Laden der Fahrstuhl-Raumplan nicht erreichbar war)
+	  - TSoundManager: MuteSfx(bool), MuteMusic(bool),
+	  HasMutedMusic:bool, HasMutedSfx:bool eingefuehrt
+	  - Neue Tastenkuerzel: Shift+M und Strg+M um Soundeffekte und
+	  Musik an/auszuschalten.
+	  - Bei Raumwechseln wird nun auch versucht die Playlist zu
+	  wechseln, beim Verlassen wird zur Standardplaylist
+	  zurueckgewechselt (falls die momentane Playlist davon abweicht).
+	  
+	  trunk/TVTower.bmx, trunk/config/settings.xml,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/external/reflectionExtended/.bmx,
+	  trunk/source/external/reflectionExtended/reflection_threaded.cpp,
+	  trunk/source/gamefunctions_screens.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt, trunk/tvtower_icon.bat
+	  
+
+2014-02-04 13:17  starscrazy
+
+	  - Der Männer/Frauen-Anteil an der Quote sollte nun korrekt
+	  dargestellt werden (muss noch getestet werden, wenn ich wieder
+	  kompilieren kann)
+	  
+	  trunk/source/gamefunctions_quotes.bmx
+	  
+
+2014-02-04 13:03  Ronny
+
+	  - gamefunctions_screens.bmx hinzugefuegt
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/source/gamefunctions_screens.bmx
+	  
+
+2014-02-02 19:31  Ronny
+
+	  - TElevator: sprites werden nun beim Laden neuinitialisiert
+	  - TGame: Events fuer onBeginSave und onLoad eingebunden
+	  - TInGameScreen_Room ueberarbeitet (da bei der Wechselanimation
+	  figure.inRoom vorzeitig genullt wird)
+	  
+	  trunk/TVTower.bmx, trunk/source/basefunctions_screens.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx, trunk/source/main.bmx,
+	  trunk/source/version.txt
+	  
+
+2014-02-02 13:39  Ronny
+
+	  - Entwicklerfunktion: Spielerwechsel (Taste 1-4) setzt nun auch
+	  den aktuell genutzten TScreen
+	  - TPersistence (Spieldaten als XML speichern): Strings werden nun
+	  korrekt enkodiert (XML-Spezialzeichen werden umgeschrieben)
+	  - Codestellen fuer STRG/Shift-Behandlung im Programmplaner zu
+	  einer Funktion zusammengefuehrt
+	  - Laden / Speichern erweitert (da fehlt noch einiges)
+	  - wichtige Spielobjekte werden nun gespeichert/geladen
+	  (Filmhaendler, Werbemakler)
+	  - alte GUIObjekte werden nun vor dem Laden der Daten (Event
+	  SaveGame.onBeginLoad) entfernt (Programmplaner, Nachrichten,
+	  Archiv)
+	  - Die Schilder die Raumbesitzer anzeigen werden nun nicht mehr
+	  einmal auf die Hochhausgrafik gezeichnet sondern bei jedem
+	  Zeichenvorgang. Erzeugt mehr Zeichenaufrufe, ist aber notwendig
+	  um auf Raumwechsel oder andere Spielerfarben (Speicherstaende)
+	  reagieren zu koennen
+	  - Figurenspezifischen onEnterRoom/onLeaveRoom mit generischen
+	  Events fuer alle Figuren ersetzt (erspart Eventbearbeitung bei
+	  Laden/Speichern)
+	  - Eventsystem: Sender/Receiver-Limit-Ueberpruefung in eigene
+	  Funktion ObjectsAreEqual ausgelagert (da nun noch von
+	  UnregisterAllListeners()-Funktion genutzt)
+	  - Eventsystem: Neue funktion unregisterListenerByLimit erlaubt
+	  das spezifische Loeschen von EventListener fuer einzelne Objekte
+	  - RoomHandler_Archive: Methode RefreshGUIElements() eingefuegt
+	  - TDeltaTimer ueberarbeitet - Delta-Werte sollten nun eher der
+	  Realitaet entsprechen
+	  - TScreen/TScreenCollection ueberarbeitet, neue Klassen
+	  TGameScreen, TInGameScreen etc. angelegt. Handling von Screens in
+	  Verbindung mit Raeumen komplett ueberarbeitet.
+	  - TFaderklasse entfernt (von TScreenChangeEffect abgeloest)
+	  - TV-Overlaygrafik ueberarbeitet (links und rechts jeweils 5px
+	  abgeknappst)
+	  - TRooms: SoundSource als {nosave} gesetzt. Objekt wird in der
+	  Methode GetSoundSource() automatisch regeneriert wenn fehlend
+	  - TStationMap: nun unbenutzte Variablen entfernt,
+	  Checkbox-Ueberwachung von "onUpdate" auf "onSetChecked" geaendert
+	  - TStationMap: Nun Anzeigefilter bei Start auf "alle anzeigen"
+	  gesetzt
+	  - TPlayer: Eigenschaft "stationmap" entfernt. Spieler-Stationmap
+	  kann nun mittels Player.GetStationMap() abgerufen werden
+	  - AdAgency: Beim Betreten des Raumes werden die GUI-Objekte nun
+	  erneuert, Sortierung der Vertraege wird ebenfalls zurueckgesetzt.
+	  Event "onScreenEnter" entfernt
+	  
+	  trunk/TVTower.bmx, trunk/res/grafiken/interface/tv_overlay.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_lua.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_screens.bmx,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/external/persistence.mod/persistence.bmx,
+	  trunk/source/external/reflectionExtended/.bmx/reflection.bmx.debug.linux.x86.s,
+	  trunk/source/external/reflectionExtended/reflection.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_debug.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_quotes.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2014-01-18 18:29  Ronny
+
+	  - Werbevertraege laufen nun korrekt nach Ablauf der Vertragszeit
+	  ab (statt einen Tag vorher)
+	  - Programmplanung: platzierte Programme koennen nun auch mit STRG
+	  und SHIFT benutzt werden (erzeugt Kopien/naechste Episode)
+	  - einige Debugmeldungen fuer Werbevertraege eingebunden
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2014-01-16 16:14  Ronny
+
+	  - weitere deutsche Texte in die Sprachdateien ausgelagert
+	  - DeltaTimer: sollte kein FPS-Limit gesetzt sein, wird auch keine
+	  kuenstliche Pause (zum CPU-Zeit sparen) eingelegt. Nur nuetzlich
+	  fuer "Performance-Checks"
+	  - TGUIListen: Mehrspaltigkeit eingebunden
+	  - TGUIListen: Mausscrollradbehandlung ueberarbeitet (nun von
+	  Listen statt ScrollablePanel verarbeitet)
+	  - TGUIGameShoppingList und TGUIGameShoppingListItem angelegt
+	  - Events: Sender und Receiver ueberpruefen nun auch, ob sie von
+	  der angefragten Klasse abstammen (extends...)
+	  - Taste "M" schaelt nun Musik an/aus (per "settings.xml
+	  <sound>TRUE/FALSE</sound> Voreinstellung treffbar)
+	  - "SimpleSFX"-Lautstaerke um 30% angehoben (Bspweise Raum-Kick,
+	  Exitdialog)
+	  - Raumanzeige: Schrift auf Schildern 1 Pixel nach unten versetzt
+	  - Raumanzeige: Kurt TV hat der Grafik perfekt sitzende
+	  Etagennummern verpasst. Danke!
+	  - alle Grafiken neu komprimiert (spart ein paar hundert KB), bei
+	  Nicht-Raumgrafiken (also weniger komplexen) waren Einsparungen
+	  zwischen 40-50% zu verzeichnen
+	  - Grafikenverzeichnis nach von /grafiken nach /res/grafiken
+	  verschoben, XML-Dateien angepasst
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt, trunk/config/figures.xml,
+	  trunk/config/gfx.xml, trunk/config/gfx_dialog.xml,
+	  trunk/config/gfx_hochhaus.xml, trunk/config/gfx_officepack.xml,
+	  trunk/config/gui.xml, trunk/config/interface.xml,
+	  trunk/config/rooms.xml, trunk/config/settings.xml,
+	  trunk/config/startup.xml, trunk/config/stationmap.xml,
+	  trunk/grafiken, trunk/res/grafiken,
+	  trunk/res/grafiken/archiv/raum_archiv.png,
+	  trunk/res/grafiken/betty/raum_betty.png,
+	  trunk/res/grafiken/betty/sammywand.png,
+	  trunk/res/grafiken/buero/ImagePack,
+	  trunk/res/grafiken/buero/finanzen.png,
+	  trunk/res/grafiken/buero/image.png,
+	  trunk/res/grafiken/buero/jalousine.png,
+	  trunk/res/grafiken/buero/officepack.png,
+	  trunk/res/grafiken/buero/pplanung.png,
+	  trunk/res/grafiken/buero/pplanung_blocks.png,
+	  trunk/res/grafiken/buero/pplanung_menu_news.png,
+	  trunk/res/grafiken/buero/pplanung_menu_news_papier.png,
+	  trunk/res/grafiken/buero/pplanung_menu_news_papier2.png,
+	  trunk/res/grafiken/buero/raum_speichernladen.png,
+	  trunk/res/grafiken/buero/statistik_koordinaten.png,
+	  trunk/res/grafiken/chef/raum_chef.png,
+	  trunk/res/grafiken/datenblaetter/blatt_pfeil_l.png,
+	  trunk/res/grafiken/datenblaetter/blatt_pfeil_r.png,
+	  trunk/res/grafiken/datenblaetter/tv_balken.png,
+	  trunk/res/grafiken/datenblaetter/tv_filmblatt.png,
+	  trunk/res/grafiken/datenblaetter/tv_serienblatt.png,
+	  trunk/res/grafiken/datenblaetter/tv_specials.png,
+	  trunk/res/grafiken/datenblaetter/tv_werbeblatt.png,
+	  trunk/res/grafiken/drehbuchagentur/drehbuch_buch.png,
+	  trunk/res/grafiken/drehbuchagentur/drehbuecher.png,
+	  trunk/res/grafiken/drehbuchagentur/raum_drehbuchagentur.png,
+	  trunk/res/grafiken/errorbox.png,
+	  trunk/res/grafiken/filmverleiher/raum_filmverleiher.png,
+	  trunk/res/grafiken/filmverleiher/raum_filmverleiher_extras.png,
+	  trunk/res/grafiken/gui/gfx_gui_chat_inputaktiv.png,
+	  trunk/res/grafiken/gui/gui2011.png,
+	  trunk/res/grafiken/gui/guipack.png,
+	  trunk/res/grafiken/gui/rahmenpack.png,
+	  trunk/res/grafiken/gui/rahmenpack2.png,
+	  trunk/res/grafiken/gui/tooltip.png,
+	  trunk/res/grafiken/hinweistafel/gfx_tafel_weiss.png,
+	  trunk/res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png,
+	  trunk/res/grafiken/hinweistafel/raum_hinweistafel.png,
+	  trunk/res/grafiken/hochhaus/FigurenPack,
+	  trunk/res/grafiken/hochhaus/HochhausPack,
+	  trunk/res/grafiken/hochhaus/Hochhauspack_Neu,
+	  trunk/res/grafiken/hochhaus/figuren.png,
+	  trunk/res/grafiken/hochhaus/himmel_mondphasen2.png,
+	  trunk/res/grafiken/hochhaus/himmel_sterne.png,
+	  trunk/res/grafiken/hochhaus/hochhaus.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_automat.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_ebene1b.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_ebene1c.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_ebene2b.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_ebene2c.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_ebene3b.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_ebene3c.png,
+	  trunk/res/grafiken/hochhaus/hochhaus_standlampe.png,
+	  trunk/res/grafiken/hochhaus/hochhauspack.png,
+	  trunk/res/grafiken/hochhaus/kaboom.png,
+	  trunk/res/grafiken/hochhaus/raum_credits.png,
+	  trunk/res/grafiken/hochhaus/raum_schild.png,
+	  trunk/res/grafiken/hochhaus/spielfigur_hausmeister.png,
+	  trunk/res/grafiken/hochhaus/textballons.png,
+	  trunk/res/grafiken/hochhaus/tooltips.png,
+	  trunk/res/grafiken/hochhaus/wolken.png,
+	  trunk/res/grafiken/interface/audience.png,
+	  trunk/res/grafiken/interface/audience_bg.png,
+	  trunk/res/grafiken/interface/audience_overlay.png,
+	  trunk/res/grafiken/interface/interface_antenne_alpha.png,
+	  trunk/res/grafiken/interface/interface_lr.png,
+	  trunk/res/grafiken/interface/interface_ou.png,
+	  trunk/res/grafiken/interface/tv_noise.png,
+	  trunk/res/grafiken/interface/tv_overlay.png,
+	  trunk/res/grafiken/interface/tv_programme_ads.png,
+	  trunk/res/grafiken/koffer.png, trunk/res/grafiken/leer.png,
+	  trunk/res/grafiken/loading_bar.png, trunk/res/grafiken/logo.png,
+	  trunk/res/grafiken/logo_small.png,
+	  trunk/res/grafiken/news/button.png,
+	  trunk/res/grafiken/news/newsplanung.png,
+	  trunk/res/grafiken/news/newsplanung_news.png,
+	  trunk/res/grafiken/raummakler/buttons.png,
+	  trunk/res/grafiken/raummakler/raum_raummakler.png,
+	  trunk/res/grafiken/raummakler/vertrag.png,
+	  trunk/res/grafiken/rectangle.png,
+	  trunk/res/grafiken/senderkarte/antenne3.png,
+	  trunk/res/grafiken/senderkarte/raum_karte.png,
+	  trunk/res/grafiken/start_bg.png,
+	  trunk/res/grafiken/start_bg1024.png,
+	  trunk/res/grafiken/studio/raum_studio.png,
+	  trunk/res/grafiken/supermarkt/raum_supermarkt.png,
+	  trunk/res/grafiken/werbeagentur/raum_werbeagentur.png,
+	  trunk/res/grafiken/werbeagentur/raum_werbeagentur_extras.png,
+	  trunk/res/grafiken/werbeagentur/werbung_vertraege.png,
+	  trunk/res/grafiken/zielgruppen.png, trunk/res/lang/lang_de.txt,
+	  trunk/res/lang/lang_en.txt, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2014-01-16 09:08  starscrazy
+
+	  -/-
+	  
+	  trunk/res/music/Quellen.txt
+	  
+
+2014-01-16 09:07  starscrazy
+
+	  Quellenangabe korrigiert
+	  
+	  trunk/res/music/Quellen.txt
+	  
+
+2014-01-15 23:29  starscrazy
+
+	  - Files des Musikstücke umbenannt
+	  - 5 neue Musikstücke hinzugefügt
+	  - Quellen.txt aktualisiert
+	  
+	  trunk/config/soundfiles.xml, trunk/config/startup.xml,
+	  trunk/res/music/60s theme.ogg, trunk/res/music/Chee Zee
+	  Beach.ogg, trunk/res/music/Chilledoutwithabeat.ogg,
+	  trunk/res/music/Fastest Man on Earth.ogg, trunk/res/music/Feelin
+	  Good.ogg, trunk/res/music/Funk Game.ogg, trunk/res/music/Honey
+	  Bee.ogg, trunk/res/music/Hustle.ogg, trunk/res/music/Light
+	  banjo.ogg, trunk/res/music/Peppy Pepe.ogg,
+	  trunk/res/music/Quellen.txt, trunk/res/music/Slow Ska Game.ogg,
+	  trunk/res/music/music1.ogg, trunk/res/music/music2.ogg,
+	  trunk/res/music/music3.ogg, trunk/res/music/music4.ogg,
+	  trunk/res/music/music5.ogg, trunk/res/music/title.ogg
+	  
+
+2014-01-15 21:51  starscrazy
+
+	  Rohe Klassen für Filmproduktion
+	  
+	  trunk/source/gamefunctions_people.bmx,
+	  trunk/source/gamefunctions_production.bmx, trunk/source/main.bmx
+	  
+
+2014-01-03 19:25  Ronny
+
+	  - Screenshots koennen nun in allen Spielbereichen mittels F12
+	  erstellt werden
+	  - Werbe-Fernseher-Grafik ueberarbeitet
+	  - Standardwert fuer geladene Musik ist nun loop=false, entfernt
+	  Bug, ein Musikstueck immer wieder von vorn begann (falls kein
+	  anderer Titel erzwungen wurde)
+	  - "STRG"/"Shift"-Behandlung im Programmplaner wurde an zwei
+	  Stellen durchgefuehrt - fuehrte zu Dopplungen. Fehler behoben
+	  - xRated-Markierung bei Programmbloecken wieder an der richtigen
+	  Stelle
+	  - GUIObjekte: AddChild/RemoveChild - Parameter "setManaged"
+	  entfernt. Dies ist nun "per Default" der Fall.
+	  - Figuren koennen nur noch im Erdgeschoss "raus laufen" (falsche
+	  Variable fuer Etagencheck genommen)
+	  - TGUIProgrammePlanElement.CreateWithBroadcastMaterial - neuer
+	  Parameter "limitToState" verhindert mehrmaliges Zeichnen von neu
+	  erzeugten (und keiner Liste zugeordneten) Programmbloecken
+	  - Filmhaendler: "nicht bezahlbare" Filme werden nun korrekt
+	  (visuell) in das Regal zurueckgelegt. Die Ueberpruefung ob ein
+	  "darunterliegendes" Element bezahlbar ist, wird nun im
+	  TryDrop-Event durchgefuehrt statt erst im Drop-Event selbst.
+	  - Programmdatenblaetter: groessere Textbereiche werden nun als
+	  gecached (aehnlich Newsbloecken), verringert GPU-Auslastung
+	  (weniger Drawcalls)
+	  - "Fader" der Tooltips ueberarbeitet (entfernt leichtes
+	  "Flackern" bei einigen Tooltips durch Rundungsfehler)
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt, trunk/config/startup.xml,
+	  trunk/grafiken/interface/tv_programme_ads.png,
+	  trunk/res/lang/lang_en.txt, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-12-31 15:15  Ronny
+
+	  - Fernseher im unteren Bildbereich:
+	  - braucht nun nur noch eine Rauschen-Grafik (die wird nun
+	  zufaellig verschoben)
+	  - Genrebilder des Fernsehers brauchen nun nicht mehr der
+	  Bildschirmform angepasst werden (werden mittels "overlay"-Bild
+	  abgedeckt)
+	  - Genrebilder ueberarbeitet/erneuert (hingezugekommen: Horror und
+	  Sport)
+	  - Menues und InGame-Bereich in TScreen-Objekte umgewandelt, alle
+	  entsprechenden GUI-Objekte in die Typen umgelagert
+	  - Fehler in der News-Planung behoben (falscher Event-Schluessel
+	  fuehrte zu Verschwinden von GUI-Elementen)
+	  - TPoint - CreateFromPos(pos) entfernt, copy() hinzugefuegt
+	  - GUIObjekte:
+	  - auf neues TGW_NinePatchSprite umgestellt: TGUIInput, TGUIButton
+	  - Eigenschaft "alignment" entfernt, "handlePosition" und
+	  "contentPosition" (inkl. Hilfsfunktionen) hinzugefuegt.
+	  Eigenschaft dient der Anordnung von Inhalt und Objekt (horizontal
+	  und vertikal)
+	  - TGUIInput-Zeichenroutine aufgeraeumt
+	  - "SetFocus" und "RemoveFocus"-Methoden fuer Objekte hinzugefuegt
+	  - TGUIInput sichert nun korrekt den Vor-Bearbeitungs-Wertung fuer
+	  den Fall von "Escape" (Zurueck zum alten Wert)
+	  - neue Grafiken erstellt
+	  - XML-Loader hat nun eine ConvertURI-Funktion um relative
+	  Pfadangaben veraendern zu koennen
+	  - TAssetManager aufgeraeumt (Getter-Funktionen, Checks
+	  optimiert). Fuer einige Objekttypen "Default"-Eintraege angelegt
+	  (Bsp.: fehlt eine Gui-Grafik, wird sie schick mit einer
+	  "rot-weiss"-Grafik ersetzt)
+	  - Textbloecke koennen nun auch vertikal ausgerichtet werden
+	  - Newsblock-Haupttexte werden nun als TImage gecached (Das
+	  Rendern vieler einzelner Buchstaben - auch mit Hilfe eines
+	  Texturatlas - ist langsamer als das eines groesseren Bildes,
+	  DrawCalls vs VRAM)
+	  - Spieloptionen in "Vor-Spielstart"-Bereich eingebunden.
+	  Verfuegbare Einstellung ist "Erscheinungsjahr"-Filter
+	  - TVTower-Icon auch als tvtower.png bereitgestellt (fuer
+	  Linuxverknuepfungen)
+	  - Betty-Code in gamefunctions_betty.bmx ausgelagert
+	  
+	  trunk/TVTower.bmx, trunk/config/gfx_dialog.xml,
+	  trunk/config/gui.xml, trunk/config/interface.xml,
+	  trunk/grafiken/dialog.png, trunk/grafiken/gui/gui_neu.png,
+	  trunk/grafiken/interface/programm_ads.png,
+	  trunk/grafiken/interface/programm_comedy.png,
+	  trunk/grafiken/interface/programm_love.png,
+	  trunk/grafiken/interface/programm_news.png,
+	  trunk/grafiken/interface/programm_noise0.png,
+	  trunk/grafiken/interface/programm_noise1.png,
+	  trunk/grafiken/interface/programm_noise2.png,
+	  trunk/grafiken/interface/programm_noise3.png,
+	  trunk/grafiken/interface/programm_none.png,
+	  trunk/grafiken/interface/programm_scifi.png,
+	  trunk/grafiken/interface/programm_thriller.png,
+	  trunk/grafiken/interface/programm_western.png,
+	  trunk/grafiken/interface/tv_noise.png,
+	  trunk/grafiken/interface/tv_overlay.png,
+	  trunk/grafiken/interface/tv_programme_ads.png,
+	  trunk/grafiken/interface/tv_programme_comedy.png,
+	  trunk/grafiken/interface/tv_programme_horror.png,
+	  trunk/grafiken/interface/tv_programme_love.png,
+	  trunk/grafiken/interface/tv_programme_news.png,
+	  trunk/grafiken/interface/tv_programme_none.png,
+	  trunk/grafiken/interface/tv_programme_scifi.png,
+	  trunk/grafiken/interface/tv_programme_sports.png,
+	  trunk/grafiken/interface/tv_programme_thriller.png,
+	  trunk/grafiken/interface/tv_programme_western.png,
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_asset.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_network.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_screens.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_betty.bmx,
+	  trunk/source/gamefunctions_debug.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammeplan.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt,
+	  trunk/tvtower.png
+	  
+
+2013-11-30 22:18  Ronny
+
+	  - Lua-Skripte koennen nun zusaetzlich zu Methoden und Feldern
+	  auch auf Konstanten und Funktionen zugreifen. Generell: das
+	  gesuchte Objekt nicht fuer Lua freigegeben wird ein
+	  LOG_ERROR-Text ausgegeben.
+	  - TPersistence ueberspringt nun beim laden als
+	  "nosave"-deklarierte Objekteigenschaften
+	  - Nun 13 statt 12 Spielfigurenmodelle zur Auswahl (hab
+	  tatsaechlich eine Frau uebersehen ;-D)
+	  - TGW_Sprite-Code ueberarbeitet (Funktionen vereinfacht,
+	  veraltete entfernt,...)
+	  - Fernsehbuttons: Nun pro Farbe nur noch ein Button eingefaerbt
+	  statt aller 5
+	  - Neue Klasse TGW_NinePatchSprite: verarbeitet "9Patch"-Grafiken
+	  wie von Android bekannt (erste sowie letzte Pixelreihen und
+	  -zeilen enthalten Informationen ueber Skalierbarkeit und
+	  Inhaltsgrenzen). Vor allem fuer GUI nuetzlich
+	  - Wrapper "TGW_Font" entfernt und Fontinformationen in den Typ
+	  TGW_BitmapFont eingefuegt
+	  - TGW_BitmapFont ueberarbeitet und Erstellung des
+	  Charmap-SpriteAtlas fuer die Schriften in einzelne Methoden
+	  ausgelagert. Erleichtert Einbindung von Effekten wie
+	  Schatten/Farbverlaeufe
+	  - DrawImageOnImage ueberarbeitet (Code fuer RGBA-Multiply - also
+	  das Mischen von semitransparenten Bildern). Schrift-Funktion
+	  DrawCharPixmapOnPixmap entfernt (durch DrawImageOnImage ersetzt).
+	  - Senderzeichen neben den Tueren werden wieder korrekt
+	  eingefaerbt (Fehler in ColorizePixmap - IsMonochrome() erwartete
+	  ARGB, bekam aber RGBA)
+	  - Es kann nun rudimentaer der Text formatiert werden (Farben,
+	  Fett, Kursiv)
+	  - Ort des Spielers von "oberer Leiste" in das Debugfenster (Taste
+	  D) umgelagertf
+	  - TGuiSlotList.GetSlotOrCoord() ueberarbeitet (nutzt nun
+	  RecalculateElements-Code, behebt Fehler mit "displaced"-Objekten,
+	  wie den diagonal verlaufenden Werbevertragsordnern)
+	  - TGW_BitmapFont.DrawBlock() hat nun Bool-Parameter "singleLine".
+	  Damit koennen Zeilenumbrueche ausgeschalten werden. Nuetzlich um
+	  einem Einzeiler-Textblock das "abkuerz..." beizubringen
+	  - TSoundManager erweitert.
+	  - Sounddateien werden nun mittels soundfiles.xml in "Playlists"
+	  eingelesen. Diese Listen definieren, welche Musik in welchem
+	  Bereich gespielt werden kann.
+	  - neue Funktionen "PlayRandomSfx(playlist)" und
+	  "PlayRandomMusicStream(playlist)"
+	  
+	  trunk, trunk/TVTower.bmx, trunk/config/figures.xml,
+	  trunk/config/resources.xml, trunk/config/soundfiles.xml,
+	  trunk/config/startup.xml, trunk/grafiken/buero/ImagePack,
+	  trunk/grafiken/hochhaus, trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/database.xml,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_asset.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_image.bmx,
+	  trunk/source/basefunctions_lua.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_screens.bmx,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/external/persistence.mod/persistence.bmx,
+	  trunk/source/external/reflectionExtended,
+	  trunk/source/external/reflectionExtended/.bmx,
+	  trunk/source/external/reflectionExtended/.bmx/reflection.bmx.debug.linux.x86.i,
+	  trunk/source/external/reflectionExtended/.bmx/reflection.bmx.debug.linux.x86.s,
+	  trunk/source/external/reflectionExtended/.bmx/reflection.bmx.release.linux.x86.i,
+	  trunk/source/external/reflectionExtended/.bmx/reflection.bmx.release.linux.x86.s,
+	  trunk/source/external/reflectionExtended/.bmx/reflection.bmx.release.mt.linux.x86.i,
+	  trunk/source/external/reflectionExtended/.bmx/reflection.bmx.release.mt.linux.x86.s,
+	  trunk/source/external/reflectionExtended/reflection.bmx,
+	  trunk/source/external/reflectionExtended/reflection.cpp,
+	  trunk/source/external/reflectionExtended/reflection_not_working.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_debug.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammecollection.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-20 09:13  Ronny
+
+	  - Bug in Update-Loop entfernt (falsche Tag-Variable an die Events
+	  weitergegeben -> Programmbloecke wurden nicht eingefaerbt und
+	  korrekt gesendet)
+	  - Bug behoben der bei schnellen
+	  "drag-drop-drag"-Programmaustausch-Klicks im Programmplaner zu
+	  Abstuerzen fuehren konnte (Variable nicht auf "Null" gecheckt)
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/source/gamefunctions_quotes.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammeplan.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-17 18:53  Ronny
+
+	  - "DeltaTimer"-Klasse ueberarbeitet
+	  - VSync aktiviert, Spiel sollte also nun mit
+	  Bildschirmwiederholrate dargestellt werden
+	  - Physikupdates von 60 auf 30 verringert (spart ein wenig
+	  CPU-Zeit).
+	  - Figuren:
+	  - nutzen zusaetzlich noch tweening (=Ueberblendung von
+	  PositionAlt zu PositionNeu - vermindert "ruckelnde" Bewegungen)
+	  - werden genauso wie ihre Sprechblasen nun an
+	  Ganzzahlenpositionen gezeichnet, macht die kleine Schrift besser
+	  lesbar und verhindert flimmern der Spielfiguraugen
+	  - "Tab"-Debuganzeige auf Taste "D" umgelegt
+	  - Wenn ein Raum unbesetzt ist, wird der "Besetzer" nun schon beim
+	  Versuch des Betretens gesetzt - um zu verhindern, dass mehrere
+	  Personen die Tuer oeffnen und hineingelangen koennen
+	  - KeyManager: einige Sonderzeichen unter Linux eingebunden
+	  (Umlaute), Tasten koennen nun fuer gewisse Zeit blockiert werden
+	  (Doppel-Escape usw.)
+	  - GUIObjekte:
+	  - Eingabefelder ueberarbeitet (wann sie Eingaben annehmen usw.).
+	  Die Escape-Taste setzt Eingabefelder wieder auf ihren vorherigen
+	  Wert zurueck
+	  - GUIManager.StartUpdates() und EndUpdates() verringern Anfragen
+	  an Key- und MouseManager
+	  - Modalfenster sowie die Eigenschaft _ignoreMouse sorgen nun
+	  wirklich fuer das Ignorieren anderer Objekte
+	  - Startjahre < 1985 (bzw dem voreingestellten Jahr) sind nun
+	  moeglich ohne dass das Spiel abstuerzt
+	  - "Anderes" Einkommen erhoeht nun nicht mehr das Einkommen durch
+	  Werbung (reine Statistik-Kosmetik)
+	  - TFinancial ueberarbeitet. Nutzen nun generische
+	  Income/Expense-Setters, heissen nun "TFinance" und werden mittels
+	  TPlayer.GetFinance(day) erstellt/uebernommen
+	  - "Mond"-Flackern beseitigt (nur im Schnelldurchlauf wirklich
+	  ersichtlich)
+	  - generische GetTweenResult-Funktion hinzugefuegt (Faktor muss
+	  bei AppDraw-Aufruf aktualisiert werden)
+	  - Darstellungsfehler bei "aufgehuebschten" negativen Zahlen
+	  korrigiert (-24.900 wurde als -24.-90 dargestellt)
+	  - neue Klasse TSimpleSoundSource ermoeglicht "freies" abspielen
+	  von Soundeffekten (bei GUI u.a.)
+	  - Test fuer 2 SFX: Wirklich-Beenden-Dialog
+	  - Filmnews kommen nun fuer Filme die "bis zu ein Jahr" nach
+	  "heute" erscheinen (statt vorher 6 Tage). Dies wird angepasst,
+	  wenn die Datenbank gefuellter ist
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/res/lang/lang_de.txt, trunk/res/sfx/Quellen.txt,
+	  trunk/res/sfx/closeFadeWindow.ogg,
+	  trunk/res/sfx/kickFromRoom.ogg, trunk/res/sfx/openWindow.ogg,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_keymanager.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sound.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_sound.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammecollection.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammeplan.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-10 18:44  Ronny
+
+	  - Werbe-Datenblatt zeigt nun die Anzahl "eingeplanter" Werbungen
+	  korrekt an.
+	  - Senderkarte zeigt nun wieder korrekt Reichweitenzuwachs an und
+	  Population und Topografie sollten nun wieder uebereinander liegen
+	  (Berlin > 4Mio EW :D)
+	  - Enable()/Disable() bei GuiObjekten fuehrt keine
+	  Listensortierung mehr durch, falls bereits en-/disabled. (fuehrt
+	  im Debugmode bei der Spieleinstellung zu Rucklern)
+	  - Tastenkuerzel "D" (maximale Reichweite) entfernt, da die
+	  Reichweitenberechnung von Manuel diesen einfachen Cheat nicht
+	  mehr ermoeglicht
+	  - Werbung beim Werbemakler wird nun korrekt aus der internen
+	  "Kofferliste" entfernt sobald sie der normalen Liste hinzugefuegt
+	  werden konnte ("nach Unterzeichnung")
+	  - Credit-Bildschirm ueberarbeitet
+	  - Anzeige des "Programm im Sendeplan" ueberarbeitet
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/grafiken/hochhaus/raum_credits.png,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammecollection.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammeplan.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-09 14:24  Ronny
+
+	  - Werbevertraege werden nun korrekt (visuell) aus dem Koffer
+	  entfernt, wenn man bei Abschluss beim Makler steht
+	  - Programmplanerbuttons haben nun "Hover"-Effekt
+	  - Hausmeister laeuft nicht mehr in die linke Hauswand, putzt nun
+	  auch nach links (mit korrekter Animation links bzw rechts) und
+	  geht nicht waehrend dem Putzen in Raeume.
+	  - Werbung: Profit und Strafe auf 200% gesetzt
+	  - Es werden nun wieder 8 Filmauktionen angezeigt (entfernt
+	  "gezahlt und trotzdem nicht Hoechstbietender"-Bug)
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-08 16:31  Ronny
+
+	  - TProgrammeData.ComputeTopicality() entfernt. Wird nun erstmals
+	  bei GetTopicality() erechnet. Verhindet "Keine Abnutzung"-Bug
+	  durch Einsatz in GetQuality().
+	  - TProgrammeLicence: neue Methode "IsPlanned" als Alternative zur
+	  dynamischen Abfrage des ProgrammePlans um festzustellen ob ein
+	  Programm geplant ist.
+	  - Rechtsklicks bei gedraggtem Elementen bei Programmplaner,
+	  Newsplaner, Filmhaendler und Werbeagentur setzen nun korrekt den
+	  Mausbuttonstatus zurueck
+	  - Fahrstuhl-Raumuebersicht: Figur wird nun erst beim "klicken"
+	  (loslassen) der Maustaste losgeschickt, anstatt schon beim
+	  "Button druecken"
+	  - Kontrolle korrigiert, dass Figuren nicht ueber den Etagenrand
+	  laufen.
+	  - Figuren koennen nun das Haus verlassen (und werden farbig
+	  entsprechend angepasst bei Dunkelheit)
+	  - TColor.AdjustRelative(percentage) um Abweichend von 0 die Farbe
+	  aufzuhellen oder abzudunkeln
+	  - Figuren sagen nun korrekt "grr" "hi" etc. - und ignorieren
+	  Personen in Raeumen
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/config/gfx_dialog.xml, trunk/config/gfx_hochhaus.xml,
+	  trunk/doc.html, trunk/docLuaOnly.html,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_genre.bmx,
+	  trunk/source/gamefunctions_popularity.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammeplan.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-07 13:57  Ronny
+
+	  - Debugeinfaerbung beim Mitternachtsprogramm entfernt
+	  - interne Verschiebung der Sendemasten entfernt
+	  - Screenshots entfernen nun korrekt den Alphakanal aus den
+	  Bildern
+	  - Bug mit TGUIobjekten (News, TV etc) entfernt: GetScreenRect()
+	  konnte "null" zurueckliefern, was zu Abstuerzen fuehrte, sobald
+	  ungeprueft darauf zugegriffen wurde
+	  - Filmhaendler: Typ kauft nun wieder Filme in dem man sie auf ihm
+	  fallen laesst (TGUIObject.onDrop achtet nun auf den Flag
+	  "accepts_drop")
+	  - TFunctions.ConvertValue liefert nun korrekte Werte fuer Werte >
+	  1Mio
+	  
+	  trunk/TVTower.bmx, trunk/changeLog.txt,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_quotes.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-05 22:56  Ronny
+
+	  - GetQuality()-Funktion wird nun von allen TBroadcastMaterial
+	  vorausgesetzt
+	  - leichte Aufraeumarbeiten in Manuels Popularity-Code
+	  (Vereinfachung, Code-Formatierung angepasst)
+	  - Quotentooltip ueberarbeitet
+	  - Text-Zeichenmethoden nehmen nun TColor statt r,g,b als
+	  Parameter an
+	  - settings_colors.xml: Alphawerte sind nun als Float anzugeben
+	  (statt 0-255)
+	  - Datenblaetter von Vertraegen und Programmen werden in der Liste
+	  wieder angezeigt (Fehler im "Alt"-Tauscher)
+	  - Auch bei schneller Geschwindigkeit (3-4Spielstunden pro
+	  Sekunde) werden nun keine Werbungen und Programme-Bloecke im
+	  Planer mehr uebersprungen
+	  - Bei gedraggten Elementen wird nun korrekt dass oberste
+	  "gehovert"
+	  - Programme die ueber "Mitternacht" platziert werden, erzeugen
+	  nun korrekt GUI-Bloecke fuer dafuer am naechsten Tag geloeschte
+	  Programme
+	  - die "ESC"-Taste fragt nun vorher mittels Dialog ab, ob wirklich
+	  beendet werden soll, ausserdem dient das ESC nun auch als "Pause"
+	  im Einzelspieler
+	  
+	  trunk/TVTower.bmx, trunk/config/gfx.xml,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_deltatimer.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_debug.bmx,
+	  trunk/source/gamefunctions_genre.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_popularity.bmx,
+	  trunk/source/gamefunctions_quotes.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammeplan.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-03 12:00  Ronny
+
+	  - Fehler in KI-Scripten entfernt (umgelagerte Funktionen
+	  innerhalb der BroadcastMaterial-Klassen)
+	  - nur-KI-Funktionen innerhalb der Medienobjekte
+	  (News,Programme,Werbung,...) gruppiert
+	  
+	  trunk/TVTower.bmx, trunk/res/ai/CommonObjects.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-11-02 16:31  Ronny
+
+	  - Merge der Aenderungen von Manuel und mir
+	  - Neues Return-Objekt fuer Lua-Funktionen: TLuaFunctionResult,
+	  beinhaltet result-Integer (fuer Ergebnis-Kennungs-ID)) plus ein
+	  data-object
+	  - TLuaFunctions nutzt nun keine Konstanten mehr (nicht erreichbar
+	  fuer Lua-Skripte)
+	  - Statt "TProgramme" existieren nun "TProgrammeData",
+	  "TProgrammeLicence" und "TProgramme", dies ermoeglicht
+	  "Lizenzpakete" (Lizenz mit Unterlizenzen)
+	  - Neue Klasse "TProgrammePerson" - enthaelt Regisseure,
+	  Schauspieler etc
+	  - TGUIobjects:
+	  - haben nun Basismethode "onDrop", als Standard ignorieren sie an
+	  sich gerichtete onDrop-Events. Ist ein Objekt aber interessiert,
+	  muss die Methode ueberschrieben und das Event angepasst
+	  (setAccepted()) werden
+	  - haben nun "handle:TPoint", ist das handle nicht NULL, ist dies
+	  der Offset vom Mauszeiger, andernfalls ist das Objekt zentriert
+	  zur Maus
+	  - haben nun Basismethode "containsXY" die zurueckgibt ob eine
+	  Koordinate innerhalb des Objektes (_und_ seines Elternelements)
+	  liegt (nuetzlich bei "gesplitteten Objekten")
+	  - versenden nun Events "onFinishDrop" und "onFinshDrag" wenn ein
+	  Drag- bzw. Drop-Vorgang abgeschlossen ist (und das item auch in
+	  der Logik "gedraggt"/"gedroppt" ist)
+	  - TGW_Sprites aufgeraeumt (area statt pos+w+h, offset ist nun
+	  Rectangle statt nur Point) -> koennen nun mit Offsets umgehen
+	  (nur partiell integriert)
+	  - Programmplaner:
+	  - FSK18 wird nun durch eine farbige Markierung am Programmblock
+	  angezeigt (spart Platz bei ansonsten vorkommenden Texten wie
+	  "FSK18-Tailer" )
+	  - Der "gehoverte" Programmblock wird nun farbig hervorgehoben,
+	  andere Programmierungen dieses Films, dieser Werbung, ... werden
+	  ebenfalls leicht hervorgehoben
+	  - Das ausgewaehlte Genre bei der Programmauswahl wird nun farbig
+	  hervorgehoben, gleiches gilt fuer das unter dem Mauscursor
+	  liegende Genre
+	  - Shortcuts: SHIFT - naechste Episode, STRG - Kopie, ALT -
+	  alternative Anzeige (Programm->Trailer,
+	  Werbung->Dauerwerbesendung)
+	  - jeder weitere Schauspieler (nach dem ersten) hat nun korrekt
+	  einen Vor- und Nachnamen (statt Vornamenachname)
+	  - Filmhaendler - Auktionsklasse:
+	  - entschlackt (unnoetiges entfernt)
+	  - per Eventsystem mit Netzwerk verknuepft
+	  - Auktionen haben nun einen Rabattwert auf ihr Startgebot, dieser
+	  sinkt pro Tag um 5%. Ist ein Minimalwert (50%) erreicht und die
+	  Auktion hat keinen Bieter so wird das Programm ausgetauscht.
+	  - Generell werden nun Bloecke (Filmhaendler - Huellen und
+	  Auktionen, Werbevertraege) hervorgehoben wenn die Maus darueber
+	  schwebt
+	  
+	  trunk/TVTower.bmx, trunk/config/gfx.xml,
+	  trunk/config/gfx_officepack.xml,
+	  trunk/grafiken/buero/finanzen_balken.png,
+	  trunk/grafiken/buero/officepack.png,
+	  trunk/grafiken/buero/pplanung_blocks.png,
+	  trunk/grafiken/buero/pplanung_menu_kassetten.png,
+	  trunk/grafiken/buero/pplanung_menu_kassettenepisodes.png,
+	  trunk/grafiken/buero/pplanung_menu_kassettenseries.png,
+	  trunk/grafiken/buero/statistik_balken_oben.png,
+	  trunk/grafiken/buero/statistik_balken_unten.png,
+	  trunk/grafiken/datenblaetter/tv_specials.png,
+	  trunk/res/ai/AIEngine.lua, trunk/res/ai/CommonObjects.lua,
+	  trunk/res/ai/DefaultAIPlayer.lua, trunk/res/ai/TaskAdAgency.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/ai/TaskNewsAgency.lua, trunk/res/ai/TaskSchedule.lua,
+	  trunk/res/ai/test_base.lua, trunk/res/database.xml,
+	  trunk/res/lang/lang_de.txt, trunk/res/lang/lang_en.txt,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_events.bmx,
+	  trunk/source/basefunctions_guielements.bmx,
+	  trunk/source/basefunctions_lua.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_elevator.bmx,
+	  trunk/source/gamefunctions_figures.bmx,
+	  trunk/source/gamefunctions_genre.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_network.bmx,
+	  trunk/source/gamefunctions_popularity.bmx,
+	  trunk/source/gamefunctions_quotes.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/gamefunctions_tvprogramme_advertisements.bmx,
+	  trunk/source/gamefunctions_tvprogramme_news.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammecollection.bmx,
+	  trunk/source/gamefunctions_tvprogramme_playerprogrammeplan.bmx,
+	  trunk/source/gamefunctions_tvprogramme_programmes.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
+2013-09-26 21:25  starscrazy
+
+	  Reintegrate des branches "quotesAndTrendings".
+	  
+	  Hauptfeatures und Änderungen:
+	  - Komplett neue Berechnung für die Filmattraktivität
+	  - Komplett neue Zuschauerberechnung und Erweiterung um
+	  Zielgruppen
+	  - Anpassungen bei der Filmpreisberechnung
+	  - Neues Popularitäts und Trendsystem (aktuell nur für Genre)
+	  - Es gibt nun eine Genre-Definition (genres.xml und
+	  newsgenres.xml) um verschiedene Parameter pro Genre zu gewichten
+	  und modifizieren.
+	  - Grundlegende Fixes in der KI damit es zu keinen Fehlern kommt
+	  mit den Neuentwicklungen kommt
+	  - Darstellungsproblem in "convertPercent" gefixt.
+	  
+	  Features der neuen Filmattraktivitätsberechnung:
+	  - Bei der Berechnung der Programmattraktivität werden die
+	  Film-Attribute pro Genre anders gewichtet.
+	  - "Genre-Popularität": Es gibt nun eine Genre-Popularität die
+	  einem Trend folgt, steigt und sinkt. Sie hat Einfluss auf die
+	  Programmattraktivität. Der Trend kann von den Spielern durch
+	  Ausstrahlung eines bestimmten Genres positiv beeinflusst werden.
+	  - "Genre <> Sendezeit": Die Attraktivität von Filmen eines Genres
+	  hängt nun von der Tageszeit ab... z.B. sind Horrorfilm im
+	  Spätprogramm erfolgreicher als Vormittags
+	  - "Genre <> Zielgruppe": Jedes Genre ist bei jeder Zielgruppe
+	  anders beliebt. Dies wird nun berücksichtigt.
+	  
+	  Features der neuen Zuschauerberechnung:
+	  - Es gibt nun 7 Zielgruppen: Kinder, Jugendliche, Hausfrauen,
+	  Arbeitnehmer, Arbeitslose, Intellektuelle und Pensionäre.
+	  - Die Kanäle konkurrieren nun tatsächlich um die gleichen
+	  Zuschauer, je nachdem welche Kanäle sich welche Zuschauer teilen.
+	  Deshalb erreicht man in Gebieten die man exklusiv bedient eine
+	  höhere Quote als in Gebieten mit viel Konkurrenz.
+	  - Das Zuschauermenge ergibt sich nun aus drei Teilmengen:
+	  Exklusive Zuschauer (die nur wegen deinem tollen Programm den TV
+	  einschalten), Zuschauer aus dem Audience Flow-Effekt (Leute die
+	  einfach dran bleiben, weil ihnen das Folgeprogramm gefällt) und
+	  überzeugte Zapper (Zuschauer die einfach hängen bleiben)
+	  
+	  
+	  Aktuelle Zahlen zu diesen Berechnungen findet man in der neuen
+	  Entwickler-Anzeige die man mit der Taste "Q" (für Quote)
+	  erreicht.
+	  
+	  trunk, trunk/TVTowerProject.blide, trunk/config/fonts.xml,
+	  trunk/config/genres.xml, trunk/config/newsgenres.xml,
+	  trunk/config/resources.xml, trunk/res/ai/CommonObjects.lua,
+	  trunk/res/ai/DefaultAIPlayer.lua,
+	  trunk/res/ai/TaskMovieDistributor.lua,
+	  trunk/res/ai/TaskSchedule.lua, trunk/source/basefunctions.bmx,
+	  trunk/source/basefunctions_resourcemanager.bmx,
+	  trunk/source/basefunctions_sprites.bmx,
+	  trunk/source/gamefunctions.bmx,
+	  trunk/source/gamefunctions_debug.bmx,
+	  trunk/source/gamefunctions_genre.bmx,
+	  trunk/source/gamefunctions_ki.bmx,
+	  trunk/source/gamefunctions_popularity.bmx,
+	  trunk/source/gamefunctions_quotes.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx, trunk/source/main.bmx
+	  
+
+2013-09-26 20:46  starscrazy
+
+	  -/-
+	  
+	  trunk/TVTowerProject.blide
+	  
+
+2013-09-20 08:50  ronny
+
+	  - Cleanup
+	  
+	  Misc/compilerAddons, Misc/compilerAddons/_readme.txt,
+	  Misc/compilerAddons/bmk.exe, Misc/compilerAddons/core.bmk,
+	  Misc/compilerAddons/custom.bmk, Misc/compilerAddons/make.bmk,
+	  trunk/TVTower, trunk/TVTower.exe, trunk/TVTower.mt.exe,
+	  trunk/_extra
+	  
+
+2013-09-19 15:33  ronny
+
+	  - TPoint.GetIntZ() hinzugefuegt
+	  - Werbemakler: kleine Fehler ausgebuegelt
+	  
+	  trunk/changeLog.txt, trunk/doc.html, trunk/docLuaOnly.html,
+	  trunk/source/basefunctions.bmx,
+	  trunk/source/gamefunctions_rooms.bmx,
+	  trunk/source/gamefunctions_tvprogramme.bmx,
+	  trunk/source/main.bmx, trunk/source/version.txt
+	  
+
 2013-09-19 14:57  ronny
 
 	  - Anpassung AI-Dateien an Aenderungen
