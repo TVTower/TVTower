@@ -924,13 +924,16 @@ Type TGame {_exposeToLua="selected"}
 			stateSyncTime = MilliSecs() + stateSyncTimer
 		EndIf
 
+		'==== HANDLE IN GAME TIME ====
+		'less than a ingame minute gone? nothing to do YET
+		If timeGone - timeGoneLastUpdate < 1.0 Then Return
 
-		'==== HANDLE SKIPPED TIME ====
-		'if speed is to high - minutes might get skipped, so
+		'==== HANDLE GONE/SKIPPED MINUTES ====
+		'if speed is to high - minutes might get skipped,
 		'handle this case so nothing gets lost.
-		Local missedMinutes:Int = Floor(timeGone - timeGoneLastUpdate)
+		'missedMinutes is >1 in all cases (else this part isn't run)
+		Local missedMinutes:float = timeGone - timeGoneLastUpdate
 		Local daysMissed:Int = Floor(missedMinutes / (24*60))
-		If missedMinutes = 0 Then Return
 
 		'adjust the game time so Game.GetHour()/GetMinute()/... return
 		'the correct value for each loop cycle. So Functions can rely on

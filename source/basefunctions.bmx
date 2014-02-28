@@ -465,12 +465,12 @@ Type TDevHelper
 
 	'replace print mode flags
 	Function setPrintMode(flag:int=0)
-			printMode = flag
+		printMode = flag
 	End Function
 
 	'replace logfile mode flags
 	Function setLogMode(flag:int=0)
-			logMode = flag
+		logMode = flag
 	End Function
 
 	'change an existing print mode (add or remove flag)
