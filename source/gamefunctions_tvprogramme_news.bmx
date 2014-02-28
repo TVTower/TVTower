@@ -257,7 +257,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for a newsShow (3 news)
-	Method GetAudienceAttraction:TAudienceAttraction()
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1)
 		Local genreDefintion:TNewsGenreDefinition = null
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		Local tempAudienceAttr:TAudience = null
@@ -349,7 +349,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for one (single!) news
-	Method GetAudienceAttraction:TAudienceAttraction()
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1)
 		'each potential news audience is calculated
 		'as if this news is the only one in the show
 		'at the end someone (the engine) has to weight the

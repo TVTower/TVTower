@@ -800,7 +800,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAudienceAttraction:TAudienceAttraction()
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1)
 		'TODO: @Manuel - hier brauchen wir eine geeignete Berechnung :D
 		local genre:int = 20 'paid programming
 		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(20)

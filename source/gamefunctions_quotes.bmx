@@ -255,7 +255,7 @@ endrem
 			AudienceResults[i].Title = broadcastedMaterial.GetTitle()
 
 			'3. Qualität meines Programmes
-			Attractions[i] = broadcastedMaterial.GetAudienceAttraction()
+			Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour())
 
 			For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 				If market.Players.Contains(String(i)) Then
@@ -264,7 +264,6 @@ endrem
 			Next
 		Next
 	End Method
-
 
 	Method SetFixAudience()
 		'SetPlayersFixAudience
@@ -295,11 +294,11 @@ endrem
 
 				broadcastedMaterial = PlayersBroadcasts[i]
 				If broadcastedMaterial
-					audienceFlowQuoteFactor:+ (broadcastedMaterial.GetAudienceAttraction().Average / 5) 'Wie gut ist das nächste Programm (+0.0 bis +0.2)
+					audienceFlowQuoteFactor:+ (broadcastedMaterial.GetAudienceAttraction(Game.GetHour()).Average / 5) 'Wie gut ist das nächste Programm (+0.0 bis +0.2)
 				EndIf
 				audienceFlowQuoteFactor:+ (RandRange(0, 10) / 100) 'Zufall (+0.0 bis +0.1)
 				audienceFlowQuoteFactor:* timeMod 'Time-Mod
-				'broadcastedMaterial.GetAudienceAttraction()
+				'broadcastedMaterial.GetAudienceAttraction(Game.GetHour())
 
 				For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 					If market.Players.Contains(String(i)) Then

@@ -1385,7 +1385,29 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAudienceAttraction:TAudienceAttraction()
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1)
+		Local result:TAudienceAttraction = New TAudienceAttraction
+		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
+									
+		'A 1 - Qualität des Films
+		Local quality = GetQuality(luckFactor)
+		result.RawQuality = quality
+		
+		'A 2 - Mod: Genre-Popularität / Trend
+		Local popularityMod:Float = (100.0 + genreDefintion.Popularity.Popularity) / 100.0 'Popularity => Wert zwischen -50 und +50
+		quality = quality * popularityMod
+		result.GenrePopularityMod = popularityMod
+		result.GenrePopularityQuality = quality
+		
+		'A 3 - Mod: Time
+		Local timeMod:Float = genreDefintion.TimeMods[hour] 'Genre/Zeit-Mod
+		quality = quality * timeMod			
+		stats.GenreTimeMod = timeMod
+		stats.GenreTimeQuality = quality	
+				
+		
+	
+	
 		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
 		Return genreDefintion.CalculateAudienceAttraction(self, Game.GetHour())
 	End Method
