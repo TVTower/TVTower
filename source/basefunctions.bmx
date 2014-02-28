@@ -463,7 +463,18 @@ Type TDevHelper
 	global lastPrintFunction:string=""
 	const MODE_LENGTH:int = 8
 
-	Function setPrintMode(flag:int=0, enable:int=TRUE)
+	'replace print mode flags
+	Function setPrintMode(flag:int=0)
+			printMode = flag
+	End Function
+
+	'replace logfile mode flags
+	Function setLogMode(flag:int=0)
+			logMode = flag
+	End Function
+
+	'change an existing print mode (add or remove flag)
+	Function changePrintMode(flag:int=0, enable:int=TRUE)
 		if enable
 			printMode :| flag
 		else
@@ -471,7 +482,8 @@ Type TDevHelper
 		endif
 	End Function
 
-	Function setLogMode(flag:int=0, enable:int=TRUE)
+	'change an existing logfile mode (add or remove flag)
+	Function changeLogMode(flag:int=0, enable:int=TRUE)
 		if enable
 			logMode :| flag
 		else

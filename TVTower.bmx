@@ -43,8 +43,11 @@ endrem
 
 Rem
 DONE
-- Werbespotdetails im Programmplaner werden wieder angezeigt (hatten vorher noch vom Textbox-Bug profitiert)
-
+- TGame.Update() ueberarbeitet:
+  - Hilfsfunktionen wie GetMinute() / GetHour() /... liefern nun auch dann korrekte Ergebnisse, wenn sie innerhalb der "uebersprungene Spielminuten"-Schleife aufgerufen werden. Direkt getriggerte (also sofort ausgefuehrten) Events koennten nun auf die Zeitparameter verzichten.
+- TGame: durch Update()-Ueberarbeitung nicht laenger benoetigte Variablen entfernt
+- TDevHelper: SetPrintMode() / SetLogMode() ueberschreiben nun den Modus, ChangePrintMode() und ChangeLogMode() dienen jetzt dazu, Modis an- oder auszuschalten
+- nicht verwendete Dateien entfernt: Pfeilgrafiken fuer Datenblaetter und ein paar Erinnerungsdateien ("wo wird was platziert")
 
 Todo
 ----
