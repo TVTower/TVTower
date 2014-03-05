@@ -1,10 +1,10 @@
-Type TDebugQuoteInfos
+ï»¿Type TDebugQuoteInfos
 	Function Draw()
 		SetColor 0,0,0
 		DrawRect(20,10,760,373)
 		SetColor 255, 255, 255
 
-		'Assets.fonts.baseFont.Draw("Bevölkerung", 25, startY)
+		'Assets.fonts.baseFont.Draw("BevÃ¶lkerung", 25, startY)
 
 		Local audienceResult:TAudienceResult = Game.GetPlayer().audience
 
@@ -22,7 +22,7 @@ Type TDebugQuoteInfos
 		font.drawBlock("Rentner", x + (70*7), y, 65, 25, TPoint.Create(ALIGN_RIGHT), TColor.clWhite)
 
 
-		font.Draw("Bevölkerung", 25, 50, TColor.clWhite);
+		font.Draw("BevÃ¶lkerung", 25, 50, TColor.clWhite);
 		DrawAudience(audienceResult.WholeMarket, 200, 50);
 
 		Local percent:String = TFunctions.shortenFloat(audienceResult.PotentialMaxAudienceQuote.Average*100,2) + "%"
@@ -64,7 +64,7 @@ Type TDebugQuoteInfos
 
 		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
-		If (attraction.AudienceAttraction <> Null) Then
+		If (attraction.BlockAttraction <> Null) Then
 			genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
 		Endif
 
@@ -72,12 +72,12 @@ Type TDebugQuoteInfos
 
 		Assets.fonts.baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, offset + 170, TColor.clRed);
 
-
-		font.Draw("Basis-Programmattraktivität", 25, offset+190, TColor.clWhite)
+rem
+		font.Draw("Basis-ProgrammattraktivitÃ¤t", 25, offset+190, TColor.clWhite)
 		percent = TFunctions.shortenFloat(attraction.RawQuality * 100,2) + "%"
 		font.drawBlock(percent, 200, offset+190, 65, 25, TPoint.Create(ALIGN_RIGHT), TColor.clRed)
 
-		font.Draw("Genre-Popularität", 25, offset+215, TColor.clWhite)
+		font.Draw("Genre-PopularitÃ¤t", 25, offset+215, TColor.clWhite)
 		Local genrePopularityMod:string = TFunctions.shortenFloat(attraction.GenrePopularityMod  * 100,2) + "%"
 		Local genrePopularityQuality:string = TFunctions.shortenFloat(attraction.GenrePopularityQuality * 100,2) + "%"
 		font.Draw(genrePopularityMod, 160, offset+215, TColor.clWhite)
@@ -89,7 +89,7 @@ Type TDebugQuoteInfos
 		font.Draw(genreTimeMod, 160, offset+240, TColor.clWhite)
 		font.drawBlock(genreTimeQuality, 200, offset+240, 65, 25, TPoint.Create(ALIGN_RIGHT), TColor.clRed)
 
-		'Nur vorübergehend
+		'Nur vorÃ¼bergehend
 		font.Draw("Trailer-Mod", 25, offset+250, TColor.clWhite)
 		Local trailerMod:String = TFunctions.shortenFloat(attraction.TrailerMod  * 100,2) + "%"
 		Local trailerQuality:String = TFunctions.shortenFloat(attraction.TrailerQuality * 100,2) + "%"
@@ -107,9 +107,9 @@ Type TDebugQuoteInfos
 		font.Draw("100%", 160, offset+295, TColor.clWhite);
 		DrawAudiencePercent(attraction, 200, offset+295);
 
-		font.Draw("Effektive Attraktivität", 25, offset+325, TColor.clWhite);
+		font.Draw("Effektive AttraktivitÃ¤t", 25, offset+325, TColor.clWhite);
 		DrawAudiencePercent(attraction, 200, offset+325)
-
+endrem
 	End Function
 
 

@@ -1,8 +1,8 @@
-Type TGenreDefinitionBase
+ï»¿Type TGenreDefinitionBase
 	Field GenreId:Int
 	Field AudienceAttraction:TAudience
 	Field Popularity:TGenrePopularity
-
+	rem
 	Method CalculateQuotes:TAudienceAttraction(quality:Float, attraction:TAudienceAttraction = Null)
 		If attraction = Null Then attraction = New TAudienceAttraction				
 
@@ -16,7 +16,7 @@ Type TGenreDefinitionBase
 		attraction.Women = CalculateQuoteForGroup(quality, AudienceAttraction.Women)
 		attraction.Men = CalculateQuoteForGroup(quality, AudienceAttraction.Men)
 
-		'Für die Statistik
+		'FÃ¼r die Statistik
 		attraction.Genre = Self.GenreId
 		attraction.AudienceAttraction = AudienceAttraction
 		Local averageTempAll:TAudience = TAudience.CreateWithBreakdown(100000)
@@ -34,6 +34,7 @@ Type TGenreDefinitionBase
 			Return targetGroupAttendance + (quality - targetGroupAttendance) / 5
 		EndIf
 	End Method
+	endrem
 End Type
 
 
@@ -56,22 +57,23 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction.Men = String(data.ValueForKey("Men")).ToFloat()
 
 		Popularity = TGenrePopularity.Create(GenreId, RandRange(-10, 10), RandRange(-25, 25))
-		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufügen
+		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufÃ¼gen
 
 		'Print "Load newsgenre " + GenreId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
 
 	Method CalculateAudienceAttraction:TAudienceAttraction(news:TNews, hour:Int, luckFactor:Int = 1)
-		Local result:TAudienceAttraction = Null
+		Throw "TODO"
+		'Local result:TAudienceAttraction = Null
 
-		Local rawQuality:Float = news.GetQuality(luckFactor)
-		Local quality:Float = Max(0, Min(99, rawQuality))
+		'Local rawQuality:Float = news.GetQuality()
+		'Local quality:Float = Max(0, Min(99, rawQuality))
 
-		result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
-		result.RawQuality = rawQuality
+		'result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
+		'result.Quality = rawQuality
 
-		Return result
+		'Return result
 	End Method
 End Type
 
@@ -107,14 +109,14 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		AudienceAttraction.Men = String(data.ValueForKey("Men")).ToFloat()
 
 		Popularity = TGenrePopularity.Create(GenreId, RandRange(-10, 10), RandRange(-25, 25))
-		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufügen
+		Game.PopularityManager.AddPopularity(Popularity) 'Zum Manager hinzufÃ¼gen
 
 		'print "Load moviegenre" + GenreId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
 
-
-	Method CalculateAudienceAttraction:TAudienceAttraction(material:TBroadcastMaterial, hour:Int, luckFactor:Int = 1)
+rem
+	Method CalculateAudienceAttraction:TAudienceAttraction(material:TBroadcastMaterial, hour:Int)
 		'RONNY @Manuel: Todo fuer Werbesendungen
 		If material.isType(TBroadcastMaterial.TYPE_ADVERTISEMENT)
 			Local result:TAudienceAttraction = Null
@@ -136,13 +138,13 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		Local quality:Float = 0
 		Local result:TAudienceAttraction = New TAudienceAttraction
 
-		result.RawQuality = data.GetQuality(luckFactor)
+		result.RawQuality = data.GetQuality()
 		
 		quality = ManipulateQualityFactor(result.RawQuality, hour, result)
 		
-		'Vorläufiger Code für den Trailer-Bonus
+		'VorlÃ¤ufiger Code fÃ¼r den Trailer-Bonus
 		'========================================				
-		'25% für eine Trailerausstrahlungen (egal zu welcher Uhrzeit), 40% für zwei Ausstrahlungen, 50% für drei Ausstrahlungen, 55% für vier und 60% für fünf und mehr.
+		'25% fÃ¼r eine Trailerausstrahlungen (egal zu welcher Uhrzeit), 40% fÃ¼r zwei Ausstrahlungen, 50% fÃ¼r drei Ausstrahlungen, 55% fÃ¼r vier und 60% fÃ¼r fÃ¼nf und mehr.
 		Local timesTrailerAired:Int = data.GetTimesTrailerAired(False)
 		Local trailerMod:Float = 1
 		
@@ -173,21 +175,21 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Method ManipulateQualityFactor:Float(quality:Float, hour:Int, stats:TAudienceAttraction)
 		Local timeMod:Float = 1
 	
-		'Popularitäts-Mod+
+		'PopularitÃ¤ts-Mod+
 		Local popularityFactor:Float = (100.0 + Popularity.Popularity) / 100.0 'Popularity => Wert zwischen -50 und +50
 		quality = quality * popularityFactor
 		stats.GenrePopularityMod = popularityFactor
 		stats.GenrePopularityQuality = quality
 		
-		If Game.BroadcastManager.FEATURE_GENRE_TIME_MOD = 1 'Wie gut passt der Sendeplatz zum Genre
-			timeMod = TimeMods[hour] 'Genre/Zeit-Mod
-			quality = quality * timeMod			
-			stats.GenreTimeMod = timeMod
-		EndIf
+		'Wie gut passt der Sendeplatz zum Genre
+		timeMod = TimeMods[hour] 'Genre/Zeit-Mod
+		quality = quality * timeMod			
+		stats.GenreTimeMod = timeMod
+		
 		quality = Max(0, Min(98, quality))
 		stats.GenreTimeQuality = quality
 						
 		Return quality
 	End Method
-
+endrem
 End Type

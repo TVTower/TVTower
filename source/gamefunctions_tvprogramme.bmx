@@ -1,4 +1,4 @@
-Const CURRENCYSIGN:string = Chr(8364) 'eurosign
+﻿Const CURRENCYSIGN:string = Chr(8364) 'eurosign
 
 include "gamefunctions_tvprogramme_advertisements.bmx"
 include "gamefunctions_tvprogramme_news.bmx"
@@ -18,6 +18,8 @@ Type TBroadcastMaterial	extends TOwnedGameObject {exposeToLua="selected"}
 
 	Field programmedHour:int	= -1	'time at which the material is planned to get send
 	Field programmedDay:int		= -1
+	
+	Field currentBlockBroadcasting:int		{_exposeToLua} '0 = läuft nicht; 1 = 1 Block; 2 = 2 Block; usw.
 
 	'states a program can be in
 	const STATE_NORMAL:int		= 0
@@ -33,10 +35,10 @@ Type TBroadcastMaterial	extends TOwnedGameObject {exposeToLua="selected"}
 
 
 	'needed for all extending objects
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1) Abstract
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction ) Abstract
 
 	'needed for all extending objects
-	Method GetQuality:Float(luckFactor:Int = 1)  {_exposeToLua}
+	Method GetQuality:Float()  {_exposeToLua}
 		print "GetQuality"
 	End Method
 
@@ -97,6 +99,7 @@ Type TBroadcastMaterial	extends TOwnedGameObject {exposeToLua="selected"}
 
 	Method BeginBroadcasting:int(day:int, hour:int, minute:int)
 		self.SetState(self.STATE_RUNNING)
+		Self.currentBlockBroadcasting = 1
 	End Method
 
 
@@ -111,6 +114,7 @@ Type TBroadcastMaterial	extends TOwnedGameObject {exposeToLua="selected"}
 
 
 	Method ContinueBroadcasting:int(day:int, hour:int, minute:int)
+		Self.currentBlockBroadcasting :+ 1
 		'print "continue broadcasting the next block of: "+GetTitle()
 	End Method
 

@@ -1,4 +1,4 @@
-REM
+﻿REM
 	===========================================================
 	code for programme-objects (movies, ..) in programme planning
 	===========================================================
@@ -352,7 +352,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	'Diese Methode ersetzt "GetBaseAudienceQuote"
-	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+	Method GetQuality:Float() {_exposeToLua}
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
 		Local quality:Float = 0.0
 
@@ -372,14 +372,11 @@ Type TProgrammeData {_exposeToLua}
 		'repetitions wont be watched that much
 		quality:*(GetTopicality() / 255.0) ^ 2
 
-		If luckFactor = 1 Then
-			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-Qualität
-		Else
-			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
-		EndIf
+		quality = quality * 0.99 + 0.01 'Mindestens 1% Qualitaet
 
 		'no minus quote
 		quality = Max(0, quality)
+		
 		Return quality
 	End Method
 
@@ -430,6 +427,10 @@ Type TProgrammeData {_exposeToLua}
 	Method GetTimesTrailerAired:Int(total:int=TRUE)
 		if total then return self.trailerAired
 		return self.trailerAiredSinceShown
+	End Method
+	
+	Method GetTrailerMod:TAudience()
+		Return TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
 	End Method
 
 
@@ -863,16 +864,16 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetQuality:Float(luckFactor:float=1) {_exposeToLua}
+	Method GetQuality:Float() {_exposeToLua}
 		'licence is connected to a programme
 		if GetData() and (isType(TYPE_MOVIE) or isType(TYPE_EPISODE))
-			return GetData().GetQuality(luckFactor)
+			return GetData().GetQuality()
 		endif
 
 		'if licence is a collection: ask subs
 		local quality:int = 0
 		For local licence:TProgrammeLicence = eachin subLicences
-			quality :+ licence.GetQuality(luckFactor)
+			quality :+ licence.GetQuality()
 		Next
 
 		if subLicences.length > 0 then return quality / subLicences.length
@@ -1287,7 +1288,7 @@ End Type
 'parent of movies, series and so on
 Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field licence:TProgrammeLicence			{_exposeToLua}
-	Field data:TProgrammeData				{_exposeToLua}
+	Field data:TProgrammeData				{_exposeToLua}	
 
 	Function Create:TProgramme(licence:TProgrammeLicence)
 		Local obj:TProgramme = New TProgramme
@@ -1305,7 +1306,6 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		Return obj
 	End Function
-
 
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int)
@@ -1380,36 +1380,62 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
-		return data.GetQuality(luckFactor)
+	Method GetQuality:Float() {_exposeToLua}
+		return data.GetQuality()
 	End Method
 
 
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1)
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
-									
-		'A 1 - Qualit�t des Films
-		Local quality = GetQuality(luckFactor)
-		result.RawQuality = quality
 		
-		'A 2 - Mod: Genre-Popularit�t / Trend
-		Local popularityMod:Float = (100.0 + genreDefintion.Popularity.Popularity) / 100.0 'Popularity => Wert zwischen -50 und +50
-		quality = quality * popularityMod
-		result.GenrePopularityMod = popularityMod
-		result.GenrePopularityQuality = quality
-		
-		'A 3 - Mod: Time
-		Local timeMod:Float = genreDefintion.TimeMods[hour] 'Genre/Zeit-Mod
-		quality = quality * timeMod			
-		stats.GenreTimeMod = timeMod
-		stats.GenreTimeQuality = quality	
+		If block = 1 Then											
+			'1 - Qualität des Programms
+			result.Quality = GetQuality()
+			
+			'2 - Mod: Genre-Popularität / Trend
+			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
+			
+			'3 - Genre <> Zielgruppe
+			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.GetNewInstance()
+			result.GenreTargetGroupMod.SubtractFloat(0.5)
+			
+			'4 - Image
+			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods()
+			result.PublicImageMod.SubtractFloat(1)
+			
+			'5 - Trailer
+			result.TrailerMod = data.GetTrailerMod()
+			result.TrailerMod.SubtractFloat(1)
 				
+			'6 - Flags
+			result.FlagsMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
+			result.FlagsMod.SubtractFloat(1)
+			
+			result.CalculateBaseAttraction()			
+			
+			'7 - Audience Flow
+			If lastMovieBlockAttraction <> Null Then
+				result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
+				Print "Faktor nachbessern!!!!!!!"
+				result.AudienceFlowBonus.MultiplyFactor(0.2) 
+			End If			
+			
+			result.CalculateBroadcastAttraction()
+		Else
+			result.CopyBroadcastAttractionFrom(lastMovieBlockAttraction)
+		Endif
 		
-	
-	
-		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
-		Return genreDefintion.CalculateAudienceAttraction(self, Game.GetHour())
+		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		result.QualityOverTimeEffectMod = ((result.Quality - 50)/250) * (block - 1)
+		
+		'9 - Genres <> Sendezeit
+		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
+		
+		'10 - News-Mod
+		'result.NewsShowMod = lastNewsBlockAttraction
+
+		result.CalculateBlockAttraction()
 	End Method
 
 

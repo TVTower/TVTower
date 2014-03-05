@@ -182,7 +182,7 @@ Type TGenrePopularity Extends TPopularity
 
 	'a programme just finished airing
 	Method FinishBroadcastingProgramme(audienceResult:TAudienceResult, blocks:Int)
-		Local quality:Float = audienceResult.AudienceAttraction.RawQuality
+		Local quality:Float = audienceResult.AudienceAttraction.Quality
 		Local audienceFactor:Float = audienceResult.Audience.GetSumFloat() / (Game.BroadcastManager.TopAudienceCount * 0.75)
 		audienceFactor = Min(Max(audienceFactor, 0.1), 1)
 

@@ -1,4 +1,4 @@
-'Application: TVGigant/TVTower
+Ôªø'Application: TVGigant/TVTower
 'Author: Ronny Otto
 
 SuperStrict
@@ -33,7 +33,7 @@ Include "gamefunctions_screens.bmx"
 
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto & Manuel Vˆgele"
+Global CopyrightString:String	= "by Ronny Otto & Manuel V√∂gele"
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 TDevHelper.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 
@@ -49,10 +49,11 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_popularity.bmx"			'Popularit‰ten und Trends
+Include "gamefunctions_popularity.bmx"			'Popularit√§ten und Trends
 Include "gamefunctions_genre.bmx"				'Genre-Definitionen
 Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 Include "gamefunctions_people.bmx"				'Angestellte und Personen
+Include "gamefunctions_publicimage.bmx"			'Das SenderImage
 Include "gamefunctions_production.bmx"			'Alles was mit Filmproduktion zu tun hat
 Include "gamefunctions_debug.bmx"
 
@@ -1086,6 +1087,7 @@ Type TPlayer {_exposeToLua="selected"}
 	Field finances:TPlayerFinance[]					'financial stats about credit, money, payments ...
 	Field audience:TAudienceResult
 
+	Field PublicImage:TPublicImage							{_exposeToLua}
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
 	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
 	Field Figure:TFigure									{_exposeToLua}				'actual figure the player uses
@@ -1180,6 +1182,7 @@ Type TPlayer {_exposeToLua="selected"}
 		Player.channelname			= channelname
 		Player.Figure				= New TFigure.CreateFigure(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayerID= playerID
+		Player.PublicImage			= New TPublicImage.Create(Player)
 		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
 		Player.ProgrammePlan		= New TPlayerProgrammePlan.Create(Player)
 
@@ -1752,7 +1755,7 @@ Type TBuilding Extends TRenderable
 		Elevator		= new TElevator.Create()
 		Elevator.Pos.SetY(GetFloorY(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
 
-		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heiﬂt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaﬂ
+		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 hei√üt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spa√ü
 
 		Return self
 	End Method
@@ -2630,9 +2633,9 @@ Type TScreen_MainMenu Extends TGameScreen
 
 Rem
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste kˆnnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat¸rlich Auswirkungen.~n~nEine Komˆdie kann h‰ufiger gesendet werden, als eine Live-‹bertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn¸pft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbevertr‰ge", "Werbevertr‰ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat¸rlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr‰ge abzuschlieﬂen."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste k√∂nnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat√ºrlich Auswirkungen.~n~nEine Kom√∂die kann h√§ufiger gesendet werden, als eine Live-√úbertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn√ºpft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: Werbevertr√§ge", "Werbevertr√§ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat√ºrlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr√§ge abzuschlie√üen."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
@@ -3462,7 +3465,7 @@ Function Init_Creation()
 		InGame_Chat.show()
 	EndIf
 
-	'Eigentlich gehˆrt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
+	'Eigentlich geh√∂rt das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
 	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
@@ -3655,37 +3658,30 @@ Type GameEvents
 
 
 		'for all
-		If minute = 5 Or minute = 55 Or minute=0 Then Interface.BottomImgDirty = True
+		If minute = 5 Or minute = 55 Or minute = 0 Then Interface.BottomImgDirty = True
+		
 		'begin of all newshows - compute their audience
 		If minute = 0
-			'if not done yet - produce the newsshow
-			For Local i:Int = 1 To 4
-				If Game.getPlayer(i) Then Game.getPlayer(i).ProgrammePlan.GetNewsShow(day,hour)
+			For Local player:TPlayer = EachIn Game.Players
+				player.ProgrammePlan.GetNewsShow().BeginBroadcasting(day, hour, minute)
 			Next
 			Game.BroadcastManager.BroadcastNewsShow(day, hour)
-		EndIf
-		'begin of all programmeblocks - compute their audience
-		If minute = 5 Then Game.BroadcastManager.BroadcastProgramme(day, hour)
-
-		'for individual players
-		For Local player:TPlayer = EachIn Game.Players
-			'begin of a newshow
-			If minute = 0
-				'a news show exists - even without news
-				player.ProgrammePlan.GetNewsShow().BeginBroadcasting(day, hour, minute)
-			'begin of a programme
-			ElseIf minute = 5
+		'begin of a programme
+		ElseIf minute = 5
+			For Local player:TPlayer = EachIn Game.Players
 				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetProgramme(day, hour)
-				If obj
-					'just starting
+				If obj					
 					If 1 = player.ProgrammePlan.GetProgrammeBlock(day, hour)
-						obj.BeginBroadcasting(day, hour, minute)
+						obj.BeginBroadcasting(day, hour, minute) 'just starting
 					Else
 						obj.ContinueBroadcasting(day, hour, minute)
 					EndIf
-				EndIf
-			'call-in shows/quiz - generate income
-			ElseIf minute = 54
+				EndIf							
+			Next
+			Game.BroadcastManager.BroadcastProgramme(day, hour)
+		'call-in shows/quiz - generate income
+		ElseIf minute = 54
+			For Local player:TPlayer = EachIn Game.Players		
 				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetProgramme(day,hour)
 				If obj
 					If obj.GetBlocks() = player.ProgrammePlan.GetProgrammeBlock(day, hour)
@@ -3694,20 +3690,24 @@ Type GameEvents
 						obj.BreakBroadcasting(day, hour, minute)
 					EndIf
 				EndIf
-			'ads
-			ElseIf minute = 55
-				'computes ads - if an ad is botched or run successful
-				'if adcontract finishes, earn money
-				Local obj:TBroadcastMaterial = Player.ProgrammePlan.GetAdvertisement(day, hour)
-				If obj
-					'just starting
+			Next
+		'ads
+		ElseIf minute = 55
+			'computes ads - if an ad is botched or run successful
+			'if adcontract finishes, earn money
+			For Local player:TPlayer = EachIn Game.Players		
+				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetAdvertisement(day, hour)
+				If obj					
 					If 1 = player.ProgrammePlan.GetAdvertisementBlock(day, hour)
-						obj.BeginBroadcasting(day, hour, minute)
+						obj.BeginBroadcasting(day, hour, minute) 'just starting
 					Else
 						obj.ContinueBroadcasting(day, hour, minute)
 					EndIf
-				EndIf				'ads end - so trailers can set their "ok"
-			ElseIf minute = 59
+				EndIf
+			Next
+		'ads end - so trailers can set their "ok" 
+		ElseIf minute = 59
+			For Local player:TPlayer = EachIn Game.Players
 				Local obj:TBroadcastMaterial = Player.ProgrammePlan.GetAdvertisement(day, hour)
 				If obj
 					If obj.GetBlocks() = player.ProgrammePlan.GetAdvertisementBlock(day, hour)
@@ -3715,9 +3715,10 @@ Type GameEvents
 					Else
 						obj.BreakBroadcasting(day, hour, minute)
 					EndIf
-				EndIf
-			EndIf
-		Next
+				EndIf			
+			Next
+		EndIf		
+					
 		Return True
 	End Function
 

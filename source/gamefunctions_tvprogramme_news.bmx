@@ -1,4 +1,4 @@
-REM
+﻿REM
 	===========================================================
 	code for news-objects in programme planning
 	===========================================================
@@ -220,9 +220,9 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 			+ Float(price) / 255.0 * 0.2
 
 		If luckFactor = 1 Then
-			quality = quality * 0.97 + Float(RandRange(10, 30)) / 1000.0 '1%-Punkte bis 3%-Punkte Basis-Qualität
+			quality = quality * 0.97 + Float(RandRange(10, 30)) / 1000.0 '1%-Punkte bis 3%-Punkte Basis-QualitÃ¤t
 		Else
-			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
+			quality = quality * 0.99 + 0.01 'Mindestens 1% QualitÃ¤t
 		EndIf
 
 		'no minus quote
@@ -257,7 +257,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for a newsShow (3 news)
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1)
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local genreDefintion:TNewsGenreDefinition = null
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		Local tempAudienceAttr:TAudience = null
@@ -304,11 +304,11 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
     End Method
 
 
-	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
+	Method GetQuality:Float() {_exposeToLua}
 		Local quality:Float = 0.0
 		local count:int = 0
 		for local i:int = 0 to 2
-			if TNews(news[i]) then quality:+TNews(news[i]).GetQuality(luckFactor);count:+1
+			if TNews(news[i]) then quality:+TNews(news[i]).GetQuality();count:+1
 		Next
 		if count > 0 then quality :/ count
 
@@ -349,7 +349,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for one (single!) news
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, luckFactor:Int = 1)
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		'each potential news audience is calculated
 		'as if this news is the only one in the show
 		'at the end someone (the engine) has to weight the
@@ -360,9 +360,9 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
-		local quality:float =  newsEvent.GetQuality(luckFactor)
-		'Zusätzlicher Bonus bei Erstausstrahlung
+	Method GetQuality:Float() {_exposeToLua}
+		local quality:float =  newsEvent.GetQuality()
+		'ZusÃ¤tzlicher Bonus bei Erstausstrahlung
 		If timesAired = 0 Then quality:*0.15
 		return quality
 	End Method
