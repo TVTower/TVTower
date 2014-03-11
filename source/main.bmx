@@ -59,9 +59,8 @@ Include "gamefunctions_debug.bmx"
 
 
 'setup what the logger should output
-TDevHelper.setLogMode(LOG_ALL & LOG_DEBUG)
-TDevHelper.setprintMode(LOG_ALL &~ LOG_AI) 'all but AI
-
+TDevHelper.setLogMode(LOG_ALL)
+TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 
 
 
@@ -525,13 +524,9 @@ Type TGame {_exposeToLua="selected"}
 
 	Field paused:Int					= False
 	Field speed:Float					= 1.0 				'Speed of the game in "game minutes per real-time second"
-	Field minutesOfDayGone:Float		= 0.0				'time of day in game, unformatted
-	Field lastMinutesOfDayGone:Float	= 0.0				'time last update was done
-	Field timeGone:Double				= 0.0				'time (minutes) in game, not reset every day
 	Field timeStart:Double				= 0.0				'time (minutes) used when starting the game
-	Field eventHandledDay:Int			= 0					'which day is currently to handle in events
-	Field eventHandledHour:Int			= 0					'which hour is currently to handle in events
-	Field eventHandledMinute:Int		= 0					'which minute is currently to handle in events
+	Field timeGone:Double				= 0.0				'time (minutes) in game, not reset every day
+	Field timeGoneLastUpdate:Double		= -1.0				'time (minutes) in game of the last update (enables calculation of missed minutes)
 	Field daysPlayed:Int				= 0
 
 	Field title:String 				= "MyGame"				'title of the game
@@ -583,7 +578,6 @@ Type TGame {_exposeToLua="selected"}
 		Localization.SetLanguage(userlanguage) 'selects language
 		Localization.LoadResource("res/lang/lang_"+userlanguage+".txt")
 		networkgame		= 0
-		minutesOfDayGone	= 0
 
 		SetStartYear(1985)
 		title				= "unknown"
@@ -913,10 +907,13 @@ Type TGame {_exposeToLua="selected"}
 
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
+		'==== ADJUST TIME ====
 		'speed is given as a factor "game-time = x * real-time"
-		minutesOfDayGone	:+ deltaTime * GetGameMinutesPerSecond()
-		timeGone			:+ deltaTime * GetGameMinutesPerSecond()
+		timeGone :+ deltaTime * GetGameMinutesPerSecond()
+		'initialize last update value if still at default value
+		if timeGoneLastUpdate < 0 then timeGoneLastUpdate = timeGone
 
+		'==== HANDLE TIMED EVENTS ====
 		'time for news ?
 		If NewsAgency.NextEventTime < timeGone Then NewsAgency.AnnounceNewNewsEvent()
 		If NewsAgency.NextChainCheckTime < timeGone Then NewsAgency.ProcessNewsEventChains()
@@ -927,35 +924,49 @@ Type TGame {_exposeToLua="selected"}
 			stateSyncTime = MilliSecs() + stateSyncTimer
 		EndIf
 
-		'if speed to high - potential skip of minutes, so "fetch them"
-		'sets minute / hour / day
-		Local missedMinutes:Int = Floor(minutesOfDayGone - lastMinutesOfDayGone)
-		If missedMinutes = 0 Then Return
+		'==== HANDLE IN GAME TIME ====
+		'less than a ingame minute gone? nothing to do YET
+		If timeGone - timeGoneLastUpdate < 1.0 Then Return
 
-		Local daysMissed:Int	= Floor(minutesOfDayGone / (24*60))
-		eventHandledDay			= Game.GetDay() - daysMissed
-		For Local i:Int = 1 To missedMinutes
-			eventHandledMinute = (Floor(lastMinutesOfDayGone)  + i ) Mod 60 '0 to 59
-			eventHandledHour = Floor( (lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
+		'==== HANDLE GONE/SKIPPED MINUTES ====
+		'if speed is to high - minutes might get skipped,
+		'handle this case so nothing gets lost.
+		'missedMinutes is >1 in all cases (else this part isn't run)
+		Local missedMinutes:float = timeGone - timeGoneLastUpdate
+		Local daysMissed:Int = Floor(missedMinutes / (24*60))
+
+		'adjust the game time so Game.GetHour()/GetMinute()/... return
+		'the correct value for each loop cycle. So Functions can rely on
+		'that functions to get the time they request.
+		'as everything can get calculated using "timeGone", no further
+		'adjustments have to take place
+		timeGone:- missedMinutes
+		For Local i:Int = 1 to missedMinutes
+			'add back another gone minute each loop
+			timeGone:+1
 
 			'minute
-			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", TData.Create().addNumber("minute", eventHandledMinute).addNumber("hour", eventHandledHour).addNumber("day", eventHandledDay) ))
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", TData.Create().addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
+
 			'hour
-			If eventHandledMinute = 0 Then EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", TData.Create().addNumber("minute", eventHandledMinute).addNumber("hour", eventHandledHour).addNumber("day", eventHandledDay) ))
+			If GetMinute() = 0
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", TData.Create().addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
+			endif
 
 			'day
-			If eventHandledHour = 0 And eventHandledMinute = 0
-				Self.minutesOfDayGone 	= 0			'reset minutes of day
-				Self.daysPlayed			:+1			'increase current day
-				eventHandledDay			:+1
+			If GetHour() = 0 And GetMinute() = 0
+				'increase current day
+				daysPlayed :+1
 			 	'automatically change current-plan-day on day change
 			 	'but do it silently (without affecting the)
-			 	RoomHandler_Office.ChangePlanningDay(eventHandledDay)
+			 	RoomHandler_Office.ChangePlanningDay(GetDay())
 
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", TData.Create().addNumber("minute", eventHandledMinute).addNumber("hour", eventHandledHour).addNumber("day", eventHandledDay) ))
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", TData.Create().addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
 			EndIf
 		Next
-		Self.lastMinutesOfDayGone = Floor(Self.minutesOfDayGone)
+
+		'reset gone time so next update can calculate missed minutes
+		timeGoneLastUpdate = timeGone
 	End Method
 
 
@@ -1136,7 +1147,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 		If arrayIndex < 0 Then Return GetFinance(Game.GetStartDay()-1)
 		If (arrayIndex = 0 And Not finances[0]) Or arrayIndex >= finances.length
-			TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG | LOG_TESTING)
+			TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances.length
 				'resize array
 				finances = finances[..arrayIndex+1]

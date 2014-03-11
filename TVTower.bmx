@@ -39,13 +39,7 @@ endrem
 ?
 
 
-
-
 Rem
-DONE
-- Werbespotdetails im Programmplaner werden wieder angezeigt (hatten vorher noch vom Textbox-Bug profitiert)
-
-
 Todo
 ----
 - RoomSigns ueberarbeiten (dynamisch aus Raeumen auslesen statt eigener Liste)
