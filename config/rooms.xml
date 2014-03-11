@@ -169,19 +169,19 @@
 			<door doorslot="1" floor="11" doortype="1" />
 		</room>
 
-		<room name="studiosize" owner="1" screen="screen_studio" size="1">
+		<room name="studio" owner="1" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="1" doortype="1" />
 		</room>
-		<room name="studiosize" owner="2" screen="screen_studio" size="1">
+		<room name="studio" owner="2" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="4" doortype="1" />
 		</room>
-		<room name="studiosize" owner="3" screen="screen_studio" size="1">
+		<room name="studio" owner="3" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="7" doortype="1" />
 		</room>
-		<room name="studiosize" owner="4" screen="screen_studio" size="1">
+		<room name="studio" owner="4" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="10" doortype="1" />
 		</room>

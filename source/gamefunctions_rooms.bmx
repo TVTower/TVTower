@@ -181,6 +181,13 @@ Type TRoom {_exposeToLua="selected"}
 		lineNumber = Max(0, Min(description.length, lineNumber))
 
 		local res:string = description[lineNumber-1]
+
+		'studios and free rooms get a second line added
+		'containing size information
+		if lineNumber = 2 and name = "studio" or name = "free"
+			res = GetLocale("ROOM_SIZE").replace("%SIZE%", size)
+		endif
+
 		if res.Find("%") = -1 then return res
 
 		res = res.Replace("%PLAYERNAME%", GetOwnerPlayerName())
