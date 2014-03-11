@@ -169,6 +169,24 @@ Type TProgrammeData {_exposeToLua}
 	End Function
 
 
+	'what to earn for each viewer
+	Method GetPerViewerRevenue:Float() {_exposeToLua}
+		local result:float = 0.0
+		If GetGenre() = TProgrammeData.GENRE_CALLINSHOW
+			result :+ GetSpeed() * 0.05
+			result :+ GetReview() * 0.2
+			'adjust by topicality
+			result :* (GetTopicality()/GetMaxTopicality())
+			print result
+		Else
+			'by default no programme has a sponsorship
+			result = 0.0
+			'TODO: include sponsorships
+		Endif
+		return result
+	End Method
+
+
 	Method GetActor:string(number:int=1)
 		number = Min(actors.length, Max(1, number))
 		if number = 0 then return ""
@@ -976,11 +994,15 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 			normalFont.drawBlock(data.country					, 10 , dY+35 , 150, 16)		'prints country
 
 			If data.genre <> data.GENRE_CALLINSHOW
+				'TODO: add sponsorship display handling here
 				normalFont.drawBlock(data.year					, 36 , dY+35 , 150, 16) 	'prints year
 				normalFont.drawBlock(data.GetDescription()		, 10,  dy+54 , 282, 71) 'prints programmedescription on moviesheet
 			Else
 				normalFont.drawBlock(data.GetDescription()		, 10,  dy+54 , 282, 51) 'prints programmedescription on moviesheet
-				normalFont.drawBlock(getLocale("MOVIE_CALLINSHOW"), 10,  dy+106 , 278, 20) 'prints programmedescription on moviesheet
+				'convert back cents to euros and round it
+				'value is "per 1000" - so multiply with that too
+				local revenue:string = int(1000 * data.GetPerViewerRevenue())+" "+CURRENCYSIGN
+				normalFont.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), 10,  dy+106 , 278, 20) 'prints programmedescription on moviesheet
 			EndIf
 
 			'set back to screen Rendering
@@ -1108,7 +1130,11 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 				normalFont.drawBlock(data.GetDescription()	, 10,  54 , 282, 71) 'prints programmedescription on moviesheet
 			Else
 				normalFont.drawBlock(data.GetDescription()	, 10,  54 , 282, 51) 'prints programmedescription on moviesheet
-				normalFont.drawBlock(getLocale("MOVIE_CALLINSHOW")      , 10,  106 , 278, 20) 'prints programmedescription on moviesheet
+
+				'convert back cents to euros and round it
+				'value is "per 1000" - so multiply with that too
+				local revenue:string = int(1000 * data.GetPerViewerRevenue())+" "+CURRENCYSIGN
+				normalFont.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), 10,  106 , 278, 20) 'prints programmedescription on moviesheet
 			EndIf
 
 
@@ -1307,6 +1333,26 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Function
 
 
+	Method CheckHourlyBroadcastingRevenue:int()
+		'callin-shows earn for each sent block... so BREAKs and FINISHs
+		'same for "sponsored" programmes
+		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
+			'fetch the rounded revenue for broadcasting this programme
+			Local revenue:Int = Game.getPlayer(owner).GetAudience() * Max(0, data.GetPerViewerRevenue())
+
+			if revenue > 0
+				'earn revenue for callin-shows
+				If data.GetGenre() = TProgrammeData.GENRE_CALLINSHOW
+					Game.getPlayer(owner).GetFinance().EarnCallerRevenue(revenue)
+				'all others programmes get "sponsored"
+				Else
+					Game.getPlayer(owner).GetFinance().EarnSponsorshipRevenue(revenue)
+				EndIf
+			endif
+		endif
+	End Method
+
+
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int)
 		Super.FinishBroadcasting(day, hour, minute)
@@ -1332,14 +1378,8 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method BreakBroadcasting:int(day:int, hour:int, minute:int)
 		Super.BreakBroadcasting:int(day, hour, minute)
 
-		'callin-shows earn for each sent block... so BREAKs and FINISHs
-		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
-			'earn revenue for callin-shows
-			If data.GetGenre() = TProgrammeData.GENRE_CALLINSHOW
-				Local revenue:Int = Game.getPlayer(owner).GetAudience() * float(RandRange(2, 5))/100.0
-				Game.getPlayer(owner).GetFinance().EarnCallerRevenue(revenue)
-			EndIf
-		endif
+		'check if revenues have to get paid (call-in-shows, sponsorships)
+		CheckHourlyBroadcastingRevenue()
 	End Method
 
 
@@ -1357,11 +1397,8 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int)
 		self.SetState(self.STATE_OK)
 
-		'earn revenue for callin-shows
-		If data.GetGenre() = TProgrammeData.GENRE_CALLINSHOW
-			Local revenue:Int = Game.getPlayer(owner).GetAudience() * float(RandRange(2, 5))/100.0
-			Game.getPlayer(owner).GetFinance().EarnCallerRevenue(revenue)
-		EndIf
+		'check if revenues have to get paid (call-in-shows, sponsorships)
+		CheckHourlyBroadcastingRevenue()
 
 		'adjust trend/popularity
 		Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity

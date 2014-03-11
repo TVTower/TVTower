@@ -169,44 +169,44 @@
 			<door doorslot="1" floor="11" doortype="1" />
 		</room>
 
-		<room name="studiosize1" owner="1" screen="screen_studio">
+		<room name="studiosize" owner="1" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="1" doortype="1" />
 		</room>
-		<room name="studiosize1" owner="2" screen="screen_studio">
+		<room name="studiosize" owner="2" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="4" doortype="1" />
 		</room>
-		<room name="studiosize1" owner="3" screen="screen_studio">
+		<room name="studiosize" owner="3" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="7" doortype="1" />
 		</room>
-		<room name="studiosize1" owner="4" screen="screen_studio">
+		<room name="studiosize" owner="4" screen="screen_studio" size="1">
 			<tooltip text="ROOM_STUDIO_OF" />
 			<door doorslot="2" floor="10" doortype="1" />
 		</room>
 
-		<room name="frduban" owner="-1" screen="screen_supermarket">
+		<room name="frduban" owner="-1" screen="screen_supermarket" size="2">
 			<tooltip text="ROOM_FRDUBAN" />
 			<door doorslot="3" floor="12" doortype="4" />
 		</room>
-		<room name="vrduban" owner="-1" screen="screen_supermarket">
+		<room name="vrduban" owner="-1" screen="screen_supermarket" size="2">
 			<tooltip text="ROOM_VRDUBAN" />
 			<door doorslot="3" floor="7" doortype="3" />
 		</room>
-		<room name="gunsagency" owner="-1" screen="screen_supermarket">
+		<room name="gunsagency" owner="-1" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_GUNSAGENCY" />
 			<door doorslot="4" floor="9" doortype="3" />
 		</room>
-		<room name="tobaccolobby" owner="-1" screen="screen_supermarket">
+		<room name="tobaccolobby" owner="-1" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_TOBACCOLOBBY" description="ROOM_TOBACCOLOBBY_OWNER" />
 			<door doorslot="2" floor="6" doortype="4" />
 		</room>
-		<room name="notobacco" owner="-1" screen="screen_supermarket">
+		<room name="notobacco" owner="-1" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_NOTOBACCO" description="ROOM_NOTOBACCO_OWNER" />
 			<door doorslot="3" floor="6" doortype="3" />
 		</room>
-		<room name="peacebrothers" owner="-1" screen="screen_supermarket">
+		<room name="peacebrothers" owner="-1" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_PEACEBROTHERS" description="ROOM_PEACEBROTHERS_SUB" />
 			<door doorslot="3" floor="10" doortype="3" />
 		</room>

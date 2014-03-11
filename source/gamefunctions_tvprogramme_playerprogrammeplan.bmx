@@ -357,7 +357,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		if TProgramme(obj) then TProgramme(obj).licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
 
 		'emit an event
-		If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", TData.Create().add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), self))
+		If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", new TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), self))
 
 		'local time:int = Game.MakeTime(0, day, hour, 0)
 		'print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + Game.GetYear(time) + " " + Game.GetDayOfYear(time) + ".Tag " + Game.GetHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
@@ -392,7 +392,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			if TProgramme(obj) then RecalculatePlannedProgramme(TProgramme(obj))
 
 			'inform others
-			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", TData.Create().add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), self))
+			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", new TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), self))
 		endif
 
 		return obj
@@ -430,7 +430,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Next
 
 		If foundAnInstance
-			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObjectInstances", TData.Create().add("object", obj).addNumber("slotType", slotType).addNumber("removeCurrentRunning", removeCurrentRunning), self))
+			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObjectInstances", new TData.add("object", obj).addNumber("slotType", slotType).addNumber("removeCurrentRunning", removeCurrentRunning), self))
 			return TRUE
 		Else
 			return FALSE
@@ -831,7 +831,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		local obj:TBroadcastMaterial = new TAdvertisement.Create(adContract)
 		if AddObject(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
 			'emit an event so eg. network can recognize the change
-			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addAdContract", TData.Create().add("contract", adContract).add("obj", obj).addNumber("day", day).addNumber("hour", hour), self))
+			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addAdContract", new TData.add("contract", adContract).add("obj", obj).addNumber("day", day).addNumber("hour", hour), self))
 			return TRUE
 		endif
 		return FALSE
@@ -882,7 +882,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.SetNews", TData.Create().AddNumber("slot", slot), newsObject))
+		if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.SetNews", new TData.AddNumber("slot", slot), newsObject))
 
 		return TRUE
     End Method
@@ -909,7 +909,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			'empty the slot
 			news[newsSlot] = null
 
-			if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.RemoveNews", TData.Create().AddNumber("slot", newsSlot), deletedNews))
+			if fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.RemoveNews", new TData.AddNumber("slot", newsSlot), deletedNews))
 			return TRUE
 		endif
 		return FALSE

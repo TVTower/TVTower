@@ -17,7 +17,6 @@ Import "source/main.bmx"
 
 Incbin "source/version.txt"
 
-
 ?Win32
 rem
 	Function SetIcon(iconname$, TheWindow%)
@@ -37,47 +36,3 @@ rem
 	SetIcon(AppFile, GetActiveWindow())
 endrem
 ?
-
-
-Rem
-Todo
-----
-- RoomSigns ueberarbeiten (dynamisch aus Raeumen auslesen statt eigener Liste)
-  dann dies per Getter machen um Neuerzeugung zu ermoeglichen
-- Tooltip am Mauscursor - "Programm vom Plan entfernen", "Hier fallen lassen um zu löschen" ..
-- Abnutzung anhand der erreichten Zuschauer-Prozente berechnen "Potenzial"
-- Werbehaendler: 2 "Billigwerbungen" die nur ab und an "erneuert" werden,
-  wenn leer, dann leer  - ist das sinnvoll? Derzeit ist Billigwerbung
-  "immer vorhanden"
-- Werbung:
-  - Imageverlust moeglich
-  - Zeitrahmen
-  - FSK18
-
-
-* Schauspieler + Regisseur-Datenbank
-  - Anhand der "fruehsten" und "spaetesten" Filme kann eine
-    Aktivitaetenzeit festgelegt werden (ausserhalb waere Spekulation - unschoen
-    wenn bspweise jemand gestorben ist)
-  - News koennen ueber die Person innerhalb der Aktivitaetenzeit geschrieben
-    werden
-  - ACHTUNG: nicht immer moeglich, es erscheinen Filme manchmal NACH dem Tod
-    eines Menschen (John Candy, Paul Walker) ... wie diese behandeln?
--> bei fiktiven Personen: Eignung als Newssprecher, Moderatoren, Darsteller, ...
-
-* XML-Dateien: Animationskonfiguration
-	- TAsset -> global "currentDeltaTime"
-	- TAsset -> global "updateList" haelt Assets die in einer Update-Runde aktualisiert werden muessen
-	- TAsset -> Sprites mit Animationskonfiguration setzen sich in diese "updateList"
-	- TAsset -> TAsset.UpdateAll() ruft die Updates auf (currentDeltaTime -> animationen etc)
-
-* Fensterverschiebung in Windows stoppt Programmablauf bis loslassen
-	- DirectX -> eigene WindowDeco - stylen
-	- OpenGL ... - WindowDeco nicht stylebar
-* Live-Events:
-	- Fussball, Formel1, Konzerte, ... fehlen noch
-* Eigenproduktionen:
-	- Filme - die auch bspweise in den Wiederverkauf
-	  gelangen koennen. Hier sollte evtl der "Kino"-Wert
-	  erst nach der Erstausstrahlung definiert werden
-EndRem

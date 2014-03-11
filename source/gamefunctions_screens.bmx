@@ -270,9 +270,9 @@ End Type
 
 Type TInGameScreen_Room extends TInGameScreen
 	Field roomName:string
-	Field currentRoom:TRooms
+	Field currentRoom:TRoom
 	Field rooms:TList = CreateList()  'rooms connected to this screen (eg office 1-4 )
-	global shortcutTarget:TRooms = null 'whacky hack
+	global shortcutTarget:TRoom = null 'whacky hack
 
 	Method Create:TInGameScreen_Room(name:string)
 		Super.Create(name)
@@ -280,7 +280,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	End Method
 
 
-	Method SetRoom(room:TRooms)
+	Method SetRoom(room:TRoom)
 		EventManager.registerListenerMethod("room.onBeginEnter", self, "OnRoomBeginEnter", room)
 		EventManager.registerListenerMethod("room.onEnter", self, "OnRoomEnter", room)
 
@@ -290,7 +290,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	End Method
 
 
-	Method GetRoom:TRooms()
+	Method GetRoom:TRoom()
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
 		return Game.GetPlayer().figure.inRoom
@@ -299,7 +299,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 	'instead of comparing rooms directly we check for names
 	'so the screen for "all" offices is getting returned
-	Function GetByRoom:TInGameScreen_Room(room:TRooms)
+	Function GetByRoom:TInGameScreen_Room(room:TRoom)
 		For local screen:TInGameScreen_Room = eachin ScreenCollection.screens.Values()
 			if screen.roomName = room.name then return screen
 		Next
@@ -322,7 +322,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 
 	Method OnRoomEnter:int(triggerEvent:TEventBase)
-		local room:TRooms = TRooms(triggerEvent.GetSender())
+		local room:TRoom = TRoom(triggerEvent.GetSender())
 		if not room or not rooms.contains(room) then return FALSE
 
 		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
@@ -334,7 +334,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 
 	Method OnRoomBeginEnter:int(triggerEvent:TEventBase)
-		local room:TRooms = TRooms(triggerEvent.GetSender())
+		local room:TRoom = TRoom(triggerEvent.GetSender())
 		if not room or not rooms.contains(room) then return FALSE
 
 		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))

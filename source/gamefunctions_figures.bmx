@@ -51,11 +51,12 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field boardingState:Int		= 0				'0=no boarding, 1=boarding, -1=deboarding
 
 	Field target:TPoint			= Null {_exposeToLua}
-	Field targetRoom:TRooms		= Null			'targetting a special room?
+	Field targetDoor:TRoomDoor	= Null			'targetting a special door?
 	Field targetHotspot:THotspot= Null			'targetting a special hotspot?
 	Field isChangingRoom:int	= FALSE			'active as soon as figure leaves/enters rooms
-	Field fromRoom:TRooms		= Null
-	Field inRoom:TRooms			= Null
+	Field fromDoor:TRoomDoor	= Null			'the door used (there might be multiple)
+	Field fromRoom:TRoom		= Null			'coming from room
+	Field inRoom:TRoom			= Null
 	Field id:Int				= 0
 	Field Visible:Int			= 1
 
@@ -65,7 +66,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field ControlledByID:Int		= -1
 	Field alreadydrawn:Int			= 0 			{nosave}
 	Field ParentPlayerID:int		= 0
-	Field SoundSource:TFigureoundSource = TFigureoundSource.Create(Self) {nosave}
+	Field SoundSource:TFigureSoundSource = TFigureSoundSource.Create(Self) {nosave}
 	Field moveable:int				= TRUE			'whether this figure can move or not (eg. for debugging)
 	Field greetOthers:int			= TRUE
 	Field useAbsolutePosition:int	= FALSE
@@ -231,18 +232,18 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		'backup old position
 		oldPos = rect.position.copy()
 
-		If Not Self.IsInElevator()
-			Self.rect.position.MoveXY(deltaTime * Self.vel.GetX(), 0)
-			If Not Self.IsOnFloor() and not useAbsolutePosition Then Self.rect.position.setY( Building.GetFloorY(Self.GetFloor()) )
+		If Not IsInElevator()
+			rect.position.MoveXY(deltaTime * vel.GetX(), 0)
+			If Not IsOnFloor() and not useAbsolutePosition Then rect.position.setY( Building.GetFloorY(GetFloor()) )
 		Else
-			Self.vel.SetX(0)
+			vel.SetX(0)
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		if not useAbsolutePosition
 			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
-			If Self.rect.GetY() < Building.GetFloorY(13) Then Self.rect.position.setY( Building.GetFloorY(13) )
-			If Self.rect.GetY() - Self.sprite.area.GetH() > Building.GetFloorY( 0) Then Self.rect.position.setY( Building.GetFloorY(0) )
+			If rect.GetY() < Building.GetFloorY(13) Then rect.position.setY( Building.GetFloorY(13) )
+			If rect.GetY() - sprite.area.GetH() > Building.GetFloorY( 0) Then rect.position.setY( Building.GetFloorY(0) )
 		endif
 	    'If Floor(Self.rect.GetX()) <= 200 Then self.changeTarget(200);self.reachTarget()
 	    'If Floor(Self.rect.GetX()) >= 579 Then self.changeTarget(579);self.reachTarget()
@@ -253,23 +254,23 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Method getAnimationToUse:string()
 		local result:string = "standFront"
 		'if standing
-		If Self.vel.GetX() = 0 or not self.moveable
+		If vel.GetX() = 0 or not moveable
 			'default - no movement needed
-			If Self.boardingState = 0
+			If boardingState = 0
 				result = "standFront"
 			'boarding/deboarding movement
 			Else
 				'multiply boardingState : if boarding it is 1, if deboarding it is -1
 				'so multiplying negates value if needed
-				If Self.boardingState * Self.PosOffset.GetX() > 0 Then result = "walkRight"
-				If Self.boardingState * Self.PosOffset.GetX() < 0 Then result = "walkLeft"
+				If boardingState * PosOffset.GetX() > 0 Then result = "walkRight"
+				If boardingState * PosOffset.GetX() < 0 Then result = "walkLeft"
 			EndIf
 
 			'show the backside if at elevator
-			If Self.hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
+			If hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
 				result = "standBack"
 			'going into a room
-			ElseIf isChangingRoom and targetRoom
+			ElseIf isChangingRoom and targetDoor
 				result = "standBack"
 			'show front
 			Else
@@ -277,8 +278,8 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 			EndIf
 		'if moving
 		Else
-			If Self.vel.GetX() > 0 Then result = "walkRight"
-			If Self.vel.GetX() < 0 Then result = "walkLeft"
+			If vel.GetX() > 0 Then result = "walkRight"
+			If vel.GetX() < 0 Then result = "walkLeft"
 		EndIf
 
 		return result
@@ -287,23 +288,23 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 	Method CanSeeFigure:int(figure:TFigure, range:int=50)
 		'being in a room - do not knock on the door :D
-		if self.inRoom OR figure.inRoom then return FALSE
+		if inRoom OR figure.inRoom then return FALSE
 		'from different floors
-		If self.rect.GetY() <> Figure.rect.GetY() then return FALSE
+		If rect.GetY() <> Figure.rect.GetY() then return FALSE
 		'and out of range
-		If Abs(self.rect.GetX() - Figure.rect.GetX()) > range then return FALSE
+		If Abs(rect.GetX() - Figure.rect.GetX()) > range then return FALSE
 
 		'same spot
-		if self.rect.GetX() = figure.rect.GetX() then return TRUE
+		if rect.GetX() = figure.rect.GetX() then return TRUE
 		'right of me
-		if self.rect.GetX() < figure.rect.GetX()
+		if rect.GetX() < figure.rect.GetX()
 			'i move to the left
-			If self.vel.GetX() < 0 then return FALSE
+			If vel.GetX() < 0 then return FALSE
 			return TRUE
 		'left of me
 		else
 			'i move to the right
-			If self.vel.GetX() > 0 then return FALSE
+			If vel.GetX() > 0 then return FALSE
 			return TRUE
 		endif
 		return FALSE
@@ -315,20 +316,20 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 			'skip other figures
 			if self = Figure then continue
 			'skip if both can't see each other to me
-			if not self.CanSeeFigure(figure) and not figure.CanSeeFigure(self) then continue
+			if not CanSeeFigure(figure) and not figure.CanSeeFigure(self) then continue
 
 			local greetType:int = 0 'grrLeft,hiLeft,?!left  adding +3 is for right side
 			'if both figures are "players" we display "GRRR" or "?!!?"
-			If figure.parentPlayerID and self.parentPlayerID
+			If figure.parentPlayerID and parentPlayerID
 				'depending on floor use "grr" or "?!"
-				greetType = 0 + 2*((1 + Building.GetFloor(self.rect.GetY()) mod 2)-1)
+				greetType = 0 + 2*((1 + Building.GetFloor(rect.GetY()) mod 2)-1)
 			else
 				greetType = 1
 			endif
 
 			'subtract half width from position - figure is drawn centered
 			'figure right of me
-			If Figure.rect.GetX() > Self.rect.GetX()
+			If Figure.rect.GetX() > rect.GetX()
 				Assets.GetSprite("gfx_building_textballons").Draw(int(tweenPos.x + rect.GetW()/2 -2), int(Building.pos.y + tweenPos.y - Self.sprite.area.GetH()), greetType, TPoint.Create(ALIGN_LEFT, ALIGN_CENTER))
 			'figure left of me
 			else
@@ -340,14 +341,15 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 
 	'player is now in room "room"
-	Method _SetInRoom:Int(room:TRooms)
+	Method _SetInRoom:Int(room:TRoom)
 		'in all cases: close the door (even if we cannot enter)
-		If room then room.CloseDoor(self)
+		'Ronny TODO: really needed?
+		If room and targetDoor then targetDoor.Close(self)
 
 		If room then room.addOccupant(Self)
 
-		'remove target Room if we are going in a room
-		if room then targetRoom = null
+		'remove target if we are going in a room
+		if room then targetDoor = null
 
 		'backup old room as origin
 		fromRoom = inRoom
@@ -359,40 +361,48 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		isChangingRoom = FALSE
 
 	 	'inform AI that we reached a room
-	 	If ParentPlayerID > 0 And Self.isAI()
+	 	If ParentPlayerID > 0 And isAI()
 			If room Then Game.GetPlayer(ParentPlayerID).PlayerKI.CallOnReachRoom(room.id) Else Game.GetPlayer(ParentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTFOUND)
 		EndIf
 
-		If Game.networkgame And Network.IsConnected Then Self.Network_SendPosition()
+		If Game.networkgame And Network.IsConnected Then Network_SendPosition()
 	End Method
 
 
-    Method CanEnterRoom:Int(room:TRooms)
+    Method CanEnterRoom:Int(room:TRoom)
 		If Not room Then Return False
 		'nicht besetzt: enter moeglich
 		If not room.hasOccupant() or room.allowMultipleOccupants Then Return True
 
 		'sonstige spielfiguren (keine spieler) koennen niemanden rausschmeissen
 		'aber auch einfach ueberall rein egal ob wer drin ist
-		If Not Self.parentPlayerID Then Return True
+		If Not parentPlayerID Then Return True
 
 		'kann andere rausschmeissen
-		If Self.parentPlayerID = room.owner Then Return True
+		If parentPlayerID = room.owner Then Return True
 
 		'sobald besetzt und kein spieler:
 		Return False
     End Method
 
-	Method KickFigureFromRoom:Int(kickFigure:TFigure, room:TRooms)
-		If Not kickFigure Or Not room Then Return False
 
-		TDevHelper.log("TFigure.KickFigureFromRoom()", Self.name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
+	Method KickFigureFromRoom:Int(kickFigure:TFigure, room:TRoom)
+		If Not kickFigure Or Not room Then Return False
+		If kickFigure = self then return FALSE
+
+		'fetch at least the main door if none is provided
+		local door:TRoomDoor = kickFigure.fromDoor
+		if not door then door = TRoomDoor.GetMainDoorToRoom(room)
+
+		TDevHelper.log("TFigure.KickFigureFromRoom()", name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
 		'instead of SimpleSoundSource we use the rooms sound source
 		'so we are able to have positioned sound
-		room.GetSoundSource().PlayRandomSFX("kick_figure", room.GetSoundSource().GetPlayerBeforeDoorSettings())
+		if door
+			door.GetSoundSource().PlayRandomSFX("kick_figure", door.GetSoundSource().GetPlayerBeforeDoorSettings())
+		endif
 
 		'maybe someone is interested in this information
-		EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", TData.Create().Add("figure", kickFigure), room ) )
+		EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", new TData.Add("figure", kickFigure).Add("door", door), room ) )
 
 		kickFigure.LeaveRoom()
 		Return True
@@ -401,11 +411,16 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 	'figure wants to enter a room
 	'"onEnterRoom" is called when successful
-	'@param room					room to enter
+	'@param door					door to use
+	'@param room					room to enter (in case no door exists)
 	'@param forceEnter				kick without being the room owner
-	Method EnterRoom:Int(room:TRooms, forceEnter:int=FALSE)
+	Method EnterRoom:Int(door:TRoomDoor, room:TRoom, forceEnter:int=FALSE)
 		'skip command if we already are entering/leaving
 		if isChangingRoom then return TRUE
+
+		'assign room if not done yet
+		if not room and door then room = door.room
+
 
 		'if already in another room, leave that first
 		if inRoom then LeaveRoom()
@@ -414,6 +429,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 		'this sends out an event that we want to enter a room
 		'if successfull, event "room.onEnter" will get triggered - which we listen to
+		if door then door.Open(self)
 		room.Enter(self, forceEnter)
 	End Method
 
@@ -421,10 +437,9 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	'gets called when the figure really enters the room (animation finished etc)
 	Function onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent._sender )
+		local room:TRoom = TRoom( triggerEvent.getData().get("room") )
 
-		local room:TRooms = TRooms( triggerEvent.getData().get("room") )
-
-'RON: if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
+		'RON: if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
 		figure._setInRoom(room)
 
 		return TRUE
@@ -439,8 +454,8 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		'RON: if self.id=1 then print "1/4 | figure: LeaveRoom | figure.id:"+self.id
 
 		If not inRoom
-			'also reset from (from nothing to nothing :D)
-			EnterRoom(null)
+			'also reset from (from nothing to nothing :D) ?
+			'EnterRoom(null)
 			return TRUE
 		endif
 		'this sends out an event that we want to leave the room
@@ -467,8 +482,10 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 
 
-	Method SendToRoom:Int(room:TRooms)
- 		If room Then ChangeTarget(room.Pos.x + 5, Building.pos.y + Building.getfloorY(room.Pos.y) - 5)
+	Method SendToDoor:Int(door:TRoomDoor)
+ 		If not door then return FALSE
+
+		ChangeTarget(door.Pos.x + 5, Building.pos.y + Building.getfloorY(door.Pos.y) - 5)
 	End Method
 
 
@@ -547,8 +564,8 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		target = TPoint.Create(x, Building.GetFloorY(Building.GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
-		targetRoom = TRooms.GetTargetroom(target.x, Building.pos.y + target.y)
-		If targetRoom then target.setX( targetRoom.pos.x + ceil(targetRoom.doorDimension.x/2) )
+		targetDoor = TRoomDoor.GetByCoord(target.x, Building.pos.y + target.y)
+		If targetDoor then target.setX( targetDoor.pos.x + ceil(targetDoor.doorDimension.x/2) )
 
 		'limit target coordinates
 		'on the base floor we can walk outside the buildng, so just check right side
@@ -601,24 +618,24 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		'hotspots are "overlaying" rooms - so more important
 		if targetHotspot
 			'emit an event
-			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", TData.Create().Add("hotspot", targetHotspot), self ) )
+			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", new TData.Add("hotspot", targetHotspot), self ) )
 
 			'remove targeted hotspot
 			targetHotspot = null
 		endif
 
 		'figure wants to change room
-		If not targetHotspot and targetRoom 'and not inRoom
+		If not targetHotspot and targetDoor
 			'emit an event
-			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", TData.Create().Add("room", targetRoom), self ) )
+			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", new TData.Add("door", targetDoor), self ) )
 
-			If targetRoom.doortype >= 0 And targetRoom.getDoorType() <> 5 And inRoom <> targetRoom
-				targetRoom.OpenDoor(Self)
+			If targetDoor.doortype >= 0 And targetDoor.getDoorType() <> 5 And inRoom <> targetDoor.room
+				targetDoor.Open(Self)
 			endif
 
 			'do not remove the target room as it is done during "entering the room"
 			'(which can be animated and so we just trust the method to do it)
-			EnterRoom(targetRoom)
+			EnterRoom(targetDoor, null)
 		EndIf
 	End Method
 

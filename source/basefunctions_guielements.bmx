@@ -155,11 +155,11 @@ Type TGUIManager
 		'we found an object accepting the drop
 
 		'ask if something does not want that drop to happen
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", TData.Create().AddObject("coord", coord) , guiobject, dropTarget)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", new TData.AddObject("coord", coord) , guiobject, dropTarget)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
-			event = TEventSimple.Create("guiobject.onDropOnTarget", TData.Create().AddObject("coord", coord) , guiobject, dropTarget)
+			event = TEventSimple.Create("guiobject.onDropOnTarget", new TData.AddObject("coord", coord) , guiobject, dropTarget)
 			EventManager.triggerEvent( event )
 		EndIf
 
@@ -170,7 +170,7 @@ Type TGUIManager
 			Return False
 		Else
 			'inform others: we successfully dropped the object to a target
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", TData.Create().AddObject("coord", coord) , guiobject, dropTarget ))
+			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", new TData.AddObject("coord", coord) , guiobject, dropTarget ))
 			'also add this drop target as receiver of the original-drop-event
 			triggerEvent._receiver = dropTarget
 			Return True
@@ -508,7 +508,7 @@ Type TGUIobject
 	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
 	Field positionBackup:TPoint		= Null
 	Field padding:TRectangle		= TRectangle.Create(0,0,0,0)
-	Field data:TData				= TData.Create() 'storage for additional data
+	Field data:TData				= new TData 'storage for additional data
 	Field scale:Float				= 1.0
 	Field alpha:Float				= 1.0
 	Field handlePosition:TPoint		= TPoint.Create(0, 0)		'where to attach the object
@@ -835,12 +835,12 @@ Type TGUIobject
 		positionBackup = TPoint.Create( GetScreenX(), GetScreenY() )
 
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", TData.Create().AddObject("coord", coord), self)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", new TData.AddObject("coord", coord), self)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 			'trigger an event immediately - if the event has a veto afterwards, do not drag!
-			Local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", TData.Create().AddObject("coord", coord), Self )
+			Local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", new TData.AddObject("coord", coord), Self )
 			EventManager.triggerEvent( event )
 			If event.isVeto() Then Return False
 
@@ -849,7 +849,7 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dragging
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrag", TData.Create().AddObject("coord", coord), Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrag", new TData.AddObject("coord", coord), Self))
 
 			Return True
 		else
@@ -872,14 +872,14 @@ Type TGUIobject
 		If coord And coord.getX()=-1 Then coord = TPoint.Create(MouseManager.x, MouseManager.y)
 
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", TData.Create().AddObject("coord", coord), self)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", new TData.AddObject("coord", coord), self)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 
 			'fire an event - if the event has a veto afterwards, do not drop!
 			'exception is, if the action is forced
-			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", TData.Create().AddObject("coord", coord), Self)
+			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", new TData.AddObject("coord", coord), Self)
 			EventManager.triggerEvent( event )
 			If Not force And event.isVeto() Then Return False
 
@@ -888,7 +888,7 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dropping - Receiver of "event" may now be helding the guiobject dropped on
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrop", TData.Create().AddObject("coord", coord), Self, event.GetReceiver()))
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrop", new TData.AddObject("coord", coord), Self, event.GetReceiver()))
 			Return True
 		else
 			Return FALSE
@@ -1144,7 +1144,7 @@ Type TGUIobject
 			Else
 				'inform others about a scroll with the mousewheel
 				If GUIManager.UpdateState_mouseScrollwheelMovement <> 0
-					Local event:TEventSimple = TEventSimple.Create("guiobject.OnScrollwheel", TData.Create().AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement),Self)
+					Local event:TEventSimple = TEventSimple.Create("guiobject.OnScrollwheel", new TData.AddNumber("value", GUIManager.UpdateState_mouseScrollwheelMovement),Self)
 					EventManager.triggerEvent(event)
 					'a listener handles the scroll - so remove it for others
 					If event.isAccepted()
@@ -1189,25 +1189,25 @@ Type TGUIobject
 							'create events
 							'onmouseenter
 							If mouseover = 0
-								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", TData.Create(), Self ) )
+								EventManager.registerEvent( TEventSimple.Create( "guiobject.OnMouseEnter", new TData, Self ) )
 								mouseover = 1
 							EndIf
 							'onmousemove
-							EventManager.registerEvent( TEventSimple.Create("guiobject.OnMouseOver", TData.Create(), Self ) )
+							EventManager.registerEvent( TEventSimple.Create("guiobject.OnMouseOver", new TData, Self ) )
 							GUIManager.UpdateState_foundHoverObject = True
 						EndIf
 
 						'somone decided to say the button is pressed above the object
 						If MouseIsDown
 							setState("active")
-							EventManager.registerEvent( TEventSimple.Create("guiobject.OnMouseDown", TData.Create().AddNumber("button", 1), Self ) )
+							EventManager.registerEvent( TEventSimple.Create("guiobject.OnMouseDown", new TData.AddNumber("button", 1), Self ) )
 						Else
 							setState("hover")
 						EndIf
 
 						'inform others about a right guiobject click
 						If GUIManager.UpdateState_mouseButtonHit[2]
-							Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",2), Self)
+							Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",2), Self)
 							OnClick(clickEvent)
 							'fire onClickEvent
 							EventManager.triggerEvent(clickEvent)
@@ -1219,7 +1219,7 @@ Type TGUIobject
 						EndIf
 
 						If MOUSEMANAGER.isDoubleHit(1)
-							Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_DOUBLECLICK).AddNumber("button",1), Self)
+							Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("type", EVENT_GUI_DOUBLECLICK).AddNumber("button",1), Self)
 							'let the object handle the click
 							OnClick(clickEvent)
 							'fire onClickEvent
@@ -1237,7 +1237,7 @@ Type TGUIobject
 								If Not HasFocus() Then GUIManager.ResetFocus()
 
 
-								Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", TData.Create().AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), Self)
+								Local clickEvent:TEventSimple = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("type", EVENT_GUI_CLICK).AddNumber("button",1), Self)
 								'let the object handle the click
 								OnClick(clickEvent)
 								'fire onClickEvent
@@ -1954,7 +1954,7 @@ Type TGUIinput Extends TGUIobject
 				_valueChanged = False
 
 				'fire onChange-event (text changed)
-				EventManager.registerEvent( TEventSimple.Create( "guiobject.onChange", TData.Create().AddNumber("type", 1).AddString("value", value), Self ) )
+				EventManager.registerEvent( TEventSimple.Create( "guiobject.onChange", new TData.AddNumber("type", 1).AddString("value", value), Self ) )
 			EndIf
 		EndIf
 		'set to "active" look
@@ -2172,7 +2172,7 @@ Type TGUIDropDown Extends TGUIobject
 					value			= Entry.getValue()
 					clickedEntryID	= Entry.id
 		'			GUIManager.setActive(0)
-					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnChange", TData.Create().AddNumber("entryID", entry.id), Self ) )
+					EventManager.registerEvent( TEventSimple.Create( "guiobject.OnChange", new TData.AddNumber("entryID", entry.id), Self ) )
 					'threadsafe?
 					MOUSEMANAGER.ResetKey(1)
 					Exit
@@ -2197,7 +2197,7 @@ Type TGUIDropDown Extends TGUIobject
 
 
 	Method AddEntry(value:String)
-		Local entry:TGUIEntry = TGUIEntry.Create( TData.Create().AddString("value", value) )
+		Local entry:TGUIEntry = TGUIEntry.Create( new TData.AddString("value", value) )
 		EntryList.AddLast(entry)
 		If Self.value = "" Then Self.value = entry.getValue()
 		If Self.clickedEntryID = -1 Then Self.clickedEntryID = entry.id
@@ -2292,7 +2292,7 @@ Type TGUICheckBox  Extends TGUIObject
 			If Not checkSprite Then Throw("Sprite ~q"+spriteBaseName+"~q not defined.")
 		EndIf
 
-		If informOthers Then EventManager.registerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", TData.Create().AddNumber("checked", checked), Self ) )
+		If informOthers Then EventManager.registerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
 	End Method
 
 
@@ -2603,7 +2603,7 @@ Type TGUIModalWindow Extends TGUIWindow
 		'and what button was used
 		'ATTENTION: maybe instead of self = sender wie should use
 		'TGUIModalWindow(self) so the listeners can fetch it correctly
-		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onClose", TData.Create().AddNumber("closeButton", closeButton) , Self))
+		EventManager.triggerEvent(TEventSimple.Create("guiModalWindow.onClose", new TData.AddNumber("closeButton", closeButton) , Self))
 	End Method
 
 
@@ -2965,9 +2965,9 @@ Type TGUIScroller Extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "minus").AddNumber("scrollAmount", 15), guiScroller ) )
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "minus").AddNumber("scrollAmount", 15), guiScroller ) )
 		ElseIf sender = guiScroller.guiButtonPlus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "down").AddNumber("scrollAmount", 15), guiScroller ) )
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "down").AddNumber("scrollAmount", 15), guiScroller ) )
 		EndIf
 	End Function
 
@@ -2990,9 +2990,9 @@ Type TGUIScroller Extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "up"), guiScroller ) )
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "up"), guiScroller ) )
 		ElseIf sender = guiScroller.guiButtonPlus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", TData.Create().AddString("direction", "down"), guiScroller ) )
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "down"), guiScroller ) )
 		EndIf
 	End Function
 
@@ -3238,7 +3238,7 @@ Type TGUIListBase Extends TGUIobject
 		'run the custom compare method
 		If autoSortItems Then entries.sort()
 
-		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", TData.Create().Add("item", item) , Self))
+		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item) , Self))
 
 		Return True
 	End Method
@@ -3250,7 +3250,7 @@ Type TGUIListBase Extends TGUIobject
 			'remove from panel and item gets managed by guimanager
 			guiEntriesPanel.removeChild(item)
 
-			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", TData.Create().Add("item", item) , Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", item) , Self))
 
 			Return True
 		Else
@@ -3518,7 +3518,7 @@ endrem
 				If value < 0 then direction = "left"
 				If value > 0 then direction = "right"
 		End Select
-		if direction <> "" then	EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", TData.Create().AddString("direction", direction).AddNumber("scrollAmount", 25), list))
+		if direction <> "" then	EventManager.registerEvent(TEventSimple.Create("guiobject.onScrollPositionChanged", new TData.AddString("direction", direction).AddNumber("scrollAmount", 25), list))
 
 		'set to accepted so that nobody else receives the event
 		triggerEvent.SetAccepted(True)
@@ -3723,7 +3723,7 @@ Type TGUISelectList Extends TGUIListBase
 			If TGUISelectListItem(Self.selectedEntry) Then TGUISelectListItem(Self.selectedEntry).selected = True
 
 			'inform others: we successfully selected an item
-			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", TData.Create().AddObject("entry", entry) , Self ) )
+			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.AddObject("entry", entry) , Self ) )
 		EndIf
 	End Method
 
@@ -3981,11 +3981,11 @@ Type TGUISlotList Extends TGUIListBase
 		If slot < 0 Or slot > Self._slots.length-1 Then Return False
 
 		If item
-			EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", TData.Create().Add("item", item).AddNumber("slot",slot) , Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item).AddNumber("slot",slot) , Self))
 			Self._slots[slot] = item
 		Else
 			If Self._slots[slot]
-				EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", TData.Create().Add("item", Self._slots[slot]).AddNumber("slot",slot) , Self))
+				EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", Self._slots[slot]).AddNumber("slot",slot) , Self))
 				Self._slots[slot] = Null
 			EndIf
 		EndIf
@@ -4008,7 +4008,7 @@ Type TGUISlotList Extends TGUIListBase
 			If Not dragItem.isDragable() Then Return False
 
 			'ask others if they want to intercept that exchange
-			Local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", TData.Create().Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
+			Local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), Self)
 			EventManager.triggerEvent(event)
 
 			If Not event.isVeto()
@@ -4020,7 +4020,7 @@ Type TGUISlotList Extends TGUIListBase
 				'unset the occupied slot
 				Self._SetSlot(slot, Null)
 
-				EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", TData.Create().Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self))
+				EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , Self))
 			EndIf
 		EndIf
 
@@ -4086,7 +4086,7 @@ Type TGUISlotList Extends TGUIListBase
 		EndIf
 
 		'ask if an add to this slot is ok
-		Local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", TData.Create().Add("item", item).AddNumber("slot",addtoSlot) , Self)
+		Local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", new TData.Add("item", item).AddNumber("slot",addtoSlot) , Self)
 		EventManager.triggerEvent(event)
 		If event.isVeto() Then Return False
 
@@ -4103,7 +4103,7 @@ Type TGUISlotList Extends TGUIListBase
 		Local slot:Int = GetSlot(item)
 		If slot >=0
 			'ask if a removal from this slot is ok
-			Local event:TEventSimple =  TEventSimple.Create("guiList.TryRemoveItem", TData.Create().Add("item", item).AddNumber("slot",slot) , Self)
+			Local event:TEventSimple =  TEventSimple.Create("guiList.TryRemoveItem", new TData.Add("item", item).AddNumber("slot",slot) , Self)
 			EventManager.triggerEvent(event)
 			If event.isVeto() Then Return False
 

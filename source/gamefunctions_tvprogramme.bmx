@@ -40,6 +40,18 @@ Type TBroadcastMaterial	extends TOwnedGameObject {exposeToLua="selected"}
 		print "GetQuality"
 	End Method
 
+
+	'what to earn for each viewers in euros?
+	'ex.: returning 0.15 means:
+	'     for 1.000     viewers I earn 150,00 Euro
+	'     for 2.000     viewers I earn 300,00 Euro
+	'     for 1.000.000 viewers I earn 150.000,00 Euro and so on
+	'so better keep the values low
+	Method GetBaseRevenue:Float() {_exposeToLua}
+		return 0.0
+	End Method
+
+
 	'get the title
 	Method GetDescription:string() {_exposeToLua}
 		Return "NO DESCRIPTION"
@@ -731,7 +743,8 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		local titleIsVisible:int = DrawBlockBackground()
 		SetColor 255,255,255
 
-		if self.mouseover and hoveredElement
+		'there is an hovered item
+		if hoveredElement
 			local oldAlpha:float = GetAlpha()
 			'i am the hovered one (but not in ghost mode)
 			'we could also check "self.mouseover", this way we could
@@ -811,6 +824,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		If not titleColor Then titleColor = TColor.Create(0,0,0)
 		If not textColor Then textColor = TColor.Create(50,50,50)
 
+title = self.broadcastMaterial.GetReferenceID() + " " +title
 
 		'shorten the title to fit into the block
 		While Assets.fonts.basefontBold.getWidth(title + titleAppend) > maxWidth And title.length > 4
@@ -1163,7 +1177,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 				if not dragItem.isDragable() then return FALSE
 
 				'ask others if they want to intercept that exchange
-				local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", TData.Create().Add("source", item).Add("target", dragItem).AddNumber("slot",slot), self)
+				local event:TEventSimple = TEventSimple.Create( "guiSlotList.onBeginReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot), self)
 				EventManager.triggerEvent(event)
 
 				if not event.isVeto()
@@ -1175,7 +1189,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 					'unset the occupied slot
 					_SetSlot(i, null)
 
-					EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", TData.Create().Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , self))
+					EventManager.triggerEvent(TEventSimple.Create( "guiSlotList.onReplaceSlotItem", new TData.Add("source", item).Add("target", dragItem).AddNumber("slot",slot) , self))
 				endif
 				'skip slots occupied by this item
 				i:+ (dragItem.broadcastMaterial.GetBlocks(isType)-1)
@@ -1236,7 +1250,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		endif
 
 		'ask if an add to this slot is ok
-		local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", TData.Create().Add("item", item).AddNumber("slot",addToSlot) , self)
+		local event:TEventSimple =  TEventSimple.Create("guiList.TryAddItem", new TData.Add("item", item).AddNumber("slot",addToSlot) , self)
 		EventManager.triggerEvent(event)
 		if event.isVeto() then return FALSE
 
@@ -1892,7 +1906,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 		bidSavings = bidSavingsMaximum
 
 		'emit event
-		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", TData.Create().Add("licence", licence).AddNumber("slot", slot), self))
+		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.Refill", new TData.Add("licence", licence).AddNumber("slot", slot), self))
 	End Method
 
 
@@ -1903,7 +1917,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 			Game.getPlayer(bestBidder).ProgrammeCollection.AddProgrammeLicence(licence)
 			Print "player "+Game.getPlayer(bestBidder).name + " won the auction for: "+licence.GetTitle()
 		End If
-		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.endAuction", TData.Create().Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid).AddNumber("bidSavings", bidSavings), self))
+		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.endAuction", new TData.Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid).AddNumber("bidSavings", bidSavings), self))
 
 		'found nobody to buy this licence
 		'so we decrease price a bit
@@ -1947,7 +1961,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 			'reset so cache gets renewed
 			_imageWithText = null
 
-			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", TData.Create().Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid), self))
+			EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.setBid", new TData.Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid), self))
 		EndIf
 		return price
 	End Method

@@ -120,7 +120,6 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 	Field attractiveness:Float			= -1					' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	'for infomercials / shopping shows
 	Field infomercialTopicality:float	= 1.0
-	Field infomercialProfit:int			= -1
 	Field infomercialMaxTopicality:float= 1.0
 
 	global List:TList					= CreateList()			' holding all Tcontracts
@@ -132,6 +131,28 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 		List.AddLast(self)
 		Return self
+	End Method
+
+
+	'what to earn each hour for each viewer
+	'(broadcasted as "infomercial")
+	Method GetPerViewerRevenue:Float() {_exposeToLua}
+		if not isInfomercialAllowed() then return 0.0
+
+		local result:float = 0.0
+
+		'calculate
+		result = CalculatePrices(base.profitBase, owner)
+		result :/ GetSpotCount()
+		result :* 0.001 'way down for reasonable prices
+		'so currently we end up with the price equal to
+		'the price of a successful contract / GetSpotCount()
+
+		'less revenue with less topicality
+		if infomercialMaxTopicality > 0
+			result :* (infomercialTopicality/infomercialMaxTopicality)
+		endif
+		return result
 	End Method
 
 
@@ -161,7 +182,6 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		self.daySigned			= day
 		self.owner				= owner
 		self.profit				= GetProfit()
-		self.infomercialProfit	= GetInfomercialProfit()
 		self.penalty			= GetPenalty()
 		self.minAudience		= GetMinAudience(owner)
 
@@ -222,25 +242,8 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method isInformercialAllowed:int() {_exposeToLua}
+	Method isInfomercialAllowed:int() {_exposeToLua}
 		return base.infomercialAllowed
-	End Method
-
-
-	'multiplies basevalues of prices, values are from 0 to 255 ... per 1000 people in audience
-	'if targetgroup is set, the price is doubled
-	Method GetInfomercialProfit:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
-		'already calculated
-		If Self.infomercialProfit >= 0 Then Return Self.infomercialProfit
-
-		'calculate
-		if baseValue = -1 then baseValue = self.base.profitBase
-		if playerID = -1 then playerID = self.owner
-
-		local result:int = CalculatePrices(baseValue, playerID)
-		result :/ GetSpotCount()
-		result :* 0.02*float(Rand(1,10)) '2-20%
-		return result
 	End Method
 
 
@@ -272,21 +275,22 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		'price is for each spot
 		Local price:Float = baseprice * Float( self.GetSpotCount() )
 
-		'ad is with fixed price - only avaible without minimum restriction
+		'ad is with fixed price - only available without minimum restriction
 		If Self.base.hasFixedPrice
 			'print self.contractBase.title + " has fixed price : "+ price + " base:"+baseprice + " profitbase:"+self.contractBase.profitBase
 			Return price
 		endif
 
-		price :* 2.0 'increase price by 100% - community says, price to low
+		price :* 4.0 'increase price by 400% - community says, price to low
 
 		'dynamic price
 		'----
 		'price we would get if 100% of audience is watching
-		price :* Max(5, getMinAudience(playerID)/1000)
+		'-> multiply with an "euros per 1000 people watching"
+		price :* Max(7.5, getMinAudience(playerID)/1000)
 
 		'specific targetgroups change price
-		If Self.GetTargetGroup() > 0 Then price :*1.75
+		If Self.GetTargetGroup() > 0 Then price :*2.0
 
 		'return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)
@@ -405,9 +409,11 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		Assets.fonts.basefontBold.drawBlock(self.GetTitle(), x + 10, y + 11, 278, 20)
 		normalFont.drawBlock("Dauerwerbesendung", x + 10, y + 34, 278, 20)
 
-		local profitFormatted:string = GetInfomercialProfit()+" "+CURRENCYSIGN
+		'convert back cents to euros and round it
+		'value is "per 1000" - so multiply with that too
+		local profitFormatted:string = int(1000*GetPerViewerRevenue())+" "+CURRENCYSIGN
 		normalFont.drawBlock(getLocale("AD_INFOMERCIAL")  , x+10, y+55, 278, 60)
-		Assets.fonts.basefontBold.drawBlock(getLocale("AD_INFOMERCIAL_PROFIT").replace("%1", profitFormatted), x+10, y+105, 278, 20)
+		Assets.fonts.basefontBold.drawBlock(getLocale("AD_INFOMERCIAL_PROFIT").replace("%PROFIT%", profitFormatted), x+10, y+105, 278, 20)
 		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY"), x+222, y+131,  40, 16)
 		SetColor 255,255,255
 
@@ -456,11 +462,15 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() +" "+ getLocale("DAY"), x+86 , y+186 , 122, 16)
 			EndIf
 		Else
-			Select self.GetDaysLeft()
-				Case 0	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TODAY") , x+86 , y+186 , 126, 16)
-				Case 1	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOMORROW") , x+86 , y+186 , 126, 16)
-				Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysLeft()), x+86 , y+186 , 122, 16)
-			EndSelect
+			if GetDaysLeft() < 0
+				font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOLATE") , x+86 , y+186 , 126, 16)
+			else
+				Select GetDaysLeft()
+					Case 0	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TODAY") , x+86 , y+186 , 126, 16)
+					Case 1	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOMORROW") , x+86 , y+186 , 126, 16)
+					Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysLeft()), x+86 , y+186 , 122, 16)
+				EndSelect
+			endif
 		EndIf
 		SetColor 255,255,255
 	End Method
@@ -513,20 +523,22 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Wie dringd ist es diese Spots zu senden
+	'Wie dringend ist es diese Spots zu senden
 	Method GetAcuteness:float() {_exposeToLua}
 		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
+		If daysLeft <= 0 then return 0 'no "acuteness" for obsolete contracts
 		Return spotsToBroadcast  / daysLeft * daysLeft  * 100
 	End Method
 
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Viele Spots sollten heute mindestens gesendet werden
+	'Wie viele Spots sollten heute mindestens gesendet werden
 	Method SendMinimalBlocksToday:int() {_exposeToLua}
 		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
 		Local acuteness:int = self.GetAcuteness()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
+		If daysLeft <= 0 then return 0 'no "blocks" for obsolete contracts
 
 		If (acuteness >= 100)
 			Return int(spotsToBroadcast / daysLeft) 'int rundet
@@ -539,10 +551,11 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Viele Spots sollten heute optimalerweise gesendet werden
+	'Wie viele Spots sollten heute optimalerweise gesendet werden
 	Method SendOptimalBlocksToday:int() {_exposeToLua}
 		Local spotsToBroadcast:int = self.GetSpotCount() - self.GetSpotsToSend()
 		Local daysLeft:int = self.getDaysLeft() + 1 'In diesem Zusammenhang nicht 0-basierend
+		If daysLeft <= 0 then return 0 'no "blocks" for obsolete contracts
 
 		Local acuteness:int = self.GetAcuteness()
 		Local optimumCount:int = Int(spotsToBroadcast / daysLeft) 'int rundet
@@ -831,7 +844,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		self.SetState(self.STATE_OK)
 		'give money
-		local earn:int = contract.GetInfomercialProfit() * (player.GetAudience() / 1000)
+		local earn:int = player.GetAudience() * contract.GetPerViewerRevenue()
 		TDevHelper.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
 		player.GetFinance().EarnAdProfit(earn)
 	End Method

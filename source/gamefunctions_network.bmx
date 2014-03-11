@@ -110,7 +110,7 @@ End Function
 Function InfoChannelEventHandler(networkObject:TNetworkObject)
 '	print "infochannel: got event: "+networkObject.evType
 	if networkObject.evType = NET_ANNOUNCEGAME
-		local evData:TData = TData.Create()
+		local evData:TData = new TData
 		evData.AddNumber("slotsUsed", networkObject.getInt(1))
 		evData.AddNumber("slotsMax", networkObject.getInt(2))
 		evData.AddNumber("hostIP", networkObject.getInt(3)) 		'could differ from senderIP
@@ -345,9 +345,11 @@ Type TNetworkHelper
 		obj.SetFloat(	3, figure.rect.GetY() )	'...
 		obj.SetFloat(	4, figure.target.x )
 		obj.SetFloat(	5, figure.target.y )
-		if figure.inRoom <> null 			then obj.setInt( 6, figure.inRoom.id)
-		if figure.targetRoom <> null		then obj.setInt( 7, figure.targetRoom.id)
-		if figure.fromRoom <> null 			then obj.setInt( 8, figure.fromRoom.id)
+		if figure.inRoom 			then obj.setInt( 6, figure.inRoom.id)
+		if figure.targetDoor		then obj.setInt( 7, figure.targetDoor.id)
+		if figure.targetHotspot		then obj.setInt( 8, figure.targetHotspot.id)
+		if figure.fromRoom 			then obj.setInt( 9, figure.fromRoom.id)
+		if figure.fromDoor 			then obj.setInt(10, figure.fromDoor.id)
 		Network.BroadcastNetworkObject( obj )
 	End Method
 
@@ -360,9 +362,11 @@ Type TNetworkHelper
 		local posY:Float			= obj.getFloat(3)
 		local targetX:Float			= obj.getFloat(4)
 		local targetY:Float			= obj.getFloat(5)
-		local inRoomID:int			= obj.getInt(6, -1,TRUE)
-		local targetRoomID:int		= obj.getInt(7, -1,TRUE)
-		local fromRoomID:int		= obj.getInt(8, -1,TRUE)
+		local inRoomID:int			= obj.getInt( 6, -1,TRUE)
+		local targetDoorID:int		= obj.getInt( 7, -1,TRUE)
+		local targetHotspotID:int	= obj.getInt( 8, -1,TRUE)
+		local fromRoomID:int		= obj.getInt( 9, -1,TRUE)
+		local fromDoorID:int		= obj.getInt(10, -1,TRUE)
 
 		If not figure.IsInElevator()
 			'only set X if wrong floor or x differs > 10 pixels
@@ -375,17 +379,21 @@ Type TNetworkHelper
 		figure.target.setXY(targetX,targetY)
 
 		If inRoomID <= 0 Then figure.inRoom = Null
-		If figure.inroom <> Null
+		If figure.inRoom
 			If inRoomID > 0 and figure.inRoom.id <> inRoomID
-				figure.inRoom = TRooms.GetRoom(inRoomID)
+				figure.inRoom = TRoom.Get(inRoomID)
 			EndIf
 		EndIf
 
-		figure.targetRoom = TRooms.GetRoom( targetRoomID )
+		figure.targetDoor = TRoomDoor.Get( targetDoorID )
+		figure.targetHotspot = THotspot.Get( targetHotspotID )
 
 		If fromRoomID <= 0 Then figure.fromRoom = Null
-		If fromRoomID > 0 And figure.fromroom <> Null
-			If figure.fromRoom.id <> fromRoomID then figure.fromRoom = TRooms.GetRoom(fromRoomID)
+		If fromRoomID > 0 And figure.fromroom
+			If figure.fromRoom.id <> fromRoomID
+				figure.fromRoom = TRoom.Get( fromRoomID )
+				figure.fromDoor = TRoomDoor.Get( fromDoorID )
+			endif
 		EndIf
 	End Method
 
@@ -694,7 +702,7 @@ print "[NET] ReceiveGameReady"
 
 		'emit an event, we received a chat message
 		'- add a "remoteSource=1" so others may recognize it
-		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", senderID).AddNumber("channels", sendToChannels).AddString("text",chatMessage).AddNumber("remoteSource",1) , null ) )
+		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", senderID).AddNumber("channels", sendToChannels).AddString("text",chatMessage).AddNumber("remoteSource",1) , null ) )
 	End Method
 
 

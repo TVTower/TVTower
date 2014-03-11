@@ -713,7 +713,7 @@ Type TTVGNetwork
 			if not obj then return
 
 			if obj.evType = NET_ANNOUNCEGAME
-				local evData:TData = TData.Create()
+				local evData:TData = new TData
 				evData.AddNumber("slotsUsed", obj.getInt(1))
 				evData.AddNumber("slotsMax", obj.getInt(2))
 				evData.AddNumber("hostIP", obj.getInt(3)) 		'could differ from senderIP

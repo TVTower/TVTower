@@ -377,30 +377,36 @@ End Type
 Type TData
 	field data:TMap = CreateMap()
 
-	Function Create:TData()
-		local obj:TData = new TData
-		return obj
-	End Function
+	Method Init:TData(data:TMap=null)
+		if data then self.data = data
+
+		return self
+	End Method
+
 
 	Method Add:TData(key:string, data:object)
 		self.data.insert(key, data)
 		return self
 	End Method
 
+
 	Method AddString:TData(key:string, data:string)
 		self.Add( key, object(data) )
 		return self
 	End Method
+
 
 	Method AddNumber:TData(key:string, data:float)
 		self.Add( key, object( string(data) ) )
 		return self
 	End Method
 
+
 	Method AddObject:TData(key:string, data:object)
 		self.Add( key, object( data ) )
 		return self
 	End Method
+
 
 	Method Get:object(key:string, defaultValue:object=null)
 		local result:object = self.data.ValueForKey(key)
@@ -408,11 +414,32 @@ Type TData
 		return defaultValue
 	End Method
 
+
 	Method GetString:string(key:string, defaultValue:string=null)
 		local result:object = self.Get(key)
 		if result then return String( result )
 		return defaultValue
 	End Method
+
+
+	Method GetBool:int(key:string, defaultValue:int=FALSE)
+		local result:object = self.Get(key)
+		if not result then return defaultValue
+		Select String(result).toLower()
+			case "1", "true", "yes"
+				return True
+			default
+				return False
+		End Select
+	End Method
+
+
+	Method GetFloat:float(key:string, defaultValue:float = 0.0)
+		local result:object = self.Get(key)
+		if result then return float( String( result ) )
+		return defaultValue
+	End Method
+
 
 	Method GetInt:int(key:string, defaultValue:int = null)
 		local result:object = self.Get(key)
