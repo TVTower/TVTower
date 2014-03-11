@@ -105,13 +105,14 @@ function BudgetManager:AllocateBudgetToTasks(pBudget)
 	local player = _G["globalPlayer"] --Zugriff die globale Variable
 
 	-- Zählen wie viele Budgetanteile es insgesamt gibt
-	local BudgetUnits = 0
+	local budgetUnits = 0
 	for k,v in pairs(player.TaskList) do
-		BudgetUnits = BudgetUnits + v.BudgetWeigth
+		budgetUnits = budgetUnits + v.BudgetWeigth
 	end
-
+	if budgetUnits == 0 then budgetUnits = 1 end	
+	
 	-- Wert einer Budgeteinheit bestimmen
-	local BudgetUnit = pBudget / BudgetUnits
+	local BudgetUnit = pBudget / budgetUnits
 
 	-- Die Budgets zuweisen
 	for k,v in pairs(player.TaskList) do
