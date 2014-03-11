@@ -5,8 +5,14 @@
 /log.ki4.txt
 /log.profiler.txt
 /TVTower
+<<<<<<< HEAD
 
 *.bak
 /TVTower.debug
 /TVTower.exe
 /version.txt
+=======
+/TVTower.debug
+/TVTower.exe
+/version.txt
+>>>>>>> ab1ab240c0810c07861407040c0da62d28366579
