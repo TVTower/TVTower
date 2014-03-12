@@ -824,8 +824,6 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		If not titleColor Then titleColor = TColor.Create(0,0,0)
 		If not textColor Then textColor = TColor.Create(50,50,50)
 
-title = self.broadcastMaterial.GetReferenceID() + " " +title
-
 		'shorten the title to fit into the block
 		While Assets.fonts.basefontBold.getWidth(title + titleAppend) > maxWidth And title.length > 4
 			title = title[..title.length-3]+".."

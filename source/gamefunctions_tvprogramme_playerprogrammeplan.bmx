@@ -270,8 +270,26 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		Local minIndex:Int = GetArrayIndex(dayStart*24 + hourStart)
 		Local maxIndex:Int = GetArrayIndex(dayEnd*24 + hourEnd)
 		local plannedMaterial:TBroadcastMaterial
+
+'materials might differ from each other
+'instead of comparing objects we compare their content
 		if startAtLatestTime
 			For local i:int = minIndex to maxIndex
+				local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
+				if not obj then continue
+				if material.GetReferenceID() = obj.GetReferenceID() then return material
+			Next
+		else
+			For local i:int = maxIndex to minIndex step -1
+				local obj:TBroadcastMaterial = TBroadcastMaterial(GetObjectAtIndex(slotType, i))
+				if not obj then continue
+				if material.GetReferenceID() = obj.GetReferenceID() then return material
+			Next
+		endif
+rem
+		if startAtLatestTime
+			For local i:int = minIndex to maxIndex
+				if not TBroadcastMaterial(GetObjectAtIndex(slotType, i)) then continue
 				if material = TBroadcastMaterial(GetObjectAtIndex(slotType, i)) then return material
 			Next
 		else
@@ -279,7 +297,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 				if material = TBroadcastMaterial(GetObjectAtIndex(slotType, i)) then return material
 			Next
 		endif
-
+endrem
 		Return null
 	End Method
 
@@ -552,17 +570,18 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		if programme.licence.owner <= 0
 			programme.licence.SetPlanned(-1)
 		else
+			'find "longest running" in all available type slots
+			'if none is found, the planned value contains "-1"
 			local instance:TBroadcastMaterial
-			'set to planned - attention, if changing setPlanned to emit events...
-			'replace that code part with a "if instance then latestHour=x" and
-			'do "setPlanned" at the end
-			programme.licence.SetPlanned(-1)
+			local blockEnd:int = -1
 			'check ad usage
-			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, -1, -1, TRUE)
-			if instance then programme.licence.SetPlanned(instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_ADVERTISEMENT))
+			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_ADVERTISEMENT, dayStart, hourStart, -1, 23, TRUE)
+			if instance then blockEnd = Max(blockEnd, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_ADVERTISEMENT))
 			'check prog usage
-			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, -1, -1, TRUE)
-			if instance then programme.licence.SetPlanned(instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_PROGRAMME))
+			instance = ObjectPlannedInTimeSpan(programme, TBroadcastMaterial.TYPE_PROGRAMME, dayStart, hourStart, -1, 23, TRUE)
+			if instance then blockEnd = Max(blockEnd, instance.programmedDay*24+instance.programmedHour + instance.GetBlocks(TBroadcastMaterial.TYPE_PROGRAMME))
+
+			programme.licence.SetPlanned(blockEnd)
 		endif
 		return TRUE
 	End Method
