@@ -10,3 +10,4 @@
 .bmx/TVTower.bmx.gui.debug.win32.x86.o
 .bmx/TVTower.bmx.gui.debug.win32.x86.s
 TVTower.debug.exe
+debug.log
