@@ -20,7 +20,7 @@ Function Font_AddGradient:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:String
 	'convert to rgba
 	If pixmap.format = PF_A8 Then pixmap = pixmap.convert(PF_RGBA8888)
 '	pixmap = pixmap.convert(PF_A8)
-	If Not config Then config = TData.Create()
+	If Not config Then config = new TData
 
 	'gradient
 	Local color:Int
@@ -50,7 +50,7 @@ End Function
 Function Font_AddShadow:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:String, char:TGW_BitmapFontChar, config:TData=Null)
 	If Not char.img Then Return char 'for "space" and other empty signs
 
-	If Not config Then config = TData.Create()
+	If Not config Then config = new TData
 	Local shadowSize:Int = config.GetInt("size", 0)
 	'nothing to do?
 	If shadowSize=0 Then Return char
@@ -190,7 +190,7 @@ Type TGUIChat Extends TGUIGameWindow
 		Local sendToChannels:Int = guiChat.getChannelsFromText(guiInput.value)
 		'- step B) is emitting the event "for all"
 		'  (the listeners have to handle if they want or ignore the line
-		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", TData.Create().AddNumber("senderID", Game.playerID).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
+		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", Game.playerID).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
 
 		'avoid getting the enter-key registered multiple times
 		'which leads to "flickering"
@@ -700,13 +700,33 @@ Type THotspot
 	Field tooltipText:String		= ""
 	Field tooltipDescription:String	= ""
 	Field hovered:Int				= False
+	Field id:int					= 0
+	Global LastID:int 				= 0
+	Global list:TList				= CreateList()
+
+	Method New()
+		LastID:+1
+		id = LastID
+
+	End Method
 
 
 	Method Create:THotSpot(name:String, x:Int,y:Int,w:Int,h:Int)
 		Self.area = TRectangle.Create(x,y,w,h)
 		Self.name = name
+
+		list. AddLast(self)
 		Return Self
 	End Method
+
+
+	Function Get:THotspot(id:int)
+		For local hotspot:THotspot = eachin list
+			if hotspot.id = id then return hotspot
+		Next
+
+		return Null
+	End Function
 
 
 	Method setTooltipText( text:String="", description:String="" )
@@ -725,7 +745,7 @@ Type THotspot
 		If adjustedArea.containsXY(MOUSEMANAGER.x, MOUSEMANAGER.y)
 			hovered = True
 			If MOUSEMANAGER.isClicked(1)
-				EventManager.triggerEvent( TEventSimple.Create("hotspot.onClick", TData.Create() , Self ) )
+				EventManager.triggerEvent( TEventSimple.Create("hotspot.onClick", new TData , Self ) )
 			EndIf
 		Else
 			hovered = False
@@ -1151,13 +1171,13 @@ Type TGameObject {_exposeToLua="selected"}
 	Global LastID:Int	= 0
 
 	Method New()
+		LastID:+1
 		'assign a new id
-		Self.id = Self.LastID
-		Self.LastID:+1
+		id = LastID
 	End Method
 
 	Method GetID:Int() {_exposeToLua}
-		Return Self.id
+		Return id
 	End Method
 
 
@@ -1235,7 +1255,7 @@ Type TGUIGameListItem Extends TGUIListItem
 		Super.Update()
 
 		If Self.mouseover Or Self.isDragged()
-			EventManager.triggerEvent(TEventSimple.Create("guiGameObject.OnMouseOver", TData.Create(), Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiGameObject.OnMouseOver", new TData, Self))
 		EndIf
 
 		If Self.mouseover Then Game.cursorstate = 1
@@ -1951,9 +1971,9 @@ Type TInterface
 
 		    For Local i:Int = 0 To 4
 				If i = ShowChannel
-					Assets.getSprite("gfx_interface_channelbuttons_on"+i).Draw(75 + i * 33, 171 + NoDX9moveY)
+					Assets.getSprite("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 171 + NoDX9moveY)
 				Else
-					Assets.getSprite("gfx_interface_channelbuttons_off"+i).Draw(75 + i * 33, 171 + NoDX9moveY)
+					Assets.getSprite("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 171 + NoDX9moveY)
 				EndIf
 		    Next
 
@@ -2280,7 +2300,7 @@ Type TStationMap {_exposeToLua="selected"}
 		Next
 		TDevHelper.Log("TStationMap.InitMapData", "calculated a population of:" + population + " in "+(MilliSecs()-start)+"ms", LOG_LOADING)
 
-		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Stationmap").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Stationmap").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 
 		'to refresh share map on buy/sell of stations
 		EventManager.registerListenerFunction( "stationmap.addStation",	onChangeStations )
@@ -2431,7 +2451,7 @@ Type TStationMap {_exposeToLua="selected"}
 		TDevHelper.Log("TStationMap.AddStation", "Player"+parent.playerID+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.addStation", TData.Create().add("station", station), Self ) )
+		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.addStation", new TData.add("station", station), Self ) )
 
 		Return True
 	End Method
@@ -2469,7 +2489,7 @@ Type TStationMap {_exposeToLua="selected"}
 		Print "TODO@Manuel: recompute Audience when station is sold"
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.removeStation", TData.Create().add("station", station), Self ) )
+		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.removeStation", new TData.add("station", station), Self ) )
 
 		Return True
     End Method

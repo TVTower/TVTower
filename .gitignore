@@ -5,9 +5,13 @@
 /log.ki4.txt
 /log.profiler.txt
 /TVTower
-
-*.bak
-.bmx/TVTower.bmx.gui.debug.win32.x86.o
-.bmx/TVTower.bmx.gui.debug.win32.x86.s
+/TVTower.debug
+/TVTower.exe
+/version.txt
 TVTower.debug.exe
 debug.log
+savegame.xml
+*.bak
+*.o
+*.s
+source/version.txt

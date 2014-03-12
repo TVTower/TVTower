@@ -363,7 +363,7 @@ End Type
 Type TEventSimple extends TEventBase
 
 	Function Create:TEventSimple(trigger:string, data:object=null, sender:object=null, receiver:object=null, channel:int=0)
-		if data=Null then data = TData.Create()
+		if data = Null then data = new TData
 		local obj:TEventSimple = new TEventSimple
 		obj._trigger	= lower(trigger)
 		obj._data	 	= data

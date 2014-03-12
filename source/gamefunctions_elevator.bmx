@@ -389,8 +389,9 @@ Type TElevator
 
 		spriteDoor.Update(deltaTime) 'Türe animieren
 
-		TRooms.UpdateDoorToolTips(deltaTime) 'Tooltips aktualisieren ----  TODO: Ist das an dieser Stelle wirklich notwendig? Begründen
+		TRoomDoor.UpdateToolTips(deltaTime) 'Tooltips aktualisieren ----  TODO: Ist das an dieser Stelle wirklich notwendig? Begründen
 	End Method
+
 
 	Method Draw() 'needs to be restructured (some test-lines within)
 		SetBlend MASKBLEND
@@ -419,6 +420,7 @@ Type TElevator
 
 		SetBlend ALPHABLEND
 	End Method
+
 
 	Method DrawFloorDoors()
 		'Innenraum zeichen (BG)     =>   elevatorBG without image -> black

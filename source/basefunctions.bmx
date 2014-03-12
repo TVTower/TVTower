@@ -377,30 +377,36 @@ End Type
 Type TData
 	field data:TMap = CreateMap()
 
-	Function Create:TData()
-		local obj:TData = new TData
-		return obj
-	End Function
+	Method Init:TData(data:TMap=null)
+		if data then self.data = data
+
+		return self
+	End Method
+
 
 	Method Add:TData(key:string, data:object)
 		self.data.insert(key, data)
 		return self
 	End Method
 
+
 	Method AddString:TData(key:string, data:string)
 		self.Add( key, object(data) )
 		return self
 	End Method
+
 
 	Method AddNumber:TData(key:string, data:float)
 		self.Add( key, object( string(data) ) )
 		return self
 	End Method
 
+
 	Method AddObject:TData(key:string, data:object)
 		self.Add( key, object( data ) )
 		return self
 	End Method
+
 
 	Method Get:object(key:string, defaultValue:object=null)
 		local result:object = self.data.ValueForKey(key)
@@ -408,11 +414,32 @@ Type TData
 		return defaultValue
 	End Method
 
+
 	Method GetString:string(key:string, defaultValue:string=null)
 		local result:object = self.Get(key)
 		if result then return String( result )
 		return defaultValue
 	End Method
+
+
+	Method GetBool:int(key:string, defaultValue:int=FALSE)
+		local result:object = self.Get(key)
+		if not result then return defaultValue
+		Select String(result).toLower()
+			case "1", "true", "yes"
+				return True
+			default
+				return False
+		End Select
+	End Method
+
+
+	Method GetFloat:float(key:string, defaultValue:float = 0.0)
+		local result:object = self.Get(key)
+		if result then return float( String( result ) )
+		return defaultValue
+	End Method
+
 
 	Method GetInt:int(key:string, defaultValue:int = null)
 		local result:object = self.Get(key)
@@ -463,7 +490,18 @@ Type TDevHelper
 	global lastPrintFunction:string=""
 	const MODE_LENGTH:int = 8
 
-	Function setPrintMode(flag:int=0, enable:int=TRUE)
+	'replace print mode flags
+	Function setPrintMode(flag:int=0)
+		printMode = flag
+	End Function
+
+	'replace logfile mode flags
+	Function setLogMode(flag:int=0)
+		logMode = flag
+	End Function
+
+	'change an existing print mode (add or remove flag)
+	Function changePrintMode(flag:int=0, enable:int=TRUE)
 		if enable
 			printMode :| flag
 		else
@@ -471,7 +509,8 @@ Type TDevHelper
 		endif
 	End Function
 
-	Function setLogMode(flag:int=0, enable:int=TRUE)
+	'change an existing logfile mode (add or remove flag)
+	Function changeLogMode(flag:int=0, enable:int=TRUE)
 		if enable
 			logMode :| flag
 		else
@@ -1459,24 +1498,43 @@ Type TFunctions
 		'Return convertValue
     End Function
 
-
+	'deprecated
 	Function shortenFloat:string(value:float, digitsAfterDecimalPoint:int=2)
-		local lengthBeforeDecimalPoint:int = string(int(value)).length
-		'now round to that digit
-		'therefor multiply by 10 for each digit (and divice by it afterwards)
-		'
-		'for example with digitsAfterDecimalPoint = 2 we get:
-		'  0.8567 is 85.67                which floors to 85 (wrong)
-		'  0.8532 is 85.32                which floors to 85 (correct)
-		'if we add 0.5 everytime... we can use "floor"
-		'  0.8567 is 85.67 + 0.5 is 86,17 which floors to 86 (correct)
-		'  0.8532 is 85.32 + 0.5 is 85,82 which floors to 85 (correct)
-		local multiplier:int = 10^digitsAfterDecimalPoint
-		value = floor(value * multiplier + 0.5) / multiplier
-
-		'now just copy length+1+digitsAfter
-		return Left(string(value), lengthBeforeDecimalPoint+1+digitsAfterDecimalPoint)
+		return FloatToString(value, digitsAfterDecimalPoint)
 	End Function
+
+
+	'convert a float to a string
+	'float is rounded to the requested amount of digits after comma
+	Function floatToString:String(value:Float, digitsAfterDecimalPoint:int = 2)
+		Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
+
+		'calculate amount of digits before "."
+		'instead of just string(int(s))).length we use the "Abs"-value
+		'and compare the original value if it is negative
+		'- this is needed because "-0.1" would be "0" as int (one char less)
+		local lengthBeforeDecimalPoint:int = string(abs(int(s))).length
+		if value < 0 then lengthBeforeDecimalPoint:+1 'minus sign
+		'remove unneeded digits (length = BEFORE + . + AFTER)
+		s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
+
+		'add at as much zeros as requested by digitsAfterDecimalPoint
+		If s.EndsWith(".")
+			for local i:int = 0 until digitsAfterDecimalPoint
+				s :+ "0"
+			Next
+		endif
+
+		Return s
+	End Function
+
+
+	'round a number using weighted non-trucate rounding.
+	Function roundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
+		Local t:Long = 10 ^ digitsAfterDecimalPoint
+		Return Long(number * t + 0.5:double * Sgn(number)) / Double(t)
+	End Function
+
 
 rem
 	'Ronny: Manuels Methode lieferte falsche Ergebnisse

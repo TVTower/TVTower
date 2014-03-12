@@ -346,7 +346,7 @@ Type TXmlLoader
 		self.loadedItems:+1
 
 		'fire event so LoaderScreen can refresh
-		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onLoadElement", TData.Create().AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onLoadElement", new TData.AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
 	End Method
 
 
@@ -366,7 +366,7 @@ Type TXmlLoader
 		If Self.xml = Null Then TDevHelper.log("TXmlLoader.Parse", "file '" + url + "' not found.", LOG_LOADING)
 
 		self.LoadResources(xml.root)
-		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onFinishParsing", TData.Create().AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onFinishParsing", new TData.AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
 	End Method
 
 
@@ -383,7 +383,7 @@ Type TXmlLoader
 
 
 			'some loaders might be interested - fire it so handler reacts immediately
-			EventManager.triggerEvent(TEventSimple.Create("resources.onLoad." + _type, TData.Create().AddObject("node", childNode).AddObject("xmlLoader", Self)))
+			EventManager.triggerEvent(TEventSimple.Create("resources.onLoad." + _type, new TData.AddObject("node", childNode).AddObject("xmlLoader", Self)))
 
 			self.currentItemNumber:+1		'increase by each entry
 
@@ -763,7 +763,7 @@ Type TResourceLoaders
 		'groups
 		if triggerEvent.isTrigger("resources.onLoad.FONTS")
 			For Local child:TxmlNode = EachIn childNode.GetChildren()
-				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.FONT", TData.Create().AddObject("node", child).AddObject("xmlLoader", xmlLoader) ) )
+				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.FONT", new TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader) ) )
 			Next
 		endif
 
@@ -819,7 +819,7 @@ Type TResourceLoaders
 			Assets.Add(TAsset.CreateBaseAsset(list, listName, "TLIST"))
 
 			For Local child:TxmlNode = EachIn childNode.GetChildren()
-				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.COLOR", TData.Create().AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
+				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.COLOR", new TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
 			Next
 		endif
 

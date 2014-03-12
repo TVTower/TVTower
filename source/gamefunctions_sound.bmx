@@ -128,13 +128,13 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 End Type
 
 Type TDoorSoundSource Extends TSoundSourceElement
-	Field Room:TRooms			'Die Raum dieser Türe
-	Field IsGamePlayerAction:Int	'
-	Field DoorTimer:TIntervalTimer		= TIntervalTimer.Create(1000)'500
+	Field door:TRoomDoor
+	Field IsGamePlayerAction:Int
+	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1000) '500
 
-	Function Create:TDoorSoundSource(_room:TRooms)
+	Function Create:TDoorSoundSource(door:TRoomDoor)
 		Local result:TDoorSoundSource = New TDoorSoundSource
-		result.Room = _room
+		result.door = door
 
 		'instead of pre-registering all events and channels, we do it
 		'during requesting a channel
@@ -155,7 +155,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 				If DoorTimer.isExpired() 'Ist der Timer abgelaufen?
 					IsGamePlayerAction = True 'Den Modus starten
 					If Game.Players[Game.playerID].Figure.inRoom = Null 'von draußen (Flur) nach drinen (Raum)
-						If Room.hasOccupant() Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
+						If door.room.hasOccupant() Then IsGamePlayerAction = False 'Ein kleiner Hack: Wenn der Raum besetzt ist, dann soll das mit dem Modus doch nicht durchgeführt werden
 						PlayRandomSfx("door_open", GetPlayerBeforeDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler vor der Türe (Depth)
 					Else 'von drinnen (Raum) nach draußen (Flur)
 						PlayRandomSfx("door_close", GetPlayerBehindDoorSettings()) 'den Sound abspielen... mit den Settings als wäre der Spieler hinter der Türe (Depth) (im Raum)
@@ -207,7 +207,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 	Method GetCenter:TPoint()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + Building.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return TPoint.Create(Room.Pos.x + Room.doorDimension.x/2, Building.GetFloorY(Room.Pos.y) - Room.doorDimension.y/2, -15)
+		Return TPoint.Create(door.Pos.x + door.doorDimension.x/2, Building.GetFloorY(door.Pos.y) - door.doorDimension.y/2, -15)
 	End Method
 
 	Method IsMovable:Int()
@@ -215,8 +215,9 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetIsHearable:Int()
-		If Room.name = "" Or Room.name = "roomboard" Or Room.name = "credits" Or Room.name = "porter" Then Return False
-		Return (Game.Players[Game.playerID].Figure.inRoom = Null) Or IsGamePlayerAction
+		If not door.isVisible() then Return False
+		'If door.room.name = "" Or door.room.name = "roomboard" Or Room.name = "credits" Or Room.name = "porter" Then Return False
+		Return Game.GetPlayer().Figure.inRoom = Null Or IsGamePlayerAction
 	End Method
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
@@ -270,12 +271,12 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 End Type
 
-Type TFigureoundSource Extends TSoundSourceElement
+Type TFigureSoundSource Extends TSoundSourceElement
 	Field Figure:TFigure
 	Field ChannelInitialized:Int = 0
 
-	Function Create:TFigureoundSource (_figure:TFigure)
-		Local result:TFigureoundSource = New TFigureoundSource
+	Function Create:TFigureSoundSource (_figure:TFigure)
+		Local result:TFigureSoundSource = New TFigureSoundSource
 		result.Figure= ­_figure
 		'result.AddDynamicSfxChannel("Steps" + result.Figure.name)
 

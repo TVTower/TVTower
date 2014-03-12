@@ -61,7 +61,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		If not contract then return False
 		if adContracts.Remove(contract)
 			'emit an event so eg. network can recognize the change
-			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeAdContract", TData.Create().add("adcontract", contract), self ) )
+			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeAdContract", new TData.add("adcontract", contract), self ) )
 		endif
 	End Method
 
@@ -75,7 +75,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 			suitcaseAdContracts.Remove(contract)
 
 			'emit an event so eg. network can recognize the change
-			If fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addAdContract", TData.Create().add("adcontract", contract), self ) )
+			If fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.addAdContract", new TData.add("adcontract", contract), self ) )
 			return TRUE
 		else
 			return FALSE
@@ -107,7 +107,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		suitcaseAdContracts.AddLast(contract)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addUnsignedAdContractToSuitcase", TData.Create().add("adcontract", contract), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addUnsignedAdContractToSuitcase", new TData.add("adcontract", contract), self))
 
 		return TRUE
 	End Method
@@ -118,7 +118,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		suitcaseAdContracts.Remove(contract)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeUnsignedAdContractFromSuitcase", TData.Create().add("adcontract", contract), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeUnsignedAdContractFromSuitcase", new TData.add("adcontract", contract), self))
 		return TRUE
 	End Method
 
@@ -158,7 +158,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		parent.ProgrammePlan.RemoveProgrammeInstancesByLicence(programmeLicence, true)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addProgrammeLicenceToSuitcase", TData.Create().add("programmeLicence", programmeLicence), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addProgrammeLicenceToSuitcase", new TData.add("programmeLicence", programmeLicence), self))
 
 		return TRUE
 	End Method
@@ -175,7 +175,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		suitcaseProgrammeLicences.Remove(licence)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicenceFromSuitcase", TData.Create().add("programmeLicence", licence), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicenceFromSuitcase", new TData.add("programmeLicence", licence), self))
 		return TRUE
 	End Method
 
@@ -193,7 +193,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		suitcaseProgrammeLicences.remove(licence)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicence", TData.Create().add("programmeLicence", licence).addNumber("sell", sell), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("sell", sell), self))
 	End Method
 
 
@@ -222,7 +222,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 		programmeLicences.AddLast(licence)
 
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addProgrammeLicence", TData.Create().add("programmeLicence", licence).addNumber("buy", buy), self))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("buy", buy), self))
 		return TRUE
 	End Method
 
@@ -388,7 +388,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		news.AddLast(newsObject)
 
 		'emit an event so eg. network can recognize the change
-		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addNews", TData.Create(), newsObject))
+		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addNews", new TData, newsObject))
 
 		return TRUE
 	End Method
@@ -401,7 +401,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 			newsObject.Remove()
 
 			'emit an event so eg. network can recognize the change
-			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeNews", TData.Create(), newsObject ) )
+			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeNews", new TData, newsObject ) )
 			return TRUE
 		endif
 		return FALSE

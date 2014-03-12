@@ -70,10 +70,10 @@ Type TScreenCollection
 		if currentScreen = screen then return TRUE
 
 		'trigger event so others can attach
-		local event:TEventSimple = TEventSimple.Create("screen.onLeave", TData.Create().Add("toScreen", screen), currentScreen)
+		local event:TEventSimple = TEventSimple.Create("screen.onLeave", new TData.Add("toScreen", screen), currentScreen)
 		EventManager.triggerEvent(event)
 		if not event.isVeto()
-			local event:TEventSimple = TEventSimple.Create("screen.onEnter", TData.Create().Add("fromScreen", currentScreen), screen)
+			local event:TEventSimple = TEventSimple.Create("screen.onEnter", new TData.Add("fromScreen", currentScreen), screen)
 			EventManager.triggerEvent(event)
 			if not event.isVeto()
 				'instead of assigning currentScreen directly we use a setter

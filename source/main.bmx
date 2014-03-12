@@ -60,9 +60,8 @@ Include "gamefunctions_debug.bmx"
 
 
 'setup what the logger should output
-TDevHelper.setLogMode(LOG_ALL & LOG_DEBUG)
-TDevHelper.setprintMode(LOG_ALL &~ LOG_AI) 'all but AI
-
+TDevHelper.setLogMode(LOG_ALL)
+TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 
 
 
@@ -441,7 +440,7 @@ Type TSaveGame
 
 		'tell everybody we start loading (eg. for unregistering objects before)
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", TData.Create().addString("saveName", saveName)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", new TData.addString("saveName", saveName)))
 
 
 		'load savegame data into game object
@@ -449,7 +448,7 @@ Type TSaveGame
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", TData.Create().addString("saveName", saveName).add("saveGame", saveGame)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
 		Return True
 	End Function
@@ -459,7 +458,7 @@ Type TSaveGame
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginSave", TData.Create().addString("saveName", saveName)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginSave", new TData.addString("saveName", saveName)))
 
 		'store game data in savegame
 		saveGame.BackupGameData()
@@ -477,7 +476,7 @@ Type TSaveGame
 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", TData.Create().addString("saveName", saveName).add("saveGame", saveGame)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
 		Return True
 	End Function
@@ -526,13 +525,9 @@ Type TGame {_exposeToLua="selected"}
 
 	Field paused:Int					= False
 	Field speed:Float					= 1.0 				'Speed of the game in "game minutes per real-time second"
-	Field minutesOfDayGone:Float		= 0.0				'time of day in game, unformatted
-	Field lastMinutesOfDayGone:Float	= 0.0				'time last update was done
-	Field timeGone:Double				= 0.0				'time (minutes) in game, not reset every day
 	Field timeStart:Double				= 0.0				'time (minutes) used when starting the game
-	Field eventHandledDay:Int			= 0					'which day is currently to handle in events
-	Field eventHandledHour:Int			= 0					'which hour is currently to handle in events
-	Field eventHandledMinute:Int		= 0					'which minute is currently to handle in events
+	Field timeGone:Double				= 0.0				'time (minutes) in game, not reset every day
+	Field timeGoneLastUpdate:Double		= -1.0				'time (minutes) in game of the last update (enables calculation of missed minutes)
 	Field daysPlayed:Int				= 0
 
 	Field title:String 				= "MyGame"				'title of the game
@@ -584,7 +579,6 @@ Type TGame {_exposeToLua="selected"}
 		Localization.SetLanguage(userlanguage) 'selects language
 		Localization.LoadResource("res/lang/lang_"+userlanguage+".txt")
 		networkgame		= 0
-		minutesOfDayGone	= 0
 
 		SetStartYear(1985)
 		title				= "unknown"
@@ -607,6 +601,7 @@ Type TGame {_exposeToLua="selected"}
 		Next
 		'colorize gfx again
 		Init_Colorization()
+
 		'set active player again (sets correct game screen)
 		GetInstance().SetActivePlayer()
 	End Function
@@ -802,10 +797,10 @@ Type TGame {_exposeToLua="selected"}
 		Select gamestate
 			Case TGame.STATE_RUNNING
 					'Begin Game - fire Events
-					EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", TData.Create().addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
-					EventManager.registerEvent(TEventSimple.Create("Game.OnHour", TData.Create().addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
+					EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
+					EventManager.registerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
 					'so we start at day "1"
-					EventManager.registerEvent(TEventSimple.Create("Game.OnDay", TData.Create().addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
+					EventManager.registerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
 
 					'so we could add news etc.
 					EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
@@ -881,7 +876,7 @@ Type TGame {_exposeToLua="selected"}
 
 	Function SendSystemMessage(message:String)
 		'send out to chats
-		EventManager.triggerEvent(TEventSimple.Create("chat.onAddEntry", TData.Create().AddNumber("senderID", -1).AddNumber("channels", CHAT_CHANNEL_SYSTEM).AddString("text", message) ) )
+		EventManager.triggerEvent(TEventSimple.Create("chat.onAddEntry", new TData.AddNumber("senderID", -1).AddNumber("channels", CHAT_CHANNEL_SYSTEM).AddString("text", message) ) )
 	End Function
 
 
@@ -914,10 +909,13 @@ Type TGame {_exposeToLua="selected"}
 
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
+		'==== ADJUST TIME ====
 		'speed is given as a factor "game-time = x * real-time"
-		minutesOfDayGone	:+ deltaTime * GetGameMinutesPerSecond()
-		timeGone			:+ deltaTime * GetGameMinutesPerSecond()
+		timeGone :+ deltaTime * GetGameMinutesPerSecond()
+		'initialize last update value if still at default value
+		if timeGoneLastUpdate < 0 then timeGoneLastUpdate = timeGone
 
+		'==== HANDLE TIMED EVENTS ====
 		'time for news ?
 		If NewsAgency.NextEventTime < timeGone Then NewsAgency.AnnounceNewNewsEvent()
 		If NewsAgency.NextChainCheckTime < timeGone Then NewsAgency.ProcessNewsEventChains()
@@ -928,35 +926,49 @@ Type TGame {_exposeToLua="selected"}
 			stateSyncTime = MilliSecs() + stateSyncTimer
 		EndIf
 
-		'if speed to high - potential skip of minutes, so "fetch them"
-		'sets minute / hour / day
-		Local missedMinutes:Int = Floor(minutesOfDayGone - lastMinutesOfDayGone)
-		If missedMinutes = 0 Then Return
+		'==== HANDLE IN GAME TIME ====
+		'less than a ingame minute gone? nothing to do YET
+		If timeGone - timeGoneLastUpdate < 1.0 Then Return
 
-		Local daysMissed:Int	= Floor(minutesOfDayGone / (24*60))
-		eventHandledDay			= Game.GetDay() - daysMissed
-		For Local i:Int = 1 To missedMinutes
-			eventHandledMinute = (Floor(lastMinutesOfDayGone)  + i ) Mod 60 '0 to 59
-			eventHandledHour = Floor( (lastMinutesOfDayGone + i) / 60) Mod 24 '0 after midnight
+		'==== HANDLE GONE/SKIPPED MINUTES ====
+		'if speed is to high - minutes might get skipped,
+		'handle this case so nothing gets lost.
+		'missedMinutes is >1 in all cases (else this part isn't run)
+		Local missedMinutes:float = timeGone - timeGoneLastUpdate
+		Local daysMissed:Int = Floor(missedMinutes / (24*60))
 
-			'minute
-			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", TData.Create().addNumber("minute", eventHandledMinute).addNumber("hour", eventHandledHour).addNumber("day", eventHandledDay) ))
-			'hour
-			If eventHandledMinute = 0 Then EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", TData.Create().addNumber("minute", eventHandledMinute).addNumber("hour", eventHandledHour).addNumber("day", eventHandledDay) ))
+		'adjust the game time so Game.GetHour()/GetMinute()/... return
+		'the correct value for each loop cycle. So Functions can rely on
+		'that functions to get the time they request.
+		'as everything can get calculated using "timeGone", no further
+		'adjustments have to take place
+		timeGone:- missedMinutes
+		For Local i:Int = 1 to missedMinutes
+			'add back another gone minute each loop
+			timeGone:+1
 
 			'day
-			If eventHandledHour = 0 And eventHandledMinute = 0
-				Self.minutesOfDayGone 	= 0			'reset minutes of day
-				Self.daysPlayed			:+1			'increase current day
-				eventHandledDay			:+1
+			If GetHour() = 0 And GetMinute() = 0
+				'increase current day
+				daysPlayed :+1
 			 	'automatically change current-plan-day on day change
 			 	'but do it silently (without affecting the)
-			 	RoomHandler_Office.ChangePlanningDay(eventHandledDay)
+			 	RoomHandler_Office.ChangePlanningDay(GetDay())
 
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", TData.Create().addNumber("minute", eventHandledMinute).addNumber("hour", eventHandledHour).addNumber("day", eventHandledDay) ))
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
 			EndIf
+
+			'hour
+			If GetMinute() = 0
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
+			endif
+
+			'minute
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
 		Next
-		Self.lastMinutesOfDayGone = Floor(Self.minutesOfDayGone)
+
+		'reset gone time so next update can calculate missed minutes
+		timeGoneLastUpdate = timeGone
 	End Method
 
 
@@ -1138,7 +1150,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 		If arrayIndex < 0 Then Return GetFinance(Game.GetStartDay()-1)
 		If (arrayIndex = 0 And Not finances[0]) Or arrayIndex >= finances.length
-			TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG | LOG_TESTING)
+			TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances.length
 				'resize array
 				finances = finances[..arrayIndex+1]
@@ -1174,7 +1186,7 @@ Type TPlayer {_exposeToLua="selected"}
 	' figureimage, a programmecollection and a programmeplan
 	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TGW_Sprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "")
 		Local Player:TPlayer		= New TPlayer
-		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Player").AddNumber("itemNumber", playerID).AddNumber("maxItemNumber", 4) ) )
+		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Player").AddNumber("itemNumber", playerID).AddNumber("maxItemNumber", 4) ) )
 
 		Player.Name					= Name
 		Player.playerID				= playerID
@@ -1371,6 +1383,7 @@ Type TPlayerFinance
 	Field income_programmeLicences:Int	= 0
 	Field income_ads:Int				= 0
 	Field income_callerRevenue:Int		= 0
+	Field income_sponsorshipRevenue:Int	= 0
 	Field income_misc:Int				= 0
 	Field income_total:Int				= 0
 	Field income_stations:Int			= 0
@@ -1494,6 +1507,15 @@ Type TPlayerFinance
 	Method EarnCallerRevenue:Int(value:Int)
 		TDevHelper.Log("TFinancial.EarnCallerRevenue()", "Player "+player.playerID+" earned "+value+" with a call-in-show", LOG_DEBUG)
 		income_callerRevenue :+ value
+		AddIncome(value)
+		Return True
+	End Method
+
+
+	'refreshs stats about earned money from sending ad powered shows or call-in
+	Method EarnSponsorshipRevenue:Int(value:Int)
+		TDevHelper.Log("TFinancial.EarnSponsorshipRevenue()", "Player "+player.playerID+" earned "+value+" broadcasting a sponsored programme", LOG_DEBUG)
+		income_sponsorshipRevenue :+ value
 		AddIncome(value)
 		Return True
 	End Method
@@ -1711,7 +1733,7 @@ Type TBuilding Extends TRenderable
 	Field gfx_buildingFence:TGW_Sprite				{nosave}
 	Field gfx_buildingRoof:TGW_Sprite				{nosave}
 
-	Field room:TRooms					= Null		'the room used for the building
+	Field room:TRoom					= Null		'the room used for the building
 	Field roomUsedTooltip:TTooltip		= Null
 	Field Stars:TPoint[60]							{nosave}
 
@@ -1745,7 +1767,7 @@ Type TBuilding Extends TRenderable
 
 
 	Method Create:TBuilding()
-		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 
 		'call to set graphics, paths for objects and other
 		'stuff not gameplay relevant
@@ -1890,7 +1912,7 @@ Type TBuilding Extends TRenderable
 		endif
 
 		'assign room
-		room = TRooms.getRoomByDetails("building",0)
+		room = TRoom.GetFirstByDetails("building")
 
 		'move elevatorplan hotspots to the elevator
 		For Local hotspot:THotspot = EachIn room.hotspots
@@ -1916,10 +1938,10 @@ Type TBuilding Extends TRenderable
 		If hotspot.name = "elevatorplan"
 			Print "figure "+figure.name+" reached elevatorplan"
 
-			Local room:TRooms = TRooms.getRoomByDetails("elevatorplan",0)
+			Local room:TRoom = TRoom.GetFirstByDetails("elevatorplan")
 			If Not room Then Print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";Return False
 
-			figure.EnterRoom(room)
+			figure.EnterRoom(null, room)
 			Return True
 		EndIf
 
@@ -1967,7 +1989,7 @@ Type TBuilding Extends TRenderable
 		SetBlend MASKBLEND
 
 		'draw overlay - open doors are drawn over "background-image-doors" etc.
-		TRooms.DrawDoors()
+		TRoomDoor.DrawAll()
 		'draw elevator parts
 		Elevator.Draw()
 
@@ -2008,7 +2030,7 @@ Type TBuilding Extends TRenderable
 			Building.gfx_buildingFence.Draw(pos.x + buildingDisplaceX + 507, pos.y + 1024 - Building.gfx_buildingFence.area.GetH() - 3)
 		EndIf
 
-		TRooms.DrawDoorToolTips()
+		TRoomDoor.DrawAllTooltips()
 
 		'draw hotspot tooltips
 		For Local hotspot:THotspot = EachIn room.hotspots
@@ -2182,12 +2204,20 @@ Type TBuilding Extends TRenderable
 		SetAlpha 1.0
 	End Method
 
-	Method CreateRoomUsedTooltip:Int(room:TRooms)
+
+	Method CreateRoomUsedTooltip:Int(door:TRoomDoor, room:TRoom = null)
+		'if no door was given, use main door of room
+		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
+		if not door then return FALSE
+
 		roomUsedTooltip			= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(pos.y + GetFloorY(room.Pos.y))
-		roomUsedTooltip.area.position.SetX(room.Pos.x + room.doorDimension.x/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.position.SetY(pos.y + GetFloorY(door.Pos.y))
+		roomUsedTooltip.area.position.SetX(door.Pos.x + door.doorDimension.x/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
+
+		return TRUE
 	End Method
+
 
 	Method CenterToFloor:Int(floornumber:Int)
 		pos.y = ((13 - (floornumber)) * 73) - 115
@@ -2394,13 +2424,13 @@ Type TFigurePostman Extends TFigure
 
 		'figure is in building and without target waiting for orders
 		If Not inRoom And Not target
-			Local room:TRooms
+			Local door:TRoomDoor
 			Repeat
-				room = TRooms(TRooms.rooms.ValueAtIndex(Rand(TRooms.rooms.Count() - 1)))
-			Until room.doortype >0
+				door = TRoomDoor.GetRandom()
+			Until door.doorType >0
 
-			TDevHelper.Log("TFigurePostman", "nothing to do -> send to room " + room.name, LOG_DEBUG | LOG_AI, True)
-			SendToRoom(room)
+			TDevHelper.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
+			SendToDoor(door)
 		EndIf
 	End Method
 End Type
@@ -2503,14 +2533,14 @@ Type TFigureJanitor Extends TFigure
 			'chose actions
 			'only clean with a chance of 30% when on the way to something
 			'and do not clean if target is a room near figure
-			If target And (Not Self.targetRoom Or (20 < Abs(targetRoom.pos.x - rect.GetX()) Or targetRoom.pos.y <> GetFloor()))
+			If target And (Not Self.targetDoor Or (20 < Abs(targetDoor.pos.x - rect.GetX()) Or targetDoor.pos.y <> GetFloor()))
 				If Rand(0,100) < Self.NormalCleanChance Then Self.currentAction = 1
 			EndIf
 			'if just standing around give a chance to clean
 			If Not target And Rand(0,100) < Self.BoredCleanChance Then	Self.currentAction = 1
 		EndIf
 
-		If Not useDoors And Self.targetRoom Then Self.targetRoom = Null
+		If Not useDoors And Self.targetDoor Then Self.targetDoor = Null
 	End Method
 End Type
 
@@ -2526,7 +2556,7 @@ Global Building:TBuilding		= new TBuilding.Create()
 TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
 
 
-EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
 
 Game.Initialize() 'Game.CreateInitialPlayers()
@@ -3551,23 +3581,23 @@ Function Init_Colorization()
 	'colorize the images
 	Local gray:TColor = TColor.Create(200, 200, 200)
 	Local gray2:TColor = TColor.Create(100, 100, 100)
-	Assets.AddImageAsSprite("gfx_financials_barren0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_building_sign0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_elevator_sign0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_elevator_sign_dragged0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons_off0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(gray2))
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons_on0", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(gray2))
+	'unused: Assets.AddImageAsSprite("gfx_financials_barren_0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_building_sign_0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_elevator_sign_0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_elevator_sign_dragged_0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(gray2))
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_0", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(gray2))
 
 	'colorizing for every player
 	For Local i:Int = 1 To 4
 		Game.GetPlayer(i).RecolorFigure()
 		local color:TColor = Game.GetPlayer(i).color
-		Assets.AddImageAsSprite("gfx_financials_barren"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_building_sign"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_elevator_sign"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_elevator_sign_dragged"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons_off"+i, Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(color, i))
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons_on"+i, Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(color, i))
+		'unused: Assets.AddImageAsSprite("gfx_financials_barren_"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_building_sign_"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_elevator_sign_"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_elevator_sign_dragged_"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_"+i, Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(color, i))
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_"+i, Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(color, i))
 	Next
 End Function
 
@@ -3575,18 +3605,15 @@ End Function
 Function Init_All()
 	TDevHelper.Log("Init_All()", "start", LOG_DEBUG)
 	Init_Creation()
+
 	TDevHelper.Log("Init_All()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 	Init_Colorization()
 	'triggering that event also triggers app.timer.loop which triggers update/draw of
 	'gamesstates - which runs this again etc.
-	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-	'setzt Raumnamen, erstellt Raum-Tooltips und Raumplaner-Schilder
-	Init_CreateRoomDetails()
-
-	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", TData.Create().AddString("text", "Fill background of building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 
 	TDevHelper.Log("Init_All()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
-	TRooms.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
+	TRoomDoor.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
 
 	TDevHelper.Log("Init_All()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
 	Building.Init()	'draws additional gfx in the sprite, registers events...
@@ -3632,7 +3659,7 @@ Type GameEvents
 		'refill if needed
 		If Game.refillMovieAgencyTime <= 0
 			'delay if there is one in this room
-			If TRooms.GetRoomByDetails("movieagency",0).hasOccupant()
+			If TRoom.GetFirstByDetails("movieagency").hasOccupant()
 				Game.refillMovieAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
@@ -3644,7 +3671,7 @@ Type GameEvents
 		EndIf
 		If Game.refillAdAgencyTime <= 0
 			'delay if there is one in this room
-			If TRooms.GetRoomByDetails("adagency",0).hasOccupant()
+			If TRoom.GetFirstByDetails("adagency").hasOccupant()
 				Game.refillAdAgencyTime :+ 15
 				Game.refillAdAgencyTime :+ 15
 			Else
@@ -3745,7 +3772,7 @@ Type GameEvents
 			TAuctionProgrammeBlocks.EndAllAuctions() 'won auctions moved to programmecollection of player
 
 			'reset room signs each day to their normal position
-			TRoomSigns.ResetPositions()
+			TRoomDoorSign.ResetPositions()
 
 			'remove old news from the players (only unset ones)
 			For Local i:Int = 1 To 4
@@ -3799,8 +3826,8 @@ Type AppEvents
 			TGW_FontManager.GetInstance().AddFont("headerFont", "res/fonts/VeraBI.ttf", 18, BOLDFONT | ITALICFONT)
 			TGW_FontManager.GetInstance().AddFont("headerFont", "res/fonts/VeraIt.ttf", 18, ITALICFONT)
 
-			Local shadowSettings:TData = TData.Create().addNumber("size", 1).addNumber("intensity", 0.5)
-			Local gradientSettings:TData = TData.Create().addNumber("gradientBottom", 180)
+			Local shadowSettings:TData = new TData.addNumber("size", 1).addNumber("intensity", 0.5)
+			Local gradientSettings:TData = new TData.addNumber("gradientBottom", 180)
 			'setup effects for normal and bold
 			headerFont = TGW_FontManager.GetInstance().CopyFont("default", "headerFont", 18, BOLDFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
@@ -3875,25 +3902,14 @@ Type AppEvents
 				If KEYMANAGER.IsHit(KEY_3) Game.SetActivePlayer(3)
 				If KEYMANAGER.IsHit(KEY_4) Game.SetActivePlayer(4)
 
-				If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(TRooms.GetRoomByDetails("adagency", 0) )
-				If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(TRooms.GetRoomByDetails("archive", Game.playerID) )
-				If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(TRooms.GetRoomByDetails("betty", 0) )
-				If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(TRooms.GetRoomByDetails("movieagency", 0))
-				If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(TRooms.GetRoomByDetails("office", Game.playerID))
-				If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(TRooms.GetRoomByDetails("chief", Game.playerID))
-				If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(TRooms.GetRoomByDetails("news", Game.playerID))
-				If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(TRooms.GetRoomByDetails("roomboard", -1))
-
-rem
-				If KEYMANAGER.IsHit(KEY_W) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("adagency", 0), True )
-				If KEYMANAGER.IsHit(KEY_A) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("archive", Game.playerID), True )
-				If KEYMANAGER.IsHit(KEY_B) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("betty", 0), True )
-				If KEYMANAGER.IsHit(KEY_F) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("movieagency", 0), True )
-				If KEYMANAGER.IsHit(KEY_O) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("office", Game.playerID), True )
-				If KEYMANAGER.IsHit(KEY_C) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("chief", Game.playerID), True )
-				If KEYMANAGER.IsHit(KEY_N) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("news", Game.playerID), True )
-				If KEYMANAGER.IsHit(KEY_R) Then Game.getPlayer().Figure.EnterRoom( TRooms.GetRoomByDetails("roomboard", -1), True )
-endrem
+				If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(TRoom.GetFirstByDetails("adagency") )
+				If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(TRoom.GetFirstByDetails("archive", Game.playerID) )
+				If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(TRoom.GetFirstByDetails("betty") )
+				If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(TRoom.GetFirstByDetails("movieagency"))
+				If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(TRoom.GetFirstByDetails("office", Game.playerID))
+				If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(TRoom.GetFirstByDetails("chief", Game.playerID))
+				If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(TRoom.GetFirstByDetails("news", Game.playerID))
+				If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(TRoom.GetFirstByDetails("roomboard"))
 			EndIf
 			If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
 			If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
@@ -4100,21 +4116,21 @@ endrem
 End Type
 
 
-Function DEV_switchRoom:int(room:TRooms)
+Function DEV_switchRoom:int(room:TRoom)
 	if not room then return FALSE
 	local figure:TFigure = Game.GetPlayer().figure
 
 	local oldEffects:int = TScreenCollection.useChangeEffects
-	local oldSpeed:int = TRooms.ChangeRoomSpeed
+	local oldSpeed:int = TRoom.ChangeRoomSpeed
 
 	'to avoid seeing too much animation
-	TRooms.ChangeRoomSpeed = 0
+	TRoom.ChangeRoomSpeed = 0
 	TScreenCollection.useChangeEffects = FALSE
 
 	TInGameScreen_Room.shortcutTarget = room 'to skip animation
-	figure.EnterRoom(room)
+	figure.EnterRoom(null, room)
 
-	TRooms.ChangeRoomSpeed = 500
+	TRoom.ChangeRoomSpeed = 500
 	TScreenCollection.useChangeEffects = TRUE
 
 	return TRUE
