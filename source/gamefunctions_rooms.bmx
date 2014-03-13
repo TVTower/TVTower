@@ -2097,7 +2097,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'1. searching
 		If stationMapMode = 1
 			'create a temporary station if not done yet
-			if not StationMapMouseoverStation then StationMapMouseoverStation = TStationMap.getStationMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
+			if not StationMapMouseoverStation then StationMapMouseoverStation = StationMapCollection.getMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
 			local mousePos:TPoint = TPoint.Create( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
@@ -2112,7 +2112,7 @@ Type RoomHandler_Office extends TRoomHandler
 			if MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
 				if StationMapMouseoverStation.GetHoveredMapSection() and StationMapMouseoverStation.getReach()>0
-					StationMapSelectedStation = TStationMap.getStationMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
+					StationMapSelectedStation = StationMapCollection.getMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
 				endif
 			endif
 
@@ -2270,7 +2270,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'only players can "enter screens" - so just use "inRoom"
 
 		For local i:int = 0 to 3
-			local show:int = TStationMap.GetStationMap(Game.GetPlayer().figure.inRoom.owner).showStations[i]
+			local show:int = StationMapCollection.GetMap(Game.GetPlayer().figure.inRoom.owner).showStations[i]
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
@@ -3342,6 +3342,7 @@ Type RoomHandler_News extends TRoomHandler
 	Global guiNewsListAvailable:TGUINewsList
 	Global guiNewsListUsed:TGUINewsSlotList
 	Global draggedGuiNews:TGuiNews = null
+	Global hoveredGuiNews:TGuiNews = null
 
 	Function Init()
 		'create genre buttons
@@ -3407,7 +3408,7 @@ Type RoomHandler_News extends TRoomHandler
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
 
-'		hoveredGuiNews = null
+		hoveredGuiNews = null
 		draggedGuiNews = null
 		guiNewsListAvailable.EmptyList()
 		guiNewsListUsed.EmptyList()
@@ -3638,6 +3639,7 @@ Type RoomHandler_News extends TRoomHandler
 		if haveToRefreshGuiElements then RefreshGUIElements()
 
 		'reset dragged block - will get set automatically on gui-update
+		hoveredGuiNews = null
 		draggedGuiNews = null
 
 		'general newsplanner elements
@@ -3653,6 +3655,7 @@ Type RoomHandler_News extends TRoomHandler
 		local item:TGUINews = TGUINews(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
+		hoveredGuiNews = item
 		if item.isDragged() then draggedGuiNews = item
 
 		return TRUE
@@ -4801,6 +4804,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("djmetzger")
 		role.addCast("Kurt TV")
 		role.addCast("Själe")
+		role.addCast("SushiTV")
 		role.addCast("...und all die anderen Fehlermelder im Forum")
 
 

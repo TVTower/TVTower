@@ -536,7 +536,7 @@ print "[NET] ReceiveGameReady"
 		local radius:int		= obj.getInt(5)
 		if not Game.isPlayer(playerID) then return FALSE
 
-		local station:TStation	= TStationMap.GetStationMap(playerID).getStation(pos.x, pos.y)
+		local station:TStation	= StationMapCollection.GetMap(playerID).getStation(pos.x, pos.y)
 
 		'disable events - ignore it to avoid recursion
 		TStationMap.fireEvents = FALSE
@@ -546,14 +546,14 @@ print "[NET] ReceiveGameReady"
 					'create the station if not existing
 					if not station then TStation.Create(pos,-1, radius, playerID)
 
-					TStationMap.GetStationMap(playerID).AddStation( station, FALSE )
+					StationMapCollection.GetMap(playerID).AddStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - add station "+station.pos.GetIntX()+","+station.pos.GetIntY()
 
 					return TRUE
 			case NET_DELETE
 					if not station then return FALSE
 
-					TStationMap.GetStationMap(playerID).RemoveStation( station, FALSE)
+					StationMapCollection.GetMap(playerID).RemoveStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - removed station "+station.pos.GetIntX()+","+station.pos.GetIntY()
 					return TRUE
 		EndSelect

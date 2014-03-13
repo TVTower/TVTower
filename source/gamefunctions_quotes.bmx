@@ -25,7 +25,7 @@ Type TBroadcastManager
 	Field currentBroadcast:TBroadcast = Null
 
 	Field TopAudienceCount:Int
-	
+
 	Field PotentialAudienceManipulations:TMap = CreateMap()
 
 	'===== Konstrukor, Speichern, Laden =====
@@ -35,7 +35,16 @@ Type TBroadcastManager
 	End Function
 
 
+	'reinitializes the manager
+	Method Reset()
+		_initialized = FALSE
+		Initialize()
+	End Method
+
+
 	Method Initialize()
+		if _initialized then return
+
 		genreDefinitions = genreDefinitions[..21]
 		Local genreMap:TMap = Assets.GetMap("genres")
 		For Local asset:TAsset = EachIn genreMap.Values()
@@ -51,6 +60,8 @@ Type TBroadcastManager
 			definition.LoadFromAssert(asset)
 			newsGenreDefinitions[definition.GenreId] = definition
 		Next
+
+		_initialized = TRUE
 	End Method
 
 
@@ -301,7 +312,7 @@ Type TBroadcast
 			End If
 		Next
 
-		Local audience:Int = TStationMap.GetShareAudience(playerIDs, withoutPlayerIDs)
+		Local audience:Int = StationMapCollection.GetShareAudience(playerIDs, withoutPlayerIDs)
 		If audience > 0 Then
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = TAudience.CreateWithBreakdown(audience)
@@ -621,8 +632,8 @@ Type TAudienceResult
 		Audience.FixGenderCount()
 		AudienceQuote = Audience.GetNewInstance()
 		AudienceQuote.Divide(PotentialMaxAudience)
-		
-		PotentialMaxAudience.FixGenderCount()		
+
+		PotentialMaxAudience.FixGenderCount()
 		PotentialMaxAudienceQuote = PotentialMaxAudience.GetNewInstance()
 		PotentialMaxAudienceQuote.Divide(WholeMarket)
 	End Method
@@ -867,15 +878,14 @@ Type TAudience
 		Men			= Ceil(Men)
 		Return Self
 	End Method
-	
-	
+
+
 	Method FixGenderCount()
 		Local GenderSum:Float = Women + Men
-		Local AudienceSum:Int = GetSum();		
-		
+		Local AudienceSum:Int = GetSum();
+
 		Women = Ceil(AudienceSum / GenderSum * Women)
-		Men = Ceil(AudienceSum / GenderSum * Men)
-		
+		Men = Ceil(AudienceSum / GenderSum * Men)		
 		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen		
 	End Method
 
@@ -906,7 +916,7 @@ Type TAudienceAttraction Extends TAudience
 	Field GenreTimeQuality:Float
 	Field AudienceAttraction:TAudience
 	Field Genre:Int
-	
+
 	Field TrailerMod:Float
 	Field TrailerQuality:Float
 

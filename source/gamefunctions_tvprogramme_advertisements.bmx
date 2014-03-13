@@ -865,13 +865,13 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'ad failed (audience lower than needed)
 		If player.audience.Audience.GetSum() < contract.GetMinAudience()
 			setState(STATE_FAILED)
-			TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
+			'TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 		'ad is ok
 		Else
 			setState(STATE_OK)
 			'successful sent - so increase the value the contract
 			contract.spotsSent:+1
-			TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
+			'TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 
 			'successful sent all needed spots?
 			If contract.isSuccessful()

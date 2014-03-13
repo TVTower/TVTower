@@ -10,7 +10,7 @@ include "gamefunctions_tvprogramme_playerprogrammecollection.bmx"
 
 
 'Base type for programmes, advertisements...
-Type TBroadcastMaterial	extends TOwnedGameObject {exposeToLua="selected"}
+Type TBroadcastMaterial	extends TOwnedGameObject {_exposeToLua="selected"}
 	Field state:int				= 0		'by default the state is "normal"
 	Field materialType:int		= 0		'original material type (may differ to usage!)
 	Field usedAsType:int		= 0		'the type this material is used for (programme as adspot -> trailer)

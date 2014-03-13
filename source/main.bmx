@@ -26,6 +26,7 @@ Import brl.Threads
 Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 												'		- base class For buttons And extension newsbutton
 												'		- stationmap-handling, -creation ...
+Include "game.stationmap.bmx"
 
 Include "gamefunctions_betty.bmx"
 Include "gamefunctions_screens.bmx"
@@ -41,15 +42,11 @@ TDevHelper.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 Global App:TApp = TApp.Create(30,-1, TRUE) 'create with screen refreshrate and vsync
 App.LoadResources("config/resources.xml")
 
-'RON: precalc here until we have abilities to use different maps during
-'     start settings setup
-TStationMap.InitMapData()
-
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_popularity.bmx"			'Popularitäten und Trends
+Include "gamefunctions_popularity.bmx"			'Popularit�ten und Trends
 Include "gamefunctions_genre.bmx"				'Genre-Definitionen
 Include "gamefunctions_quotes.bmx"				'Quotenberechnung
 Include "gamefunctions_people.bmx"				'Angestellte und Personen
@@ -86,10 +83,11 @@ Type TApp
 
 	Field creationTime:Int 'only used for debug purpose (loadingtime)
 	Global lastLoadEvent:TEventSimple	= Null
+	Global OnLoadListener:TLink = null
 	Global baseResourcesLoaded:Int		= 0						'able to draw loading screen?
 	Global baseResourceXmlUrl:String	= "config/startup.xml"	'holds bg for loading screen and more
 	Global currentResourceUrl:String	= ""
-	Global maxResourceCount:Int			= 427					'set to <=0 to get a output of loaded resources
+	Global maxResourceCount:Int			= 435					'set to <=0 to get a output of loaded resources
 	Global loadedResourceCount:Int		= 0						'set to <=0 to get a output of loaded resources
 
 	Global LogoFadeInFirstCall:Int		= 0
@@ -113,7 +111,7 @@ Type TApp
 		'register to quit confirmation dialogue
 		EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
 		'-register for each toLoad-Element from XML files
-		EventManager.registerListenerFunction( "XmlLoader.onLoadElement",	TApp.onLoadElement )
+		obj.OnLoadListener = EventManager.registerListenerFunction( "XmlLoader.onLoadElement",	TApp.onLoadElement )
 		EventManager.registerListenerFunction( "XmlLoader.onFinishParsing",	TApp.onFinishParsingXML )
 		EventManager.registerListenerFunction( "Loader.onLoadElement",	TApp.onLoadElement )
 
@@ -165,6 +163,10 @@ Type TApp
 		EventManager.registerListenerFunction("App.onDraw", 		AppEvents.onAppDraw )
 		'so we could create special fonts and other things
 		EventManager.triggerEvent( TEventSimple.Create("App.onStart") )
+
+		'from now on we are no longer interested in loaded elements
+		'as we are no longer in the loading screen (-> silent loading)
+		if OnLoadListener then EventManager.unregisterListenerByLink( OnLoadListener )
 
 		TDevHelper.Log("TApp.Start()", "loaded resources: "+loadedResourceCount, LOG_INFO)
 		TDevHelper.Log("TApp.Start()", "loading time: "+(MilliSecs() - creationTime) +"ms", LOG_INFO)
@@ -361,7 +363,7 @@ Type TSaveGame
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
 	Field _EventManagerEvents:TList = null
-	Field _Stationmaps:TList = null
+	Field _StationMapCollection:TStationMapCollection = null
 	Field _Building:TBuilding		'includes, sky, moon, ufo, elevator
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
@@ -375,7 +377,7 @@ Type TSaveGame
 		_Assign(_NewsEventCollection, NewsEventCollection, "NewsEventCollection", MODE_LOAD)
 		_Assign(_Building, Building, "Building", MODE_LOAD)
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
-		_Assign(_Stationmaps, TStationMap.List, "Stationmaps", MODE_LOAD)
+		_Assign(_StationMapCollection, StationMapCollection, "StationMapCollection", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 
@@ -390,7 +392,7 @@ Type TSaveGame
 		_Assign(ProgrammeDataCollection, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
-		_Assign(TStationMap.List, _Stationmaps, "Stationmaps", MODE_SAVE)
+		_Assign(StationMapCollection, _StationMapCollection, "StationMapCollection", MODE_SAVE)
 		'special room data
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
@@ -442,13 +444,15 @@ Type TSaveGame
 		'payload is saveName
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", new TData.addString("saveName", saveName)))
 
-
 		'load savegame data into game object
 		saveGame.RestoreGameData()
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
+
+		'call game that game continues/starts now
+		Game.Start()
 
 		Return True
 	End Function
@@ -496,7 +500,7 @@ Type TGame {_exposeToLua="selected"}
 	Const STATE_NETWORKLOBBY:Int			= 2
 	Const STATE_SETTINGSMENU:Int			= 3
 	Const STATE_STARTMULTIPLAYER:Int		= 4						'mode when data gets synchronized
-	Const STATE_INITIALIZEGAME:Int			= 5						'mode when date needed for game (names,colors) gets loaded
+	Const STATE_INITIALIZEGAME:Int			= 5						'mode when data needed for game (names,colors) gets loaded
 
 	'===== GAME SETTINGS =====
 	Const daysPerYear:Int					= 14 	{_exposeToLua}
@@ -551,17 +555,19 @@ Type TGame {_exposeToLua="selected"}
 	Field onlinegame:Int 			= 0 					'playing over internet? 0=false
 
 	Global _instance:TGame
-	Global _eventsRegistered:int 		= FALSE
+	Global _initDone:int	 		= FALSE
 
 
 	Method New()
 		_instance = self
 
-		if not _eventsRegistered
+		if not _initDone
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
-			_eventsRegistered = TRUE
+
+
+			_initDone = TRUE
 		Endif
 	End Method
 
@@ -578,10 +584,10 @@ Type TGame {_exposeToLua="selected"}
 		Localization.AddLanguages("de, en") 'adds German and English to possible language
 		Localization.SetLanguage(userlanguage) 'selects language
 		Localization.LoadResource("res/lang/lang_"+userlanguage+".txt")
-		networkgame		= 0
+		networkgame = 0
 
 		SetStartYear(1985)
-		title				= "unknown"
+		title = "unknown"
 
 		SetRandomizerBase( MilliSecs() )
 
@@ -591,6 +597,36 @@ Type TGame {_exposeToLua="selected"}
 		Return self
 	End Method
 
+
+	Method InitializeBasics()
+		CreateInitialPlayers()
+	End Method
+
+
+	'Initializes "data" needed for a game
+	'(maps, databases, managers)
+	Method Initialize()
+		'managers skip initialization if already done (eg. during loading)
+		Game.PopularityManager.Initialize()
+		Game.BroadcastManager.Initialize()
+
+		'load all movies, news, series and ad-contracts
+		LoadDatabase(userdb)
+
+		'load the used map
+		StationMapCollection.LoadMapFromXML("config/maps/germany.xml")
+	End Method
+
+
+	'run when a specific game starts
+	Method Start:int()
+		'disable chat if not networkgaming
+		If Not game.networkgame
+			InGame_Chat.hide()
+		Else
+			InGame_Chat.show()
+		EndIf
+	End Method
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
@@ -654,17 +690,6 @@ Type TGame {_exposeToLua="selected"}
 		'seed the random base for MERSENNE TWISTER (seedrnd for the internal one)
 		SeedRand(randomSeedValue)
 	End Method
-
-
-	Method Initialize()
-		Game.PopularityManager.Initialize()
-		Game.BroadcastManager.Initialize()
-
-		LoadDatabase(userdb) 'load all movies, news, series and ad-contracts
-
-		CreateInitialPlayers()
-	End Method
-
 
 
 	'computes daily costs like station or newsagency fees for every player
@@ -844,6 +869,8 @@ Type TGame {_exposeToLua="selected"}
 	End Method
 
 
+	'return the maximum audience of a player
+	'if no playerID was given, the average of all players is returned
 	Method GetMaxAudience:Int(playerID:Int=-1)
 		If Not Game.isPlayer(playerID)
 			Local avg:Int = 0
@@ -1091,1312 +1118,12 @@ End Type
 
 
 
-
-'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
-Type TPlayer {_exposeToLua="selected"}
-	Field Name:String 								'playername
-	Field channelname:String 						'name of the channel
-	Field finances:TPlayerFinance[]					'financial stats about credit, money, payments ...
-	Field audience:TAudienceResult
-
-	Field PublicImage:TPublicImage							{_exposeToLua}
-	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
-	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
-	Field Figure:TFigure									{_exposeToLua}				'actual figure the player uses
-	Field playerID:Int 			= 0					'global used ID of the player
-	Field color:TColor				 				'the color used to colorize symbols and figures
-	Field figurebase:Int 		= 0					'actual number of an array of figure-images
-	Field networkstate:Int 		= 0					'1=ready, 0=not set, ...
-	Field newsabonnements:Int[6]							{_private}					'abonnementlevels for the newsgenres
-	Field PlayerKI:KI			= Null						{_private}
-	Field CreditMaximum:Int		= 600000					{_private}
-
-
-	Method onLoad:int(triggerEvent:TEventBase)
-		'reconnect AI engine
-		if IsAi() then PlayerKI.Start()
-
-		'load savestate
-		if IsAi() then PlayerKI.CallOnLoad()
-	End Method
-
-
-	Method GetPlayerID:Int() {_exposeToLua}
-		Return playerID
-	End Method
-
-
-	Method IsAI:Int() {_exposeToLua}
-		'return self.playerKI <> null
-		Return figure.IsAI()
-	End Method
-
-
-	Method GetStationMap:TStationMap() {_exposeToLua}
-		'fetch from StationMap-list
-		local map:TStationMap = TStationMap.GetStationmap(playerID)
-		'still not existing - create it
-		if not map then map = TStationMap.Create(self)
-		return map
-	End Method
-
-
-	'returns the financial of the given day
-	'if the day is in the future, a new finance object is created
-	Method GetFinance:TPlayerFinance(day:Int=-1)
-		If day <= 0 Then day = Game.GetDay()
-		'subtract start day to get a index starting at 0 and add 1 day again
-		Local arrayIndex:Int = day +1 - Game.GetStartDay()
-
-		If arrayIndex < 0 Then Return GetFinance(Game.GetStartDay()-1)
-		If (arrayIndex = 0 And Not finances[0]) Or arrayIndex >= finances.length
-			TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
-			If arrayIndex >= finances.length
-				'resize array
-				finances = finances[..arrayIndex+1]
-			EndIf
-			finances[arrayIndex] = New TPlayerFinance.Create(Self)
-			'reuse the money from the day before
-			'if arrayIndex 0 - we do not need to take over
-			'calling GetFinance(day-1) instead of accessing the array
-			'assures that the object is created if needed (recursion)
-			If arrayIndex > 0 Then TPlayerFinance.TakeOverFinances(GetFinance(day-1), finances[arrayIndex])
-		EndIf
-		Return finances[arrayIndex]
-	End Method
-
-
-	Method GetMaxAudience:Int() {_exposeToLua}
-		Return GetStationMap().GetReach()
-	End Method
-
-
-	Method isInRoom:Int(roomName:String="", checkFromRoom:Int=False) {_exposeToLua}
-		If checkFromRoom
-			'from room has to be set AND inroom <> null (no building!)
-			Return (Figure.inRoom And Figure.inRoom.Name.toLower() = roomname.toLower()) Or (Figure.inRoom And Figure.fromRoom And Figure.fromRoom.Name.toLower() = roomname.toLower())
-		Else
-			Return (Figure.inRoom And Figure.inRoom.Name.toLower() = roomname.toLower())
-		EndIf
-	End Method
-
-
-	'creates and returns a player
-	'-creates the given playercolor and a figure with the given
-	' figureimage, a programmecollection and a programmeplan
-	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TGW_Sprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "")
-		Local Player:TPlayer		= New TPlayer
-		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Player").AddNumber("itemNumber", playerID).AddNumber("maxItemNumber", 4) ) )
-
-		Player.Name					= Name
-		Player.playerID				= playerID
-		Player.color				= color.AddToList(True).SetOwner(playerID)
-		Player.channelname			= channelname
-		Player.Figure				= New TFigure.CreateFigure(FigureName, sprite, x, onFloor, dx, ControlledByID)
-		Player.Figure.ParentPlayerID= playerID
-		Player.PublicImage			= New TPublicImage.Create(Player)
-		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
-		Player.ProgrammePlan		= New TPlayerProgrammePlan.Create(Player)
-
-		Player.RecolorFigure(Player.color)
-
-		Player.UpdateFigureBase(1)
-
-		Return Player
-	End Function
-
-
-	Method SetAIControlled(luafile:String="")
-		figure.controlledByID = 0
-		PlayerKI = new KI.Create(playerID, luafile)
-		PlayerKI.Start()
-	End Method
-
-
-	'loads a new figurbase and colorizes it
-	Method UpdateFigureBase(newfigurebase:Int)
-		Local figureCount:Int = 13
-		If newfigurebase > figureCount Then newfigurebase = 1
-		If newfigurebase <= 0 Then newfigurebase = figureCount
-		figurebase = newfigurebase
-
-		Local figureSprite:TGW_Sprite = Assets.GetSpritePack("figures").GetSprite("Player" + Self.playerID)
-		Local figureImageReplacement:TImage = ColorizeImage(Assets.GetSpritePack("figures").GetSpriteByID(figurebase).GetImage(), color)
-
-		'clear occupied area within pixmap
-		figureSprite.ClearImageData()
-		'draw the new figure at that area
-		DrawImageOnImage(figureImageReplacement, Assets.GetSpritePack("figures").image, figureSprite.area.GetX(), figureSprite.area.GetY())
-rem
-		CLS
-		DrawImage(Assets.GetSpritePack("figures").image, 10,10)
-		Flip 0
-		Delay(500)
-endrem
-	End Method
-
-
-	'colorizes a figure and the corresponding sign next to the players doors in the building
-	Method RecolorFigure(newColor:TColor = Null)
-		If newColor = Null Then newColor = color
-		color.ownerID	= 0
-		color			= newColor
-		color.ownerID	= playerID
-		UpdateFigureBase(figurebase)
-	End Method
-
-
-	'nothing up to now
-	Method UpdateFinances:Int()
-		For Local i:Int = 0 To 6
-			'
-		Next
-	End Method
-
-
-	Method GetNewsAbonnementPrice:Int(level:Int=0)
-		Return Min(5,level) * 10000
-	End Method
-
-
-	Method GetNewsAbonnementDelay:Int(genre:Int) {_exposeToLua}
-		Return 60*(3-Self.newsabonnements[genre])
-	End Method
-
-
-	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
-		If genre > 5 Then Return 0 'max 6 categories 0-5
-		Return Self.newsabonnements[genre]
-	End Method
-
-
-	Method IncreaseNewsAbonnement(genre:Int) {_exposeToLua}
-		Self.SetNewsAbonnement( genre, Self.GetNewsAbonnement(genre)+1 )
-	End Method
-
-
-	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
-		If level > Game.maxAbonnementLevel Then level = 0 'before: Return
-		If genre > 5 Then Return 'max 6 categories 0-5
-		If Self.newsabonnements[genre] <> level
-			Self.newsabonnements[genre] = level
-			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
-		EndIf
-	End Method
-
-
-	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetAudiencePercentage:Float() {_exposeToLua}
-		Return TAudienceResult.Curr(playerID).AudienceQuote.Average
-		'Local audienceResult:TAudienceResult = TAudienceResult.Curr(playerID)
-		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()
-	End Method
-
-
-Rem
-	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetRelativeAudiencePercentage:Float(playerID:Int) {_exposeToLua}
-		Return TAudienceResult.Curr(playerID).AudienceQuote.GetAverage()
-	End Method
-endrem
-
-
-	'returns value chief will give as credit
-	Method GetCreditAvailable:Int() {_exposeToLua}
-		Return Max(0, CreditMaximum - GetFinance().credit)
-	End Method
-
-
-	'nothing up to now
-	Method Update:Int()
-		''
-	End Method
-
-
-	'returns formatted value of actual money
-	'gibt einen formatierten Wert des aktuellen Geldvermoegens zurueck
-	Method GetMoneyFormatted:String(day:Int=-1)
-		Return TFunctions.convertValue(GetFinance(day).money, 2)
-	End Method
-
-
-	'attention: when used through LUA without param, the param gets "0"
-	'instead of "-1"
-	Method GetMoney:Int(day:Int=-1) {_exposeToLua}
-		Return GetFinance(day).money
-	End Method
-
-
-	'returns formatted value of actual credit
-	Method GetCreditFormatted:String(day:Int=-1)
-		Return TFunctions.convertValue(GetFinance(day).credit, 2)
-	End Method
-
-
-	Method GetCredit:Int(day:Int=-1) {_exposeToLua}
-		Return GetFinance(day).credit
-	End Method
-
-
-	Method GetAudience:Int() {_exposeToLua}
-		If Not Self.audience Then Return 0
-		Return Self.audience.Audience.GetSum()
-	End Method
-
-
-	'returns formatted value of actual audience
-	'gibt einen formatierten Wert der aktuellen Zuschauer zurueck
-	Method GetFormattedAudience:String() {_exposeToLua}
-		Return TFunctions.convertValue(GetAudience(), 2)
-	End Method
-
-	Method Compare:Int(otherObject:Object)
-		Local s:TPlayer = TPlayer(otherObject)
-		If Not s Then Return 1
-		If s.playerID > Self.playerID Then Return 1
-		Return 0
-	End Method
-
-
-	Method isActivePlayer:Int()
-		Return (Self.playerID = Game.playerID)
-	End Method
-End Type
-
-
-'holds data of WHAT has been bought, which amount of money was used and so on ...
-'contains methods for refreshing stats when paying or selling something
-Type TPlayerFinance
-	Field expense_programmeLicences:Int	= 0
-	Field expense_stations:Int 			= 0
-	Field expense_scripts:Int 			= 0
-	Field expense_productionstuff:Int	= 0
-	Field expense_penalty:Int 			= 0
-	Field expense_rent:Int 				= 0
-	Field expense_news:Int 				= 0
-	Field expense_newsagencies:Int 		= 0
-	Field expense_stationfees:Int 		= 0
-	Field expense_misc:Int 				= 0
-	Field expense_creditInterest:int	= 0	'interest to pay for the current credit
-	Field expense_total:Int 			= 0
-
-	Field income_programmeLicences:Int	= 0
-	Field income_ads:Int				= 0
-	Field income_callerRevenue:Int		= 0
-	Field income_sponsorshipRevenue:Int	= 0
-	Field income_misc:Int				= 0
-	Field income_total:Int				= 0
-	Field income_stations:Int			= 0
-	Field income_balanceInterest:int	= 0	'interest for money "on the bank"
-	Field revenue_before:Int 			= 0
-	Field revenue_after:Int 			= 0
-	Field money:Int						= 0
-	Field credit:Int 					= 0
-	Field ListLink:TLink
-	Field player:TPlayer				= Null
-	Global creditInterestRate:float		= 0.05 '5% a day
-	Global balanceInterestRate:float	= 0.01 '1% a day
-	Global List:TList					= CreateList()
-
-
-	Method Create:TPlayerFinance(player:TPlayer, startmoney:Int=500000, startcredit:Int = 500000)
-		money			= startmoney
-		revenue_before	= startmoney
-		revenue_after	= startmoney
-
-		credit			= startcredit
-		Self.player		= player
-		ListLink		= List.AddLast(Self)
-		Return Self
-	End Method
-
-
-	'take the current balance (money and credit) to the next day
-	Function TakeOverFinances:Int(fromFinance:TPlayerFinance, toFinance:TPlayerFinance Var)
-		If Not toFinance Then Return False
-		'if the "fromFinance" does not exist yet just assume the same
-		'value than of "toFinance" - so no modification would be needed
-		'in all other cases:
-		If fromFinance
-			'remove current finance from financials.list as we create a new one
-			toFinance.ListLink.remove()
-			toFinance = Null
-			'create the new financial but give the yesterdays money/credit
-			toFinance = New TPlayerFinance.Create(fromFinance.player, fromFinance.money, fromFinance.credit)
-		EndIf
-	End Function
-
-
-	'returns whether the finances allow the given transaction
-	Method CanAfford:Int(price:Int=0)
-		Return (money > 0 And money >= price)
-	End Method
-
-
-	Method ChangeMoney(value:Int)
-		'TDevHelper.log("TFinancial.ChangeMoney()", "Player "+player.playerID+" changed money by "+value, LOG_DEBUG)
-		money			:+ value
-		revenue_after	:+ value
-		'change to event?
-		If Game.isGameLeader() And player.isAI() Then player.PlayerKI.CallOnMoneyChanged()
-		If player.isActivePlayer() Then Interface.BottomImgDirty = True
-	End Method
-
-
-	Method AddIncome(value:Int)
-		income_total :+ value
-		ChangeMoney(value)
-	End Method
-
-
-	Method AddExpense(value:Int)
-		expense_total :+ value
-		ChangeMoney(-value)
-	End Method
-
-
-	Method RepayCredit:Int(value:Int)
-		TDevHelper.Log("TFinancial.RepayCredit()", "Player "+player.playerID+" repays (a part of his) credit of "+value, LOG_DEBUG)
-		credit			:- value
-		income_misc		:- value
-		income_total	:- value
-		expense_misc	:- value
-		expense_total	:- value
-		ChangeMoney(-value)
-	End Method
-
-
-	Method TakeCredit:Int(value:Int)
-		TDevHelper.Log("TFinancial.TakeCredit()", "Player "+player.playerID+" took a credit of "+value, LOG_DEBUG)
-		credit			:+ value
-		income_misc		:+ value
-		income_total	:+ value
-		expense_misc	:+ value
-		expense_total	:+ value
-		ChangeMoney(+value)
-	End Method
-
-
-	'refreshs stats about misc sells
-	Method SellMisc:Int(price:Int)
-		TDevHelper.Log("TFinancial.SellMisc()", "Player "+player.playerID+" sold mics for "+price, LOG_DEBUG)
-		income_misc :+ price
-		AddIncome(price)
-		Return True
-	End Method
-
-
-	Method SellStation:Int(price:Int)
-		TDevHelper.Log("TFinancial.SellStation()", "Player "+player.playerID+" sold a station for "+price, LOG_DEBUG)
-		income_stations :+ price
-		AddIncome(price)
-		Return True
-	End Method
-
-
-	'refreshs stats about earned money from adspots
-	Method EarnAdProfit:Int(value:Int)
-		TDevHelper.Log("TFinancial.EarnAdProfit()", "Player "+player.playerID+" earned "+value+" with ads", LOG_DEBUG)
-		income_ads :+ value
-		AddIncome(value)
-		Return True
-	End Method
-
-
-	'refreshs stats about earned money from sending ad powered shows or call-in
-	Method EarnCallerRevenue:Int(value:Int)
-		TDevHelper.Log("TFinancial.EarnCallerRevenue()", "Player "+player.playerID+" earned "+value+" with a call-in-show", LOG_DEBUG)
-		income_callerRevenue :+ value
-		AddIncome(value)
-		Return True
-	End Method
-
-
-	'refreshs stats about earned money from sending ad powered shows or call-in
-	Method EarnSponsorshipRevenue:Int(value:Int)
-		TDevHelper.Log("TFinancial.EarnSponsorshipRevenue()", "Player "+player.playerID+" earned "+value+" broadcasting a sponsored programme", LOG_DEBUG)
-		income_sponsorshipRevenue :+ value
-		AddIncome(value)
-		Return True
-	End Method
-
-
-	'refreshs stats about earned money from selling a movie/programme
-	Method SellProgrammeLicence:Int(price:Int)
-		TDevHelper.Log("TFinancial.SellLicence()", "Player "+player.playerID+" earned "+price+" selling a programme licence", LOG_DEBUG)
-		income_programmeLicences :+ price
-		AddIncome(price)
-	End Method
-
-
-	'refreshs stats about paid money from paying interest on the current credit
-	Method EarnBalanceInterest:Int(value:Int)
-		TDevHelper.Log("TFinancial.EarnBalanceInterest()", "Player "+player.playerID+" earned "+value+" on interest of their current balance", LOG_DEBUG)
-		income_balanceInterest :+ value
-		AddIncome(value)
-		Return True
-	End Method
-
-
-	'pay the bid for an auction programme
-	Method PayProgrammeBid:Int(price:Int)
-		If canAfford(price)
-			TDevHelper.Log("TFinancial.PayProgrammeBid()", "Player "+player.playerID+" paid a bid of "+price, LOG_DEBUG)
-			expense_programmeLicences	:+ price
-			AddExpense(price)
-			Return True
-		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
-			Return False
-		EndIf
-	End Method
-
-
-	'get the bid paid before another player bid for an auction programme
-	'ATTENTION: from a financial view this IS NOT CORRECT ... it should add
-	'to "income paid_programmeLicence" ...
-	Method PayBackProgrammeBid:Int(price:Int)
-		TDevHelper.Log("TFinancial.PayBackProgrammeBid()", "Player "+player.playerID+" received back "+price+" from an auction", LOG_DEBUG)
-		expense_programmeLicences	:- price
-		expense_total				:- price
-		ChangeMoney(+price)
-		Return True
-	End Method
-
-
-	'refreshs stats about paid money from buying a movie/programme
-	Method PayProgrammeLicence:Int(price:Int)
-		If canAfford(price)
-			TDevHelper.Log("TFinancial.PayProgrammeLicence()", "Player "+player.playerID+" paid "+price+" for a programmeLicence", LOG_DEBUG)
-			expense_programmeLicences :+ price
-			AddExpense(price)
-			Return True
-		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
-			Return False
-		EndIf
-	End Method
-
-
-	'refreshs stats about paid money from buying a station
-	Method PayStation:Int(price:Int)
-		If canAfford(price)
-			TDevHelper.Log("TFinancial.PayStation()", "Player "+player.playerID+" paid "+price+" for a broadcasting station", LOG_DEBUG)
-			expense_stations :+ price
-			AddExpense(price)
-			Return True
-		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
-			Return False
-		EndIf
-	End Method
-
-
-	'refreshs stats about paid money from buying a script (own production)
-	Method PayScript:Int(price:Int)
-		If canAfford(price)
-			TDevHelper.Log("TFinancial.PayScript()", "Player "+player.playerID+" paid "+price+" for a script", LOG_DEBUG)
-			expense_scripts :+ price
-			AddExpense(price)
-			Return True
-		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
-			Return False
-		EndIf
-	End Method
-
-
-	'refreshs stats about paid money from buying stuff for own production
-	Method PayProductionStuff:Int(price:Int)
-		If canAfford(price)
-			TDevHelper.Log("TFinancial.PayProductionStuff()", "Player "+player.playerID+" paid "+price+" for product stuff", LOG_DEBUG)
-			expense_productionstuff :+ price
-			AddExpense(price)
-			Return True
-		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
-			Return False
-		EndIf
-	End Method
-
-
-	'refreshs stats about paid money from paying a penalty fee (not sent the necessary adspots)
-	Method PayPenalty:Int(value:Int)
-		TDevHelper.Log("TFinancial.PayPenalty()", "Player "+player.playerID+" paid a failed contract penalty of "+value, LOG_DEBUG)
-		expense_penalty :+ value
-		AddExpense(value)
-		Return True
-	End Method
-
-
-	'refreshs stats about paid money from paying the rent of rooms
-	Method PayRent:Int(price:Int)
-		TDevHelper.Log("TFinancial.PayRent()", "Player "+player.playerID+" paid a room rent of "+price, LOG_DEBUG)
-		expense_rent :+ price
-		AddExpense(price)
-		Return True
-	End Method
-
-
-	'refreshs stats about paid money from paying for the sent newsblocks
-	Method PayNews:Int(price:Int)
-		If canAfford(price)
-			TDevHelper.Log("TFinancial.PayNews()", "Player "+player.playerID+" paid "+price+" for a news", LOG_DEBUG)
-			expense_news :+ price
-			AddExpense(price)
-			Return True
-		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
-			Return False
-		EndIf
-	End Method
-
-
-	'refreshs stats about paid money from paying the daily costs a newsagency-abonnement
-	Method PayNewsAgencies:Int(price:Int)
-		TDevHelper.Log("TFinancial.PayNewsAgencies()", "Player "+player.playerID+" paid "+price+" for news abonnements", LOG_DEBUG)
-		expense_newsagencies :+ price
-		AddExpense(price)
-		Return True
-	End Method
-
-
-	'refreshs stats about paid money from paying the fees for the owned stations
-	Method PayStationFees:Int(price:Int)
-		TDevHelper.Log("TFinancial.PayStationFees()", "Player "+player.playerID+" paid "+price+" for station fees", LOG_DEBUG)
-		expense_stationfees :+ price
-		AddExpense(price)
-		Return True
-	End Method
-
-
-	'refreshs stats about paid money from paying interest on the current credit
-	Method PayCreditInterest:Int(price:Int)
-		TDevHelper.Log("TFinancial.PayCreditInterest()", "Player "+player.playerID+" paid "+price+" on interest of their credit", LOG_DEBUG)
-		expense_creditInterest :+ price
-		AddExpense(price)
-		Return True
-	End Method
-
-
-	'refreshs stats about paid money from paying misc things
-	Method PayMisc:Int(price:Int)
-		TDevHelper.Log("TFinancial.PayStationFees()", "Player "+player.playerID+" paid "+price+" for misc", LOG_DEBUG)
-		expense_misc :+ price
-		AddExpense(price)
-		Return True
-	End Method
-End Type
-
-
-'Include "gamefunctions_interface.bmx"
-
+Include "game.player.bmx"
+Include "game.playerfinance.bmx"
 Include "gamefunctions_elevator.bmx"
 Include "gamefunctions_figures.bmx"
-
-'Summary: Type of building, area around it and doors,...
-Type TBuilding Extends TRenderable
-	Field pos:TPoint = TPoint.Create(20,0)
-	Field buildingDisplaceX:Int = 127			'px at which the building starts (leftside added is the door)
-	Field innerLeft:Int			= 127 + 40
-	Field innerRight:Int		= 127 + 468
-	Field skycolor:Float 		= 0
-	Field ufo_normal:TMoveableAnimSprites 			{nosave}
-	Field ufo_beaming:TMoveableAnimSprites 			{nosave}
-	Field Elevator:TElevator
-
-	Field Moon_Path:TCatmullRomSpline	= New TCatmullRomSpline {nosave}
-	Field Moon_PathCurrentDistanceOld:Float= 0.0
-	Field Moon_PathCurrentDistance:Float= 0.0
-	Field Moon_MovementStarted:Int		= False
-	Field Moon_MovementBaseSpeed:Float	= 0.0		'so that the whole path moved within time
-
-	Field UFO_Path:TCatmullRomSpline	= New TCatmullRomSpline {nosave}
-	Field UFO_PathCurrentDistanceOld:Float	= 0.0
-	Field UFO_PathCurrentDistance:Float		= 0.0
-	Field UFO_MovementStarted:Int		= False
-	Field UFO_MovementBaseSpeed:Float	= 0.0
-	Field UFO_DoBeamAnimation:Int		= False
-	Field UFO_BeamAnimationDone:Int		= False
-
-	Field Clouds:TMoveableAnimSprites[7]			{nosave}
-	Field CloudsAlpha:Float[7]						{nosave}
-
-	Field TimeColor:Double
-	Field DezimalTime:Float
-	Field ActHour:Int
-	Field initDone:Int					= False
-	Field gfx_bgBuildings:TGW_Sprite[6]				{nosave}
-	Field gfx_building:TGW_Sprite					{nosave}
-	Field gfx_buildingEntrance:TGW_Sprite			{nosave}
-	Field gfx_buildingEntranceWall:TGW_Sprite		{nosave}
-	Field gfx_buildingFence:TGW_Sprite				{nosave}
-	Field gfx_buildingRoof:TGW_Sprite				{nosave}
-
-	Field room:TRoom					= Null		'the room used for the building
-	Field roomUsedTooltip:TTooltip		= Null
-	Field Stars:TPoint[60]							{nosave}
-
-	Global _instance:TBuilding
-	Global _backgroundModified:int		= FALSE
-	Global _eventsRegistered:int 		= FALSE
-
-
-	Method New()
-		_instance = self
-
-		if not _eventsRegistered
-			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
-
-			EventManager.registerListenerFunction( "hotspot.onClick", onClickHotspot)
-
-			'we want to get information about figures reaching their desired target
-			'(this can be "room", "hotspot" ... )
-			EventManager.registerListenerFunction( "figure.onReachTarget", onReachTarget)
-
-			_eventsRegistered = TRUE
-		Endif
-	End Method
-
-
-	Function GetInstance:TBuilding()
-		if not _instance then _instance = new TBuilding.Create()
-		return _instance
-	End Function
-
-
-	Method Create:TBuilding()
-		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-
-		'call to set graphics, paths for objects and other
-		'stuff not gameplay relevant
-		InitGraphics()
-
-		pos.y			= 0 - gfx_building.area.GetH() + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
-		Elevator		= new TElevator.Create()
-		Elevator.Pos.SetY(GetFloorY(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
-
-		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
-
-		Return self
-	End Method
-
-
-	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TDevHelper.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
-		GetInstance().InitGraphics()
-		'reassign the elevator - should not be needed
-		'GetInstance().Elevator = TElevator.GetInstance()
-
-		'reposition hotspots
-		GetInstance().Init()
-	End Function
-
-
-	Method InitGraphics()
-		'==== MOON ====
-		'movement
-		Moon_Path = New TCatmullRomSpline
-		Moon_Path.addXY( -50, 640 )
-		Moon_Path.addXY( -50, 190 )
-		Moon_Path.addXY( 400,  10 )
-		Moon_Path.addXY( 850, 190 )
-		Moon_Path.addXY( 850, 640 )
-
-		'==== UFO ====
-		'sprites
-		ufo_normal	= New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo"), 9, 100).SetupMoveable(0, 100, 0,0)
-		ufo_beaming	= New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo2"), 9, 100).SetupMoveable(0, 100, 0,0)
-		'movement
-		Local displaceY:Int = 280, displaceX:Int = 5
-		UFO_Path = New TCatmullRomSpline
-		UFO_path.addXY( -60 +displaceX, -410 +displaceY)
-		UFO_path.addXY( -50 +displaceX, -400 +displaceY)
-		UFO_path.addXY(  50 +displaceX, -350 +displaceY)
-		UFO_path.addXY(-100 +displaceX, -300 +displaceY)
-		UFO_path.addXY( 100 +displaceX, -250 +displaceY)
-		UFO_path.addXY(  40 +displaceX, -200 +displaceY)
-		UFO_path.addXY(  50 +displaceX, -190 +displaceY)
-		UFO_path.addXY(  60 +displaceX, -200 +displaceY)
-		UFO_path.addXY(  70 +displaceX, -250 +displaceY)
-		UFO_path.addXY( 400 +displaceX, -700 +displaceY)
-		UFO_path.addXY( 410 +displaceX, -710 +displaceY)
-
-		'==== CLOUDS ====
-		For Local i:Int = 0 To Clouds.length-1
-			Clouds[i] = New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_clouds"), 1,0).SetupMoveable(- 200 * i + (i + 1) * Rand(0,400), - 30 + Rand(0,30), 2 + Rand(0, 6),0)
-			CloudsAlpha[i] = Float(Rand(80,100))/100.0
-		Next
-
-		'==== STARS ====
-		For Local j:Int = 0 To 29
-			Stars[j] = TPoint.Create( 10+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
-		Next
-		For Local j:Int = 30 To 59
-			Stars[j] = TPoint.Create( 650+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
-		Next
-
-
-		'==== BACKGROUND BUILDINGS ====
-		gfx_bgBuildings[0] = Assets.GetSprite("gfx_building_BG_Ebene3L")
-		gfx_bgBuildings[1] = Assets.GetSprite("gfx_building_BG_Ebene3R")
-		gfx_bgBuildings[2] = Assets.GetSprite("gfx_building_BG_Ebene2L")
-		gfx_bgBuildings[3] = Assets.GetSprite("gfx_building_BG_Ebene2R")
-		gfx_bgBuildings[4] = Assets.GetSprite("gfx_building_BG_Ebene1L")
-		gfx_bgBuildings[5] = Assets.GetSprite("gfx_building_BG_Ebene1R")
-
-		'building assets
-		gfx_building				= Assets.GetSprite("gfx_building")
-		gfx_buildingEntrance		= Assets.GetSprite("gfx_building_Eingang")
-		gfx_buildingEntranceWall	= Assets.GetSprite("gfx_building_EingangWand")
-		gfx_buildingFence			= Assets.GetSprite("gfx_building_Zaun")
-		gfx_buildingRoof			= Assets.GetSprite("gfx_building_Dach")
-	End Method
-
-
-	Method Update(deltaTime:Float=1.0)
-		pos.y = Clamp(pos.y, - 637, 88)
-		UpdateBackground(deltaTime)
-
-
-		'update hotspot tooltips
-		If room
-			For Local hotspot:THotspot = EachIn room.hotspots
-				hotspot.update(Self.pos.x, Self.pos.y)
-			Next
-		EndIf
-
-
-		If Self.roomUsedTooltip <> Null Then Self.roomUsedTooltip.Update(deltaTime)
-
-
-		'handle player target changes
-		If Not Game.GetPlayer().Figure.inRoom
-			If MOUSEMANAGER.isClicked(1) And Not GUIManager.modalActive
-				If Not Game.GetPlayer().Figure.isChangingRoom
-					If TFunctions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
-						Game.GetPlayer().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
-						MOUSEMANAGER.resetKey(1)
-					EndIf
-				EndIf
-			EndIf
-		EndIf
-	End Method
-
-	Method Init:Int()
-		If initDone Then Return True
-
-		if not _backgroundModified
-			Local locy13:Int	= GetFloorY(13)
-			Local locy3:Int		= GetFloorY(3)
-			Local locy0:Int		= GetFloorY(0)
-			Local locy12:Int	= GetFloorY(12)
-
-			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze4").GetImage(), Pix, -buildingDisplaceX + innerleft + 40, locy12 - Assets.GetSprite("gfx_building_Pflanze4").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze6").GetImage(), Pix, -buildingDisplaceX + innerRight - 95, locy12 - Assets.GetSprite("gfx_building_Pflanze6").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze2").GetImage(), Pix, -buildingDisplaceX + innerleft + 105, locy13 - Assets.GetSprite("gfx_building_Pflanze2").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze3").GetImage(), Pix, -buildingDisplaceX + innerRight - 105, locy13 - Assets.GetSprite("gfx_building_Pflanze3").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy0 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").area.GetW(), locy0 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy13 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").area.GetW(), locy13 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy3 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").area.GetW(), locy3 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			UnlockImage(gfx_building.parent.image)
-			Pix = Null
-
-			_backgroundModified = TRUE
-		endif
-
-		'assign room
-		room = TRoom.GetFirstByDetails("building")
-
-		'move elevatorplan hotspots to the elevator
-		For Local hotspot:THotspot = EachIn room.hotspots
-			If hotspot.name = "elevatorplan"
-				hotspot.area.position.setX( Elevator.pos.getX() )
-				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
-			EndIf
-		Next
-
-		initDone = True
-	End Method
-
-
-	Function onReachTarget:Int( triggerEvent:TEventBase )
-		Local figure:TFigure = TFigure( triggerEvent._sender )
-		If Not figure Then Return False
-
-		Local hotspot:THotspot = THotspot( triggerEvent.getData().get("hotspot") )
-		'we are only interested in hotspots
-		If Not hotspot Then Return False
-
-
-		If hotspot.name = "elevatorplan"
-			Print "figure "+figure.name+" reached elevatorplan"
-
-			Local room:TRoom = TRoom.GetFirstByDetails("elevatorplan")
-			If Not room Then Print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";Return False
-
-			figure.EnterRoom(null, room)
-			Return True
-		EndIf
-
-		Return False
-	End Function
-
-
-	Function onClickHotspot:Int( triggerEvent:TEventBase )
-		Local hotspot:THotspot = THotspot( triggerEvent._sender )
-		If Not hotspot Then Return False 'or hotspot.name <> "elevatorplan" then return FALSE
-		'not interested in others
-		If not GetInstance().room.hotspots.contains(hotspot) then return False
-
-		Game.getPlayer().figure.changeTarget( GetInstance().pos.x + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().pos.y + hotspot.area.getY() )
-		Game.getPlayer().figure.targetHotspot = hotspot
-
-		MOUSEMANAGER.resetKey(1)
-	End Function
-
-
-	Method Draw(tweenValue:Float=1.0)
-		pos.y = Clamp(pos.y, - 637, 88)
-
-		TProfiler.Enter("Draw-Building-Background")
-		DrawBackground(tweenValue)
-		TProfiler.Leave("Draw-Building-Background")
-
-		'reset drawn for all figures... so they can get drawn
-		'correct at their "z-indexes" (behind building, elevator or on floor )
-		For Local Figure:TFigure = EachIn FigureCollection.list
-			Figure.alreadydrawn = False
-		Next
-
-		If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) >= 8
-			SetColor 255, 255, 255
-			SetBlend ALPHABLEND
-			Building.gfx_buildingRoof.Draw(pos.x + buildingDisplaceX, pos.y - Building.gfx_buildingRoof.area.GetH())
-		EndIf
-
-		SetBlend MASKBLEND
-		elevator.DrawFloorDoors()
-
-		Assets.GetSprite("gfx_building").draw(pos.x + buildingDisplaceX, pos.y)
-
-		SetBlend MASKBLEND
-
-		'draw overlay - open doors are drawn over "background-image-doors" etc.
-		TRoomDoor.DrawAll()
-		'draw elevator parts
-		Elevator.Draw()
-
-		SetBlend ALPHABLEND
-
-		For Local Figure:TFigure = EachIn FigureCollection.list
-			'draw figure later if outside of building
-			If figure.rect.GetX() < pos.x + buildingDisplaceX Then Continue
-			If Not Figure.alreadydrawn Then Figure.Draw()
-			Figure.alreadydrawn = True
-		Next
-
-		Local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 130, pos.y + GetFloorY(9), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(13), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 110, pos.y + GetFloorY(9), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(6), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze6").Draw(pos.x + innerRight - 85, pos.y + GetFloorY(8), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(1), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(12), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(12), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 70, pos.y + GetFloorY(3), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 75, pos.y + GetFloorY(12), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-
-		'draw entrance on top of figures
-		If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) <= 4
-			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
-			'draw figures outside the wall
-			For Local Figure:TFigure = EachIn FigureCollection.list
-				If Not Figure.alreadydrawn Then Figure.Draw()
-			Next
-			Building.gfx_buildingEntrance.Draw(pos.x, pos.y + 1024 - Building.gfx_buildingEntrance.area.GetH() - 3)
-
-			SetColor 255,255,255
-			'draw wall
-			Building.gfx_buildingEntranceWall.Draw(pos.x + Building.gfx_buildingEntrance.area.GetW(), pos.y + 1024 - Building.gfx_buildingEntranceWall.area.GetH() - 3)
-			'draw fence
-			Building.gfx_buildingFence.Draw(pos.x + buildingDisplaceX + 507, pos.y + 1024 - Building.gfx_buildingFence.area.GetH() - 3)
-		EndIf
-
-		TRoomDoor.DrawAllTooltips()
-
-		'draw hotspot tooltips
-		For Local hotspot:THotspot = EachIn room.hotspots
-			hotspot.draw( Self.pos.x, Self.pos.y)
-		Next
-
-		If Self.roomUsedTooltip Then Self.roomUsedTooltip.Draw()
-
-	End Method
-
-
-	Method UpdateBackground(deltaTime:Float)
-		ActHour = Game.GetHour()
-		DezimalTime = Float(ActHour*60 + Game.GetMinute())/60.0
-
-		If 9 <= ActHour And Acthour < 18 Then TimeColor = 1
-		If 5 <= ActHour And Acthour <= 9 		'overlapping to avoid colorjumps
-			skycolor = DezimalTime
-			TimeColor = (skycolor - 5) / 4
-			If TimeColor > 1 Then TimeColor = 1
-			If skycolor >= 350 Then skycolor = 350
-		EndIf
-		If 18 <= ActHour And Acthour <= 23 	'overlapping to avoid colorjumps
-			skycolor = DezimalTime
-			TimeColor = 1 - (skycolor - 18) / 5
-			If TimeColor < 0 Then TimeColor = 0
-			If skycolor <= 0 Then skycolor = 0
-		EndIf
-
-
-		'compute moon position
-		If ActHour > 18 Or ActHour < 7
-			'compute current distance
-			If Not Moon_MovementStarted
-				'we have 15 hrs to "see the moon" - so we have add them accordingly
-				'this means - we have to calculate the hours "gone" since 18:00
-				Local minutesPassed:Int = 0
-				If ActHour>18
-					minutesPassed = (ActHour-18)*60 + Game.GetMinute()
-				Else
-					minutesPassed = (ActHour+7)*60 + Game.GetMinute()
-				EndIf
-
-				'calculate the base speed needed so that the moon would move
-				'the whole path within 15 hrs (15*60 minutes)
-				'this means: after 15hrs 100% of distance are reached
-				Moon_MovementBaseSpeed = 1.0 / (15*60)
-
-				Moon_PathCurrentDistance = minutesPassed * Moon_MovementBaseSpeed
-
-				Moon_MovementStarted = True
-			EndIf
-
-			'backup for tweening
-			Moon_PathCurrentDistanceOld = Moon_PathCurrentDistance
-			Moon_PathCurrentDistance:+ deltaTime * Moon_MovementBaseSpeed * Game.GetGameMinutesPerSecond()
-		Else
-			Moon_MovementStarted = False
-			'set to beginning
-			Moon_PathCurrentDistanceOld = 0.0
-			Moon_PathCurrentDistance = 0.0
-		EndIf
-
-
-		'compute ufo
-		'-----------
-		'only happens between...
-		If Game.GetDay() Mod 2 = 0 And (DezimalTime > 18 Or DezimalTime < 7)
-			UFO_MovementBaseSpeed = 1.0 / 60.0 '30 minutes for whole path
-
-			'only continue moving if not doing the beamanimation
-			If Not UFO_DoBeamAnimation Or UFO_BeamAnimationDone
-				UFO_PathCurrentDistanceOld = UFO_PathCurrentDistance
-				UFO_PathCurrentDistance:+ deltaTime * UFO_MovementBaseSpeed * Game.GetGameMinutesPerSecond()
-
-				'do beaming now
-				If UFO_PathCurrentDistance > 0.50 And Not UFO_BeamAnimationDone
-					UFO_DoBeamAnimation = True
-				EndIf
-			EndIf
-			If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
-				If ufo_beaming.getCurrentAnimation().isFinished()
-					UFO_BeamAnimationDone = True
-					UFO_DoBeamAnimation = False
-				EndIf
-				ufo_beaming.update(deltaTime)
-			EndIf
-
-		Else
-			'reset beam enabler anyways
-			UFO_DoBeamAnimation = False
-			UFO_BeamAnimationDone=False
-		EndIf
-
-		For Local i:Int = 0 To Building.Clouds.length-1
-			Clouds[i].Update(deltaTime)
-		Next
-	End Method
-
-	'Summary: Draws background of the mainscreen (stars, buildings, moon...)
-	Method DrawBackground(tweenValue:Float=1.0)
-		Local BuildingHeight:Int = gfx_building.area.GetH() + 56
-
-		If DezimalTime > 18 Or DezimalTime < 7
-			If DezimalTime > 18 And DezimalTime < 19 Then SetAlpha (1.0- (19.0 - DezimalTime))
-			If DezimalTime > 6 And DezimalTime < 8 Then SetAlpha (4.0 - DezimalTime / 2.0)
-			'stars
-			SetBlend MASKBLEND
-			Local minute:Float = Game.GetMinute()
-			For Local i:Int = 0 To 59
-				If i Mod 6 = 0 And minute Mod 2 = 0 Then Stars[i].z = Rand(0, Max(1,Stars[i].z) )
-				SetColor Stars[i].z , Stars[i].z , Stars[i].z
-				Plot(Stars[i].x , Stars[i].y )
-			Next
-
-			SetColor 255, 255, 255
-'			DezimalTime:+3
-			If DezimalTime > 24 Then DezimalTime:-24
-
-			SetBlend ALPHABLEND
-
-			Local tweenDistance:Float = GetTweenResult(Moon_PathCurrentDistance, Moon_PathCurrentDistanceOld, True)
-			Local moonPos:TPoint = Moon_Path.GetTweenPoint(tweenDistance, True)
-			'draw moon - frame is from +6hrs (so day has already changed at 18:00)
-			'Assets.GetSprite("gfx_building_BG_moon").Draw(40, 40, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
-			Assets.GetSprite("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (pos.y) + moonPos.y, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
-		EndIf
-
-		For Local i:Int = 0 To Building.Clouds.length - 1
-			SetColor Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i]
-			SetAlpha CloudsAlpha[i]
-			Clouds[i].Draw(Null, Clouds[i].rect.position.Y + 0.2*pos.y) 'parallax
-		Next
-		SetAlpha 1.0
-
-		SetColor Int(205 * timecolor) + 175, Int(205 * timecolor) + 175, Int(205 * timecolor) + 175
-		SetBlend ALPHABLEND
-		'draw UFO
-		If DezimalTime > 18 Or DezimalTime < 7
-'			If Game.GetDay() Mod 2 = 0
-				'compute and draw Ufo
-				Local tweenDistance:Float = GetTweenResult(UFO_PathCurrentDistance, UFO_PathCurrentDistanceOld, True)
-				Local UFOPos:TPoint = UFO_Path.GetTweenPoint(tweenDistance, True)
-				'print UFO_PathCurrentDistance
-				If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
-					ufo_beaming.rect.position.SetXY(UFOPos.x, 0.25 * (pos.y + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y)
-					ufo_beaming.Draw()
-				Else
-					Assets.GetSprite("gfx_building_BG_ufo").Draw( UFOPos.x, 0.25 * (pos.y + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y, ufo_normal.GetCurrentFrame())
-				EndIf
-'			EndIf
-		EndIf
-
-		SetBlend MASKBLEND
-
-		Local baseBrightness:Int = 75
-
-		SetColor Int(225 * timecolor) + baseBrightness, Int(225 * timecolor) + baseBrightness, Int(225 * timecolor) + baseBrightness
-		gfx_bgBuildings[0].Draw(pos.x		, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
-		gfx_bgBuildings[1].Draw(pos.x + 634	, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
-
-		SetColor Int(215 * timecolor) + baseBrightness+15, Int(215 * timecolor) + baseBrightness+15, Int(215 * timecolor) + baseBrightness+15
-		gfx_bgBuildings[2].Draw(pos.x		, 120 + 0.35 * (pos.y 		+ BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
-		gfx_bgBuildings[3].Draw(pos.x + 636	, 120 + 0.35 * (pos.y + 60	+ BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
-
-		SetColor Int(205 * timecolor) + baseBrightness+30, Int(205 * timecolor) + baseBrightness+30, Int(205 * timecolor) + baseBrightness+30
-		gfx_bgBuildings[4].Draw(pos.x		, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
-		gfx_bgBuildings[5].Draw(pos.x + 634	, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
-
-		SetColor 255, 255, 255
-		SetAlpha 1.0
-	End Method
-
-
-	Method CreateRoomUsedTooltip:Int(door:TRoomDoor, room:TRoom = null)
-		'if no door was given, use main door of room
-		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
-		if not door then return FALSE
-
-		roomUsedTooltip			= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(pos.y + GetFloorY(door.Pos.y))
-		roomUsedTooltip.area.position.SetX(door.Pos.x + door.doorDimension.x/2 - roomUsedTooltip.GetWidth()/2)
-		roomUsedTooltip.enabled = 1
-
-		return TRUE
-	End Method
-
-
-	Method CenterToFloor:Int(floornumber:Int)
-		pos.y = ((13 - (floornumber)) * 73) - 115
-	End Method
-
-	'Summary: returns y which has to be added to building.y, so its the difference
-	Function GetFloorY:Int(floornumber:Int)
-		Return (66 + 1 + (13 - floornumber) * 73)		  ' +10 = interface
-	End Function
-
-	Method GetFloor:Int(_y:Int)
-		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
-	End Method
-
-	Method getFloorByPixelExactPoint:Int(point:TPoint) 'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000
-		For Local i:Int = 0 To 13
-			If Building.GetFloorY(i) < point.y Then Return i
-		Next
-		Return -1
-	End Method
-End Type
-
-
-'likely a kind of agency providing news... 'at the moment only a base object
-Type TNewsAgency
-	Field NextEventTime:Double		= 0
-	Field NextChainChecktime:Double	= 0
-	Field activeChains:TList		= CreateList() 'holding chained news from the past hours/day
-
-	Method Create:TNewsAgency()
-		'maybe do some initialization here
-
-		Return Self
-	End Method
-
-	Method GetMovieNewsEvent:TNewsEvent()
-		Local licence:TProgrammeLicence = Self._GetAnnouncableProgrammeLicence()
-		If Not licence Then Return Null
-		If Not licence.getData() Then Return Null
-
-		licence.GetData().releaseAnnounced = True
-
-		Local title:String = getLocale("NEWS_ANNOUNCE_MOVIE_TITLE"+Rand(1,2) )
-		Local description:String = getLocale("NEWS_ANNOUNCE_MOVIE_DESCRIPTION"+Rand(1,4) )
-
-		'if same director and main actor...
-		If licence.GetData().getActor(1) = licence.GetData().getDirector(1)
-			title = getLocale("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_TITLE")
-			description = getLocale("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
-		EndIf
-		'if no actors ...
-		If licence.GetData().getActor(1) = ""
-			title = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
-			description = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
-		EndIf
-
-		'replace data
-		title = Self._ReplaceProgrammeData(title, licence.GetData())
-		description = Self._ReplaceProgrammeData(description, licence.GetData())
-
-		'quality and price are based on the movies data
-		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, 1, licence.GetData().review/2.0, licence.GetData().outcome/3.0)
-		'remove news from available list as we do not want to have them repeated :D
-		NewsEventCollection.Remove(NewsEvent)
-
-		Return NewsEvent
-	End Method
-
-	Method _ReplaceProgrammeData:String(text:String, data:TProgrammeData)
-		For Local i:Int = 1 To 2
-			text = text.Replace("%ACTORNAME"+i+"%", data.getActor(i))
-			text = text.Replace("%DIRECTORNAME"+i+"%", data.getDirector(i))
-		Next
-		text = text.Replace("%MOVIETITLE%", data.title)
-
-		Return text
-	End Method
-
-	'helper to get a movie which can be used for a news
-	Method _GetAnnouncableProgrammeLicence:TProgrammeLicence()
-		'filter to entries we need
-		Local licence:TProgrammeLicence
-		Local resultList:TList = CreateList()
-		For licence = EachIn TProgrammeLicence.movies
-			'ignore collection and episodes (which should not be in that list)
-			If Not licence.getData() Then Continue
-
-			'ignore if filtered out
-			If licence.owner <> 0 Then Continue
-			'ignore already announced movies
-			If licence.getData().releaseAnnounced Then Continue
-			'ignore unreleased
-			If Not licence.ignoreUnreleasedProgrammes And licence.getData().year < licence._filterReleaseDateStart Or licence.getData().year > licence._filterReleaseDateEnd Then Continue
-			'only add movies of "next X days" - 14 = 1 year
-			Local licenceTime:Int = licence.GetData().year * Game.daysPerYear + licence.getData().releaseDay
-			If licenceTime > Game.getDay() And licenceTime - Game.getDay() < 14 Then resultList.addLast(licence)
-		Next
-		If resultList.count() > 0 Then Return TProgrammeLicence._GetRandomFromList(resultList)
-
-		Return Null
-	End Method
-
-	Method GetSpecialNewsEvent:TNewsEvent()
-	End Method
-
-
-	'announces new news chain elements
-	Method ProcessNewsEventChains:Int()
-		Local announced:Int = 0
-		Local newsEvent:TNewsEvent = Null
-		For Local chainElement:TNewsEvent = EachIn activeChains
-			If Not chainElement.isLastEpisode() Then newsEvent = chainElement.GetNextNewsEventFromChain()
-			'remove the "old" one, the new element will get added instead (if existing)
-			activeChains.Remove(chainElement)
-
-			'ignore if the chain ended already
-			If Not newsEvent Then Continue
-
-			If chainElement.happenedTime + newsEvent.getHappenDelay() < Game.timeGone
-				announceNewsEvent(newsEvent)
-				announced:+1
-			EndIf
-		Next
-
-		'check every 10 game minutes
-		Self.NextChainCheckTime = Game.timeGone + 10
-
-		Return announced
-	End Method
-
-	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, fromNetwork:Int=0)
-		'only add news/newsblock if player is Host/Player OR AI
-		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
-		If Game.Players[ forPlayer ].newsabonnements[newsEvent.genre] > 0
-			'print "[LOCAL] AddNewsToPlayer: creating newsblock, player="+forPlayer
-			TNews.Create("", forPlayer, Game.Players[ forPlayer ].GetNewsAbonnementDelay(newsEvent.genre), newsEvent)
-		EndIf
-	End Method
-
-	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Int=0)
-		newsEvent.doHappen(happenedTime)
-
-		For Local i:Int = 1 To 4
-			AddNewsEventToPlayer(newsEvent, i)
-		Next
-
-		If newsEvent.episodes.count() > 0 Then activeChains.AddLast(newsEvent)
-	End Method
-
-	Method AnnounceNewNewsEvent:Int(delayAnnouncement:Int=0)
-		'no need to check for gameleader - ALL players
-		'will handle it on their own - so the randomizer stays intact
-		'if not Game.isGameLeader() then return FALSE
-		Local newsEvent:TNewsEvent = Null
-		'try to load some movie news ("new movie announced...")
-		If Not newsEvent And RandRange(1,100)<35 Then newsEvent = Self.GetMovieNewsEvent()
-
-		If Not newsEvent Then newsEvent = NewsEventCollection.GetRandom()
-
-		If newsEvent
-			Local NoOneSubscribed:Int = True
-			For Local i:Int = 1 To 4
-				If Game.Players[i].newsabonnements[newsEvent.genre] > 0 Then NoOneSubscribed = False
-			Next
-			'only add news if there are players wanting the news, else save them
-			'for later stages
-			If Not NoOneSubscribed
-				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+Game.getDay(news.happenedtime)+", time="+Game.GetFormattedTime(news.happenedtime)
-				announceNewsEvent(newsEvent, Game.timeGone + delayAnnouncement)
-			EndIf
-		EndIf
-
-		If RandRange(0,10) = 1
-			NextEventTime = Game.timeGone + Rand(20,50) 'between 20 and 50 minutes until next news
-		Else
-			NextEventTime = Game.timeGone + Rand(90,250) 'between 90 and 250 minutes until next news
-		EndIf
-	End Method
-End Type
+Include "game.building.bmx"
+Include "game.newsagency.bmx"
 
 
 Type TFigurePostman Extends TFigure
@@ -2547,7 +1274,6 @@ End Type
 
 
 
-
 '#Region: Globals, Player-Creation
 Global Interface:TInterface		= TInterface.Create()
 Global Game:TGame	  			= new TGame.Create()
@@ -2557,9 +1283,10 @@ TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
 
 
 EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-Init_CreateAllRooms() 				'creates all Rooms - with the names assigned at this moment
-
-Game.Initialize() 'Game.CreateInitialPlayers()
+'figures need building (for location) - so create AFTER building
+Game.InitializeBasics()
+'creates all Rooms - with the names assigned at this moment
+Init_CreateAllRooms()
 
 'RON
 Local haveNPCs:Int = True
@@ -2582,7 +1309,7 @@ InGame_Chat.guiList.autoHideScroller = True
 InGame_Chat.guiInput.rect.position.setXY( 275, 387)
 InGame_Chat.guiInput.setMaxLength(200)
 InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
-InGame_Chat.guiInput.maxTextWidth		= gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
+InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
 InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
 InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
 InGame_Chat.guiInput.SetValueDisplacement(0,5)
@@ -2663,9 +1390,9 @@ Type TScreen_MainMenu Extends TGameScreen
 
 Rem
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbeverträge", "Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste k�nnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat�rlich Auswirkungen.~n~nEine Kom�die kann h�ufiger gesendet werden, als eine Live-�bertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn�pft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: Werbevertr�ge", "Werbevertr�ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat�rlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr�ge abzuschlie�en."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
@@ -2789,7 +1516,6 @@ Type TScreen_GameSettings Extends TGameScreen
 	Method Create:TScreen_GameSettings(name:String)
 		Super.Create(name)
 		self.background = background
-
 		'===== CREATE AND SETUP GUI =====
 		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.GetX(), settingsArea.GetY(), settingsArea.GetW(), settingsArea.GetH(), "GameSettings")
 		guiSettingsWindow.SetCaption("Spieler")
@@ -2923,12 +1649,17 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Select sender
 			Case guiButtonStart
+					'load databases, populationmap, ...
+					Game.Initialize()
+
+
 					If Not Game.networkgame And Not Game.onlinegame
 						Game.SetGamestate(TGame.STATE_INITIALIZEGAME)
 						If Not Init_Complete
 							Init_All()
 							Init_Complete = True		'check if rooms/colors/... are initiated
 						EndIf
+						Game.Start()
 						Game.SetGamestate(TGame.STATE_RUNNING)
 					Else
 						'guiAnnounce.SetChecked(False)
@@ -3443,6 +2174,7 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 			EndIf
 
 			'register events and start game
+			Game.Start()
 			Game.SetGamestate(TGame.STATE_RUNNING)
 			'reset randomizer
 			Game.SetRandomizerBase( Game.GetRandomizerBase() )
@@ -3473,12 +2205,10 @@ Game.SetGamestate(TGame.STATE_MAINMENU)
 
 
 
-
-
 Function Init_Creation()
 	'create base stations
 	For Local i:Int = 1 To 4
-		Game.GetPlayer(i).GetStationMap().AddStation( TStation.Create( TPoint.Create(310, 260),-1, TStationMap.stationRadius, i ), False )
+		Game.GetPlayer(i).GetStationMap().AddStation( TStation.Create( TPoint.Create(310, 260),-1, StationMapCollection.stationRadius, i ), False )
 	Next
 
 	'get names from settings
@@ -3487,16 +2217,6 @@ Function Init_Creation()
 		Game.Players[i].channelname	= ScreenGameSettings.guiChannelNames[i-1].Value
 	Next
 
-
-	'disable chat if not networkgaming
-	If Not game.networkgame
-		InGame_Chat.hide()
-	Else
-		InGame_Chat.show()
-	EndIf
-
-	'Eigentlich gehört das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
-	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
 	If Game.isGameLeader()
@@ -3652,6 +2372,11 @@ Type GameEvents
 		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
 		If hour = -1 Then Return False
 
+		'===== UPDATE POPULARITY MANAGER =====
+		'the popularity manager takes care itself whether to do something
+		'or not (update intervals)
+		Game.PopularityManager.Update(triggerEvent)
+
 		'===== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY =====
 		'countdown for the refillers
 		Game.refillMovieAgencyTime :-1
@@ -3750,9 +2475,14 @@ Type GameEvents
 	End Function
 
 
+	'things happening each hour
+	Function OnHour:Int(triggerEvent:TEventBase)
+		'
+	End Function
+
+
 	Function OnDay:Int(triggerEvent:TEventBase)
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
-
 
 		TDevHelper.Log("GameEvents.OnDay", "begin of day "+(Game.GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
 
@@ -3919,6 +2649,12 @@ Type AppEvents
 			If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 			If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
 
+			If KEYMANAGER.IsHit(KEY_SPACE)
+				print "shared audience:"+ StationMapCollection.GetShare([1]).x
+				print "total audience:"+ StationMapCollection.GetShare([1]).y
+				print "share:"+ StationMapCollection.GetShare([1]).z
+				print "---------"
+			endif
 			'Save game
 			If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
 			If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
@@ -4139,6 +2875,7 @@ End Function
 
 '===== EVENTS =====
 EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
+EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
 EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
 EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
 

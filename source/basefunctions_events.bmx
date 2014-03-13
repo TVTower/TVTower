@@ -51,12 +51,12 @@ Type TEventManager
 
 
 	Method registerListenerFunction:TLink( trigger:string, _function(triggeredByEvent:TEventBase), limitToSender:object=null, limitToReceiver:object=null )
-		registerListener( trigger,	TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
+		return registerListener( trigger, TEventListenerRunFunction.Create(_function, limitToSender, limitToReceiver) )
 	End Method
 
 
 	Method registerListenerMethod:TLink( trigger:string, objectInstance:object, methodName:string, limitToSender:object=null, limitToReceiver:object=null )
-		registerListener( trigger,	TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
+		return registerListener( trigger, TEventListenerRunMethod.Create(objectInstance, methodName, limitToSender, limitToReceiver) )
 	End Method
 
 

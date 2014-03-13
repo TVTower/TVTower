@@ -130,7 +130,7 @@
 		</resource>
 		<resource name="stationmap_antenna">
 			<type>image</type>
- 			<url>res/grafiken/senderkarte/antenne3.png</url>
+ 			<url>res/grafiken/senderkarte/antenna.png</url>
 			<scripts>
 				<script	do="ColorizeCopy"	dest="stationmap_antenna0"	r="255"	g="255"	b="255" />
 				<script	do="ColorizeCopy"	dest="stationmap_antenna1"	r="100"	g="20"	b="20" />
