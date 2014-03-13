@@ -1950,6 +1950,11 @@ Type TCatmullRomSpline
 				endif
 			endif
 		Next
+
+		'if pointA is already the last one we have, the second point
+		'could be the same
+		if not pointB then pointB = pointA.Copy()
+
 		if pointA and pointB
 			'local distanceAB:float = abs(pointB.z - pointA.z)
 			'local distanceAX:float = abs(distance - pointA.z)
