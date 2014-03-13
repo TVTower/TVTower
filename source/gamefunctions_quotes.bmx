@@ -25,6 +25,8 @@ Type TBroadcastManager
 	Field currentBroadcast:TBroadcast = Null
 
 	Field TopAudienceCount:Int
+	
+	Field _initialized:int = False
 
 	Field PotentialAudienceManipulations:TMap = CreateMap()
 
@@ -107,7 +109,7 @@ Type TBroadcastManager
 			Else
 				realDay = day
 			End If
-			PotentialAudienceManipulations.Insert(realDay + "|" + realHour, factor)
+			'PotentialAudienceManipulations.Insert(realDay + "|" + realHour, factor)
 			Throw "Implementiere mich!"
 		Next	
 	End Method

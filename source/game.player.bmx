@@ -6,6 +6,7 @@ Type TPlayer {_exposeToLua="selected"}
 	Field finances:TPlayerFinance[]					'financial stats about credit, money, payments ...
 	Field audience:TAudienceResult
 
+	Field PublicImage:TPublicImage							{_exposeToLua}
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
 	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
 	Field Figure:TFigure									{_exposeToLua}				'actual figure the player uses
@@ -100,6 +101,7 @@ Type TPlayer {_exposeToLua="selected"}
 		Player.channelname			= channelname
 		Player.Figure				= New TFigure.CreateFigure(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayerID= playerID
+		Player.PublicImage			= New TPublicImage.Create(Player)
 		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
 		Player.ProgrammePlan		= New TPlayerProgrammePlan.Create(Player)
 
