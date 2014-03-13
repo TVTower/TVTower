@@ -299,13 +299,25 @@ Type TXmlHelper
 	End Function
 
 
-	Method FindRootChild:TxmlNode(nodeName:string)
-		local children:TList = root.getChildren()
+	Method FindNode:TxmlNode(startNode:TXmlNode, nodeName:string)
+		nodeName = nodeName.ToLower()
+		if not startNode then startNode = root
+
+		local children:TList = startNode.getChildren()
 		if not children then return null
 		For local child:TxmlNode = eachin children
-			if child.getName() = nodeName then return child
+			if child.getName().ToLower() = nodeName then return child
+			For local subStartNode:TxmlNode = eachin child.getChildren()
+				local subChild:TXmlNode = FindNode(subStartNode, nodeName)
+				if subChild then return subChild
+			Next
 		Next
 		return null
+	End Method
+
+
+	Method FindRootChild:TxmlNode(nodeName:string)
+		return FindChild(root, nodeName)
 	End Method
 
 
