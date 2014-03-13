@@ -480,11 +480,13 @@ Type TGW_BitmapFont
 		Local lines:string[]= null
 		'how many space is left to draw?
 		local heightLeft:float	= h
+		'are we limited in height?
+		local limitHeight:int = (heightLeft <> -1)
 
 		'for each line/paragraph
 		For Local i:Int= 0 To paragraphs.length-1
 			'skip paragraphs if no space was left
-			if heightLeft < lineHeight then continue
+			if limitHeight and heightLeft < lineHeight then continue
 
 			local line:string = paragraphs[i]
 
@@ -540,94 +542,7 @@ Type TGW_BitmapFont
 				line = line[linePartial.length..]
 				if skipNextChar then line = line[Min(1, line.length)..]
 			'until no text left, or no space left for another line
-			until line.length = 0  or heightLeft < lineHeight
-
-			'if the height was not enough - add a "..."
-			if line.length > 0
-				'get the line BEFORE
-				local currentLine:string = lines[lines.length-1]
-				'check whether we have to subtract some chars for the "..."
-				if self.getWidth(currentLine+chr(8230)) > w
-					currentLine = currentLine[.. currentLine.length-3] + chr(8230) ' "..."
-				else
-					currentLine = currentLine[.. currentLine.length] + chr(8230) ' "..."
-				endif
-				lines[lines.length-1] = currentLine
-			endif
-		Next
-
-		return lines
-	End Method
-
-	Method TextToMultiLineOLD:string[](text:string,w:float,h:float, lineHeight:float, singleLine:int=TRUE)
-		Local fittingChars:int	= 0
-		Local processedChars:Int= 0
-		Local paragraphs:string[]	= text.replace(chr(13), "~n").split("~n")
-		'the lines to output at the end
-		Local lines:string[]= null
-		'how many space is left to draw?
-		local heightLeft:float	= h
-
-		'for each line/paragraph
-		For Local i:Int= 0 To paragraphs.length-1
-			local line:string = paragraphs[i]
-
-			'process each line - and if needed add a line break
-			repeat
-				'the part of the line which has to get processed at that moment
-				local linePartial:string = line
-				local breakPosition:int = line.length
-				'whether to skip the next char of a new line
-				local skipNextChar:int	= FALSE
-
-				'copy the line to do processing and shortening
-				linePartial = line
-
-				'as long as the part of the line does not fit into
-				'the given width, we have to search for linebreakers
-				while self.getWidth(linePartial) >= w and linePartial.length >0
-					'whether we found a break position by a rule
-					local FoundBreakPosition:int = FALSE
-
-					if not singleLine
-						'search for the "most right" position of a linebreak
-						For local charPos:int = 0 To linePartial.length-1
-							'special line break rules (spaces, -, ...)
-							If linePartial[charPos] = Asc(" ")
-								breakPosition = charPos
-								FoundBreakPosition=TRUE
-							endif
-							If linePartial[charPos] = Asc("-")
-								breakPosition = charPos
-								FoundBreakPosition=TRUE
-							endif
-						Next
-					endif
-					'if no line break rule hit, use a "cut" in the middle of a word
-					if not FoundBreakPosition then breakPosition = Max(0, linePartial.length-1 -1)
-
-					'if it is a " "-space, we have to skip it
-					if linePartial[breakPosition] = ASC(" ")
-						skipNextChar = TRUE 'aka delete the " "
-					endif
-
-
-					'cut off the part AFTER the breakposition
-					linePartial = linePartial[..breakPosition]
-				wend
-				'add that line to the lines to draw
-				lines = lines[..lines.length +1]
-				lines[lines.length-1] = linePartial
-
-				heightLeft :- lineHeight
-
-
-				'strip the processed part from the original line
-				line = line[linePartial.length..]
-				if skipNextChar then line = line[Min(1, line.length)..]
-			'until no text left, or no space left for another line
-			until line.length = 0  or heightLeft < lineHeight
-
+			until line.length = 0  or (limitHeight and heightLeft < lineHeight)
 
 			'if the height was not enough - add a "..."
 			if line.length > 0
@@ -651,7 +566,7 @@ Type TGW_BitmapFont
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float	= 0.0
 		local lineHeight:float	= getHeight("gQ'_")
-		local lines:string[]	= TextToMultiLine(text, w, h, lineHeight)', singleLine)
+		local lines:string[]	= TextToMultiLine(text, w, h, lineHeight) ', singleLine)
 
 		'move along y according alignment
 		if alignment

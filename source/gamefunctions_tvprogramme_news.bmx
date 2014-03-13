@@ -577,9 +577,9 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, TPoint.Create(ALIGN_RIGHT), TColor.clBlack)
+				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.clBlack)
 			else
-				Assets.GetFont("Default", 12).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, 15, TPoint.Create(ALIGN_RIGHT), TColor.CreateGrey(50))
+				Assets.GetFont("Default", 12).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select Game.getDay() - Game.GetDay(news.newsEvent.happenedTime)
