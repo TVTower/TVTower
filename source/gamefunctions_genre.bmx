@@ -84,6 +84,9 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Field OutcomeMod:Float = 0.5
 	Field ReviewMod:Float = 0.3
 	Field SpeedMod:Float = 0.2
+	
+	Field GoodFollower:TList = CreateList()
+	Field BadFollower:TList = CreateList()
 
 	Method LoadFromAssert(asset:TAsset)
 		Local data:TMap = TMap(asset._object)

@@ -22,18 +22,11 @@ Type TBroadcastManager
 	
 	Field currentProgammeBroadcast:TBroadcast = Null
 	Field currentNewsShowBroadcast:TBroadcast = Null
-	'Field lastBroadcast:TBroadcast = Null
 	Field currentBroadcast:TBroadcast = Null
 
 	Field TopAudienceCount:Int
-
-	'Feature-Konstanten
-	'Const FEATURE_AUDIENCE_FLOW:Int = 1
-	'Const FEATURE_GENRE_ATTRIB_CALC:Int = 1
-	'Const FEATURE_GENRE_TIME_MOD:Int = 1
-	'Const FEATURE_GENRE_TARGETGROUP_MOD:Int = 1
-	'Const FEATURE_TARGETGROUP_TIME_MOD:Int = 1
-
+	
+	Field PotentialAudienceManipulations:TMap = CreateMap()
 
 	'===== Konstrukor, Speichern, Laden =====
 
@@ -88,33 +81,40 @@ Type TBroadcastManager
 		Return newsGenreDefinitions[genreId]
 	End Method
 
+	
+	'===== Manipulationen =====
+	
+	Method ManipulatePotentialAudience(factor:Float, day:Int, hour:Int, followingHours:Int = 0 ) 'factor = -0.1 und +2.0	
+		Local realDay:Int = day
+		Local realHour:Int
+		For Local i:Int = 0 to followingHours
+			realHour = hour + i
+			If realHour > 23
+				Local rest:Int = realHour / 24
+				realDay = day + (realHour - rest) / 24
+				realHour = rest
+			Else
+				realDay = day
+			End If
+			PotentialAudienceManipulations.Insert(realDay + "|" + realHour, factor)
+			Throw "Implementiere mich!"
+		Next	
+	End Method
 
 	'===== Hilfsmethoden =====
 
 	'Der Ablauf des Broadcasts, verallgemeinert für Programme und News.
 	Method BroadcastCommon:TBroadcast(hour:Int, broadcasts:TBroadcastMaterial[],recompute:Int )
-		'backup current broadcast (for later calculations)
-		'lastBroadcast = currentBroadcast
-
 		Local bc:TBroadcast = New TBroadcast
 		bc.Hour = hour
 		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
 		bc.PlayersBroadcasts = broadcasts					'Die Programmwahl der Spieler "einloggen"
 		bc.ComputeAudience(self.lastProgrammeBroadcast, self.lastNewsShowBroadcast)	'Zuschauerzahl berechnen
-		'If Not recompute Then bc.BroadcastConsequences()	'Konsequenzen der Ausstrahlung berechnen/aktualisieren
 
 		'set audience for this broadcast
 		For Local i:Int = 1 To 4
-			'RONNY: Sorgt das Ueberspringen nicht fuer ein "uebernehmen"
-			'       der vorherigen Zuschauerzahl bei einem Ausfall?
-			'edit : ja macht es, normalerweise sollte "if not .." uebersprungen
-			'       werden... aber ich an sich ist die "Berechnung" einfach
-			'       nur nicht korrekt
-			If Not bc.PlayersBroadcasts[i] Then Continue
 			Game.GetPlayer(i).audience = bc.AudienceResults[i]
 		Next
-
-
 
 		CheckTopAudience(bc)
 		'store current broadcast
@@ -127,7 +127,6 @@ Type TBroadcastManager
 	'der Spieler für die Berechnung und die spätere Begutachtung eingeloggt.
 	Method GetPlayersBroadcastMaterial:TBroadcastMaterial[](slotType:Int, day:Int=-1, hour:Int=-1)
 		Local result:TBroadcastMaterial[] = New TBroadcastMaterial[5]
-		Local material:TBroadcastMaterial
 		For Local player:TPlayer = EachIn Game.Players
 			'sets a valid TBroadcastMaterial or Null
 			result[player.playerID] = player.ProgrammePlan.GetObject(slotType, day, hour)
@@ -201,9 +200,6 @@ Type TBroadcast
 
 		ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast, lastNewsShowBroadcast)
 
-		'SetFixAudience()
-		'SetAudienceFlow(lastBroadcast)
-
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			market.ComputeAudience(Hour)
 			AssimilateResults(market)
@@ -214,24 +210,6 @@ Type TBroadcast
 		AudienceResults[3].Refresh()
 		AudienceResults[4].Refresh()
 	End Method
-
-Rem
-	'Die Konsequenzen der Ausstrahlung (Aktualitätsverlust usw.) werden durchgeführt
-	Method BroadcastConsequences()
-		Local broadcastedMaterial:TBroadcastMaterial
-		Local player:TPlayer
-		Local audienceResult:TAudienceResult
-
-		For Local i:Int = 1 To 4
-			player = TPlayer.getByID(i)
-			broadcastedMaterial = PlayersBroadcasts[i]
-			If not broadcastedMaterial then continue
-
-			player.audience = AudienceResults[i]
-			broadcastedMaterial.CheckConsequences(player)
-		Next
-	End Method
-endrem
 
 	Method GetMarketById:TAudienceMarketCalculation(id:String)
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
@@ -298,81 +276,6 @@ endrem
 		attraction.CalculateBlockAttraction()
 		attraction.Malfunction = attraction.Malfunction + 1
 		Return attraction			
-	End Method
-	
-	Method SetFixAudience()
-		'SetPlayersFixAudience
-		Rem
-		For Local i:Int = 1 To 4
-			For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-				If market.Players.Contains(String(i)) Then
-					market.SetPlayersFixAudience(i, TAudience.CreateWithBreakdown(1000).Round())
-				Endif
-			Next
-		Next
-		endrem
-	End Method
-
-rem
-	Method SetAudienceFlow(lastBroadcast:TBroadcast)
-		Local broadcastedMaterial:TBroadcastMaterial
-		If lastBroadcast <> Null Then
-			Local timeMod:Float = GetAudienceFlowTimeMod()
-
-			For Local i:Int = 1 To 4
-				'Hier Quote ermitteln anhand von Genre usw.
-				Local audienceFlowQuoteFactor:Float = 0
-
-				'RONNY @Manuel: sicher dass wir einen FlowFaktor haben
-				'               - auch wenn wir evtl nichts senden?
-				audienceFlowQuoteFactor:+ 0.1 'Wie gut passen die Genre zusammen: 0.1 = Normal
-
-				broadcastedMaterial = PlayersBroadcasts[i]
-				'If broadcastedMaterial
-				'	audienceFlowQuoteFactor:+ (broadcastedMaterial.GetAudienceAttraction(Game.GetHour()).Average / 5) 'Wie gut ist das nächste Programm (+0.0 bis +0.2)
-				'EndIf
-				'audienceFlowQuoteFactor:+ (RandRange(0, 10) / 100) 'Zufall (+0.0 bis +0.1)
-				'audienceFlowQuoteFactor:* timeMod 'Time-Mod
-				'broadcastedMaterial.GetAudienceAttraction(Game.GetHour())
-
-				For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-					If market.Players.Contains(String(i)) Then
-						Local lastMarket:TAudienceMarketCalculation = lastBroadcast.GetMarketById(market.GetId())
-						If lastMarket <> Null Then
-							Local lastAudienceResult:TAudienceResult = lastMarket.GetAudienceResultOfPlayer(i)
-
-							If lastAudienceResult <> Null Then
-								Local audienceFlow:TAudience = lastAudienceResult.Audience.GetNewInstance()
-								audienceFlow.MultiplyFactor(audienceFlowQuoteFactor)
-								audienceFlow.Round()
-								'Print "SetAudienceFlow - " + i + " Market: " + market.GetId() + " | (" + audienceFlowQuoteFactor + "): " + audienceFlow.ToString()
-
-								market.SetPlayersAudienceFlow(i, audienceFlow.Round())
-							Else
-								market.SetPlayersAudienceFlow(i, TAudience.CreateWithBreakdown(0).Round())
-							EndIf
-						EndIf
-					EndIf
-				Next
-			Next
-		EndIf
-	End Method
-endrem
-
-	Method GetAudienceFlowTimeMod:Float()
-		Local hour:Int = Hour
-		Local lastHour:Int = hour - 1
-		If lastHour = -1 Then lastHour = 23
-
-		Local compareAudience:TAudience = TAudience.CreateWithBreakdown(1000000)
-		Local lastHourPotential:Int = GetPotentialAudienceForHour(compareAudience, lastHour).GetSum()
-		Local thisHourPotential:Int = GetPotentialAudienceForHour(compareAudience, hour).GetSum()
-
-		If (lastHourPotential < thisHourPotential)
-			Return 1
-		Else
-			Return Float(thisHourPotential) / Float(lastHourPotential)
-		EndIf
 	End Method
 
 
