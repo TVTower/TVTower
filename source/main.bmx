@@ -450,6 +450,9 @@ Type TSaveGame
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
+		'call game that game continues/starts now
+		Game.Start()
+
 		Return True
 	End Function
 
@@ -562,6 +565,7 @@ Type TGame {_exposeToLua="selected"}
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
 
+
 			_initDone = TRUE
 		Endif
 	End Method
@@ -601,7 +605,6 @@ Type TGame {_exposeToLua="selected"}
 	'Initializes "data" needed for a game
 	'(maps, databases, managers)
 	Method Initialize()
-
 		'managers skip initialization if already done (eg. during loading)
 		Game.PopularityManager.Initialize()
 		Game.BroadcastManager.Initialize()
@@ -611,13 +614,18 @@ Type TGame {_exposeToLua="selected"}
 
 		'load the used map
 		StationMapCollection.LoadMapFromXML("config/maps/germany.xml")
-'delay(200)
-'		StationMapCollection.LoadMapFromXML("config/maps/germany.xml")
-'local mygame:TGame
-'mygame.Initialize()
 	End Method
 
 
+	'run when a specific game starts
+	Method Start:int()
+		'disable chat if not networkgaming
+		If Not game.networkgame
+			InGame_Chat.hide()
+		Else
+			InGame_Chat.show()
+		EndIf
+	End Method
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
@@ -1650,6 +1658,7 @@ Type TScreen_GameSettings Extends TGameScreen
 							Init_All()
 							Init_Complete = True		'check if rooms/colors/... are initiated
 						EndIf
+						Game.Start()
 						Game.SetGamestate(TGame.STATE_RUNNING)
 					Else
 						'guiAnnounce.SetChecked(False)
@@ -2164,6 +2173,7 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 			EndIf
 
 			'register events and start game
+			Game.Start()
 			Game.SetGamestate(TGame.STATE_RUNNING)
 			'reset randomizer
 			Game.SetRandomizerBase( Game.GetRandomizerBase() )
@@ -2206,16 +2216,6 @@ Function Init_Creation()
 		Game.Players[i].channelname	= ScreenGameSettings.guiChannelNames[i-1].Value
 	Next
 
-
-	'disable chat if not networkgaming
-	If Not game.networkgame
-		InGame_Chat.hide()
-	Else
-		InGame_Chat.show()
-	EndIf
-
-	'Eigentlich gehört das irgendwo in die Game-Klasse... aber ich habe keinen passenden Platz gefunden... und hier werden auch die anderen Events registriert
-	EventManager.registerListenerMethod( "Game.OnHour", Game.PopularityManager, "Update" );
 
 	'set all non human players to AI
 	If Game.isGameLeader()
@@ -2371,6 +2371,11 @@ Type GameEvents
 		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
 		If hour = -1 Then Return False
 
+		'===== UPDATE POPULARITY MANAGER =====
+		'the popularity manager takes care itself whether to do something
+		'or not (update intervals)
+		Game.PopularityManager.Update(triggerEvent)
+
 		'===== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY =====
 		'countdown for the refillers
 		Game.refillMovieAgencyTime :-1
@@ -2471,9 +2476,14 @@ Type GameEvents
 	End Function
 
 
+	'things happening each hour
+	Function OnHour:Int(triggerEvent:TEventBase)
+		'
+	End Function
+
+
 	Function OnDay:Int(triggerEvent:TEventBase)
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
-
 
 		TDevHelper.Log("GameEvents.OnDay", "begin of day "+(Game.GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
 
@@ -2866,6 +2876,7 @@ End Function
 
 '===== EVENTS =====
 EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
+EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
 EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
 EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
 

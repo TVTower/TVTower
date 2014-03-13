@@ -1,5 +1,7 @@
 ﻿Type TPopularityManager
 	Field Popularities:TList = CreateList()
+	Field updateInterval:int = 720	'update every x minutes (720 = 12*60)
+	Field updateLastTime:int = 0	'time of last update (in game minutes)
 	Field _initialized:int = FALSE
 
 
@@ -27,6 +29,9 @@
 
 
 	Method Update:Int(triggerEvent:TEventBase)
+		'no not update until interval is gone
+		if updateLastTime + updateInterval > Game.GetTimeGone() then return FALSE
+
 		'print "TPopularityManager: Updating popularities"
 		For Local popularity:TPopularity = EachIn Self.Popularities
 			popularity.UpdatePopularity()
@@ -34,6 +39,8 @@
 			popularity.UpdateTrend()
 			'print " - cId "+popularity.ContentId + ":  P: " + popularity.Popularity + " - L: " + popularity.LongTermPopularity + " - T: " + popularity.Trend + " - S: " + popularity.Surfeit
 		Next
+		'update time
+		updateLastTime = Game.GetTimeGone()
 	End Method
 
 

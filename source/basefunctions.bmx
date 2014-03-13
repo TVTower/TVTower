@@ -1945,24 +1945,26 @@ Type TCatmullRomSpline
 	'returns the coordinate of a given distance
 	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
 	Method GetTweenPoint:TPoint(distance:float, relativeValue:int=FALSE)
-		if not self.cacheGenerated then self.generateCache()
-		if relativeValue then distance = distance*self.totalDistance
+		if not cacheGenerated then generateCache()
+		if relativeValue then distance = distance * totalDistance
 
 		local pointA:TPoint = Null
 		local pointB:TPoint = Null
 
-		For local t:float = 0 To self.cache.length-1
+		For local t:float = 0 To cache.length-1
 			'if the searched distance is reached
-			if self.cache[t].z > distance
+			if cache[t].z > distance
 				if not pointA
-					pointA = self.cache[Max(t-1, 0)]
+					pointA = cache[Max(t-1, 0)]
 				elseif not pointB
-					pointB = self.cache[Max(t-1, 0)]
+					pointB = cache[Max(t-1, 0)]
 					exit
 				endif
 			endif
 		Next
 
+		'if no point was good enough - use the last possible one
+		if not pointA then pointA = cache[cache.length-1]
 		'if pointA is already the last one we have, the second point
 		'could be the same
 		if not pointB then pointB = pointA.Copy()
