@@ -66,13 +66,15 @@ Type TBroadcastManager
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0)
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
+		self.lastNewsShowBroadcast = currentNewsShowBroadcast
 		currentProgammeBroadcast = BroadcastCommon(hour, GetPlayersProgrammes(day, hour), recompute)
 	End Method
 
 
 	'Führt die Berechnung für die Nachrichten(-Show)-Ausstrahlungen durch
 	Method BroadcastNewsShow(day:Int=-1, hour:Int, recompute:Int = 0)
-		self.lastNewsShowBroadcast = currentNewsShowBroadcast
+		self.lastProgrammeBroadcast = currentProgammeBroadcast
+		self.lastNewsShowBroadcast = currentNewsShowBroadcast		
 		currentNewsShowBroadcast = BroadcastCommon(hour, GetPlayersNewsShow(day, hour), recompute)
 	End Method
 
@@ -98,7 +100,7 @@ Type TBroadcastManager
 		bc.Hour = hour
 		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
 		bc.PlayersBroadcasts = broadcasts					'Die Programmwahl der Spieler "einloggen"
-		bc.ComputeAudience(lastProgrammeBroadcast, lastNewsShowBroadcast)	'Zuschauerzahl berechnen
+		bc.ComputeAudience(self.lastProgrammeBroadcast, self.lastNewsShowBroadcast)	'Zuschauerzahl berechnen
 		'If Not recompute Then bc.BroadcastConsequences()	'Konsequenzen der Ausstrahlung berechnen/aktualisieren
 
 		'set audience for this broadcast
@@ -250,24 +252,26 @@ endrem
 
 
 	'Berechnet die Attraktivität des Programmes pro Spieler (mit Glücksfaktor) und setzt diese Infos an die Märktkalkulationen (TAudienceMarketCalculation) weiter.
-	Method ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast:TBroadcast,lastNewsShowBroadcast:TBroadcast)
+	Method ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)	
 		Local broadcastedMaterial:TBroadcastMaterial
 		For Local i:Int = 1 To 4
 			broadcastedMaterial = PlayersBroadcasts[i]
-			If Not broadcastedMaterial Then
-				Throw "Implementiere mich!"
-			End If
 			
-			AudienceResults[i].Title = broadcastedMaterial.GetTitle()
-	
 			Local lastMovieAttraction:TAudienceAttraction = null
 			If lastMovieBroadcast <> Null lastMovieAttraction = lastMovieBroadcast.Attractions[i] 
 			
 			Local lastNewsShowAttraction:TAudienceAttraction = null
-			If lastNewsShowBroadcast <> Null lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[i] 
+			If lastNewsShowBroadcast <> Null lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[i] 			
 			
-			'3. Qualität meines Programmes
-			Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction)
+			If broadcastedMaterial Then
+				AudienceResults[i].Title = broadcastedMaterial.GetTitle()			
+				'3. Qualität meines Programmes			
+				Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction)			
+			Else			
+				Print "Sendeausfall!"
+				AudienceResults[i].Title = "Sendeausfall!"
+				Attractions[i] = CalculateMalfunction(lastMovieAttraction)
+			End If			
 
 			For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 				If market.Players.Contains(String(i)) Then
@@ -277,6 +281,25 @@ endrem
 		Next
 	End Method
 
+	'Sendeausfall
+	Method CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)		
+		Local attraction:TAudienceAttraction = new TAudienceAttraction		
+		If lastMovieAttraction Then
+			attraction.Malfunction = lastMovieAttraction.Malfunction
+			attraction.AudienceFlowBonus = lastMovieAttraction.GetNewInstance()
+			attraction.AudienceFlowBonus.MultiplyFactor(0.02) 
+			
+			attraction.QualityOverTimeEffectMod = -0.2 * attraction.Malfunction
+		Else
+			attraction.QualityOverTimeEffectMod = -0.9
+		End If								
+		attraction.CalculateBaseAttraction()
+		attraction.CalculateBroadcastAttraction()				
+		attraction.CalculateBlockAttraction()
+		attraction.Malfunction = attraction.Malfunction + 1
+		Return attraction			
+	End Method
+	
 	Method SetFixAudience()
 		'SetPlayersFixAudience
 		Rem
@@ -290,7 +313,7 @@ endrem
 		endrem
 	End Method
 
-
+rem
 	Method SetAudienceFlow(lastBroadcast:TBroadcast)
 		Local broadcastedMaterial:TBroadcastMaterial
 		If lastBroadcast <> Null Then
@@ -334,7 +357,7 @@ endrem
 			Next
 		EndIf
 	End Method
-
+endrem
 
 	Method GetAudienceFlowTimeMod:Float()
 		Local hour:Int = Hour
@@ -432,8 +455,8 @@ End Type
 Type TAudienceMarketCalculation
 	Field MaxAudience:TAudience						'Die Einwohnerzahl (max. Zuschauer) in diesem Markt
 	Field AudienceAttractions:TMap = CreateMap()	'Die Attraktivität des Programmes nach Zielgruppen. Für jeden Spieler der um diesen Markt mitkämpft gibt's einen Eintrag in der Liste
-	Field AudienceFlow:TMap = CreateMap()
-	Field ExclusiveAudience:TMap = CreateMap()
+	'Field AudienceFlow:TMap = CreateMap()
+	'Field ExclusiveAudience:TMap = CreateMap()
 	'Field AdditionalAudience:TMap = CreateMap()
 	'Field AudienceResult:TMap = CreateMap()		'Das Ergebnis der Berechnung. Pro Spieler gibt's ein Ergebnis
 	Field Players:TList = CreateList()				'Die Liste der Spieler die um diesen Markt kämpfen
@@ -466,14 +489,14 @@ Type TAudienceMarketCalculation
 	End Method
 
 
-	Method SetPlayersExclusiveAudience(playerId:String, exclusiveAudienceValue:TAudience)
-		ExclusiveAudience.Insert(playerId, exclusiveAudienceValue)
-	End Method
+'	Method SetPlayersExclusiveAudience(playerId:String, exclusiveAudienceValue:TAudience)
+'		ExclusiveAudience.Insert(playerId, exclusiveAudienceValue)
+'	End Method
 
 
-	Method SetPlayersAudienceFlow(playerId:String, audienceFlowValue:TAudience)
-		AudienceFlow.Insert(playerId, audienceFlowValue)
-	End Method
+'	Method SetPlayersAudienceFlow(playerId:String, audienceFlowValue:TAudience)
+'		AudienceFlow.Insert(playerId, audienceFlowValue)
+'	End Method
 
 
 	Method GetAudienceResultOfPlayer:TAudienceResult(playerId:Int)
@@ -481,7 +504,7 @@ Type TAudienceMarketCalculation
 		'Return TAudience(MapValueForKey(AudienceResult, playerId))
 	End Method
 
-
+rem
 	Method ComputeExklusiveAudience()
 		'Kultwerte und Exklusivzuschauer addieren
 		For Local playerId:String = EachIn Players
@@ -503,8 +526,8 @@ Type TAudienceMarketCalculation
 			ExclusiveAudienceSum.Add(exclusiveAudience)
 		Next
 	End Method
-
-
+endrem
+rem
 	Method ComputeAudienceFlow()
 		'AudienceFlow aufsummieren -> Wie viele Zuschauer sind bereits
 		'an bestimmte Sender gebunden?
@@ -515,7 +538,7 @@ Type TAudienceMarketCalculation
 			AudienceFlowSum.Add(audienceFlow)
 		Next
 	End Method
-
+endrem
 
 	Method ComputeAudience(forHour:Int = -1)
 		If forHour <= 0 Then forHour = Game.GetHour()
@@ -526,10 +549,10 @@ Type TAudienceMarketCalculation
 		PotentialChannelSurfer = TBroadcast.GetPotentialAudienceForHour(MaxAudience, forHour)
 
 		'Berechne wie viele Leute extra für dieses Programm einschalten
-		ComputeExklusiveAudience() 'benötigt ein gefülltes PotentialChannelSurfer
+		'ComputeExklusiveAudience() 'benötigt ein gefülltes PotentialChannelSurfer
 
 		'Berechne den AudienceFlow
-		ComputeAudienceFlow()
+		'ComputeAudienceFlow()
 
 		'PotentialChannelSurfer um 1/4 derer aus audienceFlowSum erhöhen.
 		'Dies simuliert diejenigen, die eigentlich ausschalten wollten,
@@ -600,8 +623,8 @@ Type TAudienceMarketCalculation
 
 				'Zuschauerzahlen für den Spieler summieren
 				Local playerAudienceResult:TAudience = New TAudience
-				playerAudienceResult.Add(TAudience(MapValueForKey(ExclusiveAudience, currKey))) 'Die festen Zuschauer
-				playerAudienceResult.Add(TAudience(MapValueForKey(AudienceFlow, currKey))) 		'Der AudienceFlow
+				'playerAudienceResult.Add(TAudience(MapValueForKey(ExclusiveAudience, currKey))) 'Die festen Zuschauer
+				'playerAudienceResult.Add(TAudience(MapValueForKey(AudienceFlow, currKey))) 		'Der AudienceFlow
 				playerAudienceResult.Add(channelSurfer)											'Die Zapper
 				playerAudienceResult.Round()
 
@@ -616,12 +639,12 @@ Type TAudienceMarketCalculation
 				AudienceResults[currKeyInt].Audience = playerAudienceResult 'Die tatsächliche Zuschauerzahl
 
 				'Teilmengen der Zuschauerzahl: Exklusive, Audience Flow und Zapper
-				AudienceResults[currKeyInt].ExclusiveAudience = TAudience(MapValueForKey(ExclusiveAudience, currKey))
-				AudienceResults[currKeyInt].AudienceFlow = TAudience(MapValueForKey(AudienceFlow, currKey))
+				'AudienceResults[currKeyInt].ExclusiveAudience = TAudience(MapValueForKey(ExclusiveAudience, currKey))
+				'AudienceResults[currKeyInt].AudienceFlow = TAudience(MapValueForKey(AudienceFlow, currKey))
 				AudienceResults[currKeyInt].ChannelSurfer = channelSurfer
 
-				AudienceResults[currKeyInt].ExclusiveAudienceSum = ExclusiveAudienceSum
-				AudienceResults[currKeyInt].AudienceFlowSum = audienceFlowSum
+				'AudienceResults[currKeyInt].ExclusiveAudienceSum = ExclusiveAudienceSum
+				'AudienceResults[currKeyInt].AudienceFlowSum = audienceFlowSum
 				'Keine ChannelSurferSum, dafür
 				AudienceResults[currKeyInt].ChannelSurferToShare = ChannelSurferToShare
 
@@ -650,13 +673,13 @@ Type TAudienceResult
 	Field Audience:TAudience = New TAudience				'Die Zahl der Zuschauer die erreicht wurden. Sozusagen das Ergenis das zählt und angezeigt wird.
 
 	'Das sind die drei Teilmengen von Audience (also der Zuschauerzahl)
-	Field ExclusiveAudience:TAudience = New TAudience		'Zuschauer die nur wegen meinem Programm
-	Field AudienceFlow:TAudience = New TAudience			'Zuschauer die aus dem vorangegangenen Programmblock drangeblieben sind
+	'Field ExclusiveAudience:TAudience = New TAudience		'Zuschauer die nur wegen meinem Programm
+	'Field AudienceFlow:TAudience = New TAudience			'Zuschauer die aus dem vorangegangenen Programmblock drangeblieben sind
 	Field ChannelSurfer:TAudience = New TAudience			'Zuschauer die reingezappt haben und hängen geblieben sind.
 
 	'Aufsummierung der Zuschauerwerte ALLER Spieler... nicht nur meiner!
-	Field ExclusiveAudienceSum:TAudience = New TAudience	'Summe aller Exklusiven
-	Field AudienceFlowSum:TAudience = New TAudience			'Summe aller aus dem Audience Flow
+	'Field ExclusiveAudienceSum:TAudience = New TAudience	'Summe aller Exklusiven
+	'Field AudienceFlowSum:TAudience = New TAudience			'Summe aller aus dem Audience Flow
 	Field ChannelSurferToShare:TAudience = New TAudience	'Summe der Zapper die es zu verteilen gilt (ist nicht gleich eines ChannelSurferSum)
 
 	Field AudienceAttraction:TAudienceAttraction			'Die ursprüngliche Attraktivität des Programmes
@@ -679,10 +702,10 @@ Type TAudienceResult
 		WholeMarket.Add(res.WholeMarket)
 		ChannelSurfer.Add(res.ChannelSurfer)
 		PotentialMaxAudience.Add(res.PotentialMaxAudience)
-		AudienceFlow.Add(res.AudienceFlow)
-		ExclusiveAudience.Add(res.ExclusiveAudience)
-		AudienceFlowSum.Add(res.AudienceFlowSum)
-		ExclusiveAudienceSum.Add(res.ExclusiveAudienceSum)
+		'AudienceFlow.Add(res.AudienceFlow)
+		'ExclusiveAudience.Add(res.ExclusiveAudience)
+		'AudienceFlowSum.Add(res.AudienceFlowSum)
+		'ExclusiveAudienceSum.Add(res.ExclusiveAudienceSum)
 		ChannelSurferToShare.Add(res.ChannelSurferToShare)
 		Audience.Add(res.Audience)
 
@@ -746,6 +769,11 @@ Type TAudience
 		Return obj
 	End Function
 
+	Function CreateAndInitValue:TAudience(defaultValue:Float)
+		Local result:TAudience = New TAudience
+		result.AddFloat(defaultValue)
+		Return result
+	End Function	
 
 	Function CreateAndInit:TAudience(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
 		Local result:TAudience = New TAudience
@@ -950,7 +978,8 @@ Type TAudience
 
 
 	Method ToString:String()
-		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + TFunctions.shortenFloat(Children,2) + "  - 1: " + TFunctions.shortenFloat(Teenagers,2) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,2) + "  - 3: " + TFunctions.shortenFloat(Employees,2) + "  - 4: " + TFunctions.shortenFloat(Unemployed,2) + "  - 5: " + TFunctions.shortenFloat(Manager,2) + "  - 6: " + TFunctions.shortenFloat(Pensioners,2) + ")"
+		Local dec:Int = 4
+		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + TFunctions.shortenFloat(Children,dec) + "  - 1: " + TFunctions.shortenFloat(Teenagers,dec) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,dec) + "  - 3: " + TFunctions.shortenFloat(Employees,dec) + "  - 4: " + TFunctions.shortenFloat(Unemployed,dec) + "  - 5: " + TFunctions.shortenFloat(Manager,dec) + "  - 6: " + TFunctions.shortenFloat(Pensioners,dec) + ")"
 	End Method
 
 
@@ -1005,12 +1034,54 @@ Type TAudienceAttraction Extends TAudience
 	Field BlockAttraction:TAudience
 	
 	Field Genre:Int
+	Field Malfunction:Int '1 = Sendeausfall
 	
 	Function CreateAndInitAttraction:TAudienceAttraction(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.SetValues(group0, group1, group2, group3, group4, group5, group6, subgroup0, subgroup1)
 		Return result
 	End Function	
+	
+	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
+		If Not audienceAttr Then Return Self
+		Self.Add(audienceAttr)
+		
+		Quality	:+ audienceAttr.Quality
+		GenrePopularityMod	:+ audienceAttr.GenrePopularityMod
+		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
+		If PublicImageMod Then PublicImageMod.Add(audienceAttr.PublicImageMod)
+		If TrailerMod Then TrailerMod.Add(audienceAttr.TrailerMod)
+		If FlagsMod Then FlagsMod.Add(audienceAttr.FlagsMod)
+		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
+		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
+		GenreTimeMod :+ audienceAttr.GenreTimeMod
+		NewsShowMod :+ audienceAttr.NewsShowMod
+		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
+		If BroadcastAttraction Then BroadcastAttraction.Add(audienceAttr.BroadcastAttraction)
+		If BlockAttraction Then BlockAttraction.Add(audienceAttr.BlockAttraction)		
+
+		Return Self
+	End Method
+	
+	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
+		Self.MultiplyFactor(factor)
+		
+		Quality	:* factor
+		GenrePopularityMod 	:* factor
+		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFactor(factor)
+		If PublicImageMod Then PublicImageMod.MultiplyFactor(factor)
+		If TrailerMod Then TrailerMod.MultiplyFactor(factor)
+		If FlagsMod Then FlagsMod.MultiplyFactor(factor)
+		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFactor(factor)
+		QualityOverTimeEffectMod :* factor
+		GenreTimeMod :* factor
+		NewsShowMod :* factor
+		If BaseAttraction Then BaseAttraction.MultiplyFactor(factor)
+		If BroadcastAttraction Then BroadcastAttraction.MultiplyFactor(factor)
+		If BlockAttraction Then BlockAttraction.MultiplyFactor(factor)
+
+		Return Self		
+	End Method
 	
 	Method CalculateBaseAttraction()
 		'TDevHelper.Log("TAudienceAttraction2.CalculateBaseAttraction()", "Quality: " + Quality, LOG_DEBUG)
@@ -1031,7 +1102,7 @@ Type TAudienceAttraction Extends TAudience
 		Sum.MultiplyFactor(Quality)	
 		Self.BaseAttraction = Sum.GetNewInstance()
 		Sum.CopyTo(Self)
-		TDevHelper.Log("TAudienceAttraction.CalculateBaseAttraction()", "Base-Attraction: " + Sum.ToString(), LOG_DEBUG)
+		'TDevHelper.Log("TAudienceAttraction.CalculateBaseAttraction()", "Base-Attraction: " + Sum.ToString(), LOG_DEBUG)
 	End Method
 	
 	Method CalculateBroadcastAttraction()	
@@ -1043,14 +1114,14 @@ Type TAudienceAttraction Extends TAudience
 		
 		Self.BroadcastAttraction = Sum.GetNewInstance()
 		Sum.CopyTo(Self)
-		TDevHelper.Log("TAudienceAttraction.CalculateBroadcastAttraction()", "Broadcast-Attraction: " + Sum.ToString(), LOG_DEBUG)
+		'TDevHelper.Log("TAudienceAttraction.CalculateBroadcastAttraction()", "Broadcast-Attraction: " + Sum.ToString(), LOG_DEBUG)
 	End Method
 	
 	Method CalculateBlockAttraction()
-		TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "BroadcastAttraction: " + BroadcastAttraction.ToString(), LOG_DEBUG)
-		TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "QualityOverTimeEffectMod: " + QualityOverTimeEffectMod, LOG_DEBUG)
-		TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "GenreTimeMod: " + GenreTimeMod, LOG_DEBUG)
-		TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "NewsShowMod: " + NewsShowMod, LOG_DEBUG)
+		'TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "BroadcastAttraction: " + BroadcastAttraction.ToString(), LOG_DEBUG)
+		'TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "QualityOverTimeEffectMod: " + QualityOverTimeEffectMod, LOG_DEBUG)
+		'TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "GenreTimeMod: " + GenreTimeMod, LOG_DEBUG)
+		'TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "NewsShowMod: " + NewsShowMod, LOG_DEBUG)
 	
 		Local Sum:TAudience = new TAudience
 		Sum.AddFloat(QualityOverTimeEffectMod)
@@ -1061,7 +1132,7 @@ Type TAudienceAttraction Extends TAudience
 		Sum.Multiply(BroadcastAttraction)
 		Self.BlockAttraction = Sum.GetNewInstance()
 		Sum.CopyTo(Self)
-		TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "Block-Attraction: " + Sum.ToString(), LOG_DEBUG)					
+		'TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "Block-Attraction: " + Sum.ToString(), LOG_DEBUG)					
 	End Method
 	
 	Method CopyBroadcastAttractionFrom(otherAudienceAttraction:TAudienceAttraction)

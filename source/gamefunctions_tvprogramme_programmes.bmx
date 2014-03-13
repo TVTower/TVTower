@@ -1451,10 +1451,13 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.CalculateBaseAttraction()			
 			
 			'7 - Audience Flow
-			If lastMovieBlockAttraction <> Null Then
+			TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 1", LOG_DEBUG)
+			If lastMovieBlockAttraction Then
+				TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 2", LOG_DEBUG)
 				result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
 				Print "Faktor nachbessern!!!!!!!"
 				result.AudienceFlowBonus.MultiplyFactor(0.2) 
+				TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 3: " + result.AudienceFlowBonus.ToString(), LOG_DEBUG)
 			End If			
 			
 			result.CalculateBroadcastAttraction()
@@ -1463,7 +1466,9 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Endif
 		
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
-		result.QualityOverTimeEffectMod = ((result.Quality - 50)/250) * (block - 1)
+		TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Quality X: " + result.Quality, LOG_DEBUG)
+		
+		result.QualityOverTimeEffectMod = ((result.Quality - 0.5)/2.5) * (block - 1)
 		
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
@@ -1472,6 +1477,8 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'result.NewsShowMod = lastNewsBlockAttraction
 
 		result.CalculateBlockAttraction()
+		
+		Return result
 	End Method
 
 

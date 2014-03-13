@@ -257,28 +257,96 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for a newsShow (3 news)
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
-		Local genreDefintion:TNewsGenreDefinition = null
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )		
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
-		Local tempAudienceAttr:TAudience = null
+		resultAudienceAttr.GenreTargetGroupMod = New TAudience
+		resultAudienceAttr.PublicImageMod = New TAudience
+		resultAudienceAttr.TrailerMod = New TAudience
+		resultAudienceAttr.FlagsMod = New TAudience
+		resultAudienceAttr.AudienceFlowBonus = New TAudience
+		resultAudienceAttr.BaseAttraction = New TAudience
+		resultAudienceAttr.BroadcastAttraction = New TAudience
+		resultAudienceAttr.BlockAttraction = New TAudience	
+		
+		Local tempAudienceAttr:TAudienceAttraction = null
 		for local i:int = 0 to 2
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
 			'               es koennte ja jemand "Trailer" in die News
 			'               verpacken - siehe RTL2 und Co.
-			if TNews(news[i])
-				genreDefintion = Game.BroadcastManager.GetNewsGenreDefinition(TNews(news[i]).GetGenre())
-				tempAudienceAttr = genreDefintion.CalculateAudienceAttraction(TNews(news[i]), Game.GetHour())
-			Else
-				tempAudienceAttr = New TAudience
-			EndIf
+			tempAudienceAttr = CalculateNewsBlockAudienceAttraction(TNews(news[i]), lastMovieBlockAttraction )
 
-			'different weight for news slots
-			If i = 1 Then resultAudienceAttr.Add(tempAudienceAttr.MultiplyFactor(0.5))
-			If i = 2 Then resultAudienceAttr.Add(tempAudienceAttr.MultiplyFactor(0.3))
-			If i = 3 Then resultAudienceAttr.Add(tempAudienceAttr.MultiplyFactor(0.2))
+			'different weight for news slots			
+			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.5))
+			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.3))
+			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.2))
 		Next
-
 		Return resultAudienceAttr
+	End Method
+	
+	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction)
+		Local result:TAudienceAttraction = New TAudienceAttraction
+		Local genreDefintion:TNewsGenreDefinition = null
+			
+		'Local result:TAudienceAttraction = Null
+
+		'Local rawQuality:Float = news.GetQuality()
+		'Local quality:Float = Max(0, Min(99, rawQuality))
+
+		'result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
+		'result.Quality = rawQuality
+
+		'Return result		
+		'Print "NEWWWWWWWWWWWWWWWWWWWWWS!"
+		
+		'1 - Qualität des Programms
+		If news Then
+			genreDefintion = Game.BroadcastManager.GetNewsGenreDefinition(news.GetGenre())
+			result.Quality = news.GetQuality()					
+		Endif
+		result.Quality = Max(0.01, Min(0.99, result.Quality))		
+		
+		If genreDefintion Then
+			'2 - Mod: Trend		
+			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
+			
+			'3 - Genre <> Zielgruppe
+			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.GetNewInstance()
+			result.GenreTargetGroupMod.SubtractFloat(0.5)
+		Endif
+		
+		'4 - Image
+		result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods()
+		result.PublicImageMod.SubtractFloat(1)
+		
+		'5 - Trailer
+		result.TrailerMod = null
+			
+		'6 - Flags
+		result.FlagsMod = null
+		
+		result.CalculateBaseAttraction()			
+		
+		'7 - Audience Flow
+		If lastMovieBlockAttraction <> Null Then
+			result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
+			Local audienceFlowFactor:Float = 0.2 + (result.Quality / 2.5)
+			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
+		End If			
+		
+		result.CalculateBroadcastAttraction()
+		
+		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		result.QualityOverTimeEffectMod = 0
+		
+		'9 - Genres <> Sendezeit
+		result.GenreTimeMod = 0 'TODO
+		
+		'10 - News-Mod
+		'result.NewsShowMod = lastNewsBlockAttraction
+
+		result.CalculateBlockAttraction()
+
+		Return result
 	End Method
 
 
