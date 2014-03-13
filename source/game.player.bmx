@@ -56,7 +56,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 		If arrayIndex < 0 Then Return GetFinance(Game.GetStartDay()-1)
 		If (arrayIndex = 0 And Not finances[0]) Or arrayIndex >= finances.length
-			TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
+			'TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances.length
 				'resize array
 				finances = finances[..arrayIndex+1]

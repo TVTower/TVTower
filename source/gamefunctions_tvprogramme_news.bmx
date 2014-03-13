@@ -571,6 +571,17 @@ Type TGUINews extends TGUIGameListItem
 			'background - no "_dragged" to add to name
 			Assets.GetSprite(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 
+			'highlight hovered news (except already dragged)
+			if not isDragged() and self = RoomHandler_News.hoveredGuiNews
+				local oldAlpha:float = GetAlpha()
+				SetBlend LightBlend
+				SetAlpha 0.30*oldAlpha
+				SetColor 150,150,150
+				Assets.GetSprite(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
+				SetAlpha oldAlpha
+				SetBlend AlphaBlend
+			endif
+
 			'===== DRAW CACHED TEXTS =====
 			'creates cache if needed
 			DrawTextOverlay()

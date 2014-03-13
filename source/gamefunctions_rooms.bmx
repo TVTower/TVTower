@@ -3342,6 +3342,7 @@ Type RoomHandler_News extends TRoomHandler
 	Global guiNewsListAvailable:TGUINewsList
 	Global guiNewsListUsed:TGUINewsSlotList
 	Global draggedGuiNews:TGuiNews = null
+	Global hoveredGuiNews:TGuiNews = null
 
 	Function Init()
 		'create genre buttons
@@ -3407,7 +3408,7 @@ Type RoomHandler_News extends TRoomHandler
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
 
-'		hoveredGuiNews = null
+		hoveredGuiNews = null
 		draggedGuiNews = null
 		guiNewsListAvailable.EmptyList()
 		guiNewsListUsed.EmptyList()
@@ -3638,6 +3639,7 @@ Type RoomHandler_News extends TRoomHandler
 		if haveToRefreshGuiElements then RefreshGUIElements()
 
 		'reset dragged block - will get set automatically on gui-update
+		hoveredGuiNews = null
 		draggedGuiNews = null
 
 		'general newsplanner elements
@@ -3653,6 +3655,7 @@ Type RoomHandler_News extends TRoomHandler
 		local item:TGUINews = TGUINews(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
+		hoveredGuiNews = item
 		if item.isDragged() then draggedGuiNews = item
 
 		return TRUE
