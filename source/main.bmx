@@ -48,7 +48,7 @@ Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
 Include "gamefunctions_popularity.bmx"			'Popularit�ten und Trends
 Include "gamefunctions_genre.bmx"				'Genre-Definitionen
-Include "gamefunctions_quotes.bmx"				'Quotenberechnung
+Include "gamefunctions_broadcast.bmx"				'Quotenberechnung
 Include "gamefunctions_people.bmx"				'Angestellte und Personen
 Include "gamefunctions_publicimage.bmx"			'Das SenderImage
 Include "gamefunctions_production.bmx"			'Alles was mit Filmproduktion zu tun hat
