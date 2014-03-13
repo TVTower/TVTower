@@ -2097,7 +2097,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'1. searching
 		If stationMapMode = 1
 			'create a temporary station if not done yet
-			if not StationMapMouseoverStation then StationMapMouseoverStation = TStationMap.getStationMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
+			if not StationMapMouseoverStation then StationMapMouseoverStation = StationMapCollection.getMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
 			local mousePos:TPoint = TPoint.Create( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
@@ -2112,7 +2112,7 @@ Type RoomHandler_Office extends TRoomHandler
 			if MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
 				if StationMapMouseoverStation.GetHoveredMapSection() and StationMapMouseoverStation.getReach()>0
-					StationMapSelectedStation = TStationMap.getStationMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
+					StationMapSelectedStation = StationMapCollection.getMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
 				endif
 			endif
 
@@ -2270,7 +2270,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'only players can "enter screens" - so just use "inRoom"
 
 		For local i:int = 0 to 3
-			local show:int = TStationMap.GetStationMap(Game.GetPlayer().figure.inRoom.owner).showStations[i]
+			local show:int = StationMapCollection.GetMap(Game.GetPlayer().figure.inRoom.owner).showStations[i]
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
@@ -4801,6 +4801,7 @@ Type RoomHandler_Credits extends TRoomHandler
 		role.addCast("djmetzger")
 		role.addCast("Kurt TV")
 		role.addCast("Själe")
+		role.addCast("SushiTV")
 		role.addCast("...und all die anderen Fehlermelder im Forum")
 
 

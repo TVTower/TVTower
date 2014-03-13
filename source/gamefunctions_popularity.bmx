@@ -1,5 +1,6 @@
 ﻿Type TPopularityManager
 	Field Popularities:TList = CreateList()
+	Field _initialized:int = FALSE
 
 
 	Function Create:TPopularityManager()
@@ -8,7 +9,20 @@
 	End Function
 
 
+	'reinitializes the manager
+	Method Reset()
+		_initialized = FALSE
+		Initialize()
+	End Method
+
+
 	Method Initialize:int()
+		if _initialized then return TRUE
+
+		'reset list
+		Popularities = CreateList()
+
+		_initialized = TRUE
 	End Method
 
 
