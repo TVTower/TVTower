@@ -178,14 +178,19 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 	Method Sign:int(owner:int, day:int=-1)
 		if self.owner = owner then return FALSE
 
+		'attention: GetProfit/GetPenalty default to "owner"
+		'           if no param is given - as we set owner before
+		'           the functions wont use the "average" of all players
+		'           -> manually set to param to 0 or set owner afterwards
 		If day < 0 Then day = game.GetDay()
 		self.daySigned			= day
 		self.owner				= owner
-		self.profit				= GetProfit()
-		self.penalty			= GetPenalty()
-		self.minAudience		= GetMinAudience(owner)
+		self.profit				= GetProfit(-1, 0)
+		self.penalty			= GetPenalty(-1, 0)
+		self.minAudience		= GetMinAudience(0)
 
-		TDevHelper.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+GetProfit()+",  Penalty: "+GetPenalty()+ ",  MinAudience: "+GetMinAudience()+",  Title: "+GetTitle(), LOG_DEBUG)
+		TDevHelper.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
+		TDevHelper.log("TAdContract.Sign2", "Player "+owner+" signed a contract.  Profit: "+GetProfit()+",  Penalty: "+GetPenalty()+ ",  MinAudience: "+GetMinAudience()+",  Title: "+GetTitle(), LOG_DEBUG)
 		return TRUE
 	End Method
 
@@ -297,21 +302,26 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'gets audience in numbers (not percents)
+	'Gets minimum needed audience in absolute numbers
+	'=====
+	'if the contract is not signed/unowned the average of
+	'all players is used as input, else the owner or given player
+	'is used to calculate audience from
 	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
-		'already calculated?
-		If self.minAudience >=0 Then Return self.minAudience
-
+		'by default owner is "0" (unsigned)
+		'if none (-1) was given we default to owner
 		If playerID < 0 Then playerID = Self.owner
 
-		local useAudience:int = 0
+		'owned by someone and already calculated?
+		If playerID > 0 and minAudience >=0 Then Return minAudience
 
-		'in case of "playerID = -1" we get the avg value
-		useAudience = Game.GetMaxaudience(playerID)
+		'if playerID is <=0 (not a player) the avg audience maximum
+		'is returned
+		local useAudience:int = Game.GetMaxAudience(playerID)
 
 		'0.5 = more than 50 percent of whole germany wont watch TV the same time
 		'therefor: maximum of half the audience can be "needed"
-		Return TFunctions.RoundToBeautifulValue( Floor(useAudience*0.5 * Self.GetMinAudiencePercentage()) )
+		Return TFunctions.RoundToBeautifulValue( Floor(useAudience*0.5 * GetMinAudiencePercentage()) )
 	End Method
 
 
