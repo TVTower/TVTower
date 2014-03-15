@@ -696,7 +696,7 @@ Type TGame {_exposeToLua="selected"}
 	Method ComputeDailyCosts(day:Int=-1)
 		For Local Player:TPlayer = EachIn Players
 			'stationfees
-			Player.GetFinance().PayStationFees( Player.GetStationMap().CalculateStationCosts(player.playerID))
+			Player.GetFinance().PayStationFees( Player.GetStationMap().CalculateStationCosts())
 			'interest rate for your current credit
 			Player.GetFinance().PayCreditInterest( Player.GetFinance().credit * TPlayerFinance.creditInterestRate )
 
@@ -2411,7 +2411,7 @@ Type GameEvents
 
 		'for all
 		If minute = 5 Or minute = 55 Or minute = 0 Then Interface.BottomImgDirty = True
-		
+
 		'begin of all newshows - compute their audience
 		If minute = 0
 			For Local player:TPlayer = EachIn Game.Players
@@ -2422,18 +2422,18 @@ Type GameEvents
 		ElseIf minute = 5
 			For Local player:TPlayer = EachIn Game.Players
 				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetProgramme(day, hour)
-				If obj					
+				If obj
 					If 1 = player.ProgrammePlan.GetProgrammeBlock(day, hour)
 						obj.BeginBroadcasting(day, hour, minute) 'just starting
 					Else
 						obj.ContinueBroadcasting(day, hour, minute)
 					EndIf
-				EndIf							
+				EndIf
 			Next
 			Game.BroadcastManager.BroadcastProgramme(day, hour)
 		'call-in shows/quiz - generate income
 		ElseIf minute = 54
-			For Local player:TPlayer = EachIn Game.Players		
+			For Local player:TPlayer = EachIn Game.Players
 				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetProgramme(day,hour)
 				If obj
 					If obj.GetBlocks() = player.ProgrammePlan.GetProgrammeBlock(day, hour)
@@ -2447,9 +2447,9 @@ Type GameEvents
 		ElseIf minute = 55
 			'computes ads - if an ad is botched or run successful
 			'if adcontract finishes, earn money
-			For Local player:TPlayer = EachIn Game.Players		
+			For Local player:TPlayer = EachIn Game.Players
 				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetAdvertisement(day, hour)
-				If obj					
+				If obj
 					If 1 = player.ProgrammePlan.GetAdvertisementBlock(day, hour)
 						obj.BeginBroadcasting(day, hour, minute) 'just starting
 					Else
@@ -2457,7 +2457,7 @@ Type GameEvents
 					EndIf
 				EndIf
 			Next
-		'ads end - so trailers can set their "ok" 
+		'ads end - so trailers can set their "ok"
 		ElseIf minute = 59
 			For Local player:TPlayer = EachIn Game.Players
 				Local obj:TBroadcastMaterial = Player.ProgrammePlan.GetAdvertisement(day, hour)
@@ -2467,10 +2467,10 @@ Type GameEvents
 					Else
 						obj.BreakBroadcasting(day, hour, minute)
 					EndIf
-				EndIf			
+				EndIf
 			Next
-		EndIf		
-					
+		EndIf
+
 		Return True
 	End Function
 

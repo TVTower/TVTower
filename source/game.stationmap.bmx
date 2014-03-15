@@ -604,11 +604,12 @@ Type TStationMap {_exposeToLua="selected"}
     End Method
 
 
-	Method CalculateStationCosts:Int(owner:Int=0)
+	Method CalculateStationCosts:Int()
 		Local costs:Int = 0
 		For Local Station:TStation = EachIn stations
-			If station.owner = owner Then costs:+1000 * Ceil(station.price / 50000) ' price / 50 = cost
+			costs:+1000 * Ceil(station.price / 50000) ' price / 50 = cost
 		Next
+		if costs = 0 then Throw "CalculateStationCosts: Player without stations (or station costs) was found."
 		Return costs
 	End Method
 
