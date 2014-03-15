@@ -18,7 +18,7 @@ Type TBroadcastMaterial	extends TOwnedGameObject {_exposeToLua="selected"}
 
 	Field programmedHour:int	= -1	'time at which the material is planned to get send
 	Field programmedDay:int		= -1
-	
+
 	Field currentBlockBroadcasting:int		{_exposeToLua} '0 = läuft nicht; 1 = 1 Block; 2 = 2 Block; usw.
 
 	'states a program can be in
@@ -872,7 +872,10 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 				if TProgramme(broadcastMaterial)
 					Local programme:TProgramme	= TProgramme(broadcastMaterial)
 					text = GetLocale("TRAILER")
-					if programme.data.xrated then text = GetLocale("X_RATED")+"-"+text
+					'red corner mark should be enough to recognized X-rated
+					'removing "FSK18" from text removes the bug that this text
+					'does not fit into the rectangle on Windows systems
+					'if programme.data.xrated then text = GetLocale("X_RATED")+"-"+text
 				endif
 		End Select
 
