@@ -9,7 +9,7 @@ ENDREM
 'parent of all stationmaps
 Type TStationMapCollection
 	'list of stationmaps
-	Field list:TList = CreateList()
+	Field stationMaps:TStationMap[4]
 	'map containing bitmask-coded information for "used" pixels
 	Field shareMap:TMap = Null {nosave}
 	Field shareCache:TMap = Null {nosave}
@@ -145,14 +145,19 @@ Type TStationMapCollection
 
 
 	Method Add:int(map:TStationMap)
-		List.AddLast(map)
-		List.Sort()
+		'check boundaries
+		If map.parent.playerID < 1 or map.parent.playerID > stationMaps.length return FALSE
+		'add to array array - zerobased
+		stationMaps[map.parent.playerID-1] = map
 		return TRUE
 	End Method
 
 
 	Method Remove:int(map:TStationMap)
-		List.Remove(map)
+		'check boundaries
+		If map.parent.playerID < 1 or map.parent.playerID > stationMaps.length return FALSE
+		'remove from array - zero based
+		stationMaps[map.parent.playerID-1] = Null
 		return TRUE
 	End Method
 
@@ -161,10 +166,16 @@ Type TStationMapCollection
 	'do not expose to Lua... else they get access to buy/sell
 	Method GetMap:TStationMap(playerID:Int=-1)
 		If playerID <= 0 Then playerID = Game.playerID
+		'check boundaries
+		If playerID < 1 or playerID > stationMaps.length return Null
 
-		If list.count() < playerID Then Return Null
+		'remove until not thrown for ages
+		If stationMaps[playerID-1] and stationMaps[playerID-1].parent.playerID <> playerID
+			Throw("StationMapCollection: station order corrupt?!")
+		EndIf
 
-		Return TStationMap(list.ValueAtIndex(playerID-1))
+		'zero based
+		Return stationMaps[playerID-1]
 	End Method
 
 
@@ -182,7 +193,7 @@ Type TStationMapCollection
 		Local mapKey:String	= ""
 		Local mapValue:TPoint = Null
 		Local rect:TRectangle = TRectangle.Create(0,0,0,0)
-		For Local stationmap:TStationMap = EachIn List
+		For Local stationmap:TStationMap = EachIn stationMaps
 			For Local station:TStation = EachIn stationmap.stations
 				'mark the area within the stations circle
 				posX = 0
@@ -631,7 +642,7 @@ Type TStationMap {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		'draw all stations from all players (except filtered)
-		For local map:TStationMap = eachin StationMapCollection.list
+		For local map:TStationMap = eachin StationMapCollection.stationMaps
 			'show stations is zero based
 			If Not showStations[map.parent.playerID-1] Then Continue
 			map.DrawStations()
