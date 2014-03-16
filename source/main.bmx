@@ -46,7 +46,7 @@ Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_popularity.bmx"			'Popularit�ten und Trends
+Include "gamefunctions_popularity.bmx"			'Popularitäten und Trends
 Include "gamefunctions_genre.bmx"				'Genre-Definitionen
 Include "gamefunctions_broadcast.bmx"				'Quotenberechnung
 Include "gamefunctions_people.bmx"				'Angestellte und Personen
@@ -56,9 +56,12 @@ Include "gamefunctions_debug.bmx"
 
 
 
-'setup what the logger should output
+'===== SETUP LOGGER FILTER =====
 TDevHelper.setLogMode(LOG_ALL)
 TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
+'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
+'@MANUEL: comment out when doing DEV to see LOG_DEV-messages
+TDevHelper.changePrintMode(LOG_DEV, FALSE)
 
 
 
@@ -1390,9 +1393,9 @@ Type TScreen_MainMenu Extends TGameScreen
 
 Rem
 Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste k�nnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben nat�rlich Auswirkungen.~n~nEine Kom�die kann h�ufiger gesendet werden, als eine Live-�bertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verkn�pft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbevertr�ge", "Werbevertr�ge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und nat�rlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbevertr�ge abzuschlie�en."] )
+StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
+StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
+StartTips.addLast( ["Tipp: Werbeverträge", "Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen."] )
 
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
@@ -2638,6 +2641,8 @@ Type AppEvents
 				If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(TRoom.GetFirstByDetails("movieagency"))
 				If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(TRoom.GetFirstByDetails("office", Game.playerID))
 				If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(TRoom.GetFirstByDetails("chief", Game.playerID))
+				'e wie "employees" :D
+				If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(TRoom.GetFirstByDetails("credits"))
 				If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(TRoom.GetFirstByDetails("news", Game.playerID))
 				If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(TRoom.GetFirstByDetails("roomboard"))
 			EndIf
@@ -2649,12 +2654,6 @@ Type AppEvents
 			If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 			If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
 
-			If KEYMANAGER.IsHit(KEY_SPACE)
-				print "shared audience:"+ StationMapCollection.GetShare([1]).x
-				print "total audience:"+ StationMapCollection.GetShare([1]).y
-				print "share:"+ StationMapCollection.GetShare([1]).z
-				print "---------"
-			endif
 			'Save game
 			If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
 			If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")

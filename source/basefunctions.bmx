@@ -491,7 +491,7 @@ Const LOG_ALL:int			= 1|2|4| 8 |16 |32 |64|128|256|512|1024|2048
 
 'by default EVERYTHING is logged
 TDevHelper.setLogMode(LOG_ALL)
-TDevHelper.setprintMode(LOG_ALL)
+TDevHelper.setPrintMode(LOG_ALL)
 
 Type TDevHelper
 	global printMode:int = 0 'print nothing
@@ -539,6 +539,7 @@ Type TDevHelper
 		If debugType & LOG_ERROR Then debugtext :+ "ERROR "
 		If debugType & LOG_WARNING Then debugtext :+ "WARNING "
 		If debugType & LOG_INFO Then debugtext :+ "INFO "
+		If debugType & LOG_DEV Then debugtext :+ "DEV "
 		If debugType & LOG_DEBUG Then debugtext :+ "DEBUG "
 		If debugType & LOG_LOADING Then debugtext :+ "LOAD "
 		If debugType & LOG_GAME Then debugtext :+ "GAME "
