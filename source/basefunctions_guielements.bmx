@@ -3039,6 +3039,8 @@ Type TGUIListBase Extends TGUIobject
 	Field _entriesBlockDisplacement:TPoint		= TPoint.Create(0,0,0)	'displace the entriesblock by x,y...
 	Field _orientation:Int						= 0		'0 means vertical, 1 is horizontal
 	Field _scrollingEnabled:Int					= False
+	Field _scrollToBeginWithoutScrollbars:Int	= True	'scroll to the very first element as soon as the scrollbars get hidden ?
+
 
 
     Method Create:TGUIListBase(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
@@ -3386,7 +3388,6 @@ Type TGUIListBase Extends TGUIobject
 					'the next visible part
 					If autoscroll And (Not scrollerUsed Or atListBottom) Then scrollToLastItem()
 				EndIf
-
 			'===== HORIZONTAL ALIGNMENT =====
 			case GUI_OBJECT_ORIENTATION_HORIZONTAL
 				'determine if we did not scroll the list to a middle position
@@ -3423,6 +3424,15 @@ Type TGUIListBase Extends TGUIobject
 		local changed:int = FALSE
 		if boolH <> guiScrollerH.hasOption(GUI_OBJECT_ENABLED) then changed = TRUE
 		if boolV <> guiScrollerV.hasOption(GUI_OBJECT_ENABLED) then changed = TRUE
+
+		'as soon as the scroller gets disabled, we scroll to the first
+		'item.
+		'ATTENTION: if you do not want this behaviour, set the variable below
+		'           accordingly
+		if changed and _scrollToBeginWithoutScrollbars
+			if not _scrollingEnabled then ScrollToFirstItem()
+		End If
+
 
 		guiScrollerH.setOption(GUI_OBJECT_ENABLED, boolH)
 		guiScrollerH.setOption(GUI_OBJECT_VISIBLE, boolH)
@@ -3556,6 +3566,11 @@ endrem
 	'positive values scroll to top or left
 	Method ScrollEntries(dx:float, dy:float)
 		guiEntriesPanel.scroll(dx,dy)
+	End Method
+
+
+	Method ScrollToFirstItem()
+		ScrollEntries(0, 0 )
 	End Method
 
 

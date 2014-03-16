@@ -257,7 +257,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for a newsShow (3 news)
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )		
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 		resultAudienceAttr.PublicImageMod = New TAudience
@@ -266,8 +266,8 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		resultAudienceAttr.AudienceFlowBonus = New TAudience
 		resultAudienceAttr.BaseAttraction = New TAudience
 		resultAudienceAttr.BroadcastAttraction = New TAudience
-		resultAudienceAttr.BlockAttraction = New TAudience	
-		
+		resultAudienceAttr.BlockAttraction = New TAudience
+
 		Local tempAudienceAttr:TAudienceAttraction = null
 		for local i:int = 0 to 2
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
@@ -275,18 +275,18 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 			'               verpacken - siehe RTL2 und Co.
 			tempAudienceAttr = CalculateNewsBlockAudienceAttraction(TNews(news[i]), lastMovieBlockAttraction )
 
-			'different weight for news slots			
+			'different weight for news slots
 			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.5))
 			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.3))
 			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.2))
 		Next
 		Return resultAudienceAttr
 	End Method
-	
+
 	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction)
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		Local genreDefintion:TNewsGenreDefinition = null
-			
+
 		'Local result:TAudienceAttraction = Null
 
 		'Local rawQuality:Float = news.GetQuality()
@@ -295,52 +295,52 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
 		'result.Quality = rawQuality
 
-		'Return result		
+		'Return result
 		'Print "NEWWWWWWWWWWWWWWWWWWWWWS!"
-		
+
 		'1 - Qualität des Programms
 		If news Then
 			genreDefintion = Game.BroadcastManager.GetNewsGenreDefinition(news.GetGenre())
-			result.Quality = news.GetQuality()					
+			result.Quality = news.GetQuality()
 		Endif
-		result.Quality = Max(0.01, Min(0.99, result.Quality))		
-		
+		result.Quality = Max(0.01, Min(0.99, result.Quality))
+
 		If genreDefintion Then
-			'2 - Mod: Trend		
+			'2 - Mod: Trend
 			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
-			
+
 			'3 - Genre <> Zielgruppe
 			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.GetNewInstance()
 			result.GenreTargetGroupMod.SubtractFloat(0.5)
 		Endif
-		
+
 		'4 - Image
 		result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods()
 		result.PublicImageMod.SubtractFloat(1)
-		
+
 		'5 - Trailer
 		result.TrailerMod = null
-			
+
 		'6 - Flags
 		result.FlagsMod = null
-		
-		result.CalculateBaseAttraction()			
-		
+
+		result.CalculateBaseAttraction()
+
 		'7 - Audience Flow
 		If lastMovieBlockAttraction <> Null Then
 			result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
 			Local audienceFlowFactor:Float = 0.2 + (result.Quality / 2.5)
-			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
-		End If			
-		
+			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor)
+		End If
+
 		result.CalculateBroadcastAttraction()
-		
+
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		result.QualityOverTimeEffectMod = 0
-		
+
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = 0 'TODO
-		
+
 		'10 - News-Mod
 		'result.NewsShowMod = lastNewsBlockAttraction
 
@@ -542,7 +542,6 @@ Type TGUINews extends TGUIGameListItem
 				'self is older than other
 				if publishDifference<0 then return 1
 				'self is same age than other
-				'if publishDifference=0 then return (self.newsBlock.id > otherBlock.newsBlock.id)
 				if publishDifference=0 then return Super.Compare(Other)
 			endif
 		endif
@@ -559,36 +558,6 @@ Type TGUINews extends TGUIGameListItem
 		if news.owner = Game.playerID or news.owner <= 0 and mouseover then Game.cursorstate = 1
 		'set mouse to "dragged"
 		if isDragged() then Game.cursorstate = 2
-
-		rem
-		if isDragged()
-			print "."
-			print "----DEBUG"
-			print "gui "+_id+" listed in:"
-			'if self = RoomHandler_News.hoveredGuiNews then print "hoveredGuiNews"
-			'if self = RoomHandler_News.draggedGuiNews then print "draggedGuiNews"
-			for local obj:TGUINews = eachin GUIManager.list
-				if self = obj then print "GUIManager"
-			Next
-
-			for local obj:TGUINews = eachin RoomHandler_News.guiNewsListAvailable.entries
-				if self = obj then print "guiNewsListAvailable"
-			Next
-			for local obj:TGUINews = eachin RoomHandler_News.guiNewsListAvailable.guiEntriesPanel.children
-				if self = obj then print "guiNewsAvailable.CHILDREN"
-			Next
-			for local i:int = 0 to RoomHandler_News.guiNewsListUsed._slots.length-1
-				local obj:TGUINews = TGUINews(RoomHandler_News.guiNewsListUsed._slots[i])
-				if self = obj then print "guiNewsListUsed"
-			Next
-			if RoomHandler_News.guiNewsListUsed.guiEntriesPanel.children
-				for local obj:TGUINews = eachin RoomHandler_News.guiNewsListUsed.guiEntriesPanel.children
-					if self = obj then print "guiNewsListUsed.CHILDREN"
-				Next
-			endif
-		endif
-		endrem
-
 	End Method
 
 
@@ -701,18 +670,6 @@ Type TGUINewsList extends TGUIListBase
 		Next
 		return FALSE
 	End Method
-rem
-	'override default to check against duplicate
-	Method AddItem:int(item:TGUIobject, extra:object=null)
-		'if we find a duplicate, just return succesful without
-		'adding the item again
-		if TGUINews(item) and ContainsNews(TGUINews(item).news)
-			print "ListContainsNews - fake ADD"
-			return TRUE
-		endif
-		return Super.AddItem(item,extra)
-	End Method
-endrem
 End Type
 
 
@@ -732,14 +689,4 @@ Type TGUINewsSlotList extends TGUISlotList
 		Next
 		return FALSE
 	End Method
-rem
-	'override default to check against doublettes
-	Method AddItem:int(item:TGUIobject, extra:object=null)
-		if TGUINews(item) and ContainsNews(TGUINews(item).news)
-			print "SlotListContainsNews";
-			return TRUE
-		endif
-		return Super.AddItem(item,extra)
-	End Method
-endrem
 End Type
