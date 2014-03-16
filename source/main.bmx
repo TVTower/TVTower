@@ -2282,19 +2282,19 @@ Function Init_Creation()
 		Local playerCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
 		Local playerPlan:TPlayerProgrammePlan = Game.getPlayer(playerids).ProgrammePlan
 
-		playerPlan.AddAdvertisement(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 0 )
-		playerPlan.AddAdvertisement(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 1 )
-		playerPlan.AddAdvertisement(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 2 )
-		playerPlan.AddAdvertisement(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 3 )
-		playerPlan.AddAdvertisement(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 4 )
-		playerPlan.AddAdvertisement(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 5 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 0 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 1 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 2 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 3 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 4 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 5 )
 
 		Local currentLicence:TProgrammeLicence = Null
 		Local currentHour:Int = 0
 		For Local i:Int = 0 To 3
 			currentLicence = playerCollection.GetMovieLicenceAtIndex(i)
 			If Not currentLicence Then Continue
-			playerPlan.AddProgramme(TProgramme.Create(currentLicence), Game.GetStartDay(), currentHour )
+			playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), Game.GetStartDay(), currentHour )
 			currentHour:+ currentLicence.getData().getBlocks()
 		Next
 	Next

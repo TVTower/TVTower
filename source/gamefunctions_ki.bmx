@@ -478,11 +478,16 @@ endrem
 '- - - - - -
 ' Office
 '- - - - - -
-	Method of_getAdvertisement:Int(day:Int = -1, hour:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+	'returns the broadcast material (in result.data) at the given slot
+	Method of_getAdvertisementSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
+		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local obj:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetAdvertisement(day, hour)
-		If obj Then Return obj.id Else Return self.RESULT_NOTFOUND
+		Local material:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetAdvertisement(day, hour)
+		If material
+			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
 	End Method
 
 
@@ -501,20 +506,27 @@ endrem
 	End Method
 
 
-	'if adContractID is 0, that slot will get reset
-	Method of_addAdContractToPlan:Int(adContractID:int=-1, day:Int=-1, hour:Int=-1)
+	Method of_getAdContractByID:TAdContract(id:Int=-1)
+		If Not _PlayerInRoom("office", True) Then Return Null
+
+		Local obj:TAdContract = Game.getPlayer(Self.ME).ProgrammeCollection.GetAdContract(id)
+		If obj Then Return obj Else Return Null
+	End Method
+
+	'Set content of a programme slot
+	'=====
+	'materialSource might be "null" to clear a time slot
+	'or of types: "TProgrammeLicence" or "TAdContract"
+	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
+	Method of_setAdvertisementSlot:Int(materialSource:object, day:Int=-1, hour:Int=-1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 		'even if player has access to room, only owner can manage things here
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
-		'ignore invalid requests
-		If adContractID < 0 then Return self.RESULT_NOTFOUND
+		'create a broadcast material out of the given source
+		local broadcastMaterial:TBroadcastMaterial = Game.getPlayer(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
 
-		local contract:TAdContract = Game.getPlayer(self.ME).ProgrammeCollection.GetAdContract(adContractID)
-		if adContractID > 0 and not contract then Return self.RESULT_NOTFOUND
-
-		'adContractID=0 means, contract gets "null" which removes advertisement at day,hour
-		if Game.getPlayer(self.ME).ProgrammePlan.AddAdContract(contract, day, hour)
+		if Game.getPlayer(self.ME).ProgrammePlan.SetAdvertisementSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED
@@ -522,31 +534,33 @@ endrem
 	End Method
 
 
-	Method of_getMovie:Int(day:Int = -1, hour:Int = -1)
-		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
+	'returns the broadcast material (in result.data) at the given slot
+	Method of_getProgrammeSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
+		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local obj:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetProgramme(day, hour)
-		if obj and not TProgramme(obj) then print "geplantes Programm ist kein TProgramme (evtl Werbeshow) - bitte Ideen einbringen wie wir die Abfragen verallgemeinern koennen"
-		If obj and TProgramme(obj) and TProgramme(obj).licence Then Return TProgramme(obj).licence.id Else Return self.RESULT_NOTFOUND
+		Local material:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetProgramme(day, hour)
+		If material
+			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
+		else
+			Return TLuaFunctionResult.Create(self.RESULT_NOTFOUND, null)
+		endif
 	End Method
 
 
-	'Setzen/Entfernen von Lizenzen im Planer
-	'Rueckgabewerte: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
-	Method of_doMovieInPlan:Int(licenceID:Int=-1, day:Int=-1, hour:Int=-1)
+	'Set content of a programme slot
+	'=====
+	'materialSource might be "null" to clear a time slot
+	'or of types: "TProgrammeLicence" or "TAdContract"
+	'returns: (TVT.)RESULT_OK, RESULT_WRONGROOM, RESULT_NOTFOUND
+	Method of_SetProgrammeSlot:Int(materialSource:object, day:Int=-1, hour:Int=-1)
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 		'even if player has access to room, only owner can manage things here
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
-		'ignore invalid requests
-		If licenceID < 0 then Return self.RESULT_NOTFOUND
+		'create a broadcast material out of the given source
+		local broadcastMaterial:TBroadcastMaterial = Game.getPlayer(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
 
-
-		local licence:TProgrammeLicence = Game.getPlayer(self.ME).ProgrammeCollection.GetProgrammeLicence(licenceID)
-		if licenceID > 0 and not licence then Return self.RESULT_NOTFOUND
-
-		'licenceID=0 means, licence gets "null" which removes programme at day,hour
-		if Game.getPlayer(self.ME).ProgrammePlan.AddProgramme(TProgramme.Create(licence), day, hour)
+		if Game.getPlayer(self.ME).ProgrammePlan.SetProgrammeSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED

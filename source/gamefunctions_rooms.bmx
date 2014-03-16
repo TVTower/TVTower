@@ -1252,12 +1252,12 @@ Type RoomHandler_Office extends TRoomHandler
 		if not talkToProgrammePlanner then return TRUE
 
 		if list = GuiListProgrammes
-			if not Game.getPlayer().ProgrammePlan.AddProgramme(item.broadcastMaterial, planningDay, slot)
+			if not Game.getPlayer().ProgrammePlan.SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
 		elseif list = GuiListAdvertisements
-			if not Game.getPlayer().ProgrammePlan.AddAdvertisement(item.broadcastMaterial, planningDay, slot)
+			if not Game.getPlayer().ProgrammePlan.SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif

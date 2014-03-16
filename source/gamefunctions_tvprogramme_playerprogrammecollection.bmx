@@ -56,6 +56,32 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	End Method
 
 
+	'returns a freshly created broadcast material
+	'=====
+	'recognized materialSources: TProgrammeLicende, TAdContract
+	Method GetBroadcastMaterial:TBroadcastMaterial(materialSource:object)
+		local broadcastMaterial:TBroadcastMaterial = null
+
+		'check if we find something valid
+		if TProgrammeLicence(materialSource)
+			local licence:TProgrammeLicence = TProgrammeLicence(materialSource)
+			'stop if we do not own this licence
+			if not HasProgrammeLicence(licence) then Return Null
+
+			'set broadcast material
+			broadcastMaterial = TProgramme.Create(licence)
+		elseif TAdContract(materialSource)
+			local contract:TAdContract = TAdContract(materialSource)
+			'stop if we do not own this licence
+			if not HasAdContract(contract) then Return Null
+
+			'set broadcast material
+			broadcastMaterial = new TAdvertisement.Create(contract)
+		endif
+		return broadcastMaterial
+	End Method
+
+
 	'removes AdContract from Collection (Advertising-Menu in Programmeplanner)
 	Method RemoveAdContract:int(contract:TAdContract)
 		If not contract then return False

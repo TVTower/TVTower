@@ -243,7 +243,7 @@ function JobFulfillRequisition:Tick()
 			debugMsg("Setze Werbung in Programmplan: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId)
 
 			if (value.Day > gameDay or ( value.Day == gameDay and value.Hour > gameHour)) then
-				local result = TVT.of_addAdContractToPlan(value.ContractId, value.Day, value.Hour) --Setzt den neuen Eintrag
+				local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(value.ContractId), value.Day, value.Hour) --Setzt den neuen Eintrag
 				if (result < 0) then debugMsg("###### ERROR 2: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId .. "   Result: " .. result) end
 			else
 				debugMsg("Zu spät dran: " .. value.Day .. "/" .. value.Hour .. " = " .. value.ContractId)
@@ -362,13 +362,13 @@ function JobEmergencySchedule:SetContractToEmptyBlock(day, hour)
 	local choosenSpot = self:GetBestMatchingSpot(filteredCurrentSpotList)
 	if (choosenSpot ~= nil) then
 		debugMsg("Setze Spot: " .. fixedDay .. " / " .. fixedHour .. "  Name: " .. choosenSpot.GetTitle() .. "  MinAud: " .. choosenSpot.GetMinAudience())
-		local result = TVT.of_addAdContractToPlan(choosenSpot.Id, fixedDay, fixedHour)
+		local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.Id), fixedDay, fixedHour)
 	else
 		--nochmal ohne Filter!
 		choosenSpot = self:GetBestMatchingSpot(currentSpotList)
 		if (choosenSpot ~= nil) then
 			debugMsg("Setze Spot - ungefiltert! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Name: " .. choosenSpot.GetTitle())
-			local result = TVT.of_addAdContractToPlan(choosenSpot.Id, fixedDay, fixedHour)
+			local result = TVT.of_setAdvertisementSlot(TVT.of_getAdContractByID(choosenSpot.Id), fixedDay, fixedHour)
 		else
 			debugMsg("Keinen Spot gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 		end
@@ -418,7 +418,7 @@ function JobEmergencySchedule:SetMovieToEmptyBlock(day, hour)
 
 	if (choosenLicence ~= nil) then
 		debugMsg("Setze Film! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour .. " Lizenz: " .. choosenLicence.GetTitle() .. "  quality: " .. choosenLicence.GetQuality())
-		TVT.of_doMovieInPlan(choosenLicence.GetID(), fixedDay, fixedHour)
+		TVT.of_setProgrammeSlot(choosenLicence, fixedDay, fixedHour)
 	else
 		debugMsg("Keinen Film gefunden! Tag: " .. fixedDay .. " - Stunde: " .. fixedHour)
 	end

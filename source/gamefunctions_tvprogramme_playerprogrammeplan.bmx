@@ -342,17 +342,19 @@ endrem
 		if hour = -1 then hour = game.getHour()
 		local arrayIndex:int = GetArrayIndex(day * 24 + hour)
 
-		'print "AddObject:  id="+obj.id+" day="+day+" hour="+hour+" arrayIndex="+GetArrayIndex(day*24 + hour)  + " (currentDay="+Game.GetDay()+")"
-
 		'the same object is at the exact same slot - skip actions/events
 		if obj = GetObjectAtIndex(slotType, arrayIndex) then return TRUE
-
 
 		'do not allow adding in the past
 		if checkSlotTime and not IsUseableTimeSlot(slotType, day, hour)
 			TDevHelper.log("TPlayerProgrammePlan.AddObject", "Failed: time is in the past", LOG_INFO)
 			return FALSE
 		endif
+
+		'do not allow adding objects we do not own
+		if TAdvertisement(obj) and not parent.programmeCollection.hasAdContract(TAdvertisement(obj).contract) then return FALSE
+		if TProgramme(obj) and not parent.programmeCollection.hasProgrammeLicence(TProgramme(obj).licence) then return FALSE
+
 
 		'clear all potential overlapping objects
 		local removedObjects:object[]
@@ -623,12 +625,10 @@ endrem
 
 
 	'Add a used-as-programme to the player's programme plan
-	Method AddProgramme:int(obj:TBroadcastMaterial, day:int=-1, hour:int=-1) {_exposeToLua}
-		'print "RON: PLAN.AddProgramme       owner="+parent.playerID+" day="+day+" hour="+hour
-		if not obj then return FALSE
-
-		'do not add programmes the players does not control
-		if TProgramme(obj) and not parent.programmeCollection.hasProgrammeLicence(TProgramme(obj).licence) then return FALSE
+	Method SetProgrammeSlot:int(obj:TBroadcastMaterial, day:int=-1, hour:int=-1)
+		'if nothing is given, we have to reset that slot
+		if not obj then return (null<>RemoveObject(null, TBroadcastMaterial.TYPE_PROGRAMME, day, hour))
+'		if not obj then return FALSE
 
 		return AddObject(obj, TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
 	End Method
@@ -823,37 +823,13 @@ endrem
 	End Method
 
 
-	'Add a advertisement to the player's programme plan
-	Method AddAdvertisement:int(obj:TBroadcastMaterial, day:int=-1, hour:int=-1) {_exposeToLua}
-		'print "RON: PLAN.AddAdvertisement      owner="+parent.playerID+" day="+day+" hour="+hour
+	'Fill/Clear the given advertisement slot with the given broadcast material
+	Method SetAdvertisementSlot:int(obj:TBroadcastMaterial, day:int=-1, hour:int=-1)
 		'if nothing is given, we have to reset that slot
 		if not obj then return (null<>RemoveObject(null, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour))
 
-		'do not add ads the players does have contracts for
-		if TAdvertisement(obj) and not parent.programmeCollection.hasAdContract(TAdvertisement(obj).contract) then return FALSE
-
 		'add it
 		return AddObject(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
-	End Method
-
-
-	'Add a adcontract to the player's programme plan
-	'this creates a new tadvertisement
-	Method AddAdContract:int(adContract:TAdContract, day:int=-1, hour:int=-1) {_exposeToLua}
-		'print "RON: PLAN.AddAdContract      owner="+parent.playerID+" day="+day+" hour="+hour
-		'if nothing is given, we have to reset that slot
-		if not adContract then return (null<>RemoveObject(null, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour))
-
-		'do not add ads the players does have contracts for
-		if not parent.programmeCollection.hasAdContract(adContract) then return FALSE
-
-		local obj:TBroadcastMaterial = new TAdvertisement.Create(adContract)
-		if AddObject(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, day, hour)
-			'emit an event so eg. network can recognize the change
-			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addAdContract", new TData.add("contract", adContract).add("obj", obj).addNumber("day", day).addNumber("hour", hour), self))
-			return TRUE
-		endif
-		return FALSE
 	End Method
 
 

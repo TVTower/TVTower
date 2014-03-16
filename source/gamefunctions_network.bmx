@@ -140,8 +140,8 @@ Type TNetworkHelper
 		'someone adds a chatline
 		EventManager.registerListenerFunction( "chat.onAddEntry",	TNetworkHelper.OnChatAddEntry )
 		'changes to the player's stationmap
-		EventManager.registerListenerFunction( "stationmap.removeProgramme",	TNetworkHelper.onChangeStationmap )
-		EventManager.registerListenerFunction( "stationmap.addProgramme",		TNetworkHelper.onChangeStationmap )
+		EventManager.registerListenerFunction( "stationmap.removeStation",	TNetworkHelper.onChangeStationmap )
+		EventManager.registerListenerFunction( "stationmap.addStation",		TNetworkHelper.onChangeStationmap )
 
 		'changes to the player's programmecollection
 		EventManager.registerListenerFunction( "programmecollection.removeProgrammeLicence",	TNetworkHelper.onChangeProgrammeCollection )
