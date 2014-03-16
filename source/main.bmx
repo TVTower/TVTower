@@ -2765,28 +2765,29 @@ Type AppEvents
 	'		GUIManager.Draw("InGame") 'draw ingamechat
 	'		Assets.fonts.baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
 			Assets.fonts.baseFont.draw("Player positions:", 25,65)
+			local roomName:string = ""
+			local fig:TFigure
 			For Local i:Int = 0 To 3
-				If Game.Players[i + 1].Figure.inRoom <> Null
-					Assets.fonts.baseFont.draw("Player " + (i + 1) + ": " + Game.Players[i + 1].Figure.inRoom.Name, 25, 80 + i * 11)
-				Else
-					If Game.Players[i + 1].Figure.IsInElevator()
-						Assets.fonts.baseFont.draw("Player " + (i + 1) + ": InElevator", 25, 80 + i * 11)
-					Else If Game.Players[i + 1].Figure.IsAtElevator()
-						Assets.fonts.baseFont.draw("Player " + (i + 1) + ": AtElevator", 25, 80 + i * 11)
-					Else
-						Assets.fonts.baseFont.draw("Player " + (i + 1) + ": Building", 25, 80 + i * 11)
-					EndIf
-				EndIf
+				fig = Game.GetPlayer(i+1).figure
+				roomName = "Building"
+				If fig.inRoom
+					roomName = fig.inRoom.Name
+				elseif fig.IsInElevator()
+					roomName = "InElevator"
+				elseIf fig.IsAtElevator()
+					roomName = "AtElevator"
+				endif
+				Assets.fonts.baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
 			Next
 
 			if ScreenCollection.GetCurrentScreen()
-				Assets.fonts.baseFont.draw("Showing screen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
+				Assets.fonts.baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
 			else
-				Assets.fonts.baseFont.draw("Showing screen: Main", 25, 130)
+				Assets.fonts.baseFont.draw("onScreen: Main", 25, 130)
 			endif
 
 
-			Assets.fonts.baseFont.draw("elevator routes:", 25,150)
+			Assets.fonts.baseFont.draw("Elevator routes:", 25,150)
 			Local routepos:Int = 0
 			Local startY:Int = 165
 			If Game.networkgame Then startY :+ 4*11

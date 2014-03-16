@@ -190,7 +190,6 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		self.minAudience		= GetMinAudience(0)
 
 		TDevHelper.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
-		TDevHelper.log("TAdContract.Sign2", "Player "+owner+" signed a contract.  Profit: "+GetProfit()+",  Penalty: "+GetPenalty()+ ",  MinAudience: "+GetMinAudience()+",  Title: "+GetTitle(), LOG_DEBUG)
 		return TRUE
 	End Method
 

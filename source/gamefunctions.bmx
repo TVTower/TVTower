@@ -1584,7 +1584,7 @@ Type TTooltipAudience Extends TTooltip
 		Super.Initialize(title, content, x, y, w, h, lifetime)
 		Self.lineHeight = Self.useFont.GetHeight("Qg") 'Qg - big + underline char
 		'text line with icon
-		Self.lineIconHeight = Max(lineHeight, Assets.getSprite("gfx_targetGroup1").area.GetH())
+		Self.lineIconHeight = 1 + Max(lineHeight, Assets.getSprite("gfx_targetGroup1").area.GetH())
 	End Method
 
 
@@ -1640,10 +1640,11 @@ Type TTooltipAudience Extends TTooltip
 		Local lineY:Int = y
 		Local lineX:Int = x
 		Local lineText:String = ""
-		Local lineIconHeight:Int = Max(lineHeight, Assets.getSprite("gfx_targetGroup1").area.GetH())
+		Local lineIconHeight:Int = 1 + Max(lineHeight, Assets.getSprite("gfx_targetGroup1").area.GetH())
 		Local lineIconX:Int = lineX + Assets.getSprite("gfx_targetGroup1").area.GetW() + 2
 		Local lineIconWidth:Int = w - Assets.getSprite("gfx_targetGroup1").area.GetW()
-		Local lineIconDY:Int = Ceil(0.5 * (lineIconHeight - lineHeight))*2
+		Local lineIconDY:Int = Ceil(0.5 * (lineIconHeight - lineHeight))
+		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
 		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + TFunctions.shortenFloat(100.0 * audienceResult.PotentialMaxAudienceQuote.Average, 2) + "%)"
@@ -1686,14 +1687,14 @@ Type TTooltipAudience Extends TTooltip
 				DrawRect(lineX, lineY, w, lineIconHeight)
 				'draw icon
 				SetColor 255,255,255
-				Assets.getSprite("gfx_targetGroup"+i).draw(lineX, lineY)
+				Assets.getSprite("gfx_targetGroup"+i).draw(lineX, lineY + lineIconDY)
 				'draw text
 				If i Mod 2 = 0
-					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineIconDY,  w, lineHeight, Null, ColorTextLight)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineIconDY, lineIconWidth - 5, lineIconHeight, TPoint.Create(ALIGN_RIGHT), ColorTextLight)
+					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, TPoint.Create(ALIGN_RIGHT), ColorTextLight)
 				Else
-					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineIconDY,  w, lineHeight, Null, ColorTextDark)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineIconDY, lineIconWidth - 5, lineIconHeight, TPoint.Create(ALIGN_RIGHT), ColorTextDark)
+					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextDark)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, TPoint.Create(ALIGN_RIGHT), ColorTextDark)
 				EndIf
 				lineY :+ lineIconHeight
 			Next
