@@ -3346,13 +3346,26 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function Init()
 		'create genre buttons
-		NewsGenreButtons[0]		= new TGUIImageButton.Create(20, 194, "gfx_news_btn0", "newsroom", 0).SetCaption( GetLocale("NEWS_TECHNICS_MEDIA") )
-		NewsGenreButtons[1]		= new TGUIImageButton.Create(69, 194, "gfx_news_btn1", "newsroom", 1).SetCaption( GetLocale("NEWS_POLITICS_ECONOMY") )
-		NewsGenreButtons[2]		= new TGUIImageButton.Create(20, 247, "gfx_news_btn2", "newsroom", 2).SetCaption( GetLocale("NEWS_SHOWBIZ") )
-		NewsGenreButtons[3]		= new TGUIImageButton.Create(69, 247, "gfx_news_btn3", "newsroom", 3).SetCaption( GetLocale("NEWS_SPORT") )
+		'ATTENTION: We could do this in order of The NewsGenre-Values
+		'           But better add it to the buttons.data-property
+		'           for better checking
+		NewsGenreButtons[0]		= new TGUIImageButton.Create(69, 194, "gfx_news_btn1", "newsroom", 1).SetCaption( GetLocale("NEWS_POLITICS_ECONOMY") )
+		NewsGenreButtons[1]		= new TGUIImageButton.Create(20, 247, "gfx_news_btn2", "newsroom", 2).SetCaption( GetLocale("NEWS_SHOWBIZ") )
+		NewsGenreButtons[2]		= new TGUIImageButton.Create(69, 247, "gfx_news_btn3", "newsroom", 3).SetCaption( GetLocale("NEWS_SPORT") )
+		NewsGenreButtons[3]		= new TGUIImageButton.Create(20, 194, "gfx_news_btn0", "newsroom", 0).SetCaption( GetLocale("NEWS_TECHNICS_MEDIA") )
 		NewsGenreButtons[4]		= new TGUIImageButton.Create(118, 247, "gfx_news_btn4", "newsroom", 4).SetCaption( GetLocale("NEWS_CURRENTAFFAIRS") )
+		'add news genre to button data
+		NewsGenreButtons[0].data.AddNumber("newsGenre", TNewsEvent.GENRE_POLITICS)
+		NewsGenreButtons[1].data.AddNumber("newsGenre", TNewsEvent.GENRE_SHOWBIZ)
+		NewsGenreButtons[2].data.AddNumber("newsGenre", TNewsEvent.GENRE_SPORT)
+		NewsGenreButtons[3].data.AddNumber("newsGenre", TNewsEvent.GENRE_TECHNICS)
+		NewsGenreButtons[4].data.AddNumber("newsGenre", TNewsEvent.GENRE_CURRENTS)
+
+
 		'disable drawing of caption
-		for local i:int = 0 until len ( NewsGenreButtons ); NewsGenreButtons[i].GetCaption().Disable(); Next
+		for local i:int = 0 until len ( NewsGenreButtons )
+			NewsGenreButtons[i].GetCaption().Disable()
+		Next
 
 		'we are interested in the genre buttons
 		for local i:int = 0 until len( NewsGenreButtons )
@@ -3479,15 +3492,16 @@ Type RoomHandler_News extends TRoomHandler
 		'how much levels do we have?
 		local level:int = 0
 		For local i:int = 0 until len( NewsGenreButtons )
-			if button = NewsGenreButtons[i] then level = Game.Players[ room.owner ].GetNewsAbonnement(i);exit
+			if button = NewsGenreButtons[i]
+				level = Game.GetPlayer(room.owner).GetNewsAbonnement( button.data.GetInt("newsGenre", i) )
+				exit
+			endif
 		Next
 
 		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 180,100 )
 		NewsGenreTooltip.enabled = 1
 		'refresh lifetime
 		NewsGenreTooltip.Hover()
-		'RON: test for sjaele
-'		NewsGenreTooltip.dirtyImage = True
 
 		'move the tooltip
 		NewsGenreTooltip.area.position.SetXY(Max(21,button.rect.GetX()), button.rect.GetY()-30)
@@ -3498,7 +3512,7 @@ Type RoomHandler_News extends TRoomHandler
 		Else
 			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
 			if level = 3
-				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ "0" + getLocale("CURRENCY")
+				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ ": 0" + getLocale("CURRENCY")
 			Else
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ Game.Players[ Game.playerID ].GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 			EndIf
@@ -3517,7 +3531,10 @@ Type RoomHandler_News extends TRoomHandler
 
 		'increase the abonnement
 		For local i:int = 0 until len( NewsGenreButtons )
-			if button = NewsGenreButtons[i] then Game.Players[ Game.playerID ].IncreaseNewsAbonnement(i);exit
+			if button = NewsGenreButtons[i]
+				Game.GetPlayer().IncreaseNewsAbonnement( button.data.GetInt("newsGenre", i) )
+				exit
+			endif
 		Next
 	End Function
 
@@ -3531,7 +3548,10 @@ Type RoomHandler_News extends TRoomHandler
 		'how much levels do we have?
 		local level:int = 0
 		For local i:int = 0 until len( NewsGenreButtons )
-			if button = NewsGenreButtons[i] then level = Game.Players[ room.owner ].GetNewsAbonnement(i);exit
+			if button = NewsGenreButtons[i]
+				level = Game.GetPlayer(room.owner).GetNewsAbonnement( button.data.GetInt("newsGenre", i) )
+				exit
+			endif
 		Next
 
 		'draw the levels
