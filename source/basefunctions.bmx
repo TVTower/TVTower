@@ -1515,14 +1515,14 @@ Type TFunctions
 		if value <= 75 then return 75
 		if value <= 100 then return 100
 		'102 /50 = 2 mod 2 = 0 -> un/gerade
-		if value <= 1000 then return ceil(float(value) / 250.0)*250
-		if value <= 5000 then return ceil(float(value) / 500.0)*500
-		if value <= 10000 then return ceil(float(value) / 1000.0)*1000
-		if value <= 50000 then return ceil(float(value) / 2500.0)*2500
-		if value <= 100000 then return ceil(float(value) / 10000.0)*10000
-		if value <= 500000 then return ceil(float(value) / 25000.0)*25000
-		if value <= 1000000 then return ceil(float(value) / 250000.0)*250000
-		return ceil(value / 2500000)*2500000
+		If value <= 1000 then return ceil(value / 100.0)*100 'bisher 250
+		If value <= 5000 then return ceil(value / 250.0)*250 'bisher 500
+		If value <= 10000 then return ceil(value / 500.0)*500 'bisher 1.000
+		If value <= 50000 then return ceil(value / 1000.0)*1000 'bisher 2.500
+		If value <= 100000 then return ceil(value / 5000.0)*5000 'bisher 10.000
+		If value <= 500000 then return ceil(value / 10000.0)*10000 'bisher 25.000
+		If value <= 1000000 then return ceil(value / 25000.0)*25000 'bisher 250.000
+		return ceil(value / 2500000.0)*2500000
 	End Function
 
 
