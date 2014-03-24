@@ -154,6 +154,15 @@ Type TApp
 		Local XmlLoader:TXmlLoader = TXmlLoader.Create()
 		XmlLoader.Parse(path)
 		Assets.AddSet(XmlLoader.Values) 'copy XML-values
+
+		'DEV
+		local devConfig:TData = Assets.GetData("DEV_CONFIG", new TData)
+		TFunctions.roundToBeautifulEnabled = devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
+		if TFunctions.roundToBeautifulEnabled
+			TDevHelper.Log("TApp.LoadResources()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
+		else
+			TDevHelper.Log("TApp.LoadResources()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
+		endif
 	End Method
 
 

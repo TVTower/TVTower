@@ -1430,6 +1430,8 @@ End Type
 
 'collection of useful functions
 Type TFunctions
+	Global roundToBeautifulEnabled:int = TRUE
+
 	'check whether a checkedObject equals to a limitObject
 	'1) is the same object
 	'2) is of the same type
@@ -1509,6 +1511,9 @@ Type TFunctions
 
 
 	Function RoundToBeautifulValue:int(value:int)
+		'dev
+		if not roundToBeautifulEnabled then return value
+
 		if value = 0 then return 0
 		if value <= 25 then return 25
 		if value <= 50 then return 50
