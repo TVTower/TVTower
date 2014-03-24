@@ -1522,7 +1522,10 @@ Type TFunctions
 		If value <= 100000 then return ceil(value / 5000.0)*5000 'bisher 10.000
 		If value <= 500000 then return ceil(value / 10000.0)*10000 'bisher 25.000
 		If value <= 1000000 then return ceil(value / 25000.0)*25000 'bisher 250.000
-		return ceil(value / 2500000.0)*2500000
+		If value <= 2500000 then return ceil(value / 100000.0)*100000 'bisher --
+		If value <= 5000000 then return ceil(value / 250000.0)*250000 'bisher --
+		'>5.000.0000 in steps of 1 million
+		return ceil(value / 1000000.0)*1000000
 	End Function
 
 
