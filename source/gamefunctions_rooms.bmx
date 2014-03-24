@@ -3466,6 +3466,7 @@ Type RoomHandler_News extends TRoomHandler
 		If PlannerToolTip Then PlannerToolTip.Update(App.Timer.getDelta())
 		If NewsGenreTooltip Then NewsGenreTooltip.Update(App.Timer.getDelta())
 
+		'pinwall
 		If TFunctions.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
 			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 100, 0, 0)
 			PlannerToolTip.enabled = 1
@@ -3477,6 +3478,22 @@ Type RoomHandler_News extends TRoomHandler
 				ScreenCollection.GoToSubScreen("screen_news_newsplanning")
 			endif
 		endif
+Rem
+	Sjaele wants to use this printer differently
+
+		'printer
+		If TFunctions.IsIn(MouseManager.x, MouseManager.y, 165,240,240,110)
+			If not PlannerToolTip Then PlannerToolTip = TTooltip.Create("Newsplaner", "Hinzufügen und entfernen", 180, 260, 0, 0)
+			PlannerToolTip.enabled = 1
+			PlannerToolTip.Hover()
+			Game.cursorstate = 1
+			If MOUSEMANAGER.IsClicked(1)
+				MOUSEMANAGER.resetKey(1)
+				Game.cursorstate = 0
+				ScreenCollection.GoToSubScreen("screen_news_newsplanning")
+			endif
+		endif
+EndRem
 	End Function
 
 

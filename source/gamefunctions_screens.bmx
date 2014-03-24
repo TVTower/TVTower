@@ -85,7 +85,8 @@ End Type
 'screens used ingame (with visible interface)
 Type TInGameScreen extends TScreen
     Field background:TGW_Sprite  'background, the image containing the whole room
-	field _contentArea:TRectangle
+    'Field hotspots:THotspots     'clickable areas on the screen
+	Field _contentArea:TRectangle
 
 
 	Method Create:TInGameScreen(name:string)

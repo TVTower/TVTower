@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvt>
+	<resources>
+		<data name="DEV_CONFIG">
+			<DEV_AD_FACTOR1 value="5.0" />
+			<DEV_AD_MINIMUM_CPM value="7.5" />
+			<DEV_AD_LIMITED_GENRE_MULTIPLIER value="2.0" />
+		</data>
+	</resources>
+</tvt>

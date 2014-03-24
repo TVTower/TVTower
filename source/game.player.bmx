@@ -128,6 +128,7 @@ Type TPlayer {_exposeToLua="selected"}
 		figurebase = newfigurebase
 
 		Local figureSprite:TGW_Sprite = Assets.GetSpritePack("figures").GetSprite("Player" + Self.playerID)
+		'umstellen: anhand von "namen" ermitteln ("base"+figurebase)
 		Local figureImageReplacement:TImage = ColorizeImage(Assets.GetSpritePack("figures").GetSpriteByID(figurebase).GetImage(), color)
 
 		'clear occupied area within pixmap

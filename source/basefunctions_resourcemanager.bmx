@@ -233,7 +233,7 @@ Type TAssetManager
 
 
 	'getters for different object-types
-	Method GetObject:Object(assetName:String, assetType:string="", defaultAssetName:string="")
+	Method GetObject:Object(assetName:String, assetType:string="", defaultAssetName:string="", skipErrors:int = FALSE)
 		assetName = lower(assetName)
 		local result:TAsset = TAsset(content.ValueForKey(assetName))
 
@@ -264,9 +264,11 @@ Type TAssetManager
 			if result.GetType() = assetType.toUpper() then return result
 		endif
 
-		'something went wrong - print an error and exit application
-		PrintAssets()
-		Throw assetName+" type ~q"+assetType+"~q not found in assets. XML configuration file missing or mispelled name? Error not recoverable. App might crash now"
+		if not skipErrors
+			'something went wrong - print an error and exit application
+			PrintAssets()
+			Throw assetName+" type ~q"+assetType+"~q not found in assets. XML configuration file missing or mispelled name? Error not recoverable. App might crash now"
+		endif
 		return Null
 	End Method
 
@@ -283,6 +285,15 @@ Type TAssetManager
 
 	Method GetNinePatchSprite:TGW_NinePatchSprite(assetName:String, defaultName:string="")
 		return TGW_NinePatchSprite(GetObject(assetName, "NINEPATCHSPRITE", defaultName))
+	End Method
+
+
+	Method GetData:TData(assetName:String, defaultObj:TData=null)
+		local asset:TAsset = TAsset(GetObject(assetName, "TDATA", "", TRUE))
+		if not asset then return defaultObj
+		local data:TData = TData(asset._object)
+		if not data then return defaultObj
+		return data
 	End Method
 
 
@@ -390,6 +401,7 @@ Type TXmlLoader
 			Select _type
 				Case "RESOURCES"			Self.LoadResources(childNode)
 				Case "FILE"					Self.LoadXmlFile(childNode)
+				Case "DATA"					Self.LoadDataBlock(childNode)
 				Case "PIXMAP"				Self.LoadPixmapResource(childNode)
 				Case "IMAGE", "BIGIMAGE"	Self.LoadImageResource(childNode)
 				Case "SPRITEPACK"			Self.LoadSpritePackResource(childNode)
@@ -397,15 +409,20 @@ Type TXmlLoader
 		Next
 	End Method
 
-	Method LoadXmlFile(childNode:TxmlNode)
+	Method LoadXmlFile:int(childNode:TxmlNode)
 		Local _url:String = xml.FindValue(childNode, "url", "")
-		if _url = "" then return
+		if _url = "" then return FALSE
 
 		'process given relative-url
 		_url = ConvertURI(_url)
 
 		'emit loader event for loading screen
 		self.doLoadElement("XmlFile", _url, "loading", self.currentItemNumber)
+
+		if FileSize(_url) = -1 then
+			TDevHelper.log("XmlLoader.LoadXmlResource()", "file missing: "+_url, LOG_LOADING | LOG_ERROR, TRUE)
+			return FALSE
+		endif
 
 		Local childXML:TXmlLoader = TXmlLoader.Create()
 		childXML.Parse(_url)
@@ -414,6 +431,42 @@ Type TXmlLoader
 			TDevHelper.log("XmlLoader.LoadXmlResource()", "loading object: " + String(obj), LOG_LOADING | LOG_DEBUG, TRUE)
 			Self.Values.Insert(obj, childXML.Values.ValueForKey(obj))
 		Next
+	End Method
+
+
+	Method LoadDataBlock:TData(childNode:TxmlNode)
+		local dataName:String = xml.FindValue(childNode, "name", childNode.GetName())
+
+		'skip unnamed data (no name="x" or <namee type="data">)
+		if dataName = "" or dataName.ToUpper() = "DATA"
+			TDevHelper.log("TRegistryDataLoader.LoadFromXML", "Node ~q<"+childNode.GetName()+">~q contained no or invalid name field. Skipped.", LOG_WARNING)
+			return NULL
+		endif
+
+		local dataMerge:int = xml.FindValueBool(childNode, "merge", TRUE)
+		local values:TData = new TData.Init()
+		local data:TData = new TData.Init()
+
+		For local child:TxmlNode = eachin childNode.getChildren()
+			local name:String = xml.FindValue(child, "type", child.getName())
+			if name = "" then continue
+			local value:String = xml.FindValue(child, "value", child.getcontent())
+			values.Add(name, value)
+		Next
+
+
+
+		'if merging - we load the previously stored data (if there is some)
+		if dataMerge then data = Assets.GetData(dataName)
+		if not data then data = new TData
+
+		'merge in the new values (to an empty - or the old tdata)
+		data.Merge(values)
+
+		'add to registry
+		Assets.Add(TAsset.CreateBaseAsset(data, dataName, "TDATA"))
+
+		return data
 	End Method
 
 

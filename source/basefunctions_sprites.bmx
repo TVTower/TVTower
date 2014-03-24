@@ -1101,6 +1101,15 @@ Type TGW_Sprite extends TRenderable
 	End Method
 
 
+	Method CreateFromImage:TGW_Sprite(img:Timage, spriteName:string, spriteID:int =-1)
+		'create new spritepack
+		local spritepack:TGW_SpritePack = TGW_SpritePack.Create(img, spriteName+"_pack")
+		self.Create(spritepack, spriteName, TRectangle.Create(0, 0, img.width, img.height), null, Len(img.frames), spriteID)
+		spritepack.addSprite(self)
+		return self
+	End Method
+
+
 	Function LoadFromAsset:TGW_Sprite(asset:object)
 		local obj:TGW_Sprite = TGW_Sprite(asset)
 
@@ -1823,3 +1832,9 @@ Type TGW_SpriteParticle
 			EndIf
 	    EndMethod
 End Type
+
+
+
+
+
+

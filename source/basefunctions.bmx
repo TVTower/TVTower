@@ -337,26 +337,52 @@ Type TXmlHelper
 	End Method
 
 
-	Method FindValue:string(node:TxmlNode, fieldName:string, defaultValue:string, logString:string="")
-		fieldName = fieldName.ToLower()
+	'loads values of a node into a tdata object
+	Function LoadValuesToData:int(node:TXmlNode, data:TData var, fieldNames:string[])
+		For local fieldName:String = eachin fieldNames
+			if not TXmlHelper.HasValue(node, fieldName) then continue
+			'use the first fieldname ("frames|f" -> add as "frames")
+			local names:string[] = fieldName.ToLower().Split("|")
 
-		'given node has attribute (<episode number="1">)
-		If node.hasAttribute(fieldName) then Return node.getAttribute(fieldName)
+			data.Add(names[0], FindValue(node, fieldName, ""))
+		Next
+	End Function
 
-		'children
-'		local children:TList = node.getChildren()
-'		if children <> null and children.count() > 0
+
+	Function HasValue:int(node:TXmlNode, fieldName:string)
+		local fieldNames:string[] = fieldName.ToLower().Split("|")
+		For local name:String = eachin fieldNames
+			If node.hasAttribute(name) then Return True
+
+			For local subNode:TxmlNode = EachIn node
+				if subNode.getType() = XML_TEXT_NODE then continue
+				If subNode.getName().ToLower() = name then return TRUE
+				If subNode.getName().ToLower() = "data" and subNode.hasAttribute(name) then Return TRUE
+			Next
+		Next
+		return FALSE
+	End Function
+
+
+	Function FindValue:string(node:TxmlNode, fieldName:string, defaultValue:string, logString:string="")
+		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
+		local fieldNames:string[] = fieldName.ToLower().Split("|")
+
+		For local name:String = eachin fieldNames
+			'given node has attribute (<episode number="1">)
+			If node.hasAttribute(name) then Return node.getAttribute(name)
+
 			For local subNode:TxmlNode = EachIn node
 				if subNode.getType() = XML_TEXT_NODE then continue
 				if subNode <> null
-					If subNode.getName().ToLower() = fieldName then return subNode.getContent()
-					If subNode.getName().ToLower() = "data" and subNode.hasAttribute(fieldName) then Return subNode.getAttribute(fieldName)
+					If subNode.getName().ToLower() = name then return subNode.getContent()
+					If subNode.getName().ToLower() = "data" and subNode.hasAttribute(name) then Return subNode.getAttribute(name)
 				endif
 			Next
-'		endif
+		Next
 		if logString <> "" then print logString
 		return defaultValue
-	EndMethod
+	End Function
 
 
 	Method FindValueInt:int(node:TxmlNode, fieldName:string, defaultValue:int, logString:string="")
@@ -396,8 +422,30 @@ Type TData
 	End Method
 
 
+	Method ToString:String()
+		local res:string = "TData content [~n"
+		For local key:String = eachin data.Keys()
+			res :+ key+" = " + string(data.ValueForKey(key)) + "~n"
+		Next
+		res :+ "]~n"
+		return res
+	End Method
+
+
+	'add keys->values from other data object (and overwrite own if also existing)
+	Method Merge:int(otherData:TData)
+		if not otherData then return FALSE
+
+		For local key:string = eachin otherData.data.Keys()
+			key = key.ToLower()
+			Add(key, otherData.data.ValueForKey(key))
+		Next
+		return TRUE
+	End Method
+
+
 	Method Add:TData(key:string, data:object)
-		self.data.insert(key, data)
+		self.data.insert(key.ToLower(), data)
 		return self
 	End Method
 
@@ -421,7 +469,7 @@ Type TData
 
 
 	Method Get:object(key:string, defaultValue:object=null)
-		local result:object = self.data.ValueForKey(key)
+		local result:object = data.ValueForKey(key.ToLower())
 		if result then return result
 		return defaultValue
 	End Method

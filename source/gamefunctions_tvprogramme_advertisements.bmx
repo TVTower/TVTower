@@ -285,28 +285,33 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 			Return price
 		endif
 
-		price :* 4.0 'increase price by 400% - community says, price to low
+		local devConfig:TData = Assets.GetData("DEV_CONFIG", new TData.Init())
+		local factor1:float =  devConfig.GetFloat("DEV_AD_FACTOR1", 4.0)
+		local minCPM:float = devConfig.GetFloat("DEV_AD_MINIMUM_CPM", 7.5)
+		local limitedGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
+
+		'price :* 4.0 'increase price by 400% - community says, price to low
+		price :* factor1
 
 		'dynamic price
 		'----
 		'price we would get if 100% of audience is watching
 		'-> multiply with an "euros per 1000 people watching"
-		price :* Max(7.5, getMinAudience(playerID)/1000)
+		'price :* Max(7.5, getMinAudience(playerID)/1000)
+		'price :* Max(minCPM, getMinAudience(playerID)/1000)
+		price :* Max(minCPM, getRawMinAudience(playerID)/1000)
 
 		'specific targetgroups change price
-		If Self.GetTargetGroup() > 0 Then price :*2.0
+		'If Self.GetTargetGroup() > 0 Then price :*2.0
+		If GetTargetGroup() > 0 Then price :* limitedGenreMultiplier
 
 		'return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)
 	End Method
 
 
-	'Gets minimum needed audience in absolute numbers
-	'=====
-	'if the contract is not signed/unowned the average of
-	'all players is used as input, else the owner or given player
-	'is used to calculate audience from
-	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
+	'returns the non rounded minimum audience
+	Method GetRawMinAudience:Int(playerID:Int=-1) {_exposeToLua}
 		'by default owner is "0" (unsigned)
 		'if none (-1) was given we default to owner
 		If playerID < 0 Then playerID = Self.owner
@@ -320,7 +325,19 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 		'0.5 = more than 50 percent of whole germany wont watch TV the same time
 		'therefor: maximum of half the audience can be "needed"
-		Return TFunctions.RoundToBeautifulValue( Floor(useAudience*0.5 * GetMinAudiencePercentage()) )
+		Return Floor(useAudience*0.5 * GetMinAudiencePercentage())
+	End Method
+
+
+	'Gets minimum needed audience in absolute numbers
+	'=====
+	'if the contract is not signed/unowned the average of
+	'all players is used as input, else the owner or given player
+	'is used to calculate audience from
+	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
+		'0.5 = more than 50 percent of whole germany wont watch TV the same time
+		'therefor: maximum of half the audience can be "needed"
+		Return TFunctions.RoundToBeautifulValue( GetRawMinAudience(playerID) )
 	End Method
 
 

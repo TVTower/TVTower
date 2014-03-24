@@ -14,5 +14,6 @@
 		<file name="resource_newsgenres" url="config/newsgenres.xml" />
 		<file name="resource_genres" url="config/genres.xml" />
 		<file name="resource_soundfiles" url="config/soundfiles.xml" />
+		<file name="resource_DEV" url="config/DEV.xml" />
 	</resources>
 </tvt>
