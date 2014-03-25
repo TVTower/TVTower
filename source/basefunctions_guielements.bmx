@@ -52,6 +52,7 @@ gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "Chat_IngameOverlay", TRectang
 Type TGUIManager
 	Field globalScale:Float			= 1.0
 	Field currentState:String		= ""			'which state are we currently handling?
+	Field config:TData = new TData
 	Field List:TList				= CreateList()
 	Field ListReversed:TList		= CreateList()
 	Field ListDragged:TList			= CreateList()	'contains dragged objects (above normal)
@@ -70,6 +71,9 @@ Type TGUIManager
 
 		'is something dropping on a gui element?
 		EventManager.registerListenerFunction( "guiobject.onDrop",	TGUIManager.onDrop )
+
+		'gui specific settings
+		obj.config.AddNumber("panelGap",10)
 
 
 		Return obj
@@ -497,11 +501,6 @@ Type TGUIManager
 End Type
 Global GUIManager:TGUIManager = TGUIManager.Create()
 
-
-
-Type TGUISettings
-	Global panelGap:Int = 10
-End Type
 
 
 Type TGUIobject

@@ -14,20 +14,20 @@ Import "basefunctions_screens.bmx"
 Import "basefunctions_sound.bmx"
 
 
-Global Assets:TAssetManager = TAssetManager.Create(null)
+Global Assets:TAssetManager = TAssetManager.Create(Null)
 
 Type TAssetManager
-	global content:TMap = CreateMap()
-	global defaults:TMap = CreateMap()	'if not specified,  first added of each type gets default
-	global fonts:TGW_FontManager = TGW_FontManager.GetInstance()
+	Global content:TMap = CreateMap()
+	Global defaults:TMap = CreateMap()	'if not specified,  first added of each type gets default
+	Global fonts:TGW_FontManager = TGW_FontManager.GetInstance()
 
-	global AssetsToLoad:TMap = CreateMap()
+	Global AssetsToLoad:TMap = CreateMap()
 '	global AssetsLoaded:TMap = CreateMap()
 	?Threaded
-	global MutexContentLock:TMutex = CreateMutex()
-	global MutexDefaultLock:TMutex = CreateMutex()
-	global AssetsToLoadLock:TMutex = CreateMutex()
-	global AssetsLoadThread:TThread
+	Global MutexContentLock:TMutex = CreateMutex()
+	Global MutexDefaultLock:TMutex = CreateMutex()
+	Global AssetsToLoadLock:TMutex = CreateMutex()
+	Global AssetsLoadThread:TThread
 	?
 
 
@@ -52,37 +52,37 @@ Type TAssetManager
 		'   x0x
 		'    -
 		'so we end with a 30+2 x 30+x pimxap (10px pattern)
-		local pix:TPixmap = CreatePixmap(32,32, PF_RGBA8888)
+		Local pix:TPixmap = CreatePixmap(32,32, PF_RGBA8888)
 		pix.ClearPixels(ARGB_COLOR(0.0, 0,0,0))
 		'marks line
-		for local i:int= 12 to 18
+		For Local i:Int= 12 To 18
 			pix.WritePixel(i ,  0, ARGB_COLOR(1.0, 0,0,0))
 			pix.WritePixel(i , 31, ARGB_COLOR(1.0, 0,0,0))
 			pix.WritePixel(0 ,  i, ARGB_COLOR(1.0, 0,0,0))
 			pix.WritePixel(31,  i, ARGB_COLOR(1.0, 0,0,0))
 		Next
 		'pattern - 4 rects
-		for local i:int = 1 to 10
-			for local j:int = 1 to 10
+		For Local i:Int = 1 To 10
+			For Local j:Int = 1 To 10
 				pix.WritePixel(i    , j, ARGB_COLOR(255, 255,  0,  0))
 				pix.WritePixel(i+10 , j, ARGB_COLOR(255, 255,255,255))
 				pix.WritePixel(i+20 , j, ARGB_COLOR(255, 255,  0,  0))
 			Next
-			for local j:int = 11 to 20
+			For Local j:Int = 11 To 20
 				pix.WritePixel(i    , j, ARGB_COLOR(255, 255,255,255))
 				pix.WritePixel(i+10 , j, ARGB_COLOR(255, 255,255,255))
 				pix.WritePixel(i+20 , j, ARGB_COLOR(255, 255,255,255))
 			Next
-			for local j:int = 21 to 30
+			For Local j:Int = 21 To 30
 				pix.WritePixel(i    , j, ARGB_COLOR(255, 255,  0,  0))
 				pix.WritePixel(i+10 , j, ARGB_COLOR(255, 255,255,255))
 				pix.WritePixel(i+20 , j, ARGB_COLOR(255, 255,  0,  0))
 			Next
 		Next
 
-		local img:Timage = LoadImage(pix, DYNAMICIMAGE | FILTEREDIMAGE)
-		local sprite:TGW_Sprite = ConvertImageToSprite(img, "defaultsprite", -1)
-		local ninePatchSprite:TGW_NinePatchSprite = new TGW_NinePatchSprite.Create(sprite.parent, "defaultninepatchsprite", sprite.area, null, sprite.animcount, -1, TPoint.Create(sprite.framew, sprite.frameh))
+		Local img:TImage = LoadImage(pix, DYNAMICIMAGE | FILTEREDIMAGE)
+		Local sprite:TGW_Sprite = ConvertImageToSprite(img, "defaultsprite", -1)
+		Local ninePatchSprite:TGW_NinePatchSprite = New TGW_NinePatchSprite.Create(sprite.parent, "defaultninepatchsprite", sprite.area, Null, sprite.animcount, -1, TPoint.Create(sprite.framew, sprite.frameh))
 
 		defaults.insert("pixmap", TAsset.CreateBaseAsset(pix, "defaultpixmap", "PIXMAP"))
 		defaults.insert("image", TAsset.CreateBaseAsset(img, "defaultimage", "IMAGE"))
@@ -93,20 +93,20 @@ Type TAssetManager
 
 	'threadable function that loads objects
 	Function LoadAssetsInThread:Object(Input:Object)
-		print "loadassetsinthread"
-		For Local key:string = EachIn TAssetManager.AssetsToLoad.keys()
-			local obj:TAsset			= TAsset(TAssetManager.AssetsToLoad.ValueForKey(key))
-			local loadedObject:TAsset	= null
+		Print "loadassetsinthread"
+		For Local key:String = EachIn TAssetManager.AssetsToLoad.keys()
+			Local obj:TAsset			= TAsset(TAssetManager.AssetsToLoad.ValueForKey(key))
+			Local loadedObject:TAsset	= Null
 
-			print "LoadAssetsInThread: "+obj.GetName() + " ["+obj.getType()+"]"
+			Print "LoadAssetsInThread: "+obj.GetName() + " ["+obj.getType()+"]"
 
 			'loader types
 '			if obj.getType() = "IMAGE" then loadedObject = TAssetManager.ConvertImageToSprite( LoadImage( obj.getUrl() ), obj.getName() )
-			if obj.getType() = "SPRITE" then loadedObject = TAsset(TGW_Sprite.LoadFromAsset(obj) )
-			if obj.getType() = "NINEPATCHSPRITE" then loadedObject = TAsset(TGW_NinePatchSprite.LoadFromAsset(obj) )
-			if obj.getType() = "IMAGE" then loadedObject = TAsset(TGW_Sprite.LoadFromAsset(obj) )
+			If obj.getType() = "SPRITE" Then loadedObject = TAsset(TGW_Sprite.LoadFromAsset(obj) )
+			If obj.getType() = "NINEPATCHSPRITE" Then loadedObject = TAsset(TGW_NinePatchSprite.LoadFromAsset(obj) )
+			If obj.getType() = "IMAGE" Then loadedObject = TAsset(TGW_Sprite.LoadFromAsset(obj) )
 
-			loadedObject.setLoaded(true)
+			loadedObject.setLoaded(True)
 
 			'add to map of loaded objects
 			?Threaded
@@ -119,55 +119,55 @@ Type TAssetManager
 				UnlockMutex(MutexContentLock)
 			?
 			GCCollect() '<- FIX!
-		next
+		Next
 	End Function
 
 
 	Method StartLoadingAssets()
-		print "startloadingassets"
+		Print "startloadingassets"
 		?Threaded
-			if not TAssetManager.AssetsLoadThread OR not ThreadRunning(TAssetManager.AssetsLoadThread)
-				print " - - - - - - - - - - - - "
-				print "StartLoadingAssets: create thread"
-				print " - - - - - - - - - - - - "
+			If Not TAssetManager.AssetsLoadThread Or Not ThreadRunning(TAssetManager.AssetsLoadThread)
+				Print " - - - - - - - - - - - - "
+				Print "StartLoadingAssets: create thread"
+				Print " - - - - - - - - - - - - "
 				TAssetManager.AssetsLoadThread = CreateThread(TAssetManager.LoadAssetsInThread, Null)
-			endif
+			EndIf
 		?
-		?not Threaded
-			TAssetManager.LoadAssetsInThread(null)
+		?Not Threaded
+			TAssetManager.LoadAssetsInThread(Null)
 		?
 	End Method
 
 
-	Method AddToLoadAsset(resourceName:string, resource:object)
+	Method AddToLoadAsset(resourceName:String, resource:Object)
 		TAssetManager.AssetsToLoad.insert(resourceName, resource)
-		self.StartLoadingAssets()
+		Self.StartLoadingAssets()
 	End Method
 
 
 	Method AddSet(content:TMap)
-		Local key:string
+		Local key:String
 		For key = EachIn content.keys()
-			local obj:object = content.ValueForKey(key)
-			if TAsset(obj)
-				self.Add(TAsset(obj))
-			else
-				self.Add(TAsset.CreateBaseAsset(obj, key, "UNKNOWN"))
-			endif
+			Local obj:Object = content.ValueForKey(key)
+			If TAsset(obj)
+				Self.Add(TAsset(obj))
+			Else
+				Self.Add(TAsset.CreateBaseAsset(obj, key, "UNKNOWN"))
+			EndIf
 		Next
 	End Method
 
 
 	Method PrintAssets()
-		local res:string = ""
-		local count:int = 0
-		for local key:object = eachin self.content.keys()
-			local obj:object = self.content.ValueForKey(key)
-			res = res + " " + string(key) + "["+TAsset(obj)._type+"]"
+		Local res:String = ""
+		Local count:Int = 0
+		For Local key:Object = EachIn Self.content.keys()
+			Local obj:Object = Self.content.ValueForKey(key)
+			res = res + " " + String(key) + "["+TAsset(obj)._type+"]"
 			count:+1
-			if count >= 5 then count=0;res = res + chr(13)
-		next
-		print res
+			If count >= 5 Then count=0;res = res + Chr(13)
+		Next
+		Print res
 	End Method
 
 
@@ -176,124 +176,124 @@ Type TAssetManager
 	End Method
 
 
-	Method Add:int(asset:TAsset, assetName:string="")
-		if not asset then return FALSE
-		if assetName="" then assetName = asset.GetName() else assetName = assetName.toLower()
+	Method Add:Int(asset:TAsset, assetName:String="")
+		If Not asset Then Return False
+		If assetName="" Then assetName = asset.GetName() Else assetName = assetName.toLower()
 
-		if asset.GetType() = "IMAGE"
-			if TImage(asset._object) = null
-				if TGW_Sprite(asset._object) <> null
-					print "ASSETS: '" + asset.GetName() + "' image is null but is SPRITE"
-				else
-					print "ASSETS: '" + asset.GetName() + "' image is null"
-				endif
-			endif
+		If asset.GetType() = "IMAGE"
+			If TImage(asset._object) = Null
+				If TGW_Sprite(asset._object) <> Null
+					Print "ASSETS: '" + asset.GetName() + "' image is null but is SPRITE"
+				Else
+					Print "ASSETS: '" + asset.GetName() + "' image is null"
+				EndIf
+			EndIf
 			asset = ConvertImageToSprite(TImage(asset._object), assetName, -1)
-		elseif asset.GetType() = "PIXMAP"
-			if TPixmap(asset._object) = null
-				print "ASSETS: given pixmap '" + asset.GetName() + "' is NULL"
-			endif
-		endif
+		ElseIf asset.GetType() = "PIXMAP"
+			If TPixmap(asset._object) = Null
+				Print "ASSETS: given pixmap '" + asset.GetName() + "' is NULL"
+			EndIf
+		EndIf
 
 		?Threaded
 			LockMutex(MutexContentLock)
 			content.Insert(assetName, asset)
 			UnlockMutex(MutexContentLock)
-		?not Threaded
+		?Not Threaded
 			content.Insert(assetName, asset)
 		?
 
 	End Method
 
 
-	Function ConvertImageToSprite:TGW_Sprite(img:Timage, spriteName:string, spriteID:int =-1)
-		local spritepack:TGW_SpritePack = TGW_SpritePack.Create(img, spriteName+"_pack")
-		local sprite:TGW_Sprite = new TGW_Sprite.Create(spritepack, spriteName, TRectangle.Create(0, 0, img.width, img.height), null, Len(img.frames), spriteID)
+	Function ConvertImageToSprite:TGW_Sprite(img:TImage, spriteName:String, spriteID:Int =-1)
+		Local spritepack:TGW_SpritePack = TGW_SpritePack.Create(img, spriteName+"_pack")
+		Local sprite:TGW_Sprite = New TGW_Sprite.Create(spritepack, spriteName, TRectangle.Create(0, 0, img.width, img.height), Null, Len(img.frames), spriteID)
 		spritepack.addSprite(sprite)
 '		GCCollect() '<- FIX!
-		return sprite
+		Return sprite
 	End Function
 
 
-	Method AddImageAsSprite:int(assetName:String, img:TImage, animCount:int = 1)
-		if img = null
-			print "AddImageAsSprite - null image for "+assetName
-			return FALSE
-		endif
+	Method AddImageAsSprite:Int(assetName:String, img:TImage, animCount:Int = 1)
+		If img = Null
+			Print "AddImageAsSprite - null image for "+assetName
+			Return False
+		EndIf
 
 
-		local result:TGW_Sprite = self.ConvertImageToSprite(img, assetName,-1)
-		if animCount > 0
+		Local result:TGW_Sprite = Self.ConvertImageToSprite(img, assetName,-1)
+		If animCount > 0
 			result.animCount = animCount
 			result.framew = result.area.GetW() / animCount
-		endif
+		EndIf
 
-		return Add(result)
+		Return Add(result)
 	End Method
 
 
 	'getters for different object-types
-	Method GetObject:Object(assetName:String, assetType:string="", defaultAssetName:string="", skipErrors:int = FALSE)
-		assetName = lower(assetName)
-		local result:TAsset = TAsset(content.ValueForKey(assetName))
+	Method GetObject:Object(assetName:String, assetType:String="", defaultAssetName:String="", skipErrors:Int = False)
+		assetName = Lower(assetName)
+		Local result:TAsset = TAsset(content.ValueForKey(assetName))
 
 		'nothing found - try given default asset
-		if not result and defaultAssetName <> ""
+		If Not result And defaultAssetName <> ""
 			result = TAsset(content.ValueForKey(defaultAssetName.toLower()))
-		endif
+		EndIf
 
 		'if neither assetName nor defaultAssetName returned a value, use managers
 		'default values - only possible if Type is  known
-		if not result
+		If Not result
 			result = TAsset(defaults.ValueForKey(assetType.toLower()))
 			'if an default is known - set it
-			if result
+			If result
 				'to avoid multiple messages, we NOW add this default asset as the required
 				'one so that next run it is found normally
 				Print "ASSETMANAGER: ~q"+ assetName +"~q of type ~q"+assetType+"~q not found ! XML-file missing or wrong name? Added a default to avoid crashes."
 				'this time add "assetName" so it is stored with the name looked for
 				Add(result, assetName)
-			endif
-		endif
+			EndIf
+		EndIf
 
 		'check result
-		if result
+		If result
 			'do not limit to specific assetType?
-			if assetType = "" then return result
+			If assetType = "" Then Return result
 			'result of required  type?
-			if result.GetType() = assetType.toUpper() then return result
-		endif
+			If result.GetType() = assetType.toUpper() Then Return result
+		EndIf
 
-		if not skipErrors
+		If Not skipErrors
 			'something went wrong - print an error and exit application
 			PrintAssets()
 			Throw assetName+" type ~q"+assetType+"~q not found in assets. XML configuration file missing or mispelled name? Error not recoverable. App might crash now"
-		endif
-		return Null
+		EndIf
+		Return Null
 	End Method
 
 
 	Method GetFont:TGW_BitmapFont(_FName:String, _FSize:Int = -1, _FStyle:Int = -1)
-		return fonts.GetFont(_FName, _FSize, _FStyle)
+		Return fonts.GetFont(_FName, _FSize, _FStyle)
 	End Method
 
 
-	Method GetSprite:TGW_Sprite(assetName:String, defaultName:string="")
-		return TGW_Sprite(GetObject(assetName, "SPRITE", defaultName))
+	Method GetSprite:TGW_Sprite(assetName:String, defaultName:String="")
+		Return TGW_Sprite(GetObject(assetName, "SPRITE", defaultName))
 	End Method
 
 
-	Method GetNinePatchSprite:TGW_NinePatchSprite(assetName:String, defaultName:string="")
-		return TGW_NinePatchSprite(GetObject(assetName, "NINEPATCHSPRITE", defaultName))
+	Method GetNinePatchSprite:TGW_NinePatchSprite(assetName:String, defaultName:String="")
+		Return TGW_NinePatchSprite(GetObject(assetName, "NINEPATCHSPRITE", defaultName))
 	End Method
 
 
-	Method GetData:TData(assetName:String, defaultObj:TData=null)
-		local asset:TAsset = TAsset(GetObject(assetName, "TDATA", "", TRUE))
-		if not asset then return defaultObj
-		local data:TData = TData(asset._object)
-		if not data then return defaultObj
-		return data
+	Method GetData:TData(assetName:String, defaultObj:TData=Null)
+		Local asset:TAsset = TAsset(GetObject(assetName, "TDATA", "", True))
+		If Not asset Then Return defaultObj
+		Local data:TData = TData(asset._object)
+		If Not data Then Return defaultObj
+		Return data
 	End Method
 
 
@@ -337,66 +337,66 @@ End Type
 
 
 Type TXmlLoader
-	Field xml:TXmlHelper = null
+	Field xml:TXmlHelper = Null
 	Field Values:TMap = CreateMap()
-	Field url:string=""
-	Field baseURI:string = ""	'by default all resources are based on "main"dir
+	Field url:String=""
+	Field baseURI:String = ""	'by default all resources are based on "main"dir
 
-	global loadWarning:int = 0
-	global maxItemNumber:int = 0
-	global currentItemNumber:int = 0
-	global loadedItems:int = 0
+	Global loadWarning:Int = 0
+	Global maxItemNumber:Int = 0
+	Global currentItemNumber:Int = 0
+	Global loadedItems:Int = 0
 
 	Function Create:TXmlLoader()
-		return New TXmlLoader
+		Return New TXmlLoader
 	End Function
 
 
-	Method doLoadElement(element:string, text:string, action:String, number:int=-1)
-		if number < 0 then self.currentItemNumber:+1;number= self.currentItemNumber
-		self.loadedItems:+1
+	Method doLoadElement(element:String, text:String, action:String, number:Int=-1)
+		If number < 0 Then Self.currentItemNumber:+1;number= Self.currentItemNumber
+		Self.loadedItems:+1
 
 		'fire event so LoaderScreen can refresh
-		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onLoadElement", new TData.AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", self.maxItemNumber) ) )
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onLoadElement", New TData.AddString("element", element).AddString("text", text).AddString("action", action).AddNumber("itemNumber", number).AddNumber("maxItemNumber", Self.maxItemNumber) ) )
 	End Method
 
 
-	Method ConvertURI:string(uri:string)
-		return baseURI + uri
+	Method ConvertURI:String(uri:String)
+		Return baseURI + uri
 	End Method
 
 
 	Method Parse(url:String)
-		TDevHelper.log("XmlLoader.Parse:", url, LOG_LOADING)
+		TDevHelper.Log("XmlLoader.Parse:", url, LOG_LOADING)
 		'reset counter
-		self.maxItemNumber = 1
-		self.currentItemNumber = 0
+		Self.maxItemNumber = 1
+		Self.currentItemNumber = 0
 
-		self.url = ConvertURI(url)
-		self.xml = TXmlHelper.Create(self.url)
-		If Self.xml = Null Then TDevHelper.log("TXmlLoader.Parse", "file '" + url + "' not found.", LOG_LOADING)
+		Self.url = ConvertURI(url)
+		Self.xml = TXmlHelper.Create(Self.url)
+		If Self.xml = Null Then TDevHelper.Log("TXmlLoader.Parse", "file '" + url + "' not found.", LOG_LOADING)
 
-		self.LoadResources(xml.root)
-		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onFinishParsing", new TData.AddString("url", url).AddNumber("loaded", self.loadedItems) ) )
+		Self.LoadResources(xml.root)
+		EventManager.triggerEvent( TEventSimple.Create("XmlLoader.onFinishParsing", New TData.AddString("url", url).AddNumber("loaded", Self.loadedItems) ) )
 	End Method
 
 
 	Method LoadResources(node:TxmlNode)
-		local children:TList = node.getChildren()
-		for local childNode:TxmlNode = eachin children
+		Local children:TList = node.getChildren()
+		For Local childNode:TxmlNode = EachIn children
 
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
-			if _type<>"RESOURCES" then self.maxItemNumber:+ 1' children.count()	'it is a entry - so increase
+			If _type<>"RESOURCES" Then Self.maxItemNumber:+ 1' children.count()	'it is a entry - so increase
 		Next
 
-		for local childNode:TxmlNode = eachin node.getChildren()
+		For Local childNode:TxmlNode = EachIn node.getChildren()
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
 
 
 			'some loaders might be interested - fire it so handler reacts immediately
-			EventManager.triggerEvent(TEventSimple.Create("resources.onLoad." + _type, new TData.AddObject("node", childNode).AddObject("xmlLoader", Self)))
+			EventManager.triggerEvent(TEventSimple.Create("resources.onLoad." + _type, New TData.AddObject("node", childNode).AddObject("xmlLoader", Self)))
 
-			self.currentItemNumber:+1		'increase by each entry
+			Self.currentItemNumber:+1		'increase by each entry
 
 			Select _type
 				Case "RESOURCES"			Self.LoadResources(childNode)
@@ -409,56 +409,56 @@ Type TXmlLoader
 		Next
 	End Method
 
-	Method LoadXmlFile:int(childNode:TxmlNode)
+	Method LoadXmlFile:Int(childNode:TxmlNode)
 		Local _url:String = xml.FindValue(childNode, "url", "")
-		if _url = "" then return FALSE
+		If _url = "" Then Return False
 
 		'process given relative-url
 		_url = ConvertURI(_url)
 
 		'emit loader event for loading screen
-		self.doLoadElement("XmlFile", _url, "loading", self.currentItemNumber)
+		Self.doLoadElement("XmlFile", _url, "loading", Self.currentItemNumber)
 
-		if FileSize(_url) = -1 then
-			TDevHelper.log("XmlLoader.LoadXmlResource()", "file missing: "+_url, LOG_LOADING | LOG_ERROR, TRUE)
-			return FALSE
-		endif
+		If FileSize(_url) = -1 Then
+			TDevHelper.Log("XmlLoader.LoadXmlResource()", "file missing: "+_url, LOG_LOADING | LOG_ERROR, True)
+			Return False
+		EndIf
 
 		Local childXML:TXmlLoader = TXmlLoader.Create()
 		childXML.Parse(_url)
 
 		For Local obj:Object = EachIn MapKeys(childXML.Values)
-			TDevHelper.log("XmlLoader.LoadXmlResource()", "loading object: " + String(obj), LOG_LOADING | LOG_DEBUG, TRUE)
+			TDevHelper.Log("XmlLoader.LoadXmlResource()", "loading object: " + String(obj), LOG_LOADING | LOG_DEBUG, True)
 			Self.Values.Insert(obj, childXML.Values.ValueForKey(obj))
 		Next
 	End Method
 
 
 	Method LoadDataBlock:TData(childNode:TxmlNode)
-		local dataName:String = xml.FindValue(childNode, "name", childNode.GetName())
+		Local dataName:String = xml.FindValue(childNode, "name", childNode.GetName())
 
 		'skip unnamed data (no name="x" or <namee type="data">)
-		if dataName = "" or dataName.ToUpper() = "DATA"
-			TDevHelper.log("TRegistryDataLoader.LoadFromXML", "Node ~q<"+childNode.GetName()+">~q contained no or invalid name field. Skipped.", LOG_WARNING)
-			return NULL
-		endif
+		If dataName = "" Or dataName.ToUpper() = "DATA"
+			TDevHelper.Log("TRegistryDataLoader.LoadFromXML", "Node ~q<"+childNode.GetName()+">~q contained no or invalid name field. Skipped.", LOG_WARNING)
+			Return Null
+		EndIf
 
-		local dataMerge:int = xml.FindValueBool(childNode, "merge", TRUE)
-		local values:TData = new TData.Init()
-		local data:TData = new TData.Init()
+		Local dataMerge:Int = xml.FindValueBool(childNode, "merge", True)
+		Local values:TData = New TData.Init()
+		Local data:TData = New TData.Init()
 
-		For local child:TxmlNode = eachin childNode.getChildren()
-			local name:String = xml.FindValue(child, "type", child.getName())
-			if name = "" then continue
-			local value:String = xml.FindValue(child, "value", child.getcontent())
+		For Local child:TxmlNode = EachIn childNode.getChildren()
+			Local name:String = xml.FindValue(child, "type", child.getName())
+			If name = "" Then Continue
+			Local value:String = xml.FindValue(child, "value", child.getcontent())
 			values.Add(name, value)
 		Next
 
 
 
 		'if merging - we load the previously stored data (if there is some)
-		if dataMerge then data = Assets.GetData(dataName)
-		if not data then data = new TData
+		If dataMerge Then data = Assets.GetData(dataName)
+		If Not data Then data = New TData
 
 		'merge in the new values (to an empty - or the old tdata)
 		data.Merge(values)
@@ -466,14 +466,14 @@ Type TXmlLoader
 		'add to registry
 		Assets.Add(TAsset.CreateBaseAsset(data, dataName, "TDATA"))
 
-		return data
+		Return data
 	End Method
 
 
 	Method LoadChild:TMap(childNode:TxmlNode)
 		Local optionsMap:TMap = CreateMap()
 		For Local childOptions:TxmlNode = EachIn childNode
-			If childOptions.getChildren() <> null
+			If childOptions.getChildren() <> Null
 				optionsMap.Insert((Lower(childOptions.getName()) + "_" + Lower(xml.findAttribute(childoptions, "name", "unkown"))), Self.LoadChild(childOptions))
 			Else
 				optionsMap.Insert((Lower(childOptions.getName()) + "_" + Lower(xml.findAttribute(childoptions, "name", "unkown"))), childOptions.getContent())
@@ -501,29 +501,29 @@ Type TXmlLoader
 	End Method
 
 
-	Method LoadPixmapResource(childNode:TxmlNode, defaultName:string="default")
+	Method LoadPixmapResource(childNode:TxmlNode, defaultName:String="default")
 		Local _name:String		= Lower( xml.FindValue(childNode, "name", defaultName) )
 		Local _type:String		= Upper( xml.FindValue(childNode, "type", childNode.getName()))
 		Local _url:String		= xml.FindValue(childNode, "url", "")
-		if _type = "" or _url = "" then return
+		If _type = "" Or _url = "" Then Return
 
 		'process given relative-url
 		_url = ConvertURI(_url)
 
 		'emit loader event for loading screen
-		self.doLoadElement("pixmap resource", _url, "loading", self.currentItemNumber)
+		Self.doLoadElement("pixmap resource", _url, "loading", Self.currentItemNumber)
 		Assets.Add(TAsset.CreateBaseAsset(LoadPixmap(_url), _name, "PIXMAP") )
 	End Method
 
 
-	Method LoadImageResource(childNode:TxmlNode, defaultName:string="default")
+	Method LoadImageResource(childNode:TxmlNode, defaultName:String="default")
 		Local _name:String		= Lower( xml.FindValue(childNode, "name", defaultName) )
 		Local _type:String		= Upper( xml.FindValue(childNode, "type", childNode.getName()))
 		Local _url:String		= xml.FindValue(childNode, "url", "")
-		if _type = "" or _url = "" then return
+		If _type = "" Or _url = "" Then Return
 
 		'emit loader event for loading screen
-		self.doLoadElement("image resource", _url, "loading", self.currentItemNumber)
+		Self.doLoadElement("image resource", _url, "loading", Self.currentItemNumber)
 
 
 		Local _frames:Int		= xml.FindValueInt(childNode, "frames", xml.FindValueInt(childNode, "f", 0))
@@ -540,12 +540,12 @@ Type TXmlLoader
 		'direct load or threaded possible?
 		'solange threaded n bissl buggy - immer direkt laden
 		Local directLoadNeeded:Int = True ' <-- threaded load
-		If _r >= 0 And _g >= 0 And _b >= 0 then directLoadNeeded = true
+		If _r >= 0 And _g >= 0 And _b >= 0 Then directLoadNeeded = True
 
 		If xml.FindChild(childNode, "scripts") <> Null Then directLoadNeeded = True
 		If xml.FindChild(childNode,"colorize") <> Null Then directLoadNeeded = True
 		'create helper, so load-function has all needed data
-		Local LoadAssetHelper:TGW_Sprite = new TGW_Sprite.Create(null,_name, TRectangle.Create(0,0,0,0), null, _frames, -1, TPoint.Create(_cellwidth, _cellheight))
+		Local LoadAssetHelper:TGW_Sprite = New TGW_Sprite.Create(Null,_name, TRectangle.Create(0,0,0,0), Null, _frames, -1, TPoint.Create(_cellwidth, _cellheight))
 		LoadAssetHelper._flags = _flags
 
 		'referencing another sprite? (same base)
@@ -566,7 +566,7 @@ Type TXmlLoader
 				'print "LoadImageResource: "+_name + " | DIRECT type = "+_type
 				'add as single sprite so it is reachable through "GetSprite" too
 				Local sprite:TGW_Sprite = TGW_Sprite.LoadFromAsset(LoadAssetHelper)
-				If _r >= 0 And _g >= 0 And _b >= 0 then sprite.colorize( TColor.Create(_r,_g,_b) )
+				If _r >= 0 And _g >= 0 And _b >= 0 Then sprite.colorize( TColor.Create(_r,_g,_b) )
 				Assets.Add(sprite)
 				Self.parseScripts(childNode, sprite.GetImage())
 			Else
@@ -584,10 +584,10 @@ Type TXmlLoader
 		Local scripts:TxmlNode = xml.FindChild(childNode, "scripts")
 		If scripts <> Null
 			For Local script:TxmlNode = EachIn scripts
-				if script.getType() <> XML_ELEMENT_NODE then continue
+				If script.getType() <> XML_ELEMENT_NODE Then Continue
 
 				Local scriptDo:String	= xml.findValue(script,"do", "")
-				local _dest:string		= Lower(xml.findValue(script,"dest", ""))
+				Local _dest:String		= Lower(xml.findValue(script,"dest", ""))
 				Local _r:Int			= xml.FindValueInt(script, "r", -1)
 				Local _g:Int			= xml.FindValueInt(script, "g", -1)
 				Local _b:Int			= xml.FindValueInt(script, "b", -1)
@@ -602,12 +602,12 @@ Type TXmlLoader
 						'emit loader event for loading screen
 			'			self.doLoadElement("colorize copy", _dest, "colorize copy")
 
-						local img:Timage = ColorizeImage(TImage(data), TColor.Create(_r, _g, _b) )
-						if img <> null
+						Local img:TImage = ColorizeImageCopy(TImage(data), TColor.Create(_r, _g, _b) )
+						If img <> Null
 							Assets.AddImageAsSprite(_dest, img)
-						else
-							print "WARNING: "+_dest+" could not be created"
-						endif
+						Else
+							Print "WARNING: "+_dest+" could not be created"
+						EndIf
 					EndIf
 				EndIf
 
@@ -635,7 +635,7 @@ Type TXmlLoader
 						Local _frames:Int		= xml.findValueInt(script, "frames",		TGW_Spritepack(data).getSprite(_src).animcount)
 
 						'emit loader event for loading screen
-						self.doLoadElement("add copy sprite", _dest, "")
+						Self.doLoadElement("add copy sprite", _dest, "")
 
 						Assets.Add(TGW_Spritepack(data).AddSpritecopy(_src, _dest, TRectangle.Create(_x,_y,_w,_h), TRectangle.Create(_offsetTop, _offsetLeft, _offsetBottom, _offsetRight), _frames, TColor.Create(_r, _g, _b)))
 					EndIf
@@ -657,7 +657,7 @@ Type TXmlLoader
 
 
 		'emit loader event for loading screen
-		self.doLoadElement("image spritepack resource", _url, "loading", self.currentItemNumber)
+		Self.doLoadElement("image spritepack resource", _url, "loading", Self.currentItemNumber)
 
 
 		'Print "LoadSpritePackResource: "+_name + " " + _flags + " ["+url+"]"
@@ -670,7 +670,7 @@ Type TXmlLoader
 		Local children:TxmlNode = xml.FindChild(childNode, "children")
 		If children <> Null
 			For Local child:TxmlNode = EachIn children
-				if child.getType() <> XML_ELEMENT_NODE then continue
+				If child.getType() <> XML_ELEMENT_NODE Then Continue
 
 				Local childName:String		= Lower(xml.findValue(child,"name", ""))
 				Local childX:Int			= xml.findValueInt(child, "x", 0)
@@ -684,20 +684,20 @@ Type TXmlLoader
 				Local childID:Int			= xml.findValueInt(child, "id", -1)
 				Local childFrames:Int		= xml.findValueInt(child, "frames", 1)
 				      childFrames			= xml.findValueInt(child, "f", childFrames)
-				Local childIsNinePatch:Int	= xml.findValueBool(child, "ninePatch", FALSE)
+				Local childIsNinePatch:Int	= xml.findValueBool(child, "ninePatch", False)
 
 				If childName<> "" And childW > 0 And childH > 0
 					'emit loader event for loading screen
-					self.doLoadElement("image spritepack resource", _url, "load sprite from pack")
+					Self.doLoadElement("image spritepack resource", _url, "load sprite from pack")
 
 
 					'create sprite and add it to assets
 					Local sprite:TGW_Sprite
-					if childIsNinePatch
-						sprite = new TGW_NinePatchSprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
-					else
-						sprite = new TGW_Sprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
-					endif
+					If childIsNinePatch
+						sprite = New TGW_NinePatchSprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
+					Else
+						sprite = New TGW_Sprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
+					EndIf
 
 					spritePack.addSprite(sprite)
 					Assets.Add(sprite)
@@ -706,7 +706,7 @@ Type TXmlLoader
 					Local _r:Int			= xml.FindValueInt(child, "r", -1)
 					Local _g:Int			= xml.FindValueInt(child, "g", -1)
 					Local _b:Int			= xml.FindValueInt(child, "b", -1)
-					If _r >= 0 And _g >= 0 And _b >= 0 then sprite.colorize( TColor.Create(_r,_g,_b) )
+					If _r >= 0 And _g >= 0 And _b >= 0 Then sprite.colorize( TColor.Create(_r,_g,_b) )
 				EndIf
 			Next
 		EndIf
@@ -728,104 +728,104 @@ Type TResourceLoaders
 		EventManager.registerListenerFunction("resources.onLoad.MUSIC",			TResourceLoaders.onLoadMusicFile)
 		EventManager.registerListenerFunction("resources.onLoad.SFX",			TResourceLoaders.onLoadSfxFile)
 
-		return new TResourceLoaders
+		Return New TResourceLoaders
 	End Function
 
 
-	Function assignBasics:int(event:TEventBase, childNode:TxmlNode var, xmlLoader:TXmlLoader var)
+	Function assignBasics:Int(event:TEventBase, childNode:TxmlNode Var, xmlLoader:TXmlLoader Var)
 		childNode = TxmlNode(event.getData().get("node"))
-		if childNode = null then return false
+		If childNode = Null Then Return False
 
 		xmlLoader = TXmlLoader(event.getData().get("xmlLoader"))
-		if xmlLoader = null then return false
+		If xmlLoader = Null Then Return False
 
-		return true
+		Return True
 	End Function
 
 
-	Function onLoadMusicFile:int( triggerEvent:TEventBase )
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
-		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+	Function onLoadMusicFile:Int( triggerEvent:TEventBase )
+		Local childNode:TxmlNode = Null
+		Local xmlLoader:TXmlLoader = Null
+		If Not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) Then Return 0
 
 		'music file
-		if triggerEvent.isTrigger("resources.onLoad.MUSIC")
+		If triggerEvent.isTrigger("resources.onLoad.MUSIC")
 			Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
 			Local url:String	= xmlLoader.xml.FindValue(childNode, "url", "")
-			Local playOnLoad:int= xmlLoader.xml.FindValueBool(childNode, "playOnLoad", FALSE)
-			Local loop:int = xmlLoader.xml.FindValueBool(childNode, "loop", FALSE)
-			Local playlists:string= xmlLoader.xml.FindValue(childNode, "playlists", "")
+			Local playOnLoad:Int= xmlLoader.xml.FindValueBool(childNode, "playOnLoad", False)
+			Local loop:Int = xmlLoader.xml.FindValueBool(childNode, "loop", False)
+			Local playlists:String= xmlLoader.xml.FindValue(childNode, "playlists", "")
 			'instead of using a default-value in "FindValue()" we also want to have "default"
 			'set if one defines 'playlists=""' in the xml file
-			if playlists="" then playlists = "default"
+			If playlists="" Then playlists = "default"
 
 			url = xmlLoader.ConvertURI(url)
 
-			local stream:TMusicStream = TMusicStream.Create(url, loop)
-			if not stream or not stream.isValid()
-				TDevHelper.log("TResourceLoaders.onLoadSoundFiles()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
-			else
+			Local stream:TMusicStream = TMusicStream.Create(url, loop)
+			If Not stream Or Not stream.isValid()
+				TDevHelper.Log("TResourceLoaders.onLoadSoundFiles()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
+			Else
 				TSoundManager.GetInstance().AddSound(name, stream, playlists)
 
 				'if no music is played yet, try to get one from the "menu"-playlist
-				if not TSoundManager.GetInstance().isPlaying()
+				If Not TSoundManager.GetInstance().isPlaying()
 					TSoundManager.GetInstance().PlayMusicPlaylist("menu")
-				endif
+				EndIf
 
 				'TDevHelper.log("TResourceLoaders.onLoadSoundFiles()", "File ~q"+url+"~q loaded.", LOG_LOADING | LOG_DEBUG, TRUE)
-			endif
+			EndIf
 
-		endif
+		EndIf
 	End Function
 
 
-	Function onLoadSfxFile:int( triggerEvent:TEventBase )
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
-		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+	Function onLoadSfxFile:Int( triggerEvent:TEventBase )
+		Local childNode:TxmlNode = Null
+		Local xmlLoader:TXmlLoader = Null
+		If Not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) Then Return 0
 
 		'sfx file
-		if triggerEvent.isTrigger("resources.onLoad.SFX")
+		If triggerEvent.isTrigger("resources.onLoad.SFX")
 			Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
 			Local url:String	= xmlLoader.xml.FindValue(childNode, "url", "")
-			Local optionLoop:int= xmlLoader.xml.FindValueBool(childNode, "loop", FALSE)
-			Local playlists:string= xmlLoader.xml.FindValue(childNode, "playlists", "")
+			Local optionLoop:Int= xmlLoader.xml.FindValueBool(childNode, "loop", False)
+			Local playlists:String= xmlLoader.xml.FindValue(childNode, "playlists", "")
 
 			url = xmlLoader.ConvertURI(url)
 
-			local flags:int = SOUND_HARDWARE
-			if optionLoop then flags :| SOUND_LOOP
+			Local flags:Int = SOUND_HARDWARE
+			If optionLoop Then flags :| SOUND_LOOP
 
-			local sound:TSound = LoadSound(url, flags)
-			if not sound
-				TDevHelper.log("TResourceLoaders.onLoadSfxFile()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
-			else
+			Local sound:TSound = LoadSound(url, flags)
+			If Not sound
+				TDevHelper.Log("TResourceLoaders.onLoadSfxFile()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
+			Else
 				TSoundManager.GetInstance().AddSound(name, sound, playlists)
 				'TDevHelper.log("TResourceLoaders.onLoadSfxFile()", "File ~q"+url+"~q loaded.", LOG_LOADING | LOG_DEBUG, TRUE)
-			endif
+			EndIf
 
-		endif
+		EndIf
 	End Function
 
 	'could also be in a different files - just register to the special event
-	Function onLoadFonts:int( triggerEvent:TEventBase )
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
-		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+	Function onLoadFonts:Int( triggerEvent:TEventBase )
+		Local childNode:TxmlNode = Null
+		Local xmlLoader:TXmlLoader = Null
+		If Not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) Then Return 0
 
 		'groups
-		if triggerEvent.isTrigger("resources.onLoad.FONTS")
+		If triggerEvent.isTrigger("resources.onLoad.FONTS")
 			For Local child:TxmlNode = EachIn childNode.GetChildren()
-				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.FONT", new TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader) ) )
+				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.FONT", New TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader) ) )
 			Next
-		endif
+		EndIf
 
 		'individual color
-		if triggerEvent.isTrigger("resources.onLoad.FONT")
+		If triggerEvent.isTrigger("resources.onLoad.FONT")
 			Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
 			Local url:String	= xmlLoader.xml.FindValue(childNode, "url", "")
-			Local size:int		= xmlLoader.xml.FindValueInt(childNode, "size", 10)
-			Local setDefault:int= xmlLoader.xml.FindValueInt(childNode, "default", 0)
+			Local size:Int		= xmlLoader.xml.FindValueInt(childNode, "size", 10)
+			Local setDefault:Int= xmlLoader.xml.FindValueInt(childNode, "default", 0)
 
 			url = xmlLoader.ConvertURI(url)
 
@@ -838,67 +838,67 @@ Type TResourceLoaders
 					If flag = "BOLDFONT" Then flags = flags + BOLDFONT
 					If flag = "ITALICFONT" Then flags = flags + ITALICFONT
 				Next
-			endif
+			EndIf
 
-			if name="" or url="" then return 0
-			local font:TGW_BitmapFont = Assets.fonts.AddFont(name, url, size, SMOOTHFONT +flags)
+			If name="" Or url="" Then Return 0
+			Local font:TGW_BitmapFont = Assets.fonts.AddFont(name, url, size, SMOOTHFONT +flags)
 
-			if setDefault
-				if flags & BOLDFONT
+			If setDefault
+				If flags & BOLDFONT
 					Assets.fonts.baseFontBold = font
-				elseif flags & ITALICFONT
+				ElseIf flags & ITALICFONT
 					Assets.fonts.baseFontItalic = font
 				ElseIf name = "smalldefault"
 					Assets.fonts.baseFontSmall = font
-				else
+				Else
 					Assets.fonts.baseFont = font
-				endif
-			endif
-		endif
+				EndIf
+			EndIf
+		EndIf
 	End Function
 
 
 	'could also be in a different file - just register to the special event
-	Function onLoadColors:int( triggerEvent:TEventBase )
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
-		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+	Function onLoadColors:Int( triggerEvent:TEventBase )
+		Local childNode:TxmlNode = Null
+		Local xmlLoader:TXmlLoader = Null
+		If Not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) Then Return 0
 
 		'groups
-		if triggerEvent.isTrigger("resources.onLoad.COLORS")
-			local listName:string = xmlLoader.xml.FindValue(childNode, "name", "colorList")
-			local list:TList = CreateList()
+		If triggerEvent.isTrigger("resources.onLoad.COLORS")
+			Local listName:String = xmlLoader.xml.FindValue(childNode, "name", "colorList")
+			Local list:TList = CreateList()
 			'add list to assets
 			Assets.Add(TAsset.CreateBaseAsset(list, listName, "TLIST"))
 
 			For Local child:TxmlNode = EachIn childNode.GetChildren()
-				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.COLOR", new TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
+				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.COLOR", New TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
 			Next
-		endif
+		EndIf
 
 		'individual color
-		if triggerEvent.isTrigger("resources.onLoad.COLOR")
-			local list:TList	= TList( TEventSimple(triggerEvent).getData().get("list") )
+		If triggerEvent.isTrigger("resources.onLoad.COLOR")
+			Local list:TList	= TList( TEventSimple(triggerEvent).getData().get("list") )
 			Local name:String	= Lower( xmlLoader.xml.FindValue(childNode, "name", "") )
-			Local r:int			= xmlLoader.xml.FindValueInt(childNode, "r", 0)
-			Local g:int			= xmlLoader.xml.FindValueInt(childNode, "g", 0)
-			Local b:int			= xmlLoader.xml.FindValueInt(childNode, "b", 0)
-			Local a:int			= xmlLoader.xml.FindValueFloat(childNode, "a", 1.0)
+			Local r:Int			= xmlLoader.xml.FindValueInt(childNode, "r", 0)
+			Local g:Int			= xmlLoader.xml.FindValueInt(childNode, "g", 0)
+			Local b:Int			= xmlLoader.xml.FindValueInt(childNode, "b", 0)
+			Local a:Int			= xmlLoader.xml.FindValueFloat(childNode, "a", 1.0)
 
 			'if a list was given - add to that group
-			if list then list.addLast(TColor.Create(r,g,b,a))
+			If list Then list.addLast(TColor.Create(r,g,b,a))
 
 			'add the color asset if name given (special colors have names :D)
-			if name <> "" then Assets.Add(TAsset.CreateBaseAsset(TColor.Create(r,g,b,a), name, "TCOLOR"))
-		endif
+			If name <> "" Then Assets.Add(TAsset.CreateBaseAsset(TColor.Create(r,g,b,a), name, "TCOLOR"))
+		EndIf
 	End Function
 
 
 	'could also be in a different file - just register to the special event
-	Function onLoadRooms:int( triggerEvent:TEventBase )
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
-		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+	Function onLoadRooms:Int( triggerEvent:TEventBase )
+		Local childNode:TxmlNode = Null
+		Local xmlLoader:TXmlLoader = Null
+		If Not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) Then Return 0
 
 
 		'for every single room
@@ -910,7 +910,7 @@ Type TResourceLoaders
 			Local room:TMap		= CreateMap()
 			Local owner:Int		= xmlLoader.xml.FindValueInt(child, "owner", -1)
 			Local name:String	= xmlLoader.xml.FindValue(child, "name", "unknown")
-			Local id:string		= xmlLoader.xml.FindValue(child, "id", "")
+			Local id:String		= xmlLoader.xml.FindValue(child, "id", "")
 
 			'emit loader event for loading screen
 			'self.doLoadElement("load rooms", name, "load room")
@@ -920,25 +920,25 @@ Type TResourceLoaders
 			room.Insert("roomname", name)
 			room.Insert("fake", 	xmlLoader.xml.FindValue(child, "fake", "0") )
 			room.Insert("screen", 	xmlLoader.xml.FindValue(child, "screen", "screen_credits") )
-			local subNode:TxmlNode = null
+			Local subNode:TxmlNode = Null
 
 			'load tooltips
 			subNode = xmlLoader.xml.FindChild(child, "tooltip")
-			if subNode <> null
+			If subNode <> Null
 				room.Insert("tooltip", 	xmlLoader.xml.FindValue(subNode, "text", "") )
 				room.Insert("tooltip2", xmlLoader.xml.FindValue(subNode, "description", "") )
-			else
+			Else
 				room.Insert("tooltip", 	"" )
 				room.Insert("tooltip2", "" )
-			endif
+			EndIf
 
 			'hotspots
-			local hotSpots:TList = CreateList()
+			Local hotSpots:TList = CreateList()
 			subNode = xmlLoader.xml.FindChild(child, "hotspots")
-			if subNode and subNode.GetChildren()
+			If subNode And subNode.GetChildren()
 				For Local hotSpotNode:TxmlNode = EachIn subNode.GetChildren()
-					if not hotSpotNode then continue
-					local hotspot:TMap = CreateMap()
+					If Not hotSpotNode Then Continue
+					Local hotspot:TMap = CreateMap()
 
 					hotspot.Insert("name", 					xmlLoader.xml.FindValue(hotSpotNode, "name", "") )
 					hotspot.Insert("tooltiptext", 			xmlLoader.xml.FindValue(hotSpotNode, "tooltiptext", "") )
@@ -952,26 +952,26 @@ Type TResourceLoaders
 
 					hotSpots.addLast(hotspot)
 				Next
-			endif
+			EndIf
 			room.Insert("hotspots", hotSpots )
 
 			'load door settings
 			subNode = xmlLoader.xml.FindChild(child, "door")
-			if subNode
+			If subNode
 				room.Insert("x", 		xmlLoader.xml.FindValue(subNode, "x", -1) )
 				room.Insert("floor",	xmlLoader.xml.FindValue(subNode, "floor", -1) )
 				room.Insert("doorslot",	xmlLoader.xml.FindValue(subNode, "doorslot", -1) )
 				room.Insert("doortype", xmlLoader.xml.FindValue(subNode, "doortype", -1) )
 				room.Insert("doorwidth", xmlLoader.xml.FindValue(subNode, "doorwidth", -1) )
-			else
+			Else
 				room.Insert("x", "-1" )
 				room.Insert("floor", "0" )
 				room.Insert("xpos", "-1")
 				room.Insert("doorslot",	"-1")
 				room.Insert("doortype", "-1")
 				room.Insert("doorwidth", "-1")
-			endif
-			local key:string = Name + owner + id
+			EndIf
+			Local key:String = Name + owner + id
 			values_room.Insert(key, TAsset.CreateBaseAsset(room, key, "ROOMDATA"))
 			'TDevHelper.log("XmlLoader.LoadRooms()", "inserted room: " + Name, LOG_LOADING | LOG_DEBUG, TRUE)
 			'print "rooms: "+Name + owner
@@ -982,8 +982,8 @@ Type TResourceLoaders
 
 
 	Function onLoadNewsGenres:Int(triggerEvent:TEventBase)
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
+		Local childNode:TxmlNode = Null
+		Local xmlLoader:TXmlLoader = Null
 		If Not TResourceLoaders.assignBasics(triggerEvent, childNode, xmlLoader) Then Return 0
 
 		Local values_newsgenre:TMap = TMap(xmlLoader.Values.ValueForKey("newsgenres"))
@@ -1007,7 +1007,7 @@ Type TResourceLoaders
 
 				genre.Insert(attrId, Value)
 			Next
-			local key:string = String(id)
+			Local key:String = String(id)
 			values_newsgenre.Insert(key, TAsset.CreateBaseAsset(genre, key, "NEWSGENREDATA"))
 			'TDevHelper.log("XmlLoader.onLoadNewsGenres()", "inserted newsgenre: " + Name, LOG_LOADING | LOG_DEBUG, TRUE)
 		Next
@@ -1017,10 +1017,10 @@ Type TResourceLoaders
 	End Function
 
 
-	Function onLoadGenres:int( triggerEvent:TEventBase )
-		local childNode:TxmlNode = null
-		local xmlLoader:TXmlLoader = null
-		if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+	Function onLoadGenres:Int( triggerEvent:TEventBase )
+		Local childNode:TxmlNode = Null
+		Local xmlLoader:TXmlLoader = Null
+		If Not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) Then Return 0
 
 		Local values_genre:TMap = TMap(xmlLoader.Values.ValueForKey("genres"))
 		If values_genre = Null Then values_genre = CreateMap()
@@ -1034,26 +1034,26 @@ Type TResourceLoaders
 
 			genre.Insert("id",		String(id))
 			genre.Insert("name",	name)
-			genre.Insert("outcomeMod",	string(xmlLoader.xml.FindValueFloat(child, "outcome-mod", -1)))
-			genre.Insert("reviewMod",	string(xmlLoader.xml.FindValueFloat(child, "review-mod", -1)))
-			genre.Insert("speedMod",	string(xmlLoader.xml.FindValueFloat(child, "speed-mod", -1)))
+			genre.Insert("outcomeMod",	String(xmlLoader.xml.FindValueFloat(child, "outcome-mod", -1)))
+			genre.Insert("reviewMod",	String(xmlLoader.xml.FindValueFloat(child, "review-mod", -1)))
+			genre.Insert("speedMod",	String(xmlLoader.xml.FindValueFloat(child, "speed-mod", -1)))
 
-			local subNode:TxmlNode = null
+			Local subNode:TxmlNode = Null
 			subNode = xmlLoader.xml.FindChild(child, "timeMods")
 			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
-				local time:String = xmlLoader.xml.FindValue(subNodeChild, "time", "-1")
+				Local time:String = xmlLoader.xml.FindValue(subNodeChild, "time", "-1")
 				genre.Insert("timeMod_" + time, 	xmlLoader.xml.FindValue(subNodeChild, "value", "") )
 			Next
 
 
 			subNode = xmlLoader.xml.FindChild(child, "audienceAttractions")
 			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
-				local id:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
+				Local id:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
 				Local Value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "0.7")
 
 				genre.Insert(id, value)
 			Next
-			local key:string = String(id)
+			Local key:String = String(id)
 			values_genre.Insert(key, TAsset.CreateBaseAsset(genre, key, "GENREDATA"))
 			'TDevHelper.log("XmlLoader.onLoadGenres()", "inserted genre: " + name, LOG_LOADING | LOG_DEBUG, TRUE)
 		Next

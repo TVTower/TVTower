@@ -1018,7 +1018,7 @@ Type TGW_SpritePack extends TRenderable
 		Local tmpSpriteDest:TGW_Sprite = Self.GetSprite(spriteNameDest)
 		Local tmppix:TPixmap = LockImage(Self.image, 0)
 			tmppix.Window(tmpSpriteDest.area.GetX(), tmpSpriteDest.area.GetY(), tmpSpriteDest.area.GetW(), tmpSpriteDest.area.GetH()).ClearPixels(0)
-			DrawImageOnImage(ColorizeImage(Self.GetSprite(spriteNameSrc).GetImage(), color), tmppix, tmpSpriteDest.area.GetX(), tmpSpriteDest.area.GetY())
+			DrawImageOnImage(ColorizeImageCopy(Self.GetSprite(spriteNameSrc).GetImage(), color), tmppix, tmpSpriteDest.area.GetX(), tmpSpriteDest.area.GetY())
 		UnlockImage(Self.image, 0)
 		GCCollect() '<- FIX!
 	End Method
@@ -1028,7 +1028,7 @@ Type TGW_SpritePack extends TRenderable
 		local spriteCopy:TGW_Sprite = new TGW_Sprite.Create(self, spriteNameDest, area, offset, animcount)
 		Local tmppix:TPixmap = LockImage(Self.image, 0)
 			tmppix.Window(spriteCopy.area.GetX(), spriteCopy.area.GetY(), spriteCopy.area.GetW(), spriteCopy.area.GetH()).ClearPixels(0)
-			DrawImageOnImage(ColorizeImage(GetSprite(spriteNameSrc).GetImage(), color), tmppix, spriteCopy.area.GetX(), spriteCopy.area.GetY())
+			DrawImageOnImage(ColorizeImageCopy(GetSprite(spriteNameSrc).GetImage(), color), tmppix, spriteCopy.area.GetX(), spriteCopy.area.GetY())
 		UnlockImage(Self.image, 0)
 		GCCollect() '<- FIX!
 		'add the copy
@@ -1176,7 +1176,7 @@ Type TGW_Sprite extends TRenderable
 
 
 	Method GetColorizedImage:TImage(color:TColor, frame:int=-1)
-		return ColorizeImage(self.GetImage(frame), color)
+		return ColorizeImageCopy(self.GetImage(frame), color)
 	End Method
 
 
@@ -1220,7 +1220,7 @@ Type TGW_Sprite extends TRenderable
 	Method Colorize(color:TColor)
 		'store backup (we have to clean the image data
 		'              before pasting colorized output)
-		local newImg:TImage = ColorizeImage(GetImage(), color)
+		local newImg:TImage = ColorizeImageCopy(GetImage(), color)
 		'remove old image part
 		ClearImageData()
 		'draw now colorized image on the parent image

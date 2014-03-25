@@ -376,18 +376,19 @@ Type TGUIGameWindow Extends TGUIWindow
 		Self.guiBackground.sprite = Assets.GetNinePatchSprite("gfx_gui_panel")
 
 		Local maxOtherBoxesY:Int = 0
+		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
 		If children
 			For Local box:TGUIBackgroundBox = EachIn contentBoxes
 				maxOtherBoxesY = Max(maxOtherBoxesY, box.rect.GetY() + box.rect.GetH())
 				'after each box we want a gap
-				maxOtherBoxesY :+ TGUISettings.panelGap
+				maxOtherBoxesY :+ panelGap
 			Next
 		EndIf
 		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(displaceX, maxOtherBoxesY + displaceY, w, h, "")
 
 		box.sprite = childSprite
 		box.spriteAlpha = 1.0
-		box.SetPadding(TGUISettings.panelGap,TGUISettings.panelGap,TGUISettings.panelGap,TGUISettings.panelGap)
+		box.SetPadding(panelGap, panelGap, panelGap, panelGap)
 		AddChild(box)
 
 		contentBoxes = contentBoxes[.. contentBoxes.length +1]

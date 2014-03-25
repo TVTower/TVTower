@@ -1421,8 +1421,9 @@ endrem
 
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
+		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
 		guiButtonsWindow = New TGUIGameWindow.Create(300, 330, 200, 400, name)
-		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, TGUISettings.panelGap, TGUISettings.panelGap, TGUISettings.panelGap)
+		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
 
@@ -1532,9 +1533,10 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.GetX(), settingsArea.GetY(), settingsArea.GetW(), settingsArea.GetH(), "GameSettings")
 		guiSettingsWindow.SetCaption("Spieler")
 		guiSettingsWindow.guiBackground.spriteAlpha = 0.5
-		guiSettingsWindow.SetPadding(headerSize, TGUISettings.panelGap, TGUISettings.panelGap, TGUISettings.panelGap)
+		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
+		guiSettingsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 
-		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * TGUISettings.panelGap)
+		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
 		guiGameTitleLabel	= New TGUILabel.Create(0, 0, "Spieltitel:",TColor.CreateGrey(50),Null, name)
@@ -1568,7 +1570,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		guiButtonsWindow = New TGUIGameWindow.Create(590, 400, 200, 190, "GameSettings")
-		guiButtonsWindow.SetPadding(headerSize, TGUISettings.panelGap, TGUISettings.panelGap, TGUISettings.panelGap)
+		guiButtonsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
 
@@ -1584,11 +1586,11 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiChat.guiInput.setMaxLength(200)
 
 		guiChat.guiBackground.spriteAlpha = 0.5
-		guiChat.SetPadding(headerSize, TGUISettings.panelGap, TGUISettings.panelGap, TGUISettings.panelGap)
+		guiChat.SetPadding(headerSize, panelGap, panelGap, panelGap)
 		guiChat.SetCaption("Chat")
 		guiChat.guiList.Resize(guiChat.guiList.rect.GetW(), guiChat.guiList.rect.GetH()-10)
-		guiChat.guiInput.rect.position.MoveXY(TGUISettings.panelGap, -TGUISettings.panelGap)
-		guiChat.guiInput.Resize( guiChat.GetContentScreenWidth() - 2* TGUISettings.panelGap, guiStartYear.GetScreenHeight())
+		guiChat.guiInput.rect.position.MoveXY(panelGap, -panelGap)
+		guiChat.guiInput.Resize( guiChat.GetContentScreenWidth() - 2* panelGap, guiStartYear.GetScreenHeight())
 
 		For Local i:Int = 0 To 3
 			Local slotX:Int = i * (playerSlotGap + playerBoxDimension.GetIntX())
@@ -1910,11 +1912,13 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		Super.Create(name)
 		self.background = background
 
+
 		'create and setup GUI objects
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
+		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
 		guiButtonsWindow = New TGUIGameWindow.Create(590, 355, 200, 235, name)
-		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, TGUISettings.panelGap, TGUISettings.panelGap, TGUISettings.panelGap)
+		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.SetCaption("")
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
@@ -1934,7 +1938,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		'GameList
 		'contained within a window/panel for styling
 		guiGameListWindow = New TGUIGameWindow.Create(20, 355, 520, 235, name)
-		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, TGUISettings.panelGap, TGUISettings.panelGap, TGUISettings.panelGap)
+		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
 		guiGameListWindow.SetCaption(GetLocale("AVAILABLE_GAMES"))
 

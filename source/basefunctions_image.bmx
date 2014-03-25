@@ -371,70 +371,50 @@ End Type
 
 
 
-'colorizes an TImage (may be an AnimImage when given cell_width and height)
-Function ColorizeImage:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, flag:Int=0)
+'colorizes a copy of the given image/pixmap
+'(may be an AnimImage when given cell_width and height)
+Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, flag:Int=0)
+
 	local pixmap:TPixmap
-	if TPixmap(imageOrPixmap) then pixmap = TPixmap(imageOrPixmap)
-	if TImage(imageOrPixmap) then pixmap = LockImage(TImage(imageOrPixmap))
+	'create a copy of the given image/pixmap
+	if TPixmap(imageOrPixmap) then pixmap = TPixmap(imageOrPixmap).copy()
+	if TImage(imageOrPixmap) then pixmap = LockImage(TImage(imageOrPixmap)).copy()
 	If not pixmap then return Null
+
+	'colorize this pixmap
+	ColorizePixmap(pixmap, color)
 
 	'load
 	If cellW > 0 And cellCount > 0
-		Return LoadAnimImage( ColorizePixmap(pixmap, color), cellW, cellH, cellFirst, cellCount, flag)
+		Return LoadAnimImage( pixmap, cellW, cellH, cellFirst, cellCount, flag)
 	else
-		Return LoadImage( ColorizePixmap(pixmap, color) )
+		Return LoadImage( pixmap )
 	endif
 End Function
 
 
 
 
-'creates a pixmap copy and colorizes it
-Function ColorizePixmap:TPixmap(sourcePixmap:TPixmap, color:TColor)
-	'create a copy to work on
-	local colorizedPixmap:TPixmap = sourcePixmap.Copy()
-
+'colorizes a given pixmap (directly modifies the sourcePixmap)
+Function ColorizePixmap:Int(pixmap:TPixmap var, color:TColor)
 	'convert format of wrong one -> make sure the pixmaps are 32 bit format
-	If colorizedPixmap.format <> PF_RGBA8888 Then colorizedPixmap.convert(PF_RGBA8888)
+	If pixmap.format <> PF_RGBA8888 Then pixmap.convert(PF_RGBA8888)
 
 	local pixel:int
 	local colorTone:int = 0
-	For Local x:Int = 0 To colorizedPixmap.width - 1
-		For Local y:Int = 0 To colorizedPixmap.height - 1
-			pixel = ReadPixel(colorizedPixmap, x,y)
+	For Local x:Int = 0 To pixmap.width - 1
+		For Local y:Int = 0 To pixmap.height - 1
+			pixel = ReadPixel(pixmap, x,y)
 			'skip invisible
 			if ARGB_Alpha(pixel) = 0 then continue
 
 			colorTone = isMonochrome(pixel)
 			If colorTone > 0 and colorTone < 255
-				WritePixel(colorizedPixmap, x,y, ARGB_Color( ARGB_Alpha(pixel), colorTone * color.r / 255, colortone * color.g / 255, colortone * color.b / 255))
+				WritePixel(pixmap, x,y, ARGB_Color( ARGB_Alpha(pixel), colorTone * color.r / 255, colortone * color.g / 255, colortone * color.b / 255))
 			endif
 		Next
 	Next
-rem
-	'create INT pointer to pixels - we have a RGBA format
-	'Int Pointer contain 4 bytes -> RGBA
-	'Byte Pointer would point to individual bytes
-'	local pixelPointer:Int Ptr = Int Ptr( newpixmap.PixelPtr(0,0) )
-
-	For local x:int = 0 to pixmap.width * pixmap.height
-		'skip empty pixels - even possible?
-		'if not pixelPointer[0] then continue
-
-		'get "graytone" of the pixel at pixelPointer position
-		'isMOnochrome does not work with RBGA
-		local colorTone:int = isMonochrome( pixelPointer[0] )
-		'colorize if monochrome and not black (>0) and not white (255)
-		'colorize with RGBA! not ARGB!
-		'We use RGBA as this is a valid pixmap-format
-		If colorTone > 0 and colorTone < 255
-			pixelPointer[0] = RGBA_Color( ARGB_Alpha(pixelPointer[0]), colorTone * color.r / 255, colortone * color.g / 255, colortone * color.b / 255)
-		endif
-		'move next pixel
-		pixelPointer:+1
-	Next
-endrem
-	return colorizedPixmap
+	return True
 End Function
 
 
