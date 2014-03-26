@@ -568,34 +568,42 @@ Type TGW_BitmapFont
 		local lineHeight:float	= getHeight("gQ'_")
 		local lines:string[]	= TextToMultiLine(text, w, h, lineHeight) ', singleLine)
 
+		local blockHeight:Float = lineHeight * lines.length
+		if lines.length > 1
+			'add the lineHeightModifier for all lines but the first or single one
+			blockHeight :+ lineHeight * lineHeightModifier
+		endif
+
 		'move along y according alignment
 		if alignment
 			'empty space = height - (..)
 			'so alignTop = add 0 of that space, alignBottom = add 100% of that space
 			if alignment.GetY() <> ALIGN_TOP
-				y :+ alignment.GetY() * (h - (lines.length-1)*lineHeight)
+				y :+ alignment.GetY() * h
+				y :- blockHeight
 			endif
 		endif
 
-		'actually draw
-		If doDraw
-			for local i:int = 0 to lines.length-1
+		local startY:Float = y
+		For local i:int = 0 to lines.length-1
+			'only draw if wanted
+			If doDraw
 				if alignment and alignment.GetX() <> ALIGN_LEFT
 					alignedX = x + alignment.GetX() * (w - getWidth(lines[i]))
 				else
 					alignedX = x
 				endif
+			Endif
+			local p:TPoint = drawStyled( lines[i], alignedX, y, color, style, doDraw,special)
 
-				drawStyled( lines[i], alignedX, y + i*lineHeight, color, style, 1,special)
+			y :+ Max(lineHeight, p.y)
+			'add extra spacing _between_ lines
+			If lines.length > 1 and i < lines.length-1
+				y :+ lineHeight * lineHeightModifier
+			Endif
+		Next
 
-				'add extra spacing _between_ lines
-				if lines.length > 1 and i < lines.length-1
-					y:+ ceil( lineHeight* lineHeightModifier )
-				endif
-			Next
-		endif
-
-		return TPoint.Create(w, lines.length*lineHeight)
+		return TPoint.Create(w, y - startY)
 	End Method
 
 
@@ -831,11 +839,12 @@ Type TGW_BitmapFont
 				charBefore = int(char)
 			Next
 			width = max(width, lineWidth)
-			height:+lineHeight
 			'add extra spacing _between_ lines
 			'not done when only 1 line available or on last line
 			if currentLine < textLines.length
-				height:+ ceil( lineHeight* font.lineHeightModifier )
+				height :+ ceil( lineHeight * (1+font.lineHeightModifier) )
+			else
+				height :+ lineHeight
 			endif
 		Next
 

@@ -895,12 +895,15 @@ Type TTooltip Extends TRenderable
 	Field _startFadingTime:Float= 0.20		'at which lifetime fading starts
 	Field title:String
 	Field content:String
+	Field minContentWidth:int	= 120
+	'left (2) and right (4) is for all elements
+	'top (1) and bottom (3) padding for content
+	Field padding:TRectangle	= TRectangle.Create(3,5,4,7)
 	Field image:TImage			= Null
 	Field dirtyImage:Int		= 1
 	Field tooltipImage:Int		=-1
 	Field titleBGtype:Int		= 0
 	Field enabled:Int			= 0
-	Field _oldTitle:String
 
 	Global tooltipHeader:TGW_Sprite
 	Global tooltipIcons:TGW_Sprite
@@ -920,15 +923,35 @@ Type TTooltip Extends TRenderable
 	End Function
 
 
-	Method Initialize:Int(title:String="", content:String="unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
+	Method Initialize:Int(title:String="", content:String="unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=50)
 		Self.title				= title
-		Self._oldTitle			= title
 		Self.content			= content
 		Self.area				= TRectangle.Create(x, y, w, h)
 		Self.tooltipimage		= -1
+		Self.lifetime			= lifetime
 		Self._startLifetime		= Float(lifetime) / 1000.0 	'in seconds
 		Self._startFadingTime	= Min(_startLifetime/2.0, 0.1)
 		Self.Hover()
+	End Method
+
+
+	'sort tooltips according lifetime (dying ones behind)
+	Method Compare:Int(other:Object)
+		Local otherTip:TTooltip = TTooltip(other)
+		'no weighting
+		If Not otherTip then Return 0
+		If otherTip = Self then Return 0
+		If otherTip.GetLifePercentage() = GetLifePercentage() Then Return 0
+		'below me
+		If otherTip.GetLifePercentage() < GetLifePercentage() Then Return 1
+		'on top of me
+		Return -1
+	End Method
+
+
+	'returns (in percents) how many lifetime is left
+	Method GetLifePercentage:float()
+		return Min(1.0, Max(0.0, lifetime / _startLifetime))
 	End Method
 
 
@@ -972,13 +995,16 @@ Type TTooltip Extends TRenderable
 		'auto width calculation
 		If area.GetW() <= 0
 			Local result:Int = 0
+			local paddingLeftRight:int = 6
 			'width from title + content + spacing
-			result = UseFontBold.getWidth(title)+6
+			result = UseFontBold.getWidth(title)
 			'add icon to width
 			If tooltipimage >=0 Then result:+ ToolTipIcons.framew + 2
 			'compare with content text width
-			result = Max(GetContentWidth() + 6, result)
-			result :+ 4 'extra spacing
+			result = Max(GetContentWidth(), result)
+			'add padding
+			result:+ padding.GetLeft() + padding.GetRight()
+
 			Return result
 		EndIf
 	End Method
@@ -995,7 +1021,7 @@ Type TTooltip Extends TRenderable
 			Local result:Int = 0
 			'height from title + content + spacing
 			result:+ getTitleHeight()
-			result:+ getContentHeight()
+			result:+ getContentHeight(GetWidth())
 			Return result
 		EndIf
 	End Method
@@ -1009,17 +1035,49 @@ Type TTooltip Extends TRenderable
 	End Method
 
 
-	Method getContentWidth:Int()
-		'only add a line if there is text
-		If Len(content)>1 Then Return UseFont.getWidth(content)
-		Return 0
+	Method SetTitle:Int(value:String)
+		if title = value then return FALSE
+
+		title = value
+		'force redraw/cache reset
+		dirtyImage = True
 	End Method
 
 
-	Method getContentHeight:Int()
+	Method SetContent:Int(value:String)
+		if content = value then return FALSE
+
+		content = value
+		'force redraw/cache reset
+		dirtyImage = True
+	End Method
+
+
+	Method getContentWidth:Int()
 		'only add a line if there is text
-		If Len(content)>1 Then Return UseFont.getHeight(content) + 8
-		Return 0
+		if content <> "" then return minContentWidth
+		return 0
+
+		'If Len(content)>1 Then Return UseFont.getWidth(content)
+		'Return 0
+	End Method
+
+
+	Method GetContentInnerWidth:Int()
+		return getContentWidth() - padding.GetLeft() - padding.GetRight()
+	End Method
+
+
+	Method GetContentHeight:Int(width:int)
+		local result:int = 0
+		local maxTextWidth:int = width - padding.GetLeft() - padding.GetRight()
+
+		'only add a line if there is text
+		If content <> ""
+			result :+ UseFont.getBlockHeight(content, maxTextWidth, -1)
+			result :+ padding.GetTop() + padding.GetBottom()
+		endif
+		Return result
 	End Method
 
 
@@ -1057,15 +1115,16 @@ Type TTooltip Extends TRenderable
 		EndIf
 '		SetAlpha getFadeAmount()
 		'caption
-		useFontBold.drawStyled(title, x+5+displaceX, y+height/2 - useFontBold.getHeight("ABC")/2 +2 , TColor.Create(50,50,50), 2, 1, 0.1)
+		useFontBold.drawStyled(title, x + padding.GetLeft() + displaceX, y + (height - useFontBold.getMaxCharHeight())/2 , TColor.Create(50,50,50), 2, 1, 0.1)
 '		SetAlpha 1.0
 	End Method
 
 
 	Method DrawContent:Int(x:Int, y:Int, width:Int, height:Int)
+		If content = "" then return FALSE
+		local maxTextWidth:int = width - padding.GetLeft() - padding.GetRight()
 		SetColor 90,90,90
-		'content
-		If content <> "" Then Usefont.draw(content, area.GetX()+5,area.GetY()+TooltipHeader.area.GetH() + 7)
+		Usefont.drawBlock(content, x + padding.GetLeft(), y + padding.GetTop(), maxTextWidth, -1)
 		SetColor 255, 255, 255
 	End Method
 
@@ -1073,47 +1132,49 @@ Type TTooltip Extends TRenderable
 	Method Draw:Int(tweenValue:Float=1.0)
 		If Not enabled Then Return 0
 
-		'reset cache if title changes
-		'TODO RONNY: make obsolete and take care in correct position
-		If title <> _oldTitle Then DirtyImage = True
-
+		local col:TColor = TColor.Create().Get()
 
 		If DirtyImage Or Not Image Or Not imgCacheEnabled
-			Local boxWidth:Int	= GetWidth()
+			local boxWidth:int = GetWidth()
 			Local boxHeight:Int	= GetHeight()
+			Local boxInnerWidth:Int	= boxWidth - 2
+			Local boxInnerHeight:Int = boxHeight - 2
+			Local innerX:int = area.GetX() + 1
+			Local innerY:int = area.GetY() + 1
 			Local captionHeight:Int = GetTitleHeight()
 			DrawShadow(boxWidth, boxHeight)
 
-			SetAlpha getFadeAmount()
+			SetAlpha col.A * getFadeAmount()
 			SetColor 0,0,0
 			'border
 			DrawRect(area.GetX(), area.GetY(), boxWidth, boxHeight)
 			'bright background
 			SetColor 255,255,255
-			DrawRect(area.GetX()+1, area.GetY()+1, boxWidth-2, boxHeight-2)
+			DrawRect(innerX, innerY, boxInnerWidth, boxInnerHeight)
 
 			'draw header including caption and header background
-			DrawHeader(area.GetX()+1, area.GetY()+1, boxWidth-2, captionHeight)
+			DrawHeader(innerX, innerY, boxInnerWidth, captionHeight)
 
 			'draw content - do not use contentHeight here..
 			'if boxHeight was defined manually we just give it the left space
 			'as a caption has to get drawn in all cases...
-			DrawContent(area.GetX()+1, area.GetY()+1 + captionHeight, boxWidth-2, boxHeight-captionHeight-2)
-
-
+			DrawContent(innerX, innerY + captionHeight, boxInnerWidth, boxInnerHeight - captionHeight)
+rem
 			If imgCacheEnabled 'And lifetime = startlifetime
 				Image = TImage.Create(boxWidth, boxHeight, 1, 0, 255, 0, 255)
 				image.pixmaps[0] = VirtualGrabPixmap(Self.area.GetX(), Self.area.GetY(), boxWidth, boxHeight)
 				DirtyImage = False
 			EndIf
-			_oldTitle = title
+endrem
 		Else 'not dirty
 			DrawShadow(ImageWidth(image),ImageHeight(image))
-			SetAlpha getFadeAmount()
+			SetAlpha col.a * getFadeAmount()
 			SetColor 255,255,255
 			DrawImage(image, area.GetX(), area.GetY())
 			SetAlpha 1.0
 		EndIf
+
+		col.SetRGBA()
 	End Method
 End Type
 
@@ -1571,6 +1632,7 @@ Type TTooltipAudience Extends TTooltip
 	Field showDetails:Int = False
 	Field lineHeight:Int = 0
 	Field lineIconHeight:Int = 0
+	Field originalPos:TPoint
 
 	Function Create:TTooltipAudience(title:String = "", text:String = "unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
 		Local obj:TTooltipAudience = New TTooltipAudience
@@ -1583,14 +1645,17 @@ Type TTooltipAudience Extends TTooltip
 	'override to add lineheight
 	Method Initialize:Int(title:String="", content:String="unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
 		Super.Initialize(title, content, x, y, w, h, lifetime)
-		Self.lineHeight = Self.useFont.GetHeight("Qg") 'Qg - big + underline char
+		Self.lineHeight = Self.useFont.getMaxCharHeight()+1
 		'text line with icon
 		Self.lineIconHeight = 1 + Max(lineHeight, Assets.getSprite("gfx_targetGroup1").area.GetH())
 	End Method
 
 
-	Method SetAudienceResult(audienceResult:TAudienceResult)
+	Method SetAudienceResult:Int(audienceResult:TAudienceResult)
+		if Self.audienceResult = audienceResult then return FALSE
+
 		Self.audienceResult = audienceResult
+		self.dirtyImage = TRUE
 	End Method
 
 
@@ -1608,29 +1673,43 @@ Type TTooltipAudience Extends TTooltip
 		If KeyManager.isDown(KEY_LALT) Or KeyManager.isDown(KEY_RALT)
 			If Not showDetails Then Self.dirtyImage = True
 			showDetails = True
+			'backup position
+			if not originalPos then originalPos = area.position.Copy()
 		Else
 			If showDetails Then Self.dirtyImage = True
 			showDetails = False
+			'restore position
+			if originalPos
+				area.position.SetPos(originalPos)
+				originalPos = null
+			endif
 		EndIf
 
 		Super.Update(deltaTime)
 	End Method
 
 
-	Method GetContentHeight:Int()
-		If showDetails Then Return 3*lineHeight + 9*lineIconHeight
-		'default
-		Return 4*lineHeight
+	Method GetContentHeight:Int(width:int)
+		local result:int = 0
+		If showDetails
+			result:+ 2*lineHeight + 9*lineIconHeight
+		else
+			result:+ 3*lineHeight
+		endif
+
+		result:+ padding.GetTop() + padding.GetBottom()
+
+		return result
 	End Method
 
 
 	'override default
 	Method DrawContent:Int(x:Int, y:Int, w:Int, h:Int)
 		'give text padding
-		x :+ 5
-		y :+ 7
-		w :- 2*5
-		h :- 2*7
+		x :+ padding.GetLeft()
+		y :+ padding.GetTop()
+		w :- (padding.GetLeft() + padding.GetRight())
+		h :- (padding.GetTop() + padding.GetBottom())
 
 		If Not Self.audienceResult
 			Usefont.draw("Audience data missing", x, y)
@@ -1717,6 +1796,7 @@ Type TInterface
 	Field MoneyToolTip:TTooltip
 	Field BettyToolTip:TTooltip
 	Field CurrentTimeToolTip:TTooltip
+	Field tooltips:TList = CreateList()
 	Field noiseSprite:TGW_Sprite
 	Field noiseAlpha:Float	= 0.95
 	Field noiseDisplace:Trectangle = TRectangle.Create(0,0,0,0)
@@ -1731,11 +1811,21 @@ Type TInterface
 		Local Interface:TInterface = New TInterface
 		Interface.CurrentProgramme			= Assets.getSprite("gfx_interface_tv_programme_none")
 		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
-		'Interface.CurrentAudienceToolTip	= TTooltip.Create("", "", 355, 415)
-		Interface.CurrentAudienceToolTip	= TTooltipAudience.Create("", "", 500, 415)
-		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 355, 495)
-		Interface.MoneyToolTip				= TTooltip.Create("", "", 355, 365)
-		Interface.BettyToolTip				= TTooltip.Create("", "", 355, 465)
+		Interface.CurrentProgrammeToolTip.minContentWidth = 220
+		Interface.CurrentAudienceToolTip	= TTooltipAudience.Create("", "", 490, 440)
+		Interface.CurrentAudienceToolTip.minContentWidth = 200
+		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 490, 535)
+		Interface.MoneyToolTip				= TTooltip.Create("", "", 490, 408)
+		Interface.BettyToolTip				= TTooltip.Create("", "", 490, 485)
+
+		'collect them in one list (to sort them correctly)
+		Interface.tooltips.AddLast(Interface.CurrentProgrammeToolTip)
+		Interface.tooltips.AddLast(Interface.CurrentAudienceToolTip)
+		Interface.tooltips.AddLast(Interface.CurrentTimeToolTip)
+		Interface.tooltips.AddLast(Interface.MoneyTooltip)
+		Interface.tooltips.AddLast(Interface.BettyToolTip)
+
+
 		Interface.noiseSprite				= Assets.getSprite("gfx_interface_tv_noise")
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
@@ -1801,11 +1891,10 @@ Type TInterface
 			CurrentProgrammeText 					= getLocale("TV_OFF")
 		EndIf 'showchannel <>0
 
-		If CurrentProgrammeToolTip.enabled Then CurrentProgrammeToolTip.Update(deltaTime)
-		If CurrentAudienceToolTip.enabled Then CurrentAudienceToolTip.Update(deltaTime)
-		If CurrentTimeToolTip.enabled Then CurrentTimeToolTip.Update(deltaTime)
-		If BettyToolTip.enabled Then BettyToolTip.Update(deltaTime)
-		If MoneyToolTip.enabled Then MoneyToolTip.Update(deltaTime)
+		For local tip:TTooltip = eachin tooltips
+			If tip.enabled Then tip.Update(deltaTime)
+		Next
+		tooltips.Sort() 'sort according lifetime
 
 		'channel selection (tvscreen on interface)
 		If MOUSEMANAGER.IsHit(1)
@@ -1826,52 +1915,52 @@ Type TInterface
 		EndIf
 
 		If TFunctions.MouseIn(20,385,280,200)
-			CurrentProgrammeToolTip.title 		= CurrentProgrammeText
+			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
+			local content:String = ""
 			If ShowChannel <> 0
-				CurrentProgrammeToolTip.content	= GetLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+TFunctions.shortenFloat(Game.Players[ShowChannel].GetAudiencePercentage()*100,2)+"%)"
+				content	= GetLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+TFunctions.shortenFloat(Game.Players[ShowChannel].GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
 				If ShowChannel = Game.playerID
 					If Game.getMinute() >= 5 And Game.getMinute() < 55
 						Local obj:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetAdvertisement()
 						If TAdvertisement(obj)
-							CurrentProgrammeToolTip.content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + obj.GetTitle()+" (Mindestz.: " + TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())+")"
+							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + obj.GetTitle()+" (Mindestz.: " + TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())+")"
 						ElseIf TProgramme(obj)
-							CurrentProgrammeToolTip.content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~nTrailer: " + obj.GetTitle()
+							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~nTrailer: " + obj.GetTitle()
 						Else
-							CurrentProgrammeToolTip.content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
+							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
 						EndIf
 					ElseIf Game.getMinute()>=55 Or Game.getMinute()<5
 						Local obj:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetProgramme()
 						If TProgramme(obj)
-							CurrentProgrammeToolTip.content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~n"
+							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~n"
 							If TProgramme(obj) And TProgramme(obj).isSeries()
-								CurrentProgrammeTooltip.content :+ TProgramme(obj).licence.parentLicence.data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+								content :+ TProgramme(obj).licence.parentLicence.data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							Else
-								CurrentProgrammeToolTip.content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							EndIf
 						ElseIf TAdvertisement(obj)
-							CurrentProgrammeToolTip.content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~nDauerwerbesendung: " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~nDauerwerbesendung: " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						Else
-							CurrentProgrammeToolTip.content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+": nicht gesetzt!"
+							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+": nicht gesetzt!"
 						EndIf
 					EndIf
 				EndIf
-
 			Else
-				CurrentProgrammeToolTip.content = getLocale("TV_TURN_IT_ON")
+				content = getLocale("TV_TURN_IT_ON")
 			EndIf
-			CurrentProgrammeToolTip.enabled 	= 1
+
+			CurrentProgrammeToolTip.SetContent(content)
+			CurrentProgrammeToolTip.enabled = 1
 			CurrentProgrammeToolTip.Hover()
-			'force redraw
-			CurrentTimeToolTip.dirtyImage = True
 	    EndIf
 		If TFunctions.MouseIn(355,468,130,30)
 			'Print "DebugInfo: " + TAudienceResult.Curr().ToString()
 			Local player:TPlayer = Game.Players[Game.playerID]
 			Local audienceResult:TAudienceResult = player.audience
 
-			CurrentAudienceToolTip.title 	= GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+TFunctions.shortenFloat(player.GetAudiencePercentage() * 100,2)+"%)"
+			CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+TFunctions.shortenFloat(player.GetAudiencePercentage() * 100,2)+"%)")
 			CurrentAudienceToolTip.SetAudienceResult(audienceResult)
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
@@ -1879,30 +1968,26 @@ Type TInterface
 			CurrentTimeToolTip.dirtyImage = True
 		EndIf
 		If TFunctions.MouseIn(355,533,130,45)
-			CurrentTimeToolTip.title 	= getLocale("GAME_TIME")+": "
-			CurrentTimeToolTip.content 	= Game.getFormattedTime()+" "+getLocale("DAY")+" "+Game.getDayOfYear()+"/"+Game.daysPerYear+" "+Game.getYear()
+			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
+			CurrentTimeToolTip.SetContent(Game.getFormattedTime()+" "+getLocale("DAY")+" "+Game.getDayOfYear()+"/"+Game.daysPerYear+" "+Game.getYear())
 			CurrentTimeToolTip.enabled 	= 1
 			CurrentTimeToolTip.Hover()
-			'force redraw
-			CurrentTimeToolTip.dirtyImage = True
 		EndIf
 		If TFunctions.MouseIn(355,415,130,30)
 			MoneyToolTip.title 		= getLocale("MONEY")
-			MoneyTooltip.content	= "|b|"+getLocale("MONEY")+":|/b| "+Game.GetPlayer().GetMoney() + getLocale("CURRENCY")
-			Moneytooltip.content	:+ "~n"
-			Moneytooltip.content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ Game.GetPlayer().GetCredit() + getLocale("CURRENCY")+"|/color|"
+			local content:String = ""
+			content	= "|b|"+getLocale("MONEY")+":|/b| "+Game.GetPlayer().GetMoney() + getLocale("CURRENCY")
+			content	:+ "~n"
+			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ Game.GetPlayer().GetCredit() + getLocale("CURRENCY")+"|/color|"
+			MoneyTooltip.SetContent(content)
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()
-			'force redraw
-			MoneyToolTip.dirtyImage = True
 		EndIf
 		If TFunctions.MouseIn(355,510,130,15)
-			BettyToolTip.title	 	= getLocale("BETTY_FEELINGS")
-			BettyToolTip.content 	= "0 %"
-			BettyToolTip.enabled 	= 1
+			BettyToolTip.SetTitle(getLocale("BETTY_FEELINGS"))
+			BettyToolTip.SetContent("Derzeit liegt noch keine Liebe in der Luft ;D")
+			BettyToolTip.enabled = 1
 			BettyToolTip.Hover()
-			'force redraw
-			BettyToolTip.dirtyImage = True
 		EndIf
 	End Method
 
@@ -1995,11 +2080,11 @@ Type TInterface
 		SetAlpha 0.9
 		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime()+ " Uhr", 365,541,120,25, TPoint.Create(ALIGN_CENTER), TColor.Create(40,40,40))
 		SetAlpha 1.0
-   		CurrentProgrammeToolTip.Draw()
-	    CurrentAudienceToolTip.Draw()
-   		CurrentTimeToolTip.Draw()
-	    BettyToolTip.Draw()
-   		MoneyToolTip.Draw()
+
+		For local tip:TTooltip = eachin tooltips
+			If tip.enabled Then tip.Draw()
+		Next
+
 	    GUIManager.Draw("InGame")
 
 		TError.DrawErrors()
