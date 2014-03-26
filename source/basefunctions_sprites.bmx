@@ -587,6 +587,11 @@ Type TGW_BitmapFont
 				endif
 
 				drawStyled( lines[i], alignedX, y + i*lineHeight, color, style, 1,special)
+
+				'add extra spacing _between_ lines
+				if lines.length > 1 and i < lines.length-1
+					y:+ ceil( lineHeight* lineHeightModifier )
+				endif
 			Next
 		endif
 
@@ -827,8 +832,11 @@ Type TGW_BitmapFont
 			Next
 			width = max(width, lineWidth)
 			height:+lineHeight
-			'except first line (maybe only one line) - add extra spacing between lines
-			if currentLine > 0 then height:+ ceil( lineHeight* font.lineHeightModifier )
+			'add extra spacing _between_ lines
+			'not done when only 1 line available or on last line
+			if currentLine < textLines.length
+				height:+ ceil( lineHeight* font.lineHeightModifier )
+			endif
 		Next
 
 		'restore color
