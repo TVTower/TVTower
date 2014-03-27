@@ -81,12 +81,14 @@ Type TPopularity
 	Field ChangeLowerBound:Int					'Untergrenze für Wertänderung wenn ChanceToChange eintritt
 	Field ChangeUpperBound:Int					'Obergrenze für Wertänderung wenn ChanceToChange eintritt
 
+	'Field LogFile:TLogFile
 
 	Function Create:TPopularity(contentId:Int, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
 		Local obj:TPopularity = New TPopularity
 		obj.ContentId = contentId
 		obj.SetPopularity(popularity)
 		obj.SetLongTermPopularity(longTermPopularity)
+		'obj.LogFile = TLogFile.Create("Popularity Log", "PopularityLog" + contentId + ".txt")
 		Return obj
 	End Function
 
@@ -94,23 +96,46 @@ Type TPopularity
 	'Die Popularität wird üblicherweise am Ende des Tages aktualisiert, entsprechend des gesammelten Trend-Wertes
 	Method UpdatePopularity()
 		Popularity = Popularity + Trend
-		If Popularity > (LongTermPopularity + SurfeitUpperBoundAdd) Then
-			Surfeit = 1
-			SurfeitCounter = 0
-		Elseif Popularity <= (LongTermPopularity + SurfeitLowerBoundAdd) Then
-			Surfeit = 0
-		Elseif Popularity > (LongTermPopularity + SurfeitCounterUpperBoundAdd) Then
-			SurfeitCounter = SurfeitCounter + 1 'Wird angezählt
-		Else
+		If Popularity > LongTermPopularityUpperBound Then 'Über dem absoluten Maximum
+			'Popularity = RandRange(LongTermPopularityUpperBound - 5, LongTermPopularityUpperBound + 5)
+			If Popularity > LongTermPopularityUpperBound + SurfeitUpperBoundAdd Then
+				StartSurfeit()
+			Elseif Surfeit = 0 Then
+				SurfeitCounter = SurfeitCounter + 1 'Wird angezählt
+			Endif			
+		Elseif Popularity < LongTermPopularityLowerBound Then 'Unter dem absoluten Minimum
+			Popularity = RandRange(LongTermPopularityLowerBound - 5, LongTermPopularityLowerBound + 5)
+			SetLongTermPopularity(LongTermPopularity + RandRange(0, 15))
+		Elseif Popularity > (LongTermPopularity + SurfeitUpperBoundAdd) Then 'Über dem Langzeittrend
+			If Surfeit = 0 Then
+				SurfeitCounter = SurfeitCounter + 1 'Wird angezählt
+			Endif
+		Elseif Popularity <= (LongTermPopularity + SurfeitLowerBoundAdd) Then 'Unter dem Langzeittrend
+			Popularity = Popularity + RandRange(0, 5)
+		Elseif Popularity < (LongTermPopularityUpperBound / 4) Then
 			SurfeitCounter = 0
 		Endif
 
-		If SurfeitCounter > 2 Then
-			Surfeit = 1
-			SurfeitCounter = 0
+		If SurfeitCounter >= SurfeitCounterUpperBoundAdd Then
+			StartSurfeit()
+		Elseif Surfeit = 1 And Popularity <= LongTermPopularity Then
+			EndSurfeit()
 		Endif
+		
+		'LogFile.AddLog(Popularity + ";" + LongTermPopularity + ";" + Trend + ";" + Surfeit + ";" + SurfeitCounter, False)
 	End Method
-
+		
+	Method StartSurfeit()
+		Surfeit = 1
+		SurfeitCounter = 0	
+		SetLongTermPopularity(RandRange(LongTermPopularityLowerBound, 0))
+	End Method
+	
+	Method EndSurfeit()
+		Surfeit = 0
+		SurfeitCounter = 0
+		SetLongTermPopularity(Popularity + RandRange(0, 15))
+	End Method
 
 	'Passt die LongTermPopularity mit einigen Wahrscheinlichkeiten an oder ändert sie komplett
 	Method AdjustTrendDirectionRandomly()
@@ -119,7 +144,7 @@ Type TPopularity
 		ElseIf RandRange(1,100) <= ChanceToChange Then '10%-Chance das der langfristige Trend umschwenkt
 			SetLongTermPopularity(LongTermPopularity + RandRange(ChangeLowerBound, ChangeUpperBound))
 		Elseif RandRange(1,100) <= ChanceToAdjustLongTermPopulartiy Then '25%-Chance das sich die langfristige Popularität etwas dem aktuellen Trend/Popularität anpasst
-			SetLongTermPopularity(LongTermPopularity + ((Popularity-LongTermPopularity)/4) + Trend)
+			SetLongTermPopularity(LongTermPopularity + ((Popularity-LongTermPopularity)/2) + Trend)
 		Endif
 	End Method
 
@@ -136,7 +161,8 @@ Type TPopularity
 			Endif
 
 			local distance:float = (LongTermPopularity - Popularity) / TrendAdjustDivider
-			Trend = Max(TrendLowerBound, Min(TrendUpperBound, Trend + distance + Float(RandRange(TrendRandRangLower, TrendRandRangUpper ))/TrendAdjustDivider))
+			Local random:Float = Float(RandRange(TrendRandRangLower, TrendRandRangUpper ))/TrendAdjustDivider			
+			Trend = Max(TrendLowerBound, Min(TrendUpperBound, Trend + distance + random))
 		Endif
 	End Method
 
@@ -187,15 +213,16 @@ Type TGenrePopularity Extends TPopularity
 		obj.TrendRandRangUpper					= 15
 
 		obj.ChanceToChangeCompletely			= 2
-		obj.ChanceToChange						= 10
+		obj.ChanceToChange						= 15
 		obj.ChanceToAdjustLongTermPopulartiy	= 25
 
-		obj.ChangeLowerBound					= -25
-		obj.ChangeUpperBound					= 25
+		obj.ChangeLowerBound					= -35
+		obj.ChangeUpperBound					= 35
 
 		obj.ContentId = contentId
 		obj.SetPopularity(popularity)
 		obj.SetLongTermPopularity(longTermPopularity)
+		'obj.LogFile = TLogFile.Create("GenrePopularity Log", "GenrePopularityLog" + contentId + ".txt")
 
 		Return obj
 	End Function

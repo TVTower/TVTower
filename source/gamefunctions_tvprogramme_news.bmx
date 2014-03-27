@@ -259,6 +259,9 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	'returns the audienceAttraction for a newsShow (3 news)
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
+		resultAudienceAttr.BroadcastType = 2
+		resultAudienceAttr.Genre = -1
+		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 		resultAudienceAttr.PublicImageMod = New TAudience
 		resultAudienceAttr.TrailerMod = New TAudience
@@ -282,11 +285,11 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		Next
 		Return resultAudienceAttr
 	End Method
-
+	
 	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction)
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		Local genreDefintion:TNewsGenreDefinition = null
-
+			
 		'Local result:TAudienceAttraction = Null
 
 		'Local rawQuality:Float = news.GetQuality()
@@ -296,8 +299,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'result.Quality = rawQuality
 
 		'Return result
-		'Print "NEWWWWWWWWWWWWWWWWWWWWWS!"
-
+		
 		'1 - Qualität des Programms
 		If news Then
 			genreDefintion = Game.BroadcastManager.GetNewsGenreDefinition(news.GetGenre())
@@ -324,23 +326,23 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'6 - Flags
 		result.FlagsMod = null
 
-		result.CalculateBaseAttraction()
+		result.CalculateBaseAttraction()			
 
 		'7 - Audience Flow
 		If lastMovieBlockAttraction <> Null Then
 			result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
 			Local audienceFlowFactor:Float = 0.2 + (result.Quality / 2.5)
-			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor)
-		End If
-
+			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
+		End If			
+		
 		result.CalculateBroadcastAttraction()
-
+		
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		result.QualityOverTimeEffectMod = 0
-
+		
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = 0 'TODO
-
+		
 		'10 - News-Mod
 		'result.NewsShowMod = lastNewsBlockAttraction
 

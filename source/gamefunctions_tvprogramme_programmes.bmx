@@ -394,7 +394,7 @@ Type TProgrammeData {_exposeToLua}
 
 		'no minus quote
 		quality = Max(0, quality)
-
+		
 		Return quality
 	End Method
 
@@ -446,9 +446,22 @@ Type TProgrammeData {_exposeToLua}
 		if total then return self.trailerAired
 		return self.trailerAiredSinceShown
 	End Method
-
+	
 	Method GetTrailerMod:TAudience()
-		Return TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
+		'TODO: Bessere Berechnung
+		Local timesTrailerAired:Int = GetTimesTrailerAired(False)
+		Local trailerMod:Float = 1
+		
+		Select timesTrailerAired
+			Case 0 	trailerMod = 1
+			Case 1 	trailerMod = 1.25
+			Case 2 	trailerMod = 1.40
+			Case 3 	trailerMod = 1.50
+			Case 4 	trailerMod = 1.55
+			Default	trailerMod = 1.6			
+		EndSelect	
+	
+		Return TAudience.CreateAndInit(trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod)
 	End Method
 
 
@@ -1314,7 +1327,7 @@ End Type
 'parent of movies, series and so on
 Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field licence:TProgrammeLicence			{_exposeToLua}
-	Field data:TProgrammeData				{_exposeToLua}
+	Field data:TProgrammeData				{_exposeToLua}	
 
 	Function Create:TProgramme(licence:TProgrammeLicence)
 		Local obj:TProgramme = New TProgramme
@@ -1423,61 +1436,61 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local result:TAudienceAttraction = New TAudienceAttraction
+		result.BroadcastType = 1
 		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
-
-		If block = 1 Then
+		
+		If block = 1 Then											
 			'1 - Qualität des Programms
 			result.Quality = GetQuality()
-
-			'2 - Mod: Genre-Popularität / Trend
+			
+			'2 - Mod: Genre-Popularität / Trend			
 			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
-
+			
 			'3 - Genre <> Zielgruppe
 			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.GetNewInstance()
 			result.GenreTargetGroupMod.SubtractFloat(0.5)
-
+			
 			'4 - Image
 			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods()
 			result.PublicImageMod.SubtractFloat(1)
-
+			
 			'5 - Trailer
 			result.TrailerMod = data.GetTrailerMod()
 			result.TrailerMod.SubtractFloat(1)
-
+				
 			'6 - Flags
 			result.FlagsMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
 			result.FlagsMod.SubtractFloat(1)
-
-			result.CalculateBaseAttraction()
-
+			
+			result.CalculateBaseAttraction()			
+			
 			'7 - Audience Flow
-			TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 1", LOG_DEV)
+			'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 1", LOG_DEV)
 			If lastMovieBlockAttraction Then
-				TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 2", LOG_DEV)
+				'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 2", LOG_DEV)
 				result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
-				TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Faktor nachbessern!!!!!!!", LOG_DEV)
-				result.AudienceFlowBonus.MultiplyFactor(0.2)
-				TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 3: " + result.AudienceFlowBonus.ToString(), LOG_DEV)
-			End If
-
+				result.AudienceFlowBonus.MultiplyFactor(0.2) 
+				'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 3: " + result.AudienceFlowBonus.ToString(), LOG_DEV)
+			End If			
+			
 			result.CalculateBroadcastAttraction()
 		Else
 			result.CopyBroadcastAttractionFrom(lastMovieBlockAttraction)
 		Endif
-
+		
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Quality X: " + result.Quality, LOG_DEV)
-
+		
 		result.QualityOverTimeEffectMod = ((result.Quality - 0.5)/2.5) * (block - 1)
-
+		
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
-
+		
 		'10 - News-Mod
-		'result.NewsShowMod = lastNewsBlockAttraction
+		result.NewsShowMod = lastNewsBlockAttraction.Quality / 3
 
 		result.CalculateBlockAttraction()
-
+		
 		Return result
 	End Method
 

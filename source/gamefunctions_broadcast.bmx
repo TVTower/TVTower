@@ -274,7 +274,8 @@ Type TBroadcast
 
 	'Sendeausfall
 	Method CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)		
-		Local attraction:TAudienceAttraction = new TAudienceAttraction		
+		Local attraction:TAudienceAttraction = new TAudienceAttraction
+		attraction.BroadcastType = 0		
 		If lastMovieAttraction Then
 			attraction.Malfunction = lastMovieAttraction.Malfunction
 			attraction.AudienceFlowBonus = lastMovieAttraction.GetNewInstance()
@@ -932,6 +933,7 @@ End Type
 endrem
 
 Type TAudienceAttraction Extends TAudience
+	Field BroadcastType:Int '-1 = Sendeausfall; 1 = Film; 2 = News
 	Field Quality:Float				'0 - 100
 	Field GenrePopularityMod:Float	'
 	Field GenreTargetGroupMod:TAudience

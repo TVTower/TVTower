@@ -64,8 +64,14 @@
 
 		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
-		If (attraction.BlockAttraction <> Null) Then
-			genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
+		If attraction.BroadcastType = 1 Then			
+			If (attraction.BlockAttraction <> Null) Then
+				genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
+			Endif
+		ElseIf attraction.BroadcastType = 2 Then
+			If (attraction.BlockAttraction <> Null) Then
+				genre = "3er-Genre-Mix"
+			Endif		
 		Endif
 
 		Local offset:Int = 20
@@ -85,9 +91,9 @@
 		'Local genrePopularityQuality:string = TFunctions.shortenFloat(attraction.GenrePopularityQuality * 100,2) + "%"
 		'font.Draw(genrePopularityMod, 160, offset+130, TColor.clWhite)
 		'font.drawBlock(genrePopularityQuality, 200, offset+130, 65, 25, TPoint.Create(ALIGN_RIGHT), TColor.clRed)
-		If attraction.GenrePopularityMod Then
+		'If attraction.GenrePopularityMod Then
 			DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.GenrePopularityMod), 200, offset+130, true, true);
-		Endif			
+		'Endif			
 
 		font.Draw("3. Genre <> Zielgruppe", 25, offset+150, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)
