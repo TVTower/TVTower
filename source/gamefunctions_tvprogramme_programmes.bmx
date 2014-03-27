@@ -1437,7 +1437,8 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.BroadcastType = 1
-		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
+		result.Genre = licence.GetGenre()
+		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(result.Genre)
 		
 		If block = 1 Then											
 			'1 - Qualität des Programms

@@ -70,7 +70,7 @@
 			Endif
 		ElseIf attraction.BroadcastType = 2 Then
 			If (attraction.BlockAttraction <> Null) Then
-				genre = "3er-Genre-Mix"
+				genre = "News-Genre-Mix"
 			Endif		
 		Endif
 
