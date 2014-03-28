@@ -1504,12 +1504,20 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 		local sourceH:int = _pix.height - MARKER_WIDTH
 		local result:TRectangle = TRectangle.Create(0,0,0,0)
 		local markerRow:int=0, markerCol:int=0, skipLines:int=0
+
 		'content is defined at the last pixmap row/col
 		if mode = 1
-			markerCol = sourceW
-			markerRow = sourceH
+			markerCol = sourceH
+			markerRow = sourceW
 			skipLines = 1
 		endif
+
+		'  °= L ====== R = °			ROW ROW ROW ROW
+		'  T               T		COL
+		'  |               |		COL
+		'  B               B		COL
+		'  °= L ====== R = °		COL
+
 
 		'find left border: from 0 to first non-transparent pixel in row 0
 		For Local i:Int = skipLines To sourceW-1
