@@ -1491,6 +1491,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		result.NewsShowMod = lastNewsBlockAttraction.Quality / 3
 
 		result.CalculateBlockAttraction()
+		result.CalculatePublicImageAttraction()
 		
 		Return result
 	End Method

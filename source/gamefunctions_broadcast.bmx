@@ -73,7 +73,7 @@ Type TBroadcastManager
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0)
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
 		self.lastNewsShowBroadcast = currentNewsShowBroadcast
-		currentProgammeBroadcast = BroadcastCommon(hour, GetPlayersProgrammes(day, hour), recompute)
+		currentProgammeBroadcast = BroadcastCommon(hour, GetPlayersProgrammes(day, hour), recompute, TBroadcastMaterial.TYPE_PROGRAMME)
 	End Method
 
 
@@ -81,7 +81,7 @@ Type TBroadcastManager
 	Method BroadcastNewsShow(day:Int=-1, hour:Int, recompute:Int = 0)
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
 		self.lastNewsShowBroadcast = currentNewsShowBroadcast		
-		currentNewsShowBroadcast = BroadcastCommon(hour, GetPlayersNewsShow(day, hour), recompute)
+		currentNewsShowBroadcast = BroadcastCommon(hour, GetPlayersNewsShow(day, hour), recompute, TBroadcastMaterial.TYPE_NEWSSHOW)
 	End Method
 
 
@@ -117,7 +117,7 @@ Type TBroadcastManager
 	'===== Hilfsmethoden =====
 
 	'Der Ablauf des Broadcasts, verallgemeinert für Programme und News.
-	Method BroadcastCommon:TBroadcast(hour:Int, broadcasts:TBroadcastMaterial[],recompute:Int )
+	Method BroadcastCommon:TBroadcast(hour:Int, broadcasts:TBroadcastMaterial[], recompute:Int, broadcastType:Int )
 		Local bc:TBroadcast = New TBroadcast
 		bc.Hour = hour
 		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
@@ -126,11 +126,13 @@ Type TBroadcastManager
 
 		'set audience for this broadcast
 		For Local i:Int = 1 To 4
-			Game.GetPlayer(i).audience = bc.AudienceResults[i]
+			Local audienceResult:TAudienceResult = bc.AudienceResults[i]
+			audienceResult.AudienceAttraction.SetPlayerId(i)
+			Game.GetPlayer(i).audience = audienceResult
 		Next
 
 		CheckTopAudience(bc)
-		ChangePublicImage(bc)
+		ChangePublicImage(bc, broadcastType)
 		'store current broadcast
 		currentBroadcast = bc
 		Return bc
@@ -167,50 +169,56 @@ Type TBroadcastManager
 		Next
 	End Method
 	
-	Method ChangePublicImage(bc:TBroadcast)
-	rem
-		Local attrList:TList = CreateList()
-		For Local i:Int = 1 To 4
-			attrList.AddLast(bc.AudienceResults[i].AudienceAttraction)
-		Next
-				
-		PublicImage
-		
-		Local childTop:TList = attrList.Copy()
-		childTop.sort(True, TAudience.ChildrenSort)
-		
-		Local teenagersTop:TList = attrList.Copy()
-		teenagersTop.sort(True, TAudience.TeenagersSort)
-		
-		Local houseWifesTop:TList = attrList.Copy()
-		houseWifesTop.sort(True, TAudience.HouseWifesSort)
-		
-		Local employeesTop:TList = attrList.Copy()
-		employeesTop.sort(True, TAudience.EmployeesSort)
-		
-		Local unemployedTop:TList = attrList.Copy()
-		unemployedTop.sort(True, TAudience.UnemployedSort)
-		
-		Local managerTop:TList = attrList.Copy()
-		managerTop.sort(True, TAudience.ManagerSort)
-		
-		Local pensionersList:TList = attrList.Copy()
-		pensionersList.sort(True, TAudience.PensionersSort)
-		
-		Local womenTop:TList = attrList.Copy()
-		womenTop.sort(True, TAudience.WomenSort)
-		
-		Local menTop:TList = attrList.Copy()
-		menTop.sort(True, TAudience.MenSort)
-endrem
+	
+	Method ChangePublicImage(bc:TBroadcast, broadcastType:Int)
+		Local modification:TAudience = TBroadcast.GetPotentialAudienceForHour(TAudience.CreateAndInitValue(1))
+	
+		'If (broadcastType = 0) Then 'Movies
+			Local map:TMap = CreateMap()	
+			
+			Local attrList:TList = CreateList()
+			For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
+				map.Insert(string.FromInt(i), TAudience.CreateAndInitValue(0))
+				attrList.AddLast(bc.AudienceResults[i].AudienceAttraction.PublicImageAttraction)
+			Next			
+			
+			ChangePublicImageForTargetGroup(map, 0, attrList, TAudience.ChildrenSort)
+			ChangePublicImageForTargetGroup(map, 1, attrList, TAudience.TeenagersSort)
+			ChangePublicImageForTargetGroup(map, 2, attrList, TAudience.HouseWifesSort)
+			ChangePublicImageForTargetGroup(map, 3, attrList, TAudience.EmployeesSort)
+			ChangePublicImageForTargetGroup(map, 4, attrList, TAudience.UnemployedSort)
+			ChangePublicImageForTargetGroup(map, 5, attrList, TAudience.ManagerSort)
+			ChangePublicImageForTargetGroup(map, 6, attrList, TAudience.PensionersSort)
+			ChangePublicImageForTargetGroup(map, 7, attrList, TAudience.WomenSort)
+			ChangePublicImageForTargetGroup(map, 8, attrList, TAudience.MenSort)			
+			
+			For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
+				Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))
+				audience.Multiply(modification)
+				Game.GetPlayer(i).PublicImage.ChangeImage(audience)
+			Next						
+		'Endif
 	End Method
 	
-	Function ChildSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Children)-(s2.Children)
-	End Function	
+	
+	Method ChangePublicImageForTargetGroup(playerAudience:TMap, targetGroup:Int, attrList:TList, compareFunc( o1:Object,o2:Object )=CompareObjects)
+		Local tempList:TList = attrList.Copy()		
+		SortList(tempList,False,compareFunc)
+		
+		If (tempList.Count() = 4) Then
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).PlayerId) )).SetValue(targetGroup, 1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).PlayerId) )).SetValue(targetGroup, 0.5)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).PlayerId) )).SetValue(targetGroup, -0.5)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(3)).PlayerId) )).SetValue(targetGroup, -1)
+		Elseif (tempList.Count() = 3) Then
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).PlayerId) )).SetValue(targetGroup, 1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).PlayerId) )).SetValue(targetGroup, 0)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).PlayerId) )).SetValue(targetGroup, -1)
+		Elseif (tempList.Count() = 2) Then
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).PlayerId) )).SetValue(targetGroup, 1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).PlayerId) )).SetValue(targetGroup, -1)
+		EndIf
+	End Method	
 End Type
 
 
@@ -335,6 +343,7 @@ Type TBroadcast
 		attraction.CalculateBaseAttraction()
 		attraction.CalculateBroadcastAttraction()				
 		attraction.CalculateBlockAttraction()
+		attraction.CalculatePublicImageAttraction()
 		attraction.Malfunction = attraction.Malfunction + 1
 		Return attraction			
 	End Method
@@ -615,6 +624,7 @@ End Type
 'und stellt einige Methoden bereit die Berechnung mit Faktoren und anderen
 'TAudience-Klassen ermöglichen.
 Type TAudience
+	Field PlayerId:Int			'Nur bei Bedarf füllen
 	'job / age group
 	Field Children:Float	= 0	'Kinder
 	Field Teenagers:Float	= 0	'Teenager
@@ -698,7 +708,33 @@ Type TAudience
 		'gender
 		Women		= subgroup0
 		Men			= subgroup1
-	End Method		
+	End Method
+	
+	
+	Method SetValue(targetGroup:Int, newValue:Float)
+		'String.FromInt(targetGroup)
+		Select targetGroup
+			Case 0
+				Children = newValue
+			Case 1
+				Teenagers = newValue
+			Case 2
+				HouseWifes = newValue
+			Case 3
+				Employees = newValue
+			Case 4
+				Unemployed = newValue
+			Case 5
+				Manager = newValue
+			Case 6
+				Pensioners = newValue
+			Case 7
+				Women = newValue
+			Case 8
+				Men = newValue
+		End Select
+	End Method
+	
 
 	Method GetSum:Int()
 		Return Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners
@@ -867,68 +903,68 @@ Type TAudience
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Children)-(s2.Children)
+        Return (s1.Children*1000)-(s2.Children*1000)
 	End Function
 	
 	Function TeenagersSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Teenagers)-(s2.Teenagers)
+        Return (s1.Teenagers*1000)-(s2.Teenagers*1000)
 	End Function
 	
 	Function HouseWifesSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.HouseWifes)-(s2.HouseWifes)
+        Return (s1.HouseWifes*1000)-(s2.HouseWifes*1000)
 	End Function
 	
 	Function EmployeesSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Employees)-(s2.Employees)
+        Return (s1.Employees*1000)-(s2.Employees*1000)
 	End Function
 	
 	Function UnemployedSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Unemployed)-(s2.Unemployed)
+        Return (s1.Unemployed*1000)-(s2.Unemployed*1000)
 	End Function
 	
 	Function ManagerSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Manager)-(s2.Manager)
+        Return (s1.Manager*1000)-(s2.Manager*1000)
 	End Function
 	
 	Function PensionersSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Pensioners)-(s2.Pensioners)
+        Return (s1.Pensioners*1000)-(s2.Pensioners*1000)
 	End Function
 	
 	Function WomenSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Women)-(s2.Women)
+        Return (s1.Women*1000)-(s2.Women*1000)
 	End Function
 	
 	Function MenSort:Int(o1:Object, o2:Object)
 		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
 		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Men)-(s2.Men)
+        Return (s1.Men*1000)-(s2.Men*1000)
 	End Function	
 End Type
 
 
-Type TAudienceAttraction Extends TAudience
+Type TAudienceAttraction Extends TAudience	
 	Field BroadcastType:Int '-1 = Sendeausfall; 1 = Film; 2 = News
 	Field Quality:Float				'0 - 100
 	Field GenrePopularityMod:Float	'
@@ -945,6 +981,7 @@ Type TAudienceAttraction Extends TAudience
 	Field BaseAttraction:TAudience
 	Field BroadcastAttraction:TAudience
 	Field BlockAttraction:TAudience
+	Field PublicImageAttraction:TAudience
 	
 	Field Genre:Int
 	Field Malfunction:Int '1 = Sendeausfall
@@ -954,6 +991,14 @@ Type TAudienceAttraction Extends TAudience
 		result.SetValues(group0, group1, group2, group3, group4, group5, group6, subgroup0, subgroup1)
 		Return result
 	End Function	
+	
+	Method SetPlayerId(playerId:Int)
+		Self.PlayerId = playerId
+		Self.BaseAttraction.PlayerId = playerId
+		Self.BroadcastAttraction.PlayerId = playerId
+		Self.BlockAttraction.PlayerId = playerId
+		Self.PublicImageAttraction.PlayerId = playerId
+	End Method	
 	
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
@@ -971,7 +1016,8 @@ Type TAudienceAttraction Extends TAudience
 		NewsShowMod :+ audienceAttr.NewsShowMod
 		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
 		If BroadcastAttraction Then BroadcastAttraction.Add(audienceAttr.BroadcastAttraction)
-		If BlockAttraction Then BlockAttraction.Add(audienceAttr.BlockAttraction)		
+		If BlockAttraction Then BlockAttraction.Add(audienceAttr.BlockAttraction)
+		If PublicImageAttraction Then PublicImageAttraction.Add(audienceAttr.PublicImageAttraction)
 
 		Return Self
 	End Method
@@ -992,6 +1038,7 @@ Type TAudienceAttraction Extends TAudience
 		If BaseAttraction Then BaseAttraction.MultiplyFactor(factor)
 		If BroadcastAttraction Then BroadcastAttraction.MultiplyFactor(factor)
 		If BlockAttraction Then BlockAttraction.MultiplyFactor(factor)
+		If PublicImageAttraction Then PublicImageAttraction.MultiplyFactor(factor)
 
 		Return Self		
 	End Method
@@ -1014,6 +1061,7 @@ Type TAudienceAttraction Extends TAudience
 					
 		Sum.MultiplyFactor(Quality)	
 		Self.BaseAttraction = Sum.GetNewInstance()
+		Self.BaseAttraction.PlayerId = Self.PlayerId
 		Sum.CopyTo(Self)
 		'TDevHelper.Log("TAudienceAttraction.CalculateBaseAttraction()", "Base-Attraction: " + Sum.ToString(), LOG_DEBUG)
 	End Method
@@ -1026,6 +1074,7 @@ Type TAudienceAttraction Extends TAudience
 		EndIf
 		
 		Self.BroadcastAttraction = Sum.GetNewInstance()
+		Self.BroadcastAttraction.PlayerId = Self.PlayerId
 		Sum.CopyTo(Self)
 		'TDevHelper.Log("TAudienceAttraction.CalculateBroadcastAttraction()", "Broadcast-Attraction: " + Sum.ToString(), LOG_DEBUG)
 	End Method
@@ -1044,11 +1093,40 @@ Type TAudienceAttraction Extends TAudience
 	
 		Sum.Multiply(BroadcastAttraction)
 		Self.BlockAttraction = Sum.GetNewInstance()
+		Self.BlockAttraction.PlayerId = Self.PlayerId
 		Sum.CopyTo(Self)
 		'TDevHelper.Log("TAudienceAttraction.CalculateBlockAttraction()", "Block-Attraction: " + Sum.ToString(), LOG_DEBUG)					
 	End Method
 	
+	Method CalculatePublicImageAttraction()
+		Local Sum:TAudience = new TAudience
+		Sum.AddFloat(GenrePopularityMod)
+		Sum.Add(GenreTargetGroupMod)
+		'Sum.Add(PublicImageMod)
+		Sum.Add(TrailerMod)
+		Sum.Add(FlagsMod)
+		Sum.AddFloat(1)		
+		
+		Sum.MultiplyFactor(Quality)			
+					
+		If AudienceFlowBonus <> Null Then
+			Sum.Add(AudienceFlowBonus)
+		EndIf		
+		
+		Local Sum2:TAudience = new TAudience
+		'Sum2.AddFloat(QualityOverTimeEffectMod)
+		Sum2.AddFloat(GenreTimeMod)
+		'Sum2.AddFloat(NewsShowMod)
+		Sum2.AddFloat(1)
+		
+		Sum2.Multiply(Sum)
+		
+		Self.PublicImageAttraction = Sum2.GetNewInstance()		
+		Self.PublicImageAttraction.PlayerId = Self.PlayerId
+	End Method
+	
 	Method CopyBroadcastAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
+		PlayerId = otherAudienceAttraction.PlayerId
 		Quality = otherAudienceAttraction.Quality 
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
 		GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod
@@ -1059,7 +1137,9 @@ Type TAudienceAttraction Extends TAudience
 		AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
 		
 		BaseAttraction = otherAudienceAttraction.BaseAttraction
+		BlockAttraction = otherAudienceAttraction.BlockAttraction
 		BroadcastAttraction = otherAudienceAttraction.BroadcastAttraction
+		PublicImageAttraction = otherAudienceAttraction.PublicImageAttraction
 		
 		otherAudienceAttraction.CopyTo(Self)
 	End Method	

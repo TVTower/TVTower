@@ -270,6 +270,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		resultAudienceAttr.BaseAttraction = New TAudience
 		resultAudienceAttr.BroadcastAttraction = New TAudience
 		resultAudienceAttr.BlockAttraction = New TAudience
+		resultAudienceAttr.PublicImageAttraction = New TAudience
 
 		Local tempAudienceAttr:TAudienceAttraction = null
 		for local i:int = 0 to 2
@@ -347,6 +348,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'result.NewsShowMod = lastNewsBlockAttraction
 
 		result.CalculateBlockAttraction()
+		result.CalculatePublicImageAttraction()
 
 		Return result
 	End Method
