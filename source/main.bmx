@@ -505,6 +505,7 @@ Type TGame {_exposeToLua="selected"}
 	Global debugMode:Int					= 0						'0=no debug messages; 1=some debugmessages
 	Global debugInfos:Int					= 0
 	Global debugQuoteInfos:Int				= 0
+	Field debugAudienceInfo:TDebugAudienceInfos = new TDebugAudienceInfos
 
 	'===== GAME STATES =====
 	Const STATE_RUNNING:Int					= 0
@@ -2827,7 +2828,7 @@ Type AppEvents
 			EndIf
 		EndIf
 		If Game.DebugQuoteInfos
-			TDebugQuoteInfos.Draw()
+			Game.DebugAudienceInfo.Draw()
 		EndIf
 
 

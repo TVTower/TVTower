@@ -1578,6 +1578,10 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method ShowSheet:int(x:int,y:int,align:int)
 		self.licence.ShowSheet(x,y,align, self.usedAsType)
 	End Method
+	
+	Method GetGenreDefinition:TGenreDefinitionBase()
+		Return Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
+	End Method
 End Type
 
 

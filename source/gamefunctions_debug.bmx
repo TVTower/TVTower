@@ -1,11 +1,14 @@
-﻿Type TDebugQuoteInfos
-	Function Draw()
+﻿Type TDebugAudienceInfos
+	Field currentStatement:TBroadcastFeedbackStatement
+	Field lastCheckedMinute:Int
+
+	Method Draw()
 		SetColor 0,0,0
 		DrawRect(20,10,760,373)
 		SetColor 255, 255, 255
 
 		'Assets.fonts.baseFont.Draw("Bevölkerung", 25, startY)
-
+		
 		Local audienceResult:TAudienceResult = Game.GetPlayer().audience
 
 		Local x:Int = 200
@@ -170,6 +173,33 @@
 			DrawAudiencePercent(attraction.BlockAttraction, 200, offset+350, false, true);
 		Endif		
 		
+		
+		
+		Local currBroadcast2:TBroadcast = Game.BroadcastManager.currentBroadcast
+		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(Game.playerID)
+		
+		Local minute:Int = Game.GetMinute()
+				
+		If ((minute Mod 5) = 0)
+			If Not (self.lastCheckedMinute = minute)
+				self.lastCheckedMinute = minute
+				currentStatement = null
+				'DebugStop
+			End If
+		Endif
+			
+		If Not currentStatement Then
+			currentStatement:TBroadcastFeedbackStatement = feedback.GetNextAudienceStatement()			
+		Endif
+		
+		SetColor 0,0,0
+		DrawRect(520,415,200,30)
+		font.Draw("Statements: " + feedback.FeedbackStatements.Count(), 530, 420, TColor.clRed);		
+		If currentStatement Then
+			font.Draw(currentStatement.ToString(), 530, 430, TColor.clRed);		
+		Endif
+		
+		
 rem		
 		font.Draw("Genre <> Sendezeit", 25, offset+240, TColor.clWhite)
 		Local genreTimeMod:string = TFunctions.shortenFloat(attraction.GenreTimeMod  * 100,2) + "%"
@@ -193,7 +223,7 @@ rem
 		font.Draw("Effektive Attraktivität", 25, offset+325, TColor.clWhite);
 		DrawAudiencePercent(attraction, 200, offset+325)
 endrem
-	End Function
+	End Method
 
 
 	Function DrawAudience(audience:TAudience, x:Int, y:Int, gray:Int = false)

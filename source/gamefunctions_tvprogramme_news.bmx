@@ -386,7 +386,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		'no minus quote
 		Return Max(0, quality)
-	End Method
+	End Method	
 End Type
 
 

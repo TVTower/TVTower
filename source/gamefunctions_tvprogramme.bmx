@@ -155,6 +155,10 @@ Type TBroadcastMaterial	extends TOwnedGameObject {_exposeToLua="selected"}
 	Method ShowSheet:int(x:int,y:int,align:int=0)
 		'
 	End Method
+	
+	Method GetGenreDefinition:TGenreDefinitionBase()
+		Return Null
+	End Method
 End Type
 
 
