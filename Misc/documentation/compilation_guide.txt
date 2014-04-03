@@ -1,20 +1,149 @@
 Compilation Guide
 -----------------
 
-TVTower uses a custom Module for sound: "MaxMod2.mod".
-This module uses the cross platform library "RtAudio"
-which implies on the compilation flag:
-"exceptions -fexceptions"
-This cannot be handled with normal Blitzmax-BMK ("Compiler").
-Same is for configuring it using our sourcecode.
+TVTower is programmed with the language "BlitzMax" (and some C).
+
+BlitzMax is a proprietary and commercial language. While the author
+of BlitzMax, Mark Sibly, declared all of the custom modules as "open
+source" (zlib/libpng-licence), the compiler (bcc[.exe]) still remains
+proprietary. Currently there is a free replacement under development
+(Brucey and myself, Ronny).
+
+If you do not own BlitzMax - you can use the Demo for 30 days.
+The demo is a bit dated, so you have to do some steps "inbetween" to
+make it use more current code.
+
+
+So following steps have to get done:
+- BlitzMax installation
+- MinGW installation
+- Module compilation
+- MaxMod2 compilation
+
+
+========================================================================
+BlitzMax installation:
+========================================================================
+
+a) you do not own it
+--------------------
+	- download the demo:
+	  http://www.blitzmax.com/file/get.php?file=/Products/demos/BlitzMaxDemo137.exe
+
+	- download more up to date modules:
+	  brl.mod:
+	  https://github.com/maxmods/brl.mod/archive/efc1a388b584cde4cbd4bb6f628cc90f1ce176ca.zip
+
+	  pub.mod
+	  https://github.com/maxmods/pub.mod/archive/7c0b71a6ebc47c9470251b279c5780bde9b8a7ea.zip
+
+	- extract that modules into BlitzMaxDemoDir/mod
+	  - BlitzMaxDemoDir/mod/brl.mod (contains appstub.mod etc.)
+	  - BlitzMaxDemoDir/mod/pub.mod (contains directx.mod etc.)
+
+
+b) you own it
+-------------
+	- download the current version and install it (contains already
+	  compiled modules)
+
+========================================================================
+
+
+
+
+========================================================================
+MinGW installation:
+========================================================================
+
+We use a slightly outdated version of MinGW to have error free builds.
+Because we use "MaxMod2" which currently does not work with MinGW 4.7+
+we use 4.6.x .
+
+- Download the MinGW we use:
+  http://sourceforge.net/projects/tdm-gcc/files/TDM-GCC%20Installer/Previous/1.1006.0/tdm-gcc-4.6.1.exe/download
+
+- When running the installer, uncheck "[x] Check for new version" as we
+  want this old version to get installed
+
+- Check if the path was adjusted (command prompt "run..." "cmd")
+  gcc -v
+  should print some texts, if command was not found, adjust your path
+  and append "C:\your\mingwpath\bin".
+  Command prompts have to get closed and opened again to see the change.
+========================================================================
+
+
+
+
+========================================================================
+Module compilation:
+========================================================================
+
+a) Compilation Preparation:
+---------------------------
+
+	- Compilation uses some extra files (Blitzmax\lib and some files in
+	  Blitzmax\bin).
+
+	  Manual method:
+	  --------------
+	  - replace "ar.exe" and "ld.exe" with the ones of MinGW\bin
+	  - replace each file of BlitzMax\lib with the ones in
+	    MinGW\lib
+	    MinGW\lib\gcc\mingw32\%VERSION%
+
+	  Automatic method:
+	  -----------------
+	  - create a new file "mingw.bat", open it in notepad and paste:
+
+------- snip -------
+@echo on
+@set dirMinGW=c:\Tools\MinGW32
+@set minGWVersionString=4.7.1
+@set dirBlitzmax=c:\Tools\BlitzMax
+
+copy %dirMinGW%\bin\ar.exe %dirBlitzmax%\bin /Y
+copy %dirMinGW%\bin\ld.exe %dirBlitzmax%\bin /Y
+
+for /f "delims=" %%i in ('dir %dirBlitzmax%\lib /b') do (
+
+copy "%dirMinGW%\lib\%%i" "%dirBlitzmax%\lib\%%i" /z /y
+copy "%dirMinGW%\lib\gcc\mingw32\%minGWVersionString%\%%i" "%dirBlitzmax%\lib\%%i" /z /y
+)
+------- snip -------
+
+	- adjust "minGWVersionString" and both dir*** accordingly
+	- run the Batchfile - it should copy some files
+
+
+b) Compilation Itself:
+----------------------
+
+	- go to your BlitzMax\bin directory
+	  bmk.exe makemods (this should take a while)
+	  optional
+	  bmk.exe makemods -h (to build threaded compilates of the modules)
+
+========================================================================
+
+
+
+
+========================================================================
+MaxMod2 compilation:
+========================================================================
+
+TVTower uses a custom Module for sound: "MaxMod2.mod". This module uses
+the cross platform library "RtAudio" which implies on the compilation
+flag: "exceptions -fexceptions". This cannot be handled with normal
+Blitzmax-BMK ("Compiler"). Same is for configuring it using our
+sourcecode.
 
 Only way to achieve it is compiling it as a BlitzMax module.
 
-
-MaxMod2 Install Guide
----------------------
-
 a) Extraction:
+--------------
    - extract {PROJECT}/source/external/maxmod2_lite.mod.zip
      to {BLITZMAX_DIRECTORY}/mod
    - result is:
@@ -24,7 +153,9 @@ a) Extraction:
      {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/rtaudio.mod
      {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/wav.mod
 
+
 b) Libraries:
+-------------
    - Windows users have to:
      copy MinGW/lib/libdsound.a to BlitzMax/lib/
 
@@ -32,10 +163,14 @@ b) Libraries:
      dev: apt-get install libasound2-dev
      all: apt-get install libasound2
 
-c) compiling the module
+
+c) Compiling the module:
+------------------------
    - using a command prompt/terminal move to {BLITZMAX_DIRECTORY}/bin
    - Windows users issue command: bmk makemods maxmod2
    - Linux users issue command: ./bmk makemods maxmod2
+========================================================================
 
-Finish.
+
+Pheew... everything should be done now.
 Game client should now compile as usual.
