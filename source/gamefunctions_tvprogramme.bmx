@@ -155,7 +155,7 @@ Type TBroadcastMaterial	extends TOwnedGameObject {_exposeToLua="selected"}
 	Method ShowSheet:int(x:int,y:int,align:int=0)
 		'
 	End Method
-	
+
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return Null
 	End Method
@@ -300,7 +300,6 @@ Function LoadDatabase(filename:String)
 	Local nodeParent:TxmlNode
 	Local nodeChild:TxmlNode
 	Local nodeEpisode:TxmlNode
-	Local listChildren:TList
 	Local loadError:String = ""
 
 	local releaseDayCounter:int = 0
@@ -309,184 +308,153 @@ Function LoadDatabase(filename:String)
 	'===== IMPORT ALL MOVIES =====
 
 	'Print "reading movies from database"
-	nodeParent		= xml.FindRootChild("allmovies")
-	loadError		= "Problems loading movies. Check database.xml"
-	If nodeParent <> Null
-		listChildren = nodeParent.getChildren()
-		If listChildren = Null Then Throw loadError
+	nodeParent = xml.FindRootChild("allmovies")
+	for nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
+		If nodeChild.getName() <> "movie" then continue
 
-		For nodeChild = EachIn listChildren
-			If nodeChild.getName() = "movie"
-				title       = xml.FindValue(nodeChild,"title", "unknown title")
-				description = xml.FindValue(nodeChild,"description", "23")
-				actors      = xml.FindValue(nodeChild,"actors", "")
-				director    = xml.FindValue(nodeChild,"director", "")
-				land        = xml.FindValue(nodeChild,"country", "UNK")
-				year 		= xml.FindValueInt(nodeChild,"year", 1900)
-				Genre 		= xml.FindValueInt(nodeChild,"genre", 0 )
-				duration    = xml.FindValueInt(nodeChild,"blocks", 2)
-				xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
-				price 		= xml.FindValueInt(nodeChild,"price", 0)
-				review 		= xml.FindValueInt(nodeChild,"critics", 0)
-				speed 		= xml.FindValueInt(nodeChild,"speed", 0)
-				Outcome 	= xml.FindValueInt(nodeChild,"outcome", 0)
-				livehour 	= xml.FindValueInt(nodeChild,"time", 0)
-				refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
-				wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
-				If duration < 0 Or duration > 12 Then duration =1
+		title       = xml.FindValue(nodeChild,"title", "unknown title")
+		description = xml.FindValue(nodeChild,"description", "23")
+		actors      = xml.FindValue(nodeChild,"actors", "")
+		director    = xml.FindValue(nodeChild,"director", "")
+		land        = xml.FindValue(nodeChild,"country", "UNK")
+		year 		= xml.FindValueInt(nodeChild,"year", 1900)
+		Genre 		= xml.FindValueInt(nodeChild,"genre", 0 )
+		duration    = xml.FindValueInt(nodeChild,"blocks", 2)
+		xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
+		price 		= xml.FindValueInt(nodeChild,"price", 0)
+		review 		= xml.FindValueInt(nodeChild,"critics", 0)
+		speed 		= xml.FindValueInt(nodeChild,"speed", 0)
+		Outcome 	= xml.FindValueInt(nodeChild,"outcome", 0)
+		livehour 	= xml.FindValueInt(nodeChild,"time", 0)
+		refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
+		wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
+		If duration < 0 Or duration > 12 Then duration =1
 
-				local movieLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-				movieLicence.AddData(TProgrammeData.Create(title,description,actors, director,land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
+		local movieLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
+		movieLicence.AddData(TProgrammeData.Create(title,description,actors, director,land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
 
-				releaseDaycounter:+1
-				'print "film: "+title+ " " + totalmoviescount
-				totalmoviescount :+ 1
-			EndIf
-		Next
-	Else
-		Throw loadError
-	EndIf
+		releaseDaycounter:+1
+		'print "film: "+title+ " " + totalmoviescount
+		totalmoviescount :+ 1
+	Next
 
 
 	'===== IMPORT ALL SERIES INCLUDING EPISODES =====
 
-	nodeParent		= xml.FindRootChild("allseries")
-	'Print "reading series from database"
-	loadError		= "Problems loading series. Check database.xml"
-	If nodeParent = Null Then Throw loadError
-	listChildren = nodeParent.getChildren()
-	If listChildren = Null Then Throw loadError
-	For nodeChild = EachIn listChildren
-		If nodeChild.getName() = "serie"
-			'load series main data - in case episodes miss data
-			title       = xml.FindValue(nodeChild,"title", "unknown title")
-			description = xml.FindValue(nodeChild,"description", "")
-			actors      = xml.FindValue(nodeChild,"actors", "")
-			director    = xml.FindValue(nodeChild,"director", "")
-			land        = xml.FindValue(nodeChild,"country", "UNK")
-			year 		= xml.FindValueInt(nodeChild,"year", 1900)
-			Genre 		= xml.FindValueInt(nodeChild,"genre", 0)
-			duration    = xml.FindValueInt(nodeChild,"blocks", 2)
-			xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
-			price 		= xml.FindValueInt(nodeChild,"price", -1)
-			review 		= xml.FindValueInt(nodeChild,"critics", -1)
-			speed 		= xml.FindValueInt(nodeChild,"speed", -1)
-			Outcome 	= xml.FindValueInt(nodeChild,"outcome", -1)
-			livehour 	= xml.FindValueInt(nodeChild,"time", -1)
-			refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
-			wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
-			If duration < 0 Or duration > 12 Then duration =1
+	nodeParent = xml.FindRootChild("allseries")
+	For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
+		If nodeChild.getName() <> "serie" then continue
 
-			'create a licence for that series - with title and series description
-			local seriesLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-			'add the "overview"-data of the series
-			seriesLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
+		'load series main data - in case episodes miss data
+		title       = xml.FindValue(nodeChild,"title", "unknown title")
+		description = xml.FindValue(nodeChild,"description", "")
+		actors      = xml.FindValue(nodeChild,"actors", "")
+		director    = xml.FindValue(nodeChild,"director", "")
+		land        = xml.FindValue(nodeChild,"country", "UNK")
+		year 		= xml.FindValueInt(nodeChild,"year", 1900)
+		Genre 		= xml.FindValueInt(nodeChild,"genre", 0)
+		duration    = xml.FindValueInt(nodeChild,"blocks", 2)
+		xrated 		= xml.FindValueInt(nodeChild,"xrated", 0)
+		price 		= xml.FindValueInt(nodeChild,"price", -1)
+		review 		= xml.FindValueInt(nodeChild,"critics", -1)
+		speed 		= xml.FindValueInt(nodeChild,"speed", -1)
+		Outcome 	= xml.FindValueInt(nodeChild,"outcome", -1)
+		livehour 	= xml.FindValueInt(nodeChild,"time", -1)
+		refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", 1.0)
+		wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
+		If duration < 0 Or duration > 12 Then duration =1
 
-			releaseDaycounter:+1
-			seriescount :+ 1
+		'create a licence for that series - with title and series description
+		local seriesLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
+		'add the "overview"-data of the series
+		seriesLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
 
-			'load episodes
-			Local EpisodeNum:Int = 0
-			Local listEpisodes:TList = nodeChild.getChildren()
-			If listEpisodes <> Null And listEpisodes.count() > 0
-				For nodeEpisode = EachIn listEpisodes
-					If nodeEpisode.getName() = "episode"
-						EpisodeNum	= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
-						title      	= xml.FindValue(nodeEpisode,"title", title)
-						description = xml.FindValue(nodeEpisode,"description", description)
-						actors      = xml.FindValue(nodeEpisode,"actors", actors)
-						director    = xml.FindValue(nodeEpisode,"director", director)
-						land        = xml.FindValue(nodeEpisode,"country", land)
-						year 		= xml.FindValueInt(nodeEpisode,"year", year)
-						Genre 		= xml.FindValueInt(nodeEpisode,"genre", Genre)
-						duration    = xml.FindValueInt(nodeEpisode,"blocks", duration)
-						xrated 		= xml.FindValueInt(nodeEpisode,"xrated", xrated)
-						price 		= xml.FindValueInt(nodeEpisode,"price", price)
-						review 		= xml.FindValueInt(nodeEpisode,"critics", review)
-						speed 		= xml.FindValueInt(nodeEpisode,"speed", speed)
-						Outcome 	= xml.FindValueInt(nodeEpisode,"outcome", Outcome)
-						livehour	= xml.FindValueInt(nodeEpisode,"time", livehour)
-						refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", refreshModifier)
-						wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", wearoffModifier)
+		releaseDaycounter:+1
+		seriescount :+ 1
 
-						local episodeLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-						episodeLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
-						'add that episode to the series licence
-						seriesLicence.AddSubLicence(episodeLicence)
-					EndIf
-				Next
+		'load episodes
+		Local EpisodeNum:Int = 0
+		For nodeEpisode = EachIn TXmlHelper.GetNodeChildElements(nodeChild)
+			If nodeEpisode.getName() = "episode"
+				EpisodeNum	= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
+				title      	= xml.FindValue(nodeEpisode,"title", title)
+				description = xml.FindValue(nodeEpisode,"description", description)
+				actors      = xml.FindValue(nodeEpisode,"actors", actors)
+				director    = xml.FindValue(nodeEpisode,"director", director)
+				land        = xml.FindValue(nodeEpisode,"country", land)
+				year 		= xml.FindValueInt(nodeEpisode,"year", year)
+				Genre 		= xml.FindValueInt(nodeEpisode,"genre", Genre)
+				duration    = xml.FindValueInt(nodeEpisode,"blocks", duration)
+				xrated 		= xml.FindValueInt(nodeEpisode,"xrated", xrated)
+				price 		= xml.FindValueInt(nodeEpisode,"price", price)
+				review 		= xml.FindValueInt(nodeEpisode,"critics", review)
+				speed 		= xml.FindValueInt(nodeEpisode,"speed", speed)
+				Outcome 	= xml.FindValueInt(nodeEpisode,"outcome", Outcome)
+				livehour	= xml.FindValueInt(nodeEpisode,"time", livehour)
+				refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", refreshModifier)
+				wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", wearoffModifier)
+
+				local episodeLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
+				episodeLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
+				'add that episode to the series licence
+				seriesLicence.AddSubLicence(episodeLicence)
 			EndIf
-		EndIf
+		Next
 	Next
 
 
 	'===== IMPORT ALL ADVERTISEMENTS / CONTRACTS =====
 
-	nodeParent		= xml.FindRootChild("allads")
-	'Print "reading ads from database"
-	loadError		= "Problems loading ads. Check database.xml"
-	If nodeParent = Null Then Throw loadError
+	nodeParent = xml.FindRootChild("allads")
+	For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
+		If nodeChild.getName() <> "ad" then continue
 
-	listChildren = nodeParent.getChildren()
-	If listChildren = Null Then Throw loadError
-	For nodeChild = EachIn listChildren
-		If nodeChild.getName() = "ad"
-			title       = xml.FindValue(nodeChild,"title", "unknown title")
-			description = xml.FindValue(nodeChild,"description", "")
-			targetgroup = xml.FindValueInt(nodeChild,"targetgroup", 0)
-			spotcount	= xml.FindValueInt(nodeChild,"repetitions", 1)
-			minaudience	= xml.FindValueInt(nodeChild,"minaudience", 0)
-			minimage	= xml.FindValueInt(nodeChild,"minimage", 0)
-			fixedPrice	= xml.FindValueInt(nodeChild,"fixedprice", 0)
-			profit	    = xml.FindValueInt(nodeChild,"profit", 0)
-			penalty		= xml.FindValueInt(nodeChild,"penalty", 0)
-			daystofinish= xml.FindValueInt(nodeChild,"duration", 1)
+		title       = xml.FindValue(nodeChild,"title", "unknown title")
+		description = xml.FindValue(nodeChild,"description", "")
+		targetgroup = xml.FindValueInt(nodeChild,"targetgroup", 0)
+		spotcount	= xml.FindValueInt(nodeChild,"repetitions", 1)
+		minaudience	= xml.FindValueInt(nodeChild,"minaudience", 0)
+		minimage	= xml.FindValueInt(nodeChild,"minimage", 0)
+		fixedPrice	= xml.FindValueInt(nodeChild,"fixedprice", 0)
+		profit	    = xml.FindValueInt(nodeChild,"profit", 0)
+		penalty		= xml.FindValueInt(nodeChild,"penalty", 0)
+		daystofinish= xml.FindValueInt(nodeChild,"duration", 1)
 
-			new TAdContractBase.Create(title, description, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
-			'print "contract: "+title+ " " + contractscount
-			contractscount :+ 1
-		EndIf
+		new TAdContractBase.Create(title, description, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
+		'print "contract: "+title+ " " + contractscount
+		contractscount :+ 1
 	Next
 
 
 	'===== IMPORT ALL NEWS INCLUDING EPISODES =====
 
 	nodeParent		= xml.FindRootChild("allnews")
-	'Print "reading news from database"
-	loadError		= "Problems loading news. Check database.xml"
-	If nodeParent = Null Then Throw loadError
-	listChildren = nodeParent.getChildren()
-	If listChildren = Null Then Throw loadError
-	For nodeChild = EachIn listChildren
-		If nodeChild.getName() = "news"
-			'load series main data
-			title       = xml.FindValue(nodeChild,"title", "unknown newstitle")
-			description	= xml.FindValue(nodeChild,"description", "")
-			genre		= xml.FindValueInt(nodeChild,"genre", 0)
-			quality		= xml.FindValueInt(nodeChild,"topicality", 0)
-			price		= xml.FindValueInt(nodeChild,"price", 0)
-			Local parentNewsEvent:TNewsEvent = TNewsEvent.Create(title, description, Genre, quality, price)
+	For nodeChild = EachIn TXmlHelper.GetNodeChildElements(nodeParent)
+		If nodeChild.getName() <> "news" then continue
+		'load series main data
+		title       = xml.FindValue(nodeChild,"title", "unknown newstitle")
+		description	= xml.FindValue(nodeChild,"description", "")
+		genre		= xml.FindValueInt(nodeChild,"genre", 0)
+		quality		= xml.FindValueInt(nodeChild,"topicality", 0)
+		price		= xml.FindValueInt(nodeChild,"price", 0)
+		Local parentNewsEvent:TNewsEvent = TNewsEvent.Create(title, description, Genre, quality, price)
 
-			'load episodes
-			Local EpisodeNum:Int = 0
-			Local listEpisodes:TList = nodeChild.getChildren()
-			If listEpisodes <> Null And listEpisodes.count() > 0
-				For nodeEpisode = EachIn listEpisodes
-					If nodeEpisode.getName() = "episode"
-						EpisodeNum		= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
-						title			= xml.FindValue(nodeEpisode,"title", "unknown Newstitle")
-						description		= xml.FindValue(nodeEpisode,"description", "")
-						genre			= xml.FindValueInt(nodeEpisode,"genre", genre)
-						quality			= xml.FindValueInt(nodeEpisode,"topicality", quality)
-						price			= xml.FindValueInt(nodeEpisode,"price", price)
-						parentNewsEvent.AddEpisode(title,description, Genre, EpisodeNum,quality, price)
-						totalnewscount :+1
-					EndIf
-				Next
-				newscount :+ 1
+		'load episodes
+		Local EpisodeNum:Int = 0
+		For nodeEpisode = EachIn TXmlHelper.GetNodeChildElements(nodeChild)
+			If nodeEpisode.getName() = "episode"
+				EpisodeNum		= xml.FindValueInt(nodeEpisode,"number", EpisodeNum+1)
+				title			= xml.FindValue(nodeEpisode,"title", "unknown Newstitle")
+				description		= xml.FindValue(nodeEpisode,"description", "")
+				genre			= xml.FindValueInt(nodeEpisode,"genre", genre)
+				quality			= xml.FindValueInt(nodeEpisode,"topicality", quality)
+				price			= xml.FindValueInt(nodeEpisode,"price", price)
+				parentNewsEvent.AddEpisode(title,description, Genre, EpisodeNum,quality, price)
 				totalnewscount :+1
 			EndIf
-		EndIf
+		Next
+		newscount :+ 1
+		totalnewscount :+1
 	Next
 
 	TDevHelper.log("TDatabase.Load()", "found " + seriescount+ " series, "+totalmoviescount+ " movies, "+ contractscount + " advertisements, " + totalnewscount + " news. loading time: "+(Millisecs()-time)+"ms", LOG_LOADING)

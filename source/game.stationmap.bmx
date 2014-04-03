@@ -59,10 +59,10 @@ Type TStationMapCollection
 		Local xmlLoader:TXmlLoader = Null
 		If Not TResourceLoaders.assignBasics( triggerEvent, mapDataRootNode, xmlLoader ) Then Return 0
 
-		Local densityNode:TxmlNode = xmlLoader.xml.FindNode(mapDataRootNode, "densitymap")
+		Local densityNode:TxmlNode = xmlLoader.xml.FindElementNode(mapDataRootNode, "densitymap")
 		If not densityNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitymap>-entry.")
 
-		Local surfaceNode:TxmlNode = xmlLoader.xml.FindChild(mapDataRootNode, "surface")
+		Local surfaceNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "surface")
 		If not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
 
 		xmlLoader.LoadPixmapResource(densityNode, "map_PopulationDensity")
@@ -73,13 +73,13 @@ Type TStationMapCollection
 		TStationMapSection.Reset()
 
 		'find and load states configuration
-		Local statesNode:TxmlNode = xmlLoader.xml.FindChild(mapDataRootNode, "states")
+		Local statesNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "states")
 		If not statesNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <map><states>-area.")
 
-		For Local child:TxmlNode = EachIn statesNode.getChildren()
-			Local name:String	= xmlLoader.xml.FindValue(child, "name", "")
-			Local sprite:String	= xmlLoader.xml.FindValue(child, "sprite", "")
-			Local pos:TPoint	= TPoint.Create( xmlLoader.xml.FindValueInt(child, "x", 0), xmlLoader.xml.FindValueInt(child, "y", 0) )
+		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
+			Local name:String	= TXmlHelper.FindValue(child, "name", "")
+			Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
+			Local pos:TPoint	= TPoint.Create( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
 			'add state section if data is ok
 			If name<>"" And sprite<>""
 				New TStationMapSection.Create(pos,name, sprite).add()

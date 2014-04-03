@@ -382,14 +382,12 @@ Type TXmlLoader
 
 
 	Method LoadResources(node:TxmlNode)
-		Local children:TList = node.getChildren()
-		For Local childNode:TxmlNode = EachIn children
-
+		For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
 			If _type<>"RESOURCES" Then Self.maxItemNumber:+ 1' children.count()	'it is a entry - so increase
 		Next
 
-		For Local childNode:TxmlNode = EachIn node.getChildren()
+		For Local childNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(node)
 			Local _type:String = Upper(xml.findValue(childNode, "type", childNode.getName()))
 
 
@@ -447,7 +445,7 @@ Type TXmlLoader
 		Local values:TData = New TData.Init()
 		Local data:TData = New TData.Init()
 
-		For Local child:TxmlNode = EachIn childNode.getChildren()
+		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
 			Local name:String = xml.FindValue(child, "type", child.getName())
 			If name = "" Then Continue
 			Local value:String = xml.FindValue(child, "value", child.getcontent())
@@ -472,7 +470,8 @@ Type TXmlLoader
 
 	Method LoadChild:TMap(childNode:TxmlNode)
 		Local optionsMap:TMap = CreateMap()
-		For Local childOptions:TxmlNode = EachIn childNode
+
+		For Local childOptions:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
 			If childOptions.getChildren() <> Null
 				optionsMap.Insert((Lower(childOptions.getName()) + "_" + Lower(xml.findAttribute(childoptions, "name", "unkown"))), Self.LoadChild(childOptions))
 			Else
@@ -581,69 +580,65 @@ Type TXmlLoader
 
 	Method parseScripts(childNode:TxmlNode, data:Object)
 		'TDevHelper.log("XmlLoader.LoadImageResource()", "found image scripts", LOG_LOADING | LOG_DEBUG, TRUE)
-		Local scripts:TxmlNode = xml.FindChild(childNode, "scripts")
-		If scripts <> Null
-			For Local script:TxmlNode = EachIn scripts
-				If script.getType() <> XML_ELEMENT_NODE Then Continue
+		Local scriptsNode:TxmlNode = xml.FindChild(childNode, "scripts")
+		If not scriptsNode then return
 
-				Local scriptDo:String	= xml.findValue(script,"do", "")
-				Local _dest:String		= Lower(xml.findValue(script,"dest", ""))
-				Local _r:Int			= xml.FindValueInt(script, "r", -1)
-				Local _g:Int			= xml.FindValueInt(script, "g", -1)
-				Local _b:Int			= xml.FindValueInt(script, "b", -1)
+		For Local script:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(scriptsNode)
+			Local scriptDo:String	= xml.findValue(script,"do", "")
+			Local _dest:String		= Lower(xml.findValue(script,"dest", ""))
+			Local _r:Int			= xml.FindValueInt(script, "r", -1)
+			Local _g:Int			= xml.FindValueInt(script, "g", -1)
+			Local _b:Int			= xml.FindValueInt(script, "b", -1)
 
-				If scriptDo = "ColorizeCopy"
-					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And TImage(data) <> Null
-						'if self.loadWarning < 2
-						'	Print "parseScripts: COLORIZE  <-- param should be asset not timage"
-						'	self.loadWarning :+1
-						'endif
+			If scriptDo = "ColorizeCopy"
+				If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And TImage(data) <> Null
+					'if self.loadWarning < 2
+					'	Print "parseScripts: COLORIZE  <-- param should be asset not timage"
+					'	self.loadWarning :+1
+					'endif
 
-						'emit loader event for loading screen
-			'			self.doLoadElement("colorize copy", _dest, "colorize copy")
+					'emit loader event for loading screen
+		'			self.doLoadElement("colorize copy", _dest, "colorize copy")
 
-						Local img:TImage = ColorizeImageCopy(TImage(data), TColor.Create(_r, _g, _b) )
-						If img <> Null
-							Assets.AddImageAsSprite(_dest, img)
-						Else
-							Print "WARNING: "+_dest+" could not be created"
-						EndIf
+					Local img:TImage = ColorizeImageCopy(TImage(data), TColor.Create(_r, _g, _b) )
+					If img <> Null
+						Assets.AddImageAsSprite(_dest, img)
+					Else
+						Print "WARNING: "+_dest+" could not be created"
 					EndIf
 				EndIf
+			EndIf
 
-				If scriptDo = "CopySprite"
-					Local _src:String	= xml.findValue(script, "src", "")
-					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
-						'emit loader event for loading screen
-				'		self.doLoadElement("copy sprite", _dest, "")
+			If scriptDo = "CopySprite"
+				Local _src:String	= xml.findValue(script, "src", "")
+				If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
+					'emit loader event for loading screen
+			'		self.doLoadElement("copy sprite", _dest, "")
 
-						TGW_Spritepack(data).CopySprite(_src, _dest, TColor.Create(_r, _g, _b))
-					EndIf
+					TGW_Spritepack(data).CopySprite(_src, _dest, TColor.Create(_r, _g, _b))
 				EndIf
+			EndIf
 
-				If scriptDo = "AddCopySprite"
-					Local _src:String	= xml.findValue(script, "src", "")
-					If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
-						Local _x:Int			= xml.findValueInt(script, "x", 			TGW_Spritepack(data).getSprite(_src).area.GetX())
-						Local _y:Int			= xml.findValueInt(script, "y", 			TGW_Spritepack(data).getSprite(_src).area.GetY())
-						Local _w:Int			= xml.findValueInt(script, "w", 			TGW_Spritepack(data).getSprite(_src).area.GetW())
-						Local _h:Int			= xml.findValueInt(script, "h", 			TGW_Spritepack(data).getSprite(_src).area.GetH())
-						Local _offsetTop:Int	= xml.findValueInt(script, "offsetTop", 	TGW_Spritepack(data).getSprite(_src).offset.GetTop())
-						Local _offsetLeft:Int	= xml.findValueInt(script, "offsetLeft", 	TGW_Spritepack(data).getSprite(_src).offset.GetLeft())
-						Local _offsetBottom:Int	= xml.findValueInt(script, "offsetBottom", 	TGW_Spritepack(data).getSprite(_src).offset.GetBottom())
-						Local _offsetRight:Int	= xml.findValueInt(script, "offsetRight", 	TGW_Spritepack(data).getSprite(_src).offset.GetRight())
-						Local _frames:Int		= xml.findValueInt(script, "frames",		TGW_Spritepack(data).getSprite(_src).animcount)
+			If scriptDo = "AddCopySprite"
+				Local _src:String	= xml.findValue(script, "src", "")
+				If _r >= 0 And _g >= 0 And _b >= 0 And _dest <> "" And _src <> ""
+					Local _x:Int			= xml.findValueInt(script, "x", 			TGW_Spritepack(data).getSprite(_src).area.GetX())
+					Local _y:Int			= xml.findValueInt(script, "y", 			TGW_Spritepack(data).getSprite(_src).area.GetY())
+					Local _w:Int			= xml.findValueInt(script, "w", 			TGW_Spritepack(data).getSprite(_src).area.GetW())
+					Local _h:Int			= xml.findValueInt(script, "h", 			TGW_Spritepack(data).getSprite(_src).area.GetH())
+					Local _offsetTop:Int	= xml.findValueInt(script, "offsetTop", 	TGW_Spritepack(data).getSprite(_src).offset.GetTop())
+					Local _offsetLeft:Int	= xml.findValueInt(script, "offsetLeft", 	TGW_Spritepack(data).getSprite(_src).offset.GetLeft())
+					Local _offsetBottom:Int	= xml.findValueInt(script, "offsetBottom", 	TGW_Spritepack(data).getSprite(_src).offset.GetBottom())
+					Local _offsetRight:Int	= xml.findValueInt(script, "offsetRight", 	TGW_Spritepack(data).getSprite(_src).offset.GetRight())
+					Local _frames:Int		= xml.findValueInt(script, "frames",		TGW_Spritepack(data).getSprite(_src).animcount)
 
-						'emit loader event for loading screen
-						Self.doLoadElement("add copy sprite", _dest, "")
+					'emit loader event for loading screen
+					Self.doLoadElement("add copy sprite", _dest, "")
 
-						Assets.Add(TGW_Spritepack(data).AddSpritecopy(_src, _dest, TRectangle.Create(_x,_y,_w,_h), TRectangle.Create(_offsetTop, _offsetLeft, _offsetBottom, _offsetRight), _frames, TColor.Create(_r, _g, _b)))
-					EndIf
+					Assets.Add(TGW_Spritepack(data).AddSpritecopy(_src, _dest, TRectangle.Create(_x,_y,_w,_h), TRectangle.Create(_offsetTop, _offsetLeft, _offsetBottom, _offsetRight), _frames, TColor.Create(_r, _g, _b)))
 				EndIf
-
-
-			Next
-		EndIf
+			EndIf
+		Next
 	End Method
 
 
@@ -668,48 +663,48 @@ Type TXmlLoader
 
 		'sprites
 		Local children:TxmlNode = xml.FindChild(childNode, "children")
-		If children <> Null
-			For Local child:TxmlNode = EachIn children
-				If child.getType() <> XML_ELEMENT_NODE Then Continue
+		local childrenList:TList = CreateList()
+		If children then childrenList = TXmlHelper.GetNodeChildElements(children)
 
-				Local childName:String		= Lower(xml.findValue(child,"name", ""))
-				Local childX:Int			= xml.findValueInt(child, "x", 0)
-				Local childY:Int			= xml.findValueInt(child, "y", 0)
-				Local childW:Int			= xml.findValueInt(child, "w", 1)
-				Local childH:Int			= xml.findValueInt(child, "h", 1)
-				Local childOffsetTop:Int	= xml.findValueInt(child, "offsetTop", 0)
-				Local childOffsetLeft:Int	= xml.findValueInt(child, "offsetLeft", 0)
-				Local childOffsetRight:Int	= xml.findValueInt(child, "offsetRight", 0)
-				Local childOffsetBottom:Int	= xml.findValueInt(child, "offsetBottom", 0)
-				Local childID:Int			= xml.findValueInt(child, "id", -1)
-				Local childFrames:Int		= xml.findValueInt(child, "frames", 1)
-				      childFrames			= xml.findValueInt(child, "f", childFrames)
-				Local childIsNinePatch:Int	= xml.findValueBool(child, "ninePatch", False)
+		For Local child:TxmlNode = EachIn childrenList
+			Local childName:String		= Lower(xml.findValue(child,"name", ""))
+			Local childX:Int			= xml.findValueInt(child, "x", 0)
+			Local childY:Int			= xml.findValueInt(child, "y", 0)
+			Local childW:Int			= xml.findValueInt(child, "w", 1)
+			Local childH:Int			= xml.findValueInt(child, "h", 1)
+			Local childOffsetTop:Int	= xml.findValueInt(child, "offsetTop", 0)
+			Local childOffsetLeft:Int	= xml.findValueInt(child, "offsetLeft", 0)
+			Local childOffsetRight:Int	= xml.findValueInt(child, "offsetRight", 0)
+			Local childOffsetBottom:Int	= xml.findValueInt(child, "offsetBottom", 0)
+			Local childID:Int			= xml.findValueInt(child, "id", -1)
+			Local childFrames:Int		= xml.findValueInt(child, "frames", 1)
+				  childFrames			= xml.findValueInt(child, "f", childFrames)
+			Local childIsNinePatch:Int	= xml.findValueBool(child, "ninePatch", False)
 
-				If childName<> "" And childW > 0 And childH > 0
-					'emit loader event for loading screen
-					Self.doLoadElement("image spritepack resource", _url, "load sprite from pack")
+			If childName<> "" And childW > 0 And childH > 0
+				'emit loader event for loading screen
+				Self.doLoadElement("image spritepack resource", _url, "load sprite from pack")
 
 
-					'create sprite and add it to assets
-					Local sprite:TGW_Sprite
-					If childIsNinePatch
-						sprite = New TGW_NinePatchSprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
-					Else
-						sprite = New TGW_Sprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
-					EndIf
-
-					spritePack.addSprite(sprite)
-					Assets.Add(sprite)
-
-					'recolor/colorize?
-					Local _r:Int			= xml.FindValueInt(child, "r", -1)
-					Local _g:Int			= xml.FindValueInt(child, "g", -1)
-					Local _b:Int			= xml.FindValueInt(child, "b", -1)
-					If _r >= 0 And _g >= 0 And _b >= 0 Then sprite.colorize( TColor.Create(_r,_g,_b) )
+				'create sprite and add it to assets
+				Local sprite:TGW_Sprite
+				If childIsNinePatch
+					sprite = New TGW_NinePatchSprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
+				Else
+					sprite = New TGW_Sprite.Create(spritePack, childName, TRectangle.Create(childX, childY, childW, childH), TRectangle.Create(childOffsetTop, childOffsetLeft, childOffsetBottom, childOffsetRight), childFrames, childID)
 				EndIf
-			Next
-		EndIf
+
+				spritePack.addSprite(sprite)
+				Assets.Add(sprite)
+
+				'recolor/colorize?
+				Local _r:Int			= xml.FindValueInt(child, "r", -1)
+				Local _g:Int			= xml.FindValueInt(child, "g", -1)
+				Local _b:Int			= xml.FindValueInt(child, "b", -1)
+				If _r >= 0 And _g >= 0 And _b >= 0 Then sprite.colorize( TColor.Create(_r,_g,_b) )
+			EndIf
+		Next
+
 		Self.parseScripts(childNode, spritepack)
 	End Method
 End Type
@@ -815,7 +810,7 @@ Type TResourceLoaders
 
 		'groups
 		If triggerEvent.isTrigger("resources.onLoad.FONTS")
-			For Local child:TxmlNode = EachIn childNode.GetChildren()
+			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
 				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.FONT", New TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader) ) )
 			Next
 		EndIf
@@ -871,7 +866,7 @@ Type TResourceLoaders
 			'add list to assets
 			Assets.Add(TAsset.CreateBaseAsset(list, listName, "TLIST"))
 
-			For Local child:TxmlNode = EachIn childNode.GetChildren()
+			For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
 				EventManager.triggerEvent( TEventSimple.Create("resources.onLoad.COLOR", New TData.AddObject("node", child).AddObject("xmlLoader", xmlLoader).AddObject("list", list) ) )
 			Next
 		EndIf
@@ -905,7 +900,7 @@ Type TResourceLoaders
 		Local values_room:TMap = TMap(xmlLoader.values.ValueForKey("rooms"))
 		If values_room = Null Then values_room = CreateMap() ;
 
-		For Local child:TxmlNode = EachIn childNode.GetChildren()
+		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
 '			if child.getType() <> XML_ELEMENT_NODE then continue
 			Local room:TMap		= CreateMap()
 			Local owner:Int		= xmlLoader.xml.FindValueInt(child, "owner", -1)
@@ -935,20 +930,21 @@ Type TResourceLoaders
 			'hotspots
 			Local hotSpots:TList = CreateList()
 			subNode = xmlLoader.xml.FindChild(child, "hotspots")
-			If subNode And subNode.GetChildren()
-				For Local hotSpotNode:TxmlNode = EachIn subNode.GetChildren()
+
+			If subNode
+				For Local hotSpotNode:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 					If Not hotSpotNode Then Continue
 					Local hotspot:TMap = CreateMap()
 
-					hotspot.Insert("name", 					xmlLoader.xml.FindValue(hotSpotNode, "name", "") )
-					hotspot.Insert("tooltiptext", 			xmlLoader.xml.FindValue(hotSpotNode, "tooltiptext", "") )
-					hotspot.Insert("tooltipdescription", 	xmlLoader.xml.FindValue(hotSpotNode, "tooltipdescription", "") )
-					hotspot.Insert("x", 					xmlLoader.xml.FindValue(hotSpotNode, "x", -1) )
-					hotspot.Insert("y", 					xmlLoader.xml.FindValue(hotSpotNode, "x", -1) )
-					hotspot.Insert("floor", 				xmlLoader.xml.FindValue(hotSpotNode, "floor", -1) )
-					hotspot.Insert("width", 				xmlLoader.xml.FindValue(hotSpotNode, "width", 0) )
-					hotspot.Insert("height", 				xmlLoader.xml.FindValue(hotSpotNode, "height", 0) )
-					hotspot.Insert("bottomy", 				xmlLoader.xml.FindValue(hotSpotNode, "bottomy", 0) )
+					hotspot.Insert("name", 				 xmlLoader.xml.FindValue(hotSpotNode, "name", "") )
+					hotspot.Insert("tooltiptext", 		 xmlLoader.xml.FindValue(hotSpotNode, "tooltiptext", "") )
+					hotspot.Insert("tooltipdescription", xmlLoader.xml.FindValue(hotSpotNode, "tooltipdescription", "") )
+					hotspot.Insert("x", 				 xmlLoader.xml.FindValue(hotSpotNode, "x", -1) )
+					hotspot.Insert("y", 				 xmlLoader.xml.FindValue(hotSpotNode, "x", -1) )
+					hotspot.Insert("floor", 			 xmlLoader.xml.FindValue(hotSpotNode, "floor", -1) )
+					hotspot.Insert("width", 			 xmlLoader.xml.FindValue(hotSpotNode, "width", 0) )
+					hotspot.Insert("height", 			 xmlLoader.xml.FindValue(hotSpotNode, "height", 0) )
+					hotspot.Insert("bottomy", 			 xmlLoader.xml.FindValue(hotSpotNode, "bottomy", 0) )
 
 					hotSpots.addLast(hotspot)
 				Next
@@ -989,19 +985,19 @@ Type TResourceLoaders
 		Local values_newsgenre:TMap = TMap(xmlLoader.Values.ValueForKey("newsgenres"))
 		If values_newsgenre = Null Then values_newsgenre = CreateMap() ;
 
-		For Local child:TxmlNode = EachIn childNode.GetChildren()
-'			if child.getType() <> XML_ELEMENT_NODE then continue
-			Local genre:TMap		= CreateMap()
+		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
+			Local genre:TMap	= CreateMap()
 
 			Local id:Int		= xmlLoader.xml.FindValueInt(child, "id", -1)
 			Local name:String	= xmlLoader.xml.FindValue(child, "name", "unknown")
 
-			genre.Insert("id",		String(id))
+			genre.Insert("id", String(id))
 			genre.Insert("name", Name)
 
 			Local subNode:TxmlNode = Null
 			subNode = xmlLoader.xml.FindChild(child, "audienceAttractions")
-			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
+
+			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				Local attrId:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
 				Local Value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "0.7")
 
@@ -1025,29 +1021,29 @@ Type TResourceLoaders
 		Local values_genre:TMap = TMap(xmlLoader.Values.ValueForKey("genres"))
 		If values_genre = Null Then values_genre = CreateMap()
 
-		For Local child:TxmlNode = EachIn childNode.GetChildren()
-'			if child.getType() <> XML_ELEMENT_NODE then continue
-			Local genre:TMap		= CreateMap()
+		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
+			Local genre:TMap = CreateMap()
 
 			Local id:Int		= xmlLoader.xml.FindValueInt(child, "id", -1)
 			Local name:String	= xmlLoader.xml.FindValue(child, "name", "unknown")
 
-			genre.Insert("id",		String(id))
-			genre.Insert("name",	name)
+			genre.Insert("id",			String(id))
+			genre.Insert("name",		name)
 			genre.Insert("outcomeMod",	String(xmlLoader.xml.FindValueFloat(child, "outcome-mod", -1)))
 			genre.Insert("reviewMod",	String(xmlLoader.xml.FindValueFloat(child, "review-mod", -1)))
 			genre.Insert("speedMod",	String(xmlLoader.xml.FindValueFloat(child, "speed-mod", -1)))
 
 			Local subNode:TxmlNode = Null
+
 			subNode = xmlLoader.xml.FindChild(child, "timeMods")
-			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
+			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				Local time:String = xmlLoader.xml.FindValue(subNodeChild, "time", "-1")
 				genre.Insert("timeMod_" + time, 	xmlLoader.xml.FindValue(subNodeChild, "value", "") )
 			Next
 
 
 			subNode = xmlLoader.xml.FindChild(child, "audienceAttractions")
-			For Local subNodeChild:TxmlNode = EachIn subNode.GetChildren()
+			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				Local id:String = xmlLoader.xml.FindValue(subNodeChild, "id", "-1")
 				Local Value:String = xmlLoader.xml.FindValue(subNodeChild, "value", "0.7")
 
