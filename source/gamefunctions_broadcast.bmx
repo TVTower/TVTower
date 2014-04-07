@@ -416,46 +416,12 @@ Type TBroadcastFeedback
 		Return fb
 	End Function
 	
-	Method Calculate(bc:TBroadcast)		
+	Method Calculate(bc:TBroadcast)
 		Local material:TBroadcastMaterial = bc.PlayersBroadcasts[PlayerId]
 		Local result:TAudienceResult = bc.AudienceResults[PlayerId]
 		Local attr:TAudienceAttraction = result.AudienceAttraction
 		
-		'DebugStop
-		
-		AudienceInterest = New TAudience		
-		AudienceInterest.Children = AttractionToInterest(attr.Children)
-		AudienceInterest.Teenagers = AttractionToInterest(attr.Teenagers)
-		AudienceInterest.HouseWifes = AttractionToInterest(attr.HouseWifes)
-		AudienceInterest.Employees = AttractionToInterest(attr.Employees)
-		AudienceInterest.Unemployed = AttractionToInterest(attr.Unemployed)
-		AudienceInterest.Manager = AttractionToInterest(attr.Manager)
-		AudienceInterest.Pensioners = AttractionToInterest(attr.Pensioners)
-		AudienceInterest.Children = AttractionToInterest(attr.Children)
-		
-		If (AudienceInterest.GetSum() = 0)
-			Local highestValue:Float = attr.GetHighestValue()
-			
-			If (highestValue > 0.15)		
-				If AudienceInterest.Children = highestValue
-					AudienceInterest.Children = 1
-				ElseIf attr.Teenagers = highestValue
-					attr.Teenagers = 1
-				ElseIf attr.HouseWifes = highestValue
-					attr.HouseWifes = 1
-				ElseIf attr.Employees = highestValue
-					attr.Employees = 1
-				ElseIf attr.Unemployed = highestValue
-					attr.Unemployed = 1
-				ElseIf attr.Manager = highestValue
-					attr.Manager = 1
-				ElseIf attr.Pensioners = highestValue
-					attr.Pensioners = 1
-				ElseIf attr.Children = highestValue
-					attr.Children = 1
-				Endif
-			Endif
-		EndIf
+		CalculateAudienceInterest(bc, attr)
 		
 		If Not attr.Malfunction Then								
 			If (attr.Quality < 0.1) Then
@@ -498,6 +464,93 @@ Type TBroadcastFeedback
 		'Kommentare zum Genre				
 	End Method
 	
+	Method CalculateAudienceInterestForAllowed(attr:TAudienceAttraction, maxAudience:TAudience, plausibility:TAudience, minAttraction:Float)
+		'plausibility: Wer scheit wahrscheinlich zu: 0 = auf keinen Fall; 1 = möglich, aber nicht wahrscheinlich; 2 = wahrscheinlich
+		Local averageAttraction:Float = attr.RecalcAverage()
+		
+		Local allowedTemp:TAudience = plausibility
+		Local sortMap:TNumberSortMap = attr.ToNumberSortMap()
+		sortMap.Sort(False)		
+		Local highestKVAllowedAdults:TKeyValueNumber = GetFirstAllowed(sortMap, TAudience.CreateAndInit( 0, 1, 1, 1, 1, 1, 1, 0, 0))
+		
+		If highestKVAllowedAdults.Value >= 0.9 And attr.Quality > 0.8 Then 'Top-Programm
+			allowedTemp = TAudience.CreateAndInitValue(1)
+			allowedTemp.Children = plausibility.Children
+		EndIf					
+		
+		Local highestKVAllowed:TKeyValueNumber = GetFirstAllowed(sortMap, allowedTemp)	
+		
+		If (averageAttraction > minAttraction) Then
+			Local attrPerMember:Float = 0.9 / allowedTemp.GetSum()					
+			Local familyMemberCount:Int = Int((averageAttraction - (averageAttraction Mod attrPerMember)) / attrPerMember)
+			
+			For local kv:TKeyValueNumber = eachin sortMap.Content		
+				If allowedTemp.Children >= 1 And kv.Key = "0" Then
+					AudienceInterest.Children = AttractionToInterest(attr.Children, maxAudience.Children, allowedTemp.Children - 1)
+					If AudienceInterest.Children > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.Teenagers >= 1 And kv.Key = "1" Then
+					AudienceInterest.Teenagers = AttractionToInterest(attr.Teenagers, maxAudience.Teenagers, allowedTemp.Teenagers - 1)
+					If AudienceInterest.Teenagers > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.HouseWifes >= 1 And kv.Key = "2" Then
+					AudienceInterest.HouseWifes = AttractionToInterest(attr.HouseWifes, maxAudience.HouseWifes, allowedTemp.HouseWifes - 1)
+					If AudienceInterest.HouseWifes > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.Employees >= 1 And kv.Key = "3" Then
+					AudienceInterest.Employees = AttractionToInterest(attr.Employees, maxAudience.Employees, allowedTemp.Employees - 1)
+					If AudienceInterest.Employees > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.Unemployed >= 1 And kv.Key = "4" Then
+					AudienceInterest.Unemployed = AttractionToInterest(attr.Unemployed, maxAudience.Unemployed, allowedTemp.Unemployed - 1)
+					If AudienceInterest.Unemployed > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.Manager >= 1 And kv.Key = "5" Then
+					AudienceInterest.Manager = AttractionToInterest(attr.Manager, maxAudience.Manager, allowedTemp.Manager - 1)
+					If AudienceInterest.Manager > 0 Then familyMemberCount :- 1
+				ElseIf allowedTemp.Pensioners >= 1 And kv.Key = "6" Then
+					AudienceInterest.Pensioners = AttractionToInterest(attr.Pensioners, maxAudience.Pensioners, allowedTemp.Pensioners - 1)
+					If AudienceInterest.Pensioners > 0 Then familyMemberCount :- 1
+				EndIf
+				
+				If familyMemberCount = 0 Then Return
+			Next									
+		Else
+			If highestKVAllowed.Value >= (minAttraction * 2) Then
+				AudienceInterest.SetValue(highestKVAllowed.Key.ToInt(), 1)
+			EndIf
+		EndIf		
+	End Method
+	
+	Method CalculateAudienceInterest(bc:TBroadcast, attr:TAudienceAttraction)
+		Local maxAudience:TAudience = TBroadcast.GetPotentialAudienceForHour(TAudience.CreateAndInitValue(1), bc.Hour)
+
+		AudienceInterest = New TAudience		
+		
+		If (bc.Hour >= 0 And bc.Hour <= 1)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 1, 2, 1, 2, 0, 0), 0.2)
+		Elseif (bc.Hour >= 2 And bc.Hour <= 5)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 1, 0, 2, 0, 2, 0, 0), 0.35)
+		Elseif (bc.Hour = 6)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.3)
+		Elseif (bc.Hour >= 7 And bc.Hour <= 8)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.2)
+		Elseif (bc.Hour >= 9 And bc.Hour <= 11) 			
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.2)
+		ElseIf (bc.Hour >= 13 And bc.Hour <= 16)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.15)
+		Else
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.15)		
+		EndIf		
+	End Method	
+	
+	Method GetFirstAllowed:TKeyValueNumber(sortMap:TNumberSortMap, allowed:TAudience)
+		For local kv:TKeyValueNumber = eachin sortMap.Content		
+			If allowed.Children >= 1 And kv.Key = "0" Then Return kv
+			If allowed.Teenagers >= 1 And kv.Key = "1" Then Return kv
+			If allowed.HouseWifes >= 1 And kv.Key = "2" Then Return kv
+			If allowed.Employees >= 1 And kv.Key = "3" Then Return kv
+			If allowed.Unemployed >= 1 And kv.Key = "4" Then Return kv
+			If allowed.Manager >= 1 And kv.Key = "5" Then Return kv
+			If allowed.Pensioners >= 1 And kv.Key = "6" Then Return kv
+		Next	
+	End Method
+	
 	Method AddFeedbackStatement(importance:Int, statementKey:String, rating:Int)
 		Local statement:TBroadcastFeedbackStatement = new TBroadcastFeedbackStatement
 		statement.Importance = importance 
@@ -523,14 +576,35 @@ Type TBroadcastFeedback
 		Next		
 	End Method
 	
-	Method AttractionToInterest:Int(attraction:Float)
-		If attraction > 0.3 Then
-			Return 1
-		ElseIf attraction > 0.6 Then
-			Return 2
-		ElseIf attraction > 0.85 Then
-			Return 3
-		End If		
+	Method AttractionToInterest:Int(attraction:Float, maxAudienceMod:Float, minValue:Int = 0)
+		If maxAudienceMod >= 0.02 Then 'Extrem streng
+			If attraction > 0.9 Then
+				Return 3
+			End If		
+		ElseIf maxAudienceMod >= 0.07 Then 'Sehr streng
+			If attraction > 0.7 Then
+				Return 2
+			ElseIf attraction > 0.85 Then
+				Return 3			
+			End If			
+		ElseIf maxAudienceMod >= 0.12 Then 'Verfügbar
+			If attraction > 0.5 Then
+				Return 1
+			ElseIf attraction > 0.6 Then
+				Return 2
+			ElseIf attraction > 0.85 Then
+				Return 3			
+			End If			
+		ElseIf maxAudienceMod >= 0.16 Then 'Primetime
+			If attraction > 0.3 Then
+				Return 1
+			ElseIf attraction > 0.6 Then
+				Return 2
+			ElseIf attraction > 0.85 Then
+				Return 3			
+			End If			
+		End If
+		Return minValue
 	End Method
 End Type
 
@@ -783,13 +857,17 @@ Type TAudience
 		Return result
 	End Function	
 
-	Function CreateAndInit:TAudience(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
+	Function CreateAndInit:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float, men:Float)
 		Local result:TAudience = New TAudience
-		result.SetValues(group0, group1, group2, group3, group4, group5, group6, subgroup0, subgroup1)
+		result.SetValues(children, teenagers, houseWifes, employees, unemployed, manager, pensioners, women, men)
 		Return result
 	End Function
 
-
+	Method RecalcAverage:Float()
+		Average = (Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners)/7
+		Return Average
+	End Method
+	
 	Method GetByTargetID:Float(targetID:Int=0)
 		Select targetID
 			Case 1	Return Children
@@ -1013,25 +1091,27 @@ Type TAudience
 		Return Average
 	End Method
 	
-	Method GetHighestValue:Float(withSubGroups:Int=false)
-		Local highestValue:Float = -1000000 'Was ist der Min-Wert von Float? 
-		
-		If (Children > highestValue) Then highestValue = Children
-		If (Teenagers > highestValue) Then highestValue = Teenagers
-		If (HouseWifes > highestValue) Then highestValue = HouseWifes
-		If (Employees > highestValue) Then highestValue = Employees
-		If (Unemployed > highestValue) Then highestValue = Unemployed
-		If (Manager > highestValue) Then highestValue = Manager
-		If (Pensioners > highestValue) Then highestValue = Pensioners
-	
+	Method ToNumberSortMap:TNumberSortMap(withSubGroups:Int=false)
+		Local amap:TNumberSortMap = new TNumberSortMap
+		amap.Add("0", Children)
+		amap.Add("1", Teenagers)
+		amap.Add("2", HouseWifes)
+		amap.Add("3", Employees)
+		amap.Add("4", Unemployed)
+		amap.Add("5", Manager)
+		amap.Add("6", Pensioners)			
 		If withSubGroups Then
-			If (Women > highestValue) Then highestValue = Women
-			If (Men > highestValue) Then highestValue = Men			
-		End If
-		
-		Return highestValue
-	End Method
+			amap.Add("7", Women)
+			amap.Add("8", Men)			
+		EndIf	
+		Return amap
+	End Method	
 
+	Method ToStringMinimal:String()
+		Local dec:Int = 0
+		Return "C:" + TFunctions.shortenFloat(Children,dec) + " / T:" + TFunctions.shortenFloat(Teenagers,dec) + " / H:" + TFunctions.shortenFloat(HouseWifes,dec) + " / E:" + TFunctions.shortenFloat(Employees,dec) + " / U:" + TFunctions.shortenFloat(Unemployed,dec) + " / M:" + TFunctions.shortenFloat(Manager,dec) + " /P:" + TFunctions.shortenFloat(Pensioners,dec)
+	End Method	
+	
 	Method ToString:String()
 		Local dec:Int = 4
 		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + TFunctions.shortenFloat(Children,dec) + "  - 1: " + TFunctions.shortenFloat(Teenagers,dec) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,dec) + "  - 3: " + TFunctions.shortenFloat(Employees,dec) + "  - 4: " + TFunctions.shortenFloat(Unemployed,dec) + "  - 5: " + TFunctions.shortenFloat(Manager,dec) + "  - 6: " + TFunctions.shortenFloat(Pensioners,dec) + ")"

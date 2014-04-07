@@ -87,8 +87,8 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Field title:string			= ""
 	Field description:string	= ""
 	Field genre:Int				= 0
-	Field quality:Int			= 0
-	Field price:Int				= 0
+	Field quality:Int			= 0					'TODO: Quality wird nirgends definiert... keine Werte in der DB.
+	Field price:Int				= 0					'TODO: Es muss definiert werden welchen Rahmen price hat. In der DB sind fast alle Werte 0. Der Höchstwert ist 99.
 	Field episode:Int			= 0
 	Field episodes:TList		= CreateList()
 	Field happenedTime:Double	= -1
@@ -213,20 +213,26 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 
 	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
-		Local quality:Float = 0.0
+		Local qualityTemp:Float = 0.0
 
+		'TODO: Solange die Datenbankwerte für Price fast alle 0 sind und Quality gar nicht definiert ist, gilt die untere Quality-Rechnung
+		rem
 		quality = Float(ComputeTopicality()) / 255.0 * 0.45 ..
 			+ Float(quality) / 255.0 * 0.35 ..
 			+ Float(price) / 255.0 * 0.2
-
+		endrem
+			
+		qualityTemp = Float(ComputeTopicality()) / 255.0 * 0.6 ..
+			+ Float(quality) / 255.0 * 0.4
+			
 		If luckFactor = 1 Then
-			quality = quality * 0.97 + Float(RandRange(10, 30)) / 1000.0 '1%-Punkte bis 3%-Punkte Basis-QualitÃ¤t
+			qualityTemp = qualityTemp * 0.97 + (Float(RandRange(10, 30)) / 1000.0) '1%-Punkte bis 3%-Punkte Basis-Qualität
 		Else
-			quality = quality * 0.99 + 0.01 'Mindestens 1% QualitÃ¤t
+			qualityTemp = qualityTemp * 0.99 + 0.01 'Mindestens 1% Qualität
 		EndIf
 
 		'no minus quote
-		Return Max(0, quality)
+		Return Max(0, qualityTemp)
 	End Method
 
 
@@ -315,6 +321,9 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 			'3 - Genre <> Zielgruppe
 			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.GetNewInstance()
 			result.GenreTargetGroupMod.SubtractFloat(0.5)
+		Else
+			result.GenrePopularityMod = 0
+			result.GenreTargetGroupMod = TAudience.CreateAndInitValue(0)
 		Endif
 
 		'4 - Image
@@ -332,7 +341,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'7 - Audience Flow
 		If lastMovieBlockAttraction <> Null Then
 			result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
-			Local audienceFlowFactor:Float = 0.2 + (result.Quality / 2.5)
+			Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
 			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
 		End If			
 		

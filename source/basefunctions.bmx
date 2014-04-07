@@ -519,6 +519,42 @@ Type TData
 		local result:object = self.Get(key)
 		if result then return Int( float( String( result ) ) )
 		return defaultValue
+	End Method	
+End Type
+
+Type TNumberSortMap
+	Field Content:TList = CreateList()
+
+	Method Add(_key:String, _value:Float)
+		Content.AddLast(TKeyValueNumber.Create(_key, _value))
+	End Method
+	
+	Method Sort(ascending:Int = true)
+		SortList (Content, ascending)
+	End Method
+End Type
+
+Type TKeyValueNumber
+	Field Key:String
+	Field Value:Float
+	
+	Function Create:TKeyValueNumber(_key:String, _value:Float)
+		Local obj:TKeyValueNumber = new TKeyValueNumber
+		obj.Key = _key
+		obj.Value = _value
+		Return obj
+	End Function
+	
+	Method Compare:Int(other:Object)
+		Local s:TKeyValueNumber = TKeyValueNumber(other)
+		If Not s Then Return 1			' Object not a TKeyValueNumber: define greater than any TKeyValueNumber
+		If Value < s.Value 'Für Floats etwas unschöner, da der Rückgabewert int ist
+			Return -1
+		Else If Value > s.Value
+			Return 1
+		Else
+			Return 0
+		EndIf
 	End Method
 End Type
 
@@ -1634,8 +1670,6 @@ rem
 	End Function
 endrem
 End Type
-
-
 
 
 Type TDragAndDrop

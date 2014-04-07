@@ -1470,7 +1470,8 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			If lastMovieBlockAttraction Then
 				'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 2", LOG_DEV)
 				result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
-				result.AudienceFlowBonus.MultiplyFactor(0.2) 
+				Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
+				result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
 				'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 3: " + result.AudienceFlowBonus.ToString(), LOG_DEV)
 			End If			
 			
