@@ -449,7 +449,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 
 	Method GetQuality:Float() {_exposeToLua}
 		local quality:float =  newsEvent.GetQuality()
-		'ZusÃ¤tzlicher Bonus bei Erstausstrahlung
+		'Zusaetzlicher Bonus bei Erstausstrahlung
 		If timesAired = 0 Then quality:*0.15
 		return quality
 	End Method
