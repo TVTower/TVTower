@@ -716,7 +716,7 @@ Type TGame {_exposeToLua="selected"}
 			'newsagencyfees
 			Local newsagencyfees:Int =0
 			For Local i:Int = 0 To 5
-				newsagencyfees:+ Player.GetNewsAbonnementPrice( Player.newsabonnements[i] )
+				newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice( Player.newsabonnements[i] )
 			Next
 			Player.GetFinance(day).PayNewsAgencies((newsagencyfees))
 		Next

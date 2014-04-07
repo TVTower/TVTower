@@ -3528,16 +3528,22 @@ EndRem
 
 		If level = 0
 			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
-			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ Game.GetPlayer().GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
+			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ TNewsAgency.GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 		Else
 			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
 			if level = Game.maxAbonnementLevel
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ ": 0" + getLocale("CURRENCY")
 			Else
-				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ Game.GetPlayer().GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
+				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ TNewsAgency.GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 			EndIf
 		EndIf
-		NewsGenreTooltip.content :+ "~n"+"Abolevel fuer heute " + Game.GetPlayer().GetNewsAbonnementDaysMax(genre)
+		if Game.GetPlayer().GetNewsAbonnementDaysMax(genre) > level
+			NewsGenreTooltip.content :+ "~n~n"
+			local tip:String = getLocale("NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY")
+			tip = tip.Replace("%MAXLEVEL%", Game.GetPlayer().GetNewsAbonnementDaysMax(genre))
+			tip = tip.Replace("%TOPAY%", TNewsAgency.GetNewsAbonnementPrice(Game.GetPlayer().GetNewsAbonnementDaysMax(genre)) + getLocale("CURRENCY"))
+			NewsGenreTooltip.content :+ getLocale("HINT")+": " + tip
+		endif
 	End Function
 
 

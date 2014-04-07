@@ -210,6 +210,7 @@ NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL = Genre abonnieren Level
 NEWSSTUDIO_SUBSCRIPTION_LEVEL = Abo-Stufe
 NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER = Genre nicht länger abonnieren
 NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL = nächste Abo-Stufe
+NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY = Du hast heute bereits die Abostufe %MAXLEVEL% genutzt und musst am Tagesende %TOPAY% zahlen.
 
 MAP_COUNTRY_BREMEN				=	Bremen
 MAP_COUNTRY_BERLIN				=	Berlin
@@ -302,6 +303,7 @@ DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME = Willst Du das Spiel wirklich beenden?
 
 HINT_PRESSING_ALT_WILL_SHOW_DETAILS = "ALT"-Taste drücken für mehr Details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: tauscht Datenblatt | STRG+Klick: Programmkopie | SHIFT+Klick: nächste Episode
+HINT = Hinweis
 
 SYNCHRONIZING_START_CONDITIONS = Synchronisiere Startbedingungen
 STARTING_NETWORKGAME = Starte Netzwerkspiel

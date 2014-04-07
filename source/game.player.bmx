@@ -164,16 +164,6 @@ endrem
 	End Method
 
 
-	Method GetNewsAbonnementPrice:Int(level:Int=0)
-		Return Min(5,level) * 10000
-	End Method
-
-
-	Method GetNewsAbonnementDelay:Int(genre:Int) {_exposeToLua}
-		Return 60*(Game.maxAbonnementLevel - newsabonnements[genre])
-	End Method
-
-
 	'return which is the highest level for the given genre today
 	'(which was active for longer than X game minutes)
 	'if the last time a abonnement level was set was before today
