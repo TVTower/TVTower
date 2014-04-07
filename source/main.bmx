@@ -716,9 +716,9 @@ Type TGame {_exposeToLua="selected"}
 			'newsagencyfees
 			Local newsagencyfees:Int =0
 			For Local i:Int = 0 To 5
-				newsagencyfees:+ Player.newsabonnements[i]*10000 'baseprice for an subscriptionlevel
+				newsagencyfees:+ Player.GetNewsAbonnementPrice( Player.newsabonnements[i] )
 			Next
-			Player.GetFinance(day).PayNewsAgencies((newsagencyfees/2))
+			Player.GetFinance(day).PayNewsAgencies((newsagencyfees))
 		Next
 	End Method
 

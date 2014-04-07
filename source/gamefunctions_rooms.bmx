@@ -3508,14 +3508,17 @@ EndRem
 
 		'how much levels do we have?
 		local level:int = 0
+		local genre:int = -1
 		For local i:int = 0 until len( NewsGenreButtons )
 			if button = NewsGenreButtons[i]
-				level = Game.GetPlayer(room.owner).GetNewsAbonnement( button.data.GetInt("newsGenre", i) )
+				genre = button.data.GetInt("newsGenre", i)
+				level = Game.GetPlayer(room.owner).GetNewsAbonnement( genre )
 				exit
 			endif
 		Next
 
 		if not NewsGenreTooltip then NewsGenreTooltip = TTooltip.Create("genre", "abonnement", 180,100 )
+		NewsGenreTooltip.minContentWidth = 180
 		NewsGenreTooltip.enabled = 1
 		'refresh lifetime
 		NewsGenreTooltip.Hover()
@@ -3525,15 +3528,16 @@ EndRem
 
 		If level = 0
 			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
-			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ Game.Players[ Game.playerID ].GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
+			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ Game.GetPlayer().GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 		Else
 			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
-			if level = 3
+			if level = Game.maxAbonnementLevel
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ ": 0" + getLocale("CURRENCY")
 			Else
-				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ Game.Players[ Game.playerID ].GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
+				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ Game.GetPlayer().GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 			EndIf
 		EndIf
+		NewsGenreTooltip.content :+ "~n"+"Abolevel fuer heute " + Game.GetPlayer().GetNewsAbonnementDaysMax(genre)
 	End Function
 
 

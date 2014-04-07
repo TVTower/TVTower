@@ -15,6 +15,8 @@ Type TPlayer {_exposeToLua="selected"}
 	Field figurebase:Int 		= 0					'actual number of an array of figure-images
 	Field networkstate:Int 		= 0					'1=ready, 0=not set, ...
 	Field newsabonnements:Int[6]							{_private}					'abonnementlevels for the newsgenres
+	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1] {_private}					'maximum abonnementlevel for this day
+	Field newsabonnementsSetTime:Int[6]						{_private}					'when was the level set
 	Field PlayerKI:KI			= Null						{_private}
 	Field CreditMaximum:Int		= 600000					{_private}
 
@@ -168,10 +170,56 @@ endrem
 
 
 	Method GetNewsAbonnementDelay:Int(genre:Int) {_exposeToLua}
-		Return 60*(3-Self.newsabonnements[genre])
+		Return 60*(Game.maxAbonnementLevel - newsabonnements[genre])
 	End Method
 
 
+	'return which is the highest level for the given genre today
+	'(which was active for longer than X game minutes)
+	'if the last time a abonnement level was set was before today
+	'use the current level value
+	Method GetNewsAbonnementDaysMax:Int(genre:Int)
+		If genre > 5 Then Return 0 'max 6 categories 0-5
+
+		'not set yet - use the current abonnement
+		if newsabonnementsDayMax[genre] = -1
+			SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+		endif
+
+		'if level of genre changed - adjust maximum
+		if newsabonnementsDayMax[genre] <> newsabonnements[genre]
+			'if the "set time" is not the current day, we assume
+			'the current abonnement level as maxium
+			'eg.: genre set 23:50 - not catched by the "30 min check"
+			'also a day change sets maximum even if level is lower than
+			'maximum (which is not allowed during day to pay for the best
+			'level you had this day)
+			if Game.GetDay(newsabonnementsSetTime[genre]) < Game.GetDay()
+				SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+			EndIf
+
+			'more than 30 mins gone since last "abonnement set"
+			if Game.GetTimeGone() - newsabonnementsSetTime[genre] > 30
+				'only set maximum if the new level is higher than the
+				'current days maxmimum.
+				if newsabonnementsDayMax[genre] < newsabonnements[genre]
+					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+				EndIf
+			EndIf
+		EndIf
+		
+		return newsabonnementsDayMax[genre]
+	End Method
+
+
+	'sets the current maximum level of a news abonnement level for that day
+	Method SetNewsAbonnementDaysMax:Int(genre:Int, level:int)
+		If genre > 5 Then Return 0 'max 6 categories 0-5
+		newsabonnementsDayMax[genre] = level
+	End Method
+	
+
+	'return CURRENT newsAbonnement
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
 		If genre > 5 Then Return 0 'max 6 categories 0-5
 		Return Self.newsabonnements[genre]
@@ -179,15 +227,18 @@ endrem
 
 
 	Method IncreaseNewsAbonnement(genre:Int) {_exposeToLua}
-		Self.SetNewsAbonnement( genre, Self.GetNewsAbonnement(genre)+1 )
+		SetNewsAbonnement( genre, GetNewsAbonnement(genre)+1 )
 	End Method
 
 
 	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
 		If level > Game.maxAbonnementLevel Then level = 0 'before: Return
 		If genre > 5 Then Return 'max 6 categories 0-5
-		If Self.newsabonnements[genre] <> level
-			Self.newsabonnements[genre] = level
+		If newsabonnements[genre] <> level
+			newsabonnements[genre] = level
+			'set at which time we did this
+			newsabonnementsSetTime[genre] = Game.GetTimeGone()
+			
 			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
 		EndIf
 	End Method
