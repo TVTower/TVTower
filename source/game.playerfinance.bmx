@@ -12,6 +12,7 @@ Type TPlayerFinance
 	Field expense_stationfees:Int 		= 0
 	Field expense_misc:Int 				= 0
 	Field expense_creditInterest:int	= 0	'interest to pay for the current credit
+	Field expense_drawingCreditInterest:int	= 0	'interest to pay for having a negative balance
 	Field expense_total:Int 			= 0
 
 	Field income_programmeLicences:Int	= 0
@@ -30,6 +31,7 @@ Type TPlayerFinance
 	Field player:TPlayer				= Null
 	Global creditInterestRate:float		= 0.05 '5% a day
 	Global balanceInterestRate:float	= 0.01 '1% a day
+	Global drawingCreditRate:float		= 0.03 '3% a day  - rate for having a negative balance
 	Global List:TList					= CreateList()
 
 
@@ -163,11 +165,20 @@ Type TPlayerFinance
 	End Method
 
 
-	'refreshs stats about paid money from paying interest on the current credit
+	'refreshs stats about earned money from interest on the current balance
 	Method EarnBalanceInterest:Int(value:Int)
 		TDevHelper.Log("TFinancial.EarnBalanceInterest()", "Player "+player.playerID+" earned "+value+" on interest of their current balance", LOG_DEBUG)
 		income_balanceInterest :+ value
 		AddIncome(value)
+		Return True
+	End Method
+
+
+	'refreshs stats about paid money from drawing credit interest (negative current balance)
+	Method PayDrawingCreditInterest:Int(value:Int)
+		TDevHelper.Log("TFinancial.PayDrawingCreditInterest()", "Player "+player.playerID+" paid "+value+" on interest of having a negative current balance", LOG_DEBUG)
+		expense_drawingCreditInterest :+ value
+		AddExpense(value)
 		Return True
 	End Method
 

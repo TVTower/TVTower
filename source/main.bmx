@@ -726,7 +726,13 @@ Type TGame {_exposeToLua="selected"}
 	'computes daily income like account interest income
 	Method ComputeDailyIncome(day:Int=-1)
 		For Local Player:TPlayer = EachIn Players
-			Player.GetFinance().EarnBalanceInterest( Player.GetFinance().money * TPlayerFinance.balanceInterestRate )
+			if Player.GetFinance().money > 0
+				Player.GetFinance().EarnBalanceInterest( Player.GetFinance().money * TPlayerFinance.balanceInterestRate )
+			Else
+				'attention: multiply current money * -1 to make the
+				'negative value an "positive one" - a "positive expense"
+				Player.GetFinance().PayDrawingCreditInterest( -1 * Player.GetFinance().money * TPlayerFinance.drawingCreditRate )
+			EndIf
 		Next
 	End Method
 
