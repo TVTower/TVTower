@@ -1992,6 +1992,29 @@ Type TInterface
 	End Method
 
 
+	'returns a string list of abbreviations for the watching family
+	Function GetWatchingFamily:string[]()
+		'fetch feedback to see which test-family member might watch
+		Local feedback:TBroadcastFeedback = Game.BroadcastManager.currentBroadcast.GetFeedback(Game.playerID)
+
+		local result:String[]
+
+		if (feedback.AudienceInterest.Children > 0)
+			'maybe sent to bed ? :D
+			If Game.getHour() >= 5 and Game.getHour() < 22 then result :+ ["girl"]
+		endif
+
+		if (feedback.AudienceInterest.Pensioners > 0) then result :+ ["grandpa"]
+
+		if (feedback.AudienceInterest.Teenagers > 0)
+			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
+			If Game.GetWeekday()>6 or (Game.getHour() < 7 or Game.getHour() >= 13) then result :+ ["teen"]
+		endif
+
+		return result
+	End Function
+
+
 	'draws the interface
 	Method Draw(tweenValue:Float=1.0)
 		SetBlend ALPHABLEND
@@ -2001,13 +2024,12 @@ Type TInterface
 		Assets.getSprite("gfx_interface_leftright").DrawClipped(TPoint.Create(780, 20), TRectangle.Create(27, 0, 20, 363))
 
 		If BottomImgDirty
-			Local NoDX9moveY:Int = 383
 
 			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
 			Assets.getSprite("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
 
-			If ShowChannel <> 0 Then Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
+			If ShowChannel <> 0 Then Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419)
 
 
 
@@ -2016,31 +2038,31 @@ Type TInterface
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				If CurrentProgramme Then CurrentProgramme.Draw(45, 400)
 
-				Local audiencerate:Float = Game.Players[ShowChannel].audience.AudienceQuote.Average
+				'fetch a list of watching family members
+				local members:string[] = GetWatchingFamily()
+				'later: limit to amount of "places" on couch
+				Local familyMembersUsed:int = members.length
 
-				Local girl_on:Int 			= 0
-				Local grandpa_on:Int		= 0
-				Local teen_on:Int 			= 0
-				If audiencerate > 0.4 And (Game.getHour() < 21 And Game.getHour() > 6) Then girl_on = True
-				If audiencerate > 0.1 Then grandpa_on = True
-		  		If audiencerate > 0.3 And (Game.getHour() < 2 Or Game.getHour() > 11) Then teen_on = True
-				If teen_on And grandpa_on
-					Assets.getSprite("gfx_interface_audience_teen").Draw(570, 419 - 383 + NoDX9moveY)    'teen
-					Assets.getSprite("gfx_interface_audience_grandpa").Draw(650, 419 - 383 + NoDX9moveY)      'teen
-				ElseIf grandpa_on And girl_on And Not teen_on
-					Assets.getSprite("gfx_interface_audience_girl").Draw(570, 419 - 383 + NoDX9moveY)      'teen
-					Assets.getSprite("gfx_interface_audience_grandpa").Draw(650, 419 - 383 + NoDX9moveY)       'teen
-				Else
-					If teen_on Then Assets.getSprite("gfx_interface_audience_teen").Draw(670, 419 - 383 + NoDX9moveY)
-					If girl_on Then Assets.getSprite("gfx_interface_audience_girl").Draw(550, 419 - 383 + NoDX9moveY)
-					If grandpa_on Then Assets.getSprite("gfx_interface_audience_grandpa").Draw(610, 419 - 383 + NoDX9moveY)
-					If Not grandpa_on And Not girl_on And Not teen_on
-						SetColor 50, 50, 50
-						SetBlend MASKBLEND
-						Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419 - 383 + NoDX9moveY)
-						SetColor 255, 255, 255
-		    	    EndIf
-				EndIf
+				'slots if 3 members watch
+				local figureSlots:int[]
+				if familyMembersUsed = 3 then figureSlots = [550, 610, 670]
+				if familyMembersUsed = 2 then figureSlots = [580, 640]
+				if familyMembersUsed = 1 then figureSlots = [610]
+
+				'display an empty/dark room
+				if familyMembersUsed = 0
+					local col:TColor = new TColor.Get()
+					SetColor 50, 50, 50
+					SetBlend MASKBLEND
+					Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419)
+					col.SetRGBA()
+				else
+					local currentSlot:int = 0
+					For local member:string = eachin members
+						Assets.getSprite("gfx_interface_audience_"+member).Draw(figureslots[currentslot], 419)
+						currentslot:+1 'occupy a slot
+					Next
+				endif
 			EndIf 'showchannel <>0
 			SetBlend ALPHABLEND
 
@@ -2057,19 +2079,19 @@ Type TInterface
 
 		    For Local i:Int = 0 To 4
 				If i = ShowChannel
-					Assets.getSprite("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 171 + NoDX9moveY)
+					Assets.getSprite("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 554)
 				Else
-					Assets.getSprite("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 171 + NoDX9moveY)
+					Assets.getSprite("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 554)
 				EndIf
 		    Next
 
 			'draw the small electronic parts - "the inner tv"
 	  		SetBlend MASKBLEND
-	     	Assets.getSprite("gfx_interface_audience_overlay").Draw(520, 419 - 383 + NoDX9moveY)
+	     	Assets.getSprite("gfx_interface_audience_overlay").Draw(520, 419)
 			SetBlend ALPHABLEND
-			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getMoneyFormatted() + "  ", 377, 427 - 383 + NoDX9moveY, 103, 25, TPoint.Create(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
-			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getFormattedAudience() + "  ", 377, 469 - 383 + NoDX9moveY, 103, 25, TPoint.Create(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555 - 383 + NoDX9moveY, 120, 25, TPoint.Create(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getMoneyFormatted() + "  ", 377, 427, 103, 25, TPoint.Create(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getFormattedAudience() + "  ", 377, 469, 103, 25, TPoint.Create(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
+		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555, 120, 25, TPoint.Create(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
