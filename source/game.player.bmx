@@ -195,7 +195,10 @@ endrem
 			'maximum (which is not allowed during day to pay for the best
 			'level you had this day)
 			if Game.GetDay(newsabonnementsSetTime[genre]) < Game.GetDay()
-				SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+				'NOT 0:00 (the time daily costs are computed)
+				if Game.GetMinute() > 0
+					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
+				EndIf
 			EndIf
 
 			'more than 30 mins gone since last "abonnement set"
