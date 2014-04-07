@@ -105,14 +105,47 @@ Type TNewsAgency
 		Return announced
 	End Method
 
+
+	Function GetNewsAbonnementDelay:Int(genre:Int, level:int) {_exposeToLua}
+		if level = 3 then return 0
+		if level = 2 then return 60
+		if level = 1 then return 150 'not needed but better overview
+		return 150
+	End Function
+
+
+	'Returns the extra charge for a news
+	Function GetNewsRelativeExtraCharge:Float(genre:Int, level:int) {_exposeToLua}
+		'up to now: ignore genre, all share the same values
+		if level = 3 then return 0.20
+		if level = 2 then return 0.10
+		if level = 1 then return 0.00 'not needed but better overview
+		return 0.00
+	End Function
+
+	'Returns the price for this level of a news abonnement
+	Function GetNewsAbonnementPrice:Int(level:Int=0)
+		if level = 1 then return 10000
+		if level = 2 then return 20000
+		if level = 3 then return 35000
+		return 0
+	End Function
+
+
 	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, fromNetwork:Int=0)
+		local player:TPlayer = Game.GetPlayer(forPlayer)
 		'only add news/newsblock if player is Host/Player OR AI
 		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
-		If Game.Players[ forPlayer ].newsabonnements[newsEvent.genre] > 0
-			'print "[LOCAL] AddNewsToPlayer: creating newsblock, player="+forPlayer
-			TNews.Create("", forPlayer, Game.Players[ forPlayer ].GetNewsAbonnementDelay(newsEvent.genre), newsEvent)
+		If Player.newsabonnements[newsEvent.genre] > 0
+			local news:TNews = TNews.Create("", 0, newsEvent)
+			
+			news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
+			news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, Game.GetPlayer(forPlayer).GetNewsAbonnement(newsEvent.genre))
+
+			news.AddToPlayer(forPlayer)
 		EndIf
 	End Method
+
 
 	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Int=0)
 		newsEvent.doHappen(happenedTime)

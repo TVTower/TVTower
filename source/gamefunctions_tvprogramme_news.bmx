@@ -230,7 +230,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method ComputePrice:Int() {_exposeToLua}
+	Method ComputeBasePrice:Int() {_exposeToLua}
 		'price ranges from 0-10.000
 		Return 100 * ceil( 100 * float(0.6*quality + 0.3*price + 0.1*self.ComputeTopicality())/255.0 )
 		'Return Floor(Float(quality * price / 100 * 2 / 5)) * 100 + 1000  'Teuerstes in etwa 10000+1000
@@ -395,14 +395,23 @@ End Type
 'This object stores a players news.
 Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
     Field newsEvent:TNewsEvent	= Null	{_exposeToLua}
-    Field publishDelay:Int 		= 0						'delay the news for a certain time (depending on the abonnement-level)
+    'delay the news for a certain time (depending on the abonnement-level)
+    Field publishDelay:Int 		= 0
+    'modificators to this news (stored here: is individual for each player)
+    'absolute: value just gets added
+    'relative: fraction of base price (eg. 0.3 -> 30%) 
+	Field priceModRelativeNewsAgency:float = 0.0
+	Field priceModAbsoluteNewsAgency:int = 0
+
+    Field paidPrice:int			= 0					'the price which was paid for the news
     Field paid:int	 			= 0
 	Field timesAired:int		= 0					'how many times that programme was run
 
+	
 
-	Function Create:TNews(text:String="unknown", owner:Int=1, publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
+
+	Function Create:TNews(text:String="unknown", publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
 		If not useNewsEvent
-			print"News.Create - RandomNews"
 			useNewsEvent = NewsEventCollection.GetRandom()
 		endif
 
@@ -410,14 +419,20 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 		if useNewsEvent.happenedtime <= 0 then useNewsEvent.happenedtime = Game.GetTimeGone()
 
 		Local obj:TNews = New TNews
-		obj.publishDelay= publishdelay
-		obj.newsEvent	= useNewsEvent
-		obj.owner		= owner
+		obj.publishDelay = publishdelay
+		obj.newsEvent = useNewsEvent
 
-		'add to list and also set owner
-		Game.Players[owner].ProgrammeCollection.AddNews(obj)
 		Return obj
 	End Function
+
+
+	'call this to add it to the players collection (and send it to network etc)
+	Method AddToPlayer:int(playerID:int)
+		self.owner = playerID
+		'add to players collection (sends out event which gets
+		'recognized by the network handler)
+		Game.GetPlayer(owner).ProgrammeCollection.AddNews(self)
+	End Method
 
 
 	'returns the audienceAttraction for one (single!) news
@@ -440,9 +455,26 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
+	'returns the price of this news
+	'price differs from the (base) price of the newsEvent
+	Method GetPrice:int() {_exposeToLua}
+		'the price is fixed in the moment of getting bought
+		if paid and paidPrice<>0 then return paidPrice
+
+		'calculate the price including modifications
+		local price:int = newsEvent.ComputeBasePrice()
+		'add modificators
+		price :+ priceModRelativeNewsAgency * price
+		price :+ priceModAbsoluteNewsAgency
+		return price
+	End Method
+
+
     Method Pay:int()
 		'only pay if not already done
-		if not paid then paid = Game.GetPlayer(owner).GetFinance().PayNews(newsEvent.ComputePrice())
+		if not paid then paid = Game.GetPlayer(owner).GetFinance().PayNews(GetPrice())
+		'store the paid price as the price "sinks" during aging
+		if paid then paidPrice = GetPrice()
 		return paid
     End Method
 
@@ -629,9 +661,9 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.clBlack)
+				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.clBlack)
 			else
-				Assets.GetFont("Default", 12).drawBlock(news.newsEvent.ComputePrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.CreateGrey(50))
+				Assets.GetFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select Game.getDay() - Game.GetDay(news.newsEvent.happenedTime)
