@@ -3001,7 +3001,7 @@ Type TGUIScroller Extends TGUIobject
 
 		'emit event that the scroller position has changed
 		If sender = guiScroller.guiButtonMinus
-			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "minus").AddNumber("scrollAmount", 15), guiScroller ) )
+			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "up").AddNumber("scrollAmount", 15), guiScroller ) )
 		ElseIf sender = guiScroller.guiButtonPlus
 			EventManager.registerEvent( TEventSimple.Create( "guiobject.onScrollPositionChanged", new TData.AddString("direction", "down").AddNumber("scrollAmount", 15), guiScroller ) )
 		EndIf
@@ -3018,7 +3018,7 @@ Type TGUIScroller Extends TGUIobject
 
 		If MOUSEMANAGER.GetDownTime(1) > 0
 			'if we still have to wait - return without emitting events
-			If (MilliSecs() - MOUSEMANAGER.GetDownTime(1)) < guiScroller.mouseDownTime
+			If MOUSEMANAGER.GetDownTime(1) < guiScroller.mouseDownTime
 				Return False
 			EndIf
 		EndIf
