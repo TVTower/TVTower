@@ -921,6 +921,21 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		return self.description
 	End Method
 
+	'returns the
+	Method GetTopicality:Int() {_exposeToLua}
+		'licence connected to a single programme
+		If GetSubLicenceCount() = 0 then return GetData().GetTopicality()
+
+		'licence for a package or series
+		Local value:int
+		For local licence:TProgrammeLicence = eachin subLicences
+			value :+ licence.GetTopicality()
+		Next
+		
+		if subLicences.length > 0 then return floor(value / subLicences.length)
+		return 0
+	End Method	
+
 
 	Method GetPrice:Int() {_exposeToLua}
 		'licence connected to a single programme
