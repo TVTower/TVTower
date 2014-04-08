@@ -61,7 +61,7 @@ TDevHelper.setLogMode(LOG_ALL)
 TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages
-TDevHelper.changePrintMode(LOG_DEV, FALSE)
+'TDevHelper.changePrintMode(LOG_DEV, FALSE)
 
 
 
@@ -1640,14 +1640,14 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'handle clicks on the gui objects
 		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons", "TGUIButton")
-		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickArrows", "TGUIArrowButton")
+		EventManager.registerListenerMethod("guiobject.onHit", Self, "onHitArrows", "TGUIArrowButton")
 
 		Return Self
 	End Method
 
 
-	'handle clicks on the buttons
-	Method onClickArrows:Int(triggerEvent:TEventBase)
+	'handle hits on the arrow buttons
+	Method onHitArrows:Int(triggerEvent:TEventBase)
 		Local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent._sender)
 		If Not sender Then Return False
 
@@ -2615,8 +2615,8 @@ Type AppEvents
 		UnlockMutex(RefreshInputMutex)
 		?
 		?Not Threaded
-		KEYMANAGER.changeStatus()
-		MOUSEMANAGER.changeStatus()
+		KEYMANAGER.Update()
+		MOUSEMANAGER.Update()
 		?
 		'fetch and cache mouse and keyboard states for this cycle
 		GUIManager.StartUpdates()

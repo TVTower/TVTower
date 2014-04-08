@@ -432,9 +432,9 @@ function JobEmergencySchedule:GetProgrammeLicenceList(level, maxRerunsToday, day
 		if ( licence ~= nil) then
 			if licence.GetQualityLevel() == level then
 				local sentAndPlannedToday = MY.ProgrammePlan.HowOftenProgrammeLicenceInPlan(licence.GetID(), day, 1)
-				--debugMsg("GetProgrammeList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)
+				--debugMsg("GetProgrammeLicenceList: " .. i .. " - " .. sentAndPlannedToday .. " <= " .. maxRerunsToday)
 				if (sentAndPlannedToday <= maxRerunsToday) then
-					--debugMsg("Programme: " .. programme.title .. " - A:" .. programme.GetAttractiveness() .. " Qa:" .. programme.GetQualityLevel() .. " Qo:" .. programme.GetQuality() .. " T:" .. programme.GetTopicality())
+					--debugMsg("Lizenz: " .. licence.GetTitle() .. " - A:" .. licence.GetAttractiveness() .. " Qa:" .. licence.GetQualityLevel() .. " Qo:" .. licence.GetQuality() .. " T:" .. licence.GetTopicality())
 					table.insert(currentLicenceList, licence)
 				end
 			end

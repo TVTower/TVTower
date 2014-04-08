@@ -3371,7 +3371,7 @@ Type RoomHandler_News extends TRoomHandler
 		for local i:int = 0 until len( NewsGenreButtons )
 			EventManager.registerListenerFunction( "guiobject.onMouseOver", onHoverNewsGenreButtons, NewsGenreButtons[i] )
 			EventManager.registerListenerFunction( "guiobject.onDraw", onDrawNewsGenreButtons, NewsGenreButtons[i] )
-			EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsGenreButtons, NewsGenreButtons[i] )
+			EventManager.registerListenerFunction( "guiobject.onHit", onHitNewsGenreButtons, NewsGenreButtons[i] )
 		Next
 
 		'create the lists in the news planner
@@ -3524,7 +3524,7 @@ EndRem
 		NewsGenreTooltip.Hover()
 
 		'move the tooltip
-		NewsGenreTooltip.area.position.SetXY(Max(21,button.rect.GetX()), button.rect.GetY()-30)
+		NewsGenreTooltip.area.position.SetXY(Max(21,button.rect.GetX() + button.rect.GetW()), button.rect.GetY()-30)
 
 		If level = 0
 			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
@@ -3547,7 +3547,7 @@ EndRem
 	End Function
 
 
-	Function onClickNewsGenreButtons:int( triggerEvent:TEventBase )
+	Function onHitNewsGenreButtons:int( triggerEvent:TEventBase )
 		local button:TGUIImageButton= TGUIImageButton(triggerEvent._sender)
 		local room:TRoom			= currentRoom
 		if not button then return 0

@@ -177,7 +177,6 @@ Type TProgrammeData {_exposeToLua}
 			result :+ GetReview() * 0.2
 			'adjust by topicality
 			result :* (GetTopicality()/GetMaxTopicality())
-			print result
 		Else
 			'by default no programme has a sponsorship
 			result = 0.0
@@ -922,7 +921,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'returns the
+	'returns the avg topicality of a licence (package)
 	Method GetTopicality:Int() {_exposeToLua}
 		'licence connected to a single programme
 		If GetSubLicenceCount() = 0 then return GetData().GetTopicality()
