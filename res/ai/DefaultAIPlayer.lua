@@ -344,6 +344,13 @@ function OnMinute(number)
 	]]--
 end
 
+function OnMalfunction()	
+	infoMsg("OnMalfunction1")
+	local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
+	task.SituationPriority = 10
+	infoMsg("OnMalfunction2")
+end
+
 --TVTMoviePurchase
 --	BudgetWeigth = 7
 --	BasePriority = 8

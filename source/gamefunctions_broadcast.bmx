@@ -131,6 +131,14 @@ Type TBroadcastManager
 			Local audienceResult:TAudienceResult = bc.AudienceResults[i]
 			audienceResult.AudienceAttraction.SetPlayerId(i)
 			Game.GetPlayer(i).audience = audienceResult
+			
+			'Der KI den möglichen Sendeausfall mitteilen!
+			If audienceResult.AudienceAttraction.Malfunction Then
+				Local player:TPlayer = Game.GetPlayer(i)
+				If Game.isGameLeader() And player.isAI() 
+					player.PlayerKI.CallOnMalfunction()
+				Endif
+			Endif
 		Next
 
 		bc.FindTopValues()

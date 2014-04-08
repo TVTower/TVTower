@@ -1,4 +1,4 @@
-'**************************************************************************************************
+ï»¿'**************************************************************************************************
 ' This program was written with BLIde
 ' Application:
 ' Author:
@@ -171,6 +171,14 @@ Type KI
 			TDevHelper.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
 		End Try
 	End Method
+	
+	Method CallOnMalfunction()
+	    Try
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnMalfunction", Null)
+		Catch ex:Object
+			TDevHelper.log("KI.CallOnMalfunction", "Script "+scriptFileName+" does not contain function ~qOnMalfunction~q.", LOG_ERROR)
+		End Try
+	End Method	
 End Type
 
 
@@ -228,7 +236,7 @@ Type TLuaFunctions {_exposeToLua}
 	Field ME:Int 'Wird initialisiert
 
 
-	'Die Räume werden alle initialisiert
+	'Die RÃ¤ume werden alle initialisiert
 	Field ROOM_TOWER:Int = 0
 	Field ROOM_MOVIEAGENCY:Int
 	Field ROOM_ADAGENCY:Int
@@ -439,7 +447,7 @@ endrem
 	End Method
 
 
-	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstützt. Negativ: Nach links; Positiv: nach rechts
+	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstÃ¼tzt. Negativ: Nach links; Positiv: nach rechts
 		Game.Players[ Self.ME ].Figure.GoToCoordinatesRelative(relX, relYFloor)
 		Return self.RESULT_OK
 	End Method
@@ -569,10 +577,10 @@ endrem
 
 
 	Method getEvaluatedAudienceQuote:Int(hour:Int = -1, licenceID:Int = -1, lastQuotePercentage:Float = 0.1, audiencePercentageBasedOnHour:Float=-1)
-		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter könnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
-		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verändern) errechnen.
+		'TODO: Statt dem audiencePercentageBasedOnHour-Parameter kÃ¶nnte auch das noch unbenutzte "hour" den generellen Quotenwert in der
+		'angegebenen Stunde mit einem etwas umgebauten "calculateMaxAudiencePercentage" (ohne Zufallswerte und ohne die globale Variable zu verÃ¤ndern) errechnen.
 
-		Print "MANUEL: Für KI wieder rein machen!"
+		Print "MANUEL: FÃ¼r KI wieder rein machen!"
 		'Local licence:TProgrammeLicence = TProgrammeLicence.Get(licenceID)
 		'If licence and licence.getData()
 		'	Local Quote:Int = Floor(licence.getData().getAudienceQuote(lastQuotePercentage, audiencePercentageBasedOnHour) * 100)
