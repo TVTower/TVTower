@@ -142,7 +142,7 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		local result:float = 0.0
 
 		'calculate
-		result = CalculatePrices(base.profitBase, owner)
+		result = CalculatePrices(base.profitBase)
 		result :/ GetSpotCount()
 		result :* 0.001 'way down for reasonable prices
 		'so currently we end up with the price equal to
@@ -178,18 +178,19 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 	Method Sign:int(owner:int, day:int=-1)
 		if self.owner = owner then return FALSE
 
-		'attention: GetProfit/GetPenalty default to "owner"
-		'           if no param is given - as we set owner before
-		'           the functions wont use the "average" of all players
-		'           -> manually set to param to 0 or set owner afterwards
+		'attention: GetProfit/GetPenalty/GetMinAudience default to "owner"
+		'           if we set the owner BEFORE, the functions wont use
+		'           the "average" of all players -> set owner afterwards
+		self.profit	= GetProfit()
+		self.penalty = GetPenalty()
+		self.minAudience = GetMinAudience()
+
+		self.owner = owner
 		If day < 0 Then day = game.GetDay()
-		self.daySigned			= day
-		self.owner				= owner
-		self.profit				= GetProfit(-1, 0)
-		self.penalty			= GetPenalty(-1, 0)
-		self.minAudience		= GetMinAudience(0)
+		self.daySigned = day
 
 		TDevHelper.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
+		'TDevHelper.log("TAdContract.Sign", "       "+owner+"                     Profit: "+GetProfit()+",  Penalty: "+GetPenalty()+ ",  MinAudience: "+GetMinAudience()+",  Title: "+GetTitle(), LOG_DEBUG)
 		return TRUE
 	End Method
 
@@ -209,7 +210,14 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 
 	Method IsAvailableToSign:Int() {_exposeToLua}
-		Return (self.owner <= 0 and self.daySigned = -1)
+		'maybe add other checks here - even if something
+		'is not signed yet, it might not be able to get signed...
+		Return (not IsSigned())
+	End Method
+
+
+	Method IsSigned:int() {_exposeToLua}
+		return (owner > 0 and daySigned >= 0) 
 	End Method
 
 
@@ -253,34 +261,32 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 	'multiplies basevalues of prices, values are from 0 to 255 for 1 spot... per 1000 people in audience
 	'if targetgroup is set, the price is doubled
-	Method GetProfit:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
-		'already calculated
-		If Self.profit >= 0 Then Return Self.profit
+	Method GetProfit:Int(playerID:Int= -1) {_exposeToLua}
+		'already calculated and data for owner requested
+		If playerID=-1 and profit >= 0 Then Return profit
 
 		'calculate
-		if baseValue = -1 then baseValue = self.base.profitBase
-		if playerID = -1 then playerID = self.owner
-		Return CalculatePrices(baseValue, playerID)
+		Return CalculatePrices(base.profitBase, playerID)
 	End Method
 
 
-	Method GetPenalty:Int(baseValue:Int= -1, playerID:Int=-1) {_exposeToLua}
-		'already calculated
-		If Self.penalty >= 0 Then Return Self.penalty
+	'returns the penalty for this contract
+	Method GetPenalty:Int(playerID:Int=-1) {_exposeToLua}
+		'already calculated and data for owner requested
+		If playerID=-1 and penalty >= 0 Then Return penalty
 
 		'calculate
-		if baseValue = -1 then baseValue = self.base.penaltyBase
-		if playerID = -1 then playerID = self.owner
-		Return CalculatePrices(baseValue, playerID)
+		Return CalculatePrices(base.penaltyBase, playerID)
 	End Method
 
 
+	'calculate prices (profits, penalties...)
 	Method CalculatePrices:Int(baseprice:Int=0, playerID:Int=-1) {_exposeToLua}
 		'price is for each spot
-		Local price:Float = baseprice * Float( self.GetSpotCount() )
+		Local price:Float = baseprice * Float( GetSpotCount() )
 
 		'ad is with fixed price - only available without minimum restriction
-		If Self.base.hasFixedPrice
+		If base.hasFixedPrice
 			'print self.contractBase.title + " has fixed price : "+ price + " base:"+baseprice + " profitbase:"+self.contractBase.profitBase
 			Return price
 		endif
@@ -297,8 +303,7 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		'----
 		'price we would get if 100% of audience is watching
 		'-> multiply with an "euros per 1000 people watching"
-		'price :* Max(7.5, getMinAudience(playerID)/1000)
-		'price :* Max(minCPM, getMinAudience(playerID)/1000)
+		'price :* Max(7.5, getRawMinAudience(playerID)/1000)
 		price :* Max(minCPM, getRawMinAudience(playerID)/1000)
 
 		'specific targetgroups change price
@@ -311,16 +316,10 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 
 	'returns the non rounded minimum audience
-	Method GetRawMinAudience:Int(playerID:Int=-1) {_exposeToLua}
-		'by default owner is "0" (unsigned)
-		'if none (-1) was given we default to owner
-		If playerID < 0 Then playerID = Self.owner
-
-		'owned by someone and already calculated?
-		If playerID > 0 and minAudience >=0 Then Return minAudience
-
-		'if playerID is <=0 (not a player) the avg audience maximum
-		'is returned
+	Method GetRawMinAudience:Int(playerID:int=-1) {_exposeToLua}
+		'if no special player is requested - 
+		if playerID <= 0 and IsSigned() then playerID = owner
+		'if contract has no owner the avg audience maximum is returned
 		local useAudience:int = Game.GetMaxAudience(playerID)
 
 		'0.5 = more than 50 percent of whole germany wont watch TV the same time
@@ -330,26 +329,23 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 
 	'Gets minimum needed audience in absolute numbers
-	'=====
-	'if the contract is not signed/unowned the average of
-	'all players is used as input, else the owner or given player
-	'is used to calculate audience from
-	Method GetMinAudience:Int(playerID:Int=-1) {_exposeToLua}
-		'0.5 = more than 50 percent of whole germany wont watch TV the same time
-		'therefor: maximum of half the audience can be "needed"
+	Method GetMinAudience:Int(playerID:int=-1) {_exposeToLua}
+		'already calculated and data for owner requested
+		If playerID=-1 and minAudience >=0 Then Return minAudience
+
 		Return TFunctions.RoundToBeautifulValue( GetRawMinAudience(playerID) )
 	End Method
 
 
 	'days left for sending all contracts from today
 	Method GetDaysLeft:Int() {_exposeToLua}
-		Return ( self.base.daysToFinish - (Game.GetDay() - self.daySigned) )
+		Return ( base.daysToFinish - (Game.GetDay() - daySigned) )
 	End Method
 
 
 	'get the contract (to access its ID or title by its GetXXX() )
 	Method GetBase:TAdContractBase() {_exposeToLua}
-		Return self.base
+		Return base
 	End Method
 
 
@@ -462,30 +458,30 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 		SetColor 0,0,0
 		Local font:TGW_BitmapFont = Assets.fonts.basefont
-		Assets.fonts.basefontBold.drawBlock(self.GetTitle()	, x+10 , y+11 , 270, 70)
-		font.drawBlock(self.GetDescription()   		 		, x+10 , y+33 , 270, 70)
+		Assets.fonts.basefontBold.drawBlock(GetTitle()	, x+10 , y+11 , 270, 70)
+		font.drawBlock(GetDescription()   		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "			, x+10 , y+94 , 130, 16)
-		font.drawBlock(TFunctions.convertValue(self.GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,TPoint.Create(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
-		font.drawBlock(TFunctions.convertValue(self.GetPenalty(), 2)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetPenalty(), 2)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,TPoint.Create(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+10, y+140, 127, 16)
-		font.drawBlock(TFunctions.convertValue(self.GetMinAudience(playerID), 2), x+10, y+140, 127, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetMinAudience(), 2), x+10, y+140, 127, 16,TPoint.Create(ALIGN_RIGHT))
 
 		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		font.drawBlock(self.GetSpotsToSend()+"/"+self.GetSpotCount() , x+150, y+94 , 127, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(GetSpotsToSend()+"/"+GetSpotCount() , x+150, y+94 , 127, 16,TPoint.Create(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_PLANNED")+": "    , x+150, y+117 , 127, 16)
 		if self.owner > 0
-			font.drawBlock( self.GetSpotsPlanned() + "/" + self.GetSpotCount() , x+150, y+117 , 127, 16,TPoint.Create(ALIGN_RIGHT))
+			font.drawBlock( GetSpotsPlanned() + "/" + GetSpotCount() , x+150, y+117 , 127, 16,TPoint.Create(ALIGN_RIGHT))
 		else
 			font.drawBlock( "-" , x+150, y+117 , 127, 16,TPoint.Create(ALIGN_RIGHT))
 		endif
 
-		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+self.GetTargetgroupString()   , x+10 , y+163 , 270, 16)
+		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetTargetgroupString()   , x+10 , y+163 , 270, 16)
 		If owner <= 0
-			If self.GetDaysToFinish() > 1
-				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() +" "+ getLocale("DAYS"), x+86 , y+186 , 122, 16)
+			If GetDaysToFinish() > 1
+				font.drawBlock(getLocale("AD_TIME")+": "+GetDaysToFinish() +" "+ getLocale("DAYS"), x+86 , y+186 , 122, 16)
 			Else
-				font.drawBlock(getLocale("AD_TIME")+": "+self.GetDaysToFinish() +" "+ getLocale("DAY"), x+86 , y+186 , 122, 16)
+				font.drawBlock(getLocale("AD_TIME")+": "+GetDaysToFinish() +" "+ getLocale("DAY"), x+86 , y+186 , 122, 16)
 			EndIf
 		Else
 			if GetDaysLeft() < 0
