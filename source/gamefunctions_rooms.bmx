@@ -377,8 +377,10 @@ Type TRoom {_exposeToLua="selected"}
 		local event:TEventSimple = TEventSimple.Create("room.onLeave", new TData.Add("figure", figure) , self )
 
 		if speed = 0
+			'fire immediately
 			EventManager.triggerEvent(event)
 		else
+			'delay so that the leaving takes half the time available
 			event.delayStart(speed/2)
 			EventManager.registerEvent(event)
 		endif
@@ -3371,7 +3373,7 @@ Type RoomHandler_News extends TRoomHandler
 		for local i:int = 0 until len( NewsGenreButtons )
 			EventManager.registerListenerFunction( "guiobject.onMouseOver", onHoverNewsGenreButtons, NewsGenreButtons[i] )
 			EventManager.registerListenerFunction( "guiobject.onDraw", onDrawNewsGenreButtons, NewsGenreButtons[i] )
-			EventManager.registerListenerFunction( "guiobject.onHit", onHitNewsGenreButtons, NewsGenreButtons[i] )
+			EventManager.registerListenerFunction( "guiobject.onClick", onClickNewsGenreButtons, NewsGenreButtons[i] )
 		Next
 
 		'create the lists in the news planner
@@ -3547,7 +3549,7 @@ EndRem
 	End Function
 
 
-	Function onHitNewsGenreButtons:int( triggerEvent:TEventBase )
+	Function onClickNewsGenreButtons:int( triggerEvent:TEventBase )
 		local button:TGUIImageButton= TGUIImageButton(triggerEvent._sender)
 		local room:TRoom			= currentRoom
 		if not button then return 0

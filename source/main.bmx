@@ -58,7 +58,8 @@ Include "gamefunctions_debug.bmx"
 
 '===== SETUP LOGGER FILTER =====
 TDevHelper.setLogMode(LOG_ALL)
-TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
+TDevHelper.setPrintMode(LOG_ALL ) 'all but ai
+'TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages
 'TDevHelper.changePrintMode(LOG_DEV, FALSE)
@@ -1640,14 +1641,14 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'handle clicks on the gui objects
 		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons", "TGUIButton")
-		EventManager.registerListenerMethod("guiobject.onHit", Self, "onHitArrows", "TGUIArrowButton")
+		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickArrows", "TGUIArrowButton")
 
 		Return Self
 	End Method
 
 
-	'handle hits on the arrow buttons
-	Method onHitArrows:Int(triggerEvent:TEventBase)
+	'handle clicks on the buttons
+	Method onClickArrows:Int(triggerEvent:TEventBase)
 		Local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent._sender)
 		If Not sender Then Return False
 
@@ -1958,7 +1959,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 
 		'register clicks on TGUIGameEntry-objects -> game list
-		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickGameListEntry", "TGUIGameEntry")
+		EventManager.registerListenerMethod("guiobject.onDoubleClick", Self, "onDoubleClickGameListEntry", "TGUIGameEntry")
 		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons", "TGUIButton")
 
 		'register to network game announcements
@@ -1982,15 +1983,11 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 
 	'Doubleclick-function for NetGameLobby_GameList
-	Method onClickGameListEntry:Int(triggerEvent:TEventBase)
+	Method onDoubleClickGameListEntry:Int(triggerEvent:TEventBase)
 		Local entry:TGUIGameEntry = TGUIGameEntry(triggerEvent.getSender())
 		If Not entry Then Return False
 
-		'we are only interested in doubleclicks
-		Local clickType:Int = triggerEvent.getData().getInt("type", 0)
-		If clickType = EVENT_GUI_DOUBLECLICK
-			JoinSelectedGameEntry()
-		EndIf
+		JoinSelectedGameEntry()
 		Return False
 	End Method
 

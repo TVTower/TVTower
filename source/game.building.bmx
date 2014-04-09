@@ -241,7 +241,7 @@ Type TBuilding Extends TRenderable
 
 
 		If hotspot.name = "elevatorplan"
-			Print "figure "+figure.name+" reached elevatorplan"
+			'Print "figure "+figure.name+" reached elevatorplan"
 
 			Local room:TRoom = TRoom.GetFirstByDetails("elevatorplan")
 			If Not room Then Print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";Return False
@@ -263,7 +263,7 @@ Type TBuilding Extends TRenderable
 		Game.getPlayer().figure.changeTarget( GetInstance().pos.x + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().pos.y + hotspot.area.getY() )
 		Game.getPlayer().figure.targetHotspot = hotspot
 
-		MOUSEMANAGER.resetKey(1)
+		MOUSEMANAGER.ResetKey(1)
 	End Function
 
 

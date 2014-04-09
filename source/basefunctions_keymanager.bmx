@@ -82,6 +82,7 @@ Type TMouseManager
 	'returns whether the button was clicked 2 times
 	'strictMode defines whether more than 2 clicks also count
 	'as "double click"
+	'includes waiting time
 	Method isDoubleClicked:Int(key:Int, strictMode:int=TRUE)
 		if strictMode
 			return GetClicks(key) = 2
@@ -92,8 +93,16 @@ Type TMouseManager
 
 
 	'returns whether the button is in clicked state
-	Method isClicked:Int(key:Int)
+	'includes waiting time
+	Method isSingleClicked:Int(key:Int)
 		return GetClicks(key) = 1
+	End Method
+
+
+	'returns whether the button got clicked, no waiting time
+	'is added 
+	Method isClicked:Int(key:Int)
+		return _keyStatus[key] = KEY_STATE_NORMAL and (_keyHitCount[key] > 0)
 	End Method
 
 
