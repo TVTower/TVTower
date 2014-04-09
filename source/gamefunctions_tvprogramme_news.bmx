@@ -215,15 +215,9 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Method GetQuality:Float(luckFactor:Int = 1) {_exposeToLua}
 		Local qualityTemp:Float = 0.0
 
-		'TODO: Solange die Datenbankwerte für Price fast alle 0 sind und Quality gar nicht definiert ist, gilt die untere Quality-Rechnung
-		rem
-		quality = Float(ComputeTopicality()) / 255.0 * 0.45 ..
+		qualityTemp = Float(ComputeTopicality()) / 255.0 * 0.45 ..
 			+ Float(quality) / 255.0 * 0.35 ..
-			+ Float(price) / 255.0 * 0.2
-		endrem
-			
-		qualityTemp = Float(ComputeTopicality()) / 255.0 * 0.6 ..
-			+ Float(quality) / 255.0 * 0.4
+			+ Float(price) / 255.0 * 0.2		
 			
 		If luckFactor = 1 Then
 			qualityTemp = qualityTemp * 0.97 + (Float(RandRange(10, 30)) / 1000.0) '1%-Punkte bis 3%-Punkte Basis-Qualität
@@ -456,10 +450,10 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetQuality:Float() {_exposeToLua}
-		local quality:float =  newsEvent.GetQuality()
+	Method GetQuality:Float() {_exposeToLua}		
+		local quality:float = newsEvent.GetQuality()
 		'Zusaetzlicher Bonus bei Erstausstrahlung
-		If timesAired = 0 Then quality:*0.15
+		If timesAired = 0 Then quality:*1.15
 		return quality
 	End Method
 

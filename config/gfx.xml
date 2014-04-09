@@ -25,8 +25,8 @@
 				<child name="gfx_targetGroup5" id="Unemployed"	x="60"  y="0"   w="15" h="15"	/>
 				<child name="gfx_targetGroup6" id="Manager"		x="75"  y="0"   w="15" h="15"	/>
 				<child name="gfx_targetGroup7" id="Pensioners"	x="90"  y="0"   w="15" h="15"	/>
-				<child name="gfx_targetGroup8" id="Women"		x="105" y="0"   w="15" h="15"	/>
-				<child name="gfx_targetGroup9" id="Men"			x="120" y="0"   w="15" h="15"	/>
+				<child name="gfx_targetGroup8" id="Women"		x="120" y="0"   w="15" h="15"	/>
+				<child name="gfx_targetGroup9" id="Men"			x="105" y="0"   w="15" h="15"	/>
 			</children>
 		</spritepack>
 

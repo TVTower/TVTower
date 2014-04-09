@@ -803,12 +803,13 @@ Type TAudienceResult
 
 
 	'Berechnet die Quoten neu. Muss mindestens einmal aufgerufen werden.
-	Method Refresh()
+	Method Refresh()		
 		Audience.FixGenderCount()
+		PotentialMaxAudience.FixGenderCount()
+		
 		AudienceQuote = Audience.GetNewInstance()
 		AudienceQuote.Divide(PotentialMaxAudience)
 
-		PotentialMaxAudience.FixGenderCount()
 		PotentialMaxAudienceQuote = PotentialMaxAudience.GetNewInstance()
 		PotentialMaxAudienceQuote.Divide(WholeMarket)
 	End Method
@@ -1122,7 +1123,7 @@ Type TAudience
 	
 	Method ToString:String()
 		Local dec:Int = 4
-		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + TFunctions.shortenFloat(Children,dec) + "  - 1: " + TFunctions.shortenFloat(Teenagers,dec) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,dec) + "  - 3: " + TFunctions.shortenFloat(Employees,dec) + "  - 4: " + TFunctions.shortenFloat(Unemployed,dec) + "  - 5: " + TFunctions.shortenFloat(Manager,dec) + "  - 6: " + TFunctions.shortenFloat(Pensioners,dec) + ")"
+		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + TFunctions.shortenFloat(Children,dec) + "  - 1: " + TFunctions.shortenFloat(Teenagers,dec) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,dec) + "  - 3: " + TFunctions.shortenFloat(Employees,dec) + "  - 4: " + TFunctions.shortenFloat(Unemployed,dec) + "  - 5: " + TFunctions.shortenFloat(Manager,dec) + "  - 6: " + TFunctions.shortenFloat(Pensioners,dec) + ") - [[ W: " + TFunctions.shortenFloat(Women,dec) + "  - M: " + TFunctions.shortenFloat(Men ,dec) + " ]]"
 	End Method
 
 
@@ -1209,7 +1210,7 @@ Type TAudienceAttraction Extends TAudience
 	
 	Field QualityOverTimeEffectMod:Float
 	Field GenreTimeMod:Float
-	Field NewsShowMod:Float
+	Field NewsShowBonus:TAudience
 	
 	Field BaseAttraction:TAudience
 	Field BroadcastAttraction:TAudience
@@ -1246,7 +1247,7 @@ Type TAudienceAttraction Extends TAudience
 		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
 		GenreTimeMod :+ audienceAttr.GenreTimeMod
-		NewsShowMod :+ audienceAttr.NewsShowMod
+		If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)		
 		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
 		If BroadcastAttraction Then BroadcastAttraction.Add(audienceAttr.BroadcastAttraction)
 		If BlockAttraction Then BlockAttraction.Add(audienceAttr.BlockAttraction)
@@ -1267,7 +1268,7 @@ Type TAudienceAttraction Extends TAudience
 		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFactor(factor)
 		QualityOverTimeEffectMod :* factor
 		GenreTimeMod :* factor
-		NewsShowMod :* factor
+		If NewsShowBonus Then NewsShowBonus.MultiplyFactor(factor)
 		If BaseAttraction Then BaseAttraction.MultiplyFactor(factor)
 		If BroadcastAttraction Then BroadcastAttraction.MultiplyFactor(factor)
 		If BlockAttraction Then BlockAttraction.MultiplyFactor(factor)
@@ -1307,10 +1308,14 @@ Type TAudienceAttraction Extends TAudience
 		Local Sum:TAudience = new TAudience
 		Sum.AddFloat(QualityOverTimeEffectMod)
 		Sum.AddFloat(GenreTimeMod)
-		Sum.AddFloat(NewsShowMod)
+		'Sum.AddFloat(NewsShowMod)
 		Sum.AddFloat(1)
 	
 		Sum.Multiply(BroadcastAttraction)
+		If NewsShowBonus <> Null Then
+			Sum.Add(NewsShowBonus)
+		EndIf		
+		
 		Self.BlockAttraction = Sum.GetNewInstance()
 		Self.BlockAttraction.PlayerId = Self.PlayerId
 		Sum.CopyTo(Self)				

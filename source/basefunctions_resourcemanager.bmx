@@ -1034,7 +1034,17 @@ Type TResourceLoaders
 			genre.Insert("speedMod",	String(xmlLoader.xml.FindValueFloat(child, "speed-mod", -1)))
 
 			Local subNode:TxmlNode = Null
-
+			
+			Local goodFollowerString:String = xmlLoader.xml.FindValue(child, "goodFollower", "")
+			If goodFollowerString <> ""
+				genre.Insert("goodFollower", ListFromArray(goodFollowerString.split(",")))
+			EndIf
+			
+			Local badFollowerString:String = xmlLoader.xml.FindValue(child, "badFollower", "")
+			If badFollowerString <> ""
+				genre.Insert("badFollower", ListFromArray(badFollowerString.split(",")))
+			EndIf			
+			
 			subNode = xmlLoader.xml.FindChild(child, "timeMods")
 			For Local subNodeChild:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(subNode)
 				Local time:String = xmlLoader.xml.FindValue(subNodeChild, "time", "-1")

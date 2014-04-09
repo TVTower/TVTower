@@ -1453,7 +1453,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.BroadcastType = 1
 		result.Genre = licence.GetGenre()
-		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GeTMovieGenreDefinition(result.Genre)
+		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(result.Genre)
 		
 		If block = 1 Then											
 			'1 - Qualität des Programms
@@ -1481,30 +1481,32 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.CalculateBaseAttraction()			
 			
 			'7 - Audience Flow
-			'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 1", LOG_DEV)
+			'TODO: AudienceFlow muss sich anpassen... ein fixer Bonus über Stunden hinweg ist nicht gut... eventuell einen Teilschritt sogar zurück zu exklusiven Zuschauern.
 			If lastMovieBlockAttraction Then
-				'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 2", LOG_DEV)
+				Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
+				Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
+						
 				result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
-				Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
-				result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
-				'TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Audience Flow 3: " + result.AudienceFlowBonus.ToString(), LOG_DEV)
-			End If			
+				result.AudienceFlowBonus.Multiply(audienceFlowMod)
+			Else
+				result.AudienceFlowBonus = lastNewsBlockAttraction.GetNewInstance()
+				result.AudienceFlowBonus.MultiplyFactor(0.2)				
+			End If	
 			
 			result.CalculateBroadcastAttraction()
 		Else
 			result.CopyBroadcastAttractionFrom(lastMovieBlockAttraction)
 		Endif
 		
-		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
-		TDevHelper.Log("TProgramme.GetAudienceAttraction()", "Quality X: " + result.Quality, LOG_DEV)
-		
+		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten	
 		result.QualityOverTimeEffectMod = ((result.Quality - 0.5)/2.5) * (block - 1)
 		
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
 		
 		'10 - News-Mod
-		result.NewsShowMod = lastNewsBlockAttraction.Quality / 3
+		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.GetNewInstance().DivideFloat(2).SubtractFloat(0.1)
+		result.NewsShowBonus = lastNewsBlockAttraction.GetNewInstance().MultiplyFactor(0.2)
 
 		result.CalculateBlockAttraction()
 		result.CalculatePublicImageAttraction()
@@ -1596,7 +1598,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 	
 	Method GetGenreDefinition:TGenreDefinitionBase()
-		Return Game.BroadcastManager.GeTMovieGenreDefinition(licence.GetGenre())
+		Return Game.BroadcastManager.GetMovieGenreDefinition(licence.GetGenre())
 	End Method
 End Type
 

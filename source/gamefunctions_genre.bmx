@@ -2,6 +2,9 @@
 	Field GenreId:Int
 	Field AudienceAttraction:TAudience
 	Field Popularity:TGenrePopularity
+	
+	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience) Abstract
+
 	rem
 	Method CalculateQuotes:TAudienceAttraction(quality:Float, attraction:TAudienceAttraction = Null)
 		If attraction = Null Then attraction = New TAudienceAttraction				
@@ -75,6 +78,10 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 
 		'Return result
 	End Method
+	
+	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience)
+		Return TAudience.CreateAndInitValue(1) 'TODO: Prüfen ob hier auch was zu machen ist?
+	End Method	
 End Type
 
 
@@ -95,6 +102,11 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		ReviewMod = String(data.ValueForKey("reviewMod")).ToFloat()
 		SpeedMod = String(data.ValueForKey("speedMod")).ToFloat()
 
+		GoodFollower = TList(data.ValueForKey("goodFollower"))
+		If GoodFollower = Null Then GoodFollower = CreateList()
+		BadFollower = TList(data.ValueForKey("badFollower"))
+		If BadFollower = Null Then BadFollower = CreateList()
+		
 		TimeMods = TimeMods[..24]
 		For Local i:Int = 0 To 23
 			TimeMods[i] = String(data.ValueForKey("timeMod_" + i)).ToFloat()
@@ -117,6 +129,31 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		'print "Load moviegenre" + GenreId + ": " + AudienceAttraction.ToString()
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
+	
+	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience)
+		'DebugStop
+		Local baseAttractionFollowerTemp:TAudience = baseAttractionFollower.GetNewInstance()
+		baseAttractionFollowerTemp.DivideFloat(2).AddFloat(0.7)
+		
+		Local base:TAudience = GetAudienceFlowModBase(followerGenreId)
+		base.Multiply(baseAttractionFollowerTemp)
+		Return base
+	End Method
+	
+	Method GetAudienceFlowModBase:TAudience(followerGenreId:Int)
+		Local followerDefinition:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(followerGenreId)
+	
+		Local result:TAudience = followerDefinition.AudienceAttraction.GetNewInstance().DivideFloat(5) '0-0.2
+		
+		Local genreKey:String = String.FromInt(followerGenreId)
+		If (GoodFollower.Contains(genreKey))
+			Return result.AddFloat(0.3)
+		ElseIf (BadFollower.Contains(genreKey))
+			Return result.AddFloat(0.05).DivideFloat(2) 
+		Else
+			Return result.AddFloat(0.05)
+		End If
+	End Method	
 
 rem
 	Method CalculateAudienceAttraction:TAudienceAttraction(material:TBroadcastMaterial, hour:Int)

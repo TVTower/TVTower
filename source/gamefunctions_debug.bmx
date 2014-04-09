@@ -162,9 +162,10 @@
 		
 		font.Draw("10. Nachrichteneinfluss", 25, offset+330, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)		
-		'If attraction.QualityOverTimeEffectMod Then
+		If attraction.NewsShowBonus Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
-		DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.NewsShowMod), 200, offset+330, true, true);
+			DrawAudiencePercent(attraction.NewsShowBonus, 200, offset+330, true, true);
+		Endif		
 		
 		font.Draw("Block-Attraktivität (Effektiv)", 25, offset+350, TColor.clRed)
 		'DrawAudiencePercent(attraction, 200, offset+260)		
