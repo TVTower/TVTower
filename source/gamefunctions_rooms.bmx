@@ -1,4 +1,79 @@
-﻿'container for data describing the room
+﻿Type TRoomCollection
+	Field list:TList = CreateList()
+	Global _eventsRegistered:int= FALSE
+	Global _instance:TRoomCollection
+
+	Method New()
+		_instance = self
+
+		if not _eventsRegistered
+			'handle savegame loading (assign sprites)
+			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+			_eventsRegistered = TRUE
+		Endif
+	End Method
+
+
+	Method Add:int(room:TRoom)
+		List.AddLast(room)
+		return TRUE
+	End Method
+
+
+	Method Remove:int(room:TRoom)
+		List.Remove(room)
+		return TRUE
+	End Method
+
+
+	Function Get:TRoom(ID:int)
+		For Local room:TRoom = EachIn _instance.list
+			If room.id = ID Then Return room
+		Next
+		Return Null
+	End Function
+
+
+	Function GetRandom:TRoom()
+		return TRoom( _instance.list.ValueAtIndex( Rand(_instance.list.Count() - 1) ) )
+	End Function
+
+
+	'returns all room fitting to the given details
+	Function GetAllByDetails:TRoom[]( name:String, owner:Int=-1000 ) {_exposeToLua}
+		local rooms:TRoom[]
+		For Local room:TRoom = EachIn _instance.list
+			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
+			'skip wrong owners
+			if owner <> -1000 and room.owner <> owner then continue
+
+			If room.name = name Then rooms :+ [room]
+		Next
+		Return rooms
+	End Function
+
+
+	Function GetFirstByDetails:TRoom( name:String, owner:Int=-1000 ) {_exposeToLua}
+		local rooms:TRoom[] = GetAllByDetails(name,owner)
+		if not rooms or rooms.length = 0 then return Null
+		return rooms[0]
+	End Function
+
+
+	'run when loading finished
+	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+		TDevHelper.Log("TRoomCollection", "Savegame started loading - clean occupants list", LOG_DEBUG | LOG_SAVELOAD)
+		For local room:TRoom = eachin _instance.list
+			room.occupants.Clear()
+		Next
+	End Function
+End Type
+Global RoomCollection:TRoomCollection = new TRoomCollection
+
+
+
+
+'container for data describing the room
 'without data attached which is used for visual representation
 '(tooltip, hotspots, signs...) -> they are now in TRoomDoor
 'usage examples:
@@ -6,23 +81,35 @@
 ' - Multiple "Doors" to the same room
 Type TRoom {_exposeToLua="selected"}
 	Field name:string
-	Field description:String[]	= ["", ""]				'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
-	Field owner:Int				=-1						'playerID or -1 for system/artificial person
-	Field background:TGW_Sprite							'the image used in the room (store individual backgrounds depending on "money")
-	Field occupants:TList		= CreateList()			'figure currently in this room
-	Field allowMultipleOccupants:int = FALSE			'allow more than one
-	Field hotspots:TList		= CreateList()			'list of special areas in the room
-	Field fakeRoom:int			= FALSE					'is this a room or just a "plan" or "view"
-	Field size:int				= 1
-	Field id:int				= 0
-	Global LastID:int			= 0
-	Global list:TList			= CreateList()			'global list of rooms
-	Global _initDone:int		= FALSE
-	Global ChangeRoomSpeed:int	= 500					'time the change of a room needs (1st half is opening, 2nd closing a door)
+	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
+	Field description:String[] = ["", ""]
+	'playerID or -1 for system/artificial person
+	Field owner:Int	=-1
+	'the image used in the room (store individual backgrounds depending on "money")
+	Field _background:TGW_Sprite {nosave}
+	Field backgroundSpriteName:string
+	'figure currently in this room
+	Field occupants:TList = CreateList()
+	'allow more occupants than one?
+	Field allowMultipleOccupants:int = FALSE
+	'list of special areas in the room
+	Field hotspots:TList = CreateList()
+	'is this a room or just a "plan" or "view"
+	Field fakeRoom:int = FALSE
+	Field size:int = 1
+	Field id:int = 0
+	Field GUID:string = ""
+	Global LastID:int = 0
+	Global _initDone:int = FALSE
+
+	'=== CONFIG FOR ALL ROOMS ===
+	'time the change of a room needs (1st half is opening, 2nd closing a door)
+	Global ChangeRoomSpeed:int = 500
+
 
 	Method New()
 		LastID:+1
-		id	= LastID
+		id = LastID
 
 		'register all needed events if not done yet
 		if not _initDone
@@ -33,7 +120,12 @@ Type TRoom {_exposeToLua="selected"}
 			_initDone = TRUE
 		endif
 
-		list.AddLast(self)
+		RoomCollection.Add(self)
+	End Method
+
+
+	Method onLoad:int()
+		'
 	End Method
 
 
@@ -49,13 +141,21 @@ Type TRoom {_exposeToLua="selected"}
 
 	'init a room with basic variables
 	Method Init:TRoom(name:String="unknown", description:String[], owner:int, size:int=1)
-
+		self.GUID = "room_"+self.id
 		self.name = name
 		self.owner = owner
 		self.description = description
 		self.size = Max(0, Min(3, size))
 
 		return self
+	End Method
+
+
+	Method GetBackground:TGW_Sprite()
+		if not _background and backgroundSpriteName<>""
+			_background = Assets.GetSprite(backgroundSpriteName)
+		endif
+		return _background
 	End Method
 
 
@@ -77,41 +177,6 @@ Type TRoom {_exposeToLua="selected"}
 	Method GetSize:int() {_exposeToLua}
 		return size
 	End Method
-
-
-	Function Get:TRoom(ID:Int)
-		For Local room:TRoom = EachIn list
-			If room.id = ID Then Return room
-		Next
-		Return Null
-	End Function
-
-
-	Function GetRandom:TRoom()
-		return TRoom( list.ValueAtIndex( Rand(list.Count() - 1) ) )
-	End Function
-
-
-	'returns all room fitting to the given details
-	Function GetAllByDetails:TRoom[]( name:String, owner:Int=-1000 ) {_exposeToLua}
-		local rooms:TRoom[]
-		For Local room:TRoom = EachIn list
-			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
-			'skip wrong owners
-			if owner <> -1000 and room.owner <> owner then continue
-
-			If room.name = name Then rooms :+ [room]
-		Next
-		Return rooms
-	End Function
-
-
-	Function GetFirstByDetails:TRoom( name:String, owner:Int=-1000 ) {_exposeToLua}
-		local rooms:TRoom[] = GetAllByDetails(name,owner)
-		if not rooms or rooms.length = 0 then return Null
-		return rooms[0]
-	End Function
-
 
 
 	'draw Room
@@ -1003,7 +1068,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		if room.background then room.background.draw(20,10)
+		if room.GetBackground() then room.GetBackground().draw(20,10)
 
 		'allowed for owner only
 		If room AND room.owner = Game.playerID
@@ -2339,7 +2404,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'register self for all archives-rooms
 		For local i:int = 1 to 4
-			local room:TRoom = TRoom.GetFirstByDetails("archive", i)
+			local room:TRoom = RoomCollection.GetFirstByDetails("archive", i)
 			if room then super._RegisterHandler(onUpdate, onDraw, room)
 
 			'figure enters room - reset the suitcase's guilist, limit listening to the 4 rooms
@@ -2714,7 +2779,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence")
 
-		local room:TRoom = TRoom.GetFirstByDetails("movieagency")
+		local room:TRoom = RoomCollection.GetFirstByDetails("movieagency")
 		'figure enters room - reset the suitcase's guilist, limit listening to this room
 		EventManager.registerListenerFunction("room.onEnter", onEnterRoom, room)
 		'figure leaves room - only without dragged blocks
@@ -3796,7 +3861,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		'register self for all bosses
 		For local i:int = 1 to 4
-			local room:TRoom = TRoom.GetFirstByDetails("chief", i)
+			local room:TRoom = RoomCollection.GetFirstByDetails("chief", i)
 			if room then super._RegisterHandler(RoomHandler_Chief.Update, RoomHandler_Chief.Draw, room)
 		Next
 		'register dialogue handlers
@@ -4015,7 +4080,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection )
 
 		'figure enters room - reset guilists if player
-		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, TRoom.GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, RoomCollection.GetFirstByDetails("adagency") )
 
 		'begin drop - to intercept if dropping to wrong list
 		EventManager.registerListenerFunction( "guiobject.onTryDropOnTarget", onTryDropContract, "TGuiAdContract" )
@@ -4026,8 +4091,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'we want to know if we hover a specific block - to show a datasheet
 		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
 		'figure leaves room - only without dragged blocks
-		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, TRoom.GetFirstByDetails("adagency") )
-		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, TRoom.GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, RoomCollection.GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, RoomCollection.GetFirstByDetails("adagency") )
 		'this lists want to delete the item if a right mouse click happens...
 		EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract")
 
@@ -4673,7 +4738,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, TRoom.GetFirstByDetails("elevatorplan") )
+		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("elevatorplan") )
 	End Function
 
 
@@ -4732,7 +4797,7 @@ End Type
 
 Type RoomHandler_Roomboard extends TRoomHandler
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, TRoom.GetFirstByDetails("roomboard"))
+		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("roomboard"))
 	End Function
 
 	Function onDraw:int( triggerEvent:TEventBase )
@@ -4755,7 +4820,7 @@ End Type
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, TRoom.GetFirstByDetails("betty"))
+		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("betty"))
 	End Function
 
 	Function onDraw:int( triggerEvent:TEventBase )
@@ -4817,10 +4882,10 @@ Type RoomHandler_Credits extends TRoomHandler
 	Global fadeValue:float = 0.0
 
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, TRoom.GetFirstByDetails("credits"))
+		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("credits"))
 
 		'player figure enters screen - reset the current displayed role
-		EventManager.registerListenerFunction("room.onEnter", OnEnterRoom, TRoom.GetFirstByDetails("credits"))
+		EventManager.registerListenerFunction("room.onEnter", OnEnterRoom, RoomCollection.GetFirstByDetails("credits"))
 
 
 		local role:TCreditsRole

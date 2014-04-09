@@ -217,7 +217,7 @@ Type TBuilding Extends TRenderable
 		endif
 
 		'assign room
-		room = TRoom.GetFirstByDetails("building")
+		room = RoomCollection.GetFirstByDetails("building")
 
 		'move elevatorplan hotspots to the elevator
 		For Local hotspot:THotspot = EachIn room.hotspots
@@ -243,7 +243,7 @@ Type TBuilding Extends TRenderable
 		If hotspot.name = "elevatorplan"
 			'Print "figure "+figure.name+" reached elevatorplan"
 
-			Local room:TRoom = TRoom.GetFirstByDetails("elevatorplan")
+			Local room:TRoom = RoomCollection.GetFirstByDetails("elevatorplan")
 			If Not room Then Print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";Return False
 
 			figure.EnterRoom(null, room)

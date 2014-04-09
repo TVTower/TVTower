@@ -262,7 +262,7 @@ Type TLuaFunctions {_exposeToLua}
 		DO NOT use this constants (even "_ME" should be deprecated)
 		a) avoids modability
 		b) AI can request room using
-			TRoom.GetFirstByDetails(...)  - get the first found room
+			RoomCollection.GetFirstByDetails(...)  - get the first found room
 			TRoom.GetByDetails(...) - get array of found rooms
 		    ID is room.GetID()
 		c) a player can have multiple studios - how to handle this with const?
@@ -309,52 +309,52 @@ Type TLuaFunctions {_exposeToLua}
 
 		ret.ME = pPlayerId
 
-		ret.ROOM_MOVIEAGENCY = TRoom.GetFirstByDetails("movieagency").id
-		ret.ROOM_ADAGENCY = TRoom.GetFirstByDetails("adagency").id
-		ret.ROOM_ROOMBOARD = TRoom.GetFirstByDetails("roomboard").id
-		ret.ROOM_PORTER = TRoom.GetFirstByDetails("porter").id
-		ret.ROOM_BETTY = TRoom.GetFirstByDetails("betty").id
-		ret.ROOM_SUPERMARKET = TRoom.GetFirstByDetails("supermarket").id
-		ret.ROOM_ROOMAGENCY = TRoom.GetFirstByDetails("roomagency").id
-		ret.ROOM_PEACEBROTHERS = TRoom.GetFirstByDetails("peacebrothers").id
-		ret.ROOM_SCRIPTAGENCY = TRoom.GetFirstByDetails("scriptagency").id
-		ret.ROOM_NOTOBACCO = TRoom.GetFirstByDetails("notobacco").id
-		ret.ROOM_TOBACCOLOBBY = TRoom.GetFirstByDetails("tobaccolobby").id
-		ret.ROOM_GUNSAGENCY = TRoom.GetFirstByDetails("gunsagency").id
-		ret.ROOM_VRDUBAN = TRoom.GetFirstByDetails("vrduban").id
-		ret.ROOM_FRDUBAN = TRoom.GetFirstByDetails("frduban").id
+		ret.ROOM_MOVIEAGENCY = RoomCollection.GetFirstByDetails("movieagency").id
+		ret.ROOM_ADAGENCY = RoomCollection.GetFirstByDetails("adagency").id
+		ret.ROOM_ROOMBOARD = RoomCollection.GetFirstByDetails("roomboard").id
+		ret.ROOM_PORTER = RoomCollection.GetFirstByDetails("porter").id
+		ret.ROOM_BETTY = RoomCollection.GetFirstByDetails("betty").id
+		ret.ROOM_SUPERMARKET = RoomCollection.GetFirstByDetails("supermarket").id
+		ret.ROOM_ROOMAGENCY = RoomCollection.GetFirstByDetails("roomagency").id
+		ret.ROOM_PEACEBROTHERS = RoomCollection.GetFirstByDetails("peacebrothers").id
+		ret.ROOM_SCRIPTAGENCY = RoomCollection.GetFirstByDetails("scriptagency").id
+		ret.ROOM_NOTOBACCO = RoomCollection.GetFirstByDetails("notobacco").id
+		ret.ROOM_TOBACCOLOBBY = RoomCollection.GetFirstByDetails("tobaccolobby").id
+		ret.ROOM_GUNSAGENCY = RoomCollection.GetFirstByDetails("gunsagency").id
+		ret.ROOM_VRDUBAN = RoomCollection.GetFirstByDetails("vrduban").id
+		ret.ROOM_FRDUBAN = RoomCollection.GetFirstByDetails("frduban").id
 
-		ret.ROOM_ARCHIVE_PLAYER_ME = TRoom.GetFirstByDetails("archive", pPlayerId).id
-		ret.ROOM_NEWSAGENCY_PLAYER_ME = TRoom.GetFirstByDetails("news", pPlayerId).id
-		ret.ROOM_BOSS_PLAYER_ME = TRoom.GetFirstByDetails("chief", pPlayerId).id
-		ret.ROOM_OFFICE_PLAYER_ME = TRoom.GetFirstByDetails("office", pPlayerId).id
+		ret.ROOM_ARCHIVE_PLAYER_ME = RoomCollection.GetFirstByDetails("archive", pPlayerId).id
+		ret.ROOM_NEWSAGENCY_PLAYER_ME = RoomCollection.GetFirstByDetails("news", pPlayerId).id
+		ret.ROOM_BOSS_PLAYER_ME = RoomCollection.GetFirstByDetails("chief", pPlayerId).id
+		ret.ROOM_OFFICE_PLAYER_ME = RoomCollection.GetFirstByDetails("office", pPlayerId).id
 
 		REM
-		ret.ROOM_START_STUDIO_PLAYER_ME = TRoom.GetFirstByDetails("studio", pPlayerId).id
+		ret.ROOM_START_STUDIO_PLAYER_ME = RoomCollection.GetFirstByDetails("studio", pPlayerId).id
 
-		ret.ROOM_ARCHIVE_PLAYER1 = TRoom.GetFirstByDetails("archive", 1).id
-		ret.ROOM_NEWSAGENCY_PLAYER1 = TRoom.GetFirstByDetails("news", 1).id
-		ret.ROOM_BOSS_PLAYER1 = TRoom.GetFirstByDetails("chief", 1).id
-		ret.ROOM_OFFICE_PLAYER1 = TRoom.GetFirstByDetails("office", 1).id
-		ret.ROOM_START_STUDIO_PLAYER1 = TRoom.GetFirstByDetails("studio", 1).id
+		ret.ROOM_ARCHIVE_PLAYER1 = RoomCollection.GetFirstByDetails("archive", 1).id
+		ret.ROOM_NEWSAGENCY_PLAYER1 = RoomCollection.GetFirstByDetails("news", 1).id
+		ret.ROOM_BOSS_PLAYER1 = RoomCollection.GetFirstByDetails("chief", 1).id
+		ret.ROOM_OFFICE_PLAYER1 = RoomCollection.GetFirstByDetails("office", 1).id
+		ret.ROOM_START_STUDIO_PLAYER1 = RoomCollection.GetFirstByDetails("studio", 1).id
 
-		ret.ROOM_ARCHIVE_PLAYER2 = TRoom.GetFirstByDetails("archive", 2).id
-		ret.ROOM_NEWSAGENCY_PLAYER2 = TRoom.GetFirstByDetails("news", 2).id
-		ret.ROOM_BOSS_PLAYER2 = TRoom.GetFirstByDetails("chief", 2).id
-		ret.ROOM_OFFICE_PLAYER2 = TRoom.GetFirstByDetails("office", 2).id
-		ret.ROOM_START_STUDIO_PLAYER2 = TRoom.GetFirstByDetails("studio", 2).id
+		ret.ROOM_ARCHIVE_PLAYER2 = RoomCollection.GetFirstByDetails("archive", 2).id
+		ret.ROOM_NEWSAGENCY_PLAYER2 = RoomCollection.GetFirstByDetails("news", 2).id
+		ret.ROOM_BOSS_PLAYER2 = RoomCollection.GetFirstByDetails("chief", 2).id
+		ret.ROOM_OFFICE_PLAYER2 = RoomCollection.GetFirstByDetails("office", 2).id
+		ret.ROOM_START_STUDIO_PLAYER2 = RoomCollection.GetFirstByDetails("studio", 2).id
 
-		ret.ROOM_ARCHIVE_PLAYER3 = TRoom.GetFirstByDetails("archive", 3).id
-		ret.ROOM_NEWSAGENCY_PLAYER3 = TRoom.GetFirstByDetails("news", 3).id
-		ret.ROOM_BOSS_PLAYER3 = TRoom.GetFirstByDetails("chief", 3).id
-		ret.ROOM_OFFICE_PLAYER3 = TRoom.GetFirstByDetails("office", 3).id
-		ret.ROOM_START_STUDIO_PLAYER3 = TRoom.GetFirstByDetails("studio", 3).id
+		ret.ROOM_ARCHIVE_PLAYER3 = RoomCollection.GetFirstByDetails("archive", 3).id
+		ret.ROOM_NEWSAGENCY_PLAYER3 = RoomCollection.GetFirstByDetails("news", 3).id
+		ret.ROOM_BOSS_PLAYER3 = RoomCollection.GetFirstByDetails("chief", 3).id
+		ret.ROOM_OFFICE_PLAYER3 = RoomCollection.GetFirstByDetails("office", 3).id
+		ret.ROOM_START_STUDIO_PLAYER3 = RoomCollection.GetFirstByDetails("studio", 3).id
 
-		ret.ROOM_ARCHIVE_PLAYER4 = TRoom.GetFirstByDetails("archive", 4).id
-		ret.ROOM_NEWSAGENCY_PLAYER4 = TRoom.GetFirstByDetails("news", 4).id
-		ret.ROOM_BOSS_PLAYER4 = TRoom.GetFirstByDetails("chief", 4).id
-		ret.ROOM_OFFICE_PLAYER4 = TRoom.GetFirstByDetails("office", 4).id
-		ret.ROOM_START_STUDIO_PLAYER4 = TRoom.GetFirstByDetails("studio", 4).id
+		ret.ROOM_ARCHIVE_PLAYER4 = RoomCollection.GetFirstByDetails("archive", 4).id
+		ret.ROOM_NEWSAGENCY_PLAYER4 = RoomCollection.GetFirstByDetails("news", 4).id
+		ret.ROOM_BOSS_PLAYER4 = RoomCollection.GetFirstByDetails("chief", 4).id
+		ret.ROOM_OFFICE_PLAYER4 = RoomCollection.GetFirstByDetails("office", 4).id
+		ret.ROOM_START_STUDIO_PLAYER4 = RoomCollection.GetFirstByDetails("studio", 4).id
 		End Rem
 
 		Return ret
@@ -386,11 +386,11 @@ rem
 endrem
 
 	Method GetFirstRoomByDetails:TRoom(roomName:String, owner:Int=-1000)
-		return TRoom.GetFirstByDetails(roomName, owner)
+		return RoomCollection.GetFirstByDetails(roomName, owner)
 	End Method
 
 	Method GetRoom:TRoom(id:int)
-		return TRoom.Get(id)
+		return RoomCollection.Get(id)
 	End Method
 
 
@@ -423,7 +423,7 @@ endrem
 	'return the floor of a room
 	'attention: the floor of the first found door is returned
 	Method getRoomFloor:Int(roomId:Int = 0)
-		Local room:TRoom = TRoom.Get(roomId)
+		Local room:TRoom = RoomCollection.Get(roomId)
 		if room
 			Local door:TRoomDoor = TRoomDoor.GetMainDoorToRoom(room)
 			If door Then Return door.Pos.y
@@ -435,7 +435,7 @@ endrem
 	'send figure to a specific room
 	'attention: the first found door is used
 	Method doGoToRoom:Int(roomId:Int = 0)
-		Local room:TRoom = TRoom.Get(roomId)
+		Local room:TRoom = RoomCollection.Get(roomId)
 
 		Local door:TRoomDoor = TRoomDoor.GetMainDoorToRoom(room)
 		If door
@@ -454,7 +454,7 @@ endrem
 
 
 	Method isRoomUnused:Int(roomId:Int = 0)
-		Local Room:TRoom = TRoom.Get(roomId)
+		Local Room:TRoom = RoomCollection.Get(roomId)
 		If not Room then return self.RESULT_NOTFOUND
 		if not Room.hasOccupant() then return self.RESULT_OK
 

@@ -117,6 +117,16 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Method onLoad:int()
 		'reassign sprite
 		if spriteName then sprite = Assets.GetSprite(spriteName)
+
+		'reassign rooms
+		if inRoom then inRoom = RoomCollection.Get(inRoom.id)
+		if fromRoom then fromRoom = RoomCollection.Get(fromRoom.id)
+		if fromDoor then fromDoor = TRoomDoor.Get(fromDoor.id)
+		'set as room occupier again (so rooms occupant list gets refilled)
+		if inRoom and not inRoom.isOccupant(self)
+			inRoom.addOccupant(Self)
+		endif
+
 	End Method
 
 
@@ -453,11 +463,8 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 		'RON: if self.id=1 then print "1/4 | figure: LeaveRoom | figure.id:"+self.id
 
-		If not inRoom
-			'also reset from (from nothing to nothing :D) ?
-			'EnterRoom(null)
-			return TRUE
-		endif
+		If not inRoom then return TRUE
+
 		'this sends out an event that we want to leave the room
 		'if successfull, event "room.onLeave" will get triggered - which we listen to
 

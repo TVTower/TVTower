@@ -373,7 +373,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'TProfiler.Enter("Draw-Room")
 		'drawing a subscreen (not the room itself)
-		if background and not currentRoom.background then background.Draw(20,10)
+		if background and not currentRoom.GetBackground() then background.Draw(20,10)
 		currentRoom.Draw()
 		'TProfiler.Leave("Draw-Room")
 	End Method

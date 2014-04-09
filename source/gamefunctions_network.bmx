@@ -381,7 +381,7 @@ Type TNetworkHelper
 		If inRoomID <= 0 Then figure.inRoom = Null
 		If figure.inRoom
 			If inRoomID > 0 and figure.inRoom.id <> inRoomID
-				figure.inRoom = TRoom.Get(inRoomID)
+				figure.inRoom = RoomCollection.Get(inRoomID)
 			EndIf
 		EndIf
 
@@ -391,7 +391,7 @@ Type TNetworkHelper
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom
 			If figure.fromRoom.id <> fromRoomID
-				figure.fromRoom = TRoom.Get( fromRoomID )
+				figure.fromRoom = RoomCollection.Get( fromRoomID )
 				figure.fromDoor = TRoomDoor.Get( fromDoorID )
 			endif
 		EndIf

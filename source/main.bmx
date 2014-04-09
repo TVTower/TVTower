@@ -2404,7 +2404,7 @@ Type GameEvents
 		'refill if needed
 		If Game.refillMovieAgencyTime <= 0
 			'delay if there is one in this room
-			If TRoom.GetFirstByDetails("movieagency").hasOccupant()
+			If RoomCollection.GetFirstByDetails("movieagency").hasOccupant()
 				Game.refillMovieAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
@@ -2416,7 +2416,7 @@ Type GameEvents
 		EndIf
 		If Game.refillAdAgencyTime <= 0
 			'delay if there is one in this room
-			If TRoom.GetFirstByDetails("adagency").hasOccupant()
+			If RoomCollection.GetFirstByDetails("adagency").hasOccupant()
 				Game.refillAdAgencyTime :+ 15
 				Game.refillAdAgencyTime :+ 15
 			Else
@@ -2652,16 +2652,16 @@ Type AppEvents
 				If KEYMANAGER.IsHit(KEY_3) Game.SetActivePlayer(3)
 				If KEYMANAGER.IsHit(KEY_4) Game.SetActivePlayer(4)
 
-				If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(TRoom.GetFirstByDetails("adagency") )
-				If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(TRoom.GetFirstByDetails("archive", Game.playerID) )
-				If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(TRoom.GetFirstByDetails("betty") )
-				If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(TRoom.GetFirstByDetails("movieagency"))
-				If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(TRoom.GetFirstByDetails("office", Game.playerID))
-				If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(TRoom.GetFirstByDetails("chief", Game.playerID))
+				If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("adagency") )
+				If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", Game.playerID) )
+				If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("betty") )
+				If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("movieagency"))
+				If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", Game.playerID))
+				If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", Game.playerID))
 				'e wie "employees" :D
-				If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(TRoom.GetFirstByDetails("credits"))
-				If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(TRoom.GetFirstByDetails("news", Game.playerID))
-				If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(TRoom.GetFirstByDetails("roomboard"))
+				If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("credits"))
+				If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", Game.playerID))
+				If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("roomboard"))
 			EndIf
 			If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
 			If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
@@ -2829,6 +2829,26 @@ Type AppEvents
 			Else
 				Assets.fonts.baseFont.draw("recalculate", 25, startY + 15)
 			EndIf
+
+			'room states: debug fuer sushitv
+			local occupants:string = "-"
+			if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
+				occupants = ""
+				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
+					occupants :+ figure.name+" "
+				next
+			Endif
+			Assets.fonts.baseFont.draw("AdA. : "+occupants, 25, 350)
+
+			occupants = "-"
+			if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
+				occupants = ""
+				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
+					occupants :+ figure.name+" "
+				next
+			Endif
+			Assets.fonts.baseFont.draw("MoA. : "+occupants, 25, 365)
+
 		EndIf
 		If Game.DebugQuoteInfos
 			Game.DebugAudienceInfo.Draw()
