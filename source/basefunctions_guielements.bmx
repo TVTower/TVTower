@@ -3540,7 +3540,11 @@ endrem
 		If fromList = toList
 			'if the handler took care of everything, we skip
 			'removing and adding the item
-			If fromList.HandleDropBack(triggerEvent) Then Return True
+			If fromList.HandleDropBack(triggerEvent)
+				'inform others about that dropback
+				EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropBack", null , item, toList))
+				Return True
+			endif
 		EndIf
 
 		'move item if possible

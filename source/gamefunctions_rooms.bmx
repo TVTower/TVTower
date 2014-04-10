@@ -1035,6 +1035,9 @@ Type RoomHandler_Office extends TRoomHandler
 		'handle dragging of dayChangeProgrammePlanElements (eg. when dropping an item on them)
 		'in this case - send them to GuiManager (like freshly created to avoid a history)
 		EventManager.registerListenerFunction("guiobject.onDrag", onDragProgrammePlanElement, "TGUIProgrammePlanElement")
+		'we want to handle drops on the same guilist slot (might be other planning day)
+		EventManager.registerListenerFunction("guiobject.onDropBack", onDropProgrammePlanElementBack, "TGUIProgrammePlanElement")
+
 		'intercept dragging items if we want a SHIFT/CTRL-copy/nextepisode
 		EventManager.registerListenerFunction("guiobject.onTryDrag", onTryDragProgrammePlanElement, "TGUIProgrammePlanElement")
 		'handle dropping at the end of the list (for dragging overlapped items)
@@ -1282,6 +1285,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
 		local slot:int = triggerEvent.GetData().getInt("slot", -1)
+	
 		if not list or not item or slot = -1 then return FALSE
 
 		'we removed the item but do not want the planner to know
@@ -1304,6 +1308,32 @@ Type RoomHandler_Office extends TRoomHandler
 	End Function
 
 
+	'handle if a programme is dropped on the same slot but different
+	'planning day
+	Function onDropProgrammePlanElementBack:int(triggerEvent:TEventBase)
+		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetReceiver())
+		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetSender())
+
+		'is the gui item coming from another day?
+		'remove it from there (was "silenced" during automatic mode)
+		if List = GuiListProgrammes or list = GuiListAdvertisements
+			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
+				if item.lastList = GuiListAdvertisements
+					if not Game.getPlayer().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
+						return False
+					Endif
+				ElseIf item.lastList = GuiListProgrammes
+					if not Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
+						return False
+					Endif
+				Endif
+			Endif
+		EndIf		
+
+	End Function
+
 	'add the material to the programme plan
 	'added shortcuts for faster placement here as this event
 	'is emitted on successful placements (avoids multiple dragged blocks
@@ -1317,16 +1347,53 @@ Type RoomHandler_Office extends TRoomHandler
 		'we removed the item but do not want the planner to know
 		if not talkToProgrammePlanner then return TRUE
 
+
+		'is the gui item coming from another day?
+		'remove it from there (was "silenced" during automatic mode)
+		if List = GuiListProgrammes or list = GuiListAdvertisements
+			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
+				if item.lastList = GuiListAdvertisements
+					if not Game.getPlayer().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
+						return False
+					Endif
+				ElseIf item.lastList = GuiListProgrammes
+					if not Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
+						return False
+					Endif
+				Endif
+			Endif
+		EndIf
+
+
 		if list = GuiListProgrammes
+			'is the gui item coming from another day?
+			'remove it from there (was "silenced" during automatic mode)
+			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
+				if not Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+					print "[ERROR] dropped item on programmelist - removal from other day FAILED"
+					return False
+				endif
+			Endif
+			
 			if not Game.getPlayer().ProgrammePlan.SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
+			'set indicator on which day the item is planned
+			'  (this saves some processing time - else we could request
+			'   the day from the players ProgrammePlan)
+			item.plannedOnDay = list.planDay
 		elseif list = GuiListAdvertisements
 			if not Game.getPlayer().ProgrammePlan.SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
+			'set indicator on which day the item is planned
+			'  (this saves some processing time - else we could request
+			'   the day from the players ProgrammePlan)
+			item.plannedOnDay = list.planDay
 		else
 			print "[ERROR] dropped item on unknown list - adding to programmeplan at "+slot+":00 - FAILED"
 			return FALSE
@@ -1535,7 +1602,6 @@ Type RoomHandler_Office extends TRoomHandler
 			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-
 				ChangePlanningDay(planningDay+1)
 			endif
 		EndIf
@@ -1688,9 +1754,23 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'deletes all gui elements (eg. for rebuilding)
 	Function RemoveAllGuiElements:int(removeDragged:int=TRUE)
-		GuiListProgrammes.EmptyList()
-		GuiListAdvertisements.EmptyList()
-		'remove dragged ones
+'		GuiListProgrammes.EmptyList()
+'		GuiListAdvertisements.EmptyList()
+
+'		Rem
+'			this is problematic as this could bug out the programmePlan
+		'keep the dragged entries if wanted so
+		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
+			if not guiObject then continue
+			if removeDragged or not guiObject.IsDragged() then guiObject.remove()
+		Next
+		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
+			if not guiObject then continue
+			if removeDragged or not guiObject.IsDragged() then guiObject.remove()
+		Next
+'		End Rem
+		
+		'remove dragged ones of gui manager
 		if removeDragged
 			For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.listDragged
 				guiObject.remove()
@@ -1706,6 +1786,10 @@ Type RoomHandler_Office extends TRoomHandler
 		planningDay = day
 		'limit to start day
 		If planningDay < Game.GetDay(Game.timeStart) Then planningDay = Game.GetDay(Game.timeStart)
+
+		'adjust slotlists (to hide ghosts on differing days)
+		GuiListProgrammes.planDay = planningDay
+		GuiListAdvertisements.planDay = planningDay
 
 		'change to silent mode: do not interact with programmePlanner
 		talkToProgrammePlanner = FALSE
@@ -2644,9 +2728,9 @@ endrem
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
 			If ArchiveProgrammeList.GetOpen() = 0
-				if TFunctions.IsIn(MouseManager.x, MouseManager.y, 605,65,120,90) Or TFunctions.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
+				if TFunctions.IsIn(MouseManager.x, MouseManager.y, 605,65,160,90) Or TFunctions.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
 					Game.cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1)
+					If MOUSEMANAGER.IsHit(1)
 						MOUSEMANAGER.resetKey(1)
 						Game.cursorstate = 0
 						ArchiveProgrammeList.SetOpen(1)

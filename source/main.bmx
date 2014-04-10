@@ -59,6 +59,10 @@ Include "gamefunctions_debug.bmx"
 '===== SETUP LOGGER FILTER =====
 TDevHelper.setLogMode(LOG_ALL)
 TDevHelper.setPrintMode(LOG_ALL ) 'all but ai
+
+'print "ALLE MELDUNGEN AUS"
+'TDevHelper.SetPrintMode(0)
+
 'TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages

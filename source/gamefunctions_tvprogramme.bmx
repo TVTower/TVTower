@@ -471,6 +471,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 	Field lastList:TGUISlotList
 	Field lastListType:int = 0
 	Field lastSlot:int = 0
+	Field plannedOnDay:int = -1
 	Field imageBaseName:string = "pp_programmeblock1"
 
 	Global ghostAlpha:float = 0.8
@@ -691,9 +692,29 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 	End Method
 
 
+	'returns whether a ghost can be drawn or false, if there is a
+	'reason not to do so 
+	Method CanDrawGhost:int()
+		if IsDragged() and TGUIProgrammePlanSlotList(lastList)
+			'if guiblock is planned on another day then what the list
+			'of the ghost has set, we wont display the ghost
+			if plannedOnDay <> TGUIProgrammePlanSlotList(lastList).planDay
+				return False
+			else
+				return True
+			endif
+		endif
+		return TRUE
+	End Method
+
+
 	'draw the programmeblock inclusive text
     'zeichnet den Programmblock inklusive Text
 	Method Draw:int()
+		'check if we have to skip ghost drawing
+		if hasOption(GUI_OBJECT_DRAWMODE_GHOST) and not CanDrawGhost() then return False
+		
+		
 		if not broadcastMaterial
 			SetColor 255,0,0
 			DrawRect(GetScreenX(), GetScreenY(), 150,20)
@@ -904,6 +925,9 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 	'koennen
 	Field zoneLeft:TRectangle		= TRectangle.Create(0, 0, 200, 350)
 	Field zoneRight:TRectangle		= TRectangle.Create(300, 0, 200, 350)
+
+	'what day this slotlist is planning currently
+	Field planDay:int = -1
 
 	'holding the object representing a programme started a day earlier (eg. 23:00-01:00)
 	'this should not get handled by panels but the list itself (only interaction is
@@ -1559,7 +1583,9 @@ Type TgfxProgrammelist extends TPlannerList
 						EndIf
 					elseif mode = MODE_ARCHIVE
 						'create a dragged block
-						new TGUIProgrammeLicence.CreateWithLicence(licence).drag()
+						local obj:TGUIProgrammeLicence = new TGUIProgrammeLicence.CreateWithLicence(licence)
+						obj.SetLimitToState("archive")
+						obj.drag()
 
 						SetOpen(0)
 						doneSomething = true
@@ -1634,7 +1660,7 @@ Type TgfxProgrammelist extends TPlannerList
 			If box.containsXY(MouseManager.x,MouseManager.y)
 				If MOUSEMANAGER.IsClicked(1)
 					'create and drag new block
-					new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence) ).drag()
+					new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence), "programmePlanner" ).drag()
 
 					SetOpen(0)
 					MOUSEMANAGER.resetKey(1)
@@ -1672,7 +1698,7 @@ Type TgfxProgrammelist extends TPlannerList
 		EndIf
 
 		'close if clicked outside - simple mode: so big rect
-		if MouseManager.isHit(1)
+		if MouseManager.isHit(1)' and mode=MODE_ARCHIVE
 			local closeMe:int = TRUE
 			'in all cases the genre selector is opened
 			if genreRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
