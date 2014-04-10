@@ -1021,8 +1021,6 @@ Type RoomHandler_Office extends TRoomHandler
 		'begin drop - to intercept if dropping ad to programme which does not allow Ad-Show
 		EventManager.registerListenerFunction("guiobject.onTryDropOnTarget", onTryDropProgrammePlanElement, "TGUIProgrammePlanElement")
 		'drag/drop ... from or to one of the two lists
-'		EventManager.registerListenerFunction("guiList.TryRemoveItem", onTryRemoveItemFromSlotList, GuiListProgrammes)
-'		EventManager.registerListenerFunction("guiList.TryRemoveItem", onTryRemoveItemFromSlotList, GuiListAdvertisements)
 		EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListProgrammes)
 		EventManager.registerListenerFunction("guiList.removeItem", onRemoveItemFromSlotList, GuiListAdvertisements)
 		EventManager.registerListenerFunction("guiList.addItem", onAddItemToSlotList, GuiListProgrammes)
@@ -1241,6 +1239,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'dragging is ok
 		return TRUE
 	End Function
+
 
 	'handle adding items at the end of a day
 	'so the removed material can be recreated as dragged gui items
@@ -3962,7 +3961,7 @@ Type RoomHandler_Chief extends TRoomHandler
 		Next
 
 		For Local dialog:TDialogue = EachIn Dialogues
-			If dialog.Update(MOUSEMANAGER.IsHit(1)) = 0
+			If dialog.Update() = 0
 				room.Leave()
 				Dialogues.Remove(dialog)
 			endif

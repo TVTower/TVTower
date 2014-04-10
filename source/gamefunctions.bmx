@@ -1601,9 +1601,12 @@ Type TDialogue
 	End Method
 
 
-	Method Update:Int(isMouseHit:Int = 0)
-		Local clicked:Int = MouseManager.isHit(1) + MouseManager.IsDown(1)
-		If clicked >= 1 Then clicked = 1;MouseManager.resetKey(1)
+	Method Update:Int()
+		Local clicked:Int = 0
+		if MouseManager.isClicked(1)
+			clicked = 1
+			MouseManager.resetKey(1)
+		endif
 		Local nextText:Int = _currentText
 		If Self._texts.Count() > 0
 

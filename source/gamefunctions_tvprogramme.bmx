@@ -1656,9 +1656,12 @@ Type TgfxProgrammelist extends TPlannerList
 		If not enabled then return FALSE
 
 		'clicking on the genre selector -> select Genre
-		If MOUSEMANAGER.IsClicked(1) AND TFunctions.MouseIn(Pos.x,Pos.y, Assets.getSprite("genres_entry0").area.GetW(), Assets.getSprite("genres_entry0").area.GetH()*self.MaxGenres)
+		'instead of isClicked (butten must be "normal" then)
+		'we use "hit" (as soon as mouse button down)
+		If MOUSEMANAGER.IsHit(1) AND TFunctions.MouseIn(Pos.x,Pos.y, Assets.getSprite("genres_entry0").area.GetW(), Assets.getSprite("genres_entry0").area.GetH()*self.MaxGenres)
 			SetOpen(2)
 			currentgenre = Floor((MouseManager.y - Pos.y - 1) / Assets.getSprite("genres_entry0").area.GetH())
+			MOUSEMANAGER.ResetKey(1)
 		EndIf
 
 		'if the genre is selected, also take care of its programmes
@@ -1669,7 +1672,7 @@ Type TgfxProgrammelist extends TPlannerList
 		EndIf
 
 		'close if clicked outside - simple mode: so big rect
-		if MouseManager.isClicked(1) and 1=2
+		if MouseManager.isHit(1)
 			local closeMe:int = TRUE
 			'in all cases the genre selector is opened
 			if genreRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
@@ -1764,11 +1767,11 @@ Type TgfxContractlist extends TPlannerList
 					hoveredAdContract = contract
 
 					Game.cursorstate = 1
-					If MOUSEMANAGER.IsClicked(1)
+					If MOUSEMANAGER.IsHit(1)
 						MOUSEMANAGER.resetKey(1)
-						local gui:TGUIProgrammePlanElement = new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TAdvertisement.Create(contract) )
-						gui.drag()
-						self.SetOpen(0)
+						new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TAdvertisement.Create(contract), "programmePlanner" ).drag()
+						'close list
+						SetOpen(0)
 					EndIf
 				EndIf
 				box.position.MoveXY(0, gfxTape.area.GetH() + 1)
@@ -1780,8 +1783,8 @@ Type TgfxContractlist extends TPlannerList
 			MOUSEMANAGER.resetKey(2)
 		endif
 
-		'close if clicked outside - simple mode: so big rect
-		if MouseManager.isClicked(1)
+		'close if mouse hit outside - simple mode: so big rect
+		if MouseManager.IsHit(1)
 			if not tapeRect.containsXY(MouseManager.x, MouseManager.y)
 				SetOpen(0)
 				MouseManager.ResetKey(1)
