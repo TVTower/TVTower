@@ -159,6 +159,11 @@ Type TBroadcastManager
 		Next
 		Return result
 	End Method
+	
+	'Test für den UnitTest
+	Method GetTastValue:Int()
+		Return 5
+	End Method
 End Type
 
 

@@ -32,15 +32,19 @@ Include "gamefunctions_betty.bmx"
 Include "gamefunctions_screens.bmx"
 
 
+Global RunGameMode:Int = 2 '0 = Load nothing; 1 = Basic initialize; 2 = Run Game
+
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
 TDevHelper.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 
-
-Global App:TApp = TApp.Create(30,-1, TRUE) 'create with screen refreshrate and vsync
-App.LoadResources("config/resources.xml")
+Global App:TApp = null
+If RunGameMode >= 1 Then
+	App = TApp.Create(30,-1, TRUE) 'create with screen refreshrate and vsync
+	App.LoadResources("config/resources.xml")
+Endif
 
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
@@ -1296,78 +1300,93 @@ Type TFigureJanitor Extends TFigure
 End Type
 
 
-
-
-'#Region: Globals, Player-Creation
-Global Interface:TInterface		= TInterface.Create()
-Global Game:TGame	  			= new TGame.Create()
-Global Building:TBuilding		= new TBuilding.Create()
-'init sound receiver
-TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
-
-
-EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-'figures need building (for location) - so create AFTER building
-Game.InitializeBasics()
-'creates all Rooms - with the names assigned at this moment
-Init_CreateAllRooms()
-
-'RON
-Local haveNPCs:Int = True
-If haveNPCs
-	New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2, 65)
-	New TFigurePostman.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
-	New TFigurePostman.CreateFigure("Bote2", Assets.GetSprite("BoteLeer"), 410, 1, -65, 0)
-EndIf
-
-
-TDevHelper.Log("Base", "Creating GUIelements", LOG_DEBUG)
-Global InGame_Chat:TGUIChat = New TGUIChat.Create(520,418,280,190,"InGame")
-InGame_Chat.setDefaultHideEntryTime(10000)
-InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
-InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
-InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
-InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
-InGame_Chat.guiList.autoHideScroller = True
-'reposition input
-InGame_Chat.guiInput.rect.position.setXY( 275, 387)
-InGame_Chat.guiInput.setMaxLength(200)
-InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
-InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
-InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
-InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
-InGame_Chat.guiInput.SetValueDisplacement(0,5)
-
-
-'connect click and change events to the gui objects
-TGameEvents.Init()
+Global Interface:TInterface		= null
+Global Game:TGame	  			= null
+Global Building:TBuilding		= null
+Global InGame_Chat:TGUIChat		= null
+	
+If RunGameMode >= 2 Then
+	'#Region: Globals, Player-Creation
+	Interface		= TInterface.Create()
+	Game	  			= new TGame.Create()
+	Building		= new TBuilding.Create()
+	'init sound receiver
+	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
+	
+	
+	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+	'figures need building (for location) - so create AFTER building
+	Game.InitializeBasics()
+	'creates all Rooms - with the names assigned at this moment
+	Init_CreateAllRooms()
+	
+	'RON
+	Local haveNPCs:Int = True
+	If haveNPCs
+		New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2, 65)
+		New TFigurePostman.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
+		New TFigurePostman.CreateFigure("Bote2", Assets.GetSprite("BoteLeer"), 410, 1, -65, 0)
+	EndIf
+	
+	
+	TDevHelper.Log("Base", "Creating GUIelements", LOG_DEBUG)
+	InGame_Chat = New TGUIChat.Create(520,418,280,190,"InGame")
+	InGame_Chat.setDefaultHideEntryTime(10000)
+	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
+	InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
+	InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
+	InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
+	InGame_Chat.guiList.autoHideScroller = True
+	'reposition input
+	InGame_Chat.guiInput.rect.position.setXY( 275, 387)
+	InGame_Chat.guiInput.setMaxLength(200)
+	InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
+	InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
+	InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
+	InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
+	InGame_Chat.guiInput.SetValueDisplacement(0,5)
+	
+	
+	'connect click and change events to the gui objects
+	TGameEvents.Init()
+Endif
 
 
 Include "gamefunctions_network.bmx"
 
-SetColor 255,255,255
+If RunGameMode >= 2 Then
+	SetColor 255,255,255
+EndIf
 
 Global PlayerDetailsTimer:Int = 0
-Global MainMenuJanitor:TFigureJanitor = New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 250, 2, 65)
-MainMenuJanitor.useElevator = False
-MainMenuJanitor.useDoors = False
-MainMenuJanitor.useAbsolutePosition = True
-MainMenuJanitor.BoredCleanChance = 30
-MainMenuJanitor.MovementRangeMinX = 0
-MainMenuJanitor.MovementRangeMaxX = 800
-MainMenuJanitor.rect.position.SetY(600)
+Global MainMenuJanitor:TFigureJanitor
+Global ScreenGameSettings:TScreen_GameSettings = null
+Global GameScreen_Building:TInGameScreen_Building = null
 
+If RunGameMode >= 2 Then
+	PlayerDetailsTimer = 0
+	MainMenuJanitor = New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 250, 2, 65)
 
-'add menu screens
-Global ScreenGameSettings:TScreen_GameSettings = New TScreen_GameSettings.Create("GameSettings")
-Global GameScreen_Building:TInGameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
-'Menu
-ScreenCollection.Add(New TScreen_MainMenu.Create("MainMenu"))
-ScreenCollection.Add(ScreenGameSettings)
-ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
-ScreenCollection.Add(New TScreen_StartMultiplayer.Create("StartMultiplayer"))
-'Game screens
-ScreenCollection.Add(GameScreen_Building)
+	MainMenuJanitor.useElevator = False
+	MainMenuJanitor.useDoors = False
+	MainMenuJanitor.useAbsolutePosition = True
+	MainMenuJanitor.BoredCleanChance = 30
+	MainMenuJanitor.MovementRangeMinX = 0
+	MainMenuJanitor.MovementRangeMaxX = 800
+	MainMenuJanitor.rect.position.SetY(600)
+	
+	
+	'add menu screens
+	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
+	GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
+	'Menu
+	ScreenCollection.Add(New TScreen_MainMenu.Create("MainMenu"))
+	ScreenCollection.Add(ScreenGameSettings)
+	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
+	ScreenCollection.Add(New TScreen_StartMultiplayer.Create("StartMultiplayer"))
+	'Game screens
+	ScreenCollection.Add(GameScreen_Building)
+Endif
 
 '===== GAME SCREENS : MENUS =====
 
@@ -2222,8 +2241,10 @@ End Type
 
 Global headerFont:TGW_BitmapFont
 
-'go into the start menu
-Game.SetGamestate(TGame.STATE_MAINMENU)
+If RunGameMode >= 2 Then
+	'go into the start menu
+	Game.SetGamestate(TGame.STATE_MAINMENU)
+Endif
 
 
 
@@ -2942,40 +2963,43 @@ Global Init_Complete:Int = 0
 
 'Init EventManager
 'could also be done during update ("if not initDone...")
-EventManager.Init()
-App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
+If RunGameMode >= 2 Then
+	EventManager.Init()
+	App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
+Endif
 
 Global RefreshInput:Int = True
 ?Threaded
 Global RefreshInputMutex:TMutex = CreateMutex()
 ?
 
-If Not TApp.ExitApp And Not AppTerminate()
-'	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
-	Repeat
-		App.Timer.loop()
-
-		'we cannot fetch keystats in threads
-		'so we have to do it 100% in the main thread - same for mouse
-	?Threaded
-	If RefreshInput
-		LockMutex(RefreshInputMutex)
-		KEYMANAGER.changeStatus()
-		MOUSEMANAGER.changeStatus()
-		RefreshInput = False
-		UnlockMutex(RefreshInputMutex)
-	EndIf
-	?
-
-		'process events not directly triggered
-		'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
-		EventManager.update()
-
-		'If RandRange(0,20) = 20 Then GCCollect()
-	Until AppTerminate() Or TApp.ExitApp
-	If Game.networkgame Then Network.DisconnectFromServer()
-EndIf 'not exit game
-
+If RunGameMode >= 2 Then
+	If Not TApp.ExitApp And Not AppTerminate()
+	'	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
+		Repeat
+			App.Timer.loop()
+	
+			'we cannot fetch keystats in threads
+			'so we have to do it 100% in the main thread - same for mouse
+		?Threaded
+		If RefreshInput
+			LockMutex(RefreshInputMutex)
+			KEYMANAGER.changeStatus()
+			MOUSEMANAGER.changeStatus()
+			RefreshInput = False
+			UnlockMutex(RefreshInputMutex)
+		EndIf
+		?
+	
+			'process events not directly triggered
+			'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
+			EventManager.update()
+	
+			'If RandRange(0,20) = 20 Then GCCollect()
+		Until AppTerminate() Or TApp.ExitApp
+		If Game.networkgame Then Network.DisconnectFromServer()
+	EndIf 'not exit game
+Endif
 
 OnEnd( EndHook )
 Function EndHook()
