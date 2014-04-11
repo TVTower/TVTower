@@ -1,7 +1,8 @@
 ﻿'Application: TVGigant/TVTower
-'Author: Ronny Otto
+'Author: Ronny Otto & Manuel Vögele 
 
 SuperStrict
+
 Import brl.timer
 Import brl.Graphics
 Import "basefunctions_network.bmx"
@@ -23,29 +24,13 @@ Import brl.D3D7Max2D
 Import brl.Threads
 ?
 
+'===== Includes =====
 Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 												'		- base class For buttons And extension newsbutton
 												'		- stationmap-handling, -creation ...
 Include "game.stationmap.bmx"
-
 Include "gamefunctions_betty.bmx"
 Include "gamefunctions_screens.bmx"
-
-
-Global RunGameMode:Int = 2 '0 = Load nothing; 1 = Basic initialize; 2 = Run Game
-
-Global VersionDate:String		= LoadText("incbin::source/version.txt")
-Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
-AppTitle = "TVTower: " + VersionString + " " + CopyrightString
-TDevHelper.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
-
-Global App:TApp = null
-If RunGameMode >= 1 Then
-	App = TApp.Create(30,-1, TRUE) 'create with screen refreshrate and vsync
-	App.LoadResources("config/resources.xml")
-Endif
-
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
@@ -57,8 +42,45 @@ Include "gamefunctions_people.bmx"				'Angestellte und Personen
 Include "gamefunctions_publicimage.bmx"			'Das SenderImage
 Include "gamefunctions_production.bmx"			'Alles was mit Filmproduktion zu tun hat
 Include "gamefunctions_debug.bmx"
+Include "gamefunctions_network.bmx"
 
+Include "game.player.bmx"
+Include "game.playerfinance.bmx"
+Include "gamefunctions_elevator.bmx"
+Include "gamefunctions_figures.bmx"
+Include "game.building.bmx"
+Include "game.newsagency.bmx"
 
+'===== Globals =====
+Global VersionDate:String		= LoadText("incbin::source/version.txt")
+Global VersionString:String		= "version of " + VersionDate
+Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
+Global App:TApp = null
+Global ArchiveProgrammeList:TgfxProgrammelist
+Global SaveError:TError
+Global LoadError:TError
+Global NewsAgency:TNewsAgency
+Global Interface:TInterface		= null
+Global Game:TGame	  			= null
+Global Building:TBuilding		= null
+Global InGame_Chat:TGUIChat		= null	
+Global PlayerDetailsTimer:Int = 0
+Global MainMenuJanitor:TFigureJanitor
+Global ScreenGameSettings:TScreen_GameSettings = null
+Global GameScreen_Building:TInGameScreen_Building = null
+Global LogoTargetY:Float = 20
+Global LogoCurrY:Float = 100
+Global headerFont:TGW_BitmapFont
+Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
+Global Init_Complete:Int = 0
+Global RefreshInput:Int = True
+?Threaded
+Global RefreshInputMutex:TMutex = CreateMutex()
+?
+
+'==== Initialize ====
+AppTitle = "TVTower: " + VersionString + " " + CopyrightString
+TDevHelper.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TDevHelper.setLogMode(LOG_ALL)
@@ -74,15 +96,7 @@ TDevHelper.setPrintMode(LOG_ALL ) 'all but ai
 
 
 
-Global ArchiveProgrammeList:TgfxProgrammelist	= New TgfxProgrammelist.Create(575, 16, 21)
 
-Global SaveError:TError, LoadError:TError
-Global NewsAgency:TNewsAgency					= New TNewsAgency.Create()
-
-TTooltip.UseFontBold	= Assets.fonts.baseFontBold
-TTooltip.UseFont 		= Assets.fonts.baseFont
-TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
-TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
 
 
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
@@ -372,8 +386,6 @@ Type TApp
 	End Function
 
 End Type
-
-
 
 
 'just an object holding all data which has to get saved
@@ -1145,15 +1157,6 @@ Type TGameEvents
 End Type
 
 
-
-Include "game.player.bmx"
-Include "game.playerfinance.bmx"
-Include "gamefunctions_elevator.bmx"
-Include "gamefunctions_figures.bmx"
-Include "game.building.bmx"
-Include "game.newsagency.bmx"
-
-
 Type TFigurePostman Extends TFigure
 	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500,0,1000)
 
@@ -1300,126 +1303,6 @@ Type TFigureJanitor Extends TFigure
 End Type
 
 
-Global Interface:TInterface		= null
-Global Game:TGame	  			= null
-Global Building:TBuilding		= null
-Global InGame_Chat:TGUIChat		= null
-	
-If RunGameMode >= 2 Then
-	'#Region: Globals, Player-Creation
-	Interface		= TInterface.Create()
-	Game	  			= new TGame.Create()
-	Building		= new TBuilding.Create()
-	'init sound receiver
-	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
-	
-	
-	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-	'figures need building (for location) - so create AFTER building
-	Game.InitializeBasics()
-	'creates all Rooms - with the names assigned at this moment
-	Init_CreateAllRooms()
-	
-	'RON
-	Local haveNPCs:Int = True
-	If haveNPCs
-		New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2, 65)
-		New TFigurePostman.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
-		New TFigurePostman.CreateFigure("Bote2", Assets.GetSprite("BoteLeer"), 410, 1, -65, 0)
-	EndIf
-	
-	
-	TDevHelper.Log("Base", "Creating GUIelements", LOG_DEBUG)
-	InGame_Chat = New TGUIChat.Create(520,418,280,190,"InGame")
-	InGame_Chat.setDefaultHideEntryTime(10000)
-	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
-	InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
-	InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
-	InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
-	InGame_Chat.guiList.autoHideScroller = True
-	'reposition input
-	InGame_Chat.guiInput.rect.position.setXY( 275, 387)
-	InGame_Chat.guiInput.setMaxLength(200)
-	InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
-	InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
-	InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
-	InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
-	InGame_Chat.guiInput.SetValueDisplacement(0,5)
-	
-	
-	'connect click and change events to the gui objects
-	TGameEvents.Init()
-Endif
-
-
-Include "gamefunctions_network.bmx"
-
-If RunGameMode >= 2 Then
-	SetColor 255,255,255
-EndIf
-
-Global PlayerDetailsTimer:Int = 0
-Global MainMenuJanitor:TFigureJanitor
-Global ScreenGameSettings:TScreen_GameSettings = null
-Global GameScreen_Building:TInGameScreen_Building = null
-
-If RunGameMode >= 2 Then
-	PlayerDetailsTimer = 0
-	MainMenuJanitor = New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 250, 2, 65)
-
-	MainMenuJanitor.useElevator = False
-	MainMenuJanitor.useDoors = False
-	MainMenuJanitor.useAbsolutePosition = True
-	MainMenuJanitor.BoredCleanChance = 30
-	MainMenuJanitor.MovementRangeMinX = 0
-	MainMenuJanitor.MovementRangeMaxX = 800
-	MainMenuJanitor.rect.position.SetY(600)
-	
-	
-	'add menu screens
-	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
-	GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
-	'Menu
-	ScreenCollection.Add(New TScreen_MainMenu.Create("MainMenu"))
-	ScreenCollection.Add(ScreenGameSettings)
-	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
-	ScreenCollection.Add(New TScreen_StartMultiplayer.Create("StartMultiplayer"))
-	'Game screens
-	ScreenCollection.Add(GameScreen_Building)
-Endif
-
-'===== GAME SCREENS : MENUS =====
-
-
-Global LogoTargetY:Float = 20
-Global LogoCurrY:Float = 100
-Function DrawMenuBackground(darkened:Int=False)
-	'no cls needed - we render a background
-	'Cls
-	SetColor 255,255,255
-	Assets.GetSprite("gfx_startscreen").Draw(0,0)
-
-
-	Select game.gamestate
-		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
-			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * App.Timer.getDelta() Else LogoCurrY = LogoTargetY
-			Assets.GetSprite("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, TPoint.Create(ALIGN_CENTER, ALIGN_TOP))
-	EndSelect
-
-	If game.gamestate = TGame.STATE_MAINMENU
-		SetColor 255,255,255
-		Assets.GetFont("Default",11, ITALICFONT).drawBlock(versionstring, 10,575, 500,20, Null,TColor.Create(75,75,140))
-		Assets.GetFont("Default",11, ITALICFONT).drawBlock(copyrightstring, 10,585, 500,20, Null,TColor.Create(60,60,120))
-	EndIf
-
-	If darkened
-		SetColor 190,220,240
-		SetAlpha 0.5
-		DrawRect(0,0,App.settings.GetWidth(),App.settings.GetHeight())
-		SetAlpha 1.0
-		SetColor 255, 255, 255
-	EndIf
-End Function
 
 
 'MENU: MAIN MENU SCREEN
@@ -2237,156 +2120,6 @@ End Type
 
 
 
-
-
-Global headerFont:TGW_BitmapFont
-
-If RunGameMode >= 2 Then
-	'go into the start menu
-	Game.SetGamestate(TGame.STATE_MAINMENU)
-Endif
-
-
-
-
-
-Function Init_Creation()
-	'create base stations
-	For Local i:Int = 1 To 4
-		Game.GetPlayer(i).GetStationMap().AddStation( TStation.Create( TPoint.Create(310, 260),-1, StationMapCollection.stationRadius, i ), False )
-	Next
-
-	'get names from settings
-	For Local i:Int = 1 To 4
-		Game.Players[i].Name		= ScreenGameSettings.guiPlayerNames[i-1].Value
-		Game.Players[i].channelname	= ScreenGameSettings.guiChannelNames[i-1].Value
-	Next
-
-
-	'set all non human players to AI
-	If Game.isGameLeader()
-		For Local playerids:Int = 1 To 4
-			If Game.IsPlayer(playerids) And Not Game.IsHumanPlayer(playerids)
-				Game.Players[playerids].SetAIControlled("res/ai/DefaultAIPlayer.lua")
-			EndIf
-		Next
-		'register ai player events - but only for game leader
-		EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.PlayersOnMinute)
-		EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.PlayersOnDay)
-	EndIf
-
-	'create series/movies in movie agency
-	RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
-
-	'8 auctionable movies/series
-	For Local i:Int = 0 To 7
-		New TAuctionProgrammeBlocks.Create(i, Null)
-	Next
-
-
-	'create random programmes and so on - but only if local game
-	If Not Game.networkgame
-		For Local playerids:Int = 1 To 4
-			Local ProgrammeCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
-			For Local i:Int = 0 To Game.startMovieAmount-1
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
-			Next
-			'give series to each player
-			For Local i:Int = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
-			Next
-			'give 1 call in
-			ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
-
-			For Local i:Int = 0 To 2
-				ProgrammeCollection.AddAdContract(New TAdContract.Create(TAdContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
-			Next
-		Next
-	EndIf
-	'abonnement for each newsgroup = 1
-
-	For Local playerids:Int = 1 To 4
-		'5 groups
-		For Local i:Int = 0 To 4
-			Game.Players[playerids].SetNewsAbonnement(i, 1)
-		Next
-	Next
-
-
-	Local lastblocks:Int=0
-	'creation of blocks for players rooms
-	For Local playerids:Int = 1 To 4
-		lastblocks = 0
-		SortList(Game.Players[playerids].ProgrammeCollection.adContracts)
-
-		Local addWidth:Int = Assets.GetSprite("pp_programmeblock1").area.GetW()
-		Local addHeight:Int = Assets.GetSprite("pp_adblock1").area.GetH()
-		Local playerCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
-		Local playerPlan:TPlayerProgrammePlan = Game.getPlayer(playerids).ProgrammePlan
-
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 0 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 1 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 2 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 3 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 4 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 5 )
-
-		Local currentLicence:TProgrammeLicence = Null
-		Local currentHour:Int = 0
-		For Local i:Int = 0 To 3
-			currentLicence = playerCollection.GetMovieLicenceAtIndex(i)
-			If Not currentLicence Then Continue
-			playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), Game.GetStartDay(), currentHour )
-			currentHour:+ currentLicence.getData().getBlocks()
-		Next
-	Next
-End Function
-
-Function Init_Colorization()
-	'colorize the images
-	Local gray:TColor = TColor.Create(200, 200, 200)
-	Local gray2:TColor = TColor.Create(100, 100, 100)
-	'unused: Assets.AddImageAsSprite("gfx_financials_barren_0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_building_sign_0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_elevator_sign_0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_elevator_sign_dragged_0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(gray2))
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_0", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(gray2))
-
-	'colorizing for every player
-	For Local i:Int = 1 To 4
-		Game.GetPlayer(i).RecolorFigure()
-		local color:TColor = Game.GetPlayer(i).color
-		'unused: Assets.AddImageAsSprite("gfx_financials_barren_"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_building_sign_"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_elevator_sign_"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_elevator_sign_dragged_"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_"+i, Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(color, i))
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_"+i, Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(color, i))
-	Next
-End Function
-
-
-Function Init_All()
-	TDevHelper.Log("Init_All()", "start", LOG_DEBUG)
-	Init_Creation()
-
-	TDevHelper.Log("Init_All()", "colorizing images corresponding to playercolors", LOG_DEBUG)
-	Init_Colorization()
-	'triggering that event also triggers app.timer.loop which triggers update/draw of
-	'gamesstates - which runs this again etc.
-	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-
-	TDevHelper.Log("Init_All()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
-	TRoomDoor.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
-
-	TDevHelper.Log("Init_All()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
-	Building.Init()	'draws additional gfx in the sprite, registers events...
-
-	TDevHelper.Log("Init_All()", "complete", LOG_LOADING)
-End Function
-
-
 Type GameEvents
 	Function PlayersOnMinute:Int(triggerEvent:TEventBase)
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
@@ -2914,6 +2647,180 @@ Type AppEvents
 End Type
 
 
+OnEnd( EndHook )
+Function EndHook()
+	TProfiler.DumpLog("log.profiler.txt")
+	TLogFile.DumpLog(False)
+End Function
+
+
+'===== COMMON FUNCTIONS =====
+
+Function DrawMenuBackground(darkened:Int=False)
+	'no cls needed - we render a background
+	'Cls
+	SetColor 255,255,255
+	Assets.GetSprite("gfx_startscreen").Draw(0,0)
+
+
+	Select game.gamestate
+		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
+			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * App.Timer.getDelta() Else LogoCurrY = LogoTargetY
+			Assets.GetSprite("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, TPoint.Create(ALIGN_CENTER, ALIGN_TOP))
+	EndSelect
+
+	If game.gamestate = TGame.STATE_MAINMENU
+		SetColor 255,255,255
+		Assets.GetFont("Default",11, ITALICFONT).drawBlock(versionstring, 10,575, 500,20, Null,TColor.Create(75,75,140))
+		Assets.GetFont("Default",11, ITALICFONT).drawBlock(copyrightstring, 10,585, 500,20, Null,TColor.Create(60,60,120))
+	EndIf
+
+	If darkened
+		SetColor 190,220,240
+		SetAlpha 0.5
+		DrawRect(0,0,App.settings.GetWidth(),App.settings.GetHeight())
+		SetAlpha 1.0
+		SetColor 255, 255, 255
+	EndIf
+End Function
+
+Function Init_Creation()
+	'create base stations
+	For Local i:Int = 1 To 4
+		Game.GetPlayer(i).GetStationMap().AddStation( TStation.Create( TPoint.Create(310, 260),-1, StationMapCollection.stationRadius, i ), False )
+	Next
+
+	'get names from settings
+	For Local i:Int = 1 To 4
+		Game.Players[i].Name		= ScreenGameSettings.guiPlayerNames[i-1].Value
+		Game.Players[i].channelname	= ScreenGameSettings.guiChannelNames[i-1].Value
+	Next
+
+
+	'set all non human players to AI
+	If Game.isGameLeader()
+		For Local playerids:Int = 1 To 4
+			If Game.IsPlayer(playerids) And Not Game.IsHumanPlayer(playerids)
+				Game.Players[playerids].SetAIControlled("res/ai/DefaultAIPlayer.lua")
+			EndIf
+		Next
+		'register ai player events - but only for game leader
+		EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.PlayersOnMinute)
+		EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.PlayersOnDay)
+	EndIf
+
+	'create series/movies in movie agency
+	RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
+
+	'8 auctionable movies/series
+	For Local i:Int = 0 To 7
+		New TAuctionProgrammeBlocks.Create(i, Null)
+	Next
+
+
+	'create random programmes and so on - but only if local game
+	If Not Game.networkgame
+		For Local playerids:Int = 1 To 4
+			Local ProgrammeCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
+			For Local i:Int = 0 To Game.startMovieAmount-1
+				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
+			Next
+			'give series to each player
+			For Local i:Int = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
+				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
+			Next
+			'give 1 call in
+			ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
+
+			For Local i:Int = 0 To 2
+				ProgrammeCollection.AddAdContract(New TAdContract.Create(TAdContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
+			Next
+		Next
+	EndIf
+	'abonnement for each newsgroup = 1
+
+	For Local playerids:Int = 1 To 4
+		'5 groups
+		For Local i:Int = 0 To 4
+			Game.Players[playerids].SetNewsAbonnement(i, 1)
+		Next
+	Next
+
+
+	Local lastblocks:Int=0
+	'creation of blocks for players rooms
+	For Local playerids:Int = 1 To 4
+		lastblocks = 0
+		SortList(Game.Players[playerids].ProgrammeCollection.adContracts)
+
+		Local addWidth:Int = Assets.GetSprite("pp_programmeblock1").area.GetW()
+		Local addHeight:Int = Assets.GetSprite("pp_adblock1").area.GetH()
+		Local playerCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
+		Local playerPlan:TPlayerProgrammePlan = Game.getPlayer(playerids).ProgrammePlan
+
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 0 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 1 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 2 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 3 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 4 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 5 )
+
+		Local currentLicence:TProgrammeLicence = Null
+		Local currentHour:Int = 0
+		For Local i:Int = 0 To 3
+			currentLicence = playerCollection.GetMovieLicenceAtIndex(i)
+			If Not currentLicence Then Continue
+			playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), Game.GetStartDay(), currentHour )
+			currentHour:+ currentLicence.getData().getBlocks()
+		Next
+	Next
+End Function
+
+Function Init_Colorization()
+	'colorize the images
+	Local gray:TColor = TColor.Create(200, 200, 200)
+	Local gray2:TColor = TColor.Create(100, 100, 100)
+	'unused: Assets.AddImageAsSprite("gfx_financials_barren_0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_building_sign_0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_elevator_sign_0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_elevator_sign_dragged_0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(gray))
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(gray2))
+	Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_0", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(gray2))
+
+	'colorizing for every player
+	For Local i:Int = 1 To 4
+		Game.GetPlayer(i).RecolorFigure()
+		local color:TColor = Game.GetPlayer(i).color
+		'unused: Assets.AddImageAsSprite("gfx_financials_barren_"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_building_sign_"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_elevator_sign_"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_elevator_sign_dragged_"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(color))
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_"+i, Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(color, i))
+		Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_"+i, Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(color, i))
+	Next
+End Function
+
+
+Function Init_All()
+	TDevHelper.Log("Init_All()", "start", LOG_DEBUG)
+	Init_Creation()
+
+	TDevHelper.Log("Init_All()", "colorizing images corresponding to playercolors", LOG_DEBUG)
+	Init_Colorization()
+	'triggering that event also triggers app.timer.loop which triggers update/draw of
+	'gamesstates - which runs this again etc.
+	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+
+	TDevHelper.Log("Init_All()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
+	TRoomDoor.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
+
+	TDevHelper.Log("Init_All()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
+	Building.Init()	'draws additional gfx in the sprite, registers events...
+
+	TDevHelper.Log("Init_All()", "complete", LOG_LOADING)
+End Function
+
+
 Function DEV_switchRoom:int(room:TRoom)
 	if not room then return FALSE
 	local figure:TFigure = Game.GetPlayer().figure
@@ -2935,45 +2842,103 @@ Function DEV_switchRoom:int(room:TRoom)
 End Function
 
 
-'===== EVENTS =====
-EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
-EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
-EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
-EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
+Function StartTVTower(start:Int=true)
+	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
+	App.LoadResources("config/resources.xml")
+	
+	ArchiveProgrammeList	= New TgfxProgrammelist.Create(575, 16, 21)
+	
+	NewsAgency				= New TNewsAgency.Create()
+	
+	TTooltip.UseFontBold	= Assets.fonts.baseFontBold
+	TTooltip.UseFont 		= Assets.fonts.baseFont
+	TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
+	TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
+	
+	
+	'#Region: Globals, Player-Creation
+	Interface		= TInterface.Create()
+	Game	  			= new TGame.Create()
+	Building		= new TBuilding.Create()
+	'init sound receiver
+	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
+	
+	
+	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
+	'figures need building (for location) - so create AFTER building
+	Game.InitializeBasics()
+	'creates all Rooms - with the names assigned at this moment
+	Init_CreateAllRooms()
+	
+	'RON
+	Local haveNPCs:Int = True
+	If haveNPCs
+		New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2, 65)
+		New TFigurePostman.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
+		New TFigurePostman.CreateFigure("Bote2", Assets.GetSprite("BoteLeer"), 410, 1, -65, 0)
+	EndIf
+	
+	
+	TDevHelper.Log("Base", "Creating GUIelements", LOG_DEBUG)
+	InGame_Chat = New TGUIChat.Create(520,418,280,190,"InGame")
+	InGame_Chat.setDefaultHideEntryTime(10000)
+	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
+	InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
+	InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
+	InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
+	InGame_Chat.guiList.autoHideScroller = True
+	'reposition input
+	InGame_Chat.guiInput.rect.position.setXY( 275, 387)
+	InGame_Chat.guiInput.setMaxLength(200)
+	InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
+	InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
+	InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
+	InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
+	InGame_Chat.guiInput.SetValueDisplacement(0,5)
+	
+	
+	'connect click and change events to the gui objects
+	TGameEvents.Init()
 
+	SetColor 255,255,255
+	
+	PlayerDetailsTimer = 0
+	MainMenuJanitor = New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 250, 2, 65)
 
-'RONKI
-Rem
-print "ALLE SPIELER DEAKTIVIERT"
-print "ALLE SPIELER DEAKTIVIERT"
-print "ALLE SPIELER DEAKTIVIERT"
-print "ALLE SPIELER DEAKTIVIERT"
-print "ALLE SPIELER DEAKTIVIERT"
-for local fig:TFigure = eachin FigureCollection.list
-	if not fig.isActivePlayer() then fig.moveable = false
-Next
-KIRunning = False
-print "[DEV] AI FIGURES deactivated"
-endrem
+	MainMenuJanitor.useElevator = False
+	MainMenuJanitor.useDoors = False
+	MainMenuJanitor.useAbsolutePosition = True
+	MainMenuJanitor.BoredCleanChance = 30
+	MainMenuJanitor.MovementRangeMinX = 0
+	MainMenuJanitor.MovementRangeMaxX = 800
+	MainMenuJanitor.rect.position.SetY(600)
+	
+	
+	'add menu screens
+	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
+	GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
+	'Menu
+	ScreenCollection.Add(New TScreen_MainMenu.Create("MainMenu"))
+	ScreenCollection.Add(ScreenGameSettings)
+	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
+	ScreenCollection.Add(New TScreen_StartMultiplayer.Create("StartMultiplayer"))
+	'Game screens
+	ScreenCollection.Add(GameScreen_Building)
 
-
-Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
-
-Global Init_Complete:Int = 0
-
-'Init EventManager
-'could also be done during update ("if not initDone...")
-If RunGameMode >= 2 Then
+	'go into the start menu
+	Game.SetGamestate(TGame.STATE_MAINMENU)	
+	
+	'===== EVENTS =====
+	EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
+	EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
+	EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
+	EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )	
+	
+	'Init EventManager
+	'could also be done during update ("if not initDone...")	
 	EventManager.Init()
-	App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
-Endif
-
-Global RefreshInput:Int = True
-?Threaded
-Global RefreshInputMutex:TMutex = CreateMutex()
-?
-
-If RunGameMode >= 2 Then
+	App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents	
+	
 	If Not TApp.ExitApp And Not AppTerminate()
 	'	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
 		Repeat
@@ -2998,11 +2963,5 @@ If RunGameMode >= 2 Then
 			'If RandRange(0,20) = 20 Then GCCollect()
 		Until AppTerminate() Or TApp.ExitApp
 		If Game.networkgame Then Network.DisconnectFromServer()
-	EndIf 'not exit game
-Endif
-
-OnEnd( EndHook )
-Function EndHook()
-	TProfiler.DumpLog("log.profiler.txt")
-	TLogFile.DumpLog(False)
+	EndIf 'not exit game		
 End Function

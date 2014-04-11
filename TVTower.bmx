@@ -36,3 +36,6 @@ rem
 	SetIcon(AppFile, GetActiveWindow())
 endrem
 ?
+
+'Start Game
+StartTVTower()
