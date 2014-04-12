@@ -1463,7 +1463,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
 			
 			'3 - Genre <> Zielgruppe
-			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.GetNewInstance()
+			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
 			result.GenreTargetGroupMod.SubtractFloat(0.5)
 			
 			'4 - Image
@@ -1486,10 +1486,10 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 				Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
 				Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
 						
-				result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
+				result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
 				result.AudienceFlowBonus.Multiply(audienceFlowMod)
 			Else
-				result.AudienceFlowBonus = lastNewsBlockAttraction.GetNewInstance()
+				result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
 				result.AudienceFlowBonus.MultiplyFactor(0.2)				
 			End If	
 			
@@ -1505,8 +1505,8 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
 		
 		'10 - News-Mod
-		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.GetNewInstance().DivideFloat(2).SubtractFloat(0.1)
-		result.NewsShowBonus = lastNewsBlockAttraction.GetNewInstance().MultiplyFactor(0.2)
+		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.Copy().DivideFloat(2).SubtractFloat(0.1)
+		result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFactor(0.2)
 
 		result.CalculateBlockAttraction()
 		result.CalculatePublicImageAttraction()

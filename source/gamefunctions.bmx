@@ -1664,7 +1664,7 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + TFunctions.shortenFloat(100.0 * audienceResult.PotentialMaxAudienceQuote.Average, 2) + "%)" )
+			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + TFunctions.shortenFloat(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)" )
 		Else
 			Return Self.Usefont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": 100 (100%)")
 		EndIf
@@ -1730,7 +1730,7 @@ Type TTooltipAudience Extends TTooltip
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
-		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + TFunctions.shortenFloat(100.0 * audienceResult.PotentialMaxAudienceQuote.Average, 2) + "%)"
+		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + TFunctions.shortenFloat(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ 2 * Self.Usefont.GetHeight(lineText)
 

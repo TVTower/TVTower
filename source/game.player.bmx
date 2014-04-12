@@ -239,7 +239,7 @@ endrem
 
 	'calculates and returns the percentage of the players audience depending on the maxaudience
 	Method GetAudiencePercentage:Float() {_exposeToLua}
-		Return TAudienceResult.Curr(playerID).AudienceQuote.Average
+		Return TAudienceResult.Curr(playerID).AudienceQuote.GetAverage()
 		'Local audienceResult:TAudienceResult = TAudienceResult.Curr(playerID)
 		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()
 	End Method

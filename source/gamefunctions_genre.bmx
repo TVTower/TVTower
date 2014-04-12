@@ -23,7 +23,7 @@
 		attraction.Genre = Self.GenreId
 		attraction.AudienceAttraction = AudienceAttraction
 		Local averageTempAll:TAudience = TAudience.CreateWithBreakdown(100000)
-		Local averageTemp:TAudience = averageTempAll.GetNewInstance()
+		Local averageTemp:TAudience = averageTempAll.Copy()
 		averageTemp.Multiply(attraction)
 		attraction.Average = Float(Float(averageTemp.GetSum()) / Float(averageTempAll.GetSum()))
 
@@ -132,7 +132,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	
 	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience)
 		'DebugStop
-		Local baseAttractionFollowerTemp:TAudience = baseAttractionFollower.GetNewInstance()
+		Local baseAttractionFollowerTemp:TAudience = baseAttractionFollower.Copy()
 		baseAttractionFollowerTemp.DivideFloat(2).AddFloat(0.7)
 		
 		Local base:TAudience = GetAudienceFlowModBase(followerGenreId)
@@ -143,7 +143,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Method GetAudienceFlowModBase:TAudience(followerGenreId:Int)
 		Local followerDefinition:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(followerGenreId)
 	
-		Local result:TAudience = followerDefinition.AudienceAttraction.GetNewInstance().DivideFloat(5) '0-0.2
+		Local result:TAudience = followerDefinition.AudienceAttraction.Copy().DivideFloat(5) '0-0.2
 		
 		Local genreKey:String = String.FromInt(followerGenreId)
 		If (GoodFollower.Contains(genreKey))

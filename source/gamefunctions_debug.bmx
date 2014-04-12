@@ -28,7 +28,7 @@
 		font.Draw("Bevölkerung", 25, 50, TColor.clWhite);
 		DrawAudience(audienceResult.WholeMarket, 200, 50);
 
-		Local percent:String = TFunctions.shortenFloat(audienceResult.PotentialMaxAudienceQuote.Average*100,2) + "%"
+		Local percent:String = TFunctions.shortenFloat(audienceResult.PotentialMaxAudienceQuote.GetAverage()*100,2) + "%"
 		font.Draw("Potentielle Zuschauer", 25, 70, TColor.clWhite);
 		font.Draw(percent, 160, 70, TColor.clWhite);
 		DrawAudience(audienceResult.PotentialMaxAudience, 200, 70);
@@ -46,7 +46,7 @@
 
 
 		font.Draw("Aktuelle Zuschauerzahl", 25, 90, TColor.clWhite);
-		percent = TFunctions.shortenFloat(audienceResult.AudienceQuote.Average*100,2) + "%"
+		percent = TFunctions.shortenFloat(audienceResult.AudienceQuote.GetAverage()*100,2) + "%"
 		font.Draw(percent, 160, 90, TColor.clWhite);
 		DrawAudience(audienceResult.Audience, 200, 90);
 
@@ -259,7 +259,7 @@ endrem
 		If gray Then color = TColor.CreateGrey(150)
 
 		If Not hideAverage Then
-			val = TFunctions.shortenFloat(audience.Average * 100,2) + "%"
+			val = TFunctions.shortenFloat(audience.GetAverage() * 100,2) + "%"
 			If gray Then
 				font.drawBlock(val, x, y, 65, 25, TPoint.Create(ALIGN_RIGHT), TColor.Create(150, 80, 80))
 			Else

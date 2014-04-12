@@ -11,7 +11,7 @@
 	
 	Method GetAttractionMods:TAudience()
 		'Return TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
-		Return ImageValues.GetNewInstance().DivideFloat(100)
+		Return ImageValues.Copy().DivideFloat(100)
 	End Method
 	
 	Method ChangeImage(imageChange:TAudience)	
@@ -56,17 +56,17 @@
 		SortList(tempList,False,compareFunc)
 		
 		If (tempList.Count() = 4) Then
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).PlayerId) )).SetValue(targetGroup, 1)
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).PlayerId) )).SetValue(targetGroup, 0.5)
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).PlayerId) )).SetValue(targetGroup, -0.5)
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(3)).PlayerId) )).SetValue(targetGroup, -1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, 0.5)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).Id) )).SetValue(targetGroup, -0.5)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(3)).Id) )).SetValue(targetGroup, -1)
 		Elseif (tempList.Count() = 3) Then
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).PlayerId) )).SetValue(targetGroup, 1)
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).PlayerId) )).SetValue(targetGroup, 0)
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).PlayerId) )).SetValue(targetGroup, -1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, 0)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(2)).Id) )).SetValue(targetGroup, -1)
 		Elseif (tempList.Count() = 2) Then
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).PlayerId) )).SetValue(targetGroup, 1)
-			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).PlayerId) )).SetValue(targetGroup, -1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(0)).Id) )).SetValue(targetGroup, 1)
+			TAudience(playerAudience.ValueForKey( string.FromInt(TAudience(tempList.ValueAtIndex(1)).Id) )).SetValue(targetGroup, -1)
 		EndIf
 	End Function		
 End Type

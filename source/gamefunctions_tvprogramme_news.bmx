@@ -313,7 +313,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
 
 			'3 - Genre <> Zielgruppe
-			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.GetNewInstance()
+			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
 			result.GenreTargetGroupMod.SubtractFloat(0.5)
 		Else
 			result.GenrePopularityMod = 0
@@ -334,7 +334,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		'7 - Audience Flow
 		If lastMovieBlockAttraction <> Null Then
-			result.AudienceFlowBonus = lastMovieBlockAttraction.GetNewInstance()
+			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
 			Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
 			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
 		End If			

@@ -284,7 +284,7 @@ Type TBroadcast
 		attraction.BroadcastType = 0		
 		If lastMovieAttraction Then
 			attraction.Malfunction = lastMovieAttraction.Malfunction
-			attraction.AudienceFlowBonus = lastMovieAttraction.GetNewInstance()
+			attraction.AudienceFlowBonus = lastMovieAttraction.Copy()
 			attraction.AudienceFlowBonus.MultiplyFactor(0.02) 
 			
 			attraction.QualityOverTimeEffectMod = -0.2 * attraction.Malfunction
@@ -346,10 +346,10 @@ Type TBroadcast
 				currAudience = audienceResult.Audience.GetSum()
 				If (currAudience > TopAudience) Then TopAudience = currAudience
 				
-				currAudienceRate = audienceResult.AudienceQuote.Average
+				currAudienceRate = audienceResult.AudienceQuote.GetAverage()
 				If (currAudienceRate > TopAudienceRate) Then TopAudienceRate = currAudienceRate
 				
-				currAttraction = audienceResult.AudienceAttraction.CalcAverage()
+				currAttraction = audienceResult.AudienceAttraction.GetAverage()
 				If (currAttraction > TopAttraction) Then TopAttraction = currAttraction			
 				
 				currQuality = audienceResult.AudienceAttraction.Quality
@@ -373,7 +373,7 @@ Type TBroadcast
 	Function GetPotentialAudienceForHour:TAudience(maxAudience:TAudience, forHour:Int = -1)
 		If forHour < 0 Then forHour = Game.GetHour()
 
-		Local maxAudienceReturn:TAudience = maxAudience.GetNewInstance()
+		Local maxAudienceReturn:TAudience = maxAudience.Copy()
 		Local modi:TAudience = Null
 
 		'TODO: Eventuell auch in ein config-File auslagern
@@ -479,7 +479,7 @@ Type TBroadcastFeedback
 	
 	Method CalculateAudienceInterestForAllowed(attr:TAudienceAttraction, maxAudience:TAudience, plausibility:TAudience, minAttraction:Float)
 		'plausibility: Wer scheit wahrscheinlich zu: 0 = auf keinen Fall; 1 = möglich, aber nicht wahrscheinlich; 2 = wahrscheinlich
-		Local averageAttraction:Float = attr.RecalcAverage()
+		Local averageAttraction:Float = attr.GetAverage()
 		
 		Local allowedTemp:TAudience = plausibility
 		Local sortMap:TNumberSortMap = attr.ToNumberSortMap()
@@ -673,7 +673,7 @@ Type TAudienceMarketCalculation
 		CalculatePotentialChannelSurfer(forHour)			
 
 		'Die Zapper, um die noch gekämpft werden kann.
-		Local ChannelSurferToShare:TAudience = PotentialChannelSurfer.GetNewInstance()
+		Local ChannelSurferToShare:TAudience = PotentialChannelSurfer.Copy()
 		ChannelSurferToShare.Round()
 
 		'Ermittle wie viel ein Attractionpunkt auf Grund der Konkurrenz-
@@ -682,8 +682,8 @@ Type TAudienceMarketCalculation
 		If reduceFactor Then
 			For Local currKey:String = EachIn AudienceAttractions.Keys()
 				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey)) 'Die außerhalb berechnete Attraction
-				Local effectiveAttraction:TAudience = attraction.GetNewInstance().Multiply(reduceFactor) 'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
-				Local channelSurfer:TAudience = ChannelSurferToShare.GetNewInstance().Multiply(effectiveAttraction)	'Anteil an der "erbeuteten" Zapper berechnen
+				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor) 'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
+				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)	'Anteil an der "erbeuteten" Zapper berechnen
 				channelSurfer.Round()
 				
 				'Ergebnis in das AudienceResult schreiben
@@ -721,7 +721,7 @@ Type TAudienceMarketCalculation
 		audienceFlowSum.DivideFloat(Float(Players.Count()))
 		
 		'Es erhöht sich die Gesamtanzahl der Zuschauer etwas.
-		PotentialChannelSurfer.Add(audienceFlowSum.GetNewInstance().MultiplyFactor(0.25))		
+		PotentialChannelSurfer.Add(audienceFlowSum.Copy().MultiplyFactor(0.25))		
 	End Method
 	
 	
@@ -731,13 +731,13 @@ Type TAudienceMarketCalculation
 
 		For Local attraction:TAudienceAttraction = EachIn AudienceAttractions.Values()
 			If attrSum = Null Then
-				attrSum = attraction.GetNewInstance()
+				attrSum = attraction.Copy()
 			Else
 				attrSum.Add(attraction)
 			EndIf
 
 			If attrRange = Null Then
-				attrRange = attraction.GetNewInstance()
+				attrRange = attraction.Copy()
 			Else
 				attrRange.Children = attrRange.Children + (1 - attrRange.Children) * attraction.Children
 				attrRange.Teenagers = attrRange.Teenagers + (1 - attrRange.Teenagers) * attraction.Teenagers
@@ -755,7 +755,7 @@ Type TAudienceMarketCalculation
 		Local result:TAudience
 		
 		If attrSum Then
-			result = attrRange.GetNewInstance()
+			result = attrRange.Copy()
 
 			If result.GetSumFloat() > 0 And attrSum.GetSumFloat() > 0 Then
 				result.Divide(attrSum)
@@ -812,10 +812,10 @@ Type TAudienceResult
 		Audience.FixGenderCount()
 		PotentialMaxAudience.FixGenderCount()
 		
-		AudienceQuote = Audience.GetNewInstance()
+		AudienceQuote = Audience.Copy()
 		AudienceQuote.Divide(PotentialMaxAudience)
 
-		PotentialMaxAudienceQuote = PotentialMaxAudience.GetNewInstance()
+		PotentialMaxAudienceQuote = PotentialMaxAudience.Copy()
 		PotentialMaxAudienceQuote.Divide(WholeMarket)
 	End Method
 
@@ -833,8 +833,7 @@ End Type
 'und stellt einige Methoden bereit die Berechnung mit Faktoren und anderen
 'TAudience-Klassen ermöglichen.
 Type TAudience
-	Field PlayerId:Int			'Optional: Die Id des Spielers zu dem das Result gehört. Nur bei Bedarf füllen!
-	'job / age group
+	Field Id:Int				'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf füllen!
 	Field Children:Float	= 0	'Kinder
 	Field Teenagers:Float	= 0	'Teenager
 	Field HouseWifes:Float	= 0	'Hausfrauen
@@ -842,12 +841,23 @@ Type TAudience
 	Field Unemployed:Float	= 0	'Arbeitslose
 	Field Manager:Float		= 0	'Manager
 	Field Pensioners:Float	= 0	'Rentner
-	'gender
 	Field Women:Float		= 0	'Frauen
 	Field Men:Float			= 0	'Männer
 
-	Field Average:Float
-
+	'=== Constructors ===
+	
+	Function CreateAndInit:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
+		Local obj:TAudience = New TAudience
+		obj.SetValues(children, teenagers, houseWifes, employees, unemployed, manager, pensioners, women, men)
+		If (women = -1 And men = -1) Then obj.CalcGenderBreakdown()
+		Return obj
+	End Function
+	
+	Function CreateAndInitValue:TAudience(defaultValue:Float)
+		Local obj:TAudience = New TAudience
+		obj.AddFloat(defaultValue)
+		Return obj
+	End Function
 
 	Function CreateWithBreakdown:TAudience(audience:Int)
 		Local obj:TAudience = New TAudience
@@ -860,29 +870,58 @@ Type TAudience
 		obj.Manager		= audience * 0.03	'Manager (5% von 60% Erwachsenen = 3%)
 		obj.Pensioners	= audience * 0.21	'Rentner (21%)
 		'gender
-		obj.Women		= obj.Children * 0.5 + obj.Teenagers * 0.5 + obj.HouseWifes * 0.9 + obj.Employees * 0.4 + obj.Unemployed * 0.4 + obj.Manager * 0.25 + obj.Pensioners * 0.55
-		obj.Men			= obj.Children * 0.5 + obj.Teenagers * 0.5 + obj.HouseWifes * 0.1 + obj.Employees * 0.6 + obj.Unemployed * 0.6 + obj.Manager * 0.75 + obj.Pensioners * 0.45
+		obj.CalcGenderBreakdown()
 		Return obj
 	End Function
 
-	Function CreateAndInitValue:TAudience(defaultValue:Float)
+	'=== PUBLIC ===
+	
+	Method Copy:TAudience()
 		Local result:TAudience = New TAudience
-		result.AddFloat(defaultValue)
-		Return result
-	End Function	
+		result.Id = Id
+		result.SetValuesFrom(Self)		
+		return result
+	End Method	
 
-	Function CreateAndInit:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float, men:Float)
-		Local result:TAudience = New TAudience
-		result.SetValues(children, teenagers, houseWifes, employees, unemployed, manager, pensioners, women, men)
-		Return result
-	End Function
-
-	Method RecalcAverage:Float()
-		Average = (Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners)/7
-		Return Average
+	Method SetValuesFrom:TAudience(value:TAudience)
+		Self.SetValues(value.Children, value.Teenagers, value.HouseWifes, value.Employees, value.Unemployed, value.Manager, value.Pensioners, value.Women, value.Men)
+		Return Self
 	End Method
 	
-	Method GetByTargetID:Float(targetID:Int=0)
+	Method SetValues:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
+		Self.Children	= children
+		Self.Teenagers	= teenagers
+		Self.HouseWifes	= houseWifes
+		Self.Employees	= employees
+		Self.Unemployed	= unemployed
+		Self.Manager	= manager
+		Self.Pensioners	= pensioners
+		'gender
+		Self.Women		= women
+		Self.Men		= men
+		Return Self
+	End Method
+	
+	
+	Method GetAverage:Float()
+		Return (Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners) / 7
+	End Method
+	
+	Method CalcGenderBreakdown()
+		Women		= Children * 0.5 + Teenagers * 0.5 + HouseWifes * 0.9 + Employees * 0.4 + Unemployed * 0.4 + Manager * 0.25 + Pensioners * 0.55
+		Men			= Children * 0.5 + Teenagers * 0.5 + HouseWifes * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45		
+	End Method
+	
+	Method FixGenderCount()
+		Local GenderSum:Float = Women + Men
+		Local AudienceSum:Int = GetSum();
+
+		Women = Ceil(AudienceSum / GenderSum * Women)
+		Men = Ceil(AudienceSum / GenderSum * Men)		
+		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen		
+	End Method	
+	
+	Method GetByTargetID:Float(targetID:int)
 		Select targetID
 			Case 1	Return Children
 			Case 2	Return Teenagers
@@ -894,34 +933,17 @@ Type TAudience
 			'gender
 			Case 8 	Return Women
 			Case 9	Return Men
-			Default	Return 0
+			Default
+				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
 		End Select
+		'Return -1
 	End Method
 
 
-	Method GetNewInstance:TAudience()
-		Return CopyTo(New TAudience)
-	End Method
 
 
-	Method CopyTo:TAudience(audience:TAudience)
-		audience.SetValues(Children, Teenagers, HouseWifes, Employees, Unemployed, Manager, Pensioners, Women, Men)
-		Return audience
-	End Method
 
 
-	Method SetValues(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
-		Children	= group0
-		Teenagers	= group1
-		HouseWifes	= group2
-		Employees	= group3
-		Unemployed	= group4
-		Manager		= group5
-		Pensioners	= group6
-		'gender
-		Women		= subgroup0
-		Men			= subgroup1
-	End Method
 	
 	
 	Method SetValue(targetGroup:Int, newValue:Float)
@@ -1058,7 +1080,6 @@ Type TAudience
 		Pensioners	:/ audience.Pensioners
 		Women		:/ audience.Women
 		Men			:/ audience.Men
-		Average		=  sum / audience.GetSumFloat()
 		Return Self
 	End Method
 
@@ -1091,19 +1112,9 @@ Type TAudience
 	End Method
 
 
-	Method FixGenderCount()
-		Local GenderSum:Float = Women + Men
-		Local AudienceSum:Int = GetSum();
 
-		Women = Ceil(AudienceSum / GenderSum * Women)
-		Men = Ceil(AudienceSum / GenderSum * Men)		
-		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen		
-	End Method
 
-	Method CalcAverage:Float()
-		Average = (Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners) / 7
-		Return Average
-	End Method
+
 	
 	Method ToNumberSortMap:TNumberSortMap(withSubGroups:Int=false)
 		Local amap:TNumberSortMap = new TNumberSortMap
@@ -1133,7 +1144,7 @@ Type TAudience
 
 
 	Method ToStringAverage:String()
-		Return "Avg: " + TFunctions.shortenFloat(Average,3) + "  ( 0: " + TFunctions.shortenFloat(Children,3) + "  - 1: " + TFunctions.shortenFloat(Teenagers,3) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,3) + "  - 3: " + TFunctions.shortenFloat(Employees,3) + "  - 4: " + TFunctions.shortenFloat(Unemployed,3) + "  - 5: " + TFunctions.shortenFloat(Manager,3) + "  - 6: " + TFunctions.shortenFloat(Pensioners,3) + ")"
+		Return "Avg: " + TFunctions.shortenFloat(GetAverage(),3) + "  ( 0: " + TFunctions.shortenFloat(Children,3) + "  - 1: " + TFunctions.shortenFloat(Teenagers,3) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,3) + "  - 3: " + TFunctions.shortenFloat(Employees,3) + "  - 4: " + TFunctions.shortenFloat(Unemployed,3) + "  - 5: " + TFunctions.shortenFloat(Manager,3) + "  - 6: " + TFunctions.shortenFloat(Pensioners,3) + ")"
 	End Method
 	
 	Function ChildrenSort:Int(o1:Object, o2:Object)
@@ -1232,11 +1243,11 @@ Type TAudienceAttraction Extends TAudience
 	End Function	
 	
 	Method SetPlayerId(playerId:Int)
-		Self.PlayerId = playerId
-		Self.BaseAttraction.PlayerId = playerId
-		Self.BroadcastAttraction.PlayerId = playerId
-		Self.BlockAttraction.PlayerId = playerId
-		Self.PublicImageAttraction.PlayerId = playerId
+		Self.Id = playerId
+		Self.BaseAttraction.Id = playerId
+		Self.BroadcastAttraction.Id = playerId
+		Self.BlockAttraction.Id = playerId
+		Self.PublicImageAttraction.Id = playerId
 	End Method	
 	
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
@@ -1292,9 +1303,9 @@ Type TAudienceAttraction Extends TAudience
 		Sum.AddFloat(1)
 					
 		Sum.MultiplyFactor(Quality)	
-		Self.BaseAttraction = Sum.GetNewInstance()
-		Self.BaseAttraction.PlayerId = Self.PlayerId
-		Sum.CopyTo(Self)
+		Self.BaseAttraction = Sum.Copy()
+		Self.BaseAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
+		Self.SetValuesFrom(Sum)
 	End Method
 	
 	Method CalculateBroadcastAttraction()	
@@ -1304,9 +1315,9 @@ Type TAudienceAttraction Extends TAudience
 			Sum.Add(AudienceFlowBonus)
 		EndIf
 		
-		Self.BroadcastAttraction = Sum.GetNewInstance()
-		Self.BroadcastAttraction.PlayerId = Self.PlayerId
-		Sum.CopyTo(Self)
+		Self.BroadcastAttraction = Sum.Copy()
+		Self.BroadcastAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
+		Self.SetValuesFrom(Sum)
 	End Method
 	
 	Method CalculateBlockAttraction()
@@ -1321,9 +1332,9 @@ Type TAudienceAttraction Extends TAudience
 			Sum.Add(NewsShowBonus)
 		EndIf		
 		
-		Self.BlockAttraction = Sum.GetNewInstance()
-		Self.BlockAttraction.PlayerId = Self.PlayerId
-		Sum.CopyTo(Self)				
+		Self.BlockAttraction = Sum.Copy()
+		Self.BlockAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
+		Self.SetValuesFrom(Sum)
 	End Method
 	
 	'Die PublicImageAttraction wird dafür verwendet um zu sehen, wie gut das Programm plaziert war und wie die Qualität war.
@@ -1351,12 +1362,12 @@ Type TAudienceAttraction Extends TAudience
 		
 		Sum2.Multiply(Sum)
 		
-		Self.PublicImageAttraction = Sum2.GetNewInstance()		
-		Self.PublicImageAttraction.PlayerId = Self.PlayerId
+		Self.PublicImageAttraction = Sum2.Copy()		
+		Self.PublicImageAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 	End Method
 	
 	Method CopyBroadcastAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
-		PlayerId = otherAudienceAttraction.PlayerId
+		Id = otherAudienceAttraction.Id 'Wahrscheinlich überflüssig
 		Quality = otherAudienceAttraction.Quality 
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
 		GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod
@@ -1371,6 +1382,6 @@ Type TAudienceAttraction Extends TAudience
 		BroadcastAttraction = otherAudienceAttraction.BroadcastAttraction
 		PublicImageAttraction = otherAudienceAttraction.PublicImageAttraction
 		
-		otherAudienceAttraction.CopyTo(Self)
+		Self.SetValuesFrom(otherAudienceAttraction)
 	End Method	
 End Type
