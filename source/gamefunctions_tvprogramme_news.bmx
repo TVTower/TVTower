@@ -336,7 +336,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		If lastMovieBlockAttraction <> Null Then
 			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
 			Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
-			result.AudienceFlowBonus.MultiplyFactor(audienceFlowFactor) 
+			result.AudienceFlowBonus.MultiplyFloat(audienceFlowFactor) 
 		End If			
 		
 		result.CalculateBroadcastAttraction()

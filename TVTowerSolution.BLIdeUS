@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UnmanagedSolution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Project>
-    <Main_File>TVTower.bmx</Main_File>
+    <Main_File>TVTowerTests.bmx</Main_File>
     <Included_File>
       <FileName>source\basefunctions.bmx</FileName>
       <Document_Active>false</Document_Active>

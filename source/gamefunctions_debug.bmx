@@ -245,7 +245,7 @@ endrem
 		End If
 
 		for local i:int = 1 to 7
-			val = TFunctions.convertValue(audience.getByTargetID(i), 2)
+			val = TFunctions.convertValue(audience.GetValue(i), 2)
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, TPoint.Create(ALIGN_RIGHT), color)
 		next
 	End Function
@@ -268,7 +268,7 @@ endrem
 		End if
 
 		for local i:int = 1 to 7
-			val = TFunctions.shortenFloat(audience.GetByTargetID(i) * 100,2) + "%"
+			val = TFunctions.shortenFloat(audience.GetValue(i) * 100,2) + "%"
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, TPoint.Create(ALIGN_RIGHT), color)
 		Next
 	End Function

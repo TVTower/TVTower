@@ -1490,7 +1490,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 				result.AudienceFlowBonus.Multiply(audienceFlowMod)
 			Else
 				result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
-				result.AudienceFlowBonus.MultiplyFactor(0.2)				
+				result.AudienceFlowBonus.MultiplyFloat(0.2)				
 			End If	
 			
 			result.CalculateBroadcastAttraction()
@@ -1506,7 +1506,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		
 		'10 - News-Mod
 		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.Copy().DivideFloat(2).SubtractFloat(0.1)
-		result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFactor(0.2)
+		result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
 
 		result.CalculateBlockAttraction()
 		result.CalculatePublicImageAttraction()

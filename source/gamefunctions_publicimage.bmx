@@ -32,15 +32,15 @@
 					attrList.AddLast(bc.AudienceResults[i].AudienceAttraction.PublicImageAttraction)
 				Next			
 				
-				ChangePublicImageForTargetGroup(map, 0, attrList, TAudience.ChildrenSort)
-				ChangePublicImageForTargetGroup(map, 1, attrList, TAudience.TeenagersSort)
-				ChangePublicImageForTargetGroup(map, 2, attrList, TAudience.HouseWifesSort)
-				ChangePublicImageForTargetGroup(map, 3, attrList, TAudience.EmployeesSort)
-				ChangePublicImageForTargetGroup(map, 4, attrList, TAudience.UnemployedSort)
-				ChangePublicImageForTargetGroup(map, 5, attrList, TAudience.ManagerSort)
-				ChangePublicImageForTargetGroup(map, 6, attrList, TAudience.PensionersSort)
-				ChangePublicImageForTargetGroup(map, 7, attrList, TAudience.WomenSort)
-				ChangePublicImageForTargetGroup(map, 8, attrList, TAudience.MenSort)			
+				ChangePublicImageForTargetGroup(map, 1, attrList, TAudience.ChildrenSort)
+				ChangePublicImageForTargetGroup(map, 2, attrList, TAudience.TeenagersSort)
+				ChangePublicImageForTargetGroup(map, 3, attrList, TAudience.HouseWifesSort)
+				ChangePublicImageForTargetGroup(map, 4, attrList, TAudience.EmployeesSort)
+				ChangePublicImageForTargetGroup(map, 5, attrList, TAudience.UnemployedSort)
+				ChangePublicImageForTargetGroup(map, 6, attrList, TAudience.ManagerSort)
+				ChangePublicImageForTargetGroup(map, 7, attrList, TAudience.PensionersSort)
+				ChangePublicImageForTargetGroup(map, 8, attrList, TAudience.WomenSort)
+				ChangePublicImageForTargetGroup(map, 9, attrList, TAudience.MenSort)			
 				
 				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
 					Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))

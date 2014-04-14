@@ -78,7 +78,7 @@ Type TAudienceTest Extends TTest
 		
 		audience.HouseWifes = 2000
 		audience.CalcGenderBreakdown()
-		assertEqualsAud(TAudience.CreateAndInit(1000, 1000, 2000, 1000, 1000, 1000, 1000, 4400, 3600 ), audience)		
+			
 	End Method
 	
 	Method FixGenderCount() { test }
@@ -98,12 +98,12 @@ Type TAudienceTest Extends TTest
 		assertEqualsAud(expected, audience)	
 	End Method
 	
-	Method GetByTargetID() { test }
+	Method GetValue() { test }
 		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
 		
 		'Falsch-Angaben
 		Try
-			audience.GetByTargetID(0)	
+			audience.GetValue(0)	
 			fail("No Exception")
 		Catch ex:TArgumentException 'Alles gut			
 			assertEqualsExceptions(TArgumentException.Create("targetID", "0"), ex)
@@ -113,7 +113,7 @@ Type TAudienceTest Extends TTest
 		
 		'Falsch-Angaben
 		Try
-			audience.GetByTargetID(10)	
+			audience.GetValue(10)	
 			fail("No Exception")
 		Catch ex:TArgumentException 'Alles gut			
 			assertEqualsExceptions(TArgumentException.Create("targetID", "10"), ex)
@@ -121,16 +121,81 @@ Type TAudienceTest Extends TTest
 			fail("Wrong Exception: " + ex.ToString())
 		End Try			
 		
-		assertEqualsI(100, audience.GetByTargetID(1))
-		assertEqualsI(200, audience.GetByTargetID(2))
-		assertEqualsI(300, audience.GetByTargetID(3))
-		assertEqualsI(400, audience.GetByTargetID(4))
-		assertEqualsI(500, audience.GetByTargetID(5))
-		assertEqualsI(600, audience.GetByTargetID(6))
-		assertEqualsI(700, audience.GetByTargetID(7))
-		assertEqualsI(800, audience.GetByTargetID(8))
-		assertEqualsI(900, audience.GetByTargetID(9))		
+		assertEqualsI(100, audience.GetValue(1))
+		assertEqualsI(200, audience.GetValue(2))
+		assertEqualsI(300, audience.GetValue(3))
+		assertEqualsI(400, audience.GetValue(4))
+		assertEqualsI(500, audience.GetValue(5))
+		assertEqualsI(600, audience.GetValue(6))
+		assertEqualsI(700, audience.GetValue(7))
+		assertEqualsI(800, audience.GetValue(8))
+		assertEqualsI(900, audience.GetValue(9))		
 	End Method
+	
+	Method SetValue() { test }
+		Local audience:TAudience = new TAudience
+					
+		'Falsch-Angaben
+		Try
+			audience.SetValue(0, 100)
+			fail("No Exception")
+		Catch ex:TArgumentException 'Alles gut			
+			assertEqualsExceptions(TArgumentException.Create("targetID", "0"), ex)
+		Catch ex:Object 'falsche excpetion			
+			fail("Wrong Exception: " + ex.ToString())
+		End Try		
+		
+		'Falsch-Angaben
+		Try
+			audience.SetValue(10, 100)
+			fail("No Exception")
+		Catch ex:TArgumentException 'Alles gut			
+			assertEqualsExceptions(TArgumentException.Create("targetID", "10"), ex)
+		Catch ex:Object 'falsche excpetion			
+			fail("Wrong Exception: " + ex.ToString())
+		End Try			
+		
+		audience.SetValue(1, 100)
+		audience.SetValue(2, 200)
+		audience.SetValue(3, 300)
+		audience.SetValue(4, 400)
+		audience.SetValue(5, 500)
+		audience.SetValue(6, 600)
+		audience.SetValue(7, 700)
+		audience.SetValue(8, 800)
+		audience.SetValue(9, 900)
+		
+		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)
+	End Method	
+	
+	Method GetSum() { test }
+		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		assertEqualsF(2800, audience.GetSum())	
+	End Method
+	
+	Method MathFloat() { test }
+		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		audience.AddFloat(50)
+		assertEqualsAud(TAudience.CreateAndInit(150, 250, 350, 450, 550, 650, 750, 850, 950 ), audience)
+		audience.SubtractFloat(50)
+		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)		
+		audience.MultiplyFloat(2)
+		assertEqualsAud(TAudience.CreateAndInit(200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800 ), audience)
+		audience.DivideFloat(2)
+		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)		
+	End Method
+	
+	Method MathAudience() { test }
+		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		audience.Add(TAudience.CreateAndInit(1, 2, 3, 4, 5, 6, 7, 8, 9 ))
+		assertEqualsAud(TAudience.CreateAndInit(101, 202, 303, 404, 505, 606, 707, 808, 909 ), audience)
+		audience.Subtract(TAudience.CreateAndInit(1, 2, 3, 4, 5, 6, 7, 8, 9 ))
+		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)
+		audience.Multiply(TAudience.CreateAndInit(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ))
+		assertEqualsAud(TAudience.CreateAndInit(10, 40, 90, 160, 250, 360, 490, 640, 810 ), audience)
+		audience.Divide(TAudience.CreateAndInit(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ))
+		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)		
+	End Method	
 	
 	Method assertEqualsAud(expected:TAudience, actual:TAudience, message:String = Null)	
 		assertEqualsI(expected.Id, actual.Id, message + " [-> Id]")

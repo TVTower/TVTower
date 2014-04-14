@@ -285,7 +285,7 @@ Type TBroadcast
 		If lastMovieAttraction Then
 			attraction.Malfunction = lastMovieAttraction.Malfunction
 			attraction.AudienceFlowBonus = lastMovieAttraction.Copy()
-			attraction.AudienceFlowBonus.MultiplyFactor(0.02) 
+			attraction.AudienceFlowBonus.MultiplyFloat(0.02) 
 			
 			attraction.QualityOverTimeEffectMod = -0.2 * attraction.Malfunction
 		Else
@@ -404,7 +404,7 @@ Type TBroadcast
 			Case 23 modi = TAudience.CreateAndInit(3, 14, 24, 20, 34, 33, 35, 100, 100)
 		EndSelect
 
-		maxAudienceReturn.Multiply(modi).MultiplyFactor(1.0/100.0)
+		maxAudienceReturn.Multiply(modi).MultiplyFloat(1.0/100.0)
 		Return maxAudienceReturn
 	End Function	
 End Type
@@ -721,7 +721,7 @@ Type TAudienceMarketCalculation
 		audienceFlowSum.DivideFloat(Float(Players.Count()))
 		
 		'Es erhöht sich die Gesamtanzahl der Zuschauer etwas.
-		PotentialChannelSurfer.Add(audienceFlowSum.Copy().MultiplyFactor(0.25))		
+		PotentialChannelSurfer.Add(audienceFlowSum.Copy().MultiplyFloat(0.25))		
 	End Method
 	
 	
@@ -757,7 +757,7 @@ Type TAudienceMarketCalculation
 		If attrSum Then
 			result = attrRange.Copy()
 
-			If result.GetSumFloat() > 0 And attrSum.GetSumFloat() > 0 Then
+			If result.GetSum() > 0 And attrSum.GetSum() > 0 Then
 				result.Divide(attrSum)
 			EndIf
 		EndIf
@@ -921,7 +921,7 @@ Type TAudience
 		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen		
 	End Method	
 	
-	Method GetByTargetID:Float(targetID:int)
+	Method GetValue:Float(targetID:int)
 		Select targetID
 			Case 1	Return Children
 			Case 2	Return Teenagers
@@ -930,55 +930,32 @@ Type TAudience
 			Case 5	Return Unemployed
 			Case 6	Return Manager
 			Case 7	Return Pensioners
-			'gender
 			Case 8 	Return Women
 			Case 9	Return Men
 			Default
 				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
 		End Select
-		'Return -1
 	End Method
 
-
-
-
-
-
-	
-	
-	Method SetValue(targetGroup:Int, newValue:Float)
-		Select targetGroup
-			Case 0
-				Children = newValue
-			Case 1
-				Teenagers = newValue
-			Case 2
-				HouseWifes = newValue
-			Case 3
-				Employees = newValue
-			Case 4
-				Unemployed = newValue
-			Case 5
-				Manager = newValue
-			Case 6
-				Pensioners = newValue
-			Case 7
-				Women = newValue
-			Case 8
-				Men = newValue
+	Method SetValue(targetID:Int, newValue:Float)
+		Select targetID
+			Case 1	Children = newValue
+			Case 2	Teenagers = newValue
+			Case 3	HouseWifes = newValue
+			Case 4	Employees = newValue
+			Case 5	Unemployed = newValue
+			Case 6	Manager = newValue
+			Case 7	Pensioners = newValue
+			Case 8	Women = newValue
+			Case 9	Men = newValue
+			Default
+				Throw TArgumentException.Create("targetID", String.FromInt(targetID))			
 		End Select
 	End Method
 	
-
-	Method GetSum:Int()
+	Method GetSum:Float()
 		Return Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners
 	End Method
-
-
-	Method GetSumFloat:Float()
-		Return Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners
-	End Method
-
 
 	Method Add:TAudience(audience:TAudience)
 		'skip adding if the param is "unset"
@@ -1054,7 +1031,7 @@ Type TAudience
 	End Method
 
 
-	Method MultiplyFactor:TAudience(factor:Float)
+	Method MultiplyFloat:TAudience(factor:Float)
 		Children	:* factor
 		Teenagers	:* factor
 		HouseWifes	:* factor
@@ -1069,8 +1046,6 @@ Type TAudience
 
 
 	Method Divide:TAudience(audience:TAudience)
-		Local sum:Float = GetSumFloat()
-
 		Children	:/ audience.Children
 		Teenagers	:/ audience.Teenagers
 		HouseWifes	:/ audience.HouseWifes
@@ -1273,22 +1248,22 @@ Type TAudienceAttraction Extends TAudience
 	End Method
 	
 	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
-		Self.MultiplyFactor(factor)
+		Self.MultiplyFloat(factor)
 		
 		Quality	:* factor
 		GenrePopularityMod 	:* factor
-		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFactor(factor)
-		If PublicImageMod Then PublicImageMod.MultiplyFactor(factor)
-		If TrailerMod Then TrailerMod.MultiplyFactor(factor)
-		If FlagsMod Then FlagsMod.MultiplyFactor(factor)
-		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFactor(factor)
+		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
+		If PublicImageMod Then PublicImageMod.MultiplyFloat(factor)
+		If TrailerMod Then TrailerMod.MultiplyFloat(factor)
+		If FlagsMod Then FlagsMod.MultiplyFloat(factor)
+		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
 		QualityOverTimeEffectMod :* factor
 		GenreTimeMod :* factor
-		If NewsShowBonus Then NewsShowBonus.MultiplyFactor(factor)
-		If BaseAttraction Then BaseAttraction.MultiplyFactor(factor)
-		If BroadcastAttraction Then BroadcastAttraction.MultiplyFactor(factor)
-		If BlockAttraction Then BlockAttraction.MultiplyFactor(factor)
-		If PublicImageAttraction Then PublicImageAttraction.MultiplyFactor(factor)
+		If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
+		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)
+		If BroadcastAttraction Then BroadcastAttraction.MultiplyFloat(factor)
+		If BlockAttraction Then BlockAttraction.MultiplyFloat(factor)
+		If PublicImageAttraction Then PublicImageAttraction.MultiplyFloat(factor)
 
 		Return Self		
 	End Method
@@ -1302,7 +1277,7 @@ Type TAudienceAttraction Extends TAudience
 		Sum.Add(FlagsMod)
 		Sum.AddFloat(1)
 					
-		Sum.MultiplyFactor(Quality)	
+		Sum.MultiplyFloat(Quality)	
 		Self.BaseAttraction = Sum.Copy()
 		Self.BaseAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
@@ -1348,7 +1323,7 @@ Type TAudienceAttraction Extends TAudience
 		Sum.Add(FlagsMod)
 		Sum.AddFloat(1)		
 		
-		Sum.MultiplyFactor(Quality)			
+		Sum.MultiplyFloat(Quality)			
 					
 		If AudienceFlowBonus <> Null Then
 			Sum.Add(AudienceFlowBonus)
