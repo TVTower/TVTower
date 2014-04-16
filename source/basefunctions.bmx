@@ -519,7 +519,7 @@ Type TData
 		local result:object = self.Get(key)
 		if result then return Int( float( String( result ) ) )
 		return defaultValue
-	End Method	
+	End Method
 End Type
 
 Type TNumberSortMap
@@ -528,7 +528,7 @@ Type TNumberSortMap
 	Method Add(_key:String, _value:Float)
 		Content.AddLast(TKeyValueNumber.Create(_key, _value))
 	End Method
-	
+
 	Method Sort(ascending:Int = true)
 		SortList (Content, ascending)
 	End Method
@@ -537,14 +537,14 @@ End Type
 Type TKeyValueNumber
 	Field Key:String
 	Field Value:Float
-	
+
 	Function Create:TKeyValueNumber(_key:String, _value:Float)
 		Local obj:TKeyValueNumber = new TKeyValueNumber
 		obj.Key = _key
 		obj.Value = _value
 		Return obj
 	End Function
-	
+
 	Method Compare:Int(other:Object)
 		Local s:TKeyValueNumber = TKeyValueNumber(other)
 		If Not s Then Return 1			' Object not a TKeyValueNumber: define greater than any TKeyValueNumber
@@ -1609,7 +1609,9 @@ Type TFunctions
 		'250000 = 0,0Mrd -> divide by 1000000000
 		if typ=3 then return shortenFloat(value/1000000000.0, 2)+" Mrd"
 		'add thousands-delimiter: 10000 = 10.000
-		if length <= 7 and length > 3
+		if length <= 10 and length > 6
+			return int(floor(int(value) / 1000000))+"."+int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000000)*1000000)))) +"000",3)
+		elseif length <= 7 and length > 3
 			return int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000)*1000)))) +"000",3)
 		else
 			return int(value)
@@ -1653,22 +1655,6 @@ Type TFunctions
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
 		Return Long(number * t + 0.5:double * Sgn(number)) / Double(t)
 	End Function
-
-
-rem
-	'Ronny: Manuels Methode lieferte falsche Ergebnisse
-			aus 0.167339996 wurde 1.67
-	Function shortenFloat:string(value:float, digitsAfterDecimalPoint:int=2)
-		'mv: Die alte Methode hat nicht funktioniert, deswegen hab ich sie umgebaut. Wenn man z.B. 19.0575913 runden wollte, kam 19.57 raus. Richtig wäre aber 19,06!
-		If value = 0 then return "0"
-		Local values:String[] = string(value).split(".")
-		local length:int = string(values[0]).length
-		local potenz:int = 10^digitsAfterDecimalPoint
-		local temp:string = Left(String(int(value * potenz + .5)) + "00000000000", digitsAfterDecimalPoint + length) 'Thema runden: http://www.blitzbasic.com/Community/posts.php?topic=51753
-		local result:string = Left(temp, length) + "." + Mid(temp, length+1)
-		Return result
-	End Function
-endrem
 End Type
 
 
