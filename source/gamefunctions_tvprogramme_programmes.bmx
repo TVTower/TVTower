@@ -1514,7 +1514,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'Sequence
 		'If (Game.playerID = 1) Then DebugStop
 		
-		result.SequenceEffect = TGenreDefinitionBase.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
+		result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
 		
 		result.CalculateFinalAttraction()
 		

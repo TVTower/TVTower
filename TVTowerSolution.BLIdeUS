@@ -556,6 +556,7 @@
     <Context_Directory>\</Context_Directory>
     <Project_Name>TVTower</Project_Name>
     <BuildStep>1</BuildStep>
+    <Icon_File_Location>C:\Program Files (x86)\BLIde\blide.ico</Icon_File_Location>
     <Embed_Os_Theme>true</Embed_Os_Theme>
     <Publish_as_ConsoleApp>false</Publish_as_ConsoleApp>
     <Debug_Enabled_Publish>false</Debug_Enabled_Publish>

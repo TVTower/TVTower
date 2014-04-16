@@ -359,7 +359,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		
 		'Sequence
 		'If genreDefintion Then
-			result.SequenceEffect = TGenreDefinitionBase.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)		
+			'result.SequenceEffect = TGenreDefinitionBase.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)		
 		'Else
 			
 		'Endif
