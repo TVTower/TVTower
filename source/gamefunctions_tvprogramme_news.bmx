@@ -267,10 +267,11 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		resultAudienceAttr.TrailerMod = New TAudience
 		resultAudienceAttr.FlagsMod = New TAudience
 		resultAudienceAttr.AudienceFlowBonus = New TAudience
+		resultAudienceAttr.SequenceEffect = New TAudience
 		resultAudienceAttr.BaseAttraction = New TAudience
-		resultAudienceAttr.BroadcastAttraction = New TAudience
 		resultAudienceAttr.BlockAttraction = New TAudience
-		resultAudienceAttr.PublicImageAttraction = New TAudience
+		resultAudienceAttr.FinalAttraction = New TAudience
+		resultAudienceAttr.PublicImageAttraction = New TAudience		
 
 		Local tempAudienceAttr:TAudienceAttraction = null
 		for local i:int = 0 to 2
@@ -279,7 +280,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 			'               verpacken - siehe RTL2 und Co.
 			tempAudienceAttr = CalculateNewsBlockAudienceAttraction(TNews(news[i]), lastMovieBlockAttraction )
 
-			'different weight for news slots
+			'different weight for news slots			
 			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.5))
 			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.3))
 			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.2))
@@ -333,13 +334,15 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		result.CalculateBaseAttraction()			
 
 		'7 - Audience Flow
+		rem
 		If lastMovieBlockAttraction <> Null Then
 			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
 			Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
 			result.AudienceFlowBonus.MultiplyFloat(audienceFlowFactor) 
 		End If			
+		endrem
 		
-		result.CalculateBroadcastAttraction()
+		'result.CalculateBroadcastAttraction()
 		
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		result.QualityOverTimeEffectMod = 0
@@ -351,6 +354,19 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'result.NewsShowMod = lastNewsBlockAttraction
 
 		result.CalculateBlockAttraction()
+		
+		'If (Game.playerID = 1) Then DebugStop
+		
+		'Sequence
+		'If genreDefintion Then
+			result.SequenceEffect = TGenreDefinitionBase.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)		
+		'Else
+			
+		'Endif
+		Print "Seq: " + result.SequenceEffect.ToString()
+		
+		result.CalculateFinalAttraction()
+		
 		result.CalculatePublicImageAttraction()
 
 		Return result

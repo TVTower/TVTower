@@ -532,6 +532,10 @@ Type TNumberSortMap
 	Method Sort(ascending:Int = true)
 		SortList (Content, ascending)
 	End Method
+	
+	Method NumberAtIndex:Float( index:Int )
+		Return TKeyValueNumber(Content.ValueAtIndex(index)).Value		
+	End Method
 End Type
 
 Type TKeyValueNumber
@@ -1559,6 +1563,10 @@ Type TFunctions
 		Return out$
 	End Function
 
+	Function RoundInt:Int(f:Float)
+		'http://www.blitzbasic.com/Community/posts.php?topic=92064
+	    Return f + 0.5 * Sgn(f)		
+	End Function
 
 	Function RoundToBeautifulValue:int(value:int)
 		'dev

@@ -132,49 +132,64 @@
 			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
 			DrawAudiencePercent(attraction.BaseAttraction, 200, offset+230, false, true);
 		Endif
-		
+		rem
 		font.Draw("7. Audience Flow - Bonus", 25, offset+250, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)		
 		If attraction.AudienceFlowBonus Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
 			DrawAudiencePercent(attraction.AudienceFlowBonus, 200, offset+250, true);
-		Endif		
-				
-		font.Draw("Ausstrahlungs-Attraktivität", 25, offset+270, TColor.clRed)
-		'DrawAudiencePercent(attraction, 200, offset+260)		
-		If attraction.BroadcastAttraction Then
-			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
-			DrawAudiencePercent(attraction.BroadcastAttraction, 200, offset+270, false, true);
-		Endif		
-		
-		font.Draw("8. Zuschauerentwicklung", 25, offset+290, TColor.clWhite)
+		Endif						
+		endrem
+		font.Draw("7. Zuschauerentwicklung", 25, offset+250, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)		
 		'If attraction.QualityOverTimeEffectMod Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
-		DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.QualityOverTimeEffectMod), 200, offset+290, true, true);
+		DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.QualityOverTimeEffectMod), 200, offset+250, true, true);
 		'Endif		
 		
-		font.Draw("9. Genre <> Sendezeit", 25, offset+310, TColor.clWhite)
+		font.Draw("8. Genre <> Sendezeit", 25, offset+270, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)		
 		'If attraction.QualityOverTimeEffectMod Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
-		DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.GenreTimeMod), 200, offset+310, true, true);
-		
+		DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.GenreTimeMod), 200, offset+270, true, true);
+		rem
 		font.Draw("10. Nachrichteneinfluss", 25, offset+330, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)		
 		If attraction.NewsShowBonus Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
 			DrawAudiencePercent(attraction.NewsShowBonus, 200, offset+330, true, true);
 		Endif		
-		
-		font.Draw("Block-Attraktivität (Effektiv)", 25, offset+350, TColor.clRed)
+		endrem
+					
+		font.Draw("Block-Attraktivität", 25, offset+290, TColor.clRed)
 		'DrawAudiencePercent(attraction, 200, offset+260)		
 		If attraction.BlockAttraction Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
-			DrawAudiencePercent(attraction.BlockAttraction, 200, offset+350, false, true);
+			DrawAudiencePercent(attraction.BlockAttraction, 200, offset+290, false, true);
 		Endif		
 		
+		font.Draw("9. Sequence", 25, offset+310, TColor.clWhite)
+		'DrawAudiencePercent(attraction, 200, offset+260)		
+		If attraction.SequenceEffect Then
+			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
+			DrawAudiencePercent(attraction.SequenceEffect, 200, offset+310, true, true);
+		Endif	
 		
+		font.Draw("Finale Attraktivität (Effektiv)", 25, offset+330, TColor.clRed)
+		'DrawAudiencePercent(attraction, 200, offset+260)		
+		If attraction.FinalAttraction Then
+			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
+			DrawAudiencePercent(attraction.FinalAttraction, 200, offset+330, false, true);
+		Endif
+		
+		rem
+		font.Draw("Ausstrahlungs-Attraktivität", 25, offset+270, TColor.clRed)
+		'DrawAudiencePercent(attraction, 200, offset+260)		
+		If attraction.BroadcastAttraction Then
+			'font.drawBlock(genre, 60, offset+150, 205, 25, TPoint.Create(ALIGN_RIGHT), colorLight )
+			DrawAudiencePercent(attraction.BroadcastAttraction, 200, offset+270, false, true);
+		Endif		
+		endrem
 		
 		Local currBroadcast2:TBroadcast = Game.BroadcastManager.currentBroadcast
 		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(Game.playerID)

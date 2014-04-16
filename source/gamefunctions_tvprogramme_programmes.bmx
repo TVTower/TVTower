@@ -1480,6 +1480,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			
 			result.CalculateBaseAttraction()			
 			
+			rem
 			'7 - Audience Flow
 			'TODO: AudienceFlow muss sich anpassen... ein fixer Bonus über Stunden hinweg ist nicht gut... eventuell einen Teilschritt sogar zurück zu exklusiven Zuschauern.
 			If lastMovieBlockAttraction Then
@@ -1492,10 +1493,10 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 				result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
 				result.AudienceFlowBonus.MultiplyFloat(0.2)				
 			End If	
-			
-			result.CalculateBroadcastAttraction()
+			endrem
+			'result.CalculateBroadcastAttraction()
 		Else
-			result.CopyBroadcastAttractionFrom(lastMovieBlockAttraction)
+			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
 		
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten	
@@ -1507,12 +1508,22 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'10 - News-Mod
 		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.Copy().DivideFloat(2).SubtractFloat(0.1)
 		result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
-
-		result.CalculateBlockAttraction()
+		
+		result.CalculateBlockAttraction()			
+		
+		'Sequence
+		'If (Game.playerID = 1) Then DebugStop
+		
+		result.SequenceEffect = TGenreDefinitionBase.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
+		
+		result.CalculateFinalAttraction()
+		
 		result.CalculatePublicImageAttraction()
 		
 		Return result
 	End Method
+	
+
 
 
 	Method GetTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}

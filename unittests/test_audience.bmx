@@ -195,7 +195,73 @@ Type TAudienceTest Extends TTest
 		assertEqualsAud(TAudience.CreateAndInit(10, 40, 90, 160, 250, 360, 490, 640, 810 ), audience)
 		audience.Divide(TAudience.CreateAndInit(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ))
 		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 ), audience)		
-	End Method	
+	End Method
+	
+	Method Round() { test }
+		Local audience:TAudience = TAudience.CreateAndInit(1.34, 2.4999, 2.50000000, 0, 0.444, 0.494949494, 1, 1.1, 1.5 )
+		audience.Round()
+		assertEqualsAud(TAudience.CreateAndInit(1, 2, 3, 0, 0, 0, 1, 1, 2 ), audience)
+	End Method
+	
+	Method ToNumberSortMap() { test }
+		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		local aList:TNumberSortMap = audience.ToNumberSortMap(False)
+		
+		'Falsch-Angaben
+		Try
+			aList.NumberAtIndex(-1)
+			fail("No Exception")
+		Catch ex:TBlitzException 'Alles gut			
+			assertEquals("Object index must be positive", ex.ToString())
+		Catch ex:Object 'falsche excpetion			
+			fail("Wrong Exception: " + ex.ToString())
+		End Try			
+		
+		'Falsch-Angaben
+		Try
+			aList.NumberAtIndex(10)
+			fail("No Exception")
+		Catch ex:TBlitzException 'Alles gut			
+			assertEquals("List index out of range", ex.ToString())
+		Catch ex:Object 'falsche excpetion			
+			fail("Wrong Exception: " + ex.ToString())
+		End Try				
+		
+		assertEqualsI(7, aList.Content.Count())
+		assertEqualsF(100, aList.NumberAtIndex(0))
+		assertEqualsF(200, aList.NumberAtIndex(1))
+		assertEqualsF(300, aList.NumberAtIndex(2))
+		assertEqualsF(400, aList.NumberAtIndex(3))
+		assertEqualsF(500, aList.NumberAtIndex(4))
+		assertEqualsF(600, aList.NumberAtIndex(5))
+		assertEqualsF(700, aList.NumberAtIndex(6))
+		
+		audience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		aList = audience.ToNumberSortMap(True)		
+		assertEqualsI(9, aList.Content.Count())
+		assertEqualsF(800, aList.NumberAtIndex(7))
+		assertEqualsF(900, aList.NumberAtIndex(8))		
+	End Method
+	
+	Method InnerSort() { test }
+		Local audience1:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		Local audience2:TAudience = TAudience.CreateAndInit(99, 199, 299, 399, 499, 599, 699, 799, 899 )
+		Local audience3:TAudience = TAudience.CreateAndInit(101, 201, 301, 401, 501, 601, 701, 801, 901 )
+		
+		Local tempList:TList = CreateList()
+		tempList.AddLast(audience1)
+		tempList.AddLast(audience2)
+		tempList.AddLast(audience3)
+		SortList(tempList,False,TAudience.ChildrenSort)
+		
+		assertEqualsI(0, TAudience.InnerSort(1, audience1, audience1))
+		assertTrue(0 < TAudience.InnerSort(1, audience1, audience2))
+		assertTrue(0 > TAudience.InnerSort(1, audience1, audience3))
+
+		assertEqualsF(101, TAudience(tempList.ValueAtIndex(0)).Children)
+		assertEqualsF(100, TAudience(tempList.ValueAtIndex(1)).Children)
+		assertEqualsF(99, TAudience(tempList.ValueAtIndex(2)).Children)
+	End Method
 	
 	Method assertEqualsAud(expected:TAudience, actual:TAudience, message:String = Null)	
 		assertEqualsI(expected.Id, actual.Id, message + " [-> Id]")

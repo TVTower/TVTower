@@ -11,7 +11,6 @@
 	Eventuell gehören diese aber in eine andere Klasse.
 ENDREM
 
-
 Type TBroadcastManager
 	Field initialized:int = False
 
@@ -291,9 +290,9 @@ Type TBroadcast
 		Else
 			attraction.QualityOverTimeEffectMod = -0.9
 		End If								
-		attraction.CalculateBaseAttraction()
-		attraction.CalculateBroadcastAttraction()				
+		attraction.CalculateBaseAttraction()		
 		attraction.CalculateBlockAttraction()
+		attraction.CalculateFinalAttraction()
 		attraction.CalculatePublicImageAttraction()
 		attraction.Malfunction = attraction.Malfunction + 1
 		Return attraction			
@@ -1074,35 +1073,31 @@ Type TAudience
 	
 
 	Method Round:TAudience()
-		Children	= Ceil(Children)
-		Teenagers	= Ceil(Teenagers)
-		HouseWifes	= Ceil(HouseWifes)
-		Employees	= Ceil(Employees)
-		Unemployed	= Ceil(Unemployed)
-		Manager		= Ceil(Manager)
-		Pensioners	= Ceil(Pensioners)
-		Women		= Ceil(Women)
-		Men			= Ceil(Men)
+		Children	= TFunctions.RoundInt(Children)
+		Teenagers	= TFunctions.RoundInt(Teenagers)
+		HouseWifes	= TFunctions.RoundInt(HouseWifes)
+		Employees	= TFunctions.RoundInt(Employees)
+		Unemployed	= TFunctions.RoundInt(Unemployed)
+		Manager		= TFunctions.RoundInt(Manager)
+		Pensioners	= TFunctions.RoundInt(Pensioners)
+		Women		= TFunctions.RoundInt(Women)
+		Men			= TFunctions.RoundInt(Men)
 		Return Self
 	End Method
-
-
-
-
-
 	
+
 	Method ToNumberSortMap:TNumberSortMap(withSubGroups:Int=false)
 		Local amap:TNumberSortMap = new TNumberSortMap
-		amap.Add("0", Children)
-		amap.Add("1", Teenagers)
-		amap.Add("2", HouseWifes)
-		amap.Add("3", Employees)
-		amap.Add("4", Unemployed)
-		amap.Add("5", Manager)
-		amap.Add("6", Pensioners)			
+		amap.Add("1", Children)
+		amap.Add("2", Teenagers)
+		amap.Add("3", HouseWifes)
+		amap.Add("4", Employees)
+		amap.Add("5", Unemployed)
+		amap.Add("6", Manager)
+		amap.Add("7", Pensioners)			
 		If withSubGroups Then
-			amap.Add("7", Women)
-			amap.Add("8", Men)			
+			amap.Add("8", Women)
+			amap.Add("9", Men)			
 		EndIf	
 		Return amap
 	End Method	
@@ -1122,67 +1117,47 @@ Type TAudience
 		Return "Avg: " + TFunctions.shortenFloat(GetAverage(),3) + "  ( 0: " + TFunctions.shortenFloat(Children,3) + "  - 1: " + TFunctions.shortenFloat(Teenagers,3) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,3) + "  - 3: " + TFunctions.shortenFloat(Employees,3) + "  - 4: " + TFunctions.shortenFloat(Unemployed,3) + "  - 5: " + TFunctions.shortenFloat(Manager,3) + "  - 6: " + TFunctions.shortenFloat(Pensioners,3) + ")"
 	End Method
 	
-	Function ChildrenSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
+	Function InnerSort:Int(targetId:Int, o1:Object, o2:Object)
+		Local s1:TAudience = TAudience(o1)
+		Local s2:TAudience = TAudience(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Children*1000)-(s2.Children*1000)
+        Return (s1.GetValue(targetId)*1000)-(s2.GetValue(targetId)*1000)
+	End Function	
+	
+	Function ChildrenSort:Int(o1:Object, o2:Object)
+		Return InnerSort(1, o1, o2)
 	End Function
 	
 	Function TeenagersSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Teenagers*1000)-(s2.Teenagers*1000)
+		Return InnerSort(2, o1, o2)
 	End Function
 	
 	Function HouseWifesSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.HouseWifes*1000)-(s2.HouseWifes*1000)
+		Return InnerSort(3, o1, o2)
 	End Function
 	
 	Function EmployeesSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Employees*1000)-(s2.Employees*1000)
+		Return InnerSort(4, o1, o2)
 	End Function
 	
 	Function UnemployedSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Unemployed*1000)-(s2.Unemployed*1000)
+		Return InnerSort(5, o1, o2)
 	End Function
 	
 	Function ManagerSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Manager*1000)-(s2.Manager*1000)
+		Return InnerSort(6, o1, o2)
 	End Function
 	
 	Function PensionersSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Pensioners*1000)-(s2.Pensioners*1000)
+		Return InnerSort(7, o1, o2)
 	End Function
 	
 	Function WomenSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Women*1000)-(s2.Women*1000)
+		Return InnerSort(8, o1, o2)
 	End Function
 	
 	Function MenSort:Int(o1:Object, o2:Object)
-		Local s1:TAudienceAttraction = TAudienceAttraction(o1)
-		Local s2:TAudienceAttraction = TAudienceAttraction(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.Men*1000)-(s2.Men*1000)
+		Return InnerSort(9, o1, o2)
 	End Function	
 End Type
 
@@ -1202,10 +1177,11 @@ Type TAudienceAttraction Extends TAudience
 	Field QualityOverTimeEffectMod:Float
 	Field GenreTimeMod:Float
 	Field NewsShowBonus:TAudience
+	Field SequenceEffect:TAudience
 	
-	Field BaseAttraction:TAudience
-	Field BroadcastAttraction:TAudience
+	Field BaseAttraction:TAudience	
 	Field BlockAttraction:TAudience
+	Field FinalAttraction:TAudience
 	Field PublicImageAttraction:TAudience
 	
 	Field Genre:Int
@@ -1219,9 +1195,9 @@ Type TAudienceAttraction Extends TAudience
 	
 	Method SetPlayerId(playerId:Int)
 		Self.Id = playerId
-		Self.BaseAttraction.Id = playerId
-		Self.BroadcastAttraction.Id = playerId
+		Self.BaseAttraction.Id = playerId		
 		Self.BlockAttraction.Id = playerId
+		Self.FinalAttraction.Id = playerId
 		Self.PublicImageAttraction.Id = playerId
 	End Method	
 	
@@ -1239,9 +1215,10 @@ Type TAudienceAttraction Extends TAudience
 		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
 		GenreTimeMod :+ audienceAttr.GenreTimeMod
 		If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)		
-		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
-		If BroadcastAttraction Then BroadcastAttraction.Add(audienceAttr.BroadcastAttraction)
+		If SequenceEffect Then SequenceEffect.Add(audienceAttr.SequenceEffect)
+		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)		
 		If BlockAttraction Then BlockAttraction.Add(audienceAttr.BlockAttraction)
+		If FinalAttraction Then FinalAttraction.Add(audienceAttr.FinalAttraction)
 		If PublicImageAttraction Then PublicImageAttraction.Add(audienceAttr.PublicImageAttraction)
 
 		Return Self
@@ -1260,9 +1237,10 @@ Type TAudienceAttraction Extends TAudience
 		QualityOverTimeEffectMod :* factor
 		GenreTimeMod :* factor
 		If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
-		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)
-		If BroadcastAttraction Then BroadcastAttraction.MultiplyFloat(factor)
+		If SequenceEffect Then SequenceEffect.MultiplyFloat(factor)
+		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)		
 		If BlockAttraction Then BlockAttraction.MultiplyFloat(factor)
+		If FinalAttraction Then FinalAttraction.MultiplyFloat(factor)
 		If PublicImageAttraction Then PublicImageAttraction.MultiplyFloat(factor)
 
 		Return Self		
@@ -1282,7 +1260,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.BaseAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
 	End Method
-	
+	rem
 	Method CalculateBroadcastAttraction()	
 		Local Sum:TAudience = new TAudience
 		Sum.Add(BaseAttraction)
@@ -1294,7 +1272,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.BroadcastAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
 	End Method
-	
+	endrem
 	Method CalculateBlockAttraction()
 		Local Sum:TAudience = new TAudience
 		Sum.AddFloat(QualityOverTimeEffectMod)
@@ -1302,7 +1280,7 @@ Type TAudienceAttraction Extends TAudience
 		'Sum.AddFloat(NewsShowMod)
 		Sum.AddFloat(1)
 	
-		Sum.Multiply(BroadcastAttraction)
+		Sum.Multiply(BaseAttraction)
 		If NewsShowBonus <> Null Then
 			Sum.Add(NewsShowBonus)
 		EndIf		
@@ -1311,6 +1289,15 @@ Type TAudienceAttraction Extends TAudience
 		Self.BlockAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
 	End Method
+	
+	Method CalculateFinalAttraction()
+		Local Sum:TAudience = Self.BlockAttraction.Copy()
+		Sum.Add(SequenceEffect)
+			
+		Self.FinalAttraction = Sum
+		Self.BlockAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
+		Self.SetValuesFrom(Sum)
+	End Method	
 	
 	'Die PublicImageAttraction wird dafür verwendet um zu sehen, wie gut das Programm plaziert war und wie die Qualität war.
 	'Damit wird das PublicImage beeinflusst.
@@ -1341,7 +1328,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.PublicImageAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 	End Method
 	
-	Method CopyBroadcastAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
+	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		Id = otherAudienceAttraction.Id 'Wahrscheinlich überflüssig
 		Quality = otherAudienceAttraction.Quality 
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
@@ -1350,12 +1337,12 @@ Type TAudienceAttraction Extends TAudience
 		TrailerMod = otherAudienceAttraction.TrailerMod
 		FlagsMod = otherAudienceAttraction.FlagsMod
 		
-		AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
+		'AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
 		
-		BaseAttraction = otherAudienceAttraction.BaseAttraction
-		BlockAttraction = otherAudienceAttraction.BlockAttraction
-		BroadcastAttraction = otherAudienceAttraction.BroadcastAttraction
-		PublicImageAttraction = otherAudienceAttraction.PublicImageAttraction
+		BaseAttraction = otherAudienceAttraction.BaseAttraction		
+		'BroadcastAttraction = otherAudienceAttraction.BroadcastAttraction
+		'FinalAttraction = otherAudienceAttraction.FinalAttraction
+		'PublicImageAttraction = otherAudienceAttraction.PublicImageAttraction
 		
 		Self.SetValuesFrom(otherAudienceAttraction)
 	End Method	

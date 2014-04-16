@@ -4,40 +4,33 @@
 	Field Popularity:TGenrePopularity
 	
 	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience) Abstract
-
-	rem
-	Method CalculateQuotes:TAudienceAttraction(quality:Float, attraction:TAudienceAttraction = Null)
-		If attraction = Null Then attraction = New TAudienceAttraction				
-
-		attraction.Children = CalculateQuoteForGroup(quality, AudienceAttraction.Children)
-		attraction.Teenagers = CalculateQuoteForGroup(quality, AudienceAttraction.Teenagers)
-		attraction.HouseWifes = CalculateQuoteForGroup(quality, AudienceAttraction.HouseWifes)
-		attraction.Employees = CalculateQuoteForGroup(quality, AudienceAttraction.Employees)
-		attraction.Unemployed = CalculateQuoteForGroup(quality, AudienceAttraction.Unemployed)
-		attraction.Manager = CalculateQuoteForGroup(quality, AudienceAttraction.Manager)
-		attraction.Pensioners = CalculateQuoteForGroup(quality, AudienceAttraction.Pensioners)
-		attraction.Women = CalculateQuoteForGroup(quality, AudienceAttraction.Women)
-		attraction.Men = CalculateQuoteForGroup(quality, AudienceAttraction.Men)
-
-		'Für die Statistik
-		attraction.Genre = Self.GenreId
-		attraction.AudienceAttraction = AudienceAttraction
-		Local averageTempAll:TAudience = TAudience.CreateWithBreakdown(100000)
-		Local averageTemp:TAudience = averageTempAll.Copy()
-		averageTemp.Multiply(attraction)
-		attraction.Average = Float(Float(averageTemp.GetSum()) / Float(averageTempAll.GetSum()))
-
-		Return attraction
-	End Method
-
-	Method CalculateQuoteForGroup:Float(quality:Float, targetGroupAttendance:Float)
-		If (quality <= targetGroupAttendance)
-			Return quality + (targetGroupAttendance - quality) * quality
-		Else
-			Return targetGroupAttendance + (quality - targetGroupAttendance) / 5
-		EndIf
-	End Method
-	endrem
+	
+	Method GetSequence:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float)
+		Local result:TAudience = new TAudience
+		Local predecessorValue:Float
+		Local successorValue:Float
+		
+		For Local i:Int = 1 To 9
+			If predecessor
+				predecessorValue = predecessor.BlockAttraction.GetValue(i)
+			Else
+				predecessorValue = 0
+			EndIf
+			successorValue = successor.BlockAttraction.GetValue(i)
+			If (predecessorValue < successorValue) 'Steigende Quote
+				predecessorValue :* effectRise
+				successorValue :* (1 - effectRise)
+			Else 'Sinkende Quote
+				predecessorValue :* effectShrink
+				successorValue :* (1 - effectShrink)			
+			Endif
+			Local sum:Float = predecessorValue + successorValue
+			Local sequence:Float = sum - successor.BlockAttraction.GetValue(i)
+			'TODO: Faktoren berücksichtigen und Audience-Flow usw.
+			result.SetValue(i, sequence)
+		Next			
+		Return result
+	End Method	
 End Type
 
 
