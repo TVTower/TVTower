@@ -2,6 +2,9 @@
 <tvt>
 	<resources>
 		<data name="DEV_CONFIG">
+			<DEV_KEYS value="TRUE" />
+			<DEV_OSD value="TRUE" />
+
 			<DEV_AD_FACTOR1 value="5.0" />
 			<DEV_AD_MINIMUM_CPM value="7.5" />
 			<DEV_AD_LIMITED_GENRE_MULTIPLIER value="2.0" />

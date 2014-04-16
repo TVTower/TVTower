@@ -1,5 +1,5 @@
 ﻿'Application: TVGigant/TVTower
-'Author: Ronny Otto & Manuel Vögele 
+'Author: Ronny Otto & Manuel Vögele
 
 SuperStrict
 
@@ -63,7 +63,7 @@ Global NewsAgency:TNewsAgency
 Global Interface:TInterface		= null
 Global Game:TGame	  			= null
 Global Building:TBuilding		= null
-Global InGame_Chat:TGUIChat		= null	
+Global InGame_Chat:TGUIChat		= null
 Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = null
@@ -103,6 +103,7 @@ TDevHelper.setPrintMode(LOG_ALL ) 'all but ai
 Type TApp
 	Field Timer:TDeltaTimer
 	Field settings:TApplicationSettings
+	Field devConfig:TData				= new TData
 	Field prepareScreenshot:Int			= 0						'logo for screenshot
 	Field g:TGraphics
 	Field vsync:int						= TRUE
@@ -177,8 +178,8 @@ Type TApp
 		XmlLoader.Parse(path)
 		Assets.AddSet(XmlLoader.Values) 'copy XML-values
 
-		'DEV
-		local devConfig:TData = Assets.GetData("DEV_CONFIG", new TData)
+		'assign dev config
+		devConfig = Assets.GetData("DEV_CONFIG", new TData)
 		TFunctions.roundToBeautifulEnabled = devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
 		if TFunctions.roundToBeautifulEnabled
 			TDevHelper.Log("TApp.LoadResources()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
@@ -766,7 +767,7 @@ Type TGame {_exposeToLua="selected"}
 
 				'0 days = "today", -1 days = ended
 				If contract.GetDaysLeft() < 0
-					Player.GetFinance(day).PayPenalty(contract.GetPenalty())
+					Player.GetFinance(day).PayPenalty(contract.GetPenalty(), contract)
 					Player.ProgrammeCollection.RemoveAdContract(contract)
 				EndIf
 			Next
@@ -2386,89 +2387,91 @@ Type AppEvents
 		If Not GUIManager.GetKeystrokeReceiver()
 			'keywrapper has "key every milliseconds" functionality
 			If KEYWRAPPER.hitKey(KEY_ESCAPE) Then TApp.CreateConfirmExitAppDialogue()
-			'(un)mute sound
-			'M: (un)mute all sounds
-			'SHIFT+M: (un)mute all sound effects
-			'CTRL+M: (un)mute all music
-			If KEYMANAGER.IsHit(KEY_M)
-				if KEYMANAGER.IsDown(KEY_LSHIFT) OR KEYMANAGER.IsDown(KEY_RSHIFT)
-					TSoundManager.GetInstance().MuteSfx(not TSoundManager.GetInstance().HasMutedSfx())
-				elseif KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
-					TSoundManager.GetInstance().MuteMusic(not TSoundManager.GetInstance().HasMutedMusic())
-				else
-					TSoundManager.GetInstance().Mute(not TSoundManager.GetInstance().IsMuted())
+
+			If App.devConfig.GetBool("DEV_KEYS", FALSE)
+				'(un)mute sound
+				'M: (un)mute all sounds
+				'SHIFT+M: (un)mute all sound effects
+				'CTRL+M: (un)mute all music
+				If KEYMANAGER.IsHit(KEY_M)
+					if KEYMANAGER.IsDown(KEY_LSHIFT) OR KEYMANAGER.IsDown(KEY_RSHIFT)
+						TSoundManager.GetInstance().MuteSfx(not TSoundManager.GetInstance().HasMutedSfx())
+					elseif KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
+						TSoundManager.GetInstance().MuteMusic(not TSoundManager.GetInstance().HasMutedMusic())
+					else
+						TSoundManager.GetInstance().Mute(not TSoundManager.GetInstance().IsMuted())
+					endif
 				endif
-			endif
 
-			If Game.gamestate = TGame.STATE_RUNNING
-				If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.10
-				If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.10, 0)
+				If Game.gamestate = TGame.STATE_RUNNING
+					If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.10
+					If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.10, 0)
 
-				If KEYMANAGER.IsHit(KEY_1) Game.SetActivePlayer(1)
-				If KEYMANAGER.IsHit(KEY_2) Game.SetActivePlayer(2)
-				If KEYMANAGER.IsHit(KEY_3) Game.SetActivePlayer(3)
-				If KEYMANAGER.IsHit(KEY_4) Game.SetActivePlayer(4)
+					If KEYMANAGER.IsHit(KEY_1) Game.SetActivePlayer(1)
+					If KEYMANAGER.IsHit(KEY_2) Game.SetActivePlayer(2)
+					If KEYMANAGER.IsHit(KEY_3) Game.SetActivePlayer(3)
+					If KEYMANAGER.IsHit(KEY_4) Game.SetActivePlayer(4)
 
-				If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("adagency") )
-				If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", Game.playerID) )
-				If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("betty") )
-				If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("movieagency"))
-				If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", Game.playerID))
-				If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", Game.playerID))
-				'e wie "employees" :D
-				If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("credits"))
-				If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", Game.playerID))
-				If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("roomboard"))
-			EndIf
-			If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
-			If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
-			If KEYMANAGER.IsHit(KEY_7) Then game.speed = 360.0	'180 minutes per second
-			If KEYMANAGER.IsHit(KEY_8) Then game.speed = 480.0	'240 minute per second
-			If KEYMANAGER.IsHit(KEY_9) Then game.speed = 1.0	'1 minute per second
-			If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
-			If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
+					If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("adagency") )
+					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", Game.playerID) )
+					If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("betty") )
+					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("movieagency"))
+					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", Game.playerID))
+					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", Game.playerID))
+					'e wie "employees" :D
+					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("credits"))
+					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", Game.playerID))
+					If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("roomboard"))
+				EndIf
+				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
+				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
+				If KEYMANAGER.IsHit(KEY_7) Then game.speed = 360.0	'180 minutes per second
+				If KEYMANAGER.IsHit(KEY_8) Then game.speed = 480.0	'240 minute per second
+				If KEYMANAGER.IsHit(KEY_9) Then game.speed = 1.0	'1 minute per second
+				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
+				If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
 
-			'Save game
-			If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
-			If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
+				'Save game
+				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
+				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
 
-			If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
+				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
 
-			If Game.isGameLeader()
-				If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
-				If KEYMANAGER.Ishit(Key_F2) And Game.Players[2].isAI() Then Game.Players[2].PlayerKI.reloadScript()
-				If KEYMANAGER.Ishit(Key_F3) And Game.Players[3].isAI() Then Game.Players[3].PlayerKI.reloadScript()
-				If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
-			EndIf
+				If Game.isGameLeader()
+					If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F2) And Game.Players[2].isAI() Then Game.Players[2].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F3) And Game.Players[3].isAI() Then Game.Players[3].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
+				EndIf
 
-			If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNewsEvent()
-			If KEYMANAGER.Ishit(Key_F6) Then TSoundManager.GetInstance().PlayMusicPlaylist("default")
+				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNewsEvent()
+				If KEYMANAGER.Ishit(Key_F6) Then TSoundManager.GetInstance().PlayMusicPlaylist("default")
 
-			If KEYMANAGER.Ishit(Key_F9)
-				If (KIRunning)
-					TDevHelper.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
-					KIRunning = False
-				Else
-					TDevHelper.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-					KIRunning = True
+				If KEYMANAGER.Ishit(Key_F9)
+					If (KIRunning)
+						TDevHelper.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
+						KIRunning = False
+					Else
+						TDevHelper.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
+						KIRunning = True
+					EndIf
+				EndIf
+				If KEYMANAGER.Ishit(Key_F10)
+					If (KIRunning)
+						For Local fig:TFigure = EachIn FigureCollection.list
+							If Not fig.isActivePlayer() Then fig.moveable = False
+						Next
+						TDevHelper.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
+						KIRunning = False
+					Else
+						For Local fig:TFigure = EachIn FigureCollection.list
+							If Not fig.isActivePlayer() Then fig.moveable = True
+						Next
+						TDevHelper.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
+						KIRunning = True
+					EndIf
 				EndIf
 			EndIf
-			If KEYMANAGER.Ishit(Key_F10)
-				If (KIRunning)
-					For Local fig:TFigure = EachIn FigureCollection.list
-						If Not fig.isActivePlayer() Then fig.moveable = False
-					Next
-					TDevHelper.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
-					KIRunning = False
-				Else
-					For Local fig:TFigure = EachIn FigureCollection.list
-						If Not fig.isActivePlayer() Then fig.moveable = True
-					Next
-					TDevHelper.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-					KIRunning = True
-				EndIf
-			EndIf
-
 		EndIf
 
 
@@ -2499,117 +2502,118 @@ Type AppEvents
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(App.timer.GetTween())
 
-		Local textX:Int = 20
-		Assets.fonts.baseFont.draw("Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
-		textX:+80
-		Assets.fonts.baseFont.draw("FPS: "+App.Timer.currentFps, textX, 0)
-		textX:+60
-		Assets.fonts.baseFont.draw("UPS: " + Int(App.Timer.currentUps), textX,0)
-		textX:+60
-		Assets.fonts.baseFont.draw("Loop: "+Int(App.Timer.getLoopTimeAverage())+"ms", textX,0)
-		textX:+100
+		if App.devConfig.GetBool("DEV_OSD", FALSE)
+			Local textX:Int = 20
+			Assets.fonts.baseFont.draw("Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
+			textX:+80
+			Assets.fonts.baseFont.draw("FPS: "+App.Timer.currentFps, textX, 0)
+			textX:+60
+			Assets.fonts.baseFont.draw("UPS: " + Int(App.Timer.currentUps), textX,0)
+			textX:+60
+			Assets.fonts.baseFont.draw("Loop: "+Int(App.Timer.getLoopTimeAverage())+"ms", textX,0)
+			textX:+100
 
-		'RON: debug purpose - see if the managed guielements list increase over time
-		If TGUIObject.GetFocusedObject()
-			Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
-			textX:+160
-		Else
-			Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
-			textX:+130
-		EndIf
-
-		If game.networkgame And Network.client
-			Assets.fonts.baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
-			textX:+50
-		EndIf
-
-
-		If Game.DebugInfos
-			SetAlpha 0.75
-			SetColor 0,0,0
-			DrawRect(20,10,160,373)
-			SetColor 255, 255, 255
-			SetAlpha 1.0
-			Assets.fonts.baseFontBold.draw("Debug information:", 25,20)
-			If App.settings.directx = -1 Then Assets.fonts.baseFont.draw("Renderer: OpenGL", 25,40)
-			If App.settings.directx = 0  Then Assets.fonts.baseFont.draw("Renderer: BufferedOpenGL", 25,40)
-			If App.settings.directx = 1  Then Assets.fonts.baseFont.draw("Renderer: DirectX 7", 25, 40)
-			If App.settings.directx = 2  Then Assets.fonts.baseFont.draw("Renderer: DirectX 9", 25,40)
-
-	'		GUIManager.Draw("InGame") 'draw ingamechat
-	'		Assets.fonts.baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-			Assets.fonts.baseFont.draw("Player positions:", 25,65)
-			local roomName:string = ""
-			local fig:TFigure
-			For Local i:Int = 0 To 3
-				fig = Game.GetPlayer(i+1).figure
-				roomName = "Building"
-				If fig.inRoom
-					roomName = fig.inRoom.Name
-				elseif fig.IsInElevator()
-					roomName = "InElevator"
-				elseIf fig.IsAtElevator()
-					roomName = "AtElevator"
-				endif
-				Assets.fonts.baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
-			Next
-
-			if ScreenCollection.GetCurrentScreen()
-				Assets.fonts.baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
-			else
-				Assets.fonts.baseFont.draw("onScreen: Main", 25, 130)
-			endif
-
-
-			Assets.fonts.baseFont.draw("Elevator routes:", 25,150)
-			Local routepos:Int = 0
-			Local startY:Int = 165
-			If Game.networkgame Then startY :+ 4*11
-
-			Local callType:String = ""
-
-			Local directionString:String = "up"
-			If Building.elevator.Direction = 1 Then directionString = "down"
-			Local debugString:String =	"floor:" + Building.elevator.currentFloor +..
-										"->" + Building.elevator.targetFloor +..
-										" doorState:"+Building.elevator.ElevatorStatus
-
-			Assets.fonts.baseFont.draw(debugString, 25, startY)
-
-
-			If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
-				For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
-					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-					Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
-					routepos:+1
-				Next
+			'RON: debug purpose - see if the managed guielements list increase over time
+			If TGUIObject.GetFocusedObject()
+				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
+				textX:+160
 			Else
-				Assets.fonts.baseFont.draw("recalculate", 25, startY + 15)
+				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
+				textX:+130
 			EndIf
 
-			'room states: debug fuer sushitv
-			local occupants:string = "-"
-			if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
-				occupants = ""
-				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
-					occupants :+ figure.name+" "
-				next
-			Endif
-			Assets.fonts.baseFont.draw("AdA. : "+occupants, 25, 350)
+			If game.networkgame And Network.client
+				Assets.fonts.baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
+				textX:+50
+			EndIf
 
-			occupants = "-"
-			if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
-				occupants = ""
-				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
-					occupants :+ figure.name+" "
-				next
-			Endif
-			Assets.fonts.baseFont.draw("MoA. : "+occupants, 25, 365)
+			If Game.DebugInfos
+				SetAlpha 0.75
+				SetColor 0,0,0
+				DrawRect(20,10,160,373)
+				SetColor 255, 255, 255
+				SetAlpha 1.0
+				Assets.fonts.baseFontBold.draw("Debug information:", 25,20)
+				If App.settings.directx = -1 Then Assets.fonts.baseFont.draw("Renderer: OpenGL", 25,40)
+				If App.settings.directx = 0  Then Assets.fonts.baseFont.draw("Renderer: BufferedOpenGL", 25,40)
+				If App.settings.directx = 1  Then Assets.fonts.baseFont.draw("Renderer: DirectX 7", 25, 40)
+				If App.settings.directx = 2  Then Assets.fonts.baseFont.draw("Renderer: DirectX 9", 25,40)
 
-		EndIf
-		If Game.DebugQuoteInfos
-			Game.DebugAudienceInfo.Draw()
-		EndIf
+		'		GUIManager.Draw("InGame") 'draw ingamechat
+		'		Assets.fonts.baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
+				Assets.fonts.baseFont.draw("Player positions:", 25,65)
+				local roomName:string = ""
+				local fig:TFigure
+				For Local i:Int = 0 To 3
+					fig = Game.GetPlayer(i+1).figure
+					roomName = "Building"
+					If fig.inRoom
+						roomName = fig.inRoom.Name
+					elseif fig.IsInElevator()
+						roomName = "InElevator"
+					elseIf fig.IsAtElevator()
+						roomName = "AtElevator"
+					endif
+					Assets.fonts.baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
+				Next
+
+				if ScreenCollection.GetCurrentScreen()
+					Assets.fonts.baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
+				else
+					Assets.fonts.baseFont.draw("onScreen: Main", 25, 130)
+				endif
+
+
+				Assets.fonts.baseFont.draw("Elevator routes:", 25,150)
+				Local routepos:Int = 0
+				Local startY:Int = 165
+				If Game.networkgame Then startY :+ 4*11
+
+				Local callType:String = ""
+
+				Local directionString:String = "up"
+				If Building.elevator.Direction = 1 Then directionString = "down"
+				Local debugString:String =	"floor:" + Building.elevator.currentFloor +..
+											"->" + Building.elevator.targetFloor +..
+											" doorState:"+Building.elevator.ElevatorStatus
+
+				Assets.fonts.baseFont.draw(debugString, 25, startY)
+
+
+				If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
+					For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
+						If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
+						Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
+						routepos:+1
+					Next
+				Else
+					Assets.fonts.baseFont.draw("recalculate", 25, startY + 15)
+				EndIf
+
+				'room states: debug fuer sushitv
+				local occupants:string = "-"
+				if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
+					occupants = ""
+					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
+						occupants :+ figure.name+" "
+					next
+				Endif
+				Assets.fonts.baseFont.draw("AdA. : "+occupants, 25, 350)
+
+				occupants = "-"
+				if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
+					occupants = ""
+					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
+						occupants :+ figure.name+" "
+					next
+				Endif
+				Assets.fonts.baseFont.draw("MoA. : "+occupants, 25, 365)
+
+			EndIf
+			If Game.DebugQuoteInfos
+				Game.DebugAudienceInfo.Draw()
+			EndIf
+		Endif
 
 
 
@@ -2648,7 +2652,7 @@ End Type
 'Bis wir nen besseren Platz gefunden haben
 Type TTVTException Extends TBlitzException
 	Field message:String
-	
+
 	Method ToString:String()
 		If message = Null
 			Return GetDefaultMessage()
@@ -2656,18 +2660,18 @@ Type TTVTException Extends TBlitzException
 			Return message
 		EndIf
 	End Method
-	
+
 	Method GetDefaultMessage:String()
 		Return "Undefined TTVTException!"
 	End Method
 End Type
 
 'Bis wir nen besseren Platz gefunden haben
-Type TArgumentException Extends TTVTException	
+Type TArgumentException Extends TTVTException
 	Field argument:String
 	Field value:String
-	
-	Method ToString:String()	
+
+	Method ToString:String()
 		If argument = Null
 			Super.ToString()
 		Else
@@ -2678,18 +2682,18 @@ Type TArgumentException Extends TTVTException
 			EndIf
 		EndIf
 	End Method
-	
+
 	Method GetDefaultMessage:String()
 		Return "An argument is not valid."
-	End Method	
-	
+	End Method
+
 	Function Create:TArgumentException( argument:String, value:String = null, message:String = Null )
-		Local t:TArgumentException = New TArgumentException		
+		Local t:TArgumentException = New TArgumentException
 		t.argument = argument
 		t.value = value
 		t.message = message
 		Return t
-	End Function	
+	End Function
 End Type
 
 
@@ -2891,31 +2895,31 @@ End Function
 Function StartTVTower(start:Int=true)
 	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
 	App.LoadResources("config/resources.xml")
-	
+
 	ArchiveProgrammeList	= New TgfxProgrammelist.Create(575, 16, 21)
-	
+
 	NewsAgency				= New TNewsAgency.Create()
-	
-	TTooltip.UseFontBold	= Assets.fonts.baseFontBold 
+
+	TTooltip.UseFontBold	= Assets.fonts.baseFontBold
 	TTooltip.UseFont 		= Assets.fonts.baseFont
 	TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
 	TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
-	
-	
+
+
 	'#Region: Globals, Player-Creation
 	Interface		= TInterface.Create()
 	Game	  			= new TGame.Create()
 	Building		= new TBuilding.Create()
 	'init sound receiver
 	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
-	
-	
+
+
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 	'figures need building (for location) - so create AFTER building
 	Game.InitializeBasics()
 	'creates all Rooms - with the names assigned at this moment
 	Init_CreateAllRooms()
-	
+
 	'RON
 	Local haveNPCs:Int = True
 	If haveNPCs
@@ -2923,8 +2927,8 @@ Function StartTVTower(start:Int=true)
 		New TFigurePostman.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
 		New TFigurePostman.CreateFigure("Bote2", Assets.GetSprite("BoteLeer"), 410, 1, -65, 0)
 	EndIf
-	
-	
+
+
 	TDevHelper.Log("Base", "Creating GUIelements", LOG_DEBUG)
 	InGame_Chat = New TGUIChat.Create(520,418,280,190,"InGame")
 	InGame_Chat.setDefaultHideEntryTime(10000)
@@ -2941,13 +2945,13 @@ Function StartTVTower(start:Int=true)
 	InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
 	InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
 	InGame_Chat.guiInput.SetValueDisplacement(0,5)
-	
-	
+
+
 	'connect click and change events to the gui objects
 	TGameEvents.Init()
 
 	SetColor 255,255,255
-	
+
 	PlayerDetailsTimer = 0
 	MainMenuJanitor = New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 250, 2, 65)
 
@@ -2958,8 +2962,8 @@ Function StartTVTower(start:Int=true)
 	MainMenuJanitor.MovementRangeMinX = 0
 	MainMenuJanitor.MovementRangeMaxX = 800
 	MainMenuJanitor.rect.position.SetY(600)
-	
-	
+
+
 	'add menu screens
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
 	GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
@@ -2972,24 +2976,24 @@ Function StartTVTower(start:Int=true)
 	ScreenCollection.Add(GameScreen_Building)
 
 	'go into the start menu
-	Game.SetGamestate(TGame.STATE_MAINMENU)	
-	
+	Game.SetGamestate(TGame.STATE_MAINMENU)
+
 	'===== EVENTS =====
 	EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
 	EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
 	EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
-	EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )	
-	
+	EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
+
 	'Init EventManager
-	'could also be done during update ("if not initDone...")	
+	'could also be done during update ("if not initDone...")
 	EventManager.Init()
-	App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents	
-	
+	App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
+
 	If Not TApp.ExitApp And Not AppTerminate()
 	'	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
 		Repeat
 			App.Timer.loop()
-	
+
 			'we cannot fetch keystats in threads
 			'so we have to do it 100% in the main thread - same for mouse
 		?Threaded
@@ -3001,13 +3005,13 @@ Function StartTVTower(start:Int=true)
 			UnlockMutex(RefreshInputMutex)
 		EndIf
 		?
-	
+
 			'process events not directly triggered
 			'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
 			EventManager.update()
-	
+
 			'If RandRange(0,20) = 20 Then GCCollect()
 		Until AppTerminate() Or TApp.ExitApp
 		If Game.networkgame Then Network.DisconnectFromServer()
-	EndIf 'not exit game		
+	EndIf 'not exit game
 End Function
