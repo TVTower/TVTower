@@ -1,12 +1,16 @@
 #include <string.h>
-#include <sys/sockio.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 
 #ifdef __APPLE__
-# include <net/if.h>
+# include <sys/sockio.h>
+#endif
+
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <net/if.h>
+
+#ifdef __APPLE__
 # include <ifaddrs.h>
-#include <net/if_dl.h>
+# include <net/if_dl.h>
 #else
 # include <linux/sockios.h>
 #endif
