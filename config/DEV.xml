@@ -5,9 +5,23 @@
 			<DEV_KEYS value="TRUE" />
 			<DEV_OSD value="TRUE" />
 
+			<!-- milliseconds waiting on a floor (incl. animation).
+			     Default: 1700
+			-->
+			<DEV_ELEVATOR_WAITTIME value="1500" />
+			<!-- millseconds/frame (open/close animation, 8 frames each).
+			     Default: 70
+			-->
+			<DEV_ELEVATOR_ANIMSPEED value="60" />
+			<!-- speed in pixels per second.
+			     Default: 120
+			-->
+			<DEV_ELEVATOR_SPEED value="140" />
+
 			<DEV_AD_FACTOR1 value="5.0" />
 			<DEV_AD_MINIMUM_CPM value="7.5" />
 			<DEV_AD_LIMITED_GENRE_MULTIPLIER value="2.0" />
+
 			<!-- TRUE/1   FALSE/0 -->
 			<DEV_ROUND_TO_BEAUTIFUL_VALUES value="TRUE" />
 		</data>

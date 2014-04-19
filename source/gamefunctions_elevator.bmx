@@ -41,6 +41,7 @@ Type TElevator
 	Global _initDone:int = FALSE
 	Global _instance:TElevator							'last created elevator
 
+
 	'===== Konstruktor, Speichern, Laden =====
 	Method New()
 		_instance = self
@@ -55,8 +56,17 @@ Type TElevator
 
 
 	Method Create:TElevator()
+		'limit speed between 50 - 240 pixels per second, default 120
+		Speed = Max(50, Min(240, App.devConfig.GetInt("DEV_ELEVATOR_SPEED", self.speed)))
+		'adjust wait at floor time : 1000 - 2000 ms, default 1700
+		WaitAtFloorTime = Max(1000, Min(2000, App.devConfig.GetInt("DEV_ELEVATOR_WAITTIME", self.WaitAtFloorTime)))
+
+		'adjust animation speed (per frame) 30-100, default 70
+		local animSpeed:int = Max(30, Min(100, App.devConfig.GetInt("DEV_ELEVATOR_ANIMSPEED", 70)))
+
 		'create timer
 		WaitAtFloorTimer = TIntervalTimer.Create(WaitAtFloorTime)
+
 
 		PassengerPosition  = PassengerPosition[..6]
 		PassengerOffset    = PassengerOffset[..6]
@@ -72,8 +82,8 @@ Type TElevator
 		spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
 		spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
 		spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
-		spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,70],[1,70],[2,70],[3,70],[4,70],[5,70],[6,70],[7,70] ], 0, 1) )
-		spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,70],[6,70],[5,70],[4,70],[3,70],[2,70],[1,70],[0,70] ], 0, 1) )
+		spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
+		spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
 
 		InitSprites()
 
