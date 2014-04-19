@@ -13,13 +13,17 @@ Import MaxMod2.WAV
 
 ?Linux
 'linux needs a different maxmod-implementation
-
 'maybe move it to maxmod - or leave it out to save dependencies if not used
 TMaxModRtAudioDriver.Init("LINUX_PULSE")
+?MacOS
+'mac needs a different maxmod-implementation
+'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
+TMaxModRtAudioDriver.Init("MACOSX_CORE")
+'TMaxModRtAudioDriver.Init("AUTOMATIC")
 ?
-'init has to be done for all
-If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
 
+'init has to be done for all - currently not knowing much bout mac
+If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
 
 'type to store music files (ogg) in it
 'data is stored in bank
@@ -27,7 +31,7 @@ If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
 Type TMusicStream
 	Field bank:TBank
 	Field loop:Int
-	Field url:string
+	Field url:String
 
 
 	Function Create:TMusicStream(url:Object, loop:Int=False)
@@ -35,14 +39,14 @@ Type TMusicStream
 		obj.bank = LoadBank(url)
 		obj.loop = loop
 		obj.url = "unknown"
-		if string(url) then obj.url=string(url)
+		If String(url) Then obj.url=String(url)
 		Return obj
 	End Function
 
 
-	Method isValid:int()
-		if not self.bank then return FALSE
-		return TRUE
+	Method isValid:Int()
+		If Not Self.bank Then Return False
+		Return True
 	End Method
 
 
@@ -84,12 +88,12 @@ Type TSoundManager
 	Field soundSources:TList = CreateList()
 	Field receiver:TElementPosition
 
-	Field _currentPlaylistName:string = "default"
+	Field _currentPlaylistName:String = "default"
 	Field playlists:TMap = CreateMap()		'a named array of playlists, playlists contain available musicStreams
 
-	global instance:TSoundManager
-	global PREFIX_MUSIC:string = "MUSIC_"
-	global PREFIX_SFX:string = "SFX_"
+	Global instance:TSoundManager
+	Global PREFIX_MUSIC:String = "MUSIC_"
+	Global PREFIX_SFX:String = "SFX_"
 
 
 	Function Create:TSoundManager()
@@ -104,8 +108,8 @@ Type TSoundManager
 
 
 	Function GetInstance:TSoundManager()
-		if not instance then instance = TSoundManager.Create()
-		return instance
+		If Not instance Then instance = TSoundManager.Create()
+		Return instance
 	End Function
 
 
@@ -121,80 +125,80 @@ Type TSoundManager
 
 	'playlists is a comma separated string of playlists this music wants to
 	'be stored in
-	Method AddSound:int(name:string, sound:object, playlists:string="default")
-		Self.soundFiles.insert(lower(name), sound)
+	Method AddSound:Int(name:String, sound:Object, playlists:String="default")
+		Self.soundFiles.insert(Lower(name), sound)
 
-		local playlistsArray:string[] = playlists.split(",")
-		for local playlist:string = eachin playlistsArray
-			playlist = playlist.trim() 'remove whitespace
+		Local playlistsArray:String[] = playlists.split(",")
+		For Local playlist:String = EachIn playlistsArray
+			playlist = playlist.Trim() 'remove whitespace
 			AddSoundToPlaylist(playlist, name, sound)
 		Next
 	End Method
 
 
-	Method AddSoundToPlaylist(playlist:string="default", name:string, sound:object)
-		if TSound(sound)
-			playlist = PREFIX_SFX + lower(playlist)
-		elseif TMusicStream(sound)
-			playlist = PREFIX_MUSIC + lower(playlist)
-		endif
-		name = lower(name)
+	Method AddSoundToPlaylist(playlist:String="default", name:String, sound:Object)
+		If TSound(sound)
+			playlist = PREFIX_SFX + Lower(playlist)
+		ElseIf TMusicStream(sound)
+			playlist = PREFIX_MUSIC + Lower(playlist)
+		EndIf
+		name = Lower(name)
 
 		'if not done yet - create a new playlist entry
 		'fetch the playlist
-		local playlistContainer:TList
-		if not playlists.contains(playlist)
+		Local playlistContainer:TList
+		If Not playlists.contains(playlist)
 			playlistContainer = CreateList()
 			playlists.insert(playlist, playlistContainer)
-		else
+		Else
 			playlistContainer = TList(playlists.ValueForKey(playlist))
-		endif
+		EndIf
 		playlistContainer.AddLast(sound)
 	End Method
 
 
-	Method GetCurrentPlaylist:string()
-		return _currentPlaylistName:string
+	Method GetCurrentPlaylist:String()
+		Return _currentPlaylistName:String
 	End Method
 
 
-	Method SetCurrentPlaylist(name:string="default")
+	Method SetCurrentPlaylist(name:String="default")
 		_currentPlaylistName = name
 	End Method
 
 
 	'use this method if multiple sfx for a certain event are possible
 	'(so eg. multiple "door open/close"-sounds to make variations
-	Method GetRandomSfxFromPlaylist:TSound(playlist:string)
-		local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_SFX + playlist))
-		if not playlistContainer then print "playlist: "+playlist+" not found."; return null
-		if playlistContainer.count() = 0 then print "empty list:"+PREFIX_SFX + playlist; return NULL
-		return TSound(playlistContainer.ValueAtIndex(Rand(0, playlistContainer.count()-1)))
+	Method GetRandomSfxFromPlaylist:TSound(playlist:String)
+		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_SFX + playlist))
+		If Not playlistContainer Then Print "playlist: "+playlist+" not found."; Return Null
+		If playlistContainer.count() = 0 Then Print "empty list:"+PREFIX_SFX + playlist; Return Null
+		Return TSound(playlistContainer.ValueAtIndex(Rand(0, playlistContainer.count()-1)))
 	End Method
 
 
 	'if avoidMusic is set, the function tries to return another music (if possible)
-	Method GetRandomMusicFromPlaylist:TMusicStream(playlist:string, avoidMusic:TMusicStream=null)
-		local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_MUSIC + playlist))
-		if not playlistContainer
+	Method GetRandomMusicFromPlaylist:TMusicStream(playlist:String, avoidMusic:TMusicStream=Null)
+		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_MUSIC + playlist))
+		If Not playlistContainer
 			'TDevHelper.Log("GetRandomMusicFromPlaylist", "No playlist: "+playlist+" found.", LOG_WARNING)
-			return Null
-		endif
-		if playlistContainer.count() = 0
+			Return Null
+		EndIf
+		If playlistContainer.count() = 0
 			'TDevHelper.Log("GetRandomMusicFromPlaylist", "playlist: "+playlist+" is empty.", LOG_WARNING)
-			return Null
-		endif
+			Return Null
+		EndIf
 
-		local result:TMusicStream
+		Local result:TMusicStream
 		'try to find another music file
-		if avoidMusic and playlistContainer.count()>1
-			repeat
+		If avoidMusic And playlistContainer.count()>1
+			Repeat
 				result = TMusicStream(playlistContainer.ValueAtIndex(Rand(0, playlistContainer .count()-1)))
-			until result <> avoidMusic
-		else
+			Until result <> avoidMusic
+		Else
 			result = TMusicStream(playlistContainer.ValueAtIndex(Rand(0, playlistContainer .count()-1)))
-		endif
-		return result
+		EndIf
+		Return result
 
 '		local playlistContainer:TMusicStream[] = TMusicStream[](playlists.ValueForKey("MUSIC_"+playlist))
 '		if playlistContainer.length = 0 then print "empty list:"+"MUSIC_"+playlist; return NULL
@@ -207,83 +211,83 @@ Type TSoundManager
 	End Method
 
 
-	Method IsPlaying:int()
-		If not activeMusicChannel then return FALSE
-		return activeMusicChannel.Playing()
+	Method IsPlaying:Int()
+		If Not activeMusicChannel Then Return False
+		Return activeMusicChannel.Playing()
 	End Method
 
 
-	Method Mute:int(bool:int=TRUE)
-		if bool
-			TDevHelper.log("TSoundManager.Mute()", "Muting all sounds", LOG_DEBUG)
-		else
-			TDevHelper.log("TSoundManager.Mute()", "Unmuting all sounds", LOG_DEBUG)
-		endif
+	Method Mute:Int(bool:Int=True)
+		If bool
+			TDevHelper.Log("TSoundManager.Mute()", "Muting all sounds", LOG_DEBUG)
+		Else
+			TDevHelper.Log("TSoundManager.Mute()", "Unmuting all sounds", LOG_DEBUG)
+		EndIf
 		MuteSfx(bool)
 		MuteMusic(bool)
 	End Method
 
 
-	Method MuteSfx:int(bool:int=TRUE)
-		if bool
-			TDevHelper.log("TSoundManager.MuteSfx()", "Muting all sound effects", LOG_DEBUG)
-		else
-			TDevHelper.log("TSoundManager.MuteSfx()", "Unmuting all sound effects", LOG_DEBUG)
-		endif
+	Method MuteSfx:Int(bool:Int=True)
+		If bool
+			TDevHelper.Log("TSoundManager.MuteSfx()", "Muting all sound effects", LOG_DEBUG)
+		Else
+			TDevHelper.Log("TSoundManager.MuteSfx()", "Unmuting all sound effects", LOG_DEBUG)
+		EndIf
 		For Local element:TSoundSourceElement = EachIn soundSources
 			element.mute(bool)
 		Next
 
-		sfxOn = not bool
+		sfxOn = Not bool
 	End Method
 
 
-	Method MuteMusic:int(bool:int=TRUE)
-		if bool
-			TDevHelper.log("TSoundManager.MuteMusic()", "Muting music", LOG_DEBUG)
-		else
-			TDevHelper.log("TSoundManager.MuteMusic()", "Unmuting music", LOG_DEBUG)
-		endif
+	Method MuteMusic:Int(bool:Int=True)
+		If bool
+			TDevHelper.Log("TSoundManager.MuteMusic()", "Muting music", LOG_DEBUG)
+		Else
+			TDevHelper.Log("TSoundManager.MuteMusic()", "Unmuting music", LOG_DEBUG)
+		EndIf
 
-		if bool
-			if activeMusicChannel then PauseChannel(activeMusicChannel)
-			if inactiveMusicChannel then inactiveMusicChannel.Stop()
-		else
-			if activeMusicChannel then ResumeChannel(activeMusicChannel)
-		endif
-		musicOn = not bool
+		If bool
+			If activeMusicChannel Then PauseChannel(activeMusicChannel)
+			If inactiveMusicChannel Then inactiveMusicChannel.Stop()
+		Else
+			If activeMusicChannel Then ResumeChannel(activeMusicChannel)
+		EndIf
+		musicOn = Not bool
 	End Method
 
 
-	Method IsMuted:int()
-		if sfxOn or musicOn then return FALSE
-		return TRUE
+	Method IsMuted:Int()
+		If sfxOn Or musicOn Then Return False
+		Return True
 	End Method
 
 
-	Method HasMutedMusic:int()
-		return not musicOn
+	Method HasMutedMusic:Int()
+		Return Not musicOn
 	End Method
 
 
-	Method HasMutedSfx:int()
-		return not sfxOn
+	Method HasMutedSfx:Int()
+		Return Not sfxOn
 	End Method
 
 
-	Method Update:int()
+	Method Update:Int()
 		'skip updates if muted
-		if isMuted() then return TRUE
+		If isMuted() Then Return True
 
-		if sfxOn
+		If sfxOn
 			For Local element:TSoundSourceElement = EachIn soundSources
 				element.Update()
 			Next
-		endif
+		EndIf
 
-		If not HasMutedMusic()
+		If Not HasMutedMusic()
 			'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
-			If not activeMusicChannel then return TRUE
+			If Not activeMusicChannel Then Return True
 
 			'if the music didn't stop yet
 			If activeMusicChannel.Playing()
@@ -293,7 +297,7 @@ Type TSoundManager
 				EndIf
 			'no music is playing, just start
 			Else
-				TDevHelper.log("TSoundManager.Update()", "PlayMusicPlaylist", LOG_DEBUG)
+				TDevHelper.Log("TSoundManager.Update()", "PlayMusicPlaylist", LOG_DEBUG)
 				PlayMusicPlaylist(GetCurrentPlaylist())
 			EndIf
 		EndIf
@@ -337,97 +341,97 @@ Type TSoundManager
 
 
 	Method PlaySfx(sfx:TSound, channel:TChannel)
-		if not HasMutedSfx() and sfx then PlaySound(sfx, Channel)
+		If Not HasMutedSfx() And sfx Then PlaySound(sfx, Channel)
 	End Method
 
 
-	Method PlayMusicPlaylist(playlist:string)
-		PlayMusicOrPlayList(playlist, true)
+	Method PlayMusicPlaylist(playlist:String)
+		PlayMusicOrPlayList(playlist, True)
 	End Method
 
 
-	Method PlayMusic(music:string)
-		PlayMusicOrPlayList(music, FALSE)
+	Method PlayMusic(music:String)
+		PlayMusicOrPlayList(music, False)
 	End Method
 
 
-	Method PlayMusicOrPlaylist:int(name:String, fromPlaylist:int=FALSE)
-		if HasMutedMusic() then return TRUE
+	Method PlayMusicOrPlaylist:Int(name:String, fromPlaylist:Int=False)
+		If HasMutedMusic() Then Return True
 
-		if fromPlaylist
+		If fromPlaylist
 			nextMusicTitleStream = GetMusicStream("", name)
 			nextMusicTitleVolume = GetMusicVolume(name)
-			if nextMusicTitleStream
+			If nextMusicTitleStream
 				SetCurrentPlaylist(name)
 				TDevHelper.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
-			else
+			Else
 				TDevHelper.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q not possible. No Playlist.", LOG_DEBUG)
-			endif
-		else
+			EndIf
+		Else
 			nextMusicTitleStream = GetMusicStream(name, "")
 			nextMusicTitleVolume = GetMusicVolume(name)
 			TDevHelper.Log("PlayMusicOrPlaylist", "GetMusicStream by name ~q"+name+"~q", LOG_DEBUG)
-		endif
+		EndIf
 
 		forceNextMusicTitle = True
 
 		'Wenn der Musik-Channel noch nicht laeuft, dann jetzt starten
-		If not activeMusicChannel Or Not activeMusicChannel.Playing()
-			if not nextMusicTitleStream
+		If Not activeMusicChannel Or Not activeMusicChannel.Playing()
+			If Not nextMusicTitleStream
 				TDevHelper.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
-			else
+			Else
 				TDevHelper.Log("PlayMusicOrPlaylist", "start activeMusicChannel", LOG_DEBUG)
 				Local musicVolume:Float = nextMusicTitleVolume
 				activeMusicChannel = nextMusicTitleStream.GetChannel(musicVolume)
 				ResumeChannel(activeMusicChannel)
 
 				forceNextMusicTitle = False
-			endif
+			EndIf
 		EndIf
 	End Method
 
 
 	'returns if there would be a stream to play
 	'use this to avoid music changes if there is no new stream available
-	Method HasMusicStream:int(music:String="", playlist:string="")
-		if playlist=""
-			return null <> TMusicStream(soundFiles.ValueForKey(lower(music)))
-		else
-			return null <> GetRandomMusicFromPlaylist(playlist, nextMusicTitleStream)
-		endif
+	Method HasMusicStream:Int(music:String="", playlist:String="")
+		If playlist=""
+			Return Null <> TMusicStream(soundFiles.ValueForKey(Lower(music)))
+		Else
+			Return Null <> GetRandomMusicFromPlaylist(playlist, nextMusicTitleStream)
+		EndIf
 	End Method
 
 
-	Method GetMusicStream:TMusicStream(music:String="", playlist:string="")
+	Method GetMusicStream:TMusicStream(music:String="", playlist:String="")
 		Local result:TMusicStream
 
-		if playlist=""
-			result = TMusicStream(soundFiles.ValueForKey(lower(music)))
-			TDevHelper.log("TSoundManager.GetMusicStream()", "Play music: " + music, LOG_DEBUG)
-		else
+		If playlist=""
+			result = TMusicStream(soundFiles.ValueForKey(Lower(music)))
+			TDevHelper.Log("TSoundManager.GetMusicStream()", "Play music: " + music, LOG_DEBUG)
+		Else
 			result = GetRandomMusicFromPlaylist(playlist, nextMusicTitleStream)
-			rem
+			Rem
 			if result
 				TDevHelper.log("TSoundManager.GetMusicStream()", "Play random music from playlist: ~q" + playlist +"~q  file: ~q"+result.url+"~q", LOG_DEBUG)
 			else
 				TDevHelper.log("TSoundManager.GetMusicStream()", "Cannot play random music from playlist: ~q" + playlist +"~q, nothing found.", LOG_DEBUG)
 			endif
 			endrem
-		endif
+		EndIf
 
 		Return result
 	End Method
 
 
-	Method GetSfx:TSound(sfx:String="", playlist:string="")
+	Method GetSfx:TSound(sfx:String="", playlist:String="")
 		Local result:TSound
-		if playlist=""
-			result = TSound(soundFiles.ValueForKey(lower(sfx)))
+		If playlist=""
+			result = TSound(soundFiles.ValueForKey(Lower(sfx)))
 			'TDevHelper.log("TSoundManager.GetSfx()", "Play sfx: " + sfx, LOG_DEBUG)
-		else
+		Else
 			result = GetRandomSfxFromPlaylist(playlist)
 			'TDevHelper.log("TSoundManager.GetSfx()", "Play random sfx from playlist: " + playlist, LOG_DEBUG)
-		endif
+		EndIf
 
 		Return result
 	End Method
@@ -439,7 +443,7 @@ Type TSoundManager
 	End Method
 
 	'by default all music share the same volume
-	Method GetMusicVolume:float(music:String)
+	Method GetMusicVolume:Float(music:String)
 		Return 1.0
 	End Method
 End Type
@@ -493,16 +497,16 @@ Type TSfxChannel
 	End Method
 
 
-	Method Mute(bool:int=TRUE)
-		if bool
+	Method Mute(bool:Int=True)
+		If bool
 			If MuteAfterCurrentSfx And IsActive()
 				AdjustSettings(True)
 			Else
 				Channel.SetVolume(0)
 			EndIf
-		else
+		Else
 			Channel.SetVolume(TSoundManager.GetInstance().sfxVolume)
-		endif
+		EndIf
 	End Method
 
 
@@ -681,17 +685,17 @@ Type TSoundSourceElement Extends TElementPosition
 	End Method
 
 
-	Method PlayRandomSfx(playlist:string, sfxSettings:TSfxSettings=Null)
-		PlaySfxOrPlaylist(playlist, sfxSettings, TRUE)
+	Method PlayRandomSfx(playlist:String, sfxSettings:TSfxSettings=Null)
+		PlaySfxOrPlaylist(playlist, sfxSettings, True)
 	End Method
 
 
-	Method PlaySfx(sfx:string, sfxSettings:TSfxSettings=Null)
-		PlaySfxOrPlaylist(sfx, sfxSettings, FALSE)
+	Method PlaySfx(sfx:String, sfxSettings:TSfxSettings=Null)
+		PlaySfxOrPlaylist(sfx, sfxSettings, False)
 	End Method
 
 
-	Method PlaySfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:int=FALSE)
+	Method PlaySfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		If Not GetIsHearable() Then Return
 		If Not OnPlaySfx(name) Then Return
 		'print GetID() + " # PlaySfx: " + sfx
@@ -706,26 +710,26 @@ Type TSoundSourceElement Extends TElementPosition
 			TDynamicSfxChannel(channel).SetReceiver(GetReceiver())
 		EndIf
 
-		if playlistMode
+		If playlistMode
 			channel.PlayRandomSfx(name, settings)
-		else
+		Else
 			channel.PlaySfx(name, settings)
-		endif
+		EndIf
 		'print GetID() + " # End PlaySfx: " + sfx
 	End Method
 
 
-	Method PlayOrContinueRandomSfx(playlist:string, sfxSettings:TSfxSettings=Null)
-		PlayOrContinueSfxOrPlaylist(playlist, sfxSettings, TRUE)
+	Method PlayOrContinueRandomSfx(playlist:String, sfxSettings:TSfxSettings=Null)
+		PlayOrContinueSfxOrPlaylist(playlist, sfxSettings, True)
 	End Method
 
 
-	Method PlayOrContinueSfx(sfx:string, sfxSettings:TSfxSettings=Null)
-		PlayOrContinueSfxOrPlaylist(sfx, sfxSettings, FALSE)
+	Method PlayOrContinueSfx(sfx:String, sfxSettings:TSfxSettings=Null)
+		PlayOrContinueSfxOrPlaylist(sfx, sfxSettings, False)
 	End Method
 
 
-	Method PlayOrContinueSfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:int=FALSE)
+	Method PlayOrContinueSfxOrPlaylist(name:String, sfxSettings:TSfxSettings=Null, playlistMode:Int=False)
 		Local channel:TSfxChannel = GetChannelForSfx(name)
 		If Not channel.IsActive()
 			'Print "PlayOrContinueSfx: start"
@@ -742,7 +746,7 @@ Type TSoundSourceElement Extends TElementPosition
 	End Method
 
 
-	Method Mute:int(bool:int=TRUE)
+	Method Mute:Int(bool:Int=True)
 		For Local sfxChannel:TSfxChannel = EachIn MapValues(SfxChannels)
 			sfxChannel.Mute(bool)
 		Next
@@ -766,7 +770,7 @@ Type TSoundSourceElement Extends TElementPosition
 		Local sfxChannel:TSfxChannel = TDynamicSfxChannel.CreateDynamicSfxChannel(Self)
 		sfxChannel.MuteAfterCurrentSfx = muteAfterSfx
 		SfxChannels.insert(name, sfxChannel)
-		return sfxChannel
+		Return sfxChannel
 	End Method
 
 

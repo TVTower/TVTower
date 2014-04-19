@@ -606,7 +606,7 @@ Type TGUIobject
 		if _parent then return _parent.GetUppermostParent()
 		return self
 	End Method
-	
+
 
 	Method getParent:TGUIobject(parentClassName:String="", strictMode:Int=False)
 		'if no special parent is requested, just return the direct parent
@@ -655,7 +655,7 @@ Type TGUIobject
 	Method onDoubleClick:Int(triggerEvent:TEventBase)
 		Return False
 	End Method
-	
+
 
 	'default hit handler for all gui objects
 	'by default they do nothing
@@ -1253,7 +1253,7 @@ Type TGUIobject
 
 					'maybe change to "isAccepted" - but then each gui object
 					'have to modify the event IF they accepted the click
-					
+
 					'reset Button
 					GUIManager.UpdateState_mouseButtonHit[2] = False
 				EndIf
@@ -1324,91 +1324,55 @@ Type TGUIobject
 
 	'returns true if the conversion was successful
 	Function ConvertKeystrokesToText:Int(value:String Var)
-		Local shiftPressed:Int = False
-		Local altGrPressed:Int = False
-		?win32
-		If KEYMANAGER.IsDown(160) Or KEYMANAGER.IsDown(161) Then shiftPressed = True
-		If KEYMANAGER.IsDown(164) Or KEYMANAGER.IsDown(165) Then altGrPressed = True
-		?
-		?Not win32
-		If KEYMANAGER.IsDown(160) Or KEYMANAGER.IsDown(161) Then shiftPressed = True
-		If KEYMANAGER.IsDown(3) Then altGrPressed = True
-		?
+		'remove with backspace
+		If KEYWRAPPER.pressedKey(KEY_BACKSPACE)
+			value = value[..value.length -1]
+			return TRUE
+		Endif
+		'abort with ESCAPE
+		If KEYWRAPPER.pressedKey(KEY_ESCAPE) then Return False
 
-		Local charToAdd:String = ""
-		For Local i:Int = 65 To 90
-			charToAdd = ""
-			If KEYWRAPPER.pressedKey(i)
-				If i = 69 And altGrPressed Then charToAdd = "¤"
-				If i = 81 And altGrPressed Then charToAdd = "@"
-				If shiftPressed Then charToAdd = Chr(i) Else charToAdd = Chr(i+32)
-			EndIf
-			value :+ charToAdd
-		Next
-
-		'num keys
-		For Local i:Int = 96 To 105
-			If KEYWRAPPER.pressedKey(i) Then charToAdd=i-96
-		Next
-
-
-		?Win32
-        If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-        If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-        If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+		'read special keys (shift + altgr) to enable special key handling
+		Local shiftPressed:Int = KEYMANAGER.IsDown(160) Or KEYMANAGER.IsDown(161)
+		?not Linux
+		'windows and mac
+		Local altGrPressed:int = KEYMANAGER.IsDown(164) Or KEYMANAGER.IsDown(165)
 		?Linux
-        If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
-        If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
-        If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+		'linux
+		Local altGrPressed:int = KEYMANAGER.IsDown(3)
 		?
-        If KEYWRAPPER.pressedKey(48) Then If shiftPressed Then value :+ "=" Else value :+ "0"
-        If KEYWRAPPER.pressedKey(49) Then If shiftPressed Then value :+ "!" Else value :+ "1"
-        If KEYWRAPPER.pressedKey(50) Then If shiftPressed Then value :+ Chr(34) Else value :+ "2"
-        If KEYWRAPPER.pressedKey(51) Then If shiftPressed Then value :+ "§" Else value :+ "3"
-        If KEYWRAPPER.pressedKey(52) Then If shiftPressed Then value :+ "$" Else value :+ "4"
-        If KEYWRAPPER.pressedKey(53) Then If shiftPressed Then value :+ "%" Else value :+ "5"
-        If KEYWRAPPER.pressedKey(54) Then If shiftPressed Then value :+ "&" Else value :+ "6"
-        If KEYWRAPPER.pressedKey(55) Then If shiftPressed Then value :+ "/" Else value :+ "7"
-        If KEYWRAPPER.pressedKey(56) Then If shiftPressed Then value :+ "(" Else value :+ "8"
-        If KEYWRAPPER.pressedKey(57) Then If shiftPressed Then value :+ ")" Else value :+ "9"
-        If KEYWRAPPER.pressedKey(223) Then If shiftPressed Then value :+ "?" Else value :+ "ß"
-        If KEYWRAPPER.pressedKey(81) And altGrPressed Then value :+ "@"
-		?win32
-        If KEYWRAPPER.pressedKey(219) And shiftPressed Then value :+ "?"
-        If KEYWRAPPER.pressedKey(219) And altGrPressed Then value :+ "\"
-        If KEYWRAPPER.pressedKey(219) And Not altGrPressed And Not shiftPressed Then value :+ "ß"
-        If KEYWRAPPER.pressedKey(221) Then If shiftPressed Then value :+ "`" Else value :+ "'"
-        If KEYWRAPPER.pressedKey(226) Then If shiftPressed Then value :+ ">" Else value :+ "<"
-		?linux
-        If KEYWRAPPER.pressedKey(223) And shiftPressed Then value :+ "?"
-        If KEYWRAPPER.pressedKey(223) And altGrPressed Then value :+ "\"
-        If KEYWRAPPER.pressedKey(223) And Not altGrPressed And Not shiftPressed Then value :+ "ß"
-        If KEYWRAPPER.pressedKey(37) Then If shiftPressed Then value :+ "`" Else value :+ "'"
-        If KEYWRAPPER.pressedKey(60) Then If shiftPressed Then value :+ ">" Else value :+ "<"
-		?
-        If KEYWRAPPER.pressedKey(43) And shiftPressed Then value :+ "*"
-        If KEYWRAPPER.pressedKey(43) And altGrPressed Then value :+ "~~"
-        If KEYWRAPPER.pressedKey(43) And Not altGrPressed And Not shiftPressed Then value :+ "+"
-	    If KEYWRAPPER.pressedKey(60) Then If shiftPressed Then value :+ "°" Else value :+ "^"
-	    If KEYWRAPPER.pressedKey(35) Then If shiftPressed Then value :+ "'" Else value :+ "#"
-	    If KEYWRAPPER.pressedKey(188) Then If shiftPressed Then value :+ ";" Else value :+ ","
-	    If KEYWRAPPER.pressedKey(189) Then If shiftPressed Then value :+ "_" Else value :+ "-"
-	    If KEYWRAPPER.pressedKey(190) Then If shiftPressed Then value :+ ":" Else value :+ "."
-	    'numblock
-	    If KEYWRAPPER.pressedKey(106) Then value :+ "*"
-	    If KEYWRAPPER.pressedKey(111) Then value :+ "/"
-	    If KEYWRAPPER.pressedKey(109) Then value :+ "-"
-	    If KEYWRAPPER.pressedKey(109) Then value :+ "-"
-	    If KEYWRAPPER.pressedKey(110) Then value :+ ","
-	    For Local i:Int = 0 To 9
-			If KEYWRAPPER.pressedKey(96+i) Then value :+ i
-		Next
-		'space
-	    If KEYWRAPPER.pressedKey(32) Then value :+ " "
-	    'remove with backspace
-        If KEYWRAPPER.pressedKey(KEY_BACKSPACE) Then value = value[..value.length -1]
 
-		If KEYWRAPPER.pressedKey(KEY_ESCAPE) Then Return False
+		'charCode is "0" if no key is recognized
+		local charCode:int = int(GetChar())
+
+		'charCode is < 0 for me when umlauts are pressed
+		if charCode < 0
+			?Win32
+			If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+			If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+			If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+			?Mac
+			If KEYWRAPPER.pressedKey(186) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+			If KEYWRAPPER.pressedKey(192) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+			If KEYWRAPPER.pressedKey(222) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+			?Linux
+			If KEYWRAPPER.pressedKey(252) Then If shiftPressed Then value:+ "Ü" Else value :+ "ü"
+			If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
+			If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
+			?
+		elseif charCode > 0
+			'handle normal "keys" (excluding umlauts)
+			'skip "backspace"
+			if chr(KEY_BACKSPACE) <> chr(charCode)
+				value :+ chr(charCode)
+			endif
+		endif
+
+		'special chars - recognized on Mac, but not Linux
+		'euro sign
+		?Linux
+		If KEYWRAPPER.pressedKey(69) And altGrPressed Then value :+ chr(8364)
+		?
 		Return True
 	End Function
 End Type
@@ -1578,10 +1542,6 @@ Type TGUITextBox Extends TGUIobject
 
 	Method Draw:Int()
 		Local drawPos:TPoint = TPoint.Create(GetScreenX(), GetScreenY())
-		'horizontal alignment is done in drawBlock
-		'vertical align
-		drawPos.y :+ valueAlignment.GetY() * (GetHeight() - GetUseFont().getHeight(value))
-
 		GetUseFont().drawBlock(value, drawPos.GetIntX(), drawPos.GetIntY(), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
 	End Method
 
@@ -2385,7 +2345,7 @@ Type TGUICheckBox  Extends TGUIObject
 		'set box (un)checked
 		SetChecked(1-isChecked())
 	End Method
-	
+
 
 	'override default draw-method
 	Method Draw()
