@@ -98,6 +98,18 @@ Type TAudienceTest Extends TTest
 		assertEqualsAud(expected, audience)	
 	End Method
 	
+	Method CutMinimum() { test }
+		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		audience.CutMinimum(480)				
+		assertEqualsAud(TAudience.CreateAndInit(480, 480, 480, 480, 500, 600, 700, 800, 900 ), audience)	
+	End Method	
+	
+	Method CutMaximum() { test }
+		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
+		audience.CutMaximum(480)				
+		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 480, 480, 480, 480, 480 ), audience)	
+	End Method
+	
 	Method GetValue() { test }
 		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
 		
@@ -264,20 +276,10 @@ Type TAudienceTest Extends TTest
 	End Method
 	
 	Method assertEqualsAud(expected:TAudience, actual:TAudience, message:String = Null)	
-		assertEqualsI(expected.Id, actual.Id, message + " [-> Id]")
-		assertEqualsF(expected.Children, actual.Children, 0, message + " [-> Children]")
-		assertEqualsF(expected.Teenagers, actual.Teenagers, 0, message + " [-> Teenagers]")
-		assertEqualsF(expected.HouseWifes, actual.HouseWifes, 0, message + " [-> HouseWifes]")
-		assertEqualsF(expected.Employees, actual.Employees, 0, message + " [-> Employees]")
-		assertEqualsF(expected.Unemployed, actual.Unemployed, 0, message + " [-> Unemployed]")
-		assertEqualsF(expected.Manager, actual.Manager, 0, message + " [-> Manager]")
-		assertEqualsF(expected.Pensioners, actual.Pensioners, 0, message + " [-> Pensioners]")
-		assertEqualsF(expected.Women, actual.Women, 0, message + " [-> Women]")
-		assertEqualsF(expected.Men, actual.Men, 0, message + " [-> Men]")
+		TestAssert.assertEqualsAud(expected, actual, message)
 	End Method
 	
 	Method assertEqualsExceptions(expected:TBlitzException, actual:TBlitzException, message:String = Null)	
-		assertEquals(TTypeId.ForObject(expected).Name(), TTypeId.ForObject(actual).Name(), message + " [-> Type]")
-		assertEquals(expected.ToString(), actual.ToString(), message + " [-> Type]")
+		TestAssert.assertEqualsExceptions(expected, actual, message)	
 	End Method	
 End Type

@@ -358,12 +358,16 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'If (Game.playerID = 1) Then DebugStop
 		
 		'Sequence
-		'If genreDefintion Then
-			'result.SequenceEffect = TGenreDefinitionBase.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)		
-		'Else
-			
-		'Endif
+		rem
+		If genreDefintion Then
+			result.SequenceEffect = genreDefintion.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)	
+		Else
+			result.SequenceEffect = TGenreDefinitionBase.GetSequenceDefault(lastMovieBlockAttraction, result, 0.25, 0.35)	
+		Endif
+		
 		Print "Seq: " + result.SequenceEffect.ToString()
+		endrem
+		
 		
 		result.CalculateFinalAttraction()
 		

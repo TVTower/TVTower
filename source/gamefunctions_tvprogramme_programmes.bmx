@@ -113,8 +113,10 @@ Type TProgrammeData {_exposeToLua}
 	Field trailerTopicality:float		= 1.0
 	Field trailerMaxTopicality:float	= 1.0
 	Field trailerAired:int				= 0					'times the trailer aired
-	Field trailerAiredSinceShown:int	= 0					'times the trailer aired since the programme was shown "normal"
+	Field trailerAiredSinceShown:int	= 0					'times the trailer aired since the programme was shown "normal"	
 
+	Field genreDefinitionCache:TMovieGenreDefinition = Null
+	
 	const TYPE_UNKNOWN:int				= 1
 	const TYPE_EPISODE:int				= 2
 	const TYPE_SERIES:int				= 4
@@ -166,6 +168,12 @@ Type TProgrammeData {_exposeToLua}
 
 		ProgrammeDataCollection.Add(obj)
 		Return obj
+	End Function
+	
+	
+	Function CreateMinimal:TProgrammeData(title:String = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
+		Local quality:Int = fixQuality * 255
+		Return TProgrammeData.Create(title, Null, Null, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
 	End Function
 
 
@@ -353,7 +361,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method GetMaxTopicality:int()
-		return Max(0, 255 - 2 * Max(0, Game.GetYear() - year) )   'simplest form ;D
+		return Max(0, 255 - 2 * Max(0, Game.GetYear() - year) - Min(50, timesAired * 2)) 'simplest form ;D
 	End Method
 
 
@@ -364,27 +372,31 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method GetGenreDefinition:TMovieGenreDefinition()
-		Return Game.BroadcastManager.GetMovieGenreDefinition(Genre)
+		If Not genreDefinitionCache Then
+			genreDefinitionCache = Game.BroadcastManager.GetMovieGenreDefinition(Genre)
+		EndIf
+		Return genreDefinitionCache
 	End Method
 
-
-	'Diese Methode ersetzt "GetBaseAudienceQuote"
-	Method GetQuality:Float() {_exposeToLua}
+	Method GetQualityRaw:Float()
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
-		Local quality:Float = 0.0
-
 		If genreDef.OutcomeMod > 0.0 Then
-			quality = Float(Outcome) / 255.0 * genreDef.OutcomeMod ..
+			Return Float(Outcome) / 255.0 * genreDef.OutcomeMod ..
 				+ Float(review) / 255.0 * genreDef.ReviewMod ..
 				+ Float(speed) / 255.0 * genreDef.SpeedMod
 		Else
-			quality = Float(review) / 255.0 * genreDef.ReviewMod ..
+			Return Float(review) / 255.0 * genreDef.ReviewMod ..
 				+ Float(speed) / 255.0 * genreDef.SpeedMod
-		EndIf
+		EndIf		
+	End Method
+
+	'Diese Methode ersetzt "GetBaseAudienceQuote"
+	Method GetQuality:Float() {_exposeToLua}
+		Local quality:Float = GetQualityRaw()
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
 		Local age:Int = Max(0, 100 - Max(0, game.GetYear() - year))
-		quality:*Max(0.10, (age / 100.0))
+		quality:*Max(0.20, (age / 100.0))
 
 		'repetitions wont be watched that much
 		quality:*(GetTopicality() / 255.0) ^ 2
@@ -1384,7 +1396,8 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int)
 		Super.FinishBroadcasting(day, hour, minute)
 
-		If not Game.GetPlayer(self.owner) then return FALSE
+		'If not Game.GetPlayer(self.owner) then return FALSE
+		If self.owner > 0 And not Game.GetPlayer(self.owner) then Throw "FinishBroadcasting: Wrong player"
 
 		if self.usedAsType = TBroadcastMaterial.TYPE_PROGRAMME
 			self.FinishBroadcastingAsProgramme(day, hour, minute)
@@ -1423,13 +1436,15 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int)
 		self.SetState(self.STATE_OK)
+		
+		If self.owner > 0 Then 'Möglichkeit für Unit-Tests. Unschön... 
+			'check if revenues have to get paid (call-in-shows, sponsorships)
+			CheckHourlyBroadcastingRevenue()
 
-		'check if revenues have to get paid (call-in-shows, sponsorships)
-		CheckHourlyBroadcastingRevenue()
-
-		'adjust trend/popularity
-		Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity
-		popularity.FinishBroadcastingProgramme(Game.getPlayer(owner).audience, GetBlocks())
+			'adjust trend/popularity
+			Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity
+			popularity.FinishBroadcastingProgramme(Game.getPlayer(owner).audience, GetBlocks())
+		Endif		
 
 		'adjust topicality
 		data.CutTopicality(GetTopicalityCutModifier())
@@ -1514,7 +1529,32 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'Sequence
 		'If (Game.playerID = 1) Then DebugStop
 		
-		result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
+		Local seqCal:TSequenceCalculation = New TSequenceCalculation
+		seqCal.PredecessorShareOnRise = 0.25
+		seqCal.PredecessorShareOnShrink  = 0.5
+		seqCal.Predecessor = lastNewsBlockAttraction
+		seqCal.Successor = result
+		
+		
+		
+		'Audience-Flow
+		rem
+		If lastMovieBlockAttraction Then
+			Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
+			Local modBase:TAudience = lastGenreDefintion.GetAudienceFlowModBase(result.Genre)
+			
+			
+			Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
+					
+			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
+			result.AudienceFlowBonus.Multiply(audienceFlowMod)
+		Else
+			result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
+			result.AudienceFlowBonus.MultiplyFloat(0.2)				
+		End If		
+		endrem
+		
+		'result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
 		
 		result.CalculateFinalAttraction()
 		
@@ -1529,11 +1569,11 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method GetTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}
 		if hour = -1 then hour = Game.getNextHour()
 		'during nighttimes 0-5, the cut should be lower
-		'so we increase the cutFactor to 1.5
+		'so we increase the cutFactor to 1.35
 		if hour-1 <= 5
-			return 1.5
+			return 1.35
 		elseif hour-1 <= 12
-			return 1.25
+			return 1.2
 		else
 			return 1.0
 		endif

@@ -1,4 +1,4 @@
-Global CHAT_CHANNEL_NONE:Int	= 0
+﻿Global CHAT_CHANNEL_NONE:Int	= 0
 Global CHAT_CHANNEL_DEBUG:Int	= 1
 Global CHAT_CHANNEL_SYSTEM:Int	= 2
 Global CHAT_CHANNEL_PRIVATE:Int	= 4
@@ -1998,20 +1998,22 @@ Type TInterface
 	'returns a string list of abbreviations for the watching family
 	Function GetWatchingFamily:string[]()
 		'fetch feedback to see which test-family member might watch
-		Local feedback:TBroadcastFeedback = Game.BroadcastManager.currentBroadcast.GetFeedback(Game.playerID)
+		Local feedback:TBroadcastFeedback = Game.BroadcastManager.GetCurrentBroadcast().GetFeedback(Game.playerID)
 
 		local result:String[]
 
 		if (feedback.AudienceInterest.Children > 0)
 			'maybe sent to bed ? :D
-			If Game.getHour() >= 5 and Game.getHour() < 22 then result :+ ["girl"]
+			'If Game.getHour() >= 5 and Game.getHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
+			result :+ ["girl"]
 		endif
 
 		if (feedback.AudienceInterest.Pensioners > 0) then result :+ ["grandpa"]
 
 		if (feedback.AudienceInterest.Teenagers > 0)
 			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
-			If Game.GetWeekday()>6 or (Game.getHour() < 7 or Game.getHour() >= 13) then result :+ ["teen"]
+			'If Game.GetWeekday()>6 or (Game.getHour() < 7 or Game.getHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
+			result :+ ["teen"]
 		endif
 
 		return result

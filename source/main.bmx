@@ -767,7 +767,8 @@ Type TGame {_exposeToLua="selected"}
 
 				'0 days = "today", -1 days = ended
 				If contract.GetDaysLeft() < 0
-					Player.GetFinance(day).PayPenalty(contract.GetPenalty(), contract)
+					'Player.GetFinance(day).PayPenalty(contract.GetPenalty(), contract)
+					Player.GetFinance(day).PayPenalty(contract.GetPenalty())
 					Player.ProgrammeCollection.RemoveAdContract(contract)
 				EndIf
 			Next

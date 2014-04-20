@@ -4,13 +4,19 @@
 	Field Popularity:TGenrePopularity
 	
 	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience) Abstract
-	
+	rem
 	Method GetSequence:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float)
+		'genreDefintion.AudienceAttraction.Copy()
+		Return TGenreDefinitionBase.GetSequenceDefault(predecessor, successor, effectRise, effectShrink)
+	End Method		
+	
+	Function GetSequenceDefault:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float, riseMod:TAudience = null, shrinkMod:TAudience = null)
 		Local result:TAudience = new TAudience
 		Local predecessorValue:Float
 		Local successorValue:Float
+		Local rise:Int = false
 		
-		For Local i:Int = 1 To 9
+		For Local i:Int = 1 To 9 'Für jede Zielgruppe
 			If predecessor
 				predecessorValue = predecessor.BlockAttraction.GetValue(i)
 			Else
@@ -18,6 +24,7 @@
 			EndIf
 			successorValue = successor.BlockAttraction.GetValue(i)
 			If (predecessorValue < successorValue) 'Steigende Quote
+				rise = true
 				predecessorValue :* effectRise
 				successorValue :* (1 - effectRise)
 			Else 'Sinkende Quote
@@ -26,11 +33,17 @@
 			Endif
 			Local sum:Float = predecessorValue + successorValue
 			Local sequence:Float = sum - successor.BlockAttraction.GetValue(i)
+			If rise Then
+				sequence :* riseMod.GetValue(i)
+			Else
+				sequence :* shrinkMod.GetValue(i)
+			End If
 			'TODO: Faktoren berücksichtigen und Audience-Flow usw.
 			result.SetValue(i, sequence)
 		Next			
 		Return result
-	End Method	
+	End Function	
+	endrem
 End Type
 
 
@@ -124,6 +137,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	End Method
 	
 	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience)
+	rem
 		'DebugStop
 		Local baseAttractionFollowerTemp:TAudience = baseAttractionFollower.Copy()
 		baseAttractionFollowerTemp.DivideFloat(2).AddFloat(0.7)
@@ -131,22 +145,53 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		Local base:TAudience = GetAudienceFlowModBase(followerGenreId)
 		base.Multiply(baseAttractionFollowerTemp)
 		Return base
+	endrem
+		Return Null	
 	End Method
 	
 	Method GetAudienceFlowModBase:TAudience(followerGenreId:Int)
 		Local followerDefinition:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(followerGenreId)
 	
-		Local result:TAudience = followerDefinition.AudienceAttraction.Copy().DivideFloat(5) '0-0.2
+		Local result:TAudience = followerDefinition.AudienceAttraction.Copy()
+		result.AddFloat(0.2) '0.3 - 1.2
 		
 		Local genreKey:String = String.FromInt(followerGenreId)
-		If (GoodFollower.Contains(genreKey))
-			Return result.AddFloat(0.3)
+		If GenreId = followerGenreId Then 'Perfekter match!
+			result.MultiplyFloat(1.3)		
+		Else If (GoodFollower.Contains(genreKey))
+			result.MultiplyFloat(1.1)
 		ElseIf (BadFollower.Contains(genreKey))
-			Return result.AddFloat(0.05).DivideFloat(2) 
+			result.MultiplyFloat(0.3)
 		Else
-			Return result.AddFloat(0.05)
+			result.MultiplyFloat(0.9)
 		End If
-	End Method	
+		
+		result.CutMaximum(1.25)
+		Return result
+	End Method
+	
+	'Override
+	'case: 1 = with AudienceFlow
+	rem
+	Method GetSequence:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float, withAudienceFlow:Int = False)
+		Local riseMod:TAudience = AudienceAttraction.Copy()
+		
+			If lastMovieBlockAttraction Then
+				Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
+				Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
+						
+				result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
+				result.AudienceFlowBonus.Multiply(audienceFlowMod)
+			Else
+				result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
+				result.AudienceFlowBonus.MultiplyFloat(0.2)				
+			End If			
+		
+		
+		
+		Return TGenreDefinitionBase.GetSequenceDefault(predecessor, successor, effectRise, effectShrink)
+	End Method			
+	endrem
 
 rem
 	Method CalculateAudienceAttraction:TAudienceAttraction(material:TBroadcastMaterial, hour:Int)

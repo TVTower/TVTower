@@ -18,16 +18,18 @@ Type TBroadcastManager
 	Field genreDefinitions:TMovieGenreDefinition[]			'TODO: Gehört woanders hin
 	Field newsGenreDefinitions:TNewsGenreDefinition[]		'TODO: Gehört woanders hin
 
-	Field currentBroadcast:TBroadcast = Null
-	Field currentProgammeBroadcast:TBroadcast = Null
-	Field currentNewsShowBroadcast:TBroadcast = Null	
+	'Field currentBroadcast:TBroadcast = Null
+	'Field currentProgammeBroadcast:TBroadcast = Null
+	'Field currentNewsShowBroadcast:TBroadcast = Null	
 	
-	Field lastProgrammeBroadcast:TBroadcast = Null
-	Field lastNewsShowBroadcast:TBroadcast = Null	
+	'Field lastProgrammeBroadcast:TBroadcast = Null
+	'Field lastNewsShowBroadcast:TBroadcast = Null
 	
 	'Für die Manipulationen von außen... funktioniert noch nicht
 	Field PotentialAudienceManipulations:TMap = CreateMap()
 
+	Field Sequence:TBroadcastSequence = new TBroadcastSequence
+	
 	'===== Konstrukor, Speichern, Laden =====
 
 	Function Create:TBroadcastManager()
@@ -67,21 +69,33 @@ Type TBroadcastManager
 
 	'===== Öffentliche Methoden =====
 
+	Method GetCurrentBroadcast:TBroadcast()
+		Return Sequence.GetCurrentBroadcast()
+	End Method
+	
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0)
+		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
+		BroadcastCommon(hour, material, TBroadcastMaterial.TYPE_PROGRAMME, recompute)
+		rem
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
 		self.lastNewsShowBroadcast = currentNewsShowBroadcast
 		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
 		currentProgammeBroadcast = BroadcastCommon(hour, material, recompute)
+		endrem
 	End Method
 
 
 	'Führt die Berechnung für die Nachrichten(-Show)-Ausstrahlungen durch
 	Method BroadcastNewsShow(day:Int=-1, hour:Int, recompute:Int = 0)
+		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_NEWSSHOW, day, hour)
+		BroadcastCommon(hour, material, TBroadcastMaterial.TYPE_NEWSSHOW, recompute)
+		rem
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
 		self.lastNewsShowBroadcast = currentNewsShowBroadcast		
 		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_NEWSSHOW, day, hour)
 		currentNewsShowBroadcast = BroadcastCommon(hour, material, recompute)
+		endrem
 	End Method
 
 
@@ -118,12 +132,15 @@ Type TBroadcastManager
 	'===== Hilfsmethoden =====
 
 	'Der Ablauf des Broadcasts, verallgemeinert für Programme und News.
-	Method BroadcastCommon:TBroadcast(hour:Int, broadcasts:TBroadcastMaterial[], recompute:Int )
+	Method BroadcastCommon:TBroadcast(hour:Int, broadcasts:TBroadcastMaterial[], broadcastType:Int, recompute:Int )
 		Local bc:TBroadcast = New TBroadcast
+		bc.BroadcastType = broadcastType
 		bc.Hour = hour
+		Sequence.SetCurrentBroadcast(bc)
+		
 		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
 		bc.PlayersBroadcasts = broadcasts					'Die Programmwahl der Spieler "einloggen"
-		bc.ComputeAudience(self.lastProgrammeBroadcast, self.lastNewsShowBroadcast)	'Zuschauerzahl berechnen
+		bc.ComputeAudience(Sequence.GetBeforeProgrammeBroadcast()  , Sequence.GetBeforeNewsShowBroadcast())	'Zuschauerzahl berechnen
 
 		'set audience for this broadcast
 		For Local i:Int = 1 To 4
@@ -143,7 +160,7 @@ Type TBroadcastManager
 		bc.FindTopValues()
 		TPublicImage.ChangeImageCauseOfBroadcast(bc)
 		'store current broadcast
-		currentBroadcast = bc
+		'currentBroadcast = bc
 		Return bc
 	End Method
 
@@ -172,6 +189,7 @@ End Type
 'Berechnung einige Zeit aufbewahren kann.
 Type TBroadcast
 	Field Hour:Int = -1							'Für welche Stunde gilt dieser Broadcast
+	Field BroadcastType:Int
 	Field AudienceMarkets:TList = CreateList()	'Wie sahen die Märkte zu dieser Zeit aus?
 	Field PlayersBroadcasts:TBroadcastMaterial[] = New TBroadcastMaterial[5] '1 bis 4. 0 Wird nicht verwendet
 	Field Attractions:TAudienceAttraction[5]	'Wie Attraktiv ist das Programm für diesen Broadcast
@@ -546,6 +564,8 @@ Type TBroadcastFeedback
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.2)
 		ElseIf (bc.Hour >= 13 And bc.Hour <= 16)
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.15)
+		ElseIf (bc.Hour >= 22 And bc.Hour <= 23)
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.15)			
 		Else
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.15)		
 		EndIf		
@@ -918,6 +938,32 @@ Type TAudience
 		Women = Ceil(AudienceSum / GenderSum * Women)
 		Men = Ceil(AudienceSum / GenderSum * Men)		
 		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen		
+	End Method
+	
+	Method CutMinimum:TAudience(value:float)
+		If Children < value Then Children = value
+		If Teenagers < value Then Teenagers = value
+		If HouseWifes < value Then HouseWifes = value
+		If Employees < value Then Employees = value
+		If Unemployed < value Then Unemployed = value
+		If Manager < value Then Manager = value
+		If Pensioners < value Then Pensioners = value
+		If Women < value Then Women = value
+		If Men < value Then Men = value
+		Return Self
+	End Method	
+	
+	Method CutMaximum:TAudience(value:float)
+		If Children > value Then Children = value
+		If Teenagers > value Then Teenagers = value
+		If HouseWifes > value Then HouseWifes = value
+		If Employees > value Then Employees = value
+		If Unemployed > value Then Unemployed = value
+		If Manager > value Then Manager = value
+		If Pensioners > value Then Pensioners = value
+		If Women > value Then Women = value
+		If Men > value Then Men = value
+		Return Self
 	End Method	
 	
 	Method GetValue:Float(targetID:int)
@@ -1100,7 +1146,7 @@ Type TAudience
 			amap.Add("9", Men)			
 		EndIf	
 		Return amap
-	End Method	
+	End Method
 
 	Method ToStringMinimal:String()
 		Local dec:Int = 0
@@ -1346,4 +1392,108 @@ Type TAudienceAttraction Extends TAudience
 		
 		Self.SetValuesFrom(otherAudienceAttraction)
 	End Method	
+End Type
+
+
+Type TBroadcastSequence
+	Field sequence:TList = CreateList()
+	Field current:TBroadcast
+	
+	Method SetCurrentBroadcast(broadcast:TBroadcast)
+		current = broadcast
+		sequence.AddFirst( current )		
+	End Method
+	
+	Method GetCurrentBroadcast:TBroadcast()
+		Return TBroadcast(sequence.First())
+	End Method
+	
+	Method GetBeforeBroadcast:TBroadcast()
+		Return TBroadcast(sequence.ValueAtIndex(1))
+	End Method
+	
+	Method GetBeforeProgrammeBroadcast:TBroadcast()
+		Return GetFirst(TBroadcastMaterial.TYPE_PROGRAMME, false)
+	End Method
+	
+	Method GetBeforeNewsShowBroadcast:TBroadcast()
+		Return GetFirst(TBroadcastMaterial.TYPE_NEWSSHOW, false)
+	End Method
+	
+	Method GetFirst:TBroadcast(broadcastType:int, withoutCurrent:Int = false)
+		For local curr:TBroadcast = eachin sequence
+			If curr <> current Or withoutCurrent Then
+				If curr.BroadcastType = broadcastType Then Return curr
+			Endif
+		Next
+		Return Null
+	End Method	
+End Type
+
+Type TSequenceCalculation
+	Field Predecessor:TAudienceAttraction
+	Field Successor:TAudienceAttraction
+	Field PredecessorShareOnRise:Float
+	Field PredecessorShareOnShrink:Float
+
+	Method GetSequenceByGenreDefinition:TAudience( attractionOnlyMod:TAudience, audienceFlowMod:TAudience = null )		
+		If audienceFlowMod Then 'Film-Wechsel
+			Local mods:TAudience = audienceFlowMod.Copy() '0.3 - 1.2
+			Return GetSequenceDefault(mods, mods) 'Vielleicht ersten Parameter leer lassen?
+		Else 'alles andere
+			Local mods:TAudience = attractionOnlyMod.Copy()
+			mods.AddFloat(0.2).CutMinimum(0.5) '0.5 - 1.2
+			Return GetSequenceDefault(mods, mods)
+		EndIf
+	End Method
+	
+	Method GetSequenceDefault:TAudience( riseMod:TAudience = null, shrinkMod:TAudience = null)
+		Local result:TAudience = new TAudience
+		Local predecessorValue:Float
+		Local successorValue:Float
+
+		For Local i:Int = 1 To 9 'Für jede Zielgruppe
+			If Predecessor
+				predecessorValue = Predecessor.BlockAttraction.GetValue(i)
+			Else
+				predecessorValue = 0
+			EndIf
+			successorValue = Successor.BlockAttraction.GetValue(i)
+
+			Local riseModTemp:Float = 1
+			If riseMod Then riseModTemp = riseMod.GetValue(i)
+			Local shrinkModTemp:Float = 1
+			If shrinkMod Then shrinkModTemp = shrinkMod.GetValue(i)
+			
+			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp)
+			
+			result.SetValue(i, sequence)
+		Next			
+		Return result
+	End Method
+	
+	Method CalcSequenceCase:Float(predecessorValue:Float, successorValue:Float, riseMod:Float, shrinkMod:Float)
+		Local rise:Int = false
+		Local successorValueInitial:Float = successorValue
+	
+		If (predecessorValue < successorValue) 'Steigende Quote
+			rise = true
+			predecessorValue :* PredecessorShareOnRise
+			successorValue :* (1 - PredecessorShareOnRise)
+		Else 'Sinkende Quote
+			predecessorValue :* PredecessorShareOnShrink
+			successorValue :* (1 - PredecessorShareOnShrink)			
+		Endif
+		
+		'Um diese Berechnung zu verstehen, bitte den UnitTest "SequenceCalculationTest" anschauen
+		Local sequence:Float = (predecessorValue + successorValue) - successorValueInitial
+		If rise Then 'Wenn die Quote steigt, dann bremst der SequenceFactor aus: also negative Zahl
+			If riseMod > 1 Then	
+				sequence :* (1 / riseMod)
+			EndIf
+		Else 'Wenn die Quote schrumpft, dann erhöht der SequenceFactor... er bremst den Fall siehe u.a. auch Audience Flow 
+			sequence :* shrinkMod
+		End If
+		Return sequence
+	End Method
 End Type

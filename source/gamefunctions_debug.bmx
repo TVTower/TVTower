@@ -191,7 +191,7 @@
 		Endif		
 		endrem
 		
-		Local currBroadcast2:TBroadcast = Game.BroadcastManager.currentBroadcast
+		Local currBroadcast2:TBroadcast = Game.BroadcastManager.GetCurrentBroadcast()
 		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(Game.playerID)
 		
 		Local minute:Int = Game.GetMinute()
