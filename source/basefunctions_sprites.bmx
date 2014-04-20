@@ -292,6 +292,7 @@ Type TGW_BitmapFont
 	Field _charsEffectFuncConfig:TData[]
 	Field _pixmapFormat:int = PF_A8			'by default this is 8bit alpha only
 	Field _maxCharHeight:int = 0
+	Field _hasEllipsis:int = -1
 
 	global drawToPixmap:TPixmap = null
 	global ImageCaches:TMap = CreateMap()
@@ -436,6 +437,19 @@ Type TGW_BitmapFont
 	End Method
 
 
+	'Returns whether this font has a visible ellipsis char ("…")
+	Method HasEllipsis:int()
+		if _hasEllipsis = -1 then _hasEllipsis = GetWidth(chr(8230))
+		return _hasEllipsis
+	End Method
+
+
+	Method GetEllipsis:string()
+		if hasEllipsis() then return chr(8230)
+		return "..."
+	End Method
+
+
 	Method getMaxCharHeight:int()
 		if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_")
 		return _maxCharHeight
@@ -472,7 +486,7 @@ Type TGW_BitmapFont
 
 
 
-	Method TextToMultiLine:string[](text:string,w:float,h:float, lineHeight:float)
+	Method TextToMultiLine:string[](text:string, w:float, h:float, lineHeight:float, nicelyTruncateLastLine:int=TRUE)
 		Local fittingChars:int	= 0
 		Local processedChars:Int= 0
 		Local paragraphs:string[]	= text.replace(chr(13), "~n").split("~n")
@@ -507,18 +521,24 @@ Type TGW_BitmapFont
 					'whether we found a break position by a rule
 					local FoundBreakPosition:int = FALSE
 
-					'search for the "most right" position of a linebreak
-					For local charPos:int = 0 To linePartial.length-1
-						'special line break rules (spaces, -, ...)
-						If linePartial[charPos] = Asc(" ")
-							breakPosition = charPos
-							FoundBreakPosition=TRUE
-						endif
-						If linePartial[charPos] = Asc("-")
-							breakPosition = charPos
-							FoundBreakPosition=TRUE
-						endif
-					Next
+					'search for "nice" linebreak:
+					'- if not on last line
+					'- if enforced to do so ("nicelyTruncateLastLine")
+					if i < (paragraphs.length-1) or nicelyTruncateLastLine
+						'search for the "most right" position of a linebreak
+						For local charPos:int = 0 To linePartial.length-1
+							'special line break rules (spaces, -, ...)
+							If linePartial[charPos] = Asc(" ")
+								breakPosition = charPos
+								FoundBreakPosition=TRUE
+							endif
+							If linePartial[charPos] = Asc("-")
+								breakPosition = charPos
+								FoundBreakPosition=TRUE
+							endif
+						Next
+					endif
+
 					'if no line break rule hit, use a "cut" in the middle of a word
 					if not FoundBreakPosition then breakPosition = Max(0, linePartial.length-1 -1)
 
@@ -549,10 +569,11 @@ Type TGW_BitmapFont
 				'get the line BEFORE
 				local currentLine:string = lines[lines.length-1]
 				'check whether we have to subtract some chars for the "..."
-				if self.getWidth(currentLine+chr(8230)) > w
-					currentLine = currentLine[.. currentLine.length-3] + chr(8230) ' "..."
+				local ellipsisChar:string = GetEllipsis()
+				if getWidth(currentLine + ellipsisChar) > w
+					currentLine = currentLine[.. currentLine.length-3] + ellipsisChar
 				else
-					currentLine = currentLine[.. currentLine.length] + chr(8230) ' "..."
+					currentLine = currentLine[.. currentLine.length] + ellipsisChar
 				endif
 				lines[lines.length-1] = currentLine
 			endif
@@ -562,11 +583,11 @@ Type TGW_BitmapFont
 	End Method
 
 
-	Method drawBlock:TPoint(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TPoint=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, singleLine:int=FALSE)
+	Method drawBlock:TPoint(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TPoint=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE)
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float	= 0.0
-		local lineHeight:float	= getHeight("gQ'_")
-		local lines:string[]	= TextToMultiLine(text, w, h, lineHeight) ', singleLine)
+		Local lineHeight:float	= getMaxCharHeight()
+		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
 
 		local blockHeight:Float = lineHeight * lines.length
 		if lines.length > 1
@@ -575,12 +596,14 @@ Type TGW_BitmapFont
 		endif
 
 		'move along y according alignment
+		'-> aligned top: no change
+		'-> aligned bottom: move down by unused space so last line ends at Y + h
+		'-> aligned inbetween: move accordingly
 		if alignment
 			'empty space = height - (..)
 			'so alignTop = add 0 of that space, alignBottom = add 100% of that space
 			if alignment.GetY() <> ALIGN_TOP
-				y :+ alignment.GetY() * h
-				y :- blockHeight
+				y :+ alignment.GetY() * (h - blockHeight)
 			endif
 		endif
 
@@ -911,6 +934,13 @@ Type TGW_FontManager
 	Method GetFont:TGW_BitmapFont(name:String, size:Int=-1, style:Int=-1)
 		name = lower(name)
 		style :| SMOOTHFONT
+
+		'create a default font if not done yet
+		if not DefaultFont
+			'add a defaultFont (uses default BlitzMax font if none was set before)
+			DefaultFont = TGW_BitmapFont.Create("Default", "", 12, SMOOTHFONT)
+		EndIf
+
 		'no details given: return default font
 		If name = "default" And size = -1 And style = -1 Then Return DefaultFont
 		'no size given: use default font size
@@ -1153,11 +1183,14 @@ Type TGW_Sprite extends TRenderable
 
 	'returns the image of this sprite (reference, no copy)
 	'if the frame is 0+, only this frame is returned
-	Method GetImage:TImage(frame:int=-1)
+	'if includeBorder is TRUE, then an potential ninePatchBorder will be
+	'included
+	Method GetImage:TImage(frame:int=-1, includeBorder:int=FALSE)
 		'if a frame is requested, just return it (no need for "animated" check)
 		if frame >=0 then return GetFrameImage(frame)
 
 		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+
 		UnlockImage(parent.image)
 		GCCollect() '<- FIX!
 
@@ -1438,6 +1471,7 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 		_border			= ReadMarker(0)
 		_contentBorder	= ReadMarker(1)
 
+		'middle has to consider the marker_width (content dimension marker)
 		_middle = TPoint.Create(..
 					area.GetW() - (_border.GetLeft() + _border.GetRight()), ..
 					area.GetH() - (_border.GetTop() + _border.GetBottom()) ..
@@ -1455,6 +1489,29 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 		local gwSprite:TGW_Sprite = TGW_Sprite.LoadFromAsset(asset)
 		return new TGW_NinePatchSprite.Create(gwSprite.parent, gwSprite.getName(), gwSprite.area, null, gwSprite.animcount, -1, TPoint.Create(gwSprite.framew, gwSprite.frameh))
 	End Function
+
+
+	'returns the image of this sprite (reference, no copy)
+	'if the frame is 0+, only this frame is returned
+	'if includeBorder is TRUE, then an potential ninePatchBorder will be
+	'included
+	Method GetImage:TImage(frame:int=-1, includeBorder:int=FALSE)
+		'if a frame is requested, just return it (no need for "animated" check)
+		if frame >=0 then return GetFrameImage(frame)
+
+		Local DestPixmap:TPixmap
+		if includeBorder
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+		else
+			local border:TRectangle = GetBorder()
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX()+ border.GetLeft(), area.GetY() + border.GetTop(), area.GetW() - border.GetLeft() - border.GetRight(), area.GetH() - border.GetTop() - border.GetBottom())
+		endif
+
+		UnlockImage(parent.image)
+		GCCollect() '<- FIX!
+
+		Return TImage.Load(DestPixmap, 0, 255, 0, 255)
+	End Method
 
 
 	Method GetBorder:TRectangle()
@@ -1484,7 +1541,8 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 		If _border.GetRight() then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y, _border.GetRight()*_borderScale, _border.GetTop()*_borderScale), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, MARKER_WIDTH, _border.GetRight(), _border.GetTop()), frame)
 		'middle
 		If _border.GetLeft() Then DrawResized(TRectangle.Create(x, y+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, stretchDestH), TRectangle.Create(MARKER_WIDTH, _border.GetTop(), _border.GetLeft(), _middle.GetY()), frame)
-		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), TRectangle.Create(MARKER_WIDTH+_border.GetLeft(), MARKER_WIDTH+_border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
+'		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), TRectangle.Create(MARKER_WIDTH+_border.GetLeft(), MARKER_WIDTH+_border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
+		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), TRectangle.Create(_border.GetLeft(), _border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
 		If _border.GetRight() Then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, _border.GetRight()*_borderScale, stretchDestH), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, _border.GetTop(), _border.GetRight(), _middle.GetY()), frame)
 		'bottom
 		If _border.GetLeft() Then DrawResized(TRectangle.Create(x, y+stretchDestH+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, _border.GetBottom()*_borderScale), TRectangle.Create(MARKER_WIDTH, _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _border.GetLeft(), _border.GetBottom()), frame)
