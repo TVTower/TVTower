@@ -217,8 +217,8 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 		qualityTemp = Float(ComputeTopicality()) / 255.0 * 0.45 ..
 			+ Float(quality) / 255.0 * 0.35 ..
-			+ Float(price) / 255.0 * 0.2		
-			
+			+ Float(price) / 255.0 * 0.2
+
 		If luckFactor = 1 Then
 			qualityTemp = qualityTemp * 0.97 + (Float(RandRange(10, 30)) / 1000.0) '1%-Punkte bis 3%-Punkte Basis-Qualität
 		Else
@@ -271,7 +271,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		resultAudienceAttr.BaseAttraction = New TAudience
 		resultAudienceAttr.BlockAttraction = New TAudience
 		resultAudienceAttr.FinalAttraction = New TAudience
-		resultAudienceAttr.PublicImageAttraction = New TAudience		
+		resultAudienceAttr.PublicImageAttraction = New TAudience
 
 		Local tempAudienceAttr:TAudienceAttraction = null
 		for local i:int = 0 to 2
@@ -280,18 +280,18 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 			'               verpacken - siehe RTL2 und Co.
 			tempAudienceAttr = CalculateNewsBlockAudienceAttraction(TNews(news[i]), lastMovieBlockAttraction )
 
-			'different weight for news slots			
+			'different weight for news slots
 			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.5))
 			If i = 1 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.3))
 			If i = 2 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.2))
 		Next
 		Return resultAudienceAttr
 	End Method
-	
+
 	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction)
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		Local genreDefintion:TNewsGenreDefinition = null
-			
+
 		'Local result:TAudienceAttraction = Null
 
 		'Local rawQuality:Float = news.GetQuality()
@@ -301,7 +301,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'result.Quality = rawQuality
 
 		'Return result
-		
+
 		'1 - Qualität des Programms
 		If news Then
 			genreDefintion = Game.BroadcastManager.GetNewsGenreDefinition(news.GetGenre())
@@ -331,33 +331,34 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		'6 - Flags
 		result.FlagsMod = null
 
-		result.CalculateBaseAttraction()			
+		result.CalculateBaseAttraction()
 
 		'7 - Audience Flow
 		rem
 		If lastMovieBlockAttraction <> Null Then
 			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
 			Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
-			result.AudienceFlowBonus.MultiplyFloat(audienceFlowFactor) 
-		End If			
+			result.AudienceFlowBonus.MultiplyFloat(audienceFlowFactor)
+		End If
 		endrem
-		
+
 		'result.CalculateBroadcastAttraction()
-		
+
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		result.QualityOverTimeEffectMod = 0
-		
+
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = 0 'TODO
-		
+
 		'10 - News-Mod
 		'result.NewsShowMod = lastNewsBlockAttraction
 
 		result.CalculateBlockAttraction()
-		
+
 		'If (Game.playerID = 1) Then DebugStop
-		
+
 		'Sequence
+
 		rem
 		If genreDefintion Then
 			result.SequenceEffect = genreDefintion.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)	
@@ -368,9 +369,8 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		Print "Seq: " + result.SequenceEffect.ToString()
 		endrem
 		
-		
 		result.CalculateFinalAttraction()
-		
+
 		result.CalculatePublicImageAttraction()
 
 		Return result
@@ -409,7 +409,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		'no minus quote
 		Return Max(0, quality)
-	End Method	
+	End Method
 End Type
 
 
@@ -422,7 +422,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
     Field publishDelay:Int 		= 0
     'modificators to this news (stored here: is individual for each player)
     'absolute: value just gets added
-    'relative: fraction of base price (eg. 0.3 -> 30%) 
+    'relative: fraction of base price (eg. 0.3 -> 30%)
 	Field priceModRelativeNewsAgency:float = 0.0
 	Field priceModAbsoluteNewsAgency:int = 0
 
@@ -430,7 +430,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
     Field paid:int	 			= 0
 	Field timesAired:int		= 0					'how many times that programme was run
 
-	
+
 
 
 	Function Create:TNews(text:String="unknown", publishdelay:Int=0, useNewsEvent:TNewsEvent=Null)
@@ -470,7 +470,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetQuality:Float() {_exposeToLua}		
+	Method GetQuality:Float() {_exposeToLua}
 		local quality:float = newsEvent.GetQuality()
 		'Zusaetzlicher Bonus bei Erstausstrahlung
 		If timesAired = 0 Then quality:*1.15
@@ -495,7 +495,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 
     Method Pay:int()
 		'only pay if not already done
-		if not paid then paid = Game.GetPlayer(owner).GetFinance().PayNews(GetPrice())
+		if not paid then paid = Game.GetPlayer(owner).GetFinance().PayNews(GetPrice(), self)
 		'store the paid price as the price "sinks" during aging
 		if paid then paidPrice = GetPrice()
 		return paid

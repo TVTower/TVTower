@@ -217,7 +217,7 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 
 	Method IsSigned:int() {_exposeToLua}
-		return (owner > 0 and daySigned >= 0) 
+		return (owner > 0 and daySigned >= 0)
 	End Method
 
 
@@ -317,7 +317,7 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 	'returns the non rounded minimum audience
 	Method GetRawMinAudience:Int(playerID:int=-1) {_exposeToLua}
-		'if no special player is requested - 
+		'if no special player is requested -
 		if playerID <= 0 and IsSigned() then playerID = owner
 		'if contract has no owner the avg audience maximum is returned
 		local useAudience:int = Game.GetMaxAudience(playerID)
@@ -837,10 +837,59 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
 		'TODO: @Manuel - hier brauchen wir eine geeignete Berechnung :D
-		Return lastMovieBlockAttraction
-		'local genre:int = 20 'paid programming
-		'Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(20)
-		'Return genreDefintion.CalculateAudienceAttraction(self, Game.GetHour())
+		If lastMovieBlockAttraction then return lastMovieBlockAttraction
+
+		Local result:TAudienceAttraction = New TAudienceAttraction
+		result.BroadcastType = 1
+		result.Genre = 20 'paid programming
+		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(result.Genre)
+
+		'copied and adjusted from "programme"
+		If block = 1 Then
+			'1 - Qualität des Programms
+			result.Quality = GetQuality()
+
+			'2 - Mod: Genre-Popularität / Trend
+			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
+
+			'3 - Genre <> Zielgruppe
+			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
+			result.GenreTargetGroupMod.SubtractFloat(0.5)
+
+			'4 - Image
+			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods()
+			result.PublicImageMod.SubtractFloat(1)
+
+			'5 - Trailer - gibt es nicht fuer Werbesendungen (die
+			'              waeren ja dann wieder Werbung)
+
+			'6 - Flags
+			result.FlagsMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
+			result.FlagsMod.SubtractFloat(1)
+
+			result.CalculateBaseAttraction()
+		Else
+			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
+		Endif
+
+		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		result.QualityOverTimeEffectMod = ((result.Quality - 0.5)/2.5) * (block - 1)
+
+		'9 - Genres <> Sendezeit
+		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
+
+		'10 - News-Mod
+		result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
+
+		result.CalculateBlockAttraction()
+
+		result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
+
+		result.CalculateFinalAttraction()
+
+		result.CalculatePublicImageAttraction()
+
+		Return result
 	End Method
 
 
@@ -869,7 +918,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'give money
 		local earn:int = player.GetAudience() * contract.GetPerViewerRevenue()
 		TDevHelper.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
-		player.GetFinance().EarnAdProfit(earn)
+		player.GetFinance().EarnAdProfit(earn, contract)
 	End Method
 
 
@@ -899,7 +948,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 			If contract.isSuccessful()
 				TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" finished ad contract, earned "+contract.GetProfit()+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
 				'give money
-				player.GetFinance().EarnAdProfit(contract.GetProfit())
+				player.GetFinance().EarnAdProfit(contract.GetProfit(), contract)
 
 				'removes ads which are more than needed (eg 3 of 2 to be shown ads)
 				player.ProgrammePlan.RemoveAdvertisementInstances(self, FALSE)

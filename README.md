@@ -14,29 +14,35 @@ In this __free game__ you are the manager of a television channel. Control what 
 ####Für weitere Details | For further details:
 - Homepage (+Downloads Windows/Linux): http://www.tvgigant.de
 - Forum: http://www.gamezworld.de/phpforum
+- Mac OS Downloads available in the forum
 
 
 ***
 
 LICENCE
 =======
-We do not have agreed on a specific source yet.
-As you see, the sources are open - means you can
-read them as long and deeply as you want.
 
-BUT: this does not mean you can do whatevery you
-want with the files you find in this project.
+TVTower uses a "restricted" zLib/LibPNG-licence:
 
-Some of the sources in "source/external" are having custom licences,
-pay attention to them.
-Sound assets from 3rd parties are CC-licenced (check the
-text file in the corresponding directory).
+This software is provided 'as-is'. No warranty is given.
+The authors cannot be held liable for any damages arising from
+the use of this software.
 
-Our sources and assets are still proprietary. So
-if you intend to use the source: ask me (GWRon)
-first.
+Permission is granted to anyone to use this software for any
+purpose, and to alter it and redistribute it freely, subject to
+the following restrictions:
 
-If you want to contribute: do so but your code is
-then useable by us without further restrictions (to
-avoid running into licence limitations).
+	1. Any commercial usage requires explicit permission from
+	   the original authors.
 
+	2. The origin of this software must not be misrepresented;
+	   you must not claim that you wrote the original software.
+	   If you use this software in a product, an acknowledgment
+	   in the product is required.
+
+	3. Altered source or binary versions of this software must
+	   be plainly marked as such, and must not be misrepresented
+	   as being the original software.
+
+	4. This notice may not be removed or altered from any source
+	   distribution.

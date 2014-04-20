@@ -1,5 +1,7 @@
 Compilation Guide
 -----------------
+(Linux, Mac, Windows)
+
 
 TVTower is programmed with the language "BlitzMax" (and some C).
 
@@ -11,14 +13,18 @@ proprietary. Currently there is a free replacement under development
 
 If you do not own BlitzMax - you can use the Demo for 30 days.
 The demo is a bit dated, so you have to do some steps "inbetween" to
-make it use more current code.
+make it use more current code (and therefor enable compilation).
 
 
 So following steps have to get done:
 - BlitzMax installation
-- MinGW installation
+- Linux: Blitzmax dependencies installation
+  Mac: XCode installation
+  Windows: MinGW installation
 - Module compilation
 - MaxMod2 compilation
+- Replace "bmk[.exe]" with a modified one OR create a
+  "version.txt" if missing
 
 
 ========================================================================
@@ -27,6 +33,14 @@ BlitzMax installation:
 
 a) you do not own it
 --------------------
+
+	Mac:
+	----
+	- download the demo:
+	  http://www.blitzmax.com/file/get.php?file=/Products/demos/BlitzMaxDemo149_macosx86.zip
+
+	Windows:
+	--------
 	- download the demo:
 	  http://www.blitzmax.com/file/get.php?file=/Products/demos/BlitzMaxDemo137.exe
 
@@ -41,9 +55,14 @@ a) you do not own it
 	  - BlitzMaxDemoDir/mod/brl.mod (contains appstub.mod etc.)
 	  - BlitzMaxDemoDir/mod/pub.mod (contains directx.mod etc.)
 
+	Linux:
+	------
+	- there is no demo available, sorry.
+
 
 b) you own it
 -------------
+
 	- download the current version and install it (contains already
 	  compiled modules)
 
@@ -53,9 +72,38 @@ b) you own it
 
 
 ========================================================================
-MinGW installation:
+Blitzmax patching  (Linux):
+XCode installation (Mac):
+MinGW installation (Windows):
 ========================================================================
 
+Linux:
+------
+If you are not able to start MaxIDE or to compile .bmx files, you need
+to install some dependencies (header files etc.). On 64Bit-systems some
+symlinks need to get generated so some files can get found when
+compiling.
+
+Follow the instructions given at:
+http://www.blitzmax.com/Community/posts.php?topic=101454
+There you get some script files automating the whole process on a bunch
+of distros (Mint, Debian, Ubuntu, ...).
+
+
+Mac:
+----
+For compilation we currently use the older XCode 3.2 (coming with Snow
+Leopard - 10.6). While installing a GCC should be enough, some header
+files are needed (opengl.h, coreaudio-headers...) which you get when
+installing XCode.
+If you are on 10.7 or newer, it might be possible to use "GCC" and the
+Apple package "command line tools" (which include the header files).
+If you do not care about download sizes (gcc + commandline = 350 MB,
+XCode 3.2 800 MB, newer ones 3.5 - 4.5 GB) use XCode to avoid problems.
+
+
+Windows:
+--------
 We use a slightly outdated version of MinGW to have error free builds.
 Because we use "MaxMod2" which currently does not work with MinGW 4.7+
 we use 4.6.x .
@@ -71,6 +119,7 @@ we use 4.6.x .
   should print some texts, if command was not found, adjust your path
   and append "C:\your\mingwpath\bin".
   Command prompts have to get closed and opened again to see the change.
+
 ========================================================================
 
 
@@ -80,8 +129,9 @@ we use 4.6.x .
 Module compilation:
 ========================================================================
 
-a) Compilation Preparation:
----------------------------
+a) Compilation Preparation (Windows):
+-------------------------------------
+Linux and Mac users skip this part.
 
 	- Compilation uses some extra files (Blitzmax\lib and some files in
 	  Blitzmax\bin).
@@ -117,13 +167,29 @@ copy "%dirMinGW%\lib\gcc\mingw32\%minGWVersionString%\%%i" "%dirBlitzmax%\lib\%%
 	- run the Batchfile - it should copy some files
 
 
-b) Compilation Itself:
-----------------------
+b) Compilation Itself (Windows, Linux, Mac):
+--------------------------------------------
 
-	- go to your BlitzMax\bin directory
-	  bmk.exe makemods (this should take a while)
-	  optional
-	  bmk.exe makemods -h (to build threaded compilates of the modules)
+	a) using MaxIDE:
+	----------------
+		- startup MaxIDE and use the "rebuild all modules"-menu entry
+		  if not disabled
+
+	b) using commandline:
+	---------------------
+		Linux, Mac:
+		-----------
+		- go to your BlitzMax/bin directory
+		  ./bmk makemods (this should take a while)
+		  optional
+		  ./bmk makemods -h (to build threaded module compilates)
+
+		Windows:
+		--------
+		- go to your BlitzMax\bin directory
+		  bmk.exe makemods (this should take a while)
+		  optional
+		  bmk.exe makemods -h (to build threaded module compilates)
 
 ========================================================================
 
@@ -144,32 +210,108 @@ Only way to achieve it is compiling it as a BlitzMax module.
 
 a) Extraction:
 --------------
-   - extract {PROJECT}/source/external/maxmod2_lite.mod.zip
-     to {BLITZMAX_DIRECTORY}/mod
-   - result is:
-     {BLITZMAX_DIRECTORY}/mod/maxmod2.mod
-     {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/maxmod2.mod
-     {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/ogg.mod
-     {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/rtaudio.mod
-     {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/wav.mod
+
+	- extract {PROJECT}/source/external/maxmod2_lite.mod.zip
+	  to {BLITZMAX_DIRECTORY}/mod
+	- result is:
+	  {BLITZMAX_DIRECTORY}/mod/maxmod2.mod
+	  {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/maxmod2.mod
+	  {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/ogg.mod
+	  {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/rtaudio.mod
+	  {BLITZMAX_DIRECTORY}/mod/maxmod2.mod/wav.mod
 
 
 b) Libraries:
 -------------
-   - Windows users have to:
-     copy MinGW/lib/libdsound.a to BlitzMax/lib/
 
-   - Linux users have to install
-     dev: apt-get install libasound2-dev
-     all: apt-get install libasound2
+	- Mac users should have all needed file installed with XCode
+
+	- Linux users have to install
+	  dev: apt-get install libasound2-dev
+	  all: apt-get install libasound2
+
+	- Windows users have to:
+	  copy MinGW/lib/libdsound.a to BlitzMax/lib/
 
 
 c) Compiling the module:
 ------------------------
-   - using a command prompt/terminal move to {BLITZMAX_DIRECTORY}/bin
-   - Windows users issue command: bmk makemods maxmod2
-   - Linux users issue command: ./bmk makemods maxmod2
+
+	- using a command prompt/terminal move to {BLITZMAX_DIRECTORY}/bin
+	- Linux or Mac users issue command:
+	  ./bmk makemods maxmod2
+	- Windows users issue command:
+	  bmk.exe makemods maxmod2
+
 ========================================================================
+
+
+
+
+========================================================================
+Replace "bmk[.exe]" or create "version.txt"
+========================================================================
+
+Our project uses a file called "version.txt" which gets filled with the
+date of the compilation. If that file is missing, compilation will fail.
+
+
+Easy way: create a "version.txt":
+---------------------------------
+
+	Instead of compiling a custom "bmk" you also just could do:
+	- create an empty new file
+	  "TVTowerSources/sources/version.txt"
+
+
+Long but automated way:
+-----------------------
+
+To automate this process we use the advantages of Bruceys modified
+"bmk". This is a file within your "{BLITZMAX_DIRECTORY}/bin"-directory
+(on Windows it is called "bmk.exe", Linux and Mac call it "bmk").
+
+For Windows users we provide a precompiled version, Mac and Linux users
+have to compile it using their BlitzMax installation.
+
+
+a) Windows (or go the compile-yourself-route):
+----------------------------------------------
+
+	- backup "{BLITZMAX_DIRECTORY}/bin/bmk.exe"
+	  (eg. rename it to "bmk.original.exe")
+	- copy the files
+		- make.bmk, custom.bmk, core.bmk
+		- bmk.exe
+	  from the directory:
+	  "TVTowerSources/Misc/compilerAddons"
+	  to the directory
+	  "{BLITZMAX_DIRECTORY}/bin"
+
+
+b) Linux or Mac (compile-yourself-route):
+-----------------------------------------
+
+	- extract the file
+	  "TVTowerSources/Misc/compilerAddons/bmkng.source.zip"
+	  to a place easily to find for you
+	- open the contained bmk.bmx file with BlitzMax (MaxIDE)
+	- compile it as "non gui" in "release" mode. If you want
+	  compile as "threaded" (so it compiles multiple files at
+	  once)
+	- rename the compilate to "bmk" (Windows users: "bmk.exe")
+	  (multithreaded builds get ".mt" appended to their filename)
+	- backup "{BLITZMAX_DIRECTORY}/bin/bmk[.exe]"
+	  (eg. rename it to "bmk.original[.exe]")
+	- copy the files
+		- make.bmk, custom.bmk, core.bmk
+		- bmk.exe
+	  from the directory you extracted the bmk-sources to:
+	  "{BLITZMAX_DIRECTORY}/bin"
+
+========================================================================
+
+
 
 
 Pheew... everything should be done now.
