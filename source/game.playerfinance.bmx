@@ -131,7 +131,7 @@ Type TPlayerFinance
 
 
 	'refreshs stats about earned money from adspots
-	Method EarnAdProfit:Int(value:Int)
+	Method EarnAdProfit:Int(value:Int, irgendeinObject:object=null)
 		TDevHelper.Log("TFinancial.EarnAdProfit()", "Player "+player.playerID+" earned "+value+" with ads", LOG_DEBUG)
 		income_ads :+ value
 		AddIncome(value)
@@ -284,7 +284,7 @@ Type TPlayerFinance
 
 
 	'refreshs stats about paid money from paying for the sent newsblocks
-	Method PayNews:Int(price:Int)
+	Method PayNews:Int(price:Int,irgendeinObject:object=null)
 		If canAfford(price)
 			TDevHelper.Log("TFinancial.PayNews()", "Player "+player.playerID+" paid "+price+" for a news", LOG_DEBUG)
 			expense_news :+ price

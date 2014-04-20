@@ -883,7 +883,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		result.CalculateBlockAttraction()
 
-		result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
+		'result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
 
 		result.CalculateFinalAttraction()
 
