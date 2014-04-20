@@ -940,6 +940,12 @@ Type TAudience
 		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen		
 	End Method
 	
+	Method CutBorders:TAudience(minimum:Float, maximum:Float)
+		CutMinimum(minimum)
+		CutMaximum(maximum)
+		Return Self
+	End Method
+	
 	Method CutMinimum:TAudience(value:float)
 		If Children < value Then Children = value
 		If Teenagers < value Then Teenagers = value

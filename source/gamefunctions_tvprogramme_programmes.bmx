@@ -361,7 +361,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method GetMaxTopicality:int()
-		return Max(0, 255 - 2 * Max(0, Game.GetYear() - year) - Min(50, timesAired * 2)) 'simplest form ;D
+		return Max(0, 255 - 2 * Max(0, Game.GetYear() - year) - Min(50, timesAired * 5)) 'simplest form ;D
 	End Method
 
 
@@ -404,7 +404,7 @@ Type TProgrammeData {_exposeToLua}
 		quality = quality * 0.99 + 0.01 'Mindestens 1% Qualitaet
 
 		'no minus quote
-		quality = Max(0, quality)
+		quality = Max(0.01, quality)
 		
 		Return quality
 	End Method
@@ -1468,22 +1468,26 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.BroadcastType = 1
 		result.Genre = licence.GetGenre()
-		Local genreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(result.Genre)
+		Local genreDefintion:TMovieGenreDefinition = TMovieGenreDefinition(GetGenreDefinition())
 		
-		If block = 1 Then											
+		If block = 1 Or Not lastMovieBlockAttraction Then											
 			'1 - Qualität des Programms
 			result.Quality = GetQuality()
 			
 			'2 - Mod: Genre-Popularität / Trend			
-			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
+			result.GenrePopularityMod = Max(-0.5, Min(0.5, genreDefintion.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
 			
 			'3 - Genre <> Zielgruppe
 			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
-			result.GenreTargetGroupMod.SubtractFloat(0.5)
+			result.GenreTargetGroupMod.MultiplyFloat(1.2)
+			result.GenreTargetGroupMod.SubtractFloat(0.6)
+			result.GenreTargetGroupMod.CutBorders(-0.6, 0.6)
 			
 			'4 - Image
-			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods()
-			result.PublicImageMod.SubtractFloat(1)
+			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods() '0 bis 2	
+			result.PublicImageMod.MultiplyFloat(0.35)
+			result.PublicImageMod.SubtractFloat(0.35)
+			result.PublicImageMod.CutBorders(-0.35, 0.35)
 			
 			'5 - Trailer
 			result.TrailerMod = data.GetTrailerMod()
@@ -1514,15 +1518,21 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
 		
-		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten	
-		result.QualityOverTimeEffectMod = ((result.Quality - 0.5)/2.5) * (block - 1)
+		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		If (result.Quality < 0.5)
+			result.QualityOverTimeEffectMod = Max(-0.2, Min(0.1, ((result.Quality - 0.5)/3) * (block - 1)))
+		Else
+			result.QualityOverTimeEffectMod = Max(-0.2, Min(0.1, ((result.Quality - 0.5)/6) * (block - 1)))
+		EndIf
 		
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
 		
 		'10 - News-Mod
 		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.Copy().DivideFloat(2).SubtractFloat(0.1)
-		result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
+		If lastNewsBlockAttraction Then
+			result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
+		EndIf
 		
 		result.CalculateBlockAttraction()			
 		
@@ -1649,7 +1659,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 	
 	Method GetGenreDefinition:TGenreDefinitionBase()
-		Return Game.BroadcastManager.GetMovieGenreDefinition(licence.GetGenre())
+		Return data.GetGenreDefinition()
 	End Method
 End Type
 

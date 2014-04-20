@@ -36,6 +36,14 @@ Type TTestKit
 		Game = null
 	End Function
 	
+	Function SetPlayer:TPlayer()
+		Local player:TPlayer = new TPlayer		
+		player.Name = "Test"
+		player.PublicImage = TPublicImage.Create(player)
+		Game.SetPlayer(1, player)
+		Return player
+	End Function
+	
 	Function CrProgrammeData:TProgrammeData(title:String = null, genre:Int = 0, fixQuality:Float = 1, year:Int = 1985)
 		Local data:TProgrammeData = TProgrammeData.CreateMinimal(title, genre, fixQuality, year)
 		Return data
@@ -66,6 +74,12 @@ Type TTestKit
 		definition.OutcomeMod = outcomeMod
 		definition.ReviewMod = reviewMod
 		definition.SpeedMod = speedMod
+		definition.Popularity = New TGenrePopularity
+		definition.AudienceAttraction = TAudience.CreateAndInitValue(0.5)
+		definition.TimeMods = definition.TimeMods[..24]
+		For Local i:Int = 0 To 23
+			definition.TimeMods[i] = 1.0
+		Next
 		Return definition
 	End Function	
 EndType

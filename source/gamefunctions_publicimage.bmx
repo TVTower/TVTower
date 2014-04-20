@@ -10,7 +10,6 @@
 	End Function
 	
 	Method GetAttractionMods:TAudience()
-		'Return TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
 		Return ImageValues.Copy().DivideFloat(100)
 	End Method
 	
