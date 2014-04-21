@@ -113,7 +113,7 @@ Type TProgrammeData {_exposeToLua}
 	Field trailerTopicality:float		= 1.0
 	Field trailerMaxTopicality:float	= 1.0
 	Field trailerAired:int				= 0					'times the trailer aired
-	Field trailerAiredSinceShown:int	= 0					'times the trailer aired since the programme was shown "normal"	
+	Field trailerAiredSinceShown:int	= 0					'times the trailer aired since the programme was shown "normal"
 
 	Field genreDefinitionCache:TMovieGenreDefinition = Null
 	
@@ -405,7 +405,7 @@ Type TProgrammeData {_exposeToLua}
 
 		'no minus quote
 		quality = Max(0.01, quality)
-		
+
 		Return quality
 	End Method
 
@@ -457,21 +457,21 @@ Type TProgrammeData {_exposeToLua}
 		if total then return self.trailerAired
 		return self.trailerAiredSinceShown
 	End Method
-	
+
 	Method GetTrailerMod:TAudience()
 		'TODO: Bessere Berechnung
 		Local timesTrailerAired:Int = GetTimesTrailerAired(False)
 		Local trailerMod:Float = 1
-		
+
 		Select timesTrailerAired
 			Case 0 	trailerMod = 1
 			Case 1 	trailerMod = 1.25
 			Case 2 	trailerMod = 1.40
 			Case 3 	trailerMod = 1.50
 			Case 4 	trailerMod = 1.55
-			Default	trailerMod = 1.6			
-		EndSelect	
-	
+			Default	trailerMod = 1.6
+		EndSelect
+
 		Return TAudience.CreateAndInit(trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod, trailerMod)
 	End Method
 
@@ -681,7 +681,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 	Method Sell:int()
 		if not Game.IsPlayer(GetOwner()) then return FALSE
 
-		Game.getPlayer(owner).GetFinance().SellProgrammeLicence(getPrice())
+		Game.getPlayer(owner).GetFinance().SellProgrammeLicence(getPrice(), self)
 		'set unused again
 		SetOwner(0)
 
@@ -695,7 +695,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		If playerID = -1 Then playerID = Game.playerID
 		if not Game.IsPlayer(playerID) then return FALSE
 
-		If Game.getPlayer(playerID).GetFinance().PayProgrammeLicence(self.getPrice())
+		If Game.getPlayer(playerID).GetFinance().PayProgrammeLicence(self.getPrice(), self)
 			SetOwner(playerID)
 			Return TRUE
 		EndIf
@@ -943,10 +943,10 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		For local licence:TProgrammeLicence = eachin subLicences
 			value :+ licence.GetTopicality()
 		Next
-		
+
 		if subLicences.length > 0 then return floor(value / subLicences.length)
 		return 0
-	End Method	
+	End Method
 
 
 	Method GetPrice:Int() {_exposeToLua}
@@ -1354,7 +1354,7 @@ End Type
 'parent of movies, series and so on
 Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Field licence:TProgrammeLicence			{_exposeToLua}
-	Field data:TProgrammeData				{_exposeToLua}	
+	Field data:TProgrammeData				{_exposeToLua}
 
 	Function Create:TProgramme(licence:TProgrammeLicence)
 		Local obj:TProgramme = New TProgramme
@@ -1373,6 +1373,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Return obj
 	End Function
 
+
 	Method CheckHourlyBroadcastingRevenue:int()
 		'callin-shows earn for each sent block... so BREAKs and FINISHs
 		'same for "sponsored" programmes
@@ -1383,10 +1384,10 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			if revenue > 0
 				'earn revenue for callin-shows
 				If data.GetGenre() = TProgrammeData.GENRE_CALLINSHOW
-					Game.getPlayer(owner).GetFinance().EarnCallerRevenue(revenue)
+					Game.getPlayer(owner).GetFinance().EarnCallerRevenue(revenue, self)
 				'all others programmes get "sponsored"
 				Else
-					Game.getPlayer(owner).GetFinance().EarnSponsorshipRevenue(revenue)
+					Game.getPlayer(owner).GetFinance().EarnSponsorshipRevenue(revenue, self)
 				EndIf
 			endif
 		endif
@@ -1469,14 +1470,14 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		result.BroadcastType = 1
 		result.Genre = licence.GetGenre()
 		Local genreDefintion:TMovieGenreDefinition = TMovieGenreDefinition(GetGenreDefinition())
-		
+
 		If block = 1 Or Not lastMovieBlockAttraction Then											
 			'1 - Qualität des Programms
 			result.Quality = GetQuality()
-			
+
 			'2 - Mod: Genre-Popularität / Trend			
 			result.GenrePopularityMod = Max(-0.5, Min(0.5, genreDefintion.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
-			
+
 			'3 - Genre <> Zielgruppe
 			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
 			result.GenreTargetGroupMod.MultiplyFloat(1.2)
@@ -1492,32 +1493,32 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			'5 - Trailer
 			result.TrailerMod = data.GetTrailerMod()
 			result.TrailerMod.SubtractFloat(1)
-				
+
 			'6 - Flags
 			result.FlagsMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
 			result.FlagsMod.SubtractFloat(1)
-			
-			result.CalculateBaseAttraction()			
-			
+
+			result.CalculateBaseAttraction()
+
 			rem
 			'7 - Audience Flow
 			'TODO: AudienceFlow muss sich anpassen... ein fixer Bonus über Stunden hinweg ist nicht gut... eventuell einen Teilschritt sogar zurück zu exklusiven Zuschauern.
 			If lastMovieBlockAttraction Then
 				Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
 				Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
-						
+
 				result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
 				result.AudienceFlowBonus.Multiply(audienceFlowMod)
 			Else
 				result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
-				result.AudienceFlowBonus.MultiplyFloat(0.2)				
-			End If	
+				result.AudienceFlowBonus.MultiplyFloat(0.2)
+			End If
 			endrem
 			'result.CalculateBroadcastAttraction()
 		Else
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
-		
+
 		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		If (result.Quality < 0.5)
 			result.QualityOverTimeEffectMod = Max(-0.2, Min(0.1, ((result.Quality - 0.5)/3) * (block - 1)))
@@ -1527,15 +1528,15 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
-		
+
 		'10 - News-Mod
 		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.Copy().DivideFloat(2).SubtractFloat(0.1)
 		If lastNewsBlockAttraction Then
 			result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
 		EndIf
 		
-		result.CalculateBlockAttraction()			
-		
+		result.CalculateBlockAttraction()
+
 		'Sequence
 		'If (Game.playerID = 1) Then DebugStop
 		
@@ -1565,14 +1566,14 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		endrem
 		
 		'result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
-		
+
 		result.CalculateFinalAttraction()
-		
+
 		result.CalculatePublicImageAttraction()
-		
+
 		Return result
 	End Method
-	
+
 
 
 
@@ -1657,7 +1658,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method ShowSheet:int(x:int,y:int,align:int)
 		self.licence.ShowSheet(x,y,align, self.usedAsType)
 	End Method
-	
+
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return data.GetGenreDefinition()
 	End Method

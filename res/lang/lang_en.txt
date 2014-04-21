@@ -182,7 +182,7 @@ ERROR_NOT_ENOUGH_MONEY_TEXT 		= You do not own enough money to finish this actio
 
 
 FINANCES_OVERVIEW     = financial overview
-FINANCES_COSTS        = costs
+FINANCES_EXPENSES     = expenses
 FINANCES_INCOME       = income
 FINANCES_MONEY_BEFORE = money before
 FINANCES_MONEY_AFTER  = money after
@@ -202,6 +202,10 @@ FINANCES_NEWSAGENCIES = news agencies
 FINANCES_STATION_COSTS= station costs
 FINANCES_MISC_COSTS   = misc costs
 FINANCES_CALLER_REVENUE	= revenue from call-in-shows
+
+IMAGE_REACH = Reach
+IMAGE_SHARETOTAL = Share total
+IMAGE_SHAREWITHPLAYER = Share with %PLAYERNAME%
 
 NEWSSTUDIO_NOT_SUBSCRIBED					= not subscribed
 NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL			= subscribe genre level

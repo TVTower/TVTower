@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<!-- OFFICE: FINANCIAL SCREEN -->
+		<resource name="screen_financial_elements">
+			<type>SpritePack</type>
+ 			<url>res/grafiken/buero/screen_financials_elements.png</url>
+			<children>
+				<child name="screen_financial_positiveBalance" 	x="0" 	y="0" 	w="20"  h="20" ninepatch="true" />
+				<child name="screen_financial_negativeBalance" 	x="20" 	y="0" 	w="20"  h="20" ninepatch="true" />
+				<child name="screen_financial_newsLog1" x="0" 	y="20" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog2" x="0" 	y="41" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog3" x="0" 	y="62" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog4" x="0" 	y="83" 	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_newsLog5" x="0" 	y="104"	w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel1" x="0" 	y="125"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel2" x="0" 	y="146"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel3" x="0" 	y="167"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel4" x="0" 	y="188"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceLabel5" x="0" 	y="209"  w="220"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceValue"  x="0" 	y="230"  w="219"  h="21" ninepatch="true" />
+				<child name="screen_financial_balanceInfo"   x="41"  y="1"  w="14"  h="17" />
+
+			</children>
+		</resource>
+	</resources>
+</tvt>

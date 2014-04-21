@@ -693,7 +693,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 
 
 	'returns whether a ghost can be drawn or false, if there is a
-	'reason not to do so 
+	'reason not to do so
 	Method CanDrawGhost:int()
 		if IsDragged() and TGUIProgrammePlanSlotList(lastList)
 			'if guiblock is planned on another day then what the list
@@ -713,8 +713,8 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 	Method Draw:int()
 		'check if we have to skip ghost drawing
 		if hasOption(GUI_OBJECT_DRAWMODE_GHOST) and not CanDrawGhost() then return False
-		
-		
+
+
 		if not broadcastMaterial
 			SetColor 255,0,0
 			DrawRect(GetScreenX(), GetScreenY(), 150,20)
@@ -829,7 +829,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		title = title + titleAppend
 
 		'draw
-		Assets.fonts.basefontBold.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, null, titleColor, 0, True)
+		Assets.fonts.basefontBold.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, null, titleColor, 0, True, 1.0, FALSE)
 		textColor.setRGB()
 		useFont.draw(text, textArea.position.GetIntX() + 5, textArea.position.GetIntY() + 17)
 
@@ -876,7 +876,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		If not titleColor Then titleColor = TColor.Create(0,0,0)
 		If not textColor Then textColor = TColor.Create(50,50,50)
 
-		Assets.GetFont("Default", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, null, TColor.CreateGrey(0), 0,1,1.0,TRUE)
+		Assets.GetFont("Default", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, null, TColor.CreateGrey(0), 0,1,1.0, FALSE)
 		textColor.setRGB()
 		Assets.GetFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
 		Assets.GetFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, TPoint.Create(ALIGN_RIGHT))
@@ -1663,7 +1663,7 @@ Type TgfxProgrammelist extends TPlannerList
 					new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence), "programmePlanner" ).drag()
 
 					SetOpen(0)
-					MOUSEMANAGER.resetKey(1)
+					'MOUSEMANAGER.resetKey(1)
 					return TRUE
 				endif
 			EndIf
@@ -1709,7 +1709,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 			if closeMe
 				SetOpen(0)
-				MouseManager.ResetKey(1)
+				'MouseManager.ResetKey(1)
 			endif
 		endif
 	End Method
@@ -1813,7 +1813,7 @@ Type TgfxContractlist extends TPlannerList
 		if MouseManager.IsHit(1)
 			if not tapeRect.containsXY(MouseManager.x, MouseManager.y)
 				SetOpen(0)
-				MouseManager.ResetKey(1)
+				'MouseManager.ResetKey(1)
 			endif
 		endif
 	End Method
@@ -1954,11 +1954,11 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 
 		local price:int = GetNextBid()
-		If player.getFinance().PayProgrammeBid(price)
+		If player.getFinance().PayAuctionBid(price, self)
 			'another player was highest bidder, we pay him back the
 			'bid he gave (which is the currently highest bid...)
 			If bestBidder and Game.getPlayer(bestBidder)
-				Game.getPlayer(bestBidder).getFinance().PayBackProgrammeBid(bestBid)
+				Game.getPlayer(bestBidder).getFinance().PayBackAuctionBid(bestBid, self)
 			EndIf
 			'set new bid values
 			bestBidder = playerID

@@ -7,7 +7,7 @@
 		</resource>
 		<resource name="screen_bg_financials">
 			<type>image</type>
- 			<url>res/grafiken/buero/finanzen.png</url>
+ 			<url>res/grafiken/buero/screen_financials.png</url>
 		</resource>
 		<resource name="screen_bg_image">
 			<type>image</type>

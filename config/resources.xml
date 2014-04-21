@@ -2,6 +2,7 @@
 <tvt>
 	<resources>
 		<file name="resource_rooms" url="config/rooms.xml" />
+		<file name="resource_screen_elements" url="config/screen_elements.xml" />
 		<file name="resource_interface" url="config/interface.xml" />
 		<file name="resource_gui" url="config/gui.xml" />
 		<file name="resource_gfx_dialog" url="config/gfx_dialog.xml" />

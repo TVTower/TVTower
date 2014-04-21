@@ -918,7 +918,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'give money
 		local earn:int = player.GetAudience() * contract.GetPerViewerRevenue()
 		TDevHelper.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
-		player.GetFinance().EarnAdProfit(earn, contract)
+		player.GetFinance().EarnInfomercialRevenue(earn, contract)
 	End Method
 
 

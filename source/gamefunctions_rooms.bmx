@@ -921,12 +921,23 @@ Type RoomHandler_Office extends TRoomHandler
 	Global GuiListProgrammes:TGUIProgrammePlanSlotList
 	Global GuiListAdvertisements:TGUIProgrammePlanSlotList
 
+	'=== FINANCIAL SCREEN ===
+	Global financeHistoryStartPos:int = 0
+	Global clTypes:TColor[6]
+	Const FINANCIAL_TYPE_NEWS:int = 1
+	Const FINANCIAL_TYPE_PROGRAMME:int = 2
+	Const FINANCIAL_TYPE_DEFAULT:int = 3
+	Const FINANCIAL_TYPE_PRODUCTION:int = 4
+	Const FINANCIAL_TYPE_STATION:int = 5
+
+
 
 	Function Init()
 		'===== RUN SCREEN SPECIFIC INIT =====
 		'(event connection etc.)
 		InitStationMap()
 		InitProgrammePlanner()
+		InitFinancialScreen()
 
 		'===== REGISTER SCREEN HANDLERS =====
 		'no need for individual screens, all can be handled by one function (room is param)
@@ -975,8 +986,6 @@ Type RoomHandler_Office extends TRoomHandler
 		GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(area.GetX() + Assets.GetSprite("pp_programmeblock1").area.GetW(),area.GetY(),area.GetW(),area.GetH(), "programmeplanner")
 		GuiListAdvertisements.Init("pp_adblock1", Assets.GetSprite("pp_programmeblock1").area.GetW() + gapBetweenHours)
 		GuiListAdvertisements.isType = TBroadcastMaterial.TYPE_ADVERTISEMENT
-
-
 
 		'init lists
 		PPprogrammeList		= new TgfxProgrammelist.Create(660, 16, 21)
@@ -1285,7 +1294,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local list:TGUIProgrammePlanSlotList = TGUIProgrammePlanSlotList(triggerEvent.GetSender())
 		local item:TGUIProgrammePlanElement = TGUIProgrammePlanElement(triggerEvent.GetData().get("item"))
 		local slot:int = triggerEvent.GetData().getInt("slot", -1)
-	
+
 		if not list or not item or slot = -1 then return FALSE
 
 		'we removed the item but do not want the planner to know
@@ -1330,7 +1339,7 @@ Type RoomHandler_Office extends TRoomHandler
 					Endif
 				Endif
 			Endif
-		EndIf		
+		EndIf
 
 	End Function
 
@@ -1376,7 +1385,7 @@ Type RoomHandler_Office extends TRoomHandler
 					return False
 				endif
 			Endif
-			
+
 			if not Game.getPlayer().ProgrammePlan.SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
@@ -1769,7 +1778,7 @@ Type RoomHandler_Office extends TRoomHandler
 			if removeDragged or not guiObject.IsDragged() then guiObject.remove()
 		Next
 '		End Rem
-		
+
 		'remove dragged ones of gui manager
 		if removeDragged
 			For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.listDragged
@@ -1955,6 +1964,47 @@ Type RoomHandler_Office extends TRoomHandler
 	End Function
 
 
+	Function InitFinancialScreen:int()
+		clTypes[FINANCIAL_TYPE_NEWS] = new TColor.Create(0, 31, 83) 'news
+		clTypes[FINANCIAL_TYPE_PROGRAMME] = new TColor.Create(89, 40, 0) 'programme
+		clTypes[FINANCIAL_TYPE_DEFAULT] = new TColor.Create(30, 30, 30) 'gray/normal
+		clTypes[FINANCIAL_TYPE_PRODUCTION] = new TColor.Create(44, 0, 78) 'production
+		clTypes[FINANCIAL_TYPE_STATION] = new TColor.Create(0, 75, 69) 'stations
+
+		Rem
+
+		Local screenImage:TImage = Assets.GetSprite("screen_bg_financials").parent.image
+		Local pix:TPixmap = LockImage(roomImg)
+		Local gfx_ProgrammeBlock1:TImage = Assets.GetSprite("pp_programmeblock1").GetImage()
+
+		'block"shade" on bg
+		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
+		For Local j:Int = 0 To 11
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 67 - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 394 - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 67 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 394 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
+		Next
+
+		'set target for font
+		TGW_BitmapFont.setRenderTarget(roomImg)
+
+		local fontColor:TColor = TColor.CreateGrey(240)
+		For Local i:Int = 0 To 11
+			'left side
+			Assets.fonts.baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, fontColor, 2,1,0.25)
+			'right side
+			local text:string = i + ":00"
+			If i < 10 then text = "0" + text
+			Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, fontColor,2,1,0.25)
+		Next
+		DrawnOnProgrammePlannerBG = True
+
+		'reset target for font
+		TGW_BitmapFont.setRenderTarget(null)
+		EndRem
+	End Function
+
 
 	'===== OFFICE FINANCIALS SCREEN =====
 
@@ -1965,75 +2015,179 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		local screenOffsetX:int = 20
+		local screenOffsetY:int = 10
+
 		local finance:TPlayerFinance= Game.getPlayer(room.owner).GetFinance()
-		local font13:TGW_BitmapFont	= Assets.GetFont("Default", 14, BOLDFONT)
-		local font12:TGW_BitmapFont	= Assets.GetFont("Default", 11)
 
-		local line:int = 14
-		local fontColor:TColor = new TColor.CreateGrey(50)
-		local fontColorLight:TColor = fontColor.copy().AdjustFactor(70)
+		local captionColor:TColor = new TColor.CreateGrey(70)
+		local captionFont:TGW_BitmapFont = Assets.GetFont("Default", 13, BOLDFONT)
+		local captionHeight:int = 20 'to center it to table header according "font Baseline"
+		local textFont:TGW_BitmapFont = Assets.GetFont("Default", 13)
+		local logFont:TGW_BitmapFont = Assets.GetFont("Default", 11)
+		local textSmallFont:TGW_BitmapFont = Assets.GetFont("Default", 10)
+		local textBoldFont:TGW_BitmapFont = Assets.GetFont("Default", 13, BOLDFONT)
 
-		font13.drawBlock(GetLocale("FINANCES_OVERVIEW") 	,55, 235,330,20, null, fontColor)
-		font13.drawBlock(GetLocale("FINANCES_COSTS")       ,55,  29,330,20, null, fontColor)
-		font13.drawBlock(GetLocale("FINANCES_INCOME")      ,415, 29,330,20, null, fontColor)
-		font13.drawBlock(GetLocale("FINANCES_MONEY_BEFORE"),415,129,330,20, null, fontColor)
-		font13.drawBlock(GetLocale("FINANCES_MONEY_AFTER") ,415,193,330,20, null, fontColor)
+		local alignCenter:TPoint = TPoint.Create(0.5, 0.5)
+		local alignRightCenter:TPoint = TPoint.Create(1.0, 0.5)
+		local alignLeftCenter:TPoint = TPoint.Create(0, 0.5)
 
-		font12.drawBlock(GetLocale("FINANCES_SOLD_MOVIES")		,415, 48+line*0,330,20, null, fontColor)
-		font12.drawBlock(GetLocale("FINANCES_AD_INCOME")		,415, 48+line*1,330,20, null, fontColorLight)
-		font12.drawBlock(GetLocale("FINANCES_CALLER_REVENUE")	,415, 48+line*2,330,20, null, fontColor)
-		font12.drawBlock(GetLocale("FINANCES_MISC_INCOME")		,415, 48+line*3,330,20, null, fontColorLight)
-		font12.drawBlock(finance.income_programmeLicences+getLocale("CURRENCY")		,640, 48+line*0, 100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.income_ads+getLocale("CURRENCY")		,640, 48+line*1, 100,20, TPoint.Create(ALIGN_RIGHT), fontColorLight)
-		font12.drawBlock(finance.income_callerRevenue+getLocale("CURRENCY")	,640, 48+line*2, 100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.income_misc+getLocale("CURRENCY")		,640, 48+line*3, 100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font13.drawBlock(finance.income_total+getLocale("CURRENCY")		,640, 48+line*4+5, 100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
+		local clLog:TColor = new TColor.CreateGrey(50)
 
-		font13.drawBlock(finance.revenue_before+getLocale("CURRENCY")	,640,129,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock("+"											,415,148+line*0,10,20, TPoint.Create(ALIGN_CENTER), fontColor)
-		font12.drawBlock("-"											,415,148+line*1,10,20, TPoint.Create(ALIGN_CENTER), fontColorLight)
-		if finance.expense_creditInterest > finance.income_balanceInterest
-			font12.drawBlock("-"											,415,148+line*2,10,20, TPoint.Create(ALIGN_CENTER), fontColor)
+		local clNormal:TColor = TColor.clBlack
+		local clPositive:TColor = new TColor.Create(90, 110, 90)
+		local clNegative:TColor = new TColor.Create(110, 90, 90)
+
+
+		'=== NEWS LOG ===
+		captionFont.DrawBlock(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 520 + screenOffsetX, 13 + screenOffsetY,  220, captionHeight, alignCenter, captionColor, 1,,0.5)
+		local list:TList = TPlayerFinanceHistory.GetList(room.owner)
+		local logSlot:int = 0
+		local logH:int = 19
+		local history:TPlayerFinanceHistory
+		local logCol:string = ""
+		For local i:int = financeHistoryStartPos to Min(financeHistoryStartPos + 6, list.Count()-1)
+			history = TPlayerFinancehistory(list.ValueAtIndex(i))
+			if not history then continue
+
+			Assets.GetNinePatchSprite("screen_financial_newsLog1").DrawArea(521 + screenOffsetX, 39 + screenOffsetY + logSlot*logH , 218, logH)
+			if history.GetMoney() < 0
+				logCol = "color=190,30,30"
+			else
+				logCol = "color=35,130,30"
+			Endif
+			logFont.DrawBlock("|"+logCol+"|"+TFunctions.convertValue(abs(history.GetMoney()),, -2, ".")+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 521 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 220, logH, alignLeftCenter, clLog)
+			logSlot:+1
+		Next
+
+
+
+		'=== BALANCE TABLE ===
+
+		local labelX:int = 20 + screenOffsetX
+		local labelStartY:int = 39 + screenOffsetY
+		local labelH:int = 19, labelW:int = 220
+
+		local valueIncomeX:int = 240 + screenOffsetX
+		local valueExpenseX:int = 360 + screenOffsetX
+		local valueStartY:int = 39 + screenOffsetY
+		local valueH:int = 19, valueW:int = 95
+
+		'draw balance table
+		captionFont.DrawBlock(GetLocale("FINANCES_INCOME"), 240 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, alignCenter, captionColor, 1,,0.5)
+		captionFont.DrawBlock(GetLocale("FINANCES_EXPENSES"), 352 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, alignCenter, captionColor, 1,,0.5)
+
+		'draw total-area
+		local profit:int = finance.revenue_after - finance.revenue_before
+		if profit >= 0
+			Assets.GetNinePatchSprite("screen_financial_positiveBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		else
-			font12.drawBlock("+"											,415,148+line*2,10,20, TPoint.Create(ALIGN_CENTER), fontColor)
+			Assets.GetNinePatchSprite("screen_financial_negativeBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		endif
-		font12.drawBlock(GetLocale("FINANCES_INCOME")		,425,148+line*0,150,20, null, fontColor)
-		font12.drawBlock(GetLocale("FINANCES_COSTS")		,425,148+line*1,150,20, null, fontColorLight)
-		font12.drawBlock(GetLocale("FINANCES_INTEREST")	,425,148+line*2,150,20, null, fontColor)
+		captionFont.DrawBlock(TFunctions.convertValue(profit,,-2,"."), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, alignCenter, TColor.clWhite, 2, 1, 0.75)
 
-		font12.drawBlock(finance.income_total+getLocale("CURRENCY")		,640,148+line*0,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.expense_total+getLocale("CURRENCY")		,640,148+line*1,100,20, TPoint.Create(ALIGN_RIGHT), fontColorLight)
-		font12.drawBlock(abs(finance.expense_creditInterest - finance.income_balanceInterest) +getLocale("CURRENCY"),640,148+line*2,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font13.drawBlock(finance.revenue_after+getLocale("CURRENCY")	,640,193,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
+		'draw label backgrounds
+		local labelBGX:int = 20 + screenOffsetX
+		local labelBGW:int = 220
+		local valueBGX:int = 20 + labelBGW + 1 + screenOffsetX
+		local labelBGs:TGW_NinePatchSprite[6]
+		for local i:int = 1 to 5
+			labelBGs[i] = Assets.GetNinePatchSprite("screen_financial_balanceLabel"+i)
+		Next
 
-		font12.drawBlock(getLocale("FINANCES_BOUGHT_MOVIES")				,55, 49+line*0,330,20, null, fontColor)
-		font12.drawBlock(getLocale("FINANCES_BOUGHT_STATIONS")				,55, 49+line*1,330,20, null, fontColorLight)
-		font12.drawBlock(getLocale("FINANCES_SCRIPTS")						,55, 49+line*2,330,20, null, fontColor)
-		font12.drawBlock(getLocale("FINANCES_ACTORS_STAGES")				,55, 49+line*3,330,20, null, fontColorLight)
-		font12.drawBlock(getLocale("FINANCES_PENALTIES")					,55, 49+line*4,330,20, null, fontColor)
-		font12.drawBlock(getLocale("FINANCES_STUDIO_RENT")					,55, 49+line*5,330,20, null, fontColorLight)
-		font12.drawBlock(getLocale("FINANCES_NEWS")							,55, 49+line*6,330,20, null, fontColor)
-		font12.drawBlock(getLocale("FINANCES_NEWSAGENCIES")					,55, 49+line*7,330,20, null, fontColorLight)
-		font12.drawBlock(getLocale("FINANCES_STATION_COSTS")				,55, 49+line*8,330,20, null, fontColor)
-		font12.drawBlock(getLocale("FINANCES_MISC_COSTS")					,55, 49+line*9,330,20, null, fontColorLight)
-		font12.drawBlock(finance.expense_programmeLicences+getLocale("CURRENCY")			,280, 49+line*0,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.expense_stations+getLocale("CURRENCY")		,280, 49+line*1,100,20, TPoint.Create(ALIGN_RIGHT), fontColorLight)
-		font12.drawBlock(finance.expense_scripts+getLocale("CURRENCY")		,280, 49+line*2,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.expense_productionstuff+getLocale("CURRENCY"),280, 49+line*3,100,20, TPoint.Create(ALIGN_RIGHT), fontColorLight)
-		font12.drawBlock(finance.expense_penalty+getLocale("CURRENCY")		,280, 49+line*4,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.expense_rent+getLocale("CURRENCY")            ,280, 49+line*5,100,20, TPoint.Create(ALIGN_RIGHT), fontColorLight)
-		font12.drawBlock(finance.expense_news+getLocale("CURRENCY")            ,280, 49+line*6,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.expense_newsagencies+getLocale("CURRENCY")    ,280, 49+line*7,100,20, TPoint.Create(ALIGN_RIGHT), fontColorLight)
-		font12.drawBlock(finance.expense_stationfees+getLocale("CURRENCY")     ,280, 49+line*8,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
-		font12.drawBlock(finance.expense_misc+getLocale("CURRENCY")            ,280, 49+line*9,100,20, TPoint.Create(ALIGN_RIGHT), fontColorLight)
-		font13.drawBlock(finance.expense_total+getLocale("CURRENCY")           ,280,193,100,20, TPoint.Create(ALIGN_RIGHT), fontColor)
+		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 0*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 1*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 2*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 3*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_NEWS].DrawArea(labelBGX, labelStartY + 4*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_NEWS].DrawArea(labelBGX, labelStartY + 5*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_PRODUCTION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_PRODUCTION].DrawArea(labelBGX, labelStartY + 8*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_PRODUCTION].DrawArea(labelBGX, labelStartY + 9*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 10*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 11*valueH, labelBGW, labelH)
+		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 12*valueH, labelBGW, labelH)
+
+		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +5, labelBGW, labelH)
+
+		'draw value backgrounds
+		local balanceValueBG:TGW_NinePatchSprite = Assets.GetNinePatchSprite("screen_financial_balanceValue")
+		for local i:int = 0 to 12
+			balanceValueBG.DrawArea(valueBGX, labelStartY + i*valueH, balanceValueBG.GetWidth(), labelH)
+		Next
+		balanceValueBG.DrawArea(valueBGX, labelStartY + 14*valueH + 5, balanceValueBG.GetWidth(), labelH)
+
+		'draw balance labels
+		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_STATION])
+		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
+		'spacer for total
+		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+5, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
+
+
+		'draw "grouped"-info-sign
+		Assets.GetSprite("screen_financial_balanceInfo").Draw(valueBGX, labelStartY + 1 + 6*valueH)
+
+		'draw balance values: income
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_programmeLicences,,-2,"."), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_ads,,-2,"."), valueIncomeX, valueStartY + 1*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_callerRevenue,,-2,"."), valueIncomeX, valueStartY + 2*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_sponsorshipRevenue,,-2,"."), valueIncomeX, valueStartY + 3*valueH, valueW, valueH, alignRightCenter, clPositive)
+		'news: generate no income
+		'newsagencies: generate no income
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, alignRightCenter, clPositive)
+		'scripts: generate no income
+		'actors and productionstuff: generate no income
+		'studios: generate no income
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_balanceInterest,,-2,"."), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_creditTaken,,-2,"."), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_misc,,-2,"."), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, alignRightCenter, clPositive)
+		'spacer for total
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_total,,-2,"."), valueIncomeX, valueStartY + 14*valueH +5, valueW, valueH, alignRightCenter, clPositive)
+
+
+		'draw balance values: expenses
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_programmeLicences,,-2,"."), valueExpenseX, valueStartY + 0*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_penalty,,-2,"."), valueExpenseX, valueStartY + 1*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		'no callin expenses ?
+		'no expenses for sponsorships ?
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_news,,-2,"."), valueExpenseX, valueStartY + 4*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_newsAgencies,,-2,"."), valueExpenseX, valueStartY + 5*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees + finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_scripts,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_productionStuff,,-2,"."), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_rent,,-2,"."), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_drawingCreditInterest,,-2,"."), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditRepayed,,-2,"."), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditInterest,,-2,"."), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		'spacer for total
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_total,,-2,"."), valueExpenseX, valueStartY + 14*valueH +5, valueW, valueH, alignLeftCenter, clNegative)
+
 
 
 		'==== DRAW MONEY CURVE====
 
-		local showDays:int			= 30		'how much days to draw
-		local curveArea:TRectangle	= TRectangle.Create(60,260, 500, 100) 'where to draw + dimension
-		Local maxValue:int			= 0			'heighest reached money value of that days
+		'how much days to draw
+		local showDays:int = 10
+		'where to draw + dimension
+		local curveArea:TRectangle = TRectangle.Create(529 + screenOffsetX,239 + screenOffsetY, 200, 70)
+		'heighest reached money value of that days
+		Local maxValue:int = 0
+		'minimum money (may be negative)
+		Local minValue:int = 0
+		'color of labels
+		Local labelColor:TColor = new TColor.CreateGrey(80)
 
 		'first get the maximum value so we know how to scale the rest
 		For local i:Int = Game.GetDay()-showDays To Game.GetDay()
@@ -2042,24 +2196,55 @@ Type RoomHandler_Office extends TRoomHandler
 
 			For Local player:TPlayer = EachIn Game.Players
 				maxValue = max(maxValue, player.GetFinance(i).money)
+				minValue = min(minValue, player.GetFinance(i).money)
 			Next
 		Next
 
-		'draw the labels and borders
-
-		SetColor 200, 200, 200
-		DrawLine(curveArea.GetX(),curveArea.GetY() , curveArea.GetY() + curveArea.GetW(), curveArea.GetY())
-		DrawLine(curveArea.GetX(),curveArea.GetY() + 0.5*curveArea.GetH() , curveArea.GetX() + curveArea.GetW(), curveArea.GetY() + 0.5*curveArea.GetH())
-		SetColor 255, 255, 255
 
 		local slot:int				= 0
 		local slotPos:TPoint		= TPoint.Create(0,0)
 		local previousSlotPos:Tpoint= TPoint.Create(0,0)
 		local slotWidth:int 		= curveArea.GetW() / showDays
 
+		local yPerMoney:Float = curveArea.GetH() / Float(Abs(minValue) + maxValue)
+		'zero is at "bottom - minMoney*yPerMoney"
+		local yOfZero:Float = curveArea.GetH() - yPerMoney * Abs(minValue)
+
+		local hoveredDay:int = -1
+		For local i:Int = Game.GetDay()-showDays To Game.GetDay()
+			if TFunctions.MouseIn(curveArea.GetX() + (slot-0.5) * slotWidth, curveArea.GetY(), slotWidth, curveArea.GetH())
+				hoveredDay = i
+				'leave for loop
+				exit
+			EndIf
+			slot :+ 1
+		Next
+		if hoveredDay >= 0
+			local time:int = Game.MakeTime(0, hoveredDay, 0, 0)
+			local gameDay:string = Game.getDayOfYear(time)+"/"+Game.daysPerYear+" "+Game.getYear(time)
+			if Game.GetPlayer(room.owner).GetFinance(hoveredDay).money > 0
+				textSmallFont.Draw("Spieltag "+gameDay+": |color=50,110,50|"+TFunctions.convertValue(Game.GetPlayer(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+			Else
+				textSmallFont.Draw("Spieltag "+gameDay+": |color=110,50,50|"+TFunctions.convertValue(Game.GetPlayer(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+			Endif
+
+			local hoverX:int = curveArea.GetX() + (slot-0.5) * slotWidth
+			local hoverW:int = Min(curveArea.GetX() + curveArea.GetW() - hoverX, slotWidth)
+			if hoverX < curveArea.GetX() then hoverW = slotWidth / 2
+			hoverX = Max(curveArea.GetX(), hoverX)
+
+			local col:TColor = new TColor.Get()
+			SetBlend LightBlend
+			SetAlpha 0.1 * col.a
+			DrawRect(hoverX, curveArea.GetY(), hoverW, curveArea.GetH())
+			SetBlend AlphaBlend
+			col.SetRGBA()
+		EndIf
+
 		'draw the curves
 		SetLineWidth(2)
 		GlEnable(GL_LINE_SMOOTH)
+		slot = 0
 		For Local player:TPlayer = EachIn Game.Players
 			slot = 0
 			slotPos.SetXY(0,0)
@@ -2068,16 +2253,16 @@ Type RoomHandler_Office extends TRoomHandler
 				previousSlotPos.SetXY(slotPos.x, slotPos.y)
 				slotPos.SetXY(slot * slotWidth, 0)
 				'maximum is at 90% (so it is nicely visible)
-				if maxValue > 0 then slotPos.SetY(curveArea.GetH() - Floor((player.GetFinance(i).money / float(maxvalue)) * curveArea.GetH()))
-				if slotPos.y >= 0
-					player.color.setRGB()
-					SetAlpha 0.3
-					DrawOval(curveArea.GetX() + slotPos.GetX()-3, curveArea.GetY() + slotPos.GetY()-3,6,6)
-					SetAlpha 1.0
-					if slot > 0
-						DrawLine(curveArea.GetX() + previousSlotPos.GetX(), curveArea.GetY() + previousSlotPos.GetY(), curveArea.GetX() + slotPos.GetX(), curveArea.GetY() + slotPos.GetY())
-						SetColor 255,255,255
-					endif
+'				if maxValue > 0 then slotPos.SetY(curveArea.GetH() - Floor((player.GetFinance(i).money / float(maxvalue)) * curveArea.GetH()))
+
+				slotPos.SetY(yOfZero - player.GetFinance(i).money * yPerMoney)
+				player.color.setRGB()
+				SetAlpha 0.3
+				DrawOval(curveArea.GetX() + slotPos.GetX()-3, curveArea.GetY() + slotPos.GetY()-3,6,6)
+				SetAlpha 1.0
+				if slot > 0
+					DrawLine(curveArea.GetX() + previousSlotPos.GetX(), curveArea.GetY() + previousSlotPos.GetY(), curveArea.GetX() + slotPos.GetX(), curveArea.GetY() + slotPos.GetY())
+					SetColor 255,255,255
 				endif
 				slot :+ 1
 			Next
@@ -2085,8 +2270,8 @@ Type RoomHandler_Office extends TRoomHandler
 		SetLineWidth(1)
 
 		'coord descriptor
-		font12.drawBlock(TFunctions.convertValue(maxValue,2,0)       ,478-1 , 265+1,100,20, TPoint.Create(ALIGN_RIGHT), TColor.CreateGrey(180))
-		font12.drawBlock(TFunctions.convertValue(Int(maxValue/2),2,0),478-1 , 315+1,100,20, TPoint.Create(ALIGN_RIGHT), TColor.CreateGrey(180))
+		textSmallFont.drawBlock(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY(), curveArea.GetW(), 20, TPoint.Create(ALIGN_RIGHT), labelColor)
+		textSmallFont.drawBlock(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, TPoint.Create(ALIGN_RIGHT, ALIGN_BOTTOM), labelColor)
 	End Function
 
 
