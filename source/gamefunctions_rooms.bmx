@@ -2364,6 +2364,21 @@ Type RoomHandler_Office extends TRoomHandler
 		endif
 
 
+		'disable "previou" or "newxt" button of finance display
+		if financeShowDay = 0 or financeShowDay = Game.GetStartDay()
+			financePreviousDayButton.Disable()
+		else
+			financePreviousDayButton.Enable()
+		endif
+
+		if financeShowDay = Game.GetDay()
+			financeNextDayButton.Disable()
+		else
+			financeNextDayButton.Enable()
+		endif
+
+
+
 		Game.cursorstate = 0
 		GuiManager.Update("officeFinancialScreen")
 	End Function
