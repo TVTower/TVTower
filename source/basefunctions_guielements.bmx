@@ -1683,7 +1683,7 @@ Type TGUIArrowButton  Extends TGUIObject
 
 	Method Create:TGUIArrowButton(area:TRectangle=Null, direction:String="LEFT", limitState:String = "")
 		If Not area Then area = TRectangle.Create(0,0,-1,-1)
-		Super.CreateBase(area.GetX(), area.GetY(), State, Null)
+		Super.CreateBase(area.GetX(), area.GetY(), limitState, Null)
 
 		SetDirection(direction)
 		setZindex(40)

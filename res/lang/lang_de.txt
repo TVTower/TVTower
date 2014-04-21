@@ -179,18 +179,18 @@ ERROR_NOT_ABLE_TO_SELL_LAST_STATION = Es ist nicht möglich den letzten verblieb
 ERROR_NOT_ENOUGH_MONEY		      	= Nicht genügend Geld!
 ERROR_NOT_ENOUGH_MONEY_TEXT 		= Du besitzt nicht genügend finanzielle Mittel um diese Aktion durchzuführen.
 
-FINANCES_OVERVIEW     = Finanzüberblick
 FINANCES_EXPENSES     = Ausgaben
 FINANCES_INCOME       = Einnahmen
-FINANCES_MONEY_BEFORE = Geld vorher
-FINANCES_MONEY_AFTER  = Geld nachher
 
 FINANCES_LAST_FINANCIAL_ACTIVITIES = Letzte Finanzaktivitäten
+FINANCES_FINANCIAL_CURVES = Finanzverlauf
 FINANCES_TRADING_PROGRAMMELICENCES = Handel mit Programmlizenzen
 FINANCES_AD_INCOME__CONTRACT_PENALTY = Werbeeinkünfte / Vertragsstrafen
 FINANCES_CALL_IN_SHOW_INCOME = Einnahmen durch Call-In-Shows
 FINANCES_SPONSORSHIP_INCOME__PENALTY = Sponsoring: Einnahmen / Strafen
 FINANCES_STATIONS =  Sendestationen
+FINANCES_STATIONS_FEES =  Sender: Unterhaltskosten
+FINANCES_STATIONS_BUY_SELL =  Sender: Verkauf / Kauf
 FINANCES_CREDIT_TAKEN__REPAYED = Kredite: Neu / Rückzahlung
 FINANCES_SCRIPTS = Drehbücher
 FINANCES_ACTORS_AND_PRODUCTIONSTUFF = Darsteller und Drehbedarf
@@ -201,7 +201,6 @@ FINANCES_INTEREST_BALANCE__CREDIT = Zinsen: Guthaben / Kredite
 FINANCES_MISC = Sonstiges
 FINANCES_TOTAL = Total
 
-
 FINANCES_HISTORY_FOR_CREDITREPAID = durch Kreditrückzahlung
 FINANCES_HISTORY_FOR_CREDITTAKEN = durch Kreditaufnahme
 FINANCES_HISTORY_FOR_STATIONBOUGHT = für Senderkauf
@@ -209,7 +208,8 @@ FINANCES_HISTORY_FOR_STATIONSOLD = für Senderverkauf
 FINANCES_HISTORY_OF_STATIONFEES = Sendergebühren
 FINANCES_HISTORY_FOR_MISC = für Sonstiges
 FINANCES_HISTORY_FOR_PROGRAMMELICENCE = für Programm: %TITLE%
-FINANCES_HISTORY_FOR_AUCTIONBID = für Auktionsgebot: %TITLE%
+FINANCES_HISTORY_FOR_AUCTIONBID = für Auktion: %TITLE%
+FINANCES_HISTORY_FOR_AUCTIONBIDREPAYED = Auktionerstattung: %TITLE%
 FINANCES_HISTORY_OF_CALLERREVENUE = Call-In-Einnahmen
 FINANCES_HISTORY_OF_INFOMERCIALREVENUE = für Dauerwerbesendung
 FINANCES_HISTORY_OF_ADPROFIT = für Werbung: %TITLE%
@@ -225,15 +225,6 @@ FINANCES_HISTORY_OF_DRAWINGCREDITINTEREST = Überziehungszinsen
 FINANCES_HISTORY_OF_BALANCEINTEREST = Guthabenzinsen
 FINANCES_HISTORY_FOR_SOMETHING = für irgendwas
 
-
-FINANCES_SOLD_MOVIES  = Filmverkäufe
-FINANCES_AD_INCOME    = Werbeeinnahmen
-FINANCES_BOUGHT_MOVIES= Filmkäufe
-FINANCES_BOUGHT_STATIONS = Senderkäufe
-FINANCES_PENALTIES    = Konventionalstrafen
-FINANCES_STATION_COSTS= Sendergebühren
-FINANCES_MISC_COSTS   = Sonstige Kosten
-FINANCES_CALLER_REVENUE = Einnahmen von Call-In-Shows
 
 IMAGE_REACH		= Reichweite
 IMAGE_SHARETOTAL	= Marktanteil Total

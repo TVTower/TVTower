@@ -532,9 +532,9 @@ Type TNumberSortMap
 	Method Sort(ascending:Int = true)
 		SortList (Content, ascending)
 	End Method
-	
+
 	Method NumberAtIndex:Float( index:Int )
-		Return TKeyValueNumber(Content.ValueAtIndex(index)).Value		
+		Return TKeyValueNumber(Content.ValueAtIndex(index)).Value
 	End Method
 End Type
 
@@ -1509,6 +1509,14 @@ Type TFunctions
 	End Function
 
 
+	Function DrawOutlineRect:int(x:int, y:int, w:int, h:int)
+		DrawLine(x, y, x + w, y, 0)
+		DrawLine(x + w , y, x + w, y + h, 0)
+		DrawLine(x + w, y + h, x, y + h, 0)
+		DrawLine(x, y + h , x, y, 0)
+	End Function
+
+
 	Function CreateEmptyImage:TImage(width:int, height:int, flags:int=DYNAMICIMAGE | FILTEREDIMAGE)
 		local image:TImage = CreateImage(width, height, flags)
 		local pixmap:TPixmap = LockImage(image)
@@ -1565,7 +1573,7 @@ Type TFunctions
 
 	Function RoundInt:Int(f:Float)
 		'http://www.blitzbasic.com/Community/posts.php?topic=92064
-	    Return f + 0.5 * Sgn(f)		
+	    Return f + 0.5 * Sgn(f)
 	End Function
 
 	Function RoundToBeautifulValue:int(value:int)

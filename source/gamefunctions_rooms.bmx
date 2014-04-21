@@ -922,13 +922,13 @@ Type RoomHandler_Office extends TRoomHandler
 	Global GuiListAdvertisements:TGUIProgrammePlanSlotList
 
 	'=== FINANCIAL SCREEN ===
+	global financePreviousDayButton:TGUIArrowButton
+	global financeNextDayButton:TGUIArrowButton
+	global financeHistoryDownButton:TGUIArrowButton
+	global financeHistoryUpButton:TGUIArrowButton
 	Global financeHistoryStartPos:int = 0
+	Global financeShowDay:int = 0
 	Global clTypes:TColor[6]
-	Const FINANCIAL_TYPE_NEWS:int = 1
-	Const FINANCIAL_TYPE_PROGRAMME:int = 2
-	Const FINANCIAL_TYPE_DEFAULT:int = 3
-	Const FINANCIAL_TYPE_PRODUCTION:int = 4
-	Const FINANCIAL_TYPE_STATION:int = 5
 
 
 
@@ -1965,11 +1965,24 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 	Function InitFinancialScreen:int()
-		clTypes[FINANCIAL_TYPE_NEWS] = new TColor.Create(0, 31, 83) 'news
-		clTypes[FINANCIAL_TYPE_PROGRAMME] = new TColor.Create(89, 40, 0) 'programme
-		clTypes[FINANCIAL_TYPE_DEFAULT] = new TColor.Create(30, 30, 30) 'gray/normal
-		clTypes[FINANCIAL_TYPE_PRODUCTION] = new TColor.Create(44, 0, 78) 'production
-		clTypes[FINANCIAL_TYPE_STATION] = new TColor.Create(0, 75, 69) 'stations
+		clTypes[TPlayerFinanceHistory.GROUP_NEWS] = new TColor.Create(0, 31, 83)
+		clTypes[TPlayerFinanceHistory.GROUP_PROGRAMME] = new TColor.Create(89, 40, 0)
+		clTypes[TPlayerFinanceHistory.GROUP_DEFAULT] = new TColor.Create(30, 30, 30)
+		clTypes[TPlayerFinanceHistory.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
+		clTypes[TPlayerFinanceHistory.GROUP_STATION] = new TColor.Create(0, 75, 69)
+
+		financeHistoryUpButton = new TGUIArrowButton.Create(new TRectangle.Create(500 + 20, 180, 120, 15), "DOWN", "officeFinancialScreen")
+		financeHistoryDownButton = new TGUIArrowButton.Create(new TRectangle.Create(500 + 120 + 20, 180, 120, 15), "UP", "officeFinancialScreen")
+
+		financePreviousDayButton = new TGUIArrowButton.Create(new TRectangle.Create(20 + 20, 10 + 10, 26, 26), "LEFT", "officeFinancialScreen")
+		financeNextDayButton = new TGUIArrowButton.Create(new TRectangle.Create(20 + 175 + 20, 10 + 10, 26, 26), "RIGHT", "officeFinancialScreen")
+
+		'listen to clicks on the four buttons
+		EventManager.registerListenerFunction("guiobject.onClick", onClickFinanceButtons, "TGUIArrowButton")
+
+		'reset finance history scroll position when entering a screen
+		local screen:TScreen = ScreenCollection.GetScreen("screen_office_financials")
+		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterFinancialScreen, screen)
 
 		Rem
 
@@ -2010,15 +2023,27 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'=== EVENTS ===
 
+	'reset finance history scrolling position when entering the screen
+	'reset finance show day to current when entering the screen
+	Function onEnterFinancialScreen:int( triggerEvent:TEventBase )
+		financeHistoryStartPos = 0
+		financeShowDay = Game.GetDay()
+	End function
+
+
 	Function onDrawFinancials:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		'limit finance day between 0 and current day
+		financeShowDay = Max(0, Min(financeShowDay, Game.GetDay()))
+
+
 		local screenOffsetX:int = 20
 		local screenOffsetY:int = 10
 
-		local finance:TPlayerFinance= Game.getPlayer(room.owner).GetFinance()
+		local finance:TPlayerFinance= Game.getPlayer(room.owner).GetFinance(financeShowDay)
 
 		local captionColor:TColor = new TColor.CreateGrey(70)
 		local captionFont:TGW_BitmapFont = Assets.GetFont("Default", 13, BOLDFONT)
@@ -2039,24 +2064,35 @@ Type RoomHandler_Office extends TRoomHandler
 		local clNegative:TColor = new TColor.Create(110, 90, 90)
 
 
+		'=== DAY CHANGER ===
+		local today:int = Game.MakeTime(0, financeShowDay, 0, 0)
+		local todayText:string = Game.getDayOfYear(today)+"/"+Game.daysPerYear+" "+Game.getYear(today)
+		textFont.DrawBlock("Spieltag "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, alignCenter, TColor.CreateGrey(90), 2, 1, 0.2)
+
+
+
 		'=== NEWS LOG ===
-		captionFont.DrawBlock(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 520 + screenOffsetX, 13 + screenOffsetY,  220, captionHeight, alignCenter, captionColor, 1,,0.5)
+		captionFont.DrawBlock(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 13 + screenOffsetY,  240, captionHeight, alignCenter, captionColor, 1,,0.5)
 		local list:TList = TPlayerFinanceHistory.GetList(room.owner)
 		local logSlot:int = 0
 		local logH:int = 19
 		local history:TPlayerFinanceHistory
 		local logCol:string = ""
+
+		'limit log
+		financeHistoryStartPos = Max(0, Min(list.Count()-1 - 6, financeHistoryStartPos))
+
 		For local i:int = financeHistoryStartPos to Min(financeHistoryStartPos + 6, list.Count()-1)
 			history = TPlayerFinancehistory(list.ValueAtIndex(i))
 			if not history then continue
 
-			Assets.GetNinePatchSprite("screen_financial_newsLog1").DrawArea(521 + screenOffsetX, 39 + screenOffsetY + logSlot*logH , 218, logH)
+			Assets.GetNinePatchSprite("screen_financial_newsLog"+history.GetTypeGroup()).DrawArea(501 + screenOffsetX, 39 + screenOffsetY + logSlot*logH , 238, logH)
 			if history.GetMoney() < 0
 				logCol = "color=190,30,30"
 			else
 				logCol = "color=35,130,30"
 			Endif
-			logFont.DrawBlock("|"+logCol+"|"+TFunctions.convertValue(abs(history.GetMoney()),, -2, ".")+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 521 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 220, logH, alignLeftCenter, clLog)
+			logFont.DrawBlock("|"+logCol+"|"+TFunctions.convertValue(abs(history.GetMoney()),, -2, ".")+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 238 - 2*5, logH, alignLeftCenter, clLog)
 			logSlot:+1
 		Next
 
@@ -2095,21 +2131,21 @@ Type RoomHandler_Office extends TRoomHandler
 			labelBGs[i] = Assets.GetNinePatchSprite("screen_financial_balanceLabel"+i)
 		Next
 
-		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 0*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 1*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 2*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_PROGRAMME].DrawArea(labelBGX, labelStartY + 3*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_NEWS].DrawArea(labelBGX, labelStartY + 4*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_NEWS].DrawArea(labelBGX, labelStartY + 5*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_PRODUCTION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_PRODUCTION].DrawArea(labelBGX, labelStartY + 8*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_PRODUCTION].DrawArea(labelBGX, labelStartY + 9*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 10*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 11*valueH, labelBGW, labelH)
-		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 12*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 0*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 1*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 2*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 3*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 4*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_NEWS].DrawArea(labelBGX, labelStartY + 5*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 8*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_PRODUCTION].DrawArea(labelBGX, labelStartY + 9*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 10*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 11*valueH, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 12*valueH, labelBGW, labelH)
 
-		labelBGs[FINANCIAL_TYPE_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +5, labelBGW, labelH)
+		labelBGs[TPlayerFinanceHistory.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +5, labelBGW, labelH)
 
 		'draw value backgrounds
 		local balanceValueBG:TGW_NinePatchSprite = Assets.GetNinePatchSprite("screen_financial_balanceValue")
@@ -2119,21 +2155,21 @@ Type RoomHandler_Office extends TRoomHandler
 		balanceValueBG.DrawArea(valueBGX, labelStartY + 14*valueH + 5, balanceValueBG.GetWidth(), labelH)
 
 		'draw balance labels
-		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_STATION])
-		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_STATION])
+		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_DEFAULT])
 		'spacer for total
-		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+5, labelW, labelH, alignLeftCenter, clTypes[FINANCIAL_TYPE_DEFAULT])
+		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+5, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_DEFAULT])
 
 
 		'draw "grouped"-info-sign
@@ -2176,12 +2212,42 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 
+		'=== DRAW GROUP HOVERS ===
+		local balanceEntryW:int = labelBGX + labelBGW - labelX + labelW
+		'"station group"
+		if TFunctions.MouseIn(labelX, labelStartY + 6*valueH, balanceEntryW, labelH)
+			local bgcol:TColor = new TColor.Get()
+
+			SetAlpha bgcol.a * 0.5
+			SetColor 200,200,200
+			TFunctions.DrawOutlineRect(labelX, labelStartY + 6*valueH, balanceEntryW +2, 2*labelH +2)
+			SetAlpha bgcol.a * 0.75
+			SetColor 100,100,100
+			TFunctions.DrawOutlineRect(labelX-1, labelStartY + 6*valueH -1, balanceEntryW + 1, 2*labelH +1)
+			bgcol.SetRGBA()
+			labelBGs[TPlayerFinanceHistory.GROUP_STATION].DrawArea(labelBGX, labelStartY + 6*valueH, labelBGW, labelH)
+			labelBGs[TPlayerFinanceHistory.GROUP_STATION].DrawArea(labelBGX, labelStartY + 7*valueH, labelBGW, labelH)
+
+			balanceValueBG.DrawArea(valueBGX, labelStartY + 6*valueH, balanceValueBG.GetWidth(), labelH)
+			balanceValueBG.DrawArea(valueBGX, labelStartY + 7*valueH, balanceValueBG.GetWidth(), labelH)
+
+			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_STATION])
+			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistory.GROUP_STATION])
+
+			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, alignLeftCenter, clNegative)
+
+			textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, alignRightCenter, clPositive)
+			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		endif
+
+
 		'==== DRAW MONEY CURVE====
+		captionFont.DrawBlock(GetLocale("FINANCES_FINANCIAL_CURVES"), 500 + screenOffsetX, 207 + screenOffsetY,  240, captionHeight, alignCenter, captionColor, 1,,0.5)
 
 		'how much days to draw
 		local showDays:int = 10
 		'where to draw + dimension
-		local curveArea:TRectangle = TRectangle.Create(529 + screenOffsetX,239 + screenOffsetY, 200, 70)
+		local curveArea:TRectangle = TRectangle.Create(509 + screenOffsetX,239 + screenOffsetY, 220, 70)
 		'heighest reached money value of that days
 		Local maxValue:int = 0
 		'minimum money (may be negative)
@@ -2272,17 +2338,49 @@ Type RoomHandler_Office extends TRoomHandler
 		'coord descriptor
 		textSmallFont.drawBlock(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY(), curveArea.GetW(), 20, TPoint.Create(ALIGN_RIGHT), labelColor)
 		textSmallFont.drawBlock(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, TPoint.Create(ALIGN_RIGHT, ALIGN_BOTTOM), labelColor)
+
+
+		GuiManager.Draw("officeFinancialScreen")
 	End Function
 
 
 	Function onUpdateFinancials:int( triggerEvent:TEventBase )
-		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		'local room:TRooms		= TRooms( triggerEvent.GetData().get("room") )
-		'if not room then return 0
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
+		if not room then return 0
+
+		'disable "up" or "down" button of finance history
+		if financeHistoryStartPos = 0
+			financeHistoryDownButton.Disable()
+		else
+			financeHistoryDownButton.Enable()
+		endif
+
+		local maxVisible:int = 6
+		local notVisible:int = TPlayerFinanceHistory.GetList(room.owner).Count() - financeHistoryStartPos - maxVisible
+		if notVisible <= 0
+			financeHistoryUpButton.Disable()
+		else
+			financeHistoryUpButton.Enable()
+		endif
+
 
 		Game.cursorstate = 0
+		GuiManager.Update("officeFinancialScreen")
 	End Function
 
+
+	'right mouse button click: remove the block from the player's programmePlan
+	'left mouse button click: check shortcuts and create a copy/nextepisode-block
+	Function onClickFinanceButtons:int(triggerEvent:TEventBase)
+		local arrowButton:TGUIArrowButton = TGUIArrowButton(triggerEvent.GetSender())
+		if not arrowButton then return False
+
+		if arrowButton = financeHistoryDownButton then financeHistoryStartPos :- 1
+		if arrowButton = financeHistoryUpButton then financeHistoryStartPos :+ 1
+
+		if arrowButton = financeNextDayButton then financeShowDay :+ 1
+		if arrowButton = financePreviousDayButton then financeShowDay :- 1
+	End Function
 
 
 	'===== OFFICE IMAGE SCREEN =====

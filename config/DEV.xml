@@ -3,7 +3,7 @@
 	<resources>
 		<data name="DEV_CONFIG">
 			<DEV_KEYS value="TRUE" />
-			<DEV_OSD value="TRUE" />
+			<DEV_OSD value="FALSE" />
 
 			<!-- milliseconds waiting on a floor (incl. animation).
 			     Default: 1700

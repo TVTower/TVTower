@@ -459,6 +459,12 @@ Type TPlayerFinanceHistory
 	Const TYPE_PAY_DRAWINGCREDITINTEREST:int = 82
 	Const TYPE_EARN_BALANCEINTEREST:int = 83
 
+	Const GROUP_NEWS:int = 1
+	Const GROUP_PROGRAMME:int = 2
+	Const GROUP_DEFAULT:int = 3
+	Const GROUP_PRODUCTION:int = 4
+	Const GROUP_STATION:int = 5
+
 
 
 	Method Init:TPlayerFinanceHistory(typeID:int, money:int, obj:object=null, gameTime:int = -1)
@@ -518,27 +524,41 @@ Type TPlayerFinanceHistory
 			Case TYPE_SELL_MISC, TYPE_PAY_MISC
 				return GetLocale("FINANCES_HISTORY_FOR_MISC")
 			Case TYPE_SELL_PROGRAMMELICENCE, TYPE_PAY_PROGRAMMELICENCE
-				return GetLocale("FINANCES_HISTORY_FOR_PROGRAMMELICENCE")
-			Case TYPE_PAYBACK_AUCTIONBID, TYPE_PAY_AUCTIONBID
-				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBID")
+				local title:string = "unknown licence"
+				if TProgrammeLicence(obj) then title = TProgrammeLicence(obj).GetTitle()
+				return GetLocale("FINANCES_HISTORY_FOR_PROGRAMMELICENCE").Replace("%TITLE%", title)
+			Case TYPE_PAY_AUCTIONBID
+				local title:string = "unknown licence"
+				if TProgrammeLicence(obj) then title = TProgrammeLicence(obj).GetTitle()
+				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBID").Replace("%TITLE%", title)
+			Case TYPE_PAYBACK_AUCTIONBID
+				local title:string = "unknown licence"
+				if TProgrammeLicence(obj) then title = TProgrammeLicence(obj).GetTitle()
+				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBIDREPAYED").Replace("%TITLE%", title)
 			Case TYPE_EARN_CALLERREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_CALLERREVENUE")
 			Case TYPE_EARN_INFOMERCIALREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_INFOMERCIALREVENUE")
 			Case TYPE_EARN_ADPROFIT
-				return GetLocale("FINANCES_HISTORY_OF_ADPROFIT")
+				local title:string = "unknown contract"
+				if TAdContract(obj) then title = TAdContract(obj).GetTitle()
+				return GetLocale("FINANCES_HISTORY_OF_ADPROFIT").Replace("%TITLE%", title)
 			Case TYPE_EARN_SPONSORSHIPREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_SPONSORSHIPREVENUE")
 			Case TYPE_PAY_PENALTY
 				return GetLocale("FINANCES_HISTORY_OF_PENALTY")
 			Case TYPE_PAY_SCRIPT
-				return GetLocale("FINANCES_HISTORY_FOR_SCRIPT")
+				local title:string = "unknown script"
+'				if TAdContract(obj) then title = TAdContract(obj).GetTitle()
+				return GetLocale("FINANCES_HISTORY_FOR_SCRIPT").Replace("%TITLE%", title)
 			Case TYPE_PAY_PRODUCTIONSTUFF
 				return GetLocale("FINANCES_HISTORY_FOR_PRODUCTIONSTUFF")
 			Case TYPE_PAY_RENT
 				return GetLocale("FINANCES_HISTORY_FOR_RENT")
 			Case TYPE_PAY_NEWS
-				return GetLocale("FINANCES_HISTORY_FOR_NEWS")
+				local title:string = "unknown news"
+				if TNews(obj) then title = TNews(obj).GetTitle()
+				return GetLocale("FINANCES_HISTORY_FOR_NEWS").Replace("%TITLE%", title)
 			Case TYPE_PAY_NEWSAGENCIES
 				return GetLocale("FINANCES_HISTORY_FOR_NEWSAGENCY")
 			Case TYPE_PAY_CREDITINTEREST
@@ -549,6 +569,39 @@ Type TPlayerFinanceHistory
 				return GetLocale("FINANCES_HISTORY_OF_BALANCEINTEREST")
 			Default
 				return GetLocale("FINANCES_HISTORY_FOR_SOMETHING")
+		End Select
+	End Method
+
+
+	'returns the group a type belongs to
+	Method GetTypeGroup:int()
+		Select typeID
+			Case TYPE_CREDIT_REPAY, TYPE_CREDIT_TAKE
+				Return GROUP_DEFAULT
+			Case TYPE_PAY_STATION, TYPE_SELL_STATION, TYPE_PAY_STATIONFEES
+				Return GROUP_STATION
+			Case TYPE_SELL_MISC, TYPE_PAY_MISC
+				Return GROUP_DEFAULT
+			Case TYPE_SELL_PROGRAMMELICENCE, ..
+			     TYPE_PAY_PROGRAMMELICENCE, ..
+			     TYPE_EARN_CALLERREVENUE, ..
+			     TYPE_EARN_INFOMERCIALREVENUE, ..
+			     TYPE_EARN_SPONSORSHIPREVENUE, ..
+			     TYPE_EARN_ADPROFIT, ..
+			     TYPE_PAY_AUCTIONBID, ..
+			     TYPE_PAYBACK_AUCTIONBID, ..
+				 TYPE_PAY_PENALTY
+				Return GROUP_PROGRAMME
+			Case TYPE_PAY_SCRIPT, TYPE_PAY_PRODUCTIONSTUFF, TYPE_PAY_RENT
+				return GROUP_PRODUCTION
+			Case TYPE_PAY_NEWS, TYPE_PAY_NEWSAGENCIES
+				return GROUP_NEWS
+			Case TYPE_PAY_CREDITINTEREST,..
+			     TYPE_PAY_DRAWINGCREDITINTEREST, ..
+			     TYPE_EARN_BALANCEINTEREST
+				return GROUP_DEFAULT
+			Default
+				return GROUP_DEFAULT
 		End Select
 	End Method
 
