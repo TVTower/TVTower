@@ -6,7 +6,7 @@ Import BRL.Random
 Import brl.FreeTypeFont
 'Import "basefunctions.bmx"
 Import "basefunctions_image.bmx"
-Import "basefunctions_events.bmx"
+Import "Dig/base.util.event.bmx"
 Import "basefunctions_asset.bmx"
 
 rem
@@ -24,7 +24,7 @@ CONST ALIGN_CENTER:FLOAT	= 0.5
 CONST ALIGN_RIGHT:FLOAT		= 1.0
 CONST ALIGN_TOP:FLOAT		= 0
 CONST ALIGN_BOTTOM:FLOAT	= 1.0
-Global ALIGN_TOP_LEFT:TPoint = TPoint.Create(0, 0)
+Global ALIGN_TOP_LEFT:TPoint = new TPoint
 
 
 Type TRenderManager
@@ -45,7 +45,7 @@ End Type
 
 Type TRenderable extends TAsset
 	Field children:TList	= CreateList()
-	Field area:TRectangle	= TRectangle.Create(0,0,0,0)
+	Field area:TRectangle	= new TRectangle
 	'the zIndex is LOCAL (when parented), higher values are on TOP
 	Field zIndex:int		= 0
 
@@ -117,7 +117,7 @@ Type TSpriteAtlas
 				self.Repack()
 			endif
 		Wend
-		Self.elements.Insert(name, TRectangle.Create(freeArea.x, freeArea.y, w, h))
+		Self.elements.Insert(name, new TRectangle.Init(freeArea.x, freeArea.y, w, h))
 	End Method
 
 	Method Repack()
@@ -264,7 +264,7 @@ Type TGW_BitmapFontChar
 	Function Create:TGW_BitmapFontChar(img:TImage, x:int,y:int,w:Int, h:int, charWidth:float)
 		Local obj:TGW_BitmapFontChar = New TGW_BitmapFontChar
 		obj.img = img
-		obj.area = TRectangle.Create(x,y,w,h)
+		obj.area = new TRectangle.Init(x,y,w,h)
 		obj.charWidth = charWidth
 		Return obj
 	End Function
@@ -626,7 +626,7 @@ Type TGW_BitmapFont
 			Endif
 		Next
 
-		return TPoint.Create(w, y - startY)
+		return new TPoint.Init(w, y - startY)
 	End Method
 
 
@@ -874,7 +874,7 @@ Type TGW_BitmapFont
 		'restore color
 		if doDraw then oldColor.SetRGB()
 
-		return TPoint.Create(width, height)
+		return new TPoint.Init(width, height)
 	End Method
 
 rem
@@ -1113,7 +1113,7 @@ End Type
 
 Type TGW_Sprite extends TRenderable
 	Field spriteName:String = ""
-	Field offset:TRectangle = TRectangle.Create(0,0,0,0)
+	Field offset:TRectangle = new TRectangle
 	Field frameW:Int
 	Field frameH:Int
 	Field animCount:Int
@@ -1151,7 +1151,7 @@ Type TGW_Sprite extends TRenderable
 	Method CreateFromImage:TGW_Sprite(img:Timage, spriteName:string, spriteID:int =-1)
 		'create new spritepack
 		local spritepack:TGW_SpritePack = TGW_SpritePack.Create(img, spriteName+"_pack")
-		self.Create(spritepack, spriteName, TRectangle.Create(0, 0, img.width, img.height), null, Len(img.frames), spriteID)
+		self.Create(spritepack, spriteName, new TRectangle.Init(0, 0, img.width, img.height), null, Len(img.frames), spriteID)
 		spritepack.addSprite(self)
 		return self
 	End Method
@@ -1177,7 +1177,7 @@ Type TGW_Sprite extends TRenderable
 		endif
 		if obj._flags & MASKEDIMAGE then SetMaskColor(0,0,0)
 
-		return new TGW_Sprite.Create(spritepack, obj.getName(), TRectangle.Create(0,0, ImageWidth(spritepack.image), ImageHeight(spritepack.image)), null, obj.animcount, -1, TPoint.Create(obj.framew, obj.frameh))
+		return new TGW_Sprite.Create(spritepack, obj.getName(), new TRectangle.Init(0,0, ImageWidth(spritepack.image), ImageHeight(spritepack.image)), null, obj.animcount, -1, new TPoint.Init(obj.framew, obj.frameh))
 	End Function
 
 
@@ -1257,12 +1257,12 @@ Type TGW_Sprite extends TRenderable
 
 
 	Method GetFramePos:TPoint(frame:int=-1)
-		If frame < 0 then return TPoint.Create(0,0)
+		If frame < 0 then return new TPoint.Init(0,0)
 
 		Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
 		Local framerow:Int			= Ceil(frame / Max(1,MaxFramesInCol))
 		Local framecol:Int 			= frame - (framerow * MaxFramesInCol)
-		return TPoint.Create( framecol * self.framew, framerow * self.frameh )
+		return new TPoint.Init( framecol * self.framew, framerow * self.frameh )
 	End Method
 
 
@@ -1361,7 +1361,7 @@ Type TGW_Sprite extends TRenderable
 
 
 	Method DrawClipped(target:TPoint, source:TRectangle, frame:int=-1)
-		DrawResized(TRectangle.Create(target.GetX(),target.GetY()), source, frame)
+		DrawResized(new TRectangle.Init(target.GetX(),target.GetY()), source, frame)
 	End Method
 
 
@@ -1472,14 +1472,14 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 		_contentBorder	= ReadMarker(1)
 
 		'middle has to consider the marker_width (content dimension marker)
-		_middle = TPoint.Create(..
+		_middle = new TPoint.Init(..
 					area.GetW() - (_border.GetLeft() + _border.GetRight()), ..
 					area.GetH() - (_border.GetTop() + _border.GetBottom()) ..
 				  )
 
 		self.setType("NINEPATCHSPRITE")
 
-		'TDevHelper.log("NinePatchSprite", spritename+" border: "+int(_border.GetLeft())+","+int(_border.GetTop())+" -> "+int(_border.GetRight())+","+int(_border.GetBottom()), LOG_DEBUG)
+		'TLogger.log("NinePatchSprite", spritename+" border: "+int(_border.GetLeft())+","+int(_border.GetTop())+" -> "+int(_border.GetRight())+","+int(_border.GetBottom()), LOG_DEBUG)
 
 		return self
 	End Method
@@ -1487,7 +1487,7 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 
 	Function LoadFromAsset:TGW_NinePatchSprite(asset:object)
 		local gwSprite:TGW_Sprite = TGW_Sprite.LoadFromAsset(asset)
-		return new TGW_NinePatchSprite.Create(gwSprite.parent, gwSprite.getName(), gwSprite.area, null, gwSprite.animcount, -1, TPoint.Create(gwSprite.framew, gwSprite.frameh))
+		return new TGW_NinePatchSprite.Create(gwSprite.parent, gwSprite.getName(), gwSprite.area, null, gwSprite.animcount, -1, new TPoint.Init(gwSprite.framew, gwSprite.frameh))
 	End Function
 
 
@@ -1536,18 +1536,18 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 		Local stretchDestH:float = height - _borderScale*(_border.GetTop()+_border.GetBottom())
 
 		'top
-		If _border.GetLeft() then DrawResized(TRectangle.Create(x, y, _border.GetLeft()*_borderScale, _border.GetTop()*_borderScale), TRectangle.Create(MARKER_WIDTH, MARKER_WIDTH, _border.GetLeft(), _border.GetTop()), frame)
-		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y, stretchDestW, _border.GetTop()*_borderScale), TRectangle.Create(_border.GetLeft(), MARKER_WIDTH, _middle.GetX(), _border.GetTop()), frame )
-		If _border.GetRight() then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y, _border.GetRight()*_borderScale, _border.GetTop()*_borderScale), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, MARKER_WIDTH, _border.GetRight(), _border.GetTop()), frame)
+		If _border.GetLeft() then DrawResized(new TRectangle.Init(x, y, _border.GetLeft()*_borderScale, _border.GetTop()*_borderScale), new TRectangle.Init(MARKER_WIDTH, MARKER_WIDTH, _border.GetLeft(), _border.GetTop()), frame)
+		DrawResized(new TRectangle.Init(x+_border.GetLeft()*_borderScale, y, stretchDestW, _border.GetTop()*_borderScale), new TRectangle.Init(_border.GetLeft(), MARKER_WIDTH, _middle.GetX(), _border.GetTop()), frame )
+		If _border.GetRight() then DrawResized(new TRectangle.Init(x+stretchDestW+_border.GetLeft()*_borderScale, y, _border.GetRight()*_borderScale, _border.GetTop()*_borderScale), new TRectangle.Init(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, MARKER_WIDTH, _border.GetRight(), _border.GetTop()), frame)
 		'middle
-		If _border.GetLeft() Then DrawResized(TRectangle.Create(x, y+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, stretchDestH), TRectangle.Create(MARKER_WIDTH, _border.GetTop(), _border.GetLeft(), _middle.GetY()), frame)
-'		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), TRectangle.Create(MARKER_WIDTH+_border.GetLeft(), MARKER_WIDTH+_border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
-		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), TRectangle.Create(_border.GetLeft(), _border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
-		If _border.GetRight() Then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, _border.GetRight()*_borderScale, stretchDestH), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, _border.GetTop(), _border.GetRight(), _middle.GetY()), frame)
+		If _border.GetLeft() Then DrawResized(new TRectangle.Init(x, y+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, stretchDestH), new TRectangle.Init(MARKER_WIDTH, _border.GetTop(), _border.GetLeft(), _middle.GetY()), frame)
+'		DrawResized(new TRectangle.Init(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), new TRectangle.Init(MARKER_WIDTH+_border.GetLeft(), MARKER_WIDTH+_border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
+		DrawResized(new TRectangle.Init(x+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, stretchDestW, stretchDestH), new TRectangle.Init(_border.GetLeft(), _border.GetTop(), _middle.GetX(), _middle.GetY()), frame)
+		If _border.GetRight() Then DrawResized(new TRectangle.Init(x+stretchDestW+_border.GetLeft()*_borderScale, y+_border.GetTop()*_borderScale, _border.GetRight()*_borderScale, stretchDestH), new TRectangle.Init(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, _border.GetTop(), _border.GetRight(), _middle.GetY()), frame)
 		'bottom
-		If _border.GetLeft() Then DrawResized(TRectangle.Create(x, y+stretchDestH+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, _border.GetBottom()*_borderScale), TRectangle.Create(MARKER_WIDTH, _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _border.GetLeft(), _border.GetBottom()), frame)
-		DrawResized(TRectangle.Create(x+_border.GetLeft()*_borderScale, y+stretchDestH+_border.GetTop()*_borderScale, stretchDestW, _border.GetBottom()*_borderScale), TRectangle.Create(_border.GetLeft(), _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _middle.GetX(), _border.GetBottom()), frame)
-		If _border.GetRight() Then DrawResized(TRectangle.Create(x+stretchDestW+_border.GetLeft()*_borderScale, y+stretchDestH+_border.GetTop()*_borderScale, _border.GetRight()*_borderScale, _border.GetBottom()*_borderScale), TRectangle.Create(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _border.GetRight(), _border.GetBottom()), frame)
+		If _border.GetLeft() Then DrawResized(new TRectangle.Init(x, y+stretchDestH+_border.GetTop()*_borderScale, _border.GetLeft()*_borderScale, _border.GetBottom()*_borderScale), new TRectangle.Init(MARKER_WIDTH, _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _border.GetLeft(), _border.GetBottom()), frame)
+		DrawResized(new TRectangle.Init(x+_border.GetLeft()*_borderScale, y+stretchDestH+_border.GetTop()*_borderScale, stretchDestW, _border.GetBottom()*_borderScale), new TRectangle.Init(_border.GetLeft(), _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _middle.GetX(), _border.GetBottom()), frame)
+		If _border.GetRight() Then DrawResized(new TRectangle.Init(x+stretchDestW+_border.GetLeft()*_borderScale, y+stretchDestH+_border.GetTop()*_borderScale, _border.GetRight()*_borderScale, _border.GetBottom()*_borderScale), new TRectangle.Init(_middle.GetX()+_border.GetLeft() - MARKER_WIDTH, _middle.GetY()+_border.GetTop() - MARKER_WIDTH, _border.GetRight(), _border.GetBottom()), frame)
 	End Method
 
 
@@ -1560,7 +1560,7 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 		Local sourcepixel:Int
 		local sourceW:int = _pix.width - MARKER_WIDTH
 		local sourceH:int = _pix.height - MARKER_WIDTH
-		local result:TRectangle = TRectangle.Create(0,0,0,0)
+		local result:TRectangle = new TRectangle.Init(0,0,0,0)
 		local markerRow:int=0, markerCol:int=0, skipLines:int=0
 
 		'content is defined at the last pixmap row/col
@@ -1590,8 +1590,8 @@ Type TGW_NinePatchSprite extends TGW_Sprite
 			if ARGB_Alpha(ReadPixel(_pix, markerRow, i)) > 0 then result.SetTop(i - skipLines);exit
 		Next
 		'find bottom border: from top border the first non opaque pixel in col 0
-		For Local i:Int = result.GetTop()+1 To sourceH-1
-			if ARGB_Alpha(ReadPixel(_pix, markerRow, i)) = 0 then result.SetBottom(sourceH - i);exit
+		For Local i:Int = Min(sourceH-1, result.GetTop()+1) To sourceH-1
+			if ARGB_Alpha(ReadPixel(_pix, markerRow, i)) = 0 then result.SetBottom(sourceH - i +1);exit
 		Next
 
 		Return result
@@ -1706,9 +1706,9 @@ End Type
 
 'makes anim sprites moveable
 Type TMoveableAnimSprites extends TAnimSprites {_exposeToLua="selected"}
-	Field rect:TRectangle	= TRectangle.Create(0,0,0,0) {_exposeToLua}
-	Field oldPos:TPoint		= TPoint.Create(0,0) 'for tweening
-	Field vel:TPoint		= TPoint.Create(0,0) {_exposeToLua}
+	Field rect:TRectangle	= new TRectangle.Init(0,0,0,0) {_exposeToLua}
+	Field oldPos:TPoint		= new TPoint.Init(0,0) 'for tweening
+	Field vel:TPoint		= new TPoint.Init(0,0) {_exposeToLua}
 	Field returnToStart:Int	= 0
 
 

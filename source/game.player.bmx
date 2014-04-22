@@ -59,7 +59,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 		If arrayIndex < 0 Then Return GetFinance(Game.GetStartDay()-1)
 		If (arrayIndex = 0 And Not finances[0]) Or arrayIndex >= finances.length
-			'TDevHelper.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
+			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances.length
 				'resize array
 				finances = finances[..arrayIndex+1]
@@ -200,7 +200,7 @@ endrem
 				EndIf
 			EndIf
 		EndIf
-		
+
 		return newsabonnementsDayMax[genre]
 	End Method
 
@@ -210,7 +210,7 @@ endrem
 		If genre > 5 Then Return 0 'max 6 categories 0-5
 		newsabonnementsDayMax[genre] = level
 	End Method
-	
+
 
 	'return CURRENT newsAbonnement
 	Method GetNewsAbonnement:Int(genre:Int) {_exposeToLua}
@@ -231,7 +231,7 @@ endrem
 			newsabonnements[genre] = level
 			'set at which time we did this
 			newsabonnementsSetTime[genre] = Game.GetTimeGone()
-			
+
 			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
 		EndIf
 	End Method

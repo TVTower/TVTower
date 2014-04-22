@@ -67,7 +67,7 @@ Type KI
 
 		'only load for existing players
 		If not Game.GetPlayer(PlayerID)
-			TDevHelper.log("KI.LoadScript()", "TPlayer "+PlayerID+" not found.", LOG_ERROR)
+			TLogger.log("KI.LoadScript()", "TPlayer "+PlayerID+" not found.", LOG_ERROR)
 			return FALSE
 		endif
 
@@ -77,9 +77,9 @@ Type KI
 
 		'if there is content set, print it
 		If LuaEngine.GetSource() <> ""
-			TDevHelper.log("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
+			TLogger.log("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
 		else
-			TDevHelper.log("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
+			TLogger.log("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
 		endif
 	End Method
 
@@ -97,7 +97,7 @@ Type KI
 			args[0] = self.scriptSaveState
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnLoad", args)
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnLoad", "Script "+scriptFileName+" does not contain function ~qOnLoad~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnLoad", "Script "+scriptFileName+" does not contain function ~qOnLoad~q.", LOG_ERROR)
 		End Try
 	End Method
 
@@ -111,7 +111,7 @@ Type KI
 			args[0] = string(Game.GetTimeGone())
 			if (KIRunning) then scriptSaveState = string(LuaEngine.CallLuaFunction("OnSave", args))
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnSave", "Script "+scriptFileName+" does not contain function ~qOnSave~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnSave", "Script "+scriptFileName+" does not contain function ~qOnSave~q.", LOG_ERROR)
 		End Try
 
 		return scriptSaveState
@@ -133,7 +133,7 @@ Type KI
 			args[1] = string(fromID)
 			LuaEngine.CallLuaFunction("OnChat", args)
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnChat", "Script "+scriptFileName+" does not contain function ~qOnChat~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnChat", "Script "+scriptFileName+" does not contain function ~qOnChat~q.", LOG_ERROR)
 		End Try
 	End Method
 
@@ -144,7 +144,7 @@ Type KI
 			args[0] = String(roomId)
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnReachRoom", args)
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnReachRoom", "Script "+scriptFileName+" does not contain function ~qOnReachRoom~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnReachRoom", "Script "+scriptFileName+" does not contain function ~qOnReachRoom~q.", LOG_ERROR)
 		End Try
 	End Method
 
@@ -152,7 +152,7 @@ Type KI
 	    Try
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnLeaveRoom", Null)
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnLeaveRoom", "Script "+scriptFileName+" does not contain function ~qOnLeaveRoom~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnLeaveRoom", "Script "+scriptFileName+" does not contain function ~qOnLeaveRoom~q.", LOG_ERROR)
 		End Try
 	End Method
 
@@ -160,7 +160,7 @@ Type KI
 	    Try
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnDayBegins", Null)
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnDayBegins", "Script "+scriptFileName+" does not contain function ~qOnDayBegins~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnDayBegins", "Script "+scriptFileName+" does not contain function ~qOnDayBegins~q.", LOG_ERROR)
 		End Try
 	End Method
 
@@ -168,17 +168,17 @@ Type KI
 	    Try
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnMoneyChanged", Null)
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnMoneyChanged", "Script "+scriptFileName+" does not contain function ~qOnMoneyChanged~q.", LOG_ERROR)
 		End Try
 	End Method
-	
+
 	Method CallOnMalfunction()
 	    Try
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnMalfunction", Null)
 		Catch ex:Object
-			TDevHelper.log("KI.CallOnMalfunction", "Script "+scriptFileName+" does not contain function ~qOnMalfunction~q.", LOG_ERROR)
+			TLogger.log("KI.CallOnMalfunction", "Script "+scriptFileName+" does not contain function ~qOnMalfunction~q.", LOG_ERROR)
 		End Try
-	End Method	
+	End Method
 End Type
 
 
@@ -362,14 +362,14 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method PrintOut:Int(text:String)
-		TDevHelper.log("AI "+self.ME, text, LOG_AI)
+		TLogger.log("AI "+self.ME, text, LOG_AI)
 		Return self.RESULT_OK
 	EndMethod
 
 
-	'only printed if TDevHelper.setPrintMode(LOG_AI | LOG_DEBUG) is set
+	'only printed if TLogger.setPrintMode(LOG_AI | LOG_DEBUG) is set
 	Method PrintOutDebug:int(text:string)
-		TDevHelper.log("AI "+self.ME+" DEBUG", text, LOG_AI & LOG_DEBUG)
+		TLogger.log("AI "+self.ME+" DEBUG", text, LOG_AI & LOG_DEBUG)
 		Return self.RESULT_OK
 	End Method
 

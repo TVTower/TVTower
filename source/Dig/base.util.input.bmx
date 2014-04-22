@@ -1,24 +1,34 @@
+REM
+	===========================================================
+	Input classes
+	===========================================================
+
+	There are 3 Managers:
+
+	TMouseManager: Mouse position, buttons ...
+	TKeyManager: key states ...
+	TKeyWrapper: managing "hold down" states for keys
+ENDREM
 SuperStrict
 Import brl.System
-import brl.PolledInput
-?Threaded
-Import brl.Threads
-?
+Import brl.PolledInput
+Import "base.util.point.bmx"
 
 Global MOUSEMANAGER:TMouseManager = New TMouseManager
 Global KEYMANAGER:TKeyManager = New TKeyManager
 Global KEYWRAPPER:TKeyWrapper = New TKeyWrapper
 
-'Tastenstadien
-Const KEY_STATE_NORMAL:int= 0	'nothing done
-Const KEY_STATE_HIT:int	= 1		'once dow, now up
-Const KEY_STATE_DOWN:int = 2	'down
-Const KEY_STATE_UP:int = 3		'up
-Const KEY_STATE_BLOCKED:int	= 6
+
+Const KEY_STATE_NORMAL:int			= 0	'nothing done
+Const KEY_STATE_HIT:int				= 1	'once dow, now up
+Const KEY_STATE_DOWN:int			= 2 'down
+Const KEY_STATE_UP:int				= 3 'up
+Const KEY_STATE_BLOCKED:int			= 6
 
 For local i:int = 0 To 255
 	KEYWRAPPER.allowKey(i,KEYWRAP_ALLOW_BOTH,600,100)
 Next
+
 
 Rem
 	Hint:
@@ -33,13 +43,10 @@ Rem
 	            might call it "tripleClick" :D).
 End Rem
 Type TMouseManager
-	Field LastMouseX:Int = 0
-	Field LastMouseY:Int = 0
-	Field LastMouseZ:Int = 0
+	Field lastPos:TPoint = new TPoint
 	Field x:float = 0.0
 	Field y:float = 0.0
 
-	Field hasMoved:int = FALSE
 	'amount of pixels moved (0=zero, -upwards, +downwards)
 	Field scrollWheelMoved:int = 0
 	'current status of the buttons
@@ -100,7 +107,7 @@ Type TMouseManager
 
 
 	'returns whether the button got clicked, no waiting time
-	'is added 
+	'is added
 	Method isClicked:Int(key:Int)
 		return _keyStatus[key] = KEY_STATE_NORMAL and (_keyHitCount[key] > 0)
 	End Method
@@ -115,6 +122,16 @@ Type TMouseManager
 	'returns whether the button is in up state
 	Method isUp:Int(key:Int)
 		return _keyStatus[key] = KEY_STATE_UP
+	End Method
+
+
+	Method HasMoved:int()
+		return (0 = GetMovedDistance())
+	End Method
+
+
+	Method GetMovedDistance:int()
+		Return sqr((lastPos.X - int(x))^2 + (lastPos.y - int(y))^2)
 	End Method
 
 
@@ -196,7 +213,7 @@ Type TMouseManager
 		'-> if the hit evolved into a click, this should have been
 		'handled already after the last call of UpdateKey()
 		if _keyHitTime[i] = 0 then _keyHitCount[i] = 0
-	
+
 		If _keyStatus[i] = KEY_STATE_NORMAL
 			If MouseHit(i) then _keyStatus[i] = KEY_STATE_HIT
 		ElseIf _keyStatus[i] = KEY_STATE_HIT
@@ -244,27 +261,22 @@ Type TMouseManager
 
 	'Update the button states
 	Method Update:Int()
-		'by default mouse did not move
-		hasMoved = False
-		'same for scrollwheel
+		'by default scroll wheel did not move
 		scrollWheelMoved = 0
 
-		If LastMouseX <> int(MouseX()) Or LastMouseY <> int(MouseY())
-			hasMoved = True
-			LastMouseX = MouseX()
-			LastMouseY = MouseY()
+		If lastPos.z <> MouseZ()
+			scrollWheelMoved = lastPos.z - MouseZ()
+			lastPos.z = MouseZ()
 		endif
-		if LastMouseZ <> int(MouseZ())
-			scrollWheelMoved = LastMouseZ - int(MouseZ())
-			LastMouseZ = MouseZ()
-		endif
-		
+
 		x = MouseX()
 		y = MouseY()
 
 		For Local i:Int = 1 To 3
 			UpdateKey(i)
 		Next
+
+		lastPos.SetXY(x, y)
 	End Method
 EndType
 

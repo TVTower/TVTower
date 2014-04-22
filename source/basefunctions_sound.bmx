@@ -5,6 +5,7 @@ Import brl.Map
 Import brl.WAVLoader
 Import brl.OGGLoader
 Import "basefunctions.bmx"
+Import "Dig/base.util.logger.bmx"
 
 
 Import maxmod2.ogg
@@ -181,11 +182,11 @@ Type TSoundManager
 	Method GetRandomMusicFromPlaylist:TMusicStream(playlist:String, avoidMusic:TMusicStream=Null)
 		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_MUSIC + playlist))
 		If Not playlistContainer
-			'TDevHelper.Log("GetRandomMusicFromPlaylist", "No playlist: "+playlist+" found.", LOG_WARNING)
+			'TLogger.Log("GetRandomMusicFromPlaylist", "No playlist: "+playlist+" found.", LOG_WARNING)
 			Return Null
 		EndIf
 		If playlistContainer.count() = 0
-			'TDevHelper.Log("GetRandomMusicFromPlaylist", "playlist: "+playlist+" is empty.", LOG_WARNING)
+			'TLogger.Log("GetRandomMusicFromPlaylist", "playlist: "+playlist+" is empty.", LOG_WARNING)
 			Return Null
 		EndIf
 
@@ -219,9 +220,9 @@ Type TSoundManager
 
 	Method Mute:Int(bool:Int=True)
 		If bool
-			TDevHelper.Log("TSoundManager.Mute()", "Muting all sounds", LOG_DEBUG)
+			TLogger.Log("TSoundManager.Mute()", "Muting all sounds", LOG_DEBUG)
 		Else
-			TDevHelper.Log("TSoundManager.Mute()", "Unmuting all sounds", LOG_DEBUG)
+			TLogger.Log("TSoundManager.Mute()", "Unmuting all sounds", LOG_DEBUG)
 		EndIf
 		MuteSfx(bool)
 		MuteMusic(bool)
@@ -230,9 +231,9 @@ Type TSoundManager
 
 	Method MuteSfx:Int(bool:Int=True)
 		If bool
-			TDevHelper.Log("TSoundManager.MuteSfx()", "Muting all sound effects", LOG_DEBUG)
+			TLogger.Log("TSoundManager.MuteSfx()", "Muting all sound effects", LOG_DEBUG)
 		Else
-			TDevHelper.Log("TSoundManager.MuteSfx()", "Unmuting all sound effects", LOG_DEBUG)
+			TLogger.Log("TSoundManager.MuteSfx()", "Unmuting all sound effects", LOG_DEBUG)
 		EndIf
 		For Local element:TSoundSourceElement = EachIn soundSources
 			element.mute(bool)
@@ -244,9 +245,9 @@ Type TSoundManager
 
 	Method MuteMusic:Int(bool:Int=True)
 		If bool
-			TDevHelper.Log("TSoundManager.MuteMusic()", "Muting music", LOG_DEBUG)
+			TLogger.Log("TSoundManager.MuteMusic()", "Muting music", LOG_DEBUG)
 		Else
-			TDevHelper.Log("TSoundManager.MuteMusic()", "Unmuting music", LOG_DEBUG)
+			TLogger.Log("TSoundManager.MuteMusic()", "Unmuting music", LOG_DEBUG)
 		EndIf
 
 		If bool
@@ -292,12 +293,12 @@ Type TSoundManager
 			'if the music didn't stop yet
 			If activeMusicChannel.Playing()
 				If (forceNextMusicTitle And nextMusicTitleStream) Or fadeProcess > 0
-'					TDevHelper.log("TSoundManager.Update()", "FadeOverToNextTitle", LOG_DEBUG)
+'					TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle", LOG_DEBUG)
 					FadeOverToNextTitle()
 				EndIf
 			'no music is playing, just start
 			Else
-				TDevHelper.Log("TSoundManager.Update()", "PlayMusicPlaylist", LOG_DEBUG)
+				TLogger.Log("TSoundManager.Update()", "PlayMusicPlaylist", LOG_DEBUG)
 				PlayMusicPlaylist(GetCurrentPlaylist())
 			EndIf
 		EndIf
@@ -363,14 +364,14 @@ Type TSoundManager
 			nextMusicTitleVolume = GetMusicVolume(name)
 			If nextMusicTitleStream
 				SetCurrentPlaylist(name)
-				TDevHelper.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
 			Else
-				TDevHelper.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q not possible. No Playlist.", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q not possible. No Playlist.", LOG_DEBUG)
 			EndIf
 		Else
 			nextMusicTitleStream = GetMusicStream(name, "")
 			nextMusicTitleVolume = GetMusicVolume(name)
-			TDevHelper.Log("PlayMusicOrPlaylist", "GetMusicStream by name ~q"+name+"~q", LOG_DEBUG)
+			TLogger.Log("PlayMusicOrPlaylist", "GetMusicStream by name ~q"+name+"~q", LOG_DEBUG)
 		EndIf
 
 		forceNextMusicTitle = True
@@ -378,9 +379,9 @@ Type TSoundManager
 		'Wenn der Musik-Channel noch nicht laeuft, dann jetzt starten
 		If Not activeMusicChannel Or Not activeMusicChannel.Playing()
 			If Not nextMusicTitleStream
-				TDevHelper.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
 			Else
-				TDevHelper.Log("PlayMusicOrPlaylist", "start activeMusicChannel", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "start activeMusicChannel", LOG_DEBUG)
 				Local musicVolume:Float = nextMusicTitleVolume
 				activeMusicChannel = nextMusicTitleStream.GetChannel(musicVolume)
 				ResumeChannel(activeMusicChannel)
@@ -407,14 +408,14 @@ Type TSoundManager
 
 		If playlist=""
 			result = TMusicStream(soundFiles.ValueForKey(Lower(music)))
-			TDevHelper.Log("TSoundManager.GetMusicStream()", "Play music: " + music, LOG_DEBUG)
+			TLogger.Log("TSoundManager.GetMusicStream()", "Play music: " + music, LOG_DEBUG)
 		Else
 			result = GetRandomMusicFromPlaylist(playlist, nextMusicTitleStream)
 			Rem
 			if result
-				TDevHelper.log("TSoundManager.GetMusicStream()", "Play random music from playlist: ~q" + playlist +"~q  file: ~q"+result.url+"~q", LOG_DEBUG)
+				TLogger.log("TSoundManager.GetMusicStream()", "Play random music from playlist: ~q" + playlist +"~q  file: ~q"+result.url+"~q", LOG_DEBUG)
 			else
-				TDevHelper.log("TSoundManager.GetMusicStream()", "Cannot play random music from playlist: ~q" + playlist +"~q, nothing found.", LOG_DEBUG)
+				TLogger.log("TSoundManager.GetMusicStream()", "Cannot play random music from playlist: ~q" + playlist +"~q, nothing found.", LOG_DEBUG)
 			endif
 			endrem
 		EndIf
@@ -427,10 +428,10 @@ Type TSoundManager
 		Local result:TSound
 		If playlist=""
 			result = TSound(soundFiles.ValueForKey(Lower(sfx)))
-			'TDevHelper.log("TSoundManager.GetSfx()", "Play sfx: " + sfx, LOG_DEBUG)
+			'TLogger.log("TSoundManager.GetSfx()", "Play sfx: " + sfx, LOG_DEBUG)
 		Else
 			result = GetRandomSfxFromPlaylist(playlist)
-			'TDevHelper.log("TSoundManager.GetSfx()", "Play random sfx from playlist: " + playlist, LOG_DEBUG)
+			'TLogger.log("TSoundManager.GetSfx()", "Play random sfx from playlist: " + playlist, LOG_DEBUG)
 		EndIf
 
 		Return result

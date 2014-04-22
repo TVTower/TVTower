@@ -207,7 +207,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 	Method GetCenter:TPoint()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + Building.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return TPoint.Create(door.Pos.x + door.doorDimension.x/2, Building.GetFloorY(door.Pos.y) - door.doorDimension.y/2, -15)
+		Return new TPoint.Init(door.Pos.x + door.doorDimension.x/2, Building.GetFloorY(door.Pos.y) - door.doorDimension.y/2, -15)
 	End Method
 
 	Method IsMovable:Int()
@@ -223,7 +223,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	Method GetChannelForSfx:TSfxChannel(sfx:String)
 		local result:TSfxChannel = GetSfxChannelByName(sfx)
 		if result = null
-			'TDevHelper.log("TDoorSoundSource.GetChannelForSfx()", "SFX ~q"+sfx+"~q was not defined for room ~q"+self.room.name+"~q yet. Registered Channel for this SFX.", LOG_DEBUG)
+			'TLogger.log("TDoorSoundSource.GetChannelForSfx()", "SFX ~q"+sfx+"~q was not defined for room ~q"+self.room.name+"~q yet. Registered Channel for this SFX.", LOG_DEBUG)
 			result = self.AddDynamicSfxChannel(sfx, True)
 		endif
 		return result
@@ -398,7 +398,7 @@ Type TSimpleSoundSource extends TSoundSourceElement
 
 	Method GetCenter:TPoint()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + Building.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return TPoint.Create(App.settings.GetWidth()/2, App.settings.GetHeight()/2)
+		Return new TPoint.Init(App.settings.GetWidth()/2, App.settings.GetHeight()/2)
 	End Method
 
 	Method IsMovable:Int()

@@ -1,15 +1,21 @@
 ﻿SuperStrict
 Import brl.pngloader
+Import "Dig/base.util.rectangle.bmx"
+Import "Dig/base.util.input.bmx"
+Import "Dig/base.util.localization.bmx"
+Import "Dig/base.util.virtualgraphics.bmx"
+Import "Dig/base.util.xmlhelper.bmx"
+Import "Dig/base.util.helper.bmx"
+
+'Import "external/libxml/libxml.bmx"
+'Import "Dig/external/libxml/libxml.bmx"
+
 Import "basefunctions_zip.bmx"
-Import "basefunctions_localization.bmx"
-'Import "basefunctions_text.bmx"
-Import "basefunctions_keymanager.bmx"	'holds pressed Keys and Mousebuttons for one mainloop instead of resetting it like MouseHit()
 Import brl.reflection
 ?Threaded
 Import Brl.threads
 ?
 'Import bah.libxml
-Import "external/libxml/libxml.bmx"
 Import "external/persistence.mod/persistence.bmx"
 
 
@@ -53,219 +59,6 @@ End Type
 
 
 
-
-
-
-
-' -----------------------------------------------------------------------------
-' USAGE: Note that the order is important!
-' -----------------------------------------------------------------------------
-
-' 1) Call InitVirtualGraphics before anything else;
-' 2) Call Graphics as normal to create display;
-' 3) Call SetVirtualGraphics to set virtual display size.
-
-' The optional 'monitor_stretch' parameter of SetVirtualGraphics is there
-' because some monitors have the option to stretch non-native ratios to native
-' ratios, and you cannot detect this programmatically.
-
-' For instance, my monitor's native resolution is 1920 x 1080, and if I set the
-' Graphics mode to 1024, 768, it defaults to stretching that to fill the screen,
-' meaning the image is stretched horizontally, so a square will appear non-
-' square; however, it also provides an option to scale to the correct aspect
-' ratio. Since this is set on the monitor, there's no way to detect or correct
-' it other than by offering the option to the user. Leave it off if unsure...
-
-Type TVirtualGfx
-	Global instance:TVirtualGfx
-
-	Global DTInitComplete:Int = False
-	Global DTW:Int
-	Global DTH:Int
-
-	Field vwidth:Int
-	Field vheight:Int
-
-	Field vxoff:Float
-	Field vyoff:Float
-
-	Field vscale:Float
-
-	Method Create:TVirtualGfx (width:Int, height:Int)
-		self.instance = self
-		self.vwidth = width
-		self.vheight = height
-
-		return self
-	End Method
-
-	Function getInstance:TVirtualGfx()
-		if not TVirtualGfx.instance then new TVirtualGfx.Create(800, 600)
-
-		return TVirtualGfx.instance
-	End Function
-
-	Method Init()
-		' There must be a smarter way to check if Graphics has been called...
-		If GraphicsWidth () > 0 Or GraphicsHeight () > 0 Then EndGraphics; Notify "Programmer error! Call InitVirtualGraphics BEFORE Graphics!", True; End
-		self.DTW = DesktopWidth ()
-		self.DTH = DesktopHeight ()
-		' This only checks once... best to call InitVirtualGraphics again before any further Graphics calls (if you call EndGraphics at all)...
-		self.DTInitComplete = True
-	End Method
-
-	Function SetVirtualGraphics (vwidth:Int, vheight:Int, monitor_stretch:Int = False)
-		' InitVirtualGraphics has been called...
-		If getInstance().DTInitComplete
-			' Graphics has been called...
-			If GraphicsWidth () = 0 Or GraphicsHeight () = 0
-				Notify "Programmer error! Must call Graphics before SetVirtualGraphics", True; End
-			EndIf
-		Else
-			EndGraphics; Notify "Programmer error! Call InitVirtualGraphics before Graphics!", True; End
-		EndIf
-
-		' Reset of display needed when re-calculating virtual graphics stuff/clearing borders...
-		SetVirtualResolution( GraphicsWidth(), GraphicsHeight() )
-		SetViewport( 0, 0, GraphicsWidth(), GraphicsHeight() )
-		SetOrigin( 0, 0 )
-
-		' Store current Cls colours...
-		Local clsr:Int, clsg:Int, clsb:Int
-		GetClsColor clsr, clsg, clsb
-
-		' Set to black...
-		SetClsColor 0, 0, 0
-
-		' Got to clear both front AND back buffers or it flickers if new display area is smaller...
-		Cls;Flip
-		Cls;Flip
-		Cls;Flip
-
-		SetClsColor clsr, clsg, clsb
-
-		' Create new (global) virtual display object...
-		local instance:TVirtualGfx = new TVirtualGfx.Create( vwidth, vheight )
-
-		' Real Graphics width/height...
-		Local gwidth:Int = GraphicsWidth()
-		Local gheight:Int = GraphicsHeight()
-
-		' If monitor is correcting aspect ratio IN FULL-SCREEN MODE, use desktop size, otherwise use
-		' specified Graphics size. NB. This assumes user's desktop is using native monitor resolution,
-		' as most laptops would be by default...
-		If monitor_stretch And GraphicsDepth()
-			' Pretend real Graphics mode is desktop width/height...
-			gwidth = DTW
-			gheight = DTH
-		EndIf
-
-		' Width/height ratios...
-		Local graphicsratio:Float = Float(gwidth) / Float(gheight)
-		Local virtualratio:Float = Float(instance.vwidth) / Float(instance.vheight)
-
-		' Ratio-to-ratio. Don't even know what you'd call this, but hours of trial and error
-		' provided the right numbers in the end...
-		Local gtovratio:Float = graphicsratio / virtualratio
-		Local vtogratio:Float = virtualratio / graphicsratio
-
-		' Compare ratios...
-		If graphicsratio => virtualratio
-			' Graphics ratio wider than (or same as) virtual graphics ratio...
-			instance.vscale = Float(gheight) / Float(instance.vheight)
-
-			' Now go crazy with trial-and-error... ooh, it works! This tiny bit of code took FOREVER.
-			Local pixels:Float = Float (instance.vwidth) / (1.0 / instance.vscale) ' Width after scaling
-			Local half_scale:Float = (1.0 / instance.vscale) / 2.0
-
-			SetVirtualResolution( instance.vwidth * gtovratio, instance.vheight )
-
-			' Offset into 'real' display area...
-
-			instance.vxoff = (gwidth - pixels) * half_scale
-			instance.vyoff = 0
-
-		Else
-			' Graphics ratio narrower...
-			instance.vscale = Float (gwidth) / Float (instance.vwidth)
-
-			Local pixels:Float = Float (instance.vheight) / (1.0 / instance.vscale) ' Height after scaling
-			Local half_scale:Float = (1.0 / instance.vscale) / 2.0
-
-			SetVirtualResolution instance.vwidth, instance.vheight * vtogratio
-
-			instance.vxoff = 0
-			instance.vyoff = (gheight - pixels) * half_scale
-		EndIf
-
-		' Set up virtual graphics area...
-		SetViewport( instance.vxoff, instance.vyoff, instance.vwidth, instance.vheight )
-		SetOrigin( instance.vxoff, instance.vyoff )
-	End Function
-
-	Method VMouseX:Float ()
-		Local mx:Float = VirtualMouseX () - vxoff
-		If mx < 0 Then mx = 0 Else If mx > vwidth - 1 Then mx = vwidth - 1
-		Return mx
-	End Method
-
-	Method VMouseY:Float ()
-		Local my:Float = VirtualMouseY () - vyoff
-		If my < 0 Then my = 0 Else If my > vheight - 1 Then my = vheight - 1
-		Return my
-	End Method
-
-	Method VirtualWidth:Int ()
-		Return vwidth
-	End Method
-
-	Method VirtualHeight:Int ()
-		Return vheight
-	End Method
-
-	Method VirtualGrabPixmap:TPixmap(x:int,y:int,w:int,h:int)
-		local scaleX:float = float(GraphicsWidth()) / float(self.vwidth)
-		local scaleY:float = float(GraphicsHeight()) / float(self.vheight)
-		return _max2dDriver.GrabPixmap(float(X)*scaleX + self.vxoff, float(Y)*scaleY + self.vyoff, float(w)*scaleX, float(h)*scaleY)
-	End Method
-
-End Type
-
-' -----------------------------------------------------------------------------
-' ... and these helper functions (required)...
-' -----------------------------------------------------------------------------
-Function InitVirtualGraphics ()
-	TVirtualGfx.getInstance().Init()
-End Function
-
-Function SetVirtualGraphics (vwidth:Int, vheight:Int, monitor_stretch:Int = False)
-	TVirtualGfx.SetVirtualGraphics (vwidth, vheight, monitor_stretch)
-End Function
-
-Function VMouseX:Float ()
-	Return TVirtualGfx.getInstance().VMouseX ()
-End Function
-
-Function VMouseY:Float ()
-	Return TVirtualGfx.getInstance().VMouseY ()
-End Function
-
-' Don't need VirtualMouseXSpeed/YSpeed replacements!
-
-Function VirtualWidth:Int ()
-	Return TVirtualGfx.getInstance().VirtualWidth ()
-End Function
-
-Function VirtualHeight:Int ()
-	Return TVirtualGfx.getInstance().VirtualHeight ()
-End Function
-
-'Grab an image from the back buffer with Virtual support
-Function VirtualGrabPixmap:TPixmap(X:Int, Y:Int, W:int, H:int, Frame:Int = 0)
-	Return TVirtualGfx.getInstance().VirtualGrabPixmap(x,y,w,h)
-End Function
-
-
 Global CURRENT_TWEEN_FACTOR:float = 0.0
 Function GetTweenResult:float(currentValue:float, oldValue:float, avoidShaking:int=TRUE)
 	local result:float = currentValue * CURRENT_TWEEN_FACTOR + oldValue * (1.0 - CURRENT_TWEEN_FACTOR)
@@ -275,7 +68,7 @@ End Function
 
 
 Function GetTweenPoint:TPoint(currentPoint:TPoint, oldPoint:TPoint, avoidShaking:int=TRUE)
-	return TPoint.Create(..
+	return new TPoint.Init(..
 	         GetTweenResult(currentPoint.x, oldPoint.x, avoidShaking),..
 	         GetTweenResult(currentPoint.y, oldPoint.y, avoidShaking)..
 	       )
@@ -284,243 +77,6 @@ End Function
 
 
 
-Type TXmlHelper
-	field filename:string =""
-	field file:TxmlDoc
-	field root:TxmlNode
-
-
-	Function Create:TXmlHelper(filename:string)
-		local obj:TXmlHelper = new TXmlHelper
-		obj.filename	= filename
-		obj.file		= TxmlDoc.parseFile(filename)
-		obj.root		= obj.file.getRootElement()
-		return obj
-	End Function
-
-
-	'find a "<tag>"-element within a given start node
-	Method FindElementNode:TxmlNode(startNode:TXmlNode, nodeName:string)
-		nodeName = nodeName.ToLower()
-		if not startNode then startNode = root
-
-		For local child:TxmlNode = eachin GetNodeChildElements(startNode)
-			if child.getName().ToLower() = nodeName then return child
-			For local subStartNode:TxmlNode = eachin GetNodeChildElements(child)
-				local subChild:TXmlNode = FindElementNode(subStartNode, nodeName)
-				if subChild then return subChild
-			Next
-		Next
-		return null
-	End Method
-
-
-	Method FindRootChild:TxmlNode(nodeName:string)
-		return FindChild(root, nodeName)
-	End Method
-
-
-	Function findAttribute:string(node:TxmlNode, attributeName:string, defaultValue:string)
-		if node.hasAttribute(attributeName) <> null then return node.getAttribute(attributeName) else return defaultValue
-	End Function
-
-
-	'returns a list of all child elements (one level deeper)
-	'in comparison to "txmlnode.GetChildren()" it returns a TList
-	'in all cases.
-	Function GetNodeChildElements:TList(node:TxmlNode)
-		'we only want "<ELEMENTS>"
-		local res:TList
-		if node then res = node.GetChildren(XML_ELEMENT_NODE)
-		if not res then res = CreateList()
-		return res
-	End Function
-
-
-	'non recursive child finding
-	Function FindChild:TxmlNode(node:TxmlNode, nodeName:string)
-		nodeName = nodeName.ToLower()
-		For local child:TxmlNode = eachin GetNodeChildElements(node)
-			if child.getName().ToLower() = nodeName then return child
-		Next
-		return null
-	End Function
-
-
-	'loads values of a node into a tdata object
-	Function LoadValuesToData:int(node:TXmlNode, data:TData var, fieldNames:string[])
-		For local fieldName:String = eachin fieldNames
-			if not TXmlHelper.HasValue(node, fieldName) then continue
-			'use the first fieldname ("frames|f" -> add as "frames")
-			local names:string[] = fieldName.ToLower().Split("|")
-
-			data.Add(names[0], FindValue(node, fieldName, ""))
-		Next
-	End Function
-
-
-	Function HasValue:int(node:TXmlNode, fieldName:string)
-		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
-		local fieldNames:string[] = fieldName.ToLower().Split("|")
-
-		For local name:String = eachin fieldNames
-			If node.hasAttribute(name) then Return True
-
-			For local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-				if subNode.getType() = XML_TEXT_NODE then continue
-				If subNode.getName().ToLower() = name then return TRUE
-				If subNode.getName().ToLower() = "data" and subNode.hasAttribute(name) then Return TRUE
-			Next
-		Next
-		return FALSE
-	End Function
-
-
-	'find a value within:
-	'- the current NODE's attributes
-	'  <obj FIELDNAME="bla" />
-	'- the first level children
-	'- <obj><FIELDNAME>bla</FIELDNAME><anotherfield ...></anotherfield></obj>
-	Function FindValue:string(node:TxmlNode, fieldName:string, defaultValue:string, logString:string="")
-		'loop through all potential fieldnames ("frames|f" -> "frames", "f")
-		local fieldNames:string[] = fieldName.ToLower().Split("|")
-
-		For local name:String = eachin fieldNames
-			'given node has attribute (<episode number="1">)
-			If node.hasAttribute(name) then Return node.getAttribute(name)
-
-			For local subNode:TxmlNode = EachIn GetNodeChildElements(node)
-				If subNode.getName().ToLower() = name then return subNode.getContent()
-				If subNode.getName().ToLower() = "data" and subNode.hasAttribute(name) then Return subNode.getAttribute(name)
-			Next
-		Next
-		if logString <> "" then print logString
-		return defaultValue
-	End Function
-
-
-	Function FindValueInt:int(node:TxmlNode, fieldName:string, defaultValue:int, logString:string="")
-		local result:string = FindValue(node, fieldName, string(defaultValue), logString)
-		if result = null then return defaultValue
-		return int( result )
-	End Function
-
-
-	Function FindValueFloat:float(node:TxmlNode, fieldName:string, defaultValue:int, logString:string="")
-		local result:string = FindValue(node, fieldName, string(defaultValue), logString)
-		if result = null then return defaultValue
-		return float( result )
-	End Function
-
-
-	Function FindValueBool:float(node:TxmlNode, fieldName:string, defaultValue:int, logString:string="")
-		local result:string = FindValue(node, fieldName, string(defaultValue), logString)
-		Select result.toLower()
-			case "0", "false"	return false
-			case "1", "true"	return true
-		End Select
-		return defaultValue
-	End Function
-End Type
-
-
-
-
-Type TData
-	field data:TMap = CreateMap()
-
-	Method Init:TData(data:TMap=null)
-		if data then self.data = data
-
-		return self
-	End Method
-
-
-	Method ToString:String()
-		local res:string = "TData content [~n"
-		For local key:String = eachin data.Keys()
-			res :+ key+" = " + string(data.ValueForKey(key)) + "~n"
-		Next
-		res :+ "]~n"
-		return res
-	End Method
-
-
-	'add keys->values from other data object (and overwrite own if also existing)
-	Method Merge:int(otherData:TData)
-		if not otherData then return FALSE
-
-		For local key:string = eachin otherData.data.Keys()
-			key = key.ToLower()
-			Add(key, otherData.data.ValueForKey(key))
-		Next
-		return TRUE
-	End Method
-
-
-	Method Add:TData(key:string, data:object)
-		self.data.insert(key.ToLower(), data)
-		return self
-	End Method
-
-
-	Method AddString:TData(key:string, data:string)
-		self.Add( key, object(data) )
-		return self
-	End Method
-
-
-	Method AddNumber:TData(key:string, data:float)
-		self.Add( key, object( string(data) ) )
-		return self
-	End Method
-
-
-	Method AddObject:TData(key:string, data:object)
-		self.Add( key, object( data ) )
-		return self
-	End Method
-
-
-	Method Get:object(key:string, defaultValue:object=null)
-		local result:object = data.ValueForKey(key.ToLower())
-		if result then return result
-		return defaultValue
-	End Method
-
-
-	Method GetString:string(key:string, defaultValue:string=null)
-		local result:object = self.Get(key)
-		if result then return String( result )
-		return defaultValue
-	End Method
-
-
-	Method GetBool:int(key:string, defaultValue:int=FALSE)
-		local result:object = self.Get(key)
-		if not result then return defaultValue
-		Select String(result).toLower()
-			case "1", "true", "yes"
-				return True
-			default
-				return False
-		End Select
-	End Method
-
-
-	Method GetFloat:float(key:string, defaultValue:float = 0.0)
-		local result:object = self.Get(key)
-		if result then return float( String( result ) )
-		return defaultValue
-	End Method
-
-
-	Method GetInt:int(key:string, defaultValue:int = null)
-		local result:object = self.Get(key)
-		if result then return Int( float( String( result ) ) )
-		return defaultValue
-	End Method
-End Type
 
 Type TNumberSortMap
 	Field Content:TList = CreateList()
@@ -571,128 +127,6 @@ Function CurrentDateTime:String(_what:String="%d %B %Y")
 	Return String.FromCString(buff)
 End Function
 
-
-
-
-Const LOG_ERROR:int		= 1
-Const LOG_WARNING:int	= 2
-Const LOG_INFO:int		= 4
-Const LOG_DEBUG:int		= 8
-Const LOG_DEV:int		= 16
-Const LOG_TESTING:int	= 32
-Const LOG_LOADING:int	= 64
-Const LOG_GAME:int		= 128
-Const LOG_AI:int		= 256
-Const LOG_XML:int		= 512
-Const LOG_NETWORK:int	= 1024
-Const LOG_SAVELOAD:int	= 2048
-'all but debug/dev/testing/ai
-Const LOG_ALL_NORMAL:int	= 1|2|4| 0 | 0 | 0 |64|128| 0 |512|1024|2048
-Const LOG_ALL:int			= 1|2|4| 8 |16 |32 |64|128|256|512|1024|2048
-
-
-'by default EVERYTHING is logged
-TDevHelper.setLogMode(LOG_ALL)
-TDevHelper.setPrintMode(LOG_ALL)
-
-Type TDevHelper
-	global printMode:int = 0 'print nothing
-	global logMode:int = 0 'log nothing
-	global lastLoggedMode:int =0
-	global lastPrintMode:int =0
-	global lastLoggedFunction:string=""
-	global lastPrintFunction:string=""
-	const MODE_LENGTH:int = 8
-
-	'replace print mode flags
-	Function setPrintMode(flag:int=0)
-		printMode = flag
-	End Function
-
-	'replace logfile mode flags
-	Function setLogMode(flag:int=0)
-		logMode = flag
-	End Function
-
-	'change an existing print mode (add or remove flag)
-	Function changePrintMode(flag:int=0, enable:int=TRUE)
-		if enable
-			printMode :| flag
-		else
-			printMode :& ~flag
-		endif
-	End Function
-
-	'change an existing logfile mode (add or remove flag)
-	Function changeLogMode(flag:int=0, enable:int=TRUE)
-		if enable
-			logMode :| flag
-		else
-			logMode :& ~flag
-		endif
-	End Function
-
-
-	'outputs a string to stdout and/or logfile
-	'exactTypeRequired: requires the mode to exactly contain the debugType
-	'                   so a LOG_AI|LOG_DEBUG will only get logged if BOTH are enabled
-	Function log(functiontext:String = "", message:String, debugType:int=LOG_DEBUG, exactTypeRequired:int=FALSE)
-		Local debugtext:String = ""
-		If debugType & LOG_ERROR Then debugtext :+ "ERROR "
-		If debugType & LOG_WARNING Then debugtext :+ "WARNING "
-		If debugType & LOG_INFO Then debugtext :+ "INFO "
-		If debugType & LOG_DEV Then debugtext :+ "DEV "
-		If debugType & LOG_DEBUG Then debugtext :+ "DEBUG "
-		If debugType & LOG_LOADING Then debugtext :+ "LOAD "
-		If debugType & LOG_GAME Then debugtext :+ "GAME "
-		If debugType & LOG_AI Then debugtext :+ "AI "
-		If debugType & LOG_XML Then debugtext :+ "XML "
-		If debugType & LOG_NETWORK Then debugtext :+ "NET "
-		If debugType & LOG_SAVELOAD Then debugtext :+  "SAVELOAD "
-		if len(debugText < MODE_LENGTH)
-			debugtext = LSet(debugtext, MODE_LENGTH) + " | "
-		else
-			debugtext = debugtext + " | "
-		endif
-
-		local showFunctionText:string = ""
-		local doLog:int = FALSE
-		local doPrint:int = FALSE
-		'means ALL GIVEN TYPES have to fit
-		if exactTypeRequired
-			doLog = ((logMode & debugType) = debugType)
-			doPrint = ((printMode & debugType) = debugType)
-		'only one of the given types has to fit
-		else
-			doLog = (logMode & debugType)
-			doPrint = (printMode & debugType)
-		endif
-
-		if doLog
-			if debugType = lastLoggedMode and functiontext = lastLoggedFunction
-				showFunctionText = LSet("", len(lastLoggedFunction))
-			else
-				lastLoggedFunction = functiontext
-				lastLoggedMode = debugType
-				showFunctionText = functiontext
-			endif
-
-			AppLog.AddLog("[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message)
-		endif
-
-		if doPrint
-			if debugType = lastPrintMode and functiontext = lastPrintFunction
-				showFunctionText = LSet("", len(lastPrintFunction))
-			else
-				lastPrintFunction = functiontext
-				lastPrintMode = debugType
-				showFunctionText = functiontext
-			endif
-
-			print "[" + CurrentTime() + "] " + debugtext + Upper(showFunctionText) + ": " + message
-		endif
-	End Function
-End Type
 
 
 Function SortListArray(List:TList Var)
@@ -859,381 +293,6 @@ End Type
 
 
 
-
-Type TRectangle {_exposeToLua="selected"}
-	Field position:TPoint {_exposeToLua saveload="normal"}
-	Field dimension:TPoint {_exposeToLua saveload="normal"}
-
-
-	Function Create:TRectangle(x:Float=0.0,y:Float=0.0, w:float=0.0, h:float=0.0)
-		local obj:TRectangle = new TRectangle
-		obj.position	= TPoint.Create(x,y)
-		obj.dimension	= TPoint.Create(w,h)
-		return obj
-	End Function
-
-
-	Method Copy:TRectangle()
-		return TRectangle.Create(self.position.x, self.position.y, self.dimension.x, self.dimension.y)
-	End Method
-
-
-	'does the rects overlap?
-	Method Intersects:int(rect:TRectangle) {_exposeToLua}
-		return (   self.containsXY( rect.GetX(), rect.GetY() ) ..
-		        OR self.containsXY( rect.GetX() + rect.GetW(),  rect.GetY() + rect.GetH() ) ..
-		       )
-	End Method
-
-
-	'global helper variables should be faster than allocating locals each time (in huge amount)
-	global ix:float,iy:float,iw:float,ih:float
-	'get intersecting rectangle
-	Method IntersectRect:TRectangle(rectB:TRectangle) {_exposeToLua}
-		ix = max(self.GetX(), rectB.GetX())
-		iy = max(self.GetY(), rectB.GetY())
-		iw = min(self.GetX()+self.dimension.GetX(), rectB.position.GetX()+rectB.dimension.GetX() ) -ix
-		ih = min(self.GetY()+self.dimension.GetY(), rectB.position.GetY()+rectB.dimension.GetY() ) -iy
-
-		local intersect:TRectangle = TRectangle.Create(ix,iy,iw,ih)
-
-		if iw > 0 AND ih > 0 then
-			return intersect
-		else
-			return Null
-		endif
-	End Method
-
-
-	'does the point overlap?
-	Method containsPoint:int(point:TPoint) {_exposeToLua}
-		return self.containsXY( point.GetX(), point.GetY() )
-	End Method
-
-
-	Method containsX:int(x:float) {_exposeToLua}
-		return (    x >= self.position.GetX()..
-		        And x < self.position.GetX() + self.dimension.GetX() )
-	End Method
-
-
-	Method containsY:int(y:float) {_exposeToLua}
-		return (    y >= self.position.GetY()..
-		        And y < self.position.GetY() + self.dimension.GetY() )
-	End Method
-
-
-	'does the rect overlap with the coordinates?
-	Method containsXY:int(x:float, y:float) {_exposeToLua}
-		return (    x >= self.position.GetX()..
-		        And x < self.position.GetX() + self.dimension.GetX() ..
-		        And y >= self.position.GetY()..
-		        And y < self.position.GetY() + self.dimension.GetY() )
-	End Method
-
-
-	Method MoveXY:int(x:float,y:float)
-		self.position.MoveXY(x,y)
-	End Method
-
-
-	'rectangle names
-	Method setXYWH(x:float,y:float,w:float,h:float)
-		self.position.setXY(x,y)
-		self.dimension.setXY(w,h)
-	End Method
-
-
-	Method GetX:float()
-		return self.position.GetX()
-	End Method
-
-
-	Method GetY:float()
-		return self.position.GetY()
-	End Method
-
-
-	Method GetW:float()
-		return self.dimension.GetX()
-	End Method
-
-
-	Method GetH:float()
-		return self.dimension.GetY()
-	End Method
-
-
-	'four sided TFunctions
-	Method setTLBR(top:float,left:float,bottom:float,right:float)
-		self.position.setXY(top,left)
-		self.dimension.setXY(bottom,right)
-	End Method
-
-
-	Method SetTop:int(value:float)
-		return self.position.SetX(value)
-	End Method
-
-
-	Method SetLeft:int(value:float)
-		return self.position.SetY(value)
-	End Method
-
-
-	Method SetBottom:int(value:float)
-		return self.dimension.SetX(value)
-	End Method
-
-
-	Method SetRight:int(value:float)
-		return self.dimension.SetY(value)
-	End Method
-
-
-	Method GetTop:float()
-		return self.position.GetX()
-	End Method
-
-
-	Method GetLeft:float()
-		return self.position.GetY()
-	End Method
-
-
-	Method GetBottom:float()
-		return self.dimension.GetX()
-	End Method
-
-
-	Method GetRight:float()
-		return self.dimension.GetY()
-	End Method
-
-
-	Method GetX2:float()
-		return self.position.GetX() + self.dimension.GetX()
-	End Method
-
-
-	Method GetY2:float()
-		return self.position.GetY() + self.dimension.GetY()
-	End Method
-
-
-	Method GetAbsoluteCenterPoint:TPoint()
-		return TPoint.Create(Self.GetX() + Self.GetW()/2, Self.GetY() + Self.GetH()/2)
-	End Method
-
-
-	Method Compare:Int(o:Object)
-		Local rect:TRectangle = TRectangle(o)
-		If rect.dimension.y*rect.dimension.x < dimension.y*dimension.x then Return -1
-		If rect.dimension.y*rect.dimension.x > dimension.y*dimension.x then Return 1
-		Return 0
-	End Method
-
-
-	Method Draw:int()
-		DrawRect(GetX(), GetY(), GetW(), GetH())
-	End Method
-End Type
-
-
-Type TPoint {_exposeToLua="selected"}
-	Field x:Float
-	Field y:Float
-	Field z:Float 'Tiefe des Raumes (für Audio) Minus-Werte = Hintergrund; Plus-Werte = Vordergrund
-
-	Function Create:TPoint(_x:Float=0.0,_y:Float=0.0,_z:Float=0.0)
-		Local tmpObj:TPoint = New TPoint
-		tmpObj.SetX(_x)
-		tmpObj.SetY(_y)
-		tmpObj.SetZ(_z)
-		Return tmpObj
-	End Function
-
-	Method Copy:TPoint()
-		return TPoint.Create(x,y)
-	end Method
-
-	Method GetIntX:int() {_exposeToLua}
-		return floor(self.x)
-	End Method
-
-	Method GetIntY:int() {_exposeToLua}
-		return floor(self.y)
-	End Method
-
-	Method GetIntZ:int() {_exposeToLua}
-		return floor(self.z)
-	End Method
-
-
-	Method GetX:float() {_exposeToLua}
-		return self.x
-	End Method
-
-	Method GetY:float() {_exposeToLua}
-		return self.y
-	End Method
-
-	Method GetZ:float() {_exposeToLua}
-		return self.z
-	End Method
-
-	Method SetX(_x:Float)
-		Self.x = _x
-	End Method
-
-	Method SetY(_y:Float)
-		Self.y = _y
-	End Method
-
-	Method SetZ(_z:Float)
-		Self.z = _z
-	End Method
-
-	Method SetXY(_x:Float, _y:Float)
-		Self.SetX(_x)
-		Self.SetY(_y)
-	End Method
-
-	Method SetXYZ(_x:Float, _y:Float, _z:Float)
-		Self.SetX(_x)
-		Self.SetY(_y)
-		Self.SetZ(_z)
-	End Method
-
-	Method SetPos(otherPos:TPoint)
-		Self.SetX(otherPos.x)
-		Self.SetY(otherPos.y)
-		Self.SetZ(otherPos.z)
-	End Method
-
-
-	Method MoveX(_x:float)
-		Self.x:+ _x
-	End Method
-
-
-	Method MoveY(_y:float)
-		Self.y:+ _y
-	End Method
-
-
-	Method MoveXY( _x:float, _y:float )
-		Self.x:+ _x
-		Self.y:+ _y
-	End Method
-
-	Method isSame:int(otherPos:TPoint, round:int=0) {_exposeToLua}
-		if round
-			return abs(self.x -otherPos.x)<1.0 AND abs(self.y -otherPos.y) < 1.0
-		else
-			return self.x = otherPos.x AND self.y = otherPos.y
-		endif
-	End Method
-
-	Method isInRect:int(rect:TRectangle)
-		return rect.containsPoint(self)
-	End Method
-
-	Method DistanceTo:float(otherPoint:TPoint, withZ:int = true)
-		local distanceX:float = DistanceOfValues(x, otherPoint.x)
-		local distanceY:float = DistanceOfValues(y, otherPoint.y)
-		local distanceZ:float = DistanceOfValues(z, otherPoint.z)
-
-		local distanceXY:float = Sqr(distanceX * distanceX + distanceY * distanceY) 'Wurzel(a² + b²) = Hypotenuse von X und Y
-
-		If withZ and distanceZ <> 0
-			Return Sqr(distanceXY * distanceXY + distanceZ * distanceZ) 'Wurzel(a² + b²) = Hypotenuse von XY und Z
-		Else
-			Return distanceXY
-		Endif
-	End Method
-
-	Function DistanceOfValues:int(value1:int, value2:int)
-		return abs(value1-value2)
-	rem
-		If (value1 > value2) Then
-			Return value1 - value2
-		Else
-			Return value2 - value1
-		EndIf
-	endrem
-	End Function
-
-	Function SwitchPos(Pos:TPoint Var, otherPos:TPoint Var)
-		Local oldx:Float, oldy:Float, oldz:Float
-		oldx = Pos.x
-		oldy = Pos.y
-		oldz = Pos.z
-		Pos.x = otherpos.x
-		Pos.y = otherpos.y
-		Pos.z = otherpos.z
-		otherpos.x = oldx
-		otherpos.y = oldy
-		otherpos.z = oldz
-	End Function
-
- 	Method Save()
-		print "implement"
-	End Method
-
-	Function Load:TPoint(pnode:TxmlNode)
-		print "implement load position"
-	End Function
-End Type
-
-
-'--- color
-'Type TColorFunctions
-
-Function ARGB_Alpha:Int(ARGB:Int)
-	Return (argb Shr 24) & $ff
-EndFunction
-
-Function ARGB_Red:Int(ARGB:Int)
-	Return (argb Shr 16) & $ff
-EndFunction
-
-Function ARGB_Green:Int(ARGB:Int)
-	Return (argb Shr 8) & $ff
-EndFunction
-
-Function ARGB_Blue:Int(ARGB:Int)
-	Return (argb & $ff)
-EndFunction
-
-Function ARGB_Color:Int(alpha:Int,red:Int,green:Int,blue:Int)
-	Return (Int(alpha * $1000000) + Int(red * $10000) + Int(green * $100) + Int(blue))
-EndFunction
-
-Function RGBA_Color:Int(alpha:int,red:int,green:int,blue:int)
-'	Return (Int(alpha * $1000000) + Int(blue * $10000) + Int(green * $100) + Int(red))
-'	is the same :
-	local argb:int = 0
-	local pointer:Byte Ptr = Varptr(argb)
-	pointer[0] = red
-	pointer[1] = green
-	pointer[2] = blue
-	pointer[3] = alpha
-
-	return argb
-EndFunction
-
-
-'returns true if the given pixel is monochrome (grey)
-Function isMonochrome:int(argb:Int)
-	If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And ARGB_Alpha(argb) <> 0 then Return ARGB_Red(argb)
-	'old with "white filter < 250"
-	'filter should be done outside of that function
-	'If (red = green) And (red = blue) And(alpha <> 0) And(red < 250) Then Return green
-	Return 0
-End Function
-
-
 Function MergeLists:TList(a:TList,b:TList)
 	local list:TList = a.copy()
 	for local obj:object = eachin b
@@ -1340,40 +399,6 @@ Type TCall
 
 End Type
 
-Type TLogFile
-	field Strings:TList		= CreateList()
-	field title:string		= ""
-	field filename:string	= ""
-	global logs:TList		= CreateList()
-
-	Function Create:TLogFile(title:string, filename:string)
-		local obj:TLogFile = new TLogFile
-		obj.title = title
-		obj.filename = filename
-		TLogfile.logs.addLast(obj)
-
-		return obj
-	End Function
-
-	Function DumpLog(doPrint:Int = 1)
-		For local logfile:TLogFile = eachin TLogFile.logs
-			Local fi:TStream = WriteFile( logfile.filename )
-			WriteLine fi, logfile.title
-			For Local line:String = EachIn logfile.Strings
-				If doPrint = 1 then Print line
-				WriteLine fi, line
-			Next
-			CloseFile fi
-		Next
-	End Function
-
-	Method AddLog:int(text:String, addDateTime:int=FALSE)
-		if addDateTime then text = "[" + CurrentTime() + "] " + text
-		Strings.AddLast(text)
-		return TRUE
-	End Method
-End Type
-Global AppLog:TLogFile = TLogFile.Create("TVT Log v1.0", "log.app.txt")
 
 Type TProfiler
 	Global activated:Byte = 1
@@ -1486,29 +511,6 @@ End Type
 Type TFunctions
 	Global roundToBeautifulEnabled:int = TRUE
 
-	'check whether a checkedObject equals to a limitObject
-	'1) is the same object
-	'2) is of the same type
-	'3) is extended from same type
-	function ObjectsAreEqual:int(checkedObject:object, limit:object)
-		'one of both is empty
-		if not checkedObject then return FALSE
-		if not limit then return FALSE
-		'same object
-		if checkedObject = limit then return TRUE
-		'check if classname / type is the same (type-name given as limit )
-		if string(limit)<>null
-			local typeId:TTypeId = TTypeId.ForName(string(limit))
-			'if we haven't got a valid classname
-			if not typeId then return FALSE
-			'if checked object is same type or does extend from that type
-			if TTypeId.ForObject(checkedObject).ExtendsType(typeId) then return TRUE
-		endif
-
-		return FALSE
-	End Function
-
-
 	Function DrawOutlineRect:int(x:int, y:int, w:int, h:int)
 		DrawLine(x, y, x + w, y, 0)
 		DrawLine(x + w , y, x + w, y + h, 0)
@@ -1522,31 +524,6 @@ Type TFunctions
 		local pixmap:TPixmap = LockImage(image)
 		pixmap.clearPixels(0)
 		return image
-	End Function
-
-	Function MouseIn:int(x:float,y:float,w:float,h:float)
-		return TFunctions.IsIn(MouseManager.x, MouseManager.y, x,y,w,h)
-	End Function
-
-	Function MouseInRect:int(rect:TRectangle)
-		return TFunctions.IsIn(MouseManager.x, MouseManager.y, rect.position.x,rect.position.y,rect.dimension.x, rect.dimension.y)
-	End Function
-
-
-	Function DoMeet:int(startA:float, endA:float, startB:float, endB:float)
-		'DoMeet - 4 possibilities - but only 2 for not meeting
-		' |--A--| .--B--.    or   .--B--. |--A--|
-		return  not (Max(startA,endA) < Min(startB,endB) or Min(startA,endA) > Max(startB, endB) )
-	End function
-
-
-	Function IsIn:Int(x:Float, y:Float, rectx:Float, recty:Float, rectw:Float, recth:Float)
-		If x >= rectx And x<=rectx+rectw And..
-		   y >= recty And y<=recty+recth
-			Return 1
-		Else
-			Return 0
-		End If
 	End Function
 
 
@@ -1571,10 +548,6 @@ Type TFunctions
 		Return out$
 	End Function
 
-	Function RoundInt:Int(f:Float)
-		'http://www.blitzbasic.com/Community/posts.php?topic=92064
-	    Return f + 0.5 * Sgn(f)
-	End Function
 
 	Function RoundToBeautifulValue:int(value:int)
 		'dev
@@ -1619,11 +592,11 @@ Type TFunctions
 			If length >= 10 Then typ=3
 		endif
 		'250000 = 250Tsd -> divide by 1000
-		if typ=1 then return shortenFloat(value/1000.0, 0)+" Tsd"
+		if typ=1 then return THelper.floatToString(value/1000.0, 0)+" Tsd"
 		'250000 = 0,25Mio -> divide by 1000000
-		if typ=2 then return shortenFloat(value/1000000.0, 2)+" Mio"
+		if typ=2 then return THelper.floatToString(value/1000000.0, 2)+" Mio"
 		'250000 = 0,0Mrd -> divide by 1000000000
-		if typ=3 then return shortenFloat(value/1000000000.0, 2)+" Mrd"
+		if typ=3 then return THelper.floatToString(value/1000000000.0, 2)+" Mrd"
 		'add thousands-delimiter: 10000 = 10.000
 		if length <= 10 and length > 6
 			return int(floor(int(value) / 1000000))+"."+int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000000)*1000000)))) +"000",3)
@@ -1635,52 +608,16 @@ Type TFunctions
 		'Return convertValue
     End Function
 
-	'deprecated
-	Function shortenFloat:string(value:float, digitsAfterDecimalPoint:int=2)
-		return FloatToString(value, digitsAfterDecimalPoint)
-	End Function
-
-
-	'convert a float to a string
-	'float is rounded to the requested amount of digits after comma
-	Function floatToString:String(value:Float, digitsAfterDecimalPoint:int = 2)
-		Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
-
-		'calculate amount of digits before "."
-		'instead of just string(int(s))).length we use the "Abs"-value
-		'and compare the original value if it is negative
-		'- this is needed because "-0.1" would be "0" as int (one char less)
-		local lengthBeforeDecimalPoint:int = string(abs(int(s))).length
-		if value < 0 then lengthBeforeDecimalPoint:+1 'minus sign
-		'remove unneeded digits (length = BEFORE + . + AFTER)
-		s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
-
-		'add at as much zeros as requested by digitsAfterDecimalPoint
-		If s.EndsWith(".")
-			for local i:int = 0 until digitsAfterDecimalPoint
-				s :+ "0"
-			Next
-		endif
-
-		Return s
-	End Function
-
-
-	'round a number using weighted non-trucate rounding.
-	Function roundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
-		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		Return Long(number * t + 0.5:double * Sgn(number)) / Double(t)
-	End Function
 End Type
 
 
 Type TDragAndDrop
-	field pos:TPoint = TPoint.Create(0,0)
-  Field w:Int = 0
-  Field h:Int = 0
-  Field typ:String = ""
-  Field slot:Int = 0
-  Global List:TList = CreateList()
+	Field pos:TPoint = new TPoint
+	Field w:Int = 0
+	Field h:Int = 0
+	Field typ:String = ""
+	Field slot:Int = 0
+	Global List:TList = CreateList()
 
  	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TPoint)
  	  For Local P:TDragAndDrop = EachIn List
@@ -1712,172 +649,6 @@ End Type
 
 
 
-Type TColor
-	Field r:int			= 0
-	Field g:int			= 0
-	Field b:int			= 0
-	Field a:float		= 1.0
-	Field ownerID:int	= 0				'store if a player/object... uses that color
-
-	global list:TList	= CreateList()	'storage for colors (allows handle referencing)
-	'some const
-	global clBlack:TColor = TColor.CreateGrey(0)
-	global clWhite:TColor = TColor.CreateGrey(255)
-	global clRed:TColor = TColor.Create(255,0,0)
-	global clGreen:TColor = TColor.Create(0,255,0)
-	global clBlue:TColor = TColor.Create(0,0,255)
-
-	Function Create:TColor(r:int=0,g:int=0,b:int=0,a:float=1.0)
-		local obj:TColor = new TColor
-		obj.r = r
-		obj.g = g
-		obj.b = b
-		obj.a = a
-		return obj
-	End Function
-
-
-	Function CreateGrey:TColor(grey:int=0,a:float=1.0)
-		local obj:TColor = new TColor
-		obj.r = grey
-		obj.g = grey
-		obj.b = grey
-		obj.a = a
-		return obj
-	End Function
-
-
-	Function FromName:TColor(name:String, alpha:float=1.0)
-		Select name.ToLower()
-				Case "red"
-						Return clRed.copy().AdjustAlpha(alpha)
-				Case "green"
-						Return clGreen.copy().AdjustAlpha(alpha)
-				Case "blue"
-						Return clBlue.copy().AdjustAlpha(alpha)
-				Case "black"
-						Return clBlack.copy().AdjustAlpha(alpha)
-				Case "white"
-						Return clWhite.copy().AdjustAlpha(alpha)
-		End Select
-		Return clWhite.copy()
-	End Function
-
-
-	Method Copy:TColor()
-		return TColor.Create(r,g,b,a)
-	end Method
-
-
-	Method SetOwner:TColor(ownerID:int)
-		self.ownerID = ownerID
-		return self
-	End Method
-
-
-	Method AddToList:TColor(remove:int=0)
-		'if in list - remove first as wished
-		if remove then self.list.remove(self)
-
-		self.list.AddLast(self)
-		return self
-	End Method
-
-
-	Function getFromListObj:TColor(col:TColor)
-		return TColor.getFromList(col.r,col.g,col.b,col.a)
-	End Function
-
-
-	Function getFromList:TColor(r:Int, g:Int, b:Int, a:float=1.0)
-		For local obj:TColor = EachIn TColor.List
-			If obj.r = r And obj.g = g And obj.b = b And obj.a = a Then Return obj
-		Next
-		Return Null
-	End Function
-
-
-	Function getByOwner:TColor(ownerID:int=0)
-		For local obj:TColor = EachIn TColor.List
-			if obj.ownerID = ownerID then return obj
-		Next
-		return Null
-	End Function
-
-
-	Method AdjustRelative:TColor(percentage:float=1.0)
-		self.r = Max(0, self.r * (1.0+percentage))
-		self.g = Max(0, self.g * (1.0+percentage))
-		self.b = Max(0, self.b * (1.0+percentage))
-		return self
-	End Method
-
-
-	Method AdjustFactor:TColor(factor:int=100)
-		self.r = Max(0, self.r + factor)
-		self.g = Max(0, self.g + factor)
-		self.b = Max(0, self.b + factor)
-		return self
-	End Method
-
-
-	Method AdjustAlpha:TColor(a:float)
-		self.a = a
-		return self
-	End Method
-
-
-	Method AdjustRGB:TColor(r:int=-1,g:int=-1,b:int=-1, overwrite:int=0)
-		if overwrite
-			self.r = r
-			self.g = g
-			self.b = b
-		else
-			self.r :+r
-			self.g :+g
-			self.b :+b
-		endif
-		return self
-	End Method
-
-
-	Method FromInt:TColor(color:int)
-		self.r = ARGB_Red(color)
-		self.g = ARGB_Green(color)
-		self.b = ARGB_Blue(color)
-		self.a = float(ARGB_Alpha(color))/255.0
-		return self
-	End Method
-
-
-	Method ToInt:int()
-		return ARGB_Color(ceil(self.a*255), self.r, self.g, self.b )
-	End Method
-
-
-	'same as set()
-	Method setRGB:TColor()
-		SetColor(self.r, self.g, self.b)
-		return self
-	End Method
-
-
-	Method setRGBA:TColor()
-		SetColor(self.r, self.g, self.b)
-		SetAlpha(self.a)
-		return self
-	End Method
-
-
-	Method get:TColor()
-		GetColor(self.r, self.g, self.b)
-		self.a = GetAlpha()
-		return self
-	End Method
-End Type
-
-
-
 Type TCatmullRomSpline
 	Field points:TList			= CreateList()	'list of the control points (TPoint)
 	Field cache:TPoint[]						'array of cached points
@@ -1890,17 +661,19 @@ Type TCatmullRomSpline
 	End Method
 
 	Method addXY:TCatmullRomSpline(x:float,y:float)
-		self.points.addLast( TPoint.Create( x, y ) )
-		self.cacheGenerated = FALSE
+		points.addLast( new TPoint.Init(x, y) )
+		cacheGenerated = FALSE
 		return self
 	End MEthod
 
+
 	'Call this to add a point to the end of the list
 	Method addPoint:TCatmullRomSpline(p:TPoint)
-		self.points.addlast(p)
-		self.cacheGenerated = FALSE
+		points.addlast(p)
+		cacheGenerated = FALSE
 		return self
 	End Method
+
 
 	Method addPoints:TCatmullRomSpline(p:TPoint[])
 		For local i:int = 0 to p.length-1
@@ -1993,7 +766,7 @@ Type TCatmullRomSpline
 		p2 = TPoint( pl.value() )
 		pl = pl.nextlink()
 
-		local oldPoint:TPoint = TPoint.Create(0,0,0)
+		local oldPoint:TPoint = new TPoint
 		local cachedPoints:int = 0
 
 		'pl3 will be null when we've reached the end of the list
@@ -2001,11 +774,11 @@ Type TCatmullRomSpline
 			'get the point objects from the TLinks
 			p3 = Tpoint( pl.value() )
 
-			oldPoint.SetPos(p1)
+			oldPoint.CopyFrom(p1)
 
 			'THE MEAT And BONES! Oddly, there isn't much to explain here, just copy the code.
 			For local t:float = 0 To 1 Step 1.0/self.resolution
-				local point:TPoint = TPoint.Create(0,0,0)
+				local point:TPoint = new TPoint
 				point.x = .5 * ( (2 * p1.x) + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t * t + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * t * t * t)
 				point.y = .5 * ( (2 * p1.y) + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t * t + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * t * t * t)
 
@@ -2013,7 +786,7 @@ Type TCatmullRomSpline
 				self.totalDistance :+ point.DistanceTo(oldPoint, false)
 				'distance is stored in the current points Z coordinate
 				point.z = self.totalDistance
-				oldPoint.setPos(point)
+				oldPoint.CopyFrom(point)
 
 				'add to cache
 				self.cache = self.cache[.. cachedPoints+1]
@@ -2083,7 +856,7 @@ Type TCatmullRomSpline
 			'local weightAX:float   = 1- distanceAX/distanceAB
 			local weightAX:float   = 1- abs(distance - pointA.z)/abs(pointB.z - pointA.z)
 
-			return TPoint.Create(..
+			return new TPoint.Init(..
 				pointA.x*weightAX + pointB.x*(1-weightAX), ..
 				pointA.y*weightAX + pointB.y*(1-weightAX) ..
 			)
@@ -2093,163 +866,3 @@ Type TCatmullRomSpline
 	End Method
 
 End Type
-
-
-
-'=======================================================================
-Type appKubSpline
-	Field dataX:Float[]
-	Field dataY:Float[]
-	Field dataCount:Int =0
-	Field koeffB:Float[]
-	Field koeffC:Float[]
-	Field koeffD:Float[]
-  '---------------------------------------------------------------------
-  ' gets data as FLOAT and calculates the cubic splines
-  ' if x-, y-arrays size is different, only the smaller count is taken
-  ' data must be sorted uprising for x
-  Method GetData(x:Float[], y:Float[])
-    Local i:Int =0
-
-    Local count:Int =Min(x.length, y.length)
-    dataX =x[..]
-    dataX =x[..count]
-    dataY =y[..]
-    dataY =y[..count]
-    koeffB =koeffB[..count]
-    koeffC =koeffC[..count]
-    koeffD =koeffD[..count]
-
-    Local m:Int =count -2
-    Local s:Float = 0.0
-    Local r:Float = 0.0
-    For i =0 To m
-      koeffD[i] =dataX[i +1] -dataX[i]
-      r =(dataY[i +1] -dataY[i]) /koeffD[i]
-      koeffC[i] =r -s
-      s =r
-    Next
-    s =0
-    r =0
-    koeffC[0] =0
-    koeffC[count -1] =0
-    For i =1 To m
-      koeffC[i] =koeffC[i] +r *koeffC[i -1]
-      koeffB[i] =(dataX[i -1] -dataX[i +1]) *2 -r *s
-      s =koeffD[i]
-      r =s /koeffB[i]
-    Next
-    For i =m To 1 Step -1
-      koeffC[i] =(koeffD[i] *koeffC[i +1] -koeffC[i]) /koeffB[i]
-    Next
-    For i =0 To m
-      s =koeffD[i]
-      r =koeffC[i +1] -koeffC[i]
-      koeffD[i] =r /s
-      koeffC[i] =koeffC[i] *3
-      koeffB[i] =(dataY[i +1] -dataY[i]) /s -(koeffC[i] +r) *s
-    Next
-
-    dataCount =count
-
-  End Method
-  '------------------------------------------------------------------------------------------------------------
-  ' gets data as INT and calculates the cubic splines
-  ' if x-, y-arrays size is different, only the smaller count is taken
-  ' data must be sorted uprising for x
-  Method GetDataInt(x:Int[], y:Int[])
-    Local z:Int=0
-    Local i:Int=0
-    Local count:Int =Min(x.length, y.length)
-
-    dataX =dataX[..count]
-    For z =1 To count
-      dataX[z -1] =Float(x[z -1])
-    Next
-    dataY =dataY[..count]
-    For z =1 To count
-      dataY[z -1] =Float(y[z -1])
-    Next
-    koeffB =koeffB[..count]
-    koeffC =koeffC[..count]
-    koeffD =koeffD[..count]
-
-    Local m:Int =count -2
-    Local s:Float
-    Local r:Float
-    For i =0 To m
-      koeffD[i] =dataX[i +1] -dataX[i]
-      r =(dataY[i +1] -dataY[i]) /koeffD[i]
-      koeffC[i] =r -s
-      s =r
-    Next
-    s =0
-    r =0
-    koeffC[0] =0
-    koeffC[count -1] =0
-    For i =1 To m
-      koeffC[i] =koeffC[i] +r *koeffC[i -1]
-      koeffB[i] =(dataX[i -1] -dataX[i +1]) *2 -r *s
-      s =koeffD[i]
-      r =s /koeffB[i]
-    Next
-    For i =m To 1 Step -1
-      koeffC[i] =(koeffD[i] *koeffC[i +1] -koeffC[i]) /koeffB[i]
-    Next
-    For i =0 To m
-      s =koeffD[i]
-      r =koeffC[i +1] -koeffC[i]
-      koeffD[i] =r /s
-      koeffC[i] =koeffC[i] *3
-      koeffB[i] =(dataY[i +1] -dataY[i]) /s -(koeffC[i] +r) *s
-    Next
-
-    dataCount =count
-
-  End Method
-  '------------------------------------------------------------------------------------------------------------
-  ' returns kubic splines value as FLOAT at given x -position
-   'or always 0 if currently no data is loaded
-  Method value:Float(x:Float)
-
-    If dataCount =0 Then Return 0
-
-    If x <dataX[0] Then
-      Repeat
-        x :+dataX[dataCount -1] -dataX[0]
-      Until x =>dataX[0]
-    ElseIf x >dataX[dataCount -1] Then
-      Repeat
-        x :-dataX[dataCount -1] -dataX[0]
-      Until x <=dataX[dataCount -1]
-    End If
-
-    Local q:Float =Sgn(dataX[dataCount -1] -dataX[0])
-    Local k:Int =-1
-    Local i:Int
-    Repeat
-      i =k
-      k :+1
-    Until (q *x <q *dataX[k]) Or k =dataCount -1
-
-    q =x - dataX[i]
-    Return ((koeffD[i] *q +koeffC[i]) *q +koeffB[i]) *q +dataY[i]
-
-  End Method
-  '---------------------------------------------------------------------
-  ' returns kubic splines value as rounded INT at given x -position
-   'or always 0 if currently no data is loaded
-  Method ValueInt:Int(x:Float)
-	local tmpResult:Float = self.Value(x)
-
-    If tmpResult -Floor(tmpResult) <=.5 Then
-      Return Floor(tmpResult)
-    Else
-      Return Floor(tmpResult) +1
-    End If
-
-  End Method
-  '---------------------------------------------------------------------
-
-End Type
-'-----------------------------------------------------------------------

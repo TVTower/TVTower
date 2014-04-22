@@ -189,8 +189,8 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		If day < 0 Then day = game.GetDay()
 		self.daySigned = day
 
-		TDevHelper.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
-		'TDevHelper.log("TAdContract.Sign", "       "+owner+"                     Profit: "+GetProfit()+",  Penalty: "+GetPenalty()+ ",  MinAudience: "+GetMinAudience()+",  Title: "+GetTitle(), LOG_DEBUG)
+		TLogger.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
+		'TLogger.log("TAdContract.Sign", "       "+owner+"                     Profit: "+GetProfit()+",  Penalty: "+GetPenalty()+ ",  MinAudience: "+GetMinAudience()+",  Title: "+GetTitle(), LOG_DEBUG)
 		return TRUE
 	End Method
 
@@ -440,9 +440,9 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		SetAlpha 0.3
-		Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13,y+131), TRectangle.Create(0, 0, 200, 12))
+		Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
 		SetAlpha 1.0
-		if infomercialTopicality > 0.1 then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13,y+131), TRectangle.Create(0, 0, infomercialTopicality*200, 12))
+		if infomercialTopicality > 0.1 then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, infomercialTopicality*200, 12))
 	End Method
 
 
@@ -461,19 +461,19 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 		Assets.fonts.basefontBold.drawBlock(GetTitle()	, x+10 , y+11 , 270, 70)
 		font.drawBlock(GetDescription()   		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "			, x+10 , y+94 , 130, 16)
-		font.drawBlock(TFunctions.convertValue(GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,new TPoint.Init(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
-		font.drawBlock(TFunctions.convertValue(GetPenalty(), 2)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetPenalty(), 2)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,new TPoint.Init(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+10, y+140, 127, 16)
-		font.drawBlock(TFunctions.convertValue(GetMinAudience(), 2), x+10, y+140, 127, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetMinAudience(), 2), x+10, y+140, 127, 16,new TPoint.Init(ALIGN_RIGHT))
 
 		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		font.drawBlock(GetSpotsToSend()+"/"+GetSpotCount() , x+150, y+94 , 127, 16,TPoint.Create(ALIGN_RIGHT))
+		font.drawBlock(GetSpotsToSend()+"/"+GetSpotCount() , x+150, y+94 , 127, 16,new TPoint.Init(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_PLANNED")+": "    , x+150, y+117 , 127, 16)
 		if self.owner > 0
-			font.drawBlock( GetSpotsPlanned() + "/" + GetSpotCount() , x+150, y+117 , 127, 16,TPoint.Create(ALIGN_RIGHT))
+			font.drawBlock( GetSpotsPlanned() + "/" + GetSpotCount() , x+150, y+117 , 127, 16,new TPoint.Init(ALIGN_RIGHT))
 		else
-			font.drawBlock( "-" , x+150, y+117 , 127, 16,TPoint.Create(ALIGN_RIGHT))
+			font.drawBlock( "-" , x+150, y+117 , 127, 16,new TPoint.Init(ALIGN_RIGHT))
 		endif
 
 		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetTargetgroupString()   , x+10 , y+163 , 270, 16)
@@ -917,7 +917,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 		self.SetState(self.STATE_OK)
 		'give money
 		local earn:int = player.GetAudience() * contract.GetPerViewerRevenue()
-		TDevHelper.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
+		TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
 		player.GetFinance().EarnInfomercialRevenue(earn, contract)
 	End Method
 
@@ -936,17 +936,17 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 		'ad failed (audience lower than needed)
 		If player.audience.Audience.GetSum() < contract.GetMinAudience()
 			setState(STATE_FAILED)
-			'TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
+			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 		'ad is ok
 		Else
 			setState(STATE_OK)
 			'successful sent - so increase the value the contract
 			contract.spotsSent:+1
-			'TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
+			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-Game.GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 
 			'successful sent all needed spots?
 			If contract.isSuccessful()
-				TDevHelper.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" finished ad contract, earned "+contract.GetProfit()+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
+				TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" finished ad contract, earned "+contract.GetProfit()+CURRENCYSIGN+" with an audience of "+player.GetAudience(), LOG_DEBUG)
 				'give money
 				player.GetFinance().EarnAdProfit(contract.GetProfit(), contract)
 

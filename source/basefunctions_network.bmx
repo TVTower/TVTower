@@ -5,7 +5,7 @@ Import Brl.Map
 Import Brl.Stream
 Import Brl.Retro
 Import "external/bnetex/bnetex.bmx"	'for direct udp messages
-Import "basefunctions_events.bmx"	'for event system
+Import "Dig/base.util.event.bmx"
 
 Const NET_PACKET_RELIABLE:int	= 1
 CONST NET_PACKET_HEADER:int		= 1317

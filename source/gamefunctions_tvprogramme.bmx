@@ -457,7 +457,7 @@ Function LoadDatabase(filename:String)
 		totalnewscount :+1
 	Next
 
-	TDevHelper.log("TDatabase.Load()", "found " + seriescount+ " series, "+totalmoviescount+ " movies, "+ contractscount + " advertisements, " + totalnewscount + " news. loading time: "+(Millisecs()-time)+"ms", LOG_LOADING)
+	TLogger.log("TDatabase.Load()", "found " + seriescount+ " series, "+totalmoviescount+ " movies, "+ contractscount + " advertisements, " + totalnewscount + " news. loading time: "+(Millisecs()-time)+"ms", LOG_LOADING)
 End Function
 
 
@@ -505,7 +505,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 			Resize(Assets.GetSprite(GetAssetBaseName()+"1").area.GetW(), Assets.GetSprite(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
 
 			'set handle (center for dragged objects) to half of a 1-Block
-			self.setHandle(TPoint.Create(Assets.GetSprite(GetAssetBaseName()+"1").area.GetW()/2, Assets.GetSprite(GetAssetBaseName()+"1").area.GetH()/2))
+			self.setHandle(new TPoint.Init(Assets.GetSprite(GetAssetBaseName()+"1").area.GetW()/2, Assets.GetSprite(GetAssetBaseName()+"1").area.GetH()/2))
 		endif
 	End Method
 
@@ -570,7 +570,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		local pos:TPoint = null
 		'dragged and not in DrawGhostMode
 		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			pos = TPoint.Create(GetScreenX(), GetScreenY())
+			pos = new TPoint.Init(GetScreenX(), GetScreenY())
 			if block > 1
 				pos.MoveXY(0, Assets.GetSprite(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 			endif
@@ -586,13 +586,13 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 				pos = list.GetSlotCoord(startSlot + block-1)
 				pos.moveXY(list.getScreenX(), list.getScreenY())
 			else
-				pos = TPoint.Create(self.GetScreenX(),self.GetScreenY())
+				pos = new TPoint.Init(self.GetScreenX(),self.GetScreenY())
 				pos.MoveXY(0, Assets.GetSprite(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 				'print "block: "+block+"  "+pos.GetIntX()+","+pos.GetIntY()
 			endif
 		endif
 
-		return TRectangle.Create(pos.x,pos.y, self.rect.getW(), Assets.GetSprite(GetAssetBaseName()+"1").area.GetH())
+		return new TRectangle.Init(pos.x,pos.y, self.rect.getW(), Assets.GetSprite(GetAssetBaseName()+"1").area.GetH())
 	End Method
 
 
@@ -635,7 +635,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 	Method DrawBlockBackground:int(variant:string="")
 
 		Local titleIsVisible:Int = FALSE
-		local drawPos:TPoint = TPoint.Create(GetScreenX(), GetScreenY())
+		local drawPos:TPoint = new TPoint.Init(GetScreenX(), GetScreenY())
 		'if dragged and not in ghost mode
 		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
 			if broadcastMaterial.state = broadcastMaterial.STATE_NORMAL Then variant = "_dragged"
@@ -671,21 +671,21 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 						If blocks = 1
 							Assets.GetSprite(GetAssetBaseName()+"1"+variant).Draw(GetScreenX(), GetScreenY())
 						Else
-							Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, TRectangle.Create(0, 0, -1, 30))
+							Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 0, -1, 30))
 						EndIf
 						'xrated
 						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.xrated
 							local addPixel:int = 0
 							if GetAssetBaseName() = "pp_programmeblock" then addPixel = 1
-							Assets.GetSprite("pp_xrated").Draw(GetScreenX() + Assets.GetSprite(GetAssetBaseName()+"1"+variant).GetWidth() +addPixel, GetScreenY(),  -1, TPoint.Create(ALIGN_RIGHT, ALIGN_TOP))
+							Assets.GetSprite("pp_xrated").Draw(GetScreenX() + Assets.GetSprite(GetAssetBaseName()+"1"+variant).GetWidth() +addPixel, GetScreenY(),  -1, new TPoint.Init(ALIGN_RIGHT, ALIGN_TOP))
 						endif
 						titleIsVisible = TRUE
 				case 2	'middle
-						Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, TRectangle.Create(0, 30, -1, 15))
+						Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 30, -1, 15))
 						drawPos.MoveXY(0,15)
-						Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, TRectangle.Create(0, 30, -1, 15))
+						Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 30, -1, 15))
 				case 3	'bottom
-						Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, TRectangle.Create(0, 30, -1, 30))
+						Assets.GetSprite(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 30, -1, 30))
 			End Select
 		Next
 		return titleIsVisible
@@ -777,9 +777,9 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 
 			Select useType
 				case broadcastMaterial.TYPE_PROGRAMME
-					DrawProgrammeBlockText(TRectangle.Create(GetScreenX(), GetScreenY(), Assets.GetSprite(GetAssetBaseName()+"1").area.GetW()-1,-1))
+					DrawProgrammeBlockText(new TRectangle.Init(GetScreenX(), GetScreenY(), Assets.GetSprite(GetAssetBaseName()+"1").area.GetW()-1,-1))
 				case broadcastMaterial.TYPE_ADVERTISEMENT
-					DrawAdvertisementBlockText(TRectangle.Create(GetScreenX(), GetScreenY(), Assets.GetSprite(GetAssetBaseName()+"2").area.GetW()-4,-1))
+					DrawAdvertisementBlockText(new TRectangle.Init(GetScreenX(), GetScreenY(), Assets.GetSprite(GetAssetBaseName()+"2").area.GetW()-4,-1))
 			end Select
 		endif
 	End Method
@@ -879,7 +879,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		Assets.GetFont("Default", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, null, TColor.CreateGrey(0), 0,1,1.0, FALSE)
 		textColor.setRGB()
 		Assets.GetFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
-		Assets.GetFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, TPoint.Create(ALIGN_RIGHT))
+		Assets.GetFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, new TPoint.Init(ALIGN_RIGHT))
 		SetColor 255,255,255 'eigentlich alte Farbe wiederherstellen
 	End Method
 
@@ -923,8 +923,8 @@ End Type
 Type TGUIProgrammePlanSlotList extends TGUISlotList
 	'sollten nicht gebraucht werden - die "slotpositionen" muessten auch herhalten
 	'koennen
-	Field zoneLeft:TRectangle		= TRectangle.Create(0, 0, 200, 350)
-	Field zoneRight:TRectangle		= TRectangle.Create(300, 0, 200, 350)
+	Field zoneLeft:TRectangle		= new TRectangle.Init(0, 0, 200, 350)
+	Field zoneRight:TRectangle		= new TRectangle.Init(300, 0, 200, 350)
 
 	'what day this slotlist is planning currently
 	Field planDay:int = -1
@@ -979,7 +979,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 
 		self.slotBackground = Assets.GetSprite(spriteName)
 
-		self.blockDimension = TPoint.Create(slotBackground.area.GetW(), slotBackground.area.GetH())
+		self.blockDimension = new TPoint.Init(slotBackground.area.GetW(), slotBackground.area.GetH())
 		SetSlotMinDimension(blockDimension.GetIntX(), blockDimension.GetIntY())
 
 		self.SetEntryDisplacement(slotBackground.area.GetW() + displaceX , -12 * slotBackground.area.GetH(), 12) '12 is stepping
@@ -1067,7 +1067,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		local firstSlotCoord:TPoint = GetSlotOrCoord(0)
 		local blocksRunYesterday:int = 24 - startHour
 		guiElement.lastSlot = - blocksRunYesterday
-		guiElement.rect.position.setPos(firstSlotCoord)
+		guiElement.rect.position.CopyFrom(firstSlotCoord)
 		'move above 0:00 (gets hidden automatically)
 		guiElement.rect.position.moveXY(0, -1 * blocksRunYesterday * blockDimension.GetIntY() )
 
@@ -1366,15 +1366,15 @@ Type TPlannerList
 	Field openState:int		= 0		'0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
 	Field currentGenre:Int	=-1
 	Field enabled:Int		= 0
-	Field Pos:TPoint 		= TPoint.Create()
+	Field Pos:TPoint 		= new TPoint.Init()
 	Field gfxTape:TGW_Sprite
 	Field gfxTapeBackground:TGW_Sprite
 	Field tapeRect:TRectangle
-	Field displaceTapes:TPoint = TPoint.Create(9,8)
+	Field displaceTapes:TPoint = new TPoint.Init(9,8)
 
 
 	Method Init:int(x:float, y:float)
-		tapeRect	= TRectangle.Create(x, y, gfxTapeBackground.area.GetW(), gfxTapeBackground.area.GetH() )
+		tapeRect	= new TRectangle.Init(x, y, gfxTapeBackground.area.GetW(), gfxTapeBackground.area.GetH() )
 		return TRUE
 	End Method
 
@@ -1389,7 +1389,7 @@ End Type
 
 'the programmelist shown in the programmeplaner
 Type TgfxProgrammelist extends TPlannerList
-	Field displaceEpisodeTapes:TPoint = TPoint.Create(6,5)
+	Field displaceEpisodeTapes:TPoint = new TPoint.Init(6,5)
 	Field gfxTapeSeries:TGW_Sprite
 	Field gfxTapeEpisodes:TGW_Sprite
 	Field gfxTapeEpisodesBackground:TGW_Sprite
@@ -1419,12 +1419,12 @@ Type TgfxProgrammelist extends TPlannerList
 		genreHeight:+ Assets.getSprite("genres_entry"+1).area.GetH()
 		genreHeight:+ Assets.getSprite("genres_bottom").area.GetH()
 
-		genreRect		= TRectangle.Create(Pos.GetX(), Pos.GetY(), genreWidth, genreHeight)
+		genreRect		= new TRectangle.Init(Pos.GetX(), Pos.GetY(), genreWidth, genreHeight)
 
 		'init tapeRect - and right align it
 		self.Init(genreRect.GetX() - gfxTapeBackground.area.GetW() + 10, genreRect.GetY())
 
-		tapeEpisodesRect= TRectangle.Create(..
+		tapeEpisodesRect= new TRectangle.Init(..
 								genreRect.GetX() - gfxTapeEpisodesBackground.area.GetW() + 8,..
 								tapeRect.GetY() + tapeRect.GetH() + 5, ..
 								gfxTapeEpisodesBackground.area.GetW(), gfxTapeEpisodesBackground.area.GetH()..
@@ -1471,7 +1471,7 @@ Type TgfxProgrammelist extends TPlannerList
 					SetBlend AlphaBlend
 				endif
 				'draw hover effect if hovering
-				if TFunctions.MouseIn(Pos.x, currY, Assets.getSprite("genres_entry"+entryNum).area.GetW(), Assets.getSprite("genres_entry"+entryNum).area.GetH())
+				if THelper.MouseIn(Pos.x, currY, Assets.getSprite("genres_entry"+entryNum).area.GetW(), Assets.getSprite("genres_entry"+entryNum).area.GetH())
 					SetBlend LightBlend
 					SetAlpha 0.2*oldAlpha
 					Assets.getSprite("genres_entry"+entryNum).draw(Pos.x,currY)
@@ -1506,7 +1506,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 	Method DrawTapes:Int(genre:Int=-1)
 		local font:TGW_BitmapFont 	= Assets.getFont("Default", 10)
-		local box:TRectangle	= TRectangle.Create(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
+		local box:TRectangle	= new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
 		local asset:TGW_Sprite = null
 
 		gfxTapeBackground.Draw(tapeRect.GetX(), tapeRect.GetY())
@@ -1545,7 +1545,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 
 	Method UpdateTapes:Int(genre:Int=-1, mode:int=0)
-		local box:TRectangle = TRectangle.Create(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
+		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
 
 		If genre < 0 then return FALSE
 
@@ -1612,7 +1612,7 @@ Type TgfxProgrammelist extends TPlannerList
 		gfxTapeEpisodesBackground.Draw(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY())
 
 		local hoveredLicence:TProgrammeLicence = null
-		local box:TRectangle = TRectangle.Create(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
+		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
 		local font:TGW_BitmapFont = Assets.getFont("Default", 8)
 		'displace all tapes - border of background
 		box.MoveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
@@ -1645,7 +1645,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 	Method UpdateEpisodeTapes:Int(seriesLicence:TProgrammeLicence)
 		Local tapecount:Int = 0
-		local box:TRectangle = TRectangle.Create(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
+		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
 		'displace all tapes - border of background
 		box.MoveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
 
@@ -1684,7 +1684,7 @@ Type TgfxProgrammelist extends TPlannerList
 		'clicking on the genre selector -> select Genre
 		'instead of isClicked (butten must be "normal" then)
 		'we use "hit" (as soon as mouse button down)
-		If MOUSEMANAGER.IsHit(1) AND TFunctions.MouseIn(Pos.x,Pos.y, Assets.getSprite("genres_entry0").area.GetW(), Assets.getSprite("genres_entry0").area.GetH()*self.MaxGenres)
+		If MOUSEMANAGER.IsHit(1) AND THelper.MouseIn(Pos.x,Pos.y, Assets.getSprite("genres_entry0").area.GetW(), Assets.getSprite("genres_entry0").area.GetH()*self.MaxGenres)
 			SetOpen(2)
 			currentgenre = Floor((MouseManager.y - Pos.y - 1) / Assets.getSprite("genres_entry0").area.GetH())
 			MOUSEMANAGER.ResetKey(1)
@@ -1755,7 +1755,7 @@ Type TgfxContractlist extends TPlannerList
 
 	Method DrawTapes:Int()
 		local font:TGW_BitmapFont = Assets.getFont("Default", 10)
-		local box:TRectangle = TRectangle.Create(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
+		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
 		local hoveredAdContract:TAdContract = null
 		'displace all tapes - border of background
 		box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
@@ -1783,7 +1783,7 @@ Type TgfxContractlist extends TPlannerList
 		If not enabled then return FALSE
 
 		if self.openState >= 1
-			local box:TRectangle = TRectangle.Create(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
+			local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
 			'displace all tapes - border of background
 			box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
@@ -1834,7 +1834,7 @@ End Type
 'they do not need to have gui/non-gui objects as no special
 'handling is done (just clicking)
 Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
-	Field area:TRectangle = TRectangle.Create(0,0,0,0)
+	Field area:TRectangle = new TRectangle.Init(0,0,0,0)
 	Field licence:TProgrammeLicence		'the licence getting auctionated (a series, movie or collection)
 	Field bestBid:int = 0				'what was bidden for that licence
 	Field bestBidder:int = 0			'what was bidden for that licence
@@ -1853,7 +1853,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 	Method Create:TAuctionProgrammeBlocks(slot:Int=0, licence:TProgrammeLicence)
 		self.area.position.SetXY(140 + (slot Mod 2) * 260, 80 + Ceil(slot / 2) * 60)
-		self.area.dimension.SetPos(Assets.GetSprite("gfx_auctionmovie").area.dimension)
+		self.area.dimension.CopyFrom(Assets.GetSprite("gfx_auctionmovie").area.dimension)
 		self.slot = slot
 		self.Refill(licence)
 		List.AddLast(self)
@@ -2026,7 +2026,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 			EndIf
 			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, null, TColor.clBlack, 1, 1, 0.50)
 
-			font.drawBlock("Bieten:"+GetNextBid()+CURRENCYSIGN, 31,33, 212,20, TPoint.Create(ALIGN_RIGHT), TColor.clBlack, 1)
+			font.drawBlock("Bieten:"+GetNextBid()+CURRENCYSIGN, 31,33, 212,20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack, 1)
 
 			'reset target for fonts
 			TGW_BitmapFont.setRenderTarget(null)

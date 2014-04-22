@@ -5,6 +5,8 @@ Import Pub.Lua
 Import "external/reflectionExtended/reflection.bmx"
 Import brl.retro
 Import "basefunctions.bmx"
+Import "Dig/base.util.logger.bmx"
+
 'from maxlua
 ?threaded
 Import "basefunctions_lua_threaded.c"
@@ -131,9 +133,9 @@ Type TLuaEngine
 
 
 	Method DumpError()
-		TDevHelper.log("TLuaEngine", "#### ERROR #######################", LOG_ERROR)
-		TDevHelper.log("TLuaEngine", "Engine: "+self.id, LOG_ERROR)
-		TDevHelper.log("TLuaEngine", lua_tostring( getLuaState(),-1 ), LOG_ERROR)
+		TLogger.log("TLuaEngine", "#### ERROR #######################", LOG_ERROR)
+		TLogger.log("TLuaEngine", "Engine: "+self.id, LOG_ERROR)
+		Tlogger.log("TLuaEngine", lua_tostring( getLuaState(),-1 ), LOG_ERROR)
 	End Method
 
 
@@ -247,12 +249,12 @@ Type TLuaEngine
 				If mth
 					'PRIVATE...do not add private functions/methods
 					if mth.MetaData("_private")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 						return false
 					endif
 					'only expose the children with explicit mention
 					if exposeType = "selected" AND not mth.MetaData("_exposeToLua")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose method ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 						return false
 					endif
 
@@ -268,12 +270,12 @@ rem
 				If _function
 					'PRIVATE...do not add private functions/methods
 					if _function.MetaData("_private")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR )
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR )
 						return false
 					endif
 					'only expose the children with explicit mention
 					if exposeType = "selected" AND not _function.MetaData("_exposeToLua")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose function ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 						return false
 					endif
 
@@ -289,12 +291,12 @@ endrem
 				If _constant
 					'PRIVATE...do not add private functions/methods
 					if _constant.MetaData("_private")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 						return false
 					endif
 					'only expose the children with explicit mention
 					if exposeType = "selected" AND not _constant.MetaData("_exposeToLua")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose constant ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 						return false
 					endif
 
@@ -319,11 +321,11 @@ endrem
 					'PRIVATE...do not add private functions/methods
 					'SELECTED...only expose the children with explicit mention
 					if fld.MetaData("_private")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 						return false
 					endif
 					if exposeType = "selected" AND not fld.MetaData("_exposeToLua")
-						TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not expose field ~q" + ident+"~q. Access Failed.", LOG_ERROR)
 						return false
 					endif
 
@@ -346,7 +348,7 @@ endrem
 				endif
 
 
-				TDevHelper.log("TLuaEngine", "Object "+typeId.name()+" does not have a property called ~q" + ident+"~q.", LOG_ERROR)
+				TLogger.log("TLuaEngine", "Object "+typeId.name()+" does not have a property called ~q" + ident+"~q.", LOG_ERROR)
 				return FALSE
 			End Method
 
@@ -361,7 +363,7 @@ endrem
 
 				'only expose if type set to get exposed
 				if not typeId.MetaData("_exposeToLua")
-					TDevHelper.log("TLuaEngine", "Type "+typeId.name()+" not exposed to Lua.", LOG_ERROR)
+					TLogger.log("TLuaEngine", "Type "+typeId.name()+" not exposed to Lua.", LOG_ERROR)
 				endif
 				local exposeType:string = typeId.MetaData("_exposeToLua")
 
@@ -374,7 +376,7 @@ endrem
 					'only set values of children with explicit mention
 					if exposeType = "selected" AND not fld.MetaData("_exposeToLua") then return True
 					if fld.MetaData("_exposeToLua")<>"rw"
-						TDevHelper.log("TLuaEngine", "Object property "+typeId.name()+"."+ident+" is read-only.", LOG_ERROR)
+						TLogger.log("TLuaEngine", "Object property "+typeId.name()+"."+ident+" is read-only.", LOG_ERROR)
 						return TRUE
 					endif
 
@@ -392,7 +394,7 @@ endrem
 					End Select
 					Return True
 				EndIf
-				TDevHelper.log("TLuaEngine", "newindex: ident not found "+ident+".", LOG_ERROR)
+				TLogger.log("TLuaEngine", "newindex: ident not found "+ident+".", LOG_ERROR)
 			End Method
 
 			'functions so we can push them to lua

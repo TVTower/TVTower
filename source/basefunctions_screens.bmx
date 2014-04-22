@@ -1,6 +1,7 @@
 SuperStrict
 Import "basefunctions.bmx"
-Import "basefunctions_events.bmx"
+Import "Dig/base.util.event.bmx"
+Import "Dig/base.util.color.bmx"
 
 
 
@@ -11,7 +12,7 @@ Type TScreenCollection
 	Field targetScreen:TScreen = null
 	Field screens:TMap = CreateMap()					'containing all screens
 	Global instance:TScreenCollection
-	Global _screenDimension:TPoint = TPoint.Create(0,0)
+	Global _screenDimension:TPoint = new TPoint.Init(0,0)
 	Global useChangeEffects:int = TRUE
 
 
@@ -175,7 +176,7 @@ Type TScreenCollection
 
 
 	Function SetScreenDimension(width:int, height:int)
-		_screenDimension = TPoint.Create(width,height)
+		_screenDimension = new TPoint.Init(width,height)
 	End Function
 End Type
 Global ScreenCollection:TScreenCollection = TScreenCollection.Create(null)
@@ -323,7 +324,7 @@ Type TScreenChangeEffect
 
 
 	Method GetArea:TRectangle()
-		if not _area then _area = TRectangle.Create(0,0, TScreenCollection._screenDimension.GetX(), TScreenCollection._screenDimension.GetY())
+		if not _area then _area = new TRectangle.Init(0,0, TScreenCollection._screenDimension.GetX(), TScreenCollection._screenDimension.GetY())
 		return _area
 	End Method
 
@@ -390,7 +391,7 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 		SetAlpha tweenProgress
 
 		_color.SetRGB()
-		GetArea().Draw()
+		DrawRect(GetArea().GetX(), GetArea().GetY(), GetArea().GetW(), GetArea().GetH())
 		oldCol.SetRGBA()
 	End Method
 End Type

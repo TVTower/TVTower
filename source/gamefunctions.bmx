@@ -358,7 +358,7 @@ Type TGUIGameWindow Extends TGUIWindow
 
 		GetPadding().SetTop(35)
 
-		SetCaptionArea(TRectangle.Create(20, 10, GetContentScreenWidth() - 2*20, 25))
+		SetCaptionArea(new TRectangle.Init(20, 10, GetContentScreenWidth() - 2*20, 25))
 		guiCaptionTextBox.SetValueAlignment("LEFT", "TOP")
 
 		If Not childSprite Then childSprite = Assets.GetNinePatchSprite("gfx_gui_panel.content")
@@ -424,7 +424,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 
 '		GetPadding().SetTop(35)
 
-		SetCaptionArea(TRectangle.Create(20, 10, GetContentScreenWidth() - 2*20, 25))
+		SetCaptionArea(new TRectangle.Init(20, 10, GetContentScreenWidth() - 2*20, 25))
 		guiCaptionTextBox.SetValueAlignment("CENTER", "TOP")
 
 
@@ -472,7 +472,7 @@ Type TGUIChatEntry Extends TGUIListItem
 
 
 	Method getDimension:TPoint()
-		Local move:TPoint = TPoint.Create(0,0)
+		Local move:TPoint = new TPoint.Init(0,0)
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
@@ -534,7 +534,7 @@ Type TGUIChatEntry Extends TGUIListItem
 		'local maxWidth:int = self.getParentWidth("tguiscrollablepanel")-self.rect.getX()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local move:TPoint = TPoint.Create(0,0)
+		Local move:TPoint = new TPoint.Init(0,0)
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
@@ -664,7 +664,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		Super.Draw()
 
 		'draw text
-		Local move:TPoint = TPoint.Create(0, Self.paddingTop)
+		Local move:TPoint = new TPoint.Init(0, Self.paddingTop)
 		Local text:String = ""
 		Local textColor:TColor = Null
 		Local textDim:TPoint = Null
@@ -695,7 +695,7 @@ End Type
 
 
 Type THotspot
-	Field area:TRectangle			= TRectangle.Create(0,0,0,0)
+	Field area:TRectangle			= new TRectangle.Init(0,0,0,0)
 	Field name:String				= ""
 	Field tooltip:TTooltip			= Null
 	Field tooltipText:String		= ""
@@ -713,7 +713,7 @@ Type THotspot
 
 
 	Method Create:THotSpot(name:String, x:Int,y:Int,w:Int,h:Int)
-		Self.area = TRectangle.Create(x,y,w,h)
+		Self.area = new TRectangle.Init(x,y,w,h)
 		Self.name = name
 
 		list. AddLast(self)
@@ -763,7 +763,7 @@ Type THotspot
 
 		If tooltip And tooltip.enabled
 			tooltip.area.position.SetXY( adjustedArea.getX() + adjustedArea.getW()/2 - tooltip.GetWidth()/2, adjustedArea.getY() - tooltip.GetHeight())
-			tooltip.Update( App.Timer.getDelta() )
+			tooltip.Update( GetDeltaTimer().GetDelta() )
 			'delete old tooltips
 			If tooltip.lifetime < 0 Then tooltip = Null
 		EndIf
@@ -898,7 +898,7 @@ Type TTooltip Extends TRenderable
 	Field minContentWidth:int	= 120
 	'left (2) and right (4) is for all elements
 	'top (1) and bottom (3) padding for content
-	Field padding:TRectangle	= TRectangle.Create(3,5,4,7)
+	Field padding:TRectangle	= new TRectangle.Init(3,5,4,7)
 	Field image:TImage			= Null
 	Field dirtyImage:Int		= 1
 	Field tooltipImage:Int		=-1
@@ -926,7 +926,7 @@ Type TTooltip Extends TRenderable
 	Method Initialize:Int(title:String="", content:String="unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=50)
 		Self.title				= title
 		Self.content			= content
-		Self.area				= TRectangle.Create(x, y, w, h)
+		Self.area				= new TRectangle.Init(x, y, w, h)
 		Self.tooltipimage		= -1
 		Self.lifetime			= lifetime
 		Self._startLifetime		= Float(lifetime) / 1000.0 	'in seconds
@@ -1202,9 +1202,9 @@ End Type
 	'draws a rounded rectangle (blue border) with alphashadow
 	Function DrawGFXRect(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:String="gfx_gui_rect_")
 		gfx_Rect.getSprite(nameBase+"TopLeft").Draw(x, y)
-		gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, TPoint.Create(ALIGN_RIGHT, ALIGN_TOP))
-		gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, TPoint.Create(ALIGN_RIGHT, ALIGN_BOTTOM))
+		gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, new TPoint.Init(ALIGN_RIGHT, ALIGN_TOP))
+		gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, new TPoint.Init(ALIGN_RIGHT, ALIGN_BOTTOM))
 
 		gfx_Rect.getSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderLeft").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH())
 		gfx_Rect.getSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetH() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetH())
@@ -1346,12 +1346,12 @@ End Type
 
 
 Type TBlockMoveable Extends TOwnedGameObject
-	Field rect:TRectangle			= TRectangle.Create(0,0,0,0)
+	Field rect:TRectangle			= new TRectangle.Init(0,0,0,0)
 	Field dragable:Int				= 1 {saveload = "normalExt"}
 	Field dragged:Int				= 0 {saveload = "normalExt"}
-	Field OrigPos:TPoint 			= TPoint.Create(0, 0) {saveload = "normalExtB"}
-	Field StartPos:TPoint			= TPoint.Create(0, 0) {saveload = "normalExt"}
-	Field StartPosBackup:TPoint		= TPoint.Create(0, 0)
+	Field OrigPos:TPoint 			= new TPoint.Init(0, 0) {saveload = "normalExtB"}
+	Field StartPos:TPoint			= new TPoint.Init(0, 0) {saveload = "normalExt"}
+	Field StartPosBackup:TPoint		= new TPoint.Init(0, 0)
 
 
 	'switches coords and state of blocks
@@ -1365,15 +1365,15 @@ Type TBlockMoveable Extends TOwnedGameObject
 
 	'switches current and startcoords of two blocks
 	Method SwitchCoords(otherObj:TBlockMoveable)
-		TPoint.SwitchPos(Self.rect.position, 	otherObj.rect.position)
-		TPoint.SwitchPos(Self.StartPos,			otherObj.StartPos)
-		TPoint.SwitchPos(Self.StartPosBackup,	otherObj.StartPosBackup)
+		TPoint.SwitchPoints(rect.position, otherObj.rect.position)
+		TPoint.SwitchPoints(StartPos, otherObj.StartPos)
+		TPoint.SwitchPoints(StartPosBackup, otherObj.StartPosBackup)
 	End Method
 
 
 	'checks if x, y are within startPoint+dimension
 	Method containsCoord:Byte(x:Int, y:Int)
-		Return TFunctions.IsIn( x,y, Self.StartPos.getX(), Self.StartPos.getY(), Self.rect.getW(), Self.rect.getH() )
+		Return THelper.IsIn( x,y, Self.StartPos.getX(), Self.StartPos.getY(), Self.rect.getW(), Self.rect.getH() )
 	End Method
 
 
@@ -1387,14 +1387,14 @@ Type TBlockMoveable Extends TOwnedGameObject
 
 	Method SetBasePos(pos:TPoint = Null)
 		If pos <> Null
-			Self.rect.position.setPos(pos)
-			Self.StartPos.setPos(pos)
+			rect.position.CopyFrom(pos)
+			StartPos.CopyFrom(pos)
 		EndIf
 	End Method
 
 
 	Method IsAtStartPos:Int()
-		Return Self.rect.position.isSame(Self.StartPos, True)
+		Return rect.position.isSame(StartPos, True)
 	End Method
 
 
@@ -1426,7 +1426,7 @@ Type TError
 		obj.id		= LastID
 		LastID :+1
 		If obj.sprite = Null Then obj.sprite = Assets.getSprite("gfx_errorbox")
-		obj.pos		= TPoint.Create(400-obj.sprite.area.GetW()/2 +6, 200-obj.sprite.area.GetH()/2 +6)
+		obj.pos		= new TPoint.Init(400-obj.sprite.area.GetW()/2 +6, 200-obj.sprite.area.GetH()/2 +6)
 		obj.link	= List.AddLast(obj)
 		Return obj
 	End Function
@@ -1456,7 +1456,7 @@ Type TError
 	Method Update()
 		MouseManager.resetKey(2) 'no right clicking allowed as long as "error notice is active"
 		If Mousemanager.IsClicked(1)
-			If TFunctions.MouseIn(pos.x,pos.y, sprite.area.GetW(), sprite.area.GetH())
+			If THelper.MouseIn(pos.x,pos.y, sprite.area.GetW(), sprite.area.GetH())
 				link.Remove()
 				MouseManager.resetKey(1) 'clicked to remove error
 			EndIf
@@ -1506,7 +1506,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		Self._highlighted = False
-		If TFunctions.MouseIn( x, y-2, w, Assets.getFont("Default", 12).getBlockHeight(Self._text, w, h))
+		If THelper.MouseIn( x, y-2, w, Assets.getFont("Default", 12).getBlockHeight(Self._text, w, h))
 			Self._highlighted = True
 			If clicked
 				'emit the event if there is one
@@ -1585,7 +1585,7 @@ End Type
 Type TDialogue
 	Field _texts:TList = CreateList() 'of TDialogueTexts
 	Field _currentText:Int = 0
-	Field _rect:TRectangle = TRectangle.Create(0,0,0,0)
+	Field _rect:TRectangle = new TRectangle.Init(0,0,0,0)
 
 
 	Function Create:TDialogue(x:Float, y:Float, w:Float, h:Float)
@@ -1664,7 +1664,7 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + TFunctions.shortenFloat(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)" )
+			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + THelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)" )
 		Else
 			Return Self.Usefont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": 100 (100%)")
 		EndIf
@@ -1683,7 +1683,7 @@ Type TTooltipAudience Extends TTooltip
 			showDetails = False
 			'restore position
 			if originalPos
-				area.position.SetPos(originalPos)
+				area.position.CopyFrom(originalPos)
 				originalPos = null
 			endif
 		EndIf
@@ -1730,7 +1730,7 @@ Type TTooltipAudience Extends TTooltip
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
-		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + TFunctions.shortenFloat(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)"
+		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + THelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ 2 * Self.Usefont.GetHeight(lineText)
 
@@ -1741,23 +1741,23 @@ Type TTooltipAudience Extends TTooltip
 			Local lines:String[9]
 			Local percents:String[9]
 			lines[0]	= getLocale("AD_GENRE_1") + ": " + TFunctions.convertValue(audienceResult.Audience.Children, 0)
-			percents[0]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Children * 100,2)
+			percents[0]	= THelper.floatToString(audienceResult.AudienceQuote.Children * 100,2)
 			lines[1]	= getLocale("AD_GENRE_2") + ": " + TFunctions.convertValue(audienceResult.Audience.Teenagers, 0)
-			percents[1]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Teenagers * 100,2)
+			percents[1]	= THelper.floatToString(audienceResult.AudienceQuote.Teenagers * 100,2)
 			lines[2]	= getLocale("AD_GENRE_3") + ": " + TFunctions.convertValue(audienceResult.Audience.HouseWifes, 0)
-			percents[2]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.HouseWifes * 100,2)
+			percents[2]	= THelper.floatToString(audienceResult.AudienceQuote.HouseWifes * 100,2)
 			lines[3]	= getLocale("AD_GENRE_4") + ": " + TFunctions.convertValue(audienceResult.Audience.Employees, 0)
-			percents[3]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Employees * 100,2)
+			percents[3]	= THelper.floatToString(audienceResult.AudienceQuote.Employees * 100,2)
 			lines[4]	= getLocale("AD_GENRE_5") + ": " + TFunctions.convertValue(audienceResult.Audience.Unemployed, 0)
-			percents[4]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Unemployed * 100,2)
+			percents[4]	= THelper.floatToString(audienceResult.AudienceQuote.Unemployed * 100,2)
 			lines[5]	= getLocale("AD_GENRE_6") + ": " + TFunctions.convertValue(audienceResult.Audience.Manager, 0)
-			percents[5]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Manager * 100,2)
+			percents[5]	= THelper.floatToString(audienceResult.AudienceQuote.Manager * 100,2)
 			lines[6]	= getLocale("AD_GENRE_7") + ": " + TFunctions.convertValue(audienceResult.Audience.Pensioners, 0)
-			percents[6]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Pensioners * 100,2)
+			percents[6]	= THelper.floatToString(audienceResult.AudienceQuote.Pensioners * 100,2)
 			lines[7]	= getLocale("AD_GENRE_8") + ": " + TFunctions.convertValue(audienceResult.Audience.Women, 0)
-			percents[7]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Women * 100,2)
+			percents[7]	= THelper.floatToString(audienceResult.AudienceQuote.Women * 100,2)
 			lines[8]	= getLocale("AD_GENRE_9") + ": " + TFunctions.convertValue(audienceResult.Audience.Men, 0)
-			percents[8]	= TFunctions.shortenFloat(audienceResult.AudienceQuote.Men * 100,2)
+			percents[8]	= THelper.floatToString(audienceResult.AudienceQuote.Men * 100,2)
 
 			Local colorLight:TColor = TColor.CreateGrey(240)
 			Local colorDark:TColor = TColor.CreateGrey(230)
@@ -1774,10 +1774,10 @@ Type TTooltipAudience Extends TTooltip
 				'draw text
 				If i Mod 2 = 0
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, TPoint.Create(ALIGN_RIGHT), ColorTextLight)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TPoint.Init(ALIGN_RIGHT), ColorTextLight)
 				Else
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextDark)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, TPoint.Create(ALIGN_RIGHT), ColorTextDark)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TPoint.Init(ALIGN_RIGHT), ColorTextDark)
 				EndIf
 				lineY :+ lineIconHeight
 			Next
@@ -1802,7 +1802,7 @@ Type TInterface
 	Field tooltips:TList = CreateList()
 	Field noiseSprite:TGW_Sprite
 	Field noiseAlpha:Float	= 0.95
-	Field noiseDisplace:Trectangle = TRectangle.Create(0,0,0,0)
+	Field noiseDisplace:Trectangle = new TRectangle.Init(0,0,0,0)
 	Field ChangeNoiseTimer:Float= 0.0
 	Field ShowChannel:Byte 	= 1
 	Field BottomImgDirty:Byte = 1
@@ -1902,7 +1902,7 @@ Type TInterface
 		'channel selection (tvscreen on interface)
 		If MOUSEMANAGER.IsHit(1)
 			For Local i:Int = 0 To 4
-				If TFunctions.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
+				If THelper.MouseIn( 75 + i * 33, 171 + 383, 33, 41)
 					ShowChannel = i
 					BottomImgDirty = True
 				EndIf
@@ -1917,11 +1917,11 @@ Type TInterface
 			NoiseAlpha = 0.45 - (Rand(0,20)*0.01)
 		EndIf
 
-		If TFunctions.MouseIn(20,385,280,200)
+		If THelper.MouseIn(20,385,280,200)
 			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
 			local content:String = ""
 			If ShowChannel <> 0
-				content	= GetLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+TFunctions.shortenFloat(Game.Players[ShowChannel].GetAudiencePercentage()*100,2)+"%)"
+				content	= GetLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+THelper.floatToString(Game.Players[ShowChannel].GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
 				If ShowChannel = Game.playerID
@@ -1958,25 +1958,25 @@ Type TInterface
 			CurrentProgrammeToolTip.enabled = 1
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
-		If TFunctions.MouseIn(355,468,130,30)
+		If THelper.MouseIn(355,468,130,30)
 			'Print "DebugInfo: " + TAudienceResult.Curr().ToString()
 			Local player:TPlayer = Game.Players[Game.playerID]
 			Local audienceResult:TAudienceResult = player.audience
 
-			CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+TFunctions.shortenFloat(player.GetAudiencePercentage() * 100,2)+"%)")
+			CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+THelper.floatToString(player.GetAudiencePercentage() * 100,2)+"%)")
 			CurrentAudienceToolTip.SetAudienceResult(audienceResult)
 			CurrentAudienceToolTip.enabled 	= 1
 			CurrentAudienceToolTip.Hover()
 			'force redraw
 			CurrentTimeToolTip.dirtyImage = True
 		EndIf
-		If TFunctions.MouseIn(355,533,130,45)
+		If THelper.MouseIn(355,533,130,45)
 			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
 			CurrentTimeToolTip.SetContent(Game.getFormattedTime()+" "+getLocale("DAY")+" "+Game.getDayOfYear()+"/"+Game.daysPerYear+" "+Game.getYear())
 			CurrentTimeToolTip.enabled 	= 1
 			CurrentTimeToolTip.Hover()
 		EndIf
-		If TFunctions.MouseIn(355,415,130,30)
+		If THelper.MouseIn(355,415,130,30)
 			MoneyToolTip.title 		= getLocale("MONEY")
 			local content:String = ""
 			content	= "|b|"+getLocale("MONEY")+":|/b| "+Game.GetPlayer().GetMoney() + getLocale("CURRENCY")
@@ -1986,7 +1986,7 @@ Type TInterface
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()
 		EndIf
-		If TFunctions.MouseIn(355,510,130,15)
+		If THelper.MouseIn(355,510,130,15)
 			BettyToolTip.SetTitle(getLocale("BETTY_FEELINGS"))
 			BettyToolTip.SetContent("Derzeit liegt noch keine Liebe in der Luft ;D")
 			BettyToolTip.enabled = 1
@@ -2024,15 +2024,15 @@ Type TInterface
 	Method Draw(tweenValue:Float=1.0)
 		SetBlend ALPHABLEND
 		Assets.getSprite("gfx_interface_top").Draw(0,0)
-		Assets.getSprite("gfx_interface_leftright").DrawClipped(TPoint.Create(0, 20), TRectangle.Create(0, 0, 27, 363))
+		Assets.getSprite("gfx_interface_leftright").DrawClipped(new TPoint.Init(0, 20), new TRectangle.Init(0, 0, 27, 363))
 		SetBlend SOLIDBLEND
-		Assets.getSprite("gfx_interface_leftright").DrawClipped(TPoint.Create(780, 20), TRectangle.Create(27, 0, 20, 363))
+		Assets.getSprite("gfx_interface_leftright").DrawClipped(new TPoint.Init(780, 20), new TRectangle.Init(27, 0, 20, 363))
 
 		If BottomImgDirty
 
 			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
-			Assets.getSprite("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
+			Assets.getSprite("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
 			If ShowChannel <> 0 Then Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419)
 
@@ -2076,7 +2076,7 @@ Type TInterface
 			'draw noise of tv device
 			If ShowChannel <> 0
 				SetAlpha NoiseAlpha
-				If noiseSprite Then noiseSprite.DrawClipped(TPoint.Create(45, 400), TRectangle.Create(noiseDisplace.GetX(),noiseDisplace.GetY(), 220,170) )
+				If noiseSprite Then noiseSprite.DrawClipped(new TPoint.Init(45, 400), new TRectangle.Init(noiseDisplace.GetX(),noiseDisplace.GetY(), 220,170) )
 				SetAlpha 1.0
 			EndIf
 			'draw overlay to hide corners of non-round images
@@ -2094,18 +2094,18 @@ Type TInterface
 	  		SetBlend MASKBLEND
 	     	Assets.getSprite("gfx_interface_audience_overlay").Draw(520, 419)
 			SetBlend ALPHABLEND
-			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getMoneyFormatted() + "  ", 377, 427, 103, 25, TPoint.Create(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
-			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getFormattedAudience() + "  ", 377, 469, 103, 25, TPoint.Create(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555, 120, 25, TPoint.Create(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
+			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
+		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
 
 		SetAlpha 0.25
-		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime() + " Uhr", 366, 542, 120, 25, TPoint.Create(ALIGN_CENTER), TColor.Create(180,180,180))
+		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime() + " Uhr", 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
 		SetAlpha 0.9
-		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime()+ " Uhr", 365,541,120,25, TPoint.Create(ALIGN_CENTER), TColor.Create(40,40,40))
+		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime()+ " Uhr", 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
 		SetAlpha 1.0
 
 		For local tip:TTooltip = eachin tooltips

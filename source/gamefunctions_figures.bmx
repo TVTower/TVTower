@@ -29,7 +29,7 @@ Type TFigureCollection
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TDevHelper.Log("TFigureCollection", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
+		TLogger.Log("TFigureCollection", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
 		For local figure:TFigure = eachin _instance.list
 			figure.onLoad()
 		Next
@@ -43,11 +43,11 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	'rect: from TMoveableAnimSprites
 	' .position.y is difference to y of building
 	' .dimension.x and .y = "end" of figure in sprite
-	Field oldPos:TPoint			= TPoint.Create(0,0)
-	Field tweenPos:TPoint		= TPoint.Create(0,0)
+	Field oldPos:TPoint			= new TPoint.Init(0,0)
+	Field tweenPos:TPoint		= new TPoint.Init(0,0)
 	Field Name:String			= "unknown"
 	Field initialdx:Float		= 0.0			'backup of self.vel.x
-	Field PosOffset:TPoint		= TPoint.Create(0,0)
+	Field PosOffset:TPoint		= new TPoint.Init(0,0)
 	Field boardingState:Int		= 0				'0=no boarding, 1=boarding, -1=deboarding
 
 	Field target:TPoint			= Null {_exposeToLua}
@@ -84,7 +84,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		insertAnimation("standBack", TAnimation.Create([ [10,1000] ], -1, 0 ) )
 
 		name 				= Figurename
-		rect				= TRectangle.Create(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
+		rect				= new TRectangle.Init(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
 '		Self.vel.SetX(speed)
 		vel.SetX(0)
 		initialdx			= speed
@@ -340,11 +340,11 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 			'subtract half width from position - figure is drawn centered
 			'figure right of me
 			If Figure.rect.GetX() > rect.GetX()
-				Assets.GetSprite("gfx_building_textballons").Draw(int(tweenPos.x + rect.GetW()/2 -2), int(Building.pos.y + tweenPos.y - Self.sprite.area.GetH()), greetType, TPoint.Create(ALIGN_LEFT, ALIGN_CENTER))
+				Assets.GetSprite("gfx_building_textballons").Draw(int(tweenPos.x + rect.GetW()/2 -2), int(Building.pos.y + tweenPos.y - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER))
 			'figure left of me
 			else
 				greetType :+ 3
-				Assets.GetSprite("gfx_building_textballons").Draw(int(tweenPos.x - rect.GetW()/2 +2), int(Building.pos.y + tweenPos.y - Self.sprite.area.GetH()), greetType, TPoint.Create(ALIGN_RIGHT, ALIGN_CENTER))
+				Assets.GetSprite("gfx_building_textballons").Draw(int(tweenPos.x - rect.GetW()/2 +2), int(Building.pos.y + tweenPos.y - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER))
 			endif
 		Next
 	End Method
@@ -404,7 +404,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		local door:TRoomDoor = kickFigure.fromDoor
 		if not door then door = TRoomDoor.GetMainDoorToRoom(room)
 
-		TDevHelper.log("TFigure.KickFigureFromRoom()", name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
+		TLogger.log("TFigure.KickFigureFromRoom()", name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
 		'instead of SimpleSoundSource we use the rooms sound source
 		'so we are able to have positioned sound
 		if door
@@ -568,7 +568,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		If Building.GetFloor(y) < 0 Or Building.GetFloor(y) > 13 Then Return False
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		target = TPoint.Create(x, Building.GetFloorY(Building.GetFloor(y)) )
+		target = new TPoint.Init(x, Building.GetFloorY(Building.GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
 		targetDoor = TRoomDoor.GetByCoord(target.x, Building.pos.y + target.y)

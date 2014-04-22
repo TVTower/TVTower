@@ -268,11 +268,11 @@ Type TNetworkHelper
 		'must be a player DIFFERENT to me
 		if not Game.isPlayer(playerID) or playerID = game.playerID then return
 
-		'60 upd per second = -> App.Timer.getDeltaTime() => 16ms
+		'60 upd per second = -> GetDeltaTimer().GetDeltaTime() => 16ms
 		'ping in ms -> latency/2 -> 0.5*latency/16ms = "1,3 updates bis ping ankommt"
 		'pro Update: zeiterhoehung von "game.speed/10.0"
 		'-> bereinigung: "0.5*latency/16" * "game.speed/10.0"
-		local correction:float = 0.5*Network.client.latency / App.Timer.getDelta()   *   game.speed/10.0
+		local correction:float = 0.5*Network.client.latency / GetDeltaTimer().GetDelta()   *   game.speed/10.0
 		'we want it in s not in ms
 		correction :/ 1000.0
 '		print obj.getFloat(3) + "  + "+correction
@@ -532,7 +532,7 @@ print "[NET] ReceiveGameReady"
 	Method ReceiveStationmapChange:int( obj:TNetworkObject)
 		local playerID:int		= obj.getInt(1)
 		local action:int		= obj.getInt(2)
-		local pos:TPoint		= TPoint.Create( obj.getFloat(3), obj.getFloat(4) )
+		local pos:TPoint		= new TPoint.Init( obj.getFloat(3), obj.getFloat(4) )
 		local radius:int		= obj.getInt(5)
 		if not Game.isPlayer(playerID) then return FALSE
 

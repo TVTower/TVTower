@@ -9,6 +9,7 @@ Import brl.StandardIO
 Import brl.Max2D
 
 Import "basefunctions.bmx"
+Import "Dig/base.util.color.bmx"
 ?Win32
 'Import "Dx9Max2dDriver05\Dx9Max2dGraphicsDriver.bmx"
 ?

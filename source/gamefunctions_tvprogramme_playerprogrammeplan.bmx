@@ -347,7 +347,7 @@ endrem
 
 		'do not allow adding in the past
 		if checkSlotTime and not IsUseableTimeSlot(slotType, day, hour)
-			TDevHelper.log("TPlayerProgrammePlan.AddObject", "Failed: time is in the past", LOG_INFO)
+			TLogger.log("TPlayerProgrammePlan.AddObject", "Failed: time is in the past", LOG_INFO)
 			return FALSE
 		endif
 

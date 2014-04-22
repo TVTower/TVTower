@@ -2,10 +2,8 @@ SuperStrict
 'Author: Ronny Otto
 Import "basefunctions.bmx"
 Import "basefunctions_sprites.bmx"
-Import "basefunctions_keymanager.bmx"
-Import "basefunctions_localization.bmx"
 Import "basefunctions_resourcemanager.bmx"
-Import "basefunctions_events.bmx"
+Import "Dig/base.util.event.bmx"
 
 Rem
 	Die Objekte sollten statt
@@ -41,10 +39,10 @@ Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int			= 1
 
 
 Global gfx_GuiPack:TGW_SpritePack = TGW_SpritePack.Create(LoadImage("res/grafiken/GUI/guipack.png"), "guipack_pack")
-gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "ListControl", TRectangle.Create(96, 0, 56, 28), Null, 8, -1, TPoint.Create(14, 14)))
-gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "DropDown", TRectangle.Create(160, 0, 126, 42), Null, 21, -1, TPoint.Create(14, 14)))
-gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "Slider", TRectangle.Create(0, 30, 112, 14), Null, 8))
-gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "Chat_IngameOverlay", TRectangle.Create(0, 60, 504, 20), Null))
+gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "ListControl", new TRectangle.Init(96, 0, 56, 28), Null, 8, -1, new TPoint.Init(14, 14)))
+gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "DropDown", new TRectangle.Init(160, 0, 126, 42), Null, 21, -1, new TPoint.Init(14, 14)))
+gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "Slider", new TRectangle.Init(0, 30, 112, 14), Null, 8))
+gfx_GuiPack.AddSprite(New TGW_Sprite.Create(Null, "Chat_IngameOverlay", new TRectangle.Init(0, 60, 504, 20), Null))
 
 
 Type TGUIManager
@@ -157,11 +155,11 @@ Type TGUIManager
 		'we found an object accepting the drop
 
 		'ask if something does not want that drop to happen
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", new TData.AddObject("coord", coord) , guiobject, dropTarget)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDropOnTarget", new TData.Add("coord", coord) , guiobject, dropTarget)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
-			event = TEventSimple.Create("guiobject.onDropOnTarget", new TData.AddObject("coord", coord) , guiobject, dropTarget)
+			event = TEventSimple.Create("guiobject.onDropOnTarget", new TData.Add("coord", coord) , guiobject, dropTarget)
 			EventManager.triggerEvent( event )
 		EndIf
 
@@ -172,7 +170,7 @@ Type TGUIManager
 			Return False
 		Else
 			'inform others: we successfully dropped the object to a target
-			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", new TData.AddObject("coord", coord) , guiobject, dropTarget ))
+			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", new TData.Add("coord", coord) , guiobject, dropTarget ))
 			'also add this drop target as receiver of the original-drop-event
 			triggerEvent._receiver = dropTarget
 			Return True
@@ -502,18 +500,18 @@ Global GUIManager:TGUIManager = TGUIManager.Create()
 
 
 Type TGUIobject
-	Field rect:TRectangle			= TRectangle.Create(-1,-1,-1,-1)
+	Field rect:TRectangle			= new TRectangle.Init(-1,-1,-1,-1)
 	Field positionBackup:TPoint		= Null
-	Field padding:TRectangle		= TRectangle.Create(0,0,0,0)
+	Field padding:TRectangle		= new TRectangle.Init(0,0,0,0)
 	Field data:TData				= new TData 'storage for additional data
 	Field scale:Float				= 1.0
 	Field alpha:Float				= 1.0
-	Field handlePosition:TPoint		= TPoint.Create(0, 0)		'where to attach the object
-	Field contentPosition:TPoint	= TPoint.Create(0.5, 0.5)	'where to attach the content within the object
+	Field handlePosition:TPoint		= new TPoint.Init(0, 0)		'where to attach the object
+	Field contentPosition:TPoint	= new TPoint.Init(0.5, 0.5)	'where to attach the content within the object
 	Field state:String				= ""
 	Field value:String				= ""
 	Field mouseIsClicked:TPoint		= Null			'null = not clicked
-	Field mouseIsDown:TPoint		= TPoint.Create(-1,-1)
+	Field mouseIsDown:TPoint		= new TPoint.Init(-1,-1)
 	Field mouseover:Int				= 0			'could be done with TPoint
 	Field children:TList			= Null
 	Field _id:Int
@@ -818,14 +816,14 @@ Type TGUIobject
 	'set the anchor of the gui object
 	'valid values are 0-1.0 (percentage)
 	Method SetHandlePosition:Int(handleLeft:Float=0.0, handleTop:Float=0.0)
-		handlePosition = TPoint.Create(handleLeft, handleTop)
+		handlePosition = new TPoint.Init(handleLeft, handleTop)
 	End Method
 
 
 	'set the anchor of the gui objects content
 	'valid values are 0-1.0 (percentage)
 	Method SetContentPosition:Int(contentLeft:Float=0.0, contentTop:Float=0.0)
-		contentPosition = TPoint.Create(contentLeft, contentTop)
+		contentPosition = new TPoint.Init(contentLeft, contentTop)
 	End Method
 
 
@@ -858,15 +856,15 @@ Type TGUIobject
 	Method drag:Int(coord:TPoint=Null)
 		If Not isDragable() Or isDragged() Then Return False
 
-		positionBackup = TPoint.Create( GetScreenX(), GetScreenY() )
+		positionBackup = new TPoint.Init( GetScreenX(), GetScreenY() )
 
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", new TData.AddObject("coord", coord), self)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", new TData.Add("coord", coord), self)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 			'trigger an event immediately - if the event has a veto afterwards, do not drag!
-			Local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", new TData.AddObject("coord", coord), Self )
+			Local event:TEventSimple = TEventSimple.Create( "guiobject.onDrag", new TData.Add("coord", coord), Self )
 			EventManager.triggerEvent( event )
 			If event.isVeto() Then Return False
 
@@ -875,7 +873,7 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dragging
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrag", new TData.AddObject("coord", coord), Self))
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrag", new TData.Add("coord", coord), Self))
 
 			Return True
 		else
@@ -895,17 +893,17 @@ Type TGUIobject
 	Method drop:Int(coord:TPoint=Null, force:Int=False)
 		If Not isDragged() Then Return False
 
-		If coord And coord.getX()=-1 Then coord = TPoint.Create(MouseManager.x, MouseManager.y)
+		If coord And coord.getX()=-1 Then coord = new TPoint.Init(MouseManager.x, MouseManager.y)
 
 
-		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", new TData.AddObject("coord", coord), self)
+		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", new TData.Add("coord", coord), self)
 		EventManager.triggerEvent( event )
 		'if there is no problem ...just start dropping
 		If Not event.isVeto()
 
 			'fire an event - if the event has a veto afterwards, do not drop!
 			'exception is, if the action is forced
-			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", new TData.AddObject("coord", coord), Self)
+			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", new TData.Add("coord", coord), Self)
 			EventManager.triggerEvent( event )
 			If Not force And event.isVeto() Then Return False
 
@@ -914,7 +912,7 @@ Type TGUIobject
 			GUIManager.SortLists()
 
 			'inform others - item finished dropping - Receiver of "event" may now be helding the guiobject dropped on
-			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrop", new TData.AddObject("coord", coord), Self, event.GetReceiver()))
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onFinishDrop", new TData.Add("coord", coord), Self, event.GetReceiver()))
 			Return True
 		else
 			Return FALSE
@@ -964,7 +962,7 @@ Type TGUIobject
 
 
 	Method GetScreenPos:TPoint()
-		Return TPoint.Create(GetScreenX(), GetScreenY())
+		Return new TPoint.Init(GetScreenX(), GetScreenY())
 	End Method
 
 
@@ -1062,7 +1060,7 @@ Type TGUIobject
 	'get a rectangle describing the objects area on the screen
 	Method GetScreenRect:TRectangle()
 		'dragged items ignore parents but take care of mouse position...
-		If isDragged() Then Return TRectangle.Create(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+		If isDragged() Then Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
 
 		'no other limiting object - just return the object's area
 		'(no move needed as it is already oriented to screen 0,0)
@@ -1076,7 +1074,7 @@ Type TGUIobject
 		'only try to intersect if the parent gaves back an intersection (or self if no parent)
 		If resultRect
 			'create a sourceRect which is a screen-rect (=visual!)
-			Local sourceRect:TRectangle = TRectangle.Create( ..
+			Local sourceRect:TRectangle = new TRectangle.Init( ..
 										    GetScreenX(),..
 										    GetScreenY(),..
 										    GetScreenWidth(),..
@@ -1094,7 +1092,7 @@ Type TGUIobject
 				Return resultRect
 			EndIf
 		EndIf
-		Return TRectangle.Create(0,0,-1,-1)
+		Return new TRectangle.Init(0,0,-1,-1)
 	End Method
 
 
@@ -1207,7 +1205,7 @@ Type TGUIobject
 					'as soon as someone clicks on a object it is getting focused
 					GUImanager.setFocus(Self)
 
-					MouseIsDown = TPoint.Create( MouseManager.x, MouseManager.y )
+					MouseIsDown = new TPoint.Init( MouseManager.x, MouseManager.y )
 				EndIf
 
 				'we found a gui element which can accept clicks
@@ -1261,7 +1259,7 @@ Type TGUIobject
 				If Not GUIManager.UpdateState_foundHitObject And _flags & GUI_OBJECT_ENABLED
 					If MOUSEMANAGER.IsClicked(1)
 						'=== SET CLICKED VAR ====
-						mouseIsClicked = TPoint.Create( MouseManager.x, MouseManager.y)
+						mouseIsClicked = new TPoint.Init( MouseManager.x, MouseManager.y)
 
 						'=== SEND OUT CLICK EVENT ====
 						'if recognized as "double click" no normal "onClick"
@@ -1308,7 +1306,7 @@ Type TGUIobject
 		SetScale scale, scale
 		Assets.GetSprite(identifier+".L").Draw(x,y)
 		Assets.GetSprite(identifier+".M").TileDrawHorizontal(x + Assets.GetSprite(identifier+".L").area.GetW()*scale, y, GetScreenWidth() - ( Assets.GetSprite(identifier+".L").area.GetW() + Assets.GetSprite(identifier+".R").area.GetW())*scale, scale)
-		Assets.GetSprite(identifier+".R").Draw(x + GetScreenWidth(), y, -1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM), scale)
+		Assets.GetSprite(identifier+".R").Draw(x + GetScreenWidth(), y, -1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM), scale)
 		SetScale 1.0,1.0
 	End Method
 
@@ -1438,7 +1436,7 @@ End Type
 
 Type TGUILabel Extends TGUIobject
 	Field text:String = ""
-	Field displacement:TPoint = TPoint.Create(0,0)
+	Field displacement:TPoint = new TPoint.Init(0,0)
 	Field color:TColor = TColor.Create(0,0,0)
 
 	Global defaultLabelFont:TGW_BitmapFont
@@ -1476,7 +1474,7 @@ End Type
 
 
 Type TGUITextBox Extends TGUIobject
-	Field valueAlignment:TPoint 	= TPoint.Create(0,0)
+	Field valueAlignment:TPoint 	= new TPoint.Init(0,0)
 	Field valueColor:TColor			= TColor.Create(0,0,0)
 	Field valueStyle:Int			= 0			'used in DrawBlock(...style)
 	Field valueStyleSpecial:Float	= 1.0		'used in DrawBlock(...special)
@@ -1541,7 +1539,7 @@ Type TGUITextBox Extends TGUIobject
 
 
 	Method Draw:Int()
-		Local drawPos:TPoint = TPoint.Create(GetScreenX(), GetScreenY())
+		Local drawPos:TPoint = new TPoint.Init(GetScreenX(), GetScreenY())
 		GetUseFont().drawBlock(value, drawPos.GetIntX(), drawPos.GetIntY(), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
 	End Method
 
@@ -1576,8 +1574,8 @@ Type TGUIImageButton Extends TGUIobject
 
 		'unmanaged label -> we have to position it ourself
 		If Self.caption And Self.caption._flags & GUI_OBJECT_ENABLED
-			Self.caption.rect.position.SetPos( Self.rect.position )
-			Self.caption.rect.dimension.SetPos( Self.rect.dimension )
+			Self.caption.rect.position.CopyFrom( Self.rect.position )
+			Self.caption.rect.dimension.CopyFrom( Self.rect.dimension )
 		EndIf
 		Return Self
 	End Method
@@ -1682,7 +1680,7 @@ Type TGUIArrowButton  Extends TGUIObject
 
 
 	Method Create:TGUIArrowButton(area:TRectangle=Null, direction:String="LEFT", limitState:String = "")
-		If Not area Then area = TRectangle.Create(0,0,-1,-1)
+		If Not area Then area = new TRectangle.Init(0,0,-1,-1)
 		Super.CreateBase(area.GetX(), area.GetY(), limitState, Null)
 
 		SetDirection(direction)
@@ -1818,9 +1816,9 @@ Type TGUISlider Extends TGUIobject
 
   		If Ceil(actvalueX) < sprite.framew
 			'links an
-			sprite.DrawClipped(atPoint, TRectangle.Create(0,0, Ceil(actvalueX) + 5, -1), 4)
+			sprite.DrawClipped(atPoint, new TRectangle.Init(0,0, Ceil(actvalueX) + 5, -1), 4)
 			'links aus
-  		    sprite.DrawClipped(atPoint, TRectangle.Create(0,0,-1,-1), 0)
+  		    sprite.DrawClipped(atPoint, new TRectangle.Init(0,0,-1,-1), 0)
 		Else
 			sprite.Draw(atPoint.GetX(), atPoint.GetY(), 4)
 		EndIf
@@ -1828,11 +1826,11 @@ Type TGUISlider Extends TGUIobject
 			Local rightAtPoint:TPoint = atPoint.Copy()
 			rightAtPoint.MoveX(Self.GetScreenWidth() - sprite.framew)
 			'links an
-			sprite.DrawClipped(rightAtPoint, TRectangle.Create(0,0, Ceil(actvalueX) - (Self.GetScreenWidth() - sprite.framew) + 5, -1), 6)
+			sprite.DrawClipped(rightAtPoint, new TRectangle.Init(0,0, Ceil(actvalueX) - (Self.GetScreenWidth() - sprite.framew) + 5, -1), 6)
   		    'links aus
-  		    sprite.DrawClipped(rightAtPoint, TRectangle.Create(0,0,-1,-1), 2)
+  		    sprite.DrawClipped(rightAtPoint, new TRectangle.Init(0,0,-1,-1), 2)
 		Else
-			sprite.Draw(atPoint.GetX() + GetScreenWidth(), atPoint.GetY(), 2, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM) )
+			sprite.Draw(atPoint.GetX() + GetScreenWidth(), atPoint.GetY(), 2, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM) )
 		EndIf
 
 
@@ -1883,7 +1881,7 @@ Type TGUIinput Extends TGUIobject
 	Field _valueBeforeEdit:String		= ""
 	Field _activated:Int				= False
 
-	Global minDimension:TPoint 				= TPoint.Create(40,28)
+	Global minDimension:TPoint 				= new TPoint.Init(40,28)
     Global spriteNameDefault:String			= "gfx_gui_input.default"
 
 
@@ -1910,7 +1908,7 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method SetValueDisplacement(x:Int, y:Int)
-		Self.valueDisplacement = TPoint.Create(x,y)
+		Self.valueDisplacement = new TPoint.Init(x,y)
 	End Method
 
 
@@ -1987,7 +1985,7 @@ Type TGUIinput Extends TGUIobject
 		'give it an default orientation
 		If overlayPosition = "" Then SetOverlayPosition("left")
 
-		If Not overlayArea Then overlayArea = TRectangle.Create(0,0,0,0)
+		If Not overlayArea Then overlayArea = new TRectangle.Init(0,0,0,0)
 		If overlaySprite
 			overlayArea.dimension.SetXY(overlaySprite.GetWidth(), overlaySprite.GetHeight())
 		ElseIf overlayText<>""
@@ -2009,7 +2007,7 @@ Type TGUIinput Extends TGUIobject
 		Local textPos:TPoint
 		Local inputWidth:Int = rect.GetW()
 		If Not valueDisplacement
-			textPos = TPoint.Create(5, (rect.GetH() - useFont.getHeight("a")) /2)
+			textPos = new TPoint.Init(5, (rect.GetH() - useFont.getHeight("a")) /2)
 		Else
 			textPos = valueDisplacement.copy()
 		EndIf
@@ -2174,7 +2172,7 @@ Type TGUIDropDown Extends TGUIobject
 
 		'check new hovered or clicked items
 		For Local Entry:TGUIEntry = EachIn Self.EntryList 'Liste hier global
-			If TFunctions.MouseIn( Self.GetScreenX(), Self.GetScreenY() + currentAddY, Self.GetScreenWidth(), lineHeight)
+			If THelper.MouseIn( Self.GetScreenX(), Self.GetScreenY() + currentAddY, Self.GetScreenWidth(), lineHeight)
 				If MOUSEMANAGER.IsHit(1)
 					value			= Entry.getValue()
 					clickedEntryID	= Entry.id
@@ -2268,7 +2266,7 @@ Type TGUICheckBox  Extends TGUIObject
 	Field spriteButtonBaseName:String	= "gfx_gui_button.round"
 
 	Method Create:TGUICheckbox(area:TRectangle=Null, checked:Int=False, labelValue:String, limitState:String="", useFont:TGW_BitmapFont=Null)
-		If Not area Then area = TRectangle.Create(0,0,-1,-1)
+		If Not area Then area = new TRectangle.Init(0,0,-1,-1)
 		Super.CreateBase(area.GetX(), area.GetY(), limitState, Null)
 
 		setZindex(40)
@@ -2440,7 +2438,7 @@ Type TGUIWindow Extends TGUIPanel
 				rect = guiCaptionArea
 			Else
 				Local padding:TRectangle = guiBackground.sprite.GetContentBorder()
-				rect = TRectangle.Create(padding.GetLeft(), 0, GetContentScreenWidth(), padding.GetTop())
+				rect = new TRectangle.Init(padding.GetLeft(), 0, GetContentScreenWidth(), padding.GetTop())
 			EndIf
 
 			If Not guiCaptionTextBox
@@ -2497,8 +2495,8 @@ Type TGUIModalWindow Extends TGUIWindow
 	'variables for closing animation
 	Field moveAcceleration:Float	= 1.2
 	Field moveDY:Float				= -1.0
-	Field moveOld:TPoint			= TPoint.Create(0,0)
-	Field move:TPoint				= TPoint.Create(0,0)
+	Field moveOld:TPoint			= new TPoint.Init(0,0)
+	Field move:TPoint				= new TPoint.Init(0,0)
 	Field fadeValueOld:Float		= 1.0
 	Field fadeValue:Float			= 1.0
 	Field fadeFactor:Float			= 0.9
@@ -2538,14 +2536,14 @@ Type TGUIModalWindow Extends TGUIWindow
 			'a default button
 			Case 1
 					buttons = buttons[..1]
-					buttons[0] = New TGUIButton.Create(TPoint.Create(0, 0), 120, "OK")
+					buttons[0] = New TGUIButton.Create(new TPoint.Init(0, 0), 120, "OK")
 					AddChild(buttons[0])
 			'yes and no button
 			Case 2
 					buttons = buttons[..2]
-					buttons[0] = New TGUIButton.Create(TPoint.Create(0, 0), 90, GetLocale("YES"))
+					buttons[0] = New TGUIButton.Create(new TPoint.Init(0, 0), 90, GetLocale("YES"))
 					buttons[0].SetZIndex(1)
-					buttons[1] = New TGUIButton.Create(TPoint.Create(0, 0), 90, GetLocale("NO"))
+					buttons[1] = New TGUIButton.Create(new TPoint.Init(0, 0), 90, GetLocale("NO"))
 					buttons[1].SetZIndex(1)
 					AddChild(buttons[0])
 					AddChild(buttons[1])
@@ -2580,7 +2578,7 @@ Type TGUIModalWindow Extends TGUIWindow
 			centerY = DarkenedArea.getY() + DarkenedArea.GetH()/2
 		EndIf
 
-		If Not moveBy Then moveBy = TPoint.Create(0,0)
+		If Not moveBy Then moveBy = new TPoint.Init(0,0)
 		Self.rect.position.setXY(centerX - Self.rect.getW()/2 + moveBy.getX(),centerY - Self.rect.getH()/2 + moveBy.getY() )
 	End Method
 
@@ -2811,9 +2809,9 @@ End Type
 
 
 Type TGUIScrollablePanel Extends TGUIPanel
-	Field scrollPosition:TPoint	= TPoint.Create(0,0)
-	Field scrollLimit:TPoint	= TPoint.Create(0,0)
-	Field minSize:TPoint		= TPoint.Create(0,0)
+	Field scrollPosition:TPoint	= new TPoint.Init(0,0)
+	Field scrollLimit:TPoint	= new TPoint.Init(0,0)
+	Field minSize:TPoint		= new TPoint.Init(0,0)
 
 
 	Method Create:TGUIScrollablePanel(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
@@ -3042,8 +3040,8 @@ Type TGUIListBase Extends TGUIobject
 	Field _multiColumn:int						= FALSE
 	Field _mouseOverArea:Int					= False 'private mouseover-field (ignoring covering child elements)
 	Field _dropOnTargetListenerLink:TLink		= Null
-	Field _entryDisplacement:TPoint				= TPoint.Create(0,0,1)	'displace each entry by (z-value is stepping)...
-	Field _entriesBlockDisplacement:TPoint		= TPoint.Create(0,0,0)	'displace the entriesblock by x,y...
+	Field _entryDisplacement:TPoint				= new TPoint.Init(0,0,1)	'displace each entry by (z-value is stepping)...
+	Field _entriesBlockDisplacement:TPoint		= new TPoint.Init(0,0,0)	'displace the entriesblock by x,y...
 	Field _orientation:Int						= 0		'0 means vertical, 1 is horizontal
 	Field _scrollingEnabled:Int					= False
 	Field _scrollToBeginWithoutScrollbars:Int	= True	'scroll to the very first element as soon as the scrollbars get hidden ?
@@ -3367,7 +3365,7 @@ Type TGUIListBase Extends TGUIobject
 			EndIf
 
 			'==== SET POSITION ====
-			entry.rect.position.SetPos(currentPos)
+			entry.rect.position.CopyFrom(currentPos)
 
 			entryNumber:+1
 		Next
@@ -3601,7 +3599,7 @@ endrem
 
 		Super.Update()
 
-		_mouseOverArea = TFunctions.MouseIn(GetScreenX(), GetScreenY(), rect.GetW(), rect.GetH())
+		_mouseOverArea = THelper.MouseIn(GetScreenX(), GetScreenY(), rect.GetW(), rect.GetH())
 
 		If autoHideScroller
 			If _mouseOverArea
@@ -3619,7 +3617,7 @@ endrem
 		If guiBackground
 			guiBackground.Draw()
 		Else
-			Local rect:TRectangle = TRectangle.Create(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
+			Local rect:TRectangle = new TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
 
 			If _mouseOverArea
 				backgroundColorHovered.setRGBA()
@@ -3627,7 +3625,7 @@ endrem
 				backgroundColor.setRGBA()
 			EndIf
 
-			rect.Draw()
+			DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
 
 			SetAlpha 1.0
 			SetColor 255,255,255
@@ -3748,7 +3746,7 @@ Type TGUISelectList Extends TGUIListBase
 			If TGUISelectListItem(Self.selectedEntry) Then TGUISelectListItem(Self.selectedEntry).selected = True
 
 			'inform others: we successfully selected an item
-			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.AddObject("entry", entry) , Self ) )
+			EventManager.triggerEvent( TEventSimple.Create( "GUISelectList.onSelectEntry", new TData.Add("entry", entry) , Self ) )
 		EndIf
 	End Method
 
@@ -3770,7 +3768,7 @@ End Type
 
 
 Type TGUISlotList Extends TGUIListBase
-	Field _slotMinDimension:TPoint	= TPoint.Create(0,0)
+	Field _slotMinDimension:TPoint	= new TPoint.Init(0,0)
 	Field _slotAmount:Int			= -1		'<=0 means dynamically, else it is fixed
 	Field _slots:TGUIobject[0]
 	Field _slotsState:Int[0]
@@ -3883,14 +3881,14 @@ Type TGUISlotList Extends TGUIListBase
 	Method GetSlotOrCoord:TPoint(slot:Int=-1, coord:TPoint=Null)
 		Local baseRect:TRectangle = Null
 		If _fixedSlotDimension
-			baseRect = TRectangle.Create(0, 0, _slotMinDimension.getX(), _slotMinDimension.getY())
+			baseRect = new TRectangle.Init(0, 0, _slotMinDimension.getX(), _slotMinDimension.getY())
 		Else
 			If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL
-				baseRect = TRectangle.Create(0, 0, rect.GetW(), _slotMinDimension.getY())
+				baseRect = new TRectangle.Init(0, 0, rect.GetW(), _slotMinDimension.getY())
 			ElseIf _orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
-				baseRect = TRectangle.Create(0, 0, _slotMinDimension.getX(), rect.GetH())
+				baseRect = new TRectangle.Init(0, 0, _slotMinDimension.getX(), rect.GetH())
 			Else
-				TDevHelper.log("TGUISlotList.GetSlotOrCoord", "unknown orientation : " + _orientation, LOG_ERROR)
+				TLogger.log("TGUISlotList.GetSlotOrCoord", "unknown orientation : " + _orientation, LOG_ERROR)
 			EndIf
 		EndIf
 
@@ -3910,7 +3908,7 @@ Type TGUISlotList Extends TGUIListBase
 			EndIf
 
 			'move base rect
-			baseRect.position.setPos(currentPos)
+			baseRect.position.CopyFrom(currentPos)
 
 			'if the current position + dimension contains the given
 			'coord or is of this slot - return this position
@@ -4174,7 +4172,7 @@ Type TGUISlotList Extends TGUIListBase
 	Method RecalculateElements:Int()
 		'set startpos at point of block displacement
 		Local currentPos:TPoint = _entriesBlockDisplacement.copy()
-		Local coveredArea:TRectangle = TRectangle.Create(0,0,_entriesBlockDisplacement.x,_entriesBlockDisplacement.y)
+		Local coveredArea:TRectangle = new TRectangle.Init(0,0,_entriesBlockDisplacement.x,_entriesBlockDisplacement.y)
 		For Local i:Int = 0 To Self._slots.length-1
 			Local slotW:Int = _slotMinDimension.getX()
 			Local slotH:Int = _slotMinDimension.getY()
@@ -4185,7 +4183,7 @@ Type TGUISlotList Extends TGUIListBase
 			EndIf
 
 			'move entry's position to current one
-			If _slots[i] Then _slots[i].rect.position.SetPos(currentPos)
+			If _slots[i] Then _slots[i].rect.position.CopyFrom(currentPos)
 
 			'resize covered area
 			coveredArea.position.setXY( Min(coveredArea.position.x, currentPos.x), Min(coveredArea.position.y, currentPos.y) )
@@ -4205,7 +4203,7 @@ Type TGUISlotList Extends TGUIListBase
 		Next
 
 		'resize container panel
-		Local dimension:TPoint = TPoint.Create(coveredArea.getW() - coveredArea.getX(), coveredArea.getH() - coveredArea.getY())
+		Local dimension:TPoint = new TPoint.Init(coveredArea.getW() - coveredArea.getX(), coveredArea.getH() - coveredArea.getY())
 		guiEntriesPanel.minSize.setXY(dimension.getX(), dimension.getY() )
 		guiEntriesPanel.resize(dimension.getX(), dimension.getY() )
 
@@ -4281,9 +4279,9 @@ Type TGUIListItem Extends TGUIobject
 		triggerEvent.SetAccepted(True)
 
 		If isDragged()
-			drop(TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)))
+			drop(new TPoint.Init(data.getInt("x",-1), data.getInt("y",-1)))
 		Else
-			drag(TPoint.Create(data.getInt("x",-1), data.getInt("y",-1)))
+			drag(new TPoint.Init(data.getInt("x",-1), data.getInt("y",-1)))
 		EndIf
 	End Method
 

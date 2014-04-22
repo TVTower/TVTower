@@ -9,11 +9,13 @@ Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
 Import "basefunctions_sound.bmx"
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
-Import "basefunctions_events.bmx"				'event handler
-Import "basefunctions_deltatimer.bmx"
 Import "basefunctions_lua.bmx"					'our lua engine
 Import "basefunctions_resourcemanager.bmx"
 Import "basefunctions_screens.bmx"
+
+Import "Dig/base.util.deltatimer.bmx"
+Import "Dig/base.util.event.bmx"
+
 
 ?Linux
 Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
@@ -80,19 +82,19 @@ Global RefreshInputMutex:TMutex = CreateMutex()
 
 '==== Initialize ====
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
-TDevHelper.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
+TLogger.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
-TDevHelper.setLogMode(LOG_ALL)
-TDevHelper.setPrintMode(LOG_ALL ) 'all but ai
+TLogger.setLogMode(LOG_ALL)
+TLogger.setPrintMode(LOG_ALL ) 'all but ai
 
 'print "ALLE MELDUNGEN AUS"
-'TDevHelper.SetPrintMode(0)
+'TLogger.SetPrintMode(0)
 
-'TDevHelper.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
+'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
 '@MANUEL: comment out when doing DEV to see LOG_DEV-messages
-'TDevHelper.changePrintMode(LOG_DEV, FALSE)
+'TLogger.changePrintMode(LOG_DEV, FALSE)
 
 
 
@@ -101,7 +103,6 @@ TDevHelper.setPrintMode(LOG_ALL ) 'all but ai
 
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
-	Field Timer:TDeltaTimer
 	Field settings:TApplicationSettings
 	Field devConfig:TData				= new TData
 	Field prepareScreenshot:Int			= 0						'logo for screenshot
@@ -128,13 +129,14 @@ Type TApp
 
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:int=TRUE)
 		Local obj:TApp = New TApp
-		obj.creationTime	= MilliSecs()
-		obj.settings		= New TApplicationSettings
-		obj.timer			= TDeltaTimer.Create(updatesPerSecond, framesPerSecond)
-		obj.vsync			= vsync
-		'listen to App-timer
-		'-register to draw loading screen
-		EventManager.registerListenerFunction( "App.onDraw", 	TApp.drawLoadingScreen )
+		obj.creationTime = MilliSecs()
+		obj.settings = New TApplicationSettings
+		obj.vsync = vsync
+
+		GetDeltatimer().Init(updatesPerSecond, framesPerSecond)
+		'set loading screen as active render function
+		GetDeltaTimer()._funcRender = renderLoadingScreen
+
 		'register to quit confirmation dialogue
 		EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
 		'-register for each toLoad-Element from XML files
@@ -182,20 +184,22 @@ Type TApp
 		devConfig = Assets.GetData("DEV_CONFIG", new TData)
 		TFunctions.roundToBeautifulEnabled = devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
 		if TFunctions.roundToBeautifulEnabled
-			TDevHelper.Log("TApp.LoadResources()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
+			TLogger.Log("TApp.LoadResources()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
 		else
-			TDevHelper.Log("TApp.LoadResources()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
+			TLogger.Log("TApp.LoadResources()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
 		endif
 	End Method
 
 
 	Method Start()
-		EventManager.unregisterListenersByTrigger("App.onDraw")
 		AppEvents.Init()
 
+		GetDeltaTimer()._funcUpdate = Update
+		'set from loading screen renderfunc to normal one
+		GetDeltaTimer()._funcRender = Render
+
+		'systemupdate is called from within "update" (lower priority updates)
 		EventManager.registerListenerFunction("App.onSystemUpdate", AppEvents.onAppSystemUpdate )
-		EventManager.registerListenerFunction("App.onUpdate", 		AppEvents.onAppUpdate )
-		EventManager.registerListenerFunction("App.onDraw", 		AppEvents.onAppDraw )
 		'so we could create special fonts and other things
 		EventManager.triggerEvent( TEventSimple.Create("App.onStart") )
 
@@ -203,8 +207,8 @@ Type TApp
 		'as we are no longer in the loading screen (-> silent loading)
 		if OnLoadListener then EventManager.unregisterListenerByLink( OnLoadListener )
 
-		TDevHelper.Log("TApp.Start()", "loaded resources: "+loadedResourceCount, LOG_INFO)
-		TDevHelper.Log("TApp.Start()", "loading time: "+(MilliSecs() - creationTime) +"ms", LOG_INFO)
+		TLogger.Log("TApp.Start()", "loaded resources: "+loadedResourceCount, LOG_INFO)
+		TLogger.Log("TApp.Start()", "loading time: "+(MilliSecs() - creationTime) +"ms", LOG_INFO)
 	End Method
 
 
@@ -233,7 +237,7 @@ Type TApp
 		'remove alpha
 		SavePixmapPNG(ConvertPixmap(img, PF_RGB888), filename)
 
-		TDevHelper.Log("App.SaveScreenshot", "Screenshot saved as ~q"+filename+"~q", LOG_INFO)
+		TLogger.Log("App.SaveScreenshot", "Screenshot saved as ~q"+filename+"~q", LOG_INFO)
 	End Method
 
 
@@ -288,59 +292,350 @@ Type TApp
 	Function onLoadElement( triggerEvent:TEventBase )
 		TApp.lastLoadEvent = TEventSimple(triggerEvent)
 		loadedResourceCount:+1
-		If TApp.baseResourcesLoaded Then App.timer.loop()
+		If TApp.baseResourcesLoaded Then GetDeltaTimer().loop()
 	End Function
 
 
-	Function drawLoadingScreen( triggerEvent:TEventBase )
+	Function renderLoadingScreen:int()
 		Local evt:TEventSimple = TApp.lastLoadEvent
-		If evt<>Null
-			Local element:String		= evt.getData().getString("element")
-			Local text:String			= evt.getData().getString("text")
-			Local itemNumber:Int		= evt.getData().getInt("itemNumber")
-			Local error:Int				= evt.getData().getInt("error")
-			Local maxItemNumber:Int		= 0
-			If itemNumber > 0 Then maxItemNumber = evt.getData().getInt("maxItemNumber")
+		If not evt then return FALSE
 
-			If element = "XmlFile" Then TApp.currentResourceUrl = text
+		Local element:String		= evt.getData().getString("element")
+		Local text:String			= evt.getData().getString("text")
+		Local itemNumber:Int		= evt.getData().getInt("itemNumber")
+		Local error:Int				= evt.getData().getInt("error")
+		Local maxItemNumber:Int		= 0
+		If itemNumber > 0 Then maxItemNumber = evt.getData().getInt("maxItemNumber")
 
-			SetColor 255, 255, 255
-			Assets.GetSprite("gfx_startscreen").Draw(0,0)
+		If element = "XmlFile" Then TApp.currentResourceUrl = text
 
-			If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
-			SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
-			Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.getWidth()/2 - Assets.GetSprite("gfx_startscreen_logo").area.GetW() / 2, 100)
-			SetAlpha 1.0
-			Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, TPoint.Create(ALIGN_CENTER, ALIGN_TOP))
-			'each run of "draw" incs by "pixels per resource"
+		SetColor 255, 255, 255
+		Assets.GetSprite("gfx_startscreen").Draw(0,0)
+
+		If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
+		SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
+		Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.getWidth()/2 - Assets.GetSprite("gfx_startscreen_logo").area.GetW() / 2, 100)
+		SetAlpha 1.0
+		Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
+		'each run of "draw" incs by "pixels per resource"
 
 '			LoaderWidth = Min(680, LoaderWidth + (680.0 / TApp.maxResourceCount))
-			LoaderWidth = Min(670, 670.0 * Float(loadedResourceCount)/Float(TApp.maxResourceCount))
-			Assets.GetSprite("gfx_startscreen_loadingBar").TileDraw((400-Assets.GetSprite("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, Assets.GetSprite("gfx_startscreen_loadingBar").frameh)
-			SetColor 0,0,0
-			If itemNumber > 0
-				SetAlpha 0.25
-				DrawText "[" + Replace(RSet(loadedResourceCount, String(TApp.maxResourceCount).length), " ", "0") + "/" + TApp.maxResourceCount + "]", 655, 415
+		LoaderWidth = Min(670, 670.0 * Float(loadedResourceCount)/Float(TApp.maxResourceCount))
+		Assets.GetSprite("gfx_startscreen_loadingBar").TileDraw((400-Assets.GetSprite("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, Assets.GetSprite("gfx_startscreen_loadingBar").frameh)
+		SetColor 0,0,0
+		If itemNumber > 0
+			SetAlpha 0.25
+			DrawText "[" + Replace(RSet(loadedResourceCount, String(TApp.maxResourceCount).length), " ", "0") + "/" + TApp.maxResourceCount + "]", 655, 415
 '				DrawText "[" + Replace(RSet(itemNumber, String(maxItemNumber).length), " ", "0") + "/" + maxItemNumber + "]", 670, 415
-				DrawText TApp.currentResourceUrl, 80, 402
-			EndIf
-			SetAlpha 0.5
-			DrawText "Loading: "+text, 80, 415
-			SetAlpha 1.0
-			If error > 0
-				SetColor 255, 0 ,0
-				DrawText("ERROR: ", 80,440)
-				SetAlpha 0.75
-				DrawText(text+" not found. (press ESC to exit)", 130,440)
-				SetAlpha 1.0
-			EndIf
-			SetColor 255, 255, 255
-
-			'base cursor
-			Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
-
-			Flip 0
+			DrawText TApp.currentResourceUrl, 80, 402
 		EndIf
+		SetAlpha 0.5
+		DrawText "Loading: "+text, 80, 415
+		SetAlpha 1.0
+		If error > 0
+			SetColor 255, 0 ,0
+			DrawText("ERROR: ", 80,440)
+			SetAlpha 0.75
+			DrawText(text+" not found. (press ESC to exit)", 130,440)
+			SetAlpha 1.0
+		EndIf
+		SetColor 255, 255, 255
+
+		'base cursor
+		Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
+
+		Flip 0
+	End Function
+
+
+	Function Update:Int()
+		'every 3rd update do a system update
+		if GetDeltaTimer().timesUpdated mod 3 = 0
+			EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",null) )
+		endif
+
+		?Threaded
+		LockMutex(RefreshInputMutex)
+		RefreshInput = True
+		UnlockMutex(RefreshInputMutex)
+		?
+		?Not Threaded
+		KEYMANAGER.Update()
+		MOUSEMANAGER.Update()
+		?
+		'fetch and cache mouse and keyboard states for this cycle
+		GUIManager.StartUpdates()
+
+		GUIManager.Update("SYSTEM")
+		'as long as the exit dialogue is open, do not accept non-gui-clicks to leave rooms
+		If App.ExitAppDialogue
+			MouseManager.ResetKey(2)
+		EndIf
+
+		'ignore shortcuts if a gui object listens to keystrokes
+		'eg. the active chat input field
+		If Not GUIManager.GetKeystrokeReceiver()
+			'keywrapper has "key every milliseconds" functionality
+			If KEYWRAPPER.hitKey(KEY_ESCAPE) Then TApp.CreateConfirmExitAppDialogue()
+
+			If App.devConfig.GetBool("DEV_KEYS", FALSE)
+				'(un)mute sound
+				'M: (un)mute all sounds
+				'SHIFT+M: (un)mute all sound effects
+				'CTRL+M: (un)mute all music
+				If KEYMANAGER.IsHit(KEY_M)
+					if KEYMANAGER.IsDown(KEY_LSHIFT) OR KEYMANAGER.IsDown(KEY_RSHIFT)
+						TSoundManager.GetInstance().MuteSfx(not TSoundManager.GetInstance().HasMutedSfx())
+					elseif KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
+						TSoundManager.GetInstance().MuteMusic(not TSoundManager.GetInstance().HasMutedMusic())
+					else
+						TSoundManager.GetInstance().Mute(not TSoundManager.GetInstance().IsMuted())
+					endif
+				endif
+
+				If Game.gamestate = TGame.STATE_RUNNING
+					If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.10
+					If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.10, 0)
+
+					If KEYMANAGER.IsHit(KEY_1) Game.SetActivePlayer(1)
+					If KEYMANAGER.IsHit(KEY_2) Game.SetActivePlayer(2)
+					If KEYMANAGER.IsHit(KEY_3) Game.SetActivePlayer(3)
+					If KEYMANAGER.IsHit(KEY_4) Game.SetActivePlayer(4)
+
+					If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("adagency") )
+					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", Game.playerID) )
+					If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("betty") )
+					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("movieagency"))
+					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", Game.playerID))
+					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", Game.playerID))
+					'e wie "employees" :D
+					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("credits"))
+					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", Game.playerID))
+					If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("roomboard"))
+				EndIf
+				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
+				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
+				If KEYMANAGER.IsHit(KEY_7) Then game.speed = 360.0	'180 minutes per second
+				If KEYMANAGER.IsHit(KEY_8) Then game.speed = 480.0	'240 minute per second
+				If KEYMANAGER.IsHit(KEY_9) Then game.speed = 1.0	'1 minute per second
+				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
+				If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
+
+				'Save game
+				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
+				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
+
+				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
+
+				If Game.isGameLeader()
+					If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F2) And Game.Players[2].isAI() Then Game.Players[2].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F3) And Game.Players[3].isAI() Then Game.Players[3].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
+				EndIf
+
+				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNewsEvent()
+				If KEYMANAGER.Ishit(Key_F6) Then TSoundManager.GetInstance().PlayMusicPlaylist("default")
+
+				If KEYMANAGER.Ishit(Key_F9)
+					If (KIRunning)
+						TLogger.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
+						KIRunning = False
+					Else
+						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
+						KIRunning = True
+					EndIf
+				EndIf
+				If KEYMANAGER.Ishit(Key_F10)
+					If (KIRunning)
+						For Local fig:TFigure = EachIn FigureCollection.list
+							If Not fig.isActivePlayer() Then fig.moveable = False
+						Next
+						TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
+						KIRunning = False
+					Else
+						For Local fig:TFigure = EachIn FigureCollection.list
+							If Not fig.isActivePlayer() Then fig.moveable = True
+						Next
+						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
+						KIRunning = True
+					EndIf
+				EndIf
+			EndIf
+		EndIf
+
+
+		TError.UpdateErrors()
+		Game.cursorstate = 0
+
+
+		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
+
+		If Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE)
+			TApp.CreateConfirmExitAppDialogue()
+		EndIf
+		If AppTerminate() Then TApp.ExitApp = True
+
+		'check if we need to make a screenshot
+		If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
+
+		If Game.networkGame Then Network.Update()
+
+		GUIManager.EndUpdates() 'reset modal window states
+	End Function
+
+
+	Function Render:Int()
+		'adjust current tweenFactor
+		CURRENT_TWEEN_FACTOR = GetDeltaTimer().GetTween()
+
+		TProfiler.Enter("Draw")
+		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
+
+		if App.devConfig.GetBool("DEV_OSD", FALSE)
+			Local textX:Int = 20
+			Assets.fonts.baseFont.draw("Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
+			textX:+80
+			Assets.fonts.baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
+			textX:+60
+			Assets.fonts.baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
+			textX:+60
+			Assets.fonts.baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
+			textX:+100
+
+			'RON: debug purpose - see if the managed guielements list increase over time
+			If TGUIObject.GetFocusedObject()
+				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
+				textX:+160
+			Else
+				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
+				textX:+130
+			EndIf
+
+			If game.networkgame And Network.client
+				Assets.fonts.baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
+				textX:+50
+			EndIf
+
+			If Game.DebugInfos
+				SetAlpha 0.75
+				SetColor 0,0,0
+				DrawRect(20,10,160,373)
+				SetColor 255, 255, 255
+				SetAlpha 1.0
+				Assets.fonts.baseFontBold.draw("Debug information:", 25,20)
+				If App.settings.directx = -1 Then Assets.fonts.baseFont.draw("Renderer: OpenGL", 25,40)
+				If App.settings.directx = 0  Then Assets.fonts.baseFont.draw("Renderer: BufferedOpenGL", 25,40)
+				If App.settings.directx = 1  Then Assets.fonts.baseFont.draw("Renderer: DirectX 7", 25, 40)
+				If App.settings.directx = 2  Then Assets.fonts.baseFont.draw("Renderer: DirectX 9", 25,40)
+
+		'		GUIManager.Draw("InGame") 'draw ingamechat
+		'		Assets.fonts.baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
+				Assets.fonts.baseFont.draw("Player positions:", 25,65)
+				local roomName:string = ""
+				local fig:TFigure
+				For Local i:Int = 0 To 3
+					fig = Game.GetPlayer(i+1).figure
+					roomName = "Building"
+					If fig.inRoom
+						roomName = fig.inRoom.Name
+					elseif fig.IsInElevator()
+						roomName = "InElevator"
+					elseIf fig.IsAtElevator()
+						roomName = "AtElevator"
+					endif
+					Assets.fonts.baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
+				Next
+
+				if ScreenCollection.GetCurrentScreen()
+					Assets.fonts.baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
+				else
+					Assets.fonts.baseFont.draw("onScreen: Main", 25, 130)
+				endif
+
+
+				Assets.fonts.baseFont.draw("Elevator routes:", 25,150)
+				Local routepos:Int = 0
+				Local startY:Int = 165
+				If Game.networkgame Then startY :+ 4*11
+
+				Local callType:String = ""
+
+				Local directionString:String = "up"
+				If Building.elevator.Direction = 1 Then directionString = "down"
+				Local debugString:String =	"floor:" + Building.elevator.currentFloor +..
+											"->" + Building.elevator.targetFloor +..
+											" doorState:"+Building.elevator.ElevatorStatus
+
+				Assets.fonts.baseFont.draw(debugString, 25, startY)
+
+
+				If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
+					For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
+						If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
+						Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
+						routepos:+1
+					Next
+				Else
+					Assets.fonts.baseFont.draw("recalculate", 25, startY + 15)
+				EndIf
+
+				'room states: debug fuer sushitv
+				local occupants:string = "-"
+				if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
+					occupants = ""
+					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
+						occupants :+ figure.name+" "
+					next
+				Endif
+				Assets.fonts.baseFont.draw("AdA. : "+occupants, 25, 350)
+
+				occupants = "-"
+				if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
+					occupants = ""
+					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
+						occupants :+ figure.name+" "
+					next
+				Endif
+				Assets.fonts.baseFont.draw("MoA. : "+occupants, 25, 365)
+
+			EndIf
+			If Game.DebugQuoteInfos
+				Game.DebugAudienceInfo.Draw()
+			EndIf
+		Endif
+
+
+
+
+		'draw system things at last (-> on top)
+		GUIManager.Draw("SYSTEM")
+
+		'default pointer
+		If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
+		'open hand
+		If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
+		'grabbing hand
+		If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
+
+		'if a screenshot is generated, draw a logo in
+		If App.prepareScreenshot = 1
+			App.SaveScreenshot(Assets.GetSprite("gfx_startscreen_logoSmall"))
+			App.prepareScreenshot = False
+		EndIf
+
+
+		If Not GetDeltaTimer().HasLimitedFPS()
+			TProfiler.Enter("Draw-Flip")
+			if App.vsync then Flip 1 else Flip 0
+			TProfiler.Leave("Draw-Flip")
+		Else
+			if App.vsync then Flip 1 else Flip -1
+		EndIf
+
+
+		TProfiler.Leave("Draw")
+		Return True
 	End Function
 
 
@@ -378,7 +673,7 @@ Type TApp
 			ExitAppDialogue.SetDialogueType(2)
 			'limit to "screen" area
 			If game.gamestate = TGame.STATE_RUNNING
-				ExitAppDialogue.darkenedArea = TRectangle.Create(20,10,760,373)
+				ExitAppDialogue.darkenedArea = new TRectangle.Init(20,10,760,373)
 			EndIf
 
 			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME") )
@@ -436,12 +731,12 @@ Type TSaveGame
 		if objSource
 			objTarget = objSource
 			if mode = MODE_LOAD
-				TDevHelper.Log("TSaveGame.RestoreGameData()", "Loaded object "+name, LOG_DEBUG | LOG_SAVELOAD)
+				TLogger.Log("TSaveGame.RestoreGameData()", "Loaded object "+name, LOG_DEBUG | LOG_SAVELOAD)
 			else
-				TDevHelper.Log("TSaveGame.BackupGameData()", "Saved object "+name, LOG_DEBUG | LOG_SAVELOAD)
+				TLogger.Log("TSaveGame.BackupGameData()", "Saved object "+name, LOG_DEBUG | LOG_SAVELOAD)
 			endif
 		else
-			TDevHelper.Log("TSaveGame", "object "+name+" was NULL - ignored", LOG_DEBUG | LOG_SAVELOAD)
+			TLogger.Log("TSaveGame", "object "+name+" was NULL - ignored", LOG_DEBUG | LOG_SAVELOAD)
 		endif
 	End Method
 
@@ -615,9 +910,9 @@ Type TGame {_exposeToLua="selected"}
 	'Summary: create a game, every variable is set to Zero
 	Method Create:TGame()
 		LoadConfig("config/settings.xml")
-		Localization.AddLanguages("de, en") 'adds German and English to possible language
-		Localization.SetLanguage(userlanguage) 'selects language
-		Localization.LoadResource("res/lang/lang_"+userlanguage+".txt")
+		TLocalization.AddLanguages("de, en") 'adds German and English to possible language
+		TLocalization.SetLanguage(userlanguage) 'selects language
+		TLocalization.LoadResource("res/lang/lang_"+userlanguage+".txt")
 		networkgame = 0
 
 		SetStartYear(1985)
@@ -664,7 +959,7 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TDevHelper.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
+		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
 		'reconnect AI and other things
 		For local player:TPlayer = eachin GetInstance().Players
 			player.onLoad(null)
@@ -679,7 +974,7 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when starting saving a savegame
 	Function onSaveGameBeginSave(triggerEvent:TEventBase)
-		TDevHelper.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
+		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
 		'inform player AI that we are saving now
 		For local player:TPlayer = eachin GetInstance().players
 			If player.figure.isAI() then player.PlayerKI.CallOnSave()
@@ -950,10 +1245,10 @@ Type TGame {_exposeToLua="selected"}
 	'Summary: load the config-file and set variables depending on it
 	Method LoadConfig:Byte(configfile:String="config/settings.xml")
 		Local xml:TxmlHelper = TxmlHelper.Create(configfile)
-		If xml <> Null Then TDevHelper.Log("TGame.LoadConfig()", "settings.xml read", LOG_LOADING)
+		If xml <> Null Then TLogger.Log("TGame.LoadConfig()", "settings.xml read", LOG_LOADING)
 		Local node:TxmlNode = xml.FindRootChild("settings")
 		If node = Null Or node.getName() <> "settings"
-			TDevHelper.Log("TGame.Loadconfig()", "settings.xml misses a setting-part", LOG_LOADING | LOG_ERROR)
+			TLogger.Log("TGame.Loadconfig()", "settings.xml misses a setting-part", LOG_LOADING | LOG_ERROR)
 			Print "settings.xml fehlt der settings-Bereich"
 			Return 0
 		EndIf
@@ -1187,7 +1482,7 @@ Type TFigurePostman Extends TFigure
 				door = TRoomDoor.GetRandom()
 			Until door.doorType >0
 
-			TDevHelper.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
+			TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
 			SendToDoor(door)
 		EndIf
 	End Method
@@ -1343,11 +1638,11 @@ endrem
 
 		guiButtonsPanel	= guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
-		guiButtonStart		= New TGUIButton.Create(TPoint.Create(0,   0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_SOLO_GAME"), name, Assets.fonts.baseFontBold)
-		guiButtonNetwork	= New TGUIButton.Create(TPoint.Create(0,  40), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_NETWORKGAME"), name, Assets.fonts.baseFontBold)
-		guiButtonOnline		= New TGUIButton.Create(TPoint.Create(0,  80), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_ONLINEGAME"), name, Assets.fonts.baseFontBold)
-		guiButtonSettings	= New TGUIButton.Create(TPoint.Create(0, 120), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_SETTINGS"), name, Assets.fonts.baseFontBold)
-		guiButtonQuit		= New TGUIButton.Create(TPoint.Create(0, 170), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_QUIT"), name, Assets.fonts.baseFontBold)
+		guiButtonStart		= New TGUIButton.Create(new TPoint.Init(0,   0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_SOLO_GAME"), name, Assets.fonts.baseFontBold)
+		guiButtonNetwork	= New TGUIButton.Create(new TPoint.Init(0,  40), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_NETWORKGAME"), name, Assets.fonts.baseFontBold)
+		guiButtonOnline		= New TGUIButton.Create(new TPoint.Init(0,  80), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_ONLINEGAME"), name, Assets.fonts.baseFontBold)
+		guiButtonSettings	= New TGUIButton.Create(new TPoint.Init(0, 120), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_SETTINGS"), name, Assets.fonts.baseFontBold)
+		guiButtonQuit		= New TGUIButton.Create(new TPoint.Init(0, 170), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_QUIT"), name, Assets.fonts.baseFontBold)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -1432,8 +1727,8 @@ Type TScreen_GameSettings Extends TGameScreen
 	Global headerSize:Int = 35
 	Global guiSettingsPanel:TGUIBackgroundBox
 	Global guiPlayersPanel:TGUIBackgroundBox
-	Global settingsArea:TRectangle = TRectangle.Create(10,10,780,0) 'position of the panel
-	Global playerBoxDimension:TPoint = TPoint.Create(165,150) 'size of each player area
+	Global settingsArea:TRectangle = new TRectangle.Init(10,10,780,0) 'position of the panel
+	Global playerBoxDimension:TPoint = new TPoint.Init(165,150) 'size of each player area
 	Global playerColors:Int = 10
 	Global playerColorHeight:Int = 10
 	Global playerSlotGap:Int = 25
@@ -1459,14 +1754,14 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiStartYear		= New TGUIinput.Create(310, 12, 65, -1, "1985", 4, name)
 
 		Local checkboxHeight:Int = 0
-		'guiAnnounce		= New TGUICheckBox.Create(TRectangle.Create(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, Assets.fonts.baseFontBold)
+		'guiAnnounce		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, Assets.fonts.baseFontBold)
 
-		gui24HoursDay		= New TGUICheckBox.Create(TRectangle.Create(430, 0, 200,20), True, GetLocale("24_HOURS_GAMEDAY"), name, Assets.fonts.baseFontBold)
+		gui24HoursDay		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), True, GetLocale("24_HOURS_GAMEDAY"), name, Assets.fonts.baseFontBold)
 		checkboxHeight 		= gui24HoursDay.GetScreenHeight()
 		gui24HoursDay.disable() 'option not implemented
-		guiSpecialFormats	= New TGUICheckBox.Create(TRectangle.Create(430, 0 + 1*checkboxHeight, 200,20), True, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name, Assets.fonts.baseFontBold)
+		guiSpecialFormats	= New TGUICheckBox.Create(new TRectangle.Init(430, 0 + 1*checkboxHeight, 200,20), True, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name, Assets.fonts.baseFontBold)
 		guiSpecialFormats.disable() 'option not implemented
-		guiFilterUnreleased = New TGUICheckBox.Create(TRectangle.Create(430, 0 + 2*checkboxHeight, 200,20), True, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name, Assets.fonts.baseFontBold)
+		guiFilterUnreleased = New TGUICheckBox.Create(new TRectangle.Init(430, 0 + 2*checkboxHeight, 200,20), True, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name, Assets.fonts.baseFontBold)
 
 		'move announce to last
 		'guiAnnounce.rect.position.MoveXY(0, 4*checkboxHeight)
@@ -1489,8 +1784,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiButtonsWindow.SetCaption("")
 
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
-		guiButtonStart	= New TGUIButton.Create(TPoint.Create(0, 0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_START_GAME"), name, Assets.fonts.baseFontBold)
-		guiButtonBack	= New TGUIButton.Create(TPoint.Create(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_BACK"), name, Assets.fonts.baseFontBold)
+		guiButtonStart	= New TGUIButton.Create(new TPoint.Init(0, 0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_START_GAME"), name, Assets.fonts.baseFontBold)
+		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_BACK"), name, Assets.fonts.baseFontBold)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonBack)
@@ -1521,9 +1816,9 @@ Type TScreen_GameSettings Extends TGameScreen
 			guiChannelNames[i].SetOverlay(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
 
 			'left arrow
-			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(TRectangle.Create(0 + 10, 50, 24,24), "LEFT", name)
+			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(new TRectangle.Init(0 + 10, 50, 24,24), "LEFT", name)
 			'right arrow
-			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(TRectangle.Create(playerPanel.GetContentScreenWidth() - 10, 50, 24,24), "RIGHT", name)
+			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(new TRectangle.Init(playerPanel.GetContentScreenWidth() - 10, 50, 24,24), "RIGHT", name)
 			guiFigureArrows[i*2 + 1].rect.position.MoveXY(-guiFigureArrows[i*2 + 1].GetScreenWidth(),0)
 
 			playerPanel.AddChild(guiPlayerNames[i])
@@ -1653,7 +1948,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		'background gui items
 		GUIManager.Draw("GameSettings", 0, 100)
 
-		Local slotPos:TPoint = TPoint.Create(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
+		Local slotPos:TPoint = new TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 		For Local i:Int = 0 To 3
 			If Game.networkgame Or Game.playerID=1
 				If Game.gamestate <> TGame.STATE_STARTMULTIPLAYER And Game.Players[i+1].Figure.ControlledByID = Game.playerID Or (Game.Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
@@ -1664,7 +1959,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			EndIf
 
 			'draw colors
-			Local colorRect:TRectangle = TRectangle.Create(slotPos.GetIntX()+2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+			Local colorRect:TRectangle = new TRectangle.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 			For Local obj:TColor = EachIn TColor.List
 				If obj.ownerID = 0
 					colorRect.position.MoveXY(colorRect.GetW(), 0)
@@ -1772,9 +2067,9 @@ Type TScreen_GameSettings Extends TGameScreen
 	'	local colors:TList = Assets.GetList("PlayerColors")
 
 		If MOUSEMANAGER.IsHit(1)
-			Local slotPos:TPoint = TPoint.Create(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
+			Local slotPos:TPoint = new TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 			For Local i:Int = 0 To 3
-				Local colorRect:TRectangle = TRectangle.Create(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+				Local colorRect:TRectangle = new TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 				For Local obj:TColor = EachIn TColor.List
 					'only for unused colors
@@ -1783,7 +2078,7 @@ Type TScreen_GameSettings Extends TGameScreen
 					colorRect.position.MoveXY(colorRect.GetW(), 0)
 
 					'skip if outside of rect
-					If Not TFunctions.MouseInRect(colorRect) Then Continue
+					If Not THelper.MouseInRect(colorRect) Then Continue
 					If (Game.Players[i+1].Figure.ControlledByID = Game.playerID Or (Game.Players[i+1].Figure.ControlledByID = 0 And Game.playerID = 1))
 						modifiedPlayers=True
 						Game.Players[i+1].RecolorFigure(obj)
@@ -1838,9 +2133,9 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 
-		guiButtonJoin	= New TGUIButton.Create(TPoint.Create(0, 0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_JOIN"), name, Assets.fonts.baseFontBold)
-		guiButtonCreate	= New TGUIButton.Create(TPoint.Create(0, 45), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_CREATE_GAME"), name, Assets.fonts.baseFontBold)
-		guiButtonBack	= New TGUIButton.Create(TPoint.Create(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonJoin.GetScreenHeight()), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_BACK"), name, Assets.fonts.baseFontBold)
+		guiButtonJoin	= New TGUIButton.Create(new TPoint.Init(0, 0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_JOIN"), name, Assets.fonts.baseFontBold)
+		guiButtonCreate	= New TGUIButton.Create(new TPoint.Init(0, 45), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_CREATE_GAME"), name, Assets.fonts.baseFontBold)
+		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonJoin.GetScreenHeight()), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_BACK"), name, Assets.fonts.baseFontBold)
 
 		guiButtonsPanel.AddChild(guiButtonJoin)
 		guiButtonsPanel.AddChild(guiButtonCreate)
@@ -1946,9 +2241,9 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		DrawMenuBackground(True)
 
 		If Not Game.onlinegame
-			guiGameListWindow.SetCaption(Localization.GetString("MENU_NETWORKGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES"))
+			guiGameListWindow.SetCaption(GetLocale("MENU_NETWORKGAME")+" : "+GetLocale("MENU_AVAILABLE_GAMES"))
 		Else
-			guiGamelistWindow.SetCaption(Localization.GetString("MENU_ONLINEGAME")+" : "+Localization.GetString("MENU_AVAILABLE_GAMES"))
+			guiGamelistWindow.SetCaption(GetLocale("MENU_ONLINEGAME")+" : "+GetLocale("MENU_AVAILABLE_GAMES"))
 		EndIf
 
 		GUIManager.Draw(Self.name)
@@ -2168,7 +2463,7 @@ Type GameEvents
 				'reset but with a bit randomness
 				Game.refillMovieAgencyTime = Game.refillMovieAgencyTimer + randrange(0,20)-10
 
-				TDevHelper.Log("GameEvents.OnMinute", "partly refilling movieagency", LOG_DEBUG)
+				TLogger.Log("GameEvents.OnMinute", "partly refilling movieagency", LOG_DEBUG)
 				RoomHandler_movieagency.GetInstance().ReFillBlocks(True, 0.5)
 			EndIf
 		EndIf
@@ -2181,7 +2476,7 @@ Type GameEvents
 				'reset but with a bit randomness
 				Game.refillAdAgencyTime = Game.refillAdAgencyTimer + randrange(0,20)-10
 
-				TDevHelper.Log("GameEvents.OnMinute", "partly refilling adagency", LOG_DEBUG)
+				TLogger.Log("GameEvents.OnMinute", "partly refilling adagency", LOG_DEBUG)
 				RoomHandler_adagency.GetInstance().ReFillBlocks(True, 0.5)
 			EndIf
 		EndIf
@@ -2262,7 +2557,7 @@ Type GameEvents
 	Function OnDay:Int(triggerEvent:TEventBase)
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
 
-		TDevHelper.Log("GameEvents.OnDay", "begin of day "+(Game.GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
+		TLogger.Log("GameEvents.OnDay", "begin of day "+(Game.GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
 
 		'if new day, not start day
 		If Game.GetDaysPlayed() >= 1
@@ -2361,292 +2656,6 @@ Type AppEvents
 		TSoundManager.GetInstance().Update()
 		TProfiler.Leave("SoundUpdate")
 	End Function
-
-	'wird ausgeloest wenn OnAppUpdate-Event getriggert wird
-	Function onAppUpdate:Int(triggerEvent:TEventBase)
-		?Threaded
-		LockMutex(RefreshInputMutex)
-		RefreshInput = True
-		UnlockMutex(RefreshInputMutex)
-		?
-		?Not Threaded
-		KEYMANAGER.Update()
-		MOUSEMANAGER.Update()
-		?
-		'fetch and cache mouse and keyboard states for this cycle
-		GUIManager.StartUpdates()
-
-		GUIManager.Update("SYSTEM")
-		'as long as the exit dialogue is open, do not accept non-gui-clicks to leave rooms
-		If App.ExitAppDialogue
-			MouseManager.ResetKey(2)
-		EndIf
-
-		'ignore shortcuts if a gui object listens to keystrokes
-		'eg. the active chat input field
-		If Not GUIManager.GetKeystrokeReceiver()
-			'keywrapper has "key every milliseconds" functionality
-			If KEYWRAPPER.hitKey(KEY_ESCAPE) Then TApp.CreateConfirmExitAppDialogue()
-
-			If App.devConfig.GetBool("DEV_KEYS", FALSE)
-				'(un)mute sound
-				'M: (un)mute all sounds
-				'SHIFT+M: (un)mute all sound effects
-				'CTRL+M: (un)mute all music
-				If KEYMANAGER.IsHit(KEY_M)
-					if KEYMANAGER.IsDown(KEY_LSHIFT) OR KEYMANAGER.IsDown(KEY_RSHIFT)
-						TSoundManager.GetInstance().MuteSfx(not TSoundManager.GetInstance().HasMutedSfx())
-					elseif KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
-						TSoundManager.GetInstance().MuteMusic(not TSoundManager.GetInstance().HasMutedMusic())
-					else
-						TSoundManager.GetInstance().Mute(not TSoundManager.GetInstance().IsMuted())
-					endif
-				endif
-
-				If Game.gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.10
-					If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.10, 0)
-
-					If KEYMANAGER.IsHit(KEY_1) Game.SetActivePlayer(1)
-					If KEYMANAGER.IsHit(KEY_2) Game.SetActivePlayer(2)
-					If KEYMANAGER.IsHit(KEY_3) Game.SetActivePlayer(3)
-					If KEYMANAGER.IsHit(KEY_4) Game.SetActivePlayer(4)
-
-					If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("adagency") )
-					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", Game.playerID) )
-					If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("betty") )
-					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("movieagency"))
-					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", Game.playerID))
-					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", Game.playerID))
-					'e wie "employees" :D
-					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("credits"))
-					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", Game.playerID))
-					If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("roomboard"))
-				EndIf
-				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
-				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
-				If KEYMANAGER.IsHit(KEY_7) Then game.speed = 360.0	'180 minutes per second
-				If KEYMANAGER.IsHit(KEY_8) Then game.speed = 480.0	'240 minute per second
-				If KEYMANAGER.IsHit(KEY_9) Then game.speed = 1.0	'1 minute per second
-				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
-				If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
-
-				'Save game
-				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
-				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
-
-				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
-
-				If Game.isGameLeader()
-					If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F2) And Game.Players[2].isAI() Then Game.Players[2].PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F3) And Game.Players[3].isAI() Then Game.Players[3].PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
-				EndIf
-
-				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNewsEvent()
-				If KEYMANAGER.Ishit(Key_F6) Then TSoundManager.GetInstance().PlayMusicPlaylist("default")
-
-				If KEYMANAGER.Ishit(Key_F9)
-					If (KIRunning)
-						TDevHelper.Log("CORE", "AI deactivated", LOG_INFO | LOG_DEV )
-						KIRunning = False
-					Else
-						TDevHelper.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-						KIRunning = True
-					EndIf
-				EndIf
-				If KEYMANAGER.Ishit(Key_F10)
-					If (KIRunning)
-						For Local fig:TFigure = EachIn FigureCollection.list
-							If Not fig.isActivePlayer() Then fig.moveable = False
-						Next
-						TDevHelper.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
-						KIRunning = False
-					Else
-						For Local fig:TFigure = EachIn FigureCollection.list
-							If Not fig.isActivePlayer() Then fig.moveable = True
-						Next
-						TDevHelper.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
-						KIRunning = True
-					EndIf
-				EndIf
-			EndIf
-		EndIf
-
-
-		TError.UpdateErrors()
-		Game.cursorstate = 0
-
-
-		ScreenCollection.UpdateCurrent(App.Timer.getDelta())
-
-		If Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE)
-			TApp.CreateConfirmExitAppDialogue()
-		EndIf
-		If AppTerminate() Then TApp.ExitApp = True
-
-		'check if we need to make a screenshot
-		If KEYMANAGER.IsHit(KEY_F12) Then App.prepareScreenshot = 1
-
-		If Game.networkGame Then Network.Update()
-
-		GUIManager.EndUpdates() 'reset modal window states
-	End Function
-
-
-	Function onAppDraw:Int(triggerEvent:TEventBase)
-		'adjust current tweenFactor
-		CURRENT_TWEEN_FACTOR = App.timer.GetTween()
-
-		TProfiler.Enter("Draw")
-		ScreenCollection.DrawCurrent(App.timer.GetTween())
-
-		if App.devConfig.GetBool("DEV_OSD", FALSE)
-			Local textX:Int = 20
-			Assets.fonts.baseFont.draw("Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
-			textX:+80
-			Assets.fonts.baseFont.draw("FPS: "+App.Timer.currentFps, textX, 0)
-			textX:+60
-			Assets.fonts.baseFont.draw("UPS: " + Int(App.Timer.currentUps), textX,0)
-			textX:+60
-			Assets.fonts.baseFont.draw("Loop: "+Int(App.Timer.getLoopTimeAverage())+"ms", textX,0)
-			textX:+100
-
-			'RON: debug purpose - see if the managed guielements list increase over time
-			If TGUIObject.GetFocusedObject()
-				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
-				textX:+160
-			Else
-				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
-				textX:+130
-			EndIf
-
-			If game.networkgame And Network.client
-				Assets.fonts.baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
-				textX:+50
-			EndIf
-
-			If Game.DebugInfos
-				SetAlpha 0.75
-				SetColor 0,0,0
-				DrawRect(20,10,160,373)
-				SetColor 255, 255, 255
-				SetAlpha 1.0
-				Assets.fonts.baseFontBold.draw("Debug information:", 25,20)
-				If App.settings.directx = -1 Then Assets.fonts.baseFont.draw("Renderer: OpenGL", 25,40)
-				If App.settings.directx = 0  Then Assets.fonts.baseFont.draw("Renderer: BufferedOpenGL", 25,40)
-				If App.settings.directx = 1  Then Assets.fonts.baseFont.draw("Renderer: DirectX 7", 25, 40)
-				If App.settings.directx = 2  Then Assets.fonts.baseFont.draw("Renderer: DirectX 9", 25,40)
-
-		'		GUIManager.Draw("InGame") 'draw ingamechat
-		'		Assets.fonts.baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-				Assets.fonts.baseFont.draw("Player positions:", 25,65)
-				local roomName:string = ""
-				local fig:TFigure
-				For Local i:Int = 0 To 3
-					fig = Game.GetPlayer(i+1).figure
-					roomName = "Building"
-					If fig.inRoom
-						roomName = fig.inRoom.Name
-					elseif fig.IsInElevator()
-						roomName = "InElevator"
-					elseIf fig.IsAtElevator()
-						roomName = "AtElevator"
-					endif
-					Assets.fonts.baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
-				Next
-
-				if ScreenCollection.GetCurrentScreen()
-					Assets.fonts.baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
-				else
-					Assets.fonts.baseFont.draw("onScreen: Main", 25, 130)
-				endif
-
-
-				Assets.fonts.baseFont.draw("Elevator routes:", 25,150)
-				Local routepos:Int = 0
-				Local startY:Int = 165
-				If Game.networkgame Then startY :+ 4*11
-
-				Local callType:String = ""
-
-				Local directionString:String = "up"
-				If Building.elevator.Direction = 1 Then directionString = "down"
-				Local debugString:String =	"floor:" + Building.elevator.currentFloor +..
-											"->" + Building.elevator.targetFloor +..
-											" doorState:"+Building.elevator.ElevatorStatus
-
-				Assets.fonts.baseFont.draw(debugString, 25, startY)
-
-
-				If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
-					For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
-						If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-						Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
-						routepos:+1
-					Next
-				Else
-					Assets.fonts.baseFont.draw("recalculate", 25, startY + 15)
-				EndIf
-
-				'room states: debug fuer sushitv
-				local occupants:string = "-"
-				if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
-					occupants = ""
-					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
-						occupants :+ figure.name+" "
-					next
-				Endif
-				Assets.fonts.baseFont.draw("AdA. : "+occupants, 25, 350)
-
-				occupants = "-"
-				if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
-					occupants = ""
-					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
-						occupants :+ figure.name+" "
-					next
-				Endif
-				Assets.fonts.baseFont.draw("MoA. : "+occupants, 25, 365)
-
-			EndIf
-			If Game.DebugQuoteInfos
-				Game.DebugAudienceInfo.Draw()
-			EndIf
-		Endif
-
-
-
-
-		'draw system things at last (-> on top)
-		GUIManager.Draw("SYSTEM")
-
-		'default pointer
-		If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
-		'open hand
-		If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
-		'grabbing hand
-		If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
-
-		'if a screenshot is generated, draw a logo in
-		If App.prepareScreenshot = 1
-			App.SaveScreenshot(Assets.GetSprite("gfx_startscreen_logoSmall"))
-			App.prepareScreenshot = False
-		EndIf
-
-
-		If Not App.timer.limitedFPS()
-			TProfiler.Enter("Draw-Flip")
-			if App.vsync then Flip 1 else Flip 0
-			TProfiler.Leave("Draw-Flip")
-		Else
-			if App.vsync then Flip 1 else Flip -1
-		EndIf
-
-
-		TProfiler.Leave("Draw")
-		Return True
-	End Function
 End Type
 
 'Bis wir nen besseren Platz gefunden haben
@@ -2700,7 +2709,7 @@ End Type
 OnEnd( EndHook )
 Function EndHook()
 	TProfiler.DumpLog("log.profiler.txt")
-	TLogFile.DumpLog(False)
+	TLogFile.DumpLogs()
 End Function
 
 
@@ -2715,8 +2724,8 @@ Function DrawMenuBackground(darkened:Int=False)
 
 	Select game.gamestate
 		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
-			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * App.Timer.getDelta() Else LogoCurrY = LogoTargetY
-			Assets.GetSprite("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, TPoint.Create(ALIGN_CENTER, ALIGN_TOP))
+			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * GetDeltaTimer().GetDelta() Else LogoCurrY = LogoTargetY
+			Assets.GetSprite("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
 	EndSelect
 
 	If game.gamestate = TGame.STATE_MAINMENU
@@ -2737,7 +2746,7 @@ End Function
 Function Init_Creation()
 	'create base stations
 	For Local i:Int = 1 To 4
-		Game.GetPlayer(i).GetStationMap().AddStation( TStation.Create( TPoint.Create(310, 260),-1, StationMapCollection.stationRadius, i ), False )
+		Game.GetPlayer(i).GetStationMap().AddStation( TStation.Create( new TPoint.Init(310, 260),-1, StationMapCollection.stationRadius, i ), False )
 	Next
 
 	'get names from settings
@@ -2852,22 +2861,22 @@ End Function
 
 
 Function Init_All()
-	TDevHelper.Log("Init_All()", "start", LOG_DEBUG)
+	TLogger.Log("Init_All()", "start", LOG_DEBUG)
 	Init_Creation()
 
-	TDevHelper.Log("Init_All()", "colorizing images corresponding to playercolors", LOG_DEBUG)
+	TLogger.Log("Init_All()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 	Init_Colorization()
 	'triggering that event also triggers app.timer.loop which triggers update/draw of
 	'gamesstates - which runs this again etc.
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
 
-	TDevHelper.Log("Init_All()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
+	TLogger.Log("Init_All()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
 	TRoomDoor.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
 
-	TDevHelper.Log("Init_All()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
+	TLogger.Log("Init_All()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
 	Building.Init()	'draws additional gfx in the sprite, registers events...
 
-	TDevHelper.Log("Init_All()", "complete", LOG_LOADING)
+	TLogger.Log("Init_All()", "complete", LOG_LOADING)
 End Function
 
 
@@ -2929,7 +2938,7 @@ Function StartTVTower(start:Int=true)
 	EndIf
 
 
-	TDevHelper.Log("Base", "Creating GUIelements", LOG_DEBUG)
+	TLogger.Log("Base", "Creating GUIelements", LOG_DEBUG)
 	InGame_Chat = New TGUIChat.Create(520,418,280,190,"InGame")
 	InGame_Chat.setDefaultHideEntryTime(10000)
 	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
@@ -2992,7 +3001,7 @@ Function StartTVTower(start:Int=true)
 	If Not TApp.ExitApp And Not AppTerminate()
 	'	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
 		Repeat
-			App.Timer.loop()
+			GetDeltaTimer().Loop()
 
 			'we cannot fetch keystats in threads
 			'so we have to do it 100% in the main thread - same for mouse

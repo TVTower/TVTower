@@ -92,7 +92,7 @@ Type TInGameScreen extends TScreen
 	Method Create:TInGameScreen(name:string)
 		Super.Create(name)
 		'limit content area
-		_contentArea = TRectangle.Create(20, 10, 760, 373)
+		_contentArea = new TRectangle.Init(20, 10, 760, 373)
 		return self
 	End Method
 

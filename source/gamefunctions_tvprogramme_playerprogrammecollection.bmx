@@ -227,7 +227,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		If not licence then return FALSE
 
 		if licence.isEpisode()
-			TDevHelper.log("TPlayerProgrammeCollection.AddProgrammeLicence", "Adding skipped: licence is a series episode", LOG_WARNING)
+			TLogger.log("TPlayerProgrammeCollection.AddProgrammeLicence", "Adding skipped: licence is a series episode", LOG_WARNING)
 			return FALSE
 		endif
 
@@ -406,7 +406,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method AddNews:int(newsObject:TNews) {_private} 'do not expose to Lua.
 		'skip adding if existing already
 		if news.contains(newsObject)
-			TDevHelper.log("TPlayerProgrammeCollection.AddNews", "Adding skipped: already containing news ~q"+newsObject.getTitle()+"~q", LOG_WARNING)
+			TLogger.log("TPlayerProgrammeCollection.AddNews", "Adding skipped: already containing news ~q"+newsObject.getTitle()+"~q", LOG_WARNING)
 			return FALSE
 		endif
 

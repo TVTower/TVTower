@@ -16,13 +16,13 @@ Type TStationMapCollection
 	Field stationRadius:Int = 15
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
-	Field populationMapSize:TPoint = TPoint.Create() {nosave}
+	Field populationMapSize:TPoint = new TPoint.Init() {nosave}
 
 	Field mapConfigFile:string = ""
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
-	Global populationMapOffset:TPoint = TPoint.Create(20, 10)
+	Global populationMapOffset:TPoint = new TPoint.Init(20, 10)
 	Global _initDone:int = FALSE
 	Global _instance:TStationMapCollection
 
@@ -47,7 +47,7 @@ Type TStationMapCollection
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TDevHelper.Log("TStationMapCollection", "Savegame loaded - reloading map data", LOG_DEBUG | LOG_SAVELOAD)
+		TLogger.Log("TStationMapCollection", "Savegame loaded - reloading map data", LOG_DEBUG | LOG_SAVELOAD)
 
 		_instance.LoadMapFromXML()
 	End Function
@@ -79,7 +79,7 @@ Type TStationMapCollection
 		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
 			Local name:String	= TXmlHelper.FindValue(child, "name", "")
 			Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
-			Local pos:TPoint	= TPoint.Create( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
+			Local pos:TPoint	= new TPoint.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
 			'add state section if data is ok
 			If name<>"" And sprite<>""
 				New TStationMapSection.Create(pos,name, sprite).add()
@@ -99,11 +99,11 @@ Type TStationMapCollection
 		'=== LOAD XML CONFIG ===
 		Local xmlLoader:TXmlLoader = TXmlLoader.Create()
 		xmlLoader.Parse(mapConfigFile)
-		TDevHelper.Log("TStationMapCollection.LoadMapFromXML", "config parsed", LOG_LOADING)
+		TLogger.Log("TStationMapCollection.LoadMapFromXML", "config parsed", LOG_LOADING)
 
 		'=== LOAD ASSETS ===
 		Assets.AddSet(xmlLoader.values)
-		TDevHelper.Log("TStationMapCollection.LoadMapFromXML", "loaded assets", LOG_LOADING)
+		TLogger.Log("TStationMapCollection.LoadMapFromXML", "loaded assets", LOG_LOADING)
 
 		'=== INIT MAP DATA ===
 		CreatePopulationMap()
@@ -116,7 +116,7 @@ Type TStationMapCollection
 		local start:int = Millisecs()
 		Local srcPix:TPixmap = Assets.getPixmap("map_PopulationDensity")
 		if not srcPix
-			TDevHelper.Log("TStationMapCollection.CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
+			TLogger.Log("TStationMapCollection.CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
 			Throw("TStationMap: ~qmap_PopulationDensity~q missing.")
 			return
 		endif
@@ -140,7 +140,7 @@ Type TStationMapCollection
 				population:+ populationmap[i, j]
 			Next
 		Next
-		TDevHelper.Log("TStationMapCollection.CreatePopulationMap", "calculated a population of:" + population + " in "+(MilliSecs()-start)+"ms", LOG_LOADING)
+		TLogger.Log("TStationMapCollection.CreatePopulationMap", "calculated a population of:" + population + " in "+(MilliSecs()-start)+"ms", LOG_LOADING)
 	End Method
 
 
@@ -192,7 +192,7 @@ Type TStationMapCollection
 		Local stationY:Int	= 0
 		Local mapKey:String	= ""
 		Local mapValue:TPoint = Null
-		Local rect:TRectangle = TRectangle.Create(0,0,0,0)
+		Local rect:TRectangle = new TRectangle.Init(0,0,0,0)
 		For Local stationmap:TStationMap = EachIn stationMaps
 			For Local station:TStation = EachIn stationmap.stations
 				'mark the area within the stations circle
@@ -211,7 +211,7 @@ Type TStationMapCollection
 						'insert the players bitmask-number into the field
 						'and if there is already one ... add the number
 						mapKey = posX+","+posY
-						mapValue = TPoint.Create(posX,posY, getMaskIndex(stationmap.parent.playerID) )
+						mapValue = new TPoint.Init(posX,posY, getMaskIndex(stationmap.parent.playerID) )
 						If shareMap.Contains(mapKey)
 							mapValue.z = Int(mapValue.z) | Int(TPoint(shareMap.ValueForKey(mapKey)).z)
 						EndIf
@@ -238,7 +238,7 @@ Type TStationMapCollection
 	'returns a share between players, encoded in a tpoint containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
 	Method GetShare:TPoint(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
-		If playerIDs.length <1 Then Return TPoint.Create(0,0,0.0)
+		If playerIDs.length <1 Then Return new TPoint.Init(0,0,0.0)
 		If Not withoutPlayerIDs Then withoutPlayerIDs = New Int[0]
 		Local cacheKey:String = ""
 		For Local i:Int = 0 To playerIDs.length-1
@@ -253,7 +253,7 @@ Type TStationMapCollection
 		If shareCache And shareCache.contains(cacheKey) Then Return TPoint(shareMap.ValueForKey(cacheKey))
 
 		Local map:TMap				= GetShareMap()
-		Local result:TPoint			= TPoint.Create(0,0,0.0)
+		Local result:TPoint			= new TPoint.Init(0,0,0.0)
 		Local share:Int				= 0
 		Local total:Int				= 0
 		Local playerFlags:Int[]
@@ -339,7 +339,7 @@ endrem
 			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, populationMapSize.y-stationRadius)
 				' noch innerhalb des Kreises?
 				If Self.calculateDistance( posX - x, posY - y ) <= stationRadius
-					map.Insert(String((posX) + "," + (posY)), TPoint.Create((posX) , (posY), color ))
+					map.Insert(String((posX) + "," + (posY)), new TPoint.Init((posX) , (posY), color ))
 				EndIf
 			Next
 		Next
@@ -357,7 +357,7 @@ endrem
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
 		For Local _Station:TStation = EachIn stations
-			If TFunctions.IsIn(_x,_y, _station.pos.x - 2*stationRadius, _station.pos.y - 2 * stationRadius, 4*stationRadius, 4*stationRadius)
+			If THelper.IsIn(_x,_y, _station.pos.x - 2*stationRadius, _station.pos.y - 2 * stationRadius, 4*stationRadius, 4*stationRadius)
 				Self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
 			EndIf
 		Next
@@ -487,13 +487,13 @@ Type TStationMap {_exposeToLua="selected"}
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
 	Method getTemporaryStation:TStation(x:Int,y:Int)  {_exposeToLua}
-		Return TStation.Create(TPoint.Create(x,y),-1, StationMapCollection.stationRadius, parent.playerID)
+		Return TStation.Create(new TPoint.Init(x,y),-1, StationMapCollection.stationRadius, parent.playerID)
 	End Method
 
 
 	'return a station at the given coordinates (eg. used by network)
 	Method getStation:TStation(x:Int=0,y:Int=0) {_exposeToLua}
-		Local pos:TPoint = TPoint.Create(x, y)
+		Local pos:TPoint = new TPoint.Init(x, y)
 		For Local station:TStation = EachIn stations
 			If Not station.pos.isSame(pos) Then Continue
 			Return station
@@ -568,7 +568,7 @@ Type TStationMap {_exposeToLua="selected"}
 		'recalculate audience of channel
 		RecalculateAudienceSum()
 
-		TDevHelper.Log("TStationMap.AddStation", "Player"+parent.playerID+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
+		TLogger.Log("TStationMap.AddStation", "Player"+parent.playerID+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
 		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.addStation", new TData.add("station", station), Self ) )
@@ -595,9 +595,9 @@ Type TStationMap {_exposeToLua="selected"}
 		stations.Remove(station)
 
 		If sell
-			TDevHelper.Log("TStationMap.AddStation", "Player"+parent.playerID+" sells broadcasting station for " + station.getSellPrice() + "Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.AddStation", "Player"+parent.playerID+" sells broadcasting station for " + station.getSellPrice() + "Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
 		Else
-			TDevHelper.Log("TStationMap.AddStation", "Player"+parent.playerID+" trashes broadcasting station for 0 Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.AddStation", "Player"+parent.playerID+" trashes broadcasting station for 0 Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
 		EndIf
 
 		'recalculate audience of channel
@@ -805,15 +805,15 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		textY:+ textH + 5
 
 		Assets.fonts.baseFont.draw(GetLocale("RANGE")+": ", textX, textY)
-		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, TPoint.Create(ALIGN_RIGHT), colorWhite)
+		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
 		Assets.fonts.baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
-		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, TPoint.Create(ALIGN_RIGHT), colorWhite)
+		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
 		Assets.fonts.baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
-		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, TPoint.Create(ALIGN_RIGHT), colorWhite)
+		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
 
 	End Method
 
@@ -842,7 +842,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 		SetColor 255,255,255
 		SetAlpha OldAlpha
-		sprite.Draw(pos.x, pos.y + radius - sprite.area.GetH() - 2, -1, TPoint.Create(ALIGN_CENTER, ALIGN_TOP))
+		sprite.Draw(pos.x, pos.y + radius - sprite.area.GetH() - 2, -1, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
 	End Method
 End Type
 
@@ -859,7 +859,7 @@ Type TStationMapSection
 
 	Method Create:TStationMapSection(pos:TPoint, name:String, spriteName:string)
 		Self.spriteName = spriteName
-		Self.rect = TRectangle.Create(pos.x,pos.y, 0, 0)
+		Self.rect = new TRectangle.Init(pos.x,pos.y, 0, 0)
 		Self.name = name
 		Self.sprite = sprite
 		Return Self

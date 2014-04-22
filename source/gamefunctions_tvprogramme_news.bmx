@@ -361,14 +361,14 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		rem
 		If genreDefintion Then
-			result.SequenceEffect = genreDefintion.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)	
+			result.SequenceEffect = genreDefintion.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)
 		Else
-			result.SequenceEffect = TGenreDefinitionBase.GetSequenceDefault(lastMovieBlockAttraction, result, 0.25, 0.35)	
+			result.SequenceEffect = TGenreDefinitionBase.GetSequenceDefault(lastMovieBlockAttraction, result, 0.25, 0.35)
 		Endif
-		
+
 		Print "Seq: " + result.SequenceEffect.ToString()
 		endrem
-		
+
 		result.CalculateFinalAttraction()
 
 		result.CalculatePublicImageAttraction()
@@ -684,15 +684,15 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.clBlack)
+				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 			else
-				Assets.GetFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, TPoint.Create(ALIGN_RIGHT), TColor.CreateGrey(50))
+				Assets.GetFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select Game.getDay() - Game.GetDay(news.newsEvent.happenedTime)
-				case 0	Assets.fonts.baseFont.drawBlock(GetLocale("TODAY")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, TPoint.Create(ALIGN_RIGHT), TColor.clBlack )
-				case 1	Assets.fonts.baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, TPoint.Create(ALIGN_RIGHT), TColor.clBlack)
-				case 2	Assets.fonts.baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, TPoint.Create(ALIGN_RIGHT), TColor.clBlack)
+				case 0	Assets.fonts.baseFont.drawBlock(GetLocale("TODAY")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack )
+				case 1	Assets.fonts.baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 2	Assets.fonts.baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
 			SetColor 255, 255, 255

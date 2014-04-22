@@ -1,7 +1,7 @@
 
 'Summary: Type of building, area around it and doors,...
 Type TBuilding Extends TRenderable
-	Field pos:TPoint = TPoint.Create(20,0)
+	Field pos:TPoint = new TPoint.Init(20,0)
 	Field buildingDisplaceX:Int = 127			'px at which the building starts (leftside added is the door)
 	Field innerLeft:Int			= 127 + 40
 	Field innerRight:Int		= 127 + 468
@@ -90,7 +90,7 @@ Type TBuilding Extends TRenderable
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TDevHelper.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
+		TLogger.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
 		GetInstance().InitGraphics()
 		'reassign the elevator - should not be needed
 		'GetInstance().Elevator = TElevator.GetInstance()
@@ -137,10 +137,10 @@ Type TBuilding Extends TRenderable
 
 		'==== STARS ====
 		For Local j:Int = 0 To 29
-			Stars[j] = TPoint.Create( 10+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
+			Stars[j] = new TPoint.Init( 10+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
 		Next
 		For Local j:Int = 30 To 59
-			Stars[j] = TPoint.Create( 650+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
+			Stars[j] = new TPoint.Init( 650+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
 		Next
 
 
@@ -181,7 +181,7 @@ Type TBuilding Extends TRenderable
 		If Not Game.GetPlayer().Figure.inRoom
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager.modalActive
 				If Not Game.GetPlayer().Figure.isChangingRoom
-					If TFunctions.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
+					If THelper.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
 						Game.GetPlayer().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
 						MOUSEMANAGER.resetKey(1)
 					EndIf
@@ -308,16 +308,16 @@ Type TBuilding Extends TRenderable
 		Next
 
 		Local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 130, pos.y + GetFloorY(9), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(13), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 110, pos.y + GetFloorY(9), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(6), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze6").Draw(pos.x + innerRight - 85, pos.y + GetFloorY(8), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(1), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(12), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(12), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 70, pos.y + GetFloorY(3), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 75, pos.y + GetFloorY(12), - 1, TPoint.Create(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 130, pos.y + GetFloorY(9), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(13), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 110, pos.y + GetFloorY(9), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(6), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze6").Draw(pos.x + innerRight - 85, pos.y + GetFloorY(8), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(1), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 70, pos.y + GetFloorY(3), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 75, pos.y + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
 		'draw entrance on top of figures
 		If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) <= 4

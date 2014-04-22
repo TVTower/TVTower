@@ -21,7 +21,7 @@ Type TElevator
 	Field TargetFloor:Int					= 0			'Hier fährt der Fahrstuhl hin
 	Field Direction:Int						= 1			'Aktuelle/letzte Bewegungsrichtung: -1 = nach unten; +1 = nach oben; 0 = gibt es nicht
 	Field ReadyForBoarding:int				= false		'während der ElevatorStatus 4, 5 und 0 möglich.
-	Field Pos:TPoint						= TPoint.Create(131+230,115) 	'Aktuelle Position - difference to x/y of building
+	Field Pos:TPoint						= new TPoint.Init(131+230,115) 	'Aktuelle Position - difference to x/y of building
 
 	'Einstellungen
 	Field Speed:Float 						= 120		'pixels per second ;D
@@ -70,12 +70,12 @@ Type TElevator
 
 		PassengerPosition  = PassengerPosition[..6]
 		PassengerOffset    = PassengerOffset[..6]
-		PassengerOffset[0] = TPoint.Create(0, 0)
-		PassengerOffset[1] = TPoint.Create(-12, 0)
-		PassengerOffset[2] = TPoint.Create(-6, 0)
-		PassengerOffset[3] = TPoint.Create(3, 0)
-		PassengerOffset[4] = TPoint.Create(-3, 0)
-		PassengerOffset[5] = TPoint.Create(-8, 0)
+		PassengerOffset[0] = new TPoint.Init(0, 0)
+		PassengerOffset[1] = new TPoint.Init(-12, 0)
+		PassengerOffset[2] = new TPoint.Init(-6, 0)
+		PassengerOffset[3] = new TPoint.Init(3, 0)
+		PassengerOffset[4] = new TPoint.Init(-3, 0)
+		PassengerOffset[5] = new TPoint.Init(-8, 0)
 
 		'create sprite
 		spriteDoor = new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
@@ -103,7 +103,7 @@ Type TElevator
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TDevHelper.Log("TElevator", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
+		TLogger.Log("TElevator", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
 		'instance holds the object created when loading
 		GetInstance().InitSprites()
 	End Function
@@ -223,7 +223,7 @@ Type TElevator
 	End Method
 
 	Method GetElevatorCenterPos:TPoint()
-		Return TPoint.Create(Building.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2, Pos.y + Self.spriteDoor.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
+		Return new TPoint.Init(Building.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2, Pos.y + Self.spriteDoor.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
 	End Method
 
 	'===== Offset-Funktionen =====

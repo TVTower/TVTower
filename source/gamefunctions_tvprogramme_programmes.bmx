@@ -116,7 +116,7 @@ Type TProgrammeData {_exposeToLua}
 	Field trailerAiredSinceShown:int	= 0					'times the trailer aired since the programme was shown "normal"
 
 	Field genreDefinitionCache:TMovieGenreDefinition = Null
-	
+
 	const TYPE_UNKNOWN:int				= 1
 	const TYPE_EPISODE:int				= 2
 	const TYPE_SERIES:int				= 4
@@ -169,8 +169,8 @@ Type TProgrammeData {_exposeToLua}
 		ProgrammeDataCollection.Add(obj)
 		Return obj
 	End Function
-	
-	
+
+
 	Function CreateMinimal:TProgrammeData(title:String = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
 		Local quality:Int = fixQuality * 255
 		Return TProgrammeData.Create(title, Null, Null, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
@@ -387,7 +387,7 @@ Type TProgrammeData {_exposeToLua}
 		Else
 			Return Float(review) / 255.0 * genreDef.ReviewMod ..
 				+ Float(speed) / 255.0 * genreDef.SpeedMod
-		EndIf		
+		EndIf
 	End Method
 
 	'Diese Methode ersetzt "GetBaseAudienceQuote"
@@ -769,7 +769,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 			Local Licence:TProgrammeLicence = TProgrammeLicence(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
 			If Licence then return Licence
 		EndIf
-		TDevHelper.log("TProgrammeLicence._GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
+		TLogger.log("TProgrammeLicence._GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
 		Return Null
 	End Function
 
@@ -1101,7 +1101,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 				SetColor 255,235,110
 				DrawRect(warningX+20, y + warningY, warningW-40, 30)
 				SetAlpha 0.75
-				Assets.fonts.basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, TPoint.Create(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
+				Assets.fonts.basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TPoint.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
 				SetAlpha 1.0
 				SetColor 255,255,255
 			endif
@@ -1126,13 +1126,13 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13, y+22+188), TRectangle.Create(0, 0, widthbarSpeed*200  , 12))
-		If widthbarReview  >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13, y+22+210), TRectangle.Create(0, 0, widthbarReview*200 , 12))
-		If widthbarOutcome >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13, y+22+232), TRectangle.Create(0, 0, widthbarOutcome*200, 12))
+		If widthbarSpeed   >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+188), new TRectangle.Init(0, 0, widthbarSpeed*200  , 12))
+		If widthbarReview  >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+210), new TRectangle.Init(0, 0, widthbarReview*200 , 12))
+		If widthbarOutcome >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+232), new TRectangle.Init(0, 0, widthbarOutcome*200, 12))
 		SetAlpha 0.3
-		If widthbarMaxTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+115,y+280), TRectangle.Create(0, 0, widthbarMaxTopicality*100, 12))
+		If widthbarMaxTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarMaxTopicality*100, 12))
 		SetAlpha 1.0
-		If widthbarTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+115,y+280), TRectangle.Create(0, 0, widthbarTopicality*100, 12))
+		If widthbarTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarTopicality*100, 12))
 	End Method
 
 
@@ -1218,7 +1218,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 				SetColor 255,235,110
 				DrawRect(warningX+20, y + warningY, warningW-40, 30)
 				SetAlpha 0.75
-				Assets.fonts.basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, TPoint.Create(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
+				Assets.fonts.basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TPoint.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
 				SetAlpha 1.0
 				SetColor 255,255,255
 			endif
@@ -1256,14 +1256,14 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13, y+dY+188), TRectangle.Create(0, 0, widthbarSpeed*200  , 12))
-		If widthbarReview  >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13, y+dY+210), TRectangle.Create(0, 0, widthbarReview*200 , 12))
-		If widthbarOutcome >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13, y+dY+232), TRectangle.Create(0, 0, widthbarOutcome*200, 12))
+		If widthbarSpeed   >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+188), new TRectangle.Init(0, 0, widthbarSpeed*200  , 12))
+		If widthbarReview  >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+210), new TRectangle.Init(0, 0, widthbarReview*200 , 12))
+		If widthbarOutcome >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+232), new TRectangle.Init(0, 0, widthbarOutcome*200, 12))
 
 		SetAlpha 0.3
-		If widthbarMaxTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+115,y+280), TRectangle.Create(0, 0, widthbarMaxTopicality*100, 12))
+		If widthbarMaxTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarMaxTopicality*100, 12))
 		SetAlpha 1.0
-		If widthbarTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+115,y+280), TRectangle.Create(0, 0, widthbarTopicality*100, 12))
+		If widthbarTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarTopicality*100, 12))
 	End Method
 
 
@@ -1281,9 +1281,9 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		SetAlpha 0.3
-		Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13,y+131), TRectangle.Create(0, 0, 200, 12))
+		Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
 		SetAlpha 1.0
-		if data.trailerTopicality > 0.1 then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(TPoint.Create(x+13,y+131), TRectangle.Create(0, 0, data.trailerTopicality*200, 12))
+		if data.trailerTopicality > 0.1 then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, data.trailerTopicality*200, 12))
 	End Method
 
 
@@ -1437,15 +1437,15 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int)
 		self.SetState(self.STATE_OK)
-		
-		If self.owner > 0 Then 'Möglichkeit für Unit-Tests. Unschön... 
+
+		If self.owner > 0 Then 'Möglichkeit für Unit-Tests. Unschön...
 			'check if revenues have to get paid (call-in-shows, sponsorships)
 			CheckHourlyBroadcastingRevenue()
 
 			'adjust trend/popularity
 			Local popularity:TGenrePopularity = data.GetGenreDefinition().Popularity
 			popularity.FinishBroadcastingProgramme(Game.getPlayer(owner).audience, GetBlocks())
-		Endif		
+		Endif
 
 		'adjust topicality
 		data.CutTopicality(GetTopicalityCutModifier())
@@ -1471,11 +1471,11 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		result.Genre = licence.GetGenre()
 		Local genreDefintion:TMovieGenreDefinition = TMovieGenreDefinition(GetGenreDefinition())
 
-		If block = 1 Or Not lastMovieBlockAttraction Then											
+		If block = 1 Or Not lastMovieBlockAttraction Then
 			'1 - Qualität des Programms
 			result.Quality = GetQuality()
 
-			'2 - Mod: Genre-Popularität / Trend			
+			'2 - Mod: Genre-Popularität / Trend
 			result.GenrePopularityMod = Max(-0.5, Min(0.5, genreDefintion.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
 
 			'3 - Genre <> Zielgruppe
@@ -1483,13 +1483,13 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.GenreTargetGroupMod.MultiplyFloat(1.2)
 			result.GenreTargetGroupMod.SubtractFloat(0.6)
 			result.GenreTargetGroupMod.CutBorders(-0.6, 0.6)
-			
+
 			'4 - Image
-			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods() '0 bis 2	
+			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods() '0 bis 2
 			result.PublicImageMod.MultiplyFloat(0.35)
 			result.PublicImageMod.SubtractFloat(0.35)
 			result.PublicImageMod.CutBorders(-0.35, 0.35)
-			
+
 			'5 - Trailer
 			result.TrailerMod = data.GetTrailerMod()
 			result.TrailerMod.SubtractFloat(1)
@@ -1525,7 +1525,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Else
 			result.QualityOverTimeEffectMod = Max(-0.2, Min(0.1, ((result.Quality - 0.5)/6) * (block - 1)))
 		EndIf
-		
+
 		'9 - Genres <> Sendezeit
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
 
@@ -1534,37 +1534,37 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		If lastNewsBlockAttraction Then
 			result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
 		EndIf
-		
+
 		result.CalculateBlockAttraction()
 
 		'Sequence
 		'If (Game.playerID = 1) Then DebugStop
-		
+
 		Local seqCal:TSequenceCalculation = New TSequenceCalculation
 		seqCal.PredecessorShareOnRise = 0.25
 		seqCal.PredecessorShareOnShrink  = 0.5
 		seqCal.Predecessor = lastNewsBlockAttraction
 		seqCal.Successor = result
-		
-		
-		
+
+
+
 		'Audience-Flow
 		rem
 		If lastMovieBlockAttraction Then
 			Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
 			Local modBase:TAudience = lastGenreDefintion.GetAudienceFlowModBase(result.Genre)
-			
-			
+
+
 			Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
-					
+
 			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
 			result.AudienceFlowBonus.Multiply(audienceFlowMod)
 		Else
 			result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
-			result.AudienceFlowBonus.MultiplyFloat(0.2)				
-		End If		
+			result.AudienceFlowBonus.MultiplyFloat(0.2)
+		End If
 		endrem
-		
+
 		'result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
 
 		result.CalculateFinalAttraction()

@@ -20,20 +20,20 @@ Type TBroadcastManager
 
 	'Field currentBroadcast:TBroadcast = Null
 	'Field currentProgammeBroadcast:TBroadcast = Null
-	'Field currentNewsShowBroadcast:TBroadcast = Null	
-	
+	'Field currentNewsShowBroadcast:TBroadcast = Null
+
 	'Field lastProgrammeBroadcast:TBroadcast = Null
 	'Field lastNewsShowBroadcast:TBroadcast = Null
-	
+
 	'Für die Manipulationen von außen... funktioniert noch nicht
 	Field PotentialAudienceManipulations:TMap = CreateMap()
 
 	Field Sequence:TBroadcastSequence = new TBroadcastSequence
-	
+
 	'===== Konstrukor, Speichern, Laden =====
 
 	Function Create:TBroadcastManager()
-		Return New TBroadcastManager 
+		Return New TBroadcastManager
 	End Function
 
 
@@ -72,7 +72,7 @@ Type TBroadcastManager
 	Method GetCurrentBroadcast:TBroadcast()
 		Return Sequence.GetCurrentBroadcast()
 	End Method
-	
+
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0)
 		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
@@ -92,7 +92,7 @@ Type TBroadcastManager
 		BroadcastCommon(hour, material, TBroadcastMaterial.TYPE_NEWSSHOW, recompute)
 		rem
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
-		self.lastNewsShowBroadcast = currentNewsShowBroadcast		
+		self.lastNewsShowBroadcast = currentNewsShowBroadcast
 		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_NEWSSHOW, day, hour)
 		currentNewsShowBroadcast = BroadcastCommon(hour, material, recompute)
 		endrem
@@ -108,11 +108,11 @@ Type TBroadcastManager
 		Return newsGenreDefinitions[genreId]
 	End Method
 
-	
+
 	'===== Manipulationen =====
-	
+
 	'Ist noch nicht fertig!
-	Method ManipulatePotentialAudience(factor:Float, day:Int, hour:Int, followingHours:Int = 0 ) 'factor = -0.1 und +2.0	
+	Method ManipulatePotentialAudience(factor:Float, day:Int, hour:Int, followingHours:Int = 0 ) 'factor = -0.1 und +2.0
 		Local realDay:Int = day
 		Local realHour:Int
 		For Local i:Int = 0 to followingHours
@@ -126,7 +126,7 @@ Type TBroadcastManager
 			End If
 			'PotentialAudienceManipulations.Insert(realDay + "|" + realHour, factor)
 			Throw "Implementiere mich!"
-		Next	
+		Next
 	End Method
 
 	'===== Hilfsmethoden =====
@@ -137,7 +137,7 @@ Type TBroadcastManager
 		bc.BroadcastType = broadcastType
 		bc.Hour = hour
 		Sequence.SetCurrentBroadcast(bc)
-		
+
 		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
 		bc.PlayersBroadcasts = broadcasts					'Die Programmwahl der Spieler "einloggen"
 		bc.ComputeAudience(Sequence.GetBeforeProgrammeBroadcast()  , Sequence.GetBeforeNewsShowBroadcast())	'Zuschauerzahl berechnen
@@ -147,11 +147,11 @@ Type TBroadcastManager
 			Local audienceResult:TAudienceResult = bc.AudienceResults[i]
 			audienceResult.AudienceAttraction.SetPlayerId(i)
 			Game.GetPlayer(i).audience = audienceResult
-			
+
 			'Der KI den möglichen Sendeausfall mitteilen!
 			If audienceResult.AudienceAttraction.Malfunction Then
 				Local player:TPlayer = Game.GetPlayer(i)
-				If Game.isGameLeader() And player.isAI() 
+				If Game.isGameLeader() And player.isAI()
 					player.PlayerKI.CallOnMalfunction()
 				Endif
 			Endif
@@ -175,7 +175,7 @@ Type TBroadcastManager
 		Next
 		Return result
 	End Method
-	
+
 	'Test für den UnitTest
 	Method GetTastValue:Int()
 		Return 5
@@ -195,7 +195,7 @@ Type TBroadcast
 	Field Attractions:TAudienceAttraction[5]	'Wie Attraktiv ist das Programm für diesen Broadcast
 	Field AudienceResults:TAudienceResult[5]	'Welche Zuschauerzahlen konnten ermittelt werden
 	Field Feedback:TBroadcastFeedback[5]		'Cache für das Feedback. Bitte mit GetFeedback zugreifen, ist nämlich nicht immer gefüllt.
-	
+
 	Field TopAudience:Int						'Die höchste Zuschauerzahl
 	Field TopAudienceRate:Float					'Die höchste Zuschauerquote
 	Field TopAttraction:Float					'Die Programmattraktivität
@@ -246,7 +246,7 @@ Type TBroadcast
 		AudienceResults[4].Refresh()
 	End Method
 
-	
+
 	Method GetMarketById:TAudienceMarketCalculation(id:String)
 		For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 			If market.GetId() = id Then Return market
@@ -266,26 +266,26 @@ Type TBroadcast
 
 
 	'Berechnet die Attraktivität des Programmes pro Spieler (mit Glücksfaktor) und setzt diese Infos an die Märktkalkulationen (TAudienceMarketCalculation) weiter.
-	Method ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)	
+	Method ComputeAndSetPlayersProgrammeAttraction(lastMovieBroadcast:TBroadcast, lastNewsShowBroadcast:TBroadcast)
 		Local broadcastedMaterial:TBroadcastMaterial
 		For Local i:Int = 1 To 4
 			broadcastedMaterial = PlayersBroadcasts[i]
-			
+
 			Local lastMovieAttraction:TAudienceAttraction = null
-			If lastMovieBroadcast <> Null lastMovieAttraction = lastMovieBroadcast.Attractions[i] 
-			
+			If lastMovieBroadcast <> Null lastMovieAttraction = lastMovieBroadcast.Attractions[i]
+
 			Local lastNewsShowAttraction:TAudienceAttraction = null
-			If lastNewsShowBroadcast <> Null lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[i] 			
-			
+			If lastNewsShowBroadcast <> Null lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[i]
+
 			If broadcastedMaterial Then
-				AudienceResults[i].Title = broadcastedMaterial.GetTitle()			
-				'3. Qualität meines Programmes			
-				Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction)			
+				AudienceResults[i].Title = broadcastedMaterial.GetTitle()
+				'3. Qualität meines Programmes
+				Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction)
 			Else 'dann Sendeausfall! TODO: Chef muss böse werden!
-				TDevHelper.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + i + "': Malfunction!", LOG_DEBUG)		
+				TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + i + "': Malfunction!", LOG_DEBUG)
 				AudienceResults[i].Title = "Malfunction!" 'Sendeausfall
 				Attractions[i] = CalculateMalfunction(lastMovieAttraction)
-			End If			
+			End If
 
 			For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
 				If market.Players.Contains(String(i)) Then
@@ -296,24 +296,24 @@ Type TBroadcast
 	End Method
 
 	'Sendeausfall
-	Method CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)		
+	Method CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)
 		Local attraction:TAudienceAttraction = new TAudienceAttraction
-		attraction.BroadcastType = 0		
+		attraction.BroadcastType = 0
 		If lastMovieAttraction Then
 			attraction.Malfunction = lastMovieAttraction.Malfunction
 			attraction.AudienceFlowBonus = lastMovieAttraction.Copy()
-			attraction.AudienceFlowBonus.MultiplyFloat(0.02) 
-			
+			attraction.AudienceFlowBonus.MultiplyFloat(0.02)
+
 			attraction.QualityOverTimeEffectMod = -0.2 * attraction.Malfunction
 		Else
 			attraction.QualityOverTimeEffectMod = -0.9
-		End If								
-		attraction.CalculateBaseAttraction()		
+		End If
+		attraction.CalculateBaseAttraction()
 		attraction.CalculateBlockAttraction()
 		attraction.CalculateFinalAttraction()
 		attraction.CalculatePublicImageAttraction()
 		attraction.Malfunction = attraction.Malfunction + 1
-		Return attraction			
+		Return attraction
 	End Method
 
 
@@ -349,40 +349,40 @@ Type TBroadcast
 			AudienceMarkets.AddLast(market)
 		End If
 	End Method
-	
-	
+
+
 	Method FindTopValues()
 		Local currAudience:Int
 		Local currAudienceRate:Float
 		Local currAttraction:Float
 		Local currQuality:Float
-		
+
 		For Local i:Int = 1 To 4
 			Local audienceResult:TAudienceResult = AudienceResults[i]
 			If audienceResult Then
 				currAudience = audienceResult.Audience.GetSum()
 				If (currAudience > TopAudience) Then TopAudience = currAudience
-				
+
 				currAudienceRate = audienceResult.AudienceQuote.GetAverage()
 				If (currAudienceRate > TopAudienceRate) Then TopAudienceRate = currAudienceRate
-				
+
 				currAttraction = audienceResult.AudienceAttraction.GetAverage()
-				If (currAttraction > TopAttraction) Then TopAttraction = currAttraction			
-				
+				If (currAttraction > TopAttraction) Then TopAttraction = currAttraction
+
 				currQuality = audienceResult.AudienceAttraction.Quality
-				If (currQuality > TopQuality) Then TopQuality = currQuality					
+				If (currQuality > TopQuality) Then TopQuality = currQuality
 			Endif
-		Next	
-	End Method		
-	
-	
+		Next
+	End Method
+
+
 	Method GetFeedback:TBroadcastFeedback(playerId:Int)
 		Local currFeedback:TBroadcastFeedback = Feedback[playerId]
-		If Not currFeedback Then			
+		If Not currFeedback Then
 			currFeedback = TBroadcastFeedback.CreateFeedback(Self, playerId)
 			Feedback[playerId] = currFeedback
-		End If		
-		
+		End If
+
 		Return currFeedback
 	End Method
 
@@ -423,37 +423,37 @@ Type TBroadcast
 
 		maxAudienceReturn.Multiply(modi).MultiplyFloat(1.0/100.0)
 		Return maxAudienceReturn
-	End Function	
+	End Function
 End Type
 
 
 'Diese Klasse ist dazu da dem UI Feedback über die aktuelle Ausstrahlung zu geben.
-'For allem für die Zuschauer vor der Mattscheibe (rechts unten im Bildschirm)... 
+'For allem für die Zuschauer vor der Mattscheibe (rechts unten im Bildschirm)...
 'man kann an dieser Klasse ablesen, welche Personen sichtbar sind und wie aktiv.
 'Und man könnte Statements (Sprechblasen) einblenden und Feedback zum aktuellen Programm zu geben.
 Type TBroadcastFeedback
 	Field PlayerId:Int
 	Field AudienceInterest:TAudience				'Wie sehr ist das Publikum interessiert. Werte: 0 = kein Interesse, 1 = etwas Interesse, 2 = großes Interesse, 3 = begeistert
 	Field FeedbackStatements:TList = CreateList()
-	
-	Const QUALITY:String = "QUALITY"	
+
+	Const QUALITY:String = "QUALITY"
 	Const POPULARITY:String = "POPULARITY"
-	
+
 	Function CreateFeedback:TBroadcastFeedback(bc:TBroadcast, playerId:Int)
 		Local fb:TBroadcastFeedback = new TBroadcastFeedback
 		fb.PlayerId = playerId
-		fb.Calculate(bc)		
+		fb.Calculate(bc)
 		Return fb
 	End Function
-	
+
 	Method Calculate(bc:TBroadcast)
 		Local material:TBroadcastMaterial = bc.PlayersBroadcasts[PlayerId]
 		Local result:TAudienceResult = bc.AudienceResults[PlayerId]
 		Local attr:TAudienceAttraction = result.AudienceAttraction
-		
+
 		CalculateAudienceInterest(bc, attr)
-		
-		If Not attr.Malfunction Then								
+
+		If Not attr.Malfunction Then
 			If (attr.Quality < 0.1) Then
 				AddFeedbackStatement(8, QUALITY, -2)
 			ElseIf (attr.Quality < 0.25) Then
@@ -463,9 +463,9 @@ Type TBroadcastFeedback
 			ElseIf (attr.Quality < 0.8) Then
 				AddFeedbackStatement(6, QUALITY, 1)
 			Else
-				AddFeedbackStatement(8, QUALITY, 2)			
+				AddFeedbackStatement(8, QUALITY, 2)
 			End If
-			
+
 			if material Then
 				Local genreDefinition:TGenreDefinitionBase = material.GetGenreDefinition()
 				If genreDefinition Then
@@ -479,42 +479,42 @@ Type TBroadcastFeedback
 					ElseIf (popularityValue < 30) Then
 						AddFeedbackStatement(7, POPULARITY, 1)
 					Else
-						AddFeedbackStatement(8, POPULARITY, 2)			
-					EndIf		
+						AddFeedbackStatement(8, POPULARITY, 2)
+					EndIf
 				EndIf
 			EndIf
 		EndIf
-		
+
 		'Ein erster Test für das Feedback... später ist natürlich ein besseres Feedback geplatn
-		
+
 		'Gute Uhrzeit?
 		'Kommentare zu Flags
 		'AudienceFlow-Kommentare
 		'Kommentare zu Schauspielern
-		'Kommentare zum Genre				
+		'Kommentare zum Genre
 	End Method
-	
+
 	Method CalculateAudienceInterestForAllowed(attr:TAudienceAttraction, maxAudience:TAudience, plausibility:TAudience, minAttraction:Float)
 		'plausibility: Wer scheit wahrscheinlich zu: 0 = auf keinen Fall; 1 = möglich, aber nicht wahrscheinlich; 2 = wahrscheinlich
 		Local averageAttraction:Float = attr.GetAverage()
-		
+
 		Local allowedTemp:TAudience = plausibility
 		Local sortMap:TNumberSortMap = attr.ToNumberSortMap()
-		sortMap.Sort(False)		
+		sortMap.Sort(False)
 		Local highestKVAllowedAdults:TKeyValueNumber = GetFirstAllowed(sortMap, TAudience.CreateAndInit( 0, 1, 1, 1, 1, 1, 1, 0, 0))
-		
+
 		If highestKVAllowedAdults.Value >= 0.9 And attr.Quality > 0.8 Then 'Top-Programm
 			allowedTemp = TAudience.CreateAndInitValue(1)
 			allowedTemp.Children = plausibility.Children
-		EndIf					
-		
-		Local highestKVAllowed:TKeyValueNumber = GetFirstAllowed(sortMap, allowedTemp)	
-		
+		EndIf
+
+		Local highestKVAllowed:TKeyValueNumber = GetFirstAllowed(sortMap, allowedTemp)
+
 		If (averageAttraction > minAttraction) Then
-			Local attrPerMember:Float = 0.9 / allowedTemp.GetSum()					
+			Local attrPerMember:Float = 0.9 / allowedTemp.GetSum()
 			Local familyMemberCount:Int = Int((averageAttraction - (averageAttraction Mod attrPerMember)) / attrPerMember)
-			
-			For local kv:TKeyValueNumber = eachin sortMap.Content		
+
+			For local kv:TKeyValueNumber = eachin sortMap.Content
 				If allowedTemp.Children >= 1 And kv.Key = "0" Then
 					AudienceInterest.Children = AttractionToInterest(attr.Children, maxAudience.Children, allowedTemp.Children - 1)
 					If AudienceInterest.Children > 0 Then familyMemberCount :- 1
@@ -537,21 +537,21 @@ Type TBroadcastFeedback
 					AudienceInterest.Pensioners = AttractionToInterest(attr.Pensioners, maxAudience.Pensioners, allowedTemp.Pensioners - 1)
 					If AudienceInterest.Pensioners > 0 Then familyMemberCount :- 1
 				EndIf
-				
+
 				If familyMemberCount = 0 Then Return
-			Next									
+			Next
 		Else
 			If highestKVAllowed.Value >= (minAttraction * 2) Then
 				AudienceInterest.SetValue(highestKVAllowed.Key.ToInt(), 1)
 			EndIf
-		EndIf		
+		EndIf
 	End Method
-	
+
 	Method CalculateAudienceInterest(bc:TBroadcast, attr:TAudienceAttraction)
 		Local maxAudience:TAudience = TBroadcast.GetPotentialAudienceForHour(TAudience.CreateAndInitValue(1), bc.Hour)
 
-		AudienceInterest = New TAudience		
-		
+		AudienceInterest = New TAudience
+
 		If (bc.Hour >= 0 And bc.Hour <= 1)
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 1, 2, 1, 2, 0, 0), 0.2)
 		Elseif (bc.Hour >= 2 And bc.Hour <= 5)
@@ -560,19 +560,19 @@ Type TBroadcastFeedback
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.3)
 		Elseif (bc.Hour >= 7 And bc.Hour <= 8)
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 1, 1, 1, 0, 1, 1, 0, 0), 0.2)
-		Elseif (bc.Hour >= 9 And bc.Hour <= 11) 			
+		Elseif (bc.Hour >= 9 And bc.Hour <= 11)
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 0, 2, 0, 1, 0, 2, 0, 0), 0.2)
 		ElseIf (bc.Hour >= 13 And bc.Hour <= 16)
 			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 2, 2, 2, 0, 2, 0, 2, 0, 0), 0.15)
 		ElseIf (bc.Hour >= 22 And bc.Hour <= 23)
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.15)			
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 0, 1, 2, 2, 2, 2, 2, 0, 0), 0.15)
 		Else
-			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.15)		
-		EndIf		
-	End Method	
-	
+			CalculateAudienceInterestForAllowed(attr, maxAudience, TAudience.CreateAndInit( 1, 2, 2, 2, 2, 1, 2, 0, 0), 0.15)
+		EndIf
+	End Method
+
 	Method GetFirstAllowed:TKeyValueNumber(sortMap:TNumberSortMap, allowed:TAudience)
-		For local kv:TKeyValueNumber = eachin sortMap.Content		
+		For local kv:TKeyValueNumber = eachin sortMap.Content
 			If allowed.Children >= 1 And kv.Key = "0" Then Return kv
 			If allowed.Teenagers >= 1 And kv.Key = "1" Then Return kv
 			If allowed.HouseWifes >= 1 And kv.Key = "2" Then Return kv
@@ -580,17 +580,17 @@ Type TBroadcastFeedback
 			If allowed.Unemployed >= 1 And kv.Key = "4" Then Return kv
 			If allowed.Manager >= 1 And kv.Key = "5" Then Return kv
 			If allowed.Pensioners >= 1 And kv.Key = "6" Then Return kv
-		Next	
+		Next
 	End Method
-	
+
 	Method AddFeedbackStatement(importance:Int, statementKey:String, rating:Int)
 		Local statement:TBroadcastFeedbackStatement = new TBroadcastFeedbackStatement
-		statement.Importance = importance 
+		statement.Importance = importance
 		statement.StatementKey = statementKey
-		statement.Rating = rating 		
+		statement.Rating = rating
 		FeedbackStatements.AddLast(statement)
 	End Method
-	
+
 	'Diese Methode muss aufgerufen werden, wenn ein Statement angezeigt werden soll.
 	Method GetNextAudienceStatement:TBroadcastFeedbackStatement()
 		Local ImportanceSum:Int
@@ -598,58 +598,58 @@ Type TBroadcastFeedback
 		For local statement:TBroadcastFeedbackStatement = eachin FeedbackStatements
 			ImportanceSum :+ statement.Importance
 		Next
-		
+
 		Local randomValue:Int = Rand(1,ImportanceSum)
-		
-		Local currCount:Int		
+
+		Local currCount:Int
 		For local statement:TBroadcastFeedbackStatement = eachin FeedbackStatements
 			currCount :+ statement.Importance
-			If randomValue <= currCount Then Return statement				
-		Next		
+			If randomValue <= currCount Then Return statement
+		Next
 	End Method
-	
+
 	Method AttractionToInterest:Int(attraction:Float, maxAudienceMod:Float, minValue:Int = 0)
 		If maxAudienceMod >= 0.02 Then 'Extrem streng
 			If attraction > 0.9 Then
 				Return 3
-			End If		
+			End If
 		ElseIf maxAudienceMod >= 0.07 Then 'Sehr streng
 			If attraction > 0.7 Then
 				Return 2
 			ElseIf attraction > 0.85 Then
-				Return 3			
-			End If			
+				Return 3
+			End If
 		ElseIf maxAudienceMod >= 0.12 Then 'Verfügbar
 			If attraction > 0.5 Then
 				Return 1
 			ElseIf attraction > 0.6 Then
 				Return 2
 			ElseIf attraction > 0.85 Then
-				Return 3			
-			End If			
+				Return 3
+			End If
 		ElseIf maxAudienceMod >= 0.16 Then 'Primetime
 			If attraction > 0.3 Then
 				Return 1
 			ElseIf attraction > 0.6 Then
 				Return 2
 			ElseIf attraction > 0.85 Then
-				Return 3			
-			End If			
+				Return 3
+			End If
 		End If
 		Return minValue
 	End Method
 End Type
 
-Type TBroadcastFeedbackStatement		
+Type TBroadcastFeedbackStatement
 	Field Importance :Int
 	Field Rating:Int '-2=schrecklich, -1 = negativ, 0 = neutral, 1 = positiv, 2 = hervorragend
 	Field TargetGroup:Int
 	Field StatementKey:String
 	Field Statement:String
-	
+
 	Method ToString:String()
 		Return "Statement: " + Importance + " / " + StatementKey + " = " + Rating
-	End Method	
+	End Method
 End Type
 
 'Diese Klasse repräsentiert einen Markt um den 1 bis 4 Spieler konkurieren.
@@ -685,18 +685,18 @@ Type TAudienceMarketCalculation
 		Return AudienceResults[playerId]
 	End Method
 
-	
+
 	Method ComputeAudience(forHour:Int = -1)
 		If forHour <= 0 Then forHour = Game.GetHour()
 
-		CalculatePotentialChannelSurfer(forHour)			
+		CalculatePotentialChannelSurfer(forHour)
 
 		'Die Zapper, um die noch gekämpft werden kann.
 		Local ChannelSurferToShare:TAudience = PotentialChannelSurfer.Copy()
 		ChannelSurferToShare.Round()
 
 		'Ermittle wie viel ein Attractionpunkt auf Grund der Konkurrenz-
-		'situation wert ist bzw. Quote bringt.		
+		'situation wert ist bzw. Quote bringt.
 		Local reduceFactor:TAudience = GetReduceFactor()
 		If reduceFactor Then
 			For Local currKey:String = EachIn AudienceAttractions.Keys()
@@ -704,7 +704,7 @@ Type TAudienceMarketCalculation
 				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor) 'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
 				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)	'Anteil an der "erbeuteten" Zapper berechnen
 				channelSurfer.Round()
-				
+
 				'Ergebnis in das AudienceResult schreiben
 				Local currKeyInt:Int = currKey.ToInt()
 				AudienceResults[currKeyInt] = New TAudienceResult
@@ -725,8 +725,8 @@ Type TAudienceMarketCalculation
 			Next
 		End If
 	End Method
-	
-	
+
+
 	Method CalculatePotentialChannelSurfer(forHour:Int)
 		MaxAudience.Round()
 
@@ -736,14 +736,14 @@ Type TAudienceMarketCalculation
 		Local audienceFlowSum:TAudience = new TAudience
 		For Local attractionTemp:TAudienceAttraction = EachIn AudienceAttractions.Values()
 			audienceFlowSum.Add(attractionTemp.AudienceFlowBonus)
-		Next		
+		Next
 		audienceFlowSum.DivideFloat(Float(Players.Count()))
-		
+
 		'Es erhöht sich die Gesamtanzahl der Zuschauer etwas.
-		PotentialChannelSurfer.Add(audienceFlowSum.Copy().MultiplyFloat(0.25))		
+		PotentialChannelSurfer.Add(audienceFlowSum.Copy().MultiplyFloat(0.25))
 	End Method
-	
-	
+
+
 	Method GetReduceFactor:TAudience()
 		Local attrSum:TAudience = Null		'Die Summe aller Attractionwerte
 		Local attrRange:TAudience = Null	'Wie viel Prozent der Zapper bleibt bei mindestens einem Programm
@@ -772,7 +772,7 @@ Type TAudienceMarketCalculation
 		Next
 
 		Local result:TAudience
-		
+
 		If attrSum Then
 			result = attrRange.Copy()
 
@@ -780,8 +780,8 @@ Type TAudienceMarketCalculation
 				result.Divide(attrSum)
 			EndIf
 		EndIf
-		Return result			
-	End Method	
+		Return result
+	End Method
 End Type
 
 
@@ -827,10 +827,10 @@ Type TAudienceResult
 
 
 	'Berechnet die Quoten neu. Muss mindestens einmal aufgerufen werden.
-	Method Refresh()		
+	Method Refresh()
 		Audience.FixGenderCount()
 		PotentialMaxAudience.FixGenderCount()
-		
+
 		AudienceQuote = Audience.Copy()
 		AudienceQuote.Divide(PotentialMaxAudience)
 
@@ -864,14 +864,14 @@ Type TAudience
 	Field Men:Float			= 0	'Männer
 
 	'=== Constructors ===
-	
+
 	Function CreateAndInit:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
 		Local obj:TAudience = New TAudience
 		obj.SetValues(children, teenagers, houseWifes, employees, unemployed, manager, pensioners, women, men)
 		If (women = -1 And men = -1) Then obj.CalcGenderBreakdown()
 		Return obj
 	End Function
-	
+
 	Function CreateAndInitValue:TAudience(defaultValue:Float)
 		Local obj:TAudience = New TAudience
 		obj.AddFloat(defaultValue)
@@ -894,19 +894,19 @@ Type TAudience
 	End Function
 
 	'=== PUBLIC ===
-	
+
 	Method Copy:TAudience()
 		Local result:TAudience = New TAudience
 		result.Id = Id
-		result.SetValuesFrom(Self)		
+		result.SetValuesFrom(Self)
 		return result
-	End Method	
+	End Method
 
 	Method SetValuesFrom:TAudience(value:TAudience)
 		Self.SetValues(value.Children, value.Teenagers, value.HouseWifes, value.Employees, value.Unemployed, value.Manager, value.Pensioners, value.Women, value.Men)
 		Return Self
 	End Method
-	
+
 	Method SetValues:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
 		Self.Children	= children
 		Self.Teenagers	= teenagers
@@ -920,32 +920,32 @@ Type TAudience
 		Self.Men		= men
 		Return Self
 	End Method
-	
-	
+
+
 	Method GetAverage:Float()
 		Return (Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners) / 7
 	End Method
-	
+
 	Method CalcGenderBreakdown()
 		Women		= Children * 0.5 + Teenagers * 0.5 + HouseWifes * 0.9 + Employees * 0.4 + Unemployed * 0.4 + Manager * 0.25 + Pensioners * 0.55
-		Men			= Children * 0.5 + Teenagers * 0.5 + HouseWifes * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45		
+		Men			= Children * 0.5 + Teenagers * 0.5 + HouseWifes * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45
 	End Method
-	
+
 	Method FixGenderCount()
 		Local GenderSum:Float = Women + Men
 		Local AudienceSum:Int = GetSum();
 
 		Women = Ceil(AudienceSum / GenderSum * Women)
-		Men = Ceil(AudienceSum / GenderSum * Men)		
-		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen		
+		Men = Ceil(AudienceSum / GenderSum * Men)
+		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen
 	End Method
-	
+
 	Method CutBorders:TAudience(minimum:Float, maximum:Float)
 		CutMinimum(minimum)
 		CutMaximum(maximum)
 		Return Self
 	End Method
-	
+
 	Method CutMinimum:TAudience(value:float)
 		If Children < value Then Children = value
 		If Teenagers < value Then Teenagers = value
@@ -957,8 +957,8 @@ Type TAudience
 		If Women < value Then Women = value
 		If Men < value Then Men = value
 		Return Self
-	End Method	
-	
+	End Method
+
 	Method CutMaximum:TAudience(value:float)
 		If Children > value Then Children = value
 		If Teenagers > value Then Teenagers = value
@@ -970,8 +970,8 @@ Type TAudience
 		If Women > value Then Women = value
 		If Men > value Then Men = value
 		Return Self
-	End Method	
-	
+	End Method
+
 	Method GetValue:Float(targetID:int)
 		Select targetID
 			Case 1	Return Children
@@ -1000,10 +1000,10 @@ Type TAudience
 			Case 8	Women = newValue
 			Case 9	Men = newValue
 			Default
-				Throw TArgumentException.Create("targetID", String.FromInt(targetID))			
+				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
 		End Select
 	End Method
-	
+
 	Method GetSum:Float()
 		Return Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners
 	End Method
@@ -1022,8 +1022,8 @@ Type TAudience
 		Men			:+ audience.Men
 		Return Self
 	End Method
-	
-	
+
+
 	Method AddFloat:TAudience(number:Float)
 		Children	:+ number
 		Teenagers	:+ number
@@ -1035,7 +1035,7 @@ Type TAudience
 		Women		:+ number
 		Men			:+ number
 		Return Self
-	End Method	
+	End Method
 
 
 	Method Subtract:TAudience(audience:TAudience)
@@ -1053,7 +1053,7 @@ Type TAudience
 
 		Return Self
 	End Method
-	
+
 	Method SubtractFloat:TAudience(number:Float)
 		Children	:- number
 		Teenagers	:- number
@@ -1065,7 +1065,7 @@ Type TAudience
 		Women		:- number
 		Men			:- number
 		Return Self
-	End Method	
+	End Method
 
 
 	Method Multiply:TAudience(audience:TAudience)
@@ -1109,7 +1109,7 @@ Type TAudience
 		Return Self
 	End Method
 
-	
+
 	Method DivideFloat:TAudience(number:Float)
 		Children	:/ number
 		Teenagers	:/ number
@@ -1121,22 +1121,22 @@ Type TAudience
 		Women		:/ number
 		Men			:/ number
 		Return Self
-	End Method	
-	
+	End Method
+
 
 	Method Round:TAudience()
-		Children	= TFunctions.RoundInt(Children)
-		Teenagers	= TFunctions.RoundInt(Teenagers)
-		HouseWifes	= TFunctions.RoundInt(HouseWifes)
-		Employees	= TFunctions.RoundInt(Employees)
-		Unemployed	= TFunctions.RoundInt(Unemployed)
-		Manager		= TFunctions.RoundInt(Manager)
-		Pensioners	= TFunctions.RoundInt(Pensioners)
-		Women		= TFunctions.RoundInt(Women)
-		Men			= TFunctions.RoundInt(Men)
+		Children	= THelper.RoundInt(Children)
+		Teenagers	= THelper.RoundInt(Teenagers)
+		HouseWifes	= THelper.RoundInt(HouseWifes)
+		Employees	= THelper.RoundInt(Employees)
+		Unemployed	= THelper.RoundInt(Unemployed)
+		Manager		= THelper.RoundInt(Manager)
+		Pensioners	= THelper.RoundInt(Pensioners)
+		Women		= THelper.RoundInt(Women)
+		Men			= THelper.RoundInt(Men)
 		Return Self
 	End Method
-	
+
 
 	Method ToNumberSortMap:TNumberSortMap(withSubGroups:Int=false)
 		Local amap:TNumberSortMap = new TNumberSortMap
@@ -1146,77 +1146,77 @@ Type TAudience
 		amap.Add("4", Employees)
 		amap.Add("5", Unemployed)
 		amap.Add("6", Manager)
-		amap.Add("7", Pensioners)			
+		amap.Add("7", Pensioners)
 		If withSubGroups Then
 			amap.Add("8", Women)
-			amap.Add("9", Men)			
-		EndIf	
+			amap.Add("9", Men)
+		EndIf
 		Return amap
 	End Method
 
 	Method ToStringMinimal:String()
 		Local dec:Int = 0
-		Return "C:" + TFunctions.shortenFloat(Children,dec) + " / T:" + TFunctions.shortenFloat(Teenagers,dec) + " / H:" + TFunctions.shortenFloat(HouseWifes,dec) + " / E:" + TFunctions.shortenFloat(Employees,dec) + " / U:" + TFunctions.shortenFloat(Unemployed,dec) + " / M:" + TFunctions.shortenFloat(Manager,dec) + " /P:" + TFunctions.shortenFloat(Pensioners,dec)
-	End Method	
-	
+		Return "C:" + THelper.floatToString(Children,dec) + " / T:" + THelper.floatToString(Teenagers,dec) + " / H:" + THelper.floatToString(HouseWifes,dec) + " / E:" + THelper.floatToString(Employees,dec) + " / U:" + THelper.floatToString(Unemployed,dec) + " / M:" + THelper.floatToString(Manager,dec) + " /P:" + THelper.floatToString(Pensioners,dec)
+	End Method
+
 	Method ToString:String()
 		Local dec:Int = 4
-		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + TFunctions.shortenFloat(Children,dec) + "  - 1: " + TFunctions.shortenFloat(Teenagers,dec) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,dec) + "  - 3: " + TFunctions.shortenFloat(Employees,dec) + "  - 4: " + TFunctions.shortenFloat(Unemployed,dec) + "  - 5: " + TFunctions.shortenFloat(Manager,dec) + "  - 6: " + TFunctions.shortenFloat(Pensioners,dec) + ") - [[ W: " + TFunctions.shortenFloat(Women,dec) + "  - M: " + TFunctions.shortenFloat(Men ,dec) + " ]]"
+		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + THelper.floatToString(Children,dec) + "  - 1: " + THelper.floatToString(Teenagers,dec) + "  - 2: " + THelper.floatToString(HouseWifes,dec) + "  - 3: " + THelper.floatToString(Employees,dec) + "  - 4: " + THelper.floatToString(Unemployed,dec) + "  - 5: " + THelper.floatToString(Manager,dec) + "  - 6: " + THelper.floatToString(Pensioners,dec) + ") - [[ W: " + THelper.floatToString(Women,dec) + "  - M: " + THelper.floatToString(Men ,dec) + " ]]"
 	End Method
 
 
 	Method ToStringAverage:String()
-		Return "Avg: " + TFunctions.shortenFloat(GetAverage(),3) + "  ( 0: " + TFunctions.shortenFloat(Children,3) + "  - 1: " + TFunctions.shortenFloat(Teenagers,3) + "  - 2: " + TFunctions.shortenFloat(HouseWifes,3) + "  - 3: " + TFunctions.shortenFloat(Employees,3) + "  - 4: " + TFunctions.shortenFloat(Unemployed,3) + "  - 5: " + TFunctions.shortenFloat(Manager,3) + "  - 6: " + TFunctions.shortenFloat(Pensioners,3) + ")"
+		Return "Avg: " + THelper.floatToString(GetAverage(),3) + "  ( 0: " + THelper.floatToString(Children,3) + "  - 1: " + THelper.floatToString(Teenagers,3) + "  - 2: " + THelper.floatToString(HouseWifes,3) + "  - 3: " + THelper.floatToString(Employees,3) + "  - 4: " + THelper.floatToString(Unemployed,3) + "  - 5: " + THelper.floatToString(Manager,3) + "  - 6: " + THelper.floatToString(Pensioners,3) + ")"
 	End Method
-	
+
 	Function InnerSort:Int(targetId:Int, o1:Object, o2:Object)
 		Local s1:TAudience = TAudience(o1)
 		Local s2:TAudience = TAudience(o2)
 		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
         Return (s1.GetValue(targetId)*1000)-(s2.GetValue(targetId)*1000)
-	End Function	
-	
+	End Function
+
 	Function ChildrenSort:Int(o1:Object, o2:Object)
 		Return InnerSort(1, o1, o2)
 	End Function
-	
+
 	Function TeenagersSort:Int(o1:Object, o2:Object)
 		Return InnerSort(2, o1, o2)
 	End Function
-	
+
 	Function HouseWifesSort:Int(o1:Object, o2:Object)
 		Return InnerSort(3, o1, o2)
 	End Function
-	
+
 	Function EmployeesSort:Int(o1:Object, o2:Object)
 		Return InnerSort(4, o1, o2)
 	End Function
-	
+
 	Function UnemployedSort:Int(o1:Object, o2:Object)
 		Return InnerSort(5, o1, o2)
 	End Function
-	
+
 	Function ManagerSort:Int(o1:Object, o2:Object)
 		Return InnerSort(6, o1, o2)
 	End Function
-	
+
 	Function PensionersSort:Int(o1:Object, o2:Object)
 		Return InnerSort(7, o1, o2)
 	End Function
-	
+
 	Function WomenSort:Int(o1:Object, o2:Object)
 		Return InnerSort(8, o1, o2)
 	End Function
-	
+
 	Function MenSort:Int(o1:Object, o2:Object)
 		Return InnerSort(9, o1, o2)
-	End Function	
+	End Function
 End Type
 
 
 'Diese Klasse repräsentiert die Programmattraktivität (Inhalt von TAudience)
 'Sie beinhaltet aber zusätzlich die Informationen wie sie berechnet wurde (für Statistiken, Debugging und Nachberechnungen) unf für was sieht steht.
-Type TAudienceAttraction Extends TAudience	
+Type TAudienceAttraction Extends TAudience
 	Field BroadcastType:Int '-1 = Sendeausfall; 1 = Film; 2 = News
 	Field Quality:Float				'0 - 100
 	Field GenrePopularityMod:Float	'
@@ -1225,38 +1225,38 @@ Type TAudienceAttraction Extends TAudience
 	Field TrailerMod:TAudience
 	Field FlagsMod:TAudience
 	Field AudienceFlowBonus:TAudience
-	
+
 	Field QualityOverTimeEffectMod:Float
 	Field GenreTimeMod:Float
 	Field NewsShowBonus:TAudience
 	Field SequenceEffect:TAudience
-	
-	Field BaseAttraction:TAudience	
+
+	Field BaseAttraction:TAudience
 	Field BlockAttraction:TAudience
 	Field FinalAttraction:TAudience
 	Field PublicImageAttraction:TAudience
-	
+
 	Field Genre:Int
 	Field Malfunction:Int '1 = Sendeausfall
-	
+
 	Function CreateAndInitAttraction:TAudienceAttraction(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.SetValues(group0, group1, group2, group3, group4, group5, group6, subgroup0, subgroup1)
 		Return result
-	End Function	
-	
+	End Function
+
 	Method SetPlayerId(playerId:Int)
 		Self.Id = playerId
-		Self.BaseAttraction.Id = playerId		
+		Self.BaseAttraction.Id = playerId
 		Self.BlockAttraction.Id = playerId
 		Self.FinalAttraction.Id = playerId
 		Self.PublicImageAttraction.Id = playerId
-	End Method	
-	
+	End Method
+
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
 		Self.Add(audienceAttr)
-		
+
 		Quality	:+ audienceAttr.Quality
 		GenrePopularityMod	:+ audienceAttr.GenrePopularityMod
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
@@ -1266,19 +1266,19 @@ Type TAudienceAttraction Extends TAudience
 		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
 		GenreTimeMod :+ audienceAttr.GenreTimeMod
-		If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)		
+		If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)
 		If SequenceEffect Then SequenceEffect.Add(audienceAttr.SequenceEffect)
-		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)		
+		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
 		If BlockAttraction Then BlockAttraction.Add(audienceAttr.BlockAttraction)
 		If FinalAttraction Then FinalAttraction.Add(audienceAttr.FinalAttraction)
 		If PublicImageAttraction Then PublicImageAttraction.Add(audienceAttr.PublicImageAttraction)
 
 		Return Self
 	End Method
-	
+
 	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
 		Self.MultiplyFloat(factor)
-		
+
 		Quality	:* factor
 		GenrePopularityMod 	:* factor
 		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
@@ -1290,14 +1290,14 @@ Type TAudienceAttraction Extends TAudience
 		GenreTimeMod :* factor
 		If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
 		If SequenceEffect Then SequenceEffect.MultiplyFloat(factor)
-		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)		
+		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)
 		If BlockAttraction Then BlockAttraction.MultiplyFloat(factor)
 		If FinalAttraction Then FinalAttraction.MultiplyFloat(factor)
 		If PublicImageAttraction Then PublicImageAttraction.MultiplyFloat(factor)
 
-		Return Self		
+		Return Self
 	End Method
-	
+
 	Method CalculateBaseAttraction()
 		Local Sum:TAudience = new TAudience
 		Sum.AddFloat(GenrePopularityMod)
@@ -1306,20 +1306,20 @@ Type TAudienceAttraction Extends TAudience
 		Sum.Add(TrailerMod)
 		Sum.Add(FlagsMod)
 		Sum.AddFloat(1)
-					
-		Sum.MultiplyFloat(Quality)	
+
+		Sum.MultiplyFloat(Quality)
 		Self.BaseAttraction = Sum.Copy()
 		Self.BaseAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
 	End Method
 	rem
-	Method CalculateBroadcastAttraction()	
+	Method CalculateBroadcastAttraction()
 		Local Sum:TAudience = new TAudience
 		Sum.Add(BaseAttraction)
 		If AudienceFlowBonus <> Null Then
 			Sum.Add(AudienceFlowBonus)
 		EndIf
-		
+
 		Self.BroadcastAttraction = Sum.Copy()
 		Self.BroadcastAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
@@ -1331,26 +1331,26 @@ Type TAudienceAttraction Extends TAudience
 		Sum.AddFloat(GenreTimeMod)
 		'Sum.AddFloat(NewsShowMod)
 		Sum.AddFloat(1)
-	
+
 		Sum.Multiply(BaseAttraction)
 		If NewsShowBonus <> Null Then
 			Sum.Add(NewsShowBonus)
-		EndIf		
-		
+		EndIf
+
 		Self.BlockAttraction = Sum.Copy()
 		Self.BlockAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
 	End Method
-	
+
 	Method CalculateFinalAttraction()
 		Local Sum:TAudience = Self.BlockAttraction.Copy()
 		Sum.Add(SequenceEffect)
-			
+
 		Self.FinalAttraction = Sum
 		Self.BlockAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 		Self.SetValuesFrom(Sum)
-	End Method	
-	
+	End Method
+
 	'Die PublicImageAttraction wird dafür verwendet um zu sehen, wie gut das Programm plaziert war und wie die Qualität war.
 	'Damit wird das PublicImage beeinflusst.
 	Method CalculatePublicImageAttraction()
@@ -1360,72 +1360,72 @@ Type TAudienceAttraction Extends TAudience
 		'Sum.Add(PublicImageMod)
 		Sum.Add(TrailerMod)
 		Sum.Add(FlagsMod)
-		Sum.AddFloat(1)		
-		
-		Sum.MultiplyFloat(Quality)			
-					
+		Sum.AddFloat(1)
+
+		Sum.MultiplyFloat(Quality)
+
 		If AudienceFlowBonus <> Null Then
 			Sum.Add(AudienceFlowBonus)
-		EndIf		
-		
+		EndIf
+
 		Local Sum2:TAudience = new TAudience
 		'Sum2.AddFloat(QualityOverTimeEffectMod)
 		Sum2.AddFloat(GenreTimeMod)
 		'Sum2.AddFloat(NewsShowMod)
 		Sum2.AddFloat(1)
-		
+
 		Sum2.Multiply(Sum)
-		
-		Self.PublicImageAttraction = Sum2.Copy()		
+
+		Self.PublicImageAttraction = Sum2.Copy()
 		Self.PublicImageAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
 	End Method
-	
+
 	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
 		Id = otherAudienceAttraction.Id 'Wahrscheinlich überflüssig
-		Quality = otherAudienceAttraction.Quality 
+		Quality = otherAudienceAttraction.Quality
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
 		GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod
 		PublicImageMod = otherAudienceAttraction.PublicImageMod
 		TrailerMod = otherAudienceAttraction.TrailerMod
 		FlagsMod = otherAudienceAttraction.FlagsMod
-		
+
 		'AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
-		
-		BaseAttraction = otherAudienceAttraction.BaseAttraction		
+
+		BaseAttraction = otherAudienceAttraction.BaseAttraction
 		'BroadcastAttraction = otherAudienceAttraction.BroadcastAttraction
 		'FinalAttraction = otherAudienceAttraction.FinalAttraction
 		'PublicImageAttraction = otherAudienceAttraction.PublicImageAttraction
-		
+
 		Self.SetValuesFrom(otherAudienceAttraction)
-	End Method	
+	End Method
 End Type
 
 
 Type TBroadcastSequence
 	Field sequence:TList = CreateList()
 	Field current:TBroadcast
-	
+
 	Method SetCurrentBroadcast(broadcast:TBroadcast)
 		current = broadcast
-		sequence.AddFirst( current )		
+		sequence.AddFirst( current )
 	End Method
-	
+
 	Method GetCurrentBroadcast:TBroadcast()
 		Return TBroadcast(sequence.First())
 	End Method
-	
+
 	Method GetBeforeBroadcast:TBroadcast()
 		Return TBroadcast(sequence.ValueAtIndex(1))
 	End Method
-	
+
 	Method GetBeforeProgrammeBroadcast:TBroadcast()
 		Return GetFirst(TBroadcastMaterial.TYPE_PROGRAMME, false)
 	End Method
-	
+
 	Method GetBeforeNewsShowBroadcast:TBroadcast()
 		Return GetFirst(TBroadcastMaterial.TYPE_NEWSSHOW, false)
 	End Method
-	
+
 	Method GetFirst:TBroadcast(broadcastType:int, withoutCurrent:Int = false)
 		For local curr:TBroadcast = eachin sequence
 			If curr <> current Or withoutCurrent Then
@@ -1433,7 +1433,7 @@ Type TBroadcastSequence
 			Endif
 		Next
 		Return Null
-	End Method	
+	End Method
 End Type
 
 Type TSequenceCalculation
@@ -1442,7 +1442,7 @@ Type TSequenceCalculation
 	Field PredecessorShareOnRise:Float
 	Field PredecessorShareOnShrink:Float
 
-	Method GetSequenceByGenreDefinition:TAudience( attractionOnlyMod:TAudience, audienceFlowMod:TAudience = null )		
+	Method GetSequenceByGenreDefinition:TAudience( attractionOnlyMod:TAudience, audienceFlowMod:TAudience = null )
 		If audienceFlowMod Then 'Film-Wechsel
 			Local mods:TAudience = audienceFlowMod.Copy() '0.3 - 1.2
 			Return GetSequenceDefault(mods, mods) 'Vielleicht ersten Parameter leer lassen?
@@ -1452,7 +1452,7 @@ Type TSequenceCalculation
 			Return GetSequenceDefault(mods, mods)
 		EndIf
 	End Method
-	
+
 	Method GetSequenceDefault:TAudience( riseMod:TAudience = null, shrinkMod:TAudience = null)
 		Local result:TAudience = new TAudience
 		Local predecessorValue:Float
@@ -1470,34 +1470,34 @@ Type TSequenceCalculation
 			If riseMod Then riseModTemp = riseMod.GetValue(i)
 			Local shrinkModTemp:Float = 1
 			If shrinkMod Then shrinkModTemp = shrinkMod.GetValue(i)
-			
+
 			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp)
-			
+
 			result.SetValue(i, sequence)
-		Next			
+		Next
 		Return result
 	End Method
-	
+
 	Method CalcSequenceCase:Float(predecessorValue:Float, successorValue:Float, riseMod:Float, shrinkMod:Float)
 		Local rise:Int = false
 		Local successorValueInitial:Float = successorValue
-	
+
 		If (predecessorValue < successorValue) 'Steigende Quote
 			rise = true
 			predecessorValue :* PredecessorShareOnRise
 			successorValue :* (1 - PredecessorShareOnRise)
 		Else 'Sinkende Quote
 			predecessorValue :* PredecessorShareOnShrink
-			successorValue :* (1 - PredecessorShareOnShrink)			
+			successorValue :* (1 - PredecessorShareOnShrink)
 		Endif
-		
+
 		'Um diese Berechnung zu verstehen, bitte den UnitTest "SequenceCalculationTest" anschauen
 		Local sequence:Float = (predecessorValue + successorValue) - successorValueInitial
 		If rise Then 'Wenn die Quote steigt, dann bremst der SequenceFactor aus: also negative Zahl
-			If riseMod > 1 Then	
+			If riseMod > 1 Then
 				sequence :* (1 / riseMod)
 			EndIf
-		Else 'Wenn die Quote schrumpft, dann erhöht der SequenceFactor... er bremst den Fall siehe u.a. auch Audience Flow 
+		Else 'Wenn die Quote schrumpft, dann erhöht der SequenceFactor... er bremst den Fall siehe u.a. auch Audience Flow
 			sequence :* shrinkMod
 		End If
 		Return sequence
