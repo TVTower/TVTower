@@ -1,6 +1,6 @@
 Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
 
-	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TElementPosition)
+	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TSoundSourcePosition)
 		Local floorNumberSource:Int = Building.getFloorByPixelExactPoint(source.GetCenter())
 		Local floorNumberTarget:Int = Building.getFloorByPixelExactPoint(receiver.GetCenter())
 		Local floorDistance:Int = TPoint.DistanceOfValues(floorNumberSource, floorNumberTarget)
@@ -22,9 +22,9 @@ Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
 
 End Type
 
-Type TPlayerElementPosition Extends TElementPosition
-	Function Create:TPlayerElementPosition ()
-		Return New TPlayerElementPosition
+Type TPlayerSoundSourcePosition Extends TSoundSourcePosition
+	Function Create:TPlayerSoundSourcePosition ()
+		Return New TPlayerSoundSourcePosition
 	End Function
 
 	Method GetID:String()
@@ -43,6 +43,7 @@ Type TPlayerElementPosition Extends TElementPosition
 		Return False 'Bedeutet das es nicht überwacht wird. Speziell beim Player
 	End Method
 End Type
+
 
 Type TElevatorSoundSource Extends TSoundSourceElement
 	Field Elevator:TElevator = Null

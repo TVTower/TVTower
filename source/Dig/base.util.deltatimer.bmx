@@ -28,7 +28,6 @@ Type TDeltaTimer
 	'connect functions with this properties to get called during
 	'Loop()
 	Field _funcUpdate:int()
-	Field _funcLowPriorityUpdate:int()
 	Field _funcRender:int()
 
 	Field _loopBeginTime:int		'when did the current loop begin

@@ -5,7 +5,7 @@ Import BRL.Max2D
 Import BRL.Random
 Import brl.FreeTypeFont
 'Import "basefunctions.bmx"
-Import "basefunctions_image.bmx"
+Import "Dig/base.gfx.imagehelper.bmx"
 Import "Dig/base.util.event.bmx"
 Import "basefunctions_asset.bmx"
 

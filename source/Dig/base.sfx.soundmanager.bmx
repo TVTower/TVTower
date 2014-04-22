@@ -1,15 +1,14 @@
 SuperStrict
 Import brl.Map
-'Import brl.OpenALAudio
-'Import brl.FreeAudioAudio
 Import brl.WAVLoader
 Import brl.OGGLoader
-Import "basefunctions.bmx"
-Import "Dig/base.util.logger.bmx"
+Import "base.util.logger.bmx"
+Import "base.util.point.bmx"
 
+'the needed module files are located in "external/maxmod2_lite.mod.zip"
 
-Import maxmod2.ogg
-Import maxmod2.rtaudio
+Import MaxMod2.ogg
+Import MaxMod2.rtaudio
 Import MaxMod2.WAV
 
 ?Linux
@@ -20,7 +19,6 @@ TMaxModRtAudioDriver.Init("LINUX_PULSE")
 'mac needs a different maxmod-implementation
 'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
 TMaxModRtAudioDriver.Init("MACOSX_CORE")
-'TMaxModRtAudioDriver.Init("AUTOMATIC")
 ?
 
 'init has to be done for all - currently not knowing much bout mac
@@ -87,7 +85,7 @@ Type TSoundManager
 	Field fadeInVolume:Int = 0
 
 	Field soundSources:TList = CreateList()
-	Field receiver:TElementPosition
+	Field receiver:TSoundSourcePosition
 
 	Field _currentPlaylistName:String = "default"
 	Field playlists:TMap = CreateMap()		'a named array of playlists, playlists contain available musicStreams
@@ -114,12 +112,12 @@ Type TSoundManager
 	End Function
 
 
-	Method GetDefaultReceiver:TElementPosition()
+	Method GetDefaultReceiver:TSoundSourcePosition()
 		Return receiver
 	End Method
 
 
-	Method SetDefaultReceiver(_receiver:TElementPosition)
+	Method SetDefaultReceiver(_receiver:TSoundSourcePosition)
 		receiver = _receiver
 	End Method
 
@@ -524,7 +522,7 @@ End Type
 'Der dynamische SfxChannel hat die Möglichkeit abhängig von der Position von Sound-Quelle und Empfänger dynamische Modifikationen an den Einstellungen vorzunehmen. Er wird bei jedem Update aktualisiert.
 Type TDynamicSfxChannel Extends TSfxChannel
 	Field Source:TSoundSourceElement
-	Field Receiver:TElementPosition
+	Field Receiver:TSoundSourcePosition
 
 
 	Function CreateDynamicSfxChannel:TSfxChannel(source:TSoundSourceElement=Null)
@@ -534,7 +532,7 @@ Type TDynamicSfxChannel Extends TSfxChannel
 	End Function
 
 
-	Method SetReceiver(_receiver:TElementPosition)
+	Method SetReceiver(_receiver:TSoundSourcePosition)
 		Self.Receiver = _receiver
 	End Method
 
@@ -640,7 +638,7 @@ Type TSfxSettings
 	End Method
 
 
-	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TElementPosition)
+	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TSoundSourcePosition)
 		Local currentDistance:Int = source.GetCenter().DistanceTo(receiver.getCenter())
 
 		Local result:Float = midRangeVolume
@@ -661,8 +659,7 @@ End Type
 
 
 
-'Das ElementPositionzeug kann auch eventuell wo anders hin
-Type TElementPosition 'Basisklasse für verschiedene Wrapper
+Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
 	Method GetID:String() Abstract
 	Method GetCenter:TPoint() Abstract
 	Method IsMovable:Int() Abstract
@@ -671,7 +668,7 @@ End Type
 
 
 
-Type TSoundSourceElement Extends TElementPosition
+Type TSoundSourceElement Extends TSoundSourcePosition
 	Field SfxChannels:TMap = CreateMap()
 
 
@@ -681,7 +678,7 @@ Type TSoundSourceElement Extends TElementPosition
 	Method OnPlaySfx:Int(sfx:String) Abstract
 
 
-	Method GetReceiver:TElementPosition()
+	Method GetReceiver:TSoundSourcePosition()
 		Return TSoundManager.GetInstance().GetDefaultReceiver()
 	End Method
 

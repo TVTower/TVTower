@@ -7,12 +7,12 @@ Import brl.timer
 Import brl.Graphics
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
-Import "basefunctions_sound.bmx"
 Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_lua.bmx"					'our lua engine
 Import "basefunctions_resourcemanager.bmx"
 Import "basefunctions_screens.bmx"
 
+Import "Dig/base.sfx.soundmanager.bmx"
 Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
 
@@ -2920,7 +2920,7 @@ Function StartTVTower(start:Int=true)
 	Game	  			= new TGame.Create()
 	Building		= new TBuilding.Create()
 	'init sound receiver
-	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerElementPosition.Create())
+	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
 
 	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )

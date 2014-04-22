@@ -6,12 +6,12 @@ Import BRL.Random
 ?Threaded
 Import brl.Threads
 ?
-Import "basefunctions_image.bmx"
 Import "basefunctions_sprites.bmx"
 Import "basefunctions_asset.bmx"
 Import "Dig/base.util.event.bmx"
 Import "basefunctions_screens.bmx"
-Import "basefunctions_sound.bmx"
+
+Import "Dig/base.sfx.soundmanager.bmx"
 
 
 Global Assets:TAssetManager = TAssetManager.Create(Null)
@@ -326,11 +326,6 @@ Type TAssetManager
 	Method GetPixmap:TPixmap(assetName:String)
 		'tpixmap is no child of TAsset ...get _object
 		Return TPixmap(TAsset(GetObject(assetName, "PIXMAP"))._object)
-	End Method
-
-
-	Method GetBigImage:TBigImage(assetName:String)
-		Return TBigImage(GetObject(assetName))
 	End Method
 End Type
 

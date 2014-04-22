@@ -211,7 +211,7 @@ Only way to achieve it is compiling it as a BlitzMax module.
 a) Extraction:
 --------------
 
-	- extract {PROJECT}/source/external/maxmod2_lite.mod.zip
+	- extract {PROJECT}/source/Dig/external/maxmod2_lite.mod.zip
 	  to {BLITZMAX_DIRECTORY}/mod
 	- result is:
 	  {BLITZMAX_DIRECTORY}/mod/maxmod2.mod
