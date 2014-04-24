@@ -297,7 +297,7 @@
 		lastMovie = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, lastMovieGenreDef)		
 		lastMovieAttr = lastMovie.GetAudienceAttraction(0, 1, Null, Null)		
 		actual = programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), actual.SequenceEffect)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0688072369), actual.SequenceEffect)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.571866095), actual)
 		
 	End Method
