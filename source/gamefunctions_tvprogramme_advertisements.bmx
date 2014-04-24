@@ -835,7 +835,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False )
 		'TODO: @Manuel - hier brauchen wir eine geeignete Berechnung :D
 		If lastMovieBlockAttraction then return lastMovieBlockAttraction
 

@@ -3,7 +3,7 @@
 	Field AudienceAttraction:TAudience
 	Field Popularity:TGenrePopularity
 	
-	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience) Abstract
+	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience) Abstract
 	rem
 	Method GetSequence:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float)
 		'genreDefintion.AudienceAttraction.Copy()
@@ -85,7 +85,7 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 		'Return result
 	End Method
 	
-	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience)
+	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience)
 		Return TAudience.CreateAndInitValue(1) 'TODO: Prüfen ob hier auch was zu machen ist?
 	End Method	
 End Type
@@ -136,27 +136,25 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
 	
-	Method GetAudienceFlowMod:TAudience(followerGenreId:Int, baseAttractionFollower:TAudience)
-	rem
-		'DebugStop
+	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience)	
+		Rem
+		DebugStop
 		Local baseAttractionFollowerTemp:TAudience = baseAttractionFollower.Copy()
 		baseAttractionFollowerTemp.DivideFloat(2).AddFloat(0.7)
 		
-		Local base:TAudience = GetAudienceFlowModBase(followerGenreId)
+		Local base:TAudience = GetAudienceFlowModBase(followerDefinition)
 		base.Multiply(baseAttractionFollowerTemp)
 		Return base
-	endrem
-		Return Null	
+		EndRem
+		Return GetAudienceFlowModBase(followerDefinition)
 	End Method
 	
-	Method GetAudienceFlowModBase:TAudience(followerGenreId:Int)
-		Local followerDefinition:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(followerGenreId)
-	
+	Method GetAudienceFlowModBase:TAudience(followerDefinition:TGenreDefinitionBase)
 		Local result:TAudience = followerDefinition.AudienceAttraction.Copy()
-		result.AddFloat(0.2) '0.3 - 1.2
+		result.DivideFloat(1.3)
 		
-		Local genreKey:String = String.FromInt(followerGenreId)
-		If GenreId = followerGenreId Then 'Perfekter match!
+		Local genreKey:String = String.FromInt(followerDefinition.GenreId)
+		If GenreId = followerDefinition.GenreId Then 'Perfekter match!
 			result.MultiplyFloat(1.3)		
 		Else If (GoodFollower.Contains(genreKey))
 			result.MultiplyFloat(1.1)
@@ -166,7 +164,7 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 			result.MultiplyFloat(0.9)
 		End If
 		
-		result.CutMaximum(1.25)
+		result.CutBorders(0.25, 1.25)
 		Return result
 	End Method
 	

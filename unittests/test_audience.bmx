@@ -237,7 +237,7 @@ Type TAudienceTest Extends TTest
 			assertEquals("List index out of range", ex.ToString())
 		Catch ex:Object 'falsche excpetion			
 			fail("Wrong Exception: " + ex.ToString())
-		End Try				
+		End Try			
 		
 		assertEqualsI(7, aList.Content.Count())
 		assertEqualsF(100, aList.NumberAtIndex(0))

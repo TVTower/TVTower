@@ -2705,6 +2705,14 @@ Type TArgumentException Extends TTVTException
 	End Function
 End Type
 
+Type TNullObjectExceptionExt Extends TTVTException
+	Function Create:TNullObjectExceptionExt( message:String = Null )
+		Local t:TNullObjectExceptionExt = New TNullObjectExceptionExt
+		t.message = message
+		Return t
+	End Function
+End Type
+
 
 OnEnd( EndHook )
 Function EndHook()

@@ -21,11 +21,11 @@ End Type
 Type TTestKit
 	Function SetGame(debugMode:Int=False)
 		If debugMode Then
-			TDevHelper.setLogMode(LOG_ALL)
-			TDevHelper.setPrintMode(LOG_ALL)
+			TLogger.setLogMode(LOG_ALL)
+			TLogger.setPrintMode(LOG_ALL)
 		Else
-			TDevHelper.setLogMode(0)
-			TDevHelper.setPrintMode(0)
+			TLogger.setLogMode(0)
+			TLogger.setPrintMode(0)
 		EndIf
 		Game = new TGame.Create()
 	End Function
@@ -66,11 +66,14 @@ Type TTestKit
 	Function CrProgramme:TProgramme(title:String = null, genre:Int = 0, licenceType:Int, fixQuality:Float = 1, genreDef:TMovieGenreDefinition = Null)
 		Local licence:TProgrammeLicence = CrProgrammeLicence(title, genre, licenceType, fixQuality)		
 		If genreDef Then licence.data.genreDefinitionCache = genreDef
-		Return TProgramme.Create(licence)
+		Local programme:TProgramme = TProgramme.Create(licence)
+		programme.owner = 1
+		Return programme
 	End Function
 	
-	Function CrMovieGenreDefinition:TMovieGenreDefinition(outcomeMod:Float = 0.5, reviewMod:Float = 0.3, speedMod:Float = 0.2 )
+	Function CrMovieGenreDefinition:TMovieGenreDefinition(id:Int = 1, outcomeMod:Float = 0.5, reviewMod:Float = 0.3, speedMod:Float = 0.2 )
 		Local definition:TMovieGenreDefinition = New TMovieGenreDefinition
+		definition.GenreId = id
 		definition.OutcomeMod = outcomeMod
 		definition.ReviewMod = reviewMod
 		definition.SpeedMod = speedMod

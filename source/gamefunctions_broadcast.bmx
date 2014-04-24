@@ -1237,6 +1237,7 @@ Type TAudienceAttraction Extends TAudience
 	Field PublicImageAttraction:TAudience
 
 	Field Genre:Int
+	Field GenreDefinition:TGenreDefinitionBase
 	Field Malfunction:Int '1 = Sendeausfall
 
 	Function CreateAndInitAttraction:TAudienceAttraction(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
@@ -1252,7 +1253,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.FinalAttraction.Id = playerId
 		Self.PublicImageAttraction.Id = playerId
 	End Method
-
+	
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
 		Self.Add(audienceAttr)
@@ -1442,21 +1443,29 @@ Type TSequenceCalculation
 	Field PredecessorShareOnRise:Float
 	Field PredecessorShareOnShrink:Float
 
+	rem
 	Method GetSequenceByGenreDefinition:TAudience( attractionOnlyMod:TAudience, audienceFlowMod:TAudience = null )
 		If audienceFlowMod Then 'Film-Wechsel
-			Local mods:TAudience = audienceFlowMod.Copy() '0.3 - 1.2
+			Local mods:TAudience = audienceFlowMod.Copy() '0.3 - 1.25
+			mods.CutBorders(0.25, 1.25)
 			Return GetSequenceDefault(mods, mods) 'Vielleicht ersten Parameter leer lassen?
 		Else 'alles andere
 			Local mods:TAudience = attractionOnlyMod.Copy()
-			mods.AddFloat(0.2).CutMinimum(0.5) '0.5 - 1.2
+			mods.AddFloat(0.2).CutBorders(0.5, 1.25) '0.5 - 1.25
 			Return GetSequenceDefault(mods, mods)
 		EndIf
 	End Method
+	endrem
 
 	Method GetSequenceDefault:TAudience( riseMod:TAudience = null, shrinkMod:TAudience = null)
 		Local result:TAudience = new TAudience
 		Local predecessorValue:Float
 		Local successorValue:Float
+		Local riseModCopy:TAudience
+		Local shrinkModCopy:TAudience
+		
+		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBorders(0.8, 1.25)
+		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBorders(0.25, 1.25)
 
 		For Local i:Int = 1 To 9 'Für jede Zielgruppe
 			If Predecessor
@@ -1467,9 +1476,9 @@ Type TSequenceCalculation
 			successorValue = Successor.BlockAttraction.GetValue(i)
 
 			Local riseModTemp:Float = 1
-			If riseMod Then riseModTemp = riseMod.GetValue(i)
+			If riseModCopy Then riseModTemp = riseModCopy.GetValue(i)
 			Local shrinkModTemp:Float = 1
-			If shrinkMod Then shrinkModTemp = shrinkMod.GetValue(i)
+			If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetValue(i)
 
 			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp)
 
@@ -1494,9 +1503,9 @@ Type TSequenceCalculation
 		'Um diese Berechnung zu verstehen, bitte den UnitTest "SequenceCalculationTest" anschauen
 		Local sequence:Float = (predecessorValue + successorValue) - successorValueInitial
 		If rise Then 'Wenn die Quote steigt, dann bremst der SequenceFactor aus: also negative Zahl
-			If riseMod > 1 Then
+			'If riseMod > 1 Then
 				sequence :* (1 / riseMod)
-			EndIf
+			'EndIf
 		Else 'Wenn die Quote schrumpft, dann erhöht der SequenceFactor... er bremst den Fall siehe u.a. auch Audience Flow
 			sequence :* shrinkMod
 		End If

@@ -105,7 +105,7 @@
 		assertEqualsF(0.34, programme.GetQuality(), 0.006)
 		
 		
-		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition(0, 0.5, 0.5)
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition(1, 0, 0.5, 0.5)
 		programme = TTestKit.CrProgramme("abc2", 0, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
 		programme.licence.data.Outcome = 50
 		programme.licence.data.review = 100
@@ -128,11 +128,29 @@
 	Method GetAudienceAttraction() { test }
 		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
 		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)
-		programme.owner = 1
-	
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.503058851), programme.GetAudienceAttraction(0, 1, Null, Null))
 		
-		'Popularity
+		programme.owner = 0
+		'Falsch-Angaben
+		Try
+			programme.GetAudienceAttraction(0, 1, Null, Null)
+			fail("No Exception")
+		Catch ex:TBlitzException 'Alles gut			
+			assertEquals("The programme 'abc' have no owner.", ex.ToString())
+		Catch ex:Object 'falsche excpetion			
+			fail("Wrong Exception: " + ex.ToString())
+		End Try			
+		
+		programme.owner = 1	
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.503058851), programme.GetAudienceAttraction(0, 1, Null, Null))
+
+		'Trailer: TODO
+		
+		'Flags: TODO
+	End Method
+	
+	Method GetAudienceAttraction_Popularity() { test }
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)		
 		
 		genreDef.Popularity.Popularity = +25
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.628823578), programme.GetAudienceAttraction(0, 1, Null, Null))
@@ -145,8 +163,11 @@
 		
 		genreDef.Popularity.Popularity = -250 'Eigentliches minimum 50
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.251529425), programme.GetAudienceAttraction(0, 1, Null, Null))		
-		
-		'AudienceAttraction
+	End Method
+	
+	Method GetAudienceAttraction_AudienceAttraction() { test }
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)
 		
 		genreDef.Popularity.Popularity = 0
 		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0)
@@ -160,16 +181,19 @@
 		
 		genreDef.AudienceAttraction = TAudience.CreateAndInit(0, 0.1, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9, 1) 
 		Local expected:TAudience = TAudience.CreateAndInit(0.201223522, 0.261590600, 0.382324725, 0.442691773, 0.503058851, 0.563425899, 0.623793006, 0.744527102, 0.804894149) 
-		TestAssert.assertEqualsAud(expected, programme.GetAudienceAttraction(0, 1, Null, Null))				
+		TestAssert.assertEqualsAud(expected, programme.GetAudienceAttraction(0, 1, Null, Null))		
 		
 		'Popularity & AudienceAttraction
 		
 		genreDef.Popularity.Popularity = +250 'Eigentliches maximum 50
 		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(2)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.05642354), programme.GetAudienceAttraction(0, 1, Null, Null))
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.05642354), programme.GetAudienceAttraction(0, 1, Null, Null))		
+	End Method
+	
+	Method GetAudienceAttraction_PublicImage() { test }
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)
 		
-		
-		'Public Image
 		genreDef.Popularity.Popularity = 0
 		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)		
 		
@@ -189,18 +213,17 @@
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.326988250), programme.GetAudienceAttraction(0, 1, Null, Null))
 		
 		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(500)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.679129481), programme.GetAudienceAttraction(0, 1, Null, Null))		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.679129481), programme.GetAudienceAttraction(0, 1, Null, Null))	
+	End Method
+	
+	Method GetAudienceAttraction_QualityOverTimeEffectMod() { test }
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)
 		
-		'Trailer: TODO
-		
-		'Flags: TODO
-		
-		'QualityOverTimeEffectMod
 		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(100)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.503315330), programme.GetAudienceAttraction(0, 2, Null, Null))
 		
 		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.25, genreDef)
-		programme.owner = 1				
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.254588246), programme.GetAudienceAttraction(0, 1, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.233761936), programme.GetAudienceAttraction(0, 2, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.212935612), programme.GetAudienceAttraction(0, 3, Null, Null))
@@ -208,8 +231,7 @@
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.203670606), programme.GetAudienceAttraction(0, 5, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.203670606), programme.GetAudienceAttraction(0, 10, Null, Null))
 		
-		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.75, genreDef)
-		programme.owner = 1				
+		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.75, genreDef)		
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.751529455), programme.GetAudienceAttraction(0, 1, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.783034801), programme.GetAudienceAttraction(0, 2, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.814540029), programme.GetAudienceAttraction(0, 3, Null, Null))
@@ -217,14 +239,132 @@
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.826682448), programme.GetAudienceAttraction(0, 5, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.826682448), programme.GetAudienceAttraction(0, 10, Null, Null))		
 		
-		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
-		programme.owner = 1				
+		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)		
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), programme.GetAudienceAttraction(0, 1, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.08333337), programme.GetAudienceAttraction(0, 2, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.10000002), programme.GetAudienceAttraction(0, 3, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.10000002), programme.GetAudienceAttraction(0, 4, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.10000002), programme.GetAudienceAttraction(0, 5, Null, Null))
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.10000002), programme.GetAudienceAttraction(0, 10, Null, Null))		
+	End Method		
+	
+	Method GetAudienceAttraction_Sequence() { test }
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)		
+		
+		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)		
+		'TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.75), programme.GetAudienceAttraction(0, 1, Null, Null, True))		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.778723419), programme.GetAudienceAttraction(0, 1, Null, Null, True))		
+		
+		Local newsAttraction:TAudienceAttraction = new TAudienceAttraction
+		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(1)		
+		'TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.27), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))	
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))			
+		
+		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(0.5)		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.889361739), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))		
+		
+		
+		
+		
+		
+		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.391743690), programme.GetAudienceAttraction(0, 1, Null, Null, True))
+		
+		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(1)		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.682722211), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))	
+		
+		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(0.5)		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.502381980), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))						
 
+		
+		'Sequence - AudienceFlow
+		Local lastMovieGenreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local lastMovie:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, lastMovieGenreDef)		
+		Local lastMovieAttr:TAudienceAttraction = lastMovie.GetAudienceAttraction(0, 1, Null, Null)
+		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(0.5)	
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.502381980), programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True))		
+		
+		'Perfekt match!
+		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(1)
+		'DebugStop 'TODO: das nächste mal: GetAudienceFlowMod reaktivieren. Es fehlt noch eine Verbindung zur News-Audience-Attraction
+		Local actual:TAudienceAttraction = programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0993882269), actual.SequenceEffect)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.602447093), actual)				
+		
+		'Normal
+		lastMovieGenreDef = TTestKit.CrMovieGenreDefinition(10)
+		lastMovie = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, lastMovieGenreDef)		
+		lastMovieAttr = lastMovie.GetAudienceAttraction(0, 1, Null, Null)		
+		actual = programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), actual.SequenceEffect)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.571866095), actual)
+		
+	End Method
+	
+	Method GetAudienceFlowMod() { test }
+		Local lastMovieGenreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local lastMovie:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, lastMovieGenreDef)		
+		Local lastMovieAttr:TAudienceAttraction = lastMovie.GetAudienceAttraction(0, 1, Null, Null)
+		lastMovieGenreDef.GoodFollower.AddLast("2")
+		lastMovieGenreDef.BadFollower.AddLast("4")
+		
+		
+		
+		'Perfekter Match
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
+		Local programmeAttr:TAudienceAttraction = programme.GetAudienceAttraction(0, 1, Null, Null)		
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.25), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "p1")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "p2")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.5), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "p3")
+		
+		'Guter Follower		
+		genreDef = TTestKit.CrMovieGenreDefinition(2)
+		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
+		programmeAttr = programme.GetAudienceAttraction(0, 1, Null, Null)
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.10), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "g1")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.846153855), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "g2")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.423076928), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "g3")
+		
+		'Normaler Follower		
+		genreDef = TTestKit.CrMovieGenreDefinition(3)
+		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
+		programmeAttr = programme.GetAudienceAttraction(0, 1, Null, Null)				
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.899999976), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "n1")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.0)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.692307711), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "n2")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.346153855), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "n3")
+		
+		'Schlechter Follower
+		genreDef = TTestKit.CrMovieGenreDefinition(4)
+		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
+		programmeAttr = programme.GetAudienceAttraction(0, 1, Null, Null)
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)			
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.300000012), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "b1")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.0)			
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.25), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "b2")
+		
+		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)			
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.25), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "b3")
 	End Method
 End Type

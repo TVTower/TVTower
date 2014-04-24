@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <UnmanagedSolution xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Project>
-    <Main_File>TVTower.bmx</Main_File>
+    <Main_File>TVTowerTests.bmx</Main_File>
     <Included_File>
       <FileName>source\basefunctions.bmx</FileName>
       <Document_Active>false</Document_Active>
@@ -25,62 +25,7 @@
       <SplitSize>150</SplitSize>
     </Included_File>
     <Included_File>
-      <FileName>source\basefunctions_deltatimer.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_events.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
       <FileName>source\basefunctions_guielements.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_image.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_keymanager.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_localization.bmx</FileName>
       <Document_Active>false</Document_Active>
       <Caret_Position>
         <X>0</X>
@@ -136,28 +81,6 @@
     </Included_File>
     <Included_File>
       <FileName>source\basefunctions_screens.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_screens_OLD.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_sound.bmx</FileName>
       <Document_Active>false</Document_Active>
       <Caret_Position>
         <X>0</X>
@@ -531,7 +454,7 @@
       <SplitSize>150</SplitSize>
     </Included_File>
     <Included_File>
-      <FileName>unittests\test_broadcast_qequence_calculation.bmx</FileName>
+      <FileName>unittests\test_broadcast_sequence.bmx</FileName>
       <Document_Active>false</Document_Active>
       <Caret_Position>
         <X>0</X>
@@ -542,7 +465,7 @@
       <SplitSize>150</SplitSize>
     </Included_File>
     <Included_File>
-      <FileName>unittests\test_broadcast_sequence.bmx</FileName>
+      <FileName>unittests\test_broadcast_sequence_calculation.bmx</FileName>
       <Document_Active>false</Document_Active>
       <Caret_Position>
         <X>0</X>
@@ -600,6 +523,7 @@
     <Context_Directory>\</Context_Directory>
     <Project_Name>TVTower</Project_Name>
     <BuildStep>1</BuildStep>
+    <Icon_File_Location>C:\Program Files (x86)\BLIde\blide.ico</Icon_File_Location>
     <Embed_Os_Theme>true</Embed_Os_Theme>
     <Publish_as_ConsoleApp>false</Publish_as_ConsoleApp>
     <Debug_Enabled_Publish>false</Debug_Enabled_Publish>

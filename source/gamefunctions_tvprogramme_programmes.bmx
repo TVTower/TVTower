@@ -1465,11 +1465,12 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False )
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.BroadcastType = 1
 		result.Genre = licence.GetGenre()
 		Local genreDefintion:TMovieGenreDefinition = TMovieGenreDefinition(GetGenreDefinition())
+		result.GenreDefinition = genreDefintion
 
 		If block = 1 Or Not lastMovieBlockAttraction Then
 			'1 - Qualität des Programms
@@ -1484,8 +1485,11 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.GenreTargetGroupMod.SubtractFloat(0.6)
 			result.GenreTargetGroupMod.CutBorders(-0.6, 0.6)
 
+			Local player:TPlayer = Game.getPlayer(owner)
+			If player = Null Then Throw TNullObjectExceptionExt.Create("The programme '" + self.licence.title + "' have no owner.")
+			
 			'4 - Image
-			result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods() '0 bis 2
+			result.PublicImageMod = player.PublicImage.GetAttractionMods() '0 bis 2
 			result.PublicImageMod.MultiplyFloat(0.35)
 			result.PublicImageMod.SubtractFloat(0.35)
 			result.PublicImageMod.CutBorders(-0.35, 0.35)
@@ -1531,22 +1535,36 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		'10 - News-Mod
 		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.Copy().DivideFloat(2).SubtractFloat(0.1)
-		If lastNewsBlockAttraction Then
-			result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
-		EndIf
+		'If lastNewsBlockAttraction Then
+		'	result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
+		'EndIf
 
 		result.CalculateBlockAttraction()
 
 		'Sequence
 		'If (Game.playerID = 1) Then DebugStop
 
-		Local seqCal:TSequenceCalculation = New TSequenceCalculation
-		seqCal.PredecessorShareOnRise = 0.25
-		seqCal.PredecessorShareOnShrink  = 0.5
-		seqCal.Predecessor = lastNewsBlockAttraction
-		seqCal.Successor = result
-
-
+		If withSequenceEffect Then
+			Local seqCal:TSequenceCalculation = New TSequenceCalculation
+			seqCal.PredecessorShareOnRise = 0.2
+			seqCal.PredecessorShareOnShrink  = 0.4
+			seqCal.Predecessor = lastNewsBlockAttraction
+			seqCal.Successor = result
+			
+			
+			
+			Local seqMod:TAudience = genreDefintion.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15			
+			If block = 1 And lastMovieBlockAttraction Then 'AudienceFlow
+			'DebugStop
+				Local audienceFlowMod:TAudience = GetAudienceFlowMod(lastMovieBlockAttraction, result)
+				result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, audienceFlowMod)
+			Else
+				result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)
+			End If
+			
+	'DebugStop	
+			
+		EndIf
 
 		'Audience-Flow
 		rem
@@ -1574,7 +1592,9 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Return result
 	End Method
 
-
+	Function GetAudienceFlowMod:TAudience(lastMovieBlockAttraction:TAudienceAttraction, currentAttraction:TAudienceAttraction )
+		Return lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition, currentAttraction.BaseAttraction)	
+	End Function
 
 
 	Method GetTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}
