@@ -1440,22 +1440,9 @@ End Type
 Type TSequenceCalculation
 	Field Predecessor:TAudienceAttraction
 	Field Successor:TAudienceAttraction
-	Field PredecessorShareOnRise:Float
-	Field PredecessorShareOnShrink:Float
+	Field PredecessorShareOnRise:TAudience
+	Field PredecessorShareOnShrink:TAudience
 
-	rem
-	Method GetSequenceByGenreDefinition:TAudience( attractionOnlyMod:TAudience, audienceFlowMod:TAudience = null )
-		If audienceFlowMod Then 'Film-Wechsel
-			Local mods:TAudience = audienceFlowMod.Copy() '0.3 - 1.25
-			mods.CutBorders(0.25, 1.25)
-			Return GetSequenceDefault(mods, mods) 'Vielleicht ersten Parameter leer lassen?
-		Else 'alles andere
-			Local mods:TAudience = attractionOnlyMod.Copy()
-			mods.AddFloat(0.2).CutBorders(0.5, 1.25) '0.5 - 1.25
-			Return GetSequenceDefault(mods, mods)
-		EndIf
-	End Method
-	endrem
 
 	Method GetSequenceDefault:TAudience( riseMod:TAudience = null, shrinkMod:TAudience = null)
 		Local result:TAudience = new TAudience
@@ -1479,25 +1466,27 @@ Type TSequenceCalculation
 			If riseModCopy Then riseModTemp = riseModCopy.GetValue(i)
 			Local shrinkModTemp:Float = 1
 			If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetValue(i)
-
-			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp)
+			
+			Local predShareOnRiseForTG:Float = PredecessorShareOnRise.GetValue(i)
+			Local predShareOnShrinkForTG:Float = PredecessorShareOnShrink.GetValue(i)
+			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp, predShareOnRiseForTG, predShareOnShrinkForTG)
 
 			result.SetValue(i, sequence)
 		Next
 		Return result
 	End Method
 
-	Method CalcSequenceCase:Float(predecessorValue:Float, successorValue:Float, riseMod:Float, shrinkMod:Float)
+	Method CalcSequenceCase:Float(predecessorValue:Float, successorValue:Float, riseMod:Float, shrinkMod:Float, predShareOnRise:Float, predShareOnShrink:Float)
 		Local rise:Int = false
 		Local successorValueInitial:Float = successorValue
 
 		If (predecessorValue < successorValue) 'Steigende Quote
 			rise = true
-			predecessorValue :* PredecessorShareOnRise
-			successorValue :* (1 - PredecessorShareOnRise)
+			predecessorValue :* predShareOnRise
+			successorValue :* (1 - predShareOnRise)
 		Else 'Sinkende Quote
-			predecessorValue :* PredecessorShareOnShrink
-			successorValue :* (1 - PredecessorShareOnShrink)
+			predecessorValue :* predShareOnShrink
+			successorValue :* (1 - predShareOnShrink)
 		Endif
 
 		'Um diese Berechnung zu verstehen, bitte den UnitTest "SequenceCalculationTest" anschauen

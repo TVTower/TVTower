@@ -136,36 +136,17 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
 	
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience)	
-		Rem
-		DebugStop
-		Local baseAttractionFollowerTemp:TAudience = baseAttractionFollower.Copy()
-		baseAttractionFollowerTemp.DivideFloat(2).AddFloat(0.7)
-		
-		Local base:TAudience = GetAudienceFlowModBase(followerDefinition)
-		base.Multiply(baseAttractionFollowerTemp)
-		Return base
-		EndRem
-		Return GetAudienceFlowModBase(followerDefinition)
-	End Method
-	
-	Method GetAudienceFlowModBase:TAudience(followerDefinition:TGenreDefinitionBase)
-		Local result:TAudience = followerDefinition.AudienceAttraction.Copy()
-		result.DivideFloat(1.3)
-		
+	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience)			
 		Local genreKey:String = String.FromInt(followerDefinition.GenreId)
 		If GenreId = followerDefinition.GenreId Then 'Perfekter match!
-			result.MultiplyFloat(1.3)		
+			Return TAudience.CreateAndInitValue(0.6)
 		Else If (GoodFollower.Contains(genreKey))
-			result.MultiplyFloat(1.1)
+			Return TAudience.CreateAndInitValue(0.4)
 		ElseIf (BadFollower.Contains(genreKey))
-			result.MultiplyFloat(0.3)
+			Return TAudience.CreateAndInitValue(0.1)
 		Else
-			result.MultiplyFloat(0.9)
+			Return TAudience.CreateAndInitValue(0.25)
 		End If
-		
-		result.CutBorders(0.25, 1.25)
-		Return result
 	End Method
 	
 	'Override

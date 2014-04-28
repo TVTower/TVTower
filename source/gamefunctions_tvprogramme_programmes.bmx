@@ -1546,21 +1546,19 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		If withSequenceEffect Then
 			Local seqCal:TSequenceCalculation = New TSequenceCalculation
-			seqCal.PredecessorShareOnRise = 0.2
-			seqCal.PredecessorShareOnShrink  = 0.4
 			seqCal.Predecessor = lastNewsBlockAttraction
-			seqCal.Successor = result
-			
-			
+			seqCal.Successor = result					
+						
+			If block = 1 And lastMovieBlockAttraction Then 'AudienceFlow				
+				seqCal.PredecessorShareOnShrink = GetAudienceFlowMod(lastMovieBlockAttraction, result)
+				seqCal.PredecessorShareOnRise = seqCal.PredecessorShareOnShrink.Copy().DivideFloat(2)
+			Else				
+				seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.4)			
+				seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.2)
+			End If
 			
 			Local seqMod:TAudience = genreDefintion.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15			
-			If block = 1 And lastMovieBlockAttraction Then 'AudienceFlow
-			'DebugStop
-				Local audienceFlowMod:TAudience = GetAudienceFlowMod(lastMovieBlockAttraction, result)
-				result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, audienceFlowMod)
-			Else
-				result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)
-			End If
+			result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)
 			
 	'DebugStop	
 			

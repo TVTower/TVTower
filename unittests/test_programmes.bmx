@@ -249,7 +249,7 @@
 	End Method		
 	
 	Method GetAudienceAttraction_Sequence() { test }
-		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
+		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()	
 		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)		
 		
 		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)		
@@ -278,28 +278,44 @@
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.502381980), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))						
 
 		
-		'Sequence - AudienceFlow
+		'Sequence - AudienceFlow - Steigend
 		Local lastMovieGenreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
 		Local lastMovie:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, lastMovieGenreDef)		
 		Local lastMovieAttr:TAudienceAttraction = lastMovie.GetAudienceAttraction(0, 1, Null, Null)
-		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(0.5)	
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.502381980), programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True))		
+		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(0.5)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.502043605), programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True))		
 		
-		'Perfekt match!
+		'Vorgängersendung 0.5 -> Nachrichten 0.5 -> Folgende Sendung 1.0
+		
+		'Perfekter AudienceFlow
 		newsAttraction.BlockAttraction = TAudience.CreateAndInitValue(1)
 		'DebugStop 'TODO: das nächste mal: GetAudienceFlowMod reaktivieren. Es fehlt noch eine Verbindung zur News-Audience-Attraction
 		Local actual:TAudienceAttraction = programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0993882269), actual.SequenceEffect)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.602447093), actual)				
-		
-		'Normal
-		lastMovieGenreDef = TTestKit.CrMovieGenreDefinition(10)
-		lastMovie = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, lastMovieGenreDef)		
-		lastMovieAttr = lastMovie.GetAudienceAttraction(0, 1, Null, Null)		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.269495010), actual.SequenceEffect)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.772553861), actual)		
+
+		'Guter AudienceFlow
+		genreDef.GenreId = 2
+		lastMovieGenreDef.GoodFollower.AddLast("2")
 		actual = programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0688072369), actual.SequenceEffect)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.571866095), actual)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.179663330), actual.SequenceEffect)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.682722211), actual)					
+				
+		'Normaler AudienceFlow
+		genreDef.GenreId = 3
+		actual = programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.112289570), actual.SequenceEffect)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.615348399), actual)	
 		
+		'Schlechter AudienceFlow
+		genreDef.GenreId = 4
+		lastMovieGenreDef.BadFollower.AddLast("4")				
+		actual = programme.GetAudienceAttraction(0, 1, lastMovieAttr, newsAttraction, True)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0449158475), actual.SequenceEffect)
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.547974706), actual)	
+		
+		
+		'Sequence - AudienceFlow - Steigend
 	End Method
 	
 	Method GetAudienceFlowMod() { test }
@@ -308,63 +324,25 @@
 		Local lastMovieAttr:TAudienceAttraction = lastMovie.GetAudienceAttraction(0, 1, Null, Null)
 		lastMovieGenreDef.GoodFollower.AddLast("2")
 		lastMovieGenreDef.BadFollower.AddLast("4")
-		
-		
-		
-		'Perfekter Match
+							
 		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
 		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
 		Local programmeAttr:TAudienceAttraction = programme.GetAudienceAttraction(0, 1, Null, Null)		
 		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.25), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "p1")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "p2")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.5), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "p3")
-		
+		'Perfekter Match
+		genreDef.GenreId = 1
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.6), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "p1")
+				
 		'Guter Follower		
-		genreDef = TTestKit.CrMovieGenreDefinition(2)
-		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
-		programmeAttr = programme.GetAudienceAttraction(0, 1, Null, Null)
+		genreDef.GenreId = 2
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.4), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "g1")
 		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.10), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "g1")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.846153855), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "g2")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.423076928), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "g3")
-		
-		'Normaler Follower		
-		genreDef = TTestKit.CrMovieGenreDefinition(3)
-		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
-		programmeAttr = programme.GetAudienceAttraction(0, 1, Null, Null)				
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.899999976), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "n1")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.0)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.692307711), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "n2")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.346153855), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "n3")
+		'Normaler Follower	
+		genreDef.GenreId = 3	
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.25), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "n1")
 		
 		'Schlechter Follower
-		genreDef = TTestKit.CrMovieGenreDefinition(4)
-		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)
-		programmeAttr = programme.GetAudienceAttraction(0, 1, Null, Null)
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.3)			
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.300000012), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "b1")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(1.0)			
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.25), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "b2")
-		
-		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)			
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.25), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "b3")
+		genreDef.GenreId = 4		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.1), TProgramme.GetAudienceFlowMod(lastMovieAttr, programmeAttr), "b1")
 	End Method
 End Type

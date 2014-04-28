@@ -1,8 +1,8 @@
 Type SequenceCalculationTest Extends TTest
 	Method GetSequenceDefault() { test }	
 		Local sequenceCalc:TSequenceCalculation = new TSequenceCalculation		
-		sequenceCalc.PredecessorShareOnRise = 0.25
-		sequenceCalc.PredecessorShareOnShrink  = 0.5
+		sequenceCalc.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.25)
+		sequenceCalc.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.5)
 		sequenceCalc.Successor = New TAudienceAttraction		
 		sequenceCalc.Successor.BlockAttraction = TAudience.CreateAndInitValue(100)
 		sequenceCalc.Successor.CalculateFinalAttraction()
@@ -62,24 +62,21 @@ Type SequenceCalculationTest Extends TTest
 	End Method
 
 	Method CalcSequenceCase() { test }	
-		Local sequenceCalc:TSequenceCalculation = new TSequenceCalculation		
-		sequenceCalc.PredecessorShareOnRise = 0.25
-		sequenceCalc.PredecessorShareOnShrink  = 0.5
+		Local sequenceCalc:TSequenceCalculation = new TSequenceCalculation			
 		
+		assertEqualsF(-12.50, sequenceCalc.CalcSequenceCase(50, 100, 1, 1, 0.25, 0.5), 0, "a")
+		assertEqualsF(25, sequenceCalc.CalcSequenceCase(100, 50, 1, 1, 0.25, 0.5), 0, "b")
 		
-		assertEqualsF(-12.50, sequenceCalc.CalcSequenceCase(50, 100, 1, 1), 0, "a")
-		assertEqualsF(25, sequenceCalc.CalcSequenceCase(100, 50, 1, 1), 0, "b")
+		assertEqualsF(-6.25, sequenceCalc.CalcSequenceCase(50, 100, 2, 1, 0.25, 0.5), 0, "c")
+		assertEqualsF(25, sequenceCalc.CalcSequenceCase(100, 50, 2, 1, 0.25, 0.5), 0, "d")
 		
-		assertEqualsF(-6.25, sequenceCalc.CalcSequenceCase(50, 100, 2, 1), 0, "c")
-		assertEqualsF(25, sequenceCalc.CalcSequenceCase(100, 50, 2, 1), 0, "d")
+		assertEqualsF(-12.5, sequenceCalc.CalcSequenceCase(50, 100, 1, 2, 0.25, 0.5), 0, "e")
+		assertEqualsF(50, sequenceCalc.CalcSequenceCase(100, 50, 1, 2, 0.25, 0.5), 0, "f")
 		
-		assertEqualsF(-12.5, sequenceCalc.CalcSequenceCase(50, 100, 1, 2), 0, "e")
-		assertEqualsF(50, sequenceCalc.CalcSequenceCase(100, 50, 1, 2), 0, "f")
+		assertEqualsF(-25, sequenceCalc.CalcSequenceCase(50, 100, 0.5, 0.5, 0.25, 0.5), 0, "g")
+		assertEqualsF(12.5, sequenceCalc.CalcSequenceCase(100, 50, 0.5, 0.5, 0.25, 0.5), 0, "h")
 		
-		assertEqualsF(-25, sequenceCalc.CalcSequenceCase(50, 100, 0.5, 0.5), 0, "g")
-		assertEqualsF(12.5, sequenceCalc.CalcSequenceCase(100, 50, 0.5, 0.5), 0, "h")
-		
-		assertEqualsF(-8.33333302, sequenceCalc.CalcSequenceCase(50, 100, 1.5, 1.5), 0, "i")
-		assertEqualsF(37.5000000, sequenceCalc.CalcSequenceCase(100, 50, 1.5, 1.5), 0, "j")	
+		assertEqualsF(-8.33333302, sequenceCalc.CalcSequenceCase(50, 100, 1.5, 1.5, 0.25, 0.5), 0, "i")
+		assertEqualsF(37.5000000, sequenceCalc.CalcSequenceCase(100, 50, 1.5, 1.5, 0.25, 0.5), 0, "j")	
 	End Method
 End Type
