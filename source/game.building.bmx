@@ -1,13 +1,12 @@
 
 'Summary: Type of building, area around it and doors,...
-Type TBuilding Extends TRenderable
-	Field pos:TPoint = new TPoint.Init(20,0)
+Type TBuilding Extends TStaticEntity
 	Field buildingDisplaceX:Int = 127			'px at which the building starts (leftside added is the door)
 	Field innerLeft:Int			= 127 + 40
 	Field innerRight:Int		= 127 + 468
 	Field skycolor:Float 		= 0
-	Field ufo_normal:TMoveableAnimSprites 			{nosave}
-	Field ufo_beaming:TMoveableAnimSprites 			{nosave}
+	Field ufo_normal:TSpriteEntity 			{nosave}
+	Field ufo_beaming:TSpriteEntity			{nosave}
 	Field Elevator:TElevator
 
 	Field Moon_Path:TCatmullRomSpline	= New TCatmullRomSpline {nosave}
@@ -24,19 +23,19 @@ Type TBuilding Extends TRenderable
 	Field UFO_DoBeamAnimation:Int		= False
 	Field UFO_BeamAnimationDone:Int		= False
 
-	Field Clouds:TMoveableAnimSprites[7]			{nosave}
+	Field Clouds:TSpriteEntity[7]					{nosave}
 	Field CloudsAlpha:Float[7]						{nosave}
 
 	Field TimeColor:Double
 	Field DezimalTime:Float
 	Field ActHour:Int
 	Field initDone:Int					= False
-	Field gfx_bgBuildings:TGW_Sprite[6]				{nosave}
-	Field gfx_building:TGW_Sprite					{nosave}
-	Field gfx_buildingEntrance:TGW_Sprite			{nosave}
-	Field gfx_buildingEntranceWall:TGW_Sprite		{nosave}
-	Field gfx_buildingFence:TGW_Sprite				{nosave}
-	Field gfx_buildingRoof:TGW_Sprite				{nosave}
+	Field gfx_bgBuildings:TSprite[6]				{nosave}
+	Field gfx_building:TSprite					{nosave}
+	Field gfx_buildingEntrance:TSprite			{nosave}
+	Field gfx_buildingEntranceWall:TSprite		{nosave}
+	Field gfx_buildingFence:TSprite				{nosave}
+	Field gfx_buildingRoof:TSprite				{nosave}
 
 	Field room:TRoom					= Null		'the room used for the building
 	Field roomUsedTooltip:TTooltip		= Null
@@ -49,6 +48,8 @@ Type TBuilding Extends TRenderable
 
 	Method New()
 		_instance = self
+
+		area.position.SetX(20)
 
 		if not _eventsRegistered
 			'handle savegame loading (assign sprites)
@@ -78,8 +79,8 @@ Type TBuilding Extends TRenderable
 		'stuff not gameplay relevant
 		InitGraphics()
 
-		pos.y			= 0 - gfx_building.area.GetH() + 5 * 73 + 20	' 20 = interfacetop, 373 = raumhoehe
-		Elevator		= new TElevator.Create()
+		area.position.SetY(0 - gfx_building.area.GetH() + 5 * 73 + 20)	' 20 = interfacetop, 373 = raumhoehe
+		Elevator = new TElevator.Create()
 		Elevator.Pos.SetY(GetFloorY(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
 
 		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
@@ -112,8 +113,16 @@ Type TBuilding Extends TRenderable
 
 		'==== UFO ====
 		'sprites
-		ufo_normal	= New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo"), 9, 100).SetupMoveable(0, 100, 0,0)
-		ufo_beaming	= New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_ufo2"), 9, 100).SetupMoveable(0, 100, 0,0)
+		ufo_normal	= New TSpriteEntity
+		ufo_normal.SetSprite(GetSpriteFromRegistry("gfx_building_BG_ufo"))
+		ufo_normal.area.position.SetXY(0,100)
+		ufo_normal.GetFrameAnimations().Set("default", TSpriteFrameAnimation.CreateSimple(9, 100))
+
+		ufo_beaming	= New TSpriteEntity
+		ufo_beaming.SetSprite(GetSpriteFromRegistry("gfx_building_BG_ufo2"))
+		ufo_beaming.area.position.SetXY(0,100)
+		ufo_beaming.GetFrameAnimations().Set("default", TSpriteFrameAnimation.CreateSimple(9, 100))
+
 		'movement
 		Local displaceY:Int = 280, displaceX:Int = 5
 		UFO_Path = New TCatmullRomSpline
@@ -131,7 +140,10 @@ Type TBuilding Extends TRenderable
 
 		'==== CLOUDS ====
 		For Local i:Int = 0 To Clouds.length-1
-			Clouds[i] = New TMoveableAnimSprites.Create(Assets.GetSprite("gfx_building_BG_clouds"), 1,0).SetupMoveable(- 200 * i + (i + 1) * Rand(0,400), - 30 + Rand(0,30), 2 + Rand(0, 6),0)
+			Clouds[i] = New TSpriteEntity
+			Clouds[i].SetSprite(GetSpriteFromRegistry("gfx_building_BG_clouds"))
+			Clouds[i].area.position.SetXY(- 200 * i + (i + 1) * Rand(0,400), - 30 + Rand(0,30))
+			Clouds[i].velocity.SetXY(2 + Rand(0, 6),0)
 			CloudsAlpha[i] = Float(Rand(80,100))/100.0
 		Next
 
@@ -145,41 +157,42 @@ Type TBuilding Extends TRenderable
 
 
 		'==== BACKGROUND BUILDINGS ====
-		gfx_bgBuildings[0] = Assets.GetSprite("gfx_building_BG_Ebene3L")
-		gfx_bgBuildings[1] = Assets.GetSprite("gfx_building_BG_Ebene3R")
-		gfx_bgBuildings[2] = Assets.GetSprite("gfx_building_BG_Ebene2L")
-		gfx_bgBuildings[3] = Assets.GetSprite("gfx_building_BG_Ebene2R")
-		gfx_bgBuildings[4] = Assets.GetSprite("gfx_building_BG_Ebene1L")
-		gfx_bgBuildings[5] = Assets.GetSprite("gfx_building_BG_Ebene1R")
+		gfx_bgBuildings[0] = GetSpriteFromRegistry("gfx_building_BG_Ebene3L")
+		gfx_bgBuildings[1] = GetSpriteFromRegistry("gfx_building_BG_Ebene3R")
+		gfx_bgBuildings[2] = GetSpriteFromRegistry("gfx_building_BG_Ebene2L")
+		gfx_bgBuildings[3] = GetSpriteFromRegistry("gfx_building_BG_Ebene2R")
+		gfx_bgBuildings[4] = GetSpriteFromRegistry("gfx_building_BG_Ebene1L")
+		gfx_bgBuildings[5] = GetSpriteFromRegistry("gfx_building_BG_Ebene1R")
 
 		'building assets
-		gfx_building				= Assets.GetSprite("gfx_building")
-		gfx_buildingEntrance		= Assets.GetSprite("gfx_building_Eingang")
-		gfx_buildingEntranceWall	= Assets.GetSprite("gfx_building_EingangWand")
-		gfx_buildingFence			= Assets.GetSprite("gfx_building_Zaun")
-		gfx_buildingRoof			= Assets.GetSprite("gfx_building_Dach")
+		gfx_building = GetSpriteFromRegistry("gfx_building")
+		gfx_buildingEntrance = GetSpriteFromRegistry("gfx_building_Eingang")
+		gfx_buildingEntranceWall = GetSpriteFromRegistry("gfx_building_EingangWand")
+		gfx_buildingFence = GetSpriteFromRegistry("gfx_building_Zaun")
+		gfx_buildingRoof = GetSpriteFromRegistry("gfx_building_Dach")
 	End Method
 
 
-	Method Update(deltaTime:Float=1.0)
-		pos.y = Clamp(pos.y, - 637, 88)
+	Method Update()
+		local deltaTime:float = GetDeltaTimer().GetDelta()
+		area.position.y = Clamp(area.position.y, - 637, 88)
 		UpdateBackground(deltaTime)
 
 
 		'update hotspot tooltips
 		If room
 			For Local hotspot:THotspot = EachIn room.hotspots
-				hotspot.update(Self.pos.x, Self.pos.y)
+				hotspot.update(area.GetX(), area.GetY())
 			Next
 		EndIf
 
 
-		If Self.roomUsedTooltip <> Null Then Self.roomUsedTooltip.Update(deltaTime)
+		If roomUsedTooltip Then roomUsedTooltip.Update()
 
 
 		'handle player target changes
 		If Not Game.GetPlayer().Figure.inRoom
-			If MOUSEMANAGER.isClicked(1) And Not GUIManager.modalActive
+			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
 				If Not Game.GetPlayer().Figure.isChangingRoom
 					If THelper.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
 						Game.GetPlayer().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
@@ -200,16 +213,16 @@ Type TBuilding Extends TRenderable
 			Local locy12:Int	= GetFloorY(12)
 
 			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze4").GetImage(), Pix, -buildingDisplaceX + innerleft + 40, locy12 - Assets.GetSprite("gfx_building_Pflanze4").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze6").GetImage(), Pix, -buildingDisplaceX + innerRight - 95, locy12 - Assets.GetSprite("gfx_building_Pflanze6").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze2").GetImage(), Pix, -buildingDisplaceX + innerleft + 105, locy13 - Assets.GetSprite("gfx_building_Pflanze2").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Pflanze3").GetImage(), Pix, -buildingDisplaceX + innerRight - 105, locy13 - Assets.GetSprite("gfx_building_Pflanze3").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy0 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").area.GetW(), locy0 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy13 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").area.GetW(), locy13 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy3 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
-			DrawImageOnImage(Assets.GetSprite("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - Assets.GetSprite("gfx_building_Wandlampe").area.GetW(), locy3 - Assets.GetSprite("gfx_building_Wandlampe").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Pflanze4").GetImage(), Pix, -buildingDisplaceX + innerleft + 40, locy12 - GetSpriteFromRegistry("gfx_building_Pflanze4").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Pflanze6").GetImage(), Pix, -buildingDisplaceX + innerRight - 95, locy12 - GetSpriteFromRegistry("gfx_building_Pflanze6").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Pflanze2").GetImage(), Pix, -buildingDisplaceX + innerleft + 105, locy13 - GetSpriteFromRegistry("gfx_building_Pflanze2").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Pflanze3").GetImage(), Pix, -buildingDisplaceX + innerRight - 105, locy13 - GetSpriteFromRegistry("gfx_building_Pflanze3").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy0 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetW(), locy0 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy13 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetW(), locy13 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerleft + 125, locy3 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetH())
+			DrawImageOnImage(GetSpriteFromRegistry("gfx_building_Wandlampe").GetImage(), Pix, -buildingDisplaceX + innerRight - 125 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetW(), locy3 - GetSpriteFromRegistry("gfx_building_Wandlampe").area.GetH())
 			UnlockImage(gfx_building.parent.image)
 			Pix = Null
 
@@ -260,18 +273,17 @@ Type TBuilding Extends TRenderable
 		'not interested in others
 		If not GetInstance().room.hotspots.contains(hotspot) then return False
 
-		Game.getPlayer().figure.changeTarget( GetInstance().pos.x + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().pos.y + hotspot.area.getY() )
+		Game.getPlayer().figure.changeTarget( GetInstance().area.GetX() + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().area.GetY() + hotspot.area.getY() )
 		Game.getPlayer().figure.targetHotspot = hotspot
 
 		MOUSEMANAGER.ResetKey(1)
 	End Function
 
 
-	Method Draw(tweenValue:Float=1.0)
-		pos.y = Clamp(pos.y, - 637, 88)
+	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
 
 		TProfiler.Enter("Draw-Building-Background")
-		DrawBackground(tweenValue)
+		DrawBackground()
 		TProfiler.Leave("Draw-Building-Background")
 
 		'reset drawn for all figures... so they can get drawn
@@ -280,16 +292,16 @@ Type TBuilding Extends TRenderable
 			Figure.alreadydrawn = False
 		Next
 
-		If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) >= 8
+		If GetFloor(Game.GetPlayer().Figure.area.GetY()) >= 8
 			SetColor 255, 255, 255
 			SetBlend ALPHABLEND
-			Building.gfx_buildingRoof.Draw(pos.x + buildingDisplaceX, pos.y - Building.gfx_buildingRoof.area.GetH())
+			gfx_buildingRoof.Draw(area.GetX() + buildingDisplaceX, area.GetY() - gfx_buildingRoof.area.GetH())
 		EndIf
 
 		SetBlend MASKBLEND
 		elevator.DrawFloorDoors()
 
-		Assets.GetSprite("gfx_building").draw(pos.x + buildingDisplaceX, pos.y)
+		GetSpriteFromRegistry("gfx_building").draw(area.GetX() + buildingDisplaceX, area.GetY())
 
 		SetBlend MASKBLEND
 
@@ -302,47 +314,46 @@ Type TBuilding Extends TRenderable
 
 		For Local Figure:TFigure = EachIn FigureCollection.list
 			'draw figure later if outside of building
-			If figure.rect.GetX() < pos.x + buildingDisplaceX Then Continue
+			If figure.area.GetX() < area.GetX() + buildingDisplaceX Then Continue
 			If Not Figure.alreadydrawn Then Figure.Draw()
 			Figure.alreadydrawn = True
 		Next
 
-		Local pack:TGW_Spritepack = Assets.getSpritePack("gfx_hochhauspack")
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 130, pos.y + GetFloorY(9), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(13), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 110, pos.y + GetFloorY(9), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(6), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze6").Draw(pos.x + innerRight - 85, pos.y + GetFloorY(8), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(1), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3a").Draw(pos.x + innerLeft + 60, pos.y + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze3b").Draw(pos.x + innerLeft + 150, pos.y + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze1").Draw(pos.x + innerRight - 70, pos.y + GetFloorY(3), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		pack.GetSprite("gfx_building_Pflanze2").Draw(pos.x + innerRight - 75, pos.y + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 130, area.GetY() + GetFloorY(9), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(13), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 110, area.GetY() + GetFloorY(9), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(6), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(area.GetX() + innerRight - 85, area.GetY() + GetFloorY(8), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(1), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 70, area.GetY() + GetFloorY(3), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 75, area.GetY() + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
 		'draw entrance on top of figures
-		If Building.GetFloor(Game.Players[Game.playerID].Figure.rect.GetY()) <= 4
+		If GetFloor(Game.GetPlayer().Figure.area.GetY()) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
 			'draw figures outside the wall
 			For Local Figure:TFigure = EachIn FigureCollection.list
 				If Not Figure.alreadydrawn Then Figure.Draw()
 			Next
-			Building.gfx_buildingEntrance.Draw(pos.x, pos.y + 1024 - Building.gfx_buildingEntrance.area.GetH() - 3)
+			gfx_buildingEntrance.Draw(area.GetX(), area.GetY() + 1024 - gfx_buildingEntrance.area.GetH() - 3)
 
 			SetColor 255,255,255
 			'draw wall
-			Building.gfx_buildingEntranceWall.Draw(pos.x + Building.gfx_buildingEntrance.area.GetW(), pos.y + 1024 - Building.gfx_buildingEntranceWall.area.GetH() - 3)
+			gfx_buildingEntranceWall.Draw(area.GetX() + gfx_buildingEntrance.area.GetW(), area.GetY() + 1024 - gfx_buildingEntranceWall.area.GetH() - 3)
 			'draw fence
-			Building.gfx_buildingFence.Draw(pos.x + buildingDisplaceX + 507, pos.y + 1024 - Building.gfx_buildingFence.area.GetH() - 3)
+			gfx_buildingFence.Draw(area.GetX() + buildingDisplaceX + 507, area.GetY() + 1024 - gfx_buildingFence.area.GetH() - 3)
 		EndIf
 
 		TRoomDoor.DrawAllTooltips()
 
 		'draw hotspot tooltips
 		For Local hotspot:THotspot = EachIn room.hotspots
-			hotspot.draw( Self.pos.x, Self.pos.y)
+			hotspot.Render(area.GetX(), area.GetY())
 		Next
 
-		If Self.roomUsedTooltip Then Self.roomUsedTooltip.Draw()
+		If roomUsedTooltip Then roomUsedTooltip.Render()
 
 	End Method
 
@@ -417,21 +428,21 @@ Type TBuilding Extends TRenderable
 				EndIf
 			EndIf
 			If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
-				If ufo_beaming.getCurrentAnimation().isFinished()
+				If ufo_beaming.GetFrameAnimations().getCurrent().isFinished()
 					UFO_BeamAnimationDone = True
 					UFO_DoBeamAnimation = False
 				EndIf
-				ufo_beaming.update(deltaTime)
+				ufo_beaming.update()
 			EndIf
 
 		Else
 			'reset beam enabler anyways
 			UFO_DoBeamAnimation = False
-			UFO_BeamAnimationDone=False
+			UFO_BeamAnimationDone = False
 		EndIf
 
 		For Local i:Int = 0 To Building.Clouds.length-1
-			Clouds[i].Update(deltaTime)
+			Clouds[i].Update()
 		Next
 	End Method
 
@@ -460,14 +471,15 @@ Type TBuilding Extends TRenderable
 			Local tweenDistance:Float = GetTweenResult(Moon_PathCurrentDistance, Moon_PathCurrentDistanceOld, True)
 			Local moonPos:TPoint = Moon_Path.GetTweenPoint(tweenDistance, True)
 			'draw moon - frame is from +6hrs (so day has already changed at 18:00)
-			'Assets.GetSprite("gfx_building_BG_moon").Draw(40, 40, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
-			Assets.GetSprite("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (pos.y) + moonPos.y, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
+			'GetSpriteFromRegistry("gfx_building_BG_moon").Draw(40, 40, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
+			GetSpriteFromRegistry("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (area.GetY()) + moonPos.y, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
 		EndIf
 
 		For Local i:Int = 0 To Building.Clouds.length - 1
 			SetColor Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i]
 			SetAlpha CloudsAlpha[i]
-			Clouds[i].Draw(Null, Clouds[i].rect.position.Y + 0.2*pos.y) 'parallax
+			'draw a bit offset - parallax effect
+			Clouds[i].Render(0, Clouds[i].area.GetY() + 0.2*area.GetY())
 		Next
 		SetAlpha 1.0
 
@@ -481,10 +493,10 @@ Type TBuilding Extends TRenderable
 				Local UFOPos:TPoint = UFO_Path.GetTweenPoint(tweenDistance, True)
 				'print UFO_PathCurrentDistance
 				If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
-					ufo_beaming.rect.position.SetXY(UFOPos.x, 0.25 * (pos.y + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y)
-					ufo_beaming.Draw()
+					ufo_beaming.area.position.SetXY(UFOPos.x, 0.25 * (area.GetY() + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y)
+					ufo_beaming.Render()
 				Else
-					Assets.GetSprite("gfx_building_BG_ufo").Draw( UFOPos.x, 0.25 * (pos.y + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y, ufo_normal.GetCurrentFrame())
+					GetSpriteFromRegistry("gfx_building_BG_ufo").Draw( UFOPos.x, 0.25 * (area.GetY() + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y, ufo_normal.GetFrameAnimations().GetCurrent().GetCurrentFrame())
 				EndIf
 '			EndIf
 		EndIf
@@ -494,16 +506,16 @@ Type TBuilding Extends TRenderable
 		Local baseBrightness:Int = 75
 
 		SetColor Int(225 * timecolor) + baseBrightness, Int(225 * timecolor) + baseBrightness, Int(225 * timecolor) + baseBrightness
-		gfx_bgBuildings[0].Draw(pos.x		, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
-		gfx_bgBuildings[1].Draw(pos.x + 634	, 105 + 0.25 * (pos.y + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
+		gfx_bgBuildings[0].Draw(area.GetX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
+		gfx_bgBuildings[1].Draw(area.GetX() + 634, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
 
 		SetColor Int(215 * timecolor) + baseBrightness+15, Int(215 * timecolor) + baseBrightness+15, Int(215 * timecolor) + baseBrightness+15
-		gfx_bgBuildings[2].Draw(pos.x		, 120 + 0.35 * (pos.y 		+ BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
-		gfx_bgBuildings[3].Draw(pos.x + 636	, 120 + 0.35 * (pos.y + 60	+ BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
+		gfx_bgBuildings[2].Draw(area.GetX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
+		gfx_bgBuildings[3].Draw(area.GetX() + 636, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
 
 		SetColor Int(205 * timecolor) + baseBrightness+30, Int(205 * timecolor) + baseBrightness+30, Int(205 * timecolor) + baseBrightness+30
-		gfx_bgBuildings[4].Draw(pos.x		, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
-		gfx_bgBuildings[5].Draw(pos.x + 634	, 45 + 0.80 * (pos.y + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
+		gfx_bgBuildings[4].Draw(area.GetX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
+		gfx_bgBuildings[5].Draw(area.GetX() + 634, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
 
 		SetColor 255, 255, 255
 		SetAlpha 1.0
@@ -516,7 +528,7 @@ Type TBuilding Extends TRenderable
 		if not door then return FALSE
 
 		roomUsedTooltip			= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(pos.y + GetFloorY(door.Pos.y))
+		roomUsedTooltip.area.position.SetY(area.GetY() + GetFloorY(door.Pos.y))
 		roomUsedTooltip.area.position.SetX(door.Pos.x + door.doorDimension.x/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
@@ -525,7 +537,7 @@ Type TBuilding Extends TRenderable
 
 
 	Method CenterToFloor:Int(floornumber:Int)
-		pos.y = ((13 - (floornumber)) * 73) - 115
+		area.position.y = ((13 - (floornumber)) * 73) - 115
 	End Method
 
 	'Summary: returns y which has to be added to building.y, so its the difference
@@ -533,8 +545,8 @@ Type TBuilding Extends TRenderable
 		Return (66 + 1 + (13 - floornumber) * 73)		  ' +10 = interface
 	End Function
 
-	Method GetFloor:Int(_y:Int)
-		Return Clamp(14 - Ceil((_y - pos.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
+	Method GetFloor:Int(y:Int)
+		Return Clamp(14 - Ceil((y - area.position.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
 
 	Method getFloorByPixelExactPoint:Int(point:TPoint) 'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000

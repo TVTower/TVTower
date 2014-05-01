@@ -291,7 +291,7 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 			Return price
 		endif
 
-		local devConfig:TData = Assets.GetData("DEV_CONFIG", new TData.Init())
+		local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
 		local factor1:float =  devConfig.GetFloat("DEV_AD_FACTOR1", 4.0)
 		local minCPM:float = devConfig.GetFloat("DEV_AD_MINIMUM_CPM", 7.5)
 		local limitedGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
@@ -423,42 +423,42 @@ Type TAdContract extends TGameObject {_exposeToLua="selected"}
 
 
 	Method ShowInfomercialSheet:Int(x:Int,y:Int, align:int=0)
-		Local normalFont:TGW_BitmapFont	= Assets.fonts.baseFont
+		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
 
-		if align = 1 then x :- Assets.GetSprite("gfx_datasheets_specials").area.GetW()
-		Assets.GetSprite("gfx_datasheets_specials").Draw(x,y)
+		if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_specials").area.GetW()
+		GetSpriteFromRegistry("gfx_datasheets_specials").Draw(x,y)
 		SetColor 0,0,0
-		Assets.fonts.basefontBold.drawBlock(self.GetTitle(), x + 10, y + 11, 278, 20)
+		GetBitmapFontManager().basefontBold.drawBlock(self.GetTitle(), x + 10, y + 11, 278, 20)
 		normalFont.drawBlock("Dauerwerbesendung", x + 10, y + 34, 278, 20)
 
 		'convert back cents to euros and round it
 		'value is "per 1000" - so multiply with that too
 		local profitFormatted:string = int(1000*GetPerViewerRevenue())+" "+CURRENCYSIGN
 		normalFont.drawBlock(getLocale("AD_INFOMERCIAL")  , x+10, y+55, 278, 60)
-		Assets.fonts.basefontBold.drawBlock(getLocale("AD_INFOMERCIAL_PROFIT").replace("%PROFIT%", profitFormatted), x+10, y+105, 278, 20)
+		GetBitmapFontManager().basefontBold.drawBlock(getLocale("AD_INFOMERCIAL_PROFIT").replace("%PROFIT%", profitFormatted), x+10, y+105, 278, 20)
 		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY"), x+222, y+131,  40, 16)
 		SetColor 255,255,255
 
 		SetAlpha 0.3
-		Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
+		GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
 		SetAlpha 1.0
-		if infomercialTopicality > 0.1 then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, infomercialTopicality*200, 12))
+		if infomercialTopicality > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, infomercialTopicality*200, 12))
 	End Method
 
 
 	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:int=0)
 
-		if align=1 then x :- Assets.GetSprite("gfx_datasheets_contract").area.GetW()
+		if align=1 then x :- GetSpriteFromRegistry("gfx_datasheets_contract").area.GetW()
 
 		Local playerID:Int = owner
 		'nobody owns it or unsigned contract
 		If playerID <= 0 or self.daySigned < 0 Then playerID = Game.playerID
 
-		Assets.GetSprite("gfx_datasheets_contract").Draw(x,y)
+		GetSpriteFromRegistry("gfx_datasheets_contract").Draw(x,y)
 
 		SetColor 0,0,0
-		Local font:TGW_BitmapFont = Assets.fonts.basefont
-		Assets.fonts.basefontBold.drawBlock(GetTitle()	, x+10 , y+11 , 270, 70)
+		Local font:TBitmapFont = GetBitmapFontManager().basefont
+		GetBitmapFontManager().basefontBold.drawBlock(GetTitle()	, x+10 , y+11 , 270, 70)
 		font.drawBlock(GetDescription()   		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "			, x+10 , y+94 , 130, 16)
 		font.drawBlock(TFunctions.convertValue(GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,new TPoint.Init(ALIGN_RIGHT))
@@ -601,8 +601,8 @@ Type TGuiAdContract extends TGUIGameListItem
 	Field contract:TAdContract
 
 
-    Method Create:TGuiAdContract(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
-		Super.Create(label,x,y,width,height)
+    Method Create:TGuiAdContract(pos:TPoint=null, dimension:TPoint=null, value:String="")
+		Super.Create(pos, dimension, value)
 
 		self.assetNameDefault = "gfx_contracts_0"
 		self.assetNameDragged = "gfx_contracts_0_dragged"
@@ -681,9 +681,9 @@ Type TGuiAdContract extends TGUIGameListItem
 		SetAlpha 0.5
 
 		local backupAssetName:string = self.asset.getName()
-		self.asset = Assets.GetSprite(assetNameDefault)
+		self.asset = GetSpriteFromRegistry(assetNameDefault)
 		self.Draw()
-		self.asset = Assets.GetSprite(backupAssetName)
+		self.asset = GetSpriteFromRegistry(backupAssetName)
 
 		SetAlpha 1.0
 		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, FALSE)
@@ -708,10 +708,11 @@ End Type
 
 Type TGUIAdContractSlotList extends TGUISlotList
 
-    Method Create:TGUIAdContractSlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
-		Super.Create(x,y,width,height,state)
+    Method Create:TGUIAdContractSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
 		return self
 	End Method
+
 
 	Method ContainsContract:int(contract:TAdContract)
 		for local i:int = 0 to self.GetSlotAmount()-1
@@ -721,6 +722,7 @@ Type TGUIAdContractSlotList extends TGUISlotList
 		return FALSE
 	End Method
 
+
 	'override to add sort
 	Method AddItem:int(item:TGUIobject, extra:object=null)
 		if super.AddItem(item, extra)
@@ -729,6 +731,7 @@ Type TGUIAdContractSlotList extends TGUISlotList
 		endif
 		return FALSE
 	End Method
+
 
 	'override default event handler
 	Function onDropOnTarget:int( triggerEvent:TEventBase )

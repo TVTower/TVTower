@@ -7,13 +7,13 @@
 		DrawRect(20,10,760,373)
 		SetColor 255, 255, 255
 
-		'Assets.fonts.baseFont.Draw("Bevölkerung", 25, startY)
+		'GetBitmapFontManager().baseFont.Draw("Bevölkerung", 25, startY)
 
 		Local audienceResult:TAudienceResult = Game.GetPlayer().audience
 
 		Local x:Int = 200
 		Local y:Int = 25
-		Local font:TGW_BitmapFont = Assets.fonts.baseFontSmall
+		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
 
 		font.drawBlock("Gesamt", x, y, 65, 25, new TPoint.Init(ALIGN_RIGHT), TColor.clRed)
 		font.drawBlock("Kinder", x + (70*1), y, 65, 25, new TPoint.Init(ALIGN_RIGHT), TColor.clWhite)
@@ -79,7 +79,7 @@
 
 		Local offset:Int = 20
 
-		Assets.fonts.baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, offset + 90, TColor.clRed);
+		GetBitmapFontManager().baseFontBold.drawStyled("Sendung: " + audienceResult.Title + "     (" + genre + ")", 25, offset + 90, TColor.clRed);
 
 
 		font.Draw("1. Programmqualität", 25, offset+110, TColor.clWhite)
@@ -248,7 +248,7 @@ endrem
 	Function DrawAudience(audience:TAudience, x:Int, y:Int, gray:Int = false)
 		Local val:String
 		Local x2:Int = x + 70
-		Local font:TGW_BitmapFont = Assets.fonts.baseFontSmall
+		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
 		local color:TColor = TColor.clWhite
 		If gray Then color = TColor.CreateGrey(150)
 
@@ -269,7 +269,7 @@ endrem
 	Function DrawAudiencePercent(audience:TAudience, x:Int, y:Int, gray:Int = false, hideAverage:Int = false)
 		Local val:String
 		Local x2:Int = x + 70
-		Local font:TGW_BitmapFont = Assets.fonts.baseFontSmall
+		Local font:TBitmapFont = GetBitmapFontManager().baseFontSmall
 		local color:TColor = TColor.clWhite
 		If gray Then color = TColor.CreateGrey(150)
 

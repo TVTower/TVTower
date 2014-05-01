@@ -1,6 +1,6 @@
 SuperStrict
-Import brl.Reflection
-Import Brl.Retro
+Import BRL.Reflection
+Import BRL.Retro
 Import "base.util.input.bmx" 		'Mousemanager
 Import "base.util.rectangle.bmx"	'TRectangle
 
@@ -16,6 +16,11 @@ Type THelper
 		if not limit then return FALSE
 		'same object
 		if checkedObject = limit then return TRUE
+
+		'check if both are strings
+		if string(limit) and string(checkedObject)
+			return string(limit) = string(checkedObject)
+		endif
 
 		'check if classname / type is the same (type-name given as limit )
 		if string(limit)<>null
@@ -96,5 +101,21 @@ Type THelper
 	Function roundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
 		Return Long(number * t + 0.5:double * Sgn(number)) / Double(t)
+	End Function
+
+
+
+	Function GetTweenedValue:float(currentValue:float, oldValue:float, tween:Float, avoidShaking:int=TRUE)
+		local result:float = currentValue * tween + oldValue * (1.0 - tween)
+		if avoidShaking and Abs(result - currentValue) < 0.1 then return currentValue
+		return result
+	End Function
+
+
+	Function GetTweenedPoint:TPoint(currentPoint:TPoint, oldPoint:TPoint, tween:Float, avoidShaking:int=TRUE)
+		return new TPoint.Init(..
+	         GetTweenedValue(currentPoint.x, oldPoint.x, tween, avoidShaking),..
+	         GetTweenedValue(currentPoint.y, oldPoint.y, tween, avoidShaking)..
+	       )
 	End Function
 End Type

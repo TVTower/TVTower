@@ -32,7 +32,7 @@ Type TPlayerSoundSourcePosition Extends TSoundSourcePosition
 	End Method
 
 	Method GetCenter:TPoint()
-		Return Game.Players[Game.playerID].Figure.rect.GetAbsoluteCenterPoint()
+		Return Game.Players[Game.playerID].Figure.area.GetAbsoluteCenterPoint()
 	End Method
 
 	Method GetIsVisible:Int()
@@ -289,7 +289,7 @@ Type TFigureSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetCenter:TPoint()
-		Return Figure.rect.GetAbsoluteCenterPoint()
+		Return Figure.area.GetAbsoluteCenterPoint()
 	End Method
 
 	Method IsMovable:Int()
@@ -297,7 +297,7 @@ Type TFigureSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetIsHearable:Int()
-		Return (Game.Players[Game.playerID].Figure.inRoom = Null)
+		Return (Game.GetPlayer().Figure.inRoom = Null)
 	End Method
 
 	Method GetChannelForSfx:TSfxChannel(sfx:String)

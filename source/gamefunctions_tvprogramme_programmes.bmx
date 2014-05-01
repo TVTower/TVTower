@@ -1010,13 +1010,13 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 			cacheTextOverlay = TFunctions.CreateEmptyImage(w, h)
 
 			'render to image
-			TGW_BitmapFont.SetRenderTarget(cacheTextOverlay)
+			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
-			Local normalFont:TGW_BitmapFont	= Assets.fonts.baseFont
+			Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
 			Local dY:Int = 0
 
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.drawBlock(GetTitle(), 10, 11, 278, 20)
+			GetBitmapFontManager().basefontBold.drawBlock(GetTitle(), 10, 11, 278, 20)
 			normalFont.drawBlock(self.GetSubLicenceCount()+" "+GetLocale("MOVIE_EPISODES") , 10, 34, 278, 20) 'prints programmedescription on moviesheet
 			dy :+ 22
 
@@ -1047,7 +1047,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 			EndIf
 
 			'set back to screen Rendering
-			TGW_BitmapFont.SetRenderTarget(null)
+			TBitmapFont.SetRenderTarget(null)
 		endif
 
 		'===== DRAW CACHE =====
@@ -1083,7 +1083,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		endif
 
 
-		local asset:TGW_Sprite = Assets.GetSprite("gfx_datasheets_series")
+		local asset:TSprite = GetSpriteFromRegistry("gfx_datasheets_series")
 		if align = 1 then x :- asset.area.GetW()
 
 		'===== DRAW PROGRAMMED HINT =====
@@ -1101,7 +1101,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 				SetColor 255,235,110
 				DrawRect(warningX+20, y + warningY, warningW-40, 30)
 				SetAlpha 0.75
-				Assets.fonts.basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TPoint.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
+				GetBitmapFontManager().basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TPoint.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
 				SetAlpha 1.0
 				SetColor 255,255,255
 			endif
@@ -1114,7 +1114,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		DrawSeriesSheetTextOverlay(x, y, asset.area.GetW(), asset.area.GetH())
 
 		'===== DRAW DYNAMIC TEXTS =====
-		Local normalFont:TGW_BitmapFont	= Assets.fonts.baseFont
+		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
 		SetColor 0,0,0
 		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY")  , x+84, y+281, 40, 16)
 		normalFont.drawBlock(GetLocale("MOVIE_BLOCKS")+": "+data.GetBlocks(), x+10, y+281, 100, 16)
@@ -1126,13 +1126,13 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+188), new TRectangle.Init(0, 0, widthbarSpeed*200  , 12))
-		If widthbarReview  >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+210), new TRectangle.Init(0, 0, widthbarReview*200 , 12))
-		If widthbarOutcome >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+232), new TRectangle.Init(0, 0, widthbarOutcome*200, 12))
+		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+188), new TRectangle.Init(0, 0, widthbarSpeed*200  , 12))
+		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+210), new TRectangle.Init(0, 0, widthbarReview*200 , 12))
+		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+22+232), new TRectangle.Init(0, 0, widthbarOutcome*200, 12))
 		SetAlpha 0.3
-		If widthbarMaxTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarMaxTopicality*100, 12))
+		If widthbarMaxTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarMaxTopicality*100, 12))
 		SetAlpha 1.0
-		If widthbarTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarTopicality*100, 12))
+		If widthbarTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarTopicality*100, 12))
 	End Method
 
 
@@ -1148,9 +1148,9 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 			cacheTextOverlay = TFunctions.CreateEmptyImage(w, h)
 
 			'render to image
-			TGW_BitmapFont.SetRenderTarget(cacheTextOverlay)
+			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
-			Local normalFont:TGW_BitmapFont	= Assets.fonts.baseFont
+			Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
 
 			If data.xrated <> 0 Then normalFont.drawBlock(GetLocale("MOVIE_XRATED") , 240 , 34 , 50, 20) 'prints pg-rating
 
@@ -1180,7 +1180,7 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 			'set back to screen Rendering
-			TGW_BitmapFont.SetRenderTarget(null)
+			TBitmapFont.SetRenderTarget(null)
 		endif
 
 		'===== DRAW CACHE =====
@@ -1195,14 +1195,14 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		Local widthbarOutcome:Float		= Float(data.Outcome/ 255.0)
 		Local widthbarTopicality:Float	= Float(data.topicality / 255.0)
 		Local widthbarMaxTopicality:Float= Float(data.GetMaxTopicality() / 255.0)
-		Local normalFont:TGW_BitmapFont	= Assets.fonts.baseFont
+		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
 
 		Local dY:Int = 0
-		local asset:TGW_Sprite = null
+		local asset:TSprite = null
 		if data.isMovie()
-			asset = Assets.GetSprite("gfx_datasheets_movie")
+			asset = GetSpriteFromRegistry("gfx_datasheets_movie")
 		else
-			asset = Assets.GetSprite("gfx_datasheets_series")
+			asset = GetSpriteFromRegistry("gfx_datasheets_series")
 		endif
 
 
@@ -1218,24 +1218,24 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 				SetColor 255,235,110
 				DrawRect(warningX+20, y + warningY, warningW-40, 30)
 				SetAlpha 0.75
-				Assets.fonts.basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TPoint.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
+				GetBitmapFontManager().basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TPoint.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
 				SetAlpha 1.0
 				SetColor 255,255,255
 			endif
 		endif
 
 		If data.isMovie()
-			if align = 1 then x :- Assets.GetSprite("gfx_datasheets_movie").area.GetW()
-			Assets.GetSprite("gfx_datasheets_movie").Draw(x,y)
+			if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_movie").area.GetW()
+			GetSpriteFromRegistry("gfx_datasheets_movie").Draw(x,y)
 			SetColor 0,0,0
-			Assets.fonts.basefontBold.drawBlock(GetTitle(), x + 10, y + 11, 278, 20)
+			GetBitmapFontManager().basefontBold.drawBlock(GetTitle(), x + 10, y + 11, 278, 20)
 		Else
-			if align = 1 then x :- Assets.GetSprite("gfx_datasheets_series").area.GetW()
+			if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_series").area.GetW()
 
-			Assets.GetSprite("gfx_datasheets_series").Draw(x,y)
+			GetSpriteFromRegistry("gfx_datasheets_series").Draw(x,y)
 			SetColor 0,0,0
 			'episode display
-			Assets.fonts.basefontBold.drawBlock(parentLicence.GetTitle(), x + 10, y + 11, 278, 20)
+			GetBitmapFontManager().basefontBold.drawBlock(parentLicence.GetTitle(), x + 10, y + 11, 278, 20)
 			normalFont.drawBlock("(" + (parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ") " + data.GetTitle(), x + 10, y + 34, 278, 20)  'prints programmedescription on moviesheet
 
 			dy :+ 22
@@ -1256,24 +1256,24 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+188), new TRectangle.Init(0, 0, widthbarSpeed*200  , 12))
-		If widthbarReview  >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+210), new TRectangle.Init(0, 0, widthbarReview*200 , 12))
-		If widthbarOutcome >0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+232), new TRectangle.Init(0, 0, widthbarOutcome*200, 12))
+		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+188), new TRectangle.Init(0, 0, widthbarSpeed*200  , 12))
+		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+210), new TRectangle.Init(0, 0, widthbarReview*200 , 12))
+		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13, y+dY+232), new TRectangle.Init(0, 0, widthbarOutcome*200, 12))
 
 		SetAlpha 0.3
-		If widthbarMaxTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarMaxTopicality*100, 12))
+		If widthbarMaxTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarMaxTopicality*100, 12))
 		SetAlpha 1.0
-		If widthbarTopicality>0.01 Then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarTopicality*100, 12))
+		If widthbarTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+115,y+280), new TRectangle.Init(0, 0, widthbarTopicality*100, 12))
 	End Method
 
 
 	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0)
-		Local normalFont:TGW_BitmapFont	= Assets.fonts.baseFont
+		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
 
-		if align = 1 then x :- Assets.GetSprite("gfx_datasheets_specials").area.GetW()
-		Assets.GetSprite("gfx_datasheets_specials").Draw(x,y)
+		if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_specials").area.GetW()
+		GetSpriteFromRegistry("gfx_datasheets_specials").Draw(x,y)
 		SetColor 0,0,0
-		Assets.fonts.basefontBold.drawBlock(GetTitle(), x + 10, y + 11, 278, 20)
+		GetBitmapFontManager().basefontBold.drawBlock(GetTitle(), x + 10, y + 11, 278, 20)
 		normalFont.drawBlock("Programmvorschau / Trailer", x + 10, y + 34, 278, 20)
 
 		normalFont.drawBlock(getLocale("MOVIE_TRAILER")   , x+10, y+55, 278, 60)
@@ -1281,9 +1281,9 @@ Type TProgrammeLicence Extends TOwnedGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		SetAlpha 0.3
-		Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
+		GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
 		SetAlpha 1.0
-		if data.trailerTopicality > 0.1 then Assets.GetSprite("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, data.trailerTopicality*200, 12))
+		if data.trailerTopicality > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, data.trailerTopicality*200, 12))
 	End Method
 
 
@@ -1487,7 +1487,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 			Local player:TPlayer = Game.getPlayer(owner)
 			If player = Null Then Throw TNullObjectExceptionExt.Create("The programme '" + self.licence.title + "' have no owner.")
-			
+
 			'4 - Image
 			result.PublicImageMod = player.PublicImage.GetAttractionMods() '0 bis 2
 			result.PublicImageMod.MultiplyFloat(0.35)
@@ -1591,7 +1591,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 	Function GetAudienceFlowMod:TAudience(lastMovieBlockAttraction:TAudienceAttraction, currentAttraction:TAudienceAttraction )
-		Return lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition, currentAttraction.BaseAttraction)	
+		Return lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition, currentAttraction.BaseAttraction)
 	End Function
 
 
@@ -1691,8 +1691,8 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 	Global acceptMovies:int		= 1
 	Global acceptSeries:int		= 2
 
-    Method Create:TGUIProgrammeLicenceSlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
-		Super.Create(x,y,width,height,state)
+    Method Create:TGUIProgrammeLicenceSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
 
 		'albeit the list base already handles drop on itself
 		'we want to intercept too -- to stop dropping if not
@@ -1703,6 +1703,7 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 		return self
 	End Method
 
+
 	Method ContainsLicence:int(licence:TProgrammeLicence)
 		for local i:int = 0 to self.GetSlotAmount()-1
 			local block:TGUIProgrammeLicence = TGUIProgrammeLicence(self.GetItemBySlot(i))
@@ -1710,6 +1711,7 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 		Next
 		return FALSE
 	End Method
+
 
 	'overriden Method: so it does not accept a certain
 	'kind of programme (movies - series)
@@ -1737,7 +1739,6 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 
 		return FALSE
 	End Method
-
 End Type
 
 
@@ -1755,9 +1756,9 @@ rem
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i
 		DragAndDrop.typ = "programmeblock"
-		DragAndDrop.pos.setXY( 394, 17 + i * Assets.GetSprite("pp_programmeblock1").h )
-		DragAndDrop.w = Assets.GetSprite("pp_programmeblock1").w
-		DragAndDrop.h = Assets.GetSprite("pp_programmeblock1").h
+		DragAndDrop.pos.setXY( 394, 17 + i * GetSpriteFromRegistry("pp_programmeblock1").h )
+		DragAndDrop.w = GetSpriteFromRegistry("pp_programmeblock1").w
+		DragAndDrop.h = GetSpriteFromRegistry("pp_programmeblock1").h
 		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
 		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TProgrammeBlock.DragAndDropList
@@ -1767,9 +1768,9 @@ rem
 		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
 		DragAndDrop.slot = i+11
 		DragAndDrop.typ = "programmeblock"
-		DragAndDrop.pos.setXY( 67, 17 + i * Assets.GetSprite("pp_programmeblock1").h )
-		DragAndDrop.w = Assets.GetSprite("pp_programmeblock1").w
-		DragAndDrop.h = Assets.GetSprite("pp_programmeblock1").h
+		DragAndDrop.pos.setXY( 67, 17 + i * GetSpriteFromRegistry("pp_programmeblock1").h )
+		DragAndDrop.w = GetSpriteFromRegistry("pp_programmeblock1").w
+		DragAndDrop.h = GetSpriteFromRegistry("pp_programmeblock1").h
 		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
 		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
 		SortList TProgrammeBlock.DragAndDropList
@@ -1777,8 +1778,8 @@ rem
 endrem
 
 
-    Method Create:TGUIProgrammeLicence(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
-		Super.Create(label,x,y,width,height)
+    Method Create:TGUIProgrammeLicence(pos:TPoint=null, dimension:TPoint=null, value:String="")
+		Super.Create(pos, dimension, value)
 		return self
 	End Method
 

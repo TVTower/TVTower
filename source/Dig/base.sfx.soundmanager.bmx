@@ -447,6 +447,12 @@ Type TSoundManager
 	End Method
 End Type
 
+'===== CONVENIENCE ACCESSORS =====
+'convenience instance getter
+Function GetSoundManager:TSoundManager()
+	return TSoundManager.GetInstance()
+End Function
+
 
 
 

@@ -121,11 +121,11 @@
 				<child name="gfx_news_btn2" 			x="82"	y="0"	w="41"	h="42"	/>
 				<child name="gfx_news_btn3" 			x="123"	y="0"	w="41"	h="42"	/>
 				<child name="gfx_news_btn4" 			x="164"	y="0"	w="41"	h="42"	/>
-				<child name="gfx_news_btn0_clicked"		x="0"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn1_clicked"		x="41"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn2_clicked"		x="82"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn3_clicked"		x="123"	y="42"	w="41"	h="42"	/>
-				<child name="gfx_news_btn4_clicked"		x="164"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn0.active"		x="0"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn1.active"		x="41"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn2.active"		x="82"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn3.active"		x="123"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn4.active"		x="164"	y="42"	w="41"	h="42"	/>
 			</children>
 		</resource>
 		<resource name="stationmap_antenna">

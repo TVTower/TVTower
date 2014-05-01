@@ -38,15 +38,15 @@ End Type
 Global FigureCollection:TFigureCollection = new TFigureCollection
 
 
+
+
 'Summary: all kind of characters walking through the building (players, terrorists and so on)
-Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
-	'rect: from TMoveableAnimSprites
+Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
+	'area: from TEntity
 	' .position.y is difference to y of building
 	' .dimension.x and .y = "end" of figure in sprite
-	Field oldPos:TPoint			= new TPoint.Init(0,0)
-	Field tweenPos:TPoint		= new TPoint.Init(0,0)
-	Field Name:String			= "unknown"
-	Field initialdx:Float		= 0.0			'backup of self.vel.x
+	Field name:String			= "unknown"
+	Field initialdx:Float		= 0.0			'backup of self.velocity.x
 	Field PosOffset:TPoint		= new TPoint.Init(0,0)
 	Field boardingState:Int		= 0				'0=no boarding, 1=boarding, -1=deboarding
 
@@ -58,7 +58,6 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Field fromRoom:TRoom		= Null			'coming from room
 	Field inRoom:TRoom			= Null
 	Field id:Int				= 0
-	Field Visible:Int			= 1
 
 	Field WaitAtElevatorTimer:TIntervalTimer	= TIntervalTimer.Create(25000)
 	Field SyncTimer:TIntervalTimer				= TIntervalTimer.Create(2500) 'network sync position timer
@@ -73,22 +72,22 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Global LastID:Int				= 0
 	Global _initDone:int			= FALSE
 
-	Method CreateFigure:TFigure(FigureName:String, sprite:TGW_Sprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
-		Super.Create(sprite, 4, 130)
 
-		insertAnimation("default", TAnimation.Create([ [8,1000] ], -1, 0 ) )
+	Method Create:TFigure(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+		'adjust sprite animations
 
-		insertAnimation("walkRight", TAnimation.Create([ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
-		insertAnimation("walkLeft", TAnimation.Create([ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
-		insertAnimation("standFront", TAnimation.Create([ [8,2500], [9,250] ], -1, 0, 500) )
-		insertAnimation("standBack", TAnimation.Create([ [10,1000] ], -1, 0 ) )
+		SetSprite(sprite)
+		GetFrameAnimations().Set("default", TSpriteFrameAnimation.Create([ [8,1000] ], -1, 0 ) )
+		GetFrameAnimations().Set("walkRight", TSpriteFrameAnimation.Create([ [0,130], [1,130], [2,130], [3,130] ], -1, 0) )
+		GetFrameAnimations().Set("walkLeft", TSpriteFrameAnimation.Create([ [4,130], [5,130], [6,130], [7,130] ], -1, 0) )
+		GetFrameAnimations().Set("standFront", TSpriteFrameAnimation.Create([ [8,2500], [9,250] ], -1, 0, 500) )
+		GetFrameAnimations().Set("standBack", TSpriteFrameAnimation.Create([ [10,1000] ], -1, 0 ) )
 
-		name 				= Figurename
-		rect				= new TRectangle.Init(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
-'		Self.vel.SetX(speed)
-		vel.SetX(0)
-		initialdx			= speed
-		Self.Sprite			= sprite
+		name = Figurename
+		area = new TRectangle.Init(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
+		velocity.SetX(0)
+		initialdx = speed
+
 		Self.ControlledByID	= ControlledByID
 
 		FigureCollection.Add(self)
@@ -116,7 +115,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 	Method onLoad:int()
 		'reassign sprite
-		if spriteName then sprite = Assets.GetSprite(spriteName)
+		if sprite and sprite.name then sprite = GetSpriteFromRegistry(sprite.name)
 
 		'reassign rooms
 		if inRoom then inRoom = RoomCollection.Get(inRoom.id)
@@ -136,14 +135,15 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFloor:Int(_pos:TPoint = Null)
+	Method GetFloor:Int(pos:TPoint = Null)
 		'if we have no floor set in the pos, we return the current floor
-		If not _pos Then _pos = Self.rect.position
-		Return Building.getFloor( Building.pos.y + _pos.y )
+		If not pos Then pos = area.position
+		Return Building.getFloor( Building.area.position.y + pos.y )
 	End Method
 
+
 	Method IsOnFloor:Int()
-		Return rect.GetY() = Building.GetFloorY(GetFloor())
+		Return area.GetY() = Building.GetFloorY(GetFloor())
 	End Method
 
 
@@ -181,82 +181,78 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		if isChangingRoom then return FALSE
 
 		'stop movement, will get set to a value if we have a target to move to
-		self.vel.setX(0)
+		velocity.setX(0)
 
 		'we have a target to move to
 		if target
 			'get a temporary target coordinate so we can manipulate that safely
-			Local targetX:Int = Self.target.getIntX()
+			Local targetX:Int = target.getIntX()
 
 			'do we have to change the floor?
 			'if that is the case - change temporary target to elevator
-			If Self.HasToChangeFloor() Then targetX = Building.Elevator.GetDoorCenterX()
+			If HasToChangeFloor() Then targetX = Building.Elevator.GetDoorCenterX()
 
 			'check whether the target is left or right side of the figure
-			If targetX < Self.rect.GetX()
-				Self.vel.SetX( -(Abs(Self.initialdx)))
-			ElseIf targetX > Self.rect.GetX()
-				Self.vel.SetX(  (Abs(Self.initialdx)))
+			If targetX < area.GetX()
+				velocity.SetX( -(Abs(initialdx)))
+			ElseIf targetX > area.GetX()
+				velocity.SetX(  (Abs(initialdx)))
 			EndIf
 
 
 			'does the center of the figure will reach the target during update?
-			local dx:float = deltaTime * Self.vel.GetX()
+			local dx:float = deltaTime * velocity.GetX()
 			local reachTemporaryTarget:int = FALSE
 			'move to right and next step is more right than target
-			if dx > 0 and ceil(self.rect.getX()+dx) >= targetX then reachTemporaryTarget=true
+			if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
 			'move to left and next step is more left than target
-			if dx < 0 and ceil(self.rect.getX()+dx) <= targetX then reachTemporaryTarget=true
+			if dx < 0 and ceil(area.getX() + dx) <= targetX then reachTemporaryTarget=true
 			'we stand in front of the target
-			if dx = 0 and abs(self.rect.getX() - targetX)<1.0 then reachTemporaryTarget=true
+			if dx = 0 and abs(area.getX() - targetX) < 1.0 then reachTemporaryTarget=true
 
 
 			'we reached our current target (temp or real)
 			If reachTemporaryTarget
 				'stop moving
-				self.vel.SetX(0)
+				velocity.SetX(0)
 
 				'we reached our real target
-				if not Self.HasToChangeFloor()
-					self.reachTarget()
+				if not HasToChangeFloor()
+					reachTarget()
 				else
 					'set to elevator-targetx
-					oldPos.setX(targetX) 'set tween position too
-					rect.position.setX(targetX)
+					oldPosition.setX(targetX) 'set tween position too
+					area.position.setX(targetX)
 				endif
 			endif
 		endif
 
 		'decide if we have to play sound
-		if self.vel.getX() <> 0 and not IsInElevator()
+		if velocity.getX() <> 0 and not IsInElevator()
 			SoundSource.PlayOrContinueRandomSFX("steps")
 		else
 			SoundSource.Stop("steps")
 		EndIf
 
-		'do real moving
-		doMove(deltaTime)
-	End Method
 
-	Method doMove(deltaTime:float)
-		'backup old position
-		oldPos = rect.position.copy()
-
+		'adjust/limit position based on location
 		If Not IsInElevator()
-			rect.position.MoveXY(deltaTime * vel.GetX(), 0)
-			If Not IsOnFloor() and not useAbsolutePosition Then rect.position.setY( Building.GetFloorY(GetFloor()) )
-		Else
-			vel.SetX(0)
+			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( Building.GetFloorY(GetFloor()) )
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		if not useAbsolutePosition
 			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
-			If rect.GetY() < Building.GetFloorY(13) Then rect.position.setY( Building.GetFloorY(13) )
-			If rect.GetY() - sprite.area.GetH() > Building.GetFloorY( 0) Then rect.position.setY( Building.GetFloorY(0) )
+			If area.GetY() < Building.GetFloorY(13) Then area.position.setY( Building.GetFloorY(13) )
+			If area.GetY() - sprite.area.GetH() > Building.GetFloorY( 0) Then area.position.setY( Building.GetFloorY(0) )
 		endif
-	    'If Floor(Self.rect.GetX()) <= 200 Then self.changeTarget(200);self.reachTarget()
-	    'If Floor(Self.rect.GetX()) >= 579 Then self.changeTarget(579);self.reachTarget()
+	End Method
+
+
+	'overwrite default to add stoppers (at elevator)
+	Method GetVelocity:TPoint()
+		if IsInElevator() then return new TPoint
+		return velocity
 	End Method
 
 
@@ -264,7 +260,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Method getAnimationToUse:string()
 		local result:string = "standFront"
 		'if standing
-		If vel.GetX() = 0 or not moveable
+		If GetVelocity().GetX() = 0 or not moveable
 			'default - no movement needed
 			If boardingState = 0
 				result = "standFront"
@@ -288,8 +284,8 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 			EndIf
 		'if moving
 		Else
-			If vel.GetX() > 0 Then result = "walkRight"
-			If vel.GetX() < 0 Then result = "walkLeft"
+			If GetVelocity().GetX() > 0 Then result = "walkRight"
+			If GetVelocity().GetX() < 0 Then result = "walkLeft"
 		EndIf
 
 		return result
@@ -300,21 +296,21 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		'being in a room - do not knock on the door :D
 		if inRoom OR figure.inRoom then return FALSE
 		'from different floors
-		If rect.GetY() <> Figure.rect.GetY() then return FALSE
+		If area.GetY() <> Figure.area.GetY() then return FALSE
 		'and out of range
-		If Abs(rect.GetX() - Figure.rect.GetX()) > range then return FALSE
+		If Abs(area.GetX() - Figure.area.GetX()) > range then return FALSE
 
 		'same spot
-		if rect.GetX() = figure.rect.GetX() then return TRUE
+		if area.GetX() = figure.area.GetX() then return TRUE
 		'right of me
-		if rect.GetX() < figure.rect.GetX()
+		if area.GetX() < figure.area.GetX()
 			'i move to the left
-			If vel.GetX() < 0 then return FALSE
+			If velocity.GetX() < 0 then return FALSE
 			return TRUE
 		'left of me
 		else
 			'i move to the right
-			If vel.GetX() > 0 then return FALSE
+			If velocity.GetX() > 0 then return FALSE
 			return TRUE
 		endif
 		return FALSE
@@ -332,19 +328,19 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 			'if both figures are "players" we display "GRRR" or "?!!?"
 			If figure.parentPlayerID and parentPlayerID
 				'depending on floor use "grr" or "?!"
-				greetType = 0 + 2*((1 + Building.GetFloor(rect.GetY()) mod 2)-1)
+				greetType = 0 + 2*((1 + Building.GetFloor(area.GetY()) mod 2)-1)
 			else
 				greetType = 1
 			endif
 
 			'subtract half width from position - figure is drawn centered
 			'figure right of me
-			If Figure.rect.GetX() > rect.GetX()
-				Assets.GetSprite("gfx_building_textballons").Draw(int(tweenPos.x + rect.GetW()/2 -2), int(Building.pos.y + tweenPos.y - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER))
+			If Figure.area.GetX() > area.GetX()
+				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(Building.area.GetY() + area.GetX() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER))
 			'figure left of me
 			else
 				greetType :+ 3
-				Assets.GetSprite("gfx_building_textballons").Draw(int(tweenPos.x - rect.GetW()/2 +2), int(Building.pos.y + tweenPos.y - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER))
+				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(Building.area.GetY() + area.GetY() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER))
 			endif
 		Next
 	End Method
@@ -492,13 +488,13 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	Method SendToDoor:Int(door:TRoomDoor)
  		If not door then return FALSE
 
-		ChangeTarget(door.Pos.x + 5, Building.pos.y + Building.getfloorY(door.Pos.y) - 5)
+		ChangeTarget(door.Pos.x + 5, Building.area.position.y + Building.getfloorY(door.Pos.y) - 5)
 	End Method
 
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
-		Local newX:Int = rect.GetX() + relX
-		Local newY:Int = Building.pos.y + Building.getfloorY(GetFloor() + relYFloor) - 5
+		Local newX:Int = area.GetX() + relX
+		Local newY:Int = Building.area.position.y + Building.getfloorY(GetFloor() + relYFloor) - 5
 
 		if (newX < 150) then newX = 150 end
 		if (newX > 580) then newX = 580 end
@@ -559,8 +555,8 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 				If y<>-1 Then y = target.y
 			'create a new target
 			else
-				If x=-1 Then x = rect.position.x
-				If y=-1 Then y = rect.position.y
+				If x=-1 Then x = area.position.x
+				If y=-1 Then y = area.position.y
 			endif
 		endif
 
@@ -571,7 +567,7 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		target = new TPoint.Init(x, Building.GetFloorY(Building.GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
-		targetDoor = TRoomDoor.GetByCoord(target.x, Building.pos.y + target.y)
+		targetDoor = TRoomDoor.GetByCoord(target.x, Building.area.position.y + target.y)
 		If targetDoor then target.setX( targetDoor.pos.x + ceil(targetDoor.doorDimension.x/2) )
 
 		'limit target coordinates
@@ -616,9 +612,9 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 
 
 	Method reachTarget:int()
-		vel.SetX(0)
+		velocity.SetX(0)
 		'set target as current position - so we are exactly there we want to be
-		if target then rect.position.setX( target.getX() )
+		if target then area.position.setX( target.getX() )
 		'remove target
 		target = null
 
@@ -652,24 +648,26 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 	End Method
 
 
-	Method Update:int(deltaTime:Float)
+	Method Update:int()
+		'call parents update (which does movement and updates current
+		'animation)
+		Super.Update()
 
-		'update parent class (anim pos)
-		Super.Update(deltaTime)
+		local deltaTime:Float = GetDeltaTimer().GetDelta()
 
 		Self.alreadydrawn = 0
 
 		'movement is not done when in a room
 		FigureMovement(deltaTime)
-
 		'set the animation
-		setCurrentAnimation( getAnimationToUse() )
+		GetFrameAnimations().SetCurrent( getAnimationToUse() )
 
 		'this could be overwritten by extended types
-		self.UpdateCustom(deltaTime)
+		UpdateCustom(deltaTime)
 
 
-		If Visible And (not inRoom Or inRoom.name = "elevatorplaner")
+
+		If isVisible() And (not inRoom Or inRoom.name = "elevatorplaner")
 			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
 
@@ -689,45 +687,48 @@ Type TFigure Extends TMoveableAnimSprites {_exposeToLua="selected"}
 		EndIf
 
 		'sync playerposition if not done for long time
-		If Game.networkgame And Network.IsConnected And Self.SyncTimer.isExpired()
-			Self.Network_SendPosition()
-			Self.SyncTimer.Reset()
+		If Game.networkgame And Network.IsConnected And SyncTimer.isExpired()
+			Network_SendPosition()
+			SyncTimer.Reset()
 		EndIf
 	End Method
+
 
 	Method Network_SendPosition()
 		NetworkHelper.SendFigurePosition(Self)
 	End Method
 
-	Function UpdateAll(deltaTime:Float)
+
+	Function UpdateAll()
 		For Local Figure:TFigure = EachIn FigureCollection.list
-			Figure.Update(deltaTime)
+			Figure.Update()
 		Next
 	End Function
 
-	Method Draw:int (_x:Float= -10000, _y:Float = -10000, overwriteAnimation:String="")
-		if not sprite or not Visible then return FALSE
+
+	Method Draw:int(overwriteAnimation:String="")
+		if not sprite or not isVisible() then return FALSE
 
 		If (not inRoom Or inRoom.name = "elevatorplaner")
-			'avoid shaking figures when standing
-			if vel.GetIntX() <> 0 and not Game.paused
-				tweenPos.SetX( GetTweenResult(rect.getX(), oldPos.x, true) )
-				tweenPos.SetY( GetTweenResult(rect.getY(), oldPos.y, true) )
+			'avoid shaking figures when standing - only use tween
+			'position when moving
+			local tweenPos:TPoint
+			if velocity.GetIntX() <> 0 and not Game.paused
+				tweenPos = area.position.Copy()
 			else
-				tweenPos.SetX( oldPos.x )
-				tweenPos.SetY( oldPos.y )
+				tweenPos = oldPosition.Copy()
 			endif
 
 			'draw x-centered at current position
 			'normal
-			'Super.Draw( rect.getX() - ceil(rect.GetW()/2) + PosOffset.getX(), Building.pos.y + Self.rect.GetY() - Self.sprite.area.GetH() + PosOffset.getY())
+			'Super.Draw( rect.getX() - ceil(rect.GetW()/2) + PosOffset.getX(), Building.area.position.y + Self.rect.GetY() - Self.sprite.area.GetH() + PosOffset.getY())
 			'tweened with floats
-			'Super.Draw( tweenPosX - ceil(rect.GetW()/2) + PosOffset.getX(), Building.pos.y + tweenPosY - Self.sprite.area.GetH() + PosOffset.getY())
+			'Super.Draw( tweenPosX - ceil(rect.GetW()/2) + PosOffset.getX(), Building.area.position.y + tweenPosY - Self.sprite.area.GetH() + PosOffset.getY())
 			'tweened with int
 			if useAbsolutePosition
-				Super.Draw( int(tweenPos.X - ceil(rect.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - Self.sprite.area.GetH() + PosOffset.getY()))
+				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
 			else
-				Super.Draw( int(tweenPos.X - ceil(rect.GetW()/2) + PosOffset.getX()), int(Building.pos.y + tweenPos.Y - Self.sprite.area.GetH() + PosOffset.getY()))
+				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(Building.area.position.y + tweenPos.Y - Self.sprite.area.GetH() + PosOffset.getY()))
 			endif
 		EndIf
 

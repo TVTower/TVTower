@@ -48,18 +48,20 @@ Type TBroadcastManager
 		if initialized then return
 
 		genreDefinitions = genreDefinitions[..21]
-		Local genreMap:TMap = Assets.GetMap("genres")
-		For Local asset:TAsset = EachIn genreMap.Values()
+		Local genreMap:TMap = TMap(GetRegistry().Get("genres"))
+		if not genreMap then Throw "Registry misses ~qgenres~q."
+		For Local map:TMap = EachIn genreMap.Values()
 			Local definition:TMovieGenreDefinition = New TMovieGenreDefinition
-			definition.LoadFromAssert(asset)
+			definition.LoadFromMap(map)
 			genreDefinitions[definition.GenreId] = definition
 		Next
 
 		newsGenreDefinitions = newsGenreDefinitions[..5]
-		Local newsGenreMap:TMap = Assets.GetMap("newsgenres")
-		For Local asset:TAsset = EachIn newsGenreMap.Values()
+		Local newsGenreMap:TMap = TMap(GetRegistry().Get("newsgenres"))
+		if not newsGenreMap then Throw "Registry misses ~qnewsgenres~q."
+		For Local map:TMap = EachIn newsGenreMap.Values()
 			Local definition:TNewsGenreDefinition = New TNewsGenreDefinition
-			definition.LoadFromAssert(asset)
+			definition.LoadFromMap(map)
 			newsGenreDefinitions[definition.GenreId] = definition
 		Next
 
@@ -1253,7 +1255,7 @@ Type TAudienceAttraction Extends TAudience
 		Self.FinalAttraction.Id = playerId
 		Self.PublicImageAttraction.Id = playerId
 	End Method
-	
+
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
 		If Not audienceAttr Then Return Self
 		Self.Add(audienceAttr)
@@ -1450,7 +1452,7 @@ Type TSequenceCalculation
 		Local successorValue:Float
 		Local riseModCopy:TAudience
 		Local shrinkModCopy:TAudience
-		
+
 		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBorders(0.8, 1.25)
 		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBorders(0.25, 1.25)
 
@@ -1466,7 +1468,7 @@ Type TSequenceCalculation
 			If riseModCopy Then riseModTemp = riseModCopy.GetValue(i)
 			Local shrinkModTemp:Float = 1
 			If shrinkModCopy Then shrinkModTemp = shrinkModCopy.GetValue(i)
-			
+
 			Local predShareOnRiseForTG:Float = PredecessorShareOnRise.GetValue(i)
 			Local predShareOnShrinkForTG:Float = PredecessorShareOnShrink.GetValue(i)
 			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp, predShareOnRiseForTG, predShareOnShrinkForTG)

@@ -340,11 +340,11 @@ Type TNetworkHelper
 		if figure.ParentPlayerID and not Network.isServer then return Null
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_FIGUREPOSITION )
-		obj.SetInt(		1, figure.id )		'playerID
-		obj.SetFloat(	2, figure.rect.GetX() )	'position.x
-		obj.SetFloat(	3, figure.rect.GetY() )	'...
-		obj.SetFloat(	4, figure.target.x )
-		obj.SetFloat(	5, figure.target.y )
+		obj.SetInt( 1, figure.id )		'playerID
+		obj.SetFloat( 2, figure.area.GetX() )	'position.x
+		obj.SetFloat( 3, figure.area.GetY() )	'...
+		obj.SetFloat( 4, figure.target.x )
+		obj.SetFloat( 5, figure.target.y )
 		if figure.inRoom 			then obj.setInt( 6, figure.inRoom.id)
 		if figure.targetDoor		then obj.setInt( 7, figure.targetDoor.id)
 		if figure.targetHotspot		then obj.setInt( 8, figure.targetHotspot.id)
@@ -371,9 +371,9 @@ Type TNetworkHelper
 		If not figure.IsInElevator()
 			'only set X if wrong floor or x differs > 10 pixels
 			if posY = targetY
-				if Abs(posX - targetX) > 10 then figure.rect.position.setXY(posX,posY)
+				if Abs(posX - targetX) > 10 then figure.area.position.setXY(posX,posY)
 			else
-				figure.rect.position.setXY(posX,posY)
+				figure.area.position.setXY(posX,posY)
 			endif
 		endif
 		figure.target.setXY(targetX,targetY)

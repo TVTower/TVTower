@@ -563,8 +563,8 @@ Type TGUINews extends TGUIGameListItem
 	Field imageBaseName:string = "gfx_news_sheet"
 	Field cacheTextOverlay:TImage
 
-    Method Create:TGUINews(label:string="",x:float=0.0,y:float=0.0,width:int=120,height:int=20)
-		Super.Create(label,x,y,width,height)
+    Method Create:TGUINews(pos:TPoint=null, dimension:TPoint=null, value:String="")
+		Super.Create(pos, dimension, value)
 
 		return self
 	End Method
@@ -573,7 +573,7 @@ Type TGUINews extends TGUIGameListItem
 		self.news = news
 		if news
 			'now we can calculate the item width
-			self.Resize( Assets.GetSprite(Self.imageBaseName+news.newsEvent.genre).area.GetW(), Assets.GetSprite(Self.imageBaseName+news.newsEvent.genre).area.GetH() )
+			self.Resize( GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetH() )
 		endif
 		'self.SetLimitToState("Newsplanner")
 
@@ -630,19 +630,19 @@ Type TGUINews extends TGUIGameListItem
 '			cacheTextOverlay = CreateImage(rect.GetW(), rect.GetH(), DYNAMICIMAGE | FILTEREDIMAGE)
 
 			'render to image
-			TGW_BitmapFont.SetRenderTarget(cacheTextOverlay)
+			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
 			'default texts (title, text,...)
-			Assets.fonts.basefontBold.drawBlock(news.GetTitle(), 15, 4, 290, 15 + 8, null, TColor.CreateGrey(20))
-			Assets.fonts.baseFont.drawBlock(news.GetDescription(), 15, 19, 300, 50 + 8, null, TColor.CreateGrey(100))
+			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 4, 290, 15 + 8, null, TColor.CreateGrey(20))
+			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 19, 300, 50 + 8, null, TColor.CreateGrey(100))
 
 			local oldAlpha:float = GetAlpha()
 			SetAlpha 0.3*oldAlpha
-			Assets.GetFont("Default", 9).drawBlock(news.GetGenreString(), 15, 74, 120, 15, null, TColor.clBlack)
+			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 74, 120, 15, null, TColor.clBlack)
 			SetAlpha 1.0*oldAlpha
 
 			'set back to screen Rendering
-			TGW_BitmapFont.SetRenderTarget(null)
+			TBitmapFont.SetRenderTarget(null)
 		endif
 
 		'===== DRAW CACHE =====
@@ -665,7 +665,7 @@ Type TGUINews extends TGUIGameListItem
 
 			SetAlpha oldAlpha*itemAlpha
 			'background - no "_dragged" to add to name
-			Assets.GetSprite(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
+			GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 
 			'highlight hovered news (except already dragged)
 			if not isDragged() and self = RoomHandler_News.hoveredGuiNews
@@ -673,7 +673,7 @@ Type TGUINews extends TGUIGameListItem
 				SetBlend LightBlend
 				SetAlpha 0.30*oldAlpha
 				SetColor 150,150,150
-				Assets.GetSprite(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
+				GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
 				SetAlpha oldAlpha
 				SetBlend AlphaBlend
 			endif
@@ -684,28 +684,28 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				Assets.GetFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 			else
-				Assets.GetFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+				GetBitmapFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select Game.getDay() - Game.GetDay(news.newsEvent.happenedTime)
-				case 0	Assets.fonts.baseFont.drawBlock(GetLocale("TODAY")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack )
-				case 1	Assets.fonts.baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
-				case 2	Assets.fonts.baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack )
+				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + Game.GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
 			SetColor 255, 255, 255
 			SetAlpha oldAlpha
 			rem
 			if Game.GetPlayer(news.owner).ProgrammePlan.hasNews(news)
-				Assets.GetFont("Default", 24).Draw("NEWS GEPLANT", screenX + 20, screenY + 20, TColor.Create(0,0,0,1))
+				GetBitmapFont("Default", 24).Draw("NEWS GEPLANT", screenX + 20, screenY + 20, TColor.Create(0,0,0,1))
 			endif
 			if Game.GetPlayer(news.owner).ProgrammeCollection.hasNews(news)
-				Assets.GetFont("Default", 24).Draw("NEWS VERFUEGBAR", screenX + 20, screenY + 30, TColor.Create(0,0,0,1))
+				GetBitmapFont("Default", 24).Draw("NEWS VERFUEGBAR", screenX + 20, screenY + 30, TColor.Create(0,0,0,1))
 			endif
 			if not Game.GetPlayer(news.owner).ProgrammeCollection.hasNews(news) and not Game.GetPlayer(news.owner).ProgrammePlan.hasNews(news)
-				Assets.GetFont("Default", 24).Draw("IN KEINER LISTE", screenX + 20, screenY + 25, TColor.Create(0,0,0,1))
+				GetBitmapFont("Default", 24).Draw("IN KEINER LISTE", screenX + 20, screenY + 25, TColor.Create(0,0,0,1))
 			endif
 			endrem
 			self.resetViewport()
@@ -718,10 +718,11 @@ End Type
 
 Type TGUINewsList extends TGUIListBase
 
-    Method Create:TGUINewsList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
-		Super.Create(x,y,width,height,state)
+    Method Create:TGUINewsList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
 		return self
 	End Method
+
 
 	Method ContainsNews:int(news:TNews)
 		for local guiNews:TGUINews = eachin entries
@@ -736,10 +737,11 @@ End Type
 
 Type TGUINewsSlotList extends TGUISlotList
 
-    Method Create:TGUINewsSlotList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
-		Super.Create(x,y,width,height,state)
+    Method Create:TGUINewsSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
 		return self
 	End Method
+
 
 	Method ContainsNews:int(news:TNews)
 		for local i:int = 0 to self.GetSlotAmount()-1

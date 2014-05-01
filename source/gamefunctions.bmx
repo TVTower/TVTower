@@ -14,7 +14,7 @@ Global CHAT_COMMAND_SYSTEM:Int	= 2
 
 
 
-Function Font_AddGradient:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:String, char:TGW_BitmapFontChar, config:TData=Null)
+Function Font_AddGradient:TBitmapFontChar(font:TBitmapFont, charKey:String, char:TBitmapFontChar, config:TData=Null)
 	If Not char.img Then Return char 'for "space" and other empty signs
 	Local pixmap:TPixmap	= LockImage(char.img)
 	'convert to rgba
@@ -47,7 +47,7 @@ Function Font_AddGradient:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:String
 End Function
 
 
-Function Font_AddShadow:TGW_BitmapFontChar(font:TGW_BitmapFont, charKey:String, char:TGW_BitmapFontChar, config:TData=Null)
+Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, charKey:String, char:TBitmapFontChar, config:TData=Null)
 	If Not char.img Then Return char 'for "space" and other empty signs
 
 	If Not config Then config = new TData
@@ -106,12 +106,12 @@ Type TGUIChat Extends TGUIGameWindow
 	Global antiSpamTime:Int				= 100
 
 
-	Method Create:TGUIChat(x:Int,y:Int,width:Int,height:Int, State:String="")
-		Super.Create(x,y,width,height, State)
+	Method Create:TGUIChat(pos:TPoint, dimension:TPoint, limitState:String = "")
+		Super.CreateBase(pos, dimension, limitState)
 
 		guiPanel = AddContentBox(0,0,GetContentScreenWidth()-10,-1)
 
-		guiList = New TGUIListBase.Create(10,10,GetContentScreenWidth(),GetContentScreenHeight(),State)
+		guiList = New TGUIListBase.Create(new TPoint.Init(10,10), new TPoint.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
 		guiList.autoSortItems = False
 		guiList.SetAcceptDrop("")
@@ -120,18 +120,14 @@ Type TGUIChat Extends TGUIGameWindow
 		guiList.SetBackground(Null)
 
 
-		guiInput = New TGUIInput.Create(0, height, width,-1, "", 32, State)
+		guiInput = New TGUIInput.Create(new TPoint.Init(0, dimension.y),new TPoint.Init(dimension.x,-1), "", 32, limitState)
 		guiInput.setParent(Self)
-
-		'guiPanel.AddChild(guiPanel, false)
-		'guiPanel.AddChild(guiInput, false)
 
 		'we manage the panel
 		AddChild(guiPanel)
 
-
 		'resize base and move child elements
-		resize(width,height)
+		resize(dimension.GetX(), dimension.GetY())
 
 		'by default all chats want to list private messages and system announcements
 		setListenToChannel(CHAT_CHANNEL_PRIVATE, True)
@@ -294,7 +290,7 @@ Type TGUIChat Extends TGUIGameWindow
 
 
 	Method SetPadding:Int(top:Int,Left:Int,bottom:Int,Right:Int)
-		padding.setTLBR(top,Left,bottom,Right)
+		GetPadding().setTLBR(top,Left,bottom,Right)
 		resize()
 	End Method
 
@@ -339,29 +335,22 @@ Type TGUIChat Extends TGUIGameWindow
 			Next
 		EndIf
 	End Method
-
-
-	Method Draw()
-		Super.Draw()
-	End Method
 End Type
 
 
-Type TGUIGameWindow Extends TGUIWindow
+Type TGUIGameWindow Extends TGUIWindowBase
 	Field contentBoxes:TGUIBackgroundBox[]
 
-	Global childSprite:TGW_NinePatchSprite
+	Global childSpriteBaseName:string = "gfx_gui_panel.content"
 
 
-	Method Create:TGUIGameWindow(x:Int, y:Int, width:Int = 100, height:Int= 100, State:String = "")
-		Super.Create(x,y,width,height,State)
+	Method Create:TGUIGameWindow(pos:TPoint, dimension:TPoint, limitState:String = "")
+		Super.Create(pos, dimension, limitState)
 
 		GetPadding().SetTop(35)
 
 		SetCaptionArea(new TRectangle.Init(20, 10, GetContentScreenWidth() - 2*20, 25))
 		guiCaptionTextBox.SetValueAlignment("LEFT", "TOP")
-
-		If Not childSprite Then childSprite = Assets.GetNinePatchSprite("gfx_gui_panel.content")
 
 		Return Self
 	End Method
@@ -372,8 +361,11 @@ Type TGUIGameWindow Extends TGUIWindow
 		If w < 0 Then w = GetContentScreenWidth()
 		If h < 0 Then h = GetContentScreenHeight()
 
+		'if no background was set yet - do it now
+		if not guiBackground then SetBackground( new TGUIBackgroundBox.Create(null, null) )
+
 		'replace single-content-window-sprite (aka: remove "drawn on"-contentimage)
-		Self.guiBackground.sprite = Assets.GetNinePatchSprite("gfx_gui_panel")
+		guiBackground.spriteBaseName = "gfx_gui_panel"
 
 		Local maxOtherBoxesY:Int = 0
 		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
@@ -384,9 +376,9 @@ Type TGUIGameWindow Extends TGUIWindow
 				maxOtherBoxesY :+ panelGap
 			Next
 		EndIf
-		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(displaceX, maxOtherBoxesY + displaceY, w, h, "")
+		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TPoint.Init(displaceX, maxOtherBoxesY + displaceY), new TPoint.Init(w, h), "")
 
-		box.sprite = childSprite
+		box.spriteBaseName = childSpriteBaseName
 		box.spriteAlpha = 1.0
 		box.SetPadding(panelGap, panelGap, panelGap, panelGap)
 		AddChild(box)
@@ -406,8 +398,7 @@ Type TGUIGameWindow Extends TGUIWindow
 
 
 	Method Update:Int()
-		If guiCaptionTextBox Then guiCaptionTextBox.useFont = .headerFont
-		'self.guiTextBox.useFont = .modalWindowTextFont
+		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(.headerFont)
 
 		Super.Update()
 	End Method
@@ -417,12 +408,11 @@ End Type
 
 
 Type TGUIGameModalWindow Extends TGUIModalWindow
-	Method Create:TGUIGameModalWindow(x:Int, y:Int, width:Int = 100, height:Int= 100, limitState:String = "")
+	Method Create:TGUIGameModalWindow(pos:TPoint, dimension:TPoint, limitState:String = "")
 		_defaultValueColor = TColor.clBlack.copy()
-		_defaultCaptionColor = TColor.clWhite.copy()
-		Super.Create(x,y,width,height,limitState)
+		defaultCaptionColor = TColor.clWhite.copy()
 
-'		GetPadding().SetTop(35)
+		Super.Create(pos, dimension, limitState)
 
 		SetCaptionArea(new TRectangle.Init(20, 10, GetContentScreenWidth() - 2*20, 25))
 		guiCaptionTextBox.SetValueAlignment("CENTER", "TOP")
@@ -433,7 +423,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 
 	Method SetCaption:Int(caption:String="")
 		Super.SetCaption(caption)
-		If guiCaptionTextBox Then guiCaptionTextBox.useFont = .headerFont
+		If guiCaptionTextBox Then guiCaptionTextBox.SetFont(.headerFont)
 	End Method
 End Type
 
@@ -441,29 +431,29 @@ End Type
 
 
 Type TGUIChatEntry Extends TGUIListItem
-	Field paddingBottom:Int		= 5
+	Field paddingBottom:Int	= 5
 
 
 	Method CreateSimple:TGUIChatEntry(text:String, textColor:TColor, senderName:String, senderColor:TColor, lifetime:Int=Null)
-		Create(text)
+		Create(null,null, text)
 		SetLifetime(lifeTime)
 		SetShowtime(lifeTime)
 		SetSender(senderName, senderColor)
-		SetLabel(text,textColor)
+		SetValue(text)
+		SetValueColor(textColor)
 
 		Return Self
 	End Method
 
 
-    Method Create:TGUIChatEntry(text:String="",x:Float=0.0,y:Float=0.0,width:Int=120,height:Int=20)
+    Method Create:TGUIChatEntry(pos:TPoint=null, dimension:TPoint=null, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
-   		Super.CreateBase(x,y,"",Null)
+   		Super.CreateBase(pos, dimension, "")
 
-		Resize( width, height )
-		label = text
-
-		setLifetime( 1000 )
-		setShowtime( 1000 )
+		Resize(GetDimension().GetX(), GetDimension().GetY())
+		SetValue(value)
+		SetLifetime( 1000 )
+		SetShowtime( 1000 )
 
 		GUIManager.add(Self)
 
@@ -473,29 +463,34 @@ Type TGUIChatEntry Extends TGUIListItem
 
 	Method getDimension:TPoint()
 		Local move:TPoint = new TPoint.Init(0,0)
-		If Self.Data.getString("senderName",Null)
-			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
+		If Data.getString("senderName",Null)
+			Local senderColor:TColor = TColor(Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			move = Assets.fonts.baseFontBold.drawStyled(Self.Data.getString("senderName")+":", Self.getScreenX(), Self.getScreenY(), senderColor, 2, 0)
+			move = GetBitmapFontManager().baseFontBold.drawStyled(Data.getString("senderName")+":", Self.getScreenX(), Self.getScreenY(), senderColor, 2, 0)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
 		EndIf
 		'available width is parentsDimension minus startingpoint
-		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
-		Local maxWidth:Int = parentPanel.getContentScreenWidth()-Self.rect.getX()
+		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(GetParent("tguiscrollablepanel"))
+		Local maxWidth:Int
+		if parentPanel
+			maxWidth = parentPanel.GetContentScreenWidth() - rect.getX()
+		else
+			maxWidth = GetParent().GetContentScreenWidth() - rect.getX()
+		endif
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TPoint = Assets.fonts.baseFont.drawBlock(label, getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, Null, 2, 0)
+		Local dimension:TPoint = GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, Null, 2, 0)
 
 		'add padding
-		dimension.moveXY(0, Self.paddingBottom)
+		dimension.moveXY(0, paddingBottom)
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
-		If Self.rect.getW() <> dimension.getX() Or Self.rect.getH() <> dimension.getY()
+		If rect.getW() <> dimension.getX() Or rect.getH() <> dimension.getY()
 			'resize item
-			Self.Resize(dimension.getX(), dimension.getY())
+			Resize(dimension.getX(), dimension.getY())
 			'recalculate item positions and scroll limits
 '			local list:TGUIListBase = TGUIListBase(self.getParent("tguilistbase"))
 '			if list then list.RecalculateElements()
@@ -538,12 +533,12 @@ Type TGUIChatEntry Extends TGUIListItem
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
-			move = Assets.fonts.baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", Self.getScreenX(), Self.getScreenY(), senderColor, 2, 1)
+			move = GetBitmapFontManager().baseFontBold.drawStyled(Self.Data.getString("senderName", "")+":", Self.getScreenX(), Self.getScreenY(), senderColor, 2, 1)
 			'move the x so we get space between name and text
 			'move the y point 1 pixel as bold fonts are "higher"
 			move.setXY( move.x+5, 1)
 		EndIf
-		Assets.fonts.baseFont.drawBlock(label, getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, labelColor, 2, 1, 0.5)
+		GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, valueColor, 2, 1, 0.5)
 
 		SetAlpha 1.0
 
@@ -558,8 +553,8 @@ End Type
 Type TGUIGameList Extends TGUISelectList
 
 
-    Method Create:TGUIGameList(x:Int, y:Int, width:Int, height:Int = 50, State:String = "")
-		Super.Create(x,y,width,height, State)
+    Method Create:TGUIGameList(pos:TPoint=null, dimension:TPoint=null, limitState:String = "")
+		Super.Create(pos, dimension, limitState)
 
 		Return Self
 	End Method
@@ -582,7 +577,7 @@ Type TGUIGameList Extends TGUISelectList
 
 	Method AddItem:Int(item:TGUIobject, extra:Object=Null)
 		For Local olditem:TGUIListItem = EachIn Self.entries
-			If TGUIGameEntry(item) And TGUIGameEntry(item).label = olditem.label
+			If TGUIGameEntry(item) And TGUIGameEntry(item).GetValue() = olditem.GetValue()
 				'refresh lifetime
 				olditem.setLifeTime(olditem.initialLifeTime)
 				'unset the new one
@@ -604,7 +599,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 
 	Method CreateSimple:TGUIGameEntry(_hostIP:String, _hostPort:Int, _hostName:String="", gameTitle:String="", slotsUsed:Int, slotsMax:Int)
 		'make it "unique" enough
-		Self.Create(_hostIP+":"+_hostPort)
+		Self.Create(null, null, _hostIP+":"+_hostPort)
 
 		Self.data.AddString("hostIP", _hostIP)
 		Self.data.AddNumber("hostPort", _hostPort)
@@ -617,14 +612,15 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIGameEntry(text:String="",x:Float=0.0,y:Float=0.0,width:Int=120,height:Int=20)
+    Method Create:TGUIGameEntry(pos:TPoint=null, dimension:TPoint=null, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
-   		Super.CreateBase(x,y,"",Null)
+   		Super.CreateBase(pos, dimension, "")
 
-		Self.SetLifetime(30000) '30 seconds
-		Self.SetLabel(":D", TColor.Create(0,0,0))
+		SetLifetime(30000) '30 seconds
+		SetValue(":D")
+		SetValueColor(TColor.Create(0,0,0))
 
-		Self.Resize( width, height )
+		Resize( dimension.x, dimension.y )
 
 		GUIManager.add(Self)
 
@@ -639,7 +635,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
 		Local text:String = Self.Data.getString("gameTitle","#unknowngametitle#")+" by "+ Self.Data.getString("hostName","#unknownhostname#") + " ("+Self.Data.getInt("slotsUsed",1)+"/"+Self.Data.getInt("slotsMax",4)
-		Local dimension:TPoint = Assets.fonts.baseFont.drawBlock(text, getScreenX(), getScreenY(), maxWidth, maxHeight, Null, Null, 2, 0)
+		Local dimension:TPoint = GetBitmapFontManager().baseFont.drawBlock(text, getScreenX(), getScreenY(), maxWidth, maxHeight, Null, Null, 2, 0)
 
 		'add padding
 		dimension.moveXY(0, Self.paddingBottom)
@@ -672,17 +668,17 @@ Type TGUIGameEntry Extends TGUISelectListItem
 
 		text 		= Self.Data.getString("gameTitle","#unknowngametitle#")
 		textColor	= TColor(Self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
-		textDim		= Assets.fonts.baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor, 2, 1,0.5)
+		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor, 2, 1,0.5)
 		move.moveXY(textDim.x,1)
 
 		text 		= " by "+Self.Data.getString("hostName","#unknownhostname#")
 		textColor	= TColor(Self.Data.get("hostNameColor", TColor.Create(50,50,150)) )
-		textDim		= Assets.fonts.baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
+		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
 		move.moveXY(textDim.x,0)
 
 		text 		= " ("+Self.Data.getInt("slotsUsed",1)+"/"++Self.Data.getInt("slotsMax",4)+")"
 		textColor	= TColor(Self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
-		textDim		= Assets.fonts.baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
+		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
 		move.moveXY(textDim.x,0)
 
 		SetAlpha 1.0
@@ -763,15 +759,15 @@ Type THotspot
 
 		If tooltip And tooltip.enabled
 			tooltip.area.position.SetXY( adjustedArea.getX() + adjustedArea.getW()/2 - tooltip.GetWidth()/2, adjustedArea.getY() - tooltip.GetHeight())
-			tooltip.Update( GetDeltaTimer().GetDelta() )
+			tooltip.Update()
 			'delete old tooltips
 			If tooltip.lifetime < 0 Then tooltip = Null
 		EndIf
 	End Method
 
 
-	Method Draw:Int(offsetX:Int=0,offsetY:Int=0)
-		If tooltip Then tooltip.draw()
+	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+		If tooltip Then tooltip.Render()
 	End Method
 End Type
 
@@ -888,7 +884,7 @@ Global LoadSaveFile:TSaveFile = TSaveFile.Create()
 
 
 'tooltips containing headline and text, updated and drawn by Tinterface
-Type TTooltip Extends TRenderable
+Type TTooltip Extends TEntity
 	Field lifetime:Float		= 0.1		'how long this tooltip is existing
 	Field fadeValue:Float		= 1.0		'current fading value (0-1.0)
 	Field _startLifetime:Float	= 1.0		'initial lifetime value
@@ -905,12 +901,12 @@ Type TTooltip Extends TRenderable
 	Field titleBGtype:Int		= 0
 	Field enabled:Int			= 0
 
-	Global tooltipHeader:TGW_Sprite
-	Global tooltipIcons:TGW_Sprite
+	Global tooltipHeader:TSprite
+	Global tooltipIcons:TSprite
 	Global list:TList 			= CreateList()
 
-	Global useFontBold:TGW_BitmapFont
-	Global useFont:TGW_BitmapFont
+	Global useFontBold:TBitmapFont
+	Global useFont:TBitmapFont
 	Global imgCacheEnabled:Int	= True
 
 
@@ -962,12 +958,12 @@ Type TTooltip Extends TRenderable
 	End Method
 
 
-	Method Update:Int(deltaTime:Float=1.0)
-		lifeTime :- deltaTime
+	Method Update:Int()
+		lifeTime :- GetDeltaTimer().GetDelta()
 
 		'start fading if lifetime is running out (lower than fade time)
 		If lifetime <= _startFadingTime
-			fadeValue :- deltaTime
+			fadeValue :- GetDeltaTimer().GetDelta()
 			fadeValue :* 0.8 'speed up fade
 		EndIf
 
@@ -1129,7 +1125,7 @@ Type TTooltip Extends TRenderable
 	End Method
 
 
-	Method Draw:Int(tweenValue:Float=1.0)
+	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		If Not enabled Then Return 0
 
 		local col:TColor = TColor.Create().Get()
@@ -1184,23 +1180,23 @@ End Type
 
 
 
-	Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TGW_BitmapFont = Null)
+	Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TBitmapFont = Null)
 		Local dx:Float, dy:Float
-		Local DialogSprite:TGW_Sprite = Assets.getSprite(DialogStart)
+		Local DialogSprite:TSprite = GetSpriteFromRegistry(DialogStart)
 		height = Max(95, height ) 'minheight
 		If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + Height/3 + DialogStartMove;width:-48
 		If DialogStart = "StartRightDown" Then dx = x + width - 12;dy = y + Height/2 + DialogStartMove;width:-48
 		If DialogStart = "StartDownRight" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
 		If DialogStart = "StartDownLeft" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
 
-		Assets.GetNinePatchSprite("dialogue."+dialogueType).DrawArea(x,y,width,height)
+		GetSpriteFromRegistry("dialogue."+dialogueType).DrawArea(x,y,width,height)
 
 		DialogSprite.Draw(dx, dy)
 		If DialogText <> "" Then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 16, Height - 16, Null, TColor.clBlack)
 	End Function
 
 	'draws a rounded rectangle (blue border) with alphashadow
-	Function DrawGFXRect(gfx_Rect:TGW_SpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:String="gfx_gui_rect_")
+	Function DrawGFXRect(gfx_Rect:TSpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:String="gfx_gui_rect_")
 		gfx_Rect.getSprite(nameBase+"TopLeft").Draw(x, y)
 		gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, new TPoint.Init(ALIGN_RIGHT, ALIGN_TOP))
 		gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
@@ -1220,8 +1216,8 @@ End Type
 Type TBlockGraphical Extends TBlockMoveable
 	Field imageBaseName:String
 	Field imageDraggedBaseName:String
-	Field image:TGW_Sprite
-	Field image_dragged:TGW_Sprite
+	Field image:TSprite
+	Field image_dragged:TSprite
     Global AdditionallyDragged:Int	= 0
 End Type
 
@@ -1272,14 +1268,14 @@ End Type
 Type TGUIGameListItem Extends TGUIListItem
 	Field assetNameDefault:String = "gfx_movie0"
 	Field assetNameDragged:String = "gfx_movie0"
-	Field asset:TGW_Sprite = Null
-	Field assetDefault:TGW_Sprite = Null
-	Field assetDragged:TGW_Sprite = Null
+	Field asset:TSprite = Null
+	Field assetDefault:TSprite = Null
+	Field assetDragged:TSprite = Null
 
 
-    Method Create:TGUIGameListItem(label:String="",x:Float=0.0,y:Float=0.0,width:Int=120,height:Int=20)
+    Method Create:TGUIGameListItem(pos:TPoint=null, dimension:TPoint=null, value:String="")
 		'creates base, registers click-event,...
-		Super.Create(label, x,y,width,height)
+		Super.Create(pos, dimension, value)
 
    		Self.InitAssets()
    		Self.SetAsset()
@@ -1294,14 +1290,14 @@ Type TGUIGameListItem Extends TGUIListItem
 
 		Self.assetNameDefault = nameDefault
 		Self.assetNameDragged = nameDragged
-		Self.assetDefault = Assets.GetSprite(nameDefault)
-		Self.assetDragged = Assets.GetSprite(nameDragged)
+		Self.assetDefault = GetSpriteFromRegistry(nameDefault)
+		Self.assetDragged = GetSpriteFromRegistry(nameDragged)
 
 		Self.SetAsset(Self.assetDefault)
 	End Method
 
 
-	Method SetAsset(sprite:TGW_Sprite=Null)
+	Method SetAsset(sprite:TSprite=Null)
 		If Not sprite Then sprite = Self.assetDefault
 
 		'only resize if not done already
@@ -1416,7 +1412,7 @@ Type TError
 
 	Global List:TList = CreateList()
 	Global LastID:Int=0
-	Global sprite:TGW_Sprite
+	Global sprite:TSprite
 
 
 	Function Create:TError(title:String, message:String)
@@ -1425,7 +1421,7 @@ Type TError
 		obj.message	= message
 		obj.id		= LastID
 		LastID :+1
-		If obj.sprite = Null Then obj.sprite = Assets.getSprite("gfx_errorbox")
+		If obj.sprite = Null Then obj.sprite = GetSpriteFromRegistry("gfx_errorbox")
 		obj.pos		= new TPoint.Init(400-obj.sprite.area.GetW()/2 +6, 200-obj.sprite.area.GetH()/2 +6)
 		obj.link	= List.AddLast(obj)
 		Return obj
@@ -1479,8 +1475,8 @@ Type TError
 		Game.cursorstate = 0
 		SetColor 255,255,255
 		sprite.Draw(pos.x,pos.y)
-		Assets.getFont("Default", 15, BOLDFONT).drawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.area.GetW() - 60, 40, Null, TColor.Create(150, 50, 50))
-		Assets.getFont("Default", 12).drawBlock(message, pos.x+12+6,pos.y+50,sprite.area.GetW()-40, sprite.area.GetH()-60, Null, TColor.Create(50, 50, 50))
+		GetBitmapFont("Default", 15, BOLDFONT).drawBlock(title, pos.x + 12 + 6, pos.y + 15, sprite.area.GetW() - 60, 40, Null, TColor.Create(150, 50, 50))
+		GetBitmapFont("Default", 12).drawBlock(message, pos.x+12+6,pos.y+50,sprite.area.GetW()-40, sprite.area.GetH()-60, Null, TColor.Create(50, 50, 50))
   End Method
 End Type
 
@@ -1506,7 +1502,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		Self._highlighted = False
-		If THelper.MouseIn( x, y-2, w, Assets.getFont("Default", 12).getBlockHeight(Self._text, w, h))
+		If THelper.MouseIn( x, y-2, w, GetBitmapFont("Default", 12).getBlockHeight(Self._text, w, h))
 			Self._highlighted = True
 			If clicked
 				'emit the event if there is one
@@ -1522,11 +1518,11 @@ Type TDialogueAnswer
 		If Self._highlighted
 			SetColor 200,100,100
 			DrawOval(x, y +3, 6, 6)
-			Assets.getFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h, Null, TColor.Create(0, 0, 0))
+			GetBitmapFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h, Null, TColor.Create(0, 0, 0))
 		Else
 			SetColor 0,0,0
 			DrawOval(x, y +3, 6, 6)
-			Assets.getFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h, Null, TColor.Create(100, 100, 100))
+			GetBitmapFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h, Null, TColor.Create(100, 100, 100))
 		EndIf
 	End Method
 End Type
@@ -1554,23 +1550,23 @@ Type TDialogueTexts
 
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
-		Local ydisplace:Float = Assets.getFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
+		Local ydisplace:Float = GetBitmapFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 		_goTo = -1
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			Local returnValue:Int = answer.Update(x + 9, y + ydisplace, w - 9, h, clicked)
 			If returnValue <> - 1 Then _goTo = returnValue
-			ydisplace:+Assets.getFont("Default", 14).getHeight(answer._text) + 2
+			ydisplace:+GetBitmapFont("Default", 14).getHeight(answer._text) + 2
 		Next
 		Return _goTo
 	End Method
 
 
 	Method Draw(x:Float, y:Float, w:Float, h:Float)
-		Local ydisplace:Float = Assets.getFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
+		Local ydisplace:Float = GetBitmapFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 
-		Local lineHeight:Int = 2 + Assets.getFont("Default", 14).getHeight("QqT") 'high chars, low chars
+		Local lineHeight:Int = 2 + GetBitmapFont("Default", 14).getHeight("QqT") 'high chars, low chars
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			answer.Draw(x, y + ydisplace, w, h)
@@ -1621,7 +1617,7 @@ Type TDialogue
 
 	Method Draw()
 		SetColor 255, 255, 255
-	    DrawDialog("default", _rect.getX(), _rect.getY(), _rect.getW(), _rect.getH(), "StartLeftDown", 0, "", Assets.getFont("Default", 14))
+	    DrawDialog("default", _rect.getX(), _rect.getY(), _rect.getW(), _rect.getH(), "StartLeftDown", 0, "", GetBitmapFont("Default", 14))
 		SetColor 0, 0, 0
 		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(Self._rect.getX() + 10, Self._rect.getY() + 10, Self._rect.getW() - 60, Self._rect.getH())
 		SetColor 255, 255, 255
@@ -1650,7 +1646,7 @@ Type TTooltipAudience Extends TTooltip
 		Super.Initialize(title, content, x, y, w, h, lifetime)
 		Self.lineHeight = Self.useFont.getMaxCharHeight()+1
 		'text line with icon
-		Self.lineIconHeight = 1 + Max(lineHeight, Assets.getSprite("gfx_targetGroup1").area.GetH())
+		Self.lineIconHeight = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup1").area.GetH())
 	End Method
 
 
@@ -1672,7 +1668,7 @@ Type TTooltipAudience Extends TTooltip
 
 
 	'override default to add "ALT-Key"-Switcher
-	Method Update:Int(deltaTime:Float=1.0)
+	Method Update:Int()
 		If KeyManager.isDown(KEY_LALT) Or KeyManager.isDown(KEY_RALT)
 			If Not showDetails Then Self.dirtyImage = True
 			showDetails = True
@@ -1688,7 +1684,7 @@ Type TTooltipAudience Extends TTooltip
 			endif
 		EndIf
 
-		Super.Update(deltaTime)
+		Super.Update()
 	End Method
 
 
@@ -1723,9 +1719,9 @@ Type TTooltipAudience Extends TTooltip
 		Local lineY:Int = y
 		Local lineX:Int = x
 		Local lineText:String = ""
-		Local lineIconHeight:Int = 1 + Max(lineHeight, Assets.getSprite("gfx_targetGroup1").area.GetH())
-		Local lineIconX:Int = lineX + Assets.getSprite("gfx_targetGroup1").area.GetW() + 2
-		Local lineIconWidth:Int = w - Assets.getSprite("gfx_targetGroup1").area.GetW()
+		Local lineIconHeight:Int = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup1").area.GetH())
+		Local lineIconX:Int = lineX + GetSpriteFromRegistry("gfx_targetGroup1").area.GetW() + 2
+		Local lineIconWidth:Int = w - GetSpriteFromRegistry("gfx_targetGroup1").area.GetW()
 		Local lineIconDY:Int = Ceil(0.5 * (lineIconHeight - lineHeight))
 		Local lineTextDY:Int = lineIconDY + 2
 
@@ -1770,7 +1766,7 @@ Type TTooltipAudience Extends TTooltip
 				DrawRect(lineX, lineY, w, lineIconHeight)
 				'draw icon
 				SetColor 255,255,255
-				Assets.getSprite("gfx_targetGroup"+i).draw(lineX, lineY + lineIconDY)
+				GetSpriteFromRegistry("gfx_targetGroup"+i).draw(lineX, lineY + lineIconDY)
 				'draw text
 				If i Mod 2 = 0
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
@@ -1791,7 +1787,7 @@ End Type
 'updates tv-images shown and so on
 Type TInterface
 	Field gfx_bottomRTT:TImage
-	Field CurrentProgramme:TGW_Sprite
+	Field CurrentProgramme:TSprite
 	Field CurrentAudience:TImage
 	Field CurrentProgrammeText:String
 	Field CurrentProgrammeToolTip:TTooltip
@@ -1800,7 +1796,7 @@ Type TInterface
 	Field BettyToolTip:TTooltip
 	Field CurrentTimeToolTip:TTooltip
 	Field tooltips:TList = CreateList()
-	Field noiseSprite:TGW_Sprite
+	Field noiseSprite:TSprite
 	Field noiseAlpha:Float	= 0.95
 	Field noiseDisplace:Trectangle = new TRectangle.Init(0,0,0,0)
 	Field ChangeNoiseTimer:Float= 0.0
@@ -1812,7 +1808,7 @@ Type TInterface
 	'creates and returns an interface
 	Function Create:TInterface()
 		Local Interface:TInterface = New TInterface
-		Interface.CurrentProgramme			= Assets.getSprite("gfx_interface_tv_programme_none")
+		Interface.CurrentProgramme			= GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
 		Interface.CurrentProgrammeToolTip.minContentWidth = 220
 		Interface.CurrentAudienceToolTip	= TTooltipAudience.Create("", "", 490, 440)
@@ -1829,7 +1825,7 @@ Type TInterface
 		Interface.tooltips.AddLast(Interface.BettyToolTip)
 
 
-		Interface.noiseSprite				= Assets.getSprite("gfx_interface_tv_noise")
+		Interface.noiseSprite				= GetSpriteFromRegistry("gfx_interface_tv_noise")
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
 		Interface.noiseDisplace.Dimension.SetX(Max(0, Interface.noiseSprite.area.GetW() - Interface.CurrentProgramme.area.GetW()))
@@ -1845,7 +1841,7 @@ Type TInterface
 		If ShowChannel <> 0
 			If Game.getMinute() >= 55
 				Local advertisement:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetAdvertisement()
-				Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_ads")
+				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_ads")
 			    If advertisement
 					'real ad
 					If TAdvertisement(advertisement)
@@ -1861,14 +1857,14 @@ Type TInterface
 				EndIf
 			Else
 				Local obj:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetProgramme()
-				Interface.CurrentProgramme = Assets.getSprite("gfx_interface_tv_programme_none")
+				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 				If obj
-					Interface.CurrentProgramme = Assets.getSprite("gfx_interface_tv_programme_none")
+					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 					CurrentProgrammeToolTip.TitleBGtype	= 0
 					'real programme
 					If TProgramme(obj)
 						Local programme:TProgramme = TProgramme(obj)
-						Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
+						Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
 						If programme.isSeries()
 							CurrentProgrammeText = programme.licence.parentLicence.GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						Else
@@ -1885,7 +1881,7 @@ Type TInterface
 				EndIf
 			EndIf
 			If Game.getMinute() <= 5
-				Interface.CurrentProgramme = Assets.getSprite("gfx_interface_TVprogram_news")
+				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_news")
 				CurrentProgrammeToolTip.TitleBGtype	= 3
 				CurrentProgrammeText				= getLocale("NEWS")
 			EndIf
@@ -1895,7 +1891,7 @@ Type TInterface
 		EndIf 'showchannel <>0
 
 		For local tip:TTooltip = eachin tooltips
-			If tip.enabled Then tip.Update(deltaTime)
+			If tip.enabled Then tip.Update()
 		Next
 		tooltips.Sort() 'sort according lifetime
 
@@ -2023,18 +2019,18 @@ Type TInterface
 	'draws the interface
 	Method Draw(tweenValue:Float=1.0)
 		SetBlend ALPHABLEND
-		Assets.getSprite("gfx_interface_top").Draw(0,0)
-		Assets.getSprite("gfx_interface_leftright").DrawClipped(new TPoint.Init(0, 20), new TRectangle.Init(0, 0, 27, 363))
+		GetSpriteFromRegistry("gfx_interface_top").Draw(0,0)
+		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TPoint.Init(0, 20), new TRectangle.Init(0, 0, 27, 363))
 		SetBlend SOLIDBLEND
-		Assets.getSprite("gfx_interface_leftright").DrawClipped(new TPoint.Init(780, 20), new TRectangle.Init(27, 0, 20, 363))
+		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TPoint.Init(780, 20), new TRectangle.Init(27, 0, 20, 363))
 
 		If BottomImgDirty
 
 			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
-			Assets.getSprite("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
-			If ShowChannel <> 0 Then Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419)
+			If ShowChannel <> 0 Then GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
 
 
 
@@ -2059,19 +2055,19 @@ Type TInterface
 					local col:TColor = new TColor.Get()
 					SetColor 50, 50, 50
 					SetBlend MASKBLEND
-					Assets.getSprite("gfx_interface_audience_bg").Draw(520, 419)
+					GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
 					col.SetRGBA()
 				else
 					local currentSlot:int = 0
 					For local member:string = eachin members
-						Assets.getSprite("gfx_interface_audience_"+member).Draw(figureslots[currentslot], 419)
+						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], 419)
 						currentslot:+1 'occupy a slot
 					Next
 				endif
 			EndIf 'showchannel <>0
 			SetBlend ALPHABLEND
 
-			Assets.getSprite("gfx_interface_antenna").Draw(111,329)
+			GetSpriteFromRegistry("gfx_interface_antenna").Draw(111,329)
 
 			'draw noise of tv device
 			If ShowChannel <> 0
@@ -2080,36 +2076,36 @@ Type TInterface
 				SetAlpha 1.0
 			EndIf
 			'draw overlay to hide corners of non-round images
-			Assets.getSprite("gfx_interface_tv_overlay").Draw(45,400)
+			GetSpriteFromRegistry("gfx_interface_tv_overlay").Draw(45,400)
 
 		    For Local i:Int = 0 To 4
 				If i = ShowChannel
-					Assets.getSprite("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 554)
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 554)
 				Else
-					Assets.getSprite("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 554)
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 554)
 				EndIf
 		    Next
 
 			'draw the small electronic parts - "the inner tv"
 	  		SetBlend MASKBLEND
-	     	Assets.getSprite("gfx_interface_audience_overlay").Draw(520, 419)
+	     	GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, 419)
 			SetBlend ALPHABLEND
-			Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
-			Assets.GetFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	Assets.GetFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
+		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
 
 		SetAlpha 0.25
-		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime() + " Uhr", 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime() + " Uhr", 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
 		SetAlpha 0.9
-		Assets.getFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime()+ " Uhr", 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime()+ " Uhr", 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
 		SetAlpha 1.0
 
 		For local tip:TTooltip = eachin tooltips
-			If tip.enabled Then tip.Draw()
+			If tip.enabled Then tip.Render()
 		Next
 
 	    GUIManager.Draw("InGame")

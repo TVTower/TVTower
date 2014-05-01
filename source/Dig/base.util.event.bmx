@@ -161,7 +161,7 @@ Type TEventManager
 
 	'update the event manager - call this each cycle of your app loop
 	Method update(onlyChannel:Int=Null)
-		if not isStarted() then Init()	
+		if not isStarted() then Init()
 		'Assert _ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
 		_processEvents(onlyChannel)
 		_ticks = MilliSecs()

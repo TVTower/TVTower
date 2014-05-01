@@ -86,7 +86,7 @@ Type TRoom {_exposeToLua="selected"}
 	'playerID or -1 for system/artificial person
 	Field owner:Int	=-1
 	'the image used in the room (store individual backgrounds depending on "money")
-	Field _background:TGW_Sprite {nosave}
+	Field _background:TSprite {nosave}
 	Field backgroundSpriteName:string
 	'figure currently in this room
 	Field occupants:TList = CreateList()
@@ -151,9 +151,9 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetBackground:TGW_Sprite()
+	Method GetBackground:TSprite()
 		if not _background and backgroundSpriteName<>""
-			_background = Assets.GetSprite(backgroundSpriteName)
+			_background = GetSpriteFromRegistry(backgroundSpriteName)
 		endif
 		return _background
 	End Method
@@ -561,7 +561,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 
 		DoorTimer.setInterval( TRoom.ChangeRoomSpeed )
 
-		doorDimension.SetX( Assets.GetSprite("gfx_building_Tueren").framew )
+		doorDimension.SetX( GetSpriteFromRegistry("gfx_building_Tueren").framew )
 		self.doorSlot	= doorSlot
 		self.doorType	= doorType
 		self.Pos		= new TPoint.Init(x,floor)
@@ -636,7 +636,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	Method DrawTooltip:Int()
 		If not tooltip or not tooltip.enabled then return False
 
-		tooltip.Draw()
+		tooltip.Render()
 	End Method
 
 
@@ -647,22 +647,22 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	End Function
 
 
-	Method UpdateTooltip:Int(deltaTime:float)
+	Method UpdateTooltip:Int()
 		If tooltip AND tooltip.enabled
-			tooltip.area.position.SetY( Building.pos.y + Building.GetFloorY(Pos.y) - Assets.GetSprite("gfx_building_Tueren").area.GetH() - 20 )
-			tooltip.Update(deltaTime)
+			tooltip.area.position.SetY( Building.area.position.y + Building.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
+			tooltip.Update()
 			'delete old tooltips
 			if tooltip.lifetime < 0 then tooltip = null
 		EndIf
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and Game.GetPlayer().Figure.inRoom = Null And THelper.MouseIn(Pos.x, Building.pos.y  + building.GetFloorY(Pos.y) - doorDimension.y, doorDimension.x, doorDimension.y)
+		If room.GetDescription(1) <> "" and Game.GetPlayer().Figure.inRoom = Null And THelper.MouseIn(Pos.x, Building.area.position.y  + building.GetFloorY(Pos.y) - doorDimension.y, doorDimension.x, doorDimension.y)
 			If tooltip <> null
 				tooltip.Hover()
 			else
 				tooltip = TTooltip.Create(room.GetDescription(1), room.GetDescription(2), 100, 140, 0, 0)
 			endif
-			tooltip.area.position.setY( Building.pos.y + Building.GetFloorY(Pos.y) - Assets.GetSprite("gfx_building_Tueren").area.GetH() - 20 )
+			tooltip.area.position.setY( Building.area.position.y + Building.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
 			tooltip.area.position.setX( Pos.x + doorDimension.x/2 - tooltip.GetWidth()/2 )
 			tooltip.enabled	= 1
 			If room.name = "chief"			Then tooltip.tooltipimage = 2
@@ -675,7 +675,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	End Method
 
 
-	Function UpdateToolTips:Int(deltaTime:float)
+	Function UpdateToolTips:Int()
 		For Local door:TRoomDoor = EachIn list
 			'delete and skip if not found
 			If not door
@@ -683,7 +683,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 				continue
 			Endif
 
-			door.UpdateTooltip(deltaTime)
+			door.UpdateTooltip()
 		Next
 	End Function
 
@@ -703,15 +703,15 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		'do nothing if already done
 		If _doorsDrawnToBackground then return 0
 
-		Local Pix:TPixmap = LockImage(Assets.GetSprite("gfx_building").parent.image)
+		Local Pix:TPixmap = LockImage(GetSpriteFromRegistry("gfx_building").parent.image)
 
 		'elevator border
-		Local elevatorBorder:TGW_Sprite= Assets.GetSprite("gfx_building_Fahrstuhl_Rahmen")
+		Local elevatorBorder:TSprite= GetSpriteFromRegistry("gfx_building_Fahrstuhl_Rahmen")
 		For Local i:Int = 0 To 13
 			DrawImageOnImage(elevatorBorder.getImage(), Pix, 230, 67 - elevatorBorder.area.GetH() + 73*i)
 		Next
 
-		local doorSprite:TGW_Sprite = Assets.GetSprite("gfx_building_Tueren")
+		local doorSprite:TSprite = GetSpriteFromRegistry("gfx_building_Tueren")
 		For Local door:TRoomDoor = EachIn list
 			'skip invisible doors (without door-sprite)
 			If not door.IsVisible() then continue
@@ -719,39 +719,39 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 			'clamp doortype
 			door.doorType = Min(5, door.doorType)
 			'draw door
-			DrawImageOnImage(doorSprite.GetFrameImage(door.doorType), Pix, door.Pos.x - Building.pos.x - 127, Building.GetFloorY(door.Pos.y) - doorSprite.area.GetH())
+			DrawImageOnImage(doorSprite.GetFrameImage(door.doorType), Pix, door.Pos.x - Building.area.position.x - 127, Building.GetFloorY(door.Pos.y) - doorSprite.area.GetH())
 		Next
 		'no unlock needed atm as doing nothing
-		'UnlockImage(Assets.GetSprite("gfx_building").parent.image)
+		'UnlockImage(GetSpriteFromRegistry("gfx_building").parent.image)
 		_doorsDrawnToBackground = True
 	End Function
 
 
 	Method Draw:Int()
-		local doorSprite:TGW_Sprite = Assets.GetSprite("gfx_building_Tueren")
+		local doorSprite:TSprite = GetSpriteFromRegistry("gfx_building_Tueren")
 
 		'==== DRAW DOOR ====
 		If getDoorType() >= 5
 			If getDoorType() = 5 AND DoorTimer.isExpired() Then Close(null)
 			'valign = 1 -> subtract sprite height
-			doorSprite.Draw(Pos.x, Building.pos.y + Building.GetFloorY(Pos.y), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			doorSprite.Draw(Pos.x, Building.area.position.y + Building.GetFloorY(Pos.y), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 		EndIf
 
 		'==== DRAW DOOR SIGN ====
 		'draw on same height than door startY
-		If room.owner < 5 And room.owner >=0 then Assets.GetSprite("gfx_building_sign_"+room.owner).Draw(Pos.x + 2 + doorSprite.framew, Building.pos.y + Building.GetFloorY(Pos.y) - doorSprite.area.GetH())
+		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(Pos.x + 2 + doorSprite.framew, Building.area.position.y + Building.GetFloorY(Pos.y) - doorSprite.area.GetH())
 
 
 		'==== DRAW DEBUG TEXT ====
 		if Game.DebugInfos
-			local textY:int = Building.pos.y + Building.GetFloorY(Pos.y) - 62
+			local textY:int = Building.area.position.y + Building.GetFloorY(Pos.y) - 62
 			if room.hasOccupant()
 				for local figure:TFigure = eachin room.occupants
-					Assets.fonts.basefont.Draw(figure.name, Pos.x, textY)
+					GetBitmapFontManager().basefont.Draw(figure.name, Pos.x, textY)
 					textY:-10
 				next
 			else
-				Assets.fonts.basefont.Draw("empty", Pos.x, textY)
+				GetBitmapFontManager().basefont.Draw("empty", Pos.x, textY)
 			endif
 		endif
 	End Method
@@ -799,8 +799,8 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	Function GetByCoord:TRoomDoor( x:int, y:int )
 		For Local door:TRoomDoor = EachIn list
 			'also allow invisible rooms... so just check if hit the area
-			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.pos.y + Building.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.Pos.x, Building.pos.y + Building.GetFloorY(door.pos.y) - door.doorDimension.Y, door.doorDimension.x, door.doorDimension.y)
+			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + Building.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
+			If THelper.IsIn(x, y, door.Pos.x, Building.area.position.y + Building.GetFloorY(door.pos.y) - door.doorDimension.Y, door.doorDimension.x, door.doorDimension.y)
 				Return door
 			EndIf
 		Next
@@ -907,7 +907,7 @@ Type RoomHandler_Office extends TRoomHandler
 	Global planningDay:int = -1
 	Global talkToProgrammePlanner:int = TRUE		'set to FALSE for deleting gui objects without modifying the plan
 	Global DrawnOnProgrammePlannerBG:int = 0
-	Global ProgrammePlannerButtons:TGUIImageButton[6]
+	Global ProgrammePlannerButtons:TGUIButton[6]
 	Global PPprogrammeList:TgfxProgrammelist
 	Global PPcontractList:TgfxContractlist
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
@@ -977,14 +977,14 @@ Type RoomHandler_Office extends TRoomHandler
 		'===== CREATE GUI LISTS =====
 		'the visual gap between 0-11 and 12-23 hour
 		local gapBetweenHours:int = 57
-		local area:TRectangle = new TRectangle.Init(67,17,600,12 * Assets.GetSprite("pp_programmeblock1").area.GetH())
+		local area:TRectangle = new TRectangle.Init(67,17,600,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
 
-		GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.GetX(),area.GetY(),area.GetW(),area.GetH(), "programmeplanner")
-		GuiListProgrammes.Init("pp_programmeblock1", Assets.GetSprite("pp_adblock1").area.GetW() + gapBetweenHours)
+		GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
+		GuiListProgrammes.Init("pp_programmeblock1", GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours)
 		GuiListProgrammes.isType = TBroadcastMaterial.TYPE_PROGRAMME
 
-		GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(area.GetX() + Assets.GetSprite("pp_programmeblock1").area.GetW(),area.GetY(),area.GetW(),area.GetH(), "programmeplanner")
-		GuiListAdvertisements.Init("pp_adblock1", Assets.GetSprite("pp_programmeblock1").area.GetW() + gapBetweenHours)
+		GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TPoint.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
+		GuiListAdvertisements.Init("pp_adblock1", GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours)
 		GuiListAdvertisements.isType = TBroadcastMaterial.TYPE_ADVERTISEMENT
 
 		'init lists
@@ -992,23 +992,32 @@ Type RoomHandler_Office extends TRoomHandler
 		PPcontractList		= new TgfxContractlist.Create(660, 16)
 
 		'buttons
-		TGUILabel.SetDefaultLabelFont( Assets.GetFont("Default", 10, BOLDFONT) )
-		ProgrammePlannerButtons[0] = new TGUIImageButton.Create(672, 40+0*56, "programmeplanner_btn_ads","programmeplanner_buttons")
-		ProgrammePlannerButtons[0].SetCaption(GetLocale("PLANNER_ADS"),,new TPoint.Init(0,42))
-		ProgrammePlannerButtons[1] = new TGUIImageButton.Create(672, 40+1*56, "programmeplanner_btn_programme","programmeplanner_buttons")
-		ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"),,new TPoint.Init(0,42))
-		ProgrammePlannerButtons[2] = new TGUIImageButton.Create(672, 40+2*56, "programmeplanner_btn_options","programmeplanner_buttons")
-		ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_OPTIONS"),,new TPoint.Init(0,42))
-		ProgrammePlannerButtons[3] = new TGUIImageButton.Create(672, 40+3*56, "programmeplanner_btn_financials","programmeplanner_buttons")
-		ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_FINANCES"),,new TPoint.Init(0,42))
-		ProgrammePlannerButtons[4] = new TGUIImageButton.Create(672, 40+4*56, "programmeplanner_btn_image","programmeplanner_buttons")
-		ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_IMAGE"),,new TPoint.Init(0,42))
-		ProgrammePlannerButtons[5] = new TGUIImageButton.Create(672, 40+5*56, "programmeplanner_btn_news","programmeplanner_buttons")
-		ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_MESSAGES"),,new TPoint.Init(0,42))
+		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TPoint.Init(672, 40 + 0*56), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[0].spriteName = "programmeplanner_btn_ads"
+
+		ProgrammePlannerButtons[1] = new TGUIButton.Create(new TPoint.Init(672, 40 + 1*56), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[1].spriteName = "programmeplanner_btn_programme"
+
+		ProgrammePlannerButtons[2] = new TGUIButton.Create(new TPoint.Init(672, 40 + 2*56), null, GetLocale("PLANNER_OPTIONS"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[2].spriteName = "programmeplanner_btn_options"
+
+		ProgrammePlannerButtons[3] = new TGUIButton.Create(new TPoint.Init(672, 40 + 3*56), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[3].spriteName = "programmeplanner_btn_financials"
+
+		ProgrammePlannerButtons[4] = new TGUIButton.Create(new TPoint.Init(672, 40 + 4*56), null, GetLocale("PLANNER_IMAGE"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[4].spriteName = "programmeplanner_btn_image"
+
+		ProgrammePlannerButtons[5] = new TGUIButton.Create(new TPoint.Init(672, 40 + 5*56), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[5].spriteName = "programmeplanner_btn_news"
+
 		for local i:int = 0 to 5
-			ProgrammePlannerButtons[i].caption.SetContentPosition(ALIGN_CENTER, ALIGN_CENTER)
+			ProgrammePlannerButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
+			ProgrammePlannerButtons[i].caption.SetContentPosition(ALIGN_CENTER, ALIGN_TOP)
+			ProgrammePlannerButtons[i].caption.SetFont( GetBitmapFont("Default", 10, BOLDFONT) )
+
+			ProgrammePlannerButtons[i].SetCaptionOffset(0,42)
 		Next
-		TGUILabel.SetDefaultLabelFont( null )
+		TGUILabel.SetTypeFont( null )
 
 
 		'===== REGISTER EVENTS =====
@@ -1056,7 +1065,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'EventManager.registerListenerFunction("Game.OnMinute",	onGameMinute)
 
 		'we are interested in the programmeplanner buttons
-		EventManager.registerListenerFunction( "guiobject.onClick", onProgrammePlannerButtonClick, "TGUIImageButton" )
+		EventManager.registerListenerFunction( "guiobject.onClick", onProgrammePlannerButtonClick, "TGUIButton" )
 	End Function
 
 
@@ -1082,13 +1091,13 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'allowed for owner only
 		If room AND room.owner = Game.playerID
-			If StationsToolTip Then StationsToolTip.Draw()
+			If StationsToolTip Then StationsToolTip.Render()
 		EndIf
 
 		'allowed for all - if having keys
-		If PlannerToolTip <> Null Then PlannerToolTip.Draw()
+		If PlannerToolTip <> Null Then PlannerToolTip.Render()
 
-		If SafeToolTip <> Null Then SafeToolTip.Draw()
+		If SafeToolTip <> Null Then SafeToolTip.Render()
 	End Function
 
 
@@ -1108,8 +1117,9 @@ Type RoomHandler_Office extends TRoomHandler
 		Game.cursorstate = 0
 		'safe - reachable for all
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 165,85,70,100)
-			If SafeToolTip = Null Then SafeToolTip = TTooltip.Create("Safe", "Laden und Speichern", 140, 100, 0, 0)
+			If SafeToolTip = Null Then SafeToolTip = TTooltip.Create("Safe", "Laden und Speichern", 140, 100,-1,-1)
 			SafeToolTip.enabled = 1
+			SafeToolTip.minContentWidth = 150
 			SafeToolTip.Hover()
 			Game.cursorstate = 1
 			If MOUSEMANAGER.IsClicked(1)
@@ -1122,7 +1132,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'planner - reachable for all
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
-			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140, 0, 0)
+			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
@@ -1146,11 +1156,11 @@ Type RoomHandler_Office extends TRoomHandler
 					ScreenCollection.GoToSubScreen("screen_office_stationmap")
 				endif
 			EndIf
-			If StationsToolTip Then StationsToolTip.Update(GetDeltaTimer().GetDelta())
+			If StationsToolTip Then StationsToolTip.Update()
 		EndIf
 
-		If PlannerToolTip Then PlannerToolTip.Update(GetDeltaTimer().GetDelta())
-		If SafeToolTip Then SafeToolTip.Update(GetDeltaTimer().GetDelta())
+		If PlannerToolTip Then PlannerToolTip.Update()
+		If SafeToolTip Then SafeToolTip.Update()
 	End Function
 
 
@@ -1520,7 +1530,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If planningDay = Game.GetDay() Then SetColor 0,100,0
 		If planningDay < Game.GetDay() Then SetColor 100,100,0
 		If planningDay > Game.GetDay() Then SetColor 0,0,0
-		Assets.GetFont("Default", 10).drawBlock(Game.GetFormattedDay(1+ planningDay - Game.GetDay(Game.GetTimeStart())), 691, 18, 100, 15)
+		GetBitmapFont("Default", 10).drawBlock(Game.GetFormattedDay(1+ planningDay - Game.GetDay(Game.GetTimeStart())), 691, 18, 100, 15)
 		SetColor 255,255,255
 
 		GUIManager.Draw("programmeplanner|programmeplanner_buttons")
@@ -1558,13 +1568,13 @@ Type RoomHandler_Office extends TRoomHandler
 			SetAlpha showPlannerShortCutHintTime/100.0
 			DrawRect(23, 18, 640, 18)
 			SetAlpha Min(1.0, 2.0*showPlannerShortCutHintTime/100.0)
-			Assets.GetFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 23, 20, 640, 15, new TPoint.Init(ALIGN_CENTER), TColor.Create(0,0,0),2,1,0.25)
+			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 23, 20, 640, 15, new TPoint.Init(ALIGN_CENTER), TColor.Create(0,0,0),2,1,0.25)
 			SetAlpha 1.0
 		else
 			SetAlpha 0.75
 		endif
 		DrawOval(-8,-8,55,55)
-		Assets.GetFont("Default", 24, BOLDFONT).drawStyled("?", 22, 17, TColor.Create(50,50,150),2,1,0.5)
+		GetBitmapFont("Default", 24, BOLDFONT).drawStyled("?", 22, 17, TColor.Create(50,50,150),2,1,0.5)
 		SetAlpha 1.0
 	End Function
 
@@ -1680,7 +1690,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 	Function onProgrammePlannerButtonClick:int( triggerEvent:TEventBase )
-		local button:TGUIImageButton = TGUIImageButton( triggerEvent._sender )
+		local button:TGUIButton = TGUIButton( triggerEvent._sender )
 		if not button then return 0
 
 		'only react if the click came from the left mouse button
@@ -1929,10 +1939,10 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'add gfx to background
 	Function InitProgrammePlannerBackground:int()
-		Local roomImg:TImage				= Assets.GetSprite("screen_bg_pplanning").parent.image
+		Local roomImg:TImage				= GetSpriteFromRegistry("screen_bg_pplanning").parent.image
 		Local Pix:TPixmap					= LockImage(roomImg)
-		Local gfx_ProgrammeBlock1:TImage	= Assets.GetSprite("pp_programmeblock1").GetImage()
-		Local gfx_AdBlock1:TImage			= Assets.GetSprite("pp_adblock1").GetImage()
+		Local gfx_ProgrammeBlock1:TImage	= GetSpriteFromRegistry("pp_programmeblock1").GetImage()
+		Local gfx_AdBlock1:TImage			= GetSpriteFromRegistry("pp_adblock1").GetImage()
 
 		'block"shade" on bg
 		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
@@ -1945,22 +1955,22 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'set target for font
-		TGW_BitmapFont.setRenderTarget(roomImg)
+		TBitmapFont.setRenderTarget(roomImg)
 
 		local fontColor:TColor = TColor.CreateGrey(240)
 
 		For Local i:Int = 0 To 11
 			'left side
-			Assets.fonts.baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, fontColor, 2,1,0.25)
+			GetBitmapFontManager().baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, fontColor, 2,1,0.25)
 			'right side
 			local text:string = i + ":00"
 			If i < 10 then text = "0" + text
-			Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, fontColor,2,1,0.25)
+			GetBitmapFontManager().baseFont.drawStyled(text, 10, 18 + i * 30, fontColor,2,1,0.25)
 		Next
 		DrawnOnProgrammePlannerBG = True
 
 		'reset target for font
-		TGW_BitmapFont.setRenderTarget(null)
+		TBitmapFont.setRenderTarget(null)
 	End Function
 
 
@@ -1971,11 +1981,11 @@ Type RoomHandler_Office extends TRoomHandler
 		clTypes[TPlayerFinanceHistory.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
 		clTypes[TPlayerFinanceHistory.GROUP_STATION] = new TColor.Create(0, 75, 69)
 
-		financeHistoryUpButton = new TGUIArrowButton.Create(new new TRectangle.Init(500 + 20, 180, 120, 15), "DOWN", "officeFinancialScreen")
-		financeHistoryDownButton = new TGUIArrowButton.Create(new new TRectangle.Init(500 + 120 + 20, 180, 120, 15), "UP", "officeFinancialScreen")
+		financeHistoryUpButton = new TGUIArrowButton.Create(new TPoint.Init(500 + 20, 180), new TPoint.Init(120, 15), "DOWN", "officeFinancialScreen")
+		financeHistoryDownButton = new TGUIArrowButton.Create(new TPoint.Init(500 + 120 + 20, 180), new TPoint.Init(120, 15), "UP", "officeFinancialScreen")
 
-		financePreviousDayButton = new TGUIArrowButton.Create(new new TRectangle.Init(20 + 20, 10 + 10, 26, 26), "LEFT", "officeFinancialScreen")
-		financeNextDayButton = new TGUIArrowButton.Create(new new TRectangle.Init(20 + 175 + 20, 10 + 10, 26, 26), "RIGHT", "officeFinancialScreen")
+		financePreviousDayButton = new TGUIArrowButton.Create(new TPoint.Init(20 + 20, 10 + 10), new TPoint.Init(26, 26), "LEFT", "officeFinancialScreen")
+		financeNextDayButton = new TGUIArrowButton.Create(new TPoint.Init(20 + 175 + 20, 10 + 10), new TPoint.Init(26, 26), "RIGHT", "officeFinancialScreen")
 
 		'listen to clicks on the four buttons
 		EventManager.registerListenerFunction("guiobject.onClick", onClickFinanceButtons, "TGUIArrowButton")
@@ -1986,9 +1996,9 @@ Type RoomHandler_Office extends TRoomHandler
 
 		Rem
 
-		Local screenImage:TImage = Assets.GetSprite("screen_bg_financials").parent.image
+		Local screenImage:TImage = GetSpriteFromRegistry("screen_bg_financials").parent.image
 		Local pix:TPixmap = LockImage(roomImg)
-		Local gfx_ProgrammeBlock1:TImage = Assets.GetSprite("pp_programmeblock1").GetImage()
+		Local gfx_ProgrammeBlock1:TImage = GetSpriteFromRegistry("pp_programmeblock1").GetImage()
 
 		'block"shade" on bg
 		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
@@ -2000,21 +2010,21 @@ Type RoomHandler_Office extends TRoomHandler
 		Next
 
 		'set target for font
-		TGW_BitmapFont.setRenderTarget(roomImg)
+		TBitmapFont.setRenderTarget(roomImg)
 
 		local fontColor:TColor = TColor.CreateGrey(240)
 		For Local i:Int = 0 To 11
 			'left side
-			Assets.fonts.baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, fontColor, 2,1,0.25)
+			GetBitmapFontManager().baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, fontColor, 2,1,0.25)
 			'right side
 			local text:string = i + ":00"
 			If i < 10 then text = "0" + text
-			Assets.fonts.baseFont.drawStyled(text, 10, 18 + i * 30, fontColor,2,1,0.25)
+			GetBitmapFontManager().baseFont.drawStyled(text, 10, 18 + i * 30, fontColor,2,1,0.25)
 		Next
 		DrawnOnProgrammePlannerBG = True
 
 		'reset target for font
-		TGW_BitmapFont.setRenderTarget(null)
+		TBitmapFont.setRenderTarget(null)
 		EndRem
 	End Function
 
@@ -2046,12 +2056,12 @@ Type RoomHandler_Office extends TRoomHandler
 		local finance:TPlayerFinance= Game.getPlayer(room.owner).GetFinance(financeShowDay)
 
 		local captionColor:TColor = new TColor.CreateGrey(70)
-		local captionFont:TGW_BitmapFont = Assets.GetFont("Default", 13, BOLDFONT)
+		local captionFont:TBitmapFont = GetBitmapFont("Default", 13, BOLDFONT)
 		local captionHeight:int = 20 'to center it to table header according "font Baseline"
-		local textFont:TGW_BitmapFont = Assets.GetFont("Default", 13)
-		local logFont:TGW_BitmapFont = Assets.GetFont("Default", 11)
-		local textSmallFont:TGW_BitmapFont = Assets.GetFont("Default", 10)
-		local textBoldFont:TGW_BitmapFont = Assets.GetFont("Default", 13, BOLDFONT)
+		local textFont:TBitmapFont = GetBitmapFont("Default", 13)
+		local logFont:TBitmapFont = GetBitmapFont("Default", 11)
+		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 10)
+		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 13, BOLDFONT)
 
 		local alignCenter:TPoint = new TPoint.Init(0.5, 0.5)
 		local alignRightCenter:TPoint = new TPoint.Init(1.0, 0.5)
@@ -2086,7 +2096,7 @@ Type RoomHandler_Office extends TRoomHandler
 			history = TPlayerFinancehistory(list.ValueAtIndex(i))
 			if not history then continue
 
-			Assets.GetNinePatchSprite("screen_financial_newsLog"+history.GetTypeGroup()).DrawArea(501 + screenOffsetX, 39 + screenOffsetY + logSlot*logH , 238, logH)
+			GetSpriteFromRegistry("screen_financial_newsLog"+history.GetTypeGroup()).DrawArea(501 + screenOffsetX, 39 + screenOffsetY + logSlot*logH , 238, logH)
 			if history.GetMoney() < 0
 				logCol = "color=190,30,30"
 			else
@@ -2116,9 +2126,9 @@ Type RoomHandler_Office extends TRoomHandler
 		'draw total-area
 		local profit:int = finance.revenue_after - finance.revenue_before
 		if profit >= 0
-			Assets.GetNinePatchSprite("screen_financial_positiveBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
+			GetSpriteFromRegistry("screen_financial_positiveBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		else
-			Assets.GetNinePatchSprite("screen_financial_negativeBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
+			GetSpriteFromRegistry("screen_financial_negativeBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		endif
 		captionFont.DrawBlock(TFunctions.convertValue(profit,,-2,"."), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, alignCenter, TColor.clWhite, 2, 1, 0.75)
 
@@ -2126,9 +2136,9 @@ Type RoomHandler_Office extends TRoomHandler
 		local labelBGX:int = 20 + screenOffsetX
 		local labelBGW:int = 220
 		local valueBGX:int = 20 + labelBGW + 1 + screenOffsetX
-		local labelBGs:TGW_NinePatchSprite[6]
+		local labelBGs:TSprite[6]
 		for local i:int = 1 to 5
-			labelBGs[i] = Assets.GetNinePatchSprite("screen_financial_balanceLabel"+i)
+			labelBGs[i] = GetSpriteFromRegistry("screen_financial_balanceLabel"+i)
 		Next
 
 		labelBGs[TPlayerFinanceHistory.GROUP_PROGRAMME].DrawArea(labelBGX, labelStartY + 0*valueH, labelBGW, labelH)
@@ -2148,7 +2158,7 @@ Type RoomHandler_Office extends TRoomHandler
 		labelBGs[TPlayerFinanceHistory.GROUP_DEFAULT].DrawArea(labelBGX, labelStartY + 14*valueH +5, labelBGW, labelH)
 
 		'draw value backgrounds
-		local balanceValueBG:TGW_NinePatchSprite = Assets.GetNinePatchSprite("screen_financial_balanceValue")
+		local balanceValueBG:TSprite = GetSpriteFromRegistry("screen_financial_balanceValue")
 		for local i:int = 0 to 12
 			balanceValueBG.DrawArea(valueBGX, labelStartY + i*valueH, balanceValueBG.GetWidth(), labelH)
 		Next
@@ -2173,7 +2183,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'draw "grouped"-info-sign
-		Assets.GetSprite("screen_financial_balanceInfo").Draw(valueBGX, labelStartY + 1 + 6*valueH)
+		GetSpriteFromRegistry("screen_financial_balanceInfo").Draw(valueBGX, labelStartY + 1 + 6*valueH)
 
 		'draw balance values: income
 		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_programmeLicences,,-2,"."), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, alignRightCenter, clPositive)
@@ -2407,9 +2417,9 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		local fontColor:TColor = TColor.CreateGrey(50)
-		Assets.GetFont("Default",13).drawBlock(GetLocale("IMAGE_REACH") , 55, 233, 330, 20, null, fontColor)
-		Assets.GetFont("Default",12).drawBlock(GetLocale("IMAGE_SHARETOTAL") , 55, 45, 330, 20, null, fontColor)
-		Assets.GetFont("Default",12).drawBlock(THelper.floatToString(100.0 * Game.GetPlayer(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TPoint.Init(ALIGN_RIGHT), fontColor)
+		GetBitmapFont("Default",13).drawBlock(GetLocale("IMAGE_REACH") , 55, 233, 330, 20, null, fontColor)
+		GetBitmapFont("Default",12).drawBlock(GetLocale("IMAGE_SHARETOTAL") , 55, 45, 330, 20, null, fontColor)
+		GetBitmapFont("Default",12).drawBlock(THelper.floatToString(100.0 * Game.GetPlayer(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TPoint.Init(ALIGN_RIGHT), fontColor)
 	End Function
 
 	Function onUpdateImage:int( triggerEvent:TEventBase )
@@ -2429,14 +2439,12 @@ Type RoomHandler_Office extends TRoomHandler
 	Function InitStationMap()
 		'StationMap-GUIcomponents
 		Local button:TGUIButton
-		button = new TGUIButton.Create(new TPoint.Init(610, 110), 155, "Sendemast kaufen", "STATIONMAP")
-		button.SetTextalign("CENTER")
+		button = new TGUIButton.Create(new TPoint.Init(610, 110), new TPoint.Init(155,-1), "Sendemast kaufen", "STATIONMAP")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
 
-		button = new TGUIButton.Create(new TPoint.Init(610, 345), 155, "Sendemast verkaufen", "STATIONMAP")
+		button = new TGUIButton.Create(new TPoint.Init(610, 345), new TPoint.Init(155,-1), "Sendemast verkaufen", "STATIONMAP")
 		button.disable()
-		button.SetTextalign("CENTER")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, button )
 
@@ -2444,7 +2452,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
 		EventManager.registerListenerFunction( "stationmap.addStation",	OnChangeStationMapStation )
 
-		stationList = new TGUISelectList.Create(595,233,185,100, "STATIONMAP")
+		stationList = new TGUISelectList.Create(new TPoint.Init(595,233), new TPoint.Init(185,100), "STATIONMAP")
 		EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList )
 
 		'player enters station map screen - set checkboxes according to station map config
@@ -2452,7 +2460,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		For Local i:Int = 0 To 3
-			stationMapShowStations[i] = new TGUICheckBox.Create(new TRectangle.Init(535, 30 + i * Assets.GetSprite("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 20, 20), TRUE, String(i + 1), "STATIONMAP", Assets.GetFont("Default", 11, BOLDFONT))
+			stationMapShowStations[i] = new TGUICheckBox.Create(new TPoint.Init(535, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TPoint.Init(20, 20), TRUE, String(i + 1), "STATIONMAP")
 			stationMapShowStations[i].SetShowValue(false)
 			'register checkbox changes
 			EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, stationMapShowStations[i])
@@ -2469,12 +2477,12 @@ Type RoomHandler_Office extends TRoomHandler
 
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
-			DrawRect(564, 32 + i * Assets.GetSprite("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 15, 18)
+			DrawRect(564, 32 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 15, 18)
 			Game.Players[i + 1].color.SetRGB()
-			DrawRect(565, 33 + i * Assets.GetSprite("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 13, 16)
+			DrawRect(565, 33 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 13, 16)
 		Next
 		SetColor 255, 255, 255
-		Assets.fonts.baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 480, 15, 100, 20, new TPoint.Init(ALIGN_RIGHT))
+		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 480, 15, 100, 20, new TPoint.Init(ALIGN_RIGHT))
 
 		'draw stations and tooltips
 		Game.GetPlayer(room.owner).GetStationMap().Draw()
@@ -2484,15 +2492,15 @@ Type RoomHandler_Office extends TRoomHandler
 		'also draw the station used for buying/searching
 		If stationMapSelectedStation then stationMapSelectedStation.Draw(true)
 
-		local font:TGW_BitmapFont = Assets.fonts.baseFont
-		Assets.fonts.baseFontBold.drawStyled(GetLocale("PURCHASE"), 595, 18, TColor.clBlack, 1, 1, 0.5)
-		Assets.fonts.baseFontBold.drawStyled(GetLocale("YOUR_STATIONS"), 595, 178, TColor.clBlack, 1, 1, 0.5)
+		local font:TBitmapFont = GetBitmapFontManager().baseFont
+		GetBitmapFontManager().baseFontBold.drawStyled(GetLocale("PURCHASE"), 595, 18, TColor.clBlack, 1, 1, 0.5)
+		GetBitmapFontManager().baseFontBold.drawStyled(GetLocale("YOUR_STATIONS"), 595, 178, TColor.clBlack, 1, 1, 0.5)
 
 		'draw a kind of tooltip over a mouseoverStation
 		if stationMapMouseoverStation then stationMapMouseoverStation.DrawInfoTooltip()
 
 		If stationMapMode = 1 and stationMapSelectedStation
-			Assets.fonts.baseFontBold.draw( getLocale("MAP_COUNTRY_"+stationMapSelectedStation.getFederalState()), 595, 37, TColor.Create(80,80,0))
+			GetBitmapFontManager().baseFontBold.draw( getLocale("MAP_COUNTRY_"+stationMapSelectedStation.getFederalState()), 595, 37, TColor.Create(80,80,0))
 
 			font.draw(GetLocale("RANGE")+": ", 595, 55, TColor.clBlack)
 			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), 660, 55, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
@@ -2501,7 +2509,7 @@ Type RoomHandler_Office extends TRoomHandler
 			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReachIncrease(), 2), 660, 72, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 
 			font.draw(GetLocale("PRICE")+": ", 595, 89)
-			Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 			SetColor(255,255,255)
 		EndIf
 
@@ -2510,7 +2518,7 @@ Type RoomHandler_Office extends TRoomHandler
 			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.reach, 2, 0), 660, 200, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 
 			font.draw(GetLocale("VALUE")+": ", 595, 216, TColor.clBlack)
-			Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 		EndIf
 	End Function
 
@@ -2689,7 +2697,7 @@ Type RoomHandler_Office extends TRoomHandler
 		stationList.deselectEntry()
 
 		For Local station:TStation = EachIn Game.GetPlayer(playerID).GetStationMap().Stations
-			local item:TGUISelectListItem = new TGUISelectListItem.Create(GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")",0,0,100,20)
+			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TPoint, new TPoint.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
 			'link the station to the item
 			item.data.Add("station", station)
 			stationList.AddItem( item )
@@ -2760,15 +2768,15 @@ Type RoomHandler_Archive extends TRoomHandler
 
 	Function Init()
 		'===== CREATE GUI LISTS =====
-		GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(suitcasePos.GetX()+suitcaseGuiListDisplace.GetX(),suitcasePos.GetY()+suitcaseGuiListDisplace.GetY(),200,80, "archive")
+		GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TPoint.Init(200, 80), "archive")
 		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 		GuiListSuitcase.acceptType		= TGUIProgrammeLicenceSlotList.acceptAll
 		GuiListSuitcase.SetItemLimit(Game.maxProgrammeLicencesInSuitcase)
-		GuiListSuitcase.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").area.GetW(), Assets.GetSprite("gfx_movie0").area.GetH())
+		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
 		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
-		DudeArea = new TGUISimpleRect.Create(new TRectangle.Init(600,100, 200, 350), "archive" )
+		DudeArea = new TGUISimpleRect.Create(new TPoint.Init(600,100), new TPoint.Init(200, 350), "archive" )
 		'dude should accept drop - else no recognition
 		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -2999,7 +3007,7 @@ endrem
 		local glowSuitcase:string = ""
 		if draggedGuiProgrammeLicence then glowSuitcase = "_glow"
 		'draw suitcase
-		Assets.GetSprite("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		GUIManager.Draw("archive")
 
@@ -3111,10 +3119,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		listMoviesCheap	= listMoviesCheap[..programmesPerLine]
 		listSeries		= listSeries[..programmesPerLine]
 
-		GuiListMoviesGood	= new TGUIProgrammeLicenceSlotList.Create(596,50,200,80, "movieagency")
-		GuiListMoviesCheap	= new TGUIProgrammeLicenceSlotList.Create(596,148,200,80, "movieagency")
-		GuiListSeries		= new TGUIProgrammeLicenceSlotList.Create(596,246,200,80, "movieagency")
-		GuiListSuitcase		= new TGUIProgrammeLicenceSlotList.Create(suitcasePos.GetX()+suitcaseGuiListDisplace.GetX(),suitcasePos.GetY()+suitcaseGuiListDisplace.GetY(),200,80, "movieagency")
+		GuiListMoviesGood	= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(596,50), new TPoint.Init(200,80), "movieagency")
+		GuiListMoviesCheap	= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(596,148), new TPoint.Init(200,80), "movieagency")
+		GuiListSeries		= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(596,246), new TPoint.Init(200,80), "movieagency")
+		GuiListSuitcase		= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TPoint.Init(200,80), "movieagency")
 
 		GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
 		GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
@@ -3136,17 +3144,17 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		GuiListSeries.SetItemLimit(listSeries.length)
 		GuiListSuitcase.SetItemLimit(Game.maxProgrammeLicencesInSuitcase)
 
-		GuiListMoviesGood.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").area.GetW(), Assets.GetSprite("gfx_movie0").area.GetH())
-		GuiListMoviesCheap.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").area.GetW(), Assets.GetSprite("gfx_movie0").area.GetH())
-		GuiListSeries.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").area.GetW(), Assets.GetSprite("gfx_movie0").area.GetH())
-		GuiListSuitcase.SetSlotMinDimension(Assets.GetSprite("gfx_movie0").area.GetW(), Assets.GetSprite("gfx_movie0").area.GetH())
+		GuiListMoviesGood.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
+		GuiListMoviesCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
+		GuiListSeries.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
+		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
 
 		GuiListMoviesGood.SetAcceptDrop("TGUIProgrammeLicence")
 		GuiListMoviesCheap.SetAcceptDrop("TGUIProgrammeLicence")
 		GuiListSeries.SetAcceptDrop("TGUIProgrammeLicence")
 		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
-		VendorArea = new TGUISimpleRect.Create(new TRectangle.Init(20,60, Assets.GetSprite("gfx_hint_rooms_movieagency").area.GetW(), Assets.GetSprite("gfx_hint_rooms_movieagency").area.GetH()), "movieagency" )
+		VendorArea = new TGUISimpleRect.Create(new TPoint.Init(20,60), new TPoint.Init(GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetH()), "movieagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -3665,23 +3673,23 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'or if a player's block is dragged
 		if not draggedGuiProgrammeLicence
 			If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
-				Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(20,60)
 			endif
 		else
 			if glowVendor="_glow"
-				Assets.GetSprite("gfx_hint_rooms_movieagency").Draw(20,60)
+				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(20,60)
 			endif
 		endif
 		'let the vendor twinker sometimes...
-		If twinkerTimer.doAction() then Assets.GetSprite("gfx_gimmick_rooms_movieagency").Draw(10,60)
+		If twinkerTimer.doAction() then GetSpriteFromRegistry("gfx_gimmick_rooms_movieagency").Draw(10,60)
 		'draw suitcase
-		Assets.GetSprite("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		SetAlpha 0.5
 		local fontColor:TColor = TColor.CreateGrey(50)
-		Assets.GetFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		Assets.GetFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		Assets.GetFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
 		GUIManager.Draw("movieagency")
@@ -3692,7 +3700,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		endif
 
 
-		If AuctionToolTip Then AuctionToolTip.Draw()
+		If AuctionToolTip Then AuctionToolTip.Render()
 	End Function
 
 
@@ -3740,7 +3748,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		GUIManager.Update("movieagency")
 
-		If AuctionToolTip Then AuctionToolTip.Update( GetDeltaTimer().GetDelta() )
+		If AuctionToolTip Then AuctionToolTip.Update()
 	End Function
 
 
@@ -3750,22 +3758,22 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'===================================
 
 	Function onDrawMovieAuction:int( triggerEvent:TEventBase )
-		Assets.GetSprite("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase").Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		SetAlpha 0.5
 		local fontColor:TColor = TColor.CreateGrey(50)
-		Assets.GetFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		Assets.GetFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		Assets.GetFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
 		GUIManager.Draw("movieagency")
 		SetAlpha 0.5;SetColor 0,0,0
 		DrawRect(20,10,760,373)
 		SetAlpha 1.0;SetColor 255,255,255
-		DrawGFXRect(Assets.GetSpritePack("gfx_gui_rect"), 120, 60, 555, 290)
+		DrawGFXRect(TSpritePack(GetRegistry().Get("gfx_gui_rect")), 120, 60, 555, 290)
 		SetAlpha 0.5
-		Assets.GetFont("Default",12,BOLDFONT).drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TPoint.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.25)
+		GetBitmapFont("Default",12,BOLDFONT).drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TPoint.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.25)
 		SetAlpha 1.0
 
 		TAuctionProgrammeBlocks.DrawAll()
@@ -3781,7 +3789,7 @@ End Type
 'News room
 Type RoomHandler_News extends TRoomHandler
 	global PlannerToolTip:TTooltip
-	Global NewsGenreButtons:TGUIImageButton[5]
+	Global NewsGenreButtons:TGUIButton[5]
 	Global NewsGenreTooltip:TTooltip			'the tooltip if hovering over the genre buttons
 	Global currentRoom:TRoom					'holding the currently updated room (so genre buttons can access it)
 
@@ -3797,11 +3805,19 @@ Type RoomHandler_News extends TRoomHandler
 		'ATTENTION: We could do this in order of The NewsGenre-Values
 		'           But better add it to the buttons.data-property
 		'           for better checking
-		NewsGenreButtons[0]		= new TGUIImageButton.Create(69, 194, "gfx_news_btn1", "newsroom", 1).SetCaption( GetLocale("NEWS_POLITICS_ECONOMY") )
-		NewsGenreButtons[1]		= new TGUIImageButton.Create(20, 247, "gfx_news_btn2", "newsroom", 2).SetCaption( GetLocale("NEWS_SHOWBIZ") )
-		NewsGenreButtons[2]		= new TGUIImageButton.Create(69, 247, "gfx_news_btn3", "newsroom", 3).SetCaption( GetLocale("NEWS_SPORT") )
-		NewsGenreButtons[3]		= new TGUIImageButton.Create(20, 194, "gfx_news_btn0", "newsroom", 0).SetCaption( GetLocale("NEWS_TECHNICS_MEDIA") )
-		NewsGenreButtons[4]		= new TGUIImageButton.Create(118, 247, "gfx_news_btn4", "newsroom", 4).SetCaption( GetLocale("NEWS_CURRENTAFFAIRS") )
+		NewsGenreButtons[0]	= new TGUIButton.Create( new TPoint.Init(69, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+		NewsGenreButtons[1]	= new TGUIButton.Create( new TPoint.Init(20, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
+		NewsGenreButtons[2]	= new TGUIButton.Create( new TPoint.Init(69, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
+		NewsGenreButtons[3]	= new TGUIButton.Create( new TPoint.Init(20, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+		NewsGenreButtons[4]	= new TGUIButton.Create( new TPoint.Init(118, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
+		for local i:int = 0 to 4
+			NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
+			'adjust width according sprite dimensions
+			NewsGenreButtons[i].spriteName = "gfx_news_btn"+i
+			'disable drawing of caption
+			NewsGenreButtons[i].caption.Hide()
+		Next
+
 		'add news genre to button data
 		NewsGenreButtons[0].data.AddNumber("newsGenre", TNewsEvent.GENRE_POLITICS)
 		NewsGenreButtons[1].data.AddNumber("newsGenre", TNewsEvent.GENRE_SHOWBIZ)
@@ -3809,11 +3825,6 @@ Type RoomHandler_News extends TRoomHandler
 		NewsGenreButtons[3].data.AddNumber("newsGenre", TNewsEvent.GENRE_TECHNICS)
 		NewsGenreButtons[4].data.AddNumber("newsGenre", TNewsEvent.GENRE_CURRENTS)
 
-
-		'disable drawing of caption
-		for local i:int = 0 until len ( NewsGenreButtons )
-			NewsGenreButtons[i].GetCaption().Disable()
-		Next
 
 		'we are interested in the genre buttons
 		for local i:int = 0 until len( NewsGenreButtons )
@@ -3823,17 +3834,17 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		'create the lists in the news planner
-		guiNewsListAvailable = new TGUINewsList.Create(34,20,Assets.getSprite("gfx_news_sheet0").area.GetW(), 356,"Newsplanner")
+		guiNewsListAvailable = new TGUINewsList.Create(new TPoint.Init(34,20), new TPoint.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 356), "Newsplanner")
 		guiNewsListAvailable.SetAcceptDrop("TGUINews")
 		guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 3,guiNewsListAvailable.rect.GetH())
-		guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").area.GetW(),356)
+		guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
 
-		guiNewsListUsed = new TGUINewsSlotList.Create(444,105,Assets.getSprite("gfx_news_sheet0").area.GetW(), 3*Assets.getSprite("gfx_news_sheet0").area.GetH(),"Newsplanner")
+		guiNewsListUsed = new TGUINewsSlotList.Create(new TPoint.Init(444,105), new TPoint.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 		guiNewsListUsed.SetItemLimit(3)
 		guiNewsListUsed.SetAcceptDrop("TGUINews")
-		guiNewsListUsed.SetSlotMinDimension(0,Assets.getSprite("gfx_news_sheet0").area.GetH())
+		guiNewsListUsed.SetSlotMinDimension(0,GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
 		guiNewsListUsed.SetAutofillSlots(false)
-		guiNewsListUsed.guiEntriesPanel.minSize.SetXY(Assets.getSprite("gfx_news_sheet0").area.GetW(),3*Assets.getSprite("gfx_news_sheet0").area.GetH())
+		guiNewsListUsed.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
 
 		'if the player visually manages the blocks, we need to handle the events
 		'so we can inform the programmeplan about changes...
@@ -3894,8 +3905,8 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function onDrawNews:int( triggerEvent:TEventBase )
 		GUIManager.Draw("newsroom")
-		If PlannerToolTip Then PlannerToolTip.Draw()
-		If NewsGenreTooltip then NewsGenreTooltip.Draw()
+		If PlannerToolTip Then PlannerToolTip.Render()
+		If NewsGenreTooltip then NewsGenreTooltip.Render()
 
 	End Function
 
@@ -3911,8 +3922,8 @@ Type RoomHandler_News extends TRoomHandler
 		GUIManager.Update("newsroom")
 
 		Game.cursorstate = 0
-		If PlannerToolTip Then PlannerToolTip.Update(GetDeltaTimer().GetDelta())
-		If NewsGenreTooltip Then NewsGenreTooltip.Update(GetDeltaTimer().GetDelta())
+		If PlannerToolTip Then PlannerToolTip.Update()
+		If NewsGenreTooltip Then NewsGenreTooltip.Update()
 
 		'pinwall
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 167,60,240,160)
@@ -3948,10 +3959,9 @@ EndRem
 	'could handle the buttons in one function ( by comparing triggerEvent._trigger )
 	'onHover: handle tooltip
 	Function onHoverNewsGenreButtons:int( triggerEvent:TEventBase )
-		local button:TGUIImageButton= TGUIImageButton(triggerEvent._sender)
-		local room:TRoom			= currentRoom
-		if not button then return 0
-		if not room then return 0
+		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		local room:TRoom = currentRoom
+		if not button or not room then return 0
 
 
 		'how much levels do we have?
@@ -3975,10 +3985,10 @@ EndRem
 		NewsGenreTooltip.area.position.SetXY(Max(21,button.rect.GetX() + button.rect.GetW()), button.rect.GetY()-30)
 
 		If level = 0
-			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
+			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_NOT_SUBSCRIBED")
 			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ TNewsAgency.GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 		Else
-			NewsGenreTooltip.title = button.GetCaptionText()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
+			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
 			if level = Game.maxAbonnementLevel
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ ": 0" + getLocale("CURRENCY")
 			Else
@@ -3996,10 +4006,9 @@ EndRem
 
 
 	Function onClickNewsGenreButtons:int( triggerEvent:TEventBase )
-		local button:TGUIImageButton= TGUIImageButton(triggerEvent._sender)
-		local room:TRoom			= currentRoom
-		if not button then return 0
-		if not room then return 0
+		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		local room:TRoom = currentRoom
+		if not button or not room then return 0
 
 		'wrong room? go away!
 		if room.owner <> Game.playerID then return 0
@@ -4015,10 +4024,9 @@ EndRem
 
 
 	Function onDrawNewsGenreButtons:int( triggerEvent:TEventBase )
-		local button:TGUIImageButton= TGUIImageButton(triggerEvent._sender)
-		local room:TRoom			= currentRoom
-		if not button then return 0
-		if not room then return 0
+		local button:TGUIButton = TGUIButton(triggerEvent._sender)
+		local room:TRoom = currentRoom
+		if not button or not room then return 0
 
 		'how much levels do we have?
 		local level:int = 0
@@ -4033,7 +4041,7 @@ EndRem
 		SetColor 0,0,0
 		SetAlpha 0.4
 		For Local i:Int = 0 to level-1
-			DrawRect( button.rect.GetX()+8+i*10, button.rect.GetY()+ Assets.getSprite(button.spriteBaseName).area.GetH() -7, 7,4)
+			DrawRect( button.rect.GetX()+8+i*10, button.rect.GetY()+ GetSpriteFromRegistry(button.GetSpriteName()).area.GetH() -7, 7,4)
 		Next
 		SetColor 255,255,255
 		SetAlpha 1.0
@@ -4101,7 +4109,7 @@ EndRem
 			if not guiNewsListAvailable.ContainsNews(news)
 				'only add for news NOT planned in the news show
 				if not Game.getPlayer().ProgrammePlan.HasNews(news)
-					local guiNews:TGUINews = new TGUINews.Create(news.GetTitle())
+					local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
 					guiNews.SetNews(news)
 					guiNewsListAvailable.AddItem(guiNews)
 				endif
@@ -4113,7 +4121,7 @@ EndRem
 			if news and draggedNewsList.contains(news) then continue
 
 			if news and not guiNewsListUsed.ContainsNews(news)
-				local guiNews:TGUINews = new TGUINews.Create(news.GetTitle())
+				local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
 				guiNews.SetNews(news)
 				guiNewsListUsed.AddItem(guiNews, string(i))
 			endif
@@ -4225,15 +4233,15 @@ End Type
 'Chief: credit and emmys - your boss :D
 Type RoomHandler_Chief extends TRoomHandler
 	'smoke effect
-	Global part_array:TGW_SpriteParticle[100]
+	Global part_array:TSpriteParticle[100]
 	Global spawn_delay:Int = 15
 	Global Dialogues:TList = CreateList()
 
 	Function Init()
 		'create smoke effect particles
 		For Local i:Int = 1 To Len part_array-1
-			part_array[i] = New TGW_SpriteParticle
-			part_array[i].image = Assets.GetSprite("gfx_tex_smoke")
+			part_array[i] = New TSpriteParticle
+			part_array[i].image = GetSpriteFromRegistry("gfx_tex_smoke")
 			part_array[i].life = Rnd(0.100,1.5)
 			part_array[i].scale = 1.1
 			part_array[i].is_alive =False
@@ -4417,19 +4425,19 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		GuiListNormal	= GuiListNormal[..3]
 		for local i:int = 0 to GuiListNormal.length-1
-			GuiListNormal[i] = new TGUIAdContractSlotList.Create(430-i*70,170+i*32, 200,140, "adagency")
+			GuiListNormal[i] = new TGUIAdContractSlotList.Create(new TPoint.Init(430 - i*70, 170 + i*32), new TPoint.Init(200, 140), "adagency")
 			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListNormal[i].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
-			GuiListNormal[i].Resize(Assets.GetSprite("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), Assets.GetSprite("gfx_contracts_0").area.GetH() )
-			GuiListNormal[i].SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").area.GetW(), Assets.GetSprite("gfx_contracts_0").area.GetH())
+			GuiListNormal[i].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
+			GuiListNormal[i].SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 			GuiListNormal[i].SetAcceptDrop("TGuiAdContract")
 			GuiListNormal[i].setZindex(i)
 		Next
 
-		GuiListSuitcase	= new TGUIAdContractSlotList.Create(suitcasePos.GetX()+suitcaseGuiListDisplace.GetX(),suitcasePos.GetY()+suitcaseGuiListDisplace.GetY(),200,80, "adagency")
+		GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TPoint.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TPoint.Init(200,80), "adagency")
 		GuiListSuitcase.SetAutofillSlots(true)
 
-		GuiListCheap	= new TGUIAdContractSlotList.Create(70,200,10 +Assets.GetSprite("gfx_contracts_0").area.GetW()*4,Assets.GetSprite("gfx_contracts_0").area.GetH(), "adagency")
+		GuiListCheap = new TGUIAdContractSlotList.Create(new TPoint.Init(70, 200), new TPoint.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 		GuiListCheap.setEntriesBlockDisplacement(70,0)
 
 
@@ -4437,11 +4445,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListCheap.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 
-		GuiListCheap.SetItemLimit( listCheap.length )
+		GuiListCheap.SetItemLimit(listCheap.length)
 		GuiListSuitcase.SetItemLimit(Game.maxContracts)
 
-		GuiListCheap.SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").area.GetW(), Assets.GetSprite("gfx_contracts_0").area.GetH())
-		GuiListSuitcase.SetSlotMinDimension(Assets.GetSprite("gfx_contracts_0").area.GetW(), Assets.GetSprite("gfx_contracts_0").area.GetH())
+		GuiListCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
+		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 
 		GuiListCheap.SetEntryDisplacement( -2*GuiListNormal[0]._slotMinDimension.x, 5)
 		GuiListSuitcase.SetEntryDisplacement( 0, 0)
@@ -4449,7 +4457,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListCheap.SetAcceptDrop("TGuiAdContract")
 		GuiListSuitcase.SetAcceptDrop("TGuiAdContract")
 
-		VendorArea = new TGUISimpleRect.Create(new TRectangle.Init(286,110, Assets.GetSprite("gfx_hint_rooms_adagency").area.GetW(), Assets.GetSprite("gfx_hint_rooms_adagency").area.GetH()), "adagency" )
+		VendorArea = new TGUISimpleRect.Create(new TPoint.Init(286, 110), new TPoint.Init(GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetH()), "adagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -5066,11 +5074,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			if not Game.getPlayer().ProgrammeCollection.HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
 				glowSuitcase = "_glow"
 			endif
-			Assets.GetSprite("gfx_hint_rooms_adagency").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
+			GetSpriteFromRegistry("gfx_hint_rooms_adagency").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
 		endif
 
 		'draw suitcase
-		Assets.GetSprite("gfx_suitcase_big"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
+		GetSpriteFromRegistry("gfx_suitcase_big"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 
 		GUIManager.Draw("adagency")
 
@@ -5145,7 +5153,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		'if possible, change the target to the clicked door
 		if mouseClicked
 			local door:TRoomDoor = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
-			if door then playerFigure.ChangeTarget(door.Pos.x, Building.pos.y + Building.GetFloorY(door.Pos.y))
+			if door then playerFigure.ChangeTarget(door.Pos.x, Building.area.position.y + Building.GetFloorY(door.Pos.y))
 		endif
 
 		TRoomDoorSign.UpdateAll(False)
@@ -5209,7 +5217,7 @@ Type RoomHandler_Betty extends TRoomHandler
 		if not room then return 0
 
 		For Local i:Int = 1 To 4
-			local sprite:TGW_Sprite = Assets.GetSprite("gfx_room_betty_picture1")
+			local sprite:TSprite = GetSpriteFromRegistry("gfx_room_betty_picture1")
 			Local picY:Int = 240
 			Local picX:Int = 410 + i * (sprite.area.GetW() + 5)
 			sprite.Draw( picX, picY )
@@ -5223,7 +5231,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			Game.Players[i].Figure.Sprite.DrawClipped(new TPoint.Init(x, y), new TRectangle.Init(0, 0, -1, sprite.area.GetH()-16), 8)
 		Next
 
-		DrawDialog("default", 430, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), Assets.GetFont("Default",14))
+		DrawDialog("default", 430, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
 	End Function
 
 	Function onUpdate:int( triggerEvent:TEventBase )
@@ -5367,8 +5375,8 @@ Type RoomHandler_Credits extends TRoomHandler
 	Function onDraw:int( triggerEvent:TEventBase )
 		SetAlpha fadeValue
 
-		local fontRole:TGW_BitmapFont = Assets.GetFont("Default",28, BOLDFONT)
-		local fontCast:TGW_BitmapFont = Assets.GetFont("Default",20, BOLDFONT)
+		local fontRole:TBitmapFont = GetBitmapFont("Default",28, BOLDFONT)
+		local fontCast:TBitmapFont = GetBitmapFont("Default",20, BOLDFONT)
 		if not fadeRole then SetAlpha 1.0
 		fontRole.DrawBlock(GetRole().name.ToUpper(), 20,180, App.settings.GetWidth()-40, 40, new TPoint.Init(ALIGN_CENTER), GetRole().color, 2, 1, 0.6)
 		SetAlpha fadeValue
@@ -5412,8 +5420,8 @@ End Type
 'signs used in elevator-plan /room-plan
 Type TRoomDoorSign Extends TBlockMoveable
 	Field door:TRoomDoor
-	Field imageCache:TGW_Sprite			= null
-	Field imageDraggedCache:TGW_Sprite	= null
+	Field imageCache:TSprite			= null
+	Field imageDraggedCache:TSprite	= null
 
 	Global DragAndDropList:TList	= CreateList()
 	Global List:TList				= CreateList()
@@ -5424,7 +5432,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 	Global imageDraggedBaseName:string	= "gfx_elevator_sign_dragged_"
 
 	Method Init:TRoomDoorSign(door:TRoomDoor, x:Int=0, y:Int=0)
-		local tmpImage:TGW_Sprite = Assets.GetSprite(imageBaseName + Max(0,door.room.owner))
+		local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0,door.room.owner))
 		self.door		= door
 		dragable		= 1
 		OrigPos			= new TPoint.Init(x, y)
@@ -5500,13 +5508,13 @@ Type TRoomDoorSign Extends TBlockMoveable
 			If AdditionallyDragged > 0 Then SetAlpha 1- 1/AdditionallyDragged * 0.25
 			'refresh cache if needed
 			If not imageDraggedCache
-				imageDraggedCache = GenerateCacheImage( Assets.GetSprite(imageDraggedBaseName + Max(0, door.room.owner)) )
+				imageDraggedCache = GenerateCacheImage( GetSpriteFromRegistry(imageDraggedBaseName + Max(0, door.room.owner)) )
 			Endif
 			imageDraggedCache.Draw(rect.GetX(),rect.GetY())
 		Else
 			'refresh cache if needed
 			If not imageCache
-				imageCache = GenerateCacheImage( Assets.GetSprite(imageBaseName + Max(0, door.room.owner)) )
+				imageCache = GenerateCacheImage( GetSpriteFromRegistry(imageBaseName + Max(0, door.room.owner)) )
 			Endif
 			imageCache.Draw(rect.GetX(),rect.GetY())
 		EndIf
@@ -5515,18 +5523,18 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 
 	'generates an image containing background + text on it
-	Method GenerateCacheImage:TGW_Sprite(background:TGW_Sprite)
+	Method GenerateCacheImage:TSprite(background:TSprite)
 		local newImage:Timage = background.GetImageCopy()
-		Local font:TGW_BitmapFont = Assets.GetFont("Default",9, BOLDFONT)
-		TGW_BitmapFont.setRenderTarget(newImage)
+		Local font:TBitmapFont = GetBitmapFont("Default",9, BOLDFONT)
+		TBitmapFont.setRenderTarget(newImage)
 		if door.room.owner > 0
 			font.drawBlock(door.room.GetDescription(1), 22, 4, 150,20, null, TColor.CreateGrey(230), 2, 1, 0.5)
 		else
 			font.drawBlock(door.room.GetDescription(1), 22, 4, 150,20, null, TColor.CreateGrey(50), 2, 1, 0.3)
 		endif
-		TGW_BitmapFont.setRenderTarget(null)
+		TBitmapFont.setRenderTarget(null)
 
-		return Assets.ConvertImageToSprite(newImage, "tempCacheImage")
+		return new TSprite.InitFromImage(newImage, "tempCacheImage")
 	End Method
 
 
@@ -5607,7 +5615,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 		SortList List
 		'draw background sprites
 		For Local sign:TRoomDoorSign = EachIn List
-			Assets.GetSprite("gfx_elevator_sign_bg").Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
+			GetSpriteFromRegistry("gfx_elevator_sign_bg").Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
 		Next
 		'draw actual sign
 		For Local sign:TRoomDoorSign = EachIn List
@@ -5619,11 +5627,10 @@ End Type
 
 Function Init_CreateAllRooms()
 	local room:TRoom = null
-	Local roomMap:TMap = Assets.GetMap("rooms")
-	For Local asset:TAsset = EachIn roomMap.Values()
-		local vars:TData = new TData.Init(TMap(asset._object))
+	Local roomMap:TMap = TMap(GetRegistry().Get("rooms"))
+	if not roomMap then Throw("ERROR: no room definition loaded!")
 
-
+	For Local vars:TData = EachIn roomMap.Values()
 		'==== SCREEN ====
 		local screen:TInGameScreen_Room = TInGameScreen_Room(ScreenCollection.GetScreen(vars.GetString("screen") ))
 
@@ -5659,15 +5666,14 @@ Function Init_CreateAllRooms()
 		'==== HOTSPOTS ====
 		local hotSpots:TList = TList( vars.Get("hotspots") )
 		if hotSpots
-			for local hotSpotData:TMap = eachin hotSpots
-				local conf:TData = new TData.Init(hotSpotData)
+			for local conf:TData = eachin hotSpots
 				local name:string 	= conf.GetString("name")
-				local x:int			= conf.GetInt("x")
-				local y:int			= conf.GetInt("y")
-				local bottomy:int	= conf.GetInt("bottomy")
-				local floor:int 	= conf.GetInt("floor")
-				local width:int 	= conf.GetInt("width")
-				local height:int 	= conf.GetInt("height")
+				local x:int			= conf.GetInt("x", -1)
+				local y:int			= conf.GetInt("y", -1)
+				local bottomy:int	= conf.GetInt("bottomy", 0)
+				local floor:int 	= conf.GetInt("floor", -1)
+				local width:int 	= conf.GetInt("width", 0)
+				local height:int 	= conf.GetInt("height", 0)
 				local tooltipText:string	 	= conf.GetString("tooltiptext")
 				local tooltipDescription:string	= conf.GetString("tooltipdescription")
 

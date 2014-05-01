@@ -38,7 +38,7 @@ Type TStationMapCollection
 			'handle savegame loading (reload the map configuration)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			'handle <stationmapdata>-area in loaded xml files
-			EventManager.registerListenerFunction("resources.onLoad.STATIONMAPDATA", onLoadStationMapData )
+			EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadStationMapData, null, "STATIONMAPDATA" )
 
 			_initdone = TRUE
 		Endif
@@ -55,18 +55,19 @@ Type TStationMapCollection
 
 	'run when an xml contains an <stationmapdata>-area
 	Function onLoadStationMapData:int(triggerEvent:TEventBase)
-		Local mapDataRootNode:TxmlNode = Null
-		Local xmlLoader:TXmlLoader = Null
-		If Not TResourceLoaders.assignBasics( triggerEvent, mapDataRootNode, xmlLoader ) Then Return 0
+		Local mapDataRootNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
+		Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
+		if not mapDataRootNode or not registryLoader then return FALSE
 
-		Local densityNode:TxmlNode = xmlLoader.xml.FindElementNode(mapDataRootNode, "densitymap")
+		Local densityNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "densitymap")
 		If not densityNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><densitymap>-entry.")
 
 		Local surfaceNode:TxmlNode = TXmlHelper.FindChild(mapDataRootNode, "surface")
 		If not surfaceNode Then Throw("File ~q"+_instance.mapConfigFile+"~q misses the <stationmapdata><surface>-entry.")
 
-		xmlLoader.LoadPixmapResource(densityNode, "map_PopulationDensity")
-		xmlLoader.LoadImageResource(surfaceNode, "map_Surface")
+		'directly load the given resources
+		registryLoader.LoadSingleResourceFromXML(densityNode, TRUE, new TData.AddString("name", "map_PopulationDensity"))
+		registryLoader.LoadSingleResourceFromXML(surfaceNode, TRUE, new TData.AddString("name", "map_Surface"))
 
 		'=== LOAD STATES ===
 		'remove old states
@@ -97,13 +98,9 @@ Type TStationMapCollection
 		Local start:Int = MilliSecs()
 
 		'=== LOAD XML CONFIG ===
-		Local xmlLoader:TXmlLoader = TXmlLoader.Create()
-		xmlLoader.Parse(mapConfigFile)
+		local registryLoader:TRegistryLoader = new TRegistryLoader
+		registryLoader.LoadFromXML(mapConfigFile, TRUE)
 		TLogger.Log("TStationMapCollection.LoadMapFromXML", "config parsed", LOG_LOADING)
-
-		'=== LOAD ASSETS ===
-		Assets.AddSet(xmlLoader.values)
-		TLogger.Log("TStationMapCollection.LoadMapFromXML", "loaded assets", LOG_LOADING)
 
 		'=== INIT MAP DATA ===
 		CreatePopulationMap()
@@ -114,7 +111,7 @@ Type TStationMapCollection
 
 	Method CreatePopulationMap()
 		local start:int = Millisecs()
-		Local srcPix:TPixmap = Assets.getPixmap("map_PopulationDensity")
+		Local srcPix:TPixmap = GetPixmapFromRegistry("map_PopulationDensity")
 		if not srcPix
 			TLogger.Log("TStationMapCollection.CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
 			Throw("TStationMap: ~qmap_PopulationDensity~q missing.")
@@ -780,7 +777,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method DrawInfoTooltip()
-		Local textH:Int =  Assets.fonts.baseFontBold.getHeight( "Tg" )
+		Local textH:Int =  GetBitmapFontManager().baseFontBold.getHeight( "Tg" )
 		Local tooltipW:Int = 180
 		Local tooltipH:Int = textH * 4 + 10 + 5
 		Local tooltipX:Int = pos.x +20 - tooltipW/2
@@ -801,25 +798,25 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		Local textX:Int = tooltipX+5
 		Local textW:Int = tooltipW-10
 		Local colorWhite:TColor = TColor.Create(255,255,255)
-		Assets.fonts.baseFontBold.drawStyled( getLocale("MAP_COUNTRY_"+getFederalState()), textX, textY, TColor.Create(255,255,0), 2)
+		GetBitmapFontManager().baseFontBold.drawStyled( getLocale("MAP_COUNTRY_"+getFederalState()), textX, textY, TColor.Create(255,255,0), 2)
 		textY:+ textH + 5
 
-		Assets.fonts.baseFont.draw(GetLocale("RANGE")+": ", textX, textY)
-		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFont.draw(GetLocale("RANGE")+": ", textX, textY)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
-		Assets.fonts.baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
-		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
-		Assets.fonts.baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
-		Assets.fonts.baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
 
 	End Method
 
 
 	Method Draw(selected:Int=False)
-		Local sprite:TGW_Sprite = Null
+		Local sprite:TSprite = Null
 		Local oldAlpha:Float = GetAlpha()
 
 		If selected
@@ -834,9 +831,9 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 		Select owner
 			Case 1,2,3,4	Game.Players[owner].color.SetRGB()
-							sprite = Assets.getSprite("stationmap_antenna"+owner)
+							sprite = GetSpriteFromRegistry("stationmap_antenna"+owner)
 			Default			SetColor 255, 255, 255
-							sprite = Assets.getSprite("stationmap_antenna0")
+							sprite = GetSpriteFromRegistry("stationmap_antenna0")
 		End Select
 		DrawOval(pos.x - radius, pos.y - radius, 2 * radius, 2 * radius)
 
@@ -851,7 +848,7 @@ End Type
 
 Type TStationMapSection
 	Field rect:TRectangle
-	Field sprite:TGW_Sprite
+	Field sprite:TSprite
 	Field spriteName:string
 	Field name:String
 	Global sections:TList = CreateList()
@@ -867,7 +864,7 @@ Type TStationMapSection
 
 
 	Method LoadSprite()
-		sprite = Assets.getSprite(spriteName)
+		sprite = GetSpriteFromRegistry(spriteName)
 		'resize rect
 		rect.dimension.SetXY(sprite.area.GetW(), sprite.area.GetH())
 	End Method

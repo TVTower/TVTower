@@ -41,23 +41,23 @@
 				<child name="gfx_building_BG_Ebene3R"		x="127" y="0" 	w="126"	h="221"	id="11" />
 
 				<child name="gfx_building_Pflanze1"		x="320" y="347"	w="24"	h="50"	id="12" />
-				<child name="gfx_building_Pflanze1a"		x="344" y="347"	w="24"	h="50"	id="13" />
-				<child name="gfx_building_Pflanze1b"		x="368" y="347"	w="24"	h="50"	id="14" />
+				<child name="gfx_building_Pflanze1a"	x="344" y="347"	w="24"	h="50"	id="13" />
+				<child name="gfx_building_Pflanze1b"	x="368" y="347"	w="24"	h="50"	id="14" />
 				<child name="gfx_building_Pflanze2"		x="129" y="480"	w="43"	h="32"	id="15" />
-				<child name="gfx_building_Pflanze2a"		x="172" y="448"	w="43"	h="32"	id="16" />
-				<child name="gfx_building_Pflanze2b"		x="172" y="480"	w="43"	h="32"	id="17" />
+				<child name="gfx_building_Pflanze2a"	x="172" y="448"	w="43"	h="32"	id="16" />
+				<child name="gfx_building_Pflanze2b"	x="172" y="480"	w="43"	h="32"	id="17" />
 				<child name="gfx_building_Pflanze3"		x="0"	y="480"	w="43"	h="32"	id="18" />
-				<child name="gfx_building_Pflanze3a"		x="43"	y="480"	w="43"	h="32"	id="19" />
-				<child name="gfx_building_Pflanze3b"		x="86"	y="480"	w="43"	h="32"	id="20" />
+				<child name="gfx_building_Pflanze3a"	x="43"	y="480"	w="43"	h="32"	id="19" />
+				<child name="gfx_building_Pflanze3b"	x="86"	y="480"	w="43"	h="32"	id="20" />
 				<child name="gfx_building_Pflanze4"		x="392" y="347"	w="38"	h="41"	id="21" />
-				<child name="gfx_building_Pflanze4a"		x="430" y="347"	w="38"	h="32"	id="22" />
-				<child name="gfx_building_Pflanze4b"		x="468" y="347"	w="38"	h="32"	id="23" />
+				<child name="gfx_building_Pflanze4a"	x="430" y="347"	w="38"	h="32"	id="22" />
+				<child name="gfx_building_Pflanze4b"	x="468" y="347"	w="38"	h="32"	id="23" />
 				<child name="gfx_building_Pflanze5"		x="443" y="424"	w="32"	h="37"	id="24" />
-				<child name="gfx_building_Pflanze5a"		x="475" y="424"	w="32"	h="37"	id="25" />
-				<child name="gfx_building_Pflanze5b"		x="475" y="461"	w="32"	h="37"	id="26" />
+				<child name="gfx_building_Pflanze5a"	x="475" y="424"	w="32"	h="37"	id="25" />
+				<child name="gfx_building_Pflanze5b"	x="475" y="461"	w="32"	h="37"	id="26" />
 				<child name="gfx_building_Pflanze6"		x="436" y="390"	w="25"	h="34"	id="27" />
-				<child name="gfx_building_Pflanze6a"		x="461" y="390"	w="25"	h="34"	id="28" />
-				<child name="gfx_building_Pflanze6b"		x="486" y="390"	w="25"	h="34"	id="29" />
+				<child name="gfx_building_Pflanze6a"	x="461" y="390"	w="25"	h="34"	id="28" />
+				<child name="gfx_building_Pflanze6b"	x="486" y="390"	w="25"	h="34"	id="29" />
 
 				<child name="gfx_building_Wandlampe"		x="430" y="189"	w="60"	h="54"	id="30" />
 				<child name="gfx_building_Tueren"		x="215" y="458"	w="228"	h="54"	frames="6"	id="31" />
@@ -69,18 +69,18 @@
 
 			</children>
 			<scripts>
-				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1a"	r="200"		g="200"		b="100" />
-				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1b"	r="250"		g="250"		b="150" />
-				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2a"	r="200"		g="200"		b="100" />
-				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2b"	r="250"		g="250"		b="150" />
-				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3a"	r="200"		g="200"		b="100" />
-				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3b"	r="250"		g="250"		b="150" />
-				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4a"	r="100"		g="200"		b="200" />
-				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4b"	r="250"		g="250"		b="150" />
-				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5a"	r="100"		g="200"		b="200" />
-				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5b"	r="250"		g="250"		b="150" />
-				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6a"	r="100"		g="200"		b="200" />
-				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6b"	r="250"		g="250"		b="250" />
+				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1a"	r="200"	g="200"	b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze1"	dest="gfx_building_Pflanze1b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2a"	r="200"	g="200"	b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze2"	dest="gfx_building_Pflanze2b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3a"	r="200"	g="200"	b="100" />
+				<script do="CopySprite"		src="gfx_building_Pflanze3"	dest="gfx_building_Pflanze3b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4a"	r="100"	g="200"	b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze4"	dest="gfx_building_Pflanze4b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5a"	r="100"	g="200"	b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze5"	dest="gfx_building_Pflanze5b"	r="250"	g="250"	b="150" />
+				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6a"	r="100"	g="200"	b="200" />
+				<script do="CopySprite"		src="gfx_building_Pflanze6"	dest="gfx_building_Pflanze6b"	r="250"	g="250"	b="250" />
 			</scripts>
 		</resource>
 

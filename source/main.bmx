@@ -7,15 +7,31 @@ Import brl.timer
 Import brl.Graphics
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
-Import "basefunctions_guielements.bmx"			'Guielements like Input, Listbox, Button...
 Import "basefunctions_lua.bmx"					'our lua engine
-Import "basefunctions_resourcemanager.bmx"
 Import "basefunctions_screens.bmx"
+
+Import "Dig/base.util.registry.bmx"
+Import "Dig/base.util.registry.spriteloader.bmx"
+Import "Dig/base.util.registry.imageloader.bmx"
+Import "Dig/base.util.registry.bitmapfontloader.bmx"
+Import "Dig/base.util.registry.soundloader.bmx"
 
 Import "Dig/base.sfx.soundmanager.bmx"
 Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
 
+Import "Dig/base.framework.entity.bmx"
+Import "Dig/base.framework.entity.spriteentity.bmx"
+Import "Dig/base.gfx.bitmapfont.bmx"
+
+Import "Dig/base.gfx.gui.bmx"
+Import "Dig/base.gfx.gui.list.base.bmx"
+Import "Dig/base.gfx.gui.list.slotlist.bmx"
+Import "Dig/base.gfx.gui.list.selectlist.bmx"
+Import "Dig/base.gfx.gui.checkbox.bmx"
+Import "Dig/base.gfx.gui.input.bmx"
+Import "Dig/base.gfx.gui.window.base.bmx"
+Import "Dig/base.gfx.gui.window.modal.bmx"
 
 ?Linux
 Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
@@ -25,6 +41,10 @@ Import brl.D3D7Max2D
 ?Threaded
 Import brl.Threads
 ?
+
+'game specific
+Import "game.registry.loaders.bmx"
+
 
 '===== Includes =====
 Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
@@ -72,7 +92,7 @@ Global ScreenGameSettings:TScreen_GameSettings = null
 Global GameScreen_Building:TInGameScreen_Building = null
 Global LogoTargetY:Float = 20
 Global LogoCurrY:Float = 100
-Global headerFont:TGW_BitmapFont
+Global headerFont:TBitmapFont
 Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 Global Init_Complete:Int = 0
 Global RefreshInput:Int = True
@@ -175,19 +195,9 @@ Type TApp
 	End Method
 
 
-	Method LoadResources:Int(path:String="config/resources.xml")
-		Local XmlLoader:TXmlLoader = TXmlLoader.Create()
-		XmlLoader.Parse(path)
-		Assets.AddSet(XmlLoader.Values) 'copy XML-values
-
-		'assign dev config
-		devConfig = Assets.GetData("DEV_CONFIG", new TData)
-		TFunctions.roundToBeautifulEnabled = devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
-		if TFunctions.roundToBeautifulEnabled
-			TLogger.Log("TApp.LoadResources()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
-		else
-			TLogger.Log("TApp.LoadResources()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
-		endif
+	Method LoadResources:Int(path:String="config/resources.xml", directLoad:int=FALSE)
+		local registryLoader:TRegistryLoader = new TRegistryLoader
+		registryLoader.LoadFromXML(path, directLoad)
 	End Method
 
 
@@ -212,7 +222,7 @@ Type TApp
 	End Method
 
 
-	Method SaveScreenshot(overlay:TGW_Sprite)
+	Method SaveScreenshot(overlay:TSprite)
 		Local filename:String, padded:String
 		Local num:Int = 1
 
@@ -310,18 +320,18 @@ Type TApp
 		If element = "XmlFile" Then TApp.currentResourceUrl = text
 
 		SetColor 255, 255, 255
-		Assets.GetSprite("gfx_startscreen").Draw(0,0)
+		GetSpriteFromRegistry("gfx_startscreen").Draw(0,0)
 
 		If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
 		SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
-		Assets.GetSprite("gfx_startscreen_logo").Draw( App.settings.getWidth()/2 - Assets.GetSprite("gfx_startscreen_logo").area.GetW() / 2, 100)
+		GetSpriteFromRegistry("gfx_startscreen_logo").Draw( App.settings.getWidth()/2 - GetSpriteFromRegistry("gfx_startscreen_logo").area.GetW() / 2, 100)
 		SetAlpha 1.0
-		Assets.GetSprite("gfx_startscreen_loadingBar").Draw( 400, 376, 1, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
+		GetSpriteFromRegistry("gfx_startscreen_loadingBar").Draw( 400, 376, 1, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
 		'each run of "draw" incs by "pixels per resource"
 
 '			LoaderWidth = Min(680, LoaderWidth + (680.0 / TApp.maxResourceCount))
 		LoaderWidth = Min(670, 670.0 * Float(loadedResourceCount)/Float(TApp.maxResourceCount))
-		Assets.GetSprite("gfx_startscreen_loadingBar").TileDraw((400-Assets.GetSprite("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, Assets.GetSprite("gfx_startscreen_loadingBar").frameh)
+		GetSpriteFromRegistry("gfx_startscreen_loadingBar").TileDraw((400-GetSpriteFromRegistry("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, GetSpriteFromRegistry("gfx_startscreen_loadingBar").frameh)
 		SetColor 0,0,0
 		If itemNumber > 0
 			SetAlpha 0.25
@@ -342,7 +352,7 @@ Type TApp
 		SetColor 255, 255, 255
 
 		'base cursor
-		Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
+		GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
 
 		Flip 0
 	End Function
@@ -419,7 +429,7 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_8) Then game.speed = 480.0	'240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then game.speed = 1.0	'1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
-				If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
+				'If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
 
 				'Save game
 				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
@@ -494,116 +504,116 @@ Type TApp
 
 		if App.devConfig.GetBool("DEV_OSD", FALSE)
 			Local textX:Int = 20
-			Assets.fonts.baseFont.draw("Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
+			GetBitmapFontManager().baseFont.draw("Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
 			textX:+80
-			Assets.fonts.baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
+			GetBitmapFontManager().baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
 			textX:+60
-			Assets.fonts.baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
+			GetBitmapFontManager().baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
 			textX:+60
-			Assets.fonts.baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
+			GetBitmapFontManager().baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
 			textX:+100
 
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If TGUIObject.GetFocusedObject()
-				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
+				GetBitmapFontManager().baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"] focused: "+TGUIObject.GetFocusedObject()._id, textX,0)
 				textX:+160
 			Else
-				Assets.fonts.baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
+				GetBitmapFontManager().baseFont.draw("GUI objects: "+ GUIManager.list.count()+"[d:"+GUIManager.GetDraggedCount()+"]" , textX,0)
 				textX:+130
 			EndIf
 
 			If game.networkgame And Network.client
-				Assets.fonts.baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
+				GetBitmapFontManager().baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
 				textX:+50
 			EndIf
+		endif
 
-			If Game.DebugInfos
-				SetAlpha 0.75
-				SetColor 0,0,0
-				DrawRect(20,10,160,373)
-				SetColor 255, 255, 255
-				SetAlpha 1.0
-				Assets.fonts.baseFontBold.draw("Debug information:", 25,20)
-				If App.settings.directx = -1 Then Assets.fonts.baseFont.draw("Renderer: OpenGL", 25,40)
-				If App.settings.directx = 0  Then Assets.fonts.baseFont.draw("Renderer: BufferedOpenGL", 25,40)
-				If App.settings.directx = 1  Then Assets.fonts.baseFont.draw("Renderer: DirectX 7", 25, 40)
-				If App.settings.directx = 2  Then Assets.fonts.baseFont.draw("Renderer: DirectX 9", 25,40)
+		If Game.DebugInfos
+			SetAlpha 0.75
+			SetColor 0,0,0
+			DrawRect(20,10,160,373)
+			SetColor 255, 255, 255
+			SetAlpha 1.0
+			GetBitmapFontManager().baseFontBold.draw("Debug information:", 25,20)
+			If App.settings.directx = -1 Then GetBitmapFontManager().baseFont.draw("Renderer: OpenGL", 25,40)
+			If App.settings.directx = 0  Then GetBitmapFontManager().baseFont.draw("Renderer: BufferedOpenGL", 25,40)
+			If App.settings.directx = 1  Then GetBitmapFontManager().baseFont.draw("Renderer: DirectX 7", 25, 40)
+			If App.settings.directx = 2  Then GetBitmapFontManager().baseFont.draw("Renderer: DirectX 9", 25,40)
 
-		'		GUIManager.Draw("InGame") 'draw ingamechat
-		'		Assets.fonts.baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-				Assets.fonts.baseFont.draw("Player positions:", 25,65)
-				local roomName:string = ""
-				local fig:TFigure
-				For Local i:Int = 0 To 3
-					fig = Game.GetPlayer(i+1).figure
-					roomName = "Building"
-					If fig.inRoom
-						roomName = fig.inRoom.Name
-					elseif fig.IsInElevator()
-						roomName = "InElevator"
-					elseIf fig.IsAtElevator()
-						roomName = "AtElevator"
-					endif
-					Assets.fonts.baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
-				Next
-
-				if ScreenCollection.GetCurrentScreen()
-					Assets.fonts.baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
-				else
-					Assets.fonts.baseFont.draw("onScreen: Main", 25, 130)
+	'		GUIManager.Draw("InGame") 'draw ingamechat
+	'		GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
+			GetBitmapFontManager().baseFont.draw("Player positions:", 25,65)
+			local roomName:string = ""
+			local fig:TFigure
+			For Local i:Int = 0 To 3
+				fig = Game.GetPlayer(i+1).figure
+				roomName = "Building"
+				If fig.inRoom
+					roomName = fig.inRoom.Name
+				elseif fig.IsInElevator()
+					roomName = "InElevator"
+				elseIf fig.IsAtElevator()
+					roomName = "AtElevator"
 				endif
+				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
+			Next
+
+			if ScreenCollection.GetCurrentScreen()
+				GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
+			else
+				GetBitmapFontManager().baseFont.draw("onScreen: Main", 25, 130)
+			endif
 
 
-				Assets.fonts.baseFont.draw("Elevator routes:", 25,150)
-				Local routepos:Int = 0
-				Local startY:Int = 165
-				If Game.networkgame Then startY :+ 4*11
+			GetBitmapFontManager().baseFont.draw("Elevator routes:", 25,150)
+			Local routepos:Int = 0
+			Local startY:Int = 165
+			If Game.networkgame Then startY :+ 4*11
 
-				Local callType:String = ""
+			Local callType:String = ""
 
-				Local directionString:String = "up"
-				If Building.elevator.Direction = 1 Then directionString = "down"
-				Local debugString:String =	"floor:" + Building.elevator.currentFloor +..
-											"->" + Building.elevator.targetFloor +..
-											" doorState:"+Building.elevator.ElevatorStatus
+			Local directionString:String = "up"
+			If Building.elevator.Direction = 1 Then directionString = "down"
+			Local debugString:String =	"floor:" + Building.elevator.currentFloor +..
+										"->" + Building.elevator.targetFloor +..
+										" doorState:"+Building.elevator.ElevatorStatus
 
-				Assets.fonts.baseFont.draw(debugString, 25, startY)
+			GetBitmapFontManager().baseFont.draw(debugString, 25, startY)
 
 
-				If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
-					For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
-						If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-						Assets.fonts.baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
-						routepos:+1
-					Next
-				Else
-					Assets.fonts.baseFont.draw("recalculate", 25, startY + 15)
-				EndIf
-
-				'room states: debug fuer sushitv
-				local occupants:string = "-"
-				if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
-					occupants = ""
-					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
-						occupants :+ figure.name+" "
-					next
-				Endif
-				Assets.fonts.baseFont.draw("AdA. : "+occupants, 25, 350)
-
-				occupants = "-"
-				if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
-					occupants = ""
-					for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
-						occupants :+ figure.name+" "
-					next
-				Endif
-				Assets.fonts.baseFont.draw("MoA. : "+occupants, 25, 365)
-
+			If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
+				For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
+					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
+					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
+					routepos:+1
+				Next
+			Else
+				GetBitmapFontManager().baseFont.draw("recalculate", 25, startY + 15)
 			EndIf
-			If Game.DebugQuoteInfos
-				Game.DebugAudienceInfo.Draw()
-			EndIf
+
+			'room states: debug fuer sushitv
+			local occupants:string = "-"
+			if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
+				occupants = ""
+				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
+					occupants :+ figure.name+" "
+				next
+			Endif
+			GetBitmapFontManager().baseFont.draw("AdA. : "+occupants, 25, 350)
+
+			occupants = "-"
+			if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
+				occupants = ""
+				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
+					occupants :+ figure.name+" "
+				next
+			Endif
+			GetBitmapFontManager().baseFont.draw("MoA. : "+occupants, 25, 365)
 		Endif
+		'show quotes even without "DEV_OSD = true"
+		If Game.DebugQuoteInfos
+			Game.DebugAudienceInfo.Draw()
+		EndIf
 
 
 
@@ -612,15 +622,15 @@ Type TApp
 		GUIManager.Draw("SYSTEM")
 
 		'default pointer
-		If Game.cursorstate = 0 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
+		If Game.cursorstate = 0 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
 		'open hand
-		If Game.cursorstate = 1 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
+		If Game.cursorstate = 1 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11, 	MouseManager.y-8	,1)
 		'grabbing hand
-		If Game.cursorstate = 2 Then Assets.GetSprite("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
+		If Game.cursorstate = 2 Then GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-11,	MouseManager.y-16	,2)
 
 		'if a screenshot is generated, draw a logo in
 		If App.prepareScreenshot = 1
-			App.SaveScreenshot(Assets.GetSprite("gfx_startscreen_logoSmall"))
+			App.SaveScreenshot(GetSpriteFromRegistry("gfx_startscreen_logoSmall"))
 			App.prepareScreenshot = False
 		EndIf
 
@@ -669,7 +679,7 @@ Type TApp
 			'in single player: pause game
 			If Game And Not Game.networkgame Then Game.SetPaused(True)
 
-			ExitAppDialogue = New TGUIGameModalWindow.Create(0,0,400,150, "SYSTEM")
+			ExitAppDialogue = New TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,150), "SYSTEM")
 			ExitAppDialogue.SetDialogueType(2)
 			'limit to "screen" area
 			If game.gamestate = TGame.STATE_RUNNING
@@ -1072,17 +1082,17 @@ Type TGame {_exposeToLua="selected"}
 
 	Method CreateInitialPlayers()
 		'Creating PlayerColors - could also be done "automagically"
-		Local playerColors:TList = Assets.GetList("playerColors")
+		Local playerColors:TList = TList(GetRegistry().Get("playerColors"))
 		If playerColors = Null Then Throw "no playerColors found in configuration"
 		For Local col:TColor = EachIn playerColors
 			col.AddToList()
 		Next
 		'create playerfigures in figures-image
 		'TColor.GetByOwner -> get first unused color, TPlayer.Create sets owner of the color
-		SetPlayer(1, TPlayer.Create(1,userName	,userChannelName	,Assets.GetSprite("Player1"),	250,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
-		SetPlayer(2, TPlayer.Create(2,"Sandra"	,"SunTV"			,Assets.GetSprite("Player2"),	280,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
-		SetPlayer(3, TPlayer.Create(3,"Seidi"		,"FunTV"			,Assets.GetSprite("Player3"),	240,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
-		SetPlayer(4, TPlayer.Create(4,"Alfi"		,"RatTV"			,Assets.GetSprite("Player4"),	290, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
+		SetPlayer(1, TPlayer.Create(1,userName	,userChannelName	,GetSpriteFromRegistry("Player1"),	250,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
+		SetPlayer(2, TPlayer.Create(2,"Sandra"	,"SunTV"			,GetSpriteFromRegistry("Player2"),	280,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
+		SetPlayer(3, TPlayer.Create(3,"Seidi"		,"FunTV"			,GetSpriteFromRegistry("Player3"),	240,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
+		SetPlayer(4, TPlayer.Create(4,"Alfi"		,"RatTV"			,GetSpriteFromRegistry("Player4"),	290, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
 		GetPlayer(2).UpdateFigureBase(9)
 		GetPlayer(3).UpdateFigureBase(2)
 		GetPlayer(4).UpdateFigureBase(6)
@@ -1456,19 +1466,20 @@ Type TFigurePostman Extends TFigure
 	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500,0,1000)
 
 	'we need to overwrite it to have a custom type - with custom update routine
-	Method CreateFigure:TFigurePostman(FigureName:String, sprite:TGW_Sprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
-		Super.CreateFigure(FigureName, sprite, x, onFloor, speed, ControlledByID)
+	Method Create:TFigurePostman(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
 		Return Self
 	End Method
+
 
 	Method UpdateCustom:Int(deltaTime:Float)
 		If inRoom And nextActionTimer.isExpired()
 			nextActionTimer.Reset()
 			'switch "with" and "without" letter
-			If sprite.spriteName = "BotePost"
-				sprite = Assets.GetSpritePack("figures").GetSprite("BoteLeer")
+			If sprite.name = "BotePost"
+				sprite = GetSpriteFromRegistry("BoteLeer")
 			Else
-				sprite = Assets.GetSpritePack("figures").GetSprite("BotePost")
+				sprite = GetSpriteFromRegistry("BotePost")
 			EndIf
 
 			'leave that room so we can find a new target
@@ -1499,16 +1510,18 @@ Type TFigureJanitor Extends TFigure
 	Field MovementRangeMinX:Int	= 220
 	Field MovementRangeMaxX:Int	= 580
 
-	'we need to overwrite it to have a custom type - with custom update routine
-	Method CreateFigure:TFigureJanitor(FigureName:String, sprite:TGW_Sprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
-		Super.CreateFigure(FigureName, sprite, x, onFloor, speed, ControlledByID)
-		Self.rect.dimension.setX(14)
 
-		Self.insertAnimation("cleanRight", TAnimation.Create([ [11,130], [12,130] ], -1, 0) )
-		Self.insertAnimation("cleanLeft", TAnimation.Create([ [13,130], [14,130] ], -1, 0) )
+	'we need to overwrite it to have a custom type - with custom update routine
+	Method Create:TFigureJanitor(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
+		area.dimension.setX(14)
+
+		GetFrameAnimations().Set("cleanRight", TSpriteFrameAnimation.Create([ [11,130], [12,130] ], -1, 0) )
+		GetFrameAnimations().Set("cleanLeft", TSpriteFrameAnimation.Create([ [13,130], [14,130] ], -1, 0) )
 
 		Return Self
 	End Method
+
 
 	'overwrite original method
 	Method getAnimationToUse:String()
@@ -1520,22 +1533,18 @@ Type TFigureJanitor Extends TFigure
 		Return result
 	End Method
 
-	'overwrite basic doMove and stop movement if needed
-	Method doMove(deltaTime:Float)
-		If currentAction = 1
-			Local backupSpeed:Int = vel.getX()
-			vel.setX(0)
-			Super.doMove(deltaTime)
-			vel.setX(backupSpeed)
-		Else
-			Super.doMove(deltaTime)
-		EndIf
+
+	'overwrite default to stop moving when cleaning
+	Method GetVelocity:TPoint()
+		If currentAction = 1 then return new TPoint
+		return velocity
 	End Method
+
 
 	Method UpdateCustom:Int(deltaTime:Float)
 		'waited to long - change target (returns false while in elevator)
 		If hasToChangeFloor() And WaitAtElevatorTimer.isExpired()
-			If ChangeTarget(Rand(150, 580), Building.pos.y + Building.GetFloorY(GetFloor()))
+			If ChangeTarget(Rand(150, 580), Building.area.position.y + Building.GetFloorY(GetFloor()))
 				WaitAtElevatorTimer.Reset()
 			EndIf
 		EndIf
@@ -1546,8 +1555,8 @@ Type TFigureJanitor Extends TFigure
 			'move to a spot further away than just some pixels
 			Repeat
 				zufallx = Rand(MovementRangeMinX, MovementRangeMaxX)
-			Until Abs(rect.GetX() - zufallx) > 75
-			ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(GetFloor()))
+			Until Abs(area.GetX() - zufallx) > 75
+			ChangeTarget(zufallx, Building.area.position.y + Building.GetFloorY(GetFloor()))
 		EndIf
 
 		'reached target - and time to do something
@@ -1563,17 +1572,17 @@ Type TFigureJanitor Extends TFigure
 				'move to a spot further away than just some pixels
 				Repeat
 					zufallx = Rand(MovementRangeMinX, MovementRangeMaxX)
-				Until Abs(rect.GetX() - zufallx) > 75
+				Until Abs(area.GetX() - zufallx) > 75
 
 				'move to a different floor (only if doing nothing special)
 				If useElevator And currentAction=0 And zufall > 80 And Not IsAtElevator()
 					Local sendToFloor:Int = GetFloor() + 1
 					If sendToFloor > 13 Then sendToFloor = 0
-					ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(sendToFloor))
+					ChangeTarget(zufallx, Building.area.position.y + Building.GetFloorY(sendToFloor))
 					WaitAtElevatorTimer.Reset()
 				'move to a different X on same floor - if not cleaning now
 				Else If currentAction=0
-					ChangeTarget(zufallx, Building.pos.y + Building.GetFloorY(GetFloor()))
+					ChangeTarget(zufallx, Building.area.position.y + Building.GetFloorY(GetFloor()))
 				EndIf
 			EndIf
 
@@ -1586,7 +1595,7 @@ Type TFigureJanitor Extends TFigure
 			'chose actions
 			'only clean with a chance of 30% when on the way to something
 			'and do not clean if target is a room near figure
-			If target And (Not Self.targetDoor Or (20 < Abs(targetDoor.pos.x - rect.GetX()) Or targetDoor.pos.y <> GetFloor()))
+			If target And (Not Self.targetDoor Or (20 < Abs(targetDoor.pos.x - area.GetX()) Or targetDoor.pos.y <> GetFloor()))
 				If Rand(0,100) < Self.NormalCleanChance Then Self.currentAction = 1
 			EndIf
 			'if just standing around give a chance to clean
@@ -1618,31 +1627,34 @@ StartTips.addLast( ["Tipp: Werbeverträge", "Werbeverträge haben definierte Anf
 Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
 local tipNumber:int = rand(0, StartTips.count()-1)
 local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
-StartTipWindow.background.usefont = Assets.GetFont("Default", 18, BOLDFONT)
+StartTipWindow.background.usefont = GetBitmapFont("Default", 18, BOLDFONT)
 StartTipWindow.background.valueColor = TColor.Create(235,235,235)
 StartTipWindow.setText( tip[0], tip[1] )
 endrem
 
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
-		self.background = background
+
 		self.SetScreenChangeEffects(null,null) 'menus do not get changers
 
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(300, 330, 200, 400, name)
+		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(300, 330), new TPoint.Init(200, 400), name)
 		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
 
 		guiButtonsPanel	= guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
-		guiButtonStart		= New TGUIButton.Create(new TPoint.Init(0,   0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_SOLO_GAME"), name, Assets.fonts.baseFontBold)
-		guiButtonNetwork	= New TGUIButton.Create(new TPoint.Init(0,  40), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_NETWORKGAME"), name, Assets.fonts.baseFontBold)
-		guiButtonOnline		= New TGUIButton.Create(new TPoint.Init(0,  80), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_ONLINEGAME"), name, Assets.fonts.baseFontBold)
-		guiButtonSettings	= New TGUIButton.Create(new TPoint.Init(0, 120), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_SETTINGS"), name, Assets.fonts.baseFontBold)
-		guiButtonQuit		= New TGUIButton.Create(new TPoint.Init(0, 170), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_QUIT"), name, Assets.fonts.baseFontBold)
+		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
+		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
+
+		guiButtonStart		= New TGUIButton.Create(new TPoint.Init(0,   0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_SOLO_GAME"), name)
+		guiButtonNetwork	= New TGUIButton.Create(new TPoint.Init(0,  40), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_NETWORKGAME"), name)
+		guiButtonOnline		= New TGUIButton.Create(new TPoint.Init(0,  80), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_ONLINEGAME"), name)
+		guiButtonSettings	= New TGUIButton.Create(new TPoint.Init(0, 120), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_SETTINGS"), name)
+		guiButtonQuit		= New TGUIButton.Create(new TPoint.Init(0, 170), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_QUIT"), name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -1700,7 +1712,7 @@ endrem
 
 		GUIManager.Update(Self.name)
 
-		MainMenuJanitor.Update(deltaTime)
+		MainMenuJanitor.Update()
 	End Method
 End Type
 
@@ -1737,9 +1749,8 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	Method Create:TScreen_GameSettings(name:String)
 		Super.Create(name)
-		self.background = background
 		'===== CREATE AND SETUP GUI =====
-		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.GetX(), settingsArea.GetY(), settingsArea.GetW(), settingsArea.GetH(), "GameSettings")
+		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, "GameSettings")
 		guiSettingsWindow.SetCaption("Spieler")
 		guiSettingsWindow.guiBackground.spriteAlpha = 0.5
 		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
@@ -1748,20 +1759,20 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(0, 0, "Spieltitel:",TColor.CreateGrey(50),Null, name)
-		guiGameTitle		= New TGUIinput.Create(0, 12, 300, -1, Game.title, 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(310, 0, "Startjahr:",TColor.CreateGrey(50),Null, name)
-		guiStartYear		= New TGUIinput.Create(310, 12, 65, -1, "1985", 4, name)
+		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 0), "Spieltitel:", TColor.CreateGrey(50), name)
+		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), Game.title, 32, name)
+		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 0), "Startjahr:", TColor.CreateGrey(50), name)
+		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "1985", 4, name)
 
 		Local checkboxHeight:Int = 0
-		'guiAnnounce		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, Assets.fonts.baseFontBold)
+		'guiAnnounce		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, GetBitmapFontManager().baseFontBold)
 
-		gui24HoursDay		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), True, GetLocale("24_HOURS_GAMEDAY"), name, Assets.fonts.baseFontBold)
+		gui24HoursDay		= New TGUICheckBox.Create(new TPoint.Init(430, 0), null, True, GetLocale("24_HOURS_GAMEDAY"), name)
 		checkboxHeight 		= gui24HoursDay.GetScreenHeight()
 		gui24HoursDay.disable() 'option not implemented
-		guiSpecialFormats	= New TGUICheckBox.Create(new TRectangle.Init(430, 0 + 1*checkboxHeight, 200,20), True, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name, Assets.fonts.baseFontBold)
+		guiSpecialFormats	= New TGUICheckBox.Create(new TPoint.Init(430, 0 + 1*checkboxHeight), null, True, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name)
 		guiSpecialFormats.disable() 'option not implemented
-		guiFilterUnreleased = New TGUICheckBox.Create(new TRectangle.Init(430, 0 + 2*checkboxHeight, 200,20), True, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name, Assets.fonts.baseFontBold)
+		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + 2*checkboxHeight), null, True, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name)
 
 		'move announce to last
 		'guiAnnounce.rect.position.MoveXY(0, 4*checkboxHeight)
@@ -1778,20 +1789,25 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
-		guiButtonsWindow = New TGUIGameWindow.Create(590, 400, 200, 190, "GameSettings")
+		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(590, 400), new TPoint.Init(200, 190), "GameSettings")
 		guiButtonsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
 
+
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
-		guiButtonStart	= New TGUIButton.Create(new TPoint.Init(0, 0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_START_GAME"), name, Assets.fonts.baseFontBold)
-		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_BACK"), name, Assets.fonts.baseFontBold)
+
+		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
+		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
+
+		guiButtonStart	= New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_START_GAME"), name)
+		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_BACK"), name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonBack)
 
 
-		guiChat	 = New TGUIChat.Create(10,400,540,190, "GameSettings")
+		guiChat	 = New TGUIChat.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), "GameSettings")
 		guiChat.guiInput.setMaxLength(200)
 
 		guiChat.guiBackground.spriteAlpha = 0.5
@@ -1803,22 +1819,22 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		For Local i:Int = 0 To 3
 			Local slotX:Int = i * (playerSlotGap + playerBoxDimension.GetIntX())
-			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(slotX, 0, playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY(), "GameSettings")
-			playerPanel.sprite = Assets.GetNinePatchSprite("gfx_gui_panel.subContent.bright")
+			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TPoint.Init(slotX, 0), new TPoint.Init(playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY()), "GameSettings")
+			playerPanel.spriteBaseName = "gfx_gui_panel.subContent.bright"
 			playerPanel.SetPadding(playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap)
 			guiPlayersPanel.AddChild(playerPanel)
 
-			guiPlayerNames[i] = New TGUIinput.Create(0, 0, playerPanel.GetContentScreenWidth(), -1, Game.Players[i + 1].Name, 16, name)
-			guiPlayerNames[i].SetOverlay(Assets.GetSprite("gfx_gui_overlay_player"))
+			guiPlayerNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), Game.Players[i + 1].Name, 16, name)
+			guiPlayerNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
 
-			guiChannelNames[i] = New TGUIinput.Create(0, 0,  playerPanel.GetContentScreenWidth(), -1, Game.Players[i + 1].channelname, 16, name)
+			guiChannelNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), Game.Players[i + 1].channelname, 16, name)
 			guiChannelNames[i].rect.position.SetY(playerPanel.GetContentScreenHeight() - guiChannelNames[i].rect.GetH())
-			guiChannelNames[i].SetOverlay(Assets.GetSprite("gfx_gui_overlay_tvchannel"))
+			guiChannelNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_tvchannel"))
 
 			'left arrow
-			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(new TRectangle.Init(0 + 10, 50, 24,24), "LEFT", name)
+			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(new TPoint.Init(0 + 10, 50), new TPoint.Init(24, 24), "LEFT", name)
 			'right arrow
-			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(new TRectangle.Init(playerPanel.GetContentScreenWidth() - 10, 50, 24,24), "RIGHT", name)
+			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(new TPoint.Init(playerPanel.GetContentScreenWidth() - 10, 50), new TPoint.Init(24, 24), "RIGHT", name)
 			guiFigureArrows[i*2 + 1].rect.position.MoveXY(-guiFigureArrows[i*2 + 1].GetScreenWidth(),0)
 
 			playerPanel.AddChild(guiPlayerNames[i])
@@ -2119,23 +2135,21 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 	Method Create:TScreen_NetworkLobby(name:String)
 		Super.Create(name)
-		self.background = background
-
 
 		'create and setup GUI objects
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
 		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(590, 355, 200, 235, name)
+		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(590, 355), new TPoint.Init(200, 235), name)
 		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.SetCaption("")
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 
-		guiButtonJoin	= New TGUIButton.Create(new TPoint.Init(0, 0), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_JOIN"), name, Assets.fonts.baseFontBold)
-		guiButtonCreate	= New TGUIButton.Create(new TPoint.Init(0, 45), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_CREATE_GAME"), name, Assets.fonts.baseFontBold)
-		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonJoin.GetScreenHeight()), guiButtonsPanel.GetContentScreenWidth(), GetLocale("MENU_BACK"), name, Assets.fonts.baseFontBold)
+		guiButtonJoin	= New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_JOIN"), name)
+		guiButtonCreate	= New TGUIButton.Create(new TPoint.Init(0, 45), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_CREATE_GAME"), name)
+		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonJoin.GetScreenHeight()), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_BACK"), name)
 
 		guiButtonsPanel.AddChild(guiButtonJoin)
 		guiButtonsPanel.AddChild(guiButtonCreate)
@@ -2146,12 +2160,12 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		'GameList
 		'contained within a window/panel for styling
-		guiGameListWindow = New TGUIGameWindow.Create(20, 355, 520, 235, name)
+		guiGameListWindow = New TGUIGameWindow.Create(new TPoint.Init(20, 355), new TPoint.Init(520, 235), name)
 		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
 		guiGameListWindow.SetCaption(GetLocale("AVAILABLE_GAMES"))
 
-		guiGameList	= New TGUIGameList.Create(20,355,520,235,name)
+		guiGameList	= New TGUIGameList.Create(new TPoint.Init(20,355), new TPoint.Init(520,235), name)
 		guiGameList.SetBackground(Null)
 		guiGameList.SetPadding(0, 0, 0, 0)
 
@@ -2316,7 +2330,6 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 
 	Method Create:TScreen_StartMultiplayer(name:String)
 		Super.Create(name)
-		self.background = background
 		Return Self
 	End Method
 
@@ -2330,8 +2343,8 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 		DrawRect 200,200,400,200
 		SetAlpha 1.0
 		SetColor 0,0,0
-		Assets.fonts.baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
-		Assets.fonts.baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
+		GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
+		GetBitmapFontManager().baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
 
 
 		SetColor 180,180,200
@@ -2339,13 +2352,13 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 		DrawRect 200,200,400,200
 		SetAlpha 1.0
 		SetColor 0,0,0
-		Assets.fonts.baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
-		Assets.fonts.baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
-		Assets.fonts.baseFont.draw("Player 1..."+Game.Players[1].networkstate+" MovieListCount: "+Game.Players[1].ProgrammeCollection.GetProgrammeLicenceCount(), 220,260)
-		Assets.fonts.baseFont.draw("Player 2..."+Game.Players[2].networkstate+" MovieListCount: "+Game.Players[2].ProgrammeCollection.GetProgrammeLicenceCount(), 220,280)
-		Assets.fonts.baseFont.draw("Player 3..."+Game.Players[3].networkstate+" MovieListCount: "+Game.Players[3].ProgrammeCollection.GetProgrammeLicenceCount(), 220,300)
-		Assets.fonts.baseFont.draw("Player 4..."+Game.Players[4].networkstate+" MovieListCount: "+Game.Players[4].ProgrammeCollection.GetProgrammeLicenceCount(), 220,320)
-		If Not Game.networkgameready = 1 Then Assets.fonts.baseFont.draw("not ready!!", 220,360)
+		GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
+		GetBitmapFontManager().baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
+		GetBitmapFontManager().baseFont.draw("Player 1..."+Game.Players[1].networkstate+" MovieListCount: "+Game.Players[1].ProgrammeCollection.GetProgrammeLicenceCount(), 220,260)
+		GetBitmapFontManager().baseFont.draw("Player 2..."+Game.Players[2].networkstate+" MovieListCount: "+Game.Players[2].ProgrammeCollection.GetProgrammeLicenceCount(), 220,280)
+		GetBitmapFontManager().baseFont.draw("Player 3..."+Game.Players[3].networkstate+" MovieListCount: "+Game.Players[3].ProgrammeCollection.GetProgrammeLicenceCount(), 220,300)
+		GetBitmapFontManager().baseFont.draw("Player 4..."+Game.Players[4].networkstate+" MovieListCount: "+Game.Players[4].ProgrammeCollection.GetProgrammeLicenceCount(), 220,320)
+		If Not Game.networkgameready = 1 Then GetBitmapFontManager().baseFont.draw("not ready!!", 220,360)
 		SetColor 255,255,255
 	End Method
 
@@ -2624,25 +2637,25 @@ Type AppEvents
 	'- create special fonts
 	Function onAppStart:Int(triggerEvent:TEventBase)
 		If Not headerFont
-			TGW_FontManager.GetInstance().AddFont("headerFont", "res/fonts/Vera.ttf", 18)
-			TGW_FontManager.GetInstance().AddFont("headerFont", "res/fonts/VeraBd.ttf", 18, BOLDFONT)
-			TGW_FontManager.GetInstance().AddFont("headerFont", "res/fonts/VeraBI.ttf", 18, BOLDFONT | ITALICFONT)
-			TGW_FontManager.GetInstance().AddFont("headerFont", "res/fonts/VeraIt.ttf", 18, ITALICFONT)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/Vera.ttf", 18)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraBd.ttf", 18, BOLDFONT)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraBI.ttf", 18, BOLDFONT | ITALICFONT)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraIt.ttf", 18, ITALICFONT)
 
 			Local shadowSettings:TData = new TData.addNumber("size", 1).addNumber("intensity", 0.5)
 			Local gradientSettings:TData = new TData.addNumber("gradientBottom", 180)
 			'setup effects for normal and bold
-			headerFont = TGW_FontManager.GetInstance().CopyFont("default", "headerFont", 18, BOLDFONT)
+			headerFont = GetBitmapFontManager().Copy("default", "headerFont", 18, BOLDFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
 			headerFont.InitFont()
 
-			headerFont = TGW_FontManager.GetInstance().GetFont("headerFont", 18, ITALICFONT)
+			headerFont = GetBitmapFont("headerFont", 18, ITALICFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
 			headerFont.InitFont()
 
-			headerFont = TGW_FontManager.GetInstance().GetFont("headerFont", 18)
+			headerFont = GetBitmapFont("headerFont", 18)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
 			headerFont.SetCharsEffectFunction(2, Font_AddShadow, shadowSettings)
 			headerFont.InitFont()
@@ -2727,19 +2740,19 @@ Function DrawMenuBackground(darkened:Int=False)
 	'no cls needed - we render a background
 	'Cls
 	SetColor 255,255,255
-	Assets.GetSprite("gfx_startscreen").Draw(0,0)
+	GetSpriteFromRegistry("gfx_startscreen").Draw(0,0)
 
 
 	Select game.gamestate
 		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
 			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * GetDeltaTimer().GetDelta() Else LogoCurrY = LogoTargetY
-			Assets.GetSprite("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
+			GetSpriteFromRegistry("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
 	EndSelect
 
 	If game.gamestate = TGame.STATE_MAINMENU
 		SetColor 255,255,255
-		Assets.GetFont("Default",11, ITALICFONT).drawBlock(versionstring, 10,575, 500,20, Null,TColor.Create(75,75,140))
-		Assets.GetFont("Default",11, ITALICFONT).drawBlock(copyrightstring, 10,585, 500,20, Null,TColor.Create(60,60,120))
+		GetBitmapFont("Default",11, ITALICFONT).drawBlock(versionstring, 10,575, 500,20, Null,TColor.Create(75,75,140))
+		GetBitmapFont("Default",11, ITALICFONT).drawBlock(copyrightstring, 10,585, 500,20, Null,TColor.Create(60,60,120))
 	EndIf
 
 	If darkened
@@ -2820,8 +2833,8 @@ Function Init_Creation()
 		lastblocks = 0
 		SortList(Game.Players[playerids].ProgrammeCollection.adContracts)
 
-		Local addWidth:Int = Assets.GetSprite("pp_programmeblock1").area.GetW()
-		Local addHeight:Int = Assets.GetSprite("pp_adblock1").area.GetH()
+		Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
+		Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
 		Local playerCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
 		Local playerPlan:TPlayerProgrammePlan = Game.getPlayer(playerids).ProgrammePlan
 
@@ -2847,23 +2860,21 @@ Function Init_Colorization()
 	'colorize the images
 	Local gray:TColor = TColor.Create(200, 200, 200)
 	Local gray2:TColor = TColor.Create(100, 100, 100)
-	'unused: Assets.AddImageAsSprite("gfx_financials_barren_0", Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_building_sign_0", Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_elevator_sign_0", Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_elevator_sign_dragged_0", Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(gray))
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_0", Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(gray2))
-	Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_0", Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(gray2))
 
+	GetRegistry().Set("gfx_building_sign_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
+	GetRegistry().Set("gfx_building_sign_dragged_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_dragged_base").GetColorizedImage(gray), "gfx_building_sign_dragged_0"))
+	GetRegistry().Set("gfx_interface_channelbuttons_off_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
+	GetRegistry().Set("gfx_interface_channelbuttons_on_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
 	'colorizing for every player
 	For Local i:Int = 1 To 4
 		Game.GetPlayer(i).RecolorFigure()
 		local color:TColor = Game.GetPlayer(i).color
-		'unused: Assets.AddImageAsSprite("gfx_financials_barren_"+i, Assets.GetSprite("gfx_officepack_financials_barren").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_building_sign_"+i, Assets.GetSprite("gfx_building_sign_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_elevator_sign_"+i, Assets.GetSprite("gfx_elevator_sign_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_elevator_sign_dragged_"+i, Assets.GetSprite("gfx_elevator_sign_dragged_base").GetColorizedImage(color))
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons_off_"+i, Assets.GetSprite("gfx_interface_channelbuttons_off").GetColorizedImage(color, i))
-		Assets.AddImageAsSprite("gfx_interface_channelbuttons_on_"+i, Assets.GetSprite("gfx_interface_channelbuttons_on").GetColorizedImage(color, i))
+
+		GetRegistry().Set("gfx_building_sign_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))
+		GetRegistry().Set("gfx_elevator_sign_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_base").GetColorizedImage(color), "gfx_elevator_sign_"+i))
+		GetRegistry().Set("gfx_elevator_sign_dragged_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_dragged_base").GetColorizedImage(color), "gfx_elevator_sign_dragged_"+i))
+		GetRegistry().Set("gfx_interface_channelbuttons_off_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, i), "gfx_interface_channelbuttons_off_"+i))
+		GetRegistry().Set("gfx_interface_channelbuttons_on_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, i), "gfx_interface_channelbuttons_on_"+i))
 	Next
 End Function
 
@@ -2913,20 +2924,45 @@ Function StartTVTower(start:Int=true)
 	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
 	App.LoadResources("config/resources.xml")
 
+	'reduce instance requests
+	local RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
+	While not RURC.FinishedLoading()
+		'check if new resources have to get loaded
+		RURC.Update()
+
+		Cls
+		SetAlpha 0.2
+		SetColor 50,0,0
+		DrawRect(0, GraphicsHeight() - 20, GraphicsWidth(), 20)
+		SetAlpha 1.0
+		SetColor 255,255,255
+		DrawText("Loading: "+RURC.loadedCount+"/"+RURC.toLoadCount+"  "+String(RURC.loadedLog.Last()), 0, 580)
+		Flip 0
+	Wend
+
+	'assign dev config (resources are now loaded)
+	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", new TData))
+	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
+	if TFunctions.roundToBeautifulEnabled
+		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
+	else
+		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
+	endif
+
 	ArchiveProgrammeList	= New TgfxProgrammelist.Create(575, 16, 21)
 
 	NewsAgency				= New TNewsAgency.Create()
 
-	TTooltip.UseFontBold	= Assets.fonts.baseFontBold
-	TTooltip.UseFont 		= Assets.fonts.baseFont
-	TTooltip.ToolTipIcons	= Assets.GetSprite("gfx_building_tooltips")
-	TTooltip.TooltipHeader	= Assets.GetSprite("gfx_tooltip_header")
+	TTooltip.UseFontBold	= GetBitmapFontManager().baseFontBold
+	TTooltip.UseFont 		= GetBitmapFontManager().baseFont
+
+	TTooltip.ToolTipIcons	= GetSpriteFromRegistry("gfx_building_tooltips")
+	TTooltip.TooltipHeader	= GetSpriteFromRegistry("gfx_tooltip_header")
 
 
-	'#Region: Globals, Player-Creation
-	Interface		= TInterface.Create()
-	Game	  			= new TGame.Create()
-	Building		= new TBuilding.Create()
+	Interface = TInterface.Create()
+	Game = new TGame.Create()
+	Building = new TBuilding.Create()
 	'init sound receiver
 	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
@@ -2937,17 +2973,18 @@ Function StartTVTower(start:Int=true)
 	'creates all Rooms - with the names assigned at this moment
 	Init_CreateAllRooms()
 
+
 	'RON
 	Local haveNPCs:Int = True
 	If haveNPCs
-		New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 210, 2, 65)
-		New TFigurePostman.CreateFigure("Bote1", Assets.GetSprite("BoteLeer"), 210, 3, 65, 0)
-		New TFigurePostman.CreateFigure("Bote2", Assets.GetSprite("BoteLeer"), 410, 1, -65, 0)
+		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
+		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 3, 65, 0)
+		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 1, -65, 0)
 	EndIf
 
 
 	TLogger.Log("Base", "Creating GUIelements", LOG_DEBUG)
-	InGame_Chat = New TGUIChat.Create(520,418,280,190,"InGame")
+	InGame_Chat = New TGUIChat.Create(new TPoint.Init(520, 418), new TPoint.Init(280,190), "InGame")
 	InGame_Chat.setDefaultHideEntryTime(10000)
 	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
 	InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
@@ -2970,16 +3007,17 @@ Function StartTVTower(start:Int=true)
 	SetColor 255,255,255
 
 	PlayerDetailsTimer = 0
-	MainMenuJanitor = New TFigureJanitor.CreateFigure("Hausmeister", Assets.GetSprite("figure_Hausmeister"), 250, 2, 65)
-
+	MainMenuJanitor = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 250, 2, 65)
 	MainMenuJanitor.useElevator = False
 	MainMenuJanitor.useDoors = False
 	MainMenuJanitor.useAbsolutePosition = True
 	MainMenuJanitor.BoredCleanChance = 30
 	MainMenuJanitor.MovementRangeMinX = 0
 	MainMenuJanitor.MovementRangeMaxX = 800
-	MainMenuJanitor.rect.position.SetY(600)
-
+	MainMenuJanitor.area.position.SetY(600)
+	'remove figure from collection so it is not drawn/updated in other
+	'screens (eg. ingame)
+	FigureCollection.Remove(MainMenuJanitor)
 
 	'add menu screens
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")

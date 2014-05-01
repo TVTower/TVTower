@@ -31,8 +31,8 @@ Type TElevator
 	Field WaitAtFloorTime:Int				= 1700		'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
 
 	'Grafikelemente
-	Field SpriteDoor:TAnimSprites						'Das Türensprite und seine Animationen
-	Field SpriteInner:TGW_Sprite			{nosave}	'Das Sprite des Innenraums
+	Field door:TSpriteEntity							'Das Türensprite und seine Animationen
+	Field SpriteInner:TSprite							'Das Sprite des Innenraums
 	Field PassengerOffset:TPoint[]						'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures ein paar Offsets im Fahrstuhl
 	Field PassengerPosition:TFigure[]					'Hier wird abgelegt, welches Offset schon in Benutzung ist und von welcher Figur
 
@@ -77,17 +77,18 @@ Type TElevator
 		PassengerOffset[4] = new TPoint.Init(-3, 0)
 		PassengerOffset[5] = new TPoint.Init(-8, 0)
 
-		'create sprite
-		spriteDoor = new TAnimSprites.Create(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"), 8, 150)
-		spriteDoor.insertAnimation("default", TAnimation.Create([ [0,70] ], 0, 0) )
-		spriteDoor.insertAnimation("closed", TAnimation.Create([ [0,70] ], 0, 0) )
-		spriteDoor.insertAnimation("open", TAnimation.Create([ [7,70] ], 0, 0) )
-		spriteDoor.insertAnimation("opendoor", TAnimation.Create([ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
-		spriteDoor.insertAnimation("closedoor", TAnimation.Create([ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
+		'create door
+		door = new TSpriteEntity
+		door.SetSprite(GetSpriteFromRegistry("gfx_building_Fahrstuhl_oeffnend"))
+		door.GetFrameAnimations().Set("default", TSpriteFrameAnimation.Create([ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Set("closed", TSpriteFrameAnimation.Create([ [0,70] ], 0, 0) )
+		door.GetFrameAnimations().Set("open", TSpriteFrameAnimation.Create([ [7,70] ], 0, 0) )
+		door.GetFrameAnimations().Set("opendoor", TSpriteFrameAnimation.Create([ [0,animSpeed],[1,animSpeed],[2,animSpeed],[3,animSpeed],[4,animSpeed],[5,animSpeed],[6,animSpeed],[7,animSpeed] ], 0, 1) )
+		door.GetFrameAnimations().Set("closedoor", TSpriteFrameAnimation.Create([ [7,animSpeed],[6,animSpeed],[5,animSpeed],[4,animSpeed],[3,animSpeed],[2,animSpeed],[1,animSpeed],[0,animSpeed] ], 0, 1) )
 
 		InitSprites()
 
-		spriteDoor.setCurrentAnimation("open")
+		door.GetFrameAnimations().SetCurrent("open")
 		doorStatus = 1 'open
 		ElevatorStatus	= 0
 
@@ -111,8 +112,8 @@ Type TElevator
 
 	'should get run as soon as sprites might be invalid (loading, graphics reset)
 	Method InitSprites()
-		spriteDoor.SetSprite(Assets.GetSprite("gfx_building_Fahrstuhl_oeffnend"))
-		spriteInner	= Assets.GetSprite("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
+		door.SetSprite(GetSpriteFromRegistry("gfx_building_Fahrstuhl_oeffnend"))
+		spriteInner	= GetSpriteFromRegistry("gfx_building_Fahrstuhl_Innen")  'gfx_building_elevator_inner
 	End Method
 
 
@@ -153,7 +154,7 @@ Type TElevator
 	'===== Externe Hilfsmethoden für Figuren =====
 
 	Method IsFigureInFrontOfDoor:Int(figure:TFigure)
-		Return (GetDoorCenterX() = figure.rect.getX())
+		Return (GetDoorCenterX() = figure.area.getX())
 	End Method
 
 	Method IsFigureInElevator:Int(figure:TFigure)
@@ -161,11 +162,11 @@ Type TElevator
 	End Method
 
 	Method GetDoorCenterX:int()
-		Return Building.pos.x + Pos.x + spriteDoor.sprite.framew/2
+		Return Building.area.position.x + Pos.x + door.sprite.framew/2
 	End Method
 
 	Method GetDoorWidth:int()
-		Return spriteDoor.sprite.framew
+		Return door.sprite.framew
 	End Method
 
 	'===== Hilfsmethoden =====
@@ -223,7 +224,7 @@ Type TElevator
 	End Method
 
 	Method GetElevatorCenterPos:TPoint()
-		Return new TPoint.Init(Building.pos.x + Pos.x + Self.spriteDoor.sprite.framew/2, Pos.y + Self.spriteDoor.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
+		Return new TPoint.Init(Building.area.position.x + Pos.x + door.sprite.framew/2, Pos.y + door.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
 	End Method
 
 	'===== Offset-Funktionen =====
@@ -295,13 +296,13 @@ Type TElevator
 
 	Method OpenDoor()
 		GetSoundSource().PlayRandomSfx("elevator_door_open")
-		spriteDoor.setCurrentAnimation("opendoor", True)
+		door.GetFrameAnimations().SetCurrent("opendoor", True)
 		DoorStatus = 2 'wird geoeffnet
 	End Method
 
 	Method CloseDoor()
 		GetSoundSource().PlayRandomSfx("elevator_door_close")
-		spriteDoor.setCurrentAnimation("closedoor", True)
+		door.GetFrameAnimations().SetCurrent("closedoor", True)
 		DoorStatus = 3 'closing
 	End Method
 
@@ -309,10 +310,10 @@ Type TElevator
 
 	Method Update(deltaTime:Float=1.0)
 		'Aktualisierung des current floors - mv: da ich hier nicht durchblicke lass ich's so wie's ist ;)
-		If Abs(Building.GetFloorY(Building.GetFloor(Building.pos.y + Pos.y + spriteInner.area.GetH() - 1)) - (Pos.y + spriteInner.area.GetH())) <= 1
+		If Abs(Building.GetFloorY(Building.GetFloor(Building.area.position.y + Pos.y + spriteInner.area.GetH() - 1)) - (Pos.y + spriteInner.area.GetH())) <= 1
 			'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
 			'until the function returns the new one, instead of positioning it directly on the floorground
-			CurrentFloor = Building.GetFloor(Building.pos.y + Pos.y + spriteInner.area.GetH() - 1)
+			CurrentFloor = Building.GetFloor(Building.area.position.y + Pos.y + spriteInner.area.GetH() - 1)
 		EndIf
 
 		If ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
@@ -327,9 +328,9 @@ Type TElevator
 			If doorStatus <> 0 And doorStatus <> 3 And waitAtFloorTimer.isExpired() Then CloseDoor() 'Wenn die Wartezeit vorbei ist, dann Türen schließen
 
 			'Warten bis die Türanimation fertig ist
-			If spriteDoor.getCurrentAnimationName() = "closedoor"
-				If spriteDoor.getCurrentAnimation().isFinished()
-					spriteDoor.setCurrentAnimation("closed")
+			If door.GetFrameAnimations().getCurrentAnimationName() = "closedoor"
+				If door.GetFrameAnimations().getCurrent().isFinished()
+					door.GetFrameAnimations().SetCurrent("closed")
 					doorStatus = 0 'closed
 					ElevatorStatus = 2 '2 = Fahren
 					GetSoundSource().PlayRandomSfx("elevator_engine")
@@ -359,7 +360,7 @@ Type TElevator
 
 				'Die Figuren im Fahrstuhl mit der Kabine mitbewegen
 				For Local figure:TFigure = EachIn Passengers
-					figure.rect.position.setY( self.Pos.y + spriteInner.area.GetH())
+					figure.area.position.setY( self.Pos.y + spriteInner.area.GetH())
 				Next
 			EndIf
 		Endif
@@ -372,11 +373,11 @@ Type TElevator
 			Endif
 
 			'Türanimationen für das Öffnen fortsetzen... aber auch Passagiere ausladen, wenn es fertig ist
-			If spriteDoor.getCurrentAnimationName() = "opendoor"
+			If door.GetFrameAnimations().getCurrentAnimationName() = "opendoor"
 				MoveDeboardingPassengersToCenter() 'Während der Tür-öffnen-Animation bewegen sich die betroffenen Figuren zum Ausgang
-				If spriteDoor.getCurrentAnimation().isFinished()
+				If door.GetFrameAnimations().GetCurrent().isFinished()
 					ElevatorStatus = 4 'entladen
-					spriteDoor.setCurrentAnimation("open")
+					door.GetFrameAnimations().SetCurrent("open")
 					doorStatus = 1 'open
 				EndIf
 			EndIf
@@ -397,34 +398,39 @@ Type TElevator
 
 		If ElevatorStatus <> 3 Then MovePassengerToPosition() 'Die Passagiere an ihre Position bewegen wenn notwendig. Natürlich nicht während des Aussteigens
 
-		spriteDoor.Update(deltaTime) 'Türe animieren
+		door.Update() 'Türe animieren
 
-		TRoomDoor.UpdateToolTips(deltaTime) 'Tooltips aktualisieren ----  TODO: Ist das an dieser Stelle wirklich notwendig? Begründen
+		TRoomDoor.UpdateToolTips() 'Tooltips aktualisieren ----  TODO: Ist das an dieser Stelle wirklich notwendig? Begründen
 	End Method
 
 
 	Method Draw() 'needs to be restructured (some test-lines within)
 		SetBlend MASKBLEND
 
-		'Den leeren Schacht zeichnen... also da wo der Fahrstuhl war
-		spriteDoor.Draw(Building.pos.x + pos.x, Building.pos.y + Building.GetFloorY(CurrentFloor) - 50)
+		'draw the door the elevator is currently at (eg. for animation)
+		door.RenderAt(Building.area.position.x + pos.x, Building.area.position.y + Building.GetFloorY(CurrentFloor) - 50)
 
 		'Fahrstuhlanzeige über den Türen
 		For Local i:Int = 0 To 13
-			Local locy:Int = Building.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.area.GetH() - 8
+			Local locy:Int = Building.area.position.y + Building.GetFloorY(i) - door.sprite.area.GetH() - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
-				DrawRect(Building.pos.x+Pos.x-4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
+				DrawRect(Building.area.position.x+Pos.x-4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
 				SetColor 255,255,255
 			EndIf
 		Next
 
 		'Fahrstuhlanzeige über den Türen
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			Local locy:Int = Building.pos.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 23
-			'elevator is called to this floor					'elevator will stop there (destination)
-			If	 floorroute.call Then SetColor 200,220,20 	Else SetColor 100,220,20
-			DrawRect(Building.pos.x + Pos.x + 44, locy, 3,3)
+			Local locy:Int = Building.area.position.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 23
+			If floorroute.call
+				'elevator is called to this floor
+				SetColor 200,220,20
+			Else
+				'elevator will stop there (destination)
+				SetColor 100,220,20
+			EndIf
+			DrawRect(Building.area.position.x + Pos.x + 44, locy, 3,3)
 			SetColor 255,255,255
 		Next
 
@@ -435,9 +441,9 @@ Type TElevator
 	Method DrawFloorDoors()
 		'Innenraum zeichen (BG)     =>   elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(Building.pos.x + 360, Max(Building.pos.y, 10) , 44, 373)
+		DrawRect(Building.area.position.x + 360, Max(Building.area.position.y, 10) , 44, 373)
 		SetColor 255, 255, 255
-		spriteInner.Draw(Building.pos.x + Pos.x, Building.pos.y + Pos.y + 3.0)
+		spriteInner.Draw(Building.area.position.x + Pos.x, Building.area.position.y + Pos.y + 3.0)
 
 
 		'Zeichne Figuren
@@ -450,9 +456,9 @@ Type TElevator
 
 		'Zeichne Türen in allen Stockwerken (außer im aktuellen)
 		For Local i:Int = 0 To 13
-			Local locy:Int = Building.pos.y + Building.GetFloorY(i) - Self.spriteDoor.sprite.area.GetH()
+			Local locy:Int = Building.area.position.y + Building.GetFloorY(i) - door.sprite.area.GetH()
 			If locy < 410 And locy > - 50 And i <> CurrentFloor Then
-				Self.spriteDoor.Draw(Building.pos.x + Pos.x, locy, "closed")
+				door.RenderAt(Building.area.position.x + Pos.x, locy, "closed")
 			Endif
 		Next
 	End Method

@@ -93,7 +93,7 @@ Type TPlayer {_exposeToLua="selected"}
 	'creates and returns a player
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
-	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TGW_Sprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "")
+	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TSprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "")
 		Local Player:TPlayer		= New TPlayer
 		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Player").AddNumber("itemNumber", playerID).AddNumber("maxItemNumber", 4) ) )
 
@@ -101,7 +101,7 @@ Type TPlayer {_exposeToLua="selected"}
 		Player.playerID				= playerID
 		Player.color				= color.AddToList(True).SetOwner(playerID)
 		Player.channelname			= channelname
-		Player.Figure				= New TFigure.CreateFigure(FigureName, sprite, x, onFloor, dx, ControlledByID)
+		Player.Figure				= New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayerID= playerID
 		Player.PublicImage			= New TPublicImage.Create(Player)
 		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
@@ -109,7 +109,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 		Player.RecolorFigure(Player.color)
 
-		Player.UpdateFigureBase(1)
+		Player.UpdateFigureBase(0)
 
 		Return Player
 	End Function
@@ -123,26 +123,33 @@ Type TPlayer {_exposeToLua="selected"}
 
 
 	'loads a new figurbase and colorizes it
-	Method UpdateFigureBase(newfigurebase:Int)
-		Local figureCount:Int = 13
-		If newfigurebase > figureCount Then newfigurebase = 1
-		If newfigurebase <= 0 Then newfigurebase = figureCount
+	Method UpdateFigureBase:int(newfigurebase:Int)
+		'load configuration from registry
+		Local figuresConfig:TData = TData(GetRegistry().Get("figuresConfig", new TData))
+		Local playerFigures:string[] = figuresConfig.GetString("playerFigures", "").split(",")
+		Local figureCount:Int = Len(playerFigures)
+
+		'skip if no figures are available (an error ?!)
+		If figureCount = 0 then return False
+
+		'limit the figurebase to the available figures
+		If newfigurebase > figureCount-1 Then newfigurebase = 0
+		If newfigurebase < 0 Then newfigurebase = figureCount-1
 		figurebase = newfigurebase
 
-		Local figureSprite:TGW_Sprite = Assets.GetSpritePack("figures").GetSprite("Player" + Self.playerID)
-		'umstellen: anhand von "namen" ermitteln ("base"+figurebase)
-		Local figureImageReplacement:TImage = ColorizeImageCopy(Assets.GetSpritePack("figures").GetSpriteByID(figurebase).GetImage(), color)
+		Local newSpriteName:string = playerFigures[figurebase].trim().toLower()
+		Local newSprite:TSprite = GetSpriteFromRegistry(newSpriteName)
+		'skip if replacement sprite does not exist or default was returned
+		If not newSprite or newSprite.GetName().toLower() <>  newSpriteName then return False
+
+		Local oldSprite:TSprite = GetSpriteFromRegistry("Player" + Self.playerID)
+		Local newImage:TImage = ColorizeImageCopy(newSprite.GetImage(), color)
+		Local figuresPack:TSpritePack = TSpritePack(GetRegistry().Get("gfx_figuresPack"))
 
 		'clear occupied area within pixmap
-		figureSprite.ClearImageData()
+		oldSprite.ClearImageData()
 		'draw the new figure at that area
-		DrawImageOnImage(figureImageReplacement, Assets.GetSpritePack("figures").image, figureSprite.area.GetX(), figureSprite.area.GetY())
-rem
-		CLS
-		DrawImage(Assets.GetSpritePack("figures").image, 10,10)
-		Flip 0
-		Delay(500)
-endrem
+		DrawImageOnImage(newImage, figuresPack.image, oldSprite.area.GetX(), oldSprite.area.GetY())
 	End Method
 
 

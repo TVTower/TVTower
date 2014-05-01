@@ -13,40 +13,40 @@ ENDREM
 'Import "basefunctions_screens.bmx"
 'Import "basefunctions_resourcemanager.bmx"
 
-
-EventManager.registerListenerFunction("resources.onLoad.SCREENS", onLoadScreens)
+'register to the onLoad-Event for "Screens"
+EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadScreens,null, "SCREENS")
 Function onLoadScreens:int( triggerEvent:TEventBase )
-	local childNode:TxmlNode = null
-	local xmlLoader:TXmlLoader = null
-	if not TResourceLoaders.assignBasics( triggerEvent, childNode, xmlLoader ) then return 0
+	Local screensNode:TxmlNode = TxmlNode(triggerEvent.GetData().Get("xmlNode"))
+	Local registryLoader:TRegistryLoader = TRegistryLoader(triggerEvent.GetSender())
+	if not screensNode or not registryLoader then return FALSE
 
-	'screen group
-	if triggerEvent.isTrigger("resources.onLoad.SCREENS")
-		local ScreenCollection:TScreenCollection = TScreenCollection.GetInstance()
-		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(childNode)
-			Local name:String	= Lower( TXmlHelper.FindValue(child, "name", "") )
-			local image:string	= Lower( TXmlHelper.FindValue(child, "image", "screen_bg_archive") )
-			local parent:string = Lower( TXmlHelper.FindValue(child, "parent", "") )
-			if name <> ""
-				local screen:TInGameScreen_Room= new TInGameScreen_Room.Create(name)
-				screen.background = Assets.GetSprite(image)
-				'add to collection list
-				ScreenCollection.Add(screen)
 
-				'if screen has a parent -> set it
-				if parent <> "" and ScreenCollection.GetScreen(parent)
-					ScreenCollection.GetScreen(parent).AddSubScreen(screen)
-				endif
+	local ScreenCollection:TScreenCollection = TScreenCollection.GetInstance()
+	For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(screensNode)
+		Local name:String	= Lower( TXmlHelper.FindValue(child, "name", "") )
+		local image:string	= Lower( TXmlHelper.FindValue(child, "image", "screen_bg_archive") )
+		local parent:string = Lower( TXmlHelper.FindValue(child, "parent", "") )
+		if name <> ""
+			local screen:TInGameScreen_Room= new TInGameScreen_Room.Create(name)
+			screen.backgroundSpriteName = image
+			'add to collection list
+			ScreenCollection.Add(screen)
+
+			'if screen has a parent -> set it
+			if parent <> "" and ScreenCollection.GetScreen(parent)
+				ScreenCollection.GetScreen(parent).AddSubScreen(screen)
 			endif
-		Next
-	endif
+		endif
+	Next
 End Function
+
+
 
 
 'a default game screen
 'eg. for menu or loading screens
 Type TGameScreen extends TScreen
-    Field background:TGW_Sprite  'background, the image containing the whole room
+    Field backgroundSpriteName:string
 
 
 	Method Create:TGameScreen(name:string)
@@ -62,14 +62,20 @@ Type TGameScreen extends TScreen
 	End Method
 
 
+	Method GetBackground:TSprite()
+		if backgroundSpriteName = "" then return Null
+		return GetSpriteFromRegistry(backgroundSpriteName)
+	End Method
+
+
 	Method DrawBackground:int()
 '		if not background then return FALSE
-		if not background
+		if not GetBackground()
 			TColor.Create(100,0,0).SetRGBA()
 			DrawRect(0,0,800,600)
 		else
 			SetBlend SOLIDBLEND
-			background.Draw(20,10)
+			GetBackground().Draw(20,10)
 			SetBlend ALPHABLEND
 		endif
 	End Method
@@ -84,7 +90,7 @@ End Type
 
 'screens used ingame (with visible interface)
 Type TInGameScreen extends TScreen
-    Field background:TGW_Sprite  'background, the image containing the whole room
+    Field backgroundSpriteName:string
     'Field hotspots:THotspots     'clickable areas on the screen
 	Field _contentArea:TRectangle
 
@@ -101,6 +107,11 @@ Type TInGameScreen extends TScreen
 		return "TInGameScreen"
 	End Method
 
+
+	Method GetBackground:TSprite()
+		if backgroundSpriteName = "" then return Null
+		return GetSpriteFromRegistry(backgroundSpriteName)
+	End Method
 
 
 	Method HasScreenChangeEffect:int(otherScreen:TScreen)
@@ -191,18 +202,18 @@ Type TInGameScreen extends TScreen
 			Interface.Update(deltaTime)
 '			If Game.Players[Game.playerID].Figure.inRoom = Null Then Building.Update(deltaTime)
 			Building.Elevator.Update(deltaTime)
-			TFigure.UpdateAll(deltaTime)
+			TFigure.UpdateAll()
 		EndIf
 	End Method
 
 
 	Method DrawContent:int(tweenValue:Float)
 '		SetColor(255,255,255)
-		if background
+		if GetBackground()
 			if _contentArea
-				background.draw(_contentArea.GetX(), _contentArea.GetY())
+				GetBackground().draw(_contentArea.GetX(), _contentArea.GetY())
 			else
-				background.draw(0, 0)
+				GetBackground().draw(0, 0)
 			endif
 		endif
 '		SetColor(255,255,255)
@@ -250,9 +261,12 @@ Type TInGameScreen_Building extends TInGameScreen
 	'override default
 	Method UpdateContent(deltaTime:Float)
 		'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
-		If Game.Players[Game.playerID].Figure.inRoom = Null Then Building.pos.y =  1 * 66 + 1 * 73 + 50 - Game.Players[Game.playerID].Figure.rect.GetY()  'working for player as center
+		If Game.Players[Game.playerID].Figure.inRoom = Null
+			'working for player as center
+			Building.area.position.y =  1 * 66 + 1 * 73 + 50 - Game.Players[Game.playerID].Figure.area.GetY()
+		Endif
 
-		Building.Update(deltaTime)
+		Building.Update()
 	End Method
 
 	'override default
@@ -260,10 +274,11 @@ Type TInGameScreen_Building extends TInGameScreen
 		'TProfiler.Enter("Draw-Building")
 		SetColor Int(190 * Building.timecolor), Int(215 * Building.timecolor), Int(230 * Building.timecolor)
 		DrawRect(20, 10, 140, 373)
-		If Building.pos.y > 10 Then DrawRect(150, 10, 500, 200)
+		If Building.area.position.y > 10 Then DrawRect(150, 10, 500, 200)
 		DrawRect(650, 10, 130, 373)
 		SetColor 255, 255, 255
-		Building.Draw()									'player is not in a room so draw building
+		'player is not in a room so draw building
+		Building.Render()
 		'TProfiler.Leave("Draw-Building")
 	End Method
 End Type
@@ -373,7 +388,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'TProfiler.Enter("Draw-Room")
 		'drawing a subscreen (not the room itself)
-		if background and not currentRoom.GetBackground() then background.Draw(20,10)
+		if GetBackground() and not currentRoom.GetBackground() then GetBackground().Draw(20,10)
 		currentRoom.Draw()
 		'TProfiler.Leave("Draw-Room")
 	End Method

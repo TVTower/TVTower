@@ -29,8 +29,8 @@
 			<!-- map with graytone values of population density,
 				 colordepth must be RGBA, not Grayscale !!
 			-->
-			<densitymap url="res/grafiken/senderkarte/germany_densitymap.png" />
-			<surface url="res/grafiken/senderkarte/germany_surface.png" />
+			<densitymap type="pixmap" url="res/grafiken/senderkarte/germany_densitymap.png" />
+			<surface type="sprite" url="res/grafiken/senderkarte/germany_surface.png" />
 			<states>
 				<state name="bremen"			x="207" y="91"	sprite="map_bremen" />
 				<state name="berlin"			x="452" y="118"	sprite="map_berlin" />
