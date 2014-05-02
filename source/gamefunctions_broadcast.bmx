@@ -282,7 +282,7 @@ Type TBroadcast
 			If broadcastedMaterial Then
 				AudienceResults[i].Title = broadcastedMaterial.GetTitle()
 				'3. Qualität meines Programmes
-				Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction)
+				Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
 			Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 				TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + i + "': Malfunction!", LOG_DEBUG)
 				AudienceResults[i].Title = "Malfunction!" 'Sendeausfall
@@ -310,10 +310,7 @@ Type TBroadcast
 		Else
 			attraction.QualityOverTimeEffectMod = -0.9
 		End If
-		attraction.CalculateBaseAttraction()
-		attraction.CalculateBlockAttraction()
-		attraction.CalculateFinalAttraction()
-		attraction.CalculatePublicImageAttraction()
+		attraction.Recalculate()
 		attraction.Malfunction = attraction.Malfunction + 1
 		Return attraction
 	End Method
@@ -942,35 +939,51 @@ Type TAudience
 		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen
 	End Method
 
-	Method CutBorders:TAudience(minimum:Float, maximum:Float)
+	Method CutBordersFloat:TAudience(minimum:Float, maximum:Float)
+		CutMinimumFloat(minimum)
+		CutMaximumFloat(maximum)
+		Return Self
+	End Method
+	
+	Method CutBorders:TAudience(minimum:TAudience, maximum:TAudience)
 		CutMinimum(minimum)
 		CutMaximum(maximum)
 		Return Self
-	End Method
+	End Method	
 
-	Method CutMinimum:TAudience(value:float)
-		If Children < value Then Children = value
-		If Teenagers < value Then Teenagers = value
-		If HouseWifes < value Then HouseWifes = value
-		If Employees < value Then Employees = value
-		If Unemployed < value Then Unemployed = value
-		If Manager < value Then Manager = value
-		If Pensioners < value Then Pensioners = value
-		If Women < value Then Women = value
-		If Men < value Then Men = value
+	Method CutMinimumFloat:TAudience(value:float)
+		CutMinimum(TAudience.CreateAndInitValue(value))
 		Return Self
 	End Method
 
-	Method CutMaximum:TAudience(value:float)
-		If Children > value Then Children = value
-		If Teenagers > value Then Teenagers = value
-		If HouseWifes > value Then HouseWifes = value
-		If Employees > value Then Employees = value
-		If Unemployed > value Then Unemployed = value
-		If Manager > value Then Manager = value
-		If Pensioners > value Then Pensioners = value
-		If Women > value Then Women = value
-		If Men > value Then Men = value
+	Method CutMinimum:TAudience(minimum:TAudience)
+		If Children < minimum.Children Then Children = minimum.Children
+		If Teenagers < minimum.Teenagers Then Teenagers = minimum.Teenagers
+		If HouseWifes < minimum.HouseWifes Then HouseWifes = minimum.HouseWifes
+		If Employees < minimum.Employees Then Employees = minimum.Employees
+		If Unemployed < minimum.Unemployed Then Unemployed = minimum.Unemployed
+		If Manager < minimum.Manager Then Manager = minimum.Manager
+		If Pensioners < minimum.Pensioners Then Pensioners = minimum.Pensioners
+		If Women < minimum.Women Then Women = minimum.Women
+		If Men < minimum.Men Then Men = minimum.Men
+		Return Self
+	End Method		
+
+	Method CutMaximumFloat:TAudience(value:float)
+		CutMaximum(TAudience.CreateAndInitValue(value))
+		Return Self
+	End Method	
+	
+	Method CutMaximum:TAudience(maximum:TAudience)
+		If Children > maximum.Children Then Children = maximum.Children
+		If Teenagers > maximum.Teenagers Then Teenagers = maximum.Teenagers
+		If HouseWifes > maximum.HouseWifes Then HouseWifes = maximum.HouseWifes
+		If Employees > maximum.Employees Then Employees = maximum.Employees
+		If Unemployed > maximum.Unemployed Then Unemployed = maximum.Unemployed
+		If Manager > maximum.Manager Then Manager = maximum.Manager
+		If Pensioners > maximum.Pensioners Then Pensioners = maximum.Pensioners
+		If Women > maximum.Women Then Women = maximum.Women
+		If Men > maximum.Men Then Men = maximum.Men
 		Return Self
 	End Method
 
@@ -1225,17 +1238,16 @@ Type TAudienceAttraction Extends TAudience
 	Field GenreTargetGroupMod:TAudience
 	Field PublicImageMod:TAudience
 	Field TrailerMod:TAudience
-	Field FlagsMod:TAudience
-	Field AudienceFlowBonus:TAudience
-
+	Field MiscMod:TAudience	
 	Field QualityOverTimeEffectMod:Float
 	Field GenreTimeMod:Float
-	Field NewsShowBonus:TAudience
+	Field LuckMod:TAudience
+	
+	Field AudienceFlowBonus:TAudience
 	Field SequenceEffect:TAudience
 
 	Field BaseAttraction:TAudience
-	Field BlockAttraction:TAudience
-	Field FinalAttraction:TAudience
+	Field FinalAttraction:TAudience	
 	Field PublicImageAttraction:TAudience
 
 	Field Genre:Int
@@ -1251,9 +1263,16 @@ Type TAudienceAttraction Extends TAudience
 	Method SetPlayerId(playerId:Int)
 		Self.Id = playerId
 		Self.BaseAttraction.Id = playerId
-		Self.BlockAttraction.Id = playerId
 		Self.FinalAttraction.Id = playerId
 		Self.PublicImageAttraction.Id = playerId
+	End Method
+	
+	Method SetFixAttraction:TAudienceAttraction(attraction:TAudience)
+		Self.BaseAttraction = attraction.Copy()
+		Self.FinalAttraction = attraction.Copy()
+		Self.PublicImageAttraction = attraction.Copy()
+		Self.SetValuesFrom(attraction)	
+		Return Self
 	End Method
 
 	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
@@ -1265,17 +1284,19 @@ Type TAudienceAttraction Extends TAudience
 		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
 		If PublicImageMod Then PublicImageMod.Add(audienceAttr.PublicImageMod)
 		If TrailerMod Then TrailerMod.Add(audienceAttr.TrailerMod)
-		If FlagsMod Then FlagsMod.Add(audienceAttr.FlagsMod)
+		If MiscMod Then MiscMod.Add(audienceAttr.MiscMod)
 		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
 		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
 		GenreTimeMod :+ audienceAttr.GenreTimeMod
-		If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)
+		If LuckMod Then MiscMod.Add(audienceAttr.LuckMod)
+		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
+		
+		'If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)
 		If SequenceEffect Then SequenceEffect.Add(audienceAttr.SequenceEffect)
 		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
-		If BlockAttraction Then BlockAttraction.Add(audienceAttr.BlockAttraction)
 		If FinalAttraction Then FinalAttraction.Add(audienceAttr.FinalAttraction)
 		If PublicImageAttraction Then PublicImageAttraction.Add(audienceAttr.PublicImageAttraction)
-
+		
 		Return Self
 	End Method
 
@@ -1287,119 +1308,57 @@ Type TAudienceAttraction Extends TAudience
 		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
 		If PublicImageMod Then PublicImageMod.MultiplyFloat(factor)
 		If TrailerMod Then TrailerMod.MultiplyFloat(factor)
-		If FlagsMod Then FlagsMod.MultiplyFloat(factor)
+		If MiscMod Then MiscMod.MultiplyFloat(factor)
 		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
 		QualityOverTimeEffectMod :* factor
 		GenreTimeMod :* factor
-		If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
+		If LuckMod Then LuckMod.MultiplyFloat(factor)
+		'If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
 		If SequenceEffect Then SequenceEffect.MultiplyFloat(factor)
-		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)
-		If BlockAttraction Then BlockAttraction.MultiplyFloat(factor)
+		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)		
 		If FinalAttraction Then FinalAttraction.MultiplyFloat(factor)
 		If PublicImageAttraction Then PublicImageAttraction.MultiplyFloat(factor)
-
+		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
+		
 		Return Self
 	End Method
 
-	Method CalculateBaseAttraction()
-		Local Sum:TAudience = new TAudience
-		Sum.AddFloat(GenrePopularityMod)
-		Sum.Add(GenreTargetGroupMod)
-		Sum.Add(PublicImageMod)
-		Sum.Add(TrailerMod)
-		Sum.Add(FlagsMod)
-		Sum.AddFloat(1)
-
-		Sum.MultiplyFloat(Quality)
-		Self.BaseAttraction = Sum.Copy()
-		Self.BaseAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
-		Self.SetValuesFrom(Sum)
-	End Method
-	rem
-	Method CalculateBroadcastAttraction()
-		Local Sum:TAudience = new TAudience
-		Sum.Add(BaseAttraction)
-		If AudienceFlowBonus <> Null Then
-			Sum.Add(AudienceFlowBonus)
-		EndIf
-
-		Self.BroadcastAttraction = Sum.Copy()
-		Self.BroadcastAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
-		Self.SetValuesFrom(Sum)
-	End Method
-	endrem
-	Method CalculateBlockAttraction()
-		Local Sum:TAudience = new TAudience
-		Sum.AddFloat(QualityOverTimeEffectMod)
-		Sum.AddFloat(GenreTimeMod)
-		'Sum.AddFloat(NewsShowMod)
-		Sum.AddFloat(1)
-
-		Sum.Multiply(BaseAttraction)
-		If NewsShowBonus <> Null Then
-			Sum.Add(NewsShowBonus)
-		EndIf
-
-		Self.BlockAttraction = Sum.Copy()
-		Self.BlockAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
-		Self.SetValuesFrom(Sum)
-	End Method
-
-	Method CalculateFinalAttraction()
-		Local Sum:TAudience = Self.BlockAttraction.Copy()
-		Sum.Add(SequenceEffect)
-
-		Self.FinalAttraction = Sum
-		Self.BlockAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
-		Self.SetValuesFrom(Sum)
-	End Method
-
-	'Die PublicImageAttraction wird dafür verwendet um zu sehen, wie gut das Programm plaziert war und wie die Qualität war.
-	'Damit wird das PublicImage beeinflusst.
-	Method CalculatePublicImageAttraction()
-		Local Sum:TAudience = new TAudience
-		Sum.AddFloat(GenrePopularityMod)
-		Sum.Add(GenreTargetGroupMod)
-		'Sum.Add(PublicImageMod)
-		Sum.Add(TrailerMod)
-		Sum.Add(FlagsMod)
-		Sum.AddFloat(1)
-
-		Sum.MultiplyFloat(Quality)
-
-		If AudienceFlowBonus <> Null Then
-			Sum.Add(AudienceFlowBonus)
-		EndIf
-
-		Local Sum2:TAudience = new TAudience
-		'Sum2.AddFloat(QualityOverTimeEffectMod)
-		Sum2.AddFloat(GenreTimeMod)
-		'Sum2.AddFloat(NewsShowMod)
-		Sum2.AddFloat(1)
-
-		Sum2.Multiply(Sum)
-
-		Self.PublicImageAttraction = Sum2.Copy()
-		Self.PublicImageAttraction.Id = Self.Id 'Wahrscheinlich überflüssig
-	End Method
+	Method Recalculate()
+		Local result:TAudience = new TAudience
+		result.AddFloat(GenrePopularityMod)
+		result.Add(GenreTargetGroupMod)	
+		result.Add(TrailerMod)
+		result.Add(MiscMod)
+		result.AddFloat(GenreTimeMod)
+		result.AddFloat(QualityOverTimeEffectMod)
+		
+		Self.PublicImageAttraction = result.Copy()
+		Self.PublicImageAttraction.AddFloat(1)
+		Self.PublicImageAttraction.MultiplyFloat(Quality)
+				
+		result.Add(PublicImageMod)
+		result.Add(LuckMod)
+		
+		result.AddFloat(1)		
+		result.MultiplyFloat(Quality)			
+		result.Add(AudienceFlowBonus)
+		Self.BaseAttraction = result.Copy()
+				
+		'result.Add(AudienceFlowBonus)
+		result.Add(SequenceEffect)
+		
+		Self.FinalAttraction = result		
+		Self.SetValuesFrom(result)	
+	End Method	
 
 	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
-		Id = otherAudienceAttraction.Id 'Wahrscheinlich überflüssig
 		Quality = otherAudienceAttraction.Quality
 		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
 		GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod
-		PublicImageMod = otherAudienceAttraction.PublicImageMod
 		TrailerMod = otherAudienceAttraction.TrailerMod
-		FlagsMod = otherAudienceAttraction.FlagsMod
-
-		'AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
-
-		BaseAttraction = otherAudienceAttraction.BaseAttraction
-		'BroadcastAttraction = otherAudienceAttraction.BroadcastAttraction
-		'FinalAttraction = otherAudienceAttraction.FinalAttraction
-		'PublicImageAttraction = otherAudienceAttraction.PublicImageAttraction
-
-		Self.SetValuesFrom(otherAudienceAttraction)
+		MiscMod = otherAudienceAttraction.MiscMod
+		PublicImageMod = otherAudienceAttraction.PublicImageMod
+		AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
 	End Method
 End Type
 
@@ -1453,16 +1412,16 @@ Type TSequenceCalculation
 		Local riseModCopy:TAudience
 		Local shrinkModCopy:TAudience
 
-		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBorders(0.8, 1.25)
-		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBorders(0.25, 1.25)
+		If riseMod <> null Then riseModCopy = riseMod.Copy().CutBordersFloat(0.8, 1.25)
+		If shrinkMod <> null Then shrinkModCopy = shrinkMod.Copy().CutBordersFloat(0.25, 1.25)
 
 		For Local i:Int = 1 To 9 'Für jede Zielgruppe
 			If Predecessor
-				predecessorValue = Predecessor.BlockAttraction.GetValue(i)
+				predecessorValue = Predecessor.FinalAttraction.GetValue(i)
 			Else
 				predecessorValue = 0
 			EndIf
-			successorValue = Successor.BlockAttraction.GetValue(i)
+			successorValue = Successor.BaseAttraction.GetValue(i)
 
 			Local riseModTemp:Float = 1
 			If riseModCopy Then riseModTemp = riseModCopy.GetValue(i)
@@ -1474,7 +1433,8 @@ Type TSequenceCalculation
 			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp, predShareOnRiseForTG, predShareOnShrinkForTG)
 
 			result.SetValue(i, sequence)
-		Next
+		Next							
+		
 		Return result
 	End Method
 

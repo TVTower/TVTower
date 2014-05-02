@@ -35,7 +35,7 @@ Type TBroadcastMaterial	extends TOwnedGameObject {_exposeToLua="selected"}
 
 
 	'needed for all extending objects
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False ) Abstract
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) Abstract
 
 	'needed for all extending objects
 	Method GetQuality:Float()  {_exposeToLua}

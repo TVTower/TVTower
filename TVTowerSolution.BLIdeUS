@@ -14,28 +14,6 @@
       <SplitSize>150</SplitSize>
     </Included_File>
     <Included_File>
-      <FileName>source\basefunctions_asset.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_guielements.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
       <FileName>source\basefunctions_lua.bmx</FileName>
       <Document_Active>false</Document_Active>
       <Caret_Position>
@@ -58,17 +36,6 @@
       <SplitSize>150</SplitSize>
     </Included_File>
     <Included_File>
-      <FileName>source\basefunctions_resourcemanager.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
       <FileName>source\basefunctions_scenemanager.bmx</FileName>
       <Document_Active>false</Document_Active>
       <Caret_Position>
@@ -81,17 +48,6 @@
     </Included_File>
     <Included_File>
       <FileName>source\basefunctions_screens.bmx</FileName>
-      <Document_Active>false</Document_Active>
-      <Caret_Position>
-        <X>0</X>
-        <Y>0</Y>
-      </Caret_Position>
-      <SplitVisible>false</SplitVisible>
-      <SplitVertical>false</SplitVertical>
-      <SplitSize>150</SplitSize>
-    </Included_File>
-    <Included_File>
-      <FileName>source\basefunctions_sprites.bmx</FileName>
       <Document_Active>false</Document_Active>
       <Caret_Position>
         <X>0</X>
@@ -523,7 +479,6 @@
     <Context_Directory>\</Context_Directory>
     <Project_Name>TVTower</Project_Name>
     <BuildStep>1</BuildStep>
-    <Icon_File_Location>C:\Program Files (x86)\BLIde\blide.ico</Icon_File_Location>
     <Embed_Os_Theme>true</Embed_Os_Theme>
     <Publish_as_ConsoleApp>false</Publish_as_ConsoleApp>
     <Debug_Enabled_Publish>false</Debug_Enabled_Publish>

@@ -3,7 +3,7 @@
 	Field AudienceAttraction:TAudience
 	Field Popularity:TGenrePopularity
 
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience) Abstract
+	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase) Abstract
 	rem
 	Method GetSequence:TAudience(predecessor:TAudienceAttraction, successor:TAudienceAttraction, effectRise:Float, effectShrink:Float)
 		'genreDefintion.AudienceAttraction.Copy()
@@ -83,7 +83,7 @@ Type TNewsGenreDefinition Extends TGenreDefinitionBase
 		'Return result
 	End Method
 
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience)
+	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
 		Return TAudience.CreateAndInitValue(1) 'TODO: Prüfen ob hier auch was zu machen ist?
 	End Method
 End Type
@@ -133,16 +133,16 @@ Type TMovieGenreDefinition Extends TGenreDefinitionBase
 		'print "OutcomeMod: " + OutcomeMod + " | ReviewMod: " + ReviewMod + " | SpeedMod: " + SpeedMod
 	End Method
 
-	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase, baseAttractionFollower:TAudience)
-		Local genreKey:String = String.FromInt(followerDefinition.GenreId)
+	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase)
+		Local followerGenreKey:String = String.FromInt(followerDefinition.GenreId)
 		If GenreId = followerDefinition.GenreId Then 'Perfekter match!
-			Return TAudience.CreateAndInitValue(0.6)
-		Else If (GoodFollower.Contains(genreKey))
-			Return TAudience.CreateAndInitValue(0.4)
-		ElseIf (BadFollower.Contains(genreKey))
+			Return TAudience.CreateAndInitValue(1)
+		Else If (GoodFollower.Contains(followerGenreKey))
+			Return TAudience.CreateAndInitValue(0.7)
+		ElseIf (BadFollower.Contains(followerGenreKey))
 			Return TAudience.CreateAndInitValue(0.1)
 		Else
-			Return TAudience.CreateAndInitValue(0.25)
+			Return TAudience.CreateAndInitValue(0.35)
 		End If
 	End Method
 

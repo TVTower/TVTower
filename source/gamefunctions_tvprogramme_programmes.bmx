@@ -1465,7 +1465,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False )
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		result.BroadcastType = 1
 		result.Genre = licence.GetGenre()
@@ -1483,115 +1483,130 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
 			result.GenreTargetGroupMod.MultiplyFloat(1.2)
 			result.GenreTargetGroupMod.SubtractFloat(0.6)
-			result.GenreTargetGroupMod.CutBorders(-0.6, 0.6)
+			result.GenreTargetGroupMod.CutBordersFloat(-0.6, 0.6)
+
+			'4 - Trailer
+			result.TrailerMod = data.GetTrailerMod()
+			result.TrailerMod.SubtractFloat(1)
+
+			'5 - Flags und anderes
+			result.MiscMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
+			result.MiscMod.SubtractFloat(1)
 
 			Local player:TPlayer = Game.getPlayer(owner)
 			If player = Null Then Throw TNullObjectExceptionExt.Create("The programme '" + self.licence.title + "' have no owner.")
 
-			'4 - Image
+			'6 - Image
 			result.PublicImageMod = player.PublicImage.GetAttractionMods() '0 bis 2
 			result.PublicImageMod.MultiplyFloat(0.35)
 			result.PublicImageMod.SubtractFloat(0.35)
-			result.PublicImageMod.CutBorders(-0.35, 0.35)
-
-			'5 - Trailer
-			result.TrailerMod = data.GetTrailerMod()
-			result.TrailerMod.SubtractFloat(1)
-
-			'6 - Flags
-			result.FlagsMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
-			result.FlagsMod.SubtractFloat(1)
-
-			result.CalculateBaseAttraction()
-
-			rem
-			'7 - Audience Flow
-			'TODO: AudienceFlow muss sich anpassen... ein fixer Bonus über Stunden hinweg ist nicht gut... eventuell einen Teilschritt sogar zurück zu exklusiven Zuschauern.
-			If lastMovieBlockAttraction Then
-				Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
-				Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
-
-				result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
-				result.AudienceFlowBonus.Multiply(audienceFlowMod)
-			Else
-				result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
-				result.AudienceFlowBonus.MultiplyFloat(0.2)
-			End If
-			endrem
-			'result.CalculateBroadcastAttraction()
+			result.PublicImageMod.CutBordersFloat(-0.35, 0.35)			
 		Else
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
 
-		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		If (result.Quality < 0.5)
 			result.QualityOverTimeEffectMod = Max(-0.2, Min(0.1, ((result.Quality - 0.5)/3) * (block - 1)))
 		Else
 			result.QualityOverTimeEffectMod = Max(-0.2, Min(0.1, ((result.Quality - 0.5)/6) * (block - 1)))
 		EndIf
 
-		'9 - Genres <> Sendezeit
+		'8 - Genres <> Sendezeit
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
 
-		'10 - News-Mod
-		'result.NewsShowBonus = lastNewsBlockAttraction.BaseAttraction.Copy().DivideFloat(2).SubtractFloat(0.1)
-		'If lastNewsBlockAttraction Then
-		'	result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
-		'EndIf
+		'9 - Zufall
+		If withLuckEffect Then
+			result.LuckMod = TAudience.CreateAndInitValue(0) 
+		EndIf
+		
+		result.Recalculate()
 
-		result.CalculateBlockAttraction()
-
-		'Sequence
-		'If (Game.playerID = 1) Then DebugStop
-
+		'10 - Audience Flow
+		If block = 1 And lastMovieBlockAttraction Then 'AudienceFlow
+			result.AudienceFlowBonus = GetAudienceFlowBonus(lastMovieBlockAttraction, result, lastNewsBlockAttraction)
+		ElseIf lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus Then
+			result.AudienceFlowBonus = lastMovieBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
+		EndIf			
+		
+		result.Recalculate()
+		
+		'11 - Sequence
 		If withSequenceEffect Then
 			Local seqCal:TSequenceCalculation = New TSequenceCalculation
 			seqCal.Predecessor = lastNewsBlockAttraction
 			seqCal.Successor = result					
 						
 			If block = 1 And lastMovieBlockAttraction Then 'AudienceFlow				
-				seqCal.PredecessorShareOnShrink = GetAudienceFlowMod(lastMovieBlockAttraction, result)
-				seqCal.PredecessorShareOnRise = seqCal.PredecessorShareOnShrink.Copy().DivideFloat(2)
-			Else				
+				seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.3)
+				seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.2)
+			Else							
 				seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.4)			
 				seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.2)
 			End If
 			
 			Local seqMod:TAudience = genreDefintion.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15			
-			result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)
+			result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)										
 			
-	'DebugStop	
-			
+			Local borderMax:TAudience = genreDefintion.AudienceAttraction.Copy()
+			borderMax.DivideFloat(10)
+			borderMax.AddFloat(0.1) '0.1 - 0.2
+			borderMax.CutBordersFloat(0.1, 0.2)
+			Local borderMin:TAudience = TAudience.CreateAndInitValue(-0.2)
+			borderMin.Add(genreDefintion.AudienceAttraction.Copy().DivideFloat(10)) '-2 - -0.7
+	
+			result.SequenceEffect.CutBorders(borderMin, borderMax)
 		EndIf
 
-		'Audience-Flow
-		rem
-		If lastMovieBlockAttraction Then
-			Local lastGenreDefintion:TMovieGenreDefinition = Game.BroadcastManager.GetMovieGenreDefinition(lastMovieBlockAttraction.Genre)
-			Local modBase:TAudience = lastGenreDefintion.GetAudienceFlowModBase(result.Genre)
-
-
-			Local audienceFlowMod:TAudience = lastGenreDefintion.GetAudienceFlowMod(result.Genre, result.BaseAttraction)
-
-			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
-			result.AudienceFlowBonus.Multiply(audienceFlowMod)
-		Else
-			result.AudienceFlowBonus = lastNewsBlockAttraction.Copy()
-			result.AudienceFlowBonus.MultiplyFloat(0.2)
-		End If
-		endrem
-
-		'result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
-
-		result.CalculateFinalAttraction()
-
-		result.CalculatePublicImageAttraction()
+		result.Recalculate()
 
 		Return result
 	End Method
 
-	Function GetAudienceFlowMod:TAudience(lastMovieBlockAttraction:TAudienceAttraction, currentAttraction:TAudienceAttraction )
-		Return lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition, currentAttraction.BaseAttraction)
+	Function GetAudienceFlowBonus:TAudience(lastMovieBlockAttraction:TAudienceAttraction, currentAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction )				
+		Local flowModBase:TAudience = new TAudience
+		Local flowModBaseTemp:Float
+
+		'AudienceFlow anhand der Differenz und ob steigend oder sinkend. Nur sinkend gibt richtig AudienceFlow
+		For Local i:Int = 1 To 9 'Für jede Zielgruppe
+			Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetValue(i), lastNewsBlockAttraction.FinalAttraction.GetValue(i)) 			
+			Local successorValue:Float = currentAttraction.BaseAttraction.GetValue(i) 'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
+			
+			If (predecessorValue < successorValue) 'Steigende Quote = kaum AudienceFlow
+				flowModBaseTemp = predecessorValue * 0.05				
+			Else 'Sinkende Quote
+				flowModBaseTemp = (predecessorValue - successorValue) * 0.75				
+			Endif
+			
+			flowModBase.SetValue(i, Max(0.05, flowModBaseTemp))			
+		Next
+		
+		'Wie gut ist der Follower? Gleiche Genre passen perfekt zusammen, aber es gibt auch gute und schlechte Followerer anderer genre
+		Local flowMod:TAudience
+		If lastMovieBlockAttraction.GenreDefinition Then
+			flowMod = lastMovieBlockAttraction.GenreDefinition.GetAudienceFlowMod(currentAttraction.GenreDefinition)
+		Else
+			flowMod = TAudience.CreateAndInitValue(0) 'Ganze schlechter Follower
+		EndIf
+		
+		'Ermittlung des Maximalwertes für den Bonus. Wird am Schluss gebraucht
+		Local flowMaximum:TAudience = currentAttraction.BaseAttraction.Copy()
+		flowMaximum.DivideFloat(2)		
+		flowMaximum.CutMaximum( lastNewsBlockAttraction.FinalAttraction.Copy().DivideFloat(2)) 'Die letzte News-Show gibt an, wie viel überhaupt noch dran sind um in den Flow zu kommen.
+		flowMaximum.CutBordersFloat(0.1, 0.35)		
+		
+		
+		'Der Flow hängt nicht nur von den zuvorigen Zuschauern ab, sondern zum Teil auch von der Qualität des Nachfolgeprogrammes.
+		Local attrMod:TAudience = currentAttraction.BaseAttraction.Copy()
+		attrMod.DivideFloat(2)
+		attrMod.CutBordersFloat(0, 0.6)
+		attrMod.AddFloat(0.6) '0.6 - 1.2
+		
+		flowModBase.CutMaximum(flowMaximum)
+		flowModBase.Multiply(attrMod) '0.6 - 1.2
+		flowModBase.Multiply(flowMod) '0.1 - 1
+		flowModBase.CutMaximum(flowMaximum)
+		Return flowModBase
 	End Function
 
 

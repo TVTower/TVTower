@@ -838,7 +838,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False )
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		'TODO: @Manuel - hier brauchen wir eine geeignete Berechnung :D
 		If lastMovieBlockAttraction then return lastMovieBlockAttraction
 
@@ -867,10 +867,10 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 			'              waeren ja dann wieder Werbung)
 
 			'6 - Flags
-			result.FlagsMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
-			result.FlagsMod.SubtractFloat(1)
+			result.MiscMod = TAudience.CreateAndInit(1, 1, 1, 1, 1, 1, 1, 1, 1)
+			result.MiscMod.SubtractFloat(1)
 
-			result.CalculateBaseAttraction()
+			'result.CalculateBaseAttraction()
 		Else
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
@@ -882,15 +882,13 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 		result.GenreTimeMod = genreDefintion.TimeMods[hour] - 1 'Genre/Zeit-Mod
 
 		'10 - News-Mod
-		result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
+		'result.NewsShowBonus = lastNewsBlockAttraction.Copy().MultiplyFloat(0.2)
 
-		result.CalculateBlockAttraction()
+		'result.CalculateBlockAttraction()
 
 		'result.SequenceEffect = genreDefintion.GetSequence(lastNewsBlockAttraction, result, 0.1, 0.5)
 
-		result.CalculateFinalAttraction()
-
-		result.CalculatePublicImageAttraction()
+		result.Recalculate()
 
 		Return result
 	End Method

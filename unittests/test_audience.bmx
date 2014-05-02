@@ -100,13 +100,13 @@ Type TAudienceTest Extends TTest
 	
 	Method CutMinimum() { test }
 		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
-		audience.CutMinimum(480)				
+		audience.CutMinimumFloat(480)				
 		assertEqualsAud(TAudience.CreateAndInit(480, 480, 480, 480, 500, 600, 700, 800, 900 ), audience)	
 	End Method	
 	
 	Method CutMaximum() { test }
 		Local audience:TAudience = TAudience.CreateAndInit(100, 200, 300, 400, 500, 600, 700, 800, 900 )
-		audience.CutMaximum(480)				
+		audience.CutMaximumFloat(480)				
 		assertEqualsAud(TAudience.CreateAndInit(100, 200, 300, 400, 480, 480, 480, 480, 480 ), audience)	
 	End Method
 	

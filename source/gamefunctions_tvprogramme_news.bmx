@@ -257,7 +257,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for a newsShow (3 news)
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False )
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
 		resultAudienceAttr.BroadcastType = 2
 		resultAudienceAttr.Genre = -1
@@ -265,20 +265,20 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
 		resultAudienceAttr.PublicImageMod = New TAudience
 		resultAudienceAttr.TrailerMod = New TAudience
-		resultAudienceAttr.FlagsMod = New TAudience
+		resultAudienceAttr.MiscMod = New TAudience
 		resultAudienceAttr.AudienceFlowBonus = New TAudience
 		resultAudienceAttr.SequenceEffect = New TAudience
 		resultAudienceAttr.BaseAttraction = New TAudience
-		resultAudienceAttr.BlockAttraction = New TAudience
 		resultAudienceAttr.FinalAttraction = New TAudience
 		resultAudienceAttr.PublicImageAttraction = New TAudience
+		resultAudienceAttr.LuckMod = New TAudience		
 
 		Local tempAudienceAttr:TAudienceAttraction = null
 		for local i:int = 0 to 2
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
 			'               es koennte ja jemand "Trailer" in die News
 			'               verpacken - siehe RTL2 und Co.
-			tempAudienceAttr = CalculateNewsBlockAudienceAttraction(TNews(news[i]), lastMovieBlockAttraction )
+			tempAudienceAttr = CalculateNewsBlockAudienceAttraction(TNews(news[i]), lastMovieBlockAttraction, withSequenceEffect, withLuckEffect )
 
 			'different weight for news slots
 			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.5))
@@ -288,19 +288,9 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		Return resultAudienceAttr
 	End Method
 
-	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction)
+	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False)
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		Local genreDefintion:TNewsGenreDefinition = null
-
-		'Local result:TAudienceAttraction = Null
-
-		'Local rawQuality:Float = news.GetQuality()
-		'Local quality:Float = Max(0, Min(99, rawQuality))
-
-		'result = CalculateQuotes(quality) 'Genre/Zielgruppe-Mod
-		'result.Quality = rawQuality
-
-		'Return result
 
 		'1 - Qualität des Programms
 		If news Then
@@ -310,68 +300,77 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		result.Quality = Max(0.01, Min(0.99, result.Quality))
 
 		If genreDefintion Then
-			'2 - Mod: Trend
-			result.GenrePopularityMod = (genreDefintion.Popularity.Popularity / 100) 'Popularity => Wert zwischen -50 und +50
+			'2 - Mod: Genre-Popularität / Trend
+			result.GenrePopularityMod = Max(-0.5, Min(0.5, genreDefintion.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
 
 			'3 - Genre <> Zielgruppe
 			result.GenreTargetGroupMod = genreDefintion.AudienceAttraction.Copy()
-			result.GenreTargetGroupMod.SubtractFloat(0.5)
+			result.GenreTargetGroupMod.MultiplyFloat(1.2)
+			result.GenreTargetGroupMod.SubtractFloat(0.6)
+			result.GenreTargetGroupMod.CutBordersFloat(-0.6, 0.6)
 		Else
+			'2 - Mod: Genre-Popularität / Trend
 			result.GenrePopularityMod = 0
+			'3 - Genre <> Zielgruppe
 			result.GenreTargetGroupMod = TAudience.CreateAndInitValue(0)
 		Endif
-
+		
+		'4 - Trailer
+		result.TrailerMod = null		
+		
+		'5 - Flags und anderes
+		result.MiscMod = null
+		
 		'4 - Image
-		result.PublicImageMod = Game.getPlayer(owner).PublicImage.GetAttractionMods()
-		result.PublicImageMod.SubtractFloat(1)
+		Local player:TPlayer = Game.getPlayer(owner)
+		If player = Null Then Throw TNullObjectExceptionExt.Create("The programme '" + news.GetTitle() + "' have no owner.")
 
-		'5 - Trailer
-		result.TrailerMod = null
-
-		'6 - Flags
-		result.FlagsMod = null
-
-		result.CalculateBaseAttraction()
-
-		'7 - Audience Flow
-		rem
-		If lastMovieBlockAttraction <> Null Then
-			result.AudienceFlowBonus = lastMovieBlockAttraction.Copy()
-			Local audienceFlowFactor:Float = 0.1 + (result.Quality / 3)
-			result.AudienceFlowBonus.MultiplyFloat(audienceFlowFactor)
-		End If
-		endrem
-
-		'result.CalculateBroadcastAttraction()
-
-		'8 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		'6 - Image
+		result.PublicImageMod = player.PublicImage.GetAttractionMods() '0 bis 2
+		result.PublicImageMod.MultiplyFloat(0.35)
+		result.PublicImageMod.SubtractFloat(0.35)
+		result.PublicImageMod.CutBordersFloat(-0.35, 0.35)			
+		
+		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
 		result.QualityOverTimeEffectMod = 0
-
-		'9 - Genres <> Sendezeit
+		
+		'8 - Genres <> Sendezeit
 		result.GenreTimeMod = 0 'TODO
 
-		'10 - News-Mod
-		'result.NewsShowMod = lastNewsBlockAttraction
+		'9 - Zufall
+		If withLuckEffect Then
+			result.LuckMod = TAudience.CreateAndInitValue(0) 
+		EndIf
+		
+		'10 - Audience Flow
+		If lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus Then
+			result.AudienceFlowBonus = lastMovieBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
+		EndIf	
 
-		result.CalculateBlockAttraction()
-
-		'If (Game.playerID = 1) Then DebugStop
-
-		'Sequence
-
-		rem
-		If genreDefintion Then
-			result.SequenceEffect = genreDefintion.GetSequence(lastMovieBlockAttraction, result, 0.25, 0.35)
-		Else
-			result.SequenceEffect = TGenreDefinitionBase.GetSequenceDefault(lastMovieBlockAttraction, result, 0.25, 0.35)
-		Endif
-
-		Print "Seq: " + result.SequenceEffect.ToString()
-		endrem
-
-		result.CalculateFinalAttraction()
-
-		result.CalculatePublicImageAttraction()
+		result.Recalculate()
+		
+		'11 - Sequence
+		If withSequenceEffect Then
+			Local seqCal:TSequenceCalculation = New TSequenceCalculation
+			seqCal.Predecessor = lastMovieBlockAttraction
+			seqCal.Successor = result					
+						
+			seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.5)			
+			seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.5)
+			
+			Local seqMod:TAudience
+			If genreDefintion Then
+				seqMod = genreDefintion.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15			
+			Else
+				seqMod = TAudience.CreateAndInitValue(1)
+			EndIf
+			
+			result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)					
+			
+			result.SequenceEffect.CutBordersFloat(-0.4, 0.3)
+		EndIf
+		
+		result.Recalculate()
 
 		Return result
 	End Method
@@ -459,7 +458,7 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 
 
 	'returns the audienceAttraction for one (single!) news
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False )
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		'each potential news audience is calculated
 		'as if this news is the only one in the show
 		'at the end someone (the engine) has to weight the

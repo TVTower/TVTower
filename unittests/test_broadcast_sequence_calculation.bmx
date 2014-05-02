@@ -4,13 +4,13 @@ Type SequenceCalculationTest Extends TTest
 		sequenceCalc.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.25)
 		sequenceCalc.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.5)
 		sequenceCalc.Successor = New TAudienceAttraction		
-		sequenceCalc.Successor.BlockAttraction = TAudience.CreateAndInitValue(100)
-		sequenceCalc.Successor.CalculateFinalAttraction()
+		sequenceCalc.Successor.BaseAttraction = TAudience.CreateAndInitValue(100)
+		'sequenceCalc.Successor.Recalculate() 
 
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(-25), sequenceCalc.GetSequenceDefault())
 		
-		sequenceCalc.Successor.BlockAttraction = TAudience.CreateAndInit(10, 20, 30, 40, 50, 60, 70, 80, 90)
-		sequenceCalc.Successor.CalculateFinalAttraction()
+		sequenceCalc.Successor.BaseAttraction = TAudience.CreateAndInit(10, 20, 30, 40, 50, 60, 70, 80, 90)
+		'sequenceCalc.Successor.CalculateFinalAttraction()
 		TestAssert.assertEqualsAud(TAudience.CreateAndInit(-2.5, -5, -7.5, -10, -12.5, -15, -17.5, -20, -22.5), sequenceCalc.GetSequenceDefault())
 		
 		Local riseMod:TAudience = TAudience.CreateAndInitValue(1.3)
@@ -29,15 +29,15 @@ Type SequenceCalculationTest Extends TTest
 		
 		
 		sequenceCalc.Predecessor = New TAudienceAttraction
-		sequenceCalc.Predecessor.BlockAttraction = TAudience.CreateAndInitValue(100)
-		sequenceCalc.Predecessor.CalculateFinalAttraction()
-		sequenceCalc.Successor.BlockAttraction = TAudience.CreateAndInitValue(0)
-		sequenceCalc.Successor.CalculateFinalAttraction()		
+		sequenceCalc.Predecessor.BaseAttraction = TAudience.CreateAndInitValue(100)
+		'sequenceCalc.Predecessor.CalculateFinalAttraction()
+		sequenceCalc.Successor.BaseAttraction = TAudience.CreateAndInitValue(0)
+		'sequenceCalc.Successor.CalculateFinalAttraction()		
 		
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(50), sequenceCalc.GetSequenceDefault())
 		
-		sequenceCalc.Predecessor.BlockAttraction = TAudience.CreateAndInit(10, 20, 30, 40, 50, 60, 70, 80, 100)
-		sequenceCalc.Predecessor.CalculateFinalAttraction()
+		sequenceCalc.Predecessor.BaseAttraction = TAudience.CreateAndInit(10, 20, 30, 40, 50, 60, 70, 80, 100)
+		'sequenceCalc.Predecessor.CalculateFinalAttraction()
 		TestAssert.assertEqualsAud(TAudience.CreateAndInit(5, 10, 15, 20, 25, 30, 35, 40, 50), sequenceCalc.GetSequenceDefault())
 		
 		riseMod = TAudience.CreateAndInitValue(1.5) 'Maximum wird auf 1.3 reduziert
