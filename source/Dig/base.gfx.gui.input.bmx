@@ -266,7 +266,11 @@ Type TGUIinput Extends TGUIobject
 		Local textPos:TPoint
 		Local widgetWidth:Int = rect.GetW()
 		If Not valueDisplacement
-			textPos = new TPoint.Init(5, (rect.GetH() - GetFont().GetMaxCharHeight()) /2)
+			'add "false" to GetMaxCharHeight so it ignores parts of
+			'characters with parts below baseline.
+			'avoids "above center"-look if value does not contain such
+			'characters
+			textPos = new TPoint.Init(5, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
 		Else
 			textPos = valueDisplacement.copy()
 		EndIf

@@ -1,6 +1,9 @@
 ﻿LANG_DE = Deutsch
 LANG_EN = Englisch
 
+GAME_TITLE = Spieltitel
+START_YEAR = Startjahr
+
 GAME_TIME = Spielzeit
 BETTY_FEELINGS = Bettys Gefühle für Dich
 

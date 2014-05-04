@@ -1,6 +1,9 @@
 ﻿LANG_DE = German
 LANG_EN = English
 
+GAME_TITLE = game title
+START_YEAR = start year
+
 GAME_TIME = Game time
 BETTY_FEELINGS = Bettys feelings about you
 

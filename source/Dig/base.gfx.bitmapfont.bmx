@@ -140,6 +140,7 @@ Type TBitmapFont
 	Field _charsEffectFuncConfig:TData[]
 	Field _pixmapFormat:int = PF_A8			'by default this is 8bit alpha only
 	Field _maxCharHeight:int = 0
+	Field _maxCharHeightAboveBaseline:int = 0
 	Field _hasEllipsis:int = -1
 
 	global drawToPixmap:TPixmap = null
@@ -305,9 +306,14 @@ Type TBitmapFont
 	End Method
 
 
-	Method getMaxCharHeight:int()
-		if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_")
-		return _maxCharHeight
+	Method getMaxCharHeight:int(includeBelowBaseLine:int=True)
+		if includeBelowBaseLine
+			if _maxCharHeight = 0 then _maxCharHeight = getHeight("gQ'_")
+			return _maxCharHeight
+		else
+			if _maxCharHeightAboveBaseline = 0 then _maxCharHeightAboveBaseline = getHeight("abCDE")
+			return _maxCharHeightAboveBaseline
+		endif
 	End Method
 
 

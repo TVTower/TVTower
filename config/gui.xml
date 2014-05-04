@@ -106,9 +106,9 @@
 				<child name="gfx_gui_input.active.M"	x="168"	y="228" 	w="12" 	h="36" />
 				<child name="gfx_gui_input.active.R"	x="180"	y="228" 	w="36" 	h="36" />
 
-				<child name="gfx_gui_overlay_tvchannel"	x="0"	y="265" 	w="24" 	h="24" />
-				<child name="gfx_gui_overlay_player"	x="24"	y="265" 	w="24" 	h="24" />
-				<child name="gfx_gui_overlay_disc"		x="48"	y="265" 	w="24" 	h="24" />
+				<child name="gfx_gui_overlay_tvchannel"	x="0"	y="265" 	w="24" 	h="23" />
+				<child name="gfx_gui_overlay_player"	x="24"	y="265" 	w="24" 	h="23" />
+				<child name="gfx_gui_overlay_disc"		x="48"	y="265" 	w="24" 	h="23" />
 
 				<!-- x217 instead of 216 to avoid "subpixel" at the left side -->
 				<child name="gfx_gui_box_context.TL"		x="217"	y="0" 	w="24" 	h="36" />

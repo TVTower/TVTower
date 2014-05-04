@@ -1759,9 +1759,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 0), "Spieltitel:", TColor.CreateGrey(50), name)
+		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 6), GetLocale("GAME_TITLE")+":", TColor.CreateGrey(50), name)
 		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), Game.title, 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 0), "Startjahr:", TColor.CreateGrey(50), name)
+		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 6), GetLocale("START_YEAR")+":", TColor.CreateGrey(50), name)
 		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "1985", 4, name)
 
 		Local checkboxHeight:Int = 0
