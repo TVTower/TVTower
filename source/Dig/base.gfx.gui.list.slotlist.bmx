@@ -357,7 +357,10 @@ Type TGUISlotList Extends TGUIListBase
 	Method AddItem:Int(item:TGUIobject, extra:Object=Null)
 		Local addToSlot:Int = -1
 		Local extraIsRawSlot:Int = False
-		If String(extra)<>"" Then addToSlot= Int( String(extra) );extraIsRawSlot=True
+		If String(extra) <> ""
+			addToSlot = Int( String(extra) )
+			extraIsRawSlot = True
+		Endif
 
 		'search for first free slot
 		If Self._autofillSlots Then addToSlot = Self.getFreeSlot()

@@ -107,7 +107,9 @@ Type TGUIChat Extends TGUIGameWindow
 
 
 	Method Create:TGUIChat(pos:TPoint, dimension:TPoint, limitState:String = "")
-		Super.CreateBase(pos, dimension, limitState)
+		'use "create" instead of "createBase" so the caption gets
+		'positioned similar
+		Super.Create(pos, dimension, limitState)
 
 		guiPanel = AddContentBox(0,0,GetContentScreenWidth()-10,-1)
 

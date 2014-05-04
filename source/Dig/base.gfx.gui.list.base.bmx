@@ -191,7 +191,7 @@ Type TGUIListBase Extends TGUIobject
 		If _dropOnTargetListenerLink Then EventManager.unregisterListenerByLink(_dropOnTargetListenerLink)
 
 		'is something dropping - check if it is this list
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropOnTarget, accept, Self)
+		_dropOnTargetListenerLink = EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropOnTarget, accept, Self)
 	End Method
 
 
@@ -455,7 +455,6 @@ endrem
 	'override default
 	Method onDrop:Int(triggerEvent:TEventBase)
 		'we could check for dragged element here
-
 		triggerEvent.setAccepted(True)
 		Return True
 	End Method
@@ -498,18 +497,35 @@ endrem
 				Return True
 			endif
 		EndIf
-
+'method A
 		'move item if possible
 		If fromList Then fromList.removeItem(item)
 		'try to add the item, if not able, readd
 		If Not toList.addItem(item, data)
-			If fromList And fromList.addItem(item) Then Return True
+			If fromList
+				if fromList.addItem(item) Then Return True
 
-			'not able to add to "toList" but also not to "fromList"
-			'so set veto and keep the item dragged
-			triggerEvent.setVeto()
+				'not able to add to "toList" but also not to "fromList"
+				'so set veto and keep the item dragged
+				triggerEvent.setVeto()
+				return False
+			endif
 		EndIf
 
+
+'method B
+rem
+		'-> this does not work as an "removal" might start things
+		'   the "add" needs to know
+		'also a list might only be able to add the object if that
+		'got removed before (multi slots, or some other behaviour)
+
+		'try to add the item, if able, remove from prior one
+		local doMove:int = True
+		If toList.addItem(item, data) and fromList
+			if not fromList.removeItem(item) then triggerEvent.setVeto()
+		endif
+endrem
 
 		Return True
 	End Function

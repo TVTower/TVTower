@@ -2785,9 +2785,9 @@ Type RoomHandler_Archive extends TRoomHandler
 		'we want to know if we hover a specific block - to show a datasheet
 		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverProgrammeLicence, "TGUIProgrammeLicence" )
 		'drop programme ... so sell/buy the thing
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeLicence, "TGUIProgrammeLicence" )
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicence, "TGUIProgrammeLicence" )
 		'drop programme on dude - add back to player's collection
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" )
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropProgrammeLicenceOnDude, "TGUIProgrammeLicence" )
 		'check right clicks on a gui block
 		EventManager.registerListenerFunction( "guiobject.onClick", onClickProgrammeLicence, "TGUIProgrammeLicence" )
 
@@ -4471,12 +4471,16 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'figure enters room - reset guilists if player
 		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, RoomCollection.GetFirstByDetails("adagency") )
 
+		'2014/05/04 (Ronny): commented out, currently no longer in use
 		'begin drop - to intercept if dropping to wrong list
-		EventManager.registerListenerFunction( "guiobject.onTryDropOnTarget", onTryDropContract, "TGuiAdContract" )
+		'EventManager.registerListenerFunction( "guiobject.onTryDropOnTarget", onTryDropContract, "TGuiAdContract" )
+
+		'instead of "guiobject.onDropOnTarget" the event "guiobject.onDropOnTargetAccepted"
+		'is only emitted if the drop is successful (so it "visually" happened)
 		'drop ... to vendor or suitcase
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropContract, "TGuiAdContract" )
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContract, "TGuiAdContract" )
 		'drop on vendor - sell things
-		EventManager.registerListenerFunction( "guiobject.onDropOnTarget", onDropContractOnVendor, "TGuiAdContract" )
+		EventManager.registerListenerFunction( "guiobject.onDropOnTargetAccepted", onDropContractOnVendor, "TGuiAdContract" )
 		'we want to know if we hover a specific block - to show a datasheet
 		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
 		'figure leaves room - only without dragged blocks
@@ -4562,9 +4566,19 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'fill all open slots in the agency
 		GetInstance().ReFillBlocks()
+
+Rem
+	ronny 04.05.14:
+	commented out the removal
+	- should be obsolete now as the update routine automatically
+	  recreates them BEFORE the room is visually left (screen change
+	  animation)
+	- commenting this out avoids "flickering" when leaving the room
+
 		'remove all gui elements - else the "dropped" one may still be in the
 		'suitcase...
-		GetInstance().RemoveAllGuiElements()
+		'GetInstance().RemoveAllGuiElements()
+EndRem
 
 		return TRUE
 	End Function
@@ -4918,8 +4932,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Function
 
 
-	'in case of right mouse button click we want to remove the
-	'block from the player's programmePlan
+	'in case of right mouse button click a dragged contract is
+	'placed at its original spot again
 	Function onClickContract:int(triggerEvent:TEventBase)
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
@@ -4928,9 +4942,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'ignore wrong types and NON-dragged items
 		if not guiAdContract or not guiAdContract.isDragged() then return FALSE
 
-		'will automatically rebuild at correct spot
 		'remove gui object
 		guiAdContract.remove()
+
+		'rebuild at correct spot
+		GetInstance().RefreshGuiElements()
 
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
@@ -4984,6 +5000,14 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End function
 
 
+rem
+	2014/05/04 (Ronny):
+	This should be obsolete as you can still drop a cheap one in the
+	suitcase and then back to a "normal" list. We cannot see what
+	is the "original" list of an guiitem as there is no "isCheap"-flag
+	we could use as indicator. So .. just allow switching lists without
+	limits
+
 	'we intercept that event so we can avoid dropping from one
 	'vendor list to another
 	Function onTryDropContract:int( triggerEvent:TEventBase )
@@ -4999,18 +5023,34 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if not senderList then return FALSE
 
 		'just dropping back to origin - no problem
-		if senderList = receiverList then return TRUE
+		If senderList = receiverList then return TRUE
 
+'new approach 2014/05/04 (Ronny)
+		'allow switching between "lists" and suitcase, but not between
+		'"cheap" and "normal" list
+		'-> this allows to place a "not droppable on suitcase" contract
+		'   (eg. no space left in suitcase) back on the desk without
+		'   exactly hitting the correct list the contract originated from.
+		If senderList = GuiListCheap or receiverList = GuiListCheap
+			For local list:TGUIAdContractSlotList = eachin GuiListNormal
+				If senderList = list or receiverList = list
+					triggerEvent.setVeto()
+					return FALSE
+				Endif
+			Next
+		Endif
+
+'old approach
 		'do not allow changes between vendor lists ?
 		'->sender or receiver must be suitcase
-		if senderList <> GuiListSuitcase and receiverList <> GuiListSuitcase
-			triggerEvent.setVeto()
-			return FALSE
-		endif
+'		if senderList <> GuiListSuitcase and receiverList <> GuiListSuitcase
+'			triggerEvent.setVeto()
+'			return FALSE
+'		endif
 
 		return TRUE
 	End Function
-
+endrem
 
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
@@ -5030,17 +5070,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 
 		'find out if we sell it to the vendor or drop it to our suitcase
-		local toVendor:int = FALSE
-		for local i:int = 0 to GuiListNormal.length
-			if receiverList = GuiListNormal[i] then toVendor = true;exit
-		Next
-		if receiverList = GuiListCheap then toVendor = true
-
-		if toVendor
+		if receiverList <> GuiListSuitcase
 			guiAdContract.InitAssets( guiAdContract.getAssetName(-1, FALSE ), guiAdContract.getAssetName(-1, TRUE ) )
 
 			'no problem when dropping vendor programme to vendor..
 			if owner <= 0 then return TRUE
+
 			if not GetInstance().TakeContractFromPlayer(guiAdContract.contract, Game.playerID )
 				triggerEvent.setVeto()
 				return FALSE
@@ -5051,7 +5086,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			GetInstance().AddContract(guiAdContract.contract)
 		else
 			guiAdContract.InitAssets(guiAdContract.getAssetName(-1, TRUE ), guiAdContract.getAssetName(-1, TRUE ))
-
 			'no problem when dropping own programme to suitcase..
 			if owner = Game.playerID then return TRUE
 			if not GetInstance().GiveContractToPlayer(guiAdContract.contract, Game.playerID)
@@ -5060,8 +5094,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			endif
 		endIf
 
+		'2014/05/04 (Ronny): commented out, obsolete ?
 		'something changed...refresh missing/obsolete...
-		GetInstance().RefreshGuiElements()
+		'GetInstance().RefreshGuiElements()
+
 
 		return TRUE
 	End Function

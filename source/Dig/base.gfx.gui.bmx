@@ -67,6 +67,7 @@ Type TGUIManager
 
 	'=== PRIVATE PROPERTIES ===
 
+	Field _dropOnListenerLink:TLink
 	Field _defaultfont:TBitmapFont
 	Field _ignoreMouse:Int = False
 	'is there an object listening to keystrokes?
@@ -83,14 +84,19 @@ Type TGUIManager
 
 
 	Function GetInstance:TGUIManager()
-		if not _instance then _instance = new TGUIManager.Init()
+		if not _instance then _instance = new TGUIManager
 		return _instance
 	End Function
 
 
 	Method Init:TGUIManager()
+		'remove an potential old event listener
+		if _dropOnListenerLink
+			EventManager.unregisterListenerByLink(_dropOnListenerLink)
+		endif
+
 		'is something dropping on a gui element?
-		EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)
+		_dropOnListenerLink = EventManager.registerListenerFunction("guiobject.onDrop", TGUIManager.onDrop)
 
 		'gui specific settings
 		config.AddNumber("panelGap",10)
@@ -197,9 +203,10 @@ Type TGUIManager
 		'also veto the onDropOnTarget-event
 		If event.isVeto()
 			triggerEvent.setVeto()
+			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetDeclined", new TData.Add("coord", coord) , guiobject, dropTarget ))
 			Return False
 		Else
-			'inform others: we successfully dropped the object to a target
+			'inform others: we successfully dropped the object to a target#
 			EventManager.triggerEvent( TEventSimple.Create("guiobject.onDropOnTargetAccepted", new TData.Add("coord", coord) , guiobject, dropTarget ))
 
 			'also add this drop target as receiver of the original-drop-event
@@ -633,10 +640,6 @@ Type TGUIobject
 	End Method
 
 
-	Method AddEventListenerLink(link:TLink)
-	End Method
-
-
 	'cleanup function
 	Method Remove:Int()
 		'unlink all potential event listeners concerning that object
@@ -1016,10 +1019,15 @@ Type TGUIobject
 		If Not event.isVeto()
 			'fire an event - if the event has a veto afterwards, do not drop!
 			'exception is, if the action is forced
-
 			Local event:TEventSimple = TEventSimple.Create("guiobject.onDrop", new TData.Add("coord", coord), Self)
 			EventManager.triggerEvent( event )
-			If Not force And event.isVeto() Then Return False
+
+			If Not force And event.isVeto()
+				'inform others - item failed dropping, GetReceiver might
+				'contain the item it should have been dropped to
+				EventManager.triggerEvent(TEventSimple.Create("guiobject.onDropFailed", new TData.Add("coord", coord), Self, event.GetReceiver()))
+				Return False
+			Endif
 
 			'nobody said "no" to drop, so drop it
 			GUIManager.RemoveDragged(Self)
