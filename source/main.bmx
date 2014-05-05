@@ -78,14 +78,10 @@ Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
 Global App:TApp = null
-Global ArchiveProgrammeList:TgfxProgrammelist
-Global SaveError:TError
-Global LoadError:TError
 Global NewsAgency:TNewsAgency
-Global Interface:TInterface		= null
-Global Game:TGame	  			= null
-Global Building:TBuilding		= null
-Global InGame_Chat:TGUIChat		= null
+Global Interface:TInterface
+Global Game:TGame
+Global InGame_Chat:TGUIChat
 Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = null
@@ -93,12 +89,7 @@ Global GameScreen_Building:TInGameScreen_Building = null
 Global LogoTargetY:Float = 20
 Global LogoCurrY:Float = 100
 Global headerFont:TBitmapFont
-Global Curves:TNumberCurve = TNumberCurve.Create(1, 200)
 Global Init_Complete:Int = 0
-Global RefreshInput:Int = True
-?Threaded
-Global RefreshInputMutex:TMutex = CreateMutex()
-?
 
 '==== Initialize ====
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
@@ -364,15 +355,9 @@ Type TApp
 			EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",null) )
 		endif
 
-		?Threaded
-		LockMutex(RefreshInputMutex)
-		RefreshInput = True
-		UnlockMutex(RefreshInputMutex)
-		?
-		?Not Threaded
 		KEYMANAGER.Update()
 		MOUSEMANAGER.Update()
-		?
+
 		'fetch and cache mouse and keyboard states for this cycle
 		GUIManager.StartUpdates()
 
@@ -573,16 +558,16 @@ Type TApp
 			Local callType:String = ""
 
 			Local directionString:String = "up"
-			If Building.elevator.Direction = 1 Then directionString = "down"
-			Local debugString:String =	"floor:" + Building.elevator.currentFloor +..
-										"->" + Building.elevator.targetFloor +..
-										" doorState:"+Building.elevator.ElevatorStatus
+			If GetBuilding().elevator.Direction = 1 Then directionString = "down"
+			Local debugString:String =	"floor:" + GetBuilding().elevator.currentFloor +..
+										"->" + GetBuilding().elevator.targetFloor +..
+										" doorState:"+GetBuilding().elevator.ElevatorStatus
 
 			GetBitmapFontManager().baseFont.draw(debugString, 25, startY)
 
 
-			If Building.elevator.RouteLogic.GetSortedRouteList() <> Null
-				For Local FloorRoute:TFloorRoute = EachIn Building.elevator.RouteLogic.GetSortedRouteList()
+			If GetBuilding().elevator.RouteLogic.GetSortedRouteList() <> Null
+				For Local FloorRoute:TFloorRoute = EachIn GetBuilding().elevator.RouteLogic.GetSortedRouteList()
 					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
 					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
 					routepos:+1
@@ -713,7 +698,7 @@ Type TSaveGame
 		_Assign(_FigureCollection, FigureCollection, "FigureCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, ProgrammeDataCollection, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, NewsEventCollection, "NewsEventCollection", MODE_LOAD)
-		_Assign(_Building, Building, "Building", MODE_LOAD)
+		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
 		_Assign(_StationMapCollection, StationMapCollection, "StationMapCollection", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
@@ -725,7 +710,7 @@ Type TSaveGame
 
 	Method BackupGameData:Int()
 		_Assign(Game, _Game, "Game", MODE_SAVE)
-		_Assign(Building, _Building, "Building", MODE_SAVE)
+		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(FigureCollection, _FigureCollection, "FigureCollection", MODE_SAVE)
 		_Assign(ProgrammeDataCollection, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
@@ -785,6 +770,7 @@ Type TSaveGame
 		'load savegame data into game object
 		saveGame.RestoreGameData()
 
+
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
@@ -828,73 +814,107 @@ End Type
 'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
 Type TGame {_exposeToLua="selected"}
 	'globals are not saveloaded/exposed
-	Global debugMode:Int					= 0						'0=no debug messages; 1=some debugmessages
-	Global debugInfos:Int					= 0
-	Global debugQuoteInfos:Int				= 0
+	'0=no debug messages; 1=some debugmessages
+	Global debugMode:Int = 0
+	Global debugInfos:Int = 0
+	Global debugQuoteInfos:Int = 0
 	Field debugAudienceInfo:TDebugAudienceInfos = new TDebugAudienceInfos
 
 	'===== GAME STATES =====
-	Const STATE_RUNNING:Int					= 0
-	Const STATE_MAINMENU:Int				= 1
-	Const STATE_NETWORKLOBBY:Int			= 2
-	Const STATE_SETTINGSMENU:Int			= 3
-	Const STATE_STARTMULTIPLAYER:Int		= 4						'mode when data gets synchronized
-	Const STATE_INITIALIZEGAME:Int			= 5						'mode when data needed for game (names,colors) gets loaded
+	Const STATE_RUNNING:Int			= 0
+	Const STATE_MAINMENU:Int		= 1
+	Const STATE_NETWORKLOBBY:Int	= 2
+	Const STATE_SETTINGSMENU:Int	= 3
+	'mode when data gets synchronized
+	Const STATE_STARTMULTIPLAYER:Int= 4
+	'mode when data needed for game (names,colors) gets loaded
+	Const STATE_INITIALIZEGAME:Int	= 5
 
 	'===== GAME SETTINGS =====
-	Const daysPerYear:Int					= 14 	{_exposeToLua}
-	Const startMovieAmount:Int 				= 5		{_exposeToLua}	'how many movies does a player get on a new game
-	Const startSeriesAmount:Int				= 1		{_exposeToLua}	'how many series does a player get on a new game
-	Const startAdAmount:Int					= 3		{_exposeToLua}	'how many contracts a player gets on a new game
-	Const maxAbonnementLevel:Int			= 3		{_exposeToLua}
-	Const maxContracts:Int			 		= 10	{_exposeToLua}	'how many contracts a player can possess
-	Const maxProgrammeLicencesInSuitcase:Int= 12	{_exposeToLua}	'how many movies can be carried in suitcase
+	Const daysPerYear:Int = 14 						{_exposeToLua}
+	'how many movies does a player get on a new game
+	Const startMovieAmount:Int = 5					{_exposeToLua}
+	'how many series does a player get on a new game
+	Const startSeriesAmount:Int = 1					{_exposeToLua}
+	'how many contracts a player gets on a new game
+	Const startAdAmount:Int = 3						{_exposeToLua}
+	'maximum level a news genre abonnement can have
+	Const maxAbonnementLevel:Int = 3				{_exposeToLua}
+	'how many contracts a player can possess
+	Const maxContracts:Int = 10						{_exposeToLua}
+	'how many movies can be carried in suitcase
+	Const maxProgrammeLicencesInSuitcase:Int = 12	{_exposeToLua}
 
-	Field BroadcastManager:TBroadcastManager	= Null
-	Field PopularityManager:TPopularityManager	= Null
+	Field BroadcastManager:TBroadcastManager
+	Field PopularityManager:TPopularityManager
 
-	Field maxAudiencePercentage:Float	 	= 0.3				'how many 0.0-1.0 (100%) audience is maximum reachable
-	Field randomSeedValue:Int				= 0					'used so that random values are the same on all computers having the same seed value
+	'how many 0.0-1.0 (100%) audience is maximum reachable
+	Field maxAudiencePercentage:Float = 0.3
+	'used so that random values are the same on all computers having the same seed value
+	Field randomSeedValue:Int = 0
 
-	Field userName:String				= ""	{nosave}	'username of the player ->set in config
-	Field userPort:Short				= 4544	{nosave}	'userport of the player ->set in config
-	Field userChannelName:String		= ""	{nosave}	'channelname the player uses ->set in config
-	Field userLanguage:String			= "de"	{nosave}	'language the player uses ->set in config
-	Field userDB:String					= ""	{nosave}
-	Field userFallbackIP:String			= "" 	{nosave}
+	'username of the player ->set in config
+	Global userName:String = ""
+	'userport of the player ->set in config
+	Global userPort:Short = 4544
+	'channelname the player uses ->set in config
+	Global userChannelName:String = ""
+	'language the player uses ->set in config
+	Global userLanguage:String = "de"
+	Global userDB:String = ""
+	Global userFallbackIP:String = ""
 
 	Field Players:TPlayer[5]
-	Field playerCount:Int				= 4
+	Field playerCount:Int = 4
 
-	Field paused:Int					= False
-	Field speed:Float					= 1.0 				'Speed of the game in "game minutes per real-time second"
-	Field timeStart:Double				= 0.0				'time (minutes) used when starting the game
-	Field timeGone:Double				= 0.0				'time (minutes) in game, not reset every day
-	Field timeGoneLastUpdate:Double		= -1.0				'time (minutes) in game of the last update (enables calculation of missed minutes)
-	Field daysPlayed:Int				= 0
+	Field paused:Int = False
+	'Speed of the game in "game minutes per real-time second"
+	Field speed:Float = 1.0
+	'time (minutes) used when starting the game
+	Field timeStart:Double = 0.0
+	'time (minutes) in game, not reset every day
+	Field timeGone:Double = 0.0
+	'time (minutes) in game of the last update (enables calculation of missed minutes)
+	Field timeGoneLastUpdate:Double = -1.0
+	Field daysPlayed:Int = 0
 
-	Field title:String 				= "MyGame"				'title of the game
+	'title of the game
+	Field title:String = "MyGame"
 
-	Field cursorstate:Int		 	= 0 					'which cursor has to be shown? 0=normal 1=dragging
-	Field playerID:Int 				= 1						'playerID of player who sits in front of the screen
-	Field gamestate:Int 			= -1					'0 = Mainmenu, 1=Running, ...
+	'which cursor has to be shown? 0=normal 1=dragging
+	Field cursorstate:Int = 0
+	'playerID of player who sits in front of the screen
+	Field playerID:Int = 1
+	'0 = Mainmenu, 1=Running, ...
+	Field gamestate:Int = -1
 
-	Field stateSyncTime:Int			= 0						'last sync
-	Field stateSyncTimer:Int		= 2000					'sync every
+	'last sync
+	Field stateSyncTime:Int	= 0
+	'sync every
+	Field stateSyncTimer:Int = 2000
 
-	Field refillMovieAgencyTimer:Int= 180					'interval
-	Field refillMovieAgencyTime:Int = 180					'minutes till happening again
-	Field refillAdAgencyTimer:Int	= 240			 		'interval
-	Field refillAdAgencyTime:Int	= 240			 		'minutes till happening again
+	'refill movie agency every X Minutes
+	Field refillMovieAgencyTimer:Int = 180
+	'minutes till movie agency gets refilled again
+	Field refillMovieAgencyTime:Int = 180
+
+	'refill ad agency every X Minutes
+	Field refillAdAgencyTimer:Int = 240
+	'minutes till ad agency gets refilled again
+	Field refillAdAgencyTime:Int = 240
 
 
 	'--networkgame auf "isNetworkGame()" umbauen
-	Field networkgame:Int 			= 0 					'are we playing a network game? 0=false, 1=true, 2
-	Field networkgameready:Int 		= 0 					'is the network game ready - all options set? 0=false
-	Field onlinegame:Int 			= 0 					'playing over internet? 0=false
+	'are we playing a network game? 0=false, 1=true, 2
+	Field networkgame:Int = 0
+	'is the network game ready - all options set? 0=false
+	Field networkgameready:Int = 0
+	'playing over internet? 0=false
+	Field onlinegame:Int = 0
 
 	Global _instance:TGame
-	Global _initDone:int	 		= FALSE
+	Global _initDone:int = FALSE
+	Global _firstGamePreparationDone:int = FALSE
 
 
 	Method New()
@@ -904,7 +924,6 @@ Type TGame {_exposeToLua="selected"}
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
-
 
 			_initDone = TRUE
 		Endif
@@ -920,9 +939,12 @@ Type TGame {_exposeToLua="selected"}
 	'Summary: create a game, every variable is set to Zero
 	Method Create:TGame()
 		LoadConfig("config/settings.xml")
-		TLocalization.AddLanguages("de, en") 'adds German and English to possible language
-		TLocalization.SetLanguage(userlanguage) 'selects language
+		'add German and English to possible language
+		TLocalization.AddLanguages("de, en")
+		'select language
+		TLocalization.SetLanguage(userlanguage)
 		TLocalization.LoadResource("res/lang/lang_"+userlanguage+".txt")
+
 		networkgame = 0
 
 		SetStartYear(1985)
@@ -930,28 +952,35 @@ Type TGame {_exposeToLua="selected"}
 
 		SetRandomizerBase( MilliSecs() )
 
-		PopularityManager	= TPopularityManager.Create()
-		BroadcastManager	= TBroadcastManager.Create()
+		PopularityManager = TPopularityManager.Create()
+		BroadcastManager = TBroadcastManager.Create()
+
+		CreateInitialPlayers()
+
+		'creates all Rooms - with the names assigned at this moment
+		Init_CreateAllRooms()
 
 		Return self
 	End Method
 
 
-	Method InitializeBasics()
-		CreateInitialPlayers()
-	End Method
-
 
 	'Initializes "data" needed for a game
 	'(maps, databases, managers)
 	Method Initialize()
+
+
+print "Game.Initialize: Pop"
 		'managers skip initialization if already done (eg. during loading)
 		Game.PopularityManager.Initialize()
+print "Game.Initialize: Broad"
 		Game.BroadcastManager.Initialize()
 
+print "Game.Initialize: DB"
 		'load all movies, news, series and ad-contracts
 		LoadDatabase(userdb)
 
+print "Game.Initialize: Map"
 		'load the used map
 		StationMapCollection.LoadMapFromXML("config/maps/germany.xml")
 	End Method
@@ -959,19 +988,46 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when a specific game starts
 	Method Start:int()
+		if not _firstGamePreparationDone
+print "Game.Start(): PrepareFirstGameStart()"
+			PrepareFirstGameStart()
+			_firstGamePreparationDone = True
+		endif
+print "Game.Start(): PrepareGameStart()"
+		PrepareGameStart()
+
+print "Game.Start(): Initialize()"
+		'load databases, populationmap, ...
+		Initialize()
+
+
+		'we have to set gamestate BEFORE init_all()
+		'as init_all sends events which trigger gamestate-update/draw
+		Game.SetGamestate(TGame.STATE_INITIALIZEGAME)
+		If Not Init_Complete
+print "Game.Start(): Init_All()"
+			Init_All()
+			Init_Complete = True		'check if rooms/colors/... are initiated
+		EndIf
+
 		'disable chat if not networkgaming
 		If Not game.networkgame
 			InGame_Chat.hide()
 		Else
 			InGame_Chat.show()
 		EndIf
+
+		Game.SetGamestate(TGame.STATE_RUNNING)
 	End Method
+
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
+print "onSaveGameLoad"
 		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
 		'reconnect AI and other things
 		For local player:TPlayer = eachin GetInstance().Players
+print "onSaveGameLoad: player.onLoad"
 			player.onLoad(null)
 		Next
 		'colorize gfx again
@@ -1063,7 +1119,6 @@ Type TGame {_exposeToLua="selected"}
 	End Method
 
 
-
 	'computes penalties for expired ad-contracts
 	Method ComputeContractPenalties(day:Int=-1)
 		For Local Player:TPlayer = EachIn Players
@@ -1080,6 +1135,7 @@ Type TGame {_exposeToLua="selected"}
 	End Method
 
 
+	'creates the default players (as shown in game-settings-screen)
 	Method CreateInitialPlayers()
 		'Creating PlayerColors - could also be done "automagically"
 		Local playerColors:TList = TList(GetRegistry().Get("playerColors"))
@@ -1087,12 +1143,15 @@ Type TGame {_exposeToLua="selected"}
 		For Local col:TColor = EachIn playerColors
 			col.AddToList()
 		Next
-		'create playerfigures in figures-image
-		'TColor.GetByOwner -> get first unused color, TPlayer.Create sets owner of the color
-		SetPlayer(1, TPlayer.Create(1,userName	,userChannelName	,GetSpriteFromRegistry("Player1"),	250,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
-		SetPlayer(2, TPlayer.Create(2,"Sandra"	,"SunTV"			,GetSpriteFromRegistry("Player2"),	280,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
-		SetPlayer(3, TPlayer.Create(3,"Seidi"		,"FunTV"			,GetSpriteFromRegistry("Player3"),	240,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
-		SetPlayer(4, TPlayer.Create(4,"Alfi"		,"RatTV"			,GetSpriteFromRegistry("Player4"),	290, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
+
+		'create players, draws playerfigures on figures-image
+		'TColor.GetByOwner -> get first unused color,
+		'TPlayer.Create sets owner of the color
+		SetPlayer(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	250,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
+		SetPlayer(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	280,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
+		SetPlayer(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	240,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
+		SetPlayer(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	290, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
+		'set different figures for other players
 		GetPlayer(2).UpdateFigureBase(9)
 		GetPlayer(3).UpdateFigureBase(2)
 		GetPlayer(4).UpdateFigureBase(6)
@@ -1207,10 +1266,10 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method GetPlayer:TPlayer(playerID:Int=-1)
-		If playerID=-1 Then playerID=Self.playerID
-		If Not Game.isPlayer(playerID) Then Return Null
+		If playerID = -1 Then playerID = Self.playerID
+		If Not isPlayer(playerID) Then Return Null
 
-		Return Self.players[playerID]
+		Return players[playerID]
 	End Method
 
 
@@ -1544,7 +1603,7 @@ Type TFigureJanitor Extends TFigure
 	Method UpdateCustom:Int(deltaTime:Float)
 		'waited to long - change target (returns false while in elevator)
 		If hasToChangeFloor() And WaitAtElevatorTimer.isExpired()
-			If ChangeTarget(Rand(150, 580), Building.area.position.y + Building.GetFloorY(GetFloor()))
+			If ChangeTarget(Rand(150, 580), GetBuilding().area.position.y + GetBuilding().GetFloorY(GetFloor()))
 				WaitAtElevatorTimer.Reset()
 			EndIf
 		EndIf
@@ -1556,7 +1615,7 @@ Type TFigureJanitor Extends TFigure
 			Repeat
 				zufallx = Rand(MovementRangeMinX, MovementRangeMaxX)
 			Until Abs(area.GetX() - zufallx) > 75
-			ChangeTarget(zufallx, Building.area.position.y + Building.GetFloorY(GetFloor()))
+			ChangeTarget(zufallx, GetBuilding().area.position.y + GetBuilding().GetFloorY(GetFloor()))
 		EndIf
 
 		'reached target - and time to do something
@@ -1578,11 +1637,11 @@ Type TFigureJanitor Extends TFigure
 				If useElevator And currentAction=0 And zufall > 80 And Not IsAtElevator()
 					Local sendToFloor:Int = GetFloor() + 1
 					If sendToFloor > 13 Then sendToFloor = 0
-					ChangeTarget(zufallx, Building.area.position.y + Building.GetFloorY(sendToFloor))
+					ChangeTarget(zufallx, GetBuilding().area.position.y + GetBuilding().GetFloorY(sendToFloor))
 					WaitAtElevatorTimer.Reset()
 				'move to a different X on same floor - if not cleaning now
 				Else If currentAction=0
-					ChangeTarget(zufallx, Building.area.position.y + Building.GetFloorY(GetFloor()))
+					ChangeTarget(zufallx, GetBuilding().area.position.y + GetBuilding().GetFloorY(GetFloor()))
 				EndIf
 			EndIf
 
@@ -1888,18 +1947,8 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Select sender
 			Case guiButtonStart
-					'load databases, populationmap, ...
-					Game.Initialize()
-
-
 					If Not Game.networkgame And Not Game.onlinegame
-						Game.SetGamestate(TGame.STATE_INITIALIZEGAME)
-						If Not Init_Complete
-							Init_All()
-							Init_Complete = True		'check if rooms/colors/... are initiated
-						EndIf
 						Game.Start()
-						Game.SetGamestate(TGame.STATE_RUNNING)
 					Else
 						'guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
@@ -2398,18 +2447,8 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 			'ScreenGameSettings.guiAnnounce.SetChecked(FALSE)
 			Game.Players[Game.playerID].networkstate=1
 
-			'we have to set gamestate BEFORE init_all()
-			'as init_all sends events which trigger gamestate-update/draw
-			Game.SetGamestate(TGame.STATE_INITIALIZEGAME)
-
-			If Not Init_Complete
-				Init_All()
-				Init_Complete = True		'check if rooms/colors/... are initiated
-			EndIf
-
 			'register events and start game
 			Game.Start()
-			Game.SetGamestate(TGame.STATE_RUNNING)
 			'reset randomizer
 			Game.SetRandomizerBase( Game.GetRandomizerBase() )
 
@@ -2671,6 +2710,8 @@ Type AppEvents
 	End Function
 End Type
 
+
+
 'Bis wir nen besseren Platz gefunden haben
 Type TTVTException Extends TBlitzException
 	Field message:String
@@ -2687,6 +2728,7 @@ Type TTVTException Extends TBlitzException
 		Return "Undefined TTVTException!"
 	End Method
 End Type
+
 
 'Bis wir nen besseren Platz gefunden haben
 Type TArgumentException Extends TTVTException
@@ -2718,6 +2760,8 @@ Type TArgumentException Extends TTVTException
 	End Function
 End Type
 
+
+
 Type TNullObjectExceptionExt Extends TTVTException
 	Function Create:TNullObjectExceptionExt( message:String = Null )
 		Local t:TNullObjectExceptionExt = New TNullObjectExceptionExt
@@ -2725,6 +2769,7 @@ Type TNullObjectExceptionExt Extends TTVTException
 		Return t
 	End Function
 End Type
+
 
 
 OnEnd( EndHook )
@@ -2764,6 +2809,10 @@ Function DrawMenuBackground(darkened:Int=False)
 	EndIf
 End Function
 
+
+
+'- muss vor eigentlichem Spielstart aufgerufen werden
+'- NICHT mehrfach ausfuehrbar
 Function Init_Creation()
 	'create base stations
 	For Local i:Int = 1 To 4
@@ -2772,7 +2821,7 @@ Function Init_Creation()
 
 	'get names from settings
 	For Local i:Int = 1 To 4
-		Game.Players[i].Name		= ScreenGameSettings.guiPlayerNames[i-1].Value
+		Game.Players[i].Name = ScreenGameSettings.guiPlayerNames[i-1].Value
 		Game.Players[i].channelname	= ScreenGameSettings.guiChannelNames[i-1].Value
 	Next
 
@@ -2856,6 +2905,10 @@ Function Init_Creation()
 	Next
 End Function
 
+
+
+'- kann vor Spielstart durchgefuehrt werden
+'- kann mehrfach ausgefuehrt werden
 Function Init_Colorization()
 	'colorize the images
 	Local gray:TColor = TColor.Create(200, 200, 200)
@@ -2879,6 +2932,8 @@ Function Init_Colorization()
 End Function
 
 
+
+
 Function Init_All()
 	TLogger.Log("Init_All()", "start", LOG_DEBUG)
 	Init_Creation()
@@ -2893,10 +2948,12 @@ Function Init_All()
 	TRoomDoor.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
 
 	TLogger.Log("Init_All()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
-	Building.Init()	'draws additional gfx in the sprite, registers events...
+	GetBuilding().Init()	'draws additional gfx in the sprite, registers events...
 
 	TLogger.Log("Init_All()", "complete", LOG_LOADING)
 End Function
+
+
 
 
 Function DEV_switchRoom:int(room:TRoom)
@@ -2920,7 +2977,73 @@ Function DEV_switchRoom:int(room:TRoom)
 End Function
 
 
+
+'run this BEFORE the first game is started
+Function PrepareFirstGameStart()
+	TLogger.Log("Base", "Creating GUIelements", LOG_DEBUG)
+	InGame_Chat = New TGUIChat.Create(new TPoint.Init(520, 418), new TPoint.Init(280,190), "InGame")
+	InGame_Chat.setDefaultHideEntryTime(10000)
+	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
+	InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
+	InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
+	InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
+	InGame_Chat.guiList.autoHideScroller = True
+	'reposition input
+	InGame_Chat.guiInput.rect.position.setXY( 275, 387)
+	InGame_Chat.guiInput.setMaxLength(200)
+	InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
+	InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
+	InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
+	InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
+	InGame_Chat.guiInput.SetValueDisplacement(0,5)
+
+
+	'===== EVENTS =====
+	EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
+	EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
+	EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
+	EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
+
+
+	'Game screens
+	ScreenCollection.Add(GameScreen_Building)
+
+	PlayerDetailsTimer = 0
+
+	NewsAgency = New TNewsAgency.Create()
+
+
+	'=== SETUP TOOLTIPS ===
+	TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
+	TTooltip.UseFont = GetBitmapFontManager().baseFont
+	TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
+	TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
+
+	'interface needs tooltip definition done
+	Interface = TInterface.Create()
+
+
+	'RON
+	Local haveNPCs:Int = True
+	If haveNPCs
+		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
+		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 3, 65, 0)
+		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 1, -65, 0)
+	EndIf
+End Function
+
+
+
+'run this before EACH started game
+Function PrepareGameStart()
+	'eg reset things
+End Function
+
+
+
 Function StartTVTower(start:Int=true)
+	EventManager.Init()
+
 	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
 	App.LoadResources("config/resources.xml")
 
@@ -2949,56 +3072,13 @@ Function StartTVTower(start:Int=true)
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
 	endif
 
-	ArchiveProgrammeList	= New TgfxProgrammelist.Create(575, 16, 21)
-
-	NewsAgency				= New TNewsAgency.Create()
-
-	TTooltip.UseFontBold	= GetBitmapFontManager().baseFontBold
-	TTooltip.UseFont 		= GetBitmapFontManager().baseFont
-
-	TTooltip.ToolTipIcons	= GetSpriteFromRegistry("gfx_building_tooltips")
-	TTooltip.TooltipHeader	= GetSpriteFromRegistry("gfx_tooltip_header")
 
 
-	Interface = TInterface.Create()
 	Game = new TGame.Create()
-	Building = new TBuilding.Create()
 	'init sound receiver
 	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
 
-	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Rooms").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-	'figures need building (for location) - so create AFTER building
-	Game.InitializeBasics()
-	'creates all Rooms - with the names assigned at this moment
-	Init_CreateAllRooms()
-
-
-	'RON
-	Local haveNPCs:Int = True
-	If haveNPCs
-		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
-		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 3, 65, 0)
-		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 1, -65, 0)
-	EndIf
-
-
-	TLogger.Log("Base", "Creating GUIelements", LOG_DEBUG)
-	InGame_Chat = New TGUIChat.Create(new TPoint.Init(520, 418), new TPoint.Init(280,190), "InGame")
-	InGame_Chat.setDefaultHideEntryTime(10000)
-	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
-	InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
-	InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
-	InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
-	InGame_Chat.guiList.autoHideScroller = True
-	'reposition input
-	InGame_Chat.guiInput.rect.position.setXY( 275, 387)
-	InGame_Chat.guiInput.setMaxLength(200)
-	InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
-	InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
-	InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
-	InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
-	InGame_Chat.guiInput.SetValueDisplacement(0,5)
 
 
 	'connect click and change events to the gui objects
@@ -3006,7 +3086,6 @@ Function StartTVTower(start:Int=true)
 
 	SetColor 255,255,255
 
-	PlayerDetailsTimer = 0
 	MainMenuJanitor = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 250, 2, 65)
 	MainMenuJanitor.useElevator = False
 	MainMenuJanitor.useDoors = False
@@ -3027,46 +3106,21 @@ Function StartTVTower(start:Int=true)
 	ScreenCollection.Add(ScreenGameSettings)
 	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
 	ScreenCollection.Add(New TScreen_StartMultiplayer.Create("StartMultiplayer"))
-	'Game screens
-	ScreenCollection.Add(GameScreen_Building)
 
 	'go into the start menu
 	Game.SetGamestate(TGame.STATE_MAINMENU)
 
-	'===== EVENTS =====
-	EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
-	EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
-	EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
-	EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
 
-	'Init EventManager
-	'could also be done during update ("if not initDone...")
-	EventManager.Init()
 	App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
+	Repeat
+		GetDeltaTimer().Loop()
 
-	If Not TApp.ExitApp And Not AppTerminate()
-	'	KEYWRAPPER.allowKey(13, KEYWRAP_ALLOW_BOTH, 400, 200)
-		Repeat
-			GetDeltaTimer().Loop()
+		'process events not directly triggered
+		'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
+		EventManager.update()
+		'If RandRange(0,20) = 20 Then GCCollect()
+	Until AppTerminate() Or TApp.ExitApp
 
-			'we cannot fetch keystats in threads
-			'so we have to do it 100% in the main thread - same for mouse
-		?Threaded
-		If RefreshInput
-			LockMutex(RefreshInputMutex)
-			KEYMANAGER.changeStatus()
-			MOUSEMANAGER.changeStatus()
-			RefreshInput = False
-			UnlockMutex(RefreshInputMutex)
-		EndIf
-		?
-
-			'process events not directly triggered
-			'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
-			EventManager.update()
-
-			'If RandRange(0,20) = 20 Then GCCollect()
-		Until AppTerminate() Or TApp.ExitApp
-		If Game.networkgame Then Network.DisconnectFromServer()
-	EndIf 'not exit game
+	'take care of network
+	If Game.networkgame Then Network.DisconnectFromServer()
 End Function

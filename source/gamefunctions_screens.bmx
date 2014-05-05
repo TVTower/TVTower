@@ -201,7 +201,7 @@ Type TInGameScreen extends TScreen
 			Game.Update(deltaTime)
 			Interface.Update(deltaTime)
 '			If Game.Players[Game.playerID].Figure.inRoom = Null Then Building.Update(deltaTime)
-			Building.Elevator.Update(deltaTime)
+			GetBuilding().Elevator.Update(deltaTime)
 			TFigure.UpdateAll()
 		EndIf
 	End Method
@@ -260,26 +260,13 @@ Type TInGameScreen_Building extends TInGameScreen
 
 	'override default
 	Method UpdateContent(deltaTime:Float)
-		'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
-		If Game.Players[Game.playerID].Figure.inRoom = Null
-			'working for player as center
-			Building.area.position.y =  1 * 66 + 1 * 73 + 50 - Game.Players[Game.playerID].Figure.area.GetY()
-		Endif
-
-		Building.Update()
+		GetBuilding().Update()
 	End Method
 
 	'override default
 	Method DrawContent(tweenValue:float)
-		'TProfiler.Enter("Draw-Building")
-		SetColor Int(190 * Building.timecolor), Int(215 * Building.timecolor), Int(230 * Building.timecolor)
-		DrawRect(20, 10, 140, 373)
-		If Building.area.position.y > 10 Then DrawRect(150, 10, 500, 200)
-		DrawRect(650, 10, 130, 373)
-		SetColor 255, 255, 255
 		'player is not in a room so draw building
-		Building.Render()
-		'TProfiler.Leave("Draw-Building")
+		GetBuilding().Render()
 	End Method
 End Type
 

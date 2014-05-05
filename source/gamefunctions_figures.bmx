@@ -84,7 +84,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		GetFrameAnimations().Set("standBack", TSpriteFrameAnimation.Create([ [10,1000] ], -1, 0 ) )
 
 		name = Figurename
-		area = new TRectangle.Init(x, Building.GetFloorY(onFloor), sprite.framew, sprite.frameh )
+		area = new TRectangle.Init(x, GetBuilding().GetFloorY(onFloor), sprite.framew, sprite.frameh )
 		velocity.SetX(0)
 		initialdx = speed
 
@@ -138,23 +138,23 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Method GetFloor:Int(pos:TPoint = Null)
 		'if we have no floor set in the pos, we return the current floor
 		If not pos Then pos = area.position
-		Return Building.getFloor( Building.area.position.y + pos.y )
+		Return GetBuilding().getFloor( GetBuilding().area.position.y + pos.y )
 	End Method
 
 
 	Method IsOnFloor:Int()
-		Return area.GetY() = Building.GetFloorY(GetFloor())
+		Return area.GetY() = GetBuilding().GetFloorY(GetFloor())
 	End Method
 
 
 	'ignores y
 	Method IsAtElevator:int()
-		Return Building.Elevator.IsFigureInFrontOfDoor(Self)
+		Return GetBuilding().Elevator.IsFigureInFrontOfDoor(Self)
 	End Method
 
 
 	Method IsInElevator:int()
-		Return Building.Elevator.IsFigureInElevator(Self)
+		Return GetBuilding().Elevator.IsFigureInElevator(Self)
 	End Method
 
 
@@ -190,7 +190,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 			'do we have to change the floor?
 			'if that is the case - change temporary target to elevator
-			If HasToChangeFloor() Then targetX = Building.Elevator.GetDoorCenterX()
+			If HasToChangeFloor() Then targetX = GetBuilding().Elevator.GetDoorCenterX()
 
 			'check whether the target is left or right side of the figure
 			If targetX < area.GetX()
@@ -237,14 +237,14 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 		'adjust/limit position based on location
 		If Not IsInElevator()
-			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( Building.GetFloorY(GetFloor()) )
+			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( GetBuilding().GetFloorY(GetFloor()) )
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		if not useAbsolutePosition
 			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
-			If area.GetY() < Building.GetFloorY(13) Then area.position.setY( Building.GetFloorY(13) )
-			If area.GetY() - sprite.area.GetH() > Building.GetFloorY( 0) Then area.position.setY( Building.GetFloorY(0) )
+			If area.GetY() < GetBuilding().GetFloorY(13) Then area.position.setY( GetBuilding().GetFloorY(13) )
+			If area.GetY() - sprite.area.GetH() > GetBuilding().GetFloorY( 0) Then area.position.setY( GetBuilding().GetFloorY(0) )
 		endif
 	End Method
 
@@ -328,7 +328,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			'if both figures are "players" we display "GRRR" or "?!!?"
 			If figure.parentPlayerID and parentPlayerID
 				'depending on floor use "grr" or "?!"
-				greetType = 0 + 2*((1 + Building.GetFloor(area.GetY()) mod 2)-1)
+				greetType = 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
 			else
 				greetType = 1
 			endif
@@ -336,11 +336,11 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			'subtract half width from position - figure is drawn centered
 			'figure right of me
 			If Figure.area.GetX() > area.GetX()
-				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(Building.area.GetY() + area.GetX() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER))
+				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(GetBuilding().area.GetY() + area.GetX() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER))
 			'figure left of me
 			else
 				greetType :+ 3
-				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(Building.area.GetY() + area.GetY() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER))
+				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(GetBuilding().area.GetY() + area.GetY() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER))
 			endif
 		Next
 	End Method
@@ -488,13 +488,13 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Method SendToDoor:Int(door:TRoomDoor)
  		If not door then return FALSE
 
-		ChangeTarget(door.Pos.x + 5, Building.area.position.y + Building.getfloorY(door.Pos.y) - 5)
+		ChangeTarget(door.Pos.x + 5, GetBuilding().area.position.y + GetBuilding().getfloorY(door.Pos.y) - 5)
 	End Method
 
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
 		Local newX:Int = area.GetX() + relX
-		Local newY:Int = Building.area.position.y + Building.getfloorY(GetFloor() + relYFloor) - 5
+		Local newY:Int = GetBuilding().area.position.y + GetBuilding().getfloorY(GetFloor() + relYFloor) - 5
 
 		if (newX < 150) then newX = 150 end
 		if (newX > 580) then newX = 580 end
@@ -518,24 +518,24 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		If IsElevatorCalled() Then Return False 'Wenn er bereits gerufen wurde, dann abbrechen
 
 		'Wenn der Fahrstuhl schon da ist, dann auch abbrechen. TODOX: Muss überprüft werden
-		If Building.Elevator.CurrentFloor = GetFloor() And IsAtElevator() Then Return False
+		If GetBuilding().Elevator.CurrentFloor = GetFloor() And IsAtElevator() Then Return False
 
 		'Fahrstuhl darf man nur rufen, wenn man davor steht
-		If IsAtElevator() Then Building.Elevator.CallElevator(Self)
+		If IsAtElevator() Then GetBuilding().Elevator.CallElevator(Self)
 	End Method
 
 
 	Method GoOnBoardAndSendElevator:Int()
 		if not target then return FALSE
-		If Building.Elevator.EnterTheElevator(Self, Self.getFloor(target))
-			Building.Elevator.SendElevator(Self.getFloor(target), Self)
+		If GetBuilding().Elevator.EnterTheElevator(Self, Self.getFloor(target))
+			GetBuilding().Elevator.SendElevator(Self.getFloor(target), Self)
 		EndIf
 	End Method
 
 
 	Method ChangeTarget:Int(x:Int=-1, y:Int=-1) {_exposeToLua}
 		'if player is in elevator dont accept changes
-		If Building.Elevator.passengers.Contains(Self) Then Return False
+		If GetBuilding().Elevator.passengers.Contains(Self) Then Return False
 
 		'only change target if it's your figure or you are game leader
 		If self <> Game.GetPlayer().figure And Not Game.isGameLeader() Then Return False
@@ -561,13 +561,13 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		endif
 
 		'y is not of floor 0 -13
-		If Building.GetFloor(y) < 0 Or Building.GetFloor(y) > 13 Then Return False
+		If GetBuilding().GetFloor(y) < 0 Or GetBuilding().GetFloor(y) > 13 Then Return False
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		target = new TPoint.Init(x, Building.GetFloorY(Building.GetFloor(y)) )
+		target = new TPoint.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
-		targetDoor = TRoomDoor.GetByCoord(target.x, Building.area.position.y + target.y)
+		targetDoor = TRoomDoor.GetByCoord(target.x, GetBuilding().area.position.y + target.y)
 		If targetDoor then target.setX( targetDoor.pos.x + ceil(targetDoor.doorDimension.x/2) )
 
 		'limit target coordinates
@@ -576,7 +576,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		local rightLimit:int = 603' - ceil(rect.GetW()/2) 'subtract half a figure
 		local leftLimit:int = 200' + ceil(rect.GetW()/2) 'add half a figure
 
-		if Building.GetFloor(y) = 0
+		if GetBuilding().GetFloor(y) = 0
 			If Floor(target.x) >= rightLimit Then target.X = rightLimit
 		else
 			If Floor(target.x) <= leftLimit Then target.X = leftLimit
@@ -602,7 +602,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method IsElevatorCalled:Int()
-		For Local floorRoute:TFloorRoute = EachIn Building.Elevator.FloorRouteList
+		For Local floorRoute:TFloorRoute = EachIn GetBuilding().Elevator.FloorRouteList
 			If floorRoute.who.id = Self.id
 				Return True
 			EndIf
@@ -672,16 +672,16 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
 
 				'Ist der Fahrstuhl da? Kann ich einsteigen?
-				If Building.Elevator.CurrentFloor = GetFloor() And Building.Elevator.ReadyForBoarding
+				If GetBuilding().Elevator.CurrentFloor = GetFloor() And GetBuilding().Elevator.ReadyForBoarding
 					GoOnBoardAndSendElevator()
 				Else 'Ansonsten ruf ich ihn halt
 					CallElevator()
 				EndIf
 			EndIf
 
-			If IsInElevator() and Building.Elevator.ReadyForBoarding
-				If (not target OR Building.Elevator.CurrentFloor = GetFloor(target))
-					Building.Elevator.LeaveTheElevator(Self)
+			If IsInElevator() and GetBuilding().Elevator.ReadyForBoarding
+				If (not target OR GetBuilding().Elevator.CurrentFloor = GetFloor(target))
+					GetBuilding().Elevator.LeaveTheElevator(Self)
 				EndIf
 			EndIf
 		EndIf
@@ -721,14 +721,14 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 			'draw x-centered at current position
 			'normal
-			'Super.Draw( rect.getX() - ceil(rect.GetW()/2) + PosOffset.getX(), Building.area.position.y + Self.rect.GetY() - Self.sprite.area.GetH() + PosOffset.getY())
+			'Super.Draw( rect.getX() - ceil(rect.GetW()/2) + PosOffset.getX(), GetBuilding().area.position.y + Self.rect.GetY() - Self.sprite.area.GetH() + PosOffset.getY())
 			'tweened with floats
-			'Super.Draw( tweenPosX - ceil(rect.GetW()/2) + PosOffset.getX(), Building.area.position.y + tweenPosY - Self.sprite.area.GetH() + PosOffset.getY())
+			'Super.Draw( tweenPosX - ceil(rect.GetW()/2) + PosOffset.getX(), GetBuilding().area.position.y + tweenPosY - Self.sprite.area.GetH() + PosOffset.getY())
 			'tweened with int
 			if useAbsolutePosition
 				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
 			else
-				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(Building.area.position.y + tweenPos.Y - Self.sprite.area.GetH() + PosOffset.getY()))
+				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(GetBuilding().area.position.y + tweenPos.Y - Self.sprite.area.GetH() + PosOffset.getY()))
 			endif
 		EndIf
 

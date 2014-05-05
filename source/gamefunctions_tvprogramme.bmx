@@ -204,12 +204,17 @@ Type TProgrammePerson
 		person.dayOfDeath	= dayOfDeath
 		person.AddJob(job)
 
-		'resize if needed
-		if person.ID > persons.length then persons = persons[..persons.length+1]
+		return person
+	End Function
+
+
+	Function Add:int(person:TProgrammePerson)
+		'resize if needed - at least to ID+1
+		if person.ID > persons.length then persons = persons[..person.ID+1]
 		'add to array and corresponding list
 		persons[person.ID-1] = person
 
-		return person
+		return True
 	End Function
 
 
@@ -249,7 +254,7 @@ Type TProgrammePerson
 		'add to list
 		if job & JOB_ACTOR then actors.AddLast(self)
 		if job & JOB_DIRECTOR then directors.AddLast(self)
-		if job & JOB_WRITER then actors.AddLast(self)
+		if job & JOB_WRITER then writers.AddLast(self)
 	End Method
 End Type
 

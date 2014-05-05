@@ -73,8 +73,6 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method Create:TBuilding()
-		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Building").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-
 		'call to set graphics, paths for objects and other
 		'stuff not gameplay relevant
 		InitGraphics()
@@ -174,6 +172,13 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method Update()
+		'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
+		If Game.GetPlayer().Figure.inRoom = Null
+			'working for player as center
+			area.position.y =  1 * 66 + 1 * 73 + 50 - Game.GetPlayer().Figure.area.GetY()
+		Endif
+
+
 		local deltaTime:float = GetDeltaTimer().GetDelta()
 		area.position.y = Clamp(area.position.y, - 637, 88)
 		UpdateBackground(deltaTime)
@@ -281,10 +286,18 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
+		'=== DRAW SKY ===
+		SetColor Int(190 * timecolor), Int(215 * timecolor), Int(230 * timecolor)
+		DrawRect(20, 10, 140, 373)
+		If area.position.y > 10 Then DrawRect(150, 10, 500, 200)
+		DrawRect(650, 10, 130, 373)
+		SetColor 255, 255, 255
+
 
 		TProfiler.Enter("Draw-Building-Background")
 		DrawBackground()
 		TProfiler.Leave("Draw-Building-Background")
+
 
 		'reset drawn for all figures... so they can get drawn
 		'correct at their "z-indexes" (behind building, elevator or on floor )
@@ -441,7 +454,7 @@ Type TBuilding Extends TStaticEntity
 			UFO_BeamAnimationDone = False
 		EndIf
 
-		For Local i:Int = 0 To Building.Clouds.length-1
+		For Local i:Int = 0 To Clouds.length-1
 			Clouds[i].Update()
 		Next
 	End Method
@@ -475,7 +488,7 @@ Type TBuilding Extends TStaticEntity
 			GetSpriteFromRegistry("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (area.GetY()) + moonPos.y, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
 		EndIf
 
-		For Local i:Int = 0 To Building.Clouds.length - 1
+		For Local i:Int = 0 To Clouds.length - 1
 			SetColor Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i], Int(205 * timecolor) + 80*CloudsAlpha[i]
 			SetAlpha CloudsAlpha[i]
 			'draw a bit offset - parallax effect
@@ -540,19 +553,28 @@ Type TBuilding Extends TStaticEntity
 		area.position.y = ((13 - (floornumber)) * 73) - 115
 	End Method
 
+
 	'Summary: returns y which has to be added to building.y, so its the difference
 	Function GetFloorY:Int(floornumber:Int)
 		Return (66 + 1 + (13 - floornumber) * 73)		  ' +10 = interface
 	End Function
 
+
 	Method GetFloor:Int(y:Int)
 		Return Clamp(14 - Ceil((y - area.position.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
 
-	Method getFloorByPixelExactPoint:Int(point:TPoint) 'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000
+
+	Function getFloorByPixelExactPoint:Int(point:TPoint) 'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000
 		For Local i:Int = 0 To 13
-			If Building.GetFloorY(i) < point.y Then Return i
+			If GetFloorY(i) < point.y Then Return i
 		Next
 		Return -1
-	End Method
+	End Function
 End Type
+
+
+'===== CONVENIENCE ACCESSORS =====
+Function GetBuilding:TBuilding()
+	return TBuilding.GetInstance()
+End Function

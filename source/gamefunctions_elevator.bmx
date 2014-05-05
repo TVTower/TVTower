@@ -162,7 +162,7 @@ Type TElevator
 	End Method
 
 	Method GetDoorCenterX:int()
-		Return Building.area.position.x + Pos.x + door.sprite.framew/2
+		Return GetBuilding().area.position.x + Pos.x + door.sprite.framew/2
 	End Method
 
 	Method GetDoorWidth:int()
@@ -224,7 +224,7 @@ Type TElevator
 	End Method
 
 	Method GetElevatorCenterPos:TPoint()
-		Return new TPoint.Init(Building.area.position.x + Pos.x + door.sprite.framew/2, Pos.y + door.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
+		Return new TPoint.Init(GetBuilding().area.position.x + Pos.x + door.sprite.framew/2, Pos.y + door.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
 	End Method
 
 	'===== Offset-Funktionen =====
@@ -310,10 +310,10 @@ Type TElevator
 
 	Method Update(deltaTime:Float=1.0)
 		'Aktualisierung des current floors - mv: da ich hier nicht durchblicke lass ich's so wie's ist ;)
-		If Abs(Building.GetFloorY(Building.GetFloor(Building.area.position.y + Pos.y + spriteInner.area.GetH() - 1)) - (Pos.y + spriteInner.area.GetH())) <= 1
+		If Abs(TBuilding.GetFloorY(GetBuilding().GetFloor(GetBuilding().area.position.y + Pos.y + spriteInner.area.GetH() - 1)) - (Pos.y + spriteInner.area.GetH())) <= 1
 			'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
 			'until the function returns the new one, instead of positioning it directly on the floorground
-			CurrentFloor = Building.GetFloor(Building.area.position.y + Pos.y + spriteInner.area.GetH() - 1)
+			CurrentFloor = GetBuilding().GetFloor(GetBuilding().area.position.y + Pos.y + spriteInner.area.GetH() - 1)
 		EndIf
 
 		If ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
@@ -349,14 +349,14 @@ Type TElevator
 
 				'Fahren - Position ändern
 				If Direction = 1
-					Pos.y	= Max(Pos.y - deltaTime * Speed, Building.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'hoch fahren
+					Pos.y	= Max(Pos.y - deltaTime * Speed, TBuilding.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'hoch fahren
 				Else
-					Pos.y	= Min(Pos.y + deltaTime * Speed, Building.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'runter fahren
+					Pos.y	= Min(Pos.y + deltaTime * Speed, TBuilding.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'runter fahren
 				EndIf
 
 				'Begrenzungen: Nicht oben oder unten rausfahren ;)
-				If Pos.y + spriteInner.area.GetH() < Building.GetFloorY(13) Then Pos.y = Building.GetFloorY(13) - spriteInner.area.GetH()
-				If Pos.y + spriteInner.area.GetH() > Building.GetFloorY( 0) Then Pos.y = Building.GetFloorY(0) - spriteInner.area.GetH()
+				If Pos.y + spriteInner.area.GetH() < TBuilding.GetFloorY(13) Then Pos.y = TBuilding.GetFloorY(13) - spriteInner.area.GetH()
+				If Pos.y + spriteInner.area.GetH() > TBuilding.GetFloorY( 0) Then Pos.y = TBuilding.GetFloorY(0) - spriteInner.area.GetH()
 
 				'Die Figuren im Fahrstuhl mit der Kabine mitbewegen
 				For Local figure:TFigure = EachIn Passengers
@@ -408,21 +408,21 @@ Type TElevator
 		SetBlend MASKBLEND
 
 		'draw the door the elevator is currently at (eg. for animation)
-		door.RenderAt(Building.area.position.x + pos.x, Building.area.position.y + Building.GetFloorY(CurrentFloor) - 50)
+		door.RenderAt(GetBuilding().area.position.x + pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(CurrentFloor) - 50)
 
 		'Fahrstuhlanzeige über den Türen
 		For Local i:Int = 0 To 13
-			Local locy:Int = Building.area.position.y + Building.GetFloorY(i) - door.sprite.area.GetH() - 8
+			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(i) - door.sprite.area.GetH() - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
-				DrawRect(Building.area.position.x+Pos.x-4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
+				DrawRect(GetBuilding().area.position.x+Pos.x-4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
 				SetColor 255,255,255
 			EndIf
 		Next
 
 		'Fahrstuhlanzeige über den Türen
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			Local locy:Int = Building.area.position.y + Building.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 23
+			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 23
 			If floorroute.call
 				'elevator is called to this floor
 				SetColor 200,220,20
@@ -430,7 +430,7 @@ Type TElevator
 				'elevator will stop there (destination)
 				SetColor 100,220,20
 			EndIf
-			DrawRect(Building.area.position.x + Pos.x + 44, locy, 3,3)
+			DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy, 3,3)
 			SetColor 255,255,255
 		Next
 
@@ -441,9 +441,9 @@ Type TElevator
 	Method DrawFloorDoors()
 		'Innenraum zeichen (BG)     =>   elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(Building.area.position.x + 360, Max(Building.area.position.y, 10) , 44, 373)
+		DrawRect(GetBuilding().area.position.x + 360, Max(GetBuilding().area.position.y, 10) , 44, 373)
 		SetColor 255, 255, 255
-		spriteInner.Draw(Building.area.position.x + Pos.x, Building.area.position.y + Pos.y + 3.0)
+		spriteInner.Draw(GetBuilding().area.position.x + Pos.x, GetBuilding().area.position.y + Pos.y + 3.0)
 
 
 		'Zeichne Figuren
@@ -456,9 +456,9 @@ Type TElevator
 
 		'Zeichne Türen in allen Stockwerken (außer im aktuellen)
 		For Local i:Int = 0 To 13
-			Local locy:Int = Building.area.position.y + Building.GetFloorY(i) - door.sprite.area.GetH()
+			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(i) - door.sprite.area.GetH()
 			If locy < 410 And locy > - 50 And i <> CurrentFloor Then
-				door.RenderAt(Building.area.position.x + Pos.x, locy, "closed")
+				door.RenderAt(GetBuilding().area.position.x + Pos.x, locy, "closed")
 			Endif
 		Next
 	End Method
@@ -650,7 +650,7 @@ Type TElevatorSmartLogic Extends TElevatorRouteLogic
 
 	Function GetRouteIndexOfFigure:int(figure:TFigure)
 		local index:int = 0
-		For Local route:TFloorRoute = EachIn Building.Elevator.FloorRouteList
+		For Local route:TFloorRoute = EachIn GetBuilding().Elevator.FloorRouteList
 			If route.who = figure Then Return index
 		Next
 		Return -1

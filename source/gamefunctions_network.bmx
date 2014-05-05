@@ -90,8 +90,8 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 		case NET_CHATMESSAGE				NetworkHelper.ReceiveChatMessage( networkObject )
 
 		'not working yet
-		case NET_ELEVATORROUTECHANGE		Building.Elevator.Network_ReceiveRouteChange( networkObject )
-		case NET_ELEVATORSYNCHRONIZE		Building.Elevator.Network_ReceiveSynchronize( networkObject )
+		case NET_ELEVATORROUTECHANGE		GetBuilding().Elevator.Network_ReceiveRouteChange( networkObject )
+		case NET_ELEVATORSYNCHRONIZE		GetBuilding().Elevator.Network_ReceiveSynchronize( networkObject )
 
 		case NET_NEWSSUBSCRIPTIONCHANGE		NetworkHelper.ReceiveNewsSubscriptionChange( networkObject )
 		case NET_MOVIEAGENCYCHANGE			NetworkHelper.ReceiveMovieAgencyChange( networkObject )

@@ -1,8 +1,8 @@
 Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
 
 	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TSoundSourcePosition)
-		Local floorNumberSource:Int = Building.getFloorByPixelExactPoint(source.GetCenter())
-		Local floorNumberTarget:Int = Building.getFloorByPixelExactPoint(receiver.GetCenter())
+		Local floorNumberSource:Int = TBuilding.getFloorByPixelExactPoint(source.GetCenter())
+		Local floorNumberTarget:Int = TBuilding.getFloorByPixelExactPoint(receiver.GetCenter())
 		Local floorDistance:Int = TPoint.DistanceOfValues(floorNumberSource, floorNumberTarget)
 '		print "floorDistance: " + floorDistance + " - " + Exponential(0.5, floorDistance) + " # " + floorNumberSource + " $ " + floorNumberTarget
 		Return Super.GetVolumeByDistance(source, receiver) * Exponential(0.5, floorDistance)
@@ -207,8 +207,8 @@ Type TDoorSoundSource Extends TSoundSourceElement
 	End Method
 
 	Method GetCenter:TPoint()
-		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + Building.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return new TPoint.Init(door.Pos.x + door.doorDimension.x/2, Building.GetFloorY(door.Pos.y) - door.doorDimension.y/2, -15)
+		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + TBuilding.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
+		Return new TPoint.Init(door.Pos.x + door.doorDimension.x/2, TBuilding.GetFloorY(door.Pos.y) - door.doorDimension.y/2, -15)
 	End Method
 
 	Method IsMovable:Int()
@@ -398,7 +398,7 @@ Type TSimpleSoundSource extends TSoundSourceElement
 	End Method
 
 	Method GetCenter:TPoint()
-		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + Building.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
+		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + TBuilding.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
 		Return new TPoint.Init(App.settings.GetWidth()/2, App.settings.GetHeight()/2)
 	End Method
 

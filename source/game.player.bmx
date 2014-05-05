@@ -1,24 +1,35 @@
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer {_exposeToLua="selected"}
-	Field Name:String 								'playername
-	Field channelname:String 						'name of the channel
-	Field finances:TPlayerFinance[]					'financial stats about credit, money, payments ...
+	'playername
+	Field Name:String
+	'name of the channel
+	Field channelname:String
+	'financial stats about credit, money, payments ...
+	Field finances:TPlayerFinance[]
 	Field audience:TAudienceResult
 
 	Field PublicImage:TPublicImage							{_exposeToLua}
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
 	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
-	Field Figure:TFigure									{_exposeToLua}				'actual figure the player uses
-	Field playerID:Int 			= 0					'global used ID of the player
-	Field color:TColor				 				'the color used to colorize symbols and figures
-	Field figurebase:Int 		= 0					'actual number of an array of figure-images
-	Field networkstate:Int 		= 0					'1=ready, 0=not set, ...
-	Field newsabonnements:Int[6]							{_private}					'abonnementlevels for the newsgenres
-	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1] {_private}					'maximum abonnementlevel for this day
-	Field newsabonnementsSetTime:Int[6]						{_private}					'when was the level set
-	Field PlayerKI:KI			= Null						{_private}
-	Field CreditMaximum:Int		= 600000					{_private}
+	'actual figure the player uses
+	Field Figure:TFigure									{_exposeToLua}
+	'global used ID of the player
+	Field playerID:Int = 0
+	'the color used to colorize symbols and figures
+	Field color:TColor
+	'actual number of an array of figure-images
+	Field figurebase:Int = 0
+	'1=ready, 0=not set, ...
+	Field networkstate:Int = 0
+	'abonnementlevels for the newsgenres
+	Field newsabonnements:Int[6]
+	'maximum abonnementlevel for this day
+	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1]
+	'when was the level set
+	Field newsabonnementsSetTime:Int[6]
+	Field PlayerKI:KI
+	Field CreditMaximum:Int	= 600000
 
 
 	Method onLoad:int(triggerEvent:TEventBase)
@@ -36,7 +47,6 @@ Type TPlayer {_exposeToLua="selected"}
 
 
 	Method IsAI:Int() {_exposeToLua}
-		'return self.playerKI <> null
 		Return figure.IsAI()
 	End Method
 
@@ -94,18 +104,17 @@ Type TPlayer {_exposeToLua="selected"}
 	'-creates the given playercolor and a figure with the given
 	' figureimage, a programmecollection and a programmeplan
 	Function Create:TPlayer(playerID:int, Name:String, channelname:String = "", sprite:TSprite, x:Int, onFloor:Int = 13, dx:Int, color:TColor, ControlledByID:Int = 1, FigureName:String = "")
-		Local Player:TPlayer		= New TPlayer
-		EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Player").AddNumber("itemNumber", playerID).AddNumber("maxItemNumber", 4) ) )
+		Local Player:TPlayer = New TPlayer
 
-		Player.Name					= Name
-		Player.playerID				= playerID
-		Player.color				= color.AddToList(True).SetOwner(playerID)
-		Player.channelname			= channelname
-		Player.Figure				= New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
-		Player.Figure.ParentPlayerID= playerID
-		Player.PublicImage			= New TPublicImage.Create(Player)
-		Player.ProgrammeCollection	= TPlayerProgrammeCollection.Create(Player)
-		Player.ProgrammePlan		= New TPlayerProgrammePlan.Create(Player)
+		Player.Name	= Name
+		Player.playerID	= playerID
+		Player.color = color.AddToList(True).SetOwner(playerID)
+		Player.channelname = channelname
+		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
+		Player.Figure.ParentPlayerID = playerID
+		Player.PublicImage = New TPublicImage.Create(Player)
+		Player.ProgrammeCollection = TPlayerProgrammeCollection.Create(Player)
+		Player.ProgrammePlan = New TPlayerProgrammePlan.Create(Player)
 
 		Player.RecolorFigure(Player.color)
 
@@ -165,9 +174,9 @@ Type TPlayer {_exposeToLua="selected"}
 
 	'nothing up to now
 	Method UpdateFinances:Int()
-		For Local i:Int = 0 To 6
-			'
-		Next
+		'For Local i:Int = 0 To 6
+		'
+		'Next
 	End Method
 
 
@@ -273,7 +282,6 @@ endrem
 
 
 	'returns formatted value of actual money
-	'gibt einen formatierten Wert des aktuellen Geldvermoegens zurueck
 	Method GetMoneyFormatted:String(day:Int=-1)
 		Return TFunctions.convertValue(GetFinance(day).money, 2)
 	End Method
@@ -304,10 +312,10 @@ endrem
 
 
 	'returns formatted value of actual audience
-	'gibt einen formatierten Wert der aktuellen Zuschauer zurueck
 	Method GetFormattedAudience:String() {_exposeToLua}
 		Return TFunctions.convertValue(GetAudience(), 2)
 	End Method
+
 
 	Method Compare:Int(otherObject:Object)
 		Local s:TPlayer = TPlayer(otherObject)

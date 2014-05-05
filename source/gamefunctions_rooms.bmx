@@ -377,7 +377,7 @@ Type TRoom {_exposeToLua="selected"}
 					'Spieler-KI benachrichtigen
 					If figure.isAI() then Game.GetPlayer(figure.parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
-					If figure.isActivePlayer() then Building.CreateRoomUsedTooltip(door, room)
+					If figure.isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
 
 					triggerEvent.setVeto()
 					return FALSE
@@ -649,20 +649,20 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 
 	Method UpdateTooltip:Int()
 		If tooltip AND tooltip.enabled
-			tooltip.area.position.SetY( Building.area.position.y + Building.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
+			tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
 			tooltip.Update()
 			'delete old tooltips
 			if tooltip.lifetime < 0 then tooltip = null
 		EndIf
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and Game.GetPlayer().Figure.inRoom = Null And THelper.MouseIn(Pos.x, Building.area.position.y  + building.GetFloorY(Pos.y) - doorDimension.y, doorDimension.x, doorDimension.y)
+		If room.GetDescription(1) <> "" and Game.GetPlayer().Figure.inRoom = Null And THelper.MouseIn(Pos.x, GetBuilding().area.position.y  + TBuilding.GetFloorY(Pos.y) - doorDimension.y, doorDimension.x, doorDimension.y)
 			If tooltip <> null
 				tooltip.Hover()
 			else
 				tooltip = TTooltip.Create(room.GetDescription(1), room.GetDescription(2), 100, 140, 0, 0)
 			endif
-			tooltip.area.position.setY( Building.area.position.y + Building.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
+			tooltip.area.position.setY( GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
 			tooltip.area.position.setX( Pos.x + doorDimension.x/2 - tooltip.GetWidth()/2 )
 			tooltip.enabled	= 1
 			If room.name = "chief"			Then tooltip.tooltipimage = 2
@@ -719,7 +719,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 			'clamp doortype
 			door.doorType = Min(5, door.doorType)
 			'draw door
-			DrawImageOnImage(doorSprite.GetFrameImage(door.doorType), Pix, door.Pos.x - Building.area.position.x - 127, Building.GetFloorY(door.Pos.y) - doorSprite.area.GetH())
+			DrawImageOnImage(doorSprite.GetFrameImage(door.doorType), Pix, door.Pos.x - GetBuilding().area.position.x - 127, TBuilding.GetFloorY(door.Pos.y) - doorSprite.area.GetH())
 		Next
 		'no unlock needed atm as doing nothing
 		'UnlockImage(GetSpriteFromRegistry("gfx_building").parent.image)
@@ -734,17 +734,17 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		If getDoorType() >= 5
 			If getDoorType() = 5 AND DoorTimer.isExpired() Then Close(null)
 			'valign = 1 -> subtract sprite height
-			doorSprite.Draw(Pos.x, Building.area.position.y + Building.GetFloorY(Pos.y), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			doorSprite.Draw(Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 		EndIf
 
 		'==== DRAW DOOR SIGN ====
 		'draw on same height than door startY
-		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(Pos.x + 2 + doorSprite.framew, Building.area.position.y + Building.GetFloorY(Pos.y) - doorSprite.area.GetH())
+		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(Pos.x + 2 + doorSprite.framew, GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - doorSprite.area.GetH())
 
 
 		'==== DRAW DEBUG TEXT ====
 		if Game.DebugInfos
-			local textY:int = Building.area.position.y + Building.GetFloorY(Pos.y) - 62
+			local textY:int = GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - 62
 			if room.hasOccupant()
 				for local figure:TFigure = eachin room.occupants
 					GetBitmapFontManager().basefont.Draw(figure.name, Pos.x, textY)
@@ -799,8 +799,8 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	Function GetByCoord:TRoomDoor( x:int, y:int )
 		For Local door:TRoomDoor = EachIn list
 			'also allow invisible rooms... so just check if hit the area
-			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + Building.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.Pos.x, Building.area.position.y + Building.GetFloorY(door.pos.y) - door.doorDimension.Y, door.doorDimension.x, door.doorDimension.y)
+			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
+			If THelper.IsIn(x, y, door.Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(door.pos.y) - door.doorDimension.Y, door.doorDimension.x, door.doorDimension.y)
 				Return door
 			EndIf
 		Next
@@ -2757,6 +2757,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	Global hoveredGuiProgrammeLicence:TGuiProgrammeLicence = null
 	Global draggedGuiProgrammeLicence:TGuiProgrammeLicence = null
 
+	Global programmeList:TgfxProgrammelist
 	Global haveToRefreshGuiElements:int = TRUE
 	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 	Global DudeArea:TGUISimpleRect	'allows registration of drop-event
@@ -2779,6 +2780,8 @@ Type RoomHandler_Archive extends TRoomHandler
 		DudeArea = new TGUISimpleRect.Create(new TPoint.Init(600,100), new TPoint.Init(200, 350), "archive" )
 		'dude should accept drop - else no recognition
 		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
+
+		programmeList = New TgfxProgrammelist.Create(575, 16, 21)
 
 
 		'===== REGISTER EVENTS =====
@@ -2977,7 +2980,7 @@ endrem
 		if item.isDragged()
 			draggedGuiProgrammeLicence = item
 			'if we have an item dragged... we cannot have a menu open
-			ArchiveprogrammeList.SetOpen(0)
+			programmeList.SetOpen(0)
 		endif
 
 		return TRUE
@@ -3001,7 +3004,7 @@ endrem
 		if not room then return 0
 		if room.owner <> Game.playerID then return FALSE
 
-		ArchiveprogrammeList.Draw()
+		programmeList.Draw()
 
 		'make suitcase/vendor glow if needed
 		local glowSuitcase:string = ""
@@ -3012,8 +3015,8 @@ endrem
 		GUIManager.Draw("archive")
 
 		'show sheet from hovered list entries
-		if ArchiveprogrammeList.hoveredLicence
-			ArchiveprogrammeList.hoveredLicence.ShowSheet(30,20)
+		if programmeList.hoveredLicence
+			programmeList.hoveredLicence.ShowSheet(30,20)
 		endif
 		'show sheet from hovered suitcase entries
 		if hoveredGuiProgrammeLicence
@@ -3033,22 +3036,22 @@ endrem
 
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
-			If ArchiveProgrammeList.GetOpen() = 0
+			If programmeList.GetOpen() = 0
 				if THelper.IsIn(MouseManager.x, MouseManager.y, 605,65,160,90) Or THelper.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
 					Game.cursorstate = 1
 					If MOUSEMANAGER.IsHit(1)
 						MOUSEMANAGER.resetKey(1)
 						Game.cursorstate = 0
-						ArchiveProgrammeList.SetOpen(1)
+						programmeList.SetOpen(1)
 					endif
 				EndIf
 			endif
-			ArchiveprogrammeList.enabled = TRUE
+			programmeList.enabled = TRUE
 		else
 			'disable list if we have a dragged guiobject
-			ArchiveprogrammeList.enabled = FALSE
+			programmeList.enabled = FALSE
 		endif
-		ArchiveprogrammeList.Update(TgfxProgrammelist.MODE_ARCHIVE)
+		programmeList.Update(TgfxProgrammelist.MODE_ARCHIVE)
 
 		'create missing gui elements for the current suitcase
 		For local licence:TProgrammeLicence = eachin Game.getPlayer().ProgrammeCollection.suitcaseProgrammeLicences
@@ -5189,7 +5192,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		'if possible, change the target to the clicked door
 		if mouseClicked
 			local door:TRoomDoor = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
-			if door then playerFigure.ChangeTarget(door.Pos.x, Building.area.position.y + Building.GetFloorY(door.Pos.y))
+			if door then playerFigure.ChangeTarget(door.Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(door.Pos.y))
 		endif
 
 		TRoomDoorSign.UpdateAll(False)
@@ -5739,7 +5742,5 @@ Function Init_CreateAllRooms()
 	RoomHandler_Roomboard.Init()
 
 	RoomHandler_Credits.Init()
-
-
 End Function
 
