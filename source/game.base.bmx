@@ -257,13 +257,13 @@ Type TGame {_exposeToLua="selected"}
 	'computes penalties for expired ad-contracts
 	Method ComputeContractPenalties(day:Int=-1)
 		For Local Player:TPlayer = EachIn GetPlayerCollection().players
-			For Local Contract:TAdContract = EachIn Player.ProgrammeCollection.adContracts
+			For Local Contract:TAdContract = EachIn Player.GetProgrammeCollection().adContracts
 				If Not contract Then Continue
 
 				'0 days = "today", -1 days = ended
 				If contract.GetDaysLeft() < 0
 					Player.GetFinance(day).PayPenalty(contract.GetPenalty(), contract)
-					Player.ProgrammeCollection.RemoveAdContract(contract)
+					Player.GetProgrammeCollection().RemoveAdContract(contract)
 				EndIf
 			Next
 		Next

@@ -1927,7 +1927,7 @@ Type TInterface
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
 		If THelper.MouseIn(355,468,130,30)
-			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerCollection().Get().ProgrammePlan
+			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerCollection().Get().GetProgrammePlan()
 			if playerProgrammePlan
 				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+playerProgrammePlan.getFormattedAudience()+ " (MA: "+THelper.floatToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
 				CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
@@ -2063,7 +2063,7 @@ Type TInterface
 			SetBlend ALPHABLEND
 
 			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
-			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().ProgrammePlan.getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
 		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetGameTime().daysPlayed+1) + ". Tag", 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 

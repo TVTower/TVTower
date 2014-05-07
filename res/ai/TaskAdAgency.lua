@@ -35,7 +35,7 @@ function TaskAdAgency:Activate()
 end
 
 function TaskAdAgency:GetNextJobInTargetRoom()
-	if (MY.ProgrammeCollection.GetAdContractCount() >= 8) then
+	if (MY.GetProgrammeCollection().GetAdContractCount() >= 8) then
 		self:SetDone()
 		return nil
 	elseif (self.CheckSpots.Status ~= JOB_STATUS_DONE) then
@@ -247,7 +247,7 @@ function SignRequisitedContracts:SignMatchingContracts(requisition, guessedAudie
 	local buyedContracts = {}
 
 	for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-		if MY.ProgrammeCollection.GetAdContractCount() >= 8 then break end
+		if MY.GetProgrammeCollection().GetAdContractCount() >= 8 then break end
 
 		local minAudience = value.GetMinAudience()
 
@@ -314,7 +314,7 @@ function SignContracts:Tick()
 	--if (openSpots > 0) then
 	if (openSpots < 8) then
 		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-			if MY.ProgrammeCollection.GetAdContractCount() >= MY.ProgrammeCollection.maxContracts then break end
+			if MY.GetProgrammeCollection().GetAdContractCount() >= MY.GetProgrammeCollection().maxContracts then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
 				debugMsg("Schlieﬂe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ")")
@@ -330,8 +330,8 @@ end
 function SignContracts:GetCommonRequisition()
 	local unsentSpots = 0
 
-	for i = 0, MY.ProgrammeCollection.GetAdContractCount() - 1 do
-		local contract = MY.ProgrammeCollection.GetAdContractAtIndex(i)
+	for i = 0, MY.GetProgrammeCollection().GetAdContractCount() - 1 do
+		local contract = MY.GetProgrammeCollection().GetAdContractAtIndex(i)
 		if (contract.isSuccessful() ~= 1) then
 			unsentSpots = unsentSpots + contract.GetSpotsToSend()
 		end

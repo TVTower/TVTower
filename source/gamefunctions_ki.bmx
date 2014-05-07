@@ -514,7 +514,7 @@ endrem
 	Method of_getAdvertisementSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local material:TBroadcastMaterial = GetPlayerCollection().Get(Self.ME).ProgrammePlan.GetAdvertisement(day, hour)
+		Local material:TBroadcastMaterial = GetPlayerCollection().Get(Self.ME).GetProgrammePlan().GetAdvertisement(day, hour)
 		If material
 			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
 		else
@@ -526,14 +526,14 @@ endrem
 	Method of_getAdContractCount:Int()
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Return GetPlayerCollection().Get(Self.ME).ProgrammeCollection.GetAdContractCount()
+		Return GetPlayerProgrammeCollectionCollection().Get(Self.ME).GetAdContractCount()
 	End Method
 
 
 	Method of_getAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office", True) Then Return Null
 
-		Local obj:TAdContract = GetPlayerCollection().Get(Self.ME).ProgrammeCollection.GetAdContractAtIndex(arrayIndex)
+		Local obj:TAdContract = GetPlayerCollection().Get(Self.ME).GetProgrammeCollection().GetAdContractAtIndex(arrayIndex)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -541,7 +541,7 @@ endrem
 	Method of_getAdContractByID:TAdContract(id:Int=-1)
 		If Not _PlayerInRoom("office", True) Then Return Null
 
-		Local obj:TAdContract = GetPlayerCollection().Get(Self.ME).ProgrammeCollection.GetAdContract(id)
+		Local obj:TAdContract = GetPlayerCollection().Get(Self.ME).GetProgrammeCollection().GetAdContract(id)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -556,9 +556,9 @@ endrem
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
-		local broadcastMaterial:TBroadcastMaterial = GetPlayerCollection().Get(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
+		local broadcastMaterial:TBroadcastMaterial = GetPlayerCollection().Get(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
 
-		if GetPlayerCollection().Get(self.ME).ProgrammePlan.SetAdvertisementSlot(broadcastMaterial, day, hour)
+		if GetPlayerCollection().Get(self.ME).GetProgrammePlan().SetAdvertisementSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED
@@ -570,7 +570,7 @@ endrem
 	Method of_getProgrammeSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local material:TBroadcastMaterial = GetPlayerCollection().Get(Self.ME).ProgrammePlan.GetProgramme(day, hour)
+		Local material:TBroadcastMaterial = GetPlayerCollection().Get(Self.ME).GetProgrammePlan().GetProgramme(day, hour)
 		If material
 			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
 		else
@@ -590,9 +590,9 @@ endrem
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
-		local broadcastMaterial:TBroadcastMaterial = GetPlayerCollection().Get(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
+		local broadcastMaterial:TBroadcastMaterial = GetPlayerCollection().Get(self.ME).GetProgrammeCollection().GetBroadcastMaterial(materialSource)
 
-		if GetPlayerCollection().Get(self.ME).ProgrammePlan.SetProgrammeSlot(broadcastMaterial, day, hour)
+		if GetPlayerCollection().Get(self.ME).GetProgrammePlan().SetProgrammeSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED
@@ -641,15 +641,15 @@ endrem
 		If Self.ME <> player.Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'News bei slotID loeschen
-			if player.ProgrammePlan.RemoveNews(null, slot)
+			if player.GetProgrammePlan().RemoveNews(null, slot)
 				Return self.RESULT_OK
 			else
 				Return self.RESULT_NOTFOUND
 			endif
 		Else
-			Local news:TBroadcastMaterial = player.ProgrammeCollection.GetNews(ObjectID)
+			Local news:TBroadcastMaterial = player.GetProgrammeCollection().GetNews(ObjectID)
 			If not news or not TNews(news) then Return self.RESULT_NOTFOUND
-			player.ProgrammePlan.SetNews(TNews(news), slot)
+			player.GetProgrammePlan().SetNews(TNews(news), slot)
 
 			Return self.RESULT_OK
 		EndIf
@@ -715,7 +715,7 @@ endrem
 	Method sa_doGiveBackSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TAdContract = GetPlayerCollection().Get(self.ME).ProgrammeCollection.GetUnsignedAdContractFromSuitcase(contractID)
+		local contract:TAdContract = GetPlayerCollection().Get(self.ME).GetProgrammeCollection().GetUnsignedAdContractFromSuitcase(contractID)
 		'this does not sign - signing is done when leaving the room!
 		if contract and RoomHandler_AdAgency.GetInstance().TakeContractFromPlayer( contract, self.ME )
 			Return self.RESULT_OK
@@ -763,7 +763,7 @@ endrem
 	Method md_doSellProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get(self.ME).ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get(self.ME).GetProgrammeCollection().suitcaseProgrammeLicences
 			if licence.id = licenceID then return RoomHandler_MovieAgency.GetInstance().BuyProgrammeLicenceFromPlayer(licence)
 		Next
 		Return self.RESULT_NOTFOUND

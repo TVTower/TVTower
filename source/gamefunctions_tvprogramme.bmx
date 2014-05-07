@@ -832,7 +832,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		local player:TPlayer = GetPlayerCollection().Get(material.owner)
 		if player
 			if day < 0 then day = GetGameTime().GetDay()
-			startHour = player.ProgrammePlan.GetObjectStartHour(material.materialType,day,0)
+			startHour = player.GetProgrammePlan().GetObjectStartHour(material.materialType,day,0)
 			'get a 0-23 value
 			startHour = startHour mod 24
 		else
@@ -1262,7 +1262,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 				'evtl cachen?
 				local player:TPlayer = GetPlayerCollection().Get()
-				Local genrecount:Int = player.ProgrammeCollection.GetProgrammeGenreCount(genres)
+				Local genrecount:Int = player.GetProgrammeCollection().GetProgrammeGenreCount(genres)
 
 				If genrecount > 0
 					GetBitmapFontManager().baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres) + " (" +genreCount+ ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, null, TColor.clBlack)
@@ -1298,7 +1298,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 		'first
 		local player:TPlayer = GetPlayerCollection().Get()
-		For Local licence:TProgrammeLicence = EachIn player.ProgrammeCollection.programmeLicences
+		For Local licence:TProgrammeLicence = EachIn player.GetProgrammeCollection().programmeLicences
 			'skip wrong genre
 			If licence.GetGenre() <> genre then continue
 			'choose correct asset
@@ -1339,7 +1339,7 @@ Type TgfxProgrammelist extends TPlannerList
 '		endif
 
 		local player:TPlayer = GetPlayerCollection().Get()
-		For Local licence:TProgrammeLicence = EachIn player.ProgrammeCollection.programmeLicences
+		For Local licence:TProgrammeLicence = EachIn player.GetProgrammeCollection().programmeLicences
 			'skip wrong genre
 			If licence.GetGenre() <> genre then continue
 
@@ -1543,7 +1543,7 @@ Type TgfxContractlist extends TPlannerList
 		box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
 		local player:TPlayer = GetPlayerCollection().Get()
-		For Local contract:TAdContract = EachIn player.ProgrammeCollection.adContracts
+		For Local contract:TAdContract = EachIn player.GetProgrammeCollection().adContracts
 			gfxTape.Draw(box.GetX(), box.GetY())
 			font.drawBlock(contract.GetTitle(), box.position.GetIntX() + 13,box.position.GetIntY() + 3, 139,16, null,TColor.clBlack,0,True)
 
@@ -1571,7 +1571,7 @@ Type TgfxContractlist extends TPlannerList
 			box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
 			local player:TPlayer = GetPlayerCollection().Get()
-			For Local contract:TAdContract = EachIn player.ProgrammeCollection.adContracts
+			For Local contract:TAdContract = EachIn player.GetProgrammeCollection().adContracts
 				If box.containsXY(MouseManager.x,MouseManager.y)
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
@@ -1705,7 +1705,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 		if bestBidder
 			local player:TPlayer = GetPlayerCollection().Get(bestBidder)
-			player.ProgrammeCollection.AddProgrammeLicence(licence)
+			player.GetProgrammeCollection().AddProgrammeLicence(licence)
 			Print "player "+player.name + " won the auction for: "+licence.GetTitle()
 		End If
 		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.endAuction", new TData.Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid).AddNumber("bidSavings", bidSavings), self))

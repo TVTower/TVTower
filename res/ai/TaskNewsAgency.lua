@@ -136,8 +136,8 @@ end
 function JobNewsAgency:GetNewsList()
 	local currentNewsList = {}
 
-	for i = 0, MY.ProgrammeCollection.GetNewsCount() - 1 do
-		local news = MY.ProgrammeCollection.GetNewsAtIndex(i)
+	for i = 0, MY.GetProgrammeCollection().GetNewsCount() - 1 do
+		local news = MY.GetProgrammeCollection().GetNewsAtIndex(i)
 		if (news.IsReadyToPublish() == 1) then
 			table.insert(currentNewsList, news)
 		end

@@ -68,10 +68,14 @@ Type TPlayerCollection
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
+'return collection instance
 Function GetPlayerCollection:TPlayerCollection()
 	Return TPlayerCollection.GetInstance()
 End Function
-
+'return specific player
+Function GetPlayer:TPlayer(playerID:int=-1)
+	Return TPlayerCollection.GetInstance().Get(playerID)
+End Function
 
 
 
@@ -83,8 +87,6 @@ Type TPlayer {_exposeToLua="selected"}
 	Field channelname:String
 
 	Field PublicImage:TPublicImage							{_exposeToLua}
-	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
-	Field ProgrammePlan:TPlayerProgrammePlan				{_exposeToLua}
 	'actual figure the player uses
 	Field Figure:TFigure									{_exposeToLua}
 	'global used ID of the player
@@ -106,11 +108,12 @@ Type TPlayer {_exposeToLua="selected"}
 
 
 	Method onLoad:int(triggerEvent:TEventBase)
-		'reconnect AI engine
-		if IsAi() then PlayerKI.Start()
-
-		'load savestate
-		if IsAi() then PlayerKI.CallOnLoad()
+		if IsAi()
+			'reconnect AI engine
+			PlayerKI.Start()
+			'load savestate
+			PlayerKI.CallOnLoad()
+		endif
 	End Method
 
 
@@ -137,6 +140,16 @@ Type TPlayer {_exposeToLua="selected"}
 	'if the day is in the future, a new finance object is created
 	Method GetFinance:TPlayerFinance(day:Int=-1)
 		return GetPlayerFinanceCollection().Get(playerID, day)
+	End Method
+
+
+	Method GetProgrammeCollection:TPlayerProgrammeCollection() {_exposeToLua}
+		return GetPlayerProgrammeCollectionCollection().Get(playerID)
+	End Method
+
+
+	Method GetProgrammePlan:TPlayerProgrammePlan() {_exposeToLua}
+		return GetPlayerProgrammePlanCollection().Get(playerID)
 	End Method
 
 
@@ -168,11 +181,9 @@ Type TPlayer {_exposeToLua="selected"}
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayerID = playerID
 		Player.PublicImage = New TPublicImage.Create(Player.playerID)
-		Player.ProgrammeCollection = TPlayerProgrammeCollection.Create(Player.playerID)
-		Player.ProgrammePlan = New TPlayerProgrammePlan.Create(Player.playerID)
 
-		GetPlayerProgrammeCollectionCollection().Set(Player.playerID, Player.ProgrammeCollection)
-		GetPlayerProgrammePlanCollection().Set(Player.playerID, Player.ProgrammePlan)
+		new TPlayerProgrammeCollection.Create(playerID)
+		new TPlayerProgrammePlan.Create(playerID)
 
 		Player.RecolorFigure(Player.color)
 

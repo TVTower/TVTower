@@ -43,8 +43,13 @@ Type TPlayerProgrammeCollectionCollection
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
+'return collection instance
 Function GetPlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection()
 	Return TPlayerProgrammeCollectionCollection.GetInstance()
+End Function
+'return specific collection
+Function GetPlayerProgrammeCollection:TPlayerProgrammeCollection(playerID:int)
+	Return TPlayerProgrammeCollectionCollection.GetInstance().Get(playerID)
 End Function
 
 
@@ -63,12 +68,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Global fireEvents:int					= TRUE			'FALSE to avoid recursive handling (network)
 
 
-	Function Create:TPlayerProgrammeCollection(owner:int)
-		Local obj:TPlayerProgrammeCollection = New TPlayerProgrammeCollection
-		GetPlayerProgrammeCollectionCollection().Set(owner, obj)
-		obj.owner = owner
-		Return obj
-	End Function
+	Method Create:TPlayerProgrammeCollection(owner:int)
+		GetPlayerProgrammeCollectionCollection().Set(owner, self)
+		self.owner = owner
+		Return self
+	End Method
 
 
 	Method ClearLists()

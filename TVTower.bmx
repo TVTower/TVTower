@@ -8,7 +8,8 @@ SuperStrict
 ' @bmk doVersion source/version.txt
 '
 
-Framework brl.glmax2d
+'Framework brl.glmax2d
+Framework BRL.StandardIO
 ?Win32
 '	Import "tvtower_icon.o"
 ?

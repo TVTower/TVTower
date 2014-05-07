@@ -1311,11 +1311,11 @@ Type RoomHandler_Office extends TRoomHandler
 		if not talkToProgrammePlanner then return TRUE
 
 		if list = GuiListProgrammes
-			if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+			if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 				print "[WARNING] dragged item from programmelist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		elseif list = GuiListAdvertisements
-			if not GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+			if not GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 				print "[WARNING] dragged item from adlist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		else
@@ -1338,12 +1338,12 @@ Type RoomHandler_Office extends TRoomHandler
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -1372,12 +1372,12 @@ Type RoomHandler_Office extends TRoomHandler
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -1390,13 +1390,13 @@ Type RoomHandler_Office extends TRoomHandler
 			'is the gui item coming from another day?
 			'remove it from there (was "silenced" during automatic mode)
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
-				if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+				if not GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 					print "[ERROR] dropped item on programmelist - removal from other day FAILED"
 					return False
 				endif
 			Endif
 
-			if not GetPlayerCollection().Get().ProgrammePlan.SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayerCollection().Get().GetProgrammePlan().SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
@@ -1405,7 +1405,7 @@ Type RoomHandler_Office extends TRoomHandler
 			'   the day from the players ProgrammePlan)
 			item.plannedOnDay = list.planDay
 		elseif list = GuiListAdvertisements
-			if not GetPlayerCollection().Get().ProgrammePlan.SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayerCollection().Get().GetProgrammePlan().SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
@@ -1456,11 +1456,11 @@ Type RoomHandler_Office extends TRoomHandler
 			'-> remove dayChangeObjects from plan if dragging
 			if not item.isDragged() and talkToProgrammePlanner
 				if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
-					if GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+					if GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
 					endif
 				elseif item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
-					if GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+					if GetPlayerCollection().Get().GetProgrammePlan().RemoveProgramme(item.broadcastMaterial)
 						GuiLisTProgrammes.dayChangeGuiProgrammePlanElement = null
 					endif
 				endif
@@ -1850,7 +1850,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'===== CREATE NEW =====
 		'create missing gui elements for all programmes/ads
-		local daysProgramme:TBroadcastMaterial[] = GetPlayerCollection().Get().ProgrammePlan.GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysProgramme:TBroadcastMaterial[] = GetPlayerCollection().Get().GetProgrammePlan().GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysProgramme
 			if not obj then continue
 
@@ -1895,7 +1895,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'ad list (can contain ads, programmes, ...)
-		local daysAdvertisements:TBroadcastMaterial[] = GetPlayerCollection().Get().ProgrammePlan.GetAdvertisementsInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysAdvertisements:TBroadcastMaterial[] = GetPlayerCollection().Get().GetProgrammePlan().GetAdvertisementsInTimeSpan(planningDay, 0, planningDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysAdvertisements
 			if not obj then continue
 
@@ -2848,7 +2848,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
 		if not figure or not figure.parentPlayerID then return FALSE
 rem
-		GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.ReaddProgrammeLicencesFromSuitcase()
+		GetPlayerCollection().Get(figure.parentPlayerID).GetProgrammeCollection().ReaddProgrammeLicencesFromSuitcase()
 
 		'fill all open slots in the agency
 		ReFillBlocks()
@@ -2876,7 +2876,7 @@ endrem
 		'suitcase
 		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
 			'if the player has this licence in suitcase, skip deletion
-			if GetPlayerCollection().Get().ProgrammeCollection.HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
+			if GetPlayerCollection().Get().GetProgrammeCollection().HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
@@ -2884,7 +2884,7 @@ endrem
 
 		'===== CREATE NEW =====
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().GetProgrammeCollection().suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
@@ -2907,8 +2907,8 @@ endrem
 		if not guiBlock or not guiBlock.isDragged() then return FALSE
 
 		'add back to collection if already dropped it to suitcase before
-		if not GetPlayerCollection().Get().programmeCollection.HasProgrammeLicence(guiBlock.licence)
-			GetPlayerCollection().Get().programmeCollection.RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
+		if not GetPlayerCollection().Get().GetProgrammeCollection().HasProgrammeLicence(guiBlock.licence)
+			GetPlayerCollection().Get().GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
 		endif
 		'remove the gui element
 		guiBlock.remove()
@@ -2936,14 +2936,14 @@ endrem
 			case GuiListSuitcase
 				'check if still in collection - if so, remove
 				'from collection and add to suitcase
-				if GetPlayerCollection().Get().programmeCollection.HasProgrammeLicence(guiBlock.licence)
+				if GetPlayerCollection().Get().GetProgrammeCollection().HasProgrammeLicence(guiBlock.licence)
 					'remove gui - a new one will be generated automatically
 					'as soon as added to the suitcase and the room's update
 					guiBlock.remove()
 
 					'if not able to add to suitcase (eg. full), cancel
 					'the drop-event
-					if not GetPlayerCollection().Get().programmeCollection.AddProgrammeLicenceToSuitcase(guiBlock.licence)
+					if not GetPlayerCollection().Get().GetProgrammeCollection().AddProgrammeLicenceToSuitcase(guiBlock.licence)
 						triggerEvent.setVeto()
 					endif
 				endif
@@ -2966,7 +2966,7 @@ endrem
 		if receiver <> DudeArea then return FALSE
 
 		'add back to collection
-		GetPlayerCollection().Get().programmeCollection.RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
+		GetPlayerCollection().Get().GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
 		'remove the gui element
 		guiBlock.remove()
 		guiBlock = null
@@ -3057,7 +3057,7 @@ endrem
 		programmeList.Update(TgfxProgrammelist.MODE_ARCHIVE)
 
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().GetProgrammeCollection().suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem( new TGuiProgrammeLicence.CreateWithLicence(licence),"-1" )
 		Next
@@ -3245,7 +3245,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
 		if not figure or not figure.parentPlayerID then return FALSE
 
-		GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.ReaddProgrammeLicencesFromSuitcase()
+		GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).ReaddProgrammeLicencesFromSuitcase()
 
 		'fill all open slots in the agency
 		GetInstance().ReFillBlocks()
@@ -3314,7 +3314,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
 		'try to add to suitcase of player
-		if not GetPlayerCollection().Get(playerID).ProgrammeCollection.AddProgrammeLicenceToSuitcase(licence)
+		if not GetPlayerProgrammeCollectionCollection().Get(playerID).AddProgrammeLicenceToSuitcase(licence)
 			return FALSE
 		endif
 
@@ -3335,7 +3335,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'remove from player (lists and suitcase) - and give him money
 		if GetPlayerCollection().IsPlayer(licence.owner)
-			GetPlayerCollection().Get(licence.owner).ProgrammeCollection.RemoveProgrammeLicence(licence, TRUE)
+			GetPlayerProgrammeCollectionCollection().Get(licence.owner).RemoveProgrammeLicence(licence, TRUE)
 		endif
 
 		'add to agency's lists - if not existing yet
@@ -3413,7 +3413,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'suitcase
 		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
 			'if the player has this licence in suitcase, skip deletion
-			if GetPlayerCollection().Get().ProgrammeCollection.HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
+			if GetPlayerProgrammeCollectionCollection().Get(GetPlayerCollection().playerID).HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
@@ -3443,7 +3443,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			Next
 		Next
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollectionCollection().Get(GetPlayerCollection().playerID).suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
@@ -4088,10 +4088,10 @@ EndRem
 	Function RefreshGuiElements:int()
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries
-			if not GetPlayerCollection().Get().ProgrammeCollection.hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerCollection().Get().GetProgrammeCollection().hasNews(guiNews.news) then guiNews.remove()
 		Next
 		For local guiNews:TGuiNews = eachin guiNewsListUsed._slots
-			if not GetPlayerCollection().Get().ProgrammePlan.hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerCollection().Get().GetProgrammePlan().hasNews(guiNews.news) then guiNews.remove()
 		Next
 
 		'if removing "dragged" we also bug out the "replace"-mechanism when
@@ -4108,21 +4108,21 @@ EndRem
 		Next
 
 		'create gui element for news still missing them
-		For Local news:TNews = EachIn GetPlayerCollection().Get().ProgrammeCollection.news
+		For Local news:TNews = EachIn GetPlayerCollection().Get().GetProgrammeCollection().news
 			'skip if news is dragged
 			if draggedNewsList.contains(news) then continue
 
 			if not guiNewsListAvailable.ContainsNews(news)
 				'only add for news NOT planned in the news show
-				if not GetPlayerCollection().Get().ProgrammePlan.HasNews(news)
+				if not GetPlayerCollection().Get().GetProgrammePlan().HasNews(news)
 					local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
 					guiNews.SetNews(news)
 					guiNewsListAvailable.AddItem(guiNews)
 				endif
 			endif
 		Next
-		For Local i:int = 0 to GetPlayerCollection().Get().ProgrammePlan.news.length - 1
-			local news:TNews = TNews(GetPlayerCollection().Get().ProgrammePlan.GetNews(i))
+		For Local i:int = 0 to GetPlayerCollection().Get().GetProgrammePlan().news.length - 1
+			local news:TNews = TNews(GetPlayerCollection().Get().GetProgrammePlan().GetNews(i))
 			'skip if news is dragged
 			if news and draggedNewsList.contains(news) then continue
 
@@ -4183,8 +4183,8 @@ EndRem
 
 		'remove from plan (with addBackToCollection=FALSE) and collection
 		local player:TPlayer = GetPlayerCollection().Get(guiNews.news.owner)
-		player.ProgrammePlan.RemoveNews(guiNews.news, -1, FALSE)
-		player.ProgrammeCollection.RemoveNews(guiNews.news)
+		player.GetProgrammePlan().RemoveNews(guiNews.news, -1, FALSE)
+		player.GetProgrammeCollection().RemoveNews(guiNews.news)
 
 		'remove gui object
 		guiNews.remove()
@@ -4203,7 +4203,7 @@ EndRem
 		if not player then return False
 
 		if receiverList = guiNewsListAvailable
-			player.ProgrammePlan.RemoveNews(guiNews.news, -1, TRUE)
+			player.GetProgrammePlan().RemoveNews(guiNews.news, -1, TRUE)
 		elseif receiverList = guiNewsListUsed
 			local slot:int = -1
 			'check drop position
@@ -4212,7 +4212,7 @@ EndRem
 			if slot = -1 then slot = guiNewsListUsed.getSlot(guiNews)
 
 			'this may also drag a news that occupied that slot before
-			player.ProgrammePlan.SetNews(guiNews.news, slot)
+			player.GetProgrammePlan().SetNews(guiNews.news, slot)
 		endif
 	End Function
 
@@ -4566,10 +4566,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		'sign all new contracts
-		For Local contract:TAdContract = EachIn GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.suitcaseAdContracts
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID)
+		For Local contract:TAdContract = EachIn programmeCollection.suitcaseAdContracts
 			'adds a contract to the players collection (gets signed THERE)
 			'if successful, this also removes the contract from the suitcase
-			GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.AddAdContract(contract)
+			programmeCollection.AddAdContract(contract)
 		Next
 
 		'fill all open slots in the agency
@@ -4648,14 +4649,15 @@ EndRem
 
 	Method GiveContractToPlayer:int(contract:TAdContract, playerID:int, sign:int=FALSE)
 		if contract.owner = playerID then return FALSE
-		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		if not programmeCollection then return FALSE
 
 		'try to add to suitcase of player
 		if not sign
-			if not GetPlayerCollection().Get(playerID).ProgrammeCollection.AddUnsignedAdContractToSuitcase(contract) then return FALSE
+			if not programmeCollection.AddUnsignedAdContractToSuitcase(contract) then return FALSE
 		'we do not need the suitcase, direkt sign pls (eg. for AI)
 		else
-			if not GetPlayerCollection().Get(playerID).ProgrammeCollection.AddAdContract(contract) then return FALSE
+			if not programmeCollection.AddAdContract(contract) then return FALSE
 		endif
 
 		'remove from agency's lists
@@ -4666,8 +4668,10 @@ EndRem
 
 
 	Method TakeContractFromPlayer:int(contract:TAdContract, playerID:int)
-		local player:TPlayer = GetPlayerCollection().Get(playerID)
-		if player.ProgrammeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollection(playerID)
+		if not programmeCollection then return False
+
+		if programmeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
 			'add to agency's lists - if not existing yet
 			if not HasContract(contract) then AddContract(contract)
 
@@ -4774,10 +4778,11 @@ EndRem
 		'remove gui elements with contracts the player does not have any longer
 
 		'suitcase
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(GetPlayer().playerID)
 		For local guiAdContract:TGuiAdContract = eachin GuiListSuitcase._slots
 			'if the player has this contract in suitcase or list, skip deletion
-			if GetPlayerCollection().Get().ProgrammeCollection.HasAdContract(guiAdContract.contract) then continue
-			if GetPlayerCollection().Get().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract) then continue
+			if programmeCollection.HasAdContract(guiAdContract.contract) then continue
+			if programmeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract) then continue
 
 			'print "guiListSuitcase has obsolete contract: "+guiAdContract.contract.id
 			guiAdContract.remove()
@@ -4846,7 +4851,7 @@ EndRem
 		Next
 
 		'create missing gui elements for the players contracts
-		For local contract:TAdContract = eachin GetPlayerCollection().Get().ProgrammeCollection.adContracts
+		For local contract:TAdContract = eachin programmeCollection.adContracts
 			if guiListSuitcase.ContainsContract(contract) then continue
 			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
 			'change look
@@ -4859,7 +4864,7 @@ EndRem
 		Next
 
 		'create missing gui elements for the current suitcase
-		For local contract:TAdContract = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseAdContracts
+		For local contract:TAdContract = eachin programmeCollection.suitcaseAdContracts
 			if guiListSuitcase.ContainsContract(contract) then continue
 			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
 			'change look
@@ -5074,7 +5079,7 @@ endrem
 		'during sign we cannot rely on it. So we check if the player has
 		'the contract in the suitcaseContractList
 		local owner:int = guiAdContract.contract.owner
-		if owner <= 0 and GetPlayerCollection().Get().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract)
+		if owner <= 0 and GetPlayerProgrammeCollectionCollection().Get(GetPlayerCollection().playerID).HasUnsignedAdContractInSuitcase(guiAdContract.contract)
 			owner = GetPlayerCollection().playerID
 		endif
 
@@ -5116,7 +5121,7 @@ endrem
 		'make suitcase/vendor glow if needed
 		local glowSuitcase:string = ""
 		if draggedGuiAdContract
-			if not GetPlayerCollection().Get().ProgrammeCollection.HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
+			if not GetPlayerProgrammeCollectionCollection().Get(GetPlayerCollection().playerID).HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
 				glowSuitcase = "_glow"
 			endif
 			GetSpriteFromRegistry("gfx_hint_rooms_adagency").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())

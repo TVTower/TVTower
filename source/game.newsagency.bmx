@@ -152,7 +152,7 @@ Type TNewsAgency
 
 			'add to players collection (sends out event which gets
 			'recognized by the network handler)
-			player.ProgrammeCollection.AddNews(news)
+			player.GetProgrammeCollection().AddNews(news)
 		EndIf
 	End Method
 

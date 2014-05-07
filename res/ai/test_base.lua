@@ -38,24 +38,24 @@ end
 
 -- Funktion wird einmal pro Spielminute aufgerufen
 function OnMinute(number)
-	-- TVT.PrintOut("title: " .. tonumber(number) .. MY.getPlayerID() .. MY.ProgrammeCollection.GetProgrammeAtIndex( 1 ).title )
+	-- TVT.PrintOut("title: " .. tonumber(number) .. MY.getPlayerID() .. MY.GetProgrammeCollection().GetProgrammeAtIndex( 1 ).title )
 
 	if tonumber(number) == 0 and MY.getPlayerID() == 3 then
 --[[
 		TVT.PrintOut("DEBUG DATA for player " .. MY.getPlayerID())
 		TVT.PrintOut("- - - - - - - - - - - -")
 		TVT.PrintOut("ProgrammeCollection - contracts:")
-		entries = MY.ProgrammeCollection.getAdContracts()
+		entries = MY.GetProgrammeCollection().getAdContracts()
 		for i, entry in ipairs(entries) do
 			TVT.PrintOut("	contract "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 		end
 		TVT.PrintOut("ProgrammeCollection - movies:")
-		entries = MY.ProgrammeCollection.getMovies()
+		entries = MY.GetProgrammeCollection().getMovies()
 		for i, entry in ipairs(entries) do
 			TVT.PrintOut("	movie "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 		end
 		TVT.PrintOut("ProgrammeCollection - series:")
-		entries = MY.ProgrammeCollection.getSeries()
+		entries = MY.GetProgrammeCollection().getSeries()
 		for i, entry in ipairs(entries) do
 			TVT.PrintOut("	serie "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 			episodes = entry.GetEpisodes()
@@ -64,7 +64,7 @@ function OnMinute(number)
 			end
 		end
 		TVT.PrintOut("ProgrammeCollection - programme in general:")
-		entries = MY.ProgrammeCollection.getProgrammes()
+		entries = MY.GetProgrammeCollection().getProgrammes()
 		for i, entry in ipairs(entries) do
 			TVT.PrintOut("	programme "..i.."/"..#entries.."		: "..entry.GetTitle() .. " (id: "..entry.GetID()..")")
 		end

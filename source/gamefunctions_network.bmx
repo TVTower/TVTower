@@ -443,18 +443,18 @@ print "[NET] ReceiveGameReady"
 		local player:TPlayer
 		for local i:int = 1 to 4
 			player = GetPlayerCollection().Get(i)
-			if player.ProgrammeCollection.GetMovieLicenceCount() < Game.startMovieAmount
-				print "movie missing player("+i+") " + player.ProgrammeCollection.GetMovieLicenceCount() + " < " + Game.startMovieAmount
+			if player.GetProgrammeCollection().GetMovieLicenceCount() < Game.startMovieAmount
+				print "movie missing player("+i+") " + player.GetProgrammeCollection().GetMovieLicenceCount() + " < " + Game.startMovieAmount
 				allReady = false
 				exit
 			endif
-			if player.ProgrammeCollection.GetSeriesLicenceCount() < Game.startSeriesAmount
-				print "serie missing player("+i+") " + player.ProgrammeCollection.GetSeriesLicenceCount() + " < " + Game.startSeriesAmount
+			if player.GetProgrammeCollection().GetSeriesLicenceCount() < Game.startSeriesAmount
+				print "serie missing player("+i+") " + player.GetProgrammeCollection().GetSeriesLicenceCount() + " < " + Game.startSeriesAmount
 				allReady = false
 				exit
 			endif
-			if player.ProgrammeCollection.GetAdContractCount() < Game.startAdAmount
-				print "ad missing player("+i+") " + player.ProgrammeCollection.GetAdContractCount() + " < " + Game.startAdAmount
+			if player.GetProgrammeCollection().GetAdContractCount() < Game.startAdAmount
+				print "ad missing player("+i+") " + player.GetProgrammeCollection().GetAdContractCount() + " < " + Game.startAdAmount
 				allReady = false
 				exit
 			endif
@@ -610,23 +610,23 @@ print "[NET] ReceiveGameReady"
 
 					select action
 						case NET_ADD
-								player.ProgrammeCollection.AddProgrammeLicence(licence, FALSE)
+								player.GetProgrammeCollection().AddProgrammeLicence(licence, FALSE)
 								print "[NET] PCollection"+playerID+" - add programme licence " + licence.GetTitle()
 						'remove from Collection (Archive - RemoveProgrammeLicence)
 						case NET_DELETE
-								player.ProgrammeCollection.RemoveProgrammeLicence(licence, FALSE)
+								player.GetProgrammeCollection().RemoveProgrammeLicence(licence, FALSE)
 								print "[NET] PCollection"+playerID+" - remove programme licence " + licence.GetTitle()
 						case NET_BUY
-								player.ProgrammeCollection.AddProgrammeLicence(licence, TRUE)
+								player.GetProgrammeCollection().AddProgrammeLicence(licence, TRUE)
 								print "[NET] PCollection"+playerID+" - buy programme licence " + licence.GetTitle()
 						case NET_SELL
-								player.ProgrammeCollection.RemoveProgrammeLicence(licence, TRUE)
+								player.GetProgrammeCollection().RemoveProgrammeLicence(licence, TRUE)
 								print "[NET] PCollection"+playerID+" - sell programme licence " + licence.GetTitle()
 						case NET_TOSUITCASE
-								player.ProgrammeCollection.AddProgrammeLicenceToSuitcase(licence)
+								player.GetProgrammeCollection().AddProgrammeLicenceToSuitcase(licence)
 								print "[NET] PCollection"+playerID+" - to suitcase - programme " + licence.GetTitle()
 						case NET_FROMSUITCASE
-								player.ProgrammeCollection.RemoveProgrammeLicenceFromSuitcase(licence)
+								player.GetProgrammeCollection().RemoveProgrammeLicenceFromSuitcase(licence)
 								print "[NET] PCollection"+playerID+" - from suitcase - programme licence " + licence.GetTitle()
 					EndSelect
 
@@ -641,12 +641,12 @@ print "[NET] ReceiveGameReady"
 
 					select action
 						case NET_ADD
-								player.ProgrammeCollection.AddAdContract( new TAdContract.Create(contractBase) )
+								player.GetProgrammeCollection().AddAdContract( new TAdContract.Create(contractBase) )
 								print "[NET] PCollection"+playerID+" - add contract "+contractbase.title
 						case NET_DELETE
-								local contract:TAdContract = player.ProgrammeCollection.GetAdContractByBase( contractBase.id )
+								local contract:TAdContract = player.GetProgrammeCollection().GetAdContractByBase( contractBase.id )
 								if contract
-									player.ProgrammeCollection.RemoveAdContract( contract )
+									player.GetProgrammeCollection().RemoveAdContract( contract )
 									print "[NET] PCollection"+playerID+" - remove contract "+contract.GetTitle()
 								endif
 					EndSelect
@@ -752,7 +752,7 @@ print "[NET] ReceiveGameReady"
 		local owningPlayer:TPlayer = GetPlayerCollection().Get(blockOwnerID)
 		if not owningPlayer then return Null
 
-		Local news:TNews = owningPlayer.ProgrammeCollection.getNews(blockID)
+		Local news:TNews = owningPlayer.GetProgrammeCollection().getNews(blockID)
 		'do not automagically create new blocks for others...
 		'all do it independently from each other (for intact randomizer base )
 		if not news then return TRUE
@@ -760,7 +760,7 @@ print "[NET] ReceiveGameReady"
 		'deactivate events for that moment - avoid recursion
 		TPlayerProgrammePlan.fireEvents = FALSE
 
-		owningPlayer.ProgrammePlan.SetNews(news, slot)
+		owningPlayer.GetProgrammePlan().SetNews(news, slot)
 
 		TPlayerProgrammePlan.fireEvents = TRUE
 
@@ -800,22 +800,22 @@ print "[NET] ReceiveGameReady"
 		local hour:int			= obj.getInt(7)
 
 		'delete at given spot
-		if objectID = 0 then return (null<>GetPlayerCollection().Get(playerID).ProgrammePlan.RemoveObject(null, slotType, day, hour))
+		if objectID = 0 then return (null<> GetPlayerProgrammePlanCollection().Get(playerID).RemoveObject(null, slotType, day, hour))
 
 		'add to given datetime
 		local broadcastMaterial:TBroadcastMaterial
 		Select objectType
 			case TBroadcastmaterial.TYPE_PROGRAMME
-				broadcastMaterial = TProgramme.Create(GetPlayerCollection().Get(playerID).ProgrammeCollection.GetProgrammeLicence(referenceID))
+				broadcastMaterial = TProgramme.Create(GetPlayerProgrammeCollectionCollection().Get(playerID).GetProgrammeLicence(referenceID))
 			case TBroadcastmaterial.TYPE_ADVERTISEMENT
-				broadcastMaterial = new TAdvertisement.Create(GetPlayerCollection().Get(playerID).ProgrammeCollection.GetAdContract(referenceID))
+				broadcastMaterial = new TAdvertisement.Create(GetPlayerProgrammeCollectionCollection().Get(playerID).GetAdContract(referenceID))
 		End Select
 		If not broadcastMaterial
 			print "[NET] ReceiveProgrammePlanChange: object "+objectID+" with reference "+referenceID+" not found."
 			return FALSE
 		endif
 
-		GetPlayerCollection().Get(playerID).ProgrammePlan.AddObject(broadcastMaterial, slotType, day, hour)
+		GetPlayerProgrammePlanCollection().Get(playerID).AddObject(broadcastMaterial, slotType, day, hour)
 	End Method
 End Type
 Global NetworkHelper:TNetworkHelper = new TNetworkHelper.Create()

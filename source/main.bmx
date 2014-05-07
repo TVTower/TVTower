@@ -5,6 +5,7 @@ SuperStrict
 
 Import brl.timer
 Import brl.Graphics
+Import brl.glmax2d
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
 Import "basefunctions_lua.bmx"					'our lua engine
@@ -422,7 +423,7 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_8) Then GetGameTime().speed = 480.0	'240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetGameTime().speed = 1.0	'1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
-				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().ProgrammePlan.printOverview()
+				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
 				'Save game
 				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
@@ -694,9 +695,11 @@ Type TSaveGame
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
 	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null
+	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = null
+	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = null
 	Field _EventManagerEvents:TList = null
 	Field _StationMapCollection:TStationMapCollection = null
-	Field _Building:TBuilding		'includes, sky, moon, ufo, elevator
+	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Const MODE_LOAD:int = 0
@@ -706,6 +709,8 @@ Type TSaveGame
 	Method RestoreGameData:Int()
 		_Assign(_FigureCollection, FigureCollection, "FigureCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceCollection, TPlayerFinanceCollection._instance, "PlayerFinanceCollection", MODE_LOAD)
+		_Assign(_PlayerProgrammeCollectionCollection, TPlayerProgrammeCollectionCollection._instance, "PlayerProgrammeCollectionCollection", MODE_LOAD)
+		_Assign(_PlayerProgrammePlanCollection, TPlayerProgrammePlanCollection._instance, "PlayerProgrammePlanCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, ProgrammeDataCollection, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, NewsEventCollection, "NewsEventCollection", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
@@ -723,6 +728,8 @@ Type TSaveGame
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(FigureCollection, _FigureCollection, "FigureCollection", MODE_SAVE)
 		_Assign(TPlayerFinanceCollection._instance, _PlayerFinanceCollection, "PlayerFinanceCollection", MODE_SAVE)
+		_Assign(TPlayerProgrammeCollectionCollection._instance, _PlayerProgrammeCollectionCollection, "PlayerProgrammeCollectionCollection", MODE_SAVE)
+		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
 		_Assign(ProgrammeDataCollection, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
@@ -1711,7 +1718,7 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 		GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
 		GetBitmapFontManager().baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
 		for local i:int = 1 to 4
-			GetBitmapFontManager().baseFont.draw("Player "+i+"..."+GetPlayerCollection().Get(i).networkstate+" MovieListCount: "+GetPlayerCollection().Get(i).ProgrammeCollection.GetProgrammeLicenceCount(), 220,260 + (i-1)*20)
+			GetBitmapFontManager().baseFont.draw("Player "+i+"..."+GetPlayerCollection().Get(i).networkstate+" MovieListCount: "+GetPlayerCollection().Get(i).GetProgrammeCollection().GetProgrammeLicenceCount(), 220,260 + (i-1)*20)
 		Next
 		If Not Game.networkgameready = 1 Then GetBitmapFontManager().baseFont.draw("not ready!!", 220,360)
 		SetColor 255,255,255
@@ -1725,7 +1732,7 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 			StartMultiplayerSyncStarted = MilliSecs()
 
 			For Local playerids:Int = 1 To 4
-				Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get(playerids).ProgrammeCollection
+				Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
 				Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
 				For Local i:Int = 0 To Game.startMovieAmount-1
 					ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
@@ -1888,7 +1895,7 @@ Type GameEvents
 
 		'adjust current broadcast
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
-			player.ProgrammePlan.AdjustCurrentBroadcast(day, hour, minute)
+			player.GetProgrammePlan().AdjustCurrentBroadcast(day, hour, minute)
 		Next
 
 
@@ -1928,9 +1935,9 @@ Type GameEvents
 			'remove old news from the players (only unset ones)
 			For Local i:Int = 1 To 4
 				Local news:TNews
-				For news = EachIn GetPlayerCollection().Get(i).ProgrammeCollection.news
+				For news = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
 					If day - GetGameTime().getDay(news.newsEvent.happenedtime) >= 2
-						GetPlayerCollection().Get(i).ProgrammePlan.RemoveNews(news)
+						GetPlayerCollection().Get(i).GetProgrammePlan().RemoveNews(news)
 					EndIf
 				Next
 			Next
@@ -2093,7 +2100,7 @@ Function Init_Creation()
 	'create random programmes and so on - but only if local game
 	If Not Game.networkgame
 		For Local playerids:Int = 1 To 4
-			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get(playerids).ProgrammeCollection
+			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
 			For Local i:Int = 0 To Game.startMovieAmount-1
 				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
 			Next
@@ -2120,15 +2127,19 @@ Function Init_Creation()
 
 
 	Local lastblocks:Int=0
+	local playerCollection:TPlayerProgrammeCollection
+	Local playerPlan:TPlayerProgrammePlan
+
 	'creation of blocks for players rooms
 	For Local playerids:Int = 1 To 4
 		lastblocks = 0
-		SortList(GetPlayerCollection().Get(playerids).ProgrammeCollection.adContracts)
+		playerCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
+		playerPlan = GetPlayerProgrammePlanCollection().Get(playerids)
+
+		SortList(playerCollection.adContracts)
 
 		Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
 		Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
-		Local playerCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get(playerids).ProgrammeCollection
-		Local playerPlan:TPlayerProgrammePlan = GetPlayerCollection().Get(playerids).ProgrammePlan
 
 		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 0 )
 		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 1 )

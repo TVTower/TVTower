@@ -201,7 +201,7 @@ function BusinessStats:OnDayBegins()
 end
 
 function BusinessStats:ReadStats()
-	local currentAudience = MY.ProgrammePlan.GetAudience()
+	local currentAudience = MY.GetProgrammePlan().GetAudience()
 	if (currentAudience == 0) then
 		return;
 	end
@@ -322,7 +322,7 @@ function OnMinute(number)
 		local guessedAudience = task:GuessedAudienceForHourAndLevel(GameTime.GetHour())
 
 		local fixedDay, fixedHour = FixDayAndHour2(GameTime.GetDay(), GameTime.GetHour())
-		local programme = MY.ProgrammePlan.GetProgramme(fixedDay, fixedHour)
+		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 
 		-- RON: changed as "programme" is NIL if not existing/placed
 		local averageMovieQualityByLevel = 0

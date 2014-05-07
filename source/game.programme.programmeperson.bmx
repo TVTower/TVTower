@@ -1,3 +1,6 @@
+SuperStrict
+Import Brl.LinkedList
+
 'a person connected to a programme - directors, writers, actors...
 Type TProgrammePerson
 	field lastName:string	= ""

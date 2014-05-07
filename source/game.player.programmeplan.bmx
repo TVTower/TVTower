@@ -65,8 +65,13 @@ Type TPlayerProgrammePlanCollection
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
+'return collection instance
 Function GetPlayerProgrammePlanCollection:TPlayerProgrammePlanCollection()
 	Return TPlayerProgrammePlanCollection.GetInstance()
+End Function
+'return specific plan
+Function GetPlayerProgrammePlan:TPlayerProgrammePlan(playerID:int)
+	Return TPlayerProgrammePlanCollection.GetInstance().Get(playerID)
 End Function
 
 
