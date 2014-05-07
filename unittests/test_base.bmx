@@ -27,7 +27,7 @@ Type TTestKit
 			TLogger.setLogMode(0)
 			TLogger.setPrintMode(0)
 		EndIf
-		Game = new TGame.Create()
+		Game = new TGame.Create(False, False)
 	End Function
 	
 	Function RemoveGame()
@@ -37,9 +37,10 @@ Type TTestKit
 	End Function
 	
 	Function SetPlayer:TPlayer()
-		Local player:TPlayer = new TPlayer		
+		Local player:TPlayer = new TPlayer
+		player.playerID = 1
 		player.Name = "Test"
-		player.PublicImage = TPublicImage.Create(player)
+		player.PublicImage = TPublicImage.Create(player.GetPlayerID())
 		Game.SetPlayer(1, player)
 		Return player
 	End Function

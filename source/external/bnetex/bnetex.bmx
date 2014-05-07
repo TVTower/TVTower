@@ -14,7 +14,7 @@ Rem
 	       <br />
 	       The author Oliver Skawronek and the co-author Inkubus have to be by name mentioned.
 End Rem
-rem
+Rem
 Module Vertex.BNetEx
 ModuleInfo "Version: 1.70 Beta"
 ModuleInfo "Author: Oliver Skawronek"
@@ -23,6 +23,7 @@ ModuleInfo "License: Modified MIT"
 ModuleInfo "Modserver: BlitzHelp"
 endrem
 Import Brl.Stream
+Import Brl.Math
 Import Pub.StdC
 ?Win32
 	Import "windows.c"
@@ -866,13 +867,13 @@ Type TUDPStream Extends TNetStream
 		EndIf
 	End Method
 
-	Method SendUDPMsg:Int(IP:Int, Port:int = 0)
+	Method SendUDPMsg:Int(IP:Int, Port:Int = 0)
 		Local oldIP:Int = remoteIP
 		Local oldPort:Short = RemotePort
-		SetBroadcast(true)
+		SetBroadcast(True)
 		RemoteIP = IP
 		RemotePort = Port
-		local _sendSize:int = SendSize
+		Local _sendSize:Int = SendSize
 		While SendMsg() ; Wend
 
 '		Local returnvalue:Int = SendMsg()

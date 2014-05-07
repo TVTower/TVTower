@@ -90,10 +90,10 @@ Type TGame {_exposeToLua="selected"}
 	Method New()
 		_instance = self
 
-		if not _initDone
+		if not _initDone			
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
-			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
+			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)			
 
 			_initDone = TRUE
 		Endif
@@ -107,7 +107,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 	'Summary: create a game, every variable is set to Zero
-	Method Create:TGame()
+	Method Create:TGame(initializePlayer:Int = true, initializeRoom:Int = true)
 		LoadConfig("config/settings.xml")
 		'add German and English to possible language
 		TLocalization.AddLanguages("de, en")
@@ -122,10 +122,10 @@ Type TGame {_exposeToLua="selected"}
 
 		SetRandomizerBase( MilliSecs() )
 
-		CreateInitialPlayers()
+		If initializePlayer Then CreateInitialPlayers()
 
 		'creates all Rooms - with the names assigned at this moment
-		Init_CreateAllRooms()
+		If initializeRoom Then Init_CreateAllRooms()
 
 		Return self
 	End Method

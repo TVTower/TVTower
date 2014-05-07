@@ -1,5 +1,6 @@
 Type SequenceCalculationTest Extends TTest
 	Method GetSequenceDefault() { test }	
+	
 		Local sequenceCalc:TSequenceCalculation = new TSequenceCalculation		
 		sequenceCalc.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.25)
 		sequenceCalc.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.5)
@@ -29,14 +30,14 @@ Type SequenceCalculationTest Extends TTest
 		
 		
 		sequenceCalc.Predecessor = New TAudienceAttraction
-		sequenceCalc.Predecessor.BaseAttraction = TAudience.CreateAndInitValue(100)
+		sequenceCalc.Predecessor.FinalAttraction = TAudience.CreateAndInitValue(100)
 		'sequenceCalc.Predecessor.CalculateFinalAttraction()
 		sequenceCalc.Successor.BaseAttraction = TAudience.CreateAndInitValue(0)
 		'sequenceCalc.Successor.CalculateFinalAttraction()		
 		
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(50), sequenceCalc.GetSequenceDefault())
 		
-		sequenceCalc.Predecessor.BaseAttraction = TAudience.CreateAndInit(10, 20, 30, 40, 50, 60, 70, 80, 100)
+		sequenceCalc.Predecessor.FinalAttraction = TAudience.CreateAndInit(10, 20, 30, 40, 50, 60, 70, 80, 100)
 		'sequenceCalc.Predecessor.CalculateFinalAttraction()
 		TestAssert.assertEqualsAud(TAudience.CreateAndInit(5, 10, 15, 20, 25, 30, 35, 40, 50), sequenceCalc.GetSequenceDefault())
 		

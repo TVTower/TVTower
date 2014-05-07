@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import "game.broadcastmaterial.base.bmx"
 Import "game.broadcast.base.bmx"
 Import "game.programme.programmelicence.bmx"
@@ -88,7 +88,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 	Method FinishBroadcastingAsProgramme:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
 		self.SetState(self.STATE_OK)
 
-		If self.owner > 0 Then 'Möglichkeit für Unit-Tests. Unschön...
+		If self.owner > 0 Then 'MÃ¶glichkeit fÃ¼r Unit-Tests. UnschÃ¶n...
 			'check if revenues have to get paid (call-in-shows, sponsorships)
 			CheckHourlyBroadcastingRevenue(audienceResult)
 
@@ -127,11 +127,13 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Local genreDefinition:TMovieGenreDefinition = TMovieGenreDefinition(GetGenreDefinition())
 		result.GenreDefinition = genreDefinition
 
+		if owner = 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + licence.GetTitle() + "' has no owner.")
+		
 		If block = 1 Or Not lastMovieBlockAttraction Then
-			'1 - Qualität des Programms
+			'1 - QualitÃ¤t des Programms
 			result.Quality = GetQuality()
 
-			'2 - Mod: Genre-Popularität / Trend
+			'2 - Mod: Genre-PopularitÃ¤t / Trend
 			result.GenrePopularityMod = Max(-0.5, Min(0.5, genreDefinition.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
 
 			'3 - Genre <> Zielgruppe
@@ -160,7 +162,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
 		Endif
 
-		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr AttraktivitÃ¤t, schlechte Filme animieren eher zum Umschalten
 		If (result.Quality < 0.5)
 			result.QualityOverTimeEffectMod = Max(-0.2, Min(0.1, ((result.Quality - 0.5)/3) * (block - 1)))
 		Else
@@ -203,10 +205,7 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			Local seqMod:TAudience = genreDefinition.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15
 			result.SequenceEffect = seqCal.GetSequenceDefault(seqMod, seqMod)
 
-			Local borderMax:TAudience = genreDefinition.AudienceAttraction.Copy()
-			borderMax.DivideFloat(10)
-			borderMax.AddFloat(0.1) '0.1 - 0.2
-			borderMax.CutBordersFloat(0.1, 0.2)
+			Local borderMax:TAudience = genreDefinition.AudienceAttraction.Copy().DivideFloat(10).AddFloat(0.1).CutBordersFloat(0.1, 0.2)
 			Local borderMin:TAudience = TAudience.CreateAndInitValue(-0.2)
 			borderMin.Add(genreDefinition.AudienceAttraction.Copy().DivideFloat(10)) '-2 - -0.7
 
@@ -223,9 +222,9 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 		Local flowModBaseTemp:Float
 
 		'AudienceFlow anhand der Differenz und ob steigend oder sinkend. Nur sinkend gibt richtig AudienceFlow
-		For Local i:Int = 1 To 9 'Für jede Zielgruppe
+		For Local i:Int = 1 To 9 'FÃ¼r jede Zielgruppe
 			Local predecessorValue:Float = Min(lastMovieBlockAttraction.FinalAttraction.GetValue(i), lastNewsBlockAttraction.FinalAttraction.GetValue(i))
-			Local successorValue:Float = currentAttraction.BaseAttraction.GetValue(i) 'FinalAttraction ist noch nicht verfügbar. BaseAttraction ist also akzeptabel.
+			Local successorValue:Float = currentAttraction.BaseAttraction.GetValue(i) 'FinalAttraction ist noch nicht verfÃ¼gbar. BaseAttraction ist also akzeptabel.
 
 			If (predecessorValue < successorValue) 'Steigende Quote = kaum AudienceFlow
 				flowModBaseTemp = predecessorValue * 0.05
@@ -244,14 +243,14 @@ Type TProgramme Extends TBroadcastMaterial {_exposeToLua="selected"}
 			flowMod = TAudience.CreateAndInitValue(0) 'Ganze schlechter Follower
 		EndIf
 
-		'Ermittlung des Maximalwertes für den Bonus. Wird am Schluss gebraucht
+		'Ermittlung des Maximalwertes fÃ¼r den Bonus. Wird am Schluss gebraucht
 		Local flowMaximum:TAudience = currentAttraction.BaseAttraction.Copy()
 		flowMaximum.DivideFloat(2)
-		flowMaximum.CutMaximum( lastNewsBlockAttraction.FinalAttraction.Copy().DivideFloat(2)) 'Die letzte News-Show gibt an, wie viel überhaupt noch dran sind um in den Flow zu kommen.
+		flowMaximum.CutMaximum( lastNewsBlockAttraction.FinalAttraction.Copy().DivideFloat(2)) 'Die letzte News-Show gibt an, wie viel Ã¼berhaupt noch dran sind um in den Flow zu kommen.
 		flowMaximum.CutBordersFloat(0.1, 0.35)
 
 
-		'Der Flow hängt nicht nur von den zuvorigen Zuschauern ab, sondern zum Teil auch von der Qualität des Nachfolgeprogrammes.
+		'Der Flow hÃ¤ngt nicht nur von den zuvorigen Zuschauern ab, sondern zum Teil auch von der QualitÃ¤t des Nachfolgeprogrammes.
 		Local attrMod:TAudience = currentAttraction.BaseAttraction.Copy()
 		attrMod.DivideFloat(2)
 		attrMod.CutBordersFloat(0, 0.6)

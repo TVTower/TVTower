@@ -10,7 +10,7 @@
 		TTestKit.RemoveGame()
 	End Method
 
-	Method ProgrammeData() { test }
+	Method ProgrammeData() { test }		
 		Local data:TProgrammeData = TTestKit.CrProgrammeData(Null, 1, 0.5)
 		assertEqualsI(127, data.outcome)
 	End Method
@@ -135,7 +135,7 @@
 			programme.GetAudienceAttraction(0, 1, Null, Null)
 			fail("No Exception")
 		Catch ex:TBlitzException 'Alles gut			
-			assertEquals("The programme 'abc' have no owner.", ex.ToString())
+			assertEquals("The programme 'abc' has no owner.", ex.ToString())
 		Catch ex:Object 'falsche excpetion			
 			fail("Wrong Exception: " + ex.ToString())
 		End Try			
@@ -254,14 +254,14 @@
 		
 		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 1, genreDef)		
 		'TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.75), programme.GetAudienceAttraction(0, 1, Null, Null, True))		
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.778723419), programme.GetAudienceAttraction(0, 1, Null, Null, True))		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.850000024), programme.GetAudienceAttraction(0, 1, Null, Null, True))		
 		
 		Local newsAttraction:TAudienceAttraction = new TAudienceAttraction
-		newsAttraction.BaseAttraction = TAudience.CreateAndInitValue(1)		
+		newsAttraction.FinalAttraction = TAudience.CreateAndInitValue(1)		
 		'TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1.27), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))	
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))			
 		
-		newsAttraction.BaseAttraction = TAudience.CreateAndInitValue(0.5)		
+		newsAttraction.FinalAttraction = TAudience.CreateAndInitValue(0.5)		
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.889361739), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))		
 						
 		
@@ -269,10 +269,10 @@
 		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.391743690), programme.GetAudienceAttraction(0, 1, Null, Null, True))
 		
-		newsAttraction.BaseAttraction = TAudience.CreateAndInitValue(1)		
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.682722211), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))	
+		newsAttraction.FinalAttraction = TAudience.CreateAndInitValue(1)		
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.653058887), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))	
 		
-		newsAttraction.BaseAttraction = TAudience.CreateAndInitValue(0.5)		
+		newsAttraction.FinalAttraction = TAudience.CreateAndInitValue(0.5)		
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.502381980), programme.GetAudienceAttraction(0, 1, Null, newsAttraction, True))							
 	End Method
 	
