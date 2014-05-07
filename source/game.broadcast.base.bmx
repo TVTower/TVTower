@@ -348,10 +348,10 @@ Type TBroadcast
 			broadcastedMaterial = PlayersBroadcasts[i]
 
 			Local lastMovieAttraction:TAudienceAttraction = null
-			If lastMovieBroadcast <> Null lastMovieAttraction = lastMovieBroadcast.Attractions[i]
+			If lastMovieBroadcast then lastMovieAttraction = lastMovieBroadcast.Attractions[i]
 
 			Local lastNewsShowAttraction:TAudienceAttraction = null
-			If lastNewsShowBroadcast <> Null lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[i]
+			If lastNewsShowBroadcast then lastNewsShowAttraction = lastNewsShowBroadcast.Attractions[i]
 
 			If broadcastedMaterial Then
 				AudienceResults[i].Title = broadcastedMaterial.GetTitle()
@@ -364,8 +364,8 @@ Type TBroadcast
 			End If
 
 			For Local market:TAudienceMarketCalculation = EachIn AudienceMarkets
-				If market.Players.Contains(String(i)) Then
-					market.SetPlayersProgrammeAttraction(i, TAudienceAttraction(Attractions[i]))
+				If market.Players.Contains(String(i))
+					market.SetPlayersProgrammeAttraction(i, Attractions[i])
 				EndIf
 			Next
 		Next
@@ -773,9 +773,12 @@ Type TAudienceMarketCalculation
 		Local reduceFactor:TAudience = GetReduceFactor()
 		If reduceFactor Then
 			For Local currKey:String = EachIn AudienceAttractions.Keys()
-				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey)) 'Die außerhalb berechnete Attraction
-				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor) 'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
-				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)	'Anteil an der "erbeuteten" Zapper berechnen
+				'Die außerhalb berechnete Attraction
+				Local attraction:TAudience = TAudience(MapValueForKey(AudienceAttractions, currKey))
+				'Die effectiveAttraction (wegen Konkurrenz) entspricht der Quote!
+				Local effectiveAttraction:TAudience = attraction.Copy().Multiply(reduceFactor)
+				'Anteil an der "erbeuteten" Zapper berechnen
+				Local channelSurfer:TAudience = ChannelSurferToShare.Copy().Multiply(effectiveAttraction)
 				channelSurfer.Round()
 
 				'Ergebnis in das AudienceResult schreiben
@@ -794,7 +797,7 @@ Type TAudienceMarketCalculation
 				AudienceResults[currKeyInt].EffectiveAudienceAttraction	= effectiveAttraction
 
 				'Print "Effektive Quote für " + currKey + ": " + effectiveAttraction.ToString()
-				'Print "Zuschauer fuer " + currKey + ": " + playerAudienceResult.ToString()
+				'Print "Zuschauer fuer " + currKey + ": " + AudienceResults[currKeyInt].ToString()
 			Next
 		End If
 	End Method

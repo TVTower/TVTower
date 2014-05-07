@@ -1893,9 +1893,18 @@ Type GameEvents
 		'for all
 		If minute = 5 Or minute = 55 Or minute = 0 Then Interface.BottomImgDirty = True
 
-		'adjust current broadcast
+		'step 1/3
+		'log in current broadcasted media
 		For Local player:TPlayer = EachIn GetPlayerCollection().players
-			player.GetProgrammePlan().AdjustCurrentBroadcast(day, hour, minute)
+			player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
+		Next
+		'step 2/3
+		'calculate audience
+		TPlayerProgrammePlan.CalculateCurrentBroadcastAudience(day, hour, minute)
+		'step 3/3
+		'inform broadcasted media about their status
+		For Local player:TPlayer = EachIn GetPlayerCollection().players
+			player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
 		Next
 
 

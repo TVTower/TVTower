@@ -50,6 +50,15 @@ Type TAudienceResult
 
 
 	Method ToString:String()
-		Return Audience.GetSum() + " / " + PotentialMaxAudience.GetSum() + " / " + WholeMarket.GetSum() + "      Q: " + AudienceQuote.ToStringAverage()
+		local result:string = ""
+		if Audience then result :+ int(Audience.GetSum()) else result :+ "--"
+		result :+ " / "
+		if PotentialMaxAudience then result :+ int(PotentialMaxAudience.GetSum()) else result :+ "--"
+		result :+ " / "
+		if WholeMarket then result :+ int(WholeMarket.GetSum()) else result :+ "--"
+		result :+ "   Q: "
+		if AudienceQuote then result :+ AudienceQuote.ToStringAverage() else result :+ "--"
+
+		return result
 	End Method
 End Type

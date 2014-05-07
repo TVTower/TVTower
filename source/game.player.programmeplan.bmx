@@ -1036,7 +1036,9 @@ endrem
 
 	'that method could be externalized to "main.bmx" or another common
 	'function, there is no need to place it in this file
-	Method AdjustCurrentBroadcast:int(day:int, hour:int, minute:int)
+	'
+	'STEP 1/3: function fills current broadcast, does NOT calculate audience
+	Method LogInCurrentBroadcast:int(day:int, hour:int, minute:int)
 		local obj:TBroadcastMaterial = null
 
 		'=== BEGIN OF NEWSSHOW ===
@@ -1044,21 +1046,45 @@ endrem
 			obj = GetNewsShow()
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj)
-			'calculate audience
-			GetBroadcastManager().BroadcastNewsShow(day, hour)
-
-			'inform  object that it gets broadcasted
-			'... nothing to do yet
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
 			obj = GetProgramme(day, hour)
 			'log in current broadcast
 			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj)
+		EndIf
+	End Method
+
+
+	'STEP 2/3: calculate audience (for all players at once)
+	Function CalculateCurrentBroadcastAudience:int(day:int, hour:int, minute:int)
+		local obj:TBroadcastMaterial = null
+
+		'=== BEGIN OF NEWSSHOW ===
+		If minute = 0
+			'calculate audience
+			GetBroadcastManager().BroadcastNewsShow(day, hour)
+
+		'=== BEGIN OF PROGRAMME ===
+		ElseIf minute = 5
 			'calculate audience
 			GetBroadcastManager().BroadcastProgramme(day, hour)
+		EndIf
+	End Function
 
-			'inform  object that it gets broadcasted
+
+	'STEP 3/3: inform broadcasts
+	Method InformCurrentBroadcast:int(day:int, hour:int, minute:int)
+		local obj:TBroadcastMaterial = null
+
+		'=== BEGIN OF NEWSSHOW ===
+		If minute = 0
+			'nothing to do
+
+		'=== BEGIN OF PROGRAMME ===
+		ElseIf minute = 5
+			obj = GetProgramme(day, hour)
+
 			if obj
 				local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				'inform the object what happens (start or continuation)

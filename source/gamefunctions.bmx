@@ -1827,6 +1827,10 @@ Type TInterface
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
+			ElseIf GetGameTime().getMinute() < 5
+				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_news")
+				CurrentProgrammeToolTip.TitleBGtype	= 3
+				CurrentProgrammeText = getLocale("NEWS")
 			Else
 				Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
@@ -1851,11 +1855,6 @@ Type TInterface
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
-			EndIf
-			If GetGameTime().getMinute() <= 5
-				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_news")
-				CurrentProgrammeToolTip.TitleBGtype	= 3
-				CurrentProgrammeText = getLocale("NEWS")
 			EndIf
 		Else
 			CurrentProgrammeToolTip.TitleBGtype = 3
