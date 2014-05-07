@@ -68,16 +68,15 @@
 		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
 
-		If attraction.BroadcastType = 1 Then
+		If attraction.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME Then
 			If (attraction.BaseAttraction <> Null) Then
 				genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
 			Endif
-		ElseIf attraction.BroadcastType = 2 Then
+		ElseIf attraction.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW Then
 			If (attraction.BaseAttraction <> Null) Then
 				genre = "News-Genre-Mix"
 			Endif
-		Endif
-
+		Endif	
 
 		Local offset:Int = 20
 

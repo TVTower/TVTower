@@ -401,21 +401,21 @@
 		'Perfekter Match
 		genreDef.GenreId = 1
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(1), lastMovieGenreDef.GetAudienceFlowMod(genreDef), "p1")
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.214184716), TProgramme.GetAudienceFlowBonus(lastMovieAttr, programmeAttr, newsAttraction), "p1")
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.214184716), TProgramme.GetAudienceFlowBonusIntern(lastMovieAttr, programmeAttr, newsAttraction), "p1")
 				
 		'Guter Follower		
 		genreDef.GenreId = 2
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.7), lastMovieGenreDef.GetAudienceFlowMod(genreDef), "p1")
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.149929300), TProgramme.GetAudienceFlowBonus(lastMovieAttr, programmeAttr, newsAttraction ), "g1")
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.149929300), TProgramme.GetAudienceFlowBonusIntern(lastMovieAttr, programmeAttr, newsAttraction ), "g1")
 		
 		'Normaler Follower	
 		genreDef.GenreId = 3
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.35), lastMovieGenreDef.GetAudienceFlowMod(genreDef), "p1")	
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0749646500), TProgramme.GetAudienceFlowBonus(lastMovieAttr, programmeAttr, newsAttraction ), "n1")
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0749646500), TProgramme.GetAudienceFlowBonusIntern(lastMovieAttr, programmeAttr, newsAttraction ), "n1")
 		
 		'Schlechter Follower
 		genreDef.GenreId = 4		
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.1), lastMovieGenreDef.GetAudienceFlowMod(genreDef), "p1")
-		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0214184728), TProgramme.GetAudienceFlowBonus(lastMovieAttr, programmeAttr, newsAttraction), "b1")
+		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.0214184728), TProgramme.GetAudienceFlowBonusIntern(lastMovieAttr, programmeAttr, newsAttraction), "b1")
 	End Method
 End Type

@@ -1,4 +1,4 @@
-Rem
+﻿Rem
 	====================================================================
 	code for advertisement-objects in programme planning
 	====================================================================
@@ -19,7 +19,7 @@ Import "game.broadcast.genredefinition.movie.bmx"
 
 
 'ad spot
-Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
+Type TAdvertisement Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 	Field contract:TAdContract	= Null
 	'Eventuell den "state" hier als reine visuelle Hilfe nehmen.
 	'Dinge wie "Spot X von Y" koennen auch dynamisch erfragt werden
@@ -83,7 +83,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 	End Method
 
 
-
+rem
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		'TODO: @Manuel - hier brauchen wir eine geeignete Berechnung :D
 		If lastMovieBlockAttraction then return lastMovieBlockAttraction
@@ -138,7 +138,7 @@ Type TAdvertisement Extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		Return result
 	End Method
-
+endrem
 
 	'override
 	Method FinishBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)

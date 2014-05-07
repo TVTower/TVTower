@@ -233,9 +233,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		if GetMinAudience() >5000000 then quality :+ 0.25		'+1.00
 
 		If luckFactor = 1 Then
-			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-QualitÃ¤t
+			quality = quality * 0.98 + Float(RandRange(10, 20)) / 1000.0 '1%-Punkte bis 2%-Punkte Basis-Qualität
 		Else
-			quality = quality * 0.99 + 0.01 'Mindestens 1% QualitÃ¤t
+			quality = quality * 0.99 + 0.01 'Mindestens 1% Qualität
 		EndIf
 
 		'no minus quote
@@ -513,14 +513,14 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 	'Wird bisher nur in der LUA-KI verwendet
 	'Wie hoch ist das finanzielle Gewicht pro Spot?
-	'Wird dafÃ¼r gebraucht um die Wichtigkeit des Spots zu bewerten
+	'Wird dafür gebraucht um die Wichtigkeit des Spots zu bewerten
 	Method GetFinanceWeight:float() {_exposeToLua}
 		Return (self.GetProfit() + self.GetPenalty()) / self.GetSpotCount()
 	End Method
 
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Berechnet wie Zeitkritisch die ErfÃ¼llung des Vertrages ist (Gesamt)
+	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (Gesamt)
 	Method GetPressure:float() {_exposeToLua}
 		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return self.GetSpotCount() / _daysToFinish * _daysToFinish
@@ -528,7 +528,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'Wird bisher nur in der LUA-KI verwendet
-	'Berechnet wie Zeitkritisch die ErfÃ¼llung des Vertrages ist (tatsÃ¤chlich / aktuell)
+	'Berechnet wie Zeitkritisch die Erfüllung des Vertrages ist (tatsächlich / aktuell)
 	Method GetCurrentPressure:float() {_exposeToLua}
 		local _daysToFinish:int = self.GetDaysToFinish() + 1 'In diesem Zusammenhang nicht 0-basierend
 		Return self.GetSpotsToSend() / _daysToFinish * _daysToFinish

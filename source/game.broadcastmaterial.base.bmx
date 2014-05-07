@@ -1,7 +1,10 @@
-Import "game.gameobject.bmx"
+﻿Import "game.gameobject.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.broadcast.audienceattraction.bmx"
 Import "game.broadcast.audienceresult.bmx"
+Import "game.broadcast.sequencecalculation.bmx"
+Import "game.publicimage.bmx"
+
 
 
 'Base type for programmes, advertisements...
@@ -17,26 +20,23 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Field currentBlockBroadcasting:int		{_exposeToLua} '0 = läuft nicht; 1 = 1 Block; 2 = 2 Block; usw.
 
 	'states a program can be in
-	const STATE_NORMAL:int		= 0
-	const STATE_OK:int			= 1
-	const STATE_FAILED:int		= 2
-	const STATE_RUNNING:int		= 3
+	Const STATE_NORMAL:int		= 0
+	Const STATE_OK:int			= 1
+	Const STATE_FAILED:int		= 2
+	Const STATE_RUNNING:int		= 3
 	'types of broadcastmaterial
 	Const TYPE_UNKNOWN:int		= 1
-	const TYPE_PROGRAMME:int	= 2
-	const TYPE_ADVERTISEMENT:int= 4
-	const TYPE_NEWS:int			= 8
-	const TYPE_NEWSSHOW:int		= 16
+	Const TYPE_PROGRAMME:int	= 2
+	Const TYPE_ADVERTISEMENT:int= 4
+	Const TYPE_NEWS:int			= 8
+	Const TYPE_NEWSSHOW:int		= 16
 
 
 	'needed for all extending objects
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) Abstract
-
-
+	
 	'needed for all extending objects
-	Method GetQuality:Float()  {_exposeToLua}
-		print "GetQuality"
-	End Method
+	Method GetQuality:Float() Abstract {_exposeToLua}	
 
 
 	'what to earn for each viewers in euros?
@@ -154,4 +154,175 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Method GetGenreDefinition:TGenreDefinitionBase()
 		Return Null
 	End Method
+End Type
+
+
+Type TBroadcastMaterialDefaultImpl extends TBroadcastMaterial {_exposeToLua="selected"}
+	'default implementation	
+	Method GenrePopularityMod:Float(genreDefinition:TGenreDefinitionBase)
+		Return Max(-0.5, Min(0.5, genreDefinition.Popularity.Popularity / 100)) 'Popularity => Wert zwischen -50 und +50
+	End Method
+	
+	'default implementation
+	Method GenreTargetGroupMod:TAudience(genreDefinition:TGenreDefinitionBase)
+		Return genreDefinition.AudienceAttraction.Copy().MultiplyFloat(1.2).SubtractFloat(0.6).CutBordersFloat(-0.6, 0.6)
+	End Method
+	
+	'default implementation
+	Method GetTrailerMod:TAudience()
+		Return TAudience.CreateAndInitValue(0)
+	End Method	
+	
+	'default implementation
+	Method GetMiscMod:TAudience()
+		Return TAudience.CreateAndInitValue(0)
+	End Method
+	
+	'default implementation
+	Method GetPublicImageMod:TAudience()
+		local pubImage:TPublicImage = GetPublicImageCollection().Get(owner)
+		If not pubImage Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has an owner without publicimage.")
+	
+		Local result:TAudience = pubImage.GetAttractionMods()
+		result.MultiplyFloat(0.35)
+		result.SubtractFloat(0.35)
+		result.CutBordersFloat(-0.35, 0.35)
+		Return result
+	End Method	
+	
+	'default implementation
+	Method GetQualityOverTimeEffectMod:Float(quality:Float, block:Int )
+		If (block = 1) Then Return 0			
+		If (quality < 0.5)
+			Return Max(-0.2, Min(0.1, ((quality - 0.5)/3) * (block - 1)))
+		Else
+			Return Max(-0.2, Min(0.1, ((quality - 0.5)/6) * (block - 1)))
+		EndIf	
+	End Method
+	
+	'default implementation
+	Method GetGenreTimeMod:Float(genreDefinition:TGenreDefinitionBase, hour:Int)
+		Return genreDefinition.TimeMods[hour] - 1 'Genre/Zeit-Mod
+	End Method
+	
+	'default implementation
+	Method GetLuckMod:TAudience()
+		Return TAudience.CreateAndInitValue(0)
+	End Method
+	
+	'default implementation
+	Method GetAudienceFlowBonus:TAudience(block:Int, result:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction)
+		If lastMovieBlockAttraction And lastMovieBlockAttraction.AudienceFlowBonus Then
+			Return lastMovieBlockAttraction.AudienceFlowBonus.Copy().MultiplyFloat(0.25)
+		Else
+			Return Null
+		EndIf		
+	End Method
+	
+	'default implementation
+	Method GetSequenceEffect:TAudience(block:Int, genreDefinition:TGenreDefinitionBase, predecessor:TAudienceAttraction, currentProgramme:TAudienceAttraction, lastMovieBlockAttraction:TAudienceAttraction )
+		Local ret:TAudience
+		Local seqCal:TSequenceCalculation = New TSequenceCalculation
+		seqCal.Predecessor = predecessor
+		seqCal.Successor = currentProgramme
+
+		SetSequenceCalculationPredecessorShare(seqCal, (block = 1 And lastMovieBlockAttraction))		
+
+		Local seqMod:TAudience
+		Local borderMax:TAudience
+		Local borderMin:TAudience
+		
+		If genreDefinition
+			seqMod = genreDefinition.AudienceAttraction.Copy().DivideFloat(1.3).MultiplyFloat(0.4).AddFloat(0.75) '0.75 - 1.15
+			borderMax = genreDefinition.AudienceAttraction.Copy().DivideFloat(10).AddFloat(0.1).CutBordersFloat(0.1, 0.2)
+			borderMin = TAudience.CreateAndInitValue(-0.2).Add(genreDefinition.AudienceAttraction.Copy().DivideFloat(10)) '-2 - -0.7
+		Else
+			seqMod = TAudience.CreateAndInitValue(1)
+			borderMax = TAudience.CreateAndInitValue(0.15)
+			borderMin = TAudience.CreateAndInitValue(-0.15)
+		EndIf
+		ret = seqCal.GetSequenceDefault(seqMod, seqMod)
+		ret.CutBorders(borderMin, borderMax)
+		Return ret
+	End Method
+	
+	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
+		If audienceFlow
+			seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.3)
+			seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.2)
+		Else
+			seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.4)
+			seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.2)
+		End If
+	End Method
+	
+	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
+		Return GetAudienceAttractionInternal(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect )
+	End Method		
+	
+	Method GetAudienceAttractionInternal:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
+		Local result:TAudienceAttraction = New TAudienceAttraction
+		
+		result.BroadcastType = Self.materialType
+		Local genreDefinition:TGenreDefinitionBase = GetGenreDefinition()
+		If genreDefinition
+			result.Genre = genreDefinition.GenreId
+			result.GenreDefinition = genreDefinition
+		EndIf
+
+		if owner = 0 Then Throw TNullObjectExceptionExt.Create("The programme '" + GetTitle() + "' has no owner.")
+		
+		If block = 1 Or Not lastMovieBlockAttraction Then
+			'1 - Qualität des Programms
+			result.Quality = GetQuality()
+
+			'2 - Mod: Genre-Popularität / Trend
+			If genreDefinition
+				result.GenrePopularityMod = GenrePopularityMod(genreDefinition)
+			EndIf
+
+			'3 - Genre <> Zielgruppe
+			If genreDefinition
+				result.GenreTargetGroupMod = GenreTargetGroupMod(genreDefinition)
+			EndIf
+
+			'4 - Trailer
+			result.TrailerMod = GetTrailerMod()
+
+			'5 - Flags und anderes
+			result.MiscMod = GetMiscMod()
+
+			'6 - Image
+			result.PublicImageMod = GetPublicImageMod()
+		Else
+			result.CopyBaseAttractionFrom(lastMovieBlockAttraction)
+		Endif
+
+		'7 - Stetige Auswirkungen der Film-Quali. Gute Filme bekommen mehr Attraktivität, schlechte Filme animieren eher zum Umschalten
+		result.QualityOverTimeEffectMod = GetQualityOverTimeEffectMod(result.Quality, block)
+
+		'8 - Genres <> Sendezeit
+		If genreDefinition
+			result.GenreTimeMod = GetGenreTimeMod(genreDefinition, hour)
+		EndIf
+
+		'9 - Zufall
+		If withLuckEffect Then result.LuckMod = GetLuckMod()
+
+		result.Recalculate()
+
+		'10 - Audience Flow
+		result.AudienceFlowBonus = GetAudienceFlowBonus(block, result, lastMovieBlockAttraction, lastNewsBlockAttraction) 		
+
+		result.Recalculate()
+
+		'11 - Sequence
+		If withSequenceEffect Then
+			result.SequenceEffect = GetSequenceEffect(block, genreDefinition, lastNewsBlockAttraction, result, lastMovieBlockAttraction)
+		EndIf
+
+		result.Recalculate()
+
+		Return result
+	End Method	
 End Type

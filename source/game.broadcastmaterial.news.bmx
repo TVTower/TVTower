@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
@@ -21,6 +21,8 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		obj.owner = owner 'cannot use newsA.owner as newsA may be empty...
 		obj.title = title
 
+		obj.setMaterialType(TYPE_NEWSSHOW)
+		
 		Return obj
 	End Function
 
@@ -28,7 +30,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 	'returns the audienceAttraction for a newsShow (3 news)
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		Local resultAudienceAttr:TAudienceAttraction = New TAudienceAttraction
-		resultAudienceAttr.BroadcastType = 2
+		resultAudienceAttr.BroadcastType = TYPE_NEWSSHOW
 		resultAudienceAttr.Genre = -1
 		resultAudienceAttr.GenrePopularityMod = 0
 		resultAudienceAttr.GenreTargetGroupMod = New TAudience
@@ -47,7 +49,12 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 			'RONNY @Manuel: Todo - "Filme" usw. vorbereiten/einplanen
 			'               es koennte ja jemand "Trailer" in die News
 			'               verpacken - siehe RTL2 und Co.
-			tempAudienceAttr = CalculateNewsBlockAudienceAttraction(TNews(news[i]), lastMovieBlockAttraction, withSequenceEffect, withLuckEffect )
+			Local currentNews:TNews = TNews(news[i])
+			If currentNews Then
+				tempAudienceAttr = currentNews.GetAudienceAttraction(hour, block, lastMovieBlockAttraction, lastNewsBlockAttraction, withSequenceEffect, withLuckEffect)			
+			Else
+				tempAudienceAttr = TAudienceAttraction.CreateAndInitAttraction(0.01, 0.01, 0.01,0.01,0.01, 0.01, 0.01, 0.01, 0.01)  
+			EndIf
 
 			'different weight for news slots
 			If i = 0 Then resultAudienceAttr.AddAttraction(tempAudienceAttr.MultiplyAttrFactor(0.5))
@@ -56,8 +63,11 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 		Next
 		Return resultAudienceAttr
 	End Method
-
+rem
 	Method CalculateNewsBlockAudienceAttraction:TAudienceAttraction(news:TNews, lastMovieBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False)
+		GetAudienceAttractionInternal(
+	
+	
 		Local result:TAudienceAttraction = New TAudienceAttraction
 		Local genreDefintion:TNewsGenreDefinition = null
 
@@ -143,7 +153,7 @@ Type TNewsShow extends TBroadcastMaterial {_exposeToLua="selected"}
 
 		Return result
 	End Method
-
+endrem
 
 	'override default getter to make event id the reference id
 	Method GetReferenceID:int() {_exposeToLua}
@@ -184,7 +194,7 @@ End Type
 
 
 'This object stores a players news.
-Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
+Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
     Field newsEvent:TNewsEvent	= Null	{_exposeToLua}
     'delay the news for a certain time (depending on the abonnement-level)
     Field publishDelay:Int 		= 0
@@ -213,10 +223,17 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 		obj.publishDelay = publishdelay
 		obj.newsEvent = useNewsEvent
 
+		obj.setMaterialType(TYPE_NEWS)
+		
 		Return obj
 	End Function
 
-
+	Method SetSequenceCalculationPredecessorShare(seqCal:TSequenceCalculation, audienceFlow:Int)
+		seqCal.PredecessorShareOnShrink  = TAudience.CreateAndInitValue(0.4) '0.5
+		seqCal.PredecessorShareOnRise = TAudience.CreateAndInitValue(0.4) '0.5
+	End Method	
+	
+rem
 	'returns the audienceAttraction for one (single!) news
 	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False )
 		'each potential news audience is calculated
@@ -227,13 +244,13 @@ Type TNews extends TBroadcastMaterial {_exposeToLua="selected"}
 		Local genreDefintion:TNewsGenreDefinition = GetNewsGenreDefinitionCollection().Get(GetGenre())
 		Return genreDefintion.CalculateAudienceAttraction(self, GetGameTime().GetHour())
 	End Method
-
+endrem
 
 	Method GetQuality:Float() {_exposeToLua}
 		local quality:float = newsEvent.GetQuality()
 		'Zusaetzlicher Bonus bei Erstausstrahlung
-		If timesAired = 0 Then quality:*1.15
-		return quality
+		If timesAired = 0 Then quality:*1.15		
+		return Max(0.01, Min(0.99, quality))
 	End Method
 
 

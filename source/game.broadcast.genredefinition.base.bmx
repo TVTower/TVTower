@@ -1,10 +1,11 @@
-Import "game.broadcast.audience.bmx" 'has no other game dependencies
+﻿Import "game.broadcast.audience.bmx" 'has no other game dependencies
 Import "game.popularity.genre.bmx"
 
 Type TGenreDefinitionBase
 	Field GenreId:Int
 	Field AudienceAttraction:TAudience
 	Field Popularity:TGenrePopularity
+	Field TimeMods:Float[]
 
 	Method GetAudienceFlowMod:TAudience(followerDefinition:TGenreDefinitionBase) Abstract
 	rem

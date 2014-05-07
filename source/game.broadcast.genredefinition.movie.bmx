@@ -1,4 +1,4 @@
-SuperStrict
+﻿SuperStrict
 Import "Dig/base.util.registry.bmx"
 Import "game.broadcast.genredefinition.base.bmx"
 Import "game.popularity.bmx"
@@ -54,9 +54,7 @@ End Function
 
 
 
-Type TMovieGenreDefinition Extends TGenreDefinitionBase
-	Field TimeMods:Float[]
-
+Type TMovieGenreDefinition Extends TGenreDefinitionBase	
 	Field OutcomeMod:Float = 0.5
 	Field ReviewMod:Float = 0.3
 	Field SpeedMod:Float = 0.2
