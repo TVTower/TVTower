@@ -43,7 +43,7 @@ _G["TASK_BOSS"] = TASK_BOSS
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["DefaultAIPlayer"] = class(AIPlayer, function(c)
 	AIPlayer.init(c)	-- must init base!
-	c.CurrentTask = nil	
+	c.CurrentTask = nil
 	--c.Budget = nil  --darf nicht überschrieben werden
 	--c.Stats = nil  --darf nicht überschrieben werden
 	--c.Requisitions = nil  --darf nicht überschrieben werden
@@ -201,7 +201,7 @@ function BusinessStats:OnDayBegins()
 end
 
 function BusinessStats:ReadStats()
-	local currentAudience = MY.GetAudience()
+	local currentAudience = MY.ProgrammePlan.GetAudience()
 	if (currentAudience == 0) then
 		return;
 	end
@@ -319,9 +319,9 @@ function OnMinute(number)
 	--[[
 	if (number == "4") then
 		local task = getAIPlayer().TaskList[TASK_SCHEDULE]
-		local guessedAudience = task:GuessedAudienceForHourAndLevel(Game.GetHour())
+		local guessedAudience = task:GuessedAudienceForHourAndLevel(GameTime.GetHour())
 
-		local fixedDay, fixedHour = FixDayAndHour2(Game.GetDay(), Game.GetHour())
+		local fixedDay, fixedHour = FixDayAndHour2(GameTime.GetDay(), GameTime.GetHour())
 		local programme = MY.ProgrammePlan.GetProgramme(fixedDay, fixedHour)
 
 		-- RON: changed as "programme" is NIL if not existing/placed
@@ -330,8 +330,8 @@ function OnMinute(number)
 			averageMovieQualityByLevel = programme.GetQuality(0) -- Die Durchschnittsquote dieses Qualitätslevels
 		end
 
-		local level = task:GetQualityLevel(Game.GetHour()) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-		local globalPercentageByHour = task:GetMaxAudiencePercentageByHour(Game.GetHour()) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
+		local level = task:GetQualityLevel(GameTime.GetHour()) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
+		local globalPercentageByHour = task:GetMaxAudiencePercentageByHour(GameTime.GetHour()) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
 		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 		local guessedAudience2 = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 
@@ -344,7 +344,7 @@ function OnMinute(number)
 	]]--
 end
 
-function OnMalfunction()	
+function OnMalfunction()
 	infoMsg("OnMalfunction1")
 	local task = getAIPlayer().TaskList[_G["TASK_SCHEDULE"]]
 	task.SituationPriority = 10

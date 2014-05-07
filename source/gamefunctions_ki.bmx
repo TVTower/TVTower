@@ -45,9 +45,11 @@ Type KI
 		'own functions for player
 		LuaEngine.RegisterBlitzmaxObject(TLuaFunctions.Create(PlayerID), "TVT")
 		'the player
-		LuaEngine.RegisterBlitzmaxObject(Game.GetPlayer(PlayerID), "MY")
+		LuaEngine.RegisterBlitzmaxObject(GetPlayerCollection().Get(PlayerID), "MY")
 		'the game object
 		LuaEngine.RegisterBlitzmaxObject(Game, "Game")
+		'the game object
+		LuaEngine.RegisterBlitzmaxObject(GetGameTime(), "GameTime")
 
 		'register source and available objects
 		LuaEngine.RegisterToLua()
@@ -66,7 +68,7 @@ Type KI
 		if scriptFileName = "" then return FALSE
 
 		'only load for existing players
-		If not Game.GetPlayer(PlayerID)
+		If not GetPlayerCollection().Get(PlayerID)
 			TLogger.log("KI.LoadScript()", "TPlayer "+PlayerID+" not found.", LOG_ERROR)
 			return FALSE
 		endif
@@ -108,7 +110,7 @@ Type KI
 
 	    Try
 			Local args:Object[1]
-			args[0] = string(Game.GetTimeGone())
+			args[0] = string(GetGameTime().GetTimeGone())
 			if (KIRunning) then scriptSaveState = string(LuaEngine.CallLuaFunction("OnSave", args))
 		Catch ex:Object
 			TLogger.log("KI.CallOnSave", "Script "+scriptFileName+" does not contain function ~qOnSave~q.", LOG_ERROR)
@@ -295,12 +297,12 @@ Type TLuaFunctions {_exposeToLua}
 	EndRem
 
 	Method _PlayerInRoom:Int(roomname:String, checkFromRoom:Int = False)
-		Return Game.getPlayer(Self.ME).isInRoom(roomname, checkFromRoom)
+		Return GetPlayerCollection().Get(Self.ME).isInRoom(roomname, checkFromRoom)
 	End Method
 
 
 	Method _PlayerOwnsRoom:Int()
-		Return Self.ME = Game.getPlayer(Self.ME).Figure.inRoom.owner
+		Return Self.ME = GetPlayerCollection().Get(Self.ME).Figure.inRoom.owner
 	End Method
 
 
@@ -395,25 +397,25 @@ endrem
 
 
 	Method SendToChat:Int(ChatText:String)
-		If Game.Players[ Self.ME ] <> Null
-			'emit an event, we received a chat message
-			local sendToChannels:int = TGUIChat.GetChannelsFromText(ChatText)
-			EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) ) )
-		EndIf
+		'emit an event, we received a chat message
+		local sendToChannels:int = TGUIChat.GetChannelsFromText(ChatText)
+		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", self.ME).AddNumber("channels", sendToChannels).AddString("text",ChatText) ) )
+
 		Return 1
 	EndMethod
 
 
 	Method getPlayerRoom:Int()
-		Local room:TRoom = Game.Players[ Self.ME ].figure.inRoom
+		Local room:TRoom = GetPlayerCollection().Get(self.ME).figure.inRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
 
 	Method getPlayerTargetRoom:Int()
-		If Game.Players[ Self.ME ].figure.targetDoor
-			if Game.Players[ Self.ME ].figure.targetDoor.room
-				Return Game.Players[ Self.ME ].figure.targetDoor.room.id
+		local player:TPlayer = GetPlayerCollection().Get(self.ME)
+		If player.figure.targetDoor
+			if player.figure.targetDoor.room
+				Return player.figure.targetDoor.room.id
 			Endif
 		Endif
 		Return self.RESULT_NOTFOUND
@@ -439,7 +441,7 @@ endrem
 
 		Local door:TRoomDoor = TRoomDoor.GetMainDoorToRoom(room)
 		If door
-			Game.Players[ Self.ME ].Figure.SendToDoor(door)
+			GetPlayerCollection().Get(self.ME).figure.SendToDoor(door)
 			Return self.RESULT_OK
 		endif
 
@@ -447,8 +449,8 @@ endrem
 	End Method
 
 
-	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstützt. Negativ: Nach links; Positiv: nach rechts
-		Game.Players[ Self.ME ].Figure.GoToCoordinatesRelative(relX, relYFloor)
+	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstuetzt. Negativ: Nach links; Positiv: nach rechts
+		GetPlayerCollection().Get(self.ME).Figure.GoToCoordinatesRelative(relX, relYFloor)
 		Return self.RESULT_OK
 	End Method
 
@@ -458,7 +460,7 @@ endrem
 		If not Room then return self.RESULT_NOTFOUND
 		if not Room.hasOccupant() then return self.RESULT_OK
 
-		If Room.isOccupant( Game.GetPlayer(Self.ME).figure ) then Return -1
+		If Room.isOccupant( GetPlayerCollection().Get(Self.ME).figure ) then Return -1
 		Return self.RESULT_INUSE
 	End Method
 
@@ -486,11 +488,33 @@ endrem
 '- - - - - -
 ' Office
 '- - - - - -
+	Method of_buyStation:int(x:int, y:int)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		if StationMapCollection.GetMap(ME).BuyStation(x, y)
+			Return self.RESULT_OK
+		else
+			Return self.RESULT_FAILED
+		endif
+	End Method
+
+
+	Method of_sellStation:int(listPosition:int)
+		If Not _PlayerInRoom("office") Then Return self.RESULT_WRONGROOM
+
+		if StationMapCollection.GetMap(ME).SellStation(listPosition)
+			Return self.RESULT_OK
+		else
+			Return self.RESULT_FAILED
+		endif
+	End Method
+
+
 	'returns the broadcast material (in result.data) at the given slot
 	Method of_getAdvertisementSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local material:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetAdvertisement(day, hour)
+		Local material:TBroadcastMaterial = GetPlayerCollection().Get(Self.ME).ProgrammePlan.GetAdvertisement(day, hour)
 		If material
 			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
 		else
@@ -502,14 +526,14 @@ endrem
 	Method of_getAdContractCount:Int()
 		If Not _PlayerInRoom("office", True) Then Return self.RESULT_WRONGROOM
 
-		Return Game.getPlayer(Self.ME).ProgrammeCollection.GetAdContractCount()
+		Return GetPlayerCollection().Get(Self.ME).ProgrammeCollection.GetAdContractCount()
 	End Method
 
 
 	Method of_getAdContractAtIndex:TAdContract(arrayIndex:Int=-1)
 		If Not _PlayerInRoom("office", True) Then Return Null
 
-		Local obj:TAdContract = Game.getPlayer(Self.ME).ProgrammeCollection.GetAdContractAtIndex(arrayIndex)
+		Local obj:TAdContract = GetPlayerCollection().Get(Self.ME).ProgrammeCollection.GetAdContractAtIndex(arrayIndex)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -517,7 +541,7 @@ endrem
 	Method of_getAdContractByID:TAdContract(id:Int=-1)
 		If Not _PlayerInRoom("office", True) Then Return Null
 
-		Local obj:TAdContract = Game.getPlayer(Self.ME).ProgrammeCollection.GetAdContract(id)
+		Local obj:TAdContract = GetPlayerCollection().Get(Self.ME).ProgrammeCollection.GetAdContract(id)
 		If obj Then Return obj Else Return Null
 	End Method
 
@@ -532,9 +556,9 @@ endrem
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
-		local broadcastMaterial:TBroadcastMaterial = Game.getPlayer(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
+		local broadcastMaterial:TBroadcastMaterial = GetPlayerCollection().Get(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
 
-		if Game.getPlayer(self.ME).ProgrammePlan.SetAdvertisementSlot(broadcastMaterial, day, hour)
+		if GetPlayerCollection().Get(self.ME).ProgrammePlan.SetAdvertisementSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED
@@ -546,7 +570,7 @@ endrem
 	Method of_getProgrammeSlot:TLuaFunctionResult(day:Int = -1, hour:Int = -1)
 		If Not _PlayerInRoom("office") Then Return TLuaFunctionResult.Create(self.RESULT_WRONGROOM, null)
 
-		Local material:TBroadcastMaterial = Game.getPlayer(Self.ME).ProgrammePlan.GetProgramme(day, hour)
+		Local material:TBroadcastMaterial = GetPlayerCollection().Get(Self.ME).ProgrammePlan.GetProgramme(day, hour)
 		If material
 			Return TLuaFunctionResult.Create(self.RESULT_OK, material)
 		else
@@ -566,9 +590,9 @@ endrem
 		If Not _PlayerOwnsRoom() Then Return self.RESULT_WRONGROOM
 
 		'create a broadcast material out of the given source
-		local broadcastMaterial:TBroadcastMaterial = Game.getPlayer(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
+		local broadcastMaterial:TBroadcastMaterial = GetPlayerCollection().Get(self.ME).ProgrammeCollection.GetBroadcastMaterial(materialSource)
 
-		if Game.getPlayer(self.ME).ProgrammePlan.SetProgrammeSlot(broadcastMaterial, day, hour)
+		if GetPlayerCollection().Get(self.ME).ProgrammePlan.SetProgrammeSlot(broadcastMaterial, day, hour)
 			return self.RESULT_OK
 		else
 			return self.RESULT_NOTALLOWED
@@ -610,20 +634,22 @@ endrem
 	Method ne_doNewsInPlan:Int(slot:int=1, ObjectID:Int = -1)
 		If Not (_PlayerInRoom("newsroom", True) or _PlayerInRoom("news", True)) Then Return self.RESULT_WRONGROOM
 
+		local player:TPlayer = GetPlayerCollection().Get(self.ME)
+
 		'Es ist egal ob ein Spieler einen Schluessel fuer den Raum hat,
 		'Es ist nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> Game.Players[self.ME].Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
+		If Self.ME <> player.Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'News bei slotID loeschen
-			if Game.getPlayer(self.ME).ProgrammePlan.RemoveNews(null, slot)
+			if player.ProgrammePlan.RemoveNews(null, slot)
 				Return self.RESULT_OK
 			else
 				Return self.RESULT_NOTFOUND
 			endif
 		Else
-			Local news:TBroadcastMaterial = Game.Players[self.ME].ProgrammeCollection.GetNews(ObjectID)
+			Local news:TBroadcastMaterial = player.ProgrammeCollection.GetNews(ObjectID)
 			If not news or not TNews(news) then Return self.RESULT_NOTFOUND
-			Game.Players[self.ME].ProgrammePlan.SetNews(TNews(news), slot)
+			player.ProgrammePlan.SetNews(TNews(news), slot)
 
 			Return self.RESULT_OK
 		EndIf
@@ -689,7 +715,7 @@ endrem
 	Method sa_doGiveBackSpot:Int(contractID:Int = -1)
 		If Not _PlayerInRoom("adagency") Then Return self.RESULT_WRONGROOM
 
-		local contract:TAdContract = Game.getPlayer(self.ME).ProgrammeCollection.GetUnsignedAdContractFromSuitcase(contractID)
+		local contract:TAdContract = GetPlayerCollection().Get(self.ME).ProgrammeCollection.GetUnsignedAdContractFromSuitcase(contractID)
 		'this does not sign - signing is done when leaving the room!
 		if contract and RoomHandler_AdAgency.GetInstance().TakeContractFromPlayer( contract, self.ME )
 			Return self.RESULT_OK
@@ -737,7 +763,7 @@ endrem
 	Method md_doSellProgrammeLicence:Int(licenceID:Int=-1)
 		If Not _PlayerInRoom("movieagency") Then Return self.RESULT_WRONGROOM
 
-		For local licence:TProgrammeLicence = eachin Game.getPlayer(self.ME).ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get(self.ME).ProgrammeCollection.suitcaseProgrammeLicences
 			if licence.id = licenceID then return RoomHandler_MovieAgency.GetInstance().BuyProgrammeLicenceFromPlayer(licence)
 		Next
 		Return self.RESULT_NOTFOUND

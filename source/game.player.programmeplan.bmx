@@ -3,6 +3,73 @@ REM
 	code for PlayerProgrammePlan
 	===========================================================
 ENDREM
+SuperStrict
+Import "Dig/base.util.event.bmx"
+Import "game.gameobject.bmx"
+Import "game.gametime.bmx"
+Import "game.programme.programmelicence.bmx"
+Import "game.programme.adcontract.bmx"
+Import "game.programme.newsevent.bmx"
+Import "game.broadcastmaterial.programme.bmx"
+Import "game.broadcastmaterial.advertisement.bmx"
+Import "game.broadcastmaterial.news.bmx"
+Import "game.player.programmecollection.bmx"
+
+
+
+Type TPlayerProgrammePlanCollection
+	Field plans:TPlayerProgrammePlan[]
+	Global _instance:TPlayerProgrammePlanCollection
+	Global _eventsRegistered:int= FALSE
+
+
+	Method New()
+		_instance = self
+
+		if not _eventsRegistered
+			EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onAddProgrammeLicenceToSuitcase)
+			_eventsRegistered = TRUE
+		Endif
+	End Method
+
+
+	Function GetInstance:TPlayerProgrammePlanCollection()
+		if not _instance then _instance = new TPlayerProgrammePlanCollection
+		return _instance
+	End Function
+
+
+	Function onAddProgrammeLicenceToSuitcase:int(triggerEvent:TEventBase)
+		local gameobject:TOwnedGameObject = TOwnedGameObject(triggerEvent.GetSender())
+		local programmeLicence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmeLicence"))
+		if not gameobject or programmeLicence then return False
+
+		'remove that programme from the players plan (if set)
+		' - second param = true: also remove currently run programmes
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(gameobject.owner)
+		if plan then plan.RemoveProgrammeInstancesByLicence(programmeLicence, true)
+	End Function
+
+
+	Method Set:int(playerID:int, plan:TPlayerProgrammePlan)
+		if playerID <= 0 then return False
+		if playerID > plans.length then plans = plans[.. playerID]
+		plans[playerID-1] = plan
+	End Method
+
+
+	Method Get:TPlayerProgrammePlan(playerID:int)
+		if playerID <= 0 or playerID > plans.length then return null
+		return plans[playerID-1]
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+Function GetPlayerProgrammePlanCollection:TPlayerProgrammePlanCollection()
+	Return TPlayerProgrammePlanCollection.GetInstance()
+End Function
+
+
 
 
 Type TPlayerProgrammePlan {_exposeToLua="selected"}
@@ -10,20 +77,22 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	Field news:TBroadcastMaterial[]				= new TBroadcastMaterial[3]	'single news -> eg for specials
 	Field newsShow:TBroadcastMaterial[]			= new TBroadcastMaterial[0] 'news show
 	Field advertisements:TBroadcastMaterial[]	= new TBroadcastMaterial[0]
-	Field parent:TPlayer						= null
+	Field owner:int
 
 	Global fireEvents:int						= TRUE		'FALSE to avoid recursive handling (network)
 
 	'===== COMMON FUNCTIONS =====
 
 
-	Method Create:TPlayerProgrammePlan(player:TPlayer)
-		self.parent = player
+	Method Create:TPlayerProgrammePlan(playerID:int)
+		self.owner = playerID
+		GetPlayerProgrammePlanCollection().Set(playerID, self)
 		return self
 	End Method
 
+
 	Method getSkipHoursFromIndex:int()
-		return (Game.GetStartDay()-1)*24
+		return (GetGameTime().GetStartDay()-1)*24
 	End Method
 
 
@@ -64,10 +133,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 		endrem
 
 
-		print "=== AD/PROGRAMME PLAN PLAYER "+parent.playerID+" ==="
+		print "=== AD/PROGRAMME PLAN PLAYER " + owner + " ==="
 		For local i:int = 0 to Max(programmes.length - 1, advertisements.length - 1)
 			local currentHour:int = GetHourFromArrayIndex(i) 'hours since start
-			local time:int = Game.MakeTime(0, 0, currentHour, 0)
+			local time:int = GetGameTime().MakeTime(0, 0, currentHour, 0)
 			local adString:string = ""
 			local progString:string = ""
 
@@ -89,7 +158,7 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 			if adString <> "" or progString <> ""
 				if progString = "" then progString = "SENDEAUSFALL"
 				if adString = "" then adString = " -> WERBEAUSFALL"
-				print "[" + GetArrayIndex(time / 60) + "] " + Game.GetYear(time) + " " + Game.GetDayOfYear(time) + ".Tag " + Game.GetHour(currentHour * 60) + ":00 : " + progString + adString
+				print "[" + GetArrayIndex(time / 60) + "] " + GetGameTime().GetYear(time) + " " + GetGameTime().GetDayOfYear(time) + ".Tag " + GetGameTime().GetHour(currentHour * 60) + ":00 : " + progString + adString
 			endif
 		Next
 		For local i:int = 0 to programmes.length - 1
@@ -149,11 +218,11 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns whether the slot can be used or is already in the past...
 	Function IsUseableTimeSlot:int(slotType:int=0, day:int=-1, hour:int=-1, currentDay:int=-1, currentHour:int=-1, currentMinute:int=-1)
-		if day = -1 then day = game.getDay()
-		if hour = -1 then hour = game.getHour()
-		if currentDay =-1  then currentDay = game.GetDay()
-		if currentHour =-1  then currentHour = game.GetHour()
-		if currentMinute = -1 then currentMinute = game.getMinute()
+		if day = -1 then day = GetGameTime().getDay()
+		if hour = -1 then hour = GetGameTime().getHour()
+		if currentDay =-1  then currentDay = GetGameTime().GetDay()
+		if currentHour =-1  then currentHour = GetGameTime().GetHour()
+		if currentMinute = -1 then currentMinute = GetGameTime().getMinute()
 		'convert to total hour
 		currentHour = currentDay*24 + currentHour
 		'do not allow adding in the past
@@ -199,8 +268,8 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 
 	'returns the block of the media at the given time
 	Method GetObjectBlock:int(objectType:int=0, day:int=-1, hour:int=-1) {_exposeToLua}
-		if day = -1 then day = Game.getDay()
-		if hour = -1 then hour = Game.getHour()
+		if day = -1 then day = GetGameTime().getDay()
+		if hour = -1 then hour = GetGameTime().getHour()
 		local startHour:int = GetObjectStartHour(objectType, day, hour)
 
 		if startHour < 0 then return -1
@@ -212,10 +281,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns an array of objects within the given time frame of a
 	'specific object/list-type
 	Method GetObjectsInTimeSpan:TBroadcastMaterial[](objectType:int=0, dayStart:int=-1, hourStart:int=-1, dayEnd:int=-1, hourEnd:int=-1, includeStartingEarlierObject:int=TRUE, requireSameType:int=FALSE) {_exposeToLua}
-		If dayStart = -1 Then dayStart = Game.GetDay()
-		If hourStart = -1 Then hourStart = Game.GetHour()
-		If dayEnd = -1 Then dayEnd = Game.GetDay()
-		If hourEnd = -1 Then hourEnd = Game.GetHour()
+		If dayStart = -1 Then dayStart = GetGameTime().GetDay()
+		If hourStart = -1 Then hourStart = GetGameTime().GetHour()
+		If dayEnd = -1 Then dayEnd = GetGameTime().GetDay()
+		If hourEnd = -1 Then hourEnd = GetGameTime().GetHour()
 
 		local material:TBroadcastMaterial = null
 		local result:TBroadcastMaterial[]
@@ -252,10 +321,10 @@ Type TPlayerProgrammePlan {_exposeToLua="selected"}
 	'returns whether an object exists in the time span
 	'if so - the first (or last) material-instance is returned
 	Method ObjectPlannedInTimeSpan:TBroadcastMaterial(material:TBroadcastMaterial, slotType:int=0, dayStart:int=-1, hourStart:int=-1, dayEnd:int=-1, hourEnd:int=-1, startAtLatestTime:int=FALSE) {_exposeToLua}
-		If dayStart = -1 Then dayStart = Game.GetDay()
-		If hourStart = -1 Then hourStart = Game.GetHour()
-		If dayEnd = -1 Then dayEnd = Game.GetDay()
-		If hourEnd = -1 Then hourEnd = Game.GetHour()
+		If dayStart = -1 Then dayStart = GetGameTime().GetDay()
+		If hourStart = -1 Then hourStart = GetGameTime().GetHour()
+		If dayEnd = -1 Then dayEnd = GetGameTime().GetDay()
+		If hourEnd = -1 Then hourEnd = GetGameTime().GetHour()
 
 		'check if the starting time includes a block of a programme starting earlier
 		'if so: adjust starting time
@@ -306,8 +375,8 @@ endrem
 	'attention: that is not a gamedayHour from 0-24 but in hours since day0
 	'returns -1 if no object was found
 	Method GetObjectStartHour:int(objectType:int=0, day:int=-1, hour:int=-1) {_exposeToLua}
-		if day = -1 then day = Game.getDay()
-		if hour = -1 then hour = Game.getHour()
+		if day = -1 then day = GetGameTime().getDay()
+		if hour = -1 then hour = GetGameTime().getHour()
 		local arrayIndex:int = GetArrayIndex(day * 24 + hour)
 
 		'out of bounds?
@@ -338,9 +407,12 @@ endrem
 
 	'add an object / set a slot occupied
 	Method AddObject:int(obj:TBroadcastMaterial, slotType:int=0, day:int=-1, hour:int=-1, checkSlotTime:int=TRUE)
-		if day = -1 then day = game.getDay()
-		if hour = -1 then hour = game.getHour()
+		if day = -1 then day = GetGameTime().getDay()
+		if hour = -1 then hour = GetGameTime().getHour()
 		local arrayIndex:int = GetArrayIndex(day * 24 + hour)
+
+		'do not allow adding objects we do not own
+		if obj.GetOwner() <> owner then return FALSE
 
 		'the same object is at the exact same slot - skip actions/events
 		if obj = GetObjectAtIndex(slotType, arrayIndex) then return TRUE
@@ -350,11 +422,6 @@ endrem
 			TLogger.log("TPlayerProgrammePlan.AddObject", "Failed: time is in the past", LOG_INFO)
 			return FALSE
 		endif
-
-		'do not allow adding objects we do not own
-		if TAdvertisement(obj) and not parent.programmeCollection.hasAdContract(TAdvertisement(obj).contract) then return FALSE
-		if TProgramme(obj) and not parent.programmeCollection.hasProgrammeLicence(TProgramme(obj).licence) then return FALSE
-
 
 		'clear all potential overlapping objects
 		local removedObjects:object[]
@@ -375,12 +442,14 @@ endrem
 		'special for programmelicences: set a maximum planned time
 		'setting does not require special calculations
 		if TProgramme(obj) then TProgramme(obj).licence.SetPlanned(day*24+hour+obj.GetBlocks(slotType))
+		'Advertisements: adjust planned
+		if TAdvertisement(obj) then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 
 		'emit an event
 		If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.addObject", new TData.add("object", obj).add("removedObjects", removedObjects).addNumber("slotType", slotType).addNumber("day", day).addNumber("hour", hour), self))
 
-		'local time:int = Game.MakeTime(0, day, hour, 0)
-		'print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + Game.GetYear(time) + " " + Game.GetDayOfYear(time) + ".Tag " + Game.GetHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
+		'local time:int = GetGameTime().MakeTime(0, day, hour, 0)
+		'print "..addObject day="+day+" hour="+hour+" array[" +arrayIndex + "] " + GetGameTime().GetYear(time) + " " + GetGameTime().GetDayOfYear(time) + ".Tag " + GetGameTime().GetHour(time) + ":00 : " + obj.getTitle()+" ("+obj.getReferenceID()+")"
 		return TRUE
 	End Method
 
@@ -407,9 +476,10 @@ endrem
 			'null the corresponding array index
 			SetObjectArrayEntry(null, slotType, GetArrayIndex(programmedDay*24 + programmedHour))
 
-			'special for programmelicences:
-			'recalculate the latets planned hour
+			'ProgrammeLicences: recalculate the latest planned hour
 			if TProgramme(obj) then RecalculatePlannedProgramme(TProgramme(obj))
+			'Advertisements: adjust planned amount
+			if TAdvertisement(obj) then TAdvertisement(obj).contract.SetSpotsPlanned( GetAdvertisementsPlanned(TAdvertisement(obj).contract) )
 
 			'inform others
 			If fireEvents then EventManager.triggerEvent(TEventSimple.Create("programmeplan.removeObject", new TData.add("object", obj).addNumber("slotType", slotType).addNumber("day", programmedDay).addNumber("hour", programmedHour), self))
@@ -423,7 +493,7 @@ endrem
 	'plan's list.
 	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveObjectInstances:int(obj:TBroadcastMaterial, slotType:int=0, currentHour:int=-1, removeCurrentRunning:Int=FALSE)
-		if currentHour = -1 then currentHour = game.GetDay() * 24 + game.GetHour()
+		if currentHour = -1 then currentHour = GetGameTime().GetDay() * 24 + GetGameTime().GetHour()
 		Local array:TBroadcastMaterial[] = GetObjectArray(slotType)
 		Local earliestIndex:int = Max(0, GetArrayIndex(currentHour - obj.GetBlocks()))
 		Local currentIndex:int = Max(0, GetArrayIndex(currentHour))
@@ -462,8 +532,8 @@ endrem
 	'without disturbing others
 	Method ObjectPlaceable:Int(obj:TBroadcastMaterial, slotType:int=0, day:Int=-1, hour:int=-1)
 		If not obj Then Return 0
-		if day = -1 then day = game.getDay()
-		if hour = -1 then hour = game.getHour()
+		if day = -1 then day = GetGameTime().getDay()
+		if hour = -1 then hour = GetGameTime().getHour()
 
 		'check all slots the obj will occupy...
 		For local i:int = 0 to obj.GetBlocks() - 1
@@ -502,7 +572,7 @@ endrem
 		if not obj.isProgrammed() then return TRUE
 
 		if obj
-			'print "RON: PLAN.RemoveProgramme       owner="+parent.playerID+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
+			'print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
 
 			'backup programmed date
 			local programmedDay:int = obj.programmedDay
@@ -530,7 +600,7 @@ endrem
 
 		'first of all we need to find a user of our licence
 		Local array:TBroadcastMaterial[] = GetObjectArray(TBroadcastMaterial.TYPE_PROGRAMME)
-		Local currentHour:Int = game.GetDay() * 24 + game.GetHour()
+		Local currentHour:Int = GetGameTime().GetDay() * 24 + GetGameTime().GetHour()
 		Local earliestIndex:int = Max(0, GetArrayIndex(currentHour - licence.GetData().GetBlocks()))
 		Local currentIndex:int = Max(0, GetArrayIndex(currentHour))
 		Local latestIndex:int = array.length - 1
@@ -566,8 +636,8 @@ endrem
 
 	'refreshes the programme's licence "latestPlannedEndHour"
 	Method RecalculatePlannedProgramme:int(programme:TProgramme, dayStart:int=-1, hourStart:int=-1)
-		if dayStart = -1 then dayStart = Game.GetDay()
-		if hourStart = -1 then hourStart = Game.GetHour()
+		if dayStart = -1 then dayStart = GetGameTime().GetDay()
+		if hourStart = -1 then hourStart = GetGameTime().GetHour()
 
 		if programme.licence.owner <= 0
 			programme.licence.SetPlanned(-1)
@@ -644,9 +714,9 @@ endrem
 	'AI helper .. should be made available through "TVT."
 	'counts how many times a programme is Planned
 	Method HowOftenProgrammeLicenceInPlan:Int(licenceID:Int, day:Int=-1, includePlanned:Int=FALSE, includeStartedYesterday:int=TRUE) {_exposeToLua}
-		If day = -1 Then day = Game.GetDay()
+		If day = -1 Then day = GetGameTime().GetDay()
 		'no filter for other days than today ... would be senseless
-		if day <> Game.getDay() then includePlanned = TRUE
+		if day <> GetGameTime().getDay() then includePlanned = TRUE
 		Local count:Int = 0
 		Local minHour:Int = 0
 		Local maxHour:Int = 23
@@ -654,10 +724,10 @@ endrem
 
 		'include programmes which may not be run yet?
 		'else we stop at the current time of the day...
-		if not includePlanned then maxhour = Game.GetHour()
+		if not includePlanned then maxhour = GetGameTime().GetHour()
 
 		'debug
-		'print "HowOftenProgrammeLicenceInPlan: day="+day+" GameDay="+Game.getDay()+" minHour="+minHour+" maxHour="+maxHour + " includeYesterday="+includeStartedYesterday
+		'print "HowOftenProgrammeLicenceInPlan: day="+day+" GameDay="+GetGameTime().getDay()+" minHour="+minHour+" maxHour="+maxHour + " includeYesterday="+includeStartedYesterday
 
 		'only programmes with more than 1 block can start the day before
 		'and still run the next day - so we have to check that too
@@ -873,7 +943,7 @@ endrem
 		news[slot] = newsObject
 
 		'remove that news from the collection
-		parent.ProgrammeCollection.RemoveNews(newsObject)
+		GetPlayerProgrammeCollectionCollection().Get(owner).RemoveNews(newsObject)
 
 
 		'emit an event so eg. network can recognize the change
@@ -899,7 +969,9 @@ endrem
 			local deletedNews:TBroadcastMaterial = news[newsSlot]
 
 			'add that news back to the collection ?
-			if addToCollection and TNews(deletedNews) then parent.ProgrammeCollection.AddNews(TNews(deletedNews))
+			if addToCollection and TNews(deletedNews)
+				GetPlayerProgrammeCollectionCollection().Get(owner).AddNews(TNews(deletedNews))
+			endif
 
 			'empty the slot
 			news[newsSlot] = null
@@ -928,10 +1000,10 @@ endrem
 
 
 	Method ProduceNewsShow:TBroadcastMaterial(allowAddToPast:int=FALSE)
-		local show:TNewsShow = TNewsShow.Create("Nachrichten", parent.playerID, GetNews(0),GetNews(1),GetNews(2))
+		local show:TNewsShow = TNewsShow.Create("Nachrichten", owner, GetNews(0),GetNews(1),GetNews(2))
 		'if
 		AddObject(show, TBroadcastMaterial.TYPE_NEWSSHOW,-1,-1, FALSE)
-			'print "Production of news show for player "+parent.playerID + " OK."
+			'print "Production of news show for player "+owner + " OK."
 		'endif
 		return show
 	End Method
@@ -942,5 +1014,142 @@ endrem
 		local show:TBroadcastMaterial = GetObject(TBroadcastMaterial.TYPE_NEWSSHOW, day, hour)
 		if not show then show = ProduceNewsShow()
 		return show
+	End Method
+
+
+	'returns which number that given advertisement spot will have
+	Method GetAdvertisementSpotNumber:Int(advertisement:TAdvertisement) {_exposeToLua}
+		'if programmed - count all non-failed ads up to the programmed date
+		if advertisement.isProgrammed()
+			return 1 + GetAdvertisementsCount(advertisement.contract, advertisement.programmedDay, advertisement.programmedHour-1, TRUE, TRUE)
+		'if not programmed we just count ALL existing non-failed ads
+		else
+			return 1 + GetAdvertisementsCount(advertisement.contract, -1, -1, TRUE, TRUE)
+		endif
+	End Method
+
+
+	'that method could be externalized to "main.bmx" or another common
+	'function, there is no need to place it in this file
+	Method AdjustCurrentBroadcast:int(day:int, hour:int, minute:int)
+		local obj:TBroadcastMaterial = null
+
+		'=== BEGIN OF NEWSSHOW ===
+		If minute = 0
+			obj = GetNewsShow()
+			'log in current broadcast
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj)
+			'calculate audience
+			GetBroadcastManager().BroadcastNewsShow(day, hour)
+
+			'inform  object that it gets broadcasted
+			'... nothing to do yet
+
+		'=== BEGIN OF PROGRAMME ===
+		ElseIf minute = 5
+			obj = GetProgramme(day, hour)
+			'log in current broadcast
+			GetBroadcastManager().SetCurrentBroadcastMaterial(owner, obj)
+			'calculate audience
+			GetBroadcastManager().BroadcastProgramme(day, hour)
+
+			'inform  object that it gets broadcasted
+			if obj
+				local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+				'inform the object what happens (start or continuation)
+				If 1 = GetProgrammeBlock(day, hour)
+					obj.BeginBroadcasting(day, hour, minute, audienceResult)
+				Else
+					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
+				EndIf
+			endif
+
+		'=== END/BREAK OF PROGRAMME ===
+		'call-in shows/quiz - generate income
+		ElseIf minute = 54
+			obj = GetProgramme(day, hour)
+
+			'inform  object that it gets broadcasted
+			if obj
+				local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+				If obj.GetBlocks() = GetProgrammeBlock(day, hour)
+					if obj.FinishBroadcasting(day, hour, minute, audienceResult)
+						'for programmes: refresh planned state - for next hour
+						if TProgramme(obj)
+							RecalculatePlannedProgramme(TProgramme(obj), -1, hour+1)
+						endif
+					endif
+				Else
+					obj.BreakBroadcasting(day, hour, minute, audienceResult)
+				EndIf
+			endif
+
+		'=== BEGIN OF COMMERCIAL BREAK ===
+		ElseIf minute = 55
+			obj = GetAdvertisement(day, hour)
+
+			'inform  object that it gets broadcasted
+			If obj
+				local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+				If 1 = GetAdvertisementBlock(day, hour)
+					obj.BeginBroadcasting(day, hour, minute, audienceResult)
+
+					'computes ads - if adcontract finishes, earn money
+					if TAdvertisement(obj) and TAdvertisement(obj).contract.isSuccessful()
+						'removes ads which are more than needed (eg 3 of 2 to be shown ads)
+						RemoveAdvertisementInstances(obj, FALSE)
+						'removes them also from programmes (shopping show)
+						RemoveProgrammeInstances(obj, FALSE)
+
+						'remove contract from collection (and suitcase)
+						'contract is still stored within advertisements (until they get deleted)
+						GetPlayerProgrammeCollectionCollection().Get(owner).RemoveAdContract(TAdvertisement(obj).contract)
+					endif
+				Else
+					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
+				EndIf
+			EndIf
+
+		'=== END OF COMMERCIAL BREAK ===
+		'ads end - so trailers can set their "ok"
+		ElseIf minute = 59
+			obj = GetAdvertisement(day, hour)
+
+			'inform  object that it gets broadcasted
+			If obj
+				local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+				If obj.GetBlocks() = GetAdvertisementBlock(day, hour)
+					obj.FinishBroadcasting(day, hour, minute, audienceResult)
+				Else
+					obj.BreakBroadcasting(day, hour, minute, audienceResult)
+				EndIf
+			EndIf
+		EndIf
+	End Method
+
+
+	'=== AUDIENCE ===
+	'maybe move that helpers to TBroadcastManager
+	Method GetAudience:Int() {_exposeToLua}
+		local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+		If Not audienceResult Then Return 0
+		Return audienceResult.Audience.GetSum()
+	End Method
+
+
+	'returns formatted value of actual audience
+	Method GetFormattedAudience:String() {_exposeToLua}
+		Return TFunctions.convertValue(GetAudience(), 2)
+	End Method
+
+
+	'calculates and returns the percentage of the players audience depending on the maxaudience
+	Method GetAudiencePercentage:Float() {_exposeToLua}
+		local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+		If audienceResult then return audienceResult.AudienceQuote.GetAverage()
+
+		return 0
+		'Local audienceResult:TAudienceResult = TAudienceResult.Curr(playerID)
+		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()
 	End Method
 End Type

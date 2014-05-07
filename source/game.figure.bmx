@@ -1,5 +1,14 @@
+'SuperStrict
+'Import "Dig/base.framework.entity.spriteentity.bmx"
+'Import "game.gameobject.bmx"
+
+
+'todo: auf import umstellen
+'Include "gamefunctions_rooms.bmx"
+
+
 Type TFigureCollection
-	Field list:TList	 		= CreateList()
+	Field list:TList = CreateList()
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TFigureCollection
 
@@ -160,18 +169,18 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method IsAI:Int()
 		If id > 4 Then Return True
-		If ControlledByID = 0 or (Game.GetPlayer(parentPlayerID) and Game.GetPlayer(parentPlayerID).playerKI) Then Return True
+		If ControlledByID = 0 or (GetPlayerCollection().Get(parentPlayerID) and GetPlayerCollection().Get(parentPlayerID).playerKI) Then Return True
 		Return False
 	End Method
 
 
 	Method IsActivePlayer:Int()
-		return (parentPlayerID = Game.playerID)
+		return (parentPlayerID = GetPlayerCollection().playerID)
 	End Method
 
 
 
-	Method FigureMovement:int(deltaTime:Float=1.0)
+	Method FigureMovement:int()
 		'figure is in a room, do not move...
 		if inRoom then return FALSE
 
@@ -201,7 +210,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 			'does the center of the figure will reach the target during update?
-			local dx:float = deltaTime * velocity.GetX()
+			local deltaTime:Float = GetDeltaTimer().GetDelta()
+			local dx:float = deltaTime * GetVelocity().GetX()
 			local reachTemporaryTarget:int = FALSE
 			'move to right and next step is more right than target
 			if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
@@ -228,7 +238,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		endif
 
 		'decide if we have to play sound
-		if velocity.getX() <> 0 and not IsInElevator()
+		if GetVelocity().getX() <> 0 and not IsInElevator()
 			SoundSource.PlayOrContinueRandomSFX("steps")
 		else
 			SoundSource.Stop("steps")
@@ -368,7 +378,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 	 	'inform AI that we reached a room
 	 	If ParentPlayerID > 0 And isAI()
-			If room Then Game.GetPlayer(ParentPlayerID).PlayerKI.CallOnReachRoom(room.id) Else Game.GetPlayer(ParentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTFOUND)
+			If room Then GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnReachRoom(room.id) Else GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTFOUND)
 		EndIf
 
 		If Game.networkgame And Network.IsConnected Then Network_SendPosition()
@@ -474,7 +484,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 'RON: if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
 
-		If Game.GetPlayer(figure.ParentPlayerID) And figure.isAI() then Game.GetPlayer(figure.ParentPlayerID).PlayerKI.CallOnLeaveRoom()
+		If GetPlayerCollection().Get(figure.ParentPlayerID) And figure.isAI() then GetPlayerCollection().Get(figure.ParentPlayerID).PlayerKI.CallOnLeaveRoom()
 
 		'enter target -> null = building
 		figure._setInRoom( null )
@@ -538,7 +548,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		If GetBuilding().Elevator.passengers.Contains(Self) Then Return False
 
 		'only change target if it's your figure or you are game leader
-		If self <> Game.GetPlayer().figure And Not Game.isGameLeader() Then Return False
+		If self <> GetPlayerCollection().Get().figure And Not Game.isGameLeader() Then Return False
 
 		'needed for AI like post dude
 		If inRoom Then LeaveRoom()
@@ -591,13 +601,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method IsGameLeader:Int()
-		Return (id = Game.playerID Or (IsAI() And Game.playerID = Game.isGameLeader()))
-	End Method
-
-
-	'overwrite default UpdateMovement - we handle it in FigureMovement
-	Method UpdateMovement(deltaTime:Float)
-		'nothing
+		Return (id = GetPlayerCollection().playerID Or (IsAI() And GetPlayerCollection().playerID = Game.isGameLeader()))
 	End Method
 
 
@@ -643,7 +647,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method UpdateCustom:int(deltaTime:Float)
+	Method UpdateCustom:int()
 		'empty by default
 	End Method
 
@@ -653,17 +657,15 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		'animation)
 		Super.Update()
 
-		local deltaTime:Float = GetDeltaTimer().GetDelta()
-
 		Self.alreadydrawn = 0
 
 		'movement is not done when in a room
-		FigureMovement(deltaTime)
+		FigureMovement()
 		'set the animation
 		GetFrameAnimations().SetCurrent( getAnimationToUse() )
 
 		'this could be overwritten by extended types
-		UpdateCustom(deltaTime)
+		UpdateCustom()
 
 
 
@@ -713,8 +715,10 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			'avoid shaking figures when standing - only use tween
 			'position when moving
 			local tweenPos:TPoint
-			if velocity.GetIntX() <> 0 and not Game.paused
-				tweenPos = area.position.Copy()
+			if velocity.GetIntX() <> 0 and not GetGameTime().paused
+				tweenPos = new TPoint
+				tweenPos.SetX( GetDeltaTimer().GetTweenResult(area.getX(), oldPosition.x, true) )
+				tweenPos.SetY( GetDeltaTimer().GetTweenResult(area.getY(), oldPosition.y, true) )
 			else
 				tweenPos = oldPosition.Copy()
 			endif

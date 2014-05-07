@@ -1,264 +1,38 @@
-﻿Const CURRENCYSIGN:string = Chr(8364) 'eurosign
+﻿Type TGUINewsList extends TGUIListBase
 
-include "gamefunctions_tvprogramme_advertisements.bmx"
-include "gamefunctions_tvprogramme_news.bmx"
-include "gamefunctions_tvprogramme_programmes.bmx"
-include "gamefunctions_tvprogramme_playerprogrammeplan.bmx"
-include "gamefunctions_tvprogramme_playerprogrammecollection.bmx"
-
-
-
-
-'Base type for programmes, advertisements...
-Type TBroadcastMaterial	extends TOwnedGameObject {_exposeToLua="selected"}
-	Field state:int				= 0		'by default the state is "normal"
-	Field materialType:int		= 0		'original material type (may differ to usage!)
-	Field usedAsType:int		= 0		'the type this material is used for (programme as adspot -> trailer)
-	Field useableAsType:int		= 0		'the type this material can be used for (so we can forbid certain ads as tvshow etc)
-
-	Field programmedHour:int	= -1	'time at which the material is planned to get send
-	Field programmedDay:int		= -1
-
-	Field currentBlockBroadcasting:int		{_exposeToLua} '0 = läuft nicht; 1 = 1 Block; 2 = 2 Block; usw.
-
-	'states a program can be in
-	const STATE_NORMAL:int		= 0
-	const STATE_OK:int			= 1
-	const STATE_FAILED:int		= 2
-	const STATE_RUNNING:int		= 3
-	'types of broadcastmaterial
-	Const TYPE_UNKNOWN:int		= 1
-	const TYPE_PROGRAMME:int	= 2
-	const TYPE_ADVERTISEMENT:int= 4
-	const TYPE_NEWS:int			= 8
-	const TYPE_NEWSSHOW:int		= 16
-
-
-	'needed for all extending objects
-	Method GetAudienceAttraction:TAudienceAttraction(hour:Int, block:Int, lastMovieBlockAttraction:TAudienceAttraction, lastNewsBlockAttraction:TAudienceAttraction, withSequenceEffect:Int=False, withLuckEffect:Int=False ) Abstract
-
-	'needed for all extending objects
-	Method GetQuality:Float()  {_exposeToLua}
-		print "GetQuality"
+    Method Create:TGUINewsList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
+		return self
 	End Method
 
 
-	'what to earn for each viewers in euros?
-	'ex.: returning 0.15 means:
-	'     for 1.000     viewers I earn 150,00 Euro
-	'     for 2.000     viewers I earn 300,00 Euro
-	'     for 1.000.000 viewers I earn 150.000,00 Euro and so on
-	'so better keep the values low
-	Method GetBaseRevenue:Float() {_exposeToLua}
-		return 0.0
-	End Method
-
-
-	'get the title
-	Method GetDescription:string() {_exposeToLua}
-		Return "NO DESCRIPTION"
-	End Method
-
-
-	'get the title
-	Method GetTitle:string() {_exposeToLua}
-		Return "NO TITLE"
-	End Method
-
-
-	Method GetBlocks:int(broadcastType:int=0) {_exposeToLua}
-		Return 1
-	End Method
-
-
-	Method isType:int(typeID:int) {_exposeToLua}
-		return self.materialType = typeID
-	End Method
-
-
-	Method setMaterialType:int(typeID:int=0)
-		self.materialType = typeID
-		self.useableAsType :| typeID
-	End Method
-
-
-	Method setUsedAsType:int(typeID:int=0)
-		if typeID > 0
-			self.usedAsType = typeID
-			self.useableAsType :| typeID
-		else
-			self.usedAsType = materialType
-		endif
-	End Method
-
-
-	Method setState:int(state:int)
-		self.state = state
-	End Method
-
-
-	Method isState:int(state:int) {_exposeToLua}
-		if self.state = state then return TRUE
-		return FALSE
-	End Method
-
-
-	'by default this is the normal ID, but could be the contracts id or so...
-	Method GetReferenceID:int() {_exposeToLua}
-		return self.id
-	End Method
-
-
-	Method BeginBroadcasting:int(day:int, hour:int, minute:int)
-		self.SetState(self.STATE_RUNNING)
-		Self.currentBlockBroadcasting = 1
-	End Method
-
-
-	Method FinishBroadcasting:int(day:int, hour:int, minute:int)
-		'print "finished broadcasting of: "+GetTitle()
-	End Method
-
-
-	Method BreakBroadcasting:int(day:int, hour:int, minute:int)
-		'print "finished broadcasting a block of: "+GetTitle()
-	End Method
-
-
-	Method ContinueBroadcasting:int(day:int, hour:int, minute:int)
-		Self.currentBlockBroadcasting :+ 1
-		'print "continue broadcasting the next block of: "+GetTitle()
-	End Method
-
-
-	'returns whether a programme is programmed for that given day
-	Method IsProgrammedForDay:int(day:int=-1)
-		if day=-1 then day = Game.GetDay()
-		if programmedDay = -1 then return FALSE
-		'starting at given day
-		if programmedDay = day then return TRUE
-		'started day before and running that day too?
-		if programmedDay = day-1 and getBlocks() + programmedHour > 24 then return TRUE
-		return FALSE
-	End Method
-
-
-	'returns whether the programme is programmed at all
-	Method IsProgrammed:int(day:int=-1)
-		if programmedDay = -1 then return FALSE
-		if programmedHour = -1 then return FALSE
-		return TRUE
-	End Method
-
-
-	'overrideable default-drawer
-	Method ShowSheet:int(x:int,y:int,align:int=0)
-		'
-	End Method
-
-	Method GetGenreDefinition:TGenreDefinitionBase()
-		Return Null
-	End Method
-End Type
-
-
-
-
-'a person connected to a programme - directors, writers, actors...
-Type TProgrammePerson
-	field lastName:string	= ""
-	field firstName:string	= ""
-	field dayOfBirth:string	= "0000-00-00"
-	field dayOfDeath:string	= "0000-00-00"
-	field job:int			= 0
-	field realPerson:int	= FALSE
-	field ID:int			= 0
-
-	const JOB_ACTOR:int		= 1
-	const JOB_DIRECTOR:int	= 2
-	const JOB_WRITER:int	= 4
-
-	Global lastID:int		= 0
-	'arrays holding all entries + already filtered (actors, directors, ...)
-	'the filtered are lists for easy management, persons is array for fast search access
-	Global persons:TProgrammePerson[]
-	Global actors:TList		= CreateList()
-	Global directors:TList	= CreateList()
-	Global writers:TList	= CreateList()
-
-
-	Method New()
-		lastID:+1
-		ID = lastID
-	End Method
-
-
-	Function Create:TProgrammePerson(firstName:string, lastName:string, job:int, dayOfBirth:string="", dayOfDeath:string="")
-		if dayOfBirth = "" then dayOfBirth = "0000-00-00"
-		if dayOfDeath = "" then dayOfDeath = "0000-00-00"
-
-		local person:TProgrammePerson = new TProgrammePerson
-		person.firstName	= firstName
-		person.lastName		= lastName
-		person.dayOfBirth	= dayOfBirth
-		person.dayOfDeath	= dayOfDeath
-		person.AddJob(job)
-
-		return person
-	End Function
-
-
-	Function Add:int(person:TProgrammePerson)
-		'resize if needed - at least to ID+1
-		if person.ID > persons.length then persons = persons[..person.ID+1]
-		'add to array and corresponding list
-		persons[person.ID-1] = person
-
-		return True
-	End Function
-
-
-	Function Get:TProgrammePerson(id:int)
-		if id > persons.length or id < 0 then return Null
-
-		return persons[id-1]
-	End Function
-
-
-	Function GetByName:TProgrammePerson(firstName:string, lastName:string)
-		firstName = firstName.toLower()
-		lastName = lastName.toLower()
-
-		For local person:TProgrammePerson = eachin persons
-			if person.firstName.toLower() <> firstName then continue
-			if person.lastName.toLower() <> lastName then continue
-			return person
+	Method ContainsNews:int(news:TNews)
+		for local guiNews:TGUINews = eachin entries
+			if guiNews.news = news then return TRUE
 		Next
-		return Null
-	End Function
-
-
-	Method GetFullName:string()
-		if self.lastName<>"" then return self.firstName + " " + self.lastName
-		return self.firstName
-	End Method
-
-
-	Method AddJob:int(job:int)
-		'already done?
-		if self.job & job then return FALSE
-
-		'add job
-		self.job :| job
-
-		'add to list
-		if job & JOB_ACTOR then actors.AddLast(self)
-		if job & JOB_DIRECTOR then directors.AddLast(self)
-		if job & JOB_WRITER then writers.AddLast(self)
+		return FALSE
 	End Method
 End Type
 
 
+
+
+Type TGUINewsSlotList extends TGUISlotList
+
+    Method Create:TGUINewsSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
+		return self
+	End Method
+
+
+	Method ContainsNews:int(news:TNews)
+		for local i:int = 0 to self.GetSlotAmount()-1
+			local guiNews:TGUINews = TGUINews( self.GetItemBySlot(i) )
+			if guiNews and guiNews.news = news then return TRUE
+		Next
+		return FALSE
+	End Method
+End Type
 
 
 
@@ -336,7 +110,7 @@ Function LoadDatabase(filename:String)
 		If duration < 0 Or duration > 12 Then duration =1
 
 		local movieLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-		movieLicence.AddData(TProgrammeData.Create(title,description,actors, director,land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
+		movieLicence.AddData(TProgrammeData.Create(title,description,actors, director,land, year, releaseDayCounter mod GetGameTime().daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
 
 		releaseDaycounter:+1
 		'print "film: "+title+ " " + totalmoviescount
@@ -372,7 +146,7 @@ Function LoadDatabase(filename:String)
 		'create a licence for that series - with title and series description
 		local seriesLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
 		'add the "overview"-data of the series
-		seriesLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
+		seriesLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod GetGameTime().daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
 
 		releaseDaycounter:+1
 		seriescount :+ 1
@@ -400,7 +174,7 @@ Function LoadDatabase(filename:String)
 				wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", wearoffModifier)
 
 				local episodeLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-				episodeLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod TGame.daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
+				episodeLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod GetGameTime().daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
 				'add that episode to the series licence
 				seriesLicence.AddSubLicence(episodeLicence)
 			EndIf
@@ -630,7 +404,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 
 
 		'set mouse to "hover"
-		if broadcastMaterial.GetOwner() = Game.playerID and mouseover then Game.cursorstate = 1
+		if broadcastMaterial.GetOwner() = GetPlayerCollection().playerID and mouseover then Game.cursorstate = 1
 		'set mouse to "dragged"
 		if isDragged() then Game.cursorstate = 2
 	End Method
@@ -861,7 +635,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 						if advertisement.contract.isSuccessful()
 							text = "- OK -"
 						else
-							text = advertisement.GetSpotNumber() + "/" + advertisement.contract.GetSpotCount()
+							text = GetPlayerProgrammePlanCollection().Get(advertisement.owner).GetAdvertisementSpotNumber(advertisement) + "/" + advertisement.contract.GetSpotCount()
 						endif
 					EndIf
 				EndIf
@@ -1055,9 +829,9 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		'1. find out when it was send:
 		'   just ask the plan when the programme at "0:00" really started
 		local startHour:int = 0
-		local player:TPlayer = Game.GetPlayer(material.owner)
+		local player:TPlayer = GetPlayerCollection().Get(material.owner)
 		if player
-			if day < 0 then day = Game.GetDay()
+			if day < 0 then day = GetGameTime().GetDay()
 			startHour = player.ProgrammePlan.GetObjectStartHour(material.materialType,day,0)
 			'get a 0-23 value
 			startHour = startHour mod 24
@@ -1487,7 +1261,8 @@ Type TgfxProgrammelist extends TPlannerList
 				lineHeight = GetSpriteFromRegistry("genres_entry"+entryNum).area.GetH()
 
 				'evtl cachen?
-				Local genrecount:Int = Game.getPlayer().ProgrammeCollection.GetProgrammeGenreCount(genres)
+				local player:TPlayer = GetPlayerCollection().Get()
+				Local genrecount:Int = player.ProgrammeCollection.GetProgrammeGenreCount(genres)
 
 				If genrecount > 0
 					GetBitmapFontManager().baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres) + " (" +genreCount+ ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, null, TColor.clBlack)
@@ -1522,7 +1297,8 @@ Type TgfxProgrammelist extends TPlannerList
 		box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
 		'first
-		For Local licence:TProgrammeLicence = EachIn Game.getPlayer().ProgrammeCollection.programmeLicences
+		local player:TPlayer = GetPlayerCollection().Get()
+		For Local licence:TProgrammeLicence = EachIn player.ProgrammeCollection.programmeLicences
 			'skip wrong genre
 			If licence.GetGenre() <> genre then continue
 			'choose correct asset
@@ -1562,7 +1338,8 @@ Type TgfxProgrammelist extends TPlannerList
 '			hoveredSeries = null
 '		endif
 
-		For Local licence:TProgrammeLicence = EachIn Game.getPlayer().ProgrammeCollection.programmeLicences
+		local player:TPlayer = GetPlayerCollection().Get()
+		For Local licence:TProgrammeLicence = EachIn player.ProgrammeCollection.programmeLicences
 			'skip wrong genre
 			If licence.GetGenre() <> genre then continue
 
@@ -1765,7 +1542,8 @@ Type TgfxContractlist extends TPlannerList
 		'displace all tapes - border of background
 		box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
-		For Local contract:TAdContract = EachIn Game.Players[Game.playerID].ProgrammeCollection.adContracts
+		local player:TPlayer = GetPlayerCollection().Get()
+		For Local contract:TAdContract = EachIn player.ProgrammeCollection.adContracts
 			gfxTape.Draw(box.GetX(), box.GetY())
 			font.drawBlock(contract.GetTitle(), box.position.GetIntX() + 13,box.position.GetIntY() + 3, 139,16, null,TColor.clBlack,0,True)
 
@@ -1792,7 +1570,8 @@ Type TgfxContractlist extends TPlannerList
 			'displace all tapes - border of background
 			box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
-			For Local contract:TAdContract = EachIn Game.Players[Game.playerID].ProgrammeCollection.adContracts
+			local player:TPlayer = GetPlayerCollection().Get()
+			For Local contract:TAdContract = EachIn player.ProgrammeCollection.adContracts
 				If box.containsXY(MouseManager.x,MouseManager.y)
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
@@ -1925,8 +1704,9 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 		If not licence then return FALSE
 
 		if bestBidder
-			Game.getPlayer(bestBidder).ProgrammeCollection.AddProgrammeLicence(licence)
-			Print "player "+Game.getPlayer(bestBidder).name + " won the auction for: "+licence.GetTitle()
+			local player:TPlayer = GetPlayerCollection().Get(bestBidder)
+			player.ProgrammeCollection.AddProgrammeLicence(licence)
+			Print "player "+player.name + " won the auction for: "+licence.GetTitle()
 		End If
 		EventManager.triggerEvent(TEventSimple.Create("ProgrammeLicenceAuction.endAuction", new TData.Add("licence", licence).AddNumber("bestBidder", bestBidder).AddNumber("bestBid", bestBid).AddNumber("bidSavings", bidSavings), self))
 
@@ -1950,7 +1730,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 
 
 	Method SetBid:int(playerID:Int)
-		local player:TPlayer = Game.getPlayer(playerID)
+		local player:TPlayer = GetPlayerCollection().Get(playerID)
 		If not player then return -1
 		'if the playerID was -1 ("auto") we should assure we have a correct id now
 		playerID = player.playerID
@@ -1962,8 +1742,8 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 		If player.getFinance().PayAuctionBid(price, self)
 			'another player was highest bidder, we pay him back the
 			'bid he gave (which is the currently highest bid...)
-			If bestBidder and Game.getPlayer(bestBidder)
-				Game.getPlayer(bestBidder).getFinance().PayBackAuctionBid(bestBid, self)
+			If bestBidder and GetPlayerCollection().Get(bestBidder)
+				GetPlayerFinanceCollection().Get(bestBidder).PayBackAuctionBid(bestBid, self)
 			EndIf
 			'set new bid values
 			bestBidder = playerID
@@ -2024,7 +1804,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 			TBitmapFont.setRenderTarget(_imageWithText)
 
 			If bestBidder
-				local player:TPlayer = Game.GetPlayer(bestBidder)
+				local player:TPlayer = GetPlayerCollection().Get(bestBidder)
 				titleFont.drawStyled(player.name, 31,33, player.color, 2, 1, 0.25)
 			else
 				font.drawStyled("ohne Bieter", 31,33, TColor.CreateGrey(150), 0, 1, 0.25)
@@ -2080,8 +1860,8 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 		if not MOUSEMANAGER.IsClicked(1) then return FALSE
 
 		For Local obj:TAuctionProgrammeBlocks = EachIn TAuctionProgrammeBlocks.List
-			if obj.bestBidder <> game.playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
-				obj.SetBid( game.playerID )  'set the bid
+			if obj.bestBidder <> GetPlayerCollection().playerID And obj.area.containsXY(MouseManager.x, MouseManager.y)
+				obj.SetBid( GetPlayerCollection().playerID )  'set the bid
 				MOUSEMANAGER.ResetKey(1)
 				return TRUE
 			EndIf
@@ -2089,3 +1869,508 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 	End Function
 
 End Type
+
+
+
+
+
+
+'a graphical representation of programmes/news/ads...
+Type TGUINews extends TGUIGameListItem
+	Field news:TNews = Null
+	Field imageBaseName:string = "gfx_news_sheet"
+	Field cacheTextOverlay:TImage
+
+    Method Create:TGUINews(pos:TPoint=null, dimension:TPoint=null, value:String="")
+		Super.Create(pos, dimension, value)
+
+		return self
+	End Method
+
+	Method SetNews:int(news:TNews)
+		self.news = news
+		if news
+			'now we can calculate the item width
+			self.Resize( GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetW(), GetSpriteFromRegistry(Self.imageBaseName+news.newsEvent.genre).area.GetH() )
+		endif
+		'self.SetLimitToState("Newsplanner")
+
+		'as the news inflicts the sorting algorithm - resort
+		GUIManager.sortLists()
+	End Method
+
+
+	Method Compare:int(Other:Object)
+		local otherBlock:TGUINews = TGUINews(Other)
+		If otherBlock<>null
+			'both items are dragged - check time
+			if self._flags & GUI_OBJECT_DRAGGED AND otherBlock._flags & GUI_OBJECT_DRAGGED
+				'if a drag was earlier -> move to top
+				if self._timeDragged < otherBlock._timeDragged then Return 1
+				if self._timeDragged > otherBlock._timeDragged then Return -1
+				return 0
+			endif
+
+			if self.news and otherBlock.news
+				local publishDifference:int = self.news.GetPublishTime() - otherBlock.news.GetPublishTime()
+
+				'self is newer ("later") than other
+				if publishDifference>0 then return -1
+				'self is older than other
+				if publishDifference<0 then return 1
+				'self is same age than other
+				if publishDifference=0 then return Super.Compare(Other)
+			endif
+		endif
+
+		return Super.Compare(Other)
+	End Method
+
+
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
+		'set mouse to "hover"
+		if news.owner = GetPlayerCollection().playerID or news.owner <= 0 and mouseover then Game.cursorstate = 1
+		'set mouse to "dragged"
+		if isDragged() then Game.cursorstate = 2
+	End Method
+
+
+	Method DrawTextOverlay()
+		local screenX:float = int(GetScreenX())
+		local screenY:float = int(GetScreenY())
+
+		'===== CREATE CACHE IF MISSING =====
+		if not cacheTextOverlay
+			cacheTextOverlay = TFunctions.CreateEmptyImage(rect.GetW(), rect.GetH())
+'			cacheTextOverlay = CreateImage(rect.GetW(), rect.GetH(), DYNAMICIMAGE | FILTEREDIMAGE)
+
+			'render to image
+			TBitmapFont.SetRenderTarget(cacheTextOverlay)
+
+			'default texts (title, text,...)
+			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 4, 290, 15 + 8, null, TColor.CreateGrey(20))
+			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 19, 300, 50 + 8, null, TColor.CreateGrey(100))
+
+			local oldAlpha:float = GetAlpha()
+			SetAlpha 0.3*oldAlpha
+			GetBitmapFont("Default", 9).drawBlock(news.GetGenreString(), 15, 74, 120, 15, null, TColor.clBlack)
+			SetAlpha 1.0*oldAlpha
+
+			'set back to screen Rendering
+			TBitmapFont.SetRenderTarget(null)
+		endif
+
+		'===== DRAW CACHE =====
+		DrawImage(cacheTextOverlay, screenX, screenY)
+	End Method
+
+
+	Method Draw()
+		State = 0
+		SetColor 255,255,255
+
+		if self.RestrictViewPort()
+			local screenX:float = int(GetScreenX())
+			local screenY:float = int(GetScreenY())
+
+			local oldAlpha:float = GetAlpha()
+			local itemAlpha:float = 1.0
+			'fade out dragged
+			if isDragged() then itemAlpha = 0.25 + 0.5^GuiManager.GetDraggedNumber(self)
+
+			SetAlpha oldAlpha*itemAlpha
+			'background - no "_dragged" to add to name
+			GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
+
+			'highlight hovered news (except already dragged)
+			if not isDragged() and self = RoomHandler_News.hoveredGuiNews
+				local oldAlpha:float = GetAlpha()
+				SetBlend LightBlend
+				SetAlpha 0.30*oldAlpha
+				SetColor 150,150,150
+				GetSpriteFromRegistry(Self.imageBaseName+news.GetGenre()).Draw(screenX, screenY)
+				SetAlpha oldAlpha
+				SetBlend AlphaBlend
+			endif
+
+			'===== DRAW CACHED TEXTS =====
+			'creates cache if needed
+			DrawTextOverlay()
+
+			'===== DRAW NON-CACHED TEXTS =====
+			if not news.paid
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			else
+				GetBitmapFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+			endif
+
+			Select GetGameTime().getDay() - GetGameTime().getDay(news.newsEvent.happenedTime)
+				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack )
+				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			End Select
+
+			SetColor 255, 255, 255
+			SetAlpha oldAlpha
+			self.resetViewport()
+		endif
+	End Method
+End Type
+
+
+
+
+Type TGUIProgrammeLicenceSlotList extends TGUISlotList
+	field  acceptType:int		= 0	'accept all
+	Global acceptAll:int		= 0
+	Global acceptMovies:int		= 1
+	Global acceptSeries:int		= 2
+
+    Method Create:TGUIProgrammeLicenceSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
+
+		'albeit the list base already handles drop on itself
+		'we want to intercept too -- to stop dropping if not
+		'enough money is available
+		'---alternatively we could intercept programmeblocks-drag-event
+		'EventManager.registerListenerFunction( "guiobject.onDropOnTarget", self.onDropOnTarget, accept, self)
+
+		return self
+	End Method
+
+
+	Method ContainsLicence:int(licence:TProgrammeLicence)
+		for local i:int = 0 to self.GetSlotAmount()-1
+			local block:TGUIProgrammeLicence = TGUIProgrammeLicence(self.GetItemBySlot(i))
+			if block and block.licence = licence then return TRUE
+		Next
+		return FALSE
+	End Method
+
+
+	'overriden Method: so it does not accept a certain
+	'kind of programme (movies - series)
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		local coverBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(item)
+		if not coverBlock then return FALSE
+
+		'something odd happened - no licence
+		if not coverBlock.licence then return FALSE
+
+		if acceptType > 0
+			'movies and series do not accept collections or episodes
+			if coverBlock.licence.GetData()
+				if acceptType = acceptMovies and coverBlock.licence.GetData().isSeries() then return FALSE
+				if acceptType = acceptSeries and coverBlock.licence.GetData().isMovie() then return FALSE
+			else
+				return FALSE
+			endif
+		endif
+
+		if super.AddItem(item,extra)
+			'print "added an item ... slot state:" + self.GetUnusedSlotAmount()+"/"+self.GetSlotAmount()
+			return true
+		endif
+
+		return FALSE
+	End Method
+End Type
+
+'a graphical representation of programmes to buy/sell/archive...
+Type TGUIProgrammeLicence extends TGUIGameListItem
+	Field licence:TProgrammeLicence
+	Field isAffordable:int = TRUE
+
+rem
+
+	'programmeblock
+	For i = 0 To 11
+		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
+		DragAndDrop.slot = i
+		DragAndDrop.typ = "programmeblock"
+		DragAndDrop.pos.setXY( 394, 17 + i * GetSpriteFromRegistry("pp_programmeblock1").h )
+		DragAndDrop.w = GetSpriteFromRegistry("pp_programmeblock1").w
+		DragAndDrop.h = GetSpriteFromRegistry("pp_programmeblock1").h
+		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
+		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
+		SortList TProgrammeBlock.DragAndDropList
+	Next
+
+	For i = 0 To 11
+		Local DragAndDrop:TDragAndDrop = New TDragAndDrop
+		DragAndDrop.slot = i+11
+		DragAndDrop.typ = "programmeblock"
+		DragAndDrop.pos.setXY( 67, 17 + i * GetSpriteFromRegistry("pp_programmeblock1").h )
+		DragAndDrop.w = GetSpriteFromRegistry("pp_programmeblock1").w
+		DragAndDrop.h = GetSpriteFromRegistry("pp_programmeblock1").h
+		If Not TProgrammeBlock.DragAndDropList Then TProgrammeBlock.DragAndDropList = CreateList()
+		TProgrammeBlock.DragAndDropList.AddLast(DragAndDrop)
+		SortList TProgrammeBlock.DragAndDropList
+	Next
+endrem
+
+
+    Method Create:TGUIProgrammeLicence(pos:TPoint=null, dimension:TPoint=null, value:String="")
+		Super.Create(pos, dimension, value)
+		return self
+	End Method
+
+
+	Method CreateWithLicence:TGUIProgrammeLicence(licence:TProgrammeLicence)
+		self.Create()
+		self.setProgrammeLicence(licence)
+		return self
+	End Method
+
+
+	Method SetProgrammeLicence:TGUIProgrammeLicence(licence:TProgrammeLicence)
+		self.licence = licence
+
+		local genre:int = Min(15, Max(0,licence.GetGenre()))
+
+		'if it is a collection or series
+		if not licence.GetData()
+			if licence.licenceType = licence.TYPE_COLLECTION
+				self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
+			elseif licence.licenceType = licence.TYPE_SERIES
+				self.InitAssets("gfx_serie" + genre, "gfx_serie" + genre + "_dragged")
+			endif
+		else
+			self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
+		endif
+
+		return self
+	End Method
+
+
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
+		self.isAffordable = GetPlayerCollection().Get().getFinance().canAfford(licence.getPrice())
+
+
+		if licence.owner = GetPlayerCollection().playerID or (licence.owner <= 0 and self.isAffordable)
+			'change cursor to if mouse over item or dragged
+			if self.mouseover then Game.cursorstate = 1
+		endif
+		'ignore affordability if dragged...
+		if isDragged() then Game.cursorstate = 2
+	End Method
+
+
+	Method DrawSheet(leftX:int=30, rightX:int=30)
+'		self.parentBlock.DrawSheet()
+		local sheetY:float 	= 20
+		local sheetX:float 	= leftX
+		local sheetAlign:int= 0
+		'if mouse on left side of screen - align sheet on right side
+		if MouseManager.x < App.settings.GetWidth()/2
+			sheetX = App.settings.GetWidth() - rightX
+			sheetAlign = 1
+		endif
+
+		SetColor 0,0,0
+		SetAlpha 0.2
+		Local x:Float = self.GetScreenX()
+		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+		DrawPoly(tri)
+		SetColor 255,255,255
+		SetAlpha 1.0
+
+		self.licence.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_PROGRAMME)
+	End Method
+
+
+	Method Draw()
+		SetColor 255,255,255
+
+		'make faded as soon as not "dragable" for us
+		if licence.owner <> GetPlayerCollection().playerID and (licence.owner<=0 and not isAffordable) then SetAlpha 0.75
+		Super.Draw()
+		SetAlpha 1.0
+	End Method
+End Type
+
+
+
+
+
+
+'a graphical representation of contracts at the ad-agency ...
+Type TGuiAdContract extends TGUIGameListItem
+	Field contract:TAdContract
+
+
+    Method Create:TGuiAdContract(pos:TPoint=null, dimension:TPoint=null, value:String="")
+		Super.Create(pos, dimension, value)
+
+		self.assetNameDefault = "gfx_contracts_0"
+		self.assetNameDragged = "gfx_contracts_0_dragged"
+
+		return self
+	End Method
+
+
+	Method CreateWithContract:TGuiAdContract(contract:TAdContract)
+		self.Create()
+		self.setContract(contract)
+		return self
+	End Method
+
+
+	Method SetContract:TGuiAdContract(contract:TAdContract)
+		self.contract		= contract
+		'targetgroup is between 0-9
+		self.InitAssets(GetAssetName(contract.GetTargetGroup(), FALSE), GetAssetName(contract.GetTargetGroup(), TRUE))
+
+		return self
+	End Method
+
+
+	Method GetAssetName:string(targetGroup:int=-1, dragged:int=FALSE)
+		if targetGroup < 0 and contract then targetGroup = contract.GetTargetGroup()
+		local result:string = "gfx_contracts_" + Min(9,Max(0, targetGroup))
+		if dragged then result = result + "_dragged"
+		return result
+	End Method
+
+
+	'override default update-method
+	Method Update:int()
+		super.Update()
+
+		'set mouse to "hover"
+		if contract.owner = GetPlayerCollection().playerID or contract.owner <= 0 and mouseover then Game.cursorstate = 1
+		'set mouse to "dragged"
+		if isDragged() then Game.cursorstate = 2
+	End Method
+
+
+	Method DrawSheet(leftX:int=30, rightX:int=30)
+		local sheetY:float 	= 20
+		local sheetX:float 	= leftX
+		local sheetAlign:int= 0
+		'if mouse on left side of screen - align sheet on right side
+		'METHOD 1
+		'instead of using the half screen width, we use another
+		'value to remove "flipping" when hovering over the desk-list
+		'if MouseManager.x < RoomHandler_AdAgency.suitcasePos.GetX()
+		'METHOD 2
+		'just use the half of a screen - ensures the data sheet does not overlap
+		'the object
+		if MouseManager.x < App.settings.GetWidth()/2
+			sheetX = App.settings.GetWidth() - rightX
+			sheetAlign = 1
+		endif
+
+		SetColor 0,0,0
+		SetAlpha 0.2
+		Local x:Float = self.GetScreenX()
+		Local tri:Float[]=[sheetX+20,sheetY+25,sheetX+20,sheetY+90,self.GetScreenX()+self.GetScreenWidth()/2.0+3,self.GetScreenY()+self.GetScreenHeight()/2.0]
+		DrawPoly(tri)
+		SetColor 255,255,255
+		SetAlpha 1.0
+
+		self.contract.ShowSheet(sheetX,sheetY, sheetAlign, TBroadcastMaterial.TYPE_ADVERTISEMENT)
+	End Method
+
+
+	Method DrawGhost()
+		'by default a shaded version of the gui element is drawn at the original position
+		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, TRUE)
+		SetAlpha 0.5
+
+		local backupAssetName:string = self.asset.getName()
+		self.asset = GetSpriteFromRegistry(assetNameDefault)
+		self.Draw()
+		self.asset = GetSpriteFromRegistry(backupAssetName)
+
+		SetAlpha 1.0
+		self.SetOption(GUI_OBJECT_IGNORE_POSITIONMODIFIERS, FALSE)
+	End Method
+
+
+	Method Draw()
+		SetColor 255,255,255
+		local oldAlpha:float = GetAlpha()
+
+		'make faded as soon as not "dragable" for us
+		if contract.owner <> GetPlayerCollection().playerID and contract.owner>0 then SetAlpha 0.75*oldAlpha
+		if not isDragable() then SetColor 200,200,200
+		Super.Draw()
+		SetAlpha oldalpha
+		SetColor 255,255,255
+	End Method
+End Type
+
+
+
+
+Type TGUIAdContractSlotList extends TGUISlotList
+
+    Method Create:TGUIAdContractSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+		Super.Create(position, dimension, limitState)
+		return self
+	End Method
+
+
+	Method ContainsContract:int(contract:TAdContract)
+		for local i:int = 0 to self.GetSlotAmount()-1
+			local block:TGuiAdContract = TGuiAdContract( self.GetItemBySlot(i) )
+			if block and block.contract = contract then return TRUE
+		Next
+		return FALSE
+	End Method
+
+
+	'override to add sort
+	Method AddItem:int(item:TGUIobject, extra:object=null)
+		if super.AddItem(item, extra)
+			GUIManager.sortLists()
+			return TRUE
+		endif
+		return FALSE
+	End Method
+
+
+	'override default event handler
+	Function onDropOnTarget:int( triggerEvent:TEventBase )
+		local item:TGUIListItem = TGUIListItem(triggerEvent.GetSender())
+		if item = Null then return FALSE
+
+		'ATTENTION:
+		'Item is still in dragged state!
+		'Keep this in mind when sorting the items
+
+		'only handle if coming from another list ?
+		local parent:TGUIobject = item._parent
+		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
+		local fromList:TGUIListBase = TGUIListBase(parent)
+		if not fromList then return FALSE
+
+		local toList:TGUIListBase = TGUIListBase(triggerEvent.GetReceiver())
+		if not toList then return FALSE
+
+		local data:TData = triggerEvent.getData()
+		if not data then return FALSE
+
+		'move item if possible
+		fromList.removeItem(item)
+		'try to add the item, if not able, readd
+		if not toList.addItem(item, data)
+			if fromList.addItem(item) then return TRUE
+
+			'not able to add to "toList" but also not to "fromList"
+			'so set veto and keep the item dragged
+			triggerEvent.setVeto()
+		endif
+
+
+		return TRUE
+	End Function
+End Type
+

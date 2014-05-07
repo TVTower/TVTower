@@ -235,8 +235,8 @@ function JobFulfillRequisition:Prepare(pParams)
 end
 
 function JobFulfillRequisition:Tick()
-	local gameDay = Game.GetDay()
-	local gameHour = Game.GetHour()
+	local gameDay = GameTime.GetDay()
+	local gameHour = GameTime.GetHour()
 
 	for key, value in pairs(self.SpotSlotRequisitions) do
 		if (value.ContractId ~= -1) then
@@ -292,8 +292,8 @@ function JobEmergencySchedule:CheckEmergencyCase(howManyHours, day, hour)
 	local fixedDay, fixedHour = 0
 	local currentDay = day
 	local currentHour = hour
-	if (currentDay == nil) then currentDay = Game.GetDay() end
-	if (currentHour == nil) then currentHour = Game.GetHour() end
+	if (currentDay == nil) then currentDay = GameTime.GetDay() end
+	if (currentHour == nil) then currentHour = GameTime.GetHour() end
 
 	for i = currentHour, currentHour + howManyHours do
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)
@@ -321,8 +321,8 @@ function JobEmergencySchedule:FillIntervals(howManyHours)
 	--Zuschauerberechnung: ZuschauerquoteAufGrundderStunde * Programmquali * MaximalzuschauerproSpieler
 
 	local fixedDay, fixedHour = 0
-	local currentDay = Game.GetDay()
-	local currentHour = Game.GetHour()
+	local currentDay = GameTime.GetDay()
+	local currentHour = GameTime.GetHour()
 
 	for i = currentHour, currentHour + howManyHours do
 		fixedDay, fixedHour = self:FixDayAndHour(currentDay, i)

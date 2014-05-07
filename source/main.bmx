@@ -44,34 +44,42 @@ Import brl.Threads
 
 'game specific
 Import "game.registry.loaders.bmx"
+Import "game.exceptions.bmx"
 
+Import "game.broadcastmaterial.base.bmx"
+Import "game.broadcast.base.bmx"				'Quotenberechnung
+Import "game.player.finance.bmx"
+'Import "game.player.bmx"
+Import "game.stationmap.bmx"
+
+Import "game.broadcastmaterial.programme.bmx" 'needed by gamefunctions
+Import "game.player.programmecollection.bmx" 'needed by game.player.bmx
+Import "game.player.programmeplan.bmx" 'needed by game.player.bmx
 
 '===== Includes =====
+include "game.player.bmx"
+
 Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 												'		- base class For buttons And extension newsbutton
 												'		- stationmap-handling, -creation ...
-Include "game.stationmap.bmx"
+
 Include "gamefunctions_betty.bmx"
 Include "gamefunctions_screens.bmx"
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
 Include "gamefunctions_ki.bmx"					'LUA connection
 Include "gamefunctions_sound.bmx"				'TVTower spezifische Sounddefinitionen
-Include "gamefunctions_popularity.bmx"			'Popularitäten und Trends
-Include "gamefunctions_genre.bmx"				'Genre-Definitionen
-Include "gamefunctions_broadcast.bmx"				'Quotenberechnung
 Include "gamefunctions_people.bmx"				'Angestellte und Personen
-Include "gamefunctions_publicimage.bmx"			'Das SenderImage
 Include "gamefunctions_production.bmx"			'Alles was mit Filmproduktion zu tun hat
 Include "gamefunctions_debug.bmx"
 Include "gamefunctions_network.bmx"
 
-Include "game.player.bmx"
-Include "game.playerfinance.bmx"
 Include "gamefunctions_elevator.bmx"
-Include "gamefunctions_figures.bmx"
+Include "game.figure.bmx"
 Include "game.building.bmx"
 Include "game.newsagency.bmx"
+
+Include "game.base.bmx"
 
 '===== Globals =====
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
@@ -389,32 +397,32 @@ Type TApp
 				endif
 
 				If Game.gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsDown(KEY_UP) Then Game.speed:+0.10
-					If KEYMANAGER.IsDown(KEY_DOWN) Then Game.speed = Max( Game.speed - 0.10, 0)
+					If KEYMANAGER.IsDown(KEY_UP) Then GetGameTime().speed:+0.10
+					If KEYMANAGER.IsDown(KEY_DOWN) Then GetGameTime().speed = Max( GetGameTime().speed - 0.10, 0)
 
-					If KEYMANAGER.IsHit(KEY_1) Game.SetActivePlayer(1)
-					If KEYMANAGER.IsHit(KEY_2) Game.SetActivePlayer(2)
-					If KEYMANAGER.IsHit(KEY_3) Game.SetActivePlayer(3)
-					If KEYMANAGER.IsHit(KEY_4) Game.SetActivePlayer(4)
+					If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
+					If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
+					If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
+					If KEYMANAGER.IsHit(KEY_4) Then Game.SetActivePlayer(4)
 
 					If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("adagency") )
-					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", Game.playerID) )
+					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", GetPlayerCollection().playerID) )
 					If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("betty") )
 					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("movieagency"))
-					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", Game.playerID))
-					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", Game.playerID))
+					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", GetPlayerCollection().playerID))
+					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", GetPlayerCollection().playerID))
 					'e wie "employees" :D
 					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("credits"))
-					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", Game.playerID))
+					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", GetPlayerCollection().playerID))
 					If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("roomboard"))
 				EndIf
-				If KEYMANAGER.IsHit(KEY_5) Then game.speed = 120.0	'60 minutes per second
-				If KEYMANAGER.IsHit(KEY_6) Then game.speed = 240.0	'120 minutes per second
-				If KEYMANAGER.IsHit(KEY_7) Then game.speed = 360.0	'180 minutes per second
-				If KEYMANAGER.IsHit(KEY_8) Then game.speed = 480.0	'240 minute per second
-				If KEYMANAGER.IsHit(KEY_9) Then game.speed = 1.0	'1 minute per second
+				If KEYMANAGER.IsHit(KEY_5) Then GetGameTime().speed = 120.0	'60 minutes per second
+				If KEYMANAGER.IsHit(KEY_6) Then GetGameTime().speed = 240.0	'120 minutes per second
+				If KEYMANAGER.IsHit(KEY_7) Then GetGameTime().speed = 360.0	'180 minutes per second
+				If KEYMANAGER.IsHit(KEY_8) Then GetGameTime().speed = 480.0	'240 minute per second
+				If KEYMANAGER.IsHit(KEY_9) Then GetGameTime().speed = 1.0	'1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
-				'If KEYMANAGER.IsHit(KEY_P) Then Game.getPlayer().ProgrammePlan.printOverview()
+				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().ProgrammePlan.printOverview()
 
 				'Save game
 				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
@@ -423,10 +431,10 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
 
 				If Game.isGameLeader()
-					If KEYMANAGER.Ishit(Key_F1) And Game.Players[1].isAI() Then Game.Players[1].PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F2) And Game.Players[2].isAI() Then Game.Players[2].PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F3) And Game.Players[3].isAI() Then Game.Players[3].PlayerKI.reloadScript()
-					If KEYMANAGER.Ishit(Key_F4) And Game.Players[4].isAI() Then Game.Players[4].PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F1) And GetPlayerCollection().Get(1).isAI() Then GetPlayerCollection().Get(1).PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F2) And GetPlayerCollection().Get(2).isAI() Then GetPlayerCollection().Get(2).PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F3) And GetPlayerCollection().Get(3).isAI() Then GetPlayerCollection().Get(3).PlayerKI.reloadScript()
+					If KEYMANAGER.Ishit(Key_F4) And GetPlayerCollection().Get(4).isAI() Then GetPlayerCollection().Get(4).PlayerKI.reloadScript()
 				EndIf
 
 				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNewsEvent()
@@ -489,7 +497,7 @@ Type TApp
 
 		if App.devConfig.GetBool("DEV_OSD", FALSE)
 			Local textX:Int = 20
-			GetBitmapFontManager().baseFont.draw("Speed:" + Int(Game.GetGameMinutesPerSecond() * 100), textX , 0)
+			GetBitmapFontManager().baseFont.draw("Speed:" + Int(GetGameTime().GetGameMinutesPerSecond() * 100), textX , 0)
 			textX:+80
 			GetBitmapFontManager().baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
 			textX:+60
@@ -531,7 +539,7 @@ Type TApp
 			local roomName:string = ""
 			local fig:TFigure
 			For Local i:Int = 0 To 3
-				fig = Game.GetPlayer(i+1).figure
+				fig = GetPlayerCollection().Get(i+1).figure
 				roomName = "Building"
 				If fig.inRoom
 					roomName = fig.inRoom.Name
@@ -685,6 +693,7 @@ Type TSaveGame
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
+	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null
 	Field _EventManagerEvents:TList = null
 	Field _StationMapCollection:TStationMapCollection = null
 	Field _Building:TBuilding		'includes, sky, moon, ufo, elevator
@@ -696,6 +705,7 @@ Type TSaveGame
 
 	Method RestoreGameData:Int()
 		_Assign(_FigureCollection, FigureCollection, "FigureCollection", MODE_LOAD)
+		_Assign(_PlayerFinanceCollection, TPlayerFinanceCollection._instance, "PlayerFinanceCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, ProgrammeDataCollection, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, NewsEventCollection, "NewsEventCollection", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
@@ -712,6 +722,7 @@ Type TSaveGame
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(FigureCollection, _FigureCollection, "FigureCollection", MODE_SAVE)
+		_Assign(TPlayerFinanceCollection._instance, _PlayerFinanceCollection, "PlayerFinanceCollection", MODE_SAVE)
 		_Assign(ProgrammeDataCollection, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
@@ -811,714 +822,8 @@ Type TSaveGame
 End Type
 
 
-'Game - holds time, audience, money and other variables (typelike structure makes it easier to save the actual state)
-Type TGame {_exposeToLua="selected"}
-	'globals are not saveloaded/exposed
-	'0=no debug messages; 1=some debugmessages
-	Global debugMode:Int = 0
-	Global debugInfos:Int = 0
-	Global debugQuoteInfos:Int = 0
-	Field debugAudienceInfo:TDebugAudienceInfos = new TDebugAudienceInfos
 
-	'===== GAME STATES =====
-	Const STATE_RUNNING:Int			= 0
-	Const STATE_MAINMENU:Int		= 1
-	Const STATE_NETWORKLOBBY:Int	= 2
-	Const STATE_SETTINGSMENU:Int	= 3
-	'mode when data gets synchronized
-	Const STATE_STARTMULTIPLAYER:Int= 4
-	'mode when data needed for game (names,colors) gets loaded
-	Const STATE_INITIALIZEGAME:Int	= 5
 
-	'===== GAME SETTINGS =====
-	Const daysPerYear:Int = 14 						{_exposeToLua}
-	'how many movies does a player get on a new game
-	Const startMovieAmount:Int = 5					{_exposeToLua}
-	'how many series does a player get on a new game
-	Const startSeriesAmount:Int = 1					{_exposeToLua}
-	'how many contracts a player gets on a new game
-	Const startAdAmount:Int = 3						{_exposeToLua}
-	'maximum level a news genre abonnement can have
-	Const maxAbonnementLevel:Int = 3				{_exposeToLua}
-	'how many contracts a player can possess
-	Const maxContracts:Int = 10						{_exposeToLua}
-	'how many movies can be carried in suitcase
-	Const maxProgrammeLicencesInSuitcase:Int = 12	{_exposeToLua}
-
-	Field BroadcastManager:TBroadcastManager
-	Field PopularityManager:TPopularityManager
-
-	'how many 0.0-1.0 (100%) audience is maximum reachable
-	Field maxAudiencePercentage:Float = 0.3
-	'used so that random values are the same on all computers having the same seed value
-	Field randomSeedValue:Int = 0
-
-	'username of the player ->set in config
-	Global userName:String = ""
-	'userport of the player ->set in config
-	Global userPort:Short = 4544
-	'channelname the player uses ->set in config
-	Global userChannelName:String = ""
-	'language the player uses ->set in config
-	Global userLanguage:String = "de"
-	Global userDB:String = ""
-	Global userFallbackIP:String = ""
-
-	Field Players:TPlayer[5]
-	Field playerCount:Int = 4
-
-	Field paused:Int = False
-	'Speed of the game in "game minutes per real-time second"
-	Field speed:Float = 1.0
-	'time (minutes) used when starting the game
-	Field timeStart:Double = 0.0
-	'time (minutes) in game, not reset every day
-	Field timeGone:Double = 0.0
-	'time (minutes) in game of the last update (enables calculation of missed minutes)
-	Field timeGoneLastUpdate:Double = -1.0
-	Field daysPlayed:Int = 0
-
-	'title of the game
-	Field title:String = "MyGame"
-
-	'which cursor has to be shown? 0=normal 1=dragging
-	Field cursorstate:Int = 0
-	'playerID of player who sits in front of the screen
-	Field playerID:Int = 1
-	'0 = Mainmenu, 1=Running, ...
-	Field gamestate:Int = -1
-
-	'last sync
-	Field stateSyncTime:Int	= 0
-	'sync every
-	Field stateSyncTimer:Int = 2000
-
-	'refill movie agency every X Minutes
-	Field refillMovieAgencyTimer:Int = 180
-	'minutes till movie agency gets refilled again
-	Field refillMovieAgencyTime:Int = 180
-
-	'refill ad agency every X Minutes
-	Field refillAdAgencyTimer:Int = 240
-	'minutes till ad agency gets refilled again
-	Field refillAdAgencyTime:Int = 240
-
-
-	'--networkgame auf "isNetworkGame()" umbauen
-	'are we playing a network game? 0=false, 1=true, 2
-	Field networkgame:Int = 0
-	'is the network game ready - all options set? 0=false
-	Field networkgameready:Int = 0
-	'playing over internet? 0=false
-	Field onlinegame:Int = 0
-
-	Global _instance:TGame
-	Global _initDone:int = FALSE
-	Global _firstGamePreparationDone:int = FALSE
-
-
-	Method New()
-		_instance = self
-
-		if not _initDone
-			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
-			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
-
-			_initDone = TRUE
-		Endif
-	End Method
-
-
-	Function GetInstance:TGame()
-		if not _instance then _instance = new TGame.Create()
-		return _instance
-	End Function
-
-
-	'Summary: create a game, every variable is set to Zero
-	Method Create:TGame()
-		LoadConfig("config/settings.xml")
-		'add German and English to possible language
-		TLocalization.AddLanguages("de, en")
-		'select language
-		TLocalization.SetLanguage(userlanguage)
-		TLocalization.LoadResource("res/lang/lang_"+userlanguage+".txt")
-
-		networkgame = 0
-
-		SetStartYear(1985)
-		title = "unknown"
-
-		SetRandomizerBase( MilliSecs() )
-
-		PopularityManager = TPopularityManager.Create()
-		BroadcastManager = TBroadcastManager.Create()
-
-		CreateInitialPlayers()
-
-		'creates all Rooms - with the names assigned at this moment
-		Init_CreateAllRooms()
-
-		Return self
-	End Method
-
-
-
-	'Initializes "data" needed for a game
-	'(maps, databases, managers)
-	Method Initialize()
-
-
-print "Game.Initialize: Pop"
-		'managers skip initialization if already done (eg. during loading)
-		Game.PopularityManager.Initialize()
-print "Game.Initialize: Broad"
-		Game.BroadcastManager.Initialize()
-
-print "Game.Initialize: DB"
-		'load all movies, news, series and ad-contracts
-		LoadDatabase(userdb)
-
-print "Game.Initialize: Map"
-		'load the used map
-		StationMapCollection.LoadMapFromXML("config/maps/germany.xml")
-	End Method
-
-
-	'run when a specific game starts
-	Method Start:int()
-		if not _firstGamePreparationDone
-print "Game.Start(): PrepareFirstGameStart()"
-			PrepareFirstGameStart()
-			_firstGamePreparationDone = True
-		endif
-print "Game.Start(): PrepareGameStart()"
-		PrepareGameStart()
-
-print "Game.Start(): Initialize()"
-		'load databases, populationmap, ...
-		Initialize()
-
-
-		'we have to set gamestate BEFORE init_all()
-		'as init_all sends events which trigger gamestate-update/draw
-		Game.SetGamestate(TGame.STATE_INITIALIZEGAME)
-		If Not Init_Complete
-print "Game.Start(): Init_All()"
-			Init_All()
-			Init_Complete = True		'check if rooms/colors/... are initiated
-		EndIf
-
-		'disable chat if not networkgaming
-		If Not game.networkgame
-			InGame_Chat.hide()
-		Else
-			InGame_Chat.show()
-		EndIf
-
-		Game.SetGamestate(TGame.STATE_RUNNING)
-	End Method
-
-
-	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
-print "onSaveGameLoad"
-		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
-		'reconnect AI and other things
-		For local player:TPlayer = eachin GetInstance().Players
-print "onSaveGameLoad: player.onLoad"
-			player.onLoad(null)
-		Next
-		'colorize gfx again
-		Init_Colorization()
-
-		'set active player again (sets correct game screen)
-		GetInstance().SetActivePlayer()
-	End Function
-
-
-	'run when starting saving a savegame
-	Function onSaveGameBeginSave(triggerEvent:TEventBase)
-		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
-		'inform player AI that we are saving now
-		For local player:TPlayer = eachin GetInstance().players
-			If player.figure.isAI() then player.PlayerKI.CallOnSave()
-		Next
-	End Function
-
-
-	Method SetStartYear:Int(year:Int=0)
-		If year = 0 Then Return False
-		If year < 1930 Then Return False
-
-		timeGone	= MakeTime(year,1,0,0)
-		timeStart	= MakeTime(year,1,0,0)
-	End Method
-
-
-	'returns how many game minutes equal to one real time second
-	Method GetGameMinutesPerSecond:Float()
-		Return speed*(Not paused)
-	End Method
-
-
-	'returns how many seconds pass for one game minute
-	Method GetSecondsPerGameMinute:Float()
-		If speed*(Not paused) = 0 Then Return 0
-		Return 1.0 / (speed *(Not paused))
-	End Method
-
-
-	Method SetPaused(bool:Int=False)
-		paused = bool
-	End Method
-
-
-	Method GetRandomizerBase:Int()
-		Return randomSeedValue
-	End Method
-
-
-	Method SetRandomizerBase( value:Int=0 )
-		randomSeedValue = value
-		'seed the random base for MERSENNE TWISTER (seedrnd for the internal one)
-		SeedRand(randomSeedValue)
-	End Method
-
-
-	'computes daily costs like station or newsagency fees for every player
-	Method ComputeDailyCosts(day:Int=-1)
-		For Local Player:TPlayer = EachIn Players
-			'stationfees
-			Player.GetFinance().PayStationFees( Player.GetStationMap().CalculateStationCosts())
-			'interest rate for your current credit
-			Player.GetFinance().PayCreditInterest( Player.GetFinance().credit * TPlayerFinance.creditInterestRate )
-
-			'newsagencyfees
-			Local newsagencyfees:Int =0
-			For Local i:Int = 0 To 5
-				newsagencyfees:+ TNewsAgency.GetNewsAbonnementPrice( Player.newsabonnements[i] )
-			Next
-			Player.GetFinance(day).PayNewsAgencies((newsagencyfees))
-		Next
-	End Method
-
-
-	'computes daily income like account interest income
-	Method ComputeDailyIncome(day:Int=-1)
-		For Local Player:TPlayer = EachIn Players
-			if Player.GetFinance().money > 0
-				Player.GetFinance().EarnBalanceInterest( Player.GetFinance().money * TPlayerFinance.balanceInterestRate )
-			Else
-				'attention: multiply current money * -1 to make the
-				'negative value an "positive one" - a "positive expense"
-				Player.GetFinance().PayDrawingCreditInterest( -1 * Player.GetFinance().money * TPlayerFinance.drawingCreditRate )
-			EndIf
-		Next
-	End Method
-
-
-	'computes penalties for expired ad-contracts
-	Method ComputeContractPenalties(day:Int=-1)
-		For Local Player:TPlayer = EachIn Players
-			For Local Contract:TAdContract = EachIn Player.ProgrammeCollection.adContracts
-				If Not contract Then Continue
-
-				'0 days = "today", -1 days = ended
-				If contract.GetDaysLeft() < 0
-					Player.GetFinance(day).PayPenalty(contract.GetPenalty(), contract)
-					Player.ProgrammeCollection.RemoveAdContract(contract)
-				EndIf
-			Next
-		Next
-	End Method
-
-
-	'creates the default players (as shown in game-settings-screen)
-	Method CreateInitialPlayers()
-		'Creating PlayerColors - could also be done "automagically"
-		Local playerColors:TList = TList(GetRegistry().Get("playerColors"))
-		If playerColors = Null Then Throw "no playerColors found in configuration"
-		For Local col:TColor = EachIn playerColors
-			col.AddToList()
-		Next
-
-		'create players, draws playerfigures on figures-image
-		'TColor.GetByOwner -> get first unused color,
-		'TPlayer.Create sets owner of the color
-		SetPlayer(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	250,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
-		SetPlayer(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	280,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
-		SetPlayer(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	240,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
-		SetPlayer(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	290, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
-		'set different figures for other players
-		GetPlayer(2).UpdateFigureBase(9)
-		GetPlayer(3).UpdateFigureBase(2)
-		GetPlayer(4).UpdateFigureBase(6)
-	End Method
-
-
-	'Things to init directly after game started
-	Function onStart:Int(triggerEvent:TEventBase)
-		'create 3 starting news
-		If Game.IsGameLeader()
-			NewsAgency.AnnounceNewNewsEvent(-60)
-			NewsAgency.AnnounceNewNewsEvent(-120)
-			NewsAgency.AnnounceNewNewsEvent(-120)
-		EndIf
-	End Function
-
-
-	Method IsGameLeader:Int()
-		Return (Game.networkgame And Network.isServer) Or (Not Game.networkgame)
-	End Method
-
-
-	Method IsPlayer:Int(number:Int)
-		Return (number>0 And number<=playerCount And Players[number] <> Null)
-	End Method
-
-
-	Method IsHumanPlayer:Int(number:Int)
-		Return (IsPlayer(number) And Not Players[number].figure.IsAI())
-	End Method
-
-
-	'the negative of "isHumanPlayer" - also "no human player" is possible
-	Method IsAIPlayer:Int(number:Int)
-		Return (IsPlayer(number) And Players[number].figure.IsAI())
-	End Method
-
-
-	Method IsLocalPlayer:Int(number:Int)
-		Return number = playerID
-	End Method
-
-
-	Method SetGameState:Int( gamestate:Int )
-		If Self.gamestate = gamestate Then Return True
-
-		'switch to screen
-		Select gamestate
-			Case TGame.STATE_MAINMENU
-				ScreenCollection.GoToScreen(Null,"MainMenu")
-			Case TGame.STATE_SETTINGSMENU
-				ScreenCollection.GoToScreen(Null,"GameSettings")
-			Case TGame.STATE_NETWORKLOBBY
-				ScreenCollection.GoToScreen(Null,"NetworkLobby")
-			Case TGame.STATE_STARTMULTIPLAYER
-				ScreenCollection.GoToScreen(Null,"StartMultiplayer")
-			Case TGame.STATE_RUNNING
-				ScreenCollection.GoToScreen(GameScreen_Building)
-		EndSelect
-
-
-		'remove focus of gui objects
-		GuiManager.ResetFocus()
-		GuiManager.SetKeystrokeReceiver(Null)
-
-		'reset mouse clicks
-		MouseManager.ResetKey(1)
-		MouseManager.ResetKey(2)
-
-
-		Self.gamestate = gamestate
-		Select gamestate
-			Case TGame.STATE_RUNNING
-					'Begin Game - fire Events
-					EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
-					EventManager.registerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
-					'so we start at day "1"
-					EventManager.registerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", game.GetMinute()).addNumber("hour", game.GetHour()).addNumber("day", game.GetDay()) ))
-
-					'so we could add news etc.
-					EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
-
-					TSoundManager.GetInstance().PlayMusicPlaylist("default")
-			Default
-				'
-		EndSelect
-	End Method
-
-
-	'sets the player controlled by this client
-	Method SetActivePlayer(ID:int=-1)
-		if ID = -1 then ID = playerID
-		'for debug purposes we need to adjust more than just
-		'the playerID.
-		playerID = ID
-
-		'get currently shown screen of that player
-		if GetPlayer().figure.inRoom
-			ScreenCollection.GoToScreen(TInGameScreen_Room.GetByRoom(GetPlayer().figure.inRoom))
-		'go to building
-		else
-			ScreenCollection.GoToScreen(GameScreen_Building)
-		endif
-	End Method
-
-
-	Method SetPlayer:TPlayer(playerID:Int=-1, player:TPlayer)
-		If playerID=-1 Then playerID = Self.playerID
-		If players.length <= playerID Then players = players[..playerID+1]
-		players[playerID] = player
-	End Method
-
-
-	Method GetPlayer:TPlayer(playerID:Int=-1)
-		If playerID = -1 Then playerID = Self.playerID
-		If Not isPlayer(playerID) Then Return Null
-
-		Return players[playerID]
-	End Method
-
-
-	'return the maximum audience of a player
-	'if no playerID was given, the average of all players is returned
-	Method GetMaxAudience:Int(playerID:Int=-1)
-		If Not Game.isPlayer(playerID)
-			Local avg:Int = 0
-			For Local i:Int = 1 To 4
-				avg :+ Players[ i ].GetMaxAudience()
-			Next
-			avg:/4
-			Return avg
-		EndIf
-		Return Players[ playerID ].GetMaxAudience()
-	End Method
-
-
-	Method GetDayName:String(day:Int, longVersion:Int=0) {_exposeToLua}
-		Local versionString:String = "SHORT"
-		If longVersion = 1 Then versionString = "LONG"
-
-		Select day
-			Case 0	Return GetLocale("WEEK_"+versionString+"_MONDAY")
-			Case 1	Return GetLocale("WEEK_"+versionString+"_TUESDAY")
-			Case 2	Return GetLocale("WEEK_"+versionString+"_WEDNESDAY")
-			Case 3	Return GetLocale("WEEK_"+versionString+"_THURSDAY")
-			Case 4	Return GetLocale("WEEK_"+versionString+"_FRIDAY")
-			Case 5	Return GetLocale("WEEK_"+versionString+"_SATURDAY")
-			Case 6	Return GetLocale("WEEK_"+versionString+"_SUNDAY")
-			Default	Return "not a day"
-		EndSelect
-	End Method
-
-
-	Function SendSystemMessage(message:String)
-		'send out to chats
-		EventManager.triggerEvent(TEventSimple.Create("chat.onAddEntry", new TData.AddNumber("senderID", -1).AddNumber("channels", CHAT_CHANNEL_SYSTEM).AddString("text", message) ) )
-	End Function
-
-
-	'Summary: load the config-file and set variables depending on it
-	Method LoadConfig:Byte(configfile:String="config/settings.xml")
-		Local xml:TxmlHelper = TxmlHelper.Create(configfile)
-		If xml <> Null Then TLogger.Log("TGame.LoadConfig()", "settings.xml read", LOG_LOADING)
-		Local node:TxmlNode = xml.FindRootChild("settings")
-		If node = Null Or node.getName() <> "settings"
-			TLogger.Log("TGame.Loadconfig()", "settings.xml misses a setting-part", LOG_LOADING | LOG_ERROR)
-			Print "settings.xml fehlt der settings-Bereich"
-			Return 0
-		EndIf
-		username			= xml.FindValue(node,"username", "Ano Nymus")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'username' fehlt, setze Defaultwert: 'Ano Nymus'", LOG_LOADING)
-		userchannelname		= xml.FindValue(node,"channelname", "SunTV")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'userchannelname' fehlt, setze Defaultwert: 'SunTV'", LOG_LOADING)
-		userlanguage		= xml.FindValue(node,"language", "de")			'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'language' fehlt, setze Defaultwert: 'de'", LOG_LOADING)
-		userport			= xml.FindValueInt(node,"onlineport", 4444)		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'onlineport' fehlt, setze Defaultwert: '4444'", LOG_LOADING)
-		userdb				= xml.FindValue(node,"database", "res/database.xml")	'Print "settings.xml - missing 'database' - set to default: 'database.xml'"
-		title				= xml.FindValue(node,"defaultgamename", "MyGame")		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'defaultgamename' fehlt, setze Defaultwert: 'MyGame'", LOG_LOADING)
-		userFallbackIP		= xml.FindValue(node,"fallbacklocalip", "192.168.0.1")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'fallbacklocalip' fehlt, setze Defaultwert: '192.168.0.1'", LOG_LOADING)
-	End Method
-
-
-	Method GetNextHour:Int() {_exposeToLua}
-		Local nextHour:Int = GetHour()+1
-		If nextHour > 24 Then Return nextHour - 24
-		Return nextHour
-	End Method
-
-
-	'Summary: Updates Time, Costs, States ...
-	Method Update(deltaTime:Float=1.0)
-		'==== ADJUST TIME ====
-		'speed is given as a factor "game-time = x * real-time"
-		timeGone :+ deltaTime * GetGameMinutesPerSecond()
-		'initialize last update value if still at default value
-		if timeGoneLastUpdate < 0 then timeGoneLastUpdate = timeGone
-
-		'==== HANDLE TIMED EVENTS ====
-		'time for news ?
-		If NewsAgency.NextEventTime < timeGone Then NewsAgency.AnnounceNewNewsEvent()
-		If NewsAgency.NextChainCheckTime < timeGone Then NewsAgency.ProcessNewsEventChains()
-
-		'send state to clients
-		If IsGameLeader() And networkgame And stateSyncTime < MilliSecs()
-			NetworkHelper.SendGameState()
-			stateSyncTime = MilliSecs() + stateSyncTimer
-		EndIf
-
-		'==== HANDLE IN GAME TIME ====
-		'less than a ingame minute gone? nothing to do YET
-		If timeGone - timeGoneLastUpdate < 1.0 Then Return
-
-		'==== HANDLE GONE/SKIPPED MINUTES ====
-		'if speed is to high - minutes might get skipped,
-		'handle this case so nothing gets lost.
-		'missedMinutes is >1 in all cases (else this part isn't run)
-		Local missedMinutes:float = timeGone - timeGoneLastUpdate
-		Local daysMissed:Int = Floor(missedMinutes / (24*60))
-
-		'adjust the game time so Game.GetHour()/GetMinute()/... return
-		'the correct value for each loop cycle. So Functions can rely on
-		'that functions to get the time they request.
-		'as everything can get calculated using "timeGone", no further
-		'adjustments have to take place
-		timeGone:- missedMinutes
-		For Local i:Int = 1 to missedMinutes
-			'add back another gone minute each loop
-			timeGone:+1
-
-			'day
-			If GetHour() = 0 And GetMinute() = 0
-				'increase current day
-				daysPlayed :+1
-			 	'automatically change current-plan-day on day change
-			 	'but do it silently (without affecting the)
-			 	RoomHandler_Office.ChangePlanningDay(GetDay())
-
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
-			EndIf
-
-			'hour
-			If GetMinute() = 0
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
-			endif
-
-			'minute
-			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", GetMinute()).addNumber("hour", GetHour()).addNumber("day", GetDay()) ))
-		Next
-
-		'reset gone time so next update can calculate missed minutes
-		timeGoneLastUpdate = timeGone
-	End Method
-
-
-	'Summary: returns day of the week including gameday
-	Method GetFormattedDay:String(_day:Int = -5) {_exposeToLua}
-		Return _day+"."+GetLocale("DAY")+" ("+GetDayName( Max(0,_day-1) Mod 7, 0)+ ")"
-	End Method
-
-
-	Method GetFormattedDayLong:String(_day:Int = -1) {_exposeToLua}
-		If _day < 0 Then _day = GetDay()
-		Return GetDayName( Max(0,_day-1) Mod 7, 1)
-	End Method
-
-
-	'Summary: returns formatted value of actual gametime
-	Method GetFormattedTime:String(time:Double=0) {_exposeToLua}
-		Local strHours:String = GetHour(time)
-		Local strMinutes:String = GetMinute(time)
-
-		If Int(strHours) < 10 Then strHours = "0"+strHours
-		If Int(strMinutes) < 10 Then strMinutes = "0"+strMinutes
-		Return strHours+":"+strMinutes
-	End Method
-
-
-	Method GetWeekday:Int(_day:Int = -1) {_exposeToLua}
-		If _day < 0 Then _day = Self.GetDay()
-		Return Max(0,_day-1) Mod 7
-	End Method
-
-
-	Method MakeTime:Double(year:Int,day:Int,hour:Int,minute:Int) {_exposeToLua}
-		'year=1,day=1,hour=0,minute=1 should result in "1*yearInSeconds+1"
-		'as it is 1 minute after end of last year - new years eve ;D
-		'there is no "day 0" (as there would be no "month 0")
-
-		Return (((day-1) + year*Self.daysPerYear)*24 + hour)*60 + minute
-	End Method
-
-
-	Method GetTimeGone:Double() {_exposeToLua}
-		Return Self.timeGone
-	End Method
-
-
-	Method GetTimeStart:Double() {_exposeToLua}
-		Return Self.timeStart
-	End Method
-
-
-	Method GetYear:Int(_time:Double = 0) {_exposeToLua}
-		If _time = 0 Then _time = timeGone
-		_time = Floor(_time / (24 * 60 * daysPerYear))
-		Return Int(_time)
-	End Method
-
-
-	Method GetDayOfYear:Int(_time:Double = 0) {_exposeToLua}
-		Return (GetDay(_time) - GetYear(_time)*daysPerYear)
-	End Method
-
-
-	'get the amount of days played (completed! - that's why "-1")
-	Method GetDaysPlayed:Int() {_exposeToLua}
-		Return daysPlayed
-'		return self.GetDay(self.timeGone - Self.timeStart) - 1
-	End Method
-
-
-	Method GetStartDay:Int() {_exposeToLua}
-		Return GetDay(timeStart)
-	End Method
-
-
-	Method GetDay:Int(_time:Double = 0) {_exposeToLua}
-		If _time = 0 Then _time = timeGone
-		_time = Floor(_time / (24 * 60))
-		'we are ON a day (it is not finished yet)
-		'if we "ceil" the time, we would ignore 1.0 as this would
-		'not get rounded to 2.0 like 1.01 would do
-		Return 1 + Int(_time)
-	End Method
-
-
-	Method GetHour:Int(_time:Double = 0) {_exposeToLua}
-		If _time = 0 Then _time = timeGone
-		'remove days from time
-		_time = _time Mod (24*60)
-		'hours = how many times 60 minutes fit into rest time
-		Return Int(Floor(_time / 60))
-	End Method
-
-
-	Method GetMinute:Int(_time:Double = 0) {_exposeToLua}
-		If _time = 0 Then _time = timeGone
-		'remove days from time
-		_time = _time Mod (24*60)
-		'minutes = rest not fitting into hours
-		Return Int(_time) Mod 60
-	End Method
-End Type
-
-
-'game specific events - menu handlers etc.
-Type TGameEvents
-	Global _initDone:Int = False
-
-	'register basic events (menu handlers)
-	Function Init:Int()
-		'skip if done already
-		If _initDone Then Return False
-
-		'===== REGISTER EVENTS =====
-
-		'set init done so we do not do it again
-		_initDone = True
-	End Function
-End Type
 
 
 Type TFigurePostman Extends TFigure
@@ -1531,7 +836,7 @@ Type TFigurePostman Extends TFigure
 	End Method
 
 
-	Method UpdateCustom:Int(deltaTime:Float)
+	Method UpdateCustom:Int()
 		If inRoom And nextActionTimer.isExpired()
 			nextActionTimer.Reset()
 			'switch "with" and "without" letter
@@ -1600,7 +905,7 @@ Type TFigureJanitor Extends TFigure
 	End Method
 
 
-	Method UpdateCustom:Int(deltaTime:Float)
+	Method UpdateCustom:Int()
 		'waited to long - change target (returns false while in elevator)
 		If hasToChangeFloor() And WaitAtElevatorTimer.isExpired()
 			If ChangeTarget(Rand(150, 580), GetBuilding().area.position.y + GetBuilding().GetFloorY(GetFloor()))
@@ -1876,17 +1181,19 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiChat.guiInput.rect.position.MoveXY(panelGap, -panelGap)
 		guiChat.guiInput.Resize( guiChat.GetContentScreenWidth() - 2* panelGap, guiStartYear.GetScreenHeight())
 
+		local player:TPlayer
 		For Local i:Int = 0 To 3
+			player = GetPlayerCollection().Get(i+1)
 			Local slotX:Int = i * (playerSlotGap + playerBoxDimension.GetIntX())
 			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TPoint.Init(slotX, 0), new TPoint.Init(playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY()), "GameSettings")
 			playerPanel.spriteBaseName = "gfx_gui_panel.subContent.bright"
 			playerPanel.SetPadding(playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap)
 			guiPlayersPanel.AddChild(playerPanel)
 
-			guiPlayerNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), Game.Players[i + 1].Name, 16, name)
+			guiPlayerNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), player.Name, 16, name)
 			guiPlayerNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
 
-			guiChannelNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), Game.Players[i + 1].channelname, 16, name)
+			guiChannelNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), player.channelname, 16, name)
 			guiChannelNames[i].rect.position.SetY(playerPanel.GetContentScreenHeight() - guiChannelNames[i].rect.GetH())
 			guiChannelNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_tvchannel"))
 
@@ -1931,8 +1238,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		'left/right arrows to change figure base
 		For Local i:Int = 0 To 7
 			If sender = guiFigureArrows[i]
-				If i Mod 2  = 0 Then Game.Players[1+Ceil(i/2)].UpdateFigureBase(Game.Players[Ceil(1+i/2)].figurebase -1)
-				If i Mod 2 <> 0 Then Game.Players[1+Ceil(i/2)].UpdateFigureBase(Game.Players[Ceil(1+i/2)].figurebase +1)
+				If i Mod 2  = 0 Then GetPlayerCollection().Get(1+Ceil(i/2)).UpdateFigureBase(GetPlayerCollection().Get(Ceil(1+i/2)).figurebase -1)
+				If i Mod 2 <> 0 Then GetPlayerCollection().Get(1+Ceil(i/2)).UpdateFigureBase(GetPlayerCollection().Get(Ceil(1+i/2)).figurebase +1)
 				modifiedPlayers = True
 			EndIf
 		Next
@@ -1952,7 +1259,7 @@ Type TScreen_GameSettings Extends TGameScreen
 					Else
 						'guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
-						Interface.ShowChannel = Game.playerID
+						Interface.ShowChannel = GetPlayerCollection().playerID
 
 						Game.SetGamestate(TGame.STATE_STARTMULTIPLAYER)
 					EndIf
@@ -1960,7 +1267,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			Case guiButtonBack
 					If Game.networkgame
 						If Game.networkgame Then Network.DisconnectFromServer()
-						Game.playerID = 1
+						GetPlayerCollection().playerID = 1
 						Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 						'guiAnnounce.SetChecked(FALSE)
 						Network.StopAnnouncing()
@@ -1995,13 +1302,13 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'name or channel changed?
 		For Local i:Int = 0 To 3
-			If sender = guiPlayerNames[i] Then Game.Players[i+1].Name = value
-			If sender = guiChannelNames[i] Then Game.Players[i+1].channelName = value
+			If sender = guiPlayerNames[i] Then GetPlayerCollection().Get(i+1).Name = value
+			If sender = guiChannelNames[i] Then GetPlayerCollection().Get(i+1).channelName = value
 		Next
 
 		'start year changed
 		If sender = guiStartYear
-			Game.setStartYear( Max(1980, Int(value)) )
+			GetGameTime().setStartYear( Max(1980, Int(value)) )
 			TGUIInput(sender).value = Max(1980, Int(value))
 		EndIf
 	End Method
@@ -2015,8 +1322,8 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Local slotPos:TPoint = new TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 		For Local i:Int = 0 To 3
-			If Game.networkgame Or Game.playerID=1
-				If Game.gamestate <> TGame.STATE_STARTMULTIPLAYER And Game.Players[i+1].Figure.ControlledByID = Game.playerID Or (Game.Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
+			If Game.networkgame Or GetPlayerCollection().playerID=1
+				If Game.gamestate <> TGame.STATE_STARTMULTIPLAYER And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID = 1)
 					SetColor 255,255,255
 				Else
 					SetColor 225,255,150
@@ -2035,7 +1342,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 			'draw player figure
 			SetColor 255,255,255
-			Game.GetPlayer(i+1).Figure.Sprite.Draw(Int(slotPos.GetX() + playerBoxDimension.GetX()/2 - Game.Players[1].Figure.Sprite.framew / 2), Int(colorRect.GetY() - Game.Players[1].Figure.Sprite.area.GetH()), 8)
+			GetPlayerCollection().Get(i+1).Figure.Sprite.Draw(Int(slotPos.GetX() + playerBoxDimension.GetX()/2 - GetPlayerCollection().Get(1).Figure.Sprite.framew / 2), Int(colorRect.GetY() - GetPlayerCollection().Get(1).Figure.Sprite.area.GetH()), 8)
 
 			'move to next slot position
 			slotPos.MoveXY(playerSlotGap + playerBoxDimension.GetX(), 0)
@@ -2083,7 +1390,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 			'disable/enable announcement on lan/online
 			'if guiAnnounce.isChecked()
-				Network.client.playerName = Game.Players[ Game.playerID ].name
+				Network.client.playerName = GetPlayerCollection().Get().name
 				If Not Network.announceEnabled Then Network.StartAnnouncing(Game.title)
 			'else
 			'	Network.StopAnnouncing()
@@ -2099,7 +1406,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		For Local i:Int = 0 To 3
 			If Game.networkgame Or Game.isGameLeader()
-				If Game.gamestate <> TGame.STATE_STARTMULTIPLAYER And Game.Players[i+1].Figure.ControlledByID = Game.playerID Or (Game.Players[i+1].Figure.ControlledByID = 0 And Game.playerID=1)
+				If Game.gamestate <> TGame.STATE_STARTMULTIPLAYER And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID=1)
 					guiPlayerNames[i].enable()
 					guiChannelNames[i].enable()
 					guiFigureArrows[i*2].enable()
@@ -2144,9 +1451,9 @@ Type TScreen_GameSettings Extends TGameScreen
 
 					'skip if outside of rect
 					If Not THelper.MouseInRect(colorRect) Then Continue
-					If (Game.Players[i+1].Figure.ControlledByID = Game.playerID Or (Game.Players[i+1].Figure.ControlledByID = 0 And Game.playerID = 1))
+					If (GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID = 1))
 						modifiedPlayers=True
-						Game.Players[i+1].RecolorFigure(obj)
+						GetPlayerCollection().Get(i+1).RecolorFigure(obj)
 					EndIf
 				Next
 				'move to next slot position
@@ -2403,10 +1710,9 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 		SetColor 0,0,0
 		GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
 		GetBitmapFontManager().baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
-		GetBitmapFontManager().baseFont.draw("Player 1..."+Game.Players[1].networkstate+" MovieListCount: "+Game.Players[1].ProgrammeCollection.GetProgrammeLicenceCount(), 220,260)
-		GetBitmapFontManager().baseFont.draw("Player 2..."+Game.Players[2].networkstate+" MovieListCount: "+Game.Players[2].ProgrammeCollection.GetProgrammeLicenceCount(), 220,280)
-		GetBitmapFontManager().baseFont.draw("Player 3..."+Game.Players[3].networkstate+" MovieListCount: "+Game.Players[3].ProgrammeCollection.GetProgrammeLicenceCount(), 220,300)
-		GetBitmapFontManager().baseFont.draw("Player 4..."+Game.Players[4].networkstate+" MovieListCount: "+Game.Players[4].ProgrammeCollection.GetProgrammeLicenceCount(), 220,320)
+		for local i:int = 1 to 4
+			GetBitmapFontManager().baseFont.draw("Player "+i+"..."+GetPlayerCollection().Get(i).networkstate+" MovieListCount: "+GetPlayerCollection().Get(i).ProgrammeCollection.GetProgrammeLicenceCount(), 220,260 + (i-1)*20)
+		Next
 		If Not Game.networkgameready = 1 Then GetBitmapFontManager().baseFont.draw("not ready!!", 220,360)
 		SetColor 255,255,255
 	End Method
@@ -2419,7 +1725,7 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 			StartMultiplayerSyncStarted = MilliSecs()
 
 			For Local playerids:Int = 1 To 4
-				Local ProgrammeCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
+				Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get(playerids).ProgrammeCollection
 				Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
 				For Local i:Int = 0 To Game.startMovieAmount-1
 					ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
@@ -2439,13 +1745,13 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 		'ask every 500ms
 		If Game.isGameLeader() And SendGameReadyTimer < MilliSecs()
 			Game.SetGamestate(TGame.STATE_STARTMULTIPLAYER)
-			NetworkHelper.SendGameReady(Game.playerID)
+			NetworkHelper.SendGameReady(GetPlayerCollection().playerID)
 			SendGameReadyTimer = MilliSecs() +500
 		EndIf
 
 		If Game.networkgameready=1
 			'ScreenGameSettings.guiAnnounce.SetChecked(FALSE)
-			Game.Players[Game.playerID].networkstate=1
+			GetPlayerCollection().Get().networkstate=1
 
 			'register events and start game
 			Game.Start()
@@ -2472,7 +1778,7 @@ Type GameEvents
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
 
-		For Local player:TPLayer = EachIn Game.players
+		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isAI() Then player.PlayerKI.CallOnMinute(minute)
 		Next
 		Return True
@@ -2483,11 +1789,54 @@ Type GameEvents
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
 
-		For Local player:TPLayer = EachIn Game.players
+		For Local player:TPLayer = EachIn GetPlayerCollection().players
 			If player.isAI() Then player.PlayerKI.CallOnDayBegins()
 		Next
 		Return True
 	End Function
+
+
+	Function PlayerBroadcastMalfunction:Int(triggerEvent:TEventBase)
+		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
+		local player:TPlayer = GetPlayerCollection().Get(playerID)
+		if not player then return False
+
+		If player.isAI() then player.PlayerKI.CallOnMalfunction()
+	End Function
+
+
+	Function PlayerFinanceOnChangeMoney:Int(triggerEvent:TEventBase)
+		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
+		local player:TPlayer = GetPlayerCollection().Get(playerID)
+		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		if playerID = -1 or not player then return FALSE
+
+		If player.isAI() Then player.PlayerKI.CallOnMoneyChanged()
+		If player.isActivePlayer() Then Interface.BottomImgDirty = True
+	End Function
+
+
+	'show an error if a transaction was not possible
+	Function PlayerFinanceOnTransactionFailed:Int(triggerEvent:TEventBase)
+		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
+		local player:TPlayer = GetPlayerCollection().Get(playerID)
+		local value:int = triggerEvent.GetData().GetInt("value", 0)
+		if playerID = -1 or not player then return FALSE
+
+		'create an visual error
+		If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+	End Function
+
+
+	Function StationMapOnTrySellLastStation:Int(triggerEvent:TEventBase)
+		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
+		local player:TPlayer = GetPlayerCollection().Get(playerID)
+		if playerID = -1 or not player then return FALSE
+
+		'create an visual error
+		If player.isActivePlayer() then TError.Create( getLocale("ERROR_NOT_POSSIBLE"), getLocale("ERROR_NOT_ABLE_TO_SELL_LAST_STATION") )
+	End Function
+
 
 
 	Function OnMinute:Int(triggerEvent:TEventBase)
@@ -2500,7 +1849,7 @@ Type GameEvents
 		'===== UPDATE POPULARITY MANAGER =====
 		'the popularity manager takes care itself whether to do something
 		'or not (update intervals)
-		Game.PopularityManager.Update(triggerEvent)
+		GetPopularityManager().Update(triggerEvent)
 
 		'===== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY =====
 		'countdown for the refillers
@@ -2537,64 +1886,11 @@ Type GameEvents
 		'for all
 		If minute = 5 Or minute = 55 Or minute = 0 Then Interface.BottomImgDirty = True
 
-		'begin of all newshows - compute their audience
-		If minute = 0
-			For Local player:TPlayer = EachIn Game.Players
-				player.ProgrammePlan.GetNewsShow().BeginBroadcasting(day, hour, minute)
-			Next
-			Game.BroadcastManager.BroadcastNewsShow(day, hour)
-		'begin of a programme
-		ElseIf minute = 5
-			For Local player:TPlayer = EachIn Game.Players
-				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetProgramme(day, hour)
-				If obj
-					If 1 = player.ProgrammePlan.GetProgrammeBlock(day, hour)
-						obj.BeginBroadcasting(day, hour, minute) 'just starting
-					Else
-						obj.ContinueBroadcasting(day, hour, minute)
-					EndIf
-				EndIf
-			Next
-			Game.BroadcastManager.BroadcastProgramme(day, hour)
-		'call-in shows/quiz - generate income
-		ElseIf minute = 54
-			For Local player:TPlayer = EachIn Game.Players
-				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetProgramme(day,hour)
-				If obj
-					If obj.GetBlocks() = player.ProgrammePlan.GetProgrammeBlock(day, hour)
-						obj.FinishBroadcasting(day, hour, minute)
-					Else
-						obj.BreakBroadcasting(day, hour, minute)
-					EndIf
-				EndIf
-			Next
-		'ads
-		ElseIf minute = 55
-			'computes ads - if an ad is botched or run successful
-			'if adcontract finishes, earn money
-			For Local player:TPlayer = EachIn Game.Players
-				Local obj:TBroadcastMaterial = player.ProgrammePlan.GetAdvertisement(day, hour)
-				If obj
-					If 1 = player.ProgrammePlan.GetAdvertisementBlock(day, hour)
-						obj.BeginBroadcasting(day, hour, minute) 'just starting
-					Else
-						obj.ContinueBroadcasting(day, hour, minute)
-					EndIf
-				EndIf
-			Next
-		'ads end - so trailers can set their "ok"
-		ElseIf minute = 59
-			For Local player:TPlayer = EachIn Game.Players
-				Local obj:TBroadcastMaterial = Player.ProgrammePlan.GetAdvertisement(day, hour)
-				If obj
-					If obj.GetBlocks() = player.ProgrammePlan.GetAdvertisementBlock(day, hour)
-						obj.FinishBroadcasting(day, hour, minute)
-					Else
-						obj.BreakBroadcasting(day, hour, minute)
-					EndIf
-				EndIf
-			Next
-		EndIf
+		'adjust current broadcast
+		For Local player:TPlayer = EachIn GetPlayerCollection().players
+			player.ProgrammePlan.AdjustCurrentBroadcast(day, hour, minute)
+		Next
+
 
 		Return True
 	End Function
@@ -2609,13 +1905,13 @@ Type GameEvents
 	Function OnDay:Int(triggerEvent:TEventBase)
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
 
-		TLogger.Log("GameEvents.OnDay", "begin of day "+(Game.GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
+		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetGameTime().GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
 
 		'if new day, not start day
-		If Game.GetDaysPlayed() >= 1
+		If GetGameTime().GetDaysPlayed() >= 1
 
 			'Neuer Award faellig?
-			If Betty.GetAwardEnding() < Game.GetDay() - 1
+			If Betty.GetAwardEnding() < GetGameTime().getDay() - 1
 				Betty.GetLastAwardWinner()
 				Betty.SetAwardType(RandRange(0, Betty.MaxAwardTypes), True)
 			End If
@@ -2632,9 +1928,9 @@ Type GameEvents
 			'remove old news from the players (only unset ones)
 			For Local i:Int = 1 To 4
 				Local news:TNews
-				For news = EachIn Game.getPlayer(i).ProgrammeCollection.news
-					If day - Game.GetDay(news.newsEvent.happenedtime) >= 2
-						Game.getPlayer(i).ProgrammePlan.RemoveNews(news)
+				For news = EachIn GetPlayerCollection().Get(i).ProgrammeCollection.news
+					If day - GetGameTime().getDay(news.newsEvent.happenedtime) >= 2
+						GetPlayerCollection().Get(i).ProgrammePlan.RemoveNews(news)
 					EndIf
 				Next
 			Next
@@ -2712,65 +2008,6 @@ End Type
 
 
 
-'Bis wir nen besseren Platz gefunden haben
-Type TTVTException Extends TBlitzException
-	Field message:String
-
-	Method ToString:String()
-		If message = Null
-			Return GetDefaultMessage()
-		Else
-			Return message
-		EndIf
-	End Method
-
-	Method GetDefaultMessage:String()
-		Return "Undefined TTVTException!"
-	End Method
-End Type
-
-
-'Bis wir nen besseren Platz gefunden haben
-Type TArgumentException Extends TTVTException
-	Field argument:String
-	Field value:String
-
-	Method ToString:String()
-		If argument = Null
-			Super.ToString()
-		Else
-			If value = Null
-				Return "The argument '" + argument + "' is not valid."
-			Else
-				Return "The argument '" + argument + "' with value '" + value + "' is not valid."
-			EndIf
-		EndIf
-	End Method
-
-	Method GetDefaultMessage:String()
-		Return "An argument is not valid."
-	End Method
-
-	Function Create:TArgumentException( argument:String, value:String = null, message:String = Null )
-		Local t:TArgumentException = New TArgumentException
-		t.argument = argument
-		t.value = value
-		t.message = message
-		Return t
-	End Function
-End Type
-
-
-
-Type TNullObjectExceptionExt Extends TTVTException
-	Function Create:TNullObjectExceptionExt( message:String = Null )
-		Local t:TNullObjectExceptionExt = New TNullObjectExceptionExt
-		t.message = message
-		Return t
-	End Function
-End Type
-
-
 
 OnEnd( EndHook )
 Function EndHook()
@@ -2816,27 +2053,33 @@ End Function
 Function Init_Creation()
 	'create base stations
 	For Local i:Int = 1 To 4
-		Game.GetPlayer(i).GetStationMap().AddStation( TStation.Create( new TPoint.Init(310, 260),-1, StationMapCollection.stationRadius, i ), False )
+		GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TPoint.Init(310, 260),-1, StationMapCollection.stationRadius, i ), False )
 	Next
 
 	'get names from settings
 	For Local i:Int = 1 To 4
-		Game.Players[i].Name = ScreenGameSettings.guiPlayerNames[i-1].Value
-		Game.Players[i].channelname	= ScreenGameSettings.guiChannelNames[i-1].Value
+		GetPlayerCollection().Get(i).Name = ScreenGameSettings.guiPlayerNames[i-1].Value
+		GetPlayerCollection().Get(i).channelname = ScreenGameSettings.guiChannelNames[i-1].Value
 	Next
 
 
 	'set all non human players to AI
 	If Game.isGameLeader()
 		For Local playerids:Int = 1 To 4
-			If Game.IsPlayer(playerids) And Not Game.IsHumanPlayer(playerids)
-				Game.Players[playerids].SetAIControlled("res/ai/DefaultAIPlayer.lua")
+			If GetPlayerCollection().IsPlayer(playerids) And Not GetPlayerCollection().IsHuman(playerids)
+				GetPlayerCollection().Get(playerids).SetAIControlled("res/ai/DefaultAIPlayer.lua")
 			EndIf
 		Next
 		'register ai player events - but only for game leader
-		EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.PlayersOnMinute)
-		EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.PlayersOnDay)
+		EventManager.registerListenerFunction("Game.OnMinute", GameEvents.PlayersOnMinute)
+		EventManager.registerListenerFunction("Game.OnDay", GameEvents.PlayersOnDay)
 	EndIf
+	'=== REGISTER PLAYER EVENTS ===
+	EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", GameEvents.PlayerFinanceOnChangeMoney)
+	EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", GameEvents.PlayerFinanceOnTransactionFailed)
+	EventManager.registerListenerFunction("StationMap.onTrySellLastStation", GameEvents.StationMapOnTrySellLastStation)
+	EventManager.registerListenerFunction("BroadcastManager.BroadcastMalfunction", GameEvents.PlayerBroadcastMalfunction)
+
 
 	'create series/movies in movie agency
 	RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
@@ -2850,7 +2093,7 @@ Function Init_Creation()
 	'create random programmes and so on - but only if local game
 	If Not Game.networkgame
 		For Local playerids:Int = 1 To 4
-			Local ProgrammeCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
+			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get(playerids).ProgrammeCollection
 			For Local i:Int = 0 To Game.startMovieAmount-1
 				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
 			Next
@@ -2871,7 +2114,7 @@ Function Init_Creation()
 	For Local playerids:Int = 1 To 4
 		'5 groups
 		For Local i:Int = 0 To 4
-			Game.Players[playerids].SetNewsAbonnement(i, 1)
+			GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
 		Next
 	Next
 
@@ -2880,26 +2123,26 @@ Function Init_Creation()
 	'creation of blocks for players rooms
 	For Local playerids:Int = 1 To 4
 		lastblocks = 0
-		SortList(Game.Players[playerids].ProgrammeCollection.adContracts)
+		SortList(GetPlayerCollection().Get(playerids).ProgrammeCollection.adContracts)
 
 		Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
 		Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
-		Local playerCollection:TPlayerProgrammeCollection = Game.getPlayer(playerids).ProgrammeCollection
-		Local playerPlan:TPlayerProgrammePlan = Game.getPlayer(playerids).ProgrammePlan
+		Local playerCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get(playerids).ProgrammeCollection
+		Local playerPlan:TPlayerProgrammePlan = GetPlayerCollection().Get(playerids).ProgrammePlan
 
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 0 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 1 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 2 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 3 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 4 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), Game.GetStartDay(), 5 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 0 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 1 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 2 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 3 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 4 )
+		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 5 )
 
 		Local currentLicence:TProgrammeLicence = Null
 		Local currentHour:Int = 0
 		For Local i:Int = 0 To 3
 			currentLicence = playerCollection.GetMovieLicenceAtIndex(i)
 			If Not currentLicence Then Continue
-			playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), Game.GetStartDay(), currentHour )
+			playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), GetGameTime().GetStartDay(), currentHour )
 			currentHour:+ currentLicence.getData().getBlocks()
 		Next
 	Next
@@ -2920,8 +2163,8 @@ Function Init_Colorization()
 	GetRegistry().Set("gfx_interface_channelbuttons_on_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
 	'colorizing for every player
 	For Local i:Int = 1 To 4
-		Game.GetPlayer(i).RecolorFigure()
-		local color:TColor = Game.GetPlayer(i).color
+		GetPlayerCollection().Get(i).RecolorFigure()
+		local color:TColor = GetPlayerCollection().Get(i).color
 
 		GetRegistry().Set("gfx_building_sign_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))
 		GetRegistry().Set("gfx_elevator_sign_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_base").GetColorizedImage(color), "gfx_elevator_sign_"+i))
@@ -2958,7 +2201,7 @@ End Function
 
 Function DEV_switchRoom:int(room:TRoom)
 	if not room then return FALSE
-	local figure:TFigure = Game.GetPlayer().figure
+	local figure:TFigure = GetPlayerCollection().Get().figure
 
 	local oldEffects:int = TScreenCollection.useChangeEffects
 	local oldSpeed:int = TRoom.ChangeRoomSpeed
@@ -3079,12 +2322,6 @@ Function StartTVTower(start:Int=true)
 	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
 
-
-
-	'connect click and change events to the gui objects
-	TGameEvents.Init()
-
-	SetColor 255,255,255
 
 	MainMenuJanitor = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 250, 2, 65)
 	MainMenuJanitor.useElevator = False

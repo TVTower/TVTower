@@ -9,14 +9,27 @@
 	"TAudienceMarketCalculation".
 	Zudem bewahrt der TBroadcastManager die GenreDefinitionen auf.
 	Eventuell gehören diese aber in eine andere Klasse.
-ENDREM
+EndRem
+SuperStrict
+Import "game.broadcast.audience.bmx"
+Import "game.broadcast.audienceattraction.bmx"
+Import "game.broadcast.genredefinition.movie.bmx"
+Import "game.broadcast.genredefinition.news.bmx"
+Import "game.publicimage.bmx"
+Import "game.stationmap.bmx"
+Import "game.gametime.bmx"
+
 
 Type TBroadcastManager
 	Field initialized:int = False
 
 	'Referenzen
-	Field genreDefinitions:TMovieGenreDefinition[]			'TODO: Gehört woanders hin
 	Field newsGenreDefinitions:TNewsGenreDefinition[]		'TODO: Gehört woanders hin
+
+	Field audienceResults:TAudienceResult[]
+
+	'the current broadcast of each player
+	Field currentBroadcastMaterial:TBroadcastMaterial[]
 
 	'Field currentBroadcast:TBroadcast = Null
 	'Field currentProgammeBroadcast:TBroadcast = Null
@@ -29,6 +42,19 @@ Type TBroadcastManager
 	Field PotentialAudienceManipulations:TMap = CreateMap()
 
 	Field Sequence:TBroadcastSequence = new TBroadcastSequence
+
+	Global _instance:TBroadcastManager
+
+
+	Method New()
+		_instance = self
+	End Method
+
+
+	Function GetInstance:TBroadcastManager()
+		if not _instance then _instance = new TBroadcastManager
+		return _instance
+	End Function
 
 	'===== Konstrukor, Speichern, Laden =====
 
@@ -47,23 +73,9 @@ Type TBroadcastManager
 	Method Initialize()
 		if initialized then return
 
-		genreDefinitions = genreDefinitions[..21]
-		Local genreMap:TMap = TMap(GetRegistry().Get("genres"))
-		if not genreMap then Throw "Registry misses ~qgenres~q."
-		For Local map:TMap = EachIn genreMap.Values()
-			Local definition:TMovieGenreDefinition = New TMovieGenreDefinition
-			definition.LoadFromMap(map)
-			genreDefinitions[definition.GenreId] = definition
-		Next
-
-		newsGenreDefinitions = newsGenreDefinitions[..5]
-		Local newsGenreMap:TMap = TMap(GetRegistry().Get("newsgenres"))
-		if not newsGenreMap then Throw "Registry misses ~qnewsgenres~q."
-		For Local map:TMap = EachIn newsGenreMap.Values()
-			Local definition:TNewsGenreDefinition = New TNewsGenreDefinition
-			definition.LoadFromMap(map)
-			newsGenreDefinitions[definition.GenreId] = definition
-		Next
+		'load and init the genres
+		GetMovieGenreDefinitionCollection().Initialize()
+		GetNewsGenreDefinitionCollection().Initialize()
 
 		initialized = TRUE
 	End Method
@@ -75,10 +87,10 @@ Type TBroadcastManager
 		Return Sequence.GetCurrentBroadcast()
 	End Method
 
+
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0)
-		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_PROGRAMME, day, hour)
-		BroadcastCommon(hour, material, TBroadcastMaterial.TYPE_PROGRAMME, recompute)
+		BroadcastCommon(hour, TBroadcastMaterial.TYPE_PROGRAMME, recompute)
 		rem
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
 		self.lastNewsShowBroadcast = currentNewsShowBroadcast
@@ -90,19 +102,13 @@ Type TBroadcastManager
 
 	'Führt die Berechnung für die Nachrichten(-Show)-Ausstrahlungen durch
 	Method BroadcastNewsShow(day:Int=-1, hour:Int, recompute:Int = 0)
-		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_NEWSSHOW, day, hour)
-		BroadcastCommon(hour, material, TBroadcastMaterial.TYPE_NEWSSHOW, recompute)
+		BroadcastCommon(hour, TBroadcastMaterial.TYPE_NEWSSHOW, recompute)
 		rem
 		self.lastProgrammeBroadcast = currentProgammeBroadcast
 		self.lastNewsShowBroadcast = currentNewsShowBroadcast
 		Local material:TBroadcastMaterial[] = GetPlayersBroadcastMaterial(TBroadcastMaterial.TYPE_NEWSSHOW, day, hour)
 		currentNewsShowBroadcast = BroadcastCommon(hour, material, recompute)
 		endrem
-	End Method
-
-
-	Method GetMovieGenreDefinition:TMovieGenreDefinition(genreId:Int)
-		Return genreDefinitions[genreId]
 	End Method
 
 
@@ -133,56 +139,124 @@ Type TBroadcastManager
 
 	'===== Hilfsmethoden =====
 
+	Method GetAudienceResult:TAudienceResult(playerID:int)
+		if playerID <= 0 or playerID > audienceResults.length then return Null
+		return audienceResults[playerID-1]
+	End Method
+
+
+	Method SetAudienceResult:int(playerID:int, audienceResult:TAudienceResult)
+		if playerID <= 0 then return False
+
+		audienceResult.AudienceAttraction.SetPlayerId(playerID)
+
+		if playerID > audienceResults.length then audienceResults = audienceResults[..playerID]
+		audienceResults[playerID-1] = audienceResult
+	End Method
+
+
 	'Der Ablauf des Broadcasts, verallgemeinert für Programme und News.
-	Method BroadcastCommon:TBroadcast(hour:Int, broadcasts:TBroadcastMaterial[], broadcastType:Int, recompute:Int )
+	Method BroadcastCommon:TBroadcast(hour:Int, broadcastType:Int, recompute:Int )
 		Local bc:TBroadcast = New TBroadcast
 		bc.BroadcastType = broadcastType
 		bc.Hour = hour
 		Sequence.SetCurrentBroadcast(bc)
 
 		bc.AscertainPlayerMarkets()							'Aktuelle Märkte (um die konkuriert wird) festlegen
-		bc.PlayersBroadcasts = broadcasts					'Die Programmwahl der Spieler "einloggen"
-		bc.ComputeAudience(Sequence.GetBeforeProgrammeBroadcast()  , Sequence.GetBeforeNewsShowBroadcast())	'Zuschauerzahl berechnen
+		bc.PlayersBroadcasts = currentBroadcastMaterial		'Die Programmwahl der Spieler "einloggen"
+		'even if currentBroadcastMaterial is empty - fill
+		'playersBroadcasts to a length of 5
+		'-> access to playersBroadcast[1-4] is valid
+		bc.PlayersBroadcasts = bc.PlayersBroadcasts[..5]
 
-		'set audience for this broadcast
-		For Local i:Int = 1 To 4
-			Local audienceResult:TAudienceResult = bc.AudienceResults[i]
-			audienceResult.AudienceAttraction.SetPlayerId(i)
-			Game.GetPlayer(i).audience = audienceResult
+		'compute the audience for the given broadcasts
+		bc.ComputeAudience(Sequence.GetBeforeProgrammeBroadcast(), Sequence.GetBeforeNewsShowBroadcast())
 
-			'Der KI den möglichen Sendeausfall mitteilen!
-			If audienceResult.AudienceAttraction.Malfunction Then
-				Local player:TPlayer = Game.GetPlayer(i)
-				If Game.isGameLeader() And player.isAI()
-					player.PlayerKI.CallOnMalfunction()
-				Endif
+		For local playerID:int = 1 to 4
+			Local audienceResult:TAudienceResult = bc.AudienceResults[playerID]
+			'add to current set of results
+			SetAudienceResult(playerID, audienceResult)
+
+			'if there is a malfunction, inform others
+			If audienceResult.AudienceAttraction.Malfunction
+				EventManager.triggerEvent(TEventSimple.Create("BroadcastManager.BroadcastMalfunction", new TData.addNumber("playerID", playerID), self))
 			Endif
 		Next
 
 		bc.FindTopValues()
-		TPublicImage.ChangeImageCauseOfBroadcast(bc)
+		ChangeImageCauseOfBroadcast(bc)
 		'store current broadcast
 		'currentBroadcast = bc
 		Return bc
 	End Method
 
 
-	'Mit dieser Methode werden die aktuellen Programme/NewsShows/Werbespots
-	'der Spieler für die Berechnung und die spätere Begutachtung eingeloggt.
-	Method GetPlayersBroadcastMaterial:TBroadcastMaterial[](slotType:Int, day:Int=-1, hour:Int=-1)
-		Local result:TBroadcastMaterial[] = New TBroadcastMaterial[5]
-		For Local player:TPlayer = EachIn Game.Players
-			'sets a valid TBroadcastMaterial or Null
-			result[player.playerID] = player.ProgrammePlan.GetObject(slotType, day, hour)
-		Next
-		Return result
+	Function ChangeImageCauseOfBroadcast(bc:TBroadcast)
+		If (bc.TopAudience > 1000) 'Nur etwas ändern, wenn auch ein paar Zuschauer einschalten und nicht alle Sendeausfall haben.
+			Local modification:TAudience = TBroadcast.GetPotentialAudienceForHour(TAudience.CreateAndInitValue(1))
+
+			'If (broadcastType = 0) Then 'Movies
+				Local map:TMap = CreateMap()
+
+				Local attrList:TList = CreateList()
+				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
+					map.Insert(string.FromInt(i), TAudience.CreateAndInitValue(0))
+					attrList.AddLast(bc.AudienceResults[i].AudienceAttraction.PublicImageAttraction)
+				Next
+
+				TPublicImage.ChangeForTargetGroup(map, 1, attrList, TAudience.ChildrenSort)
+				TPublicImage.ChangeForTargetGroup(map, 2, attrList, TAudience.TeenagersSort)
+				TPublicImage.ChangeForTargetGroup(map, 3, attrList, TAudience.HouseWifesSort)
+				TPublicImage.ChangeForTargetGroup(map, 4, attrList, TAudience.EmployeesSort)
+				TPublicImage.ChangeForTargetGroup(map, 5, attrList, TAudience.UnemployedSort)
+				TPublicImage.ChangeForTargetGroup(map, 6, attrList, TAudience.ManagerSort)
+				TPublicImage.ChangeForTargetGroup(map, 7, attrList, TAudience.PensionersSort)
+				TPublicImage.ChangeForTargetGroup(map, 8, attrList, TAudience.WomenSort)
+				TPublicImage.ChangeForTargetGroup(map, 9, attrList, TAudience.MenSort)
+
+				For Local i:Int = 1 To 4 'TODO: Was passiert wenn ein Spieler ausscheidet?
+					Local audience:TAudience = TAudience(map.ValueForKey(string.FromInt(i)))
+					audience.Multiply(modification)
+					GetPublicImageCollection().Get(i).ChangeImage(audience)
+				Next
+			'Endif
+		End If
+	End Function
+
+
+	Method GetCurrentBroadcastMaterial:TBroadcastMaterial(playerID:int)
+		if playerID <= 0 or playerID > currentBroadcastMaterial.length then return Null
+
+		return currentBroadcastMaterial[playerID-1]
 	End Method
+
+
+	Method SetCurrentBroadcastMaterial:int(playerID:int, material:TBroadcastMaterial)
+		if playerID <= 0 then return False
+		'currentBroadcastMaterial has to be 1-based (not 0-based)
+		'as the rest of Manuels broadcast code is 1-based
+
+		if playerID >= currentBroadcastMaterial.length then currentBroadcastMaterial = currentBroadcastMaterial[..playerID+1]
+		currentBroadcastMaterial[playerID] = material
+
+		'if playerID > currentBroadcastMaterial.length then currentBroadcastMaterial = currentBroadcastMaterial[..playerID]
+		'currentBroadcastMaterial[playerID-1] = material
+
+		return True
+	End Method
+
 
 	'Test für den UnitTest
 	Method GetTastValue:Int()
 		Return 5
 	End Method
 End Type
+
+'===== CONVENIENCE ACCESSOR =====
+Function GetBroadcastManager:TBroadcastManager()
+	Return TBroadcastManager.GetInstance()
+End Function
+
 
 
 
@@ -282,7 +356,7 @@ Type TBroadcast
 			If broadcastedMaterial Then
 				AudienceResults[i].Title = broadcastedMaterial.GetTitle()
 				'3. Qualität meines Programmes
-				Attractions[i] = broadcastedMaterial.GetAudienceAttraction(Game.GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
+				Attractions[i] = broadcastedMaterial.GetAudienceAttraction(GetGameTime().GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
 			Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 				TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + i + "': Malfunction!", LOG_DEBUG)
 				AudienceResults[i].Title = "Malfunction!" 'Sendeausfall
@@ -387,7 +461,7 @@ Type TBroadcast
 
 
 	Function GetPotentialAudienceForHour:TAudience(maxAudience:TAudience, forHour:Int = -1)
-		If forHour < 0 Then forHour = Game.GetHour()
+		If forHour < 0 Then forHour = GetGameTime().GetHour()
 
 		Local maxAudienceReturn:TAudience = maxAudience.Copy()
 		Local modi:TAudience = Null
@@ -686,7 +760,7 @@ Type TAudienceMarketCalculation
 
 
 	Method ComputeAudience(forHour:Int = -1)
-		If forHour <= 0 Then forHour = Game.GetHour()
+		If forHour <= 0 Then forHour = GetGameTime().GetHour()
 
 		CalculatePotentialChannelSurfer(forHour)
 
@@ -786,583 +860,6 @@ End Type
 
 
 
-'Das TAudienceResult ist sowas wie das zusammengefasste Ergebnis einer
-'TBroadcast- und/oder TAudienceMarketCalculation-Berechnung.
-Type TAudienceResult
-	Field PlayerId:Int										'Optional: Die Id des Spielers zu dem das Result gehört.
-	Field Hour:Int											'Zu welcher Stunde gehört das Result
-	Field Title:String										'Der Titel des Programmes
-
-	Field WholeMarket:TAudience	= New TAudience				'Der Gesamtmarkt: Also wenn alle die einen TV haben.
-	Field PotentialMaxAudience:TAudience = New TAudience	'Die Gesamtzuschauerzahl die in dieser Stunde den TV angeschaltet hat! Also 100%-Quote! Summe aus allen Exklusiven, Flow-Leuten und Zappern
-	Field Audience:TAudience = New TAudience				'Die Zahl der Zuschauer die erreicht wurden. Sozusagen das Ergenis das zählt und angezeigt wird.
-
-	Field ChannelSurferToShare:TAudience = New TAudience	'Summe der Zapper die es zu verteilen gilt (ist nicht gleich eines ChannelSurferSum)
-
-	Field AudienceAttraction:TAudienceAttraction			'Die ursprüngliche Attraktivität des Programmes, vor der Kunkurrenzsituation
-	Field EffectiveAudienceAttraction:TAudience				'Die effektive Attraktivität des Programmes auf Grund der Konkurrenzsituation
-
-	'Werden beim Refresh berechnet
-	Field AudienceQuote:TAudience							'Die Zuschauerquote, relativ zu MaxAudienceThisHour
-	Field PotentialMaxAudienceQuote:TAudience				'Die Quote von PotentialMaxAudience. Wie viel Prozent schalten ein und checken das Programm. Basis ist WholeMarket
-
-	'Field MarketShare:Float								'Die reale Zuschauerquote, die aber noch nicht verwendet wird.
-
-
-	'Das Ergebis des aktuellen Spielers zu aktuellen Zeit
-	Function Curr:TAudienceResult(playerID:Int = -1)
-		Return Game.GetPlayer(playerID).audience
-	End Function
-
-
-	Method AddResult(res:TAudienceResult)
-		WholeMarket.Add(res.WholeMarket)
-		PotentialMaxAudience.Add(res.PotentialMaxAudience)
-		ChannelSurferToShare.Add(res.ChannelSurferToShare)
-		Audience.Add(res.Audience)
-
-		AudienceAttraction = res.AudienceAttraction 'Ist immer gleich, deswegen einfach zuweisen
-	End Method
-
-
-	'Berechnet die Quoten neu. Muss mindestens einmal aufgerufen werden.
-	Method Refresh()
-		Audience.FixGenderCount()
-		PotentialMaxAudience.FixGenderCount()
-
-		AudienceQuote = Audience.Copy()
-		AudienceQuote.Divide(PotentialMaxAudience)
-
-		PotentialMaxAudienceQuote = PotentialMaxAudience.Copy()
-		PotentialMaxAudienceQuote.Divide(WholeMarket)
-	End Method
-
-
-	Method ToString:String()
-		Return Audience.GetSum() + " / " + PotentialMaxAudience.GetSum() + " / " + WholeMarket.GetSum() + "      Q: " + AudienceQuote.ToStringAverage()
-	End Method
-End Type
-
-
-
-
-'Diese Klasse repräsentiert das Publikum, dass die Summe seiner Zielgruppen ist.
-'Die Klasse kann sowohl Zuschauerzahlen als auch Faktoren/Quoten beinhalten
-'und stellt einige Methoden bereit die Berechnung mit Faktoren und anderen
-'TAudience-Klassen ermöglichen.
-Type TAudience
-	Field Id:Int				'Optional: Eine Id zur Identifikation (z.B. PlayerId). Nur bei Bedarf füllen!
-	Field Children:Float	= 0	'Kinder
-	Field Teenagers:Float	= 0	'Teenager
-	Field HouseWifes:Float	= 0	'Hausfrauen
-	Field Employees:Float	= 0	'Employees
-	Field Unemployed:Float	= 0	'Arbeitslose
-	Field Manager:Float		= 0	'Manager
-	Field Pensioners:Float	= 0	'Rentner
-	Field Women:Float		= 0	'Frauen
-	Field Men:Float			= 0	'Männer
-
-	'=== Constructors ===
-
-	Function CreateAndInit:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
-		Local obj:TAudience = New TAudience
-		obj.SetValues(children, teenagers, houseWifes, employees, unemployed, manager, pensioners, women, men)
-		If (women = -1 And men = -1) Then obj.CalcGenderBreakdown()
-		Return obj
-	End Function
-
-	Function CreateAndInitValue:TAudience(defaultValue:Float)
-		Local obj:TAudience = New TAudience
-		obj.AddFloat(defaultValue)
-		Return obj
-	End Function
-
-	Function CreateWithBreakdown:TAudience(audience:Int)
-		Local obj:TAudience = New TAudience
-		obj.Children	= audience * 0.09	'Kinder (9%)
-		obj.Teenagers	= audience * 0.1	'Teenager (10%)
-		'adults 60%
-		obj.HouseWifes	= audience * 0.12	'Hausfrauen (20% von 60% Erwachsenen = 12%)
-		obj.Employees	= audience * 0.405	'Arbeitnehmer (67,5% von 60% Erwachsenen = 40,5%)
-		obj.Unemployed	= audience * 0.045	'Arbeitslose (7,5% von 60% Erwachsenen = 4,5%)
-		obj.Manager		= audience * 0.03	'Manager (5% von 60% Erwachsenen = 3%)
-		obj.Pensioners	= audience * 0.21	'Rentner (21%)
-		'gender
-		obj.CalcGenderBreakdown()
-		Return obj
-	End Function
-
-	'=== PUBLIC ===
-
-	Method Copy:TAudience()
-		Local result:TAudience = New TAudience
-		result.Id = Id
-		result.SetValuesFrom(Self)
-		return result
-	End Method
-
-	Method SetValuesFrom:TAudience(value:TAudience)
-		Self.SetValues(value.Children, value.Teenagers, value.HouseWifes, value.Employees, value.Unemployed, value.Manager, value.Pensioners, value.Women, value.Men)
-		Return Self
-	End Method
-
-	Method SetValues:TAudience(children:Float, teenagers:Float, houseWifes:Float, employees:Float, unemployed:Float, manager:Float, pensioners:Float, women:Float=-1, men:Float=-1)
-		Self.Children	= children
-		Self.Teenagers	= teenagers
-		Self.HouseWifes	= houseWifes
-		Self.Employees	= employees
-		Self.Unemployed	= unemployed
-		Self.Manager	= manager
-		Self.Pensioners	= pensioners
-		'gender
-		Self.Women		= women
-		Self.Men		= men
-		Return Self
-	End Method
-
-
-	Method GetAverage:Float()
-		Return (Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners) / 7
-	End Method
-
-	Method CalcGenderBreakdown()
-		Women		= Children * 0.5 + Teenagers * 0.5 + HouseWifes * 0.9 + Employees * 0.4 + Unemployed * 0.4 + Manager * 0.25 + Pensioners * 0.55
-		Men			= Children * 0.5 + Teenagers * 0.5 + HouseWifes * 0.1 + Employees * 0.6 + Unemployed * 0.6 + Manager * 0.75 + Pensioners * 0.45
-	End Method
-
-	Method FixGenderCount()
-		Local GenderSum:Float = Women + Men
-		Local AudienceSum:Int = GetSum();
-
-		Women = Ceil(AudienceSum / GenderSum * Women)
-		Men = Ceil(AudienceSum / GenderSum * Men)
-		Men :+ AudienceSum - Women - Men 'Den Rest bei den Männern draufrechnen/abziehen
-	End Method
-
-	Method CutBordersFloat:TAudience(minimum:Float, maximum:Float)
-		CutMinimumFloat(minimum)
-		CutMaximumFloat(maximum)
-		Return Self
-	End Method
-	
-	Method CutBorders:TAudience(minimum:TAudience, maximum:TAudience)
-		CutMinimum(minimum)
-		CutMaximum(maximum)
-		Return Self
-	End Method	
-
-	Method CutMinimumFloat:TAudience(value:float)
-		CutMinimum(TAudience.CreateAndInitValue(value))
-		Return Self
-	End Method
-
-	Method CutMinimum:TAudience(minimum:TAudience)
-		If Children < minimum.Children Then Children = minimum.Children
-		If Teenagers < minimum.Teenagers Then Teenagers = minimum.Teenagers
-		If HouseWifes < minimum.HouseWifes Then HouseWifes = minimum.HouseWifes
-		If Employees < minimum.Employees Then Employees = minimum.Employees
-		If Unemployed < minimum.Unemployed Then Unemployed = minimum.Unemployed
-		If Manager < minimum.Manager Then Manager = minimum.Manager
-		If Pensioners < minimum.Pensioners Then Pensioners = minimum.Pensioners
-		If Women < minimum.Women Then Women = minimum.Women
-		If Men < minimum.Men Then Men = minimum.Men
-		Return Self
-	End Method		
-
-	Method CutMaximumFloat:TAudience(value:float)
-		CutMaximum(TAudience.CreateAndInitValue(value))
-		Return Self
-	End Method	
-	
-	Method CutMaximum:TAudience(maximum:TAudience)
-		If Children > maximum.Children Then Children = maximum.Children
-		If Teenagers > maximum.Teenagers Then Teenagers = maximum.Teenagers
-		If HouseWifes > maximum.HouseWifes Then HouseWifes = maximum.HouseWifes
-		If Employees > maximum.Employees Then Employees = maximum.Employees
-		If Unemployed > maximum.Unemployed Then Unemployed = maximum.Unemployed
-		If Manager > maximum.Manager Then Manager = maximum.Manager
-		If Pensioners > maximum.Pensioners Then Pensioners = maximum.Pensioners
-		If Women > maximum.Women Then Women = maximum.Women
-		If Men > maximum.Men Then Men = maximum.Men
-		Return Self
-	End Method
-
-	Method GetValue:Float(targetID:int)
-		Select targetID
-			Case 1	Return Children
-			Case 2	Return Teenagers
-			Case 3	Return HouseWifes
-			Case 4	Return Employees
-			Case 5	Return Unemployed
-			Case 6	Return Manager
-			Case 7	Return Pensioners
-			Case 8 	Return Women
-			Case 9	Return Men
-			Default
-				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
-		End Select
-	End Method
-
-	Method SetValue(targetID:Int, newValue:Float)
-		Select targetID
-			Case 1	Children = newValue
-			Case 2	Teenagers = newValue
-			Case 3	HouseWifes = newValue
-			Case 4	Employees = newValue
-			Case 5	Unemployed = newValue
-			Case 6	Manager = newValue
-			Case 7	Pensioners = newValue
-			Case 8	Women = newValue
-			Case 9	Men = newValue
-			Default
-				Throw TArgumentException.Create("targetID", String.FromInt(targetID))
-		End Select
-	End Method
-
-	Method GetSum:Float()
-		Return Children + Teenagers + HouseWifes + Employees + Unemployed + Manager + Pensioners
-	End Method
-
-	Method Add:TAudience(audience:TAudience)
-		'skip adding if the param is "unset"
-		If Not audience Then Return Self
-		Children	:+ audience.Children
-		Teenagers	:+ audience.Teenagers
-		HouseWifes	:+ audience.HouseWifes
-		Employees	:+ audience.Employees
-		Unemployed	:+ audience.Unemployed
-		Manager		:+ audience.Manager
-		Pensioners	:+ audience.Pensioners
-		Women		:+ audience.Women
-		Men			:+ audience.Men
-		Return Self
-	End Method
-
-
-	Method AddFloat:TAudience(number:Float)
-		Children	:+ number
-		Teenagers	:+ number
-		HouseWifes	:+ number
-		Employees	:+ number
-		Unemployed	:+ number
-		Manager		:+ number
-		Pensioners	:+ number
-		Women		:+ number
-		Men			:+ number
-		Return Self
-	End Method
-
-
-	Method Subtract:TAudience(audience:TAudience)
-		'skip subtracting if the param is "unset"
-		If Not audience Then Return Self
-		Children	:- audience.Children
-		Teenagers	:- audience.Teenagers
-		HouseWifes	:- audience.HouseWifes
-		Employees	:- audience.Employees
-		Unemployed	:- audience.Unemployed
-		Manager		:- audience.Manager
-		Pensioners	:- audience.Pensioners
-		Women		:- audience.Women
-		Men			:- audience.Men
-
-		Return Self
-	End Method
-
-	Method SubtractFloat:TAudience(number:Float)
-		Children	:- number
-		Teenagers	:- number
-		HouseWifes	:- number
-		Employees	:- number
-		Unemployed	:- number
-		Manager		:- number
-		Pensioners	:- number
-		Women		:- number
-		Men			:- number
-		Return Self
-	End Method
-
-
-	Method Multiply:TAudience(audience:TAudience)
-		Children	:* audience.Children
-		Teenagers	:* audience.Teenagers
-		HouseWifes	:* audience.HouseWifes
-		Employees	:* audience.Employees
-		Unemployed	:* audience.Unemployed
-		Manager		:* audience.Manager
-		Pensioners	:* audience.Pensioners
-		Women		:* audience.Women
-		Men			:* audience.Men
-		Return Self
-	End Method
-
-
-	Method MultiplyFloat:TAudience(factor:Float)
-		Children	:* factor
-		Teenagers	:* factor
-		HouseWifes	:* factor
-		Employees	:* factor
-		Unemployed	:* factor
-		Manager		:* factor
-		Pensioners	:* factor
-		Women		:* factor
-		Men			:* factor
-		Return Self
-	End Method
-
-
-	Method Divide:TAudience(audience:TAudience)
-		Children	:/ audience.Children
-		Teenagers	:/ audience.Teenagers
-		HouseWifes	:/ audience.HouseWifes
-		Employees	:/ audience.Employees
-		Unemployed	:/ audience.Unemployed
-		Manager		:/ audience.Manager
-		Pensioners	:/ audience.Pensioners
-		Women		:/ audience.Women
-		Men			:/ audience.Men
-		Return Self
-	End Method
-
-
-	Method DivideFloat:TAudience(number:Float)
-		Children	:/ number
-		Teenagers	:/ number
-		HouseWifes	:/ number
-		Employees	:/ number
-		Unemployed	:/ number
-		Manager		:/ number
-		Pensioners	:/ number
-		Women		:/ number
-		Men			:/ number
-		Return Self
-	End Method
-
-
-	Method Round:TAudience()
-		Children	= THelper.RoundInt(Children)
-		Teenagers	= THelper.RoundInt(Teenagers)
-		HouseWifes	= THelper.RoundInt(HouseWifes)
-		Employees	= THelper.RoundInt(Employees)
-		Unemployed	= THelper.RoundInt(Unemployed)
-		Manager		= THelper.RoundInt(Manager)
-		Pensioners	= THelper.RoundInt(Pensioners)
-		Women		= THelper.RoundInt(Women)
-		Men			= THelper.RoundInt(Men)
-		Return Self
-	End Method
-
-
-	Method ToNumberSortMap:TNumberSortMap(withSubGroups:Int=false)
-		Local amap:TNumberSortMap = new TNumberSortMap
-		amap.Add("1", Children)
-		amap.Add("2", Teenagers)
-		amap.Add("3", HouseWifes)
-		amap.Add("4", Employees)
-		amap.Add("5", Unemployed)
-		amap.Add("6", Manager)
-		amap.Add("7", Pensioners)
-		If withSubGroups Then
-			amap.Add("8", Women)
-			amap.Add("9", Men)
-		EndIf
-		Return amap
-	End Method
-
-	Method ToStringMinimal:String()
-		Local dec:Int = 0
-		Return "C:" + THelper.floatToString(Children,dec) + " / T:" + THelper.floatToString(Teenagers,dec) + " / H:" + THelper.floatToString(HouseWifes,dec) + " / E:" + THelper.floatToString(Employees,dec) + " / U:" + THelper.floatToString(Unemployed,dec) + " / M:" + THelper.floatToString(Manager,dec) + " /P:" + THelper.floatToString(Pensioners,dec)
-	End Method
-
-	Method ToString:String()
-		Local dec:Int = 4
-		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + THelper.floatToString(Children,dec) + "  - 1: " + THelper.floatToString(Teenagers,dec) + "  - 2: " + THelper.floatToString(HouseWifes,dec) + "  - 3: " + THelper.floatToString(Employees,dec) + "  - 4: " + THelper.floatToString(Unemployed,dec) + "  - 5: " + THelper.floatToString(Manager,dec) + "  - 6: " + THelper.floatToString(Pensioners,dec) + ") - [[ W: " + THelper.floatToString(Women,dec) + "  - M: " + THelper.floatToString(Men ,dec) + " ]]"
-	End Method
-
-
-	Method ToStringAverage:String()
-		Return "Avg: " + THelper.floatToString(GetAverage(),3) + "  ( 0: " + THelper.floatToString(Children,3) + "  - 1: " + THelper.floatToString(Teenagers,3) + "  - 2: " + THelper.floatToString(HouseWifes,3) + "  - 3: " + THelper.floatToString(Employees,3) + "  - 4: " + THelper.floatToString(Unemployed,3) + "  - 5: " + THelper.floatToString(Manager,3) + "  - 6: " + THelper.floatToString(Pensioners,3) + ")"
-	End Method
-
-	Function InnerSort:Int(targetId:Int, o1:Object, o2:Object)
-		Local s1:TAudience = TAudience(o1)
-		Local s2:TAudience = TAudience(o2)
-		If Not s2 Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
-        Return (s1.GetValue(targetId)*1000)-(s2.GetValue(targetId)*1000)
-	End Function
-
-	Function ChildrenSort:Int(o1:Object, o2:Object)
-		Return InnerSort(1, o1, o2)
-	End Function
-
-	Function TeenagersSort:Int(o1:Object, o2:Object)
-		Return InnerSort(2, o1, o2)
-	End Function
-
-	Function HouseWifesSort:Int(o1:Object, o2:Object)
-		Return InnerSort(3, o1, o2)
-	End Function
-
-	Function EmployeesSort:Int(o1:Object, o2:Object)
-		Return InnerSort(4, o1, o2)
-	End Function
-
-	Function UnemployedSort:Int(o1:Object, o2:Object)
-		Return InnerSort(5, o1, o2)
-	End Function
-
-	Function ManagerSort:Int(o1:Object, o2:Object)
-		Return InnerSort(6, o1, o2)
-	End Function
-
-	Function PensionersSort:Int(o1:Object, o2:Object)
-		Return InnerSort(7, o1, o2)
-	End Function
-
-	Function WomenSort:Int(o1:Object, o2:Object)
-		Return InnerSort(8, o1, o2)
-	End Function
-
-	Function MenSort:Int(o1:Object, o2:Object)
-		Return InnerSort(9, o1, o2)
-	End Function
-End Type
-
-
-'Diese Klasse repräsentiert die Programmattraktivität (Inhalt von TAudience)
-'Sie beinhaltet aber zusätzlich die Informationen wie sie berechnet wurde (für Statistiken, Debugging und Nachberechnungen) unf für was sieht steht.
-Type TAudienceAttraction Extends TAudience
-	Field BroadcastType:Int '-1 = Sendeausfall; 1 = Film; 2 = News
-	Field Quality:Float				'0 - 100
-	Field GenrePopularityMod:Float	'
-	Field GenreTargetGroupMod:TAudience
-	Field PublicImageMod:TAudience
-	Field TrailerMod:TAudience
-	Field MiscMod:TAudience	
-	Field QualityOverTimeEffectMod:Float
-	Field GenreTimeMod:Float
-	Field LuckMod:TAudience
-	
-	Field AudienceFlowBonus:TAudience
-	Field SequenceEffect:TAudience
-
-	Field BaseAttraction:TAudience
-	Field FinalAttraction:TAudience	
-	Field PublicImageAttraction:TAudience
-
-	Field Genre:Int
-	Field GenreDefinition:TGenreDefinitionBase
-	Field Malfunction:Int '1 = Sendeausfall
-
-	Function CreateAndInitAttraction:TAudienceAttraction(group0:Float, group1:Float, group2:Float, group3:Float, group4:Float, group5:Float, group6:Float, subgroup0:Float, subgroup1:Float)
-		Local result:TAudienceAttraction = New TAudienceAttraction
-		result.SetValues(group0, group1, group2, group3, group4, group5, group6, subgroup0, subgroup1)
-		Return result
-	End Function
-
-	Method SetPlayerId(playerId:Int)
-		Self.Id = playerId
-		Self.BaseAttraction.Id = playerId
-		Self.FinalAttraction.Id = playerId
-		Self.PublicImageAttraction.Id = playerId
-	End Method
-	
-	Method SetFixAttraction:TAudienceAttraction(attraction:TAudience)
-		Self.BaseAttraction = attraction.Copy()
-		Self.FinalAttraction = attraction.Copy()
-		Self.PublicImageAttraction = attraction.Copy()
-		Self.SetValuesFrom(attraction)	
-		Return Self
-	End Method
-
-	Method AddAttraction:TAudienceAttraction(audienceAttr:TAudienceAttraction)
-		If Not audienceAttr Then Return Self
-		Self.Add(audienceAttr)
-
-		Quality	:+ audienceAttr.Quality
-		GenrePopularityMod	:+ audienceAttr.GenrePopularityMod
-		If GenreTargetGroupMod Then GenreTargetGroupMod.Add(audienceAttr.GenreTargetGroupMod)
-		If PublicImageMod Then PublicImageMod.Add(audienceAttr.PublicImageMod)
-		If TrailerMod Then TrailerMod.Add(audienceAttr.TrailerMod)
-		If MiscMod Then MiscMod.Add(audienceAttr.MiscMod)
-		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
-		QualityOverTimeEffectMod :+ audienceAttr.QualityOverTimeEffectMod
-		GenreTimeMod :+ audienceAttr.GenreTimeMod
-		If LuckMod Then MiscMod.Add(audienceAttr.LuckMod)
-		If AudienceFlowBonus Then AudienceFlowBonus.Add(audienceAttr.AudienceFlowBonus)
-		
-		'If NewsShowBonus Then NewsShowBonus.Add(audienceAttr.NewsShowBonus)
-		If SequenceEffect Then SequenceEffect.Add(audienceAttr.SequenceEffect)
-		If BaseAttraction Then BaseAttraction.Add(audienceAttr.BaseAttraction)
-		If FinalAttraction Then FinalAttraction.Add(audienceAttr.FinalAttraction)
-		If PublicImageAttraction Then PublicImageAttraction.Add(audienceAttr.PublicImageAttraction)
-		
-		Return Self
-	End Method
-
-	Method MultiplyAttrFactor:TAudienceAttraction(factor:float)
-		Self.MultiplyFloat(factor)
-
-		Quality	:* factor
-		GenrePopularityMod 	:* factor
-		If GenreTargetGroupMod Then GenreTargetGroupMod.MultiplyFloat(factor)
-		If PublicImageMod Then PublicImageMod.MultiplyFloat(factor)
-		If TrailerMod Then TrailerMod.MultiplyFloat(factor)
-		If MiscMod Then MiscMod.MultiplyFloat(factor)
-		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
-		QualityOverTimeEffectMod :* factor
-		GenreTimeMod :* factor
-		If LuckMod Then LuckMod.MultiplyFloat(factor)
-		'If NewsShowBonus Then NewsShowBonus.MultiplyFloat(factor)
-		If SequenceEffect Then SequenceEffect.MultiplyFloat(factor)
-		If BaseAttraction Then BaseAttraction.MultiplyFloat(factor)		
-		If FinalAttraction Then FinalAttraction.MultiplyFloat(factor)
-		If PublicImageAttraction Then PublicImageAttraction.MultiplyFloat(factor)
-		If AudienceFlowBonus Then AudienceFlowBonus.MultiplyFloat(factor)
-		
-		Return Self
-	End Method
-
-	Method Recalculate()
-		Local result:TAudience = new TAudience
-		result.AddFloat(GenrePopularityMod)
-		result.Add(GenreTargetGroupMod)	
-		result.Add(TrailerMod)
-		result.Add(MiscMod)
-		result.AddFloat(GenreTimeMod)
-		result.AddFloat(QualityOverTimeEffectMod)
-		
-		Self.PublicImageAttraction = result.Copy()
-		Self.PublicImageAttraction.AddFloat(1)
-		Self.PublicImageAttraction.MultiplyFloat(Quality)
-				
-		result.Add(PublicImageMod)
-		result.Add(LuckMod)
-		
-		result.AddFloat(1)		
-		result.MultiplyFloat(Quality)			
-		result.Add(AudienceFlowBonus)
-		Self.BaseAttraction = result.Copy()
-				
-		'result.Add(AudienceFlowBonus)
-		result.Add(SequenceEffect)
-		
-		Self.FinalAttraction = result		
-		Self.SetValuesFrom(result)	
-	End Method	
-
-	Method CopyBaseAttractionFrom(otherAudienceAttraction:TAudienceAttraction)
-		Quality = otherAudienceAttraction.Quality
-		GenrePopularityMod = otherAudienceAttraction.GenrePopularityMod
-		GenreTargetGroupMod = otherAudienceAttraction.GenreTargetGroupMod
-		TrailerMod = otherAudienceAttraction.TrailerMod
-		MiscMod = otherAudienceAttraction.MiscMod
-		PublicImageMod = otherAudienceAttraction.PublicImageMod
-		AudienceFlowBonus = otherAudienceAttraction.AudienceFlowBonus
-	End Method
-End Type
-
-
 Type TBroadcastSequence
 	Field sequence:TList = CreateList()
 	Field current:TBroadcast
@@ -1433,8 +930,8 @@ Type TSequenceCalculation
 			Local sequence:Float = CalcSequenceCase(predecessorValue, successorValue, riseModTemp, shrinkModTemp, predShareOnRiseForTG, predShareOnShrinkForTG)
 
 			result.SetValue(i, sequence)
-		Next							
-		
+		Next
+
 		Return result
 	End Method
 

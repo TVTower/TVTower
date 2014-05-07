@@ -17,19 +17,10 @@ Import Brl.threads
 ?
 'Import bah.libxml
 Import "external/persistence.mod/persistence.bmx"
+Import "Dig/base.util.mersenne.bmx"
 
+Const CURRENCYSIGN:string = Chr(8364) 'eurosign
 
-'Mersenne: Random numbers
-'reproduceable random numbers for network
-Import "basefunctions_mersenne.c"
-
-Extern "c"
-  Function SeedRand(seed:int)
-  Function Rand32:Int()
-  Function RandMax:Int(hi:int)
-  Function RandRange:Int(lo:int,hi:int)
-End Extern
-'------------------------
 
 Type TApplicationSettings
 	field fullscreen:int	= 0
@@ -74,49 +65,6 @@ Function GetTweenPoint:TPoint(currentPoint:TPoint, oldPoint:TPoint, avoidShaking
 	       )
 End Function
 
-
-
-
-
-Type TNumberSortMap
-	Field Content:TList = CreateList()
-
-	Method Add(_key:String, _value:Float)
-		Content.AddLast(TKeyValueNumber.Create(_key, _value))
-	End Method
-
-	Method Sort(ascending:Int = true)
-		SortList (Content, ascending)
-	End Method
-
-	Method NumberAtIndex:Float( index:Int )
-		Return TKeyValueNumber(Content.ValueAtIndex(index)).Value
-	End Method
-End Type
-
-Type TKeyValueNumber
-	Field Key:String
-	Field Value:Float
-
-	Function Create:TKeyValueNumber(_key:String, _value:Float)
-		Local obj:TKeyValueNumber = new TKeyValueNumber
-		obj.Key = _key
-		obj.Value = _value
-		Return obj
-	End Function
-
-	Method Compare:Int(other:Object)
-		Local s:TKeyValueNumber = TKeyValueNumber(other)
-		If Not s Then Return 1			' Object not a TKeyValueNumber: define greater than any TKeyValueNumber
-		If Value < s.Value 'Für Floats etwas unschöner, da der Rückgabewert int ist
-			Return -1
-		Else If Value > s.Value
-			Return 1
-		Else
-			Return 0
-		EndIf
-	End Method
-End Type
 
 
 

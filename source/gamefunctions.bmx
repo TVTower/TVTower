@@ -188,7 +188,7 @@ Type TGUIChat Extends TGUIGameWindow
 		Local sendToChannels:Int = guiChat.getChannelsFromText(guiInput.value)
 		'- step B) is emitting the event "for all"
 		'  (the listeners have to handle if they want or ignore the line
-		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", Game.playerID).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
+		EventManager.triggerEvent( TEventSimple.Create( "chat.onAddEntry", new TData.AddNumber("senderID", GetPlayerCollection().playerID).AddNumber("channels", sendToChannels).AddString("text",guiInput.value) , guiChat ) )
 
 		'avoid getting the enter-key registered multiple times
 		'which leads to "flickering"
@@ -272,9 +272,11 @@ Type TGUIChat Extends TGUIGameWindow
 		Local senderName:String	= ""
 		Local senderColor:TColor= Null
 
-		If Game.isPlayer(senderID)
-			senderName	= Game.Players[senderID].Name
-			senderColor	= Game.Players[senderID].color
+		local sendingPlayer:TPlayer = GetPlayerCollection().Get(senderID)
+
+		If sendingPlayer
+			senderName	= sendingPlayer.Name
+			senderColor	= sendingPlayer.color
 			If Not textColor Then textColor = Self._defaultTextColor
 		Else
 			senderName	= "SYSTEM"
@@ -1226,43 +1228,6 @@ End Type
 
 
 
-Type TGameObject {_exposeToLua="selected"}
-	Field id:Int		= 0 	{_exposeToLua}
-	Global LastID:Int	= 0
-
-	Method New()
-		LastID:+1
-		'assign a new id
-		id = LastID
-	End Method
-
-	Method GetID:Int() {_exposeToLua}
-		Return id
-	End Method
-
-
-	'overrideable method for cleanup actions
-	Method Remove()
-	End Method
-End Type
-
-
-
-
-Type TOwnedGameObject Extends TGameObject {_exposeToLua="selected"}
-	Field owner:Int		= 0
-
-
-	Method SetOwner:Int(owner:Int=0) {_exposeToLua}
-		Self.owner = owner
-	End Method
-
-
-	Method GetOwner:Int() {_exposeToLua}
-		Return owner
-	End Method
-End Type
-
 
 
 
@@ -1810,14 +1775,17 @@ Type TInterface
 	'creates and returns an interface
 	Function Create:TInterface()
 		Local Interface:TInterface = New TInterface
-		Interface.CurrentProgramme			= GetSpriteFromRegistry("gfx_interface_tv_programme_none")
-		Interface.CurrentProgrammeToolTip	= TTooltip.Create("", "", 40, 395)
+		Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+
+		Interface.CurrentProgrammeToolTip = TTooltip.Create("", "", 40, 395)
 		Interface.CurrentProgrammeToolTip.minContentWidth = 220
-		Interface.CurrentAudienceToolTip	= TTooltipAudience.Create("", "", 490, 440)
+
+		Interface.CurrentAudienceToolTip = TTooltipAudience.Create("", "", 490, 440)
 		Interface.CurrentAudienceToolTip.minContentWidth = 200
-		Interface.CurrentTimeToolTip		= TTooltip.Create("", "", 490, 535)
-		Interface.MoneyToolTip				= TTooltip.Create("", "", 490, 408)
-		Interface.BettyToolTip				= TTooltip.Create("", "", 490, 485)
+
+		Interface.CurrentTimeToolTip = TTooltip.Create("", "", 490, 535)
+		Interface.MoneyToolTip = TTooltip.Create("", "", 490, 408)
+		Interface.BettyToolTip = TTooltip.Create("", "", 490, 485)
 
 		'collect them in one list (to sort them correctly)
 		Interface.tooltips.AddLast(Interface.CurrentProgrammeToolTip)
@@ -1827,7 +1795,7 @@ Type TInterface
 		Interface.tooltips.AddLast(Interface.BettyToolTip)
 
 
-		Interface.noiseSprite				= GetSpriteFromRegistry("gfx_interface_tv_noise")
+		Interface.noiseSprite = GetSpriteFromRegistry("gfx_interface_tv_noise")
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
 		Interface.noiseDisplace.Dimension.SetX(Max(0, Interface.noiseSprite.area.GetW() - Interface.CurrentProgramme.area.GetW()))
@@ -1840,25 +1808,27 @@ Type TInterface
 
 
 	Method Update(deltaTime:Float=1.0)
-		If ShowChannel <> 0
-			If Game.getMinute() >= 55
-				Local advertisement:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetAdvertisement()
+		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
+
+		if programmePlan	'similar to "ShowChannel<>0"
+			If GetGameTime().getMinute() >= 55
+				Local advertisement:TBroadcastMaterial = programmePlan.GetAdvertisement()
 				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_ads")
 			    If advertisement
 					'real ad
 					If TAdvertisement(advertisement)
 						CurrentProgrammeToolTip.TitleBGtype = 1
-						CurrentProgrammeText 				= getLocale("ADVERTISMENT")+": "+advertisement.GetTitle()
+						CurrentProgrammeText = getLocale("ADVERTISMENT")+": "+advertisement.GetTitle()
 					Else
 						CurrentProgrammeToolTip.TitleBGtype = 1
-						CurrentProgrammeText 				= getLocale("TRAILER")+": "+advertisement.GetTitle()
+						CurrentProgrammeText = getLocale("TRAILER")+": "+advertisement.GetTitle()
 					EndIf
 				Else
 					CurrentProgrammeToolTip.TitleBGtype	= 2
-					CurrentProgrammeText				= getLocale("BROADCASTING_OUTAGE")
+					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			Else
-				Local obj:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetProgramme()
+				Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 				If obj
 					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
@@ -1868,29 +1838,29 @@ Type TInterface
 						Local programme:TProgramme = TProgramme(obj)
 						Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
 						If programme.isSeries()
-							CurrentProgrammeText = programme.licence.parentLicence.GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
+							CurrentProgrammeText = programme.licence.parentLicence.GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						Else
-							CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
+							CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						EndIf
 					ElseIf TAdvertisement(obj)
-						CurrentProgrammeText = GetLocale("INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+						CurrentProgrammeText = GetLocale("INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 					ElseIf TNews(obj)
-						CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+						CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 					EndIf
 				Else
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			EndIf
-			If Game.getMinute() <= 5
+			If GetGameTime().getMinute() <= 5
 				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_news")
 				CurrentProgrammeToolTip.TitleBGtype	= 3
-				CurrentProgrammeText				= getLocale("NEWS")
+				CurrentProgrammeText = getLocale("NEWS")
 			EndIf
 		Else
-			CurrentProgrammeToolTip.TitleBGtype		= 3
-			CurrentProgrammeText 					= getLocale("TV_OFF")
-		EndIf 'showchannel <>0
+			CurrentProgrammeToolTip.TitleBGtype = 3
+			CurrentProgrammeText = getLocale("TV_OFF")
+		EndIf 'no programmePlan found -> invalid player / tv off
 
 		For local tip:TTooltip = eachin tooltips
 			If tip.enabled Then tip.Update()
@@ -1918,13 +1888,13 @@ Type TInterface
 		If THelper.MouseIn(20,385,280,200)
 			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
 			local content:String = ""
-			If ShowChannel <> 0
-				content	= GetLocale("AUDIENCE_RATING")+": "+Game.Players[ShowChannel].getFormattedAudience()+ " (MA: "+THelper.floatToString(Game.Players[ShowChannel].GetAudiencePercentage()*100,2)+"%)"
+			If programmePlan
+				content	= GetLocale("AUDIENCE_RATING")+": "+programmePlan.getFormattedAudience()+ " (MA: "+THelper.floatToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
-				If ShowChannel = Game.playerID
-					If Game.getMinute() >= 5 And Game.getMinute() < 55
-						Local obj:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetAdvertisement()
+				If ShowChannel = GetPlayerCollection().playerID
+					If GetGameTime().getMinute() >= 5 And GetGameTime().getMinute() < 55
+						Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 						If TAdvertisement(obj)
 							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + obj.GetTitle()+" (Mindestz.: " + TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())+")"
 						ElseIf TProgramme(obj)
@@ -1932,17 +1902,17 @@ Type TInterface
 						Else
 							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
 						EndIf
-					ElseIf Game.getMinute()>=55 Or Game.getMinute()<5
-						Local obj:TBroadcastMaterial = Game.Players[ShowChannel].ProgrammePlan.GetProgramme()
+					ElseIf GetGameTime().getMinute()>=55 Or GetGameTime().getMinute()<5
+						Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 						If TProgramme(obj)
 							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~n"
 							If TProgramme(obj) And TProgramme(obj).isSeries()
-								content :+ TProgramme(obj).licence.parentLicence.data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+								content :+ TProgramme(obj).licence.parentLicence.data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							Else
-								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							EndIf
 						ElseIf TAdvertisement(obj)
-							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~nDauerwerbesendung: " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + Game.Players[ShowChannel].ProgrammePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~nDauerwerbesendung: " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						Else
 							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+": nicht gesetzt!"
 						EndIf
@@ -1957,29 +1927,28 @@ Type TInterface
 			CurrentProgrammeToolTip.Hover()
 	    EndIf
 		If THelper.MouseIn(355,468,130,30)
-			'Print "DebugInfo: " + TAudienceResult.Curr().ToString()
-			Local player:TPlayer = Game.Players[Game.playerID]
-			Local audienceResult:TAudienceResult = player.audience
-
-			CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+player.getFormattedAudience()+ " (MA: "+THelper.floatToString(player.GetAudiencePercentage() * 100,2)+"%)")
-			CurrentAudienceToolTip.SetAudienceResult(audienceResult)
-			CurrentAudienceToolTip.enabled 	= 1
-			CurrentAudienceToolTip.Hover()
-			'force redraw
-			CurrentTimeToolTip.dirtyImage = True
+			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerCollection().Get().ProgrammePlan
+			if playerProgrammePlan
+				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+playerProgrammePlan.getFormattedAudience()+ " (MA: "+THelper.floatToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
+				CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
+				CurrentAudienceToolTip.enabled = 1
+				CurrentAudienceToolTip.Hover()
+				'force redraw
+				CurrentTimeToolTip.dirtyImage = True
+			endif
 		EndIf
 		If THelper.MouseIn(355,533,130,45)
 			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
-			CurrentTimeToolTip.SetContent(Game.getFormattedTime()+" "+getLocale("DAY")+" "+Game.getDayOfYear()+"/"+Game.daysPerYear+" "+Game.getYear())
-			CurrentTimeToolTip.enabled 	= 1
+			CurrentTimeToolTip.SetContent(GetGameTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetGameTime().getDayOfYear()+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear())
+			CurrentTimeToolTip.enabled = 1
 			CurrentTimeToolTip.Hover()
 		EndIf
 		If THelper.MouseIn(355,415,130,30)
-			MoneyToolTip.title 		= getLocale("MONEY")
+			MoneyToolTip.title = getLocale("MONEY")
 			local content:String = ""
-			content	= "|b|"+getLocale("MONEY")+":|/b| "+Game.GetPlayer().GetMoney() + getLocale("CURRENCY")
+			content	= "|b|"+getLocale("MONEY")+":|/b| "+GetPlayerCollection().Get().GetMoney() + getLocale("CURRENCY")
 			content	:+ "~n"
-			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ Game.GetPlayer().GetCredit() + getLocale("CURRENCY")+"|/color|"
+			content	:+ "|b|"+getLocale("DEBT")+":|/b| |color=200,100,100|"+ GetPlayerCollection().Get().GetCredit() + getLocale("CURRENCY")+"|/color|"
 			MoneyTooltip.SetContent(content)
 			MoneyToolTip.enabled 	= 1
 			MoneyToolTip.Hover()
@@ -1996,13 +1965,13 @@ Type TInterface
 	'returns a string list of abbreviations for the watching family
 	Function GetWatchingFamily:string[]()
 		'fetch feedback to see which test-family member might watch
-		Local feedback:TBroadcastFeedback = Game.BroadcastManager.GetCurrentBroadcast().GetFeedback(Game.playerID)
+		Local feedback:TBroadcastFeedback = GetBroadcastManager().GetCurrentBroadcast().GetFeedback(GetPlayerCollection().playerID)
 
 		local result:String[]
 
 		if (feedback.AudienceInterest.Children > 0)
 			'maybe sent to bed ? :D
-			'If Game.getHour() >= 5 and Game.getHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
+			'If GetGameTime().GetHour() >= 5 and GetGameTime().GetHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["girl"]
 		endif
 
@@ -2010,7 +1979,7 @@ Type TInterface
 
 		if (feedback.AudienceInterest.Teenagers > 0)
 			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
-			'If Game.GetWeekday()>6 or (Game.getHour() < 7 or Game.getHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
+			'If Game.GetWeekday()>6 or (GetGameTime().GetHour() < 7 or GetGameTime().GetHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["teen"]
 		endif
 
@@ -2034,10 +2003,10 @@ Type TInterface
 
 			If ShowChannel <> 0 Then GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
 
-
-
 		    'channel choosen and something aired?
-			If ShowChannel <> 0 And Game.Players[ShowChannel].audience
+		    local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
+
+			If programmePlan and programmePlan.GetAudience() > 0
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				If CurrentProgramme Then CurrentProgramme.Draw(45, 400)
 
@@ -2092,18 +2061,19 @@ Type TInterface
 	  		SetBlend MASKBLEND
 	     	GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, 419)
 			SetBlend ALPHABLEND
-			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
-			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.GetPlayer().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((Game.daysPlayed+1) + ". Tag", 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().ProgrammePlan.getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
+		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetGameTime().daysPlayed+1) + ". Tag", 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
 
 		SetAlpha 0.25
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime() + " Uhr", 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime() + " Uhr", 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
 		SetAlpha 0.9
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Game.getFormattedTime()+ " Uhr", 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime()+ " Uhr", 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
 		SetAlpha 1.0
 
 		For local tip:TTooltip = eachin tooltips

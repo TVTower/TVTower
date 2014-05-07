@@ -1,3 +1,79 @@
+'SuperStrict
+'Import "game.player.finance.bmx"
+'Import "game.player.programmeplan.bmx"
+'Import "game.broadcast.audienceresult.bmx"
+'Import "game.publicimage.bmx"
+'Import "game.figure.bmx"
+
+
+Type TPlayerCollection
+	Field players:TPlayer[4]
+	'playerID of player who sits in front of the screen
+	Field playerID:Int = 1
+	Global _instance:TPlayerCollection
+
+
+	Method New()
+		_instance = self
+	End Method
+
+
+	Function GetInstance:TPlayerCollection()
+		if not _instance then _instance = new TPlayerCollection
+		return _instance
+	End Function
+
+
+	Method Set:int(id:int=-1, player:TPlayer)
+		If id = -1 Then id = playerID
+		if id <= 0 Then return False
+
+		If players.length < playerID Then players = players[..id+1]
+		players[id-1] = player
+	End Method
+
+
+	Method Get:TPlayer(id:Int=-1)
+		If id = -1 Then id = playerID
+		If Not isPlayer(id) Then Return Null
+
+		Return players[id-1]
+	End Method
+
+
+	Method GetCount:Int()
+		return players.length
+	End Method
+
+
+	Method IsPlayer:Int(number:Int)
+		Return (number > 0 And number <= players.length And players[number-1] <> Null)
+	End Method
+
+
+	Method IsHuman:Int(number:Int)
+		Return (IsPlayer(number) And Not Get(number).figure.IsAI())
+	End Method
+
+
+	'the negative of "isHumanPlayer" - also "no human player" is possible
+	Method IsAI:Int(number:Int)
+		Return (IsPlayer(number) And Get(number).figure.IsAI())
+	End Method
+
+
+	Method IsLocalPlayer:Int(number:Int)
+		Return number = playerID
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+Function GetPlayerCollection:TPlayerCollection()
+	Return TPlayerCollection.GetInstance()
+End Function
+
+
+
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer {_exposeToLua="selected"}
@@ -5,9 +81,6 @@ Type TPlayer {_exposeToLua="selected"}
 	Field Name:String
 	'name of the channel
 	Field channelname:String
-	'financial stats about credit, money, payments ...
-	Field finances:TPlayerFinance[]
-	Field audience:TAudienceResult
 
 	Field PublicImage:TPublicImage							{_exposeToLua}
 	Field ProgrammeCollection:TPlayerProgrammeCollection	{_exposeToLua}
@@ -55,7 +128,7 @@ Type TPlayer {_exposeToLua="selected"}
 		'fetch from StationMap-list
 		local map:TStationMap = StationMapCollection.GetMap(playerID)
 		'still not existing - create it
-		if not map then map = TStationMap.Create(self)
+		if not map then map = TStationMap.Create(self.playerID)
 		return map
 	End Method
 
@@ -63,25 +136,7 @@ Type TPlayer {_exposeToLua="selected"}
 	'returns the financial of the given day
 	'if the day is in the future, a new finance object is created
 	Method GetFinance:TPlayerFinance(day:Int=-1)
-		If day <= 0 Then day = Game.GetDay()
-		'subtract start day to get a index starting at 0 and add 1 day again
-		Local arrayIndex:Int = day +1 - Game.GetStartDay()
-
-		If arrayIndex < 0 Then Return GetFinance(Game.GetStartDay()-1)
-		If (arrayIndex = 0 And Not finances[0]) Or arrayIndex >= finances.length
-			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
-			If arrayIndex >= finances.length
-				'resize array
-				finances = finances[..arrayIndex+1]
-			EndIf
-			finances[arrayIndex] = New TPlayerFinance.Create(Self)
-			'reuse the money from the day before
-			'if arrayIndex 0 - we do not need to take over
-			'calling GetFinance(day-1) instead of accessing the array
-			'assures that the object is created if needed (recursion)
-			If arrayIndex > 0 Then TPlayerFinance.TakeOverFinances(GetFinance(day-1), finances[arrayIndex])
-		EndIf
-		Return finances[arrayIndex]
+		return GetPlayerFinanceCollection().Get(playerID, day)
 	End Method
 
 
@@ -112,9 +167,12 @@ Type TPlayer {_exposeToLua="selected"}
 		Player.channelname = channelname
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayerID = playerID
-		Player.PublicImage = New TPublicImage.Create(Player)
-		Player.ProgrammeCollection = TPlayerProgrammeCollection.Create(Player)
-		Player.ProgrammePlan = New TPlayerProgrammePlan.Create(Player)
+		Player.PublicImage = New TPublicImage.Create(Player.playerID)
+		Player.ProgrammeCollection = TPlayerProgrammeCollection.Create(Player.playerID)
+		Player.ProgrammePlan = New TPlayerProgrammePlan.Create(Player.playerID)
+
+		GetPlayerProgrammeCollectionCollection().Set(Player.playerID, Player.ProgrammeCollection)
+		GetPlayerProgrammePlanCollection().Set(Player.playerID, Player.ProgrammePlan)
 
 		Player.RecolorFigure(Player.color)
 
@@ -122,6 +180,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 		Return Player
 	End Function
+
 
 
 	Method SetAIControlled(luafile:String="")
@@ -200,15 +259,15 @@ Type TPlayer {_exposeToLua="selected"}
 			'also a day change sets maximum even if level is lower than
 			'maximum (which is not allowed during day to pay for the best
 			'level you had this day)
-			if Game.GetDay(newsabonnementsSetTime[genre]) < Game.GetDay()
+			if GetGameTime().GetDay(newsabonnementsSetTime[genre]) < GetGameTime().GetDay()
 				'NOT 0:00 (the time daily costs are computed)
-				if Game.GetMinute() > 0
+				if GetGameTime().GetMinute() > 0
 					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
 				EndIf
 			EndIf
 
 			'more than 30 mins gone since last "abonnement set"
-			if Game.GetTimeGone() - newsabonnementsSetTime[genre] > 30
+			if GetGameTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30
 				'only set maximum if the new level is higher than the
 				'current days maxmimum.
 				if newsabonnementsDayMax[genre] < newsabonnements[genre]
@@ -246,18 +305,10 @@ Type TPlayer {_exposeToLua="selected"}
 		If newsabonnements[genre] <> level
 			newsabonnements[genre] = level
 			'set at which time we did this
-			newsabonnementsSetTime[genre] = Game.GetTimeGone()
+			newsabonnementsSetTime[genre] = GetGameTime().GetTimeGone()
 
 			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
 		EndIf
-	End Method
-
-
-	'calculates and returns the percentage of the players audience depending on the maxaudience
-	Method GetAudiencePercentage:Float() {_exposeToLua}
-		Return TAudienceResult.Curr(playerID).AudienceQuote.GetAverage()
-		'Local audienceResult:TAudienceResult = TAudienceResult.Curr(playerID)
-		'Return audienceResult.MaxAudienceThisHour.GetSumFloat() / audienceResult.WholeMarket.GetSumFloat()
 	End Method
 
 
@@ -305,18 +356,6 @@ endrem
 	End Method
 
 
-	Method GetAudience:Int() {_exposeToLua}
-		If Not Self.audience Then Return 0
-		Return Self.audience.Audience.GetSum()
-	End Method
-
-
-	'returns formatted value of actual audience
-	Method GetFormattedAudience:String() {_exposeToLua}
-		Return TFunctions.convertValue(GetAudience(), 2)
-	End Method
-
-
 	Method Compare:Int(otherObject:Object)
 		Local s:TPlayer = TPlayer(otherObject)
 		If Not s Then Return 1
@@ -326,6 +365,6 @@ endrem
 
 
 	Method isActivePlayer:Int()
-		Return (Self.playerID = Game.playerID)
+		Return (playerID = GetPlayerCollection().playerID)
 	End Method
 End Type

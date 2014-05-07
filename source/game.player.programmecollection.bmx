@@ -3,10 +3,55 @@ REM
 	code for PlayerProgrammeCollection
 	===========================================================
 ENDREM
+SuperStrict
+Import "game.gameobject.bmx"
+Import "game.broadcastmaterial.base.bmx"
+Import "game.broadcastmaterial.news.bmx"
+Import "game.broadcastmaterial.programme.bmx"
+Import "game.broadcastmaterial.advertisement.bmx"
+
+
+
+Type TPlayerProgrammeCollectionCollection
+	Field plans:TPlayerProgrammeCollection[]
+	Field maxContracts:int = 10
+	Global _instance:TPlayerProgrammeCollectionCollection
+
+
+	Method New()
+		_instance = self
+	End Method
+
+
+	Function GetInstance:TPlayerProgrammeCollectionCollection()
+		if not _instance then _instance = new TPlayerProgrammeCollectionCollection
+		return _instance
+	End Function
+
+
+	Method Set:int(playerID:int, plan:TPlayerProgrammeCollection)
+		if playerID <= 0 then return False
+		if playerID > plans.length then plans = plans[.. playerID]
+		plans[playerID-1] = plan
+	End Method
+
+
+	Method Get:TPlayerProgrammeCollection(playerID:int)
+		if playerID <= 0 or playerID > plans.length then return null
+		return plans[playerID-1]
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+Function GetPlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection()
+	Return TPlayerProgrammeCollectionCollection.GetInstance()
+End Function
+
+
 
 
 'holds all Programmes a player possesses
-Type TPlayerProgrammeCollection {_exposeToLua="selected"}
+Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected"}
 	Field programmeLicences:TList			= CreateList()
 	Field movieLicences:TList				= CreateList()
 	Field seriesLicences:TList				= CreateList()
@@ -15,13 +60,13 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Field adContracts:TList					= CreateList()
 	Field suitcaseProgrammeLicences:TList	= CreateList()	'objects not available directly but still owned
 	Field suitcaseAdContracts:TList			= CreateList()	'objects in the suitcase but not signed
-	Field parent:TPlayer
 	Global fireEvents:int					= TRUE			'FALSE to avoid recursive handling (network)
 
 
-	Function Create:TPlayerProgrammeCollection(player:TPlayer)
+	Function Create:TPlayerProgrammeCollection(owner:int)
 		Local obj:TPlayerProgrammeCollection = New TPlayerProgrammeCollection
-		obj.parent = player
+		GetPlayerProgrammeCollectionCollection().Set(owner, obj)
+		obj.owner = owner
 		Return obj
 	End Function
 
@@ -95,7 +140,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method AddAdContract:Int(contract:TAdContract)
 		If not contract then return FALSE
 
-		if contract.sign( self.parent.playerID ) and not adContracts.contains(contract)
+		if contract.sign( owner ) and not adContracts.contains(contract)
 			adContracts.AddLast(contract)
 			'if stored in suitcase ...remove it from there as we signed it
 			suitcaseAdContracts.Remove(contract)
@@ -127,7 +172,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 	Method AddUnsignedAdContractToSuitcase:int(contract:TAdContract)
 		If not contract then return FALSE
 		'do not add if already "full"
-		if suitcaseAdContracts.count() >= Game.maxContracts then return FALSE
+		if suitcaseAdContracts.count() >= GetPlayerProgrammeCollectionCollection().maxContracts then return FALSE
 
 		'add a special block-object to the suitcase
 		suitcaseAdContracts.AddLast(contract)
@@ -166,11 +211,11 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 
 	Method AddProgrammeLicenceToSuitcase:int(programmeLicence:TProgrammeLicence)
 		'do not add if already "full"
-		if suitcaseProgrammeLicences.count() >= Game.maxProgrammeLicencesInSuitcase then return FALSE
+		if suitcaseProgrammeLicences.count() >= GetPlayerProgrammeCollectionCollection().maxContracts then return FALSE
 
 		'if owner differs, check if we have to buy
-		if parent.playerID <> programmeLicence.owner
-			if not programmeLicence.buy(parent.playerID) then return FALSE
+		if owner <> programmeLicence.owner
+			if not programmeLicence.buy(owner) then return FALSE
 		endif
 
 		programmeLicences.remove(programmeLicence)
@@ -178,10 +223,6 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 		seriesLicences.remove(programmeLicence)
 
 		suitcaseProgrammeLicences.AddLast(programmeLicence)
-
-		'remove that programme from the players plan (if set)
-		' - second param = true: also remove currently run programmes
-		parent.ProgrammePlan.RemoveProgrammeInstancesByLicence(programmeLicence, true)
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addProgrammeLicenceToSuitcase", new TData.add("programmeLicence", programmeLicence), self))
@@ -233,11 +274,11 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 
 		'if owner differs, check if we have to buy or got that gifted
 		'at program start or through special event...
-		if parent.playerID <> licence.owner
+		if owner <> licence.owner
 			if buy
-				if not licence.buy(parent.playerID) then return FALSE
+				if not licence.buy(owner) then return FALSE
 			else
-				licence.SetOwner(parent.playerID)
+				licence.SetOwner(owner)
 			endif
 		endif
 
@@ -410,7 +451,7 @@ Type TPlayerProgrammeCollection {_exposeToLua="selected"}
 			return FALSE
 		endif
 
-		newsObject.owner = parent.playerID
+		newsObject.owner = owner
 		news.AddLast(newsObject)
 
 		'emit an event so eg. network can recognize the change

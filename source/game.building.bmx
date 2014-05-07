@@ -173,9 +173,9 @@ Type TBuilding Extends TStaticEntity
 
 	Method Update()
 		'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
-		If Game.GetPlayer().Figure.inRoom = Null
+		If GetPlayerCollection().Get().Figure.inRoom = Null
 			'working for player as center
-			area.position.y =  1 * 66 + 1 * 73 + 50 - Game.GetPlayer().Figure.area.GetY()
+			area.position.y =  1 * 66 + 1 * 73 + 50 - GetPlayerCollection().Get().Figure.area.GetY()
 		Endif
 
 
@@ -196,11 +196,11 @@ Type TBuilding Extends TStaticEntity
 
 
 		'handle player target changes
-		If Not Game.GetPlayer().Figure.inRoom
+		If Not GetPlayerCollection().Get().Figure.inRoom
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
-				If Not Game.GetPlayer().Figure.isChangingRoom
+				If Not GetPlayerCollection().Get().Figure.isChangingRoom
 					If THelper.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
-						Game.GetPlayer().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
+						GetPlayerCollection().Get().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
 						MOUSEMANAGER.resetKey(1)
 					EndIf
 				EndIf
@@ -278,8 +278,8 @@ Type TBuilding Extends TStaticEntity
 		'not interested in others
 		If not GetInstance().room.hotspots.contains(hotspot) then return False
 
-		Game.getPlayer().figure.changeTarget( GetInstance().area.GetX() + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().area.GetY() + hotspot.area.getY() )
-		Game.getPlayer().figure.targetHotspot = hotspot
+		GetPlayerCollection().Get().figure.changeTarget( GetInstance().area.GetX() + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().area.GetY() + hotspot.area.getY() )
+		GetPlayerCollection().Get().figure.targetHotspot = hotspot
 
 		MOUSEMANAGER.ResetKey(1)
 	End Function
@@ -305,7 +305,7 @@ Type TBuilding Extends TStaticEntity
 			Figure.alreadydrawn = False
 		Next
 
-		If GetFloor(Game.GetPlayer().Figure.area.GetY()) >= 8
+		If GetFloor(GetPlayerCollection().Get().Figure.area.GetY()) >= 8
 			SetColor 255, 255, 255
 			SetBlend ALPHABLEND
 			gfx_buildingRoof.Draw(area.GetX() + buildingDisplaceX, area.GetY() - gfx_buildingRoof.area.GetH())
@@ -344,7 +344,7 @@ Type TBuilding Extends TStaticEntity
 		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 75, area.GetY() + GetFloorY(12), - 1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
 		'draw entrance on top of figures
-		If GetFloor(Game.GetPlayer().Figure.area.GetY()) <= 4
+		If GetFloor(GetPlayerCollection().Get().Figure.area.GetY()) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
 			'draw figures outside the wall
 			For Local Figure:TFigure = EachIn FigureCollection.list
@@ -372,8 +372,8 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method UpdateBackground(deltaTime:Float)
-		ActHour = Game.GetHour()
-		DezimalTime = Float(ActHour*60 + Game.GetMinute())/60.0
+		ActHour = GetGameTime().GetHour()
+		DezimalTime = Float(ActHour*60 + GetGameTime().GetMinute())/60.0
 
 		If 9 <= ActHour And Acthour < 18 Then TimeColor = 1
 		If 5 <= ActHour And Acthour <= 9 		'overlapping to avoid colorjumps
@@ -398,9 +398,9 @@ Type TBuilding Extends TStaticEntity
 				'this means - we have to calculate the hours "gone" since 18:00
 				Local minutesPassed:Int = 0
 				If ActHour>18
-					minutesPassed = (ActHour-18)*60 + Game.GetMinute()
+					minutesPassed = (ActHour-18)*60 + GetGameTime().GetMinute()
 				Else
-					minutesPassed = (ActHour+7)*60 + Game.GetMinute()
+					minutesPassed = (ActHour+7)*60 + GetGameTime().GetMinute()
 				EndIf
 
 				'calculate the base speed needed so that the moon would move
@@ -415,7 +415,7 @@ Type TBuilding Extends TStaticEntity
 
 			'backup for tweening
 			Moon_PathCurrentDistanceOld = Moon_PathCurrentDistance
-			Moon_PathCurrentDistance:+ deltaTime * Moon_MovementBaseSpeed * Game.GetGameMinutesPerSecond()
+			Moon_PathCurrentDistance:+ deltaTime * Moon_MovementBaseSpeed * GetGameTime().GetGameMinutesPerSecond()
 		Else
 			Moon_MovementStarted = False
 			'set to beginning
@@ -427,13 +427,13 @@ Type TBuilding Extends TStaticEntity
 		'compute ufo
 		'-----------
 		'only happens between...
-		If Game.GetDay() Mod 2 = 0 And (DezimalTime > 18 Or DezimalTime < 7)
+		If GetGameTime().getDay() Mod 2 = 0 And (DezimalTime > 18 Or DezimalTime < 7)
 			UFO_MovementBaseSpeed = 1.0 / 60.0 '30 minutes for whole path
 
 			'only continue moving if not doing the beamanimation
 			If Not UFO_DoBeamAnimation Or UFO_BeamAnimationDone
 				UFO_PathCurrentDistanceOld = UFO_PathCurrentDistance
-				UFO_PathCurrentDistance:+ deltaTime * UFO_MovementBaseSpeed * Game.GetGameMinutesPerSecond()
+				UFO_PathCurrentDistance:+ deltaTime * UFO_MovementBaseSpeed * GetGameTime().GetGameMinutesPerSecond()
 
 				'do beaming now
 				If UFO_PathCurrentDistance > 0.50 And Not UFO_BeamAnimationDone
@@ -468,7 +468,7 @@ Type TBuilding Extends TStaticEntity
 			If DezimalTime > 6 And DezimalTime < 8 Then SetAlpha (4.0 - DezimalTime / 2.0)
 			'stars
 			SetBlend MASKBLEND
-			Local minute:Float = Game.GetMinute()
+			Local minute:Float = GetGameTime().GetMinute()
 			For Local i:Int = 0 To 59
 				If i Mod 6 = 0 And minute Mod 2 = 0 Then Stars[i].z = Rand(0, Max(1,Stars[i].z) )
 				SetColor Stars[i].z , Stars[i].z , Stars[i].z
@@ -484,8 +484,8 @@ Type TBuilding Extends TStaticEntity
 			Local tweenDistance:Float = GetTweenResult(Moon_PathCurrentDistance, Moon_PathCurrentDistanceOld, True)
 			Local moonPos:TPoint = Moon_Path.GetTweenPoint(tweenDistance, True)
 			'draw moon - frame is from +6hrs (so day has already changed at 18:00)
-			'GetSpriteFromRegistry("gfx_building_BG_moon").Draw(40, 40, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
-			GetSpriteFromRegistry("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (area.GetY()) + moonPos.y, 12 - ( Game.GetDay(Game.GetTimeGone()+6*60) Mod 12) )
+			'GetSpriteFromRegistry("gfx_building_BG_moon").Draw(40, 40, 12 - ( GetGameTime().getDay(GetGameTime().GetTimeGone()+6*60) Mod 12) )
+			GetSpriteFromRegistry("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (area.GetY()) + moonPos.y, 12 - ( GetGameTime().getDay(GetGameTime().GetTimeGone()+6*60) Mod 12) )
 		EndIf
 
 		For Local i:Int = 0 To Clouds.length - 1
@@ -500,7 +500,7 @@ Type TBuilding Extends TStaticEntity
 		SetBlend ALPHABLEND
 		'draw UFO
 		If DezimalTime > 18 Or DezimalTime < 7
-'			If Game.GetDay() Mod 2 = 0
+'			If GetGameTime().getDay() Mod 2 = 0
 				'compute and draw Ufo
 				Local tweenDistance:Float = GetTweenResult(UFO_PathCurrentDistance, UFO_PathCurrentDistanceOld, True)
 				Local UFOPos:TPoint = UFO_Path.GetTweenPoint(tweenDistance, True)

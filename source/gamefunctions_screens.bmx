@@ -197,10 +197,10 @@ Type TInGameScreen extends TScreen
 			EndIf
 		EndIf
 
-		If Not Game.paused
+		If Not GetGameTime().paused
 			Game.Update(deltaTime)
 			Interface.Update(deltaTime)
-'			If Game.Players[Game.playerID].Figure.inRoom = Null Then Building.Update(deltaTime)
+'			If GetPlayerCollection().Get().Figure.inRoom = Null Then Building.Update(deltaTime)
 			GetBuilding().Elevator.Update(deltaTime)
 			TFigure.UpdateAll()
 		EndIf
@@ -296,7 +296,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	Method GetRoom:TRoom()
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
-		return Game.GetPlayer().figure.inRoom
+		return GetPlayerCollection().Get().figure.inRoom
 	End Method
 
 
@@ -355,10 +355,10 @@ Type TInGameScreen_Room extends TInGameScreen
 
 	'override default
 	Method UpdateContent:int(deltaTime:Float)
-		'instead of relying on Game.GetPlayer().inRoom each time
+		'instead of relying on GetPlayerCollection().Get().inRoom each time
 		'use currentRoom as inRoom gets reset during room change
 		'now we got the correct instance (eg. office from player 1)
-		if Game.GetPlayer().figure.inRoom then currentRoom = Game.GetPlayer().figure.inRoom
+		if GetPlayerCollection().Get().figure.inRoom then currentRoom = GetPlayerCollection().Get().figure.inRoom
 		if not currentRoom then return FALSE
 
 		currentRoom.update()
@@ -367,10 +367,10 @@ Type TInGameScreen_Room extends TInGameScreen
 
 	'override default
 	Method DrawContent:int(tweenValue:Float)
-		'instead of relying on Game.GetPlayer().inRoom each time
+		'instead of relying on GetPlayerCollection().Get().inRoom each time
 		'use currentRoom as inRoom gets reset during room change
 		'now we got the correct instance (eg. office from player 1)
-		if Game.GetPlayer().figure.inRoom then currentRoom = Game.GetPlayer().figure.inRoom
+		if GetPlayerCollection().Get().figure.inRoom then currentRoom = GetPlayerCollection().Get().figure.inRoom
 		if not currentRoom then return FALSE
 
 		'TProfiler.Enter("Draw-Room")

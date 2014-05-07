@@ -1,14 +1,18 @@
-'likely a kind of agency providing news... 'at the moment only a base object
+'likely a kind of agency providing news...
+'at the moment only a base object
 Type TNewsAgency
-	Field NextEventTime:Double		= 0
-	Field NextChainChecktime:Double	= 0
-	Field activeChains:TList		= CreateList() 'holding chained news from the past hours/day
+	Field NextEventTime:Double = 0
+	Field NextChainChecktime:Double = 0
+	'holding chained news from the past hours/day
+	Field activeChains:TList = CreateList()
+
 
 	Method Create:TNewsAgency()
 		'maybe do some initialization here
 
 		Return Self
 	End Method
+
 
 	Method GetMovieNewsEvent:TNewsEvent()
 		Local licence:TProgrammeLicence = Self._GetAnnouncableProgrammeLicence()
@@ -43,6 +47,7 @@ Type TNewsAgency
 		Return NewsEvent
 	End Method
 
+
 	Method _ReplaceProgrammeData:String(text:String, data:TProgrammeData)
 		For Local i:Int = 1 To 2
 			text = text.Replace("%ACTORNAME"+i+"%", data.getActor(i))
@@ -52,6 +57,7 @@ Type TNewsAgency
 
 		Return text
 	End Method
+
 
 	'helper to get a movie which can be used for a news
 	Method _GetAnnouncableProgrammeLicence:TProgrammeLicence()
@@ -69,13 +75,14 @@ Type TNewsAgency
 			'ignore unreleased
 			If Not licence.ignoreUnreleasedProgrammes And licence.getData().year < licence._filterReleaseDateStart Or licence.getData().year > licence._filterReleaseDateEnd Then Continue
 			'only add movies of "next X days" - 14 = 1 year
-			Local licenceTime:Int = licence.GetData().year * Game.daysPerYear + licence.getData().releaseDay
-			If licenceTime > Game.getDay() And licenceTime - Game.getDay() < 14 Then resultList.addLast(licence)
+			Local licenceTime:Int = licence.GetData().year * GetGameTime().daysPerYear + licence.getData().releaseDay
+			If licenceTime > GetGameTime().getDay() And licenceTime - GetGameTime().getDay() < 14 Then resultList.addLast(licence)
 		Next
 		If resultList.count() > 0 Then Return TProgrammeLicence._GetRandomFromList(resultList)
 
 		Return Null
 	End Method
+
 
 	Method GetSpecialNewsEvent:TNewsEvent()
 	End Method
@@ -93,14 +100,14 @@ Type TNewsAgency
 			'ignore if the chain ended already
 			If Not newsEvent Then Continue
 
-			If chainElement.happenedTime + newsEvent.getHappenDelay() < Game.timeGone
+			If chainElement.happenedTime + newsEvent.getHappenDelay() < GetGameTime().timeGone
 				announceNewsEvent(newsEvent)
 				announced:+1
 			EndIf
 		Next
 
 		'check every 10 game minutes
-		Self.NextChainCheckTime = Game.timeGone + 10
+		Self.NextChainCheckTime = GetGameTime().timeGone + 10
 
 		Return announced
 	End Method
@@ -123,6 +130,7 @@ Type TNewsAgency
 		return 0.00
 	End Function
 
+
 	'Returns the price for this level of a news abonnement
 	Function GetNewsAbonnementPrice:Int(level:Int=0)
 		if level = 1 then return 10000
@@ -133,16 +141,18 @@ Type TNewsAgency
 
 
 	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, fromNetwork:Int=0)
-		local player:TPlayer = Game.GetPlayer(forPlayer)
+		local player:TPlayer = GetPlayerCollection().Get(forPlayer)
 		'only add news/newsblock if player is Host/Player OR AI
 		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
 		If Player.newsabonnements[newsEvent.genre] > 0
 			local news:TNews = TNews.Create("", 0, newsEvent)
-			
-			news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
-			news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, Game.GetPlayer(forPlayer).GetNewsAbonnement(newsEvent.genre))
 
-			news.AddToPlayer(forPlayer)
+			news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
+			news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayerCollection().Get(forPlayer).GetNewsAbonnement(newsEvent.genre))
+
+			'add to players collection (sends out event which gets
+			'recognized by the network handler)
+			player.ProgrammeCollection.AddNews(news)
 		EndIf
 	End Method
 
@@ -157,6 +167,7 @@ Type TNewsAgency
 		If newsEvent.episodes.count() > 0 Then activeChains.AddLast(newsEvent)
 	End Method
 
+
 	Method AnnounceNewNewsEvent:Int(delayAnnouncement:Int=0)
 		'no need to check for gameleader - ALL players
 		'will handle it on their own - so the randomizer stays intact
@@ -169,21 +180,21 @@ Type TNewsAgency
 
 		If newsEvent
 			Local NoOneSubscribed:Int = True
-			For Local i:Int = 1 To 4
-				If Game.Players[i].newsabonnements[newsEvent.genre] > 0 Then NoOneSubscribed = False
+			For Local player:TPlayer = eachin GetPlayerCollection().players
+				If player.newsabonnements[newsEvent.genre] > 0 Then NoOneSubscribed = False
 			Next
 			'only add news if there are players wanting the news, else save them
 			'for later stages
 			If Not NoOneSubscribed
-				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+Game.getDay(news.happenedtime)+", time="+Game.GetFormattedTime(news.happenedtime)
-				announceNewsEvent(newsEvent, Game.timeGone + delayAnnouncement)
+				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+GetGameTime().getDay(news.happenedtime)+", time="+GetGameTime().GetFormattedTime(news.happenedtime)
+				announceNewsEvent(newsEvent, GetGameTime().timeGone + delayAnnouncement)
 			EndIf
 		EndIf
 
 		If RandRange(0,10) = 1
-			NextEventTime = Game.timeGone + Rand(20,50) 'between 20 and 50 minutes until next news
+			NextEventTime = GetGameTime().timeGone + Rand(20,50) 'between 20 and 50 minutes until next news
 		Else
-			NextEventTime = Game.timeGone + Rand(90,250) 'between 90 and 250 minutes until next news
+			NextEventTime = GetGameTime().timeGone + Rand(90,250) 'between 90 and 250 minutes until next news
 		EndIf
 	End Method
 End Type

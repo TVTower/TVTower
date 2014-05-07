@@ -9,7 +9,7 @@
 
 		'GetBitmapFontManager().baseFont.Draw("Bevölkerung", 25, startY)
 
-		Local audienceResult:TAudienceResult = Game.GetPlayer().audience
+		Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult( GetPlayerCollection().playerID )
 
 		Local x:Int = 200
 		Local y:Int = 25
@@ -67,7 +67,7 @@
 
 		Local attraction:TAudienceAttraction = audienceResult.AudienceAttraction
 		Local genre:String = "kein Genre"
-		
+
 		If attraction.BroadcastType = 1 Then
 			If (attraction.BaseAttraction <> Null) Then
 				genre = GetLocale("MOVIE_GENRE_"+attraction.Genre)
@@ -77,7 +77,7 @@
 				genre = "News-Genre-Mix"
 			Endif
 		Endif
-		
+
 
 		Local offset:Int = 20
 
@@ -112,15 +112,15 @@
 		If attraction.TrailerMod Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, new TPoint.Init(ALIGN_RIGHT), colorLight )
 			DrawAudiencePercent(attraction.TrailerMod, 200, offset+170, true, true);
-		Endif		
-		
+		Endif
+
 		font.Draw("5. Flags & Andere Mods", 25, offset+190, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)
 		If attraction.MiscMod Then
 			'font.drawBlock(genre, 60, offset+150, 205, 25, new TPoint.Init(ALIGN_RIGHT), colorLight )
 			DrawAudiencePercent(attraction.MiscMod, 200, offset+190, true, true);
-		Endif		
-		
+		Endif
+
 		font.Draw("6. Image", 25, offset+210, TColor.clWhite)
 		'DrawAudiencePercent(attraction, 200, offset+260)
 		If attraction.PublicImageMod Then
@@ -133,10 +133,10 @@
 
 		font.Draw("8. Genre <> Sendezeit", 25, offset+250, TColor.clWhite)
 		DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.GenreTimeMod), 200, offset+250, true, true);
-		
+
 		font.Draw("9. Zufall", 25, offset+270, TColor.clWhite)
 		If attraction.LuckMod Then DrawAudiencePercent(attraction.LuckMod, 200, offset+270, true, true);
-		
+
 		font.Draw("10. Audience Flow Bonus", 25, offset+290, TColor.clWhite)
 		If attraction.AudienceFlowBonus Then DrawAudiencePercent(attraction.AudienceFlowBonus, 200, offset+290, true, true);
 
@@ -145,7 +145,7 @@
 
 		font.Draw("Finale Attraktivität (Effektiv)", 25, offset+330, TColor.clRed)
 		If attraction.FinalAttraction Then DrawAudiencePercent(attraction.FinalAttraction, 200, offset+330, false, true);
-		
+
 rem
 		font.Draw("Basis-Attraktivität", 25, offset+230, TColor.clRed)
 		'DrawAudiencePercent(attraction, 200, offset+260)
@@ -192,10 +192,10 @@ rem
 		Endif
 		endrem
 
-		Local currBroadcast2:TBroadcast = Game.BroadcastManager.GetCurrentBroadcast()
-		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(Game.playerID)
+		Local currBroadcast2:TBroadcast = GetBroadcastManager().GetCurrentBroadcast()
+		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(GetPlayerCollection().playerID)
 
-		Local minute:Int = Game.GetMinute()
+		Local minute:Int = GetGameTime().GetMinute()
 
 		If ((minute Mod 5) = 0)
 			If Not (self.lastCheckedMinute = minute)

@@ -214,7 +214,7 @@ Type TRoom {_exposeToLua="selected"}
 				MOUSEMANAGER.ResetKey(2)
 			else
 				'leaving prohibited - just reset button
-				if not Game.GetPlayer().figure.LeaveRoom()
+				if not GetPlayerCollection().Get().figure.LeaveRoom()
 					MOUSEMANAGER.resetKey(2)
 				endif
 			endif
@@ -225,16 +225,16 @@ Type TRoom {_exposeToLua="selected"}
 
 
 	Method GetOwnerPlayerName:string()
-		If Game.IsPlayer(owner)
-			Return Game.GetPlayer(owner).name
+		If GetPlayerCollection().IsPlayer(owner)
+			Return GetPlayerCollection().Get(owner).name
 		Endif
 		Return "UNKNOWN PLAYER"
 	End Method
 
 
 	Method GetOwnerChannelName:string()
-		If Game.IsPlayer(owner)
-			Return Game.GetPlayer(owner).channelName
+		If GetPlayerCollection().IsPlayer(owner)
+			Return GetPlayerCollection().Get(owner).channelName
 		Endif
 		Return "UNKNOWN CHANNEL"
 	End Method
@@ -375,7 +375,7 @@ Type TRoom {_exposeToLua="selected"}
 				'Besetztzeichen ausgeben / KI informieren
 				Else
 					'Spieler-KI benachrichtigen
-					If figure.isAI() then Game.GetPlayer(figure.parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
+					If figure.isAI() then GetPlayerCollection().Get(figure.parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
 					If figure.isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
 
@@ -454,7 +454,7 @@ Type TRoom {_exposeToLua="selected"}
 
 	'a figure wants to leave that room
 	Method Leave:int( figure:TFigure=null )
-		if not figure then figure = Game.getPlayer().figure
+		if not figure then figure = GetPlayerCollection().Get().figure
 
 		'figure isn't in that room - so just leave
 		if not isOccupant(figure) then return TRUE
@@ -656,7 +656,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		EndIf
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and Game.GetPlayer().Figure.inRoom = Null And THelper.MouseIn(Pos.x, GetBuilding().area.position.y  + TBuilding.GetFloorY(Pos.y) - doorDimension.y, doorDimension.x, doorDimension.y)
+		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.inRoom = Null And THelper.MouseIn(Pos.x, GetBuilding().area.position.y  + TBuilding.GetFloorY(Pos.y) - doorDimension.y, doorDimension.x, doorDimension.y)
 			If tooltip <> null
 				tooltip.Hover()
 			else
@@ -1072,8 +1072,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Function CheckPlayerInRoom:int()
 		'check if we are in the correct room
-		if not Game.getPlayer().figure.inRoom then return FALSE
-		if Game.getPlayer().figure.inRoom.name <> "office" then return FALSE
+		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.name <> "office" then return FALSE
 
 		return TRUE
 	End Function
@@ -1090,7 +1090,7 @@ Type RoomHandler_Office extends TRoomHandler
 		if room.GetBackground() then room.GetBackground().draw(20,10)
 
 		'allowed for owner only
-		If room AND room.owner = Game.playerID
+		If room AND room.owner = GetPlayerCollection().playerID
 			If StationsToolTip Then StationsToolTip.Render()
 		EndIf
 
@@ -1106,10 +1106,10 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		Game.Players[game.playerID].figure.fromroom = Null
+		GetPlayerCollection().Get().figure.fromroom = Null
 		If MOUSEMANAGER.IsClicked(1)
 			If THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
-				Game.Players[Game.playerID].Figure.LeaveRoom()
+				GetPlayerCollection().Get().Figure.LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
 		EndIf
@@ -1144,7 +1144,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 
 		'station map - only reachable for owner
-		If room.owner = Game.playerID
+		If room.owner = GetPlayerCollection().playerID
 			If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
 				If not StationsToolTip Then StationsToolTip = TTooltip.Create("Senderkarte", "Kauf und Verkauf", 650, 80, 0, 0)
 				StationsToolTip.enabled = 1
@@ -1219,7 +1219,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'is it our plan?
 		local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
 		if not plan then return FALSE
-		if plan.parent <> Game.getPlayer() then return FALSE
+		if plan.owner <> GetPlayerCollection().playerID then return FALSE
 'print "onChangeProgrammePlan: running RefreshGuiElements"
 '		haveToRefreshGuiElements = TRUE
 		RefreshGuiElements()
@@ -1311,11 +1311,11 @@ Type RoomHandler_Office extends TRoomHandler
 		if not talkToProgrammePlanner then return TRUE
 
 		if list = GuiListProgrammes
-			if not Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+			if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
 				print "[WARNING] dragged item from programmelist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		elseif list = GuiListAdvertisements
-			if not Game.getPlayer().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+			if not GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
 				print "[WARNING] dragged item from adlist - removing from programmeplan at "+slot+":00 - FAILED"
 			endif
 		else
@@ -1338,12 +1338,12 @@ Type RoomHandler_Office extends TRoomHandler
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not Game.getPlayer().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -1372,12 +1372,12 @@ Type RoomHandler_Office extends TRoomHandler
 		if List = GuiListProgrammes or list = GuiListAdvertisements
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
 				if item.lastList = GuiListAdvertisements
-					if not Game.getPlayer().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days adlist FAILED"
 						return False
 					Endif
 				ElseIf item.lastList = GuiListProgrammes
-					if not Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+					if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
 						print "[ERROR] dropped item from another day on active day - removal in other days programmelist FAILED"
 						return False
 					Endif
@@ -1390,13 +1390,13 @@ Type RoomHandler_Office extends TRoomHandler
 			'is the gui item coming from another day?
 			'remove it from there (was "silenced" during automatic mode)
 			if item.plannedOnDay >= 0 and item.plannedOnDay <> list.planDay
-				if not Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+				if not GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
 					print "[ERROR] dropped item on programmelist - removal from other day FAILED"
 					return False
 				endif
 			Endif
 
-			if not Game.getPlayer().ProgrammePlan.SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayerCollection().Get().ProgrammePlan.SetProgrammeSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on programmelist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
@@ -1405,7 +1405,7 @@ Type RoomHandler_Office extends TRoomHandler
 			'   the day from the players ProgrammePlan)
 			item.plannedOnDay = list.planDay
 		elseif list = GuiListAdvertisements
-			if not Game.getPlayer().ProgrammePlan.SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
+			if not GetPlayerCollection().Get().ProgrammePlan.SetAdvertisementSlot(item.broadcastMaterial, planningDay, slot)
 				print "[WARNING] dropped item on adlist - adding to programmeplan at "+slot+":00 - FAILED"
 				return FALSE
 			endif
@@ -1456,11 +1456,11 @@ Type RoomHandler_Office extends TRoomHandler
 			'-> remove dayChangeObjects from plan if dragging
 			if not item.isDragged() and talkToProgrammePlanner
 				if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
-					if Game.getPlayer().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
+					if GetPlayerCollection().Get().ProgrammePlan.RemoveAdvertisement(item.broadcastMaterial)
 						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
 					endif
 				elseif item = GuiListProgrammes.dayChangeGuiProgrammePlanElement
-					if Game.getPlayer().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
+					if GetPlayerCollection().Get().ProgrammePlan.RemoveProgramme(item.broadcastMaterial)
 						GuiLisTProgrammes.dayChangeGuiProgrammePlanElement = null
 					endif
 				endif
@@ -1527,10 +1527,10 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		'time indicator
-		If planningDay = Game.GetDay() Then SetColor 0,100,0
-		If planningDay < Game.GetDay() Then SetColor 100,100,0
-		If planningDay > Game.GetDay() Then SetColor 0,0,0
-		GetBitmapFont("Default", 10).drawBlock(Game.GetFormattedDay(1+ planningDay - Game.GetDay(Game.GetTimeStart())), 691, 18, 100, 15)
+		If planningDay = GetGameTime().getDay() Then SetColor 0,100,0
+		If planningDay < GetGameTime().getDay() Then SetColor 100,100,0
+		If planningDay > GetGameTime().getDay() Then SetColor 0,0,0
+		GetBitmapFont("Default", 10).drawBlock(GetGameTime().GetFormattedDay(1+ planningDay - GetGameTime().getDay(GetGameTime().GetTimeStart())), 691, 18, 100, 15)
 		SetColor 255,255,255
 
 		GUIManager.Draw("programmeplanner|programmeplanner_buttons")
@@ -1542,7 +1542,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'overlay old days
-		If Game.GetDay() > planningDay
+		If GetGameTime().getDay() > planningDay
 			SetColor 100,100,100
 			SetAlpha 0.5
 			DrawRect(27,17,637,360)
@@ -1551,7 +1551,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 
 		SetColor 255,255,255
-		If room.owner = Game.playerID
+		If room.owner = GetPlayerCollection().playerID
 			If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw()
 			If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
 			'draw lists sheet
@@ -1585,15 +1585,15 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		'if not initialized, do so
-		if planningDay = -1 then planningDay = Game.GetDay()
+		if planningDay = -1 then planningDay = GetGameTime().getDay()
 
 
 		Game.cursorstate = 0
 
 		'set all slots occupied or not
-		local day:int = Game.GetDay()
-		local hour:int = Game.GetHour()
-		local minute:int = Game.GetMinute()
+		local day:int = GetGameTime().getDay()
+		local hour:int = GetGameTime().GetHour()
+		local minute:int = GetGameTime().GetMinute()
 		for local i:int = 0 to 23
 			if not TPlayerProgrammePlan.IsUseableTimeSlot(TBroadcastMaterial.TYPE_PROGRAMME, planningDay, i, day, hour, minute)
 				GuiListProgrammes.SetSlotState(i, 2)
@@ -1673,7 +1673,7 @@ Type RoomHandler_Office extends TRoomHandler
 		endif
 
 
-		If room.owner = Game.playerID
+		If room.owner = GetPlayerCollection().playerID
 			PPprogrammeList.Update()
 			PPcontractList.Update()
 		EndIf
@@ -1804,7 +1804,7 @@ Type RoomHandler_Office extends TRoomHandler
 	Function ChangePlanningDay:int(day:int=0)
 		planningDay = day
 		'limit to start day
-		If planningDay < Game.GetDay(Game.timeStart) Then planningDay = Game.GetDay(Game.timeStart)
+		If planningDay < GetGameTime().getDay(GetGameTime().GetTimeStart()) Then planningDay = GetGameTime().getDay(GetGameTime().GetTimeStart())
 
 		'adjust slotlists (to hide ghosts on differing days)
 		GuiListProgrammes.planDay = planningDay
@@ -1828,18 +1828,21 @@ Type RoomHandler_Office extends TRoomHandler
 		if GuiListProgrammes.daychangeGuiProgrammePlanElement then GuiListProgrammes.daychangeGuiProgrammePlanElement.remove()
 		if GuiListAdvertisements.daychangeGuiProgrammePlanElement then GuiListAdvertisements.daychangeGuiProgrammePlanElement.remove()
 
+		local currDay:int = planningDay
+		if currDay = -1 then currDay = GetGameTime().getDay()
+
 		'remove gui elements with material the player does not have any longer in plan
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
 			if guiObject.isDragged() then continue
 			'check if programmed on the current day
-			if guiObject.broadcastMaterial.isProgrammedForDay(planningDay) then continue
+			if guiObject.broadcastMaterial.isProgrammedForDay(currDay) then continue
 			'print "GuiListProgramme has obsolete programme: "+guiObject.broadcastMaterial.GetTitle()
 			guiObject.remove()
 		Next
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
 			if guiObject.isDragged() then continue
 			'check if programmed on the current day
-			if guiObject.broadcastMaterial.isProgrammedForDay(planningDay) then continue
+			if guiObject.broadcastMaterial.isProgrammedForDay(currDay) then continue
 			'print "GuiListAdvertisement has obsolete ad: "+guiObject.broadcastMaterial.GetTitle()
 			guiObject.remove()
 		Next
@@ -1847,7 +1850,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'===== CREATE NEW =====
 		'create missing gui elements for all programmes/ads
-		local daysProgramme:TBroadcastMaterial[] = Game.getPlayer().ProgrammePlan.GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysProgramme:TBroadcastMaterial[] = GetPlayerCollection().Get().ProgrammePlan.GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysProgramme
 			if not obj then continue
 
@@ -1892,7 +1895,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'ad list (can contain ads, programmes, ...)
-		local daysAdvertisements:TBroadcastMaterial[] = Game.getPlayer().ProgrammePlan.GetAdvertisementsInTimeSpan(planningDay, 0, planningDay, 23)
+		local daysAdvertisements:TBroadcastMaterial[] = GetPlayerCollection().Get().ProgrammePlan.GetAdvertisementsInTimeSpan(planningDay, 0, planningDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysAdvertisements
 			if not obj then continue
 
@@ -2037,7 +2040,7 @@ Type RoomHandler_Office extends TRoomHandler
 	'reset finance show day to current when entering the screen
 	Function onEnterFinancialScreen:int( triggerEvent:TEventBase )
 		financeHistoryStartPos = 0
-		financeShowDay = Game.GetDay()
+		financeShowDay = GetGameTime().getDay()
 	End function
 
 
@@ -2047,13 +2050,13 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		'limit finance day between 0 and current day
-		financeShowDay = Max(0, Min(financeShowDay, Game.GetDay()))
+		financeShowDay = Max(0, Min(financeShowDay, GetGameTime().getDay()))
 
 
 		local screenOffsetX:int = 20
 		local screenOffsetY:int = 10
 
-		local finance:TPlayerFinance= Game.getPlayer(room.owner).GetFinance(financeShowDay)
+		local finance:TPlayerFinance= GetPlayerCollection().Get(room.owner).GetFinance(financeShowDay)
 
 		local captionColor:TColor = new TColor.CreateGrey(70)
 		local captionFont:TBitmapFont = GetBitmapFont("Default", 13, BOLDFONT)
@@ -2075,8 +2078,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'=== DAY CHANGER ===
-		local today:int = Game.MakeTime(0, financeShowDay, 0, 0)
-		local todayText:string = Game.getDayOfYear(today)+"/"+Game.daysPerYear+" "+Game.getYear(today)
+		local today:int = GetGameTime().MakeTime(0, financeShowDay, 0, 0)
+		local todayText:string = GetGameTime().GetDayOfYear(today)+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear(today)
 		textFont.DrawBlock("Spieltag "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, alignCenter, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
@@ -2266,11 +2269,11 @@ Type RoomHandler_Office extends TRoomHandler
 		Local labelColor:TColor = new TColor.CreateGrey(80)
 
 		'first get the maximum value so we know how to scale the rest
-		For local i:Int = Game.GetDay()-showDays To Game.GetDay()
+		For local i:Int = GetGameTime().getDay()-showDays To GetGameTime().getDay()
 			'skip if day is less than startday (saves calculations)
-			if i < Game.GetStartDay() then continue
+			if i < GetGameTime().GetStartDay() then continue
 
-			For Local player:TPlayer = EachIn Game.Players
+			For Local player:TPlayer = EachIn GetPlayerCollection().players
 				maxValue = max(maxValue, player.GetFinance(i).money)
 				minValue = min(minValue, player.GetFinance(i).money)
 			Next
@@ -2287,7 +2290,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local yOfZero:Float = curveArea.GetH() - yPerMoney * Abs(minValue)
 
 		local hoveredDay:int = -1
-		For local i:Int = Game.GetDay()-showDays To Game.GetDay()
+		For local i:Int = GetGameTime().getDay()-showDays To GetGameTime().getDay()
 			if THelper.MouseIn(curveArea.GetX() + (slot-0.5) * slotWidth, curveArea.GetY(), slotWidth, curveArea.GetH())
 				hoveredDay = i
 				'leave for loop
@@ -2296,12 +2299,12 @@ Type RoomHandler_Office extends TRoomHandler
 			slot :+ 1
 		Next
 		if hoveredDay >= 0
-			local time:int = Game.MakeTime(0, hoveredDay, 0, 0)
-			local gameDay:string = Game.getDayOfYear(time)+"/"+Game.daysPerYear+" "+Game.getYear(time)
-			if Game.GetPlayer(room.owner).GetFinance(hoveredDay).money > 0
-				textSmallFont.Draw("Spieltag "+gameDay+": |color=50,110,50|"+TFunctions.convertValue(Game.GetPlayer(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+			local time:int = GetGameTime().MakeTime(0, hoveredDay, 0, 0)
+			local gameDay:string = GetGameTime().GetDayOfYear(time)+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear(time)
+			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
+				textSmallFont.Draw("Spieltag "+gameDay+": |color=50,110,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Else
-				textSmallFont.Draw("Spieltag "+gameDay+": |color=110,50,50|"+TFunctions.convertValue(Game.GetPlayer(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+				textSmallFont.Draw("Spieltag "+gameDay+": |color=110,50,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Endif
 
 			local hoverX:int = curveArea.GetX() + (slot-0.5) * slotWidth
@@ -2321,11 +2324,11 @@ Type RoomHandler_Office extends TRoomHandler
 		SetLineWidth(2)
 		GlEnable(GL_LINE_SMOOTH)
 		slot = 0
-		For Local player:TPlayer = EachIn Game.Players
+		For Local player:TPlayer = EachIn GetPlayerCollection().players
 			slot = 0
 			slotPos.SetXY(0,0)
 			previousSlotPos.SetXY(0,0)
-			For local i:Int = Game.GetDay()-showDays To Game.GetDay()
+			For local i:Int = GetGameTime().getDay()-showDays To GetGameTime().getDay()
 				previousSlotPos.SetXY(slotPos.x, slotPos.y)
 				slotPos.SetXY(slot * slotWidth, 0)
 				'maximum is at 90% (so it is nicely visible)
@@ -2375,13 +2378,13 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'disable "previou" or "newxt" button of finance display
-		if financeShowDay = 0 or financeShowDay = Game.GetStartDay()
+		if financeShowDay = 0 or financeShowDay = GetGameTime().GetStartDay()
 			financePreviousDayButton.Disable()
 		else
 			financePreviousDayButton.Enable()
 		endif
 
-		if financeShowDay = Game.GetDay()
+		if financeShowDay = GetGameTime().getDay()
 			financeNextDayButton.Disable()
 		else
 			financeNextDayButton.Enable()
@@ -2419,7 +2422,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local fontColor:TColor = TColor.CreateGrey(50)
 		GetBitmapFont("Default",13).drawBlock(GetLocale("IMAGE_REACH") , 55, 233, 330, 20, null, fontColor)
 		GetBitmapFont("Default",12).drawBlock(GetLocale("IMAGE_SHARETOTAL") , 55, 45, 330, 20, null, fontColor)
-		GetBitmapFont("Default",12).drawBlock(THelper.floatToString(100.0 * Game.GetPlayer(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TPoint.Init(ALIGN_RIGHT), fontColor)
+		GetBitmapFont("Default",12).drawBlock(THelper.floatToString(100.0 * GetPlayerCollection().Get(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TPoint.Init(ALIGN_RIGHT), fontColor)
 	End Function
 
 	Function onUpdateImage:int( triggerEvent:TEventBase )
@@ -2478,14 +2481,14 @@ Type RoomHandler_Office extends TRoomHandler
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
 			DrawRect(564, 32 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 15, 18)
-			Game.Players[i + 1].color.SetRGB()
+			GetPlayerCollection().Get(i+1).color.SetRGB()
 			DrawRect(565, 33 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 13, 16)
 		Next
 		SetColor 255, 255, 255
 		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 480, 15, 100, 20, new TPoint.Init(ALIGN_RIGHT))
 
 		'draw stations and tooltips
-		Game.GetPlayer(room.owner).GetStationMap().Draw()
+		GetPlayerCollection().Get(room.owner).GetStationMap().Draw()
 
 		'also draw the station used for buying/searching
 		If stationMapMouseoverStation then stationMapMouseoverStation.Draw()
@@ -2537,7 +2540,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		currentSubRoom = room
 
-		Game.GetPlayer(room.owner).GetStationMap().Update()
+		GetPlayerCollection().Get(room.owner).GetStationMap().Update()
 
 		'process right click
 		if MOUSEMANAGER.isHit(2)
@@ -2614,7 +2617,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if Game.GetPlayer().figure.inRoom.owner <> Game.GetPlayer().playerID then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		if stationMapMode=1
 			button.value = GetLocale("CONFIRM_PURCHASE")
@@ -2628,14 +2631,14 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if Game.GetPlayer().figure.inRoom.owner <> Game.GetPlayer().playerID then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		'coming from somewhere else... reset first
 		if stationMapMode<>1 then ResetStationMapAction(1)
 
 		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
 			'add the station (and buy it)
-			if Game.GetPlayer().GetStationMap().AddStation(stationMapSelectedStation, TRUE)
+			if GetPlayerCollection().Get().GetStationMap().AddStation(stationMapSelectedStation, TRUE)
 				ResetStationMapAction(0)
 			endif
 		EndIf
@@ -2647,14 +2650,14 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if Game.GetPlayer().figure.inRoom.owner <> Game.GetPlayer().playerID then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		'coming from somewhere else... reset first
 		if stationMapMode<>2 then ResetStationMapAction(2)
 
 		If stationMapSelectedStation and stationMapSelectedStation.getReach() > 0
 			'remove the station (and sell it)
-			if Game.GetPlayer().GetStationMap().RemoveStation(stationMapSelectedStation, TRUE)
+			if GetPlayerCollection().Get().GetStationMap().RemoveStation(stationMapSelectedStation, TRUE)
 				ResetStationMapAction(0)
 			endif
 		EndIf
@@ -2667,13 +2670,13 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if Game.GetPlayer().figure.inRoom.owner <> Game.GetPlayer().playerID then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		'noting selected yet
 		if not stationMapSelectedStation then return FALSE
 
 		'different owner or not paid
-		if stationMapSelectedStation.owner <> Game.playerID or not stationMapSelectedStation.paid
+		if stationMapSelectedStation.owner <> GetPlayerCollection().playerID or not stationMapSelectedStation.paid
 			button.disable()
 		else
 			button.enable()
@@ -2689,14 +2692,14 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'rebuild the stationList - eg. when changed the room (other office)
 	Function RefreshStationMapStationList(playerID:int=-1)
-		If playerID <= 0 Then playerID = Game.playerID
+		If playerID <= 0 Then playerID = GetPlayerCollection().playerID
 
 		'first fill of stationlist
 		stationList.EmptyList()
 		'remove potential highlighted item
 		stationList.deselectEntry()
 
-		For Local station:TStation = EachIn Game.GetPlayer(playerID).GetStationMap().Stations
+		For Local station:TStation = EachIn GetPlayerCollection().Get(playerID).GetStationMap().Stations
 			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TPoint, new TPoint.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
 			'link the station to the item
 			item.data.Add("station", station)
@@ -2709,7 +2712,7 @@ Type RoomHandler_Office extends TRoomHandler
 		Local senderList:TGUISelectList = TGUISelectList(triggerEvent._sender)
 		If not senderList then return FALSE
 
-		if not currentSubRoom or not Game.isPlayer(currentSubRoom.owner) then return FALSE
+		if not currentSubRoom or not GetPlayerCollection().IsPlayer(currentSubRoom.owner) then return FALSE
 
 		'set the linked station as selected station
 		'also set the stationmap's userAction so the map knows we want to sell
@@ -2726,7 +2729,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'only players can "enter screens" - so just use "inRoom"
 
 		For local i:int = 0 to 3
-			local show:int = StationMapCollection.GetMap(Game.GetPlayer().figure.inRoom.owner).showStations[i]
+			local show:int = StationMapCollection.GetMap(GetPlayerCollection().Get().figure.inRoom.owner).showStations[i]
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
@@ -2737,15 +2740,15 @@ Type RoomHandler_Office extends TRoomHandler
 		if not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if Game.GetPlayer().figure.inRoom.owner <> Game.GetPlayer().playerID then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		local player:int = int(button.value)
-		if not Game.IsPlayer(player) then return FALSE
+		if not GetPlayerCollection().IsPlayer(player) then return FALSE
 
 		'only set if not done already
-		if Game.GetPlayer().GetStationMap().showStations[player-1] <> button.isChecked()
+		if GetPlayerCollection().Get().GetStationMap().showStations[player-1] <> button.isChecked()
 			TLogger.Log("StationMap", "show stations for player "+player+": "+button.isChecked(), LOG_DEBUG)
-			Game.GetPlayer().GetStationMap().showStations[player-1] = button.isChecked()
+			GetPlayerCollection().Get().GetStationMap().showStations[player-1] = button.isChecked()
 		endif
 	End Function
 End Type
@@ -2845,7 +2848,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
 		if not figure or not figure.parentPlayerID then return FALSE
 rem
-		Game.GetPlayer(figure.parentPlayerID).ProgrammeCollection.ReaddProgrammeLicencesFromSuitcase()
+		GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.ReaddProgrammeLicencesFromSuitcase()
 
 		'fill all open slots in the agency
 		ReFillBlocks()
@@ -2857,8 +2860,8 @@ endrem
 
 	Function CheckPlayerInRoom:int()
 		'check if we are in the correct room
-		if not Game.getPlayer().figure.inRoom then return FALSE
-		if Game.getPlayer().figure.inRoom.name <> "archive" then return FALSE
+		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.name <> "archive" then return FALSE
 
 		return TRUE
 	End Function
@@ -2873,7 +2876,7 @@ endrem
 		'suitcase
 		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
 			'if the player has this licence in suitcase, skip deletion
-			if Game.getPlayer().ProgrammeCollection.HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
+			if GetPlayerCollection().Get().ProgrammeCollection.HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
@@ -2881,7 +2884,7 @@ endrem
 
 		'===== CREATE NEW =====
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin Game.getPlayer().ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
@@ -2904,8 +2907,8 @@ endrem
 		if not guiBlock or not guiBlock.isDragged() then return FALSE
 
 		'add back to collection if already dropped it to suitcase before
-		if not Game.GetPlayer().programmeCollection.HasProgrammeLicence(guiBlock.licence)
-			Game.GetPlayer().programmeCollection.RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
+		if not GetPlayerCollection().Get().programmeCollection.HasProgrammeLicence(guiBlock.licence)
+			GetPlayerCollection().Get().programmeCollection.RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
 		endif
 		'remove the gui element
 		guiBlock.remove()
@@ -2933,14 +2936,14 @@ endrem
 			case GuiListSuitcase
 				'check if still in collection - if so, remove
 				'from collection and add to suitcase
-				if Game.GetPlayer().programmeCollection.HasProgrammeLicence(guiBlock.licence)
+				if GetPlayerCollection().Get().programmeCollection.HasProgrammeLicence(guiBlock.licence)
 					'remove gui - a new one will be generated automatically
 					'as soon as added to the suitcase and the room's update
 					guiBlock.remove()
 
 					'if not able to add to suitcase (eg. full), cancel
 					'the drop-event
-					if not Game.GetPlayer().programmeCollection.AddProgrammeLicenceToSuitcase(guiBlock.licence)
+					if not GetPlayerCollection().Get().programmeCollection.AddProgrammeLicenceToSuitcase(guiBlock.licence)
 						triggerEvent.setVeto()
 					endif
 				endif
@@ -2963,7 +2966,7 @@ endrem
 		if receiver <> DudeArea then return FALSE
 
 		'add back to collection
-		Game.GetPlayer().programmeCollection.RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
+		GetPlayerCollection().Get().programmeCollection.RemoveProgrammeLicenceFromSuitcase(guiBlock.licence)
 		'remove the gui element
 		guiBlock.remove()
 		guiBlock = null
@@ -3002,7 +3005,7 @@ endrem
 	Function onDraw:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
-		if room.owner <> Game.playerID then return FALSE
+		if room.owner <> GetPlayerCollection().playerID then return FALSE
 
 		programmeList.Draw()
 
@@ -3030,7 +3033,7 @@ endrem
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
-		if room.owner <> game.playerID then return FALSE
+		if room.owner <> GetPlayerCollection().playerID then return FALSE
 
 		Game.cursorstate = 0
 
@@ -3054,7 +3057,7 @@ endrem
 		programmeList.Update(TgfxProgrammelist.MODE_ARCHIVE)
 
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin Game.getPlayer().ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem( new TGuiProgrammeLicence.CreateWithLicence(licence),"-1" )
 		Next
@@ -3242,7 +3245,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
 		if not figure or not figure.parentPlayerID then return FALSE
 
-		Game.GetPlayer(figure.parentPlayerID).ProgrammeCollection.ReaddProgrammeLicencesFromSuitcase()
+		GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.ReaddProgrammeLicencesFromSuitcase()
 
 		'fill all open slots in the agency
 		GetInstance().ReFillBlocks()
@@ -3308,10 +3311,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Method SellProgrammeLicenceToPlayer:int(licence:TProgrammeLicence, playerID:int)
 		if licence.owner = playerID then return FALSE
 
-		if not Game.isPlayer(playerID) then return FALSE
+		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
 		'try to add to suitcase of player
-		if not Game.getPlayer(playerID).ProgrammeCollection.AddProgrammeLicenceToSuitcase(licence)
+		if not GetPlayerCollection().Get(playerID).ProgrammeCollection.AddProgrammeLicenceToSuitcase(licence)
 			return FALSE
 		endif
 
@@ -3331,8 +3334,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local buy:int = (licence.owner > 0)
 
 		'remove from player (lists and suitcase) - and give him money
-		if Game.isPlayer(licence.owner)
-			Game.getPlayer(licence.owner).ProgrammeCollection.RemoveProgrammeLicence(licence, TRUE)
+		if GetPlayerCollection().IsPlayer(licence.owner)
+			GetPlayerCollection().Get(licence.owner).ProgrammeCollection.RemoveProgrammeLicence(licence, TRUE)
 		endif
 
 		'add to agency's lists - if not existing yet
@@ -3410,7 +3413,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'suitcase
 		For local guiLicence:TGUIProgrammeLicence = eachin GuiListSuitcase._slots
 			'if the player has this licence in suitcase, skip deletion
-			if Game.getPlayer().ProgrammeCollection.HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
+			if GetPlayerCollection().Get().ProgrammeCollection.HasProgrammeLicenceInSuitcase(guiLicence.licence) then continue
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
@@ -3440,7 +3443,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			Next
 		Next
 		'create missing gui elements for the current suitcase
-		For local licence:TProgrammeLicence = eachin Game.getPlayer().ProgrammeCollection.suitcaseProgrammeLicences
+		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
 			guiListSuitcase.addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
 			'print "ADD suitcase had missing licence: "+licence.getTitle()
@@ -3502,8 +3505,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	Function CheckPlayerInRoom:int()
 		'check if we are in the correct room
-		if not Game.getPlayer().figure.inRoom then return FALSE
-		if Game.getPlayer().figure.inRoom.name <> "movieagency" then return FALSE
+		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.name <> "movieagency" then return FALSE
 
 		return TRUE
 	End Function
@@ -3538,7 +3541,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local owner:int = item.licence.owner
 
 		'do not allow dragging items from other players
-		if owner > 0 and owner <> Game.playerID
+		if owner > 0 and owner <> GetPlayerCollection().playerID
 			triggerEvent.setVeto()
 			return FALSE
 		endif
@@ -3546,7 +3549,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'check whether a player could afford the licence
 		'if not - just veto the event so it does not get dragged
 		if owner <= 0
-			if not Game.getPlayer().getFinance().canAfford(item.licence.getPrice())
+			if not GetPlayerCollection().Get().getFinance().canAfford(item.licence.getPrice())
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -3578,15 +3581,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'allow drop on own place
 				if underlayingItem = guiLicence then return TRUE
 
-				if underlayingItem and not Game.getPlayer().getFinance().canAfford(underlayingItem.licence.getPrice())
+				if underlayingItem and not GetPlayerCollection().Get().getFinance().canAfford(underlayingItem.licence.getPrice())
 					triggerEvent.SetVeto()
 					return FALSE
 				endif
 			case GuiListSuitcase
 				'no problem when dropping own programme to suitcase..
-				if guiLicence.licence.owner = Game.playerID then return TRUE
+				if guiLicence.licence.owner = GetPlayerCollection().playerID then return TRUE
 
-				if not Game.getPlayer().getFinance().canAfford(guiLicence.licence.getPrice())
+				if not GetPlayerCollection().Get().getFinance().canAfford(guiLicence.licence.getPrice())
 					triggerEvent.setVeto()
 				endif
 		End select
@@ -3616,9 +3619,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				endif
 			case GuiListSuitcase
 				'no problem when dropping own programme to suitcase..
-				if guiLicence.licence.owner = Game.playerID then return TRUE
+				if guiLicence.licence.owner = GetPlayerCollection().playerID then return TRUE
 
-				if not GetInstance().SellProgrammeLicenceToPlayer(guiLicence.licence, Game.playerID)
+				if not GetInstance().SellProgrammeLicenceToPlayer(guiLicence.licence, GetPlayerCollection().playerID)
 					triggerEvent.setVeto()
 					'try to drop back to old list - which triggers
 					'this function again... but with a differing list..
@@ -3894,8 +3897,8 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function CheckPlayerInRoom:int()
 		'check if we are in the correct room
-		if not Game.getPlayer().figure.inRoom then return FALSE
-		if Game.getPlayer().isInRoom("newsagency") OR Game.getPlayer().isInRoom("newsplanner") then return FALSE
+		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
+		if GetPlayerCollection().Get().isInRoom("newsagency") OR GetPlayerCollection().Get().isInRoom("newsplanner") then return FALSE
 
 		return TRUE
 	End Function
@@ -3973,7 +3976,7 @@ EndRem
 		For local i:int = 0 until len( NewsGenreButtons )
 			if button = NewsGenreButtons[i]
 				genre = button.data.GetInt("newsGenre", i)
-				level = Game.GetPlayer(room.owner).GetNewsAbonnement( genre )
+				level = GetPlayerCollection().Get(room.owner).GetNewsAbonnement( genre )
 				exit
 			endif
 		Next
@@ -3998,11 +4001,11 @@ EndRem
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ TNewsAgency.GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 			EndIf
 		EndIf
-		if Game.GetPlayer().GetNewsAbonnementDaysMax(genre) > level
+		if GetPlayerCollection().Get().GetNewsAbonnementDaysMax(genre) > level
 			NewsGenreTooltip.content :+ "~n~n"
 			local tip:String = getLocale("NEWSSTUDIO_YOU_ALREADY_USED_LEVEL_AND_THEREFOR_PAY")
-			tip = tip.Replace("%MAXLEVEL%", Game.GetPlayer().GetNewsAbonnementDaysMax(genre))
-			tip = tip.Replace("%TOPAY%", TNewsAgency.GetNewsAbonnementPrice(Game.GetPlayer().GetNewsAbonnementDaysMax(genre)) + getLocale("CURRENCY"))
+			tip = tip.Replace("%MAXLEVEL%", GetPlayerCollection().Get().GetNewsAbonnementDaysMax(genre))
+			tip = tip.Replace("%TOPAY%", TNewsAgency.GetNewsAbonnementPrice(GetPlayerCollection().Get().GetNewsAbonnementDaysMax(genre)) + getLocale("CURRENCY"))
 			NewsGenreTooltip.content :+ getLocale("HINT")+": " + tip
 		endif
 	End Function
@@ -4014,12 +4017,12 @@ EndRem
 		if not button or not room then return 0
 
 		'wrong room? go away!
-		if room.owner <> Game.playerID then return 0
+		if room.owner <> GetPlayerCollection().playerID then return 0
 
 		'increase the abonnement
 		For local i:int = 0 until len( NewsGenreButtons )
 			if button = NewsGenreButtons[i]
-				Game.GetPlayer().IncreaseNewsAbonnement( button.data.GetInt("newsGenre", i) )
+				GetPlayerCollection().Get().IncreaseNewsAbonnement( button.data.GetInt("newsGenre", i) )
 				exit
 			endif
 		Next
@@ -4035,7 +4038,7 @@ EndRem
 		local level:int = 0
 		For local i:int = 0 until len( NewsGenreButtons )
 			if button = NewsGenreButtons[i]
-				level = Game.GetPlayer(room.owner).GetNewsAbonnement( button.data.GetInt("newsGenre", i) )
+				level = GetPlayerCollection().Get(room.owner).GetNewsAbonnement( button.data.GetInt("newsGenre", i) )
 				exit
 			endif
 		Next
@@ -4085,10 +4088,10 @@ EndRem
 	Function RefreshGuiElements:int()
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries
-			if not Game.getPlayer().ProgrammeCollection.hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerCollection().Get().ProgrammeCollection.hasNews(guiNews.news) then guiNews.remove()
 		Next
 		For local guiNews:TGuiNews = eachin guiNewsListUsed._slots
-			if not Game.getPlayer().ProgrammePlan.hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerCollection().Get().ProgrammePlan.hasNews(guiNews.news) then guiNews.remove()
 		Next
 
 		'if removing "dragged" we also bug out the "replace"-mechanism when
@@ -4105,21 +4108,21 @@ EndRem
 		Next
 
 		'create gui element for news still missing them
-		For Local news:TNews = EachIn Game.getPlayer().ProgrammeCollection.news
+		For Local news:TNews = EachIn GetPlayerCollection().Get().ProgrammeCollection.news
 			'skip if news is dragged
 			if draggedNewsList.contains(news) then continue
 
 			if not guiNewsListAvailable.ContainsNews(news)
 				'only add for news NOT planned in the news show
-				if not Game.getPlayer().ProgrammePlan.HasNews(news)
+				if not GetPlayerCollection().Get().ProgrammePlan.HasNews(news)
 					local guiNews:TGUINews = new TGUINews.Create(null,null, news.GetTitle())
 					guiNews.SetNews(news)
 					guiNewsListAvailable.AddItem(guiNews)
 				endif
 			endif
 		Next
-		For Local i:int = 0 to Game.getPlayer().ProgrammePlan.news.length - 1
-			local news:TNews = TNews(Game.getPlayer().ProgrammePlan.GetNews(i))
+		For Local i:int = 0 to GetPlayerCollection().Get().ProgrammePlan.news.length - 1
+			local news:TNews = TNews(GetPlayerCollection().Get().ProgrammePlan.GetNews(i))
 			'skip if news is dragged
 			if news and draggedNewsList.contains(news) then continue
 
@@ -4179,8 +4182,9 @@ EndRem
 		if not guiNews or not guiNews.isDragged() then return FALSE
 
 		'remove from plan (with addBackToCollection=FALSE) and collection
-		Game.Players[guiNews.news.owner].ProgrammePlan.RemoveNews(guiNews.news, -1, FALSE)
-		Game.Players[guiNews.news.owner].ProgrammeCollection.RemoveNews(guiNews.news)
+		local player:TPlayer = GetPlayerCollection().Get(guiNews.news.owner)
+		player.ProgrammePlan.RemoveNews(guiNews.news, -1, FALSE)
+		player.ProgrammeCollection.RemoveNews(guiNews.news)
 
 		'remove gui object
 		guiNews.remove()
@@ -4195,10 +4199,11 @@ EndRem
 		local receiverList:TGUIListBase = TGUIListBase( triggerEvent._receiver )
 		if not guiNews or not receiverList then return FALSE
 
-		local owner:int = guiNews.news.owner
+		local player:TPlayer = GetPlayerCollection().Get(guiNews.news.owner)
+		if not player then return False
 
 		if receiverList = guiNewsListAvailable
-			Game.Players[owner].ProgrammePlan.RemoveNews(guiNews.news, -1, TRUE)
+			player.ProgrammePlan.RemoveNews(guiNews.news, -1, TRUE)
 		elseif receiverList = guiNewsListUsed
 			local slot:int = -1
 			'check drop position
@@ -4207,7 +4212,7 @@ EndRem
 			if slot = -1 then slot = guiNewsListUsed.getSlot(guiNews)
 
 			'this may also drag a news that occupied that slot before
-			Game.Players[owner].ProgrammePlan.SetNews(guiNews.news, slot)
+			player.ProgrammePlan.SetNews(guiNews.news, slot)
 		endif
 	End Function
 
@@ -4265,13 +4270,13 @@ Type RoomHandler_Chief extends TRoomHandler
 
 	Function onAcceptBossCredit:int(triggerEvent:TEventBase)
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		Game.GetPlayer().GetFinance().TakeCredit(value)
+		GetPlayerCollection().Get().GetFinance().TakeCredit(value)
 	End Function
 
 
 	Function onRepayBossCredit:int(triggerEvent:TEventBase)
 		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		Game.GetPlayer().GetFinance().RepayCredit(value)
+		GetPlayerCollection().Get().GetFinance().RepayCredit(value)
 	End Function
 
 
@@ -4291,40 +4296,40 @@ Type RoomHandler_Chief extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
-		Game.Players[game.playerID].figure.fromroom = Null
+		GetPlayerCollection().Get().figure.fromroom = Null
 
 		If Dialogues.Count() <= 0
 			Local ChefDialoge:TDialogueTexts[5]
-			ChefDialoge[0] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_WELCOME").replace("%1", Game.GetPlayer().name) )
+			ChefDialoge[0] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_WELCOME").replace("%1", GetPlayerCollection().Get().name) )
 			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_WILLNOTDISTURB"), - 2, Null))
 			ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_ASKFORCREDIT"), 1, Null))
 
-			If Game.GetPlayer().GetCredit() > 0
+			If GetPlayerCollection().Get().GetCredit() > 0
 				ChefDialoge[0].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_REPAYCREDIT"), 3, Null))
 			endif
-			If Game.GetPlayer().GetCreditAvailable() > 0
-				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onAcceptBossCredit", new TData.AddNumber("value", Game.GetPlayer().GetCreditAvailable()))
-				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%1", Game.GetPlayer().GetCreditAvailable()))
+			If GetPlayerCollection().Get().GetCreditAvailable() > 0
+				local acceptEvent:TEventSimple = TEventSimple.Create("dialogue.onAcceptBossCredit", new TData.AddNumber("value", GetPlayerCollection().Get().GetCreditAvailable()))
+				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK").replace("%1", GetPlayerCollection().Get().GetCreditAvailable()))
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_OK_ACCEPT"), 2, acceptEvent))
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
 			Else
-				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%1", Game.GetPlayer().GetCredit()))
+				ChefDialoge[1] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY").replace("%1", GetPlayerCollection().Get().GetCredit()))
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ACCEPT"), 3))
 				ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
 			EndIf
 			ChefDialoge[1].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
 
-			ChefDialoge[2] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%1", Game.GetPlayer().name) )
+			ChefDialoge[2] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK").replace("%1", GetPlayerCollection().Get().name) )
 			ChefDialoge[2].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_BACKTOWORK_OK"), - 2))
 
 			ChefDialoge[3] = TDialogueTexts.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_BOSSRESPONSE") )
-			If Game.GetPlayer().GetCredit() >= 100000 And Game.GetPlayer().GetMoney() >= 100000
+			If GetPlayerCollection().Get().GetCredit() >= 100000 And GetPlayerCollection().Get().GetMoney() >= 100000
 				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", 100000))
 				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_100K"), - 2, payBackEvent))
 			EndIf
-			If Game.GetPlayer().GetCredit() < Game.GetPlayer().GetMoney()
-				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", Game.GetPlayer().GetCredit()))
-				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%1", Game.GetPlayer().GetCredit()), - 2, payBackEvent))
+			If GetPlayerCollection().Get().GetCredit() < GetPlayerCollection().Get().GetMoney()
+				local payBackEvent:TEventSimple = TEventSimple.Create("dialogue.onRepayBossCredit", new TData.AddNumber("value", GetPlayerCollection().Get().GetCredit()))
+				ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CREDIT_REPAY_ALL").replace("%1", GetPlayerCollection().Get().GetCredit()), - 2, payBackEvent))
 			EndIf
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_DECLINE"+Rand(1,3)), - 2))
 			ChefDialoge[3].AddAnswer(TDialogueAnswer.Create( GetLocale("DIALOGUE_BOSS_CHANGETOPIC"), 0))
@@ -4364,7 +4369,7 @@ Type RoomHandler_Chief extends TRoomHandler
 	rem
 	  Local ChefText:String
 	  ChefText = "Was ist?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!"
-	  If Betty.LastAwardWinner <> Game.playerID And Betty.LastAwardWinner <> 0
+	  If Betty.LastAwardWinner <> GetPlayerCollection().playerID And Betty.LastAwardWinner <> 0
 		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis für " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
 		If Betty.LastAwardType <> 0
 			ChefText = "Was fällt Ihnen ein den Award für " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis für " + Betty.GetAwardTypeString() + "."
@@ -4561,10 +4566,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		'sign all new contracts
-		For Local contract:TAdContract = EachIn Game.GetPlayer(figure.parentPlayerID).ProgrammeCollection.suitcaseAdContracts
+		For Local contract:TAdContract = EachIn GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.suitcaseAdContracts
 			'adds a contract to the players collection (gets signed THERE)
 			'if successful, this also removes the contract from the suitcase
-			Game.GetPlayer(figure.parentPlayerID).ProgrammeCollection.AddAdContract(contract)
+			GetPlayerCollection().Get(figure.parentPlayerID).ProgrammeCollection.AddAdContract(contract)
 		Next
 
 		'fill all open slots in the agency
@@ -4643,14 +4648,14 @@ EndRem
 
 	Method GiveContractToPlayer:int(contract:TAdContract, playerID:int, sign:int=FALSE)
 		if contract.owner = playerID then return FALSE
-		if not Game.isPlayer(playerID) then return FALSE
+		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
 		'try to add to suitcase of player
 		if not sign
-			if not Game.GetPlayer(playerID).ProgrammeCollection.AddUnsignedAdContractToSuitcase(contract) then return FALSE
+			if not GetPlayerCollection().Get(playerID).ProgrammeCollection.AddUnsignedAdContractToSuitcase(contract) then return FALSE
 		'we do not need the suitcase, direkt sign pls (eg. for AI)
 		else
-			if not Game.GetPlayer(playerID).ProgrammeCollection.AddAdContract(contract) then return FALSE
+			if not GetPlayerCollection().Get(playerID).ProgrammeCollection.AddAdContract(contract) then return FALSE
 		endif
 
 		'remove from agency's lists
@@ -4661,7 +4666,8 @@ EndRem
 
 
 	Method TakeContractFromPlayer:int(contract:TAdContract, playerID:int)
-		if Game.Players[ playerID ].ProgrammeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
+		local player:TPlayer = GetPlayerCollection().Get(playerID)
+		if player.ProgrammeCollection.RemoveUnsignedAdContractFromSuitcase(contract)
 			'add to agency's lists - if not existing yet
 			if not HasContract(contract) then AddContract(contract)
 
@@ -4770,8 +4776,8 @@ EndRem
 		'suitcase
 		For local guiAdContract:TGuiAdContract = eachin GuiListSuitcase._slots
 			'if the player has this contract in suitcase or list, skip deletion
-			if Game.getPlayer().ProgrammeCollection.HasAdContract(guiAdContract.contract) then continue
-			if Game.getPlayer().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract) then continue
+			if GetPlayerCollection().Get().ProgrammeCollection.HasAdContract(guiAdContract.contract) then continue
+			if GetPlayerCollection().Get().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract) then continue
 
 			'print "guiListSuitcase has obsolete contract: "+guiAdContract.contract.id
 			guiAdContract.remove()
@@ -4840,7 +4846,7 @@ EndRem
 		Next
 
 		'create missing gui elements for the players contracts
-		For local contract:TAdContract = eachin Game.getPlayer().ProgrammeCollection.adContracts
+		For local contract:TAdContract = eachin GetPlayerCollection().Get().ProgrammeCollection.adContracts
 			if guiListSuitcase.ContainsContract(contract) then continue
 			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
 			'change look
@@ -4853,7 +4859,7 @@ EndRem
 		Next
 
 		'create missing gui elements for the current suitcase
-		For local contract:TAdContract = eachin Game.getPlayer().ProgrammeCollection.suitcaseAdContracts
+		For local contract:TAdContract = eachin GetPlayerCollection().Get().ProgrammeCollection.suitcaseAdContracts
 			if guiListSuitcase.ContainsContract(contract) then continue
 			local block:TGuiAdContract = new TGuiAdContract.CreateWithContract(contract)
 			'change look
@@ -4914,8 +4920,8 @@ EndRem
 
 	Function CheckPlayerInRoom:int()
 		'check if we are in the correct room
-		if not Game.getPlayer().figure.inRoom then return FALSE
-		if Game.getPlayer().figure.inRoom.name <> "adagency" then return FALSE
+		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
+		if GetPlayerCollection().Get().figure.inRoom.name <> "adagency" then return FALSE
 
 		return TRUE
 	End Function
@@ -4984,7 +4990,7 @@ EndRem
 
 		'if coming from suitcase, try to remove it from the player
 		if senderList = GuiListSuitcase
-			if not GetInstance().TakeContractFromPlayer(guiBlock.contract, Game.getPlayer().playerID )
+			if not GetInstance().TakeContractFromPlayer(guiBlock.contract, GetPlayerCollection().Get().playerID )
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -5068,8 +5074,8 @@ endrem
 		'during sign we cannot rely on it. So we check if the player has
 		'the contract in the suitcaseContractList
 		local owner:int = guiAdContract.contract.owner
-		if owner <= 0 and Game.getPlayer().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract)
-			owner = Game.playerID
+		if owner <= 0 and GetPlayerCollection().Get().ProgrammeCollection.HasUnsignedAdContractInSuitcase(guiAdContract.contract)
+			owner = GetPlayerCollection().playerID
 		endif
 
 		'find out if we sell it to the vendor or drop it to our suitcase
@@ -5079,7 +5085,7 @@ endrem
 			'no problem when dropping vendor programme to vendor..
 			if owner <= 0 then return TRUE
 
-			if not GetInstance().TakeContractFromPlayer(guiAdContract.contract, Game.playerID )
+			if not GetInstance().TakeContractFromPlayer(guiAdContract.contract, GetPlayerCollection().playerID )
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -5090,8 +5096,8 @@ endrem
 		else
 			guiAdContract.InitAssets(guiAdContract.getAssetName(-1, TRUE ), guiAdContract.getAssetName(-1, TRUE ))
 			'no problem when dropping own programme to suitcase..
-			if owner = Game.playerID then return TRUE
-			if not GetInstance().GiveContractToPlayer(guiAdContract.contract, Game.playerID)
+			if owner = GetPlayerCollection().playerID then return TRUE
+			if not GetInstance().GiveContractToPlayer(guiAdContract.contract, GetPlayerCollection().playerID)
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -5110,7 +5116,7 @@ endrem
 		'make suitcase/vendor glow if needed
 		local glowSuitcase:string = ""
 		if draggedGuiAdContract
-			if not Game.getPlayer().ProgrammeCollection.HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
+			if not GetPlayerCollection().Get().ProgrammeCollection.HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
 				glowSuitcase = "_glow"
 			endif
 			GetSpriteFromRegistry("gfx_hint_rooms_adagency").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
@@ -5174,8 +5180,6 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
-		local playerFigure:TFigure = Game.Players[ Game.playerID ].figure
-
 		TRoomDoorSign.DrawAll()
 	End Function
 
@@ -5184,7 +5188,6 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
-		local playerFigure:TFigure = Game.Players[ Game.playerID ].figure
 		local mouseClicked:int = MouseManager.IsClicked(1)
 
 		Game.cursorstate = 0
@@ -5192,7 +5195,10 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		'if possible, change the target to the clicked door
 		if mouseClicked
 			local door:TRoomDoor = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
-			if door then playerFigure.ChangeTarget(door.Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(door.Pos.y))
+			if door
+				local playerFigure:TFigure = GetPlayerCollection().Get().figure
+				playerFigure.ChangeTarget(door.Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(door.Pos.y))
+			endif
 		endif
 
 		TRoomDoorSign.UpdateAll(False)
@@ -5261,17 +5267,18 @@ Type RoomHandler_Betty extends TRoomHandler
 			Local picX:Int = 410 + i * (sprite.area.GetW() + 5)
 			sprite.Draw( picX, picY )
 			SetAlpha 0.4
-			Game.Players[i].color.copy().AdjustRelative(-0.5).SetRGB()
+			GetPlayerCollection().Get(i).color.copy().AdjustRelative(-0.5).SetRGB()
 			DrawRect(picX + 2, picY + 8, 26, 28)
 			SetColor 255, 255, 255
 			SetAlpha 1.0
-			local x:float = picX + Int(sprite.area.GetW() / 2) - Int(Game.Players[i].Figure.Sprite.framew / 2)
+			local x:float = picX + Int(sprite.area.GetW() / 2) - Int(GetPlayerCollection().Get(i).Figure.Sprite.framew / 2)
 			local y:float = picY + sprite.area.GetH() - 30
-			Game.Players[i].Figure.Sprite.DrawClipped(new TPoint.Init(x, y), new TRectangle.Init(0, 0, -1, sprite.area.GetH()-16), 8)
+			GetPlayerCollection().Get(i).Figure.Sprite.DrawClipped(new TPoint.Init(x, y), new TRectangle.Init(0, 0, -1, sprite.area.GetH()-16), 8)
 		Next
 
 		DrawDialog("default", 430, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
 	End Function
+
 
 	Function onUpdate:int( triggerEvent:TEventBase )
 		'nothing yet
@@ -5459,16 +5466,17 @@ End Type
 'signs used in elevator-plan /room-plan
 Type TRoomDoorSign Extends TBlockMoveable
 	Field door:TRoomDoor
-	Field imageCache:TSprite			= null
+	Field imageCache:TSprite = null
 	Field imageDraggedCache:TSprite	= null
 
-	Global DragAndDropList:TList	= CreateList()
-	Global List:TList				= CreateList()
-	Global AdditionallyDragged:Int	= 0
-	Global eventsRegistered:Int		= FALSE
+	Global DragAndDropList:TList = CreateList()
+	Global List:TList = CreateList()
+	Global AdditionallyDragged:Int = 0
+	Global eventsRegistered:Int = FALSE
 
-	Global imageBaseName:string			= "gfx_elevator_sign_"
-	Global imageDraggedBaseName:string	= "gfx_elevator_sign_dragged_"
+	Global imageBaseName:string = "gfx_elevator_sign_"
+	Global imageDraggedBaseName:string = "gfx_elevator_sign_dragged_"
+
 
 	Method Init:TRoomDoorSign(door:TRoomDoor, x:Int=0, y:Int=0)
 		local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0,door.room.owner))
@@ -5620,7 +5628,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 								If not OtherLocObj then continue
 								If OtherLocObj.containsCoord(MouseManager.x, MouseManager.y) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
 '											If game.networkgame Then
-'												Network.SendMovieAgencyChange(Network.NET_SWITCH, Game.playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
+'												Network.SendMovieAgencyChange(Network.NET_SWITCH, GetPlayerCollection().playerID, OtherlocObj.Programme.id, -1, locObj.Programme)
 '			  								End If
 									locObj.SwitchBlock(otherLocObj)
 									MouseManager.resetKey(1)

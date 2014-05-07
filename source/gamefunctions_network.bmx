@@ -52,11 +52,13 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 		case NET_PLAYERJOINED
 			local playerID:int		= NetworkObject.getInt(1)
 			local playerName:string	= NetworkObject.getString(2)
-			if Game.isPlayer(playerID) then Game.Players[playerID].Figure.ControlledByID = playerID
+			if GetPlayerCollection().IsPlayer(playerID)
+				GetPlayerCollection().Get(playerID).Figure.ControlledByID = playerID
+			endif
 
 			'send others all important extra game data
 			local gameData:TNetworkObject = TNetworkObject.Create( NET_GAMESETTINGS )
-			gameData.setInt(1, Game.playerID)
+			gameData.setInt(1, GetPlayerCollection().playerID)
 			gameData.setInt(2, Game.GetRandomizerBase() )
 			Network.BroadcastNetworkObject( gameData, NET_PACKET_RELIABLE )
 
@@ -66,8 +68,8 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			'we are not the gamemaster and got a playerID
 			local joined:int		= NetworkObject.getInt(1)
 			local playerID:int		= NetworkObject.getInt(2)
-			if Game.isPlayer(playerID)
-				Game.playerID			= playerID
+			if GetPlayerCollection().IsPlayer(playerID)
+				GetPlayerCollection().playerID = playerID
 				Network.client.playerID = playerID
 			endif
 
@@ -166,11 +168,11 @@ Type TNetworkHelper
 		if slot < 0 then return 0
 
 		'ignore ai player's events if no gameleader
-		if Game.isAiPlayer(news.owner) and not Game.isGameLeader() then return false
+		if not Game.isGameLeader() and GetPlayerCollection().Get(news.owner).isAi() then return false
 		'do not allow events from players for other players objects
-		if news.owner <> Game.playerID and not Game.isGameLeader() then return FALSE
+		if news.owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
 
-		NetworkHelper.SendPlanSetNews(Game.playerID, news, slot)
+		NetworkHelper.SendPlanSetNews(GetPlayerCollection().playerID, news, slot)
 	End Function
 
 
@@ -183,9 +185,9 @@ Type TNetworkHelper
 		if not station then return FALSE
 
 		'ignore ai player's events if no gameleader
-		if Game.isAiPlayer(station.owner) and not Game.isGameLeader() then return false
+		if not Game.isGameLeader() and GetPlayerCollection().Get(station.owner).isAi() then return false
 		'do not allow events from players for other players objects
-		if station.owner <> Game.playerID and not Game.isGameLeader() then return FALSE
+		if station.owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
 
 		local action:int = -1
 		if triggerEvent.isTrigger("stationmap.addStation") then action = NET_ADD
@@ -195,15 +197,16 @@ Type TNetworkHelper
 		NetworkHelper.SendStationmapChange(station, action)
 	End Function
 
+
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
 		local programmeCollection:TPlayerProgrammeCollection = TPlayerProgrammeCollection(triggerEvent._sender)
 		if not programmeCollection then return 0
 
-		local owner:int = programmeCollection.parent.playerID
+		local owner:int = programmeCollection.owner
 		'ignore ai player's events if no gameleader
-		if Game.isAiPlayer(owner) and not Game.isGameLeader() then return false
+		if GetPlayerCollection().Get(owner).isAi() and not Game.isGameLeader() then return false
 		'do not allow events from players for other players objects
-		if owner <> Game.playerID and not Game.isGameLeader() then return FALSE
+		if owner <> GetPlayerCollection().playerID and not Game.isGameLeader() then return FALSE
 
 		select triggerEvent.getTrigger()
 			case "programmecollection.removeprogrammelicence"
@@ -255,32 +258,33 @@ Type TNetworkHelper
 
 	Method SendGameState()
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDGAMESTATE )
-		obj.setInt(1, Game.playerID)
-		obj.setFloat(2, game.speed)
-		obj.setInt(3, game.paused)
-		obj.setFloat(4, game.timeGoneLastUpdate) '- so clients can catch up
-		obj.setFloat(5, game.timeGone)
+		obj.setInt(1, GetPlayerCollection().playerID)
+		obj.setFloat(2, GetGameTime().speed)
+		obj.setInt(3, GetGameTime().paused)
+		obj.setFloat(4, GetGameTime().timeGoneLastUpdate) '- so clients can catch up
+		obj.setFloat(5, GetGameTime().timeGone)
 		Network.BroadcastNetworkObject( obj, not NET_PACKET_RELIABLE )
 	End Method
+
 
 	Method ReceiveGameState( obj:TNetworkObject )
 		Local playerID:Int		= obj.getInt(1)
 		'must be a player DIFFERENT to me
-		if not Game.isPlayer(playerID) or playerID = game.playerID then return
+		if not GetPlayerCollection().IsPlayer(playerID) or playerID = GetPlayerCollection().playerID then return
 
 		'60 upd per second = -> GetDeltaTimer().GetDeltaTime() => 16ms
 		'ping in ms -> latency/2 -> 0.5*latency/16ms = "1,3 updates bis ping ankommt"
 		'pro Update: zeiterhoehung von "game.speed/10.0"
 		'-> bereinigung: "0.5*latency/16" * "game.speed/10.0"
-		local correction:float = 0.5*Network.client.latency / GetDeltaTimer().GetDelta()   *   game.speed/10.0
+		local correction:float = 0.5 * Network.client.latency / GetDeltaTimer().GetDelta() * GetGameTime().speed/10.0
 		'we want it in s not in ms
 		correction :/ 1000.0
 '		print obj.getFloat(3) + "  + "+correction
 
-		Game.speed 				= obj.getFloat(2)
-		Game.paused				= obj.getInt(3)
-		Game.timeGoneLastUpdate	= obj.getFloat(4) + correction
-		Game.timeGone			= obj.getFloat(5) + correction
+		GetGameTime().speed = obj.getFloat(2)
+		GetGameTime().paused = obj.getInt(3)
+		GetGameTime().timeGoneLastUpdate = obj.getFloat(4) + correction
+		GetGameTime().timeGone = obj.getFloat(5) + correction
 	End Method
 
 'checked
@@ -288,7 +292,7 @@ Type TNetworkHelper
 		'print "Send Player Details to all but me ("+TNetwork.dottedIP(host.ip)+")"
 		'send packets indivual - no need to have multiple entities in one packet
 
-		for local player:TPlayer = eachin Game.Players
+		for local player:TPlayer = EachIn GetPlayerCollection().players
 			'it's me or i'm hosting and its an AI player
 			if player.playerID = Network.client.playerID OR (Network.isServer and Player.isAI())
 				'Print "[NET] send playerdetails of ME and IF I'm the host also from AI players"
@@ -308,7 +312,7 @@ Type TNetworkHelper
 
 	Method ReceivePlayerDetails( obj:TNetworkObject )
 		Local playerID:Int			= obj.getInt(1)
-		local player:TPlayer		= Game.GetPlayer(playerID)
+		local player:TPlayer		= GetPlayerCollection().Get(playerID)
 		if player = null then return
 
 		Local name:string			= obj.getString(2)
@@ -322,13 +326,13 @@ Type TNetworkHelper
 			player.color.fromInt(color)
 			player.RecolorFigure()
 		EndIf
-		If playerID <> game.playerID
-			player.name								= name
-			player.channelname						= channelName
+		If playerID <> GetPlayerCollection().playerID
+			player.name = name
+			player.channelname = channelName
 			local screen:TScreen_GameSettings = TScreen_GameSettings(ScreenCollection.GetScreen("GameSettings"))
 			screen.guiPlayerNames[ playerID-1 ].value = name
 			screen.guiChannelNames[ playerID-1 ].value = channelName
-			player.figure.controlledByID			= controlledByID
+			player.figure.controlledByID = controlledByID
 		EndIf
 	End Method
 
@@ -406,18 +410,18 @@ Type TNetworkHelper
 		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
 
 		'self ready
-		Game.Players[ playerID ].networkstate = 1
+		GetPlayerCollection().Get(playerID).networkstate = 1
 
 		for local i:int = 1 to 4
 			'set AI players ready
-			if Game.GetPlayer(i).figure.controlledByID = 0 then Game.GetPlayer(i).networkstate = 1
+			if GetPlayerCollection().Get(i).figure.controlledByID = 0 then GetPlayerCollection().Get(i).networkstate = 1
 		Next
 
 		if Network.isServer
 
 			local allReady:int = 1
 			for local otherclient:TNetworkclient = eachin Network.server.clients
-				if not Game.GetPlayer(otherclient.playerID).networkstate then allReady = false
+				if not GetPlayerCollection().Get(otherclient.playerID).networkstate then allReady = false
 			Next
 			if allReady
 				'send game start
@@ -432,29 +436,31 @@ Type TNetworkHelper
 	Method ReceiveGameReady( obj:TNetworkObject )
 print "[NET] ReceiveGameReady"
 		local remotePlayerID:int = obj.getInt(1)
-		Game.Players[ remotePlayerID ].networkstate = 1
+		GetPlayerCollection().Get(remotePlayerID).networkstate = 1
 
 		'all players have their start programme?
 		local allReady:int = 1
+		local player:TPlayer
 		for local i:int = 1 to 4
-			if Game.Players[i].ProgrammeCollection.GetMovieLicenceCount() < Game.startMovieAmount
-				print "movie missing player("+i+") " + Game.Players[i].ProgrammeCollection.GetMovieLicenceCount() + " < " + Game.startMovieAmount
+			player = GetPlayerCollection().Get(i)
+			if player.ProgrammeCollection.GetMovieLicenceCount() < Game.startMovieAmount
+				print "movie missing player("+i+") " + player.ProgrammeCollection.GetMovieLicenceCount() + " < " + Game.startMovieAmount
 				allReady = false
 				exit
 			endif
-			if Game.Players[i].ProgrammeCollection.GetSeriesLicenceCount() < Game.startSeriesAmount
-				print "serie missing player("+i+") " + Game.Players[i].ProgrammeCollection.GetSeriesLicenceCount() + " < " + Game.startSeriesAmount
+			if player.ProgrammeCollection.GetSeriesLicenceCount() < Game.startSeriesAmount
+				print "serie missing player("+i+") " + player.ProgrammeCollection.GetSeriesLicenceCount() + " < " + Game.startSeriesAmount
 				allReady = false
 				exit
 			endif
-			if Game.Players[i].ProgrammeCollection.GetAdContractCount() < Game.startAdAmount
-				print "ad missing player("+i+") " + Game.Players[i].ProgrammeCollection.GetAdContractCount() + " < " + Game.startAdAmount
+			if player.ProgrammeCollection.GetAdContractCount() < Game.startAdAmount
+				print "ad missing player("+i+") " + player.ProgrammeCollection.GetAdContractCount() + " < " + Game.startAdAmount
 				allReady = false
 				exit
 			endif
 		Next
 		if allReady and Game.GAMESTATE <> TGame.STATE_RUNNING
-			SendGameReady( Game.PlayerID, 0)
+			SendGameReady( GetPlayerCollection().playerID, 0)
 		endif
 	End Method
 
@@ -470,14 +476,14 @@ print "[NET] ReceiveGameReady"
 	End Method
 
 	Method ReceiveNewsSubscriptionChange( obj:TNetworkObject )
-		Local playerID:Int			= obj.getInt(1)
-		local player:TPlayer		= Game.GetPlayer( playerID )
+		Local playerID:Int = obj.getInt(1)
+		local player:TPlayer = GetPlayerCollection().Get( playerID )
 		if player = null then return
 
-		Local genre:Int				= obj.getInt(2)
-		Local level:Int				= obj.getInt(3)
+		Local genre:Int	= obj.getInt(2)
+		Local level:Int	= obj.getInt(3)
 		'print "[NET] ReceiveNewsSubscriptionChange: player="+playerID+", genre="+genre+", level="+level
-		Game.Players[ playerID ].setNewsAbonnement(genre, level, false)
+		player.setNewsAbonnement(genre, level, false)
 	End Method
 
 
@@ -494,11 +500,11 @@ print "[NET] ReceiveGameReady"
 	End Method
 
 	Method ReceiveMovieAgencyChange( obj:TNetworkObject )
-		Local playerID:Int			= obj.getInt(1)
-		Local methodtype:Int		= obj.getInt(2)
-		Local newid:Int 			= obj.getInt(3)
-		Local slot:Int 				= obj.getInt(4)
-		Local licenceID:Int			= obj.getInt(5)
+		Local playerID:Int = obj.getInt(1)
+		Local methodtype:Int = obj.getInt(2)
+		Local newid:Int = obj.getInt(3)
+		Local slot:Int = obj.getInt(4)
+		Local licenceID:Int = obj.getInt(5)
 
 		Local tmpID:Int = -1
 		Local oldX:Int, oldY:Int
@@ -534,7 +540,7 @@ print "[NET] ReceiveGameReady"
 		local action:int		= obj.getInt(2)
 		local pos:TPoint		= new TPoint.Init( obj.getFloat(3), obj.getFloat(4) )
 		local radius:int		= obj.getInt(5)
-		if not Game.isPlayer(playerID) then return FALSE
+		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
 		local station:TStation	= StationMapCollection.GetMap(playerID).getStation(pos.x, pos.y)
 
@@ -590,7 +596,8 @@ print "[NET] ReceiveGameReady"
 		local objectType:int	= obj.getInt(2)
 		local objectID:int		= obj.getInt(3)
 		local action:int		= obj.getInt(4)
-		if not Game.isPlayer(playerID) then return FALSE
+		local player:TPlayer = GetPlayerCollection().Get(playerID)
+		if not player then return FALSE
 
 		select objectType
 			'ProgrammeLicence
@@ -603,23 +610,23 @@ print "[NET] ReceiveGameReady"
 
 					select action
 						case NET_ADD
-								Game.Players[playerID].ProgrammeCollection.AddProgrammeLicence(licence, FALSE)
+								player.ProgrammeCollection.AddProgrammeLicence(licence, FALSE)
 								print "[NET] PCollection"+playerID+" - add programme licence " + licence.GetTitle()
 						'remove from Collection (Archive - RemoveProgrammeLicence)
 						case NET_DELETE
-								Game.Players[playerID].ProgrammeCollection.RemoveProgrammeLicence(licence, FALSE)
+								player.ProgrammeCollection.RemoveProgrammeLicence(licence, FALSE)
 								print "[NET] PCollection"+playerID+" - remove programme licence " + licence.GetTitle()
 						case NET_BUY
-								Game.Players[playerID].ProgrammeCollection.AddProgrammeLicence(licence, TRUE)
+								player.ProgrammeCollection.AddProgrammeLicence(licence, TRUE)
 								print "[NET] PCollection"+playerID+" - buy programme licence " + licence.GetTitle()
 						case NET_SELL
-								Game.Players[playerID].ProgrammeCollection.RemoveProgrammeLicence(licence, TRUE)
+								player.ProgrammeCollection.RemoveProgrammeLicence(licence, TRUE)
 								print "[NET] PCollection"+playerID+" - sell programme licence " + licence.GetTitle()
 						case NET_TOSUITCASE
-								Game.Players[playerID].ProgrammeCollection.AddProgrammeLicenceToSuitcase(licence)
+								player.ProgrammeCollection.AddProgrammeLicenceToSuitcase(licence)
 								print "[NET] PCollection"+playerID+" - to suitcase - programme " + licence.GetTitle()
 						case NET_FROMSUITCASE
-								Game.Players[playerID].ProgrammeCollection.RemoveProgrammeLicenceFromSuitcase(licence)
+								player.ProgrammeCollection.RemoveProgrammeLicenceFromSuitcase(licence)
 								print "[NET] PCollection"+playerID+" - from suitcase - programme licence " + licence.GetTitle()
 					EndSelect
 
@@ -634,12 +641,12 @@ print "[NET] ReceiveGameReady"
 
 					select action
 						case NET_ADD
-								Game.Players[ playerID ].ProgrammeCollection.AddAdContract( new TAdContract.Create(contractBase) )
+								player.ProgrammeCollection.AddAdContract( new TAdContract.Create(contractBase) )
 								print "[NET] PCollection"+playerID+" - add contract "+contractbase.title
 						case NET_DELETE
-								local contract:TAdContract = Game.Players[ playerID ].ProgrammeCollection.GetAdContractByBase( contractBase.id )
+								local contract:TAdContract = player.ProgrammeCollection.GetAdContractByBase( contractBase.id )
 								if contract
-									Game.Players[ playerID ].ProgrammeCollection.RemoveAdContract( contract )
+									player.ProgrammeCollection.RemoveAdContract( contract )
 									print "[NET] PCollection"+playerID+" - remove contract "+contract.GetTitle()
 								endif
 					EndSelect
@@ -675,10 +682,10 @@ print "[NET] ReceiveGameReady"
 		if senderID < 0 then return FALSE
 		if sendToChannels = CHAT_CHANNEL_NONE then return FALSE
 		'limit to game host sending for others (AI)
-		if senderID <> Game.playerID and not Game.IsGameLeader() then return FALSE
+		if senderID <> GetPlayerCollection().playerID and not Game.IsGameLeader() then return FALSE
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_CHATMESSAGE)
-		obj.setInt(1, Game.playerID)	'so we know the origin of the packet
+		obj.setInt(1, GetPlayerCollection().playerID)	'so we know the origin of the packet
 		obj.setInt(2, senderID)			'author of the message
 		obj.setString(3, ChatMessage)
 		obj.setInt(4, sendToChannels)
@@ -695,7 +702,7 @@ print "[NET] ReceiveGameReady"
 		'if we got back our own message, we do not want to emit
 		'a new event - as we would then also will send/receive
 		'it again and again and... This should not happen (but broadcasts...)
-		if originID = Game.playerID
+		if originID = GetPlayerCollection().playerID
 			print "ERROR: ReceiveChatMessage - got back my own message!!"
 			return FALSE
 		endif
@@ -737,13 +744,15 @@ print "[NET] ReceiveGameReady"
 	Method ReceivePlanSetNews:int( obj:TNetworkObject )
 		local sendingPlayerID:int = obj.getInt(1)
 
-		if not Game.isPlayer(sendingPlayerID) then return NULL
+		if not GetPlayerCollection().IsPlayer(sendingPlayerID) then return NULL
 
-		local blockID:int			= obj.getInt(2)
-		local blockOwnerID:int		= obj.getInt(3)
-		local slot:int				= obj.getInt(4)
+		local blockID:int = obj.getInt(2)
+		local blockOwnerID:int = obj.getInt(3)
+		local slot:int = obj.getInt(4)
+		local owningPlayer:TPlayer = GetPlayerCollection().Get(blockOwnerID)
+		if not owningPlayer then return Null
 
-		Local news:TNews = Game.Players[ blockOwnerID ].ProgrammeCollection.getNews(blockID)
+		Local news:TNews = owningPlayer.ProgrammeCollection.getNews(blockID)
 		'do not automagically create new blocks for others...
 		'all do it independently from each other (for intact randomizer base )
 		if not news then return TRUE
@@ -751,7 +760,7 @@ print "[NET] ReceiveGameReady"
 		'deactivate events for that moment - avoid recursion
 		TPlayerProgrammePlan.fireEvents = FALSE
 
-		Game.Players[ blockOwnerID ].ProgrammePlan.SetNews(news, slot)
+		owningPlayer.ProgrammePlan.SetNews(news, slot)
 
 		TPlayerProgrammePlan.fireEvents = TRUE
 
@@ -780,7 +789,7 @@ print "[NET] ReceiveGameReady"
 	End Method
 
 	Method ReceiveProgrammePlanChange:int( obj:TNetworkObject )
-		if not Game.isPlayer(obj.getInt(1)) then return FALSE
+		if not GetPlayerCollection().IsPlayer(obj.getInt(1)) then return FALSE
 
 		local playerID:int		= obj.getInt(1)
 		local objectType:int	= obj.getInt(2)
@@ -791,22 +800,22 @@ print "[NET] ReceiveGameReady"
 		local hour:int			= obj.getInt(7)
 
 		'delete at given spot
-		if objectID = 0 then return (null<>Game.getPlayer(playerID).ProgrammePlan.RemoveObject(null, slotType, day, hour))
+		if objectID = 0 then return (null<>GetPlayerCollection().Get(playerID).ProgrammePlan.RemoveObject(null, slotType, day, hour))
 
 		'add to given datetime
 		local broadcastMaterial:TBroadcastMaterial
 		Select objectType
 			case TBroadcastmaterial.TYPE_PROGRAMME
-				broadcastMaterial = TProgramme.Create(Game.getPlayer(playerID).ProgrammeCollection.GetProgrammeLicence(referenceID))
+				broadcastMaterial = TProgramme.Create(GetPlayerCollection().Get(playerID).ProgrammeCollection.GetProgrammeLicence(referenceID))
 			case TBroadcastmaterial.TYPE_ADVERTISEMENT
-				broadcastMaterial = new TAdvertisement.Create(Game.getPlayer(playerID).ProgrammeCollection.GetAdContract(referenceID))
+				broadcastMaterial = new TAdvertisement.Create(GetPlayerCollection().Get(playerID).ProgrammeCollection.GetAdContract(referenceID))
 		End Select
 		If not broadcastMaterial
 			print "[NET] ReceiveProgrammePlanChange: object "+objectID+" with reference "+referenceID+" not found."
 			return FALSE
 		endif
 
-		Game.getPlayer(playerID).ProgrammePlan.AddObject(broadcastMaterial, slotType, day, hour)
+		GetPlayerCollection().Get(playerID).ProgrammePlan.AddObject(broadcastMaterial, slotType, day, hour)
 	End Method
 End Type
 Global NetworkHelper:TNetworkHelper = new TNetworkHelper.Create()

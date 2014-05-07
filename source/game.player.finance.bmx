@@ -1,3 +1,66 @@
+SuperStrict
+Import "Dig/base.util.event.bmx"
+Import "Dig/base.util.localization.bmx"
+Import "game.gameobject.bmx"
+Import "game.gametime.bmx"
+
+Type TPlayerFinanceCollection
+	Field finances:TPlayerFinance[][]
+
+	Global _instance:TPlayerFinanceCollection
+
+
+	Method New()
+		_instance = self
+
+		if finances = null then finances = finances[..0]
+	End Method
+
+
+	Function GetInstance:TPlayerFinanceCollection()
+		if not _instance then _instance = new TPlayerFinanceCollection
+		return _instance
+	End Function
+
+
+	Method Get:TPlayerFinance(playerID:int, day:int=-1)
+		if playerID <= 0 then return Null
+
+		If day <= 0 Then day = GetGameTime().GetDay()
+		'subtract start day to get a index starting at 0 and add 1 day again
+		Local arrayIndex:Int = day +1 - GetGameTime().GetStartDay()
+		local playerIndex:int = playerID -1
+		If arrayIndex < 0 Then Return Get(playerID, GetGameTime().GetStartDay()-1)
+
+		'create entry if player misses its finance entry
+		if finances.length < playerID then finances = finances[..playerID]
+
+
+		If (arrayIndex = 0 And Not finances[playerIndex]) Or arrayIndex >= finances[playerIndex].length
+			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
+			If arrayIndex >= finances[playerIndex].length
+				'resize array
+				finances[playerIndex] = finances[playerIndex][..arrayIndex+1]
+			EndIf
+			finances[playerIndex][arrayIndex] = New TPlayerFinance.Create(playerID)
+			'reuse the money from the day before
+			'if arrayIndex 0 - we do not need to take over
+			'calling GetFinance(day-1) instead of accessing the array
+			'assures that the object is created if needed (recursion)
+			If arrayIndex > 0 Then TPlayerFinance.TakeOverFinances(Get(playerID, day-1), finances[playerIndex][arrayIndex])
+		EndIf
+		Return finances[playerIndex][arrayIndex]
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+Function GetPlayerFinanceCollection:TPlayerFinanceCollection()
+	Return TPlayerFinanceCollection.GetInstance()
+End Function
+
+
+
+
 'holds data of WHAT has been bought, which amount of money was used and so on ...
 'contains methods for refreshing stats when paying or selling something
 Type TPlayerFinance
@@ -30,7 +93,7 @@ Type TPlayerFinance
 	Field money:Int						= 0
 	Field credit:Int 					= 0
 	Field ListLink:TLink
-	Field player:TPlayer				= Null
+	Field playerID:int					= Null
 
 	Global creditInterestRate:float		= 0.05 '5% a day
 	Global balanceInterestRate:float	= 0.01 '1% a day
@@ -38,14 +101,14 @@ Type TPlayerFinance
 	Global List:TList					= CreateList()
 
 
-	Method Create:TPlayerFinance(player:TPlayer, startmoney:Int=500000, startcredit:Int = 500000)
-		money			= startmoney
-		revenue_before	= startmoney
-		revenue_after	= startmoney
+	Method Create:TPlayerFinance(playerID:int, startmoney:Int=500000, startcredit:Int = 500000)
+		money = startmoney
+		revenue_before = startmoney
+		revenue_after = startmoney
 
-		credit			= startcredit
-		Self.player		= player
-		ListLink		= List.AddLast(Self)
+		credit = startcredit
+		Self.playerID = playerID
+		ListLink = List.AddLast(Self)
 		Return Self
 	End Method
 
@@ -61,7 +124,7 @@ Type TPlayerFinance
 			toFinance.ListLink.remove()
 			toFinance = Null
 			'create the new financial but give the yesterdays money/credit
-			toFinance = New TPlayerFinance.Create(fromFinance.player, fromFinance.money, fromFinance.credit)
+			toFinance = New TPlayerFinance.Create(fromFinance.playerID, fromFinance.money, fromFinance.credit)
 		EndIf
 	End Function
 
@@ -76,9 +139,15 @@ Type TPlayerFinance
 		'TLogger.log("TFinancial.ChangeMoney()", "Player "+player.playerID+" changed money by "+value, LOG_DEBUG)
 		money			:+ value
 		revenue_after	:+ value
-		'change to event?
-		If Game.isGameLeader() And player.isAI() Then player.PlayerKI.CallOnMoneyChanged()
-		If player.isActivePlayer() Then Interface.BottomImgDirty = True
+		'emit event to inform others
+		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onChangeMoney", new TData.AddNumber("value", value).AddNumber("playerID", playerID)) )
+	End Method
+
+
+	Method TransactionFailed:int(value:int)
+		'emit event to inform others
+		EventManager.triggerEvent( TEventSimple.Create("PlayerFinance.onTransactionFailed", new TData.AddNumber("value", value).AddNumber("playerID", playerID)) )
+		return False
 	End Method
 
 
@@ -95,9 +164,9 @@ Type TPlayerFinance
 
 
 	Method RepayCredit:Int(value:Int)
-		TLogger.Log("TFinancial.RepayCredit()", "Player "+player.playerID+" repays (a part of his) credit of "+value, LOG_DEBUG)
+		TLogger.Log("TFinancial.RepayCredit()", "Player "+playerID+" repays (a part of his) credit of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_CREDIT_REPAY, -value, null).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_CREDIT_REPAY, -value, null).AddTo(playerID)
 
 		credit :- value
 		expense_creditRepayed :+ value
@@ -107,9 +176,9 @@ Type TPlayerFinance
 
 
 	Method TakeCredit:Int(value:Int)
-		TLogger.Log("TFinancial.TakeCredit()", "Player "+player.playerID+" took a credit of "+value, LOG_DEBUG)
+		TLogger.Log("TFinancial.TakeCredit()", "Player "+playerID+" took a credit of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_CREDIT_TAKE, +value).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_CREDIT_TAKE, +value).AddTo(playerID)
 
 		credit :+ value
 		income_creditTaken :+ value
@@ -120,9 +189,9 @@ Type TPlayerFinance
 
 	'refreshs stats about misc sells
 	Method SellMisc:Int(price:Int)
-		TLogger.Log("TFinancial.SellMisc()", "Player "+player.playerID+" sold mics for "+price, LOG_DEBUG)
+		TLogger.Log("TFinancial.SellMisc()", "Player "+playerID+" sold mics for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_MISC, +price).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_MISC, +price).AddTo(playerID)
 
 		income_misc :+ price
 		AddIncome(price)
@@ -131,9 +200,9 @@ Type TPlayerFinance
 
 
 	Method SellStation:Int(price:Int)
-		TLogger.Log("TFinancial.SellStation()", "Player "+player.playerID+" sold a station for "+price, LOG_DEBUG)
+		TLogger.Log("TFinancial.SellStation()", "Player "+playerID+" sold a station for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_STATION, +price).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_STATION, +price).AddTo(playerID)
 
 		income_stations :+ price
 		AddIncome(price)
@@ -143,9 +212,9 @@ Type TPlayerFinance
 
 	'refreshs stats about earned money from adspots
 	Method EarnAdProfit:Int(value:Int, contract:object)
-		TLogger.Log("TFinancial.EarnAdProfit()", "Player "+player.playerID+" earned "+value+" with ads", LOG_DEBUG)
+		TLogger.Log("TFinancial.EarnAdProfit()", "Player "+playerID+" earned "+value+" with ads", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_ADPROFIT, +value, contract).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_ADPROFIT, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
 		AddIncome(value)
@@ -155,9 +224,9 @@ Type TPlayerFinance
 
 	'refreshs stats about earned money from adspots sent as infomercial
 	Method EarnInfomercialRevenue:Int(value:Int, contract:object)
-		TLogger.Log("TFinancial.EarnInfomercialRevenue()", "Player "+player.playerID+" earned "+value+" with ads", LOG_DEBUG)
+		TLogger.Log("TFinancial.EarnInfomercialRevenue()", "Player "+playerID+" earned "+value+" with ads", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_INFOMERCIALREVENUE, +value, contract).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_INFOMERCIALREVENUE, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
 		AddIncome(value)
@@ -167,9 +236,9 @@ Type TPlayerFinance
 
 	'refreshs stats about earned money from sending ad powered shows or call-in
 	Method EarnCallerRevenue:Int(value:Int, licence:object)
-		TLogger.Log("TFinancial.EarnCallerRevenue()", "Player "+player.playerID+" earned "+value+" with a call-in-show", LOG_DEBUG)
+		TLogger.Log("TFinancial.EarnCallerRevenue()", "Player "+playerID+" earned "+value+" with a call-in-show", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_CALLERREVENUE, +value, licence).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_CALLERREVENUE, +value, licence).AddTo(playerID)
 
 		income_callerRevenue :+ value
 		AddIncome(value)
@@ -179,9 +248,9 @@ Type TPlayerFinance
 
 	'refreshs stats about earned money from sending ad powered shows or call-in
 	Method EarnSponsorshipRevenue:Int(value:Int, licence:object)
-		TLogger.Log("TFinancial.EarnSponsorshipRevenue()", "Player "+player.playerID+" earned "+value+" broadcasting a sponsored programme", LOG_DEBUG)
+		TLogger.Log("TFinancial.EarnSponsorshipRevenue()", "Player "+playerID+" earned "+value+" broadcasting a sponsored programme", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_SPONSORSHIPREVENUE, +value, licence).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_SPONSORSHIPREVENUE, +value, licence).AddTo(playerID)
 
 		income_sponsorshipRevenue :+ value
 		AddIncome(value)
@@ -191,9 +260,9 @@ Type TPlayerFinance
 
 	'refreshs stats about earned money from selling a movie/programme
 	Method SellProgrammeLicence:Int(price:Int, licence:object)
-		TLogger.Log("TFinancial.SellLicence()", "Player "+player.playerID+" earned "+price+" selling a programme licence", LOG_DEBUG)
+		TLogger.Log("TFinancial.SellLicence()", "Player "+playerID+" earned "+price+" selling a programme licence", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_PROGRAMMELICENCE, +price, licence).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_PROGRAMMELICENCE, +price, licence).AddTo(playerID)
 
 		income_programmeLicences :+ price
 		AddIncome(price)
@@ -202,9 +271,9 @@ Type TPlayerFinance
 
 	'refreshs stats about earned money from interest on the current balance
 	Method EarnBalanceInterest:Int(value:Int)
-		TLogger.Log("TFinancial.EarnBalanceInterest()", "Player "+player.playerID+" earned "+value+" on interest of their current balance", LOG_DEBUG)
+		TLogger.Log("TFinancial.EarnBalanceInterest()", "Player "+playerID+" earned "+value+" on interest of their current balance", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_BALANCEINTEREST, +value).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_BALANCEINTEREST, +value).AddTo(playerID)
 
 		income_balanceInterest :+ value
 		AddIncome(value)
@@ -214,9 +283,9 @@ Type TPlayerFinance
 
 	'refreshs stats about paid money from drawing credit interest (negative current balance)
 	Method PayDrawingCreditInterest:Int(value:Int)
-		TLogger.Log("TFinancial.PayDrawingCreditInterest()", "Player "+player.playerID+" paid "+value+" on interest of having a negative current balance", LOG_DEBUG)
+		TLogger.Log("TFinancial.PayDrawingCreditInterest()", "Player "+playerID+" paid "+value+" on interest of having a negative current balance", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_DRAWINGCREDITINTEREST, -value).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_DRAWINGCREDITINTEREST, -value).AddTo(playerID)
 
 		expense_drawingCreditInterest :+ value
 		AddExpense(value)
@@ -227,15 +296,15 @@ Type TPlayerFinance
 	'pay the bid for an auction programme
 	Method PayAuctionBid:Int(price:Int, licence:object)
 		If canAfford(price)
-			TLogger.Log("TFinancial.PayAuctionBid()", "Player "+player.playerID+" paid a bid of "+price, LOG_DEBUG)
+			TLogger.Log("TFinancial.PayAuctionBid()", "Player "+playerID+" paid a bid of "+price, LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_AUCTIONBID, -price, licence).AddTo(player.playerID)
+			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_AUCTIONBID, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
 			AddExpense(price)
 			Return True
 		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+			TransactionFailed(price)
 			Return False
 		EndIf
 	End Method
@@ -246,9 +315,9 @@ Type TPlayerFinance
 	'ATTENTION: from a financial view this IS NOT CORRECT ... it should add
 	'to "income paid_programmeLicence" ...
 	Method PayBackAuctionBid:Int(price:Int, licence:object)
-		TLogger.Log("TFinancial.PayBackAuctionBid()", "Player "+player.playerID+" received back "+price+" from an auction", LOG_DEBUG)
+		TLogger.Log("TFinancial.PayBackAuctionBid()", "Player "+playerID+" received back "+price+" from an auction", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAYBACK_AUCTIONBID, +price, licence).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAYBACK_AUCTIONBID, +price, licence).AddTo(playerID)
 
 		expense_programmeLicences	:- price
 		expense_total				:- price
@@ -260,15 +329,15 @@ Type TPlayerFinance
 	'refreshs stats about paid money from buying a movie/programme
 	Method PayProgrammeLicence:Int(price:Int, licence:object)
 		If canAfford(price)
-			TLogger.Log("TFinancial.PayProgrammeLicence()", "Player "+player.playerID+" paid "+price+" for a programmeLicence", LOG_DEBUG)
+			TLogger.Log("TFinancial.PayProgrammeLicence()", "Player "+playerID+" paid "+price+" for a programmeLicence", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PROGRAMMELICENCE, -price, licence).AddTo(player.playerID)
+			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PROGRAMMELICENCE, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
 			AddExpense(price)
 			Return True
 		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+			TransactionFailed(price)
 			Return False
 		EndIf
 	End Method
@@ -277,15 +346,15 @@ Type TPlayerFinance
 	'refreshs stats about paid money from buying a station
 	Method PayStation:Int(price:Int)
 		If canAfford(price)
-			TLogger.Log("TFinancial.PayStation()", "Player "+player.playerID+" paid "+price+" for a broadcasting station", LOG_DEBUG)
+			TLogger.Log("TFinancial.PayStation()", "Player "+playerID+" paid "+price+" for a broadcasting station", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_STATION, -price).AddTo(player.playerID)
+			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_STATION, -price).AddTo(playerID)
 
 			expense_stations :+ price
 			AddExpense(price)
 			Return True
 		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+			TransactionFailed(price)
 			Return False
 		EndIf
 	End Method
@@ -294,15 +363,15 @@ Type TPlayerFinance
 	'refreshs stats about paid money from buying a script (own production)
 	Method PayScript:Int(price:Int, script:object)
 		If canAfford(price)
-			TLogger.Log("TFinancial.PayScript()", "Player "+player.playerID+" paid "+price+" for a script", LOG_DEBUG)
+			TLogger.Log("TFinancial.PayScript()", "Player "+playerID+" paid "+price+" for a script", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_SCRIPT, -price, script).AddTo(player.playerID)
+			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_SCRIPT, -price, script).AddTo(playerID)
 
 			expense_scripts :+ price
 			AddExpense(price)
 			Return True
 		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+			TransactionFailed(price)
 			Return False
 		EndIf
 	End Method
@@ -311,15 +380,15 @@ Type TPlayerFinance
 	'refreshs stats about paid money from buying stuff for own production
 	Method PayProductionStuff:Int(price:Int)
 		If canAfford(price)
-			TLogger.Log("TFinancial.PayProductionStuff()", "Player "+player.playerID+" paid "+price+" for product stuff", LOG_DEBUG)
+			TLogger.Log("TFinancial.PayProductionStuff()", "Player "+playerID+" paid "+price+" for product stuff", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PRODUCTIONSTUFF, -price).AddTo(player.playerID)
+			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PRODUCTIONSTUFF, -price).AddTo(playerID)
 
 			expense_productionstuff :+ price
 			AddExpense(price)
 			Return True
 		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+			TransactionFailed(price)
 			Return False
 		EndIf
 	End Method
@@ -327,9 +396,9 @@ Type TPlayerFinance
 
 	'refreshs stats about paid money from paying a penalty fee (not sent the necessary adspots)
 	Method PayPenalty:Int(value:Int, contract:object)
-		TLogger.Log("TFinancial.PayPenalty()", "Player "+player.playerID+" paid a failed contract penalty of "+value, LOG_DEBUG)
+		TLogger.Log("TFinancial.PayPenalty()", "Player "+playerID+" paid a failed contract penalty of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PENALTY, -value, contract).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PENALTY, -value, contract).AddTo(playerID)
 
 		expense_penalty :+ value
 		AddExpense(value)
@@ -339,9 +408,9 @@ Type TPlayerFinance
 
 	'refreshs stats about paid money from paying the rent of rooms
 	Method PayRent:Int(price:Int, room:object)
-		TLogger.Log("TFinancial.PayRent()", "Player "+player.playerID+" paid a room rent of "+price, LOG_DEBUG)
+		TLogger.Log("TFinancial.PayRent()", "Player "+playerID+" paid a room rent of "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_RENT, -price, room).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_RENT, -price, room).AddTo(playerID)
 
 		expense_rent :+ price
 		AddExpense(price)
@@ -352,15 +421,15 @@ Type TPlayerFinance
 	'refreshs stats about paid money from paying for the sent newsblocks
 	Method PayNews:Int(price:Int, news:object)
 		If canAfford(price)
-			TLogger.Log("TFinancial.PayNews()", "Player "+player.playerID+" paid "+price+" for a news", LOG_DEBUG)
+			TLogger.Log("TFinancial.PayNews()", "Player "+playerID+" paid "+price+" for a news", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_NEWS, -price, news).AddTo(player.playerID)
+			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_NEWS, -price, news).AddTo(playerID)
 
 			expense_news :+ price
 			AddExpense(price)
 			Return True
 		Else
-			If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
+			TransactionFailed(price)
 			Return False
 		EndIf
 	End Method
@@ -368,9 +437,9 @@ Type TPlayerFinance
 
 	'refreshs stats about paid money from paying the daily costs a newsagency-abonnement
 	Method PayNewsAgencies:Int(price:Int)
-		TLogger.Log("TFinancial.PayNewsAgencies()", "Player "+player.playerID+" paid "+price+" for news abonnements", LOG_DEBUG)
+		TLogger.Log("TFinancial.PayNewsAgencies()", "Player "+playerID+" paid "+price+" for news abonnements", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_NEWSAGENCIES, -price).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_NEWSAGENCIES, -price).AddTo(playerID)
 
 		expense_newsagencies :+ price
 		AddExpense(price)
@@ -380,9 +449,9 @@ Type TPlayerFinance
 
 	'refreshs stats about paid money from paying the fees for the owned stations
 	Method PayStationFees:Int(price:Int)
-		TLogger.Log("TFinancial.PayStationFees()", "Player "+player.playerID+" paid "+price+" for station fees", LOG_DEBUG)
+		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for station fees", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_STATIONFEES, -price).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_STATIONFEES, -price).AddTo(playerID)
 
 		expense_stationfees :+ price
 		AddExpense(price)
@@ -392,9 +461,9 @@ Type TPlayerFinance
 
 	'refreshs stats about paid money from paying interest on the current credit
 	Method PayCreditInterest:Int(price:Int)
-		TLogger.Log("TFinancial.PayCreditInterest()", "Player "+player.playerID+" paid "+price+" on interest of their credit", LOG_DEBUG)
+		TLogger.Log("TFinancial.PayCreditInterest()", "Player "+playerID+" paid "+price+" on interest of their credit", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_CREDITINTEREST, -price).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_CREDITINTEREST, -price).AddTo(playerID)
 
 		expense_creditInterest :+ price
 		AddExpense(price)
@@ -404,9 +473,9 @@ Type TPlayerFinance
 
 	'refreshs stats about paid money from paying misc things
 	Method PayMisc:Int(price:Int)
-		TLogger.Log("TFinancial.PayStationFees()", "Player "+player.playerID+" paid "+price+" for misc", LOG_DEBUG)
+		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for misc", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_MISC, -price).AddTo(player.playerID)
+		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_MISC, -price).AddTo(playerID)
 
 		expense_misc :+ price
 		AddExpense(price)
@@ -468,7 +537,7 @@ Type TPlayerFinanceHistory
 
 
 	Method Init:TPlayerFinanceHistory(typeID:int, money:int, obj:object=null, gameTime:int = -1)
-		if gameTime = -1 then gameTime = Game.GetTimeGone()
+		if gameTime = -1 then gameTime = GetGameTime().GetTimeGone()
 		self.typeID = typeID
 		self.obj = obj
 		self.money = money
@@ -478,22 +547,21 @@ Type TPlayerFinanceHistory
 	End Method
 
 
-	Function GetList:TList(playerID:int = -1)
-		if playerID = -1 then playerID = Game.GetPlayer().playerID
-		if not list[playerID] then list[playerID] = CreateList()
-		return list[playerID]
+	Function GetList:TList(playerID:int)
+		if playerID <= 0 or playerID > list.length then return Null
+		if not list[playerID-1] then list[playerID-1] = CreateList()
+		return list[playerID-1]
 	End function
 
 
 	Method AddTo:int(playerID:int=-1)
-		if playerID = -1 then playerID = Game.GetPlayer().playerID
-		if not list[playerID] then list[playerID] = CreateList()
+		if playerID <= 0 or playerID > list.length then return False
+		if not list[playerID-1] then list[playerID-1] = CreateList()
 
-		list[playerID].AddLast(self)
+		list[playerID-1].AddLast(self)
 
-		list[playerID].Sort()
+		list[playerID-1].Sort()
 	End Method
-
 
 
 	Method Compare:int(otherObject:Object)
@@ -503,10 +571,10 @@ Type TPlayerFinanceHistory
 	End Method
 
 
-
 	Method GetMoney:int()
 		return money
 	End Method
+
 
 	'returns a text describing the history
 	Method GetDescription:String()
@@ -525,15 +593,15 @@ Type TPlayerFinanceHistory
 				return GetLocale("FINANCES_HISTORY_FOR_MISC")
 			Case TYPE_SELL_PROGRAMMELICENCE, TYPE_PAY_PROGRAMMELICENCE
 				local title:string = "unknown licence"
-				if TProgrammeLicence(obj) then title = TProgrammeLicence(obj).GetTitle()
+				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_PROGRAMMELICENCE").Replace("%TITLE%", title)
 			Case TYPE_PAY_AUCTIONBID
 				local title:string = "unknown licence"
-				if TProgrammeLicence(obj) then title = TProgrammeLicence(obj).GetTitle()
+				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBID").Replace("%TITLE%", title)
 			Case TYPE_PAYBACK_AUCTIONBID
 				local title:string = "unknown licence"
-				if TProgrammeLicence(obj) then title = TProgrammeLicence(obj).GetTitle()
+				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBIDREPAYED").Replace("%TITLE%", title)
 			Case TYPE_EARN_CALLERREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_CALLERREVENUE")
@@ -541,7 +609,7 @@ Type TPlayerFinanceHistory
 				return GetLocale("FINANCES_HISTORY_OF_INFOMERCIALREVENUE")
 			Case TYPE_EARN_ADPROFIT
 				local title:string = "unknown contract"
-				if TAdContract(obj) then title = TAdContract(obj).GetTitle()
+				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_OF_ADPROFIT").Replace("%TITLE%", title)
 			Case TYPE_EARN_SPONSORSHIPREVENUE
 				return GetLocale("FINANCES_HISTORY_OF_SPONSORSHIPREVENUE")
@@ -549,7 +617,7 @@ Type TPlayerFinanceHistory
 				return GetLocale("FINANCES_HISTORY_OF_PENALTY")
 			Case TYPE_PAY_SCRIPT
 				local title:string = "unknown script"
-'				if TAdContract(obj) then title = TAdContract(obj).GetTitle()
+'				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_SCRIPT").Replace("%TITLE%", title)
 			Case TYPE_PAY_PRODUCTIONSTUFF
 				return GetLocale("FINANCES_HISTORY_FOR_PRODUCTIONSTUFF")
@@ -557,7 +625,7 @@ Type TPlayerFinanceHistory
 				return GetLocale("FINANCES_HISTORY_FOR_RENT")
 			Case TYPE_PAY_NEWS
 				local title:string = "unknown news"
-				if TNews(obj) then title = TNews(obj).GetTitle()
+				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
 				return GetLocale("FINANCES_HISTORY_FOR_NEWS").Replace("%TITLE%", title)
 			Case TYPE_PAY_NEWSAGENCIES
 				return GetLocale("FINANCES_HISTORY_FOR_NEWSAGENCY")

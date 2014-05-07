@@ -3,8 +3,16 @@ REM
 	code for stationmap and broadcasting stations
 	===========================================================
 ENDREM
-'SuperStrict
-
+SuperStrict
+Import "Dig/base.util.xmlhelper.bmx"
+Import "Dig/base.util.registry.bmx"
+Import "Dig/base.util.registry.imageloader.bmx"
+Import "Dig/base.util.registry.spriteloader.bmx"
+Import "Dig/base.util.color.bmx"
+Import "Dig/base.gfx.sprite.bmx"
+Import "Dig/base.gfx.bitmapfont.bmx"
+Import "game.player.finance.bmx"
+Import "basefunctions.bmx"
 
 'parent of all stationmaps
 Type TStationMapCollection
@@ -143,36 +151,49 @@ Type TStationMapCollection
 
 	Method Add:int(map:TStationMap)
 		'check boundaries
-		If map.parent.playerID < 1 or map.parent.playerID > stationMaps.length return FALSE
+		If map.owner < 1 or map.owner > stationMaps.length return FALSE
 		'add to array array - zerobased
-		stationMaps[map.parent.playerID-1] = map
+		stationMaps[map.owner-1] = map
 		return TRUE
 	End Method
 
 
 	Method Remove:int(map:TStationMap)
 		'check boundaries
-		If map.parent.playerID < 1 or map.parent.playerID > stationMaps.length return FALSE
+		If map.owner < 1 or map.owner > stationMaps.length return FALSE
 		'remove from array - zero based
-		stationMaps[map.parent.playerID-1] = Null
+		stationMaps[map.owner-1] = Null
 		return TRUE
 	End Method
 
 
 	'return the stationmap of other players
 	'do not expose to Lua... else they get access to buy/sell
-	Method GetMap:TStationMap(playerID:Int=-1)
-		If playerID <= 0 Then playerID = Game.playerID
+	Method GetMap:TStationMap(playerID:Int)
 		'check boundaries
-		If playerID < 1 or playerID > stationMaps.length return Null
+		If playerID < 1 or playerID > stationMaps.length
+			Throw "StationMapCollection.GetMap: playerID ~q"+playerID+"~q is out of bounds."
+		Endif
 
 		'remove until not thrown for ages
-		If stationMaps[playerID-1] and stationMaps[playerID-1].parent.playerID <> playerID
+		If stationMaps[playerID-1] and stationMaps[playerID-1].owner <> playerID
 			Throw("StationMapCollection: station order corrupt?!")
 		EndIf
 
 		'zero based
 		Return stationMaps[playerID-1]
+	End Method
+
+
+	'returns the average reach of all stationmaps
+	Method GetAverageReach:int()
+		local reach:int = 0
+		local mapCount:int = 0
+		For local map:TStationMap = eachin stationMaps
+			reach :+ map.GetReach()
+			mapCount :+ 1
+		Next
+		return reach/mapCount
 	End Method
 
 
@@ -208,7 +229,7 @@ Type TStationMapCollection
 						'insert the players bitmask-number into the field
 						'and if there is already one ... add the number
 						mapKey = posX+","+posY
-						mapValue = new TPoint.Init(posX,posY, getMaskIndex(stationmap.parent.playerID) )
+						mapValue = new TPoint.Init(posX,posY, getMaskIndex(stationmap.owner) )
 						If shareMap.Contains(mapKey)
 							mapValue.z = Int(mapValue.z) | Int(TPoint(shareMap.ValueForKey(mapKey)).z)
 						EndIf
@@ -452,16 +473,21 @@ Global StationMapCollection:TStationMapCollection = New TStationMapCollection
 
 
 Type TStationMap {_exposeToLua="selected"}
-	Field showStations:Int[4]						'select whose players stations we want to see
-	Field reach:Int					= 0				'maximum audience possible
-	Field parent:TPlayer			= Null
-	Field stations:TList			= CreateList()	'all stations of the map owner
-	Global fireEvents:Int			= True			'FALSE to avoid recursive handling (network)
+	'select whose players stations we want to see
+	Field showStations:Int[4]
+	'maximum audience possible
+	Field reach:Int	= 0
+	Field owner:int	= 0
+	'all stations of the map owner
+	Field stations:TList = CreateList()
+
+	'FALSE to avoid recursive handling (network)
+	Global fireEvents:Int = True
 
 
-	Function Create:TStationMap(player:TPlayer)
+	Function Create:TStationMap(playerID:int)
 		Local obj:TStationMap = New TStationMap
-		obj.parent = player
+		obj.owner = playerID
 		obj.showStations = [1,1,1,1]
 
 		StationMapCollection.Add(obj)
@@ -484,7 +510,7 @@ Type TStationMap {_exposeToLua="selected"}
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
 	Method getTemporaryStation:TStation(x:Int,y:Int)  {_exposeToLua}
-		Return TStation.Create(new TPoint.Init(x,y),-1, StationMapCollection.stationRadius, parent.playerID)
+		Return TStation.Create(new TPoint.Init(x,y),-1, StationMapCollection.stationRadius, owner)
 	End Method
 
 
@@ -512,7 +538,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'returns the amount of stations a player has
 	Method getStationCount:Int(playerID:Int=-1) {_exposeToLua}
-		If playerID = parent.playerID Then Return stations.count()
+		If playerID = owner Then Return stations.count()
 
 		Local stationMap:TStationMap = StationMapCollection.GetMap(playerID)
 		If Not stationMap Then Return Null
@@ -533,22 +559,18 @@ Type TStationMap {_exposeToLua="selected"}
 		return StationMapCollection.CalculateAudienceIncrease(stations, x, y)
 	End Method
 
-	'buy a new station at the given coordinates
-	'only possible when in office+subrooms
-	Method BuyStation:Int(x:Int,y:Int) {_exposeToLua}
-		If Not parent.isInRoom("office", True) Then Return False
 
+	'buy a new station at the given coordinates
+	Method BuyStation:Int(x:Int,y:Int)
 		Return AddStation( getTemporaryStation( x, y ), True )
 	End Method
 
 
 	'sell a station at the given position in the list
-	'only possible when in office+subrooms
-	Method SellStation:Int(position:Int) {_exposeToLua}
-		If Not parent.isInRoom("office", True) Then Return False
-
+	Method SellStation:Int(position:Int)
 		Local station:TStation = getStationFromList(position)
 		If station Then Return RemoveStation(station, True)
+		return False
 	End Method
 
 
@@ -556,7 +578,7 @@ Type TStationMap {_exposeToLua="selected"}
 		If Not station Then Return False
 
 		'try to buy it (does nothing if already done)
-		If buy And Not station.Buy(parent.playerID) Then Return False
+		If buy And Not station.Buy(owner) Then Return False
 		'set to paid in all cases
 		station.paid = True
 
@@ -565,7 +587,7 @@ Type TStationMap {_exposeToLua="selected"}
 		'recalculate audience of channel
 		RecalculateAudienceSum()
 
-		TLogger.Log("TStationMap.AddStation", "Player"+parent.playerID+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
+		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
 		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.addStation", new TData.add("station", station), Self ) )
@@ -579,11 +601,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 		'check if we try to sell our last station...
 		If stations.count() = 1
-			'if we are the player in front of the screen
-			'inform about the situation
-			If parent.playerID = Game.playerID
-				TError.Create( getLocale("ERROR_NOT_POSSIBLE"), getLocale("ERROR_NOT_ABLE_TO_SELL_LAST_STATION") )
-			EndIf
+			EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", new TData.addNumber("playerID", owner), self))
 			Return False
 		EndIf
 
@@ -592,9 +610,9 @@ Type TStationMap {_exposeToLua="selected"}
 		stations.Remove(station)
 
 		If sell
-			TLogger.Log("TStationMap.AddStation", "Player"+parent.playerID+" sells broadcasting station for " + station.getSellPrice() + "Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.AddStation", "Player"+owner+" sells broadcasting station for " + station.getSellPrice() + "Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
 		Else
-			TLogger.Log("TStationMap.AddStation", "Player"+parent.playerID+" trashes broadcasting station for 0 Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.AddStation", "Player"+owner+" trashes broadcasting station for 0 Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
 		EndIf
 
 		'recalculate audience of channel
@@ -641,7 +659,7 @@ Type TStationMap {_exposeToLua="selected"}
 		'draw all stations from all players (except filtered)
 		For local map:TStationMap = eachin StationMapCollection.stationMaps
 			'show stations is zero based
-			If Not showStations[map.parent.playerID-1] Then Continue
+			If Not showStations[map.owner-1] Then Continue
 			map.DrawStations()
 		Next
 	End Method
@@ -671,7 +689,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		obj.pos			= pos
 		obj.price		= price
 		obj.radius		= radius
-		obj.built		= Game.getTimeGone()
+		obj.built		= GetGameTime().getTimeGone()
 
 		obj.fixedPrice	= (price <> -1)
 		obj.refreshData()
@@ -690,7 +708,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 	'returns the age in days
 	Method getAge:Int()
-		Return Game.GetDay() - Game.GetDay(Self.built)
+		Return GetGameTime().GetDay() - GetGameTime().GetDay(Self.built)
 	End Method
 
 
@@ -706,12 +724,12 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Method getReachIncrease:Int(refresh:Int=False) {_exposeToLua}
 		If reachIncrease >= 0 And Not refresh Then Return reachIncrease
 
-		If Not Game.isPlayer(owner)
+		if owner <= 0
 			Print "getReachIncrease: owner is not a player."
 			Return 0
 		EndIf
 
-		reachIncrease = Game.GetPlayer(owner).GetStationMap().CalculateAudienceIncrease(pos.x, pos.y)
+		reachIncrease = StationMapCollection.GetMap(owner).CalculateAudienceIncrease(pos.x, pos.y)
 
 		Return reachIncrease
 	End Method
@@ -751,9 +769,9 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 
 	Method Sell:Int()
-		If Not Game.IsPlayer(owner) Then Return False
+		If Not GetPlayerFinanceCollection().Get(owner) Then Return False
 
-		If Game.GetPlayer(owner).GetFinance().SellStation( getSellPrice() )
+		If GetPlayerFinanceCollection().Get(owner).SellStation( getSellPrice() )
 			owner = 0
 			Return True
 		EndIf
@@ -761,13 +779,11 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method Buy:Int( playerID:Int=-1 )
-		If playerID = -1 Then playerID = Game.playerID
-		If Not Game.IsPlayer(playerID) Then Return False
-
+	Method Buy:Int(playerID:Int)
 		If paid Then Return True
+		If Not GetPlayerFinanceCollection().Get(playerID) Then Return False
 
-		If Game.GetPlayer(playerID).GetFinance().PayStation( getPrice() )
+		If GetPlayerFinanceCollection().Get(playerID).PayStation( getPrice() )
 			owner = playerID
 			paid = True
 			Return True
@@ -830,7 +846,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		EndIf
 
 		Select owner
-			Case 1,2,3,4	Game.Players[owner].color.SetRGB()
+			Case 1,2,3,4	TColor.GetByOwner(owner).SetRGB()
 							sprite = GetSpriteFromRegistry("stationmap_antenna"+owner)
 			Default			SetColor 255, 255, 255
 							sprite = GetSpriteFromRegistry("stationmap_antenna0")

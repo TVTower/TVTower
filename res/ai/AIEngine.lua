@@ -31,7 +31,7 @@ JOB_STATUS_CANCEL	= "J_cancel"
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 _G["KIObjekt"] = class(SLFObject, function(c)		-- Erbt aus dem Basic-Objekt des Frameworks
 	SLFObject.init(c)	-- must init base!
-end)			
+end)
 -- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 -- >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -94,7 +94,7 @@ function AIPlayer:BeginNewTask()
 	self.CurrentTask = self:SelectTask()
 	if self.CurrentTask == nil then
 		debugMsg("AIPlayer:BeginNewTask - task is nil... " )
-	else			
+	else
 		self.CurrentTask:CallActivate()
 		self.CurrentTask:StartNextJob()
 	end
@@ -185,7 +185,7 @@ function AITask:StartNextJob()
 		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
-		self.StartTask = Game.GetTimeGone()		
+		self.StartTask = GameTime.GetTimeGone()
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
 		if (self.Status == TASK_STATUS_DONE) or (self.Status == TASK_STATUS_CANCEL) then
@@ -200,14 +200,14 @@ end
 
 function AITask:Tick()
 	if ((self.Status == TASK_STATUS_RUN) or (self.Status == TASK_STATUS_WAIT)) then
-		self.TickCounter = self.TickCounter + 1		
+		self.TickCounter = self.TickCounter + 1
 		--debugMsg("MaxTickCount: " .. self.TickCounter .. " > " .. self.MaxTicks)
 		if (self.TickCounter > self.MaxTicks) then
 			self:TooMuchTicks()
-		end	
-	end	
+		end
+	end
 
-	if (self.Status == TASK_STATUS_RUN or (self.Status == TASK_STATUS_PREPARE)) then	
+	if (self.Status == TASK_STATUS_RUN or (self.Status == TASK_STATUS_PREPARE)) then
 		if (self.CurrentJob == nil) then
 			--debugMsg("----- Kein Job da - Neuen Starten")
 			self:StartNextJob() --Von vorne anfangen
@@ -222,7 +222,7 @@ function AITask:Tick()
 				self:StartNextJob() --Von vorne anfangen
 			else
 				--debugMsg("----- Job-Tick")
-				self.CurrentJob:CallTick() --Fortsetzen			
+				self.CurrentJob:CallTick() --Fortsetzen
 			end
 		end
 	end
@@ -241,16 +241,16 @@ function AITask:getGotoJob()
 end
 
 function AITask:RecalcPriority()
-	if (self.LastDone == 0) then self.LastDone = Game.GetTimeGone() end
+	if (self.LastDone == 0) then self.LastDone = GameTime.GetTimeGone() end
 
 	local Ran1 = math.random(75, 125) / 100
-	local TimeDiff = math.round(Game.GetTimeGone() - self.LastDone)
+	local TimeDiff = math.round(GameTime.GetTimeGone() - self.LastDone)
 	local player = _G["globalPlayer"]
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 
 	local calcPriority = (self.BasePriority + self.SituationPriority) * Ran1 + requisitionPriority
 	local timeFactor = (20 + TimeDiff) / 20
-	
+
 	self.CurrentPriority = calcPriority * timeFactor
 
 	debugMsg("Task: " .. self:typename() .. " - Prio: " .. self.CurrentPriority .. " - TimeDiff:" .. TimeDiff .. " (c: " .. calcPriority .. ")")
@@ -270,7 +270,7 @@ function AITask:SetDone()
 	debugMsg("<<< Task abgeschlossen!")
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
-	self.LastDone = Game.GetTimeGone()
+	self.LastDone = GameTime.GetTimeGone()
 end
 
 function AITask:SetCancel()
@@ -307,20 +307,20 @@ function AIJob:typename()
 end
 
 function AIJob:resume()
-	if self.InvalidDataObject then	
+	if self.InvalidDataObject then
 		if self.Status == JOB_STATUS_REDO or self.Status == JOB_STATUS_RUN then
 			infoMsg(self:typename() .. ": InvalidDataObject resume => JOB_STATUS_NEW")
 			self.Status = JOB_STATUS_NEW
-		end		
+		end
 		self.InvalidDataObject = false
-		table.removeKey(self, "InvalidDataObject");		
+		table.removeKey(self, "InvalidDataObject");
 	end
 end
 
 function AIJob:Start(pParams)
 	self.StartParams = pParams
-	self.StartJob = Game.GetTimeGone()
-	self.LastCheck = Game.GetTimeGone()
+	self.StartJob = GameTime.GetTimeGone()
+	self.LastCheck = GameTime.GetTimeGone()
 	self.Ticks = 0
 	self:Prepare(pParams)
 end
@@ -339,10 +339,10 @@ function AIJob:Tick()
 end
 
 function AIJob:ReDoCheck(pWait)
-	if ((self.LastCheck + pWait) < Game.GetTimeGone()) then
+	if ((self.LastCheck + pWait) < GameTime.GetTimeGone()) then
 		--debugMsg("ReDoCheck")
 		self.Status = JOB_STATUS_REDO
-		self.LastCheck = Game.GetTimeGone()
+		self.LastCheck = GameTime.GetTimeGone()
 		self:Prepare(self.StartParams)
 	end
 end
@@ -373,7 +373,7 @@ function AIJobGoToRoom:OnReachRoom(roomId)
 		elseif (self:ShouldIWait()) then
 			debugMsg("Dann wart ich eben...")
 			self.IsWaiting = true
-			self.WaitSince = Game.GetTimeGone()
+			self.WaitSince = GameTime.GetTimeGone()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
 			if ((self.WaitTill - self.WaitSince) > 20) then
 				self.WaitTill = self.WaitSince + 20
@@ -407,7 +407,7 @@ function AIJobGoToRoom:ShouldIWait()
 	end
 end
 
-function AIJobGoToRoom:Prepare(pParams)	
+function AIJobGoToRoom:Prepare(pParams)
 	if ((self.Status == JOB_STATUS_NEW) or (self.Status == TASK_STATUS_PREPARE) or (self.Status == JOB_STATUS_REDO)) then
 		TVT.DoGoToRoom(self.TargetRoom)
 		self.Status = JOB_STATUS_RUN
@@ -420,7 +420,7 @@ function AIJobGoToRoom:Tick()
 		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
 			debugMsg("Jetzt ist frei!")
 			TVT.DoGoToRoom(self.TargetRoom)
-		elseif ((self.WaitTill - Game.GetTimeGone()) <= 0) then
+		elseif ((self.WaitTill - GameTime.GetTimeGone()) <= 0) then
 			debugMsg("Ach... ich geh...")
 			self.Status = JOB_STATUS_CANCEL
 		end

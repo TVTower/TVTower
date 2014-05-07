@@ -1,13 +1,25 @@
-﻿Type TPopularityManager
+Import Brl.LinkedList
+Import "Dig/base.util.event.bmx"
+Import "Dig/base.util.mersenne.bmx"
+
+
+
+Type TPopularityManager
 	Field Popularities:TList = CreateList()
 	Field updateInterval:int = 720	'update every x minutes (720 = 12*60)
-	Field updateLastTime:int = 0	'time of last update (in game minutes)
+	Field updateTimeLeft:int = 720	'time till next update (in game minutes)
 	Field _initialized:int = FALSE
+	Global _instance:TPopularityManager
 
 
-	Function Create:TPopularityManager()
-		Local obj:TPopularityManager = New TPopularityManager
-		Return obj
+	Method New()
+		_instance = self
+	End Method
+
+
+	Function GetInstance:TPopularityManager()
+		if not _instance then _instance = new TPopularityManager
+		return _instance
 	End Function
 
 
@@ -28,9 +40,11 @@
 	End Method
 
 
+	'call this once a game minuted
 	Method Update:Int(triggerEvent:TEventBase)
-		'no not update until interval is gone
-		if updateLastTime + updateInterval > Game.GetTimeGone() then return FALSE
+		updateTimeLeft :- 1
+		'do not update until interval is gone
+		if updateTimeLeft > 0 then return FALSE
 
 		'print "TPopularityManager: Updating popularities"
 		For Local popularity:TPopularity = EachIn Self.Popularities
@@ -39,8 +53,8 @@
 			popularity.UpdateTrend()
 			'print " - cId "+popularity.ContentId + ":  P: " + popularity.Popularity + " - L: " + popularity.LongTermPopularity + " - T: " + popularity.Trend + " - S: " + popularity.Surfeit
 		Next
-		'update time
-		updateLastTime = Game.GetTimeGone()
+		'reset time till next update
+		updateTimeLeft = updateInterval
 	End Method
 
 
@@ -48,6 +62,11 @@
 		Popularities.addLast(popularity)
 	End Method
 End Type
+
+'===== CONVENIENCE ACCESSOR =====
+Function GetPopularityManager:TPopularityManager()
+	Return TPopularityManager.GetInstance()
+End Function
 
 
 
@@ -102,7 +121,7 @@ Type TPopularity
 				StartSurfeit()
 			Elseif Surfeit = 0 Then
 				SurfeitCounter = SurfeitCounter + 1 'Wird angezählt
-			Endif			
+			Endif
 		Elseif Popularity < LongTermPopularityLowerBound Then 'Unter dem absoluten Minimum
 			Popularity = RandRange(LongTermPopularityLowerBound - 5, LongTermPopularityLowerBound + 5)
 			SetLongTermPopularity(LongTermPopularity + RandRange(0, 15))
@@ -121,16 +140,16 @@ Type TPopularity
 		Elseif Surfeit = 1 And Popularity <= LongTermPopularity Then
 			EndSurfeit()
 		Endif
-		
+
 		'LogFile.AddLog(Popularity + ";" + LongTermPopularity + ";" + Trend + ";" + Surfeit + ";" + SurfeitCounter, False)
 	End Method
-		
+
 	Method StartSurfeit()
 		Surfeit = 1
-		SurfeitCounter = 0	
+		SurfeitCounter = 0
 		SetLongTermPopularity(RandRange(LongTermPopularityLowerBound, 0))
 	End Method
-	
+
 	Method EndSurfeit()
 		Surfeit = 0
 		SurfeitCounter = 0
@@ -161,7 +180,7 @@ Type TPopularity
 			Endif
 
 			local distance:float = (LongTermPopularity - Popularity) / TrendAdjustDivider
-			Local random:Float = Float(RandRange(TrendRandRangLower, TrendRandRangUpper ))/TrendAdjustDivider			
+			Local random:Float = Float(RandRange(TrendRandRangLower, TrendRandRangUpper ))/TrendAdjustDivider
 			Trend = Max(TrendLowerBound, Min(TrendUpperBound, Trend + distance + random))
 		Endif
 	End Method
@@ -188,63 +207,5 @@ Type TPopularity
 
 	Method SetLongTermPopularity(value:float)
 		LongTermPopularity = Max(LongTermPopularityLowerBound, Min(LongTermPopularityUpperBound, value))
-	End Method
-End Type
-
-
-
-
-Type TGenrePopularity Extends TPopularity
-	Function Create:TGenrePopularity(contentId:Int, popularity:Float = 0.0, longTermPopularity:Float = 0.0)
-		Local obj:TGenrePopularity = New TGenrePopularity
-
-		obj.LongTermPopularityLowerBound		= -50
-		obj.LongTermPopularityUpperBound		= 50
-
-		obj.SurfeitLowerBoundAdd				= -30
-		obj.SurfeitUpperBoundAdd				= 35
-		obj.SurfeitTrendMalus					= 5
-		obj.SurfeitCounterUpperBoundAdd			= 3
-
-		obj.TrendLowerBound						= -10
-		obj.TrendUpperBound						= 10
-		obj.TrendAdjustDivider					= 5
-		obj.TrendRandRangLower					= -15
-		obj.TrendRandRangUpper					= 15
-
-		obj.ChanceToChangeCompletely			= 2
-		obj.ChanceToChange						= 15
-		obj.ChanceToAdjustLongTermPopulartiy	= 25
-
-		obj.ChangeLowerBound					= -35
-		obj.ChangeUpperBound					= 35
-
-		obj.ContentId = contentId
-		obj.SetPopularity(popularity)
-		obj.SetLongTermPopularity(longTermPopularity)
-		'obj.LogFile = TLogFile.Create("GenrePopularity Log", "GenrePopularityLog" + contentId + ".txt")
-
-		Return obj
-	End Function
-
-
-	'a programme just finished airing
-	Method FinishBroadcastingProgramme(audienceResult:TAudienceResult, blocks:Int)
-		Local quality:Float = audienceResult.AudienceAttraction.Quality
-		Local audienceFactor:Float = audienceResult.Audience.GetSum() / (Game.BroadcastManager.GetCurrentBroadcast().TopAudience * 0.75)
-		audienceFactor = Min(Max(audienceFactor, 0.1), 1)
-
-		Local changeVal:Float = quality * audienceFactor
-		select blocks
-			case 1	changeVal :* 1
-			case 2	changeVal :* 1.4
-			case 3	changeVal :* 1.6
-			default	changeVal :* 1.8
-		end select
-
-		changeVal = Min(Max(changeVal, 0.25), 1.5)
-
-		ChangeTrend(changeVal)
-		'Print "BroadcastedProgramme: Change Trend '" + GetLocale("MOVIE_GENRE_" + audienceResult.AudienceAttraction.Genre) + "': " + changeVal
 	End Method
 End Type
