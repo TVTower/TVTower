@@ -141,7 +141,7 @@ Type TGUICheckBox Extends TGUIObject
 			If isChecked() Then col = col.AdjustFactor(-50)
 			If mouseover Then col = col.AdjustFactor(-25)
 
-			GetFont().drawStyled(GetFont().FName + " " +value, atPoint.GetX() + buttonWidth + 5, Int(atPoint.GetY() + (GetScreenHeight()- GetFont().GetMaxCharHeight()) / 2) +2, col, 1 )
+			GetFont().drawStyled(value, atPoint.GetX() + buttonWidth + 5, Int(atPoint.GetY() + (GetScreenHeight()- GetFont().GetMaxCharHeight()) / 2) +2, col, 1 )
 		EndIf
 
 		oldCol.SetRGBA()

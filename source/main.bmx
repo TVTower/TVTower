@@ -204,14 +204,6 @@ Type TApp
 	Method LoadResources:Int(path:String="config/resources.xml", directLoad:int=FALSE)
 		local registryLoader:TRegistryLoader = new TRegistryLoader
 		registryLoader.LoadFromXML(path, directLoad)
-
-		'load everything until everything from that file was loaded
-		if directLoad
-			repeat
-				TRegistryUnloadedResourceCollection.GetInstance().Update()
-			until TRegistryUnloadedResourceCollection.GetInstance().FinishedLoading()
-		endif
-		print "finished"
 	End Method
 
 

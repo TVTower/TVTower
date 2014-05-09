@@ -190,6 +190,14 @@ Type TRegistryLoader
 		xmlHelper = TXmlHelper.Create(file)
 		LoadResourcesFromXML(xmlHelper.root, forceDirectLoad)
 
+		'load everything until everything from that file was loaded
+		if forceDirectLoad
+			repeat
+				TRegistryUnloadedResourceCollection.GetInstance().Update()
+			until TRegistryUnloadedResourceCollection.GetInstance().FinishedLoading()
+		endif
+
+
 		EventManager.triggerEvent( TEventSimple.Create("RegistryLoader.onLoadXmlFromFinished", new TData.AddString("uri", file) ) )
 		Return TRUE
 	End Method
