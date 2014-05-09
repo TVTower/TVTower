@@ -656,7 +656,9 @@ Type TSaveGame
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
+	Field _PlayerCollection:TPlayerCollection = Null
 	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null
+	Field _PlayerFinanceHistoryListCollection:TPlayerFinanceHistoryListCollection = Null
 	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = null
 	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = null
 	Field _EventManagerEvents:TList = null
@@ -670,7 +672,9 @@ Type TSaveGame
 
 	Method RestoreGameData:Int()
 		_Assign(_FigureCollection, FigureCollection, "FigureCollection", MODE_LOAD)
+		_Assign(_PlayerCollection, TPlayerCollection._instance, "PlayerCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceCollection, TPlayerFinanceCollection._instance, "PlayerFinanceCollection", MODE_LOAD)
+		_Assign(_PlayerFinanceHistoryListCollection, TPlayerFinanceHistoryListCollection._instance, "PlayerFinanceHistoryListCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammeCollectionCollection, TPlayerProgrammeCollectionCollection._instance, "PlayerProgrammeCollectionCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammePlanCollection, TPlayerProgrammePlanCollection._instance, "PlayerProgrammePlanCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, ProgrammeDataCollection, "ProgrammeDataCollection", MODE_LOAD)
@@ -689,7 +693,9 @@ Type TSaveGame
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(FigureCollection, _FigureCollection, "FigureCollection", MODE_SAVE)
+		_Assign(TPlayerCollection._instance, _PlayerCollection, "PlayerCollection", MODE_SAVE)
 		_Assign(TPlayerFinanceCollection._instance, _PlayerFinanceCollection, "PlayerFinanceCollection", MODE_SAVE)
+		_Assign(TPlayerFinanceHistoryListCollection._instance, _PlayerFinanceHistoryListCollection, "PlayerFinanceHistoryListCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammeCollectionCollection._instance, _PlayerProgrammeCollectionCollection, "PlayerProgrammeCollectionCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
 		_Assign(ProgrammeDataCollection, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
@@ -2296,6 +2302,15 @@ End Function
 
 
 Function StartApp:int()
+	'assign dev config (resources are now loaded)
+	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", new TData))
+	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
+	if TFunctions.roundToBeautifulEnabled
+		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
+	else
+		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
+	endif
+
 	Game.Create()
 
 
@@ -2325,15 +2340,6 @@ Function StartApp:int()
 End Function
 
 Function ShowApp:int()
-	'assign dev config (resources are now loaded)
-	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", new TData))
-	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
-	if TFunctions.roundToBeautifulEnabled
-		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
-	else
-		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
-	endif
-
 	'without creating players, rooms
 	Game = new TGame.Create(false, false)
 

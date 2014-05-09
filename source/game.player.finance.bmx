@@ -1,8 +1,9 @@
 SuperStrict
 Import "Dig/base.util.event.bmx"
-Import "Dig/base.util.localization.bmx"
 Import "game.gameobject.bmx"
 Import "game.gametime.bmx"
+Import "game.gameobject.bmx"
+Import "game.player.financehistory.bmx"
 
 Type TPlayerFinanceCollection
 	Field finances:TPlayerFinance[][]
@@ -166,7 +167,7 @@ Type TPlayerFinance
 	Method RepayCredit:Int(value:Int)
 		TLogger.Log("TFinancial.RepayCredit()", "Player "+playerID+" repays (a part of his) credit of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_CREDIT_REPAY, -value, null).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_CREDIT_REPAY, -value, null).AddTo(playerID)
 
 		credit :- value
 		expense_creditRepayed :+ value
@@ -178,7 +179,7 @@ Type TPlayerFinance
 	Method TakeCredit:Int(value:Int)
 		TLogger.Log("TFinancial.TakeCredit()", "Player "+playerID+" took a credit of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_CREDIT_TAKE, +value).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_CREDIT_TAKE, +value).AddTo(playerID)
 
 		credit :+ value
 		income_creditTaken :+ value
@@ -191,7 +192,7 @@ Type TPlayerFinance
 	Method SellMisc:Int(price:Int)
 		TLogger.Log("TFinancial.SellMisc()", "Player "+playerID+" sold mics for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_MISC, +price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_MISC, +price).AddTo(playerID)
 
 		income_misc :+ price
 		AddIncome(price)
@@ -202,7 +203,7 @@ Type TPlayerFinance
 	Method SellStation:Int(price:Int)
 		TLogger.Log("TFinancial.SellStation()", "Player "+playerID+" sold a station for "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_STATION, +price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_STATION, +price).AddTo(playerID)
 
 		income_stations :+ price
 		AddIncome(price)
@@ -214,7 +215,7 @@ Type TPlayerFinance
 	Method EarnAdProfit:Int(value:Int, contract:object)
 		TLogger.Log("TFinancial.EarnAdProfit()", "Player "+playerID+" earned "+value+" with ads", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_ADPROFIT, +value, contract).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_ADPROFIT, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
 		AddIncome(value)
@@ -226,7 +227,7 @@ Type TPlayerFinance
 	Method EarnInfomercialRevenue:Int(value:Int, contract:object)
 		TLogger.Log("TFinancial.EarnInfomercialRevenue()", "Player "+playerID+" earned "+value+" with ads", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_INFOMERCIALREVENUE, +value, contract).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_INFOMERCIALREVENUE, +value, contract).AddTo(playerID)
 
 		income_ads :+ value
 		AddIncome(value)
@@ -238,7 +239,7 @@ Type TPlayerFinance
 	Method EarnCallerRevenue:Int(value:Int, licence:object)
 		TLogger.Log("TFinancial.EarnCallerRevenue()", "Player "+playerID+" earned "+value+" with a call-in-show", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_CALLERREVENUE, +value, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_CALLERREVENUE, +value, licence).AddTo(playerID)
 
 		income_callerRevenue :+ value
 		AddIncome(value)
@@ -250,7 +251,7 @@ Type TPlayerFinance
 	Method EarnSponsorshipRevenue:Int(value:Int, licence:object)
 		TLogger.Log("TFinancial.EarnSponsorshipRevenue()", "Player "+playerID+" earned "+value+" broadcasting a sponsored programme", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_SPONSORSHIPREVENUE, +value, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_SPONSORSHIPREVENUE, +value, licence).AddTo(playerID)
 
 		income_sponsorshipRevenue :+ value
 		AddIncome(value)
@@ -262,7 +263,7 @@ Type TPlayerFinance
 	Method SellProgrammeLicence:Int(price:Int, licence:object)
 		TLogger.Log("TFinancial.SellLicence()", "Player "+playerID+" earned "+price+" selling a programme licence", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_SELL_PROGRAMMELICENCE, +price, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_SELL_PROGRAMMELICENCE, +price, licence).AddTo(playerID)
 
 		income_programmeLicences :+ price
 		AddIncome(price)
@@ -273,7 +274,7 @@ Type TPlayerFinance
 	Method EarnBalanceInterest:Int(value:Int)
 		TLogger.Log("TFinancial.EarnBalanceInterest()", "Player "+playerID+" earned "+value+" on interest of their current balance", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_EARN_BALANCEINTEREST, +value).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_EARN_BALANCEINTEREST, +value).AddTo(playerID)
 
 		income_balanceInterest :+ value
 		AddIncome(value)
@@ -285,7 +286,7 @@ Type TPlayerFinance
 	Method PayDrawingCreditInterest:Int(value:Int)
 		TLogger.Log("TFinancial.PayDrawingCreditInterest()", "Player "+playerID+" paid "+value+" on interest of having a negative current balance", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_DRAWINGCREDITINTEREST, -value).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_DRAWINGCREDITINTEREST, -value).AddTo(playerID)
 
 		expense_drawingCreditInterest :+ value
 		AddExpense(value)
@@ -298,7 +299,7 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayAuctionBid()", "Player "+playerID+" paid a bid of "+price, LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_AUCTIONBID, -price, licence).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_AUCTIONBID, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
 			AddExpense(price)
@@ -317,7 +318,7 @@ Type TPlayerFinance
 	Method PayBackAuctionBid:Int(price:Int, licence:object)
 		TLogger.Log("TFinancial.PayBackAuctionBid()", "Player "+playerID+" received back "+price+" from an auction", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAYBACK_AUCTIONBID, +price, licence).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAYBACK_AUCTIONBID, +price, licence).AddTo(playerID)
 
 		expense_programmeLicences	:- price
 		expense_total				:- price
@@ -331,7 +332,7 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayProgrammeLicence()", "Player "+playerID+" paid "+price+" for a programmeLicence", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PROGRAMMELICENCE, -price, licence).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PROGRAMMELICENCE, -price, licence).AddTo(playerID)
 
 			expense_programmeLicences :+ price
 			AddExpense(price)
@@ -348,7 +349,7 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayStation()", "Player "+playerID+" paid "+price+" for a broadcasting station", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_STATION, -price).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_STATION, -price).AddTo(playerID)
 
 			expense_stations :+ price
 			AddExpense(price)
@@ -365,7 +366,7 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayScript()", "Player "+playerID+" paid "+price+" for a script", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_SCRIPT, -price, script).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_SCRIPT, -price, script).AddTo(playerID)
 
 			expense_scripts :+ price
 			AddExpense(price)
@@ -382,7 +383,7 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayProductionStuff()", "Player "+playerID+" paid "+price+" for product stuff", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PRODUCTIONSTUFF, -price).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PRODUCTIONSTUFF, -price).AddTo(playerID)
 
 			expense_productionstuff :+ price
 			AddExpense(price)
@@ -398,7 +399,7 @@ Type TPlayerFinance
 	Method PayPenalty:Int(value:Int, contract:object)
 		TLogger.Log("TFinancial.PayPenalty()", "Player "+playerID+" paid a failed contract penalty of "+value, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_PENALTY, -value, contract).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_PENALTY, -value, contract).AddTo(playerID)
 
 		expense_penalty :+ value
 		AddExpense(value)
@@ -410,7 +411,7 @@ Type TPlayerFinance
 	Method PayRent:Int(price:Int, room:object)
 		TLogger.Log("TFinancial.PayRent()", "Player "+playerID+" paid a room rent of "+price, LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_RENT, -price, room).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_RENT, -price, room).AddTo(playerID)
 
 		expense_rent :+ price
 		AddExpense(price)
@@ -423,7 +424,7 @@ Type TPlayerFinance
 		If canAfford(price)
 			TLogger.Log("TFinancial.PayNews()", "Player "+playerID+" paid "+price+" for a news", LOG_DEBUG)
 			'add this to our history
-			new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_NEWS, -price, news).AddTo(playerID)
+			new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_NEWS, -price, news).AddTo(playerID)
 
 			expense_news :+ price
 			AddExpense(price)
@@ -439,7 +440,7 @@ Type TPlayerFinance
 	Method PayNewsAgencies:Int(price:Int)
 		TLogger.Log("TFinancial.PayNewsAgencies()", "Player "+playerID+" paid "+price+" for news abonnements", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_NEWSAGENCIES, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_NEWSAGENCIES, -price).AddTo(playerID)
 
 		expense_newsagencies :+ price
 		AddExpense(price)
@@ -451,7 +452,7 @@ Type TPlayerFinance
 	Method PayStationFees:Int(price:Int)
 		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for station fees", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_STATIONFEES, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_STATIONFEES, -price).AddTo(playerID)
 
 		expense_stationfees :+ price
 		AddExpense(price)
@@ -463,7 +464,7 @@ Type TPlayerFinance
 	Method PayCreditInterest:Int(price:Int)
 		TLogger.Log("TFinancial.PayCreditInterest()", "Player "+playerID+" paid "+price+" on interest of their credit", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_CREDITINTEREST, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_CREDITINTEREST, -price).AddTo(playerID)
 
 		expense_creditInterest :+ price
 		AddExpense(price)
@@ -475,207 +476,11 @@ Type TPlayerFinance
 	Method PayMisc:Int(price:Int)
 		TLogger.Log("TFinancial.PayStationFees()", "Player "+playerID+" paid "+price+" for misc", LOG_DEBUG)
 		'add this to our history
-		new TPlayerFinanceHistory.Init(TPlayerFinanceHistory.TYPE_PAY_MISC, -price).AddTo(playerID)
+		new TPlayerFinanceHistoryEntry.Init(TPlayerFinanceHistoryEntry.TYPE_PAY_MISC, -price).AddTo(playerID)
 
 		expense_misc :+ price
 		AddExpense(price)
 		Return True
-	End Method
-End Type
-
-
-
-
-Type TPlayerFinanceHistory
-	'the id of this entry (eg. movie, station ...)
-	Field typeID:int = 0
-	'the specific object (eg. movie)
-	Field obj:object
-	Field money:int = 0
-	Field gameTime:int = 0
-	'a list for each player
-	Global list:TList[5]
-
-	Const TYPE_CREDIT_REPAY:int = 11
-	Const TYPE_CREDIT_TAKE:int = 12
-
-	Const TYPE_PAY_STATION:int = 21
-	Const TYPE_SELL_STATION:int = 22
-	Const TYPE_PAY_STATIONFEES:int = 23
-
-	Const TYPE_SELL_MISC:int = 31
-	Const TYPE_PAY_MISC:int = 32
-
-	Const TYPE_SELL_PROGRAMMELICENCE:int = 41
-	Const TYPE_PAY_PROGRAMMELICENCE:int = 42
-	Const TYPE_PAYBACK_AUCTIONBID:int = 43
-	Const TYPE_PAY_AUCTIONBID:int = 44
-
-	Const TYPE_EARN_CALLERREVENUE:int = 51
-	Const TYPE_EARN_INFOMERCIALREVENUE:int = 52
-	Const TYPE_EARN_ADPROFIT:int = 53
-	Const TYPE_EARN_SPONSORSHIPREVENUE:int = 54
-	Const TYPE_PAY_PENALTY:int = 55
-
-	Const TYPE_PAY_SCRIPT:int = 61
-	Const TYPE_PAY_PRODUCTIONSTUFF:int = 62
-	Const TYPE_PAY_RENT:int = 63
-
-	Const TYPE_PAY_NEWS:int = 71
-	Const TYPE_PAY_NEWSAGENCIES:int = 72
-
-	Const TYPE_PAY_CREDITINTEREST:int = 81
-	Const TYPE_PAY_DRAWINGCREDITINTEREST:int = 82
-	Const TYPE_EARN_BALANCEINTEREST:int = 83
-
-	Const GROUP_NEWS:int = 1
-	Const GROUP_PROGRAMME:int = 2
-	Const GROUP_DEFAULT:int = 3
-	Const GROUP_PRODUCTION:int = 4
-	Const GROUP_STATION:int = 5
-
-
-
-	Method Init:TPlayerFinanceHistory(typeID:int, money:int, obj:object=null, gameTime:int = -1)
-		if gameTime = -1 then gameTime = GetGameTime().GetTimeGone()
-		self.typeID = typeID
-		self.obj = obj
-		self.money = money
-		self.gameTime = gameTime
-
-		Return self
-	End Method
-
-
-	Function GetList:TList(playerID:int)
-		if playerID <= 0 or playerID > list.length then return Null
-		if not list[playerID-1] then list[playerID-1] = CreateList()
-		return list[playerID-1]
-	End function
-
-
-	Method AddTo:int(playerID:int=-1)
-		if playerID <= 0 or playerID > list.length then return False
-		if not list[playerID-1] then list[playerID-1] = CreateList()
-
-		list[playerID-1].AddLast(self)
-
-		list[playerID-1].Sort()
-	End Method
-
-
-	Method Compare:int(otherObject:Object)
-		local other:TPlayerFinanceHistory = TPlayerFinanceHistory(otherObject)
-		If Not other Return 1
-		Return other.gameTime - self.gameTime
-	End Method
-
-
-	Method GetMoney:int()
-		return money
-	End Method
-
-
-	'returns a text describing the history
-	Method GetDescription:String()
-		Select typeID
-			Case TYPE_CREDIT_REPAY
-				return GetLocale("FINANCES_HISTORY_FOR_CREDITREPAID")
-			Case TYPE_CREDIT_TAKE
-				return GetLocale("FINANCES_HISTORY_FOR_CREDITTAKEN")
-			Case TYPE_PAY_STATION
-				return GetLocale("FINANCES_HISTORY_FOR_STATIONBOUGHT")
-			Case TYPE_SELL_STATION
-				return GetLocale("FINANCES_HISTORY_FOR_STATIONSOLD")
-			Case TYPE_PAY_STATIONFEES
-				return GetLocale("FINANCES_HISTORY_OF_STATIONFEES")
-			Case TYPE_SELL_MISC, TYPE_PAY_MISC
-				return GetLocale("FINANCES_HISTORY_FOR_MISC")
-			Case TYPE_SELL_PROGRAMMELICENCE, TYPE_PAY_PROGRAMMELICENCE
-				local title:string = "unknown licence"
-				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
-				return GetLocale("FINANCES_HISTORY_FOR_PROGRAMMELICENCE").Replace("%TITLE%", title)
-			Case TYPE_PAY_AUCTIONBID
-				local title:string = "unknown licence"
-				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
-				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBID").Replace("%TITLE%", title)
-			Case TYPE_PAYBACK_AUCTIONBID
-				local title:string = "unknown licence"
-				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
-				return GetLocale("FINANCES_HISTORY_FOR_AUCTIONBIDREPAYED").Replace("%TITLE%", title)
-			Case TYPE_EARN_CALLERREVENUE
-				return GetLocale("FINANCES_HISTORY_OF_CALLERREVENUE")
-			Case TYPE_EARN_INFOMERCIALREVENUE
-				return GetLocale("FINANCES_HISTORY_OF_INFOMERCIALREVENUE")
-			Case TYPE_EARN_ADPROFIT
-				local title:string = "unknown contract"
-				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
-				return GetLocale("FINANCES_HISTORY_OF_ADPROFIT").Replace("%TITLE%", title)
-			Case TYPE_EARN_SPONSORSHIPREVENUE
-				return GetLocale("FINANCES_HISTORY_OF_SPONSORSHIPREVENUE")
-			Case TYPE_PAY_PENALTY
-				return GetLocale("FINANCES_HISTORY_OF_PENALTY")
-			Case TYPE_PAY_SCRIPT
-				local title:string = "unknown script"
-'				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
-				return GetLocale("FINANCES_HISTORY_FOR_SCRIPT").Replace("%TITLE%", title)
-			Case TYPE_PAY_PRODUCTIONSTUFF
-				return GetLocale("FINANCES_HISTORY_FOR_PRODUCTIONSTUFF")
-			Case TYPE_PAY_RENT
-				return GetLocale("FINANCES_HISTORY_FOR_RENT")
-			Case TYPE_PAY_NEWS
-				local title:string = "unknown news"
-				if TNamedGameObject(obj) then title = TNamedGameObject(obj).GetTitle()
-				return GetLocale("FINANCES_HISTORY_FOR_NEWS").Replace("%TITLE%", title)
-			Case TYPE_PAY_NEWSAGENCIES
-				return GetLocale("FINANCES_HISTORY_FOR_NEWSAGENCY")
-			Case TYPE_PAY_CREDITINTEREST
-				return GetLocale("FINANCES_HISTORY_OF_CREDITINTEREST")
-			Case TYPE_PAY_DRAWINGCREDITINTEREST
-				return GetLocale("FINANCES_HISTORY_OF_DRAWINGCREDITINTEREST")
-			Case TYPE_EARN_BALANCEINTEREST
-				return GetLocale("FINANCES_HISTORY_OF_BALANCEINTEREST")
-			Default
-				return GetLocale("FINANCES_HISTORY_FOR_SOMETHING")
-		End Select
-	End Method
-
-
-	'returns the group a type belongs to
-	Method GetTypeGroup:int()
-		Select typeID
-			Case TYPE_CREDIT_REPAY, TYPE_CREDIT_TAKE
-				Return GROUP_DEFAULT
-			Case TYPE_PAY_STATION, TYPE_SELL_STATION, TYPE_PAY_STATIONFEES
-				Return GROUP_STATION
-			Case TYPE_SELL_MISC, TYPE_PAY_MISC
-				Return GROUP_DEFAULT
-			Case TYPE_SELL_PROGRAMMELICENCE, ..
-			     TYPE_PAY_PROGRAMMELICENCE, ..
-			     TYPE_EARN_CALLERREVENUE, ..
-			     TYPE_EARN_INFOMERCIALREVENUE, ..
-			     TYPE_EARN_SPONSORSHIPREVENUE, ..
-			     TYPE_EARN_ADPROFIT, ..
-			     TYPE_PAY_AUCTIONBID, ..
-			     TYPE_PAYBACK_AUCTIONBID, ..
-				 TYPE_PAY_PENALTY
-				Return GROUP_PROGRAMME
-			Case TYPE_PAY_SCRIPT, TYPE_PAY_PRODUCTIONSTUFF, TYPE_PAY_RENT
-				return GROUP_PRODUCTION
-			Case TYPE_PAY_NEWS, TYPE_PAY_NEWSAGENCIES
-				return GROUP_NEWS
-			Case TYPE_PAY_CREDITINTEREST,..
-			     TYPE_PAY_DRAWINGCREDITINTEREST, ..
-			     TYPE_EARN_BALANCEINTEREST
-				return GROUP_DEFAULT
-			Default
-				return GROUP_DEFAULT
-		End Select
-	End Method
-
-
-	Method GetTypeID:int()
-		return typeID
 	End Method
 End Type
 

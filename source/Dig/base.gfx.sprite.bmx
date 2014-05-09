@@ -451,7 +451,7 @@ Type TSprite
 
 		'normal sprites draw their image stretched to area
 		if not ninePatchEnabled
-			DrawResized(new TRectangle.Init(x, y, width, height), new TRectangle, frame)
+			DrawResized(new TRectangle.Init(x, y, width, height), null, frame)
 		else
 			'minimal dimension has to be same or bigger than all 4 borders + 0.5 of the stretch portion
 			width = Max(width, 0.5 + ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight()))
@@ -516,8 +516,8 @@ Type TSprite
 		sourceCopy.dimension.SetY(Min(area.GetH(), sourceCopy.GetH()))
 
 		'if no target dimension was given - use source dimension
-		if targetCopy.GetW() <= 0 then targetCopy.dimension.SetX(source.GetW())
-		if targetCopy.GetH() <= 0 then targetCopy.dimension.SetY(source.GetH())
+		if targetCopy.GetW() <= 0 then targetCopy.dimension.SetX(sourceCopy.GetW())
+		if targetCopy.GetH() <= 0 then targetCopy.dimension.SetY(sourceCopy.GetH())
 
 
 		'take care of offsets

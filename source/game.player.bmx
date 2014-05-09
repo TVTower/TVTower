@@ -123,7 +123,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 
 	Method IsAI:Int() {_exposeToLua}
-		Return figure.IsAI()
+		Return playerKI and figure.IsAI()
 	End Method
 
 

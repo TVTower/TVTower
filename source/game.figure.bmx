@@ -9,8 +9,11 @@
 
 Type TFigureCollection
 	Field list:TList = CreateList()
+	Field nextID:int = 1
+
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TFigureCollection
+
 
 	Method New()
 		_instance = self
@@ -23,7 +26,21 @@ Type TFigureCollection
 	End Method
 
 
+	Method Get:TFigure(figureID:int)
+		For local figure:TFigure = eachin List
+			if figure.id = figureID then return figure
+		Next
+		return Null
+	End Method
+
+
 	Method Add:int(figure:TFigure)
+		'if there is a figure with the same id, remove that first
+		if figure.id > 0
+			local existingFigure:TFigure = Get(figure.id)
+			if existingFigure then Remove(existingFigure)
+		endif
+
 		List.AddLast(figure)
 		List.Sort()
 		return TRUE
@@ -33,6 +50,12 @@ Type TFigureCollection
 	Method Remove:int(figure:TFigure)
 		List.Remove(figure)
 		return TRUE
+	End Method
+
+
+	Method GenerateID:int()
+		nextID :+1
+		return (nextID-1)
 	End Method
 
 
@@ -100,7 +123,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		Self.ControlledByID	= ControlledByID
 
 		FigureCollection.Add(self)
-
+		self.id = FigureCollection.GenerateID()
 
 		if not _initdone
 			'instead of "room.onLeave" we listen to figure.onLeaveRoom as it has
@@ -113,12 +136,6 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		endif
 
 		Return Self
-	End Method
-
-
-	Method New()
-		LastID:+1
-		id = LastID
 	End Method
 
 

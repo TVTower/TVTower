@@ -92,14 +92,14 @@ Type TScreenCollection
 
 
 	Method _SetCurrentScreen:int(screen:TScreen)
-		screen.Enter(currentScreen)
+		if screen then screen.Enter(currentScreen)
 		currentScreen = screen
 		return TRUE
 	End Method
 
 
 	Method _SetTargetScreen:int(screen:TScreen)
-		currentScreen.Leave(screen)
+		if currentScreen then currentScreen.Leave(screen)
 		targetScreen = screen
 		return TRUE
 	End Method
