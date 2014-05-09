@@ -13,13 +13,14 @@ CONST SHADOWFONT:INT = 256
 CONST GRADIENTFONT:INT = 512
 
 Type TBitmapFontManager
-	Field DefaultFont:TBitmapFont
 	Field baseFont:TBitmapFont
 	Field baseFontBold:TBitmapFont
 	Field baseFontItalic:TBitmapFont
 	Field baseFontSmall:TBitmapFont
+	Field _defaultFont:TBitmapFont
 	Field List:TList = CreateList()
-	global _instance:TBitmapFontManager
+	Global systemFont:TBitmapFont
+	Global _instance:TBitmapFontManager
 
 
 	Method New()
@@ -33,25 +34,33 @@ Type TBitmapFontManager
 	End Function
 
 
+	Method GetDefaultFont:TBitmapFont()
+		'instead of doing it in "new" (no guarantee that graphicsmode
+		'is set up already)
+		if not systemFont then systemFont = TBitmapFont.Create("SystemFont", "", 12, SMOOTHFONT)
+
+		'if no default font was set, return the system font
+		if not _defaultFont then return systemFont
+
+		return _defaultFont
+	End Method
+
+
 	Method Get:TBitmapFont(name:String, size:Int=-1, style:Int=-1)
 		name = lower(name)
 		style :| SMOOTHFONT
 
-		'create a default font if not done yet
-		if not DefaultFont
-			'add a defaultFont (uses default BlitzMax font if none was set before)
-			DefaultFont = TBitmapFont.Create("Default", "", 12, SMOOTHFONT)
-		EndIf
+		Local defaultFont:TBitmapFont = GetDefaultFont()
 
 		'no details given: return default font
-		If name = "default" And size = -1 And style = -1 Then Return DefaultFont
+		If name = "default" And size = -1 And style = -1 Then Return defaultFont
 		'no size given: use default font size
-		If size = -1 Then size = DefaultFont.FSize
+		If size = -1 Then size = defaultFont.FSize
 		'no style given: use default font style
-		If style = -1 Then style = DefaultFont.FStyle 'Else style = style | SMOOTHFONT
+		If style = -1 Then style = defaultFont.FStyle 'Else style = style | SMOOTHFONT
 
 		'if the font wasn't found, use the defaultFont-fontfile to load this style
-		Local defaultFontFile:String = DefaultFont.FFile
+		Local defaultFontFile:String = defaultFont.FFile
 		For Local Font:TBitmapFont = EachIn Self.List
 			If Font.FName = name And Font.FStyle = style Then defaultFontFile = Font.FFile
 			If Font.FName = name And Font.FSize = size And Font.FStyle = style Then Return Font
@@ -72,15 +81,16 @@ Type TBitmapFontManager
 		name = lower(name)
 		style :| SMOOTHFONT
 
-		If size = -1 Then size = DefaultFont.FSize
-		If style = -1 Then style = DefaultFont.FStyle
-		If file = "" Then file = DefaultFont.FFile
+		local defaultFont:TBitmapFont = GetDefaultFont()
+		If size = -1 Then size = defaultFont.FSize
+		If style = -1 Then style = defaultFont.FStyle
+		If file = "" Then file = defaultFont.FFile
 
 		Local Font:TBitmapFont = TBitmapFont.Create(name, file, size, style)
 		List.AddLast(Font)
 
 		'set default fonts if not done yet
-		if DefaultFont = null then DefaultFont = Font
+		if _defaultFont = null then _defaultFont = Font
 		if baseFont = null then baseFont = Font
 
 		Return Font

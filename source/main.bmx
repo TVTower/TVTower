@@ -94,11 +94,15 @@ Global InGame_Chat:TGUIChat
 Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = null
+Global ScreenMainMenu:TScreen_MainMenu = null
 Global GameScreen_Building:TInGameScreen_Building = null
 Global LogoTargetY:Float = 20
 Global LogoCurrY:Float = 100
 Global headerFont:TBitmapFont
 Global Init_Complete:Int = 0
+
+Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
+
 
 '==== Initialize ====
 AppTitle = "TVTower: " + VersionString + " " + CopyrightString
@@ -155,7 +159,9 @@ Type TApp
 
 		GetDeltatimer().Init(updatesPerSecond, framesPerSecond)
 		'set loading screen as active render function
-		GetDeltaTimer()._funcRender = renderLoadingScreen
+		'GetDeltaTimer()._funcRender = renderLoadingScreen
+		GetDeltaTimer()._funcUpdate = update
+		GetDeltaTimer()._funcRender = render
 
 		'register to quit confirmation dialogue
 		EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
@@ -168,7 +174,7 @@ Type TApp
 		obj.InitGraphics()
 		'load graphics needed for loading screen
 		obj.currentResourceUrl = obj.baseResourceXmlUrl
-		obj.LoadResources(obj.baseResourceXmlUrl)
+		obj.LoadResources(obj.baseResourceXmlUrl, true)
 
 		Return obj
 	End Function
@@ -198,15 +204,23 @@ Type TApp
 	Method LoadResources:Int(path:String="config/resources.xml", directLoad:int=FALSE)
 		local registryLoader:TRegistryLoader = new TRegistryLoader
 		registryLoader.LoadFromXML(path, directLoad)
+
+		'load everything until everything from that file was loaded
+		if directLoad
+			repeat
+				TRegistryUnloadedResourceCollection.GetInstance().Update()
+			until TRegistryUnloadedResourceCollection.GetInstance().FinishedLoading()
+		endif
+		print "finished"
 	End Method
 
 
 	Method Start()
 		AppEvents.Init()
 
-		GetDeltaTimer()._funcUpdate = Update
+		'GetDeltaTimer()._funcUpdate = Update
 		'set from loading screen renderfunc to normal one
-		GetDeltaTimer()._funcRender = Render
+		'GetDeltaTimer()._funcRender = Render
 
 		'systemupdate is called from within "update" (lower priority updates)
 		EventManager.registerListenerFunction("App.onSystemUpdate", AppEvents.onAppSystemUpdate )
@@ -363,6 +377,9 @@ Type TApp
 		if GetDeltaTimer().timesUpdated mod 3 = 0
 			EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",null) )
 		endif
+
+		'check for new resources to load
+		RURC.Update()
 
 		KEYMANAGER.Update()
 		MOUSEMANAGER.Update()
@@ -610,6 +627,8 @@ Type TApp
 		EndIf
 
 
+		'draw loading resource information
+		RenderLoadingResourcesInformation()
 
 
 		'draw system things at last (-> on top)
@@ -640,6 +659,19 @@ Type TApp
 
 		TProfiler.Leave("Draw")
 		Return True
+	End Function
+
+
+	Function RenderLoadingResourcesInformation:Int()
+		'do nothing if there is nothing to load
+		if RURC.FinishedLoading() then return TRUE
+
+		SetAlpha 0.2
+		SetColor 50,0,0
+		DrawRect(0, GraphicsHeight() - 20, GraphicsWidth(), 20)
+		SetAlpha 1.0
+		SetColor 255,255,255
+		DrawText("Loading: "+RURC.loadedCount+"/"+RURC.toLoadCount+"  "+String(RURC.loadedLog.Last()), 0, 580)
 	End Function
 
 
@@ -988,7 +1020,6 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonSettings:TGUIButton
 	Field guiButtonQuit:TGUIButton
 
-
 Rem
 Global StartTips:TList = CreateList()
 StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
@@ -1071,7 +1102,7 @@ endrem
 		DrawMenuBackground(False)
 
 		'draw the janitor BEHIND the panels
-		MainMenuJanitor.Draw(CURRENT_TWEEN_FACTOR)
+		if MainMenuJanitor then MainMenuJanitor.Draw(CURRENT_TWEEN_FACTOR)
 
 		GUIManager.Draw(Self.name)
 	End Method
@@ -1081,9 +1112,23 @@ endrem
 	Method Update:Int(deltaTime:Float)
 		Super.Update(deltaTime)
 
+		'if gamesettings screen is still missing: disable buttons
+		'-> resources not finished loading
+		if not ScreenGameSettings
+			guiButtonStart.Disable()
+			guiButtonNetwork.Disable()
+			guiButtonOnline.Disable()
+		else
+			guiButtonStart.Enable()
+			guiButtonNetwork.Enable()
+			guiButtonOnline.Enable()
+		endif
+
+
+
 		GUIManager.Update(Self.name)
 
-		MainMenuJanitor.Update()
+		if MainMenuJanitor then  MainMenuJanitor.Update()
 	End Method
 End Type
 
@@ -1130,9 +1175,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 6), GetLocale("GAME_TITLE")+":", TColor.CreateGrey(50), name)
+		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 6), GetLocale("GAME_TITLE")+":", TColor.CreateGrey(75), name)
 		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), Game.title, 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 6), GetLocale("START_YEAR")+":", TColor.CreateGrey(50), name)
+		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 6), GetLocale("START_YEAR")+":", TColor.CreateGrey(75), name)
 		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "1985", 4, name)
 
 		Local checkboxHeight:Int = 0
@@ -2269,6 +2314,7 @@ Function PrepareFirstGameStart()
 
 
 	'Game screens
+	GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
 	ScreenCollection.Add(GameScreen_Building)
 
 	PlayerDetailsTimer = 0
@@ -2303,44 +2349,8 @@ Function PrepareGameStart()
 End Function
 
 
-
-Function StartTVTower(start:Int=true)
-	EventManager.Init()
-
-	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
-	App.LoadResources("config/resources.xml")
-
-	'reduce instance requests
-	local RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
-	While not RURC.FinishedLoading()
-		'check if new resources have to get loaded
-		RURC.Update()
-
-		Cls
-		SetAlpha 0.2
-		SetColor 50,0,0
-		DrawRect(0, GraphicsHeight() - 20, GraphicsWidth(), 20)
-		SetAlpha 1.0
-		SetColor 255,255,255
-		DrawText("Loading: "+RURC.loadedCount+"/"+RURC.toLoadCount+"  "+String(RURC.loadedLog.Last()), 0, 580)
-		Flip 0
-	Wend
-
-	'assign dev config (resources are now loaded)
-	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", new TData))
-	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
-	if TFunctions.roundToBeautifulEnabled
-		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
-	else
-		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
-	endif
-
-
-
-	Game = new TGame.Create()
-	'init sound receiver
-	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
-
+Function StartApp:int()
+	Game.Create()
 
 
 	MainMenuJanitor = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 250, 2, 65)
@@ -2357,18 +2367,80 @@ Function StartTVTower(start:Int=true)
 
 	'add menu screens
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
-	GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
-	'Menu
-	ScreenCollection.Add(New TScreen_MainMenu.Create("MainMenu"))
 	ScreenCollection.Add(ScreenGameSettings)
 	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
 	ScreenCollection.Add(New TScreen_StartMultiplayer.Create("StartMultiplayer"))
 
+
+	'init sound receiver
+	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
+
+	App.Start()
+End Function
+
+Function ShowApp:int()
+	'assign dev config (resources are now loaded)
+	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", new TData))
+	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
+	if TFunctions.roundToBeautifulEnabled
+		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
+	else
+		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
+	endif
+
+	'without creating players, rooms
+	Game = new TGame.Create(false, false)
+
+	'Menu
+	ScreenMainMenu = New TScreen_MainMenu.Create("MainMenu")
+	ScreenCollection.Add(ScreenMainMenu)
+
 	'go into the start menu
 	Game.SetGamestate(TGame.STATE_MAINMENU)
+End Function
 
 
-	App.Start() 'all resources loaded - switch Events for Update/Draw from Loader to MainEvents
+Function StartTVTower(start:Int=true)
+	Global InitialResourceLoadingDone:int = FALSE
+
+	EventManager.Init()
+
+	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
+	App.LoadResources("config/resources.xml")
+
+	'====
+	'to avoid the "is loaded check" we have two loops
+	'====
+
+	'a) the mode before everything important was loaded
+	ShowApp()
+	Repeat
+		'instead of only checking for resources in main loop
+		'(happens eg. 30 times a second), check each update cycle
+		RURC.Update()
+
+		GetDeltaTimer().Loop()
+
+		if RURC.FinishedLoading() then InitialResourceLoadingDone = true
+
+		EventManager.update()
+		'If RandRange(0,20) = 20 Then GCCollect()
+	Until AppTerminate() Or TApp.ExitApp Or InitialResourceLoadingDone
+
+	'=== ADJUST GUI FONTS ===
+	'set the now available default font
+	GuiManager.SetDefaultFont( GetBitmapFontManager().Get("Default", 12) )
+	'buttons get a bold font
+	TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
+	'checkbox (and their labels) get a smaller one
+	TGUICheckbox.SetTypeFont( GetBitmapFontManager().Get("Default", 10) )
+	'labels get a slight smaller one
+	TGUILabel.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
+
+
+
+	'b) everything loaded - normal game loop
+	StartApp()
 	Repeat
 		GetDeltaTimer().Loop()
 

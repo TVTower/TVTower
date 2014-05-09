@@ -72,6 +72,12 @@ Type TGUILabel Extends TGUIobject
 	End Method
 
 
+	'override to reset cache
+	Method onStatusAppearanceChange:int()
+		_valueDimensionCache = null
+	End Method
+
+
 	Method Draw:Int()
 		GetFont().drawStyled(value, Floor(GetScreenX() + contentPosition.x*(rect.GetW() - GetValueDimension().GetX()) + contentDisplacement.GetX()), Floor(GetScreenY() + contentPosition.y*(rect.GetH() - GetValueDimension().GetY()) + contentDisplacement.GetY()), color, 1)
 	End Method

@@ -90,10 +90,10 @@ Type TGame {_exposeToLua="selected"}
 	Method New()
 		_instance = self
 
-		if not _initDone			
+		if not _initDone
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
-			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)			
+			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
 
 			_initDone = TRUE
 		Endif

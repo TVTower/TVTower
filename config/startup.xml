@@ -1,12 +1,16 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources directload="true">
-		<image name="gfx_startscreen"				url="res/grafiken/start_bg.png" />
-		<image name="gfx_startscreen_logo"			url="res/grafiken/logo.png" />
-		<image name="gfx_startscreen_logoSmall"		url="res/grafiken/logo_small.png" />
-		<image name="gfx_startscreen_loadingBar"	url="res/grafiken/loading_bar.png" f="2" cw="680" ch="64" />
-		<image name="gfx_mousecursor"				url="res/grafiken/interface/cursor.png" cw="32" ch="32" f="3" />
-		<music name="sfx_music_title"				url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />
+		<file name="resource_fonts" url="config/fonts.xml" directload="true" />
+
+		<image name="gfx_startscreen" url="res/grafiken/start_bg.png" />
+		<image name="gfx_startscreen_logo" url="res/grafiken/logo.png" />
+		<image name="gfx_startscreen_logoSmall"	url="res/grafiken/logo_small.png" />
+<!--
+		<image name="gfx_startscreen_loadingBar" url="res/grafiken/loading_bar.png" f="2" cw="680" ch="64" />
+-->
+		<image name="gfx_mousecursor" url="res/grafiken/interface/cursor.png" cw="32" ch="32" f="3" />
+		<music name="sfx_music_title" url="res/music/Chilledoutwithabeat.ogg" playOnLoad="true" loop="true" playlists="menu" />
 		<file name="resource_gui" url="config/gui.xml" />
 	</resources>
 </tvt>

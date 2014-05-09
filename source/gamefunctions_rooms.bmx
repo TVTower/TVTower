@@ -1017,7 +1017,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 			ProgrammePlannerButtons[i].SetCaptionOffset(0,42)
 		Next
-		TGUILabel.SetTypeFont( null )
+	'	TGUILabel.SetTypeFont( null )
 
 
 		'===== REGISTER EVENTS =====

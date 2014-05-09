@@ -103,6 +103,16 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 
+	'override to inform other elements too
+	Method SetAppearanceChanged:Int(bool:int)
+		Super.SetAppearanceChanged(bool)
+		'only inform if changed
+		if bool = true
+			if caption then caption.SetAppearanceChanged(bool)
+		endif
+	End Method
+
+
 
 	'acts as cache
 	Method GetSprite:TSprite()
@@ -136,14 +146,17 @@ Type TGUIButton Extends TGUIobject
 			'caption area starts at top left of button
 			caption = New TGUILabel.Create(null, text, color, null)
 			caption.SetContentPosition(ALIGN_CENTER, ALIGN_CENTER)
+			'we want the caption to use the buttons font
+			caption.SetOption(GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE, TRUE)
 			'we want to manage it...
 			GUIManager.Remove(caption)
 
 			'reposition the caption
 			RepositionCaption()
 
+			'no longer needed - caption uses parents font if none was set
 			'set to use the buttons font
-			caption.SetFont(GetFont())
+			'caption.SetFont(GetFont())
 			'assign button as parent of caption
 			caption.SetParent(self)
 		elseif caption.value <> text
@@ -194,6 +207,13 @@ Type TGUIButton Extends TGUIobject
 			case "RIGHT" 	caption.SetContentPosition(ALIGN_RIGHT, caption.contentPosition.y)
 			default		 	caption.SetContentPosition(ALIGN_CENTER, caption.contentPosition.y)
 		End Select
+	End Method
+
+
+	'override to update caption
+	Method Update:int()
+		Super.Update()
+		if caption then caption.Update()
 	End Method
 
 
