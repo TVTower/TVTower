@@ -735,7 +735,37 @@ Type TSaveGame
 	End Function
 
 
+	Function ShowMessage:int(load:int=false)
+		local title:string = getLocale("PLEASE_BE_PATIENT")
+		local text:string = getLocale("SAVEGAME_GETS_LOADED")
+		if not load then text = getLocale("SAVEGAME_GETS_CREATED")
+
+		local col:TColor = new TColor.Get()
+		local pix:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight() )
+		Cls
+		DrawPixmap(pix, 0,0)
+		SetAlpha 0.5
+		SetColor 0,0,0
+		DrawRect(0,0, GraphicsWidth(), GraphicsHeight())
+		SetAlpha 1.0
+		SetColor 255,255,255
+
+		GetSpriteFromRegistry("gfx_errorbox").Draw(GraphicsWidth()/2, GraphicsHeight()/2, -1, new TPoint.Init(0.5, 0.5))
+		local w:int = GetSpriteFromRegistry("gfx_errorbox").GetWidth()
+		local h:int = GetSpriteFromRegistry("gfx_errorbox").GetHeight()
+		local x:int = GraphicsWidth()/2 - w/2
+		local y:int = GraphicsHeight()/2 - h/2
+		GetBitmapFont("Default", 15, BOLDFONT).drawBlock(title, x + 18, y + 15, w - 60, 40, Null, TColor.Create(150, 50, 50))
+		GetBitmapFont("Default", 12).drawBlock(text, x + 18, y + 50, w - 40, h - 60, Null, TColor.Create(50, 50, 50))
+
+		Flip 0
+		col.SetRGBA()
+	End Function
+
+
 	Function Load:Int(saveName:String="savegame.xml")
+		ShowMessage(true)
+
 		TPersist.maxDepth = 4096
 		Local persist:TPersist = New TPersist
 		Local saveGame:TSaveGame = TSaveGame(persist.DeserializeFromFile(savename))
@@ -762,13 +792,15 @@ Type TSaveGame
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
 		'call game that game continues/starts now
-		Game.Start()
+		Game.StartLoadedSaveGame()
 
 		Return True
 	End Function
 
 
 	Function Save:Int(saveName:String="savegame.xml")
+		ShowMessage(false)
+
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveName
@@ -1244,7 +1276,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Select sender
 			Case guiButtonStart
 					If Not Game.networkgame And Not Game.onlinegame
-						Game.Start()
+						Game.StartNewGame()
 					Else
 						'guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
@@ -1743,7 +1775,7 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 			GetPlayerCollection().Get().networkstate=1
 
 			'register events and start game
-			Game.Start()
+			Game.StartNewGame()
 			'reset randomizer
 			Game.SetRandomizerBase( Game.GetRandomizerBase() )
 
@@ -2061,115 +2093,12 @@ End Function
 
 
 
-'- muss vor eigentlichem Spielstart aufgerufen werden
-'- NICHT mehrfach ausfuehrbar
-Function Init_Creation()
-	'create base stations
-	For Local i:Int = 1 To 4
-		GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TPoint.Init(310, 260),-1, StationMapCollection.stationRadius, i ), False )
-	Next
-
-	'get names from settings
-	For Local i:Int = 1 To 4
-		GetPlayerCollection().Get(i).Name = ScreenGameSettings.guiPlayerNames[i-1].Value
-		GetPlayerCollection().Get(i).channelname = ScreenGameSettings.guiChannelNames[i-1].Value
-	Next
-
-
-	'set all non human players to AI
-	If Game.isGameLeader()
-		For Local playerids:Int = 1 To 4
-			If GetPlayerCollection().IsPlayer(playerids) And Not GetPlayerCollection().IsHuman(playerids)
-				GetPlayerCollection().Get(playerids).SetAIControlled("res/ai/DefaultAIPlayer.lua")
-			EndIf
-		Next
-		'register ai player events - but only for game leader
-		EventManager.registerListenerFunction("Game.OnMinute", GameEvents.PlayersOnMinute)
-		EventManager.registerListenerFunction("Game.OnDay", GameEvents.PlayersOnDay)
-	EndIf
-	'=== REGISTER PLAYER EVENTS ===
-	EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", GameEvents.PlayerFinanceOnChangeMoney)
-	EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", GameEvents.PlayerFinanceOnTransactionFailed)
-	EventManager.registerListenerFunction("StationMap.onTrySellLastStation", GameEvents.StationMapOnTrySellLastStation)
-	EventManager.registerListenerFunction("BroadcastManager.BroadcastMalfunction", GameEvents.PlayerBroadcastMalfunction)
-
-
-	'create series/movies in movie agency
-	RoomHandler_MovieAgency.GetInstance().ReFillBlocks()
-
-	'8 auctionable movies/series
-	For Local i:Int = 0 To 7
-		New TAuctionProgrammeBlocks.Create(i, Null)
-	Next
-
-
-	'create random programmes and so on - but only if local game
-	If Not Game.networkgame
-		For Local playerids:Int = 1 To 4
-			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
-			For Local i:Int = 0 To Game.startMovieAmount-1
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
-			Next
-			'give series to each player
-			For Local i:Int = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
-			Next
-			'give 1 call in
-			ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
-
-			For Local i:Int = 0 To 2
-				ProgrammeCollection.AddAdContract(New TAdContract.Create(TAdContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
-			Next
-		Next
-	EndIf
-	'abonnement for each newsgroup = 1
-
-	For Local playerids:Int = 1 To 4
-		'5 groups
-		For Local i:Int = 0 To 4
-			GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
-		Next
-	Next
-
-
-	Local lastblocks:Int=0
-	local playerCollection:TPlayerProgrammeCollection
-	Local playerPlan:TPlayerProgrammePlan
-
-	'creation of blocks for players rooms
-	For Local playerids:Int = 1 To 4
-		lastblocks = 0
-		playerCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
-		playerPlan = GetPlayerProgrammePlanCollection().Get(playerids)
-
-		SortList(playerCollection.adContracts)
-
-		Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
-		Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
-
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 0 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 1 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 2 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 3 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 4 )
-		playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 5 )
-
-		Local currentLicence:TProgrammeLicence = Null
-		Local currentHour:Int = 0
-		For Local i:Int = 0 To 3
-			currentLicence = playerCollection.GetMovieLicenceAtIndex(i)
-			If Not currentLicence Then Continue
-			playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), GetGameTime().GetStartDay(), currentHour )
-			currentHour:+ currentLicence.getData().getBlocks()
-		Next
-	Next
-End Function
 
 
 
 '- kann vor Spielstart durchgefuehrt werden
 '- kann mehrfach ausgefuehrt werden
-Function Init_Colorization()
+Function ColorizePlayerExtras()
 	'colorize the images
 	Local gray:TColor = TColor.Create(200, 200, 200)
 	Local gray2:TColor = TColor.Create(100, 100, 100)
@@ -2190,29 +2119,6 @@ Function Init_Colorization()
 		GetRegistry().Set("gfx_interface_channelbuttons_on_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, i), "gfx_interface_channelbuttons_on_"+i))
 	Next
 End Function
-
-
-
-
-Function Init_All()
-	TLogger.Log("Init_All()", "start", LOG_DEBUG)
-	Init_Creation()
-
-	TLogger.Log("Init_All()", "colorizing images corresponding to playercolors", LOG_DEBUG)
-	Init_Colorization()
-	'triggering that event also triggers app.timer.loop which triggers update/draw of
-	'gamesstates - which runs this again etc.
-	EventManager.triggerEvent( TEventSimple.Create("Loader.onLoadElement", new TData.AddString("text", "Create Roomtooltips").AddNumber("itemNumber", 1).AddNumber("maxItemNumber", 1) ) )
-
-	TLogger.Log("Init_All()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
-	TRoomDoor.DrawDoorsOnBackground()		'draws the door-sprites on the building-sprite
-
-	TLogger.Log("Init_All()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
-	GetBuilding().Init()	'draws additional gfx in the sprite, registers events...
-
-	TLogger.Log("Init_All()", "complete", LOG_LOADING)
-End Function
-
 
 
 
@@ -2237,68 +2143,6 @@ Function DEV_switchRoom:int(room:TRoom)
 End Function
 
 
-
-'run this BEFORE the first game is started
-Function PrepareFirstGameStart()
-	TLogger.Log("Base", "Creating GUIelements", LOG_DEBUG)
-	InGame_Chat = New TGUIChat.Create(new TPoint.Init(520, 418), new TPoint.Init(280,190), "InGame")
-	InGame_Chat.setDefaultHideEntryTime(10000)
-	InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
-	InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
-	InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
-	InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
-	InGame_Chat.guiList.autoHideScroller = True
-	'reposition input
-	InGame_Chat.guiInput.rect.position.setXY( 275, 387)
-	InGame_Chat.guiInput.setMaxLength(200)
-	InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
-	InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
-	InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
-	InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
-	InGame_Chat.guiInput.SetValueDisplacement(0,5)
-
-
-	'===== EVENTS =====
-	EventManager.registerListenerFunction("Game.OnDay", 	GameEvents.OnDay )
-	EventManager.registerListenerFunction("Game.OnHour", 	GameEvents.OnHour )
-	EventManager.registerListenerFunction("Game.OnMinute",	GameEvents.OnMinute )
-	EventManager.registerListenerFunction("Game.OnStart",	TGame.onStart )
-
-
-	'Game screens
-	GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
-	ScreenCollection.Add(GameScreen_Building)
-
-	PlayerDetailsTimer = 0
-
-	NewsAgency = New TNewsAgency.Create()
-
-
-	'=== SETUP TOOLTIPS ===
-	TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
-	TTooltip.UseFont = GetBitmapFontManager().baseFont
-	TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
-	TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
-
-	'interface needs tooltip definition done
-	Interface = TInterface.Create()
-
-
-	'RON
-	Local haveNPCs:Int = True
-	If haveNPCs
-		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
-		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 3, 65, 0)
-		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 1, -65, 0)
-	EndIf
-End Function
-
-
-
-'run this before EACH started game
-Function PrepareGameStart()
-	'eg reset things
-End Function
 
 
 Function StartApp:int()

@@ -7,6 +7,10 @@ START_YEAR = Startjahr
 GAME_TIME = Spielzeit
 BETTY_FEELINGS = Bettys Gefühle für Dich
 
+PLEASE_BE_PATIENT = Bitte etwas Geduld
+SAVEGAME_GETS_CREATED = Speicherstand wird erstellt
+SAVEGAME_GETS_LOADED = Speicherstand wird eingelesen
+
 YES = Ja
 NO = Nein
 MONEY = Geld

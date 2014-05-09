@@ -7,6 +7,10 @@ START_YEAR = start year
 GAME_TIME = Game time
 BETTY_FEELINGS = Bettys feelings about you
 
+PLEASE_BE_PATIENT = Please be patient
+SAVEGAME_GETS_CREATED = Savegame gets created
+SAVEGAME_GETS_LOADED = Savegame gets loaded
+
 YES = Yes
 NO = No
 MONEY = Money
