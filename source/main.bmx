@@ -654,6 +654,7 @@ End Type
 'it is kind of an "DataCollectionCollection" ;D
 Type TSaveGame
 	Field _Game:TGame = Null
+	Field _GameTime:TGameTime = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
@@ -663,6 +664,8 @@ Type TSaveGame
 	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = null
 	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = null
 	Field _EventManagerEvents:TList = null
+	Field _PopularityManager:TPopularityManager = null
+	Field _BroadcastManager:TBroadcastManager = null
 	Field _StationMapCollection:TStationMapCollection = null
 	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
 	Field _NewsAgency:TNewsAgency
@@ -684,7 +687,10 @@ Type TSaveGame
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
+		_Assign(_PopularityManager, TPopularityManager._instance, "PopularityManager", MODE_LOAD)
+		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
+		_Assign(_GameTime, TGameTime._instance, "GameTime", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 
@@ -705,7 +711,10 @@ Type TSaveGame
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
+		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
+		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
+		_Assign(TGameTime._instance, _GameTime, "GameTime", MODE_SAVE)
 		'special room data
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)

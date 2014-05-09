@@ -292,10 +292,9 @@ Type TGame {_exposeToLua="selected"}
 		GetNewsAgency().AnnounceNewNewsEvent(-120)
 		GetNewsAgency().AnnounceNewNewsEvent(-120)
 
-
+		'place them into the players news shows
 		local newsToPlace:TNews
 		For Local playerID:int = 1 to 4
-			print "count for "+playerID+": "+GetPlayerProgrammeCollectionCollection().Get(playerID).news.Count()
 			For local i:int = 0 to 2
 				'attention: instead of using "GetNewsAtIndex(i)" we always
 				'use (0) - as each "placed" news is removed from the collection
@@ -312,10 +311,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 
-
-
-
-
+		'=== SETUP START PROGRAMME PLAN ===
 
 		Local lastblocks:Int=0
 		local playerCollection:TPlayerProgrammeCollection
