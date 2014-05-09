@@ -20,6 +20,7 @@ Import "Dig/base.util.registry.soundloader.bmx"
 Import "Dig/base.sfx.soundmanager.bmx"
 Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
+Import "Dig/base.util.interpolation.bmx"
 
 Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.framework.entity.spriteentity.bmx"
@@ -96,8 +97,6 @@ Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = null
 Global ScreenMainMenu:TScreen_MainMenu = null
 Global GameScreen_Building:TInGameScreen_Building = null
-Global LogoTargetY:Float = 20
-Global LogoCurrY:Float = 100
 Global headerFont:TBitmapFont
 Global Init_Complete:Int = 0
 
@@ -138,12 +137,6 @@ Type TApp
 	Global OnLoadListener:TLink = null
 	Global baseResourcesLoaded:Int		= 0						'able to draw loading screen?
 	Global baseResourceXmlUrl:String	= "config/startup.xml"	'holds bg for loading screen and more
-	Global currentResourceUrl:String	= ""
-	Global maxResourceCount:Int			= 435					'set to <=0 to get a output of loaded resources
-	Global loadedResourceCount:Int		= 0						'set to <=0 to get a output of loaded resources
-
-	Global LogoFadeInFirstCall:Int		= 0
-	Global LoaderWidth:Int				= 0
 
 	Global ExitApp:Int 						= 0		 			'=1 and the game will exit
 	Global ExitAppDialogue:TGUIModalWindow	= Null
@@ -172,8 +165,8 @@ Type TApp
 
 		obj.LoadSettings("config/settings.xml")
 		obj.InitGraphics()
+
 		'load graphics needed for loading screen
-		obj.currentResourceUrl = obj.baseResourceXmlUrl
 		obj.LoadResources(obj.baseResourceXmlUrl, true)
 
 		Return obj
@@ -223,7 +216,6 @@ Type TApp
 		'as we are no longer in the loading screen (-> silent loading)
 		if OnLoadListener then EventManager.unregisterListenerByLink( OnLoadListener )
 
-		TLogger.Log("TApp.Start()", "loaded resources: "+loadedResourceCount, LOG_INFO)
 		TLogger.Log("TApp.Start()", "loading time: "+(MilliSecs() - creationTime) +"ms", LOG_INFO)
 	End Method
 
@@ -300,67 +292,13 @@ Type TApp
 		Local evt:TEventSimple = TEventSimple(triggerEvent)
 		If evt<>Null
 			If evt.getData().getString("url") = TApp.baseResourceXmlUrl Then TApp.baseResourcesLoaded = 1
-			If TApp.maxResourceCount <= 0 Then Print "loaded items from xml: "+evt.getData().getInt("loaded")
 		EndIf
 	End Function
 
 
 	Function onLoadElement( triggerEvent:TEventBase )
 		TApp.lastLoadEvent = TEventSimple(triggerEvent)
-		loadedResourceCount:+1
 		If TApp.baseResourcesLoaded Then GetDeltaTimer().loop()
-	End Function
-
-
-	Function renderLoadingScreen:int()
-		Local evt:TEventSimple = TApp.lastLoadEvent
-		If not evt then return FALSE
-
-		Local element:String		= evt.getData().getString("element")
-		Local text:String			= evt.getData().getString("text")
-		Local itemNumber:Int		= evt.getData().getInt("itemNumber")
-		Local error:Int				= evt.getData().getInt("error")
-		Local maxItemNumber:Int		= 0
-		If itemNumber > 0 Then maxItemNumber = evt.getData().getInt("maxItemNumber")
-
-		If element = "XmlFile" Then TApp.currentResourceUrl = text
-
-		SetColor 255, 255, 255
-		GetSpriteFromRegistry("gfx_startscreen").Draw(0,0)
-
-		If LogoFadeInFirstCall = 0 Then LogoFadeInFirstCall = MilliSecs()
-		SetAlpha Float(Float(MilliSecs() - LogoFadeInFirstCall) / 750.0)
-		GetSpriteFromRegistry("gfx_startscreen_logo").Draw( App.settings.getWidth()/2 - GetSpriteFromRegistry("gfx_startscreen_logo").area.GetW() / 2, 100)
-		SetAlpha 1.0
-		GetSpriteFromRegistry("gfx_startscreen_loadingBar").Draw( 400, 376, 1, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
-		'each run of "draw" incs by "pixels per resource"
-
-'			LoaderWidth = Min(680, LoaderWidth + (680.0 / TApp.maxResourceCount))
-		LoaderWidth = Min(670, 670.0 * Float(loadedResourceCount)/Float(TApp.maxResourceCount))
-		GetSpriteFromRegistry("gfx_startscreen_loadingBar").TileDraw((400-GetSpriteFromRegistry("gfx_startscreen_loadingBar").framew / 2) ,376,LoaderWidth, GetSpriteFromRegistry("gfx_startscreen_loadingBar").frameh)
-		SetColor 0,0,0
-		If itemNumber > 0
-			SetAlpha 0.25
-			DrawText "[" + Replace(RSet(loadedResourceCount, String(TApp.maxResourceCount).length), " ", "0") + "/" + TApp.maxResourceCount + "]", 655, 415
-'				DrawText "[" + Replace(RSet(itemNumber, String(maxItemNumber).length), " ", "0") + "/" + maxItemNumber + "]", 670, 415
-			DrawText TApp.currentResourceUrl, 80, 402
-		EndIf
-		SetAlpha 0.5
-		DrawText "Loading: "+text, 80, 415
-		SetAlpha 1.0
-		If error > 0
-			SetColor 255, 0 ,0
-			DrawText("ERROR: ", 80,440)
-			SetAlpha 0.75
-			DrawText(text+" not found. (press ESC to exit)", 130,440)
-			SetAlpha 1.0
-		EndIf
-		SetColor 255, 255, 255
-
-		'base cursor
-		GetSpriteFromRegistry("gfx_mousecursor").Draw(MouseManager.x-9, 	MouseManager.y-2	,0)
-
-		Flip 0
 	End Function
 
 
@@ -1011,6 +949,7 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonOnline:TGUIButton
 	Field guiButtonSettings:TGUIButton
 	Field guiButtonQuit:TGUIButton
+
 
 Rem
 Global StartTips:TList = CreateList()
@@ -2078,10 +2017,25 @@ Function DrawMenuBackground(darkened:Int=False)
 	GetSpriteFromRegistry("gfx_startscreen").Draw(0,0)
 
 
+	'draw an (animated) logo
 	Select game.gamestate
 		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
-			If LogoCurrY > LogoTargetY Then LogoCurrY:+- 30.0 * GetDeltaTimer().GetDelta() Else LogoCurrY = LogoTargetY
-			GetSpriteFromRegistry("gfx_startscreen_logo").Draw(400, LogoCurrY, 0, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
+
+			Global logoAnimStart:int = 0
+			Global logoAnimTime:int = 1500
+			Global logoScale:float = 0.0
+			local logo:TSprite = GetSpriteFromRegistry("gfx_startscreen_logo")
+			if logo
+				if logoAnimStart = 0 then logoAnimStart = Millisecs()
+				logoScale = TInterpolation.BackOut(0.0, 1.0, Min(logoAnimTime, Millisecs() - logoAnimStart), logoAnimTime)
+				logoScale :* TInterpolation.BounceOut(0.0, 1.0, Min(logoAnimTime, Millisecs() - logoAnimStart), logoAnimTime)
+
+				local oldAlpha:float = GetAlpha()
+				SetAlpha TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, Millisecs() - logoAnimStart), 0.5*logoAnimTime)
+
+				logo.Draw( GraphicsWidth()/2, 150, -1, new TPoint.Init(0.5, 0.5), logoScale)
+				SetAlpha oldAlpha
+			Endif
 	EndSelect
 
 	If game.gamestate = TGame.STATE_MAINMENU

@@ -451,7 +451,7 @@ Type TSprite
 
 		'normal sprites draw their image stretched to area
 		if not ninePatchEnabled
-			DrawResized(new TRectangle.Init(x, y, width, height), null, frame)
+			DrawResized(new TRectangle.Init(x, y, width, height), new TRectangle, frame)
 		else
 			'minimal dimension has to be same or bigger than all 4 borders + 0.5 of the stretch portion
 			width = Max(width, 0.5 + ninePatch_borderDimensionScale*(ninePatch_borderDimension.GetLeft()+ninePatch_borderDimension.GetRight()))
@@ -516,8 +516,8 @@ Type TSprite
 		sourceCopy.dimension.SetY(Min(area.GetH(), sourceCopy.GetH()))
 
 		'if no target dimension was given - use source dimension
-		if targetCopy.GetW() <= 0 then targetCopy.dimension.SetX(sourceCopy.GetW())
-		if targetCopy.GetH() <= 0 then targetCopy.dimension.SetY(sourceCopy.GetH())
+		if targetCopy.GetW() <= 0 then targetCopy.dimension.SetX(source.GetW())
+		if targetCopy.GetH() <= 0 then targetCopy.dimension.SetY(source.GetH())
 
 
 		'take care of offsets
@@ -624,7 +624,7 @@ Type TSprite
 		if not alignment then alignment = ALIGN_TOP_LEFT
 
 		If frame = -1 Or framew = 0
-			DrawSubImageRect(parent.image, x - alignment.GetX()*area.GetW()*scale , y - alignment.GetY()*area.GetH()*scale, area.GetW(), area.GetH(), area.GetX(), area.GetY(), area.GetW(), area.GetH(), 0, 0, 0)
+			DrawSubImageRect(parent.image, x - alignment.GetX()*area.GetW()*scale , y - alignment.GetY()*area.GetH()*scale, area.GetW()*scale, area.GetH()*scale, area.GetX(), area.GetY(), area.GetW(), area.GetH(), 0, 0, 0)
 		Else
 			Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
 			Local framerow:Int			= Ceil(frame / MaxFramesInCol)
