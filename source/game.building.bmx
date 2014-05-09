@@ -47,10 +47,6 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method New()
-		_instance = self
-
-		area.position.SetX(20)
-
 		if not _eventsRegistered
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
@@ -73,12 +69,14 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method Create:TBuilding()
+		area.position.SetX(20)
+
 		'call to set graphics, paths for objects and other
 		'stuff not gameplay relevant
 		InitGraphics()
 
 		area.position.SetY(0 - gfx_building.area.GetH() + 5 * 73 + 20)	' 20 = interfacetop, 373 = raumhoehe
-		Elevator = new TElevator.Create()
+		Elevator = TElevator.GetInstance().Init()
 		Elevator.Pos.SetY(GetFloorY(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
 
 		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
@@ -91,8 +89,9 @@ Type TBuilding Extends TStaticEntity
 	Function onSaveGameLoad(triggerEvent:TEventBase)
 		TLogger.Log("TBuilding", "Savegame loaded - reassign sprites, recreate movement paths for gfx.", LOG_DEBUG | LOG_SAVELOAD)
 		GetInstance().InitGraphics()
-		'reassign the elevator - should not be needed
-		'GetInstance().Elevator = TElevator.GetInstance()
+
+		'reassign elevator from freshly loaded building to elevator instance
+		TElevator._instance = GetInstance().Elevator
 
 		'reposition hotspots
 		GetInstance().Init()
@@ -235,7 +234,7 @@ Type TBuilding Extends TStaticEntity
 		endif
 
 		'assign room
-		room = RoomCollection.GetFirstByDetails("building")
+		room = GetRoomCollection().GetFirstByDetails("building")
 
 		'move elevatorplan hotspots to the elevator
 		For Local hotspot:THotspot = EachIn room.hotspots
@@ -261,7 +260,7 @@ Type TBuilding Extends TStaticEntity
 		If hotspot.name = "elevatorplan"
 			'Print "figure "+figure.name+" reached elevatorplan"
 
-			Local room:TRoom = RoomCollection.GetFirstByDetails("elevatorplan")
+			Local room:TRoom = GetRoomCollection().GetFirstByDetails("elevatorplan")
 			If Not room Then Print "[ERROR] room: elevatorplan not not defined. Cannot enter that room.";Return False
 
 			figure.EnterRoom(null, room)
@@ -301,7 +300,7 @@ Type TBuilding Extends TStaticEntity
 
 		'reset drawn for all figures... so they can get drawn
 		'correct at their "z-indexes" (behind building, elevator or on floor )
-		For Local Figure:TFigure = EachIn FigureCollection.list
+		For Local Figure:TFigure = EachIn GetFigureCollection().list
 			Figure.alreadydrawn = False
 		Next
 
@@ -325,7 +324,7 @@ Type TBuilding Extends TStaticEntity
 
 		SetBlend ALPHABLEND
 
-		For Local Figure:TFigure = EachIn FigureCollection.list
+		For Local Figure:TFigure = EachIn GetFigureCollection().list
 			'draw figure later if outside of building
 			If figure.area.GetX() < area.GetX() + buildingDisplaceX Then Continue
 			If Not Figure.alreadydrawn Then Figure.Draw()
@@ -347,7 +346,7 @@ Type TBuilding Extends TStaticEntity
 		If GetFloor(GetPlayerCollection().Get().Figure.area.GetY()) <= 4
 			SetColor Int(205 * timecolor) + 150, Int(205 * timecolor) + 150, Int(205 * timecolor) + 150
 			'draw figures outside the wall
-			For Local Figure:TFigure = EachIn FigureCollection.list
+			For Local Figure:TFigure = EachIn GetFigureCollection().list
 				If Not Figure.alreadydrawn Then Figure.Draw()
 			Next
 			gfx_buildingEntrance.Draw(area.GetX(), area.GetY() + 1024 - gfx_buildingEntrance.area.GetH() - 3)

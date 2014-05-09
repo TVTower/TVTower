@@ -9,11 +9,6 @@ Type TNewsGenreDefinitionCollection
 	Global _instance:TNewsGenreDefinitionCollection
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TNewsGenreDefinitionCollection()
 		if not _instance then _instance = new TNewsGenreDefinitionCollection
 		return _instance

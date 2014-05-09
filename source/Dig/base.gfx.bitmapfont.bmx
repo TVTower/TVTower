@@ -23,11 +23,6 @@ Type TBitmapFontManager
 	Global _instance:TBitmapFontManager
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TBitmapFontManager()
 		if not _instance then _instance = new TBitmapFontManager
 		return _instance

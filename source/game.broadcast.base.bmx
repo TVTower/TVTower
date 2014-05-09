@@ -46,22 +46,12 @@ Type TBroadcastManager
 	Global _instance:TBroadcastManager
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TBroadcastManager()
 		if not _instance then _instance = new TBroadcastManager
 		return _instance
 	End Function
 
 	'===== Konstrukor, Speichern, Laden =====
-
-	Function Create:TBroadcastManager()
-		Return New TBroadcastManager
-	End Function
-
 
 	'reinitializes the manager
 	Method Reset()
@@ -412,7 +402,7 @@ Type TBroadcast
 			End If
 		Next
 
-		Local audience:Int = StationMapCollection.GetShareAudience(playerIDs, withoutPlayerIDs)
+		Local audience:Int = GetStationMapCollection().GetShareAudience(playerIDs, withoutPlayerIDs)
 		If audience > 0 Then
 			Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
 			market.maxAudience = TAudience.CreateWithBreakdown(audience)

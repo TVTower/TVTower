@@ -13,11 +13,6 @@ Type TPlayerCollection
 	Global _instance:TPlayerCollection
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TPlayerCollection()
 		if not _instance then _instance = new TPlayerCollection
 		return _instance
@@ -129,7 +124,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 	Method GetStationMap:TStationMap() {_exposeToLua}
 		'fetch from StationMap-list
-		local map:TStationMap = StationMapCollection.GetMap(playerID)
+		local map:TStationMap = GetStationMapCollection().GetMap(playerID)
 		'still not existing - create it
 		if not map then map = TStationMap.Create(self.playerID)
 		return map

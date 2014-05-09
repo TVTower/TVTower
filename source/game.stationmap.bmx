@@ -36,8 +36,6 @@ Type TStationMapCollection
 
 
 	Method New()
-		_instance = self
-
 		if not _initDone
 			'to refresh share map on buy/sell of stations
 			EventManager.registerListenerFunction( "stationmap.addStation",	onChangeStations )
@@ -51,6 +49,13 @@ Type TStationMapCollection
 			_initdone = TRUE
 		Endif
 	End Method
+
+
+	Function GetInstance:TStationMapCollection()
+		if not _instance then _instance = new TStationMapCollection
+		return _instance
+	End Function
+
 
 
 	'run when loading finished
@@ -108,7 +113,7 @@ Type TStationMapCollection
 		'=== LOAD XML CONFIG ===
 		local registryLoader:TRegistryLoader = new TRegistryLoader
 		registryLoader.LoadFromXML(mapConfigFile, TRUE)
-		TLogger.Log("TStationMapCollection.LoadMapFromXML", "config parsed", LOG_LOADING)
+		'TLogger.Log("TGetStationMapCollection().LoadMapFromXML", "config parsed", LOG_LOADING)
 
 		'=== INIT MAP DATA ===
 		CreatePopulationMap()
@@ -121,7 +126,7 @@ Type TStationMapCollection
 		local start:int = Millisecs()
 		Local srcPix:TPixmap = GetPixmapFromRegistry("map_PopulationDensity")
 		if not srcPix
-			TLogger.Log("TStationMapCollection.CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
+			TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
 			Throw("TStationMap: ~qmap_PopulationDensity~q missing.")
 			return
 		endif
@@ -145,7 +150,7 @@ Type TStationMapCollection
 				population:+ populationmap[i, j]
 			Next
 		Next
-		TLogger.Log("TStationMapCollection.CreatePopulationMap", "calculated a population of:" + population + " in "+(MilliSecs()-start)+"ms", LOG_LOADING)
+		TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "calculated a population of:" + population + " in "+(MilliSecs()-start)+"ms", LOG_DEBUG | LOG_LOADING)
 	End Method
 
 
@@ -172,7 +177,7 @@ Type TStationMapCollection
 	Method GetMap:TStationMap(playerID:Int)
 		'check boundaries
 		If playerID < 1 or playerID > stationMaps.length
-			Throw "StationMapCollection.GetMap: playerID ~q"+playerID+"~q is out of bounds."
+			Throw "GetStationMapCollection().GetMap: playerID ~q"+playerID+"~q is out of bounds."
 		Endif
 
 		'remove until not thrown for ages
@@ -468,7 +473,13 @@ endrem
 		_instance.GenerateShareMap()
 	End Function
 End Type
-Global StationMapCollection:TStationMapCollection = New TStationMapCollection
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetStationMapCollection:TStationMapCollection()
+	Return TStationMapCollection.GetInstance()
+End Function
+
 
 
 
@@ -490,7 +501,7 @@ Type TStationMap {_exposeToLua="selected"}
 		obj.owner = playerID
 		obj.showStations = [1,1,1,1]
 
-		StationMapCollection.Add(obj)
+		GetStationMapCollection().Add(obj)
 
 		Return obj
 	End Function
@@ -503,14 +514,14 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	Method getCoverage:Float() {_exposeToLua}
-		Return Float(getReach()) / Float(StationMapCollection.getPopulation())
+		Return Float(getReach()) / Float(GetStationMapCollection().getPopulation())
 	End Method
 
 
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
 	Method getTemporaryStation:TStation(x:Int,y:Int)  {_exposeToLua}
-		Return TStation.Create(new TPoint.Init(x,y),-1, StationMapCollection.stationRadius, owner)
+		Return TStation.Create(new TPoint.Init(x,y),-1, GetStationMapCollection().stationRadius, owner)
 	End Method
 
 
@@ -527,7 +538,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'returns a station of a player at a given position in the list
 	Function getStationFromList:TStation(playerID:Int=-1, position:Int=0) {_exposeToLua}
-		Local stationMap:TStationMap = StationMapCollection.GetMap(playerID)
+		Local stationMap:TStationMap = GetStationMapCollection().GetMap(playerID)
 		If Not stationMap Then Return Null
 		'out of bounds?
 		If position < 0 Or position >= stationMap.stations.count() Then Return Null
@@ -540,7 +551,7 @@ Type TStationMap {_exposeToLua="selected"}
 	Method getStationCount:Int(playerID:Int=-1) {_exposeToLua}
 		If playerID = owner Then Return stations.count()
 
-		Local stationMap:TStationMap = StationMapCollection.GetMap(playerID)
+		Local stationMap:TStationMap = GetStationMapCollection().GetMap(playerID)
 		If Not stationMap Then Return Null
 
 		Return stationMap.getStationCount(playerID)
@@ -549,14 +560,14 @@ Type TStationMap {_exposeToLua="selected"}
 
 	'returns maximum audience a player's stations cover
 	Method RecalculateAudienceSum:Int() {_exposeToLua}
-		reach = StationMapCollection.RecalculateAudienceSum(stations)
+		reach = GetStationMapCollection().RecalculateAudienceSum(stations)
 		return reach
 	End Method
 
 
 	'returns additional audience when placing a station at the given coord
 	Method CalculateAudienceIncrease:Int(x:Int, y:Int) {_exposeToLua}
-		return StationMapCollection.CalculateAudienceIncrease(stations, x, y)
+		return GetStationMapCollection().CalculateAudienceIncrease(stations, x, y)
 	End Method
 
 
@@ -657,7 +668,7 @@ Type TStationMap {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		'draw all stations from all players (except filtered)
-		For local map:TStationMap = eachin StationMapCollection.stationMaps
+		For local map:TStationMap = eachin GetStationMapCollection().stationMaps
 			'show stations is zero based
 			If Not showStations[map.owner-1] Then Continue
 			map.DrawStations()
@@ -715,7 +726,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	'get the reach of that station
 	Method getReach:Int(refresh:Int=False) {_exposeToLua}
 		If reach >= 0 And Not refresh Then Return reach
-		reach = StationMapCollection.CalculateStationReach(pos.x, pos.y)
+		reach = GetStationMapCollection().CalculateStationReach(pos.x, pos.y)
 
 		Return reach
 	End Method
@@ -729,7 +740,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			Return 0
 		EndIf
 
-		reachIncrease = StationMapCollection.GetMap(owner).CalculateAudienceIncrease(pos.x, pos.y)
+		reachIncrease = GetStationMapCollection().GetMap(owner).CalculateAudienceIncrease(pos.x, pos.y)
 
 		Return reachIncrease
 	End Method

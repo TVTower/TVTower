@@ -5,13 +5,13 @@ Type TNewsAgency
 	Field NextChainChecktime:Double = 0
 	'holding chained news from the past hours/day
 	Field activeChains:TList = CreateList()
+	Global _instance:TNewsAgency
 
 
-	Method Create:TNewsAgency()
-		'maybe do some initialization here
-
-		Return Self
-	End Method
+	Function GetInstance:TNewsAgency()
+		if not _instance then _instance = new TNewsAgency
+		return _instance
+	End Function
 
 
 	Method GetMovieNewsEvent:TNewsEvent()
@@ -198,3 +198,9 @@ Type TNewsAgency
 		EndIf
 	End Method
 End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return singleton instance
+Function GetNewsAgency:TNewsAgency()
+	Return TNewsAgency.GetInstance()
+End Function

@@ -88,7 +88,6 @@ Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
 Global App:TApp = null
-Global NewsAgency:TNewsAgency
 Global Interface:TInterface
 Global Game:TGame
 Global InGame_Chat:TGUIChat
@@ -109,7 +108,9 @@ TLogger.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
 TLogger.setLogMode(LOG_ALL)
-TLogger.setPrintMode(LOG_ALL ) 'all but ai
+TLogger.setPrintMode(LOG_ALL )
+
+TLogger.setPrintMode(LOG_DEV ) 'all but ai
 
 'print "ALLE MELDUNGEN AUS"
 'TLogger.SetPrintMode(0)
@@ -353,16 +354,16 @@ Type TApp
 					If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
 					If KEYMANAGER.IsHit(KEY_4) Then Game.SetActivePlayer(4)
 
-					If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("adagency") )
-					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("archive", GetPlayerCollection().playerID) )
-					If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("betty") )
-					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("movieagency"))
-					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("office", GetPlayerCollection().playerID))
-					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("chief", GetPlayerCollection().playerID))
+					If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
+					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", GetPlayerCollection().playerID) )
+					If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("betty") )
+					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
+					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
+					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("chief", GetPlayerCollection().playerID))
 					'e wie "employees" :D
-					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("credits"))
-					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("news", GetPlayerCollection().playerID))
-					If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(RoomCollection.GetFirstByDetails("roomboard"))
+					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
+					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
+					If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
 				EndIf
 				If KEYMANAGER.IsHit(KEY_5) Then GetGameTime().speed = 120.0	'60 minutes per second
 				If KEYMANAGER.IsHit(KEY_6) Then GetGameTime().speed = 240.0	'120 minutes per second
@@ -370,7 +371,7 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_8) Then GetGameTime().speed = 480.0	'240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetGameTime().speed = 1.0	'1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
-				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
+				If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
 				'Save game
 				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
@@ -385,7 +386,7 @@ Type TApp
 					If KEYMANAGER.Ishit(Key_F4) And GetPlayerCollection().Get(4).isAI() Then GetPlayerCollection().Get(4).PlayerKI.reloadScript()
 				EndIf
 
-				If KEYMANAGER.Ishit(Key_F5) Then NewsAgency.AnnounceNewNewsEvent()
+				If KEYMANAGER.Ishit(Key_F5) Then GetNewsAgency().AnnounceNewNewsEvent()
 				If KEYMANAGER.Ishit(Key_F6) Then TSoundManager.GetInstance().PlayMusicPlaylist("default")
 
 				If KEYMANAGER.Ishit(Key_F9)
@@ -399,13 +400,13 @@ Type TApp
 				EndIf
 				If KEYMANAGER.Ishit(Key_F10)
 					If (KIRunning)
-						For Local fig:TFigure = EachIn FigureCollection.list
+						For Local fig:TFigure = EachIn GetFigureCollection().list
 							If Not fig.isActivePlayer() Then fig.moveable = False
 						Next
 						TLogger.Log("CORE", "AI Figures deactivated", LOG_INFO | LOG_DEV )
 						KIRunning = False
 					Else
-						For Local fig:TFigure = EachIn FigureCollection.list
+						For Local fig:TFigure = EachIn GetFigureCollection().list
 							If Not fig.isActivePlayer() Then fig.moveable = True
 						Next
 						TLogger.Log("CORE", "AI activated", LOG_INFO | LOG_DEV )
@@ -534,18 +535,18 @@ Type TApp
 
 			'room states: debug fuer sushitv
 			local occupants:string = "-"
-			if RoomCollection.GetFirstByDetails("adagency").HasOccupant()
+			if GetRoomCollection().GetFirstByDetails("adagency").HasOccupant()
 				occupants = ""
-				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("adagency").occupants
+				for local figure:TFigure = eachin GetRoomCollection().GetFirstByDetails("adagency").occupants
 					occupants :+ figure.name+" "
 				next
 			Endif
 			GetBitmapFontManager().baseFont.draw("AdA. : "+occupants, 25, 350)
 
 			occupants = "-"
-			if RoomCollection.GetFirstByDetails("movieagency").HasOccupant()
+			if GetRoomCollection().GetFirstByDetails("movieagency").HasOccupant()
 				occupants = ""
-				for local figure:TFigure = eachin RoomCollection.GetFirstByDetails("movieagency").occupants
+				for local figure:TFigure = eachin GetRoomCollection().GetFirstByDetails("movieagency").occupants
 					occupants :+ figure.name+" "
 				next
 			Endif
@@ -664,6 +665,7 @@ Type TSaveGame
 	Field _EventManagerEvents:TList = null
 	Field _StationMapCollection:TStationMapCollection = null
 	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
+	Field _NewsAgency:TNewsAgency
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
 	Const MODE_LOAD:int = 0
@@ -671,17 +673,18 @@ Type TSaveGame
 
 
 	Method RestoreGameData:Int()
-		_Assign(_FigureCollection, FigureCollection, "FigureCollection", MODE_LOAD)
+		_Assign(_FigureCollection, TFigureCollection._instance, "FigureCollection", MODE_LOAD)
+		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_PlayerCollection, TPlayerCollection._instance, "PlayerCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceCollection, TPlayerFinanceCollection._instance, "PlayerFinanceCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceHistoryListCollection, TPlayerFinanceHistoryListCollection._instance, "PlayerFinanceHistoryListCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammeCollectionCollection, TPlayerProgrammeCollectionCollection._instance, "PlayerProgrammeCollectionCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammePlanCollection, TPlayerProgrammePlanCollection._instance, "PlayerProgrammePlanCollection", MODE_LOAD)
-		_Assign(_ProgrammeDataCollection, ProgrammeDataCollection, "ProgrammeDataCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, NewsEventCollection, "NewsEventCollection", MODE_LOAD)
+		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
 		_Assign(_EventManagerEvents, EventManager._events, "Events", MODE_LOAD)
-		_Assign(_StationMapCollection, StationMapCollection, "StationMapCollection", MODE_LOAD)
+		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 
@@ -692,16 +695,17 @@ Type TSaveGame
 	Method BackupGameData:Int()
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
-		_Assign(FigureCollection, _FigureCollection, "FigureCollection", MODE_SAVE)
+		_Assign(TFigureCollection._instance, _FigureCollection, "FigureCollection", MODE_SAVE)
 		_Assign(TPlayerCollection._instance, _PlayerCollection, "PlayerCollection", MODE_SAVE)
 		_Assign(TPlayerFinanceCollection._instance, _PlayerFinanceCollection, "PlayerFinanceCollection", MODE_SAVE)
 		_Assign(TPlayerFinanceHistoryListCollection._instance, _PlayerFinanceHistoryListCollection, "PlayerFinanceHistoryListCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammeCollectionCollection._instance, _PlayerProgrammeCollectionCollection, "PlayerProgrammeCollectionCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
-		_Assign(ProgrammeDataCollection, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
+		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
+		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)
-		_Assign(StationMapCollection, _StationMapCollection, "StationMapCollection", MODE_SAVE)
+		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
 		'special room data
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
@@ -768,7 +772,7 @@ Type TSaveGame
 
 		TPersist.maxDepth = 4096
 		Local persist:TPersist = New TPersist
-		Local saveGame:TSaveGame = TSaveGame(persist.DeserializeFromFile(savename))
+		Local saveGame:TSaveGame  = TSaveGame(persist.DeserializeFromFile(savename))
 		If Not saveGame
 			Print "savegame file is corrupt or missing."
 			Return False
@@ -779,13 +783,12 @@ Type TSaveGame
 			Return False
 		EndIf
 
+
 		'tell everybody we start loading (eg. for unregistering objects before)
 		'payload is saveName
 		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", new TData.addString("saveName", saveName)))
-
 		'load savegame data into game object
 		saveGame.RestoreGameData()
-
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
@@ -793,7 +796,6 @@ Type TSaveGame
 
 		'call game that game continues/starts now
 		Game.StartLoadedSaveGame()
-
 		Return True
 	End Function
 
@@ -1879,7 +1881,7 @@ Type GameEvents
 		'refill if needed
 		If Game.refillMovieAgencyTime <= 0
 			'delay if there is one in this room
-			If RoomCollection.GetFirstByDetails("movieagency").hasOccupant()
+			If GetRoomCollection().GetFirstByDetails("movieagency").hasOccupant()
 				Game.refillMovieAgencyTime :+ 15
 			Else
 				'reset but with a bit randomness
@@ -1891,7 +1893,7 @@ Type GameEvents
 		EndIf
 		If Game.refillAdAgencyTime <= 0
 			'delay if there is one in this room
-			If RoomCollection.GetFirstByDetails("adagency").hasOccupant()
+			If GetRoomCollection().GetFirstByDetails("adagency").hasOccupant()
 				Game.refillAdAgencyTime :+ 15
 				Game.refillAdAgencyTime :+ 15
 			Else
@@ -2168,7 +2170,7 @@ Function StartApp:int()
 	MainMenuJanitor.area.position.SetY(600)
 	'remove figure from collection so it is not drawn/updated in other
 	'screens (eg. ingame)
-	FigureCollection.Remove(MainMenuJanitor)
+	GetFigureCollection().Remove(MainMenuJanitor)
 
 	'add menu screens
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
@@ -2185,7 +2187,7 @@ End Function
 
 Function ShowApp:int()
 	'without creating players, rooms
-	Game = new TGame.Create(false, false)
+	Game = TGame.GetInstance().Create(false, false)
 
 	'Menu
 	ScreenMainMenu = New TScreen_MainMenu.Create("MainMenu")

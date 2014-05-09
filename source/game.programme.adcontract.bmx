@@ -310,7 +310,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'if no special player is requested -
 		if playerID <= 0 and IsSigned() then playerID = owner
 		'if contract has no owner the avg audience maximum is returned
-		local useAudience:int = StationMapCollection.GetAverageReach()
+		local useAudience:int = GetStationMapCollection().GetAverageReach()
 
 		'0.5 = more than 50 percent of whole germany wont watch TV the same time
 		'therefor: maximum of half the audience can be "needed"

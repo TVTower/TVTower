@@ -8,11 +8,6 @@ Type TMovieGenreDefinitionCollection
 	Global _instance:TMovieGenreDefinitionCollection
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TMovieGenreDefinitionCollection()
 		if not _instance then _instance = new TMovieGenreDefinitionCollection
 		return _instance
@@ -54,7 +49,7 @@ End Function
 
 
 
-Type TMovieGenreDefinition Extends TGenreDefinitionBase	
+Type TMovieGenreDefinition Extends TGenreDefinitionBase
 	Field OutcomeMod:Float = 0.5
 	Field ReviewMod:Float = 0.3
 	Field SpeedMod:Float = 0.2

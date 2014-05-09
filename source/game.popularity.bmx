@@ -12,11 +12,6 @@ Type TPopularityManager
 	Global _instance:TPopularityManager
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TPopularityManager()
 		if not _instance then _instance = new TPopularityManager
 		return _instance

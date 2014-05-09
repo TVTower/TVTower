@@ -12,8 +12,6 @@ Type TPlayerFinanceCollection
 
 
 	Method New()
-		_instance = self
-
 		if finances = null then finances = finances[..0]
 	End Method
 

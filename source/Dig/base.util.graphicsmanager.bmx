@@ -27,11 +27,6 @@ Type TGraphicsManager
 	CONST RENDERER_DIRECTX9:int 		= 2
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TGraphicsManager()
 		If not _instance Then New TGraphicsManager
 		Return _instance

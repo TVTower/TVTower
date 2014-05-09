@@ -43,19 +43,14 @@ Type TElevator
 
 
 	'===== Konstruktor, Speichern, Laden =====
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TElevator()
-		if not _instance then _instance = new TElevator.Create()
+		if not _instance then _instance = new TElevator
 		return _instance
 	End Function
 
 
 
-	Method Create:TElevator()
+	Method Init:TElevator()
 		'limit speed between 50 - 240 pixels per second, default 120
 		Speed = Max(50, Min(240, App.devConfig.GetInt("DEV_ELEVATOR_SPEED", self.speed)))
 		'adjust wait at floor time : 1000 - 2000 ms, default 1700

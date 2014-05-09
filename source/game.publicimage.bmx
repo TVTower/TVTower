@@ -6,10 +6,6 @@ Type TPublicImageCollection
 	Field entries:TPublicImage[]
 	Global _instance:TPublicImageCollection
 
-	Method New()
-		_instance = self
-	End Method
-
 
 	Function GetInstance:TPublicImageCollection()
 		if not _instance then _instance = new TPublicImageCollection

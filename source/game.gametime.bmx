@@ -17,11 +17,6 @@ Type TGameTime {_exposeToLua="selected"}
 	Global _instance:TGameTime
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TGameTime()
 		if not _instance then _instance = new TGameTime
 		return _instance

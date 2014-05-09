@@ -16,14 +16,18 @@ Type TFigureCollection
 
 
 	Method New()
-		_instance = self
-
 		if not _eventsRegistered
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			_eventsRegistered = TRUE
 		Endif
 	End Method
+
+
+	Function GetInstance:TFigureCollection()
+		if not _instance then _instance = new TFigureCollection
+		return _instance
+	End Function
 
 
 	Method Get:TFigure(figureID:int)
@@ -67,7 +71,13 @@ Type TFigureCollection
 		Next
 	End Function
 End Type
-Global FigureCollection:TFigureCollection = new TFigureCollection
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetFigureCollection:TFigureCollection()
+	Return TFigureCollection.GetInstance()
+End Function
+
 
 
 
@@ -122,8 +132,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 		Self.ControlledByID	= ControlledByID
 
-		FigureCollection.Add(self)
-		self.id = FigureCollection.GenerateID()
+		GetFigureCollection().Add(self)
+		self.id = GetFigureCollection().GenerateID()
 
 		if not _initdone
 			'instead of "room.onLeave" we listen to figure.onLeaveRoom as it has
@@ -144,8 +154,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		if sprite and sprite.name then sprite = GetSpriteFromRegistry(sprite.name)
 
 		'reassign rooms
-		if inRoom then inRoom = RoomCollection.Get(inRoom.id)
-		if fromRoom then fromRoom = RoomCollection.Get(fromRoom.id)
+		if inRoom then inRoom = GetRoomCollection().Get(inRoom.id)
+		if fromRoom then fromRoom = GetRoomCollection().Get(fromRoom.id)
 		if fromDoor then fromDoor = TRoomDoor.Get(fromDoor.id)
 		'set as room occupier again (so rooms occupant list gets refilled)
 		if inRoom and not inRoom.isOccupant(self)
@@ -345,7 +355,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method GetPeopleOnSameFloor()
-		For Local Figure:TFigure = EachIn FigureCollection.List
+		For Local Figure:TFigure = EachIn GetFigureCollection().List
 			'skip other figures
 			if self = Figure then continue
 			'skip if both can't see each other to me
@@ -531,7 +541,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Function GetByID:TFigure(id:Int)
-		For Local Figure:TFigure = EachIn FigureCollection.List
+		For Local Figure:TFigure = EachIn GetFigureCollection().List
 			If Figure.id = id Then Return Figure
 		Next
 		Return Null
@@ -719,7 +729,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Function UpdateAll()
-		For Local Figure:TFigure = EachIn FigureCollection.list
+		For Local Figure:TFigure = EachIn GetFigureCollection().list
 			Figure.Update()
 		Next
 	End Function

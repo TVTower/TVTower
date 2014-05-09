@@ -24,8 +24,6 @@ Type TPlayerProgrammePlanCollection
 
 
 	Method New()
-		_instance = self
-
 		if not _eventsRegistered
 			EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onAddProgrammeLicenceToSuitcase)
 			_eventsRegistered = TRUE
@@ -577,7 +575,7 @@ endrem
 		if not obj.isProgrammed() then return TRUE
 
 		if obj
-			'print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
+			print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
 
 			'backup programmed date
 			local programmedDay:int = obj.programmedDay

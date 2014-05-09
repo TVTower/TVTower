@@ -385,7 +385,7 @@ Type TNetworkHelper
 		If inRoomID <= 0 Then figure.inRoom = Null
 		If figure.inRoom
 			If inRoomID > 0 and figure.inRoom.id <> inRoomID
-				figure.inRoom = RoomCollection.Get(inRoomID)
+				figure.inRoom = GetRoomCollection().Get(inRoomID)
 			EndIf
 		EndIf
 
@@ -395,7 +395,7 @@ Type TNetworkHelper
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom
 			If figure.fromRoom.id <> fromRoomID
-				figure.fromRoom = RoomCollection.Get( fromRoomID )
+				figure.fromRoom = GetRoomCollection().Get( fromRoomID )
 				figure.fromDoor = TRoomDoor.Get( fromDoorID )
 			endif
 		EndIf
@@ -542,7 +542,7 @@ print "[NET] ReceiveGameReady"
 		local radius:int		= obj.getInt(5)
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 
-		local station:TStation	= StationMapCollection.GetMap(playerID).getStation(pos.x, pos.y)
+		local station:TStation	= GetStationMapCollection().GetMap(playerID).getStation(pos.x, pos.y)
 
 		'disable events - ignore it to avoid recursion
 		TStationMap.fireEvents = FALSE
@@ -552,14 +552,14 @@ print "[NET] ReceiveGameReady"
 					'create the station if not existing
 					if not station then TStation.Create(pos,-1, radius, playerID)
 
-					StationMapCollection.GetMap(playerID).AddStation( station, FALSE )
+					GetStationMapCollection().GetMap(playerID).AddStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - add station "+station.pos.GetIntX()+","+station.pos.GetIntY()
 
 					return TRUE
 			case NET_DELETE
 					if not station then return FALSE
 
-					StationMapCollection.GetMap(playerID).RemoveStation( station, FALSE )
+					GetStationMapCollection().GetMap(playerID).RemoveStation( station, FALSE )
 					print "[NET] StationMap player "+playerID+" - removed station "+station.pos.GetIntX()+","+station.pos.GetIntY()
 					return TRUE
 		EndSelect

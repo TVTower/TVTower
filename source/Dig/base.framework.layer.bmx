@@ -44,7 +44,6 @@ Type TLayerManager
 
 	Method New()
 		if _instance Then Throw "Multiple TLayerManager not allowed"
-		_instance = self
 	End Method
 
 

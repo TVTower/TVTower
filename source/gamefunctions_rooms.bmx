@@ -3,15 +3,20 @@
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TRoomCollection
 
-	Method New()
-		_instance = self
 
+	Method New()
 		if not _eventsRegistered
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
 			_eventsRegistered = TRUE
 		Endif
 	End Method
+
+
+	Function GetInstance:TRoomCollection()
+		if not _instance then _instance = new TRoomCollection
+		return _instance
+	End Function
 
 
 	Method Add:int(room:TRoom)
@@ -68,7 +73,12 @@
 		Next
 	End Function
 End Type
-Global RoomCollection:TRoomCollection = new TRoomCollection
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetRoomCollection:TRoomCollection()
+	Return TRoomCollection.GetInstance()
+End Function
 
 
 
@@ -120,7 +130,7 @@ Type TRoom {_exposeToLua="selected"}
 			_initDone = TRUE
 		endif
 
-		RoomCollection.Add(self)
+		GetRoomCollection().Add(self)
 	End Method
 
 
@@ -960,13 +970,10 @@ Type RoomHandler_Office extends TRoomHandler
 		'during next update.
 		'Not RefreshGUIElements() in this function as the
 		'new programmes are not loaded yet
-
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null
-		GuiListProgrammes.EmptyList()
-		GuiListAdvertisements.EmptyList()
 
-		haveToRefreshGuiElements = true
+		RemoveAllGuiElements(TRUE)
 	End Function
 
 
@@ -1741,6 +1748,7 @@ Type RoomHandler_Office extends TRoomHandler
 		return FALSE
 	End Function
 
+
 	Function CreateNextEpisodeOrCopy:int(item:TGUIProgrammePlanElement, createCopy:int=TRUE)
 		local newMaterial:TBroadcastMaterial = null
 
@@ -1773,9 +1781,6 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'deletes all gui elements (eg. for rebuilding)
 	Function RemoveAllGuiElements:int(removeDragged:int=TRUE)
-'		GuiListProgrammes.EmptyList()
-'		GuiListAdvertisements.EmptyList()
-
 '		Rem
 '			this is problematic as this could bug out the programmePlan
 		'keep the dragged entries if wanted so
@@ -1996,39 +2001,6 @@ Type RoomHandler_Office extends TRoomHandler
 		'reset finance history scroll position when entering a screen
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_financials")
 		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterFinancialScreen, screen)
-
-		Rem
-
-		Local screenImage:TImage = GetSpriteFromRegistry("screen_bg_financials").parent.image
-		Local pix:TPixmap = LockImage(roomImg)
-		Local gfx_ProgrammeBlock1:TImage = GetSpriteFromRegistry("pp_programmeblock1").GetImage()
-
-		'block"shade" on bg
-		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
-		For Local j:Int = 0 To 11
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 67 - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 394 - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 67 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 394 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
-		Next
-
-		'set target for font
-		TBitmapFont.setRenderTarget(roomImg)
-
-		local fontColor:TColor = TColor.CreateGrey(240)
-		For Local i:Int = 0 To 11
-			'left side
-			GetBitmapFontManager().baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, fontColor, 2,1,0.25)
-			'right side
-			local text:string = i + ":00"
-			If i < 10 then text = "0" + text
-			GetBitmapFontManager().baseFont.drawStyled(text, 10, 18 + i * 30, fontColor,2,1,0.25)
-		Next
-		DrawnOnProgrammePlannerBG = True
-
-		'reset target for font
-		TBitmapFont.setRenderTarget(null)
-		EndRem
 	End Function
 
 
@@ -2556,7 +2528,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'1. searching
 		If stationMapMode = 1
 			'create a temporary station if not done yet
-			if not StationMapMouseoverStation then StationMapMouseoverStation = StationMapCollection.getMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
+			if not StationMapMouseoverStation then StationMapMouseoverStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
 			local mousePos:TPoint = new TPoint.Init( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
@@ -2571,7 +2543,7 @@ Type RoomHandler_Office extends TRoomHandler
 			if MOUSEMANAGER.isClicked(1)
 				'check reach and valid federal state
 				if StationMapMouseoverStation.GetHoveredMapSection() and StationMapMouseoverStation.getReach()>0
-					StationMapSelectedStation = StationMapCollection.getMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
+					StationMapSelectedStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( StationMapMouseoverStation.pos.x, StationMapMouseoverStation.pos.y )
 				endif
 			endif
 
@@ -2729,7 +2701,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'only players can "enter screens" - so just use "inRoom"
 
 		For local i:int = 0 to 3
-			local show:int = StationMapCollection.GetMap(GetPlayerCollection().Get().figure.inRoom.owner).showStations[i]
+			local show:int = GetStationMapCollection().GetMap(GetPlayerCollection().Get().figure.inRoom.owner).showStations[i]
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
@@ -2799,7 +2771,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'register self for all archives-rooms
 		For local i:int = 1 to 4
-			local room:TRoom = RoomCollection.GetFirstByDetails("archive", i)
+			local room:TRoom = GetRoomCollection().GetFirstByDetails("archive", i)
 			if room then super._RegisterHandler(onUpdate, onDraw, room)
 
 			'figure enters room - reset the suitcase's guilist, limit listening to the 4 rooms
@@ -3174,7 +3146,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'drop on vendor - sell things
 		EventManager.registerListenerFunction("guiobject.onDropOnTarget", onDropProgrammeLicenceOnVendor, "TGUIProgrammeLicence")
 
-		local room:TRoom = RoomCollection.GetFirstByDetails("movieagency")
+		local room:TRoom = GetRoomCollection().GetFirstByDetails("movieagency")
 		'figure enters room - reset the suitcase's guilist, limit listening to this room
 		EventManager.registerListenerFunction("room.onEnter", onEnterRoom, room)
 		'figure leaves room - only without dragged blocks
@@ -3888,10 +3860,8 @@ Type RoomHandler_News extends TRoomHandler
 
 		hoveredGuiNews = null
 		draggedGuiNews = null
-		guiNewsListAvailable.EmptyList()
-		guiNewsListUsed.EmptyList()
 
-		haveToRefreshGuiElements = true
+		RemoveAllGuiElements()
 	End Function
 
 
@@ -4086,12 +4056,13 @@ EndRem
 
 
 	Function RefreshGuiElements:int()
+		local owner:int = GetPlayerCollection().playerID
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries
-			if not GetPlayerCollection().Get().GetProgrammeCollection().hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerProgrammeCollectionCollection().Get(owner).hasNews(guiNews.news) then guiNews.remove()
 		Next
 		For local guiNews:TGuiNews = eachin guiNewsListUsed._slots
-			if not GetPlayerCollection().Get().GetProgrammePlan().hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerProgrammePlanCollection().Get(owner).hasNews(guiNews.news) then guiNews.remove()
 		Next
 
 		'if removing "dragged" we also bug out the "replace"-mechanism when
@@ -4108,7 +4079,7 @@ EndRem
 		Next
 
 		'create gui element for news still missing them
-		For Local news:TNews = EachIn GetPlayerCollection().Get().GetProgrammeCollection().news
+		For Local news:TNews = EachIn GetPlayerProgrammeCollectionCollection().Get(owner).news
 			'skip if news is dragged
 			if draggedNewsList.contains(news) then continue
 
@@ -4122,7 +4093,7 @@ EndRem
 			endif
 		Next
 		For Local i:int = 0 to GetPlayerCollection().Get().GetProgrammePlan().news.length - 1
-			local news:TNews = TNews(GetPlayerCollection().Get().GetProgrammePlan().GetNews(i))
+			local news:TNews = TNews(GetPlayerProgrammePlanCollection().Get(owner).GetNews(i))
 			'skip if news is dragged
 			if news and draggedNewsList.contains(news) then continue
 
@@ -4258,7 +4229,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		'register self for all bosses
 		For local i:int = 1 to 4
-			local room:TRoom = RoomCollection.GetFirstByDetails("chief", i)
+			local room:TRoom = GetRoomCollection().GetFirstByDetails("chief", i)
 			if room then super._RegisterHandler(RoomHandler_Chief.Update, RoomHandler_Chief.Draw, room)
 		Next
 		'register dialogue handlers
@@ -4477,7 +4448,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection )
 
 		'figure enters room - reset guilists if player
-		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, RoomCollection.GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, GetRoomCollection().GetFirstByDetails("adagency") )
 
 		'2014/05/04 (Ronny): commented out, currently no longer in use
 		'begin drop - to intercept if dropping to wrong list
@@ -4492,8 +4463,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'we want to know if we hover a specific block - to show a datasheet
 		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
 		'figure leaves room - only without dragged blocks
-		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, RoomCollection.GetFirstByDetails("adagency") )
-		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, RoomCollection.GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, GetRoomCollection().GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, GetRoomCollection().GetFirstByDetails("adagency") )
 		'this lists want to delete the item if a right mouse click happens...
 		EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract")
 
@@ -5177,7 +5148,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("elevatorplan") )
+		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("elevatorplan") )
 	End Function
 
 
@@ -5236,7 +5207,7 @@ End Type
 
 Type RoomHandler_Roomboard extends TRoomHandler
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("roomboard"))
+		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("roomboard"))
 	End Function
 
 	Function onDraw:int( triggerEvent:TEventBase )
@@ -5259,7 +5230,7 @@ End Type
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("betty"))
+		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("betty"))
 	End Function
 
 	Function onDraw:int( triggerEvent:TEventBase )
@@ -5322,10 +5293,10 @@ Type RoomHandler_Credits extends TRoomHandler
 	Global fadeValue:float = 0.0
 
 	Function Init()
-		super._RegisterHandler(onUpdate, onDraw, RoomCollection.GetFirstByDetails("credits"))
+		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("credits"))
 
 		'player figure enters screen - reset the current displayed role
-		EventManager.registerListenerFunction("room.onEnter", OnEnterRoom, RoomCollection.GetFirstByDetails("credits"))
+		EventManager.registerListenerFunction("room.onEnter", OnEnterRoom, GetRoomCollection().GetFirstByDetails("credits"))
 
 
 		local role:TCreditsRole

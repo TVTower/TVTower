@@ -81,7 +81,6 @@ Type TGUIManager
 
 	Method New()
 		if not _instance then self.Init()
-		_instance = self
 	End Method
 
 

@@ -17,12 +17,6 @@ Type TPlayerProgrammeCollectionCollection
 	Field maxContracts:int = 10
 	Global _instance:TPlayerProgrammeCollectionCollection
 
-
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TPlayerProgrammeCollectionCollection()
 		if not _instance then _instance = new TPlayerProgrammeCollectionCollection
 		return _instance
@@ -458,6 +452,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		newsObject.owner = owner
 		news.AddLast(newsObject)
 
+print "added news to "+owner+" - count: "+news.Count()
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addNews", new TData, newsObject))
 

@@ -84,8 +84,6 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method New()
-		_instance = self
-
 		if not _initDone
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
@@ -97,7 +95,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Function GetInstance:TGame()
-		if not _instance then _instance = new TGame.Create()
+		if not _instance then _instance = new TGame
 		return _instance
 	End Function
 
@@ -139,6 +137,7 @@ Type TGame {_exposeToLua="selected"}
 		ColorizePlayerExtras()
 
 		TLogger.Log("Game.PrepareStart()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
+
 		TRoomDoor.DrawDoorsOnBackground()
 
 		TLogger.Log("Game.PrepareStart()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
@@ -187,9 +186,6 @@ Type TGame {_exposeToLua="selected"}
 
 		PlayerDetailsTimer = 0
 
-		NewsAgency = New TNewsAgency.Create()
-
-
 		'=== SETUP TOOLTIPS ===
 		TTooltip.UseFontBold = GetBitmapFontManager().baseFontBold
 		TTooltip.UseFont = GetBitmapFontManager().baseFont
@@ -198,15 +194,6 @@ Type TGame {_exposeToLua="selected"}
 
 		'interface needs tooltip definition done
 		Interface = TInterface.Create()
-
-
-		'RON
-		Local haveNPCs:Int = True
-		If haveNPCs
-			New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
-			New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 3, 65, 0)
-			New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 1, -65, 0)
-		EndIf
 
 
 		'register ai player events - but only for game leader
@@ -229,6 +216,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method PrepareNewGame:int()
+		'=== FIGURES ===
 		'set all non human players to AI
 		If Game.isGameLeader()
 			For Local playerids:Int = 1 To 4
@@ -238,13 +226,20 @@ Type TGame {_exposeToLua="selected"}
 			Next
 		EndIf
 
+		'create npc figures
+		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
+		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 3, 65, 0)
+		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 1, -65, 0)
+
+
+
 		'=== STATION MAP ===
 		'load the used map
-		StationMapCollection.LoadMapFromXML("config/maps/germany.xml")
+		GetStationMapCollection().LoadMapFromXML("config/maps/germany.xml")
 
 		'create base stations
 		For Local i:Int = 1 To 4
-			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TPoint.Init(310, 260),-1, StationMapCollection.stationRadius, i ), False )
+			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TPoint.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
 		Next
 
 
@@ -283,14 +278,43 @@ Type TGame {_exposeToLua="selected"}
 				Next
 			Next
 		EndIf
-		'abonnement for each newsgroup = 1
 
+		'=== SETUP NEWS + ABONNEMENTS ===
+		'adjust abonnement for each newsgroup to 1
 		For Local playerids:Int = 1 To 4
-			'5 groups
-			For Local i:Int = 0 To 4
+			For Local i:Int = 0 To 4 '5 groups
 				GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
 			Next
 		Next
+
+		'create 3 starting news
+		GetNewsAgency().AnnounceNewNewsEvent(-60)
+		GetNewsAgency().AnnounceNewNewsEvent(-120)
+		GetNewsAgency().AnnounceNewNewsEvent(-120)
+
+
+		local newsToPlace:TNews
+		For Local playerID:int = 1 to 4
+			print "count for "+playerID+": "+GetPlayerProgrammeCollectionCollection().Get(playerID).news.Count()
+			For local i:int = 0 to 2
+				'attention: instead of using "GetNewsAtIndex(i)" we always
+				'use (0) - as each "placed" news is removed from the collection
+				'leaving the next on listIndex 0
+				newsToPlace = GetPlayerProgrammeCollectionCollection().Get(playerID).GetNewsAtIndex(0)
+				if not newsToPlace then throw "Game.PrepareNewGame: initial news " + i + " missing."
+
+				'set it paid
+				newsToPlace.paid = true
+				'set planned
+				GetPlayerProgrammePlanCollection().Get(playerID).SetNews(newsToPlace, i)
+			Next
+		Next
+
+
+
+
+
+
 
 
 		Local lastblocks:Int=0
@@ -324,7 +348,6 @@ Type TGame {_exposeToLua="selected"}
 				currentHour:+ currentLicence.getData().getBlocks()
 			Next
 		Next
-
 	End Method
 
 
@@ -474,12 +497,6 @@ Type TGame {_exposeToLua="selected"}
 
 	'Things to init directly after game started
 	Function onStart:Int(triggerEvent:TEventBase)
-		'create 3 starting news
-		If Game.IsGameLeader()
-			NewsAgency.AnnounceNewNewsEvent(-60)
-			NewsAgency.AnnounceNewNewsEvent(-120)
-			NewsAgency.AnnounceNewNewsEvent(-120)
-		EndIf
 	End Function
 
 
@@ -503,7 +520,13 @@ Type TGame {_exposeToLua="selected"}
 			Case TGame.STATE_STARTMULTIPLAYER
 				ScreenCollection.GoToScreen(Null,"StartMultiplayer")
 			Case TGame.STATE_RUNNING
-				ScreenCollection.GoToScreen(GameScreen_Building)
+				'when a game is loaded we should try set the right screen
+				'not just the default building screen
+				if GetPlayerCollection().Get().figure.inRoom
+					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
+				else
+					ScreenCollection.GoToScreen(GameScreen_Building)
+				endif
 		EndSelect
 
 
@@ -611,8 +634,8 @@ Type TGame {_exposeToLua="selected"}
 
 		'==== HANDLE TIMED EVENTS ====
 		'time for news ?
-		If NewsAgency.NextEventTime < gameTime.timeGone Then NewsAgency.AnnounceNewNewsEvent()
-		If NewsAgency.NextChainCheckTime < gameTime.timeGone Then NewsAgency.ProcessNewsEventChains()
+		If GetNewsAgency().NextEventTime < gameTime.timeGone Then GetNewsAgency().AnnounceNewNewsEvent()
+		If GetNewsAgency().NextChainCheckTime < gameTime.timeGone Then GetNewsAgency().ProcessNewsEventChains()
 
 		'send state to clients
 		If IsGameLeader() And networkgame And stateSyncTime < MilliSecs()

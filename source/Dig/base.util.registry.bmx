@@ -38,11 +38,6 @@ Type TRegistry
 	Global _instance:TRegistry
 
 
-	Method New()
-		_instance = self
-	End Method
-
-
 	Function GetInstance:TRegistry()
 		if not _instance then _instance = new TRegistry
 		return _instance
@@ -282,11 +277,6 @@ Type TRegistryUnloadedResourceCollection
 	Field _loaderThread:TThread
 	?
 	Global _instance:TRegistryUnloadedResourceCollection
-
-
-	Method New()
-		_instance = self
-	End Method
 
 
 	Function GetInstance:TRegistryUnloadedResourceCollection()

@@ -64,6 +64,13 @@ Type TProgrammeDataCollection
 											1.4, .. 	'fillers
 											1.4 .. 		'paid programming
 										  ]
+	Global _instance:TProgrammeDataCollection
+
+
+	Function GetInstance:TProgrammeDataCollection()
+		if not _instance then _instance = new TProgrammeDataCollection
+		return _instance
+	End Function
 
 
 	Method Add:int(obj:TProgrammeData)
@@ -86,7 +93,13 @@ Type TProgrammeDataCollection
 	End Method
 
 End Type
-Global ProgrammeDataCollection:TProgrammeDataCollection = new TProgrammeDataCollection
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetProgrammeDataCollection:TProgrammeDataCollection()
+	Return TProgrammeDataCollection.GetInstance()
+End Function
+
 
 
 
@@ -173,7 +186,7 @@ Type TProgrammeData {_exposeToLua}
 		obj.liveHour		= Max(-1,livehour)
 		obj.topicality		= obj.GetTopicality()
 
-		ProgrammeDataCollection.Add(obj)
+		GetProgrammeDataCollection().Add(obj)
 		Return obj
 	End Function
 
@@ -289,7 +302,7 @@ Type TProgrammeData {_exposeToLua}
 
 	Method GetGenreWearoffModifier:float(genre:int=-1)
 		if genre = -1 then genre = self.genre
-		return ProgrammeDataCollection.GetGenreWearoffModifier(genre)
+		return GetProgrammeDataCollection().GetGenreWearoffModifier(genre)
 	End Method
 
 
@@ -300,7 +313,7 @@ Type TProgrammeData {_exposeToLua}
 
 	Method GetGenreRefreshModifier:float(genre:int=-1)
 		if genre = -1 then genre = self.genre
-		return ProgrammeDataCollection.GetGenreRefreshModifier(genre)
+		return GetProgrammeDataCollection().GetGenreRefreshModifier(genre)
 	End Method
 
 
@@ -425,7 +438,7 @@ Type TProgrammeData {_exposeToLua}
 
 		'cut of by an individual cutoff factor - do not allow values > 1.0 (refresh instead of cut)
 		'the value : default * invidual * individualGenre
-		topicality:* Min(1.0,  cutFactor * ProgrammeDataCollection.wearoffFactor * GetGenreWearoffModifier() * GetWearoffModifier() )
+		topicality:* Min(1.0,  cutFactor * GetProgrammeDataCollection().wearoffFactor * GetGenreWearoffModifier() * GetWearoffModifier() )
 	End Method
 
 
@@ -436,7 +449,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Function RefreshAllTopicalities:int() {_private}
-		For Local data:TProgrammeData = eachin ProgrammeDataCollection.list
+		For Local data:TProgrammeData = eachin GetProgrammeDataCollection().list
 			data.RefreshTopicality()
 			data.RefreshTrailerTopicality()
 		Next
@@ -444,7 +457,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method RefreshTopicality:Int() {_private}
-		topicality = Min(GetMaxTopicality(), topicality*ProgrammeDataCollection.refreshFactor*self.GetGenreRefreshModifier()*self.GetRefreshModifier())
+		topicality = Min(GetMaxTopicality(), topicality*GetProgrammeDataCollection().refreshFactor*self.GetGenreRefreshModifier()*self.GetRefreshModifier())
 		Return topicality
 	End Method
 

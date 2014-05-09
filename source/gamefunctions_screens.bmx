@@ -231,6 +231,7 @@ End Type
 Type TInGameScreen_Building extends TInGameScreen
 	global instance:TInGameScreen_Building
 
+
 	Method Create:TInGameScreen_Building(name:string)
 		Super.Create(name)
 		instance = self
@@ -239,6 +240,7 @@ Type TInGameScreen_Building extends TInGameScreen
 
 		return self
 	End Method
+
 
 	Function onLeaveRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent._sender )
@@ -263,12 +265,15 @@ Type TInGameScreen_Building extends TInGameScreen
 		GetBuilding().Update()
 	End Method
 
+
 	'override default
 	Method DrawContent(tweenValue:float)
 		'player is not in a room so draw building
 		GetBuilding().Render()
 	End Method
 End Type
+
+
 
 
 Type TInGameScreen_Room extends TInGameScreen

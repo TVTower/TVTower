@@ -9,10 +9,6 @@ Type TPlayerFinanceHistoryListCollection
 	Field historyLists:TList[]
 	Global _instance:TPlayerFinanceHistoryListCollection
 
-	Method New()
-		_instance = self
-	End Method
-
 
 	Function GetInstance:TPlayerFinanceHistoryListCollection()
 		if not _instance then _instance = new TPlayerFinanceHistoryListCollection
