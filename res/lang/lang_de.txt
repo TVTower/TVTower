@@ -11,6 +11,9 @@ PLEASE_BE_PATIENT = Bitte etwas Geduld
 SAVEGAME_GETS_CREATED = Speicherstand wird erstellt
 SAVEGAME_GETS_LOADED = Speicherstand wird eingelesen
 
+PROGRAMMELICENCES = Programmlizenzen
+SELECT_LICENCES_FOR_SALE = Lizenzen zum Verkauf auswählen
+
 YES = Ja
 NO = Nein
 MONEY = Geld

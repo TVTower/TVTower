@@ -11,6 +11,10 @@ PLEASE_BE_PATIENT = Please be patient
 SAVEGAME_GETS_CREATED = Savegame gets created
 SAVEGAME_GETS_LOADED = Savegame gets loaded
 
+PROGRAMMELICENCES = Programme licences
+SELECT_LICENCES_FOR_SALE = Select licences for sale
+
+
 YES = Yes
 NO = No
 MONEY = Money

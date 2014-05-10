@@ -1501,7 +1501,13 @@ Type TgfxProgrammelist extends TPlannerList
 		newState = Max(0, newState)
 		if newState <= 1 then currentgenre=-1
 		if newState <= 2 then hoveredSeries=Null
-		If newState = 0 Then enabled = 0;hoveredSeries=Null;currentgenre=-1 else enabled = 1
+		If newState = 0
+			enabled = 0
+			hoveredSeries = Null
+			currentgenre = -1
+		else
+			enabled = 1
+		endif
 
 		self.openState = newState
 	End Method

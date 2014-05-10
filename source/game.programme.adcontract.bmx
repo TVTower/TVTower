@@ -193,8 +193,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		If day < 0 Then day = GetGameTime().GetDay()
 		self.daySigned = day
 
-		TLogger.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
-		'TLogger.log("TAdContract.Sign", "       "+owner+"                     Profit: "+GetProfit()+",  Penalty: "+GetPenalty()+ ",  MinAudience: "+GetMinAudience()+",  Title: "+GetTitle(), LOG_DEBUG)
+		'TLogger.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
 		return TRUE
 	End Method
 

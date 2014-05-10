@@ -869,7 +869,7 @@ Type TFigurePostman Extends TFigure
 				door = TRoomDoor.GetRandom()
 			Until door.doorType >0
 
-			TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
+			'TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
 			SendToDoor(door)
 		EndIf
 	End Method
@@ -1940,7 +1940,7 @@ Type GameEvents
 	Function OnDay:Int(triggerEvent:TEventBase)
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
 
-		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetGameTime().GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
+		'TLogger.Log("GameEvents.OnDay", "begin of day "+(GetGameTime().GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
 
 		'if new day, not start day
 		If GetGameTime().GetDaysPlayed() >= 1

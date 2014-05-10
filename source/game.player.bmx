@@ -180,7 +180,6 @@ Type TPlayer {_exposeToLua="selected"}
 		Player.channelname = channelname
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayerID = playerID
-		Player.PublicImage =
 
 		TPublicImage.Create(Player.playerID)
 		new TPlayerProgrammeCollection.Create(playerID)

@@ -274,6 +274,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		End Select
 	End Function
 
+
+	Global warnedEmptyRandomFromList:int = False
 	Function _GetRandomFromList:TProgrammeLicence(_list:TList)
 
 		If _list = Null Then Return Null
@@ -281,7 +283,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			Local Licence:TProgrammeLicence = TProgrammeLicence(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
 			If Licence then return Licence
 		EndIf
-		TLogger.log("TProgrammeLicence._GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
+		if not warnedEmptyRandomFromList
+			TLogger.log("TProgrammeLicence._GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
+			warnedEmptyRandomFromList = true
+		endif
 		Return Null
 	End Function
 

@@ -2731,6 +2731,7 @@ End Type
 Type RoomHandler_Archive extends TRoomHandler
 	Global hoveredGuiProgrammeLicence:TGuiProgrammeLicence = null
 	Global draggedGuiProgrammeLicence:TGuiProgrammeLicence = null
+	Global openCollectionTooltip:TTooltip
 
 	Global programmeList:TgfxProgrammelist
 	Global haveToRefreshGuiElements:int = TRUE
@@ -2802,11 +2803,20 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
 		if not figure or not figure.parentPlayerID then return FALSE
 
+		'if the list is open - just close the list and veto against
+		'leaving the room
+		if programmeList.openState <> 0
+			programmeList.SetOpen(0)
+			triggerEvent.SetVeto()
+			return FALSE
+		endif
+
 		'do not allow leaving as long as we have a dragged block
 		if draggedGuiProgrammeLicence
 			triggerEvent.setVeto()
 			return FALSE
 		endif
+
 		return TRUE
 	End Function
 
@@ -2989,6 +2999,10 @@ endrem
 
 		GUIManager.Draw("archive")
 
+		'draw dude tooltip
+		If openCollectionTooltip Then openCollectionTooltip.Render()
+
+
 		'show sheet from hovered list entries
 		if programmeList.hoveredLicence
 			programmeList.hoveredLicence.ShowSheet(30,20)
@@ -3013,6 +3027,12 @@ endrem
 		if not draggedGuiProgrammeLicence
 			If programmeList.GetOpen() = 0
 				if THelper.IsIn(MouseManager.x, MouseManager.y, 605,65,160,90) Or THelper.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
+					'activate tooltip
+					If not openCollectionTooltip Then openCollectionTooltip = TTooltip.Create(GetLocale("PROGRAMMELICENCES"), GetLocale("SELECT_LICENCES_FOR_SALE"), 470, 130, 0, 0)
+					openCollectionTooltip.enabled = 1
+					openCollectionTooltip.Hover()
+
+
 					Game.cursorstate = 1
 					If MOUSEMANAGER.IsHit(1)
 						MOUSEMANAGER.resetKey(1)
@@ -3027,6 +3047,10 @@ endrem
 			programmeList.enabled = FALSE
 		endif
 		programmeList.Update(TgfxProgrammelist.MODE_ARCHIVE)
+
+		'handle tooltip
+		If openCollectionTooltip Then openCollectionTooltip.Update()
+
 
 		'create missing gui elements for the current suitcase
 		For local licence:TProgrammeLicence = eachin GetPlayerCollection().Get().GetProgrammeCollection().suitcaseProgrammeLicences
@@ -3044,7 +3068,6 @@ endrem
 		draggedGuiProgrammeLicence = null
 
 		GUIManager.Update("archive")
-
 	End Function
 End Type
 
@@ -3182,11 +3205,13 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
 		if not room or not figure then return FALSE
 
-		'we are not interested in other figures than our player's
-		if not figure.IsActivePlayer() then return FALSE
+		'only interested in player figures (they cannot be in one room
+		'simultaneously, others like postman should not refill while you
+		'are in)
+		if not figure.parentPlayerID then return False
 
-		GetInstance().RemoveAllGuiElements()
-		GetInstance().RefreshGUIElements()
+		'fill all open slots in the agency
+		GetInstance().ReFillBlocks()
 	End Function
 
 
@@ -3218,9 +3243,6 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).ReaddProgrammeLicencesFromSuitcase()
-
-		'fill all open slots in the agency
-		GetInstance().ReFillBlocks()
 
 		return TRUE
 	End Function
@@ -4447,7 +4469,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		EventManager.registerListenerFunction( "programmecollection.addAdContract", onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection )
 
-		'figure enters room - reset guilists if player
+		'figure enters room - reset guilists and refill slots
 		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, GetRoomCollection().GetFirstByDetails("adagency") )
 
 		'2014/05/04 (Ronny): commented out, currently no longer in use
@@ -4498,14 +4520,18 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
 		if not room or not figure then return FALSE
 
-		'fill all open slots in the agency - eg. when entering the first time
-		'we are not interested in other figures than our player's
-		if not figure.IsActivePlayer() then return FALSE
+		'only interested in player figures (they cannot be in one room
+		'simultaneously, others like postman should not refill while you
+		'are in)
+		if not figure.parentPlayerID then return False
 
-		GetInstance().RemoveAllGuiElements()
-		GetInstance().ResetContractOrder()
+		if figure.IsActivePlayer()
+			GetInstance().ResetContractOrder()
+		endif
+
+		'refill the empty blocks, also sets haveToRefreshGuiElements=true
+		'so next call the gui elements will be redone
 		GetInstance().ReFillBlocks()
-		GetInstance().RefreshGUIElements()
 	End function
 
 
@@ -4543,22 +4569,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			'if successful, this also removes the contract from the suitcase
 			programmeCollection.AddAdContract(contract)
 		Next
-
-		'fill all open slots in the agency
-		GetInstance().ReFillBlocks()
-
-Rem
-	ronny 04.05.14:
-	commented out the removal
-	- should be obsolete now as the update routine automatically
-	  recreates them BEFORE the room is visually left (screen change
-	  animation)
-	- commenting this out avoids "flickering" when leaving the room
-
-		'remove all gui elements - else the "dropped" one may still be in the
-		'suitcase...
-		'GetInstance().RemoveAllGuiElements()
-EndRem
 
 		return TRUE
 	End Function
