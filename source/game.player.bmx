@@ -81,7 +81,6 @@ Type TPlayer {_exposeToLua="selected"}
 	'name of the channel
 	Field channelname:String
 
-	Field PublicImage:TPublicImage							{_exposeToLua}
 	'actual figure the player uses
 	Field Figure:TFigure									{_exposeToLua}
 	'global used ID of the player
@@ -131,6 +130,12 @@ Type TPlayer {_exposeToLua="selected"}
 	End Method
 
 
+	'make public image available for AI/Lua
+	Method GetPublicImage:TPublicImage()	{_exposeToLua}
+		return GetPublicImageCollection().Get(playerID)
+	End Method
+
+
 	'returns the financial of the given day
 	'if the day is in the future, a new finance object is created
 	Method GetFinance:TPlayerFinance(day:Int=-1)
@@ -175,8 +180,9 @@ Type TPlayer {_exposeToLua="selected"}
 		Player.channelname = channelname
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
 		Player.Figure.ParentPlayerID = playerID
-		Player.PublicImage = New TPublicImage.Create(Player.playerID)
+		Player.PublicImage =
 
+		TPublicImage.Create(Player.playerID)
 		new TPlayerProgrammeCollection.Create(playerID)
 		new TPlayerProgrammePlan.Create(playerID)
 

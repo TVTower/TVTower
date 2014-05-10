@@ -110,8 +110,6 @@ TLogger.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
-TLogger.setPrintMode(LOG_DEV ) 'all but ai
-
 'print "ALLE MELDUNGEN AUS"
 'TLogger.SetPrintMode(0)
 
@@ -663,6 +661,7 @@ Type TSaveGame
 	Field _PlayerFinanceHistoryListCollection:TPlayerFinanceHistoryListCollection = Null
 	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = null
 	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = null
+	Field _PublicImageCollection:TPublicImageCollection = null
 	Field _EventManagerEvents:TList = null
 	Field _PopularityManager:TPopularityManager = null
 	Field _BroadcastManager:TBroadcastManager = null
@@ -683,6 +682,7 @@ Type TSaveGame
 		_Assign(_PlayerFinanceHistoryListCollection, TPlayerFinanceHistoryListCollection._instance, "PlayerFinanceHistoryListCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammeCollectionCollection, TPlayerProgrammeCollectionCollection._instance, "PlayerProgrammeCollectionCollection", MODE_LOAD)
 		_Assign(_PlayerProgrammePlanCollection, TPlayerProgrammePlanCollection._instance, "PlayerProgrammePlanCollection", MODE_LOAD)
+		_Assign(_PublicImageCollection, TPublicImageCollection._instance, "PublicImageCollection", MODE_LOAD)
 		_Assign(_NewsEventCollection, NewsEventCollection, "NewsEventCollection", MODE_LOAD)
 		_Assign(_NewsAgency, TNewsAgency._instance, "NewsAgency", MODE_LOAD)
 		_Assign(_Building, TBuilding._instance, "Building", MODE_LOAD)
@@ -707,6 +707,7 @@ Type TSaveGame
 		_Assign(TPlayerFinanceHistoryListCollection._instance, _PlayerFinanceHistoryListCollection, "PlayerFinanceHistoryListCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammeCollectionCollection._instance, _PlayerProgrammeCollectionCollection, "PlayerProgrammeCollectionCollection", MODE_SAVE)
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
+		_Assign(TPublicImageCollection._instance, _PublicImageCollection, "PublicImageCollection", MODE_SAVE)
 		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
@@ -739,13 +740,6 @@ Type TSaveGame
 		'check if all data is available
 		Return True
 	End Method
-
-
-	'merge a source object with a target object, only overwrite
-	'things not set to "nosave"
-	Function MergeObjects(objectSource:object, objectTarget:object var)
-		'
-	End Function
 
 
 	Function ShowMessage:int(load:int=false)
@@ -2240,9 +2234,9 @@ Function StartTVTower(start:Int=true)
 	'buttons get a bold font
 	TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 	'checkbox (and their labels) get a smaller one
-	TGUICheckbox.SetTypeFont( GetBitmapFontManager().Get("Default", 10) )
+	'TGUICheckbox.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
 	'labels get a slight smaller one
-	TGUILabel.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
+	'TGUILabel.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
 
 
 

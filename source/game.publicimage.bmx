@@ -42,6 +42,7 @@ Type TPublicImage {_exposeToLua="selected"}
 		Local obj:TPublicImage = New TPublicImage
 		obj.playerID = playerID
 		obj.ImageValues = TAudience.CreateAndInit(100, 100, 100, 100, 100, 100, 100, 100, 100)
+		'add to collection
 		GetPublicImageCollection().Set(playerID, obj)
 		Return obj
 	End Function
