@@ -76,7 +76,7 @@
 			If (attraction.BaseAttraction <> Null) Then
 				genre = "News-Genre-Mix"
 			Endif
-		Endif	
+		Endif
 
 		Local offset:Int = 20
 
@@ -216,7 +216,7 @@ rem
 			font.Draw(currentStatement.ToString(), 530, 440, TColor.clRed);
 		Endif
 
-
+		SetColor 255,255,255
 
 
 rem
