@@ -624,7 +624,16 @@ Type TSprite
 		if not alignment then alignment = ALIGN_TOP_LEFT
 
 		If frame = -1 Or framew = 0
-			DrawSubImageRect(parent.image, x - alignment.GetX()*area.GetW()*scale , y - alignment.GetY()*area.GetH()*scale, area.GetW()*scale, area.GetH()*scale, area.GetX(), area.GetY(), area.GetW(), area.GetH(), 0, 0, 0)
+			DrawSubImageRect(parent.image,..
+							 x - alignment.GetX() * area.GetW() * scale,..
+							 y - alignment.GetY() * area.GetH() * scale,..
+							 area.GetW() * scale,..
+							 area.GetH() * scale,..
+							 area.GetX(),..
+							 area.GetY(),..
+							 area.GetW(),..
+							 area.GetH(),..
+							 0, 0, 0)
 		Else
 			Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
 			Local framerow:Int			= Ceil(frame / MaxFramesInCol)
@@ -633,8 +642,8 @@ Type TSprite
 			DrawSubImageRect(parent.image,..
 							 x - alignment.GetX() * frameW * scale,..
 							 y - alignment.GetY() * frameH * scale,..
-							 framew,..
-							 frameh,..
+							 framew * scale,..
+							 frameh * scale,..
 							 area.GetX() + framecol * frameW,..
 							 area.GetY() + framerow * frameH,..
 							 framew,..

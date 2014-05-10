@@ -43,7 +43,7 @@ Type TRegistryImageLoader extends TRegistryBaseLoader
 		'batch load some field names
 		local fieldNames:String[]
 		fieldNames :+ ["img"]
-		fieldNames :+ ["frames|f", "frameW|cellwidth|cw", "frameH|cellheight|cw"]
+		fieldNames :+ ["frames|f", "frameW|cellwidth|cw", "frameH|cellheight|ch"]
 		fieldNames :+ ["r", "g", "b"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 

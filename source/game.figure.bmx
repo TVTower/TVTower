@@ -111,6 +111,16 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Field moveable:int				= TRUE			'whether this figure can move or not (eg. for debugging)
 	Field greetOthers:int			= TRUE
 	Field useAbsolutePosition:int	= FALSE
+	'when was the last greet to another figure?
+	Field lastGreetTime:int	= 0
+	'what was the last type of greet?
+	Field lastGreetType:int = -1
+	Field lastGreetFigureID:int = -1
+	'how long should the greet-sprite be shown
+	Global greetTime:int = 1000
+	'how long to wait intil I greet the same person again
+	Global greetEvery:int = 8000
+
 	Global LastID:Int				= 0
 	Global _initDone:int			= FALSE
 
@@ -361,6 +371,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			'skip if both can't see each other to me
 			if not CanSeeFigure(figure) and not figure.CanSeeFigure(self) then continue
 
+
 			local greetType:int = 0 'grrLeft,hiLeft,?!left  adding +3 is for right side
 			'if both figures are "players" we display "GRRR" or "?!!?"
 			If figure.parentPlayerID and parentPlayerID
@@ -370,14 +381,32 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 				greetType = 1
 			endif
 
-			'subtract half width from position - figure is drawn centered
-			'figure right of me
-			If Figure.area.GetX() > area.GetX()
-				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(GetBuilding().area.GetY() + area.GetX() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER))
-			'figure left of me
-			else
-				greetType :+ 3
-				GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(GetBuilding().area.GetY() + area.GetY() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER))
+			'if the greeting type differs
+			'- or enough time has gone for another greet
+			'- or another figure gets greeted
+			if greetType <> lastGreetType or Millisecs() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
+				lastGreetType = greetType
+				lastGreetFigureID = figure.id
+
+				lastGreetTime = Millisecs()
+			endif
+
+			'show greet for a maximum time of "showGreetTime"
+			if Millisecs() - lastGreetTime < greetTime
+				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, Millisecs() - lastGreetTime), greetTime)
+				local oldAlpha:float = GetAlpha()
+				SetAlpha TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, Millisecs() - lastGreetTime), 0.5*greetTime)
+				'subtract half width from position - figure is drawn centered
+				'figure right of me
+				If Figure.area.GetX() > area.GetX()
+					'draw the "to the right" balloon a bit lower (so both are better visible)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(GetBuilding().area.GetY() + area.GetY() - Self.sprite.area.GetH() + 2), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER), scale)
+				'figure left of me
+				else
+					greetType :+ 3
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(GetBuilding().area.GetY() + area.GetY() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER), scale)
+				endif
+				SetAlpha oldAlpha
 			endif
 		Next
 	End Method
