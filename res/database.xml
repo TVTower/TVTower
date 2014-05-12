@@ -1563,7 +1563,7 @@ Herrliche Hau-Drauf-Action mit XXX und XXX, cooler Soundtrack</description>
 			<title>Kakiemon-Porzellanmanufakturen in Japan</title>
 			<description>Dokumentation über traditionelle Handwerker bei ihrer beschaulichen Arbeit.</description>
 			<data actors="" director="Yoshi Grünwald" country="D" year="1992" genre="13" blocks="1" time="0" price="10" critics="120" speed="15" outcome="0" betty="100" />
-		</movie>		
+		</movie>
 		<movie>
 			<title>Kunst am Arsch der Welt</title>
 			<description>Patty Glansen bestaunt und berichtet von skurrilen Kunstwerken und Künstlern aus einer Gebiergsregion mit ungeöhnlichem Namen.</description>
@@ -1574,6 +1574,7 @@ Herrliche Hau-Drauf-Action mit XXX und XXX, cooler Soundtrack</description>
 			<description>Wissenschaftliche, künstlerische und sprachkulturelle Aufarbeitung der spannendsten Tempora in den schönsten Sprachen dieser Welt.</description>
 			<data actors="Heinz Ulmer" director="Henry Cutamaran" country="D" year="1989" genre="13" blocks="2" time="0" price="0" critics="90" speed="1" outcome="0" betty="100" />
 		</movie>
+
 		<movie>
 			<title>Klimax Kulturgeschichte: Eine weibliche Erörterung</title>
 			<description>Betty Botterblom präsentiert und erörtert die spannendsten kulturellen Entwicklungen der letzten 150 Jahre aus einem weiblichen Blickwinkel.</description>
@@ -1679,7 +1680,7 @@ Herrliche Hau-Drauf-Action mit XXX und XXX, cooler Soundtrack</description>
 		<serie>
 			<title>Die Patty Glansen Show</title>
 			<description>Nach Ihrem Erfolg (bei den Kritikern) versucht sich Patty Glansen nun auf dem großen Parkett der TV-Unterhaltung. Spannende Gespräche, interessante Berichte. Eine Show von Senioren, für Senioren.</description>
-			<data  actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1997" genre="17"  blocks="2" price="100" critics="132" speed="72" outcome="48"betty="40" />
+			<data  actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1997" genre="17"  blocks="2" price="100" critics="132" speed="72" outcome="48" betty="40" />
 			<episode number="1">
 				<title>Lothar Molch</title>
 				<description>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.
