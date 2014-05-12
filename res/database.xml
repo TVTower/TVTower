@@ -1567,12 +1567,27 @@ Herrliche Hau-Drauf-Action mit XXX und XXX, cooler Soundtrack</description>
 		<movie>
 			<title>Kunst am Arsch der Welt</title>
 			<description>Patty Glansen bestaunt und berichtet von skurrilen Kunstwerken und Künstlern aus einer Gebiergsregion mit ungeöhnlichem Namen.</description>
-			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1995" genre="13" blocks="1" time="0" price="20" critics="190" speed="5" outcome="0" betty="130" />
+			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1983" genre="13" blocks="1" time="0" price="20" critics="190" speed="5" outcome="0" betty="130" />
 		</movie>
 		<movie>
 			<title>Faszination Plusquamperfekt</title>
 			<description>Wissenschaftliche, künstlerische und sprachkulturelle Aufarbeitung der spannendsten Tempora in den schönsten Sprachen dieser Welt.</description>
 			<data actors="Heinz Ulmer" director="Henry Cutamaran" country="D" year="1989" genre="13" blocks="2" time="0" price="0" critics="90" speed="1" outcome="0" betty="100" />
+		</movie>
+		<movie>
+			<title>Klimax Kulturgeschichte: Eine weibliche Erörterung</title>
+			<description>Betty Botterblom präsentiert und erörtert die spannendsten kulturellen Entwicklungen der letzten 150 Jahre aus einem weiblichen Blickwinkel.</description>
+			<data actors="Betty Botterblom" director="Kalle Knall" country="D" year="1990" genre="13" blocks="5" time="0" price="200" critics="255" speed="10" outcome="0" betty="255" />
+		</movie>
+		<movie>
+			<title>Wasser-Theremin, Klickphone &amp; Achselgeige: Musikgeschmack im Grenzbereich</title>
+			<description>Spannende Dokumentation über den Experimentalmusiker Rudi Hackl, seine faszinierenden Instrumente und seine kakophonischen Klangwelten.</description>
+			<data actors="Rudi Hackl" director="Pit Pot" country="AT" year="2001" genre="13" blocks="2" time="0" price="50" critics="135" speed="5" outcome="0" betty="100" />
+		</movie>
+		<movie>
+			<title>Lolcat: Da lacht die Katz'!</title>
+			<description>Kulturelle Erörterung eines jungen Internet-Phänomes: humoristische Katzen-Bilder.</description>
+			<data actors="" director="Samantha Goodman" country="USA" year="2007" genre="13" blocks="1" time="0" price="10" critics="35" speed="60" outcome="0" betty="50" />
 		</movie>		
 	</allmovies>
 	<allseries>
