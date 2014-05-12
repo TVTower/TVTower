@@ -71,7 +71,7 @@ Playerhills Hommage an Laurel Kubus</description>
 		<movie>
 			<title>Tschüssikowski A4</title>
 			<description>Diskussion um den Wert der deutschen Autobahn heute und dessen Nutzen nach Erschöpfung der Ölquellen.</description>
-			<data  actors="Michi Bajuwar" director="Michi Bajuwar" country="D" year="2006" genre="13"  blocks="1" time="0" price="50" critics="216" speed="96" outcome="36" />
+			<data actors="Michi Bajuwar" director="Michi Bajuwar" country="D" year="2006" genre="13"  blocks="1" time="0" price="50" critics="216" speed="96" outcome="36" betty="50" />
 		</movie>
 		<movie>
 			<title>Asian Queen</title>
@@ -274,7 +274,7 @@ Ultrabrutal, doch nicht allzu weit hergeholt</description>
 		<movie>
 			<title>Beer, Bier, Pivo</title>
 			<description>Alle 987 Biersorten werden vorgestellt und von einem Obdachlosen, einem Alkoholiker und einem Steuerberater getestet. </description>
-			<data  actors="Fritz Ballermann, Erwin Rotnase, Paul Sarte." director="Fritz Ballermann" country="B" year="1997" genre="13"  blocks="2" time="0" price="0" critics="24" speed="12" outcome="0" />
+			<data  actors="Fritz Ballermann, Erwin Rotnase, Paul Sarte." director="Fritz Ballermann" country="B" year="1997" genre="13"  blocks="2" time="0" price="0" critics="24" speed="12" outcome="0" betty="10" />
 		</movie>
 		<movie>
 			<title>Being Johann Merkstmich</title>
@@ -296,7 +296,7 @@ Monumentaler Meilenstein</description>
 		<movie>
 			<title>Biedermeier - (K)eine Zeit zum Feiern</title>
 			<description>Gibt es noch heute Biedermeier? Wie war das damals? Diesen und anderen Fragen geht diese Sendung auf den Grund und versucht nicht ganz ernsthafte Antworten zu geben.</description>
-			<data  actors="Papriccio Delafel" director="Ludwig Zerbst" country="D" year="1992" genre="13"  blocks="1" time="0" price="50" critics="36" speed="60" outcome="0" />
+			<data  actors="Papriccio Delafel" director="Ludwig Zerbst" country="D" year="1992" genre="13"  blocks="1" time="0" price="50" critics="36" speed="60" outcome="0" betty="10" />
 		</movie>
 		<movie>
 			<title>Der herbe Erdtrabant</title>
@@ -504,7 +504,7 @@ Klassiker von Alan Smithee</description>
 		<movie>
 			<title>Die Demoskopie des Menschen</title>
 			<description>Patty Glansen führt den Zuschauer durch subjektiv ausgewählte Kurzberichte über das Leben fanatischer Kirchgänger.</description>
-			<data  actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1996" genre="13"  blocks="2" time="0" price="100" critics="108" speed="60" outcome="12" />
+			<data  actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1996" genre="13"  blocks="2" time="0" price="100" critics="108" speed="60" outcome="12" betty="30" />
 		</movie>
 		<movie>
 			<title>Die Streichholzhammerbowle</title>
@@ -638,7 +638,7 @@ Spannendes Abenteuer nach Karl May</description>
 			<title>Ein Ei zum Frühstück?</title>
 			<description>Locker flockig bringt uns diese Dokumentation dem Thema nahe: Wie gesund ist das Ei zum Frühstück? Schadet ein zweites zum Abendessen?
 </description>
-			<data  actors="-" director="Alan Smithee" country="GB" year="1995" genre="13"  blocks="1" time="0" price="150" critics="72" speed="132" outcome="48" />
+			<data actors="-" director="Alan Smithee" country="GB" year="1995" genre="13"  blocks="1" time="0" price="150" critics="72" speed="132" outcome="48" betty="50" />
 		</movie>
 		<movie>
 			<title>Ehre in Frage gestellt</title>
@@ -1020,7 +1020,7 @@ Oscar-Nominierung für Cruise (Bester Nebendarsteller) und Anderson (Bestes Orig
 		<movie>
 			<title>Mal rückwärts!</title>
 			<description>Wissenschaftler erklären satanische Hetzsprüche, die beim Rückwärts-Abspielen populärer Schallplatten zu hören sind.</description>
-			<data  actors="Siegmund Freund, Kalle Knall, Ötzi Altmann." director="Kalle Knall" country="NL" year="2001" genre="13"  blocks="1" price="0" critics="84" speed="48" outcome="0" />
+			<data actors="Siegmund Freund, Kalle Knall, Ötzi Altmann." director="Kalle Knall" country="NL" year="2001" genre="13"  blocks="1" price="0" critics="84" speed="48" outcome="0" betty="30" />
 		</movie>
 		<movie>
 			<title>Uno Momento</title>
@@ -1172,7 +1172,7 @@ Gut gemachte Action am laufenden Band</description>
 		<movie>
 			<title>Reiseziel Molwanien</title>
 			<description>Molwanien, das Land wo die Zahnärzte offen für Individualität plädieren. Reporter Borack zeigt ein verschlafenes Land.</description>
-			<data  actors="Mikael Borack, Antonali Schwipsiwupsi" director="Mikael Borack" country="MO" year="2000" genre="13"  blocks="1" time="0" price="0" critics="120" speed="24" outcome="12" />
+			<data actors="Mikael Borack, Antonali Schwipsiwupsi" director="Mikael Borack" country="MO" year="2000" genre="13"  blocks="1" time="0" price="0" critics="120" speed="24" outcome="12" betty="100" />
 		</movie>
 		<movie>
 			<title>Totenmesse für einen Traum</title>
@@ -1365,13 +1365,13 @@ Verhoevens "gewaltiger" Science-Fiction-Knaller</description>
 		</movie>
 		<movie>
 			<title>Talk um 10</title>
-			<description>XXX erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch.</description>
-			<data  actors="XXX" director="Alan Smithee" country="D" year="1990" genre="13"  blocks="1" time="0" price="50" critics="204" speed="12" outcome="12" />
+			<description>Hellmuth Zifleck erwartet wie jeden Abend einen Gast, oft Star am Literaturhimmel, und bespricht dessen neues Buch.</description>
+			<data actors="Hellmuth Zifleck" director="Andi Latte" country="D" year="1990" genre="13"  blocks="1" time="0" price="50" critics="204" speed="12" outcome="12" betty="150" />
 		</movie>
 		<movie>
 			<title>Talk um 10 Spezial</title>
-			<description>Diesmal erwartet der Star-Buchkritiker Zifleck nicht wie sonst nur einen Gast. Ganze fünf kritisieren sich diesmal gegenseitig und bringen Würze in die Diskussionsrunde.</description>
-			<data  actors="XXX" director="Alan Smithee" country="D" year="1991" genre="13"  blocks="1" time="0" price="100" critics="180" speed="12" outcome="48" />
+			<description>Diesmal erwartet der Star-Buchkritiker Zifleck nicht wie sonst nur einen Gast. Ganze Fünf kritisieren sich diesmal gegenseitig und bringen Würze in die Diskussionsrunde.</description>
+			<data actors="Hellmuth Zifleck" director="Andi Latte" country="D" year="1991" genre="13"  blocks="1" time="0" price="100" critics="180" speed="12" outcome="48" betty="180" />
 		</movie>
 		<movie>
 			<title>Flamenco &amp; Buck</title>
@@ -1494,7 +1494,7 @@ Von den Kritikern lange Zeit verkannt</description>
 		<movie>
 			<title>VHS im Test</title>
 			<description>Eine Generation die &quot;Lehre&quot; mit &quot;Leere&quot; um- und be- und schreibt. Keine Arbeit und Moos für alle!</description>
-			<data  actors="Königin Svetlana von Schweden und ein Arbeitsloser namens &quot;Groggy&quot;" director="Archie Arbeitslos" country="D" year="2004" genre="13"  blocks="1" time="0" price="0" critics="108" speed="120" outcome="0" />
+			<data  actors="Königin Svetlana von Schweden und ein Arbeitsloser namens &quot;Groggy&quot;" director="Archie Bald" country="D" year="2004" genre="13"  blocks="1" time="0" price="0" critics="108" speed="120" outcome="0" betty="20" />
 		</movie>
 		<movie>
 			<title>Hack the Fog - Wenn die Pfote mit dem Köter wedelt</title>
@@ -1554,6 +1554,26 @@ Rückkehr in die Zukunft</description>
 Herrliche Hau-Drauf-Action mit XXX und XXX, cooler Soundtrack</description>
 			<data  actors="Ronald Pleasefence" director="Alan Smithee" country="I" year="1973" genre="3"  blocks="2" time="20" price="100" critics="24" speed="180" outcome="144" />
 		</movie>
+		<movie>
+			<title>Kultur Heute</title>
+			<description>Betty Botterblom erzählt exklusiv von den neuesten kulturellen Errungenschaften des freien Westens.</description>
+			<data actors="Betty Botterblom" director="Kalle Knall" country="D" year="1985" genre="13" blocks="1" time="0" price="0" critics="255" speed="100" outcome="0" betty="255" behaviour="bettyshow"/>
+		</movie>
+		<movie>
+			<title>Kakiemon-Porzellanmanufakturen in Japan</title>
+			<description>Dokumentation über traditionelle Handwerker bei ihrer beschaulichen Arbeit.</description>
+			<data actors="" director="Yoshi Grünwald" country="D" year="1992" genre="13" blocks="1" time="0" price="10" critics="120" speed="15" outcome="0" betty="100" />
+		</movie>		
+		<movie>
+			<title>Kunst am Arsch der Welt</title>
+			<description>Patty Glansen bestaunt und berichtet von skurrilen Kunstwerken und Künstlern aus einer Gebiergsregion mit ungeöhnlichem Namen.</description>
+			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1995" genre="13" blocks="1" time="0" price="20" critics="190" speed="5" outcome="0" betty="130" />
+		</movie>
+		<movie>
+			<title>Faszination Plusquamperfekt</title>
+			<description>Wissenschaftliche, künstlerische und sprachkulturelle Aufarbeitung der spannendsten Tempora in den schönsten Sprachen dieser Welt.</description>
+			<data actors="Heinz Ulmer" director="Henry Cutamaran" country="D" year="1989" genre="13" blocks="2" time="0" price="0" critics="90" speed="1" outcome="0" betty="100" />
+		</movie>		
 	</allmovies>
 	<allseries>
 		<serie>
@@ -1644,7 +1664,7 @@ Herrliche Hau-Drauf-Action mit XXX und XXX, cooler Soundtrack</description>
 		<serie>
 			<title>Die Patty Glansen Show</title>
 			<description>Nach Ihrem Erfolg (bei den Kritikern) versucht sich Patty Glansen nun auf dem großen Parkett der TV-Unterhaltung. Spannende Gespräche, interessante Berichte. Eine Show von Senioren, für Senioren.</description>
-			<data  actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1997" genre="17"  blocks="2" price="100" critics="132" speed="72" outcome="48" />
+			<data  actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1997" genre="17"  blocks="2" price="100" critics="132" speed="72" outcome="48"betty="40" />
 			<episode number="1">
 				<title>Lothar Molch</title>
 				<description>Zum Auftakt der neuen Show zu Gast: Lothar Molch, Vorsitzender der graumelierten Panther und Sabine Filz vom Amt für Soziales.
@@ -1728,7 +1748,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 		<serie>
 			<title>Entstehung des Kosmos</title>
 			<description>Klaus Berntsch stellt Vorschulkindern in lustigen Einspielern die Entstehung des Kosmos vor.</description>
-			<data  actors="Klaus Berntsch" director="Astrid Jupidar" country="AUT" year="2005" genre="13"  blocks="2" price="20" critics="90" speed="20" outcome="0" />
+			<data  actors="Klaus Berntsch" director="Astrid Jupidar" country="AUT" year="2005" genre="13"  blocks="2" price="20" critics="90" speed="20" outcome="0" betty="30" />
 			<episode number="1">
 				<title>Der Urknall</title>
 				<description>Peng hat's gemacht und Klaus spielt mit einer platzenden Melone den Urknall nach.</description>
@@ -1818,11 +1838,11 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 		<serie>
 			<title>Maler vergangener Zeiten</title>
 			<description>Klaus-Jürgen Klüppisch sucht und besucht Nachfahren berühmter Maler. Begleitet wird das Treffen von Einspielern die damalige Zeiten nachstellen.</description>
-			<data  actors="Klaus-Jürgen Klüppisch" director="Klaus-Jürgen-Klüppisch" country="D" year="1981" genre="13"  blocks="1" price="55" critics="125" speed="20" outcome="0" />
+			<data  actors="Klaus-Jürgen Klüppisch" director="Klaus-Jürgen-Klüppisch" country="D" year="1981" genre="13"  blocks="1" price="55" critics="125" speed="20" outcome="0" betty="140" />
 			<episode number="1">
 				<title>Michelangelo</title>
 				<description>Klüppisch trifft Mike aus London, er behauptet ein Nachfahre der Cousine 12. Grades von Michelangelos Großtante zu sein.</description>
-				<data  genre="13" 	price="55"	critics="125"	speed="20" />
+				<data  year="1982" genre="13" 	price="55"	critics="125"	speed="20" />
 			</episode>
 			<episode number="2">
 				<title>Monet</title>
@@ -1893,7 +1913,7 @@ Ein Muss für jede Hausfrau, ein Fluch für harte Männer.</description>
 		<serie>
 			<title>XXX besucht...</title>
 			<description>Der bekannte Moderator XXX besucht Menschen die keiner kennt, deren Wirkung aber unvergessen bleibt.</description>
-			<data  actors="XXX" director="Alan Smithee" country="D" year="1992" genre="13"  blocks="1" time="0" price="100" critics="0" speed="84" outcome="0" />
+			<data  actors="XXX" director="Alan Smithee" country="D" year="1992" genre="13"  blocks="1" time="0" price="100" critics="0" speed="84" outcome="0" betty="60" />
 			<episode number="1">
 				<title>XXX besucht... Madame Krussaud</title>
 				<description>Im Schatten ihrer Schwester bastelt Madame Krussaud Figuren aus von Fans bereitgestelltem Ohrenschmalz.</description>

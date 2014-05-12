@@ -534,7 +534,7 @@
 				<audienceAttraction id="Men" value="0.8" />
 			</audienceAttractions>			
 		</genre>
-		<genre id="13" name="culture" outcome-mod="0.2" review-mod="0.6" speed-mod="0.2">
+		<genre id="13" name="culture" outcome-mod="0.1" review-mod="0.4" speed-mod="0.1">
 			<goodFollower>11,16,18</goodFollower>
 			<badFollower>0,2,3,4,6,7,9,10,14,15,17</badFollower>
 			<timeMods>
