@@ -29,13 +29,14 @@ Type TPlayerFinanceCollection
 		'subtract start day to get a index starting at 0 and add 1 day again
 		Local arrayIndex:Int = day +1 - GetGameTime().GetStartDay()
 		local playerIndex:int = playerID -1
+		'if the array is less than allowed: return finance from day 0
+		'which is the day before "start"
 		If arrayIndex < 0 Then Return Get(playerID, GetGameTime().GetStartDay()-1)
 
 		'create entry if player misses its finance entry
 		if finances.length < playerID then finances = finances[..playerID]
 
-
-		If (arrayIndex = 0 And Not finances[playerIndex]) Or arrayIndex >= finances[playerIndex].length
+		If (arrayIndex = 0 And Not finances[playerIndex][0]) Or arrayIndex >= finances[playerIndex].length
 			'TLogger.Log("TPlayer.GetFinance()", "Adding a new finance to player "+Self.playerID+" for day "+day+ " at index "+arrayIndex, LOG_DEBUG)
 			If arrayIndex >= finances[playerIndex].length
 				'resize array
