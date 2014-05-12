@@ -9,6 +9,7 @@ REM
 ENDREM
 SuperStrict
 Import Brl.retro
+Import "base.util.time.bmx"
 
 
 
@@ -54,7 +55,7 @@ Type TDeltaTimer
 
 
 	Method Reset()
-		_loopBeginTime = MilliSecs()
+		_loopBeginTime = Time.GetTimeGone()
 	End Method
 
 
@@ -69,7 +70,7 @@ Type TDeltaTimer
 
 	'time the current loop needed up to now
 	Method GetCurrentLoopTime:float()
-		return Millisecs() - _loopBeginTime
+		return Time.GetTimeGone() - _loopBeginTime
 	End Method
 
 
@@ -157,8 +158,10 @@ Type TDeltaTimer
 
 	Method Loop()
 		'compute time last loop neeeded
-		_lastLoopTime  = Millisecs() - _loopBeginTime	'<-- the delta
-		_loopBeginTime = MilliSecs()					'store for next run
+		'1/2: compute delta
+		_lastLoopTime  = Time.GetTimeGone() - _loopBeginTime
+		'2/2: store for next run
+		_loopBeginTime = Time.GetTimeGone()
 
 		'update values for FPS/UPS stats
 		updateStatistics()

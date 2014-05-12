@@ -652,6 +652,12 @@ End Type
 'it is kind of an "DataCollectionCollection" ;D
 Type TSaveGame
 	Field _Game:TGame = Null
+	'store the time since when the app started - timers rely on this
+	'and without, times will differ after "loading" (so elevator stops
+	'closing doors etc.)
+	'this allows to have "realtime" (independend from "logic updates")
+	'effects - for visual effects (fading), sound ...
+	Field _Time_startTime:Long = 0
 	Field _GameTime:TGameTime = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
@@ -693,12 +699,17 @@ Type TSaveGame
 		_Assign(_GameTime, TGameTime._instance, "GameTime", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
-
 		_Assign(_Game, Game, "Game")
+
+		'restore "started time"
+		Time.startTime = _Time_startTime
 	End Method
 
 
 	Method BackupGameData:Int()
+		'store "started time"
+		_Time_startTime = Time.startTime
+
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
 		_Assign(TFigureCollection._instance, _FigureCollection, "FigureCollection", MODE_SAVE)

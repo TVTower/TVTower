@@ -243,7 +243,7 @@ Type TGUIinput Extends TGUIobject
 			Wend
 			GetFont().draw(printValue, position.GetIntX(), position.GetIntY())
 
-			SetAlpha Ceil(Sin(MilliSecs() / 4)) * oldCol.a
+			SetAlpha Ceil(Sin(Time.GetTimeGone() / 4)) * oldCol.a
 			GetFont().draw("_", Int(position.GetIntX() + GetFont().getWidth(printValue)), Int(position.GetY()) )
 
 			'oldCol.SetRGBA()

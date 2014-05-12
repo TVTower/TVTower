@@ -28,7 +28,7 @@ Type TGraphicsManager
 
 
 	Function GetInstance:TGraphicsManager()
-		If not _instance Then New TGraphicsManager
+		If not _instance Then _instance = New TGraphicsManager
 		Return _instance
 	End Function
 

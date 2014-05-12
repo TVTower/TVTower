@@ -73,15 +73,15 @@ Type KI
 			return FALSE
 		endif
 
-		Local loadtime:Int = MilliSecs()
+		Local loadingStopWatch:TStopWatch = new TStopWatch.Init()
 		'load content
 		LuaEngine.SetSource(LoadText(scriptFileName))
 
 		'if there is content set, print it
 		If LuaEngine.GetSource() <> ""
-			TLogger.log("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
+			TLogger.log("KI.LoadScript", "ReLoaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		else
-			TLogger.log("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + (MilliSecs() - loadtime) + "ms", LOG_DEBUG | LOG_LOADING)
+			TLogger.log("KI.LoadScript", "Loaded LUA AI for player "+playerID+". Loading Time: " + loadingStopWatch.GetTime() + "ms", LOG_DEBUG | LOG_LOADING)
 		endif
 	End Method
 
@@ -462,6 +462,12 @@ endrem
 
 		If Room.isOccupant( GetPlayerCollection().Get(Self.ME).figure ) then Return -1
 		Return self.RESULT_INUSE
+	End Method
+
+
+	'returns how many time is gone since game/app start
+	Method getTimeGone:Int()
+		Return Time.GetTimeGone()
 	End Method
 
 

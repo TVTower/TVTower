@@ -752,7 +752,7 @@ Type TGUIListItem Extends TGUIobject
 	Method SetLifetime:Int(milliseconds:Int=Null)
 		If milliseconds
 			initialLifetime = milliseconds
-			lifetime = MilliSecs() + milliseconds
+			lifetime = Time.GetTimeGone() + milliseconds
 		Else
 			initialLifetime = Null
 			lifetime = Null
@@ -769,7 +769,7 @@ Type TGUIListItem Extends TGUIobject
 	Method SetShowtime:Int(milliseconds:Int=Null)
 		If milliseconds
 			InitialShowtime = milliseconds
-			showtime = MilliSecs() + milliseconds
+			showtime = Time.GetTimeGone() + milliseconds
 		Else
 			InitialShowtime = Null
 			showtime = Null
@@ -782,10 +782,10 @@ Type TGUIListItem Extends TGUIobject
 		Super.Update()
 
 		'if the item has a lifetime it will autoremove on death
-		If lifetime And (MilliSecs() > lifetime) Then Return Remove()
+		If lifetime And (Time.GetTimeGone() > lifetime) Then Return Remove()
 
 		If showtime And isVisible()
-			If (MilliSecs() > showtime) Then hide()
+			If (Time.GetTimeGone() > showtime) Then hide()
 		EndIf
 	End Method
 

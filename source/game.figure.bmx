@@ -384,18 +384,18 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			'if the greeting type differs
 			'- or enough time has gone for another greet
 			'- or another figure gets greeted
-			if greetType <> lastGreetType or Millisecs() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
+			if greetType <> lastGreetType or Time.GetTimeGone() - lastGreetTime > greetEvery or lastGreetFigureID <> figure.id
 				lastGreetType = greetType
 				lastGreetFigureID = figure.id
 
-				lastGreetTime = Millisecs()
+				lastGreetTime = Time.GetTimeGone()
 			endif
 
 			'show greet for a maximum time of "showGreetTime"
-			if Millisecs() - lastGreetTime < greetTime
-				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, Millisecs() - lastGreetTime), greetTime)
+			if Time.GetTimeGone() - lastGreetTime < greetTime
+				local scale:float = TInterpolation.BackOut(0.0, 1.0, Min(greetTime, Time.GetTimeGone() - lastGreetTime), greetTime)
 				local oldAlpha:float = GetAlpha()
-				SetAlpha TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, Millisecs() - lastGreetTime), 0.5*greetTime)
+				SetAlpha TInterpolation.RegularOut(0.5, 1.0, Min(0.5*greetTime, Time.GetTimeGone() - lastGreetTime), 0.5*greetTime)
 				'subtract half width from position - figure is drawn centered
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()

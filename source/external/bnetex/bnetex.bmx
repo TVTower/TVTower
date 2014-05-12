@@ -396,7 +396,9 @@ Type TNetwork
 		MemFree(Buffer)
 		closesocket_(Socket)
 
-		Return Stop - Start
+		'ronny: return Abs value if Stop and Start are negative
+		'       values (>25 days uptime)
+		Return Abs(Stop - Start)
 	End Function
 
 	Rem

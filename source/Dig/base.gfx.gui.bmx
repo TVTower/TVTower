@@ -13,6 +13,7 @@ Import "base.util.input.bmx"
 Import "base.util.localization.bmx"
 Import "base.util.registry.bmx"
 Import "base.util.event.bmx"
+Import "base.util.time.bmx"
 
 
 
@@ -66,6 +67,7 @@ Type TGUIManager
 	Field UpdateState_mouseScrollwheelMovement:Int = 0
 	Field UpdateState_foundHitObject:Int = False
 	Field UpdateState_foundHoverObject:Int = False
+	Field UpdateState_foundFocusObject:Int = False
 
 	'=== PRIVATE PROPERTIES ===
 
@@ -135,7 +137,7 @@ Type TGUIManager
 	'dragged are above normal objects
 	Method AddDragged:Int(obj:TGUIObject)
 		obj.setOption(GUI_OBJECT_DRAGGED, True)
-		obj._timeDragged = MilliSecs()
+		obj._timeDragged = Time.GetTimeGone()
 
 		If ListDragged.contains(obj) Then Return False
 
@@ -409,6 +411,12 @@ Type TGUIManager
 
 
 	Method SetFocus:Int(obj:TGUIObject)
+		'in all cases: set the foundFocus for this cycle
+		if obj then UpdateState_foundFocusObject = true
+
+		'skip setting focus if already focused
+		if TGUIObject.GetFocusedObject() = obj then return False
+
 		TGUIObject.SetFocusedObject(obj)
 
 		'try to set as potential keystroke receiver
@@ -431,11 +439,24 @@ Type TGUIManager
 
 		UpdateState_mouseButtonDown = MOUSEMANAGER.GetAllStatusDown()
 		UpdateState_mouseButtonHit = MOUSEMANAGER.GetAllStatusHit() 'single and double clicks!
+
+		UpdateState_foundFocusObject = false
+		UpdateState_foundHitObject = False
+		UpdateState_foundHoverObject = False
 	End Method
 
 
 	'run after all other gui things so important values can get reset
 	Method EndUpdates:Int()
+		'if we had a click this cycle and an gui element is focused,
+		'remove focus from it
+		if MouseManager.isClicked(1)
+			if not UpdateState_foundFocusObject and GUIManager.GetFocus()
+				GUIManager.ResetFocus()
+				'GUIManager.setFocus(Null)
+			endif
+		endif
+
 		'ignoreMouse can be useful for objects which know, that nothing
 		'else should take care of mouse movement/clicks
 		_ignoreMouse = False
@@ -450,8 +471,6 @@ Type TGUIManager
 
 		UpdateState_mouseScrollwheelMovement = MOUSEMANAGER.GetScrollwheelmovement()
 
-		UpdateState_foundHitObject = False
-		UpdateState_foundHoverObject = False
 		Local screenRect:TRectangle = Null
 
 		'store a list of special elements - maybe the list gets changed
@@ -698,6 +717,13 @@ Type TGUIobject
 	End Method
 
 
+	Method HasParent:int(parent:TGUIObject)
+		if not _parent then return False
+		if _parent = parent then return True
+		return _parent.HasParent(parent)
+	End Method
+
+
 	'convencience function to return the uppermost parent
 	Method GetUppermostParent:TGUIObject()
 		'also possible:
@@ -820,11 +846,22 @@ Type TGUIobject
 	'sets the currently focused object
 	Function setFocusedObject(obj:TGUIObject)
 		'if there was an focused object -> inform about removal of focus
-		If obj <> _focusedObject And _focusedObject Then _focusedObject.removeFocus()
+		If (obj <> _focusedObject) And _focusedObject
+			'sender = previous focused object
+			'receiver = newly focused object
+			EventManager.triggerEvent(TEventSimple.Create("guiobject.onRemoveFocus", null , _focusedObject, obj))
+			_focusedObject.removeFocus()
+		endif
+
+		'inform about a new object getting focused
+		'sender = newly focused object
+		'receiver = previous focused object
+		if obj then EventManager.triggerEvent(TEventSimple.Create("guiobject.onSetFocus", null , obj, _focusedObject))
+
 		'set new focused object
 		_focusedObject = obj
 		'if there is a focused object now - inform about gain of focus
-		If _focusedObject Then _focusedObject.setFocus()
+		If _focusedObject then _focusedObject.setFocus()
 	End Function
 
 
@@ -1343,7 +1380,7 @@ Type TGUIobject
 			'mouseclick somewhere - should deactivate active object
 			'no need to use the cached mouseButtonDown[] as we want the
 			'general information about a click
-			If MOUSEMANAGER.isHit(1) And hasFocus() Then GUIManager.setFocus(Null)
+'			If MOUSEMANAGER.isHit(1) And hasFocus() Then GUIManager.setFocus(Null)
 		'mouse over object
 		Else
 			'inform others about a scroll with the mousewheel
@@ -1467,7 +1504,8 @@ Type TGUIobject
 
 						'clicking on an object sets focus to it
 						'so remove from old before
-						If Not HasFocus() Then GUIManager.ResetFocus()
+'Ronny: 2014/05/11 - commented out, still needed?
+'						If Not HasFocus() Then GUIManager.ResetFocus()
 
 						GUIManager.UpdateState_foundHitObject = True
 					EndIf

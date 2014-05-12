@@ -9,37 +9,60 @@
 'Die Standard-Logikimplementierung ist "TElevatorSmartStrategy" zu finden. Diese benötigt die Klasse "TSmartFloorRoute" eine Ableitung von 'TFloorRoute
 
 Type TElevator
-	'Referenzen
-	Field Passengers:TList					= CreateList()	'Alle aktuellen Passagiere als TFigure
-	Field RouteLogic:TElevatorRouteLogic	= null
-	Field FloorRouteList:TList				= CreateList() 'Die Liste mit allen Fahrstuhlanfragen und Sendekommandos in der Reihenfolge in der sie gestellt wurden
+	'=== Referenzen ===
+	'Alle aktuellen Passagiere als TFigure
+	Field Passengers:TList = CreateList()
+	Field RouteLogic:TElevatorRouteLogic = null
+	'Die Liste mit allen Fahrstuhlanfragen und Sendekommandos in der
+	'Reihenfolge in der sie gestellt wurden
+	Field FloorRouteList:TList = CreateList()
 
-	'Aktueller Status (zu speichern)
-	Field ElevatorStatus:Int				= 0			'0 = warte auf nächsten Auftrag, 1 = Türen schließen, 2 = Fahren, 3 = Türen öffnen, 4 = entladen/beladen
-	Field DoorStatus:Int 					= 0    		'0 = closed, 1 = open, 2 = opening, 3 = closing
-	Field CurrentFloor:Int					= 0			'Aktuelles Stockwerk
-	Field TargetFloor:Int					= 0			'Hier fährt der Fahrstuhl hin
-	Field Direction:Int						= 1			'Aktuelle/letzte Bewegungsrichtung: -1 = nach unten; +1 = nach oben; 0 = gibt es nicht
-	Field ReadyForBoarding:int				= false		'während der ElevatorStatus 4, 5 und 0 möglich.
-	Field Pos:TPoint						= new TPoint.Init(131+230,115) 	'Aktuelle Position - difference to x/y of building
+	'=== Aktueller Status (zu speichern) ===
+	'0 = warte auf nächsten Auftrag,
+	'1 = Türen schließen, 2 = Fahren, 3 = Türen öffnen,
+	'4 = entladen/beladen
+	Field ElevatorStatus:Int = 0
+	'0 = closed, 1 = open, 2 = opening, 3 = closing
+	Field DoorStatus:Int = 0
+	'Aktuelles Stockwerk
+	Field CurrentFloor:Int = 0
+	'Hier fährt der Fahrstuhl hin
+	Field TargetFloor:Int = 0
+	'Aktuelle/letzte Bewegungsrichtung: -1 = nach unten; +1 = nach oben; 0 = gibt es nicht
+	Field Direction:Int	= 1
+	'während der ElevatorStatus 4, 5 und 0 möglich.
+	Field ReadyForBoarding:int = false
+	'Aktuelle Position - difference to x/y of building
+	Field Pos:TPoint = new TPoint.Init(131 + 230,115)
 
-	'Einstellungen
-	Field Speed:Float 						= 120		'pixels per second ;D
+	'=== EINSTELLUNGEN ===
+	'pixels per second ;D
+	Field Speed:Float = 120
 
-	'Timer
-	Field WaitAtFloorTimer:TIntervalTimer	= null 		'Wie lange (Millisekunden) werden die Türen offen gelassen (alt: 650)
-	Field WaitAtFloorTime:Int				= 1700		'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in Millisekunden - basierend auf MilliSecs() + waitAtFloorTime)
+	'=== TIMER ===
+	'Wie lange (Millisekunden) werden die Türen offen gelassen
+	'(alt: 650)
+	Field WaitAtFloorTimer:TIntervalTimer = null
+	'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in
+	'Millisekunden - basierend auf Time.GetTimeGone() + waitAtFloorTime)
+	Field WaitAtFloorTime:Int = 1700
 
-	'Grafikelemente
-	Field door:TSpriteEntity							'Das Türensprite und seine Animationen
-	Field SpriteInner:TSprite							'Das Sprite des Innenraums
-	Field PassengerOffset:TPoint[]						'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures ein paar Offsets im Fahrstuhl
-	Field PassengerPosition:TFigure[]					'Hier wird abgelegt, welches Offset schon in Benutzung ist und von welcher Figur
+	'=== GRAFIKELEMENTE ===
+	'Das Türensprite und seine Animationen
+	Field door:TSpriteEntity
+	'Das Sprite des Innenraums
+	Field SpriteInner:TSprite
+	'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures
+	'ein paar Offsets im Fahrstuhl
+	Field PassengerOffset:TPoint[]
+	'Hier wird abgelegt, welches Offset schon in Benutzung ist und von
+	'welcher Figur
+	Field PassengerPosition:TFigure[]
 
 	'globals are not saved
 	Global _soundSource:TElevatorSoundSource
 	Global _initDone:int = FALSE
-	Global _instance:TElevator							'last created elevator
+	Global _instance:TElevator
 
 
 	'===== Konstruktor, Speichern, Laden =====

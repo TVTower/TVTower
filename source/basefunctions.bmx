@@ -83,6 +83,7 @@ Function SortListArray(List:TList Var)
 	List = List.FromArray(arr)
 End Function
 
+
 Type TNumberCurveValue
 	Field _value:Int
 
@@ -92,6 +93,7 @@ Type TNumberCurveValue
 		Return obj
 	End Function
 End Type
+
 
 Type TNumberCurve
 	Field _values:TList[]
@@ -171,73 +173,89 @@ End Type
 
 'for things happening every X moments
 Type TIntervalTimer
-	field interval:int		= 0		'happens every ...
-	field intervalToUse:int	= 0		'happens every ...
-	field actionTime:int	= 0		'plus duration
-	field randomness:int	= 0		'value the interval can "change" on GetIntervall() to BOTH sides - minus and plus
-	field timer:int			= 0		'time when event last happened
+	'happens every ...
+	field interval:int		= 0
+	'happens every ...
+	field intervalToUse:int	= 0
+	'plus duration
+	field actionTime:int	= 0
+	'value the interval can "change" on GetIntervall() to BOTH
+	'sides - minus and plus
+	field randomness:int	= 0
+	'time when event last happened
+	field timer:int			= 0
+
 
 	Function Create:TIntervalTimer(interval:int, actionTime:int = 0, randomness:int = 0)
 		local obj:TIntervalTimer = new TIntervalTimer
-		obj.interval	= interval
-		obj.actionTime	= actionTime
-		obj.randomness	= randomness
+		obj.interval = interval
+		obj.actionTime = actionTime
+		obj.randomness = randomness
 		'set timer
 		obj.reset()
 		return obj
 	End Function
 
+
 	Method GetInterval:int()
-		return self.intervalToUse
+		return intervalToUse
 	End Method
+
 
 	Method SetInterval(value:int, resetTimer:int=false)
-		self.interval = value
-		if resetTimer then self.Reset()
+		interval = value
+		if resetTimer then Reset()
 	End Method
 
+
 	Method SetActionTime(value:int, resetTimer:int=false)
-		self.actionTime = value
-		if resetTimer then self.Reset()
+		actionTime = value
+		if resetTimer then Reset()
 	End Method
+
 
 	'returns TRUE if interval is gone (ignores action time)
 	'action time could be eg. "show text for actiontime-seconds EVERY interval-seconds"
 	Method doAction:int()
-		local timeLeft:int = Millisecs() - (self.timer + self.GetInterval() )
-		return ( timeLeft > 0 AND timeLeft < self.actionTime )
+		local timeLeft:int = Time.GetTimeGone() - (timer + GetInterval() )
+		return ( timeLeft > 0 AND timeLeft < actionTime )
 	End Method
+
 
 	'returns TRUE if interval and duration is gone (ignores duration)
 	Method isExpired:int()
-		return ( self.timer + self.GetInterval() + self.actionTime <= Millisecs() )
+		return ( timer + GetInterval() + actionTime <= Time.GetTimeGone() )
 	End Method
+
 
 	Method getTimeGoneInPercents:float()
 		local restTime:int = Max(0, getTimeUntilExpire())
 		if restTime = 0 then return 1.0
-		return 1.0 - (restTime / float(self.GetInterval()))
+		return 1.0 - (restTime / float(GetInterval()))
 	End Method
 
 	Method getTimeUntilExpire:int()
-		return self.timer + self.GetInterval() + self.actionTime - Millisecs()
+		return timer + GetInterval() + actionTime - Time.GetTimeGone()
 	End Method
+
 
 	Method reachedHalftime:int()
-		return ( self.timer + 0.5*(self.GetInterval() + self.actionTime) <= Millisecs() )
+		return ( timer + 0.5*(GetInterval() + actionTime) <= Time.GetTimeGone() )
 	End Method
+
 
 	Method expire()
-		self.timer = -self.GetInterval()
+		timer = -GetInterval()
 	End Method
+
 
 	Method reset()
-		self.intervalToUse = self.interval + rand(-self.randomness, self.randomness)
+		intervalToUse = interval + rand(-randomness, randomness)
 
-		self.timer = Millisecs()
+		timer = Time.GetTimeGone()
 	End Method
-
 End Type
+
 
 
 
@@ -403,7 +421,7 @@ Type TProfiler
 			Local call:tcall = null
 			call = TCall(calls.ValueForKey(func))
 			if call <> null
-				call.start	= MilliSecs()
+				call.start	= Time.GetTimeGone()
 				call.calls	:+1
 				Return true
 			EndIf
@@ -415,7 +433,7 @@ Type TProfiler
 			call.parent	= TProfiler.LastCall
 			call.calls	= 1
 			call.name	= func
-			call.start	= MilliSecs()
+			call.start	= Time.GetTimeGone()
 			calls.insert(func, call)
 			TProfiler.LastCall = call
 			?Threaded
@@ -434,7 +452,7 @@ Type TProfiler
 			?
 			Local call:TCall = TCall(calls.ValueForKey(func))
 			If call <> null
-				Local l:int = MilliSecs()-call.start
+				Local l:int = Time.GetTimeGone() - call.start
 				call.times.addlast( string(l) )
 				if call.parent <> null
 					TProfiler.LastCall = call.parent

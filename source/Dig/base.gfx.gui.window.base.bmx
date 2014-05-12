@@ -10,20 +10,22 @@ Import "base.gfx.gui.panel.bmx"
 Type TGUIWindowBase Extends TGUIPanel
 	Field guiCaptionTextBox:TGUITextBox
 	Field guiCaptionArea:TRectangle
+	'this panel can contain additional content (buttons, panels....)
+	Field guiContent:TGUIPanel
 	Global defaultCaptionColor:TColor = null
 
 	Method Create:TGUIWindowBase(pos:TPoint, dimension:TPoint, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 
 		'create background, setup text etc.
-		InitContent(dimension)
+		InitWindow(dimension)
 
 		GUIManager.Add(Self)
 		Return Self
 	End Method
 
 
-	Method InitContent(dimension:TPoint)
+	Method InitWindow(dimension:TPoint)
 		If Not guiBackground
 			SetBackground( new TGUIBackgroundBox.Create(null, null) )
 		Else
@@ -40,6 +42,31 @@ Type TGUIWindowBase Extends TGUIPanel
 		guiBackground.SetZIndex(0) 'absolute background of all children
 		guiCaptionTextBox.SetZIndex(1)
 	End Method
+
+
+	'returns the content panel to add content too
+	'content panel gets created if not done yet
+	Method GetGuiContent:TGUIPanel()
+		if not guiContent
+			guiContent = new TGUIPanel.Create(new TPoint, new TPoint.Init(GetContentScreenWidth(), GetContentScreenHeight()), "")
+			AddChild(guiContent)
+		endif
+
+		return guiContent
+	End Method
+
+
+	'override to add guiContent-resizing
+	Method Resize:Int(w:Float=Null,h:Float=Null)
+		Super.Resize(w,h)
+
+		'resize content (if exists) to use all available content space
+		If guiContent
+			guiContent.rect.position.SetXY(0,0)
+			guiContent.resize(GetContentScreenWidth(),GetContentScreenHeight())
+		EndIf
+	End Method
+
 
 
 	'overwrite default to reapply caption/value to reposition them
@@ -124,11 +151,15 @@ Type TGUIWindowBase Extends TGUIPanel
 		SetCaption(caption)
 		SetValue(value)
 
-		Local oldTextboxHeight:Float = guiTextBox.rect.GetH()
-		Local newTextboxHeight:Float = guiTextBox.getHeight()
-
 		'resize window
-		Self.resize(0, rect.getH() + newTextboxHeight - oldTextboxHeight)
+		if guiTextBox
+			Local oldTextboxHeight:Float = guiTextBox.rect.GetH()
+			Local newTextboxHeight:Float = guiTextBox.getHeight()
+			Self.resize(0, rect.getH() + newTextboxHeight - oldTextboxHeight)
+		else
+			Self.resize(0, rect.getH())
+		endif
+
 		Return True
 	End Method
 End Type

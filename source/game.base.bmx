@@ -114,7 +114,7 @@ Type TGame {_exposeToLua="selected"}
 		GetGametime().SetStartYear(1985)
 		title = "unknown"
 
-		SetRandomizerBase( MilliSecs() )
+		SetRandomizerBase( Time.MillisecsLong() )
 
 		If initializePlayer Then CreateInitialPlayers()
 
@@ -634,9 +634,9 @@ Type TGame {_exposeToLua="selected"}
 		If GetNewsAgency().NextChainCheckTime < gameTime.timeGone Then GetNewsAgency().ProcessNewsEventChains()
 
 		'send state to clients
-		If IsGameLeader() And networkgame And stateSyncTime < MilliSecs()
+		If IsGameLeader() And networkgame And stateSyncTime < Time.GetTimeGone()
 			NetworkHelper.SendGameState()
-			stateSyncTime = MilliSecs() + stateSyncTimer
+			stateSyncTime = Time.GetTimeGone() + stateSyncTimer
 		EndIf
 
 		'==== HANDLE IN GAME TIME ====

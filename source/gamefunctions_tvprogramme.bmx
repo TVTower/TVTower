@@ -45,7 +45,6 @@ Function LoadDatabase(filename:String)
 	local totalnewscount:Int
 	local contractscount:Int
 
-	local time:int = Millisecs()
 	Local title:String
 	Local description:String
 	Local actors:String
@@ -84,6 +83,7 @@ Function LoadDatabase(filename:String)
 	local releaseDayCounter:int = 0
 
 
+	local stopWatch:TStopWatch = new TStopWatch.Init()
 	'===== IMPORT ALL MOVIES =====
 
 	'Print "reading movies from database"
@@ -236,7 +236,7 @@ Function LoadDatabase(filename:String)
 		totalnewscount :+1
 	Next
 
-	TLogger.log("TDatabase.Load()", "found " + seriescount+ " series, "+totalmoviescount+ " movies, "+ contractscount + " advertisements, " + totalnewscount + " news. loading time: "+(Millisecs()-time)+"ms", LOG_LOADING)
+	TLogger.log("TDatabase.Load()", "found " + seriescount+ " series, "+totalmoviescount+ " movies, "+ contractscount + " advertisements, " + totalnewscount + " news. loading time: "+stopWatch.GetTime()+"ms", LOG_LOADING)
 End Function
 
 

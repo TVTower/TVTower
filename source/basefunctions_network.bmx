@@ -162,9 +162,9 @@ Type TNetworkClient extends TNetworkConnection
 			Else
 				SendEvent(NET_LEAVEGAMEREQUEST,NET_PACKET_RELIABLE)
 				Local ev:ENetEvent=New ENetEvent
-				Local start:Int=MilliSecs()
+				Local start:Int = Time.GetTimeGone()
 				Repeat
-					If MilliSecs()-start>disconnecttimeout Exit
+					If Time.GetTimeGone() - start > disconnecttimeout then Exit
 					If enet_host_service(self.enethost,ev,100)
 						Select ev.event
 							Case ENET_EVENT_TYPE_RECEIVE
@@ -281,7 +281,7 @@ Type TNetworkClient extends TNetworkConnection
 				response.evType = NET_PINGRESPONSE 'change ev type from ping request to response
 				Send(response)
 			Case NET_PINGRESPONSE
-				latency = MilliSecs()-response.getInt(1)
+				latency = Time.GetTimeGone() - response.getInt(1)
 				response.setInt(2, response.senderIP)
 				response.setInt(3, response.senderPort)
 				If enetpeer=pingpeer
@@ -295,12 +295,9 @@ Type TNetworkClient extends TNetworkConnection
 
 	Method Ping:Int(ip:Int=0,port:Int=0)
 		local obj:TNetworkObject = TNetworkObject.Create(NET_PINGREQUEST)
-		obj.setInt(1, MilliSecs())
+		obj.setInt(1, Time.GetTimeGone())
 		Return Send(obj)
-'''''''
-
-
-
+rem
 		Const disconnecttimeout:Int=1000
 		Local packet:TNetworkPacket=New TNetworkPacket,addr:Byte Ptr,eneTNetworkPacket:Byte Ptr,ev:EnetEvent,result:Int,id:Int,start:Int
 
@@ -319,9 +316,9 @@ Type TNetworkClient extends TNetworkConnection
 			pingpeer= enet_host_connect(enethost,addr,1)
 			enet_address_destroy(addr)
 			If pingpeer
-				start=MilliSecs()
+				start = Time.GetTimeGone()
 				Repeat
-					If MilliSecs()-start>disconnecttimeout
+					If Time.GetTimeGone() - start > disconnecttimeout
 						enet_peer_disconnect(pingpeer)
 						pingpeer=Null
 						'Print "Connect timeout"
@@ -333,7 +330,7 @@ Type TNetworkClient extends TNetworkConnection
 					EndIf
 				Forever
 				local obj:TNetworkObject = CreateNetworkObject(NET_PINGREQUEST)
-				obj.setInt(1, Millisecs() )
+				obj.setInt(1, Time.GetTimeGone() )
 
 				packet = obj.ToPacket()
 				If packet
@@ -355,9 +352,10 @@ Type TNetworkClient extends TNetworkConnection
 			EndIf
 		Else
 			local response:TNetworkObject = CreateNetworkObject(NET_PINGREQUEST)
-			response.setInt(1, MilliSecs())
+			response.setInt(1, Time.GetTimeGone())
 			Return Send(response)
 		EndIf
+endrem
 	EndMethod
 End Type
 
@@ -437,7 +435,7 @@ Type TNetworkServer Extends TNetworkConnection
 
 		Select evType
 			Case NET_PINGRESPONSE
-				client.latency=MilliSecs()-response.getInt(1)
+				client.latency = Time.GetTimeGone() - response.getInt(1)
 
 			Case NET_LEAVEGAMEREQUEST
 				If client
@@ -699,7 +697,7 @@ Type TTVGNetwork
 		self.InitInfoStream()
 		self.announceEnabled= true
 		self.announceTitle	= title
-		self.announceTime	= Millisecs()
+		self.announceTime	= Time.GetTimeGone()
 		self.announceToLan	= toLan
 	End Method
 
@@ -789,9 +787,9 @@ Type TTVGNetwork
 
 		if self.server then self.server.Update()
 		if self.client
-			if self.pingTime < Millisecs()
+			if self.pingTime < Time.GetTimeGone()
 				self.client.Ping()
-				self.pingTime = Millisecs()+self.pingTimer
+				self.pingTime = Time.GetTimeGone() + self.pingTimer
 			endif
 			self.client.Update()
 		endif
@@ -905,10 +903,10 @@ Type TTVGNetwork
 
 	Method SendGameAnnouncement()
 		if not self.announceEnabled then return
-		if self.announceTime > Millisecs() then return
+		if self.announceTime > Time.GetTimeGone() then return
 		if self.GetFreeSlot() = 0 then return
 
-		self.announceTime = Millisecs() + self.announceTimer
+		self.announceTime = Time.GetTimeGone() + self.announceTimer
 		local obj:TNetworkObject = TNetworkObject.Create(NET_ANNOUNCEGAME)
 		If self.announceToLan
 			'Print "NET: announcing a LAN game to " +GetBroadcastIP(self.GetMyIP())
@@ -925,12 +923,12 @@ rem
 
 			Print "NET: announcing a ONLINE game "
 			Local Onlinestream:TStream = ReadStream("http::www.tvgigant.de/lobby/lobby.php?action=AddGame&Titel="+UrlEncode(Game.title)+"&IP="+OnlineIP+"&Port="+host.port+"&Spieler="+Self.getFreeSlot()+"&Hashcode="+LastOnlineHashCode)
-			Local timeouttimer:Int = MilliSecs()+5000 '5 seconds okay?
+			Local timeouttimer:Int = Time.GetTimeGone() + 5000 '5 seconds okay?
 			Local timeout:Byte = False
 			If Not Onlinestream Then Throw ("Not Online?")
 
 			While Not Eof(Onlinestream) Or timeout
-				If timeouttimer < MilliSecs() Then timeout = True
+				If timeouttimer < Time.GetTimeGone() Then timeout = True
 				Local responsestring:String = ReadLine(Onlinestream)
 				If responsestring <> Null AND responsestring <> "UPDATEDGAME" Then LastOnlineHashCode = responsestring
 			Wend

@@ -9,6 +9,7 @@ Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.color.bmx"
+Import "Dig/base.util.time.bmx"
 Import "Dig/base.gfx.sprite.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
 Import "game.player.finance.bmx"
@@ -108,8 +109,6 @@ Type TStationMapCollection
 	Method LoadMapFromXML:int(xmlFile:string="")
 		if xmlFile <> "" then mapConfigFile = xmlFile
 
-		Local start:Int = MilliSecs()
-
 		'=== LOAD XML CONFIG ===
 		local registryLoader:TRegistryLoader = new TRegistryLoader
 		registryLoader.LoadFromXML(mapConfigFile, TRUE)
@@ -123,7 +122,7 @@ Type TStationMapCollection
 
 
 	Method CreatePopulationMap()
-		local start:int = Millisecs()
+		local stopWatch:TStopWatch = new TStopWatch.Init()
 		Local srcPix:TPixmap = GetPixmapFromRegistry("map_PopulationDensity")
 		if not srcPix
 			TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "pixmap ~qmap_PopulationDensity~q is missing.", LOG_LOADING)
@@ -150,7 +149,7 @@ Type TStationMapCollection
 				population:+ populationmap[i, j]
 			Next
 		Next
-		TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "calculated a population of:" + population + " in "+(MilliSecs()-start)+"ms", LOG_DEBUG | LOG_LOADING)
+		TLogger.Log("TGetStationMapCollection().CreatePopulationMap", "calculated a population of:" + population + " in "+stopWatch.GetTime()+"ms", LOG_DEBUG | LOG_LOADING)
 	End Method
 
 
@@ -851,7 +850,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			SetAlpha 0.25 * oldAlpha
 			DrawOval(pos.x - radius -2, pos.y - radius -2 ,radius*2+4,radius*2+4)
 
-			SetAlpha Min(0.9, Max(0,Sin(MilliSecs()/3)) + 0.5 ) * oldAlpha
+			SetAlpha Min(0.9, Max(0,Sin(Time.GetTimeGone()/3)) + 0.5 ) * oldAlpha
 		Else
 			SetAlpha 0.4 * oldAlpha
 		EndIf

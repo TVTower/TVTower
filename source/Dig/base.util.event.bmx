@@ -15,6 +15,7 @@ Import Brl.threads
 Import "base.util.logger.bmx"
 Import "base.util.data.bmx"
 Import "base.util.helper.bmx"
+Import "base.util.time.bmx"
 
 
 
@@ -40,8 +41,10 @@ Type TEventManager
 	Method Init()
 		'Assert _ticks = -1, "TEventManager: preparing to start event manager while already started"
 		If _ticks = -1
-			_events.Sort()				'sort by age
-			_ticks = MilliSecs()		'begin
+			'sort by age
+			_events.Sort()
+			'begin
+			_ticks = Time.GetTimeGone()
 			TLogger.Log("TEventManager.Init()", "OK", LOG_LOADING)
 		EndIf
 	End Method
@@ -164,7 +167,7 @@ Type TEventManager
 		if not isStarted() then Init()
 		'Assert _ticks >= 0, "TEventManager: updating event manager that hasn't been prepared"
 		_processEvents(onlyChannel)
-		_ticks = MilliSecs()
+		_ticks = Time.GetTimeGone()
 	End Method
 
 
