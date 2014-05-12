@@ -150,10 +150,9 @@ Type TApp
 		obj.vsync = vsync
 
 		GetDeltatimer().Init(updatesPerSecond, framesPerSecond)
-		'set loading screen as active render function
-		'GetDeltaTimer()._funcRender = renderLoadingScreen
 		GetDeltaTimer()._funcUpdate = update
 		GetDeltaTimer()._funcRender = render
+
 
 		'register to quit confirmation dialogue
 		EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
@@ -181,7 +180,8 @@ Type TApp
 		settings.directx		= xml.FindValueInt(node, "directx", settings.directx, "settings.xml fehlt 'directx', setze Defaultwert: "+settings.directx+" (OpenGL)")
 		settings.colordepth		= xml.FindValueInt(node, "colordepth", settings.colordepth, "settings.xml fehlt 'colordepth', setze Defaultwert: "+settings.colordepth)
 		local activateSoundEffects:int	= xml.FindValueBool(node, "sound_effects", TRUE, "settings.xml fehlt 'sound_effects', setze Defaultwert: TRUE")
-		local activateSoundMusic:int	= xml.FindValueBool(node, "sound_music", TRUE, "settings.xml fehlt 'sound_music', setze Defaultwert: TRUE")
+		local activateSoundMusic:int = xml.FindValueBool(node, "sound_music", TRUE, "settings.xml fehlt 'sound_music', setze Defaultwert: TRUE")
+		local soundEngine:string = xml.FindValue(node, "sound_engine", "AUTOMATIC", "settings.xml fehlt 'sound_engine', setze Defaultwert: AUTOMATIC")
 
 		TSoundManager.GetInstance().MuteMusic(not activateSoundMusic)
 		TSoundManager.GetInstance().MuteSfx(not activateSoundEffects)

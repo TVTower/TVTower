@@ -11,19 +11,6 @@ Import MaxMod2.ogg
 Import MaxMod2.rtaudio
 Import MaxMod2.WAV
 
-?Linux
-'linux needs a different maxmod-implementation
-'maybe move it to maxmod - or leave it out to save dependencies if not used
-TMaxModRtAudioDriver.Init("LINUX_PULSE")
-?MacOS
-'mac needs a different maxmod-implementation
-'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
-TMaxModRtAudioDriver.Init("MACOSX_CORE")
-?
-
-'init has to be done for all - currently not knowing much bout mac
-If Not SetAudioDriver("MaxMod RtAudio") Then Throw "Audio Failed"
-
 'type to store music files (ogg) in it
 'data is stored in bank
 'Play-Method is adopted from maxmod2.bmx-Function "play"
@@ -94,15 +81,66 @@ Type TSoundManager
 	Global PREFIX_MUSIC:String = "MUSIC_"
 	Global PREFIX_SFX:String = "SFX_"
 
+	Global audioEngine:String = "AUTOMATIC"
+
 
 	Function Create:TSoundManager()
 		Local manager:TSoundManager = New TSoundManager
+
+
+		'initialize sound system
+		SetAudioEngine(audioEngine)
+
+
 		manager.musicChannel1 = AllocChannel()
 		manager.musicChannel2 = AllocChannel()
 		manager.sfxChannel_Elevator = AllocChannel()
 		manager.sfxChannel_Elevator2 = AllocChannel()
 		manager.defaulTSfxDynamicSettings = TSfxSettings.Create()
 		Return manager
+	End Function
+
+
+	Function SetAudioEngine(engine:string)
+		'limit to allowed engines
+		Select engine.ToUpper()
+			case "LINUX_ALSA"
+				audioEngine = "LINUX_ALSA"
+			case "LINUX_OSS"
+				audioEngine = "LINUX_OSS"
+			case "LINUX_PULSE"
+				audioEngine = "LINUX_PULSE"
+			case "UNIX_JACK"
+				audioEngine = "UNIX_JACK"
+
+			case "MACOSX_CORE"
+				audioEngine = "MACOSX_CORE"
+
+			case "WINDOWS_ASIO"
+				audioEngine = "WINDOWS_ASIO"
+			case "WINDOWS_DS"
+				audioEngine = "WINDOWS_DS"
+
+			default
+				audioEngine = "AUTOMATIC"
+		End Select
+
+		?Linux
+			'if nothing was specified: use pulseAudio
+			if audioEngine = "AUTOMATIC" then audioEngine = "LINUX_PULSE"
+			'linux needs a different maxmod-implementation
+			'maybe move it to maxmod - or leave it out to save dependencies if not used
+			TMaxModRtAudioDriver.Init(audioEngine)
+		?MacOS
+			'mac needs a different maxmod-implementation
+			'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
+
+			TMaxModRtAudioDriver.Init("MACOSX_CORE")
+		?
+		'init has to be done for all - currently not knowing much bout mac
+		If Not SetAudioDriver("MaxMod RtAudio") Then Throw "SoundManager: SetAudioEngine() Failed: " +audioEngine
+
+		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+audioEngine+"~q.", LOG_DEBUG)
 	End Function
 
 

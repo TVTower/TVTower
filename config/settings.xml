@@ -14,5 +14,15 @@
 		<colordepth>16</colordepth>
 		<sound_effects>TRUE</sound_effects>
 		<sound_music>TRUE</sound_music>
+		<!-- possible values:
+			all:     AUTOMATIC
+			linux:   LINUX_ALSA, LINUX_OSS, LINUX_PULSE, UNIX_JACK
+			mac:     MACOSX_CORE
+			windows: WINDOWS_ASIO, WINDOWS_DS
+
+			attention: program might crash with invalid settings, which
+			           enforces you to adjust this file by hand!
+		-->
+		<sound_engine>AUTOMATIC</sound_engine>
 	</settings>
 </game>
