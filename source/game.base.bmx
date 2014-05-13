@@ -228,8 +228,8 @@ Type TGame {_exposeToLua="selected"}
 
 		'create npc figures
 		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
-		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 3, 65, 0)
-		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 1, -65, 0)
+		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 6, 65, 0)
+		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 0, -65, 0)
 
 
 

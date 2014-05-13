@@ -66,16 +66,20 @@ Type TGUIListBase Extends TGUIobject
 		'by default all lists do not have scrollers
 		setScrollerState(False, False)
 
+		'the entries panel cannot be focused
+		guiEntriesPanel.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+
+
 		autoSortItems = True
 
 
 		'register events
 		'someone uses the mouse wheel to scroll over the panel
-		EventManager.registerListenerFunction( "guiobject.OnScrollwheel", onScrollWheel, Self)
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.OnScrollwheel", onScrollWheel, Self))
 		'- we are interested in certain events from the scroller or self
-		EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged",	onScroll, guiScrollerH )
-		EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged",	onScroll, guiScrollerV )
-		EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged",	onScroll, self )
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScroll, guiScrollerH ))
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScroll, guiScrollerV ))
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onScrollPositionChanged", onScroll, self ))
 
 
 		'is something dropping - check if it this list

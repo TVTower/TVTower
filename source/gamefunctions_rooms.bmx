@@ -189,6 +189,17 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
+	'returns if figure-sprites in this room are drawn in the building
+	'(eg. for plans)
+	Method ShowsFigures:int()
+		'maybe offload it to xml and a room-property
+		if fakeRoom then return True
+		'If (not inRoom Or inRoom.name = "elevatorplaner")
+
+		return False
+	End Method
+
+
 	'draw Room
 	Method Draw:int()
 		'if not self.screen then Throw "ERROR: room.draw() - screen missing";return 0
@@ -2394,7 +2405,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local fontColor:TColor = TColor.CreateGrey(50)
 		GetBitmapFont("Default",13).drawBlock(GetLocale("IMAGE_REACH") , 55, 233, 330, 20, null, fontColor)
 		GetBitmapFont("Default",12).drawBlock(GetLocale("IMAGE_SHARETOTAL") , 55, 45, 330, 20, null, fontColor)
-		GetBitmapFont("Default",12).drawBlock(THelper.floatToString(100.0 * GetPlayerCollection().Get(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TPoint.Init(ALIGN_RIGHT), fontColor)
+		GetBitmapFont("Default",12).drawBlock(MathHelper.floatToString(100.0 * GetPlayerCollection().Get(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TPoint.Init(ALIGN_RIGHT), fontColor)
 	End Function
 
 	Function onUpdateImage:int( triggerEvent:TEventBase )
@@ -5296,8 +5307,8 @@ Type RoomHandler_Credits extends TRoomHandler
 	Global roles:TCreditsRole[]
 	Global currentRolePosition:int = 0
 	Global currentCastPosition:int = 0
-	Global changeRoleTimer:TIntervalTimer = TIntervalTimer.Create(3200, 0,0)
-	Global fadeTimer:TIntervalTimer = TIntervalTimer.Create(1000, 0,0)
+	Global changeRoleTimer:TIntervalTimer = TIntervalTimer.Create(3200, 0)
+	Global fadeTimer:TIntervalTimer = TIntervalTimer.Create(1000, 0)
 	Global fadeMode:int = 0 '0 = fadein, 1=stay, 2=fadeout
 	Global fadeRole:int = TRUE
 	Global fadeValue:float = 0.0

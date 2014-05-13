@@ -92,13 +92,6 @@ Type TDeltaTimer
 	End Method
 
 
-	Method GetTweenResult:float(currentValue:float, oldValue:float, avoidShaking:int=TRUE)
-		local result:float = currentValue * getTween() + oldValue * (1.0 - getTween())
-		if avoidShaking and Abs(result - currentValue) < 0.1 then return currentValue
-		return result
-	End Method
-
-
 	'updates currentFps and currentUps
 	Method UpdateStatistics:int()
 		_secondGone	:+ _lastLoopTime

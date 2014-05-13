@@ -89,7 +89,7 @@ Type TSoundManager
 
 
 		'initialize sound system
-		SetAudioEngine(audioEngine)
+		InitAudioEngine()
 
 
 		manager.musicChannel1 = AllocChannel()
@@ -124,8 +124,11 @@ Type TSoundManager
 			default
 				audioEngine = "AUTOMATIC"
 		End Select
+	End Function
 
-		?Linux
+
+	Function InitAudioEngine:int()
+			?Linux
 			'if nothing was specified: use pulseAudio
 			if audioEngine = "AUTOMATIC" then audioEngine = "LINUX_PULSE"
 			'linux needs a different maxmod-implementation

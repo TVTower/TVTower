@@ -28,7 +28,7 @@
 		font.Draw("Bevölkerung", 25, 50, TColor.clWhite);
 		DrawAudience(audienceResult.WholeMarket, 200, 50);
 
-		Local percent:String = THelper.floatToString(audienceResult.PotentialMaxAudienceQuote.GetAverage()*100,2) + "%"
+		Local percent:String = MathHelper.floatToString(audienceResult.PotentialMaxAudienceQuote.GetAverage()*100,2) + "%"
 		font.Draw("Potentielle Zuschauer", 25, 70, TColor.clWhite);
 		font.Draw(percent, 160, 70, TColor.clWhite);
 		DrawAudience(audienceResult.PotentialMaxAudience, 200, 70);
@@ -46,7 +46,7 @@
 
 
 		font.Draw("Aktuelle Zuschauerzahl", 25, 90, TColor.clWhite);
-		percent = THelper.floatToString(audienceResult.AudienceQuote.GetAverage()*100,2) + "%"
+		percent = MathHelper.floatToString(audienceResult.AudienceQuote.GetAverage()*100,2) + "%"
 		font.Draw(percent, 160, 90, TColor.clWhite);
 		DrawAudience(audienceResult.Audience, 200, 90);
 
@@ -84,15 +84,15 @@
 
 
 		font.Draw("1. Programmqualität & Aktual.", 25, offset+110, TColor.clWhite)
-		'percent = THelper.floatToString(attraction.Quality * 100,2) + "%"
+		'percent = MathHelper.floatToString(attraction.Quality * 100,2) + "%"
 		'font.drawBlock(percent, 200, offset+110, 65, 25, new TPoint.Init(ALIGN_RIGHT), TColor.clRed)
 		If attraction.Quality Then
 			DrawAudiencePercent(TAudience.CreateAndInitValue(attraction.Quality), 200, offset+110, true, true);
 		Endif
 
 		font.Draw("2. Genre-Popularität / Trend", 25, offset+130, TColor.clWhite)
-		'Local genrePopularityMod:string = THelper.floatToString(attraction.GenrePopularityMod  * 100,2) + "%"
-		'Local genrePopularityQuality:string = THelper.floatToString(attraction.GenrePopularityQuality * 100,2) + "%"
+		'Local genrePopularityMod:string = MathHelper.floatToString(attraction.GenrePopularityMod  * 100,2) + "%"
+		'Local genrePopularityQuality:string = MathHelper.floatToString(attraction.GenrePopularityQuality * 100,2) + "%"
 		'font.Draw(genrePopularityMod, 160, offset+130, TColor.clWhite)
 		'font.drawBlock(genrePopularityQuality, 200, offset+130, 65, 25, new TPoint.Init(ALIGN_RIGHT), TColor.clRed)
 		'If attraction.GenrePopularityMod Then
@@ -221,15 +221,15 @@ rem
 
 rem
 		font.Draw("Genre <> Sendezeit", 25, offset+240, TColor.clWhite)
-		Local genreTimeMod:string = THelper.floatToString(attraction.GenreTimeMod  * 100,2) + "%"
-		Local genreTimeQuality:string = THelper.floatToString(attraction.GenreTimeQuality * 100,2) + "%"
+		Local genreTimeMod:string = MathHelper.floatToString(attraction.GenreTimeMod  * 100,2) + "%"
+		Local genreTimeQuality:string = MathHelper.floatToString(attraction.GenreTimeQuality * 100,2) + "%"
 		font.Draw(genreTimeMod, 160, offset+240, TColor.clWhite)
 		font.drawBlock(genreTimeQuality, 200, offset+240, 65, 25, new TPoint.Init(ALIGN_RIGHT), TColor.clRed)
 
 		'Nur vorübergehend
 		font.Draw("Trailer-Mod", 25, offset+250, TColor.clWhite)
-		Local trailerMod:String = THelper.floatToString(attraction.TrailerMod  * 100,2) + "%"
-		Local trailerQuality:String = THelper.floatToString(attraction.TrailerQuality * 100,2) + "%"
+		Local trailerMod:String = MathHelper.floatToString(attraction.TrailerMod  * 100,2) + "%"
+		Local trailerQuality:String = MathHelper.floatToString(attraction.TrailerQuality * 100,2) + "%"
 		font.Draw(trailerMod, 160, offset+250, TColor.clWhite)
 		font.drawBlock(trailerQuality, 200, offset+250, 65, 25, new TPoint.Init(ALIGN_RIGHT), TColor.clRed)
 
@@ -276,7 +276,7 @@ endrem
 		local pointAlignRight:TPoint = new TPoint.Init(ALIGN_RIGHT)
 
 		If Not hideAverage Then
-			val = THelper.floatToString(audience.GetAverage() * 100,2) + "%"
+			val = MathHelper.floatToString(audience.GetAverage() * 100,2) + "%"
 			If gray Then
 				font.drawBlock(val, x, y, 65, 25, pointAlignRight, TColor.Create(150, 80, 80))
 			Else
@@ -285,7 +285,7 @@ endrem
 		End if
 
 		for local i:int = 1 to 7
-			val = THelper.floatToString(audience.GetValue(i) * 100,2) + "%"
+			val = MathHelper.floatToString(audience.GetValue(i) * 100,2) + "%"
 			font.drawBlock(val, x2 + 70*(i-1), y, 65, 25, pointAlignRight, color)
 		Next
 	End Function

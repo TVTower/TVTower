@@ -1,0 +1,218 @@
+Rem
+	====================================================================
+	String helper classes
+	====================================================================
+
+	Various helpers to work with strings.
+
+
+
+	====================================================================
+	function printf:
+	----------------
+	Source: https://code.google.com/p/diddy/source/browse/src/diddy/
+	        format.monkey
+
+	Modified: by Ronny Otto, added Rounding of Floats
+
+	Licence:
+	Copyright (c) 2011 Steve Revill and Shane Woolcock
+	Permission is hereby granted, free of charge, to any person
+	obtaining a copy of this software and associated documentation files
+	(the "Software"), to deal in the Software without restriction,
+	including without limitation the rights to use, copy, modify, merge,
+	publish, distribute, sublicense, and/or sell copies of the Software,
+	and to permit persons to whom the Software is furnished to do so,
+	subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be
+	included in all copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+	OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+	NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+	BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+	ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+	CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+	====================================================================
+
+End Rem
+SuperStrict
+Import "base.util.math.bmx"
+
+
+Type StringHelper
+
+	'fill a given string with the args provided
+	'examples:
+	'print StringHelper.printf("price %3.3f", ["12.12399"])
+	'print StringHelper.printf("My name is %s, write it big! %S is %d", ["John", "John", "12"])
+	Function printf:String(text:string, args:string[])
+		Local argCount:Int = args.Length
+
+		Local result:String = ""
+		Local formatting:Int = False
+		Local escapingBackslash:Int = False
+		Local escapingPercent:Int = False
+		Local textPos:Int = 0
+		Local argnum:Int = 0
+		Local char:string = ""
+
+		While textPos < text.Length
+			char = chr(text[textPos])
+			textPos :+ 1
+
+			'if escaping with backslash, add the character
+			If escapingBackslash
+				result :+ char 'maybe better Mid(text, textPos, 1) for UTF8 ?
+				escapingBackslash = False
+
+			'if not escaping enable escaping when char is a backslash
+			ElseIf char = "\"
+				escapingBackslash = True
+
+			'if receiving % while not formatting, enable formatting + escape percent
+			ElseIf Not formatting And char = "%"
+				formatting = True
+				escapingPercent = True
+
+			'if escaping a percent and receiving another one, disable formatting
+			ElseIf escapingPercent And char = "%"
+				result :+ char
+				escapingPercent = False
+				formatting = False
+
+			'if not formatting, just add the character
+			ElseIf Not formatting
+				result :+ char
+
+
+			'if formatting
+			Else
+				'check if text contains more placeholders than arguments given
+				If argnum >= argcount
+					Throw "StringHelper.printf(): not enough arguments given to format the given string."
+				endif
+
+				Local fmtarg:String = char
+				Local foundPeriod:int = False
+				Local foundMinus:int = False
+				Local foundPadding:Int = False
+				Local formatLengthStr:String = ""
+				Local formatLength:Int = 0
+				Local formatDPStr:String = ""
+				Local formatDP:Int = 0
+				Local formatType:String = ""
+
+				' extract the rest of the format tag
+				If Not IsValidFormat(char)
+					While textPos < text.Length
+						fmtarg :+ text[textPos..textPos+1]
+						textPos :+ 1
+						If IsValidFormat(fmtarg[fmtarg.Length-1..]) Then Exit
+					Wend
+				EndIf
+				' set format type
+				formatType = fmtarg[fmtarg.Length-1..]
+
+				' get the last character as the format type and die if it's wrong
+				If formatType = ""
+					Throw "StringHelper.printF(): Error parsing format string!"
+				endif
+
+				Local fmtargptr:Int = 0
+				' check for minus
+				If chr(fmtarg[0]) = "-"
+					foundMinus = True
+					fmtargptr :+ 1
+				' check for padding
+				ElseIf chr(fmtarg[fmtargptr]) = "0"
+					foundPadding = True
+					fmtargptr :+ 1
+				EndIf
+
+				' check for digits up to a period or a character
+				While fmtargptr < fmtarg.Length
+					If IsValidFormat(fmtargptr)
+						Exit
+					ElseIf fmtarg[fmtargptr] >= "0"[0] And fmtarg[fmtargptr] <= "9"[0]
+						If Not foundPeriod
+							formatLengthStr :+ fmtarg[fmtargptr..fmtargptr+1]
+						Else
+							formatDPStr :+ fmtarg[fmtargptr..fmtargptr+1]
+						EndIf
+					ElseIf fmtarg[fmtargptr] = "."[0]
+						foundPeriod = True
+					EndIf
+					fmtargptr :+ 1
+				Wend
+
+				formatting = False
+				If formatLengthStr <> "" Then formatLength = Int(formatLengthStr)
+				If formatDPStr <> "" Then formatDP = Int(formatDPStr)
+
+				If formatType = "d"
+					Local ds:String = Int(args[argnum])
+					While ds.Length < formatLength
+						If foundPadding
+							ds = "0"+ds
+						ElseIf foundMinus
+							ds :+ " "
+						Else
+							ds = " "+ds
+						EndIf
+					Wend
+					result :+ ds
+				ElseIf formatType = "f"
+					'Ronny: replaced code with a rounding one from
+					'       our framework
+					Local df:Float = Float(args[argnum])
+					result :+ MathHelper.FloatToString(df, formatDP)
+				ElseIf formatType = "c"
+					If foundPadding Or foundMinus
+						Throw "StringHelper.printf(): Error parsing format string!"
+					endif
+					result :+ chr(Int(args[argnum]))
+				ElseIf formatType = "s" Or formatType = "S"
+					If foundPadding
+						Throw "StringHelper.printf(): Error parsing format string!"
+					endif
+					Local ds:String = args[argnum]
+					If formatType = "S" Then ds = ds.ToUpper()
+					While ds.Length < formatLength
+						If foundMinus
+							ds :+ " "
+						Else
+							ds = " " + ds
+						EndIf
+					Wend
+					result :+ ds
+				ElseIf formatType = "x" Or formatType = "X"
+					Local ds:String = Hex(Int(args[argnum])).ToLower()
+					If formatType = "X" Then ds = ds.ToUpper()
+					While ds.Length < formatLength
+						If foundPadding
+							ds = "0" + ds
+						ElseIf foundMinus
+							ds :+ " "
+						Else
+							ds = " " + ds
+						EndIf
+					Wend
+					result :+ ds
+				EndIf
+
+				argnum :+ 1
+			EndIf
+		Wend
+		return result
+
+		'helper function
+		Function IsValidFormat:Int(char:String)
+			'Return "dfsScxX".Find(char)
+			Return char = "d" Or char = "f" Or char = "s" Or char = "S" Or char = "c" Or char = "x" Or char = "X"
+		End Function
+	End Function
+End Type

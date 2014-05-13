@@ -3,6 +3,7 @@ Import BRL.Reflection
 Import BRL.Retro
 Import "base.util.input.bmx" 		'Mousemanager
 Import "base.util.rectangle.bmx"	'TRectangle
+Import "base.util.math.bmx"
 
 'collection of useful functions
 Type THelper
@@ -66,56 +67,17 @@ Type THelper
 	End Function
 
 
-	'convert a float to a string
-	'float is rounded to the requested amount of digits after comma
-	Function floatToString:String(value:Float, digitsAfterDecimalPoint:int = 2)
-		Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
-
-		'calculate amount of digits before "."
-		'instead of just string(int(s))).length we use the "Abs"-value
-		'and compare the original value if it is negative
-		'- this is needed because "-0.1" would be "0" as int (one char less)
-		local lengthBeforeDecimalPoint:int = string(abs(int(s))).length
-		if value < 0 then lengthBeforeDecimalPoint:+1 'minus sign
-		'remove unneeded digits (length = BEFORE + . + AFTER)
-		s = Left(s, lengthBeforeDecimalPoint + 1 + digitsAfterDecimalPoint)
-
-		'add at as much zeros as requested by digitsAfterDecimalPoint
-		If s.EndsWith(".")
-			for local i:int = 0 until digitsAfterDecimalPoint
-				s :+ "0"
-			Next
-		endif
-
-		Return s
-	End Function
-
-
-	Function RoundInt:Int(f:Float)
-		'http://www.blitzbasic.com/Community/posts.php?topic=92064
-	    Return f + 0.5 * Sgn(f)
-	End Function
-
-
-	'round a number using weighted non-trucate rounding.
-	Function roundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
-		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		Return Long(number * t + 0.5:double * Sgn(number)) / Double(t)
-	End Function
-
-
-
-	Function GetTweenedValue:float(currentValue:float, oldValue:float, tween:Float, avoidShaking:int=TRUE)
-		local result:float = currentValue * tween + oldValue * (1.0 - tween)
-		if avoidShaking and Abs(result - currentValue) < 0.1 then return currentValue
-		return result
-	End Function
-
-
 	Function GetTweenedPoint:TPoint(currentPoint:TPoint, oldPoint:TPoint, tween:Float, avoidShaking:int=TRUE)
-		return new TPoint.Init(..
-	         GetTweenedValue(currentPoint.x, oldPoint.x, tween, avoidShaking),..
-	         GetTweenedValue(currentPoint.y, oldPoint.y, tween, avoidShaking)..
-	       )
+		if avoidShaking
+			return new TPoint.Init(..
+				 MathHelper.SteadyTween(oldPoint.x, currentPoint.x, tween),..
+				 MathHelper.SteadyTween(oldPoint.y, currentPoint.y, tween)..
+			   )
+		else
+			return new TPoint.Init(..
+				 MathHelper.Tween(oldPoint.x, currentPoint.x, tween),..
+				 MathHelper.Tween(oldPoint.y, currentPoint.y, tween)..
+			   )
+		endif
 	End Function
 End Type

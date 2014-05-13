@@ -315,15 +315,15 @@ Type TAudience
 
 
 	Method Round:TAudience()
-		Children	= THelper.RoundInt(Children)
-		Teenagers	= THelper.RoundInt(Teenagers)
-		HouseWifes	= THelper.RoundInt(HouseWifes)
-		Employees	= THelper.RoundInt(Employees)
-		Unemployed	= THelper.RoundInt(Unemployed)
-		Manager		= THelper.RoundInt(Manager)
-		Pensioners	= THelper.RoundInt(Pensioners)
-		Women		= THelper.RoundInt(Women)
-		Men			= THelper.RoundInt(Men)
+		Children	= MathHelper.RoundInt(Children)
+		Teenagers	= MathHelper.RoundInt(Teenagers)
+		HouseWifes	= MathHelper.RoundInt(HouseWifes)
+		Employees	= MathHelper.RoundInt(Employees)
+		Unemployed	= MathHelper.RoundInt(Unemployed)
+		Manager		= MathHelper.RoundInt(Manager)
+		Pensioners	= MathHelper.RoundInt(Pensioners)
+		Women		= MathHelper.RoundInt(Women)
+		Men			= MathHelper.RoundInt(Men)
 		Return Self
 	End Method
 
@@ -346,17 +346,17 @@ Type TAudience
 
 	Method ToStringMinimal:String()
 		Local dec:Int = 0
-		Return "C:" + THelper.floatToString(Children,dec) + " / T:" + THelper.floatToString(Teenagers,dec) + " / H:" + THelper.floatToString(HouseWifes,dec) + " / E:" + THelper.floatToString(Employees,dec) + " / U:" + THelper.floatToString(Unemployed,dec) + " / M:" + THelper.floatToString(Manager,dec) + " /P:" + THelper.floatToString(Pensioners,dec)
+		Return "C:" + MathHelper.floatToString(Children,dec) + " / T:" + MathHelper.floatToString(Teenagers,dec) + " / H:" + MathHelper.floatToString(HouseWifes,dec) + " / E:" + MathHelper.floatToString(Employees,dec) + " / U:" + MathHelper.floatToString(Unemployed,dec) + " / M:" + MathHelper.floatToString(Manager,dec) + " /P:" + MathHelper.floatToString(Pensioners,dec)
 	End Method
 
 	Method ToString:String()
 		Local dec:Int = 4
-		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + THelper.floatToString(Children,dec) + "  - 1: " + THelper.floatToString(Teenagers,dec) + "  - 2: " + THelper.floatToString(HouseWifes,dec) + "  - 3: " + THelper.floatToString(Employees,dec) + "  - 4: " + THelper.floatToString(Unemployed,dec) + "  - 5: " + THelper.floatToString(Manager,dec) + "  - 6: " + THelper.floatToString(Pensioners,dec) + ") - [[ W: " + THelper.floatToString(Women,dec) + "  - M: " + THelper.floatToString(Men ,dec) + " ]]"
+		Return "Sum: " + Int(Ceil(GetSum())) + "  ( 0: " + MathHelper.floatToString(Children,dec) + "  - 1: " + MathHelper.floatToString(Teenagers,dec) + "  - 2: " + MathHelper.floatToString(HouseWifes,dec) + "  - 3: " + MathHelper.floatToString(Employees,dec) + "  - 4: " + MathHelper.floatToString(Unemployed,dec) + "  - 5: " + MathHelper.floatToString(Manager,dec) + "  - 6: " + MathHelper.floatToString(Pensioners,dec) + ") - [[ W: " + MathHelper.floatToString(Women,dec) + "  - M: " + MathHelper.floatToString(Men ,dec) + " ]]"
 	End Method
 
 
 	Method ToStringAverage:String()
-		Return "Avg: " + THelper.floatToString(GetAverage(),3) + "  ( 0: " + THelper.floatToString(Children,3) + "  - 1: " + THelper.floatToString(Teenagers,3) + "  - 2: " + THelper.floatToString(HouseWifes,3) + "  - 3: " + THelper.floatToString(Employees,3) + "  - 4: " + THelper.floatToString(Unemployed,3) + "  - 5: " + THelper.floatToString(Manager,3) + "  - 6: " + THelper.floatToString(Pensioners,3) + ")"
+		Return "Avg: " + MathHelper.floatToString(GetAverage(),3) + "  ( 0: " + MathHelper.floatToString(Children,3) + "  - 1: " + MathHelper.floatToString(Teenagers,3) + "  - 2: " + MathHelper.floatToString(HouseWifes,3) + "  - 3: " + MathHelper.floatToString(Employees,3) + "  - 4: " + MathHelper.floatToString(Unemployed,3) + "  - 5: " + MathHelper.floatToString(Manager,3) + "  - 6: " + MathHelper.floatToString(Pensioners,3) + ")"
 	End Method
 
 

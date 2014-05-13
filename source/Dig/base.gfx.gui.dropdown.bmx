@@ -35,65 +35,50 @@ Rem
 	====================================================================
 End Rem
 SuperStrict
-'Import "base.gfx.gui.input.bmx"
-Import "base.gfx.gui.button.bmx"
+Import "base.gfx.gui.input.bmx"
+'Import "base.gfx.gui.button.bmx"
 Import "base.gfx.gui.list.selectlist.bmx"
 
 
-Type TGUIMySelectList extends TGUISelectList
 
-    Method Create:TGUIMySelectList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
-		Super.Create(position, dimension, limitState)
-		return self
-	End Method
-
-	Method Draw:int()
-		SetColor 255,0,0
-		SetAlpha 0.5
-		DrawRect(GetContentScreenX(),GetContentScreenY(),2,GetContentScreenHeight())
-		DrawRect(GetContentScreenX() + GetContentScreenWidth() - 2,GetContentScreenY(),2,GetContentScreenHeight())
-		SetAlpha 1.0
-		SetColor 255,255,255
-
-		Super.Draw()
-	End Method
-End Type
-
-
-
-Type TGUIDropDown Extends TGUIButton
+Type TGUIDropDown Extends TGUIInput
 	'height of the opened drop down
 	Field openHeight:int = 100
 	Field open:int = FALSE
-	Field list:TGUIMySelectList
+	Field list:TGUISelectList
 
 
-    Method Create:TGUIDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", limitState:String = "")
+    Method Create:TGUIDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
 		'setup base widget (button)
-		Super.Create(position, dimension, State)
+		Super.Create(position, dimension, value, maxLength, State)
 
 		'=== STYLE BUTTON ===
 		'use another sprite than the default button
 		spriteName = "gfx_gui_input.default"
-'		selectButton.SetOverlayPosition("right")
-'		selectButton.SetOverlay("gfx_gui_icon_arrowDown")
+		SetOverlayPosition("right")
+		SetOverlay("gfx_gui_icon_arrowDown")
+		SetEditable(False)
 
 
 		'=== ENTRY LIST ===
 		'create and style list
-		list = new TGUIMYSelectList.Create(new TPoint.Init(0, self.rect.GetH()), new TPoint.Init(rect.GetW(), 80), "")
+		list = new TGUISelectList.Create(new TPoint.Init(0, self.rect.GetH()), new TPoint.Init(rect.GetW(), 80), "")
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
 		SetOpen(false)
 
+		'set the list to ignore focus requests (avoids onRemoveFocus-events)
+		list.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+
 
 		'=== REGISTER EVENTS ===
-		'to close the list automatically if the button or the list
-		'looses focus
-		EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self )
-		EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self.list )
+		'to close the list automatically if the budget looses focus
+		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self ))
+		'listen to clicks to dropdown-items
+		AddEventListener(EventManager.registerListenerMethod( "guiobject.onClick",	Self.list, "onClickOnEntry", "TGUIDropDownItem" ))
+
 		'to register if an item was selected
-		EventManager.registerListenerMethod("guiselectlist.onSelectEntry", self, "onSelectEntry", self.list )
+		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", self, "onSelectEntry", self.list ))
 
 		Return Self
 	End Method
@@ -106,22 +91,46 @@ Type TGUIDropDown Extends TGUIButton
 
 		local sender:TGuiObject = TGUIObject(triggerEvent.GetSender())
 		local receiver:TGuiObject = TGUIObject(triggerEvent.GetReceiver())
+		if not sender then return False
 
-		'one method to register "clicks":
-		rem
+		Rem
 		'if the receiver is an entry of the list - close and "click"
 		if self.list.HasItem(receiver)
 			SetOpen(False)
 			print "clicked"
 		endif
-		endrem
+		EndRem
+
+		'close on click on a list item
+		if receiver and list.HasItem(receiver)
+			SetValue(receiver.GetValue())
+			SetOpen(False)
+		endif
+
 
 		'skip when loosing focus to self->list or list->self
-		if sender = self and receiver = self.list then return False
-		if sender = self.list and receiver = self then return False
-		'skip if the receiver has a parent which is this button or the list
-		if receiver.HasParent(self.list) then return False
+		if receiver
+			local senderBelongsToWidget:int = False
+			local receiverBelongsToWidget:int = False
 
+			if sender = self
+				senderBelongsToWidget = True
+			elseif sender.HasParent(self.list)
+				senderBelongsToWidget = True
+			endif
+
+			if senderBelongsToWidget and receiver
+				if receiver = self
+					receiverBelongsToWidget = True
+				elseif receiver.HasParent(self.list)
+					receiverBelongsToWidget = True
+				endif
+			endif
+
+			'keep the widgets list "open" if ne focus is now at a sub element
+			'of the widget
+			if senderBelongsToWidget and receiverBelongsToWidget then return False
+		endif
 
 
 		SetOpen(False)
@@ -129,9 +138,14 @@ Type TGUIDropDown Extends TGUIButton
 
 
 	Method onSelectEntry:int(triggerEvent:TEventBase)
-		local item:TGUIDropDownItem = TGUIDropDownItem(triggerEvent.GetData().Get("item"))
+		local guiobj:TGUIObject = TGUIObject(triggerEvent.GetData().Get("entry"))
+		if guiobj then print guiObj.GetClassName()
+
+		local item:TGUIDropDownItem = TGUIDropDownItem(triggerEvent.GetData().Get("entry"))
 		'clicked item is of a different type
 		if not item then return False
+
+		SetValue(item.GetValue())
 	EndMethod
 
 
@@ -164,22 +178,6 @@ Type TGUIDropDown Extends TGUIButton
 		list.AddItem(item)
 	End Method
 
-rem
-
-	'override default method
-	Method GetScreenHeight:Float()
-		local height:int = Super.GetScreenHeight()
-		if IsOpen() then height :+ list.GetScreenHeight()
-		return height
-	End Method
-
-	'override default method to return a different rect when "open"
-	Method GetScreenRect:TRectangle()
-		if not IsOpen() then return Super.GetScreenRect()
-
-		return new TRectangle.Init( GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
-	End Method
-endrem
 
 	'override default update-method
 	Method Update:Int()
@@ -188,19 +186,12 @@ endrem
 		'move list to our position
 		list.rect.position.SetXY( rect.GetX(), rect.GetY() + GetScreenHeight() )
 
-'		list.Update()
 		UpdateChildren()
 	End Method
 
 
 	Method Draw()
-		SetAlpha 0.5
-		DrawRect(GetContentScreenX(),GetContentScreenY(),GetContentScreenWidth(),GetContentScreenHeight())
-		SetAlpha 1.0
-
-
 		Super.Draw()
-'		list.Draw()
 		DrawChildren()
 	End Method
 End Type

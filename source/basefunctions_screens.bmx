@@ -385,7 +385,7 @@ Type TScreenChangeEffect_SimpleFader extends TScreenChangeEffect
 
 	Method Draw:int(tweenValue:Float=1.0)
 		local oldCol:TColor = new TColor.Get()
-		local tweenProgress:float = GetTweenResult(_progress, _progressOld, tweenValue)
+		local tweenProgress:float = MathHelper.Tween(_progressOld, _progress, tweenValue)
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
 
 		SetAlpha tweenProgress
@@ -411,7 +411,7 @@ Type TScreenChangeEffect_ClosingRects extends TScreenChangeEffect_SimpleFader
 
 	Method Draw:int(tweenValue:Float=1.0)
 		local oldCol:TColor = new TColor.Get()
-		local tweenProgress:float = GetTweenResult(_progress, _progressOld, tweenValue)
+		local tweenProgress:float = MathHelper.Tween(_progressOld, _progress, tweenValue)
 		if _direction = DIRECTION_OPEN then tweenProgress = Max(0, 1.0 - tweenProgress)
 
 		local rectsWidth:float  = tweenProgress * (GetArea().GetW() / 2)

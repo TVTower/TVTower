@@ -148,9 +148,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		if not _initdone
 			'instead of "room.onLeave" we listen to figure.onLeaveRoom as it has
 			'the figure as sender - so we can filter
-			EventManager.registerListenerFunction("figure.onLeaveRoom", onLeaveRoom, "TFigure" )
+			EventManager.registerListenerFunction("figure.onLeaveRoom", event_onLeaveRoom, "TFigure" )
 			'same for onEnterRoom
-			EventManager.registerListenerFunction("figure.onEnterRoom", onEnterRoom, "TFigure" )
+			EventManager.registerListenerFunction("figure.onEnterRoom", event_onEnterRoom, "TFigure" )
 
 			_initDone = TRUE
 		endif
@@ -247,8 +247,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 			'does the center of the figure will reach the target during update?
-			local deltaTime:Float = GetDeltaTimer().GetDelta()
-			local dx:float = deltaTime * GetVelocity().GetX()
+			local dx:float = GetVelocity().GetX() * GetDeltaTimer().GetDelta()
 			local reachTemporaryTarget:int = FALSE
 			'move to right and next step is more right than target
 			if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
@@ -324,6 +323,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 				result = "standBack"
 			'going into a room
 			ElseIf isChangingRoom and targetDoor
+				result = "standBack"
+			'in a room (or standing in front of a fake room - looking at plan)
+			ElseIf inRoom and inRoom.ShowsFigures()
 				result = "standBack"
 			'show front
 			Else
@@ -507,18 +509,27 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	'gets called when the figure really enters the room (animation finished etc)
-	Function onEnterRoom:int( triggerEvent:TEventBase )
+	Function event_onEnterRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent._sender )
 		local room:TRoom = TRoom( triggerEvent.getData().get("room") )
 
 		'RON: if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
 		figure._setInRoom(room)
 
+		'inform figure, so it can do special things
+		figure.onEnterRoom(room)
+
 		return TRUE
 	End Function
 
 
-	'command to leave a room - "onLeaveRoom" is called when successful
+	'called if the event "onEnterRoom" is triggered for this figure
+	Method onEnterRoom(room:TRoom)
+		'by default do nothing
+	End Method
+
+
+	'command to leave a room - "event_onLeaveRoom" is called when successful
 	Method LeaveRoom:Int()
 		'skip command if we already are leaving
 		if isChangingRoom then return TRUE
@@ -535,20 +546,29 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	'gets called when the figure really leaves the room (animation finished etc)
-	Function onLeaveRoom:int( triggerEvent:TEventBase )
+	Function event_onLeaveRoom:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent._sender )
 
 'RON: if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
 
 		If GetPlayerCollection().Get(figure.ParentPlayerID) And figure.isAI() then GetPlayerCollection().Get(figure.ParentPlayerID).PlayerKI.CallOnLeaveRoom()
 
+		local oldRoom:TRoom = figure.inRoom
+
 		'enter target -> null = building
 		figure._setInRoom( null )
 
+		'inform figure, so it can do special things
+		figure.onLeaveRoom(oldRoom)
 
 		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(figure)
 	End Function
 
+
+	'called if the event "onLeaveRoom" is triggered for this figure
+	Method onLeaveRoom(room:TRoom)
+		'by default do nothing
+	End Method
 
 
 	Method SendToDoor:Int(door:TRoomDoor)
@@ -767,32 +787,28 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Method Draw:int(overwriteAnimation:String="")
 		if not sprite or not isVisible() then return FALSE
 
-		If (not inRoom Or inRoom.name = "elevatorplaner")
+		If (not inRoom Or inRoom.ShowsFigures())
 			'avoid shaking figures when standing - only use tween
 			'position when moving
 			local tweenPos:TPoint
 			if velocity.GetIntX() <> 0 and not GetGameTime().paused
-				tweenPos = new TPoint
-				tweenPos.SetX( GetDeltaTimer().GetTweenResult(area.getX(), oldPosition.x, true) )
-				tweenPos.SetY( GetDeltaTimer().GetTweenResult(area.getY(), oldPosition.y, true) )
+				tweenPos = new TPoint.Init(..
+					MathHelper.SteadyTween(oldPosition.x, area.getX(), GetDeltaTimer().GetTween()), ..
+					MathHelper.SteadyTween(oldPosition.y, area.getY(), GetDeltaTimer().GetTween()) ..
+				)
 			else
-				tweenPos = oldPosition.Copy()
+				tweenPos = area.position.Copy()
 			endif
 
-			'draw x-centered at current position
-			'normal
-			'Super.Draw( rect.getX() - ceil(rect.GetW()/2) + PosOffset.getX(), GetBuilding().area.position.y + Self.rect.GetY() - Self.sprite.area.GetH() + PosOffset.getY())
-			'tweened with floats
-			'Super.Draw( tweenPosX - ceil(rect.GetW()/2) + PosOffset.getX(), GetBuilding().area.position.y + tweenPosY - Self.sprite.area.GetH() + PosOffset.getY())
-			'tweened with int
+			'draw x-centered at current position, with int
 			if useAbsolutePosition
 				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
 			else
-				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(GetBuilding().area.position.y + tweenPos.Y - Self.sprite.area.GetH() + PosOffset.getY()))
+				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(GetBuilding().area.position.y + tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
 			endif
 		EndIf
 
-		if greetOthers then Self.GetPeopleOnSameFloor()
+		if greetOthers then GetPeopleOnSameFloor()
 	End Method
 
 End Type

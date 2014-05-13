@@ -27,6 +27,13 @@ Type TGUIScroller Extends TGUIobject
 		guiButtonMinus = New TGUIArrowButton.Create(Null, null, "UP", "")
 		guiButtonPlus = New TGUIArrowButton.Create(Null, null, "DOWN", "")
 
+		'set the buttons to ignore focus setting
+		guiButtonMinus.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+		guiButtonPlus.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+
+		'the scroller itself ignores focus too
+		self.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+
 		'style myself - aligns buttons
 		onAppearanceChanged()
 
@@ -36,10 +43,10 @@ Type TGUIScroller Extends TGUIobject
 		guiButtonPlus.setParent(Self)
 
 		'scroller is interested in hits (not clicks) on its buttons
-		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScroller.onButtonClick, Self.guiButtonMinus )
-		EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScroller.onButtonClick, Self.guiButtonPlus )
-		EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScroller.onButtonDown, Self.guiButtonMinus )
-		EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScroller.onButtonDown, Self.guiButtonPlus )
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScroller.onButtonClick, guiButtonMinus ))
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onClick",	TGUIScroller.onButtonClick, guiButtonPlus ))
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScroller.onButtonDown, guiButtonMinus ))
+		AddEventListener(EventManager.registerListenerFunction( "guiobject.onMouseDown",	TGUIScroller.onButtonDown, guiButtonPlus ))
 
 		GUIManager.Add( Self)
 

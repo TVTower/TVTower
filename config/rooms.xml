@@ -235,22 +235,25 @@
 			<door doorslot="1" floor="10" doortype="3" />
 		</room>
 
-		<room name="roomboard" owner="-1" screen="screen_roomboard">
+		<room name="roomboard" owner="-1" screen="screen_roomboard" fake="1">
 			<tooltip text="ROOM_ROOMBOARD" />
 			<door doorslot="4" x="527" floor="0" doortype="1" doorwidth="59" />
 		</room>
-		<room name="credits" owner="-1" screen="screen_credits">
+		<room name="credits" owner="-1" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_CREDITS" />
 			<door doorslot="4" x="559" floor="13" doortype="1" doorwidth="52" />
 		</room>
-		<room name="porter" owner="-1" screen="screen_credits">
+		<room name="porter" owner="-1" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_PORTER" />
 			<door doorslot="1" x="186" floor="0" doortype="1" doorwidth="66" />
 		</room>
 
 
 		<!-- elevator doors, to make them clickable | ID is differing so assets are inserted properly-->
-		<room name="elevatorplan" owner="0" id="0"  screen="screen_elevatorplan"><tooltip text="ROOM_ELEVATORPLAN" /><door doorslot="-1" floor="0" doorwidth="40" doortype="-1" /></room>
+		<room name="elevatorplan" owner="0" id="0" screen="screen_elevatorplan" fake="1">
+			<tooltip text="ROOM_ELEVATORPLAN" />
+			<door doorslot="-1" floor="0" doorwidth="40" doortype="-1" />
+		</room>
 
 		<!-- "building" is a special room - and also handle if no room is given -->
 		<room name="building" owner="0" fake="1">

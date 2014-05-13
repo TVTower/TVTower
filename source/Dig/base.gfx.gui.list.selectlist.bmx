@@ -53,7 +53,7 @@ Type TGUISelectList Extends TGUIListBase
 	'overrideable
 	Method RegisterListeners:Int()
 		'we want to know about clicks
-		EventManager.registerListenerMethod( "guiobject.onClick",	Self, "onClickOnEntry", "TGUISelectListItem" )
+		AddEventListener(EventManager.registerListenerMethod( "guiobject.onClick",	Self, "onClickOnEntry", "TGUISelectListItem" ))
 	End Method
 
 

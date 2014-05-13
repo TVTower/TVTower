@@ -29,9 +29,10 @@ Const GUI_OBJECT_IGNORE_POSITIONMODIFIERS:Int	= 2^7
 Const GUI_OBJECT_IGNORE_PARENTPADDING:Int		= 2^8
 Const GUI_OBJECT_ACCEPTS_DROP:Int				= 2^9
 Const GUI_OBJECT_CAN_RECEIVE_KEYSTROKES:Int		= 2^10
-Const GUI_OBJECT_DRAWMODE_GHOST:Int				= 2^11
+Const GUI_OBJECT_CAN_GAIN_FOCUS:Int				= 2^11
+Const GUI_OBJECT_DRAWMODE_GHOST:Int				= 2^12
 'defines what GetFont() tries to get at first: parents or types font
-Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^12
+Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^13
 
 '===== GUI STATUS CONSTANTS =====
 CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^0
@@ -589,6 +590,8 @@ Type TGUIobject
 	Field _parent:TGUIobject = Null
 	'fuer welchen gamestate anzeigen
 	Field _limitToState:String = ""
+	'an array containing registered event listeners
+	Field _registeredEventListener:TLink[]
 	'displacement of object when dragged (null = centered)
 	Field handle:TPoint	= Null
 	Field className:String			= ""
@@ -617,6 +620,7 @@ Type TGUIobject
 		setOption(GUI_OBJECT_VISIBLE, True)
 		setOption(GUI_OBJECT_ENABLED, True)
 		setOption(GUI_OBJECT_CLICKABLE, True)
+		setOption(GUI_OBJECT_CAN_GAIN_FOCUS, True)
 	End Method
 
 
@@ -696,9 +700,10 @@ Type TGUIobject
 	Method Remove:Int()
 		'unlink all potential event listeners concerning that object
 		EventManager.unregisterListenerByLimit(self,self)
-'		For Local link:TLink = EachIn _registeredEventListener
-'			link.Remove()
-'		Next
+
+		For Local link:TLink = EachIn _registeredEventListener
+			link.Remove()
+		Next
 
 		'maybe our parent takes care of us...
 		If _parent Then _parent.RemoveChild(Self)
@@ -708,6 +713,11 @@ Type TGUIobject
 		GUIManager.remove(Self)
 
 		Return True
+	End Method
+
+
+	Method AddEventListener:int(listenerLink:TLink)
+		_registeredEventListener :+ [listenerLink]
 	End Method
 
 
@@ -1416,7 +1426,9 @@ Type TGUIobject
 				'create a new "event"
 				If Not MouseIsDown
 					'as soon as someone clicks on a object it is getting focused
-					GUImanager.setFocus(Self)
+					if HasOption(GUI_OBJECT_CAN_GAIN_FOCUS)
+						GUImanager.setFocus(Self)
+					endif
 
 					MouseIsDown = new TPoint.Init( MouseManager.x, MouseManager.y )
 				EndIf

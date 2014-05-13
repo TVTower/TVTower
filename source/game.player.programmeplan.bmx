@@ -575,7 +575,7 @@ endrem
 		if not obj.isProgrammed() then return TRUE
 
 		if obj
-			print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
+			'print "RON: PLAN.RemoveProgramme       owner="+owner+" day="+day+" hour="+hour + " obj :"+obj.GetTitle()
 
 			'backup programmed date
 			local programmedDay:int = obj.programmedDay

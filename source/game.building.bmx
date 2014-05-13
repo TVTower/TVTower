@@ -179,7 +179,7 @@ Type TBuilding Extends TStaticEntity
 
 
 		local deltaTime:float = GetDeltaTimer().GetDelta()
-		area.position.y = Clamp(area.position.y, - 637, 88)
+		area.position.y = MathHelper.Clamp(area.position.y, - 637, 88)
 		UpdateBackground(deltaTime)
 
 
@@ -480,7 +480,7 @@ Type TBuilding Extends TStaticEntity
 
 			SetBlend ALPHABLEND
 
-			Local tweenDistance:Float = GetTweenResult(Moon_PathCurrentDistance, Moon_PathCurrentDistanceOld, True)
+			Local tweenDistance:Float = MathHelper.Tween(Moon_PathCurrentDistanceOld, Moon_PathCurrentDistance, GetDeltaTimer().GetTween())
 			Local moonPos:TPoint = Moon_Path.GetTweenPoint(tweenDistance, True)
 			'draw moon - frame is from +6hrs (so day has already changed at 18:00)
 			'GetSpriteFromRegistry("gfx_building_BG_moon").Draw(40, 40, 12 - ( GetGameTime().getDay(GetGameTime().GetTimeGone()+6*60) Mod 12) )
@@ -501,7 +501,7 @@ Type TBuilding Extends TStaticEntity
 		If DezimalTime > 18 Or DezimalTime < 7
 '			If GetGameTime().getDay() Mod 2 = 0
 				'compute and draw Ufo
-				Local tweenDistance:Float = GetTweenResult(UFO_PathCurrentDistance, UFO_PathCurrentDistanceOld, True)
+				Local tweenDistance:Float = MathHelper.Tween(UFO_PathCurrentDistanceOld, UFO_PathCurrentDistance, GetDeltaTimer().GetTween())
 				Local UFOPos:TPoint = UFO_Path.GetTweenPoint(tweenDistance, True)
 				'print UFO_PathCurrentDistance
 				If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
@@ -560,7 +560,7 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method GetFloor:Int(y:Int)
-		Return Clamp(14 - Ceil((y - area.position.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
+		Return MathHelper.Clamp(14 - Ceil((y - area.position.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
 	End Method
 
 

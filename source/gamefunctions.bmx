@@ -1519,7 +1519,7 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + THelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)" )
+			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)" )
 		Else
 			Return Self.Usefont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": 100 (100%)")
 		EndIf
@@ -1585,7 +1585,7 @@ Type TTooltipAudience Extends TTooltip
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
-		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + THelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)"
+		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ 2 * Self.Usefont.GetHeight(lineText)
 
@@ -1596,23 +1596,23 @@ Type TTooltipAudience Extends TTooltip
 			Local lines:String[9]
 			Local percents:String[9]
 			lines[0]	= getLocale("AD_GENRE_1") + ": " + TFunctions.convertValue(audienceResult.Audience.Children, 0)
-			percents[0]	= THelper.floatToString(audienceResult.AudienceQuote.Children * 100,2)
+			percents[0]	= MathHelper.floatToString(audienceResult.AudienceQuote.Children * 100,2)
 			lines[1]	= getLocale("AD_GENRE_2") + ": " + TFunctions.convertValue(audienceResult.Audience.Teenagers, 0)
-			percents[1]	= THelper.floatToString(audienceResult.AudienceQuote.Teenagers * 100,2)
+			percents[1]	= MathHelper.floatToString(audienceResult.AudienceQuote.Teenagers * 100,2)
 			lines[2]	= getLocale("AD_GENRE_3") + ": " + TFunctions.convertValue(audienceResult.Audience.HouseWifes, 0)
-			percents[2]	= THelper.floatToString(audienceResult.AudienceQuote.HouseWifes * 100,2)
+			percents[2]	= MathHelper.floatToString(audienceResult.AudienceQuote.HouseWifes * 100,2)
 			lines[3]	= getLocale("AD_GENRE_4") + ": " + TFunctions.convertValue(audienceResult.Audience.Employees, 0)
-			percents[3]	= THelper.floatToString(audienceResult.AudienceQuote.Employees * 100,2)
+			percents[3]	= MathHelper.floatToString(audienceResult.AudienceQuote.Employees * 100,2)
 			lines[4]	= getLocale("AD_GENRE_5") + ": " + TFunctions.convertValue(audienceResult.Audience.Unemployed, 0)
-			percents[4]	= THelper.floatToString(audienceResult.AudienceQuote.Unemployed * 100,2)
+			percents[4]	= MathHelper.floatToString(audienceResult.AudienceQuote.Unemployed * 100,2)
 			lines[5]	= getLocale("AD_GENRE_6") + ": " + TFunctions.convertValue(audienceResult.Audience.Manager, 0)
-			percents[5]	= THelper.floatToString(audienceResult.AudienceQuote.Manager * 100,2)
+			percents[5]	= MathHelper.floatToString(audienceResult.AudienceQuote.Manager * 100,2)
 			lines[6]	= getLocale("AD_GENRE_7") + ": " + TFunctions.convertValue(audienceResult.Audience.Pensioners, 0)
-			percents[6]	= THelper.floatToString(audienceResult.AudienceQuote.Pensioners * 100,2)
+			percents[6]	= MathHelper.floatToString(audienceResult.AudienceQuote.Pensioners * 100,2)
 			lines[7]	= getLocale("AD_GENRE_8") + ": " + TFunctions.convertValue(audienceResult.Audience.Women, 0)
-			percents[7]	= THelper.floatToString(audienceResult.AudienceQuote.Women * 100,2)
+			percents[7]	= MathHelper.floatToString(audienceResult.AudienceQuote.Women * 100,2)
 			lines[8]	= getLocale("AD_GENRE_9") + ": " + TFunctions.convertValue(audienceResult.Audience.Men, 0)
-			percents[8]	= THelper.floatToString(audienceResult.AudienceQuote.Men * 100,2)
+			percents[8]	= MathHelper.floatToString(audienceResult.AudienceQuote.Men * 100,2)
 
 			Local colorLight:TColor = TColor.CreateGrey(240)
 			Local colorDark:TColor = TColor.CreateGrey(230)
@@ -1780,7 +1780,7 @@ Type TInterface
 			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
 			local content:String = ""
 			If programmePlan
-				content	= GetLocale("AUDIENCE_RATING")+": "+programmePlan.getFormattedAudience()+ " (MA: "+THelper.floatToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
+				content	= GetLocale("AUDIENCE_RATING")+": "+programmePlan.getFormattedAudience()+ " (MA: "+MathHelper.floatToString(programmePlan.GetAudiencePercentage()*100,2)+"%)"
 
 				'show additional information if channel is player's channel
 				If ShowChannel = GetPlayerCollection().playerID
@@ -1820,7 +1820,7 @@ Type TInterface
 		If THelper.MouseIn(355,468,130,30)
 			local playerProgrammePlan:TPlayerProgrammePlan = GetPlayerCollection().Get().GetProgrammePlan()
 			if playerProgrammePlan
-				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+playerProgrammePlan.getFormattedAudience()+ " (MA: "+THelper.floatToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
+				CurrentAudienceToolTip.SetTitle(GetLocale("AUDIENCE_RATING")+": "+playerProgrammePlan.getFormattedAudience()+ " (MA: "+MathHelper.floatToString(playerProgrammePlan.GetAudiencePercentage() * 100,2)+"%)")
 				CurrentAudienceToolTip.SetAudienceResult(GetBroadcastManager().GetAudienceResult(playerProgrammePlan.owner))
 				CurrentAudienceToolTip.enabled = 1
 				CurrentAudienceToolTip.Hover()

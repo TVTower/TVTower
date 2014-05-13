@@ -6,6 +6,8 @@ Import "Dig/base.util.localization.bmx"
 Import "Dig/base.util.virtualgraphics.bmx"
 Import "Dig/base.util.xmlhelper.bmx"
 Import "Dig/base.util.helper.bmx"
+Import "Dig/base.util.string.bmx"
+
 
 'Import "external/libxml/libxml.bmx"
 'Import "Dig/external/libxml/libxml.bmx"
@@ -47,24 +49,6 @@ Type TApplicationSettings
 	End Method
 
 End Type
-
-
-
-Global CURRENT_TWEEN_FACTOR:float = 0.0
-Function GetTweenResult:float(currentValue:float, oldValue:float, avoidShaking:int=TRUE)
-	local result:float = currentValue * CURRENT_TWEEN_FACTOR + oldValue * (1.0 - CURRENT_TWEEN_FACTOR)
-	if avoidShaking and Abs(result - currentValue) < 0.1 then return currentValue
-	return result
-End Function
-
-
-Function GetTweenPoint:TPoint(currentPoint:TPoint, oldPoint:TPoint, avoidShaking:int=TRUE)
-	return new TPoint.Init(..
-	         GetTweenResult(currentPoint.x, oldPoint.x, avoidShaking),..
-	         GetTweenResult(currentPoint.y, oldPoint.y, avoidShaking)..
-	       )
-End Function
-
 
 
 
@@ -174,23 +158,24 @@ End Type
 'for things happening every X moments
 Type TIntervalTimer
 	'happens every ...
-	field interval:int		= 0
+	field interval:int = 0
 	'happens every ...
 	field intervalToUse:int	= 0
 	'plus duration
-	field actionTime:int	= 0
-	'value the interval can "change" on GetIntervall() to BOTH
-	'sides - minus and plus
-	field randomness:int	= 0
+	field actionTime:int = 0
+	'value the interval can "change" on GetIntervall()
+	field randomnessMin:int = 0
+	field randomnessMax:int = 0
 	'time when event last happened
-	field timer:int			= 0
+	field timer:int = 0
 
 
-	Function Create:TIntervalTimer(interval:int, actionTime:int = 0, randomness:int = 0)
+	Function Create:TIntervalTimer(interval:int, actionTime:int = 0, randomnessMin:int = 0, randomnessMax:int = 0)
 		local obj:TIntervalTimer = new TIntervalTimer
 		obj.interval = interval
 		obj.actionTime = actionTime
-		obj.randomness = randomness
+		obj.randomnessMin = randomnessMin
+		obj.randomnessMax = randomnessMax
 		'set timer
 		obj.reset()
 		return obj
@@ -234,6 +219,7 @@ Type TIntervalTimer
 		return 1.0 - (restTime / float(GetInterval()))
 	End Method
 
+
 	Method getTimeUntilExpire:int()
 		return timer + GetInterval() + actionTime - Time.GetTimeGone()
 	End Method
@@ -250,7 +236,7 @@ Type TIntervalTimer
 
 
 	Method reset()
-		intervalToUse = interval + rand(-randomness, randomness)
+		intervalToUse = interval + rand(randomnessMin, randomnessMax)
 
 		timer = Time.GetTimeGone()
 	End Method
@@ -304,12 +290,6 @@ Type TStringHelper
 	End Function
 End Type
 
-'Gibt Eingabewert zurueck, wenn innerhalb Grenzen, ansonsten passende Grenze
-Function Clamp:Float(value:Float, minvalue:Float = 0.0, maxvalue:Float = 1.0)
-	value=Max(value,minvalue)
-	value=Min(value,maxvalue)
-	Return value
-End Function
 
 Global LastSeekPos:Int =0
 Function Stream_SeekString:Int(str:String, stream:TStream)
@@ -558,11 +538,11 @@ Type TFunctions
 			If length >= 10 Then typ=3
 		endif
 		'250000 = 250Tsd -> divide by 1000
-		if typ=1 then return THelper.floatToString(value/1000.0, 0)+" Tsd"
+		if typ=1 then return MathHelper.floatToString(value/1000.0, 0)+" Tsd"
 		'250000 = 0,25Mio -> divide by 1000000
-		if typ=2 then return THelper.floatToString(value/1000000.0, 2)+" Mio"
+		if typ=2 then return MathHelper.floatToString(value/1000000.0, 2)+" Mio"
 		'250000 = 0,0Mrd -> divide by 1000000000
-		if typ=3 then return THelper.floatToString(value/1000000000.0, 2)+" Mrd"
+		if typ=3 then return MathHelper.floatToString(value/1000000000.0, 2)+" Mrd"
 		'add thousands-delimiter: 10000 = 10.000
 		if length <= 10 and length > 6
 			return int(floor(int(value) / 1000000))+"."+int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000000)*1000000)))) +"000",3)

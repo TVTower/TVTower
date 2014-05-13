@@ -183,6 +183,8 @@ Type TApp
 		local activateSoundMusic:int = xml.FindValueBool(node, "sound_music", TRUE, "settings.xml fehlt 'sound_music', setze Defaultwert: TRUE")
 		local soundEngine:string = xml.FindValue(node, "sound_engine", "AUTOMATIC", "settings.xml fehlt 'sound_engine', setze Defaultwert: AUTOMATIC")
 
+		TSoundManager.SetAudioEngine(soundEngine)
+
 		TSoundManager.GetInstance().MuteMusic(not activateSoundMusic)
 		TSoundManager.GetInstance().MuteSfx(not activateSoundEffects)
 
@@ -436,9 +438,6 @@ Type TApp
 
 
 	Function Render:Int()
-		'adjust current tweenFactor
-		CURRENT_TWEEN_FACTOR = GetDeltaTimer().GetTween()
-
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
@@ -850,12 +849,21 @@ End Type
 
 
 Type TFigurePostman Extends TFigure
-	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500,0,1000)
+	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500, 0, 0, 5000)
 
 	'we need to overwrite it to have a custom type - with custom update routine
 	Method Create:TFigurePostman(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
 		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
 		Return Self
+	End Method
+
+
+	'override to make the figure stay in the room for a random time
+	Method onEnterRoom:int(room:TRoom)
+		Super.onEnterRoom(room)
+
+		'reset timer so figure stays in room for some time
+		nextActionTimer.Reset()
 	End Method
 
 
@@ -876,9 +884,10 @@ Type TFigurePostman Extends TFigure
 		'figure is in building and without target waiting for orders
 		If Not inRoom And Not target
 			Local door:TRoomDoor
+			'search for a visible door
 			Repeat
 				door = TRoomDoor.GetRandom()
-			Until door.doorType >0
+			Until door.doorType > 0
 
 			'TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
 			SendToDoor(door)
@@ -889,7 +898,7 @@ End Type
 
 Type TFigureJanitor Extends TFigure
 	Field currentAction:Int	= 0		'0=nothing,1=cleaning,...
-	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(2500,0, 500) '500ms randomness
+	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(2500,0, -500, 500) '500ms randomness
 	Field useElevator:Int 	= True
 	Field useDoors:Int		= True
 	Field BoredCleanChance:Int	= 10
@@ -907,6 +916,15 @@ Type TFigureJanitor Extends TFigure
 		GetFrameAnimations().Set("cleanLeft", TSpriteFrameAnimation.Create([ [13,130], [14,130] ], -1, 0) )
 
 		Return Self
+	End Method
+
+
+	'override to make the figure stay in the room for a random time
+	Method onEnterRoom:int(room:TRoom)
+		Super.onEnterRoom(room)
+
+		'reset timer so figure stays in room for some time
+		nextActionTimer.Reset()
 	End Method
 
 
@@ -1087,7 +1105,7 @@ endrem
 		DrawMenuBackground(False)
 
 		'draw the janitor BEHIND the panels
-		if MainMenuJanitor then MainMenuJanitor.Draw(CURRENT_TWEEN_FACTOR)
+		if MainMenuJanitor then MainMenuJanitor.Draw(tweenValue)
 
 		GUIManager.Draw(Self.name)
 	End Method
