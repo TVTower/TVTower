@@ -667,7 +667,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		local sheetY:float 	= 20
 		local sheetX:float 	= leftX
 		local sheetAlign:int= 0
-		if width = 0 then width = App.settings.GetWidth()
+		if width = 0 then width = GetGraphicsManager().GetWidth()
 		'if mouse on left side of area - align sheet on right side
 		if MouseManager.x < width/2
 			sheetX = width - rightX
@@ -1841,8 +1841,8 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 				local sheetX:float 	= leftX
 				local sheetAlign:int= 0
 				'if mouse on left side of screen - align sheet on right side
-				if MouseManager.x < App.settings.GetWidth()/2
-					sheetX = App.settings.GetWidth() - rightX
+				if MouseManager.x < GetGraphicsManager().GetWidth()/2
+					sheetX = GetGraphicsManager().GetWidth() - rightX
 					sheetAlign = 1
 				endif
 
@@ -2174,8 +2174,8 @@ endrem
 		local sheetX:float 	= leftX
 		local sheetAlign:int= 0
 		'if mouse on left side of screen - align sheet on right side
-		if MouseManager.x < App.settings.GetWidth()/2
-			sheetX = App.settings.GetWidth() - rightX
+		if MouseManager.x < GetGraphicsManager().GetWidth()/2
+			sheetX = GetGraphicsManager().GetWidth() - rightX
 			sheetAlign = 1
 		endif
 
@@ -2268,8 +2268,8 @@ Type TGuiAdContract extends TGUIGameListItem
 		'METHOD 2
 		'just use the half of a screen - ensures the data sheet does not overlap
 		'the object
-		if MouseManager.x < App.settings.GetWidth()/2
-			sheetX = App.settings.GetWidth() - rightX
+		if MouseManager.x < GetGraphicsManager().GetWidth()/2
+			sheetX = GetGraphicsManager().GetWidth() - rightX
 			sheetAlign = 1
 		endif
 

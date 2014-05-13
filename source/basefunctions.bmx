@@ -24,33 +24,6 @@ Import "Dig/base.util.mersenne.bmx"
 Const CURRENCYSIGN:string = Chr(8364) 'eurosign
 
 
-Type TApplicationSettings
-	field fullscreen:int	= 0
-	field directx:int		= 0
-	field colordepth:int	= 16
-	field realWidth:int		= 800
-	field realHeight:int	= 600
-	field designedWidth:int	= 800
-	field designedHeight:int= 600
-	field hertz:int			= 60
-	field flag:Int			= 0 'GRAPHICS_BACKBUFFER | GRAPHICS_ALPHABUFFER '& GRAPHICS_ACCUMBUFFER & GRAPHICS_DEPTHBUFFER
-
-	Function Create:TApplicationSettings()
-		local obj:TApplicationSettings = new TApplicationSettings
-		return obj
-	End Function
-
-	Method GetHeight:int()
-		return self.designedHeight
-	End Method
-
-	Method GetWidth:int()
-		return self.designedWidth
-	End Method
-
-End Type
-
-
 
 Function CurrentDateTime:String(_what:String="%d %B %Y")
 	Local	time:Byte[256],buff:Byte[256]

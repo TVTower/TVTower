@@ -21,6 +21,7 @@ Import "Dig/base.sfx.soundmanager.bmx"
 Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.interpolation.bmx"
+Import "Dig/base.util.graphicsmanager.bmx"
 
 Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.framework.entity.spriteentity.bmx"
@@ -125,11 +126,8 @@ TLogger.setPrintMode(LOG_ALL )
 
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
-	Field settings:TApplicationSettings
 	Field devConfig:TData				= new TData
 	Field prepareScreenshot:Int			= 0						'logo for screenshot
-	Field g:TGraphics
-	Field vsync:int						= TRUE
 
 	Field creationTime:Int 'only used for debug purpose (loadingtime)
 	Global lastLoadEvent:TEventSimple	= Null
@@ -146,8 +144,7 @@ Type TApp
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:int=TRUE)
 		Local obj:TApp = New TApp
 		obj.creationTime = MilliSecs()
-		obj.settings = New TApplicationSettings
-		obj.vsync = vsync
+
 
 		GetDeltatimer().Init(updatesPerSecond, framesPerSecond)
 		GetDeltaTimer()._funcUpdate = update
@@ -162,7 +159,10 @@ Type TApp
 		EventManager.registerListenerFunction( "Loader.onLoadElement",	TApp.onLoadElement )
 
 		obj.LoadSettings("config/settings.xml")
-		obj.InitGraphics()
+
+		GetGraphicsManager().SetVsync(vsync)
+		GetGraphicsManager().SetResolution(800,600)
+		GetGraphicsManager().InitGraphics()
 
 		'load graphics needed for loading screen
 		obj.LoadResources(obj.baseResourceXmlUrl, true)
@@ -176,22 +176,26 @@ Type TApp
 		Local node:TXmlNode = xml.findRootChild("settings")
 		If node = Null Or node.getName() <> "settings" Then	Print "settings.xml fehlt der settings-Bereich"
 
-		settings.fullscreen		= xml.FindValueBool(node, "fullscreen", settings.fullscreen, "settings.xml fehlt 'fullscreen', setze Defaultwert: "+settings.fullscreen)
-		settings.directx		= xml.FindValueInt(node, "directx", settings.directx, "settings.xml fehlt 'directx', setze Defaultwert: "+settings.directx+" (OpenGL)")
-		settings.colordepth		= xml.FindValueInt(node, "colordepth", settings.colordepth, "settings.xml fehlt 'colordepth', setze Defaultwert: "+settings.colordepth)
+		local fullscreen:int = xml.FindValueBool(node, "fullscreen", GetGraphicsManager().GetFullscreen(), "settings.xml fehlt 'fullscreen', setze Defaultwert: " + GetGraphicsManager().GetFullscreen())
+		local renderer:int = xml.FindValueInt(node, "directx", GetGraphicsManager().GetRenderer(), "settings.xml fehlt 'directx', setze Defaultwert: "+ GetGraphicsManager().GetRenderer() +" ("+ GetGraphicsManager().GetRendererName() +")")
+		local colordepth:int = xml.FindValueInt(node, "colordepth", GetGraphicsManager().GetColordepth(), "settings.xml fehlt 'colordepth', setze Defaultwert: "+GetGraphicsManager().GetColordepth())
+		If colordepth <> 16 And colordepth <> 32
+			Print "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16"
+			colordepth = 16
+		EndIf
+
+		GetGraphicsManager().SetFullscreen(fullscreen)
+		GetGraphicsManager().SetRenderer(renderer)
+		GetGraphicsManager().SetColordepth(colordepth)
+
+
 		local activateSoundEffects:int	= xml.FindValueBool(node, "sound_effects", TRUE, "settings.xml fehlt 'sound_effects', setze Defaultwert: TRUE")
 		local activateSoundMusic:int = xml.FindValueBool(node, "sound_music", TRUE, "settings.xml fehlt 'sound_music', setze Defaultwert: TRUE")
 		local soundEngine:string = xml.FindValue(node, "sound_engine", "AUTOMATIC", "settings.xml fehlt 'sound_engine', setze Defaultwert: AUTOMATIC")
 
 		TSoundManager.SetAudioEngine(soundEngine)
-
 		TSoundManager.GetInstance().MuteMusic(not activateSoundMusic)
 		TSoundManager.GetInstance().MuteSfx(not activateSoundEffects)
-
-		If settings.colordepth <> 16 And settings.colordepth <> 32
-			Print "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16"
-			settings.colordepth = 16
-		EndIf
 	End Method
 
 
@@ -241,51 +245,12 @@ Type TApp
 		Local img:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight())
 
 		'add overlay
-		If overlay Then overlay.DrawOnImage(img, settings.GetWidth() - overlay.GetWidth() - 10, 10, TColor.Create(255,255,255,0.5))
+		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, TColor.Create(255,255,255,0.5))
 
 		'remove alpha
 		SavePixmapPNG(ConvertPixmap(img, PF_RGB888), filename)
 
 		TLogger.Log("App.SaveScreenshot", "Screenshot saved as ~q"+filename+"~q", LOG_INFO)
-	End Method
-
-
-	Method InitGraphics:Int()
-		'virtual resolution
-		InitVirtualGraphics()
-
-		Try
-			Select Settings.directx
-				?Win32
-				Case  1	SetGraphicsDriver D3D7Max2DDriver()
-				Case  2	SetGraphicsDriver D3D9Max2DDriver()
-				?
-				Case -1 SetGraphicsDriver GLMax2DDriver()
-				?Linux
-				Default SetGraphicsDriver GLMax2DDriver()
-'				Default SetGraphicsDriver BufferedGLMax2DDriver()
-				?
-				?Not Linux
-				Default SetGraphicsDriver GLMax2DDriver()
-				?
-			EndSelect
-			g = Graphics(Settings.realWidth, Settings.realHeight, Settings.colordepth*Settings.fullscreen, Settings.Hertz, Settings.flag)
-			If g = Null
-			?Win32
-				Throw "Graphics initiation error! The game will try to open in windowed DirectX 7 mode."
-				SetGraphicsDriver D3D7Max2DDriver()
-				g = Graphics(Settings.realWidth, Settings.realHeight, 0, Settings.Hertz)
-			?Not Win32
-				Throw "Graphics initiation error! no OpenGL available."
-			?
-			EndIf
-		EndTry
-		SetBlend ALPHABLEND
-		SetMaskColor 0, 0, 0
-		HideMouse()
-
-		'virtual resolution
-		SetVirtualGraphics(settings.designedWidth, settings.designedHeight, False)
 	End Method
 
 
@@ -360,6 +325,12 @@ Type TApp
 					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("chief", GetPlayerCollection().playerID))
+
+					If KEYMANAGER.IsHit(KEY_SPACE)
+						GetGraphicsManager().SetFullscreen(1 - GetGraphicsManager().GetFullscreen())
+						GetGraphicsManager().InitGraphics()
+					endif
+
 					'e wie "employees" :D
 					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
 					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
@@ -474,10 +445,7 @@ Type TApp
 			SetColor 255, 255, 255
 			SetAlpha 1.0
 			GetBitmapFontManager().baseFontBold.draw("Debug information:", 25,20)
-			If App.settings.directx = -1 Then GetBitmapFontManager().baseFont.draw("Renderer: OpenGL", 25,40)
-			If App.settings.directx = 0  Then GetBitmapFontManager().baseFont.draw("Renderer: BufferedOpenGL", 25,40)
-			If App.settings.directx = 1  Then GetBitmapFontManager().baseFont.draw("Renderer: DirectX 7", 25, 40)
-			If App.settings.directx = 2  Then GetBitmapFontManager().baseFont.draw("Renderer: DirectX 9", 25,40)
+			GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 25,40)
 
 	'		GUIManager.Draw("InGame") 'draw ingamechat
 	'		GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
@@ -576,14 +544,7 @@ Type TApp
 		EndIf
 
 
-		If Not GetDeltaTimer().HasLimitedFPS()
-			TProfiler.Enter("Draw-Flip")
-			if App.vsync then Flip 1 else Flip 0
-			TProfiler.Leave("Draw-Flip")
-		Else
-			if App.vsync then Flip 1 else Flip -1
-		EndIf
-
+		GetGraphicsManager().Flip(GetDeltaTimer().HasLimitedFPS())
 
 		TProfiler.Leave("Draw")
 		Return True
@@ -2119,7 +2080,7 @@ Function DrawMenuBackground(darkened:Int=False)
 	If darkened
 		SetColor 190,220,240
 		SetAlpha 0.5
-		DrawRect(0,0,App.settings.GetWidth(),App.settings.GetHeight())
+		DrawRect(0, 0, GetGraphicsManager().GetWidth(), GetGraphicsManager().GetHeight())
 		SetAlpha 1.0
 		SetColor 255, 255, 255
 	EndIf

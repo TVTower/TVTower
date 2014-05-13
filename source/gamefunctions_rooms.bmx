@@ -5421,9 +5421,9 @@ Type RoomHandler_Credits extends TRoomHandler
 		local fontRole:TBitmapFont = GetBitmapFont("Default",28, BOLDFONT)
 		local fontCast:TBitmapFont = GetBitmapFont("Default",20, BOLDFONT)
 		if not fadeRole then SetAlpha 1.0
-		fontRole.DrawBlock(GetRole().name.ToUpper(), 20,180, App.settings.GetWidth()-40, 40, new TPoint.Init(ALIGN_CENTER), GetRole().color, 2, 1, 0.6)
+		fontRole.DrawBlock(GetRole().name.ToUpper(), 20,180, GetGraphicsManager().GetWidth() - 40, 40, new TPoint.Init(ALIGN_CENTER), GetRole().color, 2, 1, 0.6)
 		SetAlpha fadeValue
-		if GetCast() then fontCast.DrawBlock(GetCast(), 150,210, App.settings.GetWidth()-300, 80, new TPoint.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.6)
+		if GetCast() then fontCast.DrawBlock(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 80, new TPoint.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.6)
 
 		SetAlpha 1.0
 	End Function

@@ -399,7 +399,7 @@ Type TSimpleSoundSource extends TSoundSourceElement
 
 	Method GetCenter:TPoint()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + TBuilding.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return new TPoint.Init(App.settings.GetWidth()/2, App.settings.GetHeight()/2)
+		Return new TPoint.Init(GetGraphicsManager().GetWidth()/2, GetGraphicsManager().GetHeight()/2)
 	End Method
 
 	Method IsMovable:Int()

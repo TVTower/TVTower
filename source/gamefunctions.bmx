@@ -1890,7 +1890,7 @@ Type TInterface
 
 			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
-			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0,App.settings.getHeight(),0, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
 			If ShowChannel <> 0 Then GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
 

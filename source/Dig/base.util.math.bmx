@@ -74,7 +74,6 @@ Type MathHelper
 	'float is rounded to the requested amount of digits after comma
 	Function floatToString:String(value:Float, digitsAfterDecimalPoint:int = 2)
 		Local s:String = RoundNumber(value, digitsAfterDecimalPoint + 1)
-
 		'calculate amount of digits before "."
 		'instead of just string(int(s))).length we use the "Abs"-value
 		'and compare the original value if it is negative
@@ -105,7 +104,7 @@ Type MathHelper
 	'round a number using weighted non-truncate rounding.
 	Function RoundNumber:Double(number:Double, digitsAfterDecimalPoint:Byte = 2)
 		Local t:Long = 10 ^ digitsAfterDecimalPoint
-		Return RoundInt(number) / Double(t)
+		Return RoundInt(number * t) / Double(t)
 	End Function
 
 
