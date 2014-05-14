@@ -1,4 +1,42 @@
-﻿'Sprite-Classes
+﻿Rem
+	====================================================================
+	Classes for Sprites and Spritecontainers
+	====================================================================
+
+	This class provides TSpritePack and TSprite, which are alternatives
+	to TImage as they use the principle of SpriteAtlases which decrease
+	the amount of drawcalls if sprites from the same base image
+	(spritepack) are drawn after another.
+
+
+	====================================================================
+	If not otherwise stated, the following code is available under the
+	following licence:
+
+	LICENCE: zlib/libpng
+
+	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+
+	This software is provided 'as-is', without any express or
+	implied warranty. In no event will the authors be held liable
+	for any	damages arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any
+	purpose, including commercial applications, and to alter it
+	and redistribute it freely, subject to the following restrictions:
+
+	1. The origin of this software must not be misrepresented; you
+	   must not claim that you wrote the original software. If you use
+	   this software in a product, an acknowledgment in the product
+	   documentation would be appreciated but is not required.
+
+	2. Altered source versions must be plainly marked as such, and
+	   must not be misrepresented as being the original software.
+
+	3. This notice may not be removed or altered from any source
+	   distribution.
+	====================================================================
+EndRem
 SuperStrict
 
 Import BRL.Max2D
@@ -9,11 +47,11 @@ Import "base.gfx.imagehelper.bmx"
 Import "base.gfx.sprite.frameanimation.bmx"
 
 
-CONST ALIGN_LEFT:FLOAT		= 0
-CONST ALIGN_CENTER:FLOAT	= 0.5
-CONST ALIGN_RIGHT:FLOAT		= 1.0
-CONST ALIGN_TOP:FLOAT		= 0
-CONST ALIGN_BOTTOM:FLOAT	= 1.0
+CONST ALIGN_LEFT:FLOAT = 0
+CONST ALIGN_CENTER:FLOAT = 0.5
+CONST ALIGN_RIGHT:FLOAT = 1.0
+CONST ALIGN_TOP:FLOAT = 0
+CONST ALIGN_BOTTOM:FLOAT = 1.0
 Global ALIGN_TOP_LEFT:TPoint = new TPoint
 
 
@@ -651,68 +689,4 @@ Type TSprite
 							 0, 0, 0)
 		EndIf
 	End Method
-End Type
-
-
-
-
-
-
-
-Type TSpriteParticle
-	Field x:Float,y:Float
-	Field xrange:Int,yrange:Int
-	Field vel:Float
-	Field angle:Float
-	Field image:TSprite
-	Field life:float
-	field startLife:float
-	Field is_alive:Int
-	Field alpha:Float
-	Field scale:Float
-
-
-		Method Spawn(px:Float,py:Float,pvel:Float,plife:Float,pscale:Float,pangle:Float,pxrange:Float,pyrange:Float)
-			is_alive	= True
-			x			= Rnd(px-(pxrange/2),px+(pxrange/2))
-			y			= Rnd(py-(pyrange/2),py+(pyrange/2))
-			vel			= pvel
-			xrange		= pxrange
-			yrange		= pyrange
-
-			life		= plife
-			startLife	= plife
-			scale		= pscale
-			angle		= pangle
-			alpha		= 0.10 * plife + Rnd(1,10)*0.05
-		End Method
-
-		Method Update(deltaTime:float = 1.0)
-			life:-deltaTime
-			If life <0 then is_alive = False
-			if is_alive = True
-				'pcount:+1
-				vel:* 0.99 '1.02 '0.98
-				x:+(vel*Cos(angle-90))*deltaTime
-				y:-(vel*Sin(angle-90))*deltaTime
-				if life / startLife < 0.5 then alpha:*0.97*(1.0-deltaTime)
-
-				If y < 330 Then 	scale:*1.03*(1.0-deltaTime)
-				If y > 330 Then 	scale:*1.01*(1.0-deltaTime)
-				angle:*0.999
-			EndIf
-		End Method
-
-		Method Draw()
-			If is_alive = True
-				SetAlpha alpha
-				SetRotation angle
-				SetScale(scale,scale)
-				image.draw(x,y)
-				SetAlpha 1.0
-				SetRotation 0
-				SetScale 1,1
-				SetColor 255,255,255
-			EndIf
-	    EndMethod
 End Type

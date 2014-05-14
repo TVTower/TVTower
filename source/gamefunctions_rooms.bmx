@@ -4245,20 +4245,31 @@ End Type
 'Chief: credit and emmys - your boss :D
 Type RoomHandler_Chief extends TRoomHandler
 	'smoke effect
-	Global part_array:TSpriteParticle[100]
-	Global spawn_delay:Int = 15
+	Global smokeEmitter:TSpriteParticleEmitter
 	Global Dialogues:TList = CreateList()
 
 	Function Init()
-		'create smoke effect particles
-		For Local i:Int = 1 To Len part_array-1
-			part_array[i] = New TSpriteParticle
-			part_array[i].image = GetSpriteFromRegistry("gfx_tex_smoke")
-			part_array[i].life = Rnd(0.100,1.5)
-			part_array[i].scale = 1.1
-			part_array[i].is_alive =False
-			part_array[i].alpha = 1
-		Next
+		local smokeConfig:TData = new TData
+		smokeConfig.Add("sprite", GetSpriteFromRegistry("gfx_tex_smoke"))
+		smokeConfig.AddNumber("velocityMin", 5.0)
+		smokeConfig.AddNumber("velocityMax", 35.0)
+		smokeConfig.AddNumber("lifeMin", 0.30)
+		smokeConfig.AddNumber("lifeMax", 2.75)
+		smokeConfig.AddNumber("scaleMin", 0.1)
+		smokeConfig.AddNumber("scaleMax", 0.15)
+		smokeConfig.AddNumber("angleMin", 176)
+		smokeConfig.AddNumber("angleMax", 184)
+		smokeConfig.AddNumber("xRange", 2)
+		smokeConfig.AddNumber("yRange", 2)
+
+		local emitterConfig:TData = new TData
+		emitterConfig.Add("area", new TRectangle.Init(69, 335, 0, 0))
+		emitterConfig.AddNumber("particleLimit", 100)
+		emitterConfig.AddNumber("spawnEveryMin", 0.30)
+		emitterConfig.AddNumber("spawnEveryMax", 0.60)
+
+		smokeEmitter = new TSpriteParticleEmitter.Init(emitterConfig, smokeConfig)
+
 
 		'register self for all bosses
 		For local i:int = 1 to 4
@@ -4288,9 +4299,8 @@ Type RoomHandler_Chief extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
-		For Local i:Int = 1 To Len(part_array)-1
-			part_array[i].Draw()
-		Next
+		smokeEmitter.Draw()
+
 		For Local dialog:TDialogue = EachIn Dialogues
 			dialog.Draw()
 		Next
@@ -4345,22 +4355,7 @@ Type RoomHandler_Chief extends TRoomHandler
 			Dialogues.AddLast(ChefDialog)
 		EndIf
 
-		'cigar particles
-		spawn_delay:-1
-		If spawn_delay<0
-			spawn_delay=5
-			For local pp:int = 1 To 64
-				For local i:int = 1 To Len(part_array)-1
-					If part_array[i].is_alive = False
-						part_array[i].Spawn(69,335,Rnd (5.0,35.0),Rnd (0.30,2.75),Rnd (0.2,1.4),Rnd(176, 184),2,2)
-						Exit
-					EndIf
-				Next
-			Next
-		EndIf
-		For local i:int = 1 To Len(part_array)-1
-			part_array[i].Update(GetDeltaTimer().GetDelta())
-		Next
+		smokeEmitter.Update()
 
 		For Local dialog:TDialogue = EachIn Dialogues
 			If dialog.Update() = 0

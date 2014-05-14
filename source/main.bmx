@@ -22,6 +22,7 @@ Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.interpolation.bmx"
 Import "Dig/base.util.graphicsmanager.bmx"
+Import "Dig/base.gfx.sprite.particle.bmx"
 
 Import "Dig/base.framework.entity.bmx"
 Import "Dig/base.framework.entity.spriteentity.bmx"
