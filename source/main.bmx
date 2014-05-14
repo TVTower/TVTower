@@ -8,7 +8,6 @@ Import brl.Graphics
 Import brl.glmax2d
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
-Import "basefunctions_lua.bmx"					'our lua engine
 Import "basefunctions_screens.bmx"
 
 Import "Dig/base.util.registry.bmx"
@@ -16,6 +15,7 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
 Import "Dig/base.util.registry.bitmapfontloader.bmx"
 Import "Dig/base.util.registry.soundloader.bmx"
+Import "Dig/base.util.luaengine.bmx"
 
 Import "Dig/base.sfx.soundmanager.bmx"
 Import "Dig/base.util.deltatimer.bmx"

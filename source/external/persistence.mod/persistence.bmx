@@ -46,7 +46,7 @@ Import "../../Dig/external/libxml/libxml.bmx" 'BaH.libxml
 'Import "../libxml/libxml.bmx" 'BaH.libxml
 'using custom to have support for const/function reflection
 'Import BRL.Reflection
-Import "../reflectionExtended/reflection.bmx"
+Import "../../Dig/external/reflectionExtended/reflection.bmx"
 Import BRL.Map
 Import BRL.Stream
 

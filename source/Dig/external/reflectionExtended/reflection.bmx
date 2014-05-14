@@ -1,6 +1,3 @@
-
-Strict
-
 Rem
 bbdoc: BASIC/Reflection
 End Rem
@@ -18,110 +15,106 @@ ModuleInfo "History: Added Brucey's size fix to GetArrayElement()/SetArrayElemen
 ModuleInfo "History: 1.01 Release"
 ModuleInfo "History: Fixed NewArray using temp type name"
 endrem
-
+SuperStrict
 Import BRL.LinkedList
 Import BRL.Map
-
-?threaded
-Import "reflection_threaded.cpp"
-?not threaded
 Import "reflection.cpp"
-?
+
+
 Private
 
 Extern
+	Function bbObjectNew:Object(class:int)
+	Function bbObjectRegisteredTypes:Int Ptr(count:int Var)
 
-Function bbObjectNew:Object( class )
-Function bbObjectRegisteredTypes:Int Ptr( count Var )
+	Function bbArrayNew1D:Object(typeTag:Byte Ptr, length:int)
 
-Function bbArrayNew1D:Object( typeTag:Byte Ptr,length )
+	Function bbRefArrayClass()
+	Function bbRefStringClass()
+	Function bbRefObjectClass()
 
+	Function bbRefArrayLength(array:Object, dim:Int = 0)
+	Function bbRefArrayTypeTag$(array:Object)
+	Function bbRefArrayDimensions:Int(array:Object)
+	Function bbRefArrayCreate:Object(typeTag:Byte Ptr, dims:Int[])
 
-Function bbRefArrayClass()
-Function bbRefStringClass()
-Function bbRefObjectClass()
+	Function bbRefFieldPtr:Byte Ptr(obj:Object, index:int)
+	Function bbRefMethodPtr:Byte Ptr(obj:Object, index:int)
+	Function bbRefArrayElementPtr:Byte Ptr(sz:int, array:Object, index:int)
 
-Function bbRefArrayLength( array:Object, dim:Int = 0 )
-Function bbRefArrayTypeTag$( array:Object )
-Function bbRefArrayDimensions:Int( array:Object )
-Function bbRefArrayCreate:Object( typeTag:Byte Ptr,dims:Int[] )
+	Function bbRefGetObject:Object(p:Byte Ptr)
+	Function bbRefPushObject(p:Byte Ptr, obj:Object)
+	Function bbRefInitObject(p:Byte Ptr, obj:Object)
+	Function bbRefAssignObject(p:Byte Ptr, obj:Object)
 
-Function bbRefFieldPtr:Byte Ptr( obj:Object,index )
-Function bbRefMethodPtr:Byte Ptr( obj:Object,index )
-Function bbRefArrayElementPtr:Byte Ptr( sz,array:Object,index )
-
-Function bbRefGetObject:Object( p:Byte Ptr )
-Function bbRefPushObject( p:Byte Ptr,obj:Object )
-Function bbRefInitObject( p:Byte Ptr,obj:Object )
-Function bbRefAssignObject( p:Byte Ptr,obj:Object )
-
-Function bbRefGetObjectClass( obj:Object )
-Function bbRefGetSuperClass( class )
-
+	Function bbRefGetObjectClass(obj:Object)
+	Function bbRefGetSuperClass(class:int)
 End Extern
 
-Type TClass
 
-	Method Compare( with:Object )
-		Return _class-TClass( with )._class
+Type TClass
+	Field _class:int
+
+	Method Compare:int(with:Object)
+		Return _class - TClass(with)._class
 	End Method
 
-	Method SetClass:TClass( class )
-		_class=class
+	Method SetClass:TClass(class:int)
+		_class = class
 		Return Self
 	End Method
-
-	Field _class
 End Type
 
-Function _Get:Object( p:Byte Ptr,typeId:TTypeId )
+
+Function _Get:Object(p:Byte Ptr, typeId:TTypeId)
 	Select typeId
-	Case ByteTypeId
-		Return String.FromInt( (Byte Ptr p)[0] )
-	Case ShortTypeId
-		Return String.FromInt( (Short Ptr p)[0] )
-	Case IntTypeId
-		Return String.FromInt( (Int Ptr p)[0] )
-	Case LongTypeId
-		Return String.FromLong( (Long Ptr p)[0] )
-	Case FloatTypeId
-		Return String.FromFloat( (Float Ptr p)[0] )
-	Case DoubleTypeId
-		Return String.FromDouble( (Double Ptr p)[0] )
-	Default
-		Return bbRefGetObject( p )
+		Case ByteTypeId
+			Return String.FromInt( (Byte Ptr p)[0] )
+		Case ShortTypeId
+			Return String.FromInt( (Short Ptr p)[0] )
+		Case IntTypeId
+			Return String.FromInt( (Int Ptr p)[0] )
+		Case LongTypeId
+			Return String.FromLong( (Long Ptr p)[0] )
+		Case FloatTypeId
+			Return String.FromFloat( (Float Ptr p)[0] )
+		Case DoubleTypeId
+			Return String.FromDouble( (Double Ptr p)[0] )
+		Default
+			Return bbRefGetObject(p)
 	End Select
 End Function
 
-Function _Push:Byte Ptr( sp:Byte Ptr,typeId:TTypeId,value:Object )
+
+Function _Push:Byte Ptr(sp:Byte Ptr, typeId:TTypeId, value:Object)
 	Select typeId
-	Case ByteTypeId,ShortTypeId,IntTypeId
-		(Int Ptr sp)[0]=value.ToString().ToInt()
-		Return sp+4
-	Case LongTypeId
-		(Long Ptr sp)[0]=value.ToString().ToLong()
-		Return sp+8
-	Case FloatTypeId
-		(Float Ptr sp)[0]=value.ToString().ToFloat()
-		Return sp+4
-	Case DoubleTypeId
-		(Double Ptr sp)[0]=value.ToString().ToDouble()
-		Return sp+8
-	Case StringTypeId
-		If Not value value=""
-		bbRefPushObject sp,value
-		Return sp+4
-	Default
-		If value
-			Local c=typeId._class
-			Local t=bbRefGetObjectClass( value )
-			While t And t<>c
-				t=bbRefGetSuperClass( t )
-			Wend
-			If Not t Throw "ERROR"
-		EndIf
-		bbRefPushObject sp,value
-		Return sp+4
+		Case ByteTypeId,ShortTypeId,IntTypeId
+			(Int Ptr sp)[0]=value.ToString().ToInt()
+			Return sp+4
+		Case LongTypeId
+			(Long Ptr sp)[0]=value.ToString().ToLong()
+			Return sp+8
+		Case FloatTypeId
+			(Float Ptr sp)[0]=value.ToString().ToFloat()
+			Return sp+4
+		Case DoubleTypeId
+			(Double Ptr sp)[0]=value.ToString().ToDouble()
+			Return sp+8
+		Case StringTypeId
+			If Not value value=""
+			bbRefPushObject sp,value
+			Return sp+4
+		Default
+			If value
+				Local c:int = typeId._class
+				Local t:int = bbRefGetObjectClass(value)
+				While t And t<>c
+					t = bbRefGetSuperClass(t)
+				Wend
+				If Not t Throw "ERROR"
+			EndIf
+			bbRefPushObject sp,value
+			Return sp+4
 	End Select
 End Function
 
@@ -140,45 +133,47 @@ Function _Assign( p:Byte Ptr,typeId:TTypeId,value:Object )
 	Case DoubleTypeId
 		(Double Ptr p)[0]=value.ToString().ToDouble()
 	Case StringTypeId
-		If Not value value=""
+		If Not value then value=""
 		bbRefAssignObject p,value
 	Default
 		If value
-			Local c=typeId._class
-			Local t=bbRefGetObjectClass( value )
+			Local c:int = typeId._class
+			Local t:int = bbRefGetObjectClass( value )
 			While t And t<>c
-				t=bbRefGetSuperClass( t )
+				t = bbRefGetSuperClass( t )
 			Wend
-			If Not t Throw "ERROR"
+			If Not t then Throw "ERROR"
 		EndIf
 		bbRefAssignObject p,value
 	End Select
 End Function
 
 Function _Call:Object( p:Byte Ptr,typeId:TTypeId,obj:Object,args:Object[],argTypes:TTypeId[] )
-	Local q[10],sp:Byte Ptr=q
+	Local q:int[10]
+	Local sp:Byte Ptr = q
+
 	bbRefPushObject sp,obj
 	sp:+4
-	If typeId=LongTypeId sp:+8
-	For Local i=0 Until args.length
+	If typeId=LongTypeId then sp:+8
+	For Local i:int = 0 Until args.length
 		If Int Ptr(sp)>=Int Ptr(q)+8 Throw "ERROR"
 		sp=_Push( sp,argTypes[i],args[i] )
 	Next
 	If Int Ptr(sp)>Int Ptr(q)+8 Throw "ERROR"
 	Select typeId
 	Case ByteTypeId,ShortTypeId,IntTypeId
-		Local f(p0,p1,p2,p3,p4,p5,p6,p7)=p
+		Local f:Int(p0:int,p1:int,p2:int,p3:int,p4:int,p5:int,p6:int,p7:int) = p
 		Return String.FromInt( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 	Case LongTypeId
 		Throw "TODO"
 	Case FloatTypeId
-		Local f:Float(p0,p1,p2,p3,p4,p5,p6,p7)=p
+		Local f:Float(p0:int,p1:int,p2:int,p3:int,p4:int,p5:int,p6:int,p7:int) = p
 		Return String.FromFloat( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 	Case DoubleTypeId
-		Local f:Double(p0,p1,p2,p3,p4,p5,p6,p7)=p
+		Local f:Double(p0:int,p1:int,p2:int,p3:int,p4:int,p5:int,p6:int,p7:int) = p
 		Return String.FromDouble( f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] ) )
 	Default
-		Local f:Object(p0,p1,p2,p3,p4,p5,p6,p7)=p
+		Local f:Object(p0:int,p1:int,p2:int,p3:int,p4:int,p5:int,p6:int,p7:int) = p
 		Return f( q[0],q[1],q[2],q[3],q[4],q[5],q[6],q[7] )
 	End Select
 End Function
@@ -215,8 +210,8 @@ Function TypeIdForTag:TTypeId( ty$ )
 	EndIf
 	If ty.StartsWith( ":" )
 		ty=ty[1..]
-		Local i=ty.FindLast( "." )
-		If i<>-1 ty=ty[i+1..]
+		Local i:int = ty.FindLast( "." )
+		If i<>-1 then ty=ty[i+1..]
 		Return TTypeId.ForName( ty )
 	EndIf
 	Select ty
@@ -232,21 +227,21 @@ End Function
 
 Function ExtractMetaData$( meta$,key$ )
 	If Not key Return meta
-	Local i=0
+	Local i:int = 0
 	While i<meta.length
-		Local e=meta.Find( "=",i )
-		If e=-1 Throw "Malformed meta data"
+		Local e:int = meta.Find( "=",i )
+		If e=-1 then Throw "Malformed meta data"
 		Local k$=meta[i..e],v$
 		i=e+1
 		If i<meta.length And meta[i]=Asc("~q")
 			i:+1
-			Local e=meta.Find( "~q",i )
+			Local e:int = meta.Find( "~q",i )
 			If e=-1 Throw "Malformed meta data"
 			v=meta[i..e]
 			i=e+1
 		Else
-			Local e=meta.Find( " ",i )
-			If e=-1 e=meta.length
+			Local e:int = meta.Find( " ",i )
+			If e=-1 then e=meta.length
 			v=meta[i..e]
 			i=e
 		EndIf
@@ -393,8 +388,9 @@ Rem
 bbdoc: Type field
 End Rem
 Type TField Extends TMember
+	Field _index:int
 
-	Method Init:TField( name$,typeId:TTypeId,meta$,index )
+	Method Init:TField( name$,typeId:TTypeId,meta$,index:int)
 		_name=name
 		_typeId=typeId
 		_meta=meta
@@ -486,7 +482,6 @@ Type TField Extends TMember
 		Set obj,value
 	End Method
 
-	Field _index
 
 End Type
 
@@ -547,7 +542,7 @@ bbdoc: Type method
 End Rem
 Type TMethod Extends TMember
 
-	Method Init:TMethod( name$,typeId:TTypeId,meta$,selfTypeId:TTypeId,index,argTypes:TTypeId[] )
+	Method Init:TMethod( name$,typeId:TTypeId,meta$,selfTypeId:TTypeId,index:int ,argTypes:TTypeId[] )
 		_name=name
 		_typeId=typeId
 		_meta=meta
@@ -583,7 +578,7 @@ Type TMethod Extends TMember
 	End Method
 
 
-	Field _selfTypeId:TTypeId,_index,_argTypes:TTypeId[], _fptr:Byte Ptr
+	Field _selfTypeId:TTypeId,_index:int,_argTypes:TTypeId[], _fptr:Byte Ptr
 
 End Type
 
@@ -645,7 +640,7 @@ Type TTypeId
 	Rem
 	bbdoc: Determine if type extends a type
 	End Rem
-	Method ExtendsType( typeId:TTypeId )
+	Method ExtendsType:int( typeId:TTypeId )
 		If Self=typeId Return True
 		If _super Return _super.ExtendsType( typeId )
 	End Method
@@ -836,7 +831,7 @@ Type TTypeId
 	Rem
 	bbdoc: Create a new array
 	End Rem
-	Method NewArray:Object( length, dims:Int[] = Null )
+	Method NewArray:Object( length:int, dims:Int[] = Null )
 		If Not _elementType Throw "TypeID is not an array type"
 		Local tag:Byte Ptr=_elementType._typeTag
 		If Not tag
@@ -853,7 +848,7 @@ Type TTypeId
 	Rem
 	bbdoc: Get array length
 	End Rem
-	Method ArrayLength( array:Object, dim:Int = 0 )
+	Method ArrayLength:int( array:Object, dim:Int = 0 )
 		If Not _elementType Throw "TypeID is not an array type"
 		Return bbRefArrayLength( array, dim )
 	End Method
@@ -869,7 +864,7 @@ Type TTypeId
 	Rem
 	bbdoc: Get an array element
 	End Rem
-	Method GetArrayElement:Object( array:Object,index )
+	Method GetArrayElement:Object( array:Object,index:int )
 		If Not _elementType Throw "TypeID is not an array type"
 		Local p:Byte Ptr=bbRefArrayElementPtr( _elementType._size,array,index )
 		Return _Get( p,_elementType )
@@ -878,7 +873,7 @@ Type TTypeId
 	Rem
 	bbdoc: Set an array element
 	End Rem
-	Method SetArrayElement( array:Object,index,value:Object )
+	Method SetArrayElement( array:Object,index:int,value:Object )
 		If Not _elementType Throw "TypeID is not an array type"
 		Local p:Byte Ptr=bbRefArrayElementPtr( _elementType._size,array,index )
 		_Assign p,_elementType,value
@@ -903,7 +898,7 @@ Type TTypeId
 	End Rem
 	Function ForObject:TTypeId( obj:Object )
 		_Update
-		Local class=bbRefGetObjectClass( obj )
+		Local class:int= bbRefGetObjectClass(obj)
 		If class=ArrayTypeId._class
 			If Not bbRefArrayLength( obj ) Return ArrayTypeId
 			Return TypeIdForTag( bbRefArrayTypeTag( obj ) ).ArrayType()
@@ -926,7 +921,7 @@ Type TTypeId
 
 	'***** PRIVATE *****
 
-	Method Init:TTypeId( name$,size,class=0,supor:TTypeId=Null )
+	Method Init:TTypeId( name$,size:int,class:int=0,supor:TTypeId=Null )
 		_name=name
 		_size=size
 		_class=class
@@ -940,10 +935,10 @@ Type TTypeId
 		Return Self
 	End Method
 
-	Method SetClass:TTypeId( class )
-		Local debug=(Int Ptr class)[2]
+	Method SetClass:TTypeId( class:int )
+		Local debug:int=(Int Ptr class)[2]
 		Local name$=String.FromCString( Byte Ptr( (Int Ptr debug)[1] ) ),meta$
-		Local i=name.Find( "{" )
+		Local i:int=name.Find( "{" )
 		If i<>-1
 			meta=name[i+1..name.length-1]
 			name=name[..i]
@@ -957,10 +952,10 @@ Type TTypeId
 	End Method
 
 	Function _Update()
-		Local count,p:Int Ptr=bbObjectRegisteredTypes( count )
+		Local count:int,p:Int Ptr=bbObjectRegisteredTypes( count )
 		If count=_count Return
 		Local list:TList=New TList
-		For Local i=_count Until count
+		For Local i:int=_count Until count
 			Local ty:TTypeId=New TTypeId.SetClass( p[i] )
 			list.AddLast ty
 		Next
@@ -983,7 +978,7 @@ Type TTypeId
 		If Not _super._derived _super._derived=New TList
 		_super._derived.AddLast Self
 
-		Local debug=(Int Ptr _class)[2]
+		Local debug:int=(Int Ptr _class)[2]
 		Local p:Int Ptr=(Int Ptr debug)+2
 
 		While p[0]
@@ -991,7 +986,7 @@ Type TTypeId
 			Local ty$=String.FromCString( Byte Ptr p[2] )
 
 			Local meta$
-			Local i=ty.Find( "{" )
+			Local i:int=ty.Find( "{" )
 			If i<>-1
 				meta=ty[i+1..ty.length-1]
 				ty=ty[..i]
@@ -1029,7 +1024,7 @@ Type TTypeId
 
 	Method BuildArgTypes:TTypeId(retType:TTypeId, t:string[], argTypes:TTypeId[] var)
 		If t[0].length>1
-			Local i,b,q$=t[0][1..],args:TList=New TList
+			Local i:int,b:int,q$=t[0][1..],args:TList=New TList
 			While i<q.length
 				Select q[i]
 				Case Asc( "," )
@@ -1062,8 +1057,8 @@ Type TTypeId
 
 	Field _name$
 	Field _meta$
-	Field _class
-	Field _size=4
+	Field _class:int
+	Field _size:int=4
 	Field _consts:TList
 	Field _fields:TList
 	Field _methods:TList
@@ -1074,6 +1069,6 @@ Type TTypeId
 	Field _elementType:TTypeId
 	Field _typeTag:Byte Ptr
 
-	Global _count,_nameMap:TMap=New TMap,_classMap:TMap=New TMap
+	Global _count:int,_nameMap:TMap=New TMap,_classMap:TMap=New TMap
 
 End Type

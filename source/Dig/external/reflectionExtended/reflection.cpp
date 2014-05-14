@@ -1,3 +1,7 @@
+/*
+ * Ronny Otto: added "THREADED" definition to make it compileable in
+ * BlitzMax threaded mode.
+ */
 #ifndef THREADED
 	#define THREADED
 #endif
