@@ -13,9 +13,9 @@ Framework BRL.StandardIO
 ?Win32
 '	Import "tvtower_icon.o"
 ?
-Import pub.freeaudio 'fuer rtaudio
 Import "source/main.bmx"
 
+Import MaxMod2.rtaudio 'fuer rtaudio
 Incbin "source/version.txt"
 
 ?Win32

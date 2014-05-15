@@ -412,8 +412,6 @@ Type TRegistryUnloadedResourceCollection
 		endif
 		'loading failed
 		toLoad.loadAttempts :+1
-'RONNY
-print "loading failed : "+ toLoad.name + " | "+ toLoad.loadAttempts
 		'add to the list of failed resources
 		AddFailed(toLoad)
 		return FALSE
@@ -454,7 +452,13 @@ Type TRegistryUnloadedResource
 		if not loader then return false
 
 		'try to load an object with the given config and resourceType-name
-		return loader.LoadFromConfig(config, resourceName)
+		if loader.LoadFromConfig(config, resourceName)
+			'inform others: we loaded something
+			EventManager.triggerEvent(TEventSimple.Create("RegistryLoader.onLoadResource", new TData.AddString("name", name).AddString("resourceName", resourceName)))
+			return True
+		else
+			return False
+		endif
 	End Method
 
 

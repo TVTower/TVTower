@@ -9,6 +9,7 @@ Import "base.util.point.bmx"
 
 Import MaxMod2.ogg
 Import MaxMod2.rtaudio
+'Import MaxMod2.rtaudionopulse
 Import MaxMod2.WAV
 
 'type to store music files (ogg) in it
@@ -77,10 +78,13 @@ Type TSoundManager
 	Field _currentPlaylistName:String = "default"
 	Field playlists:TMap = CreateMap()		'a named array of playlists, playlists contain available musicStreams
 
+
 	Global instance:TSoundManager
+
 	Global PREFIX_MUSIC:String = "MUSIC_"
 	Global PREFIX_SFX:String = "SFX_"
 
+	Global audioEngineEnabled:int = True
 	Global audioEngine:String = "AUTOMATIC"
 
 
@@ -104,14 +108,18 @@ Type TSoundManager
 	Function SetAudioEngine(engine:string)
 		'limit to allowed engines
 		Select engine.ToUpper()
+			case "NONE"
+				audioEngine = "NONE"
+
 			case "LINUX_ALSA"
 				audioEngine = "LINUX_ALSA"
-			case "LINUX_OSS"
-				audioEngine = "LINUX_OSS"
 			case "LINUX_PULSE"
 				audioEngine = "LINUX_PULSE"
-			case "UNIX_JACK"
-				audioEngine = "UNIX_JACK"
+			case "LINUX_OSS"
+				audioEngine = "LINUX_OSS"
+			'following are currently not compiled in the rtAudio module
+			'case "UNIX_JACK"
+			'	audioEngine = "UNIX_JACK"
 
 			case "MACOSX_CORE"
 				audioEngine = "MACOSX_CORE"
@@ -127,29 +135,79 @@ Type TSoundManager
 	End Function
 
 
+	Function InitSpecificAudioEngine:int(engine:string)
+		TMaxModRtAudioDriver.Init(engine)
+		'
+		If Not SetAudioDriver("MaxMod RtAudio")
+			if engine = audioEngine
+				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engine+"~q (configured) failed.", LOG_ERROR)
+			else
+				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engine+"~q failed.", LOG_ERROR)
+			endif
+			Return False
+		Else
+			Return True
+		endif
+	End Function
+
+
 	Function InitAudioEngine:int()
-			?Linux
-			'if nothing was specified: use pulseAudio
-			if audioEngine = "AUTOMATIC" then audioEngine = "LINUX_PULSE"
-			'linux needs a different maxmod-implementation
-			'maybe move it to maxmod - or leave it out to save dependencies if not used
-			TMaxModRtAudioDriver.Init(audioEngine)
+		'reenable rtAudio-messages
+		TMaxModRtAudioDriver.showWarnings(False)
+
+		local engines:String[] = [audioEngine]
+		'add automatic-engine if manual setup is not already set to it
+		if audioEngine <> "AUTOMATIC" then engines :+ ["AUTOMATIC"]
+
+		?Linux
+			if audioEngine <> "LINUX_PULSE" then engines :+ ["LINUX_PULSE"]
+			if audioEngine <> "LINUX_ALSA" then engines :+ ["LINUX_ALSA"]
+			if audioEngine <> "LINUX_OSS" then engines :+ ["LINUX_OSS"]
+			'if audioEngine <> "UNIX_JACK" then engines :+ ["UNIX_JACK"]
 		?MacOS
-			'mac needs a different maxmod-implementation
 			'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
-
-			TMaxModRtAudioDriver.Init("MACOSX_CORE")
+			audioEngine :+ ["MACOSX_CORE"]
+		?Win32
+			audioEngine :+ ["WINDOWS_ASIO"]
+			audioEngine :+ ["WINDOWS_DS"]
 		?
-		'init has to be done for all - currently not knowing much bout mac
-		If Not SetAudioDriver("MaxMod RtAudio") Then Throw "SoundManager: SetAudioEngine() Failed: " +audioEngine
 
-		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+audioEngine+"~q.", LOG_DEBUG)
+		'try to init one of the engines, starting with the manually set
+		'audioEngine
+		local foundWorkingEngine:string = ""
+		if audioEngine <> "NONE"
+			For local engine:string = eachin engines
+				if InitSpecificAudioEngine(engine)
+					foundWorkingEngine = engine
+					exit
+				endif
+			Next
+		endif
+
+		'if no sound engine initialized successfully, use the dummy
+		'output (no sound)
+		if foundWorkingEngine = ""
+			TLogger.Log("SoundManager.SetAudioEngine()", "No working audio engine found. Disabling sound.", LOG_ERROR)
+			DisableAudioEngine()
+			Return False
+		endif
+
+		'reenable rtAudio-messages
+		TMaxModRtAudioDriver.showWarnings(True)
+
+		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+foundWorkingEngine+"~q.", LOG_DEBUG)
+		Return True
 	End Function
 
 
 	Function GetInstance:TSoundManager()
 		If Not instance Then instance = TSoundManager.Create()
 		Return instance
+	End Function
+
+
+	Function DisableAudioEngine:int()
+		audioEngineEnabled = False
 	End Function
 
 
@@ -283,6 +341,8 @@ Type TSoundManager
 
 
 	Method MuteMusic:Int(bool:Int=True)
+		if not audioEngineEnabled then return False
+
 		If bool
 			TLogger.Log("TSoundManager.MuteMusic()", "Muting music", LOG_DEBUG)
 		Else
@@ -344,7 +404,9 @@ Type TSoundManager
 	End Method
 
 
-	Method FadeOverToNextTitle()
+	Method FadeOverToNextTitle:int()
+		if not audioEngineEnabled then return False
+
 		If (fadeProcess = 0) Then
 			fadeProcess = 1
 			inactiveMusicChannel = nextMusicTitleStream.GetChannel(0)
@@ -380,7 +442,9 @@ Type TSoundManager
 	End Method
 
 
-	Method PlaySfx(sfx:TSound, channel:TChannel)
+	Method PlaySfx:int(sfx:TSound, channel:TChannel)
+		if not audioEngineEnabled then return False
+
 		If Not HasMutedSfx() And sfx Then PlaySound(sfx, Channel)
 	End Method
 
@@ -396,6 +460,8 @@ Type TSoundManager
 
 
 	Method PlayMusicOrPlaylist:Int(name:String, fromPlaylist:Int=False)
+		if not audioEngineEnabled then return False
+
 		If HasMutedMusic() Then Return True
 
 		If fromPlaylist

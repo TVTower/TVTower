@@ -40,7 +40,7 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 		'distinguish them before real loading
 
 		'load config properties
-		local fieldNames:String[] = ["name", "url", "loop", "playlists"]
+		local fieldNames:String[] = ["name", "url", "loop", "playonload", "playlists"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 
 		'process given relative-url
@@ -60,6 +60,7 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 		Local url:String = data.GetString("url", "")
 		Local loop:Int = data.GetBool("loop", False)
 		Local playlists:String = data.GetString("playlists", "")
+		Local playonload:int = data.GetBool("playonload", False)
 
 		'instead of using a default-value in "GetString()" we also want
 		'to have "default" set if one defined 'playlists=""' in the xml
@@ -74,6 +75,8 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 					TLogger.Log("TRegistrySoundLoader.LoadFromConfig()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
 				Else
 					GetSoundManager().AddSound(name, stream, playlists)
+
+					if playonload then TSoundManager.GetInstance().PlayMusic(name)
 				EndIf
 
 			case "sfx"

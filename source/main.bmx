@@ -130,9 +130,11 @@ Type TApp
 	Field devConfig:TData				= new TData
 	Field prepareScreenshot:Int			= 0						'logo for screenshot
 
-	Field creationTime:Int 'only used for debug purpose (loadingtime)
-	Global lastLoadEvent:TEventSimple	= Null
-	Global OnLoadListener:TLink = null
+	'only used for debug purpose (loadingtime)
+	Field creationTime:Int
+	'store listener for music loaded in "startup"
+	Field OnLoadMusicListener:TLink
+
 	Global baseResourcesLoaded:Int		= 0						'able to draw loading screen?
 	Global baseResourceXmlUrl:String	= "config/startup.xml"	'holds bg for loading screen and more
 
@@ -154,10 +156,8 @@ Type TApp
 
 		'register to quit confirmation dialogue
 		EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
-		'-register for each toLoad-Element from XML files
-		obj.OnLoadListener = EventManager.registerListenerFunction( "XmlLoader.onLoadElement",	TApp.onLoadElement )
-		EventManager.registerListenerFunction( "XmlLoader.onFinishParsing",	TApp.onFinishParsingXML )
-		EventManager.registerListenerFunction( "Loader.onLoadElement",	TApp.onLoadElement )
+		EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
+		obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
 
 		obj.LoadSettings("config/settings.xml")
 
@@ -170,6 +170,25 @@ Type TApp
 
 		Return obj
 	End Function
+
+
+	'if no startup-music was defined, try to play menu music if some
+	'is loaded
+	Function onLoadMusicResource( triggerEvent:TEventBase )
+		local resourceName:string = triggerEvent.GetData().GetString("resourceName")
+		if resourceName = "MUSIC"
+			'if no music is played yet, try to get one from the "menu"-playlist
+			if not GetSoundManager().isPlaying() then GetSoundManager().PlayMusicPlaylist("menu")
+		endif
+	End Function
+
+
+	Function onLoadXmlFromFinished( triggerEvent:TEventBase )
+		If triggerEvent.getData().getString("uri") = TApp.baseResourceXmlUrl
+			TApp.baseResourcesLoaded = 1
+		endif
+	End Function
+
 
 
 	Method LoadSettings:Int(path:String="config/settings.xml")
@@ -209,10 +228,6 @@ Type TApp
 	Method Start()
 		AppEvents.Init()
 
-		'GetDeltaTimer()._funcUpdate = Update
-		'set from loading screen renderfunc to normal one
-		'GetDeltaTimer()._funcRender = Render
-
 		'systemupdate is called from within "update" (lower priority updates)
 		EventManager.registerListenerFunction("App.onSystemUpdate", AppEvents.onAppSystemUpdate )
 		'so we could create special fonts and other things
@@ -220,7 +235,7 @@ Type TApp
 
 		'from now on we are no longer interested in loaded elements
 		'as we are no longer in the loading screen (-> silent loading)
-		if OnLoadListener then EventManager.unregisterListenerByLink( OnLoadListener )
+		if OnLoadMusicListener then EventManager.unregisterListenerByLink( OnLoadMusicListener )
 
 		TLogger.Log("TApp.Start()", "loading time: "+(MilliSecs() - creationTime) +"ms", LOG_INFO)
 	End Method
@@ -253,20 +268,6 @@ Type TApp
 
 		TLogger.Log("App.SaveScreenshot", "Screenshot saved as ~q"+filename+"~q", LOG_INFO)
 	End Method
-
-
-	Function onFinishParsingXML( triggerEvent:TEventBase )
-		Local evt:TEventSimple = TEventSimple(triggerEvent)
-		If evt<>Null
-			If evt.getData().getString("url") = TApp.baseResourceXmlUrl Then TApp.baseResourcesLoaded = 1
-		EndIf
-	End Function
-
-
-	Function onLoadElement( triggerEvent:TEventBase )
-		TApp.lastLoadEvent = TEventSimple(triggerEvent)
-		If TApp.baseResourcesLoaded Then GetDeltaTimer().loop()
-	End Function
 
 
 	Function Update:Int()
