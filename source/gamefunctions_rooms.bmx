@@ -1135,7 +1135,7 @@ Type RoomHandler_Office extends TRoomHandler
 		Game.cursorstate = 0
 		'safe - reachable for all
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 165,85,70,100)
-			If SafeToolTip = Null Then SafeToolTip = TTooltip.Create("Safe", "Laden und Speichern", 140, 100,-1,-1)
+			If SafeToolTip = Null Then SafeToolTip = TTooltip.Create(GetLocale("ROOM_SAFE"), GetLocale("FOR_PRIVATE_AFFAIRS"), 140, 100,-1,-1)
 			SafeToolTip.enabled = 1
 			SafeToolTip.minContentWidth = 150
 			SafeToolTip.Hover()
@@ -1150,7 +1150,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'planner - reachable for all
 		If THelper.IsIn(MouseManager.x, MouseManager.y, 600,140,128,210)
-			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create("Programmplaner", "und Statistiken", 580, 140)
+			If PlannerToolTip = Null Then PlannerToolTip = TTooltip.Create(GetLocale("ROOM_PROGRAMMEPLANNER"), GetLocale("AND_STATISTICS"), 580, 140)
 			PlannerToolTip.enabled = 1
 			PlannerToolTip.Hover()
 			Game.cursorstate = 1
@@ -1164,7 +1164,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'station map - only reachable for owner
 		If room.owner = GetPlayerCollection().playerID
 			If THelper.IsIn(MouseManager.x, MouseManager.y, 732,45,160,170)
-				If not StationsToolTip Then StationsToolTip = TTooltip.Create("Senderkarte", "Kauf und Verkauf", 650, 80, 0, 0)
+				If not StationsToolTip Then StationsToolTip = TTooltip.Create(GetLocale("ROOM_STATIONMAP"), GetLocale("BUY_AND_SELL"), 650, 80, 0, 0)
 				StationsToolTip.enabled = 1
 				StationsToolTip.Hover()
 				Game.cursorstate = 1
@@ -2063,7 +2063,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'=== DAY CHANGER ===
 		local today:int = GetGameTime().MakeTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetGameTime().GetDayOfYear(today)+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear(today)
-		textFont.DrawBlock("Spieltag "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, alignCenter, TColor.CreateGrey(90), 2, 1, 0.2)
+		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, alignCenter, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
 
@@ -2285,9 +2285,9 @@ Type RoomHandler_Office extends TRoomHandler
 			local time:int = GetGameTime().MakeTime(0, hoveredDay, 0, 0)
 			local gameDay:string = GetGameTime().GetDayOfYear(time)+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
-				textSmallFont.Draw("Spieltag "+gameDay+": |color=50,110,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Else
-				textSmallFont.Draw("Spieltag "+gameDay+": |color=110,50,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
+				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=110,50,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Endif
 
 			local hoverX:int = curveArea.GetX() + (slot-0.5) * slotWidth

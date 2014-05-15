@@ -1846,7 +1846,7 @@ Type TInterface
 		EndIf
 		If THelper.MouseIn(355,510,130,15)
 			BettyToolTip.SetTitle(getLocale("BETTY_FEELINGS"))
-			BettyToolTip.SetContent("Derzeit liegt noch keine Liebe in der Luft ;D")
+			BettyToolTip.SetContent(getLocale("THERE_IS_NO_LOVE_IN_THE_AIR_YET"))
 			BettyToolTip.enabled = 1
 			BettyToolTip.Hover()
 		EndIf
@@ -1955,16 +1955,16 @@ Type TInterface
 
 			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
 			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetGameTime().daysPlayed+1) + ". Tag", 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetGameTime().daysPlayed+1) + ". "+GetLocale("DAY"), 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
 
 		SetAlpha 0.25
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime() + " Uhr", 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
 		SetAlpha 0.9
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime()+ " Uhr", 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime()+ " "+GetLocale("OCLOCK"), 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
 		SetAlpha 1.0
 
 		For local tip:TTooltip = eachin tooltips

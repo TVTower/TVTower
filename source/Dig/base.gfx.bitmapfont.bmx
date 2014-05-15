@@ -365,7 +365,7 @@ Type TBitmapFont
 		'how many space is left to draw?
 		local heightLeft:float	= h
 		'are we limited in height?
-		local limitHeight:int = (heightLeft <> -1)
+		local limitHeight:int = (heightLeft > 0)
 
 		'for each line/paragraph
 		For Local i:Int= 0 To paragraphs.length-1
@@ -387,7 +387,7 @@ Type TBitmapFont
 
 				'as long as the part of the line does not fit into
 				'the given width, we have to search for linebreakers
-				while self.getWidth(linePartial) >= w and linePartial.length >0
+				while (w>0 and self.getWidth(linePartial) >= w) and linePartial.length >0
 					'whether we found a break position by a rule
 					local FoundBreakPosition:int = FALSE
 
@@ -440,7 +440,7 @@ Type TBitmapFont
 				local currentLine:string = lines[lines.length-1]
 				'check whether we have to subtract some chars for the "..."
 				local ellipsisChar:string = GetEllipsis()
-				if getWidth(currentLine + ellipsisChar) > w
+				if (w>0 and getWidth(currentLine + ellipsisChar) > w)
 					currentLine = currentLine[.. currentLine.length-3] + ellipsisChar
 				else
 					currentLine = currentLine[.. currentLine.length] + ellipsisChar
@@ -472,7 +472,7 @@ Type TBitmapFont
 		if alignment
 			'empty space = height - (..)
 			'so alignTop = add 0 of that space, alignBottom = add 100% of that space
-			if alignment.GetY() <> ALIGN_TOP
+			if alignment.GetY() <> ALIGN_TOP and h > 0
 				y :+ alignment.GetY() * (h - blockHeight)
 			endif
 		endif
@@ -481,7 +481,7 @@ Type TBitmapFont
 		For local i:int = 0 to lines.length-1
 			'only align when drawing
 			If doDraw
-				if alignment and alignment.GetX() <> ALIGN_LEFT
+				if alignment and alignment.GetX() <> ALIGN_LEFT and w > 0
 					alignedX = x + alignment.GetX() * (w - getWidth(lines[i]))
 				else
 					alignedX = x

@@ -14,6 +14,8 @@ Import "base.util.registry.spriteloader.bmx"
 Type TGUICheckBox Extends TGUIObject
     Field _checked:Int=False
     Field _showValue:Int=True
+    'limit the label/value width/height?
+    Field _maxValueDimension:TPoint = new TPoint
     Field checkSprite:TSprite
 	Field buttonSprite:TSprite
 	Field spriteBaseName:String	= "gfx_gui_icon_check"
@@ -49,6 +51,16 @@ Type TGUICheckBox Extends TGUIObject
 
 	Method SetShowValue:Int(bool:Int=True)
 		_showValue = bool
+	End Method
+
+
+	Method SetMaxValueWidth:Int(value:Int=-1)
+		_maxValueDimension.x = value
+	End Method
+
+
+	Method SetMaxValueHeight:Int(value:Int=-1)
+		_maxValueDimension.y = value
 	End Method
 
 
@@ -141,7 +153,7 @@ Type TGUICheckBox Extends TGUIObject
 			If isChecked() Then col = col.AdjustFactor(-50)
 			If mouseover Then col = col.AdjustFactor(-25)
 
-			GetFont().drawStyled(value, atPoint.GetX() + buttonWidth + 5, Int(atPoint.GetY() + (GetScreenHeight()- GetFont().GetMaxCharHeight()) / 2) +2, col, 1 )
+			GetFont().drawBlock(value, Int(atPoint.GetX() + buttonWidth + 5), Int(atPoint.GetY() + (GetScreenHeight()- GetFont().GetMaxCharHeight()) / 2) +2, _maxValueDimension.x, _maxValueDimension.y, null, col, 1 )
 		EndIf
 
 		oldCol.SetRGBA()

@@ -5,7 +5,9 @@ GAME_TITLE = game title
 START_YEAR = start year
 
 GAME_TIME = Game time
+GAMEDAY = Gameday
 BETTY_FEELINGS = Bettys feelings about you
+THERE_IS_NO_LOVE_IN_THE_AIR_YET = There is no love in the air yet... ;D
 
 PLEASE_BE_PATIENT = Please be patient
 SAVEGAME_GETS_CREATED = Savegame gets created
@@ -25,6 +27,7 @@ PRICE = Price
 VALUE = Value
 
 CURRENCY = €
+OCLOCK =
 DAY = day
 DAYS = days
 WEEK_SHORT_MONDAY		= mo
@@ -71,7 +74,7 @@ PLANNER_MESSAGES		= messages
 ROOM_ELEVATORPLAN		= elevator target planner
 ROOM_NEWSPLANNER		= newsplanner
 ROOM_FINANCES			= finances
-ROOM_SAFE				= save and load
+ROOM_SAFE				= safe
 ROOM_IMAGE_AND_QUOTES	= image/audience
 ROOM_PROGRAMMEPLANNER	= programmeplanner
 ROOM_STATIONMAP			= stationmap
@@ -310,6 +313,10 @@ CONFIRM_PURCHASE = Confirm purchase
 CONFIRM_SALE = Confirm sale
 BUY_STATION = Buy station
 SELL_STATION = Sell station
+
+BUY_AND_SELL = Buy and sell
+AND_STATISTICS = and statistics
+FOR_PRIVATE_AFFAIRS = for your most private affairs
 
 MOVIES = Movies
 SERIES = Series

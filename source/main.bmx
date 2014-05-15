@@ -1155,6 +1155,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSpecialFormats	= New TGUICheckBox.Create(new TPoint.Init(430, 0 + 1*checkboxHeight), null, True, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name)
 		guiSpecialFormats.disable() 'option not implemented
 		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + 2*checkboxHeight), null, True, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name)
+		guiFilterUnreleased.SetMaxValueWidth(280)
 
 		'move announce to last
 		'guiAnnounce.rect.position.MoveXY(0, 4*checkboxHeight)

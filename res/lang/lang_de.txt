@@ -5,7 +5,9 @@ GAME_TITLE = Spieltitel
 START_YEAR = Startjahr
 
 GAME_TIME = Spielzeit
+GAMEDAY = Spieltag
 BETTY_FEELINGS = Bettys Gefühle für Dich
+THERE_IS_NO_LOVE_IN_THE_AIR_YET = Derzeit liegt noch keine Liebe in der Luft ;D
 
 PLEASE_BE_PATIENT = Bitte etwas Geduld
 SAVEGAME_GETS_CREATED = Speicherstand wird erstellt
@@ -24,6 +26,7 @@ PRICE = Preis
 VALUE = Wert
 
 CURRENCY = €
+OCLOCK = Uhr
 DAY = Tag
 DAYS = Tage
 WEEK_SHORT_MONDAY   = Mo
@@ -70,7 +73,7 @@ PLANNER_MESSAGES  = Mitteilungen
 ROOM_ELEVATORPLAN		= Fahrstuhlziel-Planer
 ROOM_NEWSPLANNER		= Newsplaner
 ROOM_FINANCES			= Finanzen
-ROOM_SAFE				= Speichern und Laden
+ROOM_SAFE				= Safe
 ROOM_IMAGE_AND_QUOTES	= Image/Quoten
 ROOM_PROGRAMMEPLANNER	= Programmplaner
 ROOM_STATIONMAP       = Senderkarte
@@ -309,6 +312,10 @@ CONFIRM_PURCHASE = Kauf bestätigen
 CONFIRM_SALE = Verkauf bestätigen
 BUY_STATION = Sendemast kaufen
 SELL_STATION = Sendemast verkaufen
+
+BUY_AND_SELL = Kaufen und Verkaufen
+AND_STATISTICS = und Statistiken
+FOR_PRIVATE_AFFAIRS = Für schmutzige Angelegenheiten
 
 MOVIES = Filme
 SERIES = Serien
