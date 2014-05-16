@@ -12,9 +12,8 @@ In this __free game__ you are the manager of a television channel. Control what 
 
 
 ####Für weitere Details | For further details:
-- Homepage (+Downloads Windows/Linux): http://www.tvgigant.de
+- Homepage (+Downloads Linux/Mac/Linux): http://www.tvgigant.de
 - Forum: http://www.gamezworld.de/phpforum
-- Mac OS Downloads available in the forum
 
 
 ***
