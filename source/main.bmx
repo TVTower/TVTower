@@ -328,11 +328,6 @@ Type TApp
 					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
 					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("chief", GetPlayerCollection().playerID))
 
-					If KEYMANAGER.IsHit(KEY_SPACE)
-						GetGraphicsManager().SetFullscreen(1 - GetGraphicsManager().GetFullscreen())
-						GetGraphicsManager().InitGraphics()
-					endif
-
 					'e wie "employees" :D
 					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
 					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
@@ -346,8 +341,11 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
-				'Save game
-				If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
+				'Save game only when in a game
+				if game.gamestate = TGame.STATE_RUNNING
+					If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
+				endif
+
 				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
 
 				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
