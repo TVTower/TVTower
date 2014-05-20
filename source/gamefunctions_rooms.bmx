@@ -123,9 +123,7 @@ Type TRoom {_exposeToLua="selected"}
 
 		'register all needed events if not done yet
 		if not _initDone
-			EventManager.registerListenerFunction("room.onTryLeave", onTryLeave)
 			EventManager.registerListenerFunction("room.onLeave", onLeave)
-			EventManager.registerListenerFunction("room.onTryEnter", onTryEnter)
 			EventManager.registerListenerFunction("room.onEnter", onEnter)
 			_initDone = TRUE
 		endif
@@ -316,21 +314,50 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-	'returns whether the figure can leave the room
-	Method CanEnter:int(figure:TFigure, forceEnter:int=FALSE)
-		'emit event that someone wants to enter a room + param forceEnter
-		local event:TEventSimple = TEventSimple.Create("room.onTryEnter", new TData.Add("figure", figure).AddNumber("forceEnter", forceEnter) , self )
-		EventManager.triggerEvent( Event )
-		if event.isVeto()
-			'maybe someone wants to know that ...eg. for closing doors
-			EventManager.triggerEvent( TEventSimple.Create("room.onCancelEnter", new TData.Add("figure", figure) , self ) )
-			return FALSE
-		endif
-		return TRUE
-	End Method
+	'==== ENTER / LEAVE PROCESS ====
+Rem
+    === ENTER ===
+	figure.EnterRoom()
+		-> room.CanFigureEnter()
+		-> ev: figure.onTryEnterRoom
+		-> room.DoEnter()
+			-> add occupant (right when opening the door)
+			-> ev: room.onBeginEnter
+			-> ev: room.onEnter (delayed --> door anim)
+				-> room.onEnter()
+					-> figure.onEnterRoom()
+						-> ev: figure.onEnterRoom
+						-> figure.SetInRoom(Room)
+	=== LEAVE ===
+	figure.LeaveRoom()
+		-> room.CanFigureLeave()
+		-> ev: figure.onTryLeaveRoom
+		-> room.DoLeave()
+			-> ev: room.onBeginLeave
+			-> ev: room.onLeave (delayed --> door anim)
+				-> room.onLeave()
+					-> remove occupant (when door closes)
+					-> figure.onLeaveRoom()
+						-> ev: figure.onLeaveRoom
+						-> figure.SetInRoom(null)
+End Rem
 
+	Method DoEnter:int(door:TRoomDoor, figure:TFigure, speed:int)
+		if door and figure then door.Open(figure)
 
-	Method DoEnter:int(figure:TFigure, speed:int)
+ 		'set the room used in that moment to avoid that two figures
+ 		'opening the door at the same time will both get into the room
+ 		'(occupied check is done in "onFigureTryEnterRoom")
+		if not hasOccupant() then addOccupant(figure)
+
+		'kick other figures from the room if figure is the owner 
+		'only player-figures need such handling (events etc.)
+		If figure.parentPlayerID and figure.parentPlayerID = owner
+			for local occupant:TFigure = eachin occupants
+				if occupant <> figure then figure.KickFigureFromRoom(occupant, self)
+			next
+		EndIf
+	
 		'inform others that we start going into the room (eg. for animations)
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", new TData.Add("figure", figure) , self ) )
 
@@ -346,70 +373,6 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-	Method Enter:int( figure:TFigure=null, forceEnter:int )
-		'figure is already in that room - so just enter
-		if isOccupant(figure) then return TRUE
-
-		'ask if enter possible
-		if not CanEnter(figure, forceEnter) then return FALSE
-
-'if figure.id = 1 then print "2/4 | room: onTryEnter | room: "+self.name
-
-		'enter is allowed
-		figure.isChangingRoom = true
-		'actually enter the room
-		DoEnter(figure, TRoom.ChangeRoomSpeed/2)
-		return TRUE
-	End Method
-
-
-	'gets called if somebody tries to enter a room
-	'also kicks figures in rooms if the owner tries to enter
-	Function onTryEnter:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure( triggerEvent.getData().get("figure") )
-		if not figure then return FALSE
-
-		local room:TRoom = TRoom(triggerEvent.getSender())
-		if not room then return FALSE
-
-		local door:TRoomDoor = TRoomDoor( triggerEvent.getData().get("door") )
-		local forceEnter:int = triggerEvent.getData().getInt("forceEnter",FALSE)
-
-		'no problem as soon as multiple figures are allowed
-		if room.allowMultipleOccupants then return TRUE
-
- 		'set the room used in that moment already - else
- 		'two figures opening the door at the same time will both get
- 		'into the room (occupied check is done here in "onTry")
-		if not room.hasOccupant() then room.addOccupant(figure)
-
-		'occupied, only one figure allowed and figure is not the occupier
-		If room.hasOccupant() and not room.isOccupant(figure)
-			'only player-figures need such handling (events etc.)
-			If figure.parentPlayerID
-				'kick others, except multiple figures allowed in the room
-				If figure.parentPlayerID = room.owner OR forceEnter
-					'andere rausschmeissen (falls vorhanden)
-					for local occupant:TFigure = eachin room.occupants
-						figure.KickFigureFromRoom(occupant, room)
-					next
-				'Besetztzeichen ausgeben / KI informieren
-				Else
-					'Spieler-KI benachrichtigen
-					If figure.isAI() then GetPlayerCollection().Get(figure.parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
-					'tooltip only for active user
-					If figure.isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
-
-					triggerEvent.setVeto()
-					return FALSE
-				EndIf
-			EndIf
-		EndIf
-
-		return TRUE
-	End Function
-
-
 	'gets called when the figure really enters a room (fadeout animation finished etc)
 	Function onEnter:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent.getData().get("figure") )
@@ -420,16 +383,7 @@ Type TRoom {_exposeToLua="selected"}
 
 		local door:TRoomDoor = TRoomDoor( triggerEvent.getData().get("door") )
 
-		'set the room used
-		room.addOccupant(figure)
-
-		'if figure.id = 1 then print "3/4 | room: onEnter | room: "+self.name+ " | triggering figure.onEnterRoom"
-
-		'inform others that a figure enters the room
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , figure ) )
-
-
-			'close the door (for now: close all doors to this room)
+		'close the door (for now: close all doors to this room)
 		if not door
 			For door = eachin TRoomDoor.GetDoorsToRoom(room)
 				If door.GetDoorType() >= 0 then door.Close(figure)
@@ -437,23 +391,31 @@ Type TRoom {_exposeToLua="selected"}
 		else
 			If door.GetDoorType() >= 0 then door.Close(figure)
 		endif
+
+		'inform figure that it now entered the room
+		figure.onEnterRoom(room, door)
 	End Function
 
 
-	'returns whether the figure can leave the room
-	Method CanLeave:int(figure:TFigure=null)
-		'emit event that someone wants to leave a room
-		local event:TEventSimple = TEventSimple.Create("room.onTryLeave", new TData.Add("figure", figure) , self )
-		EventManager.triggerEvent( Event )
-		if event.isVeto()
-			EventManager.triggerEvent( TEventSimple.Create("room.onCancelLeave", new TData.Add("figure", figure) , self ) )
-			return FALSE
-		endif
-		return TRUE
-	End Method
+	'returns whether the figure can enter this room
+	'override this in custom rooms
+	Method CanFigureEnter:int(figure:TFigure)
+		'all can enter if there is no limit...
+		if allowMultipleOccupants then return True
+		'non players can enter everytime
+		if not figure.parentPlayerID then return True
+		'players must be owner of the room
+		If figure.parentPlayerID = owner then return True
 
+		return False
+	End Method
+	
 
 	Method DoLeave:int(figure:TFigure, speed:int)
+		'figure isn't in that room - so just leave
+		if not isOccupant(figure) then return TRUE
+
+		figure.isChangingRoom = true
 
 		'inform others that we start going out of that room (eg. for animations)
 		EventManager.triggerEvent( TEventSimple.Create("room.onBeginLeave", new TData.Add("figure", figure) , self ) )
@@ -461,7 +423,6 @@ Type TRoom {_exposeToLua="selected"}
 		'finally inform that the figure leaves the room - eg for AI-scripts
 		'but delay that ChangeRoomSpeed/2 - so the real leaving takes place later
 		local event:TEventSimple = TEventSimple.Create("room.onLeave", new TData.Add("figure", figure) , self )
-
 		if speed = 0
 			'fire immediately
 			EventManager.triggerEvent(event)
@@ -473,55 +434,11 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-	'a figure wants to leave that room
-	Method Leave:int( figure:TFigure=null )
-		if not figure then figure = GetPlayerCollection().Get().figure
-
-		'figure isn't in that room - so just leave
-		if not isOccupant(figure) then return TRUE
-
-		'ask if leave possible
-		if not CanLeave(figure) then return FALSE
-		'if figure.id = 1 then print "2/4 | figure: "+figure.name+" | room: onTryLeave | room: "+self.name
-		'leave is allowed
-		figure.isChangingRoom = true
-		'actually leave the room
-		DoLeave(figure, TRoom.ChangeRoomSpeed/2)
-
-		return TRUE
-	End Method
-
-
-	'gets called if somebody tries to leave a room
-	Function onTryLeave:int(triggerEvent:TEventBase )
-		local figure:TFigure = TFigure( triggerEvent.getData().get("figure") )
-		if not figure then return FALSE
-
-		local room:TRoom = TRoom(triggerEvent.getSender())
-		if not room then return FALSE
-
-		'only pay attention to players
-		if figure.ParentPlayerID
-			'roomboard left without animation as soon as something dragged but leave forced
-			If room.name = "roomboard" 	AND TRoomDoorSign.AdditionallyDragged > 0
-				triggerEvent.setVeto()
-				return FALSE
-			endif
-		endif
-
-		return TRUE
-	End Function
-
-
 	'gets called when the figure really leaves the room (fadein animation finished etc)
 	Function onLeave:int( triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent.getData().get("figure") )
-		if not figure then return FALSE
-
 		local room:TRoom = TRoom(triggerEvent.getSender())
-		if not room then return FALSE
-
-		'if figure.id = 1 then print "3/4 | room: onLeave | room: "+self.name+ " | triggering figure.onLeaveRoom"
+		if not figure or not room then return FALSE
 
 		'open the door
 		'which door to open?
@@ -530,28 +447,41 @@ Type TRoom {_exposeToLua="selected"}
 
 		if door and door.GetDoorType() >= 0 then door.Open(figure)
 
-		'remove the occupant from the rooms list
+		'remove the occupant from the rooms list after animation finished
+		'and figure really left that room
 		room.removeOccupant(figure)
 
-		'inform others that a figure leaves the room
-		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", new TData.Add("room", room).Add("door", door) , figure ) )
+		'inform figure that it now left the room
+		figure.onLeaveRoom(room)
 	End Function
+
+
+	'returns whether the figure can leave the room
+	Method CanFigureLeave:int(figure:TFigure=null)
+		'by default everyone can leave
+		return TRUE
+	End Method
 End Type
 
 
 
-Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
-	Field room:TRoom
-	Field tooltip:TTooltip			= null					'uses description
-	Field DoorTimer:TIntervalTimer	= TIntervalTimer.Create(1) 'time is set in Init() depending on changeRoomSpeed..
-	Field Pos:TPoint										'x of the rooms door in the building, y as floornumber
-	Field doorSlot:Int				= -1					'door 1-4 on floor (<0 is invisible, -1 is unset)
-	Field doortype:Int				= -1
-	Field doorDimension:TPoint		= new TPoint.Init(38,52)
-	Field _soundSource:TDoorSoundSource = Null {nosave}
-	Field sign:TRoomDoorSign		= null
+Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
+	'Field area:
+	'  position.x is x of the rooms door in the building
+	'  position.y is floornumber
 
-	Global list:TList					= CreateList()		'List of doors
+	Field room:TRoom
+	'uses description
+	Field tooltip:TTooltip = null
+	'time is set in Init() depending on changeRoomSpeed..
+	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1)
+	'door 1-4 on floor (<0 is invisible, -1 is unset)
+	Field doorSlot:Int = -1
+	Field doortype:Int = -1
+	Field _soundSource:TDoorSoundSource = Null {nosave}
+	Field sign:TRoomDoorSign = null
+
+	Global list:TList = CreateList()		'List of doors
 	Global _doorsDrawnToBackground:Int	= 0					'doors drawn to Pixmap of background
 
 	const doorSlot0:int	= -10								'x coord of defined slots
@@ -559,14 +489,6 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	const doorSlot2:int	= 293
 	const doorSlot3:int	= 469
 	const doorSlot4:int	= 557
-
-
-	Method New()
-		LastID:+1
-		id	= LastID
-
-		list.AddLast(self)
-	End Method
 
 
 	'create room and use preloaded image
@@ -577,17 +499,23 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		'autocalc the position
 		if x=-1 and doorSlot>=0 AND doorSlot<=4 then x = getDoorSlotX(doorSlot)
 
+		GenerateID()
+
 		'assign variables
 		self.room = room
 
 		DoorTimer.setInterval( TRoom.ChangeRoomSpeed )
 
-		doorDimension.SetX( GetSpriteFromRegistry("gfx_building_Tueren").framew )
-		self.doorSlot	= doorSlot
-		self.doorType	= doorType
-		self.Pos		= new TPoint.Init(x,floor)
+		self.area = new TRectangle.Init(x,floor, 38, 52)
+		self.area.dimension.SetX( GetSpriteFromRegistry("gfx_building_Tueren").framew )
+		self.doorSlot = doorSlot
+		self.doorType = doorType
+
 
 		CreateRoomsign()
+
+		list.AddLast(self)
+		
 
 		Return self
 	End Method
@@ -615,10 +543,10 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		'already adjusted...
 		if doorSlot >= 0 then return doorSlot
 
-		if int(pos.x) = doorSlot1 then return 1
-		if int(pos.x) = doorSlot2 then return 2
-		if int(pos.x) = doorSlot3 then return 3
-		if int(pos.x) = doorSlot4 then return 4
+		if area.GetX() = doorSlot1 then return 1
+		if area.GetX() = doorSlot2 then return 2
+		if area.GetX() = doorSlot3 then return 3
+		if area.GetX() = doorSlot4 then return 4
 
 		return 0
 	End Method
@@ -670,27 +598,27 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 
 	Method UpdateTooltip:Int()
 		If tooltip AND tooltip.enabled
-			tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
+			tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
 			tooltip.Update()
 			'delete old tooltips
 			if tooltip.lifetime < 0 then tooltip = null
 		EndIf
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.inRoom = Null And THelper.MouseIn(Pos.x, GetBuilding().area.position.y  + TBuilding.GetFloorY(Pos.y) - doorDimension.y, doorDimension.x, doorDimension.y)
+		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.inRoom = Null And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
 			If tooltip <> null
 				tooltip.Hover()
 			else
 				tooltip = TTooltip.Create(room.GetDescription(1), room.GetDescription(2), 100, 140, 0, 0)
 			endif
-			tooltip.area.position.setY( GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
-			tooltip.area.position.setX( Pos.x + doorDimension.x/2 - tooltip.GetWidth()/2 )
+			tooltip.area.position.setY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
+			tooltip.area.position.setX( area.GetX() + area.GetW()/2 - tooltip.GetWidth()/2 )
 			tooltip.enabled	= 1
-			If room.name = "chief"			Then tooltip.tooltipimage = 2
-			If room.name = "news"			Then tooltip.tooltipimage = 4
-			If room.name = "archive"		Then tooltip.tooltipimage = 0
-			If room.name = "office"			Then tooltip.tooltipimage = 1
-			If room.name.Find("studio",0)=0	Then tooltip.tooltipimage = 5
+			If room.name = "chief" Then tooltip.tooltipimage = 2
+			If room.name = "news" Then tooltip.tooltipimage = 4
+			If room.name = "archive" Then tooltip.tooltipimage = 0
+			If room.name = "office" Then tooltip.tooltipimage = 1
+			If room.name.Find("studio",0) = 0 Then tooltip.tooltipimage = 5
 			If room.owner >= 1 Then tooltip.TitleBGtype = room.owner + 10
 		EndIf
 	End Method
@@ -714,7 +642,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		'Ronny TODO: maybe replace "invisible doors" with hotspots + room signes (if visible in elevator)
 		If room = null then Return FALSE
 		If room.name = "roomboard" OR room.name = "credits" OR room.name = "porter" then Return FALSE
-		If doorType < 0 OR Pos.x <= 0 then Return FALSE
+		If doorType < 0 OR area.GetX() <= 0 then Return FALSE
 
 		Return TRUE
 	End Method
@@ -740,7 +668,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 			'clamp doortype
 			door.doorType = Min(5, door.doorType)
 			'draw door
-			DrawImageOnImage(doorSprite.GetFrameImage(door.doorType), Pix, door.Pos.x - GetBuilding().area.position.x - 127, TBuilding.GetFloorY(door.Pos.y) - doorSprite.area.GetH())
+			DrawImageOnImage(doorSprite.GetFrameImage(door.doorType), Pix, door.area.GetX() - GetBuilding().area.GetX() - 127, TBuilding.GetFloorY(door.area.GetY()) - doorSprite.area.GetH())
 		Next
 		'no unlock needed atm as doing nothing
 		'UnlockImage(GetSpriteFromRegistry("gfx_building").parent.image)
@@ -748,31 +676,31 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	End Function
 
 
-	Method Draw:Int()
+	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		local doorSprite:TSprite = GetSpriteFromRegistry("gfx_building_Tueren")
 
 		'==== DRAW DOOR ====
 		If getDoorType() >= 5
 			If getDoorType() = 5 AND DoorTimer.isExpired() Then Close(null)
 			'valign = 1 -> subtract sprite height
-			doorSprite.Draw(Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			doorSprite.Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 		EndIf
 
 		'==== DRAW DOOR SIGN ====
 		'draw on same height than door startY
-		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(Pos.x + 2 + doorSprite.framew, GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - doorSprite.area.GetH())
+		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(area.GetX() + 2 + doorSprite.framew, GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH())
 
 
 		'==== DRAW DEBUG TEXT ====
 		if Game.DebugInfos
-			local textY:int = GetBuilding().area.position.y + TBuilding.GetFloorY(Pos.y) - 62
+			local textY:int = GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - 62
 			if room.hasOccupant()
 				for local figure:TFigure = eachin room.occupants
-					GetBitmapFontManager().basefont.Draw(figure.name, Pos.x, textY)
+					GetBitmapFontManager().basefont.Draw(figure.name, xOffset + area.GetX(), yOffset + textY)
 					textY:-10
 				next
 			else
-				GetBitmapFontManager().basefont.Draw("empty", Pos.x, textY)
+				GetBitmapFontManager().basefont.Draw("empty", xOffset + area.GetX(), yOffset + textY)
 			endif
 		endif
 	End Method
@@ -784,7 +712,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 			'Ronny TODO: maybe replace "invisible doors" with hotspots + room signes (if visible in elevator)
 			If not door.IsVisible() then continue
 
-			door.Draw()
+			door.Render()
 		Next
 	End Function
 
@@ -795,7 +723,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		If doortype < 0 then return 0
 
 		local signx:int = 0
-		Local signy:Int = 41 + (13 - Pos.y) * 23
+		Local signy:Int = 41 + (13 - area.GetY()) * 23
 		select slot
 			case 1	signx = 26
 			case 2	signx = 208
@@ -821,7 +749,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 		For Local door:TRoomDoor = EachIn list
 			'also allow invisible rooms... so just check if hit the area
 			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(door.pos.y) - door.doorDimension.Y, door.doorDimension.x, door.doorDimension.y)
+			If THelper.IsIn(x, y, door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()) - door.area.GetH(), door.area.GetW(), door.area.GetH())
 				Return door
 			EndIf
 		Next
@@ -858,7 +786,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	Function GetByMapPos:TRoomDoor( doorSlot:Int, doorFloor:Int )
 		if doorSlot >= 0 and doorFloor >= 0
 			For Local door:TRoomDoor= EachIn list
-				If door.Pos.y = doorFloor And door.doorSlot = doorSlot Then Return door
+				If door.area.GetY() = doorFloor And door.doorSlot = doorSlot Then Return door
 			Next
 		EndIf
 		Return Null
@@ -868,7 +796,7 @@ Type TRoomDoor extends TGameObject  {_exposeToLua="selected"}
 	Function GetByDetails:TRoomDoor( name:String, owner:Int, floor:int =-1 )
 		For Local door:TRoomDoor = EachIn list
 			'skip wrong floors
-			if floor >=0 and door.pos.y <> floor then continue
+			if floor >=0 and door.area.GetY() <> floor then continue
 			'skip wrong owners
 			if door.room.owner <> owner then continue
 
@@ -2788,7 +2716,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 			'figure enters room - reset the suitcase's guilist, limit listening to the 4 rooms
 			EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, room )
-			EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, room )
+			EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom, null,room )
 			EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, room )
 		Next
 
@@ -2811,7 +2739,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		'if the list is open - just close the list and veto against
@@ -3184,7 +3112,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'figure enters room - reset the suitcase's guilist, limit listening to this room
 		EventManager.registerListenerFunction("room.onEnter", onEnterRoom, room)
 		'figure leaves room - only without dragged blocks
-		EventManager.registerListenerFunction("room.onTryLeave", onTryLeaveRoom, room)
+		EventManager.registerListenerFunction("figure.onTryLeaveRoom", onTryLeaveRoom, null, room)
 		EventManager.registerListenerFunction("room.onLeave", onLeaveRoom, room)
 
 		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
@@ -3227,11 +3155,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 
 	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return FALSE
+		local room:TRoom = TRoom(triggerEvent.GetReceiver())
 
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		'do not allow leaving as long as we have a dragged block
@@ -4359,7 +4286,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		For Local dialog:TDialogue = EachIn Dialogues
 			If dialog.Update() = 0
-				room.Leave()
+				GetPlayerCollection().Get().figure.LeaveRoom()
 				Dialogues.Remove(dialog)
 			endif
 		Next
@@ -4491,7 +4418,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'we want to know if we hover a specific block - to show a datasheet
 		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
 		'figure leaves room - only without dragged blocks
-		EventManager.registerListenerFunction( "room.onTryLeave", onTryLeaveRoom, GetRoomCollection().GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom, null, GetRoomCollection().GetFirstByDetails("adagency") )
 		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, GetRoomCollection().GetFirstByDetails("adagency") )
 		'this lists want to delete the item if a right mouse click happens...
 		EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract")
@@ -4542,11 +4469,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
+		local room:TRoom = TRoom(triggerEvent.GetReceiver())
 		if not room then return FALSE
 
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		'do not allow leaving as long as we have a dragged block
@@ -5189,7 +5116,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 			local door:TRoomDoor = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
 			if door
 				local playerFigure:TFigure = GetPlayerCollection().Get().figure
-				playerFigure.ChangeTarget(door.Pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(door.Pos.y))
+				playerFigure.ChangeTarget(door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()))
 			endif
 		endif
 
@@ -5224,7 +5151,29 @@ End Type
 Type RoomHandler_Roomboard extends TRoomHandler
 	Function Init()
 		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("roomboard"))
+
+		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom, null, GetRoomCollection().GetFirstByDetails("roomboard"))
 	End Function
+
+
+	'gets called if somebody tries to leave the roomboard
+	Function onTryLeaveRoom:int(triggerEvent:TEventBase )
+		local figure:TFigure = TFigure( triggerEvent.GetSender())
+		local room:TRoom = TRoom(triggerEvent.GetReceiver())
+		if not room or not figure then return FALSE
+
+		'only pay attention to players
+		if figure.ParentPlayerID
+			'roomboard left without animation as soon as something dragged but leave forced
+			If room.name = "roomboard" AND TRoomDoorSign.AdditionallyDragged > 0
+				triggerEvent.setVeto()
+				return FALSE
+			endif
+		endif
+
+		return TRUE
+	End Function
+	
 
 	Function onDraw:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom(triggerEvent._sender)
@@ -5699,7 +5648,7 @@ Function Init_CreateAllRooms()
 			vars.GetInt("doortype") ..
 		)
 		if vars.GetInt("doorwidth") > 0
-			door.doorDimension.setX( vars.GetInt("doorwidth") )
+			door.area.dimension.setX( vars.GetInt("doorwidth") )
 		endif
 
 		'==== HOTSPOTS ====

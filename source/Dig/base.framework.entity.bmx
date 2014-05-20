@@ -7,6 +7,8 @@ Type TStaticEntity
 	Field area:TRectangle = new TRectangle
 	Field name:string
 	Field visible:int = True
+	Field id:int = 0
+	Global LastID:int = 0
 
 
 	Method New()
@@ -14,12 +16,20 @@ Type TStaticEntity
 	End Method
 
 
+	Method GenerateID:int()
+		LastID:+1
+		'assign a new id
+		id = LastID
+	End Method
+	
+
+
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0) abstract
 
 
-	Method Update:Int()
+'	Method Update:Int()
 	'do nothing
-	End Method
+'	End Method
 
 
 	Method SetVisible:int(bool:int=True)

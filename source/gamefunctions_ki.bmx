@@ -150,14 +150,26 @@ Type KI
 		End Try
 	End Method
 
-	Method CallOnLeaveRoom()
+	Method CallOnLeaveRoom(roomId:int)
 	    Try
-			if (KIRunning) then LuaEngine.CallLuaFunction("OnLeaveRoom", Null)
+			Local args:Object[1]
+			args[0] = String(roomId)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnLeaveRoom", args)
 		Catch ex:Object
 			TLogger.log("KI.CallOnLeaveRoom", "Script "+scriptFileName+" does not contain function ~qOnLeaveRoom~q.", LOG_ERROR)
 		End Try
 	End Method
 
+	Method CallOnEnterRoom(roomId:int)
+	    Try
+			Local args:Object[1]
+			args[0] = String(roomId)
+			if (KIRunning) then LuaEngine.CallLuaFunction("OnEnterRoom", args)
+		Catch ex:Object
+			TLogger.log("KI.CallOnEnterRoom", "Script "+scriptFileName+" does not contain function ~qOnEnterRoom~q.", LOG_ERROR)
+		End Try
+	End Method
+	
 	Method CallOnDayBegins()
 	    Try
 			if (KIRunning) then LuaEngine.CallLuaFunction("OnDayBegins", Null)
@@ -413,11 +425,10 @@ endrem
 
 	Method getPlayerTargetRoom:Int()
 		local player:TPlayer = GetPlayerCollection().Get(self.ME)
-		If player.figure.targetDoor
-			if player.figure.targetDoor.room
-				Return player.figure.targetDoor.room.id
-			Endif
-		Endif
+		local roomDoor:TRoomDoor = TRoomDoor(player.figure.targetObj)
+		
+		If roomDoor and roomDoor.room then Return roomDoor.room.id
+
 		Return self.RESULT_NOTFOUND
 	End Method
 
@@ -428,7 +439,7 @@ endrem
 		Local room:TRoom = GetRoomCollection().Get(roomId)
 		if room
 			Local door:TRoomDoor = TRoomDoor.GetMainDoorToRoom(room)
-			If door Then Return door.Pos.y
+			If door Then Return door.area.GetY()
 		endif
 		Return self.RESULT_NOTFOUND
 	End Method

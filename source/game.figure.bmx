@@ -87,22 +87,28 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	'area: from TEntity
 	' .position.y is difference to y of building
 	' .dimension.x and .y = "end" of figure in sprite
-	Field name:String			= "unknown"
-	Field initialdx:Float		= 0.0			'backup of self.velocity.x
-	Field PosOffset:TPoint		= new TPoint.Init(0,0)
-	Field boardingState:Int		= 0				'0=no boarding, 1=boarding, -1=deboarding
+	Field name:String = "unknown"
+	'backup of self.velocity.x
+	Field initialdx:Float = 0.0
+	Field PosOffset:TPoint = new TPoint.Init(0,0)
+	'0=no boarding, 1=boarding, -1=deboarding
+	Field boardingState:Int = 0
 
-	Field target:TPoint			= Null {_exposeToLua}
-	Field targetDoor:TRoomDoor	= Null			'targetting a special door?
-	Field targetHotspot:THotspot= Null			'targetting a special hotspot?
-	Field isChangingRoom:int	= FALSE			'active as soon as figure leaves/enters rooms
-	Field fromDoor:TRoomDoor	= Null			'the door used (there might be multiple)
-	Field fromRoom:TRoom		= Null			'coming from room
-	Field inRoom:TRoom			= Null
-	Field id:Int				= 0
+	Field target:TPoint	= Null {_exposeToLua}
+	'targetting a special object (door, hotspot) ?
+	Field targetObj:TStaticEntity
+	'active as soon as figure leaves/enters rooms
+	Field isChangingRoom:int = FALSE
+	'the door used (there might be multiple)
+	Field fromDoor:TRoomDoor = Null
+	'coming from room
+	Field fromRoom:TRoom = Null
+	Field inRoom:TRoom = Null
+	Field id:Int = 0
 
-	Field WaitAtElevatorTimer:TIntervalTimer	= TIntervalTimer.Create(25000)
-	Field SyncTimer:TIntervalTimer				= TIntervalTimer.Create(2500) 'network sync position timer
+	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(25000)
+	'network sync position timer
+	Field SyncTimer:TIntervalTimer = TIntervalTimer.Create(2500)
 
 	Field ControlledByID:Int		= -1
 	Field alreadydrawn:Int			= 0 			{nosave}
@@ -146,12 +152,6 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		self.id = GetFigureCollection().GenerateID()
 
 		if not _initdone
-			'instead of "room.onLeave" we listen to figure.onLeaveRoom as it has
-			'the figure as sender - so we can filter
-			EventManager.registerListenerFunction("figure.onLeaveRoom", event_onLeaveRoom, "TFigure" )
-			'same for onEnterRoom
-			EventManager.registerListenerFunction("figure.onEnterRoom", event_onEnterRoom, "TFigure" )
-
 			_initDone = TRUE
 		endif
 
@@ -322,7 +322,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			If hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
 				result = "standBack"
 			'going into a room
-			ElseIf isChangingRoom and targetDoor
+			ElseIf isChangingRoom and TRoomDoor(targetObj)
 				result = "standBack"
 			'in a room (or standing in front of a fake room - looking at plan)
 			ElseIf inRoom and inRoom.ShowsFigures()
@@ -415,15 +415,15 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	'player is now in room "room"
-	Method _SetInRoom:Int(room:TRoom)
+	Method SetInRoom:Int(room:TRoom)
 		'in all cases: close the door (even if we cannot enter)
 		'Ronny TODO: really needed?
-		If room and targetDoor then targetDoor.Close(self)
+		If room and TRoomDoor(targetObj) then TRoomDoor(targetObj).Close(self)
 
-		If room then room.addOccupant(Self)
+		If room and not room.IsOccupant(self) then room.addOccupant(Self)
 
 		'remove target if we are going in a room
-		if room then targetDoor = null
+		if room then targetObj = null
 
 		'backup old room as origin
 		fromRoom = inRoom
@@ -439,25 +439,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			If room Then GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnReachRoom(room.id) Else GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTFOUND)
 		EndIf
 
-		If Game.networkgame And Network.IsConnected Then Network_SendPosition()
+		'inform others that room is changed
+		EventManager.triggerEvent( TEventSimple.Create("figure.SetInRoom", self, inroom) )
 	End Method
-
-
-    Method CanEnterRoom:Int(room:TRoom)
-		If Not room Then Return False
-		'nicht besetzt: enter moeglich
-		If not room.hasOccupant() or room.allowMultipleOccupants Then Return True
-
-		'sonstige spielfiguren (keine spieler) koennen niemanden rausschmeissen
-		'aber auch einfach ueberall rein egal ob wer drin ist
-		If Not parentPlayerID Then Return True
-
-		'kann andere rausschmeissen
-		If parentPlayerID = room.owner Then Return True
-
-		'sobald besetzt und kein spieler:
-		Return False
-    End Method
 
 
 	Method KickFigureFromRoom:Int(kickFigure:TFigure, room:TRoom)
@@ -485,9 +469,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 	'figure wants to enter a room
 	'"onEnterRoom" is called when successful
-	'@param door					door to use
-	'@param room					room to enter (in case no door exists)
-	'@param forceEnter				kick without being the room owner
+	'@param door         door to use
+	'@param room         room to enter (in case no door exists)
+	'@param forceEnter   kick without being the room owner
 	Method EnterRoom:Int(door:TRoomDoor, room:TRoom, forceEnter:int=FALSE)
 		'skip command if we already are entering/leaving
 		if isChangingRoom then return TRUE
@@ -495,92 +479,101 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		'assign room if not done yet
 		if not room and door then room = door.room
 
-
 		'if already in another room, leave that first
 		if inRoom then LeaveRoom()
 
-		'RON: if self.id=1 then print "1/4 | figure: EnterRoom | figure.id:"+self.id
+		'figure is already in that room - so just enter
+		if room.isOccupant(self) then return TRUE
 
-		'this sends out an event that we want to enter a room
-		'if successfull, event "room.onEnter" will get triggered - which we listen to
-		if door then door.Open(self)
-		room.Enter(self, forceEnter)
+
+		'check if enter not possible 
+		if not room.CanFigureEnter(self) and not forceEnter
+			If room.hasOccupant() and not room.isOccupant(self)
+				'only player-figures need such handling (events etc.)
+				If parentPlayerID and not parentPlayerID = room.owner
+					'inform player AI
+					If isAI() then GetPlayerCollection().Get(parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
+					'tooltip only for active user
+					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
+					return FALSE
+				EndIf
+			EndIf
+		endif
+
+		'ask if somebody is against going into the room
+		local event:TEventSimple = TEventSimple.Create("figure.onTryEnterRoom", new TData.Add("door", door) , self, room )
+		EventManager.triggerEvent(event)
+		'stop entering
+		if event.IsVeto() then return False
+		
+		'enter is allowed
+		isChangingRoom = true
+
+		'actually enter the room
+		room.DoEnter(door, self, TRoom.ChangeRoomSpeed/2)
 	End Method
 
 
-	'gets called when the figure really enters the room (animation finished etc)
-	Function event_onEnterRoom:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure( triggerEvent._sender )
-		local room:TRoom = TRoom( triggerEvent.getData().get("room") )
+	Method onEnterRoom(room:TRoom, door:TRoomDoor)
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self ) )
 
-		'RON: if figure.id=1 then print "4/4 | figure: onEnterRoom | figure.id:"+self.id
-		figure._setInRoom(room)
-
-		'inform figure, so it can do special things
-		figure.onEnterRoom(room)
-
-		return TRUE
-	End Function
-
-
-	'called if the event "onEnterRoom" is triggered for this figure
-	Method onEnterRoom(room:TRoom)
-		'by default do nothing
+	 	'inform player AI that figure entered a room
+	 	If ParentPlayerID > 0 And isAI()
+			GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnEnterRoom(room.id)
+		EndIf
+		
+		SetInRoom(room)
 	End Method
 
 
-	'command to leave a room - "event_onLeaveRoom" is called when successful
+	'command to leave a room - "onLeaveRoom" is called when successful
 	Method LeaveRoom:Int()
-		'skip command if we already are leaving
-		if isChangingRoom then return TRUE
+		'skip command if in no room or already leaving
+		if not inroom or isChangingRoom then return True
 
-		'RON: if self.id=1 then print "1/4 | figure: LeaveRoom | figure.id:"+self.id
+		'skip leaving if not allowed to do so
+		if not inroom.CanFigureLeave(self) then return False
 
-		If not inRoom then return TRUE
+		'ask if somebody is against leaving that room
+		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", null , self, inroom )
+		EventManager.triggerEvent(event)
+		'stop leaving
+		if event.IsVeto() then return False
 
-		'this sends out an event that we want to leave the room
-		'if successfull, event "room.onLeave" will get triggered - which we listen to
+		'leave is allowed
+		isChangingRoom = true
 
-		inRoom.Leave( self )
+		inRoom.DoLeave(self, TRoom.ChangeRoomSpeed/2)
 	End Method
 
 
 	'gets called when the figure really leaves the room (animation finished etc)
-	Function event_onLeaveRoom:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure( triggerEvent._sender )
+	Method onLeaveRoom(room:TRoom)
+		'inform others that a figure left the room
+		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
 
-'RON: if figure.id=1 then print "4/4 | figure: onLeaveRoom | figure.id:"+self.id
-
-		If GetPlayerCollection().Get(figure.ParentPlayerID) And figure.isAI() then GetPlayerCollection().Get(figure.ParentPlayerID).PlayerKI.CallOnLeaveRoom()
-
-		local oldRoom:TRoom = figure.inRoom
+		'inform player AI
+		If GetPlayerCollection().Get(ParentPlayerID) And isAI()
+			local roomID:int = 0
+			if room then roomID = room.id
+			GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnLeaveRoom(roomID)
+		endif
 
 		'enter target -> null = building
-		figure._setInRoom( null )
-
-		'inform figure, so it can do special things
-		figure.onLeaveRoom(oldRoom)
-
-		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(figure)
-	End Function
-
-
-	'called if the event "onLeaveRoom" is triggered for this figure
-	Method onLeaveRoom(room:TRoom)
-		'by default do nothing
+		SetInRoom( null )
 	End Method
 
 
 	Method SendToDoor:Int(door:TRoomDoor)
  		If not door then return FALSE
 
-		ChangeTarget(door.Pos.x + 5, GetBuilding().area.position.y + GetBuilding().getfloorY(door.Pos.y) - 5)
+		ChangeTarget(door.area.GetX() + 5, GetBuilding().area.GetY() + GetBuilding().getfloorY(door.area.GetY()) - 5)
 	End Method
 
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
 		Local newX:Int = area.GetX() + relX
-		Local newY:Int = GetBuilding().area.position.y + GetBuilding().getfloorY(GetFloor() + relYFloor) - 5
+		Local newY:Int = GetBuilding().area.GetY() + GetBuilding().getfloorY(GetFloor() + relYFloor) - 5
 
 		if (newX < 150) then newX = 150 end
 		if (newX > 580) then newX = 580 end
@@ -626,12 +619,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		'only change target if it's your figure or you are game leader
 		If self <> GetPlayerCollection().Get().figure And Not Game.isGameLeader() Then Return False
 
-		'needed for AI like post dude
-		If inRoom Then LeaveRoom()
-
-		'reset potential target hotspots, they get refilled if user
+		'reset potential target object, they get refilled if user
 		'clicks on one in a later stage
-		targetHotspot = null
+		targetObj = null
 
 		'only a partial target was given
 		if x=-1 or y=-1
@@ -653,8 +643,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		target = new TPoint.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
-		targetDoor = TRoomDoor.GetByCoord(target.x, GetBuilding().area.position.y + target.y)
-		If targetDoor then target.setX( targetDoor.pos.x + ceil(targetDoor.doorDimension.x/2) )
+
+		targetObj = TRoomDoor.GetByCoord(target.x, GetBuilding().area.GetY() + target.y)
+		If targetObj then target.setX( targetObj.area.GetX() + ceil(targetObj.area.GetW()/2))
 
 		'limit target coordinates
 		'on the base floor we can walk outside the buildng, so just check right side
@@ -669,8 +660,16 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			If Floor(target.x) >= rightLimit Then target.X = rightLimit
 		endif
 
-		'change to event
-		If Game.networkgame Then If Network.IsConnected Then NetworkHelper.SendFigurePosition(Self)
+		local targetRoom:TRoom
+		if TRoomDoor(targetObj) then targetRoom = TRoomDoor(targetObj).room 
+
+		'if still in a room, but targetting another one ... leave first
+		'this is needed as computer players do not "leave a room", they
+		'just change targets 
+		If targetRoom and targetRoom <> inRoom Then LeaveRoom()
+
+		'emit an event
+		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )
 
 		return TRUE
 	End Method
@@ -698,28 +697,24 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		'remove target
 		target = null
 
-		'hotspots are "overlaying" rooms - so more important
-		if targetHotspot
+		if targetObj
 			'emit an event
-			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", new TData.Add("hotspot", targetHotspot), self ) )
+			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetObj ) )
 
-			'remove targeted hotspot
-			targetHotspot = null
+			if THotspot(targetObj)
+				'remove targeted hotspot
+				targetObj = null
+			elseif TRoomDoor(targetObj)
+				local targetDoor:TRoomDoor = TRoomDoor(targetObj)
+'				If targetDoor.doortype >= 0 And targetDoor.getDoorType() <> 5 And inRoom <> targetDoor.room
+'					targetDoor.Open(Self)
+'				endif
+
+				'do not remove the target room as it is done during "entering the room"
+				'(which can be animated and so we just trust the method to do it)
+				EnterRoom(targetDoor, null)
+			EndIf
 		endif
-
-		'figure wants to change room
-		If not targetHotspot and targetDoor
-			'emit an event
-			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", new TData.Add("door", targetDoor), self ) )
-
-			If targetDoor.doortype >= 0 And targetDoor.getDoorType() <> 5 And inRoom <> targetDoor.room
-				targetDoor.Open(Self)
-			endif
-
-			'do not remove the target room as it is done during "entering the room"
-			'(which can be animated and so we just trust the method to do it)
-			EnterRoom(targetDoor, null)
-		EndIf
 	End Method
 
 
@@ -764,9 +759,10 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			EndIf
 		EndIf
 
-		'sync playerposition if not done for long time
-		If Game.networkgame And Network.IsConnected And SyncTimer.isExpired()
-			Network_SendPosition()
+
+		'maybe someone is interested in this information
+		If SyncTimer.isExpired() 
+			EventManager.triggerEvent( TEventSimple.Create("figure.onSyncTimer", self) )
 			SyncTimer.Reset()
 		EndIf
 	End Method

@@ -694,29 +694,23 @@ End Type
 
 
 
-Type THotspot
-	Field area:TRectangle			= new TRectangle.Init(0,0,0,0)
-	Field name:String				= ""
-	Field tooltip:TTooltip			= Null
-	Field tooltipText:String		= ""
+Type THotspot extends TStaticEntity
+	Field area:TRectangle = new TRectangle.Init(0,0,0,0)
+	Field name:String = ""
+	Field tooltip:TTooltip = Null
+	Field tooltipText:String = ""
 	Field tooltipDescription:String	= ""
-	Field hovered:Int				= False
-	Field id:int					= 0
-	Global LastID:int 				= 0
-	Global list:TList				= CreateList()
-
-	Method New()
-		LastID:+1
-		id = LastID
-
-	End Method
+	Field hovered:Int = False
+	Global list:TList = CreateList()
 
 
 	Method Create:THotSpot(name:String, x:Int,y:Int,w:Int,h:Int)
-		Self.area = new TRectangle.Init(x,y,w,h)
+		area = new TRectangle.Init(x,y,w,h)
 		Self.name = name
 
-		list. AddLast(self)
+		GenerateID()
+
+		list.AddLast(self)
 		Return Self
 	End Method
 

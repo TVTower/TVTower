@@ -820,8 +820,8 @@ Type TFigurePostman Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method onEnterRoom:int(room:TRoom)
-		Super.onEnterRoom(room)
+	Method onEnterRoom:int(room:TRoom, door:TRoomDoor)
+		Super.onEnterRoom(room, door)
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -881,8 +881,8 @@ Type TFigureJanitor Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method onEnterRoom:int(room:TRoom)
-		Super.onEnterRoom(room)
+	Method onEnterRoom:int(room:TRoom, door:TRoomDoor)
+		Super.onEnterRoom(room, door)
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -961,14 +961,17 @@ Type TFigureJanitor Extends TFigure
 			'chose actions
 			'only clean with a chance of 30% when on the way to something
 			'and do not clean if target is a room near figure
-			If target And (Not Self.targetDoor Or (20 < Abs(targetDoor.pos.x - area.GetX()) Or targetDoor.pos.y <> GetFloor()))
+			local targetDoor:TRoomDoor = TRoomDoor(targetObj)
+			If target And (Not targetDoor Or (20 < Abs(targetDoor.area.GetX() - area.GetX()) Or targetDoor.area.GetY() <> GetFloor()))
 				If Rand(0,100) < Self.NormalCleanChance Then Self.currentAction = 1
 			EndIf
 			'if just standing around give a chance to clean
 			If Not target And Rand(0,100) < Self.BoredCleanChance Then	Self.currentAction = 1
 		EndIf
 
-		If Not useDoors And Self.targetDoor Then Self.targetDoor = Null
+		if targetObj
+			If Not useDoors And TRoomDoor(targetObj) Then targetObj = Null
+		endif
 	End Method
 End Type
 

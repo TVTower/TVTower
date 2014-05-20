@@ -146,15 +146,21 @@ Type TNetworkHelper
 		EventManager.registerListenerFunction( "stationmap.addStation",		TNetworkHelper.onChangeStationmap )
 
 		'changes to the player's programmecollection
-		EventManager.registerListenerFunction( "programmecollection.removeProgrammeLicence",	TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.addProgrammeLicence",		TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.removeAdContract",			TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.addAdContract",				TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.removeProgrammeLicenceFromSuitcase",	TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.addProgrammeLicenceToSuitcase",		TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.addProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeAdContract", TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.addAdContract",	TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.removeProgrammeLicenceFromSuitcase", TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction( "programmecollection.addProgrammeLicenceToSuitcase", TNetworkHelper.onChangeProgrammeCollection )
+
+		'listen to events to refresh figure position 
+		EventManager.registerListenerFunction( "figure.onSyncTimer", TNetworkHelper.onFigurePositionChanged )
+		EventManager.registerListenerFunction( "figure.onReachTarget", TNetworkHelper.onFigurePositionChanged )
+		EventManager.registerListenerFunction( "figure.onChangeTarget", TNetworkHelper.onFigurePositionChanged )
+		EventManager.registerListenerFunction( "figure.onSetInRoom", TNetworkHelper.onFigurePositionChanged )
 
 		'changes in movieagency
-		EventManager.registerListenerFunction( "ProgrammeLicenceAuction.setBid",				TNetworkHelper.onChangeMovieAgency )
+		EventManager.registerListenerFunction( "ProgrammeLicenceAuction.setBid", TNetworkHelper.onChangeMovieAgency )
 
 		registeredEvents = true
 	End Method
@@ -195,6 +201,14 @@ Type TNetworkHelper
 		if action = -1 then return FALSE
 
 		NetworkHelper.SendStationmapChange(station, action)
+	End Function
+
+
+	Function onFigurePositionChanged:int( triggerEvent:TEventBase )
+		local figure:TFigure = TFigure(triggerEvent.GetSender())
+		if not figure then return FALSE
+
+		NetworkHelper.SendFigurePosition(figure)
 	End Function
 
 
@@ -349,28 +363,28 @@ Type TNetworkHelper
 		obj.SetFloat( 3, figure.area.GetY() )	'...
 		obj.SetFloat( 4, figure.target.x )
 		obj.SetFloat( 5, figure.target.y )
-		if figure.inRoom 			then obj.setInt( 6, figure.inRoom.id)
-		if figure.targetDoor		then obj.setInt( 7, figure.targetDoor.id)
-		if figure.targetHotspot		then obj.setInt( 8, figure.targetHotspot.id)
-		if figure.fromRoom 			then obj.setInt( 9, figure.fromRoom.id)
-		if figure.fromDoor 			then obj.setInt(10, figure.fromDoor.id)
+		if figure.inRoom then obj.setInt( 6, figure.inRoom.id)
+		if TRoomDoor(figure.targetObj) then obj.setInt( 7, figure.targetObj.id)
+		if THotSpot(figure.targetObj) then obj.setInt( 8, figure.targetObj.id)
+		if figure.fromRoom then obj.setInt( 9, figure.fromRoom.id)
+		if figure.fromDoor then obj.setInt(10, figure.fromDoor.id)
 		Network.BroadcastNetworkObject( obj )
 	End Method
 
 	Method ReceiveFigurePosition( obj:TNetworkObject )
-		Local figureID:Int		= obj.getInt(1)
-		local figure:TFigure	= TFigure.getByID( figureID )
+		Local figureID:Int = obj.getInt(1)
+		local figure:TFigure = TFigure.getByID( figureID )
 		if figure = null then return
 
-		local posX:Float			= obj.getFloat(2)
-		local posY:Float			= obj.getFloat(3)
-		local targetX:Float			= obj.getFloat(4)
-		local targetY:Float			= obj.getFloat(5)
-		local inRoomID:int			= obj.getInt( 6, -1,TRUE)
-		local targetDoorID:int		= obj.getInt( 7, -1,TRUE)
-		local targetHotspotID:int	= obj.getInt( 8, -1,TRUE)
-		local fromRoomID:int		= obj.getInt( 9, -1,TRUE)
-		local fromDoorID:int		= obj.getInt(10, -1,TRUE)
+		local posX:Float = obj.getFloat(2)
+		local posY:Float = obj.getFloat(3)
+		local targetX:Float	= obj.getFloat(4)
+		local targetY:Float	= obj.getFloat(5)
+		local inRoomID:int = obj.getInt( 6, -1,TRUE)
+		local targetDoorID:int = obj.getInt( 7, -1,TRUE)
+		local targetHotspotID:int = obj.getInt( 8, -1,TRUE)
+		local fromRoomID:int = obj.getInt( 9, -1,TRUE)
+		local fromDoorID:int = obj.getInt(10, -1,TRUE)
 
 		If not figure.IsInElevator()
 			'only set X if wrong floor or x differs > 10 pixels
@@ -389,8 +403,8 @@ Type TNetworkHelper
 			EndIf
 		EndIf
 
-		figure.targetDoor = TRoomDoor.Get( targetDoorID )
-		figure.targetHotspot = THotspot.Get( targetHotspotID )
+		if targetDoorID then figure.targetObj = TRoomDoor.Get( targetDoorID )
+		if targetHotspotID then figure.targetObj = THotspot.Get( targetHotspotID )
 
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom

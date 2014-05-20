@@ -208,7 +208,7 @@ Type TDoorSoundSource Extends TSoundSourceElement
 
 	Method GetCenter:TPoint()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + TBuilding.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return new TPoint.Init(door.Pos.x + door.doorDimension.x/2, TBuilding.GetFloorY(door.Pos.y) - door.doorDimension.y/2, -15)
+		Return new TPoint.Init(door.area.GetX() + door.area.GetW()/2, TBuilding.GetFloorY(door.area.GetY()) - door.area.GetH()/2, -15)
 	End Method
 
 	Method IsMovable:Int()

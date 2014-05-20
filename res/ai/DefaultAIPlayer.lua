@@ -286,6 +286,9 @@ end
 function OnLeaveRoom()
 end
 
+function OnEnterRoom()
+end
+
 function OnSave()
 	SLFManager.StoreDefinition.Player = getAIPlayer()
 	return SLFManager:save()

@@ -252,10 +252,9 @@ Type TBuilding Extends TStaticEntity
 		Local figure:TFigure = TFigure( triggerEvent._sender )
 		If Not figure Then Return False
 
-		Local hotspot:THotspot = THotspot( triggerEvent.getData().get("hotspot") )
 		'we are only interested in hotspots
+		Local hotspot:THotSpot = THotSpot(triggerEvent.GetReceiver())
 		If Not hotspot Then Return False
-
 
 		If hotspot.name = "elevatorplan"
 			'Print "figure "+figure.name+" reached elevatorplan"
@@ -278,7 +277,7 @@ Type TBuilding Extends TStaticEntity
 		If not GetInstance().room.hotspots.contains(hotspot) then return False
 
 		GetPlayerCollection().Get().figure.changeTarget( GetInstance().area.GetX() + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().area.GetY() + hotspot.area.getY() )
-		GetPlayerCollection().Get().figure.targetHotspot = hotspot
+		GetPlayerCollection().Get().figure.targetObj = hotspot
 
 		MOUSEMANAGER.ResetKey(1)
 	End Function
@@ -540,8 +539,8 @@ Type TBuilding Extends TStaticEntity
 		if not door then return FALSE
 
 		roomUsedTooltip			= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(area.GetY() + GetFloorY(door.Pos.y))
-		roomUsedTooltip.area.position.SetX(door.Pos.x + door.doorDimension.x/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.position.SetY(area.GetY() + GetFloorY(door.area.GetY()))
+		roomUsedTooltip.area.position.SetX(door.area.GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		return TRUE
