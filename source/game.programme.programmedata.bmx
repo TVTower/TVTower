@@ -92,6 +92,13 @@ Type TProgrammeDataCollection
 		return 1.0
 	End Method
 
+
+	Function RefreshTopicalities:int()
+		For Local data:TProgrammeData = eachin GetProgrammeDataCollection().list
+			data.RefreshTopicality()
+			data.RefreshTrailerTopicality()
+		Next
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -446,14 +453,6 @@ Type TProgrammeData {_exposeToLua}
 	Method CutTrailerTopicality:Int(cutToFactor:float=0.9) {_private}
 		trailerTopicality:* Min(1.0,  cutToFactor * trailerTopicality)
 	End Method
-
-
-	Function RefreshAllTopicalities:int() {_private}
-		For Local data:TProgrammeData = eachin GetProgrammeDataCollection().list
-			data.RefreshTopicality()
-			data.RefreshTrailerTopicality()
-		Next
-	End Function
 
 
 	Method RefreshTopicality:Int() {_private}

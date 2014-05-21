@@ -1,3 +1,531 @@
+2014-05-21  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Dauerwerbesendungen berechnen ihre TKP nun anhand des bereits berechneten Profits der Werbung, anstatt sie jeweils dynamisch von der Vertragsbasis zu berechnen - Regression-Fix: Kompiliert nun auch wieder unter Win32 und Mac (maxMod-Modul neu entpacken und kompilieren!)
+
+	- Fahrstuhl-Knopfindikatoren reaktiviert
+
+	- Figuren faden ein und aus beim Raumverlassen/-betreten - Rechtsklick-Verarbeitung in Raeumen per Eventlistener realisiert (verringert Abhaengigkeit Raum->Figuren)
+
+2014-05-20  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Raum betreten/verlassen ueberarbeitet und vereinheitlicht - verschiedene Figur-Positionsaenderungen mit Events versehen und mit Netzwerk verknuepft - Ki: "CallOnEnterRoom" hinzugefuegt - TRoomDoor und THotspot als Ziele fuer Figuren zusammengefuehrt
+
+2014-05-19  STARSCrazy  <stars_crazy@gmx.de>
+
+	Weitere Korrekturen am Language-File
+
+	Noch ne Kleinigkeit
+
+	Kleine Korrekturen an den Language-Files
+
+2014-05-16  Ronny Otto  <ron_github@gamezworld.de>
+
+	Update README.md
+
+	- Englische Texte ueberarbeitet - Speichern nur noch "im Spiel" moeglich (statt wie vorher schon im Menue)
+
+2014-05-15  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Bitmaptexte koennen nun auch Breite/Hoehe <= 0 haben - dann gibt es jeweils kein "Limit" - TGUICheckbox angepasst um den nebenstehenden Text groessentechnisch limitieren zu koennen - weitere Lokalisierungen eingefuegt
+
+	- SoundManager ueberarbeitet (versucht nun eine Liste an Soundengines durchzuarbeiten bis eine brauchbare gefunden worden ist) - MaxMod2-rtAudio erweitert (rtAudioNoPulse) um die PulseAudio-Abhaengigkeit in einem Extrakompilat zu entfernen (Linuxsysteme ohne PulseAudio-Installation)
+
+2014-05-14  Ronny Otto  <ron_github@gamezworld.de>
+
+	- LuaEngine ins Dig-Framework ausgelagert - ExtendedReflection ins Dig-Framework ausgelagert
+
+	- Dig-Framework aktualisiert (TSpriteParticle + TSpriteParticleEmitter) - Chef-Zigarrenqualm auf TSpriteParticleEmitter umgestellt
+
+2014-05-13  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Framework-Dateien aktualisiert - TApplicationSettings (App.settings) entfernt, da TGraphicsManager die gleiche Funktionalitaet bereits beinhaltet
+
+	- Neue Hilfsklassen: MathHelper und StringHelper (printf(), Tween(), ...) - Fix: Figuren (wie Postbote, Hausmeister) verschwinden nicht laenger in "nicht"-Raeumen wie Raumplaner, Fahrstuhlplan, Credits, Pfoertner) sondern bleiben davor stehen (mit Gesicht zur "Wand") - Postboten und Hausmeister verschwinden nun fuer eine geringe zufaellige Zeit in den Raeumen statt ein "Rein-Raus"-Spiel zu absolvieren - Figuren rufen nun Methoden "onEnterRoom" und "onLeaveRoom" auf, sobald sie einen Raum betreten/verlassen. Die allgemeinen Eventlistener-Funktionen wurden umbenannt in "event_onEnterRoom" und "event_onLeaveRoom" -> Methoden sind ueberschreibbar fuer "extending TFigure"-Klassen wie TFigurePostman
+
+2014-05-12  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Fix: TPlayerFinanceCollection.Get() vergass, die Spielerfinanzen fuer "Spieltag 0" anzulegen (fehlerhafte Ueberpruefung)
+
+2014-05-12  STARSCrazy  <stars_crazy@gmx.de>
+
+	Merge branch 'master' of https://github.com/GWRon/TVTower
+	Conflicts:
+		res/database.xml
+
+2014-05-12  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Fix: database.xml von STARSCrazy enthielt XML-Fehler
+
+2014-05-12  STARSCrazy  <stars_crazy@gmx.de>
+
+	Noch ein paar "Kultursendungen" ;)
+
+	Kultur abgewertet / "Kultur Heute" hinzugefügt
+	- Kultur-Genre etwas abgewertet
+	- "Kultur Heute", ein erste Betty-Wert und ein paar Kultursendungen
+	hinzugefügt
+
+2014-05-12  Ronny Otto  <ron_github@gamezworld.de>
+
+	- genutzte SoundEngine einstellbar gestaltet
+
+	- Fix: Millisecs() lieferte ab gewisser Laufzeit des Computers negative Werte, Eventsystem benoetigt aber positive Werte -> Events wurden nicht abgefeuert (Klicks auf GUI Buttons). Fixes #10 - Neue Funktion "Time.GetTimeGone()" die zurueckliefert, wann das Programm gestartet worden ist. Speicherstaende setzen diesen Wert entsprechend der "damaligen Zeit"
+
+2014-05-10  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Fix: Quotendebugfenster vergass die Farben zurueckzusetzen (->schwarzer Mauscursor)
+
+	- Fix: registry.imageloader hat "cw" (cellwidth) statt "ch" fuer die Angabe von Framehoehe eines animierten Bildes genommen - Fix: Frames eines Sprites koennen nun korrekt skaliert werden - Die "Begruessungs"-Sprechblasen werden nun etwas animiert (weniger statisch), werden nicht mehr dauerhaft angezeigt (nur aller X Sekunden oder bei Wechsel der Zielfigur) - Fix: Die nach rechts gerichtete Sprechblase der Figuren hatte eine X-Komponente in der Berechnung der Y-Koordinate (-> die Blase war nicht immer sichtbar)
+
+	- Archiv: Typ hat nun einen eigenen Tooltip, ein Rechtsklick schliesst nun erst die Liste anstatt gleich den Raum zu verlassen - Filmhaendler und Werbemakler: Lizenzen und Vertraege werden nun erst beim erneuten Betreten des Raumes ausgefuellt (verhindert "verschwindende" Ordnergrafiken waehrend der Raumverlassen-Animation) - einige Log-Nachrichten deaktiviert
+
+	- PublicImageCollection wird nun mit abgespeichert - TPlayer-Eigenschaft "publicImage" entfernt und "GetPublicImage()"-Getter hinzugefuegt (fuer KI)
+
+2014-05-09  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Speicherstaende enthalten nun auch Daten des Broadcastmanagers (aktuelle Zuschauerzahlen) und des Popularitaetenmanagers (Trends)
+
+	- Fix: Die Zuweisung von "Instanzen" bei "New" entfernt (da sonst schon neue Instanzen redefiniert worden sind, waehrend der Speicherstand eingelesen wurde) - Zum Spielstart werden nun bereits 3 Nachrichten als "Nachrichtenshow" festgelegt - Fix: Beim Spielstart wird der Screen, in dem die Spielfigur sich befindet angezeigt (statt immer das Hochhaus)
+
+	- Laden/Speichern informiert nun grafisch darueber, dass gespeichert/geladen wird - TGame: neue Methoden: StartLoadedSaveGame(), StartNewGame(), PrepareNewGame(), PrepareStart() - ersetzt "INIT_ALL()"
+
+	- Finanzhistorie in eigene Datei ausgelagert, Collection angelegt - Regressionsfix: Finanzhistorie wird nun wieder korrekt mit gespeichert
+
+	- Dig/Interpolation hinzugefuegt (fuer Logoanimation) - neue Logoanimation (lenkt hoffentlich vom parallel ablaufenden Ladevorgang ab :D)
+
+	- Registry: LoadFromXML mit "directload=true" laedt nun die Resourcen sofort nach
+
+	- "Ladebildschirm" entfernt, Startresourcen angepasst (+GUI,+Fonts)
+
+2014-05-08  STARSCrazy  <stars_crazy@gmx.de>
+
+	Attraktivitätsberechnungs-Code verallgemeinert
+	- SequenceCalculation ausgelagert
+	- GetAudienceAttraction verallgemeinert
+
+2014-05-07  STARSCrazy  <stars_crazy@gmx.de>
+
+	UnitTests laufen jetzt nach Rons Umbau wieder durch
+
+2014-05-07  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Fix: audienceResult.ToString() - Fix: Nachrichtenbild wurde von xx:00 - xx:05 angezeigt (korrekt: bis xx:04) - Fix: Ablauf Quotenberechnung korrigiert (Einloggen der Broadcasts, Zuschauerberechnung, Information an den jeweiligen Broadcast)
+
+	- ProgrammePlan/ProgrammeCollection von TPlayer entfernt (dafuer GetProgrammePlan() und GetProgrammeCollection()-Getter eingefuehrt - erleichtert Ansprechen durch KI)
+
+	- bei vielen Spielobjekten die zyklische Verflechtung (A braucht B, B braucht A) entfernt (lauffaehig aber sicher noch fehlerbehaftet)
+
+2014-05-05  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Code restrukturiert dabei entdeckte, kleinere, Fehler entfernt - Spielstand sollte nun auch aus Startmenue heraus "ladbar" sein
+
+2014-05-04  Ronny Otto  <ron_github@gamezworld.de>
+
+	- GUIInput-Objekte richten den Text nun so aus, dass Bereiche unterhalb der Baseline (wie bei "g", "p", "q") nicht mit einberechnet werden
+
+	- Fix: Beim Werbemakler werden ueber das Maximum hinausgehende und auf dem Koffer fallengelassene Werbevertraege nicht laenger dem Spieler hinzugefuegt - Werbevertraege sind beim zurueckgeben (an den Makler) nun an beliebige Liste zurueckgebbar (statt vorher nur ihre "urspruengliche")
+
+2014-05-02  STARSCrazy  <stars_crazy@gmx.de>
+
+	Experimenteller Zwischenstand AudienceFlow und Sequence aktiviert
+
+2014-05-01  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Zwischenstand: viele Kernkomponenten mit unserem Dig-Framework ersetzt
+
+2014-04-28  STARSCrazy  <stars_crazy@gmx.de>
+
+	AudienceFlow-Ber. weiter ausgetüftelt +UnitTests
+
+2014-04-24  STARSCrazy  <stars_crazy@gmx.de>
+
+	Nun wieder kompilierbar
+
+	Sequence verbessert aber noch deaktiviert
+
+2014-04-22  Ronny Otto  <ron_github@gamezworld.de>
+
+	- weitere Dateien von Dig uebernommen und eigenen Code darauf angepasst - compilation_guide an neue Pfade angepasst (maxmod2-Modul)
+
+	- Ersten Code von unserem Dig-Framework uebernommen und Code entsprechend angepasst
+
+2014-04-21  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Finanzuebersicht: Tagwechselbuttons werden nun ausgegraut wenn Tageswechsel nicht moeglich - alte Finanzbildschirmgrafik entfernt
+
+	- Logo ueberarbeitet (freiere Schrift) - Finanzbildschirm komplettiert (Tagwechsel, Finanzhistorie scrollbar) - Lang-Dateien von alten Finanzbildschirmtexten befreit
+
+	- Neuer Finanzbildschirm (Zwischenstand, erleichtert spaetere Merges) - Finanzhistorie (Transaktionslog) - Gitignore angepasst damit Mac-Binary ignoriert wird
+
+	- Neuer Finanzbildschirm (Zwischenstand, erleichtert spaetere Merges) - Finanzhistorie (Transaktionslog)
+
+2014-04-20  STARSCrazy  <stars_crazy@gmx.de>
+
+	Weitere UnitTests + etwas Balancing für Quoten
+	- Testabdeckung erhöht
+	- Einfluss "Genre <> Zielgruppe" etwas erhöht
+	- Einfluss des Images etwas verringert
+	- Zuschauerentwicklung abgeschwächt.
+	- Sequence-Effekt nochmal raus genommen bis er richtig getestet ist.
+
+	- Merge war nicht kompilierbar
+	Siehe PayNews und EarnAdProfit
+
+	Merge branch 'master' of https://github.com/GWRon/TVTower
+	Conflicts:
+		source/gamefunctions_tvprogramme_news.bmx
+
+	Zwischencommit, damit das mit den merges icht ausufert
+	- Sequence-Effekt als neue Lösung des Audience-Flow-Problems
+	- Mehr UnitTests und Anpassungen auf Grund dessen
+	- TBroadcastSequence extrahiert... ich glaube ich mach's zurük in
+	TBroadcastManager, da der angedachte Sinn nicht mehr benötigt wird.
+
+2014-04-20  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Dauerwerbesendungen als erstes Programm (Tag 1, 0:00) sind nun wieder moeglich (Nullobjekt bei GetAudienceAttraction wenn Vorprogramm fehlte)
+
+	- TGW_NinePatchSprite.GetImage() hat nun optionalen Parameter um die Markierung mit zu kopieren (Standard: nicht mitkopieren)
+
+2014-04-19  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Mac OS nutzt nun CoreAudio als rtAudio-Treiber - TGUIObjekte: Texteingabe sollte nun plattformuebergreifend mit Sonderzeichen umgehen (Procedere vereinfacht und "Fehler" in BlitzMax umgangen)
+
+	- Fahrstuhlkonfiguration teilweise per "DEV.xml" tarierbar.
+
+2014-04-18  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Compilation_guide nochmals erweitert
+
+	- "Compilation_guide" angepasst, enthaelt nun Informationen fuer Mac OS
+
+2014-04-17  Ronny Otto  <ron_github@gamezworld.de>
+
+	- temporaeren Segfault in CalculateNewsBlockAudienceAttraction entfernt (Debugausgabe von Manuel)
+
+	- und noch ein Commit, damit es unter Linux wieder mit BnetEx klappt :D
+
+	- BNetEx/bsd.c angepasst damit es unter Mac kompilierbar wird (Danke @ http://www.blitzforum.de/forum/viewtopic.php?p=354707#354707)
+
+2014-04-16  STARSCrazy  <stars_crazy@gmx.de>
+
+	damit es kompilierbar bleibt
+
+	Zwischenstand Quoten-Sequenz
+
+2014-04-16  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Dev-Keys und Dev-OSD (FPS-Anzeige) per DEV.xml de-/aktivierbar gemacht (ohne diese XML ist beides "aus")
+
+	- 7-stellige (1.000.000+) Zahlen bekommen nun einen Punkt mehr spendiert (75000.000 -> 75.000.000)
+
+2014-04-14  STARSCrazy  <stars_crazy@gmx.de>
+
+	TAudience-UnitTests erweitert und refactored
+
+2014-04-14  Ronny Otto  <ron_github@gamezworld.de>
+
+	- version.txt aus der Versionsverwaltung entfernt (erspart mir den Konflikt, wenn STARSCrazy seine version.txt immer mit committed ;-D )
+
+2014-04-12  STARSCrazy  <stars_crazy@gmx.de>
+
+	layout-File kann wieder raus
+
+	Erste UnitTests geschrieben (TAudience)
+	- UnitTests mit TAudience ausprobiert
+	- BLIde Projektfile von managed auf unmanaged umgestellt
+
+2014-04-11  STARSCrazy  <stars_crazy@gmx.de>
+
+	main.bmx sortiert um Durchblick zu bekommen
+
+	RunGameMode eingefügt - Vorbereitung UnitTests
+	- Ich möchte für die Quotenberechnung versuchen UnitTests zu nutzen,
+	dazu muss ich aber die Files laden können ohne das gleich das ganze
+	Programm startet. Deshalb habe ich vorbereitend RunGameMode eingefügt.
+	- Und ich hab den mod angefügt den ich nutzen möchte.
+
+2014-04-10  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Archiv: klickbare Flaeche zum Oeffnen des Menues verbreitert, GUI-Items nun korrektem Screen zugeordnet - Programme koennen nun zwischen den Programmplanertagen herumgesetzt werden - Neues GUIEvent: onDropBack, wenn ein Listenelement in die gleiche Liste zurueckgesetzt wird (bei SlotListen: gleicher Slot)
+
+	- Programmplaner: Auswahl Programmgenre erfolgt nun mittels "Hit" statt "Click" - Programmplaner: GUI-Element der Werbung aus Werbeliste wird nun korrekt dem Programmplaner zugeordnet (vorher 2x gezeichent - was beim neuen Maushandler fuer Probleme sorgte)
+
+2014-04-10  STARSCrazy  <stars_crazy@gmx.de>
+
+	Fixes Quotenberechnung, Erweiterung Genredef.
+	- genre: GoodFollower und BadFollower verfügbar gemacht
+	- Männer/Frauen-Anzeige bei der Zielgruppe korrigiert
+	- NewsMod auf NewsBonus umgebaut
+	- Nachrichten-Qualitätsberechnung gefixt
+	- AudienceFlow um die neuen Faktoren (Follower/Quali) erweitert
+	- NewsShowMod: Experimentell angepasst (ist aber noch nicht ausreichend)
+
+2014-04-09  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Beim Laden eines Speicherstands werden nun die Figuren-Raum-Verknuepfungen erneuert und die Liste "occupants" eines jeden Raumes wird vorher geleert und durch die Figuren neubefuellt. - Fix: Beim Laden eines Speicherstandes bei dem eine der Figuren in einem Raum war, war dieser auch nach Verlassen des Raumes noch besetzt.
+
+	- Maushandling ueberarbeitet (IsClicked, IsSingleClicked() und IsDoubleClicked() - ersteres wartet nicht auf weitere Clicks (passiert also sofort nach Loslassen der Maustaste) -> GuiElemente muessen nicht mehr auf OnHit umgestellt werden - GUIElemente angepasst
+
+2014-04-09  STARSCrazy  <stars_crazy@gmx.de>
+
+	OnMalfunction (Sendeausfall) für KI integriert
+
+2014-04-08  Ronny Otto  <ron_github@gamezworld.de>
+
+	- TGUIScroller (Scrollbuttons bei Listen): "Hoch"-Klick korrigiert (war ausser Funktion), Anpassung an neuen MouseManager durchgefuehrt (GetDownTime)
+
+	- MouseManager ueberarbeitet, jeder Mausklick ist nun per se ein "Hit", nach einer Wartezeit werden diese als "Clicks"/"Doubleclicks" erkannt - momentan notwendige GUIElemente umgestellt, die nicht zwischen Einzel- und Doppelklicks unterscheiden muessen (sollten spaeter nahezu alle sein - mit Ausnahme von "Listenauswahl"). Da spaeter unser Dig-Framework zum Einsatz kommt erfolgt dort dann das generelle "umstellen". - Fix: Genrebuttons im Nachrichtenstudio koennen nun wieder "wild" hochgeklickert werden ohne dass zuviele Klicks registriert werden
+
+	- Commitkorrektur GetTopicality()
+
+	- Programmlizenzen besitzen nun "GetTopicality" - liefert den Aktualitaetsdurchschnitt des gesamten Lizenzpakets zurueck (oder der Einzellizenz)
+
+	- Programmlizenzen besitzen nun "GetTopicality" - liefert den Aktualitaetsdurchschnitt des gesamten Lizenzpakets zurueck (oder der Einzellizenz)
+
+	- FIX: Werbevertraege sollten nun wie geplant beim Unterschreiben die vorher im Datenblatt angezeigten Anforderungen besitzen
+
+2014-04-08  STARSCrazy  <stars_crazy@gmx.de>
+
+	Merge branch 'master' of https://github.com/GWRon/TVTower
+	Conflicts:
+		source/version.txt
+
+	TBroadcastFeedback-Berechnung & News-Quality
+	- TBroadcastFeedback-Berechnung verbessert
+	- News-Quality justiert, solange nie etwa sin price steht.
+
+2014-04-07  Ronny Otto  <ron_github@gamezworld.de>
+
+	- neue Testversion - Nachrichtenagenturen haben je nach genutztem Level einen relativen Aufpreis bei Kauf der Nachricht
+
+	- Nachrichtenverzoegerung ist nun weniger linear (Stufe 1: 2,5h | 2: 1h, 3: 0h) - Nachrichtenagenturpreise sind nun ebenfalls nicht mehr strikt linear - generische News-Funktionen von TPlayer zu TNewsAgency verschoben - Hinweis im Nachrichtenabo-Tooltip eingebunden, falls bereits fuer einen hoeheren Level gezahlt wird
+
+	- Anzeige der Testfamilie basiert nun auf TBroadcastFeedback von STARSCrazy
+
+	- negative Kontostaende fuehren nun zu Dispokredit-Zinsen (derzeit 3% vgl mit 1% fuer Guthabenzinsen)
+
+	- Newsabogebuehren werden nicht mehr halbiert (Tooltipanzeige entspricht nun abgezogenem Wert - Newsabogebuehren werden nun anderes definiert: Tageswechsel definiert aktuellen Abolevel als Maximum. Ansonsten: nach 30 Spielminuten wird ein aktuell gesetztes Abolevel als Maximum gesetzt (falls hoeher als aktuelles Maximum).
+
+	- Newsabogebuehren werden nicht mehr halbiert (Tooltipanzeige entspricht nun abgezogenem Wert - Newsabogebuehren werden nun anderes definiert: Tageswechsel definiert aktuellen Abolevel als Maximum. Ansonsten: nach 30 Spielminuten wird ein aktuell gesetztes Abolevel als Maximum gesetzt (falls hoeher als aktuelles Maximum).
+
+2014-04-03  Ronny Otto  <ron_github@gamezworld.de>
+
+	- libXML von 1.15 auf 2.01 aktualisiert - davon betroffene Codestellen aktualisiert
+
+	- Kompilations-Anleitung aufgefrischt - sollte nun selbst mit der alten BlitzMax-30Tage-Demo kompilierbar sein
+
+2014-04-03  STARSCrazy  <stars_crazy@gmx.de>
+
+	TBroadcastFeedback erstellt und aufgeräumt
+	- Den Broadcast-Code weiter aufgeräumt
+	- TBroadcastFeedback: Erste Version der Klasse realisiert. Sie ist für
+	das optische Feedback der aktuellen Ausstrahlung... also welche
+	Zuschauer rechts jenseits der Mattscheibe zu sehen sind. Man kann dort
+	auch Kommentare in Sprechblasen einblenden oder später Zuschauerfeedbach
+	durch lustige Sprüche/Ausgen einholen (z.B. "Bähh... Liebesfilme? Die
+	sind Mega-Out!", "Was für'n scheiß Film"). Das optische müsste dann
+	allerdings Ronny realisieren, wenn wir das wollen.
+
+2014-04-01  STARSCrazy  <stars_crazy@gmx.de>
+
+	Erste Implementierung des Sender-Images
+
+2014-03-28  Ronny Otto  <ron_github@gamezworld.de>
+
+	- NinePatch: ReadMarker Modus "Content" (rechte und untere Markierung) hatte Breite und Hoehe vertauscht
+
+2014-03-28  STARSCrazy  <stars_crazy@gmx.de>
+
+	Broadcast aufgeräumt
+
+2014-03-27  STARSCrazy  <stars_crazy@gmx.de>
+
+	Popularität & Quoten
+	(ich hatte es in den falschen branch commited)
+	- Anpassung / Balancing der Popularitätsentwicklung
+	- Trailer-Mod funktioniert wieder mit der Übergangslösung
+	- News-Mod wird berücksichtigt... vorläufiger Wert (unbalanced)
+	- Debug-Darstellung an einigen Stellen gefixt
+	- In TAudienceAttraction einen BroadcastType eingefügt
+
+2014-03-26  Ronny Otto  <ron_github@gamezworld.de>
+
+	- weitere Korrekturen an TBitmapFont (Ermittlung von Hoehe/Breite eines Textes) - Tooltips ueberarbeitet, Lifetime-Initialisierung eingebunden - Interface-Tooltips ("Geld"/"Quote" etc) einheitlich angeordnet
+
+	- Texthoehe von Bitmapfonts wird nun korrekt berechnet (Zeilenabstand wird nur bei mehrzeiligem Text hinzugefuegt)
+
+2014-03-25  Ronny Otto  <ron_github@gamezworld.de>
+
+	- ColorizeImage() in ColorizeImageCopy() umbenannt (eindeutiger) - TGUISettings entfernt und config:TData im GUIManager eingefuehrt
+
+2014-03-24  Ronny Otto  <ron_github@gamezworld.de>
+
+	- "RoundToBeautiful" per DEV.xml deaktivierbar
+
+	- Neue Werterundungen eingebunden (kleinere Schritte)
+
+	- "Aufhuebschung" der Werte angepasst (Danke@SushiTV)
+
+	- DEV.xml angelegt (enthaelt Variablen die von Testern angepasst werden koennen, aber interne Faktoren repraesentieren). - Resourcemanager kann nun TData aus XML einlesen (<data name="x"><field value="1" /></data>) - Werbevertraege nutzen zur Berechnung nun die ungerundete Mindestzuschauerzahl - kleinere Aenderungen am XMLHelper
+
+2014-03-18  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Newsabo-Buttons waren mit den falschen Genres verknuepft
+
+2014-03-16  Ronny Otto  <ron_github@gamezworld.de>
+
+	- ProgrammePlan.AddAvertisement() und AddProgramme() eindeutiger benannt (SetAdvertisementSlot() und SetProgrammeSlot()) - es kann ja auch eine Werbung als Programm gesendet werden.
+	- Die KI koennte nun - wenn sie will - ebenfalls Trailer und Dauerwerbesendungen platzieren
+
+	- Quotentooltip etwas vergroessert - einige Debugmeldungen entfernt
+
+	- Dev-Meldungen werden nun per "Standard" nicht mehr angezeigt (auskommentieren waehrend lokalem Entwickeln)
+
+	- Werden die Scrollleisten von Listen versteckt, wird der Inhalt nun automatisch zum ersten Eintraggescrollt (es sollten ja alle Eintraege sichtbar sein)
+
+2014-03-15  Ronny Otto  <ron_github@gamezworld.de>
+
+	- FSK18-Trailer bekommen im Text kein "FSK18" mehr angezeigt, da dies unter Windowssystemen nicht auf eine Zeile gepasst hat - das rote Dreieck am Rand muss als Hinweis reichen
+
+	- StationMapCollection: Stationmaps werden nun in Array statt Liste gespeichert (beim Speichern/Laden konnte die Listensortierung durcheinander kommen was zu fehlerhaften Spieler-Stationmap-Zuordnungen fuehren konnte). Danke an SushiTV fuer den Bugreport.
+
+	- TAdContract.Sign() nimmt nun korrekt den Durchschnitt der Spieler als Basis der Berechnungen von Gewinn/Strafe/Mindestzuschauer (fehlende Standardparameter korrigiert)
+
+	- Kosten fuer Sendemasten werden nun korrekt berechnet
+
+2014-03-14  STARSCrazy  <stars_crazy@gmx.de>
+
+	Folgen der Umbennnung von quotes zu broadcast
+
+	Rename gamefunctions_quotes.bmx to gamefunctions_broadcast.bmx
+
+	Merge
+
+	Merge remote-tracking branch 'origin/master' into Quoten-Erweiterung
+	Conflicts:
+		source/gamefunctions_quotes.bmx
+		source/main.bmx
+		source/version.txt
+
+	Rename gamefunctions_broadcast.bmx to gamefunctions_quotes.bmx
+
+	Rename gamefunctions_quotes.bmx to gamefunctions_broadcast.bmx
+
+	gamefunctions_quotes etwas aufgeräumt
+
+2014-03-13  Ronny Otto  <ron_github@gamezworld.de>
+
+	- einige Debugmeldungen deaktiviert - Nachrichten haben nun einen Hovereffekt (aehnlich dem Programmplaner)
+
+	- PopularityManager wird nun aller 12 Spielstunden aktualisiert (konfigurierbar) statt aller 1h. Close #6 - weiteren Fehler in TCatmullRomSpline.GetTweenPoint() gefixt
+
+	- groessere Klassen aus main.bmx herausgeloest - StationMapCollection uebernimmt Managerfunktionen fuer Stationmaps (Laden/Speichern korrigiert. fix #3) - StationMap nun weiter konfigurierbar (config/maps/germany.xml) -> Vorbereitung fuer auswaehlbare Senderkarten
+
+	- RegisterListenerFunction/Method lieferten keinen TLink zurueck - BroadcastMaterial wird nun korrekt an LUA freigegeben
+
+	- TXMLHelper: Neue Funktion FindNode() sucht rekursiv nach einer Node
+
+	- TCatmullRomSpline.GetTweenPoint() gefixt, konnte bei Erreichen des letzten Punktes im Cache einen Null-TPoint zurueckliefern
+
+	Nachrichtenpreise wieder anzeigen
+	- Nachrichten werden wieder angezeigt. Fix #4
+	- Font.DrawBlock limitiert bei height=-1 nicht mehr nach Hoehe
+
+2014-03-13  STARSCrazy  <stars_crazy@gmx.de>
+
+	Unfertiger Zwischenstand
+
+2014-03-12  STARSCrazy  <stars_crazy@gmx.de>
+
+	Merge aus dem trunk
+
+	SolutionFile für Blide
+
+2014-03-12  Ronny Otto  <ron_github@gamezworld.de>
+
+	"ist Programmiert"-Status gefixt.
+	- TPlayerProgrammePlan.RecalculatePlannedProgramme() korrigiert. Nun wird nur die "spaeteste" Endzeit eines Programms/Werbeblocks genutzt. fix #2
+	- TPlayerProgrammePlan.ObjectPlannedInTimeSpan() korrigiert. Statt Objekte direkt zu vergleichen, wird deren ReferenceID() verglichen.
+
+2014-03-11  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Tooltips der Studio-Raeume (und "freier" Raeume) zeigen nun Raumgroesse an
+
+	- Laden/Speichern: Figuren kicken sich nicht mehr selbst aus einem Raum - TRooms aufgesplittet in TRoomDoor und TRoom -> mehrere Tueren koennten in einen Raum fuehren - TRoomSigns heisst nun TRoomDoorSign, reine "Raumplan"-Funktionalitaet zum entsprechenden RoomHandler verschoben - Reihenfolge geaendert in der Spielminuten abgearbeitet werden. Von "onMinute, onHour, OnDay" zu "onDay, onHour, onMinute"   - Behebt "Division durch 0-Fehler". Die KI konnte 0 Uhr Werbeinformationen ("kurz bevor" die Werbevertraege verarbeitet werden). Dadurch konnte die Restzeit 0 betragen - was dann in Hilfsfunktionen zu einem "bla durch Restzeit" fuehrte   - Zusaetzlich in besagten Hilfsfunktionen "0"-Checks eingefuegt - TData hat nun noch Getter: "GetBool" der auch "1|true|yes"-Werte reagiert, "GetFloat" um Kommazahlen auszulesen - Raumplaner und Tooltips haben nach erfolgtem Laden nun die korrekten Spieler- und Sendernamen des Spielstandes - Programmplaner hebt nun wieder gleiche Programme/Werbungen hervor (wie auch immer die Bedingung mit "mouseover" da reinkam ;D) - Werbepreise angehoben (200% von vorherigen Versionen, also nun 400% vom Startwert). Das Minimum des "Pro 1000 Zuschauer"-Wertes von 5 Euro auf 7.50 Euro erhoeht - Die erzielbaren Einnahmen von Call-In-Shows/Dauerwerbesendungen sind nun flexibel (Sendungs- und Werbevertragsabhaengig). - Jegliches Programm koennte nun Einnahmen bei der Ausstrahlung erzeugen (Bsp.: Lobby-Sponsoren zahlen geringe Betraege fuer jeden Zuschauer)
+
+2014-03-11  STARSCrazy  <stars_crazy@gmx.de>
+
+	Merge branch 'master' of https://github.com/GWRon/TVTower
+	Conflicts:
+		.gitignore
+
+	Merge2
+
+	Merge
+
+	Möglicher div / 0 fix
+	Ich vermute aber aber eher, dass das Absturz-Problem eher in BlitzMax
+	auftritt. Vielleicht gibt's noch Probleme wenn die KI Filme oder Werbung
+	um 0 Uhr setzt.
+
+2014-03-06  STARSCrazy  <stars_crazy@gmx.de>
+
+	Ungetestete Version der vereinfachten Berechnung
+	- Umstrukturierung und Vereinfachung des Quoten-Codes. Noch ungetstet.
+	- OnMinute etwas angepasst... damit die Reihenfolge auch immer passt
+	bezüglich BroadcastManager und TBroadcastMaterial-Events
+
+2014-03-01  Ronny Otto  <ron_github@gamezworld.de>
+
+	- TFunctions.ShortenFloat() ruft nun FloatToString() auf. ShortenFloat ist ab jetzt veraltet. FloatToString() behebt einen Fehler, der bei negativen Zahlen der Form "-0.xxx" das Minus unterschlug - TFunctions.roundNumber() als eigene Funktion bereitgestellt.
+
+2014-02-28  Ronny Otto  <ron_github@gamezworld.de>
+
+	- TGame.Updates: missedMinutes werden nun kommagenau abgezogen (konnte zu uebersprungenen Minuten fuehren wenn alte Zeit: 1.99999975 und neue 3.0014) - .gitignore angepasst
+
+	- TGame.Update() ueberarbeitet:   - Hilfsfunktionen wie GetMinute() / GetHour() /... liefern nun auch dann korrekte Ergebnisse, wenn sie innerhalb der "uebersprungene Spielminuten"-Schleife aufgerufen werden. Direkt getriggerte (also sofort ausgefuehrten) Events koennten nun auf die Zeitparameter verzichten. - TGame: durch Update()-Ueberarbeitung nicht laenger benoetigte Variablen entfernt - TDevHelper: SetPrintMode() / SetLogMode() ueberschreiben nun den Modus, ChangePrintMode() und ChangeLogMode() dienen jetzt dazu, Modis an- oder auszuschalten - nicht verwendete Dateien entfernt: Pfeilgrafiken fuer Datenblaetter und ein paar Erinnerungsdateien ("wo wird was platziert")
+
+2014-02-28  STARSCrazy  <stars_crazy@gmx.de>
+
+	Zwischenstand (erste Überlegungen)
+
+	.gitignore aktualisiert
+
+	Testfile wieder löschen
+
+	Nochmal ein Test
+
+	Nochmaliger github-Test
+
+2014-02-24  STARSCrazy  <stars_crazy@gmx.de>
+
+	Diese Files existieren nun unter anderem Namen im gleichen Verzeichnis
+
+	Testfile wieder entfernt
+
+	git-Test
+
+2014-02-24  STARSCrazy  <stars_crazy@gmx.d>
+
+	- Umbau der "LUA-Klassen" auf ein "besseres System" - KI kann nun gespeichert und geladen werden.
+
+2014-02-24  Ronny Otto  <ron_github@gamezworld.de>
+
+	- Linux-PNG-Icon wieder eingefuegt - savegame.zip entfernt - Dokumente (docLua.html und doc.html sowie compilation_guide.txt) nach "Misc/documents" verschoben - github-Startseite angepasst
+
+	- Linux-PNG-Icon wieder eingefuegt - savegame.zip entfernt - Dokumente (docLua.html und doc.html sowie compilation_guide.txt) nach "Misc/documents" verschoben - github-Startseite angepasst
+
+	- gitignore angepasst (Log-Dateien und Prekompilate)
+
+	- changelog-Generator fuer gitHub eingefuegt: Misc/changeLogGenerator
+
+	Update README.md
+
+	Update README.md
+
+	README.md
+
 2014-02-24  Ronny Otto  <github_ron@gamezworld.de>
 
 	Add missing Logs from Rev306-346 (Reposerver got faulty) 2014-02-22 11:05  Ronny - Werbespotdetails im Programmplaner werden wieder angezeigt (hatten vorher noch vom Textbox-Bug profitiert)

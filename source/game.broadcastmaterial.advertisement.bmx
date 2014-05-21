@@ -161,6 +161,9 @@ endrem
 		Local earn:Int = audienceResult.Audience.GetSum() * contract.GetPerViewerRevenue()
 		TLogger.Log("TAdvertisement.FinishBroadcastingAsProgramme", "Infomercial sent, earned "+earn+CURRENCYSIGN+" with an audience of " + audienceResult.Audience.GetSum(), LOG_DEBUG)
 		GetPlayerFinanceCollection().Get(owner).EarnInfomercialRevenue(earn, contract)
+
+		'reduce topicality for infomercials
+		contract.base.CutInfomercialTopicality(GetInfomercialTopicalityCutModifier())
 	End Method
 
 
@@ -192,6 +195,21 @@ endrem
 		EndIf
 		return TRUE
 	End Method
+
+
+	Method GetInfomercialTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}
+		if hour = -1 then hour = GetGameTime().getNextHour()
+		'during nighttimes 0-5, the cut should be lower
+		'so we increase the cutFactor to 1.35
+		if hour-1 <= 5
+			return 0.99
+		elseif hour-1 <= 12
+			return 0.95
+		else
+			return 0.90
+		endif
+	End Method
+
 
 
 	Method GetQuality:Float() {_exposeToLua}

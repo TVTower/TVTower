@@ -647,7 +647,7 @@ print "[NET] ReceiveGameReady"
 					TPlayerProgrammeCollection.fireEvents = TRUE
 			'Contract
 			case 2
-					Local contractbase:TAdContractBase = TAdContractBase.Get( objectID )
+					Local contractbase:TAdContractBase = GetAdContractBaseCollection().Get( objectID )
 					if not contractbase then return FALSE
 
 					'disable events - ignore it to avoid recursion

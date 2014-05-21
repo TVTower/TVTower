@@ -278,7 +278,7 @@ Type TGame {_exposeToLua="selected"}
 				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
 
 				For Local i:Int = 0 To 2
-					ProgrammeCollection.AddAdContract(New TAdContract.Create(TAdContractBase.GetRandomWithLimitedAudienceQuote(0, 0.15)) )
+					ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0, 0.15)) )
 				Next
 			Next
 		EndIf

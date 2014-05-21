@@ -18,22 +18,146 @@ Import "game.broadcastmaterial.base.bmx"
 
 
 
+Type TAdContractBaseCollection
+	Field list:TList = CreateList()
+	Global _instance:TAdContractBaseCollection
+
+
+	Function GetInstance:TAdContractBaseCollection()
+		if not _instance then _instance = new TAdContractBaseCollection
+		return _instance
+	End Function
+
+
+	Method Get:TAdContractBase(id:Int)
+		For Local base:TAdContractBase = EachIn list
+			If base.id = id Then Return base
+		Next
+		Return Null
+	End Method
+
+
+	Method GetRandom:TAdContractBase(_list:TList = null)
+		if _list = Null then _list = List
+		If _list = Null Then Return Null
+		If _list.count() > 0
+			Local obj:TAdContractBase = TAdContractBase(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
+			if obj then return obj
+		endif
+		return Null
+	End Method
+
+
+	Method GetRandomWithLimitedAudienceQuote:TAdContractBase(minAudienceQuote:float=0.0, maxAudienceQuote:Float=0.35)
+		'maxAudienceQuote - xx% market share as maximum
+		'filter to entries we need
+		Local resultList:TList = CreateList()
+		For local obj:TAdContractBase = EachIn list
+			If obj.minAudienceBase >= minAudienceQuote AND obj.minAudienceBase <= maxAudienceQuote
+				resultList.addLast(obj)
+			EndIf
+		Next
+		Return GetRandom(resultList)
+	End Method
+
+
+	Method Remove:int(obj:TAdContractBase)
+		return list.Remove(obj)
+	End Method
+
+
+	Method Add:int(obj:TAdContractBase)
+		list.AddLast(obj)
+		return TRUE
+	End Method
+
+
+	Method RefreshInfomercialTopicalities:int() {_private}
+		For Local base:TAdContractBase = eachin list
+			base.RefreshInfomercialTopicality()
+		Next
+	End Method
+End Type
+	
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetAdContractBaseCollection:TAdContractBaseCollection()
+	Return TAdContractBaseCollection.GetInstance()
+End Function
+
+
+
+
+Type TAdContractCollection
+	Field list:TList = CreateList()
+	Global _instance:TAdContractCollection
+
+
+	Function GetInstance:TAdContractCollection()
+		if not _instance then _instance = new TAdContractCollection
+		return _instance
+	End Function
+
+
+	Method Get:TAdContract(id:Int)
+		For Local contract:TAdContract = EachIn list
+			If contract.id = id Then Return contract
+		Next
+		Return Null
+	End Method
+
+
+	Method Remove:int(obj:TAdContract)
+		return list.Remove(obj)
+	End Method
+
+
+	Method Add:int(obj:TAdContract)
+		list.AddLast(obj)
+		return TRUE
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetAdContractCollection:TAdContractCollection()
+	Return TAdContractCollection.GetInstance()
+End Function
+
+
+
+
+
 'contracts bases for advertisement - straight from the DB
 'they just contain data to base new contracts of
 Type TAdContractBase extends TGameObject {_exposeToLua}
-	Field title:string			= ""
-	Field description:string	= ""
-	Field daysToFinish:Int					' days to fullfill a (signed) contract
-	Field spotCount:Int						' spots to send
-	Field blocks:int = 1					' blocklength
-	Field targetGroup:Int					' target group of the spot
-	Field minAudienceBase:Float				' minimum audience (real value calculated on sign)
-	Field minImageBase:Float				' minimum image base value (real value calculated on sign)
-	Field hasFixedPrice:Int					' flag wether price is fixed
-	Field profitBase:Float					' base of profit (real value calculated on sign)
-	Field penaltyBase:Float					' base of penalty (real value calculated on sign)
-	Field infomercialAllowed:int = TRUE		' is the broadcast of an infomercial allowed?
-	global List:TList = CreateList()		' holding all TContractBases
+	Field title:string = ""
+	Field description:string = ""
+	'days to fullfill a (signed) contract
+	Field daysToFinish:Int
+	'spots to send
+	Field spotCount:Int
+	'block length
+	Field blocks:int = 1
+	'target group of the spot
+	Field targetGroup:Int
+	'minimum audience (real value calculated on sign)
+	Field minAudienceBase:Float
+	'minimum image base value (real value calculated on sign)
+	Field minImageBase:Float
+	'flag wether price is fixed
+	Field hasFixedPrice:Int
+	'base of profit (real value calculated on sign)
+	Field profitBase:Float
+	'base of penalty (real value calculated on sign)
+	Field penaltyBase:Float
+	'=== infomercials / shopping shows ===
+	'is the broadcast of an infomercial allowed?
+	Field infomercialAllowed:int = TRUE
+	'topicality for this contract base (all adcontracts of this base
+	'share this topicality !)
+	Field infomercialTopicality:float = 1.0
+	Field infomercialMaxTopicality:float = 1.0
 
 
 	Method Create:TAdContractBase(title:String, description:String, daystofinish:Int, spotcount:Int, targetgroup:Int, minaudience:Int, minimage:Int, fixedPrice:Int, profit:Int, penalty:Int)
@@ -48,41 +172,11 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 		self.profitBase		= Float(profit)
 		self.penaltyBase 	= Float(penalty)
 
-		List.AddLast(self)
+		GetAdContractBaseCollection().Add(self)
+
 		Return self
 	End Method
 
-
-	Function Get:TAdContractBase(id:Int) {_exposeToLua}
-		For Local obj:TAdContractBase = EachIn List
-			If obj.id = id Then Return obj
-		Next
-		Return Null
-	End Function
-
-
-	Function GetRandom:TAdContractBase(_list:TList = null)
-		if _list = Null then _list = List
-		If _list = Null Then Return Null
-		If _list.count() > 0
-			Local obj:TAdContractBase = TAdContractBase(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			if obj then return obj
-		endif
-		return Null
-	End Function
-
-
-	Function GetRandomWithLimitedAudienceQuote:TAdContractBase(minAudienceQuote:float=0.0, maxAudienceQuote:Float=0.35)
-		'maxAudienceQuote - xx% market share as maximum
-		'filter to entries we need
-		Local resultList:TList = CreateList()
-		For local obj:TAdContractBase = EachIn TAdContractBase.list
-			If obj.minAudienceBase >= minAudienceQuote AND obj.minAudienceBase <= maxAudienceQuote
-				resultList.addLast(obj)
-			EndIf
-		Next
-		Return TAdContractBase.GetRandom(resultList)
-	End Function
 
 
 	Method GetTitle:string() {_exposeToLua}
@@ -97,6 +191,32 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 
 	Method GetBlocks:int() {_exposeToLua}
 		return self.blocks
+	End Method
+
+
+	Method GetInfomercialTopicality:Float() {_exposeToLua}
+		return infomercialTopicality
+	End Method
+
+
+	Method GetMaxInfomercialTopicality:Float() {_exposeToLua}
+		return infomercialMaxTopicality
+	End Method
+
+
+	Method CutInfomercialTopicality:Int(cutFactor:float=1.0) {_private}
+		infomercialTopicality :* cutFactor
+		'limit to 0-max
+		infomercialTopicality = Max(0, Min(infomercialTopicality, GetMaxInfomercialTopicality()))
+	End Method
+
+
+	Method RefreshInfomercialTopicality:Int() {_private}
+		'each day topicality refreshes by 15%
+		infomercialTopicality :* 1.15
+		'limit to 0-max
+		infomercialTopicality = Max(0, Min(infomercialTopicality, GetMaxInfomercialTopicality()))
+		Return infomercialTopicality
 	End Method
 End Type
 
@@ -121,19 +241,13 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	Field minAudience:Int = -1
 	' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	Field attractiveness:Float = -1
-	'for infomercials / shopping shows
-	Field infomercialTopicality:float = 1.0
-	Field infomercialMaxTopicality:float= 1.0
-
-	'holding all TAdContracts
-	global List:TList = CreateList()
 
 
 	'create UNSIGNED (adagency)
 	Method Create:TAdContract(baseContract:TAdContractBase)
 		self.base = baseContract
 
-		List.AddLast(self)
+		GetAdContractCollection().Add(self)
 		Return self
 	End Method
 
@@ -152,8 +266,8 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'the price of a successful contract / GetSpotCount()
 
 		'less revenue with less topicality
-		if infomercialMaxTopicality > 0
-			result :* (infomercialTopicality/infomercialMaxTopicality)
+		if base.GetMaxInfomercialTopicality() > 0
+			result :* (base.infomercialTopicality / base.GetMaxInfomercialTopicality())
 		endif
 		return result
 	End Method
@@ -435,7 +549,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		SetAlpha 0.3
 		GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
 		SetAlpha 1.0
-		if infomercialTopicality > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, infomercialTopicality*200, 12))
+		if base.GetInfomercialTopicality() > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, base.GetInfomercialTopicality()*200, 12))
 	End Method
 
 
@@ -485,14 +599,6 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		EndIf
 		SetColor 255,255,255
 	End Method
-
-
-	Function Get:TAdContract(id:Int)
-		For Local contract:TAdContract = EachIn List
-			If contract.id = id Then Return contract
-		Next
-		Return Null
-	End Function
 
 
 	'===== AI-LUA HELPER FUNCTIONS =====

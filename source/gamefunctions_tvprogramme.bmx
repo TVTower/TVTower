@@ -1134,7 +1134,8 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		if dayChangeGuiProgrammePlanElement then dayChangeGuiProgrammePlanElement.draw()
 
 		'draw ghosts...
-		if not Game.DebugInfos then DrawChildren()
+		'if not Game.DebugInfos then
+		DrawChildren()
 	End Method
 End Type
 

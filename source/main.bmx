@@ -915,14 +915,9 @@ Type TFigureJanitor Extends TFigure
 			EndIf
 		EndIf
 
-		'sometimes we got stuck in a room ... go out
+		'waited long enough in room ... go out
 		if inRoom and nextActionTimer.isExpired()
-			Local zufallx:Int = 0
-			'move to a spot further away than just some pixels
-			Repeat
-				zufallx = Rand(MovementRangeMinX, MovementRangeMaxX)
-			Until Abs(area.GetX() - zufallx) > 75
-			ChangeTarget(zufallx, GetBuilding().area.position.y + GetBuilding().GetFloorY(GetFloor()))
+			LeaveRoom()
 		EndIf
 
 		'reached target - and time to do something
@@ -1758,7 +1753,7 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
 
 				For Local j:Int = 0 To Game.startAdAmount-1
-					ProgrammeCollection.AddAdContract(New TAdContract.Create(TAdContractBase.GetRandomWithLimitedAudienceQuote(0.0, 0.15)))
+					ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0.0, 0.15)))
 				Next
 			Next
 		EndIf
@@ -1964,7 +1959,8 @@ Type GameEvents
 				Betty.SetAwardType(RandRange(0, Betty.MaxAwardTypes), True)
 			End If
 
-			TProgrammeData.RefreshAllTopicalities()
+			GetProgrammeDataCollection().RefreshTopicalities()
+			GetAdContractBaseCollection().RefreshInfomercialTopicalities()
 			Game.ComputeContractPenalties()
 			Game.ComputeDailyCosts()	'first pay everything, then earn...
 			Game.ComputeDailyIncome()

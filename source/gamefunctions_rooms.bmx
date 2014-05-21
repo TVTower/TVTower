@@ -4805,8 +4805,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listNormal then contract = new TAdContract.Create( TAdContractBase.GetRandom() )
-				if lists[j] = listCheap then contract = new TAdContract.Create( TAdContractBase.GetRandomWithLimitedAudienceQuote(0.0, contractCheapAudienceMaximum) )
+				if lists[j] = listNormal then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
+				if lists[j] = listCheap then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0.0, contractCheapAudienceMaximum) )
 
 				'add new contract to slot
 				if contract

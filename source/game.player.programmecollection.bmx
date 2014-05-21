@@ -129,6 +129,9 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method RemoveAdContract:int(contract:TAdContract)
 		If not contract then return False
 		if adContracts.Remove(contract)
+			'remove this contract from the global contracts list too
+			GetAdContractCollection().Remove(contract)
+
 			'emit an event so eg. network can recognize the change
 			if fireEvents then EventManager.registerEvent( TEventSimple.Create( "programmecollection.removeAdContract", new TData.add("adcontract", contract), self ) )
 		endif
