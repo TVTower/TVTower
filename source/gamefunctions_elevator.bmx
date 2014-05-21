@@ -423,12 +423,12 @@ Type TElevator
 
 
 	Method Draw() 'needs to be restructured (some test-lines within)
-		SetBlend MASKBLEND
+		SetBlend ALPHABLEND
 
 		'draw the door the elevator is currently at (eg. for animation)
 		door.RenderAt(GetBuilding().area.position.x + pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(CurrentFloor) - 50)
 
-		'Fahrstuhlanzeige über den Türen
+		'draw elevator position above the doors
 		For Local i:Int = 0 To 13
 			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(i) - door.sprite.area.GetH() - 8
 			If locy < 410 And locy > -50
@@ -438,17 +438,26 @@ Type TElevator
 			EndIf
 		Next
 
-		'Fahrstuhlanzeige über den Türen
+		'draw call state next to the doors
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 23
+			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 26
 			If floorroute.call
 				'elevator is called to this floor
-				SetColor 200,220,20
+				SetColor 220,240,40
+				SetAlpha 0.55
+				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy, 3,2)
+				SetAlpha 1.0
+				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy, 3,1)
 			Else
 				'elevator will stop there (destination)
-				SetColor 100,220,20
+				SetColor 220,120,50
+				SetAlpha 0.85
+				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy+3, 3,2)
+				SetColor 250,150,80
+				SetAlpha 1.0
+				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy+4, 3,1)
+				SetAlpha 1.0
 			EndIf
-			DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy, 3,3)
 			SetColor 255,255,255
 		Next
 

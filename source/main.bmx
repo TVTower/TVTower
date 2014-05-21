@@ -829,6 +829,18 @@ Type TFigurePostman Extends TFigure
 
 
 	Method UpdateCustom:Int()
+		'figure is in building and without target waiting for orders
+		If Not inRoom And Not target
+			Local door:TRoomDoor
+			'search for a visible door
+			Repeat
+				door = TRoomDoor.GetRandom()
+			Until door.doorType > 0
+
+			'TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
+			SendToDoor(door)
+		EndIf
+
 		If inRoom And nextActionTimer.isExpired()
 			nextActionTimer.Reset()
 			'switch "with" and "without" letter
@@ -840,18 +852,6 @@ Type TFigurePostman Extends TFigure
 
 			'leave that room so we can find a new target
 			leaveRoom()
-		EndIf
-
-		'figure is in building and without target waiting for orders
-		If Not inRoom And Not target
-			Local door:TRoomDoor
-			'search for a visible door
-			Repeat
-				door = TRoomDoor.GetRandom()
-			Until door.doorType > 0
-
-			'TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
-			SendToDoor(door)
 		EndIf
 	End Method
 End Type
