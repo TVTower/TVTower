@@ -146,8 +146,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		local result:float = 0.0
 
 		'calculate
-		result = CalculatePrices(base.profitBase)
-		result :/ GetSpotCount()
+		result = profit / GetSpotCount()
 		result :* 0.001 'way down for reasonable prices
 		'so currently we end up with the price equal to
 		'the price of a successful contract / GetSpotCount()

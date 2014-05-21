@@ -8,6 +8,7 @@ Import "base.util.point.bmx"
 'the needed module files are located in "external/maxmod2_lite.mod.zip"
 
 Import MaxMod2.ogg
+
 Import MaxMod2.rtaudio
 'Import MaxMod2.rtaudionopulse
 Import MaxMod2.WAV
@@ -166,10 +167,10 @@ Type TSoundManager
 			'if audioEngine <> "UNIX_JACK" then engines :+ ["UNIX_JACK"]
 		?MacOS
 			'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
-			audioEngine :+ ["MACOSX_CORE"]
+			engines :+ ["MACOSX_CORE"]
 		?Win32
-			audioEngine :+ ["WINDOWS_ASIO"]
-			audioEngine :+ ["WINDOWS_DS"]
+			engines :+ ["WINDOWS_ASIO"]
+			engines :+ ["WINDOWS_DS"]
 		?
 
 		'try to init one of the engines, starting with the manually set
