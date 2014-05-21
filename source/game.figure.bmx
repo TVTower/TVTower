@@ -506,8 +506,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		'stop entering
 		if event.IsVeto() then return False
 		
-		'enter is allowed
-		isChangingRoom = true
+		'enter is allowed - set time of start
+		isChangingRoom = Time.GetTimeGone()
 
 		'actually enter the room
 		room.DoEnter(door, self, TRoom.ChangeRoomSpeed/2)
@@ -540,8 +540,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		'stop leaving
 		if event.IsVeto() then return False
 
-		'leave is allowed
-		isChangingRoom = true
+		'leave is allowed - set time of start
+		isChangingRoom = Time.GetTimeGone()
 
 		inRoom.DoLeave(self, TRoom.ChangeRoomSpeed/2)
 	End Method
@@ -643,7 +643,6 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		target = new TPoint.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
-
 		targetObj = TRoomDoor.GetByCoord(target.x, GetBuilding().area.GetY() + target.y)
 		If targetObj then target.setX( targetObj.area.GetX() + ceil(targetObj.area.GetW()/2))
 
@@ -706,9 +705,6 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 				targetObj = null
 			elseif TRoomDoor(targetObj)
 				local targetDoor:TRoomDoor = TRoomDoor(targetObj)
-'				If targetDoor.doortype >= 0 And targetDoor.getDoorType() <> 5 And inRoom <> targetDoor.room
-'					targetDoor.Open(Self)
-'				endif
 
 				'do not remove the target room as it is done during "entering the room"
 				'(which can be animated and so we just trust the method to do it)
@@ -783,26 +779,41 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Method Draw:int(overwriteAnimation:String="")
 		if not sprite or not isVisible() then return FALSE
 
-		If (not inRoom Or inRoom.ShowsFigures())
-			'avoid shaking figures when standing - only use tween
-			'position when moving
-			local tweenPos:TPoint
-			if velocity.GetIntX() <> 0 and not GetGameTime().paused
-				tweenPos = new TPoint.Init(..
-					MathHelper.SteadyTween(oldPosition.x, area.getX(), GetDeltaTimer().GetTween()), ..
-					MathHelper.SteadyTween(oldPosition.y, area.getY(), GetDeltaTimer().GetTween()) ..
-				)
-			else
-				tweenPos = area.position.Copy()
-			endif
+		'skip figures in rooms or in rooms not showing a figure
+		If inRoom and not inRoom.ShowsFigures() then return False
 
-			'draw x-centered at current position, with int
-			if useAbsolutePosition
-				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
+		local oldAlpha:Float = GetAlpha()
+		if isChangingRoom
+			local alpha:float = Min(1.0, float(Time.GetTimeGone() - isChangingRoom) / (TRoom.ChangeRoomSpeed / 2))
+			'to building -> fade in
+			if inroom
+				'nothing to do
+			'from building -> fade out
 			else
-				RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(GetBuilding().area.position.y + tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
+				alpha = 1.0 - alpha
 			endif
-		EndIf
+			SetAlpha(alpha * oldAlpha)
+		endif
+
+		'avoid shaking figures when standing - only use tween
+		'position when moving
+		local tweenPos:TPoint
+		if velocity.GetIntX() <> 0 and not GetGameTime().paused
+			tweenPos = new TPoint.Init(..
+				MathHelper.SteadyTween(oldPosition.x, area.getX(), GetDeltaTimer().GetTween()), ..
+				MathHelper.SteadyTween(oldPosition.y, area.getY(), GetDeltaTimer().GetTween()) ..
+			)
+		else
+			tweenPos = area.position.Copy()
+		endif
+
+		'draw x-centered at current position, with int
+		if useAbsolutePosition
+			RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
+		else
+			RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(GetBuilding().area.position.y + tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
+		endif
+		SetAlpha(oldAlpha)
 
 		if greetOthers then GetPeopleOnSameFloor()
 	End Method

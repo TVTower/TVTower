@@ -202,6 +202,10 @@ Type TGame {_exposeToLua="selected"}
 			EventManager.registerListenerFunction("Game.OnDay", GameEvents.PlayersOnDay)
 		EndIf
 
+		'=== REGISTER GENERIC EVENTS ===
+		'react on right clicks during a rooms update (leave room)
+		EventManager.registerListenerFunction("room.onUpdate", GameEvents.RoomOnUpdate)
+
 		'=== REGISTER PLAYER EVENTS ===
 		EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", GameEvents.PlayerFinanceOnChangeMoney)
 		EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", GameEvents.PlayerFinanceOnTransactionFailed)

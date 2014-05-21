@@ -916,7 +916,7 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		'sometimes we got stuck in a room ... go out
-		If inRoom And Rand(0,100) = 1 '1%
+		if inRoom and nextActionTimer.isExpired()
 			Local zufallx:Int = 0
 			'move to a spot further away than just some pixels
 			Repeat
@@ -1847,6 +1847,25 @@ Type GameEvents
 		If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
 	End Function
 
+
+	'called each time a room (the active player visits) is updated
+	Function RoomOnUpdate:int(triggerEvent:TEventBase)
+		'handle normal right click
+		if MOUSEMANAGER.IsHit(2)
+			'check subrooms
+			'only leave a room if not in a subscreen
+			'if in subscreen, go to parent one
+			if ScreenCollection.GetCurrentScreen().parentScreen
+				ScreenCollection.GoToParentScreen()
+				MOUSEMANAGER.ResetKey(2)
+			else
+				'leaving prohibited - just reset button
+				if not GetPlayerCollection().Get().figure.LeaveRoom()
+					MOUSEMANAGER.resetKey(2)
+				endif
+			endif
+		endif
+	End Function
 
 	Function StationMapOnTrySellLastStation:Int(triggerEvent:TEventBase)
 		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)

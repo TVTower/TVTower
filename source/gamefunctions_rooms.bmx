@@ -223,22 +223,6 @@ Type TRoom {_exposeToLua="selected"}
 		'emit event so custom updaters can handle
 		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", null, self) )
 
-		'handle normal right click
-		if MOUSEMANAGER.IsHit(2)
-			'check subrooms
-			'only leave a room if not in a subscreen
-			'if in subscreen, go to parent one
-			if ScreenCollection.GetCurrentScreen().parentScreen
-				ScreenCollection.GoToParentScreen()
-				MOUSEMANAGER.ResetKey(2)
-			else
-				'leaving prohibited - just reset button
-				if not GetPlayerCollection().Get().figure.LeaveRoom()
-					MOUSEMANAGER.resetKey(2)
-				endif
-			endif
-		endif
-
 		return 0
 	End Method
 
@@ -492,30 +476,29 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 
 	'create room and use preloaded image
-	'Raum erstellen und bereits geladenes Bild nutzen
-	'x = 1-4
-	'y = floor
 	Method Init:TRoomDoor(room:TRoom, doorSlot:int=-1, x:Int=0, floor:Int=0, doortype:Int=-1)
 		'autocalc the position
 		if x=-1 and doorSlot>=0 AND doorSlot<=4 then x = getDoorSlotX(doorSlot)
-
-		GenerateID()
 
 		'assign variables
 		self.room = room
 
 		DoorTimer.setInterval( TRoom.ChangeRoomSpeed )
 
-		self.area = new TRectangle.Init(x,floor, 38, 52)
-		self.area.dimension.SetX( GetSpriteFromRegistry("gfx_building_Tueren").framew )
+		'x = 1-4, "door slots"
+		'y = floor
+		'w = door width
+		'h = door height
+		self.area = new TRectangle.Init(x,floor, GetSpriteFromRegistry("gfx_building_Tueren").framew, 52)
 		self.doorSlot = doorSlot
 		self.doorType = doorType
 
-
+		'give it an ID
+		GenerateID()
+		'create the sign next to room's door
 		CreateRoomsign()
 
 		list.AddLast(self)
-		
 
 		Return self
 	End Method
