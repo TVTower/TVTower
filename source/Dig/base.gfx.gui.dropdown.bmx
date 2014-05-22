@@ -69,7 +69,18 @@ Type TGUIDropDown Extends TGUIInput
 
 		'set the list to ignore focus requests (avoids onRemoveFocus-events)
 		list.setOption(GUI_OBJECT_CAN_GAIN_FOCUS, False)
+		'list ignores screen limits of parents ("overflow")
+		list.setOption(GUI_OBJECT_IGNORE_PARENTLIMITS, TRUE)
 
+		'draw the open list on top of nearly everything
+		list.SetZIndex(20000)
+
+		'add bg to list
+		local bg:TGUIBackgroundBox = new TGUIBackgroundBox.Create(new TPoint, new TPoint)
+		bg.spriteBaseName = "gfx_gui_input.default"
+		list.SetBackground(bg)
+		'use padding from background
+		list.SetPadding(bg.GetPadding().getTop(), bg.GetPadding().getLeft(),  bg.GetPadding().getBottom(), bg.GetPadding().getRight())
 
 		'=== REGISTER EVENTS ===
 		'to close the list automatically if the budget looses focus
@@ -104,6 +115,10 @@ Type TGUIDropDown Extends TGUIInput
 		'close on click on a list item
 		if receiver and list.HasItem(receiver)
 			SetValue(receiver.GetValue())
+
+			'reset mouse button to avoid clicks below
+			MouseManager.ResetKey(1)
+
 			SetOpen(False)
 		endif
 
@@ -139,7 +154,6 @@ Type TGUIDropDown Extends TGUIInput
 
 	Method onSelectEntry:int(triggerEvent:TEventBase)
 		local guiobj:TGUIObject = TGUIObject(triggerEvent.GetData().Get("entry"))
-		if guiobj then print guiObj.GetClassName()
 
 		local item:TGUIDropDownItem = TGUIDropDownItem(triggerEvent.GetData().Get("entry"))
 		'clicked item is of a different type
@@ -151,6 +165,9 @@ Type TGUIDropDown Extends TGUIInput
 
 	'override onClick to add open/close toggle
 	Method onClick:int(triggerEvent:TEventBase)
+		'reset mouse button to avoid clicks below
+		MouseManager.ResetKey(1)
+
 		SetOpen(1- IsOpen())
 	End Method
 
@@ -158,10 +175,8 @@ Type TGUIDropDown Extends TGUIInput
 	Method SetOpen:Int(bool:int)
 		open = bool
 		if open
-			print "show list"
 			list.Show()
 		else
-			print "hide list"
 			list.Hide()
 		endif
 	End Method
@@ -184,17 +199,29 @@ Type TGUIDropDown Extends TGUIInput
 		Super.Update()
 
 		'move list to our position
-		list.rect.position.SetXY( rect.GetX(), rect.GetY() + GetScreenHeight() )
-
-		UpdateChildren()
+		list.rect.position.SetXY( GetScreenX(), GetScreenY() + GetScreenHeight() )
+'RON
+'		UpdateChildren()
 	End Method
 
 
 	Method Draw()
 		Super.Draw()
-		DrawChildren()
+rem
+		if open
+			SetAlpha 1.0
+			SetColor 100,0,0
+			DrawRect(list.GetContentScreenX(),list.GetContentScreenY()+100,list.GetContentScreenWidth(), list.GetContentScreenHeight())
+			SetColor 255,255,255
+			DrawRect(list.guiEntriesPanel.GetContentScreenX(),list.guiEntriesPanel.GetContentScreenY()+150,list.guiEntriesPanel.GetContentScreenWidth(), list.guiEntriesPanel.GetContentScreenHeight())
+			SetAlpha 1.0
+		endif
+endrem
+'RON
+'		DrawChildren()
 	End Method
 End Type
+
 
 
 
@@ -218,29 +245,34 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
+	Method GetScreenWidth:Float()
+		local listParent:TGUIListBase = TGUIListBase(GetParent("TGUIListBase"))
+		if not listParent or not listParent.guiEntriesPanel
+			Return GetParent().GetScreenWidth()
+		else
+			Return listParent.guiEntriesPanel.GetContentScreenWidth()
+		endif
+	End Method
+
+
 	Method Draw:Int()
 		local oldCol:TColor = new TColor.Get()
-		local upperParent:TGUIObject = GetUppermostParent()
-		upperParent.RestrictViewPort()
-
-		'available width is parentsDimension minus startingpoint
-		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
-
+		local upperParent:TGUIObject = GetParent("TGUIListBase")
+		upperParent.RestrictContentViewPort()
 
 		If mouseover
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, rect.getH())
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
 			SetColor 255,255,255
 		ElseIf selected
 			SetAlpha GetAlpha()*0.5
 			SetColor 250,210,100
-			DrawRect(getScreenX(), getScreenY(), maxWidth, rect.getH())
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
 		'draw value
-		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
+		GetFont().draw(value, getScreenX(), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
 
 		upperParent.ResetViewPort()
 		oldCol.SetRGBA()

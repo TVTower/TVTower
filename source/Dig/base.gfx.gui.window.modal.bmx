@@ -69,9 +69,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			Case 2
 				buttons = buttons[..2]
 				buttons[0] = New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(90, -1), GetLocale("YES"))
-				buttons[0].SetZIndex(1)
 				buttons[1] = New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(90, -1), GetLocale("NO"))
-				buttons[1].SetZIndex(1)
 				AddChild(buttons[0])
 				AddChild(buttons[1])
 				'set to ignore parental padding (so it starts at 0,0)

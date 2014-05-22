@@ -5,120 +5,145 @@ Rem
 End Rem
 SuperStrict
 Import "base.gfx.gui.bmx"
-Import "base.gfx.gui.label.bmx"
+Import "base.gfx.gui.button.bmx"
 Import "base.util.registry.spriteloader.bmx"
 
 
-
-
-Type TGUICheckBox Extends TGUIObject
-    Field _checked:Int=False
-    Field _showValue:Int=True
-    'limit the label/value width/height?
-    Field _maxValueDimension:TPoint = new TPoint
+Type TGUICheckBox Extends TGUIButton
+    Field checked:Int = False
     Field checkSprite:TSprite
-	Field buttonSprite:TSprite
-	Field spriteBaseName:String	= "gfx_gui_icon_check"
-	Field spriteButtonBaseName:String = "gfx_gui_button.round"
-
+	Field checkSpriteName:String = "gfx_gui_icon_check"
+	Field checkboxDimension:TPoint
+	Field checkboxDimensionAutocalculated:int = True
+	Field valueChecked:string = ""
+	Field valueUnchecked:string = ""
+	Field captionDisplacement:TPoint = new TPoint.Init(5,0)
+	
+	Global _checkboxMinDimension:TPoint = new TPoint.Init(15,15)
 	Global _typeDefaultFont:TBitmapFont
 
 
-	Method Create:TGUICheckbox(pos:TPoint, dimension:TPoint, checked:Int=False, labelValue:String, limitState:String="")
-		'setup base widget
-		Super.CreateBase(pos, dimension, limitState)
+	Method Create:TGUICheckbox(pos:TPoint, dimension:TPoint, value:String, limitState:String="")
+		'use another sprite name (assign before initing super)
+		spriteName = "gfx_gui_button.round"
 
-		SetZindex(40)
-		SetValue(labelValue)
-		SetChecked(checked, False) 'without sending events
+		valueChecked = value
+		valueUnchecked = value
 
-		'let the guimanager manage the button
-		GUIManager.Add(Self)
+		Super.Create(pos, dimension, value, limitState)
 
-		Return Self
+		return self
+	End Method
+
+
+	Method SetCaptionValues:Int(checkedValue:string, uncheckedValue:string)
+		self.valueChecked = checkedValue
+		self.valueUnchecked = uncheckedValue
+		if caption
+			if IsChecked()
+				caption.value = checkedValue
+			else
+				caption.value = uncheckedValue
+			endif
+		endif
 	End Method
 
 
 	Method SetChecked:Int(checked:Int=True, informOthers:Int=True)
 		'if already same state - do nothing
-		If _checked = checked Then Return FALSE
+		If self.checked = checked Then Return FALSE
 
-		_checked = checked
+		self.checked = checked
 
-		If informOthers Then EventManager.registerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
+		If informOthers then EventManager.registerEvent(TEventSimple.Create("guiCheckBox.onSetChecked", new TData.AddNumber("checked", checked), Self ) )
 	End Method
 
 
-	Method SetShowValue:Int(bool:Int=True)
-		_showValue = bool
+	Method IsChecked:Int()
+		Return checked
 	End Method
 
 
-	Method SetMaxValueWidth:Int(value:Int=-1)
-		_maxValueDimension.x = value
+	'override to get value depending on checked state
+	Method GetValue:String()
+		if IsChecked() then return valueChecked
+		return valueUnchecked
 	End Method
 
 
-	Method SetMaxValueHeight:Int(value:Int=-1)
-		_maxValueDimension.y = value
-	End Method
-
-
-	'override to use custom global
-	Function SetTypeFont:Int(font:TBitmapFont)
-		_typeDefaultFont = font
-	End Function
-
-
-	'override to use custom global
-	Function GetTypeFont:TBitmapFont()
-		return _typeDefaultFont
-	End Function
-
-
-	'private getter
-	'acts as cache
-	Method _GetButtonSprite:TSprite()
-		'refresh cache if not set or wrong sprite name
-		if not buttonSprite or buttonSprite.GetName() <> (spriteButtonBaseName + self.state)
-			local newSprite:TSprite = GetSpriteFromRegistry(spriteButtonBaseName + self.state, spriteButtonBaseName)
-			if not buttonSprite or newSprite.GetName() <> buttonSprite.GetName()
-				buttonSprite = newSprite
-				'new image - resize
-				Resize()
-			endif
+	Method SetCheckboxDimension:int(dimension:TPoint)
+		if not dimension
+			checkboxDimension = null
+			checkboxDimensionAutocalculated = True
+		else
+			checkboxDimension = dimension.copy()
+			checkboxDimensionAutocalculated = False
 		endif
-		return buttonSprite
 	End Method
 
 
+	Method GetCheckboxDimension:TPoint()
+		if not checkboxDimension
+			local dim:TRectangle = GetSprite().GetNinePatchBorderDimension()
+			checkboxDimension = new TPoint.Init(..
+				Max(_checkboxMinDimension.x, dim.GetLeft() + dim.GetRight()), ..
+				Max(_checkboxMinDimension.y, dim.GetTop() + dim.GetBottom()) ..
+			)
+		endif
+		return checkboxDimension
+	End Method
+
+
+	'override for a differing alignment
+	Method SetCaption:Int(text:String, color:TColor=Null)
+		Super.SetCaption(text, color)
+		if caption
+			caption.SetContentPosition(ALIGN_LEFT, ALIGN_TOP)
+			caption.SetValueEffect(1, 0.2)
+			caption.SetValueColor(TColor.CreateGrey(120))
+		endif
+	End Method
+
+
+	Method ShowCaption:Int(bool:Int=True)
+		if bool
+			caption.Show()
+		else
+			caption.Hide()
+		endif
+	End Method
+	
+
 	'private getter
 	'acts as cache
-	Method _GetCheckSprite:TSprite()
+	Method GetCheckSprite:TSprite()
 		if isChecked()
 			'refresh cache if not set or wrong sprite name
-			if not checkSprite or checkSprite.GetName() <> spriteBaseName
-				checksprite = GetSpriteFromRegistry(spriteBaseName)
+			if not checkSprite or checkSprite.GetName() <> checkSpriteName
+				checksprite = GetSpriteFromRegistry(checkSpriteName)
 			endif
 		endif
 		return checkSprite
 	End Method
 
 
-	'override so we have a minimum size
-	Method Resize(w:Float=Null,h:Float=Null)
-		if not w or w < 0 then w = rect.dimension.GetX()
-		if not h or h < 0 then h = rect.dimension.GetY()
-
-		'set to minimum size or bigger
-		local spriteDimension:TRectangle = _GetButtonSprite().GetNinePatchBorderDimension()
-		rect.dimension.setX( Max(w, spriteDimension.GetLeft() + spriteDimension.GetRight()) )
-		rect.dimension.sety( Max(h, spriteDimension.GetTop() + spriteDimension.GetBottom()) )
+	'override default to add checkbox+caption
+	Method GetScreenWidth:float()
+		if caption
+			return GetCheckboxDimension().x + caption.rect.position.y + caption.GetValueDimension().x
+		else
+			return GetCheckboxDimension().x
+		endif
 	End Method
 
 
-	Method IsChecked:Int()
-		Return _checked
+	'override default to add checkbox+caption
+	Method GetScreenHeight:float()
+		if caption
+			return Max(GetCheckboxDimension().y, caption.rect.position.y + caption.GetValueDimension().y)
+		else
+			return GetCheckboxDimension().y
+		endif
 	End Method
 
 
@@ -129,9 +154,31 @@ Type TGUICheckBox Extends TGUIObject
 		if button <> 1 then return FALSE
 
 		'set box (un)checked
-		SetChecked(1-isChecked())
+		SetChecked(1 - isChecked())
 	End Method
 
+
+	'override default to handle image changes
+	Method onStatusAppearanceChange:int()
+		Super.onStatusAppearanceChange()
+
+		'reset autocalculated checkbox dimension
+		if checkboxDimensionAutocalculated then SetCheckboxDimension(null)
+	End Method
+
+
+	'override so caption gets positioned next to checkbox instead
+	'of within
+	Method RepositionCaption:Int()
+		if not caption then return False
+
+		caption.rect.dimension.X = rect.GetW() - GetCheckboxDimension().x - captionDisplacement.x
+
+		caption.rect.position.X = GetCheckboxDimension().x + captionDisplacement.x
+		'center first line to checkbox center
+		caption.rect.position.y = (GetScreenHeight()- GetFont().GetMaxCharHeight()) / 2 + captionDisplacement.y
+	End Method
+	
 
 	'override default draw-method
 	Method Draw()
@@ -141,21 +188,29 @@ Type TGUICheckBox Extends TGUIObject
 		SetColor 255, 255, 255
 		SetAlpha oldCol.a * alpha
 
-		Local buttonWidth:Int = rect.GetH() 'square...
+		Local sprite:TSprite = GetSprite()
+		if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)
+		if sprite then sprite.DrawArea(atPoint.getX(), atPoint.getY(), GetCheckboxDimension().x, GetCheckboxDimension().y)
 
-		'draw button (background)
-		_GetButtonSprite().DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())
 		'draw checked mark at center of button
-		if IsChecked() then _GetCheckSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TPoint.Init(0.5, 0.5))
+		if IsChecked() then GetCheckSprite().Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TPoint.Init(0.5, 0.5))
 
-		If _showValue
-			Local col:TColor = TColor.Create(75,75,75)
-			If isChecked() Then col = col.AdjustFactor(-50)
-			If mouseover Then col = col.AdjustFactor(-25)
-
-			GetFont().drawBlock(value, Int(atPoint.GetX() + buttonWidth + 5), Int(atPoint.GetY() + (GetScreenHeight()- GetFont().GetMaxCharHeight()) / 2) +2, _maxValueDimension.x, _maxValueDimension.y, null, col, 1 )
+		If caption and caption.IsVisible()
+			if IsChecked()
+				caption.value = valueChecked
+			else
+				caption.value = valueUnchecked
+			endif
+		
+			Local oldCol:TColor = caption.color.copy()
+			If isChecked() Then caption.color.AdjustFactor(-60)
+			If mouseover Then caption.color.AdjustFactor(-30)
+			
+			caption.Draw()
+			'reset color 
+			caption.color = oldCol
 		EndIf
 
 		oldCol.SetRGBA()
-	End Method
-End Type
+	End Method	
+End Type	

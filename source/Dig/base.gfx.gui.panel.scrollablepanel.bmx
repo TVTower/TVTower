@@ -53,6 +53,24 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 
+	Method ReachedLeftLimit:int()
+		return (scrollPosition.GetX() = 0)
+	End Method
+
+	Method ReachedRightLimit:int()
+		return (scrollPosition.GetX() = scrollLimit.GetX())
+	End Method
+
+	Method ReachedTopLimit:int()
+		return (scrollPosition.GetY() = 0)
+	End Method
+
+	Method ReachedBottomLimit:int()
+		return (scrollPosition.GetY() = scrollLimit.GetY())
+	End Method
+
+
+
 	Method SetLimits:Int(lx:Float,ly:Float)
 		scrollLimit.setXY(lx,ly)
 	End Method

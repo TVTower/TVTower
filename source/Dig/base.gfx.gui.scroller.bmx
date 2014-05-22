@@ -157,6 +157,21 @@ Type TGUIScroller Extends TGUIobject
 	End Function
 
 
+	Method SetButtonStates:int(enableMinus:int = True, enablePlus:int = True)
+		if enableMinus
+			guiButtonMinus.Enable()
+		else
+			guiButtonMinus.Disable()
+		endif
+
+		if enablePlus
+			guiButtonPlus.Enable()
+		else
+			guiButtonPlus.Disable()
+		endif
+	End Method
+
+
 	Method Draw()
 		SetColor 125,0,0
 		SetAlpha 0.20

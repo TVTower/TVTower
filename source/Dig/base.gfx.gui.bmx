@@ -27,12 +27,13 @@ Const GUI_OBJECT_MANAGED:Int					= 2^5
 Const GUI_OBJECT_POSITIONABSOLUTE:Int			= 2^6
 Const GUI_OBJECT_IGNORE_POSITIONMODIFIERS:Int	= 2^7
 Const GUI_OBJECT_IGNORE_PARENTPADDING:Int		= 2^8
-Const GUI_OBJECT_ACCEPTS_DROP:Int				= 2^9
-Const GUI_OBJECT_CAN_RECEIVE_KEYSTROKES:Int		= 2^10
-Const GUI_OBJECT_CAN_GAIN_FOCUS:Int				= 2^11
-Const GUI_OBJECT_DRAWMODE_GHOST:Int				= 2^12
+Const GUI_OBJECT_IGNORE_PARENTLIMITS:Int		= 2^9
+Const GUI_OBJECT_ACCEPTS_DROP:Int				= 2^10
+Const GUI_OBJECT_CAN_RECEIVE_KEYSTROKES:Int		= 2^11
+Const GUI_OBJECT_CAN_GAIN_FOCUS:Int				= 2^12
+Const GUI_OBJECT_DRAWMODE_GHOST:Int				= 2^13
 'defines what GetFont() tries to get at first: parents or types font
-Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^13
+Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^14
 
 '===== GUI STATUS CONSTANTS =====
 CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^0
@@ -275,14 +276,10 @@ Type TGUIManager
 		'if objB is active element - move to top
 		If objB.hasFocus() Then Return -1
 
-		'if objA is invisible, move to to end
-		If Not(objA._flags & GUI_OBJECT_VISIBLE) Then Return -1
-		If Not(objB._flags & GUI_OBJECT_VISIBLE) Then Return 1
-
 		'if objA is "higher", move it to the top
-		If objA.rect.position.z > objB.rect.position.z Then Return 1
+		If objA.GetZIndex() > objB.GetZIndex() Then Return 1
 		'if objA is "lower"", move to bottom
-		If objA.rect.position.z < objB.rect.position.z Then Return -1
+		If objA.GetZIndex() < objB.GetZIndex() Then Return -1
 
 		'run custom compare job
 '		return objA.compare(objB)
@@ -337,7 +334,7 @@ Type TGUIManager
 		If Not(obj._flags & GUI_OBJECT_VISIBLE) Then Return False
 
 		'skip if not visible by zindex
-		If Not ( (toZ = -1000 Or obj.rect.position.z <= toZ) And (fromZ = -1000 Or obj.rect.position.z >= fromZ)) Then Return False
+		If Not ( (toZ = -1000 Or obj.GetZIndex() <= toZ) And (fromZ = -1000 Or obj.GetZIndex() >= fromZ)) Then Return False
 
 		'limit display by state - skip if object is hidden in that state
 		'deep check only if a specific state is wanted AND the object is limited to states
@@ -436,6 +433,7 @@ Type TGUIManager
 
 	'should be run on start of the current tick
 	Method StartUpdates:Int()
+
 		UpdateState_mouseScrollwheelMovement = MOUSEMANAGER.GetScrollwheelmovement()
 
 		UpdateState_mouseButtonDown = MOUSEMANAGER.GetAllStatusDown()
@@ -471,8 +469,6 @@ Type TGUIManager
 		currentState = State
 
 		UpdateState_mouseScrollwheelMovement = MOUSEMANAGER.GetScrollwheelmovement()
-
-		Local screenRect:TRectangle = Null
 
 		'store a list of special elements - maybe the list gets changed
 		'during update... some elements will get added/destroyed...
@@ -532,6 +528,8 @@ Type TGUIManager
 			'tint image if object is disabled
 			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
 			obj.Draw()
+'RON
+'print obj.GetClassName() + " z:"+obj.GetZIndex()
 			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 
 			'fire event
@@ -810,14 +808,23 @@ Type TGUIobject
 
 		child.setParent( Self )
 		If Not children Then children = CreateList()
-		If children.addLast(child) Then GUIManager.Remove(child)
+'		If children.addLast(child) then GUIManager.Remove(child)
+		children.addLast(child)
 		children.sort(True, TGUIManager.SortObjects)
+		'maybe zindex changed now
+		'GuiManager.SortLists()
 	End Method
 
 
 	Method RemoveChild:Int(child:TGUIobject)
 		If Not children Then Return False
-		If children.Remove(child) Then GUIManager.Add(child)
+		children.Remove(child)
+rem
+		If children.Remove(child)
+			GUIManager.Remove(child)
+			GUIManager.Add(child)
+		endif
+endrem
 	End Method
 
 
@@ -836,6 +843,16 @@ Type TGUIobject
 		Next
 	End Method
 
+
+	Method RestrictContentViewport:Int()
+		GUIManager.RestrictViewport(..
+			GetContentScreenX(), ..
+			GetContentScreenY(), ..
+			GetContentScreenWidth(), ..
+			GetContentScreenHeight() ..
+		)
+	End Method
+	
 
 	Method RestrictViewport:Int()
 		Local screenRect:TRectangle = GetScreenRect()
@@ -1031,6 +1048,18 @@ Type TGUIobject
 	'valid values are 0-1.0 (percentage)
 	Method SetContentPosition:Int(contentLeft:Float=0.0, contentTop:Float=0.0)
 		contentPosition = new TPoint.Init(contentLeft, contentTop)
+	End Method
+
+
+	Method GetZIndex:int()
+		if rect.position.z = 0
+			'each children is at least 1 zindex higher
+			if _parent then return _parent.GetZIndex() + 1
+		'-1 means: try to get the zindex from parent
+		elseif rect.position.z = -1
+			if _parent then return _parent.GetZIndex()
+		endif
+		return rect.position.z
 	End Method
 
 
@@ -1269,10 +1298,25 @@ Type TGUIobject
 	End Method
 
 
+	Method GetContentScreenRect:TRectangle()
+		return new TRectangle.Init(..
+			GetContentScreenX(), ..
+			GetContentScreenY(), ..
+			GetContentScreenWidth(), ..
+			GetContentScreenHeight()..
+		)
+	End Method
+
+
 	'get a rectangle describing the objects area on the screen
 	Method GetScreenRect:TRectangle()
 		'dragged items ignore parents but take care of mouse position...
 		If isDragged() Then Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+
+		'if the item ignores parental limits, just return its very own screen rect
+		If HasOption(GUI_OBJECT_IGNORE_PARENTLIMITS)
+			Return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
+		endif
 
 		'no other limiting object - just return the object's area
 		'(no move needed as it is already oriented to screen 0,0)
@@ -1373,7 +1417,7 @@ Type TGUIobject
 		Endif
 
 		'always be above parent
-		If _parent And _parent.rect.position.z >= rect.position.z Then setZIndex(_parent.rect.position.z+10)
+'		If _parent And _parent.rect.position.z >= rect.position.z Then setZIndex(_parent.rect.position.z+10)
 
 		If GUIManager._ignoreMouse then return FALSE
 
@@ -1513,6 +1557,8 @@ Type TGUIobject
 						MouseIsDown = Null
 						'reset mouse button
 						MOUSEMANAGER.ResetKey(1)
+						'reset Button cache
+'						GUIManager.UpdateState_mouseButtonHit[1] = False
 
 						'clicking on an object sets focus to it
 						'so remove from old before
@@ -1526,20 +1572,6 @@ Type TGUIobject
 		EndIf
 	End Method
 
-
-'VERALTET !!!!!
-REM
-	'eg. for buttons/inputfields/dropdownbase...
-	Method DrawBaseForm(identifier:String, x:Float, y:Float)
-		SetScale scale, scale
-		local spriteL:TSprite = TSprite(GetRegistry().Get(identifier+".L"))
-		local spriteR:TSprite = TSprite(GetRegistry().Get(identifier+".R"))
-		spriteL.Draw(x,y)
-		TSprite(GetRegistry().Get(identifier+".M")).TileDrawHorizontal(x + spriteL.area.GetW()*scale, y, GetScreenWidth() - ( spriteL.area.GetW() + spriteR.area.GetW())*scale, scale)
-		spriteR.Draw(x + GetScreenWidth(), y, -1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM), scale)
-		SetScale 1.0,1.0
-	End Method
-endrem
 
 	Method DrawBaseFormText:Object(_value:String, x:Float, y:Float)
 		Local col:TColor = TColor.Create(100,100,100)

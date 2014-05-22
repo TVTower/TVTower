@@ -333,8 +333,8 @@ Type TGUIChat Extends TGUIGameWindow
 		Super.Update()
 
 		'show items again if somone hovers over the list (-> reset timer)
-		If Self.guiList._mouseOverArea
-			For Local entry:TGuiObject = EachIn Self.guiList.entries
+		If guiList._mouseOverArea
+			For Local entry:TGuiObject = EachIn guiList.entries
 				entry.show()
 			Next
 		EndIf
@@ -385,6 +385,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 		box.spriteBaseName = childSpriteBaseName
 		box.spriteAlpha = 1.0
 		box.SetPadding(panelGap, panelGap, panelGap, panelGap)
+
 		AddChild(box)
 
 		contentBoxes = contentBoxes[.. contentBoxes.length +1]
@@ -418,7 +419,7 @@ Type TGUIGameModalWindow Extends TGUIModalWindow
 
 		Super.Create(pos, dimension, limitState)
 
-		SetCaptionArea(new TRectangle.Init(20, 10, GetContentScreenWidth() - 2*20, 25))
+		SetCaptionArea(new TRectangle.Init(-1,10,-1,25))
 		guiCaptionTextBox.SetValueAlignment("CENTER", "TOP")
 
 

@@ -51,7 +51,7 @@ Type TGUIListBase Extends TGUIobject
     Method Create:TGUIListBase(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
 		Super.CreateBase(position, dimension, limitState)
 
-		setZIndex(10)
+		setZIndex(0)
 
 		guiScrollerH = New TGUIScroller.Create(Self)
 		guiScrollerV = New TGUIScroller.Create(Self)
@@ -151,19 +151,19 @@ Type TGUIListBase Extends TGUIobject
 		If guiEntriesPanel
 			'also set minsize so scroll works
 			guiEntriesPanel.minSize.SetXY(..
-				rect.GetW() + _entriesBlockDisplacement.x - showScrollerV*guiScrollerV.GetScreenWidth(),..
-				rect.GetH() + _entriesBlockDisplacement.y - showScrollerH*guiScrollerH.rect.getH()..
+				GetContentScreenWidth() + _entriesBlockDisplacement.x - showScrollerV*guiScrollerV.GetScreenWidth(),..
+				GetContentScreenHeight() + _entriesBlockDisplacement.y - showScrollerH*guiScrollerH.rect.getH()..
 			)
 
 			guiEntriesPanel.Resize(..
-				rect.getW() + _entriesBlockDisplacement.x - showScrollerV * guiScrollerV.rect.getW(),..
-				rect.getH() + _entriesBlockDisplacement.y - showScrollerH * guiScrollerH.rect.getH()..
+				GetContentScreenWidth() + _entriesBlockDisplacement.x - showScrollerV * guiScrollerV.rect.getW(),..
+				GetContentScreenHeight() + _entriesBlockDisplacement.y - showScrollerH * guiScrollerH.rect.getH()..
 			)
 		EndIf
 
 		'move horizontal scroller --
 		If showScrollerH and not guiScrollerH.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
-			guiScrollerH.rect.position.setXY(_entriesBlockDisplacement.x, rect.getH() + _entriesBlockDisplacement.y - guiScrollerH.guiButtonMinus.rect.getH())
+			guiScrollerH.rect.position.setXY(_entriesBlockDisplacement.x, GetContentScreenHeight() + _entriesBlockDisplacement.y - guiScrollerH.guiButtonMinus.rect.getH())
 			if showScrollerV
 				guiScrollerH.Resize(GetScreenWidth() - guiScrollerV.GetScreenWidth(), 0)
 			else
@@ -172,11 +172,11 @@ Type TGUIListBase Extends TGUIobject
 		EndIf
 		'move vertical scroller |
 		If showScrollerV and not guiScrollerV.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
-			guiScrollerV.rect.position.setXY( rect.getW() + _entriesBlockDisplacement.x - guiScrollerV.guiButtonMinus.rect.getW(), _entriesBlockDisplacement.y)
+			guiScrollerV.rect.position.setXY( GetContentScreenWidth() + _entriesBlockDisplacement.x - guiScrollerV.guiButtonMinus.rect.getW(), _entriesBlockDisplacement.y)
 			if showScrollerH
-				guiScrollerV.Resize(0, GetScreenHeight() - guiScrollerH.GetScreenHeight()-03)
+				guiScrollerV.Resize(0, GetContentScreenHeight() - guiScrollerH.GetScreenHeight()-03)
 			else
-				guiScrollerV.Resize(0, GetScreenHeight())
+				guiScrollerV.Resize(0, GetContentScreenHeight())
 			endif
 		EndIf
 
@@ -235,15 +235,14 @@ Type TGUIListBase Extends TGUIobject
 		'so a normal AddItem-handler can work with calculated dimensions from now on
 		Local dimension:TPoint = item.getDimension()
 
-		'reset zindex
-		item.setZIndex(rect.position.z)
-
 		entries.addLast(item)
 
 		'run the custom compare method
 		If autoSortItems Then entries.sort()
 
 		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item) , Self))
+
+		GUIManager.SortLists()
 
 		Return True
 	End Method
@@ -444,15 +443,6 @@ Type TGUIListBase Extends TGUIobject
 
 		'resize everything
 		Resize()
-
-'print "SetScrollerState : h:"+boolH+" v:"+boolV
-rem
-		'if active, subtract guiScroller-width
-		guiEntriesPanel.Resize(rect.getW() - (boolV>0) * guiScrollerV.rect.getW(),..
-		                       rect.getH() - (boolH>0) * guiScrollerH.rect.getH()..
-		                      )
-endrem
-
 	End Method
 
 
@@ -614,6 +604,17 @@ endrem
 
 		Super.Update()
 
+
+		'enable/disable buttons of scrollers if they reached the
+		'limits of the scrollable panel
+		if guiScrollerH.hasOption(GUI_OBJECT_ENABLED)
+			guiScrollerH.SetButtonStates(not guiEntriesPanel.ReachedLeftLimit(), not guiEntriesPanel.ReachedRightLimit())
+		endif
+		if guiScrollerV.hasOption(GUI_OBJECT_ENABLED)
+			guiScrollerV.SetButtonStates(not guiEntriesPanel.ReachedTopLimit(), not guiEntriesPanel.ReachedBottomLimit())
+		endif
+				
+
 		_mouseOverArea = THelper.MouseIn(GetScreenX(), GetScreenY(), rect.GetW(), rect.GetH())
 
 		If autoHideScroller
@@ -647,7 +648,8 @@ endrem
 			oldCol.SetRGBA()
 		EndIf
 
-		DrawChildren()
+'RON: noch gebraucht?
+'		DrawChildren()
 
 		If _debugMode
 			Local oldCol:TColor = new TColor.Get()

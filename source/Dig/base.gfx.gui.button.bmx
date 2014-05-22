@@ -22,6 +22,7 @@ Type TGUIButton Extends TGUIobject
 	Global AUTO_SIZE_MODE_NONE:int = 0
 	Global AUTO_SIZE_MODE_TEXT:int = 1
 	Global AUTO_SIZE_MODE_SPRITE:int = 2
+	Global _typeDefaultCaptionAlign:TPoint = new TPoint.Init()
 	Global _typeDefaultFont:TBitmapFont
 	Global _typeDefaultCaptionColor:TColor
 
@@ -30,7 +31,6 @@ Type TGUIButton Extends TGUIobject
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 
-		SetZindex(10)
 		SetValue(value)
 
     	GUIManager.Add(Self)
@@ -141,6 +141,13 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 
+	'override default - to use caption instead of value
+	Method GetValue:String()
+		if not caption then return Super.GetValue()
+		return caption.GetValue()
+	End Method
+
+
 	Method SetCaption:Int(text:String, color:TColor=Null)
 		if not caption
 			'caption area starts at top left of button
@@ -154,9 +161,6 @@ Type TGUIButton Extends TGUIobject
 			'reposition the caption
 			RepositionCaption()
 
-			'no longer needed - caption uses parents font if none was set
-			'set to use the buttons font
-			'caption.SetFont(GetFont())
 			'assign button as parent of caption
 			caption.SetParent(self)
 		elseif caption.value <> text

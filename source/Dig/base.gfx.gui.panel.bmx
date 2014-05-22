@@ -80,6 +80,8 @@ Type TGUIPanel Extends TGUIObject
 			guiBackground = obj
 			'set background to ignore parental padding (so it starts at 0,0)
 			guiBackground.SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
+			'set background to to be on same level than parent
+			guiBackground.SetZIndex(-1)
 
 			addChild(obj) 'manage it by our own
 		EndIf
@@ -148,11 +150,11 @@ Type TGUIPanel Extends TGUIObject
 
 
 		'Super.Update()
-		UpdateChildren()
+'		UpdateChildren()
 	End Method
 
 
 	Method Draw()
-		DrawChildren()
+'		DrawChildren()
 	End Method
 End Type

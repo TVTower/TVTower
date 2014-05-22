@@ -11,6 +11,10 @@ Import "base.gfx.gui.bmx"
 Type TGUILabel Extends TGUIobject
 	Field contentDisplacement:TPoint = new TPoint.Init(0,0)
 	Field color:TColor = TColor.Create(0,0,0)
+    'limit the label/value width/height?
+    Field valueMaxDimension:TPoint = new TPoint
+	Field valueEffectType:int = 1
+	Field valueEffectSpecial:Float = 0.4
 	Field _valueDimensionCache:TPoint = null
 
 	Global _typeDefaultFont:TBitmapFont
@@ -34,6 +38,31 @@ Type TGUILabel Extends TGUIobject
 
 	Method SetContentDisplacement:int(displacement:TPoint)
 		if displacement then contentDisplacement.CopyFrom(displacement)
+	End Method
+
+
+	Method SetValueColor:int(color:TColor)
+		if color then self.color = color.copy()
+	End Method
+	
+	
+	Method SetValueMaxWidth:Int(value:Int=-1)
+		valueMaxDimension.SetX(value)
+		'recalculate dimension cache
+		_valueDimensionCache = null
+	End Method
+
+
+	Method SetValueMaxHeight:Int(value:Int=-1)
+		valueMaxDimension.SetY(value)
+		'recalculate dimension cache
+		_valueDimensionCache = null
+	End Method
+
+
+	Method SetValueEffect:int(valueEffectType:Int, valueEffectSpecial:Float = 1.0)
+		self.valueEffectType = valueEffectType
+		self.valueEffectSpecial = valueEffectSpecial
 	End Method
 
 
@@ -66,7 +95,14 @@ Type TGUILabel Extends TGUIobject
 		if not _valueDimensionCache
 			_valueDimensionCache = new TPoint
 			_valueDimensionCache.SetX(GetFont().getWidth(value))
-			_valueDimensionCache.SetY(GetFont().getHeight(value))
+			'does the text fit into the maximum given width?
+			'if so, there is no need for a linebreak/more complex calc.
+			if valueMaxDimension.x > 0 and _valueDimensionCache.x < valueMaxDimension.x 
+				_valueDimensionCache.SetY(GetFont().getHeight(value))
+			'if not, the dimensions are equal to the text block dimensions
+			else
+				_valueDimensionCache = GetFont().GetBlockDimension(value, valueMaxDimension.x, valueMaxDimension.y)
+			endif
 		endif
 		return _valueDimensionCache
 	End Method
@@ -79,6 +115,6 @@ Type TGUILabel Extends TGUIobject
 
 
 	Method Draw:Int()
-		GetFont().drawStyled(value, Floor(GetScreenX() + contentPosition.x*(rect.GetW() - GetValueDimension().GetX()) + contentDisplacement.GetX()), Floor(GetScreenY() + contentPosition.y*(rect.GetH() - GetValueDimension().GetY()) + contentDisplacement.GetY()), color, 1)
+		GetFont().drawBlock(value, GetScreenX() + contentDisplacement.GetX(), GetScreenY() + contentDisplacement.GetY(), GetScreenWidth() - 2*contentDisplacement.GetX(), GetScreenHeight() - 2*contentDisplacement.GetY(), new TPoint.Init(contentPosition.x, contentPosition.y), color, valueEffectType, true, valueEffectSpecial)
 	End Method
 End Type

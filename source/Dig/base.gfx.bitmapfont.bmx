@@ -337,6 +337,11 @@ Type TBitmapFont
 	End Method
 
 
+	Method getBlockDimension:TPoint(text:String, w:Float, h:Float)
+		return drawBlock(text, 0,0,w,h, null, null, 0, 0)
+	End Method
+
+
 	'render to target pixmap/image/screen
 	Function setRenderTarget:int(target:object=null)
 		'render to screen
@@ -387,7 +392,7 @@ Type TBitmapFont
 
 				'as long as the part of the line does not fit into
 				'the given width, we have to search for linebreakers
-				while (w>0 and self.getWidth(linePartial) >= w) and linePartial.length >0
+				while (w>0 and self.getWidth(linePartial) > w) and linePartial.length >0
 					'whether we found a break position by a rule
 					local FoundBreakPosition:int = FALSE
 
@@ -455,8 +460,10 @@ Type TBitmapFont
 
 	Method drawBlock:TPoint(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TPoint=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE)
 		'use special chars (instead of text) for same height on all lines
-		Local alignedX:float	= 0.0
-		Local lineHeight:float	= getMaxCharHeight()
+		Local alignedX:float = 0.0
+		Local lineMaxWidth:Float = 0
+		local lineWidth:Float = 0
+		Local lineHeight:float = getMaxCharHeight()
 		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
 
 		local blockHeight:Float = lineHeight * lines.length
@@ -479,10 +486,13 @@ Type TBitmapFont
 
 		local startY:Float = y
 		For local i:int = 0 to lines.length-1
+			lineWidth = getWidth(lines[i])
+			lineMaxWidth = Max(lineMaxwidth, lineWidth)
+
 			'only align when drawing
 			If doDraw
 				if alignment and alignment.GetX() <> ALIGN_LEFT and w > 0
-					alignedX = x + alignment.GetX() * (w - getWidth(lines[i]))
+					alignedX = x + alignment.GetX() * (w - lineWidth)
 				else
 					alignedX = x
 				endif
@@ -496,7 +506,7 @@ Type TBitmapFont
 			Endif
 		Next
 
-		return new TPoint.Init(w, y - startY)
+		return new TPoint.Init(lineMaxWidth, y - startY)
 	End Method
 
 

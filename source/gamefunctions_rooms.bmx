@@ -2357,8 +2357,9 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		For Local i:Int = 0 To 3
-			stationMapShowStations[i] = new TGUICheckBox.Create(new TPoint.Init(535, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TPoint.Init(20, 20), TRUE, String(i + 1), "STATIONMAP")
-			stationMapShowStations[i].SetShowValue(false)
+			stationMapShowStations[i] = new TGUICheckBox.Create(new TPoint.Init(535, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TPoint.Init(20, 20), String(i + 1), "STATIONMAP")
+			stationMapShowStations[i].SetChecked(True, False)
+			stationMapShowStations[i].ShowCaption(False)
 			'register checkbox changes
 			EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, stationMapShowStations[i])
 		Next

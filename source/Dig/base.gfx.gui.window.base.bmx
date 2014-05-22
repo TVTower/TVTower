@@ -39,8 +39,11 @@ Type TGUIWindowBase Extends TGUIPanel
 		SetCaption("Window")
 		guiCaptionTextBox.SetFont( GetBitmapFont("Default", 16, BOLDFONT) )
 
-		guiBackground.SetZIndex(0) 'absolute background of all children
-		guiCaptionTextBox.SetZIndex(1)
+		guiBackground.SetParent(self)
+		'background has same zindex like window
+		guiBackground.SetZIndex(-1)
+		'caption uses automatic zindex (+1 to parent)
+		guiCaptionTextBox.SetZIndex(0)
 	End Method
 
 

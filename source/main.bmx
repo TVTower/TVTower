@@ -1127,8 +1127,10 @@ Type TScreen_GameSettings Extends TGameScreen
 
 	Method Create:TScreen_GameSettings(name:String)
 		Super.Create(name)
+
+
 		'===== CREATE AND SETUP GUI =====
-		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, "GameSettings")
+		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, name)
 		guiSettingsWindow.SetCaption("Spieler")
 		guiSettingsWindow.guiBackground.spriteAlpha = 0.5
 		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
@@ -1137,21 +1139,23 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 6), GetLocale("GAME_TITLE")+":", TColor.CreateGrey(75), name)
+		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 0), GetLocale("GAME_TITLE")+":", TColor.CreateGrey(75), name)
 		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), Game.title, 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 6), GetLocale("START_YEAR")+":", TColor.CreateGrey(75), name)
+		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 0), GetLocale("START_YEAR")+":", TColor.CreateGrey(75), name)
 		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "1985", 4, name)
 
 		Local checkboxHeight:Int = 0
 		'guiAnnounce		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, GetBitmapFontManager().baseFontBold)
 
-		gui24HoursDay		= New TGUICheckBox.Create(new TPoint.Init(430, 0), null, True, GetLocale("24_HOURS_GAMEDAY"), name)
+		gui24HoursDay		= New TGUICheckBox.Create(new TPoint.Init(430, 0), null, GetLocale("24_HOURS_GAMEDAY"), name)
 		checkboxHeight 		= gui24HoursDay.GetScreenHeight()
+		gui24HoursDay.SetChecked(True, False)
 		gui24HoursDay.disable() 'option not implemented
-		guiSpecialFormats	= New TGUICheckBox.Create(new TPoint.Init(430, 0 + 1*checkboxHeight), null, True, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name)
+		guiSpecialFormats	= New TGUICheckBox.Create(new TPoint.Init(430, 0 + 1*checkboxHeight), null, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name)
+		guiSpecialFormats.SetChecked(True, False)
 		guiSpecialFormats.disable() 'option not implemented
-		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + 2*checkboxHeight), null, True, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name)
-		guiFilterUnreleased.SetMaxValueWidth(280)
+		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + 2*checkboxHeight), null, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name)
+		guiFilterUnreleased.SetChecked(True, False)
 
 		'move announce to last
 		'guiAnnounce.rect.position.MoveXY(0, 4*checkboxHeight)
@@ -1168,7 +1172,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
-		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(590, 400), new TPoint.Init(200, 190), "GameSettings")
+		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(590, 400), new TPoint.Init(200, 190), name)
 		guiButtonsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
@@ -1186,7 +1190,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiButtonsPanel.AddChild(guiButtonBack)
 
 
-		guiChat	 = New TGUIChat.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), "GameSettings")
+		guiChat	 = New TGUIChat.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), name)
 		guiChat.guiInput.setMaxLength(200)
 
 		guiChat.guiBackground.spriteAlpha = 0.5
@@ -1200,7 +1204,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		For Local i:Int = 0 To 3
 			player = GetPlayerCollection().Get(i+1)
 			Local slotX:Int = i * (playerSlotGap + playerBoxDimension.GetIntX())
-			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TPoint.Init(slotX, 0), new TPoint.Init(playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY()), "GameSettings")
+			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TPoint.Init(slotX, 0), new TPoint.Init(playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY()), name)
 			playerPanel.spriteBaseName = "gfx_gui_panel.subContent.bright"
 			playerPanel.SetPadding(playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap)
 			guiPlayersPanel.AddChild(playerPanel)
@@ -1302,7 +1306,6 @@ Type TScreen_GameSettings Extends TGameScreen
 					'ATTENTION: use "not" as checked means "not ignore"
 					'TProgrammeLicence.setIgnoreUnreleasedProgrammes( not sender.isChecked())
 		End Select
-
 		If sender.isChecked()
 			TGame.SendSystemMessage(GetLocale("OPTION_ON")+": "+sender.GetValue())
 		Else
