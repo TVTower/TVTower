@@ -34,6 +34,8 @@ Const GUI_OBJECT_CAN_GAIN_FOCUS:Int				= 2^12
 Const GUI_OBJECT_DRAWMODE_GHOST:Int				= 2^13
 'defines what GetFont() tries to get at first: parents or types font
 Const GUI_OBJECT_FONT_PREFER_PARENT_TO_TYPE:Int	= 2^14
+'defines if changes to children change gui order (zindex on "panels")
+Const GUI_OBJECT_CHILDREN_CHANGE_GUIORDER:Int	= 2^15
 
 '===== GUI STATUS CONSTANTS =====
 CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^0
@@ -619,6 +621,7 @@ Type TGUIobject
 		setOption(GUI_OBJECT_ENABLED, True)
 		setOption(GUI_OBJECT_CLICKABLE, True)
 		setOption(GUI_OBJECT_CAN_GAIN_FOCUS, True)
+		setOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER, True)
 	End Method
 
 
@@ -706,8 +709,14 @@ Type TGUIobject
 		'maybe our parent takes care of us...
 		If _parent Then _parent.RemoveChild(Self)
 
+		'remove children (so they might inform their children and so on)
+		If children
+			For local child:TGUIObject = eachin children
+				child.Remove()
+			Next
+		EndIf
+		
 		'just in case we have a managed one
-		'if _flags & GUI_OBJECT_MANAGED then
 		GUIManager.remove(Self)
 
 		Return True
@@ -811,8 +820,11 @@ Type TGUIobject
 '		If children.addLast(child) then GUIManager.Remove(child)
 		children.addLast(child)
 		children.sort(True, TGUIManager.SortObjects)
+
 		'maybe zindex changed now
-		'GuiManager.SortLists()
+		if hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
+			GuiManager.SortLists()
+		endif
 	End Method
 
 
@@ -1194,6 +1206,13 @@ endrem
 
 	Method GetScreenWidth:Float()
 		Return rect.GetW()
+	End Method
+
+
+	'takes parent alpha into consideration
+	Method GetScreenAlpha:Float()
+		if _parent then return alpha * _parent.GetScreenAlpha()
+		return alpha
 	End Method
 
 

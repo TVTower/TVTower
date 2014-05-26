@@ -1,5 +1,15 @@
-﻿LANG_DE = Deutsch
-LANG_EN = Englisch
+﻿LANGUAGE_NAME_INTERNATIONAL = German
+LANGUAGE_NAME_LOCALE = Deutsch
+
+CHAT = Chat
+
+STARTHINT_TITLE1 = Programmplaner
+STARTHINT_TEXT1 = Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
+STARTHINT_TITLE2 = Programmplanung
+STARTHINT_TEXT2 = Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.\n\nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre.
+STARTHINT_TITLE3 = Werbeverträge
+STARTHINT_TEXT3 = Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.\n\nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen.
+
 
 GAME_TITLE = Spieltitel
 START_YEAR = Startjahr

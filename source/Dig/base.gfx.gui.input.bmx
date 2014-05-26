@@ -38,7 +38,7 @@ Type TGUIinput Extends TGUIobject
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 
-		SetZindex(20)
+'		SetZindex(20)
 		SetValue(value)
 		if maxLength >= 0
 			SetMaxLength(maxLength)
@@ -231,7 +231,8 @@ Type TGUIinput Extends TGUIobject
 	Method DrawContent:Int(position:TPoint)
 	    Local i:Int	= 0
 		Local printValue:String	= value
-		Local oldCol:TColor = new TColor.Get()
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * GetScreenAlpha()
 
 		'if we are the input receiving keystrokes, symbolize it with the
 		'blinking underscore sign "text_"

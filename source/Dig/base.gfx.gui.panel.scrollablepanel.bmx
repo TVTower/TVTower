@@ -88,10 +88,26 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	Method RestrictViewport:Int()
 		Local screenRect:TRectangle = Self.GetScreenRect()
 		If screenRect
-			GUIManager.RestrictViewport(screenRect.getX(),screenRect.getY() - scrollPosition.getY(), screenRect.getW(),screenRect.getH())
+			GUIManager.RestrictViewport(screenRect.getX() - scrollPosition.getX() , screenRect.getY() - scrollPosition.getY(), screenRect.getW(), screenRect.getH())
 			Return True
 		Else
 			Return False
 		EndIf
 	End Method
+
+Rem
+	Debug drawing
+	Method Draw()
+		Super.Draw()
+		SetAlpha 0.7
+		SetColor 255,0,0
+		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+		SetColor 0,255,0
+		DrawRect(GetScreenX() + scrollPosition.x, GetScreenY() + scrollPosition.y, 100, 2)
+		SetColor 0,0,255
+		DrawRect(GetScreenX() + scrollLimit.x, GetScreenY() + scrollLimit.y, 50, 2)
+		SetColor 255,255,255
+		SetAlpha 1.0
+	End Method
+End Rem
 End Type

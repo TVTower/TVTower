@@ -1,12 +1,41 @@
-REM
-	===========================================================
+Rem
+	====================================================================
 	class for smooth framerates
-	===========================================================
+	====================================================================
 
 	This class provides a Loop-Method too.
 	To have functions run in this loop, connect functions to the
 	_funcUpdate and _funcRender properties.
-ENDREM
+
+
+	====================================================================
+	If not otherwise stated, the following code is available under the
+	following licence:
+
+	LICENCE: zlib/libpng
+
+	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+
+	This software is provided 'as-is', without any express or
+	implied warranty. In no event will the authors be held liable
+	for any	damages arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any
+	purpose, including commercial applications, and to alter it
+	and redistribute it freely, subject to the following restrictions:
+
+	1. The origin of this software must not be misrepresented; you
+	   must not claim that you wrote the original software. If you use
+	   this software in a product, an acknowledgment in the product
+	   documentation would be appreciated but is not required.
+
+	2. Altered source versions must be plainly marked as such, and
+	   must not be misrepresented as being the original software.
+
+	3. This notice may not be removed or altered from any source
+	   distribution.
+	====================================================================
+EndRem
 SuperStrict
 Import Brl.retro
 Import "base.util.time.bmx"
@@ -14,28 +43,38 @@ Import "base.util.time.bmx"
 
 
 Type TDeltaTimer
-	Field _updateRate:float			'1.0/UPS
-	Field _renderRate:float			'1.0/FPS
-	Field _timeFactor:float  = 1.0	'conversion from realtime->apptime (2.0 = double as fast)
+	'1.0/UPS
+	Field _updateRate:float
+	'1.0/FPS
+	Field _renderRate:float
+	'conversion from realtime->apptime (2.0 = double as fast)
+	Field _timeFactor:float  = 1.0
 
-	Field _updateAccumulator:float	'time available for updates this loop
-	Field _renderAccumulator:float	'time available for renders this loop
+	'time available for updates in this loop
+	Field _updateAccumulator:float
+	'time available for renders in this loop
+	Field _renderAccumulator:float
 
 	Field timesUpdated:int   = 0
 	Field timesRendered:int  = 0
 	Field currentUPS:int     = 0
 	Field currentFPS:int     = 0
 
-	'connect functions with this properties to get called during
-	'Loop()
+	'connect functions with this properties to get called during Loop()
 	Field _funcUpdate:int()
 	Field _funcRender:int()
 
-	Field _loopBeginTime:int		'when did the current loop begin
-	Field _lastLoopTime:int			'realtime how long the last loop took
-	Field _loopTimeSum:float = 0.0	'time all loops used so far
-	Field _loopTimeCount:int = 0	'amount of loops done
-	Field _secondGone:int	 = 0	'time accumulator to check whether a second passed (value=milliseconds)
+	'when did the current loop begin
+	Field _loopBeginTime:int
+	'realtime how long the last loop took
+	Field _lastLoopTime:int
+	'time all loops used so far
+	Field _loopTimeSum:float = 0.0
+	'amount of loops done
+	Field _loopTimeCount:int = 0
+	'time accumulator to check whether a second passed
+	'(value = milliseconds)
+	Field _secondGone:int = 0
 
 	Global _instance:TDeltaTimer
 
@@ -89,6 +128,13 @@ Type TDeltaTimer
 	Method GetTween:float()
 		'_updateAccumulator contains remainder
 		return _updateAccumulator / _updateRate
+	End Method
+
+
+	Method GetTweenResult:float(currentValue:float, oldValue:float, avoidShaking:int=TRUE)
+		local result:float = currentValue * getTween() + oldValue * (1.0 - getTween())
+		if avoidShaking and Abs(result - currentValue) < 0.1 then return currentValue
+		return result
 	End Method
 
 
@@ -179,7 +225,7 @@ Type TDeltaTimer
 	End Method
 End Type
 
-'convenience function
+'===== CONVENIENCE ACCESSOR =====
 Function GetDeltaTimer:TDeltaTimer()
 	return TDeltaTimer.GetInstance()
 End Function

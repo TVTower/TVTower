@@ -14,6 +14,7 @@ Type TGUIWindowBase Extends TGUIPanel
 	Field guiContent:TGUIPanel
 	Global defaultCaptionColor:TColor = null
 
+
 	Method Create:TGUIWindowBase(pos:TPoint, dimension:TPoint, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 
@@ -24,6 +25,16 @@ Type TGUIWindowBase Extends TGUIPanel
 		Return Self
 	End Method
 
+
+	'override to delete children too
+	Method Remove:Int()
+		Super.Remove()
+
+		if guiCaptionTextBox then guiCaptionTextBox.Remove()
+
+		return True
+	End Method
+	
 
 	Method InitWindow(dimension:TPoint)
 		If Not guiBackground

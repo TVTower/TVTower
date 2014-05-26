@@ -53,10 +53,22 @@ Type TGameScreen extends TScreen
 		Super.Create(name)
 		_enterScreenEffect = new TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_OPEN)
 		_leaveScreenEffect = new TScreenChangeEffect_SimpleFader.Create(TScreenChangeEffect.DIRECTION_CLOSE)
+
+		EventManager.registerListenerMethod("Language.onSetLanguage", Self, "onSetLanguage")
 		return self
 	End Method
 
+	'handle re-localization requests
+	Method onSetLanguage:Int(triggerEvent:TEventBase)
+		SetLanguage(triggerEvent.GetData().GetString("languageCode", ""))
+	End Method
 
+
+	Method SetLanguage:int(languageCode:String = "")
+		'by default do nothing
+	End Method
+
+	
 	Method ToString:string()
 		return "TGameScreen"
 	End Method

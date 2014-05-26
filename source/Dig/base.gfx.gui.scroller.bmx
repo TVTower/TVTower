@@ -173,9 +173,10 @@ Type TGUIScroller Extends TGUIobject
 
 
 	Method Draw()
-		SetColor 125,0,0
-		SetAlpha 0.20
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * GetScreenAlpha() * 0.20
 
+		SetColor 125,0,0
 		Local width:Int = guiButtonMinus.GetScreenWidth()
 		Local height:Int = guiButtonMinus.GetScreenHeight()
 		Select _orientation
@@ -185,7 +186,6 @@ Type TGUIScroller Extends TGUIobject
 				DrawRect(GetScreenX() + width/2, GetScreenY() + height/4, GetScreenWidth() - width, height/2)
 		End Select
 
-		SetAlpha 1.0
-		SetColor 255,255,255
+		oldCol.SetRGBA()
 	End Method
 End Type

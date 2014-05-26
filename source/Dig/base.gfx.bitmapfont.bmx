@@ -1,7 +1,44 @@
+Rem
+	====================================================================
+	Bitmapfont + Manager classes
+	====================================================================
+
+	Bitmapfont classes using sprite atlases for faster drawing.
+
+
+	====================================================================
+	If not otherwise stated, the following code is available under the
+	following licence:
+
+	LICENCE: zlib/libpng
+
+	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+
+	This software is provided 'as-is', without any express or
+	implied warranty. In no event will the authors be held liable
+	for any	damages arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any
+	purpose, including commercial applications, and to alter it
+	and redistribute it freely, subject to the following restrictions:
+
+	1. The origin of this software must not be misrepresented; you
+	   must not claim that you wrote the original software. If you use
+	   this software in a product, an acknowledgment in the product
+	   documentation would be appreciated but is not required.
+
+	2. Altered source versions must be plainly marked as such, and
+	   must not be misrepresented as being the original software.
+
+	3. This notice may not be removed or altered from any source
+	   distribution.
+	====================================================================
+End Rem
 SuperStrict
 Import BRL.Max2D
 Import BRL.Map
-Import brl.FreeTypeFont 'to load from truetype
+'to load from truetype
+Import brl.FreeTypeFont
 Import "base.util.rectangle.bmx"
 Import "base.gfx.sprite.bmx"
 Import "base.gfx.spriteatlas.bmx"
@@ -125,25 +162,37 @@ End Type
 
 
 Type TBitmapFont
-	Field FName:string = ""			'identifier
-	Field FFile:string = ""			'source path
-	Field FSize:int = 0				'size of this font
-	Field FStyle:int = 0			'style used in this font
-	Field FImageFont:TImageFont		'the original imagefont
+	'identifier
+	Field FName:string = ""
+	'source path
+	Field FFile:string = ""
+	'size of this font
+	Field FSize:int = 0
+	'style used in this font
+	Field FStyle:int = 0
+	'the original imagefont
+	Field FImageFont:TImageFont
 
 	Field chars:TMap = CreateMap()
 	Field charsSprites:Tmap	= CreateMap()
-	field spriteSet:TSpritePack
+	Field spriteSet:TSpritePack
+	'by default only the first 256 chars get loaded
+	'as soon as an "utf8"-code is requested, the font will re-init with
+	'more sprites 
 	Field MaxSigns:Int = 256
-	Field ExtraChars:String = "€…"
+	Field glyphCount:int = 0
+	Field ExtraChars:String = ""
 	Field gfx:TMax2dGraphics
 	Field uniqueID:string =""
 	Field displaceY:float=100.0
-	Field lineHeightModifier:float = 0.2	'modifier * lineheight gets added at the end
-	Field drawAtFixedPoints:int = true		'whether to use ints or floats for coords
+	'modifier * lineheight gets added at the end
+	Field lineHeightModifier:float = 0.2
+	'whether to use ints or floats for coords
+	Field drawAtFixedPoints:int = true
 	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:string, char:TBitmapFontChar, config:TData)[]
 	Field _charsEffectFuncConfig:TData[]
-	Field _pixmapFormat:int = PF_A8			'by default this is 8bit alpha only
+	'by default this is 8bit alpha only
+	Field _pixmapFormat:int = PF_A8
 	Field _maxCharHeight:int = 0
 	Field _maxCharHeightAboveBaseline:int = 0
 	Field _hasEllipsis:int = -1
@@ -155,6 +204,7 @@ Type TBitmapFont
 
 	Function Create:TBitmapFont(name:String, url:String, size:Int, style:Int)
 		Local obj:TBitmapFont = New TBitmapFont
+
 		obj.FName = name
 		obj.FFile = url
 		obj.FSize = size
@@ -232,19 +282,38 @@ Type TBitmapFont
 	End Method
 
 
+	'reinits the font and loads the characters above charcode 256
+	Method LoadExtendedCharacters()
+		MaxSigns = -1
+		InitFont()
+	End Method
+
+
 	'load glyphs of an imagefont as TBitmapFontChar into a char-TMap
 	Method LoadCharsFromImgFont(imgFont:TImageFont=null)
 		if imgFont = null then imgFont = FImageFont
 		Local glyph:TImageGlyph
 		Local glyphCount:Int = imgFont.CountGlyphs()
 		Local n:int
-		For Local i:Int = 0 Until MaxSigns
+		Local loadMaxGlyphs:int = glyphCount
+		if MaxSigns <> -1 then loadMaxGlyphs = MaxSigns
+
+		if extraChars = ""
+			extraChars :+ chr(8364) '€
+			extraChars :+ chr(8230) '…
+		endif
+
+		self.glyphCount = glyphCount
+
+		For Local i:Int = 0 Until loadMaxGlyphs
+'		For Local i:Int = 0 Until MaxSigns
 			n = imgFont.CharToGlyph(i)
 			If n < 0 or n > glyphCount then Continue
 			glyph = imgFont.LoadGlyph(n)
 			If not glyph then continue
 
-			'base displacement calculated with A-Z (space between TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
+			'base displacement calculated with A-Z (space between
+			'TOPLEFT of 'ABCDE' and TOPLEFT of 'acen'...)
 			if i >= 65 AND i < 95 then displaceY = Min(displaceY, glyph._y)
 			chars.insert(string(i), new TBitmapFontChar.Init(glyph._image, glyph._x, glyph._y,glyph._w,glyph._h, glyph._advance))
 		Next
@@ -284,9 +353,9 @@ Type TBitmapFont
 			if not TBitmapFontChar(chars.ValueForKey(charKey)).img then continue
 
 			'draw char image on charmap
-			'print "adding "+charKey + " = "+chr(int(charKey))
 			local charPix:TPixmap = LockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
-'			If charPix.format <> 2 Then charPix.convert(PF_A8) 'make sure the pixmaps are 8bit alpha-format
+			'make sure the pixmaps are 8bit alpha-format
+'			If charPix.format <> 2 Then charPix.convert(PF_A8)
 			DrawImageOnImage(charPix, pix, rect.GetX(), rect.GetY())
 			UnlockImage(TBitmapFontChar(chars.ValueForKey(charKey)).img)
 			' es fehlt noch charWidth - extraTyp?
@@ -400,7 +469,8 @@ Type TBitmapFont
 					'- if not on last line
 					'- if enforced to do so ("nicelyTruncateLastLine")
 					if i < (paragraphs.length-1) or nicelyTruncateLastLine
-						'search for the "most right" position of a linebreak
+						'search for the "most right" position of a
+						'linebreak
 						For local charPos:int = 0 To linePartial.length-1
 							'special line break rules (spaces, -, ...)
 							If linePartial[charPos] = Asc(" ")
@@ -414,7 +484,8 @@ Type TBitmapFont
 						Next
 					endif
 
-					'if no line break rule hit, use a "cut" in the middle of a word
+					'if no line break rule hit, use a "cut" in the
+					'middle of a word
 					if not FoundBreakPosition then breakPosition = Max(0, linePartial.length-1 -1)
 
 					'if it is a " "-space, we have to skip it
@@ -468,7 +539,8 @@ Type TBitmapFont
 
 		local blockHeight:Float = lineHeight * lines.length
 		if lines.length > 1
-			'add the lineHeightModifier for all lines but the first or single one
+			'add the lineHeightModifier for all lines but the first or
+			'single one
 			blockHeight :+ lineHeight * lineHeightModifier
 		endif
 
@@ -478,7 +550,8 @@ Type TBitmapFont
 		'-> aligned inbetween: move accordingly
 		if alignment
 			'empty space = height - (..)
-			'so alignTop = add 0 of that space, alignBottom = add 100% of that space
+			'-> alignTop = add 0 of that space
+			'-> alignBottom = add 100% of that space
 			if alignment.GetY() <> ALIGN_TOP and h > 0
 				y :+ alignment.GetY() * (h - blockHeight)
 			endif
@@ -634,7 +707,8 @@ Type TBitmapFont
 			if not color
 				color = oldColor.copy()
 			else
-				'when drawing to a pixmap, take screen alpha into consideration
+				'when drawing to a pixmap, take screen alpha into
+				'consideration
 				if drawToPixmap
 					'create a copy to not modify the original
 					color = color.copy()
@@ -647,7 +721,7 @@ Type TBitmapFont
 
 		endif
 		'set the lineHeight before the "for-loop" so it has a set
-		'value if a line "in the middle" just consists of spaces or nothing
+		'value if a line "in the middle" just consists of spaces/nothing
 		'-> allows double-linebreaks
 
 		'control vars
@@ -659,7 +733,8 @@ Type TBitmapFont
 		local currentControlCommandPayload:string = ""
 
 		local lineHeight:int = 0
-		local char:string = ""
+		local charCode:int
+		local displayCharCode:int 'if char is not found
 		local charBefore:int
 		local font:TBitmapFont = self 'by default this font is responsible
 		local colorOriginal:TColor = null
@@ -667,7 +742,8 @@ Type TBitmapFont
 		local sprite:TSprite
 		local styleDisplaceY:int = 0
 		For text:string = eachin textLines
-			'except first line (maybe only one line) - add extra spacing between lines
+			'except first line (maybe only one line) - add extra spacing
+			'between lines
 			if currentLine > 0 then height:+ ceil( lineHeight* font.lineHeightModifier )
 
 			currentLine:+1
@@ -675,14 +751,19 @@ Type TBitmapFont
 			local lineWidth:int = 0
 
 			For Local i:Int = 0 Until text.length
-				char = text[i]
+				charCode = int(text[i])
 
+				'reload with utf8?
+				If charCode > 256 and MaxSigns = 256 and glyphCount > 256 and extraChars.find(chr(charCode)) = -1
+					LoadExtendedCharacters()
+				EndIf
+					
 
 				'check for controls
 				if controlCharStarted
 					'receiving command
-					if char <> controlChar
-						currentControlCommand:+ chr(int(char))
+					if charCode <> controlChar
+						currentControlCommand:+ chr(charCode)
 					'receive stopper
 					else
 						controlCharStarted = FALSE
@@ -701,19 +782,26 @@ Type TBitmapFont
 				endif
 
 				'someone wants style the font
-				if char = controlChar and charBefore <> controlCharEscape
+				if charCode = controlChar and charBefore <> controlCharEscape
 					controlCharStarted = 1 - controlCharStarted
 					'skip char
-					charBefore = int(char)
+					charBefore = charCode
 					continue
 				endif
-				'skip drawing the escape char if we are escaping the command char
-				if char = controlCharEscape and i < text.length-1 and text[i+1] = controlChar
-					charBefore = int(char)
+				'skip drawing the escape char if we are escaping the
+				'command char
+				if charCode = controlCharEscape and i < text.length-1 and text[i+1] = controlChar
+					charBefore = charCode
 					continue
 				endif
 
-				Local bm:TBitmapFontChar = TBitmapFontChar( font.chars.ValueForKey(char) )
+				Local bm:TBitmapFontChar = TBitmapFontChar( font.chars.ValueForKey(string(charCode)) )
+				if bm
+					displayCharCode = charCode
+				else
+					displayCharCode = Asc("?")
+					bm = TBitmapFontChar( font.chars.ValueForKey(string(displayCharCode)) )
+				endif
 				if bm <> null
 					Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
 					Local ty:Float = bm.area.GetX() * gfx.tform_jx + bm.area.GetY() * gfx.tform_jy
@@ -721,7 +809,7 @@ Type TBitmapFont
 					if text[i] > 32
 						lineHeight = MAX(lineHeight, bm.area.GetH())
 						if doDraw
-							sprite = TSprite(font.charsSprites.ValueForKey(char))
+							sprite = TSprite(font.charsSprites.ValueForKey(string(displayCharCode)))
 							if sprite
 								if drawToPixmap
 									sprite.DrawOnImage(drawToPixmap, x+lineWidth+tx,y+height+ty+styleDisplaceY - font.displaceY, color)
@@ -742,10 +830,10 @@ Type TBitmapFont
 					endif
 				EndIf
 
-				charBefore = int(char)
+				charBefore = charCode
 			Next
 			width = max(width, lineWidth)
-			height:+lineHeight
+			height :+ lineHeight
 			'add extra spacing _between_ lines
 			'not done when only 1 line available or on last line
 			if currentLine < textLines.length
@@ -758,29 +846,6 @@ Type TBitmapFont
 
 		return new TPoint.Init(width, height)
 	End Method
-
-rem
-	Method drawfixed(text:String,x:Float,y:Float)
-		local color:TColor = new TColor.Get()
-
-		For Local i:Int = 0 Until text.length
-			Local bm:TBitmapFontChar = TBitmapFontChar(self.chars.ValueForKey(string(text[i]-32)))
-			if bm <> null
-				Local tx:Float = bm.area.GetX() * gfx.tform_ix + bm.area.GetY() * gfx.tform_iy
-				Local ty:Float = bm.area.GetX() * gfx.tform_jx + bm.area.GetY() * gfx.tform_jy
-				local sprite:TSprite = TSprite(self.charsSprites.ValueForKey(string(text[i]-32)))
-				if sprite <> null
-					if self.drawToPixmap
-						sprite.DrawOnPixmap(self.drawToPixmap, x+tx,y+ty, color)
-					else
-						sprite.Draw(x+tx,y+ty)
-					endif
-				endif
-				x :+ bm.charWidth
-			endif
-		Next
-	End Method
-endrem
 
 Rem
 DISABLECACHE

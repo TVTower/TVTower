@@ -5,7 +5,7 @@ Rem
 
 
 	====================================================================
-	LICENCE
+	LICENCE: zlib/libpng
 
 	Copyright (C) 2014 Manuel Vögele
 

@@ -5,6 +5,7 @@ Rem
 End Rem
 SuperStrict
 Import "base.util.virtualgraphics.bmx"
+Import "base.util.interpolation.bmx"
 Import "base.gfx.gui.window.base.bmx"
 Import "base.gfx.gui.button.bmx"
 
@@ -15,16 +16,15 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	Field DarkenedArea:TRectangle = Null
 	Field buttons:TGUIButton[]
 	Field autoAdjustHeight:Int = True
-	'variables for closing animation
-	Field moveAcceleration:Float = 1.2
-	Field moveDY:Float = -1.0
-	Field moveOld:TPoint = new TPoint.Init(0,0)
-	Field move:TPoint = new TPoint.Init(0,0)
-	Field fadeValueOld:Float = 1.0
-	Field fadeValue:Float = 1.0
-	Field fadeFactor:Float = 0.9
-	Field fadeActive:Float = False
-	Field isSetToClose:Int = False
+	'=== CLOSING VARIABLES ===
+	'indicator if 
+	Field closeActionStarted:int = 0
+	'the time a close action started
+	Field closeActionTime:int = 0
+	'the time a close action runs
+	Field closeActionDuration:int = 1000
+	'the position of the widget when closing
+	Field closeActionStartPosition:TPoint = new TPoint
 
 
 
@@ -97,7 +97,6 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	'overwrite windowBase-method to recenter after appearance change
 	Method onStatusAppearanceChange:int()
 		Super.onStatusAppearanceChange()
-		'Resize(-1,-1)
 		Recenter()
 	End Method
 
@@ -119,26 +118,11 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
-	'cleanup function
-	Method Remove:Int()
-		Super.remove()
-
-		'button is managed from guimanager
-		'so we have to delete that separately
-		For Local button:TGUIobject = EachIn Self.buttons
-			button.remove()
-		Next
-		Return True
-	End Method
-
-
 	'close the window (eg. with an animation)
 	Method Close:Int(closeButton:Int=-1)
-		Self.isSetToClose = True
-
-		'no animation just calls "remove"
-		'but we want a nice fadeout
-		Self.fadeActive = True
+		closeActionStarted = True
+		closeActionTime = Time.GetTimeGone()
+		closeActionStartPosition = rect.position.copy()
 
 		'fire event so others know that the window is closed
 		'and what button was used
@@ -147,9 +131,16 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	Method canClose:Int()
-		If Self.fadeActive Then Return False
-
-		Return True
+		'is there an animation active?
+		If closeActionStarted
+			If closeActionTime + closeActionDuration < Time.GetTimeGone()
+				Return True
+			Else
+				Return False
+			EndIf
+		Else
+			Return True
+		EndIf
 	End Method
 
 
@@ -170,41 +161,18 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	'override default update-method
 	Method Update:Int()
 		'maybe children intercept clicks...
-		UpdateChildren()
-
+		'so call Super.Update as it calls UpdateChildren already
 		Super.Update()
 
 		'remove the window as soon as there is no animation active
-		If isSetToClose
-			If canClose()
-				Self.remove()
-				Return False
-			Else
-				If fadeActive
-					'backup for tweening
-					fadeValueOld = fadeValue
-					fadeValue :* fadeFactor
-				EndIf
-				'buttons are managed by guimanager, so we have to set
-				'their alpha here so they can draw correctly
-				For Local i:Int = 0 To buttons.length-1
-					buttons[i].alpha = fadeValue
-				Next
-				'quit fading when nearly zero
-				If fadeValue < 0.05 Then fadeActive = False
-
-				'move the dialogue too
-				'- first increase the speed
-				moveDY :* moveAcceleration
-				'backup old move for tweening, store fade as .z
-				moveold.setXY(0, move.y)
-				'- now displace the objects
-				move.moveXY(0, moveDY)
-			EndIf
+		'until then: play the animation
+		If closeActionStarted and canClose()
+			Self.remove()
+			Return False
 		EndIf
 
-		Self.recenter(move)
-
+		'we manage drawing and updating our background
+		If guiBackground then guiBackground.Update()
 
 		'deactivate mousehandling for other underlying objects
 		GUIManager._ignoreMouse = True
@@ -212,23 +180,33 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 
 	Method Draw()
-		local tween:Float = GetDeltaTimer().GetTween()
+		local oldCol:TColor = new TColor.Get()
+		local newAlpha:Float = 1.0
 
-		'move to tweened move-position
-		Self.recenter( THelper.GetTweenedPoint(move, moveOld, tween))
+		if closeActionStarted
+			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
+			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)
+			recenter(new TPoint.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)))
 
-		SetAlpha Max(0, 0.5 * MathHelper.SteadyTween(fadeValueOld, fadeValue, tween))
-		SetColor 0,0,0
+			'as text "wobbles" (drawn at INT position while sprites draw
+			'with floats - so they seem to change offsets) we fade them
+			'out earlier
+			if guiCaptionTextBox then guiCaptionTextBox.alpha = 0.5 * newAlpha
+			if guiTextBox then guiTextBox.alpha = 0.5 * newAlpha
+		endif
+
+		self.alpha = newAlpha
+
+		SetAlpha(oldCol.a * alpha * 0.5)
+		SetColor(0, 0, 0)
 		If Not DarkenedArea
-			DrawRect(0,0,GraphicsWidth(), GraphicsHeight())
+			DrawRect(0, 0, GraphicsWidth(), GraphicsHeight())
 		Else
-			DrawRect(DarkenedArea.getX(),DarkenedArea.getY(),DarkenedArea.getW(), DarkenedArea.getH())
+			DrawRect(DarkenedArea.getX(), DarkenedArea.getY(), DarkenedArea.getW(), DarkenedArea.getH())
 		EndIf
-		SetAlpha Max(0, 1.0 * MathHelper.SteadyTween(fadeValueOld, fadeValue, tween))
-		SetColor 255,255,255
+		oldCol.SetRGBA()
 
-		DrawChildren()
-
-		SetAlpha 1.0
+		'we manage drawing and updating our background
+		If guiBackground then guiBackground.Draw()
 	End Method
 End Type

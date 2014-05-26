@@ -1,5 +1,16 @@
-﻿LANG_DE = German
-LANG_EN = English
+﻿LANGUAGE_NAME_INTERNATIONAL = English
+LANGUAGE_NAME_LOCALE = English
+
+
+CHAT = Chat
+
+STARTHINT_TITLE1 = Programme plan
+STARTHINT_TEXT1 = The CTRL-key allows you to place a programme multiple times on your plan. While the SHIFT-key tries to place the next episode of a series.
+STARTHINT_TITLE2 = Programme plan
+STARTHINT_TEXT2 = Programmes have different genres. These genres naturally have some differences.\n\nA comedy movie can be broadcasted more often than a live programme. Kids movies have also less wearoff effects than programmes of other genres.
+STARTHINT_TITLE3 = Ad contracts
+STARTHINT_TEXT3 = Ad contracts have defined requirements to the minimum audience. This and of course profits/penalties are directly attached to the maximum audience a channel can reach currently.\n\nTherefore it is sometimes better to sign new contracts right before buying new stations.
+
 
 GAME_TITLE = Game title
 START_YEAR = Start year

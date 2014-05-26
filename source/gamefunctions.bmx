@@ -91,6 +91,90 @@ End Function
 
 
 
+
+Type TGUISpriteDropDown extends TGUIDropDown
+
+	Method Create:TGUISpriteDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
+		Super.Create(position, dimension, value)
+		Return self
+	End Method
+	
+
+	'override to add sprite next to value
+	Method DrawContent:Int(position:TPoint)
+		'position is already a copy, so we can reuse it without
+		'copying it first
+
+		'draw sprite
+		if TGUISpriteDropDownItem(selectedEntry)
+			local scaleSprite:float = 0.8
+			local labelHeight:int = GetFont().GetHeight(GetValue())
+			local item:TGUISpriteDropDownItem = TGUISpriteDropDownItem(selectedEntry)
+			local sprite:TSprite = GetSpriteFromRegistry( item.data.GetString("spriteName", "default") )
+			if item and sprite.GetName() <> "defaultSprite"
+				local displaceY:int = -1 + 0.5 * (labelHeight - (item.GetSpriteDimension().y * scaleSprite))
+				sprite.DrawArea(position.x, position.y + displaceY, item.GetSpriteDimension().x * scaleSprite, item.GetSpriteDimension().y * scaleSprite)
+				position.MoveXY(item.GetSpriteDimension().x * scaleSprite + 3, 0)
+			endif
+		endif
+
+		'draw value
+		Super.DrawContent(position)
+	End Method
+End Type
+
+
+Type TGUISpriteDropDownItem Extends TGUIDropDownItem
+	Global spriteDimension:TPoint
+	Global defaultSpriteDimension:TPoint = new TPoint.Init(24, 24)
+	
+
+    Method Create:TGUISpriteDropDownItem(position:TPoint=null, dimension:TPoint=null, value:String="")
+		if not dimension
+			dimension = new TPoint.Init(-1, GetSpriteDimension().y + 2)
+		else
+			dimension.x = Max(dimension.x, GetSpriteDimension().x)
+			dimension.y = Max(dimension.y, GetSpriteDimension().y)
+		endif
+		Super.Create(position, dimension, value)
+		return self
+    End Method
+
+
+    Method GetSpriteDimension:TPoint()
+		if not spriteDimension then return defaultSpriteDimension
+		return spriteDimension
+    End Method
+
+
+	Method SetSpriteDimension:int(dimension:TPoint)
+		spriteDimension = dimension.copy()
+
+		Resize(..
+			Max(dimension.x, GetSpriteDimension().x), ..
+			Max(dimension.y, GetSpriteDimension().y) ..
+		)
+	End Method
+    
+
+	Method DrawValue:int()
+		local valueX:int = getScreenX()
+
+		local sprite:TSprite = GetSpriteFromRegistry( data.GetString("spriteName", "default") )
+		if sprite.GetName() <> "defaultSprite"
+			sprite.DrawArea(valueX, GetScreenY()+1, GetSpriteDimension().x, GetSpriteDimension().y)
+			valueX :+ GetSpriteDimension().x + 3
+		else
+			valueX :+ GetSpriteDimension().x + 3
+		endif
+		'draw value
+		GetFont().draw(value, valueX, Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
+	End Method
+End Type
+
+
+
+
 Type TGUIChat Extends TGUIGameWindow
 	Field guiPanel:TGUIBackgroundBox
 	Field _defaultTextColor:TColor		= TColor.Create(0,0,0)

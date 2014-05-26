@@ -75,7 +75,12 @@ Type TGUITextBox Extends TGUIobject
 
 
 	Method Draw:Int()
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * GetScreenAlpha()
+
 		Local drawPos:TPoint = new TPoint.Init(GetScreenX(), GetScreenY())
 		GetFont().drawBlock(value, drawPos.GetIntX(), drawPos.GetIntY(), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
+
+		oldCol.SetRGBA()
 	End Method
 End Type

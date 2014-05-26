@@ -1,7 +1,7 @@
 Rem
-	===========================================================
+	====================================================================
 	Interpolation
-	===========================================================
+	====================================================================
 
 	This class provides some helpful functions to enable easing,
 	bouncing, ... growth of a given interval.
@@ -20,9 +20,8 @@ Rem
 	Both have defaults if no specific params are given
 
 
-	===========================================================
+	====================================================================
 	Licence: Equation Formulas
-	===========================================================
 
 	TERMS OF USE - EASING EQUATIONS
 
@@ -58,7 +57,35 @@ Rem
 	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 	POSSIBILITY OF SUCH DAMAGE.
 
-ENDREM
+
+	====================================================================
+	If not otherwise stated, the following code is available under the
+	following licence:
+
+	LICENCE: zlib/libpng
+
+	Copyright (C) 2002-2014 Ronny Otto, digidea.de
+
+	This software is provided 'as-is', without any express or
+	implied warranty. In no event will the authors be held liable
+	for any	damages arising from the use of this software.
+
+	Permission is granted to anyone to use this software for any
+	purpose, including commercial applications, and to alter it
+	and redistribute it freely, subject to the following restrictions:
+
+	1. The origin of this software must not be misrepresented; you
+	   must not claim that you wrote the original software. If you use
+	   this software in a product, an acknowledgment in the product
+	   documentation would be appreciated but is not required.
+
+	2. Altered source versions must be plainly marked as such, and
+	   must not be misrepresented as being the original software.
+
+	3. This notice may not be removed or altered from any source
+	   distribution.
+	====================================================================
+EndRem
 SuperStrict
 Import Brl.Math
 
@@ -74,6 +101,7 @@ Type TInterpolation
 
 
 	'=== BOUNCE ===
+	'by Robert Penner
 
 	Function BounceOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
@@ -108,6 +136,7 @@ Type TInterpolation
 
 
 	'=== REGULAR ===
+	'by Robert Penner
 
 	Function RegularIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
@@ -132,6 +161,7 @@ Type TInterpolation
 
 
 	'=== STRONG ===
+	'by Robert Penner
 
 	Function StrongIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
@@ -157,6 +187,7 @@ Type TInterpolation
 
 
 	'=== BACK ===
+	'by Robert Penner
 
 	Function BackIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double, s:Double = -1.0)
 		If s = -1.0 Then s = 1.70158
@@ -186,6 +217,7 @@ Type TInterpolation
 
 
 	'=== ELASTIC ===
+	'by Robert Penner
 
 	Function ElasticIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double, a:Double = 0.0, p:Double = 0.0)
 		Local s:Double
@@ -254,6 +286,7 @@ Type TInterpolation
 
 
 	'=== CIRC ===
+	'by Robert Penner
 
 	Function CircIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
@@ -279,6 +312,7 @@ Type TInterpolation
 
 
 	'=== CUBIC ===
+	'by Robert Penner
 
 	Function CubicIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
@@ -304,6 +338,7 @@ Type TInterpolation
 
 
 	'=== EXPO ===
+	'by Robert Penner
 
 	Function ExpoIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		If time = 0.0
@@ -337,6 +372,8 @@ Type TInterpolation
 
 
 	'=== QUART ===
+	'by Robert Penner
+
 	Function QuartIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		time :/ timeTotal
 		Return endValue * time * time * time * time + startValue
@@ -361,13 +398,17 @@ Type TInterpolation
 
 
 	'=== SINE ===
+	'by Robert Penner
+
 	Function SineIn:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		Return - endValue * Cos((time / timeTotal * (PI / 2.0)) * (180.0 / PI)) + endValue + startValue
 	End Function
 
+
 	Function SineOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		Return endValue * Sin((time / timeTotal * (PI / 2.0)) * (180.0 / PI)) + startValue
 	End Function
+
 
 	Function SineInOut:Double(startValue:Double, endValue:Double, time:Double, timeTotal:Double)
 		Return - 0.5 * endValue * (Cos((PI * time / timeTotal) * (180.0 / PI)) - 1.0) + startValue

@@ -27,8 +27,7 @@ Type TGUICheckBox Extends TGUIButton
 		'use another sprite name (assign before initing super)
 		spriteName = "gfx_gui_button.round"
 
-		valueChecked = value
-		valueUnchecked = value
+		SetCaptionValues(value,value)
 
 		Super.Create(pos, dimension, value, limitState)
 
@@ -39,11 +38,12 @@ Type TGUICheckBox Extends TGUIButton
 	Method SetCaptionValues:Int(checkedValue:string, uncheckedValue:string)
 		self.valueChecked = checkedValue
 		self.valueUnchecked = uncheckedValue
-		if caption
+
+		if self.caption
 			if IsChecked()
-				caption.value = checkedValue
+				SetValue(checkedValue)
 			else
-				caption.value = uncheckedValue
+				SetValue(uncheckedValue)
 			endif
 		endif
 	End Method
@@ -94,9 +94,24 @@ Type TGUICheckBox Extends TGUIButton
 	End Method
 
 
+	Function SetTypeFont:Int(font:TBitmapFont)
+		_typeDefaultFont = font
+	End Function
+
+
+	'override in extended classes if wanted
+	Function GetTypeFont:TBitmapFont()
+		return _typeDefaultFont
+	End Function
+
+
 	'override for a differing alignment
 	Method SetCaption:Int(text:String, color:TColor=Null)
 		Super.SetCaption(text, color)
+
+		valueChecked = text
+		valueUnchecked = text
+
 		if caption
 			caption.SetContentPosition(ALIGN_LEFT, ALIGN_TOP)
 			caption.SetValueEffect(1, 0.2)
@@ -130,7 +145,7 @@ Type TGUICheckBox Extends TGUIButton
 	'override default to add checkbox+caption
 	Method GetScreenWidth:float()
 		if caption
-			return GetCheckboxDimension().x + caption.rect.position.y + caption.GetValueDimension().x
+			return GetCheckboxDimension().x + caption.rect.position.x + caption.GetValueDimension().x
 		else
 			return GetCheckboxDimension().x
 		endif
@@ -172,11 +187,11 @@ Type TGUICheckBox Extends TGUIButton
 	Method RepositionCaption:Int()
 		if not caption then return False
 
-		caption.rect.dimension.X = rect.GetW() - GetCheckboxDimension().x - captionDisplacement.x
+		caption.rect.dimension.x = rect.GetW() - GetCheckboxDimension().x - captionDisplacement.x
 
-		caption.rect.position.X = GetCheckboxDimension().x + captionDisplacement.x
+		caption.rect.position.x = GetCheckboxDimension().x + captionDisplacement.x
 		'center first line to checkbox center
-		caption.rect.position.y = (GetScreenHeight()- GetFont().GetMaxCharHeight()) / 2 + captionDisplacement.y
+		caption.rect.position.y = (GetCheckboxDimension().y - GetFont().GetMaxCharHeight()) / 2 + captionDisplacement.y
 	End Method
 	
 
@@ -186,7 +201,7 @@ Type TGUICheckBox Extends TGUIButton
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
-		SetAlpha oldCol.a * alpha
+		SetAlpha oldCol.a * GetScreenAlpha()
 
 		Local sprite:TSprite = GetSprite()
 		if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)

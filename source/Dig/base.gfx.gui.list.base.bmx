@@ -47,7 +47,6 @@ Type TGUIListBase Extends TGUIobject
 	Field _scrollToBeginWithoutScrollbars:Int = True
 
 
-
     Method Create:TGUIListBase(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
 		Super.CreateBase(position, dimension, limitState)
 
@@ -59,7 +58,9 @@ Type TGUIListBase Extends TGUIobject
 		guiScrollerH.SetOrientation(GUI_OBJECT_ORIENTATION_HORIZONTAL)
 
 		guiEntriesPanel = New TGUIScrollablePanel.Create(null, new TPoint.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), self.state)
+
 		AddChild(guiEntriesPanel) 'manage by our own
+
 
 		'by default all lists accept drop
 		setOption(GUI_OBJECT_ACCEPTS_DROP, True)
@@ -242,8 +243,6 @@ Type TGUIListBase Extends TGUIobject
 
 		EventManager.triggerEvent(TEventSimple.Create("guiList.addItem", new TData.Add("item", item) , Self))
 
-		GUIManager.SortLists()
-
 		Return True
 	End Method
 
@@ -373,49 +372,68 @@ Type TGUIListBase Extends TGUIobject
 		Select _orientation
 			'===== VERTICAL ALIGNMENT =====
 			case GUI_OBJECT_ORIENTATION_VERTICAL
-				'determine if we did not scroll the list to a middle position
-				'so this is true if we are at the very bottom of the list aka "the end"
+				'determine if we did not scroll the list to a middle
+				'position so this is true if we are at the very bottom
+				'of the list aka "the end"
 				Local atListBottom:Int = 1 > Floor(Abs(guiEntriesPanel.scrollLimit.GetY() - guiEntriesPanel.scrollPosition.getY()))
 
 				'set scroll limits:
-				If dimension.getY() < guiEntriesPanel.getScreenheight()
-					'if there are only some elements, they might be "less high" than
-					'the available area - no need to align them at the bottom
-					guiEntriesPanel.SetLimits(0, -dimension.getY())
-				Else
-					'maximum is at the bottom of the area, not top - so subtract height
-					guiEntriesPanel.SetLimits(0, -(dimension.getY() - guiEntriesPanel.getScreenheight()) )
+'				If dimension.getY() < guiEntriesPanel.getScreenheight()
+					'if there are only some elements, they might be
+					'"less high" than the available area - no need to
+					'align them at the bottom
+'					guiEntriesPanel.SetLimits(0, -dimension.getY())
+'				Else
+					'maximum is at the bottom of the area, not top - so
+					'subtract height
+					'old: guiEntriesPanel.SetLimits(0, -(dimension.getY() - guiEntriesPanel.getScreenheight()) )
+					local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+					if not lastItem
+						guiEntriesPanel.SetLimits(0, 0)
+					else
+						guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight() - lastItem.GetScreenHeight()))
+					endif
 
-					'in case of auto scrolling we should consider scrolling to
-					'the next visible part
+					'in case of auto scrolling we should consider
+					'scrolling to the next visible part
 					If autoscroll And (Not scrollerUsed Or atListBottom) Then scrollToLastItem()
-				EndIf
+'				EndIf
 			'===== HORIZONTAL ALIGNMENT =====
 			case GUI_OBJECT_ORIENTATION_HORIZONTAL
-				'determine if we did not scroll the list to a middle position
-				'so this is true if we are at the very bottom of the list aka "the end"
+				'determine if we did not scroll the list to a middle
+				'position so this is true if we are at the very right
+				'of the list aka "the end"
 				Local atListBottom:Int = 1 > Floor( Abs(guiEntriesPanel.scrollLimit.GetX() - guiEntriesPanel.scrollPosition.getX() ) )
 
 				'set scroll limits:
 				If dimension.getX() < guiEntriesPanel.getScreenWidth()
-					'if there are only some elements, they might be "less high" than
-					'the available area - no need to align them at the bottom
+					'if there are only some elements, they might be
+					'"less high" than the available area - no need to
+					'align them at the right
 					guiEntriesPanel.SetLimits(-dimension.getX(), 0 )
 				Else
-					'maximum is at the bottom of the area, not top - so subtract height
-					guiEntriesPanel.SetLimits(-(dimension.getX() - guiEntriesPanel.getScreenWidth()), 0)
+					'maximum is at the bottom of the area, not top - so
+					'subtract height
+					'old: guiEntriesPanel.SetLimits(-(dimension.getX() - guiEntriesPanel.getScreenWidth()), 0)
+					local lastItem:TGUIListItem = TGUIListItem(entries.Last())
+					if not lastItem
+						guiEntriesPanel.SetLimits(0, 0)
+					else
+						guiEntriesPanel.SetLimits(- (dimension.getX() - guiEntriesPanel.getScreenWidth() - lastItem.GetScreenWidth()), 0)
+					endif
 
-					'in case of auto scrolling we should consider scrolling to
-					'the next visible part
+					'in case of auto scrolling we should consider
+					'scrolling to the next visible part
 					If autoscroll And (Not scrollerUsed Or atListBottom) Then scrollToLastItem()
 				EndIf
 
 		End Select
 
 		'if not all entries fit on the panel, enable scroller
-		SetScrollerState( dimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
-		                  dimension.getY() > guiEntriesPanel.GetScreenHeight() ..
-						)
+		SetScrollerState(..
+			dimension.getX() > guiEntriesPanel.GetScreenWidth(), ..
+			dimension.getY() > guiEntriesPanel.GetScreenHeight() ..
+		)
 	End Method
 
 
@@ -648,8 +666,10 @@ endrem
 			oldCol.SetRGBA()
 		EndIf
 
-'RON: noch gebraucht?
-'		DrawChildren()
+		'draws the guiEntriesPanel (default guiEntriesPanel does not
+		'draw something but extended might do)
+		DrawChildren()
+		
 
 		If _debugMode
 			Local oldCol:TColor = new TColor.Get()

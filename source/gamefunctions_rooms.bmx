@@ -173,7 +173,7 @@ Type TRoom {_exposeToLua="selected"}
 
 
 	Method GetName:string() {_exposeToLua}
-		return name
+		return GetLocale(name)
 	End Method
 
 
@@ -248,7 +248,7 @@ Type TRoom {_exposeToLua="selected"}
 		if description = null then return ""
 		lineNumber = Max(0, Min(description.length, lineNumber))
 
-		local res:string = description[lineNumber-1]
+		local res:string = GetLocale(description[lineNumber-1])
 
 		'studios and free rooms get a second line added
 		'containing size information
@@ -832,6 +832,8 @@ Type RoomHandler_Office extends TRoomHandler
 	global stationMapSelectedStation:TStation
 	global stationMapMouseoverStation:TStation
 	global stationMapShowStations:TGUICheckBox[4]
+	global stationMapBuyButton:TGUIButton
+	global stationMapSellButton:TGUIButton
 
 	'=== PROGRAMME PLANNER ===
 	Global showPlannerShortCutHintTime:int = 0
@@ -871,6 +873,9 @@ Type RoomHandler_Office extends TRoomHandler
 		InitProgrammePlanner()
 		InitFinancialScreen()
 
+		'localize gui elements
+		SetLanguage()
+
 		'===== REGISTER SCREEN HANDLERS =====
 		'no need for individual screens, all can be handled by one function (room is param)
 		super._RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
@@ -882,6 +887,33 @@ Type RoomHandler_Office extends TRoomHandler
 		'===== REGISTER EVENTS =====
 		'handle savegame loading (remove old gui elements)
 		EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+
+		'inform if language changes
+		EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
+	End Function
+
+
+	Function onSetLanguage:int(triggerEvent:TEventBase)
+		SetLanguage()
+	End Function
+
+
+	Function SetLanguage()
+		'programmeplanner
+		if ProgrammePlannerButtons[0]
+			ProgrammePlannerButtons[0].SetCaption(GetLocale("PLANNER_ADS"))
+			ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"))
+			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_OPTIONS"))
+			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_FINANCES"))
+			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_IMAGE"))
+			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_MESSAGES"))
+		endif
+		
+		'stationmap
+		if stationMapBuyButton
+			stationMapBuyButton.SetCaption(GetLocale("BUY_STATION"))
+			stationMapSellButton.SetCaption(GetLocale("SELL_STATION"))
+		endif
 	End Function
 
 
@@ -994,9 +1026,8 @@ Type RoomHandler_Office extends TRoomHandler
 		'EventManager.registerListenerFunction("Game.OnMinute",	onGameMinute)
 
 		'we are interested in the programmeplanner buttons
-		EventManager.registerListenerFunction( "guiobject.onClick", onProgrammePlannerButtonClick, "TGUIButton" )
+		EventManager.registerListenerFunction("guiobject.onClick", onProgrammePlannerButtonClick, "TGUIButton" )
 	End Function
-
 
 
 	Function CheckPlayerInRoom:int()
@@ -2332,18 +2363,16 @@ Type RoomHandler_Office extends TRoomHandler
 	'===================================
 	'Office: Stationmap
 	'===================================
-
 	Function InitStationMap()
 		'StationMap-GUIcomponents
-		Local button:TGUIButton
-		button = new TGUIButton.Create(new TPoint.Init(610, 110), new TPoint.Init(155,-1), "Sendemast kaufen", "STATIONMAP")
-		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, button )
-		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, button )
+		stationMapBuyButton = new TGUIButton.Create(new TPoint.Init(610, 110), new TPoint.Init(155,-1), "", "STATIONMAP")
+		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, stationMapBuyButton )
+		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, stationMapBuyButton )
 
-		button = new TGUIButton.Create(new TPoint.Init(610, 345), new TPoint.Init(155,-1), "Sendemast verkaufen", "STATIONMAP")
-		button.disable()
-		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, button )
-		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, button )
+		stationMapSellButton = new TGUIButton.Create(new TPoint.Init(610, 345), new TPoint.Init(155,-1), "", "STATIONMAP")
+		stationMapBuyButton.disable()
+		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, stationMapSellButton )
+		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, stationMapSellButton )
 
 		'we have to refresh the gui station list as soon as we remove or add a station
 		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
@@ -5427,6 +5456,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 		if not eventsRegistered
 			'handle savegame loading (remove old gui elements)
 			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+			EventManager.registerListenerFunction("Language.onSetLanguage", onSetLanguage)
 			eventsRegistered = TRUE
 		endif
 
@@ -5434,8 +5464,23 @@ Type TRoomDoorSign Extends TBlockMoveable
 	End Method
 
 
+	'as soon as a language changes, remove the cached images
+	'to get them regenerated
+	Function onSetLanguage(triggerEvent:TEventBase)
+		For Local obj:TRoomDoorSign = EachIn list
+			obj.imageCache = null
+			obj.imageDraggedCache = null
+		Next
+	End Function
+
+
+	'as soon as a savegame gets loaded, we remove the cached images
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
-		'as soon as a savegame gets loaded, we remove the cached images
+		ResetImageCaches()
+	End Function
+
+
+	Function ResetImageCaches:int()
 		For Local obj:TRoomDoorSign = EachIn list
 			obj.imageCache = null
 			obj.imageDraggedCache = null
@@ -5612,8 +5657,8 @@ Function Init_CreateAllRooms()
 		room.Init(..
 			vars.GetString("roomname"),  ..
 			[ ..
-				GetLocale(vars.GetString("tooltip")), ..
-				GetLocale(vars.GetString("tooltip2")) ..
+				vars.GetString("tooltip"), ..
+				vars.GetString("tooltip2") ..
 			], ..
 			vars.GetInt("owner",-1),  ..
 			vars.GetInt("size", 1)  ..

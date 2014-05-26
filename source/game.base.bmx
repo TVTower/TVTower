@@ -81,7 +81,7 @@ Type TGame {_exposeToLua="selected"}
 	Global _instance:TGame
 	Global _initDone:int = FALSE
 	Global _firstGamePreparationDone:int = FALSE
-
+	Global StartTipWindow:TGUIModalWindow
 
 	Method New()
 		if not _initDone
@@ -103,11 +103,13 @@ Type TGame {_exposeToLua="selected"}
 	'Summary: create a game, every variable is set to Zero
 	Method Create:TGame(initializePlayer:Int = true, initializeRoom:Int = true)
 		LoadConfig("config/settings.xml")
-		'add German and English to possible language
-		TLocalization.AddLanguages("de, en")
-		'select language
-		TLocalization.SetLanguage(userlanguage)
-		TLocalization.LoadResource("res/lang/lang_"+userlanguage+".txt")
+
+		'load all localizations
+		TLocalization.LoadLanguageFiles("res/lang/lang_*.txt")
+		'set default language
+		TLocalization.SetCurrentLanguage("en")
+		'select user language
+		TLocalization.SetCurrentLanguage(userlanguage)
 
 		networkgame = 0
 
@@ -154,6 +156,30 @@ Type TGame {_exposeToLua="selected"}
 		GetPopularityManager().Initialize()
 		GetBroadcastManager().Initialize()
 
+		'=== START TIPS ===
+		'maybe show this window each game? or only on game start or ... ?
+
+		local showStartTips:int = FALSE
+
+		if showStartTips
+			'TLogger.Log("TGame", "Creating start tip GUIelement", LOG_DEBUG)
+			Local StartTips:TList = CreateList()
+			Local tipNumber:int = 1
+			'repeat as long there is a localization available
+			While GetLocale("STARTHINT_TITLE"+tipNumber) <> "STARTHINT_TITLE"+tipNumber
+				StartTips.addLast( [GetLocale("HINT")+ ": "+GetLocale("STARTHINT_TITLE"+tipNumber), GetLocale("STARTHINT_TEXT"+tipNumber)] )
+				tipNumber :+ 1
+			Wend
+
+			if StartTips.count() > 0
+				local tipNumber:int = rand(0, StartTips.count()-1)
+				local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
+
+				StartTipWindow = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,350), "InGame")
+				StartTipWindow.DarkenedArea = new TRectangle.Init(20,10,760,373)
+				StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )
+			endif
+		endif
 
 		'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
 		InGame_Chat = New TGUIChat.Create(new TPoint.Init(520, 418), new TPoint.Init(280,190), "InGame")

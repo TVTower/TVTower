@@ -43,9 +43,11 @@ Import "base.gfx.gui.list.selectlist.bmx"
 
 Type TGUIDropDown Extends TGUIInput
 	'height of the opened drop down
-	Field openHeight:int = 100
 	Field open:int = FALSE
+	Field selectedEntry:TGUIObject
 	Field list:TGUISelectList
+	Field listHeight:int = 100
+	
 
 
     Method Create:TGUIDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
@@ -62,7 +64,7 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== ENTRY LIST ===
 		'create and style list
-		list = new TGUISelectList.Create(new TPoint.Init(0, self.rect.GetH()), new TPoint.Init(rect.GetW(), 80), "")
+		list = new TGUISelectList.Create(new TPoint.Init(0, self.rect.GetH()), new TPoint.Init(rect.GetW(), listHeight), "")
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
 		SetOpen(false)
@@ -114,7 +116,8 @@ Type TGUIDropDown Extends TGUIInput
 
 		'close on click on a list item
 		if receiver and list.HasItem(receiver)
-			SetValue(receiver.GetValue())
+			EventManager.triggerEvent( TEventSimple.Create("GUIDropDown.onSelectEntry", null, Self, receiver) )
+			SetSelectedEntry(receiver)
 
 			'reset mouse button to avoid clicks below
 			MouseManager.ResetKey(1)
@@ -159,7 +162,9 @@ Type TGUIDropDown Extends TGUIInput
 		'clicked item is of a different type
 		if not item then return False
 
-		SetValue(item.GetValue())
+		SetSelectedEntry(item)
+		'inform others: we successfully selected an item
+		EventManager.triggerEvent( TEventSimple.Create("GUIDropDown.onSelectEntry", null, Self, item) )
 	EndMethod
 
 
@@ -169,6 +174,18 @@ Type TGUIDropDown Extends TGUIInput
 		MouseManager.ResetKey(1)
 
 		SetOpen(1- IsOpen())
+	End Method
+
+
+	Method SetSelectedEntry(item:TGUIObject)
+		selectedEntry = item
+		SetValue(item.GetValue())
+	End Method
+	
+
+	'sets the height of the lists content area (ignoring padding)
+	Method SetListContentHeight:int(height:Float)
+		list.Resize(list.rect.GetW(), height + list.GetPadding().GetTop() + list.GetPadding().GetBottom())
 	End Method
 
 
@@ -199,26 +216,16 @@ Type TGUIDropDown Extends TGUIInput
 		Super.Update()
 
 		'move list to our position
-		list.rect.position.SetXY( GetScreenX(), GetScreenY() + GetScreenHeight() )
+		local listPosY:int = GetScreenY() + GetScreenHeight()
+		'if list ends below screen end we might move it above the button
+		if listPosY + list.GetScreenHeight() > GraphicsHeight()
+			if list.GetScreenHeight() < GetScreenY()
+				listPosY = GetScreenY() - list.GetScreenHeight()
+			endif
+		endif
+		list.rect.position.SetXY( GetScreenX(), listPosY )
 'RON
 '		UpdateChildren()
-	End Method
-
-
-	Method Draw()
-		Super.Draw()
-rem
-		if open
-			SetAlpha 1.0
-			SetColor 100,0,0
-			DrawRect(list.GetContentScreenX(),list.GetContentScreenY()+100,list.GetContentScreenWidth(), list.GetContentScreenHeight())
-			SetColor 255,255,255
-			DrawRect(list.guiEntriesPanel.GetContentScreenX(),list.guiEntriesPanel.GetContentScreenY()+150,list.guiEntriesPanel.GetContentScreenWidth(), list.guiEntriesPanel.GetContentScreenHeight())
-			SetAlpha 1.0
-		endif
-endrem
-'RON
-'		DrawChildren()
 	End Method
 End Type
 
@@ -255,11 +262,8 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-	Method Draw:Int()
-		local oldCol:TColor = new TColor.Get()
-		local upperParent:TGUIObject = GetParent("TGUIListBase")
-		upperParent.RestrictContentViewPort()
 
+	Method DrawBackground:int()
 		If mouseover
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
@@ -271,8 +275,24 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
-		'draw value
+	End Method
+
+
+	Method DrawValue:int()
 		GetFont().draw(value, getScreenX(), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
+	End Method
+
+
+	Method Draw:Int()
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * GetScreenAlpha()
+
+		local upperParent:TGUIObject = GetParent("TGUIListBase")
+		upperParent.RestrictContentViewPort()
+
+		DrawBackground()
+
+		DrawValue()
 
 		upperParent.ResetViewPort()
 		oldCol.SetRGBA()

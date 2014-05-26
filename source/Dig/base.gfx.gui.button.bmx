@@ -22,7 +22,6 @@ Type TGUIButton Extends TGUIobject
 	Global AUTO_SIZE_MODE_NONE:int = 0
 	Global AUTO_SIZE_MODE_TEXT:int = 1
 	Global AUTO_SIZE_MODE_SPRITE:int = 2
-	Global _typeDefaultCaptionAlign:TPoint = new TPoint.Init()
 	Global _typeDefaultFont:TBitmapFont
 	Global _typeDefaultCaptionColor:TColor
 
@@ -240,7 +239,7 @@ Type TGUIButton Extends TGUIobject
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
-		SetAlpha oldCol.a * alpha
+		SetAlpha oldCol.a * GetScreenAlpha()
 
 		Local sprite:TSprite = GetSprite()
 		if state <> "" then sprite = GetSpriteFromRegistry(GetSpriteName() + state, sprite)

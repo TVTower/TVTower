@@ -23,7 +23,7 @@ Type TGUIArrowButton Extends TGUIObject
 		Super.CreateBase(pos, dimension, limitState)
 
 		SetDirection(direction)
-		setZindex(40)
+'		setZindex(40)
 		value = ""
 
 		'let the guimanager manage the button
@@ -89,7 +89,7 @@ Type TGUIArrowButton Extends TGUIObject
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
-		SetAlpha oldCol.a * alpha
+		SetAlpha oldCol.a * GetScreenAlpha()
 
 		'draw button (background)
 		_GetButtonSprite().DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())

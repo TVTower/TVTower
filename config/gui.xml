@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources>
+		<file name="resource_gui_languageflags" url="config/gui_languageflags.xml" />
+
 		<resource name="gfx_gui_rect">
 			<type>SpritePack</type>
  			<url>res/grafiken/gui/rahmenpack2.png</url>

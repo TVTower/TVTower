@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<tvt>
+	<resources>
+		<sprite name="flag_de"	url="res/grafiken/gui/flags/de.png" />
+		<sprite name="flag_en"	url="res/grafiken/gui/flags/en.png" />
+		<sprite name="flag_it"	url="res/grafiken/gui/flags/it.png" />
+		<sprite name="flag_ru"	url="res/grafiken/gui/flags/ru.png" />
+		<sprite name="flag_tr"	url="res/grafiken/gui/flags/tr.png" />
+		<sprite name="flag_cz"	url="res/grafiken/gui/flags/cz.png" />
+		<sprite name="flag_fr"	url="res/grafiken/gui/flags/fr.png" />
+	</resources>
+</tvt>

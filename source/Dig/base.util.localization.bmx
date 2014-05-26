@@ -9,88 +9,78 @@ Import BRL.Map
 
 
 Type TLocalization
-	Global currentLanguage:String
-	Global supportedLanguages:TList = CreateList()
-	Global resources:TList = CreateList()
-
-	'Set the current language
-	Function SetLanguage:Int(language:String)
-		For Local lang:String = EachIn supportedLanguages
-			If language = lang
-				currentLanguage = language
-				Return True
-			EndIf
-		Next
-
-		Return False
-	End Function
-
-
-	'Returns the current language
-	Function Language:String()
-		Return currentLanguage
-	End Function
-
-
-	'Adds a comma separated list of languages to the supported languages list
-	Function AddLanguages:int(languages:String)
-		Local Pos:Int = Instr(languages, ",")
-		If Pos = 0
-			supportedLanguages.AddLast(languages.Trim())
-			Return 0
-		EndIf
-
-		While Pos > 0
-			supportedLanguages.AddLast(Left(languages, Pos - 1).Trim())
-			languages = Mid(languages, Pos + 1)
-			Pos = Instr(languages, ",")
-		Wend
-
-		supportedLanguages.AddLast(languages.Trim())
-	End Function
-
-
-	'Loads the specified resource file into memory (faster, memory used)
-	Function LoadResource(filename:String)
-		TLocalizationMemoryResource.open(filename)
-	End Function
-
-
-	'Loads all resource files according to the filter (for example: myfile*.txt will load myfile_en.txt, myfile_de.txt etc.)
-	Function LoadResources(filter:String)
-		For Local file:String = EachIn GetResourceFiles(filter)
-			LoadResource(file)
-		Next
-	End Function
+	Global currentLanguage:TLocalizationLanguage
+	Global languages:TMap = CreateMap()
+	Global languagesCount:int = 0
 
 
 	Function GetStringWithParams:string(Key:string, group:string = Null, params:string[] = null)
-		local result:string = TLocalization.GetString(Key, group)
-		if params = null then return result
+		if params = null then Return GetString(Key, group)
 
+		local result:string = GetString(Key, group)
 		For local i:int = 0 until Len(params)
 			result = result.replace("%"+(i+1), params[i])
 		Next
+		Return result
 	End Function
 
 
 	'Returns the value for the specified key, or the given key if
 	'nothing was found
 	Function GetString:String(Key:String, group:String = Null)
-		Local ret:String = Key
+		if not currentLanguage then return Key
+		
+		Return currentLanguage.Get(Key, group).replace("\n", Chr(13))
+	End Function
 
-		For Local r:TLocalizationMemoryResource = EachIn resources
-			If r.language <> currentLanguage Then Continue
-			ret = r.GetString(Key, group)
-			If ret Then Return ret.replace("\n", Chr(13))
+
+	Function GetLanguage:TLocalizationLanguage(languageCode:string)
+		return TLocalizationLanguage(languages.ValueForKey(languageCode))
+	End Function
+
+
+	Function AddLanguage:int(language:TLocalizationLanguage)
+		if not languages.ValueForKey(language.languageCode)
+			languagesCount :+ 1
+		endif
+		languages.insert(language.languageCode, language)
+	End Function
+
+
+	Function SetCurrentLanguage:Int(language:String)
+		local lang:TLocalizationLanguage = GetLanguage(language)
+
+		if lang
+			currentLanguage = lang
+			Return True
+		else
+			Return False
+		endif
+	End Function
+
+
+	'Returns the current language
+	Function GetCurrentLanguageCode:String()
+		if currentLanguage then return currentLanguage.languageCode
+		return ""
+	End Function
+
+
+	Function LoadLanguageFile(file:String, languageCode:string="")
+		AddLanguage(TLocalizationLanguage.Create(file))
+	End Function
+
+
+	'Loads all resource files according to the filter (for example: myfile*.txt will load myfile_en.txt, myfile_de.txt etc.)
+	Function LoadLanguageFiles(filter:String)
+		For Local file:String = EachIn GetLanguageFiles(filter)
+			LoadLanguageFile(file)
 		Next
-
-		Return ret
 	End Function
 
 
 	'Detects the language of a resource file
-	Function GetLanguageFromFilename:String(filename:String)
+	Function GetLanguageCodeFromFilename:String(filename:String)
 		Local lastpos:Int = 0
 		Local Pos:Int = Instr(filename, "_")
 
@@ -114,8 +104,8 @@ Type TLocalization
 	End Function
 
 
-	'Returns all resource files according to the filter
-	Function GetResourceFiles:TList(filter:String)
+	'Returns all language files according to the filter
+	Function GetLanguageFiles:TList(filter:String)
 		Local ret:TList = New TList
 		Local Pos:Int = Instr(filter, "*")
 
@@ -143,14 +133,11 @@ Type TLocalization
 	End Function
 
 
-	'Releases all resources used by the Localization Module
+	'Releases all resources used by the localization class
 	Function Dispose()
-		For Local r:TLocalizationMemoryResource = EachIn Resources
-			r.Close()
-		Next
-		Resources.Clear()
-		Resources = Null
-		supportedLanguages = Null
+		languages.Clear()
+		languages = Null
+		currentLanguage = Null
 	End Function
 End Type
 
@@ -162,28 +149,25 @@ end Function
 
 
 
-'resource type (loads the resource file in the memory, faster access,
-'increased memory usage) ----------------
-Type TLocalizationMemoryResource
-	Field language:String
-	Field _link:TLink
-	Field map:TMap
+
+Type TLocalizationLanguage
+	Field map:TMap = CreateMap()
+	Field languageCode:string = ""
 
 
 	'Opens a resource file and loads the content into memory
-	Function open:TLocalizationMemoryResource(filename:String, language:String = Null)
-		If language = Null
-			language = TLocalization.GetLanguageFromFilename(filename)
-			If not language Then Throw "No language was specified for loading the resource file and the language could not be detected from the filename itself.~r~nPlease specify the language or use the format ~qname_language.extension~q for the resource files."
+	Function Create:TLocalizationLanguage(filename:String, languageCode:String = Null)
+		If languageCode = Null
+			languageCode = TLocalization.GetLanguageCodeFromFilename(filename)
+			If not languageCode Then Throw "No language was specified for loading the resource file and the language could not be detected from the filename itself.~r~nPlease specify the language or use the format ~qname_language.extension~q for the resource files."
 		EndIf
 
+
+		Local lang:TLocalizationLanguage = New TLocalizationLanguage
+		lang.languageCode = languageCode
+
+		'load definitions
 		Local content:string = LoadText(filename)
-
-		Local r:TLocalizationMemoryResource = New TLocalizationMemoryResource
-		r.language = language
-		r.map = CreateMap()
-		r._link = TLocalization.resources.AddLast(r)
-
 		Local line:string =""
 		Local Key:String
 		Local value:String
@@ -191,8 +175,10 @@ Type TLocalizationMemoryResource
 		Local group:String = ""
 
 		For line = EachIn content.Split(chr(10))
-			if Left(line, 2) = "//" then print "comment:"+line;continue
+			'comments
+			if Left(line, 2) = "//" then continue
 
+			'groups
 			If Left(line, 1) = "[" and Right(line, 1) = "]"
 				group = Mid(line, 2, line.length - 2).Trim()
 			EndIf
@@ -208,43 +194,29 @@ Type TLocalizationMemoryResource
 
 			If group <> ""
 				'insert as "groupname::key"
-				r.map.Insert( lower(group + "::" + Key), value )
+				lang.map.Insert(lower(group + "::" + Key), value)
 				'insert as key if "key" was not defined before
-				If r.map.ValueForKey(Key) = Null Then r.map.Insert( lower(Key), value )
+				If not lang.map.ValueForKey(Key) Then lang.map.Insert(lower(Key), value)
 			Else
-				r.map.Insert( lower(Key), value )
+				lang.map.Insert(lower(Key), value)
 			EndIf
 		Next
-		Return r
+		Return lang
 	End Function
 
 
 	'Gets the value for the specified key
-	Method GetString:String(Key:String, group:String = Null)
+	Method Get:String(Key:String, group:String = Null)
 		Local ret:Object
 
-		If group <> Null Then key = group + "::" + Key
+		If group Then key = group + "::" + Key
 
-		ret = map.ValueForKey( lower(key) )
+		ret = map.ValueForKey(lower(key))
 
 		If ret = Null
 			Return Key
 		Else
 			Return String(ret)
 		EndIf
-	End Method
-
-
-	'Releases the used memory
-	Method Close()
-		If _link Then _link.Remove()
-		If map Then map.Clear()
-	End Method
-
-
-	'If there are no references to this resource, the object will be
-	'deleted automatically
-	Method Delete()
-		Close()
 	End Method
 End Type

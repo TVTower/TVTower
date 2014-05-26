@@ -69,10 +69,12 @@ Type TGUIPanel Extends TGUIObject
 
 
 	Method SetBackground(obj:TGUIBackgroundBox=Null)
+		'remove old background from children
+		if guiBackground then removeChild(guiBackground)
+
 		'reset to nothing?
 		If Not obj
 			If guiBackground
-				removeChild(guiBackground)
 				guiBackground.remove()
 				guiBackground = Null
 			EndIf
@@ -83,7 +85,10 @@ Type TGUIPanel Extends TGUIObject
 			'set background to to be on same level than parent
 			guiBackground.SetZIndex(-1)
 
-			addChild(obj) 'manage it by our own
+			'manage it by our own
+			GuiManager.Remove(obj)
+			
+			addChild(obj)
 		EndIf
 	End Method
 
@@ -99,6 +104,7 @@ Type TGUIPanel Extends TGUIObject
 	Method SetValue(value:String="")
 		If value=""
 			If guiTextBox
+				RemoveChild(guiTextBox)
 				guiTextBox.remove()
 				guiTextBox = Null
 			EndIf
@@ -110,6 +116,8 @@ Type TGUIPanel Extends TGUIObject
 
 			if not guiTextBox
 				guiTextBox = New TGUITextBox.Create(new TPoint.Init(0,0), new TPoint.Init(50,50), value, "")
+				'we take care of the text box
+				AddChild(guiTextBox)
 			else
 				guiTextBox.SetValue(value)
 			endif
@@ -121,8 +129,6 @@ Type TGUIPanel Extends TGUIObject
 			EndIf
 			guiTextBox.SetValueAlignment("CENTER", "CENTER")
 			guiTextBox.SetAutoAdjustHeight(True)
-			'we take care of the text box
-			addChild(guiTextBox)
 		EndIf
 
 		'to resize textbox accordingly
@@ -148,13 +154,11 @@ Type TGUIPanel Extends TGUIObject
 			SetAppearanceChanged(false)
 		Endif
 
-
-		'Super.Update()
-'		UpdateChildren()
+		UpdateChildren()
 	End Method
 
 
 	Method Draw()
-'		DrawChildren()
+		DrawChildren()
 	End Method
 End Type

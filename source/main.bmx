@@ -32,6 +32,7 @@ Import "Dig/base.gfx.gui.bmx"
 Import "Dig/base.gfx.gui.list.base.bmx"
 Import "Dig/base.gfx.gui.list.slotlist.bmx"
 Import "Dig/base.gfx.gui.list.selectlist.bmx"
+Import "Dig/base.gfx.gui.dropdown.bmx"
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.input.bmx"
 Import "Dig/base.gfx.gui.window.base.bmx"
@@ -225,6 +226,18 @@ Type TApp
 	End Method
 
 
+	Method SetLanguage:Int(languageCode:string="de")
+		'skip if the same language is already set
+		if TLocalization.GetCurrentLanguageCode() = languageCode then return False
+
+		'select language
+		TLocalization.SetCurrentLanguage(languageCode)
+		'inform others - so eg. buttons can re-localize
+		EventManager.triggerEvent(TEventSimple.Create("Language.onSetLanguage", new TData.Add("languageCode", languageCode), self))
+		Return True
+	End Method
+
+
 	Method Start()
 		AppEvents.Init()
 
@@ -340,6 +353,15 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_9) Then GetGameTime().speed = 1.0	'1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
+
+				If KEYMANAGER.IsHit(KEY_TAB)
+					if TLocalization.GetCurrentLanguageCode() = "de"
+						App.SetLanguage("en")
+					else
+						App.SetLanguage("de")
+					endif
+				endif
+					
 
 				'Save game only when in a game
 				if game.gamestate = TGame.STATE_RUNNING
@@ -565,6 +587,12 @@ Type TApp
 
 
 	Function onAppConfirmExit:Int(triggerEvent:TEventBase)
+		local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
+		if not dialogue then return False
+
+		'not interested in other dialogues
+		if dialogue <> TApp.ExitAppDialogue then return False
+
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
 
 		'approve exit
@@ -980,21 +1008,7 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonOnline:TGUIButton
 	Field guiButtonSettings:TGUIButton
 	Field guiButtonQuit:TGUIButton
-
-
-Rem
-Global StartTips:TList = CreateList()
-StartTips.addLast( ["Tipp: Programmplaner", "Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen."] )
-StartTips.addLast( ["Tipp: Programmplanung", "Programme haben verschiedene Genre. Diese Genre haben natürlich Auswirkungen.~n~nEine Komödie kann häufiger gesendet werden, als eine Live-Übertragung. Kinderfilme sind ebenso mit weniger Abnutzungserscheinungen verknüpft als Programme anderer Genre."] )
-StartTips.addLast( ["Tipp: Werbeverträge", "Werbeverträge haben definierte Anforderungen an die zu erreichende Mindestzuschauerzahl. Diese, und natürlich auch die Gewinne/Strafen, sind gekoppelt an die Reichweite die derzeit mit dem eigenen Sender erreicht werden kann.~n~nManchmal ist es deshalb besser, vor dem Sendestationskauf neue Werbeverträge abzuschließen."] )
-
-Global StartTipWindow:TGUIModalWindow = new TGUIModalWindow.Create(0,0,400,250, "InGame")
-local tipNumber:int = rand(0, StartTips.count()-1)
-local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
-StartTipWindow.background.usefont = GetBitmapFont("Default", 18, BOLDFONT)
-StartTipWindow.background.valueColor = TColor.Create(235,235,235)
-StartTipWindow.setText( tip[0], tip[1] )
-endrem
+	Field guiLanguageDropDown:TGUISpriteDropDown
 
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
@@ -1014,11 +1028,11 @@ endrem
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
 
-		guiButtonStart		= New TGUIButton.Create(new TPoint.Init(0,   0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_SOLO_GAME"), name)
-		guiButtonNetwork	= New TGUIButton.Create(new TPoint.Init(0,  40), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_NETWORKGAME"), name)
-		guiButtonOnline		= New TGUIButton.Create(new TPoint.Init(0,  80), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_ONLINEGAME"), name)
-		guiButtonSettings	= New TGUIButton.Create(new TPoint.Init(0, 120), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_SETTINGS"), name)
-		guiButtonQuit		= New TGUIButton.Create(new TPoint.Init(0, 170), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_QUIT"), name)
+		guiButtonStart		= New TGUIButton.Create(new TPoint.Init(0,   0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(new TPoint.Init(0,  40), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(new TPoint.Init(0,  80), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(new TPoint.Init(0, 120), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(new TPoint.Init(0, 170), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -1028,9 +1042,50 @@ endrem
 
 		guiButtonSettings.disable()
 
-		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons")
 
+		if TLocalization.languagesCount > 0
+			guiLanguageDropDown = New TGUISpriteDropDown.Create(new TPoint.Init(620, 560), new TPoint.Init(170,-1), "Sprache", 128)
+			local itemHeight:int = 0
+			local languageCount:int = 0
+
+			For local lang:TLocalizationLanguage = eachin TLocalization.languages.Values()
+				languageCount :+ 1
+				local item:TGUISpriteDropDownItem = new TGUISpriteDropDownItem.Create(null, null, lang.Get("LANGUAGE_NAME_LOCALE"))
+				item.SetValueColor(TColor.clBlack)
+				item.data.Add("value", lang.Get("LANGUAGE_NAME_LOCALE"))
+				item.data.Add("languageCode", lang.languageCode)
+				item.data.add("spriteName", "flag_"+lang.languageCode)
+				'item.SetZindex(10000)
+				guiLanguageDropDown.AddItem(item)
+				if itemHeight = 0 then itemHeight = item.GetScreenHeight()
+
+				if lang.languageCode = TLocalization.GetCurrentLanguageCode()
+					guiLanguageDropDown.SetSelectedEntry(item)
+				endif
+			Next
+			GuiManager.SortLists()
+			'we want to have max 4 items visible at once
+			guiLanguageDropDown.SetListContentHeight(itemHeight * Min(languageCount,4))
+			EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", self, "onSelectLanguageEntry", guiLanguageDropDown)
+		endif
+
+		'fill captions with the localized values
+		SetLanguage()
+
+		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons")
 		Return Self
+	End Method
+
+
+	'handle clicks on the buttons
+	Method onSelectLanguageEntry:Int(triggerEvent:TEventBase)
+		local languageEntry:TGUIObject = TGUIObject(triggerEvent.GetReceiver())
+		if not languageEntry then Return False
+
+		TLocalization.SetCurrentLanguage(languageEntry.data.GetString("languageCode", "en"))
+
+		'fill captions with the localized values
+		SetLanguage()
 	End Method
 
 
@@ -1058,6 +1113,16 @@ endrem
 		End Select
 	End Method
 
+
+	'override default
+	Method SetLanguage:int(languageCode:String = "")
+		guiButtonStart.SetCaption(GetLocale("MENU_SOLO_GAME"))
+		guiButtonNetwork.SetCaption(GetLocale("MENU_NETWORKGAME"))
+		guiButtonOnline.SetCaption(GetLocale("MENU_ONLINEGAME"))
+		guiButtonSettings.SetCaption(GetLocale("MENU_SETTINGS"))
+		guiButtonQuit.SetCaption(GetLocale("MENU_QUIT"))
+	End Method
+	
 
 	'override default draw
 	Method Draw:int(tweenValue:float)
@@ -1131,7 +1196,6 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'===== CREATE AND SETUP GUI =====
 		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, name)
-		guiSettingsWindow.SetCaption("Spieler")
 		guiSettingsWindow.guiBackground.spriteAlpha = 0.5
 		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
 		guiSettingsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
@@ -1139,22 +1203,25 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 0), GetLocale("GAME_TITLE")+":", TColor.CreateGrey(75), name)
+		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 0), "", TColor.CreateGrey(75), name)
 		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), Game.title, 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 0), GetLocale("START_YEAR")+":", TColor.CreateGrey(75), name)
+		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 0), "", TColor.CreateGrey(75), name)
 		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "1985", 4, name)
 
 		Local checkboxHeight:Int = 0
 		'guiAnnounce		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, GetBitmapFontManager().baseFontBold)
 
-		gui24HoursDay		= New TGUICheckBox.Create(new TPoint.Init(430, 0), null, GetLocale("24_HOURS_GAMEDAY"), name)
-		checkboxHeight 		= gui24HoursDay.GetScreenHeight()
+		gui24HoursDay = New TGUICheckBox.Create(new TPoint.Init(430, 0), new TPoint.Init(300), "", name)
 		gui24HoursDay.SetChecked(True, False)
 		gui24HoursDay.disable() 'option not implemented
-		guiSpecialFormats	= New TGUICheckBox.Create(new TPoint.Init(430, 0 + 1*checkboxHeight), null, GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"), name)
+		checkboxHeight :+ gui24HoursDay.GetScreenHeight()
+
+		guiSpecialFormats = New TGUICheckBox.Create(new TPoint.Init(430, 0 + checkboxHeight), new TPoint.Init(300), "", name)
 		guiSpecialFormats.SetChecked(True, False)
 		guiSpecialFormats.disable() 'option not implemented
-		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + 2*checkboxHeight), null, GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"), name)
+		checkboxHeight :+ guiSpecialFormats.GetScreenHeight()
+
+		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + checkboxHeight), new TPoint.Init(300), "", name)
 		guiFilterUnreleased.SetChecked(True, False)
 
 		'move announce to last
@@ -1183,19 +1250,18 @@ Type TScreen_GameSettings Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
 
-		guiButtonStart	= New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_START_GAME"), name)
-		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_BACK"), name)
+		guiButtonStart = New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonBack = New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonBack)
 
 
-		guiChat	 = New TGUIChat.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), name)
+		guiChat	= New TGUIChat.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), name)
 		guiChat.guiInput.setMaxLength(200)
 
 		guiChat.guiBackground.spriteAlpha = 0.5
 		guiChat.SetPadding(headerSize, panelGap, panelGap, panelGap)
-		guiChat.SetCaption("Chat")
 		guiChat.guiList.Resize(guiChat.guiList.rect.GetW(), guiChat.guiList.rect.GetH()-10)
 		guiChat.guiInput.rect.position.MoveXY(panelGap, -panelGap)
 		guiChat.guiInput.Resize( guiChat.GetContentScreenWidth() - 2* panelGap, guiStartYear.GetScreenHeight())
@@ -1227,6 +1293,12 @@ Type TScreen_GameSettings Extends TGameScreen
 			playerPanel.AddChild(guiFigureArrows[i*2 + 0])
 			playerPanel.AddChild(guiFigureArrows[i*2 + 1])
 		Next
+
+
+		'set button texts
+		'could be done in "startup"-methods when changing screens
+		'to the DIG ones
+		SetLanguage()
 
 
 		'===== REGISTER EVENTS =====
@@ -1332,11 +1404,42 @@ Type TScreen_GameSettings Extends TGameScreen
 	End Method
 
 
+	'override default
+	Method SetLanguage:int(languageCode:String = "")
+		'not needed, done during update
+		'guiSettingsWindow.SetCaption(GetLocale("MENU_NETWORKGAME"))
+
+		guiGameTitleLabel.SetValue(GetLocale("GAME_TITLE")+":")
+		guiStartYearLabel.SetValue(GetLocale("START_YEAR")+":")
+
+		gui24HoursDay.SetValue(GetLocale("24_HOURS_GAMEDAY"))
+		guiSpecialFormats.SetValue(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS")+ " oder du ist mehr")
+		guiFilterUnreleased.SetValue(GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"))
+
+		guiButtonStart.SetCaption(GetLocale("MENU_START_GAME"))
+		guiButtonBack.SetCaption(GetLocale("MENU_BACK"))
+
+		guiChat.SetCaption(GetLocale("CHAT"))
+
+
+		're-align the checkboxes as localization might have changed
+		'label dimensions
+		local y:int = 0
+		gui24HoursDay.rect.position.SetY(0)
+		y :+ gui24HoursDay.GetScreenHeight()
+
+		guiSpecialFormats.rect.position.SetY(y)
+		y :+ guiSpecialFormats.GetScreenHeight()
+
+		guiFilterUnreleased.rect.position.SetY(y)
+	End Method
+	
+
 	Method Draw:int(tweenValue:float)
 		DrawMenuBackground(True)
 
 		'background gui items
-		GUIManager.Draw("GameSettings", 0, 100)
+		GUIManager.Draw(name, 0, 100)
 
 		Local slotPos:TPoint = new TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 		For Local i:Int = 0 To 3
@@ -1367,7 +1470,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Next
 
 		'overlay gui items (higher zindex)
-		GUIManager.Draw("GameSettings", 101)
+		GUIManager.Draw(name, 101)
 	End Method
 
 
@@ -1537,7 +1640,6 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		guiGameListWindow = New TGUIGameWindow.Create(new TPoint.Init(20, 355), new TPoint.Init(520, 235), name)
 		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
-		guiGameListWindow.SetCaption(GetLocale("AVAILABLE_GAMES"))
 
 		guiGameList	= New TGUIGameList.Create(new TPoint.Init(20,355), new TPoint.Init(520,235), name)
 		guiGameList.SetBackground(Null)
@@ -1546,6 +1648,8 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
 		guiGameListPanel.AddChild(guiGameList)
 
+		'localize gui elements
+		SetLanguage()
 
 		'register clicks on TGUIGameEntry-objects -> game list
 		EventManager.registerListenerMethod("guiobject.onDoubleClick", Self, "onDoubleClickGameListEntry", "TGUIGameEntry")
@@ -1606,6 +1710,15 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		End Select
 	End Method
 
+
+	'override default
+	Method SetLanguage:int(languageCode:String = "")
+		guiButtonJoin.SetCaption(GetLocale("MENU_JOIN"))
+		guiButtonCreate.SetCaption(GetLocale("MENU_CREATE_GAME"))
+		guiButtonBack.SetCaption(GetLocale("MENU_BACK"))
+		guiGameListWindow.SetCaption(GetLocale("AVAILABLE_GAMES"))
+	End Method
+	
 
 	Method JoinSelectedGameEntry:Int()
 		'try to get information about a clicked item
@@ -2081,12 +2194,13 @@ Function DrawMenuBackground(darkened:Int=False)
 			Global logoScale:float = 0.0
 			local logo:TSprite = GetSpriteFromRegistry("gfx_startscreen_logo")
 			if logo
-				if logoAnimStart = 0 then logoAnimStart = Millisecs()
-				logoScale = TInterpolation.BackOut(0.0, 1.0, Min(logoAnimTime, Millisecs() - logoAnimStart), logoAnimTime)
-				logoScale :* TInterpolation.BounceOut(0.0, 1.0, Min(logoAnimTime, Millisecs() - logoAnimStart), logoAnimTime)
+				local timeGone:int = Time.GetTimeGone()
+				if logoAnimStart = 0 then logoAnimStart = timeGone
+				logoScale = TInterpolation.BackOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
+				logoScale :* TInterpolation.BounceOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
 
 				local oldAlpha:float = GetAlpha()
-				SetAlpha TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, Millisecs() - logoAnimStart), 0.5*logoAnimTime)
+				SetAlpha TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, timeGone - logoAnimStart), 0.5*logoAnimTime)
 
 				logo.Draw( GraphicsWidth()/2, 150, -1, new TPoint.Init(0.5, 0.5), logoScale)
 				SetAlpha oldAlpha
