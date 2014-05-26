@@ -1,4 +1,4 @@
-Type TPersonMinimal
+ï»¿Type TPersonMinimal
 	Field id:string
 	Field firstName:string			= ""
 	Field lastName:string			= ""
@@ -11,8 +11,6 @@ End Type
 
 
 Type TPerson Extends TPersonMinimal
-	Field firstName:string			= ""
-	Field lastName:string			= ""
 	Field nickName:string			= ""
 	Field gender:Int				= 0	'0=Unbekannt 1=Mann 2=Frau
 	
@@ -25,18 +23,18 @@ Type TPerson Extends TPersonMinimal
 	Field topGenre1:Int				= -1
 	Field topGenre2:Int				= -1
 	
-	Field fame:Int					= 0 '0 - 100	Kinokasse +++					Wie berühmt ist die Person?
-	Field scandalizing:Int			= 0 '0 - 100	Besonders Interessant für Shows und Sonderevents und Auslöser für News
-	Field priceFactor:Int			= 0 '0 - 100	Für die Manipulation des Preises. Manche sind teurer/günstiger als ihre Leistung erwarten würde.
+	Field fame:Int					= 0 '0 - 100	Kinokasse +++					Wie berÃ¼hmt ist die Person?
+	Field scandalizing:Int			= 0 '0 - 100	Besonders Interessant fÃ¼r Shows und Sonderevents und AuslÃ¶ser fÃ¼r News
+	Field priceFactor:Int			= 0 '0 - 100	FÃ¼r die Manipulation des Preises. Manche sind teurer/gÃ¼nstiger als ihre Leistung erwarten wÃ¼rde.
 
-	Field skill:Int					= 0 '0 - 100	Kinokasse +		Kritik +++		Bonus bei manchen Genre (wie Drama)! Für Regisseur, Musiker und Intellektueller: Wie gut kann er sein Handwerk		
+	Field skill:Int					= 0 '0 - 100	Kinokasse +		Kritik +++		Bonus bei manchen Genre (wie Drama)! FÃ¼r Regisseur, Musiker und Intellektueller: Wie gut kann er sein Handwerk		
 	Field power:Int					= 0 '0 - 100	Kinokasse +		Tempo +++		Bonus bei manchen Genre (wie Action)
-	Field humor:Int					= 0 '0 - 100	Kinokasse +		Tempo +++		Bonus bei manchen Genre (wie Komödie)
-	Field charisma:Int				= 0 '0 - 100	Kinokasse +		Kritik ++		Bonus bei manchen Genre (wie Liebe, Drama, Komödie)
+	Field humor:Int					= 0 '0 - 100	Kinokasse +		Tempo +++		Bonus bei manchen Genre (wie KomÃ¶die)
+	Field charisma:Int				= 0 '0 - 100	Kinokasse +		Kritik ++		Bonus bei manchen Genre (wie Liebe, Drama, KomÃ¶die)
 	Field appearance:Int			= 0 '0 - 100	Kinokasse ++ 	Tempo +			Bonus bei manchen Genre (wie Erotik, Liebe, Action)	
 	
 	Method GetActorBaseFee:Int() 'Das Grundhonorar als Schauspieler
-		'TODO: Überarbeiten
+		'TODO: Ã¼berarbeiten
 		local sum:float = 50 + power + humor + charisma + appearance + skill * 2 '(50 bis 650)
 		Local factor:Float = (fame*0.8 + scandalizing*0.2)/50
 		
@@ -44,7 +42,7 @@ Type TPerson Extends TPersonMinimal
 	End Method
 	
 	Method GetGuestFee:Int() 'Kosten als Studiogast
-		'TODO: Überarbeiten
+		'TODO: Ã¼berarbeiten
 		local sum:float = 50 + fame*2 + scandalizing*0.5 + humor*0.3 + charisma*0.3 + appearance*0.3 + skill
 		Return 100 + Floor(Int(sum * priceFactor / 50)/100)*100
 	End Method
