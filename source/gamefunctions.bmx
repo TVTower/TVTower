@@ -95,7 +95,7 @@ End Function
 Type TGUISpriteDropDown extends TGUIDropDown
 
 	Method Create:TGUISpriteDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
-		Super.Create(position, dimension, value)
+		Super.Create(position, dimension, value, maxLength, limitState)
 		Return self
 	End Method
 	
@@ -154,6 +154,21 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
 			Max(dimension.x, GetSpriteDimension().x), ..
 			Max(dimension.y, GetSpriteDimension().y) ..
 		)
+	End Method
+
+
+	'override to change color
+	Method DrawBackground:int()
+		local oldCol:TColor = new TColor.Get()
+		SetColor(125, 160, 215)
+		If mouseover
+			SetAlpha(oldCol.a * 0.75)
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+		ElseIf selected
+			SetAlpha(oldCol.a * 0.5)
+			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
+		EndIf
+		oldCol.SetRGBA()
 	End Method
     
 

@@ -52,7 +52,7 @@ Type TGUIDropDown Extends TGUIInput
 
     Method Create:TGUIDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
 		'setup base widget (button)
-		Super.Create(position, dimension, value, maxLength, State)
+		Super.Create(position, dimension, value, maxLength, limitState)
 
 		'=== STYLE BUTTON ===
 		'use another sprite than the default button
@@ -88,7 +88,7 @@ Type TGUIDropDown Extends TGUIInput
 		'to close the list automatically if the budget looses focus
 		AddEventListener(EventManager.registerListenerMethod("guiobject.onRemoveFocus", Self, "onRemoveFocus", self ))
 		'listen to clicks to dropdown-items
-		AddEventListener(EventManager.registerListenerMethod( "guiobject.onClick",	Self.list, "onClickOnEntry", "TGUIDropDownItem" ))
+		AddEventListener(EventManager.registerListenerMethod("GUIDropDownItem.onClick",	Self.list, "onClickOnEntry" ))
 
 		'to register if an item was selected
 		AddEventListener(EventManager.registerListenerMethod("guiselectlist.onSelectEntry", self, "onSelectEntry", self.list ))
@@ -215,6 +215,17 @@ Type TGUIDropDown Extends TGUIInput
 	Method Update:Int()
 		Super.Update()
 
+		'if the list is open, an "escape" is used to "abort the action"
+		if isOpen() and KeyManager.IsHit(KEY_ESCAPE)
+			'do not allow another ESC-press for 250ms
+			KeyManager.blockKey(KEY_ESCAPE, 250)
+			'close the list
+			SetOpen(False)
+			'remove focus from gui object
+			GuiManager.ResetFocus()
+		endif
+		
+
 		'move list to our position
 		local listPosY:int = GetScreenY() + GetScreenHeight()
 		'if list ends below screen end we might move it above the button
@@ -224,8 +235,6 @@ Type TGUIDropDown Extends TGUIInput
 			endif
 		endif
 		list.rect.position.SetXY( GetScreenX(), listPosY )
-'RON
-'		UpdateChildren()
 	End Method
 End Type
 
@@ -275,6 +284,18 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
+	End Method
+
+
+	'override onClick to close parental list
+	Method OnClick:int(triggerEvent:TEventBase)
+		Super.OnClick(triggerEvent)
+		'inform others that a dropdownitem was clicked
+		'this makes the "dropdownitem-clicked"-event filterable even
+		'if the itemclass gets extended (compared to the general approach
+		'of "guiobject.onclick")
+		print "dropdown clicked"
+		EventManager.triggerEvent(TEventSimple.Create("GUIDropDownItem.onClick", null, Self, triggerEvent.GetReceiver()) )
 	End Method
 
 

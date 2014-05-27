@@ -1044,14 +1044,14 @@ Type TScreen_MainMenu Extends TGameScreen
 
 
 		if TLocalization.languagesCount > 0
-			guiLanguageDropDown = New TGUISpriteDropDown.Create(new TPoint.Init(620, 560), new TPoint.Init(170,-1), "Sprache", 128)
+			guiLanguageDropDown = New TGUISpriteDropDown.Create(new TPoint.Init(620, 560), new TPoint.Init(170,-1), "Sprache", 128, name)
 			local itemHeight:int = 0
 			local languageCount:int = 0
 
 			For local lang:TLocalizationLanguage = eachin TLocalization.languages.Values()
 				languageCount :+ 1
 				local item:TGUISpriteDropDownItem = new TGUISpriteDropDownItem.Create(null, null, lang.Get("LANGUAGE_NAME_LOCALE"))
-				item.SetValueColor(TColor.clBlack)
+				item.SetValueColor(TColor.CreateGrey(100))
 				item.data.Add("value", lang.Get("LANGUAGE_NAME_LOCALE"))
 				item.data.Add("languageCode", lang.languageCode)
 				item.data.add("spriteName", "flag_"+lang.languageCode)

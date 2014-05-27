@@ -53,7 +53,7 @@ Type TGUISelectList Extends TGUIListBase
 	'overrideable
 	Method RegisterListeners:Int()
 		'we want to know about clicks
-		AddEventListener(EventManager.registerListenerMethod( "guiobject.onClick",	Self, "onClickOnEntry", "TGUISelectListItem" ))
+		AddEventListener(EventManager.registerListenerMethod("GUISelectListItem.onClick",	Self, "onClickOnEntry"))
 	End Method
 
 
@@ -105,6 +105,17 @@ Type TGUISelectListItem Extends TGUIListItem
 		GUIManager.add(Self)
 
 		Return Self
+	End Method
+
+
+	'override onClick to emit a special event
+	Method OnClick:int(triggerEvent:TEventBase)
+		Super.OnClick(triggerEvent)
+		'inform others that a selectlistitem was clicked
+		'this makes the "selectlistitem-clicked"-event filterable even
+		'if the itemclass gets extended (compared to the general approach
+		'of "guiobject.onclick")
+		EventManager.triggerEvent(TEventSimple.Create("GUISelectListItem.onClick", null, Self, triggerEvent.GetReceiver()) )
 	End Method
 
 
