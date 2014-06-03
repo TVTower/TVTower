@@ -92,8 +92,11 @@ Type TScreenCollection
 
 
 	Method _SetCurrentScreen:int(screen:TScreen)
-		if screen then screen.Enter(currentScreen)
-		currentScreen = screen
+		if screen <> currentScreen
+			if screen then screen.Enter(currentScreen)
+			currentScreen = screen
+			screen.Start()
+		endif
 		return TRUE
 	End Method
 
@@ -269,6 +272,12 @@ Type TScreen
 
 	Method Enter:int(fromScreen:TScreen=null)
 		if _enterScreenEffect then _enterScreenEffect.Reset()
+	End Method
+
+
+	'gets called right after entering that screen
+	'so use this to init certain values or elements on that screen
+	Method Start:int()
 	End Method
 
 

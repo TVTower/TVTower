@@ -34,10 +34,11 @@ Type TGUIinput Extends TGUIobject
     Global spriteNameDefault:String	= "gfx_gui_input.default"
 
 
-	Method Create:TGUIinput(pos:TPoint, dimension:TPoint, value:String, maxLength:Int=128, State:String = "")
+	Method Create:TGUIinput(pos:TPoint, dimension:TPoint, value:String, maxLength:Int=128, limitState:String = "")
 		'setup base widget
-		Super.CreateBase(pos, dimension, State)
+		Super.CreateBase(pos, dimension, limitState)
 
+'		SetZindex(20)
 		SetValue(value)
 		if maxLength >= 0
 			SetMaxLength(maxLength)
@@ -230,8 +231,6 @@ Type TGUIinput Extends TGUIobject
 	Method DrawContent:Int(position:TPoint)
 	    Local i:Int	= 0
 		Local printValue:String	= value
-		local oldCol:TColor = new TColor.Get()
-		SetAlpha oldCol.a * GetScreenAlpha()
 
 		'if we are the input receiving keystrokes, symbolize it with the
 		'blinking underscore sign "text_"
@@ -243,10 +242,11 @@ Type TGUIinput Extends TGUIobject
 			Wend
 			GetFont().draw(printValue, position.GetIntX(), position.GetIntY())
 
-			SetAlpha Ceil(Sin(Time.GetTimeGone() / 4)) * oldCol.a
+			local oldAlpha:float = GetAlpha()
+			SetAlpha Ceil(Sin(Time.GetTimeGone() / 4)) * oldAlpha
 			GetFont().draw("_", Int(position.GetIntX() + GetFont().getWidth(printValue)), Int(position.GetY()) )
 
-			'oldCol.SetRGBA()
+			SetAlpha oldAlpha
 	    Else
 			color.setRGB()
 			While GetFont().GetWidth(printValue) > maxTextWidth And printvalue.length > 0
@@ -256,12 +256,13 @@ Type TGUIinput Extends TGUIobject
 			GetFont().drawStyled(printValue, position.GetIntX(), position.GetIntY(), color, 1)
 		EndIf
 
-		oldCol.SetRGBA()
 	End Method
 
 
 	Method Draw()
 		Local atPoint:TPoint = GetScreenPos()
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * GetScreenAlpha()
 
 		Local textPos:TPoint
 		Local widgetWidth:Int = rect.GetW()
@@ -300,5 +301,7 @@ Type TGUIinput Extends TGUIobject
 		Self.maxTextWidth = widgetWidth - textPos.GetX()*2
 		'actually draw
 		DrawContent(atPoint.Copy().MoveXY(textPos.GetX(), textPos.GetY()))
+
+		oldCol.SetRGBA()
 	End Method
 End Type

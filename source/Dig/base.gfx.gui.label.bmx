@@ -12,7 +12,7 @@ Type TGUILabel Extends TGUIobject
 	Field contentDisplacement:TPoint = new TPoint.Init(0,0)
 	Field color:TColor = TColor.Create(0,0,0)
 	Field valueEffectType:int = 1
-	Field valueEffectSpecial:Float = 0.4
+	Field valueEffectSpecial:Float = 0.25
 	Field _valueDimensionCache:TPoint = null
 
 	Global _typeDefaultFont:TBitmapFont

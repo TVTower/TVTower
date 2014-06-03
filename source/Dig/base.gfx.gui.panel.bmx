@@ -154,7 +154,7 @@ Type TGUIPanel Extends TGUIObject
 			SetAppearanceChanged(false)
 		Endif
 
-		UpdateChildren()
+'		UpdateChildren()
 	End Method
 
 

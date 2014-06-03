@@ -78,6 +78,15 @@ Type Time
 
 		return (MilliSecsLong() - startTime)
 	End Function
+
+
+	Function GetSystemTime:String(format:String="%d %B %Y")
+		Local time:Byte[256]
+		Local buff:Byte[256]
+		time_(time)
+		strftime_(buff, 256, format, localtime_(time))
+		Return String.FromCString(buff)
+	End Function
 End Type
 
 

@@ -39,13 +39,7 @@ Type TGUICheckBox Extends TGUIButton
 		self.valueChecked = checkedValue
 		self.valueUnchecked = uncheckedValue
 
-		if self.caption
-			if IsChecked()
-				SetValue(checkedValue)
-			else
-				SetValue(uncheckedValue)
-			endif
-		endif
+		if self.caption then setValue(GetValue())
 	End Method
 
 
@@ -109,9 +103,14 @@ Type TGUICheckBox Extends TGUIButton
 	Method SetCaption:Int(text:String, color:TColor=Null)
 		Super.SetCaption(text, color)
 
-		valueChecked = text
-		valueUnchecked = text
 
+		'only overwrite this values if they weren't set yet
+		if valueChecked = "" and valueUnchecked = ""
+			valueChecked = text
+			valueUnchecked = text
+		endif
+		
+		
 		if caption
 			caption.SetContentPosition(ALIGN_LEFT, ALIGN_TOP)
 			caption.SetValueEffect(1, 0.2)
@@ -211,12 +210,8 @@ Type TGUICheckBox Extends TGUIButton
 		if IsChecked() then GetCheckSprite().Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TPoint.Init(0.5, 0.5))
 
 		If caption and caption.IsVisible()
-			if IsChecked()
-				caption.value = valueChecked
-			else
-				caption.value = valueUnchecked
-			endif
-		
+			caption.SetValue(GetValue())
+
 			Local oldCol:TColor = caption.color.copy()
 			If isChecked() Then caption.color.AdjustFactor(-60)
 			If mouseover Then caption.color.AdjustFactor(-30)

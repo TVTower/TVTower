@@ -3,6 +3,8 @@ LANGUAGE_NAME_LOCALE = English
 
 
 CHAT = Chat
+SAVE_AND_APPLY = Save and apply
+CANCEL = Cancel
 
 STARTHINT_TITLE1 = Programme plan
 STARTHINT_TEXT1 = The CTRL-key allows you to place a programme multiple times on your plan. While the SHIFT-key tries to place the next episode of a series.

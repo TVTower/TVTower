@@ -2,6 +2,8 @@
 LANGUAGE_NAME_LOCALE = Deutsch
 
 CHAT = Chat
+SAVE_AND_APPLY = Speichern und anwenden
+CANCEL = Abbrechen
 
 STARTHINT_TITLE1 = Programmplaner
 STARTHINT_TEXT1 = Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.

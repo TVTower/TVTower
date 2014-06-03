@@ -43,6 +43,7 @@ Type TGame {_exposeToLua="selected"}
 	Global userChannelName:String = ""
 	'language the player uses ->set in config
 	Global userLanguage:String = "de"
+	Global userStartYear:int = 1985
 	Global userDB:String = ""
 	Global userFallbackIP:String = ""
 
@@ -102,7 +103,7 @@ Type TGame {_exposeToLua="selected"}
 
 	'Summary: create a game, every variable is set to Zero
 	Method Create:TGame(initializePlayer:Int = true, initializeRoom:Int = true)
-		LoadConfig("config/settings.xml")
+		LoadConfig(App.config)
 
 		'load all localizations
 		TLocalization.LoadLanguageFiles("res/lang/lang_*.txt")
@@ -113,7 +114,7 @@ Type TGame {_exposeToLua="selected"}
 
 		networkgame = 0
 
-		GetGametime().SetStartYear(1985)
+		GetGametime().SetStartYear(userStartYear)
 		title = "unknown"
 
 		SetRandomizerBase( Time.MillisecsLong() )
@@ -632,23 +633,17 @@ Type TGame {_exposeToLua="selected"}
 	End Function
 
 
-	'Summary: load the config-file and set variables depending on it
-	Method LoadConfig:Byte(configfile:String="config/settings.xml")
-		Local xml:TxmlHelper = TxmlHelper.Create(configfile)
-		If xml <> Null Then TLogger.Log("TGame.LoadConfig()", "settings.xml read", LOG_LOADING)
-		Local node:TxmlNode = xml.FindRootChild("settings")
-		If node = Null Or node.getName() <> "settings"
-			TLogger.Log("TGame.Loadconfig()", "settings.xml misses a setting-part", LOG_LOADING | LOG_ERROR)
-			Print "settings.xml fehlt der settings-Bereich"
-			Return 0
-		EndIf
-		username			= xml.FindValue(node,"username", "Ano Nymus")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'username' fehlt, setze Defaultwert: 'Ano Nymus'", LOG_LOADING)
-		userchannelname		= xml.FindValue(node,"channelname", "SunTV")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'userchannelname' fehlt, setze Defaultwert: 'SunTV'", LOG_LOADING)
-		userlanguage		= xml.FindValue(node,"language", "de")			'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'language' fehlt, setze Defaultwert: 'de'", LOG_LOADING)
-		userport			= xml.FindValueInt(node,"onlineport", 4444)		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'onlineport' fehlt, setze Defaultwert: '4444'", LOG_LOADING)
-		userdb				= xml.FindValue(node,"database", "res/database.xml")	'Print "settings.xml - missing 'database' - set to default: 'database.xml'"
-		title				= xml.FindValue(node,"defaultgamename", "MyGame")		'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'defaultgamename' fehlt, setze Defaultwert: 'MyGame'", LOG_LOADING)
-		userFallbackIP		= xml.FindValue(node,"fallbacklocalip", "192.168.0.1")	'PrintDebug ("TGame.LoadConfig()", "settings.xml - 'fallbacklocalip' fehlt, setze Defaultwert: '192.168.0.1'", LOG_LOADING)
+	'Summary: load config from the app config data and set variables
+	'depending on it
+	Method LoadConfig:int(config:TData)
+		username = config.GetString("playername", "Player")
+		userchannelname = config.GetString("channelname", "My Channel")
+		userlanguage = config.GetString("language", "de")
+		userStartYear = config.GetInt("startyear", 1985)
+		userport = config.GetInt("onlineport", 4444)
+		userdb = config.GetString("database", "res/database.xml")
+		title = config.GetString("gamename", "New Game")
+		userFallbackIP = config.GetString("fallbacklocalip", "192.168.0.1")
 	End Method
 
 

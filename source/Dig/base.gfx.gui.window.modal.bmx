@@ -120,6 +120,9 @@ Type TGUIModalWindow Extends TGUIWindowBase
 
 	'close the window (eg. with an animation)
 	Method Close:Int(closeButton:Int=-1)
+		'only close once :D
+		if closeActionStarted then return False
+		
 		closeActionStarted = True
 		closeActionTime = Time.GetTimeGone()
 		closeActionStartPosition = rect.position.copy()
@@ -144,7 +147,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
-	'handle clicks on the up/down-buttons and inform others about changes
+	'handle clicks on the various close buttons
 	Method onButtonClick:Int( triggerEvent:TEventBase )
 		Local sender:TGUIButton = TGUIButton(triggerEvent.GetSender())
 		If sender = Null Then Return False
@@ -163,6 +166,12 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		'maybe children intercept clicks...
 		'so call Super.Update as it calls UpdateChildren already
 		Super.Update()
+
+		if Not GuiManager.GetKeystrokeReceiver() and KeyManager.IsHit(KEY_ESCAPE)
+			'do not allow another ESC-press for 250ms
+			KeyManager.blockKey(KEY_ESCAPE, 250)
+			self.close()
+		endif
 
 		'remove the window as soon as there is no animation active
 		'until then: play the animation

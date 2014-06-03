@@ -51,8 +51,10 @@ Type TGUIDropDown Extends TGUIInput
 
 
     Method Create:TGUIDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
-		'setup base widget (button)
+		'setup base widget (input)
 		Super.Create(position, dimension, value, maxLength, limitState)
+		'but this element does not react to keystrokes
+		SetOption(GUI_OBJECT_CAN_RECEIVE_KEYSTROKES, False)
 
 		'=== STYLE BUTTON ===
 		'use another sprite than the default button
@@ -294,7 +296,6 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		'this makes the "dropdownitem-clicked"-event filterable even
 		'if the itemclass gets extended (compared to the general approach
 		'of "guiobject.onclick")
-		print "dropdown clicked"
 		EventManager.triggerEvent(TEventSimple.Create("GUIDropDownItem.onClick", null, Self, triggerEvent.GetReceiver()) )
 	End Method
 

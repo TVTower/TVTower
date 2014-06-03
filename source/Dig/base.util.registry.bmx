@@ -183,7 +183,7 @@ Type TRegistryLoader
 		endif
 
 		xmlHelper = TXmlHelper.Create(file)
-		LoadResourcesFromXML(xmlHelper.root, forceDirectLoad)
+		LoadResourcesFromXML(xmlHelper.GetRootNode(), forceDirectLoad)
 
 		'load everything until everything from that file was loaded
 		if forceDirectLoad
@@ -225,7 +225,7 @@ Type TRegistryLoader
 				'directly by the loader -> eg. "fonts" which only groups "font")
 				if conf
 					'merge in the extras (eg. overwrite "names")
-					if extras then conf.Merge(extras)
+					if extras then conf.Append(extras)
 
 					'directly load the objects or defer to a helper
 					if loader.directLoading or forceDirectLoad
@@ -412,6 +412,8 @@ Type TRegistryUnloadedResourceCollection
 		endif
 		'loading failed
 		toLoad.loadAttempts :+1
+'RONNY
+print "loading failed : "+ toLoad.name + " | "+ toLoad.loadAttempts
 		'add to the list of failed resources
 		AddFailed(toLoad)
 		return FALSE
@@ -645,7 +647,7 @@ Type TRegistryDataLoader extends TRegistryBaseLoader
 		if merge then values = TData(GetRegistry().Get(name, new TData))
 
 		'merge in the new values (to an empty - or the old tdata)
-		values.Merge(TData(data.Get("values")))
+		values.Append(TData(data.Get("values")))
 
 		'add to registry
 		GetRegistry().Set(name, values)

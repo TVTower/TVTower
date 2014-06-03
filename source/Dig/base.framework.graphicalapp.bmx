@@ -44,6 +44,7 @@ Import "base.framework.screen.bmx"
 Type TGraphicalApp extends TApp
 	'should the app do a CLS before rendering?
 	Field autoCls:int = TRUE
+	Field startupFadeInTime:float = 0.5
 
 
 	Method Prepare:int()
@@ -53,6 +54,16 @@ Type TGraphicalApp extends TApp
 		gm.SetHertz(0)
 
 		gm.InitGraphics()
+	End Method
+
+
+	Method Start:int()
+		local screen:TScreen = GetScreenManager().GetCurrent()
+
+		If screen
+			screen.PrepareStart()
+			screen.FadeIn(startupFadeInTime)
+		endif
 	End Method
 
 

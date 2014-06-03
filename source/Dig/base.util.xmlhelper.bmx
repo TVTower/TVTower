@@ -2,27 +2,54 @@ SuperStrict
 Import Brl.Standardio
 Import "external/libxml/libxml.bmx"
 Import "base.util.data.bmx"
+Import Brl.Retro 'for filesize
+
 
 Type TXmlHelper
 	Field filename:String =""
-	Field file:TxmlDoc
-	Field root:TxmlNode
+	Field xmlDoc:TxmlDoc
 
 
-	Function Create:TXmlHelper(filename:String)
+	Function Create:TXmlHelper(filename:String, rootNode:String="")
 		Local obj:TXmlHelper = New TXmlHelper
-		obj.filename= filename
-		obj.file	= TxmlDoc.parseFile(filename)
-		obj.root	= obj.file.getRootElement()
+		if filesize(filename) >= 0
+			obj.filename = filename
+			obj.xmlDoc = TxmlDoc.parseFile(filename)
+		else
+			obj.filename = filename
+			obj.xmlDoc = TxmlDoc.newDoc("1.0")
+			if rootNode <> "" then obj.CreateRootNode(rootNode)
+		endif
 		Return obj
 	End Function
+
+
+	Method GetRootNode:TxmlNode()
+		return xmlDoc.getRootElement()
+	End Method
+
+
+	Method CreateRootNode:TxmlNode(key:string)
+		if key = "" then key = "root"
+		local result:TxmlNode = TxmlNode.newNode(key)
+		xmlDoc.setRootElement(result)
+		'add a new line within <key></key>" so children get added on
+		'the next line
+		GetRootNode().AddContent("~n")
+		return result
+	End Method
 
 
 	'find a "<tag>"-element within a given start node
 	Method FindElementNode:TxmlNode(startNode:TXmlNode, nodeName:String)
 		nodeName = nodeName.ToLower()
-		If Not startNode Then startNode = root
+		If Not startNode Then startNode = GetRootNode()
+		if Not startNode Then return Null
 
+		'maybe we are searching for start node
+		if startNode.getName().ToLower() = nodeName then return startNode
+
+		'traverse through children
 		For Local child:TxmlNode = EachIn GetNodeChildElements(startNode)
 			If child.getName().ToLower() = nodeName Then Return child
 			For Local subStartNode:TxmlNode = EachIn GetNodeChildElements(child)
@@ -35,7 +62,7 @@ Type TXmlHelper
 
 
 	Method FindRootChild:TxmlNode(nodeName:String)
-		Return FindChild(root, nodeName)
+		Return FindChild(GetRootNode(), nodeName)
 	End Method
 
 

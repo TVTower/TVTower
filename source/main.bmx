@@ -22,6 +22,8 @@ Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.interpolation.bmx"
 Import "Dig/base.util.graphicsmanager.bmx"
+Import "Dig/base.util.data.xmlstorage.bmx"
+
 Import "Dig/base.gfx.sprite.particle.bmx"
 
 Import "Dig/base.framework.entity.bmx"
@@ -29,13 +31,11 @@ Import "Dig/base.framework.entity.spriteentity.bmx"
 Import "Dig/base.gfx.bitmapfont.bmx"
 
 Import "Dig/base.gfx.gui.bmx"
-Import "Dig/base.gfx.gui.list.base.bmx"
 Import "Dig/base.gfx.gui.list.slotlist.bmx"
 Import "Dig/base.gfx.gui.list.selectlist.bmx"
 Import "Dig/base.gfx.gui.dropdown.bmx"
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.input.bmx"
-Import "Dig/base.gfx.gui.window.base.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
 
 ?Linux
@@ -128,8 +128,13 @@ TLogger.setPrintMode(LOG_ALL )
 
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
-	Field devConfig:TData				= new TData
-	Field prepareScreenshot:Int			= 0						'logo for screenshot
+	Field devConfig:TData = new TData
+	'developer/base configuration
+	Field configBase:TData = new TData
+	'configuration containing base + user
+	Field config:TData = new TData
+	'draw logo for screenshot ?
+	Field prepareScreenshot:Int	= 0
 
 	'only used for debug purpose (loadingtime)
 	Field creationTime:Int
@@ -143,7 +148,8 @@ Type TApp
 	Global ExitAppDialogue:TGUIModalWindow	= Null
 	Global ExitAppDialogueTime:Int			= 0					'creation time for "double escape" to abort
 	Global ExitAppDialogueEventListeners:TList = CreateList()
-
+	Global settingsBasePath:string = "config/settings.xml"
+	Global settingsUserPath:string = "config/settings.user.xml"
 
 	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:int=TRUE)
 		Local obj:TApp = New TApp
@@ -160,7 +166,8 @@ Type TApp
 		EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
 		obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
 
-		obj.LoadSettings("config/settings.xml")
+		obj.LoadSettings()
+		obj.ApplySettings()
 
 		GetGraphicsManager().SetVsync(vsync)
 		GetGraphicsManager().SetResolution(800,600)
@@ -191,32 +198,42 @@ Type TApp
 	End Function
 
 
+	Method LoadSettings:Int()
+		local storage:TDataXmlStorage = new TDataXmlStorage
+		storage.SetRootNodeKey("config")
+		'load default config
+		configBase = storage.Load(settingsBasePath)
+		if not configBase then configBase = new TData
 
-	Method LoadSettings:Int(path:String="config/settings.xml")
-		Local xml:TXmlHelper = TXmlHelper.Create(path)
-		Local node:TXmlNode = xml.findRootChild("settings")
-		If node = Null Or node.getName() <> "settings" Then	Print "settings.xml fehlt der settings-Bereich"
-
-		local fullscreen:int = xml.FindValueBool(node, "fullscreen", GetGraphicsManager().GetFullscreen(), "settings.xml fehlt 'fullscreen', setze Defaultwert: " + GetGraphicsManager().GetFullscreen())
-		local renderer:int = xml.FindValueInt(node, "directx", GetGraphicsManager().GetRenderer(), "settings.xml fehlt 'directx', setze Defaultwert: "+ GetGraphicsManager().GetRenderer() +" ("+ GetGraphicsManager().GetRendererName() +")")
-		local colordepth:int = xml.FindValueInt(node, "colordepth", GetGraphicsManager().GetColordepth(), "settings.xml fehlt 'colordepth', setze Defaultwert: "+GetGraphicsManager().GetColordepth())
-		If colordepth <> 16 And colordepth <> 32
-			Print "settings.xml enthaelt fehlerhaften Eintrag fuer 'colordepth', setze Defaultwert: 16"
-			colordepth = 16
-		EndIf
-
-		GetGraphicsManager().SetFullscreen(fullscreen)
-		GetGraphicsManager().SetRenderer(renderer)
-		GetGraphicsManager().SetColordepth(colordepth)
+		'load custom config and merge to a useable "total" config
+		config = configBase.copy().Append(storage.Load(settingsUserPath))
+	End Method
 
 
-		local activateSoundEffects:int	= xml.FindValueBool(node, "sound_effects", TRUE, "settings.xml fehlt 'sound_effects', setze Defaultwert: TRUE")
-		local activateSoundMusic:int = xml.FindValueBool(node, "sound_music", TRUE, "settings.xml fehlt 'sound_music', setze Defaultwert: TRUE")
-		local soundEngine:string = xml.FindValue(node, "sound_engine", "AUTOMATIC", "settings.xml fehlt 'sound_engine', setze Defaultwert: AUTOMATIC")
+	Method SaveSettings:Int(newConfig:TData)
+		'save the data differing to the default config
+		'that "-" sets libxml to output the content instead of writing to
+		'a file. Normally you should write to "test.user.xml" to overwrite
+		'the users customized settings
 
-		TSoundManager.SetAudioEngine(soundEngine)
-		TSoundManager.GetInstance().MuteMusic(not activateSoundMusic)
-		TSoundManager.GetInstance().MuteSfx(not activateSoundEffects)
+		'remove "DEV_" ignore key so they get stored too
+		local storage:TDataXmlStorage = new TDataXmlStorage
+		storage.SetRootNodeKey("config")
+		storage.SetIgnoreKeysStartingWith("")
+		storage.Save(settingsUserPath, newConfig.GetDifferenceTo(self.configBase))
+	End Method
+
+
+	Method ApplySettings:Int()
+		GetGraphicsManager().SetFullscreen(config.GetBool("fullscreen", False))
+		GetGraphicsManager().SetRenderer(config.GetInt("renderer", GetGraphicsManager().GetRenderer()))
+		GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
+
+		TSoundManager.SetAudioEngine(config.GetString("sound_engine", "AUTOMATIC"))
+		TSoundManager.GetInstance().MuteMusic(not config.GetBool("sound_music", TRUE))
+		TSoundManager.GetInstance().MuteSfx(not config.GetBool("sound_effects", TRUE))
+
+		if Game then Game.LoadConfig(config)
 	End Method
 
 
@@ -590,10 +607,16 @@ Type TApp
 		local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
 		if not dialogue then return False
 
+		'store closeing time of this modal window (does not matter which
+		'one) to skip creating another exit dialogue within a certain
+		'timeframe
+		ExitAppDialogueTime = Millisecs()
+
 		'not interested in other dialogues
 		if dialogue <> TApp.ExitAppDialogue then return False
 
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
+
 
 		'approve exit
 		If buttonNumber = 0 Then TApp.ExitApp = True
@@ -608,29 +631,22 @@ Type TApp
 
 
 	Function CreateConfirmExitAppDialogue:Int()
-		If ExitAppDialogue
-			'after 100ms waiting another ESC-Press will close the dialogue
-			If MilliSecs() - ExitAppDialogueTime < 100 Then Return False
+		'100ms since last dialogue
+		If MilliSecs() - ExitAppDialogueTime < 100 then Return False
 
-			ExitAppDialogue.Close(-1)
-			ExitAppDialogueTime = MilliSecs()
-		Else
-			'100ms since last dialogue
-			If MilliSecs() - ExitAppDialogueTime < 100 Then Return False
+		ExitAppDialogueTime = MilliSecs()
+		'in single player: pause game
+		If Game And Not Game.networkgame Then Game.SetPaused(True)
 
-			ExitAppDialogueTime = MilliSecs()
-			'in single player: pause game
-			If Game And Not Game.networkgame Then Game.SetPaused(True)
-
-			ExitAppDialogue = New TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,150), "SYSTEM")
-			ExitAppDialogue.SetDialogueType(2)
-			'limit to "screen" area
-			If game.gamestate = TGame.STATE_RUNNING
-				ExitAppDialogue.darkenedArea = new TRectangle.Init(20,10,760,373)
-			EndIf
-
-			ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME") )
+		ExitAppDialogue = New TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,150), "SYSTEM")
+		ExitAppDialogue.SetDialogueType(2)
+		ExitAppDialogue.SetZIndex(100000)
+		'limit to "screen" area
+		If game.gamestate = TGame.STATE_RUNNING
+			ExitAppDialogue.darkenedArea = new TRectangle.Init(20,10,760,373)
 		EndIf
+
+		ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME") )
 	End Function
 
 End Type
@@ -1009,6 +1025,8 @@ Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonSettings:TGUIButton
 	Field guiButtonQuit:TGUIButton
 	Field guiLanguageDropDown:TGUISpriteDropDown
+	Field settingsWindow:TSettingsWindow
+
 
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
@@ -1039,8 +1057,6 @@ Type TScreen_MainMenu Extends TGameScreen
 		guiButtonsPanel.AddChild(guiButtonOnline)
 		guiButtonsPanel.AddChild(guiButtonSettings)
 		guiButtonsPanel.AddChild(guiButtonQuit)
-
-		guiButtonSettings.disable()
 
 
 		if TLocalization.languagesCount > 0
@@ -1073,8 +1089,28 @@ Type TScreen_MainMenu Extends TGameScreen
 		SetLanguage()
 
 		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons")
+
+		'handle saving/applying of settings
+		EventManager.RegisterListenerMethod("guiModalWindow.onClose", self, "onCloseModalDialogue")
+
 		Return Self
 	End Method
+
+
+	Method onCloseModalDialogue:Int(triggerEvent:TEventBase)
+		if not settingsWindow then return False
+		
+		local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
+		if dialogue <> settingsWindow.modalDialogue then return False
+
+		'"apply" button was used...save the whole thing
+		if triggerEvent.GetData().GetInt("closeButton", -1) = 0
+			ApplySettingsWindow()
+		endif
+		'unset variable - allows escape/quit-window again
+		settingsWindow = null
+	End Method
+
 
 
 	'handle clicks on the buttons
@@ -1095,6 +1131,9 @@ Type TScreen_MainMenu Extends TGameScreen
 		If Not sender Then Return False
 
 		Select sender
+			Case guiButtonSettings
+					CreateSettingsWindow()
+					
 			Case guiButtonStart
 					Game.SetGamestate(TGame.STATE_SETTINGSMENU)
 
@@ -1113,6 +1152,26 @@ Type TScreen_MainMenu Extends TGameScreen
 		End Select
 	End Method
 
+
+	Method CreateSettingsWindow()
+		'load config
+		App.LoadSettings()
+		settingsWindow = new TSettingsWindow.Init()
+	End Method
+
+
+	Method ApplySettingsWindow:int()
+		local newConfig:TData = App.config.copy()
+		'append values stored in gui elements
+		newConfig.Append(settingsWindow.ReadGuiValues())
+
+		App.SaveSettings(newConfig)
+		'save the new config as current config
+		App.config = newConfig
+		'and "reinit" settings
+		App.ApplySettings()
+	End Method
+	
 
 	'override default
 	Method SetLanguage:int(languageCode:String = "")
@@ -1193,7 +1252,6 @@ Type TScreen_GameSettings Extends TGameScreen
 	Method Create:TScreen_GameSettings(name:String)
 		Super.Create(name)
 
-
 		'===== CREATE AND SETUP GUI =====
 		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, name)
 		guiSettingsWindow.guiBackground.spriteAlpha = 0.5
@@ -1204,9 +1262,9 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
 		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 0), "", TColor.CreateGrey(75), name)
-		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), Game.title, 32, name)
+		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), "", 32, name)
 		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 0), "", TColor.CreateGrey(75), name)
-		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "1985", 4, name)
+		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "", 4, name)
 
 		Local checkboxHeight:Int = 0
 		'guiAnnounce		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, GetBitmapFontManager().baseFontBold)
@@ -1321,6 +1379,17 @@ Type TScreen_GameSettings Extends TGameScreen
 	End Method
 
 
+	'override to set guielements values (instead of only on screen creation)
+	Method Start:int()
+		guiGameTitle.SetValue(Game.title)
+		guiStartYear.SetValue(Game.userStartYear)
+		guiPlayerNames[0].SetValue(game.username)
+		guiChannelNames[0].SetValue(game.userchannelname)
+		guiGameTitle.SetValue(game.title)
+	End Method
+
+
+
 	'handle clicks on the buttons
 	Method onClickArrows:Int(triggerEvent:TEventBase)
 		Local sender:TGUIArrowButton = TGUIArrowButton(triggerEvent._sender)
@@ -1378,11 +1447,15 @@ Type TScreen_GameSettings Extends TGameScreen
 					'ATTENTION: use "not" as checked means "not ignore"
 					'TProgrammeLicence.setIgnoreUnreleasedProgrammes( not sender.isChecked())
 		End Select
-		If sender.isChecked()
-			TGame.SendSystemMessage(GetLocale("OPTION_ON")+": "+sender.GetValue())
-		Else
-			TGame.SendSystemMessage(GetLocale("OPTION_OFF")+": "+sender.GetValue())
-		EndIf
+
+		'only inform when in settings menu
+		if Game.gamestate = TGame.STATE_SETTINGSMENU
+			If sender.isChecked()
+				TGame.SendSystemMessage(GetLocale("OPTION_ON")+": "+sender.GetValue())
+			Else
+				TGame.SendSystemMessage(GetLocale("OPTION_OFF")+": "+sender.GetValue())
+			EndIf
+		endif
 	End Method
 
 
@@ -1901,6 +1974,205 @@ Type TScreen_StartMultiplayer Extends TGameScreen
 		EndIf
 	End Method
 End Type
+
+
+
+'the modal window containing various gui elements to configur some
+'basics in the game
+Type TSettingsWindow
+	Field modalDialogue:TGUIGameModalWindow
+	Field inputPlayerName:TGUIInput
+	Field inputChannelName:TGUIInput
+	Field inputStartYear:TGUIInput
+	Field inputStationmap:TGUIDropDown
+	Field inputDatabase:TGUIDropDown
+	Field checkMusic:TGUICheckbox
+	Field checkSfx:TGUICheckbox
+	Field dropdownRenderer:TGUIDropDown
+	Field checkFullscreen:TGUICheckbox
+	Field inputGameName:TGUIInput
+	Field inputOnlinePort:TGUIInput
+
+
+	Method ReadGuiValues:TData()
+		local data:TData = new TData
+
+		data.Add("playername", inputPlayerName.GetValue())
+		data.Add("channelname", inputChannelName.GetValue())
+		data.Add("startyear", inputStartYear.GetValue())
+		'data.Add("stationmap", inputStationmap.GetValue())
+		'data.Add("database", inputDatabase.GetValue())
+		data.AddBoolString("sound_music", checkMusic.IsChecked())
+		data.AddBoolString("sound_effects", checkSfx.IsChecked())
+
+		data.AddBoolString("fullscreen", checkFullscreen.IsChecked())
+		data.Add("gamename", inputGameName.GetValue())
+		data.Add("onlineport", inputOnlinePort.GetValue())
+
+		return data
+	End Method
+
+
+	Method SetGuiValues:int(data:TData)
+		inputPlayerName.SetValue(data.GetString("playername", "Player"))
+		inputChannelName.SetValue(data.GetString("channelname", "My Channel"))
+		inputStartYear.SetValue(data.GetInt("startyear", 1985))
+		'inputStationmap.SetValue(data.GetString("stationmap", "config/maps/germany.xml"))
+		'inputDatabase.SetValue(data.GetString("database", "res/database.xml"))
+		checkMusic.SetChecked(data.GetBool("sound_music", True))
+		checkSfx.SetChecked(data.GetBool("sound_effects", True))
+
+		checkFullscreen.SetChecked(data.GetBool("fullscreen", False))
+
+		inputGameName.SetValue(data.GetString("gamename", "New Game"))
+		inputOnlinePort.SetValue(data.GetInt("onlineport", 4544))
+	End Method
+
+
+	Method Init:TSettingsWindow()
+		'LAYOUT CONFIG
+		local nextY:int = 0, nextX:int = 0
+		local rowWidth:int = 215
+		local checkboxWidth:int = 180
+		local inputWidth:int = 170
+		local labelH:int = 12
+		local inputH:int = 0
+		local windowW:int = 670
+		local windowH:int = 380
+
+		modalDialogue = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(windowW, windowH), "SYSTEM")
+
+		modalDialogue.SetDialogueType(2)
+		modalDialogue.buttons[0].SetCaption(GetLocale("SAVE_AND_APPLY"))
+		modalDialogue.buttons[0].Resize(160,-1)
+		modalDialogue.buttons[1].SetCaption(GetLocale("CANCEL"))
+		modalDialogue.buttons[1].Resize(160,-1)
+		modalDialogue.SetCaptionAndValue(GetLocale("MENU_SETTINGS"), "")
+
+		local canvas:TGUIObject = modalDialogue.GetGuiContent()
+				
+		local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(new TPoint.Init(0, nextY), "Vorgaben ~qNeues Spiel~q")
+		labelTitleGameDefaults.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		canvas.AddChild(labelTitleGameDefaults)
+		nextY :+ 25
+
+		local labelPlayerName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Spielername:")
+		inputPlayerName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
+		canvas.AddChild(labelPlayerName)
+		canvas.AddChild(inputPlayerName)
+		inputH = inputPlayerName.GetScreenHeight()
+		nextY :+ inputH + labelH * 1.5
+
+		local labelChannelName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Sendername:")
+		inputChannelName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
+		canvas.AddChild(labelChannelName)
+		canvas.AddChild(inputChannelName)
+		nextY :+ inputH + labelH * 1.5
+
+		local labelStartYear:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Startjahr:")
+		inputStartYear = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(50,-1), "", 4)
+		canvas.AddChild(labelStartYear)
+		canvas.AddChild(inputStartYear)
+		nextY :+ inputH + labelH * 1.5
+
+		local labelStationmap:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Ausstrahlungsland:")
+		inputStationmap = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "germany.xml", 128)
+		inputStationmap.disable()
+		canvas.AddChild(labelStationmap)
+		canvas.AddChild(inputStationmap)
+		nextY :+ inputH + labelH * 1.5
+
+		local labelDatabase:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Datenbank:")
+		inputDatabase = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "database.xml", 128)
+		inputDatabase.disable()
+		canvas.AddChild(labelDatabase)
+		canvas.AddChild(inputDatabase)
+		nextY :+ inputH + labelH * 1.5
+
+
+		nextY = 0
+		nextX = 1*rowWidth
+		'SOUND
+		local labelTitleSound:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Soundausgabe")
+		labelTitleSound.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		canvas.AddChild(labelTitleSound)
+		nextY :+ 25
+
+		checkMusic = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
+		checkMusic.SetCaptionValues("An, Musik wird abgespielt.", "Aus, es wird keine Musik abgespielt." )
+		canvas.AddChild(checkMusic)
+		nextY :+ Max(inputH, checkMusic.GetScreenHeight())
+
+		checkSfx = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
+		checkSfx.SetCaptionValues("An, Soundeffekte werden abgespielt.", "Aus, es werden keine Soundeffekte abgespielt." )
+		canvas.AddChild(checkSfx)
+		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
+		nextY :+ 15
+
+
+		'GRAPHICS
+		local labelTitleGraphics:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Grafik")
+		labelTitleGraphics.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		canvas.AddChild(labelTitleGraphics)
+		nextY :+ 25
+
+		local labelRenderer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Renderer:")
+		dropdownRenderer = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + 12), new TPoint.Init(inputWidth,-1), "Automatisch", 128)
+		local rendererValues:string[] = ["0", "3"]
+		local rendererTexts:string[] = ["OpenGL", "Buffered OpenGL"]
+		?Win32
+			renderValues :+ ["1","2]
+			rendererTexts : + ["DirectX 7", "DirectX 9"]
+		?
+		local itemHeight:int = 0
+		For local i:int = 0 until rendererValues.Length
+			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, rendererTexts[i])
+			item.SetValueColor(TColor.CreateGrey(50))
+			item.data.Add("value", rendererValues[i])
+			dropdownRenderer.AddItem(item)
+			if itemHeight = 0 then itemHeight = item.GetScreenHeight()
+		Next
+		dropdownRenderer.SetListContentHeight(itemHeight * Len(rendererValues))
+
+		canvas.AddChild(labelRenderer)
+		canvas.AddChild(dropdownRenderer)
+'		GuiManager.SortLists()
+		nextY :+ inputH + labelH * 1.5
+
+		checkFullscreen = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
+		checkFullscreen.SetCaptionValues("Vollbildmodus aktiviert", "Vollbildmodus deaktiviert" )
+		canvas.AddChild(checkFullscreen)
+		nextY :+ Max(inputH, checkFullscreen.GetScreenHeight()) + labelH * 1.5
+
+
+		'MULTIPLAYER
+		nextY = 0
+		nextX = 2*rowWidth
+		local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Mehrspieler")
+		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		canvas.AddChild(labelTitleMultiplayer)
+		nextY :+ 25
+
+		local labelGameName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Spieltitel:")
+		inputGameName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
+		canvas.AddChild(labelGameName)
+		canvas.AddChild(inputGameName)
+		nextY :+ inputH + labelH * 1.5
+
+	
+		local labelOnlinePort:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Port fuer Onlinespiele:")
+		inputOnlinePort = New TGUIInput.Create(new TPoint.Init(nextX, nextY + 12), new TPoint.Init(50,-1), "", 4)
+		canvas.AddChild(labelOnlinePort)
+		canvas.AddChild(inputOnlinePort)
+		nextY :+ inputH + 5
+
+		'fill values
+		SetGuiValues(App.config)
+
+		return self
+	End Method
+End Type
+
 
 
 

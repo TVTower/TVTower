@@ -25,15 +25,6 @@ Const CURRENCYSIGN:string = Chr(8364) 'eurosign
 
 
 
-Function CurrentDateTime:String(_what:String="%d %B %Y")
-	Local	time:Byte[256],buff:Byte[256]
-	time_(time)
-	strftime_(buff,256,_what,localtime_( time ))
-	Return String.FromCString(buff)
-End Function
-
-
-
 Function SortListArray(List:TList Var)
 	Local Arr:Object[] = List.ToArray()
 	Arr.Sort()
