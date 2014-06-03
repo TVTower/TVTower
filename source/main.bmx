@@ -249,6 +249,10 @@ Type TApp
 
 		'select language
 		TLocalization.SetCurrentLanguage(languageCode)
+
+		'store in config - for auto save of user settings
+		config.Add("language", languageCode)
+		
 		'inform others - so eg. buttons can re-localize
 		EventManager.triggerEvent(TEventSimple.Create("Language.onSetLanguage", new TData.Add("languageCode", languageCode), self))
 		Return True
@@ -371,6 +375,7 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
+rem debug only
 				If KEYMANAGER.IsHit(KEY_TAB)
 					if TLocalization.GetCurrentLanguageCode() = "de"
 						App.SetLanguage("en")
@@ -378,7 +383,7 @@ Type TApp
 						App.SetLanguage("de")
 					endif
 				endif
-					
+endrem					
 
 				'Save game only when in a game
 				if game.gamestate = TGame.STATE_RUNNING
@@ -1118,10 +1123,13 @@ Type TScreen_MainMenu Extends TGameScreen
 		local languageEntry:TGUIObject = TGUIObject(triggerEvent.GetReceiver())
 		if not languageEntry then Return False
 
-		TLocalization.SetCurrentLanguage(languageEntry.data.GetString("languageCode", "en"))
+		App.SetLanguage(languageEntry.data.GetString("languageCode", "en"))
+		'auto save to user settings
+		App.SaveSettings(App.config)
 
 		'fill captions with the localized values
 		SetLanguage()
+
 	End Method
 
 
@@ -1486,7 +1494,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiStartYearLabel.SetValue(GetLocale("START_YEAR")+":")
 
 		gui24HoursDay.SetValue(GetLocale("24_HOURS_GAMEDAY"))
-		guiSpecialFormats.SetValue(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS")+ " oder du ist mehr")
+		guiSpecialFormats.SetValue(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"))
 		guiFilterUnreleased.SetValue(GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"))
 
 		guiButtonStart.SetCaption(GetLocale("MENU_START_GAME"))
@@ -2051,38 +2059,38 @@ Type TSettingsWindow
 
 		local canvas:TGUIObject = modalDialogue.GetGuiContent()
 				
-		local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(new TPoint.Init(0, nextY), "Vorgaben ~qNeues Spiel~q")
+		local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(new TPoint.Init(0, nextY), GetLocale("DEFAULTS_FOR_NEW_GAME"))
 		labelTitleGameDefaults.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleGameDefaults)
 		nextY :+ 25
 
-		local labelPlayerName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Spielername:")
+		local labelPlayerName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("PLAYERNAME")+":")
 		inputPlayerName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
 		canvas.AddChild(labelPlayerName)
 		canvas.AddChild(inputPlayerName)
 		inputH = inputPlayerName.GetScreenHeight()
 		nextY :+ inputH + labelH * 1.5
 
-		local labelChannelName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Sendername:")
+		local labelChannelName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("CHANNELNAME")+":")
 		inputChannelName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
 		canvas.AddChild(labelChannelName)
 		canvas.AddChild(inputChannelName)
 		nextY :+ inputH + labelH * 1.5
 
-		local labelStartYear:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Startjahr:")
+		local labelStartYear:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("START_YEAR")+":")
 		inputStartYear = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(50,-1), "", 4)
 		canvas.AddChild(labelStartYear)
 		canvas.AddChild(inputStartYear)
 		nextY :+ inputH + labelH * 1.5
 
-		local labelStationmap:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Ausstrahlungsland:")
+		local labelStationmap:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("STATIONMAP")+":")
 		inputStationmap = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "germany.xml", 128)
 		inputStationmap.disable()
 		canvas.AddChild(labelStationmap)
 		canvas.AddChild(inputStationmap)
 		nextY :+ inputH + labelH * 1.5
 
-		local labelDatabase:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Datenbank:")
+		local labelDatabase:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("DATABASE")+":")
 		inputDatabase = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "database.xml", 128)
 		inputDatabase.disable()
 		canvas.AddChild(labelDatabase)
@@ -2093,36 +2101,36 @@ Type TSettingsWindow
 		nextY = 0
 		nextX = 1*rowWidth
 		'SOUND
-		local labelTitleSound:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Soundausgabe")
+		local labelTitleSound:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
 		labelTitleSound.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleSound)
 		nextY :+ 25
 
 		checkMusic = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
-		checkMusic.SetCaptionValues("An, Musik wird abgespielt.", "Aus, es wird keine Musik abgespielt." )
+		checkMusic.SetCaptionValues(GetLocale("MUSIC_GETS_PLAYED"), GetLocale("MUSIC_GETS_NOT_PLAYED"))
 		canvas.AddChild(checkMusic)
 		nextY :+ Max(inputH, checkMusic.GetScreenHeight())
 
 		checkSfx = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
-		checkSfx.SetCaptionValues("An, Soundeffekte werden abgespielt.", "Aus, es werden keine Soundeffekte abgespielt." )
+		checkSfx.SetCaptionValues(GetLocale("SFX_GETS_PLAYED"), GetLocale("SFX_GETS_NOT_PLAYED"))
 		canvas.AddChild(checkSfx)
 		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
 		nextY :+ 15
 
 
 		'GRAPHICS
-		local labelTitleGraphics:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Grafik")
+		local labelTitleGraphics:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("GRAPHICS"))
 		labelTitleGraphics.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleGraphics)
 		nextY :+ 25
 
-		local labelRenderer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Renderer:")
-		dropdownRenderer = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + 12), new TPoint.Init(inputWidth,-1), "Automatisch", 128)
+		local labelRenderer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("RENDERER") + ":")
+		dropdownRenderer = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + 12), new TPoint.Init(inputWidth,-1), "", 128)
 		local rendererValues:string[] = ["0", "3"]
 		local rendererTexts:string[] = ["OpenGL", "Buffered OpenGL"]
 		?Win32
-			renderValues :+ ["1","2]
-			rendererTexts : + ["DirectX 7", "DirectX 9"]
+			rendererValues :+ ["1","2"]
+			rendererTexts :+ ["DirectX 7", "DirectX 9"]
 		?
 		local itemHeight:int = 0
 		For local i:int = 0 until rendererValues.Length
@@ -2140,7 +2148,7 @@ Type TSettingsWindow
 		nextY :+ inputH + labelH * 1.5
 
 		checkFullscreen = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
-		checkFullscreen.SetCaptionValues("Vollbildmodus aktiviert", "Vollbildmodus deaktiviert" )
+		checkFullscreen.SetCaptionValues(GetLocale("FULLSCREEN_ACTIVE"), GetLocale("FULLSCREEN_NOT_ACTIVE"))
 		canvas.AddChild(checkFullscreen)
 		nextY :+ Max(inputH, checkFullscreen.GetScreenHeight()) + labelH * 1.5
 
@@ -2148,19 +2156,19 @@ Type TSettingsWindow
 		'MULTIPLAYER
 		nextY = 0
 		nextX = 2*rowWidth
-		local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Mehrspieler")
+		local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("MULTIPLAYER"))
 		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleMultiplayer)
 		nextY :+ 25
 
-		local labelGameName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Spieltitel:")
+		local labelGameName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("GAME_TITLE")+":")
 		inputGameName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
 		canvas.AddChild(labelGameName)
 		canvas.AddChild(inputGameName)
 		nextY :+ inputH + labelH * 1.5
 
 	
-		local labelOnlinePort:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), "Port fuer Onlinespiele:")
+		local labelOnlinePort:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("PORT_ONLINEGAME")+":")
 		inputOnlinePort = New TGUIInput.Create(new TPoint.Init(nextX, nextY + 12), new TPoint.Init(50,-1), "", 4)
 		canvas.AddChild(labelOnlinePort)
 		canvas.AddChild(inputOnlinePort)

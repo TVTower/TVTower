@@ -5,6 +5,23 @@ CHAT = Chat
 SAVE_AND_APPLY = Speichern und anwenden
 CANCEL = Abbrechen
 
+PLAYERNAME = Spielername
+CHANNELNAME = Sendername
+STATIONMAP = Senderkarte
+DATABASE = Datenbank
+SOUND_OUTPUT = Soundausgabe
+GRAPHICS = Grafik
+MUSIC_GETS_PLAYED = An, Musik wird abgespielt.
+MUSIC_GETS_NOT_PLAYED = Aus, es wird keine Musik abgespielt.
+SFX_GETS_PLAYED = An, Soundeffekte werden abgespielt.
+SFX_GETS_NOT_PLAYED = Aus, es werden keine Soundeffekte abgespielt.
+FULLSCREEN_ACTIVE = Vollbildmodus aktiviert
+FULLSCREEN_NOT_ACTIVE = Vollbildmodus deaktiviert
+MULTIPLAYER = Mehrspieler
+DEFAULTS_FOR_NEW_GAME= Vorgaben "Neues Spiel"
+RENDERER = Renderer
+PORT_ONLINEGAME = Port für Onlinespiele
+
 STARTHINT_TITLE1 = Programmplaner
 STARTHINT_TEXT1 = Mit der STRG+Taste könnt ihr ein Programm mehrfach im Planer platzieren. Die Shift-Taste hingegen versucht nach der Platzierung die darauffolgende Episode bereitzustellen.
 STARTHINT_TITLE2 = Programmplanung

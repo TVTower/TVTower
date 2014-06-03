@@ -6,6 +6,23 @@ CHAT = Chat
 SAVE_AND_APPLY = Save and apply
 CANCEL = Cancel
 
+PLAYERNAME = Playername
+CHANNELNAME = Channelname
+STATIONMAP = Stationmap
+DATABASE = Database
+SOUND_OUTPUT = Sound output
+GRAPHICS = Graphics
+MUSIC_GETS_PLAYED = On, music gets played.
+MUSIC_GETS_NOT_PLAYED = off, no music gets played.
+SFX_GETS_PLAYED = On, sound effects get played.
+SFX_GETS_NOT_PLAYED = Off, no sound effects get played.
+FULLSCREEN_ACTIVE = Fullscreen mode active
+FULLSCREEN_NOT_ACTIVE = Fullscreen mode not active
+MULTIPLAYER = Multiplayer
+RENDERER = Renderer
+DEFAULTS_FOR_NEW_GAME= Defaults for "New Game"
+PORT_ONLINEGAME = Port for online games
+
 STARTHINT_TITLE1 = Programme plan
 STARTHINT_TEXT1 = The CTRL-key allows you to place a programme multiple times on your plan. While the SHIFT-key tries to place the next episode of a series.
 STARTHINT_TITLE2 = Programme plan
