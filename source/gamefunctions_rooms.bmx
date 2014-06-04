@@ -2447,6 +2447,10 @@ Type RoomHandler_Office extends TRoomHandler
 			font.draw(GetLocale("VALUE")+": ", 595, 216, TColor.clBlack)
 			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 		EndIf
+
+
+		GetBitmapFontManager().Get("default", 12).DrawBlock("Sendemast", 600, 250, 200, 200, new TPoint.Init(0,0), TColor.clBlack)
+		
 	End Function
 
 

@@ -617,11 +617,7 @@ endrem
 
 	'override default update-method
 	Method Update:Int()
-		'first check if our children recognize that click
-		UpdateChildren()
-
 		Super.Update()
-
 
 		'enable/disable buttons of scrollers if they reached the
 		'limits of the scrollable panel
@@ -666,10 +662,6 @@ endrem
 			oldCol.SetRGBA()
 		EndIf
 
-		'draws the guiEntriesPanel (default guiEntriesPanel does not
-		'draw something but extended might do)
-		DrawChildren()
-		
 
 		If _debugMode
 			Local oldCol:TColor = new TColor.Get()
