@@ -2370,7 +2370,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, stationMapBuyButton )
 
 		stationMapSellButton = new TGUIButton.Create(new TPoint.Init(610, 345), new TPoint.Init(155,-1), "", "STATIONMAP")
-		stationMapBuyButton.disable()
+		stationMapSellButton.disable()
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, stationMapSellButton )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, stationMapSellButton )
 
