@@ -94,7 +94,16 @@ Type TRoom {_exposeToLua="selected"}
 	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
 	Field description:String[] = ["", ""]
 	'playerID or -1 for system/artificial person
-	Field owner:Int	=-1
+	Field owner:Int	= -1
+	'can this room be rented or still occupied?
+	Field availableForRent:Int = False
+	'can this room be used as a studio?
+	Field usableAsStudio:Int = False
+	'does something block that room (eg. previous bomb attack)
+	Field blocked:Int = False
+	'time until this minutes in the game are gone
+	Field blockedUntil:Int = 0
+	
 	'the image used in the room (store individual backgrounds depending on "money")
 	Field _background:TSprite {nosave}
 	Field backgroundSpriteName:string
@@ -106,6 +115,7 @@ Type TRoom {_exposeToLua="selected"}
 	Field hotspots:TList = CreateList()
 	'is this a room or just a "plan" or "view"
 	Field fakeRoom:int = FALSE
+	'size of this room (eg. for studios)
 	Field size:int = 1
 	Field id:int = 0
 	Field GUID:string = ""
@@ -155,7 +165,58 @@ Type TRoom {_exposeToLua="selected"}
 		self.description = description
 		self.size = Max(0, Min(3, size))
 
+		'default studio rooms
+		if name = "studio" then SetUsableAsStudio(true)
+
 		return self
+	End Method
+
+
+	Method SetBlocked:int(blockTimeInMinutes:int = 0)
+		if blockTimeInMinutes = 0
+			blocked = False
+		else
+			blocked = True
+			blockedUntil = GetGameTime().GetTimeGone() + blockTimeInMinutes
+		endif
+	End Method
+
+
+	Method IsBlocked:Int()
+		if blocked and blockedUntil < GetGameTime().GetMinute() then blocked = False
+		return blocked
+	End Method
+
+
+	Method SetUsableAsStudio:int(bool:int = True)
+		usableAsStudio = bool
+	End Method
+
+
+	Method IsUsableAsStudio:int()
+		return usableAsStudio
+	End Method
+
+
+	Method SetAvailableForRent:int(bool:int = True)
+		availableForRent = bool
+	End Method
+
+
+	Method IsAvailableForRent:int()
+		return fakeRoom = 0 and not HasOwner() and availableForRent
+	End Method
+
+
+	Method HasOwner:int()
+		return (owner > 0)
+	End Method
+
+
+	'call this is if the terrorist attacks this room
+	Method SetAttacked:int()
+		'block this room for 24 ingame hours 
+		SetBlocked(60 * 24) 
 	End Method
 
 
@@ -184,6 +245,21 @@ Type TRoom {_exposeToLua="selected"}
 
 	Method GetSize:int() {_exposeToLua}
 		return size
+	End Method
+
+
+	'change the owner of this room
+	Method ChangeOwner:int(newOwner:int)
+		local event:TEventSimple = TEventSimple.Create("room.onChangeOwner", new TData.AddNumber("oldOwner", self.owner).AddNumber("newOwner", newOwner), self)
+		EventManager.triggerEvent(event)
+
+		if not event.IsVeto()
+			self.owner = newOwner
+			return True
+		else
+			'someone is against changing the owner
+			return False
+		endif
 	End Method
 
 
@@ -250,9 +326,9 @@ Type TRoom {_exposeToLua="selected"}
 
 		local res:string = GetLocale(description[lineNumber-1])
 
-		'studios and free rooms get a second line added
+		'free rooms get a second line added
 		'containing size information
-		if lineNumber = 2 and name = "studio" or name = "free"
+		if lineNumber = 2 and IsUsableAsStudio()
 			res = GetLocale("ROOM_SIZE").replace("%SIZE%", size)
 		endif
 
@@ -384,6 +460,8 @@ End Rem
 	'returns whether the figure can enter this room
 	'override this in custom rooms
 	Method CanFigureEnter:int(figure:TFigure)
+		'access to this room is blocked (eg. repair after attack)
+		if IsBlocked() then return False
 		'all can enter if there is no limit...
 		if allowMultipleOccupants then return True
 		'non players can enter everytime
@@ -5244,6 +5322,38 @@ Type RoomHandler_Betty extends TRoomHandler
 End Type
 
 
+
+'RoomAgency
+Type RoomHandler_RoomAgency extends TRoomHandler
+	Function Init()
+		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("roomagency"))
+	End Function
+
+
+	Function RentRoom:int(room:TRoom, owner:int=0)
+		print "RoomHandler_RoomAgency.RentRoom()"
+		room.ChangeOwner(owner)
+	End Function
+
+
+	Function CancelRoom:int(room:TRoom)
+		print "RoomHandler_RoomAgency.CancelRoom()"
+		room.ChangeOwner(0)
+	End Function
+
+
+	Function onDraw:int( triggerEvent:TEventBase )
+		'nothing yet
+	End Function
+
+
+	Function onUpdate:int( triggerEvent:TEventBase )
+		'nothing yet
+	End Function
+End Type
+
+
+
 'helper for Credits
 Type TCreditsRole
 	field name:string = ""
@@ -5549,9 +5659,9 @@ Type TRoomDoorSign Extends TBlockMoveable
 		Local font:TBitmapFont = GetBitmapFont("Default",9, BOLDFONT)
 		TBitmapFont.setRenderTarget(newImage)
 		if door.room.owner > 0
-			font.drawBlock(door.room.GetDescription(1), 22, 4, 150,20, null, TColor.CreateGrey(230), 2, 1, 0.5)
+			font.drawBlock(door.room.GetDescription(1), 22, 4, 150,15, null, TColor.CreateGrey(230), 2, 1, 0.5)
 		else
-			font.drawBlock(door.room.GetDescription(1), 22, 4, 150,20, null, TColor.CreateGrey(50), 2, 1, 0.3)
+			font.drawBlock(door.room.GetDescription(1), 22, 4, 150,15, null, TColor.CreateGrey(50), 2, 1, 0.3)
 		endif
 		TBitmapFont.setRenderTarget(null)
 
@@ -5560,11 +5670,12 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 
 	Function UpdateAll(DraggingAllowed:int)
-		'Local localslot:Int = 0 						'slot in suitcase
-
-		AdditionallyDragged = 0			'reset additional dragged objects
-		SortList List						'sort blocklist
-		ReverseList list 					'reorder: first are dragged obj then not dragged
+		'reset additional dragged objects
+		AdditionallyDragged = 0
+		'sort blocklist
+		SortList(List)
+		'reorder: first are dragged obj then not dragged
+		ReverseList(list)
 
 		For Local locObj:TRoomDoorSign = EachIn List
 			If not locObj then continue
@@ -5717,6 +5828,7 @@ Function Init_CreateAllRooms()
 
 	RoomHandler_AdAgency.GetInstance().Init()
 	RoomHandler_MovieAgency.GetInstance().Init()
+	RoomHandler_RoomAgency.Init()
 
 	RoomHandler_Betty.Init()
 

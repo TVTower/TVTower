@@ -1,28 +1,25 @@
 'handles network events
 
 'first 100 ids reserved for base network events
-'Const NET_SETSLOT:Int					= 101				' SERVER: command from server to set to a given playerslot
-'Const NET_SLOTSET:Int					= 102				' ALL: 	  response to all, that IP uses slot X now
+'Const NET_SETSLOT:Int					= 101		' SERVER: command from server to set to a given playerslot
+'Const NET_SLOTSET:Int					= 102		' ALL: 	  response to all, that IP uses slot X now
 
-Const NET_SENDGAMESTATE:Int				= 102				' ALL:    sends a ReadyFlag
-Const NET_GAMEREADY:Int					= 103				' ALL:    sends a ReadyFlag
-Const NET_STARTGAME:Int					= 104				' SERVER: sends a StartFlag
-Const NET_CHATMESSAGE:Int				= 105				' ALL:    a sent chatmessage ;D
-Const NET_PLAYERDETAILS:Int				= 106				' ALL:    name, channelname...
-Const NET_FIGUREPOSITION:Int			= 107				' ALL:    x,y,room,target...
-'now handled by PROGRAMMECOLLECTIONCHANGE
-'Const NET_SENDPROGRAMME:Int			= 108				' SERVER: sends a Programme to a user for adding this to the players collection
-'Const NET_SENDCONTRACT:Int				= 109				' SERVER: sends a Contract to a user for adding this to the players collection
-'Const NET_SENDNEWS:Int					= 110				' SERVER: creates and sends news
-Const NET_ELEVATORSYNCHRONIZE:Int		= 111				' SERVER: synchronizing the elevator
-Const NET_ELEVATORROUTECHANGE:Int		= 112				' ALL:    elevator routes have changed
-Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113				' ALL: sends Changes in subscription levels of news-agencies
-Const NET_STATIONMAPCHANGE:Int			= 114				' ALL:    stations have changes (added ...)
-Const NET_MOVIEAGENCYCHANGE:Int			= 115				' ALL: sends changes of programme in movieshop
-Const NET_PROGRAMMECOLLECTIONCHANGE:Int = 116				' ALL:    programmecollection was changed (removed, sold...)
-Const NET_PROGRAMMEPLAN_CHANGE:Int		= 117				' ALL:    playerprogramme has changed (added, removed, ...movies,ads ...)
+Const NET_SENDGAMESTATE:Int				= 102		' ALL:    sends a ReadyFlag
+Const NET_GAMEREADY:Int					= 103		' ALL:    sends a ReadyFlag
+Const NET_STARTGAME:Int					= 104		' SERVER: sends a StartFlag
+Const NET_CHATMESSAGE:Int				= 105		' ALL:    a sent chatmessage ;D
+Const NET_PLAYERDETAILS:Int				= 106		' ALL:    name, channelname...
+Const NET_FIGUREPOSITION:Int			= 107		' ALL:    x,y,room,target...
+Const NET_ELEVATORSYNCHRONIZE:Int		= 111		' SERVER: synchronizing the elevator
+Const NET_ELEVATORROUTECHANGE:Int		= 112		' ALL:    elevator routes have changed
+Const NET_NEWSSUBSCRIPTIONCHANGE:Int	= 113		' ALL:	  sends Changes in subscription levels of news-agencies
+Const NET_STATIONMAPCHANGE:Int			= 114		' ALL:    stations have changes (added ...)
+Const NET_MOVIEAGENCYCHANGE:Int			= 115		' ALL:    sends changes of programme in movieshop
+Const NET_ROOMAGENCYCHANGE:Int			= 116		' ALL:    sends changes to room details (owner changes etc.)
+Const NET_PROGRAMMECOLLECTIONCHANGE:Int = 117		' ALL:    programmecollection was changed (removed, sold...)
+Const NET_PROGRAMMEPLAN_CHANGE:Int		= 118		' ALL:    playerprogramme has changed (added, removed, ...movies,ads ...)
 Const NET_PLAN_SETNEWS:Int				= 119
-Const NET_GAMESETTINGS:Int				= 121				' SERVER: send extra settings (random seed value etc.)
+Const NET_GAMESETTINGS:Int				= 121		' SERVER: send extra settings (random seed value etc.)
 
 Const NET_DELETE:Int					= 0
 Const NET_ADD:Int						= 1000
@@ -81,29 +78,48 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			local randomSeedValue:int = NetworkObject.getInt(2)
 			Game.SetRandomizerBase( randomSeedValue )
 
-		case NET_STARTGAME					Game.networkgameready = 1
-		case NET_GAMEREADY					NetworkHelper.ReceiveGameReady( networkObject )
-		case NET_SENDGAMESTATE				NetworkHelper.ReceiveGameState( networkObject )
-		case NET_PLAYERDETAILS				NetworkHelper.ReceivePlayerDetails( networkObject )
-		case NET_FIGUREPOSITION				NetworkHelper.ReceiveFigurePosition( networkObject )
+		case NET_STARTGAME
+				Game.networkgameready = 1
+		case NET_GAMEREADY
+				NetworkHelper.ReceiveGameReady( networkObject )
+		case NET_SENDGAMESTATE
+				NetworkHelper.ReceiveGameState( networkObject )
+		case NET_PLAYERDETAILS
+				NetworkHelper.ReceivePlayerDetails( networkObject )
+		case NET_FIGUREPOSITION
+				NetworkHelper.ReceiveFigurePosition( networkObject )
 
 'untested
 
-		case NET_CHATMESSAGE				NetworkHelper.ReceiveChatMessage( networkObject )
+		case NET_CHATMESSAGE
+				NetworkHelper.ReceiveChatMessage( networkObject )
 
 		'not working yet
-		case NET_ELEVATORROUTECHANGE		GetBuilding().Elevator.Network_ReceiveRouteChange( networkObject )
-		case NET_ELEVATORSYNCHRONIZE		GetBuilding().Elevator.Network_ReceiveSynchronize( networkObject )
+		case NET_ELEVATORROUTECHANGE
+				GetBuilding().Elevator.Network_ReceiveRouteChange( networkObject )
+		case NET_ELEVATORSYNCHRONIZE
+				GetBuilding().Elevator.Network_ReceiveSynchronize( networkObject )
 
-		case NET_NEWSSUBSCRIPTIONCHANGE		NetworkHelper.ReceiveNewsSubscriptionChange( networkObject )
-		case NET_MOVIEAGENCYCHANGE			NetworkHelper.ReceiveMovieAgencyChange( networkObject )
-		case NET_PROGRAMMECOLLECTIONCHANGE	NetworkHelper.ReceiveProgrammeCollectionChange( networkObject )
-		case NET_STATIONMAPCHANGE			NetworkHelper.ReceiveStationmapChange( networkObject )
+		case NET_NEWSSUBSCRIPTIONCHANGE
+				NetworkHelper.ReceiveNewsSubscriptionChange( networkObject )
+		case NET_MOVIEAGENCYCHANGE
+				NetworkHelper.ReceiveMovieAgencyChange( networkObject )
+		case NET_ROOMAGENCYCHANGE
+				NetworkHelper.ReceiveRoomAgencyChange( networkObject )
+		case NET_PROGRAMMECOLLECTIONCHANGE
+				NetworkHelper.ReceiveProgrammeCollectionChange( networkObject )
+		case NET_STATIONMAPCHANGE
+				NetworkHelper.ReceiveStationmapChange( networkObject )
 
-		case NET_PROGRAMMEPLAN_CHANGE		NetworkHelper.ReceiveProgrammePlanChange(networkObject)
-		case NET_PLAN_SETNEWS				NetworkHelper.ReceivePlanSetNews( networkObject )
+		case NET_PROGRAMMEPLAN_CHANGE
+				NetworkHelper.ReceiveProgrammePlanChange(networkObject)
+		case NET_PLAN_SETNEWS
+				NetworkHelper.ReceivePlanSetNews( networkObject )
 
-		default 							if networkObject.evType>=100 then print "client got unused event:" + networkObject.evType
+		default
+				if networkObject.evType>=100
+					print "client got unused event:" + networkObject.evType
+				endif
 	EndSelect
 
 End Function
@@ -129,41 +145,69 @@ End Function
 
 Type TNetworkHelper
 	field registeredEvents:int = FALSE
+	'disable if functions get called which emit events 
+	Global listenToEvents:int = FALSE
+
 
 	Method Create:TNetworkHelper()
 		'self.RegisterEventListeners()
 		return self
 	End Method
 
+
 	Method RegisterEventListeners:int()
 		if registeredEvents then return FALSE
 
-		EventManager.registerListenerFunction( "programmeplan.SetNews",			TNetworkHelper.onPlanSetNews )
+		EventManager.registerListenerFunction("programmeplan.SetNews", TNetworkHelper.onPlanSetNews)
 		'someone adds a chatline
-		EventManager.registerListenerFunction( "chat.onAddEntry",	TNetworkHelper.OnChatAddEntry )
+		EventManager.registerListenerFunction("chat.onAddEntry", TNetworkHelper.OnChatAddEntry)
 		'changes to the player's stationmap
-		EventManager.registerListenerFunction( "stationmap.removeStation",	TNetworkHelper.onChangeStationmap )
-		EventManager.registerListenerFunction( "stationmap.addStation",		TNetworkHelper.onChangeStationmap )
+		EventManager.registerListenerFunction("stationmap.removeStation", TNetworkHelper.onChangeStationmap)
+		EventManager.registerListenerFunction("stationmap.addStation", TNetworkHelper.onChangeStationmap)
+
+		'changes to rooms (eg. owner changes)
+		EventManager.registerListenerFunction("RoomAgency.rentRoom", TNetworkHelper.onChangeRoomAgency)
 
 		'changes to the player's programmecollection
-		EventManager.registerListenerFunction( "programmecollection.removeProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.addProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.removeAdContract", TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.addAdContract",	TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.removeProgrammeLicenceFromSuitcase", TNetworkHelper.onChangeProgrammeCollection )
-		EventManager.registerListenerFunction( "programmecollection.addProgrammeLicenceToSuitcase", TNetworkHelper.onChangeProgrammeCollection )
+		EventManager.registerListenerFunction("programmecollection.removeProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection)
+		EventManager.registerListenerFunction("programmecollection.addProgrammeLicence", TNetworkHelper.onChangeProgrammeCollection)
+		EventManager.registerListenerFunction("programmecollection.removeAdContract", TNetworkHelper.onChangeProgrammeCollection)
+		EventManager.registerListenerFunction("programmecollection.addAdContract",	TNetworkHelper.onChangeProgrammeCollection)
+		EventManager.registerListenerFunction("programmecollection.removeProgrammeLicenceFromSuitcase", TNetworkHelper.onChangeProgrammeCollection)
+		EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", TNetworkHelper.onChangeProgrammeCollection)
 
 		'listen to events to refresh figure position 
-		EventManager.registerListenerFunction( "figure.onSyncTimer", TNetworkHelper.onFigurePositionChanged )
-		EventManager.registerListenerFunction( "figure.onReachTarget", TNetworkHelper.onFigurePositionChanged )
-		EventManager.registerListenerFunction( "figure.onChangeTarget", TNetworkHelper.onFigurePositionChanged )
-		EventManager.registerListenerFunction( "figure.onSetInRoom", TNetworkHelper.onFigurePositionChanged )
+		EventManager.registerListenerFunction("figure.onSyncTimer", TNetworkHelper.onFigurePositionChanged)
+		EventManager.registerListenerFunction("figure.onReachTarget", TNetworkHelper.onFigurePositionChanged)
+		EventManager.registerListenerFunction("figure.onChangeTarget", TNetworkHelper.onFigurePositionChanged)
+		EventManager.registerListenerFunction("figure.onSetInRoom", TNetworkHelper.onFigurePositionChanged)
 
 		'changes in movieagency
-		EventManager.registerListenerFunction( "ProgrammeLicenceAuction.setBid", TNetworkHelper.onChangeMovieAgency )
+		EventManager.registerListenerFunction("ProgrammeLicenceAuction.setBid", TNetworkHelper.onChangeMovieAgency)
 
 		registeredEvents = true
 	End Method
+
+
+	Function onChangeRoomAgency:int( triggerEvent:TEventBase )
+		if not listenToEvents then return False
+
+		'only react if game leader / server
+		'if not Game.isGameLeader() then return False
+		if not Network.isServer then return False
+
+		local room:TRoom = TRoom(triggerEvent.GetSender())
+		if not room then return False
+
+		local action:int = -1
+		if triggerEvent.isTrigger("RoomAgency.rentRoom") then action = NET_BUY
+		if triggerEvent.isTrigger("RoomAgency.cancelRoom") then action = NET_SELL
+		if action = -1 then return FALSE
+
+		local owner:int = triggerEvent.GetData().GetInt("newOwner", 0)
+		NetworkHelper.SendRoomAgencyChange(room, action, owner)
+	End Function
+	
 
 	'connect GUI with normal handling
 	Function onPlanSetNews:int( triggerEvent:TEventBase )
@@ -538,6 +582,41 @@ print "[NET] ReceiveGameReady"
 
 
 
+	Method SendRoomAgencyChange(room:TRoom, action:int=0, owner:int=0)
+		local obj:TNetworkObject = TNetworkObject.Create( NET_ROOMAGENCYCHANGE )
+		obj.SetInt(1, room.owner)
+		obj.SetInt(2, action)
+		obj.SetInt(3, owner)
+		Network.BroadcastNetworkObject( obj, NET_PACKET_RELIABLE )
+	End Method
+
+	Method ReceiveRoomAgencyChange:int(obj:TNetworkObject)
+		local roomID:int = obj.getInt(1)
+		local action:int = obj.getInt(2)
+		local newOwner:int = obj.getInt(3)
+
+		local room:TRoom = GetRoomCollection().Get(roomID)
+		if not room then return False
+
+		'disable events - ignore it to avoid recursion
+		listenToEvents = False
+
+		select action
+			case NET_BUY
+					RoomHandler_RoomAgency.rentRoom(room, newOwner)
+					print "[NET] RoomAgency: player "+newOwner+" rents room "+ room.GetName()
+
+					return TRUE
+			case NET_SELL
+					local oldOwner:int = room.owner
+					RoomHandler_RoomAgency.cancelRoom(room)
+					print "[NET] RoomAgencY: player "+oldOwner+" stopped renting room "+room.GetName()
+					return TRUE
+		EndSelect
+
+		listenToEvents = TRUE
+	End Method
+
 
 	Method SendStationmapChange(station:TStation, action:int=0)
 		local obj:TNetworkObject = TNetworkObject.Create( NET_STATIONMAPCHANGE )
@@ -579,8 +658,6 @@ print "[NET] ReceiveGameReady"
 		EndSelect
 		TStationMap.fireEvents = TRUE
 	End Method
-
-
 
 
 	Method SendProgrammeCollectionProgrammeLicenceChange(playerID:int= -1, licence:TProgrammeLicence, action:int=0)

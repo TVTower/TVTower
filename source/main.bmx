@@ -2107,12 +2107,12 @@ Type TSettingsWindow
 		nextY :+ 25
 
 		checkMusic = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
-		checkMusic.SetCaptionValues(GetLocale("MUSIC_GETS_PLAYED"), GetLocale("MUSIC_GETS_NOT_PLAYED"))
+		checkMusic.SetCaption(GetLocale("MUSIC"))
 		canvas.AddChild(checkMusic)
 		nextY :+ Max(inputH, checkMusic.GetScreenHeight())
 
 		checkSfx = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
-		checkSfx.SetCaptionValues(GetLocale("SFX_GETS_PLAYED"), GetLocale("SFX_GETS_NOT_PLAYED"))
+		checkSfx.SetCaption(GetLocale("SFX"))
 		canvas.AddChild(checkSfx)
 		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
 		nextY :+ 15
@@ -2148,7 +2148,7 @@ Type TSettingsWindow
 		nextY :+ inputH + labelH * 1.5
 
 		checkFullscreen = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
-		checkFullscreen.SetCaptionValues(GetLocale("FULLSCREEN_ACTIVE"), GetLocale("FULLSCREEN_NOT_ACTIVE"))
+		checkFullscreen.SetCaption(GetLocale("FULLSCREEN"))
 		canvas.AddChild(checkFullscreen)
 		nextY :+ Max(inputH, checkFullscreen.GetScreenHeight()) + labelH * 1.5
 

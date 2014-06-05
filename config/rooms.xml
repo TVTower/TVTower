@@ -186,27 +186,27 @@
 			<door doorslot="2" floor="10" doortype="1" />
 		</room>
 
-		<room name="frduban" owner="-1" screen="screen_supermarket" size="2">
+		<room name="frduban" owner="0" screen="screen_supermarket" size="2">
 			<tooltip text="ROOM_FRDUBAN" />
 			<door doorslot="3" floor="12" doortype="4" />
 		</room>
-		<room name="vrduban" owner="-1" screen="screen_supermarket" size="2">
+		<room name="vrduban" owner="0" screen="screen_supermarket" size="2">
 			<tooltip text="ROOM_VRDUBAN" />
 			<door doorslot="3" floor="7" doortype="3" />
 		</room>
-		<room name="gunsagency" owner="-1" screen="screen_supermarket" size="3">
+		<room name="gunsagency" owner="0" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_GUNSAGENCY" />
 			<door doorslot="4" floor="9" doortype="3" />
 		</room>
-		<room name="tobaccolobby" owner="-1" screen="screen_supermarket" size="3">
+		<room name="tobaccolobby" owner="0" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_TOBACCOLOBBY" description="ROOM_TOBACCOLOBBY_OWNER" />
 			<door doorslot="2" floor="6" doortype="4" />
 		</room>
-		<room name="notobacco" owner="-1" screen="screen_supermarket" size="3">
+		<room name="notobacco" owner="0" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_NOTOBACCO" description="ROOM_NOTOBACCO_OWNER" />
 			<door doorslot="3" floor="6" doortype="3" />
 		</room>
-		<room name="peacebrothers" owner="-1" screen="screen_supermarket" size="3">
+		<room name="peacebrothers" owner="0" screen="screen_supermarket" size="3">
 			<tooltip text="ROOM_PEACEBROTHERS" description="ROOM_PEACEBROTHERS_SUB" />
 			<door doorslot="3" floor="10" doortype="3" />
 		</room>
@@ -235,15 +235,15 @@
 			<door doorslot="1" floor="10" doortype="3" />
 		</room>
 
-		<room name="roomboard" owner="-1" screen="screen_roomboard" fake="1">
+		<room name="roomboard" owner="0" screen="screen_roomboard" fake="1">
 			<tooltip text="ROOM_ROOMBOARD" />
 			<door doorslot="4" x="527" floor="0" doortype="1" doorwidth="59" />
 		</room>
-		<room name="credits" owner="-1" screen="screen_credits" fake="1">
+		<room name="credits" owner="0" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_CREDITS" />
 			<door doorslot="4" x="559" floor="13" doortype="1" doorwidth="52" />
 		</room>
-		<room name="porter" owner="-1" screen="screen_credits" fake="1">
+		<room name="porter" owner="0" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_PORTER" />
 			<door doorslot="1" x="186" floor="0" doortype="1" doorwidth="66" />
 		</room>
