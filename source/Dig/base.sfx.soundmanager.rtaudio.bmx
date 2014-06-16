@@ -5,28 +5,101 @@ Import brl.OGGLoader
 Import "base.util.logger.bmx"
 Import "base.util.point.bmx"
 
-Import "base.sfx.soundstream.bmx"
+'the needed module files are located in "external/maxmod2_lite.mod.zip"
+
+Import MaxMod2.ogg
+
+Import MaxMod2.rtaudio
+'Import MaxMod2.rtaudionopulse
+Import MaxMod2.WAV
+
+'type to store music files (ogg) in it
+'data is stored in bank
+'Play-Method is adopted from maxmod2.bmx-Function "play"
+Type TDigAudioStream
+	Field bank:TBank
+	Field loop:Int
+	Field url:String
+
+
+	Function Create:TDigAudioStream(url:Object, loop:Int=False)
+		Local obj:TDigAudioStream = New TDigAudioStream
+		obj.bank = LoadBank(url)
+		obj.loop = loop
+		obj.url = "unknown"
+		If String(url) Then obj.url=String(url)
+		Return obj
+	End Function
+
+
+	Method Clone:TDigAudioStream(deepClone:int = False)
+		local c:TDigAudioStream = new TDigAudioStream
+		c.bank = self.bank
+		c.loop = self.loop
+		c.url = self.url
+		return c
+	End Method
+
+
+	Method isValid:Int()
+		If Not Self.bank Then Return False
+		Return True
+	End Method
+
+
+	Method GetChannel:TChannel(volume:Float)
+		Local channel:TChannel = CueMusic(Self.bank, loop)
+		channel.SetVolume(volume)
+		Return channel
+	End Method
+End Type
+
+
+Type TDigAudioStreamOgg extends TDigAudioStream
+	Method CreateWithFile:TDigAudioStreamOgg(url:object, loop:int = False, useMemoryStream:int = False)
+		self.bank = LoadBank(url)
+		self.loop = loop
+		self.url = "unknown"
+		If String(url) Then self.url=String(url)
+		return self
+	End Method
+
+
+	Method Clone:TDigAudioStreamOgg(deepClone:int = False)
+		local c:TDigAudioStreamOgg = new TDigAudioStreamOgg
+		c.bank = self.bank
+		c.loop = self.loop
+		c.url = self.url
+		return c
+	End Method
+End Type
+
 
 
 
 Type TSoundManager
 	Field soundFiles:TMap = CreateMap()
+	Field musicChannel1:TChannel = Null
+	Field musicChannel2:TChannel = Null
 	Field activeMusicChannel:TChannel = Null
 	Field inactiveMusicChannel:TChannel = Null
 
+	Field sfxChannel_Elevator:TChannel = Null
+	Field sfxChannel_Elevator2:TChannel = Null
 	Field sfxVolume:Float = 1
 	Field defaulTSfxDynamicSettings:TSfxSettings = Null
 
 	Field sfxOn:Int = 1
 	Field musicOn:Int = 1
 	Field musicVolume:Float = 1
-	Field nextMusicVolume:Float = 1
+	Field nextMusicTitleVolume:Float = 1
 	Field lastTitleNumber:Int = 0
-	Field inactiveMusicStream:TDigAudioStream = Null
-	Field activeMusicStream:TDigAudioStream = Null
-	Field nextMusicStream:TDigAudioStream = Null
+	Field currenTDigAudioStream:TDigAudioStream = Null
+	Field nextMusicTitleStream:TDigAudioStream = Null
 
-	Field forceNextMusic:Int = 0
+	Field currentMusic:TSound = Null
+	Field nextMusicTitle:TSound = Null
+	Field forceNextMusicTitle:Int = 0
 	Field fadeProcess:Int = 0 '0 = nicht aktiv  1 = aktiv
 	Field fadeOutVolume:Int = 1000
 	Field fadeInVolume:Int = 0
@@ -35,14 +108,8 @@ Type TSoundManager
 	Field receiver:TSoundSourcePosition
 
 	Field _currentPlaylistName:String = "default"
-	'a named array of playlists, playlists contain available musicStreams
-	Field playlists:TMap = CreateMap()
+	Field playlists:TMap = CreateMap()		'a named array of playlists, playlists contain available musicStreams
 
-	'do auto crossfade X seconds before song end
-	'use 0 to disable that feature
-	Field autoCrossFadeTime:int = 2
-	'disable to skip fading on next song switch 
-	Field autoCrossFadeNextSong:int = True
 
 	Global instance:TSoundManager
 
@@ -56,9 +123,15 @@ Type TSoundManager
 	Function Create:TSoundManager()
 		Local manager:TSoundManager = New TSoundManager
 
+
 		'initialize sound system
 		InitAudioEngine()
 
+
+		manager.musicChannel1 = AllocChannel()
+		manager.musicChannel2 = AllocChannel()
+		manager.sfxChannel_Elevator = AllocChannel()
+		manager.sfxChannel_Elevator2 = AllocChannel()
 		manager.defaulTSfxDynamicSettings = TSfxSettings.Create()
 		Return manager
 	End Function
@@ -71,19 +144,22 @@ Type TSoundManager
 				audioEngine = "NONE"
 
 			case "LINUX_ALSA"
-				audioEngine = "FreeAudio ALSA System"
+				audioEngine = "LINUX_ALSA"
 			case "LINUX_PULSE"
-				audioEngine = "FreeAudio PulseAudio System"
+				audioEngine = "LINUX_PULSE"
 			case "LINUX_OSS"
-				audioEngine = "FreeAudio OpenSound System"
+				audioEngine = "LINUX_OSS"
+			'following are currently not compiled in the rtAudio module
+			'case "UNIX_JACK"
+			'	audioEngine = "UNIX_JACK"
 
 			case "MACOSX_CORE"
-				audioEngine = "FreeAudio CoreAudio"
+				audioEngine = "MACOSX_CORE"
 
-			case "WINDOWS_MM"
-				audioEngine = "FreeAudio Multimedia"
+			case "WINDOWS_ASIO"
+				audioEngine = "WINDOWS_ASIO"
 			case "WINDOWS_DS"
-				audioEngine = "FreeAudio DirectSound"
+				audioEngine = "WINDOWS_DS"
 
 			default
 				audioEngine = "AUTOMATIC"
@@ -92,8 +168,9 @@ Type TSoundManager
 
 
 	Function InitSpecificAudioEngine:int(engine:string)
-		if engine = "AUTOMATIC" then engine = "FreeAudio"
-		If Not SetAudioDriver(engine)
+		TMaxModRtAudioDriver.Init(engine)
+		'
+		If Not SetAudioDriver("MaxMod RtAudio")
 			if engine = audioEngine
 				TLogger.Log("SoundManager.SetAudioEngine()", "audio engine ~q"+engine+"~q (configured) failed.", LOG_ERROR)
 			else
@@ -107,20 +184,24 @@ Type TSoundManager
 
 
 	Function InitAudioEngine:int()
+		'reenable rtAudio-messages
+		TMaxModRtAudioDriver.showWarnings(False)
+
 		local engines:String[] = [audioEngine]
 		'add automatic-engine if manual setup is not already set to it
 		if audioEngine <> "AUTOMATIC" then engines :+ ["AUTOMATIC"]
 
 		?Linux
-			if audioEngine <> "FreeAudio PulseAudio System" then engines :+ ["FreeAudio PulseAudio System"]
-			if audioEngine <> "FreeAudio ALSA System" then engines :+ ["FreeAudio ALSA System"]
-			if audioEngine <> "FreeAudio OpenSound System" then engines :+ ["FreeAudio OpenSound System"]
+			if audioEngine <> "LINUX_PULSE" then engines :+ ["LINUX_PULSE"]
+			if audioEngine <> "LINUX_ALSA" then engines :+ ["LINUX_ALSA"]
+			if audioEngine <> "LINUX_OSS" then engines :+ ["LINUX_OSS"]
+			'if audioEngine <> "UNIX_JACK" then engines :+ ["UNIX_JACK"]
 		?MacOS
 			'ATTENTION: WITHOUT ENABLED SOUNDCARD THIS CRASHES!
-			engines :+ ["FreeAudio CoreAudio"]
+			engines :+ ["MACOSX_CORE"]
 		?Win32
-			engines :+ ["FreeAudio Multimedia"]
-			engines :+ ["FreeAudio DirectSound"]
+			engines :+ ["WINDOWS_ASIO"]
+			engines :+ ["WINDOWS_DS"]
 		?
 
 		'try to init one of the engines, starting with the manually set
@@ -143,6 +224,9 @@ Type TSoundManager
 			Return False
 		endif
 
+		'reenable rtAudio-messages
+		TMaxModRtAudioDriver.showWarnings(True)
+
 		TLogger.Log("SoundManager.SetAudioEngine()", "initialized with engine ~q"+foundWorkingEngine+"~q.", LOG_DEBUG)
 		Return True
 	End Function
@@ -157,12 +241,6 @@ Type TSoundManager
 	Function DisableAudioEngine:int()
 		audioEngineEnabled = False
 	End Function
-
-
-	'use 0 to disable feature
-	Method SetAutoCrossfadeTime:int(seconds:int = 0)
-		autoCrossFadeTime = seconds
-	End Method
 
 
 	Method GetDefaultReceiver:TSoundSourcePosition()
@@ -225,13 +303,12 @@ Type TSoundManager
 		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_SFX + playlist))
 		If Not playlistContainer Then Print "playlist: "+playlist+" not found."; Return Null
 		If playlistContainer.count() = 0 Then Print "empty list:"+PREFIX_SFX + playlist; Return Null
-
 		Return TSound(playlistContainer.ValueAtIndex(Rand(0, playlistContainer.count()-1)))
 	End Method
 
 
 	'if avoidMusic is set, the function tries to return another music (if possible)
-	Method GetRandomMusicFromPlaylist:TDigAudioStream(playlist:String, avoidMusic:TDigAudioStream = Null)
+	Method GetRandomMusicFromPlaylist:TDigAudioStream(playlist:String, avoidMusic:TDigAudioStream=Null)
 		Local playlistContainer:TList = TList(playlists.ValueForKey(PREFIX_MUSIC + playlist))
 		If Not playlistContainer
 			'TLogger.Log("GetRandomMusicFromPlaylist", "No playlist: "+playlist+" found.", LOG_WARNING)
@@ -252,6 +329,10 @@ Type TSoundManager
 			result = TDigAudioStream(playlistContainer.ValueAtIndex(Rand(0, playlistContainer .count()-1)))
 		EndIf
 		Return result
+
+'		local playlistContainer:TDigAudioStream[] = TDigAudioStream[](playlists.ValueForKey("MUSIC_"+playlist))
+'		if playlistContainer.length = 0 then print "empty list:"+"MUSIC_"+playlist; return NULL
+'		return playlistContainer[Rand(0, playlistContainer.length-1)]
 	End Method
 
 
@@ -340,33 +421,16 @@ Type TSoundManager
 			'Wenn der Musik-Channel nicht läuft, dann muss nichts gemacht werden
 			If Not activeMusicChannel Then Return True
 
-			'refill buffers
-			If inactiveMusicStream then inactiveMusicStream.Update()
-			If activeMusicStream then activeMusicStream.Update()
-
-
-			'autocrossfade to the next song
-			if autoCrossFadeTime > 0 and autoCrossFadeNextSong and activeMusicStream
-				if activeMusicStream.GetTimeLeft() < autoCrossFadeTime
-					PlayMusicPlaylist(GetCurrentPlaylist())
-				endif
-			endif
-
-
 			'if the music didn't stop yet
 			If activeMusicChannel.Playing()
-				If (forceNextMusic And nextMusicStream) Or fadeProcess > 0
-					'TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle", LOG_DEBUG)
+				If (forceNextMusicTitle And nextMusicTitleStream) Or fadeProcess > 0
+'					TLogger.log("TSoundManager.Update()", "FadeOverToNextTitle", LOG_DEBUG)
 					FadeOverToNextTitle()
 				EndIf
 			'no music is playing, just start
 			Else
 				TLogger.Log("TSoundManager.Update()", "PlayMusicPlaylist", LOG_DEBUG)
 				PlayMusicPlaylist(GetCurrentPlaylist())
-
-				'enable autocrossfading for next song if disabled in the
-				'past (eg through playing the same song twice)
-				if autoCrossFadeTime > 0 then autoCrossFadeNextSong = True
 			EndIf
 		EndIf
 	End Method
@@ -377,29 +441,26 @@ Type TSoundManager
 
 		If (fadeProcess = 0) Then
 			fadeProcess = 1
-			inactiveMusicChannel = nextMusicStream.CreateChannel(0)
+			inactiveMusicChannel = nextMusicTitleStream.GetChannel(0)
 			ResumeChannel(inactiveMusicChannel)
+			nextMusicTitleStream = Null
 
-			inactiveMusicStream = activeMusicStream
-			activeMusicStream = nextMusicStream
-			nextMusicStream = Null
-
-			forceNextMusic = False
+			forceNextMusicTitle = False
 			fadeOutVolume = 1000
 			fadeInVolume = 0
 		EndIf
 
 		If (fadeProcess = 1) Then 'Das fade out des aktiven Channels
-			fadeOutVolume :- 15
+			fadeOutVolume = fadeOutVolume - 15
 			activeMusicChannel.SetVolume(fadeOutVolume/1000.0 * musicVolume)
 
-			fadeInVolume :+ 15
-			inactiveMusicChannel.SetVolume(fadeInVolume/1000.0 * nextMusicVolume)
+			fadeInVolume = fadeInVolume + 15
+			inactiveMusicChannel.SetVolume(fadeInVolume/1000.0 * nextMusicTitleVolume)
 		EndIf
 
 		If fadeOutVolume <= 0 And fadeInVolume >= 1000 Then
 			fadeProcess = 0 'Prozess beendet
-			musicVolume = nextMusicVolume
+			musicVolume = nextMusicTitleVolume
 			SwitchMusicChannels()
 		EndIf
 	End Method
@@ -409,7 +470,6 @@ Type TSoundManager
 		Local channelTemp:TChannel = Self.activeMusicChannel
 		Self.activeMusicChannel = Self.inactiveMusicChannel
 		Self.inactiveMusicChannel = channelTemp
-
 		Self.inactiveMusicChannel.Stop()
 	End Method
 
@@ -437,61 +497,35 @@ Type TSoundManager
 		If HasMutedMusic() Then Return True
 
 		If fromPlaylist
-			nextMusicStream = GetMusicStream("", name)
-			nextMusicVolume = GetMusicVolume(name)
-			If nextMusicStream
+			nextMusicTitleStream = GeTDigAudioStream("", name)
+			nextMusicTitleVolume = GetMusicVolume(name)
+			If nextMusicTitleStream
 				SetCurrentPlaylist(name)
-				TLogger.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "GeTDigAudioStream from Playlist ~q"+name+"~q. Also set current playlist to it.", LOG_DEBUG)
 			Else
-				TLogger.Log("PlayMusicOrPlaylist", "GetMusicStream from Playlist ~q"+name+"~q not possible. No Playlist.", LOG_DEBUG)
+				TLogger.Log("PlayMusicOrPlaylist", "GeTDigAudioStream from Playlist ~q"+name+"~q not possible. No Playlist.", LOG_DEBUG)
 			EndIf
 		Else
-			nextMusicStream = GetMusicStream(name, "")
-			nextMusicVolume = GetMusicVolume(name)
-			TLogger.Log("PlayMusicOrPlaylist", "GetMusicStream by name ~q"+name+"~q", LOG_DEBUG)
+			nextMusicTitleStream = GeTDigAudioStream(name, "")
+			nextMusicTitleVolume = GetMusicVolume(name)
+			TLogger.Log("PlayMusicOrPlaylist", "GeTDigAudioStream by name ~q"+name+"~q", LOG_DEBUG)
 		EndIf
 
-		if not nextMusicStream
-			TLogger.Log("PlayMusicOrPlaylist", "Music not found. Using random from default playlist", LOG_DEBUG)
-			nextMusicStream = GetRandomMusicFromPlaylist("default")
-			nextMusicVolume = 1
-		endif
+		forceNextMusicTitle = True
 
-		forceNextMusic = True
-		
 		'Wenn der Musik-Channel noch nicht laeuft, dann jetzt starten
 		If Not activeMusicChannel Or Not activeMusicChannel.Playing()
-			If Not nextMusicStream
+			If Not nextMusicTitleStream
 				TLogger.Log("PlayMusicOrPlaylist", "could not start activeMusicChannel: no next music found", LOG_DEBUG)
 			Else
 				TLogger.Log("PlayMusicOrPlaylist", "start activeMusicChannel", LOG_DEBUG)
-				Local musicVolume:Float = nextMusicVolume
-				activeMusicChannel = nextMusicStream.CreateChannel(musicVolume)
-
+				Local musicVolume:Float = nextMusicTitleVolume
+				activeMusicChannel = nextMusicTitleStream.GetChannel(musicVolume)
 				ResumeChannel(activeMusicChannel)
 
-				inactiveMusicStream = activeMusicStream
-				activeMusicStream = nextMusicStream
-
-				forceNextMusic = False
+				forceNextMusicTitle = False
 			EndIf
 		EndIf
-
-
-		'While playMusicPlayList will return the next song,
-		'there is no guarantee that it does not return the
-		'same song again
-		'the nature of the stream's buffer is, that you
-		'cannot play 1 stream in 2 different channels
-
-		'that is why fading needs a clone if songs are the same
-		if autoCrossFadeNextSong and nextMusicStream
-			if nextMusicStream = activeMusicStream
-				'print "playing same song: creating clone"
-				nextMusicStream = activeMusicStream.Clone()
-				nextMusicVolume = musicVolume
-			endif
-		endif		
 	End Method
 
 
@@ -501,26 +535,24 @@ Type TSoundManager
 		If playlist=""
 			Return Null <> TDigAudioStream(soundFiles.ValueForKey(Lower(music)))
 		Else
-			Return Null <> GetRandomMusicFromPlaylist(playlist, nextMusicStream)
+			Return Null <> GetRandomMusicFromPlaylist(playlist, nextMusicTitleStream)
 		EndIf
 	End Method
 
 
-	Method GetMusicStream:TDigAudioStream(music:String="", playlist:String="")
+	Method GeTDigAudioStream:TDigAudioStream(music:String="", playlist:String="")
 		Local result:TDigAudioStream
 
 		If playlist=""
 			result = TDigAudioStream(soundFiles.ValueForKey(Lower(music)))
-			TLogger.Log("TSoundManager.GetMusicStream()", "Play music: " + music, LOG_DEBUG)
+			TLogger.Log("TSoundManager.GeTDigAudioStream()", "Play music: " + music, LOG_DEBUG)
 		Else
-			'try to get a song differing to the current one
-			result = GetRandomMusicFromPlaylist(playlist, activeMusicStream)
-			'result = GetRandomMusicFromPlaylist(playlist, nextMusicStream)
+			result = GetRandomMusicFromPlaylist(playlist, nextMusicTitleStream)
 			Rem
 			if result
-				TLogger.log("TSoundManager.GetMusicStream()", "Play random music from playlist: ~q" + playlist +"~q  file: ~q"+result.url+"~q", LOG_DEBUG)
+				TLogger.log("TSoundManager.GeTDigAudioStream()", "Play random music from playlist: ~q" + playlist +"~q  file: ~q"+result.url+"~q", LOG_DEBUG)
 			else
-				TLogger.log("TSoundManager.GetMusicStream()", "Cannot play random music from playlist: ~q" + playlist +"~q, nothing found.", LOG_DEBUG)
+				TLogger.log("TSoundManager.GeTDigAudioStream()", "Cannot play random music from playlist: ~q" + playlist +"~q, nothing found.", LOG_DEBUG)
 			endif
 			endrem
 		EndIf

@@ -17,7 +17,6 @@ Import "Dig/base.util.registry.bitmapfontloader.bmx"
 Import "Dig/base.util.registry.soundloader.bmx"
 Import "Dig/base.util.luaengine.bmx"
 
-Import "Dig/base.sfx.soundmanager.bmx"
 Import "Dig/base.util.deltatimer.bmx"
 Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.interpolation.bmx"
@@ -402,7 +401,7 @@ endrem
 				EndIf
 
 				If KEYMANAGER.Ishit(Key_F5) Then GetNewsAgency().AnnounceNewNewsEvent()
-				If KEYMANAGER.Ishit(Key_F6) Then TSoundManager.GetInstance().PlayMusicPlaylist("default")
+				If KEYMANAGER.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
 
 				If KEYMANAGER.Ishit(Key_F9)
 					If (KIRunning)
@@ -2441,7 +2440,7 @@ Type AppEvents
 	'lower priority updates (currently happening every 2 "appUpdates")
 	Function onAppSystemUpdate:Int(triggerEvent:TEventBase)
 		TProfiler.Enter("SoundUpdate")
-		TSoundManager.GetInstance().Update()
+		GetSoundManager().Update()
 		TProfiler.Leave("SoundUpdate")
 	End Function
 End Type
@@ -2589,7 +2588,7 @@ Function StartApp:int()
 
 
 	'init sound receiver
-	TSoundManager.GetInstance().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
+	GetSoundManager().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
 	App.Start()
 End Function

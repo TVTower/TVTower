@@ -10,7 +10,8 @@ ENDREM
 SuperStrict
 Import BRL.PNGLoader
 Import "base.util.registry.bmx"
-Import "base.sfx.soundmanager.bmx"
+'Import "base.sfx.soundmanager.bmx"
+Import "base.sfx.soundmanager.rtaudio.bmx"
 'register this loader
 new TRegistrySoundLoader.Init()
 
@@ -70,8 +71,8 @@ Type TRegistrySoundLoader extends TRegistryBaseLoader
 
 		Select resourceName
 			case "music"
-				Local stream:TMusicStream = TMusicStream.Create(url, loop)
-				If Not stream Or Not stream.isValid()
+				Local stream:TDigAudioStreamOgg = new TDigAudioStreamOgg.CreateWithFile(url, loop)
+				If Not stream
 					TLogger.Log("TRegistrySoundLoader.LoadFromConfig()", "File ~q"+url+"~q is missing or corrupt.", LOG_ERROR)
 				Else
 					GetSoundManager().AddSound(name, stream, playlists)
