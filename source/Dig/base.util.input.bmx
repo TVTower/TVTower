@@ -105,8 +105,13 @@ Type TMouseManager
 		_keyStatus[key] = KEY_STATE_NORMAL
 		_keyHitCount[key] = 0
 		_keyClickCount[key] = 0
-		_keyClicked[key] = 0
+		ResetClicked(key)
 		Return KEY_STATE_UP
+	End Method
+
+
+	Method ResetClicked(key:int)
+		_keyClicked[key] = 0
 	End Method
 
 

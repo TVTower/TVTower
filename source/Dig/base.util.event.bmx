@@ -422,6 +422,18 @@ Type TEventBase
 	End Method
 
 
+	Method Trigger:TEventBase()
+		EventManager.triggerEvent(self)
+		return self
+	End Method
+
+
+	Method Register:TEventBase()
+		EventManager.registerEvent(self)
+		return self
+	End Method
+
+
 	' to sort the event queue by time
 	Method Compare:Int(other:Object)
 		Local event:TEventBase = TEventBase(other)

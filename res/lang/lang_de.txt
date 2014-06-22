@@ -373,4 +373,5 @@ HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: tauscht Datenblatt | STRG+Klick: Programmk
 HINT = Hinweis
 
 SYNCHRONIZING_START_CONDITIONS = Synchronisiere Startbedingungen
-STARTING_NETWORKGAME = Starte Netzwerkspiel
+STARTING_MULTIPLAYERGAME = Starte Mehrspieler-Spiel
+STARTING_SINGLEPLAYERGAME = Starte Einzelspieler-Spiel

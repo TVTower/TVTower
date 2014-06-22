@@ -1545,8 +1545,11 @@ endrem
 					GUIManager.UpdateState_mouseButtonHit[2] = False
 				EndIf
 
-				If Not GUIManager.UpdateState_foundHitObject And _flags & GUI_OBJECT_ENABLED
-					If MOUSEMANAGER.IsClicked(1)
+
+				'IsClicked does not include waiting time - so check for
+				'single and double clicks too
+				If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject
+					If MOUSEMANAGER.IsClicked(1) or MOUSEMANAGER.GetClicks(1) > 0
 						'=== SET CLICKED VAR ====
 						mouseIsClicked = new TPoint.Init( MouseManager.x, MouseManager.y)
 
@@ -1564,7 +1567,8 @@ endrem
 							clickEvent = TEventSimple.Create("guiobject.OnSingleClick", new TData.AddNumber("button",1), Self)
 							'let the object handle the click
 							OnSingleClick(clickEvent)
-						Else
+						'only "hit" if done the first time
+						Else 'if not GUIManager.UpdateState_foundHitObject
 							clickEvent = TEventSimple.Create("guiobject.OnClick", new TData.AddNumber("button",1), Self)
 							'let the object handle the click
 							OnClick(clickEvent)
@@ -1575,9 +1579,15 @@ endrem
 						'added for imagebutton and arrowbutton not being reset when mouse standing still
 						MouseIsDown = Null
 						'reset mouse button
-						MOUSEMANAGER.ResetKey(1)
+						'-> do not reset it as it would disable
+						'   "doubleclick" recognition
+						'MOUSEMANAGER.ResetKey(1)
+						'but we can reset clicked state
+						MOUSEMANAGER.ResetClicked(1)
+
+						
 						'reset Button cache
-'						GUIManager.UpdateState_mouseButtonHit[1] = False
+						GUIManager.UpdateState_mouseButtonHit[1] = False
 
 						'clicking on an object sets focus to it
 						'so remove from old before

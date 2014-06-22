@@ -198,8 +198,9 @@ Type TScreen
 	Method Create:TScreen(name:string)
 		SetName(name)
 		'initialize screen change effects
-		Enter()
-		Leave()
+		if _enterScreenEffect then _enterScreenEffect.Reset()
+		if _leaveScreenEffect then _leaveScreenEffect.Reset()
+
 		return self
 	End Method
 

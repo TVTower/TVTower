@@ -663,7 +663,7 @@ Type TGUIGameList Extends TGUISelectList
 		Return Self
 	End Method
 
-
+rem
 	'override default
 	Method RegisterListeners:Int()
 		'we want to know about clicks
@@ -677,18 +677,24 @@ Type TGUIGameList Extends TGUISelectList
 
 		Return Super.onClickOnEntry(triggerEvent)
 	End Method
-
+endrem
 
 	Method AddItem:Int(item:TGUIobject, extra:Object=Null)
-		For Local olditem:TGUIListItem = EachIn Self.entries
-			If TGUIGameEntry(item) And TGUIGameEntry(item).GetValue() = olditem.GetValue()
+		'check if we already have an item with the same value
+		local gameItem:TGUIGameEntry = TGUIGameEntry(item)
+		if gameItem
+			For Local olditem:TGUIListItem = EachIn Self.entries
+				'skip other items
+				if gameItem.data.GetInt("hostPort") <> olditem.data.GetInt("hostPort") then continue
+				if gameItem.data.GetString("hostIP") <> olditem.data.GetString("hostIP") then continue
+				
 				'refresh lifetime
 				olditem.setLifeTime(olditem.initialLifeTime)
 				'unset the new one
 				item.remove()
 				Return False
-			EndIf
-		Next
+			Next
+		endif
 		Return Super.AddItem(item, extra)
 	End Method
 End Type
@@ -701,13 +707,13 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	Field paddingTop:Int		= 2
 
 
-	Method CreateSimple:TGUIGameEntry(_hostIP:String, _hostPort:Int, _hostName:String="", gameTitle:String="", slotsUsed:Int, slotsMax:Int)
+	Method CreateSimple:TGUIGameEntry(hostIP:String, hostPort:Int, hostName:String="", gameTitle:String="", slotsUsed:Int, slotsMax:Int)
 		'make it "unique" enough
-		Self.Create(null, null, _hostIP+":"+_hostPort)
+		Self.Create(null, null, hostIP+":"+hostPort)
 
-		Self.data.AddString("hostIP", _hostIP)
-		Self.data.AddNumber("hostPort", _hostPort)
-		Self.data.AddString("hostName", _hostName)
+		Self.data.AddString("hostIP", hostIP)
+		Self.data.AddNumber("hostPort", hostPort)
+		Self.data.AddString("hostName", hostName)
 		Self.data.AddString("gameTitle", gametitle)
 		Self.data.AddNumber("slotsUsed", slotsUsed)
 		Self.data.AddNumber("slotsMax", slotsMax)
@@ -717,6 +723,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 
 
     Method Create:TGUIGameEntry(pos:TPoint=null, dimension:TPoint=null, value:String="")
+
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 
@@ -724,7 +731,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		SetValue(":D")
 		SetValueColor(TColor.Create(0,0,0))
 
-		Resize( dimension.x, dimension.y )
+'		Resize( dimension.x, dimension.y )
 
 		GUIManager.add(Self)
 
@@ -735,13 +742,13 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	Method getDimension:TPoint()
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
-		Local maxWidth:Int = parentPanel.getContentScreenWidth()-Self.rect.getX()
+		Local maxWidth:Int = parentPanel.getContentScreenWidth() '- GetScreenWidth()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local text:String = Self.Data.getString("gameTitle","#unknowngametitle#")+" by "+ Self.Data.getString("hostName","#unknownhostname#") + " ("+Self.Data.getInt("slotsUsed",1)+"/"+Self.Data.getInt("slotsMax",4)
-		Local dimension:TPoint = GetBitmapFontManager().baseFont.drawBlock(text, getScreenX(), getScreenY(), maxWidth, maxHeight, Null, Null, 2, 0)
-
+		Local dimension:TPoint = new TPoint.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
+		
 		'add padding
+		dimension.moveXY(0, Self.paddingTop)
 		dimension.moveXY(0, Self.paddingBottom)
 
 		'set current size and refresh scroll limits of list
@@ -755,14 +762,8 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-	Method Draw:Int()
-		'self.getParent("topitem").RestrictViewPort()
-
-		If Self.showtime <> Null Then SetAlpha Float(Self.showtime-MilliSecs())/500.0
-
-		'draw highlight-background etc
-		Super.Draw()
-
+	'override
+	Method DrawValue:int()
 		'draw text
 		Local move:TPoint = new TPoint.Init(0, Self.paddingTop)
 		Local text:String = ""
@@ -784,10 +785,18 @@ Type TGUIGameEntry Extends TGUISelectListItem
 		textColor	= TColor(Self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
 		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
 		move.moveXY(textDim.x,0)
+	End Method
+
+
+	Method Draw:Int()
+		If Self.showtime <> Null
+			SetAlpha Float(Self.showtime-Time.GetTimeGone())/500.0
+		endif
+		
+		'draw highlight-background etc
+		Super.Draw()
 
 		SetAlpha 1.0
-
-		'self.getParent("topitem").ResetViewPort()
 	End Method
 End Type
 

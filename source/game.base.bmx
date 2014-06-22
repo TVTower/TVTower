@@ -13,8 +13,8 @@ Type TGame {_exposeToLua="selected"}
 	Const STATE_MAINMENU:Int		= 1
 	Const STATE_NETWORKLOBBY:Int	= 2
 	Const STATE_SETTINGSMENU:Int	= 3
-	'mode when data gets synchronized
-	Const STATE_STARTMULTIPLAYER:Int= 4
+	'mode when data gets synchronized or initialized
+	Const STATE_PREPAREGAMESTART:Int= 4
 
 	'===== GAME SETTINGS =====
 	'how many movies does a player get on a new game
@@ -78,14 +78,20 @@ Type TGame {_exposeToLua="selected"}
 	Field networkgameready:Int = 0
 	'playing over internet? 0=false
 	Field onlinegame:Int = 0
+	'was "PrepareStart" run for this specific game?
+	Field _startPreparationDone:int = FALSE' {noSave}
 
 	Global _instance:TGame
 	Global _initDone:int = FALSE
+	'was "PrepareFirstGameStart" run already?
 	Global _firstGamePreparationDone:int = FALSE
 	Global StartTipWindow:TGUIModalWindow
 
+
 	Method New()
 		if not _initDone
+			'handle begin of savegameloading (prepare first game if needed)
+			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			EventManager.registerListenerFunction("SaveGame.OnBeginSave", onSaveGameBeginSave)
@@ -131,7 +137,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 	'run this before EACH started game
-	Function PrepareStart()
+	Method PrepareStart()
 		'load all movies, news, series and ad-contracts
 		TLogger.Log("Game.PrepareStart()", "loading database", LOG_DEBUG)
 		LoadDatabase(userdb)
@@ -146,8 +152,8 @@ Type TGame {_exposeToLua="selected"}
 		TLogger.Log("Game.PrepareStart()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
 		GetBuilding().Init() 'also registers events...
 
-		'eg reset things
-	End Function
+		_startPreparationDone = True
+	End Method
 
 
 	'run this BEFORE the first game is started
@@ -290,25 +296,9 @@ Type TGame {_exposeToLua="selected"}
 		Next
 
 
-		'create random programmes and so on - but only if local game
-		If Not Game.networkgame
-			For Local playerids:Int = 1 To 4
-				Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
-				For Local i:Int = 0 To Game.startMovieAmount-1
-					ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
-				Next
-				'give series to each player
-				For Local i:Int = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
-					ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
-				Next
-				'give 1 call in
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
+		'give each player some programme
+		SpreadStartProgramme()
 
-				For Local i:Int = 0 To 2
-					ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0, 0.15)) )
-				Next
-			Next
-		EndIf
 
 		'=== SETUP NEWS + ABONNEMENTS ===
 		'adjust abonnement for each newsgroup to 1
@@ -375,6 +365,32 @@ Type TGame {_exposeToLua="selected"}
 				currentHour:+ currentLicence.getData().getBlocks()
 			Next
 		Next
+
+
+		'=== SETUP INTERFACE ===
+		
+		'switch active TV channel to player
+		Interface.ShowChannel = GetPlayerCollection().playerID
+	End Method
+
+
+	Method SpreadStartProgramme:int()
+		For Local playerids:Int = 1 To 4
+			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
+			For Local i:Int = 0 To Game.startMovieAmount-1
+				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
+			Next
+			'give series to each player
+			For Local i:Int = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
+				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
+			Next
+			'give 1 call in
+			ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
+
+			For Local i:Int = 0 To 2
+				ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0, 0.15)) )
+			Next
+		Next
 	End Method
 
 
@@ -390,9 +406,8 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when a specific game starts
 	Method _Start:int(startNewGame:int = TRUE)
-
-		PrepareStart()
 		if not _firstGamePreparationDone then PrepareFirstGameStart()
+		if not _startPreparationDone then PrepareStart()
 
 		'new games need some initializations
 		if startNewGame then PrepareNewGame()
@@ -409,6 +424,14 @@ Type TGame {_exposeToLua="selected"}
 		'state (eg. when loaded)
 		Game.SetGamestate(TGame.STATE_RUNNING, TRUE)
 	End Method
+
+
+	'run when loading starts
+	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+		'if not done yet: run preparation for first game
+		'(eg. if loading is done from mainmenu)
+		PrepareFirstGameStart()
+	End Function
 
 
 	'run when loading finished
@@ -544,8 +567,8 @@ Type TGame {_exposeToLua="selected"}
 				ScreenCollection.GoToScreen(Null,"GameSettings")
 			Case TGame.STATE_NETWORKLOBBY
 				ScreenCollection.GoToScreen(Null,"NetworkLobby")
-			Case TGame.STATE_STARTMULTIPLAYER
-				ScreenCollection.GoToScreen(Null,"StartMultiplayer")
+			Case TGame.STATE_PREPAREGAMESTART
+				ScreenCollection.GoToScreen(Null,"PrepareGameStart")
 			Case TGame.STATE_RUNNING
 				'when a game is loaded we should try set the right screen
 				'not just the default building screen

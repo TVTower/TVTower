@@ -32,22 +32,27 @@ Const NET_SWITCH:Int					= 7000
 Const NET_TOSUITCASE:Int				= 8000
 Const NET_FROMSUITCASE:Int				= 9000
 
-Network.callbackServer		= ServerEventHandler
-Network.callbackClient		= ClientEventHandler
+Network.callbackServer = ServerEventHandler
+Network.callbackClient = ClientEventHandler
 
 
+'=== EVENTS FOR SERVER ===
 Function ServerEventHandler(server:TNetworkServer,client:TNetworkclient,id:Int, networkObject:TNetworkObject)
 	Select networkObject.evType
 		'player joined, send player data to all
-		case NET_PLAYERJOINED 		NetworkHelper.SendPlayerDetails()
-'		default 					print "server got unused event:" + networkObject.evType
+		case NET_PLAYERJOINED
+			NetworkHelper.SendPlayerDetails()
+'		default
+'			print "server got unused event:" + networkObject.evType
 	EndSelect
 End Function
 
+
+'=== EVENTS FOR CLIENT ===
 Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetworkObject)
 	Select networkObject.evType
 		case NET_PLAYERJOINED
-			local playerID:int		= NetworkObject.getInt(1)
+			local playerID:int = NetworkObject.getInt(1)
 			local playerName:string	= NetworkObject.getString(2)
 			if GetPlayerCollection().IsPlayer(playerID)
 				GetPlayerCollection().Get(playerID).Figure.ControlledByID = playerID
@@ -59,16 +64,19 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 			gameData.setInt(2, Game.GetRandomizerBase() )
 			Network.BroadcastNetworkObject( gameData, NET_PACKET_RELIABLE )
 
+
 		case NET_JOINRESPONSE
 			if not Network.client.joined then return
 			if Network.isServer then return
 			'we are not the gamemaster and got a playerID
-			local joined:int		= NetworkObject.getInt(1)
-			local playerID:int		= NetworkObject.getInt(2)
+			local joined:int = NetworkObject.getInt(1)
+			local playerID:int = NetworkObject.getInt(2)
 			if GetPlayerCollection().IsPlayer(playerID)
 				GetPlayerCollection().playerID = playerID
 				Network.client.playerID = playerID
 			endif
+			TLogger.Log("Network.ClientEventHandler", "got join response.", LOG_DEBUG | LOG_NETWORK)
+
 
 		case NET_GAMESETTINGS
 			if not Network.client.joined then return
@@ -80,12 +88,16 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 
 		case NET_STARTGAME
 				Game.networkgameready = 1
+
 		case NET_GAMEREADY
 				NetworkHelper.ReceiveGameReady( networkObject )
+
 		case NET_SENDGAMESTATE
 				NetworkHelper.ReceiveGameState( networkObject )
+
 		case NET_PLAYERDETAILS
 				NetworkHelper.ReceivePlayerDetails( networkObject )
+
 		case NET_FIGUREPOSITION
 				NetworkHelper.ReceiveFigurePosition( networkObject )
 
@@ -124,6 +136,8 @@ Function ClientEventHandler(client:TNetworkclient,id:Int, networkObject:TNetwork
 
 End Function
 
+
+'=== EVENTS FROM INFO CHANNEL ===
 'redirect a networkobject as event so others may connect easily
 Function InfoChannelEventHandler(networkObject:TNetworkObject)
 '	print "infochannel: got event: "+networkObject.evType

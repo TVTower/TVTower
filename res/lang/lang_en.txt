@@ -376,4 +376,5 @@ HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: copy progr
 HINT = Hint
 
 SYNCHRONIZING_START_CONDITIONS = Synchronizing start conditions
-STARTING_NETWORKGAME = Starting network game
+STARTING_MULTIPLAYERGAME = Starting multiplayer game
+STARTING_SINGLEPLAYERGAME = Starting singleplayer game

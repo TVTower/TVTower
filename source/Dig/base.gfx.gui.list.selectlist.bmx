@@ -119,6 +119,12 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
+	Method DrawValue:int()
+		'draw value
+		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
+	End Method
+
+
 	Method Draw:Int()
 		local upperParent:TGUIObject = GetUppermostParent()
 		upperParent.RestrictViewPort()
@@ -141,8 +147,7 @@ Type TGUISelectListItem Extends TGUIListItem
 			SetAlpha GetAlpha()*2.0
 		EndIf
 
-		'draw value
-		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
+		DrawValue()
 
 		oldCol.SetRGBA()
 		upperParent.ResetViewPort()

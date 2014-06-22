@@ -122,9 +122,6 @@ TLogger.setPrintMode(LOG_ALL )
 
 
 
-
-
-
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
 	Field devConfig:TData = new TData
@@ -1145,13 +1142,13 @@ Type TScreen_MainMenu Extends TGameScreen
 					Game.SetGamestate(TGame.STATE_SETTINGSMENU)
 
 			Case guiButtonNetwork
-					Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					Game.onlinegame = False
+					Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					Game.networkgame = True
 
 			Case guiButtonOnline
-					Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					Game.onlinegame = True
+					Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 					Game.networkgame = True
 
 			Case guiButtonQuit
@@ -1230,7 +1227,7 @@ End Type
 'MENU: GAME SETTINGS SCREEN
 Type TScreen_GameSettings Extends TGameScreen
 	Field guiSettingsWindow:TGUIGameWindow
-	'Field guiAnnounce:TGUICheckBox
+	Field guiAnnounce:TGUICheckBox
 	Field gui24HoursDay:TGUICheckBox
 	Field guiSpecialFormats:TGUICheckBox
 	Field guiFilterUnreleased:TGUICheckBox
@@ -1274,8 +1271,6 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "", 4, name)
 
 		Local checkboxHeight:Int = 0
-		'guiAnnounce		= New TGUICheckBox.Create(new TRectangle.Init(430, 0, 200,20), False, "Spielersuche abgeschlossen", name, GetBitmapFontManager().baseFontBold)
-
 		gui24HoursDay = New TGUICheckBox.Create(new TPoint.Init(430, 0), new TPoint.Init(300), "", name)
 		gui24HoursDay.SetChecked(True, False)
 		gui24HoursDay.disable() 'option not implemented
@@ -1288,15 +1283,17 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + checkboxHeight), new TPoint.Init(300), "", name)
 		guiFilterUnreleased.SetChecked(True, False)
+		checkboxHeight :+ guiFilterUnreleased.GetScreenHeight()
 
-		'move announce to last
-		'guiAnnounce.rect.position.MoveXY(0, 4*checkboxHeight)
+		guiAnnounce = New TGUICheckBox.Create(new TPoint.Init(430, 0 + checkboxHeight), new TPoint.Init(300), "", name)
+		guiAnnounce.SetChecked(True, False)
+
 
 		guiSettingsPanel.AddChild(guiGameTitleLabel)
 		guiSettingsPanel.AddChild(guiGameTitle)
 		guiSettingsPanel.AddChild(guiStartYearLabel)
 		guiSettingsPanel.AddChild(guiStartYear)
-		'guiSettingsPanel.AddChild(guiAnnounce)
+		guiSettingsPanel.AddChild(guiAnnounce)
 		guiSettingsPanel.AddChild(gui24HoursDay)
 		guiSettingsPanel.AddChild(guiSpecialFormats)
 		guiSettingsPanel.AddChild(guiFilterUnreleased)
@@ -1422,21 +1419,20 @@ Type TScreen_GameSettings Extends TGameScreen
 		Select sender
 			Case guiButtonStart
 					If Not Game.networkgame And Not Game.onlinegame
-						Game.StartNewGame()
+						TLogger.Log("Game", "Start a new singleplayer game", LOG_DEBUG)
 					Else
-						'guiAnnounce.SetChecked(False)
+						TLogger.Log("Game", "Start a new multiplayer game", LOG_DEBUG)
+						guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
-						Interface.ShowChannel = GetPlayerCollection().playerID
-
-						Game.SetGamestate(TGame.STATE_STARTMULTIPLAYER)
 					EndIf
+					Game.SetGamestate(TGame.STATE_PREPAREGAMESTART)
 
 			Case guiButtonBack
 					If Game.networkgame
 						If Game.networkgame Then Network.DisconnectFromServer()
 						GetPlayerCollection().playerID = 1
 						Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
-						'guiAnnounce.SetChecked(FALSE)
+						guiAnnounce.SetChecked(FALSE)
 						Network.StopAnnouncing()
 					Else
 						Game.SetGamestate(TGame.STATE_MAINMENU)
@@ -1496,6 +1492,8 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiSpecialFormats.SetValue(GetLocale("ALLOW_TRAILERS_AND_INFOMERCIALS"))
 		guiFilterUnreleased.SetValue(GetLocale("ALLOW_MOVIES_WITH_YEAR_OF_PRODUCTION_GT_GAMEYEAR"))
 
+		guiAnnounce.SetValue("Nach weiteren Spielern suchen")
+		
 		guiButtonStart.SetCaption(GetLocale("MENU_START_GAME"))
 		guiButtonBack.SetCaption(GetLocale("MENU_BACK"))
 
@@ -1524,7 +1522,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		Local slotPos:TPoint = new TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 		For Local i:Int = 0 To 3
 			If Game.networkgame Or GetPlayerCollection().playerID=1
-				If Game.gamestate <> TGame.STATE_STARTMULTIPLAYER And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID = 1)
+				If Game.gamestate <> TGame.STATE_PREPAREGAMESTART And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID = 1)
 					SetColor 255,255,255
 				Else
 					SetColor 225,255,150
@@ -1571,12 +1569,12 @@ Type TScreen_GameSettings Extends TGameScreen
 				guiSettingsWindow.SetCaption(GetLocale("MENU_ONLINEGAME"))
 			EndIf
 
-			'guiAnnounce.show()
+			guiAnnounce.show()
 			guiGameTitle.show()
 			guiGameTitleLabel.show()
 
-			'If guiAnnounce.isChecked() And Game.isGameLeader()
-			If Game.isGameLeader()
+			If guiAnnounce.isChecked() And Game.isGameLeader()
+			'If Game.isGameLeader()
 				'guiAnnounce.enable()
 				guiGameTitle.disable()
 				If guiGameTitle.Value = "" Then guiGameTitle.Value = "no title"
@@ -1586,28 +1584,28 @@ Type TScreen_GameSettings Extends TGameScreen
 			EndIf
 			If Not Game.isGameLeader()
 				guiGameTitle.disable()
-				'guiAnnounce.disable()
+				guiAnnounce.disable()
 			EndIf
 
 			'disable/enable announcement on lan/online
-			'if guiAnnounce.isChecked()
+			if guiAnnounce.isChecked()
 				Network.client.playerName = GetPlayerCollection().Get().name
 				If Not Network.announceEnabled Then Network.StartAnnouncing(Game.title)
-			'else
-			'	Network.StopAnnouncing()
-			'endif
+			else
+				Network.StopAnnouncing()
+			endif
 		Else
 			guiSettingsWindow.SetCaption(GetLocale("MENU_SOLO_GAME"))
 			'guiChat.setOption(GUI_OBJECT_VISIBLE,False)
 
 
-			'guiAnnounce.hide()
+			guiAnnounce.hide()
 			guiGameTitle.disable()
 		EndIf
 
 		For Local i:Int = 0 To 3
 			If Game.networkgame Or Game.isGameLeader()
-				If Game.gamestate <> TGame.STATE_STARTMULTIPLAYER And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID=1)
+				If Game.gamestate <> TGame.STATE_PREPAREGAMESTART And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID=1)
 					guiPlayerNames[i].enable()
 					guiChannelNames[i].enable()
 					guiFigureArrows[i*2].enable()
@@ -1720,12 +1718,12 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		guiGameListWindow = New TGUIGameWindow.Create(new TPoint.Init(20, 355), new TPoint.Init(520, 235), name)
 		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
-
-		guiGameList	= New TGUIGameList.Create(new TPoint.Init(20,355), new TPoint.Init(520,235), name)
+		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
+		'add list to the panel (which is located in the window
+		guiGameList	= New TGUIGameList.Create(new TPoint.Init(0,0), new TPoint.Init(guiGameListPanel.GetContentScreenWidth(),guiGameListPanel.GetContentScreenHeight()), name)
 		guiGameList.SetBackground(Null)
 		guiGameList.SetPadding(0, 0, 0, 0)
 
-		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
 		guiGameListPanel.AddChild(guiGameList)
 
 		'localize gui elements
@@ -1889,96 +1887,176 @@ End Type
 
 
 
-'SCREEN: START MULTIPLAYER
-Type TScreen_StartMultiplayer Extends TGameScreen
+'SCREEN: PREPARATION FOR A GAME START
+'(loading savegame, synchronising multiplayer data)
+Type TScreen_PrepareGameStart Extends TGameScreen
 	Field SendGameReadyTimer:Int = 0
 	Field StartMultiplayerSyncStarted:Int = 0
+	Field messageWindow:TGUIGameModalWindow
+	
+	'Store call states as we try a "Non blocking" approach
+	'which means, the update loop gets called multiple time.
+	'To avoid multiple calls, we save the states. 
+	'====
+	'was "startGame()" called already?
+	Field startGameCalled:int = False
+	'was "prepareGame()" called already?
+	Field prepareGameCalled:int = False
+	'was "SpreadConfiguration()" called already?
+	Field spreadConfigurationCalled:int = False
+	'was "SpreadStartData()" called already?
+	Field spreadStartDataCalled:int = False
+	'can "startGame()" get called?
+	Field canStartGame:int = False
 
 
-	Method Create:TScreen_StartMultiplayer(name:String)
+	Method Create:TScreen_PrepareGameStart(name:String)
 		Super.Create(name)
+
+		messageWindow = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,250), name)
+		'messageWindow.DarkenedArea = new TRectangle.Init(20,10,760,373)
+		messageWindow.SetCaptionAndValue("title", "")
+		messageWindow.SetDialogueType(0) 'no buttons
+		
 		Return Self
 	End Method
 
 
 	Method Draw:int(tweenValue:float)
-		'as background the settings screen
+		'draw settings screen as background
+		'BESSER: VORHERIGEN BILDSCHIRM zeichnen (fuer Laden)
 		ScreenCollection.GetScreen("GameSettings").Draw(tweenValue)
 
-		SetColor 180,180,200
-		SetAlpha 0.5
-		DrawRect 200,200,400,200
-		SetAlpha 1.0
-		SetColor 0,0,0
-		GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
-		GetBitmapFontManager().baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
+		'draw messageWindow
+		GUIManager.Draw(name)
 
-
-		SetColor 180,180,200
-		SetAlpha 1.0
-		DrawRect 200,200,400,200
-		SetAlpha 1.0
-		SetColor 0,0,0
-		GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", 220,220)
-		GetBitmapFontManager().baseFont.draw(GetLocale("STARTING_NETWORKGAME")+"...", 220,240)
-		for local i:int = 1 to 4
-			GetBitmapFontManager().baseFont.draw("Player "+i+"..."+GetPlayerCollection().Get(i).networkstate+" MovieListCount: "+GetPlayerCollection().Get(i).GetProgrammeCollection().GetProgrammeLicenceCount(), 220,260 + (i-1)*20)
-		Next
-		If Not Game.networkgameready = 1 Then GetBitmapFontManager().baseFont.draw("not ready!!", 220,360)
-		SetColor 255,255,255
+		'rect of the message window's content area 
+		local messageRect:TRectangle = messageWindow.GetContentScreenRect()
+		local oldAlpha:float = GetAlpha()
+		SetAlpha messageWindow.GetScreenAlpha()
+		local messageDY:int = 0
+		if Game.networkgame OR 1=1
+			GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+			messageDY :+ 20
+			for local i:int = 1 to 4
+				GetBitmapFontManager().baseFont.draw(GetLocale("PLAYER")+" "+i+"..."+GetPlayerCollection().Get(i).networkstate+" MovieListCount: "+GetPlayerCollection().Get(i).GetProgrammeCollection().GetProgrammeLicenceCount(), messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+				messageDY :+ 20
+			Next
+			If Not Game.networkgameready = 1
+				GetBitmapFontManager().baseFont.draw("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
+			EndIf
+		Endif
+		SetAlpha oldAlpha
 	End Method
 
 
+	Method Reset:int()
+		startGameCalled = False
+		prepareGameCalled = False
+		spreadConfigurationCalled = False
+		spreadStartDataCalled = False
+		canStartGame = False
+	End Method
+
+
+	'override to reset values
+	Method Start:int()
+		Reset()
+		
+		If Game.networkGame
+			messageWindow.SetCaption(GetLocale("STARTING_NETWORKGAME"))
+		Else
+			messageWindow.SetCaption(GetLocale("STARTING_SINGLEPLAYERGAME"))
+		EndIf
+	End Method
+
+
+	Method Enter:int(fromScreen:TScreen=null)
+		Super.Enter(fromScreen)
+
+		If wait = 0 then wait = Time.GetTimeGone()
+		Reset()
+	End Method
+
+
+	global wait:int = 0
+
 	'override default update
 	Method Update:Int(deltaTime:Float)
-		'master should spread startprogramme around
-		If Game.isGameLeader() And Not StartMultiplayerSyncStarted
-			StartMultiplayerSyncStarted = MilliSecs()
+		'update messagewindow
+		GUIManager.Update(name)
 
-			For Local playerids:Int = 1 To 4
-				Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
-				Local ProgrammeArray:TProgramme[Game.startMovieAmount + Game.startSeriesAmount + 1]
-				For Local i:Int = 0 To Game.startMovieAmount-1
-					ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
-				Next
-				'give series to each player
-				For Local i:Int= 0 To Game.startSeriesAmount-1
-					ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
-				Next
-				'give 1 call in
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
 
-				For Local j:Int = 0 To Game.startAdAmount-1
-					ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0.0, 0.15)))
-				Next
-			Next
+		'=== STEPS ===
+		'MP = MultiPlayer, SP = SinglePlayer, ALL = all modes
+		'1. MP:  Spread configuration (database / name)
+		'2. ALL: Prepare game (load database, color figures)
+		'3. MP:  Check if ready to start game
+		'4. ALL: Start game (if ready)
+
+
+		'=== STEP 1 ===
+		If game.networkGame
+			SpreadConfiguration()
+			spreadConfigurationCalled = True
+		Endif
+
+
+		'=== STEP 2 ===
+		If not prepareGameCalled
+			Game.PrepareStart()
+			StartMultiplayerSyncStarted = Time.GetTimeGone()
+			prepareGameCalled = True
 		EndIf
-		'ask every 500ms
-		If Game.isGameLeader() And SendGameReadyTimer < MilliSecs()
-			Game.SetGamestate(TGame.STATE_STARTMULTIPLAYER)
+
+
+		'=== STEP 3 ===
+		'ask other players if they are ready (ask every 500ms)
+		If Game.isGameLeader() And SendGameReadyTimer < Time.GetTimeGone()
 			NetworkHelper.SendGameReady(GetPlayerCollection().playerID)
-			SendGameReadyTimer = MilliSecs() +500
+			SendGameReadyTimer = Time.GetTimeGone() + 500
+		EndIf
+		'go back to game settings if something takes longer than expected
+		If Time.GetTimeGone() - StartMultiplayerSyncStarted > 10000
+			Print "sync timeout"
+			StartMultiplayerSyncStarted = 0
+			game.SetGamestate(TGame.STATE_SETTINGSMENU)
+			Return False
 		EndIf
 
-		If Game.networkgameready=1
-			'ScreenGameSettings.guiAnnounce.SetChecked(FALSE)
-			GetPlayerCollection().Get().networkstate=1
+		if not startGameCalled
+			'singleplayer games can always start
+			If not Game.networkGame
+'				if Time.GetTimeGone() - wait > 5000
+					canStartGame = True
+'				endif
+			'multiplayer games can start if all players are ready
+			else
+				if Game.networkgameready = 1
+					ScreenGameSettings.guiAnnounce.SetChecked(FALSE)
+					GetPlayerCollection().Get().networkstate = 1
+					canStartGame = True
+				EndIf
+			EndIf
+		endif
+		
 
+		'=== STEP 4 ===
+		If canStartGame and not startGameCalled
 			'register events and start game
 			Game.StartNewGame()
 			'reset randomizer
 			Game.SetRandomizerBase( Game.GetRandomizerBase() )
-
-			Return True
-		Else
-			'go back to game settings if something takes longer than expected
-			If MilliSecs() - StartMultiplayerSyncStarted > 10000
-				Print "sync timeout"
-				StartMultiplayerSyncStarted = 0
-				game.SetGamestate(TGame.STATE_SETTINGSMENU)
-				Return False
-			EndIf
+			startGameCalled = True
 		EndIf
+	End Method
+
+
+	'spread configuration to other players
+	Method SpreadConfiguration:int()
+		if not Game.networkGame then return False
+
+		'send which database to use (or send database itself?)
 	End Method
 End Type
 
@@ -2584,7 +2662,7 @@ Function StartApp:int()
 	ScreenGameSettings = New TScreen_GameSettings.Create("GameSettings")
 	ScreenCollection.Add(ScreenGameSettings)
 	ScreenCollection.Add(New TScreen_NetworkLobby.Create("NetworkLobby"))
-	ScreenCollection.Add(New TScreen_StartMultiplayer.Create("StartMultiplayer"))
+	ScreenCollection.Add(New TScreen_PrepareGameStart.Create("PrepareGameStart"))
 
 
 	'init sound receiver
