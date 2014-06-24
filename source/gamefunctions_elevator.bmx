@@ -334,7 +334,8 @@ Type TElevator extends TEntity
 		'it has to reach the first pixel of the floor until the
 		'function returns the new one, instead of positioning it
 		'directly on the floorground
-		local tmpFloorY:int = TBuilding.GetFloorY(GetBuilding().GetFloor(GetBuilding().area.GetY() + area.GetY() + spriteInner.area.GetH() - 1))
+		local tmpCurrentFloor:int = GetBuilding().GetFloor(GetBuilding().area.GetY() + area.GetY() + spriteInner.area.GetH() - 1)
+		local tmpFloorY:int = TBuilding.GetFloorY(tmpCurrentFloor)
 		local tmpElevatorBottomY:int = area.GetY() + spriteInner.area.GetH()
 
 		'direction = -1 => downwards
@@ -601,7 +602,8 @@ End Type
 
 
 Type TElevatorSmartLogic Extends TElevatorRouteLogic
-	Field Elevator:TElevator					'Die Referenz zum Fahrstuhl
+	Field Elevator:TElevator
+		'Die Referenz zum Fahrstuhl
 	Field TemporaryRouteList:TList				'Die temporäre RouteList. Sie ist so lange aktuell, bis sich etwas an FloorRouteList ändert, dann wird TemporaryRouteList auf null gesetzt
 	Field TopTurningPointForSort:int = -1		'Das aktuell höchste Stockwerk das es zu erreichen gibt
 	Field BottomTurningPointForSort:int = -1	'Das aktuell tiefste Stockwerk das es zu erreichen gibt
