@@ -4,6 +4,7 @@ REM
 	===========================================================
 ENDREM
 SuperStrict
+Import "game.gamerules.bmx"
 Import "game.gameobject.bmx"
 Import "game.broadcastmaterial.base.bmx"
 Import "game.broadcastmaterial.news.bmx"
@@ -14,8 +15,8 @@ Import "game.broadcastmaterial.advertisement.bmx"
 
 Type TPlayerProgrammeCollectionCollection
 	Field plans:TPlayerProgrammeCollection[]
-	Field maxContracts:int = 10
 	Global _instance:TPlayerProgrammeCollectionCollection
+
 
 	Function GetInstance:TPlayerProgrammeCollectionCollection()
 		if not _instance then _instance = new TPlayerProgrammeCollectionCollection
@@ -173,7 +174,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Method AddUnsignedAdContractToSuitcase:int(contract:TAdContract)
 		If not contract then return FALSE
 		'do not add if already "full"
-		if suitcaseAdContracts.count() >= GetPlayerProgrammeCollectionCollection().maxContracts then return FALSE
+		if suitcaseAdContracts.count() >= GameRules.maxContracts then return FALSE
 
 		'add a special block-object to the suitcase
 		suitcaseAdContracts.AddLast(contract)
@@ -212,7 +213,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	Method AddProgrammeLicenceToSuitcase:int(programmeLicence:TProgrammeLicence)
 		'do not add if already "full"
-		if suitcaseProgrammeLicences.count() >= GetPlayerProgrammeCollectionCollection().maxContracts then return FALSE
+		if suitcaseProgrammeLicences.count() >= GameRules.maxContracts then return FALSE
 
 		'if owner differs, check if we have to buy
 		if owner <> programmeLicence.owner

@@ -218,13 +218,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method FigureMovement:int()
-		'figure is in a room, do not move...
-		if inRoom then return FALSE
-
-		if not moveable then return FALSE
-
-		'stop movement if changing rooms
-		if isChangingRoom then return FALSE
+		If not CanMove() then return False
 
 		'stop movement, will get set to a value if we have a target to move to
 		velocity.setX(0)
@@ -247,7 +241,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 			'does the center of the figure will reach the target during update?
-			local dx:float = GetVelocity().GetX() * GetDeltaTimer().GetDelta()
+			local dx:float = GetVelocity().GetX() * GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
 			local reachTemporaryTarget:int = FALSE
 			'move to right and next step is more right than target
 			if dx > 0 and ceil(area.getX() + dx) >= targetX then reachTemporaryTarget=true
@@ -342,8 +336,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method CanSeeFigure:int(figure:TFigure, range:int=50)
-		'being in a room - do not knock on the door :D
-		if inRoom OR figure.inRoom then return FALSE
+		'being in a room (or coming out of one)
+		if not IsVisible() or not IsVisible() then return FALSE
 		'from different floors
 		If area.GetY() <> Figure.area.GetY() then return FALSE
 		'and out of range
@@ -411,6 +405,36 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 				SetAlpha oldAlpha
 			endif
 		Next
+	End Method
+
+
+	Method IsVisible:int()
+		return (IsInBuilding() or isChangingRoom)
+	End Method
+
+
+	Method IsInBuilding:int()
+		If isChangingRoom Then Return False
+		If inRoom Then Return False
+		return True
+rem
+		'going from building to room
+		If isChangingRoom and not inRoom then return True
+		'going from room to building
+		If isChangingRoom and inRoom then return False
+		'in a room
+		If inRoom then return False
+		'default
+		Return True
+endrem
+	End Method
+
+
+	Method CanMove:int()
+		If not IsInBuilding() then return False
+		if not moveable then return False
+
+		return True
 	End Method
 
 
@@ -538,6 +562,11 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", null , self, inroom )
 		EventManager.triggerEvent(event)
 		'stop leaving
+if event.IsVeto()
+	print "RON: figure.LeaveRoom: room=" + inroom.name + "  figure="+self.name
+endif
+
+
 		if event.IsVeto() then return False
 
 		'leave is allowed - set time of start
@@ -736,7 +765,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 
-		If isVisible() And (not inRoom Or inRoom.name = "elevatorplaner")
+		If isVisible() And (CanMove() Or (inroom and inRoom.name = "elevatorplaner"))
 			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
 

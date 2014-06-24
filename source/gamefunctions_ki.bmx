@@ -49,6 +49,8 @@ Type KI
 		'the game object
 		LuaEngine.RegisterBlitzmaxObject(Game, "Game")
 		'the game object
+		LuaEngine.RegisterBlitzmaxObject(GameRules, "GameRules")
+		'the game object
 		LuaEngine.RegisterBlitzmaxObject(GetGameTime(), "GameTime")
 
 		'register source and available objects

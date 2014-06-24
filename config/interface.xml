@@ -107,15 +107,27 @@
 			<type>image</type>
  			<url>res/grafiken/interface/tv_programme_none.png</url>
 		</resource>
-		<resource name="gfx_interface_TVprogram_news">
+		<resource name="gfx_interface_tv_programme_news">
 			<type>image</type>
  			<url>res/grafiken/interface/tv_programme_news.png</url>
 		</resource>
-		<resource name="gfx_interface_TVprogram_ads">
+		<resource name="gfx_interface_tv_programme_ads">
 			<type>image</type>
  			<url>res/grafiken/interface/tv_programme_ads.png</url>
 		</resource>
-
+		<resource name="gfx_interface_tv_programme_ads_none">
+			<type>image</type>
+ 			<url>res/grafiken/interface/tv_programme_ads_none.png</url>
+		</resource>
+		<resource name="gfx_interface_tv_programme_traileroverlay">
+			<type>image</type>
+ 			<url>res/grafiken/interface/tv_programme_traileroverlay.png</url>
+		</resource>
+		<resource name="gfx_interface_tv_programme_infomercialoverlay">
+			<type>image</type>
+ 			<url>res/grafiken/interface/tv_programme_infomercialoverlay.png</url>
+		</resource>
+		
 		<resource name="gfx_interface_audience_bg">
 			<type>image</type>
  			<url>res/grafiken/interface/audience_bg.png</url>

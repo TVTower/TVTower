@@ -515,18 +515,18 @@ print "[NET] ReceiveGameReady"
 		local player:TPlayer
 		for local i:int = 1 to 4
 			player = GetPlayerCollection().Get(i)
-			if player.GetProgrammeCollection().GetMovieLicenceCount() < Game.startMovieAmount
-				print "movie missing player("+i+") " + player.GetProgrammeCollection().GetMovieLicenceCount() + " < " + Game.startMovieAmount
+			if player.GetProgrammeCollection().GetMovieLicenceCount() < GameRules.startMovieAmount
+				print "movie missing player("+i+") " + player.GetProgrammeCollection().GetMovieLicenceCount() + " < " + GameRules.startMovieAmount
 				allReady = false
 				exit
 			endif
-			if player.GetProgrammeCollection().GetSeriesLicenceCount() < Game.startSeriesAmount
-				print "serie missing player("+i+") " + player.GetProgrammeCollection().GetSeriesLicenceCount() + " < " + Game.startSeriesAmount
+			if player.GetProgrammeCollection().GetSeriesLicenceCount() < GameRules.startSeriesAmount
+				print "serie missing player("+i+") " + player.GetProgrammeCollection().GetSeriesLicenceCount() + " < " + GameRules.startSeriesAmount
 				allReady = false
 				exit
 			endif
-			if player.GetProgrammeCollection().GetAdContractCount() < Game.startAdAmount
-				print "ad missing player("+i+") " + player.GetProgrammeCollection().GetAdContractCount() + " < " + Game.startAdAmount
+			if player.GetProgrammeCollection().GetAdContractCount() < GameRules.startAdAmount
+				print "ad missing player("+i+") " + player.GetProgrammeCollection().GetAdContractCount() + " < " + GameRules.startAdAmount
 				allReady = false
 				exit
 			endif

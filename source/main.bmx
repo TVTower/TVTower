@@ -47,6 +47,7 @@ Import brl.Threads
 ?
 
 'game specific
+Import "game.gamerules.bmx"
 Import "game.registry.loaders.bmx"
 Import "game.exceptions.bmx"
 
@@ -345,6 +346,16 @@ Type TApp
 				If Game.gamestate = TGame.STATE_RUNNING
 					If KEYMANAGER.IsDown(KEY_UP) Then GetGameTime().speed:+0.10
 					If KEYMANAGER.IsDown(KEY_DOWN) Then GetGameTime().speed = Max( GetGameTime().speed - 0.10, 0)
+
+					If KEYMANAGER.IsDown(KEY_RIGHT)
+						TEntity.worldSpeedFactor :+ 0.10
+						GetGameTime().speed :+ 0.10
+					endif
+					If KEYMANAGER.IsDown(KEY_LEFT) Then
+						TEntity.worldSpeedFactor = Max( TEntity.worldSpeedFactor - 0.10, 0)
+						GetGameTime().speed = Max( GetGameTime().speed - 0.10, 0)
+					Endif
+
 
 					If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
 					If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
@@ -664,6 +675,7 @@ Type TSaveGame
 	'effects - for visual effects (fading), sound ...
 	Field _Time_startTime:Long = 0
 	Field _GameTime:TGameTime = Null
+	Field _GameRules:TGamerules = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
@@ -702,6 +714,7 @@ Type TSaveGame
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
 		_Assign(_GameTime, TGameTime._instance, "GameTime", MODE_LOAD)
+		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 		_Assign(_Game, Game, "Game")
@@ -732,6 +745,7 @@ Type TSaveGame
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
 		_Assign(TGameTime._instance, _GameTime, "GameTime", MODE_SAVE)
+		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
 		'special room data
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
 		_Assign(RoomHandler_AdAgency._instance, _RoomHandler_AdAgency, "AdAgency", MODE_Save)
@@ -905,9 +919,11 @@ End Type
 Type TFigureJanitor Extends TFigure
 	Field currentAction:Int	= 0		'0=nothing,1=cleaning,...
 	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(2500,0, -500, 500) '500ms randomness
-	Field useElevator:Int 	= True
-	Field useDoors:Int		= True
-	Field BoredCleanChance:Int	= 10
+	Field nextActionTime:int = 2500
+	Field nextActionRandomTime:int = 500
+	Field useElevator:Int = True
+	Field useDoors:Int = True
+	Field BoredCleanChance:Int = 10
 	Field NormalCleanChance:Int = 30
 	Field MovementRangeMinX:Int	= 220
 	Field MovementRangeMaxX:Int	= 580
@@ -995,18 +1011,22 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		If Not inRoom And nextActionTimer.isExpired() And Not hasToChangeFloor()
+			nextActionTimer.SetRandomness(-nextActionRandomTime / TEntity.worldSpeedFactor, nextActionRandomTime * TEntity.worldSpeedFactor)
+			nextActionTimer.SetInterval(nextActionTime / TEntity.worldSpeedFactor)
 			nextActionTimer.Reset()
-			Self.currentAction = 0
+
+			
+			currentAction = 0
 
 			'chose actions
 			'only clean with a chance of 30% when on the way to something
 			'and do not clean if target is a room near figure
 			local targetDoor:TRoomDoor = TRoomDoor(targetObj)
 			If target And (Not targetDoor Or (20 < Abs(targetDoor.area.GetX() - area.GetX()) Or targetDoor.area.GetY() <> GetFloor()))
-				If Rand(0,100) < Self.NormalCleanChance Then Self.currentAction = 1
+				If Rand(0,100) < NormalCleanChance Then currentAction = 1
 			EndIf
 			'if just standing around give a chance to clean
-			If Not target And Rand(0,100) < Self.BoredCleanChance Then	Self.currentAction = 1
+			If Not target And Rand(0,100) < BoredCleanChance Then currentAction = 1
 		EndIf
 
 		if targetObj
@@ -1237,7 +1257,7 @@ Type TScreen_GameSettings Extends TGameScreen
 	Field guiStartYear:TGuiInput
 	Field guiButtonStart:TGUIButton
 	Field guiButtonBack:TGUIButton
-	Field guiChat:TGUIChat
+	Field guiChatWindow:TGUIChatWindow
 	Field guiPlayerNames:TGUIinput[4]
 	Field guiChannelNames:TGUIinput[4]
 	Field guiFigureArrows:TGUIArrowButton[8]
@@ -1319,14 +1339,14 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiButtonsPanel.AddChild(guiButtonBack)
 
 
-		guiChat	= New TGUIChat.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), name)
-		guiChat.guiInput.setMaxLength(200)
+		guiChatWindow = New TGUIChatWindow.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), name)
+		guiChatWindow.guiChat.guiInput.setMaxLength(200)
 
-		guiChat.guiBackground.spriteAlpha = 0.5
-		guiChat.SetPadding(headerSize, panelGap, panelGap, panelGap)
-		guiChat.guiList.Resize(guiChat.guiList.rect.GetW(), guiChat.guiList.rect.GetH()-10)
-		guiChat.guiInput.rect.position.MoveXY(panelGap, -panelGap)
-		guiChat.guiInput.Resize( guiChat.GetContentScreenWidth() - 2* panelGap, guiStartYear.GetScreenHeight())
+		guiChatWindow.guiBackground.spriteAlpha = 0.5
+		guiChatWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
+		guiChatWindow.guiChat.guiList.Resize(guiChatWindow.guiChat.guiList.rect.GetW(), guiChatWindow.guiChat.guiList.rect.GetH()-10)
+		guiChatWindow.guiChat.guiInput.rect.position.MoveXY(panelGap, -panelGap)
+		guiChatWindow.guiChat.guiInput.Resize( guiChatWindow.guiChat.GetContentScreenWidth() - 2* panelGap, guiStartYear.GetScreenHeight())
 
 		local player:TPlayer
 		For Local i:Int = 0 To 3
@@ -1497,7 +1517,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiButtonStart.SetCaption(GetLocale("MENU_START_GAME"))
 		guiButtonBack.SetCaption(GetLocale("MENU_BACK"))
 
-		guiChat.SetCaption(GetLocale("CHAT"))
+		guiChatWindow.SetCaption(GetLocale("CHAT"))
 
 
 		're-align the checkboxes as localization might have changed
@@ -1625,7 +1645,7 @@ Type TScreen_GameSettings Extends TGameScreen
 		'not final !
 		If KEYMANAGER.isDown(KEY_ENTER)
 			If Not GUIManager.GetFocus()
-				GUIManager.SetFocus(guiChat.guiInput)
+				GUIManager.SetFocus(guiChatWindow.guiChat.guiInput)
 				'KEYMANAGER.blockKey(KEY_ENTER, 200) 'block for 100ms
 				'KEYMANAGER.resetKey(KEY_ENTER)
 			EndIf
@@ -1935,7 +1955,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		local oldAlpha:float = GetAlpha()
 		SetAlpha messageWindow.GetScreenAlpha()
 		local messageDY:int = 0
-		if Game.networkgame OR 1=1
+		if Game.networkgame
 			GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 			messageDY :+ 20
 			for local i:int = 1 to 4
@@ -1945,6 +1965,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			If Not Game.networkgameready = 1
 				GetBitmapFontManager().baseFont.draw("not ready!!", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 			EndIf
+		Else
+			GetBitmapFontManager().baseFont.draw(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 		Endif
 		SetAlpha oldAlpha
 	End Method
@@ -2347,6 +2369,15 @@ Type GameEvents
 
 
 	Function OnMinute:Int(triggerEvent:TEventBase)
+		For local room:TRoom = eachin GetRoomCollection().list
+			if room.occupants.count() > 0
+				For local fig:TFigure = eachin room.occupants
+					if fig.IsInBuilding() then THROW "FIGURE "+fig.name+" in room="+room.name 
+				Next
+			endif
+		Next
+
+	
 		'things happening x:05
 		Local minute:Int = triggerEvent.GetData().GetInt("minute",-1)
 		Local hour:Int = triggerEvent.GetData().GetInt("hour",-1)

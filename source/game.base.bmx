@@ -17,21 +17,6 @@ Type TGame {_exposeToLua="selected"}
 	Const STATE_PREPAREGAMESTART:Int= 4
 
 	'===== GAME SETTINGS =====
-	'how many movies does a player get on a new game
-	Const startMovieAmount:Int = 5					{_exposeToLua}
-	'how many series does a player get on a new game
-	Const startSeriesAmount:Int = 1					{_exposeToLua}
-	'how many contracts a player gets on a new game
-	Const startAdAmount:Int = 3						{_exposeToLua}
-	'maximum level a news genre abonnement can have
-	Const maxAbonnementLevel:Int = 3				{_exposeToLua}
-	'how many contracts a player can possess
-	Const maxContracts:Int = 10						{_exposeToLua}
-	'how many movies can be carried in suitcase
-	Const maxProgrammeLicencesInSuitcase:Int = 12	{_exposeToLua}
-
-	'how many 0.0-1.0 (100%) audience is maximum reachable
-	Field maxAudiencePercentage:Float = 0.3
 	'used so that random values are the same on all computers having the same seed value
 	Field randomSeedValue:Int = 0
 
@@ -120,6 +105,12 @@ Type TGame {_exposeToLua="selected"}
 
 		networkgame = 0
 
+
+		'=== ADJUST GAME RULES ===
+		'how many contracts can a player possess
+		GameRules.maxContracts = 10
+
+
 		GetGametime().SetStartYear(userStartYear)
 		title = "unknown"
 
@@ -134,8 +125,6 @@ Type TGame {_exposeToLua="selected"}
 	End Method
 
 
-
-
 	'run this before EACH started game
 	Method PrepareStart()
 		'load all movies, news, series and ad-contracts
@@ -146,7 +135,6 @@ Type TGame {_exposeToLua="selected"}
 		ColorizePlayerExtras()
 
 		TLogger.Log("Game.PrepareStart()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
-
 		TRoomDoor.DrawDoorsOnBackground()
 
 		TLogger.Log("Game.PrepareStart()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
@@ -165,29 +153,11 @@ Type TGame {_exposeToLua="selected"}
 
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
-
 		local showStartTips:int = FALSE
+		if showStartTips then CreateStartTips()
 
-		if showStartTips
-			'TLogger.Log("TGame", "Creating start tip GUIelement", LOG_DEBUG)
-			Local StartTips:TList = CreateList()
-			Local tipNumber:int = 1
-			'repeat as long there is a localization available
-			While GetLocale("STARTHINT_TITLE"+tipNumber) <> "STARTHINT_TITLE"+tipNumber
-				StartTips.addLast( [GetLocale("HINT")+ ": "+GetLocale("STARTHINT_TITLE"+tipNumber), GetLocale("STARTHINT_TEXT"+tipNumber)] )
-				tipNumber :+ 1
-			Wend
 
-			if StartTips.count() > 0
-				local tipNumber:int = rand(0, StartTips.count()-1)
-				local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
-
-				StartTipWindow = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,350), "InGame")
-				StartTipWindow.DarkenedArea = new TRectangle.Init(20,10,760,373)
-				StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )
-			endif
-		endif
-
+		'=== GUI SETUP ===
 		'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
 		InGame_Chat = New TGUIChat.Create(new TPoint.Init(520, 418), new TPoint.Init(280,190), "InGame")
 		InGame_Chat.setDefaultHideEntryTime(10000)
@@ -196,6 +166,10 @@ Type TGame {_exposeToLua="selected"}
 		InGame_Chat.setOption(GUI_OBJECT_CLICKABLE, False)
 		InGame_Chat.SetDefaultTextColor( TColor.Create(255,255,255) )
 		InGame_Chat.guiList.autoHideScroller = True
+		'remove unneeded elements
+		InGame_Chat.SetBackground(null)
+
+
 		'reposition input
 		InGame_Chat.guiInput.rect.position.setXY( 275, 387)
 		InGame_Chat.guiInput.setMaxLength(200)
@@ -250,6 +224,25 @@ Type TGame {_exposeToLua="selected"}
 	End Function
 
 
+	Function CreateStartTips:int()
+		TLogger.Log("TGame", "Creating start tip GUIelement", LOG_DEBUG)
+		Local StartTips:TList = CreateList()
+		Local tipNumber:int = 1
+		'repeat as long there is a localization available
+		While GetLocale("STARTHINT_TITLE"+tipNumber) <> "STARTHINT_TITLE"+tipNumber
+			StartTips.addLast( [GetLocale("HINT")+ ": "+GetLocale("STARTHINT_TITLE"+tipNumber), GetLocale("STARTHINT_TEXT"+tipNumber)] )
+			tipNumber :+ 1
+		Wend
+
+		if StartTips.count() > 0
+			local tipNumber:int = rand(0, StartTips.count()-1)
+			local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
+
+			StartTipWindow = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,350), "InGame")
+			StartTipWindow.DarkenedArea = new TRectangle.Init(20,10,760,373)
+			StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )
+		endif
+	End Function
 
 
 	Method PrepareNewGame:int()
@@ -377,11 +370,11 @@ Type TGame {_exposeToLua="selected"}
 	Method SpreadStartProgramme:int()
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
-			For Local i:Int = 0 To Game.startMovieAmount-1
+			For Local i:Int = 0 until GameRules.startMovieAmount
 				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
 			Next
 			'give series to each player
-			For Local i:Int = Game.startMovieAmount To Game.startMovieAmount + Game.startSeriesAmount-1
+			For Local i:Int = GameRules.startMovieAmount until GameRules.startMovieAmount + GameRules.startSeriesAmount
 				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
 			Next
 			'give 1 call in

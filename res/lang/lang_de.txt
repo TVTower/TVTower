@@ -372,6 +372,7 @@ HINT_PRESSING_ALT_WILL_SHOW_DETAILS = "ALT"-Taste drücken für mehr Details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: tauscht Datenblatt | STRG+Klick: Programmkopie | SHIFT+Klick: nächste Episode
 HINT = Hinweis
 
+PREPARING_START_DATA = Bereite Startdaten vor
 SYNCHRONIZING_START_CONDITIONS = Synchronisiere Startbedingungen
 STARTING_MULTIPLAYERGAME = Starte Mehrspieler-Spiel
 STARTING_SINGLEPLAYERGAME = Starte Einzelspieler-Spiel

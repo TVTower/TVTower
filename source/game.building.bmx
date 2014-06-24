@@ -77,7 +77,7 @@ Type TBuilding Extends TStaticEntity
 
 		area.position.SetY(0 - gfx_building.area.GetH() + 5 * 73 + 20)	' 20 = interfacetop, 373 = raumhoehe
 		Elevator = TElevator.GetInstance().Init()
-		Elevator.Pos.SetY(GetFloorY(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
+		Elevator.area.position.SetY(GetFloorY(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
 
 		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
 
@@ -239,7 +239,7 @@ Type TBuilding Extends TStaticEntity
 		'move elevatorplan hotspots to the elevator
 		For Local hotspot:THotspot = EachIn room.hotspots
 			If hotspot.name = "elevatorplan"
-				hotspot.area.position.setX( Elevator.pos.getX() )
+				hotspot.area.position.setX( Elevator.area.getX() )
 				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
 			EndIf
 		Next
@@ -319,7 +319,7 @@ Type TBuilding Extends TStaticEntity
 		'draw overlay - open doors are drawn over "background-image-doors" etc.
 		TRoomDoor.DrawAll()
 		'draw elevator parts
-		Elevator.Draw()
+		Elevator.Render()
 
 		SetBlend ALPHABLEND
 

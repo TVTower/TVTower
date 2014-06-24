@@ -8,7 +8,7 @@
 
 'Die Standard-Logikimplementierung ist "TElevatorSmartStrategy" zu finden. Diese benötigt die Klasse "TSmartFloorRoute" eine Ableitung von 'TFloorRoute
 
-Type TElevator
+Type TElevator extends TEntity
 	'=== Referenzen ===
 	'Alle aktuellen Passagiere als TFigure
 	Field Passengers:TList = CreateList()
@@ -32,8 +32,6 @@ Type TElevator
 	Field Direction:Int	= 1
 	'während der ElevatorStatus 4, 5 und 0 möglich.
 	Field ReadyForBoarding:int = false
-	'Aktuelle Position - difference to x/y of building
-	Field Pos:TPoint = new TPoint.Init(131 + 230,115)
 
 	'=== EINSTELLUNGEN ===
 	'pixels per second ;D
@@ -74,6 +72,9 @@ Type TElevator
 
 
 	Method Init:TElevator()
+		'Aktuelle Position - difference to x/y of building
+		area.position.SetXY(131 + 230, 115)
+
 		'limit speed between 50 - 240 pixels per second, default 120
 		Speed = Max(50, Min(240, App.devConfig.GetInt("DEV_ELEVATOR_SPEED", self.speed)))
 		'adjust wait at floor time : 1000 - 2000 ms, default 1700
@@ -180,7 +181,7 @@ Type TElevator
 	End Method
 
 	Method GetDoorCenterX:int()
-		Return GetBuilding().area.position.x + Pos.x + door.sprite.framew/2
+		Return GetBuilding().area.position.x + area.GetX() + door.sprite.framew/2
 	End Method
 
 	Method GetDoorWidth:int()
@@ -242,7 +243,7 @@ Type TElevator
 	End Method
 
 	Method GetElevatorCenterPos:TPoint()
-		Return new TPoint.Init(GetBuilding().area.position.x + Pos.x + door.sprite.framew/2, Pos.y + door.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
+		Return new TPoint.Init(GetBuilding().area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
 	End Method
 
 	'===== Offset-Funktionen =====
@@ -326,13 +327,32 @@ Type TElevator
 
 	'===== Aktualisierungs-Methoden =====
 
-	Method Update(deltaTime:Float=1.0)
-		'Aktualisierung des current floors - mv: da ich hier nicht durchblicke lass ich's so wie's ist ;)
-		If Abs(TBuilding.GetFloorY(GetBuilding().GetFloor(GetBuilding().area.position.y + Pos.y + spriteInner.area.GetH() - 1)) - (Pos.y + spriteInner.area.GetH())) <= 1
-			'the -1 is used for displace the object one pixel higher, so it has to reach the first pixel of the floor
-			'until the function returns the new one, instead of positioning it directly on the floorground
-			CurrentFloor = GetBuilding().GetFloor(GetBuilding().area.position.y + Pos.y + spriteInner.area.GetH() - 1)
+	Method Update:int()
+		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+
+		'the -1 is used for displace the object one pixel higher, so
+		'it has to reach the first pixel of the floor until the
+		'function returns the new one, instead of positioning it
+		'directly on the floorground
+		local tmpCurrentFloor:int = GetBuilding().GetFloor(GetBuilding().area.GetY() + area.GetY() + spriteInner.area.GetH() - 1)
+		local tmpFloorY:int = TBuilding.GetFloorY(tmpCurrentFloor)
+		local tmpElevatorBottomY:int = area.GetY() + spriteInner.area.GetH()
+
+		'direction = -1 => downwards
+		'direction = +1 => upwards
+		If direction < 0 and tmpFloorY <= tmpElevatorBottomY
+			CurrentFloor = tmpCurrentFloor
+		elseif direction > 0 and tmpFloorY >= tmpElevatorBottomY
+			CurrentFloor = tmpCurrentFloor
 		EndIf
+
+rem
+		'Aktualisierung des current floors
+		'- mv: da ich hier nicht durchblicke lass ich's so wie's ist ;)
+		If Abs(tmpFloorY - tmpElevatorBottomY) <= 1
+			CurrentFloor = tmpCurrentFloor
+		EndIf
+endrem
 
 		If ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
 			TargetFloor = CalculateNextTarget() 'Nächstes Ziel in der Route
@@ -357,28 +377,38 @@ Type TElevator
 		Endif
 
 		If ElevatorStatus = 2 '2 = Fahren
-			TargetFloor = CalculateNextTarget() 'Nochmal prüfen ob es vielleicht ein neueres Ziel gibt das unterwegs eingeladen werden muss
+			'Nochmal prüfen ob es vielleicht ein neueres Ziel gibt das
+			'unterwegs eingeladen werden muss
+			TargetFloor = CalculateNextTarget()
 
-			if CurrentFloor = TargetFloor 'Ist der Fahrstuhl da/angekommen, aber die Türen sind noch geschlossen? Dann öffnen!
+			'Ist der Fahrstuhl da/angekommen, aber die Türen sind noch
+			'geschlossen? Dann öffnen!
+			if CurrentFloor = TargetFloor
 				ElevatorStatus = 3 'Türen öffnen
 '				Direction = 0
 			Else
+				'backup for tweening
+				oldPosition.SetXY(area.position.x, area.position.y)
+
 				If (CurrentFloor < TargetFloor) then Direction = 1 else Direction = -1
+				'set velocity according (negative) direction
+				SetVelocity(0, -Direction * Speed)
 
-				'Fahren - Position ändern
-				If Direction = 1
-					Pos.y	= Max(Pos.y - deltaTime * Speed, TBuilding.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'hoch fahren
-				Else
-					Pos.y	= Min(Pos.y + deltaTime * Speed, TBuilding.GetFloorY(TargetFloor) - spriteInner.area.GetH()) 'runter fahren
-				EndIf
+				'set new position
+				area.position.MoveXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
 
-				'Begrenzungen: Nicht oben oder unten rausfahren ;)
-				If Pos.y + spriteInner.area.GetH() < TBuilding.GetFloorY(13) Then Pos.y = TBuilding.GetFloorY(13) - spriteInner.area.GetH()
-				If Pos.y + spriteInner.area.GetH() > TBuilding.GetFloorY( 0) Then Pos.y = TBuilding.GetFloorY(0) - spriteInner.area.GetH()
+
+				'do not move further than the target floor
+				local tmpTargetFloorY:int = TBuilding.GetFloorY(TargetFloor) - spriteInner.area.GetH()
+				
+				If (direction < 0 and area.GetY() > tmpTargetFloorY) or ..
+				   (direction > 0 and area.GetY() < tmpTargetFloorY)
+					area.position.y = tmpTargetFloorY
+				endif
 
 				'Die Figuren im Fahrstuhl mit der Kabine mitbewegen
 				For Local figure:TFigure = EachIn Passengers
-					figure.area.position.setY( self.Pos.y + spriteInner.area.GetH())
+					figure.area.position.setY( area.GetY() + spriteInner.area.GetH())
 				Next
 			EndIf
 		Endif
@@ -386,13 +416,19 @@ Type TElevator
 		If ElevatorStatus = 3 '3 = Türen öffnen
 			If doorStatus = 0
 				OpenDoor()
-				'wie lange die Türen mindestens offen bleiben.
-				waitAtFloorTimer.SetInterval(waitAtFloorTime, true)
+				'set time for the doors to keep open
+				'adjust this by worldSpeedFactor at that time
+				'so a higher factor shortens time to wait
+				waitAtFloorTimer.SetInterval(waitAtFloorTime / TEntity.worldSpeedFactor, true)
 			Endif
 
-			'Türanimationen für das Öffnen fortsetzen... aber auch Passagiere ausladen, wenn es fertig ist
+			'Türanimationen für das Öffnen fortsetzen... aber auch
+			'Passagiere ausladen, wenn es fertig ist
 			If door.GetFrameAnimations().getCurrentAnimationName() = "opendoor"
-				MoveDeboardingPassengersToCenter() 'Während der Tür-öffnen-Animation bewegen sich die betroffenen Figuren zum Ausgang
+				'Während der Tür-öffnen-Animation bewegen sich die
+				'betroffenen Figuren zum Ausgang
+				MoveDeboardingPassengersToCenter()
+				
 				If door.GetFrameAnimations().GetCurrent().isFinished()
 					ElevatorStatus = 4 'entladen
 					door.GetFrameAnimations().SetCurrent("open")
@@ -404,58 +440,61 @@ Type TElevator
 		If ElevatorStatus = 4 '4 = entladen / einsteigen
 			If ReadyForBoarding = false
 				ReadyForBoarding = true
-			Else 'ist im Else-Zweig damit die Update-Loop nochmal zu den Figuren wechseln kann um ein-/auszusteigen
+			'ist im Else-Zweig damit die Update-Loop nochmal zu den
+			'Figuren wechseln kann um ein-/auszusteigen
+			Else
 				'Wenn die Wartezeit um ist, dann nach nem neuen Ziel suchen
 				If waitAtFloorTimer.isExpired()
-					RemoveIgnoredRoutes() 'Entferne nicht wahrgenommene routen
+					'Entferne nicht wahrgenommene Routen
+					RemoveIgnoredRoutes()
 					ElevatorStatus = 0 '0 = warte auf nächsten Auftrag
 					RouteLogic.BoardingDone()
-				endif
+				Endif
 			Endif
 		Endif
 
-		If ElevatorStatus <> 3 Then MovePassengerToPosition() 'Die Passagiere an ihre Position bewegen wenn notwendig. Natürlich nicht während des Aussteigens
+		'Die Passagiere an ihre Position bewegen wenn notwendig.
+		'Natürlich nicht während des Aussteigens
+		If ElevatorStatus <> 3 Then MovePassengerToPosition()
 
 		door.Update() 'Türe animieren
-
-		TRoomDoor.UpdateToolTips() 'Tooltips aktualisieren ----  TODO: Ist das an dieser Stelle wirklich notwendig? Begründen
 	End Method
 
 
-	Method Draw() 'needs to be restructured (some test-lines within)
+	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		SetBlend ALPHABLEND
 
 		'draw the door the elevator is currently at (eg. for animation)
-		door.RenderAt(GetBuilding().area.position.x + pos.x, GetBuilding().area.position.y + TBuilding.GetFloorY(CurrentFloor) - 50)
+		door.RenderAt(GetBuilding().area.GetX() + area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(CurrentFloor) - 50)
 
 		'draw elevator position above the doors
 		For Local i:Int = 0 To 13
-			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(i) - door.sprite.area.GetH() - 8
+			Local locy:Int = GetBuilding().area.GetY() + TBuilding.GetFloorY(i) - door.sprite.area.GetH() - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
-				DrawRect(GetBuilding().area.position.x+Pos.x-4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
+				DrawRect(GetBuilding().area.GetX() + area.GetX() - 4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
 				SetColor 255,255,255
 			EndIf
 		Next
 
 		'draw call state next to the doors
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 26
+			Local locy:Int = GetBuilding().area.GetY() + TBuilding.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 26
 			If floorroute.call
 				'elevator is called to this floor
 				SetColor 220,240,40
 				SetAlpha 0.55
-				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy, 3,2)
+				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy, 3,2)
 				SetAlpha 1.0
-				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy, 3,1)
+				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy, 3,1)
 			Else
 				'elevator will stop there (destination)
 				SetColor 220,120,50
 				SetAlpha 0.85
-				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy+3, 3,2)
+				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy+3, 3,2)
 				SetColor 250,150,80
 				SetAlpha 1.0
-				DrawRect(GetBuilding().area.position.x + Pos.x + 44, locy+4, 3,1)
+				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy+4, 3,1)
 				SetAlpha 1.0
 			EndIf
 			SetColor 255,255,255
@@ -468,9 +507,9 @@ Type TElevator
 	Method DrawFloorDoors()
 		'Innenraum zeichen (BG)     =>   elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(GetBuilding().area.position.x + 360, Max(GetBuilding().area.position.y, 10) , 44, 373)
+		DrawRect(GetBuilding().area.GetX() + 360, Max(GetBuilding().area.GetY(), 10) , 44, 373)
 		SetColor 255, 255, 255
-		spriteInner.Draw(GetBuilding().area.position.x + Pos.x, GetBuilding().area.position.y + Pos.y + 3.0)
+		spriteInner.Draw(GetBuilding().area.GetX() + area.GetX(), GetBuilding().area.GetY() + area.GetY() + 3.0)
 
 
 		'Zeichne Figuren
@@ -483,9 +522,9 @@ Type TElevator
 
 		'Zeichne Türen in allen Stockwerken (außer im aktuellen)
 		For Local i:Int = 0 To 13
-			Local locy:Int = GetBuilding().area.position.y + TBuilding.GetFloorY(i) - door.sprite.area.GetH()
-			If locy < 410 And locy > - 50 And i <> CurrentFloor Then
-				door.RenderAt(GetBuilding().area.position.x + Pos.x, locy, "closed")
+			Local locy:Int = GetBuilding().area.GetY() + TBuilding.GetFloorY(i) - door.sprite.area.GetH()
+			If locy < 410 And locy > - 50 And i <> CurrentFloor
+				door.RenderAt(GetBuilding().area.GetX() + area.GetX(), locy, "closed")
 			Endif
 		Next
 	End Method

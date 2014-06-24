@@ -190,29 +190,80 @@ End Type
 
 
 
-Type TGUIChat Extends TGUIGameWindow
+Type TGUIChatWindow Extends TGUIGameWindow
 	Field guiPanel:TGUIBackgroundBox
-	Field _defaultTextColor:TColor		= TColor.Create(0,0,0)
-	Field _defaultHideEntryTime:Int		= Null
-	Field _channels:Int					= 0		'bitmask of channels the chat listens to
-	Field guiList:TGUIListBase			= Null
-	Field guiInput:TGUIInput			= Null
-	Field guiInputPositionRelative:Int	= 0		'is the input is inside the chatbox or absolute
-	Field guiInputHistory:TList			= CreateList()
-	Field keepInputActive:Int			= True
-
-	Global antiSpamTimer:Int			= 0		'time when again allowed to send
-	Global antiSpamTime:Int				= 100
+	Field guiChat:TGUIChat
+	Field padding:TRectangle = new TRectangle.Init(8, 8, 8, 8)
 
 
-	Method Create:TGUIChat(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIChatWindow(pos:TPoint, dimension:TPoint, limitState:String = "")
 		'use "create" instead of "createBase" so the caption gets
 		'positioned similar
 		Super.Create(pos, dimension, limitState)
 
 		guiPanel = AddContentBox(0,0,GetContentScreenWidth()-10,-1)
+		'we manage the panel
+		AddChild(guiPanel)
 
-		guiList = New TGUIListBase.Create(new TPoint.Init(10,10), new TPoint.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
+		guiChat = new TGUIChat.Create(new TPoint.Init(0,0), new TPoint.Init(-1,-1), limitState)
+		'we manage the panel
+		AddChild(guiChat)
+
+		'resize base and move child elements
+		resize(dimension.GetX(), dimension.GetY())
+
+		GUIManager.Add( Self )
+
+		Return Self
+	End Method
+
+
+	Method SetPadding:Int(top:Int,Left:Int,bottom:Int,Right:Int)
+		GetPadding().setTLBR(top,Left,bottom,Right)
+		resize()
+	End Method
+
+
+	'override resize and add minSize-support
+	Method Resize(w:Float=Null,h:Float=Null)
+		Super.Resize(w,h)
+
+		'background covers whole area, so resize it
+		If guiBackground Then guiBackground.resize(rect.getW(), rect.getH())
+
+		If guiPanel then guiPanel.Resize(GetContentScreenWidth(), GetContentScreenHeight())
+		
+		If guiChat
+			guiChat.rect.position.SetXY(padding.GetLeft(), padding.GetTop())
+			guiChat.Resize(GetContentScreenWidth() - padding.GetRight() - padding.GetLeft(), GetContentScreenHeight() - padding.GetTop() - padding.GetBottom())
+		endif
+	End Method
+End Type
+
+
+
+
+Type TGUIChat Extends TGUIPanel
+	Field _defaultTextColor:TColor = TColor.Create(0,0,0)
+	Field _defaultHideEntryTime:Int = Null
+	'bitmask of channels the chat listens to
+	Field _channels:Int = 0
+	Field guiList:TGUIListBase = Null
+	Field guiInput:TGUIInput = Null
+	'is the input is inside the chatbox or absolute
+	Field guiInputPositionRelative:Int = 0
+	Field guiInputHistory:TList	= CreateList()
+	Field keepInputActive:Int = True
+
+	'time when again allowed to send
+	Global antiSpamTimer:Int = 0
+	Global antiSpamTime:Int	= 100
+
+
+	Method Create:TGUIChat(pos:TPoint, dimension:TPoint, limitState:String = "")
+		Super.Create(pos, dimension, limitState)
+
+		guiList = New TGUIListBase.Create(new TPoint.Init(0,0), new TPoint.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
 		guiList.autoSortItems = False
 		guiList.SetAcceptDrop("")
@@ -220,12 +271,8 @@ Type TGUIChat Extends TGUIGameWindow
 		guiList.autoScroll = True
 		guiList.SetBackground(Null)
 
-
 		guiInput = New TGUIInput.Create(new TPoint.Init(0, dimension.y),new TPoint.Init(dimension.x,-1), "", 32, limitState)
 		guiInput.setParent(Self)
-
-		'we manage the panel
-		AddChild(guiPanel)
 
 		'resize base and move child elements
 		resize(dimension.GetX(), dimension.GetY())
@@ -294,14 +341,14 @@ Type TGUIChat Extends TGUIGameWindow
 		KEYMANAGER.blockKey(KEY_ENTER, 250) 'block for 100ms
 
 		'trigger antiSpam
-		guiChat.antiSpamTimer = MilliSecs() + guiChat.antiSpamTime
+		guiChat.antiSpamTimer = Time.GetTimeGone() + guiChat.antiSpamTime
 
 		If guiChat.guiInputHistory.last() <> guiInput.value
 			guiChat.guiInputHistory.AddLast(guiInput.value)
 		EndIf
 
 		'reset input field
-		guiInput.value = ""
+		guiInput.SetValue("")
 	End Function
 
 
@@ -383,7 +430,6 @@ Type TGUIChat Extends TGUIGameWindow
 			textColor	= TColor.Create(255,100,100)
 		EndIf
 
-
 		'finally add to the chat box
 		Local entry:TGUIChatEntry = New TGUIChatEntry.CreateSimple(text, textColor, senderName, senderColor, Null )
 		'if the default is "null" then no hiding will take place
@@ -405,25 +451,18 @@ Type TGUIChat Extends TGUIGameWindow
 		'background covers whole area, so resize it
 		If guiBackground Then guiBackground.resize(rect.getW(), rect.getH())
 
-		Local contentWidth:Int = GetContentScreenWidth()
-		Local contentHeight:Int = GetContentScreenHeight()
-		If guiPanel
-			guiPanel.Resize(contentWidth, contentHeight)
-			contentWidth = guiPanel.GetContentScreenWidth()
-			contentHeight = guiPanel.GetContentScreenHeight()
-		EndIf
-
 		Local subtractInputHeight:Float = 0.0
 		'move and resize input field to the bottom
 		If guiInput And Not guiInput.hasOption(GUI_OBJECT_POSITIONABSOLUTE)
 			guiInput.resize(GetContentScreenWidth(),Null)
-			'ignore panel padding...
-			guiInput.rect.position.setXY(0, GetContentScreenHeight() - guiInput.rect.getH())
-			subtractInputHeight = guiInput.rect.getH()
+			guiInput.rect.position.setXY(0, GetContentScreenHeight() - guiInput.GetScreenHeight())
+			subtractInputHeight = guiInput.GetScreenHeight()
 		EndIf
 
 		'move and resize the listbox (subtract input if needed)
-		If guiList Then guiList.resize(contentWidth, GetContentScreenHeight() - 10 - subtractInputHeight)
+		If guiList
+			guiList.resize(GetContentScreenWidth(), GetContentScreenHeight() - subtractInputHeight)
+		EndIf
 	End Method
 
 
@@ -439,6 +478,8 @@ Type TGUIChat Extends TGUIGameWindow
 		EndIf
 	End Method
 End Type
+
+
 
 
 Type TGUIGameWindow Extends TGUIWindowBase
@@ -625,7 +666,7 @@ Type TGUIChatEntry Extends TGUIListItem
 	Method Draw:Int()
 		Self.getParent("tguilistbase").RestrictViewPort()
 
-		If Self.showtime <> Null Then SetAlpha Float(Self.showtime-MilliSecs())/500.0
+		If Self.showtime <> Null Then SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
 		Local maxWidth:Int = parentPanel.getContentScreenWidth()-Self.rect.getX()
@@ -790,7 +831,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 
 	Method Draw:Int()
 		If Self.showtime <> Null
-			SetAlpha Float(Self.showtime-Time.GetTimeGone())/500.0
+			SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
 		endif
 		
 		'draw highlight-background etc
@@ -1750,6 +1791,7 @@ End Type
 Type TInterface
 	Field gfx_bottomRTT:TImage
 	Field CurrentProgramme:TSprite
+	Field CurrentProgrammeOverlay:TSprite
 	Field CurrentAudience:TImage
 	Field CurrentProgrammeText:String
 	Field CurrentProgrammeToolTip:TTooltip
@@ -1806,47 +1848,57 @@ Type TInterface
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
 
 		if programmePlan	'similar to "ShowChannel<>0"
+			Interface.CurrentProgrammeOverlay = Null
+
 			If GetGameTime().getMinute() >= 55
-				Local advertisement:TBroadcastMaterial = programmePlan.GetAdvertisement()
-				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_ads")
-			    If advertisement
+				Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
+			    If obj
+					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
 					'real ad
-					If TAdvertisement(advertisement)
+					If TAdvertisement(obj)
 						CurrentProgrammeToolTip.TitleBGtype = 1
-						CurrentProgrammeText = getLocale("ADVERTISMENT")+": "+advertisement.GetTitle()
+						CurrentProgrammeText = getLocale("ADVERTISMENT") + ": " + obj.GetTitle()
 					Else
+						If(TProgramme(obj))
+							Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + TProgramme(obj).data.GetGenre(), "gfx_interface_tv_programme_none")
+						EndIf
+						Interface.CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_traileroverlay")
 						CurrentProgrammeToolTip.TitleBGtype = 1
-						CurrentProgrammeText = getLocale("TRAILER")+": "+advertisement.GetTitle()
+						CurrentProgrammeText = getLocale("TRAILER") + ": " + obj.GetTitle()
 					EndIf
 				Else
+					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads_none")
+
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			ElseIf GetGameTime().getMinute() < 5
-				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_news")
+				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
 				CurrentProgrammeToolTip.TitleBGtype	= 3
 				CurrentProgrammeText = getLocale("NEWS")
 			Else
 				Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
-				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 				If obj
 					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 					CurrentProgrammeToolTip.TitleBGtype	= 0
 					'real programme
 					If TProgramme(obj)
 						Local programme:TProgramme = TProgramme(obj)
-						Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_TVprogram_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
+						Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
 						If programme.isSeries()
 							CurrentProgrammeText = programme.licence.parentLicence.GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						Else
 							CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						EndIf
 					ElseIf TAdvertisement(obj)
+						Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
+						Interface.CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
 						CurrentProgrammeText = GetLocale("INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 					ElseIf TNews(obj)
 						CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 					EndIf
 				Else
+					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
@@ -1996,6 +2048,7 @@ Type TInterface
 			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
 			If ShowChannel <> 0 Then GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
+			SetBlend ALPHABLEND
 
 		    'channel choosen and something aired?
 		    local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
@@ -2003,6 +2056,7 @@ Type TInterface
 			If programmePlan and programmePlan.GetAudience() > 0
 				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
 				If CurrentProgramme Then CurrentProgramme.Draw(45, 400)
+				If CurrentProgrammeOverlay Then CurrentProgrammeOverlay.Draw(45, 400)
 
 				'fetch a list of watching family members
 				local members:string[] = GetWatchingFamily()
@@ -2022,6 +2076,7 @@ Type TInterface
 					SetBlend MASKBLEND
 					GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
 					col.SetRGBA()
+					SetBlend ALPHABLEND
 				else
 					local currentSlot:int = 0
 					For local member:string = eachin members
@@ -2030,7 +2085,6 @@ Type TInterface
 					Next
 				endif
 			EndIf 'showchannel <>0
-			SetBlend ALPHABLEND
 
 			GetSpriteFromRegistry("gfx_interface_antenna").Draw(111,329)
 
@@ -2052,9 +2106,7 @@ Type TInterface
 		    Next
 
 			'draw the small electronic parts - "the inner tv"
-	  		SetBlend MASKBLEND
 	     	GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, 419)
-			SetBlend ALPHABLEND
 
 			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
 			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)

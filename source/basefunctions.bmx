@@ -138,8 +138,7 @@ Type TIntervalTimer
 		local obj:TIntervalTimer = new TIntervalTimer
 		obj.interval = interval
 		obj.actionTime = actionTime
-		obj.randomnessMin = randomnessMin
-		obj.randomnessMax = randomnessMax
+		obj.SetRandomness(randomnessMin, randomnessMax)
 		'set timer
 		obj.reset()
 		return obj
@@ -154,6 +153,12 @@ Type TIntervalTimer
 	Method SetInterval(value:int, resetTimer:int=false)
 		interval = value
 		if resetTimer then Reset()
+	End Method
+
+
+	Method SetRandomness(minValue:int, maxValue:int)
+		randomnessMin = minValue
+		randomnessMax = maxValue
 	End Method
 
 

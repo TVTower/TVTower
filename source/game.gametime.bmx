@@ -11,6 +11,7 @@ Type TGameTime {_exposeToLua="selected"}
 	Field timeGoneLastUpdate:Double = -1.0
 	Field daysPlayed:Int = 0
 	'Speed of the game in "game minutes per real-time second"
+	'speed influences ingametime (so: broadcasting, moon, day-night-cycle,...)
 	Field speed:Float = 1.0
 	Field paused:Int = False
 

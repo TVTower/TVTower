@@ -311,7 +311,7 @@ Type TPlayer {_exposeToLua="selected"}
 
 
 	Method SetNewsAbonnement(genre:Int, level:Int, sendToNetwork:Int = True) {_exposeToLua}
-		If level > Game.maxAbonnementLevel Then level = 0 'before: Return
+		If level > GameRules.maxAbonnementLevel Then level = 0 'before: Return
 		If genre > 5 Then Return 'max 6 categories 0-5
 		If newsabonnements[genre] <> level
 			newsabonnements[genre] = level

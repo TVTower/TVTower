@@ -213,7 +213,11 @@ Type TInGameScreen extends TScreen
 			Game.Update(deltaTime)
 			Interface.Update(deltaTime)
 '			If GetPlayerCollection().Get().Figure.inRoom = Null Then Building.Update(deltaTime)
-			GetBuilding().Elevator.Update(deltaTime)
+			GetBuilding().Elevator.Update()
+
+			'Tooltips aktualisieren
+			TRoomDoor.UpdateToolTips()
+
 			TFigure.UpdateAll()
 		EndIf
 	End Method

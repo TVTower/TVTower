@@ -375,6 +375,7 @@ HINT_PRESSING_ALT_WILL_SHOW_DETAILS = Pressing "ALT"-key will show details.
 HINT_PROGRAMMEPLANER_SHORTCUTS = ALT: switch data sheet | CTRL+Click: copy programme | SHIFT+Click: next episode
 HINT = Hint
 
+PREPARING_START_DATA = Preparing start data
 SYNCHRONIZING_START_CONDITIONS = Synchronizing start conditions
 STARTING_MULTIPLAYERGAME = Starting multiplayer game
 STARTING_SINGLEPLAYERGAME = Starting singleplayer game

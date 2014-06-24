@@ -314,7 +314,7 @@ function SignContracts:Tick()
 	--if (openSpots > 0) then
 	if (openSpots < 8) then
 		for key, value in pairs(self.AdAgencyTask.SpotsInAgency) do
-			if MY.GetProgrammeCollection().GetAdContractCount() >= MY.GetProgrammeCollection().maxContracts then break end
+			if MY.GetProgrammeCollection().GetAdContractCount() >= GameRules.maxContracts then break end
 			if (openSpots > 0) then
 				openSpots = openSpots - value.GetSpotCount()
 				debugMsg("Schlieﬂe Werbevertrag: " .. value.GetTitle() .. " (" .. value.GetID() .. ")")

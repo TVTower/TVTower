@@ -381,7 +381,8 @@ Rem
 		-> room.CanFigureEnter()
 		-> ev: figure.onTryEnterRoom
 		-> room.DoEnter()
-			-> add occupant (right when opening the door)
+			-> add occupant (right when opening the door, avoids
+			                 simultaneous enter of 2+ figures)
 			-> ev: room.onBeginEnter
 			-> ev: room.onEnter (delayed --> door anim)
 				-> room.onEnter()
@@ -666,7 +667,7 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 		EndIf
 
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.inRoom = Null And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
+		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.IsInBuilding() And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
 			If tooltip <> null
 				tooltip.Hover()
 			else
@@ -888,6 +889,16 @@ Type TRoomHandler
 		endif
 	End Function
 
+
+	Function CheckPlayerInRoom:int(roomName:string)
+		'check if we are in the correct room
+		If GetPlayerCollection().Get().figure.isChangingRoom Then Return False
+		If not GetPlayerCollection().Get().figure.inRoom Then Return False
+		if GetPlayerCollection().Get().figure.inRoom.name <> roomName then return FALSE
+		return TRUE
+	End Function
+
+
 '	Function Init() abstract
 '	Function Update:int( triggerEvent:TEventBase ) abstract
 '	Function Draw:int( triggerEvent:TEventBase ) abstract
@@ -1108,15 +1119,6 @@ Type RoomHandler_Office extends TRoomHandler
 	End Function
 
 
-	Function CheckPlayerInRoom:int()
-		'check if we are in the correct room
-		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
-		if GetPlayerCollection().Get().figure.inRoom.name <> "office" then return FALSE
-
-		return TRUE
-	End Function
-
-
 	'===== OFFICE ROOM SCREEN ======
 
 
@@ -1252,7 +1254,7 @@ Type RoomHandler_Office extends TRoomHandler
 	'if players are in the office during changes
 	'to their programme plan, react to...
 	Function onChangeProgrammePlan:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("office") then return FALSE
 
 		'is it our plan?
 		local plan:TPlayerProgrammePlan = TPlayerProgrammePlan(triggerEvent.GetSender())
@@ -2783,7 +2785,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 		GuiListSuitcase.acceptType		= TGUIProgrammeLicenceSlotList.acceptAll
-		GuiListSuitcase.SetItemLimit(Game.maxProgrammeLicencesInSuitcase)
+		GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
 		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
 		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
@@ -2873,17 +2875,6 @@ endrem
 	End Function
 
 
-
-	Function CheckPlayerInRoom:int()
-		'check if we are in the correct room
-		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
-		if GetPlayerCollection().Get().figure.inRoom.name <> "archive" then return FALSE
-
-		return TRUE
-	End Function
-
-
-
 	Function RefreshGuiElements:int()
 		'===== REMOVE UNUSED =====
 		'remove gui elements with licences the player does not have any
@@ -2914,7 +2905,7 @@ endrem
 	'in case of right mouse button click we want to add back the
 	'dragged block to the player's programmeCollection
 	Function onClickProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("archive") then return FALSE
 		'only react if the click came from the right mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 2 then return TRUE
 
@@ -2940,7 +2931,7 @@ endrem
 	' OnDropAccepted - do all things to finish the action
 	'but this should be kept simple...
 	Function onDropProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("archive") then return FALSE
 
 		local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -2974,7 +2965,7 @@ endrem
 
 	'handle cover block drops on the dude
 	Function onDropProgrammeLicenceOnDude:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("archive") then return FALSE
 
 		local guiBlock:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
@@ -3177,7 +3168,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		GuiListMoviesGood.SetItemLimit(listMoviesGood.length)
 		GuiListMoviesCheap.SetItemLimit(listMoviesCheap.length)
 		GuiListSeries.SetItemLimit(listSeries.length)
-		GuiListSuitcase.SetItemLimit(Game.maxProgrammeLicencesInSuitcase)
+		GuiListSuitcase.SetItemLimit(GameRules.maxProgrammeLicencesInSuitcase)
 
 		GuiListMoviesGood.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
 		GuiListMoviesCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
@@ -3530,23 +3521,13 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
-	Function CheckPlayerInRoom:int()
-		'check if we are in the correct room
-		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
-		if GetPlayerCollection().Get().figure.inRoom.name <> "movieagency" then return FALSE
-
-		return TRUE
-	End Function
-
-
-
 	'===================================
 	'Movie Agency: Room screen
 	'===================================
 
 
 	Function onMouseOverProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("movieagency") then return FALSE
 
 		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
 		if item = Null then return FALSE
@@ -3560,7 +3541,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	'check if we are allowed to drag that licence
 	Function onDragProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("movieagency") then return FALSE
 
 		local item:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent.GetSender())
 		if item = Null then return FALSE
@@ -3589,7 +3570,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'- check if dropping on suitcase and affordable
 	'- check if dropping on an item which is not affordable
 	Function onTryDropProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("movieagency") then return FALSE
 
 		local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -3627,7 +3608,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	'dropping takes place - sell/buy licences or veto if not possible
 	Function onDropProgrammeLicence:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("movieagency") then return FALSE
 
 		local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiverList:TGUIListBase = TGUIListBase(triggerEvent._receiver)
@@ -3663,7 +3644,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 	'handle cover block drops on the vendor ... only sell if from the player
 	Function onDropProgrammeLicenceOnVendor:int(triggerEvent:TEventBase)
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("movieagency") then return FALSE
 
 		local guiLicence:TGUIProgrammeLicence = TGUIProgrammeLicence(triggerEvent._sender)
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
@@ -3920,15 +3901,6 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
-	Function CheckPlayerInRoom:int()
-		'check if we are in the correct room
-		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
-		if GetPlayerCollection().Get().isInRoom("newsagency") OR GetPlayerCollection().Get().isInRoom("newsplanner") then return FALSE
-
-		return TRUE
-	End Function
-
-
 	'===================================
 	'News: room screen
 	'===================================
@@ -4020,7 +3992,7 @@ EndRem
 			NewsGenreTooltip.content = getLocale("NEWSSTUDIO_SUBSCRIBE_GENRE_LEVEL")+" 1: "+ TNewsAgency.GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
 		Else
 			NewsGenreTooltip.title = button.caption.GetValue()+" - "+getLocale("NEWSSTUDIO_SUBSCRIPTION_LEVEL")+" "+level
-			if level = Game.maxAbonnementLevel
+			if level = GameRules.maxAbonnementLevel
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_DONT_SUBSCRIBE_GENRE_ANY_LONGER")+ ": 0" + getLocale("CURRENCY")
 			Else
 				NewsGenreTooltip.content = getLocale("NEWSSTUDIO_NEXT_SUBSCRIPTION_LEVEL")+": "+ TNewsAgency.GetNewsAbonnementPrice(level+1)+getLocale("CURRENCY")
@@ -4185,7 +4157,7 @@ EndRem
 	'we need to know whether we dragged or hovered an item - so we
 	'can react to right clicks ("forbid room leaving")
 	Function onMouseOverNews:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("newsagency") then return FALSE
 
 		local item:TGUINews = TGUINews(triggerEvent.GetSender())
 		if item = Null then return FALSE
@@ -4475,7 +4447,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 
 		GuiListCheap.SetItemLimit(listCheap.length)
-		GuiListSuitcase.SetItemLimit(Game.maxContracts)
+		GuiListSuitcase.SetItemLimit(GameRules.maxContracts)
 
 		GuiListCheap.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
 		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_contracts_0").area.GetW(), GetSpriteFromRegistry("gfx_contracts_0").area.GetH())
@@ -4932,15 +4904,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Method
 
 
-	Function CheckPlayerInRoom:int()
-		'check if we are in the correct room
-		if not GetPlayerCollection().Get().figure.inRoom then return FALSE
-		if GetPlayerCollection().Get().figure.inRoom.name <> "adagency" then return FALSE
-
-		return TRUE
-	End Function
-
-
 
 	'===================================
 	'Ad Agency: Room screen
@@ -4949,7 +4912,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	'if players are in the agency during changes
 	'to their programme collection, react to...
 	Function onChangeProgrammeCollection:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("adagency") then return FALSE
 
 		GetInstance().RefreshGuiElements()
 	End Function
@@ -4977,7 +4940,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Function onMouseOverContract:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("adagency") then return FALSE
 
 		local item:TGuiAdContract = TGuiAdContract(triggerEvent.GetSender())
 		if item = Null then return FALSE
@@ -4991,7 +4954,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	'handle cover block drops on the vendor ... only sell if from the player
 	Function onDropContractOnVendor:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("adagency") then return FALSE
 
 		local guiBlock:TGuiAdContract = TGuiAdContract( triggerEvent._sender )
 		local receiver:TGUIobject = TGUIObject(triggerEvent._receiver)
@@ -5023,62 +4986,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End function
 
 
-rem
-	2014/05/04 (Ronny):
-	This should be obsolete as you can still drop a cheap one in the
-	suitcase and then back to a "normal" list. We cannot see what
-	is the "original" list of an guiitem as there is no "isCheap"-flag
-	we could use as indicator. So .. just allow switching lists without
-	limits
-
-	'we intercept that event so we can avoid dropping from one
-	'vendor list to another
-	Function onTryDropContract:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
-
-		local guiBlock:TGuiAdContract = TGuiAdContract( triggerEvent._sender )
-		local receiverList:TGUIAdContractSlotList = TGUIAdContractSlotList( triggerEvent._receiver )
-		if not guiBlock or not receiverList then return FALSE
-
-		local parent:TGUIobject = guiBlock._parent
-		if TGUIPanel(parent) then parent = TGUIPanel(parent)._parent
-		local senderList:TGUIAdContractSlotList = TGUIAdContractSlotList(parent)
-		if not senderList then return FALSE
-
-		'just dropping back to origin - no problem
-		If senderList = receiverList then return TRUE
-
-'new approach 2014/05/04 (Ronny)
-		'allow switching between "lists" and suitcase, but not between
-		'"cheap" and "normal" list
-		'-> this allows to place a "not droppable on suitcase" contract
-		'   (eg. no space left in suitcase) back on the desk without
-		'   exactly hitting the correct list the contract originated from.
-		If senderList = GuiListCheap or receiverList = GuiListCheap
-			For local list:TGUIAdContractSlotList = eachin GuiListNormal
-				If senderList = list or receiverList = list
-					triggerEvent.setVeto()
-					return FALSE
-				Endif
-			Next
-		Endif
-
-'old approach
-		'do not allow changes between vendor lists ?
-		'->sender or receiver must be suitcase
-'		if senderList <> GuiListSuitcase and receiverList <> GuiListSuitcase
-'			triggerEvent.setVeto()
-'			return FALSE
-'		endif
-
-		return TRUE
-	End Function
-endrem
-
 	'in this stage, the item is already added to the new gui list
 	'we now just add or remove it to the player or vendor's list
 	Function onDropContract:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom() then return FALSE
+		if not CheckPlayerInRoom("adagency") then return FALSE
 
 		local guiAdContract:TGuiAdContract = TGuiAdContract(triggerEvent._sender)
 		local receiverList:TGUIAdContractSlotList = TGUIAdContractSlotList(triggerEvent._receiver)
