@@ -1848,57 +1848,57 @@ Type TInterface
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
 
 		if programmePlan	'similar to "ShowChannel<>0"
-			Interface.CurrentProgrammeOverlay = Null
+			CurrentProgrammeOverlay = Null
 
 			If GetGameTime().getMinute() >= 55
 				Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 			    If obj
-					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
+					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
 					'real ad
 					If TAdvertisement(obj)
 						CurrentProgrammeToolTip.TitleBGtype = 1
 						CurrentProgrammeText = getLocale("ADVERTISMENT") + ": " + obj.GetTitle()
 					Else
 						If(TProgramme(obj))
-							Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + TProgramme(obj).data.GetGenre(), "gfx_interface_tv_programme_none")
+							CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + TProgramme(obj).data.GetGenre(), "gfx_interface_tv_programme_none")
 						EndIf
-						Interface.CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_traileroverlay")
+						CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_traileroverlay")
 						CurrentProgrammeToolTip.TitleBGtype = 1
 						CurrentProgrammeText = getLocale("TRAILER") + ": " + obj.GetTitle()
 					EndIf
 				Else
-					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads_none")
+					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads_none")
 
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
 			ElseIf GetGameTime().getMinute() < 5
-				Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
+				CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
 				CurrentProgrammeToolTip.TitleBGtype	= 3
 				CurrentProgrammeText = getLocale("NEWS")
 			Else
 				Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 				If obj
-					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 					CurrentProgrammeToolTip.TitleBGtype	= 0
 					'real programme
 					If TProgramme(obj)
 						Local programme:TProgramme = TProgramme(obj)
-						Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
+						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_" + programme.data.GetGenre(), "gfx_interface_tv_programme_none")
 						If programme.isSeries()
 							CurrentProgrammeText = programme.licence.parentLicence.GetTitle() + " ("+ (programme.GetEpisodeNumber()+1) + "/" + programme.GetEpisodeCount()+"): " + programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						Else
 							CurrentProgrammeText = programme.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + programme.GetBlocks() + ")"
 						EndIf
 					ElseIf TAdvertisement(obj)
-						Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
-						Interface.CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
+						CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
+						CurrentProgrammeOverlay = GetSpriteFromRegistry("gfx_interface_tv_programme_infomercialoverlay")
 						CurrentProgrammeText = GetLocale("INFOMERCIAL")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 					ElseIf TNews(obj)
 						CurrentProgrammeText = GetLocale("SPECIAL_NEWS_BROADCAST")+": "+obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 					EndIf
 				Else
-					Interface.CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
+					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_none")
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
@@ -2053,10 +2053,12 @@ Type TInterface
 		    'channel choosen and something aired?
 		    local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
 
+			'CurrentProgramme can contain "outage"-image, so draw
+			'even without audience
+			If CurrentProgramme Then CurrentProgramme.Draw(45, 400)
+			If CurrentProgrammeOverlay Then CurrentProgrammeOverlay.Draw(45, 400)
+
 			If programmePlan and programmePlan.GetAudience() > 0
-				'If CurrentProgram = Null Then Print "ERROR: CurrentProgram is missing"
-				If CurrentProgramme Then CurrentProgramme.Draw(45, 400)
-				If CurrentProgrammeOverlay Then CurrentProgrammeOverlay.Draw(45, 400)
 
 				'fetch a list of watching family members
 				local members:string[] = GetWatchingFamily()
