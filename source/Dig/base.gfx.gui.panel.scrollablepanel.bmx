@@ -54,19 +54,19 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 
 	Method ReachedLeftLimit:int()
-		return (scrollPosition.GetX() = 0)
+		return (scrollPosition.GetX() >= 0)
 	End Method
 
 	Method ReachedRightLimit:int()
-		return (scrollPosition.GetX() = scrollLimit.GetX())
+		return (scrollPosition.GetX() <= scrollLimit.GetX())
 	End Method
 
 	Method ReachedTopLimit:int()
-		return (scrollPosition.GetY() = 0)
+		return (scrollPosition.GetY() >= 0)
 	End Method
 
 	Method ReachedBottomLimit:int()
-		return (scrollPosition.GetY() = scrollLimit.GetY())
+		return (scrollPosition.GetY() <= scrollLimit.GetY())
 	End Method
 
 
@@ -82,6 +82,9 @@ Type TGUIScrollablePanel Extends TGUIPanel
 		'check limits
 		scrollPosition.SetY(Min(0, scrollPosition.GetY()))
 		scrollPosition.SetY(Max(scrollPosition.GetY(), scrollLimit.GetY()))
+
+		scrollPosition.SetX(Min(0, scrollPosition.GetX()))
+		scrollPosition.SetX(Max(scrollPosition.GetX(), scrollLimit.GetX()))
 	End Method
 
 
@@ -96,7 +99,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 Rem
-	Debug drawing
+'	Debug drawing
 	Method Draw()
 		Super.Draw()
 		SetAlpha 0.7

@@ -1612,7 +1612,7 @@ endrem
 
 
 	'returns true if the conversion was successful
-	Function ConvertKeystrokesToText:Int(value:String Var)
+	Function ConvertKeystrokesToText:Int(value:String Var, skipEnterKey:int = False)
 		'remove with backspace
 		If KEYWRAPPER.pressedKey(KEY_BACKSPACE)
 			value = value[..value.length -1]
@@ -1649,12 +1649,15 @@ endrem
 			If KEYWRAPPER.pressedKey(246) Then If shiftPressed Then value:+ "Ö" Else value :+ "ö"
 			If KEYWRAPPER.pressedKey(163) Then If shiftPressed Then value:+ "Ä" Else value :+ "ä"
 			?
+		'handle normal "keys" (excluding umlauts)
 		elseif charCode > 0
-			'handle normal "keys" (excluding umlauts)
+			local addChar:int = True
 			'skip "backspace"
-			if chr(KEY_BACKSPACE) <> chr(charCode)
-				value :+ chr(charCode)
-			endif
+			if chr(KEY_BACKSPACE) = chr(charCode) then addChar = False
+			'skip enter if whished so
+			if skipEnterKey and chr(KEY_ENTER) = chr(charCode) then addChar = False
+
+			if addChar then value :+ chr(charCode)
 		endif
 
 		'special chars - recognized on Mac, but not Linux

@@ -103,7 +103,8 @@ Type TGUIinput Extends TGUIobject
 				'as soon as an input field is marked as active input
 				'all key strokes could change the input
 				If Self = GuiManager.GetKeystrokeReceiver()
-					If Not ConvertKeystrokesToText(value)
+					'ignore enter keys => TRUE
+					If Not ConvertKeystrokesToText(value, True)
 						value = _valueBeforeEdit
 
 						'do not allow another ESC-press for 150ms

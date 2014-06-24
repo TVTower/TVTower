@@ -54,10 +54,17 @@ Type TEntity extends TStaticEntity
 	Field oldPosition:TPoint = new TPoint
 	'moving direction
 	Field velocity:TPoint = new TPoint
+	'a world speed factor of 1.0 means realtime, 2.0 = fast forward 
+	Global worldSpeedFactor:float = 1.0
 
 
 	Method New()
 		name = "TEntity"
+	End Method
+
+
+	Method GetWorldSpeedFactor:float()
+		return worldSpeedFactor
 	End Method
 
 
@@ -72,7 +79,7 @@ Type TEntity extends TStaticEntity
 
 
 	Method Update:Int()
-		local deltaTime:Float = GetDeltaTimer().GetDelta()
+		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
 
 		'=== UPDATE MOVEMENT ===
 		'backup for tweening

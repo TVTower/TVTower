@@ -35,6 +35,7 @@ EndRem
 SuperStrict
 Import "base.framework.entity.bmx"
 Import "base.gfx.sprite.bmx"
+Import "base.gfx.sprite.frameanimation.bmx"
 
 
 Type TSpriteEntity extends TEntity
@@ -86,7 +87,8 @@ Type TSpriteEntity extends TEntity
 		Super.Update()
 
 		'=== UPDATE ANIMATION ===
-		if frameAnimations then frameAnimations.GetCurrent().Update()
+		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
+		if frameAnimations then frameAnimations.GetCurrent().Update(deltaTime)
 	End Method
 
 

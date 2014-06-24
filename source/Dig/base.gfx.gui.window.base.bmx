@@ -99,7 +99,12 @@ Type TGUIWindowBase Extends TGUIPanel
 			'calculation of undefined/automatic values
 			'vertical center the caption between 0 and the start of
 			'content but to make it visible in all cases use "max(...)".
-			Local padding:TRectangle = guiBackground.GetSprite().GetNinePatchContentBorder()
+			Local padding:TRectangle
+			if guiBackground
+				padding = guiBackground.GetSprite().GetNinePatchContentBorder()
+			else
+				padding = new TRectangle.Init()
+			endif
 			if rect.position.x = -1 then rect.position.x = padding.GetLeft()
 			if rect.position.y = -1 then rect.position.y = 0
 			if rect.dimension.x = -1 then rect.dimension.x = GetContentScreenWidth()

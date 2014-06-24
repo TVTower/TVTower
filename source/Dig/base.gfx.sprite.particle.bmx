@@ -36,6 +36,7 @@ Rem
 EndRem
 SuperStrict
 Import "base.gfx.sprite.bmx"
+Import "base.util.deltatimer.bmx"
 
 
 Type TSpriteParticleEmitter

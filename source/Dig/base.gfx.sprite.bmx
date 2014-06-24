@@ -44,7 +44,6 @@ Import BRL.Random
 Import "base.util.event.bmx"
 Import "base.util.point.bmx"
 Import "base.gfx.imagehelper.bmx"
-Import "base.gfx.sprite.frameanimation.bmx"
 
 
 CONST ALIGN_LEFT:FLOAT = 0

@@ -1,7 +1,6 @@
 SuperStrict
 Import BRL.Map
 Import BRL.Retro
-Import "base.util.deltatimer.bmx"
 
 
 Type TSpriteFrameAnimationCollection
@@ -47,8 +46,8 @@ Type TSpriteFrameAnimationCollection
 	End Method
 
 
-	Method Update:int()
-		GetCurrent().Update()
+	Method Update:int(deltaTime:float)
+		GetCurrent().Update(deltaTime)
 	End Method
 End Type
 
@@ -56,12 +55,17 @@ End Type
 
 
 Type TSpriteFrameAnimation
-	Field repeatTimes:int = 0			'how many times animation should repeat until finished
-	Field currentImageFrame:int = 0		'frame of sprite/image
-	Field currentFrame:int = 0			'position in frames-array
+	'how many times animation should repeat until finished
+	Field repeatTimes:int = 0
+	'frame of sprite/image
+	Field currentImageFrame:int = 0
+	'position in frames-array
+	Field currentFrame:int = 0
 	Field frames:int[]
-	Field framesTime:float[]			'duration for each frame
-	Field paused:Int = FALSE			'stay with currentFrame or cycle through frames?
+	'duration for each frame
+	Field framesTime:float[]
+	'stay with currentFrame or cycle through frames?
+	Field paused:Int = FALSE
 	Field frameTimer:float = null
 	Field randomness:int = 0
 
@@ -92,13 +96,13 @@ Type TSpriteFrameAnimation
 	End Function
 
 
-	Method Update:int()
+	Method Update:int(deltaTime:float)
 		'skip update if only 1 frame is set
 		'skip if paused
 		If paused or frames.length <= 1 then return 0
 
 		if frameTimer = null then ResetFrameTimer()
-		frameTimer :- GetDeltaTimer().GetDelta()
+		frameTimer :- deltaTime
 
 		'time for next frame
 		if frameTimer <= 0.0

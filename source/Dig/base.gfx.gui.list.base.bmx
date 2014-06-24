@@ -378,12 +378,12 @@ Type TGUIListBase Extends TGUIobject
 				Local atListBottom:Int = 1 > Floor(Abs(guiEntriesPanel.scrollLimit.GetY() - guiEntriesPanel.scrollPosition.getY()))
 
 				'set scroll limits:
-'				If dimension.getY() < guiEntriesPanel.getScreenheight()
+				If autoscroll and dimension.getY() < guiEntriesPanel.getScreenheight()
 					'if there are only some elements, they might be
 					'"less high" than the available area - no need to
 					'align them at the bottom
-'					guiEntriesPanel.SetLimits(0, -dimension.getY())
-'				Else
+					guiEntriesPanel.SetLimits(0, -dimension.getY())
+				Else
 					'maximum is at the bottom of the area, not top - so
 					'subtract height
 					'old: guiEntriesPanel.SetLimits(0, -(dimension.getY() - guiEntriesPanel.getScreenheight()) )
@@ -391,13 +391,17 @@ Type TGUIListBase Extends TGUIobject
 					if not lastItem
 						guiEntriesPanel.SetLimits(0, 0)
 					else
-						guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight() - lastItem.GetScreenHeight()))
+						if not autoScroll
+							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight() - lastItem.GetScreenHeight()))
+						else
+							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight()))
+						endif
 					endif
 
 					'in case of auto scrolling we should consider
 					'scrolling to the next visible part
 					If autoscroll And (Not scrollerUsed Or atListBottom) Then scrollToLastItem()
-'				EndIf
+				EndIf
 			'===== HORIZONTAL ALIGNMENT =====
 			case GUI_OBJECT_ORIENTATION_HORIZONTAL
 				'determine if we did not scroll the list to a middle
@@ -662,8 +666,18 @@ endrem
 			oldCol.SetRGBA()
 		EndIf
 
+		if guiEntriesPanel then guiEntriesPanel.Draw()
+
 
 		If _debugMode
+			SetAlpha 0.2
+			Local rect:TRectangle = new TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
+			DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
+			SetColor 255,0,0
+			DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+			SetColor 255,255,255
+			SetAlpha 1.0
+
 			Local oldCol:TColor = new TColor.Get()
 			Local offset:Int = GetScreenY()
 			For Local entry:TGUIListItem = EachIn entries
