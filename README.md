@@ -1,7 +1,7 @@
 TVTower
 =======
 
-Ein Tribut an MadTV | A tribute to MadTV.
+Ein Tribut an Mad TV | A tribute to Mad TV.
 
 ###Deutsch
 Du bist Manager eines Fernsehsenders in diesem __kostenlosen Spiel__ . Lenke was gesendet wird und wann. Verdiene Geld durch Werbeeinnahmen und treibe die Konkurrenz in den Bankrott. Hole Zuschauer vor die Flimmerkiste in dem Du branntheisse Nachrichtenstories sendest und mit spannenden Livesendungen Millionen von Mitmenschen am Einschlafen hinterst. Fertigprodukte aus Hollywood sind nicht so dein Ding? Tja, Eigenproduktionen koennten Quotenhits werden - oder aber teure Millionengraeber.
