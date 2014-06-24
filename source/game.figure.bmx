@@ -409,6 +409,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	Method IsVisible:int()
+		'in a fake room?
+		if inRoom and inRoom.ShowsFigures() then return True
+		
 		return (IsInBuilding() or isChangingRoom)
 	End Method
 
@@ -821,6 +824,12 @@ endif
 			else
 				alpha = 1.0 - alpha
 			endif
+
+			'do not fade when it is a fake room
+			if inRoom and inRoom.ShowsFigures() then alpha = 1.0
+			if fromRoom and fromRoom.ShowsFigures() then alpha = 1.0
+
+			
 			SetAlpha(alpha * oldAlpha)
 		endif
 
