@@ -1038,8 +1038,8 @@ Type RoomHandler_Office extends TRoomHandler
 		GuiListAdvertisements.isType = TBroadcastMaterial.TYPE_ADVERTISEMENT
 
 		'init lists
-		PPprogrammeList		= new TgfxProgrammelist.Create(660, 16, 21)
-		PPcontractList		= new TgfxContractlist.Create(660, 16)
+		PPprogrammeList	= new TgfxProgrammelist.Create(660, 16, 21)
+		PPcontractList = new TgfxContractlist.Create(660, 16)
 
 		'buttons
 		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TPoint.Init(672, 40 + 0*56), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
@@ -3050,13 +3050,12 @@ endrem
 
 		'open list when clicking dude
 		if not draggedGuiProgrammeLicence
-			If programmeList.GetOpen() = 0
+			If not programmeList.GetOpen()
 				if THelper.IsIn(MouseManager.x, MouseManager.y, 605,65,160,90) Or THelper.IsIn(MouseManager.x, MouseManager.y, 525,155,240,225)
 					'activate tooltip
 					If not openCollectionTooltip Then openCollectionTooltip = TTooltip.Create(GetLocale("PROGRAMMELICENCES"), GetLocale("SELECT_LICENCES_FOR_SALE"), 470, 130, 0, 0)
 					openCollectionTooltip.enabled = 1
 					openCollectionTooltip.Hover()
-
 
 					Game.cursorstate = 1
 					If MOUSEMANAGER.IsHit(1)

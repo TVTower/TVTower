@@ -316,10 +316,21 @@ Type TApp
 		'fetch and cache mouse and keyboard states for this cycle
 		GUIManager.StartUpdates()
 
+
+		'enable reading of clicked states (just for the case of being
+		'diabled because of an exitDialogue exists)
+		MouseManager.Enable(1)
+		MouseManager.Enable(2)
+
 		GUIManager.Update("SYSTEM")
-		'as long as the exit dialogue is open, do not accept non-gui-clicks to leave rooms
+		'as long as the exit dialogue is open, do not accept clicks to
+		'non gui elements (eg. to leave rooms)
 		If App.ExitAppDialogue
 			MouseManager.ResetKey(2)
+
+			'this sets all IsClicked(), IsHit() to False
+			MouseManager.Disable(1)
+			MouseManager.Disable(2)
 		EndIf
 
 		'ignore shortcuts if a gui object listens to keystrokes

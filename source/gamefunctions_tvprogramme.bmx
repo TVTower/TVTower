@@ -1154,13 +1154,13 @@ Type TPlannerList
 
 
 	Method Init:int(x:float, y:float)
-		tapeRect	= new TRectangle.Init(x, y, gfxTapeBackground.area.GetW(), gfxTapeBackground.area.GetH() )
+		tapeRect = new TRectangle.Init(x, y, gfxTapeBackground.area.GetW(), gfxTapeBackground.area.GetH() )
 		return TRUE
 	End Method
 
 
 	Method getOpen:Int()
-		return self.openState
+		return self.openState and enabled
 	End Method
 End Type
 
@@ -1462,7 +1462,7 @@ Type TgfxProgrammelist extends TPlannerList
 		hoveredLicence = null
 
 		'if not "open", do nothing (including checking right clicks)
-		If not enabled then return FALSE
+		If not GetOpen() then Return False
 
 		'clicking on the genre selector -> select Genre
 		'instead of isClicked (butten must be "normal" then)
@@ -1481,7 +1481,7 @@ Type TgfxProgrammelist extends TPlannerList
 		EndIf
 
 		'close if clicked outside - simple mode: so big rect
-		if MouseManager.isHit(1)' and mode=MODE_ARCHIVE
+		if MouseManager.isHit(1) ' and mode=MODE_ARCHIVE
 			local closeMe:int = TRUE
 			'in all cases the genre selector is opened
 			if genreRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
@@ -1504,8 +1504,6 @@ Type TgfxProgrammelist extends TPlannerList
 		if newState <= 2 then hoveredSeries=Null
 		If newState = 0
 			enabled = 0
-			hoveredSeries = Null
-			currentgenre = -1
 		else
 			enabled = 1
 		endif

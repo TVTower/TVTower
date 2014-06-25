@@ -95,6 +95,9 @@ Type TMouseManager
 	'time (in ms) to wait for another click to recognize doubleclicks
 	'so it is also the maximum time "between" that needed two clicks
 	Field _doubleClickTime:int = 250
+	'can clicks/hits get read?
+	'special info read is possible (IsDown(), IsUp())
+	Field _enabled:int[] = [True, True, True, True]
 
 
 
@@ -115,6 +118,16 @@ Type TMouseManager
 	End Method
 
 
+	Method Disable(key:int)
+		_enabled[key] = False
+	End Method
+
+
+	Method Enable(key:int)
+		_enabled[key] = True
+	End Method
+
+
 	'returns whether the button is in normal state
 	Method isNormal:Int(key:Int)
 		return _keyStatus[key] = KEY_STATE_NORMAL
@@ -123,6 +136,8 @@ Type TMouseManager
 
 	'returns whether the button is in hit state
 	Method isHit:Int(key:Int)
+		if not _enabled[key] then return False
+
 		return _keyStatus[key] = KEY_STATE_HIT
 	End Method
 
@@ -132,6 +147,8 @@ Type TMouseManager
 	'as "double click"
 	'includes waiting time
 	Method isDoubleClicked:Int(key:Int, strictMode:int=TRUE)
+		if not _enabled[key] then return False
+		
 		if strictMode
 			return GetClicks(key) = 2
 		else
@@ -143,6 +160,8 @@ Type TMouseManager
 	'returns whether the button is in clicked state
 	'includes waiting time
 	Method isSingleClicked:Int(key:Int)
+		if not _enabled[key] then return False
+
 		return GetClicks(key) = 1
 	End Method
 
@@ -150,6 +169,8 @@ Type TMouseManager
 	'returns whether the button got clicked, no waiting time
 	'is added
 	Method isClicked:Int(key:Int)
+		if not _enabled[key] then return False
+
 		if not _keyClicked[key]
 			return false
 		else
