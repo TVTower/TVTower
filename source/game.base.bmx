@@ -63,8 +63,6 @@ Type TGame {_exposeToLua="selected"}
 	Field networkgameready:Int = 0
 	'playing over internet? 0=false
 	Field onlinegame:Int = 0
-	'was "PrepareStart" run for this specific game?
-	Field _startPreparationDone:int = FALSE' {noSave}
 
 	Global _instance:TGame
 	Global _initDone:int = FALSE
@@ -105,7 +103,6 @@ Type TGame {_exposeToLua="selected"}
 
 		networkgame = 0
 
-
 		'=== ADJUST GAME RULES ===
 		'how many contracts can a player possess
 		GameRules.maxContracts = 10
@@ -139,8 +136,6 @@ Type TGame {_exposeToLua="selected"}
 
 		TLogger.Log("Game.PrepareStart()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
 		GetBuilding().Init() 'also registers events...
-
-		_startPreparationDone = True
 	End Method
 
 
@@ -400,7 +395,8 @@ Type TGame {_exposeToLua="selected"}
 	'run when a specific game starts
 	Method _Start:int(startNewGame:int = TRUE)
 		if not _firstGamePreparationDone then PrepareFirstGameStart()
-		if not _startPreparationDone then PrepareStart()
+		'run in all cases
+		PrepareStart()
 
 		'new games need some initializations
 		if startNewGame then PrepareNewGame()
