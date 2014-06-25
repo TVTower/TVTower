@@ -25,7 +25,7 @@ Type TPlayerProgrammePlanCollection
 
 	Method New()
 		if not _eventsRegistered
-			EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onAddProgrammeLicenceToSuitcase)
+'			EventManager.registerListenerFunction("programmecollection.addProgrammeLicenceToSuitcase", onAddProgrammeLicenceToSuitcase)
 			_eventsRegistered = TRUE
 		Endif
 	End Method
@@ -36,7 +36,7 @@ Type TPlayerProgrammePlanCollection
 		return _instance
 	End Function
 
-
+rem
 	Function onAddProgrammeLicenceToSuitcase:int(triggerEvent:TEventBase)
 		local gameobject:TOwnedGameObject = TOwnedGameObject(triggerEvent.GetSender())
 		local programmeLicence:TProgrammeLicence = TProgrammeLicence(triggerEvent.GetData().Get("programmeLicence"))
@@ -47,7 +47,7 @@ Type TPlayerProgrammePlanCollection
 		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(gameobject.owner)
 		if plan then plan.RemoveProgrammeInstancesByLicence(programmeLicence, true)
 	End Function
-
+endrem
 
 	Method Set:int(playerID:int, plan:TPlayerProgrammePlan)
 		if playerID <= 0 then return False
@@ -613,6 +613,7 @@ endrem
 		For local i:int = earliestIndex to latestIndex
 			'skip other programmes
 			If not TBroadcastMaterial(array[i]) then continue
+
 			if array[i].GetReferenceID() <> licence.GetReferenceID() then continue
 
 			programme = TBroadcastMaterial(array[i])
@@ -631,7 +632,18 @@ endrem
 	'If removeCurrentRunning is true, also the current block can be affected
 	Method RemoveProgrammeInstances:int(obj:TBroadcastMaterial, removeCurrentRunning:Int=FALSE)
 		local doneSomething:int=FALSE
-		if RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_PROGRAMME, -1, removeCurrentRunning) then doneSomething = TRUE
+		local programme:TBroadcastMaterial
+		if GetGameTime().getMinute() >= 5 and GetGameTime().getMinute() < 55
+			programme = GetProgramme()
+		endif
+
+		if RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_PROGRAMME, -1, removeCurrentRunning)
+			'if the object is the current broadcasted thing, reset audience
+			if programme and obj = programme
+				GetBroadcastManager().GetAudienceResult(owner).Malfunction()
+			endif
+			doneSomething = TRUE
+		endif
 		if RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_ADVERTISEMENT, -1, removeCurrentRunning) then doneSomething = TRUE
 		return doneSomething
 	End Method

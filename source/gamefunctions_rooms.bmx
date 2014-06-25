@@ -2865,12 +2865,11 @@ Type RoomHandler_Archive extends TRoomHandler
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
 		if not figure or not figure.parentPlayerID then return FALSE
-rem
-		GetPlayerCollection().Get(figure.parentPlayerID).GetProgrammeCollection().ReaddProgrammeLicencesFromSuitcase()
 
-		'fill all open slots in the agency
-		ReFillBlocks()
-endrem
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(figure.parentPlayerID)
+		For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).suitcaseProgrammeLicences
+			plan.RemoveProgrammeInstancesByLicence(licence, true)
+		Next
 		return TRUE
 	End Function
 
@@ -2926,10 +2925,6 @@ endrem
 	End Function
 
 
-	'normally we should split in two parts:
-	' OnDrop - check money etc, veto if needed
-	' OnDropAccepted - do all things to finish the action
-	'but this should be kept simple...
 	Function onDropProgrammeLicence:int( triggerEvent:TEventBase )
 		if not CheckPlayerInRoom("archive") then return FALSE
 

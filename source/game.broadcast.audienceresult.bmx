@@ -49,6 +49,13 @@ Type TAudienceResult
 	End Method
 
 
+	'Sets audience to 0 (eg. when removing a licence of a broadcasted
+	'programme)
+	Method Malfunction:()
+		print "TODO: Manuel - add Malfunction() code for audience reset."
+	End Method
+
+
 	Method ToString:String()
 		local result:string = ""
 		if Audience then result :+ int(Audience.GetSum()) else result :+ "--"
