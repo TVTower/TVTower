@@ -640,7 +640,7 @@ endrem
 		if RemoveObjectInstances(obj, TBroadcastMaterial.TYPE_PROGRAMME, -1, removeCurrentRunning)
 			'if the object is the current broadcasted thing, reset audience
 			if programme and obj = programme
-				GetBroadcastManager().GetAudienceResult(owner).Malfunction()
+				GetBroadcastManager().SetBroadcastMalfunction(owner)
 			endif
 			doneSomething = TRUE
 		endif

@@ -78,6 +78,30 @@ Type TBroadcastManager
 	End Method
 
 
+	'sets the current broadcast as malfunction
+	Method SetBroadcastMalfunction:int(playerID:int)
+		print "TODO: Manuel, da fehlt noch was"
+	
+		SetCurrentBroadcastMaterial(playerID, null)
+		print "OLD: "+GetAudienceResult(playerID).ToString()
+
+		local bc:TBroadcast = GetCurrentBroadcast()
+		bc.PlayersBroadcasts = currentBroadcastMaterial
+		bc.Attractions[playerID] = bc.CalculateMalfunction(null)
+
+		For Local market:TAudienceMarketCalculation = EachIn bc.AudienceMarkets
+			If not market.Players.Contains(String(playerID)) then continue
+			market.SetPlayersProgrammeAttraction(playerID, bc.Attractions[playerID])
+		Next
+		bc.AudienceResults[playerID].Refresh()
+		print "NEW: "+bc.AudienceResults[playerID].ToString()
+		'add to current set of results
+		SetAudienceResult(playerID, bc.AudienceResults[playerID])
+
+	End Method
+
+
+
 	'Führt die Berechnung für die Einschaltquoten der Sendeblöcke durch
 	Method BroadcastProgramme(day:Int=-1, hour:Int, recompute:Int = 0)
 		BroadcastCommon(hour, TBroadcastMaterial.TYPE_PROGRAMME, recompute)
@@ -360,6 +384,7 @@ Type TBroadcast
 			Next
 		Next
 	End Method
+
 
 	'Sendeausfall
 	Method CalculateMalfunction:TAudienceAttraction(lastMovieAttraction:TAudienceAttraction)

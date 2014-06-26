@@ -6,24 +6,56 @@ Import "game.broadcast.audienceattraction.bmx"
 'Das TAudienceResult ist sowas wie das zusammengefasste Ergebnis einer
 'TBroadcast- und/oder TAudienceMarketCalculation-Berechnung.
 Type TAudienceResult
-	Field PlayerId:Int										'Optional: Die Id des Spielers zu dem das Result gehört.
-	Field Hour:Int											'Zu welcher Stunde gehört das Result
-	Field Title:String										'Der Titel des Programmes
+	'Optional: Die Id des Spielers zu dem das Result gehört.
+	Field PlayerId:Int
+	'Zu welcher Stunde gehört das Result
+	Field Hour:Int
+	'Der Titel des Programmes
+	Field Title:String
 
-	Field WholeMarket:TAudience	= New TAudience				'Der Gesamtmarkt: Also wenn alle die einen TV haben.
-	Field PotentialMaxAudience:TAudience = New TAudience	'Die Gesamtzuschauerzahl die in dieser Stunde den TV angeschaltet hat! Also 100%-Quote! Summe aus allen Exklusiven, Flow-Leuten und Zappern
-	Field Audience:TAudience = New TAudience				'Die Zahl der Zuschauer die erreicht wurden. Sozusagen das Ergenis das zählt und angezeigt wird.
+	'Der Gesamtmarkt: Also wenn alle die einen TV haben.
+	Field WholeMarket:TAudience
+	'Die Gesamtzuschauerzahl die in dieser Stunde den TV an hat!
+	'Also 100%-Quote! Summe aus allen Exklusiven, Flow-Leuten und Zappern
+	Field PotentialMaxAudience:TAudience
+	'Die Zahl der Zuschauer die erreicht wurden.
+	'Sozusagen das Ergenis das zählt und angezeigt wird.
+	Field Audience:TAudience
+	'Summe der Zapper die es zu verteilen gilt
+	'(ist nicht gleich eines ChannelSurferSum)
+	Field ChannelSurferToShare:TAudience
+	'Die ursprüngliche Attraktivität des Programmes, vor der
+	'Kunkurrenzsituation
+	Field AudienceAttraction:TAudienceAttraction
+	'Die effektive Attraktivität des Programmes auf Grund der
+	'Konkurrenzsituation
+	Field EffectiveAudienceAttraction:TAudience
 
-	Field ChannelSurferToShare:TAudience = New TAudience	'Summe der Zapper die es zu verteilen gilt (ist nicht gleich eines ChannelSurferSum)
+	'=== werden beim Refresh berechnet ===
+	'Die Zuschauerquote, relativ zu MaxAudienceThisHour
+	Field AudienceQuote:TAudience
+	'Die Quote von PotentialMaxAudience. Wie viel Prozent schalten ein
+	'und checken das Programm. Basis ist WholeMarket
+	Field PotentialMaxAudienceQuote:TAudience
 
-	Field AudienceAttraction:TAudienceAttraction			'Die ursprüngliche Attraktivität des Programmes, vor der Kunkurrenzsituation
-	Field EffectiveAudienceAttraction:TAudience				'Die effektive Attraktivität des Programmes auf Grund der Konkurrenzsituation
+	'Die reale Zuschauerquote, die aber noch nicht verwendet wird.
+	'Field MarketShare:Float
 
-	'Werden beim Refresh berechnet
-	Field AudienceQuote:TAudience							'Die Zuschauerquote, relativ zu MaxAudienceThisHour
-	Field PotentialMaxAudienceQuote:TAudience				'Die Quote von PotentialMaxAudience. Wie viel Prozent schalten ein und checken das Programm. Basis ist WholeMarket
 
-	'Field MarketShare:Float								'Die reale Zuschauerquote, die aber noch nicht verwendet wird.
+	Method New()
+		Reset()
+	End Method
+
+
+	Method Reset()
+		WholeMarket = New TAudience
+		PotentialMaxAudience:TAudience = New TAudience
+		Audience:TAudience = New TAudience
+		ChannelSurferToShare  = New TAudience
+
+		AudienceQuote = Null
+		PotentialMaxAudienceQuote = Null
+	End Method
 
 
 	Method AddResult(res:TAudienceResult)
@@ -46,13 +78,6 @@ Type TAudienceResult
 
 		PotentialMaxAudienceQuote = PotentialMaxAudience.Copy()
 		PotentialMaxAudienceQuote.Divide(WholeMarket)
-	End Method
-
-
-	'Sets audience to 0 (eg. when removing a licence of a broadcasted
-	'programme)
-	Method Malfunction:()
-		print "TODO: Manuel - add Malfunction() code for audience reset."
 	End Method
 
 
