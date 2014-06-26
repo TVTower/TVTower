@@ -1,4 +1,4 @@
-Type TestAssert Extends TTest
+﻿Type TestAssert Extends TTest
 	Function assertEqualsAud(expected:TAudience, actual:TAudience, message:String = Null)	
 		assertEqualsI(expected.Id, actual.Id, message + " [-> Id]")
 		assertEqualsF(expected.Children, actual.Children, 0.000005, message + " [-> Children]")
@@ -27,6 +27,10 @@ Type TTestKit
 			TLogger.setLogMode(0)
 			TLogger.setPrintMode(0)
 		EndIf
+		
+		App = TApp.Create(30, -1, True, False) 'create with screen refreshrate and vsync
+		'App.LoadResources("config/resources.xml")		
+		
 		Game = new TGame.Create(False, False)
 	End Function
 	
@@ -40,7 +44,7 @@ Type TTestKit
 		Local player:TPlayer = new TPlayer
 		player.playerID = 1
 		player.Name = "Test"
-		player.PublicImage = TPublicImage.Create(player.GetPlayerID())
+		TPublicImage.Create(player.GetPlayerID())
 		Game.SetPlayer(1, player)
 		Return player
 	End Function

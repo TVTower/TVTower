@@ -148,30 +148,30 @@ Type TApp
 	Global settingsBasePath:string = "config/settings.xml"
 	Global settingsUserPath:string = "config/settings.user.xml"
 
-	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:int=TRUE)
+	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:int=TRUE, initializeGUI:Int=True)
 		Local obj:TApp = New TApp
 		obj.creationTime = MilliSecs()
 
+		If initializeGUI Then
+			GetDeltatimer().Init(updatesPerSecond, framesPerSecond)
+			GetDeltaTimer()._funcUpdate = update
+			GetDeltaTimer()._funcRender = render		
 
-		GetDeltatimer().Init(updatesPerSecond, framesPerSecond)
-		GetDeltaTimer()._funcUpdate = update
-		GetDeltaTimer()._funcRender = render
-
-
-		'register to quit confirmation dialogue
-		EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
-		EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
-		obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
-
-		obj.LoadSettings()
-		obj.ApplySettings()
-
-		GetGraphicsManager().SetVsync(vsync)
-		GetGraphicsManager().SetResolution(800,600)
-		GetGraphicsManager().InitGraphics()
-
-		'load graphics needed for loading screen
-		obj.LoadResources(obj.baseResourceXmlUrl, true)
+			'register to quit confirmation dialogue
+			EventManager.registerListenerFunction( "guiModalWindow.onClose", 	TApp.onAppConfirmExit )
+			EventManager.registerListenerFunction( "RegistryLoader.onLoadXmlFromFinished",	TApp.onLoadXmlFromFinished )
+			obj.OnLoadMusicListener = EventManager.registerListenerFunction( "RegistryLoader.onLoadResource",	TApp.onLoadMusicResource )
+	
+			obj.LoadSettings()
+			obj.ApplySettings()
+	
+			GetGraphicsManager().SetVsync(vsync)
+			GetGraphicsManager().SetResolution(800,600)
+			GetGraphicsManager().InitGraphics()
+			
+			'load graphics needed for loading screen
+			obj.LoadResources(obj.baseResourceXmlUrl, true)			
+		EndIf
 
 		Return obj
 	End Function
@@ -2727,10 +2727,11 @@ End Function
 
 
 Function StartTVTower(start:Int=true)
+	DebugStop
 	Global InitialResourceLoadingDone:int = FALSE
 
 	EventManager.Init()
-
+	
 	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
 	App.LoadResources("config/resources.xml")
 

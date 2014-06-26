@@ -36,8 +36,8 @@
 		assertEqualsF(1, programme.GetTopicalityCutModifier(18), 0.006)
 		
 		'=== Senken der Topicality ===
-		
-		assertEqualsF(0.65, ProgrammeDataCollection.wearoffFactor, 0.006)
+		Local progDataCollection:TProgrammeDataCollection = GetProgrammeDataCollection()
+		assertEqualsF(0.65, progDataCollection.wearoffFactor, 0.006)
 		assertEqualsF(1, programme.data.GetGenreWearoffModifier(), 0.006)
 		assertEqualsF(1, programme.data.GetWearoffModifier(), 0.006)				
 		programme.data.CutTopicality(programme.GetTopicalityCutModifier())		
@@ -49,14 +49,14 @@
 		
 		'=== Refresh der Topicality ===
 		
-		assertEqualsF(1.5, ProgrammeDataCollection.refreshFactor, 0.006)
+		assertEqualsF(1.5, progDataCollection.refreshFactor, 0.006)
 		assertEqualsF(1, programme.data.GetGenreRefreshModifier(), 0.006)
 		assertEqualsF(1, programme.data.GetRefreshModifier(), 0.006)			
-		TProgrammeData.RefreshAllTopicalities()		
+		TProgrammeDataCollection.RefreshTopicalities()		
 		assertEqualsF(181, programme.data.GetTopicality(), 0.006)
-		TProgrammeData.RefreshAllTopicalities()		
+		TProgrammeDataCollection.RefreshTopicalities()		
 		assertEqualsF(245, programme.data.GetTopicality(), 0.006)
-		TProgrammeData.RefreshAllTopicalities()		
+		TProgrammeDataCollection.RefreshTopicalities()		
 		assertEqualsF(245, programme.data.GetTopicality(), 0.006)
 		
 		'=== Extreme Jahrgänge ===
@@ -197,22 +197,24 @@
 		genreDef.Popularity.Popularity = 0
 		genreDef.AudienceAttraction = TAudience.CreateAndInitValue(0.5)		
 		
-		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(0)
+		Local publicImage:TPublicImage = GetPublicImageCollection().Get(TestPlayer.playerID)
+		
+		publicImage.ImageValues = TAudience.CreateAndInitValue(0)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.326988250), programme.GetAudienceAttraction(0, 1, Null, Null))
 		
-		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(100)
+		publicImage.ImageValues = TAudience.CreateAndInitValue(100)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.503058851), programme.GetAudienceAttraction(0, 1, Null, Null))
 		
-		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(150)
+		publicImage.ImageValues = TAudience.CreateAndInitValue(150)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.591094136), programme.GetAudienceAttraction(0, 1, Null, Null))
 		
-		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(200)
+		publicImage.ImageValues = TAudience.CreateAndInitValue(200)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.679129481), programme.GetAudienceAttraction(0, 1, Null, Null))
 		
-		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(-50)
+		publicImage.ImageValues = TAudience.CreateAndInitValue(-50)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.326988250), programme.GetAudienceAttraction(0, 1, Null, Null))
 		
-		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(500)
+		publicImage.ImageValues = TAudience.CreateAndInitValue(500)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.679129481), programme.GetAudienceAttraction(0, 1, Null, Null))	
 	End Method
 	
@@ -220,7 +222,8 @@
 		Local genreDef:TMovieGenreDefinition = TTestKit.CrMovieGenreDefinition()
 		Local programme:TProgramme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.5, genreDef)
 		
-		TestPlayer.PublicImage.ImageValues = TAudience.CreateAndInitValue(100)
+		Local publicImage:TPublicImage = GetPublicImageCollection().Get(TestPlayer.playerID)
+		publicImage.ImageValues = TAudience.CreateAndInitValue(100)
 		TestAssert.assertEqualsAud(TAudience.CreateAndInitValue(0.503315330), programme.GetAudienceAttraction(0, 2, Null, Null))
 		
 		programme = TTestKit.CrProgramme("abc", 1, TProgrammeLicence.TYPE_MOVIE, 0.25, genreDef)
