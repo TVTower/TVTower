@@ -62,7 +62,7 @@ Type TTestKit
 		Return licence
 	End Function
 	
-	Function CrProgrammeSmall:TProgramme(title:String = null, genre:Int = 0, licenceType:Int, fixQuality:Float = 1, year:Int = 1985)
+	Function CrProgrammeSmall:TProgramme(title:String = null, genre:Int = 0, licenceType:Int = 8, fixQuality:Float = 1, year:Int = 1985)
 		Local licence:TProgrammeLicence = CrProgrammeLicence(title, genre, licenceType, fixQuality, year)		
 		licence.data.genreDefinitionCache = CrMovieGenreDefinition()
 		Return TProgramme.Create(licence)
@@ -89,5 +89,12 @@ Type TTestKit
 			definition.TimeMods[i] = 1.0
 		Next
 		Return definition
-	End Function	
+	End Function
+	
+	Function CrAudienceMarketCalculation:TAudienceMarketCalculation(audience:Int, player1:Int = True)
+		Local market:TAudienceMarketCalculation = New TAudienceMarketCalculation
+		market.maxAudience = TAudience.CreateWithBreakdown(audience)
+		market.AddPlayer(player1)		
+		Return market
+	End Function
 EndType
