@@ -565,11 +565,6 @@ endrem
 		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", null , self, inroom )
 		EventManager.triggerEvent(event)
 		'stop leaving
-if event.IsVeto()
-	print "RON: figure.LeaveRoom: room=" + inroom.name + "  figure="+self.name
-endif
-
-
 		if event.IsVeto() then return False
 
 		'leave is allowed - set time of start

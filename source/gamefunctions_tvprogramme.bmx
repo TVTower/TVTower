@@ -1311,7 +1311,7 @@ Type TgfxProgrammelist extends TPlannerList
 			asset.Draw(box.GetX(), box.GetY())
 			SetColor 255,255,255
 
-			font.drawBlock(licence.GetTitle(), box.position.GetIntX() + 13, box.position.GetIntY() + 3, 139,16,null, TColor.clBlack ,0,True)
+			font.drawBlock(licence.GetTitle(), box.position.GetIntX() + 13, box.position.GetIntY() + 3, 139,16,null, TColor.clBlack ,0, True, 1.0, False)
 
 			'we are hovering a licence...
 			If box.containsXY(MouseManager.x,MouseManager.y)
