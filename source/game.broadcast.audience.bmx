@@ -287,15 +287,20 @@ Type TAudience
 
 
 	Method Divide:TAudience(audience:TAudience)
-		Children	:/ audience.Children
-		Teenagers	:/ audience.Teenagers
-		HouseWifes	:/ audience.HouseWifes
-		Employees	:/ audience.Employees
-		Unemployed	:/ audience.Unemployed
-		Manager		:/ audience.Manager
-		Pensioners	:/ audience.Pensioners
-		Women		:/ audience.Women
-		Men			:/ audience.Men
+		if audience.GetSum() = 0
+			'set all values to 0 (new Audience has 0 as default)
+			SetValuesFrom(new TAudience)
+		Else
+			Children	:/ audience.Children
+			Teenagers	:/ audience.Teenagers
+			HouseWifes	:/ audience.HouseWifes
+			Employees	:/ audience.Employees
+			Unemployed	:/ audience.Unemployed
+			Manager		:/ audience.Manager
+			Pensioners	:/ audience.Pensioners
+			Women		:/ audience.Women
+			Men			:/ audience.Men
+		EndIf
 		Return Self
 	End Method
 

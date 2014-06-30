@@ -28,6 +28,9 @@ Type TStationMapCollection
 	Field populationMapSize:TPoint = new TPoint.Init() {nosave}
 
 	Field mapConfigFile:string = ""
+	'does the shareMap has to get regenerated during the next
+	'update cycle?
+	Field _regenerateMap:int = False
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
@@ -38,14 +41,12 @@ Type TStationMapCollection
 
 	Method New()
 		if not _initDone
-			'to refresh share map on buy/sell of stations
-			EventManager.registerListenerFunction( "stationmap.addStation",	onChangeStations )
-			EventManager.registerListenerFunction( "stationmap.removeStation",	onChangeStations )
-
 			'handle savegame loading (reload the map configuration)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 			'handle <stationmapdata>-area in loaded xml files
 			EventManager.registerListenerFunction("RegistryLoader.onLoadResourceFromXML", onLoadStationMapData, null, "STATIONMAPDATA" )
+			'handle activation of stations
+			EventManager.registerListenerFunction("station.onSetActive", onSetStationActive)
 
 			_initdone = TRUE
 		Endif
@@ -57,6 +58,16 @@ Type TStationMapCollection
 		return _instance
 	End Function
 
+
+	'as soon as a station gets active (again), the sharemap has to get
+	'regenerated (for a correct audience calculation)
+	Function onSetStationActive(triggerEvent:TEventBase)
+		GetInstance()._regenerateMap = True
+		'also set the owning stationmap to "changed" so only this single
+		'audience sum only gets recalculated (saves cpu time)
+		local station:TStation = TStation(triggerEvent.GetSender())
+		if station then GetInstance().GetMap(station.owner).changed = True
+	End Function
 
 
 	'run when loading finished
@@ -217,6 +228,9 @@ Type TStationMapCollection
 		Local rect:TRectangle = new TRectangle.Init(0,0,0,0)
 		For Local stationmap:TStationMap = EachIn stationMaps
 			For Local station:TStation = EachIn stationmap.stations
+				'skip inactive stations
+				if not station.IsActive() then continue
+
 				'mark the area within the stations circle
 				posX = 0
 				posY = 0
@@ -262,6 +276,12 @@ Type TStationMapCollection
 	Method GetShare:TPoint(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
 		If playerIDs.length <1 Then Return new TPoint.Init(0,0,0.0)
 		If Not withoutPlayerIDs Then withoutPlayerIDs = New Int[0]
+
+	rem
+		'does not work currently (see below "TODO")
+
+		'=== CHECK CACHE ===
+		'if already cached, save time...
 		Local cacheKey:String = ""
 		For Local i:Int = 0 To playerIDs.length-1
 			cacheKey:+ "_"+playerIDs[i]
@@ -270,20 +290,19 @@ Type TStationMapCollection
 		For Local i:Int = 0 To withoutPlayerIDs.length-1
 			cacheKey:+ "_"+withoutPlayerIDs[i]
 		Next
-
-		'if already cached, save time...
 		If shareCache And shareCache.contains(cacheKey) Then Return TPoint(shareMap.ValueForKey(cacheKey))
-
-		Local map:TMap				= GetShareMap()
-		Local result:TPoint			= new TPoint.Init(0,0,0.0)
-		Local share:Int				= 0
-		Local total:Int				= 0
+	end rem
+	
+		Local map:TMap = GetShareMap()
+		Local result:TPoint	= new TPoint.Init(0,0,0.0)
+		Local share:Int	= 0
+		Local total:Int	= 0
 		Local playerFlags:Int[]
-		Local allFlag:Int			= 0
+		Local allFlag:Int = 0
 		Local withoutPlayerFlags:Int[]
-		Local withoutFlag:Int		= 0
-		playerFlags					= playerFlags[.. playerIDs.length]
-		withoutPlayerFlags			= withoutPlayerFlags[.. withoutPlayerIDs.length]
+		Local withoutFlag:Int = 0
+		playerFlags	= playerFlags[.. playerIDs.length]
+		withoutPlayerFlags = withoutPlayerFlags[.. withoutPlayerIDs.length]
 
 		For Local i:Int = 0 To playerIDs.length-1
 			'player 1=1, 2=2, 3=4, 4=8 ...
@@ -293,16 +312,16 @@ Type TStationMapCollection
 
 		For Local i:Int = 0 To withoutPlayerIDs.length-1
 			'player 1=1, 2=2, 3=4, 4=8 ...
-			withoutPlayerFlags[i]	= getMaskIndex( withoutPlayerIDs[i] )
+			withoutPlayerFlags[i] = getMaskIndex( withoutPlayerIDs[i] )
 			withoutFlag :| withoutPlayerFlags[i]
 		Next
 
 
-		Local someoneUsesPoint:Int	= False
-		Local allUsePoint:Int		= False
+		Local someoneUsesPoint:Int = False
+		Local allUsePoint:Int = False
 		For Local mapValue:TPoint = EachIn map.Values()
-			someoneUsesPoint		= False
-			allUsePoint				= False
+			someoneUsesPoint = False
+			allUsePoint = False
 
 			'we need to check if one on our ignore list is there
 				'no need to do this individual, we can just check the groupFlag
@@ -352,6 +371,40 @@ endrem
 	End Method
 
 
+	Method Update:int()
+		'update all stationmaps (and their stations)
+		For local i:int = 0 until stationMaps.length
+			if not stationMaps[i] then continue
+
+			stationMaps[i].Update()
+		Next
+
+
+		'refresh the share map and refresh max audience sum
+		'as soon as one of the stationmap changed
+		If _regenerateMap
+			GenerateShareMap()
+
+			'recalculate the audience sums of all changed maps
+			'maybe generalize it (recalculate ALL as soon as map
+			'gets regenerated)
+			'this individual way saves calculation time (only do what
+			'is needed)
+			For local i:int = 1 to stationMaps.length
+				if GetMap(i).changed
+					GetMap(i).RecalculateAudienceSum()
+					'we handled the changed flag
+					GetMap(i).changed = False
+				endif
+			Next
+
+			'we handled regenerating the map
+			_regenerateMap = False
+		EndIf
+	End Method
+
+
+
 	Method _FillPoints(map:TMap Var, x:Int, y:Int, color:Int)
 		Local posX:Int = 0, posY:Int = 0
 		x = Max(0, x)
@@ -379,6 +432,10 @@ endrem
 		'overwrite with stations owner already has - red pixels get overwritten with white,
 		'count red at the end for increase amount
 		For Local _Station:TStation = EachIn stations
+			'DO NOT SKIP INACTIVE STATIONS !!
+			'increases are for estimations - so they should include
+			'non-finished stations too
+		
 			If THelper.IsIn(_x,_y, _station.pos.x - 2*stationRadius, _station.pos.y - 2 * stationRadius, 4*stationRadius, 4*stationRadius)
 				Self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
 			EndIf
@@ -396,8 +453,11 @@ endrem
 	'summary: returns maximum audience a player has
 	Method RecalculateAudienceSum:Int(stations:TList)
 		Local Points:TMap = New TMap
-		For Local _Station:TStation = EachIn stations
-			Self._FillPoints(Points, _Station.pos.x, _Station.pos.y, ARGB_Color(255, 255, 255, 255))
+		For Local station:TStation = EachIn stations
+			'skip inactive stations
+			if not station.IsActive() then continue
+
+			Self._FillPoints(Points, station.pos.x, station.pos.y, ARGB_Color(255, 255, 255, 255))
 		Next
 		Local returnValue:Int = 0
 
@@ -465,12 +525,6 @@ endrem
 		If Not shareMap Then GenerateShareMap()
 		Return shareMap
 	End Method
-
-
-	'someone sold or bought a station, call shareMap-Generator
-	Function onChangeStations:Int( triggerEvent:TEventBase )
-		_instance.GenerateShareMap()
-	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -490,6 +544,7 @@ Type TStationMap {_exposeToLua="selected"}
 	Field owner:int	= 0
 	'all stations of the map owner
 	Field stations:TList = CreateList()
+	Field changed:int = False
 
 	'FALSE to avoid recursive handling (network)
 	Global fireEvents:Int = True
@@ -594,13 +649,18 @@ Type TStationMap {_exposeToLua="selected"}
 
 		stations.AddLast(station)
 
-		'recalculate audience of channel
-		RecalculateAudienceSum()
+		'DO NOT refresh the share map as ths would increase potential
+		'audience in this moment. Generate it as soon as a station gets
+		'"ready" (before next audience calculation - means xx:04 or xx:59)
+		'GetStationMapCollection().GenerateShareMap()
+
+		'ALSO DO NOT recalculate audience of channel
+		'RecalculateAudienceSum()
 
 		TLogger.Log("TStationMap.AddStation", "Player"+owner+" buys broadcasting station for " + station.price + " Euro (increases reach by " + station.reach + ")", LOG_DEBUG)
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.addStation", new TData.add("station", station), Self ) )
+		If fireEvents Then EventManager.triggerEvent( TEventSimple.Create( "stationmap.addStation", new TData.add("station", station), Self ) )
 
 		Return True
 	End Method
@@ -611,7 +671,7 @@ Type TStationMap {_exposeToLua="selected"}
 
 		'check if we try to sell our last station...
 		If stations.count() = 1
-			EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", new TData.addNumber("playerID", owner), self))
+			EventManager.triggerEvent(TEventSimple.Create("StationMap.onTrySellLastStation", null, self))
 			Return False
 		EndIf
 
@@ -620,21 +680,24 @@ Type TStationMap {_exposeToLua="selected"}
 		stations.Remove(station)
 
 		If sell
-			TLogger.Log("TStationMap.AddStation", "Player"+owner+" sells broadcasting station for " + station.getSellPrice() + "Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
+			TLogger.Log("TStationMap.AddStation", "Player"+owner+" sells broadcasting station for " + station.getSellPrice() + " Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
 		Else
 			TLogger.Log("TStationMap.AddStation", "Player"+owner+" trashes broadcasting station for 0 Euro (had a reach of " + station.reach + ")", LOG_DEBUG)
 		EndIf
 
+
+		'refresh the share map (needed for audience calculations)
+		GetStationMapCollection().GenerateShareMap()
 		'recalculate audience of channel
 		RecalculateAudienceSum()
 
 		'when station is sold, audience will decrease,
-		'while a buy will not increase the current audience but the next block
-		'parent.ComputeAudience( TRUE )
-		Print "TODO@Manuel: recompute Audience when station is sold"
+		'while a buy will not increase the current audience but the
+		'next block (news or programme)
+		'-> handled in main.bmx with a listener to "stationmap.removeStation"
 
 		'emit an event so eg. network can recognize the change
-		If fireEvents Then EventManager.registerEvent( TEventSimple.Create( "stationmap.removeStation", new TData.add("station", station), Self ) )
+		If fireEvents Then EventManager.triggerEvent(TEventSimple.Create("StationMap.removeStation", new TData.add("station", station), Self))
 
 		Return True
     End Method
@@ -651,13 +714,20 @@ Type TStationMap {_exposeToLua="selected"}
 
 
 	Method Update()
-		'
+		UpdateStations()
+	End Method
+
+
+	Method UpdateStations()
+		For Local station:TStation = EachIn stations
+			station.Update()
+		Next
 	End Method
 
 
 	Method DrawStations()
-		For Local _Station:TStation = EachIn stations
-			_Station.Draw()
+		For Local station:TStation = EachIn stations
+			station.Draw()
 		Next
 	End Method
 
@@ -682,28 +752,32 @@ End Type
 'functions are calculation of audiencesums and drawing of stations
 Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Field pos:TPoint
-	Field reach:Int				= -1
-	Field reachIncrease:Int		= -1		'increase of reach at when bought
-	Field price:Int				= -1
-	Field fixedPrice:Int		= False		'fixed prices are kept during refresh
-	Field owner:Int				= 0
-	Field paid:Int				= False
-	Field built:Int				= 0			'time at which the
-	Field radius:Int			= 0
-	Field federalState:String	= ""
+	Field reach:Int	= -1
+	'increase of reach at when bought
+	Field reachIncrease:Int = -1
+	Field price:Int	= -1
+	'fixed prices are kept during refresh
+	Field fixedPrice:Int = False
+	Field owner:Int = 0
+	Field paid:Int = False
+	'time at which the station was bought
+	Field built:Int	= 0
+	'is the station already working?
+	Field active:Int = 0
+	Field radius:Int = 0
+	Field federalState:String = ""
 
 
 	Function Create:TStation( pos:TPoint, price:Int=-1, radius:Int, owner:Int)
 		Local obj:TStation = New TStation
-		obj.owner		= owner
-		obj.pos			= pos
-		obj.price		= price
-		obj.radius		= radius
-		obj.built		= GetGameTime().getTimeGone()
+		obj.owner = owner
+		obj.pos	= pos
+		obj.price = price
+		obj.radius = radius
+		obj.built = GetGameTime().getTimeGone()
 
 		obj.fixedPrice	= (price <> -1)
 		obj.refreshData()
-		'print "pos "+pos.getIntX()+","+pos.getIntY()+" preis:"+obj.getPrice()+" reach:"+obj.getReach()
 		Return obj
 	End Function
 
@@ -721,6 +795,12 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		Return GetGameTime().GetDay() - GetGameTime().GetDay(Self.built)
 	End Method
 
+
+	'returns the age in minutes
+	Method getAgeInMinutes:Int()
+		Return GetGameTime().GetTimeGone() - Self.built
+	End Method
+	
 
 	'get the reach of that station
 	Method getReach:Int(refresh:Int=False) {_exposeToLua}
@@ -778,6 +858,20 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsActive:int()
+		return active
+	End Method
+
+
+	'a station begins to work (broadcast)
+	Method SetActive:int()
+		active = True
+
+		'inform others (eg. to recalculate audience)
+		EventManager.triggerEvent(TEventSimple.Create("station.onSetActive", null, Self))
+	End Method
+
+
 	Method Sell:Int()
 		If Not GetPlayerFinanceCollection().Get(owner) Then Return False
 
@@ -827,7 +921,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		GetBitmapFontManager().baseFontBold.drawStyled( getLocale("MAP_COUNTRY_"+getFederalState()), textX, textY, TColor.Create(255,255,0), 2)
 		textY:+ textH + 5
 
-		GetBitmapFontManager().baseFont.draw(GetLocale("RANGE")+": ", textX, textY)
+		GetBitmapFontManager().baseFont.draw(GetLocale("REACH")+": ", textX, textY)
 		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
@@ -866,6 +960,24 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 		SetAlpha OldAlpha
 		sprite.Draw(pos.x, pos.y + radius - sprite.area.GetH() - 2, -1, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
+	End Method
+
+
+	Method Update:int()
+		'check if it becomes ready
+		If not IsActive()
+			local activate:int = False
+			'TODO: if wanted, check for RepairStates or such things
+
+			'older than 60 minutes
+			if getAgeInMinutes() > 60 then activate = True
+			'at xx:00 or xx:05 programmes start (and new audience
+			'calculations happen), so stations get ready too 
+			if GetGameTime().GetMinute() = 5 then activate = True
+			if GetGameTime().GetMinute() = 0 then activate = True
+
+			if activate then SetActive()
+		EndIf
 	End Method
 End Type
 

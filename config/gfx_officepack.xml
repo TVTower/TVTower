@@ -26,6 +26,9 @@
 				<child name="genres_entry0"					x="604" 	y="435" 	w="146" h="17" />
 				<child name="genres_bottom"					x="604" 	y="452" 	w="146" h="3" />
 
+				<child name="stationlist_antenna_on"		x="605" 	y="465" 	w="13" h="14" />
+				<child name="stationlist_antenna_off"		x="620" 	y="465" 	w="13" h="14" />
+
 				<child name="programmeplanner_btn_options"			x="318"	y="351"	w="98"	h="56" />
 				<child name="programmeplanner_btn_programme"		x="423"	y="416"	w="98"	h="56" />
 				<child name="programmeplanner_btn_financials"		x="839"	y="230"	w="98"	h="56" />

@@ -62,7 +62,7 @@ Import "game.player.programmecollection.bmx" 'needed by game.player.bmx
 Import "game.player.programmeplan.bmx" 'needed by game.player.bmx
 
 '===== Includes =====
-include "game.player.bmx"
+Include "game.player.bmx"
 
 Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
 												'		- base class For buttons And extension newsbutton
@@ -90,15 +90,15 @@ Include "game.base.bmx"
 Global VersionDate:String		= LoadText("incbin::source/version.txt")
 Global VersionString:String		= "version of " + VersionDate
 Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
-Global App:TApp = null
+Global App:TApp = Null
 Global Interface:TInterface
 Global Game:TGame
 Global InGame_Chat:TGUIChat
 Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
-Global ScreenGameSettings:TScreen_GameSettings = null
-Global ScreenMainMenu:TScreen_MainMenu = null
-Global GameScreen_Building:TInGameScreen_Building = null
+Global ScreenGameSettings:TScreen_GameSettings = Null
+Global ScreenMainMenu:TScreen_MainMenu = Null
+Global GameScreen_Building:TInGameScreen_Building = Null
 Global headerFont:TBitmapFont
 Global Init_Complete:Int = 0
 
@@ -125,11 +125,11 @@ TLogger.setPrintMode(LOG_ALL )
 
 'Enthaelt Verbindung zu Einstellungen und Timern, sonst nix
 Type TApp
-	Field devConfig:TData = new TData
+	Field devConfig:TData = New TData
 	'developer/base configuration
-	Field configBase:TData = new TData
+	Field configBase:TData = New TData
 	'configuration containing base + user
-	Field config:TData = new TData
+	Field config:TData = New TData
 	'draw logo for screenshot ?
 	Field prepareScreenshot:Int	= 0
 
@@ -145,10 +145,10 @@ Type TApp
 	Global ExitAppDialogue:TGUIModalWindow	= Null
 	Global ExitAppDialogueTime:Int			= 0					'creation time for "double escape" to abort
 	Global ExitAppDialogueEventListeners:TList = CreateList()
-	Global settingsBasePath:string = "config/settings.xml"
-	Global settingsUserPath:string = "config/settings.user.xml"
+	Global settingsBasePath:String = "config/settings.xml"
+	Global settingsUserPath:String = "config/settings.user.xml"
 
-	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:int=TRUE, initializeGUI:Int=True)
+	Function Create:TApp(updatesPerSecond:Int = 60, framesPerSecond:Int = 30, vsync:Int=True, initializeGUI:Int=True)
 		Local obj:TApp = New TApp
 		obj.creationTime = MilliSecs()
 
@@ -170,7 +170,7 @@ Type TApp
 			GetGraphicsManager().InitGraphics()
 			
 			'load graphics needed for loading screen
-			obj.LoadResources(obj.baseResourceXmlUrl, true)			
+			obj.LoadResources(obj.baseResourceXmlUrl, True)			
 		EndIf
 
 		Return obj
@@ -180,27 +180,27 @@ Type TApp
 	'if no startup-music was defined, try to play menu music if some
 	'is loaded
 	Function onLoadMusicResource( triggerEvent:TEventBase )
-		local resourceName:string = triggerEvent.GetData().GetString("resourceName")
-		if resourceName = "MUSIC"
+		Local resourceName:String = triggerEvent.GetData().GetString("resourceName")
+		If resourceName = "MUSIC"
 			'if no music is played yet, try to get one from the "menu"-playlist
-			if not GetSoundManager().isPlaying() then GetSoundManager().PlayMusicPlaylist("menu")
-		endif
+			If Not GetSoundManager().isPlaying() Then GetSoundManager().PlayMusicPlaylist("menu")
+		EndIf
 	End Function
 
 
 	Function onLoadXmlFromFinished( triggerEvent:TEventBase )
 		If triggerEvent.getData().getString("uri") = TApp.baseResourceXmlUrl
 			TApp.baseResourcesLoaded = 1
-		endif
+		EndIf
 	End Function
 
 
 	Method LoadSettings:Int()
-		local storage:TDataXmlStorage = new TDataXmlStorage
+		Local storage:TDataXmlStorage = New TDataXmlStorage
 		storage.SetRootNodeKey("config")
 		'load default config
 		configBase = storage.Load(settingsBasePath)
-		if not configBase then configBase = new TData
+		If Not configBase Then configBase = New TData
 
 		'load custom config and merge to a useable "total" config
 		config = configBase.copy().Append(storage.Load(settingsUserPath))
@@ -214,10 +214,10 @@ Type TApp
 		'the users customized settings
 
 		'remove "DEV_" ignore key so they get stored too
-		local storage:TDataXmlStorage = new TDataXmlStorage
+		Local storage:TDataXmlStorage = New TDataXmlStorage
 		storage.SetRootNodeKey("config")
 		storage.SetIgnoreKeysStartingWith("")
-		storage.Save(settingsUserPath, newConfig.GetDifferenceTo(self.configBase))
+		storage.Save(settingsUserPath, newConfig.GetDifferenceTo(Self.configBase))
 	End Method
 
 
@@ -227,22 +227,22 @@ Type TApp
 		GetGraphicsManager().SetColordepth(config.GetInt("colordepth", 16))
 
 		TSoundManager.SetAudioEngine(config.GetString("sound_engine", "AUTOMATIC"))
-		TSoundManager.GetInstance().MuteMusic(not config.GetBool("sound_music", TRUE))
-		TSoundManager.GetInstance().MuteSfx(not config.GetBool("sound_effects", TRUE))
+		TSoundManager.GetInstance().MuteMusic(Not config.GetBool("sound_music", True))
+		TSoundManager.GetInstance().MuteSfx(Not config.GetBool("sound_effects", True))
 
-		if Game then Game.LoadConfig(config)
+		If Game Then Game.LoadConfig(config)
 	End Method
 
 
-	Method LoadResources:Int(path:String="config/resources.xml", directLoad:int=FALSE)
-		local registryLoader:TRegistryLoader = new TRegistryLoader
+	Method LoadResources:Int(path:String="config/resources.xml", directLoad:Int=False)
+		Local registryLoader:TRegistryLoader = New TRegistryLoader
 		registryLoader.LoadFromXML(path, directLoad)
 	End Method
 
 
-	Method SetLanguage:Int(languageCode:string="de")
+	Method SetLanguage:Int(languageCode:String="de")
 		'skip if the same language is already set
-		if TLocalization.GetCurrentLanguageCode() = languageCode then return False
+		If TLocalization.GetCurrentLanguageCode() = languageCode Then Return False
 
 		'select language
 		TLocalization.SetCurrentLanguage(languageCode)
@@ -251,7 +251,7 @@ Type TApp
 		config.Add("language", languageCode)
 		
 		'inform others - so eg. buttons can re-localize
-		EventManager.triggerEvent(TEventSimple.Create("Language.onSetLanguage", new TData.Add("languageCode", languageCode), self))
+		EventManager.triggerEvent(TEventSimple.Create("Language.onSetLanguage", New TData.Add("languageCode", languageCode), Self))
 		Return True
 	End Method
 
@@ -266,7 +266,7 @@ Type TApp
 
 		'from now on we are no longer interested in loaded elements
 		'as we are no longer in the loading screen (-> silent loading)
-		if OnLoadMusicListener then EventManager.unregisterListenerByLink( OnLoadMusicListener )
+		If OnLoadMusicListener Then EventManager.unregisterListenerByLink( OnLoadMusicListener )
 
 		TLogger.Log("TApp.Start()", "loading time: "+(MilliSecs() - creationTime) +"ms", LOG_INFO)
 	End Method
@@ -303,9 +303,9 @@ Type TApp
 
 	Function Update:Int()
 		'every 3rd update do a system update
-		if GetDeltaTimer().timesUpdated mod 3 = 0
-			EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",null) )
-		endif
+		If GetDeltaTimer().timesUpdated Mod 3 = 0
+			EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",Null) )
+		EndIf
 
 		'check for new resources to load
 		RURC.Update()
@@ -339,20 +339,20 @@ Type TApp
 			'keywrapper has "key every milliseconds" functionality
 			If KEYWRAPPER.hitKey(KEY_ESCAPE) Then TApp.CreateConfirmExitAppDialogue()
 
-			If App.devConfig.GetBool("DEV_KEYS", FALSE)
+			If App.devConfig.GetBool("DEV_KEYS", False)
 				'(un)mute sound
 				'M: (un)mute all sounds
 				'SHIFT+M: (un)mute all sound effects
 				'CTRL+M: (un)mute all music
 				If KEYMANAGER.IsHit(KEY_M)
-					if KEYMANAGER.IsDown(KEY_LSHIFT) OR KEYMANAGER.IsDown(KEY_RSHIFT)
-						TSoundManager.GetInstance().MuteSfx(not TSoundManager.GetInstance().HasMutedSfx())
-					elseif KEYMANAGER.IsDown(KEY_LCONTROL) OR KEYMANAGER.IsDown(KEY_RCONTROL)
-						TSoundManager.GetInstance().MuteMusic(not TSoundManager.GetInstance().HasMutedMusic())
-					else
-						TSoundManager.GetInstance().Mute(not TSoundManager.GetInstance().IsMuted())
-					endif
-				endif
+					If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
+						TSoundManager.GetInstance().MuteSfx(Not TSoundManager.GetInstance().HasMutedSfx())
+					ElseIf KEYMANAGER.IsDown(KEY_LCONTROL) Or KEYMANAGER.IsDown(KEY_RCONTROL)
+						TSoundManager.GetInstance().MuteMusic(Not TSoundManager.GetInstance().HasMutedMusic())
+					Else
+						TSoundManager.GetInstance().Mute(Not TSoundManager.GetInstance().IsMuted())
+					EndIf
+				EndIf
 
 				If Game.gamestate = TGame.STATE_RUNNING
 					If KEYMANAGER.IsDown(KEY_UP) Then GetGameTime().speed:+0.10
@@ -361,11 +361,11 @@ Type TApp
 					If KEYMANAGER.IsDown(KEY_RIGHT)
 						TEntity.worldSpeedFactor :+ 0.10
 						GetGameTime().speed :+ 0.10
-					endif
+					EndIf
 					If KEYMANAGER.IsDown(KEY_LEFT) Then
 						TEntity.worldSpeedFactor = Max( TEntity.worldSpeedFactor - 0.10, 0)
 						GetGameTime().speed = Max( GetGameTime().speed - 0.10, 0)
-					Endif
+					EndIf
 
 
 					If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
@@ -391,9 +391,9 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_8) Then GetGameTime().speed = 480.0	'240 minute per second
 				If KEYMANAGER.IsHit(KEY_9) Then GetGameTime().speed = 1.0	'1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
-				If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
+				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
-rem debug only
+Rem debug only
 				If KEYMANAGER.IsHit(KEY_TAB)
 					if TLocalization.GetCurrentLanguageCode() = "de"
 						App.SetLanguage("en")
@@ -404,9 +404,9 @@ rem debug only
 endrem					
 
 				'Save game only when in a game
-				if game.gamestate = TGame.STATE_RUNNING
+				If game.gamestate = TGame.STATE_RUNNING
 					If KEYMANAGER.IsHit(KEY_S) Then TSaveGame.Save("savegame.xml")
-				endif
+				EndIf
 
 				If KEYMANAGER.IsHit(KEY_L) Then TSaveGame.Load("savegame.xml")
 
@@ -474,7 +474,7 @@ endrem
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
-		if App.devConfig.GetBool("DEV_OSD", FALSE)
+		If App.devConfig.GetBool("DEV_OSD", False)
 			Local textX:Int = 20
 			GetBitmapFontManager().baseFont.draw("Speed:" + Int(GetGameTime().GetGameMinutesPerSecond() * 100), textX , 0)
 			textX:+80
@@ -498,7 +498,7 @@ endrem
 				GetBitmapFontManager().baseFont.draw("Ping: "+Int(Network.client.latency)+"ms", textX,0)
 				textX:+50
 			EndIf
-		endif
+		EndIf
 
 		If Game.DebugInfos
 			SetAlpha 0.75
@@ -512,26 +512,26 @@ endrem
 	'		GUIManager.Draw("InGame") 'draw ingamechat
 	'		GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
 			GetBitmapFontManager().baseFont.draw("Player positions:", 25,65)
-			local roomName:string = ""
-			local fig:TFigure
+			Local roomName:String = ""
+			Local fig:TFigure
 			For Local i:Int = 0 To 3
 				fig = GetPlayerCollection().Get(i+1).figure
 				roomName = "Building"
 				If fig.inRoom
 					roomName = fig.inRoom.Name
-				elseif fig.IsInElevator()
+				ElseIf fig.IsInElevator()
 					roomName = "InElevator"
-				elseIf fig.IsAtElevator()
+				ElseIf fig.IsAtElevator()
 					roomName = "AtElevator"
-				endif
+				EndIf
 				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
 			Next
 
-			if ScreenCollection.GetCurrentScreen()
+			If ScreenCollection.GetCurrentScreen()
 				GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
-			else
+			Else
 				GetBitmapFontManager().baseFont.draw("onScreen: Main", 25, 130)
-			endif
+			EndIf
 
 
 			GetBitmapFontManager().baseFont.draw("Elevator routes:", 25,150)
@@ -561,24 +561,24 @@ endrem
 			EndIf
 
 			'room states: debug fuer sushitv
-			local occupants:string = "-"
-			if GetRoomCollection().GetFirstByDetails("adagency").HasOccupant()
+			Local occupants:String = "-"
+			If GetRoomCollection().GetFirstByDetails("adagency").HasOccupant()
 				occupants = ""
-				for local figure:TFigure = eachin GetRoomCollection().GetFirstByDetails("adagency").occupants
+				For Local figure:TFigure = EachIn GetRoomCollection().GetFirstByDetails("adagency").occupants
 					occupants :+ figure.name+" "
-				next
-			Endif
+				Next
+			EndIf
 			GetBitmapFontManager().baseFont.draw("AdA. : "+occupants, 25, 350)
 
 			occupants = "-"
-			if GetRoomCollection().GetFirstByDetails("movieagency").HasOccupant()
+			If GetRoomCollection().GetFirstByDetails("movieagency").HasOccupant()
 				occupants = ""
-				for local figure:TFigure = eachin GetRoomCollection().GetFirstByDetails("movieagency").occupants
+				For Local figure:TFigure = EachIn GetRoomCollection().GetFirstByDetails("movieagency").occupants
 					occupants :+ figure.name+" "
-				next
-			Endif
+				Next
+			EndIf
 			GetBitmapFontManager().baseFont.draw("MoA. : "+occupants, 25, 365)
-		Endif
+		EndIf
 		'show quotes even without "DEV_OSD = true"
 		If Game.DebugQuoteInfos
 			Game.DebugAudienceInfo.Draw()
@@ -615,7 +615,7 @@ endrem
 
 	Function RenderLoadingResourcesInformation:Int()
 		'do nothing if there is nothing to load
-		if RURC.FinishedLoading() then return TRUE
+		If RURC.FinishedLoading() Then Return True
 
 		SetAlpha 0.2
 		SetColor 50,0,0
@@ -627,16 +627,16 @@ endrem
 
 
 	Function onAppConfirmExit:Int(triggerEvent:TEventBase)
-		local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
-		if not dialogue then return False
+		Local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
+		If Not dialogue Then Return False
 
 		'store closeing time of this modal window (does not matter which
 		'one) to skip creating another exit dialogue within a certain
 		'timeframe
-		ExitAppDialogueTime = Millisecs()
+		ExitAppDialogueTime = MilliSecs()
 
 		'not interested in other dialogues
-		if dialogue <> TApp.ExitAppDialogue then return False
+		If dialogue <> TApp.ExitAppDialogue Then Return False
 
 		Local buttonNumber:Int = triggerEvent.GetData().getInt("closeButton",-1)
 
@@ -655,18 +655,18 @@ endrem
 
 	Function CreateConfirmExitAppDialogue:Int()
 		'100ms since last dialogue
-		If MilliSecs() - ExitAppDialogueTime < 100 then Return False
+		If MilliSecs() - ExitAppDialogueTime < 100 Then Return False
 
 		ExitAppDialogueTime = MilliSecs()
 		'in single player: pause game
 		If Game And Not Game.networkgame Then Game.SetPaused(True)
 
-		ExitAppDialogue = New TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,150), "SYSTEM")
+		ExitAppDialogue = New TGUIGameModalWindow.Create(New TPoint, New TPoint.Init(400,150), "SYSTEM")
 		ExitAppDialogue.SetDialogueType(2)
 		ExitAppDialogue.SetZIndex(100000)
 		'limit to "screen" area
 		If game.gamestate = TGame.STATE_RUNNING
-			ExitAppDialogue.darkenedArea = new TRectangle.Init(20,10,760,373)
+			ExitAppDialogue.darkenedArea = New TRectangle.Init(20,10,760,373)
 		EndIf
 
 		ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME") )
@@ -693,19 +693,19 @@ Type TSaveGame
 	Field _PlayerCollection:TPlayerCollection = Null
 	Field _PlayerFinanceCollection:TPlayerFinanceCollection = Null
 	Field _PlayerFinanceHistoryListCollection:TPlayerFinanceHistoryListCollection = Null
-	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = null
-	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = null
-	Field _PublicImageCollection:TPublicImageCollection = null
-	Field _EventManagerEvents:TList = null
-	Field _PopularityManager:TPopularityManager = null
-	Field _BroadcastManager:TBroadcastManager = null
-	Field _StationMapCollection:TStationMapCollection = null
+	Field _PlayerProgrammePlanCollection:TPlayerProgrammePlanCollection = Null
+	Field _PlayerProgrammeCollectionCollection:TPlayerProgrammeCollectionCollection = Null
+	Field _PublicImageCollection:TPublicImageCollection = Null
+	Field _EventManagerEvents:TList = Null
+	Field _PopularityManager:TPopularityManager = Null
+	Field _BroadcastManager:TBroadcastManager = Null
+	Field _StationMapCollection:TStationMapCollection = Null
 	Field _Building:TBuilding 'includes, sky, moon, ufo, elevator
 	Field _NewsAgency:TNewsAgency
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
-	Const MODE_LOAD:int = 0
-	Const MODE_SAVE:int = 1
+	Const MODE_LOAD:Int = 0
+	Const MODE_SAVE:Int = 1
 
 
 	Method RestoreGameData:Int()
@@ -763,17 +763,17 @@ Type TSaveGame
 	End Method
 
 
-	Method _Assign(objSource:object var, objTarget:object var, name:string="DATA", mode:int=0)
-		if objSource
+	Method _Assign(objSource:Object Var, objTarget:Object Var, name:String="DATA", mode:Int=0)
+		If objSource
 			objTarget = objSource
-			if mode = MODE_LOAD
+			If mode = MODE_LOAD
 				TLogger.Log("TSaveGame.RestoreGameData()", "Loaded object "+name, LOG_DEBUG | LOG_SAVELOAD)
-			else
+			Else
 				TLogger.Log("TSaveGame.BackupGameData()", "Saved object "+name, LOG_DEBUG | LOG_SAVELOAD)
-			endif
-		else
+			EndIf
+		Else
 			TLogger.Log("TSaveGame", "object "+name+" was NULL - ignored", LOG_DEBUG | LOG_SAVELOAD)
-		endif
+		EndIf
 	End Method
 
 
@@ -783,13 +783,13 @@ Type TSaveGame
 	End Method
 
 
-	Function ShowMessage:int(load:int=false)
-		local title:string = getLocale("PLEASE_BE_PATIENT")
-		local text:string = getLocale("SAVEGAME_GETS_LOADED")
-		if not load then text = getLocale("SAVEGAME_GETS_CREATED")
+	Function ShowMessage:Int(Load:Int=False)
+		Local title:String = getLocale("PLEASE_BE_PATIENT")
+		Local text:String = getLocale("SAVEGAME_GETS_LOADED")
+		If Not Load Then text = getLocale("SAVEGAME_GETS_CREATED")
 
-		local col:TColor = new TColor.Get()
-		local pix:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight() )
+		Local col:TColor = New TColor.Get()
+		Local pix:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight() )
 		Cls
 		DrawPixmap(pix, 0,0)
 		SetAlpha 0.5
@@ -798,11 +798,11 @@ Type TSaveGame
 		SetAlpha 1.0
 		SetColor 255,255,255
 
-		GetSpriteFromRegistry("gfx_errorbox").Draw(GraphicsWidth()/2, GraphicsHeight()/2, -1, new TPoint.Init(0.5, 0.5))
-		local w:int = GetSpriteFromRegistry("gfx_errorbox").GetWidth()
-		local h:int = GetSpriteFromRegistry("gfx_errorbox").GetHeight()
-		local x:int = GraphicsWidth()/2 - w/2
-		local y:int = GraphicsHeight()/2 - h/2
+		GetSpriteFromRegistry("gfx_errorbox").Draw(GraphicsWidth()/2, GraphicsHeight()/2, -1, New TPoint.Init(0.5, 0.5))
+		Local w:Int = GetSpriteFromRegistry("gfx_errorbox").GetWidth()
+		Local h:Int = GetSpriteFromRegistry("gfx_errorbox").GetHeight()
+		Local x:Int = GraphicsWidth()/2 - w/2
+		Local y:Int = GraphicsHeight()/2 - h/2
 		GetBitmapFont("Default", 15, BOLDFONT).drawBlock(title, x + 18, y + 15, w - 60, 40, Null, TColor.Create(150, 50, 50))
 		GetBitmapFont("Default", 12).drawBlock(text, x + 18, y + 50, w - 40, h - 60, Null, TColor.Create(50, 50, 50))
 
@@ -812,7 +812,7 @@ Type TSaveGame
 
 
 	Function Load:Int(saveName:String="savegame.xml")
-		ShowMessage(true)
+		ShowMessage(True)
 
 		TPersist.maxDepth = 4096
 		Local persist:TPersist = New TPersist
@@ -830,13 +830,13 @@ Type TSaveGame
 
 		'tell everybody we start loading (eg. for unregistering objects before)
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", new TData.addString("saveName", saveName)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginLoad", New TData.addString("saveName", saveName)))
 		'load savegame data into game object
 		saveGame.RestoreGameData()
 
 		'tell everybody we finished loading (eg. for clearing GUI-lists)
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnLoad", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
 		'call game that game continues/starts now
 		Game.StartLoadedSaveGame()
@@ -845,12 +845,12 @@ Type TSaveGame
 
 
 	Function Save:Int(saveName:String="savegame.xml")
-		ShowMessage(false)
+		ShowMessage(False)
 
 		Local saveGame:TSaveGame = New TSaveGame
 		'tell everybody we start saving
 		'payload is saveName
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginSave", new TData.addString("saveName", saveName)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnBeginSave", New TData.addString("saveName", saveName)))
 
 		'store game data in savegame
 		saveGame.BackupGameData()
@@ -868,7 +868,7 @@ Type TSaveGame
 
 		'tell everybody we finished saving
 		'payload is saveName and saveGame-object
-		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", new TData.addString("saveName", saveName).add("saveGame", saveGame)))
+		EventManager.triggerEvent(TEventSimple.Create("SaveGame.OnSave", New TData.addString("saveName", saveName).add("saveGame", saveGame)))
 
 		Return True
 	End Function
@@ -890,7 +890,7 @@ Type TFigurePostman Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method onEnterRoom:int(room:TRoom, door:TRoomDoor)
+	Method onEnterRoom:Int(room:TRoom, door:TRoomDoor)
 		Super.onEnterRoom(room, door)
 
 		'reset timer so figure stays in room for some time
@@ -930,8 +930,8 @@ End Type
 Type TFigureJanitor Extends TFigure
 	Field currentAction:Int	= 0		'0=nothing,1=cleaning,...
 	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(2500,0, -500, 500) '500ms randomness
-	Field nextActionTime:int = 2500
-	Field nextActionRandomTime:int = 500
+	Field nextActionTime:Int = 2500
+	Field nextActionRandomTime:Int = 500
 	Field useElevator:Int = True
 	Field useDoors:Int = True
 	Field BoredCleanChance:Int = 10
@@ -953,7 +953,7 @@ Type TFigureJanitor Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method onEnterRoom:int(room:TRoom, door:TRoomDoor)
+	Method onEnterRoom:Int(room:TRoom, door:TRoomDoor)
 		Super.onEnterRoom(room, door)
 
 		'reset timer so figure stays in room for some time
@@ -974,8 +974,8 @@ Type TFigureJanitor Extends TFigure
 
 	'overwrite default to stop moving when cleaning
 	Method GetVelocity:TPoint()
-		If currentAction = 1 then return new TPoint
-		return velocity
+		If currentAction = 1 Then Return New TPoint
+		Return velocity
 	End Method
 
 
@@ -988,7 +988,7 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		'waited long enough in room ... go out
-		if inRoom and nextActionTimer.isExpired()
+		If inRoom And nextActionTimer.isExpired()
 			LeaveRoom()
 		EndIf
 
@@ -1032,7 +1032,7 @@ Type TFigureJanitor Extends TFigure
 			'chose actions
 			'only clean with a chance of 30% when on the way to something
 			'and do not clean if target is a room near figure
-			local targetDoor:TRoomDoor = TRoomDoor(targetObj)
+			Local targetDoor:TRoomDoor = TRoomDoor(targetObj)
 			If target And (Not targetDoor Or (20 < Abs(targetDoor.area.GetX() - area.GetX()) Or targetDoor.area.GetY() <> GetFloor()))
 				If Rand(0,100) < NormalCleanChance Then currentAction = 1
 			EndIf
@@ -1040,9 +1040,9 @@ Type TFigureJanitor Extends TFigure
 			If Not target And Rand(0,100) < BoredCleanChance Then currentAction = 1
 		EndIf
 
-		if targetObj
+		If targetObj
 			If Not useDoors And TRoomDoor(targetObj) Then targetObj = Null
-		endif
+		EndIf
 	End Method
 End Type
 
@@ -1063,12 +1063,12 @@ Type TScreen_MainMenu Extends TGameScreen
 	Method Create:TScreen_MainMenu(name:String)
 		Super.Create(name)
 
-		self.SetScreenChangeEffects(null,null) 'menus do not get changers
+		Self.SetScreenChangeEffects(Null,Null) 'menus do not get changers
 
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
-		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(300, 330), new TPoint.Init(200, 400), name)
+		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
+		guiButtonsWindow = New TGUIGameWindow.Create(New TPoint.Init(300, 330), New TPoint.Init(200, 400), name)
 		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
@@ -1078,11 +1078,11 @@ Type TScreen_MainMenu Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
 
-		guiButtonStart		= New TGUIButton.Create(new TPoint.Init(0,   0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonNetwork	= New TGUIButton.Create(new TPoint.Init(0,  40), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonOnline		= New TGUIButton.Create(new TPoint.Init(0,  80), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonSettings	= New TGUIButton.Create(new TPoint.Init(0, 120), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonQuit		= New TGUIButton.Create(new TPoint.Init(0, 170), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonStart		= New TGUIButton.Create(New TPoint.Init(0,   0), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonNetwork	= New TGUIButton.Create(New TPoint.Init(0,  40), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonOnline		= New TGUIButton.Create(New TPoint.Init(0,  80), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonSettings	= New TGUIButton.Create(New TPoint.Init(0, 120), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonQuit		= New TGUIButton.Create(New TPoint.Init(0, 170), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonNetwork)
@@ -1091,31 +1091,31 @@ Type TScreen_MainMenu Extends TGameScreen
 		guiButtonsPanel.AddChild(guiButtonQuit)
 
 
-		if TLocalization.languagesCount > 0
-			guiLanguageDropDown = New TGUISpriteDropDown.Create(new TPoint.Init(620, 560), new TPoint.Init(170,-1), "Sprache", 128, name)
-			local itemHeight:int = 0
-			local languageCount:int = 0
+		If TLocalization.languagesCount > 0
+			guiLanguageDropDown = New TGUISpriteDropDown.Create(New TPoint.Init(620, 560), New TPoint.Init(170,-1), "Sprache", 128, name)
+			Local itemHeight:Int = 0
+			Local languageCount:Int = 0
 
-			For local lang:TLocalizationLanguage = eachin TLocalization.languages.Values()
+			For Local lang:TLocalizationLanguage = EachIn TLocalization.languages.Values()
 				languageCount :+ 1
-				local item:TGUISpriteDropDownItem = new TGUISpriteDropDownItem.Create(null, null, lang.Get("LANGUAGE_NAME_LOCALE"))
+				Local item:TGUISpriteDropDownItem = New TGUISpriteDropDownItem.Create(Null, Null, lang.Get("LANGUAGE_NAME_LOCALE"))
 				item.SetValueColor(TColor.CreateGrey(100))
 				item.data.Add("value", lang.Get("LANGUAGE_NAME_LOCALE"))
 				item.data.Add("languageCode", lang.languageCode)
 				item.data.add("spriteName", "flag_"+lang.languageCode)
 				'item.SetZindex(10000)
 				guiLanguageDropDown.AddItem(item)
-				if itemHeight = 0 then itemHeight = item.GetScreenHeight()
+				If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
 
-				if lang.languageCode = TLocalization.GetCurrentLanguageCode()
+				If lang.languageCode = TLocalization.GetCurrentLanguageCode()
 					guiLanguageDropDown.SetSelectedEntry(item)
-				endif
+				EndIf
 			Next
 			GuiManager.SortLists()
 			'we want to have max 4 items visible at once
 			guiLanguageDropDown.SetListContentHeight(itemHeight * Min(languageCount,4))
-			EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", self, "onSelectLanguageEntry", guiLanguageDropDown)
-		endif
+			EventManager.registerListenerMethod("GUIDropDown.onSelectEntry", Self, "onSelectLanguageEntry", guiLanguageDropDown)
+		EndIf
 
 		'fill captions with the localized values
 		SetLanguage()
@@ -1123,32 +1123,32 @@ Type TScreen_MainMenu Extends TGameScreen
 		EventManager.registerListenerMethod("guiobject.onClick", Self, "onClickButtons")
 
 		'handle saving/applying of settings
-		EventManager.RegisterListenerMethod("guiModalWindow.onClose", self, "onCloseModalDialogue")
+		EventManager.RegisterListenerMethod("guiModalWindow.onClose", Self, "onCloseModalDialogue")
 
 		Return Self
 	End Method
 
 
 	Method onCloseModalDialogue:Int(triggerEvent:TEventBase)
-		if not settingsWindow then return False
+		If Not settingsWindow Then Return False
 		
-		local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
-		if dialogue <> settingsWindow.modalDialogue then return False
+		Local dialogue:TGUIModalWindow = TGUIModalWindow(triggerEvent.GetSender())
+		If dialogue <> settingsWindow.modalDialogue Then Return False
 
 		'"apply" button was used...save the whole thing
-		if triggerEvent.GetData().GetInt("closeButton", -1) = 0
+		If triggerEvent.GetData().GetInt("closeButton", -1) = 0
 			ApplySettingsWindow()
-		endif
+		EndIf
 		'unset variable - allows escape/quit-window again
-		settingsWindow = null
+		settingsWindow = Null
 	End Method
 
 
 
 	'handle clicks on the buttons
 	Method onSelectLanguageEntry:Int(triggerEvent:TEventBase)
-		local languageEntry:TGUIObject = TGUIObject(triggerEvent.GetReceiver())
-		if not languageEntry then Return False
+		Local languageEntry:TGUIObject = TGUIObject(triggerEvent.GetReceiver())
+		If Not languageEntry Then Return False
 
 		App.SetLanguage(languageEntry.data.GetString("languageCode", "en"))
 		'auto save to user settings
@@ -1191,12 +1191,12 @@ Type TScreen_MainMenu Extends TGameScreen
 	Method CreateSettingsWindow()
 		'load config
 		App.LoadSettings()
-		settingsWindow = new TSettingsWindow.Init()
+		settingsWindow = New TSettingsWindow.Init()
 	End Method
 
 
-	Method ApplySettingsWindow:int()
-		local newConfig:TData = App.config.copy()
+	Method ApplySettingsWindow:Int()
+		Local newConfig:TData = App.config.copy()
 		'append values stored in gui elements
 		newConfig.Append(settingsWindow.ReadGuiValues())
 
@@ -1209,7 +1209,7 @@ Type TScreen_MainMenu Extends TGameScreen
 	
 
 	'override default
-	Method SetLanguage:int(languageCode:String = "")
+	Method SetLanguage:Int(languageCode:String = "")
 		guiButtonStart.SetCaption(GetLocale("MENU_SOLO_GAME"))
 		guiButtonNetwork.SetCaption(GetLocale("MENU_NETWORKGAME"))
 		guiButtonOnline.SetCaption(GetLocale("MENU_ONLINEGAME"))
@@ -1219,11 +1219,11 @@ Type TScreen_MainMenu Extends TGameScreen
 	
 
 	'override default draw
-	Method Draw:int(tweenValue:float)
+	Method Draw:Int(tweenValue:Float)
 		DrawMenuBackground(False)
 
 		'draw the janitor BEHIND the panels
-		if MainMenuJanitor then MainMenuJanitor.Draw(tweenValue)
+		If MainMenuJanitor Then MainMenuJanitor.Draw(tweenValue)
 
 		GUIManager.Draw(Self.name)
 	End Method
@@ -1235,21 +1235,21 @@ Type TScreen_MainMenu Extends TGameScreen
 
 		'if gamesettings screen is still missing: disable buttons
 		'-> resources not finished loading
-		if not ScreenGameSettings
+		If Not ScreenGameSettings
 			guiButtonStart.Disable()
 			guiButtonNetwork.Disable()
 			guiButtonOnline.Disable()
-		else
+		Else
 			guiButtonStart.Enable()
 			guiButtonNetwork.Enable()
 			guiButtonOnline.Enable()
-		endif
+		EndIf
 
 
 
 		GUIManager.Update(Self.name)
 
-		if MainMenuJanitor then  MainMenuJanitor.Update()
+		If MainMenuJanitor Then  MainMenuJanitor.Update()
 	End Method
 End Type
 
@@ -1276,8 +1276,8 @@ Type TScreen_GameSettings Extends TGameScreen
 	Global headerSize:Int = 35
 	Global guiSettingsPanel:TGUIBackgroundBox
 	Global guiPlayersPanel:TGUIBackgroundBox
-	Global settingsArea:TRectangle = new TRectangle.Init(10,10,780,0) 'position of the panel
-	Global playerBoxDimension:TPoint = new TPoint.Init(165,150) 'size of each player area
+	Global settingsArea:TRectangle = New TRectangle.Init(10,10,780,0) 'position of the panel
+	Global playerBoxDimension:TPoint = New TPoint.Init(165,150) 'size of each player area
 	Global playerColors:Int = 10
 	Global playerColorHeight:Int = 10
 	Global playerSlotGap:Int = 25
@@ -1290,33 +1290,33 @@ Type TScreen_GameSettings Extends TGameScreen
 		'===== CREATE AND SETUP GUI =====
 		guiSettingsWindow = New TGUIGameWindow.Create(settingsArea.position, settingsArea.dimension, name)
 		guiSettingsWindow.guiBackground.spriteAlpha = 0.5
-		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
+		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
 		guiSettingsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(new TPoint.Init(0, 0), "", TColor.CreateGrey(75), name)
-		guiGameTitle		= New TGUIinput.Create(new TPoint.Init(0, 12), new TPoint.Init(300, -1), "", 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(new TPoint.Init(310, 0), "", TColor.CreateGrey(75), name)
-		guiStartYear		= New TGUIinput.Create(new TPoint.Init(310, 12), new TPoint.Init(65, -1), "", 4, name)
+		guiGameTitleLabel	= New TGUILabel.Create(New TPoint.Init(0, 0), "", TColor.CreateGrey(75), name)
+		guiGameTitle		= New TGUIinput.Create(New TPoint.Init(0, 12), New TPoint.Init(300, -1), "", 32, name)
+		guiStartYearLabel	= New TGUILabel.Create(New TPoint.Init(310, 0), "", TColor.CreateGrey(75), name)
+		guiStartYear		= New TGUIinput.Create(New TPoint.Init(310, 12), New TPoint.Init(65, -1), "", 4, name)
 
 		Local checkboxHeight:Int = 0
-		gui24HoursDay = New TGUICheckBox.Create(new TPoint.Init(430, 0), new TPoint.Init(300), "", name)
+		gui24HoursDay = New TGUICheckBox.Create(New TPoint.Init(430, 0), New TPoint.Init(300), "", name)
 		gui24HoursDay.SetChecked(True, False)
 		gui24HoursDay.disable() 'option not implemented
 		checkboxHeight :+ gui24HoursDay.GetScreenHeight()
 
-		guiSpecialFormats = New TGUICheckBox.Create(new TPoint.Init(430, 0 + checkboxHeight), new TPoint.Init(300), "", name)
+		guiSpecialFormats = New TGUICheckBox.Create(New TPoint.Init(430, 0 + checkboxHeight), New TPoint.Init(300), "", name)
 		guiSpecialFormats.SetChecked(True, False)
 		guiSpecialFormats.disable() 'option not implemented
 		checkboxHeight :+ guiSpecialFormats.GetScreenHeight()
 
-		guiFilterUnreleased = New TGUICheckBox.Create(new TPoint.Init(430, 0 + checkboxHeight), new TPoint.Init(300), "", name)
+		guiFilterUnreleased = New TGUICheckBox.Create(New TPoint.Init(430, 0 + checkboxHeight), New TPoint.Init(300), "", name)
 		guiFilterUnreleased.SetChecked(True, False)
 		checkboxHeight :+ guiFilterUnreleased.GetScreenHeight()
 
-		guiAnnounce = New TGUICheckBox.Create(new TPoint.Init(430, 0 + checkboxHeight), new TPoint.Init(300), "", name)
+		guiAnnounce = New TGUICheckBox.Create(New TPoint.Init(430, 0 + checkboxHeight), New TPoint.Init(300), "", name)
 		guiAnnounce.SetChecked(True, False)
 
 
@@ -1332,7 +1332,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
-		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(590, 400), new TPoint.Init(200, 190), name)
+		guiButtonsWindow = New TGUIGameWindow.Create(New TPoint.Init(590, 400), New TPoint.Init(200, 190), name)
 		guiButtonsWindow.SetPadding(headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsWindow.SetCaption("")
@@ -1343,14 +1343,14 @@ Type TScreen_GameSettings Extends TGameScreen
 		TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
 		TGUIButton.SetTypeCaptionColor( TColor.CreateGrey(75) )
 
-		guiButtonStart = New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
-		guiButtonBack = New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonStart = New TGUIButton.Create(New TPoint.Init(0, 0), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
+		guiButtonBack = New TGUIButton.Create(New TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonStart.GetScreenHeight()), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), "", name)
 
 		guiButtonsPanel.AddChild(guiButtonStart)
 		guiButtonsPanel.AddChild(guiButtonBack)
 
 
-		guiChatWindow = New TGUIChatWindow.Create(new TPoint.Init(10,400), new TPoint.Init(540,190), name)
+		guiChatWindow = New TGUIChatWindow.Create(New TPoint.Init(10,400), New TPoint.Init(540,190), name)
 		guiChatWindow.guiChat.guiInput.setMaxLength(200)
 
 		guiChatWindow.guiBackground.spriteAlpha = 0.5
@@ -1359,26 +1359,26 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiChatWindow.guiChat.guiInput.rect.position.MoveXY(panelGap, -panelGap)
 		guiChatWindow.guiChat.guiInput.Resize( guiChatWindow.guiChat.GetContentScreenWidth() - 2* panelGap, guiStartYear.GetScreenHeight())
 
-		local player:TPlayer
+		Local player:TPlayer
 		For Local i:Int = 0 To 3
 			player = GetPlayerCollection().Get(i+1)
 			Local slotX:Int = i * (playerSlotGap + playerBoxDimension.GetIntX())
-			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TPoint.Init(slotX, 0), new TPoint.Init(playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY()), name)
+			Local playerPanel:TGUIBackgroundBox = New TGUIBackgroundBox.Create(New TPoint.Init(slotX, 0), New TPoint.Init(playerBoxDimension.GetIntX(), playerBoxDimension.GetIntY()), name)
 			playerPanel.spriteBaseName = "gfx_gui_panel.subContent.bright"
 			playerPanel.SetPadding(playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap,playerSlotInnerGap)
 			guiPlayersPanel.AddChild(playerPanel)
 
-			guiPlayerNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), player.Name, 16, name)
+			guiPlayerNames[i] = New TGUIinput.Create(New TPoint.Init(0, 0), New TPoint.Init(playerPanel.GetContentScreenWidth(), -1), player.Name, 16, name)
 			guiPlayerNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_player"))
 
-			guiChannelNames[i] = New TGUIinput.Create(new TPoint.Init(0, 0), new TPoint.Init(playerPanel.GetContentScreenWidth(), -1), player.channelname, 16, name)
+			guiChannelNames[i] = New TGUIinput.Create(New TPoint.Init(0, 0), New TPoint.Init(playerPanel.GetContentScreenWidth(), -1), player.channelname, 16, name)
 			guiChannelNames[i].rect.position.SetY(playerPanel.GetContentScreenHeight() - guiChannelNames[i].rect.GetH())
 			guiChannelNames[i].SetOverlay(GetSpriteFromRegistry("gfx_gui_overlay_tvchannel"))
 
 			'left arrow
-			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(new TPoint.Init(0 + 10, 50), new TPoint.Init(24, 24), "LEFT", name)
+			guiFigureArrows[i*2 + 0] = New TGUIArrowButton.Create(New TPoint.Init(0 + 10, 50), New TPoint.Init(24, 24), "LEFT", name)
 			'right arrow
-			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(new TPoint.Init(playerPanel.GetContentScreenWidth() - 10, 50), new TPoint.Init(24, 24), "RIGHT", name)
+			guiFigureArrows[i*2 + 1] = New TGUIArrowButton.Create(New TPoint.Init(playerPanel.GetContentScreenWidth() - 10, 50), New TPoint.Init(24, 24), "RIGHT", name)
 			guiFigureArrows[i*2 + 1].rect.position.MoveXY(-guiFigureArrows[i*2 + 1].GetScreenWidth(),0)
 
 			playerPanel.AddChild(guiPlayerNames[i])
@@ -1415,7 +1415,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 
 	'override to set guielements values (instead of only on screen creation)
-	Method Start:int()
+	Method Start:Int()
 		guiGameTitle.SetValue(Game.title)
 		guiStartYear.SetValue(Game.userStartYear)
 		guiPlayerNames[0].SetValue(game.username)
@@ -1463,7 +1463,7 @@ Type TScreen_GameSettings Extends TGameScreen
 						If Game.networkgame Then Network.DisconnectFromServer()
 						GetPlayerCollection().playerID = 1
 						Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
-						guiAnnounce.SetChecked(FALSE)
+						guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
 					Else
 						Game.SetGamestate(TGame.STATE_MAINMENU)
@@ -1483,13 +1483,13 @@ Type TScreen_GameSettings Extends TGameScreen
 		End Select
 
 		'only inform when in settings menu
-		if Game.gamestate = TGame.STATE_SETTINGSMENU
+		If Game.gamestate = TGame.STATE_SETTINGSMENU
 			If sender.isChecked()
 				TGame.SendSystemMessage(GetLocale("OPTION_ON")+": "+sender.GetValue())
 			Else
 				TGame.SendSystemMessage(GetLocale("OPTION_OFF")+": "+sender.GetValue())
 			EndIf
-		endif
+		EndIf
 	End Method
 
 
@@ -1512,7 +1512,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 
 	'override default
-	Method SetLanguage:int(languageCode:String = "")
+	Method SetLanguage:Int(languageCode:String = "")
 		'not needed, done during update
 		'guiSettingsWindow.SetCaption(GetLocale("MENU_NETWORKGAME"))
 
@@ -1533,7 +1533,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		're-align the checkboxes as localization might have changed
 		'label dimensions
-		local y:int = 0
+		Local y:Int = 0
 		gui24HoursDay.rect.position.SetY(0)
 		y :+ gui24HoursDay.GetScreenHeight()
 
@@ -1544,13 +1544,13 @@ Type TScreen_GameSettings Extends TGameScreen
 	End Method
 	
 
-	Method Draw:int(tweenValue:float)
+	Method Draw:Int(tweenValue:Float)
 		DrawMenuBackground(True)
 
 		'background gui items
 		GUIManager.Draw(name, 0, 100)
 
-		Local slotPos:TPoint = new TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
+		Local slotPos:TPoint = New TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 		For Local i:Int = 0 To 3
 			If Game.networkgame Or GetPlayerCollection().playerID=1
 				If Game.gamestate <> TGame.STATE_PREPAREGAMESTART And GetPlayerCollection().Get(i+1).Figure.ControlledByID = GetPlayerCollection().playerID Or (GetPlayerCollection().Get(i+1).Figure.ControlledByID = 0 And GetPlayerCollection().playerID = 1)
@@ -1561,7 +1561,7 @@ Type TScreen_GameSettings Extends TGameScreen
 			EndIf
 
 			'draw colors
-			Local colorRect:TRectangle = new TRectangle.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+			Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX()+2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 			For Local obj:TColor = EachIn TColor.List
 				If obj.ownerID = 0
 					colorRect.position.MoveXY(colorRect.GetW(), 0)
@@ -1619,12 +1619,12 @@ Type TScreen_GameSettings Extends TGameScreen
 			EndIf
 
 			'disable/enable announcement on lan/online
-			if guiAnnounce.isChecked()
+			If guiAnnounce.isChecked()
 				Network.client.playerName = GetPlayerCollection().Get().name
 				If Not Network.announceEnabled Then Network.StartAnnouncing(Game.title)
-			else
+			Else
 				Network.StopAnnouncing()
-			endif
+			EndIf
 		Else
 			guiSettingsWindow.SetCaption(GetLocale("MENU_SOLO_GAME"))
 			'guiChat.setOption(GUI_OBJECT_VISIBLE,False)
@@ -1669,9 +1669,9 @@ Type TScreen_GameSettings Extends TGameScreen
 	'	local colors:TList = Assets.GetList("PlayerColors")
 
 		If MOUSEMANAGER.IsHit(1)
-			Local slotPos:TPoint = new TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
+			Local slotPos:TPoint = New TPoint.Init(guiPlayersPanel.GetContentScreenX(),guiPlayersPanel.GetContentScreeny())
 			For Local i:Int = 0 To 3
-				Local colorRect:TRectangle = new TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
+				Local colorRect:TRectangle = New TRectangle.Init(slotPos.GetIntX() + 2, Int(guiChannelNames[i].GetContentScreenY() - playerColorHeight - playerSlotInnerGap), (playerBoxDimension.GetX() - 2*playerSlotInnerGap - 10)/ playerColors, playerColorHeight)
 
 				For Local obj:TColor = EachIn TColor.List
 					'only for unused colors
@@ -1725,17 +1725,17 @@ Type TScreen_NetworkLobby Extends TGameScreen
 		'create and setup GUI objects
 		Local guiButtonsWindow:TGUIGameWindow
 		Local guiButtonsPanel:TGUIBackgroundBox
-		local panelGap:int = GUIManager.config.GetInt("panelGap", 10)
-		guiButtonsWindow = New TGUIGameWindow.Create(new TPoint.Init(590, 355), new TPoint.Init(200, 235), name)
+		Local panelGap:Int = GUIManager.config.GetInt("panelGap", 10)
+		guiButtonsWindow = New TGUIGameWindow.Create(New TPoint.Init(590, 355), New TPoint.Init(200, 235), name)
 		guiButtonsWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiButtonsWindow.SetCaption("")
 		guiButtonsWindow.guiBackground.spriteAlpha = 0.5
 		guiButtonsPanel = guiButtonsWindow.AddContentBox(0,0,-1,-1)
 
 
-		guiButtonJoin	= New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_JOIN"), name)
-		guiButtonCreate	= New TGUIButton.Create(new TPoint.Init(0, 45), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_CREATE_GAME"), name)
-		guiButtonBack	= New TGUIButton.Create(new TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonJoin.GetScreenHeight()), new TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_BACK"), name)
+		guiButtonJoin	= New TGUIButton.Create(New TPoint.Init(0, 0), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_JOIN"), name)
+		guiButtonCreate	= New TGUIButton.Create(New TPoint.Init(0, 45), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(),-1), GetLocale("MENU_CREATE_GAME"), name)
+		guiButtonBack	= New TGUIButton.Create(New TPoint.Init(0, guiButtonsPanel.GetcontentScreenHeight() - guiButtonJoin.GetScreenHeight()), New TPoint.Init(guiButtonsPanel.GetContentScreenWidth(), -1), GetLocale("MENU_BACK"), name)
 
 		guiButtonsPanel.AddChild(guiButtonJoin)
 		guiButtonsPanel.AddChild(guiButtonCreate)
@@ -1746,12 +1746,12 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 		'GameList
 		'contained within a window/panel for styling
-		guiGameListWindow = New TGUIGameWindow.Create(new TPoint.Init(20, 355), new TPoint.Init(520, 235), name)
+		guiGameListWindow = New TGUIGameWindow.Create(New TPoint.Init(20, 355), New TPoint.Init(520, 235), name)
 		guiGameListWindow.SetPadding(TScreen_GameSettings.headerSize, panelGap, panelGap, panelGap)
 		guiGameListWindow.guiBackground.spriteAlpha = 0.5
 		Local guiGameListPanel:TGUIBackgroundBox = guiGameListWindow.AddContentBox(0,0,-1,-1)
 		'add list to the panel (which is located in the window
-		guiGameList	= New TGUIGameList.Create(new TPoint.Init(0,0), new TPoint.Init(guiGameListPanel.GetContentScreenWidth(),guiGameListPanel.GetContentScreenHeight()), name)
+		guiGameList	= New TGUIGameList.Create(New TPoint.Init(0,0), New TPoint.Init(guiGameListPanel.GetContentScreenWidth(),guiGameListPanel.GetContentScreenHeight()), name)
 		guiGameList.SetBackground(Null)
 		guiGameList.SetPadding(0, 0, 0, 0)
 
@@ -1821,7 +1821,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 
 
 	'override default
-	Method SetLanguage:int(languageCode:String = "")
+	Method SetLanguage:Int(languageCode:String = "")
 		guiButtonJoin.SetCaption(GetLocale("MENU_JOIN"))
 		guiButtonCreate.SetCaption(GetLocale("MENU_CREATE_GAME"))
 		guiButtonBack.SetCaption(GetLocale("MENU_BACK"))
@@ -1847,7 +1847,7 @@ Type TScreen_NetworkLobby Extends TGameScreen
 	End Method
 
 
-	Method Draw:int(tweenValue:float)
+	Method Draw:Int(tweenValue:Float)
 		DrawMenuBackground(True)
 
 		If Not Game.onlinegame
@@ -1930,21 +1930,21 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	'To avoid multiple calls, we save the states. 
 	'====
 	'was "startGame()" called already?
-	Field startGameCalled:int = False
+	Field startGameCalled:Int = False
 	'was "prepareGame()" called already?
-	Field prepareGameCalled:int = False
+	Field prepareGameCalled:Int = False
 	'was "SpreadConfiguration()" called already?
-	Field spreadConfigurationCalled:int = False
+	Field spreadConfigurationCalled:Int = False
 	'was "SpreadStartData()" called already?
-	Field spreadStartDataCalled:int = False
+	Field spreadStartDataCalled:Int = False
 	'can "startGame()" get called?
-	Field canStartGame:int = False
+	Field canStartGame:Int = False
 
 
 	Method Create:TScreen_PrepareGameStart(name:String)
 		Super.Create(name)
 
-		messageWindow = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,250), name)
+		messageWindow = New TGUIGameModalWindow.Create(New TPoint, New TPoint.Init(400,250), name)
 		'messageWindow.DarkenedArea = new TRectangle.Init(20,10,760,373)
 		messageWindow.SetCaptionAndValue("title", "")
 		messageWindow.SetDialogueType(0) 'no buttons
@@ -1953,7 +1953,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	End Method
 
 
-	Method Draw:int(tweenValue:float)
+	Method Draw:Int(tweenValue:Float)
 		'draw settings screen as background
 		'BESSER: VORHERIGEN BILDSCHIRM zeichnen (fuer Laden)
 		ScreenCollection.GetScreen("GameSettings").Draw(tweenValue)
@@ -1962,14 +1962,14 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		GUIManager.Draw(name)
 
 		'rect of the message window's content area 
-		local messageRect:TRectangle = messageWindow.GetContentScreenRect()
-		local oldAlpha:float = GetAlpha()
+		Local messageRect:TRectangle = messageWindow.GetContentScreenRect()
+		Local oldAlpha:Float = GetAlpha()
 		SetAlpha messageWindow.GetScreenAlpha()
-		local messageDY:int = 0
-		if Game.networkgame
+		Local messageDY:Int = 0
+		If Game.networkgame
 			GetBitmapFontManager().baseFont.draw(GetLocale("SYNCHRONIZING_START_CONDITIONS")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 			messageDY :+ 20
-			for local i:int = 1 to 4
+			For Local i:Int = 1 To 4
 				GetBitmapFontManager().baseFont.draw(GetLocale("PLAYER")+" "+i+"..."+GetPlayerCollection().Get(i).networkstate+" MovieListCount: "+GetPlayerCollection().Get(i).GetProgrammeCollection().GetProgrammeLicenceCount(), messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
 				messageDY :+ 20
 			Next
@@ -1978,12 +1978,12 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			EndIf
 		Else
 			GetBitmapFontManager().baseFont.draw(GetLocale("PREPARING_START_DATA")+"...", messageRect.GetX(), messageRect.GetY() + messageDY, TColor.clBlack)
-		Endif
+		EndIf
 		SetAlpha oldAlpha
 	End Method
 
 
-	Method Reset:int()
+	Method Reset:Int()
 		startGameCalled = False
 		prepareGameCalled = False
 		spreadConfigurationCalled = False
@@ -1993,7 +1993,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 
 	'override to reset values
-	Method Start:int()
+	Method Start:Int()
 		Reset()
 		
 		If Game.networkGame
@@ -2004,15 +2004,15 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 	End Method
 
 
-	Method Enter:int(fromScreen:TScreen=null)
+	Method Enter:Int(fromScreen:TScreen=Null)
 		Super.Enter(fromScreen)
 
-		If wait = 0 then wait = Time.GetTimeGone()
+		If wait = 0 Then wait = Time.GetTimeGone()
 		Reset()
 	End Method
 
 
-	global wait:int = 0
+	Global wait:Int = 0
 
 	'override default update
 	Method Update:Int(deltaTime:Float)
@@ -2032,11 +2032,11 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		If game.networkGame
 			SpreadConfiguration()
 			spreadConfigurationCalled = True
-		Endif
+		EndIf
 
 
 		'=== STEP 2 ===
-		If not prepareGameCalled
+		If Not prepareGameCalled
 			Game.PrepareStart()
 			StartMultiplayerSyncStarted = Time.GetTimeGone()
 			prepareGameCalled = True
@@ -2057,25 +2057,25 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 			Return False
 		EndIf
 
-		if not startGameCalled
+		If Not startGameCalled
 			'singleplayer games can always start
-			If not Game.networkGame
+			If Not Game.networkGame
 '				if Time.GetTimeGone() - wait > 5000
 					canStartGame = True
 '				endif
 			'multiplayer games can start if all players are ready
-			else
-				if Game.networkgameready = 1
-					ScreenGameSettings.guiAnnounce.SetChecked(FALSE)
+			Else
+				If Game.networkgameready = 1
+					ScreenGameSettings.guiAnnounce.SetChecked(False)
 					GetPlayerCollection().Get().networkstate = 1
 					canStartGame = True
 				EndIf
 			EndIf
-		endif
+		EndIf
 		
 
 		'=== STEP 4 ===
-		If canStartGame and not startGameCalled
+		If canStartGame And Not startGameCalled
 			'register events and start game
 			Game.StartNewGame()
 			'reset randomizer
@@ -2086,8 +2086,8 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 
 
 	'spread configuration to other players
-	Method SpreadConfiguration:int()
-		if not Game.networkGame then return False
+	Method SpreadConfiguration:Int()
+		If Not Game.networkGame Then Return False
 
 		'send which database to use (or send database itself?)
 	End Method
@@ -2113,7 +2113,7 @@ Type TSettingsWindow
 
 
 	Method ReadGuiValues:TData()
-		local data:TData = new TData
+		Local data:TData = New TData
 
 		data.Add("playername", inputPlayerName.GetValue())
 		data.Add("channelname", inputChannelName.GetValue())
@@ -2127,11 +2127,11 @@ Type TSettingsWindow
 		data.Add("gamename", inputGameName.GetValue())
 		data.Add("onlineport", inputOnlinePort.GetValue())
 
-		return data
+		Return data
 	End Method
 
 
-	Method SetGuiValues:int(data:TData)
+	Method SetGuiValues:Int(data:TData)
 		inputPlayerName.SetValue(data.GetString("playername", "Player"))
 		inputChannelName.SetValue(data.GetString("channelname", "My Channel"))
 		inputStartYear.SetValue(data.GetInt("startyear", 1985))
@@ -2149,16 +2149,16 @@ Type TSettingsWindow
 
 	Method Init:TSettingsWindow()
 		'LAYOUT CONFIG
-		local nextY:int = 0, nextX:int = 0
-		local rowWidth:int = 215
-		local checkboxWidth:int = 180
-		local inputWidth:int = 170
-		local labelH:int = 12
-		local inputH:int = 0
-		local windowW:int = 670
-		local windowH:int = 380
+		Local nextY:Int = 0, nextX:Int = 0
+		Local rowWidth:Int = 215
+		Local checkboxWidth:Int = 180
+		Local inputWidth:Int = 170
+		Local labelH:Int = 12
+		Local inputH:Int = 0
+		Local windowW:Int = 670
+		Local windowH:Int = 380
 
-		modalDialogue = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(windowW, windowH), "SYSTEM")
+		modalDialogue = New TGUIGameModalWindow.Create(New TPoint, New TPoint.Init(windowW, windowH), "SYSTEM")
 
 		modalDialogue.SetDialogueType(2)
 		modalDialogue.buttons[0].SetCaption(GetLocale("SAVE_AND_APPLY"))
@@ -2167,41 +2167,41 @@ Type TSettingsWindow
 		modalDialogue.buttons[1].Resize(160,-1)
 		modalDialogue.SetCaptionAndValue(GetLocale("MENU_SETTINGS"), "")
 
-		local canvas:TGUIObject = modalDialogue.GetGuiContent()
+		Local canvas:TGUIObject = modalDialogue.GetGuiContent()
 				
-		local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(new TPoint.Init(0, nextY), GetLocale("DEFAULTS_FOR_NEW_GAME"))
+		Local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(New TPoint.Init(0, nextY), GetLocale("DEFAULTS_FOR_NEW_GAME"))
 		labelTitleGameDefaults.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleGameDefaults)
 		nextY :+ 25
 
-		local labelPlayerName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("PLAYERNAME")+":")
-		inputPlayerName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
+		Local labelPlayerName:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("PLAYERNAME")+":")
+		inputPlayerName = New TGUIInput.Create(New TPoint.Init(nextX, nextY + labelH), New TPoint.Init(inputWidth,-1), "", 128)
 		canvas.AddChild(labelPlayerName)
 		canvas.AddChild(inputPlayerName)
 		inputH = inputPlayerName.GetScreenHeight()
 		nextY :+ inputH + labelH * 1.5
 
-		local labelChannelName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("CHANNELNAME")+":")
-		inputChannelName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
+		Local labelChannelName:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("CHANNELNAME")+":")
+		inputChannelName = New TGUIInput.Create(New TPoint.Init(nextX, nextY + labelH), New TPoint.Init(inputWidth,-1), "", 128)
 		canvas.AddChild(labelChannelName)
 		canvas.AddChild(inputChannelName)
 		nextY :+ inputH + labelH * 1.5
 
-		local labelStartYear:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("START_YEAR")+":")
-		inputStartYear = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(50,-1), "", 4)
+		Local labelStartYear:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("START_YEAR")+":")
+		inputStartYear = New TGUIInput.Create(New TPoint.Init(nextX, nextY + labelH), New TPoint.Init(50,-1), "", 4)
 		canvas.AddChild(labelStartYear)
 		canvas.AddChild(inputStartYear)
 		nextY :+ inputH + labelH * 1.5
 
-		local labelStationmap:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("STATIONMAP")+":")
-		inputStationmap = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "germany.xml", 128)
+		Local labelStationmap:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("STATIONMAP")+":")
+		inputStationmap = New TGUIDropDown.Create(New TPoint.Init(nextX, nextY + labelH), New TPoint.Init(inputWidth,-1), "germany.xml", 128)
 		inputStationmap.disable()
 		canvas.AddChild(labelStationmap)
 		canvas.AddChild(inputStationmap)
 		nextY :+ inputH + labelH * 1.5
 
-		local labelDatabase:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("DATABASE")+":")
-		inputDatabase = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "database.xml", 128)
+		Local labelDatabase:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("DATABASE")+":")
+		inputDatabase = New TGUIDropDown.Create(New TPoint.Init(nextX, nextY + labelH), New TPoint.Init(inputWidth,-1), "database.xml", 128)
 		inputDatabase.disable()
 		canvas.AddChild(labelDatabase)
 		canvas.AddChild(inputDatabase)
@@ -2211,17 +2211,17 @@ Type TSettingsWindow
 		nextY = 0
 		nextX = 1*rowWidth
 		'SOUND
-		local labelTitleSound:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
+		Local labelTitleSound:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
 		labelTitleSound.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleSound)
 		nextY :+ 25
 
-		checkMusic = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
+		checkMusic = New TGUICheckbox.Create(New TPoint.Init(nextX, nextY), New TPoint.Init(checkboxWidth,-1), "")
 		checkMusic.SetCaption(GetLocale("MUSIC"))
 		canvas.AddChild(checkMusic)
 		nextY :+ Max(inputH, checkMusic.GetScreenHeight())
 
-		checkSfx = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
+		checkSfx = New TGUICheckbox.Create(New TPoint.Init(nextX, nextY), New TPoint.Init(checkboxWidth,-1), "")
 		checkSfx.SetCaption(GetLocale("SFX"))
 		canvas.AddChild(checkSfx)
 		nextY :+ Max(inputH, checkSfx.GetScreenHeight())
@@ -2229,26 +2229,26 @@ Type TSettingsWindow
 
 
 		'GRAPHICS
-		local labelTitleGraphics:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("GRAPHICS"))
+		Local labelTitleGraphics:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("GRAPHICS"))
 		labelTitleGraphics.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleGraphics)
 		nextY :+ 25
 
-		local labelRenderer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("RENDERER") + ":")
-		dropdownRenderer = New TGUIDropDown.Create(new TPoint.Init(nextX, nextY + 12), new TPoint.Init(inputWidth,-1), "", 128)
-		local rendererValues:string[] = ["0", "3"]
-		local rendererTexts:string[] = ["OpenGL", "Buffered OpenGL"]
+		Local labelRenderer:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("RENDERER") + ":")
+		dropdownRenderer = New TGUIDropDown.Create(New TPoint.Init(nextX, nextY + 12), New TPoint.Init(inputWidth,-1), "", 128)
+		Local rendererValues:String[] = ["0", "3"]
+		Local rendererTexts:String[] = ["OpenGL", "Buffered OpenGL"]
 		?Win32
 			rendererValues :+ ["1","2"]
 			rendererTexts :+ ["DirectX 7", "DirectX 9"]
 		?
-		local itemHeight:int = 0
-		For local i:int = 0 until rendererValues.Length
-			local item:TGUIDropDownItem = new TGUIDropDownItem.Create(null, null, rendererTexts[i])
+		Local itemHeight:Int = 0
+		For Local i:Int = 0 Until rendererValues.Length
+			Local item:TGUIDropDownItem = New TGUIDropDownItem.Create(Null, Null, rendererTexts[i])
 			item.SetValueColor(TColor.CreateGrey(50))
 			item.data.Add("value", rendererValues[i])
 			dropdownRenderer.AddItem(item)
-			if itemHeight = 0 then itemHeight = item.GetScreenHeight()
+			If itemHeight = 0 Then itemHeight = item.GetScreenHeight()
 		Next
 		dropdownRenderer.SetListContentHeight(itemHeight * Len(rendererValues))
 
@@ -2257,7 +2257,7 @@ Type TSettingsWindow
 '		GuiManager.SortLists()
 		nextY :+ inputH + labelH * 1.5
 
-		checkFullscreen = New TGUICheckbox.Create(new TPoint.Init(nextX, nextY), new TPoint.Init(checkboxWidth,-1), "")
+		checkFullscreen = New TGUICheckbox.Create(New TPoint.Init(nextX, nextY), New TPoint.Init(checkboxWidth,-1), "")
 		checkFullscreen.SetCaption(GetLocale("FULLSCREEN"))
 		canvas.AddChild(checkFullscreen)
 		nextY :+ Max(inputH, checkFullscreen.GetScreenHeight()) + labelH * 1.5
@@ -2266,20 +2266,20 @@ Type TSettingsWindow
 		'MULTIPLAYER
 		nextY = 0
 		nextX = 2*rowWidth
-		local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("MULTIPLAYER"))
+		Local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("MULTIPLAYER"))
 		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 11, BOLDFONT))
 		canvas.AddChild(labelTitleMultiplayer)
 		nextY :+ 25
 
-		local labelGameName:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("GAME_TITLE")+":")
-		inputGameName = New TGUIInput.Create(new TPoint.Init(nextX, nextY + labelH), new TPoint.Init(inputWidth,-1), "", 128)
+		Local labelGameName:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("GAME_TITLE")+":")
+		inputGameName = New TGUIInput.Create(New TPoint.Init(nextX, nextY + labelH), New TPoint.Init(inputWidth,-1), "", 128)
 		canvas.AddChild(labelGameName)
 		canvas.AddChild(inputGameName)
 		nextY :+ inputH + labelH * 1.5
 
 	
-		local labelOnlinePort:TGUILabel = New TGUILabel.Create(new TPoint.Init(nextX, nextY), GetLocale("PORT_ONLINEGAME")+":")
-		inputOnlinePort = New TGUIInput.Create(new TPoint.Init(nextX, nextY + 12), new TPoint.Init(50,-1), "", 4)
+		Local labelOnlinePort:TGUILabel = New TGUILabel.Create(New TPoint.Init(nextX, nextY), GetLocale("PORT_ONLINEGAME")+":")
+		inputOnlinePort = New TGUIInput.Create(New TPoint.Init(nextX, nextY + 12), New TPoint.Init(50,-1), "", 4)
 		canvas.AddChild(labelOnlinePort)
 		canvas.AddChild(inputOnlinePort)
 		nextY :+ inputH + 5
@@ -2287,7 +2287,7 @@ Type TSettingsWindow
 		'fill values
 		SetGuiValues(App.config)
 
-		return self
+		Return Self
 	End Method
 End Type
 
@@ -2318,19 +2318,19 @@ Type GameEvents
 
 
 	Function PlayerBroadcastMalfunction:Int(triggerEvent:TEventBase)
-		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
-		local player:TPlayer = GetPlayerCollection().Get(playerID)
-		if not player then return False
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
+		Local player:TPlayer = GetPlayerCollection().Get(playerID)
+		If Not player Then Return False
 
-		If player.isAI() then player.PlayerKI.CallOnMalfunction()
+		If player.isAI() Then player.PlayerKI.CallOnMalfunction()
 	End Function
 
 
 	Function PlayerFinanceOnChangeMoney:Int(triggerEvent:TEventBase)
-		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
-		local player:TPlayer = GetPlayerCollection().Get(playerID)
-		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		if playerID = -1 or not player then return FALSE
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
+		Local player:TPlayer = GetPlayerCollection().Get(playerID)
+		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
+		If playerID = -1 Or Not player Then Return False
 
 		If player.isAI() Then player.PlayerKI.CallOnMoneyChanged()
 		If player.isActivePlayer() Then Interface.BottomImgDirty = True
@@ -2339,10 +2339,10 @@ Type GameEvents
 
 	'show an error if a transaction was not possible
 	Function PlayerFinanceOnTransactionFailed:Int(triggerEvent:TEventBase)
-		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
-		local player:TPlayer = GetPlayerCollection().Get(playerID)
-		local value:int = triggerEvent.GetData().GetInt("value", 0)
-		if playerID = -1 or not player then return FALSE
+		Local playerID:Int = triggerEvent.GetData().GetInt("playerID", 0)
+		Local player:TPlayer = GetPlayerCollection().Get(playerID)
+		Local value:Int = triggerEvent.GetData().GetInt("value", 0)
+		If playerID = -1 Or Not player Then Return False
 
 		'create an visual error
 		If player.isActivePlayer() Then TError.CreateNotEnoughMoneyError()
@@ -2350,57 +2350,64 @@ Type GameEvents
 
 
 	'called each time a room (the active player visits) is updated
-	Function RoomOnUpdate:int(triggerEvent:TEventBase)
+	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
 		'handle normal right click
-		if MOUSEMANAGER.IsHit(2)
+		If MOUSEMANAGER.IsHit(2)
 			'check subrooms
 			'only leave a room if not in a subscreen
 			'if in subscreen, go to parent one
-			if ScreenCollection.GetCurrentScreen().parentScreen
+			If ScreenCollection.GetCurrentScreen().parentScreen
 				ScreenCollection.GoToParentScreen()
 				MOUSEMANAGER.ResetKey(2)
-			else
+			Else
 				'leaving prohibited - just reset button
-				if not GetPlayerCollection().Get().figure.LeaveRoom()
+				If Not GetPlayerCollection().Get().figure.LeaveRoom()
 					MOUSEMANAGER.resetKey(2)
-				endif
-			endif
-		endif
+				EndIf
+			EndIf
+		EndIf
 	End Function
 
+
+	Function StationMapOnSellStation:Int(triggerEvent:TEventBase)
+		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
+		If Not stationMap Then Return False
+		
+		Local player:TPlayer = GetPlayerCollection().Get(stationMap.owner)
+		If Not player Then Return False
+
+		TLogger.Log("StationMapOnSellStation", "recomputing audience for player "+player.playerID, LOG_DEBUG)
+		GetBroadcastManager().ReComputePlayerAudience(player.playerID)
+	End Function
+
+
 	Function StationMapOnTrySellLastStation:Int(triggerEvent:TEventBase)
-		local playerID:int = triggerEvent.GetData().GetInt("playerID", 0)
-		local player:TPlayer = GetPlayerCollection().Get(playerID)
-		if playerID = -1 or not player then return FALSE
+		Local stationMap:TStationMap = TStationMap(triggerEvent.GetSender())
+		If Not stationMap Then Return False
+
+		Local player:TPlayer = GetPlayerCollection().Get(stationMap.owner)
+		If Not player Then Return False
 
 		'create an visual error
-		If player.isActivePlayer() then TError.Create( getLocale("ERROR_NOT_POSSIBLE"), getLocale("ERROR_NOT_ABLE_TO_SELL_LAST_STATION") )
+		If player.isActivePlayer() Then TError.Create( getLocale("ERROR_NOT_POSSIBLE"), getLocale("ERROR_NOT_ABLE_TO_SELL_LAST_STATION") )
 	End Function
 
 
 
 	Function OnMinute:Int(triggerEvent:TEventBase)
-		For local room:TRoom = eachin GetRoomCollection().list
-			if room.occupants.count() > 0
-				For local fig:TFigure = eachin room.occupants
-					if fig.IsInBuilding() then THROW "FIGURE "+fig.name+" in room="+room.name 
-				Next
-			endif
-		Next
-
-	
-		'things happening x:05
 		Local minute:Int = triggerEvent.GetData().GetInt("minute",-1)
 		Local hour:Int = triggerEvent.GetData().GetInt("hour",-1)
 		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
 		If hour = -1 Then Return False
 
-		'===== UPDATE POPULARITY MANAGER =====
+
+		'=== UPDATE POPULARITY MANAGER ===
 		'the popularity manager takes care itself whether to do something
 		'or not (update intervals)
 		GetPopularityManager().Update(triggerEvent)
 
-		'===== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY =====
+
+		'=== CHANGE OFFER OF MOVIEAGENCY AND ADAGENCY ===
 		'countdown for the refillers
 		Game.refillMovieAgencyTime :-1
 		Game.refillAdAgencyTime :-1
@@ -2432,24 +2439,36 @@ Type GameEvents
 		EndIf
 
 
-		'for all
+		'=== REFRESH INTERFACE IF NEEDED ===
 		If minute = 5 Or minute = 55 Or minute = 0 Then Interface.BottomImgDirty = True
 
-		'step 1/3
-		'log in current broadcasted media
-		For Local player:TPlayer = EachIn GetPlayerCollection().players
-			player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
-		Next
-		'step 2/3
-		'calculate audience
-		TPlayerProgrammePlan.CalculateCurrentBroadcastAudience(day, hour, minute)
-		'step 3/3
-		'inform broadcasted media about their status
-		For Local player:TPlayer = EachIn GetPlayerCollection().players
-			player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
-		Next
+
+		'=== UPDATE STATIONMAPS ===
+		'checks for newly activated stations (which start to broadcast
+		'then, not earlier). This avoids getting an audience recalculation
+		'after the removal of a station - while other stations were
+		'bought AFTER the audience got calculated (aka "cheating").
+		GetStationMapCollection().Update()
 
 
+		'=== ADJUST CURRENT BROADCASTS ===
+		'broadcasts change at xx:00, xx:05, xx:55
+		If minute = 5 Or minute = 55 Or minute = 0
+			'step 1/3
+			'log in current broadcasted media
+			For Local player:TPlayer = EachIn GetPlayerCollection().players
+				player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
+			Next
+			'step 2/3
+			'calculate audience
+			TPlayerProgrammePlan.CalculateCurrentBroadcastAudience(day, hour, minute)
+			'step 3/3
+			'inform broadcasted media about their status
+			For Local player:TPlayer = EachIn GetPlayerCollection().players
+				player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
+			Next
+		EndIf
+	
 		Return True
 	End Function
 
@@ -2536,8 +2555,8 @@ Type AppEvents
 			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraBI.ttf", 18, BOLDFONT | ITALICFONT)
 			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraIt.ttf", 18, ITALICFONT)
 
-			Local shadowSettings:TData = new TData.addNumber("size", 1).addNumber("intensity", 0.5)
-			Local gradientSettings:TData = new TData.addNumber("gradientBottom", 180)
+			Local shadowSettings:TData = New TData.addNumber("size", 1).addNumber("intensity", 0.5)
+			Local gradientSettings:TData = New TData.addNumber("gradientBottom", 180)
 			'setup effects for normal and bold
 			headerFont = GetBitmapFontManager().Copy("default", "headerFont", 18, BOLDFONT)
 			headerFont.SetCharsEffectFunction(1, Font_AddGradient, gradientSettings)
@@ -2588,22 +2607,22 @@ Function DrawMenuBackground(darkened:Int=False)
 	Select game.gamestate
 		Case TGame.STATE_NETWORKLOBBY, TGame.STATE_MAINMENU
 
-			Global logoAnimStart:int = 0
-			Global logoAnimTime:int = 1500
-			Global logoScale:float = 0.0
-			local logo:TSprite = GetSpriteFromRegistry("gfx_startscreen_logo")
-			if logo
-				local timeGone:int = Time.GetTimeGone()
-				if logoAnimStart = 0 then logoAnimStart = timeGone
+			Global logoAnimStart:Int = 0
+			Global logoAnimTime:Int = 1500
+			Global logoScale:Float = 0.0
+			Local logo:TSprite = GetSpriteFromRegistry("gfx_startscreen_logo")
+			If logo
+				Local timeGone:Int = Time.GetTimeGone()
+				If logoAnimStart = 0 Then logoAnimStart = timeGone
 				logoScale = TInterpolation.BackOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
 				logoScale :* TInterpolation.BounceOut(0.0, 1.0, Min(logoAnimTime, timeGone - logoAnimStart), logoAnimTime)
 
-				local oldAlpha:float = GetAlpha()
+				Local oldAlpha:Float = GetAlpha()
 				SetAlpha TInterpolation.RegularOut(0.0, 1.0, Min(0.5*logoAnimTime, timeGone - logoAnimStart), 0.5*logoAnimTime)
 
-				logo.Draw( GraphicsWidth()/2, 150, -1, new TPoint.Init(0.5, 0.5), logoScale)
+				logo.Draw( GraphicsWidth()/2, 150, -1, New TPoint.Init(0.5, 0.5), logoScale)
 				SetAlpha oldAlpha
-			Endif
+			EndIf
 	EndSelect
 
 	If game.gamestate = TGame.STATE_MAINMENU
@@ -2633,57 +2652,57 @@ Function ColorizePlayerExtras()
 	Local gray:TColor = TColor.Create(200, 200, 200)
 	Local gray2:TColor = TColor.Create(100, 100, 100)
 
-	GetRegistry().Set("gfx_building_sign_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
-	GetRegistry().Set("gfx_building_sign_dragged_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_dragged_base").GetColorizedImage(gray), "gfx_building_sign_dragged_0"))
-	GetRegistry().Set("gfx_interface_channelbuttons_off_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
-	GetRegistry().Set("gfx_interface_channelbuttons_on_0", new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
+	GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
+	GetRegistry().Set("gfx_building_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_dragged_base").GetColorizedImage(gray), "gfx_building_sign_dragged_0"))
+	GetRegistry().Set("gfx_interface_channelbuttons_off_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
+	GetRegistry().Set("gfx_interface_channelbuttons_on_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
 	'colorizing for every player
 	For Local i:Int = 1 To 4
 		GetPlayerCollection().Get(i).RecolorFigure()
-		local color:TColor = GetPlayerCollection().Get(i).color
+		Local color:TColor = GetPlayerCollection().Get(i).color
 
-		GetRegistry().Set("gfx_building_sign_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))
-		GetRegistry().Set("gfx_elevator_sign_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_base").GetColorizedImage(color), "gfx_elevator_sign_"+i))
-		GetRegistry().Set("gfx_elevator_sign_dragged_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_dragged_base").GetColorizedImage(color), "gfx_elevator_sign_dragged_"+i))
-		GetRegistry().Set("gfx_interface_channelbuttons_off_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, i), "gfx_interface_channelbuttons_off_"+i))
-		GetRegistry().Set("gfx_interface_channelbuttons_on_"+i, new TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, i), "gfx_interface_channelbuttons_on_"+i))
+		GetRegistry().Set("gfx_building_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))
+		GetRegistry().Set("gfx_elevator_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_base").GetColorizedImage(color), "gfx_elevator_sign_"+i))
+		GetRegistry().Set("gfx_elevator_sign_dragged_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_dragged_base").GetColorizedImage(color), "gfx_elevator_sign_dragged_"+i))
+		GetRegistry().Set("gfx_interface_channelbuttons_off_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, i), "gfx_interface_channelbuttons_off_"+i))
+		GetRegistry().Set("gfx_interface_channelbuttons_on_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, i), "gfx_interface_channelbuttons_on_"+i))
 	Next
 End Function
 
 
 
-Function DEV_switchRoom:int(room:TRoom)
-	if not room then return FALSE
-	local figure:TFigure = GetPlayerCollection().Get().figure
+Function DEV_switchRoom:Int(room:TRoom)
+	If Not room Then Return False
+	Local figure:TFigure = GetPlayerCollection().Get().figure
 
-	local oldEffects:int = TScreenCollection.useChangeEffects
-	local oldSpeed:int = TRoom.ChangeRoomSpeed
+	Local oldEffects:Int = TScreenCollection.useChangeEffects
+	Local oldSpeed:Int = TRoom.ChangeRoomSpeed
 
 	'to avoid seeing too much animation
 	TRoom.ChangeRoomSpeed = 0
-	TScreenCollection.useChangeEffects = FALSE
+	TScreenCollection.useChangeEffects = False
 
 	TInGameScreen_Room.shortcutTarget = room 'to skip animation
-	figure.EnterRoom(null, room)
+	figure.EnterRoom(Null, room)
 
 	TRoom.ChangeRoomSpeed = 500
-	TScreenCollection.useChangeEffects = TRUE
+	TScreenCollection.useChangeEffects = True
 
-	return TRUE
+	Return True
 End Function
 
 
 
 
-Function StartApp:int()
+Function StartApp:Int()
 	'assign dev config (resources are now loaded)
-	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", new TData))
-	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", TRUE)
-	if TFunctions.roundToBeautifulEnabled
+	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", New TData))
+	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", True)
+	If TFunctions.roundToBeautifulEnabled
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
-	else
+	Else
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is disabled", LOG_DEBUG | LOG_LOADING)
-	endif
+	EndIf
 
 	Game.Create()
 
@@ -2713,9 +2732,9 @@ Function StartApp:int()
 	App.Start()
 End Function
 
-Function ShowApp:int()
+Function ShowApp:Int()
 	'without creating players, rooms
-	Game = TGame.GetInstance().Create(false, false)
+	Game = TGame.GetInstance().Create(False, False)
 
 	'Menu
 	ScreenMainMenu = New TScreen_MainMenu.Create("MainMenu")
@@ -2726,13 +2745,12 @@ Function ShowApp:int()
 End Function
 
 
-Function StartTVTower(start:Int=true)
-	DebugStop
-	Global InitialResourceLoadingDone:int = FALSE
+Function StartTVTower(start:Int=True)
+	Global InitialResourceLoadingDone:Int = False
 
 	EventManager.Init()
 	
-	App = TApp.Create(30, -1, TRUE) 'create with screen refreshrate and vsync
+	App = TApp.Create(30, -1, True) 'create with screen refreshrate and vsync
 	App.LoadResources("config/resources.xml")
 
 	'====
@@ -2748,7 +2766,7 @@ Function StartTVTower(start:Int=true)
 
 		GetDeltaTimer().Loop()
 
-		if RURC.FinishedLoading() then InitialResourceLoadingDone = true
+		If RURC.FinishedLoading() Then InitialResourceLoadingDone = True
 
 		EventManager.update()
 		'If RandRange(0,20) = 20 Then GCCollect()

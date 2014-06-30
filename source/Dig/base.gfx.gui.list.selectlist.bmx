@@ -119,22 +119,9 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-	Method DrawValue:int()
-		'draw value
-		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
-	End Method
-
-
-	Method Draw:Int()
-		local upperParent:TGUIObject = GetUppermostParent()
-		upperParent.RestrictViewPort()
-
+	Method DrawBackground:int()
 		'available width is parentsDimension minus startingpoint
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
-		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
-
-		local oldCol:TColor = new TColor.Get()
-
 		If mouseover
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), maxWidth, rect.getH())
@@ -146,10 +133,59 @@ Type TGUISelectListItem Extends TGUIListItem
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
+	End Method
 
+
+	Method DrawValue:int()
+		'draw value
+		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
+	End Method
+
+
+	Method Draw:Int()
+		local upperParent:TGUIObject = GetUppermostParent()
+		upperParent.RestrictViewPort()
+		local oldCol:TColor = new TColor.Get()
+
+
+		DrawBackground()
 		DrawValue()
 
 		oldCol.SetRGBA()
 		upperParent.ResetViewPort()
+	End Method
+End Type
+
+
+
+
+Type TGUICustomSelectListItem Extends TGUISelectListItem
+	'allow custom functions to get hooked in
+	Field _customDraw:int(obj:TGUIObject)
+	Field _customDrawValue:int(obj:TGUIObject)
+	Field _customDrawBackground:int(obj:TGUIObject)
+
+
+    Method Create:TGUICustomSelectListItem(position:TPoint=null, dimension:TPoint=null, value:String="")
+   		Super.Create(position, dimension, value)
+		Return Self
+	End Method
+
+
+	Method DrawBackground:int()
+		if _customDrawBackground then _customDrawBackground(self);return True
+		Super.DrawBackground()
+	End Method
+
+
+	Method DrawValue:int()
+		if _customDrawValue then _customDrawValue(self);return True
+		Super.DrawValue()
+	End Method
+
+
+	Method Draw:Int()
+		if _customDraw then _customDraw(self);return True
+		Super.Draw()
 	End Method
 End Type

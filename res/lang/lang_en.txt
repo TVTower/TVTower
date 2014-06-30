@@ -48,10 +48,11 @@ YES = Yes
 NO = No
 MONEY = Money
 DEBT = Debt
-RANGE = Range
+REACH = Reach
 INCREASE = Increase
 PRICE = Price
 VALUE = Value
+BROADCASTING_AREA = Broadcasting area
 
 CURRENCY = €
 OCLOCK =

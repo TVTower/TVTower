@@ -2509,19 +2509,19 @@ Type RoomHandler_Office extends TRoomHandler
 		If stationMapMode = 1 and stationMapSelectedStation
 			GetBitmapFontManager().baseFontBold.draw( getLocale("MAP_COUNTRY_"+stationMapSelectedStation.getFederalState()), 595, 37, TColor.Create(80,80,0))
 
-			font.draw(GetLocale("RANGE")+": ", 595, 55, TColor.clBlack)
+			font.draw(GetLocale("REACH")+": ", 595, 55, TColor.clBlack)
 			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), 660, 55, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 
-			font.draw(GetLocale("INCREASE")+": ", 595, 72)
+			font.draw(GetLocale("INCREASE")+": ", 595, 72, TColor.clBlack)
 			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReachIncrease(), 2), 660, 72, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 
-			font.draw(GetLocale("PRICE")+": ", 595, 89)
+			font.draw(GetLocale("PRICE")+": ", 595, 89, TColor.clBlack)
 			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 			SetColor(255,255,255)
 		EndIf
 
 		If stationMapSelectedStation and stationMapSelectedStation.paid
-			font.draw(GetLocale("RANGE")+": ", 595, 200, TColor.clBlack)
+			font.draw(GetLocale("REACH")+": ", 595, 200, TColor.clBlack)
 			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.reach, 2, 0), 660, 200, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
 
 			font.draw(GetLocale("VALUE")+": ", 595, 216, TColor.clBlack)
@@ -2704,12 +2704,46 @@ Type RoomHandler_Office extends TRoomHandler
 		stationList.deselectEntry()
 
 		For Local station:TStation = EachIn GetPlayerCollection().Get(playerID).GetStationMap().Stations
-			local item:TGUISelectListItem = new TGUISelectListItem.Create(new TPoint, new TPoint.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
+			local item:TGUICustomSelectListItem = new TGUICustomSelectListItem.Create(new TPoint, new TPoint.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
 			'link the station to the item
 			item.data.Add("station", station)
+			item._customDrawValue = DrawMapStationListEntry
 			stationList.AddItem( item )
 		Next
 	End Function
+
+
+	'custom drawing function for list entries
+	Function DrawMapStationListEntry:int(obj:TGUIObject)
+		local item:TGUICustomSelectListItem = TGUICustomSelectListItem(obj)
+		if not item then return False
+
+		local station:TStation = TStation(item.data.Get("station"))
+		if not station then return False
+
+		local sprite:TSprite
+		if station.IsActive()
+			sprite = GetSpriteFromRegistry("stationlist_antenna_on")
+		else
+			sprite = GetSpriteFromRegistry("stationlist_antenna_off")
+		endif
+
+
+		'draw with different color according status
+		if station.IsActive()
+			'draw antenna
+			sprite.Draw(Int(item.GetScreenX() + 5), item.GetScreenY() + 0.5*(item.rect.getH() - sprite.GetHeight()))
+			item.GetFont().draw(item.GetValue(), Int(item.GetScreenX() + 5 + sprite.GetWidth() + 5), Int(item.GetScreenY() + 2 + 0.5*(item.rect.getH()- item.GetFont().getHeight(item.value))), item.valueColor)
+		else
+			local oldAlpha:float = GetAlpha()
+			SetAlpha oldAlpha*0.5
+			'draw antenna
+			sprite.Draw(Int(item.GetScreenX() + 5), item.GetScreenY() + 0.5*(item.rect.getH() - sprite.GetHeight()))
+			item.GetFont().draw(item.GetValue(), Int(item.GetScreenX() + 5 + sprite.GetWidth() + 5), Int(item.GetScreenY() + 2 + 0.5*(item.rect.getH()- item.GetFont().getHeight(item.value))), item.valueColor.copy().AdjustFactor(50))
+			SetAlpha oldAlpha
+		endif
+	End Function
+	
 
 	'an entry was selected - make the linked station the currently selected station
 	Function OnSelectEntry_StationMapStationList:int(triggerEvent:TEventBase)
@@ -2862,6 +2896,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
 		if not figure or not figure.parentPlayerID then return FALSE
 
+		'remove all licences in the suitcase from the programmeplan
 		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(figure.parentPlayerID)
 		For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).suitcaseProgrammeLicences
 			plan.RemoveProgrammeInstancesByLicence(licence, true)

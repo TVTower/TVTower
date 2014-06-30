@@ -1693,10 +1693,11 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentHeight:Int(width:int)
 		local result:int = 0
+
 		If showDetails
-			result:+ 2*lineHeight + 9*lineIconHeight
+			result:+ 1*lineHeight + 2*lineHeight + 9*lineIconHeight
 		else
-			result:+ 3*lineHeight
+			result:+ 1*lineHeight + 2*lineHeight + 1*lineHeight
 		endif
 
 		result:+ padding.GetTop() + padding.GetBottom()
@@ -1731,8 +1732,17 @@ Type TTooltipAudience Extends TTooltip
 		'draw overview text
 		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
+
+		local reach:int = GetStationMapCollection().GetMap(GetPlayerCollection().playerID).reach
+		local totalReach:int = GetStationMapCollection().population
+
+		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.floatToString(100.0 * float(reach)/totalReach, 2) + "%)"
+		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		'add 1 line more - as spacing to details
 		lineY :+ 2 * Self.Usefont.GetHeight(lineText)
 
+		
 		If Not showDetails
 			Self.Usefont.draw(GetLocale("HINT_PRESSING_ALT_WILL_SHOW_DETAILS") , lineX, lineY, TColor.CreateGrey(150))
 		Else

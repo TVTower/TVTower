@@ -45,10 +45,11 @@ YES = Ja
 NO = Nein
 MONEY = Geld
 DEBT = Schulden
-RANGE = Reichweite
+REACH = Reichweite
 INCREASE = Zuwachs
 PRICE = Preis
 VALUE = Wert
+BROADCASTING_AREA = Sendegebiet
 
 CURRENCY = €
 OCLOCK = Uhr

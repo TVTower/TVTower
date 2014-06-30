@@ -378,7 +378,7 @@ Type TGUIListBase Extends TGUIobject
 				Local atListBottom:Int = 1 > Floor(Abs(guiEntriesPanel.scrollLimit.GetY() - guiEntriesPanel.scrollPosition.getY()))
 
 				'set scroll limits:
-				If autoscroll and dimension.getY() < guiEntriesPanel.getScreenheight()
+				If autoscroll or dimension.getY() < guiEntriesPanel.getScreenheight()
 					'if there are only some elements, they might be
 					'"less high" than the available area - no need to
 					'align them at the bottom
@@ -391,11 +391,11 @@ Type TGUIListBase Extends TGUIobject
 					if not lastItem
 						guiEntriesPanel.SetLimits(0, 0)
 					else
-						if not autoScroll
-							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight() - lastItem.GetScreenHeight()))
-						else
+'						if not autoScroll
+'							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight() - lastItem.GetScreenHeight()))
+'						else
 							guiEntriesPanel.SetLimits(0, - (dimension.getY() - guiEntriesPanel.getScreenheight()))
-						endif
+'						endif
 					endif
 
 					'in case of auto scrolling we should consider

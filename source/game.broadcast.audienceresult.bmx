@@ -49,8 +49,8 @@ Type TAudienceResult
 
 	Method Reset()
 		WholeMarket = New TAudience
-		PotentialMaxAudience:TAudience = New TAudience
-		Audience:TAudience = New TAudience
+		PotentialMaxAudience = New TAudience
+		Audience = New TAudience
 		ChannelSurferToShare  = New TAudience
 
 		AudienceQuote = Null
@@ -73,11 +73,17 @@ Type TAudienceResult
 		Audience.FixGenderCount()
 		PotentialMaxAudience.FixGenderCount()
 
-		AudienceQuote = Audience.Copy()
-		AudienceQuote.Divide(PotentialMaxAudience)
+		'quote = audience / maxAudience
+		AudienceQuote = Audience.Copy().Divide(PotentialMaxAudience)
 
-		PotentialMaxAudienceQuote = PotentialMaxAudience.Copy()
-		PotentialMaxAudienceQuote.Divide(WholeMarket)
+		'no need to calculate a quote if the audience itself is 0 already
+		'-> avoids "nan"-values when dividing with "0.0f" values
+		If PotentialMaxAudience.GetSum() = 0
+			PotentialMaxAudienceQuote = new TAudience
+		Else
+			'potential quote = potential audience / whole market
+			PotentialMaxAudienceQuote = PotentialMaxAudience.Copy().Divide(WholeMarket)
+		EndIf
 	End Method
 
 
