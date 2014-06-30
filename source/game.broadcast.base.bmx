@@ -937,11 +937,60 @@ End Type
 Type TBroadcastSequence
 	Field sequence:TList = CreateList()
 	Field current:TBroadcast
+	'how many entries should be kept for each type
+	'keep all = -1
+	Field amountOfEntriesToKeep:int = 3
 
 	Method SetCurrentBroadcast(broadcast:TBroadcast)
 		current = broadcast
 		sequence.AddFirst( current )
+
+		RemoveOldEntries()
 	End Method
+
+
+	Method RemoveOldEntries()
+		'delete nothing if we have to keep all
+		if amountOfEntriesToKeep < 0 then return
+
+		local foundProgramme:int = 0
+		local foundNewsShow:int = 0
+		For local curr:TBroadcast = eachin sequence
+			if curr.BroadcastType = TBroadcastMaterial.TYPE_PROGRAMME
+				if foundProgramme < amountOfEntriesToKeep
+					foundProgramme :+ 1
+				else
+					sequence.Remove(curr)
+
+					'also remove no longer needed "special data"
+					curr.Attractions = new TAudienceAttraction[4]
+					For local i:int = 0 to 3
+						curr.AudienceResults[i].PotentialMaxAudience = null
+						curr.AudienceResults[i].ChannelSurferToShare = null
+						curr.AudienceResults[i].AudienceAttraction = null
+						curr.AudienceResults[i].EffectiveAudienceAttraction = null
+					Next
+				endif
+			endif
+			if curr.BroadcastType = TBroadcastMaterial.TYPE_NEWSSHOW
+				if foundNewsShow < amountOfEntriesToKeep
+					foundNewsShow :+ 1
+				else
+					sequence.Remove(curr)
+
+					'also remove no longer needed "special data"
+					curr.Attractions = new TAudienceAttraction[4]
+					For local i:int = 0 to 3
+						curr.AudienceResults[i].PotentialMaxAudience = null
+						curr.AudienceResults[i].ChannelSurferToShare = null
+						curr.AudienceResults[i].AudienceAttraction = null
+						curr.AudienceResults[i].EffectiveAudienceAttraction = null
+					Next
+				endif
+			endif
+		Next
+	End Method
+
 
 	Method GetCurrentBroadcast:TBroadcast()
 		Return TBroadcast(sequence.First())

@@ -124,9 +124,6 @@ Type TGame {_exposeToLua="selected"}
 
 	'run this before EACH started game
 	Method PrepareStart()
-		'load all movies, news, series and ad-contracts
-		TLogger.Log("Game.PrepareStart()", "loading database", LOG_DEBUG)
-		LoadDatabase(userdb)
 
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		ColorizePlayerExtras()
@@ -245,6 +242,11 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method PrepareNewGame:int()
+		'load all movies, news, series and ad-contracts
+		'do this here, as saved games already contain the database
+		TLogger.Log("Game.PrepareNewGame()", "loading database", LOG_DEBUG)
+		LoadDatabase(userdb)
+
 		'=== FIGURES ===
 		'set all non human players to AI
 		If Game.isGameLeader()

@@ -141,7 +141,7 @@ Type TProgrammeData {_exposeToLua}
 	Field trailerAired:int				= 0					'times the trailer aired
 	Field trailerAiredSinceShown:int	= 0					'times the trailer aired since the programme was shown "normal"
 
-	Field genreDefinitionCache:TMovieGenreDefinition = Null
+	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
 	const TYPE_UNKNOWN:int		= 1
 	const TYPE_EPISODE:int		= 2
