@@ -418,6 +418,15 @@ Type TGame {_exposeToLua="selected"}
 		'set force=true so the gamestate is set even if already in this
 		'state (eg. when loaded)
 		Game.SetGamestate(TGame.STATE_RUNNING, TRUE)
+
+
+		if startNewGame
+			'Begin Game - fire Events
+			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
+			'so we start at day "1"
+			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
+		EndIf
 	End Method
 
 
@@ -587,12 +596,6 @@ Type TGame {_exposeToLua="selected"}
 		Self.gamestate = gamestate
 		Select gamestate
 			Case TGame.STATE_RUNNING
-					'Begin Game - fire Events
-					EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
-					EventManager.registerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
-					'so we start at day "1"
-					EventManager.registerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
-
 					'so we could add news etc.
 					EventManager.triggerEvent( TEventSimple.Create("Game.OnStart") )
 
