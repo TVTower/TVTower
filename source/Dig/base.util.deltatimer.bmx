@@ -159,7 +159,7 @@ Type TDeltaTimer
 		'as soon as the accumulator is bigger than the time reserved
 		'for an update ("timeStep"), the loop does as much updates
 		'as the accumulator "fits"
-		_updateAccumulator:+ _lastLoopTime/1000.0
+		_updateAccumulator:+ Max(0, _lastLoopTime)/1000.0
 		while(_updateAccumulator > _updateRate)
 			'if there is a function connected - run it
 			if _funcUpdate then _funcUpdate()

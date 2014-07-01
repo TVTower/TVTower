@@ -72,13 +72,19 @@ Type Time
 	End Function
 
 
+	'set startTime so that GetTimeGone would return "timeGone"
+	Function SetTimeGone:int(timeGone:long)
+		startTime = MilliSecsLong() - timeGone
+	End Function
+	
+
 	'returns the time gone since the first call to "GetTimeGone()"
-	Function GetTimeGone:int()
+	Function GetTimeGone:Long()
 		if startTime = 0 then startTime = MilliSecsLong()
 
 		return (MilliSecsLong() - startTime)
 	End Function
-
+	
 
 	Function GetSystemTime:String(format:String="%d %B %Y")
 		Local time:Byte[256]

@@ -679,12 +679,12 @@ End Type
 'it is kind of an "DataCollectionCollection" ;D
 Type TSaveGame
 	Field _Game:TGame = Null
-	'store the time since when the app started - timers rely on this
+	'store the time gone since when the app started - timers rely on this
 	'and without, times will differ after "loading" (so elevator stops
 	'closing doors etc.)
 	'this allows to have "realtime" (independend from "logic updates")
 	'effects - for visual effects (fading), sound ...
-	Field _Time_startTime:Long = 0
+	Field _Time_timeGone:Long = 0
 	Field _GameTime:TGameTime = Null
 	Field _GameRules:TGamerules = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
@@ -730,14 +730,14 @@ Type TSaveGame
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
 		_Assign(_Game, Game, "Game")
 
-		'restore "started time"
-		Time.startTime = _Time_startTime
+		'restore "time gone since start"
+		Time.SetTimeGone(_Time_timeGone)
 	End Method
 
 
 	Method BackupGameData:Int()
-		'store "started time"
-		_Time_startTime = Time.startTime
+		'store "time gone since start"
+		_Time_timeGone = Time.GetTimeGone()
 
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
@@ -2482,7 +2482,7 @@ Type GameEvents
 	Function OnDay:Int(triggerEvent:TEventBase)
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
 
-		'TLogger.Log("GameEvents.OnDay", "begin of day "+(GetGameTime().GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
+		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetGameTime().GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
 
 		'if new day, not start day
 		If GetGameTime().GetDaysPlayed() >= 1
