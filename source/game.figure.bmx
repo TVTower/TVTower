@@ -607,6 +607,24 @@ endrem
 	End Method
 
 
+	'send a figure to the offscreen position
+	Method SendToOffscreen:Int()
+		ChangeTarget(-50, GetBuilding().area.GetY() + GetBuilding().getfloorY(0) - 5)
+	End Method
+
+
+	'instantly move a figure to the offscreen position
+	Method MoveToOffscreen:Int()
+		area.position.SetXY(-50, GetBuilding().GetFloorY(0))
+	End Method
+
+
+	Method IsOffscreen:int()
+		if GetFloor() = 0 and area.GetX() = -50 then return True
+		return False
+	End Method
+
+
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
 		Local newX:Int = area.GetX() + relX
 		Local newY:Int = GetBuilding().area.GetY() + GetBuilding().getfloorY(GetFloor() + relYFloor) - 5
@@ -833,7 +851,7 @@ endrem
 			if inRoom and inRoom.ShowsFigures() then alpha = 1.0
 			if fromRoom and fromRoom.ShowsFigures() then alpha = 1.0
 			if TRoomDoor(targetObj) and TRoomDoor(targetObj).room
-				TRoomDoor(targetObj).room.ShowsFigures() then alpha = 1.0
+				if TRoomDoor(targetObj).room.ShowsFigures() then alpha = 1.0
 			endif
 			
 			SetAlpha(alpha * oldAlpha)
