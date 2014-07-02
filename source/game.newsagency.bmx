@@ -168,33 +168,58 @@ Type TNewsAgency
 	End Method
 
 
+	'generates a new news event from various sources (such as new
+	'movie announcements, actor news ...)
+	Method GenerateNewNewsEvent:TNewsEvent()
+		local newsEvent:TNewsEvent = null
+
+		'=== TYPE MOVIE NEWS ===
+		'35% chance: try to load some movie news ("new movie announced...")
+		If Not newsEvent And RandRange(1,100) < 35
+			newsEvent = GetMovieNewsEvent()
+		EndIf
+
+
+		'=== TYPE RANDOM NEWS ===
+		'if no "special case" triggered, just use a random news
+		If Not newsEvent
+			newsEvent = NewsEventCollection.GetRandom()
+		EndIf
+
+		return newsEvent
+	End Method
+
+
 	Method AnnounceNewNewsEvent:Int(delayAnnouncement:Int=0)
-		'no need to check for gameleader - ALL players
-		'will handle it on their own - so the randomizer stays intact
-		'if not Game.isGameLeader() then return FALSE
-		Local newsEvent:TNewsEvent = Null
-		'try to load some movie news ("new movie announced...")
-		If Not newsEvent And RandRange(1,100)<35 Then newsEvent = Self.GetMovieNewsEvent()
+		'=== CREATE A NEW NEWS ===
+		Local newsEvent:TNewsEvent = GenerateNewNewsEvent()
 
-		If Not newsEvent Then newsEvent = NewsEventCollection.GetRandom()
 
+		'=== ANNOUNCE THE NEWS ===
+		'only announce if forced or somebody is listening
 		If newsEvent
-			Local NoOneSubscribed:Int = True
-			For Local player:TPlayer = eachin GetPlayerCollection().players
-				If player.newsabonnements[newsEvent.genre] > 0 Then NoOneSubscribed = False
-			Next
-			'only add news if there are players wanting the news, else save them
-			'for later stages
-			If Not NoOneSubscribed
+			local skipNews:int = newsEvent.IsSkippable()
+			If skipNews
+				For Local player:TPlayer = eachin GetPlayerCollection().players
+					'a player listens to this genre, disallow skipping
+					If player.newsabonnements[newsEvent.genre] > 0 Then skipNews = False
+				Next
+			EndIf
+
+			If not skipNews
 				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+GetGameTime().getDay(news.happenedtime)+", time="+GetGameTime().GetFormattedTime(news.happenedtime)
 				announceNewsEvent(newsEvent, GetGameTime().timeGone + delayAnnouncement)
 			EndIf
 		EndIf
 
+
+		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
 		If RandRange(0,10) = 1
-			NextEventTime = GetGameTime().timeGone + Rand(20,50) 'between 20 and 50 minutes until next news
+			'between 20 and 50 minutes until next news
+			NextEventTime = GetGameTime().timeGone + Rand(20,50)
 		Else
-			NextEventTime = GetGameTime().timeGone + Rand(90,250) 'between 90 and 250 minutes until next news
+			'between 90 and 250 minutes until next news
+			NextEventTime = GetGameTime().timeGone + Rand(90,250)
 		EndIf
 	End Method
 End Type

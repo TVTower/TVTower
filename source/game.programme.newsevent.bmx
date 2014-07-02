@@ -113,12 +113,16 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Field broadcastEffects:TNewsEffect[]
 	'is this news a child of a chain?
 	Field parent:TNewsEvent = Null
+	'can the "happening" get skipped ("happens later")
+	'eg. if no player listens to the genre
+	'news like "terrorist will attack" happen in all cases => NOT skippable
+	Field skippable:int = True
 
-	Const GENRE_POLITICS:Int	= 0	{_exposeToLua}
-	Const GENRE_SHOWBIZ:Int		= 1	{_exposeToLua}
-	Const GENRE_SPORT:Int		= 2	{_exposeToLua}
-	Const GENRE_TECHNICS:Int	= 3	{_exposeToLua}
-	Const GENRE_CURRENTS:Int	= 4	{_exposeToLua}
+	Const GENRE_POLITICS:Int = 0	{_exposeToLua}
+	Const GENRE_SHOWBIZ:Int  = 1	{_exposeToLua}
+	Const GENRE_SPORT:Int    = 2	{_exposeToLua}
+	Const GENRE_TECHNICS:Int = 3	{_exposeToLua}
+	Const GENRE_CURRENTS:Int = 4	{_exposeToLua}
 
 
 	Function Create:TNewsEvent(title:String, description:String, Genre:Int, quality:Int=0, price:Int=0)
@@ -302,8 +306,13 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method isLastEpisode:int()
+	Method IsLastEpisode:int()
 		return self.parent<>null and self.episode = self.parent.episodes.count()
+	End Method
+
+
+	Method IsSkippable:int()
+		return skippable
 	End Method
 
 
