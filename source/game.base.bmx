@@ -261,6 +261,10 @@ Type TGame {_exposeToLua="selected"}
 		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
 		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 6, 65, 0)
 		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 0, -65, 0)
+		local fig:TFigure
+		fig = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), -50, 0, 65)
+		fig.MoveToOffscreen()
+'		New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), -50, 0, 65)
 
 
 

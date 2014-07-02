@@ -23,14 +23,14 @@ Type TBuilding Extends TStaticEntity
 	Field UFO_DoBeamAnimation:Int		= False
 	Field UFO_BeamAnimationDone:Int		= False
 
-	Field Clouds:TSpriteEntity[7]					{nosave}
-	Field CloudsAlpha:Float[7]						{nosave}
+	Field Clouds:TSpriteEntity[7]				{nosave}
+	Field CloudsAlpha:Float[7]					{nosave}
 
 	Field TimeColor:Double
 	Field DezimalTime:Float
 	Field ActHour:Int
 	Field initDone:Int					= False
-	Field gfx_bgBuildings:TSprite[6]				{nosave}
+	Field gfx_bgBuildings:TSprite[6]			{nosave}
 	Field gfx_building:TSprite					{nosave}
 	Field gfx_buildingEntrance:TSprite			{nosave}
 	Field gfx_buildingEntranceWall:TSprite		{nosave}

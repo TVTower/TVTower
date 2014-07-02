@@ -1049,6 +1049,114 @@ End Type
 
 
 
+
+Type TFigureTerrorist Extends TFigure
+	'did the figure check the roomboard where to go to?
+	Field foundTarget:int = False
+	'where to deliver the "package"
+	Field deliverToRoom:TRoom
+	'was the "package" delivered already?
+	Field deliveryDone:int = False
+	'time to wait between doing something
+	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500, 0, 0, 5000)
+
+
+	'we need to overwrite it to have a custom type - with custom update routine
+	Method Create:TFigureTerrorist(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
+		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
+		deliverToRoom = GetRoomCollection().GetFirstByDetails("supermarket")
+		Return Self
+	End Method
+
+
+	'override to make the figure stay in the room for a random time
+	Method onEnterRoom:Int(room:TRoom, door:TRoomDoor)
+		Super.onEnterRoom(room, door)
+
+		'
+		if room = deliverToRoom then deliveryDone = True
+
+		'reset timer so figure stays in room for some time
+		nextActionTimer.Reset()
+	End Method
+
+
+	Method UpdateCustom:Int()
+		'nothing to do - move to offscreen (leave building)
+		If not deliverToRoom and not target
+			if not IsOffScreen() then SendToOffscreen()
+		EndIf
+
+		'package delivered? leave building and await orders
+		If deliveryDone
+			print "delivered"
+			deliverToRoom = Null
+			deliveryDone = False
+		EndIf
+	
+		'figure is in building and without target waiting for orders
+		If Not inRoom And Not target
+			Local door:TRoomDoor
+			If Not foundTarget
+				door = TRoomDoor.GetByDetails("roomboard", 0)
+				if not door then print "door not found"
+
+				TLogger.Log("TFigureTerrorist", "send to roomboard", LOG_DEBUG | LOG_AI, True)
+			ElseIf deliverToRoom
+				door = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
+				if not door then print "deliver door not found"
+
+				TLogger.Log("TFigureTerrorist", "send to room "+deliverToRoom.name, LOG_DEBUG | LOG_AI, True)
+			EndIf
+
+			if door then SendToDoor(door)
+		EndIf
+
+rem
+		if not foundTarget
+			'... neues ziel einloggen
+			foundTarget = True
+		Else
+			'bombe legen
+			'...
+			deliveredBomb = True
+
+			'...nach "ausserhalb" schicken
+		EndIf
+endrem
+
+		If inRoom And nextActionTimer.isExpired()
+			nextActionTimer.Reset()
+
+			'terrorist now knows where to "deliver"
+			if not foundTarget then foundTarget = True
+rem
+			'switch "with" and "without" letter
+			If sprite.name = "BotePost"
+				sprite = GetSpriteFromRegistry("BoteLeer")
+			Else
+				sprite = GetSpriteFromRegistry("BotePost")
+			EndIf
+endrem
+			'leave that room so we can find a new target
+			leaveRoom()
+		EndIf
+	End Method
+
+
+	'override: terrorist do like nobody
+	Method GetGreetingTypeForFigure:int(figure:TFigure)
+		'0 = grrLeft
+		'1 = hiLeft
+		'2 = ?!left
+
+		'depending on floor use "grr" or "?!"
+		return 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
+	End Method	
+End Type
+
+
+
 'MENU: MAIN MENU SCREEN
 Type TScreen_MainMenu Extends TGameScreen
 	Field guiButtonStart:TGUIButton
