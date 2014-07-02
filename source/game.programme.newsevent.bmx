@@ -89,17 +89,30 @@ Global NewsEventCollection:TNewsEventCollection = new TNewsEventCollection
 
 
 Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
-	Field title:string			= ""
-	Field description:string	= ""
-	Field genre:Int				= 0
-	Field quality:Int			= 0					'TODO: Quality wird nirgends definiert... keine Werte in der DB.
-	Field price:Int				= 0					'TODO: Es muss definiert werden welchen Rahmen price hat. In der DB sind fast alle Werte 0. Der Höchstwert ist 99.
-	Field episode:Int			= 0
-	Field episodes:TList		= CreateList()
-	Field happenedTime:Double	= -1
-	Field happenDelayData:int[]	= [5,0,0,0]			'different params for delay generation
-	Field happenDelayType:int	= 2					'what kind of delay do we have? 2 = hours
-	Field parent:TNewsEvent		= Null				'is this news a child of a chain?
+	Field title:string = ""
+	Field description:string = ""
+	Field genre:Int = 0
+	'TODO: Quality wird nirgends definiert... keine Werte in der DB.
+	Field quality:Int = 0
+	'TODO: Es muss definiert werden welchen Rahmen price hat. In der DB
+	'      sind fast alle Werte 0. Der Höchstwert ist 99.
+	Field price:Int	= 0
+	Field episode:Int = 0
+	Field episodes:TList = CreateList()
+	Field happenedTime:Double = -1
+	'params for delay generation  [A,B,C,D]
+	Field happenDelayData:int[]	= [5,0,0,0]
+	'what kind of delay do we have?
+	'1 = "A" days from now
+	'2 = "A" hours from now
+	'3 = "A" days from now at "B":00
+	Field happenDelayType:int = 2
+	'effects which get triggered on "doHappen"
+	Field happenEffects:TNewsEffect[]
+	'effects which get triggered on "doBroadcast"
+	Field broadcastEffects:TNewsEffect[]
+	'is this news a child of a chain?
+	Field parent:TNewsEvent = Null
 
 	Const GENRE_POLITICS:Int	= 0	{_exposeToLua}
 	Const GENRE_SHOWBIZ:Int		= 1	{_exposeToLua}
@@ -172,6 +185,78 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	End Function
 
 
+	'checks if an effect was already added before
+	Method HasBroadcastEffect:int(effect:TNewsEffect)
+		if not effect then return True
+
+		For local existingEffect:TNewsEffect = eachin broadcastEffects
+			if effect = existingEffect then return True
+		Next
+		return False
+	End Method
+
+
+	Method AddBroadcastEffect:int(effect:TNewsEffect)
+		'skip if already added
+		If HasBroadcastEffect(effect) then return False
+
+		'add effect
+		broadcastEffects :+ [effect]
+		return True
+	End Method
+
+
+	Method RemoveBroadcastEffect:int(effect:TNewsEffect)
+		'to make the array "truncate", create a new one - and just
+		'skip adding the effect which should get removed.
+		local newEffects:TNewsEffect[]
+		For Local existingEffect:TNewsEffect = eachIn broadcastEffects
+			if existingEffect = effect then continue
+			newEffects :+ [existingEffect]
+		Next
+		
+		'set new array
+		happenEffects = newEffects
+		return True
+	End Method
+
+
+	'checks if an effect was already added before
+	Method HasHappenEffect:int(effect:TNewsEffect)
+		if not effect then return True
+
+		For local existingEffect:TNewsEffect = eachin happenEffects
+			if effect = existingEffect then return True
+		Next
+		return False
+	End Method
+
+
+	Method AddHappenEffect:int(effect:TNewsEffect)
+		'skip if already added
+		If HasHappenEffect(effect) then return False
+
+		'add effect
+		happenEffects :+ [effect]
+		return True
+	End Method
+
+
+	Method RemoveHappenEffect:int(effect:TNewsEffect)
+		'to make the array "truncate", create a new one - and just
+		'skip adding the effect which should get removed.
+		local newEffects:TNewsEffect[]
+		For Local existingEffect:TNewsEffect = eachIn happenEffects
+			if existingEffect = effect then continue
+			newEffects :+ [existingEffect]
+		Next
+		
+		'set new array
+		happenEffects = newEffects
+		return True
+	End Method
+
+
 	Method getHappenDelay:int()
 		'data is days from now
 		if self.happenDelayType = 1 then return self.happenDelayData[0]*60*24
@@ -188,9 +273,28 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 
 	Method doHappen(time:int = 0)
+		'set happened time, add to collection list...
 		NewsEventCollection.setNewsHappened(self, time)
+
+		'trigger happenEffects
+		local effectParams:TData = new TData.Add("newsEvent", self)
+		For local eff:TNewsEffect = eachin happenEffects
+			eff.Trigger(effectParams)
+		Next
 	End Method
 
+
+	'call this as soon as a news containing this newsEvent is
+	'broadcasted. If playerID = -1 then this effect might target
+	'"all players" (depends on implementation)
+	Method doBroadcast(playerID:int = -1)
+		'trigger broadcastEffects
+		local effectParams:TData = new TData.Add("newsEvent", self).AddNumber("playerID", playerID)
+		For local eff:TNewsEffect = eachin broadcastEffects
+			eff.Trigger(effectParams)
+		Next
+	End Method
+	
 
 	Method getEpisodesCount:int()
 		if self.parent then return self.parent.episodes.Count()
@@ -243,3 +347,43 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 End Type
 
 
+
+
+Type TNewsEffect
+	Field data:TData
+	Field _customEffectFunc:int(params:TData)
+
+
+	Method ToString:string()
+		local name:string = data.GetString("name", "default")
+		return "TNewsEffect ("+name+")"
+	End Method
+
+
+	Method SetData(data:TData)
+		self.data = data
+	End Method
+
+
+	Method GetData:TData()
+		if not data then data = new TData
+		return data
+	End Method
+
+	
+	'call to handle/emit the effect
+	Method Trigger:int(params:TData)
+		if _customEffectFunc then return _customEffectFunc(params)
+
+		return EffectFunc(params)
+	End Method
+
+
+	'override this function in custom types
+	Method EffectFunc:int(params:TData)
+		print ToString()
+		print "params: "+params.ToString()
+	
+		return True
+	End Method
+End Type
