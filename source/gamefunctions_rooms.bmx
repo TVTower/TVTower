@@ -544,10 +544,10 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 	Field _soundSource:TDoorSoundSource = Null {nosave}
 	Field sign:TRoomDoorSign = null
 
-	Global list:TList = CreateList()		'List of doors
-	Global _doorsDrawnToBackground:Int	= 0					'doors drawn to Pixmap of background
+	Global list:TList = CreateList()				'List of doors
+	Global _doorsDrawnToBackground:Int	= 0			'doors drawn to Pixmap of background
 
-	const doorSlot0:int	= -10								'x coord of defined slots
+	const doorSlot0:int	= -10						'x coord of defined slots
 	const doorSlot1:int	= 206
 	const doorSlot2:int	= 293
 	const doorSlot3:int	= 469
@@ -564,11 +564,11 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 		DoorTimer.setInterval( TRoom.ChangeRoomSpeed )
 
-		'x = 1-4, "door slots"
+		'x = x of the given doorSlot
 		'y = floor
 		'w = door width
 		'h = door height
-		self.area = new TRectangle.Init(x,floor, GetSpriteFromRegistry("gfx_building_Tueren").framew, 52)
+		self.area = new TRectangle.Init(x, floor, GetSpriteFromRegistry("gfx_building_Tueren").framew, 52)
 		self.doorSlot = doorSlot
 		self.doorType = doorType
 
@@ -613,6 +613,11 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 		return 0
 	End Method
 
+
+	Method getDoorFloor:int()
+		return area.GetY()
+	End Method
+	 
 
 	Method getDoorType:int()
 		if DoorTimer.isExpired() then return doortype else return 5
@@ -784,17 +789,8 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 		If doortype < 0 then return 0
 
-		local signx:int = 0
-		Local signy:Int = 41 + (13 - area.GetY()) * 23
-		select slot
-			case 1	signx = 26
-			case 2	signx = 208
-			case 3	signx = 417
-			case 4	signx = 599
-			default return 0
-		end select
-
-		sign = new TRoomDoorSign.Init(self, signx, signy)
+		'area.getY() is the floor of the door
+		sign = new TRoomDoorSign.Init(self, slot, area.getY())
 		return true
 	End Method
 
@@ -5470,6 +5466,8 @@ End Type
 'signs used in elevator-plan /room-plan
 Type TRoomDoorSign Extends TBlockMoveable
 	Field door:TRoomDoor
+	Field signSlot:int = 0
+	Field signFloor:int = 0
 	Field imageCache:TSprite = null
 	Field imageDraggedCache:TSprite	= null
 
@@ -5482,13 +5480,20 @@ Type TRoomDoorSign Extends TBlockMoveable
 	Global imageDraggedBaseName:string = "gfx_elevator_sign_dragged_"
 
 
-	Method Init:TRoomDoorSign(door:TRoomDoor, x:Int=0, y:Int=0)
-		local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0,door.room.owner))
-		self.door		= door
-		dragable		= 1
-		OrigPos			= new TPoint.Init(x, y)
-		StartPos		= new TPoint.Init(x, y)
-		rect 			= new TRectangle.Init(x,y, tmpImage.area.GetW(), tmpImage.area.GetH() - 1)
+	Method Init:TRoomDoorSign(roomDoor:TRoomDoor, signSlot:Int=0, signFloor:Int=0)
+		local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0, roomDoor.room.owner))
+		door = roomDoor
+		dragable = 1
+
+		self.signFloor = signFloor
+		self.signSlot = signSlot
+
+		Local y:Int = GetFloorY(signFloor)
+		local x:Int = GetSlotX(signSlot)
+
+		OrigPos = new TPoint.Init(x, y)
+		StartPos = new TPoint.Init(x, y)
+		rect = new TRectangle.Init(x, y, tmpImage.area.GetW(), tmpImage.area.GetH() - 1)
 
 		List.AddLast(self)
 		SortList List
@@ -5500,7 +5505,7 @@ Type TRoomDoorSign Extends TBlockMoveable
  		DragAndDrop.h = rect.GetH()
 
 		DragAndDropList.AddLast(DragAndDrop)
- 		SortList DragAndDropList
+ 		SortList(DragAndDropList)
 
 		'===== REGISTER EVENTS =====
 		if not eventsRegistered
@@ -5513,6 +5518,73 @@ Type TRoomDoorSign Extends TBlockMoveable
 		Return self
 	End Method
 
+
+	Function GetFloorY:int(signFloor:int)
+		return 41 + (13 - signFloor) * 23
+	End Function
+
+
+	Function GetFloor:int(signY:int)
+		return 13 - ((signY - 41) / 23)
+	End Function
+
+
+	Function GetSlotX:int(signSlot:int)
+		select signSlot
+			case 1	return 26
+			case 2	return 208
+			case 3	return 417
+			case 4	return 599
+			default Throw "TRoomDoorSign.GetSlotX(): invalid signSlot "+signSlot
+		end select
+		return 0
+	End Function
+
+
+	Function GetSlot:int(signX:int)
+		select signX
+			case 26		return 1
+			case 208	return 2
+			case 417	return 3
+			case 599	return 4
+			default Throw "TRoomDoorSign.GetSlot(): invalid signX "+signX
+		end select
+		return 0
+	End Function
+
+
+	Function GetFirstByRoom:TRoomDoorSign(room:TRoom)
+		For local sign:TRoomDoorSign = eachin list
+			if not sign.door then continue
+			if not sign.door.room then continue
+
+			if sign.door.room = room then return sign
+		Next
+		return Null
+	End Function
+
+
+	'return the sign originally at the given position
+	Function GetByOriginalPosition:TRoomDoorSign(signSlot:int, signFloor:int)
+		For local sign:TRoomDoorSign = eachin list
+			if sign.signSlot = signSlot and sign.signFloor = signFloor
+				return sign
+			endif
+		Next
+		return Null
+	End Function
+
+
+	'return the sign now at the given position
+	Function GetByCurrentPosition:TRoomDoorSign(signSlot:int, signFloor:int)
+		For local sign:TRoomDoorSign = eachin list
+			if sign.GetSlot(sign.rect.GetX()) = signSlot and sign.GetFloor(sign.rect.GetY()) = signFloor
+				return sign
+			endif
+		Next
+		return Null
+	End Function
+	
 
 	'as soon as a language changes, remove the cached images
 	'to get them regenerated
@@ -5559,12 +5631,13 @@ Type TRoomDoorSign Extends TBlockMoveable
 	   Return (dragged * 100)-(s.dragged * 100)
 	End Method
 
-
+rem unused
 	Method GetSlotOfBlock:Int()
 		If rect.GetX() = 589 then Return 12+(Int(Floor(StartPos.y - 17) / 30))
 		If rect.GetX() = 262 then Return 1*(Int(Floor(StartPos.y - 17) / 30))
 		Return -1
 	End Method
+endrem
 
 	'draw the Block inclusive text
 	'zeichnet den Block inklusive Text

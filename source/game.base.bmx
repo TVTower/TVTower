@@ -64,6 +64,8 @@ Type TGame {_exposeToLua="selected"}
 	'playing over internet? 0=false
 	Field onlinegame:Int = 0
 
+	Field terrorists:TFigureTerrorist[2]
+
 	Global _instance:TGame
 	Global _initDone:int = FALSE
 	'was "PrepareFirstGameStart" run already?
@@ -261,10 +263,11 @@ Type TGame {_exposeToLua="selected"}
 		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
 		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 6, 65, 0)
 		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 0, -65, 0)
-		local fig:TFigure
-		fig = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), -50, 0, 65)
-		fig.MoveToOffscreen()
-'		New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), -50, 0, 65)
+
+		terrorists[0] = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), -50, 0, 65)
+		terrorists[0].MoveToOffscreen()
+		terrorists[1] = New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), -50, 0, 65)
+		terrorists[1].MoveToOffscreen()
 
 
 

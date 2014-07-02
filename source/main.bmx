@@ -412,6 +412,12 @@ endrem
 
 				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
 
+If KEYMANAGER.IsHit(KEY_SPACE)
+	Global whichTerrorist:int = 0
+	whichTerrorist = 1 - whichTerrorist
+	Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
+EndIf
+
 				If Game.isGameLeader()
 					If KEYMANAGER.Ishit(Key_F1) And GetPlayerCollection().Get(1).isAI() Then GetPlayerCollection().Get(1).PlayerKI.reloadScript()
 					If KEYMANAGER.Ishit(Key_F2) And GetPlayerCollection().Get(2).isAI() Then GetPlayerCollection().Get(2).PlayerKI.reloadScript()
@@ -1052,11 +1058,11 @@ End Type
 
 Type TFigureTerrorist Extends TFigure
 	'did the figure check the roomboard where to go to?
-	Field foundTarget:int = False
+	Field checkedRoomboard:int = False
 	'where to deliver the "package"
 	Field deliverToRoom:TRoom
 	'was the "package" delivered already?
-	Field deliveryDone:int = False
+	Field deliveryDone:int = True
 	'time to wait between doing something
 	Field nextActionTimer:TIntervalTimer = TIntervalTimer.Create(1500, 0, 0, 5000)
 
@@ -1064,7 +1070,6 @@ Type TFigureTerrorist Extends TFigure
 	'we need to overwrite it to have a custom type - with custom update routine
 	Method Create:TFigureTerrorist(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
 		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
-		deliverToRoom = GetRoomCollection().GetFirstByDetails("supermarket")
 		Return Self
 	End Method
 
@@ -1073,11 +1078,24 @@ Type TFigureTerrorist Extends TFigure
 	Method onEnterRoom:Int(room:TRoom, door:TRoomDoor)
 		Super.onEnterRoom(room, door)
 
-		'
+		'terrorist now knows where to "deliver"
+		if not checkedRoomboard then checkedRoomboard = True
+		'if the room is the deliver target, delivery is finished
 		if room = deliverToRoom then deliveryDone = True
-
+			
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
+	End Method
+
+
+	'set the room the figure should go to.
+	'Terrorist do not know where the room will be, so they
+	'go to the roomboard first
+	Method SetDeliverToRoom:int(room:TRoom)
+		'to go to this room, we have to first visit the roomboard
+		checkedRoomboard = False
+		deliveryDone = False
+		deliverToRoom = room
 	End Method
 
 
@@ -1087,57 +1105,36 @@ Type TFigureTerrorist Extends TFigure
 			if not IsOffScreen() then SendToOffscreen()
 		EndIf
 
-		'package delivered? leave building and await orders
-		If deliveryDone
-			print "delivered"
-			deliverToRoom = Null
-			deliveryDone = False
-		EndIf
-	
 		'figure is in building and without target waiting for orders
-		If Not inRoom And Not target
-			Local door:TRoomDoor
-			If Not foundTarget
-				door = TRoomDoor.GetByDetails("roomboard", 0)
-				if not door then print "door not found"
+		If not deliveryDone and not target and IsInBuilding()
+			'before directly going to a room, ask the roomboard where
+			'to go
+			If Not checkedRoomboard
+				TLogger.Log("TFigureTerrorist", self.name" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
+				SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
+			Else
+				'instead of sending the figure to the correct door, we
+				'ask the roomsigns where to go to
+				'1) get sign of the door
+				local signA:TRoomDoorSign = TRoomDoorSign.GetFirstByRoom(deliverToRoom)
+				'2) get sign which is now at the original position of signA
+				local signB:TRoomDoorSign = TRoomDoorSign.GetByCurrentPosition(signA.signSlot, signA.signFloor)
+				if not signB then print "sign at given position not found"
 
-				TLogger.Log("TFigureTerrorist", "send to roomboard", LOG_DEBUG | LOG_AI, True)
-			ElseIf deliverToRoom
-				door = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
-				if not door then print "deliver door not found"
-
-				TLogger.Log("TFigureTerrorist", "send to room "+deliverToRoom.name, LOG_DEBUG | LOG_AI, True)
+				TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+signb.door.room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+				SendToDoor(signb.door)
 			EndIf
-
-			if door then SendToDoor(door)
 		EndIf
 
-rem
-		if not foundTarget
-			'... neues ziel einloggen
-			foundTarget = True
-		Else
-			'bombe legen
-			'...
-			deliveredBomb = True
-
-			'...nach "ausserhalb" schicken
-		EndIf
-endrem
-
-		If inRoom And nextActionTimer.isExpired()
+		If inRoom and nextActionTimer.isExpired()
 			nextActionTimer.Reset()
 
-			'terrorist now knows where to "deliver"
-			if not foundTarget then foundTarget = True
-rem
-			'switch "with" and "without" letter
-			If sprite.name = "BotePost"
-				sprite = GetSpriteFromRegistry("BoteLeer")
-			Else
-				sprite = GetSpriteFromRegistry("BotePost")
+			'delivery finished - send home again
+			If deliveryDone
+				deliverToRoom = Null
+				SendToOffscreen()
 			EndIf
-endrem
+
 			'leave that room so we can find a new target
 			leaveRoom()
 		EndIf
