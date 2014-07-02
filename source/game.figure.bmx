@@ -360,6 +360,22 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetGreetingTypeForFigure:int(figure:TFigure)
+		'0 = grrLeft
+		'1 = hiLeft
+		'2 = ?!left
+
+		'if both figures are "players" we display "GRRR" or "?!!?"
+		If figure.parentPlayerID and parentPlayerID
+			'depending on floor use "grr" or "?!"
+			return 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
+		'display "hi"
+		else
+			return 1
+		endif
+	End Method
+
+
 	Method GetPeopleOnSameFloor()
 		For Local Figure:TFigure = EachIn GetFigureCollection().List
 			'skip other figures
@@ -368,14 +384,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			if not CanSeeFigure(figure) and not figure.CanSeeFigure(self) then continue
 
 
-			local greetType:int = 0 'grrLeft,hiLeft,?!left  adding +3 is for right side
-			'if both figures are "players" we display "GRRR" or "?!!?"
-			If figure.parentPlayerID and parentPlayerID
-				'depending on floor use "grr" or "?!"
-				greetType = 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
-			else
-				greetType = 1
-			endif
+			local greetType:int = GetGreetingTypeForFigure(figure)
 
 			'if the greeting type differs
 			'- or enough time has gone for another greet
@@ -823,7 +832,9 @@ endrem
 			'do not fade when it is a fake room
 			if inRoom and inRoom.ShowsFigures() then alpha = 1.0
 			if fromRoom and fromRoom.ShowsFigures() then alpha = 1.0
-
+			if TRoomDoor(targetObj) and TRoomDoor(targetObj).room
+				TRoomDoor(targetObj).room.ShowsFigures() then alpha = 1.0
+			endif
 			
 			SetAlpha(alpha * oldAlpha)
 		endif
