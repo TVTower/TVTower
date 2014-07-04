@@ -1136,11 +1136,16 @@ Type TTooltip Extends TEntity
 	End Method
 
 
-	Method DrawHeader:Int(x:Float, y:Float, width:Int, height:Int)
+	Method SetHeaderColor:int()
 		If TitleBGtype = 0 Then SetColor 250,250,250
 		If TitleBGtype = 1 Then SetColor 200,250,200
 		If TitleBGtype = 2 Then SetColor 250,150,150
 		If TitleBGtype = 3 Then SetColor 200,200,250
+	End Method
+
+
+	Method DrawHeader:Int(x:Float, y:Float, width:Int, height:Int)
+		SetHeaderColor()
 		TooltipHeader.TileDraw(x, y, width, height)
 
 		SetColor 255,255,255
@@ -1165,6 +1170,17 @@ Type TTooltip Extends TEntity
 	End Method
 
 
+	Method DrawBackground:int(x:int, y:int, w:int, h:int)
+		local oldCol:TColor = new TColor.Get()
+
+		'bright background
+		SetColor 255,255,255
+		DrawRect(x, y, w, h)
+
+		oldCol.SetRGB()
+	End Method
+
+
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		If Not enabled Then Return 0
 
@@ -1184,9 +1200,10 @@ Type TTooltip Extends TEntity
 			SetColor 0,0,0
 			'border
 			DrawRect(area.GetX(), area.GetY(), boxWidth, boxHeight)
-			'bright background
 			SetColor 255,255,255
-			DrawRect(innerX, innerY, boxInnerWidth, boxInnerHeight)
+
+			'draw background of whole tooltip
+			DrawBackground(innerX, innerY, boxInnerWidth, boxInnerHeight)
 
 			'draw header including caption and header background
 			DrawHeader(innerX, innerY, boxInnerWidth, captionHeight)

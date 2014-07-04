@@ -222,6 +222,22 @@
 			<tooltip text="ROOM_BETTY" />
 			<door doorslot="1" floor="13" doortype="1" />
 		</room>
+		<room name="laundry" owner="0" screen="screen_supermarket" size="2">
+			<tooltip text="ROOM_LAUNDRY" />
+			<door doorslot="1" floor="1" doortype="2" />
+		</room>
+		<room name="biocontrol" owner="0" screen="screen_supermarket" size="1">
+			<tooltip text="ROOM_BIOCONTROL" />
+			<door doorslot="2" floor="12" doortype="3" />
+		</room>
+		<room name="computershop" owner="0" screen="screen_supermarket" size="2">
+			<tooltip text="ROOM_COMPUTERSHOP" />
+			<door doorslot="4" floor="7" doortype="4" />
+		</room>
+		<room name="pychiatrist" owner="0" screen="screen_supermarket" size="1">
+			<tooltip text="ROOM_PSYCHIATRIST" />
+			<door doorslot="2" floor="3" doortype="4" />
+		</room>
 		<room name="supermarket" owner="0" screen="screen_supermarket">
 			<tooltip text="ROOM_SUPERMARKET" description="ROOM_SUPERMARKET_SUB" />
 			<door doorslot="3" floor="1" doortype="3" />

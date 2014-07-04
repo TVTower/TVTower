@@ -812,7 +812,7 @@ Type TBitmapFont
 							sprite = TSprite(font.charsSprites.ValueForKey(string(displayCharCode)))
 							if sprite
 								if drawToPixmap
-									sprite.DrawOnImage(drawToPixmap, x+lineWidth+tx,y+height+ty+styleDisplaceY - font.displaceY, color)
+									sprite.DrawOnImage(drawToPixmap, x+lineWidth+tx, y+height+ty+styleDisplaceY - font.displaceY, -1, null, color)
 								else
 									sprite.Draw(x+lineWidth+tx,y+height+ty+styleDisplaceY - font.displaceY)
 								endif

@@ -292,7 +292,7 @@ Type TApp
 		Local img:TPixmap = VirtualGrabPixmap(0, 0, GraphicsWidth(), GraphicsHeight())
 
 		'add overlay
-		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, TColor.Create(255,255,255,0.5))
+		If overlay Then overlay.DrawOnImage(img, GetGraphicsManager().GetWidth() - overlay.GetWidth() - 10, 10, -1, null, TColor.Create(255,255,255,0.5))
 
 		'remove alpha
 		SavePixmapPNG(ConvertPixmap(img, PF_RGB888), filename)
@@ -413,9 +413,11 @@ endrem
 				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
 
 If KEYMANAGER.IsHit(KEY_SPACE)
-	Global whichTerrorist:int = 0
-	whichTerrorist = 1 - whichTerrorist
-	Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
+	GetRoomCollection().GetFirstByDetails("supermarket").SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
+	GetRoomCollection().GetFirstByDetails("office", 1).SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
+'	Global whichTerrorist:int = 1
+'	whichTerrorist = 1 - whichTerrorist
+'	Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
 EndIf
 
 				If Game.isGameLeader()
@@ -1110,7 +1112,7 @@ Type TFigureTerrorist Extends TFigure
 			'before directly going to a room, ask the roomboard where
 			'to go
 			If Not checkedRoomboard
-				TLogger.Log("TFigureTerrorist", self.name" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
+				TLogger.Log("TFigureTerrorist", self.name+" is sent to roomboard", LOG_DEBUG | LOG_AI, True)
 				SendToDoor(TRoomDoor.GetByDetails("roomboard", 0))
 			Else
 				'instead of sending the figure to the correct door, we

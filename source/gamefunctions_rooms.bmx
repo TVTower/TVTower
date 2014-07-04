@@ -100,7 +100,7 @@ Type TRoom {_exposeToLua="selected"}
 	'can this room be used as a studio?
 	Field usableAsStudio:Int = False
 	'does something block that room (eg. previous bomb attack)
-	Field blocked:Int = False
+	Field blockedState:Int = BLOCKEDSTATE_NONE 
 	'time until this minutes in the game are gone
 	Field blockedUntil:Int = 0
 	
@@ -125,6 +125,11 @@ Type TRoom {_exposeToLua="selected"}
 	'=== CONFIG FOR ALL ROOMS ===
 	'time the change of a room needs (1st half is opening, 2nd closing a door)
 	Global ChangeRoomSpeed:int = 500
+
+	Const BLOCKEDSTATE_NONE:int       = 0 'not blocked at all
+	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
+	Const BLOCKEDSTATE_RENOVATION:int = 2 'eg. for rooms not "bombable"
+	Const BLOCKEDSTATE_MARSHAL:int    = 3 'eg. archive when not enough money
 
 
 	Method New()
@@ -172,19 +177,75 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-	Method SetBlocked:int(blockTimeInMinutes:int = 0)
+	'easy accessor to block a room using predefined values
+	Method SetBlockedState:int(blockedState:int = 0)
+		local time:int = 0
+		
+		'=== BOMB ===
+		if blockedState = BLOCKEDSTATE_BOMB
+			'"placerholder rooms" (might get rent later)
+			if owner = 0 and IsUsableAsStudio() 
+				time = 60 * 24
+			'rooms like movie agency
+			elseIf owner = 0
+				time = 60 * 2
+			'player rooms
+			elseIf owner > 0
+				time = 30 
+			endif
+		endif
+
+		'=== RENOVATION ===
+		if blockedState = BLOCKEDSTATE_RENOVATION
+			if owner = 0 and IsUsableAsStudio() 
+				'ATTENTION: "randRange" to get the same in multiplayer games
+				time = 60 * randRange(5,10)
+			elseIf owner = 0
+				time = 30 * randRange(1,3)
+			elseIf owner > 0
+				time = 10 * randRange(1,2) 
+			endif
+		endif
+
+		'=== MARSHAL ===
+		if blockedState = BLOCKEDSTATE_RENOVATION
+			'just blocks player rooms
+			If owner > 0
+				time = 15 * randRange(1,4) 
+			endif
+		endif
+			
+		SetBlocked(time, blockedState) 
+	End Method
+
+
+	Method SetBlocked:int(blockTimeInMinutes:int = 0, blockedState:int = 0)
+		'remove blockage without effects!
 		if blockTimeInMinutes = 0
-			blocked = False
+			blockedState = BLOCKEDSTATE_NONE
 		else
-			blocked = True
+			self.blockedState = blockedState
 			blockedUntil = GetGameTime().GetTimeGone() + blockTimeInMinutes
 		endif
 	End Method
 
 
+	Method SetUnblocked:int()
+		'when it was got bombed, free the room now
+		if blockedState = BLOCKEDSTATE_BOMB
+			if IsUsableAsStudio() then SetAvailableForRent(True)
+		EndIf
+				
+		blockedState = BLOCKEDSTATE_NONE
+	End Method
+
+
+
 	Method IsBlocked:Int()
-		if blocked and blockedUntil < GetGameTime().GetMinute() then blocked = False
-		return blocked
+		if blockedState <> BLOCKEDSTATE_NONE and blockedUntil < GetGameTime().GetTimeGone()
+			SetUnBlocked()
+		EndIf
+		return (blockedState <> BLOCKEDSTATE_NONE)
 	End Method
 
 
@@ -210,13 +271,6 @@ Type TRoom {_exposeToLua="selected"}
 
 	Method HasOwner:int()
 		return (owner > 0)
-	End Method
-
-
-	'call this is if the terrorist attacks this room
-	Method SetAttacked:int()
-		'block this room for 24 ingame hours 
-		SetBlocked(60 * 24) 
 	End Method
 
 
@@ -527,6 +581,87 @@ End Rem
 End Type
 
 
+Type TRoomDoorTooltip extends TTooltip
+	Field roomID:int
+
+	Function Create:TRoomDoorTooltip(title:String = "", content:String = "unknown", x:Int = 0, y:Int = 0, w:Int = -1, h:Int = -1, lifetime:Int = 300)
+		local obj:TRoomDoorTooltip = new TRoomDoorTooltip
+		obj.Initialize(title, content, x, y, w, h, lifetime)
+		return obj
+	End Function
+
+
+	Method AssignRoom(roomID:int)
+		self.roomID = roomID
+	End Method
+
+
+	'override to add "blocked" support
+	Method DrawBackground:int(x:int, y:int, w:int, h:int)
+		local room:TRoom = GetRoomCollection().Get(roomID)
+		if not room then return False
+
+		local oldCol:TColor = new TColor.Get()
+
+		if room.IsBlocked()
+			SetColor 255,235,215
+		else
+			SetColor 255,255,255
+		endif
+		DrawRect(x, y, w, h)
+
+		oldCol.SetRGB()
+	End Method
+
+
+	'override to modify header col
+	Method SetHeaderColor:int()
+		local room:TRoom = GetRoomCollection().Get(roomID)
+		if room and room.isBlocked()
+			SetColor 250,230,210
+		else
+			Super.SetHeaderColor()
+		endif
+	End Method
+	
+
+
+	Method Update:Int()
+		local room:TRoom = GetRoomCollection().Get(roomID)
+		if not room then return False
+
+		'adjust image used in tooltip
+		If room.name = "archive" Then tooltipimage = 0
+		If room.name = "office" Then tooltipimage = 1
+		If room.name = "chief" Then tooltipimage = 2
+		If room.name = "news" Then tooltipimage = 4
+		If room.name.Find("studio",0) = 0 Then tooltipimage = 5
+		'adjust header bg color
+		If room.owner >= 1 then
+			TitleBGtype = room.owner + 10
+		Else
+			TitleBGtype = 0
+		EndIf
+
+
+		local newTitle:String = room.GetDescription(1)
+		if newTitle <> title then SetTitle(newTitle)
+
+		local newContent:String = room.GetDescription(2)
+		if room.IsBlocked()
+			'add line spacer
+			if newContent<>"" then newContent :+ chr(13) + chr(13)
+			'add blocked message
+			newContent :+ GetLocale("ROOM_IS_BLOCKED")
+		endif
+		if newContent <> content then SetContent(newContent)
+
+		Super.Update()
+	End Method
+End Type
+
+
+
 
 Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 	'Field area:
@@ -535,7 +670,7 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 	Field room:TRoom
 	'uses description
-	Field tooltip:TTooltip = null
+	Field tooltip:TRoomDoorTooltip = null
 	'time is set in Init() depending on changeRoomSpeed..
 	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1)
 	'door 1-4 on floor (<0 is invisible, -1 is unset)
@@ -664,30 +799,28 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 
 	Method UpdateTooltip:Int()
+		'only show tooltip if not "empty" and mouse in door-rect
+		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.IsInBuilding() And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
+			If not tooltip
+				tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
+				tooltip.AssignRoom(room.id)
+			endif
+
+			tooltip.Hover()
+			tooltip.enabled	= 1
+		EndIf
+
+
 		If tooltip AND tooltip.enabled
-			tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
 			tooltip.Update()
+
+			tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
+			tooltip.area.position.setX( area.GetX() + area.GetW()/2 - tooltip.GetWidth()/2 )
+
 			'delete old tooltips
 			if tooltip.lifetime < 0 then tooltip = null
 		EndIf
 
-		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.IsInBuilding() And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
-			If tooltip <> null
-				tooltip.Hover()
-			else
-				tooltip = TTooltip.Create(room.GetDescription(1), room.GetDescription(2), 100, 140, 0, 0)
-			endif
-			tooltip.area.position.setY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
-			tooltip.area.position.setX( area.GetX() + area.GetW()/2 - tooltip.GetWidth()/2 )
-			tooltip.enabled	= 1
-			If room.name = "chief" Then tooltip.tooltipimage = 2
-			If room.name = "news" Then tooltip.tooltipimage = 4
-			If room.name = "archive" Then tooltip.tooltipimage = 0
-			If room.name = "office" Then tooltip.tooltipimage = 1
-			If room.name.Find("studio",0) = 0 Then tooltip.tooltipimage = 5
-			If room.owner >= 1 Then tooltip.TitleBGtype = room.owner + 10
-		EndIf
 	End Method
 
 
@@ -753,9 +886,19 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 			doorSprite.Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 		EndIf
 
+
 		'==== DRAW DOOR SIGN ====
 		'draw on same height than door startY
-		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(area.GetX() + 2 + doorSprite.framew, GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH())
+		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(xOffset + area.GetX() + 2 + doorSprite.framew, yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH())
+
+
+		'==== DRAW OVERLAY ===
+		if room.IsBlocked()
+			'when a bomb is the reason - draw a barrier tape
+			if room.blockedState = room.BLOCKEDSTATE_BOMB
+				GetSpriteFromRegistry("gfx_building_absperrung").Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), -1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			EndIf
+		EndIf
 
 
 		'==== DRAW DEBUG TEXT ====

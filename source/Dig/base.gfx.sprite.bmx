@@ -52,6 +52,9 @@ CONST ALIGN_RIGHT:FLOAT = 1.0
 CONST ALIGN_TOP:FLOAT = 0
 CONST ALIGN_BOTTOM:FLOAT = 1.0
 Global ALIGN_TOP_LEFT:TPoint = new TPoint
+Global ALIGN_TOP_RIGHT:TPoint = new TPoint.Init(ALIGN_RIGHT, ALIGN_TOP)
+Global ALIGN_BOTTOM_LEFT:TPoint = new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM)
+Global ALIGN_BOTTOM_RIGHT:TPoint = new TPoint.Init(ALIGN_RIGHT, ALIGN_BOTTOM)
 
 
 
@@ -231,6 +234,17 @@ Type TSprite
 		local ninePatch:int = data.GetBool("ninePatch", FALSE)
 		local parent:TSpritePack = TSpritePack(data.Get("parent", null))
 
+		'assign an offset rect if defined so
+		local offsetLeft:int = data.GetInt("offsetLeft", 0)
+		local offsetRight:int = data.GetInt("offsetRight", 0)
+		local offsetTop:int = data.GetInt("offsetTop", 0)
+		local offsetBottom:int = data.GetInt("offsetBottom", 0)
+		local offset:TRectangle = null
+		if offsetLeft <> 0 or offsetRight <> 0 or offsetTop <> 0 or offsetBottom <> 0
+			offset = new TRectangle.Init(offsetTop, offsetLeft, offsetBottom, offsetRight)
+		EndIf
+
+
 		'create a new spritepack if none is assigned yet
 		if parent = null
 			if flags & MASKEDIMAGE then SetMaskColor(255,0,255)
@@ -251,7 +265,7 @@ Type TSprite
 		endif
 
 		'create sprite
-		local sprite:TSprite = new TSprite.Init(parent, name, new TRectangle.Init(0,0, ImageWidth(parent.image), ImageHeight(parent.image)), null, animCount, new TPoint.Init(frameW, frameH), id)
+		local sprite:TSprite = new TSprite.Init(parent, name, new TRectangle.Init(0,0, ImageWidth(parent.image), ImageHeight(parent.image)), offset, animCount, new TPoint.Init(frameW, frameH), id)
 
 		'enable nine patch if wanted
 		if ninePatch then sprite.EnableNinePatch()
@@ -387,9 +401,13 @@ Type TSprite
 
 
 	'return the pixmap of the sprite' image (reference, no copy)
-	Method GetPixmap:TPixmap()
-		Local DestPixmap:TPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
-		'UnlockImage(self.parent.image)
+	Method GetPixmap:TPixmap(frame:Int=-1)
+		Local DestPixmap:TPixmap
+		if frame >= 0
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX() + frame * framew, area.GetY(), framew, area.GetH())
+		Else
+			DestPixmap = LockImage(parent.image, 0, False, True).Window(area.GetX(), area.GetY(), area.GetW(), area.GetH())
+		EndIf
 		'GCCollect() '<- FIX!
 		return DestPixmap
 	End Method
@@ -475,8 +493,17 @@ Type TSprite
 
 
 	'draw the sprite onto a given image or pixmap
-	Method DrawOnImage(imageOrPixmap:object, x:int, y:int, modifyColor:TColor=null)
-		DrawImageOnImage(getPixmap(), imageOrPixmap, x + offset.GetLeft(), y + offset.GetTop(), modifyColor)
+	Method DrawOnImage(imageOrPixmap:object, x:int, y:int, frame:int = -1, alignment:TPoint=null, modifyColor:TColor=null)
+		if not alignment then alignment = ALIGN_TOP_LEFT
+		if frame >= 0
+			x :- alignment.GetX() * framew
+			y :- alignment.GetY() * frameh
+		else
+			x :- alignment.GetX() * area.GetW()
+			y :- alignment.GetY() * area.GetH()
+		endif
+
+		DrawImageOnImage(getPixmap(frame), imageOrPixmap, x + offset.GetLeft(), y + offset.GetTop(), modifyColor)
 	End Method
 
 

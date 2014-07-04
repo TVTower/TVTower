@@ -96,6 +96,8 @@ PLANNER_FINANCES  = Finanzen
 PLANNER_IMAGE     = Image
 PLANNER_MESSAGES  = Mitteilungen
 
+ROOM_IS_BLOCKED = Raum ist blockiert!
+
 ROOM_ELEVATORPLAN		= Fahrstuhlziel-Planer
 ROOM_NEWSPLANNER		= Newsplaner
 ROOM_FINANCES			= Finanzen
@@ -133,6 +135,10 @@ ROOM_TOBACCOLOBBY_OWNER	= Vereinigung amerikanischer Tabakproduzenten
 ROOM_VRDUBAN			= Konsulat der VR Duban
 ROOM_FRDUBAN			= Botschaft der FR Duban
 ROOM_PORTER				= Pförtner
+ROOM_LAUNDRY			= Wäscherei
+ROOM_BIOCONTROL			= Bio-Control
+ROOM_PSYCHIATRIST		= Psychiaterbüro "Harry Dippl"
+ROOM_COMPUTERSHOP		= Computershop "SpySoft"
 ROOM_AUCTION			= Auktion
 ROOM_AUCTION_SUB		= Film- und Serienauktion
 ROOM_SIZE				= Raumgröße: %SIZE%

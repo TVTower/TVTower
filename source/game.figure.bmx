@@ -521,8 +521,17 @@ endrem
 		'figure is already in that room - so just enter
 		if room.isOccupant(self) then return TRUE
 
+		'something (bomb, renovation, ...) does not allow access to this
+		'room for now
+		if room.IsBlocked()
+			'inform player AI
+			If isAI() then GetPlayerCollection().Get(parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTALLOWED)
+			'tooltip only for active user
+			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
+			return FALSE
+		endif
 
-		'check if enter not possible 
+		'check if enter not possible
 		if not room.CanFigureEnter(self) and not forceEnter
 			If room.hasOccupant() and not room.isOccupant(self)
 				'only player-figures need such handling (events etc.)
