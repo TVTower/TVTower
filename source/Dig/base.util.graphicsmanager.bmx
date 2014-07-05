@@ -134,8 +134,9 @@ Type TGraphicsManager
 
 
 	Method InitGraphics:Int()
-		'virtual resolution
-		InitVirtualGraphics()
+		'initialize virtual graphics only when "InitGraphics()" is run
+		'for the first time
+		if not _g then InitVirtualGraphics()
 
 '		Try
 			Select renderer
