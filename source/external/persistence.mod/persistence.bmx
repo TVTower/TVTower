@@ -630,6 +630,12 @@ Type TPersist
 
 							Local fieldObj:TField = objType.FindField(fieldNode.getAttribute("name"))
 
+							'Ronny: skip unknown fields (no longer existing in the type)
+							If Not fieldObj Then
+								Print "[WARNING] TPersistence: field ~q"+fieldNode.getAttribute("name")+"~q is no longer available."
+								Continue
+							End If
+
 							'Ronny: skip loading elements having "nosave" metadata
 							If fieldObj.MetaData("nosave") Then
 								Continue

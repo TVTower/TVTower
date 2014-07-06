@@ -23,31 +23,31 @@ Type TBuilding Extends TStaticEntity
 	Field UFO_DoBeamAnimation:Int		= False
 	Field UFO_BeamAnimationDone:Int		= False
 
-	Field Clouds:TSpriteEntity[7]					{nosave}
-	Field CloudsAlpha:Float[7]						{nosave}
+	Field Clouds:TSpriteEntity[7]				{nosave}
+	Field CloudsAlpha:Float[7]					{nosave}
 
 	Field TimeColor:Double
 	Field DezimalTime:Float
 	Field ActHour:Int
-	Field initDone:Int					= False
-	Field gfx_bgBuildings:TSprite[6]				{nosave}
+	Field gfx_bgBuildings:TSprite[6]			{nosave}
 	Field gfx_building:TSprite					{nosave}
 	Field gfx_buildingEntrance:TSprite			{nosave}
 	Field gfx_buildingEntranceWall:TSprite		{nosave}
 	Field gfx_buildingFence:TSprite				{nosave}
 	Field gfx_buildingRoof:TSprite				{nosave}
 
-	Field room:TRoom					= Null		'the room used for the building
-	Field roomUsedTooltip:TTooltip		= Null
-	Field Stars:TPoint[60]							{nosave}
+	'the room used for the building
+	Field room:TRoom = Null
+	Field roomUsedTooltip:TTooltip = Null
+	Field Stars:TPoint[60]						{nosave}
 
 
 	Global softDrinkMachineActive:int = False
 	Global softDrinkMachine:TSpriteEntity
 
 	Global _instance:TBuilding
-	Global _backgroundModified:int		= FALSE
-	Global _eventsRegistered:int 		= FALSE
+	Global _backgroundModified:int = FALSE
+	Global _eventsRegistered:int = FALSE
 
 
 	Method New()
@@ -75,8 +75,7 @@ Type TBuilding Extends TStaticEntity
 	Method Create:TBuilding()
 		area.position.SetX(20)
 
-		'call to set graphics, paths for objects and other
-		'stuff not gameplay relevant
+		'call to set graphics, paths for objects and other stuff
 		InitGraphics()
 
 		area.position.SetY(0 - gfx_building.area.GetH() + 5 * 73 + 20)	' 20 = interfacetop, 373 = raumhoehe
@@ -179,6 +178,53 @@ Type TBuilding Extends TStaticEntity
 		gfx_buildingEntranceWall = GetSpriteFromRegistry("gfx_building_EingangWand")
 		gfx_buildingFence = GetSpriteFromRegistry("gfx_building_Zaun")
 		gfx_buildingRoof = GetSpriteFromRegistry("gfx_building_Dach")
+
+
+		'=== BACKGROUND DECORATION ===
+		'draw sprites directly on the building sprite if not done yet
+		if not _backgroundModified
+			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
+			local ALIGN_BOTTOM_CENTER:TPoint = new TPoint.Init(ALIGN_CENTER, ALIGN_BOTTOM)
+			local itemX:int
+
+			'=== DRAW NECESSARY ITEMS ===
+			'credits sign on floor 13
+			GetSpriteFromRegistry("gfx_building_credits").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 5, GetFloorY(13), -1, ALIGN_BOTTOM_RIGHT)
+			'roomboard on floor 0
+			GetSpriteFromRegistry("gfx_building_roomboard").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 30, GetFloorY(0), -1, ALIGN_BOTTOM_RIGHT)
+
+
+			'=== DRAW DECORATION ===
+			'floor 0
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(0), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(0), -1, ALIGN_BOTTOM_RIGHT)
+			'floor 1
+			itemX = -buildingDisplaceX + innerRight - 30
+			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_BOTTOM_CENTER)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_BOTTOM_CENTER)
+			'floor 3
+			itemX = -buildingDisplaceX + innerRight - 80
+			GetSpriteFromRegistry("gfx_building_picture1").DrawOnImage(Pix, itemX, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX - 20, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX + 20, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
+			'floor 4
+			GetSpriteFromRegistry("gfx_building_Pflanze5").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 67, GetFloorY(4), -1, ALIGN_BOTTOM_LEFT)
+			'floor 12
+			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 50, GetFloorY(12), -1, ALIGN_BOTTOM_CENTER)
+			GetSpriteFromRegistry("gfx_building_Pflanze4").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 40, GetFloorY(12), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_Pflanze6").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 95, GetFloorY(12), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(7), -1, ALIGN_BOTTOM_LEFT)
+			'floor 13
+			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_Pflanze3").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 105, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(13), -1, ALIGN_BOTTOM_RIGHT)
+
+			UnlockImage(gfx_building.parent.image)
+			Pix = Null
+
+			_backgroundModified = TRUE
+		endif		
 	End Method
 
 
@@ -224,53 +270,6 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method Init:Int()
-		If initDone Then Return True
-
-		if not _backgroundModified
-
-			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
-			local ALIGN_BOTTOM_CENTER:TPoint = new TPoint.Init(ALIGN_CENTER, ALIGN_BOTTOM)
-			local itemX:int
-
-			'=== DRAW NECESSARY ITEMS ===
-			'credits sign on floor 13
-			GetSpriteFromRegistry("gfx_building_credits").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 5, GetFloorY(13), -1, ALIGN_BOTTOM_RIGHT)
-			'roomboard on floor 0
-			GetSpriteFromRegistry("gfx_building_roomboard").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 30, GetFloorY(0), -1, ALIGN_BOTTOM_RIGHT)
-
-
-			'=== DRAW DECORATION ===
-			'floor 0
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(0), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(0), -1, ALIGN_BOTTOM_RIGHT)
-			'floor 1
-			itemX = -buildingDisplaceX + innerRight - 30
-			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_BOTTOM_CENTER)
-			'floor 3
-			itemX = -buildingDisplaceX + innerRight - 80
-			GetSpriteFromRegistry("gfx_building_picture1").DrawOnImage(Pix, itemX, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX - 20, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX + 20, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
-			'floor 4
-			GetSpriteFromRegistry("gfx_building_Pflanze5").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 67, GetFloorY(4), -1, ALIGN_BOTTOM_LEFT)
-			'floor 12
-			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 50, GetFloorY(12), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_Pflanze4").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 40, GetFloorY(12), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Pflanze6").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 95, GetFloorY(12), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(7), -1, ALIGN_BOTTOM_LEFT)
-			'floor 13
-			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Pflanze3").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 105, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(13), -1, ALIGN_BOTTOM_RIGHT)
-
-			UnlockImage(gfx_building.parent.image)
-			Pix = Null
-
-			_backgroundModified = TRUE
-		endif
-
 		'assign room
 		room = GetRoomCollection().GetFirstByDetails("building")
 
@@ -281,8 +280,6 @@ Type TBuilding Extends TStaticEntity
 				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
 			EndIf
 		Next
-
-		initDone = True
 	End Method
 
 
