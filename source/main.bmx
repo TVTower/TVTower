@@ -114,7 +114,7 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
 'print "ALLE MELDUNGEN AUS"
-'TLogger.SetPrintMode(0)
+TLogger.SetPrintMode(0)
 
 'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
@@ -393,15 +393,6 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
-Rem debug only
-				If KEYMANAGER.IsHit(KEY_TAB)
-					if TLocalization.GetCurrentLanguageCode() = "de"
-						App.SetLanguage("en")
-					else
-						App.SetLanguage("de")
-					endif
-				endif
-endrem					
 
 				'Save game only when in a game
 				If game.gamestate = TGame.STATE_RUNNING
@@ -412,13 +403,14 @@ endrem
 
 				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
 
-If KEYMANAGER.IsHit(KEY_SPACE)
-	GetRoomCollection().GetFirstByDetails("supermarket").SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
-	GetRoomCollection().GetFirstByDetails("office", 1).SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
-'	Global whichTerrorist:int = 1
-'	whichTerrorist = 1 - whichTerrorist
-'	Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
-EndIf
+
+				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
+					GetRoomCollection().GetFirstByDetails("supermarket").SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
+					GetRoomCollection().GetFirstByDetails("office", 1).SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
+					Global whichTerrorist:int = 1
+					whichTerrorist = 1 - whichTerrorist
+					Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
+				EndIf
 
 				If Game.isGameLeader()
 					If KEYMANAGER.Ishit(Key_F1) And GetPlayerCollection().Get(1).isAI() Then GetPlayerCollection().Get(1).PlayerKI.reloadScript()
@@ -427,7 +419,10 @@ EndIf
 					If KEYMANAGER.Ishit(Key_F4) And GetPlayerCollection().Get(4).isAI() Then GetPlayerCollection().Get(4).PlayerKI.reloadScript()
 				EndIf
 
-				If KEYMANAGER.Ishit(Key_F5) Then GetNewsAgency().AnnounceNewNewsEvent()
+				'only announce news in single player mode - as announces
+				'are done on all clients on their own.
+				If KEYMANAGER.Ishit(Key_F5) and not Game.networkGame Then GetNewsAgency().AnnounceNewNewsEvent()
+
 				If KEYMANAGER.Ishit(Key_F6) Then GetSoundManager().PlayMusicPlaylist("default")
 
 				If KEYMANAGER.Ishit(Key_F9)

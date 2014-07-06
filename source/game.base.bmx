@@ -682,9 +682,8 @@ Type TGame {_exposeToLua="selected"}
 		gameTime.Update()
 
 		'==== HANDLE TIMED EVENTS ====
-		'time for news ?
-		If GetNewsAgency().NextEventTime < gameTime.timeGone Then GetNewsAgency().AnnounceNewNewsEvent()
-		If GetNewsAgency().NextChainCheckTime < gameTime.timeGone Then GetNewsAgency().ProcessNewsEventChains()
+		'check if it is time for new news
+		GetNewsAgency().Update()
 
 		'send state to clients
 		If IsGameLeader() And networkgame And stateSyncTime < Time.GetTimeGone()

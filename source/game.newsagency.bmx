@@ -1,10 +1,35 @@
 'likely a kind of agency providing news...
 'at the moment only a base object
 Type TNewsAgency
-	Field NextEventTime:Double = 0
-	Field NextChainChecktime:Double = 0
+	'when to announce a new newsevent
+	Field NextEventTime:Long = 0
+	'check for a new news every x-y minutes
+	Field NextEventTimeInterval:int[] = [50, 80]
+	'when to announce a new news from a newschain
+	Field NextChainTime:Long = 0
+	'check for a new newschain every x-y minutes
+	Field NextChainTimeInterval:int[] = [10, 15]
 	'holding chained news from the past hours/day
 	Field activeChains:TList = CreateList()
+
+	'=== WEATHER HANDLING ===
+	'time of last weather event/news
+	Field weatherUpdateTime:Long = 0
+	'announce new weather every x-y minutes
+	Field weatherUpdateTimeInterval:int[] = [360, 720]
+	Field weatherType:int = 0
+	
+
+	'=== TERRORIST HANDLING ===
+	'both parties (VR and FR) have their own array entry
+	'when to update propabilities the next time
+	Field terroristUpdateTime:Long = 0
+	'update terrorists probability every x-y minutes
+	Field terroristUpdateTimeInterval:int[] = [45, 60]
+	'chances that an attack is announced (0 - 1.0)
+	Field terroristAttackProbability:Float[] = [0.0, 0.0]
+	'rate the propability grows each game hour
+	Field terroristAttackProbabilityGrowth:Float[][] = [ [0.02,0.07], [0.02,0.07] ]	
 	Global _instance:TNewsAgency
 
 
@@ -12,6 +37,89 @@ Type TNewsAgency
 		if not _instance then _instance = new TNewsAgency
 		return _instance
 	End Function
+
+
+	Method Update:int()
+		'All players update their newsagency on their own.
+		'As we use "randRange" this will produce the same random values
+		'on all clients - so they should be sync'd all the time.
+		
+		If NextEventTime < GetGameTime().GetTimeGone() Then AnnounceNewNewsEvent()
+		If NextChainTime < GetGameTime().GetTimeGone() Then ProcessNewsEventChains()
+		If terroristUpdateTime < GetGameTime().GetTimeGone() Then UpdateTerrorists()
+		If weatherUpdateTime < GetGameTime().GetTimeGone() Then UpdateWeather()
+	End Method
+
+
+	Method UpdateTerrorists:int()
+		'set next update time (between min-max interval)
+		terroristUpdateTime = GetGameTime().GetTimeGone() + randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
+
+		'who is the mainaggressor? - this parties probability grows faster
+		local mainAggressor:int = (terroristAttackProbability[1] > terroristAttackProbability[0])
+		
+		For local i:int = 0 to 1
+			'randRange uses "ints", so convert 1.0 to 100
+			local increase:Float = 0.01 * randRange(terroristAttackProbabilityGrowth[i][0]*100, terroristAttackProbabilityGrowth[i][1]*100)
+			'if not the mainaggressor, grow slower
+			if i <> mainAggressor then increase :* 0.5
+
+			terroristAttackProbability[i] :+ increase
+			
+			'more than 100%? start attack (news event)
+			if terroristAttackProbability[i] > 1.0
+				terroristAttackProbability[i] = 0.0
+				'print GetGameTime().GetDay()+". "+GetGameTime().GetFormattedTime() + " | terrorist["+i+"] attack"
+
+				'Create terror news event
+			endif
+		Next
+	End Method
+
+
+	Method UpdateWeather:int()
+		weatherUpdateTime = GetGameTime().GetTimeGone() + randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1])
+
+
+		local newsEvent:TNewsEvent = GetWeatherNewsEvent()
+		If newsEvent
+			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.title+", day="+GetGameTime().getDay(newsEvent.happenedtime)+", time="+GetGameTime().GetFormattedTime(newsEvent.happenedtime)
+			announceNewsEvent(newsEvent, GetGameTime().GetTimeGone() + 0)
+		EndIf
+
+	End Method
+
+
+
+	Method GetWeatherNewsEvent:TNewsEvent()
+		'quality and price are nearly the same everytime
+		Local quality:int = randRange(50,60)
+		Local price:int = randRange(45,50)
+		Local description:string = "Keine besonderen Wetterereignisse"
+		local title:string = "Wetterbericht " + (GetGameTime().GetHour()+1)+" bis " + GetGameTime().GetHour(weatherUpdateTime)+" Uhr"
+
+		weatherType :+ 1
+		Select weatherType
+			case 1	description = "Sonnig, heiter und unbewoelkt."
+			case 2	description = "Sonnig, leichte Wolken."
+			case 3	description = "Bedeckt, leichte Windboeen."
+			case 4	description = "Bedeckt, Sonne und leichte Schauer wechseln sich ab."
+			case 5	description = "Gewitterwolken. Selten Sonne."
+			case 6	description = "Starke Schauer. Kraeftige Winde von Nord-Ost."
+			case 7	description = "Warnung vor Sturmboeen."
+					if randRange(0,1) = 0 then weatherType = 3
+			case 8	description = "Sonnig aber kühl, kaum Wolken."
+			default weatherType = 0
+		End Select
+		
+
+		
+		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, TNewsEvent.GENRE_CURRENTS, quality, price)
+		'remove news from available list to avoid repetition
+		NewsEventCollection.Remove(NewsEvent)
+
+		Return NewsEvent
+	End Method
 
 
 	Method GetMovieNewsEvent:TNewsEvent()
@@ -40,7 +148,7 @@ Type TNewsAgency
 		description = Self._ReplaceProgrammeData(description, licence.GetData())
 
 		'quality and price are based on the movies data
-		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, 1, licence.GetData().review/2.0, licence.GetData().outcome/3.0)
+		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, TNewsEvent.GENRE_SHOWBIZ, licence.GetData().review/2.0, licence.GetData().outcome/3.0)
 		'remove news from available list as we do not want to have them repeated :D
 		NewsEventCollection.Remove(NewsEvent)
 
@@ -84,10 +192,6 @@ Type TNewsAgency
 	End Method
 
 
-	Method GetSpecialNewsEvent:TNewsEvent()
-	End Method
-
-
 	'announces new news chain elements
 	Method ProcessNewsEventChains:Int()
 		Local announced:Int = 0
@@ -106,8 +210,8 @@ Type TNewsAgency
 			EndIf
 		Next
 
-		'check every 10 game minutes
-		Self.NextChainCheckTime = GetGameTime().timeGone + 10
+		'check every x-y game minutes
+		NextChainTime = GetGameTime().GetTimeGone() + randRange(NextChainTimeInterval[0], NextChainTimeInterval[1])
 
 		Return announced
 	End Method
@@ -150,8 +254,7 @@ Type TNewsAgency
 			news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
 			news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayerCollection().Get(forPlayer).GetNewsAbonnement(newsEvent.genre))
 
-			'add to players collection (sends out event which gets
-			'recognized by the network handler)
+			'add to players collection
 			player.GetProgrammeCollection().AddNews(news)
 		EndIf
 	End Method
@@ -208,18 +311,22 @@ Type TNewsAgency
 
 			If not skipNews
 				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+GetGameTime().getDay(news.happenedtime)+", time="+GetGameTime().GetFormattedTime(news.happenedtime)
-				announceNewsEvent(newsEvent, GetGameTime().timeGone + delayAnnouncement)
+				announceNewsEvent(newsEvent, GetGameTime().GetTimeGone() + delayAnnouncement)
 			EndIf
 		EndIf
 
 
 		'=== ADJUST TIME FOR NEXT NEWS ANNOUNCEMENT ===
-		If RandRange(0,10) = 1
-			'between 20 and 50 minutes until next news
-			NextEventTime = GetGameTime().timeGone + Rand(20,50)
-		Else
-			'between 90 and 250 minutes until next news
-			NextEventTime = GetGameTime().timeGone + Rand(90,250)
+		ResetNextEventTime()
+	End Method
+
+
+	Method ResetNextEventTime:int()
+		'between 20 and 50 minutes until next news
+		NextEventTime = GetGameTime().GetTimeGone() + randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
+		'50% chance to have an even longer time
+		If RandRange(0,10) > 5
+			NextEventTime = + randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
 		EndIf
 	End Method
 End Type

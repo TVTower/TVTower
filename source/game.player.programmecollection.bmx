@@ -456,7 +456,6 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		newsObject.owner = owner
 		news.AddLast(newsObject)
 
-		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addNews", new TData, newsObject))
 
 		return TRUE

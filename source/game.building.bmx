@@ -1,27 +1,29 @@
 
 'Summary: Type of building, area around it and doors,...
 Type TBuilding Extends TStaticEntity
-	Field buildingDisplaceX:Int = 127			'px at which the building starts (leftside added is the door)
-	Field innerLeft:Int			= 127 + 40
-	Field innerRight:Int		= 127 + 468
-	Field skycolor:Float 		= 0
-	Field ufo_normal:TSpriteEntity 			{nosave}
-	Field ufo_beaming:TSpriteEntity			{nosave}
+	'px at which the building starts (leftside added is the door)
+	Field buildingDisplaceX:Int = 127
+	Field innerLeft:Int	= 127 + 40
+	Field innerRight:Int = 127 + 468
+	Field skycolor:Float = 0
+	Field ufo_normal:TSpriteEntity 				{nosave}
+	Field ufo_beaming:TSpriteEntity				{nosave}
 	Field Elevator:TElevator
 
-	Field Moon_Path:TCatmullRomSpline	= New TCatmullRomSpline {nosave}
+	Field Moon_Path:TCatmullRomSpline = New TCatmullRomSpline {nosave}
 	Field Moon_PathCurrentDistanceOld:Float= 0.0
-	Field Moon_PathCurrentDistance:Float= 0.0
-	Field Moon_MovementStarted:Int		= False
-	Field Moon_MovementBaseSpeed:Float	= 0.0		'so that the whole path moved within time
+	Field Moon_PathCurrentDistance:Float = 0.0
+	Field Moon_MovementStarted:Int = False
+	'so that the whole path moved within time
+	Field Moon_MovementBaseSpeed:Float = 0.0
 
-	Field UFO_Path:TCatmullRomSpline	= New TCatmullRomSpline {nosave}
-	Field UFO_PathCurrentDistanceOld:Float	= 0.0
-	Field UFO_PathCurrentDistance:Float		= 0.0
-	Field UFO_MovementStarted:Int		= False
-	Field UFO_MovementBaseSpeed:Float	= 0.0
-	Field UFO_DoBeamAnimation:Int		= False
-	Field UFO_BeamAnimationDone:Int		= False
+	Field UFO_Path:TCatmullRomSpline = New TCatmullRomSpline {nosave}
+	Field UFO_PathCurrentDistanceOld:Float = 0.0
+	Field UFO_PathCurrentDistance:Float = 0.0
+	Field UFO_MovementStarted:Int = False
+	Field UFO_MovementBaseSpeed:Float = 0.0
+	Field UFO_DoBeamAnimation:Int = False
+	Field UFO_BeamAnimationDone:Int	= False
 
 	Field Clouds:TSpriteEntity[7]				{nosave}
 	Field CloudsAlpha:Float[7]					{nosave}

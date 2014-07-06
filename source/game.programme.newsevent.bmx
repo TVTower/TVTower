@@ -57,12 +57,21 @@ Type TNewsEventCollection
 
 	Method GetRandom:TNewsEvent()
 		'if no news is available, make older ones available again
-		if List.Count() = 0 then SetOldNewsUnused(7)
-		'if there is still nothing - also accept younger ones
-		if List.Count() = 0 then SetOldNewsUnused(2)
-
-		if List.Count() = 0 then print "NO ELEMENTS IN NEWSEVENT LIST!!"
-
+		'start with 7 days ago and lower until we got a news
+		local days:int = 7
+		While List.Count() = 0 and days >= 0
+			SetOldNewsUnused(days)
+			days :- 1
+		Wend
+		if days < 7
+			print "NewsEventCollection.GetRandom(): used=" + usedList.Count() + " unused="+list.Count() + " refreshedDaysAgo="+(days+1)
+		endif
+		
+		if List.Count() = 0
+			'This should only happen if no news events were found in the database
+			Throw "TNewsEventCollection.GetRandom(): no unused news events found."
+		endif
+		
 		'fetch a random news
 		Local news:TNewsEvent = TNewsEvent(List.ValueAtIndex((randRange(0, List.Count() - 1))))
 
