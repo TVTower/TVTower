@@ -40,7 +40,7 @@ Type TGUISelectList Extends TGUIListBase
 	Field selectedEntry:TGUIobject = Null
 
 
-    Method Create:TGUISelectList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUISelectList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		'register listeners in a central location
@@ -94,8 +94,8 @@ Type TGUISelectListItem Extends TGUIListItem
 	Field selected:Int = False
 
 
-    Method Create:TGUISelectListItem(position:TPoint=null, dimension:TPoint=null, value:String="")
-		if not dimension then dimension = new TPoint.Init(80,20)
+    Method Create:TGUISelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
+		if not dimension then dimension = new TVec2D.Init(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")
@@ -166,7 +166,7 @@ Type TGUICustomSelectListItem Extends TGUISelectListItem
 	Field _customDrawBackground:int(obj:TGUIObject)
 
 
-    Method Create:TGUICustomSelectListItem(position:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUICustomSelectListItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
    		Super.Create(position, dimension, value)
 		Return Self
 	End Method

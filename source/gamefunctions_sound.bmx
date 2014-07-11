@@ -1,9 +1,9 @@
 Type TSfxFloorSoundBarrierSettings Extends TSfxSettings
 
 	Method GetVolumeByDistance:Float(source:TSoundSourceElement, receiver:TSoundSourcePosition)
-		Local floorNumberSource:Int = TBuilding.getFloorByPixelExactPoint(source.GetCenter())
-		Local floorNumberTarget:Int = TBuilding.getFloorByPixelExactPoint(receiver.GetCenter())
-		Local floorDistance:Int = TPoint.DistanceOfValues(floorNumberSource, floorNumberTarget)
+		Local floorNumberSource:Int = TBuilding.getFloorByPixelExactPoint(source.GetCenter().toVec2D())
+		Local floorNumberTarget:Int = TBuilding.getFloorByPixelExactPoint(receiver.GetCenter().toVec2D())
+		Local floorDistance:Int = Abs(floorNumberSource - floorNumberTarget)
 '		print "floorDistance: " + floorDistance + " - " + Exponential(0.5, floorDistance) + " # " + floorNumberSource + " $ " + floorNumberTarget
 		Return Super.GetVolumeByDistance(source, receiver) * Exponential(0.5, floorDistance)
 	End Method
@@ -31,8 +31,8 @@ Type TPlayerSoundSourcePosition Extends TSoundSourcePosition
 		Return "Player"
 	End Method
 
-	Method GetCenter:TPoint()
-		Return GetPlayerCollection().Get().Figure.area.GetAbsoluteCenterPoint()
+	Method GetCenter:TVec3D()
+		Return GetPlayerCollection().Get().Figure.area.GetAbsoluteCenterVec().ToVec3D()
 	End Method
 
 	Method GetIsVisible:Int()
@@ -64,7 +64,7 @@ Type TElevatorSoundSource Extends TSoundSourceElement
 		Return "Elevator"
 	End Method
 
-	Method GetCenter:TPoint()
+	Method GetCenter:TVec3D()
 		Return Elevator.GetElevatorCenterPos()
 	End Method
 
@@ -206,9 +206,9 @@ Type TDoorSoundSource Extends TSoundSourceElement
 		Return "Door"
 	End Method
 
-	Method GetCenter:TPoint()
+	Method GetCenter:TVec3D()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + TBuilding.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return new TPoint.Init(door.area.GetX() + door.area.GetW()/2, TBuilding.GetFloorY(door.area.GetY()) - door.area.GetH()/2, -15)
+		Return new TVec3D.Init(door.area.GetX() + door.area.GetW()/2, TBuilding.GetFloorY(door.area.GetY()) - door.area.GetH()/2, -15)
 	End Method
 
 	Method IsMovable:Int()
@@ -288,8 +288,8 @@ Type TFigureSoundSource Extends TSoundSourceElement
 		Return "Figure" + Figure.id
 	End Method
 
-	Method GetCenter:TPoint()
-		Return Figure.area.GetAbsoluteCenterPoint()
+	Method GetCenter:TVec3D()
+		Return Figure.area.GetAbsoluteCenterVec().ToVec3D()
 	End Method
 
 	Method IsMovable:Int()
@@ -397,9 +397,9 @@ Type TSimpleSoundSource extends TSoundSourceElement
 		Return "SimpleSfx"
 	End Method
 
-	Method GetCenter:TPoint()
+	Method GetCenter:TVec3D()
 		'print "DoorCenter: " + Room.Pos.x + "/" + Room.Pos.y + " => " + (Room.Pos.x + Room.doorwidth/2) + "/" + (Building.GetFloorY(Room.Pos.y) - Room.doorheight/2) + "    GetFloorY: " + TBuilding.GetFloorY(Room.Pos.y) + " ... GetFloor: " + Building.GetFloor(Room.Pos.y)
-		Return new TPoint.Init(GetGraphicsManager().GetWidth()/2, GetGraphicsManager().GetHeight()/2)
+		Return new TVec3D.Init(GetGraphicsManager().GetWidth()/2, GetGraphicsManager().GetHeight()/2)
 	End Method
 
 	Method IsMovable:Int()

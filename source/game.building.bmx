@@ -41,7 +41,7 @@ Type TBuilding Extends TStaticEntity
 	'the room used for the building
 	Field room:TRoom = Null
 	Field roomUsedTooltip:TTooltip = Null
-	Field Stars:TPoint[60]						{nosave}
+	Field Stars:TVec3D[60]						{nosave}
 
 
 	Global softDrinkMachineActive:int = False
@@ -159,10 +159,10 @@ Type TBuilding Extends TStaticEntity
 
 		'==== STARS ====
 		For Local j:Int = 0 To 29
-			Stars[j] = new TPoint.Init( 10+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
+			Stars[j] = new TVec3D.Init( 10+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
 		Next
 		For Local j:Int = 30 To 59
-			Stars[j] = new TPoint.Init( 650+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
+			Stars[j] = new TVec3D.Init( 650+Rand(0,150), 20+Rand(0,273), 50+Rand(0,150) )
 		Next
 
 
@@ -186,41 +186,40 @@ Type TBuilding Extends TStaticEntity
 		'draw sprites directly on the building sprite if not done yet
 		if not _backgroundModified
 			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
-			local ALIGN_BOTTOM_CENTER:TPoint = new TPoint.Init(ALIGN_CENTER, ALIGN_BOTTOM)
 			local itemX:int
 
 			'=== DRAW NECESSARY ITEMS ===
 			'credits sign on floor 13
-			GetSpriteFromRegistry("gfx_building_credits").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 5, GetFloorY(13), -1, ALIGN_BOTTOM_RIGHT)
+			GetSpriteFromRegistry("gfx_building_credits").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 5, GetFloorY(13), -1, ALIGN_RIGHT_BOTTOM)
 			'roomboard on floor 0
-			GetSpriteFromRegistry("gfx_building_roomboard").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 30, GetFloorY(0), -1, ALIGN_BOTTOM_RIGHT)
+			GetSpriteFromRegistry("gfx_building_roomboard").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 30, GetFloorY(0), -1, ALIGN_RIGHT_BOTTOM)
 
 
 			'=== DRAW DECORATION ===
 			'floor 0
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(0), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(0), -1, ALIGN_BOTTOM_RIGHT)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(0), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(0), -1, ALIGN_RIGHT_BOTTOM)
 			'floor 1
 			itemX = -buildingDisplaceX + innerRight - 30
-			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_BOTTOM_CENTER)
+			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_CENTER_BOTTOM)
 			'floor 3
 			itemX = -buildingDisplaceX + innerRight - 80
-			GetSpriteFromRegistry("gfx_building_picture1").DrawOnImage(Pix, itemX, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX - 20, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX + 20, GetFloorY(3), -1, ALIGN_BOTTOM_CENTER)
+			GetSpriteFromRegistry("gfx_building_picture1").DrawOnImage(Pix, itemX, GetFloorY(3), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX - 20, GetFloorY(3), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX + 20, GetFloorY(3), -1, ALIGN_CENTER_BOTTOM)
 			'floor 4
-			GetSpriteFromRegistry("gfx_building_Pflanze5").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 67, GetFloorY(4), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_Pflanze5").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 67, GetFloorY(4), -1, ALIGN_LEFT_BOTTOM)
 			'floor 12
-			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 50, GetFloorY(12), -1, ALIGN_BOTTOM_CENTER)
-			GetSpriteFromRegistry("gfx_building_Pflanze4").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 40, GetFloorY(12), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Pflanze6").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 95, GetFloorY(12), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(7), -1, ALIGN_BOTTOM_LEFT)
+			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 50, GetFloorY(12), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Pflanze4").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 40, GetFloorY(12), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Pflanze6").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 95, GetFloorY(12), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(7), -1, ALIGN_LEFT_BOTTOM)
 			'floor 13
-			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Pflanze3").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 105, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(13), -1, ALIGN_BOTTOM_LEFT)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(13), -1, ALIGN_BOTTOM_RIGHT)
+			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(13), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Pflanze3").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 105, GetFloorY(13), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(13), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(13), -1, ALIGN_RIGHT_BOTTOM)
 
 			UnlockImage(gfx_building.parent.image)
 			Pix = Null
@@ -363,7 +362,7 @@ Type TBuilding Extends TStaticEntity
 		'draw elevator parts
 		Elevator.Render()
 		'draw softdrinkmachine
-		softDrinkMachine.RenderAt(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(6), "", ALIGN_BOTTOM_LEFT)
+		softDrinkMachine.RenderAt(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(6), "", ALIGN_LEFT_BOTTOM)
 
 		if not softDrinkMachineActive
 			softDrinkMachine.GetFrameAnimations().SetCurrent("use")
@@ -380,29 +379,29 @@ Type TBuilding Extends TStaticEntity
 		Next
 
 		'floor 1
-		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(1), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(1), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 2	- between rooms
-		GetSpriteFromRegistry("gfx_building_Pflanze4").Draw(area.GetX() + innerRight - 105, area.GetY() + GetFloorY(2), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze4").Draw(area.GetX() + innerRight - 105, area.GetY() + GetFloorY(2), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 3
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(3), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(3), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 4
-		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(4), - 1, ALIGN_BOTTOM_RIGHT)
+		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(4), - 1, ALIGN_RIGHT_BOTTOM)
 		'floor 6
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(6), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(6), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 8
-		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(area.GetX() + innerRight - 85, area.GetY() + GetFloorY(8), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(area.GetX() + innerRight - 85, area.GetY() + GetFloorY(8), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 9
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 130, area.GetY() + GetFloorY(9), - 1, ALIGN_BOTTOM_LEFT)
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 110, area.GetY() + GetFloorY(9), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 130, area.GetY() + GetFloorY(9), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 110, area.GetY() + GetFloorY(9), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 11
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerLeft + 85, area.GetY() + GetFloorY(11), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerLeft + 85, area.GetY() + GetFloorY(11), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 12
-		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(12), - 1, ALIGN_BOTTOM_LEFT)
-		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(12), - 1, ALIGN_BOTTOM_LEFT)
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 75, area.GetY() + GetFloorY(12), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 75, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
 		'floor 13
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(13), - 1, ALIGN_BOTTOM_LEFT)
-		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(12), - 1, ALIGN_BOTTOM_LEFT)
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(13), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
 
 
 		'draw entrance on top of figures
@@ -544,7 +543,7 @@ Type TBuilding Extends TStaticEntity
 			SetBlend ALPHABLEND
 
 			Local tweenDistance:Float = MathHelper.Tween(Moon_PathCurrentDistanceOld, Moon_PathCurrentDistance, GetDeltaTimer().GetTween())
-			Local moonPos:TPoint = Moon_Path.GetTweenPoint(tweenDistance, True)
+			Local moonPos:TVec2D = Moon_Path.GetTweenPoint(tweenDistance, True)
 			'draw moon - frame is from +6hrs (so day has already changed at 18:00)
 			'GetSpriteFromRegistry("gfx_building_BG_moon").Draw(40, 40, 12 - ( GetGameTime().getDay(GetGameTime().GetTimeGone()+6*60) Mod 12) )
 			GetSpriteFromRegistry("gfx_building_BG_moon").Draw(moonPos.x, 0.10 * (area.GetY()) + moonPos.y, 12 - ( GetGameTime().getDay(GetGameTime().GetTimeGone()+6*60) Mod 12) )
@@ -565,7 +564,7 @@ Type TBuilding Extends TStaticEntity
 '			If GetGameTime().getDay() Mod 2 = 0
 				'compute and draw Ufo
 				Local tweenDistance:Float = MathHelper.Tween(UFO_PathCurrentDistanceOld, UFO_PathCurrentDistance, GetDeltaTimer().GetTween())
-				Local UFOPos:TPoint = UFO_Path.GetTweenPoint(tweenDistance, True)
+				Local UFOPos:TVec2D = UFO_Path.GetTweenPoint(tweenDistance, True)
 				'print UFO_PathCurrentDistance
 				If UFO_DoBeamAnimation And Not UFO_BeamAnimationDone
 					ufo_beaming.area.position.SetXY(UFOPos.x, 0.25 * (area.GetY() + BuildingHeight - gfx_bgBuildings[0].area.GetH()) + UFOPos.y)
@@ -641,7 +640,9 @@ Type TBuilding Extends TStaticEntity
 	End Method
 
 
-	Function getFloorByPixelExactPoint:Int(point:TPoint) 'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau... also zwischen 0 und ~ 1000
+	'point ist hier NICHT zwischen 0 und 13... sondern pixelgenau...
+	'also zwischen 0 und ~ 1000
+	Function getFloorByPixelExactPoint:Int(point:TVec2D)
 		For Local i:Int = 0 To 13
 			If GetFloorY(i) < point.y Then Return i
 		Next

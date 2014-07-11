@@ -37,9 +37,9 @@ Type TGUIListBase Extends TGUIobject
 	Field _mouseOverArea:Int = False
 	Field _dropOnTargetListenerLink:TLink = Null
 	'displace each entry by (z-value is stepping)...
-	Field _entryDisplacement:TPoint	= new TPoint.Init(0, 0, 1)
+	Field _entryDisplacement:TVec3D	= new TVec3D.Init(0, 0, 1)
 	'displace the entriesblock by x,y...
-	Field _entriesBlockDisplacement:TPoint = new TPoint.Init(0, 0, 0)
+	Field _entriesBlockDisplacement:TVec3D = new TVec3D.Init(0, 0, 0)
 	'orientation of the list: 0 means vertical, 1 is horizontal
 	Field _orientation:Int = 0
 	Field _scrollingEnabled:Int	= False
@@ -47,7 +47,7 @@ Type TGUIListBase Extends TGUIobject
 	Field _scrollToBeginWithoutScrollbars:Int = True
 
 
-    Method Create:TGUIListBase(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUIListBase(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.CreateBase(position, dimension, limitState)
 
 		setZIndex(0)
@@ -57,7 +57,7 @@ Type TGUIListBase Extends TGUIobject
 		'orientation of horizontal scroller has to get set manually
 		guiScrollerH.SetOrientation(GUI_OBJECT_ORIENTATION_HORIZONTAL)
 
-		guiEntriesPanel = New TGUIScrollablePanel.Create(null, new TPoint.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), self.state)
+		guiEntriesPanel = New TGUIScrollablePanel.Create(null, new TVec2D.Init(rect.GetW() - guiScrollerV.rect.getW(), rect.GetH() - guiScrollerH.rect.getH()), self.state)
 
 		AddChild(guiEntriesPanel) 'manage by our own
 
@@ -211,7 +211,7 @@ Type TGUIListBase Extends TGUIobject
 	End Method
 
 
-	Method GetItemByCoord:TGUIobject(coord:TPoint)
+	Method GetItemByCoord:TGUIobject(coord:TVec2D)
 		For Local entry:TGUIobject = EachIn entries
 			'our entries are sorted and replaced, so we could
 			'quit as soon as the
@@ -234,7 +234,7 @@ Type TGUIListBase Extends TGUIobject
 
 		'recalculate dimensions as the item now knows its parent
 		'so a normal AddItem-handler can work with calculated dimensions from now on
-		Local dimension:TPoint = item.getDimension()
+		'Local dimension:TVec2D = item.getDimension()
 
 		entries.addLast(item)
 
@@ -294,11 +294,11 @@ Type TGUIListBase Extends TGUIobject
 
 	'recalculate scroll maximas, item positions...
 	Method RecalculateElements:Int()
-		local startPos:TPoint = _entriesBlockDisplacement.copy()
-		Local dimension:TPoint = _entriesBlockDisplacement.copy()
+		local startPos:TVec3D = _entriesBlockDisplacement.copy()
+		Local dimension:TVec3D = _entriesBlockDisplacement.copy()
 		Local entryNumber:Int = 1
-		Local nextPos:TPoint = startPos.copy()
-		Local currentPos:TPoint
+		Local nextPos:TVec3D = startPos.copy()
+		Local currentPos:TVec3D
 		local columnPadding:int = 5
 
 		For Local entry:TGUIobject = EachIn entries
@@ -317,16 +317,16 @@ Type TGUIListBase Extends TGUIobject
 						if currentPos.GetX() + entry.rect.GetW() > GetContentScreenWidth()
 							currentPos.SetXY(startPos.GetX(), currentPos.GetY() + entry.rect.GetH())
 							'new lines increase dimension of container
-							dimension.MoveXY(0, entry.rect.GetH())
+							dimension.AddXY(0, entry.rect.GetH())
 						endif
 
 						nextPos = currentPos.copy()
-						nextPos.MoveXY(entry.rect.GetW() + columnPadding, 0)
+						nextPos.AddXY(entry.rect.GetW() + columnPadding, 0)
 					else
 						nextPos = currentPos.copy()
-						nextPos.MoveXY(0, entry.rect.GetH())
+						nextPos.AddXY(0, entry.rect.GetH())
 						'new lines increase dimension of container
-						dimension.MoveXY(0, entry.rect.GetH())
+						dimension.AddXY(0, entry.rect.GetH())
 					endif
 
 				Case GUI_OBJECT_ORIENTATION_HORIZONTAL
@@ -339,29 +339,29 @@ Type TGUIListBase Extends TGUIobject
 						if currentPos.GetY() + entry.rect.GetH() > GetContentScreenHeight()
 							currentPos.SetXY(currentPos.GetX() + entry.rect.GetW(), startPos.GetY())
 							'new lines increase dimension of container
-							dimension.MoveXY(entry.rect.GetW(), 0 )
+							dimension.AddXY(entry.rect.GetW(), 0 )
 						endif
 
 						nextPos = currentPos.copy()
-						nextPos.MoveXY(0, entry.rect.GetH() + columnPadding)
+						nextPos.AddXY(0, entry.rect.GetH() + columnPadding)
 					else
 						nextPos = currentPos.copy()
-						nextPos.MoveXY(entry.rect.GetW(),0)
+						nextPos.AddXY(entry.rect.GetW(),0)
 						'new lines increase dimension of container
-						dimension.MoveXY(entry.rect.GetW(), 0 )
+						dimension.AddXY(entry.rect.GetW(), 0 )
 					endif
 			End Select
 
 			'==== ADD POTENTIAL DISPLACEMENT ====
 			'add the displacement afterwards - so the first one is not displaced
 			If entryNumber Mod _entryDisplacement.z = 0 And entry <> entries.last()
-				currentPos.MoveXY(_entryDisplacement.x, _entryDisplacement.y)
+				currentPos.AddXY(_entryDisplacement.x, _entryDisplacement.y)
 				'increase dimension if positive displacement
-				dimension.MoveXY( Max(0,_entryDisplacement.x), Max(0, _entryDisplacement.y))
+				dimension.AddXY( Max(0,_entryDisplacement.x), Max(0, _entryDisplacement.y))
 			EndIf
 
 			'==== SET POSITION ====
-			entry.rect.position.CopyFrom(currentPos)
+			entry.rect.position.CopyFrom(currentPos.ToVec2D())
 
 			entryNumber:+1
 		Next
@@ -726,9 +726,9 @@ Type TGUIListItem Extends TGUIobject
 	Field positionNumber:Int = 0
 
 
-    Method Create:TGUIListItem(pos:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUIListItem(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		'have a basic size (specify a dimension in your custom type)
-		if not dimension then dimension = new TPoint.Init(80,20)
+		if not dimension then dimension = new TVec2D.Init(80,20)
 
 		'limit this items to nothing - as soon as we parent it, it will
 		'follow the parents limits
@@ -769,9 +769,9 @@ Type TGUIListItem Extends TGUIobject
 		triggerEvent.SetAccepted(True)
 
 		If isDragged()
-			drop(new TPoint.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			drop(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
 		Else
-			drag(new TPoint.Init(data.getInt("x",-1), data.getInt("y",-1)))
+			drag(new TVec2D.Init(data.getInt("x",-1), data.getInt("y",-1)))
 		EndIf
 	End Method
 
@@ -823,7 +823,7 @@ Type TGUIListItem Extends TGUIobject
 
 
 	Method Draw()
-		Local atPoint:TPoint = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenPos()
 		Local draw:Int=True
 		Local parent:TGUIobject = Null
 		If Not(Self._flags & GUI_OBJECT_DRAGGED)

@@ -883,7 +883,7 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 		If getDoorType() >= 5
 			If getDoorType() = 5 AND DoorTimer.isExpired() Then Close(null)
 			'valign = 1 -> subtract sprite height
-			doorSprite.Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), getDoorType(), new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			doorSprite.Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), getDoorType(), ALIGN_LEFT_BOTTOM)
 		EndIf
 
 
@@ -896,7 +896,7 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 		if room.IsBlocked()
 			'when a bomb is the reason - draw a barrier tape
 			if room.blockedState = room.BLOCKEDSTATE_BOMB
-				GetSpriteFromRegistry("gfx_building_absperrung").Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), -1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+				GetSpriteFromRegistry("gfx_building_absperrung").Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), -1, ALIGN_LEFT_BOTTOM)
 			EndIf
 		EndIf
 
@@ -1172,7 +1172,7 @@ Type RoomHandler_Office extends TRoomHandler
 		GuiListProgrammes.Init("pp_programmeblock1", GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours)
 		GuiListProgrammes.isType = TBroadcastMaterial.TYPE_PROGRAMME
 
-		GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TPoint.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
+		GuiListAdvertisements = new TGUIProgrammePlanSlotList.Create(new TVec2D.Init(area.GetX() + GetSpriteFromRegistry("pp_programmeblock1").area.GetW(), area.GetY()), area.dimension, "programmeplanner")
 		GuiListAdvertisements.Init("pp_adblock1", GetSpriteFromRegistry("pp_programmeblock1").area.GetW() + gapBetweenHours)
 		GuiListAdvertisements.isType = TBroadcastMaterial.TYPE_ADVERTISEMENT
 
@@ -1181,22 +1181,22 @@ Type RoomHandler_Office extends TRoomHandler
 		PPcontractList = new TgfxContractlist.Create(660, 16)
 
 		'buttons
-		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TPoint.Init(672, 40 + 0*56), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 0*56), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
 		ProgrammePlannerButtons[0].spriteName = "programmeplanner_btn_ads"
 
-		ProgrammePlannerButtons[1] = new TGUIButton.Create(new TPoint.Init(672, 40 + 1*56), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[1] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 1*56), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
 		ProgrammePlannerButtons[1].spriteName = "programmeplanner_btn_programme"
 
-		ProgrammePlannerButtons[2] = new TGUIButton.Create(new TPoint.Init(672, 40 + 2*56), null, GetLocale("PLANNER_OPTIONS"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[2] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 2*56), null, GetLocale("PLANNER_OPTIONS"), "programmeplanner_buttons")
 		ProgrammePlannerButtons[2].spriteName = "programmeplanner_btn_options"
 
-		ProgrammePlannerButtons[3] = new TGUIButton.Create(new TPoint.Init(672, 40 + 3*56), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[3] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 3*56), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
 		ProgrammePlannerButtons[3].spriteName = "programmeplanner_btn_financials"
 
-		ProgrammePlannerButtons[4] = new TGUIButton.Create(new TPoint.Init(672, 40 + 4*56), null, GetLocale("PLANNER_IMAGE"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[4] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 4*56), null, GetLocale("PLANNER_IMAGE"), "programmeplanner_buttons")
 		ProgrammePlannerButtons[4].spriteName = "programmeplanner_btn_image"
 
-		ProgrammePlannerButtons[5] = new TGUIButton.Create(new TPoint.Init(672, 40 + 5*56), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[5] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 5*56), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
 		ProgrammePlannerButtons[5].spriteName = "programmeplanner_btn_news"
 
 		for local i:int = 0 to 5
@@ -1747,7 +1747,7 @@ Type RoomHandler_Office extends TRoomHandler
 			SetAlpha showPlannerShortCutHintTime/100.0
 			DrawRect(23, 18, 640, 18)
 			SetAlpha Min(1.0, 2.0*showPlannerShortCutHintTime/100.0)
-			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 23, 20, 640, 15, new TPoint.Init(ALIGN_CENTER), TColor.Create(0,0,0),2,1,0.25)
+			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 23, 20, 640, 15, new TVec2D.Init(ALIGN_CENTER), TColor.Create(0,0,0),2,1,0.25)
 			SetAlpha 1.0
 		else
 			SetAlpha 0.75
@@ -2161,11 +2161,11 @@ Type RoomHandler_Office extends TRoomHandler
 		clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION] = new TColor.Create(44, 0, 78)
 		clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION] = new TColor.Create(0, 75, 69)
 
-		financeHistoryUpButton = new TGUIArrowButton.Create(new TPoint.Init(500 + 20, 180), new TPoint.Init(120, 15), "DOWN", "officeFinancialScreen")
-		financeHistoryDownButton = new TGUIArrowButton.Create(new TPoint.Init(500 + 120 + 20, 180), new TPoint.Init(120, 15), "UP", "officeFinancialScreen")
+		financeHistoryUpButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 20, 180), new TVec2D.Init(120, 15), "DOWN", "officeFinancialScreen")
+		financeHistoryDownButton = new TGUIArrowButton.Create(new TVec2D.Init(500 + 120 + 20, 180), new TVec2D.Init(120, 15), "UP", "officeFinancialScreen")
 
-		financePreviousDayButton = new TGUIArrowButton.Create(new TPoint.Init(20 + 20, 10 + 10), new TPoint.Init(26, 26), "LEFT", "officeFinancialScreen")
-		financeNextDayButton = new TGUIArrowButton.Create(new TPoint.Init(20 + 175 + 20, 10 + 10), new TPoint.Init(26, 26), "RIGHT", "officeFinancialScreen")
+		financePreviousDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 20, 10 + 10), new TVec2D.Init(26, 26), "LEFT", "officeFinancialScreen")
+		financeNextDayButton = new TGUIArrowButton.Create(new TVec2D.Init(20 + 175 + 20, 10 + 10), new TVec2D.Init(26, 26), "RIGHT", "officeFinancialScreen")
 
 		'listen to clicks on the four buttons
 		EventManager.registerListenerFunction("guiobject.onClick", onClickFinanceButtons, "TGUIArrowButton")
@@ -2210,10 +2210,6 @@ Type RoomHandler_Office extends TRoomHandler
 		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 10)
 		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 13, BOLDFONT)
 
-		local alignCenter:TPoint = new TPoint.Init(0.5, 0.5)
-		local alignRightCenter:TPoint = new TPoint.Init(1.0, 0.5)
-		local alignLeftCenter:TPoint = new TPoint.Init(0, 0.5)
-
 		local clLog:TColor = new TColor.CreateGrey(50)
 
 		local clNormal:TColor = TColor.clBlack
@@ -2224,12 +2220,12 @@ Type RoomHandler_Office extends TRoomHandler
 		'=== DAY CHANGER ===
 		local today:int = GetGameTime().MakeTime(0, financeShowDay, 0, 0)
 		local todayText:string = GetGameTime().GetDayOfYear(today)+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear(today)
-		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, alignCenter, TColor.CreateGrey(90), 2, 1, 0.2)
+		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
 
 		'=== NEWS LOG ===
-		captionFont.DrawBlock(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 13 + screenOffsetY,  240, captionHeight, alignCenter, captionColor, 1,,0.5)
+		captionFont.DrawBlock(GetLocale("FINANCES_LAST_FINANCIAL_ACTIVITIES"), 500 + screenOffsetX, 13 + screenOffsetY,  240, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
 		local list:TList = GetPlayerFinanceHistoryListCollection().Get(room.owner)
 		local logSlot:int = 0
 		local logH:int = 19
@@ -2249,7 +2245,7 @@ Type RoomHandler_Office extends TRoomHandler
 			else
 				logCol = "color=35,130,30"
 			Endif
-			logFont.DrawBlock("|"+logCol+"|"+TFunctions.convertValue(abs(history.GetMoney()),, -2, ".")+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 238 - 2*5, logH, alignLeftCenter, clLog)
+			logFont.DrawBlock("|"+logCol+"|"+TFunctions.convertValue(abs(history.GetMoney()),, -2, ".")+" "+getLocale("CURRENCY")+"|/color| "+history.GetDescription(), 501 + screenOffsetX + 5, 41 + screenOffsetY + logSlot*logH, 238 - 2*5, logH, ALIGN_LEFT_CENTER, clLog)
 			logSlot:+1
 		Next
 
@@ -2267,8 +2263,8 @@ Type RoomHandler_Office extends TRoomHandler
 		local valueH:int = 19, valueW:int = 95
 
 		'draw balance table
-		captionFont.DrawBlock(GetLocale("FINANCES_INCOME"), 240 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, alignCenter, captionColor, 1,,0.5)
-		captionFont.DrawBlock(GetLocale("FINANCES_EXPENSES"), 352 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, alignCenter, captionColor, 1,,0.5)
+		captionFont.DrawBlock(GetLocale("FINANCES_INCOME"), 240 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
+		captionFont.DrawBlock(GetLocale("FINANCES_EXPENSES"), 352 + screenOffsetX, 13 + screenOffsetY,  104, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
 
 		'draw total-area
 		local profit:int = finance.revenue_after - finance.revenue_before
@@ -2277,7 +2273,7 @@ Type RoomHandler_Office extends TRoomHandler
 		else
 			GetSpriteFromRegistry("screen_financial_negativeBalance").DrawArea(250 + screenOffsetX, 332 + screenOffsetY, 200, 25)
 		endif
-		captionFont.DrawBlock(TFunctions.convertValue(profit,,-2,"."), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, alignCenter, TColor.clWhite, 2, 1, 0.75)
+		captionFont.DrawBlock(TFunctions.convertValue(profit,,-2,"."), 250 + screenOffsetX, 332 + screenOffsetY, 200, 25, ALIGN_CENTER_CENTER, TColor.clWhite, 2, 1, 0.75)
 
 		'draw label backgrounds
 		local labelBGX:int = 20 + screenOffsetX
@@ -2312,60 +2308,60 @@ Type RoomHandler_Office extends TRoomHandler
 		balanceValueBG.DrawArea(valueBGX, labelStartY + 14*valueH + 5, balanceValueBG.GetWidth(), labelH)
 
 		'draw balance labels
-		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS])
-		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
-		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
-		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
-		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_TRADING_PROGRAMMELICENCES"), labelX, labelStartY + 0*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_AD_INCOME__CONTRACT_PENALTY"), labelX, labelStartY + 1*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_CALL_IN_SHOW_INCOME"), labelX, labelStartY + 2*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_SPONSORSHIP_INCOME__PENALTY"), labelX, labelStartY + 3*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PROGRAMME])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWS"), labelX, labelStartY + 4*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_NEWSAGENCIES"), labelX, labelStartY + 5*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_NEWS])
+		textFont.DrawBlock(GetLocale("FINANCES_STATIONS"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
+		textFont.DrawBlock(GetLocale("FINANCES_SCRIPTS"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_ACTORS_AND_PRODUCTIONSTUFF"), labelX, labelStartY + 8*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_STUDIO_RENT"), labelX, labelStartY + 9*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_PRODUCTION])
+		textFont.DrawBlock(GetLocale("FINANCES_INTEREST_BALANCE__CREDIT"), labelX, labelStartY + 10*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_CREDIT_TAKEN__REPAYED"), labelX, labelStartY + 11*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
+		textFont.DrawBlock(GetLocale("FINANCES_MISC"), labelX, labelStartY + 12*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
 		'spacer for total
-		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+5, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
+		textBoldFont.DrawBlock(GetLocale("FINANCES_TOTAL"), labelX, labelStartY + 14*valueH+5, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_DEFAULT])
 
 
 		'draw "grouped"-info-sign
 		GetSpriteFromRegistry("screen_financial_balanceInfo").Draw(valueBGX, labelStartY + 1 + 6*valueH)
 
 		'draw balance values: income
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_programmeLicences,,-2,"."), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, alignRightCenter, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_ads,,-2,"."), valueIncomeX, valueStartY + 1*valueH, valueW, valueH, alignRightCenter, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_callerRevenue,,-2,"."), valueIncomeX, valueStartY + 2*valueH, valueW, valueH, alignRightCenter, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_sponsorshipRevenue,,-2,"."), valueIncomeX, valueStartY + 3*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_programmeLicences,,-2,"."), valueIncomeX, valueStartY + 0*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_ads,,-2,"."), valueIncomeX, valueStartY + 1*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_callerRevenue,,-2,"."), valueIncomeX, valueStartY + 2*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_sponsorshipRevenue,,-2,"."), valueIncomeX, valueStartY + 3*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'news: generate no income
 		'newsagencies: generate no income
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 6*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'scripts: generate no income
 		'actors and productionstuff: generate no income
 		'studios: generate no income
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_balanceInterest,,-2,"."), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, alignRightCenter, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_creditTaken,,-2,"."), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, alignRightCenter, clPositive)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_misc,,-2,"."), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_balanceInterest,,-2,"."), valueIncomeX, valueStartY + 10*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_creditTaken,,-2,"."), valueIncomeX, valueStartY + 11*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_misc,,-2,"."), valueIncomeX, valueStartY + 12*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 		'spacer for total
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_total,,-2,"."), valueIncomeX, valueStartY + 14*valueH +5, valueW, valueH, alignRightCenter, clPositive)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.income_total,,-2,"."), valueIncomeX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
 
 
 		'draw balance values: expenses
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_programmeLicences,,-2,"."), valueExpenseX, valueStartY + 0*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_penalty,,-2,"."), valueExpenseX, valueStartY + 1*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_programmeLicences,,-2,"."), valueExpenseX, valueStartY + 0*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_penalty,,-2,"."), valueExpenseX, valueStartY + 1*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		'no callin expenses ?
 		'no expenses for sponsorships ?
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_news,,-2,"."), valueExpenseX, valueStartY + 4*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_newsAgencies,,-2,"."), valueExpenseX, valueStartY + 5*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees + finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_scripts,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_productionStuff,,-2,"."), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_rent,,-2,"."), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_drawingCreditInterest,,-2,"."), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditRepayed,,-2,"."), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, alignLeftCenter, clNegative)
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditInterest,,-2,"."), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_news,,-2,"."), valueExpenseX, valueStartY + 4*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_newsAgencies,,-2,"."), valueExpenseX, valueStartY + 5*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees + finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_scripts,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_productionStuff,,-2,"."), valueExpenseX, valueStartY + 8*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_rent,,-2,"."), valueExpenseX, valueStartY + 9*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_drawingCreditInterest,,-2,"."), valueExpenseX, valueStartY + 10*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditRepayed,,-2,"."), valueExpenseX, valueStartY + 11*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_creditInterest,,-2,"."), valueExpenseX, valueStartY + 12*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		'spacer for total
-		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_total,,-2,"."), valueExpenseX, valueStartY + 14*valueH +5, valueW, valueH, alignLeftCenter, clNegative)
+		textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_total,,-2,"."), valueExpenseX, valueStartY + 14*valueH +5, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 
 
 
@@ -2388,18 +2384,18 @@ Type RoomHandler_Office extends TRoomHandler
 			balanceValueBG.DrawArea(valueBGX, labelStartY + 6*valueH, balanceValueBG.GetWidth(), labelH)
 			balanceValueBG.DrawArea(valueBGX, labelStartY + 7*valueH, balanceValueBG.GetWidth(), labelH)
 
-			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
-			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, alignLeftCenter, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
+			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_FEES"), labelX, labelStartY + 6*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
+			textFont.DrawBlock(GetLocale("FINANCES_STATIONS_BUY_SELL"), labelX, labelStartY + 7*valueH, labelW, labelH, ALIGN_LEFT_CENTER, clTypes[TPlayerFinanceHistoryEntry.GROUP_STATION])
 
-			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, alignLeftCenter, clNegative)
+			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stationFees,,-2,"."), valueExpenseX, valueStartY + 6*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 
-			textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, alignRightCenter, clPositive)
-			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, alignLeftCenter, clNegative)
+			textBoldFont.drawBlock(TFunctions.convertValue(finance.income_stations,,-2,"."), valueIncomeX, valueStartY + 7*valueH, valueW, valueH, ALIGN_RIGHT_CENTER, clPositive)
+			textBoldFont.drawBlock(TFunctions.convertValue(finance.expense_stations,,-2,"."), valueExpenseX, valueStartY + 7*valueH, valueW, valueH, ALIGN_LEFT_CENTER, clNegative)
 		endif
 
 
 		'==== DRAW MONEY CURVE====
-		captionFont.DrawBlock(GetLocale("FINANCES_FINANCIAL_CURVES"), 500 + screenOffsetX, 207 + screenOffsetY,  240, captionHeight, alignCenter, captionColor, 1,,0.5)
+		captionFont.DrawBlock(GetLocale("FINANCES_FINANCIAL_CURVES"), 500 + screenOffsetX, 207 + screenOffsetY,  240, captionHeight, ALIGN_CENTER_CENTER, captionColor, 1,,0.5)
 
 		'how much days to draw
 		local showDays:int = 10
@@ -2425,8 +2421,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		local slot:int				= 0
-		local slotPos:TPoint		= new TPoint.Init(0,0)
-		local previousSlotPos:Tpoint= new TPoint.Init(0,0)
+		local slotPos:TVec2D		= new TVec2D.Init(0,0)
+		local previousSlotPos:TVec2D= new TVec2D.Init(0,0)
 		local slotWidth:int 		= curveArea.GetW() / showDays
 
 		local yPerMoney:Float = curveArea.GetH() / Float(Abs(minValue) + maxValue)
@@ -2493,8 +2489,8 @@ Type RoomHandler_Office extends TRoomHandler
 		SetLineWidth(1)
 
 		'coord descriptor
-		textSmallFont.drawBlock(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY(), curveArea.GetW(), 20, new TPoint.Init(ALIGN_RIGHT), labelColor)
-		textSmallFont.drawBlock(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, new TPoint.Init(ALIGN_RIGHT, ALIGN_BOTTOM), labelColor)
+		textSmallFont.drawBlock(TFunctions.convertValue(maxvalue,2,0), curveArea.GetX(), curveArea.GetY(), curveArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT), labelColor)
+		textSmallFont.drawBlock(TFunctions.convertValue(minvalue,2,0), curveArea.GetX(), curveArea.GetY() + curveArea.GetH()-20, curveArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM), labelColor)
 
 
 		GuiManager.Draw("officeFinancialScreen")
@@ -2566,7 +2562,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local fontColor:TColor = TColor.CreateGrey(50)
 		GetBitmapFont("Default",13).drawBlock(GetLocale("IMAGE_REACH") , 55, 233, 330, 20, null, fontColor)
 		GetBitmapFont("Default",12).drawBlock(GetLocale("IMAGE_SHARETOTAL") , 55, 45, 330, 20, null, fontColor)
-		GetBitmapFont("Default",12).drawBlock(MathHelper.floatToString(100.0 * GetPlayerCollection().Get(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TPoint.Init(ALIGN_RIGHT), fontColor)
+		GetBitmapFont("Default",12).drawBlock(MathHelper.floatToString(100.0 * GetPlayerCollection().Get(room.owner).GetStationMap().getCoverage(), 2) + "%", 280, 45, 93, 20, new TVec2D.Init(ALIGN_RIGHT), fontColor)
 	End Function
 
 	Function onUpdateImage:int( triggerEvent:TEventBase )
@@ -2584,11 +2580,11 @@ Type RoomHandler_Office extends TRoomHandler
 	'===================================
 	Function InitStationMap()
 		'StationMap-GUIcomponents
-		stationMapBuyButton = new TGUIButton.Create(new TPoint.Init(610, 110), new TPoint.Init(155,-1), "", "STATIONMAP")
+		stationMapBuyButton = new TGUIButton.Create(new TVec2D.Init(610, 110), new TVec2D.Init(155,-1), "", "STATIONMAP")
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, stationMapBuyButton )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, stationMapBuyButton )
 
-		stationMapSellButton = new TGUIButton.Create(new TPoint.Init(610, 345), new TPoint.Init(155,-1), "", "STATIONMAP")
+		stationMapSellButton = new TGUIButton.Create(new TVec2D.Init(610, 345), new TVec2D.Init(155,-1), "", "STATIONMAP")
 		stationMapSellButton.disable()
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, stationMapSellButton )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, stationMapSellButton )
@@ -2597,7 +2593,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
 		EventManager.registerListenerFunction( "stationmap.addStation",	OnChangeStationMapStation )
 
-		stationList = new TGUISelectList.Create(new TPoint.Init(595,233), new TPoint.Init(185,100), "STATIONMAP")
+		stationList = new TGUISelectList.Create(new TVec2D.Init(595,233), new TVec2D.Init(185,100), "STATIONMAP")
 		EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList )
 
 		'player enters station map screen - set checkboxes according to station map config
@@ -2605,7 +2601,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		For Local i:Int = 0 To 3
-			stationMapShowStations[i] = new TGUICheckBox.Create(new TPoint.Init(535, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TPoint.Init(20, 20), String(i + 1), "STATIONMAP")
+			stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(535, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
 			stationMapShowStations[i].SetChecked(True, False)
 			stationMapShowStations[i].ShowCaption(False)
 			'register checkbox changes
@@ -2628,7 +2624,7 @@ Type RoomHandler_Office extends TRoomHandler
 			DrawRect(565, 33 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 13, 16)
 		Next
 		SetColor 255, 255, 255
-		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 480, 15, 100, 20, new TPoint.Init(ALIGN_RIGHT))
+		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 480, 15, 100, 20, new TVec2D.Init(ALIGN_RIGHT))
 
 		'draw stations and tooltips
 		GetPlayerCollection().Get(room.owner).GetStationMap().Draw()
@@ -2649,22 +2645,22 @@ Type RoomHandler_Office extends TRoomHandler
 			GetBitmapFontManager().baseFontBold.draw( getLocale("MAP_COUNTRY_"+stationMapSelectedStation.getFederalState()), 595, 37, TColor.Create(80,80,0))
 
 			font.draw(GetLocale("REACH")+": ", 595, 55, TColor.clBlack)
-			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), 660, 55, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), 660, 55, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 
 			font.draw(GetLocale("INCREASE")+": ", 595, 72, TColor.clBlack)
-			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReachIncrease(), 2), 660, 72, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReachIncrease(), 2), 660, 72, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 
 			font.draw(GetLocale("PRICE")+": ", 595, 89, TColor.clBlack)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			SetColor(255,255,255)
 		EndIf
 
 		If stationMapSelectedStation and stationMapSelectedStation.paid
 			font.draw(GetLocale("REACH")+": ", 595, 200, TColor.clBlack)
-			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.reach, 2, 0), 660, 200, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.reach, 2, 0), 660, 200, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 
 			font.draw(GetLocale("VALUE")+": ", 595, 216, TColor.clBlack)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 		EndIf
 	End Function
 
@@ -2700,7 +2696,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If stationMapMode = 1
 			'create a temporary station if not done yet
 			if not StationMapMouseoverStation then StationMapMouseoverStation = GetStationMapCollection().getMap(room.owner).getTemporaryStation( MouseManager.x, MouseManager.y )
-			local mousePos:TPoint = new TPoint.Init( MouseManager.x, MouseManager.y)
+			local mousePos:TVec2D = new TVec2D.Init( MouseManager.x, MouseManager.y)
 
 			'if the mouse has moved - refresh the station data and move station
 			if not StationMapMouseoverStation.pos.isSame( mousePos )
@@ -2843,7 +2839,7 @@ Type RoomHandler_Office extends TRoomHandler
 		stationList.deselectEntry()
 
 		For Local station:TStation = EachIn GetPlayerCollection().Get(playerID).GetStationMap().Stations
-			local item:TGUICustomSelectListItem = new TGUICustomSelectListItem.Create(new TPoint, new TPoint.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
+			local item:TGUICustomSelectListItem = new TGUICustomSelectListItem.Create(new TVec2D, new TVec2D.Init(100,20), GetLocale("STATION")+" (" + TFunctions.convertValue(station.reach, 2, 0) + ")")
 			'link the station to the item
 			item.data.Add("station", station)
 			item._customDrawValue = DrawMapStationListEntry
@@ -2944,13 +2940,13 @@ Type RoomHandler_Archive extends TRoomHandler
 	Global DudeArea:TGUISimpleRect	'allows registration of drop-event
 
 	'configuration
-	Global suitcasePos:TPoint				= new TPoint.Init(40,270)
-	Global suitcaseGuiListDisplace:TPoint	= new TPoint.Init(14,25)
+	Global suitcasePos:TVec2D				= new TVec2D.Init(40,270)
+	Global suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
 
 
 	Function Init()
 		'===== CREATE GUI LISTS =====
-		GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TPoint.Init(200, 80), "archive")
+		GuiListSuitcase	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200, 80), "archive")
 		GuiListSuitcase.guiEntriesPanel.minSize.SetXY(200,80)
 		GuiListSuitcase.SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 		GuiListSuitcase.acceptType		= TGUIProgrammeLicenceSlotList.acceptAll
@@ -2958,7 +2954,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		GuiListSuitcase.SetSlotMinDimension(GetSpriteFromRegistry("gfx_movie0").area.GetW(), GetSpriteFromRegistry("gfx_movie0").area.GetH())
 		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
-		DudeArea = new TGUISimpleRect.Create(new TPoint.Init(600,100), new TPoint.Init(200, 350), "archive" )
+		DudeArea = new TGUISimpleRect.Create(new TVec2D.Init(600,100), new TVec2D.Init(200, 350), "archive" )
 		'dude should accept drop - else no recognition
 		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -3285,8 +3281,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 
 	'configuration
-	Global suitcasePos:TPoint				= new TPoint.Init(350,130)
-	Global suitcaseGuiListDisplace:TPoint	= new TPoint.Init(14,25)
+	Global suitcasePos:TVec2D				= new TVec2D.Init(350,130)
+	Global suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
 	Field programmesPerLine:int			= 12
 	Field movieCheapMaximum:int			= 50000
 
@@ -3309,10 +3305,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		listMoviesCheap	= listMoviesCheap[..programmesPerLine]
 		listSeries		= listSeries[..programmesPerLine]
 
-		GuiListMoviesGood	= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(596,50), new TPoint.Init(200,80), "movieagency")
-		GuiListMoviesCheap	= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(596,148), new TPoint.Init(200,80), "movieagency")
-		GuiListSeries		= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(596,246), new TPoint.Init(200,80), "movieagency")
-		GuiListSuitcase		= new TGUIProgrammeLicenceSlotList.Create(new TPoint.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TPoint.Init(200,80), "movieagency")
+		GuiListMoviesGood	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(200,80), "movieagency")
+		GuiListMoviesCheap	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(200,80), "movieagency")
+		GuiListSeries		= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(200,80), "movieagency")
+		GuiListSuitcase		= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "movieagency")
 
 		GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
 		GuiListMoviesCheap.guiEntriesPanel.minSize.SetXY(200,80)
@@ -3344,7 +3340,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		GuiListSeries.SetAcceptDrop("TGUIProgrammeLicence")
 		GuiListSuitcase.SetAcceptDrop("TGUIProgrammeLicence")
 
-		VendorArea = new TGUISimpleRect.Create(new TPoint.Init(20,60), new TPoint.Init(GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetH()), "movieagency" )
+		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(20,60), new TVec2D.Init(GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_movieagency").area.GetH()), "movieagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -3747,7 +3743,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'check if something is underlaying and whether the
 				'player could afford it
 				local underlayingItem:TGUIProgrammeLicence = null
-				local coord:TPoint = TPoint(triggerEvent.getData().get("coord", new TPoint.Init(-1,-1)))
+				local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
 				if coord then underlayingItem = TGUIProgrammeLicence(receiverList.GetItemByCoord(coord))
 
 				'allow drop on own place
@@ -3865,9 +3861,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		SetAlpha 0.5
 		local fontColor:TColor = TColor.CreateGrey(50)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
 		GUIManager.Draw("movieagency")
@@ -3940,9 +3936,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		SetAlpha 0.5
 		local fontColor:TColor = TColor.CreateGrey(50)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
-		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TPoint.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("MOVIES"),		642,  27+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SPECIAL_BIN"),	642, 125+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
+		GetBitmapFont("Default",12, BOLDFONT).drawBlock(GetLocale("SERIES"), 		642, 223+3, 108,20, new TVec2D.Init(ALIGN_CENTER), fontColor)
 		SetAlpha 1.0
 
 		GUIManager.Draw("movieagency")
@@ -3951,7 +3947,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		SetAlpha 1.0;SetColor 255,255,255
 		DrawGFXRect(TSpritePack(GetRegistry().Get("gfx_gui_rect")), 120, 60, 555, 290)
 		SetAlpha 0.5
-		GetBitmapFont("Default",12,BOLDFONT).drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TPoint.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.25)
+		GetBitmapFont("Default",12,BOLDFONT).drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.25)
 		SetAlpha 1.0
 
 		TAuctionProgrammeBlocks.DrawAll()
@@ -3983,11 +3979,11 @@ Type RoomHandler_News extends TRoomHandler
 		'ATTENTION: We could do this in order of The NewsGenre-Values
 		'           But better add it to the buttons.data-property
 		'           for better checking
-		NewsGenreButtons[0]	= new TGUIButton.Create( new TPoint.Init(69, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
-		NewsGenreButtons[1]	= new TGUIButton.Create( new TPoint.Init(20, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
-		NewsGenreButtons[2]	= new TGUIButton.Create( new TPoint.Init(69, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
-		NewsGenreButtons[3]	= new TGUIButton.Create( new TPoint.Init(20, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
-		NewsGenreButtons[4]	= new TGUIButton.Create( new TPoint.Init(118, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
+		NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(69, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+		NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(20, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
+		NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(69, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
+		NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(20, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+		NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(118, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
 		for local i:int = 0 to 4
 			NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
 			'adjust width according sprite dimensions
@@ -4012,12 +4008,12 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		'create the lists in the news planner
-		guiNewsListAvailable = new TGUINewsList.Create(new TPoint.Init(34,20), new TPoint.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 356), "Newsplanner")
+		guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(34,20), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 356), "Newsplanner")
 		guiNewsListAvailable.SetAcceptDrop("TGUINews")
 		guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 3,guiNewsListAvailable.rect.GetH())
 		guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
 
-		guiNewsListUsed = new TGUINewsSlotList.Create(new TPoint.Init(444,105), new TPoint.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+		guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(444,105), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 		guiNewsListUsed.SetItemLimit(3)
 		guiNewsListUsed.SetAcceptDrop("TGUINews")
 		guiNewsListUsed.SetSlotMinDimension(0,GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
@@ -4369,7 +4365,7 @@ EndRem
 		elseif receiverList = guiNewsListUsed
 			local slot:int = -1
 			'check drop position
-			local coord:TPoint = TPoint(triggerEvent.getData().get("coord", new TPoint.Init(-1,-1)))
+			local coord:TVec2D = TVec2D(triggerEvent.getData().get("coord", new TVec2D.Init(-1,-1)))
 			if coord then slot = guiNewsListUsed.GetSlotByCoord(coord)
 			if slot = -1 then slot = guiNewsListUsed.getSlot(guiNews)
 
@@ -4559,8 +4555,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global GuiListSuitcase:TGUIAdContractSlotList = null
 
 	'configuration
-	Global suitcasePos:TPoint					= new TPoint.Init(520,100)
-	Global suitcaseGuiListDisplace:TPoint		= new TPoint.Init(19,32)
+	Global suitcasePos:TVec2D					= new TVec2D.Init(520,100)
+	Global suitcaseGuiListDisplace:TVec2D		= new TVec2D.Init(19,32)
 	Global contractsPerLine:int					= 4
 	Global contractsNormalAmount:int			= 12
 	Global contractsCheapAmount:int				= 4
@@ -4590,7 +4586,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		GuiListNormal	= GuiListNormal[..3]
 		for local i:int = 0 to GuiListNormal.length-1
-			GuiListNormal[i] = new TGUIAdContractSlotList.Create(new TPoint.Init(430 - i*70, 170 + i*32), new TPoint.Init(200, 140), "adagency")
+			GuiListNormal[i] = new TGUIAdContractSlotList.Create(new TVec2D.Init(430 - i*70, 170 + i*32), new TVec2D.Init(200, 140), "adagency")
 			GuiListNormal[i].SetOrientation( GUI_OBJECT_ORIENTATION_HORIZONTAL )
 			GuiListNormal[i].SetItemLimit( contractsNormalAmount / GuiListNormal.length  )
 			GuiListNormal[i].Resize(GetSpriteFromRegistry("gfx_contracts_0").area.GetW() * (contractsNormalAmount / GuiListNormal.length), GetSpriteFromRegistry("gfx_contracts_0").area.GetH() )
@@ -4599,10 +4595,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			GuiListNormal[i].setZindex(i)
 		Next
 
-		GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TPoint.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TPoint.Init(200,80), "adagency")
+		GuiListSuitcase	= new TGUIAdContractSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "adagency")
 		GuiListSuitcase.SetAutofillSlots(true)
 
-		GuiListCheap = new TGUIAdContractSlotList.Create(new TPoint.Init(70, 200), new TPoint.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
+		GuiListCheap = new TGUIAdContractSlotList.Create(new TVec2D.Init(70, 200), new TVec2D.Init(10 +GetSpriteFromRegistry("gfx_contracts_0").area.GetW()*4,GetSpriteFromRegistry("gfx_contracts_0").area.GetH()), "adagency")
 		GuiListCheap.setEntriesBlockDisplacement(70,0)
 
 
@@ -4622,7 +4618,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListCheap.SetAcceptDrop("TGuiAdContract")
 		GuiListSuitcase.SetAcceptDrop("TGuiAdContract")
 
-		VendorArea = new TGUISimpleRect.Create(new TPoint.Init(286, 110), new TPoint.Init(GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetH()), "adagency" )
+		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(286, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetH()), "adagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -5384,7 +5380,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			SetAlpha 1.0
 			local x:float = picX + Int(sprite.area.GetW() / 2) - Int(GetPlayerCollection().Get(i).Figure.Sprite.framew / 2)
 			local y:float = picY + sprite.area.GetH() - 30
-			GetPlayerCollection().Get(i).Figure.Sprite.DrawClipped(new TPoint.Init(x, y), new TRectangle.Init(0, 0, -1, sprite.area.GetH()-16), 8)
+			GetPlayerCollection().Get(i).Figure.Sprite.DrawClipped(new TRectangle.Init(x, y, -1, sprite.area.GetH()-16), null, 8)
 		Next
 
 		DrawDialog("default", 430, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
@@ -5567,9 +5563,9 @@ Type RoomHandler_Credits extends TRoomHandler
 		local fontRole:TBitmapFont = GetBitmapFont("Default",28, BOLDFONT)
 		local fontCast:TBitmapFont = GetBitmapFont("Default",20, BOLDFONT)
 		if not fadeRole then SetAlpha 1.0
-		fontRole.DrawBlock(GetRole().name.ToUpper(), 20,180, GetGraphicsManager().GetWidth() - 40, 40, new TPoint.Init(ALIGN_CENTER), GetRole().color, 2, 1, 0.6)
+		fontRole.DrawBlock(GetRole().name.ToUpper(), 20,180, GetGraphicsManager().GetWidth() - 40, 40, new TVec2D.Init(ALIGN_CENTER), GetRole().color, 2, 1, 0.6)
 		SetAlpha fadeValue
-		if GetCast() then fontCast.DrawBlock(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 80, new TPoint.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.6)
+		if GetCast() then fontCast.DrawBlock(GetCast(), 150,210, GetGraphicsManager().GetWidth() - 300, 80, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.6)
 
 		SetAlpha 1.0
 	End Function
@@ -5634,8 +5630,8 @@ Type TRoomDoorSign Extends TBlockMoveable
 		Local y:Int = GetFloorY(signFloor)
 		local x:Int = GetSlotX(signSlot)
 
-		OrigPos = new TPoint.Init(x, y)
-		StartPos = new TPoint.Init(x, y)
+		OrigPos = new TVec2D.Init(x, y)
+		StartPos = new TVec2D.Init(x, y)
 		rect = new TRectangle.Init(x, y, tmpImage.area.GetW(), tmpImage.area.GetH() - 1)
 
 		List.AddLast(self)

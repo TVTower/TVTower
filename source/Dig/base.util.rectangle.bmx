@@ -6,12 +6,12 @@ Rem
 	Base rectangle class including some helper functions.
 End Rem
 SuperStrict
-Import "base.util.point.bmx"
+Import "base.util.vector.bmx"
 
 
 Type TRectangle {_exposeToLua="selected"}
-	Field position:TPoint = new TPoint {_exposeToLua}
-	Field dimension:TPoint = new TPoint {_exposeToLua}
+	Field position:TVec2D = new TVec2D {_exposeToLua}
+	Field dimension:TVec2D = new TVec2D {_exposeToLua}
 	'global helper variables should be faster than allocating locals each time (in huge amount)
 	global ix:float,iy:float,iw:float,ih:float
 
@@ -55,8 +55,8 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	'returns whether the rectangle contains a point
-	Method ContainsPoint:int(point:TPoint) {_exposeToLua}
-		return containsXY( point.GetX(), point.GetY() )
+	Method ContainsVec:int(vec:TVec2D) {_exposeToLua}
+		return containsXY( vec.GetX(), vec.GetY() )
 	End Method
 
 
@@ -87,8 +87,8 @@ Type TRectangle {_exposeToLua="selected"}
 
 
 	'moves the rectangle to x,y
-	Method MoveXY:int(x:float,y:float)
-		position.MoveXY(x, y)
+	Method MoveXY:int(x:float, y:float)
+		position.AddXY(x, y)
 	End Method
 
 
@@ -176,8 +176,8 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetAbsoluteCenterPoint:TPoint()
-		return new TPoint.Init(GetX() + GetW()/2, GetY() + GetH()/2)
+	Method GetAbsoluteCenterVec:TVec2D()
+		return new TVec2D.Init(GetX() + GetW()/2, GetY() + GetH()/2)
 	End Method
 
 

@@ -25,7 +25,7 @@ Type TStationMapCollection
 	Field stationRadius:Int = 15
 	Field population:Int = 0 {nosave}
 	Field populationmap:Int[,] {nosave}
-	Field populationMapSize:TPoint = new TPoint.Init() {nosave}
+	Field populationMapSize:TVec2D = new TVec2D.Init() {nosave}
 
 	Field mapConfigFile:string = ""
 	'does the shareMap has to get regenerated during the next
@@ -34,7 +34,7 @@ Type TStationMapCollection
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
-	Global populationMapOffset:TPoint = new TPoint.Init(20, 10)
+	Global populationMapOffset:TVec2D = new TVec2D.Init(20, 10)
 	Global _initDone:int = FALSE
 	Global _instance:TStationMapCollection
 
@@ -105,7 +105,7 @@ Type TStationMapCollection
 		For Local child:TxmlNode = EachIn TXmlHelper.GetNodeChildElements(statesNode)
 			Local name:String	= TXmlHelper.FindValue(child, "name", "")
 			Local sprite:String	= TXmlHelper.FindValue(child, "sprite", "")
-			Local pos:TPoint	= new TPoint.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
+			Local pos:TVec2D	= new TVec2D.Init( TXmlHelper.FindValueInt(child, "x", 0), TXmlHelper.FindValueInt(child, "y", 0) )
 			'add state section if data is ok
 			If name<>"" And sprite<>""
 				New TStationMapSection.Create(pos,name, sprite).add()
@@ -224,7 +224,7 @@ Type TStationMapCollection
 		Local stationX:Int	= 0
 		Local stationY:Int	= 0
 		Local mapKey:String	= ""
-		Local mapValue:TPoint = Null
+		Local mapValue:TVec3D = Null
 		Local rect:TRectangle = new TRectangle.Init(0,0,0,0)
 		For Local stationmap:TStationMap = EachIn stationMaps
 			For Local station:TStation = EachIn stationmap.stations
@@ -247,9 +247,9 @@ Type TStationMapCollection
 						'insert the players bitmask-number into the field
 						'and if there is already one ... add the number
 						mapKey = posX+","+posY
-						mapValue = new TPoint.Init(posX,posY, getMaskIndex(stationmap.owner) )
+						mapValue = new TVec3D.Init(posX,posY, getMaskIndex(stationmap.owner) )
 						If shareMap.Contains(mapKey)
-							mapValue.z = Int(mapValue.z) | Int(TPoint(shareMap.ValueForKey(mapKey)).z)
+							mapValue.z = Int(mapValue.z) | Int(TVec3D(shareMap.ValueForKey(mapKey)).z)
 						EndIf
 						shareMap.Insert(mapKey, mapValue)
 					Next
@@ -271,10 +271,10 @@ Type TStationMapCollection
 	End Method
 
 
-	'returns a share between players, encoded in a tpoint containing:
+	'returns a share between players, encoded in a TVec3D containing:
 	'x=sharedAudience,y=totalAudience,z=percentageOfSharedAudience
-	Method GetShare:TPoint(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
-		If playerIDs.length <1 Then Return new TPoint.Init(0,0,0.0)
+	Method GetShare:TVec3D(playerIDs:Int[], withoutPlayerIDs:Int[]=Null)
+		If playerIDs.length <1 Then Return new TVec3D.Init(0,0,0.0)
 		If Not withoutPlayerIDs Then withoutPlayerIDs = New Int[0]
 
 	rem
@@ -290,11 +290,11 @@ Type TStationMapCollection
 		For Local i:Int = 0 To withoutPlayerIDs.length-1
 			cacheKey:+ "_"+withoutPlayerIDs[i]
 		Next
-		If shareCache And shareCache.contains(cacheKey) Then Return TPoint(shareMap.ValueForKey(cacheKey))
+		If shareCache And shareCache.contains(cacheKey) Then Return TVec3D(shareMap.ValueForKey(cacheKey))
 	end rem
 	
 		Local map:TMap = GetShareMap()
-		Local result:TPoint	= new TPoint.Init(0,0,0.0)
+		Local result:TVec3D	= new TVec3D.Init(0,0,0.0)
 		Local share:Int	= 0
 		Local total:Int	= 0
 		Local playerFlags:Int[]
@@ -319,7 +319,7 @@ Type TStationMapCollection
 
 		Local someoneUsesPoint:Int = False
 		Local allUsePoint:Int = False
-		For Local mapValue:TPoint = EachIn map.Values()
+		For Local mapValue:TVec3D = EachIn map.Values()
 			someoneUsesPoint = False
 			allUsePoint = False
 
@@ -414,7 +414,7 @@ endrem
 			For posY = Max(y - stationRadius,stationRadius) To Min(y + stationRadius, populationMapSize.y-stationRadius)
 				' noch innerhalb des Kreises?
 				If Self.calculateDistance( posX - x, posY - y ) <= stationRadius
-					map.Insert(String((posX) + "," + (posY)), new TPoint.Init((posX) , (posY), color ))
+					map.Insert(String((posX) + "," + (posY)), new TVec3D.Init((posX) , (posY), color ))
 				EndIf
 			Next
 		Next
@@ -441,7 +441,7 @@ endrem
 			EndIf
 		Next
 
-		For Local point:TPoint = EachIn points.Values()
+		For Local point:TVec3D = EachIn points.Values()
 			If ARGB_Red(point.z) = 0 And ARGB_Blue(point.z) = 255
 				returnvalue:+ populationmap[point.x, point.y]
 			EndIf
@@ -461,7 +461,7 @@ endrem
 		Next
 		Local returnValue:Int = 0
 
-		For Local point:TPoint = EachIn points.Values()
+		For Local point:TVec3D = EachIn points.Values()
 			If ARGB_Red(point.z) = 255 And ARGB_Blue(point.z) = 255
 				returnValue:+ populationmap[point.x, point.y]
 			EndIf
@@ -575,13 +575,13 @@ Type TStationMap {_exposeToLua="selected"}
 	'returns a station-object wich can be used for further
 	'information getting (share etc)
 	Method getTemporaryStation:TStation(x:Int,y:Int)  {_exposeToLua}
-		Return TStation.Create(new TPoint.Init(x,y),-1, GetStationMapCollection().stationRadius, owner)
+		Return TStation.Create(new TVec2D.Init(x,y),-1, GetStationMapCollection().stationRadius, owner)
 	End Method
 
 
 	'return a station at the given coordinates (eg. used by network)
 	Method getStation:TStation(x:Int=0,y:Int=0) {_exposeToLua}
-		Local pos:TPoint = new TPoint.Init(x, y)
+		Local pos:TVec2D = new TVec2D.Init(x, y)
 		For Local station:TStation = EachIn stations
 			If Not station.pos.isSame(pos) Then Continue
 			Return station
@@ -751,7 +751,7 @@ End Type
 'provides the option to buy new stations
 'functions are calculation of audiencesums and drawing of stations
 Type TStation Extends TGameObject {_exposeToLua="selected"}
-	Field pos:TPoint
+	Field pos:TVec2D
 	Field reach:Int	= -1
 	'increase of reach at when bought
 	Field reachIncrease:Int = -1
@@ -768,7 +768,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Field federalState:String = ""
 
 
-	Function Create:TStation( pos:TPoint, price:Int=-1, radius:Int, owner:Int)
+	Function Create:TStation( pos:TVec2D, price:Int=-1, radius:Int, owner:Int)
 		Local obj:TStation = New TStation
 		obj.owner = owner
 		obj.pos	= pos
@@ -922,15 +922,15 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		textY:+ textH + 5
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("REACH")+": ", textX, textY)
-		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReach(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("INCREASE")+": ", textX, textY)
-		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getReachIncrease(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
 		textY:+ textH
 
 		GetBitmapFontManager().baseFont.draw(GetLocale("PRICE")+": ", textX, textY)
-		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, new TPoint.Init(ALIGN_RIGHT), colorWhite)
+		GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(getPrice(), 2), textX, textY, textW, 20, new TVec2D.Init(ALIGN_RIGHT), colorWhite)
 
 	End Method
 
@@ -959,7 +959,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 		SetColor 255,255,255
 		SetAlpha OldAlpha
-		sprite.Draw(pos.x, pos.y + radius - sprite.area.GetH() - 2, -1, new TPoint.Init(ALIGN_CENTER, ALIGN_TOP))
+		sprite.Draw(pos.x, pos.y + radius - sprite.area.GetH() - 2, -1, new TVec2D.Init(ALIGN_CENTER, ALIGN_TOP))
 	End Method
 
 
@@ -992,7 +992,7 @@ Type TStationMapSection
 	Global sections:TList = CreateList()
 
 
-	Method Create:TStationMapSection(pos:TPoint, name:String, spriteName:string)
+	Method Create:TStationMapSection(pos:TVec2D, name:String, spriteName:string)
 		Self.spriteName = spriteName
 		Self.rect = new TRectangle.Init(pos.x,pos.y, 0, 0)
 		Self.name = name

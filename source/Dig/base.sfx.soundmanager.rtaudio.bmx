@@ -3,7 +3,7 @@ Import brl.Map
 Import brl.WAVLoader
 Import brl.OGGLoader
 Import "base.util.logger.bmx"
-Import "base.util.point.bmx"
+Import "base.util.vector.bmx"
 
 'the needed module files are located in "external/maxmod2_lite.mod.zip"
 
@@ -683,8 +683,8 @@ Type TDynamicSfxChannel Extends TSfxChannel
 
 
 	Method AdjustSettings(isUpdate:Int)
-		Local sourcePoint:TPoint = Source.GetCenter()
-		Local receiverPoint:TPoint = Receiver.GetCenter() 'Meistens die Position der Spielfigur
+		Local sourcePoint:TVec3D = Source.GetCenter()
+		Local receiverPoint:TVec3D = Receiver.GetCenter() 'Meistens die Position der Spielfigur
 
 		If CurrentSettings.forceVolume
 			channel.SetVolume(CurrentSettings.defaultVolume)
@@ -704,16 +704,16 @@ Type TDynamicSfxChannel Extends TSfxChannel
 			Else
 				channel.SetPan(Float(sourcePoint.x - receiverPoint.x) / 170)
 			EndIf
-			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elementPoint.z = 0
+			channel.SetDepth(0) 'Die Tiefe spielt keine Rolle, da elemenTVec2D.z = 0
 		Else
-			Local zDistance:Float = TPoint.DistanceOfValues(sourcePoint.z, receiverPoint.z)
+			Local zDistance:Float = Abs(sourcePoint.z - receiverPoint.z)
 
 			If CurrentSettings.forcePan
 				channel.SetPan(CurrentSettings.defaultPan)
 				'print "Pan:" + CurrentSettings.defaultPan
 			Else
-				Local xDistance:Float = TPoint.DistanceOfValues(sourcePoint.x, receiverPoint.x)
-				Local yDistance:Float = TPoint.DistanceOfValues(sourcePoint.y, receiverPoint.y)
+				Local xDistance:Float = Abs(sourcePoint.x - receiverPoint.x)
+				Local yDistance:Float = Abs(sourcePoint.y - receiverPoint.y)
 
 				Local angleZX:Float = ATan(zDistance / xDistance) 'Winkelfunktion: Welchen Winkel hat der Hörer zur Soundquelle. 90° = davor/dahiner    0° = gleiche Ebene	tan(alpha) = Gegenkathete / Ankathete
 
@@ -806,7 +806,7 @@ End Type
 
 Type TSoundSourcePosition 'Basisklasse für verschiedene Wrapper
 	Method GetID:String() Abstract
-	Method GetCenter:TPoint() Abstract
+	Method GetCenter:TVec3D() Abstract
 	Method IsMovable:Int() Abstract
 End Type
 

@@ -51,11 +51,13 @@ End Type
 
 Type TEntity extends TStaticEntity
 	'for tweening
-	Field oldPosition:TPoint = new TPoint
+	Field oldPosition:TVec2D = new TVec2D
 	'moving direction
-	Field velocity:TPoint = new TPoint
+	Field velocity:TVec2D = new TVec2D
+	'entity specific speedFactor. If < 0 then worldSpeedFactor gets used
+	Field worldSpeedFactor:Float = -1.0
 	'a world speed factor of 1.0 means realtime, 2.0 = fast forward 
-	Global worldSpeedFactor:float = 1.0
+	Global globalWorldSpeedFactor:Float = 1.0
 
 
 	Method New()
@@ -64,6 +66,7 @@ Type TEntity extends TStaticEntity
 
 
 	Method GetWorldSpeedFactor:float()
+		if worldSpeedFactor < 0 then return globalWorldSpeedFactor
 		return worldSpeedFactor
 	End Method
 
@@ -73,7 +76,7 @@ Type TEntity extends TStaticEntity
 	End Method
 
 
-	Method GetVelocity:TPoint()
+	Method GetVelocity:TVec2D()
 		return velocity
 	End Method
 
@@ -85,6 +88,6 @@ Type TEntity extends TStaticEntity
 		'backup for tweening
 		oldPosition.SetXY(area.position.x, area.position.y)
 		'set new position
-		area.position.MoveXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
+		area.position.AddXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
 	End Method
 End Type

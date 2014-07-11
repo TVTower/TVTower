@@ -9,14 +9,14 @@ Import "base.gfx.gui.bmx"
 
 
 Type TGUITextBox Extends TGUIobject
-	Field valueAlignment:TPoint = new TPoint.Init(0,0)
+	Field valueAlignment:TVec2D = new TVec2D.Init(0,0)
 	Field valueColor:TColor	= TColor.Create(0,0,0)
 	Field valueStyle:Int = 0 'used in DrawBlock(...style)
 	Field valueStyleSpecial:Float = 1.0	 'used in DrawBlock(...special)
 	Field _autoAdjustHeight:Int	= False
 
 
-	Method Create:TGUITextBox(position:TPoint = null, dimension:TPoint = null, text:String, limitState:String="")
+	Method Create:TGUITextBox(position:TVec2D = null, dimension:TVec2D = null, text:String, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
 
 		SetValue(text)
@@ -78,7 +78,7 @@ Type TGUITextBox Extends TGUIobject
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		Local drawPos:TPoint = new TPoint.Init(GetScreenX(), GetScreenY())
+		Local drawPos:TVec2D = new TVec2D.Init(GetScreenX(), GetScreenY())
 		GetFont().drawBlock(value, drawPos.GetIntX(), drawPos.GetIntY(), rect.GetW(), rect.GetH(), valueAlignment, valueColor, 1, 1, 0.25)
 
 		oldCol.SetRGBA()

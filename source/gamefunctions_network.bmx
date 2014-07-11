@@ -645,7 +645,7 @@ print "[NET] ReceiveGameReady"
 	Method ReceiveStationmapChange:int( obj:TNetworkObject)
 		local playerID:int		= obj.getInt(1)
 		local action:int		= obj.getInt(2)
-		local pos:TPoint		= new TPoint.Init( obj.getFloat(3), obj.getFloat(4) )
+		local pos:TVec2D		= new TVec2D.Init( obj.getFloat(3), obj.getFloat(4) )
 		local radius:int		= obj.getInt(5)
 		if not GetPlayerCollection().IsPlayer(playerID) then return FALSE
 

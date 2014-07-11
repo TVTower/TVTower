@@ -79,7 +79,7 @@ Function Font_AddShadow:TBitmapFontChar(font:TBitmapFont, charKey:String, char:T
 
 	'increase character dimension
 	char.charWidth :+ shadowSize
-	char.area.dimension.moveXY(shadowSize, shadowSize)
+	char.area.dimension.addXY(shadowSize, shadowSize)
 
 	char.img = LoadImage(newPixmap)
 
@@ -94,14 +94,14 @@ End Function
 
 Type TGUISpriteDropDown extends TGUIDropDown
 
-	Method Create:TGUISpriteDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
+	Method Create:TGUISpriteDropDown(position:TVec2D = null, dimension:TVec2D = null, value:string="", maxLength:Int=128, limitState:String = "")
 		Super.Create(position, dimension, value, maxLength, limitState)
 		Return self
 	End Method
 	
 
 	'override to add sprite next to value
-	Method DrawContent:Int(position:TPoint)
+	Method DrawContent:Int(position:TVec2D)
 		'position is already a copy, so we can reuse it without
 		'copying it first
 
@@ -114,7 +114,7 @@ Type TGUISpriteDropDown extends TGUIDropDown
 			if item and sprite.GetName() <> "defaultSprite"
 				local displaceY:int = -1 + 0.5 * (labelHeight - (item.GetSpriteDimension().y * scaleSprite))
 				sprite.DrawArea(position.x, position.y + displaceY, item.GetSpriteDimension().x * scaleSprite, item.GetSpriteDimension().y * scaleSprite)
-				position.MoveXY(item.GetSpriteDimension().x * scaleSprite + 3, 0)
+				position.addXY(item.GetSpriteDimension().x * scaleSprite + 3, 0)
 			endif
 		endif
 
@@ -125,13 +125,13 @@ End Type
 
 
 Type TGUISpriteDropDownItem Extends TGUIDropDownItem
-	Global spriteDimension:TPoint
-	Global defaultSpriteDimension:TPoint = new TPoint.Init(24, 24)
+	Global spriteDimension:TVec2D
+	Global defaultSpriteDimension:TVec2D = new TVec2D.Init(24, 24)
 	
 
-    Method Create:TGUISpriteDropDownItem(position:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUISpriteDropDownItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
 		if not dimension
-			dimension = new TPoint.Init(-1, GetSpriteDimension().y + 2)
+			dimension = new TVec2D.Init(-1, GetSpriteDimension().y + 2)
 		else
 			dimension.x = Max(dimension.x, GetSpriteDimension().x)
 			dimension.y = Max(dimension.y, GetSpriteDimension().y)
@@ -141,13 +141,13 @@ Type TGUISpriteDropDownItem Extends TGUIDropDownItem
     End Method
 
 
-    Method GetSpriteDimension:TPoint()
+    Method GetSpriteDimension:TVec2D()
 		if not spriteDimension then return defaultSpriteDimension
 		return spriteDimension
     End Method
 
 
-	Method SetSpriteDimension:int(dimension:TPoint)
+	Method SetSpriteDimension:int(dimension:TVec2D)
 		spriteDimension = dimension.copy()
 
 		Resize(..
@@ -196,7 +196,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 	Field padding:TRectangle = new TRectangle.Init(8, 8, 8, 8)
 
 
-	Method Create:TGUIChatWindow(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIChatWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		'use "create" instead of "createBase" so the caption gets
 		'positioned similar
 		Super.Create(pos, dimension, limitState)
@@ -205,7 +205,7 @@ Type TGUIChatWindow Extends TGUIGameWindow
 		'we manage the panel
 		AddChild(guiPanel)
 
-		guiChat = new TGUIChat.Create(new TPoint.Init(0,0), new TPoint.Init(-1,-1), limitState)
+		guiChat = new TGUIChat.Create(new TVec2D.Init(0,0), new TVec2D.Init(-1,-1), limitState)
 		'we manage the panel
 		AddChild(guiChat)
 
@@ -260,10 +260,10 @@ Type TGUIChat Extends TGUIPanel
 	Global antiSpamTime:Int	= 100
 
 
-	Method Create:TGUIChat(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIChat(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
-		guiList = New TGUIListBase.Create(new TPoint.Init(0,0), new TPoint.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
+		guiList = New TGUIListBase.Create(new TVec2D.Init(0,0), new TVec2D.Init(GetContentScreenWidth(),GetContentScreenHeight()), limitState)
 		guiList.setOption(GUI_OBJECT_ACCEPTS_DROP, False)
 		guiList.autoSortItems = False
 		guiList.SetAcceptDrop("")
@@ -271,7 +271,7 @@ Type TGUIChat Extends TGUIPanel
 		guiList.autoScroll = True
 		guiList.SetBackground(Null)
 
-		guiInput = New TGUIInput.Create(new TPoint.Init(0, dimension.y),new TPoint.Init(dimension.x,-1), "", 32, limitState)
+		guiInput = New TGUIInput.Create(new TVec2D.Init(0, dimension.y),new TVec2D.Init(dimension.x,-1), "", 32, limitState)
 		guiInput.setParent(Self)
 
 		'resize base and move child elements
@@ -488,7 +488,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 	Global childSpriteBaseName:string = "gfx_gui_panel.content"
 
 
-	Method Create:TGUIGameWindow(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIGameWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		GetPadding().SetTop(35)
@@ -520,7 +520,7 @@ Type TGUIGameWindow Extends TGUIWindowBase
 				maxOtherBoxesY :+ panelGap
 			Next
 		EndIf
-		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TPoint.Init(displaceX, maxOtherBoxesY + displaceY), new TPoint.Init(w, h), "")
+		Local box:TGUIBackgroundBox = New TGUIBackgroundBox.Create(new TVec2D.Init(displaceX, maxOtherBoxesY + displaceY), new TVec2D.Init(w, h), "")
 
 		box.spriteBaseName = childSpriteBaseName
 		box.spriteAlpha = 1.0
@@ -553,7 +553,7 @@ End Type
 
 
 Type TGUIGameModalWindow Extends TGUIModalWindow
-	Method Create:TGUIGameModalWindow(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIGameModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		_defaultValueColor = TColor.clBlack.copy()
 		defaultCaptionColor = TColor.clWhite.copy()
 
@@ -591,7 +591,7 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-    Method Create:TGUIChatEntry(pos:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUIChatEntry(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
 
@@ -606,8 +606,8 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method getDimension:TPoint()
-		Local move:TPoint = new TPoint.Init(0,0)
+	Method getDimension:TVec2D()
+		Local move:TVec2D = new TVec2D.Init(0,0)
 		If Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
@@ -626,10 +626,10 @@ Type TGUIChatEntry Extends TGUIListItem
 		endif
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TPoint = GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, Null, 2, 0)
+		Local dimension:TVec2D = GetBitmapFontManager().baseFont.drawBlock(GetValue(), getScreenX()+move.x, getScreenY()+move.y, maxWidth-move.X, maxHeight, Null, Null, 2, 0)
 
 		'add padding
-		dimension.moveXY(0, paddingBottom)
+		dimension.addXY(0, paddingBottom)
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
@@ -674,7 +674,7 @@ Type TGUIChatEntry Extends TGUIListItem
 		'local maxWidth:int = self.getParentWidth("tguiscrollablepanel")-self.rect.getX()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local move:TPoint = new TPoint.Init(0,0)
+		Local move:TVec2D = new TVec2D.Init(0,0)
 		If Self.Data.getString("senderName",Null)
 			Local senderColor:TColor = TColor(Self.Data.get("senderColor"))
 			If Not senderColor Then senderColor = TColor.Create(0,0,0)
@@ -698,7 +698,7 @@ End Type
 Type TGUIGameList Extends TGUISelectList
 
 
-    Method Create:TGUIGameList(pos:TPoint=null, dimension:TPoint=null, limitState:String = "")
+    Method Create:TGUIGameList(pos:TVec2D=null, dimension:TVec2D=null, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		Return Self
@@ -763,7 +763,7 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-    Method Create:TGUIGameEntry(pos:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUIGameEntry(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(pos, dimension, "")
@@ -780,17 +780,17 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-	Method getDimension:TPoint()
+	Method getDimension:TVec2D()
 		'available width is parentsDimension minus startingpoint
 		Local parentPanel:TGUIScrollablePanel = TGUIScrollablePanel(Self.getParent("tguiscrollablepanel"))
 		Local maxWidth:Int = parentPanel.getContentScreenWidth() '- GetScreenWidth()
 		Local maxHeight:Int = 2000 'more than 2000 pixel is a really long text
 
-		Local dimension:TPoint = new TPoint.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
+		Local dimension:TVec2D = new TVec2D.Init(maxWidth, GetBitmapFontManager().baseFont.GetMaxCharHeight())
 		
 		'add padding
-		dimension.moveXY(0, Self.paddingTop)
-		dimension.moveXY(0, Self.paddingBottom)
+		dimension.addXY(0, Self.paddingTop)
+		dimension.addXY(0, Self.paddingBottom)
 
 		'set current size and refresh scroll limits of list
 		'but only if something changed (eg. first time or content changed)
@@ -806,26 +806,26 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	'override
 	Method DrawValue:int()
 		'draw text
-		Local move:TPoint = new TPoint.Init(0, Self.paddingTop)
+		Local move:TVec2D = new TVec2D.Init(0, Self.paddingTop)
 		Local text:String = ""
 		Local textColor:TColor = Null
-		Local textDim:TPoint = Null
+		Local textDim:TVec2D = Null
 		'line: title by hostname (slotsused/slotsmax)
 
 		text 		= Self.Data.getString("gameTitle","#unknowngametitle#")
 		textColor	= TColor(Self.Data.get("gameTitleColor", TColor.Create(150,80,50)) )
 		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor, 2, 1,0.5)
-		move.moveXY(textDim.x,1)
+		move.addXY(textDim.x,1)
 
 		text 		= " by "+Self.Data.getString("hostName","#unknownhostname#")
 		textColor	= TColor(Self.Data.get("hostNameColor", TColor.Create(50,50,150)) )
 		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
-		move.moveXY(textDim.x,0)
+		move.addXY(textDim.x,0)
 
 		text 		= " ("+Self.Data.getInt("slotsUsed",1)+"/"++Self.Data.getInt("slotsMax",4)+")"
 		textColor	= TColor(Self.Data.get("hostNameColor", TColor.Create(0,0,0)) )
 		textDim		= GetBitmapFontManager().baseFontBold.drawStyled(text, Self.getScreenX() + move.x, Self.getScreenY() + move.y, textColor)
-		move.moveXY(textDim.x,0)
+		move.addXY(textDim.x,0)
 	End Method
 
 
@@ -885,7 +885,7 @@ Type THotspot extends TStaticEntity
 		'handle clicks -> send events so eg can send figure to it
 
 		Local adjustedArea:TRectangle = area.copy()
-		adjustedArea.position.moveXY(offsetX, offsetY)
+		adjustedArea.position.addXY(offsetX, offsetY)
 
 		If adjustedArea.containsXY(MOUSEMANAGER.x, MOUSEMANAGER.y)
 			hovered = True
@@ -1255,9 +1255,9 @@ End Type
 	'draws a rounded rectangle (blue border) with alphashadow
 	Function DrawGFXRect(gfx_Rect:TSpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:String="gfx_gui_rect_")
 		gfx_Rect.getSprite(nameBase+"TopLeft").Draw(x, y)
-		gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, new TPoint.Init(ALIGN_RIGHT, ALIGN_TOP))
-		gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, new TPoint.Init(ALIGN_RIGHT, ALIGN_BOTTOM))
+		gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+		gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, new TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+		gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM))
 
 		gfx_Rect.getSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderLeft").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH())
 		gfx_Rect.getSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetH() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetH())
@@ -1293,7 +1293,7 @@ Type TGUIGameListItem Extends TGUIListItem
 	Field assetDragged:TSprite = Null
 
 
-    Method Create:TGUIGameListItem(pos:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUIGameListItem(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		'creates base, registers click-event,...
 		Super.Create(pos, dimension, value)
 
@@ -1365,9 +1365,9 @@ Type TBlockMoveable Extends TOwnedGameObject
 	Field rect:TRectangle			= new TRectangle.Init(0,0,0,0)
 	Field dragable:Int				= 1 {saveload = "normalExt"}
 	Field dragged:Int				= 0 {saveload = "normalExt"}
-	Field OrigPos:TPoint 			= new TPoint.Init(0, 0) {saveload = "normalExtB"}
-	Field StartPos:TPoint			= new TPoint.Init(0, 0) {saveload = "normalExt"}
-	Field StartPosBackup:TPoint		= new TPoint.Init(0, 0)
+	Field OrigPos:TVec2D 			= new TVec2D.Init(0, 0) {saveload = "normalExtB"}
+	Field StartPos:TVec2D			= new TVec2D.Init(0, 0) {saveload = "normalExt"}
+	Field StartPosBackup:TVec2D		= new TVec2D.Init(0, 0)
 
 
 	'switches coords and state of blocks
@@ -1381,9 +1381,9 @@ Type TBlockMoveable Extends TOwnedGameObject
 
 	'switches current and startcoords of two blocks
 	Method SwitchCoords(otherObj:TBlockMoveable)
-		TPoint.SwitchPoints(rect.position, otherObj.rect.position)
-		TPoint.SwitchPoints(StartPos, otherObj.StartPos)
-		TPoint.SwitchPoints(StartPosBackup, otherObj.StartPosBackup)
+		TVec2D.SwitchVecs(rect.position, otherObj.rect.position)
+		TVec2D.SwitchVecs(StartPos, otherObj.StartPos)
+		TVec2D.SwitchVecs(StartPosBackup, otherObj.StartPosBackup)
 	End Method
 
 
@@ -1401,7 +1401,7 @@ Type TBlockMoveable Extends TOwnedGameObject
 	End Method
 
 
-	Method SetBasePos(pos:TPoint = Null)
+	Method SetBasePos(pos:TVec2D = Null)
 		If pos <> Null
 			rect.position.CopyFrom(pos)
 			StartPos.CopyFrom(pos)
@@ -1428,7 +1428,7 @@ Type TError
 	Field message:String
 	Field id:Int
 	Field link:TLink
-	Field pos:TPoint
+	Field pos:TVec2D
 
 	Global List:TList = CreateList()
 	Global LastID:Int=0
@@ -1442,7 +1442,7 @@ Type TError
 		obj.id		= LastID
 		LastID :+1
 		If obj.sprite = Null Then obj.sprite = GetSpriteFromRegistry("gfx_errorbox")
-		obj.pos		= new TPoint.Init(400-obj.sprite.area.GetW()/2 +6, 200-obj.sprite.area.GetH()/2 +6)
+		obj.pos		= new TVec2D.Init(400-obj.sprite.area.GetW()/2 +6, 200-obj.sprite.area.GetH()/2 +6)
 		obj.link	= List.AddLast(obj)
 		Return obj
 	End Function
@@ -1651,7 +1651,7 @@ Type TTooltipAudience Extends TTooltip
 	Field showDetails:Int = False
 	Field lineHeight:Int = 0
 	Field lineIconHeight:Int = 0
-	Field originalPos:TPoint
+	Field originalPos:TVec2D
 
 	Function Create:TTooltipAudience(title:String = "", text:String = "unknown", x:Int=0, y:Int=0, w:Int=-1, h:Int=-1, lifetime:Int=300)
 		Local obj:TTooltipAudience = New TTooltipAudience
@@ -1800,10 +1800,10 @@ Type TTooltipAudience Extends TTooltip
 				'draw text
 				If i Mod 2 = 0
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextLight)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TPoint.Init(ALIGN_RIGHT), ColorTextLight)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TVec2D.Init(ALIGN_RIGHT), ColorTextLight)
 				Else
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextDark)
-					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TPoint.Init(ALIGN_RIGHT), ColorTextDark)
+					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
 				EndIf
 				lineY :+ lineIconHeight
 			Next
@@ -1862,8 +1862,9 @@ Type TInterface
 		Interface.noiseSprite = GetSpriteFromRegistry("gfx_interface_tv_noise")
 		'set space "left" when subtracting the genre image
 		'so we know how many pixels we can move that image to simulate animation
-		Interface.noiseDisplace.Dimension.SetX(Max(0, Interface.noiseSprite.area.GetW() - Interface.CurrentProgramme.area.GetW()))
-		Interface.noiseDisplace.Dimension.SetY(Max(0, Interface.noiseSprite.area.GetH() - Interface.CurrentProgramme.area.GetH()))
+		Interface.noiseDisplace.Dimension.SetX(Max(0, Interface.noiseSprite.GetWidth() - Interface.CurrentProgramme.GetWidth()))
+		Interface.noiseDisplace.Dimension.SetY(Max(0, Interface.noiseSprite.GetHeight() - Interface.CurrentProgramme.GetHeight()))
+
 		If Not InterfaceList Then InterfaceList = CreateList()
 		InterfaceList.AddLast(Interface)
 		SortList InterfaceList
@@ -2064,15 +2065,15 @@ Type TInterface
 	Method Draw(tweenValue:Float=1.0)
 		SetBlend ALPHABLEND
 		GetSpriteFromRegistry("gfx_interface_top").Draw(0,0)
-		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TPoint.Init(0, 20), new TRectangle.Init(0, 0, 27, 363))
+		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TRectangle.Init(0, 20, 27, 363))
 		SetBlend SOLIDBLEND
-		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TPoint.Init(780, 20), new TRectangle.Init(27, 0, 20, 363))
+		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TRectangle.Init(780, 20, 20, 363), new TVec2D.Init(27,0))
 
 		If BottomImgDirty
 
 			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
-			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, new TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM))
 
 			If ShowChannel <> 0 Then GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
 			SetBlend ALPHABLEND
@@ -2120,7 +2121,8 @@ Type TInterface
 			'draw noise of tv device
 			If ShowChannel <> 0
 				SetAlpha NoiseAlpha
-				If noiseSprite Then noiseSprite.DrawClipped(new TPoint.Init(45, 400), new TRectangle.Init(noiseDisplace.GetX(),noiseDisplace.GetY(), 220,170) )
+'				If noiseSprite Then noiseSprite.DrawClippedOld(new TVec2D.Init(45, 400), new TRectangle.Init(noiseDisplace.GetX(),noiseDisplace.GetY(), 220,170) )
+				If noiseSprite Then noiseSprite.Draw(45, 400)
 				SetAlpha 1.0
 			EndIf
 			'draw overlay to hide corners of non-round images
@@ -2137,18 +2139,18 @@ Type TInterface
 			'draw the small electronic parts - "the inner tv"
 	     	GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, 419)
 
-			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
-			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience() + "  ", 377, 469, 103, 25, new TPoint.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetGameTime().daysPlayed+1) + ". "+GetLocale("DAY"), 366, 555, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TVec2D.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience() + "  ", 377, 469, 103, 25, new TVec2D.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
+		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetGameTime().daysPlayed+1) + ". "+GetLocale("DAY"), 366, 555, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
 
 		SetAlpha 0.25
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 542, 120, 25, new TPoint.Init(ALIGN_CENTER), TColor.Create(180,180,180))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 542, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180))
 		SetAlpha 0.9
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime()+ " "+GetLocale("OCLOCK"), 365,541,120,25, new TPoint.Init(ALIGN_CENTER), TColor.Create(40,40,40))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime()+ " "+GetLocale("OCLOCK"), 365,541,120,25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(40,40,40))
 		SetAlpha 1.0
 
 		For local tip:TTooltip = eachin tooltips

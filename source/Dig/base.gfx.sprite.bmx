@@ -42,7 +42,7 @@ SuperStrict
 Import BRL.Max2D
 Import BRL.Random
 Import "base.util.event.bmx"
-Import "base.util.point.bmx"
+Import "base.util.vector.bmx"
 Import "base.gfx.imagehelper.bmx"
 
 
@@ -51,10 +51,18 @@ CONST ALIGN_CENTER:FLOAT = 0.5
 CONST ALIGN_RIGHT:FLOAT = 1.0
 CONST ALIGN_TOP:FLOAT = 0
 CONST ALIGN_BOTTOM:FLOAT = 1.0
-Global ALIGN_TOP_LEFT:TPoint = new TPoint
-Global ALIGN_TOP_RIGHT:TPoint = new TPoint.Init(ALIGN_RIGHT, ALIGN_TOP)
-Global ALIGN_BOTTOM_LEFT:TPoint = new TPoint.Init(ALIGN_LEFT, ALIGN_BOTTOM)
-Global ALIGN_BOTTOM_RIGHT:TPoint = new TPoint.Init(ALIGN_RIGHT, ALIGN_BOTTOM)
+
+Global ALIGN_LEFT_TOP:TVec2D = new TVec2D
+Global ALIGN_CENTER_TOP:TVec2D = new TVec2D.Init(ALIGN_CENTER, ALIGN_TOP)
+Global ALIGN_RIGHT_TOP:TVec2D = new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP)
+
+Global ALIGN_LEFT_CENTER:TVec2D = new TVec2D.Init(ALIGN_LEFT, ALIGN_CENTER)
+Global ALIGN_CENTER_CENTER:TVec2D = new TVec2D.Init(ALIGN_CENTER, ALIGN_CENTER)
+Global ALIGN_RIGHT_CENTER:TVec2D = new TVec2D.Init(ALIGN_RIGHT, ALIGN_CENTER)
+
+Global ALIGN_LEFT_BOTTOM:TVec2D = new TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM)
+Global ALIGN_CENTER_BOTTOM:TVec2D = new TVec2D.Init(ALIGN_CENTER, ALIGN_BOTTOM)
+Global ALIGN_RIGHT_BOTTOM:TVec2D = new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM)
 
 
 
@@ -177,7 +185,7 @@ Type TSprite
 	'=== NINE PATCH SECTION ===
 	Field ninePatchEnabled:int = FALSE
 	'center: size of the middle parts (width, height)
-	Field ninePatch_centerDimension:TPoint
+	Field ninePatch_centerDimension:TVec2D
 	'border: size of TopLeft,TopRight,BottomLeft,BottomRight
 	Field ninePatch_borderDimension:TRectangle
 	'content: limits for displaying content
@@ -190,7 +198,7 @@ Type TSprite
 
 
 
-	Method Init:TSprite(spritepack:TSpritePack=null, name:String, area:TRectangle, offset:TRectangle, animcount:Int = 0, spriteDimension:TPoint=null, id:int=0)
+	Method Init:TSprite(spritepack:TSpritePack=null, name:String, area:TRectangle, offset:TRectangle, animcount:Int = 0, spriteDimension:TVec2D=null, id:int=0)
 		self.name = name
 		self.area = area.copy()
 		self.id = id
@@ -265,7 +273,7 @@ Type TSprite
 		endif
 
 		'create sprite
-		local sprite:TSprite = new TSprite.Init(parent, name, new TRectangle.Init(0,0, ImageWidth(parent.image), ImageHeight(parent.image)), offset, animCount, new TPoint.Init(frameW, frameH), id)
+		local sprite:TSprite = new TSprite.Init(parent, name, new TRectangle.Init(0,0, ImageWidth(parent.image), ImageHeight(parent.image)), offset, animCount, new TVec2D.Init(frameW, frameH), id)
 
 		'enable nine patch if wanted
 		if ninePatch then sprite.EnableNinePatch()
@@ -298,7 +306,7 @@ Type TSprite
 		Endif
 
 		'center has to consider the marker_width (content dimension marker)
-		ninePatch_centerDimension = new TPoint.Init(..
+		ninePatch_centerDimension = new TVec2D.Init(..
 					area.GetW() - (ninePatch_borderDimension.GetLeft() + ninePatch_borderDimension.GetRight()), ..
 					area.GetH() - (ninePatch_borderDimension.GetTop() + ninePatch_borderDimension.GetBottom()) ..
 				  )
@@ -455,13 +463,13 @@ Type TSprite
 	End Method
 
 
-	Method GetFramePos:TPoint(frame:int=-1)
-		If frame < 0 then return new TPoint.Init(0,0)
+	Method GetFramePos:TVec2D(frame:int=-1)
+		If frame < 0 then return new TVec2D.Init(0,0)
 
 		Local MaxFramesInCol:Int = Ceil(area.GetW() / framew)
 		Local framerow:Int = Ceil(frame / Max(1,MaxFramesInCol))
 		Local framecol:Int = frame - (framerow * MaxFramesInCol)
-		return new TPoint.Init(framecol * frameW, framerow * frameH)
+		return new TVec2D.Init(framecol * frameW, framerow * frameH)
 	End Method
 
 
@@ -493,8 +501,8 @@ Type TSprite
 
 
 	'draw the sprite onto a given image or pixmap
-	Method DrawOnImage(imageOrPixmap:object, x:int, y:int, frame:int = -1, alignment:TPoint=null, modifyColor:TColor=null)
-		if not alignment then alignment = ALIGN_TOP_LEFT
+	Method DrawOnImage(imageOrPixmap:object, x:int, y:int, frame:int = -1, alignment:TVec2D=null, modifyColor:TColor=null)
+		if not alignment then alignment = ALIGN_LEFT_TOP
 		if frame >= 0
 			x :- alignment.GetX() * framew
 			y :- alignment.GetY() * frameh
@@ -589,24 +597,24 @@ Type TSprite
 			'top and left border also modify position to draw
 			'starting at the top border - so include that offset
 			if sourceCopy.GetY() = 0
-				targetCopy.position.MoveY(-offset.GetTop())
-				targetCopy.dimension.MoveY(offset.GetTop())
-				sourceCopy.dimension.MoveY(offset.GetTop())
+				targetCopy.position.AddY(-offset.GetTop())
+				targetCopy.dimension.AddY(offset.GetTop())
+				sourceCopy.dimension.AddY(offset.GetTop())
 			else
-				sourceCopy.position.MoveY(offset.GetTop())
+				sourceCopy.position.AddY(offset.GetTop())
 			endif
 			if sourceCopy.GetX() = 0
-				targetCopy.position.MoveX(-offset.GetLeft())
-				targetCopy.dimension.MoveX(offset.GetLeft())
-				sourceCopy.dimension.MoveX(offset.GetLeft())
+				targetCopy.position.AddX(-offset.GetLeft())
+				targetCopy.dimension.AddX(offset.GetLeft())
+				sourceCopy.dimension.AddX(offset.GetLeft())
 			else
-				sourceCopy.position.MoveX(offset.GetLeft())
+				sourceCopy.position.AddX(offset.GetLeft())
 			endif
 
 			'hitting bottom border - draw bottom offset
 			if (sourceCopy.GetY() + sourceCopy.GetH()) >= (area.GetH() - offset.GetBottom())
-				sourceCopy.dimension.MoveY(offset.GetBottom())
-				targetCopy.dimension.MoveY(offset.GetBottom())
+				sourceCopy.dimension.AddY(offset.GetBottom())
+				targetCopy.dimension.AddY(offset.GetBottom())
 			endif
 			'hitting right border - draw right offset
 '			if (sourceCopy.GetX() + sourceCopy.GetW()) >= (area.GetW() - offset.GetRight())
@@ -618,15 +626,16 @@ Type TSprite
 	End Method
 
 
-	Method DrawClipped(target:TPoint, source:TRectangle, frame:int=-1)
-		DrawResized(new TRectangle.Init(target.GetX(),target.GetY()), source, frame)
+	Method DrawClipped(target:TRectangle, offset:TVec2D = null, frame:int=-1)
+		if not offset then offset = new TVec2D
+		DrawResized(new TRectangle.Init(target.GetX(),target.GetY()), new TRectangle.Init(offset.GetX(), offset.GetY(), target.GetW(), target.GetH()), frame)
 	End Method
 
 
 	Method TileDrawHorizontal(x:float, y:float, w:float, scale:float=1.0, theframe:int=-1)
 		local widthLeft:float = w
 		local currentX:float = x
-		local framePos:TPoint = getFramePos(theframe)
+		local framePos:TVec2D = getFramePos(theframe)
 
 		While widthLeft > 0
 			local widthPart:float = Min(frameW, widthLeft) 'draw part of sprite or whole ?
@@ -668,7 +677,7 @@ Type TSprite
 	End Method
 
 
-	Method Draw(x:Float, y:Float, frame:Int=-1, alignment:TPoint=null, scale:float=1.0, drawCompleteImage:Int=FALSE)
+	Method Draw(x:Float, y:Float, frame:Int=-1, alignment:TVec2D=null, scale:float=1.0, drawCompleteImage:Int=FALSE)
 		x:- offset.GetLeft() * scale
 		y:- offset.GetTop() * scale
 
@@ -684,35 +693,43 @@ Type TSprite
 			BOTTOMLEFT        BOTTOMRIGHT
 		endrem
 
-
-		if not alignment then alignment = ALIGN_TOP_LEFT
+		'for a correct rotation calculation
+		if scale <> 1.0 then SetScale scale, scale
+	
+		if not alignment then alignment = ALIGN_LEFT_TOP
 
 		If frame = -1 Or framew = 0
 			DrawSubImageRect(parent.image,..
-							 x - alignment.GetX() * area.GetW() * scale,..
-							 y - alignment.GetY() * area.GetH() * scale,..
-							 area.GetW() * scale,..
-							 area.GetH() * scale,..
+							 x,..
+							 y,..
+							 area.GetW(),..
+							 area.GetH(),..
 							 area.GetX(),..
 							 area.GetY(),..
 							 area.GetW(),..
 							 area.GetH(),..
-							 0, 0, 0)
+							 alignment.GetX() * area.GetW(), ..
+							 alignment.GetY() * area.GetH(), ..
+							 0)
 		Else
 			Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
 			Local framerow:Int			= Ceil(frame / MaxFramesInCol)
 			Local framecol:Int 			= frame - (framerow * MaxFramesInCol)
 
 			DrawSubImageRect(parent.image,..
-							 x - alignment.GetX() * frameW * scale,..
-							 y - alignment.GetY() * frameH * scale,..
-							 framew * scale,..
-							 frameh * scale,..
+							 x,..
+							 y,..
+							 framew,..
+							 frameh,..
 							 area.GetX() + framecol * frameW,..
 							 area.GetY() + framerow * frameH,..
 							 framew,..
 							 frameh,..
-							 0, 0, 0)
+							 alignment.GetX() * frameW, ..
+							 alignment.GetY() * frameH, ..
+							 0)
 		EndIf
+
+		if scale <> 1.0 then SetScale 1.0, 1.0
 	End Method
 End Type

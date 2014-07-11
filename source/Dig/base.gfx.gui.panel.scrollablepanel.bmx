@@ -10,12 +10,12 @@ Import "base.gfx.gui.panel.bmx"
 
 
 Type TGUIScrollablePanel Extends TGUIPanel
-	Field scrollPosition:TPoint	= new TPoint.Init(0,0)
-	Field scrollLimit:TPoint	= new TPoint.Init(0,0)
-	Field minSize:TPoint		= new TPoint.Init(0,0)
+	Field scrollPosition:TVec2D	= new TVec2D.Init(0,0)
+	Field scrollLimit:TVec2D	= new TVec2D.Init(0,0)
+	Field minSize:TVec2D		= new TVec2D.Init(0,0)
 
 
-	Method Create:TGUIScrollablePanel(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIScrollablePanel(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 		Self.minSize.SetXY(50,50)
 
@@ -77,7 +77,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 
 	Method Scroll:Int(dx:Float,dy:Float)
-		scrollPosition.MoveXY(dx, dy)
+		scrollPosition.AddXY(dx, dy)
 
 		'check limits
 		scrollPosition.SetY(Min(0, scrollPosition.GetY()))

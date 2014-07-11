@@ -547,9 +547,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		SetColor 255,255,255
 
 		SetAlpha 0.3
-		GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, 200, 12))
+		GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+131, 200, 10))
 		SetAlpha 1.0
-		if base.GetInfomercialTopicality() > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawClipped(new TPoint.Init(x+13,y+131), new TRectangle.Init(0, 0, base.GetInfomercialTopicality()*200, 12))
+		if base.GetInfomercialTopicality() > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+131, base.GetInfomercialTopicality()*200, 10))
 	End Method
 
 
@@ -564,19 +564,19 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		GetBitmapFontManager().basefontBold.drawBlock(GetTitle()	, x+10 , y+11 , 270, 70)
 		font.drawBlock(GetDescription()   		 		, x+10 , y+33 , 270, 70)
 		font.drawBlock(getLocale("AD_PROFIT")+": "			, x+10 , y+94 , 130, 16)
-		font.drawBlock(TFunctions.convertValue(GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,new TPoint.Init(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,new TVec2D.Init(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
-		font.drawBlock(TFunctions.convertValue(GetPenalty(), 2)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,new TPoint.Init(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetPenalty(), 2)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,new TVec2D.Init(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+10, y+140, 127, 16)
-		font.drawBlock(TFunctions.convertValue(GetMinAudience(), 2), x+10, y+140, 127, 16,new TPoint.Init(ALIGN_RIGHT))
+		font.drawBlock(TFunctions.convertValue(GetMinAudience(), 2), x+10, y+140, 127, 16,new TVec2D.Init(ALIGN_RIGHT))
 
 		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		font.drawBlock(GetSpotsToSend()+"/"+GetSpotCount() , x+150, y+94 , 127, 16,new TPoint.Init(ALIGN_RIGHT))
+		font.drawBlock(GetSpotsToSend()+"/"+GetSpotCount() , x+150, y+94 , 127, 16,new TVec2D.Init(ALIGN_RIGHT))
 		font.drawBlock(getLocale("AD_PLANNED")+": "    , x+150, y+117 , 127, 16)
 		if self.owner > 0
-			font.drawBlock( GetSpotsPlanned() + "/" + GetSpotCount() , x+150, y+117 , 127, 16,new TPoint.Init(ALIGN_RIGHT))
+			font.drawBlock( GetSpotsPlanned() + "/" + GetSpotCount() , x+150, y+117 , 127, 16,new TVec2D.Init(ALIGN_RIGHT))
 		else
-			font.drawBlock( "-" , x+150, y+117 , 127, 16,new TPoint.Init(ALIGN_RIGHT))
+			font.drawBlock( "-" , x+150, y+117 , 127, 16,new TVec2D.Init(ALIGN_RIGHT))
 		endif
 
 		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetTargetgroupString()   , x+10 , y+163 , 270, 16)

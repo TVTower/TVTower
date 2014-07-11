@@ -527,14 +527,14 @@ End Type
 
 
 Type TDragAndDrop
-	Field pos:TPoint = new TPoint
+	Field pos:TVec2D = new TVec2D
 	Field w:Int = 0
 	Field h:Int = 0
 	Field typ:String = ""
 	Field slot:Int = 0
 	Global List:TList = CreateList()
 
- 	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TPoint)
+ 	Function FindDragAndDropObject:TDragAndDrop(List:TList, _pos:TVec2D)
  	  For Local P:TDragAndDrop = EachIn List
 		If P.pos.isSame(_pos) Then Return P
 	  Next
@@ -565,8 +565,8 @@ End Type
 
 
 Type TCatmullRomSpline
-	Field points:TList			= CreateList()	'list of the control points (TPoint)
-	Field cache:TPoint[]						'array of cached points
+	Field points:TList			= CreateList()	'list of the control points (TVec3D)
+	Field cache:TVec3D[]						'array of cached points
 	Field cacheGenerated:int	= FALSE
 	Field totalDistance:float	= 0				'how long is the spline?
 	const resolution:float		= 100.0
@@ -576,21 +576,21 @@ Type TCatmullRomSpline
 	End Method
 
 	Method addXY:TCatmullRomSpline(x:float,y:float)
-		points.addLast( new TPoint.Init(x, y) )
+		points.addLast( new TVec3D.Init(x, y) )
 		cacheGenerated = FALSE
 		return self
 	End MEthod
 
 
 	'Call this to add a point to the end of the list
-	Method addPoint:TCatmullRomSpline(p:TPoint)
+	Method addPoint:TCatmullRomSpline(p:TVec3D)
 		points.addlast(p)
 		cacheGenerated = FALSE
 		return self
 	End Method
 
 
-	Method addPoints:TCatmullRomSpline(p:TPoint[])
+	Method addPoints:TCatmullRomSpline(p:TVec3D[])
 		For local i:int = 0 to p.length-1
 			self.points.addLast(p[i])
 		Next
@@ -602,7 +602,7 @@ Type TCatmullRomSpline
 	Method draw:int()
 		'Draw a rectangle at each control point so we can see
 		'them (not relevant to the algorithm)
-		For local p:TPoint = EachIn self.points
+		For local p:TVec3D = EachIn self.points
 			DrawRect(p.x-3 , p.y-3 , 7 , 7)
 		Next
 
@@ -617,25 +617,25 @@ Type TCatmullRomSpline
 		'null, and then get the next p3 from it if not.
 
 		local pl:TLink	= Null
-		local p0:TPoint = Null
-		local p1:TPoint = Null
-		local p2:TPoint = Null
-		local p3:TPoint = Null
+		local p0:TVec3D = Null
+		local p1:TVec3D = Null
+		local p2:TVec3D = Null
+		local p3:TVec3D = Null
 
 		'assign first 2 points
 		'point 3 is assigned in the while loop
 		pl = points.firstlink()
-		p0 = TPoint( pl.value() )
+		p0 = TVec3D( pl.value() )
 		pl = pl.nextlink()
-		p1 = TPoint( pl.value() )
+		p1 = TVec3D( pl.value() )
 		pl = pl.nextlink()
-		p2 = TPoint( pl.value() )
+		p2 = TVec3D( pl.value() )
 		pl = pl.nextlink()
 
 		'pl3 will be null when we've reached the end of the list
 		While pl <> Null
 			'get the point objects from the TLinks
-			p3 = TPoint( pl.value() )
+			p3 = TVec3D( pl.value() )
 
 			local oldX:float = p1.x
 			local oldY:float = p1.y
@@ -669,31 +669,31 @@ Type TCatmullRomSpline
 		If self.points.count()<4 Then Return 0
 
 		local pl:TLink	= Null
-		local p0:TPoint, p1:TPoint, p2:TPoint, p3:TPoint = Null
+		local p0:TVec3D, p1:TVec3D, p2:TVec3D, p3:TVec3D = Null
 
 		'assign first 2 points
 		'point 3 is assigned in the while loop
 		pl = points.firstlink()
-		p0 = TPoint( pl.value() )
+		p0 = TVec3D( pl.value() )
 		pl = pl.nextlink()
-		p1 = TPoint( pl.value() )
+		p1 = TVec3D( pl.value() )
 		pl = pl.nextlink()
-		p2 = TPoint( pl.value() )
+		p2 = TVec3D( pl.value() )
 		pl = pl.nextlink()
 
-		local oldPoint:TPoint = new TPoint
+		local oldPoint:TVec3D = new TVec3D
 		local cachedPoints:int = 0
 
 		'pl3 will be null when we've reached the end of the list
 		While pl <> Null
 			'get the point objects from the TLinks
-			p3 = Tpoint( pl.value() )
+			p3 = TVec3D( pl.value() )
 
 			oldPoint.CopyFrom(p1)
 
 			'THE MEAT And BONES! Oddly, there isn't much to explain here, just copy the code.
 			For local t:float = 0 To 1 Step 1.0/self.resolution
-				local point:TPoint = new TPoint
+				local point:TVec3D = new TVec3D
 				point.x = .5 * ( (2 * p1.x) + (p2.x - p0.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t * t + (3 * p1.x - p0.x - 3 * p2.x + p3.x) * t * t * t)
 				point.y = .5 * ( (2 * p1.y) + (p2.y - p0.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t * t + (3 * p1.y - p0.y - 3 * p2.y + p3.y) * t * t * t)
 
@@ -724,14 +724,14 @@ Type TCatmullRomSpline
 
 	'returns the coordinate of a given distance
 	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
-	Method GetPoint:TPoint(distance:float, relativeValue:int=FALSE)
+	Method GetPoint:TVec2D(distance:float, relativeValue:int=FALSE)
 		if not self.cacheGenerated then self.generateCache()
 		if relativeValue then distance = distance*self.totalDistance
 
 		For local t:float = 0 To self.cache.length-1
 			'if the searched distance is reached - return it
 			if self.cache[t].z > distance
-				return self.cache[Max(t-1, 0)]
+				return self.cache[Max(t-1, 0)].ToVec2D()
 			endif
 		Next
 		return Null
@@ -739,12 +739,12 @@ Type TCatmullRomSpline
 
 	'returns the coordinate of a given distance
 	'the spot is ranging from 0.0 (0%) to 1.0 (100%) of the distance
-	Method GetTweenPoint:TPoint(distance:float, relativeValue:int=FALSE)
+	Method GetTweenPoint:TVec2D(distance:float, relativeValue:int=FALSE)
 		if not cacheGenerated then generateCache()
 		if relativeValue then distance = distance * totalDistance
 
-		local pointA:TPoint = Null
-		local pointB:TPoint = Null
+		local pointA:TVec3D = Null
+		local pointB:TVec3D = Null
 
 		For local t:float = 0 To cache.length-1
 			'if the searched distance is reached
@@ -771,7 +771,7 @@ Type TCatmullRomSpline
 			'local weightAX:float   = 1- distanceAX/distanceAB
 			local weightAX:float   = 1- abs(distance - pointA.z)/abs(pointB.z - pointA.z)
 
-			return new TPoint.Init(..
+			return new TVec2D.Init(..
 				pointA.x*weightAX + pointB.x*(1-weightAX), ..
 				pointA.y*weightAX + pointB.y*(1-weightAX) ..
 			)

@@ -52,7 +52,7 @@ Type TElevator extends TEntity
 	Field SpriteInner:TSprite
 	'Damit nicht alle auf einem Haufen stehen, gibt es für die Figures
 	'ein paar Offsets im Fahrstuhl
-	Field PassengerOffset:TPoint[]
+	Field PassengerOffset:TVec2D[]
 	'Hier wird abgelegt, welches Offset schon in Benutzung ist und von
 	'welcher Figur
 	Field PassengerPosition:TFigure[]
@@ -89,12 +89,12 @@ Type TElevator extends TEntity
 
 		PassengerPosition  = PassengerPosition[..6]
 		PassengerOffset    = PassengerOffset[..6]
-		PassengerOffset[0] = new TPoint.Init(0, 0)
-		PassengerOffset[1] = new TPoint.Init(-12, 0)
-		PassengerOffset[2] = new TPoint.Init(-6, 0)
-		PassengerOffset[3] = new TPoint.Init(3, 0)
-		PassengerOffset[4] = new TPoint.Init(-3, 0)
-		PassengerOffset[5] = new TPoint.Init(-8, 0)
+		PassengerOffset[0] = new TVec2D.Init(0, 0)
+		PassengerOffset[1] = new TVec2D.Init(-12, 0)
+		PassengerOffset[2] = new TVec2D.Init(-6, 0)
+		PassengerOffset[3] = new TVec2D.Init(3, 0)
+		PassengerOffset[4] = new TVec2D.Init(-3, 0)
+		PassengerOffset[5] = new TVec2D.Init(-8, 0)
 
 		'create door
 		door = new TSpriteEntity
@@ -242,8 +242,9 @@ Type TElevator extends TEntity
 		Return RouteLogic.CalculateNextTarget()
 	End Method
 
-	Method GetElevatorCenterPos:TPoint()
-		Return new TPoint.Init(GetBuilding().area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25) '-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
+	Method GetElevatorCenterPos:TVec3D()
+		'-25 = z-Achse für Audio. Der Fahrstuhl liegt etwas im Hintergrund
+		Return new TVec3D.Init(GetBuilding().area.GetX() + area.GetX() + door.sprite.framew/2, area.GetY() + door.sprite.frameh/2 + 56, -25)
 	End Method
 
 	'===== Offset-Funktionen =====
@@ -265,7 +266,7 @@ Type TElevator extends TEntity
 		for local i:int = 0 to len(PassengerPosition) - 1
 			local figure:TFigure = PassengerPosition[i]
 			If figure <> null
-				local offset:TPoint = PassengerOffset[i]
+				local offset:TVec2D = PassengerOffset[i]
 				If figure.PosOffset.getX() <> offset.getX()
 					'set to 1 -> indicator we are moving in the elevator (boarding)
 					figure.boardingState = 1
@@ -396,7 +397,7 @@ Type TElevator extends TEntity
 				SetVelocity(0, -Direction * Speed)
 
 				'set new position
-				area.position.MoveXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
+				area.position.AddXY( deltaTime * GetVelocity().x, deltaTime * GetVelocity().y )
 
 
 				'do not move further than the target floor
@@ -420,7 +421,7 @@ Type TElevator extends TEntity
 				'set time for the doors to keep open
 				'adjust this by worldSpeedFactor at that time
 				'so a higher factor shortens time to wait
-				waitAtFloorTimer.SetInterval(waitAtFloorTime / TEntity.worldSpeedFactor, true)
+				waitAtFloorTimer.SetInterval(waitAtFloorTime / TEntity.globalWorldSpeedFactor, true)
 			Endif
 
 			'continue door animation for opening doors

@@ -1,6 +1,6 @@
 ﻿Type TGUINewsList extends TGUIListBase
 
-    Method Create:TGUINewsList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUINewsList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		return self
 	End Method
@@ -19,7 +19,7 @@ End Type
 
 Type TGUINewsSlotList extends TGUISlotList
 
-    Method Create:TGUINewsSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUINewsSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		return self
 	End Method
@@ -259,8 +259,8 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 	Global hoveredElement:TGUIProgrammePlanElement = null
 
 
-    Method Create:TGUIProgrammePlanElement(pos:TPoint=null, dimension:TPoint=null, value:String="")
-		if not dimension then dimension = new TPoint.Init(120,20)
+    Method Create:TGUIProgrammePlanElement(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
+		if not dimension then dimension = new TVec2D.Init(120,20)
 		Super.Create(pos, dimension, value)
 		return self
 	End Method
@@ -284,7 +284,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 			Resize(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW(), GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * material.getBlocks())
 
 			'set handle (center for dragged objects) to half of a 1-Block
-			self.setHandle(new TPoint.Init(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
+			self.setHandle(new TVec2D.Init(GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetW()/2, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH()/2))
 		endif
 	End Method
 
@@ -346,12 +346,12 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 
 
 	Method GetBlockRect:TRectangle(block:int=1)
-		local pos:TPoint = null
+		local pos:TVec2D = null
 		'dragged and not in DrawGhostMode
 		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
-			pos = new TPoint.Init(GetScreenX(), GetScreenY())
+			pos = new TVec2D.Init(GetScreenX(), GetScreenY())
 			if block > 1
-				pos.MoveXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
+				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 			endif
 		else
 			local startSlot:int = lastSlot
@@ -362,11 +362,11 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 			endif
 
 			if list
-				pos = list.GetSlotCoord(startSlot + block-1)
-				pos.moveXY(list.getScreenX(), list.getScreenY())
+				pos = list.GetSlotCoord(startSlot + block-1).ToVec2D()
+				pos.addXY(list.getScreenX(), list.getScreenY())
 			else
-				pos = new TPoint.Init(self.GetScreenX(),self.GetScreenY())
-				pos.MoveXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
+				pos = new TVec2D.Init(self.GetScreenX(),self.GetScreenY())
+				pos.addXY(0, GetSpriteFromRegistry(GetAssetBaseName()+"1").area.GetH() * (block - 1))
 				'print "block: "+block+"  "+pos.GetIntX()+","+pos.GetIntY()
 			endif
 		endif
@@ -414,7 +414,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 	Method DrawBlockBackground:int(variant:string="")
 
 		Local titleIsVisible:Int = FALSE
-		local drawPos:TPoint = new TPoint.Init(GetScreenX(), GetScreenY())
+		local drawPos:TVec2D = new TVec2D.Init(GetScreenX(), GetScreenY())
 		'if dragged and not in ghost mode
 		If isDragged() and not hasOption(GUI_OBJECT_DRAWMODE_GHOST)
 			if broadcastMaterial.state = broadcastMaterial.STATE_NORMAL Then variant = "_dragged"
@@ -450,21 +450,21 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 						If blocks = 1
 							GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).Draw(GetScreenX(), GetScreenY())
 						Else
-							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 0, -1, 30))
+							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
 						EndIf
 						'xrated
 						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.xrated
 							local addPixel:int = 0
 							if GetAssetBaseName() = "pp_programmeblock" then addPixel = 1
-							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth() +addPixel, GetScreenY(),  -1, new TPoint.Init(ALIGN_RIGHT, ALIGN_TOP))
+							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth() +addPixel, GetScreenY(),  -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
 						endif
 						titleIsVisible = TRUE
 				case 2	'middle
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 30, -1, 15))
-						drawPos.MoveXY(0,15)
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 30, -1, 15))
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 15), new TVec2D.Init(0, 30))
+						drawPos.addXY(0,15)
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 15), new TVec2D.Init(0, 30))
 				case 3	'bottom
-						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(drawPos, new TRectangle.Init(0, 30, -1, 30))
+						GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawpos.y, -1, 30), new TVec2D.Init(0, 30))
 			End Select
 		Next
 		return titleIsVisible
@@ -658,7 +658,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		GetBitmapFont("Default", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, null, TColor.CreateGrey(0), 0,1,1.0, FALSE)
 		textColor.setRGB()
 		GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
-		GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, new TPoint.Init(ALIGN_RIGHT))
+		GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT))
 		SetColor 255,255,255 'eigentlich alte Farbe wiederherstellen
 	End Method
 
@@ -714,12 +714,12 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 	Field daychangeGuiProgrammePlanElement:TGUIProgrammePlanElement
 
 	Field slotBackground:TSprite= null
-	Field blockDimension:TPoint		= null
+	Field blockDimension:TVec2D		= null
 	Field acceptTypes:int			= 0
 	Field isType:int				= 0
 	Global registeredGlobalListeners:int = FALSE
 
-    Method Create:TGUIProgrammePlanSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUIProgrammePlanSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		SetOrientation(GUI_OBJECT_ORIENTATION_VERTICAL)
@@ -758,7 +758,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 
 		self.slotBackground = GetSpriteFromRegistry(spriteName)
 
-		self.blockDimension = new TPoint.Init(slotBackground.area.GetW(), slotBackground.area.GetH())
+		self.blockDimension = new TVec2D.Init(slotBackground.area.GetW(), slotBackground.area.GetH())
 		SetSlotMinDimension(blockDimension.GetIntX(), blockDimension.GetIntY())
 
 		self.SetEntryDisplacement(slotBackground.area.GetW() + displaceX , -12 * slotBackground.area.GetH(), 12) '12 is stepping
@@ -843,12 +843,12 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 
 		'2. set the position of that element so that the "todays blocks" are starting at
 		'   0:00
-		local firstSlotCoord:TPoint = GetSlotOrCoord(0)
+		local firstSlotCoord:TVec2D = GetSlotOrCoord(0).ToVec2D()
 		local blocksRunYesterday:int = 24 - startHour
 		guiElement.lastSlot = - blocksRunYesterday
 		guiElement.rect.position.CopyFrom(firstSlotCoord)
 		'move above 0:00 (gets hidden automatically)
-		guiElement.rect.position.moveXY(0, -1 * blocksRunYesterday * blockDimension.GetIntY() )
+		guiElement.rect.position.addXY(0, -1 * blocksRunYesterday * blockDimension.GetIntY() )
 
 		dayChangeGuiProgrammePlanElement = guiElement
 
@@ -862,7 +862,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 
 	'override default "default accept behaviour" of onDrop
 	Method onDrop:int(triggerEvent:TEventBase)
-		local dropCoord:TPoint = TPoint(triggerEvent.GetData().get("coord"))
+		local dropCoord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
 		if not dropCoord then return FALSE
 
 		if self.containsXY(dropCoord.x, dropCoord.y)
@@ -1020,7 +1020,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 			local data:TData = TData(extra)
 			if not data then return FALSE
 
-			local dropCoord:TPoint = TPoint(data.get("coord"))
+			local dropCoord:TVec2D = TVec2D(data.get("coord"))
 			if not dropCoord then return FALSE
 
 			'set slot to land
@@ -1106,8 +1106,8 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 
 
 	Method Draw:int()
-		local atPoint:TPoint = GetScreenPos()
-		local pos:TPoint = null
+		local atPoint:TVec2D = GetScreenPos()
+		local pos:TVec2D = null
 		For local i:int = 0 to _slotsState.length-1
 			'skip occupied slots
 			if _slots[i]
@@ -1119,7 +1119,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 
 			if _slotsState[i] = 0 then continue
 
-			pos = GetSlotOrCoord(i)
+			pos = GetSlotOrCoord(i).ToVec2D()
 			'disabled
 			if _slotsState[i] = 1 then SetColor 100,100,100
 			'occupied
@@ -1146,11 +1146,11 @@ Type TPlannerList
 	Field openState:int		= 0		'0=enabled 1=openedgenres 2=openedmovies 3=openedepisodes = 1
 	Field currentGenre:Int	=-1
 	Field enabled:Int		= 0
-	Field Pos:TPoint 		= new TPoint.Init()
+	Field Pos:TVec2D 		= new TVec2D.Init()
 	Field gfxTape:TSprite
 	Field gfxTapeBackground:TSprite
 	Field tapeRect:TRectangle
-	Field displaceTapes:TPoint = new TPoint.Init(9,8)
+	Field displaceTapes:TVec2D = new TVec2D.Init(9,8)
 
 
 	Method Init:int(x:float, y:float)
@@ -1169,7 +1169,7 @@ End Type
 
 'the programmelist shown in the programmeplaner
 Type TgfxProgrammelist extends TPlannerList
-	Field displaceEpisodeTapes:TPoint = new TPoint.Init(6,5)
+	Field displaceEpisodeTapes:TVec2D = new TVec2D.Init(6,5)
 	Field gfxTapeSeries:TSprite
 	Field gfxTapeEpisodes:TSprite
 	Field gfxTapeEpisodesBackground:TSprite
@@ -1295,7 +1295,7 @@ Type TgfxProgrammelist extends TPlannerList
 		if genre < 0 then return FALSE
 
 		'displace all tapes - border of background
-		box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
+		box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
 		'first
 		local player:TPlayer = GetPlayerCollection().Get()
@@ -1321,7 +1321,7 @@ Type TgfxProgrammelist extends TPlannerList
 				SetAlpha 1.0
 				SetBlend AlphaBlend
 			endif
-			box.MoveXY(0, 19)
+			box.moveXY(0, 19)
 		Next
 	End Method
 
@@ -1331,7 +1331,7 @@ Type TgfxProgrammelist extends TPlannerList
 
 		If genre < 0 then return FALSE
 
-		box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
+		box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
 		'we clicked somewhere - if a series was below, that variable
 		'gets refilled automagically -> no need to keep it filled
@@ -1382,7 +1382,7 @@ Type TgfxProgrammelist extends TPlannerList
 				endif
 			EndIf
 
-			box.MoveXY(0, 19)
+			box.moveXY(0, 19)
 		Next
 		return FALSE
 	End Method
@@ -1398,7 +1398,7 @@ Type TgfxProgrammelist extends TPlannerList
 		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
 		local font:TBitmapFont = GetBitmapFont("Default", 8)
 		'displace all tapes - border of background
-		box.MoveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
+		box.moveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
 
 		For Local i:Int = 0 To seriesLicence.GetSubLicenceCount()-1
 			Local licence:TProgrammeLicence = TProgrammeLicence(seriesLicence.GetsubLicenceAtIndex(i))
@@ -1420,7 +1420,7 @@ Type TgfxProgrammelist extends TPlannerList
 				SetBlend AlphaBlend
 			EndIf
 
-			box.MoveXY(0, 12)
+			box.moveXY(0, 12)
 		Next
 
 	End Method
@@ -1430,7 +1430,7 @@ Type TgfxProgrammelist extends TPlannerList
 		Local tapecount:Int = 0
 		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
 		'displace all tapes - border of background
-		box.MoveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
+		box.moveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
 
 		For Local i:Int = 0 To seriesLicence.GetSubLicenceCount()-1
 			Local licence:TProgrammeLicence = TProgrammeLicence(seriesLicence.GetsubLicenceAtIndex(i))
@@ -1451,7 +1451,7 @@ Type TgfxProgrammelist extends TPlannerList
 				endif
 			EndIf
 
-			box.MoveXY(0, 12)
+			box.moveXY(0, 12)
 		Next
 		return FALSE
 	End Method
@@ -1545,7 +1545,7 @@ Type TgfxContractlist extends TPlannerList
 		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
 		local hoveredAdContract:TAdContract = null
 		'displace all tapes - border of background
-		box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
+		box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
 		local player:TPlayer = GetPlayerCollection().Get()
 		For Local contract:TAdContract = EachIn player.GetProgrammeCollection().adContracts
@@ -1559,7 +1559,7 @@ Type TgfxContractlist extends TPlannerList
 				SetAlpha 1.0
 				SetBlend AlphaBlend
 			EndIf
-			box.MoveXY(0, gfxtape.area.GetH() + 1)
+			box.moveXY(0, gfxtape.area.GetH() + 1)
 		Next
 	End Method
 
@@ -1573,7 +1573,7 @@ Type TgfxContractlist extends TPlannerList
 		if self.openState >= 1
 			local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
 			'displace all tapes - border of background
-			box.MoveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
+			box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
 			local player:TPlayer = GetPlayerCollection().Get()
 			For Local contract:TAdContract = EachIn player.GetProgrammeCollection().adContracts
@@ -1589,7 +1589,7 @@ Type TgfxContractlist extends TPlannerList
 						SetOpen(0)
 					EndIf
 				EndIf
-				box.position.MoveXY(0, gfxTape.area.GetH() + 1)
+				box.position.addXY(0, gfxTape.area.GetH() + 1)
 			Next
 		endif
 
@@ -1816,7 +1816,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 			EndIf
 			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, null, TColor.clBlack, 1, 1, 0.50)
 
-			font.drawBlock("Bieten:"+GetNextBid()+CURRENCYSIGN, 31,33, 212,20, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack, 1)
+			font.drawBlock("Bieten:"+GetNextBid()+CURRENCYSIGN, 31,33, 212,20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack, 1)
 
 			'reset target for fonts
 			TBitmapFont.setRenderTarget(null)
@@ -1886,7 +1886,7 @@ Type TGUINews extends TGUIGameListItem
 	Field imageBaseName:string = "gfx_news_sheet"
 	Field cacheTextOverlay:TImage
 
-    Method Create:TGUINews(pos:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUINews(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		Super.Create(pos, dimension, value)
 
 		return self
@@ -2007,15 +2007,15 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			else
-				GetBitmapFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TPoint.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+				GetBitmapFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select GetGameTime().getDay() - GetGameTime().getDay(news.newsEvent.happenedTime)
-				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack )
-				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
-				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TPoint.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
+				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
 			SetColor 255, 255, 255
@@ -2034,7 +2034,7 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 	Global acceptMovies:int		= 1
 	Global acceptSeries:int		= 2
 
-    Method Create:TGUIProgrammeLicenceSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUIProgrammeLicenceSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		'albeit the list base already handles drop on itself
@@ -2118,7 +2118,7 @@ rem
 endrem
 
 
-    Method Create:TGUIProgrammeLicence(pos:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGUIProgrammeLicence(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		Super.Create(pos, dimension, value)
 		return self
 	End Method
@@ -2210,7 +2210,7 @@ Type TGuiAdContract extends TGUIGameListItem
 	Field contract:TAdContract
 
 
-    Method Create:TGuiAdContract(pos:TPoint=null, dimension:TPoint=null, value:String="")
+    Method Create:TGuiAdContract(pos:TVec2D=null, dimension:TVec2D=null, value:String="")
 		Super.Create(pos, dimension, value)
 
 		self.assetNameDefault = "gfx_contracts_0"
@@ -2317,7 +2317,7 @@ End Type
 
 Type TGUIAdContractSlotList extends TGUISlotList
 
-    Method Create:TGUIAdContractSlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUIAdContractSlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 		return self
 	End Method

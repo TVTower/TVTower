@@ -45,8 +45,8 @@ Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int		= 1
 
 
 Global gfx_GuiPack:TSpritePack = new TSpritePack.Init(LoadImage("res/grafiken/GUI/guipack.png"), "guipack_pack")
-gfx_GuiPack.AddSprite(New TSprite.Init(Null, "ListControl", new TRectangle.Init(96, 0, 56, 28), Null, 8, new TPoint.Init(14, 14)))
-gfx_GuiPack.AddSprite(New TSprite.Init(Null, "DropDown", new TRectangle.Init(160, 0, 126, 42), Null, 21, new TPoint.Init(14, 14)))
+gfx_GuiPack.AddSprite(New TSprite.Init(Null, "ListControl", new TRectangle.Init(96, 0, 56, 28), Null, 8, new TVec2D.Init(14, 14)))
+gfx_GuiPack.AddSprite(New TSprite.Init(Null, "DropDown", new TRectangle.Init(160, 0, 126, 42), Null, 21, new TVec2D.Init(14, 14)))
 gfx_GuiPack.AddSprite(New TSprite.Init(Null, "Slider", new TRectangle.Init(0, 30, 112, 14), Null, 8))
 gfx_GuiPack.AddSprite(New TSprite.Init(Null, "Chat_IngameOverlay", new TRectangle.Init(0, 60, 504, 20), Null))
 
@@ -169,7 +169,7 @@ Type TGUIManager
 		If guiobject = Null Then Return False
 
 		'find out if it hit a list...
-		Local coord:TPoint = TPoint(triggerEvent.GetData().get("coord"))
+		Local coord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
 		If Not coord Then Return False
 		Local potentialDropTargets:TGuiObject[] = GUIManager.GetObjectsByPos(coord, GUIManager.currentState, True, GUI_OBJECT_ACCEPTS_DROP)
 		Local dropTarget:TGuiObject = TGUIObject(triggerEvent.GetReceiver())
@@ -348,7 +348,7 @@ Type TGUIManager
 
 
 	'returns an array of objects at the given point
-	Method GetObjectsByPos:TGuiObject[](coord:TPoint, limitState:String=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
+	Method GetObjectsByPos:TGuiObject[](coord:TVec2D, limitState:String=Null, ignoreDragged:Int=True, requiredFlags:Int=0, limit:Int=0)
 		If limitState=Null Then limitState = currentState
 
 		Local guiObjects:TGuiObject[]
@@ -376,7 +376,7 @@ Type TGUIManager
 	End Method
 
 
-	Method GetFirstObjectByPos:TGuiObject(coord:TPoint, limitState:String=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
+	Method GetFirstObjectByPos:TGuiObject(coord:TVec2D, limitState:String=Null, ignoreDragged:Int=True, requiredFlags:Int=0)
 		Local guiObjects:TGuiObject[] = GetObjectsByPos(coord, limitState, ignoreDragged, requiredFlags, 1)
 
 		If guiObjects.length = 0 Then Return Null Else Return guiObjects[0]
@@ -385,7 +385,7 @@ Type TGUIManager
 
 	Method DisplaceGUIobjects(State:String = "", x:Int = 0, y:Int = 0)
 		For Local obj:TGUIobject = EachIn List
-			If isState(obj, State) Then obj.rect.position.MoveXY( x,y )
+			If isState(obj, State) Then obj.rect.position.AddXY( x,y )
 		Next
 	End Method
 
@@ -561,20 +561,21 @@ Global GUIManager:TGUIManager = TGUIManager.GetInstance()
 
 Type TGUIobject
 	Field rect:TRectangle = new TRectangle.Init(-1,-1,-1,-1)
-	Field positionBackup:TPoint = Null
+	Field zIndex:int = 0
+	Field positionBackup:TVec2D = Null
 	'storage for additional data
 	Field data:TData = new TData
 	Field scale:Float = 1.0
 	Field alpha:Float = 1.0
 	'where to attach the object
-	Field handlePosition:TPoint	= new TPoint.Init(0, 0)
+	Field handlePosition:TVec2D	= new TVec2D.Init(0, 0)
 	'where to attach the content within the object
-	Field contentPosition:TPoint = new TPoint.Init(0.5, 0.5)
+	Field contentPosition:TVec2D = new TVec2D.Init(0.5, 0.5)
 	Field state:String = ""
 	Field value:String = ""
-	Field mouseIsClicked:TPoint	= Null			'null = not clicked
-	Field mouseIsDown:TPoint = new TPoint.Init(-1,-1)
-	Field mouseOver:Int	= 0						'could be done with TPoint
+	Field mouseIsClicked:TVec2D	= Null			'null = not clicked
+	Field mouseIsDown:TVec2D = new TVec2D.Init(-1,-1)
+	Field mouseOver:Int	= 0						'could be done with TVec2D
 	Field children:TList = Null
 	Field _id:Int
 	Field _padding:TRectangle = null 'by default no padding
@@ -593,7 +594,7 @@ Type TGUIobject
 	'an array containing registered event listeners
 	Field _registeredEventListener:TLink[]
 	'displacement of object when dragged (null = centered)
-	Field handle:TPoint	= Null
+	Field handle:TVec2D	= Null
 	Field className:String			= ""
 	'Field _lastDrawTick:int			= 0
 	'Field _lastUpdateTick:int		= 0
@@ -625,10 +626,10 @@ Type TGUIobject
 	End Method
 
 
-	Method CreateBase:TGUIobject(pos:TPoint, dimension:TPoint, limitState:String="")
+	Method CreateBase:TGUIobject(pos:TVec2D, dimension:TVec2D, limitState:String="")
 		'create missing params
-		If Not pos Then pos = new TPoint.Init(0,0)
-		If Not dimension Then dimension = new TPoint.Init(-1,-1)
+		If Not pos Then pos = new TVec2D.Init(0,0)
+		If Not dimension Then dimension = new TVec2D.Init(-1,-1)
 
 		rect.position.setXY(pos.x, pos.y)
 		'resize widget, dimension of (-1,-1) is "auto dimension"
@@ -1052,31 +1053,31 @@ endrem
 	'set the anchor of the gui object
 	'valid values are 0-1.0 (percentage)
 	Method SetHandlePosition:Int(handleLeft:Float=0.0, handleTop:Float=0.0)
-		handlePosition = new TPoint.init(handleLeft, handleTop)
+		handlePosition = new TVec2D.init(handleLeft, handleTop)
 	End Method
 
 
 	'set the anchor of the gui objects content
 	'valid values are 0-1.0 (percentage)
 	Method SetContentPosition:Int(contentLeft:Float=0.0, contentTop:Float=0.0)
-		contentPosition = new TPoint.Init(contentLeft, contentTop)
+		contentPosition = new TVec2D.Init(contentLeft, contentTop)
 	End Method
 
 
 	Method GetZIndex:int()
-		if rect.position.z = 0
+		if zIndex = 0
 			'each children is at least 1 zindex higher
 			if _parent then return _parent.GetZIndex() + 1
 		'-1 means: try to get the zindex from parent
-		elseif rect.position.z = -1
+		elseif zIndex = -1
 			if _parent then return _parent.GetZIndex()
 		endif
-		return rect.position.z
+		return zIndex
 	End Method
 
 
 	Method SetZIndex(zindex:Int)
-		rect.position.z = zindex
+		self.zIndex = zindex
 		GUIManager.SortLists()
 	End Method
 
@@ -1106,10 +1107,10 @@ endrem
 	End Method
 
 
-	Method drag:Int(coord:TPoint=Null)
+	Method drag:Int(coord:TVec2D=Null)
 		If Not isDragable() Or isDragged() Then Return False
 
-		positionBackup = new TPoint.Init( GetScreenX(), GetScreenY() )
+		positionBackup = new TVec2D.Init( GetScreenX(), GetScreenY() )
 
 
 		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrag", new TData.Add("coord", coord), self)
@@ -1143,10 +1144,10 @@ endrem
 	End Method
 
 
-	Method drop:Int(coord:TPoint=Null, force:Int=False)
+	Method drop:Int(coord:TVec2D=Null, force:Int=False)
 		If Not isDragged() Then Return False
 
-		If coord And coord.getX()=-1 Then coord = new TPoint.Init(MouseManager.x, MouseManager.y)
+		If coord And coord.getX()=-1 Then coord = new TVec2D.Init(MouseManager.x, MouseManager.y)
 
 
 		Local event:TEventSimple = TEventSimple.Create("guiobject.onTryDrop", new TData.Add("coord", coord), self)
@@ -1221,8 +1222,8 @@ endrem
 	End Method
 
 
-	Method GetScreenPos:TPoint()
-		Return new TPoint.Init(GetScreenX(), GetScreenY())
+	Method GetScreenPos:TVec2D()
+		Return new TVec2D.Init(GetScreenX(), GetScreenY())
 	End Method
 
 
@@ -1297,12 +1298,12 @@ endrem
 	End Method
 
 
-	Method SetHandle:Int(handle:TPoint)
+	Method SetHandle:Int(handle:TVec2D)
 		Self.handle = handle
 	End Method
 
 
-	Method GetHandle:TPoint()
+	Method GetHandle:TVec2D()
 		Return handle
 	End Method
 
@@ -1312,7 +1313,7 @@ endrem
 	End Method
 
 
-	Method getDimension:TPoint()
+	Method getDimension:TVec2D()
 		Return rect.dimension
 	End Method
 
@@ -1493,7 +1494,7 @@ endrem
 						GUImanager.setFocus(Self)
 					endif
 
-					MouseIsDown = new TPoint.Init( MouseManager.x, MouseManager.y )
+					MouseIsDown = new TVec2D.Init( MouseManager.x, MouseManager.y )
 				EndIf
 
 				'we found a gui element which can accept clicks
@@ -1551,7 +1552,7 @@ endrem
 				If _flags & GUI_OBJECT_ENABLED and not GUIManager.UpdateState_foundHitObject
 					If MOUSEMANAGER.IsClicked(1) or MOUSEMANAGER.GetClicks(1) > 0
 						'=== SET CLICKED VAR ====
-						mouseIsClicked = new TPoint.Init( MouseManager.x, MouseManager.y)
+						mouseIsClicked = new TVec2D.Init( MouseManager.x, MouseManager.y)
 
 						'=== SEND OUT CLICK EVENT ====
 						'if recognized as "double click" no normal "onClick"
@@ -1674,7 +1675,7 @@ End Type
 
 'simple gui object helper - so non-gui-objects may receive events...
 Type TGUISimpleRect Extends TGUIobject
-	Method Create:TGUISimpleRect(position:TPoint, dimension:TPoint, limitState:String="")
+	Method Create:TGUISimpleRect(position:TVec2D, dimension:TVec2D, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
 		Self.Resize(dimension.GetX(), dimension.GetY() )
 

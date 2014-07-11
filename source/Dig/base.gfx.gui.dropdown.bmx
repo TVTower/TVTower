@@ -50,7 +50,7 @@ Type TGUIDropDown Extends TGUIInput
 	
 
 
-    Method Create:TGUIDropDown(position:TPoint = null, dimension:TPoint = null, value:string="", maxLength:Int=128, limitState:String = "")
+    Method Create:TGUIDropDown(position:TVec2D = null, dimension:TVec2D = null, value:string="", maxLength:Int=128, limitState:String = "")
 		'setup base widget (input)
 		Super.Create(position, dimension, value, maxLength, limitState)
 		'but this element does not react to keystrokes
@@ -66,7 +66,7 @@ Type TGUIDropDown Extends TGUIInput
 
 		'=== ENTRY LIST ===
 		'create and style list
-		list = new TGUISelectList.Create(new TPoint.Init(0, self.rect.GetH()), new TPoint.Init(rect.GetW(), listHeight), "")
+		list = new TGUISelectList.Create(new TVec2D.Init(0, self.rect.GetH()), new TVec2D.Init(rect.GetW(), listHeight), "")
 		'do not add as child - we position it on our own when updating
 		'hide list to begin
 		SetOpen(false)
@@ -80,7 +80,7 @@ Type TGUIDropDown Extends TGUIInput
 		list.SetZIndex(20000)
 
 		'add bg to list
-		local bg:TGUIBackgroundBox = new TGUIBackgroundBox.Create(new TPoint, new TPoint)
+		local bg:TGUIBackgroundBox = new TGUIBackgroundBox.Create(new TVec2D, new TVec2D)
 		bg.spriteBaseName = "gfx_gui_input.default"
 		list.SetBackground(bg)
 		'use padding from background
@@ -249,8 +249,8 @@ End Type
 Type TGUIDropDownItem Extends TGUISelectListItem
 
 
-    Method Create:TGUIDropDownItem(position:TPoint=null, dimension:TPoint=null, value:String="")
-		if not dimension then dimension = new TPoint.Init(80,20)
+    Method Create:TGUIDropDownItem(position:TVec2D=null, dimension:TVec2D=null, value:String="")
+		if not dimension then dimension = new TVec2D.Init(80,20)
 
 		'no "super.Create..." as we do not need events and dragable and...
    		Super.CreateBase(position, dimension, "")

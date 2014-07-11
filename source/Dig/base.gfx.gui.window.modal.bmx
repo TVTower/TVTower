@@ -24,11 +24,11 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	'the time a close action runs
 	Field closeActionDuration:int = 1000
 	'the position of the widget when closing
-	Field closeActionStartPosition:TPoint = new TPoint
+	Field closeActionStartPosition:TVec2D = new TVec2D
 
 
 
-	Method Create:TGUIModalWindow(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIModalWindow(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.Create(pos, dimension, limitState)
 
 		setZIndex(10000)
@@ -61,15 +61,15 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			'a default button
 			Case 1
 				buttons = buttons[..1]
-				buttons[0] = New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(120, -1), GetLocale("OK"))
+				buttons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(120, -1), GetLocale("OK"))
 				AddChild(buttons[0])
 				'set to ignore parental padding (so it starts at 0,0)
 				buttons[0].SetOption(GUI_OBJECT_IGNORE_PARENTPADDING, True)
 			'yes and no button
 			Case 2
 				buttons = buttons[..2]
-				buttons[0] = New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(90, -1), GetLocale("YES"))
-				buttons[1] = New TGUIButton.Create(new TPoint.Init(0, 0), new TPoint.Init(90, -1), GetLocale("NO"))
+				buttons[0] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(90, -1), GetLocale("YES"))
+				buttons[1] = New TGUIButton.Create(new TVec2D.Init(0, 0), new TVec2D.Init(90, -1), GetLocale("NO"))
 				AddChild(buttons[0])
 				AddChild(buttons[1])
 				'set to ignore parental padding (so it starts at 0,0)
@@ -101,7 +101,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
-	Method Recenter:Int(moveBy:TPoint=Null)
+	Method Recenter:Int(moveBy:TVec2D=Null)
 		'center the window
 		Local centerX:Float=0.0
 		Local centerY:Float=0.0
@@ -113,7 +113,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 			centerY = DarkenedArea.getY() + DarkenedArea.GetH()/2
 		EndIf
 
-		If Not moveBy Then moveBy = new TPoint.Init(0,0)
+		If Not moveBy Then moveBy = new TVec2D.Init(0,0)
 		rect.position.setXY(centerX - rect.getW()/2 + moveBy.getX(),centerY - rect.getH()/2 + moveBy.getY() )
 	End Method
 
@@ -195,7 +195,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 		if closeActionStarted
 			local yUntilScreenLeft:int = VirtualHeight() - (closeActionStartPosition.y + GetScreenHeight())
 			newAlpha = 1.0 - TInterpolation.Linear(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)
-			recenter(new TPoint.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)))
+			recenter(new TVec2D.Init(0, - yUntilScreenLeft * TInterpolation.BackIn(0.0, 1.0, Min(closeActionDuration, Time.GetTimeGone() - closeActionTime), closeActionDuration)))
 
 			'as text "wobbles" (drawn at INT position while sprites draw
 			'with floats - so they seem to change offsets) we fade them

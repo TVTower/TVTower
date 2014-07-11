@@ -18,7 +18,7 @@ Type TGUIArrowButton Extends TGUIObject
 	Field spriteButtonBaseName:String = "gfx_gui_button.round"
 
 
-	Method Create:TGUIArrowButton(pos:TPoint, dimension:TPoint, direction:String="LEFT", limitState:String = "")
+	Method Create:TGUIArrowButton(pos:TVec2D, dimension:TVec2D, direction:String="LEFT", limitState:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, limitState)
 
@@ -85,7 +85,7 @@ Type TGUIArrowButton Extends TGUIObject
 
 	'override default draw-method
 	Method Draw()
-		Local atPoint:TPoint = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
@@ -94,7 +94,7 @@ Type TGUIArrowButton Extends TGUIObject
 		'draw button (background)
 		_GetButtonSprite().DrawArea(atPoint.getX(), atPoint.getY(), rect.GetW(), rect.GetH())
 		'draw arrow at center of button
-		_GetArrowSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TPoint.Init(0.5, 0.5))
+		_GetArrowSprite().Draw(atPoint.getX() + int(rect.GetW()/2), atPoint.getY() + int(rect.GetH()/2), -1, new TVec2D.Init(0.5, 0.5))
 
 		oldCol.SetRGBA()
 	End Method

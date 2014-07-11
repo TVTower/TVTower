@@ -90,11 +90,11 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Field name:String = "unknown"
 	'backup of self.velocity.x
 	Field initialdx:Float = 0.0
-	Field PosOffset:TPoint = new TPoint.Init(0,0)
+	Field PosOffset:TVec2D = new TVec2D.Init(0,0)
 	'0=no boarding, 1=boarding, -1=deboarding
 	Field boardingState:Int = 0
 
-	Field target:TPoint	= Null {_exposeToLua}
+	Field target:TVec2D	= Null {_exposeToLua}
 	'targetting a special object (door, hotspot) ?
 	Field targetObj:TStaticEntity
 	'active as soon as figure leaves/enters rooms
@@ -181,7 +181,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetFloor:Int(pos:TPoint = Null)
+	Method GetFloor:Int(pos:TVec2D = Null)
 		'if we have no floor set in the pos, we return the current floor
 		If not pos Then pos = area.position
 		Return GetBuilding().getFloor( GetBuilding().area.position.y + pos.y )
@@ -290,8 +290,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	'overwrite default to add stoppers (at elevator)
-	Method GetVelocity:TPoint()
-		if IsInElevator() then return new TPoint
+	Method GetVelocity:TVec2D()
+		if IsInElevator() then return new TVec2D
 		return velocity
 	End Method
 
@@ -405,11 +405,11 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()
 					'draw the "to the right" balloon a bit lower (so both are better visible)
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(GetBuilding().area.GetY() + area.GetY() - Self.sprite.area.GetH() + 2), greetType, new TPoint.Init(ALIGN_LEFT, ALIGN_CENTER), scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(GetBuilding().area.GetY() + area.GetY() - sprite.area.GetH() + 2), greetType, ALIGN_LEFT_CENTER, scale)
 				'figure left of me
 				else
 					greetType :+ 3
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(GetBuilding().area.GetY() + area.GetY() - Self.sprite.area.GetH()), greetType, new TPoint.Init(ALIGN_RIGHT, ALIGN_CENTER), scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(GetBuilding().area.GetY() + area.GetY() - sprite.area.GetH()), greetType, ALIGN_RIGHT_CENTER, scale)
 				endif
 				SetAlpha oldAlpha
 			endif
@@ -703,7 +703,7 @@ endrem
 		If GetBuilding().GetFloor(y) < 0 Or GetBuilding().GetFloor(y) > 13 Then Return False
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		target = new TPoint.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
+		target = new TVec2D.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
 		targetObj = TRoomDoor.GetByCoord(target.x, GetBuilding().area.GetY() + target.y)
@@ -868,9 +868,9 @@ endrem
 
 		'avoid shaking figures when standing - only use tween
 		'position when moving
-		local tweenPos:TPoint
+		local tweenPos:TVec2D
 		if velocity.GetIntX() <> 0 and not GetGameTime().paused
-			tweenPos = new TPoint.Init(..
+			tweenPos = new TVec2D.Init(..
 				MathHelper.SteadyTween(oldPosition.x, area.getX(), GetDeltaTimer().GetTween()), ..
 				MathHelper.SteadyTween(oldPosition.y, area.getY(), GetDeltaTimer().GetTween()) ..
 			)

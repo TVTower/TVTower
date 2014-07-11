@@ -15,7 +15,7 @@ Type TGUIWindowBase Extends TGUIPanel
 	Global defaultCaptionColor:TColor = null
 
 
-	Method Create:TGUIWindowBase(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIWindowBase(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 
 		'create background, setup text etc.
@@ -36,7 +36,7 @@ Type TGUIWindowBase Extends TGUIPanel
 	End Method
 	
 
-	Method InitWindow(dimension:TPoint)
+	Method InitWindow(dimension:TVec2D)
 		If Not guiBackground
 			SetBackground( new TGUIBackgroundBox.Create(null, null) )
 		Else
@@ -62,7 +62,7 @@ Type TGUIWindowBase Extends TGUIPanel
 	'content panel gets created if not done yet
 	Method GetGuiContent:TGUIPanel()
 		if not guiContent
-			guiContent = new TGUIPanel.Create(new TPoint, new TPoint.Init(GetContentScreenWidth(), GetContentScreenHeight()), "")
+			guiContent = new TGUIPanel.Create(new TVec2D, new TVec2D.Init(GetContentScreenWidth(), GetContentScreenHeight()), "")
 			AddChild(guiContent)
 		endif
 
@@ -140,7 +140,7 @@ Type TGUIWindowBase Extends TGUIPanel
 		Else
 			If Not guiCaptionTextBox
 				'create the caption container
-				guiCaptionTextBox = New TGUITextBox.Create(new TPoint, new Tpoint, caption, "")
+				guiCaptionTextBox = New TGUITextBox.Create(new TVec2D, new TVec2D, caption, "")
 
 				If defaultCaptionColor
 					guiCaptionTextBox.SetValueColor(defaultCaptionColor)

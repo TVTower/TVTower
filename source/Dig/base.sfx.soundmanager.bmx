@@ -3,7 +3,7 @@ Import brl.Map
 Import brl.WAVLoader
 Import brl.OGGLoader
 Import "base.util.logger.bmx"
-Import "base.util.point.bmx"
+Import "base.util.vector.bmx"
 
 Import "base.sfx.soundstream.bmx"
 

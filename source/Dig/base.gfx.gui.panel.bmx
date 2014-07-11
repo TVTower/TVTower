@@ -16,7 +16,7 @@ Type TGUIPanel Extends TGUIObject
 	Field _defaultValueColor:TColor
 
 
-	Method Create:TGUIPanel(pos:TPoint, dimension:TPoint, limitState:String = "")
+	Method Create:TGUIPanel(pos:TVec2D, dimension:TVec2D, limitState:String = "")
 		Super.CreateBase(pos, dimension, limitState)
 
 		GUIManager.Add(Self)
@@ -115,7 +115,7 @@ Type TGUIPanel Extends TGUIObject
 			if guiBackground then padding = guiBackground.GetSprite().GetNinePatchContentBorder()
 
 			if not guiTextBox
-				guiTextBox = New TGUITextBox.Create(new TPoint.Init(0,0), new TPoint.Init(50,50), value, "")
+				guiTextBox = New TGUITextBox.Create(new TVec2D.Init(0,0), new TVec2D.Init(50,50), value, "")
 				'we take care of the text box
 				AddChild(guiTextBox)
 			else

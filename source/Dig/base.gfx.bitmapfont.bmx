@@ -406,7 +406,7 @@ Type TBitmapFont
 	End Method
 
 
-	Method getBlockDimension:TPoint(text:String, w:Float, h:Float)
+	Method getBlockDimension:TVec2D(text:String, w:Float, h:Float)
 		return drawBlock(text, 0,0,w,h, null, null, 0, 0)
 	End Method
 
@@ -529,7 +529,7 @@ Type TBitmapFont
 	End Method
 
 
-	Method drawBlock:TPoint(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TPoint=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE)
+	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE)
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float = 0.0
 		Local lineMaxWidth:Float = 0
@@ -570,7 +570,7 @@ Type TBitmapFont
 					alignedX = x
 				endif
 			EndIf
-			local p:TPoint = drawStyled( lines[i], alignedX, y, color, style, doDraw,special)
+			local p:TVec2D = drawStyled( lines[i], alignedX, y, color, style, doDraw,special)
 
 			y :+ Max(lineHeight, p.y)
 			'add extra spacing _between_ lines
@@ -579,11 +579,11 @@ Type TBitmapFont
 			Endif
 		Next
 
-		return new TPoint.Init(lineMaxWidth, y - startY)
+		return new TVec2D.Init(lineMaxWidth, y - startY)
 	End Method
 
 
-	Method drawStyled:TPoint(text:String,x:Float,y:Float, color:TColor=null, style:int=0, doDraw:int=1, special:float=-1.0)
+	Method drawStyled:TVec2D(text:String,x:Float,y:Float, color:TColor=null, style:int=0, doDraw:int=1, special:float=-1.0)
 		if drawAtFixedPoints
 			x = int(x)
 			y = int(y)
@@ -631,17 +631,17 @@ Type TBitmapFont
 		endif
 
 		if oldColor then SetAlpha oldColor.a
-		local result:TPoint = draw(text,x,y, color, doDraw)
+		local result:TVec2D = draw(text,x,y, color, doDraw)
 
 		if oldColor then oldColor.SetRGBA()
 		return result
 	End Method
 
 
-	Method drawWithBG:TPoint(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:int=0)
+	Method drawWithBG:TVec2D(value:String, x:Int, y:Int, bgAlpha:Float = 0.3, bgCol:Int = 0, style:int=0)
 		Local OldAlpha:Float = GetAlpha()
 		Local color:TColor = new TColor.Get()
-		local dimension:TPoint = drawStyled(value,0,0, null, style,0)
+		local dimension:TVec2D = drawStyled(value,0,0, null, style,0)
 		SetAlpha bgAlpha
 		SetColor bgCol, bgCol, bgCol
 		DrawRect(x, y, dimension.GetX(), dimension.GetY())
@@ -696,7 +696,7 @@ Type TBitmapFont
 	End Method
 
 
-	Method draw:TPoint(text:String,x:Float,y:Float, color:TColor=null, doDraw:int=TRUE)
+	Method draw:TVec2D(text:String,x:Float,y:Float, color:TColor=null, doDraw:int=TRUE)
 		local width:float = 0.0
 		local height:float = 0.0
 		local textLines:string[]	= text.replace(chr(13), "~n").split("~n")
@@ -844,7 +844,7 @@ Type TBitmapFont
 		'restore color
 		if doDraw then oldColor.SetRGB()
 
-		return new TPoint.Init(width, height)
+		return new TVec2D.Init(width, height)
 	End Method
 
 Rem

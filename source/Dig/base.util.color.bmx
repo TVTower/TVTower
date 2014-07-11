@@ -40,6 +40,11 @@ Type TColor
 	End Function
 
 
+	Function CreateFromMix:TColor(colorA:TColor, colorB:TColor, mixFactor:float = 0.5)
+		return colorA.Copy().Mix(colorB, mixFactor)
+	End Function
+
+
 	Function FromName:TColor(name:String, alpha:float=1.0)
 		Select name.ToLower()
 				Case "red"
@@ -98,6 +103,18 @@ Type TColor
 	End Function
 
 
+	'mixes colors, mixFactor is percentage (0-1) of otherColors influence
+	Method Mix:TColor(otherColor:TColor, mixFactor:float = 0.5)
+		'clamp mixFactor to 0-1.0
+		mixFactor = Min(1.0, Max(0.0, mixFactor)) 
+		self.r = self.r * (1.0 - mixFactor) + otherColor.r * mixFactor
+		self.g = self.g * (1.0 - mixFactor) + otherColor.g * mixFactor
+		self.b = self.b * (1.0 - mixFactor) + otherColor.b * mixFactor
+		self.a = self.a * (1.0 - mixFactor) + otherColor.a * mixFactor
+		return self
+	End Method
+
+
 	Method AdjustRelative:TColor(percentage:float=1.0)
 		self.r = Max(0, self.r * (1.0+percentage))
 		self.g = Max(0, self.g * (1.0+percentage))
@@ -111,6 +128,15 @@ Type TColor
 		self.g = Max(0, self.g + factor)
 		self.b = Max(0, self.b + factor)
 		return self
+	End Method
+
+
+	Method AdjustSaturation(percentage:Float=1.0)
+		'maybe better convert to HSL instead of this simple approach
+		local luminance:float = 0.3 * r + 0.6 * g + 0.1 * b
+		r = r + percentage * (luminance - r)
+		g = g + percentage * (luminance - g)
+		b = b + percentage * (luminance - b)
 	End Method
 
 

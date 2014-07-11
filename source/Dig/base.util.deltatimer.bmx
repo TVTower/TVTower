@@ -79,6 +79,11 @@ Type TDeltaTimer
 	Global _instance:TDeltaTimer
 
 
+	Method New()
+		Init(60,-1)
+	End Method
+
+
 	Function GetInstance:TDeltaTimer()
 		if not _instance then _instance = new TDeltaTimer
 		return _instance

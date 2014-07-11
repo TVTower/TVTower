@@ -41,7 +41,7 @@ ENDREM
 SuperStrict
 Import brl.System
 Import brl.PolledInput
-Import "base.util.point.bmx"
+Import "base.util.vector.bmx"
 Import "base.util.time.bmx"
 
 Global MOUSEMANAGER:TMouseManager = New TMouseManager
@@ -73,9 +73,10 @@ Rem
 	            might call it "tripleClick" :D).
 End Rem
 Type TMouseManager
-	Field lastPos:TPoint = new TPoint
+	Field lastPos:TVec2D = new TVec2D
 	Field x:float = 0.0
 	Field y:float = 0.0
+	Field lastScrollWheel:int = 0
 
 	'amount of pixels moved (0=zero, -upwards, +downwards)
 	Field scrollWheelMoved:int = 0
@@ -334,9 +335,9 @@ Type TMouseManager
 		'by default scroll wheel did not move
 		scrollWheelMoved = 0
 
-		If lastPos.z <> MouseZ()
-			scrollWheelMoved = lastPos.z - MouseZ()
-			lastPos.z = MouseZ()
+		If lastScrollWheel <> MouseZ()
+			scrollWheelMoved = lastScrollWheel - MouseZ()
+			lastScrollWheel = MouseZ()
 		endif
 
 		x = MouseX()

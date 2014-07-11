@@ -103,14 +103,14 @@ Type THelper
 	End Function
 
 
-	Function GetTweenedPoint:TPoint(currentPoint:TPoint, oldPoint:TPoint, tween:Float, avoidShaking:int=TRUE)
+	Function GetTweenedPoint:TVec2D(currentPoint:TVec2D, oldPoint:TVec2D, tween:Float, avoidShaking:int=TRUE)
 		if avoidShaking
-			return new TPoint.Init(..
+			return new TVec2D.Init(..
 				 MathHelper.SteadyTween(oldPoint.x, currentPoint.x, tween),..
 				 MathHelper.SteadyTween(oldPoint.y, currentPoint.y, tween)..
 			   )
 		else
-			return new TPoint.Init(..
+			return new TVec2D.Init(..
 				 MathHelper.Tween(oldPoint.x, currentPoint.x, tween),..
 				 MathHelper.Tween(oldPoint.y, currentPoint.y, tween)..
 			   )

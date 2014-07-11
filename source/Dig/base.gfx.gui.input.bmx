@@ -24,17 +24,17 @@ Type TGUIinput Extends TGUIobject
 	'where to position the overlay: empty=none, "left", "right"
 	Field overlayPosition:String = ""
 
-	Field valueDisplacement:TPoint
+	Field valueDisplacement:TVec2D
 	Field _valueChanged:Int	= False '1 if changed
 	Field _valueBeforeEdit:String = ""
 	Field _editable:Int = True
 
-	Global minDimension:TPoint = new TPoint.Init(40,28)
+	Global minDimension:TVec2D = new TVec2D.Init(40,28)
 	'default name for all inputs
     Global spriteNameDefault:String	= "gfx_gui_input.default"
 
 
-	Method Create:TGUIinput(pos:TPoint, dimension:TPoint, value:String, maxLength:Int=128, limitState:String = "")
+	Method Create:TGUIinput(pos:TVec2D, dimension:TVec2D, value:String, maxLength:Int=128, limitState:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, limitState)
 
@@ -72,7 +72,7 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method SetValueDisplacement(x:Int, y:Int)
-		valueDisplacement = new TPoint.Init(x,y)
+		valueDisplacement = new TVec2D.Init(x,y)
 	End Method
 
 
@@ -184,9 +184,9 @@ Type TGUIinput Extends TGUIobject
 
 
 	'draws overlay and returns used dimension/space
-	Method DrawOverlay:TPoint(position:TPoint)
+	Method DrawOverlay:TVec2D(position:TVec2D)
 		'contains width/height of space the overlay uses
-		local dim:TPoint = new TPoint.Init(0,0)
+		local dim:TVec2D = new TVec2D.Init(0,0)
 		local overlayArea:TRectangle = GetOverlayArea()
 		'skip invalid overlay data
 		If overlayArea.GetW() < 0  or overlayPosition = "" then return dim
@@ -229,7 +229,7 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int(position:TPoint)
+	Method DrawContent:Int(position:TVec2D)
 	    Local i:Int	= 0
 		Local printValue:String	= value
 
@@ -261,18 +261,18 @@ Type TGUIinput Extends TGUIobject
 
 
 	Method Draw()
-		Local atPoint:TPoint = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenPos()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		Local textPos:TPoint
+		Local textPos:TVec2D
 		Local widgetWidth:Int = rect.GetW()
 		If Not valueDisplacement
 			'add "false" to GetMaxCharHeight so it ignores parts of
 			'characters with parts below baseline.
 			'avoids "above center"-look if value does not contain such
 			'characters
-			textPos = new TPoint.Init(5, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
+			textPos = new TVec2D.Init(5, (rect.GetH() - GetFont().GetMaxCharHeight(False)) /2)
 		Else
 			textPos = valueDisplacement.copy()
 		EndIf
@@ -285,10 +285,10 @@ Type TGUIinput Extends TGUIobject
 		If spriteName<>"" Then sprite = GetSpriteFromRegistry(GetSpriteName() + Self.state, spriteNameDefault)
 		If sprite
 			'draw overlay and save occupied space
-			local overlayDim:TPoint = DrawOverlay(atPoint)
+			local overlayDim:TVec2D = DrawOverlay(atPoint)
 
 			'move sprite by Icon-Area (and decrease width)
-			If overlayPosition = "iconLeft" Then atPoint.MoveXY(overlayDim.GetX(), overlayDim.GetY())
+			If overlayPosition = "iconLeft" Then atPoint.AddXY(overlayDim.GetX(), overlayDim.GetY())
 			widgetWidth :- overlayDim.GetX()
 
 			sprite.DrawArea(atPoint.GetX(), atPoint.getY(), widgetWidth, rect.GetH())
@@ -301,7 +301,7 @@ Type TGUIinput Extends TGUIobject
 		'limit maximal text width
 		Self.maxTextWidth = widgetWidth - textPos.GetX()*2
 		'actually draw
-		DrawContent(atPoint.Copy().MoveXY(textPos.GetX(), textPos.GetY()))
+		DrawContent(atPoint.Copy().AddXY(textPos.GetX(), textPos.GetY()))
 
 		oldCol.SetRGBA()
 	End Method

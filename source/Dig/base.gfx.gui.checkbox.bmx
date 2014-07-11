@@ -13,17 +13,17 @@ Type TGUICheckBox Extends TGUIButton
     Field checked:Int = False
     Field checkSprite:TSprite
 	Field checkSpriteName:String = "gfx_gui_icon_check"
-	Field checkboxDimension:TPoint
+	Field checkboxDimension:TVec2D
 	Field checkboxDimensionAutocalculated:int = True
 	Field valueChecked:string = ""
 	Field valueUnchecked:string = ""
-	Field captionDisplacement:TPoint = new TPoint.Init(5,0)
+	Field captionDisplacement:TVec2D = new TVec2D.Init(5,0)
 	
-	Global _checkboxMinDimension:TPoint = new TPoint.Init(15,15)
+	Global _checkboxMinDimension:TVec2D = new TVec2D.Init(15,15)
 	Global _typeDefaultFont:TBitmapFont
 
 
-	Method Create:TGUICheckbox(pos:TPoint, dimension:TPoint, value:String, limitState:String="")
+	Method Create:TGUICheckbox(pos:TVec2D, dimension:TVec2D, value:String, limitState:String="")
 		'use another sprite name (assign before initing super)
 		spriteName = "gfx_gui_button.round"
 
@@ -65,7 +65,7 @@ Type TGUICheckBox Extends TGUIButton
 	End Method
 
 
-	Method SetCheckboxDimension:int(dimension:TPoint)
+	Method SetCheckboxDimension:int(dimension:TVec2D)
 		if not dimension
 			checkboxDimension = null
 			checkboxDimensionAutocalculated = True
@@ -76,10 +76,10 @@ Type TGUICheckBox Extends TGUIButton
 	End Method
 
 
-	Method GetCheckboxDimension:TPoint()
+	Method GetCheckboxDimension:TVec2D()
 		if not checkboxDimension
 			local dim:TRectangle = GetSprite().GetNinePatchBorderDimension()
-			checkboxDimension = new TPoint.Init(..
+			checkboxDimension = new TVec2D.Init(..
 				Max(_checkboxMinDimension.x, dim.GetLeft() + dim.GetRight()), ..
 				Max(_checkboxMinDimension.y, dim.GetTop() + dim.GetBottom()) ..
 			)
@@ -196,7 +196,7 @@ Type TGUICheckBox Extends TGUIButton
 
 	'override default draw-method
 	Method Draw()
-		Local atPoint:TPoint = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255
@@ -207,7 +207,7 @@ Type TGUICheckBox Extends TGUIButton
 		if sprite then sprite.DrawArea(atPoint.getX(), atPoint.getY(), GetCheckboxDimension().x, GetCheckboxDimension().y)
 
 		'draw checked mark at center of button
-		if IsChecked() then GetCheckSprite().Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TPoint.Init(0.5, 0.5))
+		if IsChecked() then GetCheckSprite().Draw(atPoint.getX() + int(GetCheckboxDimension().x/2), atPoint.getY() + int(GetCheckboxDimension().y/2), -1, new TVec2D.Init(0.5, 0.5))
 
 		If caption and caption.IsVisible()
 			caption.SetValue(GetValue())

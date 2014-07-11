@@ -12,7 +12,7 @@ Type TScreenCollection
 	Field targetScreen:TScreen = null
 	Field screens:TMap = CreateMap()					'containing all screens
 	Global instance:TScreenCollection
-	Global _screenDimension:TPoint = new TPoint.Init(0,0)
+	Global _screenDimension:TVec2D = new TVec2D.Init(0,0)
 	Global useChangeEffects:int = TRUE
 
 
@@ -179,7 +179,7 @@ Type TScreenCollection
 
 
 	Function SetScreenDimension(width:int, height:int)
-		_screenDimension = new TPoint.Init(width,height)
+		_screenDimension = new TVec2D.Init(width,height)
 	End Function
 End Type
 Global ScreenCollection:TScreenCollection = TScreenCollection.Create(null)

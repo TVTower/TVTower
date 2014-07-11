@@ -36,7 +36,7 @@ Import "base.gfx.gui.list.base.bmx"
 
 
 Type TGUISlotList Extends TGUIListBase
-	Field _slotMinDimension:TPoint = new TPoint.Init(0,0)
+	Field _slotMinDimension:TVec2D = new TVec2D.Init(0,0)
 	'slotAmount: <=0 means dynamically, else it is fixed
 	Field _slotAmount:Int = -1
 	Field _slots:TGUIobject[0]
@@ -45,7 +45,7 @@ Type TGUISlotList Extends TGUIListBase
 	Field _fixedSlotDimension:Int = False
 
 
-    Method Create:TGUISlotList(position:TPoint = null, dimension:TPoint = null, limitState:String = "")
+    Method Create:TGUISlotList(position:TVec2D = null, dimension:TVec2D = null, limitState:String = "")
 		Super.Create(position, dimension, limitState)
 
 		autoSortItems = False
@@ -149,7 +149,7 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
-	Method GetSlotOrCoord:TPoint(slot:Int=-1, coord:TPoint=Null)
+	Method GetSlotOrCoord:TVec3D(slot:Int=-1, coord:TVec2D=Null)
 		Local baseRect:TRectangle = Null
 		If _fixedSlotDimension
 			baseRect = new TRectangle.Init(0, 0, _slotMinDimension.getX(), _slotMinDimension.getY())
@@ -164,7 +164,7 @@ Type TGUISlotList Extends TGUIListBase
 		EndIf
 
 		'set startpos at point of block displacement
-		Local currentPos:TPoint = _entriesBlockDisplacement.copy()
+		Local currentPos:TVec3D = _entriesBlockDisplacement.copy()
 		Local currentRect:TRectangle 'used to check if a given coord is within
 		Local slotW:Int
 		Local slotH:Int
@@ -179,7 +179,7 @@ Type TGUISlotList Extends TGUIListBase
 			EndIf
 
 			'move base rect
-			baseRect.position.CopyFrom(currentPos)
+			baseRect.position.CopyFrom(currentPos.ToVec2D())
 
 			'if the current position + dimension contains the given
 			'coord or is of this slot - return this position
@@ -202,14 +202,14 @@ Type TGUISlotList Extends TGUIListBase
 
 			'move to the next one
 			If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL
-				currentPos.MoveXY(0, slotH )
+				currentPos.AddXY(0, slotH )
 			ElseIf _orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
-				currentPos.MoveXY(slotW, 0)
+				currentPos.AddXY(slotW, 0)
 			EndIf
 
 			'add the displacement, z-value is stepping, not for LAST element
 			If (i+1) Mod _entryDisplacement.z = 0 And i < _slots.length-1
-				currentPos.MoveXY(_entryDisplacement.x, _entryDisplacement.y)
+				currentPos.AddXY(_entryDisplacement.x, _entryDisplacement.y)
 			EndIf
 		Next
 		'return the end of the list coordinate ?!
@@ -217,23 +217,23 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
-	Method GetSlotCoord:TPoint(slot:Int)
+	Method GetSlotCoord:TVec3D(slot:Int)
 		Return GetSlotOrCoord(slot, Null)
 	End Method
 
 
 	'get a slot by a (global/screen) coord
-	Method GetSlotByCoord:Int(coord:TPoint, isScreenCoord:Int=True)
+	Method GetSlotByCoord:Int(coord:TVec2D, isScreenCoord:Int=True)
 		'create a copy of the given coord - avoids modifying it
-		Local useCoord:TPoint = coord.copy()
+		Local useCoord:TVec2D = coord.copy()
 
 		'convert global/screen to local coords
-		If isScreenCoord Then useCoord.MoveXY(-Self.GetScreenX(),-Self.GetScreenY())
+		If isScreenCoord Then useCoord.AddXY(-Self.GetScreenX(),-Self.GetScreenY())
 		Return GetSlotOrCoord(-1, useCoord).z
 	End Method
 
 
-	Method GetItemByCoord:TGUIobject(coord:TPoint)
+	Method GetItemByCoord:TGUIobject(coord:TVec2D)
 		Local slot:Int = Self.GetSlotByCoord(coord)
 		Return Self.GetItemBySlot(slot)
 	End Method
@@ -337,7 +337,7 @@ Type TGUISlotList Extends TGUIListBase
 	Method HandleDropBack:Int(triggerEvent:TEventBase)
 		'as slotlists can easily compare "old slot" and "dropzone"-slot
 		'we use this to check if the slot is changing..
-		Local dropCoord:TPoint = TPoint(triggerEvent.GetData().get("coord"))
+		Local dropCoord:TVec2D = TVec2D(triggerEvent.GetData().get("coord"))
 		Local item:TGUIobject = TGUIobject(triggerEvent.GetSender())
 		'skip handling if important data is missing/incorrect
 		If Not dropCoord Or Not item Then Return False
@@ -373,7 +373,7 @@ Type TGUISlotList Extends TGUIListBase
 			Local data:TData = TData(extra)
 			If Not data Then Return False
 
-			Local dropCoord:TPoint = TPoint(data.get("coord"))
+			Local dropCoord:TVec2D = TVec2D(data.get("coord"))
 			If Not dropCoord Then Return False
 
 			'set slot to land
@@ -417,11 +417,11 @@ Type TGUISlotList Extends TGUIListBase
 
 
 	Method Draw()
-		Local atPoint:TPoint = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenPos()
 		If _debugMode
 			'restrict by scrollable panel - if not possible, there is no "space left"
 			If guiEntriesPanel.RestrictViewPort()
-				Local pos:TPoint = Null
+				Local pos:TVec3D = Null
 				SetAlpha 0.4
 				For Local i:Int = 0 To Self._slots.length-1
 					pos = GetSlotOrCoord(i)
@@ -431,7 +431,7 @@ Type TGUISlotList Extends TGUIListBase
 					SetColor 255,255,255
 					DrawRect(atPoint.GetX()+pos.getX()+1, atPoint.GetY()+pos.getY()+1, _slotMinDimension.getX()-2, _slotMinDimension.getY()-2)
 					SetColor 0,0,0
-					DrawText("slot "+i+"|"+GetSlotByCoord(pos), atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
+					DrawText("slot "+i+"|"+GetSlotByCoord(pos.ToVec2D()), atPoint.GetX()+pos.getX(), atPoint.GetY()+pos.getY())
 					SetColor 255,255,255
 				Next
 				SetAlpha 1.0
@@ -445,7 +445,7 @@ Type TGUISlotList Extends TGUIListBase
 
 	Method RecalculateElements:Int()
 		'set startpos at point of block displacement
-		Local currentPos:TPoint = _entriesBlockDisplacement.copy()
+		Local currentPos:TVec3D = _entriesBlockDisplacement.copy()
 		Local coveredArea:TRectangle = new TRectangle.Init(0,0,_entriesBlockDisplacement.x,_entriesBlockDisplacement.y)
 		For Local i:Int = 0 To Self._slots.length-1
 			Local slotW:Int = _slotMinDimension.getX()
@@ -457,7 +457,7 @@ Type TGUISlotList Extends TGUIListBase
 			EndIf
 
 			'move entry's position to current one
-			If _slots[i] Then _slots[i].rect.position.CopyFrom(currentPos)
+			If _slots[i] Then _slots[i].rect.position.CopyFrom(currentPos.ToVec2D())
 
 			'resize covered area
 			coveredArea.position.setXY( Min(coveredArea.position.x, currentPos.x), Min(coveredArea.position.y, currentPos.y) )
@@ -465,19 +465,19 @@ Type TGUISlotList Extends TGUIListBase
 
 
 			If _orientation = GUI_OBJECT_ORIENTATION_VERTICAL
-				currentPos.MoveXY(0, slotH )
+				currentPos.AddXY(0, slotH )
 			ElseIf Self._orientation = GUI_OBJECT_ORIENTATION_HORIZONTAL
-				currentPos.MoveXY(slotW, 0)
+				currentPos.AddXY(slotW, 0)
 			EndIf
 
 			'add the displacement, z-value is stepping, not for LAST element
 			If (i+1) Mod Self._entryDisplacement.z = 0 And i < _slots.length-1
-				currentPos.MoveXY(_entryDisplacement.x, _entryDisplacement.y)
+				currentPos.AddXY(_entryDisplacement.x, _entryDisplacement.y)
 			EndIf
 		Next
 
 		'resize container panel
-		Local dimension:TPoint = new TPoint.Init(coveredArea.getW() - coveredArea.getX(), coveredArea.getH() - coveredArea.getY())
+		Local dimension:TVec2D = new TVec2D.Init(coveredArea.getW() - coveredArea.getX(), coveredArea.getH() - coveredArea.getY())
 		guiEntriesPanel.minSize.setXY(dimension.getX(), dimension.getY() )
 		guiEntriesPanel.resize(dimension.getX(), dimension.getY() )
 

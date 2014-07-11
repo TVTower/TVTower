@@ -153,7 +153,7 @@ Type TGame {_exposeToLua="selected"}
 
 		'=== GUI SETUP ===
 		'TLogger.Log("TGame", "Creating ingame GUIelements", LOG_DEBUG)
-		InGame_Chat = New TGUIChat.Create(new TPoint.Init(520, 418), new TPoint.Init(280,190), "InGame")
+		InGame_Chat = New TGUIChat.Create(new TVec2D.Init(520, 418), new TVec2D.Init(280,190), "InGame")
 		InGame_Chat.setDefaultHideEntryTime(10000)
 		InGame_Chat.guiList.backgroundColor = TColor.Create(0,0,0,0.2)
 		InGame_Chat.guiList.backgroundColorHovered = TColor.Create(0,0,0,0.7)
@@ -236,7 +236,7 @@ Type TGame {_exposeToLua="selected"}
 			local tipNumber:int = rand(0, StartTips.count()-1)
 			local tip:string[] = string[](StartTips.valueAtIndex(tipNumber))
 
-			StartTipWindow = new TGUIGameModalWindow.Create(new TPoint, new TPoint.Init(400,350), "InGame")
+			StartTipWindow = new TGUIGameModalWindow.Create(new TVec2D, new TVec2D.Init(400,350), "InGame")
 			StartTipWindow.DarkenedArea = new TRectangle.Init(20,10,760,373)
 			StartTipWindow.SetCaptionAndValue( tip[0], tip[1] )
 		endif
@@ -277,7 +277,7 @@ Type TGame {_exposeToLua="selected"}
 
 		'create base stations
 		For Local i:Int = 1 To 4
-			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TPoint.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
+			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
 		Next
 
 

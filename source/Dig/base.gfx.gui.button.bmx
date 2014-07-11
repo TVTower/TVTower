@@ -26,7 +26,7 @@ Type TGUIButton Extends TGUIobject
 	Global _typeDefaultCaptionColor:TColor
 
 
-	Method Create:TGUIButton(pos:TPoint, dimension:TPoint, value:String, State:String = "")
+	Method Create:TGUIButton(pos:TVec2D, dimension:TVec2D, value:String, State:String = "")
 		'setup base widget
 		Super.CreateBase(pos, dimension, State)
 
@@ -220,22 +220,22 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int(position:TPoint)
+	Method DrawContent:Int(position:TVec2D)
 		if not caption then return False
 		if not caption.IsVisible() then return False
 
 		'move caption
-		if state = ".active" then caption.rect.position.MoveXY(1,1)
+		if state = ".active" then caption.rect.position.AddXY(1,1)
 
 		caption.Draw()
 
 		'move caption back
-		if state = ".active" then caption.rect.position.MoveXY(-1,-1)
+		if state = ".active" then caption.rect.position.AddXY(-1,-1)
 	End Method
 
 
 	Method Draw:Int()
-		Local atPoint:TPoint = GetScreenPos()
+		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 
 		SetColor 255, 255, 255

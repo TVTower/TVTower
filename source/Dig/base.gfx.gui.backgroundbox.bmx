@@ -16,7 +16,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 	Field spriteBaseName:String = "gfx_gui_panel"
 
 
-	Method Create:TGUIBackgroundBox(position:TPoint, dimension:TPoint, limitState:String="")
+	Method Create:TGUIBackgroundBox(position:TVec2D, dimension:TVec2D, limitState:String="")
 		Super.CreateBase(position, dimension, limitState)
 
 		SetZindex(0)
@@ -51,7 +51,7 @@ Type TGUIBackgroundBox Extends TGUIobject
 
 
 	Method DrawBackground:Int()
-		Local drawPos:TPoint = GetScreenPos()
+		Local drawPos:TVec2D = GetScreenPos()
 		local oldCol:TColor = new TColor.Get()
 		'a local spriteAlpha means widget as "parent" can have alpha 1.0
 		'while the sprite is drawn with 0.3

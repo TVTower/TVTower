@@ -9,18 +9,18 @@ Import "base.gfx.gui.bmx"
 
 
 Type TGUILabel Extends TGUIobject
-	Field contentDisplacement:TPoint = new TPoint.Init(0,0)
+	Field contentDisplacement:TVec2D = new TVec2D.Init(0,0)
 	Field color:TColor = TColor.Create(0,0,0)
 	Field valueEffectType:int = 1
 	Field valueEffectSpecial:Float = 0.25
-	Field _valueDimensionCache:TPoint = null
+	Field _valueDimensionCache:TVec2D = null
 
 	Global _typeDefaultFont:TBitmapFont
 
 
 	'will be added to general GuiManager
 	'-- use CreateSelfContained to get a unmanaged object
-	Method Create:TGUILabel(pos:TPoint, text:String, color:TColor=Null, State:String="")
+	Method Create:TGUILabel(pos:TVec2D, text:String, color:TColor=Null, State:String="")
 		Super.CreateBase(pos, null, State)
 
 		'by default labels have left aligned content
@@ -34,7 +34,7 @@ Type TGUILabel Extends TGUIobject
 	End Method
 
 
-	Method SetContentDisplacement:int(displacement:TPoint)
+	Method SetContentDisplacement:int(displacement:TVec2D)
 		if displacement then contentDisplacement.CopyFrom(displacement)
 	End Method
 
@@ -82,9 +82,9 @@ Type TGUILabel Extends TGUIobject
 	End Function
 
 
-	Method GetValueDimension:TPoint()
+	Method GetValueDimension:TVec2D()
 		if not _valueDimensionCache
-			_valueDimensionCache = new TPoint
+			_valueDimensionCache = new TVec2D
 			_valueDimensionCache.SetX(GetFont().getWidth(value))
 			'does the text fit into the maximum given width?
 			'if so, there is no need for a linebreak/more complex calc.
@@ -109,7 +109,7 @@ Type TGUILabel Extends TGUIobject
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
-		GetFont().drawBlock(value, GetScreenX() + contentDisplacement.GetX(), GetScreenY() + contentDisplacement.GetY(), GetScreenWidth() - 2*contentDisplacement.GetX(), GetScreenHeight() - 2*contentDisplacement.GetY(), new TPoint.Init(contentPosition.x, contentPosition.y), color, valueEffectType, true, valueEffectSpecial)
+		GetFont().drawBlock(value, GetScreenX() + contentDisplacement.GetX(), GetScreenY() + contentDisplacement.GetY(), GetScreenWidth() - 2*contentDisplacement.GetX(), GetScreenHeight() - 2*contentDisplacement.GetY(), new TVec2D.Init(contentPosition.x, contentPosition.y), color, valueEffectType, true, valueEffectSpecial)
 
 		oldCol.SetRGBA()
 	End Method

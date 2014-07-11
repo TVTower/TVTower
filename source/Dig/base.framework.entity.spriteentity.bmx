@@ -55,6 +55,11 @@ Type TSpriteEntity extends TEntity
 
 	Method SetSprite:TSpriteEntity(sprite:TSprite)
 		self.sprite = sprite
+		if sprite
+			self.area.position.SetXY(sprite.GetWidth(), sprite.GetHeight())
+		else
+			self.area.position.SetXY(0, 0)
+		endif
 	End Method
 
 
@@ -68,7 +73,7 @@ Type TSpriteEntity extends TEntity
 	End Method
 
 
-	Method RenderAt:Int(x:Float = 0, y:Float = 0, animationName:string="", alignment:TPoint = null)
+	Method RenderAt:Int(x:Float = 0, y:Float = 0, animationName:string="", alignment:TVec2D = null)
 		'=== DRAW SPRITE ===
 		local frame:int = -1
 		if frameAnimations
