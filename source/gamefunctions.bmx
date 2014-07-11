@@ -2121,8 +2121,7 @@ Type TInterface
 			'draw noise of tv device
 			If ShowChannel <> 0
 				SetAlpha NoiseAlpha
-'				If noiseSprite Then noiseSprite.DrawClippedOld(new TVec2D.Init(45, 400), new TRectangle.Init(noiseDisplace.GetX(),noiseDisplace.GetY(), 220,170) )
-				If noiseSprite Then noiseSprite.Draw(45, 400)
+				If noiseSprite Then noiseSprite.DrawClipped(new TRectangle.Init(45, 400, 220,170), new TVec2D.Init(noiseDisplace.GetX(), noiseDisplace.GetY()) )
 				SetAlpha 1.0
 			EndIf
 			'draw overlay to hide corners of non-round images
