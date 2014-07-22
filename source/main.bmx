@@ -704,6 +704,7 @@ Type TSaveGame
 	'effects - for visual effects (fading), sound ...
 	Field _Time_timeGone:Long = 0
 	Field _WorldTime:TWorldTime = Null
+	Field _World:TWorld = Null
 	Field _GameRules:TGamerules = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
@@ -742,6 +743,7 @@ Type TSaveGame
 		_Assign(_PopularityManager, TPopularityManager._instance, "PopularityManager", MODE_LOAD)
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
+		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
@@ -773,6 +775,7 @@ Type TSaveGame
 		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
+		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
 		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
 		'special room data
