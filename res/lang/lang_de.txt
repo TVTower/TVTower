@@ -383,3 +383,20 @@ PREPARING_START_DATA = Bereite Startdaten vor
 SYNCHRONIZING_START_CONDITIONS = Synchronisiere Startbedingungen
 STARTING_MULTIPLAYERGAME = Starte Mehrspieler-Spiel
 STARTING_SINGLEPLAYERGAME = Starte Einzelspieler-Spiel
+
+WEATHER_FORECAST_FOR_X_TILL_Y = Wetterbericht für %BEGINHOUR% bis %ENDHOUR% Uhr
+SKY_IS_PARTIALLY_CLOUDY = Der Himmel ist teilweise bewölkt.
+SKY_IS_OVERCAST = Der Himmel ist wolkenverhangen.
+SKY_IS_WITHOUT_CLOUDS = Der Himmel bleibt wolkenfrei.
+SUN_SHINES_WHOLE_TIME = Die Sonne scheint die ganze Zeit.
+SUN_WINS_AGAINST_CLOUDS = Die Sonne setzt sich gegen vorhandene Wolken durch.
+SUN_IS_SHINING_SOMETIMES = Teilweise lässt sich die Sonne blicken.
+SUN_IS_NOT_SHINING = Es wird trist. Die Sonne versteckt sich.
+RAIN_AND_SNOW_ALTERNATE = Regen und Schnee wechseln sich ab.
+RAIN_IS_POSSIBLE = Mit Regen ist zu rechnen.
+SNOW_IS_FALLING = Vorsicht auf den Straßen. Schnee bringt Glätte mit sich.
+TEMPERATURES_ARE_BETWEEN_X_AND_Y = Die Temperaturen bewegen sich zwischen %MINTEMPERATURE% und %MAXTEMPERATURE%°C
+TEMPERATURE_IS_CONSTANT_AT_X = Die Temperatur beläuft sich auf konstante %TEMPERATURE%°C
+
+BLOCKED = Blockiert
+ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE = Der Zugang zu diesem Raum ist derzeit nicht möglich.

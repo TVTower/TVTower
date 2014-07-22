@@ -101,8 +101,12 @@ Type TRoom {_exposeToLua="selected"}
 	Field usableAsStudio:Int = False
 	'does something block that room (eg. previous bomb attack)
 	Field blockedState:Int = BLOCKEDSTATE_NONE 
-	'time until this minutes in the game are gone
-	Field blockedUntil:Int = 0
+	'time until this seconds in the game are gone
+	Field blockedUntil:Double = 0
+	'if > 0 : time a bomb was placed 
+	Field bombPlacedTime:Double = -1
+	'if > 0 : a bomb explosion will be drawn
+	Field bombExplosionTime:Double = -1
 	
 	'the image used in the room (store individual backgrounds depending on "money")
 	Field _background:TSprite {nosave}
@@ -125,6 +129,10 @@ Type TRoom {_exposeToLua="selected"}
 	'=== CONFIG FOR ALL ROOMS ===
 	'time the change of a room needs (1st half is opening, 2nd closing a door)
 	Global ChangeRoomSpeed:int = 500
+	'game seconds until a bomb will explode
+	Global bombFuseTime:Int = 5*60
+	'realtime milliseconds a bomb visually explodes
+	Global bombExplosionDuration:int = 1000
 
 	Const BLOCKEDSTATE_NONE:int       = 0 'not blocked at all
 	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
@@ -177,6 +185,11 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
+	Method PlaceBomb:int()
+		bombPlacedTime = GetWorldTime().GetTimeGone()
+	End Method
+
+
 	'easy accessor to block a room using predefined values
 	Method SetBlockedState:int(blockedState:int = 0)
 		local time:int = 0
@@ -225,7 +238,7 @@ Type TRoom {_exposeToLua="selected"}
 			blockedState = BLOCKEDSTATE_NONE
 		else
 			self.blockedState = blockedState
-			blockedUntil = GetGameTime().GetTimeGone() + blockTimeInMinutes
+			blockedUntil = GetWorldTime().GetTimeGone() + 60*blockTimeInMinutes
 		endif
 	End Method
 
@@ -242,7 +255,7 @@ Type TRoom {_exposeToLua="selected"}
 
 
 	Method IsBlocked:Int()
-		if blockedState <> BLOCKEDSTATE_NONE and blockedUntil < GetGameTime().GetTimeGone()
+		if blockedState <> BLOCKEDSTATE_NONE and blockedUntil < GetWorldTime().GetTimeGone()
 			SetUnBlocked()
 		EndIf
 		return (blockedState <> BLOCKEDSTATE_NONE)
@@ -340,6 +353,23 @@ Type TRoom {_exposeToLua="selected"}
 		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", null, self) )
 
 		return 0
+	End Method
+
+
+	'checks the room for a placed bomb
+	Method CheckForBomb:int()
+		'was a bomb placed? check fuse and detonation time
+		if bombPlacedTime >= 0 and blockedState <> TRoom.BLOCKEDSTATE_BOMB
+			if bombPlacedTime + bombFuseTime < GetWorldTime().GetTimeGone()
+				SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
+				'time is NOT a gametime but a real time!
+				'so the explosion is visible for a given time independent
+				'from game speed
+				bombExplosionTime = Time.GetTimeGone()
+				'reset placed time
+				bombPlacedTime = -1
+			endif
+		endif
 	End Method
 
 
@@ -893,10 +923,22 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 
 		'==== DRAW OVERLAY ===
+
 		if room.IsBlocked()
 			'when a bomb is the reason - draw a barrier tape
 			if room.blockedState = room.BLOCKEDSTATE_BOMB
-				GetSpriteFromRegistry("gfx_building_absperrung").Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), -1, ALIGN_LEFT_BOTTOM)
+
+				'is there is an explosion happening in that moment?
+				'attention: not gametime but time (realtime effect)
+				if room.bombExplosionTime + room.bombExplosionDuration > Time.GetTimeGone()
+					local bombTimeGone:int = (Time.GetTimeGone() - room.bombExplosionTime)
+					local scale:float = 1.0
+					scale = TInterpolation.BackOut(0.0, 1.0, Min(room.bombExplosionDuration, bombTimeGone), room.bombExplosionDuration)
+					scale :* TInterpolation.BounceOut(0.0, 1.0, Min(room.bombExplosionDuration, bombTimeGone), room.bombExplosionDuration)
+					GetSpriteFromRegistry("gfx_building_explosion").Draw(xOffset + area.GetX() + area.GetW()/2, yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH()/2, -1, ALIGN_CENTER_CENTER, scale)
+				else
+					GetSpriteFromRegistry("gfx_building_blockeddoorsign").Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), -1, ALIGN_LEFT_BOTTOM)
+				endif
 			EndIf
 		EndIf
 
@@ -1706,10 +1748,10 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		'time indicator
-		If planningDay = GetGameTime().getDay() Then SetColor 0,100,0
-		If planningDay < GetGameTime().getDay() Then SetColor 100,100,0
-		If planningDay > GetGameTime().getDay() Then SetColor 0,0,0
-		GetBitmapFont("Default", 10).drawBlock(GetGameTime().GetFormattedDay(1+ planningDay - GetGameTime().getDay(GetGameTime().GetTimeStart())), 691, 18, 100, 15)
+		If planningDay = GetWorldTime().getDay() Then SetColor 0,100,0
+		If planningDay < GetWorldTime().getDay() Then SetColor 100,100,0
+		If planningDay > GetWorldTime().getDay() Then SetColor 0,0,0
+		GetBitmapFont("Default", 10).drawBlock(GetWorldTime().GetFormattedDay(1+ planningDay - GetWorldTime().getDay(GetWorldTime().GetTimeStart())), 691, 18, 100, 15)
 		SetColor 255,255,255
 
 		GUIManager.Draw("programmeplanner|programmeplanner_buttons")
@@ -1721,7 +1763,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'overlay old days
-		If GetGameTime().getDay() > planningDay
+		If GetWorldTime().getDay() > planningDay
 			SetColor 100,100,100
 			SetAlpha 0.5
 			DrawRect(27,17,637,360)
@@ -1764,15 +1806,15 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		'if not initialized, do so
-		if planningDay = -1 then planningDay = GetGameTime().getDay()
+		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
 
 		Game.cursorstate = 0
 
 		'set all slots occupied or not
-		local day:int = GetGameTime().getDay()
-		local hour:int = GetGameTime().GetHour()
-		local minute:int = GetGameTime().GetMinute()
+		local day:int = GetWorldTime().getDay()
+		local hour:int = GetWorldTime().GetDayHour()
+		local minute:int = GetWorldTime().GetDayMinute()
 		for local i:int = 0 to 23
 			if not TPlayerProgrammePlan.IsUseableTimeSlot(TBroadcastMaterial.TYPE_PROGRAMME, planningDay, i, day, hour, minute)
 				GuiListProgrammes.SetSlotState(i, 2)
@@ -1981,7 +2023,7 @@ Type RoomHandler_Office extends TRoomHandler
 	Function ChangePlanningDay:int(day:int=0)
 		planningDay = day
 		'limit to start day
-		If planningDay < GetGameTime().getDay(GetGameTime().GetTimeStart()) Then planningDay = GetGameTime().getDay(GetGameTime().GetTimeStart())
+		If planningDay < GetWorldTime().getDay(GetWorldTime().GetTimeStart()) Then planningDay = GetWorldTime().getDay(GetWorldTime().GetTimeStart())
 
 		'adjust slotlists (to hide ghosts on differing days)
 		GuiListProgrammes.planDay = planningDay
@@ -2006,7 +2048,7 @@ Type RoomHandler_Office extends TRoomHandler
 		if GuiListAdvertisements.daychangeGuiProgrammePlanElement then GuiListAdvertisements.daychangeGuiProgrammePlanElement.remove()
 
 		local currDay:int = planningDay
-		if currDay = -1 then currDay = GetGameTime().getDay()
+		if currDay = -1 then currDay = GetWorldTime().getDay()
 
 		'remove gui elements with material the player does not have any longer in plan
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
@@ -2184,7 +2226,7 @@ Type RoomHandler_Office extends TRoomHandler
 	'reset finance show day to current when entering the screen
 	Function onEnterFinancialScreen:int( triggerEvent:TEventBase )
 		financeHistoryStartPos = 0
-		financeShowDay = GetGameTime().getDay()
+		financeShowDay = GetWorldTime().getDay()
 	End function
 
 
@@ -2194,7 +2236,7 @@ Type RoomHandler_Office extends TRoomHandler
 		if not room then return 0
 
 		'limit finance day between 0 and current day
-		financeShowDay = Max(0, Min(financeShowDay, GetGameTime().getDay()))
+		financeShowDay = Max(0, Min(financeShowDay, GetWorldTime().getDay()))
 
 
 		local screenOffsetX:int = 20
@@ -2218,8 +2260,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'=== DAY CHANGER ===
-		local today:int = GetGameTime().MakeTime(0, financeShowDay, 0, 0)
-		local todayText:string = GetGameTime().GetDayOfYear(today)+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear(today)
+		local today:int = GetWorldTime().MakeTime(0, financeShowDay, 0, 0)
+		local todayText:string = GetWorldTime().GetDayOfYear(today)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(today)
 		textFont.DrawBlock(GetLocale("GAMEDAY")+" "+todayText, 50 + screenOffsetX, 15 +  screenOffsetY, 140, 20, ALIGN_CENTER_CENTER, TColor.CreateGrey(90), 2, 1, 0.2)
 
 
@@ -2409,9 +2451,9 @@ Type RoomHandler_Office extends TRoomHandler
 		Local labelColor:TColor = new TColor.CreateGrey(80)
 
 		'first get the maximum value so we know how to scale the rest
-		For local i:Int = GetGameTime().getDay()-showDays To GetGameTime().getDay()
+		For local i:Int = GetWorldTime().getDay()-showDays To GetWorldTime().getDay()
 			'skip if day is less than startday (saves calculations)
-			if i < GetGameTime().GetStartDay() then continue
+			if i < GetWorldTime().GetStartDay() then continue
 
 			For Local player:TPlayer = EachIn GetPlayerCollection().players
 				maxValue = max(maxValue, player.GetFinance(i).money)
@@ -2430,7 +2472,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local yOfZero:Float = curveArea.GetH() - yPerMoney * Abs(minValue)
 
 		local hoveredDay:int = -1
-		For local i:Int = GetGameTime().getDay()-showDays To GetGameTime().getDay()
+		For local i:Int = GetWorldTime().getDay()-showDays To GetWorldTime().getDay()
 			if THelper.MouseIn(curveArea.GetX() + (slot-0.5) * slotWidth, curveArea.GetY(), slotWidth, curveArea.GetH())
 				hoveredDay = i
 				'leave for loop
@@ -2439,8 +2481,8 @@ Type RoomHandler_Office extends TRoomHandler
 			slot :+ 1
 		Next
 		if hoveredDay >= 0
-			local time:int = GetGameTime().MakeTime(0, hoveredDay, 0, 0)
-			local gameDay:string = GetGameTime().GetDayOfYear(time)+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear(time)
+			local time:int = GetWorldTime().MakeTime(0, hoveredDay, 0, 0)
+			local gameDay:string = GetWorldTime().GetDayOfYear(time)+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear(time)
 			if GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money > 0
 				textSmallFont.Draw(GetLocale("GAMEDAY")+" "+gameDay+": |color=50,110,50|"+TFunctions.convertValue(GetPlayerCollection().Get(room.owner).GetFinance(hoveredDay).money,,-2,".")+"|/color|", curveArea.GetX(), curveArea.GetY() + curveArea.GetH() + 2, TColor.CreateGrey(50))
 			Else
@@ -2468,7 +2510,7 @@ Type RoomHandler_Office extends TRoomHandler
 			slot = 0
 			slotPos.SetXY(0,0)
 			previousSlotPos.SetXY(0,0)
-			For local i:Int = GetGameTime().getDay()-showDays To GetGameTime().getDay()
+			For local i:Int = GetWorldTime().getDay()-showDays To GetWorldTime().getDay()
 				previousSlotPos.SetXY(slotPos.x, slotPos.y)
 				slotPos.SetXY(slot * slotWidth, 0)
 				'maximum is at 90% (so it is nicely visible)
@@ -2518,13 +2560,13 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'disable "previou" or "newxt" button of finance display
-		if financeShowDay = 0 or financeShowDay = GetGameTime().GetStartDay()
+		if financeShowDay = 0 or financeShowDay = GetWorldTime().GetStartDay()
 			financePreviousDayButton.Disable()
 		else
 			financePreviousDayButton.Enable()
 		endif
 
-		if financeShowDay = GetGameTime().getDay()
+		if financeShowDay = GetWorldTime().getDay()
 			financeNextDayButton.Disable()
 		else
 			financeNextDayButton.Enable()

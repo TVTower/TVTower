@@ -11,7 +11,7 @@ Rem
 EndRem
 SuperStrict
 Import "game.gameobject.bmx"
-Import "game.gametime.bmx"
+Import "game.world.worldtime.bmx"
 'to fetch maximum audience
 Import "game.stationmap.bmx"
 Import "game.broadcastmaterial.base.bmx"
@@ -303,7 +303,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		self.minAudience = GetMinAudience()
 
 		self.owner = owner
-		If day < 0 Then day = GetGameTime().GetDay()
+		If day < 0 Then day = GetWorldTime().GetDay()
 		self.daySigned = day
 
 		'TLogger.log("TAdContract.Sign", "Player "+owner+" signed a contract.  Profit: "+profit+",  Penalty: "+penalty+ ",  MinAudience: "+minAudience+",  Title: "+GetTitle(), LOG_DEBUG)
@@ -441,7 +441,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 	'days left for sending all contracts from today
 	Method GetDaysLeft:Int() {_exposeToLua}
-		Return ( base.daysToFinish - (GetGameTime().GetDay() - daySigned) )
+		Return ( base.daysToFinish - (GetWorldTime().GetDay() - daySigned) )
 	End Method
 
 

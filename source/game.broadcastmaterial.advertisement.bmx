@@ -178,13 +178,13 @@ endrem
 		'ad failed (audience lower than needed)
 		If audienceResult.Audience.GetSum() < contract.GetMinAudience()
 			setState(STATE_FAILED)
-			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetGameTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
+			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 		'ad is ok
 		Else
 			setState(STATE_OK)
 			'successful sent - so increase the value the contract
 			contract.spotsSent:+1
-			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetGameTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
+			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent SUCCESSFUL spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 
 			'successful sent all needed spots?
 			If contract.isSuccessful()
@@ -198,7 +198,7 @@ endrem
 
 
 	Method GetInfomercialTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}
-		if hour = -1 then hour = GetGameTime().getNextHour()
+		if hour = -1 then hour = GetWorldTime().GetNextHour()
 		'during nighttimes 0-5, the cut should be lower
 		'so we increase the cutFactor to 1.35
 		if hour-1 <= 5

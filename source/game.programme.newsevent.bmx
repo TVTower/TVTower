@@ -7,7 +7,7 @@ Import "Dig/base.util.mersenne.bmx"
 'for TBroadcastSequence
 Import "game.broadcast.base.bmx"
 Import "game.gameobject.bmx"
-Import "game.gametime.bmx"
+Import "game.world.worldtime.bmx"
 
 
 
@@ -46,7 +46,7 @@ Type TNewsEventCollection
 
 	Method SetOldNewsUnused(daysAgo:int=1)
 		For local news:TNewsEvent = eachin usedList
-			if abs(GetGameTime().GetDay(news.happenedTime) - GetGameTime().GetDay()) >= daysAgo
+			if abs(GetWorldTime().GetDay(news.happenedTime) - GetWorldTime().GetDay()) >= daysAgo
 				usedList.Remove(news)
 				list.addLast(news)
 				news.happenedTime = -1
@@ -82,9 +82,9 @@ Type TNewsEventCollection
 	End Method
 
 
-	Method setNewsHappened(news:TNewsEvent, time:int = 0)
+	Method setNewsHappened(news:TNewsEvent, time:Double = 0)
 		'nothing set - use "now"
-		if time = 0 then time = GetGameTime().timegone
+		if time = 0 then time = GetWorldTime().GetTimeGone()
 		news.happenedtime = time
 
 		if not news.parent
@@ -272,13 +272,13 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 
 	Method getHappenDelay:int()
 		'data is days from now
-		if self.happenDelayType = 1 then return self.happenDelayData[0]*60*24
+		if self.happenDelayType = 1 then return self.happenDelayData[0]*60*60*24
 		'data is hours from now
-		if self.happenDelayType = 2 then return self.happenDelayData[0]*60
+		if self.happenDelayType = 2 then return self.happenDelayData[0]*60*60
 		'data is days from now at X:00
 		if self.happenDelayType = 3
-			local time:int = GetGameTime().MakeTime(GetGameTime().GetYear(), GetGameTime().GetDayOfYear() + self.happenDelayData[0], self.happenDelayData[1],0)
-			return time - GetGameTime().getTimeGone()
+			local time:int = GetWorldTime().MakeTime(GetWorldTime().GetYear(), GetWorldTime().GetDayOfYear() + self.happenDelayData[0], self.happenDelayData[1],0)
+			return time - GetWorldTime().getTimeGone()
 		endif
 
 		return 0
@@ -328,7 +328,7 @@ Type TNewsEvent extends TGameObject {_exposeToLua="selected"}
 	Method ComputeTopicality:Float()
 		'the older the less ppl want to watch - 1hr = 0.95%, 2hr = 0.90%...
 		'means: after 20 hrs, the topicality is 0
-		local ageHours:int = floor( float(GetGameTime().GetTimeGone() - self.happenedTime)/60.0 )
+		local ageHours:int = floor( float(GetWorldTime().GetTimeGone() - self.happenedTime)/3600.0 )
 		Local age:float = Max(0,100-5*Max(0, ageHours) )
 		return age*2.55 ',max is 255
 	End Method

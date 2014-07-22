@@ -12,16 +12,32 @@
 		</image>
 		<image name="gfx_building"				url="res/grafiken/hochhaus/hochhaus.png" flags="FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE" />
 		<image name="gfx_building_tooltips"		url="res/grafiken/hochhaus/tooltips.png" cw="20" ch="20" f="7" />
-		<image name="gfx_building_softdrinkmachine"		url="res/grafiken/hochhaus/hochhaus_automat.png" cw="32" ch="48" f="15" />
+		<image name="gfx_building_softdrinkmachine"		url="res/grafiken/hochhaus/item_softdrinkmachine.png" cw="32" ch="48" f="15" />
 		<image name="gfx_building_textballons"	url="res/grafiken/hochhaus/textballons.png" cw="23" ch="12" f="6" />
-		<image name="gfx_building_standlight"	url="res/grafiken/hochhaus/hochhaus_standlampe.png" />
-		<image name="gfx_building_BG_clouds"	url="res/grafiken/hochhaus/wolken.png" flags="FILTEREDIMAGE" />
-		<image name="gfx_building_BG_moon"		url="res/grafiken/hochhaus/himmel_mondphasen2.png" cw="40" ch="40" f="12" flags="FILTEREDIMAGE" />
-		<sprite name="gfx_building_absperrung"	url="res/grafiken/hochhaus/absperrung.png" offsetLeft="-3" />
+		<image name="gfx_building_standlight"	url="res/grafiken/hochhaus/item_standlight.png" />
+		<sprite name="gfx_world_sky_moon"		url="res/grafiken/hochhaus/sky_moon.png" cw="40" ch="40" f="12" flags="FILTEREDIMAGE" />
+		<sprite name="gfx_building_blockeddoorsign"	url="res/grafiken/hochhaus/item_blockeddoorsign.png" offsetLeft="-3" />
+		<sprite name="gfx_building_explosion"	url="res/grafiken/hochhaus/item_explosion.png" offsetLeft="-5" />
 		<sprite name="gfx_building_credits"		url="res/grafiken/hochhaus/item_credits.png" offsetTop="-30" />
 		<sprite name="gfx_building_roomboard"	url="res/grafiken/hochhaus/item_roomboard.png" offsetTop="-30" />
 		<sprite name="gfx_building_standlightSmall"	url="res/grafiken/hochhaus/item_standlight_small.png" />
 
+		<resource name="gfx_world_sky_pack">
+			<type>SpritePack</type>
+ 			<url>res/grafiken/hochhaus/sky_clouds.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
+ 			<children>
+				<child name="gfx_world_sky_clouds1"	 x="0" y="0" w="182" h="57" />
+				<child name="gfx_world_sky_clouds2"	 x="27" y="84" w="60" h="30" />
+				<child name="gfx_world_sky_clouds3"	 x="130" y="65" w="120" h="60" />
+				<child name="gfx_world_sky_clouds4"	 x="185" y="0" w="145" h="60" />
+				<child name="gfx_world_sky_clouds5"	 x="335" y="0" w="170" h="60" />
+				<child name="gfx_world_sky_clouds6"	 x="420" y="70" w="85" h="35" />
+				<child name="gfx_world_sky_clouds7"	 x="422" y="10" w="85" h="100" />
+				<child name="gfx_world_sky_clouds8"	 x="184" y="0" w="65" h="32" />
+				<child name="gfx_world_sky_clouds9"	 x="149" y="32" w="35" h="25" />
+			</children>
+		</resource>
 
 		<resource name="gfx_hochhauspack">
 			<type>SpritePack</type>

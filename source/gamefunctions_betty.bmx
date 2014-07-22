@@ -50,7 +50,7 @@ Type TBetty
 	Method SetAwardType(AwardType:Int = 0, SetEndingDay:Int = 0, Duration:Int = 0)
 		If Duration = 0 Then Duration = Self.AwardDuration
 		CurrentAwardType = AwardType
-		If SetEndingDay = True Then AwardEndingAtDay = GetGameTime().GetDay() + Duration
+		If SetEndingDay = True Then AwardEndingAtDay = GetWorldTime().GetDay() + Duration
 	End Method
 
 

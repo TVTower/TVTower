@@ -96,7 +96,7 @@ end
 function SpotSlotRequisition:CheckActuality()
 	if (self.Done) then return false end
 
-	if (self.Day >= GameTime.GetDay() or ( self.Day == GameTime.GetDay() and self.Hour + 2 > GameTime.GetHour())) then
+	if (self.Day >= WorldTime.GetDay() or ( self.Day == WorldTime.GetDay() and self.Hour + 2 > WorldTime.GetDayHour())) then
 		return true
 	else
 		self:Complete()

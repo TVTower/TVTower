@@ -2,11 +2,11 @@
 'at the moment only a base object
 Type TNewsAgency
 	'when to announce a new newsevent
-	Field NextEventTime:Long = 0
+	Field NextEventTime:Double = 0
 	'check for a new news every x-y minutes
 	Field NextEventTimeInterval:int[] = [50, 80]
 	'when to announce a new news from a newschain
-	Field NextChainTime:Long = 0
+	Field NextChainTime:Double = 0
 	'check for a new newschain every x-y minutes
 	Field NextChainTimeInterval:int[] = [10, 15]
 	'holding chained news from the past hours/day
@@ -14,7 +14,7 @@ Type TNewsAgency
 
 	'=== WEATHER HANDLING ===
 	'time of last weather event/news
-	Field weatherUpdateTime:Long = 0
+	Field weatherUpdateTime:Double = 0
 	'announce new weather every x-y minutes
 	Field weatherUpdateTimeInterval:int[] = [360, 720]
 	Field weatherType:int = 0
@@ -23,7 +23,7 @@ Type TNewsAgency
 	'=== TERRORIST HANDLING ===
 	'both parties (VR and FR) have their own array entry
 	'when to update propabilities the next time
-	Field terroristUpdateTime:Long = 0
+	Field terroristUpdateTime:Double = 0
 	'update terrorists probability every x-y minutes
 	Field terroristUpdateTimeInterval:int[] = [45, 60]
 	'chances that an attack is announced (0 - 1.0)
@@ -44,16 +44,16 @@ Type TNewsAgency
 		'As we use "randRange" this will produce the same random values
 		'on all clients - so they should be sync'd all the time.
 		
-		If NextEventTime < GetGameTime().GetTimeGone() Then AnnounceNewNewsEvent()
-		If NextChainTime < GetGameTime().GetTimeGone() Then ProcessNewsEventChains()
-		If terroristUpdateTime < GetGameTime().GetTimeGone() Then UpdateTerrorists()
-		If weatherUpdateTime < GetGameTime().GetTimeGone() Then UpdateWeather()
+		If NextEventTime < GetWorldTime().GetTimeGone() Then AnnounceNewNewsEvent()
+		If NextChainTime < GetWorldTime().GetTimeGone() Then ProcessNewsEventChains()
+		If terroristUpdateTime < GetWorldTime().GetTimeGone() Then UpdateTerrorists()
+		If weatherUpdateTime < GetWorldTime().GetTimeGone() Then UpdateWeather()
 	End Method
 
 
 	Method UpdateTerrorists:int()
 		'set next update time (between min-max interval)
-		terroristUpdateTime = GetGameTime().GetTimeGone() + randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
+		terroristUpdateTime = GetWorldTime().GetTimeGone() + 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
 
 		'who is the mainaggressor? - this parties probability grows faster
 		local mainAggressor:int = (terroristAttackProbability[1] > terroristAttackProbability[0])
@@ -69,7 +69,7 @@ Type TNewsAgency
 			'more than 100%? start attack (news event)
 			if terroristAttackProbability[i] > 1.0
 				terroristAttackProbability[i] = 0.0
-				'print GetGameTime().GetDay()+". "+GetGameTime().GetFormattedTime() + " | terrorist["+i+"] attack"
+				'print GetWorldTime().GetDay()+". "+GetWorldTime().GetFormattedTime() + " | terrorist["+i+"] attack"
 
 				'Create terror news event
 			endif
@@ -78,13 +78,13 @@ Type TNewsAgency
 
 
 	Method UpdateWeather:int()
-		weatherUpdateTime = GetGameTime().GetTimeGone() + randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1])
+		weatherUpdateTime = GetWorldTime().GetTimeGone() + 60 * randRange(weatherUpdateTimeInterval[0], weatherUpdateTimeInterval[1])
 
 
 		local newsEvent:TNewsEvent = GetWeatherNewsEvent()
 		If newsEvent
-			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.title+", day="+GetGameTime().getDay(newsEvent.happenedtime)+", time="+GetGameTime().GetFormattedTime(newsEvent.happenedtime)
-			announceNewsEvent(newsEvent, GetGameTime().GetTimeGone() + 0)
+			'Print "[LOCAL] UpdateWeather: added weather news title="+newsEvent.title+", day="+GetWorldTime().getDay(newsEvent.happenedtime)+", time="+GetWorldTime().GetFormattedTime(newsEvent.happenedtime)
+			announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
 		EndIf
 
 	End Method
@@ -95,24 +95,98 @@ Type TNewsAgency
 		'quality and price are nearly the same everytime
 		Local quality:int = randRange(50,60)
 		Local price:int = randRange(45,50)
-		Local description:string = "Keine besonderen Wetterereignisse"
-		local title:string = "Wetterbericht " + (GetGameTime().GetHour()+1)+" bis " + GetGameTime().GetHour(weatherUpdateTime)+" Uhr"
+		local beginHour:int = GetWorldTime().GetDayHour()+1
+		local endHour:int = GetWorldTime().GetDayHour(weatherUpdateTime)
+		Local description:string = ""
+		local title:string = GetLocale("WEATHER_FORECAST_FOR_X_TILL_Y").replace("%BEGINHOUR%", beginHour).replace("%ENDHOUR%", endHour)
+		local forecastHours:int = ceil((weatherUpdateTime - GetWorldTime().GetTimeGone()) / 3600.0)
+		local weather:TWorldWeatherEntry
+		'states
+		local isRaining:int = 0
+		local isSnowing:int = 0
+		local isBelowZero:int = 0
+		local isCloudy:int = 0
+		local isClear:int = 0
+		local isPartiallyCloudy:int = 0
+		local isNight:int = 0
+		local isDay:int = 0
+		local sunHours:int = 0
+		local sunAverage:float = 0.0
+		local tempMin:int = 1000, tempMax:int = -1000
 
-		weatherType :+ 1
-		Select weatherType
-			case 1	description = "Sonnig, heiter und unbewoelkt."
-			case 2	description = "Sonnig, leichte Wolken."
-			case 3	description = "Bedeckt, leichte Windboeen."
-			case 4	description = "Bedeckt, Sonne und leichte Schauer wechseln sich ab."
-			case 5	description = "Gewitterwolken. Selten Sonne."
-			case 6	description = "Starke Schauer. Kraeftige Winde von Nord-Ost."
-			case 7	description = "Warnung vor Sturmboeen."
-					if randRange(0,1) = 0 then weatherType = 3
-			case 8	description = "Sonnig aber kühl, kaum Wolken."
-			default weatherType = 0
-		End Select
+		'fetch next weather
+		local upcomingWeather:TWorldWeatherEntry[forecastHours]
+		For local i:int = 0 until forecastHours
+			upcomingWeather[i] = GetWorld().Weather.GetUpcomingWeather(i+1)
+		Next
+
+
+		'check for specific states
+		For weather = eachin upcomingWeather
+			if GetWorldTime().IsNight(weather._time)
+				isNight = True
+			else
+				isDay = True
+			endif
+
+			tempMin = Min(tempMin, weather.GetTemperature())
+			tempMax = Max(tempMax, weather.GetTemperature())
+
+			if weather.GetTemperature() < 0 then isBelowZero = True
+			if weather.IsRaining() and weather.GetTemperature() >= 0 then isRaining = True
+			if weather.GetTemperature() < 0 and weather.IsRaining() then isSnowing = True
+
+			if weather.GetWorldWeather() = TWorldWeather.WEATHER_CLEAR
+				isClear = True
+			else
+				isCloudy = True
+			endif
+
+			if weather.IsSunVisible() then sunHours :+1
+		Next
+		if isCloudy and isClear
+			isPartiallyCloudy = True
+			isCloudy = False
+			isClear = False
+		endif
+		sunAverage = float(sunHours)/float(forecastHours)
+
+
+
+		'construct text
+		description = ""
 		
+		if isPartiallyCloudy
+			description :+ GetLocale("SKY_IS_PARTIALLY_CLOUDY")
+		elseif isCloudy
+			description :+ GetLocale("SKY_IS_OVERCAST")
+		elseif isClear
+			description :+ GetLocale("SKY_IS_WITHOUT_CLOUDS")
+		endif
+		
+		if sunAverage = 1.0 and isDay
+			if not isNight then description :+ GetLocale("SUN_SHINES_WHOLE_TIME")
+		elseif sunAverage > 0.5
+			description :+ GetLocale("SUN_WINS_AGAINST_CLOUDS")
+		elseif sunAverage > 0
+			description :+ GetLocale("SUN_IS_SHINING_SOMETIMES")
+		else
+			description :+ GetLocale("SUN_IS_NOT_SHINING")
+		endif
 
+		if isRaining and isSnowing
+			description :+ GetLocale("RAIN_AND_SNOW_ALTERNATE")
+		elseif isRaining
+			description :+ GetLocale("RAIN_IS_POSSIBLE")
+		elseif isSnowing
+			description :+ GetLocale("SNOW_IS_FALLING")
+		endif
+
+		if tempMin <> tempMax
+			description :+ GetLocale("TEMPERATURES_ARE_BETWEEN_X_AND_Y").replace("%MINTEMPERATURE%", tempMin).replace("%MAXTEMPERATURE%", tempMax)
+		else
+			description :+ GetLocale("TEMPERATURE_IS_CONSTANT_AT_X").replace("%TEMPERATURE%", tempMin)
+		endif
 		
 		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, TNewsEvent.GENRE_CURRENTS, quality, price)
 		'remove news from available list to avoid repetition
@@ -183,8 +257,8 @@ Type TNewsAgency
 			'ignore unreleased
 			If Not licence.ignoreUnreleasedProgrammes And licence.getData().year < licence._filterReleaseDateStart Or licence.getData().year > licence._filterReleaseDateEnd Then Continue
 			'only add movies of "next X days" - 14 = 1 year
-			Local licenceTime:Int = licence.GetData().year * GetGameTime().daysPerYear + licence.getData().releaseDay
-			If licenceTime > GetGameTime().getDay() And licenceTime - GetGameTime().getDay() < 14 Then resultList.addLast(licence)
+			Local licenceTime:Int = licence.GetData().year * GetWorldTime().GetDaysPerYear() + licence.getData().releaseDay
+			If licenceTime > GetWorldTime().getDay() And licenceTime - GetWorldTime().getDay() < 14 Then resultList.addLast(licence)
 		Next
 		If resultList.count() > 0 Then Return TProgrammeLicence._GetRandomFromList(resultList)
 
@@ -204,14 +278,14 @@ Type TNewsAgency
 			'ignore if the chain ended already
 			If Not newsEvent Then Continue
 
-			If chainElement.happenedTime + newsEvent.getHappenDelay() < GetGameTime().timeGone
+			If chainElement.happenedTime + newsEvent.getHappenDelay() < GetWorldTime().GetTimeGone()
 				announceNewsEvent(newsEvent)
 				announced:+1
 			EndIf
 		Next
 
 		'check every x-y game minutes
-		NextChainTime = GetGameTime().GetTimeGone() + randRange(NextChainTimeInterval[0], NextChainTimeInterval[1])
+		NextChainTime = GetWorldTime().GetTimeGone() + 60 * randRange(NextChainTimeInterval[0], NextChainTimeInterval[1])
 
 		Return announced
 	End Method
@@ -310,8 +384,8 @@ Type TNewsAgency
 			EndIf
 
 			If not skipNews
-				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+GetGameTime().getDay(news.happenedtime)+", time="+GetGameTime().GetFormattedTime(news.happenedtime)
-				announceNewsEvent(newsEvent, GetGameTime().GetTimeGone() + delayAnnouncement)
+				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+GetWorldTime().getDay(news.happenedtime)+", time="+GetWorldTime().GetFormattedTime(news.happenedtime)
+				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + delayAnnouncement)
 			EndIf
 		EndIf
 
@@ -323,7 +397,7 @@ Type TNewsAgency
 
 	Method ResetNextEventTime:int()
 		'between 20 and 50 minutes until next news
-		NextEventTime = GetGameTime().GetTimeGone() + randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
+		NextEventTime = GetWorldTime().GetTimeGone() + 60 * randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])
 		'50% chance to have an even longer time
 		If RandRange(0,10) > 5
 			NextEventTime = + randRange(NextEventTimeInterval[0], NextEventTimeInterval[1])

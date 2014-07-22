@@ -402,18 +402,21 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
-	Method GetMovieLicences:Object[]() {_exposeToLua}
-		Return movieLicences.toArray()
+	Method GetMovieLicences:TList() {_exposeToLua}
+		Return movieLicences
+		'Return movieLicences.toArray()
 	End Method
 
 
-	Method GetSeriesLicences:Object[]() {_exposeToLua}
-		Return seriesLicences.toArray()
+	Method GetSeriesLicences:TList() {_exposeToLua}
+		Return seriesLicences
+		'Return seriesLicences.toArray()
 	End Method
 
 
-	Method GetProgrammeLicences:Object[]() {_exposeToLua}
-		Return programmeLicences.toArray()
+	Method GetProgrammeLicences:TList() {_exposeToLua}
+		return programmeLicences
+		'Return programmeLicences.toArray()
 	End Method
 
 

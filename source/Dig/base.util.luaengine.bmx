@@ -39,7 +39,7 @@ Type TLuaEngine
 
 	'load "all" modules or only some specific ones
 	'eg. ["base","table"] or ["all"]
-	Field _modulesToLoad:string[] = ["base", "table", "io"]
+	Field _modulesToLoad:string[] = ["all"]
 	'functions/calls getting "nil"ed before the script is run
 	'eg. ["os"]
 	Field _blacklistedFunctions:string[]

@@ -44,6 +44,8 @@ Type TGame {_exposeToLua="selected"}
 	Field stateSyncTime:Int	= 0
 	'sync every
 	Field stateSyncTimer:Int = 2000
+	'last moment a WorlTime-"minute" was gone (for missed minutes)
+	Field lastTimeMinuteGone:Double = 0
 
 	'refill movie agency every X Minutes
 	Field refillMovieAgencyTimer:Int = 180
@@ -110,7 +112,7 @@ Type TGame {_exposeToLua="selected"}
 		GameRules.maxContracts = 10
 
 
-		GetGametime().SetStartYear(userStartYear)
+		GetWorldTime().SetStartYear(userStartYear)
 		title = "unknown"
 
 		SetRandomizerBase( Time.MillisecsLong() )
@@ -120,9 +122,52 @@ Type TGame {_exposeToLua="selected"}
 		'creates all Rooms - with the names assigned at this moment
 		If initializeRoom Then Init_CreateAllRooms()
 
+
+		InitWorld()
+
 		Return self
 	End Method
 
+
+
+	Method InitWorld()
+		local worldConfig:TData = TData(GetRegistry().Get("WORLDCONFIG", New TData))
+
+
+		local world:TWorld = GetWorld().Init(1*3600, worldConfig)
+		'we draw them in front of the background buildings
+		world.autoRenderSnow = False
+		world.autoRenderRain = False
+		
+		'=== SETUP WORLD ===
+		'1. SKY SPRITES
+		GetRegistry().Set("gfx_world_sky_gradient", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_gradient.png"), "gfx_world_sky_gradient"))
+		GetRegistry().Set("gfx_world_sky_sun", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_sun.png"), "gfx_world_sky_sun"))
+		GetRegistry().Set("gfx_world_sky_sunrays", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_sunrays.png"), "gfx_world_sky_sunrays"))
+		World.InitSky(..
+			GetSpriteFromRegistry("gfx_world_sky_gradient"), ..
+			GetSpriteFromRegistry("gfx_world_sky_moon"), ..
+			GetSpriteFromRegistry("gfx_world_sky_sun"), ..
+			GetSpriteFromRegistry("gfx_world_sky_sunrays") ..
+		)
+		'2. SETUP RAIN
+		GetRegistry().Set("gfx_world_sky_rain1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_rain1.png"), "gfx_world_sky_rain1"))
+		GetRegistry().Set("gfx_world_sky_rain2", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_rain2.png"), "gfx_world_sky_rain2"))
+		World.InitRainEffect(2, GetSpriteGroupFromRegistry("gfx_world_sky_rain"))
+		'3. SETUP SNOW
+		GetRegistry().Set("gfx_world_sky_snow1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_snow1.png"), "gfx_world_sky_snow1"))
+		GetRegistry().Set("gfx_world_sky_snow2", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_snow2.png"), "gfx_world_sky_snow2"))
+		GetRegistry().Set("gfx_world_sky_snow3", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_snow3.png"), "gfx_world_sky_snow3"))
+		World.InitSnowEffect(20, GetSpriteGroupFromRegistry("gfx_world_sky_snow"))
+		'4. SETUP LIGHTNING
+		GetRegistry().Set("gfx_world_sky_lightning1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_lightning1.png"), "gfx_world_sky_lightning1"))
+		GetRegistry().Set("gfx_world_sky_lightning_side1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_lightning_side1.png"), "gfx_world_sky_lightning_side1"))
+		World.InitLightningEffect(GetSpriteGroupFromRegistry("gfx_world_sky_lightning"), GetSpriteGroupFromRegistry("gfx_world_sky_lightning_side"))
+		'5. SETUP CLOUDS
+		World.InitCloudEffect(50, GetSpriteGroupFromRegistry("gfx_world_sky_clouds"))
+		World.cloudEffect.Start() 'clouds from begin
+	End Method
+	
 
 	'run this before EACH started game
 	Method PrepareStart()
@@ -182,8 +227,8 @@ Type TGame {_exposeToLua="selected"}
 
 
 		'Game screens
-		GameScreen_Building = New TInGameScreen_Building.Create("InGame_Building")
-		ScreenCollection.Add(GameScreen_Building)
+		GameScreen_World = New TInGameScreen_World.Create("InGame_World")
+		ScreenCollection.Add(GameScreen_World)
 
 		PlayerDetailsTimer = 0
 
@@ -260,7 +305,7 @@ Type TGame {_exposeToLua="selected"}
 		EndIf
 
 		'create npc figures
-		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 210, 2, 65)
+		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), 210, 2, 65)
 		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 6, 65, 0)
 		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 0, -65, 0)
 
@@ -350,19 +395,19 @@ Type TGame {_exposeToLua="selected"}
 			Local addWidth:Int = GetSpriteFromRegistry("pp_programmeblock1").area.GetW()
 			Local addHeight:Int = GetSpriteFromRegistry("pp_adblock1").area.GetH()
 
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 0 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 1 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 2 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 3 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 4 )
-			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetGameTime().GetStartDay(), 5 )
+			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 0 )
+			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 1 )
+			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 2 )
+			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 3 )
+			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 4 )
+			playerPlan.SetAdvertisementSlot(New TAdvertisement.Create(playerCollection.GetRandomAdContract()), GetWorldTime().GetStartDay(), 5 )
 
 			Local currentLicence:TProgrammeLicence = Null
 			Local currentHour:Int = 0
 			For Local i:Int = 0 To 3
 				currentLicence = playerCollection.GetMovieLicenceAtIndex(i)
 				If Not currentLicence Then Continue
-				playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), GetGameTime().GetStartDay(), currentHour )
+				playerPlan.SetProgrammeSlot(TProgramme.Create(currentLicence), GetWorldTime().GetStartDay(), currentHour )
 				currentHour:+ currentLicence.getData().getBlocks()
 			Next
 		Next
@@ -429,10 +474,10 @@ Type TGame {_exposeToLua="selected"}
 
 		if startNewGame
 			'Begin Game - fire Events
-			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
-			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
 			'so we start at day "1"
-			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", GetGameTime().GetMinute()).addNumber("hour", GetGameTime().GetHour()).addNumber("day", GetGameTime().getDay()) ))
+			EventManager.registerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", GetWorldTime().GetDayMinute()).addNumber("hour", GetWorldTime().GetDayHour()).addNumber("day", GetWorldTime().getDay()) ))
 		EndIf
 	End Method
 
@@ -469,7 +514,7 @@ Type TGame {_exposeToLua="selected"}
 
 
 	Method SetPaused(bool:Int=False)
-		GetGameTime().paused = bool
+		GetWorldTime().SetPaused(bool)
 	End Method
 
 
@@ -586,7 +631,7 @@ Type TGame {_exposeToLua="selected"}
 				if GetPlayerCollection().Get().figure.inRoom
 					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
 				else
-					ScreenCollection.GoToScreen(GameScreen_Building)
+					ScreenCollection.GoToScreen(GameScreen_world)
 				endif
 		EndSelect
 
@@ -625,7 +670,7 @@ Type TGame {_exposeToLua="selected"}
 			ScreenCollection.GoToScreen(TInGameScreen_Room.GetByRoom(GetPlayer().figure.inRoom))
 		'go to building
 		else
-			ScreenCollection.GoToScreen(GameScreen_Building)
+			ScreenCollection.GoToScreen(GameScreen_World)
 		endif
 	End Method
 
@@ -677,13 +722,27 @@ Type TGame {_exposeToLua="selected"}
 
 	'Summary: Updates Time, Costs, States ...
 	Method Update(deltaTime:Float=1.0)
-		local gameTime:TGameTime = GetGameTime()
+		local worldTime:TWorldTime = GetWorldTime()
 		'==== ADJUST TIME ====
-		gameTime.Update()
+		worldTime.Update()
+
+		'==== UPDATE WORLD ===
+		'only update weather as it affects news etc.
+		'lighting/effects are only updated when figure is outside of a
+		'room (updateWeather is skipping processing if done just moments
+		'ago)
+		GetWorld().UpdateWeather()
 
 		'==== HANDLE TIMED EVENTS ====
 		'check if it is time for new news
 		GetNewsAgency().Update()
+
+
+		'==== CHECK BOMBS ====
+		'this triggers potential bombs
+		for local room:TRoom = eachin GetRoomCollection().list
+			room.CheckForBomb()
+		next
 
 		'send state to clients
 		If IsGameLeader() And networkgame And stateSyncTime < Time.GetTimeGone()
@@ -691,48 +750,51 @@ Type TGame {_exposeToLua="selected"}
 			stateSyncTime = Time.GetTimeGone() + stateSyncTimer
 		EndIf
 
+		'init if not done yet
+		if lastTimeMinuteGone = 0 then lastTimeMinuteGone = worldTime.GetTimeGone()
+
 		'==== HANDLE IN GAME TIME ====
 		'less than a ingame minute gone? nothing to do YET
-		If gameTime.timeGone - gameTime.timeGoneLastUpdate < 1.0 Then Return
+		If worldTime.GetTimeGone() - lastTimeMinuteGone < 60.0 Then Return
 
 		'==== HANDLE GONE/SKIPPED MINUTES ====
 		'if speed is to high - minutes might get skipped,
 		'handle this case so nothing gets lost.
 		'missedMinutes is >1 in all cases (else this part isn't run)
-		Local missedMinutes:float = gameTime.timeGone - gameTime.timeGoneLastUpdate
+		Local missedSeconds:float = (worldTime.GetTimeGone() - lastTimeMinuteGone)
+		Local missedMinutes:float = missedSeconds/60.0
 		Local daysMissed:Int = Floor(missedMinutes / (24*60))
 
-		'adjust the game time so GetGameTime().GetHour()/GetMinute()/... return
-		'the correct value for each loop cycle. So Functions can rely on
-		'that functions to get the time they request.
+		'adjust the game time so GetWorldTime().GetDayHour()/Minute/...
+		'return the correct value for each loop cycle. So Functions can
+		'rely on that functions to get the time they request.
 		'as everything can get calculated using "timeGone", no further
 		'adjustments have to take place
-		gameTime.timeGone:- missedMinutes
+		worldTime._timeGone:- missedSeconds
+
 		For Local i:Int = 1 to missedMinutes
 			'add back another gone minute each loop
-			gameTime.timeGone:+1
+			worldTime._timeGone :+ 60
 
 			'day
-			If gameTime.GetHour() = 0 And gameTime.GetMinute() = 0
-				'increase current day
-				gameTime.daysPlayed :+1
+			If worldTime.GetDayHour() = 0 And worldTime.GetDayMinute() = 0
 			 	'automatically change current-plan-day on day change
 			 	'but do it silently (without affecting the)
-			 	RoomHandler_Office.ChangePlanningDay(gameTime.GetDay())
+			 	RoomHandler_Office.ChangePlanningDay(worldTime.GetDay())
 
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", gameTime.GetMinute()).addNumber("hour", gameTime.GetHour()).addNumber("day", gameTime.GetDay()) ))
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnDay", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 			EndIf
 
 			'hour
-			If gameTime.GetMinute() = 0
-				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", gameTime.GetMinute()).addNumber("hour", gameTime.GetHour()).addNumber("day", gameTime.GetDay()) ))
+			If worldTime.GetDayMinute() = 0
+				EventManager.triggerEvent(TEventSimple.Create("Game.OnHour", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 			endif
 
 			'minute
-			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", gameTime.GetMinute()).addNumber("hour", gameTime.GetHour()).addNumber("day", gameTime.GetDay()) ))
+			EventManager.triggerEvent(TEventSimple.Create("Game.OnMinute", new TData.addNumber("minute", worldTime.GetDayMinute()).addNumber("hour", worldTime.GetDayHour()).addNumber("day", worldTime.GetDay()) ))
 		Next
 
-		'reset gone time so next update can calculate missed minutes
-		gameTime.timeGoneLastUpdate = gameTime.timeGone
+		'reset time of lst minute so next update can calculate missed minutes
+		lastTimeMinuteGone = worldTime.GetTimeGone()
 	End Method
 End Type

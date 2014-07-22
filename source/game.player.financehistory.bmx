@@ -2,7 +2,7 @@ SuperStrict
 Import Brl.LinkedList
 Import "Dig/base.util.localization.bmx"
 Import "game.gameobject.bmx"
-Import "game.gametime.bmx"
+Import "game.world.worldtime.bmx"
 
 'collection holds a list of entries for each player
 Type TPlayerFinanceHistoryListCollection
@@ -48,7 +48,7 @@ Type TPlayerFinanceHistoryEntry
 	'the specific object (eg. movie)
 	Field obj:object
 	Field money:int = 0
-	Field gameTime:int = 0
+	Field worldTime:Double = 0
 
 	Const TYPE_CREDIT_REPAY:int = 11
 	Const TYPE_CREDIT_TAKE:int = 12
@@ -90,12 +90,12 @@ Type TPlayerFinanceHistoryEntry
 
 
 
-	Method Init:TPlayerFinanceHistoryEntry(typeID:int, money:int, obj:object=null, gameTime:int = -1)
-		if gameTime = -1 then gameTime = GetGameTime().GetTimeGone()
+	Method Init:TPlayerFinanceHistoryEntry(typeID:int, money:int, obj:object=null, worldTime:int = -1)
+		if worldTime = -1 then worldTime = GetWorldTime().GetTimeGone()
 		self.typeID = typeID
 		self.obj = obj
 		self.money = money
-		self.gameTime = gameTime
+		self.worldTime = worldTime
 
 		Return self
 	End Method
@@ -111,7 +111,7 @@ Type TPlayerFinanceHistoryEntry
 	Method Compare:int(otherObject:Object)
 		local other:TPlayerFinanceHistoryEntry = TPlayerFinanceHistoryEntry(otherObject)
 		If Not other Return 1
-		Return other.gameTime - self.gameTime
+		Return other.worldTime - self.worldTime
 	End Method
 
 

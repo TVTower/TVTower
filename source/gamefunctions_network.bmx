@@ -331,10 +331,10 @@ Type TNetworkHelper
 	Method SendGameState()
 		local obj:TNetworkObject = TNetworkObject.Create( NET_SENDGAMESTATE )
 		obj.setInt(1, GetPlayerCollection().playerID)
-		obj.setFloat(2, GetGameTime().speed)
-		obj.setInt(3, GetGameTime().paused)
-		obj.setFloat(4, GetGameTime().timeGoneLastUpdate) '- so clients can catch up
-		obj.setFloat(5, GetGameTime().timeGone)
+		obj.setDouble(2, GetWorldTime()._timeFactor)
+		obj.setInt(3, GetWorldTime()._paused)
+		obj.setDouble(4, GetWorldTime()._timeGoneLastUpdate) '- so clients can catch up
+		obj.setDouble(5, GetWorldTime()._timeGone)
 		Network.BroadcastNetworkObject( obj, not NET_PACKET_RELIABLE )
 	End Method
 
@@ -348,15 +348,16 @@ Type TNetworkHelper
 		'ping in ms -> latency/2 -> 0.5*latency/16ms = "1,3 updates bis ping ankommt"
 		'pro Update: zeiterhoehung von "game.speed/10.0"
 		'-> bereinigung: "0.5*latency/16" * "game.speed/10.0"
-		local correction:float = 0.5 * Network.client.latency / GetDeltaTimer().GetDelta() * GetGameTime().speed/10.0
+		local correction:Double = 0.5 * Network.client.latency / GetDeltaTimer().GetDelta() * GetWorldTime()._timeFactor/10.0
 		'we want it in s not in ms
 		correction :/ 1000.0
 '		print obj.getFloat(3) + "  + "+correction
 
-		GetGameTime().speed = obj.getFloat(2)
-		GetGameTime().paused = obj.getInt(3)
-		GetGameTime().timeGoneLastUpdate = obj.getFloat(4) + correction
-		GetGameTime().timeGone = obj.getFloat(5) + correction
+		GetWorldTime()._timeFactor = obj.getDouble(2)
+		GetWorldTime()._paused = obj.getInt(3)
+		GetWorldTime().SetTimeGone(obj.getDouble(5) + correction)
+		'done in SetTimeGone()
+		'GetWorldTime()._timeGoneLastUpdate = obj.getDouble(4) + correction
 	End Method
 
 'checked

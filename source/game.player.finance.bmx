@@ -1,8 +1,7 @@
 SuperStrict
 Import "Dig/base.util.event.bmx"
 Import "game.gameobject.bmx"
-Import "game.gametime.bmx"
-Import "game.gameobject.bmx"
+Import "game.world.worldtime.bmx"
 Import "game.player.financehistory.bmx"
 
 Type TPlayerFinanceCollection
@@ -25,13 +24,13 @@ Type TPlayerFinanceCollection
 	Method Get:TPlayerFinance(playerID:int, day:int=-1)
 		if playerID <= 0 then return Null
 
-		If day <= 0 Then day = GetGameTime().GetDay()
+		If day <= 0 Then day = GetWorldTime().GetDay()
 		'subtract start day to get a index starting at 0 and add 1 day again
-		Local arrayIndex:Int = day +1 - GetGameTime().GetStartDay()
+		Local arrayIndex:Int = day +1 - GetWorldTime().GetStartDay()
 		local playerIndex:int = playerID -1
 		'if the array is less than allowed: return finance from day 0
 		'which is the day before "start"
-		If arrayIndex < 0 Then Return Get(playerID, GetGameTime().GetStartDay()-1)
+		If arrayIndex < 0 Then Return Get(playerID, GetWorldTime().GetStartDay()-1)
 
 		'create entry if player misses its finance entry
 		if finances.length < playerID then finances = finances[..playerID]

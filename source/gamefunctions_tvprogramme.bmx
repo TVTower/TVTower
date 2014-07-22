@@ -110,7 +110,7 @@ Function LoadDatabase(filename:String)
 		If duration < 0 Or duration > 12 Then duration =1
 
 		local movieLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-		movieLicence.AddData(TProgrammeData.Create(title,description,actors, director,land, year, releaseDayCounter mod GetGameTime().daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
+		movieLicence.AddData(TProgrammeData.Create(title,description,actors, director,land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
 
 		releaseDaycounter:+1
 		'print "film: "+title+ " " + totalmoviescount
@@ -146,7 +146,7 @@ Function LoadDatabase(filename:String)
 		'create a licence for that series - with title and series description
 		local seriesLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
 		'add the "overview"-data of the series
-		seriesLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod GetGameTime().daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
+		seriesLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
 
 		releaseDaycounter:+1
 		seriescount :+ 1
@@ -174,7 +174,7 @@ Function LoadDatabase(filename:String)
 				wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", wearoffModifier)
 
 				local episodeLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-				episodeLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod GetGameTime().daysPerYear, livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
+				episodeLicence.AddData(TProgrammeData.Create(title, description, actors, director, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, price, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
 				'add that episode to the series licence
 				seriesLicence.AddSubLicence(episodeLicence)
 			EndIf
@@ -831,7 +831,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		local startHour:int = 0
 		local player:TPlayer = GetPlayerCollection().Get(material.owner)
 		if player
-			if day < 0 then day = GetGameTime().GetDay()
+			if day < 0 then day = GetWorldTime().GetDay()
 			startHour = player.GetProgrammePlan().GetObjectStartHour(material.materialType,day,0)
 			'get a 0-23 value
 			startHour = startHour mod 24
@@ -2012,10 +2012,10 @@ Type TGUINews extends TGUIGameListItem
 				GetBitmapFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
-			Select GetGameTime().getDay() - GetGameTime().getDay(news.newsEvent.happenedTime)
-				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
-				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetGameTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.newsEvent.happenedTime)
+				case 0	GetBitmapFontManager().baseFont.drawBlock(GetLocale("TODAY")+" " + GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack )
+				case 1	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("YESTERDAY")+" "+ GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				case 2	GetBitmapFontManager().baseFont.drawBlock("("+GetLocale("OLD")+") "+GetLocale("TWO_DAYS_AGO")+" " + GetWorldTime().GetFormattedTime(news.newsEvent.happenedtime), screenX + 90, screenY + 74, 140, 15, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			End Select
 
 			SetColor 255, 255, 255

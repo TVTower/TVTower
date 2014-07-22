@@ -5,7 +5,7 @@ REM
 ENDREM
 SuperStrict
 Import "Dig/base.util.localization.bmx"
-Import "game.gametime.bmx"
+Import "game.world.worldtime.bmx"
 Import "game.programme.programmeperson.bmx"
 Import "game.broadcast.genredefinition.movie.bmx"
 
@@ -388,7 +388,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method GetMaxTopicality:int()
-		return Max(0, 255 - 2 * Max(0, GetGameTime().GetYear() - year) - Min(50, timesAired * 5)) 'simplest form ;D
+		return Max(0, 255 - 2 * Max(0, GetWorldTime().GetYear() - year) - Min(50, timesAired * 5)) 'simplest form ;D
 	End Method
 
 
@@ -424,7 +424,7 @@ Type TProgrammeData {_exposeToLua}
 		Local quality:Float = GetQualityRaw()
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
-		Local age:Int = Max(0, 100 - Max(0, GetGameTime().GetYear() - year))
+		Local age:Int = Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
 		quality:*Max(0.20, (age / 100.0))
 
 		'repetitions wont be watched that much
@@ -507,7 +507,7 @@ Type TProgrammeData {_exposeToLua}
 		'call-in shows are kind of "live"
 		if genre = GENRE_CALLINSHOW then return TRUE
 
-		return (year <= GetGameTime().getYear() and releaseDay <= GetGameTime().getDay())
+		return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 
 

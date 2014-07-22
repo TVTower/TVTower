@@ -194,7 +194,7 @@ rem
 		Local currBroadcast2:TBroadcast = GetBroadcastManager().GetCurrentBroadcast()
 		Local feedback:TBroadcastFeedback = currBroadcast2.GetFeedback(GetPlayerCollection().playerID)
 
-		Local minute:Int = GetGameTime().GetMinute()
+		Local minute:Int = GetWorldTime().GetDayMinute()
 
 		If ((minute Mod 5) = 0)
 			If Not (self.lastCheckedMinute = minute)

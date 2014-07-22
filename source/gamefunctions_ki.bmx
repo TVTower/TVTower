@@ -43,15 +43,15 @@ Type KI
 
 		'==== LINK SPECIAL OBJECTS
 		'own functions for player
-		LuaEngine.RegisterBlitzmaxObject(TLuaFunctions.Create(PlayerID), "TVT")
+		LuaEngine.RegisterBlitzmaxObject("TVT", TLuaFunctions.Create(PlayerID))
 		'the player
-		LuaEngine.RegisterBlitzmaxObject(GetPlayerCollection().Get(PlayerID), "MY")
+		LuaEngine.RegisterBlitzmaxObject("MY", GetPlayerCollection().Get(PlayerID))
 		'the game object
-		LuaEngine.RegisterBlitzmaxObject(Game, "Game")
+		LuaEngine.RegisterBlitzmaxObject("Game", Game)
 		'the game object
-		LuaEngine.RegisterBlitzmaxObject(GameRules, "GameRules")
+		LuaEngine.RegisterBlitzmaxObject("GameRules", GameRules)
 		'the game object
-		LuaEngine.RegisterBlitzmaxObject(GetGameTime(), "GameTime")
+		LuaEngine.RegisterBlitzmaxObject("WorldTime", GetWorldTime())
 
 		'register source and available objects
 		LuaEngine.RegisterToLua()
@@ -112,7 +112,7 @@ Type KI
 
 	    Try
 			Local args:Object[1]
-			args[0] = string(GetGameTime().GetTimeGone())
+			args[0] = string(GetWorldTime().GetTimeGone())
 			if (KIRunning) then scriptSaveState = string(LuaEngine.CallLuaFunction("OnSave", args))
 		Catch ex:Object
 			TLogger.log("KI.CallOnSave", "Script "+scriptFileName+" does not contain function ~qOnSave~q.", LOG_ERROR)

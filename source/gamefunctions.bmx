@@ -1878,7 +1878,7 @@ Type TInterface
 		if programmePlan	'similar to "ShowChannel<>0"
 			CurrentProgrammeOverlay = Null
 
-			If GetGameTime().getMinute() >= 55
+			If GetWorldTime().GetDayMinute() >= 55
 				Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 			    If obj
 					CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_ads")
@@ -1900,7 +1900,7 @@ Type TInterface
 					CurrentProgrammeToolTip.TitleBGtype	= 2
 					CurrentProgrammeText = getLocale("BROADCASTING_OUTAGE")
 				EndIf
-			ElseIf GetGameTime().getMinute() < 5
+			ElseIf GetWorldTime().GetDayMinute() < 5
 				CurrentProgramme = GetSpriteFromRegistry("gfx_interface_tv_programme_news")
 				CurrentProgrammeToolTip.TitleBGtype	= 3
 				CurrentProgrammeText = getLocale("NEWS")
@@ -1967,7 +1967,7 @@ Type TInterface
 
 				'show additional information if channel is player's channel
 				If ShowChannel = GetPlayerCollection().playerID
-					If GetGameTime().getMinute() >= 5 And GetGameTime().getMinute() < 55
+					If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
 						Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 						If TAdvertisement(obj)
 							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + obj.GetTitle()+" (Mindestz.: " + TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())+")"
@@ -1976,7 +1976,7 @@ Type TInterface
 						Else
 							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
 						EndIf
-					ElseIf GetGameTime().getMinute()>=55 Or GetGameTime().getMinute()<5
+					ElseIf GetWorldTime().GetDayMinute()>=55 Or GetWorldTime().GetDayMinute()<5
 						Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 						If TProgramme(obj)
 							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~n"
@@ -2013,7 +2013,7 @@ Type TInterface
 		EndIf
 		If THelper.MouseIn(355,533,130,45)
 			CurrentTimeToolTip.SetTitle(getLocale("GAME_TIME")+": ")
-			CurrentTimeToolTip.SetContent(GetGameTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetGameTime().getDayOfYear()+"/"+GetGameTime().daysPerYear+" "+GetGameTime().getYear())
+			CurrentTimeToolTip.SetContent(GetWorldTime().getFormattedTime()+" "+getLocale("DAY")+" "+GetWorldTime().getDayOfYear()+"/"+GetWorldTime().GetDaysPerYear()+" "+GetWorldTime().getYear())
 			CurrentTimeToolTip.enabled = 1
 			CurrentTimeToolTip.Hover()
 		EndIf
@@ -2045,7 +2045,7 @@ Type TInterface
 
 		if (feedback.AudienceInterest.Children > 0)
 			'maybe sent to bed ? :D
-			'If GetGameTime().GetHour() >= 5 and GetGameTime().GetHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
+			'If GetWorldTime().GetDayHour() >= 5 and GetWorldTime().GetDayHour() < 22 then 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["girl"]
 		endif
 
@@ -2053,7 +2053,7 @@ Type TInterface
 
 		if (feedback.AudienceInterest.Teenagers > 0)
 			'in school monday-friday - in school from till 7 to 13 - needs no sleep :D
-			'If Game.GetWeekday()>6 or (GetGameTime().GetHour() < 7 or GetGameTime().GetHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
+			'If Game.GetWeekday()>6 or (GetWorldTime().GetDayHour() < 7 or GetWorldTime().GetDayHour() >= 13) then result :+ ["teen"] 'manuel: muss im Feedback-Code geprüft werden.
 			result :+ ["teen"]
 		endif
 
@@ -2140,16 +2140,16 @@ Type TInterface
 
 			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TVec2D.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
 			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience() + "  ", 377, 469, 103, 25, new TVec2D.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetGameTime().daysPlayed+1) + ". "+GetLocale("DAY"), 366, 555, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 555, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
 
 		SetAlpha 0.25
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 542, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 542, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180))
 		SetAlpha 0.9
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetGameTime().getFormattedTime()+ " "+GetLocale("OCLOCK"), 365,541,120,25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(40,40,40))
+		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime()+ " "+GetLocale("OCLOCK"), 365,541,120,25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(40,40,40))
 		SetAlpha 1.0
 
 		For local tip:TTooltip = eachin tooltips

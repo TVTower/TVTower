@@ -186,7 +186,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method GetTopicalityCutModifier:float(hour:int=-1) {_exposeToLua}
-		if hour = -1 then hour = GetGameTime().getNextHour()
+		if hour = -1 then hour = GetWorldTime().GetNextHour()
 		'during nighttimes 0-5, the cut should be lower
 		'so we increase the cutFactor to 1.35
 		if hour-1 <= 5
@@ -200,7 +200,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	Method GetTrailerTopicalityCutToFactor:float(hour:int=-1) {_exposeToLua}
-		if hour = -1 then hour = GetGameTime().getNextHour()
+		if hour = -1 then hour = GetWorldTime().GetNextHour()
 		'during nighttimes 0-5, the cut should be lower
 		'so we increase the cutFactor to 1.5
 		if hour-1 <= 5

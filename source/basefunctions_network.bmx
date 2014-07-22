@@ -30,6 +30,7 @@ Const NET_TYPE_UINT8:int   = 3
 Const NET_TYPE_UINT16:int  = 4
 Const NET_TYPE_FLOAT16:int = 5
 Const NET_TYPE_FLOAT32:int = 6
+Const NET_TYPE_DOUBLE:int  = 7
 
 '=== NETWORK PACKET TYPES ===
 Const NET_CONNECT:Int           = 1      ' ALL: Connect Attempt
@@ -169,7 +170,7 @@ Type TNetworkClient extends TNetworkConnection
 			Else
 				SendEvent(NET_LEAVEGAMEREQUEST,NET_PACKET_RELIABLE)
 				Local ev:ENetEvent=New ENetEvent
-				Local start:Int = Time.GetTimeGone()
+				Local start:Long = Time.GetTimeGone()
 				Repeat
 					If Time.GetTimeGone() - start > disconnecttimeout then Exit
 
@@ -1156,17 +1157,22 @@ Type TNetworkObject
 	
 
 	Method SetInt( index:int,data:int )
-		WriteSlot( index ).SetInt data
+		WriteSlot( index ).SetInt( data )
 	End Method
 
 
 	Method SetFloat( index:int, data:float )
-		WriteSlot( index ).SetFloat data
+		WriteSlot( index ).SetFloat( data )
+	End Method
+
+
+	Method SetDouble( index:int, data:Double )
+		WriteSlot( index ).SetDouble( data )
 	End Method
 
 
 	Method SetString( index:int, data:string )
-		WriteSlot( index ).SetString data
+		WriteSlot( index ).SetString( data )
 	End Method
 
 
@@ -1177,6 +1183,11 @@ Type TNetworkObject
 
 	Method GetFloat:float( index:int, defaultValue:float=0.0, defaultProvided:int=FALSE  )
 		Return slots[index].GetFloat( defaultValue, defaultProvided )
+	End Method
+
+
+	Method GetDouble:Double( index:int, defaultValue:Double=0.0, defaultProvided:int=FALSE  )
+		Return slots[index].GetDouble( defaultValue, defaultProvided )
 	End Method
 
 
@@ -1479,6 +1490,14 @@ Type TNetworkObjectSlot
 	End Method
 
 
+	Method SetDouble( data:Double )
+		Assert slottype=0 Or slottype = NET_TYPE_DOUBLE
+		'store as string
+		_string = String.FromDouble(data)
+		slottype = NET_TYPE_DOUBLE
+	End Method
+
+
 	Method SetString( data:string )
 		Assert slottype = 0 Or slottype = NET_TYPE_STRING
 		_string	= data
@@ -1521,6 +1540,25 @@ Type TNetworkObjectSlot
 			Return _float
 		endif
 	End Method
+
+
+	Method GetDouble:Double(defaultValue:Double=0.0, defaultProvided:int=FALSE)
+		'double/float/int/string don't have real NULL, so we have to
+		'rely on defaultProvided
+		'if a defaultValue is set, return it as long as field type is
+		'differing
+		if defaultProvided
+			if slottype = NET_TYPE_DOUBLE
+				Return _string.ToDouble()
+			else
+				Return defaultValue
+			endif
+		else
+			Assert slottype = NET_TYPE_DOUBLE, "Wrong slot type. No DOUBLE but "+slottype
+			Return _string.ToDouble()
+		endif
+	End Method
+	
 
 	Method GetString:string(defaultValue:string="", defaultProvided:int=FALSE)
 		'float/int/string don't have real NULL, so we have to rely on

@@ -84,8 +84,8 @@ Type TProduction
 	End Method
 
 	Method Start()
-		endDate = GetGameTime().GetTimeGone()
-		endDate :+ 500
+		endDate = GetWorldTime().GetTimeGone()
+		endDate :+ 500 * 60 '500 minutes
 	End Method
 
 	Method Finalize()

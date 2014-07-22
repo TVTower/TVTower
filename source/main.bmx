@@ -6,10 +6,6 @@ SuperStrict
 Import brl.timer
 Import brl.Graphics
 Import brl.glmax2d
-Import "basefunctions_network.bmx"
-Import "basefunctions.bmx"						'Base-functions for Color, Image, Localization, XML ...
-Import "basefunctions_screens.bmx"
-
 Import "Dig/base.util.registry.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "Dig/base.util.registry.imageloader.bmx"
@@ -37,6 +33,11 @@ Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.input.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
 
+Import "basefunctions_network.bmx"
+Import "basefunctions.bmx"
+Import "basefunctions_screens.bmx"
+Import "game.world.bmx"
+
 ?Linux
 Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
 ?Win32
@@ -52,21 +53,24 @@ Import "game.registry.loaders.bmx"
 Import "game.exceptions.bmx"
 
 Import "game.broadcastmaterial.base.bmx"
-Import "game.broadcast.base.bmx"				'Quotenberechnung
+Import "game.broadcast.base.bmx"
 Import "game.player.finance.bmx"
 'Import "game.player.bmx"
 Import "game.stationmap.bmx"
 
-Import "game.broadcastmaterial.programme.bmx" 'needed by gamefunctions
-Import "game.player.programmecollection.bmx" 'needed by game.player.bmx
-Import "game.player.programmeplan.bmx" 'needed by game.player.bmx
+'needed by gamefunctions
+Import "game.broadcastmaterial.programme.bmx"
+'needed by game.player.bmx
+Import "game.player.programmecollection.bmx"
+'needed by game.player.bmx
+Import "game.player.programmeplan.bmx"
 
 '===== Includes =====
 Include "game.player.bmx"
 
-Include "gamefunctions.bmx" 					'Types: - TError - Errorwindows with handling
-												'		- base class For buttons And extension newsbutton
-												'		- stationmap-handling, -creation ...
+'Types: - TError - Errorwindows with handling
+'		- base class For buttons And extension newsbutton
+Include "gamefunctions.bmx"
 
 Include "gamefunctions_betty.bmx"
 Include "gamefunctions_screens.bmx"
@@ -87,9 +91,9 @@ Include "game.newsagency.bmx"
 Include "game.base.bmx"
 
 '===== Globals =====
-Global VersionDate:String		= LoadText("incbin::source/version.txt")
-Global VersionString:String		= "version of " + VersionDate
-Global CopyrightString:String	= "by Ronny Otto & Manuel Vögele"
+Global VersionDate:String = LoadText("incbin::source/version.txt")
+Global VersionString:String = "version of " + VersionDate
+Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global App:TApp = Null
 Global Interface:TInterface
 Global Game:TGame
@@ -98,7 +102,7 @@ Global PlayerDetailsTimer:Int = 0
 Global MainMenuJanitor:TFigureJanitor
 Global ScreenGameSettings:TScreen_GameSettings = Null
 Global ScreenMainMenu:TScreen_MainMenu = Null
-Global GameScreen_Building:TInGameScreen_Building = Null
+Global GameScreen_World:TInGameScreen_World = Null
 Global headerFont:TBitmapFont
 Global Init_Complete:Int = 0
 
@@ -114,7 +118,7 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
 'print "ALLE MELDUNGEN AUS"
-TLogger.SetPrintMode(0)
+'TLogger.SetPrintMode(0)
 
 'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
@@ -355,41 +359,48 @@ Type TApp
 				EndIf
 
 				If Game.gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsDown(KEY_UP) Then GetGameTime().speed:+0.10
-					If KEYMANAGER.IsDown(KEY_DOWN) Then GetGameTime().speed = Max( GetGameTime().speed - 0.10, 0)
+					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+60)
+					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-60)
 
 					If KEYMANAGER.IsDown(KEY_RIGHT)
 						TEntity.globalWorldSpeedFactor :+ 0.10
-						GetGameTime().speed :+ 0.10
+						GetWorldTime().AdjustTimeFactor(+60)
 					EndIf
 					If KEYMANAGER.IsDown(KEY_LEFT) Then
 						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.10, 0)
-						GetGameTime().speed = Max( GetGameTime().speed - 0.10, 0)
+						GetWorldTime().AdjustTimeFactor(-60)
 					EndIf
 
+					if KEYMANAGER.IsHit(KEY_Y)
+						GetWorld().Weather.SetPressure(-14)
+						GetWorld().Weather.SetTemperature(-10)
+					endif
 
-					If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
-					If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
-					If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
-					If KEYMANAGER.IsHit(KEY_4) Then Game.SetActivePlayer(4)
+				
+					if not GetPlayerCollection().Get().figure.isChangingRoom
+						If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
+						If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
+						If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
+						If KEYMANAGER.IsHit(KEY_4) Then Game.SetActivePlayer(4)
 
-					If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
-					If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", GetPlayerCollection().playerID) )
-					If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("betty") )
-					If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
-					If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
-					If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("chief", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_W) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("adagency") )
+						If KEYMANAGER.IsHit(KEY_A) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("archive", GetPlayerCollection().playerID) )
+						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("betty") )
+						If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
+						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("chief", GetPlayerCollection().playerID))
 
-					'e wie "employees" :D
-					If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
-					If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
-					If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
+						'e wie "employees" :D
+						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
+						If KEYMANAGER.IsHit(KEY_N) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("news", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_R) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("roomboard"))
+					endif
 				EndIf
-				If KEYMANAGER.IsHit(KEY_5) Then GetGameTime().speed = 120.0	'60 minutes per second
-				If KEYMANAGER.IsHit(KEY_6) Then GetGameTime().speed = 240.0	'120 minutes per second
-				If KEYMANAGER.IsHit(KEY_7) Then GetGameTime().speed = 360.0	'180 minutes per second
-				If KEYMANAGER.IsHit(KEY_8) Then GetGameTime().speed = 480.0	'240 minute per second
-				If KEYMANAGER.IsHit(KEY_9) Then GetGameTime().speed = 1.0	'1 minute per second
+				If KEYMANAGER.IsHit(KEY_5) Then GetWorldTime().SetTimeFactor(60*60.0)  '60 virtual minutes per realtime second
+				If KEYMANAGER.IsHit(KEY_6) Then GetWorldTime().SetTimeFactor(120*60.0) '120 minutes per second
+				If KEYMANAGER.IsHit(KEY_7) Then GetWorldTime().SetTimeFactor(180*60.0) '180 minutes per second
+				If KEYMANAGER.IsHit(KEY_8) Then GetWorldTime().SetTimeFactor(240*60.0) '240 minute per second
+				If KEYMANAGER.IsHit(KEY_9) Then GetWorldTime().SetTimeFactor(1*60.0)   '1 minute per second
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
@@ -403,13 +414,12 @@ Type TApp
 
 				If KEYMANAGER.IsHit(KEY_D) Then Game.DebugInfos = 1 - Game.DebugInfos
 
-
+				'send terrorist to a random room
 				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
-					GetRoomCollection().GetFirstByDetails("supermarket").SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
-					GetRoomCollection().GetFirstByDetails("office", 1).SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
 					Global whichTerrorist:int = 1
 					whichTerrorist = 1 - whichTerrorist
-					Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
+'					Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
+					Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetRandom() )
 				EndIf
 
 				If Game.isGameLeader()
@@ -479,7 +489,7 @@ Type TApp
 
 		If App.devConfig.GetBool("DEV_OSD", False)
 			Local textX:Int = 20
-			GetBitmapFontManager().baseFont.draw("Speed:" + Int(GetGameTime().GetGameMinutesPerSecond() * 100), textX , 0)
+			GetBitmapFontManager().baseFont.draw("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
 			textX:+80
 			GetBitmapFontManager().baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
 			textX:+60
@@ -581,6 +591,11 @@ Type TApp
 				Next
 			EndIf
 			GetBitmapFontManager().baseFont.draw("MoA. : "+occupants, 25, 365)
+
+
+			if not GetPlayerCollection().Get().figure.inRoom
+				GetWorld().RenderDebug(180,20)
+			endif
 		EndIf
 		'show quotes even without "DEV_OSD = true"
 		If Game.DebugQuoteInfos
@@ -688,7 +703,7 @@ Type TSaveGame
 	'this allows to have "realtime" (independend from "logic updates")
 	'effects - for visual effects (fading), sound ...
 	Field _Time_timeGone:Long = 0
-	Field _GameTime:TGameTime = Null
+	Field _WorldTime:TWorldTime = Null
 	Field _GameRules:TGamerules = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
@@ -727,7 +742,7 @@ Type TSaveGame
 		_Assign(_PopularityManager, TPopularityManager._instance, "PopularityManager", MODE_LOAD)
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
-		_Assign(_GameTime, TGameTime._instance, "GameTime", MODE_LOAD)
+		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
 		_Assign(_RoomHandler_MovieAgency, RoomHandler_MovieAgency._instance, "MovieAgency", MODE_LOAD)
 		_Assign(_RoomHandler_AdAgency, RoomHandler_AdAgency._instance, "AdAgency", MODE_LOAD)
@@ -758,7 +773,7 @@ Type TSaveGame
 		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
-		_Assign(TGameTime._instance, _GameTime, "GameTime", MODE_SAVE)
+		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
 		'special room data
 		_Assign(RoomHandler_MovieAgency._instance, _RoomHandler_MovieAgency, "MovieAgency", MODE_Save)
@@ -1128,6 +1143,9 @@ Type TFigureTerrorist Extends TFigure
 
 			'delivery finished - send home again
 			If deliveryDone
+				'place bomb
+				deliverToRoom.PlaceBomb()
+
 				deliverToRoom = Null
 				SendToOffscreen()
 			EndIf
@@ -1607,7 +1625,7 @@ Type TScreen_GameSettings Extends TGameScreen
 
 		'start year changed
 		If sender = guiStartYear
-			GetGameTime().setStartYear( Max(1980, Int(value)) )
+			GetWorldTime().setStartYear( Max(1980, Int(value)) )
 			TGUIInput(sender).value = Max(1980, Int(value))
 		EndIf
 	End Method
@@ -2502,7 +2520,6 @@ Type GameEvents
 		Local day:Int = triggerEvent.GetData().GetInt("day",-1)
 		If hour = -1 Then Return False
 
-
 		'=== UPDATE POPULARITY MANAGER ===
 		'the popularity manager takes care itself whether to do something
 		'or not (update intervals)
@@ -2584,13 +2601,13 @@ Type GameEvents
 	Function OnDay:Int(triggerEvent:TEventBase)
 		Local day:Int = triggerEvent.GetData().GetInt("day", -1)
 
-		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetGameTime().GetDaysPlayed()+1)+" (real day: "+day+")", LOG_DEBUG)
+		TLogger.Log("GameEvents.OnDay", "begin of day "+(GetWorldTime().GetDaysRun()+1)+" (real day: "+day+")", LOG_DEBUG)
 
 		'if new day, not start day
-		If GetGameTime().GetDaysPlayed() >= 1
+		If GetWorldTime().GetDaysRun() >= 1
 
 			'Neuer Award faellig?
-			If Betty.GetAwardEnding() < GetGameTime().getDay() - 1
+			If Betty.GetAwardEnding() < GetWorldTime().getDay() - 1
 				Betty.GetLastAwardWinner()
 				Betty.SetAwardType(RandRange(0, Betty.MaxAwardTypes), True)
 			End If
@@ -2609,7 +2626,7 @@ Type GameEvents
 			For Local i:Int = 1 To 4
 				Local news:TNews
 				For news = EachIn GetPlayerCollection().Get(i).GetProgrammeCollection().news
-					If day - GetGameTime().getDay(news.newsEvent.happenedtime) >= 2
+					If day - GetWorldTime().getDay(news.newsEvent.happenedtime) >= 2
 						GetPlayerCollection().Get(i).GetProgrammePlan().RemoveNews(news)
 					EndIf
 				Next
@@ -2809,7 +2826,7 @@ Function StartApp:Int()
 	Game.Create()
 
 
-	MainMenuJanitor = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("figure_Hausmeister"), 250, 2, 65)
+	MainMenuJanitor = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), 250, 2, 65)
 	MainMenuJanitor.useElevator = False
 	MainMenuJanitor.useDoors = False
 	MainMenuJanitor.useAbsolutePosition = True

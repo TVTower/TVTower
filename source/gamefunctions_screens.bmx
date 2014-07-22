@@ -209,7 +209,7 @@ Type TInGameScreen extends TScreen
 			EndIf
 		EndIf
 
-		If Not GetGameTime().paused
+		If Not GetWorldTime().IsPaused()
 			Game.Update(deltaTime)
 			Interface.Update(deltaTime)
 '			If GetPlayerCollection().Get().Figure.inRoom = Null Then Building.Update(deltaTime)
@@ -244,11 +244,11 @@ End Type
 
 
 'of this type only one instance can exist
-Type TInGameScreen_Building extends TInGameScreen
-	global instance:TInGameScreen_Building
+Type TInGameScreen_World extends TInGameScreen
+	global instance:TInGameScreen_World
 
 
-	Method Create:TInGameScreen_Building(name:string)
+	Method Create:TInGameScreen_World(name:string)
 		Super.Create(name)
 		instance = self
 
@@ -278,12 +278,14 @@ Type TInGameScreen_Building extends TInGameScreen
 
 	'override default
 	Method UpdateContent(deltaTime:Float)
+		GetWorld().Update()
 		GetBuilding().Update()
 	End Method
 
 
 	'override default
 	Method DrawContent(tweenValue:float)
+		GetWorld().Render()
 		'player is not in a room so draw building
 		GetBuilding().Render()
 	End Method

@@ -270,15 +270,15 @@ Type TPlayer {_exposeToLua="selected"}
 			'also a day change sets maximum even if level is lower than
 			'maximum (which is not allowed during day to pay for the best
 			'level you had this day)
-			if GetGameTime().GetDay(newsabonnementsSetTime[genre]) < GetGameTime().GetDay()
+			if GetWorldTime().GetDay(newsabonnementsSetTime[genre]) < GetWorldTime().GetDay()
 				'NOT 0:00 (the time daily costs are computed)
-				if GetGameTime().GetMinute() > 0
+				if GetWorldTime().GetDayMinute() > 0
 					SetNewsAbonnementDaysMax(genre, newsabonnements[genre])
 				EndIf
 			EndIf
 
 			'more than 30 mins gone since last "abonnement set"
-			if GetGameTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30
+			if GetWorldTime().GetTimeGone() - newsabonnementsSetTime[genre] > 30*60
 				'only set maximum if the new level is higher than the
 				'current days maxmimum.
 				if newsabonnementsDayMax[genre] < newsabonnements[genre]
@@ -316,7 +316,7 @@ Type TPlayer {_exposeToLua="selected"}
 		If newsabonnements[genre] <> level
 			newsabonnements[genre] = level
 			'set at which time we did this
-			newsabonnementsSetTime[genre] = GetGameTime().GetTimeGone()
+			newsabonnementsSetTime[genre] = GetWorldTime().GetTimeGone()
 
 			If Game.networkgame And Network.IsConnected And sendToNetwork Then NetworkHelper.SendNewsSubscriptionChange(Self.playerID, genre, level)
 		EndIf

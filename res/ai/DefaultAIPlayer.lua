@@ -313,18 +313,21 @@ function FixDayAndHour2(day, hour)
 	return newDay, moduloHour
 end
 
-function OnMinute(number)
+function OnMinute(number, array)
 	if (aiIsActive) then
 		getAIPlayer():Tick()
 	end
+
+	--local list = MY.GetProgrammeCollection().GetProgrammeLicences()
+	--debugMsg("list count: " .. list:Count())
 
 	--Zum Test
 	--[[
 	if (number == "4") then
 		local task = getAIPlayer().TaskList[TASK_SCHEDULE]
-		local guessedAudience = task:GuessedAudienceForHourAndLevel(GameTime.GetHour())
+		local guessedAudience = task:GuessedAudienceForHourAndLevel(WorldTime.GetDayHour())
 
-		local fixedDay, fixedHour = FixDayAndHour2(GameTime.GetDay(), GameTime.GetHour())
+		local fixedDay, fixedHour = FixDayAndHour2(Worldtime.GetDay(), Worldtime.GetDayHour())
 		local programme = MY.GetProgrammePlan().GetProgramme(fixedDay, fixedHour)
 
 		-- RON: changed as "programme" is NIL if not existing/placed
@@ -333,8 +336,8 @@ function OnMinute(number)
 			averageMovieQualityByLevel = programme.GetQuality(0) -- Die Durchschnittsquote dieses Qualitätslevels
 		end
 
-		local level = task:GetQualityLevel(GameTime.GetHour()) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
-		local globalPercentageByHour = task:GetMaxAudiencePercentageByHour(GameTime.GetHour()) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
+		local level = task:GetQualityLevel(WorldTime.GetDayHour()) --Welchen Qualitätslevel sollte ein Film/Werbung um diese Uhrzeit haben
+		local globalPercentageByHour = task:GetMaxAudiencePercentageByHour(WorldTime.GetDayHour()) -- Die Maximalquote: Entspricht ungefähr "maxAudiencePercentage"
 		--local averageMovieQualityByLevel = task:GetAverageMovieQualityByLevel(level) -- Die Durchschnittsquote dieses Qualitätslevels
 		local guessedAudience2 = averageMovieQualityByLevel * globalPercentageByHour * MY.GetMaxAudience()
 

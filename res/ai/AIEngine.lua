@@ -185,7 +185,7 @@ function AITask:StartNextJob()
 		self.CurrentJob = self:getGotoJob()
 	else
 		self.Status = TASK_STATUS_RUN
-		self.StartTask = GameTime.GetTimeGone()
+		self.StartTask = WorldTime.GetTimeGone()
 		self.CurrentJob = self:GetNextJobInTargetRoom()
 
 		if (self.Status == TASK_STATUS_DONE) or (self.Status == TASK_STATUS_CANCEL) then
@@ -241,10 +241,10 @@ function AITask:getGotoJob()
 end
 
 function AITask:RecalcPriority()
-	if (self.LastDone == 0) then self.LastDone = GameTime.GetTimeGone() end
+	if (self.LastDone == 0) then self.LastDone = WorldTime.GetTimeGone() end
 
 	local Ran1 = math.random(75, 125) / 100
-	local TimeDiff = math.round(GameTime.GetTimeGone() - self.LastDone)
+	local TimeDiff = math.round(WorldTime.GetTimeGone() - self.LastDone)
 	local player = _G["globalPlayer"]
 	local requisitionPriority = player:GetRequisitionPriority(self.Id)
 
@@ -270,7 +270,7 @@ function AITask:SetDone()
 	debugMsg("<<< Task abgeschlossen!")
 	self.Status = TASK_STATUS_DONE
 	self.SituationPriority = 0
-	self.LastDone = GameTime.GetTimeGone()
+	self.LastDone = WorldTime.GetTimeGone()
 end
 
 function AITask:SetCancel()
@@ -319,8 +319,8 @@ end
 
 function AIJob:Start(pParams)
 	self.StartParams = pParams
-	self.StartJob = GameTime.GetTimeGone()
-	self.LastCheck = GameTime.GetTimeGone()
+	self.StartJob = WorldTime.GetTimeGone()
+	self.LastCheck = WorldTime.GetTimeGone()
 	self.Ticks = 0
 	self:Prepare(pParams)
 end
@@ -339,10 +339,10 @@ function AIJob:Tick()
 end
 
 function AIJob:ReDoCheck(pWait)
-	if ((self.LastCheck + pWait) < GameTime.GetTimeGone()) then
+	if ((self.LastCheck + pWait) < WorldTime.GetTimeGone()) then
 		--debugMsg("ReDoCheck")
 		self.Status = JOB_STATUS_REDO
-		self.LastCheck = GameTime.GetTimeGone()
+		self.LastCheck = WorldTime.GetTimeGone()
 		self:Prepare(self.StartParams)
 	end
 end
@@ -373,7 +373,7 @@ function AIJobGoToRoom:OnReachRoom(roomId)
 		elseif (self:ShouldIWait()) then
 			debugMsg("Dann wart ich eben...")
 			self.IsWaiting = true
-			self.WaitSince = GameTime.GetTimeGone()
+			self.WaitSince = WorldTime.GetTimeGone()
 			self.WaitTill = self.WaitSince + 3 + (self.Task.CurrentPriority / 6)
 			if ((self.WaitTill - self.WaitSince) > 20) then
 				self.WaitTill = self.WaitSince + 20
@@ -420,7 +420,7 @@ function AIJobGoToRoom:Tick()
 		if (TVT.isRoomUnused(self.TargetRoom) == 1) then
 			debugMsg("Jetzt ist frei!")
 			TVT.DoGoToRoom(self.TargetRoom)
-		elseif ((self.WaitTill - GameTime.GetTimeGone()) <= 0) then
+		elseif ((self.WaitTill - WorldTime.GetTimeGone()) <= 0) then
 			debugMsg("Ach... ich geh...")
 			self.Status = JOB_STATUS_CANCEL
 		end

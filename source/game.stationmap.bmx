@@ -761,7 +761,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 	Field owner:Int = 0
 	Field paid:Int = False
 	'time at which the station was bought
-	Field built:Int	= 0
+	Field built:Double = 0
 	'is the station already working?
 	Field active:Int = 0
 	Field radius:Int = 0
@@ -774,7 +774,7 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 		obj.pos	= pos
 		obj.price = price
 		obj.radius = radius
-		obj.built = GetGameTime().getTimeGone()
+		obj.built = GetWorldTime().getTimeGone()
 
 		obj.fixedPrice	= (price <> -1)
 		obj.refreshData()
@@ -792,13 +792,13 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 
 	'returns the age in days
 	Method getAge:Int()
-		Return GetGameTime().GetDay() - GetGameTime().GetDay(Self.built)
+		Return GetWorldTime().GetDay() - GetWorldTime().GetDay(Self.built)
 	End Method
 
 
 	'returns the age in minutes
 	Method getAgeInMinutes:Int()
-		Return GetGameTime().GetTimeGone() - Self.built
+		Return (GetWorldTime().GetTimeGone() - Self.built) / 60
 	End Method
 	
 
@@ -973,8 +973,8 @@ Type TStation Extends TGameObject {_exposeToLua="selected"}
 			if getAgeInMinutes() > 60 then activate = True
 			'at xx:00 or xx:05 programmes start (and new audience
 			'calculations happen), so stations get ready too 
-			if GetGameTime().GetMinute() = 5 then activate = True
-			if GetGameTime().GetMinute() = 0 then activate = True
+			if GetWorldTime().GetDayMinute() = 5 then activate = True
+			if GetWorldTime().GetDayMinute() = 0 then activate = True
 
 			if activate then SetActive()
 		EndIf

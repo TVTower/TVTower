@@ -131,7 +131,7 @@ Type TIntervalTimer
 	field randomnessMin:int = 0
 	field randomnessMax:int = 0
 	'time when event last happened
-	field timer:int = 0
+	field timer:Long = 0
 
 
 	Function Create:TIntervalTimer(interval:int, actionTime:int = 0, randomnessMin:int = 0, randomnessMax:int = 0)
@@ -171,7 +171,7 @@ Type TIntervalTimer
 	'returns TRUE if interval is gone (ignores action time)
 	'action time could be eg. "show text for actiontime-seconds EVERY interval-seconds"
 	Method doAction:int()
-		local timeLeft:int = Time.GetTimeGone() - (timer + GetInterval() )
+		local timeLeft:Double = Time.GetTimeGone() - (timer + GetInterval() )
 		return ( timeLeft > 0 AND timeLeft < actionTime )
 	End Method
 
@@ -189,7 +189,7 @@ Type TIntervalTimer
 	End Method
 
 
-	Method getTimeUntilExpire:int()
+	Method getTimeUntilExpire:Double()
 		return timer + GetInterval() + actionTime - Time.GetTimeGone()
 	End Method
 
@@ -305,7 +305,7 @@ Type TCall
 	Field depth:int = 0
 	Field parent:TCall = null
 	Field name:String
-	Field start:Int
+	Field start:Long
 	Field Times:TList
 	Field calls:Int
 	Method New()

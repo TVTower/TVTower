@@ -227,7 +227,7 @@ Type TNews extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		endif
 
 		'if no happened time is set, use the Game time
-		if useNewsEvent.happenedtime <= 0 then useNewsEvent.happenedtime = GetGameTime().GetTimeGone()
+		if useNewsEvent.happenedtime <= 0 then useNewsEvent.happenedtime = GetWorldTime().GetTimeGone()
 
 		Local obj:TNews = New TNews
 		obj.publishDelay = publishdelay
@@ -262,7 +262,7 @@ rem
 		'audience (eg. slot1=50%, slot2=30%, slot3=20%)
 
 		Local genreDefintion:TNewsGenreDefinition = GetNewsGenreDefinitionCollection().Get(GetGenre())
-		Return genreDefintion.CalculateAudienceAttraction(self, GetGameTime().GetHour())
+		Return genreDefintion.CalculateAudienceAttraction(self, GetWorldTime().GetHour())
 	End Method
 endrem
 
@@ -322,7 +322,7 @@ endrem
 
 
 	Method IsReadyToPublish:Int() {_exposeToLua}
-		Return (newsEvent.happenedtime + publishDelay <= GetGameTime().GetTimeGone())
+		Return (newsEvent.happenedtime + publishDelay <= GetWorldTime().GetTimeGone())
 	End Method
 
 

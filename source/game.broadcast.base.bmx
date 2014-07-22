@@ -17,7 +17,7 @@ Import "game.broadcast.genredefinition.movie.bmx"
 Import "game.broadcast.genredefinition.news.bmx"
 Import "game.publicimage.bmx"
 Import "game.stationmap.bmx"
-Import "game.gametime.bmx"
+Import "game.world.worldtime.bmx"
 
 
 Type TBroadcastManager
@@ -394,7 +394,7 @@ Type TBroadcast
 		If broadcastedMaterial Then
 			GetAudienceResult(playerId).Title = broadcastedMaterial.GetTitle()
 			'3. Qualität meines Programmes
-			Attractions[playerId-1] = broadcastedMaterial.GetAudienceAttraction(GetGameTime().GetHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
+			Attractions[playerId-1] = broadcastedMaterial.GetAudienceAttraction(GetWorldTime().GetDayHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 			TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + playerId + "': Malfunction!", LOG_DEBUG)
 			GetAudienceResult(playerId).Title = "Malfunction!" 'Sendeausfall
@@ -522,7 +522,7 @@ Type TBroadcast
 
 
 	Function GetPotentialAudienceForHour:TAudience(maxAudience:TAudience, forHour:Int = -1)
-		If forHour < 0 Then forHour = GetGameTime().GetHour()
+		If forHour < 0 Then forHour = GetWorldTime().GetDayHour()
 
 		Local maxAudienceReturn:TAudience = maxAudience.Copy()
 		Local modi:TAudience = Null
@@ -831,7 +831,7 @@ Type TAudienceMarketCalculation
 
 
 	Method ComputeAudience(forHour:Int = -1)
-		If forHour <= 0 Then forHour = GetGameTime().GetHour()
+		If forHour <= 0 Then forHour = GetWorldTime().GetDayHour()
 
 		CalculatePotentialChannelSurfer(forHour)
 
