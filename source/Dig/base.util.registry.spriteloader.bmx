@@ -224,7 +224,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 				Local offsetLeft:Int = data.GetInt("offsetLeft", srcSprite.offset.GetLeft())
 				Local offsetBottom:Int = data.GetInt("offsetBottom", srcSprite.offset.GetBottom())
 				Local offsetRight:Int = data.GetInt("offsetRight", srcSprite.offset.GetRight())
-				Local frames:Int = data.GetInt("frames", srcSprite.animcount)
+				Local frames:Int = data.GetInt("frames", srcSprite.frames)
 
 				'add to registry
 				local sprite:TSprite
@@ -249,4 +249,33 @@ End Type
 '===== CONVENIENCE REGISTRY ACCESSORS =====
 Function GetSpriteFromRegistry:TSprite(name:string, defaultNameOrSprite:object = Null)
 	Return TSprite( GetRegistry().Get(name, defaultNameOrSprite, "sprite") )
+End Function
+
+
+Function GetSpriteGroupFromRegistry:TSprite[](baseName:string, defaultNameOrSprite:object = Null)
+	local sprite:TSprite
+	local result:TSprite[]
+	local number:int = 1
+	local maxNumber:int = 1000
+	repeat
+		'do not use "defaultType" or "defaultObject" - we want to know
+		'if there is an object with this name
+		sprite = TSprite( GetRegistry().Get(baseName+number) )
+		number :+1
+
+		if sprite then result :+ [sprite]
+	until sprite = null or number >= maxNumber
+
+	'add default one if nothing was found 
+	if result.length = 0 and defaultNameOrSprite <> null
+		if TSprite(defaultNameOrSprite)
+			result :+ [TSprite(defaultNameOrSprite)]
+		elseif string(defaultNameOrSprite) <> ""
+			sprite = TSprite( GetRegistry().Get(string(defaultNameOrSprite), null, "sprite") )
+			if sprite then result :+ [sprite]
+		endif
+	endif
+
+
+	Return result
 End Function

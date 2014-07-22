@@ -103,6 +103,14 @@ Type TColor
 	End Function
 
 
+	Method GetBrightness:Float()
+		'variant "HSP"
+		return Sqr(0.299 * r^2 + 0.587 * g^2 + 0.114 * b^2)
+		'variant "Luminance"
+		'return 0.2126 * r + 0.7152 * g + 0.0722 *b
+	End Method
+
+
 	'mixes colors, mixFactor is percentage (0-1) of otherColors influence
 	Method Mix:TColor(otherColor:TColor, mixFactor:float = 0.5)
 		'clamp mixFactor to 0-1.0

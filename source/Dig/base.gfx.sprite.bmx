@@ -151,8 +151,8 @@ Type TSpritePack
 	End Method
 
 
-	Method AddSpriteCopy:TSprite(spriteNameSrc:String, spriteNameDest:String, area:TRectangle, offset:TRectangle=null, animcount:int = 0, color:TColor)
-		local spriteCopy:TSprite = new TSprite.Init(self, spriteNameDest, area, offset, animcount)
+	Method AddSpriteCopy:TSprite(spriteNameSrc:String, spriteNameDest:String, area:TRectangle, offset:TRectangle=null, frames:int = 0, color:TColor)
+		local spriteCopy:TSprite = new TSprite.Init(self, spriteNameDest, area, offset, frames)
 		Local tmppix:TPixmap = LockImage(image, 0)
 			tmppix.Window(spriteCopy.area.GetX(), spriteCopy.area.GetY(), spriteCopy.area.GetW(), spriteCopy.area.GetH()).ClearPixels(0)
 			DrawImageOnImage(ColorizeImageCopy(GetSprite(spriteNameSrc).GetImage(), color), tmppix, spriteCopy.area.GetX(), spriteCopy.area.GetY())
@@ -178,7 +178,7 @@ Type TSprite
 	Field name:string
 	Field frameW:Int
 	Field frameH:Int
-	Field animCount:Int
+	Field frames:Int
 	Field parent:TSpritePack
 	Field _pix:TPixmap = null
 
@@ -198,7 +198,7 @@ Type TSprite
 
 
 
-	Method Init:TSprite(spritepack:TSpritePack=null, name:String, area:TRectangle, offset:TRectangle, animcount:Int = 0, spriteDimension:TVec2D=null, id:int=0)
+	Method Init:TSprite(spritepack:TSpritePack=null, name:String, area:TRectangle, offset:TRectangle, frames:Int = 0, spriteDimension:TVec2D=null, id:int=0)
 		self.name = name
 		self.area = area.copy()
 		self.id = id
@@ -206,9 +206,9 @@ Type TSprite
 		if offset then self.offset = offset.copy()
 		frameW = area.GetW()
 		frameH = area.GetH()
-		self.animCount = animcount
-		If animcount > 0
-			frameW = ceil(area.GetW() / animcount)
+		self.frames = frames
+		If frames > 0
+			frameW = ceil(area.GetW() / frames)
 			frameH = area.GetH()
 		EndIf
 		If spriteDimension and spriteDimension.x<>0 and spriteDimension.y<>0
@@ -235,7 +235,7 @@ Type TSprite
 		local flags:int = data.GetInt("flags", 0)
 		local url:string = data.GetString("url", "")
 		local name:string = data.GetString("name", "unknownSprite")
-		local animCount:int = data.GetInt("frames", 0)
+		local frames:int = data.GetInt("frames", 0)
 		local frameW:int = data.GetInt("frameW", 0)
 		local frameH:int = data.GetInt("frameH", 0)
 		local id:int = data.GetInt("id", 0)
@@ -263,8 +263,8 @@ Type TSprite
 				Return Null
 			endif
 			'load img to find out celldimensions
-			if animCount > 0 AND (frameW = 0 OR frameW = 0)
-				frameW = ImageWidth(img) / animCount
+			if frames > 0 AND (frameW = 0 OR frameW = 0)
+				frameW = ImageWidth(img) / frames
 				frameH = ImageHeight(img)
 			endif
 			parent = new TSpritePack.Init(img, name + "_pack")
@@ -273,7 +273,7 @@ Type TSprite
 		endif
 
 		'create sprite
-		local sprite:TSprite = new TSprite.Init(parent, name, new TRectangle.Init(0,0, ImageWidth(parent.image), ImageHeight(parent.image)), offset, animCount, new TVec2D.Init(frameW, frameH), id)
+		local sprite:TSprite = new TSprite.Init(parent, name, new TRectangle.Init(0,0, ImageWidth(parent.image), ImageHeight(parent.image)), offset, frames, new TVec2D.Init(frameW, frameH), id)
 
 		'enable nine patch if wanted
 		if ninePatch then sprite.EnableNinePatch()
@@ -424,8 +424,8 @@ Type TSprite
 	'creates a REAL copy (no reference) of an image
 	Method GetImageCopy:TImage(loadAnimated:int = 1)
 		SetMaskColor(255,0,255)
-		If self.animcount >1 And loadAnimated
-			Return LoadAnimImage(GetPixmap().copy(), frameW, frameH, 0, animCount)
+		If self.frames >1 And loadAnimated
+			Return LoadAnimImage(GetPixmap().copy(), frameW, frameH, 0, frames)
 		Else
 			Return LoadImage(GetPixmap().copy())
 		EndIf

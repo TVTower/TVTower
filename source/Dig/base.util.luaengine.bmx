@@ -35,24 +35,49 @@ Type TLuaEngine
 	'we store other objects in our metatable - we are responsible for
 	'them.
 	'fenv should be known from Lua itself
-	Field _fenv:Int
+	Field _functionEnvironmentRef:Int
 
+	'load "all" modules or only some specific ones
+	'eg. ["base","table"] or ["all"]
+	Field _modulesToLoad:string[] = ["base", "table", "io"]
+	'functions/calls getting "nil"ed before the script is run
+	'eg. ["os"]
+	Field _blacklistedFunctions:string[]
+
+	'which elements can get read without "_exposeToLua" metadata?
+	Field whiteListedTypes:TList = CreateList()
+	Field whiteListCreated:int = False
 
 
 	Function Create:TLuaEngine(source:String)
 		Local obj:TLuaEngine = New TLuaEngine.SetSource(source)
+		'add here so during "RegisterToLua" code could run already
+		list.addLast(obj)
+
 		'init fenv and register self
 		obj.RegisterToLua()
 		obj.lastID :+1
 		obj.id = obj.lastID
 
-		list.addLast(obj)
+		obj.GenerateWhiteList()
+
 		Return obj
 	End Function
 
 
+	Method GenerateWhiteList:int()
+		if whiteListCreated then return True
+
+		whiteListedTypes.AddLast("tlist")
+		whiteListedTypes.AddLast("tmap")
+
+		whiteListCreated = True
+		return True
+	End Method
+	
+
 	Method Delete()
-		luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _fenv)
+		luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _functionEnvironmentRef)
 		luaL_unref(getLuaState(), LUA_REGISTRYINDEX, _chunk)
 	End Method
 
@@ -66,10 +91,39 @@ Type TLuaEngine
 	End Function
 
 
+	'register libraries to lua
+	'available libs:
+	'"base" = luaopen_base       "debug" = luaopen_debug
+	'"io" = luaopen_io           "math" = luaopen_math
+	'"os" = luaopen_os           "package" = luaopen_package
+	'"string"= luaopen_string    "table" = luaopen_table
+	Function RegisterLibraries:int(lua_state:Byte Ptr, libnames:string[])
+		if not libnames then libnames = ["all"]
+		
+		For local lib:string = eachin libnames
+			Select lib.toLower()
+				'registers all libs
+				case "all"      LuaL_openlibs(lua_state)
+				                return True
+				'register single libs
+				case "base"     lua_register(lua_state, lib, luaopen_base)
+				case "debug"    lua_register(lua_state, lib, luaopen_debug)
+				case "io"       lua_register(lua_state, lib, luaopen_io)
+				case "math"     lua_register(lua_state, lib, luaopen_math)
+				case "os"       lua_register(lua_state, lib, luaopen_os)
+				case "package"  lua_register(lua_state, lib, luaopen_package)
+				case "string"   lua_register(lua_state, lib, luaopen_string)
+				case "table"    lua_register(lua_state, lib, luaopen_table)
+			End Select
+		Next
+		Return True
+	End Function
+
+
 	Method GetLuaState:Byte Ptr()
 		If Not _luaState
 			_luaState = luaL_newstate()
-			luaL_openlibs(_luaState)
+			RegisterLibraries(_luaState, _modulesToLoad)
 		EndIf
 		Return _luaState
 	End Method
@@ -97,12 +151,16 @@ Type TLuaEngine
 		'push class block
 		If Not lua_pushchunk() Then Return Null
 
+		'set new environment for this lua state, so accesses
+		'to unwanted globals gets restricted (os.***)
+'		lua_setfenv( GetLuaState(), 1 )
+
 		'create fenv table
 		lua_newtable( getLuaState() )
 
 		'save it
 		lua_pushvalue(getLuaState(), -1)
-		_fenv	= luaL_ref(getLuaState(), LUA_REGISTRYINDEX)
+		_functionEnvironmentRef	= luaL_ref(getLuaState(), LUA_REGISTRYINDEX)
 
 		'set self/super object
 		lua_pushvalue(getLuaState(), -1)
@@ -115,6 +173,8 @@ Type TLuaEngine
 		lua_pushcfunction(getLuaState(), NewIndexSelf)
 		lua_setfield(getLuaState(), -2, "__newindex")
 
+		'BlackListLuaModules()
+
 		'set fenv metatable
 		lua_pushvalue(getLuaState(), -1)
 		lua_setmetatable(getLuaState(), -2)
@@ -123,6 +183,14 @@ Type TLuaEngine
 		lua_setfenv(getLuaState(), -2)
 		If lua_pcall(getLuaState(), 0, 0, 0 ) Then DumpError()
 	End Method
+
+
+	Method BlackListFunctions()
+		for local entry:string = eachin _blacklistedFunctions
+			lua_pushnil(getLuaState())
+			lua_setglobal(getLuaState(), entry)
+		next
+	endmethod
 
 
 	Method DumpError()
@@ -188,7 +256,7 @@ Type TLuaEngine
 
 	'calls getobjmetatable
 	Method lua_pushobject(obj:Object)
-		'mv 06.11.2012: Es ist nötig "null"-Werte in Lua-kompatible "nil"-Werte umzuwandeln.
+		'convert BlitzMax "null"-objects to lua compatible "nil" values
 		If obj = null
 			lua_pushnil(getLuaState())
 		Else
@@ -224,8 +292,11 @@ Type TLuaEngine
 		Local typeId:TTypeId = TTypeId.ForObject(obj)
 		Local ident:String = lua_tostring(getLuaState(), 2)
 
+		'by default allow read access to lists/maps ?!
+		local whiteListedType:int = whiteListedTypes.contains(typeId.name().toLower())
+
 		'only expose if type ("parent") is set to get exposed
-		if not typeId.MetaData("_exposeToLua") then return False
+		if not whiteListedType and not typeId.MetaData("_exposeToLua") then return False
 		local exposeType:string = typeId.MetaData("_exposeToLua")
 
 		'===== SKIP PRIVATE THINGS =====
@@ -354,6 +425,17 @@ endrem
 		Local mth:TMethod = typeId.FindMethod(ident)
 		If mth Then Throw "newIndex ERROR"
 
+		'I do not know how to handle arrays properly (needs metatables
+		'and custom userdata)
+		if typeId.name().contains("[]")
+			TLogger.log("TLuaEngine", "Arrays are not supported - array type: " + typeId.name() + ".", LOG_ERROR)
+			'array index is
+			'print lua_tostring(getLuaState(), 2)
+			'array value is
+			'print lua_tostring(getLuaState(), 3)
+			return True
+		endif
+
 		'only expose if type set to get exposed
 		if not typeId.MetaData("_exposeToLua")
 			TLogger.log("TLuaEngine", "Type " + typeId.name() + " not exposed to Lua.", LOG_ERROR)
@@ -373,18 +455,29 @@ endrem
 				return TRUE
 			endif
 
-			Select fld.TypeId()
-				Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
-					fld.SetInt(obj, lua_tointeger(getLuaState(), 3))
-				Case FloatTypeId
-					fld.SetFloat(obj, lua_tonumber(getLuaState(), 3))
-				Case DoubleTypeId
-					fld.SetDouble(obj, lua_tonumber(getLuaState(), 3))
-				Case StringTypeId
-					fld.SetString(obj, lua_tostring(getLuaState(), 3))
-				Default
-					fld.Set(obj, lua_unboxobject(getLuaState(), 3))
-			End Select
+			If lua_isnil(getLuaState(), 3)
+				Select fld.TypeId()
+					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId, FloatTypeId, DoubleTypeId, StringTypeId
+						'SetInt/SetFloat/...all convert to a string
+						'"null" is 0/0.0/"" for primitive types in BlitzMax
+						fld.SetString(obj, "")
+					Default
+						fld.Set(obj, null)
+				End Select
+			else
+				Select fld.TypeId()
+					Case IntTypeId, ShortTypeId, ByteTypeId, LongTypeId
+						fld.SetInt(obj, lua_tointeger(getLuaState(), 3))
+					Case FloatTypeId
+						fld.SetFloat(obj, lua_tonumber(getLuaState(), 3))
+					Case DoubleTypeId
+						fld.SetDouble(obj, lua_tonumber(getLuaState(), 3))
+					Case StringTypeId
+						fld.SetString(obj, lua_tostring(getLuaState(), 3))
+					Default
+						fld.Set(obj, lua_unboxobject(getLuaState(), 3))
+				End Select
+			endif
 			Return True
 		EndIf
 		TLogger.log("TLuaEngine", "newindex: ident not found " + ident + ".", LOG_ERROR)
@@ -478,7 +571,7 @@ endrem
 
 	Method CallLuaFunction:Object(name:String, args:Object[] = Null)
 		'push fenv
-		lua_rawgeti(getLuaState(), LUA_REGISTRYINDEX, _fenv)
+		lua_rawgeti(getLuaState(), LUA_REGISTRYINDEX, _functionEnvironmentRef)
 
 		lua_getfield(getLuaState(), -1, name)
 		If lua_isnil(getLuaState(), -1)
@@ -511,7 +604,7 @@ endrem
 		'pop the result
 		lua_pop(getLuaState(), 1)
 
-		'pop the fenv ?
+		'pop the _functionEnvironmentRef ?
 		lua_pop(getLuaState(), 1)
 
 		Return ret
@@ -520,7 +613,7 @@ endrem
 
 	'Once registered, the object can be accessed from within Lua scripts
 	'using the @ObjName identifer.
-	Method RegisterBlitzmaxObject(Obj:Object, ObjName:String)
+	Method RegisterBlitzmaxObject(ObjName:String, Obj:Object)
 		lua_pushobject(obj)
 		lua_setglobal(getLuaState(), ObjName)
 	End Method
