@@ -1398,6 +1398,8 @@ Type RoomHandler_Office extends TRoomHandler
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null
 
+		'remove all entries
+		RemoveAllGuiElements(true)
 		RefreshGUIElements()
 	End Function
 
@@ -1416,6 +1418,7 @@ Type RoomHandler_Office extends TRoomHandler
 			triggerEvent.setVeto()
 			return FALSE
 		endif
+
 		return TRUE
 	End Function
 
@@ -1674,8 +1677,8 @@ Type RoomHandler_Office extends TRoomHandler
 		'left mouse button
 		if triggerEvent.GetData().getInt("button",0) = 1
 			'special handling for special items
-			'-> remove dayChangeObjects from plan if dragging
-			if not item.isDragged() and talkToProgrammePlanner
+			'-> remove dayChangeObjects from plan if dragging (and allowed)
+			if not item.isDragged() and item.isDragable() and talkToProgrammePlanner
 				if item = GuiListAdvertisements.dayChangeGuiProgrammePlanElement
 					if GetPlayerCollection().Get().GetProgrammePlan().RemoveAdvertisement(item.broadcastMaterial)
 						GuiListAdvertisements.dayChangeGuiProgrammePlanElement = null
@@ -1993,33 +1996,6 @@ Type RoomHandler_Office extends TRoomHandler
 	End Function
 
 
-	'deletes all gui elements (eg. for rebuilding)
-	Function RemoveAllGuiElements:int(removeDragged:int=TRUE)
-'		Rem
-'			this is problematic as this could bug out the programmePlan
-		'keep the dragged entries if wanted so
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
-			if not guiObject then continue
-			if removeDragged or not guiObject.IsDragged() then guiObject.remove()
-		Next
-		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
-			if not guiObject then continue
-			if removeDragged or not guiObject.IsDragged() then guiObject.remove()
-		Next
-'		End Rem
-
-		'remove dragged ones of gui manager
-		if removeDragged
-			For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.listDragged
-				guiObject.remove()
-			Next
-		endif
-
-		'to recreate everything during next update...
-		haveToRefreshGuiElements = TRUE
-	End Function
-
-
 	Function ChangePlanningDay:int(day:int=0)
 		planningDay = day
 		'limit to start day
@@ -2029,34 +2005,82 @@ Type RoomHandler_Office extends TRoomHandler
 		GuiListProgrammes.planDay = planningDay
 		GuiListAdvertisements.planDay = planningDay
 
-		'change to silent mode: do not interact with programmePlanner
-		talkToProgrammePlanner = FALSE
 		'FALSE: without removing dragged
 		'->ONLY keeps newly created, not ones dragged from a slot
 		RemoveAllGuiElements(FALSE)
-
 		RefreshGuiElements()
-		talkToProgrammePlanner = TRUE
 	end Function
 
 
-	Function RefreshGuiElements:int()
-		'===== REMOVE UNUSED =====
+	'deletes all gui elements (eg. for rebuilding)
+	Function RemoveAllGuiElements:int(removeDragged:int=TRUE)
+		'do not inform programmeplanner!
+		local oldTalk:int =	talkToProgrammePlanner
+		talkToProgrammePlanner = False
 
+'		Rem
+'			this is problematic as this could bug out the programmePlan
+		'keep the dragged entries if wanted so
+		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
+			if not guiObject then continue
+			if removeDragged or not guiObject.IsDragged()
+				guiObject.remove()
+				guiObject = null
+			endif
+		Next
+		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
+			if not guiObject then continue
+			if removeDragged or not guiObject.IsDragged()
+				guiObject.remove()
+				guiObject = null
+			endif
+		Next
+'		End Rem
+
+		'remove dragged ones of gui manager
+		if removeDragged
+			For local guiObject:TGuiProgrammePlanElement = eachin GuiManager.listDragged
+				guiObject.remove()
+				guiObject = null
+			Next
+		endif
+
+		'to recreate everything during next update...
+		haveToRefreshGuiElements = TRUE
+
+		'set to backupped value
+		talkToProgrammePlanner = oldTalk
+	End Function
+
+
+	Function RefreshGuiElements:int()
+		'do not inform programmeplanner!
+		local oldTalk:int =	talkToProgrammePlanner
+		talkToProgrammePlanner = False
+
+		'===== REMOVE UNUSED =====
+		 
 		'remove overnight
-		if GuiListProgrammes.daychangeGuiProgrammePlanElement then GuiListProgrammes.daychangeGuiProgrammePlanElement.remove()
-		if GuiListAdvertisements.daychangeGuiProgrammePlanElement then GuiListAdvertisements.daychangeGuiProgrammePlanElement.remove()
+		if GuiListProgrammes.daychangeGuiProgrammePlanElement
+			GuiListProgrammes.daychangeGuiProgrammePlanElement.remove()
+			GuiListProgrammes.daychangeGuiProgrammePlanElement = null
+		endif
+		if GuiListAdvertisements.daychangeGuiProgrammePlanElement
+			GuiListAdvertisements.daychangeGuiProgrammePlanElement.remove()
+			GuiListAdvertisements.daychangeGuiProgrammePlanElement = null
+		endif
 
 		local currDay:int = planningDay
 		if currDay = -1 then currDay = GetWorldTime().getDay()
 
-		'remove gui elements with material the player does not have any longer in plan
+		
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListProgrammes._slots
 			if guiObject.isDragged() then continue
 			'check if programmed on the current day
 			if guiObject.broadcastMaterial.isProgrammedForDay(currDay) then continue
 			'print "GuiListProgramme has obsolete programme: "+guiObject.broadcastMaterial.GetTitle()
 			guiObject.remove()
+			guiObject = null
 		Next
 		For local guiObject:TGuiProgrammePlanElement = eachin GuiListAdvertisements._slots
 			if guiObject.isDragged() then continue
@@ -2064,6 +2088,7 @@ Type RoomHandler_Office extends TRoomHandler
 			if guiObject.broadcastMaterial.isProgrammedForDay(currDay) then continue
 			'print "GuiListAdvertisement has obsolete ad: "+guiObject.broadcastMaterial.GetTitle()
 			guiObject.remove()
+			guiObject = null
 		Next
 
 
@@ -2072,10 +2097,9 @@ Type RoomHandler_Office extends TRoomHandler
 		local daysProgramme:TBroadcastMaterial[] = GetPlayerCollection().Get().GetProgrammePlan().GetProgrammesInTimeSpan(planningDay, 0, planningDay, 23)
 		For local obj:TBroadcastMaterial = eachin daysProgramme
 			if not obj then continue
-
 			'if already included - skip it
 			if GuiListProgrammes.ContainsBroadcastMaterial(obj) then continue
-
+			
 			'DAYCHANGE
 			'skip programmes started yesterday (they are stored individually)
 			if obj.programmedDay < planningDay and planningDay > 0
@@ -2156,6 +2180,9 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		haveToRefreshGuiElements = FALSE
+
+		'set to backupped value
+		talkToProgrammePlanner = oldTalk
 	End Function
 
 
@@ -3094,6 +3121,7 @@ Type RoomHandler_Archive extends TRoomHandler
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
+			guiLicence = null
 		Next
 
 		'===== CREATE NEW =====
@@ -3156,6 +3184,8 @@ Type RoomHandler_Archive extends TRoomHandler
 					if not GetPlayerCollection().Get().GetProgrammeCollection().AddProgrammeLicenceToSuitcase(guiBlock.licence)
 						triggerEvent.setVeto()
 					endif
+					
+					guiBlock = null
 				endif
 
 				'else it is just a "drop back"
@@ -3615,6 +3645,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		For local guiLicence:TGUIProgrammeLicence = eachin GuiManager.listDragged
 			guiLicence.remove()
+			guiLicence = null
 		Next
 
 		hoveredGuiProgrammeLicence = null
@@ -3637,6 +3668,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 			'print "guiListSuitcase has obsolete licence: "+guiLicence.licence.getTitle()
 			guiLicence.remove()
+			guiLicence = null
 		Next
 		'agency lists
 		local lists:TProgrammeLicence[][]				= [	listMoviesGood,listMoviesCheap,listSeries ]
@@ -3647,6 +3679,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 				'print "REM lists"+j+" has obsolete licence: "+guiLicence.licence.getTitle()
 				guiLicence.remove()
+				guiLicence = null
 			Next
 		Next
 
@@ -4280,6 +4313,7 @@ EndRem
 		guiNewsListUsed.emptyList()
 		For local guiNews:TGuiNews = eachin GuiManager.listDragged
 			guiNews.remove()
+			guiNews = null
 		Next
 	End Function
 
@@ -4288,10 +4322,16 @@ EndRem
 		local owner:int = GetPlayerCollection().playerID
 		'remove gui elements with news the player does not have anylonger
 		For local guiNews:TGuiNews = eachin guiNewsListAvailable.entries
-			if not GetPlayerProgrammeCollectionCollection().Get(owner).hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerProgrammeCollectionCollection().Get(owner).hasNews(guiNews.news)
+				guiNews.remove()
+				guiNews = null
+			endif
 		Next
 		For local guiNews:TGuiNews = eachin guiNewsListUsed._slots
-			if not GetPlayerProgrammePlanCollection().Get(owner).hasNews(guiNews.news) then guiNews.remove()
+			if not GetPlayerProgrammePlanCollection().Get(owner).hasNews(guiNews.news)
+				guiNews.remove()
+				guiNews = null
+			endif
 		Next
 
 		'if removing "dragged" we also bug out the "replace"-mechanism when
@@ -4388,7 +4428,8 @@ EndRem
 
 		'remove gui object
 		guiNews.remove()
-
+		guiNews = null
+		
 		'remove right click - to avoid leaving the room
 		MouseManager.ResetKey(2)
 	End Function
@@ -4946,6 +4987,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListSuitcase.EmptyList()
 		For local guiAdContract:TGuiAdContract = eachin GuiManager.listDragged
 			guiAdContract.remove()
+			guiAdContract = null
 		Next
 
 		hoveredGuiAdContract = null
@@ -4969,17 +5011,24 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 			'print "guiListSuitcase has obsolete contract: "+guiAdContract.contract.id
 			guiAdContract.remove()
+			guiAdContract = null
 		Next
 		'agency lists
 		For local i:int = 0 to GuiListNormal.length-1
 			For local guiAdContract:TGuiAdContract = eachin GuiListNormal[i]._slots
 				'if not HasContract(guiAdContract.contract) then print "REM guiListNormal"+i+" has obsolete contract: "+guiAdContract.contract.id
-				if not HasContract(guiAdContract.contract) then guiAdContract.remove()
+				if not HasContract(guiAdContract.contract)
+					guiAdContract.remove()
+					guiAdContract = null
+				endif
 			Next
 		Next
 		For local guiAdContract:TGuiAdContract = eachin GuiListCheap._slots
 			'if not HasContract(guiAdContract.contract) then	print "REM guiListCheap has obsolete contract: "+guiAdContract.contract.id
-			if not HasContract(guiAdContract.contract) then guiAdContract.remove()
+			if not HasContract(guiAdContract.contract)
+				guiAdContract.remove()
+				guiAdContract = null
+			endif
 		Next
 
 
@@ -5132,6 +5181,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'remove gui object
 		guiAdContract.remove()
+		guiAdContract = null
 
 		'rebuild at correct spot
 		GetInstance().RefreshGuiElements()
@@ -5180,6 +5230,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		endif
 		'remove the block, will get recreated if needed
 		guiBlock.remove()
+		guiBlock = null
 
 		'something changed...refresh missing/obsolete...
 		GetInstance().RefreshGuiElements()
