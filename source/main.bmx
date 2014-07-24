@@ -118,7 +118,7 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
 'print "ALLE MELDUNGEN AUS"
-'TLogger.SetPrintMode(0)
+TLogger.SetPrintMode(0)
 
 'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
@@ -487,16 +487,25 @@ Type TApp
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
+
+		Local textX:Int = 20
+		GetBitmapFontManager().baseFont.draw("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
+		textX:+80
+		GetBitmapFontManager().baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
+		textX:+60
+		GetBitmapFontManager().baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
+		textX:+60
+
 		If App.devConfig.GetBool("DEV_OSD", False)
-			Local textX:Int = 20
-			GetBitmapFontManager().baseFont.draw("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
-			textX:+80
-			GetBitmapFontManager().baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
-			textX:+60
-			GetBitmapFontManager().baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
-			textX:+60
 			GetBitmapFontManager().baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
 			textX:+100
+			'update time per second
+			GetBitmapFontManager().baseFont.draw("UTPS: " + Int(GetDeltaTimer()._currentUpdateTimePerSecond), 560,0)
+			textX:+60
+			'render time per second
+			GetBitmapFontManager().baseFont.draw("RTPS: " + Int(GetDeltaTimer()._currentRenderTimePerSecond), 620,0)
+			textX:+60
+
 
 			'RON: debug purpose - see if the managed guielements list increase over time
 			If TGUIObject.GetFocusedObject()
@@ -2576,20 +2585,27 @@ Type GameEvents
 		'=== ADJUST CURRENT BROADCASTS ===
 		'broadcasts change at xx:00, xx:05, xx:55
 		If minute = 5 Or minute = 55 Or minute = 0
-			'step 1/3
+			'step 1/2
 			'log in current broadcasted media
 			For Local player:TPlayer = EachIn GetPlayerCollection().players
 				player.GetProgrammePlan().LogInCurrentBroadcast(day, hour, minute)
 			Next
-			'step 2/3
+			'step 2/2
 			'calculate audience
 			TPlayerProgrammePlan.CalculateCurrentBroadcastAudience(day, hour, minute)
-			'step 3/3
-			'inform broadcasted media about their status
+		EndIf
+
+
+		'=== INFORM BROADCASTS ===
+		'inform about broadcasts starting / ending
+		'-> earn call-in profit
+		'-> cut topicality
+		If (minute = 5 Or minute = 55 Or minute = 0) or ..
+		   (minute = 4 Or minute = 54 or minute = 59)
 			For Local player:TPlayer = EachIn GetPlayerCollection().players
 				player.GetProgrammePlan().InformCurrentBroadcast(day, hour, minute)
 			Next
-		EndIf
+		endIf
 	
 		Return True
 	End Function
@@ -2872,7 +2888,8 @@ Function StartTVTower(start:Int=True)
 
 	EventManager.Init()
 	
-	App = TApp.Create(30, -1, True) 'create with screen refreshrate and vsync
+'	App = TApp.Create(30, -1, True) 'create with screen refreshrate and vsync
+	App = TApp.Create(30, 30, False) 'create with refreshrate of 40
 	App.LoadResources("config/resources.xml")
 
 	'====

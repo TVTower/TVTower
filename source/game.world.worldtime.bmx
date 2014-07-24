@@ -95,7 +95,8 @@ Type TWorldTime {_exposeToLua="selected"}
 
 
 	Method IsPaused:int()
-		return GetTimeFactor() = 0
+		return self._paused
+		'return GetTimeFactor() = 0
 	End Method
 
 

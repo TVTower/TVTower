@@ -101,7 +101,9 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 			popularity.FinishBroadcastingProgramme(data, GetBlocks())
 		Endif
-
+		'for debug prints:
+		'local oldTop:float = data.topicality
+		
 		'adjust topicality
 		data.CutTopicality(GetTopicalityCutModifier())
 
@@ -112,6 +114,8 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		'now the trailer is for the next broadcast...
 		data.trailerTopicality = 1.0
 		'print "aired programme "+GetTitle()+" "+data.timesAired+"x."
+
+		'print self.GetTitle() + "  finished at day="+day+" hour="+hour+" minute="+minute + " aired="+data.timesAired + " topicality="+data.topicality+" oldTop="+oldTop
 	End Method
 
 

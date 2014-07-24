@@ -1096,6 +1096,16 @@ endrem
 				'(which itself informs the broadcasted news)
 				obj.BeginBroadcasting(day, hour, minute, audienceResult)
 			EndIf
+			
+		'=== END OF NEWSSHOW ===
+		ElseIf minute = 4
+			obj = GetNewsShow(day, hour)
+			If obj
+				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
+				'inform news show that broadcasting started
+				'(which itself informs the broadcasted news)
+				obj.FinishBroadcasting(day, hour, minute, audienceResult)
+			EndIf
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5

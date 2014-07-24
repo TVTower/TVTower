@@ -60,6 +60,16 @@ Type TDeltaTimer
 	Field currentUPS:int     = 0
 	Field currentFPS:int     = 0
 
+	'milliseconds updates currently needed this second
+	Field _updateTime:Long = 0
+	'milliseconds updates needed last second
+	Field _currentUpdateTimePerSecond:Long = 0
+
+	'milliseconds renders currently needed this second
+	Field _renderTime:Long = 0
+	'milliseconds renders needed last second
+	Field _currentRenderTimePerSecond:Long = 0
+
 	'connect functions with this properties to get called during Loop()
 	Field _funcUpdate:int()
 	Field _funcRender:int()
@@ -155,6 +165,12 @@ Type TDeltaTimer
 			timesUpdated  = 0
 			_loopTimeSum  = GetLoopTimeAverage()
 			_loopTimeCount= 1
+
+			_currentUpdateTimePerSecond = _updateTime
+			_updateTime = 0
+
+			_currentRenderTimePerSecond = _renderTime
+			_renderTime = 0
 		endif
 	End Method
 
@@ -165,6 +181,9 @@ Type TDeltaTimer
 		'for an update ("timeStep"), the loop does as much updates
 		'as the accumulator "fits"
 		_updateAccumulator:+ Max(0, _lastLoopTime)/1000.0
+
+		local start:Long = Time.GetTimeGone()
+		
 		while(_updateAccumulator > _updateRate)
 			'if there is a function connected - run it
 			if _funcUpdate then _funcUpdate()
@@ -174,6 +193,8 @@ Type TDeltaTimer
 			'for stats
 			timesUpdated:+1
 		wend
+
+		_updateTime :+ (Time.GetTimeGone() - start)
 	End Method
 
 
@@ -183,6 +204,8 @@ Type TDeltaTimer
 		_renderAccumulator:+ Max(0, _lastLoopTime - getCurrentLoopTime()) / 1000.0
 
 		if(_renderAccumulator > _renderRate)
+			local start:Long = Time.GetTimeGone()
+
 			'if there is a function connected - run it
 			if _funcRender then _funcRender()
 
@@ -191,6 +214,8 @@ Type TDeltaTimer
 
 			'for stats
 			timesRendered:+1
+
+			_renderTime :+ (Time.GetTimeGone() - start)
 		endif
 	End Method
 

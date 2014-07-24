@@ -869,6 +869,11 @@ endrem
 		'avoid shaking figures when standing - only use tween
 		'position when moving
 		local tweenPos:TVec2D
+
+		
+		'also do not move with WorldTime being paused
+		'alternatively (also do not move when gamespeed is "0")
+		'-> and GetWorldTime().GetTimeFactor() > 0
 		if velocity.GetIntX() <> 0 and not GetWorldTime().IsPaused()
 			tweenPos = new TVec2D.Init(..
 				MathHelper.SteadyTween(oldPosition.x, area.getX(), GetDeltaTimer().GetTween()), ..
