@@ -4332,21 +4332,8 @@ SetColor 255,255,255
 
 	'deletes all gui elements (eg. for rebuilding)
 	Function RemoveAllGuiElements:int()
-local count:int = 0
-for local news:TGUINews = Eachin GUIMANAGER.list
-	count:+1
-Next
-print "before "+count
-
 		guiNewsListAvailable.emptyList()
 		guiNewsListUsed.emptyList()
-
-count = 0
-for local news:TGUINews = Eachin GUIMANAGER.list
-	count:+1
-Next
-print "afterUsed "+count
-
 
 		For local guiNews:TGuiNews = eachin GuiManager.listDragged
 			guiNews.remove()
@@ -5451,7 +5438,6 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 			EndIf
 		Next
 
-		Print "GetDoorFromXY : no door found at "+x+","+y
 		return null
 	End Function
 End Type

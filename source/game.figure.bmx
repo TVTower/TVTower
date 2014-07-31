@@ -258,7 +258,12 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 				'we reached our real target
 				if not HasToChangeFloor()
-					reachTarget()
+					'you can only reach target when not a passenger of
+					'the elevator - this avoids going into the elevator
+					'plan without really leaving the elevator
+					If not GetBuilding().Elevator.passengers.Contains(Self)
+						reachTarget()
+					endif
 				else
 					'set to elevator-targetx
 					oldPosition.setX(targetX) 'set tween position too
