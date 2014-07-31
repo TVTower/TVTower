@@ -98,10 +98,13 @@ Type TGUIScrollablePanel Extends TGUIPanel
 		EndIf
 	End Method
 
-Rem
-'	Debug drawing
-	Method Draw()
-		Super.Draw()
+	
+	Method DrawContent:Int()
+		'
+	End Method
+
+
+	Method DrawDebug:Int()
 		SetAlpha 0.7
 		SetColor 255,0,0
 		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
@@ -112,5 +115,4 @@ Rem
 		SetColor 255,255,255
 		SetAlpha 1.0
 	End Method
-End Rem
 End Type

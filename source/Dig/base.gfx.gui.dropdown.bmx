@@ -312,11 +312,14 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 		local upperParent:TGUIObject = GetParent("TGUIListBase")
 		upperParent.RestrictContentViewPort()
 
-		DrawBackground()
-
-		DrawValue()
+		Super.Draw()
 
 		upperParent.ResetViewPort()
 		oldCol.SetRGBA()
+	End Method
+
+
+	Method DrawContent:Int()
+		DrawValue()
 	End Method
 End Type

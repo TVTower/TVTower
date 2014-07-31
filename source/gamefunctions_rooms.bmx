@@ -1812,6 +1812,15 @@ Type RoomHandler_Office extends TRoomHandler
 		if planningDay = -1 then planningDay = GetWorldTime().getDay()
 
 
+		'if we have a licence dragged ... we should take care of "ESC"-Key
+		if draggedGuiProgrammePlanElement
+			if KeyManager.IsHit(KEY_ESCAPE)
+				draggedGuiProgrammePlanElement.dropBackToOrigin()
+				draggedGuiProgrammePlanElement = null
+				hoveredGuiProgrammePlanElement = null
+			endif
+		endif
+
 		Game.cursorstate = 0
 
 		'set all slots occupied or not
@@ -3353,10 +3362,10 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	Global GuiListSuitcase:TGUIProgrammeLicenceSlotList = null
 
 	'configuration
-	Global suitcasePos:TVec2D				= new TVec2D.Init(350,130)
-	Global suitcaseGuiListDisplace:TVec2D	= new TVec2D.Init(14,25)
-	Field programmesPerLine:int			= 12
-	Field movieCheapMaximum:int			= 50000
+	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
+	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
+	Field programmesPerLine:int	= 12
+	Field movieCheapMaximum:int	= 50000
 
 	Global _instance:RoomHandler_MovieAgency
 	Global _initDone:int = FALSE
@@ -3671,8 +3680,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			guiLicence = null
 		Next
 		'agency lists
-		local lists:TProgrammeLicence[][]				= [	listMoviesGood,listMoviesCheap,listSeries ]
-		local guiLists:TGUIProgrammeLicenceSlotList[]	= [	guiListMoviesGood, guiListMoviesCheap, guiListSeries ]
+		local lists:TProgrammeLicence[][] = [ listMoviesGood,listMoviesCheap,listSeries ]
+		local guiLists:TGUIProgrammeLicenceSlotList[] = [ guiListMoviesGood, guiListMoviesCheap, guiListSeries ]
 		For local j:int = 0 to guiLists.length-1
 			For local guiLicence:TGUIProgrammeLicence = eachin guiLists[j]._slots
 				if HasProgrammeLicence(guiLicence.licence) then continue
@@ -3691,7 +3700,13 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			For local licence:TProgrammeLicence = eachin lists[j]
 				if not licence then continue
 				if guiLists[j].ContainsLicence(licence) then continue
+
 				guiLists[j].addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
+rem
+				local lic:TGUIProgrammeLicence = new TGUIProgrammeLicence.CreateWithLicence(licence)
+				GUIManager.Remove(lic)
+				guiLists[j].addItem(lic,"-1" )
+endrem
 				'print "ADD lists"+j+" had missing licence: "+licence.getTitle()
 			Next
 		Next
@@ -4054,10 +4069,10 @@ Type RoomHandler_News extends TRoomHandler
 		'ATTENTION: We could do this in order of The NewsGenre-Values
 		'           But better add it to the buttons.data-property
 		'           for better checking
-		NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(69, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
-		NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(20, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
-		NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(69, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
-		NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(20, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+		NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(20, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+		NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(69, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+		NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(20, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
+		NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(69, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
 		NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(118, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
 		for local i:int = 0 to 4
 			NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
@@ -4068,10 +4083,10 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		'add news genre to button data
-		NewsGenreButtons[0].data.AddNumber("newsGenre", TNewsEvent.GENRE_POLITICS)
-		NewsGenreButtons[1].data.AddNumber("newsGenre", TNewsEvent.GENRE_SHOWBIZ)
-		NewsGenreButtons[2].data.AddNumber("newsGenre", TNewsEvent.GENRE_SPORT)
-		NewsGenreButtons[3].data.AddNumber("newsGenre", TNewsEvent.GENRE_TECHNICS)
+		NewsGenreButtons[0].data.AddNumber("newsGenre", TNewsEvent.GENRE_TECHNICS)
+		NewsGenreButtons[1].data.AddNumber("newsGenre", TNewsEvent.GENRE_POLITICS)
+		NewsGenreButtons[2].data.AddNumber("newsGenre", TNewsEvent.GENRE_SHOWBIZ)
+		NewsGenreButtons[3].data.AddNumber("newsGenre", TNewsEvent.GENRE_SPORT)
 		NewsGenreButtons[4].data.AddNumber("newsGenre", TNewsEvent.GENRE_CURRENTS)
 
 
@@ -4298,6 +4313,14 @@ EndRem
 
 		SetColor 255,255,255  'normal
 		GUIManager.Draw("Newsplanner")
+
+local count:int = 0
+for local news:TGUINews = Eachin GUIMANAGER.list
+	count:+1
+Next
+SetColor 0,0,0
+DrawText("RONNY: inList="+guiNewsListAvailable.entries.Count()+"  inManagerList="+count,470, 50)
+SetColor 255,255,255
 	End Function
 
 
@@ -4309,12 +4332,33 @@ EndRem
 
 	'deletes all gui elements (eg. for rebuilding)
 	Function RemoveAllGuiElements:int()
+local count:int = 0
+for local news:TGUINews = Eachin GUIMANAGER.list
+	count:+1
+Next
+print "before "+count
+
 		guiNewsListAvailable.emptyList()
 		guiNewsListUsed.emptyList()
+
+count = 0
+for local news:TGUINews = Eachin GUIMANAGER.list
+	count:+1
+Next
+print "afterUsed "+count
+
+
 		For local guiNews:TGuiNews = eachin GuiManager.listDragged
 			guiNews.remove()
 			guiNews = null
 		Next
+		'should not be needed
+		rem
+		For local guiNews:TGuiNews = eachin GuiManager.list
+			guiNews.remove()
+			guiNews = null
+		Next
+		endrem
 	End Function
 
 
@@ -4382,6 +4426,13 @@ EndRem
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		'if we have a licence dragged ... we should take care of "ESC"-Key
+		if draggedGuiNews
+			if KeyManager.IsHit(KEY_ESCAPE)
+				draggedGuiNews.dropBackToOrigin()
+			endif
+		endif
+
 		Game.cursorstate = 0
 
 		'delete unused and create new gui elements
@@ -4399,8 +4450,6 @@ EndRem
 	'we need to know whether we dragged or hovered an item - so we
 	'can react to right clicks ("forbid room leaving")
 	Function onMouseOverNews:int( triggerEvent:TEventBase )
-		if not CheckPlayerInRoom("newsagency") then return FALSE
-
 		local item:TGUINews = TGUINews(triggerEvent.GetSender())
 		if item = Null then return FALSE
 
@@ -4638,12 +4687,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Global GuiListSuitcase:TGUIAdContractSlotList = null
 
 	'configuration
-	Global suitcasePos:TVec2D					= new TVec2D.Init(520,100)
-	Global suitcaseGuiListDisplace:TVec2D		= new TVec2D.Init(19,32)
-	Global contractsPerLine:int					= 4
-	Global contractsNormalAmount:int			= 12
-	Global contractsCheapAmount:int				= 4
-	Global contractCheapAudienceMaximum:float	= 0.05 '5% market share
+	Global suitcasePos:TVec2D = new TVec2D.Init(520,100)
+	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(19,32)
+	Global contractsPerLine:int	= 4
+	Global contractsNormalAmount:int = 12
+	Global contractsCheapAmount:int	= 4
+	Global contractCheapAudienceMaximum:float = 0.05 '5% market share
 
 	Global _instance:RoomHandler_AdAgency
 	Global _initDone:int = FALSE
@@ -4661,8 +4710,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'===== CREATE/RESIZE LISTS =====
 
-		listNormal		= listNormal[..contractsNormalAmount]
-		listCheap		= listCheap[..contractsCheapAmount]
+		listNormal = listNormal[..contractsNormalAmount]
+		listCheap = listCheap[..contractsCheapAmount]
 
 
 		'===== CREATE GUI LISTS =====
@@ -5335,6 +5384,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		hoveredGuiAdContract = null
 		'reset dragged block too
 		draggedGuiAdContract = null
+
 		GUIManager.Update("adagency")
 	End Function
 

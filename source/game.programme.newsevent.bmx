@@ -369,7 +369,7 @@ End Type
 
 Type TNewsEffect
 	Field data:TData
-	Field _customEffectFunc:int(params:TData)
+	Field _customEffectFunc:int(data:TData, params:TData)
 
 
 	Method ToString:string()
@@ -391,7 +391,7 @@ Type TNewsEffect
 	
 	'call to handle/emit the effect
 	Method Trigger:int(params:TData)
-		if _customEffectFunc then return _customEffectFunc(params)
+		if _customEffectFunc then return _customEffectFunc(GetData(), params)
 
 		return EffectFunc(params)
 	End Method
@@ -400,6 +400,7 @@ Type TNewsEffect
 	'override this function in custom types
 	Method EffectFunc:int(params:TData)
 		print ToString()
+		print "data: "+GetData().ToString()
 		print "params: "+params.ToString()
 	
 		return True

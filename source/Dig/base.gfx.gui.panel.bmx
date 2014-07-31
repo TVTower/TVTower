@@ -85,9 +85,7 @@ Type TGUIPanel Extends TGUIObject
 			'set background to to be on same level than parent
 			guiBackground.SetZIndex(-1)
 
-			'manage it by our own
-			GuiManager.Remove(obj)
-			
+			'we manage it now, not the guimanager
 			addChild(obj)
 		EndIf
 	End Method
@@ -146,6 +144,11 @@ Type TGUIPanel Extends TGUIObject
 	End Method
 
 
+	Method DrawContent:Int()
+		'
+	End Method
+
+
 	Method Update()
 		'as we do not call "super.Update()" - we handle this manually
 		'if appearance changed since last update tick: inform widget
@@ -154,11 +157,6 @@ Type TGUIPanel Extends TGUIObject
 			SetAppearanceChanged(false)
 		Endif
 
-'		UpdateChildren()
-	End Method
-
-
-	Method Draw()
-		DrawChildren()
+		UpdateChildren()
 	End Method
 End Type

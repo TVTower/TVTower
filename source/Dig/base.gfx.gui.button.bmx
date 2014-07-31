@@ -220,7 +220,7 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int(position:TVec2D)
+	Method DrawButtonContent:Int(position:TVec2D)
 		if not caption then return False
 		if not caption.IsVisible() then return False
 
@@ -234,7 +234,7 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 
-	Method Draw:Int()
+	Method DrawContent:Int()
 		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 
@@ -253,7 +253,7 @@ Type TGUIButton Extends TGUIobject
 		endif
 
 		'draw label/caption of button
-		DrawContent(atPoint)
+		DrawButtonContent(atPoint)
 
 		oldCol.SetRGBA()
 	End Method

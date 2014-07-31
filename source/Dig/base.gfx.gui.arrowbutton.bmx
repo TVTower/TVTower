@@ -84,7 +84,7 @@ Type TGUIArrowButton Extends TGUIObject
 
 
 	'override default draw-method
-	Method Draw()
+	Method DrawContent()
 		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 

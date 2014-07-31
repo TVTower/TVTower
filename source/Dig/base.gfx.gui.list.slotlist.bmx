@@ -78,10 +78,9 @@ Type TGUISlotList Extends TGUIListBase
 		For Local i:Int = 0 To _slots.length-1
 			'skip empty slots
 			If _slots[i]=null then continue
-			'call the objects cleanup-method
-			_slots[i].remove()
-			'unset
-			_slots[i] = Null
+			'call the objects cleanup-method and unsets afterwards
+			_slots[i].Remove()
+			_slots[i] = null
 			_slotsState[i] = 0
 		Next
 	End Method
@@ -306,7 +305,7 @@ Type TGUISlotList Extends TGUIListBase
 			EventManager.triggerEvent(event)
 
 			If Not event.isVeto()
-				'remove the other one from the panel
+				'remove the other one from the panel - and add back to guimanager
 				If dragItem._parent Then dragItem._parent.RemoveChild(dragItem)
 
 				'drag the other one
@@ -404,10 +403,15 @@ Type TGUISlotList Extends TGUIListBase
 			EventManager.triggerEvent(event)
 			If event.isVeto() Then Return False
 
+
+			'remove from list - and add back to guimanager
+			'do not call Remove() as Remove() could call RemoveItem() again
+			'item.Remove()
+
 			'remove it
 			Self._SetSlot(slot, Null)
-			'remove from panel
-			guiEntriesPanel.removeChild(item)
+			'remove from panel - and add back to guimanager
+			'guiEntriesPanel.removeChild(item)
 
 			Self.RecalculateElements()
 			Return True
@@ -416,9 +420,9 @@ Type TGUISlotList Extends TGUIListBase
 	End Method
 
 
-	Method Draw()
-		Local atPoint:TVec2D = GetScreenPos()
+	Method DrawDebug()
 		If _debugMode
+			Local atPoint:TVec2D = GetScreenPos()
 			'restrict by scrollable panel - if not possible, there is no "space left"
 			If guiEntriesPanel.RestrictViewPort()
 				Local pos:TVec3D = Null
@@ -438,8 +442,6 @@ Type TGUISlotList Extends TGUIListBase
 				ResetViewPort()
 			EndIf
 		EndIf
-
-		DrawChildren()
 	End Method
 
 

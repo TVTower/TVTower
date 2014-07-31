@@ -172,7 +172,7 @@ Type TGUIScroller Extends TGUIobject
 	End Method
 
 
-	Method Draw()
+	Method DrawContent()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha() * 0.20
 

@@ -4,13 +4,14 @@ Type TNewsAgency
 	'when to announce a new newsevent
 	Field NextEventTime:Double = 0
 	'check for a new news every x-y minutes
-	Field NextEventTimeInterval:int[] = [50, 80]
+	Field NextEventTimeInterval:int[] = [60, 95]
 	'when to announce a new news from a newschain
 	Field NextChainTime:Double = 0
 	'check for a new newschain every x-y minutes
-	Field NextChainTimeInterval:int[] = [10, 15]
+	Field NextChainTimeInterval:int[] = [20, 30]
 	'holding chained news from the past hours/day
 	Field activeChains:TList = CreateList()
+
 
 	'=== WEATHER HANDLING ===
 	'time of last weather event/news
@@ -18,18 +19,23 @@ Type TNewsAgency
 	'announce new weather every x-y minutes
 	Field weatherUpdateTimeInterval:int[] = [360, 720]
 	Field weatherType:int = 0
-	
 
+	
 	'=== TERRORIST HANDLING ===
 	'both parties (VR and FR) have their own array entry
-	'when to update propabilities the next time
+	'when to update aggression the next time
 	Field terroristUpdateTime:Double = 0
-	'update terrorists probability every x-y minutes
-	Field terroristUpdateTimeInterval:int[] = [45, 60]
-	'chances that an attack is announced (0 - 1.0)
-	Field terroristAttackProbability:Float[] = [0.0, 0.0]
-	'rate the propability grows each game hour
-	Field terroristAttackProbabilityGrowth:Float[][] = [ [0.02,0.07], [0.02,0.07] ]	
+	'update terrorists aggression every x-y minutes
+	Field terroristUpdateTimeInterval:int[] = [30, 45]
+	'level of terrorists aggression (each level = new news)
+	'party 2 starts later
+	Field terroristAggressionLevel:Int[] = [0, -1]
+	'progress in the given aggression level (0 - 1.0)
+	Field terroristAggressionLevelProgress:Float[] = [0.0, 0.0]
+	'rate the aggression level progresses each game hour
+	Field terroristAggressionLevelProgressRate:Float[][] = [ [0.05,0.09], [0.05,0.09] ]	
+
+
 	Global _instance:TNewsAgency
 
 
@@ -55,26 +61,125 @@ Type TNewsAgency
 		'set next update time (between min-max interval)
 		terroristUpdateTime = GetWorldTime().GetTimeGone() + 60*randRange(terroristUpdateTimeInterval[0], terroristUpdateTimeInterval[1])
 
-		'who is the mainaggressor? - this parties probability grows faster
-		local mainAggressor:int = (terroristAttackProbability[1] > terroristAttackProbability[0])
-		
+		'who is the mainaggressor? - this parties levelProgress grows faster
+		local mainAggressor:int = (terroristAggressionLevel[1] + terroristAggressionLevelProgress[1] > terroristAggressionLevel[0] + terroristAggressionLevelProgress[0])
+
+
+		'adjust level progress
 		For local i:int = 0 to 1
 			'randRange uses "ints", so convert 1.0 to 100
-			local increase:Float = 0.01 * randRange(terroristAttackProbabilityGrowth[i][0]*100, terroristAttackProbabilityGrowth[i][1]*100)
+			local increase:Float = 0.01 * randRange(terroristAggressionLevelProgressRate[i][0]*100, terroristAggressionLevelProgressRate[i][1]*100)
 			'if not the mainaggressor, grow slower
 			if i <> mainAggressor then increase :* 0.5
 
-			terroristAttackProbability[i] :+ increase
-			
-			'more than 100%? start attack (news event)
-			if terroristAttackProbability[i] > 1.0
-				terroristAttackProbability[i] = 0.0
-				'print GetWorldTime().GetDay()+". "+GetWorldTime().GetFormattedTime() + " | terrorist["+i+"] attack"
+			'each level has its custom increasement
+			'so responses come faster and faster
+			Select terroristAggressionLevel[i]
+				case 1
+					terroristAggressionLevelProgress[i] :+ 1.1 * increase
+				case 2
+					terroristAggressionLevelProgress[i] :+ 1.2 * increase
+				case 3
+					terroristAggressionLevelProgress[i] :+ 1.3 * increase
+				case 4
+					terroristAggressionLevelProgress[i] :+ 1.5 * increase
+				default
+					terroristAggressionLevelProgress[i] :+ increase
+			End Select
+		Next
 
-				'Create terror news event
+		'handle "level ups"
+		For local i:int = 0 to 1
+			'skip if no level up happens
+			if terroristAggressionLevelProgress[i] < 1.0 then continue
+
+			'set to next level
+			terroristAggressionLevel[i] :+ 1
+			'if progress was 1.05, keep the 0.05 for the new level
+			terroristAggressionLevelProgress[i] :- 1.0
+
+			'announce news for levels 1-4
+			if terroristAggressionLevel[i] < 5
+				local newsEvent:TNewsEvent = GetTerroristNewsEvent(i)
+				If newsEvent then announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + 0)
+			endif
+
+			'reset level if limit reached, also delay by 2 levels so
+			'things do not happen one after another
+			if terroristAggressionLevel[i] >= 5 + 1
+				print terroristAggressionLevel[i]
+				'reset to level 0
+				terroristAggressionLevel[i] = 0
 			endif
 		Next
 	End Method
+
+
+	Method GetTerroristNewsEvent:TNewsEvent(terroristGroup:int = 0)
+		Local aggressionLevel:int = terroristAggressionLevel[terroristGroup]
+		Local quality:int = randRange(50,60) + aggressionLevel * 5
+		Local price:int = randRange(45,50) + aggressionLevel * 5
+		Local title:String
+		Local description:String
+
+		local genre:int = TNewsEvent.GENRE_POLITICS
+		Select aggressionLevel
+			case 1
+				if terroristGroup = 1
+					title = "Botschafter der VR Duban beleidigt Amtskollegen"
+					description = "Es ist ein Eklat: ein Botschafter der VR Duban beleidigte seinen Amtskollegen aus der Freien Republik Duban."
+				else
+					title = "Botschafter der FR Duban beschimpft Nachbarn"
+					description = "Das kann nicht sein: ein Botschafter der FR Duban beleidigte den Repräsentanten der Volksrepublik Duban."
+				endif
+			case 2
+				if terroristGroup = 1
+					title = "Botschafter verprügelt"
+					description = "Auf dem Heimweg wurde der Botschafter der VR Duban in der Tiefgarage bewusstlos geschlagen. Zeugen sahen einen PKW der FR Duban davonfahren."
+				else
+					title = "Wohnung eines Botschafters verwüstet"
+					description = "Die Wohnung des Botschafters der Freien Republik Duban wurde verwüstet. Hinweise deuten auf Kreise der VR DUBAN."
+				endif
+			case 3
+				if terroristGroup = 1
+					title = "VR Duban droht mit Vergeltung"
+					description = "Die VR Duban droht offen mit Rache. Die Schuldigen sollen gefunden worden sein. Die Situation ist brenzlig."
+				else
+					title = "FR Duban warnt vor Konsequenzen"
+					description = "Genug. So der knappe Wortlaut der Botschaft. Die FR Duban ergreift Gegenmaßnahmen."
+				endif
+			case 4
+				title = "Die Polizei warnt vor Terroristen"
+				description = "Die Polizei verlor die Spur zu einem kürzlich gesichteten Terroristen, er soll dubanischer Herkunft sein."
+				'currents instead of politics
+				genre = TNewsEvent.GENRE_CURRENTS
+			default
+				return null
+		End Select
+
+		Local NewsEvent:TNewsEvent = TNewsEvent.Create(title, description, genre, quality, price)
+		'remove news from available list to avoid repetition
+		NewsEventCollection.Remove(NewsEvent)
+
+		'send out terrorist
+		if aggressionLevel = 4
+			local effect:TNewsEffect = new TNewsEffect
+
+			effect.GetData().Add("figure", Game.terrorists[terroristGroup])
+			'effect.GetData().Add("room", GetRoomCollection().GetRandom())
+			if terroristGroup = 0
+				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("frduban"))
+			else
+				effect.GetData().Add("room", GetRoomCollection().GetFirstByDetails("vrduban"))
+			endif
+			effect._customEffectFunc = TFigureTerrorist.SendFigureToRoom
+
+			NewsEvent.AddHappenEffect(effect)
+		endif
+
+		Return NewsEvent
+	End Method
+	
 
 
 	Method UpdateWeather:int()
@@ -88,7 +193,6 @@ Type TNewsAgency
 		EndIf
 
 	End Method
-
 
 
 	Method GetWeatherNewsEvent:TNewsEvent()
@@ -318,15 +422,20 @@ Type TNewsAgency
 	End Function
 
 
-	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, fromNetwork:Int=0)
+	Method AddNewsEventToPlayer:Int(newsEvent:TNewsEvent, forPlayer:Int=-1, forceAdd:Int=False, fromNetwork:Int=0)
 		local player:TPlayer = GetPlayerCollection().Get(forPlayer)
 		'only add news/newsblock if player is Host/Player OR AI
 		'If Not Game.isLocalPlayer(forPlayer) And Not Game.isAIPlayer(forPlayer) Then Return 'TODO: Wenn man gerade Spieler 2 ist/verfolgt (Taste 2) dann bekommt Spieler 1 keine News
-		If Player.newsabonnements[newsEvent.genre] > 0
+		If Player.newsabonnements[newsEvent.genre] > 0 or forceAdd
 			local news:TNews = TNews.Create("", 0, newsEvent)
 
-			news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
-			news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayerCollection().Get(forPlayer).GetNewsAbonnement(newsEvent.genre))
+			if Player.newsabonnements[newsEvent.genre] >0
+				news.publishDelay = GetNewsAbonnementDelay(newsEvent.genre, Player.newsabonnements[newsEvent.genre] )
+				news.priceModRelativeNewsAgency = GetNewsRelativeExtraCharge(newsEvent.genre, GetPlayerCollection().Get(forPlayer).GetNewsAbonnement(newsEvent.genre))
+			Else
+				news.publishDelay = 0
+				news.priceModRelativeNewsAgency = 0.0
+			endif
 
 			'add to players collection
 			player.GetProgrammeCollection().AddNews(news)
@@ -334,11 +443,11 @@ Type TNewsAgency
 	End Method
 
 
-	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Int=0)
+	Method announceNewsEvent:Int(newsEvent:TNewsEvent, happenedTime:Int=0, forceAdd:Int=False)
 		newsEvent.doHappen(happenedTime)
 
 		For Local i:Int = 1 To 4
-			AddNewsEventToPlayer(newsEvent, i)
+			AddNewsEventToPlayer(newsEvent, i, forceAdd)
 		Next
 
 		If newsEvent.episodes.count() > 0 Then activeChains.AddLast(newsEvent)
@@ -367,7 +476,7 @@ Type TNewsAgency
 	End Method
 
 
-	Method AnnounceNewNewsEvent:Int(delayAnnouncement:Int=0)
+	Method AnnounceNewNewsEvent:Int(delayAnnouncement:Int=0, forceAdd:Int=False)
 		'=== CREATE A NEW NEWS ===
 		Local newsEvent:TNewsEvent = GenerateNewNewsEvent()
 
@@ -383,9 +492,9 @@ Type TNewsAgency
 				Next
 			EndIf
 
-			If not skipNews
+			If not skipNews or forceAdd
 				'Print "[LOCAL] AnnounceNewNews: added news title="+news.title+", day="+GetWorldTime().getDay(news.happenedtime)+", time="+GetWorldTime().GetFormattedTime(news.happenedtime)
-				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + delayAnnouncement)
+				announceNewsEvent(newsEvent, GetWorldTime().GetTimeGone() + delayAnnouncement, forceAdd)
 			EndIf
 		EndIf
 

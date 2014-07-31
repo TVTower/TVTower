@@ -101,7 +101,7 @@ Type TGUISpriteDropDown extends TGUIDropDown
 	
 
 	'override to add sprite next to value
-	Method DrawContent:Int(position:TVec2D)
+	Method DrawInputContent:Int(position:TVec2D)
 		'position is already a copy, so we can reuse it without
 		'copying it first
 
@@ -119,7 +119,7 @@ Type TGUISpriteDropDown extends TGUIDropDown
 		endif
 
 		'draw value
-		Super.DrawContent(position)
+		Super.DrawInputContent(position)
 	End Method
 End Type
 
@@ -663,7 +663,7 @@ Type TGUIChatEntry Extends TGUIListItem
 	End Method
 
 
-	Method Draw:Int()
+	Method DrawContent:Int()
 		Self.getParent("tguilistbase").RestrictViewPort()
 
 		If Self.showtime <> Null Then SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
@@ -829,13 +829,13 @@ Type TGUIGameEntry Extends TGUISelectListItem
 	End Method
 
 
-	Method Draw:Int()
+	Method DrawContent:Int()
 		If Self.showtime <> Null
 			SetAlpha Float(Self.showtime - Time.GetTimeGone())/500.0
 		endif
 		
 		'draw highlight-background etc
-		Super.Draw()
+		Super.DrawContent()
 
 		SetAlpha 1.0
 	End Method
@@ -1336,7 +1336,9 @@ Type TGUIGameListItem Extends TGUIListItem
 			EventManager.triggerEvent(TEventSimple.Create("guiGameObject.OnMouseOver", new TData, Self))
 		EndIf
 
-		If Self.mouseover Then Game.cursorstate = 1
+		'over item and item could get dragged - indicate with hand cursor
+		If Self.mouseover and Self.IsDragable() Then Game.cursorstate = 1
+
 		If Self.isDragged()
 			Self.SetAsset(Self.assetDragged)
 			Game.cursorstate = 2
@@ -1344,7 +1346,7 @@ Type TGUIGameListItem Extends TGUIListItem
 	End Method
 
 
-	Method Draw()
+	Method DrawContent()
 		asset.draw(Self.GetScreenX(), Self.GetScreenY())
 		'hovered
 		If Self.mouseover

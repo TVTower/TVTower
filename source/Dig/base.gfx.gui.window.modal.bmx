@@ -53,7 +53,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	Method SetDialogueType:Int(typeID:Int)
 		For Local button:TGUIobject = EachIn Self.buttons
 			button.remove()
-			removeChild(button)
+			'DeleteChild(button)
 		Next
 		buttons = New TGUIButton[0] '0 sized array
 
@@ -188,7 +188,7 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
-	Method Draw()
+	Method DrawContent()
 		local oldCol:TColor = new TColor.Get()
 		local newAlpha:Float = 1.0
 

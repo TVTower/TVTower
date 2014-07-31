@@ -349,15 +349,18 @@ Type TGame {_exposeToLua="selected"}
 		'=== SETUP NEWS + ABONNEMENTS ===
 		'adjust abonnement for each newsgroup to 1
 		For Local playerids:Int = 1 To 4
-			For Local i:Int = 0 To 4 '5 groups
-				GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
-			Next
+'			For Local i:Int = 0 To 4 '5 groups
+'				GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
+'			Next
+
+			'only have abonnement for currents
+			GetPlayerCollection().Get(playerids).SetNewsAbonnement(4, 1)
 		Next
 
-		'create 3 starting news
-		GetNewsAgency().AnnounceNewNewsEvent(-60)
-		GetNewsAgency().AnnounceNewNewsEvent(-120)
-		GetNewsAgency().AnnounceNewNewsEvent(-120)
+		'create 3 starting news, True = add even without news abonnement
+		GetNewsAgency().AnnounceNewNewsEvent(-60, True)
+		GetNewsAgency().AnnounceNewNewsEvent(-120, True)
+		GetNewsAgency().AnnounceNewNewsEvent(-120, True)
 
 		'place them into the players news shows
 		local newsToPlace:TNews
@@ -367,8 +370,10 @@ Type TGame {_exposeToLua="selected"}
 				'use (0) - as each "placed" news is removed from the collection
 				'leaving the next on listIndex 0
 				newsToPlace = GetPlayerProgrammeCollectionCollection().Get(playerID).GetNewsAtIndex(0)
-				if not newsToPlace then throw "Game.PrepareNewGame: initial news " + i + " missing."
-
+				if not newsToPlace
+					'throw "Game.PrepareNewGame: initial news " + i + " missing."
+					continue
+				endif
 				'set it paid
 				newsToPlace.paid = true
 				'set planned

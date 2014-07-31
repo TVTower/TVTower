@@ -295,9 +295,19 @@ Type TGUIManager
 		ListReversed = List.Reversed()
 	End Method
 
+rem
+	Method DeleteObject(obj:TGUIObject var)
+		if not obj then return 
+		obj.remove()
+		Remove(obj)
+		obj = null
+	End Method
+endrem
 
 	'only remove from lists (object cleanup has to get called separately)
 	Method Remove:Int(obj:TGUIObject)
+		if not obj then return False
+		
 		obj.setOption(GUI_OBJECT_MANAGED, False)
 
 		List.remove(obj)
@@ -305,8 +315,6 @@ Type TGUIManager
 
 		RemoveDragged(obj)
 
-		'no need to sort on removal as the order wont change then (just one less)
-		'SortLists()
 		Return True
 	End Method
 
@@ -698,7 +706,7 @@ Type TGUIobject
 	End Method
 
 
-	'cleanup function
+	'cleanup function, makes it ready for getting set to null
 	Method Remove:Int()
 		'unlink all potential event listeners concerning that object
 		EventManager.unregisterListenerByLimit(self,self)
@@ -708,6 +716,7 @@ Type TGUIobject
 		Next
 
 		'maybe our parent takes care of us...
+'		If _parent Then _parent.DeleteChild(Self)
 		If _parent Then _parent.RemoveChild(Self)
 
 		'remove children (so they might inform their children and so on)
@@ -818,26 +827,36 @@ Type TGUIobject
 
 		child.setParent( Self )
 		If Not children Then children = CreateList()
-'		If children.addLast(child) then GUIManager.Remove(child)
-		children.addLast(child)
-		children.sort(True, TGUIManager.SortObjects)
 
-		'maybe zindex changed now
-		if hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
-			GuiManager.SortLists()
+		If children.addLast(child)
+			'remove from guimanager, we take care of it
+			GUIManager.Remove(child)
+			children.sort(True, TGUIManager.SortObjects)
+
+			'maybe zindex changed now
+			if hasOption(GUI_OBJECT_CHILDREN_CHANGE_GUIORDER)
+				GuiManager.SortLists()
+			endif
 		endif
 	End Method
 
 
-	Method RemoveChild:Int(child:TGUIobject)
+	'just deletes child from children list
+	Method DeleteChild:Int(child:TGUIobject)
 		If Not children Then Return False
 		children.Remove(child)
-rem
-		If children.Remove(child)
-			GUIManager.Remove(child)
-			GUIManager.Add(child)
-		endif
-endrem
+	End Method
+	
+
+	'removes child and adds it back to the guimanager
+	Method RemoveChild:Int(child:TGUIobject)
+		'remove from children list
+		If Not children Then Return False
+		children.Remove(child)
+
+		'add back to guimanager
+		'RON: this should be needed but bugs out "news dnd handling"
+		'GuiManager.Add(child)
 	End Method
 
 
@@ -1372,7 +1391,26 @@ endrem
 	End Method
 
 
-	Method Draw() Abstract
+	Method Draw()
+		DrawBackground()
+		DrawContent()
+		DrawChildren()
+		DrawOverlay()
+	End Method
+
+
+	'has to get implemented in each widget
+	Method DrawContent() abstract
+
+
+	Method DrawBackground()
+		'
+	End Method
+
+
+	Method DrawOverlay()
+		'
+	End Method
 
 
 	'used when an item is eg. dragged
@@ -1395,7 +1433,7 @@ endrem
 		'skip children if self not visible
 		if not IsVisible() then return false
 
-		'update added elements
+		'draw children
 		For Local obj:TGUIobject = EachIn children
 			'before skipping a dragged one, we try to ask it as a ghost (at old position)
 			If obj.isDragged() Then obj.drawGhost()
@@ -1404,12 +1442,6 @@ endrem
 
 			'skip invisible objects
 			if not obj.IsVisible() then continue
-
-			'avoid getting updated multiple times
-			'this can be overcome with a manual "obj.Update()"-call
-			'if obj._lastDrawTick = GUIManager._lastDrawTick then continue
-			'obj._lastDrawTick = GUIManager._lastDrawTick
-
 
 			'tint image if object is disabled
 			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
@@ -1430,14 +1462,16 @@ endrem
 
 
 	Method Update:Int()
+		'to recognize clicks/hovers/actions on child elements:
+		'ask them first!
+		UpdateChildren()
+	
 		'if appearance changed since last update tick: inform widget
 		If isAppearanceChanged()
 			onStatusAppearanceChange()
 			SetAppearanceChanged(false)
 		Endif
 
-		'always be above parent
-'		If _parent And _parent.rect.position.z >= rect.position.z Then setZIndex(_parent.rect.position.z+10)
 
 		If GUIManager._ignoreMouse then return FALSE
 
@@ -1684,11 +1718,14 @@ Type TGUISimpleRect Extends TGUIobject
 	End Method
 
 
-	Method Draw()
-	Rem debug
+	Method DrawContent:Int()
+		'
+	End Method
+
+
+	Method DrawDebug:Int()
 		SetAlpha 0.5
 		DrawRect(self.GetScreenX(), self.GetScreenY(), self.GetScreenWidth(), self.GetScreenHeight())
 		SetAlpha 1.0
-	endrem
 	End Method
 End Type

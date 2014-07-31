@@ -120,6 +120,8 @@ Type TGUISelectListItem Extends TGUIListItem
 
 
 	Method DrawBackground:int()
+		local oldCol:TColor = new TColor.Get()
+
 		'available width is parentsDimension minus startingpoint
 		Local maxWidth:Int = GetParent().getContentScreenWidth() - rect.getX()
 		If mouseover
@@ -133,6 +135,8 @@ Type TGUISelectListItem Extends TGUIListItem
 			SetColor 255,255,255
 			SetAlpha GetAlpha()*2.0
 		EndIf
+
+		oldCol.SetRGBA()
 	End Method
 
 
@@ -142,17 +146,19 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-	Method Draw:Int()
-		local upperParent:TGUIObject = GetUppermostParent()
-		upperParent.RestrictViewPort()
-		local oldCol:TColor = new TColor.Get()
-
-
-		DrawBackground()
+	Method DrawContent:Int()
 		DrawValue()
+	End Method
+	
+	
+	Method Draw:Int()
+'deactivated, creates flickering
+'		local upperParent:TGUIObject = GetUppermostParent()
+'		upperParent.RestrictViewPort()
 
-		oldCol.SetRGBA()
-		upperParent.ResetViewPort()
+		Super.Draw()
+
+'		upperParent.ResetViewPort()
 	End Method
 End Type
 

@@ -93,8 +93,11 @@ Type TGUIListBase Extends TGUIobject
 
 	Method EmptyList:Int()
 		For Local obj:TGUIobject = EachIn entries
-			'call the objects cleanup-method
+			'call the objects cleanup-method and unsets the object
+'			GUIManager.DeleteObject(obj)
 			obj.remove()
+			GUIManager.Remove(obj)
+			obj = null
 		Next
 		'overwrite the list with a new one
 		entries = CreateList()
@@ -254,7 +257,7 @@ Type TGUIListBase Extends TGUIobject
 			guiEntriesPanel.removeChild(item)
 
 			EventManager.triggerEvent(TEventSimple.Create("guiList.removeItem", new TData.Add("item", item) , Self))
-
+			
 			Return True
 		Else
 			Print "not able to remove item "+item._id
@@ -623,6 +626,10 @@ endrem
 	Method Update:Int()
 		Super.Update()
 
+		'update all children (and therefore items of the guientriespanel)
+		'now done by basic "Update" already
+		'UpdateChildren()
+
 		'enable/disable buttons of scrollers if they reached the
 		'limits of the scrollable panel
 		if guiScrollerH.hasOption(GUI_OBJECT_ENABLED)
@@ -647,7 +654,7 @@ endrem
 	End Method
 
 
-	Method Draw()
+	Method DrawBackground:Int()
 		If guiBackground
 			guiBackground.Draw()
 		Else
@@ -662,13 +669,18 @@ endrem
 
 			DrawRect(rect.GetX(), rect.GetY(), rect.GetW(), rect.GetH())
 
-
 			oldCol.SetRGBA()
 		EndIf
+	End Method
 
-		if guiEntriesPanel then guiEntriesPanel.Draw()
+
+	Method DrawContent:Int()
+		'
+	End Method
 
 
+
+	Method DrawDebug:Int()
 		If _debugMode
 			SetAlpha 0.2
 			Local rect:TRectangle = new TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
@@ -749,13 +761,13 @@ Type TGUIListItem Extends TGUIobject
 		Super.Remove()
 
 		'also remove itself from the list it may belong to
+		'this adds the object back to the guimanager
 		Local parent:TGUIobject = Self._parent
 		If TGUIPanel(parent) Then parent = TGUIPanel(parent)._parent
 		If TGUIScrollablePanel(parent) Then parent = TGUIScrollablePanel(parent)._parent
 		If TGUIListBase(parent) Then TGUIListBase(parent).RemoveItem(Self)
 		Return True
 	End Method
-
 
 	'override default
 	Method onClick:Int(triggerEvent:TEventBase)
@@ -822,7 +834,7 @@ Type TGUIListItem Extends TGUIobject
 	End Method
 
 
-	Method Draw()
+	Method DrawContent:Int()
 		Local atPoint:TVec2D = GetScreenPos()
 		Local draw:Int=True
 		Local parent:TGUIobject = Null

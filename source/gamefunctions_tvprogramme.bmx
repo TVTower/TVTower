@@ -489,7 +489,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 
 	'draw the programmeblock inclusive text
     'zeichnet den Programmblock inklusive Text
-	Method Draw:int()
+	Method DrawContent:int()
 		'check if we have to skip ghost drawing
 		if hasOption(GUI_OBJECT_DRAWMODE_GHOST) and not CanDrawGhost() then return False
 
@@ -1105,7 +1105,7 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 	End Method
 
 
-	Method Draw:int()
+	Method DrawContent:int()
 		local atPoint:TVec2D = GetScreenPos()
 		local pos:TVec2D = null
 		For local i:int = 0 to _slotsState.length-1
@@ -1132,10 +1132,6 @@ Type TGUIProgrammePlanSlotList extends TGUISlotList
 		Next
 
 		if dayChangeGuiProgrammePlanElement then dayChangeGuiProgrammePlanElement.draw()
-
-		'draw ghosts...
-		'if not Game.DebugInfos then
-		DrawChildren()
 	End Method
 End Type
 
@@ -1973,7 +1969,7 @@ Type TGUINews extends TGUIGameListItem
 	End Method
 
 
-	Method Draw()
+	Method DrawContent()
 		State = 0
 		SetColor 255,255,255
 
@@ -2084,10 +2080,11 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 	End Method
 End Type
 
+
+
 'a graphical representation of programmes to buy/sell/archive...
 Type TGUIProgrammeLicence extends TGUIGameListItem
 	Field licence:TProgrammeLicence
-	Field isAffordable:int = TRUE
 
 rem
 
@@ -2151,19 +2148,18 @@ endrem
 	End Method
 
 
-	'override default update-method
-	Method Update:int()
-		super.Update()
+	'override to only allow dragging for affordable or own licences
+	Method IsDragable:Int() 
+		If Super.IsDragable()
+			return (licence.owner = GetPlayerCollection().playerID or (licence.owner <= 0 and IsAffordable()))
+		Else
+			return False
+		EndIf
+	End Method
 
-		self.isAffordable = GetPlayerCollection().Get().getFinance().canAfford(licence.getPrice())
 
-
-		if licence.owner = GetPlayerCollection().playerID or (licence.owner <= 0 and self.isAffordable)
-			'change cursor to if mouse over item or dragged
-			if self.mouseover then Game.cursorstate = 1
-		endif
-		'ignore affordability if dragged...
-		if isDragged() then Game.cursorstate = 2
+	Method IsAffordable:Int()
+		return GetPlayerCollection().Get().getFinance().canAfford(licence.getPrice())
 	End Method
 
 
@@ -2190,11 +2186,11 @@ endrem
 	End Method
 
 
-	Method Draw()
+	Method Draw:Int()
 		SetColor 255,255,255
 
 		'make faded as soon as not "dragable" for us
-		if licence.owner <> GetPlayerCollection().playerID and (licence.owner<=0 and not isAffordable) then SetAlpha 0.75
+		if licence.owner <> GetPlayerCollection().playerID and (licence.owner<=0 and not IsAffordable()) then SetAlpha 0.75
 		Super.Draw()
 		SetAlpha 1.0
 	End Method
@@ -2299,14 +2295,16 @@ Type TGuiAdContract extends TGUIGameListItem
 	End Method
 
 
-	Method Draw()
+	Method Draw:Int()
 		SetColor 255,255,255
 		local oldAlpha:float = GetAlpha()
 
 		'make faded as soon as not "dragable" for us
 		if contract.owner <> GetPlayerCollection().playerID and contract.owner>0 then SetAlpha 0.75*oldAlpha
 		if not isDragable() then SetColor 200,200,200
+
 		Super.Draw()
+
 		SetAlpha oldalpha
 		SetColor 255,255,255
 	End Method

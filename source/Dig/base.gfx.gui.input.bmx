@@ -184,7 +184,7 @@ Type TGUIinput Extends TGUIobject
 
 
 	'draws overlay and returns used dimension/space
-	Method DrawOverlay:TVec2D(position:TVec2D)
+	Method DrawButtonOverlay:TVec2D(position:TVec2D)
 		'contains width/height of space the overlay uses
 		local dim:TVec2D = new TVec2D.Init(0,0)
 		local overlayArea:TRectangle = GetOverlayArea()
@@ -229,7 +229,7 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int(position:TVec2D)
+	Method DrawInputContent:Int(position:TVec2D)
 	    Local i:Int	= 0
 		Local printValue:String	= value
 
@@ -260,7 +260,7 @@ Type TGUIinput Extends TGUIobject
 	End Method
 
 
-	Method Draw()
+	Method DrawContent()
 		Local atPoint:TVec2D = GetScreenPos()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
@@ -285,7 +285,7 @@ Type TGUIinput Extends TGUIobject
 		If spriteName<>"" Then sprite = GetSpriteFromRegistry(GetSpriteName() + Self.state, spriteNameDefault)
 		If sprite
 			'draw overlay and save occupied space
-			local overlayDim:TVec2D = DrawOverlay(atPoint)
+			local overlayDim:TVec2D = DrawButtonOverlay(atPoint)
 
 			'move sprite by Icon-Area (and decrease width)
 			If overlayPosition = "iconLeft" Then atPoint.AddXY(overlayDim.GetX(), overlayDim.GetY())
@@ -301,7 +301,7 @@ Type TGUIinput Extends TGUIobject
 		'limit maximal text width
 		Self.maxTextWidth = widgetWidth - textPos.GetX()*2
 		'actually draw
-		DrawContent(atPoint.Copy().AddXY(textPos.GetX(), textPos.GetY()))
+		DrawInputContent(atPoint.Copy().AddXY(textPos.GetX(), textPos.GetY()))
 
 		oldCol.SetRGBA()
 	End Method

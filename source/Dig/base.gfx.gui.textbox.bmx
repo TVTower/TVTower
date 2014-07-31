@@ -74,7 +74,7 @@ Type TGUITextBox Extends TGUIobject
 	End Method
 
 
-	Method Draw:Int()
+	Method DrawContent:Int()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 

@@ -50,6 +50,11 @@ Type TGUIBackgroundBox Extends TGUIobject
 	End Method
 
 
+	Method DrawContent:Int()
+		'
+	End Method
+
+
 	Method DrawBackground:Int()
 		Local drawPos:TVec2D = GetScreenPos()
 		local oldCol:TColor = new TColor.Get()
@@ -58,10 +63,5 @@ Type TGUIBackgroundBox Extends TGUIobject
 		SetAlpha oldCol.a * GetScreenAlpha() * spriteAlpha
 		GetSprite().DrawArea(drawPos.getX(), drawPos.getY(), GetScreenWidth(), GetScreenHeight())
 		oldCol.SetRGBA()
-	End Method
-
-
-	Method Draw()
-		DrawBackground()
 	End Method
 End Type
