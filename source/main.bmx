@@ -18,6 +18,7 @@ Import "Dig/base.util.event.bmx"
 Import "Dig/base.util.interpolation.bmx"
 Import "Dig/base.util.graphicsmanager.bmx"
 Import "Dig/base.util.data.xmlstorage.bmx"
+Import "Dig/base.util.profiler.bmx"
 
 Import "Dig/base.gfx.sprite.particle.bmx"
 
@@ -118,7 +119,7 @@ TLogger.setLogMode(LOG_ALL)
 TLogger.setPrintMode(LOG_ALL )
 
 'print "ALLE MELDUNGEN AUS"
-TLogger.SetPrintMode(0)
+'TLogger.SetPrintMode(0)
 
 'TLogger.setPrintMode(LOG_ALL &~ LOG_AI ) 'all but ai
 'THIS IS TO REMOVE CLUTTER FOR NON-DEVS
@@ -173,7 +174,8 @@ Type TApp
 			GetGraphicsManager().SetResolution(800,600)
 			GetGraphicsManager().InitGraphics()
 			
-			'load graphics needed for loading screen
+			'load graphics needed for loading screen,
+			'load directly (no delayed loading)
 			obj.LoadResources(obj.baseResourceXmlUrl, True)			
 		EndIf
 
@@ -306,13 +308,17 @@ Type TApp
 
 
 	Function Update:Int()
+		TProfiler.Enter("Update")
 		'every 3rd update do a system update
 		If GetDeltaTimer().timesUpdated Mod 3 = 0
 			EventManager.triggerEvent( TEventSimple.Create("App.onSystemUpdate",Null) )
 		EndIf
 
+		TProfiler.Enter("RessourceLoader")
 		'check for new resources to load
 		RURC.Update()
+		TProfiler.Leave("RessourceLoader")
+		
 
 		KEYMANAGER.Update()
 		MOUSEMANAGER.Update()
@@ -359,16 +365,16 @@ Type TApp
 				EndIf
 
 				If Game.gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+60)
-					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-60)
+					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+10)
+					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-10)
 
 					If KEYMANAGER.IsDown(KEY_RIGHT)
 						TEntity.globalWorldSpeedFactor :+ 0.10
-						GetWorldTime().AdjustTimeFactor(+60)
+						GetWorldTime().AdjustTimeFactor(+10)
 					EndIf
 					If KEYMANAGER.IsDown(KEY_LEFT) Then
 						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.10, 0)
-						GetWorldTime().AdjustTimeFactor(-60)
+						GetWorldTime().AdjustTimeFactor(-10)
 					EndIf
 
 					if KEYMANAGER.IsHit(KEY_Y)
@@ -466,9 +472,8 @@ Type TApp
 		TError.UpdateErrors()
 		Game.cursorstate = 0
 
-
 		ScreenCollection.UpdateCurrent(GetDeltaTimer().GetDelta())
-
+	
 		If Not GuiManager.GetKeystrokeReceiver() And KEYWRAPPER.hitKey(KEY_ESCAPE)
 			TApp.CreateConfirmExitAppDialogue()
 		EndIf
@@ -480,6 +485,8 @@ Type TApp
 		If Game.networkGame Then Network.Update()
 
 		GUIManager.EndUpdates() 'reset modal window states
+
+		TProfiler.Leave("Update")
 	End Function
 
 
@@ -1096,6 +1103,16 @@ Type TFigureTerrorist Extends TFigure
 		Super.Create(FigureName, sprite, x, onFloor, speed, ControlledByID)
 		Return Self
 	End Method
+
+
+	'used in news effect function
+	Function SendFigureToRoom(data:TData, params:TData)
+		local figure:TFigureTerrorist = TFigureTerrorist(data.Get("figure"))
+		local room:TRoom = TRoom(data.Get("room"))
+		if not figure or not room then return
+
+		figure.SetDeliverToRoom(room)
+	End Function
 
 
 	'override to make the figure stay in the room for a random time
@@ -2833,8 +2850,15 @@ End Function
 
 
 Function StartApp:Int()
+	TProfiler.Enter("StartApp")
 	'assign dev config (resources are now loaded)
 	App.devConfig = TData(GetRegistry().Get("DEV_CONFIG", New TData))
+
+	'disable log from now on (if dev wished so)
+	If not App.devConfig.GetBool("DEV_LOG", True)
+		TLogger.SetPrintMode(0)
+	EndIf
+
 	TFunctions.roundToBeautifulEnabled = App.devConfig.GetBool("DEV_ROUND_TO_BEAUTIFUL_VALUES", True)
 	If TFunctions.roundToBeautifulEnabled
 		TLogger.Log("StartTVTower()", "DEV RoundToBeautiful is enabled", LOG_DEBUG | LOG_LOADING)
@@ -2868,9 +2892,11 @@ Function StartApp:Int()
 	GetSoundManager().SetDefaultReceiver(TPlayerSoundSourcePosition.Create())
 
 	App.Start()
+	TProfiler.Leave("StartApp")
 End Function
 
 Function ShowApp:Int()
+	TProfiler.Enter("ShowApp")
 	'without creating players, rooms
 	Game = TGame.GetInstance().Create(False, False)
 
@@ -2880,6 +2906,8 @@ Function ShowApp:Int()
 
 	'go into the start menu
 	Game.SetGamestate(TGame.STATE_MAINMENU)
+
+	TProfiler.Leave("ShowApp")
 End Function
 
 
@@ -2888,20 +2916,31 @@ Function StartTVTower(start:Int=True)
 
 	EventManager.Init()
 	
-'	App = TApp.Create(30, -1, True) 'create with screen refreshrate and vsync
-	App = TApp.Create(30, 30, False) 'create with refreshrate of 40
+	TProfiler.Enter("StartTVTower: Create App")
+	App = TApp.Create(30, -1, True) 'create with screen refreshrate and vsync
+'	App = TApp.Create(30, 40, False) 'create with refreshrate of 40
 	App.LoadResources("config/resources.xml")
+	TProfiler.Leave("StartTVTower: Create App")
+
+?Threaded
+'	While not RURC.FinishedLoading()
+'		Delay(1)
+'	Wend
+?
 
 	'====
 	'to avoid the "is loaded check" we have two loops
 	'====
 
 	'a) the mode before everything important was loaded
+TProfiler.Enter("InitialLoading")
 	ShowApp()
 	Repeat
 		'instead of only checking for resources in main loop
 		'(happens eg. 30 times a second), check each update cycle
+		TProfiler.Enter("RessourceLoader")
 		RURC.Update()
+		TProfiler.Leave("RessourceLoader")
 
 		GetDeltaTimer().Loop()
 
@@ -2910,6 +2949,7 @@ Function StartTVTower(start:Int=True)
 		EventManager.update()
 		'If RandRange(0,20) = 20 Then GCCollect()
 	Until AppTerminate() Or TApp.ExitApp Or InitialResourceLoadingDone
+TProfiler.Leave("InitialLoading")
 
 	'=== ADJUST GUI FONTS ===
 	'set the now available default font
@@ -2924,15 +2964,19 @@ Function StartTVTower(start:Int=True)
 
 
 	'b) everything loaded - normal game loop
+TProfiler.Enter("GameLoop")
 	StartApp()
 	Repeat
 		GetDeltaTimer().Loop()
 
 		'process events not directly triggered
 		'process "onMinute" etc. -> App.OnUpdate, App.OnDraw ...
+TProfiler.Enter("EventManager")
 		EventManager.update()
+TProfiler.Leave("EventManager")
 		'If RandRange(0,20) = 20 Then GCCollect()
 	Until AppTerminate() Or TApp.ExitApp
+TProfiler.Leave("GameLoop")
 
 	'take care of network
 	If Game.networkgame Then Network.DisconnectFromServer()

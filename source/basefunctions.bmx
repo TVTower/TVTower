@@ -276,11 +276,9 @@ Function Stream_SeekString:Int(str:String, stream:TStream)
 End Function
 
 Function SortListFast(list:TList)
-TProfiler.Enter("SortFast")
 		Local Arr:Object[] = ListToArray(list)
 		Arr.Sort()
 		list = ListFromArray(Arr)
-  TPRofiler.Leave("SortFast")
 End Function
 
 
@@ -299,127 +297,6 @@ Function RequestFromUrl:String(myurl:String)
 	CloseStream myip							'Don't forget to close the opened stream in the end!
 	Return ipstring$							'Just return what we've got
 End Function
-
-
-Type TCall
-	Field depth:int = 0
-	Field parent:TCall = null
-	Field name:String
-	Field start:Long
-	Field Times:TList
-	Field calls:Int
-	Method New()
-		times = CreateList()
-	End Method
-
-End Type
-
-
-Type TProfiler
-	Global activated:Byte = 1
-	Global calls:TMap = CreateMap()
-	Global lastCall:TCall = null
-	?Threaded
-	Global accessMutex:TMutex = CreateMutex()
-	?
-
-	Function DumpLog( file:String )
-
-		Local fi:TStream = WriteFile( file )
-
-			WriteLine fi,".-----------------------------------------------------------------------------."
-			WriteLine fi,"| AppProfiler |                                                               |"
-			WriteLine fi,"|-----------------------------------------------------------------------------|"
-			For Local c:TCall = EachIn calls.Values()
-				Local totTime:int=0
-				For Local time:string = EachIn c.times
-					totTime:+int(time)
-				Next
-				local funcName:string = C.Name
-				local depth:int = 0
-				while Instr(funcName, "-") > 0
-					funcName = Mid(funcName, Instr(funcName, "-")+1)
-					depth:+1
-				Wend
-				c.depth = max(c.depth, depth)
-
-				if c.depth > 0
-					funcName = "'-"+funcName
-					if c.depth >=2
-						for local i:int = 0 to c.depth-2
-							funcName = "  "+funcName
-						Next
-					endif
-				endif
-				local AvgTime:string = String( floor(int(1000.0*(Float(TotTime) / Float(c.calls)))) / 1000.0 )
-				WriteLine fi, "| " + LSet(funcName, 24) + "  Calls: " + RSet(c.calls, 8) + "  Total: " + LSet(String(Float(tottime) / Float(1000)),8)+"s" + "  Avg:" + LSet(AvgTime,8)+"ms"+ " |"
-			Next
-			WriteLine fi,"'-----------------------------------------------------------------------------'"
-		CloseFile fi
-
-	End Function
-
-	Function Enter:int(func:String)
-		If TProfiler.activated
-			?Threaded
-				return TRUE
-				'wait for the mutex to get access to child variables
-				LockMutex(accessMutex)
-			?
-
-			Local call:tcall = null
-			call = TCall(calls.ValueForKey(func))
-			if call <> null
-				call.start	= Time.GetTimeGone()
-				call.calls	:+1
-				Return true
-			EndIf
-
-			call = New TCall
-
-			if TProfiler.LastCall <> null then call.depth = TProfiler.LastCall.depth +1
-			'Print "Profiler: added new call:"+func + " depth:"+ call.depth
-			call.parent	= TProfiler.LastCall
-			call.calls	= 1
-			call.name	= func
-			call.start	= Time.GetTimeGone()
-			calls.insert(func, call)
-			TProfiler.LastCall = call
-			?Threaded
-				'wait for the mutex to get access to child variables
-				UnLockMutex(accessMutex)
-			?
-		EndIf
-	End Function
-
-	Function Leave:int( func:String )
-		If TProfiler.activated
-			?Threaded
-				return TRUE
-				'wait for the mutex to get access to child variables
-				LockMutex(accessMutex)
-			?
-			Local call:TCall = TCall(calls.ValueForKey(func))
-			If call <> null
-				Local l:int = Time.GetTimeGone() - call.start
-				call.times.addlast( string(l) )
-				if call.parent <> null
-					TProfiler.LastCall = call.parent
-				endif
-				?Threaded
-					'wait for the mutex to get access to child variables
-					UnLockMutex(accessMutex)
-				?
-				Return true
-			EndIf
-			?Threaded
-				'wait for the mutex to get access to child variables
-				UnLockMutex(accessMutex)
-			?
-		EndIf
-		return false
-	End Function
-End Type
 
 
 'collection of useful functions
