@@ -1875,9 +1875,11 @@ Type TInterface
 	Method Update(deltaTime:Float=1.0)
 		local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
 
+		'reset current programme sprites
+		CurrentProgrammeOverlay = Null
+		CurrentProgramme = Null
+		
 		if programmePlan	'similar to "ShowChannel<>0"
-			CurrentProgrammeOverlay = Null
-
 			If GetWorldTime().GetDayMinute() >= 55
 				Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 			    If obj
@@ -1951,13 +1953,18 @@ Type TInterface
 			Next
 		EndIf
 
-		'noise on interface-tvscreen
-		ChangeNoiseTimer :+ deltaTime
-		If ChangeNoiseTimer >= 0.20
-			noiseDisplace.position.SetXY(Rand(0, noiseDisplace.dimension.GetX()),Rand(0, noiseDisplace.dimension.GetY()))
-			ChangeNoiseTimer = 0.0
-			NoiseAlpha = 0.45 - (Rand(0,20)*0.01)
+
+		'skip adjusting the noise if the tv is off
+		If programmePlan
+			'noise on interface-tvscreen
+			ChangeNoiseTimer :+ deltaTime
+			If ChangeNoiseTimer >= 0.20
+				noiseDisplace.position.SetXY(Rand(0, noiseDisplace.dimension.GetX()),Rand(0, noiseDisplace.dimension.GetY()))
+				ChangeNoiseTimer = 0.0
+				NoiseAlpha = 0.45 - (Rand(0,20)*0.01)
+			EndIf
 		EndIf
+
 
 		If THelper.MouseIn(20,385,280,200)
 			CurrentProgrammeToolTip.SetTitle(CurrentProgrammeText)
