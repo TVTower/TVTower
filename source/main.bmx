@@ -365,16 +365,16 @@ Type TApp
 				EndIf
 
 				If Game.gamestate = TGame.STATE_RUNNING
-					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+10)
-					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-10)
+					If KEYMANAGER.IsDown(KEY_UP) Then GetWorldTime().AdjustTimeFactor(+5)
+					If KEYMANAGER.IsDown(KEY_DOWN) Then GetWorldTime().AdjustTimeFactor(-5)
 
 					If KEYMANAGER.IsDown(KEY_RIGHT)
-						TEntity.globalWorldSpeedFactor :+ 0.10
-						GetWorldTime().AdjustTimeFactor(+10)
+						TEntity.globalWorldSpeedFactor :+ 0.05
+						GetWorldTime().AdjustTimeFactor(+5)
 					EndIf
 					If KEYMANAGER.IsDown(KEY_LEFT) Then
-						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.10, 0)
-						GetWorldTime().AdjustTimeFactor(-10)
+						TEntity.globalWorldSpeedFactor = Max( TEntity.globalWorldSpeedFactor - 0.05, 0)
+						GetWorldTime().AdjustTimeFactor(-5)
 					EndIf
 
 					if KEYMANAGER.IsHit(KEY_Y)

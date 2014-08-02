@@ -111,7 +111,9 @@ Type TGame {_exposeToLua="selected"}
 		'how many contracts can a player possess
 		GameRules.maxContracts = 10
 
-
+		'set basic game speed to 20 gameseconds per second
+		GetWorldTime().SetTimeFactor(20.0)
+		'set start year
 		GetWorldTime().SetStartYear(userStartYear)
 		title = "unknown"
 
@@ -144,9 +146,6 @@ Type TGame {_exposeToLua="selected"}
 			GetSpriteFromRegistry("gfx_world_sky_sun"), ..
 			GetSpriteFromRegistry("gfx_world_sky_sunrays") ..
 		)
-		print "rain : " + GetSpriteGroupFromRegistry("gfx_world_sky_rain").length
-		print "rain : " + GetSpriteGroupFromRegistry("gfx_world_sky_rain").length
-
 		'2. SETUP RAIN
 		World.InitRainEffect(2, GetSpriteGroupFromRegistry("gfx_world_sky_rain"))
 		'3. SETUP SNOW
