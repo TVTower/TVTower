@@ -804,7 +804,7 @@ endrem
 
 
 
-		If isVisible() And (CanMove() Or (inroom and inRoom.name = "elevatorplaner"))
+		If isVisible() And CanMove() ')(CanMove() Or (inroom and inRoom.name = "elevatorplaner"))
 			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
 

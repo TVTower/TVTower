@@ -28,6 +28,16 @@ Type TWeatherEffectBase extends TEntity
 	End Method
 
 
+	Method SetUseSprites:Int(useSprites:TSprite[])
+		'clear old
+		sprites = new TSprite[0]
+
+		for local sprite:TSprite = eachIn useSprites
+			self.sprites :+ [sprite]
+		Next
+	End Method
+
+
 	Method IsActive:int()
 		return fadeState.GetState() = 1 or fadeState.IsFadingOn()
 	End Method
@@ -77,6 +87,30 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 	End Method
 
 
+	'reassign sprites for each snowflake
+	Method ReassignSprites:int(useSprites:TSprite[])
+		'assign new sprites to use
+		SetUseSprites(useSprites)
+
+		For local i:int = 0 until layerSprites.length
+			'fetch sprite with given name again - or use random one
+			local useSpriteNumber:Int = -1
+			For local sprite:TSprite = eachin sprites
+				if sprite.name <> layerSprites[i].name then continue
+
+				useSpriteNumber = i
+				exit
+			Next
+			'if number is not available anymore ... use random
+			if useSpriteNumber < 0 or useSpriteNumber > sprites.length-1
+				useSpriteNumber = rand(0, sprites.length-1)
+			EndIf
+
+			layerSprites[i] = sprites[useSpriteNumber]
+		Next
+	End Method
+	
+
 	Method ConfigureLayer(layerNumber:int, position:TVec2D, velocity:TVec2D, sprite:TSprite = null)
 		'resize if needed
 		if layerPositions.length < layerNumber
@@ -107,7 +141,6 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 		layerVelocities[layerNumber-1] = velocity
 	End Method
 	
-
 
 	Method Update:int()
 		If not IsActive() then return False
@@ -149,6 +182,8 @@ Type TWeatherEffectRain extends TWeatherEffectBase
 End Type
 
 
+
+
 Type TWeatherEffectLightning extends TWeatherEffectBase
 	Field lightnings:TList = CreateList()
 	Field lightningLifetimeMin:int = 150
@@ -157,6 +192,7 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 	Field nextLightningIntervalMin:int = 3500
 	Field nextLightningIntervalMax:int = 7500
 	Field spritesSide:TSprite[]
+
 
 	Method Init:TWeatherEffectLightning(area:TRectangle, startLightnings:int = 1, useSprites:TSprite[], useSpritesSide:TSprite[])
 		'do nothing without sprites
@@ -185,6 +221,38 @@ Type TWeatherEffectLightning extends TWeatherEffectBase
 		return self
 	End Method
 
+
+	'reassign sprites for each snowflake
+	Method ReassignSprites:int(useSprites:TSprite[], useSpritesSide:TSprite[])
+		'assign new sprites to use
+		SetUseSprites(useSprites)
+		SetUseSpritesSide(useSpritesSide)
+
+		For local lightning:TData = eachin lightnings
+			local spriteNumber:int = lightning.GetInt("spriteNumber", -1)
+			local useSpritesSide:int = lightning.GetInt("useSpritesSide", 0)
+			if useSpritesSide
+				if spriteNumber < 0 or spriteNumber > spritesSide.length-1
+					lightning.Add("spriteNumber", spritesSide[rand(0, spritesSide.length-1)])
+				EndIf
+			else
+				if spriteNumber < 0 or spriteNumber > sprites.length-1
+					lightning.Add("spriteNumber", sprites[rand(0, sprites.length-1)])
+				EndIf
+			endif
+		Next
+	End Method
+
+
+	Method SetUseSpritesSide:Int(useSpritesSide:TSprite[])
+		'clear old
+		spritesSide = new TSprite[0]
+
+		for local sprite:TSprite = eachIn useSpritesSide
+			self.sprites :+ [sprite]
+		Next
+	End Method
+	
 
 	Method AddLightning:int()
 		'lifetime in seconds
@@ -305,6 +373,7 @@ End Type
 
 
 
+
 Type TWeatherEffectSnow extends TWeatherEffectBase
 	Field flakes:TList = CreateList()
 	Field flakeLifetimeMin:int = 2500
@@ -332,6 +401,20 @@ Type TWeatherEffectSnow extends TWeatherEffectBase
 		Next
 		
 		return self
+	End Method
+
+
+	'reassign sprites for each snowflake
+	Method ReassignSprites:int(useSprites:TSprite[])
+		'assign new sprites to use
+		SetUseSprites(useSprites)
+
+		For local flake:TData = eachin flakes
+			local spriteNumber:int = flake.GetInt("spriteNumber", -1)
+			if spriteNumber < 0 or spriteNumber > sprites.length-1
+				flake.Add("spriteNumber", sprites[rand(0, sprites.length-1)])
+			EndIf
+		Next
 	End Method
 
 
@@ -452,6 +535,7 @@ End Type
 
 
 
+
 Type TWeatherEffectClouds extends TWeatherEffectBase
 	Field clouds:TList = CreateList()
 	Field cloudMax:int = 30
@@ -461,12 +545,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 	Field skyBrightness:Float = 1.0
 
 	Method Init:TWeatherEffectClouds(area:TRectangle, cloudAmount:int = 30, useSprites:TSprite[])
-		'clear old
-		sprites = new TSprite[0]
-
-		for local sprite:TSprite = eachIn useSprites
-			self.sprites :+ [sprite]
-		Next
+		SetUseSprites(useSprites)
 
 		self.area = area.copy()
 
@@ -480,6 +559,30 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 		Next
 		
 		return self
+	End Method
+
+
+	'reassign sprites for each cloud
+	Method ReassignSprites:int(useSprites:TSprite[])
+		'assign new sprites to use
+		SetUseSprites(useSprites)
+
+		local entity:TSpriteEntity
+		For local cloud:TData = eachin clouds
+			entity = TSpriteEntity(cloud.Get("spriteEntity"))
+			'fetch sprite with given name again - or use random one
+			local useSprite:TSprite
+			For local sprite:TSprite = eachin sprites
+				if sprite.name <> entity.sprite.name then continue
+
+				useSprite = sprite
+				exit
+			Next
+			if useSprite then entity.sprite = useSprite
+			if not entity.sprite then entity.sprite = sprites[rand(0, sprites.length-1)]
+
+			entity.area.dimension.SetXY(entity.sprite.GetWidth(), entity.sprite.GetHeight())
+		Next
 	End Method
 
 

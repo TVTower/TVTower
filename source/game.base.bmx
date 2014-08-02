@@ -122,9 +122,6 @@ Type TGame {_exposeToLua="selected"}
 		'creates all Rooms - with the names assigned at this moment
 		If initializeRoom Then Init_CreateAllRooms()
 
-
-		InitWorld()
-
 		Return self
 	End Method
 
@@ -141,27 +138,20 @@ Type TGame {_exposeToLua="selected"}
 		
 		'=== SETUP WORLD ===
 		'1. SKY SPRITES
-		GetRegistry().Set("gfx_world_sky_gradient", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_gradient.png"), "gfx_world_sky_gradient"))
-		GetRegistry().Set("gfx_world_sky_sun", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_sun.png"), "gfx_world_sky_sun"))
-		GetRegistry().Set("gfx_world_sky_sunrays", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_sunrays.png"), "gfx_world_sky_sunrays"))
 		World.InitSky(..
 			GetSpriteFromRegistry("gfx_world_sky_gradient"), ..
 			GetSpriteFromRegistry("gfx_world_sky_moon"), ..
 			GetSpriteFromRegistry("gfx_world_sky_sun"), ..
 			GetSpriteFromRegistry("gfx_world_sky_sunrays") ..
 		)
+		print "rain : " + GetSpriteGroupFromRegistry("gfx_world_sky_rain").length
+		print "rain : " + GetSpriteGroupFromRegistry("gfx_world_sky_rain").length
+
 		'2. SETUP RAIN
-		GetRegistry().Set("gfx_world_sky_rain1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_rain1.png"), "gfx_world_sky_rain1"))
-		GetRegistry().Set("gfx_world_sky_rain2", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_rain2.png"), "gfx_world_sky_rain2"))
 		World.InitRainEffect(2, GetSpriteGroupFromRegistry("gfx_world_sky_rain"))
 		'3. SETUP SNOW
-		GetRegistry().Set("gfx_world_sky_snow1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_snow1.png"), "gfx_world_sky_snow1"))
-		GetRegistry().Set("gfx_world_sky_snow2", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_snow2.png"), "gfx_world_sky_snow2"))
-		GetRegistry().Set("gfx_world_sky_snow3", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_snow3.png"), "gfx_world_sky_snow3"))
 		World.InitSnowEffect(20, GetSpriteGroupFromRegistry("gfx_world_sky_snow"))
 		'4. SETUP LIGHTNING
-		GetRegistry().Set("gfx_world_sky_lightning1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_lightning1.png"), "gfx_world_sky_lightning1"))
-		GetRegistry().Set("gfx_world_sky_lightning_side1", new TSprite.InitFromImage(LoadImage("res/grafiken/hochhaus/sky_lightning_side1.png"), "gfx_world_sky_lightning_side1"))
 		World.InitLightningEffect(GetSpriteGroupFromRegistry("gfx_world_sky_lightning"), GetSpriteGroupFromRegistry("gfx_world_sky_lightning_side"))
 		'5. SETUP CLOUDS
 		World.InitCloudEffect(50, GetSpriteGroupFromRegistry("gfx_world_sky_clouds"))
@@ -171,7 +161,6 @@ Type TGame {_exposeToLua="selected"}
 
 	'run this before EACH started game
 	Method PrepareStart()
-
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		ColorizePlayerExtras()
 
@@ -187,8 +176,11 @@ Type TGame {_exposeToLua="selected"}
 	Function PrepareFirstGameStart:int()
 		if _firstGamePreparationDone then return False
 
+		Game.InitWorld()
+
 		GetPopularityManager().Initialize()
 		GetBroadcastManager().Initialize()
+
 
 		'=== START TIPS ===
 		'maybe show this window each game? or only on game start or ... ?
@@ -497,6 +489,20 @@ Type TGame {_exposeToLua="selected"}
 
 	'run when loading finished
 	Function onSaveGameLoad(triggerEvent:TEventBase)
+		TLogger.Log("TGame", "Savegame loaded - reassigning sprites to world/weather.", LOG_DEBUG | LOG_SAVELOAD)
+		'reconnect sky sprites
+		GetWorld().InitSky(..
+			GetSpriteFromRegistry("gfx_world_sky_gradient"), ..
+			GetSpriteFromRegistry("gfx_world_sky_moon"), ..
+			GetSpriteFromRegistry("gfx_world_sky_sun"), ..
+			GetSpriteFromRegistry("gfx_world_sky_sunrays") ..
+		)
+		GetWorld().rainEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_rain"))
+		GetWorld().snowEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_snow"))
+		GetWorld().lightningEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_lightning"), GetSpriteGroupFromRegistry("gfx_world_sky_lightning_side"))
+		GetWorld().cloudEffect.ReassignSprites(GetSpriteGroupFromRegistry("gfx_world_sky_clouds"))
+
+
 		TLogger.Log("TGame", "Savegame loaded - colorize players.", LOG_DEBUG | LOG_SAVELOAD)
 		'reconnect AI and other things
 		For local player:TPlayer = eachin GetPlayerCollection().players
