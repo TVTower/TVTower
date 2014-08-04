@@ -19,6 +19,7 @@ Import "Dig/base.util.interpolation.bmx"
 Import "Dig/base.util.graphicsmanager.bmx"
 Import "Dig/base.util.data.xmlstorage.bmx"
 Import "Dig/base.util.profiler.bmx"
+Import "Dig/base.util.directorytree.bmx"
 
 Import "Dig/base.gfx.sprite.particle.bmx"
 
@@ -2279,7 +2280,7 @@ Type TSettingsWindow
 		data.Add("channelname", inputChannelName.GetValue())
 		data.Add("startyear", inputStartYear.GetValue())
 		'data.Add("stationmap", inputStationmap.GetValue())
-		'data.Add("database", inputDatabase.GetValue())
+		data.Add("databaseDir", inputDatabase.GetValue())
 		data.AddBoolString("sound_music", checkMusic.IsChecked())
 		data.AddBoolString("sound_effects", checkSfx.IsChecked())
 
@@ -2296,7 +2297,7 @@ Type TSettingsWindow
 		inputChannelName.SetValue(data.GetString("channelname", "My Channel"))
 		inputStartYear.SetValue(data.GetInt("startyear", 1985))
 		'inputStationmap.SetValue(data.GetString("stationmap", "config/maps/germany.xml"))
-		'inputDatabase.SetValue(data.GetString("database", "res/database.xml"))
+		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
 		checkMusic.SetChecked(data.GetBool("sound_music", True))
 		checkSfx.SetChecked(data.GetBool("sound_effects", True))
 
@@ -2361,7 +2362,7 @@ Type TSettingsWindow
 		nextY :+ inputH + labelH * 1.5
 
 		Local labelDatabase:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("DATABASE")+":")
-		inputDatabase = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "database.xml", 128)
+		inputDatabase = New TGUIDropDown.Create(New TVec2D.Init(nextX, nextY + labelH), New TVec2D.Init(inputWidth,-1), "res/database/Default", 128)
 		inputDatabase.disable()
 		canvas.AddChild(labelDatabase)
 		canvas.AddChild(inputDatabase)

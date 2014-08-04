@@ -24,12 +24,13 @@ Type TGame {_exposeToLua="selected"}
 	Global userName:String = ""
 	'userport of the player ->set in config
 	Global userPort:Short = 4544
+	'directory containing the movie/news/... databases
+	Global userDBDir:String = ""
 	'channelname the player uses ->set in config
 	Global userChannelName:String = ""
 	'language the player uses ->set in config
 	Global userLanguage:String = "de"
 	Global userStartYear:int = 1985
-	Global userDB:String = ""
 	Global userFallbackIP:String = ""
 
 	'title of the game
@@ -283,7 +284,7 @@ Type TGame {_exposeToLua="selected"}
 		'load all movies, news, series and ad-contracts
 		'do this here, as saved games already contain the database
 		TLogger.Log("Game.PrepareNewGame()", "loading database", LOG_DEBUG)
-		LoadDatabase(userdb)
+		LoadDatabase(userDBDir)
 
 		'=== FIGURES ===
 		'set all non human players to AI
@@ -724,7 +725,7 @@ Type TGame {_exposeToLua="selected"}
 		userlanguage = config.GetString("language", "de")
 		userStartYear = config.GetInt("startyear", 1985)
 		userport = config.GetInt("onlineport", 4444)
-		userdb = config.GetString("database", "res/database.xml")
+		userDBDir = config.GetString("databaseDir", "res/database/Default")
 		title = config.GetString("gamename", "New Game")
 		userFallbackIP = config.GetString("fallbacklocalip", "192.168.0.1")
 	End Method
