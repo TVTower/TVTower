@@ -424,8 +424,13 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
 					Global whichTerrorist:int = 1
 					whichTerrorist = 1 - whichTerrorist
-'					Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetFirstByDetails("supermarket") )
-					Game.terrorists[whichTerrorist].SetDeliverToRoom( GetRoomCollection().GetRandom() )
+
+					local targetRoom:TRoom
+					Repeat
+						targetRoom = GetRoomCollection().GetRandom()
+					until targetRoom.name <> "building"
+					
+					Game.terrorists[whichTerrorist].SetDeliverToRoom( targetRoom )
 				EndIf
 
 				If Game.isGameLeader()
@@ -1160,10 +1165,16 @@ Type TFigureTerrorist Extends TFigure
 				local signA:TRoomDoorSign = TRoomDoorSign.GetFirstByRoom(deliverToRoom)
 				'2) get sign which is now at the original position of signA
 				local signB:TRoomDoorSign = TRoomDoorSign.GetByCurrentPosition(signA.signSlot, signA.signFloor)
-				if not signB then print "sign at given position not found"
 
-				TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+signb.door.room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
-				SendToDoor(signb.door)
+				if signB
+					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+signb.door.room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					SendToDoor(signb.door)
+				else
+					TLogger.Log("TFigureTerrorist", self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					'send home again
+					deliveryDone = True
+					SendToOffscreen()
+				endif
 			EndIf
 		EndIf
 

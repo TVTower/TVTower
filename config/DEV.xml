@@ -4,6 +4,7 @@
 		<data name="DEV_CONFIG">
 			<DEV_KEYS value="TRUE" />
 			<DEV_OSD value="FALSE" />
+			<DEV_LOG value="TRUE" />
 
 			<!-- milliseconds waiting on a floor (incl. animation).
 			     Default: 1700
