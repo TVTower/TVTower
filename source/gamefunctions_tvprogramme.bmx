@@ -266,7 +266,7 @@ Function LoadDatabase(dbDirectory:String)
 			newsCount :+ 1
 			totalNewsCount :+ 1
 		Next
-		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + fileURI + "~q. Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + totalNewsCount + " news. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
+		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + fileURI + "~q. Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + newsCount + " news. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
 	Next
 	
 	TLogger.log("TDatabase.Load()", "Loaded from "+fileURIs.length + " DBs. Found " + totalSeriesCount + " series, " + totalMoviesCount + " movies, " + totalContractsCount + " advertisements, " + totalNewsCount + " news. loading time: " + stopWatchAll.GetTime() + "ms", LOG_LOADING)

@@ -33,7 +33,7 @@ Nach dem Roman von Agatha Christie.</description>
 			<title>2002: Bredouille im All</title>
 			<description>Die Expedition ins All als metaphorische Reise in die Seele der Menschheit.
 Ein symphonischer Science-Fiction-Trip</description>
-			<data  actors="Keyren Dalley " director="Laurel Kubus" country="GB" year="1968" genre="2"  blocks="3" time="20" price="100" critics="228" speed="36" outcome="168" />
+			<data  actors="Keyren Dalley" director="Laurel Kubus" country="GB" year="1968" genre="2"  blocks="3" time="20" price="100" critics="228" speed="36" outcome="168" />
 		</movie>
 		<movie>
 			<title>27 Tage verpasst</title>
@@ -54,7 +54,7 @@ Ein symphonischer Science-Fiction-Trip</description>
 			<title>59 1/2 Tage in Paris</title>
 			<description>Mikki Gurke mimt erneut den geheimnisvollen Verführer.
 Aber diesmal schauen ihm erheblich weniger Voyeure dabei zu</description>
-			<data  actors="Mikki Gurke" director="Annabelle Gaurkies " country="USA" year="1997" genre="6"  blocks="2" time="20" price="100" critics="24" speed="60" outcome="84" />
+			<data  actors="Mikki Gurke" director="Annabelle Gaurkies" country="USA" year="1997" genre="6"  blocks="2" time="20" price="100" critics="24" speed="60" outcome="84" />
 		</movie>
 		<movie>
 			<title>An Asian Spooky Story</title>
@@ -170,7 +170,7 @@ Schockierende Bilder, was bei Meal Gibtsschon allerdings kaum mehr verwundert.</
 		</movie>
 		<movie>
 			<title>Klasterisk - Die Hinkelsteinmission</title>
-			<description>"Der Kampf der Häuptlinge" und "Der Seher" wurden in einen Topf geschmissen, trotzdem kann sich die Hinkelsteinmission sehen lassen.</description>
+			<description>&quot;Der Kampf der Häuptlinge&quot; und &quot;Der Seher&quot; wurden in einen Topf geschmissen, trotzdem kann sich die Hinkelsteinmission sehen lassen.</description>
 			<data  director="Alan Smithee" country="F" year="1989" genre="10"  blocks="2" time="20" price="100" critics="96" speed="144" outcome="96" />
 		</movie>
 		<movie>
@@ -197,7 +197,7 @@ Verfilmung des Comics von Flaszini und Oberzo</description>
 		</movie>
 		<movie>
 			<title>Klasterix und die Nordmänner</title>
-			<description>35 Jahre nach der Comicvorlage "Klasterix und die Normannen" erschien dieser Animationsfilm, der sich wenigstens bemüht, die gewohnte Optik der Zeichentrickfiguren zu bewahren.
+			<description>35 Jahre nach der Comicvorlage &quot;Klasterix und die Normannen&quot; erschien dieser Animationsfilm, der sich wenigstens bemüht, die gewohnte Optik der Zeichentrickfiguren zu bewahren.
 Ging im WM-Jahr unter</description>
 			<data  director="Alan Smithee" country="F" year="2006" genre="10"  blocks="2" time="0" price="100" critics="108" speed="144" outcome="72" />
 		</movie>
@@ -437,7 +437,7 @@ Einzigartig durch die Walzermusik und das Nachkriegswien</description>
 		</movie>
 		<movie>
 			<title>Der Geister-Austreiber</title>
-			<description>Ein junges Mädchen ist "besessen". Ein Geistlicher soll sie von der dunklen Macht befreien.
+			<description>Ein junges Mädchen ist &quot;besessen&quot;. Ein Geistlicher soll sie von der dunklen Macht befreien.
 Horror vom Feinsten</description>
 			<data  actors="Eylen Buersten" director="Alan Smithee" country="USA" year="1973" genre="4"  blocks="3" time="20" price="100" critics="72" speed="108" outcome="168" />
 		</movie>
@@ -654,7 +654,7 @@ Urkomisches Gagfeuerwerk</description>
 		</movie>
 		<movie>
 			<title>Millenium Day - Die letzte Nacht vorm Chaos</title>
-			<description>Dämonische Story, die von der Unruhe vor "dem Millennium" profitieren wollte, Schwarzacker auf seiner Karriereleiter jedoch nicht weiter nach oben katapultieren konnte</description>
+			<description>Dämonische Story, die von der Unruhe vor &quot;dem Millennium&quot; profitieren wollte, Schwarzacker auf seiner Karriereleiter jedoch nicht weiter nach oben katapultieren konnte</description>
 			<data  actors="Arnold Weissenacker" director="Alan Smithee" country="USA" year="1999" genre="0"  blocks="3" time="20" price="200" critics="24" speed="156" outcome="84" />
 		</movie>
 		<movie>
@@ -699,7 +699,7 @@ Erstaunlich erfolgreich, wahrscheinlich weil Pionier des Animationsfilms</descri
 		<movie>
 			<title>Rhythmus des Tanzes</title>
 			<description>Alex arbeitet tagsüber als Schweißerin und tanzt nachts in einem Club. Ihr großer Traum ist es, professionelle Ballettänzerin zu werden.
-Oscar für den Titelsong "Rhythmus des Tanzes... What a Feeling"</description>
+Oscar für den Titelsong &quot;Rhythmus des Tanzes... What a Feeling&quot;</description>
 			<data  actors="XXX" director="Abrian Styne" country="USA" year="1983" genre="5"  blocks="2" time="20" price="100" critics="132" speed="96" outcome="120" />
 		</movie>
 		<movie>
@@ -825,7 +825,7 @@ El-Mariachi-Fans wurden von Rodriguez gänzlich enttäuscht</description>
 		<movie>
 			<title>Die Raubstewardess</title>
 			<description>Stewardeß Jackie bessert ihre Finanzen als Kurier für einen Waffenhändler auf. Als sie dabei erwischt wird, steht sie vor einer schwierigen Entscheidung...
-Klasse: Bobby Womacks "Across 110th SXXXt"</description>
+Klasse: Bobby Womacks &quot;Across 110th SXXXt&quot;</description>
 			<data  actors="Sammael K. Hackson, Miguel Creyton, Robart Die Niere" director="Kentain Marafino" country="USA" year="1997" genre="0"  blocks="3" time="20" price="100" critics="132" speed="132" outcome="144" />
 		</movie>
 		<movie>
@@ -967,7 +967,7 @@ Berührende, einigermaßen glaubwürdige Geschichte und eingängige Musik von Ha
 		</movie>
 		<movie>
 			<title>Aureal &amp; Partly - Kinder der Wüste</title>
-			<description>Mr. Laurel und Mr. Hardy wollen zum Treffen ihres Clubs "Die Wüstensöhne" nach Chicago. Um ihre Frauen zu überzeugen, muß sich Olli krank stellen. Aber letztlich fliegen die beiden auf.</description>
+			<description>Mr. Laurel und Mr. Hardy wollen zum Treffen ihres Clubs &quot;Die Wüstensöhne&quot; nach Chicago. Um ihre Frauen zu überzeugen, muß sich Olli krank stellen. Aber letztlich fliegen die beiden auf.</description>
 			<data  actors="Ben Aureal, Olliwer Partly" director="Alan Smithee" country="USA" year="1933" genre="3"  blocks="1" time="20" price="100" critics="84" speed="156" outcome="132" />
 		</movie>
 		<movie>
@@ -1062,7 +1062,7 @@ Namhafte Schauspieler, aber das Konzept kann nicht überzeugen</description>
 			<title>Mr. Galaxie</title>
 			<description>Schwarzacker läßt in diesem Frühwerk seiner Karriere ausgiebig die Muskeln spielen.
 Viel Muckis, wenig Grips</description>
-			<data  actors="Arnold Weissenacker, Yeff Bruckner, " director="Alan Smithee" country="USA" year="1976" genre="5"  blocks="2" time="20" price="150" critics="12" speed="72" outcome="72" />
+			<data  actors="Arnold Weissenacker, Yeff Bruckner" director="Alan Smithee" country="USA" year="1976" genre="5"  blocks="2" time="20" price="150" critics="12" speed="72" outcome="72" />
 		</movie>
 		<movie>
 			<title>Kindermädchen mit Stoppeln</title>
@@ -1125,7 +1125,7 @@ Starke Kostüme, insgesamt aber leider schwaches Remake</description>
 		</movie>
 		<movie>
 			<title>Polizeikadetten 7 - Der Moskauauftrag</title>
-			<description>Nach vier Jahren Pause hat man die alte Goldgrube "Police Academy" noch einmal ausgekratzt. Ob man inzwischen von einem Abschluß sprechen kann? Man kann nie wissen.</description>
+			<description>Nach vier Jahren Pause hat man die alte Goldgrube &quot;Polizeikadetten&quot; noch einmal ausgekratzt. Ob man inzwischen von einem Abschluß sprechen kann? Man kann nie wissen.</description>
 			<data  actors="Christof Ley" director="Alan Smithee" country="USA" year="1994" genre="3"  blocks="2" time="0" price="150" critics="12" speed="72" outcome="36" />
 		</movie>
 		<movie>
@@ -1239,13 +1239,13 @@ Gute Action, aber mehr auch nicht</description>
 		</movie>
 		<movie>
 			<title>Rubinroter Waran</title>
-			<description>Noch vor "Schweigende Hammel": Bei seinen Ermittlungen gegen einen Massenmörder muß Will Graham auf den Rat Hannie's Ball Lecters zurückgreifen.
+			<description>Noch vor &quot;Schweigende Hammel&quot;: Bei seinen Ermittlungen gegen einen Massenmörder muß Will Graham auf den Rat Hannie's Ball Lecters zurückgreifen.
 Hopkins zum dritten Mal in der Rolle seines Lebens</description>
 			<data  actors="Antonio Chopkids, Eduardo Gordon, Harvey Scheitell" director="Alan Smithee" country="USA" year="2002" genre="1"  blocks="3" time="20" price="150" critics="180" speed="168" outcome="144" />
 		</movie>
 		<movie>
 			<title>Renn um Dein Leben - mit Todesgarantie</title>
-			<description>In der Zukunft wird Ben Richards zu Unrecht verurteilt. Er hat als Todeskandidat in der sadistischen TV-Show "The Renn um Dein Leben - mit Todesgarantie" aufzutreten. Trotz knallharter Gegner und Fallen schlägt er sich wacker.</description>
+			<description>In der Zukunft wird Ben Richards zu Unrecht verurteilt. Er hat als Todeskandidat in der sadistischen TV-Show &quot;The Renn um Dein Leben - mit Todesgarantie&quot; aufzutreten. Trotz knallharter Gegner und Fallen schlägt er sich wacker.</description>
 			<data  actors="Arnold Weissenacker" director="Alan Smithee" country="USA" year="1987" genre="0"  blocks="2" xrated="1" time="20" price="50" critics="72" speed="192" outcome="168" />
 		</movie>
 		<movie>
@@ -1355,7 +1355,7 @@ Aufwendiges Actionspektakel von Regisseur Giroland Emmerling</description>
 		<movie>
 			<title>Raumschiffkadetten</title>
 			<description>Eine brutale Schlacht Soldaten gegen Rieseninsekten.
-Verhoevens "gewaltiger" Science-Fiction-Knaller</description>
+Verhoevens &quot;gewaltiger&quot; Science-Fiction-Knaller</description>
 			<data  actors="XXX" director="Paul Verhoertmich" country="USA" year="1997" genre="2"  blocks="3" xrated="1" time="20" price="100" critics="72" speed="228" outcome="168" />
 		</movie>
 		<movie>
@@ -1566,7 +1566,7 @@ Herrliche Hau-Drauf-Action mit XXX und XXX, cooler Soundtrack</description>
 		</movie>
 		<movie>
 			<title>Kunst am Arsch der Welt</title>
-			<description>Patty Glansen bestaunt und berichtet von skurrilen Kunstwerken und Künstlern aus einer Gebiergsregion mit ungeöhnlichem Namen.</description>
+			<description>Patty Glansen bestaunt und berichtet von skurrilen Kunstwerken und Künstlern aus einer Gebirgsregion mit ungewöhnlichem Namen.</description>
 			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1983" genre="13" blocks="1" time="0" price="20" critics="190" speed="5" outcome="0" betty="130" />
 		</movie>
 		<movie>
@@ -2026,7 +2026,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 		</news>
 		<news>
 			<title>Alton neuer Programmchef bei Pro9</title>
-			<description>Der Ex-Showpraktikant von Stephan Rapp ist heute überraschend Programmchef geworden. Ändern wird sich nichts, "Wir haben doch Zeit", so Alton.</description>
+			<description>Der Ex-Showpraktikant von Stephan Rapp ist heute überraschend Programmchef geworden. Ändern wird sich nichts, &quot;Wir haben doch Zeit&quot;, so Alton.</description>
 			<data genre="1" price="0" topicality="75" />
 		</news>
 		<news>
@@ -2085,7 +2085,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 			</episode>
 			<episode number="2">
 				<title>Trainerschein für M. Bretz?</title>
-				<description>Die Chancen stehen gut: "Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden.", so der Herthaner. Berlin darf hoffen.</description>
+			<description>Die Chancen stehen gut: Ich möchte zuerst die Trainerlizenz erwerben, danach kann man mit mir reden.&quot;, so der Herthaner. Berlin darf hoffen.</description>
 				<data genre="2" price="0" topicality="75" />
 			</episode>
 			<episode number="3">
@@ -2106,7 +2106,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 		</news>
 		<news>
 			<title>Bundeskanzler lehnt Filmhauptrolle ab</title>
-			<description>Kanzler Schröler lehnte die Hauptrolle in dem Film "Lügen ist meine Leidenschaft" verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</description>
+			<description>Kanzler Schröler lehnte die Hauptrolle in dem Film &quot;Lügen ist meine Leidenschaft&quot; verärgert ab. Filmpartnerin Angie Mertel ist bitter enttäuscht.</description>
 			<data genre="1" price="0" topicality="0" />
 		</news>
 		<news>
@@ -2126,7 +2126,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 		</news>
 		<news>
 			<title>Computerspiel zerstört PC</title>
-			<description>Das Spiel "Rasante Geschwindigkeiten 12" des Herstellers Elektromerz hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</description>
+			<description>Das Spiel &quot;Rasante Geschwindigkeiten 12&quot; des Herstellers Elektromerz hat bei einem Zocker die Grafikkarte zerstört. Sie sei in Flammen aufgegangen.</description>
 			<data genre="3" price="0" topicality="50" />
 			<episode number="1">
 				<title>Mehrere Zockeropfer melden sich</title>
@@ -2176,7 +2176,7 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 		</news>
 		<news>
 			<title>Die roten Rosen geben Abschiedstournee</title>
-			<description>Die Band mit den Hits wie "Hier kommt Alexandra" gibt für nächstes Jahr ihre Abschiedstournee bekannt.</description>
+			<description>Die Band mit den Hits wie &quot;Hier kommt Alexandra&quot; gibt für nächstes Jahr ihre Abschiedstournee bekannt.</description>
 			<data genre="1" price="0" topicality="75" />
 		</news>
 		<news>
@@ -2296,12 +2296,12 @@ Auch dieses Jahr wird wieder mit Demonstrationen gerechnet.</description>
 			<data genre="0" price="0" topicality="50" />
 			<episode number="1">
 				<title>Erste Demos vor G8-Gipfel</title>
-				<description>Bereits vor dem Treffen der führenden Witschaftsnationen campen Demonstranten in Paris. "Wir sind zu allem bereit, so ein Demonstrant"</description>
+				<description>Bereits vor dem Treffen der führenden Witschaftsnationen campen Demonstranten in Paris. &quot;Wir sind zu allem bereit, so ein Demonstrant&quot;.</description>
 				<data genre="0" price="0" topicality="75" />
 			</episode>
 			<episode number="2">
 				<title>USA - Angst vor Terrordemonstranten</title>
-				<description>Die vereinigten Staaten fürchten Anschläge beim G8-Gipfel in Paris. Powell: "Wenn die Terrorcamper nicht verschwinden, werden wir nicht teilnehmen."</description>
+				<description>Die vereinigten Staaten fürchten Anschläge beim G8-Gipfel in Paris. Powell: &quot;Wenn die Terrorcamper nicht verschwinden, werden wir nicht teilnehmen.&quot;</description>
 				<data genre="0" price="0" topicality="75" />
 			</episode>
 			<episode number="3">
@@ -2362,12 +2362,12 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			<data genre="4" price="5" topicality="5" />
 		</news>
 		<news>
-			<title>Knight-Rider-Auto auf den Schrott?</title>
-			<description>Kidd, das legendäre Auto der Serie "Knight Rider" wird verschrottet. Dies teilte der aktuelle Besitzer des Autos mit.</description>
+			<title>Neid-Reiter-Auto auf den Schrott?</title>
+			<description>Kidd, das legendäre Auto der Serie &quot;Neid-Reiter&quot; wird verschrottet. Dies teilte der aktuelle Besitzer des Autos mit.</description>
 			<data genre="1" price="0" topicality="25" />
 			<episode number="1">
 				<title>David Hasseldoof gegen Verschrottung</title>
-				<description>David Hasseldoof widersetzt sich der Verschrottung seines Spielzeugs und hat eine Stiftung "Rettet Kidd" gegründet.</description>
+				<description>David Hasseldoof widersetzt sich der Verschrottung seines Spielzeugs und hat eine Stiftung &quot;Rettet Kidd&quot; gegründet.</description>
 				<data genre="1" price="3" topicality="23" />
 			</episode>
 			<episode number="2">
@@ -2432,7 +2432,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="3">
 				<title>Erste Spuren im Schreibtisch-Mordfall</title>
-				<description>Beide Opfer des von der Bevölkerung "Schreibtisch-Mörder" genannten Täters waren Angestellte eines großen Möbelhauses.</description>
+				<description>Beide Opfer des von der Bevölkerung &quot;Schreibtisch-Mörder&quot; genannten Täters waren Angestellte eines großen Möbelhauses.</description>
 				<data genre="4" price="0" topicality="150" />
 			</episode>
 			<episode number="4">
@@ -2468,21 +2468,21 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 		</news>
 		<news>
 			<title>Michel Bollock will weg</title>
-			<description>Fußballstar Bollock hat keine Lust mehr auf Bayerische Weißwurst und Bier. Manager Hochness meint: "Michel kann gehen, wenn die Ablösesumme stimmt".</description>
+			<description>Fußballstar Bollock hat keine Lust mehr auf Bayerische Weißwurst und Bier. Manager Hochness meint: &quot;Michel kann gehen, wenn die Ablösesumme stimmt&quot;.</description>
 			<data genre="2" price="0" topicality="75" />
 			<episode number="1">
 				<title>Hochness bestätigt nun doch Wechsel</title>
-				<description>Michel Bollock wechselt ab nächse Saison für 75Mio € Ablöse zu Real. Hochness reibt sich die Hände: "Für das Geld bekommen wir 2 neue Bollocks."</description>
+				<description>Michel Bollock wechselt ab nächse Saison für 75Mio € Ablöse zu Real. Hochness reibt sich die Hände: &quot;Für das Geld bekommen wir 2 neue Bollocks.&quot;</description>
 				<data genre="2" price="0" topicality="50" />
 			</episode>
 			<episode number="2">
 				<title>Bollock und Real einigen sich</title>
-				<description>Wie die Blöd-Zeitung berichtet ist der Wechsel des Bayern-Star zu den Königlichen perfekt. Manager Hochness dementiert: "Ich weiß von nichts".</description>
+				<description>Wie die Blöd-Zeitung berichtet ist der Wechsel des Bayern-Star zu den Königlichen perfekt. Manager Hochness dementiert: &quot;Ich weiß von nichts&quot;.</description>
 				<data genre="2" price="0" topicality="125" />
 			</episode>
 			<episode number="3">
 				<title>Hochness verbessert Angebot</title>
-				<description>Manager Hochness kontert auf das Real-Angebot und bietet Bollock 7 Mio€ Jahresgehalt. "Mehr ist nicht drin", so Hochness.</description>
+				<description>Manager Hochness kontert auf das Real-Angebot und bietet Bollock 7 Mio€ Jahresgehalt. &quot;Mehr ist nicht drin&quot;, so Hochness.</description>
 				<data genre="2" price="0" topicality="75" />
 			</episode>
 			<episode number="4">
@@ -2502,7 +2502,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="2">
 				<title>Ökoterroristen liessen Nashorn frei</title>
-				<description>Laut einem Bekennerschreiben sind die Türschützer von der Gruppe "ZORRO" für das Entlaufen des Nashorns verantwortlich.</description>
+				<description>Laut einem Bekennerschreiben sind die Türschützer von der Gruppe &quot;ZORRO&quot; für das Entlaufen des Nashorns verantwortlich.</description>
 				<data genre="4" price="0" topicality="100" />
 			</episode>
 			<episode number="3">
@@ -2577,7 +2577,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="2">
 				<title>Fans sammeln für Hein Dubty</title>
-				<description>Nach dem USB-Gummipuppenskandal sammeln die TVGigant Fans Geld für die Gerichtskosten: "Wir können doch unseren Hein nicht im Stich lassen."</description>
+				<description>Nach dem USB-Gummipuppenskandal sammeln die TVGigant Fans Geld für die Gerichtskosten: &quot;Wir können doch unseren Hein nicht im Stich lassen.&quot;</description>
 				<data genre="4" price="0" topicality="50" />
 			</episode>
 			<episode number="3">
@@ -2627,7 +2627,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="6">
 				<title>Erdbeben: Suche Eingestellt</title>
-				<description>Nach dem Erdbeben in San Francisco wird die Suche nach überlebenden eingestellt. "Es besteht eigentlich keine Hoffnung mehr", so ein Helfer.</description>
+				<description>Nach dem Erdbeben in San Francisco wird die Suche nach überlebenden eingestellt. &quot;Es besteht eigentlich keine Hoffnung mehr&quot;, so ein Helfer.</description>
 				<data genre="4" price="0" topicality="150" />
 			</episode>
 			<episode number="7">
@@ -2657,7 +2657,7 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="2">
 				<title>Semmelgerste erneut erwischt</title>
-				<description>Martin Semmelgerste war trotz Führerscheintzug mit dem PKW unterwegs. Der Polizei sagte er: "Habt ihr nichts besseres zu tun als mich anzuhalten?"</description>
+				<description>Martin Semmelgerste war trotz Führerscheintzug mit dem PKW unterwegs. Der Polizei sagte er: &quot;Habt ihr nichts besseres zu tun als mich anzuhalten?&quot;</description>
 				<data genre="1" price="0" topicality="25" />
 			</episode>
 			<episode number="3">
@@ -2703,11 +2703,11 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 		</news>
 		<news>
 			<title>Straßenfeger findet 500 Euro</title>
-			<description>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 500 Euro. "Die wer'n sofort versofff'n", so der Finder.</description>
+			<description>Besser hätte der Morgen nicht anfangen können: Beim Arbeiten fand ein Straßenfeger in Hamburg 500 Euro. &quot;Die wer'n sofort versofff'n&quot;, so der Finder.</description>
 			<data genre="4" price="0" topicality="50" />
 			<episode number="1">
 				<title>Straßenfeger tot</title>
-				<description>Der Finder des 500-Euro-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: "...und er kehrt nie wieder!"</description>
+				<description>Der Finder des 500-Euro-Scheins starb an einer Alkoholvergiftung. Auf seinem Grabstein steht: &quot;...und er kehrt nie wieder!&quot;</description>
 				<data genre="4" price="0" topicality="50" />
 			</episode>
 		</news>
@@ -2837,12 +2837,12 @@ Verlost wird dabei noch ein NASA-Topfset.</description>
 			</episode>
 			<episode number="3">
 				<title>Queen: Ich fühle mich gut!</title>
-				<description>Nach der Untersuchung der angegriffenen Queen sagte sie: "I am pleased!" und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</description>
+				<description>Nach der Untersuchung der angegriffenen Queen sagte sie: &quot;I am pleased!&quot; und sah keine Probleme in ihrer neuen - kleinen - Körpergröße.</description>
 				<data genre="4" price="58" topicality="172" />
 			</episode>
 			<episode number="4">
 				<title>Ärzte: Queen wächst wieder!</title>
-				<description>Die weltweit renommierten Ärzte haben ihre Untersuchungen beendet. "Sie wächst wieder, 5 cm pro Tag!"
+				<description>Die weltweit renommierten Ärzte haben ihre Untersuchungen beendet. &quot;Sie wächst wieder, 5 cm pro Tag!&quot;
 Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 				<data genre="4" price="99" topicality="133" />
 			</episode>
@@ -2884,11 +2884,11 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 		</news>
 		<news>
 			<title>Wildschwein-Randale in Schrebergärten</title>
-			<description>In den letzten Tagen kommt es vermehrt zu Wildschwein-Angriffen auf Schrebergärten. "Die Sau gehört abgeschossen", so der entrüstete Schrebergärtner Rico Milke.</description>
+			<description>In den letzten Tagen kommt es vermehrt zu Wildschwein-Angriffen auf Schrebergärten. &quot;Die Sau gehört abgeschossen&quot;, so der entrüstete Schrebergärtner Rico Milke.</description>
 			<data genre="4" price="5" topicality="75" />
 			<episode number="1">
 				<title>Kleingärtner erschießt Polizisten</title>
-				<description>Der Kleingärtner Rico Milke erschoss auf der Wildschweinjagd in seinem Garten einen Polizisten. "Ich hielt ihn für ein Wildschwein", beteuerte der Schütze.</description>
+				<description>Der Kleingärtner Rico Milke erschoss auf der Wildschweinjagd in seinem Garten einen Polizisten. &quot;Ich hielt ihn für ein Wildschwein&quot;, beteuerte der Schütze.</description>
 				<data genre="4" price="5" topicality="125" />
 			</episode>
 		</news>
@@ -3136,7 +3136,7 @@ Ich fühl mich wohl mit Lemor</description>
 		</ad>
 		<ad>
 			<title>Nichts-wie-weg</title>
-			<description>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und "Gepäck zurück"-Garantie.</description>
+			<description>Günstige Urlaubstrips. Jetzt mit Datingbörse für Pauschaltouristen und &quot;Gepäck zurück&quot;-Garantie.</description>
 			<data minaudience="100" minimage="50" repetitions="3"  profit="35" penalty="30" targetgroup="0" duration="3" />
 		</ad>
 		<ad>
@@ -3229,7 +3229,7 @@ Der Vorteil: Kein Porto für Überweisungsträger</description>
 		</ad>
 		<ad>
 			<title>Schwarzmalerei AG</title>
-			<description>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop "live" am Telefon.</description>
+			<description>Freundliche Frauen aus Osteuropa erstellen Ihr Horoskop &quot;live&quot; am Telefon.</description>
 			<data minaudience="100" minimage="150" repetitions="3"  profit="20" penalty="15" targetgroup="8" duration="6" />
 		</ad>
 		<ad>
@@ -3303,7 +3303,7 @@ Aber nur mit Ulbricht Umzüge!</description>
 		</ad>
 		<ad>
 			<title>Vitalon Super Supau</title>
-			<description>Die "Vitalon Foods Company" aus Taiwan läßt Ricardo Dream Handerson als MacGyver für ihren Sports Drink werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Motorboot.</description>
+			<description>Die &quot;Vitalon Foods Company&quot; aus Taiwan läßt Ricardo Dream Handerson als MacGyver für ihren Sports Drink werben: auf dem Fahrrad, im Jeep, beim Tai Chi und auf dem Motorboot.</description>
 			<data minaudience="175"  repetitions="4"  profit="20" penalty="15" targetgroup="7" duration="3" />
 		</ad>
 		<ad>
@@ -3313,7 +3313,7 @@ Aber nur mit Ulbricht Umzüge!</description>
 		</ad>
 		<ad>
 			<title>Weisser Friese</title>
-			<description>Waschen Sie ihre Wäsche mit "Weisser Friese" porentief rein!</description>
+			<description>Waschen Sie ihre Wäsche mit &quot;Weisser Friese&quot; porentief rein!</description>
 			<data minaudience="70"  repetitions="2"  profit="100" penalty="100" targetgroup="3" duration="3" />
 		</ad>
 		<ad>

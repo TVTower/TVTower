@@ -265,6 +265,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'so currently we end up with the price equal to
 		'the price of a successful contract / GetSpotCount()
 
+		'now cut this to 20%
+		result :* 0.2
+
 		'less revenue with less topicality
 		if base.GetMaxInfomercialTopicality() > 0
 			result :* (base.infomercialTopicality / base.GetMaxInfomercialTopicality())

@@ -167,6 +167,7 @@ Type TProgrammeData {_exposeToLua}
 	Const GENRE_NEWS:Int		= 16
 	Const GENRE_SHOW:Int		= 17
 	Const GENRE_MONUMENTAL:Int	= 18
+	Const GENRE_FILLER:Int		= 19 'TV films etc.
 	Const GENRE_CALLINSHOW:Int	= 20
 
 
@@ -210,6 +211,8 @@ Type TProgrammeData {_exposeToLua}
 		If GetGenre() = TProgrammeData.GENRE_CALLINSHOW
 			result :+ GetSpeed() * 0.05
 			result :+ GetReview() * 0.2
+			'cut to 50%
+			result :* 0.5
 			'adjust by topicality
 			result :* (GetTopicality()/GetMaxTopicality())
 		Else

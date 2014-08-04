@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvgdb>
+	<allmovies>
+		<movie>
+			<title>Wahre Pantoffelhelden</title>
+			<description>Gudrun erbt die Pantoffelfabrik ihres Vaters - der Bürgermeister intrigiert und die Stadt braucht ...wahre Pantoffelhelden um die Fabrik zu retten.</description>
+			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1983" genre="19"  blocks="2" price="35" critics="100" speed="50" outcome="120" />
+			<created_by name="Ronny" userID="5578" />
+		</movie>
+		<movie>
+			<title>Die Kartoffelkönigin</title>
+			<description>Glansen verzückt die Bauern. Dicke Kartoffeln und Dumme Bauern sucht man vergebens in dieser herzlich warmen und romantischen Fernsehkomödie.</description>
+			<data actors="Patty Glansen" director="Henry Cutamaran" country="D" year="1985" genre="19"  blocks="2" price="45" critics="80" speed="70" outcome="105" />
+			<created_by name="Ronny" userID="5578" />
+		</movie>
+	</allmovies>
+	<allseries>
+		<serie>
+			<title>Brisante Ufer</title>
+			<description>Ein Kamerateam begleitet Rettungsschwimmer und andere Helden unserer heimischen Gewässer.</description>
+			<data actors="Laiendarsteller" director="Klaus Grobe" country="D" year="1982" genre="19"  blocks="1" price="30" critics="110" speed="50" />
+			<created_by name="Ronny" userID="5578" />
+			<episode number="1">
+				<title>Die Wasserwacht</title>
+				<description>Männer mit wettergegerbter Haut, viel Spritzwasser und eine launische See sind die Helden dieser Folge.</description>
+				<data price="35" critics="120" />
+			</episode>
+			<episode number="2">
+				<title>Das Elb-Wehr</title>
+				<description>Scheinbar langweilig aber doch enorm wichtig: die Instandhaltung eines Wehrs der Elbe. Zeigt einmalige, aber langweilige, Unterwasseraufnahmen.</description>
+				<data critics="60" speed="30" />
+			</episode>
+			<episode number="3">
+				<title>SOS im Freibad Gammelau</title>
+				<description>Dramatische Szenenm, eingefangen im Freibad Gammelau: Ist es ein Schokoriegel?</description>
+				<data critics="40" speed="140" />
+			</episode>
+		</serie>
+	</allseries>
+	<allnews>
+		<news>
+			<title>Spitzelaffäre</title>
+			<description>Auf der Toilette des Bundestags wurde ein Gespräch zwischen zwei nicht genannten Politikern aufgezeichnet. Audiomaterial scheinbar zensiert, Pfeif- und Zischgeräusche überdecken Gespräch.</description>
+			<data genre="0" price="25" topicality="70" />
+			<created_by name="Ronny" userID="5578" />
+			<episode number="1">
+				<title>Spitzelaffäre - Zensur herausgefiltert</title>
+				<description>Das Audiomaterial des Toilettenmitschnitts konnte bereinigt werden. Über die kodierte Frage &quot;Hast Du mal noch Papier?&quot; rätseln Experten.</description>
+				<data genre="0" price="37" topicality="60" />
+			</episode>
+		</news>
+	</allnews>
+	<allads>
+		<ad>
+			<title>Kambalott</title>
+			<description>Lecker Kompott wie von Omi. Der einzig wahre Nachtisch - mit Kernbeiss-Garantie.</description>
+			<data repetitions="3" profit="5" penalty="7" duration="3" />
+			<created_by name="Ronny" userID="5578" />
+		</ad>
+	</allads>
+</tvgdb>
