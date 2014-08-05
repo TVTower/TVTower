@@ -411,6 +411,7 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
+				If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
 
 				'Save game only when in a game
 				If game.gamestate = TGame.STATE_RUNNING
@@ -729,6 +730,7 @@ Type TSaveGame
 	Field _World:TWorld = Null
 	Field _GameRules:TGamerules = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
+	Field _ProgrammeLicenceCollection:TProgrammeLicenceCollection = Null
 	Field _NewsEventCollection:TNewsEventCollection = Null
 	Field _FigureCollection:TFigureCollection = Null
 	Field _PlayerCollection:TPlayerCollection = Null
@@ -752,6 +754,7 @@ Type TSaveGame
 	Method RestoreGameData:Int()
 		_Assign(_FigureCollection, TFigureCollection._instance, "FigureCollection", MODE_LOAD)
 		_Assign(_ProgrammeDataCollection, TProgrammeDataCollection._instance, "ProgrammeDataCollection", MODE_LOAD)
+		_Assign(_ProgrammeLicenceCollection, TProgrammeLicenceCollection._instance, "ProgrammeLicenceCollection", MODE_LOAD)
 		_Assign(_PlayerCollection, TPlayerCollection._instance, "PlayerCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceCollection, TPlayerFinanceCollection._instance, "PlayerFinanceCollection", MODE_LOAD)
 		_Assign(_PlayerFinanceHistoryListCollection, TPlayerFinanceHistoryListCollection._instance, "PlayerFinanceHistoryListCollection", MODE_LOAD)
@@ -791,6 +794,7 @@ Type TSaveGame
 		_Assign(TPlayerProgrammePlanCollection._instance, _PlayerProgrammePlanCollection, "PlayerProgrammePlanCollection", MODE_SAVE)
 		_Assign(TPublicImageCollection._instance, _PublicImageCollection, "PublicImageCollection", MODE_SAVE)
 		_Assign(TProgrammeDataCollection._instance, _ProgrammeDataCollection, "ProgrammeDataCollection", MODE_SAVE)
+		_Assign(TProgrammeLicenceCollection._instance, _ProgrammeLicenceCollection, "ProgrammeLicenceCollection", MODE_SAVE)
 		_Assign(NewsEventCollection, _NewsEventCollection, "NewsEventCollection", MODE_SAVE)
 		_Assign(TNewsAgency._instance, _NewsAgency, "NewsAgency", MODE_SAVE)
 		_Assign(EventManager._events, _EventManagerEvents, "Events", MODE_SAVE)

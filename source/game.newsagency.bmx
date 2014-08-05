@@ -348,9 +348,8 @@ Type TNewsAgency
 	'helper to get a movie which can be used for a news
 	Method _GetAnnouncableProgrammeLicence:TProgrammeLicence()
 		'filter to entries we need
-		Local licence:TProgrammeLicence
 		Local resultList:TList = CreateList()
-		For licence = EachIn TProgrammeLicence.movies
+		For local licence:TProgrammeLicence = EachIn GetProgrammeLicenceCollection().movies
 			'ignore collection and episodes (which should not be in that list)
 			If Not licence.getData() Then Continue
 
@@ -364,7 +363,7 @@ Type TNewsAgency
 			Local licenceTime:Int = licence.GetData().year * GetWorldTime().GetDaysPerYear() + licence.getData().releaseDay
 			If licenceTime > GetWorldTime().getDay() And licenceTime - GetWorldTime().getDay() < 14 Then resultList.addLast(licence)
 		Next
-		If resultList.count() > 0 Then Return TProgrammeLicence._GetRandomFromList(resultList)
+		If resultList.count() > 0 Then Return GetProgrammeLicenceCollection().GetRandomFromList(resultList)
 
 		Return Null
 	End Method

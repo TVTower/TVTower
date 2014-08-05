@@ -1717,7 +1717,7 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 		local minPrice:int = 200000
 
 		while not licence and minPrice >= 0
-			licence = TProgrammeLicence.GetRandomWithPrice(minPrice)
+			licence = GetProgrammeLicenceCollection().GetRandomWithPrice(minPrice)
 			'lower the requirements
 			if not licence then minPrice :- 10000
 		Wend

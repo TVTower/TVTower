@@ -13,6 +13,220 @@ Import "game.player.finance.bmx"
 Import "basefunctions.bmx" 'CreateEmptyImage()
 
 
+Type TProgrammeLicenceCollection
+	'holding all programme licences
+	Field licences:TList = CreateList()
+	'holding only licences of special packages containing multiple
+	'movies/series
+	Field collections:TList	= CreateList()
+	'holding only movie licences
+	Field movies:TList = CreateList()
+	'holding only series licences
+	Field series:TList = CreateList()
+
+	Global _instance:TProgrammeLicenceCollection
+
+
+	Function GetInstance:TProgrammeLicenceCollection()
+		if not _instance then _instance = new TProgrammeLicenceCollection
+		return _instance
+	End Function
+
+
+	Method PrintMovies:int()
+		print "--------- movies: "+movies.Count()
+		For local movie:TProgrammeLicence = Eachin movies
+			print movie.GetTitle() + "   | owner="+movie.owner
+		Next
+		print "---------"
+	End Method
+
+
+	'add a licence
+	Method Add:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		if skipDuplicates and licences.contains(licence) then return False
+
+		licences.AddLast(licence)
+		return True
+	End Method
+
+
+	'checks if the licences list contains the given licence
+	Method Contains:Int(licence:TProgrammeLicence)
+		return licences.contains(licence)
+	End Method
+
+
+	'add a licence as movie
+	Method AddMovie:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		if skipDuplicates and movies.contains(licence) then return False
+
+		movies.AddLast(licence)
+		return True
+	End Method
+
+
+	'checks if the movie list contains the given licence
+	Method ContainsMovie:Int(licence:TProgrammeLicence)
+		return movies.contains(licence)
+	End Method	
+
+
+	'add a licence as series
+	Method AddSeries:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		if skipDuplicates and series.contains(licence) then return False
+		
+		series.AddLast(licence)
+		return True
+	End Method
+
+
+	'checks if the series list contains the given licence
+	Method ContainsSeries:Int(licence:TProgrammeLicence)
+		return series.contains(licence)
+	End Method	
+
+
+	'add a licence as collection
+	Method AddCollection:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		if skipDuplicates and collections.contains(licence) then return False
+		
+		collections.AddLast(licence)
+		return True
+	End Method
+
+
+	'checks if the collection list contains the given licence
+	Method ContainsCollection:Int(licence:TProgrammeLicence)
+		return collections.contains(licence)
+	End Method
+	
+
+	'returns the list to use for the given type
+	'this is just important for "random" access as we could
+	'also just access "progList" in all cases...
+	Method _GetList:TList(programmeType:int=0)
+		Select programmeType
+			case TProgrammeLicence.TYPE_MOVIE
+				return movies
+			case TProgrammeLicence.TYPE_SERIES
+				return series
+			case TProgrammeLicence.TYPE_COLLECTION
+				return collections
+			default
+				return licences
+		End Select
+	End Method
+
+
+	Global warnedEmptyRandomFromList:int = False
+	Method GetRandomFromList:TProgrammeLicence(_list:TList)
+
+		If _list = Null Then Return Null
+		If _list.count() > 0
+			Local Licence:TProgrammeLicence = TProgrammeLicence(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
+			If Licence then return Licence
+		EndIf
+		if not warnedEmptyRandomFromList
+			TLogger.log("TProgrammeLicence.GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
+			warnedEmptyRandomFromList = true
+		endif
+		Return Null
+	End Method
+
+
+	Method Get:TProgrammeLicence(id:Int, programmeType:int=0)
+		local list:TList = _GetList(programmeType)
+		local licence:TProgrammeLicence = null
+
+		For Local i:Int = 0 To list.Count() - 1
+			Licence = TProgrammeLicence(list.ValueAtIndex(i))
+			if Licence and Licence.id = id Then Return Licence
+		Next
+		Return Null
+	End Method
+
+
+	Method GetRandom:TProgrammeLicence(programmeType:int=0, includeEpisodes:int=FALSE)
+		'filter to entries we need
+		Local Licence:TProgrammeLicence
+		Local sourceList:TList = _GetList(programmeType)
+		Local resultList:TList = CreateList()
+
+		For Licence = EachIn sourceList
+			'ignore if filtered out
+			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			'ignoring episodes
+			If not includeEpisodes and Licence.isEpisode() Then continue
+
+			'if available (unbought, released..), add it to candidates list
+			resultList.addLast(Licence)
+		Next
+
+		Return GetRandomFromList(resultList)
+	End Method
+
+
+	Method GetRandomWithPrice:TProgrammeLicence(MinPrice:int=0, MaxPrice:Int=-1, programmeType:int=0, includeEpisodes:int=FALSE)
+		'filter to entries we need
+		Local Licence:TProgrammeLicence
+		Local sourceList:TList = _GetList(programmeType)
+		Local resultList:TList = CreateList()
+
+		For Licence = EachIn sourceList
+			'ignore if filtered out
+			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			'ignoring episodes
+			If not includeEpisodes and Licence.isEpisode() Then continue
+
+			'skip if to expensive
+			if MaxPrice > 0 and Licence.getPrice() > MaxPrice then continue
+
+			'if available (unbought, released..), add it to candidates list
+			If Licence.getPrice() >= MinPrice Then resultList.addLast(Licence)
+		Next
+		Return GetRandomFromList(resultList)
+	End Method
+
+
+	Method GetRandomWithGenre:TProgrammeLicence(genre:Int=0, programmeType:int=0, includeEpisodes:int=FALSE)
+		Local Licence:TProgrammeLicence
+		Local sourceList:TList = _GetList(programmeType)
+		Local resultList:TList = CreateList()
+
+		For Licence = EachIn sourceList
+			'ignore if filtered out
+			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			'ignoring episodes
+			If not includeEpisodes and Licence.isEpisode() Then continue
+
+			'if available (unbought, released..), add it to candidates list
+			If Licence.GetData()
+				if Licence.GetData().getGenre() = genre Then resultList.addLast(Licence)
+			else
+				local foundGenreInSubLicence:int = FALSE
+				for local subLicence:TProgrammeLicence = eachin Licence.subLicences
+					if foundGenreInSubLicence then continue
+					if subLicence.GetData() and subLicence.GetData().getGenre() = genre
+						resultList.addLast(Licence)
+						foundGenreInSubLicence = TRUE
+					endif
+				Next
+			endif
+		Next
+		Return GetRandomFromList(resultList)
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetProgrammeLicenceCollection:TProgrammeLicenceCollection()
+	Return TProgrammeLicenceCollection.GetInstance()
+End Function
+
+
+
+
 'licence of for movies, series and so on
 Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	Field title:string			= ""
@@ -26,11 +240,6 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	Field cacheTextOverlay:TImage 			{nosave}
 	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
 
-	Global licences:TList		= CreateList()		'holding all programme licences
-	Global collections:TList	= CreateList()		'holding only licences of special packages containing multiple movies/series
-	Global movies:TList			= CreateList()		'holding only movie licences
-	Global series:TList			= CreateList()		'holding only series licences
-
 	Global ignoreUnreleasedProgrammes:int	= TRUE	'hide movies of 2012 when in 1985?
 	Global _filterReleaseDateStart:int		= 1900
 	Global _filterReleaseDateEnd:int		= 2100
@@ -40,7 +249,6 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	const TYPE_SERIES:int		= 4
 	const TYPE_MOVIE:int		= 8
 	const TYPE_COLLECTION:int	= 16
-
 
 
 	Function Create:TProgrammeLicence(title:String, description:String, licenceType:int=1)
@@ -58,24 +266,21 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		self.data = data
 		self.licenceType = data.programmeType
 
-		'we got direct content - so add that licence to the global list
-		'a) exception are episodes...they have to get fetched through the series head
+		'we got direct content - so add that licence to the global
+		'licence collection
+
+		'unused:
+		'a) exception are episodes...they have to get fetched through
+		'   the series head
 		'if not isEpisode() and not licences.contains(self) then licences.addLast(self)
 
 		'b) store all licences to enable collections of episodes from multiple series/seasons
-		if not licences.contains(self) then licences.addLast(self)
+		GetProgrammeLicenceCollection().Add(self)
 
 		'only "Movies" are stored separately,
-		'episodes are listed in a series which gets added
-		'during adding of episodes
-		if isMovie()
-			'print "AddData: movie " + data.getTitle()
-			if not movies.contains(self) then movies.addLast(self)
-		endif
-
-		'shouldn't be needed: set type to the one of programmedata
-		'data.licenceType = data.programmeType
-
+		'episodes are listed in a series which gets added during adding
+		'of episodes
+		if isMovie() then GetProgrammeLicenceCollection().AddMovie(self)
 
 		return TRUE
 	End Method
@@ -117,10 +322,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 		'print "AddSubLicence "+self.licenceType+" "+self.getTitle()+"  adding title="+licence.getTitle()
 
-		'if the licence has no special type up to now...
+		'if the licence has no special type up to now, add licence to
+		'global collection
 		if licence.isType(TYPE_UNKNOWN)
-			'we got content - so add the current licence to the global list
-			if not licences.contains(self) then licences.addLast(self)
+			GetProgrammeLicenceCollection().Add(self)
 		endif
 
 		'a series episode is added to a series licence
@@ -132,8 +337,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			'add series licence as parent for this episode
 			licence.parentLicence = self
 
-			'add series if not done yet
-			if not series.contains(self) then series.addLast(self)
+			'add series if not done yet (check is done automatically)
+			GetProgrammeLicenceCollection().AddSeries(self)
 		endif
 
 		'a series is added to a licence (series-heads do not have data) -> gets a collection
@@ -142,11 +347,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		if licence.isType(TYPE_MOVIE) then self.licenceType = TYPE_COLLECTION
 
 		'add collections to their list
-		if self.isType(TYPE_MOVIE) and not collections.contains(self) then collections.addLast(self)
+		if self.isType(TYPE_MOVIE) then GetProgrammeLicenceCollection().AddCollection(self)
 
-		'resize array of sublicences first, then add licence
-		subLicences = subLicences[.. subLicences.length+1]
-		subLicences[subLicences.length-1] = licence
+		'add to array of sublicences
+		subLicences :+ [licence]
 		Return TRUE
 	End Method
 
@@ -155,21 +359,26 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		return (self.licenceType & licenceType)
 	End Method
 
+
 	Method isSeries:int() {_exposeToLua}
 		return (self.licenceType & self.TYPE_SERIES)
 	End Method
+
 
 	Method isEpisode:int() {_exposeToLua}
 		return (self.licenceType & self.TYPE_EPISODE)
 	End Method
 
+
 	Method isMovie:int() {_exposeToLua}
 		return (self.licenceType & self.TYPE_MOVIE)
 	End Method
+	
 
 	Method isCollection:int() {_exposeToLua}
 		return (self.licenceType & self.TYPE_COLLECTION)
 	End Method
+	
 
 	Function setIgnoreUnreleasedProgrammes(ignore:int=TRUE, releaseStart:int=1900, releaseEnd:int=2100)
 		ignoreUnreleasedProgrammes = ignore
@@ -256,122 +465,6 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 		return TRUE
 	End Method
-
-
-	'returns the list to use for the given type
-	'this is just important for "random" access as we could
-	'also just access "progList" in all cases...
-	Function _GetList:TList(programmeType:int=0)
-		Select programmeType
-			case TYPE_MOVIE
-				return movies
-			case TYPE_SERIES
-				return series
-			case TYPE_COLLECTION
-				return collections
-			default
-				return licences
-		End Select
-	End Function
-
-
-	Global warnedEmptyRandomFromList:int = False
-	Function _GetRandomFromList:TProgrammeLicence(_list:TList)
-
-		If _list = Null Then Return Null
-		If _list.count() > 0
-			Local Licence:TProgrammeLicence = TProgrammeLicence(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			If Licence then return Licence
-		EndIf
-		if not warnedEmptyRandomFromList
-			TLogger.log("TProgrammeLicence._GetRandomFromList()", "list is empty (incorrect filter or not enough available licences?)", LOG_DEBUG | LOG_WARNING | LOG_DEV, TRUE)
-			warnedEmptyRandomFromList = true
-		endif
-		Return Null
-	End Function
-
-
-	Function Get:TProgrammeLicence(id:Int, programmeType:int=0)
-		local list:TList = _GetList(programmeType)
-		local licence:TProgrammeLicence = null
-
-		For Local i:Int = 0 To list.Count() - 1
-			Licence = TProgrammeLicence(list.ValueAtIndex(i))
-			if Licence and Licence.id = id Then Return Licence
-		Next
-		Return Null
-	End Function
-
-
-	Function GetRandom:TProgrammeLicence(programmeType:int=0, includeEpisodes:int=FALSE)
-		'filter to entries we need
-		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeType)
-		Local resultList:TList = CreateList()
-
-		For Licence = EachIn sourceList
-			'ignore if filtered out
-			If Licence.owner <> 0 or not Licence.isReleased() Then continue
-			'ignoring episodes
-			If not includeEpisodes and Licence.isEpisode() Then continue
-
-			'if available (unbought, released..), add it to candidates list
-			resultList.addLast(Licence)
-		Next
-
-		Return _GetRandomFromList(resultList)
-	End Function
-
-
-	Function GetRandomWithPrice:TProgrammeLicence(MinPrice:int=0, MaxPrice:Int=-1, programmeType:int=0, includeEpisodes:int=FALSE)
-		'filter to entries we need
-		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeType)
-		Local resultList:TList = CreateList()
-
-		For Licence = EachIn sourceList
-			'ignore if filtered out
-			If Licence.owner <> 0 or not Licence.isReleased() Then continue
-			'ignoring episodes
-			If not includeEpisodes and Licence.isEpisode() Then continue
-
-			'skip if to expensive
-			if MaxPrice > 0 and Licence.getPrice() > MaxPrice then continue
-
-			'if available (unbought, released..), add it to candidates list
-			If Licence.getPrice() >= MinPrice Then resultList.addLast(Licence)
-		Next
-		Return _GetRandomFromList(resultList)
-	End Function
-
-
-	Function GetRandomWithGenre:TProgrammeLicence(genre:Int=0, programmeType:int=0, includeEpisodes:int=FALSE)
-		Local Licence:TProgrammeLicence
-		Local sourceList:TList = _GetList(programmeType)
-		Local resultList:TList = CreateList()
-
-		For Licence = EachIn sourceList
-			'ignore if filtered out
-			If Licence.owner <> 0 or not Licence.isReleased() Then continue
-			'ignoring episodes
-			If not includeEpisodes and Licence.isEpisode() Then continue
-
-			'if available (unbought, released..), add it to candidates list
-			If Licence.GetData()
-				if Licence.GetData().getGenre() = genre Then resultList.addLast(Licence)
-			else
-				local foundGenreInSubLicence:int = FALSE
-				for local subLicence:TProgrammeLicence = eachin Licence.subLicences
-					if foundGenreInSubLicence then continue
-					if subLicence.GetData() and subLicence.GetData().getGenre() = genre
-						resultList.addLast(Licence)
-						foundGenreInSubLicence = TRUE
-					endif
-				Next
-			endif
-		Next
-		Return _GetRandomFromList(resultList)
-	End Function
 
 
 	Method setPlanned:int(latestHour:int=-1)

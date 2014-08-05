@@ -421,14 +421,14 @@ Type TGame {_exposeToLua="selected"}
 		For Local playerids:Int = 1 To 4
 			Local ProgrammeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(playerids)
 			For Local i:Int = 0 until GameRules.startMovieAmount
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_MOVIE))
+				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TProgrammeLicence.TYPE_MOVIE))
 			Next
 			'give series to each player
 			For Local i:Int = GameRules.startMovieAmount until GameRules.startMovieAmount + GameRules.startSeriesAmount
-				ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES))
+				ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandom(TProgrammeLicence.TYPE_SERIES))
 			Next
 			'give 1 call in
-			ProgrammeCollection.AddProgrammeLicence(TProgrammeLicence.GetRandomWithGenre(20))
+			ProgrammeCollection.AddProgrammeLicence(GetProgrammeLicenceCollection().GetRandomWithGenre(20))
 
 			For Local i:Int = 0 To 2
 				ProgrammeCollection.AddAdContract(New TAdContract.Create(GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0, 0.15)) )

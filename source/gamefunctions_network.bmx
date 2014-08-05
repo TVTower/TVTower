@@ -708,7 +708,7 @@ print "[NET] ReceiveGameReady"
 		select objectType
 			'ProgrammeLicence
 			case 1
-					Local licence:TProgrammeLicence = TProgrammeLicence.Get(objectID)
+					Local licence:TProgrammeLicence = GetProgrammeLicenceCollection().Get(objectID)
 					if not licence then return FALSE
 
 					'disable events - ignore it to avoid recursion

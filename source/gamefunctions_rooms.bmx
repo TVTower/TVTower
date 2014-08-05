@@ -3752,9 +3752,9 @@ endrem
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listMoviesGood then licence = TProgrammeLicence.GetRandomWithPrice(75000,-1, TProgrammeLicence.TYPE_MOVIE)
-				if lists[j] = listMoviesCheap then licence = TProgrammeLicence.GetRandomWithPrice(0,75000, TProgrammeLicence.TYPE_MOVIE)
-				if lists[j] = listSeries then licence = TProgrammeLicence.GetRandom(TProgrammeLicence.TYPE_SERIES)
+				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(75000,-1, TProgrammeLicence.TYPE_MOVIE)
+				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,75000, TProgrammeLicence.TYPE_MOVIE)
+				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandom(TProgrammeLicence.TYPE_SERIES)
 
 				'add new licence at slot
 				if licence
