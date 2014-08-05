@@ -159,6 +159,16 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	Field infomercialTopicality:float = 1.0
 	Field infomercialMaxTopicality:float = 1.0
 
+	Const TARGETGROUP_CHILDREN:Int = 1
+	Const TARGETGROUP_TEENAGER:Int = 2
+	Const TARGETGROUP_HOUSEWIFES:Int = 3
+	Const TARGETGROUP_EMPLOYEES:Int = 4
+	Const TARGETGROUP_UNEMPLOYED:Int = 5
+	Const TARGETGROUP_MANAGER:Int = 6
+	Const TARGETGROUP_PENSIONERS:Int = 7
+	Const TARGETGROUP_WOMEN:Int = 8
+	Const TARGETGROUP_MEN:Int = 9
+
 
 	Method Create:TAdContractBase(title:String, description:String, daystofinish:Int, spotcount:Int, targetgroup:Int, minaudience:Int, minimage:Int, fixedPrice:Int, profit:Int, penalty:Int)
 		self.title			= title
