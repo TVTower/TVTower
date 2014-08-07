@@ -119,7 +119,7 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-	Method DrawBackground:int()
+	Method DrawBackground()
 		local oldCol:TColor = new TColor.Get()
 
 		'available width is parentsDimension minus startingpoint
@@ -140,26 +140,27 @@ Type TGUISelectListItem Extends TGUIListItem
 	End Method
 
 
-	Method DrawValue:int()
+	Method DrawValue()
 		'draw value
 		GetFont().draw(value, Int(GetScreenX() + 5), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(Self.value))), valueColor)
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		DrawValue()
 	End Method
 	
-	
-	Method Draw:Int()
+rem
 'deactivated, creates flickering
-'		local upperParent:TGUIObject = GetUppermostParent()
-'		upperParent.RestrictViewPort()
+	Method Draw:Int()
+		local upperParent:TGUIObject = GetUppermostParent()
+		upperParent.RestrictViewPort()
 
 		Super.Draw()
 
-'		upperParent.ResetViewPort()
+		upperParent.ResetViewPort()
 	End Method
+endrem
 End Type
 
 
@@ -178,20 +179,29 @@ Type TGUICustomSelectListItem Extends TGUISelectListItem
 	End Method
 
 
-	Method DrawBackground:int()
-		if _customDrawBackground then _customDrawBackground(self);return True
-		Super.DrawBackground()
+	Method DrawBackground()
+		if _customDrawBackground
+			_customDrawBackground(self)
+		else
+			Super.DrawBackground()
+		endif
 	End Method
 
 
-	Method DrawValue:int()
-		if _customDrawValue then _customDrawValue(self);return True
-		Super.DrawValue()
+	Method DrawValue()
+		if _customDrawValue
+			_customDrawValue(self)
+		else
+			Super.DrawValue()
+		endif
 	End Method
 
 
-	Method Draw:Int()
-		if _customDraw then _customDraw(self);return True
-		Super.Draw()
+	Method Draw()
+		if _customDraw
+			_customDraw(self)
+		else
+			Super.Draw()
+		endif
 	End Method
 End Type

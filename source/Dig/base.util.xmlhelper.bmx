@@ -94,7 +94,7 @@ Type TXmlHelper
 
 
 	'loads values of a node into a tdata object
-	Function LoadValuesToData:Int(node:TXmlNode, data:TData Var, fieldNames:String[])
+	Function LoadValuesToData:Int(node:TXmlNode, data:TData, fieldNames:String[])
 		For Local fieldName:String = EachIn fieldNames
 			If Not TXmlHelper.HasValue(node, fieldName) Then Continue
 			'use the first fieldname ("frames|f" -> add as "frames")

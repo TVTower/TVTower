@@ -308,7 +308,7 @@ End Type
 
 
 Type TEventListenerRunFunction Extends TEventListenerBase
-	Field _function(triggeredByEvent:TEventBase)
+	Field _function:int(triggeredByEvent:TEventBase)
 
 
 	Function Create:TEventListenerRunFunction(_function(triggeredByEvent:TEventBase), limitToSender:Object=Null, limitToReceiver:Object=Null )

@@ -45,7 +45,7 @@ Type TGUILabel Extends TGUIobject
 	
 
 	'override to reset dimension cache
-	Method Resize(w:Float=-1, h:Float=-1)
+	Method Resize(w:Float = 0, h:Float = 0)
 		Super.Resize(w, h)
 		_valueDimensionCache = null
 	End Method
@@ -57,7 +57,7 @@ Type TGUILabel Extends TGUIobject
 	End Method
 
 
-	Method SetValue:Int(value:string)
+	Method SetValue(value:string)
 		Super.SetValue(value)
 		'reset cache
 		_valueDimensionCache = null
@@ -105,7 +105,7 @@ Type TGUILabel Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 

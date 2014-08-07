@@ -71,8 +71,9 @@ Type TGUIWindowBase Extends TGUIPanel
 
 
 	'override to add guiContent-resizing
-	Method Resize:Int(w:Float=Null,h:Float=Null)
-		Super.Resize(w,h)
+	'size 0, 0 is not possible (leads to autosize)
+	Method Resize(w:Float = 0, h:Float = 0)
+		Super.Resize(w, h)
 
 		'resize content (if exists) to use all available content space
 		If guiContent

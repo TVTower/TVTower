@@ -274,7 +274,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 
 
 
-	Method DrawBackground:int()
+	Method DrawBackground()
 		If mouseover
 			SetColor 250,210,100
 			DrawRect(getScreenX(), getScreenY(), GetScreenWidth(), rect.getH())
@@ -300,12 +300,12 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-	Method DrawValue:int()
+	Method DrawValue()
 		GetFont().draw(value, getScreenX(), Int(GetScreenY() + 2 + 0.5*(rect.getH()- GetFont().getHeight(value))), valueColor)
 	End Method
 
 
-	Method Draw:Int()
+	Method Draw()
 		local oldCol:TColor = new TColor.Get()
 		SetAlpha oldCol.a * GetScreenAlpha()
 
@@ -319,7 +319,7 @@ Type TGUIDropDownItem Extends TGUISelectListItem
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		DrawValue()
 	End Method
 End Type

@@ -256,24 +256,24 @@ End Function
 
 'copies an TImage to not manipulate the source image
 Function CopyImage:TImage(src:TImage)
-   If src = Null Then Return Null
+	If src = Null Then Return Null
 
-   Local dst:TImage = New TImage
-   MemCopy(dst, src, SizeOf(dst))
+	Local dst:TImage = New TImage
+	MemCopy(dst, src, SizeOf(dst))
 
-   dst.pixmaps = New TPixmap[src.pixmaps.length]
-   dst.frames = New TImageFrame[src.frames.length]
-   dst.seqs = New Int[src.seqs.length]
+	dst.pixmaps = New TPixmap[src.pixmaps.length]
+	dst.frames = New TImageFrame[src.frames.length]
+	dst.seqs = New Int[src.seqs.length]
 
-   For Local i:Int = 0 To dst.pixmaps.length-1
-      dst.pixmaps[i] = CopyPixmap(src.pixmaps[i])
-   Next
+	For Local i:Int = 0 To dst.pixmaps.length-1
+	  dst.pixmaps[i] = CopyPixmap(src.pixmaps[i])
+	Next
 
-   For Local i:Int = 0 To dst.frames.length-1
-      dst.Frame(i)
-   Next
+	For Local i:Int = 0 To dst.frames.length-1
+	  dst.Frame(i)
+	Next
 
    MemCopy(dst.seqs, src.seqs, SizeOf(dst.seqs))
 
-   Return dst
+	Return dst
 End Function

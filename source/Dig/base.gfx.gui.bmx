@@ -429,6 +429,8 @@ endrem
 
 		'try to set as potential keystroke receiver
 		SetKeystrokeReceiver(obj)
+
+		return True
 	End Method
 
 
@@ -953,7 +955,7 @@ Type TGUIobject
 	End Method
 
 
-	Method SetValue:Int(value:string)
+	Method SetValue(value:string)
 		self.value = value
 	End Method
 
@@ -1063,9 +1065,9 @@ Type TGUIobject
 	End Method
 
 
-	Method Resize(w:Float=Null,h:Float=Null)
-		If w Then rect.dimension.setX(w)
-		If h Then rect.dimension.setY(h)
+	Method Resize(w:Float = 0, h:Float = 0)
+		If w > 0 Then rect.dimension.setX(w)
+		If h > 0 Then rect.dimension.setY(h)
 	End Method
 
 
@@ -1718,12 +1720,12 @@ Type TGUISimpleRect Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		'
 	End Method
 
 
-	Method DrawDebug:Int()
+	Method DrawDebug()
 		SetAlpha 0.5
 		DrawRect(self.GetScreenX(), self.GetScreenY(), self.GetScreenWidth(), self.GetScreenHeight())
 		SetAlpha 1.0

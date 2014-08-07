@@ -8,6 +8,7 @@ Type TStaticEntity
 	Field name:string
 	Field visible:int = True
 	Field id:int = 0
+	Field parent:TStaticEntity = null
 	Global LastID:int = 0
 
 
@@ -30,6 +31,21 @@ Type TStaticEntity
 '	Method Update:Int()
 	'do nothing
 '	End Method
+
+
+	Method GetX:Float()
+		if parent then return parent.GetX() + area.GetX()
+	End Method
+
+
+	Method GetY:Float()
+		if parent then return parent.GetY() + area.GetY()
+	End Method
+
+
+	Method SetParent:Int(parent:TStaticEntity)
+		self.parent = parent
+	End Method
 
 
 	Method SetVisible:int(bool:int=True)

@@ -56,7 +56,7 @@ Type TGUIinput Extends TGUIobject
 
 
 	'override resize to add autocalculation and min handling
-	Method Resize(w:Float=-1,h:Float=-1)
+	Method Resize(w:Float = 0, h:Float = 0)
 		Super.Resize(Max(w, minDimension.GetX()), Max(h, minDimension.GetY()))
 	End Method
 
@@ -77,10 +77,14 @@ Type TGUIinput Extends TGUIobject
 
 
 	'(this creates a backup of the old value)
-	Method SetFocus()
-		Super.SetFocus()
-		'backup old value
-		_valueBeforeEdit = value
+	Method SetFocus:Int()
+		if Super.SetFocus()
+			'backup old value
+			_valueBeforeEdit = value
+			return True
+		else
+			return False
+		endif
 	End Method
 
 

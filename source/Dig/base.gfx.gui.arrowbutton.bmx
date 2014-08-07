@@ -45,9 +45,10 @@ Type TGUIArrowButton Extends TGUIObject
 
 
 	'override so we have a minimum size
-	Method Resize(w:Float=Null,h:Float=Null)
-		if not w or w < 0 then w = rect.dimension.GetX()
-		if not h or h < 0 then h = rect.dimension.GetY()
+	'size 0, 0 is not possible (leads to autosize)
+	Method Resize(w:Float = 0, h:Float = 0)
+		if w <= 0 then w = rect.dimension.GetX()
+		if h <= 0 then h = rect.dimension.GetY()
 
 		'set to minimum size or bigger
 		local spriteDimension:TRectangle = _GetButtonSprite().GetNinePatchBorderDimension()

@@ -63,16 +63,17 @@ Type TGUIButton Extends TGUIobject
 
 
 	'override resize to add autocalculation and caption handling
-	Method Resize(w:Float=-1, h:Float=-1)
+	'size 0, 0 is not possible (leads to autosize)
+	Method Resize(w:Float = 0, h:Float = 0)
 		'autocalculate width/height
-		if w = -1
+		if w <= 0
 			if autoSizeModeWidth = AUTO_SIZE_MODE_TEXT
 				w = GetFont().getWidth(self.value) + 8
 			elseif autoSizeModeWidth = AUTO_SIZE_MODE_SPRITE
 				w = GetSprite().area.GetW()
 			endif
 		endif
-		if h = -1
+		if h <= 0
 			h = rect.GetH()
 			if autoSizeModeHeight <> AUTO_SIZE_MODE_NONE or h = -1
 
@@ -87,8 +88,8 @@ Type TGUIButton Extends TGUIobject
 		endif
 
 
-		If w>0 Then rect.dimension.setX(w)
-		If h>0 Then rect.dimension.setY(h)
+		If w > 0 Then rect.dimension.setX(w)
+		If h > 0 Then rect.dimension.setY(h)
 
 		'move caption according to its rules
 		RepositionCaption()
@@ -135,7 +136,7 @@ Type TGUIButton Extends TGUIobject
 
 
 	'override default - to use caption instead of value
-	Method SetValue:Int(value:string)
+	Method SetValue(value:string)
 		SetCaption(value)
 	End Method
 
@@ -234,7 +235,7 @@ Type TGUIButton Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		Local atPoint:TVec2D = GetScreenPos()
 		Local oldCol:TColor = new TColor.Get()
 

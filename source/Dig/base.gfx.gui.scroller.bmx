@@ -74,7 +74,8 @@ Type TGUIScroller Extends TGUIobject
 
 
 	'override resize and add minSize-support
-	Method Resize(w:Float=Null,h:Float=Null)
+	'size 0, 0 is not possible (leads to autosize)
+	Method Resize(w:Float = 0, h:Float = 0)
 		'according the orientation we limit height or width
 		Select _orientation
 			case GUI_OBJECT_ORIENTATION_HORIZONTAL
@@ -84,7 +85,7 @@ Type TGUIScroller Extends TGUIobject
 				w = guiButtonMinus.rect.getW()
 				'if h <= 0 then h = rect.GetH()
 		End Select
-		Super.Resize(w,h)
+		Super.Resize(w, h)
 
 		'move the first button to the most left and top position
 		guiButtonMinus.rect.position.SetXY(0, 0)

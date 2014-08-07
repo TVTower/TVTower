@@ -31,10 +31,10 @@ Type TGUIPanel Extends TGUIObject
 	End Method
 
 
-	Method Resize:Int(w:Float=Null,h:Float=Null)
+	Method Resize(w:Float = 0, h:Float = 0)
 		'resize self
-		If w Then rect.dimension.setX(w) Else w = rect.GetW()
-		If h Then rect.dimension.setY(h) Else h = rect.GetH()
+		If w > 0 Then rect.dimension.setX(w) Else w = rect.GetW()
+		If h > 0 Then rect.dimension.setY(h) Else h = rect.GetH()
 
 		'move background
 		If guiBackground Then guiBackground.resize(w,h)
@@ -144,12 +144,12 @@ Type TGUIPanel Extends TGUIObject
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		'
 	End Method
 
 
-	Method Update()
+	Method Update:Int()
 		'as we do not call "super.Update()" - we handle this manually
 		'if appearance changed since last update tick: inform widget
 		If isAppearanceChanged()

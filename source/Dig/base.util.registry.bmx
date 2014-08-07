@@ -103,7 +103,12 @@ Type TRegistry
 
 
 	Method ToString:String()
-		Return "TRegistry: " + Len(data) + " data elements."
+		local elementCount:int = 0
+		For Local k:String = EachIn data.Keys()
+			elementCount :+ 1
+		Next
+
+		Return "TRegistry: " + elementCount + " data elements."
 	End Method
 End Type
 
@@ -187,9 +192,10 @@ Type TRegistryLoader
 
 		'load everything until everything from that file was loaded
 		if forceDirectLoad
+			local instance:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceCollection.GetInstance()
 			repeat
-				TRegistryUnloadedResourceCollection.GetInstance().Update()
-			until TRegistryUnloadedResourceCollection.GetInstance().FinishedLoading()
+				instance.Update()
+			until instance.FinishedLoading()
 		endif
 
 

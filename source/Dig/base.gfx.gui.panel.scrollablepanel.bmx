@@ -24,10 +24,9 @@ Type TGUIScrollablePanel Extends TGUIPanel
 
 
 	'override resize and add minSize-support
-	Method Resize(w:Float=Null,h:Float=Null)
-		If w And w >= minSize.GetX() Then rect.dimension.setX(w)
-		If h And h >= minSize.GetY() Then rect.dimension.setY(h)
-
+	Method Resize(w:Float = 0, h:Float = 0)
+		If w > 0 And w >= minSize.GetX() Then rect.dimension.setX(w)
+		If h > 0 And h >= minSize.GetY() Then rect.dimension.setY(h)
 	End Method
 
 
@@ -99,12 +98,7 @@ Type TGUIScrollablePanel Extends TGUIPanel
 	End Method
 
 	
-	Method DrawContent:Int()
-		'
-	End Method
-
-
-	Method DrawDebug:Int()
+	Method DrawDebug()
 		SetAlpha 0.7
 		SetColor 255,0,0
 		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())

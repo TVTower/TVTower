@@ -94,8 +94,9 @@ Type MathHelper
 		'1E-06 is a value defining at which point things get equal
 		'-> 5th digit after comma/point
 		'1.121039E-44 is the smallest value
-		print Abs(b - a)+ " < " +Max(1E-06 * Max(Abs(a), Abs(b)), 1.121039E-44)
 		Return Abs(b - a) < Max(1E-06 * Max(Abs(a), Abs(b)), 1.121039E-44)
+		'another possibility is:
+		'Return Abs(b - a) < Max(0.000001 * Max(Abs(a), Abs(b)), 2^(-146))
 	End Function
 
 

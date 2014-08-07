@@ -80,7 +80,8 @@ Type TGUIModalWindow Extends TGUIWindowBase
 	End Method
 
 
-	Method Resize:Int(w:Float=Null,h:Float=Null)
+	'size 0, 0 is not possible (leads to autosize)
+	Method Resize(w:Float = 0, h:Float = 0)
 		Super.Resize(w, h)
 		'move button
 		If buttons.length = 1

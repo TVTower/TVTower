@@ -92,8 +92,7 @@ Type TSpriteEntity extends TEntity
 		Super.Update()
 
 		'=== UPDATE ANIMATION ===
-		local deltaTime:Float = GetDeltaTimer().GetDelta() * GetWorldSpeedFactor()
-		if frameAnimations then frameAnimations.GetCurrent().Update(deltaTime)
+		if frameAnimations then frameAnimations.GetCurrent().Update()
 	End Method
 
 

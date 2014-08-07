@@ -50,12 +50,12 @@ Type TGUIBackgroundBox Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		'
 	End Method
 
 
-	Method DrawBackground:Int()
+	Method DrawBackground()
 		Local drawPos:TVec2D = GetScreenPos()
 		local oldCol:TColor = new TColor.Get()
 		'a local spriteAlpha means widget as "parent" can have alpha 1.0

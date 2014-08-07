@@ -143,7 +143,8 @@ Type TGUIListBase Extends TGUIobject
 
 
 	'override resize and add minSize-support
-	Method Resize(w:Float=Null,h:Float=Null)
+	'size 0, 0 is not possible (leads to autosize)
+	Method Resize(w:Float = 0, h:Float = 0)
 		Super.Resize(w,h)
 
 		'cache enabled state of both scrollers
@@ -654,7 +655,7 @@ endrem
 	End Method
 
 
-	Method DrawBackground:Int()
+	Method DrawBackground()
 		If guiBackground
 			guiBackground.Draw()
 		Else
@@ -674,13 +675,13 @@ endrem
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		'
 	End Method
 
 
 
-	Method DrawDebug:Int()
+	Method DrawDebug()
 		If _debugMode
 			SetAlpha 0.2
 			Local rect:TRectangle = new TRectangle.Init(guiEntriesPanel.GetScreenX(), guiEntriesPanel.GetScreenY(), Min(rect.GetW(), guiEntriesPanel.rect.GetW()), Min(rect.GetH(), guiEntriesPanel.rect.GetH()) )
@@ -804,7 +805,7 @@ Type TGUIListItem Extends TGUIobject
 	End Method
 
 
-	Method Show:Int()
+	Method Show()
 		SetShowtime(initialShowtime)
 		Super.Show()
 	End Method
@@ -834,7 +835,7 @@ Type TGUIListItem Extends TGUIobject
 	End Method
 
 
-	Method DrawContent:Int()
+	Method DrawContent()
 		Local atPoint:TVec2D = GetScreenPos()
 		Local draw:Int=True
 		Local parent:TGUIobject = Null
