@@ -58,7 +58,7 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 		endif
 
 		'=== HANDLE "<BITMAPFONT>" ===
-		local fieldNames:String[] = ["name", "url", "size", "default", "flags"]
+		local fieldNames:String[] = ["name", "url", "size", "default", "flags", "lineHeightModifier", "spaceWidthModifier"]
 		TXmlHelper.LoadValuesToData(node, data, fieldNames)
 		'process given relative-url
 		data.AddString("url", loader.GetURI(data.GetString("url", "")))
@@ -107,6 +107,10 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 				GetBitmapFontManager().baseFont = font
 			EndIf
 		EndIf
+
+		'=== ADJUST SETTINGS ===
+		font.lineHeightModifier = data.GetFloat("lineHeightModifier", font.lineHeightModifier)
+		font.spaceWidthModifier = data.GetFloat("spaceWidthModifier", font.spaceWidthModifier)
 
 		'indicate that the loading was successful
 		return True

@@ -622,7 +622,8 @@ Type TSprite
 '			endif
 		endif
 
-		DrawSubImageRect(parent.image, targetCopy.GetX(), targetCopy.GetY(), targetCopy.GetW(), targetCopy.GetH(), area.GetX() + sourceCopy.GetX(), area.GetY() + sourceCopy.GetY(), sourceCopy.GetW(), sourceCopy.GetH())
+		'round position down, and dimension up
+		DrawSubImageRect(parent.image, floor(targetCopy.GetX()), floor(targetCopy.GetY()), ceil(targetCopy.GetW()), ceil(targetCopy.GetH()), area.GetX() + sourceCopy.GetX(), area.GetY() + sourceCopy.GetY(), sourceCopy.GetW(), sourceCopy.GetH())
 	End Method
 
 

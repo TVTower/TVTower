@@ -186,7 +186,9 @@ Type TBitmapFont
 	Field uniqueID:string =""
 	Field displaceY:float=100.0
 	'modifier * lineheight gets added at the end
-	Field lineHeightModifier:float = 0.2
+	Field lineHeightModifier:float = 1.2
+	'value the width of " " (space) is multiplied with
+	Field spaceWidthModifier:float = 1.0
 	'whether to use ints or floats for coords
 	Field drawAtFixedPoints:int = true
 	Field _charsEffectFunc:TBitmapFontChar(font:TBitmapFont, charKey:string, char:TBitmapFontChar, config:TData)[]
@@ -541,7 +543,7 @@ Type TBitmapFont
 		if lines.length > 1
 			'add the lineHeightModifier for all lines but the first or
 			'single one
-			blockHeight :+ lineHeight * lineHeightModifier
+			blockHeight :+ lineHeight * (lineHeightModifier-1.0)
 		endif
 
 		'move along y according alignment
@@ -575,7 +577,7 @@ Type TBitmapFont
 			y :+ Max(lineHeight, p.y)
 			'add extra spacing _between_ lines
 			If lines.length > 1 and i < lines.length-1
-				y :+ lineHeight * lineHeightModifier
+				y :+ lineHeight * (lineHeightModifier-1.0)
 			Endif
 		Next
 
@@ -744,7 +746,7 @@ Type TBitmapFont
 		For text:string = eachin textLines
 			'except first line (maybe only one line) - add extra spacing
 			'between lines
-			if currentLine > 0 then height:+ ceil( lineHeight* font.lineHeightModifier )
+			if currentLine > 0 then height:+ ceil( lineHeight* (font.lineHeightModifier-1.0) )
 
 			currentLine:+1
 
@@ -826,7 +828,11 @@ Type TBitmapFont
 					elseif rotation = 180
 						lineWidth :- bm.charWidth * gfx.tform_ix
 					else
-						lineWidth :+ bm.charWidth * gfx.tform_ix
+						if text[i] = 32 'space
+							lineWidth :+ bm.charWidth * gfx.tform_ix * spaceWidthModifier
+						else
+							lineWidth :+ bm.charWidth * gfx.tform_ix
+						endif
 					endif
 				EndIf
 
@@ -837,7 +843,7 @@ Type TBitmapFont
 			'add extra spacing _between_ lines
 			'not done when only 1 line available or on last line
 			if currentLine < textLines.length
-				height:+ ceil( lineHeight* font.lineHeightModifier )
+				height:+ ceil( lineHeight* (font.lineHeightModifier-1.0) )
 			endif
 		Next
 
