@@ -261,29 +261,29 @@ Type TNewsAgency
 		description = ""
 		
 		if isPartiallyCloudy
-			description :+ GetLocale("SKY_IS_PARTIALLY_CLOUDY")
+			description :+ GetLocale("SKY_IS_PARTIALLY_CLOUDY")+" "
 		elseif isCloudy
-			description :+ GetLocale("SKY_IS_OVERCAST")
+			description :+ GetLocale("SKY_IS_OVERCAST")+" "
 		elseif isClear
-			description :+ GetLocale("SKY_IS_WITHOUT_CLOUDS")
+			description :+ GetLocale("SKY_IS_WITHOUT_CLOUDS")+" "
 		endif
 		
 		if sunAverage = 1.0 and isDay
-			if not isNight then description :+ GetLocale("SUN_SHINES_WHOLE_TIME")
+			if not isNight then description :+ GetLocale("SUN_SHINES_WHOLE_TIME")+" "
 		elseif sunAverage > 0.5
-			description :+ GetLocale("SUN_WINS_AGAINST_CLOUDS")
+			description :+ GetLocale("SUN_WINS_AGAINST_CLOUDS")+" "
 		elseif sunAverage > 0
-			description :+ GetLocale("SUN_IS_SHINING_SOMETIMES")
+			description :+ GetLocale("SUN_IS_SHINING_SOMETIMES")+" "
 		else
-			description :+ GetLocale("SUN_IS_NOT_SHINING")
+			description :+ GetLocale("SUN_IS_NOT_SHINING")+" "
 		endif
 
 		if isRaining and isSnowing
-			description :+ GetLocale("RAIN_AND_SNOW_ALTERNATE")
+			description :+ GetLocale("RAIN_AND_SNOW_ALTERNATE")+" "
 		elseif isRaining
-			description :+ GetLocale("RAIN_IS_POSSIBLE")
+			description :+ GetLocale("RAIN_IS_POSSIBLE")+" "
 		elseif isSnowing
-			description :+ GetLocale("SNOW_IS_FALLING")
+			description :+ GetLocale("SNOW_IS_FALLING")+" "
 		endif
 
 		if tempMin <> tempMax

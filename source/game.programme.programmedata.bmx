@@ -113,40 +113,54 @@ End Function
 
 'raw data for movies, series,...
 Type TProgrammeData {_exposeToLua}
-	Field title:string					= ""
-	Field description:string			= ""
-	Field actors:TProgrammePerson[]							'array holding actor(s)
-	Field directors:TProgrammePerson[]						'array holding director(s)
-	Field country:String				= "UNK"
-	Field year:Int						= 1900
-	Field targetGroup:int				= 0					'special targeted audience?
-	Field refreshModifier:float			= 1.0				'changes how much a programme "regenerates" (multiplied with genreModifier)
-	Field wearoffModifier:Float			= 1.0				'changes how much a programme loses during sending it
-	Field liveHour:Int					= 0
-	Field outcome:Float					= 0
-	Field review:Float					= 0
-	Field speed:Float					= 0
-	Field relPrice:Int					= 0
-	Field genre:Int						= 0
-	Field blocks:Int					= 1
-	Field xrated:Int					= 0
-	Field programmeType:Int				= 1					'0 = serie, 1 = movie, ...?
-	Field releaseDay:Int				= 1					'at which day was the programme released?
-	Field releaseAnnounced:int			= FALSE				'announced in news etc?
-	Field timesAired:int				= 0					'how many times that programme was run
-	Field topicality:Int				= -1 				'how "attractive" a programme is (the more shown, the less this value)
-	'trailer data
-	Field trailerTopicality:float		= 1.0
-	Field trailerMaxTopicality:float	= 1.0
-	Field trailerAired:int				= 0					'times the trailer aired
-	Field trailerAiredSinceShown:int	= 0					'times the trailer aired since the programme was shown "normal"
+	Field title:string = ""
+	Field description:string = ""
+	'array holding actor(s)
+	Field actors:TProgrammePerson[]
+	'array holding director(s)
+	Field directors:TProgrammePerson[]
+	Field country:String = "UNK"
+	Field year:Int = 1900
+	'special targeted audience?
+	Field targetGroup:int = 0
+	'changes how much a programme "regenerates" (multiplied with genreModifier)
+	Field refreshModifier:float = 1.0
+	'changes how much a programme loses during sending it
+	Field wearoffModifier:Float	= 1.0
+	Field liveHour:Int = 0
+	Field outcome:Float	= 0
+	Field review:Float = 0
+	Field speed:Float = 0
+	Field relPrice:Int = 0
+	Field genre:Int	= 0
+	Field blocks:Int = 1
+	Field xrated:Int = 0
+	'0 = serie, 1 = movie, ...?
+	Field programmeType:Int	= 1
+	'at which day was the programme released?
+	Field releaseDay:Int = 1
+	'announced in news etc?
+	Field releaseAnnounced:int = FALSE
+	'how many times that programme was run
+	'(per player, 0 = unknown - eg before "game start" to lower values)
+	Field timesAired:int[] = [0]
+	'how "attractive" a programme is (the more shown, the less this value)
+	Field topicality:Int = -1
+
+	'=== trailer data ===
+	Field trailerTopicality:float = 1.0
+	Field trailerMaxTopicality:float = 1.0
+	'times the trailer aired
+	Field trailerAired:int = 0
+	'times the trailer aired since the programme was shown "normal"
+	Field trailerAiredSinceShown:int = 0
 
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
-	const TYPE_UNKNOWN:int		= 1
-	const TYPE_EPISODE:int		= 2
-	const TYPE_SERIES:int		= 4
-	const TYPE_MOVIE:int		= 8
+	Const TYPE_UNKNOWN:int		= 1
+	Const TYPE_EPISODE:int		= 2
+	Const TYPE_SERIES:int		= 4
+	Const TYPE_MOVIE:int		= 8
 
 	Const GENRE_ACTION:Int		= 0
 	Const GENRE_THRILLER:Int	= 1
@@ -391,7 +405,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method GetMaxTopicality:int()
-		return Max(0, 255 - 2 * Max(0, GetWorldTime().GetYear() - year) - Min(50, timesAired * 5)) 'simplest form ;D
+		return Max(0, 255 - 2 * Max(0, GetWorldTime().GetYear() - year) - Min(50, GetTimesAired() * 5)) 'simplest form ;D
 	End Method
 
 
@@ -501,8 +515,28 @@ Type TProgrammeData {_exposeToLua}
 	End Method
 
 
-	Method GetTimesAired:Int()
-		return timesAired
+	'playerID < 0 means "get all"
+	Method GetTimesAired:Int(playerID:int = -1)
+		if playerID >= timesAired.length then return 0
+		if playerID >= 0 then return timesAired[playerID]
+
+		local result:int = 0
+		For local i:int = 0 until timesAired.length
+			result :+ timesAired[i]
+		Next
+		return result
+	End Method
+
+
+	Method SetTimesAired:Int(times:int, playerID:int)
+		if playerID < 0 then playerID = 0
+
+		'resize array if player has no entry yet
+		if playerID >= timesAired.length
+			timesAired = timesAired[.. playerID + 1]
+		endif
+
+		timesAired[playerID] = times
 	End Method
 
 
@@ -520,6 +554,6 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method isSeries:int()
-		return programmeType = TYPE_SERIES | TYPE_EPISODE
+		return (programmeType = TYPE_SERIES) or (programmeType = TYPE_EPISODE) 
 	End Method
 End Type

@@ -167,6 +167,10 @@ AD_TOSEND				= to send
 AD_PENALTY				= Penalty
 AD_MIN_AUDIENCE			= Min. audience
 AD_TARGETGROUP			= Target group
+AD_SEND_TILL_TOLATE     = to late!!!
+AD_SEND_TILL_MIDNIGHT   = send till midnight !!
+AD_SEND_TILL_TOMORROW   = send till tomorrow!
+
 AD_TILL_TOLATE			= too late!!!
 AD_TILL_TODAY			= till today!!
 AD_TILL_TOMORROW		= till tomorrow!
@@ -197,6 +201,7 @@ MOVIE_TOPICALITY		= Topicality
 MOVIE_BLOCKS			= blocks
 MOVIE_XRATED			= X-rated
 MOVIE_EPISODES			= episodes
+SERIES_WITH_X_EPISODES = Series with %EPISODESCOUNT% episodes
 MOVIE_GENRE_0			= Action
 MOVIE_GENRE_1			= Thriller
 MOVIE_GENRE_2			= Sci-fi
@@ -220,6 +225,9 @@ MOVIE_GENRE_19			= Filler
 MOVIE_GENRE_20			= Paid programing
 MOVIE_CALLINSHOW		= You earn %PROFIT% per 1.000 viewers.
 MOVIE_TRAILER			= Airing a trailer may increase interest in upcoming broadcastings of the promoted programme.
+
+AUCTION_MAKE_BID = Bid
+AUCTION_WITHOUT_BID = Without bid
 
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Click on movie or series to place a bid.
 

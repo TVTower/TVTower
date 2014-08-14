@@ -1249,7 +1249,7 @@ End Type
 		GetSpriteFromRegistry("dialogue."+dialogueType).DrawArea(x,y,width,height)
 
 		DialogSprite.Draw(dx, dy)
-		If DialogText <> "" Then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 16, Height - 16, Null, TColor.clBlack)
+		If DialogText <> "" Then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 25, Height - 16, Null, TColor.clBlack)
 	End Function
 
 	'draws a rounded rectangle (blue border) with alphashadow
@@ -1524,7 +1524,7 @@ Type TDialogueAnswer
 
 	Method Update:Int(x:Float, y:Float, w:Float, h:Float, clicked:Int = 0)
 		Self._highlighted = False
-		If THelper.MouseIn( x, y-2, w, GetBitmapFont("Default", 12).getBlockHeight(Self._text, w, h))
+		If THelper.MouseIn( x, y-2, w, GetBitmapFontManager().baseFont.getBlockHeight(Self._text, w, h))
 			Self._highlighted = True
 			If clicked
 				'emit the event if there is one
@@ -1540,11 +1540,11 @@ Type TDialogueAnswer
 		If Self._highlighted
 			SetColor 200,100,100
 			DrawOval(x, y +3, 6, 6)
-			GetBitmapFont("Default", 12, BoldFont).drawBlock(Self._text, x+9, y-1, w-10, h, Null, TColor.Create(0, 0, 0))
+			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(Self._text, x+9, y-1, w-10, h, Null, TColor.Create(0, 0, 0))
 		Else
 			SetColor 0,0,0
 			DrawOval(x, y +3, 6, 6)
-			GetBitmapFont("Default", 12).drawBlock(Self._text, x+10, y, w-10, h, Null, TColor.Create(100, 100, 100))
+			GetBitmapFont("Default", 13).drawBlock(Self._text, x+10, y, w-10, h, Null, TColor.Create(100, 100, 100))
 		EndIf
 	End Method
 End Type
@@ -1588,7 +1588,7 @@ Type TDialogueTexts
 		Local ydisplace:Float = GetBitmapFont("Default", 14).drawBlock(Self._text, x, y, w, h).getY()
 		ydisplace:+15 'displace answers a bit
 
-		Local lineHeight:Int = 2 + GetBitmapFont("Default", 14).getHeight("QqT") 'high chars, low chars
+		Local lineHeight:Int = 2 + GetBitmapFont("Default", 14).GetMaxCharHeight()
 
 		For Local answer:TDialogueAnswer = EachIn(Self._answers)
 			answer.Draw(x, y + ydisplace, w, h)
@@ -1641,7 +1641,9 @@ Type TDialogue
 		SetColor 255, 255, 255
 	    DrawDialog("default", _rect.getX(), _rect.getY(), _rect.getW(), _rect.getH(), "StartLeftDown", 0, "", GetBitmapFont("Default", 14))
 		SetColor 0, 0, 0
-		If Self._texts.Count() > 0 Then TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(Self._rect.getX() + 10, Self._rect.getY() + 10, Self._rect.getW() - 60, Self._rect.getH())
+		If Self._texts.Count() > 0
+			TDialogueTexts(Self._texts.ValueAtIndex(Self._currentText)).Draw(Self._rect.getX() + 10, Self._rect.getY() + 10, Self._rect.getW() - 60, Self._rect.getH())
+		endif
 		SetColor 255, 255, 255
 	End Method
 End Type
@@ -1682,7 +1684,7 @@ Type TTooltipAudience Extends TTooltip
 
 	Method GetContentWidth:Int()
 		If audienceResult
-			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)" )
+			Return Self.useFont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)" )
 		Else
 			Return Self.Usefont.GetWidth( GetLocale("MAX_AUDIENCE_RATING") + ": 100 (100%)")
 		EndIf
@@ -1713,10 +1715,16 @@ Type TTooltipAudience Extends TTooltip
 	Method GetContentHeight:Int(width:int)
 		local result:int = 0
 
+		local reach:int = GetStationMapCollection().GetMap(GetPlayerCollection().playerID).reach
+		local totalReach:int = GetStationMapCollection().population
+		result:+ Self.Usefont.GetHeight(GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)")
+		result:+ Self.Usefont.GetHeight(GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.floatToString(100.0 * float(reach)/totalReach, 2) + "%)")
+		result:+ 1*lineHeight
+
 		If showDetails
-			result:+ 1*lineHeight + 2*lineHeight + 9*lineIconHeight
+			result:+ 9*lineIconHeight
 		else
-			result:+ 1*lineHeight + 2*lineHeight + 1*lineHeight
+			result:+ 1*lineHeight
 		endif
 
 		result:+ padding.GetTop() + padding.GetBottom()
@@ -1742,14 +1750,13 @@ Type TTooltipAudience Extends TTooltip
 		Local lineY:Int = y
 		Local lineX:Int = x
 		Local lineText:String = ""
-		Local lineIconHeight:Int = 1 + Max(lineHeight, GetSpriteFromRegistry("gfx_targetGroup1").area.GetH())
 		Local lineIconX:Int = lineX + GetSpriteFromRegistry("gfx_targetGroup1").area.GetW() + 2
 		Local lineIconWidth:Int = w - GetSpriteFromRegistry("gfx_targetGroup1").area.GetW()
-		Local lineIconDY:Int = Ceil(0.5 * (lineIconHeight - lineHeight))
+		Local lineIconDY:Int = floor(0.5 * (lineIconHeight - lineHeight))
 		Local lineTextDY:Int = lineIconDY + 2
 
 		'draw overview text
-		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.PotentialMaxAudienceQuote.GetAverage(), 2) + "%)"
+		lineText = GetLocale("MAX_AUDIENCE_RATING") + ": " + TFunctions.convertValue(audienceResult.PotentialMaxAudience.GetSum(),0) + " (" + MathHelper.floatToString(100.0 * audienceResult.GetPotentialMaxAudienceQuote().GetAverage(), 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
 		lineY :+ 1 * Self.Usefont.GetHeight(lineText)
 
@@ -1758,8 +1765,10 @@ Type TTooltipAudience Extends TTooltip
 
 		lineText = GetLocale("BROADCASTING_AREA") + ": " + TFunctions.convertValue(reach, 0) + " (" + MathHelper.floatToString(100.0 * float(reach)/totalReach, 2) + "%)"
 		Self.Usefont.draw(lineText, lineX, lineY, TColor.CreateGrey(90))
+		lineY :+ Self.Usefont.GetHeight(lineText)
+
 		'add 1 line more - as spacing to details
-		lineY :+ 2 * Self.Usefont.GetHeight(lineText)
+		lineY :+ lineHeight
 
 		
 		If Not showDetails
@@ -1768,24 +1777,25 @@ Type TTooltipAudience Extends TTooltip
 			'add lines so we can have an easier "for loop"
 			Local lines:String[9]
 			Local percents:String[9]
+			local audienceQuote:TAudience = audienceResult.GetAudienceQuote()
 			lines[0]	= getLocale("AD_GENRE_1") + ": " + TFunctions.convertValue(audienceResult.Audience.Children, 0)
-			percents[0]	= MathHelper.floatToString(audienceResult.AudienceQuote.Children * 100,2)
+			percents[0]	= MathHelper.floatToString(audienceQuote.Children * 100,2)
 			lines[1]	= getLocale("AD_GENRE_2") + ": " + TFunctions.convertValue(audienceResult.Audience.Teenagers, 0)
-			percents[1]	= MathHelper.floatToString(audienceResult.AudienceQuote.Teenagers * 100,2)
+			percents[1]	= MathHelper.floatToString(audienceQuote.Teenagers * 100,2)
 			lines[2]	= getLocale("AD_GENRE_3") + ": " + TFunctions.convertValue(audienceResult.Audience.HouseWifes, 0)
-			percents[2]	= MathHelper.floatToString(audienceResult.AudienceQuote.HouseWifes * 100,2)
+			percents[2]	= MathHelper.floatToString(audienceQuote.HouseWifes * 100,2)
 			lines[3]	= getLocale("AD_GENRE_4") + ": " + TFunctions.convertValue(audienceResult.Audience.Employees, 0)
-			percents[3]	= MathHelper.floatToString(audienceResult.AudienceQuote.Employees * 100,2)
+			percents[3]	= MathHelper.floatToString(audienceQuote.Employees * 100,2)
 			lines[4]	= getLocale("AD_GENRE_5") + ": " + TFunctions.convertValue(audienceResult.Audience.Unemployed, 0)
-			percents[4]	= MathHelper.floatToString(audienceResult.AudienceQuote.Unemployed * 100,2)
+			percents[4]	= MathHelper.floatToString(audienceQuote.Unemployed * 100,2)
 			lines[5]	= getLocale("AD_GENRE_6") + ": " + TFunctions.convertValue(audienceResult.Audience.Manager, 0)
-			percents[5]	= MathHelper.floatToString(audienceResult.AudienceQuote.Manager * 100,2)
+			percents[5]	= MathHelper.floatToString(audienceQuote.Manager * 100,2)
 			lines[6]	= getLocale("AD_GENRE_7") + ": " + TFunctions.convertValue(audienceResult.Audience.Pensioners, 0)
-			percents[6]	= MathHelper.floatToString(audienceResult.AudienceQuote.Pensioners * 100,2)
+			percents[6]	= MathHelper.floatToString(audienceQuote.Pensioners * 100,2)
 			lines[7]	= getLocale("AD_GENRE_8") + ": " + TFunctions.convertValue(audienceResult.Audience.Women, 0)
-			percents[7]	= MathHelper.floatToString(audienceResult.AudienceQuote.Women * 100,2)
+			percents[7]	= MathHelper.floatToString(audienceQuote.Women * 100,2)
 			lines[8]	= getLocale("AD_GENRE_9") + ": " + TFunctions.convertValue(audienceResult.Audience.Men, 0)
-			percents[8]	= MathHelper.floatToString(audienceResult.AudienceQuote.Men * 100,2)
+			percents[8]	= MathHelper.floatToString(audienceQuote.Men * 100,2)
 
 			Local colorLight:TColor = TColor.CreateGrey(240)
 			Local colorDark:TColor = TColor.CreateGrey(230)
@@ -1796,6 +1806,7 @@ Type TTooltipAudience Extends TTooltip
 				'shade the rows
 				If i Mod 2 = 0 Then colorLight.SetRGB() Else colorDark.SetRGB()
 				DrawRect(lineX, lineY, w, lineIconHeight)
+
 				'draw icon
 				SetColor 255,255,255
 				GetSpriteFromRegistry("gfx_targetGroup"+i).draw(lineX, lineY + lineIconDY)
@@ -1807,6 +1818,7 @@ Type TTooltipAudience Extends TTooltip
 					Usefont.drawBlock(lines[i-1], lineIconX, lineY + lineTextDY,  w, lineHeight, Null, ColorTextDark)
 					Usefont.drawBlock(percents[i-1]+"%", lineIconX, lineY + lineTextDY, lineIconWidth - 5, lineIconHeight, new TVec2D.Init(ALIGN_RIGHT), ColorTextDark)
 				EndIf
+
 				lineY :+ lineIconHeight
 			Next
 		EndIf
@@ -2147,19 +2159,37 @@ Type TInterface
 			'draw the small electronic parts - "the inner tv"
 	     	GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, 419)
 
-			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted() + "  ", 377, 427, 103, 25, new TVec2D.Init(ALIGN_RIGHT), TColor.Create(200,230,200), 2)
-			GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience() + "  ", 377, 469, 103, 25, new TVec2D.Init(ALIGN_RIGHT), TColor.Create(200,200,230), 2)
-		 	GetBitmapFont("Default", 11, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 555, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180), 2)
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted(), 366, 421, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
+
+			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerCollection().Get().GetProgrammePlan().getFormattedAudience(), 366, 463, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,200,230), 2, 1, 0.5)
+
+			'=== DRAW SECONDARY INFO ===
+			local oldAlpha:Float = GetAlpha()
+			SetAlpha oldAlpha*0.75
+
+			'current days financial win/loss
+			local profit:int = GetPlayerCollection().Get().GetFinance().GetCurrentProfit()
+			if profit > 0
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock("+"+TFunctions.DottedValue(profit), 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,200,170), 2, 1, 0.5)
+			elseif profit = 0
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(0, 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,170), 2, 1, 0.5)
+			else
+				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(TFunctions.DottedValue(profit), 366, 421+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(200,170,170), 2, 1, 0.5)
+			endif
+
+			'market share
+			GetBitmapFont("Default", 12, BOLDFONT).drawBlock("MA: "+MathHelper.floatToString(programmePlan.GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
+
+			'current day
+		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 555, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(180,180,180), 2, 1, 0.5)
+
+			SetAlpha oldAlpha
 		EndIf 'bottomimg is dirty
 
 		SetBlend ALPHABLEND
 
-
-		SetAlpha 0.25
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 542, 120, 25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(180,180,180))
-		SetAlpha 0.9
-		GetBitmapFont("Default", 13, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime()+ " "+GetLocale("OCLOCK"), 365,541,120,25, new TVec2D.Init(ALIGN_CENTER), TColor.Create(40,40,40))
-		SetAlpha 1.0
+'DrawRect(366, 542, 112, 15)
+		GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetWorldTime().getFormattedTime() + " "+GetLocale("OCLOCK"), 366, 540, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(220,220,220), 2, 1, 0.5)
 
 		For local tip:TTooltip = eachin tooltips
 			If tip.enabled Then tip.Render()

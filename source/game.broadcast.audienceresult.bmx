@@ -3,24 +3,106 @@ Import "game.broadcast.audience.bmx"
 Import "game.broadcast.audienceattraction.bmx"
 
 
-'Das TAudienceResult ist sowas wie das zusammengefasste Ergebnis einer
+'Das TAudienceResultBase ist sowas wie das zusammengefasste Ergebnis einer
 'TBroadcast- und/oder TAudienceMarketCalculation-Berechnung.
-Type TAudienceResult
+'Sie enthaelt keine Zusatzdaten (ChannelSurfer etc), diese Klasse nutzen
+'um Quoten zu "archivieren"
+Type TAudienceResultBase
 	'Optional: Die Id des Spielers zu dem das Result gehört.
 	Field PlayerId:Int
 	'Zu welcher Stunde gehört das Result
 	Field Hour:Int
 	'Der Titel des Programmes
 	Field Title:String
-
+	'Die Zahl der Zuschauer die erreicht wurden.
+	'Sozusagen das Ergenis das zählt und angezeigt wird.
+	Field Audience:TAudience
 	'Der Gesamtmarkt: Also wenn alle die einen TV haben.
 	Field WholeMarket:TAudience
 	'Die Gesamtzuschauerzahl die in dieser Stunde den TV an hat!
 	'Also 100%-Quote! Summe aus allen Exklusiven, Flow-Leuten und Zappern
 	Field PotentialMaxAudience:TAudience
-	'Die Zahl der Zuschauer die erreicht wurden.
-	'Sozusagen das Ergenis das zählt und angezeigt wird.
-	Field Audience:TAudience
+
+
+	Method New()
+		Reset()
+	End Method
+
+
+	Method Reset()
+		Audience = New TAudience
+		WholeMarket = New TAudience
+		PotentialMaxAudience = New TAudience
+	End Method
+
+
+	'returns the average audienceresult for the given results
+	Function CreateAverage:TAudienceResultBase(audienceResultBases:TAudienceResultBase[])
+		local result:TAudienceResultBase = new TAudienceResultBase
+		if audienceResultBases.length = 0 then return result
+		'if audienceResultBases.length = 1 then return audienceResultBases[0]
+
+		For local audienceResultBase:TAudienceResultBase = EachIn audienceResultBases
+			result.Audience.Add(audienceResultBase.Audience)
+			result.WholeMarket.Add(audienceResultBase.WholeMarket)
+			result.PotentialMaxAudience.Add(audienceResultBase.PotentialMaxAudience)
+		Next
+
+		If audienceResultBases.length > 1
+			result.Audience.DivideFloat(audienceResultBases.length)
+			result.WholeMarket.DivideFloat(audienceResultBases.length)
+			result.PotentialMaxAudience.DivideFloat(audienceResultBases.length)
+		Endif
+		
+		return result
+	End Function
+
+
+	'instead of storing "audienceQuote" as field (bigger savegames)
+	'we can create it on the fly
+	'returns audience quote relative to MaxAudience of that time
+	Method GetAudienceQuote:TAudience()
+		if not Audience then return new TAudience
+
+		'quote = audience / maxAudience
+		return Audience.Copy().Divide(PotentialMaxAudience)
+	End Method
+
+
+	'instead of storing "potentialMaxAudienceQuote" as field we can
+	'create it on the fly
+	'returns the quote of PotentialMaxAudience. What percentage switch
+	'on the TV and check the programme. Base is WholeMarket
+	Method GetPotentialMaxAudienceQuote:TAudience()
+		'no need to calculate a quote if the audience itself is 0 already
+		'-> avoids "nan"-values when dividing with "0.0f" values
+		If PotentialMaxAudience.GetSum() = 0 then return new TAudience
+
+		'potential quote = potential audience / whole market
+		return PotentialMaxAudience.Copy().Divide(WholeMarket)
+	End Method
+
+
+	Method ToString:String()
+		local result:string = ""
+		if Audience then result :+ int(Audience.GetSum()) else result :+ "--"
+		result :+ " / "
+		if PotentialMaxAudience then result :+ int(PotentialMaxAudience.GetSum()) else result :+ "--"
+		result :+ " / "
+		if WholeMarket then result :+ int(WholeMarket.GetSum()) else result :+ "--"
+		result :+ "   Q: "
+		result :+ GetAudienceQuote().ToStringAverage()
+
+		return result
+	End Method
+End Type
+
+
+
+
+'Das TAudienceResult erweitert die Basis um weitere Daten
+'die aber nicht von allen Elementen benoetigt werden
+Type TAudienceResult extends TAudienceResultBase
 	'Summe der Zapper die es zu verteilen gilt
 	'(ist nicht gleich eines ChannelSurferSum)
 	Field ChannelSurferToShare:TAudience
@@ -31,30 +113,30 @@ Type TAudienceResult
 	'Konkurrenzsituation
 	Field EffectiveAudienceAttraction:TAudience
 
-	'=== werden beim Refresh berechnet ===
-	'Die Zuschauerquote, relativ zu MaxAudienceThisHour
-	Field AudienceQuote:TAudience
-	'Die Quote von PotentialMaxAudience. Wie viel Prozent schalten ein
-	'und checken das Programm. Basis ist WholeMarket
-	Field PotentialMaxAudienceQuote:TAudience
-
 	'Die reale Zuschauerquote, die aber noch nicht verwendet wird.
 	'Field MarketShare:Float
 
-
+	'override with same content - so it calls "this" Reset, not Super.Reset()
 	Method New()
 		Reset()
 	End Method
 
 
 	Method Reset()
-		WholeMarket = New TAudience
-		PotentialMaxAudience = New TAudience
-		Audience = New TAudience
+		Super.Reset()
 		ChannelSurferToShare  = New TAudience
+	End Method
 
-		AudienceQuote = Null
-		PotentialMaxAudienceQuote = Null
+
+	Method ToAudienceResultBase:TAudienceResultBase(audienceResult:TAudienceResult)
+		local base:TAudienceResultBase = new TAudienceResultBase
+		base.PlayerId = self.PlayerId
+		base.Hour = self.Hour
+		base.Title = self.Title
+		base.Audience = self.Audience
+		base.PotentialMaxAudience = self.PotentialMaxAudience
+		base.WholeMarket = self.WholeMarket
+		return base
 	End Method
 
 
@@ -72,31 +154,5 @@ Type TAudienceResult
 	Method Refresh()
 		Audience.FixGenderCount()
 		PotentialMaxAudience.FixGenderCount()
-
-		'quote = audience / maxAudience
-		AudienceQuote = Audience.Copy().Divide(PotentialMaxAudience)
-
-		'no need to calculate a quote if the audience itself is 0 already
-		'-> avoids "nan"-values when dividing with "0.0f" values
-		If PotentialMaxAudience.GetSum() = 0
-			PotentialMaxAudienceQuote = new TAudience
-		Else
-			'potential quote = potential audience / whole market
-			PotentialMaxAudienceQuote = PotentialMaxAudience.Copy().Divide(WholeMarket)
-		EndIf
-	End Method
-
-
-	Method ToString:String()
-		local result:string = ""
-		if Audience then result :+ int(Audience.GetSum()) else result :+ "--"
-		result :+ " / "
-		if PotentialMaxAudience then result :+ int(PotentialMaxAudience.GetSum()) else result :+ "--"
-		result :+ " / "
-		if WholeMarket then result :+ int(WholeMarket.GetSum()) else result :+ "--"
-		result :+ "   Q: "
-		if AudienceQuote then result :+ AudienceQuote.ToStringAverage() else result :+ "--"
-
-		return result
 	End Method
 End Type

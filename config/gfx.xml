@@ -1,12 +1,31 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources>
-		<!-- other syntax ... simpler :D -->
-		<image name="gfx_datasheets_movie"		url="res/grafiken/datenblaetter/tv_filmblatt.png" />
-		<image name="gfx_datasheets_specials"	url="res/grafiken/datenblaetter/tv_specials.png" />
-		<image name="gfx_datasheets_series"		url="res/grafiken/datenblaetter/tv_serienblatt.png" />
-		<image name="gfx_datasheets_contract"	url="res/grafiken/datenblaetter/tv_werbeblatt.png" />
-		<image name="gfx_datasheets_bar"		url="res/grafiken/datenblaetter/tv_balken.png" />
+		<spritepack name="gfx_datasheet_general_pack">
+			<url>res/grafiken/datasheets/datasheet_general.png</url>
+			<children>
+				<child name="gfx_datasheet_title"					x="0"	y="0"	w="310"	h="26" />
+				<child name="gfx_datasheet_series"					x="0"	y="26"	w="310"	h="16" />
+				<child name="gfx_datasheet_country"					x="0"	y="42"	w="310"	h="16" />
+				<child name="gfx_datasheet_content"					x="0"	y="58"	w="310"	h="70" />
+				<child name="gfx_datasheet_splitter"				x="0"	y="128"	w="310"	h="6" />
+				<child name="gfx_datasheet_content2"				x="0"	y="134"	w="310"	h="46" />
+				<child name="gfx_datasheet_subTop"					x="0"	y="180"	w="310"	h="4" />
+				<child name="gfx_datasheet_subMovieRatings"			x="0"	y="184"	w="310"	h="65" />
+				<child name="gfx_datasheet_subTopicalityRating"		x="0"	y="184"	w="310"	h="16" />
+				<child name="gfx_datasheet_subMessageEarn"			x="0"	y="249"	w="310"	h="27" />
+				<child name="gfx_datasheet_subMessageWarning"		x="0"	y="276"	w="310"	h="27" />
+				<child name="gfx_datasheet_subMessageTargetGroup"		x="0"	y="303"	w="310"	h="27" />
+				<child name="gfx_datasheet_subMovieAttributes"			x="0"	y="352"	w="310"	h="27" />
+				<child name="gfx_datasheet_subAdContractAttributes"  	x="0"	y="379"	w="310"	h="54" />
+				<child name="gfx_datasheet_subAdContractAttributes1"	x="0"	y="379"	w="310"	h="27" />
+				<child name="gfx_datasheet_subAdContractAttributes2"	x="0"	y="406"	w="310"	h="27" />
+				<child name="gfx_datasheet_bottom"						x="0"	y="433"	w="310"	h="15" />
+				<child name="gfx_datasheet_bar"							x="8"	y="460"	w="200"	h="10" />
+				<child name="gfx_datasheet_xrated"						x="320"	y="2"	w="26"	h="26" offsetLeft="14" offsetTop="-2" />
+			</children>
+		</spritepack>
+
 
 		<spritepack name="gfx_room_adagency_pack">
  			<url>res/grafiken/werbeagentur/raum_werbeagentur_extras.png</url>

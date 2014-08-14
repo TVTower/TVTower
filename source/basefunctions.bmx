@@ -365,6 +365,21 @@ Type TFunctions
 	End Function
 
 
+	Function dottedValue:String(value:Float)
+		'find out amount of digits before decimal point
+		local intValue:int = int(value)
+		local length:int = string(intValue).length
+
+		if length <= 10 and length > 6
+			return int(floor(int(value) / 1000000))+"."+int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000000)*1000000)))) +"000",3)
+		elseif length <= 7 and length > 3
+			return int(floor(int(value) / 1000))+"."+Left( abs(int((int(value) - int(floor(int(value) / 1000)*1000)))) +"000",3)
+		else
+			return int(value)
+		endif
+	End Function
+
+
 	'formats a value: 1000400 = 1,0 Mio
 	Function convertValue:String(value:float, digitsAfterDecimalPoint:int=2, typ:Int=0, delimeter:string=",")
       ' typ 1: 250000 = 250Tsd

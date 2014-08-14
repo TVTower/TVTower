@@ -272,6 +272,15 @@ Type TBitmapFont
 	End Method
 
 
+	'returns the same font in the given size/style combination
+	'it is more or less a wrapper to make acces more convenient
+	Method GetVariant:TBitmapFont(size:int=-1, style:int = -1)
+		if size = -1 then size = self.FSize
+		if style = -1 then style = self.FStyle
+		return TBitmapFontManager.GetInstance().Get(self.FName, size, style)	
+	End Method
+
+	
 	'generate a charmap containing packed rectangles where to store images
 	Method InitFont(config:TData=null )
 		'1. load chars
@@ -531,13 +540,26 @@ Type TBitmapFont
 	End Method
 
 
-	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE)
+	'draws the text in a given block according to given alignment.
+	'@nicelyTruncateLastLine:      try to shorten a word with "..."
+	'                              or just truncate? 
+	'@centerSingleLineOnBaseline:  if only 1 line is given, is center
+	'                              calculated using baseline (no "y,g,p,...") 
+	Method drawBlock:TVec2D(text:String, x:Float, y:Float, w:Float, h:Float, alignment:TVec2D=null, color:TColor=null, style:int=0, doDraw:int = 1, special:float=1.0, nicelyTruncateLastLine:int=TRUE, centerSingleLineOnBaseline:int=False)
 		'use special chars (instead of text) for same height on all lines
 		Local alignedX:float = 0.0
 		Local lineMaxWidth:Float = 0
 		local lineWidth:Float = 0
 		Local lineHeight:float = getMaxCharHeight()
 		Local lines:string[] = TextToMultiLine(text, w, h, lineHeight, nicelyTruncateLastLine)
+		'first height was calculated using all characters, but we now
+		'know if we could center using baseline only (only available
+		'when there is only 1 line to draw)
+		if lines.length = 1 and centerSingleLineOnBaseline
+			lineHeight = getMaxCharHeight(False)
+'			lineHeight = 0.25 * lineHeight + 0.75 * getMaxCharHeight(False)
+'			lineHeight :+ 1 'a bit of influence of "below baseline" chars
+		endif
 
 		local blockHeight:Float = lineHeight * lines.length
 		if lines.length > 1
@@ -560,7 +582,7 @@ Type TBitmapFont
 		endif
 
 		local startY:Float = y
-		For local i:int = 0 to lines.length-1
+		For local i:int = 0 until lines.length
 			lineWidth = getWidth(lines[i])
 			lineMaxWidth = Max(lineMaxwidth, lineWidth)
 

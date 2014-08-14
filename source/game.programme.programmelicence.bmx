@@ -10,6 +10,8 @@ Import "game.gameobject.bmx"
 Import "game.broadcastmaterial.base.bmx"
 Import "game.programme.programmedata.bmx"
 Import "game.player.finance.bmx"
+Import "game.broadcast.audience.bmx"
+Import "game.broadcast.broadcaststatistic.bmx"
 Import "basefunctions.bmx" 'CreateEmptyImage()
 
 
@@ -237,8 +239,12 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	Field latestPlannedEndHour:int = -1				'the latest hour-(from-start) one of the planned programmes ends
 	Field parentLicence:TProgrammeLicence			'series are parent of episodes
 	Field subLicences:TProgrammeLicence[]			'other licences this licence covers
-	Field cacheTextOverlay:TImage 			{nosave}
-	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
+
+	'store stats for each owner
+	Field broadcastStatistics:TBroadcastStatistic[]
+
+'	Field cacheTextOverlay:TImage 			{nosave}
+'	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
 
 	Global ignoreUnreleasedProgrammes:int	= TRUE	'hide movies of 2012 when in 1985?
 	Global _filterReleaseDateStart:int		= 1900
@@ -352,6 +358,27 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		'add to array of sublicences
 		subLicences :+ [licence]
 		Return TRUE
+	End Method
+
+
+	Method GetBroadcastStatistic:TBroadcastStatistic()
+		local useOwner:int = owner
+		if owner < 0 then useOwner = 0
+
+		if broadcastStatistics.length <= useOwner then broadcastStatistics = broadcastStatistics[.. useOwner + 1]
+		if not broadcastStatistics[useOwner] then broadcastStatistics[useOwner] = new TBroadcastStatistic
+
+		return broadcastStatistics[useOwner]
+	End Method
+
+
+	Method SetBroadcastStatistic:Int(broadcastStatistic:TBroadcastStatistic)
+		local useOwner:int = owner
+		if owner < 0 then useOwner = 0
+
+		if broadcastStatistics.length <= useOwner then broadcastStatistics = broadcastStatistics[.. useOwner + 1]
+		broadcastStatistics[useOwner] = broadcastStatistic
+		return True
 	End Method
 
 
@@ -596,17 +623,231 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 		if showMode = TBroadcastMaterial.TYPE_PROGRAMME
-			if isSeries()
-				ShowSeriesSheet(x, y, align)
-			else
-				ShowSingleSheet(x, y, align)
-			endif
+			ShowProgrammeSheet(x, y, align)
 		'trailermode
 		elseif showMode = TBroadcastMaterial.TYPE_ADVERTISEMENT
 			ShowTrailerSheet(x, y, align)
 		endif
 	End Method
 
+
+	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0)
+		local data:TProgrammeData        = GetData()
+		Local widthbarSpeed:Float        = data.speed / 255.0
+		Local widthbarReview:Float       = data.review / 255.0
+		Local widthbarOutcome:Float      = data.Outcome/ 255.0
+		Local widthbarTopicality:Float   = data.topicality / 255.0
+		Local widthbarMaxTopicality:Float= data.GetMaxTopicality() / 255.0
+		Local fontNormal:TBitmapFont     = GetBitmapFontManager().baseFont
+		Local fontBold:TBitmapFont       = GetBitmapFontManager().baseFontBold
+		Local fontSemiBold:TBitmapFont   = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+
+		Local showPlannedWarning:Int = False
+		Local showEarnInfo:Int = False
+		
+		if owner > 0 'and GetPlayerCollection().Get().figure.inRoom
+			'only if planned and in archive
+			if self.IsPlanned() ' and GetPlayerCollection().Get().figure.inRoom.name = "archive"
+				showPlannedWarning = True
+			endif
+		endif
+
+		If data.genre = data.GENRE_CALLINSHOW then showEarnInfo = True
+
+'debug
+'showPlannedWarning = True
+'showEarnInfo = True
+
+		'=== DRAW BACKGROUND ===
+		local sprite:TSprite
+		local currX:Int = x
+		local currY:int = y
+		local currTextWidth:int
+
+		'move sheet to left when right-aligned
+		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
+		
+		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		if isEpisode() or isSeries()
+			sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+		endif
+		sprite = GetSpriteFromRegistry("gfx_datasheet_country"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_splitter"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_content2"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieRatings"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+
+		If showEarnInfo
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageEarn"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+		EndIf
+
+		If showPlannedWarning
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageWarning"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+		endif
+
+
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieAttributes"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
+
+
+
+		'=== DRAW TEXTS / OVERLAYS ====
+		currY = y + 8 'so position is within "border"
+		currX :+ 7 'inside
+		local textColor:TColor = TColor.CreateGrey(25)
+		local textLightColor:TColor = TColor.CreateGrey(75)
+		local textEarnColor:TColor = TColor.Create(45,80,10)
+		local textWarningColor:TColor = TColor.Create(80,45,10)
+		
+		if isSeries()
+			'default is size "12" so resize to 13
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			currY :+ 18
+			fontNormal.drawBlock(GetLocale("SERIES_WITH_X_EPISODES").Replace("%EPISODESCOUNT%", GetSubLicenceCount()), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			currY :+ 16
+		elseif isEpisode()
+			'title of "series"
+			'default is size "12" so resize to 13
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(parentLicence.GetTitle(), currX + 6, currY, 280, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			currY :+ 18
+			'episode num/max + episode title
+			fontNormal.drawBlock((parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY, 280, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			currY :+ 16
+		else ' = if isMovie()
+			'default is size "12" so resize to 13
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 18, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+			currY :+ 18
+		endif
+
+		'country + genre
+		'country/year + genre   - for non-callin-shows
+		local countryYear:String = data.country
+		If data.genre <> data.GENRE_CALLINSHOW
+			countryYear :+ " " + data.year
+		endif
+		fontNormal.drawBlock(countryYear, currX + 6, currY, 65, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		fontNormal.drawBlock(data.GetGenreString(), currX + 6 + 67, currY, 215, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 16
+
+		'content description
+		currY :+ 3	'description starts with offset
+		fontNormal.drawBlock(data.GetDescription(), currX + 6, currY, 280, 64, null ,textColor)
+		currY :+ 64 'content
+		currY :+ 3	'description ends with offset
+
+		'splitter
+		currY :+ 6
+
+		'max width of director/actors - to align their content properly
+		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
+		if data.GetActorsString() <> ""
+			currTextWidth = Max(currTextWidth, Int(fontSemiBold.getWidth(GetLocale("MOVIE_ACTORS")+":")))
+		endif
+
+
+		currY :+ 3	'subcontent (actors/director) start with offset
+		'director
+		if data.GetDirectorsString() <> ""
+			fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", currX + 6, currY, 280, 13, null, textColor)
+			fontNormal.drawBlock(data.GetDirectorsString(), currX + 6 + 5 + currTextWidth, currY , 280 - 15 - currTextWidth, 15, null, textColor)
+		endif
+		currY :+ 13
+
+		'actors
+		if data.GetActorsString() <> ""
+			fontSemiBold.drawBlock(GetLocale("MOVIE_ACTORS")+":", currX + 6 , currY, 280, 26, null, textColor)
+			fontNormal.drawBlock(data.GetActorsString(), currX + 6 + 5 + currTextWidth, currY, 280 - 15 - currTextWidth, 30, null, textColor)
+		endif
+		currY :+ 26
+		currY :+ 3 'subcontent end with offset
+		currY :+ 1 'end of subcontent area
+
+		'===== DRAW RATINGS / BARS =====
+		'captions
+		currY :+ 4 'offset of ratings
+		fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"),      currX + 215, currY,      75, 15, null, textLightColor)
+		fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"),     currX + 215, currY + 16, 75, 15, null, textLightColor)
+		fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"),  currX + 215, currY + 32, 75, 15, null, textLightColor)
+		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY + 48, 75, 15, null, textLightColor)
+
+		'===== DRAW BARS =====
+		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, widthbarSpeed*200  , 10))
+		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 16, widthbarReview*200 , 10))
+		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 32, widthbarOutcome*200, 10))
+		If widthbarMaxTopicality>0.01
+			SetAlpha GetAlpha()*0.25
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, widthbarMaxTopicality*200, 10))
+			SetAlpha GetAlpha()*4.0
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, widthbarTopicality*200, 10))
+		EndIf
+		currY :+ 65
+
+		
+		'=== DRAW SPECIAL MESSAGES ===
+		If showEarnInfo
+			'convert back cents to euros and round it
+			'value is "per 1000" - so multiply with that too
+			local revenue:string = TFunctions.DottedValue(int(1000 * data.GetPerViewerRevenue()))+CURRENCYSIGN
+			currY :+ 4 'top content padding of that line
+			fontSemiBold.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), currX + 35,  currY, 245, 15, ALIGN_CENTER_CENTER, textEarnColor, 0,1,1.0,True, True)
+			currY :+ 15 + 8 'lineheight + bottom content padding
+		EndIf
+
+		if showPlannedWarning
+			currY :+ 4 'top content padding of that line
+			fontSemiBold.drawBlock("Programm im Sendeplan!", currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
+			currY :+ 15 + 8 'lineheight + bottom content padding
+		endif
+
+		currY :+ 4 'align to content portion of that line
+		'blocks
+		fontBold.drawBlock(data.GetBlocks(), currX + 33, currY, 17, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+
+		'repetitions
+		fontBold.drawBlock(data.GetTimesAired(owner), currX + 84, currY, 22, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+
+		'record
+		fontBold.drawBlock(TFunctions.convertValue(GetBroadcastStatistic().GetBestAudienceResult(owner, -1).audience.GetSum(),2), currX + 140, currY, 52, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+
+		
+		'price
+rem
+	to enable this, code must be restructured (player class)
+		local finance:TPlayerFinance
+		'only check finances if it is no other player (avoids exposing
+		'that information to us)
+		if GetPlayerCollection().playerID = owner
+			finance = GetPlayerFinanceCollection().Get(owner, -1)
+		endif
+endrem
+		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
+		if not finance or finance.canAfford(getPrice())
+			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+		else
+			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 227, currY, 55, 15, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0), 0,1,1.0,True, True)
+		endif
+		currY :+ 15 + 8 'lineheight + bottom content padding
+
+		'=== X-Rated Overlay ===
+		If data.xrated <> 0
+			GetSpriteFromRegistry("gfx_datasheet_xrated").Draw(currX + GetSpriteFromRegistry("gfx_datasheet_title").GetWidth(), y, -1, ALIGN_RIGHT_TOP)
+		Endif
+	End Method
+
+rem
 
 	Method DrawSeriesSheetTextOverlay(x:int, y:int, w:int, h:int)
 		'reset cache
@@ -798,13 +1039,153 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method ShowSingleSheet:Int(x:Int,y:Int, align:int=0)
-		local data:TProgrammeData		= GetData()
-		Local widthbarSpeed:Float		= Float(data.speed / 255.0)
-		Local widthbarReview:Float		= Float(data.review / 255.0)
-		Local widthbarOutcome:Float		= Float(data.Outcome/ 255.0)
-		Local widthbarTopicality:Float	= Float(data.topicality / 255.0)
-		Local widthbarMaxTopicality:Float= Float(data.GetMaxTopicality() / 255.0)
-		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
+		local data:TProgrammeData        = GetData()
+		Local widthbarSpeed:Float        = data.speed / 255.0
+		Local widthbarReview:Float       = data.review / 255.0
+		Local widthbarOutcome:Float      = data.Outcome/ 255.0
+		Local widthbarTopicality:Float   = data.topicality / 255.0
+		Local widthbarMaxTopicality:Float= data.GetMaxTopicality() / 255.0
+		Local fontNormal:TBitmapFont     = GetBitmapFontManager().baseFont
+		Local fontBold:TBitmapFont       = GetBitmapFontManager().baseFontBold
+		Local fontSemiBold:TBitmapFont   = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+
+
+		'=== DRAW BACKGROUND ===
+		local sprite:TSprite
+		local currX:Int = x + 320
+		local currY:int = y
+		local currTextWidth:int
+		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		if not data.IsMovie()
+			sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+		endif
+		sprite = GetSpriteFromRegistry("gfx_datasheet_country"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_splitter"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_content2"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieRatings"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+'		If data.genre = data.GENRE_CALLINSHOW
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageEarn"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+'		EndIf
+
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieAttributes"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
+
+
+
+		'=== DRAW TEXTS / OVERLAYS ====
+		currY = y + 7 'inside
+		currX :+ 7 'inside
+		local textColor:TColor = TColor.CreateGrey(25)
+		local textLightColor:TColor = TColor.CreateGrey(75)
+		local textEarnColor:TColor = TColor.Create(45,80,10)
+		
+		if data.isMovie()
+			'default is size "12"
+			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY + 4, 278, 16, null, textColor)
+			'fontBold.drawBlock(GetTitle(), currX + 6, currY + 4, 278, 16, null, textColor)
+		else
+			'title
+			fontBold.drawBlock(parentLicence.GetTitle(), currX + 6, currY + 4, 278, 16, null, textColor)
+			currY :+ 20
+			'episode num/max + episode title
+			fontNormal.drawBlock((parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY + 11, 278, 12, null, textColor)
+		endif
+		currY :+ 20
+
+		'country + genre
+		'country/year + genre   - for non-callin-shows
+		local countryYear:String = data.country
+		If data.genre <> data.GENRE_CALLINSHOW
+			countryYear :+ " " + data.year
+		endif
+		fontNormal.drawBlock(countryYear          , currX + 6     , currY + 2, 65, 15, null, textColor)
+		fontNormal.drawBlock(data.GetGenreString(), currX + 6 + 67, currY + 2, 215, 15, null, textColor)
+		currY :+ 18
+
+		'content description
+		fontNormal.drawBlock(data.GetDescription(), currX + 6, currY, 280, 65, null ,textColor)
+		currY :+ 67
+		currY :+ 5 'splitter
+		'director
+		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
+		fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", currX + 6, currY + 4, 280, 15, null, textColor)
+		fontNormal.drawBlock(data.GetDirectorsString()      , currX + 6 + 5 + currTextWidth, currY + 4 , 280 - 15 - currTextWidth, 15, null, textColor)
+		currY :+ 15
+
+		'actors
+		if data.GetActorsString() <> ""
+			currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_ACTORS")+":"))
+			fontSemiBold.drawBlock(GetLocale("MOVIE_ACTORS")+":", currX + 6 , currY + 4, 280, 30, null, textColor)
+			fontNormal.drawBlock(data.GetActorsString()       , currX + 6 + 5 + currTextWidth, currY + 4, 280 - 15 - currTextWidth, 30, null, textColor)
+		endif
+		currY :+ 30
+		currY :+ 6 'to rating
+
+		'===== DRAW RATINGS / BARS =====
+		'captions
+		fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"),      currX + 215, currY,      75, 15, null, textLightColor)
+		fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"),     currX + 215, currY + 17, 75, 15, null, textLightColor)
+		fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"),  currX + 215, currY + 34, 75, 15, null, textLightColor)
+		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY + 51, 75, 15, null, textLightColor)
+
+		'===== DRAW BARS =====
+		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, widthbarSpeed*200  , 10))
+		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 17, widthbarReview*200 , 10))
+		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 34, widthbarOutcome*200, 10))
+		If widthbarMaxTopicality>0.01
+			SetAlpha GetAlpha()*0.25
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 51, widthbarMaxTopicality*100, 10))
+			SetAlpha GetAlpha()*4.0
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 51, widthbarTopicality*100, 10))
+		EndIf
+		
+		currY :+ 68
+
+
+
+
+'		If data.genre = data.GENRE_CALLINSHOW
+			'convert back cents to euros and round it
+			'value is "per 1000" - so multiply with that too
+			local revenue:string = int(1000 * data.GetPerViewerRevenue())+" "+CURRENCYSIGN
+			fontSemiBold.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), currX + 35,  currY + 5 , 245, 15, ALIGN_CENTER_TOP, textEarnColor)
+			currY :+ 28
+'		EndIf
+
+		'blocks
+		fontBold.drawBlock(data.GetBlocks(), currX + 30, currY + 3, 20, 15, ALIGN_CENTER_CENTER, textColor)
+
+		'price
+		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
+		if not finance or finance.canAfford(getPrice())
+			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 225, currY+3, 55, 15, ALIGN_RIGHT_CENTER, textColor)
+		else
+			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 225, currY+3, 55, 15, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0))
+		endif
+
+		currY :+ 28
+
+
+		'=== X-Rated Overlay ===
+		'If data.xrated <> 0 Then fontNormal.drawBlock(GetLocale("MOVIE_XRATED") , 240 , dY+34 , 50, 20) 'prints pg-rating
+
+
+
+		
+
 
 		Local dY:Int = 0
 		local asset:TSprite = null
@@ -833,6 +1214,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			endif
 		endif
 
+
 		If data.isMovie()
 			if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_movie").area.GetW()
 			GetSpriteFromRegistry("gfx_datasheets_movie").Draw(x,y)
@@ -845,7 +1227,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			SetColor 0,0,0
 			'episode display
 			GetBitmapFontManager().basefontBold.drawBlock(parentLicence.GetTitle(), x + 10, y + 11, 278, 20)
-			normalFont.drawBlock("(" + (parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ") " + data.GetTitle(), x + 10, y + 34, 278, 20)  'prints programmedescription on moviesheet
+			fontNormal.drawBlock("(" + (parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ") " + data.GetTitle(), x + 10, y + 34, 278, 20)  'prints programmedescription on moviesheet
 
 			dy :+ 22
 		EndIf
@@ -855,14 +1237,14 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 		'===== DRAW DYNAMIC TEXTS =====
 		SetColor 0,0,0
-		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY")  , x+84, y+281, 40, 16)
-		normalFont.drawBlock(GetLocale("MOVIE_BLOCKS")+": "+data.GetBlocks(), x+10, y+281, 100, 16)
+		fontNormal.drawBlock(GetLocale("MOVIE_TOPICALITY")  , x+84, y+281, 40, 16)
+		fontNormal.drawBlock(GetLocale("MOVIE_BLOCKS")+": "+data.GetBlocks(), x+10, y+281, 100, 16)
 
-		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
+'		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
 		if not finance or finance.canAfford(getPrice())
-			normalFont.drawBlock(GetPrice(), x+240, y+281, 120, 20)
+			fontNormal.drawBlock(GetPrice(), x+240, y+281, 120, 20)
 		else
-			normalFont.drawBlock(GetPrice(), x+240, y+281, 120, 20, null, TColor.Create(200,0,0))
+			fontNormal.drawBlock(GetPrice(), x+240, y+281, 120, 20, null, TColor.Create(200,0,0))
 		endif
 		SetColor 255,255,255
 
@@ -876,25 +1258,63 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		SetAlpha 1.0
 		If widthbarTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+115, y+280, widthbarTopicality*100, 10))
 	End Method
-
+endrem
 
 	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0)
-		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
+		'=== DRAW BACKGROUND ===
+		local sprite:TSprite
+		local currX:Int = x
+		local currY:int = y
 
-		if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_specials").area.GetW()
-		GetSpriteFromRegistry("gfx_datasheets_specials").Draw(x,y)
-		SetColor 0,0,0
-		GetBitmapFontManager().basefontBold.drawBlock(GetTitle(), x + 10, y + 11, 278, 20)
-		normalFont.drawBlock("Programmvorschau / Trailer", x + 10, y + 34, 278, 20)
+		'move sheet to left when right-aligned
+		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
+		
+		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subTopicalityRating"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
 
-		normalFont.drawBlock(getLocale("MOVIE_TRAILER")   , x+10, y+55, 278, 60)
-		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY"), x+222, y+131,  40, 16)
-		SetColor 255,255,255
 
-		SetAlpha 0.3
-		GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+131, 200, 10))
-		SetAlpha 1.0
-		if data.trailerTopicality > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+131, data.trailerTopicality*200, 10))
+
+		'=== DRAW TEXTS / OVERLAYS ====
+		currY = y + 8 'so position is within "border"
+		currX :+ 7 'inside
+		local textColor:TColor = TColor.CreateGrey(25)
+		local textLightColor:TColor = TColor.CreateGrey(75)
+		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
+		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
+		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 18
+		fontNormal.drawBlock(GetLocale("TRAILER"), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 16
+
+		'content description
+		currY :+ 3	'description starts with offset
+		fontNormal.drawBlock(getLocale("MOVIE_TRAILER"), currX + 6, currY, 280, 64, null ,textColor)
+		currY :+ 64 'content
+		currY :+ 3	'description ends with offset
+
+		currY :+ 4 'offset of subContent
+
+		'topicality
+		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY, 75, 15, null, textLightColor)
+
+		if data.trailerTopicality > 0.1
+			SetAlpha GetAlpha()*0.25
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, 200, 10))
+			SetAlpha GetAlpha()*4.0
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, data.trailerTopicality*200, 10))
+		endif
 	End Method
 
 

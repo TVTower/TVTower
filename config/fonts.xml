@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvt>
 	<bitmapfonts>
-		<bitmapfont name="default" url="res/fonts/Vera.ttf" size="11" default="1" />
-		<bitmapfont name="default" url="res/fonts/VeraBd.ttf" size="11" flags="BOLDFONT" default="1" />
-		<bitmapfont name="default" url="res/fonts/VeraIt.ttf" size="11" flags="ITALICFONT" default="1" />
-		<bitmapfont name="smalldefault" url="res/fonts/Vera.ttf" size="9" default="1" />
+		<bitmapfont name="default" url="res/fonts/sourcesans/SourceSansPro-Regular.ttf" size="12" default="1" lineHeightModifier="1.1" spaceWidthModifier="1.4" />
+		<bitmapfont name="default" url="res/fonts/sourcesans/SourceSansPro-Bold.ttf" size="13" flags="BOLDFONT" default="1" lineHeightModifier="1.1" />
+		<bitmapfont name="default" url="res/fonts/sourcesans/SourceSansPro-It.ttf" size="12" flags="ITALICFONT" default="1" lineHeightModifier="1.1" />
+
+		<bitmapfont name="defaultThin" url="res/fonts/sourcesans/SourceSansPro-Light.ttf" size="13" lineHeightModifier="1.1" />
+		<bitmapfont name="defaultThin" url="res/fonts/sourcesans/SourceSansPro-Semibold.ttf" size="13" flags="BOLDFONT" lineHeightModifier="1.1" />
+
+		<bitmapfont name="smalldefault" url="res/fonts/sourcesans/SourceSansPro-Regular.ttf" size="10" default="1" />
 	</bitmapfonts>
 </tvt>

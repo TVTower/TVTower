@@ -633,23 +633,22 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 
 
 		Local maxWidth:Int			= textArea.GetW()
-		Local useFont:TBitmapFont	= GetBitmapFont("Default", 11, ITALICFONT)
+		Local titleFont:TBitmapFont = GetBitmapFont("DefaultThin", 12, BOLDFONT)
+		Local useFont:TBitmapFont	= GetBitmapFont("Default", 12, ITALICFONT)
 		If not titleColor Then titleColor = TColor.Create(0,0,0)
 		If not textColor Then textColor = TColor.Create(50,50,50)
 
 		'shorten the title to fit into the block
-		While GetBitmapFontManager().basefontBold.getWidth(title + titleAppend) > maxWidth And title.length > 4
+		While titleFont.getWidth(title + titleAppend) > maxWidth And title.length > 4
 			title = title[..title.length-3]+".."
 		Wend
 		'add eg. "(1/10)"
 		title = title + titleAppend
 
 		'draw
-		GetBitmapFontManager().basefontBold.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, null, titleColor, 0, True, 1.0, FALSE)
-		textColor.setRGB()
-		useFont.draw(text, textArea.position.GetIntX() + 5, textArea.position.GetIntY() + 17)
-
-		useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 17)
+		titleFont.drawBlock(title, textArea.position.GetIntX() + 5, textArea.position.GetIntY() +2, textArea.GetW() - 5, 18, null, titleColor, 0, True, 1.0, FALSE)
+		useFont.draw(text, textArea.position.GetIntX() + 5, textArea.position.GetIntY() + 17, textColor)
+		useFont.draw(text2, textArea.position.GetIntX() + 138, textArea.position.GetIntY() + 17, textColor)
 
 		SetColor 255,255,255
 	End Method
@@ -692,7 +691,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 		If not titleColor Then titleColor = TColor.Create(0,0,0)
 		If not textColor Then textColor = TColor.Create(50,50,50)
 
-		GetBitmapFont("Default", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, null, TColor.CreateGrey(0), 0,1,1.0, FALSE)
+		GetBitmapFont("DefaultThin", 10, BOLDFONT).drawBlock(title, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 2, textArea.GetW(), 18, null, TColor.CreateGrey(0), 0,1,1.0, FALSE)
 		textColor.setRGB()
 		GetBitmapFont("Default", 10).drawBlock(text, textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 30)
 		GetBitmapFont("Default", 10).drawBlock(text2,textArea.position.GetIntX() + 3, textArea.position.GetIntY() + 17, TextArea.GetW(), 20, new TVec2D.Init(ALIGN_RIGHT))
@@ -1319,8 +1318,11 @@ Type TgfxProgrammelist extends TPlannerList
 
 
 	Method DrawTapes:Int(genre:Int=-1)
-		local font:TBitmapFont 	= GetBitmapFont("Default", 10)
-		local box:TRectangle	= new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
+		local font:TBitmapFont = GetBitmapFont("Default", 10)
+		'add 1 to box height - so it includes the "splitter"
+		'this avoids flickering when moving the mouse over the list
+		'and the pixel without a box is "hovered
+		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() +1)
 		local asset:TSprite = null
 
 		gfxTapeBackground.Draw(tapeRect.GetX(), tapeRect.GetY())
@@ -1344,7 +1346,7 @@ Type TgfxProgrammelist extends TPlannerList
 			asset.Draw(box.GetX(), box.GetY())
 			SetColor 255,255,255
 
-			font.drawBlock(licence.GetTitle(), box.position.GetIntX() + 13, box.position.GetIntY() + 3, 139,16,null, TColor.clBlack ,0, True, 1.0, False)
+			font.drawBlock(licence.GetTitle(), box.position.GetIntX() + 13, box.position.GetIntY() + 4, 139,16,null, TColor.clBlack ,0, True, 1.0, False)
 
 			'we are hovering a licence...
 			If box.containsXY(MouseManager.x,MouseManager.y)
@@ -1354,13 +1356,18 @@ Type TgfxProgrammelist extends TPlannerList
 				SetAlpha 1.0
 				SetBlend AlphaBlend
 			endif
-			box.moveXY(0, 19)
+
+			'move box by own height
+			box.moveXY(0, box.GetH())
 		Next
 	End Method
 
 
 	Method UpdateTapes:Int(genre:Int=-1, mode:int=0)
-		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
+		'add 1 to box height - so it includes the "splitter"
+		'this avoids flickering when moving the mouse over the list
+		'and the pixel without a box is "hovered
+		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() +1 )
 
 		If genre < 0 then return FALSE
 
@@ -1393,7 +1400,6 @@ Type TgfxProgrammelist extends TPlannerList
 						Else
 							'set the hoveredSeries so the episodes-list is drawn
 							hoveredSeries = licence
-
 							SetOpen(3)
 							doneSomething = true
 						EndIf
@@ -1415,7 +1421,8 @@ Type TgfxProgrammelist extends TPlannerList
 				endif
 			EndIf
 
-			box.moveXY(0, 19)
+			'move box by own height
+			box.moveXY(0, box.GetH())
 		Next
 		return FALSE
 	End Method
@@ -1428,7 +1435,10 @@ Type TgfxProgrammelist extends TPlannerList
 		gfxTapeEpisodesBackground.Draw(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY())
 
 		local hoveredLicence:TProgrammeLicence = null
-		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
+		'add 1 to box height - so it includes the "splitter"
+		'this avoids flickering when moving the mouse over the list
+		'and the pixel without a box is "hovered
+		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() +1)
 		local font:TBitmapFont = GetBitmapFont("Default", 8)
 		'displace all tapes - border of background
 		box.moveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
@@ -1453,7 +1463,8 @@ Type TgfxProgrammelist extends TPlannerList
 				SetBlend AlphaBlend
 			EndIf
 
-			box.moveXY(0, 12)
+			'move box by own height
+			box.moveXY(0, box.GetH())
 		Next
 
 	End Method
@@ -1461,7 +1472,10 @@ Type TgfxProgrammelist extends TPlannerList
 
 	Method UpdateEpisodeTapes:Int(seriesLicence:TProgrammeLicence)
 		Local tapecount:Int = 0
-		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() )
+		'add 1 to box height - so it includes the "splitter"
+		'this avoids flickering when moving the mouse over the list
+		'and the pixel without a box is "hovered
+		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() +1 )
 		'displace all tapes - border of background
 		box.moveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
 
@@ -1469,11 +1483,11 @@ Type TgfxProgrammelist extends TPlannerList
 			Local licence:TProgrammeLicence = TProgrammeLicence(seriesLicence.GetsubLicenceAtIndex(i))
 			If not licence then continue
 
-			'store for sheet-display
-			hoveredLicence = licence
-
 			tapecount :+ 1
 			If box.containsXY(MouseManager.x,MouseManager.y)
+				'store for sheet-display
+				hoveredLicence = licence
+
 				If MOUSEMANAGER.IsClicked(1)
 					'create and drag new block
 					new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence), "programmePlanner" ).drag()
@@ -1484,7 +1498,8 @@ Type TgfxProgrammelist extends TPlannerList
 				endif
 			EndIf
 
-			box.moveXY(0, 12)
+			'move box by own height
+			box.moveXY(0, box.GetH())
 		Next
 		return FALSE
 	End Method
@@ -1835,8 +1850,8 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 			if not _imageWithText then THROW "GetImage Error for gfx_auctionmovie"
 
 			local pix:TPixmap = LockImage(_imageWithText)
-			local font:TBitmapFont		= GetBitmapFont("Default", 10)
-			local titleFont:TBitmapFont	= GetBitmapFont("Default", 10, BOLDFONT)
+			local font:TBitmapFont		= GetBitmapFont("Default", 12)
+			local titleFont:TBitmapFont	= GetBitmapFont("Default", 12, BOLDFONT)
 
 			'set target for fonts
 			TBitmapFont.setRenderTarget(_imageWithText)
@@ -1845,11 +1860,11 @@ Type TAuctionProgrammeBlocks extends TGameObject {_exposeToLua="selected"}
 				local player:TPlayer = GetPlayerCollection().Get(bestBidder)
 				titleFont.drawStyled(player.name, 31,33, player.color, 2, 1, 0.25)
 			else
-				font.drawStyled("ohne Bieter", 31,33, TColor.CreateGrey(150), 0, 1, 0.25)
+				font.drawStyled(GetLocale("AUCTION_WITHOUT_BID"), 31,33, TColor.CreateGrey(150), 0, 1, 0.25)
 			EndIf
 			titleFont.drawBlock(licence.GetTitle(), 31,5, 215,30, null, TColor.clBlack, 1, 1, 0.50)
 
-			font.drawBlock("Bieten:"+GetNextBid()+CURRENCYSIGN, 31,33, 212,20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack, 1)
+			font.drawBlock(GetLocale("AUCTION_MAKE_BID")+": "+TFunctions.DottedValue(GetNextBid())+CURRENCYSIGN, 31,33, 212,20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack, 1)
 
 			'reset target for fonts
 			TBitmapFont.setRenderTarget(null)
@@ -2040,9 +2055,9 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				GetBitmapFont("Default", 12, BOLDFONT).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			else
-				GetBitmapFont("Default", 12).drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.newsEvent.happenedTime)

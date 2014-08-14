@@ -162,11 +162,10 @@ AD_TOSEND		= zu senden
 AD_PENALTY		= Strafe
 AD_MIN_AUDIENCE= Mindestz.
 AD_TARGETGROUP = Zielgruppe
-AD_TILL_TOLATE   = zu spät!!!
-AD_TILL_TODAY    = bis heute Abend!!
-AD_TILL_TOMORROW  = bis Morgen!
+AD_SEND_TILL_TOLATE   = zu spät!!!
+AD_SEND_TILL_MIDNIGHT  = bis Mitternacht senden!!
+AD_SEND_TILL_TOMORROW  = bis Morgen senden!
 AD_STILL_X_DAYS= noch %1 Tage
-AD_TIME        = Zeit
 
 AD_GENRE_NONE	= Alle
 AD_GENRE_1		= Kinder
@@ -188,10 +187,11 @@ MOVIE_ACTORS    = Darsteller
 MOVIE_SPEED     = Tempo
 MOVIE_CRITIC    = Kritik
 MOVIE_BOXOFFICE = Kinokasse
-MOVIE_TOPICALITY= Akt.
+MOVIE_TOPICALITY= Aktualität
 MOVIE_BLOCKS    = Blöcke
 MOVIE_XRATED    = FSK18
 MOVIE_EPISODES  = Folgen
+SERIES_WITH_X_EPISODES = Serie mit %EPISODESCOUNT% Folgen
 MOVIE_GENRE_0 = Action
 MOVIE_GENRE_1 = Krimi
 MOVIE_GENRE_2 = Sci-Fi
@@ -213,8 +213,11 @@ MOVIE_GENRE_17= Show
 MOVIE_GENRE_18= Monumental
 MOVIE_GENRE_19= Lückenfüller
 MOVIE_GENRE_20= Call-In/Shopping
-MOVIE_CALLINSHOW= Du verdienst %PROFIT% je 1000 Zuschauer.
+MOVIE_CALLINSHOW= Du verdienst %PROFIT% je 1.000 Zuschauer.
 MOVIE_TRAILER= Das Ausstrahlen einer Programmvorschau kann das Interesse an folgenden Ausstrahlungen des beworbenen Programmes erhöhen.
+
+AUCTION_MAKE_BID = Bieten
+AUCTION_WITHOUT_BID = Ohne Gebot
 
 CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID= Zum Bieten auf Film oder Serie klicken.
 

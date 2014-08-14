@@ -6,7 +6,6 @@ Import "game.broadcast.sequencecalculation.bmx"
 Import "game.publicimage.bmx"
 
 
-
 'Base type for programmes, advertisements...
 Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	Field state:int				= 0		'by default the state is "normal"

@@ -2281,12 +2281,12 @@ Type RoomHandler_Office extends TRoomHandler
 		local finance:TPlayerFinance= GetPlayerCollection().Get(room.owner).GetFinance(financeShowDay)
 
 		local captionColor:TColor = new TColor.CreateGrey(70)
-		local captionFont:TBitmapFont = GetBitmapFont("Default", 13, BOLDFONT)
+		local captionFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
 		local captionHeight:int = 20 'to center it to table header according "font Baseline"
-		local textFont:TBitmapFont = GetBitmapFont("Default", 13)
-		local logFont:TBitmapFont = GetBitmapFont("Default", 11)
-		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 10)
-		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 13, BOLDFONT)
+		local textFont:TBitmapFont = GetBitmapFont("Default", 14)
+		local logFont:TBitmapFont = GetBitmapFont("Default", 12)
+		local textSmallFont:TBitmapFont = GetBitmapFont("Default", 11)
+		local textBoldFont:TBitmapFont = GetBitmapFont("Default", 14, BOLDFONT)
 
 		local clLog:TColor = new TColor.CreateGrey(50)
 
@@ -3036,7 +3036,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'dude should accept drop - else no recognition
 		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
-		programmeList = New TgfxProgrammelist.Create(575, 16, 21)
+		programmeList = New TgfxProgrammelist.Create(635, 16, 21)
 
 
 		'===== REGISTER EVENTS =====
@@ -4313,14 +4313,6 @@ EndRem
 
 		SetColor 255,255,255  'normal
 		GUIManager.Draw("Newsplanner")
-
-local count:int = 0
-for local news:TGUINews = Eachin GUIMANAGER.list
-	count:+1
-Next
-SetColor 0,0,0
-DrawText("RONNY: inList="+guiNewsListAvailable.entries.Count()+"  inManagerList="+count,470, 50)
-SetColor 255,255,255
 	End Function
 
 
@@ -5403,6 +5395,9 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
+		'no handling needed when exit dialogue is open
+		If TApp.ExitAppDialogue then return 0
+
 		local mouseClicked:int = MouseManager.IsClicked(1)
 
 		Game.cursorstate = 0
@@ -5414,10 +5409,10 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 				local playerFigure:TFigure = GetPlayerCollection().Get().figure
 				playerFigure.ChangeTarget(door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()))
 			endif
+			if mouseClicked then MouseManager.ResetKey(1)
 		endif
 
 		TRoomDoorSign.UpdateAll(False)
-		if mouseClicked then MouseManager.ResetKey(1)
 	End Function
 
 
@@ -5471,21 +5466,29 @@ Type RoomHandler_Roomboard extends TRoomHandler
 	
 
 	Function onDraw:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
+		if not TRoom(triggerEvent._sender) then return 0
 
 		TRoomDoorSign.DrawAll()
 	End Function
 
+
 	Function onUpdate:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
+		if not TRoom(triggerEvent._sender) then return 0
 
 		Game.cursorstate = 0
-		TRoomDoorSign.UpdateAll(True)
-		If MouseManager.IsDown(1) Then MouseManager.resetKey(1)
+
+		'only allow dragging of roomsigns when no exitapp-dialoge exists
+		if not TApp.ExitAppDialogue
+			TRoomDoorSign.UpdateAll(True)
+		else
+			TRoomDoorSign.DropBackDraggedSigns()
+			TRoomDoorSign.UpdateAll(False)
+		endif
 	End Function
 End Type
+
+
+
 
 'Betty
 Type RoomHandler_Betty extends TRoomHandler
@@ -5493,9 +5496,9 @@ Type RoomHandler_Betty extends TRoomHandler
 		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("betty"))
 	End Function
 
+
 	Function onDraw:int( triggerEvent:TEventBase )
-		local room:TRoom = TRoom(triggerEvent._sender)
-		if not room then return 0
+		if not TRoom(triggerEvent._sender) then return 0
 
 		For Local i:Int = 1 To 4
 			local sprite:TSprite = GetSpriteFromRegistry("gfx_room_betty_picture1")
@@ -5512,7 +5515,7 @@ Type RoomHandler_Betty extends TRoomHandler
 			GetPlayerCollection().Get(i).Figure.Sprite.DrawClipped(new TRectangle.Init(x, y, -1, sprite.area.GetH()-16), null, 8)
 		Next
 
-		DrawDialog("default", 430, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
+		DrawDialog("default", 440, 120, 280, 110, "StartLeftDown", 0, GetLocale("DIALOGUE_BETTY_WELCOME"), GetBitmapFont("Default",14))
 	End Function
 
 
@@ -5933,7 +5936,7 @@ endrem
 	'generates an image containing background + text on it
 	Method GenerateCacheImage:TSprite(background:TSprite)
 		local newImage:Timage = background.GetImageCopy()
-		Local font:TBitmapFont = GetBitmapFont("Default",9, BOLDFONT)
+		Local font:TBitmapFont = GetBitmapFont("Default",10, BOLDFONT)
 		TBitmapFont.setRenderTarget(newImage)
 		if door.room.owner > 0
 			font.drawBlock(door.room.GetDescription(1), 22, 4, 150,15, null, TColor.CreateGrey(230), 2, 1, 0.5)
@@ -5945,6 +5948,17 @@ endrem
 		return new TSprite.InitFromImage(newImage, "tempCacheImage")
 	End Method
 
+
+	Function DropBackDraggedSigns:Int()
+		For Local locObj:TRoomDoorSign = EachIn List
+			If not locObj then continue
+			If not locObj.dragged then continue
+
+			locObj.SetCoords(locObj.StartPos.x, locObj.StartPos.y)
+			locObj.dragged = False
+		Next
+	End Function
+	
 
 	Function UpdateAll(DraggingAllowed:int)
 		'reset additional dragged objects

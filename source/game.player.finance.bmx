@@ -134,6 +134,11 @@ Type TPlayerFinance
 	End Method
 
 
+	Method GetCurrentProfit:Int()
+		return revenue_after - revenue_before
+	End Method
+
+
 	Method ChangeMoney(value:Int)
 		'TLogger.log("TFinancial.ChangeMoney()", "Player "+player.playerID+" changed money by "+value, LOG_DEBUG)
 		money			:+ value

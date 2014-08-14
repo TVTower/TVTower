@@ -543,74 +543,189 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method ShowInfomercialSheet:Int(x:Int,y:Int, align:int=0)
-		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
+		'=== DRAW BACKGROUND ===
+		local sprite:TSprite
+		local currX:Int = x
+		local currY:int = y
 
-		if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_specials").area.GetW()
-		GetSpriteFromRegistry("gfx_datasheets_specials").Draw(x,y)
-		SetColor 0,0,0
-		GetBitmapFontManager().basefontBold.drawBlock(self.GetTitle(), x + 10, y + 11, 278, 20)
-		normalFont.drawBlock("Dauerwerbesendung", x + 10, y + 34, 278, 20)
+		'move sheet to left when right-aligned
+		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
+		
+		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		if owner > 0
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageEarn"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+		endif
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subTopicalityRating"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
 
-		'convert back cents to euros and round it
-		'value is "per 1000" - so multiply with that too
-		local profitFormatted:string = int(1000*GetPerViewerRevenue())+" "+CURRENCYSIGN
-		normalFont.drawBlock(getLocale("AD_INFOMERCIAL")  , x+10, y+55, 278, 60)
-		GetBitmapFontManager().basefontBold.drawBlock(getLocale("AD_INFOMERCIAL_PROFIT").replace("%PROFIT%", profitFormatted), x+10, y+105, 278, 20)
-		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY"), x+222, y+131,  40, 16)
-		SetColor 255,255,255
 
-		SetAlpha 0.3
-		GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+131, 200, 10))
-		SetAlpha 1.0
-		if base.GetInfomercialTopicality() > 0.1 then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+131, base.GetInfomercialTopicality()*200, 10))
+
+		'=== DRAW TEXTS / OVERLAYS ====
+		currY = y + 8 'so position is within "border"
+		currX :+ 7 'inside
+		local textColor:TColor = TColor.CreateGrey(25)
+		local textLightColor:TColor = TColor.CreateGrey(75)
+		local textEarnColor:TColor = TColor.Create(45,80,10)
+		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
+		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
+		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 18
+		fontNormal.drawBlock(GetLocale("INFOMERCIAL"), currX + 6, currY, 280, 15, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 16
+
+		'content description
+		currY :+ 3	'description starts with offset
+		fontNormal.drawBlock(getLocale("AD_INFOMERCIAL"), currX + 6, currY, 280, 64, null ,textColor)
+		currY :+ 64 'content
+		currY :+ 3	'description ends with offset
+
+		currY :+ 4 'offset of subContent
+
+		if owner > 0
+			'convert back cents to euros and round it
+			'value is "per 1000" - so multiply with that too
+			local revenue:string = TFunctions.DottedValue(int(1000 * GetPerViewerRevenue()))+CURRENCYSIGN
+			currY :+ 4 'top content padding of that line
+			fontSemiBold.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), currX + 35,  currY, 245, 15, ALIGN_CENTER_CENTER, textEarnColor, 0,1,1.0,True, True)
+			currY :+ 15 + 8 'lineheight + bottom content padding
+		endif
+		
+		'topicality
+		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY, 75, 15, null, textLightColor)
+
+		if base.GetInfomercialTopicality() > 0.1
+			SetAlpha GetAlpha()*0.25
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, 200, 10))
+			SetAlpha GetAlpha()*4.0
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1, base.GetInfomercialTopicality()*200, 10))
+		endif
 	End Method
 
 
 	Method ShowAdvertisementSheet:Int(x:Int,y:Int, align:int=0)
+		'=== DRAW BACKGROUND ===
+		local sprite:TSprite
+		local currX:Int = x
+		local currY:int = y
+		local daysLeft:int = GetDaysLeft()
+		'not signed?
+		if owner <= 0 then daysLeft = GetDaysToFinish()
 
-		if align=1 then x :- GetSpriteFromRegistry("gfx_datasheets_contract").area.GetW()
+		'move sheet to left when right-aligned
+		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
+		
+		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
 
-		GetSpriteFromRegistry("gfx_datasheets_contract").Draw(x,y)
-
-		SetColor 0,0,0
-		Local font:TBitmapFont = GetBitmapFontManager().basefont
-		GetBitmapFontManager().basefontBold.drawBlock(GetTitle()	, x+10 , y+11 , 270, 70)
-		font.drawBlock(GetDescription()   		 		, x+10 , y+33 , 270, 70)
-		font.drawBlock(getLocale("AD_PROFIT")+": "			, x+10 , y+94 , 130, 16)
-		font.drawBlock(TFunctions.convertValue(GetProfit(), 2)+" "+CURRENCYSIGN , x+10 , y+94 , 130, 16,new TVec2D.Init(ALIGN_RIGHT))
-		font.drawBlock(getLocale("AD_PENALTY")+": "       , x+10 , y+117, 130, 16)
-		font.drawBlock(TFunctions.convertValue(GetPenalty(), 2)+" "+CURRENCYSIGN, x+10 , y+117, 130, 16,new TVec2D.Init(ALIGN_RIGHT))
-		font.drawBlock(getLocale("AD_MIN_AUDIENCE")+": "    , x+10, y+140, 127, 16)
-		font.drawBlock(TFunctions.convertValue(GetMinAudience(), 2), x+10, y+140, 127, 16,new TVec2D.Init(ALIGN_RIGHT))
-
-		font.drawBlock(getLocale("AD_TOSEND")+": "    , x+150, y+94 , 127, 16)
-		font.drawBlock(GetSpotsToSend()+"/"+GetSpotCount() , x+150, y+94 , 127, 16,new TVec2D.Init(ALIGN_RIGHT))
-		font.drawBlock(getLocale("AD_PLANNED")+": "    , x+150, y+117 , 127, 16)
-		if self.owner > 0
-			font.drawBlock( GetSpotsPlanned() + "/" + GetSpotCount() , x+150, y+117 , 127, 16,new TVec2D.Init(ALIGN_RIGHT))
-		else
-			font.drawBlock( "-" , x+150, y+117 , 127, 16,new TVec2D.Init(ALIGN_RIGHT))
-		endif
-
-		font.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetTargetgroupString()   , x+10 , y+163 , 270, 16)
-		If owner <= 0
-			If GetDaysToFinish() > 1
-				font.drawBlock(getLocale("AD_TIME")+": "+GetDaysToFinish() +" "+ getLocale("DAYS"), x+86 , y+186 , 122, 16)
-			Else
-				font.drawBlock(getLocale("AD_TIME")+": "+GetDaysToFinish() +" "+ getLocale("DAY"), x+86 , y+186 , 122, 16)
-			EndIf
-		Else
-			if GetDaysLeft() < 0
-				font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOLATE") , x+86 , y+186 , 126, 16)
-			else
-				Select GetDaysLeft()
-					Case 0	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TODAY") , x+86 , y+186 , 126, 16)
-					Case 1	font.drawBlock(getLocale("AD_TIME")+": "+getLocale("AD_TILL_TOMORROW") , x+86 , y+186 , 126, 16)
-					Default	font.drawBlock(getLocale("AD_TIME")+": "+Replace(getLocale("AD_STILL_X_DAYS"),"%1", Self.GetDaysLeft()), x+86 , y+186 , 122, 16)
-				EndSelect
-			endif
+		'warn if special target group
+		If base.targetGroup > 0
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageTargetGroup"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
 		EndIf
-		SetColor 255,255,255
+
+		'warn if short of time
+		If daysLeft <= 1
+			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageWarning"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+		EndIf
+
+		sprite = GetSpriteFromRegistry("gfx_datasheet_subAdContractAttributes"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+
+
+		'=== DRAW TEXTS / OVERLAYS ====
+		currY = y + 8 'so position is within "border"
+		currX :+ 7 'inside
+		local textColor:TColor = TColor.CreateGrey(25)
+		local textProfitColor:TColor = TColor.Create(45,80,10)
+		local textPenaltyColor:TColor = TColor.Create(80,45,10)
+		local textWarningColor:TColor = TColor.Create(80,45,10)
+		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
+		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
+		Local fontSemiBold:TBitmapFont   = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+
+
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 18
+
+		'content description
+		currY :+ 3	'description starts with offset
+		fontNormal.drawBlock(GetDescription(), currX + 6, currY, 280, 64, null ,textColor)
+		currY :+ 64 'content
+		currY :+ 3	'description ends with offset
+
+		currY :+ 4 'offset of subContent
+
+
+		'warn if special target group
+		If base.targetGroup > 0
+			currY :+ 4 'top content padding of that line
+			fontSemiBold.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetTargetgroupString(), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
+			currY :+ 15 + 8 'lineheight + bottom content padding
+		Endif
+
+		'warn if short of time
+		If daysLeft <= 1
+			currY :+ 4 'top content padding of that line
+			If daysLeft = 1
+				fontSemiBold.drawBlock(getLocale("AD_SEND_TILL_TOMORROW"), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
+			ElseIf daysLeft = 0
+				fontSemiBold.drawBlock(getLocale("AD_SEND_TILL_MIDNIGHT"), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
+			Else
+				fontSemiBold.drawBlock(getLocale("AD_SEND_TILL_TOLATE"), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
+			EndIf
+			currY :+ 15 + 8 'lineheight + bottom content padding
+		Endif
+
+
+		currY :+ 4 'align to content portion of that line
+		'days left for this contract
+		If daysLeft > 1
+			fontBold.drawBlock(daysLeft +" "+ getLocale("DAYS"), currX+34, currY , 62, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+		Else
+			fontBold.drawBlock(daysLeft +" "+ getLocale("DAY"), currX+34, currY , 62, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+		EndIf
+		'spots successfully sent
+		if owner < 0
+			'show how many we have to send
+			fontBold.drawBlock(GetSpotCount() + "x", currX+131, currY , 58, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+		else
+			fontBold.drawBlock(GetSpotsSent() + "/" + GetSpotCount(), currX+131, currY , 58, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+		endif
+		'planend
+		if owner > 0
+			fontBold.drawBlock(GetSpotsPlanned() + "/" + GetSpotCount(), currX+224, currY , 58, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+		endif
+		currY :+ 15 + 8 'lineheight + bottom content padding
+
+
+		currY :+ 4 'align to content portion of that line
+		'minAudience
+		fontBold.drawBlock(TFunctions.convertValue(GetMinAudience(), 2), currX+33, currY , 66, 15, ALIGN_CENTER_CENTER, textColor, 0,1,1.0,True, True)
+		'penalty
+		fontBold.drawBlock(TFunctions.convertValue(GetPenalty(), 2), currX+131, currY , 58, 15, ALIGN_RIGHT_CENTER, textPenaltyColor, 0,1,1.0,True, True)
+		'profit
+		fontBold.drawBlock(TFunctions.convertValue(GetProfit(), 2), currX+224, currY , 58, 15, ALIGN_RIGHT_CENTER, textProfitColor, 0,1,1.0,True, True)
+		currY :+ 15 + 8 'lineheight + bottom content padding
 	End Method
 
 

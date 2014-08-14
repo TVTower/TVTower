@@ -69,6 +69,26 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 
 	'override
+	Method BeginBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+		Super.BeginBroadcasting:int(day, hour, minute, audienceResult)
+
+		'remove old "last audience" data to avoid wrong "average values"
+		licence.GetBroadcastStatistic().RemoveLastAudienceResult(licence.owner)
+		'store audience for this block
+		licence.GetBroadcastStatistic().SetAudienceResult(licence.owner, currentBlockBroadcasting, audienceResult)
+	End Method
+
+
+	'override
+	Method ContinueBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
+		Super.ContinueBroadcasting(day, hour, minute, audienceResult)
+
+		'store audience for this block
+		licence.GetBroadcastStatistic().SetAudienceResult(licence.owner, currentBlockBroadcasting, audienceResult)
+	End Method
+
+
+	'override
 	Method BreakBroadcasting:int(day:int, hour:int, minute:int, audienceResult:TAudienceResult)
 		Super.BreakBroadcasting:int(day, hour, minute, audienceResult)
 
@@ -108,12 +128,12 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 		data.CutTopicality(GetTopicalityCutModifier())
 
 		'if someone can watch that movie, increase the aired amount
-		data.timesAired:+1
+		data.SetTimesAired(data.GetTimesAired(owner)+1, owner)
 		'reset trailer count
 		data.trailerAiredSinceShown = 0
 		'now the trailer is for the next broadcast...
 		data.trailerTopicality = 1.0
-		'print "aired programme "+GetTitle()+" "+data.timesAired+"x."
+		'print "aired programme "+GetTitle()+" "+data.GetTimesAired(owner)+"x."
 
 		'print self.GetTitle() + "  finished at day="+day+" hour="+hour+" minute="+minute + " aired="+data.timesAired + " topicality="+data.topicality+" oldTop="+oldTop
 	End Method

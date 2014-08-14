@@ -1461,10 +1461,14 @@ Type TScreen_GameSettings Extends TGameScreen
 		guiPlayersPanel = guiSettingsWindow.AddContentBox(0,0,-1, playerBoxDimension.GetY() + 2 * panelGap)
 		guiSettingsPanel = guiSettingsWindow.AddContentBox(0,0,-1, 100)
 
-		guiGameTitleLabel	= New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(75), name)
+		guiGameTitleLabel	= New TGUILabel.Create(New TVec2D.Init(0, 0), "", TColor.CreateGrey(90), name)
 		guiGameTitle		= New TGUIinput.Create(New TVec2D.Init(0, 12), New TVec2D.Init(300, -1), "", 32, name)
-		guiStartYearLabel	= New TGUILabel.Create(New TVec2D.Init(310, 0), "", TColor.CreateGrey(75), name)
+		guiStartYearLabel	= New TGUILabel.Create(New TVec2D.Init(310, 0), "", TColor.CreateGrey(90), name)
 		guiStartYear		= New TGUIinput.Create(New TVec2D.Init(310, 12), New TVec2D.Init(65, -1), "", 4, name)
+
+		guiGameTitleLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
+		guiStartYearLabel.SetFont( GetBitmapFontManager().Get("DefaultThin", 14, BOLDFONT) )
+
 
 		Local checkboxHeight:Int = 0
 		gui24HoursDay = New TGUICheckBox.Create(New TVec2D.Init(430, 0), New TVec2D.Init(300), "", name)
@@ -2327,7 +2331,7 @@ Type TSettingsWindow
 
 		modalDialogue.SetDialogueType(2)
 		modalDialogue.buttons[0].SetCaption(GetLocale("SAVE_AND_APPLY"))
-		modalDialogue.buttons[0].Resize(160,-1)
+		modalDialogue.buttons[0].Resize(180,-1)
 		modalDialogue.buttons[1].SetCaption(GetLocale("CANCEL"))
 		modalDialogue.buttons[1].Resize(160,-1)
 		modalDialogue.SetCaptionAndValue(GetLocale("MENU_SETTINGS"), "")
@@ -2335,7 +2339,7 @@ Type TSettingsWindow
 		Local canvas:TGUIObject = modalDialogue.GetGuiContent()
 				
 		Local labelTitleGameDefaults:TGUILabel = New TGUILabel.Create(New TVec2D.Init(0, nextY), GetLocale("DEFAULTS_FOR_NEW_GAME"))
-		labelTitleGameDefaults.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		labelTitleGameDefaults.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		canvas.AddChild(labelTitleGameDefaults)
 		nextY :+ 25
 
@@ -2377,7 +2381,7 @@ Type TSettingsWindow
 		nextX = 1*rowWidth
 		'SOUND
 		Local labelTitleSound:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("SOUND_OUTPUT"))
-		labelTitleSound.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		labelTitleSound.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		canvas.AddChild(labelTitleSound)
 		nextY :+ 25
 
@@ -2395,7 +2399,7 @@ Type TSettingsWindow
 
 		'GRAPHICS
 		Local labelTitleGraphics:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("GRAPHICS"))
-		labelTitleGraphics.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		labelTitleGraphics.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		canvas.AddChild(labelTitleGraphics)
 		nextY :+ 25
 
@@ -2432,7 +2436,7 @@ Type TSettingsWindow
 		nextY = 0
 		nextX = 2*rowWidth
 		Local labelTitleMultiplayer:TGUILabel = New TGUILabel.Create(New TVec2D.Init(nextX, nextY), GetLocale("MULTIPLAYER"))
-		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 11, BOLDFONT))
+		labelTitleMultiplayer.SetFont(GetBitmapFont("default", 14, BOLDFONT))
 		canvas.AddChild(labelTitleMultiplayer)
 		nextY :+ 25
 
@@ -2969,9 +2973,9 @@ TProfiler.Leave("InitialLoading")
 
 	'=== ADJUST GUI FONTS ===
 	'set the now available default font
-	GuiManager.SetDefaultFont( GetBitmapFontManager().Get("Default", 12) )
+	GuiManager.SetDefaultFont( GetBitmapFontManager().Get("Default", 14) )
 	'buttons get a bold font
-	TGUIButton.SetTypeFont( GetBitmapFontManager().baseFontBold )
+	TGUIButton.SetTypeFont( GetBitmapFontManager().Get("Default", 14, BOLDFONT) )
 	'checkbox (and their labels) get a smaller one
 	'TGUICheckbox.SetTypeFont( GetBitmapFontManager().Get("Default", 11) )
 	'labels get a slight smaller one
