@@ -2725,10 +2725,10 @@ Type AppEvents
 	'- create special fonts
 	Function onAppStart:Int(triggerEvent:TEventBase)
 		If Not headerFont
-			GetBitmapFontManager().Add("headerFont", "res/fonts/Vera.ttf", 18)
-			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraBd.ttf", 18, BOLDFONT)
-			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraBI.ttf", 18, BOLDFONT | ITALICFONT)
-			GetBitmapFontManager().Add("headerFont", "res/fonts/VeraIt.ttf", 18, ITALICFONT)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-Semibold.ttf", 18)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-Bold.ttf", 18, BOLDFONT)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-BoldIt.ttf", 18, BOLDFONT | ITALICFONT)
+			GetBitmapFontManager().Add("headerFont", "res/fonts/sourcesans/SourceSansPro-It.ttf", 18, ITALICFONT)
 
 			Local shadowSettings:TData = New TData.addNumber("size", 1).addNumber("intensity", 0.5)
 			Local gradientSettings:TData = New TData.addNumber("gradientBottom", 180)
