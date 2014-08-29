@@ -96,13 +96,10 @@ Type TWorld
 		showMoon = config.GetBool("showMoon", True)
 		showSkyGradient = config.GetBool("showSkyGradient", True)
 
-		stars = stars[..config.GetInt("starsAmount", 60)]
-	
-		'=== SETUP STARS ===
-		For Local i:Int = 0 until stars.length
-			stars[i] = new TVec3D.Init(Rand(area.GetX(), area.GetX2()), Rand(area.GetY(), area.GetY2()), 50+Rand(0,StarsBrightness-50))
-		Next
-				
+		'we do not save stars in savegames, so we externalized
+		'initialization to make it more convenient to call
+		InitStars(config.GetInt("starsAmount", 60))
+
 		return Self
 	End Method
 
@@ -140,6 +137,16 @@ Type TWorld
 		cloudEffect = new TWeatherEffectClouds.Init(area.copy(), cloudAmount, sprites)
 	End Method
 
+
+	Method InitStars:int(starCount:int = 60)
+		stars = stars[..starCount]
+	
+		'=== SETUP STARS ===
+		For Local i:Int = 0 until stars.length
+			stars[i] = new TVec3D.Init(Rand(area.GetX(), area.GetX2()), Rand(area.GetY(), area.GetY2()), 50+Rand(0,StarsBrightness-50))
+		Next
+	End Method
+	
 
 	Method UpdateEffects:int()
 		'=== RAIN ===
@@ -354,6 +361,9 @@ Type TWorld
 
 
 	Method RenderStars:int()
+		if stars.length = 0 then InitStars(60)
+		if not stars[0] then InitStars(stars.length)
+	
 		local dayPhase:int = GetWorldTime().GetDayPhase()
 		'no stars during a day
 		if dayPhase = GetWorldTime().DAYPHASE_DAY then return False

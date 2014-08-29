@@ -67,6 +67,9 @@ Type TAdContractBaseCollection
 
 
 	Method Add:int(obj:TAdContractBase)
+		'only add once
+		if list.contains(obj) then return False
+
 		list.AddLast(obj)
 		return TRUE
 	End Method
@@ -113,6 +116,9 @@ Type TAdContractCollection
 
 
 	Method Add:int(obj:TAdContract)
+		'only add once
+		if list.contains(obj) then return False
+		
 		list.AddLast(obj)
 		return TRUE
 	End Method
@@ -188,7 +194,6 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	End Method
 
 
-
 	Method GetTitle:string() {_exposeToLua}
 		return self.title
 	End Method
@@ -252,6 +257,12 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	' KI: Wird nur in der Lua-KI verwendet du die Filme zu bewerten
 	Field attractiveness:Float = -1
 
+
+
+	Method New()
+		GetAdContractCollection().Add(self)
+	End Method
+	
 
 	'create UNSIGNED (adagency)
 	Method Create:TAdContract(baseContract:TAdContractBase)

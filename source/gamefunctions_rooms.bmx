@@ -4935,6 +4935,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Function isCheapContract:int(contract:TAdContract)
+		if contract.base = null
+			print "base is null"
+			return False
+		endif
 		return contract.GetMinAudiencePercentage() < contractCheapAudienceMaximum
 	End Function
 

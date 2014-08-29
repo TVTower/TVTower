@@ -2178,7 +2178,7 @@ Type TInterface
 			endif
 
 			'market share
-			GetBitmapFont("Default", 12, BOLDFONT).drawBlock("MA: "+MathHelper.floatToString(programmePlan.GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
+			GetBitmapFont("Default", 12, BOLDFONT).drawBlock("MA: "+MathHelper.floatToString(GetPlayerCollection().Get().GetProgrammePlan().GetAudiencePercentage()*100,2)+"%", 366, 463+15, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(170,170,200), 2, 1, 0.5)
 
 			'current day
 		 	GetBitmapFont("Default", 12, BOLDFONT).drawBlock((GetWorldTime().GetDaysRun()+1) + ". "+GetLocale("DAY"), 366, 555, 112, 12, ALIGN_CENTER_CENTER, TColor.Create(180,180,180), 2, 1, 0.5)
