@@ -4765,6 +4765,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'handle savegame loading (remove old gui elements)
 		EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+		'handle faulty adcontracts (after data got loaded)
+		EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
 
 		_initDone = true
 	End Method
@@ -4781,9 +4783,16 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'We cannot rely on "onEnterRoom" as we could have saved
 		'in this room
 		GetInstance().RemoveAllGuiElements()
+
 		haveToRefreshGuiElements = true
 	End Function
+	
 
+	'run AFTER the savegame data got loaded
+	Function onSaveGameLoad(triggerEvent:TEventBase)
+		'in the case of being empty (should not happen)
+		GetInstance().RefillBlocks()
+	End Function
 
 
 	Function onEnterRoom:int(triggerEvent:TEventBase)
@@ -4935,10 +4944,6 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 
 	Function isCheapContract:int(contract:TAdContract)
-		if contract.base = null
-			print "base is null"
-			return False
-		endif
 		return contract.GetMinAudiencePercentage() < contractCheapAudienceMaximum
 	End Function
 
@@ -4946,10 +4951,12 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	Method ResetContractOrder:int()
 		local contracts:TList = CreateList()
 		for local contract:TAdContract = eachin listNormal
-			contracts.addLast(contract)
+			'only add valid contracts
+			if contract.base then contracts.addLast(contract)
 		Next
 		for local contract:TAdContract = eachin listCheap
-			contracts.addLast(contract)
+			'only add valid contracts
+			if contract.base then contracts.addLast(contract)
 		Next
 		listNormal = new TAdContract[listNormal.length]
 		listCheap = new TAdContract[listCheap.length]
@@ -5169,8 +5176,8 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		for local j:int = 0 to lists.length-1
 			for local i:int = 0 to lists[j].length-1
-				'if exists...skip it
-				if lists[j][i] then continue
+				'if exists and is valid...skip it
+				if lists[j][i] and lists[j][i].base then continue
 
 				if lists[j] = listNormal then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandom() )
 				if lists[j] = listCheap then contract = new TAdContract.Create( GetAdContractBaseCollection().GetRandomWithLimitedAudienceQuote(0.0, contractCheapAudienceMaximum) )
@@ -5618,17 +5625,24 @@ Type RoomHandler_Credits extends TRoomHandler
 		role = CreateRole("Datenbank-Team", TColor.Create(210,120,250))
 		role.addCast("Ronny Otto")
 		role.addCast("Martin Rackow")
+		role.addCast("Själe")
+		role.addCast("SpeedMinister")
 		role.addCast("u.a. Freiwillige")
 
 		role = CreateRole("Tester", TColor.Create(160,180,250))
 		role.addCast("...und Motivationsteam")
+		'old testers (< 2007)
+		'role.addCast("Ceddy")
+		'role.addCast("dirkw")
+		'role.addCast("djmetzger")
 		role.addCast("Basti")
-		role.addCast("Ceddy")
-		role.addCast("dirkw")
-		role.addCast("djmetzger")
+		role.addCast("domi")
 		role.addCast("Kurt TV")
+		role.addCast("red")
 		role.addCast("Själe")
 		role.addCast("SushiTV")
+		role.addCast("Ulf")
+
 		role.addCast("...und all die anderen Fehlermelder im Forum")
 
 

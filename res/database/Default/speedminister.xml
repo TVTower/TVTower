@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tvgdb>
+	<allads>
+		<ad>
+			<title>Esel24.komm</title>
+			<description>Hochzeit? Firmenveranstaltung? Familienfeier? Autopanne! Umzug! Esel zum Mieten und zum Kaufen! Esel24.komm!</description>
+			<data minaudience="12" repetitions="3" profit="8" penalty="10" targetgroup="0" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Valvoa</title>
+			<description>Valvoa der Truck fuer die Frau. 460PS nur 350kEuro, auf Wunsch auch in rosa. Valvoa stinkt ab!</description>
+			<data minaudience="80" repetitions="2" profit="77" penalty="85" targetgroup="8" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>four4down</title>
+			<description>Prickelnde Kohlensäure, zischende Dose, Kühlung für Rachen und Kehle, super geschmackvoll? Nicht mehr träumen! four4down bringt Sie auf den Boden zurück!</description>
+			<data minaudience="15" repetitions="3" profit="18" penalty="26" targetgroup="0" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Inter Outer Under World Travel</title>
+			<description>Stehplätze, Verpflegung* aus der Dose und Betäubungsgas machen den Flug angenehm. Auch die Piloten sind extrem ausgeruht. Schönen Urlaub!
+			(*gegen Aufpreis)</description>
+			<data minaudience="20" minimage="20" repetitions="1" profit="26" penalty="39" targetgroup="4" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Teppichoase Kamelfurt</title>
+			<description>Es ist AUS! Zum 50. Mal! Jubiläumsausverkauf! Live-Band und Kinderhüpfburg auf dem Parkplatz! Wir sind Pleite! Teppichverkäufer-Ehrenwort!</description>
+			<data minaudience="30" minimage="10" repetitions="4" profit="33" penalty="35" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Haslan Autocars</title>
+			<description>Kommst Du. - Kuckst Du. - Kaufst Du.</description>
+			<data minaudience="2" repetitions="2" profit="7" penalty="10" targetgroup="0" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Bundesdeutsche Anstalt fuer Meditation</title>
+			<description>Leitfaden zur aufrichtigen inneren Reinigung, Tipps und Tricks, Best Practices und vieles mehr. Infos bei uns! LAM - VAM - RAM - YAM - HAM - KSHAM - OM.</description>
+			<data minaudience="20" repetitions="7" profit="70" penalty="35" targetgroup="0" duration="7"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Chemical Air</title>
+			<description>Pestizid, Fungizid, Herbizid. Unser Flieger steht bereit. Wir spritzen Ihr Feld, Ihre Obstplantage und Ihren Garten. Auch für privat! Einfach anrufen.</description>
+			<data minaudience="110" minimage="80" repetitions="4" profit="100" penalty="150" targetgroup="0" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Pizza Paschulke</title>
+			<description>Pizza aus dem Schwedenofen. Schön knackig und bissfest. Auch als Ersatzbrennstoff verwendbar. Jeden ungeraden Kalendertag liefern wir auch aus.</description>
+			<data minaudience="3" repetitions="5" profit="22" penalty="28" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Raff und Gier, Banken und Versicherungen</title>
+			<description>Ihr Geld steht bei uns im Mittelpunkt. In unsren Banken bewachen wir es. Wir verteidigen es gegen JEDEN. Keine Ausnahmen.</description>
+			<data minaudience="20" minimage="28" repetitions="3" profit="33" penalty="50" targetgroup="4" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Raff und Gier, Banken und Versicherungen</title>
+			<description>Unsere Versicherungen nehmen Ihr Geld auch völlig ohne Gegenleistung! Bitte einschicken.</description>
+			<data minaudience="60" minimage="68" repetitions="3" profit="69" penalty="100" targetgroup="4" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Erlebnisbad Spargelsund</title>
+			<description>Besuchen mit der Familie unseren Wasserpark und erleben Sie unsere Attraktionen. Kettenanzüge fürs Haifischbecken in allen Größen ausleihbar.</description>
+			<data minaudience="10" repetitions="2" profit="17" penalty="8" targetgroup="0" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Malerei Farbecht</title>
+			<description>Unschlagbar im Preis. Fenster und Türen abkleben war gestern. Wir sind kosteneffizient, das werden Sie sehen. Zum Termin erscheinen wir! - oft! - manchmal.</description>
+			<data minaudience="5" repetitions="4" profit="10" penalty="12" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Baumschule Bummbarts</title>
+			<description>Bummbarts Bäume wissen Väter zu schätzen, wenn sie mit Ihrem Sohne einen setzen.</description>
+			<data minaudience="31" repetitions="5" profit="40" penalty="49" targetgroup="9" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Baumschule Bummbarts</title>
+			<description>In Parks und Gärten genießt man die Räume, die Highlights aber sind Bummbarts Bäume.</description>
+			<data minaudience="62" repetitions="6" profit="80" penalty="99" targetgroup="9" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Koizucht Koiner</title>
+			<description>Satte Fische zu satten Preisen. Ein weiterer Beleg, was einmal ein Schwabe sagte: "Wenn's nix koscht'! Sonscht kommt koiner nai!"</description>
+			<data minaudience="90" repetitions="3" profit="120" penalty="144" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>HAPPO</title>
+			<description>Das Hundefutter mit Aspartam. Mästen Sie Ihren Liebling! Wie das Schwein, so auch der Hund, wird Ihr Tierchen alsbald kugelrund.</description>
+			<data minaudience="5" repetitions="3" profit="15" penalty="24" targetgroup="0" duration="5"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+
+
+		<ad>
+			<title>Kakteenwunderland</title>
+			<description>Unsere Kakteen stechen härter, länger und ausdauernder, als die der Konkurrenz. Wir haben Kakteen für Garten, Wintergarten, Treibhaus und fürs Bett.</description>
+			<data repetitions="4" profit="20" penalty="24" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Kaisers neue Kleider</title>
+			<description>Neue Kollektion bei Kaisers: Extrem guter Tragekomfort, hauchdünner Stoff, fantasievolle Schnitte. Ein echter Hingucker! Kaisers neue Kleider!</description>
+			<data minaudience="130" minimage="100" repetitions="6" profit="140" penalty="150" targetgroup="0" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Greek Haircut</title>
+			<description>Wir geben eine Ouzo für jede Zentimeter abgeschnittene Haare! Wer brauchte schon Haare, wenne kann tragen Helm?</description>
+			<data minaudience="30" minimage="10" repetitions="1" profit="15" penalty="25" targetgroup="0" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Sportschule Steilpass</title>
+			<description>Exzellente Prüfungsvorbereitung der zukünftigen Profisportler durch unsere Lehrkräfte nach der Philosophie: "Nimm Du ihn - ich hab' ihn sicher!"</description>
+			<data minaudience="90" minimage="90" repetitions="3" profit="77" penalty="77" targetgroup="0" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Nordseeinsel Spackeroog</title>
+			<description>Genießen Sie die See, auch wenn sie nie da ist. Fühlen Sie Schafsköttel zwischen den Zehen und den Geruch modernden Tangs in der Nase. Natürlich, Spackeroog!</description>
+			<data minaudience="15" minimage="5" repetitions="4" profit="22" penalty="37" targetgroup="0" duration="7"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+			<ad>
+			<title>Rennpferde Engel</title>
+			<description>Sommerschlussverkauf! Die alten Klepper müssen raus! Für 2 Araber gibt es eine Schindmähre gratis oben drauf! Kein Versand! Schnäppchenwetter bei Engel.</description>
+			<data minaudience="10" minimage="20" repetitions="4" profit="41" penalty="45" targetgroup="6" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Bildergalerie Silberfisch</title>
+			<description>Wir sind bodenständig! Keine einfarbigen Flächen zu Fantasiepreisen. Bei uns z.B. "Röhrender Hirsch auf Zweimastschoner in stürmischer See" nur 500 Ocken.</description>
+			<data minaudience="100" minimage="100" repetitions="5" profit="111" penalty="222" targetgroup="4" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Potz-Blitz Autohof</title>
+			<description>Kommen Sie zu unserem Autohof. LKW-Waschmöglichkeiten. Duschen und Toiletten vorhanden! Ab 1000l Dieselbetankung ein gratis Kaffee!!! Potz-Blitz! An der A7!</description>
+			<data minaudience="50" minimage="40" repetitions="3" profit="45" penalty="50" targetgroup="4" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+
+
+		<ad>
+			<title>Bullshit Bingo Brokers</title>
+			<description>Traum-Renditen ohne den Finger krumm zu machen. Ganze Bevölkerungen in die Hungersnot schicken? - Egal? - Bullseye mit Bullshit Bingo Brokers!</description>
+			<data minaudience="25" minimage="20" repetitions="4" profit="40" penalty="50" targetgroup="6" duration="5"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Imkerei Hummeldoof</title>
+			<description>Premium Honigprodukte von Ihrer Lieblings-Imkerei Hummeldoof. Wir gewähren unseren Bienen ein gutes, motivierendes Arbeitsumfeld. Feierabendbier inklusive!</description>
+			<data minaudience="60" minimage="50" repetitions="6" profit="60" penalty="80" targetgroup="3" duration="6"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Bobo Wattebällchen</title>
+			<description>Wattebällchen für jeden Anlass. Bobo Wattebällchen für die Frau, für das Kind und für den Soldat.</description>
+			<data minaudience="27" minimage="27" repetitions="3" profit="27" penalty="34" targetgroup="0" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Brauerei Hopfengurgler</title>
+			<description>Echt genial: Unser Doppelbock gibt's jetzt auch alkoholfrei! Oans, zwoa, droa, g'suffa!</description>
+			<data minaudience="40" minimage="30" repetitions="5" profit="45" penalty="55" targetgroup="0" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Brauerei Hopfengurgler</title>
+			<description>Echt genial: Pilsner, Export und Weizen jetzt auch als Zäpfchen erhältlich! Praktisch im 40er Party-Pack! Das zieht! Oans, zwoa, droa, ziags!</description>
+			<data minaudience="80" minimage="60" repetitions="5" profit="90" penalty="110" targetgroup="0" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Karkasonic Fluchomat</title>
+			<description>Stört sie der zensierende Piepston anstelle eines saftigen Fluches? Karkasonic hat die Lösung: Der Fluchomat. Mit Fluchneuheiten und Übertreibungsgarantie!!! </description>
+			<data minaudience="30" minimage="25" repetitions="3" profit="38" penalty="44" targetgroup="0" duration="4"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Winzerei Weinstein</title>
+			<description>Lutschen Sie sich durch erlesene Jahrgänge der Weingeschichte. Weinsteinsortimente der gleichnamigen Winzerei ab sofort erhältlich!</description>
+			<data minaudience="50" minimage="50" repetitions="2" profit="45" penalty="70" targetgroup="0" duration="2"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Unternehmensberatung Beisele</title>
+			<description>Mir schwaetzed Iha'ne nai und kriagat ah'no was dafiar! Guat, is net guat g'nuag! S'muss scho Beisele sai!</description>
+			<data minaudience="20" minimage="24" repetitions="3" profit="35" penalty="40" targetgroup="6" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Enemy24</title>
+			<description>Suchen Sie jemanden zum Dissen oder Haten? Fehlt Ihnen bisher ein Erzfeind? Nutzen Sie "Enemy24"! Wir finden Ihren persönlichen Gegenspieler!</description>
+			<data minaudience="20" minimage="20" repetitions="1" profit="15" penalty="30" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Ohrostopf Lärmschutz</title>
+			<description>Nölt Ihr Chef? Die Alte sowieso? Die Kinder sind nicht auszuhalten? - RUHE !!! - Jetzt: Ohrostopf!</description>
+			<data minaudience="61" minimage="50" repetitions="4" profit="57" penalty="62" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Immobilien Haino</title>
+			<description>Von der Altbau-Baracke bis zur Luxusvilla. Wir haben alles im Programm! Zuerst: Selbstauskunft an uns schicken. Mit etwas Glück melden wir uns bei Ihnen.</description>
+			<data minaudience="50" minimage="50" repetitions="6" profit="79" penalty="99" targetgroup="0" duration="5"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+		<ad>
+			<title>Dörrobst Toni</title>
+			<description>Ganz neu Dörrgemüse bei uns im Spezialitäten-Regal. In den Sorten Dörr-Kuerbis, Dörr-Gurke und Dörr-Wassermelone!</description>
+			<data repetitions="3" profit="14" penalty="17" targetgroup="0" duration="3"/>
+			<created_by name="SpeedMinister" />
+		</ad>
+	</allads>
+</tvgdb>
