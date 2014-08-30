@@ -1182,7 +1182,7 @@ Type TPlannerList
 	Field gfxTape:TSprite
 	Field gfxTapeBackground:TSprite
 	Field tapeRect:TRectangle
-	Field displaceTapes:TVec2D = new TVec2D.Init(9,8)
+	Field displaceTapes:TVec2D = new TVec2D.Init(9,7)
 
 
 	Method Init:int(x:float, y:float)
@@ -1231,7 +1231,7 @@ Type TgfxProgrammelist extends TPlannerList
 		genreHeight:+ GetSpriteFromRegistry("genres_entry"+1).area.GetH()
 		genreHeight:+ GetSpriteFromRegistry("genres_bottom").area.GetH()
 
-		genreRect		= new TRectangle.Init(Pos.GetX(), Pos.GetY(), genreWidth, genreHeight)
+		genreRect = new TRectangle.Init(Pos.GetX(), Pos.GetY(), genreWidth, genreHeight)
 
 		'init tapeRect - and right align it
 		self.Init(genreRect.GetX() - gfxTapeBackground.area.GetW() + 10, genreRect.GetY())
@@ -1262,7 +1262,7 @@ Type TgfxProgrammelist extends TPlannerList
 		If self.openState >=1
 			local currY:float = Pos.y
 			local oldAlpha:float = GetAlpha()
-			GetSpriteFromRegistry("genres_top").draw(Pos.x,currY)
+			GetSpriteFromRegistry("genres_top").draw(Pos.x, currY)
 			currY:+GetSpriteFromRegistry("genres_top").area.GetH()
 
 			For local genres:int = 0 To self.maxGenres-1 		'21 genres
