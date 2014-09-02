@@ -1,9 +1,9 @@
 Rem
 	====================================================================
-	THelper - various helper functions
+	TFadingState
 	====================================================================
 
-	Class containing various helper functions.
+	Class helper functions for simple faders.
 
 
 	====================================================================

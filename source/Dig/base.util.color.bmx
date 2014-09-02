@@ -189,6 +189,13 @@ Type TColor
 	End Method
 
 
+	'same as set()
+	Method setCls:TColor()
+		SetClsColor(self.r, self.g, self.b)
+		return self
+	End Method
+
+
 	Method setRGBA:TColor()
 		SetColor(self.r, self.g, self.b)
 		SetAlpha(self.a)
@@ -198,6 +205,13 @@ Type TColor
 
 	Method get:TColor()
 		GetColor(self.r, self.g, self.b)
+		self.a = GetAlpha()
+		return self
+	End Method
+
+
+	Method getFromClsColor:TColor()
+		GetClsColor(self.r, self.g, self.b)
 		self.a = GetAlpha()
 		return self
 	End Method

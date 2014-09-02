@@ -165,6 +165,14 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	Field infomercialTopicality:float = 1.0
 	Field infomercialMaxTopicality:float = 1.0
 
+	'by which factor do we cut the profit when send as infomercial
+	'compared to the profit a single ad would generate
+	'- for all
+	Global infomercialCutFactor:Float = 0.2
+	Global infomercialCutFactorDevModifier:Float = 1.0
+	'- for the individual base
+	'Field infomercialCutFactorModifier:Float = 1.0
+
 	Const TARGETGROUP_CHILDREN:Int = 1
 	Const TARGETGROUP_TEENAGER:Int = 2
 	Const TARGETGROUP_HOUSEWIFES:Int = 3
@@ -286,8 +294,11 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'so currently we end up with the price equal to
 		'the price of a successful contract / GetSpotCount()
 
-		'now cut this to 20%
-		result :* 0.2
+		'now cut this to the given infomercialCutFactor
+		result :* TAdContractBase.infomercialCutFactor
+		result :* TAdContractBase.infomercialCutFactorDevModifier
+		'cut again with the individual cut factor
+		'result :* base.infomercialCutFactorModifier
 
 		'less revenue with less topicality
 		if base.GetMaxInfomercialTopicality() > 0

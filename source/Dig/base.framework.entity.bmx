@@ -14,6 +14,7 @@ Type TStaticEntity
 
 	Method New()
 		name = "TStaticEntity"
+		GenerateID()
 	End Method
 
 
@@ -22,7 +23,11 @@ Type TStaticEntity
 		'assign a new id
 		id = LastID
 	End Method
-	
+
+
+	Method Remove:Int()
+		'cleanup
+	End Method
 
 
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0) abstract
@@ -33,13 +38,86 @@ Type TStaticEntity
 '	End Method
 
 
-	Method GetX:Float()
-		if parent then return parent.GetX() + area.GetX()
+	Method GetScreenArea:TRectangle()
+		return new TRectangle.Init(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight() )
 	End Method
 
 
-	Method GetY:Float()
-		if parent then return parent.GetY() + area.GetY()
+	Method GetScreenX:Float()
+		if parent
+			return parent.GetScreenX() + parent.GetChildX(self) + area.GetX()
+		else
+			return area.GetX()
+		endif
+	End Method
+
+
+	Method GetScreenY:Float()
+		if parent
+			return parent.GetScreenY() + parent.GetChildY(self) + area.GetY()
+		else
+			return area.GetY()
+		endif
+	End Method
+
+
+	Method GetScreenWidth:Float()
+		if parent
+			'parent has auto-size wont limit the entity, so use full size
+			if parent.area.GetW() < 0 then return Max(0, area.GetW())
+
+			'variant a:
+			'entity has auto-size -> cannot calculate occupied space
+			'just occupy all potential space
+			'if area.GetW() < 0 then return Max(0, parent.GetScreenWidth() - parent.GetChildX(self))
+
+			'variant b:
+			'just return 0 if we cannot calculate the size
+			if area.GetW() < 0 then return 0
+
+			'calculate available space of parent, or if enough left,
+			'occupy all space entity wants
+			local x:Int = parent.GetScreenX() + parent.GetChildX(self)
+			local x2:Int = Min(GetScreenX() + area.GetW(), parent.GetScreenX() + parent.GetScreenWidth())
+			return Max(0, (x2 - x))
+		endif
+
+		return Max(0, area.GetW())
+	End Method
+
+
+	Method GetScreenHeight:Float()
+		if parent
+			'parent has auto-size wont limit the entity, so use full size
+			if parent.area.GetH() < 0 then return Max(0, area.GetH())
+
+			'variant a:
+			'entity has auto-size -> cannot calculate occupied space
+			'just occupy all potential space
+			'if area.GetH() < 0 then return Max(0, parent.GetScreenHeight() - parent.GetChildY(self))
+
+			'variant b:
+			'just return 0 if we cannot calculate the size
+			if area.GetH() < 0 then return 0
+
+			'calculate available space of parent, or if enough left,
+			'occupy all space entity wants
+			local y:Int = parent.GetScreenY() + parent.GetChildY(self)
+			local y2:Int = Min(GetScreenY() + area.GetH(), parent.GetScreenY() + parent.GetScreenHeight())
+			return Max(0, (y2 - y))
+		endif
+
+		return Max(0, area.GetH())
+	End Method
+
+
+	Method GetChildX:Float(child:TStaticEntity)
+		return 0
+	End Method
+
+
+	Method GetChildY:Float(child:TStaticEntity)
+		return 0
 	End Method
 
 
@@ -55,6 +133,12 @@ Type TStaticEntity
 
 	Method IsVisible:int()
 		return visible
+	End Method
+
+
+	'returns if the size of the entity was given
+	Method HasSize:int()
+		return area.GetW() > 0 and area.GetH() > 0
 	End Method
 
 

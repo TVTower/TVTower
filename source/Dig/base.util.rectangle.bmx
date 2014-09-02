@@ -30,6 +30,16 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
+	'copies all values from the given rectangle
+	Method CopyFrom:Int(rect:TRectangle)
+		if not rect then return False
+
+		position.copyFrom(rect.position)
+		dimension.copyFrom(rect.dimension)
+		return True
+	End Method
+
+
 	'returns if the rect overlaps with the given one
 	Method Intersects:int(rect:TRectangle) {_exposeToLua}
 		return ( containsXY( rect.GetX(), rect.GetY() ) ..
@@ -38,7 +48,7 @@ Type TRectangle {_exposeToLua="selected"}
 	End Method
 
 
-	'returns a rectangle describing the intersection of the
+	'returns a new rectangle describing the intersection of the
 	'rectangle and the given one
 	'attention: returns NULL if there is no intersection
 	Method IntersectRect:TRectangle(rectB:TRectangle) {_exposeToLua}
@@ -51,6 +61,23 @@ Type TRectangle {_exposeToLua="selected"}
 
 		if iw > 0 AND ih > 0 then return intersect
 		return Null
+	End Method
+
+
+	'modifies the rectangle to contain the intersection of self and the
+	'given one
+	Method Intersect:TRectangle(rectB:TRectangle)
+		ix = max(GetX(), rectB.GetX())
+		iy = max(GetY(), rectB.GetY())
+		iw = min(GetX2(), rectB.GetX2() ) - ix
+		ih = min(GetY2(), rectB.GetY2() ) - iy
+
+		position.x = ix
+		position.y = iy
+		dimension.x = iw
+		dimension.y = ih
+
+		return self
 	End Method
 
 
