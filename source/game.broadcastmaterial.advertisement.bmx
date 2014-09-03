@@ -175,8 +175,13 @@ endrem
 			return TRUE
 		endif
 
+
+		'programme broadcasting outage = ad fails too!
+		If audienceResult.broadcastOutage
+			print "Sendeausfall"
+			setState(STATE_FAILED)
 		'ad failed (audience lower than needed)
-		If audienceResult.Audience.GetSum() < contract.GetMinAudience()
+		Else If audienceResult.Audience.GetSum() < contract.GetMinAudience()
 			setState(STATE_FAILED)
 			'TLogger.Log("TAdvertisement.BeginBroadcasting", "Player "+contract.owner+" sent FAILED spot "+contract.spotsSent+"/"+contract.GetSpotCount()+". Title: "+contract.GetTitle()+". Time: day "+(day-GetWorldTime().GetStartDay())+", "+hour+":"+minute+".", LOG_DEBUG)
 		'ad is ok

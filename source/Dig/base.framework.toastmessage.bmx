@@ -147,6 +147,8 @@ Type TToastMessageSpawnPoint extends TEntity
 	'=== CONFIGURATION ===
 	'vector describing spaces between two messages
 	Field spacerSize:TVec2D = New TVec2D.Init(0,5)
+	'render a background?
+	Field showBackground:Int = False
 
 	Global GROW_DOWN:int = 1
 	Global GROW_UP:int = -1
@@ -208,16 +210,24 @@ Type TToastMessageSpawnPoint extends TEntity
 	End Method
 
 
+	Method RenderBackground:Int(xOffset:Float=0, yOffset:Float=0)
+		local oldAlpha:Float = GetAlpha()
+		SetAlpha oldAlpha * 0.3
+		SetColor 255,0,0
+		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
+		SetAlpha oldAlpha
+		SetColor 255,255,255
+	End Method
+
+
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		'store old render config and adjust to our needs
 		local renderConfig:TRenderconfig = TRenderConfig.Push()
 		if HasSize() then SetViewPort(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
 
-		SetAlpha renderConfig.color.a * 0.3
-		SetColor 255,0,0
-		DrawRect(GetScreenX(), GetScreenY(), GetScreenWidth(), GetScreenHeight())
-		SetAlpha renderConfig.color.a
-		SetColor 255,255,255
+
+		if showBackground then RenderBackground(xOffset, yOffset)
+		
 		For local message:TToastMessage = EachIn messages
 			message.Render(xOffset, yOffset)
 		Next

@@ -119,6 +119,13 @@ Type TBroadcastManager
 		GetCurrentBroadcast().PlayersBroadcasts = currentBroadcastMaterial
 		'recalculate the players audience
 		ReComputePlayerAudience(playerID)
+
+		'inform audienceresult that this is a outage
+		local result:TAudienceResult = GetCurrentBroadcast().GetAudienceResult(playerID)
+		if result
+			result.broadcastOutage = True
+			GetCurrentBroadcast().SetAudienceResult(playerID, result)
+		endif
 	End Method	
 
 
@@ -397,7 +404,9 @@ Type TBroadcast
 			Attractions[playerId-1] = broadcastedMaterial.GetAudienceAttraction(GetWorldTime().GetDayHour(), broadcastedMaterial.currentBlockBroadcasting, lastMovieAttraction, lastNewsShowAttraction, True, true)
 		Else 'dann Sendeausfall! TODO: Chef muss böse werden!
 			TLogger.Log("TBroadcast.ComputeAndSetPlayersProgrammeAttraction()", "Player '" + playerId + "': Malfunction!", LOG_DEBUG)
-			GetAudienceResult(playerId).Title = "Malfunction!" 'Sendeausfall
+			'outage
+			GetAudienceResult(playerId).Title = "Malfunction!"
+			GetAudienceResult(playerId).broadcastOutage = True
 			Attractions[playerId-1] = CalculateMalfunction(lastMovieAttraction)
 		End If
 

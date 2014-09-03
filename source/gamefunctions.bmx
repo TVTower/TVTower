@@ -1991,25 +1991,30 @@ Type TInterface
 					If GetWorldTime().GetDayMinute() >= 5 And GetWorldTime().GetDayMinute() < 55
 						Local obj:TBroadcastMaterial = programmePlan.GetAdvertisement()
 						If TAdvertisement(obj)
-							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~n" + obj.GetTitle()+" (Mindestz.: " + TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())+")"
+							'outage before?
+							If not programmePlan.GetProgramme()
+								content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("INVALID_BY_BROADCAST_OUTAGE") +")"
+							Else
+								content :+ "~n ~n|b||color=100,150,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n" + obj.GetTitle()+" ("+ GetLocale("MIN_AUDIENCE") +": "+ TFunctions.convertValue(TAdvertisement(obj).contract.getMinAudience())+")"
+							EndIf
 						ElseIf TProgramme(obj)
-							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+":~nTrailer: " + obj.GetTitle()
+							content :+ "~n ~n|b|"+getLocale("NEXT_ADBLOCK")+":|/b|~n"+ GetLocale("TRAILER")+": " + obj.GetTitle()
 						Else
-							content :+ "~n ~n"+getLocale("NEXT_ADBLOCK")+": nicht gesetzt!"
+							content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_ADBLOCK")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
 						EndIf
 					ElseIf GetWorldTime().GetDayMinute()>=55 Or GetWorldTime().GetDayMinute()<5
 						Local obj:TBroadcastMaterial = programmePlan.GetProgramme()
 						If TProgramme(obj)
-							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~n"
+							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"
 							If TProgramme(obj) And TProgramme(obj).isSeries()
 								content :+ TProgramme(obj).licence.parentLicence.data.GetTitle() + ": " + obj.GetTitle() + " (" + getLocale("BLOCK") + " " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							Else
 								content :+ obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 							EndIf
 						ElseIf TAdvertisement(obj)
-							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+":~nDauerwerbesendung: " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
+							content :+ "~n ~n|b|"+getLocale("NEXT_PROGRAMME")+":|/b|~n"+ GetLocale("INFOMERCIAL")+": " + obj.GetTitle() + " (" + getLocale("BLOCK")+" " + programmePlan.GetProgrammeBlock() + "/" + obj.GetBlocks() + ")"
 						Else
-							content :+ "~n ~n"+getLocale("NEXT_PROGRAMME")+": nicht gesetzt!"
+							content :+ "~n ~n|b||color=200,100,100|"+getLocale("NEXT_PROGRAMME")+":|/color||/b|~n"+ GetLocale("NEXT_NOTHINGSET")
 						EndIf
 					EndIf
 				EndIf
