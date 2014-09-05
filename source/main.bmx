@@ -58,6 +58,7 @@ Import "game.exceptions.bmx"
 Import "game.broadcastmaterial.base.bmx"
 Import "game.broadcast.base.bmx"
 Import "game.player.finance.bmx"
+Import "game.player.boss.bmx"
 'Import "game.player.bmx"
 Import "game.stationmap.bmx"
 

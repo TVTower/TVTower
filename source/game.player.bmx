@@ -82,7 +82,8 @@ Type TPlayer {_exposeToLua="selected"}
 	Field channelname:String
 
 	'actual figure the player uses
-	Field Figure:TFigure									{_exposeToLua}
+	Field Figure:TFigure {_exposeToLua}
+	Field boss:TPlayerBoss {_exposeToLua}
 	'global used ID of the player
 	Field playerID:Int = 0
 	'the color used to colorize symbols and figures
@@ -91,14 +92,16 @@ Type TPlayer {_exposeToLua="selected"}
 	Field figurebase:Int = 0
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
+	Field PlayerKI:KI
+	Field CreditMaximum:Int	= 600000
+
+	'=== NEWS ABONNEMENTS ===
 	'abonnementlevels for the newsgenres
 	Field newsabonnements:Int[6]
 	'maximum abonnementlevel for this day
 	Field newsabonnementsDayMax:Int[] = [-1,-1,-1,-1,-1,-1]
 	'when was the level set
 	Field newsabonnementsSetTime:Int[6]
-	Field PlayerKI:KI
-	Field CreditMaximum:Int	= 600000
 
 
 	Method onLoad:int(triggerEvent:TEventBase)
@@ -184,6 +187,9 @@ Type TPlayer {_exposeToLua="selected"}
 		TPublicImage.Create(Player.playerID)
 		new TPlayerProgrammeCollection.Create(playerID)
 		new TPlayerProgrammePlan.Create(playerID)
+
+		'create a new boss for the player
+		GetPlayerBossCollection().Set(playerID, new TPlayerBoss)
 
 		Player.RecolorFigure(Player.color)
 

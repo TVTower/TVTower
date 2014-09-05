@@ -1090,41 +1090,55 @@ endrem
 		'=== BEGIN OF NEWSSHOW ===
 		If minute = 0
 			obj = GetNewsShow(day, hour)
+			local eventKey:String = "broadcasting.begin"
+
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				'inform news show that broadcasting started
 				'(which itself informs the broadcasted news)
 				obj.BeginBroadcasting(day, hour, minute, audienceResult)
 			EndIf
+			'inform others (eg. boss), "broadcastMaterial" could be null!
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 			
 		'=== END OF NEWSSHOW ===
 		ElseIf minute = 4
 			obj = GetNewsShow(day, hour)
+			local eventKey:String = "broadcasting.finish"
+
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				'inform news show that broadcasting started
 				'(which itself informs the broadcasted news)
 				obj.FinishBroadcasting(day, hour, minute, audienceResult)
 			EndIf
+			'inform others (eg. boss), "broadcastMaterial" could be null!
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
 			obj = GetProgramme(day, hour)
+			local eventKey:String = "broadcasting.begin"
 
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				'inform the object what happens (start or continuation)
 				If 1 = GetProgrammeBlock(day, hour)
 					obj.BeginBroadcasting(day, hour, minute, audienceResult)
+					'eventKey = "broadcasting.begin"
 				Else
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
+					eventKey = "broadcasting.continue"
 				EndIf
 			EndIf
+			'inform others (eg. boss), "broadcastMaterial" could be null!
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== END/BREAK OF PROGRAMME ===
 		'call-in shows/quiz - generate income
 		ElseIf minute = 54
 			obj = GetProgramme(day, hour)
+			local eventKey:String = "broadcasting.finish"
 
 			'inform  object that it gets broadcasted
 			If obj
@@ -1135,15 +1149,20 @@ endrem
 						If TProgramme(obj)
 							RecalculatePlannedProgramme(TProgramme(obj), -1, hour+1)
 						EndIf
+						'eventKey = "broadcasting.finish"
 					EndIf
 				Else
 					obj.BreakBroadcasting(day, hour, minute, audienceResult)
+					eventKey = "broadcasting.break"
 				EndIf
 			EndIf
-
+			'inform others (eg. boss), "broadcastMaterial" could be null!
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
 			obj = GetAdvertisement(day, hour)
+			local eventKey:String = "broadcasting.begin"
 
 			'inform  object that it gets broadcasted
 			If obj
@@ -1162,25 +1181,34 @@ endrem
 						'contract is still stored within advertisements (until they get deleted)
 						GetPlayerProgrammeCollectionCollection().Get(owner).RemoveAdContract(TAdvertisement(obj).contract)
 					EndIf
+					'eventKey = "broadcasting.begin"
 				Else
 					obj.ContinueBroadcasting(day, hour, minute, audienceResult)
+					eventKey = "broadcasting.continue"
 				EndIf
 			EndIf
+			'inform others (eg. boss), "broadcastMaterial" could be null!
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== END OF COMMERCIAL BREAK ===
 		'ads end - so trailers can set their "ok"
 		ElseIf minute = 59
 			obj = GetAdvertisement(day, hour)
+			local eventKey:String = "broadcasting.finish"
 
 			'inform  object that it gets broadcasted
 			If obj
 				Local audienceResult:TAudienceResult = GetBroadcastManager().GetAudienceResult(owner)
 				If obj.GetBlocks() = GetAdvertisementBlock(day, hour)
 					obj.FinishBroadcasting(day, hour, minute, audienceResult)
+					'eventKey = "broadcasting.finish"
 				Else
 					obj.BreakBroadcasting(day, hour, minute, audienceResult)
+					eventKey = "broadcasting.break"
 				EndIf
 			EndIf
+			'inform others (eg. boss), "broadcastMaterial" could be null!
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 		EndIf
 	End Method
 
