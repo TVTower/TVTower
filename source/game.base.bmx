@@ -671,6 +671,9 @@ Type TGame {_exposeToLua="selected"}
 		'for debug purposes we need to adjust more than just
 		'the playerID.
 		GetPlayerCollection().playerID = ID
+		'also set this information for the boss collection (avoids
+		'circular references)
+		GetPlayerBossCollection().playerID = ID
 
 		'get currently shown screen of that player
 		if GetPlayer().figure.inRoom

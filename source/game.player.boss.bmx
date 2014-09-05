@@ -3,10 +3,15 @@ SuperStrict
 Import "game.player.finance.bmx"
 'to recognize players broadcasts in events
 Import "game.player.programmeplan.bmx"
+'to be able to send out toastmessages
+Import "game.toastmessage.bmx"
 
 
 Type TPlayerBossCollection
 	Field bosses:TPlayerBoss[4]
+	'playerID of player who sits in front of the screen
+	'adjust this TOO when switching players
+	Field playerID:Int = 1
 	Global _instance:TPlayerBossCollection
 
 
@@ -17,6 +22,7 @@ Type TPlayerBossCollection
 
 
 	Method Set:int(id:int=-1, boss:TPlayerBoss)
+		If id = -1 Then id = playerID
 		if id <= 0 Then return False
 
 		If bosses.length < id Then bosses = bosses[..id+1]
@@ -27,7 +33,8 @@ Type TPlayerBossCollection
 	End Method
 
 
-	Method Get:TPlayerBoss(id:Int)
+	Method Get:TPlayerBoss(id:Int=-1)
+		If id = -1 Then id = playerID
 		If Not IsBoss(id) Then Return Null
 
 		Return bosses[id-1]
@@ -106,14 +113,23 @@ Type TPlayerBoss
 		if not programmePlan or programmePlan.owner <> playerID then return False
 
 		local broadcastMaterial:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("broadcastMaterial"))
-		'example:
+
+
 		rem
-		if broadcastMaterial
-			print "Boss: ohh you sent: " + broadcastMaterial.GetTitle()
-		else
-			print "Boss: Malfunction ???!!"
-		endif
-		endrem
+		'toastmessage example
+		'only send out messages for the active player!
+		if self <> GetPlayerBossCollection().Get() then return False
+
+		local toast:TGameToastMessage = new TGameToastMessage
+		toast.SetMessageType(0)
+		toast.SetCaption("Boss: Was zum Teufel?")
+		toast.SetText("Sendeausfall ?!")
+		'close after 5 ingame minutes
+		toast.SetCloseAtWorldTime(GetWorldTime().GetTimeGone() + 300)
+		'or close after 10 seconds
+		toast.SetLifeTime(10)
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		end rem
 	End Method
 End Type
 

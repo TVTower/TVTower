@@ -429,10 +429,11 @@ Type TNetworkHelper
 		if figure.fromDoor then obj.setInt(10, figure.fromDoor.id)
 		Network.BroadcastNetworkObject( obj )
 	End Method
+	
 
 	Method ReceiveFigurePosition( obj:TNetworkObject )
 		Local figureID:Int = obj.getInt(1)
-		local figure:TFigure = TFigure.getByID( figureID )
+		local figure:TFigure = GetFigureCollection().Get( figureID )
 		if figure = null then return
 
 		local posX:Float = obj.getFloat(2)

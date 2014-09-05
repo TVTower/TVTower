@@ -9,8 +9,7 @@
 
 Type TFigureCollection
 	Field list:TList = CreateList()
-	Field nextID:int = 1
-
+	Field lastFigureID:int = 0
 	Global _eventsRegistered:int= FALSE
 	Global _instance:TFigureCollection
 
@@ -28,6 +27,12 @@ Type TFigureCollection
 		if not _instance then _instance = new TFigureCollection
 		return _instance
 	End Function
+
+
+	Method GenerateID:int()
+		lastFigureID :+1
+		return lastFigureID
+	End Method
 
 
 	Method Get:TFigure(figureID:int)
@@ -54,12 +59,6 @@ Type TFigureCollection
 	Method Remove:int(figure:TFigure)
 		List.Remove(figure)
 		return TRUE
-	End Method
-
-
-	Method GenerateID:int()
-		nextID :+1
-		return (nextID-1)
 	End Method
 
 
@@ -97,6 +96,11 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Field target:TVec2D	= Null {_exposeToLua}
 	'targetting a special object (door, hotspot) ?
 	Field targetObj:TStaticEntity
+
+	Field figureID:Int = 0
+	'does the figure accept manual (AI or user) ChangeTarget-commands?
+	Field controllable:Int = True
+
 	'active as soon as figure leaves/enters rooms
 	Field isChangingRoom:int = FALSE
 	'the door used (there might be multiple)
@@ -104,19 +108,19 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	'coming from room
 	Field fromRoom:TRoom = Null
 	Field inRoom:TRoom = Null
-	Field id:Int = 0
 
 	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(25000)
 	'network sync position timer
 	Field SyncTimer:TIntervalTimer = TIntervalTimer.Create(2500)
 
-	Field ControlledByID:Int		= -1
-	Field alreadydrawn:Int			= 0 			{nosave}
-	Field ParentPlayerID:int		= 0
+	Field ControlledByID:Int = -1
+	Field alreadyDrawn:Int = 0 			{nosave}
+	Field ParentPlayerID:int = 0
 	Field SoundSource:TFigureSoundSource = TFigureSoundSource.Create(Self) {nosave}
-	Field moveable:int				= TRUE			'whether this figure can move or not (eg. for debugging)
-	Field greetOthers:int			= TRUE
-	Field useAbsolutePosition:int	= FALSE
+	'whether this figure can move or not (eg. for debugging)
+	Field moveable:int = TRUE
+	Field greetOthers:int = TRUE
+	Field useAbsolutePosition:int = FALSE
 	'when was the last greet to another figure?
 	Field lastGreetTime:int	= 0
 	'what was the last type of greet?
@@ -127,8 +131,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	'how long to wait intil I greet the same person again
 	Global greetEvery:int = 8000
 
-	Global LastID:Int				= 0
-	Global _initDone:int			= FALSE
+	Global _initDone:int = FALSE
 
 
 	Method Create:TFigure(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
@@ -149,7 +152,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		Self.ControlledByID	= ControlledByID
 
 		GetFigureCollection().Add(self)
-		self.id = GetFigureCollection().GenerateID()
+
+		self.figureID = GetFigureCollection().GenerateID()
 
 		if not _initdone
 			_initDone = TRUE
@@ -211,10 +215,15 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	'return if a figure could change targets or receive commands
+	Method IsControllable:Int()
+		return controllable
+	End Method
+
+
 	Method IsActivePlayer:Int()
 		return (parentPlayerID = GetPlayerCollection().playerID)
 	End Method
-
 
 
 	Method FigureMovement:int()
@@ -614,10 +623,14 @@ endrem
 	End Method
 
 
-	Method SendToDoor:Int(door:TRoomDoor)
+	Method SendToDoor:Int(door:TRoomDoor, forceSend:Int=False)
  		If not door then return FALSE
 
-		ChangeTarget(door.area.GetX() + 5, GetBuilding().area.GetY() + GetBuilding().getfloorY(door.area.GetY()) - 5)
+		If forceSend
+			ForceChangeTarget(door.area.GetX() + 5, GetBuilding().area.GetY() + GetBuilding().getfloorY(door.area.GetY()) - 5)
+		Else
+			ChangeTarget(door.area.GetX() + 5, GetBuilding().area.GetY() + GetBuilding().getfloorY(door.area.GetY()) - 5)
+		EndIf
 	End Method
 
 
@@ -650,14 +663,6 @@ endrem
 	End Method
 
 
-	Function GetByID:TFigure(id:Int)
-		For Local Figure:TFigure = EachIn GetFigureCollection().List
-			If Figure.id = id Then Return Figure
-		Next
-		Return Null
-	End Function
-
-
 	Method CallElevator:Int()
 		'ego nur ich selbst
 		'if not self.parentPlayer or self.parentPlayer.playerID <> 1 then return false
@@ -680,17 +685,26 @@ endrem
 	End Method
 
 
-	Method ChangeTarget:Int(x:Int=-1, y:Int=-1) {_exposeToLua}
-		'if player is in elevator dont accept changes
-		If GetBuilding().Elevator.passengers.Contains(Self) Then Return False
+	'change the target of the figure
+	'@forceChange   defines wether the target could change target
+	'               even when not controllable
+	Method _ChangeTarget:Int(x:Int=-1, y:Int=-1, forceChange:Int=False)
+		if not forceChange
+			'is controlling allowed (eg. figure MUST go to a specific target)
+			If not IsControllable() then Return False
 
+			'if player is in elevator dont accept changes
+			If GetBuilding().Elevator.passengers.Contains(Self) Then Return False
+		EndIf
+		
 		'only change target if it's your figure or you are game leader
 		If self <> GetPlayerCollection().Get().figure And Not Game.isGameLeader() Then Return False
 
-		'reset potential target object, they get refilled if user
-		'clicks on one in a later stage
-		targetObj = null
 
+		'=== CALCULATE NEW TARGET/TARGET-OBJECT ===
+		local newTargetObj:TStaticEntity = Null
+		local newTarget:TVec2D = Null
+	
 		'only a partial target was given
 		if x=-1 or y=-1
 			'change current target
@@ -708,27 +722,43 @@ endrem
 		If GetBuilding().GetFloor(y) < 0 Or GetBuilding().GetFloor(y) > 13 Then Return False
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		target = new TVec2D.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
+		newTarget = new TVec2D.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
-		targetObj = TRoomDoor.GetByCoord(target.x, GetBuilding().area.GetY() + target.y)
-		If targetObj then target.setX( targetObj.area.GetX() + ceil(targetObj.area.GetW()/2))
+		newTargetObj = TRoomDoor.GetByCoord(newTarget.x, GetBuilding().area.GetY() + newTarget.y)
+		If newTargetObj then newTarget.setX(newTargetObj.area.GetX() + ceil(newTargetObj.area.GetW()/2))
 
 		'limit target coordinates
-		'on the base floor we can walk outside the buildng, so just check right side
-		'target.y contains the floorY so we use "y" which holds clicked floor
+		'on the base floor we can walk outside the building, so just
+		'check right side
+		'target.y contains the floorY so we use "y" which holds clicked
+		'floor
 		local rightLimit:int = 603' - ceil(rect.GetW()/2) 'subtract half a figure
 		local leftLimit:int = 200' + ceil(rect.GetW()/2) 'add half a figure
 
 		if GetBuilding().GetFloor(y) = 0
-			If Floor(target.x) >= rightLimit Then target.X = rightLimit
+			If Floor(newTarget.x) >= rightLimit Then newTarget.X = rightLimit
 		else
-			If Floor(target.x) <= leftLimit Then target.X = leftLimit
-			If Floor(target.x) >= rightLimit Then target.X = rightLimit
+			If Floor(newTarget.x) <= leftLimit Then newTarget.X = leftLimit
+			If Floor(newTarget.x) >= rightLimit Then newTarget.X = rightLimit
 		endif
 
 		local targetRoom:TRoom
-		if TRoomDoor(targetObj) then targetRoom = TRoomDoor(targetObj).room 
+		if TRoomDoor(newTargetObj) then targetRoom = TRoomDoor(newTargetObj).room 
+
+
+		'=== CHECK IF ALREADY THERE ===
+		'check if figure is already at this target
+		if newTargetObj and newTargetObj = targetObj then return False
+		if newTarget and target and newTarget.isSame(target) then return False
+		'or if already in this room
+		if targetRoom and targetRoom = inRoom then return False
+
+
+		'=== SET NEW TARGET ===
+		'new target - so go to it
+		target = newTarget.Copy()
+		targetObj = newTargetObj
 
 		'if still in a room, but targetting another one ... leave first
 		'this is needed as computer players do not "leave a room", they
@@ -739,6 +769,20 @@ endrem
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )
 
 		return TRUE
+	End Method
+
+
+	'forcefully change the target, even if not controllable
+	'eg. to send it to a boss' room
+	'do not expose this to AI - as it else could escape another forced
+	'target change
+	Method ForceChangeTarget:Int(x:Int=-1, y:Int=-1)
+		return _ChangeTarget(x,y, True)
+	End Method
+	
+
+	Method ChangeTarget:Int(x:Int=-1, y:Int=-1) {_exposeToLua}
+		return _ChangeTarget(x,y, False)
 	End Method
 
 

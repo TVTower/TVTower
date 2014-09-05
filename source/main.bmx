@@ -382,8 +382,10 @@ Type TApp
 					EndIf
 
 					if KEYMANAGER.IsHit(KEY_Y)
-						GetWorld().Weather.SetPressure(-14)
-						GetWorld().Weather.SetTemperature(-10)
+						print "send to chef:"
+						GetPlayerCollection().Get().figure.SendToDoor( TRoomDoor.GetByDetails("chief", 1) )
+'						GetWorld().Weather.SetPressure(-14)
+'						GetWorld().Weather.SetTemperature(-10)
 					endif
 
 				
@@ -1680,6 +1682,7 @@ Type TScreen_GameSettings Extends TGameScreen
 					If Game.networkgame
 						If Game.networkgame Then Network.DisconnectFromServer()
 						GetPlayerCollection().playerID = 1
+						GetPlayerBossCollection().playerID = 1
 						Game.SetGamestate(TGame.STATE_NETWORKLOBBY)
 						guiAnnounce.SetChecked(False)
 						Network.StopAnnouncing()
