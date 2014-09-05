@@ -98,7 +98,7 @@ Include "game.base.bmx"
 
 '===== Globals =====
 Global VersionDate:String = LoadText("incbin::source/version.txt")
-Global VersionString:String = "version of " + VersionDate
+Global VersionString:String = "ALPHA version ~q" + VersionDate+"~q"
 Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global App:TApp = Null
 Global Game:TGame
@@ -115,7 +115,7 @@ Global RURC:TRegistryUnloadedResourceCollection = TRegistryUnloadedResourceColle
 
 
 '==== Initialize ====
-AppTitle = "TVTower: " + VersionString + " " + CopyrightString
+AppTitle = "TVTower: " + VersionString
 TLogger.Log("CORE", "Starting TVTower, "+VersionString+".", LOG_INFO )
 
 '===== SETUP LOGGER FILTER =====
@@ -383,7 +383,7 @@ Type TApp
 
 					if KEYMANAGER.IsHit(KEY_Y)
 						print "send to chef:"
-						GetPlayerCollection().Get().figure.SendToDoor( TRoomDoor.GetByDetails("chief", 1) )
+						GetPlayerCollection().Get().figure.SendToDoor( TRoomDoor.GetByDetails("chief", 1), True )
 '						GetWorld().Weather.SetPressure(-14)
 '						GetWorld().Weather.SetTemperature(-10)
 					endif

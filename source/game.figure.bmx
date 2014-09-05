@@ -512,7 +512,7 @@ endrem
 		'maybe someone is interested in this information
 		EventManager.triggerEvent( TEventSimple.Create("room.kickFigure", new TData.Add("figure", kickFigure).Add("door", door), room ) )
 
-		kickFigure.LeaveRoom()
+		kickFigure.LeaveRoom(True)
 		Return True
 	End Method
 
@@ -530,7 +530,7 @@ endrem
 		if not room and door then room = door.room
 
 		'if already in another room, leave that first
-		if inRoom then LeaveRoom()
+		if inRoom then LeaveRoom(True)
 
 		'figure is already in that room - so just enter
 		if room.isOccupant(self) then return TRUE
@@ -586,19 +586,27 @@ endrem
 
 
 	'command to leave a room - "onLeaveRoom" is called when successful
-	Method LeaveRoom:Int()
+	Method LeaveRoom:Int(force:Int=False)
 		'skip command if in no room or already leaving
 		if not inroom or isChangingRoom then return True
 
+		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
-		if not inroom.CanFigureLeave(self) then return False
+		if not force and not inroom.CanFigureLeave(self) then return False
 
 		'ask if somebody is against leaving that room
+		'but ignore the result if figure is forced to leave
 		local event:TEventSimple = TEventSimple.Create("figure.onTryLeaveRoom", null , self, inroom )
 		EventManager.triggerEvent(event)
 		'stop leaving
-		if event.IsVeto() then return False
+		if not force and event.IsVeto() then return False
 
+		'inform that a figure forcefully leaves a room (so GUI or so can
+		'get cleared)
+		if force then EventManager.triggerEvent(TEventSimple.Create("figure.onForcefullyLeaveRoom", null , self, inroom))
+
+
+		'=== LEAVE ===
 		'leave is allowed - set time of start
 		isChangingRoom = Time.GetTimeGone()
 
@@ -762,8 +770,8 @@ endrem
 
 		'if still in a room, but targetting another one ... leave first
 		'this is needed as computer players do not "leave a room", they
-		'just change targets 
-		If targetRoom and targetRoom <> inRoom Then LeaveRoom()
+		'just change targets
+		If targetRoom and targetRoom <> inRoom Then LeaveRoom(forceChange)
 
 		'emit an event
 		EventManager.triggerEvent( TEventSimple.Create("figure.onChangeTarget", self ) )

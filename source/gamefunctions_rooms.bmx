@@ -1255,10 +1255,16 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'for all office rooms - register if someone goes into the programmeplanner
 		local screen:TScreen = ScreenCollection.GetScreen("screen_office_pplanning")
+
 		'player enters screen - reset the guilists
 		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen)
 		'player leaves screen - only without dragged blocks
 		EventManager.registerListenerFunction("screen.OnLeave", onLeaveProgrammePlannerScreen, screen)
+		'player leaves office forcefully - clean up
+		For local i:int = 1 to 4
+			local room:TRoom = GetRoomCollection().GetFirstByDetails("office", i)
+			EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom, null, room)
+		Next
 
 		'to react on changes in the programmePlan (eg. contract finished)
 		EventManager.registerListenerFunction("programmeplan.addObject", onChangeProgrammePlan)
@@ -1420,6 +1426,28 @@ Type RoomHandler_Office extends TRoomHandler
 		endif
 
 		return TRUE
+	End Function
+
+
+	'called as soon as a players figure is forced to leave a room
+	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+
+
+		'=== PROGRAMMEPLANNER ===
+		'close lists
+		PPprogrammeList.SetOpen(0)
+		PPcontractList.SetOpen(0)
+
+		'abort handling dragged elements
+		If draggedGuiProgrammePlanElement then draggedGuiProgrammePlanElement.dropBackToOrigin()
+		For local obj:TGUIProgrammePlanElement = eachIn GuiManager.ListDragged
+			obj.dropBackToOrigin()
+		Next
+
+		'=== STATION MAP ===
+		'---
 	End Function
 
 
@@ -3058,6 +3086,9 @@ Type RoomHandler_Archive extends TRoomHandler
 			EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, room )
 			EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom, null,room )
 			EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, room )
+
+			'player leaves office forcefully - clean up
+			EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom, null, room)
 		Next
 
 		'handle savegame loading (remove old gui elements)
@@ -3114,7 +3145,21 @@ Type RoomHandler_Archive extends TRoomHandler
 		For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).suitcaseProgrammeLicences
 			plan.RemoveProgrammeInstancesByLicence(licence, true)
 		Next
+
+		'close the list if open
+		'programmeList.SetOpen(0)
+		
 		return TRUE
+	End Function
+
+
+	'called as soon as a players figure is forced to leave the room
+	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+
+		'abort handling dragged elements
+		If draggedGuiProgrammeLicence then draggedGuiProgrammeLicence.dropBackToOrigin()
 	End Function
 
 
@@ -3441,6 +3486,8 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'figure leaves room - only without dragged blocks
 		EventManager.registerListenerFunction("figure.onTryLeaveRoom", onTryLeaveRoom, null, room)
 		EventManager.registerListenerFunction("room.onLeave", onLeaveRoom, room)
+		'player leaves movieagency forcefully - drop back potentially dragged elements
+		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom, null, room)
 
 		super._RegisterScreenHandler( onUpdateMovieAgency, onDrawMovieAgency, ScreenCollection.GetScreen("screen_movieagency"))
 		super._RegisterScreenHandler( onUpdateMovieAuction, onDrawMovieAuction, ScreenCollection.GetScreen("screen_movieauction"))
@@ -3512,6 +3559,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		return TRUE
 	End Function
 
+
+	'called as soon as a players figure is forced to leave a room
+	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+
+		'abort handling dragged elements
+		If draggedGuiProgrammeLicence then draggedGuiProgrammeLicence.dropBackToOrigin()
+	End Function
 
 	'===================================
 	'Movie Agency: common TFunctions
@@ -4131,6 +4187,12 @@ Type RoomHandler_News extends TRoomHandler
 		'also we want to interrupt leaving a room with dragged items
 		EventManager.registerListenerFunction("screen.OnLeave", onLeaveNewsPlannerScreen, screen)
 
+		'player leaves newsagency forcefully - drop back potentially dragged elements
+		For local i:int = 1 to 4
+			local room:TRoom = GetRoomCollection().GetFirstByDetails("news", i)
+			EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom, null, room)
+		Next
+
 		super._RegisterScreenHandler( onUpdateNews, onDrawNews, ScreenCollection.GetScreen("screen_news") )
 		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_news_newsplanning") )
 
@@ -4151,6 +4213,16 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
+	'called as soon as a players figure is forced to leave the room
+	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+
+		'abort handling dragged elements
+		If draggedGuiNews then draggedGuiNews.dropBackToOrigin()
+	End Function
+
+
 	'===================================
 	'News: room screen
 	'===================================
@@ -4166,7 +4238,7 @@ Type RoomHandler_News extends TRoomHandler
 
 	Function onUpdateNews:int( triggerEvent:TEventBase )
 		'local screen:TScreen	= TScreen(triggerEvent._sender)
-		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
+		local room:TRoom = TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
 		'store current room for later access (in guiobjects)
@@ -4740,8 +4812,9 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		EventManager.registerListenerFunction( "programmecollection.addAdContract", onChangeProgrammeCollection )
 		EventManager.registerListenerFunction( "programmecollection.removeAdContract", onChangeProgrammeCollection )
 
+		local room:TRoom = GetRoomCollection().GetFirstByDetails("adagency")
 		'figure enters room - reset guilists and refill slots
-		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, GetRoomCollection().GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "room.onEnter", onEnterRoom, room )
 
 		'2014/05/04 (Ronny): commented out, currently no longer in use
 		'begin drop - to intercept if dropping to wrong list
@@ -4756,8 +4829,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'we want to know if we hover a specific block - to show a datasheet
 		EventManager.registerListenerFunction( "guiGameObject.OnMouseOver", onMouseOverContract, "TGuiAdContract" )
 		'figure leaves room - only without dragged blocks
-		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom, null, GetRoomCollection().GetFirstByDetails("adagency") )
-		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, GetRoomCollection().GetFirstByDetails("adagency") )
+		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom, null, room )
+		EventManager.registerListenerFunction( "room.onLeave", onLeaveRoom, room )
+		'player leaves agency forcefully - clean up
+		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom, null, room)
+
 		'this lists want to delete the item if a right mouse click happens...
 		EventManager.registerListenerFunction("guiobject.onClick", onClickContract, "TGuiAdContract")
 
@@ -4851,6 +4927,31 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		Next
 
 		return TRUE
+	End Function
+
+
+	'called as soon as a players figure is forced to leave the room
+	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+
+		if draggedGuiAdContract then draggedGuiAdContract.dropBackToOrigin()
+
+		'instead of leaving the room and accidentially adding contracts
+		'we delete all unsigned contracts from the list
+		GetPlayerProgrammeCollectionCollection().Get(GetPlayer().playerID).suitcaseAdContracts.Clear()
+
+
+		'remove and recreate all (so they get the correct visual style)
+		GetInstance().RemoveAllGuiElements()
+		GetInstance().RefreshGuiElements()
+
+		'For local obj:TGuiAdContract = eachIn GuiManager.ListDragged
+		'	obj.dropBackToOrigin()
+		'Next
+		'style them again correctly
+		'change look
+		'block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
 	End Function
 
 
@@ -5453,7 +5554,11 @@ Type RoomHandler_Roomboard extends TRoomHandler
 	Function Init()
 		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("roomboard"))
 
-		EventManager.registerListenerFunction( "figure.onTryLeaveRoom", onTryLeaveRoom, null, GetRoomCollection().GetFirstByDetails("roomboard"))
+		local room:TRoom = GetRoomCollection().GetFirstByDetails("roomboard")
+		EventManager.registerListenerFunction("figure.onTryLeaveRoom", onTryLeaveRoom, null, room)
+
+		'player leaves planner forcefully - clean up
+		EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom, null, room)
 	End Function
 
 
@@ -5474,6 +5579,17 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 		return TRUE
 	End Function
+
+
+	'called as soon as a players figure is forced to leave the room
+	Function onForcefullyLeaveRoom:int( triggerEvent:TEventBase )
+		'only handle the players figure
+		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
+
+		TRoomDoorSign.DropBackDraggedSigns()
+		TRoomDoorSign.UpdateAll(False)
+	End Function
+
 	
 
 	Function onDraw:int( triggerEvent:TEventBase )
