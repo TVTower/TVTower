@@ -114,7 +114,7 @@ Type TEventManager
 	End Method
 
 
-	'remove an event from a trigger
+	'remove an event listener from a trigger
 	Method unregisterListener(trigger:String, eventListener:TEventListenerBase)
 		Local listeners:TList = TList(_listeners.ValueForKey( Lower(trigger) ))
 		If listeners <> Null Then listeners.remove(eventListener)

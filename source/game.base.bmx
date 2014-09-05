@@ -230,10 +230,6 @@ Type TGame {_exposeToLua="selected"}
 		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
 		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
 
-		'interface needs tooltip definition done
-		Interface = TInterface.Create()
-
-
 		'register ai player events - but only for game leader
 		If Game.isGameLeader()
 			EventManager.registerListenerFunction("Game.OnMinute", GameEvents.PlayersOnMinute)
@@ -413,7 +409,7 @@ Type TGame {_exposeToLua="selected"}
 		'=== SETUP INTERFACE ===
 		
 		'switch active TV channel to player
-		Interface.ShowChannel = GetPlayerCollection().playerID
+		GetInGameInterface().ShowChannel = GetPlayerCollection().playerID
 	End Method
 
 

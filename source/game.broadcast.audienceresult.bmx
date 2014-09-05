@@ -14,7 +14,7 @@ Type TAudienceResultBase
 	Field Hour:Int
 	'Der Titel des Programmes
 	Field Title:String
-	'was it a outage?
+	'was it an outage (programme was not sent)?
 	Field broadcastOutage:Int = False
 	'previous audience result (so advertisement sees who watched programme)
 	Field previousAudienceResult:TAudienceResultBase = Null

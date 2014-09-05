@@ -186,7 +186,7 @@ Type TInGameScreen extends TScreen
 
 	Method DrawOverlay:int(tweenValue:float)
 		'TProfiler.Enter("Draw-Interface")
-		Interface.Draw()
+		GetInGameInterface().Draw()
 		'TProfiler.Leave("Draw-Interface")
 	End Method
 
@@ -211,7 +211,7 @@ Type TInGameScreen extends TScreen
 
 		If Not GetWorldTime().IsPaused()
 			Game.Update(deltaTime)
-			Interface.Update(deltaTime)
+			GetInGameInterface().Update(deltaTime)
 '			If GetPlayerCollection().Get().Figure.inRoom = Null Then Building.Update(deltaTime)
 			GetBuilding().Elevator.Update()
 

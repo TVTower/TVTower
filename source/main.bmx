@@ -39,6 +39,7 @@ Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"
 Import "basefunctions_screens.bmx"
 Import "game.world.bmx"
+Import "game.toastmessage.bmx"
 
 ?Linux
 Import "external/bufferedglmax2d/bufferedglmax2d.bmx"
@@ -74,6 +75,8 @@ Include "game.player.bmx"
 '		- base class For buttons And extension newsbutton
 Include "gamefunctions.bmx"
 
+Include "game.ingameinterface.bmx"
+
 Include "gamefunctions_betty.bmx"
 Include "gamefunctions_screens.bmx"
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
@@ -97,7 +100,6 @@ Global VersionDate:String = LoadText("incbin::source/version.txt")
 Global VersionString:String = "version of " + VersionDate
 Global CopyrightString:String = "by Ronny Otto & Manuel Vögele"
 Global App:TApp = Null
-Global Interface:TInterface
 Global Game:TGame
 Global InGame_Chat:TGUIChat
 Global PlayerDetailsTimer:Int = 0
@@ -424,15 +426,19 @@ Type TApp
 
 				'send terrorist to a random room
 				If KEYMANAGER.IsHit(KEY_T) and not Game.networkGame
-					Global whichTerrorist:int = 1
-					whichTerrorist = 1 - whichTerrorist
+					If KEYMANAGER.IsDown(KEY_LSHIFT) Or KEYMANAGER.IsDown(KEY_RSHIFT)
+						GenerateRandomToast()
+					Else
+						Global whichTerrorist:int = 1
+						whichTerrorist = 1 - whichTerrorist
 
-					local targetRoom:TRoom
-					Repeat
-						targetRoom = GetRoomCollection().GetRandom()
-					until targetRoom.name <> "building"
-					
-					Game.terrorists[whichTerrorist].SetDeliverToRoom( targetRoom )
+						local targetRoom:TRoom
+						Repeat
+							targetRoom = GetRoomCollection().GetRandom()
+						until targetRoom.name <> "building"
+						
+						Game.terrorists[whichTerrorist].SetDeliverToRoom( targetRoom )
+					EndIf
 				EndIf
 
 				If Game.isGameLeader()
@@ -496,6 +502,35 @@ Type TApp
 		TProfiler.Leave("Update")
 	End Function
 
+
+
+	Function GenerateRandomToast()
+			local toast:TGameToastMessage = new TGameToastMessage
+			toast.SetLifeTime( Rand(10000,15000)/1000.0 )
+			toast.SetMessageType(rand(0,3))
+			toast.SetPriority(rand(0,10))
+			toast.SetCaption("Testnachricht" + Millisecs())
+			toast.SetText("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam")
+
+			if rand(0,1) = 1
+				toast.SetCaption("Der Chef will Dich sehen!")
+				toast.SetLifeTime(-1)
+				'close in 1 worldTime minute
+				toast.SetCloseAtWorldTime( GetWorldTime().GetTimeGone() + rand(60,120))
+			endif
+
+			Select rand(0,3)
+				case 0
+					GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+				case 1
+					GetToastMessageCollection().AddMessage(toast, "TOPRIGHT")
+				case 2
+					GetToastMessageCollection().AddMessage(toast, "BOTTOMLEFT")
+				case 3
+					GetToastMessageCollection().AddMessage(toast, "BOTTOMRIGHT")
+			EndSelect
+	End Function
+	
 
 	Function Render:Int()
 		TProfiler.Enter("Draw")
@@ -2515,7 +2550,7 @@ Type GameEvents
 		If playerID = -1 Or Not player Then Return False
 
 		If player.isAI() Then player.PlayerKI.CallOnMoneyChanged()
-		If player.isActivePlayer() Then Interface.BottomImgDirty = True
+		If player.isActivePlayer() Then GetInGameInterface().BottomImgDirty = True
 	End Function
 
 
@@ -2621,7 +2656,7 @@ Type GameEvents
 
 
 		'=== REFRESH INTERFACE IF NEEDED ===
-		If minute = 5 Or minute = 55 Or minute = 0 Then Interface.BottomImgDirty = True
+		If minute = 5 Or minute = 55 Or minute = 0 Then GetInGameInterface().BottomImgDirty = True
 
 
 		'=== UPDATE STATIONMAPS ===

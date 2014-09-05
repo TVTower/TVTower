@@ -150,8 +150,8 @@ Type TToastMessageSpawnPoint extends TEntity
 	'render a background?
 	Field showBackground:Int = False
 
-	Global GROW_DOWN:int = 1
-	Global GROW_UP:int = -1
+	Global GROW_DOWN:int = 0
+	Global GROW_UP:int = 1
 
 
 	'add a message after others
@@ -186,6 +186,12 @@ Type TToastMessageSpawnPoint extends TEntity
 	End Method
 
 
+	'override to allow alignment
+	Method GetChildX:Float(child:TStaticEntity)
+		return alignment.GetX() * (GetScreenWidth() - child.area.GetW())
+	End Method
+
+
 	'override to displace if there are other entities
 	Method GetChildY:Float(child:TStaticEntity)
 		if not child then return Null
@@ -195,7 +201,10 @@ Type TToastMessageSpawnPoint extends TEntity
 		if alignment.y = GROW_UP then result :+ area.GetH()
 
 		For local message:TToastMessage = EachIn messages
-			if message = child then return result
+			if message = child
+				if alignment.y = GROW_UP then result :- child.area.GetH()
+				return result
+			endif
 
 			Select alignment.y
 				case GROW_DOWN
@@ -373,7 +382,7 @@ Type TToastMessage extends TEntity
 
 		'check clicked state
 		If GetScreenArea().containsXY(MouseManager.x, MouseManager.y)
-			If MouseManager.IsClicked(1)
+			If MouseManager.IsClicked(1) or MouseManager.IsHit(1)
 				Close()
 				MouseManager.ResetKey(1)
 
@@ -384,10 +393,10 @@ Type TToastMessage extends TEntity
 	End Method
 
 
-	Method RenderContent:Int(xOffset:Float=0, yOffset:Float=0)
-		'rem
+	Method RenderBackground:Int(xOffset:Float=0, yOffset:Float=0)
 		if canvasImage
 			DrawImage(canvasImage, xOffset + GetScreenX(), yOffset + GetScreenY())
+'rem
 		else
 			DrawRect(xOffset + GetScreenX(), yOffset + GetScreenY(), area.GetW(), area.GetH())
 			SetColor 0,0,255
@@ -398,8 +407,19 @@ Type TToastMessage extends TEntity
 			endif
 			DrawText(name+" "+id, xOffset + GetScreenX() + 5, yOffset + GetScreenY() + 5)
 			SetColor 255,255,255
+'endrem
 		endif
-		'endrem
+	End Method
+
+
+	Method RenderForeground:Int(xOffset:Float=0, yOffset:Float=0)
+		'
+	End Method
+
+
+	Method RenderContent:Int(xOffset:Float=0, yOffset:Float=0)
+		RenderBackground(xOffset, yOffset)
+		RenderForeground(xOffset, yOffset)
 	End Method
 
 
