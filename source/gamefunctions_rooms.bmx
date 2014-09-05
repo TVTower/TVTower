@@ -3160,6 +3160,11 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'abort handling dragged elements
 		If draggedGuiProgrammeLicence then draggedGuiProgrammeLicence.dropBackToOrigin()
+
+		'instead of leaving the room and accidentially removing programmes
+		'from the plan we readd all licences from the suitcase back to
+		'the players collection
+		GetPlayerProgrammeCollectionCollection().Get(GetPlayer().playerID).ReaddProgrammeLicencesFromSuitcase()
 	End Function
 
 

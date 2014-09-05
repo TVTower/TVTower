@@ -382,7 +382,7 @@ Type TApp
 					EndIf
 
 					if KEYMANAGER.IsHit(KEY_Y)
-						print "send to chef:"
+'						print "send to chef:"
 						GetPlayerCollection().Get().figure.SendToDoor( TRoomDoor.GetByDetails("chief", 1), True )
 '						GetWorld().Weather.SetPressure(-14)
 '						GetWorld().Weather.SetTemperature(-10)
