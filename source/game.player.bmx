@@ -5,59 +5,52 @@
 'Import "game.figure.bmx"
 
 
-Type TPlayerCollection
-	Field players:TPlayer[4]
-	'playerID of player who sits in front of the screen
-	Field playerID:Int = 1
-	Global _instance:TPlayerCollection
-
-
+Type TPlayerCollection extends TPlayerBaseCollection
+	'override - create a PlayerCollection instead of PlayerBaseCollection
 	Function GetInstance:TPlayerCollection()
-		if not _instance then _instance = new TPlayerCollection
-		return _instance
+		if not _instance
+			_instance = new TPlayerCollection
+
+		'if the instance was created, but was a "base" one, create
+		'a new and take over the values
+		'==== ATTENTION =====
+		'NEVER store _instance somewhere without paying attention
+		'to this "whacky hack"
+		elseif not TPlayerCollection(_instance)
+			local collection:TPlayerCollection = new TPlayerCollection
+			collection.players = _instance.players
+			collection.playerID = _instance.playerID
+			'now the new collection is the instance
+			_instance = collection
+		endif
+		return TPlayerCollection(_instance)
 	End Function
 
 
-	Method Set:int(id:int=-1, player:TPlayer)
-		If id = -1 Then id = playerID
-		if id <= 0 Then return False
-
-		If players.length < playerID Then players = players[..id+1]
-		players[id-1] = player
-	End Method
-
-
 	Method Get:TPlayer(id:Int=-1)
-		If id = -1 Then id = playerID
-		If Not isPlayer(id) Then Return Null
-
-		Return players[id-1]
+		return TPlayer(Super.Get(id))
 	End Method
 
 
-	Method GetCount:Int()
-		return players.length
-	End Method
-
-
+	'override to return "true" only for TPlayer but not TPlayerBase
 	Method IsPlayer:Int(number:Int)
-		Return (number > 0 And number <= players.length And players[number-1] <> Null)
+		Return (number > 0 And number <= players.length And TPlayer(players[number-1]))
 	End Method
-
+	
 
 	Method IsHuman:Int(number:Int)
-		Return (IsPlayer(number) And Not Get(number).figure.IsAI())
+		Return (IsPlayer(number) And Not TPlayer(Get(number)).figure.IsAI())
 	End Method
 
 
 	'the negative of "isHumanPlayer" - also "no human player" is possible
 	Method IsAI:Int(number:Int)
-		Return (IsPlayer(number) And Get(number).figure.IsAI())
+		Return (IsPlayer(number) And TPlayer(Get(number)).figure.IsAI())
 	End Method
 
 
 	Method IsLocalPlayer:Int(number:Int)
-		Return number = playerID
+		Return IsLocalPlayer(number)
 	End Method
 End Type
 
@@ -68,7 +61,7 @@ Function GetPlayerCollection:TPlayerCollection()
 End Function
 'return specific player
 Function GetPlayer:TPlayer(playerID:int=-1)
-	Return TPlayerCollection.GetInstance().Get(playerID)
+	Return TPlayer(TPlayerCollection.GetInstance().Get(playerID))
 End Function
 
 
@@ -170,6 +163,13 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 		figure.controlledByID = 0
 		PlayerKI = new KI.Create(playerID, luafile)
 		PlayerKI.Start()
+	End Method
+
+
+	'remove this helper as soon as "player" class gets a single importable
+	'file
+	Method SendToBoss:Int()
+		figure.SendToDoor( TRoomDoor.GetByDetails("chief", playerID), True )
 	End Method
 
 

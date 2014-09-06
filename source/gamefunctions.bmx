@@ -418,7 +418,7 @@ Type TGUIChat Extends TGUIPanel
 		Local senderName:String	= ""
 		Local senderColor:TColor= Null
 
-		local sendingPlayer:TPlayer = GetPlayerCollection().Get(senderID)
+		local sendingPlayer:TPlayerBase = GetPlayerCollection().Get(senderID)
 
 		If sendingPlayer
 			senderName	= sendingPlayer.Name

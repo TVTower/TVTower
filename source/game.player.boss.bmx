@@ -139,7 +139,6 @@ Type TPlayerBoss
 
 		'no longer await the visit of this player
 		awaitingPlayerVisit = False
-		print "no longer wait"
 	End Method
 	
 
@@ -166,7 +165,7 @@ Type TPlayerBoss
 		local boss:TPlayerBoss = TPlayerBoss(sender.GetData().Get("boss"))
 		if not boss then return False
 
-'		GetPlayerCollection().Get(boss.playerID).figure.SendToDoor( TRoomDoor.GetByDetails("chief", boss.playerID), True )
+		GetPlayerBaseCollection().Get(boss.playerID).SendToBoss()
 	End Function
 End Type
 

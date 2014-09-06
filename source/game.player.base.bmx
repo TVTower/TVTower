@@ -4,6 +4,64 @@ Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.player.finance.bmx"
 
 
+Type TPlayerBaseCollection
+	Field players:TPlayerBase[4]
+	'playerID of player who sits in front of the screen
+	Field playerID:Int = 1
+	Global _instance:TPlayerBaseCollection
+
+
+	Function GetInstance:TPlayerBaseCollection()
+		if not _instance then _instance = new TPlayerBaseCollection
+		return _instance
+	End Function
+
+
+	Method Set:int(id:int=-1, player:TPlayerBase)
+		If id = -1 Then id = playerID
+		if id <= 0 Then return False
+
+		If players.length < playerID Then players = players[..id+1]
+		players[id-1] = player
+	End Method
+
+
+	Method Get:TPlayerBase(id:Int=-1)
+		If id = -1 Then id = playerID
+		If Not isPlayer(id) Then Return Null
+
+		Return players[id-1]
+	End Method
+
+
+	Method GetCount:Int()
+		return players.length
+	End Method
+
+
+	Method IsPlayer:Int(number:Int)
+		Return (number > 0 And number <= players.length And players[number-1] <> Null)
+	End Method
+
+
+	Method IsLocalPlayer:Int(number:Int)
+		Return number = playerID
+	End Method
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetPlayerBaseCollection:TPlayerBaseCollection()
+	Return TPlayerBaseCollection.GetInstance()
+End Function
+'return specific playerBase
+Function GetPlayerBase:TPlayerBase(playerID:int=-1)
+	Return TPlayerBaseCollection.GetInstance().Get(playerID)
+End Function
+
+
+
+
 Type TPlayerBase {_exposeToLua="selected"}
 	'playername
 	Field Name:String
@@ -86,5 +144,12 @@ Type TPlayerBase {_exposeToLua="selected"}
 		'For Local i:Int = 0 To 6
 		'
 		'Next
+	End Method
+
+
+	'remove this helper as soon as "player" class gets a single importable
+	'file
+	Method SendToBoss:Int()
+		'implement in real class
 	End Method
 End Type
