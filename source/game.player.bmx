@@ -71,7 +71,6 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 
 	'actual figure the player uses
 	Field Figure:TFigure {_exposeToLua}
-	Field boss:TPlayerBoss {_exposeToLua}
 	Field PlayerKI:KI
 
 
@@ -170,6 +169,9 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	'file
 	Method SendToBoss:Int()
 		figure.SendToDoor( TRoomDoor.GetByDetails("chief", playerID), True )
+
+		'inform the boss that the player accepted the call
+		GetPlayerBossCollection().Get(playerID).InformPlayerAcceptedCall()
 	End Method
 
 

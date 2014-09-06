@@ -614,7 +614,7 @@ endrem
 		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
 		'maybe move this lines to TPlayer
 		If ParentPlayerID > 0
-			EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("room", room).Add("door", door), GetPlayerCollection().Get(ParentPlayerID), room) )
+			EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), GetPlayerCollection().Get(ParentPlayerID), room) )
 		EndIf
 		
 	 	'inform player AI that figure entered a room
@@ -678,6 +678,10 @@ endrem
 	Method FinishLeaveRoom(room:TRoomBase)
 		'inform others that a figure left the room
 		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
+		'maybe move this lines to TPlayer
+		If ParentPlayerID > 0
+			EventManager.triggerEvent( TEventSimple.Create("player.onLeaveRoom", null, GetPlayerCollection().Get(ParentPlayerID), room) )
+		EndIf
 
 		'inform player AI
 		If GetPlayerCollection().Get(ParentPlayerID) And isAI()
@@ -765,6 +769,11 @@ endrem
 	'@forceChange   defines wether the target could change target
 	'               even when not controllable
 	Method _ChangeTarget:Int(x:Int=-1, y:Int=-1, forceChange:Int=False)
+		if forceChange
+			'remove control
+			controllable = False
+		endif
+
 		if not forceChange
 			'is controlling allowed (eg. figure MUST go to a specific target)
 			If not IsControllable() then Return False
@@ -878,6 +887,9 @@ endrem
 
 
 	Method reachTarget:int()
+		'regain control
+		controllable = True
+
 		velocity.SetX(0)
 		'set target as current position - so we are exactly there we want to be
 		if target then area.position.setX( target.getX() )

@@ -1099,7 +1099,7 @@ endrem
 				obj.BeginBroadcasting(day, hour, minute, audienceResult)
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 			
 		'=== END OF NEWSSHOW ===
 		ElseIf minute = 4
@@ -1113,7 +1113,7 @@ endrem
 				obj.FinishBroadcasting(day, hour, minute, audienceResult)
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_NEWSSHOW).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== BEGIN OF PROGRAMME ===
 		ElseIf minute = 5
@@ -1132,7 +1132,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== END/BREAK OF PROGRAMME ===
 		'call-in shows/quiz - generate income
@@ -1157,7 +1157,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_PROGRAMME).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 			
 		'=== BEGIN OF COMMERCIAL BREAK ===
 		ElseIf minute = 55
@@ -1188,7 +1188,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 
 		'=== END OF COMMERCIAL BREAK ===
 		'ads end - so trailers can set their "ok"
@@ -1208,7 +1208,7 @@ endrem
 				EndIf
 			EndIf
 			'inform others (eg. boss), "broadcastMaterial" could be null!
-			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
+			EventManager.triggerEvent(TEventSimple.Create(eventKey, New TData.add("broadcastMaterial", obj).addNumber("broadcastedAsType", TBroadcastMaterial.TYPE_ADVERTISEMENT).addNumber("day", day).addNumber("hour", hour).addNumber("minute", minute), Self))
 		EndIf
 	End Method
 

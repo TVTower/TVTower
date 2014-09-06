@@ -71,6 +71,11 @@ Type TBroadcastMaterial	extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	Method isUsedAsType:int(typeID:int) {_exposeToLua}
+		return self.usedAsType = typeID
+	End Method
+
+
 	Method setMaterialType:int(typeID:int=0)
 		self.materialType = typeID
 		self.useableAsType :| typeID

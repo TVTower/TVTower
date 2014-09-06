@@ -236,6 +236,13 @@ Type TData
 	End Method
 
 
+	Method GetLong:float(key:string, defaultValue:Long = 0.0)
+		local result:object = Get(key)
+		if result then return Long( String( result ) )
+		return defaultValue
+	End Method
+
+
 	Method GetFloat:float(key:string, defaultValue:float = 0.0)
 		local result:object = Get(key)
 		if result then return float( String( result ) )

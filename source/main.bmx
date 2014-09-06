@@ -2572,6 +2572,43 @@ Type GameEvents
 	End Function
 
 
+	Function PlayerBoss_OnCallPlayer:Int(triggerEvent:TEventBase)
+		local latestTime:Long = triggerEvent.GetData().GetLong("latestTime", GetWorldTime().GetTimeGone() + 2*3600)
+		local boss:TPlayerBoss = TPlayerBoss(triggerEvent.GetSender())
+		local player:TPlayer = TPlayer(triggerEvent.GetReceiver())
+
+		if player.IsAI()
+			'inform ai
+		else
+			'send out a toast message
+
+			local toast:TGameToastMessage = new TGameToastMessage
+			
+			'until 2 hours
+			toast.SetCloseAtWorldTime(latestTime)
+			toast.SetMessageType(1)
+			toast.SetPriority(10)
+			toast.SetCaption("Dein Chef will dich sehen")
+			toast.SetText("Der Chef gibt dir 2 Stunden, sich bei Ihm zu melden. Hier klicken um den Besuch vorzeitig zu starten.")
+			toast.SetOnCloseFunction(PlayerBoss_onClosePlayerCallMessage)
+			toast.GetData().Add("boss", boss)
+			toast.GetData().Add("player", player)
+			GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+		endif
+	End Function
+
+
+	'if a player clicks on the toastmessage calling him, he will get
+	'sent to the boss in that moment
+	Function PlayerBoss_onClosePlayerCallMessage:int(sender:TToastMessage)
+		local boss:TPlayerBoss = TPlayerBoss(sender.GetData().get("boss"))
+		local player:TPlayer = TPlayer(sender.GetData().get("player"))
+		if not boss or not player then return False
+
+		player.SendToBoss()
+	End Function
+
+
 	'called each time a room (the active player visits) is updated
 	Function RoomOnUpdate:Int(triggerEvent:TEventBase)
 		'handle normal right click

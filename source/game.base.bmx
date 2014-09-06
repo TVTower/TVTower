@@ -243,6 +243,7 @@ Type TGame {_exposeToLua="selected"}
 		'=== REGISTER PLAYER EVENTS ===
 		EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", GameEvents.PlayerFinanceOnChangeMoney)
 		EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", GameEvents.PlayerFinanceOnTransactionFailed)
+		EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", GameEvents.PlayerBoss_OnCallPlayer)
 		'visually inform that selling the last station is impossible
 		EventManager.registerListenerFunction("StationMap.onTrySellLastStation", GameEvents.StationMapOnTrySellLastStation)
 		'trigger audience recomputation when a station is trashed/sold
