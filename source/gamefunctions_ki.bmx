@@ -420,7 +420,7 @@ endrem
 
 
 	Method getPlayerRoom:Int()
-		Local room:TRoom = GetPlayerCollection().Get(self.ME).figure.inRoom
+		Local room:TRoomBase = GetPlayerCollection().Get(self.ME).figure.inRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -440,7 +440,7 @@ endrem
 	Method getRoomFloor:Int(roomId:Int = 0)
 		Local room:TRoom = GetRoomCollection().Get(roomId)
 		if room
-			Local door:TRoomDoor = TRoomDoor.GetMainDoorToRoom(room)
+			Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
 			If door Then Return door.area.GetY()
 		endif
 		Return self.RESULT_NOTFOUND
@@ -452,7 +452,7 @@ endrem
 	Method doGoToRoom:Int(roomId:Int = 0)
 		Local room:TRoom = GetRoomCollection().Get(roomId)
 
-		Local door:TRoomDoor = TRoomDoor.GetMainDoorToRoom(room)
+		Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
 		If door
 			GetPlayerCollection().Get(self.ME).figure.SendToDoor(door)
 			Return self.RESULT_OK

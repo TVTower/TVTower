@@ -296,9 +296,9 @@ End Type
 
 Type TInGameScreen_Room extends TInGameScreen
 	Field roomName:string
-	Field currentRoom:TRoom
+	Field currentRoom:TRoomBase
 	Field rooms:TList = CreateList()  'rooms connected to this screen (eg office 1-4 )
-	global shortcutTarget:TRoom = null 'whacky hack
+	global shortcutTarget:TRoomBase = null 'whacky hack
 
 	Method Create:TInGameScreen_Room(name:string)
 		Super.Create(name)
@@ -306,7 +306,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	End Method
 
 
-	Method SetRoom(room:TRoom)
+	Method SetRoom(room:TRoomBase)
 		EventManager.registerListenerMethod("room.onBeginEnter", self, "OnRoomBeginEnter", room)
 		EventManager.registerListenerMethod("room.onEnter", self, "OnRoomEnter", room)
 
@@ -316,7 +316,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	End Method
 
 
-	Method GetRoom:TRoom()
+	Method GetRoom:TRoomBase()
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
 		return GetPlayerCollection().Get().figure.inRoom
@@ -325,7 +325,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 	'instead of comparing rooms directly we check for names
 	'so the screen for "all" offices is getting returned
-	Function GetByRoom:TInGameScreen_Room(room:TRoom)
+	Function GetByRoom:TInGameScreen_Room(room:TRoomBase)
 		For local screen:TInGameScreen_Room = eachin ScreenCollection.screens.Values()
 			if screen.roomName = room.name then return screen
 		Next
@@ -348,10 +348,11 @@ Type TInGameScreen_Room extends TInGameScreen
 
 
 	Method OnRoomEnter:int(triggerEvent:TEventBase)
-		local room:TRoom = TRoom(triggerEvent.GetSender())
+		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
 		if not room or not rooms.contains(room) then return FALSE
 
-		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
+		'only interested in figures entering the room
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.isActivePlayer() then return FALSE
 
 		'try to change played music when entering a room
@@ -360,10 +361,11 @@ Type TInGameScreen_Room extends TInGameScreen
 
 
 	Method OnRoomBeginEnter:int(triggerEvent:TEventBase)
-		local room:TRoom = TRoom(triggerEvent.GetSender())
+		local room:TRoomBase = TRoomBase(triggerEvent.GetSender())
 		if not room or not rooms.contains(room) then return FALSE
 
-		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
+		'only interested in figures entering the room
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.isActivePlayer() then return FALSE
 
 		'Set the players current screen when changing rooms

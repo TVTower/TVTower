@@ -19,13 +19,13 @@
 	End Function
 
 
-	Method Add:int(room:TRoom)
+	Method Add:int(room:TRoomBase)
 		List.AddLast(room)
 		return TRUE
 	End Method
 
 
-	Method Remove:int(room:TRoom)
+	Method Remove:int(room:TRoomBase)
 		List.Remove(room)
 		return TRUE
 	End Method
@@ -89,63 +89,15 @@ End Function
 'usage examples:
 ' - RoomAgency
 ' - Multiple "Doors" to the same room
-Type TRoom {_exposeToLua="selected"}
-	Field name:string
-	'description, eg. "Bettys bureau" (+ "name of the owner" for "adagency ... owned by X")
-	Field description:String[] = ["", ""]
-	'playerID or -1 for system/artificial person
-	Field owner:Int	= -1
-	'can this room be rented or still occupied?
-	Field availableForRent:Int = False
-	'can this room be used as a studio?
-	Field usableAsStudio:Int = False
-	'does something block that room (eg. previous bomb attack)
-	Field blockedState:Int = BLOCKEDSTATE_NONE 
-	'time until this seconds in the game are gone
-	Field blockedUntil:Double = 0
-	'if > 0 : time a bomb was placed 
-	Field bombPlacedTime:Double = -1
-	'if > 0 : a bomb explosion will be drawn
-	Field bombExplosionTime:Double = -1
-	
-	'the image used in the room (store individual backgrounds depending on "money")
-	Field _background:TSprite {nosave}
-	Field backgroundSpriteName:string
-	'figure currently in this room
-	Field occupants:TList = CreateList()
-	'allow more occupants than one?
-	Field allowMultipleOccupants:int = FALSE
+Type TRoom extends TRoomBase {_exposeToLua="selected"}
 	'list of special areas in the room
 	Field hotspots:TList = CreateList()
-	'is this a room or just a "plan" or "view"
-	Field fakeRoom:int = FALSE
-	'size of this room (eg. for studios)
-	Field size:int = 1
-	Field id:int = 0
-	Field GUID:string = ""
-	Global LastID:int = 0
-	Global _initDone:int = FALSE
-
-	'=== CONFIG FOR ALL ROOMS ===
-	'time the change of a room needs (1st half is opening, 2nd closing a door)
-	Global ChangeRoomSpeed:int = 500
-	'game seconds until a bomb will explode
-	Global bombFuseTime:Int = 5*60
-	'realtime milliseconds a bomb visually explodes
-	Global bombExplosionDuration:int = 1000
-
-	Const BLOCKEDSTATE_NONE:int       = 0 'not blocked at all
-	Const BLOCKEDSTATE_BOMB:int       = 1 'eg. after terrorists attacked
-	Const BLOCKEDSTATE_RENOVATION:int = 2 'eg. for rooms not "bombable"
-	Const BLOCKEDSTATE_MARSHAL:int    = 3 'eg. archive when not enough money
 
 
 	Method New()
-		LastID:+1
-		id = LastID
-
 		'register all needed events if not done yet
 		if not _initDone
+			'close / open doors
 			EventManager.registerListenerFunction("room.onLeave", onLeave)
 			EventManager.registerListenerFunction("room.onEnter", onEnter)
 			_initDone = TRUE
@@ -155,193 +107,14 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-	Method onLoad:int()
-		'
-	End Method
-
-
-	Method AssignToScreen:int(screen:TInGameScreen_Room)
-		if screen
-			screen.SetRoom(self)
-			return TRUE
-		else
-			return FALSE
-		endif
-	End Method
-
-
 	'init a room with basic variables
 	Method Init:TRoom(name:String="unknown", description:String[], owner:int, size:int=1)
-		self.GUID = "room_"+self.id
-		self.name = name
-		self.owner = owner
-		self.description = description
-		self.size = Max(0, Min(3, size))
-
-		'default studio rooms
-		if name = "studio" then SetUsableAsStudio(true)
-
+		Super.Init(name, description, owner, size)
 		return self
 	End Method
 
 
-	Method PlaceBomb:int()
-		bombPlacedTime = GetWorldTime().GetTimeGone()
-	End Method
-
-
-	'easy accessor to block a room using predefined values
-	Method SetBlockedState:int(blockedState:int = 0)
-		local time:int = 0
-		
-		'=== BOMB ===
-		if blockedState = BLOCKEDSTATE_BOMB
-			'"placerholder rooms" (might get rent later)
-			if owner = 0 and IsUsableAsStudio() 
-				time = 60 * 24
-			'rooms like movie agency
-			elseIf owner = 0
-				time = 60 * 2
-			'player rooms
-			elseIf owner > 0
-				time = 30 
-			endif
-		endif
-
-		'=== RENOVATION ===
-		if blockedState = BLOCKEDSTATE_RENOVATION
-			if owner = 0 and IsUsableAsStudio() 
-				'ATTENTION: "randRange" to get the same in multiplayer games
-				time = 60 * randRange(5,10)
-			elseIf owner = 0
-				time = 30 * randRange(1,3)
-			elseIf owner > 0
-				time = 10 * randRange(1,2) 
-			endif
-		endif
-
-		'=== MARSHAL ===
-		if blockedState = BLOCKEDSTATE_RENOVATION
-			'just blocks player rooms
-			If owner > 0
-				time = 15 * randRange(1,4) 
-			endif
-		endif
-			
-		SetBlocked(time, blockedState) 
-	End Method
-
-
-	Method SetBlocked:int(blockTimeInMinutes:int = 0, blockedState:int = 0)
-		'remove blockage without effects!
-		if blockTimeInMinutes = 0
-			blockedState = BLOCKEDSTATE_NONE
-		else
-			self.blockedState = blockedState
-			blockedUntil = GetWorldTime().GetTimeGone() + 60*blockTimeInMinutes
-		endif
-	End Method
-
-
-	Method SetUnblocked:int()
-		'when it was got bombed, free the room now
-		if blockedState = BLOCKEDSTATE_BOMB
-			if IsUsableAsStudio() then SetAvailableForRent(True)
-		EndIf
-				
-		blockedState = BLOCKEDSTATE_NONE
-	End Method
-
-
-
-	Method IsBlocked:Int()
-		if blockedState <> BLOCKEDSTATE_NONE and blockedUntil < GetWorldTime().GetTimeGone()
-			SetUnBlocked()
-		EndIf
-		return (blockedState <> BLOCKEDSTATE_NONE)
-	End Method
-
-
-	Method SetUsableAsStudio:int(bool:int = True)
-		usableAsStudio = bool
-	End Method
-
-
-	Method IsUsableAsStudio:int()
-		return usableAsStudio
-	End Method
-
-
-	Method SetAvailableForRent:int(bool:int = True)
-		availableForRent = bool
-	End Method
-
-
-	Method IsAvailableForRent:int()
-		return fakeRoom = 0 and not HasOwner() and availableForRent
-	End Method
-
-
-	Method HasOwner:int()
-		return (owner > 0)
-	End Method
-
-
-	Method GetBackground:TSprite()
-		if not _background and backgroundSpriteName<>""
-			_background = GetSpriteFromRegistry(backgroundSpriteName)
-		endif
-		return _background
-	End Method
-
-
-	Method GetID:int() {_exposeToLua}
-		return id
-	End Method
-
-
-	Method GetName:string() {_exposeToLua}
-		return GetLocale(name)
-	End Method
-
-
-	Method GetOwner:int() {_exposeToLua}
-		return owner
-	End Method
-
-
-	Method GetSize:int() {_exposeToLua}
-		return size
-	End Method
-
-
-	'change the owner of this room
-	Method ChangeOwner:int(newOwner:int)
-		local event:TEventSimple = TEventSimple.Create("room.onChangeOwner", new TData.AddNumber("oldOwner", self.owner).AddNumber("newOwner", newOwner), self)
-		EventManager.triggerEvent(event)
-
-		if not event.IsVeto()
-			self.owner = newOwner
-			return True
-		else
-			'someone is against changing the owner
-			return False
-		endif
-	End Method
-
-
-	'returns if figure-sprites in this room are drawn in the building
-	'(eg. for plans)
-	Method ShowsFigures:int()
-		'maybe offload it to xml and a room-property
-		if fakeRoom then return True
-		'If (not inRoom Or inRoom.name = "elevatorplaner")
-
-		return False
-	End Method
-
-
-	'draw Room
+	'override to add screen draw
 	Method Draw:int()
 		'if not self.screen then Throw "ERROR: room.draw() - screen missing";return 0
 		'draw current screen
@@ -349,41 +122,17 @@ Type TRoom {_exposeToLua="selected"}
 		'emit event so custom functions can run after screen draw, sender = screen
 		EventManager.triggerEvent( TEventSimple.Create("room.onScreenDraw", new TData.Add("room", self) , ScreenCollection.GetCurrentScreen() ) )
 
-		'emit event so custom draw functions can run
-		EventManager.triggerEvent( TEventSimple.Create("room.onDraw", null, self) )
-
-		return 0
+		return Super.Draw()
 	End Method
 
 
-	'checks the room for a placed bomb
-	Method CheckForBomb:int()
-		'was a bomb placed? check fuse and detonation time
-		if bombPlacedTime >= 0 and blockedState <> TRoom.BLOCKEDSTATE_BOMB
-			if bombPlacedTime + bombFuseTime < GetWorldTime().GetTimeGone()
-				SetBlockedState(TRoom.BLOCKEDSTATE_BOMB)
-				'time is NOT a gametime but a real time!
-				'so the explosion is visible for a given time independent
-				'from game speed
-				bombExplosionTime = Time.GetTimeGone()
-				'reset placed time
-				bombPlacedTime = -1
-			endif
-		endif
-	End Method
-
-
-	'process special functions of this room. Is there something to click on?
-	'animated gimmicks? draw within this function.
+	'override to add screen update
 	Method Update:Int()
 		'emit event so custom functions can run after screen update, sender = screen
 		'also this event has "room" as payload
 		EventManager.triggerEvent( TEventSimple.Create("room.onScreenUpdate", new TData.Add("room", self) , ScreenCollection.GetCurrentScreen() ) )
 
-		'emit event so custom updaters can handle
-		EventManager.triggerEvent( TEventSimple.Create("room.onUpdate", null, self) )
-
-		return 0
+		return Super.Update()
 	End Method
 
 
@@ -403,19 +152,9 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-	'returns desc-field with placeholders replaced
+	'override to add playername/channelname replacement
 	Method GetDescription:string(lineNumber:int=1) {_exposeToLua}
-		if description = null then return ""
-		lineNumber = Max(0, Min(description.length, lineNumber))
-
-		local res:string = GetLocale(description[lineNumber-1])
-
-		'free rooms get a second line added
-		'containing size information
-		if lineNumber = 2 and IsUsableAsStudio()
-			res = GetLocale("ROOM_SIZE").replace("%SIZE%", size)
-		endif
-
+		local res:String = Super.GetDescription(lineNumber)
 		if res.Find("%") = -1 then return res
 
 		res = res.Replace("%PLAYERNAME%", GetOwnerPlayerName())
@@ -425,190 +164,37 @@ Type TRoom {_exposeToLua="selected"}
 	End Method
 
 
-
-	Method isOccupant:int(figure:TFigure)
-		return occupants.contains(figure)
-	End Method
-
-
-	Method hasOccupant:int()
-		return occupants.count() > 0
-	End Method
-
-
-	Method addOccupant:int(figure:TFigure)
-		if not occupants.contains(figure)
-			occupants.addLast(figure)
-		endif
-		return TRUE
-	End Method
-
-
-	Method removeOccupant:int(figure:TFigure)
-		if not occupants.contains(figure) then return FALSE
-
-		occupants.remove(figure)
-		return TRUE
-	End Method
-
-
 	Method addHotspot:int( hotspot:THotspot )
 		if hotspot then hotspots.addLast(hotspot);return TRUE
 		return FALSE
 	End Method
 
 
-	'==== ENTER / LEAVE PROCESS ====
-Rem
-    === ENTER ===
-	figure.EnterRoom()
-		-> room.CanFigureEnter()
-		-> ev: figure.onTryEnterRoom
-		-> room.DoEnter()
-			-> add occupant (right when opening the door, avoids
-			                 simultaneous enter of 2+ figures)
-			-> ev: room.onBeginEnter
-			-> ev: room.onEnter (delayed --> door anim)
-				-> room.onEnter()
-					-> figure.onEnterRoom()
-						-> ev: figure.onEnterRoom
-						-> figure.SetInRoom(Room)
-	=== LEAVE ===
-	figure.LeaveRoom()
-		-> room.CanFigureLeave()
-		-> ev: figure.onTryLeaveRoom
-		-> room.DoLeave()
-			-> ev: room.onBeginLeave
-			-> ev: room.onLeave (delayed --> door anim)
-				-> room.onLeave()
-					-> remove occupant (when door closes)
-					-> figure.onLeaveRoom()
-						-> ev: figure.onLeaveRoom
-						-> figure.SetInRoom(null)
-End Rem
-
-	Method DoEnter:int(door:TRoomDoor, figure:TFigure, speed:int)
-		if door and figure then door.Open(figure)
-
- 		'set the room used in that moment to avoid that two figures
- 		'opening the door at the same time will both get into the room
- 		'(occupied check is done in "onFigureTryEnterRoom")
-		if not hasOccupant() then addOccupant(figure)
-
-		'kick other figures from the room if figure is the owner 
-		'only player-figures need such handling (events etc.)
-		If figure.parentPlayerID and figure.parentPlayerID = owner
-			for local occupant:TFigure = eachin occupants
-				if occupant <> figure then figure.KickFigureFromRoom(occupant, self)
-			next
-		EndIf
-	
-		'inform others that we start going into the room (eg. for animations)
-		EventManager.triggerEvent( TEventSimple.Create("room.onBeginEnter", new TData.Add("figure", figure) , self ) )
-
-		'finally inform that the figure enters the room - eg for AI-scripts
-		'but delay that by ChangeRoomSpeed/2 - so the real entering takes place later
-		local event:TEventSimple = TEventSimple.Create("room.onEnter", new TData.Add("figure", figure) , self )
-		if speed = 0
-			EventManager.triggerEvent(event)
-		else
-			event.delayStart(speed/2)
-			EventManager.registerEvent(event)
-		endif
-	End Method
-
-
-	'gets called when the figure really enters a room (fadeout animation finished etc)
-	Function onEnter:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure( triggerEvent.getData().get("figure") )
-		if not figure then return FALSE
-
-		local room:TRoom = TRoom(triggerEvent.getSender())
-		if not room then return FALSE
-
-		local door:TRoomDoor = TRoomDoor( triggerEvent.getData().get("door") )
-
+	'override to close all doors to a room
+	Method FinishEnter:int(door:TRoomDoorBase, entity:TEntity)
+		'=== CLOSE DOORS ===
 		'close the door (for now: close all doors to this room)
+		'which door to open?
 		if not door
-			For door = eachin TRoomDoor.GetDoorsToRoom(room)
-				If door.GetDoorType() >= 0 then door.Close(figure)
+			For door = eachin TRoomDoor.GetDoorsToRoom(self)
+				If door.GetDoorType() >= 0 then door.Close(entity)
 			Next
 		else
-			If door.GetDoorType() >= 0 then door.Close(figure)
-		endif
-
-		'inform figure that it now entered the room
-		figure.onEnterRoom(room, door)
-	End Function
-
-
-	'returns whether the figure can enter this room
-	'override this in custom rooms
-	Method CanFigureEnter:int(figure:TFigure)
-		'access to this room is blocked (eg. repair after attack)
-		if IsBlocked() then return False
-		'all can enter if there is no limit...
-		if allowMultipleOccupants then return True
-		'non players can enter everytime
-		if not figure.parentPlayerID then return True
-		'players must be owner of the room
-		If figure.parentPlayerID = owner then return True
-
-		return False
-	End Method
-	
-
-	Method DoLeave:int(figure:TFigure, speed:int)
-		'figure isn't in that room - so just leave
-		if not isOccupant(figure) then return TRUE
-
-		figure.isChangingRoom = true
-
-		'inform others that we start going out of that room (eg. for animations)
-		EventManager.triggerEvent( TEventSimple.Create("room.onBeginLeave", new TData.Add("figure", figure) , self ) )
-
-		'finally inform that the figure leaves the room - eg for AI-scripts
-		'but delay that ChangeRoomSpeed/2 - so the real leaving takes place later
-		local event:TEventSimple = TEventSimple.Create("room.onLeave", new TData.Add("figure", figure) , self )
-		if speed = 0
-			'fire immediately
-			EventManager.triggerEvent(event)
-		else
-			'delay so that the leaving takes half the time available
-			event.delayStart(speed/2)
-			EventManager.registerEvent(event)
+			Super.FinishEnter(door, entity)
 		endif
 	End Method
 
 
-	'gets called when the figure really leaves the room (fadein animation finished etc)
-	Function onLeave:int( triggerEvent:TEventBase )
-		local figure:TFigure = TFigure( triggerEvent.getData().get("figure") )
-		local room:TRoom = TRoom(triggerEvent.getSender())
-		if not figure or not room then return FALSE
-
+	'override to fetch main door if none was given
+	Method FinishLeave:int(door:TRoomDoorBase, entity:TEntity)
 		'open the door
-		'which door to open?
-		local door:TRoomDoor = TRoomDoor( triggerEvent.getData().get("door") )
-		if not door then door = TRoomDoor.GetMainDoorToRoom(room)
+		if not door then door = TRoomDoor.GetMainDoorToRoom(self)
 
-		if door and door.GetDoorType() >= 0 then door.Open(figure)
-
-		'remove the occupant from the rooms list after animation finished
-		'and figure really left that room
-		room.removeOccupant(figure)
-
-		'inform figure that it now left the room
-		figure.onLeaveRoom(room)
-	End Function
-
-
-	'returns whether the figure can leave the room
-	Method CanFigureLeave:int(figure:TFigure=null)
-		'by default everyone can leave
-		return TRUE
+		Super.FinishLeave(door, entity)
 	End Method
 End Type
+
+
 
 
 Type TRoomDoorTooltip extends TTooltip
@@ -693,41 +279,23 @@ End Type
 
 
 
-Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
-	'Field area:
-	'  position.x is x of the rooms door in the building
-	'  position.y is floornumber
-
-	Field room:TRoom
+Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
+	Field room:TRoomBase
 	'uses description
 	Field tooltip:TRoomDoorTooltip = null
-	'time is set in Init() depending on changeRoomSpeed..
-	Field DoorTimer:TIntervalTimer = TIntervalTimer.Create(1)
-	'door 1-4 on floor (<0 is invisible, -1 is unset)
-	Field doorSlot:Int = -1
-	Field doortype:Int = -1
 	Field _soundSource:TDoorSoundSource = Null {nosave}
 	Field sign:TRoomDoorSign = null
 
-	Global list:TList = CreateList()				'List of doors
-	Global _doorsDrawnToBackground:Int	= 0			'doors drawn to Pixmap of background
-
-	const doorSlot0:int	= -10						'x coord of defined slots
-	const doorSlot1:int	= 206
-	const doorSlot2:int	= 293
-	const doorSlot3:int	= 469
-	const doorSlot4:int	= 557
-
 
 	'create room and use preloaded image
-	Method Init:TRoomDoor(room:TRoom, doorSlot:int=-1, x:Int=0, floor:Int=0, doortype:Int=-1)
+	Method Init:TRoomDoor(room:TRoomBase, doorSlot:int=-1, x:Int=0, floor:Int=0, doortype:Int=-1)
 		'autocalc the position
 		if x=-1 and doorSlot>=0 AND doorSlot<=4 then x = getDoorSlotX(doorSlot)
 
 		'assign variables
 		self.room = room
 
-		DoorTimer.setInterval( TRoom.ChangeRoomSpeed )
+		DoorTimer.setInterval( TRoomBase.ChangeRoomSpeed )
 
 		'x = x of the given doorSlot
 		'y = floor
@@ -742,7 +310,7 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 		'create the sign next to room's door
 		CreateRoomsign()
 
-		list.AddLast(self)
+		GetRoomDoorBaseCollection().Add(self)
 
 		Return self
 	End Method
@@ -754,65 +322,53 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 	End Method
 
 
-	Function getDoorSlotX:int(slot:int)
-		select slot
-			case 1	return doorSlot1
-			case 2	return doorSlot2
-			case 3	return doorSlot3
-			case 4	return doorSlot4
-		end select
-
-		return 0
-	End Function
-
-
-	Method getDoorSlot:int()
-		'already adjusted...
-		if doorSlot >= 0 then return doorSlot
-
-		if area.GetX() = doorSlot1 then return 1
-		if area.GetX() = doorSlot2 then return 2
-		if area.GetX() = doorSlot3 then return 3
-		if area.GetX() = doorSlot4 then return 4
-
-		return 0
-	End Method
-
-
-	Method getDoorFloor:int()
-		return area.GetY()
-	End Method
-	 
-
-	Method getDoorType:int()
-		if DoorTimer.isExpired() then return doortype else return 5
-	End Method
-
-
-	Method Close(figure:TFigure)
+	'override to play sound
+	Method Close(entity:TEntity)
+		if not TFigure(entity) then return
+		
 		'timer finished
 		If Not DoorTimer.isExpired()
-			GetSoundSource().PlayCloseDoorSfx(figure)
-			DoorTimer.expire()
+			GetSoundSource().PlayCloseDoorSfx(TFigure(entity))
 		Endif
+		
+		Super.Close(entity)
 	End Method
 
 
-	Method Open(figure:TFigure)
+	'override to play sound
+	Method Open(entity:TEntity)
+		if not TFigure(entity) then return
+
 		'timer ticks again
 		If DoorTimer.isExpired()
-			GetSoundSource().PlayOpenDoorSfx(figure)
+			GetSoundSource().PlayOpenDoorSfx(TFigure(entity))
 		Endif
-		DoorTimer.reset()
+
+		Super.Open(entity)
 	End Method
 
 
-	Function CloseAll()
-		For Local door:TRoomDoor = EachIn list
-			door.Close(null)
-		Next
-	End Function
+	'override to add visibility support for rooms
+	Method IsVisible:int()
+		if not Super.IsVisible() then return False
 
+		'skip invisible doors (without door-sprite)
+		'Ronny TODO: maybe replace "invisible doors" with hotspots + room signes (if visible in elevator)
+		If room = null then Return FALSE
+		If room.name = "roomboard" OR room.name = "credits" OR room.name = "porter" then Return FALSE
+
+		return True
+	End Method
+	
+
+	Method DrawOnBackground:Int(pix:TPixmap)
+		'clamp doortype
+		doorType = Min(5, doorType)
+		local doorSprite:TSprite = GetSpriteFromRegistry("gfx_building_Tueren")
+		'draw door
+		DrawImageOnImage(doorSprite.GetFrameImage(doorType), Pix, area.GetX() - GetBuilding().area.GetX() - 127, TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH())
+	End Method
+	
 
 	Method DrawTooltip:Int()
 		If not tooltip or not tooltip.enabled then return False
@@ -822,7 +378,7 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 
 	Function DrawAllTooltips:Int()
-		For Local door:TRoomDoor = EachIn list
+		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().List
 			door.DrawTooltip()
 		Next
 	End Function
@@ -855,54 +411,15 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 
 
 	Function UpdateToolTips:Int()
-		For Local door:TRoomDoor = EachIn list
+		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
 			'delete and skip if not found
 			If not door
-				list.remove(door)
+				GetRoomDoorBaseCollection().list.remove(door)
 				continue
 			Endif
 
 			door.UpdateTooltip()
 		Next
-	End Function
-
-
-	Method IsVisible:int()
-		'skip invisible doors (without door-sprite)
-		'Ronny TODO: maybe replace "invisible doors" with hotspots + room signes (if visible in elevator)
-		If room = null then Return FALSE
-		If room.name = "roomboard" OR room.name = "credits" OR room.name = "porter" then Return FALSE
-		If doorType < 0 OR area.GetX() <= 0 then Return FALSE
-
-		Return TRUE
-	End Method
-
-
-	Function DrawDoorsOnBackground:Int()
-		'do nothing if already done
-		If _doorsDrawnToBackground then return 0
-
-		Local Pix:TPixmap = LockImage(GetSpriteFromRegistry("gfx_building").parent.image)
-
-		'elevator border
-		Local elevatorBorder:TSprite= GetSpriteFromRegistry("gfx_building_Fahrstuhl_Rahmen")
-		For Local i:Int = 0 To 13
-			DrawImageOnImage(elevatorBorder.getImage(), Pix, 230, 67 - elevatorBorder.area.GetH() + 73*i)
-		Next
-
-		local doorSprite:TSprite = GetSpriteFromRegistry("gfx_building_Tueren")
-		For Local door:TRoomDoor = EachIn list
-			'skip invisible doors (without door-sprite)
-			If not door.IsVisible() then continue
-
-			'clamp doortype
-			door.doorType = Min(5, door.doorType)
-			'draw door
-			DrawImageOnImage(doorSprite.GetFrameImage(door.doorType), Pix, door.area.GetX() - GetBuilding().area.GetX() - 127, TBuilding.GetFloorY(door.area.GetY()) - doorSprite.area.GetH())
-		Next
-		'no unlock needed atm as doing nothing
-		'UnlockImage(GetSpriteFromRegistry("gfx_building").parent.image)
-		_doorsDrawnToBackground = True
 	End Function
 
 
@@ -958,17 +475,6 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 	End Method
 
 
-	Function DrawAll:Int()
-		For Local door:TRoomDoor = EachIn list
-			'skip invisible doors (without door-sprite)
-			'Ronny TODO: maybe replace "invisible doors" with hotspots + room signes (if visible in elevator)
-			If not door.IsVisible() then continue
-
-			door.Render()
-		Next
-	End Function
-
-
 	Method CreateRoomSign:int( slot:int=-1 )
 		if slot = -1 then slot = doorSlot
 
@@ -980,70 +486,49 @@ Type TRoomDoor extends TStaticEntity  {_exposeToLua="selected"}
 	End Method
 
 
-	Function Get:TRoomDoor(id:int)
-		For Local door:TRoomDoor = EachIn list
-			if door.id = id then return door
-		Next
-		return Null
-	End Function
-
-
-	Function GetByCoord:TRoomDoor( x:int, y:int )
-		For Local door:TRoomDoor = EachIn list
-			'also allow invisible rooms... so just check if hit the area
-			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()) - door.area.GetH(), door.area.GetW(), door.area.GetH())
-				Return door
-			EndIf
-		Next
-		Return Null
-	End Function
-
-	Function GetRandom:TRoomDoor()
-		return TRoomDoor( list.ValueAtIndex( Rand(list.Count() - 1) ) )
-	End Function
-
-
 	'returns the first door connected to a room
-	Function GetDoorsToRoom:TRoomDoor[]( room:TRoom )
+	Function GetDoorsToRoom:TRoomDoor[]( room:TRoomBase )
 		local res:TRoomDoor[]
 		if not room then return res
 
-		For Local door:TRoomDoor = EachIn list
+		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
 			if door.room = room then res :+ [door]
 		Next
 		return res
 	End Function
 
 
-	Function GetMainDoorToRoom:TRoomDoor( room:TRoom )
+	Function GetMainDoorToRoom:TRoomDoorBase( room:TRoomBase )
 		'Ronny TODO: add configuration "mainDoor"
 		'            or remove whole function and replace with
 		'            "nearestDoorToRoom"
-		local doors:TRoomDoor[] = GetDoorsToRoom(room)
+		local doors:TRoomDoorBase[] = GetDoorsToRoom(room)
 		If doors.length = 0 then return Null
 		return doors[0]
 	End Function
 
 
-	Function GetByMapPos:TRoomDoor( doorSlot:Int, doorFloor:Int )
-		if doorSlot >= 0 and doorFloor >= 0
-			For Local door:TRoomDoor= EachIn list
-				If door.area.GetY() = doorFloor And door.doorSlot = doorSlot Then Return door
-			Next
-		EndIf
-		Return Null
-	End Function
-
 
 	Function GetByDetails:TRoomDoor( name:String, owner:Int, floor:int =-1 )
-		For Local door:TRoomDoor = EachIn list
+		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
 			'skip wrong floors
 			if floor >=0 and door.area.GetY() <> floor then continue
 			'skip wrong owners
 			if door.room.owner <> owner then continue
 
 			If door.room.name = name Then Return door
+		Next
+		Return Null
+	End Function
+
+
+	Function GetByCoord:TRoomDoor( x:int, y:int )
+		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
+			'also allow invisible rooms... so just check if hit the area
+			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
+			If THelper.IsIn(x, y, door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()) - door.area.GetH(), door.area.GetW(), door.area.GetH())
+				Return door
+			EndIf
 		Next
 		Return Null
 	End Function
@@ -1084,6 +569,7 @@ Type TRoomHandler
 '	Function Update:int( triggerEvent:TEventBase ) abstract
 '	Function Draw:int( triggerEvent:TEventBase ) abstract
 End Type
+
 
 
 'Office: handling the players room
@@ -3137,7 +2623,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		if not room then return FALSE
 
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		'remove all licences in the suitcase from the programmeplan
@@ -3292,7 +2778,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	'clear the guilist for the suitcase if a player enters
 	Function onEnterRoom:int( triggerEvent:TEventBase )
 		'we are not interested in other figures than our player's
-		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.IsActivePlayer() then return FALSE
 
 		'empty the guilist / delete gui elements
@@ -3520,7 +3006,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'clear the guilist for the suitcase if a player enters
 	Function onEnterRoom:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom(triggerEvent.GetSender())
-		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not room or not figure then return FALSE
 
 		'only interested in player figures (they cannot be in one room
@@ -3556,7 +3042,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		if not room then return FALSE
 
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).ReaddProgrammeLicencesFromSuitcase()
@@ -4622,6 +4108,7 @@ Type RoomHandler_Chief extends TRoomHandler
 		EventManager.registerListenerFunction("dialogue.onAcceptBossCredit", onAcceptBossCredit)
 		EventManager.registerListenerFunction("dialogue.onRepayBossCredit", onRepayBossCredit)
 
+
 	End Function
 
 
@@ -4647,6 +4134,7 @@ Type RoomHandler_Chief extends TRoomHandler
 			dialog.Draw()
 		Next
 	End Function
+
 
 	Function Update:int( triggerEvent:TEventBase )
 		local room:TRoom = TRoom(triggerEvent._sender)
@@ -4878,7 +4366,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 	Function onEnterRoom:int(triggerEvent:TEventBase)
 		local room:TRoom = TRoom(triggerEvent.GetSender())
-		local figure:TFigure = TFigure(triggerEvent.GetData().Get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not room or not figure then return FALSE
 
 		'only interested in player figures (they cannot be in one room
@@ -4920,7 +4408,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if not room then return FALSE
 
 		'non players can always leave
-		local figure:TFigure = TFigure(triggerEvent.getData().get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure or not figure.parentPlayerID then return FALSE
 
 		'sign all new contracts
@@ -5521,7 +5009,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 		'if possible, change the target to the clicked door
 		if mouseClicked
-			local door:TRoomDoor = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
+			local door:TRoomDoorBase = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
 			if door
 				local playerFigure:TFigure = GetPlayerCollection().Get().figure
 				playerFigure.ChangeTarget(door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()))
@@ -5534,7 +5022,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 
 	'returns the door defined by a sign at X,Y
-	Function GetDoorByPlanXY:TRoomDoor(x:Int=-1, y:Int=-1)
+	Function GetDoorByPlanXY:TRoomDoorBase(x:Int=-1, y:Int=-1)
 		For Local sign:TRoomDoorSign = EachIn TRoomDoorsign.List
 			'virtual rooms
 			If sign.rect.GetX() < 0 then continue
@@ -5545,7 +5033,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 				If sign.rect.GetX() = signSlot2 Then xpos = 2
 				If sign.rect.GetX() = signSlot3 Then xpos = 3
 				If sign.rect.GetX() = signSlot4 Then xpos = 4
-				Local door:TRoomDoor = TRoomDoor.GetByMapPos(xpos, 13 - Ceil((y-41)/23))
+				Local door:TRoomDoorBase = GetRoomDoorBaseCollection().GetByMapPos(xpos, 13 - Ceil((y-41)/23))
 				if door then return door
 			EndIf
 		Next
@@ -5817,7 +5305,7 @@ Type RoomHandler_Credits extends TRoomHandler
 
 	'reset to start role when entering
 	Function onEnterRoom:int(triggerEvent:TEventBase)
-		local figure:TFigure = TFigure(triggerEvent.GetData().get("figure"))
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
 		if not figure then return FALSE
 
 		fadeTimer.Reset()
@@ -5963,7 +5451,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 	End Function
 
 
-	Function GetFirstByRoom:TRoomDoorSign(room:TRoom)
+	Function GetFirstByRoom:TRoomDoorSign(room:TRoomBase)
 		For local sign:TRoomDoorSign = eachin list
 			if not sign.door then continue
 			if not sign.door.room then continue
@@ -6208,7 +5696,7 @@ Function Init_CreateAllRooms()
 			vars.GetInt("owner",-1),  ..
 			vars.GetInt("size", 1)  ..
 		)
-		room.AssignToScreen(screen)
+		if screen then screen.SetRoom(room)
 		room.fakeRoom = vars.GetBool("fake", FALSE)
 
 

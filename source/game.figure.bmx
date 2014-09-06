@@ -18,6 +18,9 @@ Type TFigureCollection
 		if not _eventsRegistered
 			'handle savegame loading (assign sprites)
 			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			EventManager.registerListenerFunction("room.onLeave", onLeaveRoom)
+			EventManager.registerListenerFunction("room.onEnter", onEnterRoom)
+
 			_eventsRegistered = TRUE
 		Endif
 	End Method
@@ -69,6 +72,28 @@ Type TFigureCollection
 			figure.onLoad()
 		Next
 	End Function
+
+
+	'gets called when the figure really enters a room (fadeout animation finished etc)
+	Function onEnterRoom:Int(triggerEvent:TEventBase)
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		local room:TRoomBase = TRoomBase(triggerEvent.getSender())
+		if not figure or not room then return FALSE
+
+		local door:TRoomDoorBase = TRoomDoorBase( triggerEvent.getData().get("door") )
+
+		figure.FinishEnterRoom(room, door)
+	End Function
+
+
+	'gets called when the figure really leaves a room (fadein animation finished etc)
+	Function onLeaveRoom:Int(triggerEvent:TEventBase)
+		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
+		local room:TRoom = TRoom(triggerEvent.getSender())
+		if not figure or not room then return FALSE
+
+		figure.FinishLeaveRoom(room)
+	End Function
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -104,10 +129,10 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	'active as soon as figure leaves/enters rooms
 	Field isChangingRoom:int = FALSE
 	'the door used (there might be multiple)
-	Field fromDoor:TRoomDoor = Null
+	Field fromDoor:TRoomDoorBase = Null
 	'coming from room
-	Field fromRoom:TRoom = Null
-	Field inRoom:TRoom = Null
+	Field fromRoom:TRoomBase = Null
+	Field inRoom:TRoomBase = Null
 
 	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(25000)
 	'network sync position timer
@@ -170,7 +195,8 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		'reassign rooms
 		if inRoom then inRoom = GetRoomCollection().Get(inRoom.id)
 		if fromRoom then fromRoom = GetRoomCollection().Get(fromRoom.id)
-		if fromDoor then fromDoor = TRoomDoor.Get(fromDoor.id)
+		if fromDoor then fromDoor = GetRoomDoorBaseCollection().Get(fromDoor.id)
+		if TRoomDoorBase(targetObj) then targetObj = GetRoomDoorBaseCollection().Get(TRoomDoorBase(targetObj).id)
 		'set as room occupier again (so rooms occupant list gets refilled)
 		if inRoom and not inRoom.isOccupant(self)
 			inRoom.addOccupant(Self)
@@ -333,7 +359,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			ElseIf isChangingRoom and TRoomDoor(targetObj)
 				result = "standBack"
 			'in a room (or standing in front of a fake room - looking at plan)
-			ElseIf inRoom and inRoom.ShowsFigures()
+			ElseIf inRoom and inRoom.ShowsOccupants()
 				result = "standBack"
 			'show front
 			Else
@@ -433,7 +459,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 	Method IsVisible:int()
 		'in a fake room?
-		if inRoom and inRoom.ShowsFigures() then return True
+		if inRoom and inRoom.ShowsOccupants() then return True
 		
 		return (IsInBuilding() or isChangingRoom)
 	End Method
@@ -465,10 +491,10 @@ endrem
 
 
 	'player is now in room "room"
-	Method SetInRoom:Int(room:TRoom)
+	Method SetInRoom:Int(room:TRoomBase)
 		'in all cases: close the door (even if we cannot enter)
 		'Ronny TODO: really needed?
-		If room and TRoomDoor(targetObj) then TRoomDoor(targetObj).Close(self)
+		If room and TRoomDoorBase(targetObj) then TRoomDoorBase(targetObj).Close(self)
 
 		If room and not room.IsOccupant(self) then room.addOccupant(Self)
 
@@ -494,19 +520,19 @@ endrem
 	End Method
 
 
-	Method KickFigureFromRoom:Int(kickFigure:TFigure, room:TRoom)
+	Method KickFigureFromRoom:Int(kickFigure:TFigure, room:TRoomBase)
 		If Not kickFigure Or Not room Then Return False
 		If kickFigure = self then return FALSE
 
 		'fetch at least the main door if none is provided
-		local door:TRoomDoor = kickFigure.fromDoor
+		local door:TRoomDoorBase = kickFigure.fromDoor
 		if not door then door = TRoomDoor.GetMainDoorToRoom(room)
 
 		TLogger.log("TFigure.KickFigureFromRoom()", name+" kicks "+ kickFigure.name + " out of room: "+room.name, LOG_DEBUG)
 		'instead of SimpleSoundSource we use the rooms sound source
 		'so we are able to have positioned sound
-		if door
-			door.GetSoundSource().PlayRandomSFX("kick_figure", door.GetSoundSource().GetPlayerBeforeDoorSettings())
+		if TRoomDoor(door)
+			TRoomDoor(door).GetSoundSource().PlayRandomSFX("kick_figure", TRoomDoor(door).GetSoundSource().GetPlayerBeforeDoorSettings())
 		endif
 
 		'maybe someone is interested in this information
@@ -522,7 +548,7 @@ endrem
 	'@param door         door to use
 	'@param room         room to enter (in case no door exists)
 	'@param forceEnter   kick without being the room owner
-	Method EnterRoom:Int(door:TRoomDoor, room:TRoom, forceEnter:int=FALSE)
+	Method EnterRoom:Int(door:TRoomDoor, room:TRoomBase, forceEnter:int=FALSE)
 		'skip command if we already are entering/leaving
 		if isChangingRoom then return TRUE
 
@@ -546,7 +572,7 @@ endrem
 		endif
 
 		'check if enter not possible
-		if not room.CanFigureEnter(self) and not forceEnter
+		if not CanEnterRoom(room) and not forceEnter
 			If room.hasOccupant() and not room.isOccupant(self)
 				'only player-figures need such handling (events etc.)
 				If parentPlayerID and not parentPlayerID = room.owner
@@ -569,20 +595,54 @@ endrem
 		isChangingRoom = Time.GetTimeGone()
 
 		'actually enter the room
-		room.DoEnter(door, self, TRoom.ChangeRoomSpeed/2)
+		room.BeginEnter(door, self, TRoom.ChangeRoomSpeed/2)
+
+
+		'kick other figures from the room if figure is the owner 
+		'only player-figures need such handling (events etc.)
+		If parentPlayerID and parentPlayerID = room.owner
+			for local occupant:TFigure = eachin room.occupants
+				if occupant <> self then KickFigureFromRoom(occupant, room)
+			next
+		EndIf
 	End Method
 
 
-	Method onEnterRoom(room:TRoom, door:TRoomDoor)
-		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self ) )
-
+	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
+		'=== INFORM OTHERS ===
+		'inform figure that it now entered the room
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
+		'maybe move this lines to TPlayer
+		If ParentPlayerID > 0
+			EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("room", room).Add("door", door), GetPlayerCollection().Get(ParentPlayerID), room) )
+		EndIf
+		
 	 	'inform player AI that figure entered a room
 	 	If ParentPlayerID > 0 And isAI()
 			GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnEnterRoom(room.id)
 		EndIf
-		
+
+		'=== SET IN ROOM ===
 		SetInRoom(room)
 	End Method
+
+
+	Method CanEnterRoom:Int(room:TRoomBase)
+		'cannot enter if room forbids
+		'(exception are non-players)
+		if not room.CanEntityEnter(self)
+			if not room.IsBlocked() and not parentPlayerID
+				return True
+			endif
+
+			return False
+		endif
+
+		'players must be owner of the room
+		If parentPlayerID = room.owner then return True
+
+		return False
+	End Method 
 
 
 	'command to leave a room - "onLeaveRoom" is called when successful
@@ -592,7 +652,7 @@ endrem
 
 		'=== CHECK IF LEAVING IS ALLOWED ===
 		'skip leaving if not allowed to do so
-		if not force and not inroom.CanFigureLeave(self) then return False
+		if not force and not CanLeaveroom(inroom) then return False
 
 		'ask if somebody is against leaving that room
 		'but ignore the result if figure is forced to leave
@@ -610,12 +670,12 @@ endrem
 		'leave is allowed - set time of start
 		isChangingRoom = Time.GetTimeGone()
 
-		inRoom.DoLeave(self, TRoom.ChangeRoomSpeed/2)
+		inRoom.BeginLeave(null, self, TRoom.ChangeRoomSpeed/2)
 	End Method
 
 
 	'gets called when the figure really leaves the room (animation finished etc)
-	Method onLeaveRoom(room:TRoom)
+	Method FinishLeaveRoom(room:TRoomBase)
 		'inform others that a figure left the room
 		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
 
@@ -631,7 +691,15 @@ endrem
 	End Method
 
 
-	Method SendToDoor:Int(door:TRoomDoor, forceSend:Int=False)
+	Method CanLeaveRoom:Int(room:TRoomBase)
+		'cannot leave if room forbids
+		if not room.CanEntityLeave(self) then return False
+
+		return True
+	End Method 
+
+
+	Method SendToDoor:Int(door:TRoomDoorBase, forceSend:Int=False)
  		If not door then return FALSE
 
 		If forceSend
@@ -751,7 +819,7 @@ endrem
 			If Floor(newTarget.x) >= rightLimit Then newTarget.X = rightLimit
 		endif
 
-		local targetRoom:TRoom
+		local targetRoom:TRoomBase
 		if TRoomDoor(newTargetObj) then targetRoom = TRoomDoor(newTargetObj).room 
 
 
@@ -900,7 +968,7 @@ endrem
 		if not sprite or not isVisible() then return FALSE
 
 		'skip figures in rooms or in rooms not showing a figure
-		If inRoom and not inRoom.ShowsFigures() then return False
+		If inRoom and not inRoom.ShowsOccupants() then return False
 
 		local oldAlpha:Float = GetAlpha()
 		if isChangingRoom
@@ -914,10 +982,10 @@ endrem
 			endif
 
 			'do not fade when it is a fake room
-			if inRoom and inRoom.ShowsFigures() then alpha = 1.0
-			if fromRoom and fromRoom.ShowsFigures() then alpha = 1.0
+			if inRoom and inRoom.ShowsOccupants() then alpha = 1.0
+			if fromRoom and fromRoom.ShowsOccupants() then alpha = 1.0
 			if TRoomDoor(targetObj) and TRoomDoor(targetObj).room
-				if TRoomDoor(targetObj).room.ShowsFigures() then alpha = 1.0
+				if TRoomDoor(targetObj).room.ShowsOccupants() then alpha = 1.0
 			endif
 			
 			SetAlpha(alpha * oldAlpha)

@@ -165,7 +165,7 @@ Type TGame {_exposeToLua="selected"}
 		ColorizePlayerExtras()
 
 		TLogger.Log("Game.PrepareStart()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
-		TRoomDoor.DrawDoorsOnBackground()
+		GetRoomDoorBaseCollection().DrawDoorsOnBackground()
 
 		TLogger.Log("Game.PrepareStart()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
 		GetBuilding().Init() 'also registers events...

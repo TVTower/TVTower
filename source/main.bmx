@@ -69,6 +69,8 @@ Import "game.player.programmecollection.bmx"
 'needed by game.player.bmx
 Import "game.player.programmeplan.bmx"
 
+Import "game.room.base.bmx"
+
 '===== Includes =====
 Include "game.player.bmx"
 
@@ -988,8 +990,8 @@ Type TFigurePostman Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method onEnterRoom:Int(room:TRoom, door:TRoomDoor)
-		Super.onEnterRoom(room, door)
+	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
+		Super.FinishEnterRoom(room, door)
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -999,10 +1001,10 @@ Type TFigurePostman Extends TFigure
 	Method UpdateCustom:Int()
 		'figure is in building and without target waiting for orders
 		If Not inRoom And Not target
-			Local door:TRoomDoor
+			Local door:TRoomDoorBase
 			'search for a visible door
 			Repeat
-				door = TRoomDoor.GetRandom()
+				door = GetRoomDoorBaseCollection().GetRandom()
 			Until door.doorType > 0
 
 			'TLogger.Log("TFigurePostman", "nothing to do -> send to door of " + door.room.name, LOG_DEBUG | LOG_AI, True)
@@ -1051,8 +1053,8 @@ Type TFigureJanitor Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method onEnterRoom:Int(room:TRoom, door:TRoomDoor)
-		Super.onEnterRoom(room, door)
+	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
+		Super.FinishEnterRoom(room, door)
 
 		'reset timer so figure stays in room for some time
 		nextActionTimer.Reset()
@@ -1152,7 +1154,7 @@ Type TFigureTerrorist Extends TFigure
 	'did the figure check the roomboard where to go to?
 	Field checkedRoomboard:int = False
 	'where to deliver the "package"
-	Field deliverToRoom:TRoom
+	Field deliverToRoom:TRoomBase
 	'was the "package" delivered already?
 	Field deliveryDone:int = True
 	'time to wait between doing something
@@ -1169,7 +1171,7 @@ Type TFigureTerrorist Extends TFigure
 	'used in news effect function
 	Function SendFigureToRoom(data:TData, params:TData)
 		local figure:TFigureTerrorist = TFigureTerrorist(data.Get("figure"))
-		local room:TRoom = TRoom(data.Get("room"))
+		local room:TRoomBase = TRoomBase(data.Get("room"))
 		if not figure or not room then return
 
 		figure.SetDeliverToRoom(room)
@@ -1177,8 +1179,8 @@ Type TFigureTerrorist Extends TFigure
 
 
 	'override to make the figure stay in the room for a random time
-	Method onEnterRoom:Int(room:TRoom, door:TRoomDoor)
-		Super.onEnterRoom(room, door)
+	Method FinishEnterRoom:Int(room:TRoomBase, door:TRoomDoorBase)
+		Super.FinishEnterRoom(room, door)
 
 		'terrorist now knows where to "deliver"
 		if not checkedRoomboard then checkedRoomboard = True
@@ -1193,7 +1195,7 @@ Type TFigureTerrorist Extends TFigure
 	'set the room the figure should go to.
 	'Terrorist do not know where the room will be, so they
 	'go to the roomboard first
-	Method SetDeliverToRoom:int(room:TRoom)
+	Method SetDeliverToRoom:int(room:TRoomBase)
 		'to go to this room, we have to first visit the roomboard
 		checkedRoomboard = False
 		deliveryDone = False

@@ -315,7 +315,7 @@ Type TBuilding Extends TStaticEntity
 		SetBlend MASKBLEND
 
 		'draw overlay - open doors are drawn over "background-image-doors" etc.
-		TRoomDoor.DrawAll()
+		GetRoomDoorBaseCollection().DrawAllDoors()
 		'draw elevator parts
 		Elevator.Render()
 		'draw softdrinkmachine
@@ -469,7 +469,7 @@ Type TBuilding Extends TStaticEntity
 	End Method
 
 
-	Method CreateRoomUsedTooltip:Int(door:TRoomDoor, room:TRoom = null)
+	Method CreateRoomUsedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = null)
 		'if no door was given, use main door of room
 		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
 		if not door then return FALSE
@@ -483,7 +483,7 @@ Type TBuilding Extends TStaticEntity
 	End Method
 
 
-	Method CreateRoomBlockedTooltip:Int(door:TRoomDoor, room:TRoom = null)
+	Method CreateRoomBlockedTooltip:Int(door:TRoomDoorBase, room:TRoomBase = null)
 		'if no door was given, use main door of room
 		if not door and room then door = TRoomDoor.GetMainDoorToRoom(room)
 		if not door then return FALSE

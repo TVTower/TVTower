@@ -463,14 +463,14 @@ Type TNetworkHelper
 			EndIf
 		EndIf
 
-		if targetDoorID then figure.targetObj = TRoomDoor.Get( targetDoorID )
+		if targetDoorID then figure.targetObj = GetRoomDoorBaseCollection().Get( targetDoorID )
 		if targetHotspotID then figure.targetObj = THotspot.Get( targetHotspotID )
 
 		If fromRoomID <= 0 Then figure.fromRoom = Null
 		If fromRoomID > 0 And figure.fromroom
 			If figure.fromRoom.id <> fromRoomID
 				figure.fromRoom = GetRoomCollection().Get( fromRoomID )
-				figure.fromDoor = TRoomDoor.Get( fromDoorID )
+				figure.fromDoor = GetRoomDoorBaseCollection().Get( fromDoorID )
 			endif
 		EndIf
 	End Method

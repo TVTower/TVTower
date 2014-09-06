@@ -269,11 +269,32 @@ Type TToastMessage extends TEntity
 	Field _openCloseTimeGone:Float = 0
 	Field _lifeTime:Float = -1
 	Field _lifeTimeStartValue:Float = -1
+	'additional data
+	Field _data:TData
+	Field _onCloseFunction(sender:TToastMessage)
 
 
 	Method New()
 		area.dimension.SetXY(200,50)
 		Open()
+	End Method
+
+
+	'sets a function to call when the message gets closed
+	Method SetOnCloseFunction(onCloseFunction(sender:TToastMessage))
+		_onCloseFunction = onCloseFunction
+	End Method
+
+
+	'sets the data the close function gets as param
+	Method SetData(data:TData)
+		_data = data
+	End Method
+
+
+	Method GetData:TData()
+		if not _data then _data = new TData
+		return _data
 	End Method
 
 
@@ -329,6 +350,7 @@ Type TToastMessage extends TEntity
 
 		'fire event so others can handle it (eg. remove from list)
 		EventManager.triggerEvent(TEventSimple.Create("toastmessage.onClose", null, Self))
+		if _onCloseFunction then _onCloseFunction(self)
 	End Method
 
 

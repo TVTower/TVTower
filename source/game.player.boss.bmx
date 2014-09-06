@@ -5,6 +5,10 @@ Import "game.player.finance.bmx"
 Import "game.player.programmeplan.bmx"
 'to be able to send out toastmessages
 Import "game.toastmessage.bmx"
+'to access room data
+Import "game.room.base.bmx"
+'to access player data
+Import "game.player.base.bmx"
 
 
 Type TPlayerBossCollection
@@ -93,6 +97,7 @@ Type TPlayerBoss
 
 	Method RegisterEvents:Int()
 		EventManager.registerListenerMethod("broadcasting.finish", self, "onFinishBroadcasting")
+		EventManager.registerListenerMethod("player.onEnterRoom", self, "onPlayerEnterRoom")
 	End Method
 
 
@@ -114,23 +119,55 @@ Type TPlayerBoss
 
 		local broadcastMaterial:TBroadcastMaterial = TBroadcastMaterial(triggerEvent.GetData().Get("broadcastMaterial"))
 
-
-		rem
-		'toastmessage example
-		'only send out messages for the active player!
-		if self <> GetPlayerBossCollection().Get() then return False
-
-		local toast:TGameToastMessage = new TGameToastMessage
-		toast.SetMessageType(0)
-		toast.SetCaption("Boss: Was zum Teufel?")
-		toast.SetText("Sendeausfall ?!")
-		'close after 5 ingame minutes
-		toast.SetCloseAtWorldTime(GetWorldTime().GetTimeGone() + 300)
-		'or close after 10 seconds
-		toast.SetLifeTime(10)
-		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
-		end rem
+		If not broadcastMaterial and not awaitingPlayerVisit
+			awaitingPlayerVisit = True
+			CallPlayer()
+		EndIf
 	End Method
+
+
+	'called as soon as a player enters the boss' room
+	Method onPlayerEnterRoom:Int(triggerEvent:TEventSimple)
+		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
+		if not room then return False
+		'wrong room?
+		if room.name <> "chief" or room.owner <> playerID then return False
+
+		'only interested in the visit of the own player
+		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
+		if not player or playerID <> player.playerID then return False
+
+		'no longer await the visit of this player
+		awaitingPlayerVisit = False
+		print "no longer wait"
+	End Method
+	
+
+
+	'call this method to request the player to visit the boss
+	'-> this creates a toastmessage so the player can react
+	Method CallPlayer:Int()
+		local toast:TGameToastMessage = new TGameToastMessage
+		'until 2 hours
+		toast.SetCloseAtWorldTime(GetWorldTime().GetTimegone() + 2*3600 )
+		toast.SetMessageType(1)
+		toast.SetPriority(10)
+		toast.SetCaption("Dein Chef will dich sehen")
+		toast.SetText("Der Chef gibt dir 2 Stunden, sich bei Ihm zu melden. Hier klicken um den Besuch vorzeitig zu starten.")
+		toast.SetOnCloseFunction(onClosePlayerCallMessage)
+		toast.GetData().Add("boss", self)
+		GetToastMessageCollection().AddMessage(toast, "TOPLEFT")
+	End Method
+
+
+	'if a player clicks on the toastmessage calling him, he will get
+	'sent to the boss in that moment
+	Function onClosePlayerCallMessage:int(sender:TToastMessage)
+		local boss:TPlayerBoss = TPlayerBoss(sender.GetData().Get("boss"))
+		if not boss then return False
+
+'		GetPlayerCollection().Get(boss.playerID).figure.SendToDoor( TRoomDoor.GetByDetails("chief", boss.playerID), True )
+	End Function
 End Type
 
 
