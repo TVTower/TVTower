@@ -249,7 +249,7 @@ Type TRoomDoorTooltip extends TTooltip
 		'adjust image used in tooltip
 		If room.name = "archive" Then tooltipimage = 0
 		If room.name = "office" Then tooltipimage = 1
-		If room.name = "chief" Then tooltipimage = 2
+		If room.name = "boss" Then tooltipimage = 2
 		If room.name = "news" Then tooltipimage = 4
 		If room.name.Find("studio",0) = 0 Then tooltipimage = 5
 		'adjust header bg color
@@ -4157,7 +4157,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		'register self for all bosses
 		For local i:int = 1 to 4
-			local room:TRoom = GetRoomCollection().GetFirstByDetails("chief", i)
+			local room:TRoom = GetRoomCollection().GetFirstByDetails("boss", i)
 			if room then super._RegisterHandler(RoomHandler_Chief.Update, RoomHandler_Chief.Draw, room)
 		Next
 		'register dialogue handlers

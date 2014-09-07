@@ -21,7 +21,7 @@
 			<type>image</type>
  			<url>res/grafiken/buero/raum_buero.png</url>
 		</resource>
-		<resource name="screen_bg_chief">
+		<resource name="screen_bg_boss">
 			<type>image</type>
  			<url>res/grafiken/chef/raum_chef.png</url>
 		</resource>
@@ -76,7 +76,7 @@
 	</resources>
 	<screens>
 		<screen name="screen_archive" image="screen_bg_archive" />
-		<screen name="screen_chief" image="screen_bg_chief" />
+		<screen name="screen_boss" image="screen_bg_boss" />
 		<screen name="screen_studio" image="screen_bg_studio" />
 		<screen name="screen_supermarket" image="screen_bg_supermarket" />
 		<screen name="screen_betty" image="screen_bg_betty" />
@@ -135,20 +135,20 @@
 			<door doorslot="2" floor="11" doortype="3" />
 		</room>
 
-		<room name="chief" owner="1" screen="screen_chief">
-			<tooltip text="ROOM_CHIEF_OF" />
+		<room name="boss" owner="1" screen="screen_boss">
+			<tooltip text="ROOM_BOSS_OF" />
 			<door doorslot="3" floor="2" doortype="4" />
 		</room>
-		<room name="chief" owner="2" screen="screen_chief">
-			<tooltip text="ROOM_CHIEF_OF" />
+		<room name="boss" owner="2" screen="screen_boss">
+			<tooltip text="ROOM_BOSS_OF" />
 			<door doorslot="3" floor="5" doortype="4" />
 		</room>
-		<room name="chief" owner="3" screen="screen_chief">
-			<tooltip text="ROOM_CHIEF_OF" />
+		<room name="boss" owner="3" screen="screen_boss">
+			<tooltip text="ROOM_BOSS_OF" />
 			<door doorslot="3" floor="8" doortype="4" />
 		</room>
-		<room name="chief" owner="4" screen="screen_chief">
-			<tooltip text="ROOM_CHIEF_OF" />
+		<room name="boss" owner="4" screen="screen_boss">
+			<tooltip text="ROOM_BOSS_OF" />
 			<door doorslot="3" floor="11" doortype="4" />
 		</room>
 

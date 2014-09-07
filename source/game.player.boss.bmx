@@ -165,7 +165,7 @@ Type TPlayerBoss
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
 		if not room then return False
 		'wrong room?
-		if room.name <> "chief" or room.owner <> playerID then return False
+		if room.name <> "boss" or room.owner <> playerID then return False
 
 		'only interested in the visit of the own player
 		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())
@@ -182,7 +182,7 @@ Type TPlayerBoss
 		local room:TRoomBase = TRoomBase(triggerEvent.GetReceiver())
 		if not room then return False
 		'wrong room?
-		if room.name <> "chief" or room.owner <> playerID then return False
+		if room.name <> "boss" or room.owner <> playerID then return False
 
 		'only interested in the visit of the own player
 		local player:TPlayerBase = TPlayerBase(triggerEvent.GetSender())

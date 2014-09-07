@@ -342,7 +342,7 @@ Type TLuaFunctions {_exposeToLua}
 
 		ret.ROOM_ARCHIVE_PLAYER_ME = GetRoomCollection().GetFirstByDetails("archive", pPlayerId).id
 		ret.ROOM_NEWSAGENCY_PLAYER_ME = GetRoomCollection().GetFirstByDetails("news", pPlayerId).id
-		ret.ROOM_BOSS_PLAYER_ME = GetRoomCollection().GetFirstByDetails("chief", pPlayerId).id
+		ret.ROOM_BOSS_PLAYER_ME = GetRoomCollection().GetFirstByDetails("boss", pPlayerId).id
 		ret.ROOM_OFFICE_PLAYER_ME = GetRoomCollection().GetFirstByDetails("office", pPlayerId).id
 
 		REM
@@ -350,25 +350,25 @@ Type TLuaFunctions {_exposeToLua}
 
 		ret.ROOM_ARCHIVE_PLAYER1 = GetRoomCollection().GetFirstByDetails("archive", 1).id
 		ret.ROOM_NEWSAGENCY_PLAYER1 = GetRoomCollection().GetFirstByDetails("news", 1).id
-		ret.ROOM_BOSS_PLAYER1 = GetRoomCollection().GetFirstByDetails("chief", 1).id
+		ret.ROOM_BOSS_PLAYER1 = GetRoomCollection().GetFirstByDetails("boss", 1).id
 		ret.ROOM_OFFICE_PLAYER1 = GetRoomCollection().GetFirstByDetails("office", 1).id
 		ret.ROOM_START_STUDIO_PLAYER1 = GetRoomCollection().GetFirstByDetails("studio", 1).id
 
 		ret.ROOM_ARCHIVE_PLAYER2 = GetRoomCollection().GetFirstByDetails("archive", 2).id
 		ret.ROOM_NEWSAGENCY_PLAYER2 = GetRoomCollection().GetFirstByDetails("news", 2).id
-		ret.ROOM_BOSS_PLAYER2 = GetRoomCollection().GetFirstByDetails("chief", 2).id
+		ret.ROOM_BOSS_PLAYER2 = GetRoomCollection().GetFirstByDetails("boss", 2).id
 		ret.ROOM_OFFICE_PLAYER2 = GetRoomCollection().GetFirstByDetails("office", 2).id
 		ret.ROOM_START_STUDIO_PLAYER2 = GetRoomCollection().GetFirstByDetails("studio", 2).id
 
 		ret.ROOM_ARCHIVE_PLAYER3 = GetRoomCollection().GetFirstByDetails("archive", 3).id
 		ret.ROOM_NEWSAGENCY_PLAYER3 = GetRoomCollection().GetFirstByDetails("news", 3).id
-		ret.ROOM_BOSS_PLAYER3 = GetRoomCollection().GetFirstByDetails("chief", 3).id
+		ret.ROOM_BOSS_PLAYER3 = GetRoomCollection().GetFirstByDetails("boss", 3).id
 		ret.ROOM_OFFICE_PLAYER3 = GetRoomCollection().GetFirstByDetails("office", 3).id
 		ret.ROOM_START_STUDIO_PLAYER3 = GetRoomCollection().GetFirstByDetails("studio", 3).id
 
 		ret.ROOM_ARCHIVE_PLAYER4 = GetRoomCollection().GetFirstByDetails("archive", 4).id
 		ret.ROOM_NEWSAGENCY_PLAYER4 = GetRoomCollection().GetFirstByDetails("news", 4).id
-		ret.ROOM_BOSS_PLAYER4 = GetRoomCollection().GetFirstByDetails("chief", 4).id
+		ret.ROOM_BOSS_PLAYER4 = GetRoomCollection().GetFirstByDetails("boss", 4).id
 		ret.ROOM_OFFICE_PLAYER4 = GetRoomCollection().GetFirstByDetails("office", 4).id
 		ret.ROOM_START_STUDIO_PLAYER4 = GetRoomCollection().GetFirstByDetails("studio", 4).id
 		End Rem

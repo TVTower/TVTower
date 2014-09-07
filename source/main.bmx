@@ -385,7 +385,7 @@ Type TApp
 
 					if KEYMANAGER.IsHit(KEY_Y)
 '						print "send to chef:"
-						GetPlayerCollection().Get().figure.SendToDoor( TRoomDoor.GetByDetails("chief", 1), True )
+						GetPlayerCollection().Get().figure.SendToDoor( TRoomDoor.GetByDetails("boss", 1), True )
 '						GetWorld().Weather.SetPressure(-14)
 '						GetWorld().Weather.SetTemperature(-10)
 					endif
@@ -402,7 +402,7 @@ Type TApp
 						If KEYMANAGER.IsHit(KEY_B) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("betty") )
 						If KEYMANAGER.IsHit(KEY_F) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("movieagency"))
 						If KEYMANAGER.IsHit(KEY_O) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("office", GetPlayerCollection().playerID))
-						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("chief", GetPlayerCollection().playerID))
+						If KEYMANAGER.IsHit(KEY_C) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("boss", GetPlayerCollection().playerID))
 
 						'e wie "employees" :D
 						If KEYMANAGER.IsHit(KEY_E) Then DEV_switchRoom(GetRoomCollection().GetFirstByDetails("credits"))
