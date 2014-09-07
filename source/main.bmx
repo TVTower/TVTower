@@ -34,6 +34,8 @@ Import "Dig/base.gfx.gui.dropdown.bmx"
 Import "Dig/base.gfx.gui.checkbox.bmx"
 Import "Dig/base.gfx.gui.input.bmx"
 Import "Dig/base.gfx.gui.window.modal.bmx"
+Import "Dig/base.framework.tooltip.bmx"
+
 
 Import "basefunctions_network.bmx"
 Import "basefunctions.bmx"
