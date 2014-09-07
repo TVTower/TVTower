@@ -72,6 +72,7 @@ Import "game.player.programmecollection.bmx"
 Import "game.player.programmeplan.bmx"
 
 Import "game.room.base.bmx"
+Import "game.betty.bmx"
 
 '===== Includes =====
 Include "game.player.bmx"
@@ -82,7 +83,6 @@ Include "gamefunctions.bmx"
 
 Include "game.ingameinterface.bmx"
 
-Include "gamefunctions_betty.bmx"
 Include "gamefunctions_screens.bmx"
 Include "gamefunctions_tvprogramme.bmx"  		'contains structures for TV-programme-data/Blocks and dnd-objects
 Include "gamefunctions_rooms.bmx"				'basic roomtypes with handling
@@ -771,6 +771,7 @@ Type TSaveGame
 	Field _WorldTime:TWorldTime = Null
 	Field _World:TWorld = Null
 	Field _GameRules:TGamerules = Null
+	Field _Betty:TBetty = Null
 	Field _AdContractBaseCollection:TAdContractBaseCollection = Null
 	Field _AdContractCollection:TAdContractCollection = Null
 	Field _ProgrammeDataCollection:TProgrammeDataCollection = Null
@@ -818,6 +819,7 @@ Type TSaveGame
 		_Assign(_PopularityManager, TPopularityManager._instance, "PopularityManager", MODE_LOAD)
 		_Assign(_BroadcastManager, TBroadcastManager._instance, "BroadcastManager", MODE_LOAD)
 		_Assign(_StationMapCollection, TStationMapCollection._instance, "StationMapCollection", MODE_LOAD)
+		_Assign(_Betty, TBetty._instance, "Betty", MODE_LOAD)
 		_Assign(_World, TWorld._instance, "World", MODE_LOAD)
 		_Assign(_WorldTime, TWorldTime._instance, "WorldTime", MODE_LOAD)
 		_Assign(_GameRules, GameRules, "GameRules", MODE_LOAD)
@@ -856,6 +858,7 @@ Type TSaveGame
 		_Assign(TPopularityManager._instance, _PopularityManager, "PopularityManager", MODE_SAVE)
 		_Assign(TBroadcastManager._instance, _BroadcastManager, "BroadcastManager", MODE_SAVE)
 		_Assign(TStationMapCollection._instance, _StationMapCollection, "StationMapCollection", MODE_SAVE)
+		_Assign(TBetty._instance, _Betty, "Betty", MODE_SAVE)
 		_Assign(TWorld._instance, _World, "World", MODE_SAVE)
 		_Assign(TWorldTime._instance, _WorldTime, "WorldTime", MODE_SAVE)
 		_Assign(GameRules, _GameRules, "GameRules", MODE_SAVE)
@@ -2756,9 +2759,9 @@ Type GameEvents
 		If GetWorldTime().GetDaysRun() >= 1
 
 			'Neuer Award faellig?
-			If Betty.GetAwardEnding() < GetWorldTime().getDay() - 1
-				Betty.GetLastAwardWinner()
-				Betty.SetAwardType(RandRange(0, Betty.MaxAwardTypes), True)
+			If GetBetty().GetAwardEnding() < GetWorldTime().getDay() - 1
+				GetBetty().GetLastAwardWinner()
+				GetBetty().SetAwardType(RandRange(0, GetBetty().MaxAwardTypes), True)
 			End If
 
 			GetProgrammeDataCollection().RefreshTopicalities()

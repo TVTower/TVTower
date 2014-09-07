@@ -1,4 +1,9 @@
-Global Betty:TBetty = New TBetty
+SuperStrict
+Import "game.world.worldtime.bmx"
+
+
+
+
 Type TBetty
 	Field InLove:Float[5]
 	Field LoveSum:Float
@@ -10,9 +15,16 @@ Type TBetty
 	Field AwardDuration:Int = 3
 	Field LastAwardWinner:Int = 0
 	Field LastAwardType:Int = 0
+	Global _instance:TBetty
 
 
-	Method IncInLove(PlayerID:Int, Amount:Float)
+	Function GetInstance:TBetty()
+		if not _instance then _instance = new TBetty
+		return _instance
+	End Function
+
+
+	Method AdjustLove(PlayerID:Int, Amount:Float)
 		For Local i:Int = 1 To 4
 			Self.InLove[i] :-Amount / 4
 		Next
@@ -24,7 +36,7 @@ Type TBetty
 	End Method
 
 
-	Method IncAward(PlayerID:Int, Amount:Float)
+	Method AdjustAward(PlayerID:Int, Amount:Float)
 		For Local i:Int = 1 To 4
 			Self.AwardWinner[i] :-Amount / 4
 		Next
@@ -81,3 +93,7 @@ Type TBetty
 		Return Ceil(100 * Self.AwardWinner[PlayerID] / Self.AwardSum)
 	End Method
 End Type
+
+Function GetBetty:TBetty()
+	Return TBetty.GetInstance()
+End Function
