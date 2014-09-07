@@ -191,4 +191,14 @@ Type TRoomDoorBase extends TStaticEntity  {_exposeToLua="selected"}
 	Method DrawOnBackground:Int(pix:TPixmap)
 		'base door does nothing
 	End Method
+
+
+	Method GetOwnerName:String()
+		return "unknown"
+	End Method
+
+
+	Method GetOwner:Int()
+		return 0
+	End Method
 End Type

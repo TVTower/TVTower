@@ -73,6 +73,7 @@ Import "game.player.programmecollection.bmx"
 Import "game.player.programmeplan.bmx"
 
 Import "game.room.base.bmx"
+Import "game.room.roomdoorsign.bmx"
 Import "game.betty.bmx"
 
 '===== Includes =====
@@ -1226,12 +1227,12 @@ Type TFigureTerrorist Extends TFigure
 				'instead of sending the figure to the correct door, we
 				'ask the roomsigns where to go to
 				'1) get sign of the door
-				local signA:TRoomDoorSign = TRoomDoorSign.GetFirstByRoom(deliverToRoom)
+				local signA:TRoomDoorSign = TRoomDoor(TRoomDoor.GetMainDoorToRoom(deliverToRoom)).sign
 				'2) get sign which is now at the original position of signA
 				local signB:TRoomDoorSign = TRoomDoorSign.GetByCurrentPosition(signA.signSlot, signA.signFloor)
 
 				if signB
-					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+signb.door.room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+TRoomDoor(signb.door).room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					SendToDoor(signb.door)
 				else
 					TLogger.Log("TFigureTerrorist", self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
