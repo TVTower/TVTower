@@ -7,6 +7,92 @@ Import "game.world.worldtime.bmx"
 Import "game.room.roomdoor.base.bmx"
 
 
+Type TRoomBaseCollection
+	Field list:TList = CreateList()
+	Global _eventsRegistered:int= FALSE
+	Global _instance:TRoomBaseCollection
+
+
+	Method New()
+		if not _eventsRegistered
+			'handle savegame loading (assign sprites)
+			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
+			_eventsRegistered = TRUE
+		Endif
+	End Method
+
+
+	Function GetInstance:TRoomBaseCollection()
+		if not _instance then _instance = new TRoomBaseCollection
+		return _instance
+	End Function
+
+
+	Method Add:int(room:TRoomBase)
+		List.AddLast(room)
+		return TRUE
+	End Method
+
+
+	Method Remove:int(room:TRoomBase)
+		List.Remove(room)
+		return TRUE
+	End Method
+
+
+	Function Get:TRoomBase(ID:int)
+		For Local room:TRoomBase = EachIn _instance.list
+			If room.id = ID Then Return room
+		Next
+		Return Null
+	End Function
+
+
+	Function GetRandom:TRoomBase()
+		return TRoomBase( _instance.list.ValueAtIndex( Rand(_instance.list.Count() - 1) ) )
+	End Function
+
+
+	'returns all room fitting to the given details
+	Function GetAllByDetails:TRoomBase[]( name:String, owner:Int=-1000 ) {_exposeToLua}
+		local rooms:TRoomBase[]
+		For Local room:TRoomBase = EachIn _instance.list
+			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
+			'skip wrong owners
+			if owner <> -1000 and room.owner <> owner then continue
+
+			If room.name = name Then rooms :+ [room]
+		Next
+		Return rooms
+	End Function
+
+
+	Function GetFirstByDetails:TRoomBase( name:String, owner:Int=-1000 ) {_exposeToLua}
+		local rooms:TRoomBase[] = GetAllByDetails(name,owner)
+		if not rooms or rooms.length = 0 then return Null
+		return rooms[0]
+	End Function
+
+
+	'=== EVENTS ===
+
+	'run when loading finished
+	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
+		TLogger.Log("TRoomCollection", "Savegame started loading - clean occupants list", LOG_DEBUG | LOG_SAVELOAD)
+		For local room:TRoomBase = eachin _instance.list
+			room.occupants.Clear()
+		Next
+	End Function
+End Type
+
+'===== CONVENIENCE ACCESSOR =====
+'return collection instance
+Function GetRoomBaseCollection:TRoomBaseCollection()
+	Return TRoomBaseCollection.GetInstance()
+End Function
+
+
+
 
 Type TRoomBase {_exposeToLua="selected"}
 	Field name:string

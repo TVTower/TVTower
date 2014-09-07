@@ -1,76 +1,46 @@
-﻿Type TRoomCollection
-	Field list:TList = CreateList()
-	Global _eventsRegistered:int= FALSE
-	Global _instance:TRoomCollection
-
-
-	Method New()
-		if not _eventsRegistered
-			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnBeginLoad", onSaveGameBeginLoad)
-			_eventsRegistered = TRUE
-		Endif
-	End Method
-
-
+﻿Type TRoomCollection Extends TRoomBaseCollection
 	Function GetInstance:TRoomCollection()
-		if not _instance then _instance = new TRoomCollection
-		return _instance
+		if not _instance
+			_instance = new TRoomCollection
+
+		'if the instance was created, but was a "base" one, create
+		'a new and take over the values
+		'==== ATTENTION =====
+		'NEVER store _instance somewhere without paying attention
+		'to this "whacky hack"
+		elseif not TRoomCollection(_instance)
+			local collection:TRoomCollection = new TRoomCollection
+			collection.list = _instance.list
+			'now the new collection is the instance
+			_instance = collection
+		endif
+		return TRoomCollection(_instance)
 	End Function
 
 
-	Method Add:int(room:TRoomBase)
-		List.AddLast(room)
-		return TRUE
-	End Method
-
-
-	Method Remove:int(room:TRoomBase)
-		List.Remove(room)
-		return TRUE
-	End Method
-
-
 	Function Get:TRoom(ID:int)
-		For Local room:TRoom = EachIn _instance.list
-			If room.id = ID Then Return room
-		Next
-		Return Null
+		Return TRoom(Super.Get(ID))
 	End Function
 
 
 	Function GetRandom:TRoom()
-		return TRoom( _instance.list.ValueAtIndex( Rand(_instance.list.Count() - 1) ) )
+		Return TRoom(Super.GetRandom())
 	End Function
 
 
 	'returns all room fitting to the given details
 	Function GetAllByDetails:TRoom[]( name:String, owner:Int=-1000 ) {_exposeToLua}
-		local rooms:TRoom[]
-		For Local room:TRoom = EachIn _instance.list
-			'print name+" <> "+room.name+"   "+owner+" <> "+room.owner
-			'skip wrong owners
-			if owner <> -1000 and room.owner <> owner then continue
-
-			If room.name = name Then rooms :+ [room]
+		local rooms:TRoomBase[] = Super.GetAllByDetails(name, owner)
+		local result:TRoom[]
+		For Local room:TRoom = EachIn rooms
+			result :+ [room]
 		Next
-		Return rooms
+		Return result
 	End Function
 
 
 	Function GetFirstByDetails:TRoom( name:String, owner:Int=-1000 ) {_exposeToLua}
-		local rooms:TRoom[] = GetAllByDetails(name,owner)
-		if not rooms or rooms.length = 0 then return Null
-		return rooms[0]
-	End Function
-
-
-	'run when loading finished
-	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
-		TLogger.Log("TRoomCollection", "Savegame started loading - clean occupants list", LOG_DEBUG | LOG_SAVELOAD)
-		For local room:TRoom = eachin _instance.list
-			room.occupants.Clear()
-		Next
+		return TRoom(Super.GetFirstByDetails(name, owner))
 	End Function
 End Type
 
@@ -243,7 +213,7 @@ Type TRoomDoorTooltip extends TTooltip
 
 
 	Method Update:Int()
-		local room:TRoom = GetRoomCollection().Get(roomID)
+		local room:TRoomBase = GetRoomBaseCollection().Get(roomID)
 		if not room then return False
 
 		'adjust image used in tooltip
