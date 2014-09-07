@@ -565,6 +565,11 @@ Type TRoomHandler
 	End Function
 
 
+	'call this function if the visual user actions need to get aborted
+	Function AbortScreenActions:Int()
+		'by default nothing has to get done
+	End Function
+
 '	Function Init() abstract
 '	Function Update:int( triggerEvent:TEventBase ) abstract
 '	Function Draw:int( triggerEvent:TEventBase ) abstract
@@ -880,6 +885,38 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'===== OFFICE PROGRAMME PLANNER SCREEN =====
 
+	'call this function if the visual user actions need to get
+	'aborted
+	'clear the screen (remove dragged elements)
+	Function AbortScreenActions:Int()
+		'=== PROGRAMMEPLANNER ===
+		if draggedGuiProgrammePlanElement
+			'Try to drop back the element
+			draggedGuiProgrammePlanElement.dropBackToOrigin()
+			'successful or not - get rid of the gui element
+			'(if it was a clone with no dropback-possibility this
+			'just removes the clone, no worries)
+			draggedGuiProgrammePlanElement = null
+			hoveredGuiProgrammePlanElement = null
+		endif
+
+		'Try to drop back dragged elements
+		For local obj:TGUIProgrammePlanElement = eachIn GuiManager.ListDragged
+			obj.dropBackToOrigin()
+			'successful or not - get rid of the gui element
+			obj.Remove()
+		Next
+
+		'=== STATIONMAP ===
+		'...
+
+		'=== IMAGE SCREEN ===
+		'...
+
+		'...
+	End Function
+
+
 	'=== EVENTS ===
 
 	'clear the guilist if a player enters
@@ -926,11 +963,7 @@ Type RoomHandler_Office extends TRoomHandler
 		PPprogrammeList.SetOpen(0)
 		PPcontractList.SetOpen(0)
 
-		'abort handling dragged elements
-		If draggedGuiProgrammePlanElement then draggedGuiProgrammePlanElement.dropBackToOrigin()
-		For local obj:TGUIProgrammePlanElement = eachIn GuiManager.ListDragged
-			obj.dropBackToOrigin()
-		Next
+		AbortScreenActions()
 
 		'=== STATION MAP ===
 		'---
@@ -1327,13 +1360,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if draggedGuiProgrammePlanElement
-			if KeyManager.IsHit(KEY_ESCAPE)
-				draggedGuiProgrammePlanElement.dropBackToOrigin()
-				draggedGuiProgrammePlanElement = null
-				hoveredGuiProgrammePlanElement = null
-			endif
-		endif
+		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
 
 		Game.cursorstate = 0
 
@@ -1515,7 +1542,13 @@ Type RoomHandler_Office extends TRoomHandler
 		end select
 
 		'create and drag
-		if newMaterial then new TGUIProgrammePlanElement.CreateWithBroadcastMaterial(newMaterial, "programmePlanner").drag()
+		if newMaterial
+			local guiObject:TGUIProgrammePlanElement = new TGUIProgrammePlanElement.CreateWithBroadcastMaterial(newMaterial, "programmePlanner")
+			guiObject.drag()
+			'remove position backup so a "dropback" does not work, and
+			'the item does not drop back to "0,0"
+			guiObject.positionBackup = null
+		endif
 	End Function
 
 
@@ -2582,6 +2615,18 @@ Type RoomHandler_Archive extends TRoomHandler
 	End Function
 
 
+	'clear the screen (remove dragged elements)
+	Function AbortScreenActions:Int()
+		'abort handling dragged elements
+		If draggedGuiProgrammeLicence
+			draggedGuiProgrammeLicence.dropBackToOrigin()
+			'remove in all cases
+			draggedGuiProgrammeLicence = null
+			hoveredGuiProgrammeLicence = null
+		EndIf
+	End Function
+
+
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
@@ -2644,8 +2689,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
-		'abort handling dragged elements
-		If draggedGuiProgrammeLicence then draggedGuiProgrammeLicence.dropBackToOrigin()
+		AbortScreenActions()
 
 		'instead of leaving the room and accidentially removing programmes
 		'from the plan we readd all licences from the suitcase back to
@@ -2990,6 +3034,18 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	End Method
 
 
+	Function AbortScreenActions:Int()
+		if draggedGuiProgrammeLicence
+			if KeyManager.IsHit(KEY_ESCAPE)
+				'try to drop the licence back
+				draggedGuiProgrammeLicence.dropBackToOrigin()
+				draggedGuiProgrammeLicence = null
+				hoveredGuiProgrammeLicence = null
+			endif
+		endif
+	End Function
+
+
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		'as soon as a savegame gets loaded, we remove every
 		'guiElement this room manages
@@ -3056,8 +3112,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
-		'abort handling dragged elements
-		If draggedGuiProgrammeLicence then draggedGuiProgrammeLicence.dropBackToOrigin()
+		AbortScreenActions()
 	End Function
 
 	'===================================
@@ -3523,13 +3578,7 @@ endrem
 		Game.cursorstate = 0
 
 		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if draggedGuiProgrammeLicence
-			if KeyManager.IsHit(KEY_ESCAPE)
-				draggedGuiProgrammeLicence.dropBackToOrigin()
-				draggedGuiProgrammeLicence = null
-				hoveredGuiProgrammeLicence = null
-			endif
-		endif
+		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
 
 
 		'show a auction-tooltip (but not if we dragged a block)
@@ -3693,6 +3742,18 @@ Type RoomHandler_News extends TRoomHandler
 	End Function
 
 
+	Function AbortScreenActions:Int()
+		if draggedGuiNews
+			if KeyManager.IsHit(KEY_ESCAPE)
+				'try to drop the licence back
+				draggedGuiNews.dropBackToOrigin()
+				draggedGuiNews = null
+				hoveredGuiNews = null
+			endif
+		endif
+	End Function
+
+
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		'for further explanation of this, check
 		'RoomHandler_Office.onSaveGameBeginLoad()
@@ -3709,8 +3770,7 @@ Type RoomHandler_News extends TRoomHandler
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
-		'abort handling dragged elements
-		If draggedGuiNews then draggedGuiNews.dropBackToOrigin()
+		AbortScreenActions()
 	End Function
 
 
@@ -3969,11 +4029,7 @@ EndRem
 		if not room then return 0
 
 		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if draggedGuiNews
-			if KeyManager.IsHit(KEY_ESCAPE)
-				draggedGuiNews.dropBackToOrigin()
-			endif
-		endif
+		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
 
 		Game.cursorstate = 0
 
@@ -4341,6 +4397,38 @@ Type RoomHandler_AdAgency extends TRoomHandler
 	End Method
 
 
+	Function AbortScreenActions:Int()
+		if draggedGuiAdContract
+			if KeyManager.IsHit(KEY_ESCAPE)
+				'try to drop the licence back
+				draggedGuiAdContract.dropBackToOrigin()
+				draggedGuiAdContract = null
+				hoveredGuiAdContract = null
+			endif
+		endif
+
+		'remove and recreate all (so they get the correct visual style)
+		'do not use that - it reorders elements and changes the position
+		'of empty slots ... maybe unwanted
+		'GetInstance().RemoveAllGuiElements()
+		'GetInstance().RefreshGuiElements()
+
+
+		'change look to "stand on table look"
+		For local i:int = 0 to GuiListNormal.length-1
+			For Local obj:TGUIAdContract = EachIn GuiListNormal[i]._slots
+				obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
+			Next
+		Next
+		For Local obj:TGUIAdContract = EachIn GuiListCheap._slots
+			obj.InitAssets(obj.getAssetName(-1, FALSE), obj.getAssetName(-1, TRUE))
+		Next
+
+	End Function
+
+
+
+
 	Function onSaveGameBeginLoad(triggerEvent:TEventBase)
 		'as soon as a savegame gets loaded, we remove every
 		'guiElement this room manages
@@ -4428,23 +4516,11 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
-		if draggedGuiAdContract then draggedGuiAdContract.dropBackToOrigin()
-
 		'instead of leaving the room and accidentially adding contracts
 		'we delete all unsigned contracts from the list
 		GetPlayerProgrammeCollectionCollection().Get(GetPlayer().playerID).suitcaseAdContracts.Clear()
 
-
-		'remove and recreate all (so they get the correct visual style)
-		GetInstance().RemoveAllGuiElements()
-		GetInstance().RefreshGuiElements()
-
-		'For local obj:TGuiAdContract = eachIn GuiManager.ListDragged
-		'	obj.dropBackToOrigin()
-		'Next
-		'style them again correctly
-		'change look
-		'block.InitAssets(block.getAssetName(-1, TRUE), block.getAssetName(-1, TRUE))
+		AbortScreenActions()
 	End Function
 
 
@@ -4951,13 +5027,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		if not room then return 0
 
 		'if we have a licence dragged ... we should take care of "ESC"-Key
-		if draggedGuiAdContract
-			if KeyManager.IsHit(KEY_ESCAPE)
-				draggedGuiAdContract.dropBackToOrigin()
-				draggedGuiAdContract = null
-				hoveredGuiAdContract = null
-			endif
-		endif
+		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
 
 		Game.cursorstate = 0
 
@@ -5055,6 +5125,12 @@ Type RoomHandler_Roomboard extends TRoomHandler
 	End Function
 
 
+	Function AbortScreenActions:Int()
+		TRoomDoorSign.DropBackDraggedSigns()
+		TRoomDoorSign.UpdateAll(False)
+	End Function
+	
+
 	'gets called if somebody tries to leave the roomboard
 	Function onTryLeaveRoom:int(triggerEvent:TEventBase )
 		local figure:TFigure = TFigure( triggerEvent.GetSender())
@@ -5079,8 +5155,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		'only handle the players figure
 		if TFigure(triggerEvent.GetSender()) <> GetPlayerCollection().Get().figure then return False
 
-		TRoomDoorSign.DropBackDraggedSigns()
-		TRoomDoorSign.UpdateAll(False)
+		AbortScreenActions()
 	End Function
 
 	
@@ -5096,6 +5171,8 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		if not TRoom(triggerEvent._sender) then return 0
 
 		Game.cursorstate = 0
+
+		if KeyManager.IsHit(KEY_ESCAPE) then AbortScreenActions()
 
 		'only allow dragging of roomsigns when no exitapp-dialoge exists
 		if not TApp.ExitAppDialogue
