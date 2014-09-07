@@ -265,6 +265,8 @@ Type TBuilding Extends TStaticEntity
 
 
 		If roomUsedTooltip Then roomUsedTooltip.Update()
+		'Tooltips aktualisieren
+		TRoomDoor.UpdateToolTips()
 
 
 		'handle player target changes
@@ -316,6 +318,7 @@ Type TBuilding Extends TStaticEntity
 
 		'draw overlay - open doors are drawn over "background-image-doors" etc.
 		GetRoomDoorBaseCollection().DrawAllDoors()
+		
 		'draw elevator parts
 		Elevator.Render()
 		'draw softdrinkmachine

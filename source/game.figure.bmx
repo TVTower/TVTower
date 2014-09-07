@@ -1,23 +1,16 @@
 'SuperStrict
-'Import "Dig/base.framework.entity.spriteentity.bmx"
 'Import "game.gameobject.bmx"
 
 
-'todo: auf import umstellen
-'Include "gamefunctions_rooms.bmx"
-
-
-Type TFigureCollection
-	Field list:TList = CreateList()
-	Field lastFigureID:int = 0
+Type TFigureCollection extends TFigureBaseCollection
+	'custom eventsregistered variable - because we listen to more events
 	Global _eventsRegistered:int= FALSE
-	Global _instance:TFigureCollection
 
 
 	Method New()
 		if not _eventsRegistered
-			'handle savegame loading (assign sprites)
-			EventManager.registerListenerFunction("SaveGame.OnLoad", onSaveGameLoad)
+			'TFigure can handle rooms, TFigureBase not - so listen only
+			'in this collection
 			EventManager.registerListenerFunction("room.onLeave", onLeaveRoom)
 			EventManager.registerListenerFunction("room.onEnter", onEnterRoom)
 
@@ -26,53 +19,33 @@ Type TFigureCollection
 	End Method
 
 
+	'override - create a FigureCollection instead of FigureBaseCollection
 	Function GetInstance:TFigureCollection()
-		if not _instance then _instance = new TFigureCollection
-		return _instance
+		if not _instance
+			_instance = new TFigureCollection
+
+		'if the instance was created, but was a "base" one, create
+		'a new and take over the values
+		'==== ATTENTION =====
+		'NEVER store _instance somewhere without paying attention
+		'to this "whacky hack"
+		elseif not TFigureCollection(_instance)
+			local collection:TFigureCollection = new TFigureCollection
+			collection.list = _instance.list
+			collection.lastFigureID = _instance.lastFigureID
+			'now the new collection is the instance
+			_instance = collection
+		endif
+		return TFigureCollection(_instance)
 	End Function
-
-
-	Method GenerateID:int()
-		lastFigureID :+1
-		return lastFigureID
-	End Method
 
 
 	Method Get:TFigure(figureID:int)
-		For local figure:TFigure = eachin List
-			if figure.id = figureID then return figure
-		Next
-		return Null
+		Return TFigure(Super.Get(figureID))
 	End Method
 
 
-	Method Add:int(figure:TFigure)
-		'if there is a figure with the same id, remove that first
-		if figure.id > 0
-			local existingFigure:TFigure = Get(figure.id)
-			if existingFigure then Remove(existingFigure)
-		endif
-
-		List.AddLast(figure)
-		List.Sort()
-		return TRUE
-	End Method
-
-
-	Method Remove:int(figure:TFigure)
-		List.Remove(figure)
-		return TRUE
-	End Method
-
-
-	'run when loading finished
-	Function onSaveGameLoad(triggerEvent:TEventBase)
-		TLogger.Log("TFigureCollection", "Savegame loaded - reassigning sprites", LOG_DEBUG | LOG_SAVELOAD)
-		For local figure:TFigure = eachin _instance.list
-			figure.onLoad()
-		Next
-	End Function
-
+	'=== EVENTS ===
 
 	'gets called when the figure really enters a room (fadeout animation finished etc)
 	Function onEnterRoom:Int(triggerEvent:TEventBase)
@@ -106,26 +79,9 @@ End Function
 
 
 
-'Summary: all kind of characters walking through the building (players, terrorists and so on)
-Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
-	'area: from TEntity
-	' .position.y is difference to y of building
-	' .dimension.x and .y = "end" of figure in sprite
-	Field name:String = "unknown"
-	'backup of self.velocity.x
-	Field initialdx:Float = 0.0
-	Field PosOffset:TVec2D = new TVec2D.Init(0,0)
-	'0=no boarding, 1=boarding, -1=deboarding
-	Field boardingState:Int = 0
-
-	Field target:TVec2D	= Null {_exposeToLua}
-	'targetting a special object (door, hotspot) ?
-	Field targetObj:TStaticEntity
-
-	Field figureID:Int = 0
-	'does the figure accept manual (AI or user) ChangeTarget-commands?
-	Field controllable:Int = True
-
+'all kind of characters walking through the building
+'(players, terrorists and so on)
+Type TFigure extends TFigureBase
 	'active as soon as figure leaves/enters rooms
 	Field isChangingRoom:int = FALSE
 	'the door used (there might be multiple)
@@ -138,25 +94,10 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	'network sync position timer
 	Field SyncTimer:TIntervalTimer = TIntervalTimer.Create(2500)
 
-	Field ControlledByID:Int = -1
-	Field alreadyDrawn:Int = 0 			{nosave}
 	Field ParentPlayerID:int = 0
-	Field SoundSource:TFigureSoundSource = TFigureSoundSource.Create(Self) {nosave}
-	'whether this figure can move or not (eg. for debugging)
-	Field moveable:int = TRUE
-	Field greetOthers:int = TRUE
+	Field _soundSource:TSoundSourceElement {nosave}
+	'use the building coordinates or is the area absolute positioned?
 	Field useAbsolutePosition:int = FALSE
-	'when was the last greet to another figure?
-	Field lastGreetTime:int	= 0
-	'what was the last type of greet?
-	Field lastGreetType:int = -1
-	Field lastGreetFigureID:int = -1
-	'how long should the greet-sprite be shown
-	Global greetTime:int = 1000
-	'how long to wait intil I greet the same person again
-	Global greetEvery:int = 8000
-
-	Global _initDone:int = FALSE
 
 
 	Method Create:TFigure(FigureName:String, sprite:TSprite, x:Int, onFloor:Int = 13, speed:Int, ControlledByID:Int = -1)
@@ -188,9 +129,15 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetSoundSource:TSoundSourceElement()
+		if not _soundSource then _soundSource = TFigureSoundSource.Create(Self)
+		return _soundSource
+	End Method
+
+
+	'override to add room-support
 	Method onLoad:int()
-		'reassign sprite
-		if sprite and sprite.name then sprite = GetSpriteFromRegistry(sprite.name)
+		Super.onLoad()
 
 		'reassign rooms
 		if inRoom then inRoom = GetRoomCollection().Get(inRoom.id)
@@ -201,7 +148,6 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 		if inRoom and not inRoom.isOccupant(self)
 			inRoom.addOccupant(Self)
 		endif
-
 	End Method
 
 
@@ -241,15 +187,11 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	'return if a figure could change targets or receive commands
-	Method IsControllable:Int()
-		return controllable
-	End Method
-
-
 	Method IsActivePlayer:Int()
 		return (parentPlayerID = GetPlayerCollection().playerID)
 	End Method
+
+
 
 
 	Method FigureMovement:int()
@@ -309,9 +251,9 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 		'decide if we have to play sound
 		if GetVelocity().getX() <> 0 and not IsInElevator()
-			SoundSource.PlayOrContinueRandomSFX("steps")
+			GetSoundSource().PlayOrContinueRandomSFX("steps")
 		else
-			SoundSource.Stop("steps")
+			GetSoundSource().Stop("steps")
 		EndIf
 
 
@@ -337,15 +279,14 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 
 
 	'returns what animation has to get played in that moment
-	Method getAnimationToUse:string()
-		local result:string = "standFront"
-		'if standing
+	Method GetAnimationToUse:string()
+		'fetch the animation for walking and standing
+		local result:string = Super.GetAnimationToUse()
+
+		'check for special animations
 		If GetVelocity().GetX() = 0 or not moveable
-			'default - no movement needed
-			If boardingState = 0
-				result = "standFront"
 			'boarding/deboarding movement
-			Else
+			If boardingState <> 0
 				'multiply boardingState : if boarding it is 1, if deboarding it is -1
 				'so multiplying negates value if needed
 				If boardingState * PosOffset.GetX() > 0 Then result = "walkRight"
@@ -365,39 +306,11 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 			Else
 				result = "standFront"
 			EndIf
-		'if moving
-		Else
-			If GetVelocity().GetX() > 0 Then result = "walkRight"
-			If GetVelocity().GetX() < 0 Then result = "walkLeft"
 		EndIf
 
 		return result
 	End Method
 
-
-	Method CanSeeFigure:int(figure:TFigure, range:int=50)
-		'being in a room (or coming out of one)
-		if not IsVisible() or not IsVisible() then return FALSE
-		'from different floors
-		If area.GetY() <> Figure.area.GetY() then return FALSE
-		'and out of range
-		If Abs(area.GetX() - Figure.area.GetX()) > range then return FALSE
-
-		'same spot
-		if area.GetX() = figure.area.GetX() then return TRUE
-		'right of me
-		if area.GetX() < figure.area.GetX()
-			'i move to the left
-			If velocity.GetX() < 0 then return FALSE
-			return TRUE
-		'left of me
-		else
-			'i move to the right
-			If velocity.GetX() > 0 then return FALSE
-			return TRUE
-		endif
-		return FALSE
-	End Method
 
 
 	Method GetGreetingTypeForFigure:int(figure:TFigure)
@@ -416,7 +329,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetPeopleOnSameFloor()
+	Method GreetPeopleOnSameFloor()
 		For Local Figure:TFigure = EachIn GetFigureCollection().List
 			'skip other figures
 			if self = Figure then continue
@@ -457,6 +370,7 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	'override to take rooms into consideration
 	Method IsVisible:int()
 		'in a fake room?
 		if inRoom and inRoom.ShowsOccupants() then return True
@@ -468,25 +382,15 @@ Type TFigure extends TSpriteEntity {_exposeToLua="selected"}
 	Method IsInBuilding:int()
 		If isChangingRoom Then Return False
 		If inRoom Then Return False
-		return True
-rem
-		'going from building to room
-		If isChangingRoom and not inRoom then return True
-		'going from room to building
-		If isChangingRoom and inRoom then return False
-		'in a room
-		If inRoom then return False
-		'default
 		Return True
-endrem
 	End Method
 
 
+	'override to add buildingsupport
 	Method CanMove:int()
 		If not IsInBuilding() then return False
-		if not moveable then return False
 
-		return True
+		return Super.CanMove()
 	End Method
 
 
@@ -765,23 +669,18 @@ endrem
 	End Method
 
 
+	'overridden
 	'change the target of the figure
 	'@forceChange   defines wether the target could change target
 	'               even when not controllable
 	Method _ChangeTarget:Int(x:Int=-1, y:Int=-1, forceChange:Int=False)
-		if forceChange
-			'remove control
-			controllable = False
-		endif
+		'remove control
+		if forceChange then controllable = False
+		'is controlling allowed (eg. figure MUST go to a specific target)
+		if not forceChange and not IsControllable() then Return False
 
-		if not forceChange
-			'is controlling allowed (eg. figure MUST go to a specific target)
-			If not IsControllable() then Return False
-
-			'if player is in elevator dont accept changes
-			If GetBuilding().Elevator.passengers.Contains(Self) Then Return False
-		EndIf
-		
+		'if player is in elevator dont accept changes
+		if not forceChange and GetBuilding().Elevator.passengers.Contains(Self) Then Return False
 		'only change target if it's your figure or you are game leader
 		If self <> GetPlayerCollection().Get().figure And Not Game.isGameLeader() Then Return False
 
@@ -857,20 +756,6 @@ endrem
 	End Method
 
 
-	'forcefully change the target, even if not controllable
-	'eg. to send it to a boss' room
-	'do not expose this to AI - as it else could escape another forced
-	'target change
-	Method ForceChangeTarget:Int(x:Int=-1, y:Int=-1)
-		return _ChangeTarget(x,y, True)
-	End Method
-	
-
-	Method ChangeTarget:Int(x:Int=-1, y:Int=-1) {_exposeToLua}
-		return _ChangeTarget(x,y, False)
-	End Method
-
-
 	Method IsGameLeader:Int()
 		Return (id = GetPlayerCollection().playerID Or (IsAI() And GetPlayerCollection().playerID = Game.isGameLeader()))
 	End Method
@@ -886,15 +771,9 @@ endrem
 	End Method
 
 
+	'override to add support for hotspots/rooms and sending an event
 	Method reachTarget:int()
-		'regain control
-		controllable = True
-
-		velocity.SetX(0)
-		'set target as current position - so we are exactly there we want to be
-		if target then area.position.setX( target.getX() )
-		'remove target
-		target = null
+		Super.ReachTarget()
 
 		if targetObj
 			'emit an event
@@ -906,37 +785,21 @@ endrem
 			elseif TRoomDoor(targetObj)
 				local targetDoor:TRoomDoor = TRoomDoor(targetObj)
 
-				'do not remove the target room as it is done during "entering the room"
-				'(which can be animated and so we just trust the method to do it)
+				'do not remove the target room as it is done during
+				'"entering the room" (which can be animated and so we
+				'just trust the method to do it)
 				EnterRoom(targetDoor, null)
 			EndIf
 		endif
 	End Method
 
 
-	Method UpdateCustom:int()
-		'empty by default
-	End Method
-
-
 	Method Update:int()
-		'call parents update (which does movement and updates current
-		'animation)
+		'call figureBase update (does movement and updates current animation)
 		Super.Update()
 
-		Self.alreadydrawn = 0
 
-		'movement is not done when in a room
-		FigureMovement()
-		'set the animation
-		GetFrameAnimations().SetCurrent( getAnimationToUse() )
-
-		'this could be overwritten by extended types
-		UpdateCustom()
-
-
-
-		If isVisible() And CanMove() ')(CanMove() Or (inroom and inRoom.name = "elevatorplaner"))
+		If isVisible() And CanMove()
 			If HasToChangeFloor() And IsAtElevator() And Not IsInElevator()
 				'TODOX: Blockiert.. weil noch einer aus dem Plan auswählen will
 
@@ -962,18 +825,6 @@ endrem
 			SyncTimer.Reset()
 		EndIf
 	End Method
-
-
-	Method Network_SendPosition()
-		NetworkHelper.SendFigurePosition(Self)
-	End Method
-
-
-	Function UpdateAll()
-		For Local Figure:TFigure = EachIn GetFigureCollection().list
-			Figure.Update()
-		Next
-	End Function
 
 
 	Method Draw:int(overwriteAnimation:String="")
@@ -1028,7 +879,6 @@ endrem
 		endif
 		SetAlpha(oldAlpha)
 
-		if greetOthers then GetPeopleOnSameFloor()
+		if greetOthers then GreetPeopleOnSameFloor()
 	End Method
-
 End Type

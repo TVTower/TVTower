@@ -178,7 +178,6 @@ endrem
 
 		'programme broadcasting outage = ad fails too!
 		If audienceResult.broadcastOutage
-			print "Sendeausfall"
 			setState(STATE_FAILED)
 		'ad failed (audience lower than needed)
 		Else If audienceResult.Audience.GetSum() < contract.GetMinAudience()

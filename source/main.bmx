@@ -42,6 +42,7 @@ Import "basefunctions.bmx"
 Import "basefunctions_screens.bmx"
 Import "game.world.bmx"
 Import "game.toastmessage.bmx"
+Import "game.figure.base.bmx"
 
 ?Linux
 Import "external/bufferedglmax2d/bufferedglmax2d.bmx"

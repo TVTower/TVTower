@@ -71,7 +71,6 @@ Type TRoomDoorBaseCollection
 	End Method
 
 
-
 	Method GetRandom:TRoomDoorBase()
 		return TRoomDoorBase( list.ValueAtIndex( Rand(list.Count() - 1) ) )
 	End Method

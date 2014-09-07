@@ -215,10 +215,7 @@ Type TInGameScreen extends TScreen
 '			If GetPlayerCollection().Get().Figure.inRoom = Null Then Building.Update(deltaTime)
 			GetBuilding().Elevator.Update()
 
-			'Tooltips aktualisieren
-			TRoomDoor.UpdateToolTips()
-
-			TFigure.UpdateAll()
+			GetFigureCollection().UpdateAll()
 		EndIf
 	End Method
 

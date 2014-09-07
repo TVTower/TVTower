@@ -398,15 +398,14 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 
 		If tooltip AND tooltip.enabled
-			tooltip.Update()
-
-			tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
-			tooltip.area.position.setX( area.GetX() + area.GetW()/2 - tooltip.GetWidth()/2 )
-
-			'delete old tooltips
-			if tooltip.lifetime < 0 then tooltip = null
+			if tooltip.Update()
+				tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
+				tooltip.area.position.setX( area.GetX() + area.GetW()/2 - tooltip.GetWidth()/2 )
+			else
+				'delete old tooltips
+				tooltip = null
+			endif
 		EndIf
-
 	End Method
 
 
@@ -5789,6 +5788,10 @@ Function Init_CreateAllRooms()
 		if vars.GetInt("doorwidth") > 0
 			door.area.dimension.setX( vars.GetInt("doorwidth") )
 		endif
+
+		'add the door to the building?
+		'...
+
 
 		'==== HOTSPOTS ====
 		local hotSpots:TList = TList( vars.Get("hotspots") )

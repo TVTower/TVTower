@@ -90,6 +90,7 @@ Type TTooltip Extends TEntity
 			Image	= Null
 			enabled	= False
 			List.remove(Self)
+			Return False
 		EndIf
 
 		If dirtyImage
@@ -98,6 +99,7 @@ Type TTooltip Extends TEntity
 			'limit to screen too
 			area.position.SetY( Max(10, Min(area.GetY(), 600 - GetHeight())) )
 		EndIf
+		Return True
 	End Method
 
 

@@ -1,8 +1,16 @@
+Rem
+	====================================================================
+	Game specific implementation/configuration of the generic
+	TToastMessage.
+	====================================================================
+End Rem
+
 SuperStrict
 
 Import "Dig/base.framework.toastmessage.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.world.worldtime.bmx"
+
 
 
 Type TGameToastMessage extends TToastMessage
