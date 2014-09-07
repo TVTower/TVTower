@@ -316,7 +316,7 @@ Type TInGameScreen_Room extends TInGameScreen
 	Method GetRoom:TRoomBase()
 		'the room of this screen MUST be the room the active player
 		'figure is in ...
-		return GetPlayerCollection().Get().figure.inRoom
+		return GetPlayerCollection().Get().GetFigure().inRoom
 	End Method
 
 
@@ -380,7 +380,7 @@ Type TInGameScreen_Room extends TInGameScreen
 		'instead of relying on GetPlayerCollection().Get().inRoom each time
 		'use currentRoom as inRoom gets reset during room change
 		'now we got the correct instance (eg. office from player 1)
-		if GetPlayerCollection().Get().figure.inRoom then currentRoom = GetPlayerCollection().Get().figure.inRoom
+		if GetPlayerCollection().Get().GetFigure().inRoom then currentRoom = GetPlayerCollection().Get().GetFigure().inRoom
 		if not currentRoom then return FALSE
 
 		currentRoom.update()
@@ -392,7 +392,7 @@ Type TInGameScreen_Room extends TInGameScreen
 		'instead of relying on GetPlayerCollection().Get().inRoom each time
 		'use currentRoom as inRoom gets reset during room change
 		'now we got the correct instance (eg. office from player 1)
-		if GetPlayerCollection().Get().figure.inRoom then currentRoom = GetPlayerCollection().Get().figure.inRoom
+		if GetPlayerCollection().Get().GetFigure().inRoom then currentRoom = GetPlayerCollection().Get().GetFigure().inRoom
 		if not currentRoom then return FALSE
 
 		'TProfiler.Enter("Draw-Room")

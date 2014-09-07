@@ -94,7 +94,6 @@ Type TFigure extends TFigureBase
 	'network sync position timer
 	Field SyncTimer:TIntervalTimer = TIntervalTimer.Create(2500)
 
-	Field ParentPlayerID:int = 0
 	Field _soundSource:TSoundSourceElement {nosave}
 	'use the building coordinates or is the area absolute positioned?
 	Field useAbsolutePosition:int = FALSE
@@ -182,13 +181,13 @@ Type TFigure extends TFigureBase
 
 	Method IsAI:Int()
 		If id > 4 Then Return True
-		If ControlledByID = 0 or (GetPlayerCollection().Get(parentPlayerID) and GetPlayerCollection().Get(parentPlayerID).playerKI) Then Return True
+		If ControlledByID = 0 or (GetPlayerCollection().Get(playerID) and GetPlayerCollection().Get(playerID).playerKI) Then Return True
 		Return False
 	End Method
 
 
 	Method IsActivePlayer:Int()
-		return (parentPlayerID = GetPlayerCollection().playerID)
+		return (playerID = GetPlayerCollection().playerID)
 	End Method
 
 
@@ -319,7 +318,7 @@ Type TFigure extends TFigureBase
 		'2 = ?!left
 
 		'if both figures are "players" we display "GRRR" or "?!!?"
-		If figure.parentPlayerID and parentPlayerID
+		If figure.playerID and playerID
 			'depending on floor use "grr" or "?!"
 			return 0 + 2*((1 + GetBuilding().GetFloor(area.GetY()) mod 2)-1)
 		'display "hi"
@@ -415,8 +414,12 @@ Type TFigure extends TFigureBase
 		isChangingRoom = FALSE
 
 	 	'inform AI that we reached a room
-	 	If ParentPlayerID > 0 And isAI()
-			If room Then GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnReachRoom(room.id) Else GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTFOUND)
+	 	If playerID > 0 And isAI()
+			If room
+				GetPlayer(playerID).PlayerKI.CallOnReachRoom(room.id)
+			Else
+				GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTFOUND)
+			EndIf
 		EndIf
 
 		'inform others that room is changed
@@ -469,7 +472,7 @@ Type TFigure extends TFigureBase
 		'room for now
 		if room.IsBlocked()
 			'inform player AI
-			If isAI() then GetPlayerCollection().Get(parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTALLOWED)
+			If isAI() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_NOTALLOWED)
 			'tooltip only for active user
 			If isActivePlayer() then GetBuilding().CreateRoomBlockedTooltip(door, room)
 			return FALSE
@@ -479,9 +482,9 @@ Type TFigure extends TFigureBase
 		if not CanEnterRoom(room) and not forceEnter
 			If room.hasOccupant() and not room.isOccupant(self)
 				'only player-figures need such handling (events etc.)
-				If parentPlayerID and not parentPlayerID = room.owner
+				If playerID and not playerID = room.owner
 					'inform player AI
-					If isAI() then GetPlayerCollection().Get(parentPlayerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
+					If isAI() then GetPlayer(playerID).PlayerKI.CallOnReachRoom(LuaFunctions.RESULT_INUSE)
 					'tooltip only for active user
 					If isActivePlayer() then GetBuilding().CreateRoomUsedTooltip(door, room)
 					return FALSE
@@ -504,7 +507,7 @@ Type TFigure extends TFigureBase
 
 		'kick other figures from the room if figure is the owner 
 		'only player-figures need such handling (events etc.)
-		If parentPlayerID and parentPlayerID = room.owner
+		If playerID and playerID = room.owner
 			for local occupant:TFigure = eachin room.occupants
 				if occupant <> self then KickFigureFromRoom(occupant, room)
 			next
@@ -517,13 +520,13 @@ Type TFigure extends TFigureBase
 		'inform figure that it now entered the room
 		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterRoom", new TData.Add("room", room).Add("door", door) , self, room) )
 		'maybe move this lines to TPlayer
-		If ParentPlayerID > 0
-			EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), GetPlayerCollection().Get(ParentPlayerID), room) )
+		If playerID > 0
+			EventManager.triggerEvent( TEventSimple.Create("player.onEnterRoom", new TData.Add("door", door), GetPlayerCollection().Get(playerID), room) )
 		EndIf
 		
 	 	'inform player AI that figure entered a room
-	 	If ParentPlayerID > 0 And isAI()
-			GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnEnterRoom(room.id)
+	 	If playerID > 0 And isAI()
+			GetPlayer(playerID).PlayerKI.CallOnEnterRoom(room.id)
 		EndIf
 
 		'=== SET IN ROOM ===
@@ -535,7 +538,7 @@ Type TFigure extends TFigureBase
 		'cannot enter if room forbids
 		'(exception are non-players)
 		if not room.CanEntityEnter(self)
-			if not room.IsBlocked() and not parentPlayerID
+			if not room.IsBlocked() and not playerID
 				return True
 			endif
 
@@ -543,7 +546,7 @@ Type TFigure extends TFigureBase
 		endif
 
 		'players must be owner of the room
-		If parentPlayerID = room.owner then return True
+		If playerID = room.owner then return True
 
 		return False
 	End Method 
@@ -583,15 +586,15 @@ Type TFigure extends TFigureBase
 		'inform others that a figure left the room
 		EventManager.triggerEvent( TEventSimple.Create("figure.onLeaveRoom", null, self, room ) )
 		'maybe move this lines to TPlayer
-		If ParentPlayerID > 0
-			EventManager.triggerEvent( TEventSimple.Create("player.onLeaveRoom", null, GetPlayerCollection().Get(ParentPlayerID), room) )
+		If playerID > 0
+			EventManager.triggerEvent( TEventSimple.Create("player.onLeaveRoom", null, GetPlayer(playerID), room) )
 		EndIf
 
 		'inform player AI
-		If GetPlayerCollection().Get(ParentPlayerID) And isAI()
+		If GetPlayer(playerID) And isAI()
 			local roomID:int = 0
 			if room then roomID = room.id
-			GetPlayerCollection().Get(ParentPlayerID).PlayerKI.CallOnLeaveRoom(roomID)
+			GetPlayer(playerID).PlayerKI.CallOnLeaveRoom(roomID)
 		endif
 
 		'enter target -> null = building

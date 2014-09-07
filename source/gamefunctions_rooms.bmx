@@ -386,7 +386,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 	Method UpdateTooltip:Int()
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().Figure.IsInBuilding() And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
+		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().GetFigure().IsInBuilding() And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
 			If not tooltip
 				tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
 				tooltip.AssignRoom(room.id)
@@ -557,9 +557,10 @@ Type TRoomHandler
 
 	Function CheckPlayerInRoom:int(roomName:string)
 		'check if we are in the correct room
-		If GetPlayerCollection().Get().figure.isChangingRoom Then Return False
-		If not GetPlayerCollection().Get().figure.inRoom Then Return False
-		if GetPlayerCollection().Get().figure.inRoom.name <> roomName then return FALSE
+		local figure:TFigure = GetPlayerCollection().Get().GetFigure()
+		If figure.isChangingRoom Then Return False
+		If not figure.inRoom Then Return False
+		if figure.inRoom.name <> roomName then return FALSE
 		return TRUE
 	End Function
 
@@ -823,10 +824,10 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		GetPlayerCollection().Get().figure.fromroom = Null
+		GetPlayerCollection().Get().GetFigure().fromroom = Null
 		If MOUSEMANAGER.IsClicked(1)
 			If THelper.IsIn(MouseManager.x,MouseManager.y,25,40,150,295)
-				GetPlayerCollection().Get().Figure.LeaveRoom()
+				GetPlayerCollection().Get().GetFigure().LeaveRoom()
 				MOUSEMANAGER.resetKey(1)
 			EndIf
 		EndIf
@@ -2380,7 +2381,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		if stationMapMode=1
 			button.value = GetLocale("CONFIRM_PURCHASE")
@@ -2394,7 +2395,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		'coming from somewhere else... reset first
 		if stationMapMode<>1 then ResetStationMapAction(1)
@@ -2413,7 +2414,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		'coming from somewhere else... reset first
 		if stationMapMode<>2 then ResetStationMapAction(2)
@@ -2433,7 +2434,7 @@ Type RoomHandler_Office extends TRoomHandler
 		If not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		'noting selected yet
 		if not stationMapSelectedStation then return FALSE
@@ -2526,7 +2527,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'only players can "enter screens" - so just use "inRoom"
 
 		For local i:int = 0 to 3
-			local show:int = GetStationMapCollection().GetMap(GetPlayerCollection().Get().figure.inRoom.owner).showStations[i]
+			local show:int = GetStationMapCollection().GetMap(GetPlayerCollection().Get().GetFigure().inRoom.owner).showStations[i]
 			stationMapShowStations[i].SetChecked(show)
 		Next
 	End Function
@@ -2537,7 +2538,7 @@ Type RoomHandler_Office extends TRoomHandler
 		if not button then return FALSE
 
 		'ignore clicks if not in the own office
-		if GetPlayerCollection().Get().figure.inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
+		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
 		local player:int = int(button.value)
 		if not GetPlayerCollection().IsPlayer(player) then return FALSE
@@ -2641,7 +2642,7 @@ Type RoomHandler_Archive extends TRoomHandler
 	Function onTryLeaveRoom:int( triggerEvent:TEventBase )
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
-		if not figure or not figure.parentPlayerID then return FALSE
+		if not figure or not figure.playerID then return FALSE
 
 		'if the list is open - just close the list and veto against
 		'leaving the room
@@ -2668,11 +2669,11 @@ Type RoomHandler_Archive extends TRoomHandler
 
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.parentPlayerID then return FALSE
+		if not figure or not figure.playerID then return FALSE
 
 		'remove all licences in the suitcase from the programmeplan
-		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(figure.parentPlayerID)
-		For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).suitcaseProgrammeLicences
+		local plan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(figure.playerID)
+		For local licence:TProgrammeLicence = EachIn GetPlayerProgrammeCollectionCollection().Get(figure.playerID).suitcaseProgrammeLicences
 			plan.RemoveProgrammeInstancesByLicence(licence, true)
 		Next
 
@@ -3067,7 +3068,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'only interested in player figures (they cannot be in one room
 		'simultaneously, others like postman should not refill while you
 		'are in)
-		if not figure.parentPlayerID then return False
+		if not figure.playerID then return False
 
 		'fill all open slots in the agency
 		GetInstance().ReFillBlocks()
@@ -3079,7 +3080,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
-		if not figure or not figure.parentPlayerID then return FALSE
+		if not figure or not figure.playerID then return FALSE
 
 		'do not allow leaving as long as we have a dragged block
 		if draggedGuiProgrammeLicence
@@ -3098,9 +3099,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.parentPlayerID then return FALSE
+		if not figure or not figure.playerID then return FALSE
 
-		GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID).ReaddProgrammeLicencesFromSuitcase()
+		GetPlayerProgrammeCollectionCollection().Get(figure.playerID).ReaddProgrammeLicencesFromSuitcase()
 
 		return TRUE
 	End Function
@@ -4195,7 +4196,7 @@ Type RoomHandler_Chief extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
-		GetPlayerCollection().Get().figure.fromroom = Null
+		GetPlayerCollection().Get().GetFigure().fromroom = Null
 
 		If Dialogues.Count() <= 0
 			Local ChefDialoge:TDialogueTexts[5]
@@ -4244,7 +4245,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 		For Local dialog:TDialogue = EachIn Dialogues
 			If dialog.Update() = 0
-				GetPlayerCollection().Get().figure.LeaveRoom()
+				GetPlayerCollection().Get().GetFigure().LeaveRoom()
 				Dialogues.Remove(dialog)
 			endif
 		Next
@@ -4459,7 +4460,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		'only interested in player figures (they cannot be in one room
 		'simultaneously, others like postman should not refill while you
 		'are in)
-		if not figure.parentPlayerID then return False
+		if not figure.playerID then return False
 
 		if figure.IsActivePlayer()
 			GetInstance().ResetContractOrder()
@@ -4477,7 +4478,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetSender())
-		if not figure or not figure.parentPlayerID then return FALSE
+		if not figure or not figure.playerID then return FALSE
 
 		'do not allow leaving as long as we have a dragged block
 		if draggedGuiAdContract
@@ -4496,10 +4497,10 @@ Type RoomHandler_AdAgency extends TRoomHandler
 
 		'non players can always leave
 		local figure:TFigure = TFigure(triggerEvent.GetReceiver())
-		if not figure or not figure.parentPlayerID then return FALSE
+		if not figure or not figure.playerID then return FALSE
 
 		'sign all new contracts
-		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(figure.parentPlayerID)
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerProgrammeCollectionCollection().Get(figure.playerID)
 		For Local contract:TAdContract = EachIn programmeCollection.suitcaseAdContracts
 			'adds a contract to the players collection (gets signed THERE)
 			'if successful, this also removes the contract from the suitcase
@@ -5080,7 +5081,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		if mouseClicked
 			local door:TRoomDoorBase = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
 			if door
-				local playerFigure:TFigure = GetPlayerCollection().Get().figure
+				local playerFigure:TFigureBase = GetPlayerCollection().Get().figure
 				playerFigure.ChangeTarget(door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()))
 			endif
 			if mouseClicked then MouseManager.ResetKey(1)
@@ -5137,7 +5138,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		if not room or not figure then return FALSE
 
 		'only pay attention to players
-		if figure.ParentPlayerID
+		if figure.playerID
 			'roomboard left without animation as soon as something dragged but leave forced
 			If room.name = "roomboard" AND TRoomDoorSign.AdditionallyDragged > 0
 				triggerEvent.setVeto()

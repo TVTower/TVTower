@@ -39,13 +39,13 @@ Type TPlayerCollection extends TPlayerBaseCollection
 	
 
 	Method IsHuman:Int(number:Int)
-		Return (IsPlayer(number) And Not TPlayer(Get(number)).figure.IsAI())
+		Return (IsPlayer(number) And Not TPlayer(Get(number)).GetFigure().IsAI())
 	End Method
 
 
 	'the negative of "isHumanPlayer" - also "no human player" is possible
 	Method IsAI:Int(number:Int)
-		Return (IsPlayer(number) And TPlayer(Get(number)).figure.IsAI())
+		Return (IsPlayer(number) And TPlayer(Get(number)).GetFigure().IsAI())
 	End Method
 
 
@@ -68,9 +68,6 @@ End Function
 
 'class holding name, channelname, infos about the figure, programmeplan, programmecollection and so on - from a player
 Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
-
-	'actual figure the player uses
-	Field Figure:TFigure {_exposeToLua}
 	Field PlayerKI:KI
 
 
@@ -84,8 +81,13 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
+	Method GetFigure:TFigure()
+		return TFigure(figure)
+	End Method
+
+
 	Method IsAI:Int() {_exposeToLua}
-		Return playerKI and figure.IsAI()
+		Return playerKI and GetFigure().IsAI()
 	End Method
 
 
@@ -122,9 +124,9 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	Method isInRoom:Int(roomName:String="", checkFromRoom:Int=False) {_exposeToLua}
 		If checkFromRoom
 			'from room has to be set AND inroom <> null (no building!)
-			Return (Figure.inRoom And Figure.inRoom.Name.toLower() = roomname.toLower()) Or (Figure.inRoom And Figure.fromRoom And Figure.fromRoom.Name.toLower() = roomname.toLower())
+			Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower()) Or (GetFigure().inRoom And GetFigure().fromRoom And GetFigure().fromRoom.Name.toLower() = roomname.toLower())
 		Else
-			Return (Figure.inRoom And Figure.inRoom.Name.toLower() = roomname.toLower())
+			Return (GetFigure().inRoom And GetFigure().inRoom.Name.toLower() = roomname.toLower())
 		EndIf
 	End Method
 
@@ -140,7 +142,7 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 		Player.color = color.AddToList(True).SetOwner(playerID)
 		Player.channelname = channelname
 		Player.Figure = New TFigure.Create(FigureName, sprite, x, onFloor, dx, ControlledByID)
-		Player.Figure.ParentPlayerID = playerID
+		Player.Figure.playerID = playerID
 
 		TPublicImage.Create(Player.playerID)
 		new TPlayerProgrammeCollection.Create(playerID)
@@ -168,12 +170,11 @@ Type TPlayer extends TPlayerBase {_exposeToLua="selected"}
 	'remove this helper as soon as "player" class gets a single importable
 	'file
 	Method SendToBoss:Int()
-		figure.SendToDoor( TRoomDoor.GetByDetails("boss", playerID), True )
+		GetFigure().SendToDoor( TRoomDoor.GetByDetails("boss", playerID), True )
 
 		'inform the boss that the player accepted the call
 		GetPlayerBossCollection().Get(playerID).InformPlayerAcceptedCall()
 	End Method
-
 
 
 	'return which is the highest level for the given genre today
@@ -263,12 +264,6 @@ endrem
 	End Method
 
 
-	'nothing up to now
-	Method Update:Int()
-		''
-	End Method
-
-
 	'returns formatted value of actual money
 	Method GetMoneyFormatted:String(day:Int=-1)
 		Return TFunctions.convertValue(GetFinance(day).money, 2)
@@ -290,18 +285,5 @@ endrem
 
 	Method GetCredit:Int(day:Int=-1) {_exposeToLua}
 		Return GetFinance(day).credit
-	End Method
-
-
-	Method Compare:Int(otherObject:Object)
-		Local s:TPlayer = TPlayer(otherObject)
-		If Not s Then Return 1
-		If s.playerID > Self.playerID Then Return 1
-		Return 0
-	End Method
-
-
-	Method isActivePlayer:Int()
-		Return (playerID = GetPlayerCollection().playerID)
 	End Method
 End Type

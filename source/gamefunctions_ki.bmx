@@ -316,7 +316,7 @@ Type TLuaFunctions {_exposeToLua}
 
 
 	Method _PlayerOwnsRoom:Int()
-		Return Self.ME = GetPlayerCollection().Get(Self.ME).Figure.inRoom.owner
+		Return Self.ME = GetPlayerCollection().Get(Self.ME).GetFigure().inRoom.owner
 	End Method
 
 
@@ -420,7 +420,7 @@ endrem
 
 
 	Method getPlayerRoom:Int()
-		Local room:TRoomBase = GetPlayerCollection().Get(self.ME).figure.inRoom
+		Local room:TRoomBase = GetPlayerCollection().Get(self.ME).GetFigure().inRoom
 		If room <> Null Then Return room.id Else Return self.RESULT_NOTFOUND
 	End Method
 
@@ -454,7 +454,7 @@ endrem
 
 		Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
 		If door
-			GetPlayerCollection().Get(self.ME).figure.SendToDoor(door)
+			GetPlayerCollection().Get(self.ME).GetFigure().SendToDoor(door)
 			Return self.RESULT_OK
 		endif
 
@@ -463,7 +463,7 @@ endrem
 
 
 	Method doGoToRelative:Int(relX:Int = 0, relYFloor:Int = 0) 'Nur x wird unterstuetzt. Negativ: Nach links; Positiv: nach rechts
-		GetPlayerCollection().Get(self.ME).Figure.GoToCoordinatesRelative(relX, relYFloor)
+		GetPlayerCollection().Get(self.ME).GetFigure().GoToCoordinatesRelative(relX, relYFloor)
 		Return self.RESULT_OK
 	End Method
 
@@ -657,7 +657,7 @@ endrem
 
 		'Es ist egal ob ein Spieler einen Schluessel fuer den Raum hat,
 		'Es ist nur schauen erlaubt fuer "Fremde"
-		If Self.ME <> player.Figure.inRoom.owner Then Return self.RESULT_WRONGROOM
+		If Self.ME <> player.GetFigure().inRoom.owner Then Return self.RESULT_WRONGROOM
 
 		If ObjectID = 0 'News bei slotID loeschen
 			if player.GetProgrammePlan().RemoveNews(null, slot)

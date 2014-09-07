@@ -2,6 +2,7 @@ SuperStrict
 Import "Dig/base.util.color.bmx"
 Import "Dig/base.util.registry.spriteloader.bmx"
 Import "game.player.finance.bmx"
+Import "game.figure.base.bmx"
 
 
 Type TPlayerBaseCollection
@@ -73,6 +74,9 @@ Type TPlayerBase {_exposeToLua="selected"}
 	Field color:TColor
 	'actual number of an array of figure-images
 	Field figurebase:Int = 0
+	'actual figure the player uses
+	Field Figure:TFigureBase {_exposeToLua}
+
 	'1=ready, 0=not set, ...
 	Field networkstate:Int = 0
 	Field CreditMaximum:Int	= 600000
@@ -90,11 +94,24 @@ Type TPlayerBase {_exposeToLua="selected"}
 		Return playerID
 	End Method
 
+	
+	Method GetFigure:TFigureBase()
+		return figure
+	End Method
+
 
 	'returns the financial of the given day
 	'if the day is in the future, a new finance object is created
 	Method GetFinance:TPlayerFinance(day:Int=-1)
 		return GetPlayerFinanceCollection().Get(playerID, day)
+	End Method
+
+
+	'nothing up to now
+	Method UpdateFinances:Int()
+		'For Local i:Int = 0 To 6
+		'
+		'Next
 	End Method
 
 
@@ -139,11 +156,21 @@ Type TPlayerBase {_exposeToLua="selected"}
 	End Method
 
 
-	'nothing up to now
-	Method UpdateFinances:Int()
-		'For Local i:Int = 0 To 6
-		'
-		'Next
+	Method Update:Int()
+		'nothing up to now
+	End Method
+
+
+	Method Compare:Int(otherObject:Object)
+		Local s:TPlayerBase = TPlayerBase(otherObject)
+		If Not s Then Return 1
+		If s.playerID > Self.playerID Then Return 1
+		Return 0
+	End Method
+
+
+	Method isActivePlayer:Int()
+		Return (playerID = GetPlayerBaseCollection().playerID)
 	End Method
 
 

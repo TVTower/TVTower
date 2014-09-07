@@ -245,9 +245,9 @@ Type TBuilding Extends TStaticEntity
 		softDrinkMachine.Update()
 	
 		'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
-		If GetPlayerCollection().Get().Figure.inRoom = Null
+		If GetPlayer().GetFigure().inRoom = Null
 			'working for player as center
-			area.position.y =  1 * 66 + 1 * 73 + 50 - GetPlayerCollection().Get().Figure.area.GetY()
+			area.position.y =  1 * 66 + 1 * 73 + 50 - GetPlayer().figure.area.GetY()
 		Endif
 
 
@@ -270,9 +270,9 @@ Type TBuilding Extends TStaticEntity
 
 
 		'handle player target changes
-		If Not GetPlayerCollection().Get().Figure.inRoom
+		If Not GetPlayer().GetFigure().inRoom
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
-				If Not GetPlayerCollection().Get().Figure.isChangingRoom
+				If Not GetPlayer().GetFigure().isChangingRoom
 					If THelper.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
 						GetPlayerCollection().Get().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
 						MOUSEMANAGER.resetKey(1)
@@ -299,11 +299,13 @@ Type TBuilding Extends TStaticEntity
 
 		'reset drawn for all figures... so they can get drawn
 		'correct at their "z-indexes" (behind building, elevator or on floor )
-		For Local Figure:TFigure = EachIn GetFigureCollection().list
+		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().list
 			Figure.alreadydrawn = False
 		Next
 
-		If GetFloor(GetPlayerCollection().Get().Figure.area.GetY()) >= 8
+		'only draw the building roof if the player figure is in a specific
+		'area
+		If GetFloor(GetPlayer().figure.area.GetY()) >= 8
 			SetColor 255, 255, 255
 			SetBlend ALPHABLEND
 			gfx_buildingRoof.Draw(area.GetX() + buildingDisplaceX, area.GetY() - gfx_buildingRoof.area.GetH())
@@ -331,7 +333,7 @@ Type TBuilding Extends TStaticEntity
 
 		SetBlend ALPHABLEND
 
-		For Local Figure:TFigure = EachIn GetFigureCollection().list
+		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().list
 			'draw figure later if outside of building
 			If figure.area.GetX() < area.GetX() + buildingDisplaceX Then Continue
 			If Not Figure.alreadydrawn Then Figure.Draw()

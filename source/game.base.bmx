@@ -516,7 +516,7 @@ Type TGame {_exposeToLua="selected"}
 		TLogger.Log("TGame", "Start saving - inform AI.", LOG_DEBUG | LOG_SAVELOAD)
 		'inform player AI that we are saving now
 		For local player:TPlayer = eachin GetPlayerCollection().players
-			If player.figure.isAI() then player.PlayerKI.CallOnSave()
+			If player.GetFigure().isAI() then player.PlayerKI.CallOnSave()
 		Next
 	End Function
 
@@ -636,7 +636,7 @@ Type TGame {_exposeToLua="selected"}
 			Case TGame.STATE_RUNNING
 				'when a game is loaded we should try set the right screen
 				'not just the default building screen
-				if GetPlayerCollection().Get().figure.inRoom
+				if GetPlayerCollection().Get().GetFigure().inRoom
 					ScreenCollection.GoToScreen(ScreenCollection.GetCurrentScreen())
 				else
 					ScreenCollection.GoToScreen(GameScreen_world)
@@ -677,8 +677,8 @@ Type TGame {_exposeToLua="selected"}
 		GetPlayerBossCollection().playerID = ID
 
 		'get currently shown screen of that player
-		if GetPlayer().figure.inRoom
-			ScreenCollection.GoToScreen(TInGameScreen_Room.GetByRoom(GetPlayer().figure.inRoom))
+		if GetPlayer().GetFigure().inRoom
+			ScreenCollection.GoToScreen(TInGameScreen_Room.GetByRoom(GetPlayer().GetFigure().inRoom))
 		'go to building
 		else
 			ScreenCollection.GoToScreen(GameScreen_World)

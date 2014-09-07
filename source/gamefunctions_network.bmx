@@ -414,7 +414,7 @@ Type TNetworkHelper
 'checked
 	Method SendFigurePosition:int(figure:TFigure)
 		'no player figures can only be send from Master
-		if figure.ParentPlayerID and not Network.isServer then return Null
+		if figure.playerID and not Network.isServer then return Null
 
 		local obj:TNetworkObject = TNetworkObject.Create( NET_FIGUREPOSITION )
 		obj.SetInt( 1, figure.id )		'playerID

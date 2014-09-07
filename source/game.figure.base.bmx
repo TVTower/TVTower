@@ -112,6 +112,9 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	'what was the last type of greet?
 	Field lastGreetType:int = -1
 	Field lastGreetFigureID:int = -1
+	'is there a player controlling that figure?
+	Field playerID:int = 0
+
 	'how long should the greet-sprite be shown
 	Global greetTime:int = 1000
 	'how long to wait intil I greet the same person again

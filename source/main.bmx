@@ -388,13 +388,13 @@ Type TApp
 
 					if KEYMANAGER.IsHit(KEY_Y)
 '						print "send to chef:"
-						GetPlayerCollection().Get().figure.SendToDoor( TRoomDoor.GetByDetails("boss", 1), True )
+						GetPlayer().GetFigure().SendToDoor( TRoomDoor.GetByDetails("boss", 1), True )
 '						GetWorld().Weather.SetPressure(-14)
 '						GetWorld().Weather.SetTemperature(-10)
 					endif
 
 				
-					if not GetPlayerCollection().Get().figure.isChangingRoom
+					if not GetPlayer().GetFigure().isChangingRoom
 						If KEYMANAGER.IsHit(KEY_1) Then Game.SetActivePlayer(1)
 						If KEYMANAGER.IsHit(KEY_2) Then Game.SetActivePlayer(2)
 						If KEYMANAGER.IsHit(KEY_3) Then Game.SetActivePlayer(3)
@@ -594,7 +594,7 @@ Type TApp
 			Local roomName:String = ""
 			Local fig:TFigure
 			For Local i:Int = 0 To 3
-				fig = GetPlayerCollection().Get(i+1).figure
+				fig = GetPlayerCollection().Get(i+1).GetFigure()
 				roomName = "Building"
 				If fig.inRoom
 					roomName = fig.inRoom.Name
@@ -659,7 +659,7 @@ Type TApp
 			GetBitmapFontManager().baseFont.draw("MoA. : "+occupants, 25, 365)
 
 
-			if not GetPlayerCollection().Get().figure.inRoom
+			if not GetPlayer().GetFigure().inRoom
 				GetWorld().RenderDebug(180,20)
 			endif
 		EndIf
@@ -2627,7 +2627,7 @@ Type GameEvents
 				MOUSEMANAGER.ResetKey(2)
 			Else
 				'leaving prohibited - just reset button
-				If Not GetPlayerCollection().Get().figure.LeaveRoom()
+				If Not GetPlayer().GetFigure().LeaveRoom()
 					MOUSEMANAGER.resetKey(2)
 				EndIf
 			EndIf
@@ -2945,7 +2945,6 @@ End Function
 
 Function DEV_switchRoom:Int(room:TRoom)
 	If Not room Then Return False
-	Local figure:TFigure = GetPlayerCollection().Get().figure
 
 	Local oldEffects:Int = TScreenCollection.useChangeEffects
 	Local oldSpeed:Int = TRoom.ChangeRoomSpeed
@@ -2955,7 +2954,7 @@ Function DEV_switchRoom:Int(room:TRoom)
 	TScreenCollection.useChangeEffects = False
 
 	TInGameScreen_Room.shortcutTarget = room 'to skip animation
-	figure.EnterRoom(Null, room)
+	GetPlayer().GetFigure().EnterRoom(Null, room)
 
 	TRoom.ChangeRoomSpeed = 500
 	TScreenCollection.useChangeEffects = True
