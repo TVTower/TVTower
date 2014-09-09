@@ -164,11 +164,9 @@ Type TGame {_exposeToLua="selected"}
 		TLogger.Log("Game.PrepareStart()", "colorizing images corresponding to playercolors", LOG_DEBUG)
 		ColorizePlayerExtras()
 
-		TLogger.Log("Game.PrepareStart()", "drawing door-sprites on the building-sprite", LOG_DEBUG)
-		GetRoomDoorBaseCollection().DrawDoorsOnBackground()
-
-		TLogger.Log("Game.PrepareStart()", "drawing plants and lights on the building-sprite", LOG_DEBUG)
-		GetBuilding().Init() 'also registers events...
+		TLogger.Log("Game.PrepareStart()", "drawing doors, plants and lights on the building-sprite", LOG_DEBUG)
+		'also registers events...
+		GetBuilding().Init()
 	End Method
 
 
@@ -294,14 +292,21 @@ Type TGame {_exposeToLua="selected"}
 		EndIf
 
 		'create npc figures
-		New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), 210, 2, 65)
-		New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 6, 65, 0)
-		New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 0, -65, 0)
+		local fig:TFigureBase
+		fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), 210, 2, 65)
+		fig.SetParent(GetBuilding().buildingInner)
+		fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 6, 65, 0)
+		fig.SetParent(GetBuilding().buildingInner)
+		fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 0, -65, 0)
+		fig.SetParent(GetBuilding().buildingInner)
+		
 
 		terrorists[0] = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), -50, 0, 65)
 		terrorists[0].MoveToOffscreen()
+		terrorists[0].SetParent(GetBuilding().buildingInner)
 		terrorists[1] = New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), -50, 0, 65)
 		terrorists[1].MoveToOffscreen()
+		terrorists[1].SetParent(GetBuilding().buildingInner)
 
 
 

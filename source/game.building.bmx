@@ -1,13 +1,15 @@
 
+'TODO: split TBuilding into TBuilding + TBuildingArea
+'      TBuildingArea then contains background buildings, ufo ...
+
+
 'Summary: Type of building, area around it and doors,...
 Type TBuilding Extends TStaticEntity
-	'px at which the building starts (leftside added is the door)
-	Field buildingDisplaceX:Int = 127
-	Field innerLeft:Int	= 127 + 40
-	Field innerRight:Int = 127 + 468
+	
 	Field ufo_normal:TSpriteEntity 				{nosave}
 	Field ufo_beaming:TSpriteEntity				{nosave}
 	Field Elevator:TElevator
+	Field doors:TList = CreateList()
 
 	Field UFO_Path:TCatmullRomSpline = New TCatmullRomSpline {nosave}
 	Field UFO_PathCurrentDistanceOld:Float = 0.0
@@ -27,6 +29,33 @@ Type TBuilding Extends TStaticEntity
 	'the room used for the building
 	Field room:TRoom = Null
 	Field roomUsedTooltip:TTooltip = Null
+
+	'an entity with the area spawning the whole inner part of
+	'the building (for proper alignment)
+	Field buildingInner:TStaticEntity
+
+	'position of the start of the left wall (aka the building sprite)
+	Const leftWallX:int = 127
+	'position of the inner left/right side of the building
+	'measured from the beginning of the sprite/leftWallX
+	Const innerX:Int = 40
+	Const innerX2:Int = 468
+	'default door width
+	Const doorWidth:int	= 19
+	'height of each floor
+	Const floorWidth:int = 429
+	Const floorHeight:int = 73
+	Const floorCount:Int = 14 '0-13
+	'start of the uppermost floor - eg. add roof height
+	Const uppermostFloorTop:Int = 0
+	'x coord of defined slots
+	'x coord is relative to "leftWallX" 
+	Const doorSlot0:int	= -10
+	Const doorSlot1:int	= 19
+	Const doorSlot2:int	= doorSlot1 + 87
+	Const doorSlot3:int	= doorSlot1 + 263
+	Const doorSlot4:int	= doorslot1 + 351
+
 
 	Global softDrinkMachineActive:int = False
 	Global softDrinkMachine:TSpriteEntity
@@ -60,13 +89,27 @@ Type TBuilding Extends TStaticEntity
 
 	Method Create:TBuilding()
 		area.position.SetX(20)
+		area.dimension.SetXY(760, floorCount * floorHeight + 50) 'occupy full area
+
+		'create an entity spawning the complete inner area of the building
+		'this entity can be used as parent for other entities - which
+		'want to layout to the "inner area" of the building (eg. doors)
+		buildingInner = new TStaticEntity
+		buildingInner.area.position.SetXY(leftWallX + innerX, 0)
+		'subtract missing "splitter wall" of last floor
+		buildingInner.area.dimension.SetXY(floorWidth, floorCount * floorHeight - 7)
+		'set building as parent for proper alignment
+		buildingInner.SetParent(self)
+
 
 		'call to set graphics, paths for objects and other stuff
 		InitGraphics()
 
-		area.position.SetY(0 - gfx_building.area.GetH() + 5 * 73 + 20)	' 20 = interfacetop, 373 = raumhoehe
+		area.position.SetY(0 - gfx_building.area.GetH() + 5 * floorHeight + 20)	' 20 = interfacetop, 373 = raumhoehe
 		Elevator = TElevator.GetInstance().Init()
-		Elevator.area.position.SetY(GetFloorY(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
+		Elevator.SetParent(self.buildingInner)
+		Elevator.area.position.SetX(floorWidth/2 - Elevator.GetDoorWidth()/2)
+		Elevator.area.position.SetY(GetFloorY2(Elevator.CurrentFloor) - Elevator.spriteInner.area.GetH())
 
 		Elevator.RouteLogic = TElevatorSmartLogic.Create(Elevator, 0) 'Die Logik die im Elevator verwendet wird. 1 heißt, dass der PrivilegePlayerMode aktiv ist... mMn macht's nur so wirklich Spaß
 
@@ -90,9 +133,75 @@ Type TBuilding Extends TStaticEntity
 		'reassign elevator from freshly loaded building to elevator instance
 		TElevator._instance = GetInstance().Elevator
 
-		'reposition hotspots
+		'reposition hotspots, prepare building sprite...
 		GetInstance().Init()
 	End Function
+
+
+	Method PrepareBuildingSprite:Int()
+		'TODO: copy original building sprite (empty) before modifying
+		'      the first time - so it allows various layouts of room
+	
+		'=== BACKGROUND DECORATION ===
+		'draw sprites directly on the building sprite if not done yet
+		if not _backgroundModified
+			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
+
+			'=== DRAW NECESSARY ITEMS ===
+			'credits sign on floor 13
+			GetSpriteFromRegistry("gfx_building_credits").DrawOnImage(Pix, innerX2 - 5, GetFloorY2(13), -1, ALIGN_RIGHT_BOTTOM)
+			'roomboard on floor 0
+			GetSpriteFromRegistry("gfx_building_roomboard").DrawOnImage(Pix, innerX2 - 30, GetFloorY2(0), -1, ALIGN_RIGHT_BOTTOM)
+
+			'=== DRAW ELEVATOR BORDER ===
+			Local elevatorBorder:TSprite= GetSpriteFromRegistry("gfx_building_Fahrstuhl_Rahmen")
+			For Local i:Int = 0 To 13
+				DrawImageOnImage(elevatorBorder.getImage(), Pix, 230, 67 - elevatorBorder.area.GetH() + floorHeight*i)
+			Next
+
+			'=== DRAW DOORS ===
+			For Local door:TRoomDoorBase = EachIn doors
+				'skip invisible doors (without door-sprite)
+				If not door.IsVisible() then continue
+
+				local sprite:TSprite = door.GetSprite()
+				if not sprite then continue
+
+				sprite.DrawOnImage(pix, innerX + door.area.GetX(), door.area.GetY(), MathHelper.Clamp(door.doorType, 0,5), ALIGN_LEFT_BOTTOM)
+			Next
+
+
+			'=== DRAW DECORATION ===
+			'floor 0
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX + 125, GetFloorY2(0), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX2 - 125, GetFloorY2(0), -1, ALIGN_RIGHT_BOTTOM)
+			'floor 1
+			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, innerX2 - 70, GetFloorY2(1), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, innerX2 - 70, GetFloorY2(1), -1, ALIGN_CENTER_BOTTOM)
+			'floor 3
+			GetSpriteFromRegistry("gfx_building_picture1").DrawOnImage(Pix, innerX2 - 80, GetFloorY2(3), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, innerX2 - 100, GetFloorY2(3), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, innerX2 - 60, GetFloorY2(3), -1, ALIGN_CENTER_BOTTOM)
+			'floor 4
+			GetSpriteFromRegistry("gfx_building_Pflanze5").DrawOnImage(Pix, innerX2 - 85, GetFloorY2(4), -1, ALIGN_LEFT_BOTTOM)
+			'floor 7
+			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, innerX + 45, GetFloorY2(7), -1, ALIGN_LEFT_BOTTOM)
+			'floor 12
+			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, innerX2 - 50, GetFloorY2(12), -1, ALIGN_CENTER_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Pflanze4").DrawOnImage(Pix, innerX + 40, GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Pflanze6").DrawOnImage(Pix, innerX2 - 95, GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+			'floor 13
+			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, innerX + 105, GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Pflanze3").DrawOnImage(Pix, innerX2 - 105, GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX + 125, GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX2 - 125, GetFloorY2(13), -1, ALIGN_RIGHT_BOTTOM)
+
+			UnlockImage(gfx_building.parent.image)
+			Pix = Null
+
+			_backgroundModified = TRUE
+		endif
+	End Method
 
 
 	Method InitGraphics()
@@ -137,52 +246,6 @@ Type TBuilding Extends TStaticEntity
 		gfx_buildingEntranceWall = GetSpriteFromRegistry("gfx_building_EingangWand")
 		gfx_buildingFence = GetSpriteFromRegistry("gfx_building_Zaun")
 		gfx_buildingRoof = GetSpriteFromRegistry("gfx_building_Dach")
-
-
-		'=== BACKGROUND DECORATION ===
-		'draw sprites directly on the building sprite if not done yet
-		if not _backgroundModified
-			Local Pix:TPixmap = LockImage(gfx_building.parent.image)
-			local itemX:int
-
-			'=== DRAW NECESSARY ITEMS ===
-			'credits sign on floor 13
-			GetSpriteFromRegistry("gfx_building_credits").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 5, GetFloorY(13), -1, ALIGN_RIGHT_BOTTOM)
-			'roomboard on floor 0
-			GetSpriteFromRegistry("gfx_building_roomboard").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 30, GetFloorY(0), -1, ALIGN_RIGHT_BOTTOM)
-
-
-			'=== DRAW DECORATION ===
-			'floor 0
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(0), -1, ALIGN_LEFT_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(0), -1, ALIGN_RIGHT_BOTTOM)
-			'floor 1
-			itemX = -buildingDisplaceX + innerRight - 30
-			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_CENTER_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX, GetFloorY(1), -1, ALIGN_CENTER_BOTTOM)
-			'floor 3
-			itemX = -buildingDisplaceX + innerRight - 80
-			GetSpriteFromRegistry("gfx_building_picture1").DrawOnImage(Pix, itemX, GetFloorY(3), -1, ALIGN_CENTER_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX - 20, GetFloorY(3), -1, ALIGN_CENTER_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, itemX + 20, GetFloorY(3), -1, ALIGN_CENTER_BOTTOM)
-			'floor 4
-			GetSpriteFromRegistry("gfx_building_Pflanze5").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 67, GetFloorY(4), -1, ALIGN_LEFT_BOTTOM)
-			'floor 12
-			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 50, GetFloorY(12), -1, ALIGN_CENTER_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Pflanze4").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 40, GetFloorY(12), -1, ALIGN_LEFT_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Pflanze6").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 95, GetFloorY(12), -1, ALIGN_LEFT_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(7), -1, ALIGN_LEFT_BOTTOM)
-			'floor 13
-			GetSpriteFromRegistry("gfx_building_Pflanze2").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 105, GetFloorY(13), -1, ALIGN_LEFT_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Pflanze3").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 105, GetFloorY(13), -1, ALIGN_LEFT_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerleft + 125, GetFloorY(13), -1, ALIGN_LEFT_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, -buildingDisplaceX + innerRight - 125, GetFloorY(13), -1, ALIGN_RIGHT_BOTTOM)
-
-			UnlockImage(gfx_building.parent.image)
-			Pix = Null
-
-			_backgroundModified = TRUE
-		endif		
 	End Method
 
 
@@ -190,13 +253,50 @@ Type TBuilding Extends TStaticEntity
 		'assign room
 		room = GetRoomCollection().GetFirstByDetails("building")
 
-		'move elevatorplan hotspots to the elevator
 		For Local hotspot:THotspot = EachIn room.hotspots
+			'set building inner as parent, so "getScreenX/Y()" can
+			'layout properly)
+			hotspot.setParent(self.buildingInner)
+
+			'move elevatorplan hotspots to the elevator
 			If hotspot.name = "elevatorplan"
 				hotspot.area.position.setX( Elevator.area.getX() )
 				hotspot.area.dimension.setXY( Elevator.GetDoorWidth(), 58 )
 			EndIf
 		Next
+
+		For local figure:TFigureBase = EachIn GetFigureBaseCollection().list
+			figure.setParent(self.buildingInner)
+		Next
+
+
+		PrepareBuildingSprite()
+	End Method
+
+
+	Function GetDoorXFromDoorSlot:int(slot:int)
+		select slot
+			case 1	return doorSlot1
+			case 2	return doorSlot2
+			case 3	return doorSlot3
+			case 4	return doorSlot4
+		end select
+
+		return 0
+	End Function
+	
+	
+	Method AddDoor:Int(door:TRoomDoorBase)
+		if not door then return False
+		'add to innerBuilding, so doors can properly layout in the
+		'inner area
+		door.SetParent(self.buildingInner)
+		'move door accordingly
+		door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
+		door.area.position.SetY(GetFloorY2(door.onFloor))
+
+		'add to list
+		doors.addLast(door)
 	End Method
 
 
@@ -228,9 +328,14 @@ Type TBuilding Extends TStaticEntity
 		'not interested in others
 		If not GetInstance().room.hotspots.contains(hotspot) then return False
 
-		GetPlayerCollection().Get().figure.changeTarget( GetInstance().area.GetX() + hotspot.area.getX() + hotspot.area.getW()/2, GetInstance().area.GetY() + hotspot.area.getY() )
-		GetPlayerCollection().Get().figure.targetObj = hotspot
-
+		'hotspot position is LOCAL to building, so no transition needed
+		GetPlayerCollection().Get().figure.changeTarget( hotspot.area.getX() + hotspot.area.getW()/2, hotspot.area.getY() )
+		'ignore clicks to elevator plans on OTHER floors
+		'in this case just move to the target, but do not "enter" the room
+		If hotspot.name <> "elevatorplan" OR GetInstance().GetFloor(hotspot.area.GetY()) = GetInstance().GetFloor(GetPlayerCollection().Get().figure.area.GetY())
+			GetPlayerCollection().Get().figure.targetObj = hotspot
+		EndIf
+		
 		MOUSEMANAGER.ResetKey(1)
 	End Function
 
@@ -244,10 +349,11 @@ Type TBuilding Extends TStaticEntity
 		'update softdrinkmachine
 		softDrinkMachine.Update()
 	
-		'66 = 13th floor height, 2 floors normal = 1*73, 50 = roof
+		'center player
 		If GetPlayer().GetFigure().inRoom = Null
-			'working for player as center
-			area.position.y =  1 * 66 + 1 * 73 + 50 - GetPlayer().figure.area.GetY()
+			'subtract 7 because of missing "wall" in last floor
+			'add 50 for roof
+			area.position.y =  2 * floorHeight - 7 + 50 - GetPlayer().figure.area.GetY()
 		Endif
 
 
@@ -259,7 +365,15 @@ Type TBuilding Extends TStaticEntity
 		'update hotspot tooltips
 		If room
 			For Local hotspot:THotspot = EachIn room.hotspots
-				hotspot.update(area.GetX(), area.GetY())
+				'disable elevatorplan hotspot tooltips in other floors
+				if hotspot.name = "elevatorplan"
+					if GetFloor(hotspot.area.GetY()) <> GetFloor(GetPlayer().figure.area.GetY())
+						hotspot.tooltipEnabled = False
+					else
+						hotspot.tooltipEnabled = True
+					endif
+				endif
+				hotspot.update()
 			Next
 		EndIf
 
@@ -274,7 +388,11 @@ Type TBuilding Extends TStaticEntity
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
 				If Not GetPlayer().GetFigure().isChangingRoom
 					If THelper.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
-						GetPlayerCollection().Get().Figure.ChangeTarget(MouseManager.x, MouseManager.y)
+						print "change target: Mouse="+ MouseManager.x+","+MouseManager.y
+						'convert mouse position to building-coordinates
+						local x:int = MouseManager.x - buildingInner.GetScreenX()
+						local y:int = MouseManager.y - buildingInner.GetScreenY()
+						GetPlayerCollection().Get().Figure.ChangeTarget(x, y)
 						MOUSEMANAGER.resetKey(1)
 					EndIf
 				EndIf
@@ -284,9 +402,6 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method Render:int(xOffset:Float = 0, yOffset:Float = 0)
-		'=== DRAW WORLD ===
-'		world.Render()
-
 		TProfiler.Enter("Draw-Building-Background")
 		DrawBackground()
 		TProfiler.Leave("Draw-Building-Background")
@@ -308,23 +423,25 @@ Type TBuilding Extends TStaticEntity
 		If GetFloor(GetPlayer().figure.area.GetY()) >= 8
 			SetColor 255, 255, 255
 			SetBlend ALPHABLEND
-			gfx_buildingRoof.Draw(area.GetX() + buildingDisplaceX, area.GetY() - gfx_buildingRoof.area.GetH())
+			gfx_buildingRoof.Draw(GetScreenX() + leftWallX, GetScreenY(), -1, ALIGN_LEFT_BOTTOM)
 		EndIf
 
 		SetBlend MASKBLEND
-		elevator.DrawFloorDoors()
 
-		GetSpriteFromRegistry("gfx_building").draw(area.GetX() + buildingDisplaceX, area.GetY())
+		elevator.DrawFloorDoors()
+		gfx_building.draw(GetScreenX() + leftWallX, area.GetY())
 
 		SetBlend MASKBLEND
 
+		'draw owner signs next to doors,
+		'draw open doors overlaying the doors drawn directly on the bg sprite
 		'draw overlay - open doors are drawn over "background-image-doors" etc.
 		GetRoomDoorBaseCollection().DrawAllDoors()
-		
+
 		'draw elevator parts
 		Elevator.Render()
 		'draw softdrinkmachine
-		softDrinkMachine.RenderAt(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(6), "", ALIGN_LEFT_BOTTOM)
+		softDrinkMachine.RenderAt(buildingInner.GetScreenX() + innerX2 - 90, buildingInner.GetScreenY() + GetFloorY2(6), "", ALIGN_LEFT_BOTTOM)
 
 		if not softDrinkMachineActive
 			softDrinkMachine.GetFrameAnimations().SetCurrent("use")
@@ -333,38 +450,40 @@ Type TBuilding Extends TStaticEntity
 
 		SetBlend ALPHABLEND
 
+
+
 		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().list
 			'draw figure later if outside of building
-			If figure.area.GetX() < area.GetX() + buildingDisplaceX Then Continue
+'			If figure.GetScreenX() < GetScreenX() + 127 Then Continue
+			If figure.GetScreenX() < buildingInner.GetScreenX() Then Continue
 			If Not Figure.alreadydrawn Then Figure.Draw()
 			Figure.alreadydrawn = True
 		Next
 
 		'floor 1
-		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(1), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(1), -1, ALIGN_LEFT_BOTTOM)
 		'floor 2	- between rooms
-		GetSpriteFromRegistry("gfx_building_Pflanze4").Draw(area.GetX() + innerRight - 105, area.GetY() + GetFloorY(2), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze4").Draw(buildingInner.GetScreenX() + floorWidth - 105, buildingInner.GetScreenY() + GetFloorY2(2), -1, ALIGN_LEFT_BOTTOM)
 		'floor 3
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(3), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(3), -1, ALIGN_LEFT_BOTTOM)
 		'floor 4
-		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(area.GetX() + innerRight - 60, area.GetY() + GetFloorY(4), - 1, ALIGN_RIGHT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(buildingInner.GetScreenX() + floorWidth - 60, buildingInner.GetScreenY() + GetFloorY2(4), -1, ALIGN_RIGHT_BOTTOM)
 		'floor 6
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(6), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(6), -1, ALIGN_LEFT_BOTTOM)
 		'floor 8
-		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(area.GetX() + innerRight - 85, area.GetY() + GetFloorY(8), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(buildingInner.GetScreenX() + floorWidth - 85, buildingInner.GetScreenY() + GetFloorY2(8), -1, ALIGN_LEFT_BOTTOM)
 		'floor 9
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerRight - 130, area.GetY() + GetFloorY(9), - 1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 110, area.GetY() + GetFloorY(9), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + floorWidth - 130, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + floorWidth - 110, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
 		'floor 11
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerLeft + 85, area.GetY() + GetFloorY(11), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + 85, buildingInner.GetScreenY() + GetFloorY2(11), -1, ALIGN_LEFT_BOTTOM)
 		'floor 12
-		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(area.GetX() + innerLeft + 60, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(area.GetX() + innerRight - 75, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze3a").Draw(buildingInner.GetScreenX() + 60, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + floorWidth - 75, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 		'floor 13
-		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(13), - 1, ALIGN_LEFT_BOTTOM)
-		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(area.GetX() + innerLeft + 150, area.GetY() + GetFloorY(12), - 1, ALIGN_LEFT_BOTTOM)
-
+		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(13), -1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze3b").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(12), -1, ALIGN_LEFT_BOTTOM)
 
 		'draw entrance on top of figures
 		If GetFloor(GetPlayerCollection().Get().Figure.area.GetY()) <= 4
@@ -375,13 +494,17 @@ Type TBuilding Extends TStaticEntity
 			For Local Figure:TFigure = EachIn GetFigureCollection().list
 				If Not Figure.alreadydrawn Then Figure.Draw()
 			Next
-			gfx_buildingEntrance.Draw(area.GetX(), area.GetY() + 1024 - gfx_buildingEntrance.area.GetH() - 3)
+
+			'the bottom elements (entrance, fence ...) are using offsets
+			'to properly align with the building
+
+			gfx_buildingEntrance.Draw(GetScreenX(), GetScreenY())
 
 			TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 0.9).SetRGB()
 			'draw wall
-			gfx_buildingEntranceWall.Draw(area.GetX() + gfx_buildingEntrance.area.GetW(), area.GetY() + 1024 - gfx_buildingEntranceWall.area.GetH() - 3)
+			gfx_buildingEntranceWall.Draw(GetScreenX(), GetScreenY())
 			'draw fence
-			gfx_buildingFence.Draw(area.GetX() + buildingDisplaceX + 507, area.GetY() + 1024 - gfx_buildingFence.area.GetH() - 3)
+			gfx_buildingFence.Draw(GetScreenX(), GetScreenY())
 		EndIf
 		SetColor(255,255,255)
 		TRoomDoor.DrawAllTooltips()
@@ -426,6 +549,7 @@ Type TBuilding Extends TStaticEntity
 			UFO_BeamAnimationDone = False
 		EndIf
 	End Method
+	
 
 	'Summary: Draws background of the mainscreen (stars, buildings, moon...)
 	Method DrawBackground(tweenValue:Float=1.0)
@@ -456,18 +580,18 @@ Type TBuilding Extends TStaticEntity
 
 		skyInfluence = 0.7
 		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[0].Draw(area.GetX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
-		gfx_bgBuildings[1].Draw(area.GetX() + 634, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
+		gfx_bgBuildings[0].Draw(GetScreenX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
+		gfx_bgBuildings[1].Draw(GetScreenX() + 634, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
 
 		skyInfluence = 0.5
 		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[2].Draw(area.GetX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
-		gfx_bgBuildings[3].Draw(area.GetX() + 636, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
+		gfx_bgBuildings[2].Draw(GetScreenX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
+		gfx_bgBuildings[3].Draw(GetScreenX() + 636, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
 
 		skyInfluence = 0.3
 		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
-		gfx_bgBuildings[4].Draw(area.GetX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
-		gfx_bgBuildings[5].Draw(area.GetX() + 634, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
+		gfx_bgBuildings[4].Draw(GetScreenX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
+		gfx_bgBuildings[5].Draw(GetScreenX() + 634, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
 
 		SetColor 255, 255, 255
 		SetAlpha 1.0
@@ -480,8 +604,8 @@ Type TBuilding Extends TStaticEntity
 		if not door then return FALSE
 
 		roomUsedTooltip	= TTooltip.Create("Besetzt", "In diesem Raum ist schon jemand", 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(area.GetY() + GetFloorY(door.area.GetY()))
-		roomUsedTooltip.area.position.SetX(door.area.GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH())
+		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		return TRUE
@@ -494,8 +618,8 @@ Type TBuilding Extends TStaticEntity
 		if not door then return FALSE
 
 		roomUsedTooltip = TTooltip.Create(GetLocale("BLOCKED"), GetLocale("ACCESS_TO_THIS_ROOM_IS_CURRENTLY_NOT_POSSIBLE"), 0,0,-1,-1,2000)
-		roomUsedTooltip.area.position.SetY(area.GetY() + GetFloorY(door.area.GetY()))
-		roomUsedTooltip.area.position.SetX(door.area.GetX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
+		roomUsedTooltip.area.position.SetY(door.GetScreenY() - door.area.GetH())
+		roomUsedTooltip.area.position.SetX(door.GetScreenX() + door.area.GetW()/2 - roomUsedTooltip.GetWidth()/2)
 		roomUsedTooltip.enabled = 1
 
 		return TRUE
@@ -503,18 +627,34 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method CenterToFloor:Int(floornumber:Int)
-		area.position.y = ((13 - (floornumber)) * 73) - 115
+		area.position.y = ((13 - floornumber) * floorHeight) - 115
 	End Method
 
 
-	'Summary: returns y which has to be added to building.y, so its the difference
-	Function GetFloorY:Int(floornumber:Int)
-		Return (66 + 1 + (13 - floornumber) * 73)		  ' +10 = interface
+	'returns y of the requested floors CEILING position (upper part)
+	'	coordinate is local (difference to building coordinates)
+	Function GetFloorY:Int(floorNumber:Int)
+		'limit floornumber to 0-(floorCount-1)
+		floorNumber = Max(0, Min(floornumber,floorCount-1))
+
+		'subtract 7 because last floor has no "splitter wall"
+		Return 1 + (floorCount-1 - floorNumber) * floorHeight - 7
 	End Function
 
 
+	'returns y of the requested floors GROUND position (lower part)
+	'	coordinate is local (difference to building coordinates)
+	Function GetFloorY2:Int(floorNumber:Int)
+		return GetFloorY(floorNumber) + floorHeight
+	End Function
+
+
+	'returns floor of a given y-coordinate (local to building coordinates)
 	Method GetFloor:Int(y:Int)
-		Return MathHelper.Clamp(14 - Ceil((y - area.position.y) / 73),0,13) 'TODO/FIXIT mv 10.11.2012 scheint nicht zu funktionieren!!! Liefert immer die gleiche Zahl egal in welchem Stockwerk man ist
+'		Return MathHelper.Clamp(14 - Ceil((y - area.GetY()) / 73),0,13)
+		y :- uppermostFloorTop
+		y = Ceil(y / floorHeight)
+		return MathHelper.Clamp(13 - y, 0, 13)
 	End Method
 
 
@@ -522,7 +662,7 @@ Type TBuilding Extends TStaticEntity
 	'also zwischen 0 und ~ 1000
 	Function getFloorByPixelExactPoint:Int(point:TVec2D)
 		For Local i:Int = 0 To 13
-			If GetFloorY(i) < point.y Then Return i
+			If GetFloorY2(i) < point.y Then Return i
 		Next
 		Return -1
 	End Function

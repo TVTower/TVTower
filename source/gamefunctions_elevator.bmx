@@ -72,8 +72,8 @@ Type TElevator extends TEntity
 
 
 	Method Init:TElevator()
-		'Aktuelle Position - difference to x/y of building
-		area.position.SetXY(131 + 230, 115)
+'		'Aktuelle Position - difference to x/y of building
+'		area.position.SetXY(131 + 230, 115)
 
 		'limit speed between 50 - 240 pixels per second, default 120
 		Speed = Max(50, Min(240, App.devConfig.GetInt("DEV_ELEVATOR_SPEED", self.speed)))
@@ -181,7 +181,7 @@ Type TElevator extends TEntity
 	End Method
 
 	Method GetDoorCenterX:int()
-		Return GetBuilding().area.position.x + area.GetX() + door.sprite.framew/2
+		Return area.GetX() + door.sprite.framew/2
 	End Method
 
 	Method GetDoorWidth:int()
@@ -335,8 +335,8 @@ Type TElevator extends TEntity
 		'it has to reach the first pixel of the floor until the
 		'function returns the new one, instead of positioning it
 		'directly on the floorground
-		local tmpCurrentFloor:int = GetBuilding().GetFloor(GetBuilding().area.GetY() + area.GetY() + spriteInner.area.GetH() - 1)
-		local tmpFloorY:int = TBuilding.GetFloorY(tmpCurrentFloor)
+		local tmpCurrentFloor:int = GetBuilding().GetFloor(area.GetY() + spriteInner.area.GetH() - 1)
+		local tmpFloorY:int = TBuilding.GetFloorY2(tmpCurrentFloor)
 		local tmpElevatorBottomY:int = area.GetY() + spriteInner.area.GetH()
 
 		'direction = -1 => downwards
@@ -401,7 +401,7 @@ Type TElevator extends TEntity
 
 
 				'do not move further than the target floor
-				local tmpTargetFloorY:int = TBuilding.GetFloorY(TargetFloor) - spriteInner.area.GetH()
+				local tmpTargetFloorY:int = TBuilding.GetFloorY2(TargetFloor) - spriteInner.area.GetH()
 				
 				If (direction < 0 and area.GetY() > tmpTargetFloorY) or ..
 				   (direction > 0 and area.GetY() < tmpTargetFloorY)
@@ -471,37 +471,41 @@ Type TElevator extends TEntity
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
 		SetBlend ALPHABLEND
 
+		local parentY:int = GetScreenY()
+		if parent then parentY = parent.GetScreenY()
 		'draw the door the elevator is currently at (eg. for animation)
-		door.RenderAt(GetBuilding().area.GetX() + area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(CurrentFloor) - 50)
-
+		'instead of using GetScreenY() we fix our y coordinate to the
+		'current floor
+		door.RenderAt(GetScreenX(), parentY + TBuilding.GetFloorY2(CurrentFloor) - 50)
+		
 		'draw elevator position above the doors
 		For Local i:Int = 0 To 13
-			Local locy:Int = GetBuilding().area.GetY() + TBuilding.GetFloorY(i) - door.sprite.area.GetH() - 8
+			Local locy:Int = parentY + TBuilding.GetFloorY2(i) - door.sprite.area.GetH() - 8
 			If locy < 410 And locy > -50
 				SetColor 200,0,0
-				DrawRect(GetBuilding().area.GetX() + area.GetX() - 4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
+				DrawRect(GetScreenX() - 4 + 10 + (CurrentFloor)*2, locy + 3, 2,2)
 				SetColor 255,255,255
 			EndIf
 		Next
 
 		'draw call state next to the doors
 		For Local FloorRoute:TFloorRoute = EachIn FloorRouteList
-			Local locy:Int = GetBuilding().area.GetY() + TBuilding.GetFloorY(floorroute.floornumber) - spriteInner.area.GetH() + 26
+			Local locy:Int = parentY + TBuilding.GetFloorY2(floorroute.floornumber) - spriteInner.area.GetH() + 26
 			If floorroute.call
 				'elevator is called to this floor
 				SetColor 220,240,40
 				SetAlpha 0.55
-				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy, 3,2)
+				DrawRect(GetScreenX() + 44, locy, 3,2)
 				SetAlpha 1.0
-				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy, 3,1)
+				DrawRect(GetScreenX() + 44, locy, 3,1)
 			Else
 				'elevator will stop there (destination)
 				SetColor 220,120,50
 				SetAlpha 0.85
-				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy+3, 3,2)
+				DrawRect(GetScreenX() + 44, locy+3, 3,2)
 				SetColor 250,150,80
 				SetAlpha 1.0
-				DrawRect(GetBuilding().area.GetX() + area.GetX() + 44, locy+4, 3,1)
+				DrawRect(GetScreenX() + 44, locy+4, 3,1)
 				SetAlpha 1.0
 			EndIf
 			SetColor 255,255,255
@@ -512,11 +516,14 @@ Type TElevator extends TEntity
 
 
 	Method DrawFloorDoors()
+		local parentY:int = GetScreenY()
+		if parent then parentY = parent.GetScreenY()
+		
 		'draw inner (BG) => elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(GetBuilding().area.GetX() + 360, Max(GetBuilding().area.GetY(), 10) , 44, 373)
+		DrawRect(GetScreenX(), Max(parentY, 10) , 44, 373)
 		SetColor 255, 255, 255
-		spriteInner.Draw(GetBuilding().area.GetX() + area.GetX(), GetBuilding().area.GetY() + area.GetY() + 3.0)
+		spriteInner.Draw(GetScreenX(), GetScreenY() + 3.0)
 
 
 		'Draw Figures
@@ -529,9 +536,9 @@ Type TElevator extends TEntity
 
 		'Draw (elevator-)doors on all floors (except the current one)
 		For Local i:Int = 0 To 13
-			Local locy:Int = GetBuilding().area.GetY() + TBuilding.GetFloorY(i) - door.sprite.area.GetH()
+			Local locy:Int = parentY + TBuilding.GetFloorY2(i) - door.sprite.area.GetH()
 			If locy < 410 And locy > - 50 And i <> CurrentFloor
-				door.RenderAt(GetBuilding().area.GetX() + area.GetX(), locy, "closed")
+				door.RenderAt(GetScreenX(), locy, "closed")
 			Endif
 		Next
 	End Method

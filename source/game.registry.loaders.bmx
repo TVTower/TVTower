@@ -184,7 +184,7 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 
 				Local hotspotData:TData = new TData
 				local hotspotFields:string[]
-				hotspotFields :+ ["name", "tooltip", "tooltipdescription"]
+				hotspotFields :+ ["name", "tooltiptext", "tooltipdescription"]
 				hotspotFields :+ ["x", "y", "floor", "width", "height", "bottomy"]
 				TXmlHelper.LoadValuesToData(hotspotNode, hotspotData, hotspotFields)
 
@@ -202,7 +202,7 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 		'this is the default value for rooms without doors
 		doorData.Add("floor", "0")
 		If subNode
-			local doorFields:string[] = ["x", "floor", "doorslot", "doortype", "doorwidth"]
+			local doorFields:string[] = ["x", "floor", "doorslot", "doortype", "doorwidth", "doortooltip"]
 			TXmlHelper.LoadValuesToData(subNode, doorData, doorFields)
 		EndIf
 		'add door configuration
@@ -240,11 +240,12 @@ Type TRegistryRoomLoader extends TRegistryBaseLoader
 
 		local doorData:TData = TData(data.Get("door", new TData))
 		'load door settings
-		roomData.AddNumber("x", doorData.GetInt("x", -1))
+		roomData.AddNumber("x", doorData.GetInt("x", -1000))
 		roomData.AddNumber("floor",	 doorData.GetInt("floor", -1))
 		roomData.AddNumber("doorslot", doorData.GetInt("doorslot", -1))
 		roomData.AddNumber("doortype", doorData.GetInt("doortype", -1))
 		roomData.AddNumber("doorwidth", doorData.GetInt("doorwidth", -1))
+		roomData.AddBoolString("doortooltip", doorData.GetBool("doortooltip", True))
 
 		'fetch/create the rooms config container
 		local roomsMap:TMap = TMap(GetRegistry().Get("rooms"))

@@ -441,7 +441,7 @@ endrem
 		Local room:TRoom = GetRoomCollection().Get(roomId)
 		if room
 			Local door:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(room)
-			If door Then Return door.area.GetY()
+			If door Then Return door.GetOnFloor()
 		endif
 		Return self.RESULT_NOTFOUND
 	End Method

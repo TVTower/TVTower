@@ -253,22 +253,23 @@
 
 		<room name="roomboard" owner="0" screen="screen_roomboard" fake="1">
 			<tooltip text="ROOM_ROOMBOARD" />
-			<door doorslot="4" x="527" floor="0" doortype="1" doorwidth="59" />
+			<door doorslot="4" x="340" floor="0" doortype="1" doorwidth="59" />
 		</room>
 		<room name="credits" owner="0" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_CREDITS" />
-			<door doorslot="4" x="559" floor="13" doortype="1" doorwidth="52" />
+			<door doorslot="4" x="370" floor="13" doortype="1" doorwidth="52" />
 		</room>
 		<room name="porter" owner="0" screen="screen_credits" fake="1">
 			<tooltip text="ROOM_PORTER" />
-			<door doorslot="1" x="186" floor="0" doortype="1" doorwidth="66" />
+			<door doorslot="1" x="0" floor="0" doortype="1" doorwidth="66" />
 		</room>
 
 
 		<!-- elevator doors, to make them clickable | ID is differing so assets are inserted properly-->
+		<!-- also hide tooltip for this room's door -->
 		<room name="elevatorplan" owner="0" id="0" screen="screen_elevatorplan" fake="1">
 			<tooltip text="ROOM_ELEVATORPLAN" />
-			<door doorslot="-1" floor="0" doorwidth="40" doortype="-1" />
+			<door doorslot="-1" x="-1000" floor="0" doorwidth="40" doortype="-1" doortooltip="0" />
 		</room>
 
 		<!-- "building" is a special room - and also handle if no room is given -->

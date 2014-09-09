@@ -1043,8 +1043,8 @@ Type TFigureJanitor Extends TFigure
 	Field useDoors:Int = True
 	Field BoredCleanChance:Int = 10
 	Field NormalCleanChance:Int = 30
-	Field MovementRangeMinX:Int	= 220
-	Field MovementRangeMaxX:Int	= 580
+	Field MovementRangeMinX:Int	= 20
+	Field MovementRangeMaxX:Int	= 420
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
@@ -1089,7 +1089,7 @@ Type TFigureJanitor Extends TFigure
 	Method UpdateCustom:Int()
 		'waited to long - change target (returns false while in elevator)
 		If hasToChangeFloor() And WaitAtElevatorTimer.isExpired()
-			If ChangeTarget(Rand(150, 580), GetBuilding().area.position.y + GetBuilding().GetFloorY(GetFloor()))
+			If ChangeTarget(Rand(MovementRangeMinX, MovementRangeMaxX), GetBuilding().GetFloorY2(GetFloor()))
 				WaitAtElevatorTimer.Reset()
 			EndIf
 		EndIf
@@ -1118,11 +1118,11 @@ Type TFigureJanitor Extends TFigure
 				If useElevator And currentAction=0 And zufall > 80 And Not IsAtElevator()
 					Local sendToFloor:Int = GetFloor() + 1
 					If sendToFloor > 13 Then sendToFloor = 0
-					ChangeTarget(zufallx, GetBuilding().area.position.y + GetBuilding().GetFloorY(sendToFloor))
+					ChangeTarget(zufallx, GetBuilding().GetFloorY2(sendToFloor))
 					WaitAtElevatorTimer.Reset()
 				'move to a different X on same floor - if not cleaning now
 				Else If currentAction=0
-					ChangeTarget(zufallx, GetBuilding().area.position.y + GetBuilding().GetFloorY(GetFloor()))
+					ChangeTarget(zufallx, GetBuilding().GetFloorY2(GetFloor()))
 				EndIf
 			EndIf
 
@@ -1140,7 +1140,7 @@ Type TFigureJanitor Extends TFigure
 			'only clean with a chance of 30% when on the way to something
 			'and do not clean if target is a room near figure
 			Local targetDoor:TRoomDoor = TRoomDoor(targetObj)
-			If target And (Not targetDoor Or (20 < Abs(targetDoor.area.GetX() - area.GetX()) Or targetDoor.area.GetY() <> GetFloor()))
+			If target And (Not targetDoor Or (20 < Abs(targetDoor.GetScreenX() - area.GetX()) Or targetDoor.GetOnFloor() <> GetFloor()))
 				If Rand(0,100) < NormalCleanChance Then currentAction = 1
 			EndIf
 			'if just standing around give a chance to clean
@@ -1227,13 +1227,14 @@ Type TFigureTerrorist Extends TFigure
 				'instead of sending the figure to the correct door, we
 				'ask the roomsigns where to go to
 				'1) get sign of the door
-				local signA:TRoomDoorSign = TRoomDoor(TRoomDoor.GetMainDoorToRoom(deliverToRoom)).sign
-				'2) get sign which is now at the original position of signA
-				local signB:TRoomDoorSign = TRoomDoorSign.GetByCurrentPosition(signA.signSlot, signA.signFloor)
+				local roomDoor:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
+				'2) get sign which is now at the slot/floor of the room
+				local sign:TRoomDoorSign
+				if roomDoor then sign = TRoomDoorSign.GetByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
 
-				if signB
-					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+TRoomDoor(signb.door).room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
-					SendToDoor(signb.door)
+				if sign and sign.door
+					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+TRoomDoor(sign.door).room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
+					SendToDoor(sign.door)
 				else
 					TLogger.Log("TFigureTerrorist", self.name+" cannot send to a room, sign of target over empty room slot (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
 					'send home again

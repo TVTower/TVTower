@@ -243,6 +243,7 @@ Type TRoomDoorTooltip extends TTooltip
 		if newContent <> content then SetContent(newContent)
 
 		Super.Update()
+		return True
 	End Method
 End Type
 
@@ -252,34 +253,26 @@ End Type
 Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Field room:TRoomBase
 	'uses description
+	Field showTooltip:Int = True
 	Field tooltip:TRoomDoorTooltip = null
 	Field _soundSource:TDoorSoundSource = Null {nosave}
-	Field sign:TRoomDoorSign = null
 
 
 	'create room and use preloaded image
-	Method Init:TRoomDoor(room:TRoomBase, doorSlot:int=-1, x:Int=0, floor:Int=0, doortype:Int=-1)
-		'autocalc the position
-		if x=-1 and doorSlot>=0 AND doorSlot<=4 then x = getDoorSlotX(doorSlot)
-
+	Method Init:TRoomDoor(room:TRoomBase, doorSlot:int=-1, onFloor:Int=0, doorType:Int=-1)
 		'assign variables
 		self.room = room
 
 		DoorTimer.setInterval( TRoomBase.ChangeRoomSpeed )
 
-		'x = x of the given doorSlot
-		'y = floor
-		'w = door width
-		'h = door height
-		self.area = new TRectangle.Init(x, floor, GetSpriteFromRegistry("gfx_building_Tueren").framew, 52)
+		self.area = new TRectangle.Init(0, 0, GetSpriteFromRegistry("gfx_building_Tueren").framew, 52)
 		self.doorSlot = doorSlot
 		self.doorType = doorType
+		self.onFloor = onFloor
 
 		'give it an ID
 		GenerateID()
-		'create the sign next to room's door
-		CreateRoomsign()
-
+		
 		GetRoomDoorBaseCollection().Add(self)
 
 		Return self
@@ -329,16 +322,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 		return True
 	End Method
-	
 
-	Method DrawOnBackground:Int(pix:TPixmap)
-		'clamp doortype
-		doorType = Min(5, doorType)
-		local doorSprite:TSprite = GetSpriteFromRegistry("gfx_building_Tueren")
-		'draw door
-		DrawImageOnImage(doorSprite.GetFrameImage(doorType), Pix, area.GetX() - GetBuilding().area.GetX() - 127, TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH())
-	End Method
-	
 
 	Method DrawTooltip:Int()
 		If not tooltip or not tooltip.enabled then return False
@@ -349,14 +333,14 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 	Function DrawAllTooltips:Int()
 		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().List
-			door.DrawTooltip()
+			if door.showTooltip then door.DrawTooltip()
 		Next
 	End Function
 
 
 	Method UpdateTooltip:Int()
 		'only show tooltip if not "empty" and mouse in door-rect
-		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().GetFigure().IsInBuilding() And THelper.MouseIn(area.GetX(), GetBuilding().area.GetY()  + TBuilding.GetFloorY(area.GetY()) - area.GetH(), area.GetW(), area.GetH())
+		If room.GetDescription(1) <> "" and GetPlayerCollection().Get().GetFigure().IsInBuilding() And THelper.MouseIn(GetScreenX(), GetScreenY() - area.GetH(), area.GetW(), area.GetH())
 			If not tooltip
 				tooltip = TRoomDoorTooltip.Create("", "", 100, 140, 0, 0)
 				tooltip.AssignRoom(room.id)
@@ -369,8 +353,8 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 		If tooltip AND tooltip.enabled
 			if tooltip.Update()
-				tooltip.area.position.SetY( GetBuilding().area.position.y + TBuilding.GetFloorY(area.GetY()) - GetSpriteFromRegistry("gfx_building_Tueren").area.GetH() - 20 )
-				tooltip.area.position.setX( area.GetX() + area.GetW()/2 - tooltip.GetWidth()/2 )
+				tooltip.area.position.SetY( GetScreenY() - area.GetH() - 20 )
+				tooltip.area.position.setX( GetScreenX() + area.GetW()/2 - tooltip.GetWidth()/2 )
 			else
 				'delete old tooltips
 				tooltip = null
@@ -387,29 +371,30 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 				continue
 			Endif
 
-			door.UpdateTooltip()
+			if door.showTooltip then door.UpdateTooltip()
 		Next
 	End Function
 
 
 	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
-		local doorSprite:TSprite = GetSpriteFromRegistry("gfx_building_Tueren")
+		local doorSprite:TSprite = GetSprite()
 
 		'==== DRAW DOOR ====
 		If getDoorType() >= 5
 			If getDoorType() = 5 AND DoorTimer.isExpired() Then Close(null)
 			'valign = 1 -> subtract sprite height
-			doorSprite.Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), getDoorType(), ALIGN_LEFT_BOTTOM)
+			doorSprite.Draw(xOffset + GetScreenX(), yOffset + GetScreenY(), getDoorType(), ALIGN_LEFT_BOTTOM)
 		EndIf
 
 
-		'==== DRAW DOOR SIGN ====
+		'==== DRAW DOOR OWNER SIGN ====
 		'draw on same height than door startY
-		If room.owner < 5 And room.owner >=0 then GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(xOffset + area.GetX() + 2 + doorSprite.framew, yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH())
+		If room.owner < 5 And room.owner >=0
+			GetSpriteFromRegistry("gfx_building_sign_"+room.owner).Draw(xOffset + GetScreenX() + 2 + doorSprite.framew, yOffset + GetScreenY() - area.GetH())
+		EndIf
 
 
 		'==== DRAW OVERLAY ===
-
 		if room.IsBlocked()
 			'when a bomb is the reason - draw a barrier tape
 			if room.blockedState = room.BLOCKEDSTATE_BOMB
@@ -421,9 +406,9 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 					local scale:float = 1.0
 					scale = TInterpolation.BackOut(0.0, 1.0, Min(room.bombExplosionDuration, bombTimeGone), room.bombExplosionDuration)
 					scale :* TInterpolation.BounceOut(0.0, 1.0, Min(room.bombExplosionDuration, bombTimeGone), room.bombExplosionDuration)
-					GetSpriteFromRegistry("gfx_building_explosion").Draw(xOffset + area.GetX() + area.GetW()/2, yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - doorSprite.area.GetH()/2, -1, ALIGN_CENTER_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_explosion").Draw(xOffset + GetScreenX() + area.GetW()/2, yOffset + GetScreenY() - doorSprite.area.GetH()/2, -1, ALIGN_CENTER_CENTER, scale)
 				else
-					GetSpriteFromRegistry("gfx_building_blockeddoorsign").Draw(xOffset + area.GetX(), yOffset + GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()), -1, ALIGN_LEFT_BOTTOM)
+					GetSpriteFromRegistry("gfx_building_blockeddoorsign").Draw(xOffset + GetScreenX(), yOffset + GetScreenY(), -1, ALIGN_LEFT_BOTTOM)
 				endif
 			EndIf
 		EndIf
@@ -431,14 +416,14 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 
 		'==== DRAW DEBUG TEXT ====
 		if Game.DebugInfos
-			local textY:int = GetBuilding().area.GetY() + TBuilding.GetFloorY(area.GetY()) - 62
+			local textY:int = GetScreenY() - area.GetH() - 10
 			if room.hasOccupant()
 				for local figure:TFigure = eachin room.occupants
-					GetBitmapFontManager().basefont.Draw(figure.name, xOffset + area.GetX(), yOffset + textY)
+					GetBitmapFontManager().basefont.Draw(figure.name, xOffset + GetScreenX(), yOffset + textY)
 					textY:-10
 				next
 			else
-				GetBitmapFontManager().basefont.Draw("empty", xOffset + area.GetX(), yOffset + textY)
+				GetBitmapFontManager().basefont.Draw("empty", xOffset + GetScreenX(), yOffset + textY)
 			endif
 		endif
 	End Method
@@ -455,17 +440,6 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Method GetOwnerName:String()
 		if room then return room.GetDescription(1)
 		return super.GetOwnerName()
-	End Method
-
-
-	Method CreateRoomSign:int( slot:int=-1 )
-		if slot = -1 then slot = doorSlot
-
-		If doortype < 0 then return 0
-
-		'area.getY() is the floor of the door
-		sign = new TRoomDoorSign.Init(self, slot, area.getY())
-		return true
 	End Method
 
 
@@ -495,7 +469,7 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	Function GetByDetails:TRoomDoor( name:String, owner:Int, floor:int =-1 )
 		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
 			'skip wrong floors
-			if floor >=0 and door.area.GetY() <> floor then continue
+			if floor >=0 and door.GetOnFloor() <> floor then continue
 			'skip wrong owners
 			if door.room.owner <> owner then continue
 
@@ -505,11 +479,12 @@ Type TRoomDoor extends TRoomDoorBase  {_exposeToLua="selected"}
 	End Function
 
 
-	Function GetByCoord:TRoomDoor( x:int, y:int )
-		For Local door:TRoomDoor = EachIn GetRoomDoorBaseCollection().list
+	'returns a door by the given (local to parent/building) coordinates
+	Function GetByCoord:TRoomDoorBase( x:int, y:int )
+		For Local door:TRoomDoorBase = EachIn GetRoomDoorBaseCollection().list
 			'also allow invisible rooms... so just check if hit the area
-			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
-			If THelper.IsIn(x, y, door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()) - door.area.GetH(), door.area.GetW(), door.area.GetH())
+			'If room.doortype >= 0 and THelper.IsIn(x, y, room.Pos.x, Building.area.position.y + TBuilding.GetFloorY2(room.pos.y) - room.doorDimension.Y, room.doorDimension.x, room.doorDimension.y)
+			If THelper.IsIn(x, y, door.area.GetX(), door.area.GetY() - door.area.GetH(), door.area.GetW(), door.area.GetH())
 				Return door
 			EndIf
 		Next
@@ -5039,6 +5014,13 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 
 	Function Init()
 		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("elevatorplan") )
+
+		'recreate room plan
+		TRoomDoorSign.list.Clear()
+		For local door:TRoomDoorBase = EachIn GetBuilding().doors
+			'create the sign in the roomplan (if not "invisible door")
+			If door.doorType >= 0 then new TRoomDoorSign.Init(door)
+		Next
 	End Function
 
 
@@ -5064,10 +5046,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		'if possible, change the target to the clicked door
 		if mouseClicked
 			local door:TRoomDoorBase = GetDoorByPlanXY(MouseManager.x,MouseManager.y)
-			if door
-				local playerFigure:TFigureBase = GetPlayerCollection().Get().figure
-				playerFigure.ChangeTarget(door.area.GetX(), GetBuilding().area.GetY() + TBuilding.GetFloorY(door.area.GetY()))
-			endif
+			if door then GetPlayer().GetFigure().SendToDoor(door)
 			if mouseClicked then MouseManager.ResetKey(1)
 		endif
 
@@ -5433,6 +5412,7 @@ Function Init_CreateAllRooms()
 		local screen:TInGameScreen_Room = TInGameScreen_Room(ScreenCollection.GetScreen(vars.GetString("screen") ))
 
 
+
 		'==== ROOM ====
 		local room:TRoom = new TRoom
 		room.Init(..
@@ -5448,21 +5428,21 @@ Function Init_CreateAllRooms()
 		room.fakeRoom = vars.GetBool("fake", FALSE)
 
 
+
 		'==== DOOR ====
 		local door:TRoomDoor = new TRoomDoor
 		door.Init(..
 			room,..
 			vars.GetInt("doorslot"), ..
-			vars.GetInt("x"), ..
 			vars.GetInt("floor"), ..
 			vars.GetInt("doortype") ..
 		)
-		if vars.GetInt("doorwidth") > 0
-			door.area.dimension.setX( vars.GetInt("doorwidth") )
-		endif
+		GetBuilding().AddDoor(door)
+		'override defaults
+		if not vars.GetBool("doortooltip") then door.showTooltip = False
+		if vars.GetInt("doorwidth") > 0 then door.area.dimension.setX( vars.GetInt("doorwidth") )
+		if vars.GetInt("x",-1000) <> -1000 then door.area.position.SetX(vars.GetInt("x"))
 
-		'add the door to the building?
-		'...
 
 
 		'==== HOTSPOTS ====
@@ -5480,10 +5460,11 @@ Function Init_CreateAllRooms()
 				local tooltipDescription:string	= conf.GetString("tooltipdescription")
 
 				'align at bottom of floor
-				if floor >= 0 then y = TBuilding.GetFloorY(floor) - height
+				if floor >= 0 then y = TBuilding.GetFloorY2(floor) - height
 
 				local hotspot:THotspot = new THotspot.Create( name, x, y - bottomy, width, height)
 				hotspot.setTooltipText( GetLocale(tooltipText), GetLocale(tooltipDescription) )
+
 				room.addHotspot( hotspot )
 			next
 		endif

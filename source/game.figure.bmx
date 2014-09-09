@@ -110,7 +110,7 @@ Type TFigure extends TFigureBase
 		GetFrameAnimations().Set("standBack", TSpriteFrameAnimation.Create([ [10,1000] ], -1, 0 ) )
 
 		name = Figurename
-		area = new TRectangle.Init(x, GetBuilding().GetFloorY(onFloor), sprite.framew, sprite.frameh )
+		area = new TRectangle.Init(x, GetBuilding().GetFloorY2(onFloor), sprite.framew, sprite.frameh )
 		velocity.SetX(0)
 		initialdx = speed
 
@@ -159,12 +159,12 @@ Type TFigure extends TFigureBase
 	Method GetFloor:Int(pos:TVec2D = Null)
 		'if we have no floor set in the pos, we return the current floor
 		If not pos Then pos = area.position
-		Return GetBuilding().getFloor( GetBuilding().area.position.y + pos.y )
+		Return GetBuilding().getFloor(pos.y)
 	End Method
 
 
 	Method IsOnFloor:Int()
-		Return area.GetY() = GetBuilding().GetFloorY(GetFloor())
+		Return area.GetY() = GetBuilding().GetFloorY2(GetFloor())
 	End Method
 
 
@@ -258,14 +258,14 @@ Type TFigure extends TFigureBase
 
 		'adjust/limit position based on location
 		If Not IsInElevator()
-			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( GetBuilding().GetFloorY(GetFloor()) )
+			If Not IsOnFloor() and not useAbsolutePosition Then area.position.setY( GetBuilding().GetFloorY2(GetFloor()) )
 		EndIf
 
 		'limit player position (only within floor 13 and floor 0 allowed)
 		if not useAbsolutePosition
 			'beim Vergleich oben nicht "self.sprite.area.GetH()" abziehen... das war falsch und führt zum Ruckeln im obersten Stock
-			If area.GetY() < GetBuilding().GetFloorY(13) Then area.position.setY( GetBuilding().GetFloorY(13) )
-			If area.GetY() - sprite.area.GetH() > GetBuilding().GetFloorY( 0) Then area.position.setY( GetBuilding().GetFloorY(0) )
+			If area.GetY() < GetBuilding().GetFloorY2(13) Then area.position.setY( GetBuilding().GetFloorY2(13) )
+			If area.GetY() - sprite.area.GetH() > GetBuilding().GetFloorY2(0) Then area.position.setY( GetBuilding().GetFloorY2(0) )
 		endif
 	End Method
 
@@ -357,11 +357,11 @@ Type TFigure extends TFigureBase
 				'figure right of me
 				If Figure.area.GetX() > area.GetX()
 					'draw the "to the right" balloon a bit lower (so both are better visible)
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() + area.GetW()/2 -2), int(GetBuilding().area.GetY() + area.GetY() - sprite.area.GetH() + 2), greetType, ALIGN_LEFT_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenX() + area.GetW()/2 -2), int(GetScreenY() - sprite.area.GetH() + 2), greetType, ALIGN_LEFT_CENTER, scale)
 				'figure left of me
 				else
 					greetType :+ 3
-					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(area.GetX() - area.GetW()/2 +2), int(GetBuilding().area.GetY() + area.GetY() - sprite.area.GetH()), greetType, ALIGN_RIGHT_CENTER, scale)
+					GetSpriteFromRegistry("gfx_building_textballons").Draw(int(GetScreenX() - area.GetW()/2 +2), int(GetScreenY() - sprite.area.GetH()), greetType, ALIGN_RIGHT_CENTER, scale)
 				endif
 				SetAlpha oldAlpha
 			endif
@@ -614,37 +614,36 @@ Type TFigure extends TFigureBase
  		If not door then return FALSE
 
 		If forceSend
-			ForceChangeTarget(door.area.GetX() + 5, GetBuilding().area.GetY() + GetBuilding().getfloorY(door.area.GetY()) - 5)
+			ForceChangeTarget(door.area.GetX() + 5, door.area.GetY())
 		Else
-			ChangeTarget(door.area.GetX() + 5, GetBuilding().area.GetY() + GetBuilding().getfloorY(door.area.GetY()) - 5)
+			ChangeTarget(door.area.GetX() + 5, door.area.GetY())
 		EndIf
 	End Method
 
 
 	'send a figure to the offscreen position
 	Method SendToOffscreen:Int()
-		ChangeTarget(-50, GetBuilding().area.GetY() + GetBuilding().getfloorY(0) - 5)
+		ChangeTarget(GameRules.offscreenX, GetBuilding().GetFloorY2(0) - 5)
 	End Method
 
 
 	'instantly move a figure to the offscreen position
 	Method MoveToOffscreen:Int()
-		area.position.SetXY(-50, GetBuilding().GetFloorY(0))
+		area.position.SetXY(GameRules.offscreenX, GetBuilding().GetFloorY2(0))
 	End Method
 
 
 	Method IsOffscreen:int()
-		if GetFloor() = 0 and area.GetX() = -50 then return True
+		if GetFloor() = 0 and area.GetX() <= GameRules.offscreenX then return True
 		return False
 	End Method
 
 
 	Method GoToCoordinatesRelative:Int(relX:Int = 0, relYFloor:Int = 0)
 		Local newX:Int = area.GetX() + relX
-		Local newY:Int = GetBuilding().area.GetY() + GetBuilding().getfloorY(GetFloor() + relYFloor) - 5
+		Local newY:Int = GetBuilding().area.GetY() + GetBuilding().GetFloorY2(GetFloor() + relYFloor) - 5
 
-		if (newX < 150) then newX = 150 end
-		if (newX > 580) then newX = 580 end
+		newX = MathHelper.Clamp(newX, 10, GetBuilding().floorWidth - 10)
 
  		ChangeTarget(newX, newY)
 	End Method
@@ -709,10 +708,10 @@ Type TFigure extends TFigureBase
 		If GetBuilding().GetFloor(y) < 0 Or GetBuilding().GetFloor(y) > 13 Then Return False
 
 		'set new target, y is recalculated to "basement"-y of that floor
-		newTarget = new TVec2D.Init(x, GetBuilding().GetFloorY(GetBuilding().GetFloor(y)) )
+		newTarget = new TVec2D.Init(x, GetBuilding().GetFloorY2(GetBuilding().GetFloor(y)) )
 
 		'when targeting a room, set target to center of door
-		newTargetObj = TRoomDoor.GetByCoord(newTarget.x, GetBuilding().area.GetY() + newTarget.y)
+		newTargetObj = TRoomDoor.GetByCoord(newTarget.x, newTarget.y)
 		If newTargetObj then newTarget.setX(newTargetObj.area.GetX() + ceil(newTargetObj.area.GetW()/2))
 
 		'limit target coordinates
@@ -720,8 +719,11 @@ Type TFigure extends TFigureBase
 		'check right side
 		'target.y contains the floorY so we use "y" which holds clicked
 		'floor
-		local rightLimit:int = 603' - ceil(rect.GetW()/2) 'subtract half a figure
-		local leftLimit:int = 200' + ceil(rect.GetW()/2) 'add half a figure
+
+		'TODO: do this in a GetLimitX() method to make it overrideable
+		'      by bigger figures - like the the janitor
+		local rightLimit:int = TBuilding.floorWidth-15 '603
+		local leftLimit:int = 15 '200
 
 		if GetBuilding().GetFloor(y) = 0
 			If Floor(newTarget.x) >= rightLimit Then newTarget.X = rightLimit
@@ -741,11 +743,16 @@ Type TFigure extends TFigureBase
 		'or if already in this room
 		if targetRoom and targetRoom = inRoom then return False
 
-
 		'=== SET NEW TARGET ===
 		'new target - so go to it
 		target = newTarget.Copy()
 		targetObj = newTargetObj
+
+if id = 1
+	if targetObj then print "change target "+newTarget.x+","+newTarget.y+" -> is special obj"
+	if not targetObj then print "change target "+newTarget.x+","+newTarget.y
+endif
+
 
 		'if still in a room, but targetting another one ... leave first
 		'this is needed as computer players do not "leave a room", they
@@ -874,12 +881,15 @@ Type TFigure extends TFigureBase
 			tweenPos = area.position.Copy()
 		endif
 
+
 		'draw x-centered at current position, with int
-		if useAbsolutePosition
-			RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
+		if parent
+			'with parent: draw local to parent (add parents screen coord)
+			RenderAt( int(parent.GetScreenX() + tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(parent.GetScreenY() + tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
 		else
-			RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(GetBuilding().area.position.y + tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
+			RenderAt( int(tweenPos.X - ceil(area.GetW()/2) + PosOffset.getX()), int(tweenPos.Y - sprite.area.GetH() + PosOffset.getY()))
 		endif
+		
 		SetAlpha(oldAlpha)
 
 		if greetOthers then GreetPeopleOnSameFloor()

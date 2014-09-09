@@ -30,7 +30,10 @@ Type TStaticEntity
 	End Method
 
 
-	Method Render:Int(xOffset:Float=0, yOffset:Float=0) abstract
+'	Method Render:Int(xOffset:Float=0, yOffset:Float=0) abstract
+	Method Render:Int(xOffset:Float=0, yOffset:Float=0)
+		'implement in extension
+	End Method
 
 
 '	Method Update:Int()
@@ -77,7 +80,7 @@ Type TStaticEntity
 
 			'calculate available space of parent, or if enough left,
 			'occupy all space entity wants
-			local x:Int = parent.GetScreenX() + parent.GetChildX(self)
+			local x:Int = GetScreenX() 'parent.GetScreenX() + parent.GetChildX(self)
 			local x2:Int = Min(GetScreenX() + area.GetW(), parent.GetScreenX() + parent.GetScreenWidth())
 			return Max(0, (x2 - x))
 		endif
@@ -102,7 +105,7 @@ Type TStaticEntity
 
 			'calculate available space of parent, or if enough left,
 			'occupy all space entity wants
-			local y:Int = parent.GetScreenY() + parent.GetChildY(self)
+			local y:Int = GetScreenY() 'parent.GetScreenY() + parent.GetChildY(self)
 			local y2:Int = Min(GetScreenY() + area.GetH(), parent.GetScreenY() + parent.GetScreenHeight())
 			return Max(0, (y2 - y))
 		endif
@@ -111,12 +114,16 @@ Type TStaticEntity
 	End Method
 
 
-	Method GetChildX:Float(child:TStaticEntity)
+	'return at which x position a child (or all) start
+	'	returns an offset, not a screen coordinate!
+	Method GetChildX:Float(child:TStaticEntity = Null)
 		return 0
 	End Method
 
 
-	Method GetChildY:Float(child:TStaticEntity)
+	'return at which y position a child (or all) start
+	'	returns an offset, not a screen coordinate!
+	Method GetChildY:Float(child:TStaticEntity = Null)
 		return 0
 	End Method
 

@@ -187,14 +187,16 @@ Type TToastMessageSpawnPoint extends TEntity
 
 
 	'override to allow alignment
-	Method GetChildX:Float(child:TStaticEntity)
+	Method GetChildX:Float(child:TStaticEntity = Null)
+		if not child then return Super.GetChildX()
+
 		return alignment.GetX() * (GetScreenWidth() - child.area.GetW())
 	End Method
 
 
 	'override to displace if there are other entities
-	Method GetChildY:Float(child:TStaticEntity)
-		if not child then return Null
+	Method GetChildY:Float(child:TStaticEntity = Null)
+		if not child then return Super.GetChildY()
 
 		local result:Float = 0
 		'if alignment.y = GROW_DOWN then result = 0

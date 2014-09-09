@@ -60,9 +60,9 @@
  			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
  			<children>
 				<child name="gfx_building_Dach" 			x="0" 	y="296" w="507"	h="51"	id="0" />
-				<child name="gfx_building_Eingang" 			x="0" 	y="397" w="130"	h="77"	id="1" />
-				<child name="gfx_building_EingangWand"		x="131" y="397" w="35"	h="77" />
-				<child name="gfx_building_Zaun" 			x="166" y="397" w="126"	h="51"	id="2" />
+				<child name="gfx_building_Eingang" 			x="0" 	y="397" w="130"	h="77"	offsetTop="-944" id="1" />
+				<child name="gfx_building_EingangWand"		x="131" y="397" w="35"	h="77"  offsetLeft="-130" offsetTop="-944" />
+				<child name="gfx_building_Zaun" 			x="166" y="397" w="126"	h="51"	offsetLeft="-634" offsetTop="-970" id="2" />
 				<child name="gfx_building_Fahrstuhl_Rahmen" 			x="292"	y="397" w="52"	h="58"	id="3" />
 				<child name="gfx_building_Fahrstuhl_Geschlossen" 	x="344" y="397" w="52"	h="58"	id="4" />
 				<child name="gfx_building_Fahrstuhl_Innen" 			x="396" y="397" w="40"	h="55"	id="5" />

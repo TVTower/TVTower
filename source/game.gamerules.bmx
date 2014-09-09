@@ -16,6 +16,9 @@ Type TGameRules {_exposeToLua}
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)
 	'speed is used for figures, elevator, ...
 	Field worldSpeed:float = 1.0
+
+	'x coordinate figures are when "offscreen" (left the building)
+	Field offscreenX:int = -200
 End Type
 
 Global GameRules:TGameRules = new TGameRules

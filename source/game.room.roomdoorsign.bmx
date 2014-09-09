@@ -23,16 +23,15 @@ Type TRoomDoorSign Extends TBlockMoveable
 	Global imageDraggedBaseName:string = "gfx_elevator_sign_dragged_"
 
 
-	Method Init:TRoomDoorSign(roomDoor:TRoomDoorBase, signSlot:Int=0, signFloor:Int=0)
+	Method Init:TRoomDoorSign(roomDoor:TRoomDoorBase)
+		if not roomDoor then return Null
+
 		local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0, roomDoor.GetOwner()))
 		door = roomDoor
 		dragable = 1
 
-		self.signFloor = signFloor
-		self.signSlot = signSlot
-
-		Local y:Int = GetFloorY(signFloor)
-		local x:Int = GetSlotX(signSlot)
+		Local y:Int = GetFloorY(door.onFloor)
+		local x:Int = GetSlotX(door.doorSlot)
 
 		OrigPos = new TVec2D.Init(x, y)
 		StartPos = new TVec2D.Init(x, y)
@@ -99,7 +98,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 	'return the sign originally at the given position
 	Function GetByOriginalPosition:TRoomDoorSign(signSlot:int, signFloor:int)
 		For local sign:TRoomDoorSign = eachin list
-			if sign.signSlot = signSlot and sign.signFloor = signFloor
+			if sign.door.doorSlot = signSlot and sign.door.onFloor = signFloor
 				return sign
 			endif
 		Next

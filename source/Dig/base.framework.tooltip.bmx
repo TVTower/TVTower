@@ -72,8 +72,8 @@ Type TTooltip Extends TEntity
 
 	'reset lifetime
 	Method Hover()
-		lifeTime 	= _startLifetime
-		fadeValue	= 1.0
+		lifeTime = _startLifetime
+		fadeValue = 1.0
 	End Method
 
 
@@ -93,12 +93,17 @@ Type TTooltip Extends TEntity
 			Return False
 		EndIf
 
-		If dirtyImage
-			'limit to visible areas
-			area.position.SetX( Max(21, Min(area.GetX(), 759 - GetWidth())) )
-			'limit to screen too
-			area.position.SetY( Max(10, Min(area.GetY(), 600 - GetHeight())) )
-		EndIf
+rem
+		'limit to visible areas
+		local outOfScreenLeft:int = Min(0, GetScreenX())
+		local outOfScreenRight:int = Max(0, GetScreenX() + GetWidth() - 800)
+		local outOfScreenTop:int = Min(0, GetScreenY())
+		local outOfScreenBottom:int = Max(600, GetScreenY() + GetHeight() - 600)
+		if outOfScreenLeft then area.position.SetX( area.GetX() + outOfScreenLeft )
+		if outOfScreenRight then area.position.SetX( area.GetX() - outOfScreenRight )
+		if outOfScreenTop then area.position.SetY( area.GetY() + outOfScreenTop )
+		if outOfScreenBottom then area.position.SetY( area.GetY() - outOfScreenBottom )
+endrem
 		Return True
 	End Method
 
@@ -201,19 +206,16 @@ Type TTooltip Extends TEntity
 	Method DrawShadow(width:Float, height:Float)
 		SetColor 0, 0, 0
 		SetAlpha getFadeAmount() * 0.3
-		DrawRect(area.GetX()+2, area.GetY()+2, width, height)
+		DrawRect(GetScreenX()+2, GetScreenY()+2, width, height)
 
 		SetAlpha getFadeAmount() * 0.1
-		DrawRect(area.GetX()+1, area.GetY()+1, width, height)
+		DrawRect(GetScreenX()+1, GetScreenY()+1, width, height)
 		SetColor 255,255,255
 	End Method
 
 
 	Method getFadeAmount:Float()
 		Return fadeValue
-'		if (startLifetime - lifetime) >= startFadeTime then return 1.0
-
-'		return (100.0 * (fadeTime - startFadeTime)) / 100.0
 	End Method
 
 
@@ -272,15 +274,15 @@ Type TTooltip Extends TEntity
 			Local boxHeight:Int	= GetHeight()
 			Local boxInnerWidth:Int	= boxWidth - 2
 			Local boxInnerHeight:Int = boxHeight - 2
-			Local innerX:int = area.GetX() + 1
-			Local innerY:int = area.GetY() + 1
+			Local innerX:int = GetScreenX() + 1
+			Local innerY:int = GetScreenY() + 1
 			Local captionHeight:Int = GetTitleHeight()
 			DrawShadow(boxWidth, boxHeight)
 
 			SetAlpha col.A * getFadeAmount()
 			SetColor 0,0,0
 			'border
-			DrawRect(area.GetX(), area.GetY(), boxWidth, boxHeight)
+			DrawRect(GetScreenX(), GetScreenY(), boxWidth, boxHeight)
 			SetColor 255,255,255
 
 			'draw background of whole tooltip
@@ -295,8 +297,16 @@ Type TTooltip Extends TEntity
 			DrawContent(innerX, innerY + captionHeight, boxInnerWidth, boxInnerHeight - captionHeight)
 rem
 			If imgCacheEnabled 'And lifetime = startlifetime
+				local startX:int = Max(GetScreenX(), 0)
+				local startY:int = Max(GetScreenY(), 0)
+				local endX:int = Min(800, boxWidth - startX)
+				local endY:int = Min(600, boxHeight - startY)
+				boxWidth = endX - startX
+				boxHeight = endY - startY
+
 				Image = TImage.Create(boxWidth, boxHeight, 1, 0, 255, 0, 255)
-				image.pixmaps[0] = VirtualGrabPixmap(Self.area.GetX(), Self.area.GetY(), boxWidth, boxHeight)
+				'old without border check: image.pixmaps[0] = VirtualGrabPixmap(Self.area.GetX(), Self.area.GetY(), boxWidth, boxHeight)
+				image.pixmaps[0] = VirtualGrabPixmap(startX, startY, boxWidth, boxHeight)
 				DirtyImage = False
 			EndIf
 endrem
@@ -304,7 +314,7 @@ endrem
 			DrawShadow(ImageWidth(image),ImageHeight(image))
 			SetAlpha col.a * getFadeAmount()
 			SetColor 255,255,255
-			DrawImage(image, area.GetX(), area.GetY())
+			DrawImage(image, GetScreenX(), GetScreenY())
 			SetAlpha 1.0
 		EndIf
 
