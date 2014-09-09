@@ -5,19 +5,20 @@
 			<DEV_KEYS value="TRUE" />
 			<DEV_OSD value="FALSE" />
 			<DEV_LOG value="TRUE" />
+			<DEV_INFOMERCIALCUTFACTOR value="0.1" />
 
 			<!-- milliseconds waiting on a floor (incl. animation).
-			     Default: 1700
+			     Default: 1500
+				<DEV_ELEVATOR_WAITTIME value="1500" />
 			-->
-			<DEV_ELEVATOR_WAITTIME value="1500" />
 			<!-- millseconds/frame (open/close animation, 8 frames each).
-			     Default: 70
+			     Default: 60
+				<DEV_ELEVATOR_ANIMSPEED value="60" />
 			-->
-			<DEV_ELEVATOR_ANIMSPEED value="60" />
 			<!-- speed in pixels per second.
-			     Default: 120
+			     Default: 130
+				<DEV_ELEVATOR_SPEED value="140" />
 			-->
-			<DEV_ELEVATOR_SPEED value="140" />
 
 			<DEV_AD_FACTOR1 value="5.0" />
 			<DEV_AD_MINIMUM_CPM value="7.5" />

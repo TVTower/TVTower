@@ -25,7 +25,7 @@ Type TElevator extends TEntity
 	'0 = closed, 1 = open, 2 = opening, 3 = closing
 	Field DoorStatus:Int = 0
 	'Aktuelles Stockwerk
-	Field CurrentFloor:Int = 0
+	Field CurrentFloor:Int = 8
 	'Hier fährt der Fahrstuhl hin
 	Field TargetFloor:Int = 0
 	'Aktuelle/letzte Bewegungsrichtung: -1 = nach unten; +1 = nach oben; 0 = gibt es nicht
@@ -35,7 +35,7 @@ Type TElevator extends TEntity
 
 	'=== EINSTELLUNGEN ===
 	'pixels per second ;D
-	Field Speed:Float = 120
+	Field Speed:Float = 130
 
 	'=== TIMER ===
 	'Wie lange (Millisekunden) werden die Türen offen gelassen
@@ -43,7 +43,7 @@ Type TElevator extends TEntity
 	Field WaitAtFloorTimer:TIntervalTimer = null
 	'Der Fahrstuhl wartet so lange, bis diese Zeit erreicht ist (in
 	'Millisekunden - basierend auf Time.GetTimeGone() + waitAtFloorTime)
-	Field WaitAtFloorTime:Int = 1700
+	Field WaitAtFloorTime:Int = 1500
 
 	'=== GRAFIKELEMENTE ===
 	'Das Türensprite und seine Animationen
@@ -72,16 +72,13 @@ Type TElevator extends TEntity
 
 
 	Method Init:TElevator()
-'		'Aktuelle Position - difference to x/y of building
-'		area.position.SetXY(131 + 230, 115)
-
 		'limit speed between 50 - 240 pixels per second, default 120
 		Speed = Max(50, Min(240, App.devConfig.GetInt("DEV_ELEVATOR_SPEED", self.speed)))
 		'adjust wait at floor time : 1000 - 2000 ms, default 1700
 		WaitAtFloorTime = Max(1000, Min(2000, App.devConfig.GetInt("DEV_ELEVATOR_WAITTIME", self.WaitAtFloorTime)))
 
 		'adjust animation speed (per frame) 30-100, default 70
-		local animSpeed:int = Max(30, Min(100, App.devConfig.GetInt("DEV_ELEVATOR_ANIMSPEED", 70)))
+		local animSpeed:int = Max(30, Min(100, App.devConfig.GetInt("DEV_ELEVATOR_ANIMSPEED", 60)))
 
 		'create timer
 		WaitAtFloorTimer = TIntervalTimer.Create(WaitAtFloorTime)

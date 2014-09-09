@@ -291,23 +291,46 @@ Type TGame {_exposeToLua="selected"}
 			Next
 		EndIf
 
-		'create npc figures
-		local fig:TFigureBase
-		fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), 210, 2, 65)
+
+		'move all figures to offscreen, and set their target to their
+		'offices (for now just to the "floor", later maybe to the boss)
+		For local i:int = 1 to 4
+			GetPlayer(i).GetFigure().MoveToOffscreen()
+			GetPlayer(i).GetFigure().area.position.x :+ i*15 + (i mod 2)*2
+			'forcefully send (no controlling possible until reaching the target)
+			'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
+			GetPlayer(i).figure.ForceChangeTarget(TRoomDoor.GetByDetails("news", i).area.GetX() + 60, TRoomDoor.GetByDetails("news", i).area.GetY())
+		Next
+
+		'also create/move other figures of the building
+		'all of them are created at "offscreen position"
+		local fig:TFigure
+		fig = New TFigureJanitor.Create("Hausmeister", GetSpriteFromRegistry("janitor"), GameRules.offscreenX, 0, 65)
 		fig.SetParent(GetBuilding().buildingInner)
-		fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), 210, 6, 65, 0)
+		fig.SendToDoor(TRoomDoor.GetByDetails("supermarket",-1), True)
+
+		fig = New TFigurePostman.Create("Bote1", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX - 90, 0, 65, 0)
 		fig.SetParent(GetBuilding().buildingInner)
-		fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), 410, 0, -65, 0)
+		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 1), True)
+
+		fig = New TFigurePostman.Create("Bote2", GetSpriteFromRegistry("BoteLeer"), GameRules.offscreenX -60, 0, -65, 0)
 		fig.SetParent(GetBuilding().buildingInner)
+		fig.SendToDoor(TRoomDoor.GetByDetails("boss", 3), True)
 		
 
-		terrorists[0] = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), -50, 0, 65)
-		terrorists[0].MoveToOffscreen()
+		terrorists[0] = New TFigureTerrorist.Create("Terrorist1", GetSpriteFromRegistry("Terrorist1"), GameRules.offscreenX, 0, 65)
+		'terrorists[0].MoveToOffscreen()
 		terrorists[0].SetParent(GetBuilding().buildingInner)
-		terrorists[1] = New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), -50, 0, 65)
-		terrorists[1].MoveToOffscreen()
+		terrorists[1] = New TFigureTerrorist.Create("Terrorist2", GetSpriteFromRegistry("Terrorist2"), GameRules.offscreenX, 0, 65)
+		'terrorists[1].MoveToOffscreen()
 		terrorists[1].SetParent(GetBuilding().buildingInner)
 
+		'we want all players to alreay wait in front of the elevator
+		'and not only 1 player sending it while all others wait
+		'so we move the elevator to a higher floor, so it just
+		'reaches floor 0 when all are already waiting
+		'floor 9 is just enough for the players
+		TElevator._instance.currentFloor = 9
 
 
 		'=== STATION MAP ===
@@ -343,9 +366,9 @@ Type TGame {_exposeToLua="selected"}
 		'=== SETUP NEWS + ABONNEMENTS ===
 		'adjust abonnement for each newsgroup to 1
 		For Local playerids:Int = 1 To 4
-'			For Local i:Int = 0 To 4 '5 groups
-'				GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
-'			Next
+			'For Local i:Int = 0 To 4 '5 groups
+			'	GetPlayerCollection().Get(playerids).SetNewsAbonnement(i, 1)
+			'Next
 
 			'only have abonnement for currents
 			GetPlayerCollection().Get(playerids).SetNewsAbonnement(4, 1)
@@ -603,10 +626,11 @@ Type TGame {_exposeToLua="selected"}
 		'create players, draws playerfigures on figures-image
 		'TColor.GetByOwner -> get first unused color,
 		'TPlayer.Create sets owner of the color
-		SetPlayer(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	250,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
-		SetPlayer(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	280,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
-		SetPlayer(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	240,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
-		SetPlayer(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	290, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
+		SetPlayer(1, TPlayer.Create(1, userName, userChannelName, GetSpriteFromRegistry("Player1"),	150,  2, 90, TColor.getByOwner(0), 1, "Player 1"))
+		SetPlayer(2, TPlayer.Create(2, "Sandra", "SunTV", GetSpriteFromRegistry("Player2"),	180,  5, 90, TColor.getByOwner(0), 0, "Player 2"))
+		SetPlayer(3, TPlayer.Create(3, "Seidi", "FunTV", GetSpriteFromRegistry("Player3"),	140,  8, 90, TColor.getByOwner(0), 0, "Player 3"))
+		SetPlayer(4, TPlayer.Create(4, "Alfi", "RatTV", GetSpriteFromRegistry("Player4"),	190, 13, 90, TColor.getByOwner(0), 0, "Player 4"))
+
 		'set different figures for other players
 		GetPlayer(2).UpdateFigureBase(9)
 		GetPlayer(3).UpdateFigureBase(2)
