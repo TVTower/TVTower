@@ -83,12 +83,16 @@ End Function
 '(players, terrorists and so on)
 Type TFigure extends TFigureBase
 	'active as soon as figure leaves/enters rooms
-	Field isChangingRoom:int = FALSE
+	Field isChangingRoom:int = False
+	'true as soon as a specific target object (door, hotspot) is reached
+	'value gets reset as soon as "reachTarget()" gets called
+	Field arrivedAtTargetObj:int = False {nosave}
 	'the door used (there might be multiple)
 	Field fromDoor:TRoomDoorBase = Null
 	'coming from room
 	Field fromRoom:TRoomBase = Null
 	Field inRoom:TRoomBase = Null
+
 
 	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(25000)
 	'network sync position timer
@@ -291,9 +295,24 @@ Type TFigure extends TFigureBase
 				If boardingState * PosOffset.GetX() > 0 Then result = "walkRight"
 				If boardingState * PosOffset.GetX() < 0 Then result = "walkLeft"
 			EndIf
+rem
+			'by default show backside
+			result = "standBack"
 
-			'show the backside if at elevator
+			'show front:
+			'in elevator
+			If IsInElevator() then result = "standFront"
+			'when idleing
+		'	If not target and not targetObj then result = "standFront"
+			'coming out of a room
+			If isChangingRoom and fromRoom then result = "standFront"
+endrem			
+
+			'show the backside if at elevator to change floor
 			If hasToChangeFloor() And Not IsInElevator() And IsAtElevator()
+				result = "standBack"
+			'not moving but wants to go to somewhere
+			ElseIf arrivedAtTargetObj
 				result = "standBack"
 			'going into a room
 			ElseIf isChangingRoom and TRoomDoor(targetObj)
@@ -301,9 +320,6 @@ Type TFigure extends TFigureBase
 			'in a room (or standing in front of a fake room - looking at plan)
 			ElseIf inRoom and inRoom.ShowsOccupants()
 				result = "standBack"
-			'show front
-			Else
-				result = "standFront"
 			EndIf
 		EndIf
 
@@ -412,6 +428,9 @@ Type TFigure extends TFigureBase
 
 		'room change finished
 		isChangingRoom = FALSE
+		'also arrival state can get reset
+		arrivedAtTargetObj = False
+
 
 	 	'inform AI that we reached a room
 	 	If playerID > 0 And isAI()
@@ -748,12 +767,6 @@ Type TFigure extends TFigureBase
 		target = newTarget.Copy()
 		targetObj = newTargetObj
 
-if id = 1
-	if targetObj then print "change target "+newTarget.x+","+newTarget.y+" -> is special obj"
-	if not targetObj then print "change target "+newTarget.x+","+newTarget.y
-endif
-
-
 		'if still in a room, but targetting another one ... leave first
 		'this is needed as computer players do not "leave a room", they
 		'just change targets
@@ -788,6 +801,9 @@ endif
 		if targetObj
 			'emit an event
 			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetObj ) )
+
+			'set indicator (to adjust animation eg. to "standBack")
+			arrivedAtTargetObj = True
 
 			if THotspot(targetObj)
 				'remove targeted hotspot
@@ -852,6 +868,9 @@ endif
 			'from building -> fade out
 			else
 				alpha = 1.0 - alpha
+				'only fade when targeting something
+				'avoids fading on elevator plan
+				if not targetObj then alpha = 1.0 
 			endif
 
 			'do not fade when it is a fake room

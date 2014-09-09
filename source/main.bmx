@@ -2925,11 +2925,15 @@ Function ColorizePlayerExtras()
 	'colorize the images
 	Local gray:TColor = TColor.Create(200, 200, 200)
 	Local gray2:TColor = TColor.Create(100, 100, 100)
+	Local gray3:TColor = TColor.Create(225, 225, 225)
 
 	GetRegistry().Set("gfx_building_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(gray), "gfx_building_sign_0"))
 	GetRegistry().Set("gfx_building_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_dragged_base").GetColorizedImage(gray), "gfx_building_sign_dragged_0"))
 	GetRegistry().Set("gfx_interface_channelbuttons_off_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
 	GetRegistry().Set("gfx_interface_channelbuttons_on_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
+	GetRegistry().Set("gfx_elevator_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_base").GetColorizedImage(gray3), "gfx_elevator_sign_0"))
+	GetRegistry().Set("gfx_elevator_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_dragged_base").GetColorizedImage(gray3), "gfx_elevator_sign_dragged_0"))
+
 	'colorizing for every player
 	For Local i:Int = 1 To 4
 		GetPlayerCollection().Get(i).RecolorFigure()

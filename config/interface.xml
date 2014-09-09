@@ -21,8 +21,11 @@
 				<child name="gfx_interface_top"		x="0" y="217"	w="800"	h="20"	id="2" />
 			</children>
 		</spritepack>
-		
-		<sprite name="gfx_interface_antenna" url="res/grafiken/interface/interface_antenne_alpha.png" />
+
+		<!-- Users blamed the big antenna...
+		<sprite name="gfx_interface_antenna" url="res/grafiken/interface/interface_antenna.png" />
+		-->
+		<sprite name="gfx_interface_antenna" url="res/grafiken/interface/interface_antenna_short.png" />
 			
 		<sprite name="gfx_interface_channelbuttons_off" url="res/grafiken/interface/channelbuttons_off.png" f="5" />
 		<sprite name="gfx_interface_channelbuttons_on" url="res/grafiken/interface/channelbuttons_on.png" f="5" />

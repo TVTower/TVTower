@@ -212,10 +212,9 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 
 	'returns what animation has to get played in that moment
 	Method GetAnimationToUse:string()
-		local result:string = "standFront"
+		local result:string = "standBack"
 		'if standing
 		If GetVelocity().GetX() = 0 or not moveable
-			'default - no movement needed
 			result = "standFront"
 		Else
 			If GetVelocity().GetX() > 0 Then result = "walkRight"

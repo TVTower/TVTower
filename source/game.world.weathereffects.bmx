@@ -601,7 +601,7 @@ Type TWeatherEffectClouds extends TWeatherEffectBase
 
 		local i:int = clouds.Count()
 		spriteEntity.area.position.SetXY(Rand(-200,800) + area.GetX(), - 30 + Rand(0,40) + area.GetY())
-		spriteEntity.velocity.SetX(0.3 + Rand(0, 3)/10.0)
+		spriteEntity.velocity.SetX(2.3 + Rand(0, 20)/10.0)
 
 		cloud.AddNumber("velocityX", spriteEntity.velocity.GetX())
 		cloud.AddNumber("velocityStrengthX", abs(spriteEntity.velocity.GetX()))

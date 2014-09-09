@@ -175,19 +175,7 @@
 		<image name="gfx_tex_smoke"						url="res/grafiken/chef/tex_smoke.png" />
 		<image name="gfx_elevator_sign_bg"				url="res/grafiken/hinweistafel/gfx_tafel_halterung.png" />
 		<image name="gfx_elevator_sign_base"			url="res/grafiken/hinweistafel/gfx_tafel_weiss.png" />
-		<!-- defining them here allows to use different graphics for the channels instead just colorized ones -->
-		<image name="gfx_elevator_sign_0"				url="res/grafiken/hinweistafel/gfx_tafel_weiss.png" />
-		<image name="gfx_elevator_sign_1"				url="res/grafiken/hinweistafel/gfx_tafel_weiss.png" />
-		<image name="gfx_elevator_sign_2"				url="res/grafiken/hinweistafel/gfx_tafel_weiss.png" />
-		<image name="gfx_elevator_sign_3"				url="res/grafiken/hinweistafel/gfx_tafel_weiss.png" />
-		<image name="gfx_elevator_sign_4"				url="res/grafiken/hinweistafel/gfx_tafel_weiss.png" />
 		<image name="gfx_elevator_sign_dragged_base"	url="res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
-		<!-- defining them here allows to use different graphics for the channels instead just colorized ones -->
-		<image name="gfx_elevator_sign_dragged_0"		url="res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
-		<image name="gfx_elevator_sign_dragged_1"		url="res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
-		<image name="gfx_elevator_sign_dragged_2"		url="res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
-		<image name="gfx_elevator_sign_dragged_3"		url="res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
-		<image name="gfx_elevator_sign_dragged_4"		url="res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
 
 		<resource name="gfx_contracts_pack">
 			<type>SpritePack</type>
