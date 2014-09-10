@@ -1007,7 +1007,7 @@ Type TFigurePostman Extends TFigure
 
 	Method UpdateCustom:Int()
 		'figure is in building and without target waiting for orders
-		If Not inRoom And Not target
+		If IsIdling()
 			Local door:TRoomDoorBase
 			'search for a visible door
 			Repeat
@@ -1045,6 +1045,9 @@ Type TFigureJanitor Extends TFigure
 	Field NormalCleanChance:Int = 30
 	Field MovementRangeMinX:Int	= 20
 	Field MovementRangeMaxX:Int	= 420
+	'how many seconds does the janitor wait at the elevator
+	'until he goes to elsewhere
+	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(20000)
 
 
 	'we need to overwrite it to have a custom type - with custom update routine
@@ -1100,7 +1103,7 @@ Type TFigureJanitor Extends TFigure
 		EndIf
 
 		'reached target - and time to do something
-		If Not target And nextActionTimer.isExpired()
+		If IsIdling() and nextActionTimer.isExpired()
 			If Not hasToChangeFloor()
 
 				'reset is done later - we want to catch isExpired there too
@@ -1217,7 +1220,7 @@ Type TFigureTerrorist Extends TFigure
 		EndIf
 
 		'figure is in building and without target waiting for orders
-		If not deliveryDone and not target and IsInBuilding()
+		If not deliveryDone and IsIdling()
 			'before directly going to a room, ask the roomboard where
 			'to go
 			If Not checkedRoomboard
@@ -2589,9 +2592,8 @@ Type GameEvents
 			'inform ai
 		else
 			'send out a toast message
-
 			local toast:TGameToastMessage = new TGameToastMessage
-			
+		
 			'until 2 hours
 			toast.SetCloseAtWorldTime(latestTime)
 			toast.SetMessageType(1)

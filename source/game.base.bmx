@@ -296,11 +296,13 @@ Type TGame {_exposeToLua="selected"}
 		'offices (for now just to the "floor", later maybe to the boss)
 		For local i:int = 1 to 4
 			GetPlayer(i).GetFigure().MoveToOffscreen()
-			GetPlayer(i).GetFigure().area.position.x :+ i*15 + (i mod 2)*2
+			GetPlayer(i).GetFigure().area.position.x :+ i*3 + (i mod 2)*15
 			'forcefully send (no controlling possible until reaching the target)
 			'GetPlayer(i).GetFigure().SendToDoor( TRoomDoor.GetByDetails("office", i), True)
 			GetPlayer(i).figure.ForceChangeTarget(TRoomDoor.GetByDetails("news", i).area.GetX() + 60, TRoomDoor.GetByDetails("news", i).area.GetY())
 		Next
+'debug
+'		GetPlayer(1).GetFigure().area.position.SetXY(TRoomDoor.GetByDetails("news", 1).area.GetX() + 60, TRoomDoor.GetByDetails("news", 1).area.GetY())
 
 		'also create/move other figures of the building
 		'all of them are created at "offscreen position"
@@ -331,6 +333,10 @@ Type TGame {_exposeToLua="selected"}
 		'reaches floor 0 when all are already waiting
 		'floor 9 is just enough for the players
 		TElevator._instance.currentFloor = 9
+
+
+		'=== ADJUST GAME RULES ===
+		GameRules.dailyBossVisit = App.devConfig.GetInt("DEV_DAILY_BOSS_VISIT", TRUE)
 
 
 		'=== STATION MAP ===

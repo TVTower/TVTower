@@ -9,6 +9,8 @@ Import "game.toastmessage.bmx"
 Import "game.room.base.bmx"
 'to access player data
 Import "game.player.base.bmx"
+'to access game rules
+Import "game.gamerules.bmx"
 
 
 Type TPlayerBossCollection
@@ -129,10 +131,11 @@ Type TPlayerBoss
 
 		'=== CHECK IF BOSS WANTS TO SEE PLAYER ===
 		'await the player each day at 16:00
-		If minute = 0 and hour = 16 and not awaitingPlayerVisit
-			awaitingPlayerVisit = True
-		EndIf
-	
+		if GameRules.dailyBossVisit
+			If minute = 0 and hour = 16 and not awaitingPlayerVisit
+				awaitingPlayerVisit = True
+			EndIf
+		endif
 
 		'call the player if needed
 		If awaitingPlayerVisit and not announcedAwaitingPlayerVisit

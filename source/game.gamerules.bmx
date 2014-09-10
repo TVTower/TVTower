@@ -19,6 +19,9 @@ Type TGameRules {_exposeToLua}
 
 	'x coordinate figures are when "offscreen" (left the building)
 	Field offscreenX:int = -200
+
+	'does the boss has to get visited daily?
+	Field dailyBossVisit:int = True
 End Type
 
 Global GameRules:TGameRules = new TGameRules

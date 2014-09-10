@@ -72,9 +72,9 @@ Type TBuilding Extends TStaticEntity
 
 			EventManager.registerListenerFunction( "hotspot.onClick", onClickHotspot)
 
-			'we want to get information about figures reaching their desired target
+			'we want to get information about figures entering their desired target
 			'(this can be "room", "hotspot" ... )
-			EventManager.registerListenerFunction( "figure.onReachTarget", onReachTarget)
+			EventManager.registerListenerFunction( "figure.onEnterTarget", onEnterTarget)
 
 			_eventsRegistered = TRUE
 		Endif
@@ -300,7 +300,7 @@ Type TBuilding Extends TStaticEntity
 	End Method
 
 
-	Function onReachTarget:Int( triggerEvent:TEventBase )
+	Function onEnterTarget:Int( triggerEvent:TEventBase )
 		Local figure:TFigure = TFigure( triggerEvent._sender )
 		If Not figure Then Return False
 
@@ -388,7 +388,6 @@ Type TBuilding Extends TStaticEntity
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
 				If Not GetPlayer().GetFigure().isChangingRoom
 					If THelper.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
-						print "change target: Mouse="+ MouseManager.x+","+MouseManager.y
 						'convert mouse position to building-coordinates
 						local x:int = MouseManager.x - buildingInner.GetScreenX()
 						local y:int = MouseManager.y - buildingInner.GetScreenY()

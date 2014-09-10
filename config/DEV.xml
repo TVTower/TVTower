@@ -19,6 +19,7 @@
 			     Default: 130
 				<DEV_ELEVATOR_SPEED value="140" />
 			-->
+			<DEV_DAILY_BOSS_VISIT value="0" />
 
 			<DEV_AD_FACTOR1 value="5.0" />
 			<DEV_AD_MINIMUM_CPM value="7.5" />

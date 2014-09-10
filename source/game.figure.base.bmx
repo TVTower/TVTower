@@ -97,6 +97,13 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	Field target:TVec2D	= Null {_exposeToLua}
 	'targetting a special object (door, hotspot) ?
 	Field targetObj:TStaticEntity
+	'how long to wait until entering the target (door/hotspot)
+	'or how long to wait until start moving when having left
+	'a door
+	Field WaitEnterTimer:Long = -1
+	Field WaitLeavingTimer:Long = -1
+	Field WaitEnterLeavingTime:Int = 200
+	
 
 	Field figureID:Int = 0
 	'does the figure accept manual (AI or user) ChangeTarget-commands?
@@ -140,7 +147,17 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
+	Method IsIdling:int()
+		If target or targetObj then return False
+		If IsWaitingToEnter() or IsWaitingToLeave() then return False
+
+		return True
+	End Method
+	
+
 	Method CanMove:int()
+		if IsWaitingToEnter() then return False
+		if IsWaitingToLeave() then return False
 		return moveable
 	End Method
 	
@@ -198,7 +215,7 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 	End Method
 
 
-	Method reachTarget:int()
+	Method ReachTarget:int()
 		'regain control
 		controllable = True
 
@@ -207,6 +224,45 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 		if target then area.position.setX( target.getX() )
 		'remove target
 		target = null
+
+		'emit an event
+		EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetObj ) )
+
+		'start waiting in front of the target
+		If targetObj
+			WaitEnterTimer = Time.GetTimeGone() + WaitEnterLeavingTime
+		EndIf
+	End Method
+
+
+	Method EnterTarget:int()
+		'emit an event
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, targetObj ) )
+
+		'reset target
+		targetObj = Null
+
+		'disable waiting
+		WaitEnterTimer = -1
+	End Method
+
+
+	Method CanEnterTarget:Int()
+		'if still going to somewhere
+		if target then return False
+		'if you do not have a target, you cannot enter one
+		if not targetObj then return False
+
+		return not IsWaitingToEnter()
+	End Method
+
+
+	Method IsWaitingToEnter:Int()
+		Return WaitEnterTimer > Time.GetTimeGone()
+	End Method
+
+	Method IsWaitingToLeave:Int()
+		Return WaitLeavingTimer > Time.GetTimeGone()
 	End Method
 
 
@@ -220,6 +276,10 @@ Type TFigureBase extends TSpriteEntity {_exposeToLua="selected"}
 			If GetVelocity().GetX() > 0 Then result = "walkRight"
 			If GetVelocity().GetX() < 0 Then result = "walkLeft"
 		EndIf
+		
+		if IsWaitingToLeave() then result = "standFront"
+		if IsWaitingToEnter() then result = "standBack"
+
 		return result
 	End Method
 	

@@ -93,8 +93,6 @@ Type TFigure extends TFigureBase
 	Field fromRoom:TRoomBase = Null
 	Field inRoom:TRoomBase = Null
 
-
-	Field WaitAtElevatorTimer:TIntervalTimer = TIntervalTimer.Create(25000)
 	'network sync position timer
 	Field SyncTimer:TIntervalTimer = TIntervalTimer.Create(2500)
 
@@ -195,6 +193,14 @@ Type TFigure extends TFigureBase
 	End Method
 
 
+	'override to add building/room support
+	Method IsIdling:int()
+		if not Super.IsIdling() then return False
+		
+		If not IsInBuilding() then return False
+
+		return True
+	End Method
 
 
 	Method FigureMovement:int()
@@ -242,7 +248,7 @@ Type TFigure extends TFigureBase
 					'the elevator - this avoids going into the elevator
 					'plan without really leaving the elevator
 					If not GetBuilding().Elevator.passengers.Contains(Self)
-						reachTarget()
+						ReachTarget()
 					endif
 				else
 					'set to elevator-targetx
@@ -251,6 +257,13 @@ Type TFigure extends TFigureBase
 				endif
 			endif
 		endif
+
+		'targetObj means, the figure has to wait a bit until it can
+		'enter/leave
+		'CanEnterTarget() checks if the figure can enter the target
+		'in this moment (or it might have to wait a bit longer)
+		if not target and targetObj and CanEnterTarget() then EnterTarget()
+
 
 		'decide if we have to play sound
 		if GetVelocity().getX() <> 0 and not IsInElevator()
@@ -618,6 +631,9 @@ endrem
 
 		'enter target -> null = building
 		SetInRoom( null )
+
+		'activate timer to wait a bit after leaving a room
+		WaitLeavingTimer = Time.GetTimeGone() + WaitEnterLeavingTime
 	End Method
 
 
@@ -794,17 +810,12 @@ endrem
 	End Method
 
 
-	'override to add support for hotspots/rooms and sending an event
-	Method reachTarget:int()
-		Super.ReachTarget()
+	'override to add support for hotspots/rooms
+	Method EnterTarget:Int()
+		'emit an event
+		EventManager.triggerEvent( TEventSimple.Create("figure.onEnterTarget", null, self, targetObj ) )
 
 		if targetObj
-			'emit an event
-			EventManager.triggerEvent( TEventSimple.Create("figure.onReachTarget", null, self, targetObj ) )
-
-			'set indicator (to adjust animation eg. to "standBack")
-			arrivedAtTargetObj = True
-
 			if THotspot(targetObj)
 				'remove targeted hotspot
 				targetObj = null
