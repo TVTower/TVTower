@@ -2035,14 +2035,14 @@ Type TGuiAdContract extends TGUIGameListItem
 	Method SetContract:TGuiAdContract(contract:TAdContract)
 		self.contract		= contract
 		'targetgroup is between 0-9
-		self.InitAssets(GetAssetName(contract.GetTargetGroup(), FALSE), GetAssetName(contract.GetTargetGroup(), TRUE))
+		self.InitAssets(GetAssetName(contract.GetLimitedToTargetGroup(), FALSE), GetAssetName(contract.GetLimitedToTargetGroup(), TRUE))
 
 		return self
 	End Method
 
 
 	Method GetAssetName:string(targetGroup:int=-1, dragged:int=FALSE)
-		if targetGroup < 0 and contract then targetGroup = contract.GetTargetGroup()
+		if targetGroup < 0 and contract then targetGroup = contract.GetLimitedToTargetGroup()
 		local result:string = "gfx_contracts_" + Min(9,Max(0, targetGroup))
 		if dragged then result = result + "_dragged"
 		return result

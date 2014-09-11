@@ -2893,6 +2893,9 @@ Ihre normale Körpergröße wird in einer Woche erwartet.</description>
 			</episode>
 		</news>
 	</allnews>
+
+<!--
+ads are now in TVTDatabaseV3.xml
 	<allads>
 		<ad>
 			<title>Aeroswift</title>
@@ -3332,6 +3335,7 @@ Aber nur mit Ulbricht Umzüge!</description>
 			<data   repetitions="4"  profit="9" penalty="10" targetgroup="1" duration="5" />
 		</ad>
 	</allads>
+-->
 	<exportOptions onlyFakes="true" onlyCustom="false"/>
 	<time value="5229.5ms" />
 </tvgdb>

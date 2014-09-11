@@ -220,7 +220,7 @@ Type TDatabaseLoader
 			totalSeriesCount :+ 1
 		Next
 
-'rem
+
 		'===== IMPORT ALL ADVERTISEMENTS / CONTRACTS =====
 
 		nodeParent = xml.FindRootChild("allads")
@@ -232,20 +232,17 @@ Type TDatabaseLoader
 			targetgroup = xml.FindValueInt(nodeChild,"targetgroup", 0)
 			spotcount	= xml.FindValueInt(nodeChild,"repetitions", 1)
 			'0-50% -> 0.0 - 0.5
-			minaudience	= 0.5 * float(xml.FindValueInt(nodeChild,"minaudience", 0)) /255.0
-			'0-50% -> 0.0 - 0.5
-			minimage	= 0.5 * float(xml.FindValueInt(nodeChild,"minimage", 0)) /255.0
+			minaudience	= xml.FindValueInt(nodeChild,"minaudience", 0) /255.0
+			minimage	= xml.FindValueInt(nodeChild,"minimage", 0) /255.0
 			fixedPrice = xml.FindValueInt(nodeChild,"fixedprice", 0)
 			if fixedPrice
 				profit	= xml.FindValueInt(nodeChild,"profit", 0)
 				penalty	= xml.FindValueInt(nodeChild,"penalty", 0)
 			else
-				'0-100% -> 0.0 - 1.0
-				profit	= xml.FindValueInt(nodeChild,"profit", 0) / 255.0
-				profit	= 255*4 * profit 'adjust to current changes
-				'0-100% -> 0.0 - 1.0
-				penalty	= xml.FindValueInt(nodeChild,"penalty", 0) / 255.0
-				penalty	= 255*4 * penalty 'adjust to current changes
+				'30 is the factor the old v2-values got multiplied with
+				'after normalizing - so do this to make them comparable
+				profit	= 30 * xml.FindValueInt(nodeChild,"profit", 0)
+				penalty	= 30 * xml.FindValueInt(nodeChild,"penalty", 0)
 			endif
 			daystofinish= xml.FindValueInt(nodeChild,"duration", 1)
 
@@ -255,13 +252,11 @@ Type TDatabaseLoader
 			localizeDescription.Set(description, "de")
 			
 			local ad:TAdContractBase = new TAdContractBase.Create("", localizeTitle, localizeDescription, daystofinish, spotcount, targetgroup, minaudience, minimage, fixedPrice, profit, penalty)
-if title = "Aeroswift" then print title+": "+ad.profitBase+", " + ad.minAudienceBase + "  (old)"
-if title = "La Baguette" then print title+": "+ad.profitBase+", " + ad.penaltyBase +"  " + ad.minAudienceBase + "  (old)"
-			'print "contract: "+title+ " " + contractscount
+
 			contractsCount :+ 1
 			totalContractsCount :+ 1
 		Next
-'endrem
+
 
 		'===== IMPORT ALL NEWS INCLUDING EPISODES =====
 
@@ -309,12 +304,15 @@ if title = "La Baguette" then print title+": "+ad.profitBase+", " + ad.penaltyBa
 				If nodeAd.getName() <> "ad" then continue
 
 				local GUID:String = xml.FindValue(nodeAd,"id", "")
+				local doAdd:int = True
 				'try to fetch an existing one
 				adContract = GetAdContractBaseCollection().GetByGUID(GUID)
 				if not adContract
 					adContract = new TAdContractBase
 					adContract.title = new TLocalizedString
 					adContract.description = new TLocalizedString
+				else
+					doAdd = False
 				endif
 				
 				'read in data
@@ -334,51 +332,45 @@ if title = "La Baguette" then print title+": "+ad.profitBase+", " + ad.penaltyBa
 'aktivieren, wenn Datenbank Eintraege enthaelt, die infomercials erlauben
 '				adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
 '				adContract.quality = data.GetBool("quality", adContract.quality)
-				adContract.infomercialAllowed = data.GetBool("infomercial", adContract.infomercialAllowed)
 				adContract.quality = 0.5
 
 				adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
 				adContract.fixedPrice = data.GetInt("fixed_price", adContract.fixedPrice)
 				adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
+				adContract.proPressureGroup = data.GetInt("pro_pressure_group", adContract.proPressureGroup)
+				adContract.contraPressureGroup = data.GetInt("contra_pressure_group", adContract.contraPressureGroup)
 
 'ueberpruefen wann korrekt in neuer DB gespeichert
 'dann "if"-unterscheidung nicht mehr notwendig
 				If adContract.fixedPrice
+					adContract.profitBase = data.GetFloat("profit", adContract.profitBase)
+					adContract.penaltyBase = data.GetFloat("penalty", adContract.penaltyBase)
+				Else
 					adContract.profitBase = data.GetInt("profit", adContract.profitBase)
 					adContract.penaltyBase = data.GetInt("penalty", adContract.penaltyBase)
-				Else
-					adContract.profitBase = data.GetInt("profit", adContract.profitBase * 250)/250.0
-					adContract.penaltyBase = data.GetInt("penalty", adContract.penaltyBase * 250)/250.0
 				endif
-
-				'TODO
-				'adContract.proPressureGroup = data.GetInt("pro_pressure_group", adContract.pro_pressure_group)
-				'adContract.contraPressureGroup = data.GetInt("contra_pressure_group", adContract.contra_pressure_group)
 			
 
 				'=== CONDITIONS ===
 				local nodeConditions:TxmlNode = xml.FindElementNode(nodeAd, "conditions")
-				xml.LoadValuesToData(nodeData, data, [..
-					"min_audience", "min_image", "target_group" ..
+				xml.LoadValuesToData(nodeConditions, data, [..
+					"min_audience", "min_image", "target_group", ..
+					"allowed_programme_type", "allowed_genre", ..
+					"prohibited_genre", "prohibited_programme_type" ..
 				])
-'aktivieren, wenn DB korrigiert (50% der Werte)
 				'0-100% -> 0.0 - 1.0
-'				adContract.minAudienceBase = 0.01 * data.GetInt("min_audience", adContract.minAudienceBase*100)
-'				adContract.minImageBase = 0.01 * data.GetInt("min_image", adContract.minImageBase*100)
-				adContract.minAudienceBase = 0.01 * int(0.5 * data.GetInt("min_audience", adContract.minAudienceBase * 200))
-				adContract.minImageBase = 0.01 * int(0.5 * data.GetInt("min_image", adContract.minImageBase * 200))
-				adContract.targetGroup = data.GetInt("target_group", adContract.targetGroup)
-
-				'TODO:
-				'<allowed_genre>1</allowed_genre>
-				'<prohibited_genre>2</prohibited_genre>
-				'<allowed_programme_type>3</allowed_programme_type>
-				'<prohibited_programme_type>4</prohibited_programme_type>
-
-if adcontract.title.Get() = "Aeroswift"
-	print adcontract.title.Get() +":  "+adContract.profitBase+", " + adContract.minAudienceBase
-endif
-			rem
+				adContract.minAudienceBase = 0.01 * data.GetFloat("min_audience", adContract.minAudienceBase*100.0)
+				adContract.minImageBase = 0.01 * data.GetFloat("min_image", adContract.minImageBase*100.0)
+				adContract.limitedToTargetGroup = data.GetInt("target_group", adContract.limitedToTargetGroup)
+				adContract.limitedToProgrammeGenre = data.GetInt("allowed_genre", adContract.limitedToProgrammeGenre)
+				adContract.limitedToProgrammeType = data.GetInt("allowed_programme_type", adContract.limitedToProgrammeType)
+				adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
+				adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
+				'if only one group
+				adContract.proPressureGroup = data.GetInt("pro_pressure_group", adContract.proPressureGroup)
+				adContract.contraPressureGroup = data.GetInt("contra_pressure_group", adContract.contraPressureGroup)
+				rem
+				for multiple groups: 
 				local proPressureGroups:String[] = data.GetString("pro_pressure_groups", "").Split(" ")
 				For local group:string = EachIn proPressureGroups
 					if not adContract.HasProPressureGroup(int(group))
@@ -394,13 +386,14 @@ endif
 				endrem
 
 				'add to collection
-		'		GetAdContractBaseCollection().Add(adContract)
-
-				'print "contract: "+title+ " " + contractscount
-				contractsCount :+ 1
-				totalContractsCount :+ 1
+				if doAdd
+					GetAdContractBaseCollection().Add(adContract)
+					contractsCount :+ 1
+					totalContractsCount :+ 1
+				endif
 			Next
 		endif
+
 
 		TLogger.log("TDatabase.Load()", "Loaded DB ~q" + xml.filename + "~q (version 3). Found " + seriesCount + " series, " + moviesCount + " movies, " + contractsCount + " advertisements, " + newsCount + " news. loading time: " + stopWatch.GetTime() + "ms", LOG_LOADING)
 	End Method

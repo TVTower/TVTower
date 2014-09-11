@@ -34,6 +34,14 @@ Type TAdContractBaseCollection
 		Return TAdContractBase(entries.ValueForKey(GUID))
 	End Method
 
+	'this is not guaranteed to be unique!
+	Method GetByTitle:TAdContractBase(title:String, language:String="")
+		For Local base:TAdContractBase = EachIn entries.Values()
+			If base.title.Get(language) = title Then Return base
+		Next
+		Return Null
+	End Method
+
 
 	Method Get:TAdContractBase(id:Int)
 		For Local base:TAdContractBase = EachIn entries.Values()
@@ -180,7 +188,31 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	'block length
 	Field blocks:int = 1
 	'target group of the spot
-	Field targetGroup:Int
+	Field limitedToTargetGroup:Int
+	'is the ad broadcasting limit to a specific genre?
+	'eg. "horror"
+	Field limitedToGenre:Int = -1
+	'is the ad broadcasting limit to a specific programme type?
+	'eg. "series", "movies"
+	Field limitedToProgrammeType:Int = -1
+	'is the ad broadcasting limit to a specific programme genre?
+	'eg. only "lovestory"
+	Field limitedToProgrammeGenre:Int = -1
+	'is the ad broadcasting not allowed for a specific programme genre?
+	'eg. no "lovestory"
+	Field forbiddenProgrammeGenre:Int = -1
+	'is the ad broadcasting not allowed for a specific programme type?
+	'eg. no "series"
+	Field forbiddenProgrammeType:Int = -1
+
+	'is the ad broadcasting limit to a specific broadcast type?
+	'Field limitedToBroadcastType:Int = -1
+
+	'is there a interest group liking/hating broadcasts of this?
+	'eg. anti-nicotin
+	Field proPressureGroup:Int = -1
+	Field contraPressureGroup:Int = -1
+	
 	'minimum audience (real value calculated on sign)
 	Field minAudienceBase:Float
 	'minimum image base value (real value calculated on sign)
@@ -227,7 +259,7 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 		self.description = description
 		self.daysToFinish = daysToFinish
 		self.spotCount = spotCount
-		self.targetGroup = targetGroup
+		self.limitedToTargetGroup = targetGroup
 		self.minAudienceBase = minAudience
 		self.minImageBase = minImage
 		self.fixedPrice = fixedPrice
@@ -332,7 +364,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		local result:float = 0.0
 
 		'calculate
-		result = profit / GetSpotCount()
+		result = GetProfit() / GetSpotCount()
 		result :* 0.001 'way down for reasonable prices
 		'so currently we end up with the price equal to
 		'the price of a successful contract / GetSpotCount()
@@ -460,42 +492,54 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'calculate prices (profits, penalties...)
-	Method CalculatePrices:Int(baseprice:Float=0, playerID:Int=-1) {_exposeToLua}
-		local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
-		local factor1:float =  devConfig.GetFloat("DEV_AD_FACTOR1", 1.0)
-		local minCPM:float = devConfig.GetFloat("DEV_AD_MINIMUM_CPM", 7.5)
-		local limitedGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
-		local limitedTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 2.0)
-
-		'=== PRICE CALCULATION ===
-
-		'price is for each spot
-		Local price:Float = basePrice * GetSpotCount()
-
+	Method CalculatePrices:Int(baseValue:Float=0, playerID:Int=-1) {_exposeToLua}
+		'=== FIXED PRICE ===
 		'ad is with fixed price - only available without minimum restriction
 		If base.fixedPrice
-			print self.base.title.Get() + " has fixed price : "+ int(price) + " base:"+int(baseprice) + " profitbase:"+base.profitBase +" penaltyBase:"+base.penaltyBase
-			Return price
+			'print self.base.title.Get() + " has fixed price : "+ int(baseValue * GetSpotCount()) + " base:"+int(baseprice) + " profitbase:"+base.profitBase +" penaltyBase:"+base.penaltyBase
+			'basePrice is a precalculated value (eg. 1000 euro)
+			Return baseValue * GetSpotCount()
 		endif
 
-		'multiply by our balancing factor
-		price :* factor1
 
-		'Modify price according the amount of blocks containing "1000"
-		'people. A RawMinAudience of 7200 contains 7.2 "cpm" blocks.
-		'
+		'=== DYNAMIC PRICE ===
+		'maximum value for
+		'spotCount = 1
+		'baseValue/profit/penalty = 100%,
+		'minAudience = 100%
+		'maxAudience = 80 000 000 (whole Germany)
+		'baseCPM * baseValue * spotcount * minAudienceInNumbers
+		'baseCPM * 1.0       * 1         * (80 000 000 * 1.0)
+		'= baseCPM * 80 000 000
+
+		Local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
+		'baseCPM is a balancing factor!
+		Local balancingFactor:float = devConfig.GetFloat("DEV_AD_BALANCING_FACTOR", 1.0)
+		Local minCPM:float = devConfig.GetFloat("DEV_AD_MINIMUM_CPM", 7.5)
+		Local limitedToGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
+		Local limitedToTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 2.0)
+		Local price:Float
+
+		'1) calculate a CPM-Value: a value paid "per 1000 viewer"
+
+		'baseValue is "baseCPM" here, a value paid for 1000 viewers
+		price = baseValue * GetSpotCount()
+		'adjust by a balancing factor
+		price :* balancingFactor
+
+		'specific targetgroups change price
+		If GetLimitedToTargetGroup() > 0 Then price :* limitedToTargetGroupMultiplier
+		'limiting to specific genres change the price too
+		If GetLimitedToGenre() > 0 Then price :* limitedToGenreMultiplier
+
+		'2) calculate final value by multiplying with required audience 
 		'To avoid "dumping prices" we do at least multiply with "minCPM"
 		'or higher
 		price :* Max(minCPM, getRawMinAudience(playerID)/1000)
 
-		'specific targetgroups change price
-		If GetTargetGroup() > 0 Then price :* limitedGenreMultiplier
-		'limiting to specific genres change the price too
-		'If GetLimitedGenre() > 0 Then price :* limitedGenreMultiplier
+		'print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
 
-		print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
-
-		'return "beautiful" prices
+		'3) return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)
 	End Method
 
@@ -582,20 +626,25 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method GetTargetGroup:Int() {_exposeToLua}
-		Return base.targetGroup
+	Method GetLimitedToTargetGroup:Int() {_exposeToLua}
+		Return base.limitedToTargetGroup
 	End Method
 
 
-	Method GetTargetGroupString:String(group:Int=-1) {_exposeToLua}
+	Method GetLimitedToTargetGroupString:String(group:Int=-1) {_exposeToLua}
 		'if no group given, use the one of the object
-		if group < 0 then group = self.base.targetGroup
+		if group < 0 then group = self.base.limitedToTargetGroup
 
 		If group >= 1 And group <=9
 			Return GetLocale("AD_GENRE_"+group)
 		else
 			Return GetLocale("AD_GENRE_NONE")
 		EndIf
+	End Method
+
+
+	Method GetLimitedToGenre:Int() {_exposeToLua}
+		Return base.limitedToGenre
 	End Method
 
 
@@ -711,7 +760,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		currY :+ sprite.GetHeight()
 
 		'warn if special target group
-		If base.targetGroup > 0
+		If base.limitedToTargetGroup > 0
 			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageTargetGroup"); sprite.Draw(currX, currY)
 			currY :+ sprite.GetHeight()
 		EndIf
@@ -754,9 +803,9 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 		'warn if special target group
-		If base.targetGroup > 0
+		If base.limitedToTargetGroup > 0
 			currY :+ 4 'top content padding of that line
-			fontSemiBold.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetTargetgroupString(), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
+			fontSemiBold.drawBlock(getLocale("AD_TARGETGROUP")+": "+GetLimitedToTargetGroupString(), currX + 35, currY, 245, 15, ALIGN_CENTER_CENTER, textWarningColor, 0,1,1.0,True, True)
 			currY :+ 15 + 8 'lineheight + bottom content padding
 		Endif
 
