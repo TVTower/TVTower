@@ -597,6 +597,10 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		Next
 		value :* 0.75
 
+		'round to next "1000" block
+		value = Int(Floor(value / 1000) * 1000)
+
+
 		Return value
 	End Method
 
@@ -633,11 +637,6 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 	Method ShowProgrammeSheet:Int(x:Int,y:Int, align:int=0)
 		local data:TProgrammeData        = GetData()
-		Local widthbarSpeed:Float        = data.speed / 255.0
-		Local widthbarReview:Float       = data.review / 255.0
-		Local widthbarOutcome:Float      = data.Outcome/ 255.0
-		Local widthbarTopicality:Float   = data.topicality / 255.0
-		Local widthbarMaxTopicality:Float= data.GetMaxTopicality() / 255.0
 		Local fontNormal:TBitmapFont     = GetBitmapFontManager().baseFont
 		Local fontBold:TBitmapFont       = GetBitmapFontManager().baseFontBold
 		Local fontSemiBold:TBitmapFont   = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
@@ -666,7 +665,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 		'move sheet to left when right-aligned
 		if align = 1 then currX = x - GetSpriteFromRegistry("gfx_datasheet_title").area.GetW()
-		
+
+
 		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
 		currY :+ sprite.GetHeight()
 		if isEpisode() or isSeries()
@@ -784,14 +784,15 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY + 48, 75, 15, null, textLightColor)
 
 		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, widthbarSpeed*200  , 10))
-		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 16, widthbarReview*200 , 10))
-		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 32, widthbarOutcome*200, 10))
-		If widthbarMaxTopicality>0.01
+
+		If data.GetSpeed() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, data.GetSpeed()*200  , 10))
+		If data.GetReview() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 16, data.GetReview()*200 , 10))
+		If data.GetOutcome() > 0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 32, data.GetOutcome()*200, 10))
+		If data.GetMaxTopicality() > 0.01
 			SetAlpha GetAlpha()*0.25
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, widthbarMaxTopicality*200, 10))
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, data.GetMaxTopicality()*200, 10))
 			SetAlpha GetAlpha()*4.0
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, widthbarTopicality*200, 10))
+			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 48, data.GetTopicality()*200, 10))
 		EndIf
 		currY :+ 65
 

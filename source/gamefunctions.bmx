@@ -926,34 +926,34 @@ End Type
 
 
 
-	Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TBitmapFont = Null)
-		Local dx:Float, dy:Float
-		Local DialogSprite:TSprite = GetSpriteFromRegistry(DialogStart)
-		height = Max(95, height ) 'minheight
-		If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + Height/3 + DialogStartMove;width:-48
-		If DialogStart = "StartRightDown" Then dx = x + width - 12;dy = y + Height/2 + DialogStartMove;width:-48
-		If DialogStart = "StartDownRight" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
-		If DialogStart = "StartDownLeft" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
+Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Height:Int, DialogStart:String = "StartDownLeft", DialogStartMove:Int = 0, DialogText:String = "", DialogFont:TBitmapFont = Null)
+	Local dx:Float, dy:Float
+	Local DialogSprite:TSprite = GetSpriteFromRegistry(DialogStart)
+	height = Max(95, height ) 'minheight
+	If DialogStart = "StartLeftDown" Then dx = x - 48;dy = y + Height/3 + DialogStartMove;width:-48
+	If DialogStart = "StartRightDown" Then dx = x + width - 12;dy = y + Height/2 + DialogStartMove;width:-48
+	If DialogStart = "StartDownRight" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
+	If DialogStart = "StartDownLeft" Then dx = x + width/2 + DialogStartMove;dy = y + Height - 12;Height:-53
 
-		GetSpriteFromRegistry("dialogue."+dialogueType).DrawArea(x,y,width,height)
+	GetSpriteFromRegistry("dialogue."+dialogueType).DrawArea(x,y,width,height)
 
-		DialogSprite.Draw(dx, dy)
-		If DialogText <> "" Then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 25, Height - 16, Null, TColor.clBlack)
-	End Function
+	DialogSprite.Draw(dx, dy)
+	If DialogText <> "" Then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 25, Height - 16, Null, TColor.clBlack)
+End Function
 
-	'draws a rounded rectangle (blue border) with alphashadow
-	Function DrawGFXRect(gfx_Rect:TSpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:String="gfx_gui_rect_")
-		gfx_Rect.getSprite(nameBase+"TopLeft").Draw(x, y)
-		gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
-		gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, new TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-		gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM))
+'draws a rounded rectangle (blue border) with alphashadow
+Function DrawGFXRect(gfx_Rect:TSpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:String="gfx_gui_rect_")
+	gfx_Rect.getSprite(nameBase+"TopLeft").Draw(x, y)
+	gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
+	gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, new TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM))
+	gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM))
 
-		gfx_Rect.getSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderLeft").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH())
-		gfx_Rect.getSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetH() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetH())
-		gfx_Rect.getSprite(nameBase+"BorderTop").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW(), y, width - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetW(), gfx_Rect.getSprite(nameBase+"BorderTop").area.GetH())
-		gfx_Rect.getSprite(nameBase+"BorderBottom").TileDraw(x + gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetW(), y + Height - gfx_Rect.getSprite(nameBase+"BorderBottom").area.GetH(), width - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetW(), gfx_Rect.getSprite(nameBase+"BorderBottom").area.GetH())
-		gfx_Rect.getSprite(nameBase+"Back").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), width - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH())
-	End Function
+	gfx_Rect.getSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderLeft").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH())
+	gfx_Rect.getSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetH() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetH())
+	gfx_Rect.getSprite(nameBase+"BorderTop").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW(), y, width - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetW(), gfx_Rect.getSprite(nameBase+"BorderTop").area.GetH())
+	gfx_Rect.getSprite(nameBase+"BorderBottom").TileDraw(x + gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetW(), y + Height - gfx_Rect.getSprite(nameBase+"BorderBottom").area.GetH(), width - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetW(), gfx_Rect.getSprite(nameBase+"BorderBottom").area.GetH())
+	gfx_Rect.getSprite(nameBase+"Back").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), width - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH())
+End Function
 
 
 

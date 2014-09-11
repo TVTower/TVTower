@@ -76,6 +76,8 @@ Import "game.room.base.bmx"
 Import "game.room.roomdoorsign.bmx"
 Import "game.betty.bmx"
 
+Import "game.database.bmx"
+
 '===== Includes =====
 Include "game.player.bmx"
 

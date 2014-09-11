@@ -220,3 +220,40 @@ Type TLocalizationLanguage
 		EndIf
 	End Method
 End Type
+
+
+
+
+Type TLocalizedString
+	Field values:TMap = CreateMap()
+	Global defaultLanguage:string = "de"
+
+
+	'to ease "setting" (mystring.set(value)) the language
+	'comes after the value.
+	Method Set:int(value:String, language:String="")
+		if language="" then language = defaultLanguage
+		values.insert(language, value)
+	End Method
+
+
+	Method Get:String(language:String="")
+		if language="" then language=defaultLanguage
+		if values.Contains(language) or language = defaultLanguage
+			return string(values.ValueForKey(language))
+		else
+			return string(values.ValueForKey(defaultLanguage))
+		endif
+	End Method
+
+
+	Method Append:Int(other:TLocalizedString)
+		if not other then return False
+
+		For local language:String = EachIn other.values.Keys()
+			'this might overwrite previous values of the same language
+			Set(string(other.values.ValueForKey(language)), language)
+		Next
+		return True
+	End Method
+End Type

@@ -1,16 +1,31 @@
 Type TGameObject {_exposeToLua="selected"}
 	Field id:Int = 0 	{_exposeToLua}
+	Field GUID:String {_exposeToLua}
 	Global LastID:Int = 0
 
 	Method New()
 		LastID:+1
 		'assign a new id
 		id = LastID
+
+		'create a new guid
+		SetGUID("")
 	End Method
 
 
 	Method GetID:Int() {_exposeToLua}
 		Return id
+	End Method
+
+
+	Method GetGUID:String() {_exposeToLua}
+		Return GUID
+	End Method
+
+
+	Method SetGUID:Int(GUID:String)
+		if GUID="" then GUID = "generic-gameobject-"+id
+		self.GUID = GUID
 	End Method
 
 

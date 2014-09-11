@@ -749,7 +749,7 @@ print "[NET] ReceiveGameReady"
 					select action
 						case NET_ADD
 								player.GetProgrammeCollection().AddAdContract( new TAdContract.Create(contractBase) )
-								print "[NET] PCollection"+playerID+" - add contract "+contractbase.title
+								print "[NET] PCollection"+playerID+" - add contract "+contractbase.GetTitle()
 						case NET_DELETE
 								local contract:TAdContract = player.GetProgrammeCollection().GetAdContractByBase( contractBase.id )
 								if contract

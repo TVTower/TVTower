@@ -19,7 +19,8 @@ Import "game.broadcastmaterial.base.bmx"
 
 
 Type TAdContractBaseCollection
-	Field list:TList = CreateList()
+	Field entries:TMap = CreateMap()
+	Field entriesCount:int = -1
 	Global _instance:TAdContractBaseCollection
 
 
@@ -29,54 +30,87 @@ Type TAdContractBaseCollection
 	End Function
 
 
+	Method GetByGUID:TAdContractBase(GUID:String)
+		Return TAdContractBase(entries.ValueForKey(GUID))
+	End Method
+
+
 	Method Get:TAdContractBase(id:Int)
-		For Local base:TAdContractBase = EachIn list
+		For Local base:TAdContractBase = EachIn entries.Values()
 			If base.id = id Then Return base
 		Next
 		Return Null
 	End Method
 
 
-	Method GetRandom:TAdContractBase(_list:TList = null)
-		if _list = Null then _list = List
-		If _list = Null Then Return Null
-		If _list.count() > 0
-			Local obj:TAdContractBase = TAdContractBase(_list.ValueAtIndex((randRange(0, _list.Count() - 1))))
-			if obj then return obj
-		endif
-		return Null
+	Method GetCount:Int()
+		if entriesCount >= 0 then return entriesCount
+
+		entriesCount = 0
+		For Local base:TAdContractBase = EachIn entries.Values()
+			entriesCount :+1
+		Next
+		return entriesCount
+	End Method
+
+
+	Method GetRandom:TAdContractBase(array:TAdContractBase[] = null)
+		if array = Null or array.length = 0 then array = GetAllAsArray()
+		If array.length = 0 Then Return Null
+
+		Return array[(randRange(0, array.length-1))]
+	End Method
+
+
+	Method GetAllAsArray:TAdContractBase[]()
+		local array:TAdContractBase[]
+		'create a full array containing all elements
+		For local obj:TAdContractBase = EachIn entries.Values()
+			array :+ [obj]
+		Next
+		return array
 	End Method
 
 
 	Method GetRandomWithLimitedAudienceQuote:TAdContractBase(minAudienceQuote:float=0.0, maxAudienceQuote:Float=0.35)
 		'maxAudienceQuote - xx% market share as maximum
 		'filter to entries we need
-		Local resultList:TList = CreateList()
-		For local obj:TAdContractBase = EachIn list
+		Local array:TAdContractBase[]
+		For local obj:TAdContractBase = EachIn entries.Values()
 			If obj.minAudienceBase >= minAudienceQuote AND obj.minAudienceBase <= maxAudienceQuote
-				resultList.addLast(obj)
+				array :+ [obj]
 			EndIf
 		Next
-		Return GetRandom(resultList)
+		Return GetRandom(array)
 	End Method
 
 
 	Method Remove:int(obj:TAdContractBase)
-		return list.Remove(obj)
+		if obj.GetGuid() and entries.Remove(obj.GetGUID())
+			'invalidate count
+			entriesCount = -1
+
+			return True
+		endif
+
+		return False
 	End Method
 
 
 	Method Add:int(obj:TAdContractBase)
-		'only add once
-		if list.contains(obj) then return False
+		if entries.Insert(obj.GetGUID(), obj)
+			'invalidate count
+			entriesCount = -1
 
-		list.AddLast(obj)
-		return TRUE
+			return TRUE
+		endif
+
+		return False
 	End Method
 
 
 	Method RefreshInfomercialTopicalities:int() {_private}
-		For Local base:TAdContractBase = eachin list
+		For Local base:TAdContractBase = eachin entries.Values()
 			base.RefreshInfomercialTopicality()
 		Next
 	End Method
@@ -137,12 +171,12 @@ End Function
 'contracts bases for advertisement - straight from the DB
 'they just contain data to base new contracts of
 Type TAdContractBase extends TGameObject {_exposeToLua}
-	Field title:string = ""
-	Field description:string = ""
+	Field title:TLocalizedString
+	Field description:TLocalizedString
 	'days to fullfill a (signed) contract
 	Field daysToFinish:Int
 	'spots to send
-	Field spotCount:Int
+	Field spotCount:Int = 1
 	'block length
 	Field blocks:int = 1
 	'target group of the spot
@@ -151,12 +185,15 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	Field minAudienceBase:Float
 	'minimum image base value (real value calculated on sign)
 	Field minImageBase:Float
-	'flag wether price is fixed
-	Field hasFixedPrice:Int
+	'flag wether price is fixed or not
+	Field fixedPrice:Int = False
 	'base of profit (real value calculated on sign)
 	Field profitBase:Float
 	'base of penalty (real value calculated on sign)
 	Field penaltyBase:Float
+	'the quality of the advertisement (cheap one or hollywood style?)
+	'also might affect infomercial audience rating
+	Field quality:Float = 0.5 'default is 50%
 	'=== infomercials / shopping shows ===
 	'is the broadcast of an infomercial allowed?
 	Field infomercialAllowed:int = TRUE
@@ -184,17 +221,18 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	Const TARGETGROUP_MEN:Int = 9
 
 
-	Method Create:TAdContractBase(title:String, description:String, daystofinish:Int, spotcount:Int, targetgroup:Int, minaudience:Int, minimage:Int, fixedPrice:Int, profit:Int, penalty:Int)
-		self.title			= title
-		self.description	= description
-		self.daysToFinish	= daystofinish
-		self.spotCount		= spotcount
-		self.targetGroup	= targetgroup
-		self.minAudienceBase= Float(minaudience) / 10.0
-		self.minImageBase	= Float(minimage) / 10.0
-		self.hasFixedPrice	= fixedPrice
-		self.profitBase		= Float(profit)
-		self.penaltyBase 	= Float(penalty)
+	Method Create:TAdContractBase(GUID:String, title:TLocalizedString, description:TLocalizedString, daysToFinish:Int, spotCount:Int, targetgroup:Int, minAudience:Float, minImage:Float, fixedPrice:Int, profit:Float, penalty:Float)
+		self.SetGUID(GUID)
+		self.title = title
+		self.description = description
+		self.daysToFinish = daysToFinish
+		self.spotCount = spotCount
+		self.targetGroup = targetGroup
+		self.minAudienceBase = minAudience
+		self.minImageBase = minImage
+		self.fixedPrice = fixedPrice
+		self.profitBase	= profit
+		self.penaltyBase = penalty
 
 		GetAdContractBaseCollection().Add(self)
 
@@ -203,17 +241,22 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 
 
 	Method GetTitle:string() {_exposeToLua}
-		return self.title
+		return title.Get()
 	End Method
 
 
 	Method GetDescription:string() {_exposeToLua}
-		return self.description
+		return description.Get()
 	End Method
 
 
 	Method GetBlocks:int() {_exposeToLua}
-		return self.blocks
+		return blocks
+	End Method
+
+
+	Method GetQuality:int() {_exposeToLua}
+		return quality
 	End Method
 
 
@@ -361,7 +404,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	'percents = 0.0 - 1.0 (0-100%)
 	Method GetMinAudiencePercentage:Float(dbvalue:Float = -1) {_exposeToLua}
 		If dbvalue < 0 Then dbvalue = Self.base.minAudienceBase
-		Return Max(0.0, Min(1.0, dbvalue / 100.0)) 'from 75% to 0.75
+		Return MathHelper.Clamp(dbValue, 0.0, 1.0)
 	End Method
 
 
@@ -396,7 +439,6 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	'multiplies basevalues of prices, values are from 0 to 255 for 1 spot... per 1000 people in audience
 	'if targetgroup is set, the price is doubled
 	Method GetProfit:Int(playerID:Int= -1) {_exposeToLua}
 		'already calculated and data for owner requested
@@ -418,34 +460,40 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	'calculate prices (profits, penalties...)
-	Method CalculatePrices:Int(baseprice:Int=0, playerID:Int=-1) {_exposeToLua}
+	Method CalculatePrices:Int(baseprice:Float=0, playerID:Int=-1) {_exposeToLua}
+		local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
+		local factor1:float =  devConfig.GetFloat("DEV_AD_FACTOR1", 1.0)
+		local minCPM:float = devConfig.GetFloat("DEV_AD_MINIMUM_CPM", 7.5)
+		local limitedGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
+		local limitedTargetGroupMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_TARGETGROUP_MULTIPLIER", 2.0)
+
+		'=== PRICE CALCULATION ===
+
 		'price is for each spot
-		Local price:Float = baseprice * Float( GetSpotCount() )
+		Local price:Float = basePrice * GetSpotCount()
 
 		'ad is with fixed price - only available without minimum restriction
-		If base.hasFixedPrice
-			'print self.contractBase.title + " has fixed price : "+ price + " base:"+baseprice + " profitbase:"+self.contractBase.profitBase
+		If base.fixedPrice
+			print self.base.title.Get() + " has fixed price : "+ int(price) + " base:"+int(baseprice) + " profitbase:"+base.profitBase +" penaltyBase:"+base.penaltyBase
 			Return price
 		endif
 
-		local devConfig:TData = TData(GetRegistry().Get("DEV_CONFIG", new TData.Init()))
-		local factor1:float =  devConfig.GetFloat("DEV_AD_FACTOR1", 4.0)
-		local minCPM:float = devConfig.GetFloat("DEV_AD_MINIMUM_CPM", 7.5)
-		local limitedGenreMultiplier:float = devConfig.GetFloat("DEV_AD_LIMITED_GENRE_MULTIPLIER", 2.0)
-
-		'price :* 4.0 'increase price by 400% - community says, price to low
+		'multiply by our balancing factor
 		price :* factor1
 
-		'dynamic price
-		'----
-		'price we would get if 100% of audience is watching
-		'-> multiply with an "euros per 1000 people watching"
-		'price :* Max(7.5, getRawMinAudience(playerID)/1000)
+		'Modify price according the amount of blocks containing "1000"
+		'people. A RawMinAudience of 7200 contains 7.2 "cpm" blocks.
+		'
+		'To avoid "dumping prices" we do at least multiply with "minCPM"
+		'or higher
 		price :* Max(minCPM, getRawMinAudience(playerID)/1000)
 
 		'specific targetgroups change price
-		'If Self.GetTargetGroup() > 0 Then price :*2.0
 		If GetTargetGroup() > 0 Then price :* limitedGenreMultiplier
+		'limiting to specific genres change the price too
+		'If GetLimitedGenre() > 0 Then price :* limitedGenreMultiplier
+
+		print GetTitle()+": "+GetMinAudiencePercentage() +" -- price " +price +" ---raw audience "+getRawMinAudience(playerID)
 
 		'return "beautiful" prices
 		Return TFunctions.RoundToBeautifulValue(price)
@@ -457,11 +505,18 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		'if no special player is requested -
 		if playerID <= 0 and IsSigned() then playerID = owner
 		'if contract has no owner the avg audience maximum is returned
-		local useAudience:int = GetStationMapCollection().GetAverageReach()
+		local useAudience:int = 0
+		if playerID = -1
+			useAudience = GetStationMapCollection().GetAverageReach()
+		else
+			useAudience = GetStationMapCollection().GetMap(playerID).GetReach()
+		endif
 
-		'0.5 = more than 50 percent of whole germany wont watch TV the same time
-		'therefor: maximum of half the audience can be "needed"
-		Return Floor(useAudience*0.5 * GetMinAudiencePercentage())
+		'no more than 50 percent of whole germany will watch TV at the
+		'same time, so convert "whole germany watches"-based audience
+		'percentage to a useable one:
+		'cut it by 0.5
+		Return Floor(0.5 * useAudience * GetMinAudiencePercentage())
 	End Method
 
 

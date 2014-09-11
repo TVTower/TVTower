@@ -14,8 +14,8 @@ Import BRL.FileSystem
 
 
 Type TDirectoryTree
-	Field directories:TMap             = CreateMap()
-	Field filePaths:TMap               = CreateMap()
+	Field directories:TList             = CreateList()
+	Field filePaths:TList               = CreateList()
 	'root path of the scanned directory
 	Field baseDirectory:String         = ""
 	'files to include/exclude in the tree. "*" means all
@@ -40,8 +40,15 @@ Type TDirectoryTree
 	End Method
 
 
-	Method AddFile(fileUri:String, fileName:String)
-		filePaths.insert(fileUri, fileName)
+	Method AddFile(fileURI:String)
+		if filePaths.Contains(fileURI) then return
+		filePaths.AddLast(fileURI)
+	End Method
+
+
+	Method AddDirectory(directoryURI:String)
+		if directories.Contains(directoryURI) then return
+		directories.AddLast(directoryURI)
 	End Method
 
 
@@ -138,14 +145,14 @@ Type TDirectoryTree
 					'skip files with non-enabled file names
 					If Not _includeFileNames.Contains( StripAll(file).toLower() ) And Not _includeFileNames.Contains("*") Then Continue
 
-					filePaths.insert(uri, file)
+					AddFile(uri)
 				Case 2
 					'skip forbidden directories
 					If _excludeDirectoryNames.Contains( file.toLower() ) Then Continue
 					'skip directories with non-enabled directory names
 					If Not _includeDirectoryNames.Contains( file.toLower() ) And Not _includeDirectoryNames.Contains("*") Then Continue
 
-					directories.insert(uri, file)
+					AddDirectory(uri)
 					ScanDir(uri)
 			End Select
 		Forever
@@ -157,7 +164,7 @@ Type TDirectoryTree
 	'returns all found files for a given filter
 	Method GetFiles:String[](fileName:String="", fileEnding:String="", URIstartsWith:String="")
 		Local result:String[]
-		For Local uri:String = EachIn filePaths.Keys()
+		For Local uri:String = EachIn filePaths
 			'skip files with wrong filename - case sensitive
 			If fileName <> "" And StripDir(uri) <> fileName Then Continue
 			'skip uris not starting with given filter

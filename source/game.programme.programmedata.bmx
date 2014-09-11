@@ -131,7 +131,7 @@ Type TProgrammeData {_exposeToLua}
 	Field outcome:Float	= 0
 	Field review:Float = 0
 	Field speed:Float = 0
-	Field relPrice:Int = 0
+	Field priceModifier:Float = 1.0
 	Field genre:Int	= 0
 	Field blocks:Int = 1
 	Field xrated:Int = 0
@@ -145,7 +145,7 @@ Type TProgrammeData {_exposeToLua}
 	'(per player, 0 = unknown - eg before "game start" to lower values)
 	Field timesAired:int[] = [0]
 	'how "attractive" a programme is (the more shown, the less this value)
-	Field topicality:Int = -1
+	Field topicality:Float = -1
 
 	'=== trailer data ===
 	Field trailerTopicality:float = 1.0
@@ -185,7 +185,7 @@ Type TProgrammeData {_exposeToLua}
 	Const GENRE_CALLINSHOW:Int	= 20
 
 
-	Function Create:TProgrammeData(title:String, description:String, actors:String, directors:String, country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, relPrice:Int, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, programmeType:Int=1) {_private}
+	Function Create:TProgrammeData(title:String, description:String, actors:TProgrammePerson[], directors:TProgrammePerson[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, priceModifier:Float, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, programmeType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 
 		obj.title			= title
@@ -193,15 +193,15 @@ Type TProgrammeData {_exposeToLua}
 		obj.programmeType	= programmeType
 		obj.refreshModifier = Max(0.0, refreshModifier)
 		obj.wearoffModifier = Max(0.0, wearoffModifier)
-		obj.review			= Max(0,review)
-		obj.speed			= Max(0,speed)
-		obj.relPrice		= Max(0,relPrice)
-		obj.outcome			= Max(0,Outcome)
+		obj.review			= Max(0,Min(1.0, review))
+		obj.speed			= Max(0,Min(1.0, speed))
+		obj.outcome			= Max(0,Min(1.0, Outcome))
+		obj.priceModifier   = Max(0,priceModifier) '- modificator. > 100% increases price
 		obj.genre			= Max(0,Genre)
 		obj.blocks			= blocks
 		obj.xrated			= xrated
-		obj.actors			= _GetPersonsFromString(actors, TProgrammePerson.JOB_ACTOR)
-		obj.directors		= _GetPersonsFromString(directors, TProgrammePerson.JOB_DIRECTOR)
+		obj.actors			= actors
+		obj.directors		= directors
 		obj.country			= country
 		obj.year			= year
 		obj.releaseDay		= day
@@ -214,7 +214,7 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Function CreateMinimal:TProgrammeData(title:String = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
-		Local quality:Int = fixQuality * 255
+		Local quality:Int = fixQuality
 		Return TProgrammeData.Create(title, Null, Null, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
 	End Function
 
@@ -223,8 +223,8 @@ Type TProgrammeData {_exposeToLua}
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
 		local result:float = 0.0
 		If GetGenre() = TProgrammeData.GENRE_CALLINSHOW
-			result :+ GetSpeed() * 0.05
-			result :+ GetReview() * 0.2
+			result :+ GetSpeed() * 127.5
+			result :+ GetReview() * 51
 			'cut to 50%
 			result :* 0.5
 			'adjust by topicality
@@ -268,50 +268,6 @@ Type TProgrammeData {_exposeToLua}
 		Next
 		return result[..result.length-2]
 	End Method
-
-
-	Function _GetPersonsFromString:TProgrammePerson[](personsString:string="", job:int=0)
-		local personsStringArray:string[] = personsString.split(",")
-		local personArray:TProgrammePerson[]
-
-		For local personString:string = eachin personsStringArray
-			'split first and lastName
-			local _name:string[] = personString.split(" ")
-			local name:string[]
-			'remove " "-strings
-			for local i:int = 0 to _name.length-1
-				if _name[i].trim() = "" then continue
-				name = name[..name.length+1]
-				name[name.length-1] = _name[i]
-			Next
-
-			'ignore "unknown" actors
-			if name.length <= 0 or name[0] = "XXX" then continue
-
-			local firstName:string = name[0]
-			local lastName:string = ""
-			'add rest to lastname
-			For local i:int = 1 to name.length - 1
-				lastName:+ name[i]+" "
-			Next
-			'trim last space
-			lastName = lastName[..lastName.length-1]
-
-			local person:TProgrammePerson = TProgrammePerson.GetByName(firstName, lastName)
-			if person
-				person.AddJob(job)
-			else
-				person = TProgrammePerson.Create(firstName, lastName, job)
-			endif
-
-			'increase arraysize by 1
-			personArray = personArray[..personArray.length+1]
-			'add person
-			personArray[personArray.length-1] = person
-		Next
-		return personArray
-	End Function
-
 
 
 	Method GetRefreshModifier:float()
@@ -367,49 +323,77 @@ Type TProgrammeData {_exposeToLua}
 	End Method
 
 
-	Method GetOutcome:int()
+	'returns a value from 0.0 - 1.0 (0-100%)
+	Method GetOutcome:Float()
 		return self.outcome
 	End Method
 
 
-	Method GetSpeed:int()
+	'returns a value from 0.0 - 1.0 (0-100%)
+	Method GetSpeed:Float()
 		return self.speed
 	End Method
 
 
-	Method GetReview:int()
+	'returns a value from 0.0 - 1.0 (0-100%)
+	Method GetReview:Float()
 		return self.review
 	End Method
 
 
 	Method GetPrice:int()
-		Local tmpreview:Float
-		Local tmpspeed:Float
 		Local value:int = 0
-		If Outcome > 0 'movies
-			value = 0.55 * 255 * Outcome + 0.25 * 255 * review + 0.2 * 255 * speed
-			If (GetMaxTopicality() >= 230) Then value:*1.4
-			If (GetMaxTopicality() >= 240) Then value:*1.6
-			If (GetMaxTopicality() >= 250) Then value:*1.8
-			If (GetMaxTopicality() > 253)  Then value:*2.1 'the more current the more expensive
-		Else 'shows, productions, series...
-			If (review > 0.5 * 255) Then tmpreview = 255 - 2.5 * (review - 0.5 * 255) else tmpreview = 1.6667 * review
-			If (speed > 0.6 * 255) Then tmpspeed = 255 - 2.5 * (speed - 0.6 * 255) else tmpspeed = 1.6667 * speed
-			value = 1.3 * ( 0.45 * 255 * tmpreview + 0.55 * 255 * tmpspeed )
+
+		'maximum price is
+		'basefactor * topicalityModifier * priceModifier
+
+		'movies run in cinema (outcome >0)
+		If isMovie() and GetOutcome() > 0
+			'basefactor * priceFactor
+			value = 120000 * (0.55 * GetOutcome() + 0.25 * GetReview() + 0.2 * GetSpeed())
+		 'shows, productions, series...
+		Else
+			'basefactor * priceFactor
+			value = 75000 * ( 0.45 * GetReview() + 0.55 * GetSpeed() )
+			if GetReview() > 0.5 then value :* 1.1
+			if GetSpeed() > 0.6 then value :* 1.1
 		EndIf
-		value:*(1.5 * GetTopicality() / 255)
+
+		'the more current the more expensive
+		'multipliers stack"
+		local topicalityModifier:Float = 1.0
+		If (GetMaxTopicality() >= 0.80) Then topicalityModifier = 1.1
+		If (GetMaxTopicality() >= 0.85) Then topicalityModifier = 1.3
+		If (GetMaxTopicality() >= 0.90) Then topicalityModifier = 1.8
+		If (GetMaxTopicality() >= 0.94) Then topicalityModifier = 2.5
+		If (GetMaxTopicality() >= 0.98) Then topicalityModifier = 3.5
+		'make just released programmes even more expensive
+		If (GetMaxTopicality() > 0.99)  Then topicalityModifier = 5.0
+
+		value :* topicalityModifier
+
+		'topicality has a certain value influence
+		value :* GetTopicality()
+
+		'individual price modifier - default is 1.0
+		'until we revisited the database, it only has a 20% influence
+		value :* (0.8+0.2*priceModifier)
+	
+		'round to next "1000" block
 		value = Int(Floor(value / 1000) * 1000)
+
+'print GetTitle()+"  value1: "+value + "  outcome:"+GetOutcome()+"  review:"+GetReview() + " maxTop:"+GetMaxTopicality()+" year:"+year
 
 		return value
 	End Method
 
 
-	Method GetMaxTopicality:int()
-		return Max(0, 255 - 2 * Max(0, GetWorldTime().GetYear() - year) - Min(50, GetTimesAired() * 5)) 'simplest form ;D
+	Method GetMaxTopicality:Float()
+		return 0.01 * (Max(0, 100 - Max(0, GetWorldTime().GetYear() - year) - Min(40, GetTimesAired() * 4))) 'simplest form ;D
 	End Method
 
 
-	Method GetTopicality:int()
+	Method GetTopicality:Float()
 		if topicality < 0 then topicality = GetMaxTopicality()
 		return topicality
 	End Method
@@ -426,12 +410,12 @@ Type TProgrammeData {_exposeToLua}
 	Method GetQualityRaw:Float()
 		Local genreDef:TMovieGenreDefinition = GetGenreDefinition()
 		If genreDef.OutcomeMod > 0.0 Then
-			Return Float(Outcome) / 255.0 * genreDef.OutcomeMod ..
-				+ Float(review) / 255.0 * genreDef.ReviewMod ..
-				+ Float(speed) / 255.0 * genreDef.SpeedMod
+			Return GetOutcome() * genreDef.OutcomeMod ..
+				+ GetReview() * genreDef.ReviewMod ..
+				+ GetSpeed() * genreDef.SpeedMod
 		Else
-			Return Float(review) / 255.0 * genreDef.ReviewMod ..
-				+ Float(speed) / 255.0 * genreDef.SpeedMod
+			Return GetReview() * genreDef.ReviewMod ..
+				+ GetSpeed() * genreDef.SpeedMod
 		EndIf
 	End Method
 
@@ -441,15 +425,13 @@ Type TProgrammeData {_exposeToLua}
 		Local quality:Float = GetQualityRaw()
 
 		'the older the less ppl want to watch - 1 year = 0.99%, 2 years = 0.98%...
-		Local age:Int = Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
-		quality:*Max(0.20, (age / 100.0))
+		Local age:Int = 0.01 * Max(0, 100 - Max(0, GetWorldTime().GetYear() - year))
+		quality :* Max(0.20, age)
 
 		'repetitions wont be watched that much
-		quality:*(GetTopicality() / 255.0) ^ 2
+		quality :* GetTopicality() ^ 2
 
-		quality = quality * 0.99 + 0.01 'Mindestens 1% Qualitaet
-
-		'no minus quote
+		'no minus quote, min 0.01 quote
 		quality = Max(0.01, quality)
 
 		Return quality
