@@ -561,11 +561,13 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetTitle:string() {_exposeToLua}
+		if self.title = "" then return GetData().GetTitle()
 		return self.title
 	End Method
 
 
 	Method GetDescription:string() {_exposeToLua}
+		if self.description = "" then return GetData().GetDescription()
 		return self.description
 	End Method
 
@@ -843,7 +845,7 @@ endrem
 		currY :+ 15 + 8 'lineheight + bottom content padding
 
 		'=== X-Rated Overlay ===
-		If data.xrated <> 0
+		If data.IsXRated()
 			GetSpriteFromRegistry("gfx_datasheet_xrated").Draw(currX + GetSpriteFromRegistry("gfx_datasheet_title").GetWidth(), y, -1, ALIGN_RIGHT_TOP)
 		Endif
 	End Method

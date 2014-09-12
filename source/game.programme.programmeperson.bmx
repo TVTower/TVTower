@@ -18,6 +18,15 @@ Type TProgrammePersonCollection
 	End Function
 
 
+	Method GetByGUID:TProgrammePersonBase(GUID:String)
+		local result:TProgrammePersonBase
+		result = TProgrammePersonBase(insignificant.ValueForKey(GUID))
+		if not result
+			result = TProgrammePersonBase(celebrities.ValueForKey(GUID))
+		endif
+		return result
+	End Method
+	
 	Method GetInsignificantByGUID:TProgrammePersonBase(GUID:String)
 		Return TProgrammePersonBase(insignificant.ValueForKey(GUID))
 	End Method
@@ -25,6 +34,7 @@ Type TProgrammePersonCollection
 	Method GetCelebrityByGUID:TProgrammePerson(GUID:String)
 		Return TProgrammePerson(celebrities.ValueForKey(GUID))
 	End Method
+
 
 	'deprecated - used for v2-database
 	Method GetCelebrityByName:TProgrammePerson(firstName:string, lastName:string)
@@ -91,7 +101,7 @@ Type TProgrammePersonCollection
 		return False
 	End Method
 	
-	Method RemoveCelebrity:int(person:TProgrammePerson)
+	Method RemoveCelebrity:int(person:TProgrammePersonBase)
 		if person.GetGuid() and celebrities.Remove(person.GetGUID())
 			'invalidate count
 			celebritiesCount = -1
@@ -104,25 +114,19 @@ Type TProgrammePersonCollection
 	
 
 	Method AddInsignificant:int(person:TProgrammePersonBase)
-		if insignificant.Insert(person.GetGUID(), person)
-			'invalidate count
-			insignificantCount = -1
+		insignificant.Insert(person.GetGUID(), person)
+		'invalidate count
+		insignificantCount = -1
 
-			return TRUE
-		endif
-
-		return False
+		return TRUE
 	End Method
 
 	Method AddCelebrity:int(person:TProgrammePersonBase)
-		if celebrities.Insert(person.GetGUID(), person)
-			'invalidate count
-			celebritiesCount = -1
+		celebrities.Insert(person.GetGUID(), person)
+		'invalidate count
+		celebritiesCount = -1
 
-			return TRUE
-		endif
-
-		return False
+		return TRUE
 	End Method
 End Type
 '===== CONVENIENCE ACCESSOR =====
@@ -137,20 +141,22 @@ End Function
 Type TProgrammePersonBase extends TGameObject
 	field lastName:String = ""
 	field firstName:String = ""
+	field nickName:String = ""
 	field job:int = 0
-	field GUID:String
 	field realPerson:int = False
 
-	const JOB_ACTOR:int		= 1
-	const JOB_DIRECTOR:int	= 2
-	const JOB_WRITER:int	= 4
-
+	'one person could have multiple jobs: use bitmask values
+	const JOB_UNKNOWN:int = 0
+	const JOB_ACTOR:int = 1
+	const JOB_DIRECTOR:int = 2
+	const JOB_WRITER:int = 4
 
 	'override to add another generic naming
 	Method SetGUID:Int(GUID:String)
 		if GUID="" then GUID = "programmeperson-"+id
 		self.GUID = GUID
 	End Method
+
 
 	Method AddJob:int(job:int)
 		'already done?
@@ -160,9 +166,9 @@ Type TProgrammePersonBase extends TGameObject
 		self.job :| job
 
 		'add to list
-		'if job & JOB_ACTOR then actors.AddLast(self)
-		'if job & JOB_DIRECTOR then directors.AddLast(self)
-		'if job & JOB_WRITER then writers.AddLast(self)
+		'if job & TProgrammePersonBase.JOB_ACTOR then actors.AddLast(self)
+		'if job & TProgrammePersonBase.JOB_DIRECTOR then directors.AddLast(self)
+		'if job & TVTProgrammePersonJob.Writer then writers.AddLast(self)
 	End Method
 
 
@@ -173,6 +179,17 @@ Type TProgrammePersonBase extends TGameObject
 
 	Method SetLastName:Int(lastName:string)
 		self.lastName = lastName
+	End Method
+
+
+	Method SetNickName:Int(nickName:string)
+		self.nickName = nickName
+	End Method
+
+
+	Method GetNickName:String()
+		if nickName = "" then return firstName
+		return nickName
 	End Method
 
 
@@ -188,6 +205,32 @@ End Type
 Type TProgrammePerson extends TProgrammePersonBase
 	field dayOfBirth:string	= "0000-00-00"
 	field dayOfDeath:string	= "0000-00-00"
+	field gender:int = 0
+	field country:string = ""
+	'how prominent is a person 0-1.0 = 0-100%
+	field prominence:float = 0.0
+	field skill:float = 0.0
+	field fame:float = 0.0
+	field priceModifier:Float = 1.0
+	field scandalizing:float = 0.0
+	field power:float = 0.0
+	field humor:float = 0.0
+	field charisma:float = 0.0
+	field appearance:float = 0.0
+	'at which genres this person is doing his best job
+	'TODO: maybe change this later to a general genreExperience-Container
+	'which increases over time
+	field topGenre1:Int = -1
+	field topGenre2:Int = -1
+	
+
+	'don't feel attacked by this naming! "UNKNOWN" includes
+	'transgenders, maybe transsexuals, unknown lifeforms ... just
+	'everything which is not called by a male or female pronoun
+	Const GENDER_UNKNOWN:int = 0
+	Const GENDER_MALE:int = 1
+	Const GENDER_FEMALE:int = 2
+	
 
 
 	Method SetDayOfBirth:Int(date:String="")

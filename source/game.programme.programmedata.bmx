@@ -11,11 +11,13 @@ Import "game.broadcast.genredefinition.movie.bmx"
 
 
 Type TProgrammeDataCollection
-	Field list:TList			= CreateList()
+	Field entries:TMap = CreateMap()
+	Field entriesCount:int = -1
+
 	'factor by what a programmes topicality DECREASES by sending it
-	Field wearoffFactor:float	= 0.65
+	Field wearoffFactor:float = 0.65
 	'factor by what a programmes topicality INCREASES by a day switch
-	Field refreshFactor:float	= 1.5
+	Field refreshFactor:float = 1.5
 	'values get multiplied with the refresh factor
 	'so this means: higher values increase the resulting topicality win
 	Field genreRefreshModifier:float[] =  [	1.0, .. 	'action
@@ -73,11 +75,45 @@ Type TProgrammeDataCollection
 	End Function
 
 
-	Method Add:int(obj:TProgrammeData)
-		list.AddLast(obj)
-		return TRUE
+	Method GetByGUID:TProgrammeData(GUID:String)
+		Return TProgrammeData(entries.ValueForKey(GUID))
 	End Method
 
+
+	Method GetCount:Int()
+		if entriesCount >= 0 then return entriesCount
+
+		entriesCount = 0
+		For Local base:TProgrammeData = EachIn entries.Values()
+			entriesCount :+1
+		Next
+		return entriesCount
+	End Method
+
+
+	Method Remove:int(obj:TProgrammeData)
+		if obj.GetGuid() and entries.Remove(obj.GetGUID())
+			'invalidate count
+			entriesCount = -1
+
+			return True
+		endif
+
+		return False
+	End Method
+
+
+	Method Add:int(obj:TProgrammeData)
+		if entries.Insert(obj.GetGUID(), obj)
+			'invalidate count
+			entriesCount = -1
+
+			return TRUE
+		endif
+
+		return False
+	End Method
+	
 
 	Method GetGenreRefreshModifier:float(genre:int=-1)
 		if genre < self.genreRefreshModifier.length then return self.genreRefreshModifier[genre]
@@ -93,12 +129,12 @@ Type TProgrammeDataCollection
 	End Method
 
 
-	Function RefreshTopicalities:int()
-		For Local data:TProgrammeData = eachin GetProgrammeDataCollection().list
+	Method RefreshTopicalities:int()
+		For Local data:TProgrammeData = eachin entries.Values()
 			data.RefreshTopicality()
 			data.RefreshTrailerTopicality()
 		Next
-	End Function
+	End Method
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -112,13 +148,13 @@ End Function
 
 
 'raw data for movies, series,...
-Type TProgrammeData {_exposeToLua}
-	Field title:string = ""
-	Field description:string = ""
+Type TProgrammeData extends TGameObject {_exposeToLua}
+	Field title:TLocalizedString
+	Field description:TLocalizedString
 	'array holding actor(s)
-	Field actors:TProgrammePerson[]
+	Field actors:TProgrammePersonBase[]
 	'array holding director(s)
-	Field directors:TProgrammePerson[]
+	Field directors:TProgrammePersonBase[]
 	Field country:String = "UNK"
 	Field year:Int = 1900
 	'special targeted audience?
@@ -127,14 +163,15 @@ Type TProgrammeData {_exposeToLua}
 	Field refreshModifier:float = 1.0
 	'changes how much a programme loses during sending it
 	Field wearoffModifier:Float	= 1.0
-	Field liveHour:Int = 0
+	Field liveHour:Int = -1
 	Field outcome:Float	= 0
 	Field review:Float = 0
 	Field speed:Float = 0
 	Field priceModifier:Float = 1.0
 	Field genre:Int	= 0
 	Field blocks:Int = 1
-	Field xrated:Int = 0
+	'flags contains bitwise encoded things like xRated, paid, trash ...
+	Field flags:Int = 0
 	'0 = serie, 1 = movie, ...?
 	Field programmeType:Int	= 1
 	'at which day was the programme released?
@@ -184,12 +221,37 @@ Type TProgrammeData {_exposeToLua}
 	Const GENRE_FILLER:Int		= 19 'TV films etc.
 	Const GENRE_CALLINSHOW:Int	= 20
 
+	'Genereller Quotenbonus!
+	Const FLAG_LIVE:Int = 1
+	'Bonus bei Kindern / Jugendlichen. Malues bei Rentnern / Managern.
+	Const FLAG_ANIMATION:Int = 2
+	'Bonus bei Betty und bei Managern
+	Const FLAG_CULTURE:Int = 4
+	'Verringert die Nachteile des Filmalters. Bonus bei Rentnern.
+	'Höhere Serientreue bei Serien.
+	Const FLAG_CULT:Int = 8
+	'Bonus bei Arbeitslosen und Hausfrauen. Malus bei Arbeitnehmern und
+	'Managern. Trash läuft morgens und mittags gut => Bonus!
+	Const FLAG_TRASH:Int = 16
+	'Nochmal deutlich verringerter Preis. Verringert die Nachteile des
+	'Filmalters. Bonus bei Jugendlichen. Malus bei allen anderen
+	'Zielgruppen. Bonus in der Nacht!
+	Const FLAG_BMOVIE:Int = 32
+	'Kleiner Bonus für Jugendliche, Arbeitnehmer, Arbeitslose, (Männer).
+	'Kleiner Malus für Kinder, Hausfrauen, Rentner, (Frauen).
+	Const FLAG_XRATED:Int = 64
+	'Call-In-Shows
+	Const FLAG_PAID:Int = 128
+	'Ist ne Serie! Vielleicht besser als den ProgrammeType... so kann
+	'auch ne Reportage ne Serie sein.
+	Const FLAG_SERIES:Int = 256
 
-	Function Create:TProgrammeData(title:String, description:String, actors:TProgrammePerson[], directors:TProgrammePerson[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, priceModifier:Float, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, programmeType:Int=1) {_private}
+
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, actors:TProgrammePersonBase[], directors:TProgrammePersonBase[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, priceModifier:Float, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, programmeType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
-
-		obj.title			= title
-		obj.description 	= description
+		obj.SetGUID(GUID)
+		obj.title = title
+		obj.description = description
 		obj.programmeType	= programmeType
 		obj.refreshModifier = Max(0.0, refreshModifier)
 		obj.wearoffModifier = Max(0.0, wearoffModifier)
@@ -199,7 +261,7 @@ Type TProgrammeData {_exposeToLua}
 		obj.priceModifier   = Max(0,priceModifier) '- modificator. > 100% increases price
 		obj.genre			= Max(0,Genre)
 		obj.blocks			= blocks
-		obj.xrated			= xrated
+		obj.SetFlag(FLAG_XRATED, xrated)
 		obj.actors			= actors
 		obj.directors		= directors
 		obj.country			= country
@@ -213,10 +275,31 @@ Type TProgrammeData {_exposeToLua}
 	End Function
 
 
-	Function CreateMinimal:TProgrammeData(title:String = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
+	Function CreateMinimal:TProgrammeData(title:TLocalizedString = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
 		Local quality:Int = fixQuality
-		Return TProgrammeData.Create(title, Null, Null, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
+		if not title then title = new TLocalizedString
+		Return TProgrammeData.Create("", title, new TLocalizedString, Null, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
 	End Function
+
+rem
+	'this is run when the object gets cloned
+	Method onGotCloned:Int(original:object)
+		'
+	End Method
+endrem
+
+	Method hasFlag:Int(flag:Int) {_exposeToLua}
+		Return flags & flag
+	End Method
+
+
+	Method setFlag(flag:Int, enable:Int=True)
+		If enable
+			flags :| flag
+		Else
+			flags :& ~flag
+		EndIf
+	End Method
 
 
 	'what to earn for each viewer
@@ -304,17 +387,17 @@ Type TProgrammeData {_exposeToLua}
 
 
 	Method GetTitle:string()
-		return self.title
+		return self.title.Get()
 	End Method
 
 
 	Method GetDescription:string()
-		return self.description
+		return self.description.Get()
 	End Method
 
 
-	Method GetXRated:int()
-		return (self.xrated <> "")
+	Method IsXRated:int()
+		return HasFlag(FLAG_XRATED)
 	End Method
 
 

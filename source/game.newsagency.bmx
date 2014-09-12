@@ -339,7 +339,7 @@ Type TNewsAgency
 			text = text.Replace("%ACTORNAME"+i+"%", data.getActor(i))
 			text = text.Replace("%DIRECTORNAME"+i+"%", data.getDirector(i))
 		Next
-		text = text.Replace("%MOVIETITLE%", data.title)
+		text = text.Replace("%MOVIETITLE%", data.title.Get())
 
 		Return text
 	End Method

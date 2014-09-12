@@ -106,14 +106,11 @@ Type TAdContractBaseCollection
 
 
 	Method Add:int(obj:TAdContractBase)
-		if entries.Insert(obj.GetGUID(), obj)
-			'invalidate count
-			entriesCount = -1
+		entries.Insert(obj.GetGUID(), obj)
+		'invalidate count
+		entriesCount = -1
 
-			return TRUE
-		endif
-
-		return False
+		return True
 	End Method
 
 

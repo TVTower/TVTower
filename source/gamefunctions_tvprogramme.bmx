@@ -247,7 +247,7 @@ Type TGUIProgrammePlanElement extends TGUIGameListItem
 							GetSpriteFromRegistry(GetAssetBaseName()+"2"+variant).DrawClipped(new TRectangle.Init(drawPos.x, drawPos.y, -1, 30))
 						EndIf
 						'xrated
-						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.xrated
+						if TProgramme(broadcastMaterial) and TProgramme(broadcastMaterial).data.IsXRated()
 							local addPixel:int = 0
 							if GetAssetBaseName() = "pp_programmeblock" then addPixel = 1
 							GetSpriteFromRegistry("pp_xrated").Draw(GetScreenX() + GetSpriteFromRegistry(GetAssetBaseName()+"1"+variant).GetWidth() +addPixel, GetScreenY(),  -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))

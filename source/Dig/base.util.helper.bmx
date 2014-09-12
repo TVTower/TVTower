@@ -116,4 +116,116 @@ Type THelper
 			   )
 		endif
 	End Function
+
+
+
+	Global ListTypeID:TTypeId=TTypeId.ForObject(new TList)
+	Global MapTypeID:TTypeId=TTypeId.ForObject(new TMap)
+
+	'clones the given object
+	'function is calling itself recursively for each property
+	'returns the cloned object
+	Function CloneObject:object(obj:object)
+		'clone code is based on the work of "Azathoth"
+		'http://www.blitzbasic.com/codearcs/codearcs.php?code=2132
+
+		'skip cloning nothing
+		If obj = Null Then Return Null
+
+		'to access properties we need a TTypeID of the object
+		Local objTypeID:TTypeId=TTypeId.ForObject(obj)
+
+
+		'=== STRINGS ===
+		If objTypeID.ExtendsType(StringTypeId) then return String(obj)
+
+
+		'=== ARRAYS ===
+		If objTypeID.ExtendsType(ArrayTypeId)
+			'if an array does not contain elements, the reflection
+			'cannot recognize which type the array contains (Null[])
+
+			'accessing this "null[]"-arrays would lead to a thrown
+			'error - so we need "try" to catch the exception.
+			'Thanks to Brucey's persistence.mod (doing it similar)
+
+			'objects name might be TMyType[] - remove the []-part
+			Local objTypeName:string = objTypeID.name()[..objTypeID.name().length - 2]
+			Local size:Int
+			Try
+				size = objTypeID.ArrayLength(obj)
+			Catch e$
+				objTypeName = "Object"
+				size = 0
+			End Try
+			
+			'if the object does not contain things in that array, the
+			'copy wont need it too
+			If size = 0 then return Null
+
+			'create new array
+			local clone:object = objTypeID.NewArray(objTypeID.ArrayLength(obj))
+			'something failed, return a null object
+			If not clone then return Null
+
+			'clone each element of the array
+			For Local i:int=0 Until objTypeID.ArrayLength(obj)
+				'run recursive clone for arrays, objects and strings
+				If objTypeID.ElementType().ExtendsType(ArrayTypeId) or objTypeID.ElementType().ExtendsType(StringTypeId) or objTypeID.ElementType().ExtendsType(ObjectTypeId)
+					objTypeID.SetArrayElement(clone, i, CloneObject(objTypeID.GetArrayElement(obj, i)))
+				Else
+					objTypeID.SetArrayElement(clone, i, objTypeID.GetArrayElement(obj, i))
+				EndIf
+			Next
+
+			return clone
+		EndIf
+
+
+		'=== LISTS ===
+		If objTypeID.ExtendsType(ListTypeID)
+			local list:TList = CreateList()
+			For local entry:object = EachIn TList(obj)
+				list.AddLast(entry)
+			Next
+			return list
+		EndIf
+		
+		'=== TMAPS ===
+		'do maps BEFORE arrays... as maps extend arrays
+		If objTypeID.ExtendsType(MapTypeID)
+			local map:TMap = CreateMap()
+			For local key:string = EachIn TMap(obj).Keys()
+				map.Insert(key, TMap(obj).ValueForKey(key))
+			Next
+			return map
+		EndIf	
+
+		'=== OBJECTS ===
+		'create a new instance of the objects type
+		Local clone:object = New obj
+
+		'loop over all fields of the object
+		For Local fld:TField=EachIn objTypeID.EnumFields()
+			Local fldId:TTypeId=fld.TypeId()
+
+			'only clone non-null-fields and if not explicitely forbidden
+			If fld.Get(obj) And fld.MetaData("NoClone") = Null
+				'if explizitely stated, clone referenceable objects by
+				'reusing their reference, else deep clone it
+				If fld.MetaData("CloneUseReference")
+					fld.Set(clone, fld.Get(obj))
+				Else
+					fld.Set(clone, CloneObject(fld.Get(obj)))
+				EndIf
+			EndIf
+		Next
+
+		'inform the clone that it got cloned
+		'call a method "onGotCloned:Int(original:obj)"
+		Local mth:TMethod = objTypeID.FindMethod("onGotCloned")
+		If mth then mth.Invoke(clone, [obj])
+
+		Return clone
+	End Function	
 End Type
