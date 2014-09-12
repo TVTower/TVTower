@@ -1022,10 +1022,19 @@ Type TgfxProgrammelist extends TPlannerList
 			GetSpriteFromRegistry("genres_top").draw(Pos.x, currY)
 			currY:+GetSpriteFromRegistry("genres_top").area.GetH()
 
+			'mark new genres
+			'- do this part in programmecollection (only on add/remove)
+			local containsNew:int[self.maxGenres]
+			For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
+				containsNew[licence.GetGenre()] = 1
+			Next
+
 			For local genres:int = 0 To self.maxGenres-1 		'21 genres
 				local lineHeight:int =0
 				local entryNum:string = (genres mod 2)
 				if genres = 0 then entryNum = "First"
+
+				
 
 				'draw background
 				GetSpriteFromRegistry("genres_entry"+entryNum).draw(Pos.x,currY)
@@ -1034,6 +1043,14 @@ Type TgfxProgrammelist extends TPlannerList
 					SetBlend LightBlend
 					SetAlpha 0.2*oldAlpha
 					SetColor 120,170,255
+					GetSpriteFromRegistry("genres_entry"+entryNum).draw(Pos.x,currY)
+					SetColor 255,255,255
+					SetAlpha oldAlpha
+					SetBlend AlphaBlend
+				elseif containsNew[genres] = 1
+					SetBlend LightBlend
+					SetAlpha 0.2*oldAlpha
+					SetColor 170,255,120
 					GetSpriteFromRegistry("genres_entry"+entryNum).draw(Pos.x,currY)
 					SetColor 255,255,255
 					SetAlpha oldAlpha

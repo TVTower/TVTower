@@ -60,6 +60,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	Field adContracts:TList					= CreateList()
 	Field suitcaseProgrammeLicences:TList	= CreateList()	'objects not available directly but still owned
 	Field suitcaseAdContracts:TList			= CreateList()	'objects in the suitcase but not signed
+	Field justAddedProgrammeLicences:TList	= CreateList() {nosave}
 	Global fireEvents:int					= TRUE			'FALSE to avoid recursive handling (network)
 
 
@@ -77,6 +78,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		adContracts.Clear()
 		suitcaseProgrammeLicences.Clear()
 		suitcaseAdContracts.Clear()
+		justAddedProgrammeLicences.Clear()
 	End Method
 
 
@@ -233,6 +235,11 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 	End Method
 
 
+	Method ClearJustAddedProgrammeLicences:Int()
+		justAddedProgrammeLicences.Clear()
+	End Method
+
+
 	Method RemoveProgrammeLicenceFromSuitcase:int(licence:TProgrammeLicence)
 		if not suitcaseProgrammeLicences.Contains(licence) then return FALSE
 
@@ -260,6 +267,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		seriesLicences.remove(licence)
 		'remove from suitcase too!
 		suitcaseProgrammeLicences.remove(licence)
+		'remove from justAddedProgrammeLicences too!
+		justAddedProgrammeLicences.Remove(licence)
 
 		'emit an event so eg. network can recognize the change
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.removeProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("sell", sell), self))
@@ -290,6 +299,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if licence.isSeries() then seriesLicences.AddLast(licence)
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 		programmeLicences.AddLast(licence)
+
+		justAddedProgrammeLicences.AddLast(licence)
 
 		if fireEvents then EventManager.registerEvent(TEventSimple.Create("programmecollection.addProgrammeLicence", new TData.add("programmeLicence", licence).addNumber("buy", buy), self))
 		return TRUE

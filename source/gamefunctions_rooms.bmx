@@ -567,6 +567,7 @@ Type RoomHandler_Office extends TRoomHandler
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
 	Global fastNavigateInitialTimer:int = 250
 	Global fastNavigationUsedContinuously:int = FALSE
+	Global openedProgrammeListThisVisit:int = False
 
 	Global hoveredGuiProgrammePlanElement:TGuiProgrammePlanElement = null
 	Global draggedGuiProgrammePlanElement:TGuiProgrammePlanElement = null
@@ -905,6 +906,11 @@ Type RoomHandler_Office extends TRoomHandler
 		if draggedGuiProgrammePlanElement
 			triggerEvent.setVeto()
 			return FALSE
+		endif
+
+
+		if openedProgrammeListThisVisit
+			GetPlayerCollection().Get().GetProgrammeCollection().ClearJustAddedProgrammeLicences()
 		endif
 
 		return TRUE
@@ -1282,7 +1288,10 @@ Type RoomHandler_Office extends TRoomHandler
 
 		SetColor 255,255,255
 		If room.owner = GetPlayerCollection().playerID
-			If PPprogrammeList.GetOpen() > 0 Then PPprogrammeList.Draw()
+			If PPprogrammeList.GetOpen() > 0
+				PPprogrammeList.Draw()
+				openedProgrammeListThisVisit = True
+			endif
 			If PPcontractList.GetOpen()  > 0 Then PPcontractList.Draw()
 			'draw lists sheet
 			If PPprogrammeList.GetOpen() and PPprogrammeList.hoveredLicence
