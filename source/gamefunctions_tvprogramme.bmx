@@ -1778,8 +1778,8 @@ Type TGUINews extends TGUIGameListItem
 			TBitmapFont.SetRenderTarget(cacheTextOverlay)
 
 			'default texts (title, text,...)
-			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 4, 290, 15 + 8, null, TColor.CreateGrey(20))
-			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 19, 300, 50 + 8, null, TColor.CreateGrey(100))
+			GetBitmapFontManager().basefontBold.drawBlock(news.GetTitle(), 15, 4, 330, 15 + 8, null, TColor.CreateGrey(20))
+			GetBitmapFontManager().baseFont.drawBlock(news.GetDescription(), 15, 19, 340, 50 + 8, null, TColor.CreateGrey(100))
 
 			local oldAlpha:float = GetAlpha()
 			SetAlpha 0.3*oldAlpha
@@ -1829,9 +1829,9 @@ Type TGUINews extends TGUIGameListItem
 
 			'===== DRAW NON-CACHED TEXTS =====
 			if not news.paid
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 			else
-				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 219, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
+				GetBitmapFontManager().basefontBold.drawBlock(news.GetPrice() + ",-", screenX + 262, screenY + 72, 90, -1, new TVec2D.Init(ALIGN_RIGHT), TColor.CreateGrey(50))
 			endif
 
 			Select GetWorldTime().GetDay() - GetWorldTime().GetDay(news.newsEvent.happenedTime)
