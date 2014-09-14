@@ -1305,15 +1305,15 @@ Type RoomHandler_Office extends TRoomHandler
 
 		if showPlannerShortCutHintTime > 0
 			SetAlpha showPlannerShortCutHintTime/100.0
-			DrawRect(23, 18, 640, 18)
+			DrawRect(3, 0, 660, 15)
 			SetAlpha Min(1.0, 2.0*showPlannerShortCutHintTime/100.0)
-			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 23, 20, 640, 15, new TVec2D.Init(ALIGN_CENTER), TColor.Create(0,0,0),2,1,0.25)
+			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 0, 660, 15, new TVec2D.Init(ALIGN_CENTER), TColor.Create(0,0,0),2,1,0.25)
 			SetAlpha 1.0
 		else
 			SetAlpha 0.75
 		endif
-		DrawOval(-8,-8,55,55)
-		GetBitmapFont("Default", 24, BOLDFONT).drawStyled("?", 22, 17, TColor.Create(50,50,150),2,1,0.5)
+		DrawOval(-25,-20,50,50)
+		GetBitmapFont("Default", 24, BOLDFONT).drawStyled("?", 2, 2, TColor.Create(50,50,150),2,1,0.5)
 		SetAlpha 1.0
 	End Function
 
@@ -1421,7 +1421,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 
 		'hide or show help
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 10,10,35,35)
+		If THelper.IsIn(MouseManager.x, MouseManager.y, 0,0,25,30)
 			showPlannerShortCutHintTime = 90
 			showPlannerShortCutHintFadeAmount = 1
 		else
@@ -1720,10 +1720,10 @@ Type RoomHandler_Office extends TRoomHandler
 		'block"shade" on bg
 		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
 		For Local j:Int = 0 To 11
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 87 - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 414 - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 87 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 414 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 87 - 20, 17 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 414 - 20, 17 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 87 + ImageWidth(gfx_Programmeblock1) - 20, 17 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 414 + ImageWidth(gfx_Programmeblock1) - 20, 17 + j * 30, shadeColor)
 		Next
 
 
