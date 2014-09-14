@@ -29,9 +29,9 @@
 			<type>image</type>
  			<url>res/grafiken/news/raum_news.png</url>
 		</resource>
-		<resource name="screen_bg_newsplanning">
+		<resource name="screen_bg_newsplanner">
 			<type>image</type>
- 			<url>res/grafiken/news/newsplanung.png</url>
+ 			<url>res/grafiken/news/newsplanner.png</url>
 		</resource>
 		<resource name="screen_bg_archive">
 			<type>image</type>
@@ -97,7 +97,7 @@
 		<screen name="screen_office_safe" image="screen_bg_safe" parent="screen_office" />
 
 		<screen name="screen_news" image="screen_bg_news" />
-		<screen name="screen_news_newsplanning" image="screen_bg_newsplanning" parent="screen_news" />
+		<screen name="screen_news_newsplanner" image="screen_bg_newsplanner" parent="screen_news" />
 	</screens>
 	<rooms>
 		<!-- visible rooms in the building -->

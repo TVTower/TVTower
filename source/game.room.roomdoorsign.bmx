@@ -19,14 +19,16 @@ Type TRoomDoorSign Extends TBlockMoveable
 	Global AdditionallyDragged:Int = 0
 	Global eventsRegistered:Int = FALSE
 
-	Global imageBaseName:string = "gfx_elevator_sign_"
-	Global imageDraggedBaseName:string = "gfx_elevator_sign_dragged_"
+	Global imageBaseName:string = "gfx_roomboard_sign_"
+	Global imageDraggedBaseName:string = "gfx_roomboard_sign_dragged_"
 
 
 	Method Init:TRoomDoorSign(roomDoor:TRoomDoorBase)
 		if not roomDoor then return Null
 
-		local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0, roomDoor.GetOwner()))
+		'local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0, roomDoor.GetOwner()))
+		'this base image is already loaded on sign creation
+		local tmpImage:TSprite = GetSpriteFromRegistry("gfx_roomboard_sign_base")
 		door = roomDoor
 		dragable = 1
 
@@ -192,9 +194,9 @@ Type TRoomDoorSign Extends TBlockMoveable
 		Local font:TBitmapFont = GetBitmapFont("Default",10, BOLDFONT)
 		TBitmapFont.setRenderTarget(newImage)
 		if door.GetOwner() > 0
-			font.drawBlock(door.GetOwnerName(), 22, 4, 150,15, null, TColor.CreateGrey(230), 2, 1, 0.5)
+			font.drawBlock(door.GetOwnerName(), 22, 4, 150,15, null, TColor.CreateGrey(50), 2, 1, 0.20)
 		else
-			font.drawBlock(door.GetOwnerName(), 22, 4, 150,15, null, TColor.CreateGrey(50), 2, 1, 0.3)
+			font.drawBlock(door.GetOwnerName(), 22, 4, 150,15, null, TColor.CreateGrey(100), 2, 1, 0.20)
 		endif
 		TBitmapFont.setRenderTarget(null)
 

@@ -78,7 +78,7 @@ Type TWorld
 	Method Init:TWorld(startTime:Double = 5*3600, config:TData = null)
 		if not config then config = new TData
 		'=== INITIALIZE ===
-		area = new TRectangle.Init(20,10,760,373)
+		area = new TRectangle.Init(0,0,800,385)
 		centerPoint = new TVec2D.Init(400, 570 + area.GetY())
 		sunPoint = new TVec2D.Init(400, 1100 + area.GetY())
 		moonPoint =  new TVec2D.Init(400, 100 + area.GetY())

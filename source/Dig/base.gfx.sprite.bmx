@@ -179,6 +179,8 @@ Type TSprite
 	Field frameW:Int
 	Field frameH:Int
 	Field frames:Int
+	'amount of rotation: 0=none, 90=90°clockwise, -90=90°anti-clockwise
+	Field rotated:int = 0
 	Field parent:TSpritePack
 	Field _pix:TPixmap = null
 
@@ -432,8 +434,8 @@ Type TSprite
 	End Method
 
 
-	Method GetColorizedImage:TImage(color:TColor, frame:int=-1)
-		return ColorizeImageCopy(GetImage(frame), color)
+	Method GetColorizedImage:TImage(color:TColor, frame:int=-1, colorizeMode:int=0)
+		return ColorizeImageCopy(GetImage(frame), color, 0,0,0, 1,0, colorizeMode)
 	End Method
 
 
@@ -446,19 +448,37 @@ Type TSprite
 
 
 	Method GetWidth:int(includeOffset:int=TRUE)
-		if includeOffset
-			return area.GetW() - offset.GetLeft() - offset.GetRight()
+		'todo: advanced calculation
+		if rotated = 90 or rotated = -90
+			if includeOffset
+				return area.GetH() - offset.GetTop() - offset.GetBottom()
+			else
+				return area.GetH()
+			endif
 		else
-			return area.GetW()
+			if includeOffset
+				return area.GetW() - offset.GetLeft() - offset.GetRight()
+			else
+				return area.GetW()
+			endif
 		endif
 	End Method
 
 
 	Method GetHeight:int(includeOffset:int=TRUE)
-		if includeOffset
-			return area.GetH() + offset.GetTop() + offset.GetBottom()
+		'todo: advanced calculation
+		if rotated = 90 or rotated = -90
+			if includeOffset
+				return area.GetW() + offset.GetLeft() + offset.GetRight()
+			else
+				return area.GetW()
+			endif
 		else
-			return area.GetH()
+			if includeOffset
+				return area.GetH() + offset.GetTop() + offset.GetBottom()
+			else
+				return area.GetH()
+			endif
 		endif
 	End Method
 
@@ -694,10 +714,29 @@ Type TSprite
 			BOTTOMLEFT        BOTTOMRIGHT
 		endrem
 
+		local alignX:Float = 0.0
+		local alignY:Float = 0.0
+
+		if alignment
+			alignX = alignment.x
+			alignY = alignment.y
+		endif
+
 		'for a correct rotation calculation
-		if scale <> 1.0 then SetScale scale, scale
-	
-		if not alignment then alignment = ALIGN_LEFT_TOP
+		if scale <> 1.0 then SetScale(scale, scale)
+		if rotated
+			SetRotation(-rotated)
+			'GetHeight() returns the width for a 90° rotated element
+			if rotated = 90
+				y :+ GetHeight(False) * scale
+
+				'switch alignments
+				local old:float = alignX
+				alignX = alignY
+				alignY = old
+			endif
+		endif
+
 
 		If frame = -1 Or framew = 0
 			DrawSubImageRect(parent.image,..
@@ -709,8 +748,8 @@ Type TSprite
 							 area.GetY(),..
 							 area.GetW(),..
 							 area.GetH(),..
-							 alignment.GetX() * area.GetW(), ..
-							 alignment.GetY() * area.GetH(), ..
+							 alignX * area.GetW(), ..
+							 alignY * area.GetH(), ..
 							 0)
 		Else
 			Local MaxFramesInCol:Int	= Ceil(area.GetW() / framew)
@@ -726,11 +765,12 @@ Type TSprite
 							 area.GetY() + framerow * frameH,..
 							 framew,..
 							 frameh,..
-							 alignment.GetX() * frameW, ..
-							 alignment.GetY() * frameH, ..
+							 alignX * frameW, ..
+							 alignY * frameH, ..
 							 0)
 		EndIf
 
-		if scale <> 1.0 then SetScale 1.0, 1.0
+		if scale <> 1.0 then SetScale(1.0, 1.0)
+		if rotated <> 0 then SetRotation(0)
 	End Method
 End Type

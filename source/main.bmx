@@ -585,15 +585,14 @@ Type TApp
 		If Game.DebugInfos
 			SetAlpha 0.75
 			SetColor 0,0,0
-			DrawRect(20,10,160,373)
+			DrawRect(0,0,160,385)
 			SetColor 255, 255, 255
 			SetAlpha 1.0
-			GetBitmapFontManager().baseFontBold.draw("Debug information:", 25,20)
-			GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 25,40)
+			GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
+			GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
 
-	'		GUIManager.Draw("InGame") 'draw ingamechat
-	'		GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
-			GetBitmapFontManager().baseFont.draw("Player positions:", 25,65)
+			'GetBitmapFontManager().baseFont.draw(Network.stream.UDPSpeedString(), 662,490)
+			GetBitmapFontManager().baseFont.draw("Player positions:", 5,55)
 			Local roomName:String = ""
 			Local fig:TFigure
 			For Local i:Int = 0 To 3
@@ -606,19 +605,19 @@ Type TApp
 				ElseIf fig.IsAtElevator()
 					roomName = "AtElevator"
 				EndIf
-				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName, 25, 80 + i * 11)
+				GetBitmapFontManager().baseFont.draw("P " + (i + 1) + ": "+roomName, 5, 70 + i * 11)
 			Next
 
 			If ScreenCollection.GetCurrentScreen()
-				GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 25, 130)
+				GetBitmapFontManager().baseFont.draw("onScreen: "+ScreenCollection.GetCurrentScreen().name, 5, 120)
 			Else
-				GetBitmapFontManager().baseFont.draw("onScreen: Main", 25, 130)
+				GetBitmapFontManager().baseFont.draw("onScreen: Main", 5, 120)
 			EndIf
 
 
-			GetBitmapFontManager().baseFont.draw("Elevator routes:", 25,150)
+			GetBitmapFontManager().baseFont.draw("Elevator routes:", 5,140)
 			Local routepos:Int = 0
-			Local startY:Int = 165
+			Local startY:Int = 155
 			If Game.networkgame Then startY :+ 4*11
 
 			Local callType:String = ""
@@ -629,17 +628,17 @@ Type TApp
 										"->" + GetBuilding().elevator.targetFloor +..
 										" doorState:"+GetBuilding().elevator.ElevatorStatus
 
-			GetBitmapFontManager().baseFont.draw(debugString, 25, startY)
+			GetBitmapFontManager().baseFont.draw(debugString, 5, startY)
 
 
 			If GetBuilding().elevator.RouteLogic.GetSortedRouteList() <> Null
 				For Local FloorRoute:TFloorRoute = EachIn GetBuilding().elevator.RouteLogic.GetSortedRouteList()
 					If floorroute.call = 0 Then callType = " 'send' " Else callType= " 'call' "
-					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 25, startY + 15 + routepos * 11)
+					GetBitmapFontManager().baseFont.draw(FloorRoute.floornumber + callType + FloorRoute.who.Name, 5, startY + 15 + routepos * 11)
 					routepos:+1
 				Next
 			Else
-				GetBitmapFontManager().baseFont.draw("recalculate", 25, startY + 15)
+				GetBitmapFontManager().baseFont.draw("recalculate", 5, startY + 15)
 			EndIf
 
 			'room states: debug fuer sushitv
@@ -650,7 +649,7 @@ Type TApp
 					occupants :+ figure.name+" "
 				Next
 			EndIf
-			GetBitmapFontManager().baseFont.draw("AdA. : "+occupants, 25, 350)
+			GetBitmapFontManager().baseFont.draw("AdA. : "+occupants, 5, 340)
 
 			occupants = "-"
 			If GetRoomCollection().GetFirstByDetails("movieagency").HasOccupant()
@@ -659,11 +658,11 @@ Type TApp
 					occupants :+ figure.name+" "
 				Next
 			EndIf
-			GetBitmapFontManager().baseFont.draw("MoA. : "+occupants, 25, 365)
+			GetBitmapFontManager().baseFont.draw("MoA. : "+occupants, 5, 355)
 
 
 			if not GetPlayer().GetFigure().inRoom
-				GetWorld().RenderDebug(180,20)
+				GetWorld().RenderDebug(160,10)
 			endif
 		EndIf
 		'show quotes even without "DEV_OSD = true"
@@ -753,7 +752,7 @@ Type TApp
 		ExitAppDialogue.SetZIndex(100000)
 		'limit to "screen" area
 		If game.gamestate = TGame.STATE_RUNNING
-			ExitAppDialogue.darkenedArea = New TRectangle.Init(20,10,760,373)
+			ExitAppDialogue.darkenedArea = New TRectangle.Init(0,0,800,385)
 		EndIf
 
 		ExitAppDialogue.SetCaptionAndValue( GetLocale("ALREADY_OVER"), GetLocale("DO_YOU_REALLY_WANT_TO_QUIT_THE_GAME") )
@@ -2181,7 +2180,7 @@ Type TScreen_PrepareGameStart Extends TGameScreen
 		Super.Create(name)
 
 		messageWindow = New TGUIGameModalWindow.Create(New TVec2D, New TVec2D.Init(400,250), name)
-		'messageWindow.DarkenedArea = new TRectangle.Init(20,10,760,373)
+		'messageWindow.DarkenedArea = new TRectangle.Init(0,0,800,385)
 		messageWindow.SetCaptionAndValue("title", "")
 		messageWindow.SetDialogueType(0) 'no buttons
 		
@@ -2935,8 +2934,8 @@ Function ColorizePlayerExtras()
 	GetRegistry().Set("gfx_building_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_dragged_base").GetColorizedImage(gray), "gfx_building_sign_dragged_0"))
 	GetRegistry().Set("gfx_interface_channelbuttons_off_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(gray2), "gfx_interface_channelbuttons_off_0"))
 	GetRegistry().Set("gfx_interface_channelbuttons_on_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(gray2), "gfx_interface_channelbuttons_on_0"))
-	GetRegistry().Set("gfx_elevator_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_base").GetColorizedImage(gray3), "gfx_elevator_sign_0"))
-	GetRegistry().Set("gfx_elevator_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_dragged_base").GetColorizedImage(gray3), "gfx_elevator_sign_dragged_0"))
+	GetRegistry().Set("gfx_roomboard_sign_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_0"))
+	GetRegistry().Set("gfx_roomboard_sign_dragged_0", New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(gray3,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_0"))
 
 	'colorizing for every player
 	For Local i:Int = 1 To 4
@@ -2944,8 +2943,8 @@ Function ColorizePlayerExtras()
 		Local color:TColor = GetPlayerCollection().Get(i).color
 
 		GetRegistry().Set("gfx_building_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_building_sign_base").GetColorizedImage(color), "gfx_building_sign_"+i))
-		GetRegistry().Set("gfx_elevator_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_base").GetColorizedImage(color), "gfx_elevator_sign_"+i))
-		GetRegistry().Set("gfx_elevator_sign_dragged_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_elevator_sign_dragged_base").GetColorizedImage(color), "gfx_elevator_sign_dragged_"+i))
+		GetRegistry().Set("gfx_roomboard_sign_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base").GetColorizedImage(color,-1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_"+i))
+		GetRegistry().Set("gfx_roomboard_sign_dragged_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_roomboard_sign_base_dragged").GetColorizedImage(color, -1, COLORIZEMODE_OVERLAY), "gfx_roomboard_sign_dragged_"+i))
 		GetRegistry().Set("gfx_interface_channelbuttons_off_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_off").GetColorizedImage(color, i), "gfx_interface_channelbuttons_off_"+i))
 		GetRegistry().Set("gfx_interface_channelbuttons_on_"+i, New TSprite.InitFromImage(GetSpriteFromRegistry("gfx_interface_channelbuttons_on").GetColorizedImage(color, i), "gfx_interface_channelbuttons_on_"+i))
 	Next

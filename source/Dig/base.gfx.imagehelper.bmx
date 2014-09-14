@@ -207,8 +207,12 @@ End Function
 
 
 
+Const COLORIZEMODE_MULTIPLY:int = 0
+Const COLORIZEMODE_NEGATIVEMULTIPLY:int = 1
+Const COLORIZEMODE_OVERLAY:int = 2
+
 'colorizes an TImage (may be an AnimImage when given cell_width and height)
-Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, flag:Int=0)
+Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=0, cellH:Int=0, cellFirst:Int=0, cellCount:Int=1, flag:Int=0, colorizationMode:int = 0)
 	local pixmap:TPixmap
 	if TPixmap(imageOrPixmap) then pixmap = TPixmap(imageOrPixmap)
 	if TImage(imageOrPixmap) then pixmap = LockImage(TImage(imageOrPixmap))
@@ -216,9 +220,9 @@ Function ColorizeImageCopy:TImage(imageOrPixmap:object, color:TColor, cellW:Int=
 
 	'load
 	If cellW > 0 And cellCount > 0
-		Return LoadAnimImage( ColorizePixmapCopy(pixmap, color), cellW, cellH, cellFirst, cellCount, flag)
+		Return LoadAnimImage( ColorizePixmapCopy(pixmap, color, colorizationMode), cellW, cellH, cellFirst, cellCount, flag)
 	else
-		Return LoadImage( ColorizePixmapCopy(pixmap, color) )
+		Return LoadImage( ColorizePixmapCopy(pixmap, color, colorizationMode) )
 	endif
 End Function
 
@@ -226,7 +230,7 @@ End Function
 
 
 'creates a pixmap copy and colorizes it
-Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor)
+Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor, colorizationMode:int = 0)
 	'create a copy to work on
 	local colorizedPixmap:TPixmap = sourcePixmap.Copy()
 
@@ -235,18 +239,96 @@ Function ColorizePixmapCopy:TPixmap(sourcePixmap:TPixmap, color:TColor)
 
 	local pixel:int
 	local colorTone:int = 0
-	For Local x:Int = 0 To colorizedPixmap.width - 1
-		For Local y:Int = 0 To colorizedPixmap.height - 1
-			pixel = ReadPixel(colorizedPixmap, x,y)
-			'skip invisible
-			if ARGB_Alpha(pixel) = 0 then continue
+	
 
-			colorTone = isMonochrome(pixel)
-			If colorTone > 0 and colorTone < 255
-				WritePixel(colorizedPixmap, x,y, ARGB_Color( ARGB_Alpha(pixel), colorTone * color.r / 255, colortone * color.g / 255, colortone * color.b / 255))
-			endif
-		Next
-	Next
+	'for performance reasons we have the for-loops AFTER the colorizationMode
+	'selection, so selecting the mode does not get run for each pixel
+	Select colorizationMode
+		case COLORIZEMODE_MULTIPLY
+			For Local x:Int = 0 To colorizedPixmap.width - 1
+				For Local y:Int = 0 To colorizedPixmap.height - 1
+					pixel = ReadPixel(colorizedPixmap, x,y)
+					'skip invisible
+					if ARGB_Alpha(pixel) = 0 then continue
+
+					colorTone = isMonochrome(pixel, True)
+					If colorTone > 0 'and colorTone < 255
+						WritePixel(colorizedPixmap, x,y, ARGB_Color(..
+							ARGB_Alpha(pixel),..
+							colorTone * color.r / 255, ..
+							colortone * color.g / 255, ..
+							colortone * color.b / 255 ..
+						))
+					elseif colorTone = 0 and ARGB_Alpha(pixel) = 255
+						'somehow writing 255,0,0,0 keeps things transparent
+						WritePixel(colorizedPixmap, x,y, ARGB_Color( 255, 0, 0, 1))
+					endif
+				Next
+			Next
+
+		'"Negative Multiply" (Photoshop calls this "SCREEN") sets black
+		'to the given color, and white to white.
+		'rgb 0,0,0 -> color, rgb 128,128,18 -> 50% color + 50% white ...
+		'Formula: resultColor = 255 - (((255 - topColor)*(255 - bottomColor))/255)
+    	case COLORIZEMODE_NEGATIVEMULTIPLY
+			For Local x:Int = 0 To colorizedPixmap.width - 1
+				For Local y:Int = 0 To colorizedPixmap.height - 1
+					pixel = ReadPixel(colorizedPixmap, x,y)
+					'skip invisible
+					if ARGB_Alpha(pixel) = 0 then continue
+
+					colorTone = isMonochrome(pixel, True)
+					If colorTone > 0 'and colorTone < 255
+						WritePixel(colorizedPixmap, x,y, ARGB_Color(..
+							ARGB_Alpha(pixel),..
+							255 - (255 - color.r) * (255 - colorTone) / 255, ..
+							255 - (255 - color.g) * (255 - colorTone) / 255, ..
+							255 - (255 - color.b) * (255 - colorTone) / 255 ..
+						))
+					elseif colorTone = 0 and ARGB_Alpha(pixel) = 255
+						'somehow writing 255,0,0,0 keeps things transparent
+						WritePixel(colorizedPixmap, x,y, ARGB_Color( 255, color.r, color.g, color.b))
+					endif
+				Next
+			Next			
+
+		'overlay darkens pixels below 128 and brightens pixels above 128
+		'so with 0 you get black, with 255 you get white, and 128 is
+		'the color you want to colorize to
+		'Formula: resultColor =
+		'				if (bottomColor < 128) then (2 * topColor * bottomColor / 255) 
+		'				else (255 - 2 * (255 - topColor) * (255 - bottomColor) / 255)
+		case COLORIZEMODE_OVERLAY
+			For Local x:Int = 0 To colorizedPixmap.width - 1
+				For Local y:Int = 0 To colorizedPixmap.height - 1
+					pixel = ReadPixel(colorizedPixmap, x,y)
+					'skip invisible
+					if ARGB_Alpha(pixel) = 0 then continue
+
+					colorTone = isMonochrome(pixel, True)
+					If colorTone > 0' and colorTone < 255
+						if colorTone < 128
+							WritePixel(colorizedPixmap, x,y, ARGB_Color(..
+								ARGB_Alpha(pixel),..
+								(2* colorTone * color.r) / 255, ..
+								(2* colortone * color.g) / 255, ..
+								(2* colortone * color.b) / 255 ..
+							))
+						else
+							WritePixel(colorizedPixmap, x,y, ARGB_Color(..
+								ARGB_Alpha(pixel),..
+								255 - 2 * (255 - color.r) * (255 - colorTone) / 255, ..
+								255 - 2 * (255 - color.g) * (255 - colorTone) / 255, ..
+								255 - 2 * (255 - color.b) * (255 - colorTone) / 255 ..
+							))
+						endif
+					elseif colorTone = 0 and ARGB_Alpha(pixel) = 255
+						'somehow writing 255,0,0,0 keeps things transparent
+						WritePixel(colorizedPixmap, x,y, ARGB_Color( 255, 0, 0, 1))
+					endif
+				Next
+			Next
+	End Select
 
 	return colorizedPixmap
 End Function

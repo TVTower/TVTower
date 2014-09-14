@@ -39,11 +39,11 @@ Type TBuilding Extends TStaticEntity
 	'position of the inner left/right side of the building
 	'measured from the beginning of the sprite/leftWallX
 	Const innerX:Int = 40
-	Const innerX2:Int = 468
+	Const innerX2:Int = 508
 	'default door width
 	Const doorWidth:int	= 19
 	'height of each floor
-	Const floorWidth:int = 429
+	Const floorWidth:int = 469
 	Const floorHeight:int = 73
 	Const floorCount:Int = 14 '0-13
 	'start of the uppermost floor - eg. add roof height
@@ -52,9 +52,9 @@ Type TBuilding Extends TStaticEntity
 	'x coord is relative to "leftWallX" 
 	Const doorSlot0:int	= -10
 	Const doorSlot1:int	= 19
-	Const doorSlot2:int	= doorSlot1 + 87
-	Const doorSlot3:int	= doorSlot1 + 263
-	Const doorSlot4:int	= doorslot1 + 351
+	Const doorSlot2:int	= doorSlot1 + 97
+	Const doorSlot3:int	= doorSlot1 + 283
+	Const doorSlot4:int	= doorslot1 + 376
 
 
 	Global softDrinkMachineActive:int = False
@@ -88,8 +88,8 @@ Type TBuilding Extends TStaticEntity
 
 
 	Method Create:TBuilding()
-		area.position.SetX(20)
-		area.dimension.SetXY(760, floorCount * floorHeight + 50) 'occupy full area
+		area.position.SetX(0)
+		area.dimension.SetXY(800, floorCount * floorHeight + 50) 'occupy full area
 
 		'create an entity spawning the complete inner area of the building
 		'this entity can be used as parent for other entities - which
@@ -105,7 +105,7 @@ Type TBuilding Extends TStaticEntity
 		'call to set graphics, paths for objects and other stuff
 		InitGraphics()
 
-		area.position.SetY(0 - gfx_building.area.GetH() + 5 * floorHeight + 20)	' 20 = interfacetop, 373 = raumhoehe
+		area.position.SetY(0 - gfx_building.area.GetH() + 5 * floorHeight)
 		Elevator = TElevator.GetInstance().Init()
 		Elevator.SetParent(self.buildingInner)
 		Elevator.area.position.SetX(floorWidth/2 - Elevator.GetDoorWidth()/2)
@@ -156,7 +156,8 @@ Type TBuilding Extends TStaticEntity
 			'=== DRAW ELEVATOR BORDER ===
 			Local elevatorBorder:TSprite= GetSpriteFromRegistry("gfx_building_Fahrstuhl_Rahmen")
 			For Local i:Int = 0 To 13
-				DrawImageOnImage(elevatorBorder.getImage(), Pix, 230, 67 - elevatorBorder.area.GetH() + floorHeight*i)
+				DrawImageOnImage(elevatorBorder.getImage(), Pix, 250, 67 - elevatorBorder.area.GetH() + floorHeight*i)
+				DrawImageOnImage(elevatorBorder.getImage(), Pix, 250, 67 - elevatorBorder.area.GetH() + floorHeight*i)
 			Next
 
 			'=== DRAW DOORS ===
@@ -173,8 +174,8 @@ Type TBuilding Extends TStaticEntity
 
 			'=== DRAW DECORATION ===
 			'floor 0
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX + 125, GetFloorY2(0), -1, ALIGN_LEFT_BOTTOM)
-			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX2 - 125, GetFloorY2(0), -1, ALIGN_RIGHT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX + 145, GetFloorY2(0), -1, ALIGN_LEFT_BOTTOM)
+			GetSpriteFromRegistry("gfx_building_Wandlampe").DrawOnImage(Pix, innerX2 - 145, GetFloorY2(0), -1, ALIGN_RIGHT_BOTTOM)
 			'floor 1
 			GetSpriteFromRegistry("gfx_building_picture2").DrawOnImage(Pix, innerX2 - 70, GetFloorY2(1), -1, ALIGN_CENTER_BOTTOM)
 			GetSpriteFromRegistry("gfx_building_standlightSmall").DrawOnImage(Pix, innerX2 - 70, GetFloorY2(1), -1, ALIGN_CENTER_BOTTOM)
@@ -245,7 +246,7 @@ Type TBuilding Extends TStaticEntity
 		gfx_buildingEntrance = GetSpriteFromRegistry("gfx_building_Eingang")
 		gfx_buildingEntranceWall = GetSpriteFromRegistry("gfx_building_EingangWand")
 		gfx_buildingFence = GetSpriteFromRegistry("gfx_building_Zaun")
-		gfx_buildingRoof = GetSpriteFromRegistry("gfx_building_Dach")
+		gfx_buildingRoof = GetSpriteFromRegistry("gfx_building_roof")
 	End Method
 
 
@@ -387,7 +388,7 @@ Type TBuilding Extends TStaticEntity
 		If Not GetPlayer().GetFigure().inRoom
 			If MOUSEMANAGER.isClicked(1) And Not GUIManager._ignoreMouse
 				If Not GetPlayer().GetFigure().isChangingRoom
-					If THelper.IsIn(MouseManager.x, MouseManager.y, 20, 10, 760, 373)
+					If THelper.IsIn(MouseManager.x, MouseManager.y, 0, 0, 800, 385)
 						'convert mouse position to building-coordinates
 						local x:int = MouseManager.x - buildingInner.GetScreenX()
 						local y:int = MouseManager.y - buildingInner.GetScreenY()
@@ -421,16 +422,11 @@ Type TBuilding Extends TStaticEntity
 		'area
 		If GetFloor(GetPlayer().figure.area.GetY()) >= 8
 			SetColor 255, 255, 255
-			SetBlend ALPHABLEND
 			gfx_buildingRoof.Draw(GetScreenX() + leftWallX, GetScreenY(), -1, ALIGN_LEFT_BOTTOM)
 		EndIf
 
-		SetBlend MASKBLEND
-
 		elevator.DrawFloorDoors()
 		gfx_building.draw(GetScreenX() + leftWallX, area.GetY())
-
-		SetBlend MASKBLEND
 
 		'draw owner signs next to doors,
 		'draw open doors overlaying the doors drawn directly on the bg sprite
@@ -447,14 +443,11 @@ Type TBuilding Extends TStaticEntity
 			softDrinkMachineActive = True
 		Endif
 
-		SetBlend ALPHABLEND
-
-
 
 		For Local Figure:TFigureBase = EachIn GetFigureBaseCollection().list
 			'draw figure later if outside of building
 '			If figure.GetScreenX() < GetScreenX() + 127 Then Continue
-			If figure.GetScreenX() < buildingInner.GetScreenX() Then Continue
+			If figure.GetScreenX() + figure.GetScreenWidth() < buildingInner.GetScreenX() Then Continue
 			If Not Figure.alreadydrawn Then Figure.Draw()
 			Figure.alreadydrawn = True
 		Next
@@ -470,7 +463,7 @@ Type TBuilding Extends TStaticEntity
 		'floor 6
 		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + 150, buildingInner.GetScreenY() + GetFloorY2(6), -1, ALIGN_LEFT_BOTTOM)
 		'floor 8
-		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(buildingInner.GetScreenX() + floorWidth - 85, buildingInner.GetScreenY() + GetFloorY2(8), -1, ALIGN_LEFT_BOTTOM)
+		GetSpriteFromRegistry("gfx_building_Pflanze6").Draw(buildingInner.GetScreenX() + floorWidth - 95, buildingInner.GetScreenY() + GetFloorY2(8), -1, ALIGN_LEFT_BOTTOM)
 		'floor 9
 		GetSpriteFromRegistry("gfx_building_Pflanze1").Draw(buildingInner.GetScreenX() + floorWidth - 130, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
 		GetSpriteFromRegistry("gfx_building_Pflanze2").Draw(buildingInner.GetScreenX() + floorWidth - 110, buildingInner.GetScreenY() + GetFloorY2(9), -1, ALIGN_LEFT_BOTTOM)
@@ -580,17 +573,17 @@ Type TBuilding Extends TStaticEntity
 		skyInfluence = 0.7
 		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
 		gfx_bgBuildings[0].Draw(GetScreenX(), 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[0].area.GetH()), - 1)
-		gfx_bgBuildings[1].Draw(GetScreenX() + 634, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
+		gfx_bgBuildings[1].Draw(GetScreenX() + 674, 105 + 0.25 * (area.GetY() + 5 + BuildingHeight - gfx_bgBuildings[1].area.GetH()), - 1)
 
 		skyInfluence = 0.5
 		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
 		gfx_bgBuildings[2].Draw(GetScreenX(), 120 + 0.35 * (area.GetY() + BuildingHeight - gfx_bgBuildings[2].area.GetH()), - 1)
-		gfx_bgBuildings[3].Draw(GetScreenX() + 636, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
+		gfx_bgBuildings[3].Draw(GetScreenX() + 676, 120 + 0.35 * (area.GetY() + 60 + BuildingHeight - gfx_bgBuildings[3].area.GetH()), - 1)
 
 		skyInfluence = 0.3
 		TColor.CreateGrey(GetWorld().lighting.GetSkyBrightness() * 255).Mix(TColor.clWhite, 1.0 - skyInfluence).SetRGB()
 		gfx_bgBuildings[4].Draw(GetScreenX(), 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[4].area.GetH()), - 1)
-		gfx_bgBuildings[5].Draw(GetScreenX() + 634, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
+		gfx_bgBuildings[5].Draw(GetScreenX() + 674, 45 + 0.80 * (area.GetY() + BuildingHeight - gfx_bgBuildings[5].area.GetH()), - 1)
 
 		SetColor 255, 255, 255
 		SetAlpha 1.0

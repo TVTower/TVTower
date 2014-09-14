@@ -10,7 +10,16 @@
 				<script	do="ColorizeCopy"	dest="gfx_building_sign4"	r="100"	g="100"	b="0" />
 			</scripts>
 		</image>
-		<image name="gfx_building"				url="res/grafiken/hochhaus/hochhaus.png" flags="FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE" />
+
+		<spritepack name="gfx_building_pack" >
+ 			<url>res/grafiken/hochhaus/hochhaus.png</url>
+ 			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
+			<children>
+				<child name="gfx_building" 		x="0" 	y="0" w="547" h="1024" />
+				<child name="gfx_building_roof" x="548" y="1" w="50" h="547" rotated="90" />
+			</children>
+		</spritepack>
+		
 		<image name="gfx_building_tooltips"		url="res/grafiken/hochhaus/tooltips.png" cw="20" ch="20" f="7" />
 		<image name="gfx_building_softdrinkmachine"		url="res/grafiken/hochhaus/item_softdrinkmachine.png" cw="32" ch="48" f="15" />
 		<image name="gfx_building_textballons"	url="res/grafiken/hochhaus/textballons.png" cw="23" ch="12" f="6" />
@@ -59,10 +68,9 @@
  			<url>res/grafiken/hochhaus/hochhauspack.png</url>
  			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
  			<children>
-				<child name="gfx_building_Dach" 			x="0" 	y="296" w="507"	h="51"	id="0" />
 				<child name="gfx_building_Eingang" 			x="0" 	y="397" w="130"	h="77"	offsetTop="-944" id="1" />
 				<child name="gfx_building_EingangWand"		x="131" y="397" w="35"	h="77"  offsetLeft="-130" offsetTop="-944" />
-				<child name="gfx_building_Zaun" 			x="166" y="397" w="126"	h="51"	offsetLeft="-634" offsetTop="-970" id="2" />
+				<child name="gfx_building_Zaun" 			x="166" y="397" w="126"	h="51"	offsetLeft="-674" offsetTop="-970" id="2" />
 				<child name="gfx_building_Fahrstuhl_Rahmen" 			x="292"	y="397" w="52"	h="58"	id="3" />
 				<child name="gfx_building_Fahrstuhl_Geschlossen" 	x="344" y="397" w="52"	h="58"	id="4" />
 				<child name="gfx_building_Fahrstuhl_Innen" 			x="396" y="397" w="40"	h="55"	id="5" />

@@ -158,9 +158,7 @@
 				<script do="ColorizeCopy"	dest="stationmap_antenna4"	r="100"	g="100"	b="0" />
 			</scripts>
 		</resource>
-		<resource name="gfx_news_sheet_base">
-			<type>image</type>
- 			<url>res/grafiken/news/newsplanung_news.png</url>
+		<sprite name="gfx_newssheet_base" url="res/grafiken/news/newsplanner_newssheet.png">
 			<scripts>
 				<script	do="ColorizeCopy"	dest="gfx_news_sheet0"	r="205"	g="170"	b="50" />
 				<script	do="ColorizeCopy"	dest="gfx_news_sheet1"	r="50"	g="140"	b="205" />
@@ -168,14 +166,19 @@
 				<script do="ColorizeCopy"	dest="gfx_news_sheet3"	r="170"	g="30"	b="220" />
 				<script do="ColorizeCopy"	dest="gfx_news_sheet4"	r="60"	g="160"	b="60" />
 			</scripts>
-		</resource>
+		</sprite>
 		<image name="gfx_room_betty_picture1"			url="res/grafiken/betty/bild1.png" />
 		<image name="gfx_errorbox"						url="res/grafiken/errorbox.png" />
 		<image name="gfx_tooltip_header"				url="res/grafiken/gui/tooltip.png" />
 		<image name="gfx_tex_smoke"						url="res/grafiken/chef/tex_smoke.png" />
 		<image name="gfx_elevator_sign_bg"				url="res/grafiken/hinweistafel/gfx_tafel_halterung.png" />
-		<image name="gfx_elevator_sign_base"			url="res/grafiken/hinweistafel/gfx_tafel_weiss.png" />
-		<image name="gfx_elevator_sign_dragged_base"	url="res/grafiken/hinweistafel/gfx_tafel_weiss_dragged.png" />
+
+		<spritepack name="gfx_roomboard_sign_basePack" url="res/grafiken/hinweistafel/roomboard_sign_base.png">
+			<children>
+				<child name="gfx_roomboard_sign_base"			x="0"	y="0"	w="180"	h="24" />
+				<child name="gfx_roomboard_sign_base_dragged"	x="0"	y="25"	w="180"	h="24" />
+			</children>
+		</spritepack>
 
 		<resource name="gfx_contracts_pack">
 			<type>SpritePack</type>

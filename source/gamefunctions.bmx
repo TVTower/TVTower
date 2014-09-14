@@ -1121,7 +1121,7 @@ Type TError
 	Method Draw()
 		SetAlpha 0.5
 		SetColor 0,0,0
-		DrawRect(20,10,760, 373)
+		DrawRect(0,0,800, 385)
 		SetAlpha 1.0
 		Game.cursorstate = 0
 		SetColor 255,255,255

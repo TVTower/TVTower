@@ -518,7 +518,7 @@ Type TElevator extends TEntity
 		
 		'draw inner (BG) => elevatorBG without image -> black
 		SetColor 0,0,0
-		DrawRect(GetScreenX(), Max(parentY, 10) , 44, 373)
+		DrawRect(GetScreenX(), Max(parentY, 0) , 44, 385)
 		SetColor 255, 255, 255
 		spriteInner.Draw(GetScreenX(), GetScreenY() + 3.0)
 

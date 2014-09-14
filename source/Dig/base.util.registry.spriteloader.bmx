@@ -62,6 +62,7 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 			childFieldNames :+ ["offsetLeft", "offsetTop", "offsetRight", "offsetBottom"]
 			childFieldNames :+ ["frames|f"]
 			childFieldNames :+ ["ninepatch"]
+			childFieldNames :+ ["rotated"]
 			TXmlHelper.LoadValuesToData(childNode, childData, childFieldNames)
 
 			'add child data
@@ -148,6 +149,9 @@ Type TRegistrySpriteLoader extends TRegistryImageLoader
 				null, ..
 				childData.GetInt("id", 0) ..
 			)
+			'rotation
+			sprite.rotated = childData.GetInt("rotated", 0)
+
 			'search for ninepatch
 			if childData.GetBool("ninepatch")
 				sprite.EnableNinePatch()

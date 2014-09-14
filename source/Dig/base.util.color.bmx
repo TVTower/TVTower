@@ -260,10 +260,14 @@ EndFunction
 
 
 'returns true if the given pixel is monochrome (grey)
-Function isMonochrome:int(argb:Int)
-	If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And ARGB_Alpha(argb) <> 0 then Return ARGB_Red(argb)
-	'old with "white filter < 250"
-	'filter should be done outside of that function
-	'If (red = green) And (red = blue) And(alpha <> 0) And(red < 250) Then Return green
-	Return 0
+'beTolerant defines if 240,240,241 is still monochrome, this
+'is useful if you use gradients, as sometimes gradients have this
+'differing values
+Function isMonochrome:int(argb:Int, beTolerant:int=False)
+	if beTolerant
+		If Abs(ARGB_Red(argb) - ARGB_Green(argb))<=1 And Abs(ARGB_Red(argb) - ARGB_Blue(argb))<=1 And ARGB_Alpha(argb) <> 0 then Return ARGB_Red(argb)
+	else
+		If ARGB_Red(argb) = ARGB_Green(argb) And ARGB_Red(argb) = ARGB_Blue(argb) And ARGB_Alpha(argb) <> 0 then Return ARGB_Red(argb)
+	endif
+	Return -1
 End Function

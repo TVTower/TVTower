@@ -547,7 +547,7 @@ Type TAdContract extends TNamedGameObject {_exposeToLua="selected"}
 		if playerID <= 0 and IsSigned() then playerID = owner
 		'if contract has no owner the avg audience maximum is returned
 		local useAudience:int = 0
-		if playerID = -1
+		if playerID <= 0
 			useAudience = GetStationMapCollection().GetAverageReach()
 		else
 			useAudience = GetStationMapCollection().GetMap(playerID).GetReach()

@@ -4,7 +4,7 @@
 
 	Method Draw()
 		SetColor 0,0,0
-		DrawRect(20,10,760,373)
+		DrawRect(0,0,800,385)
 		SetColor 255, 255, 255
 
 		'GetBitmapFontManager().baseFont.Draw("Bevölkerung", 25, startY)

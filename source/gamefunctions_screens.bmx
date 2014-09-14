@@ -87,7 +87,7 @@ Type TGameScreen extends TScreen
 			DrawRect(0,0,800,600)
 		else
 			SetBlend SOLIDBLEND
-			GetBackground().Draw(20,10)
+			GetBackground().Draw(0, 0)
 			SetBlend ALPHABLEND
 		endif
 	End Method
@@ -110,7 +110,7 @@ Type TInGameScreen extends TScreen
 	Method Create:TInGameScreen(name:string)
 		Super.Create(name)
 		'limit content area
-		_contentArea = new TRectangle.Init(20, 10, 760, 373)
+		_contentArea = new TRectangle.Init(0, 0, 800, 385)
 		return self
 	End Method
 
@@ -397,7 +397,7 @@ Type TInGameScreen_Room extends TInGameScreen
 
 		'TProfiler.Enter("Draw-Room")
 		'drawing a subscreen (not the room itself)
-		if GetBackground() and not currentRoom.GetBackground() then GetBackground().Draw(20,10)
+		if GetBackground() and not currentRoom.GetBackground() then GetBackground().Draw(0, 0)
 		currentRoom.Draw()
 		'TProfiler.Leave("Draw-Room")
 	End Method

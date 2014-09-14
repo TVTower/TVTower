@@ -279,29 +279,25 @@ Type TInGameInterface
 		'=== RENDER TOASTMESSAGES ===
 		'below everything else of the interface: our toastmessages
 		GetToastMessageCollection().Render(0,0)
-	
+rem
 		SetBlend ALPHABLEND
 		GetSpriteFromRegistry("gfx_interface_top").Draw(0,0)
 		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TRectangle.Init(0, 20, 27, 363))
 		SetBlend SOLIDBLEND
 		GetSpriteFromRegistry("gfx_interface_leftright").DrawClipped(new TRectangle.Init(780, 20, 20, 363), new TVec2D.Init(27,0))
+endrem
 
 		If BottomImgDirty
-
-			SetBlend MASKBLEND
 			'draw bottom, aligned "bottom"
-			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, new TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-
-			If ShowChannel <> 0 Then GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
-			SetBlend ALPHABLEND
-
+			GetSpriteFromRegistry("gfx_interface_bottom").Draw(0, GetGraphicsManager().GetHeight(), 0, ALIGN_LEFT_BOTTOM)
+		
 		    'channel choosen and something aired?
 		    local programmePlan:TPlayerProgrammePlan = GetPlayerProgrammePlanCollection().Get(ShowChannel)
 
 			'CurrentProgramme can contain "outage"-image, so draw
 			'even without audience
-			If CurrentProgramme Then CurrentProgramme.Draw(45, 400)
-			If CurrentProgrammeOverlay Then CurrentProgrammeOverlay.Draw(45, 400)
+			If CurrentProgramme Then CurrentProgramme.Draw(45, 405)
+			If CurrentProgrammeOverlay Then CurrentProgrammeOverlay.Draw(45, 405)
 
 			If programmePlan and programmePlan.GetAudience() > 0
 
@@ -316,44 +312,37 @@ Type TInGameInterface
 				if familyMembersUsed = 2 then figureSlots = [580, 640]
 				if familyMembersUsed = 1 then figureSlots = [610]
 
-				'display an empty/dark room
-				if familyMembersUsed = 0
-					local col:TColor = new TColor.Get()
-					SetColor 50, 50, 50
-					SetBlend MASKBLEND
-					GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, 419)
-					col.SetRGBA()
-					SetBlend ALPHABLEND
-				else
+				'if nothing is displayed, a empty/dark room is shown
+				'by default (on interface bg)
+				'-> just care if family is watching
+				if familyMembersUsed > 0
+					GetSpriteFromRegistry("gfx_interface_audience_bg").Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
 					local currentSlot:int = 0
 					For local member:string = eachin members
-						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], 419)
+						GetSpriteFromRegistry("gfx_interface_audience_"+member).Draw(figureslots[currentslot], GetGraphicsManager().GetHeight()-181)
 						currentslot:+1 'occupy a slot
 					Next
+					'draw the small electronic parts - "the inner tv"
+					GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, GetGraphicsManager().GetHeight()-31, 0, ALIGN_LEFT_BOTTOM)
 				endif
 			EndIf 'showchannel <>0
-
-			GetSpriteFromRegistry("gfx_interface_antenna").Draw(111,329)
 
 			'draw noise of tv device
 			If ShowChannel <> 0
 				SetAlpha NoiseAlpha
-				If noiseSprite Then noiseSprite.DrawClipped(new TRectangle.Init(45, 400, 220,170), new TVec2D.Init(noiseDisplace.GetX(), noiseDisplace.GetY()) )
+				If noiseSprite Then noiseSprite.DrawClipped(new TRectangle.Init(45, 405, 220,170), new TVec2D.Init(noiseDisplace.GetX(), noiseDisplace.GetY()) )
 				SetAlpha 1.0
 			EndIf
 			'draw overlay to hide corners of non-round images
-			GetSpriteFromRegistry("gfx_interface_tv_overlay").Draw(45,400)
+			GetSpriteFromRegistry("gfx_interface_tv_overlay").Draw(45,405)
 
 		    For Local i:Int = 0 To 4
 				If i = ShowChannel
-					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 554)
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_on_"+i).Draw(75 + i * 33, 559)
 				Else
-					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 554)
+					GetSpriteFromRegistry("gfx_interface_channelbuttons_off_"+i).Draw(75 + i * 33, 559)
 				EndIf
 		    Next
-
-			'draw the small electronic parts - "the inner tv"
-	     	GetSpriteFromRegistry("gfx_interface_audience_overlay").Draw(520, 419)
 
 			GetBitmapFont("Default", 16, BOLDFONT).drawBlock(GetPlayerCollection().Get().getMoneyFormatted(), 366, 421, 112, 15, ALIGN_CENTER_CENTER, TColor.Create(200,230,200), 2, 1, 0.5)
 

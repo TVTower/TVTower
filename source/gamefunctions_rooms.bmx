@@ -765,7 +765,7 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
-		if room.GetBackground() then room.GetBackground().draw(20,10)
+		if room.GetBackground() then room.GetBackground().draw(0, 0)
 
 		'allowed for owner only
 		If room AND room.owner = GetPlayerCollection().playerID
@@ -1720,10 +1720,10 @@ Type RoomHandler_Office extends TRoomHandler
 		'block"shade" on bg
 		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
 		For Local j:Int = 0 To 11
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 67 - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 394 - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 67 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 394 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 87 - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 414 - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 87 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 414 + ImageWidth(gfx_Programmeblock1) - 20, 17 - 10 + j * 30, shadeColor)
 		Next
 
 
@@ -1734,11 +1734,11 @@ Type RoomHandler_Office extends TRoomHandler
 
 		For Local i:Int = 0 To 11
 			'left side
-			GetBitmapFontManager().baseFont.drawStyled( (i + 12) + ":00", 338, 18 + i * 30, fontColor, 2,1,0.25)
+			GetBitmapFontManager().baseFont.drawStyled( (i + 12) + ":00", 358, 18 + i * 30, fontColor, 2,1,0.25)
 			'right side
 			local text:string = i + ":00"
 			If i < 10 then text = "0" + text
-			GetBitmapFontManager().baseFont.drawStyled(text, 10, 18 + i * 30, fontColor,2,1,0.25)
+			GetBitmapFontManager().baseFont.drawStyled(text, 30, 18 + i * 30, fontColor,2,1,0.25)
 		Next
 		DrawnOnProgrammePlannerBG = True
 
@@ -3271,15 +3271,17 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				if not licence then continue
 				if guiLists[j].ContainsLicence(licence) then continue
 
-				guiLists[j].addItem(new TGUIProgrammeLicence.CreateWithLicence(licence),"-1" )
-rem
+
 				local lic:TGUIProgrammeLicence = new TGUIProgrammeLicence.CreateWithLicence(licence)
-				GUIManager.Remove(lic)
-				guiLists[j].addItem(lic,"-1" )
-endrem
+				'if adding to list was not possible, remove the licence again
+				if not guiLists[j].addItem(lic,"-1" )
+					GUIManager.Remove(lic)
+				endif
+				
 				'print "ADD lists"+j+" had missing licence: "+licence.getTitle()
 			Next
 		Next
+
 		'create missing gui elements for the current suitcase
 		For local licence:TProgrammeLicence = eachin GetPlayerProgrammeCollectionCollection().Get(GetPlayerCollection().playerID).suitcaseProgrammeLicences
 			if guiListSuitcase.ContainsLicence(licence) then continue
@@ -3597,7 +3599,7 @@ endrem
 
 		GUIManager.Draw("movieagency")
 		SetAlpha 0.5;SetColor 0,0,0
-		DrawRect(20,10,760,373)
+		DrawRect(0,0,800,385)
 		SetAlpha 1.0;SetColor 255,255,255
 		DrawGFXRect(TSpritePack(GetRegistry().Get("gfx_gui_rect")), 120, 60, 555, 290)
 		SetAlpha 0.5
@@ -3620,6 +3622,8 @@ Type RoomHandler_News extends TRoomHandler
 	Global NewsGenreButtons:TGUIButton[5]
 	Global NewsGenreTooltip:TTooltip			'the tooltip if hovering over the genre buttons
 	Global currentRoom:TRoom					'holding the currently updated room (so genre buttons can access it)
+	'the image displaying "send news"
+	Global newsPlannerTextImage:TImage = null
 
 	'lists for visually placing news blocks
 	Global haveToRefreshGuiElements:int = TRUE
@@ -3633,11 +3637,11 @@ Type RoomHandler_News extends TRoomHandler
 		'ATTENTION: We could do this in order of The NewsGenre-Values
 		'           But better add it to the buttons.data-property
 		'           for better checking
-		NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(20, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
-		NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(69, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
-		NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(20, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
-		NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(69, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
-		NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(118, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
+		NewsGenreButtons[0]	= new TGUIButton.Create( new TVec2D.Init(15, 194), null, GetLocale("NEWS_TECHNICS_MEDIA"), "newsroom")
+		NewsGenreButtons[1]	= new TGUIButton.Create( new TVec2D.Init(64, 194), null, GetLocale("NEWS_POLITICS_ECONOMY"), "newsroom")
+		NewsGenreButtons[2]	= new TGUIButton.Create( new TVec2D.Init(15, 247), null, GetLocale("NEWS_SHOWBIZ"), "newsroom")
+		NewsGenreButtons[3]	= new TGUIButton.Create( new TVec2D.Init(64, 247), null, GetLocale("NEWS_SPORT"), "newsroom")
+		NewsGenreButtons[4]	= new TGUIButton.Create( new TVec2D.Init(113, 247), null, GetLocale("NEWS_CURRENTAFFAIRS"), "newsroom")
 		for local i:int = 0 to 4
 			NewsGenreButtons[i].SetAutoSizeMode( TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE )
 			'adjust width according sprite dimensions
@@ -3662,12 +3666,13 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		'create the lists in the news planner
-		guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(34,20), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 356), "Newsplanner")
+		'we add 2 pixel to the height to make "auto scrollbar" work better
+		guiNewsListAvailable = new TGUINewsList.Create(new TVec2D.Init(15,16), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 4*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 		guiNewsListAvailable.SetAcceptDrop("TGUINews")
-		guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 3,guiNewsListAvailable.rect.GetH())
+		guiNewsListAvailable.Resize(guiNewsListAvailable.rect.GetW() + guiNewsListAvailable.guiScrollerV.rect.GetW() + 8,guiNewsListAvailable.rect.GetH())
 		guiNewsListAvailable.guiEntriesPanel.minSize.SetXY(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(),356)
 
-		guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(444,105), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
+		guiNewsListUsed = new TGUINewsSlotList.Create(new TVec2D.Init(420,106), new TVec2D.Init(GetSpriteFromRegistry("gfx_news_sheet0").area.GetW(), 3*GetSpriteFromRegistry("gfx_news_sheet0").area.GetH()), "Newsplanner")
 		guiNewsListUsed.SetItemLimit(3)
 		guiNewsListUsed.SetAcceptDrop("TGUINews")
 		guiNewsListUsed.SetSlotMinDimension(0,GetSpriteFromRegistry("gfx_news_sheet0").area.GetH())
@@ -3689,7 +3694,7 @@ Type RoomHandler_News extends TRoomHandler
 		EventManager.registerListenerFunction("guiGameObject.OnMouseOver", onMouseOverNews, "TGUINews" )
 
 		'for all news rooms - register if someone goes into the planner
-		local screen:TScreen = ScreenCollection.GetScreen("screen_news_newsplanning")
+		local screen:TScreen = ScreenCollection.GetScreen("screen_news_newsplanner")
 		'figure enters screen - reset the guilists, limit listening to the 4 rooms
 		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterNewsPlannerScreen, screen)
 		'also we want to interrupt leaving a room with dragged items
@@ -3702,7 +3707,7 @@ Type RoomHandler_News extends TRoomHandler
 		Next
 
 		super._RegisterScreenHandler( onUpdateNews, onDrawNews, ScreenCollection.GetScreen("screen_news") )
-		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_news_newsplanning") )
+		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_news_newsplanner") )
 
 
 		'handle savegame loading (remove old gui elements)
@@ -3778,7 +3783,7 @@ Type RoomHandler_News extends TRoomHandler
 			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_news_newsplanning")
+				ScreenCollection.GoToSubScreen("screen_news_newsplanner")
 			endif
 		endif
 Rem
@@ -3793,7 +3798,7 @@ Rem
 			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_news_newsplanning")
+				ScreenCollection.GoToSubScreen("screen_news_newsplanner")
 			endif
 		endif
 EndRem
@@ -3902,8 +3907,25 @@ EndRem
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+
+		'create sign text image
+		if not newsPlannerTextImage
+			newsPlannerTextImage = TFunctions.CreateEmptyImage(310, 60)
+			'render to image
+			TBitmapFont.SetRenderTarget(newsPlannerTextImage)
+
+			GetBitmapFont("default", 18).DrawBlock("An das Team~n|b|Folgende News senden:|/b|", 0, 0, 300, 50, ALIGN_CENTER_CENTER, TColor.CreateGrey(100))
+
+			'set back to screen Rendering
+			TBitmapFont.SetRenderTarget(null)
+		endif
+		SetRotation(-2.1)
+		DrawImage(newsPlannerTextImage, 450, 30)
+		SetRotation(0)
+
 		SetColor 255,255,255  'normal
 		GUIManager.Draw("Newsplanner")
+
 	End Function
 
 
@@ -4115,7 +4137,7 @@ Type RoomHandler_Chief extends TRoomHandler
 		smokeConfig.AddNumber("yRange", 2)
 
 		local emitterConfig:TData = new TData
-		emitterConfig.Add("area", new TRectangle.Init(69, 335, 0, 0))
+		emitterConfig.Add("area", new TRectangle.Init(49, 335, 0, 0))
 		emitterConfig.AddNumber("particleLimit", 100)
 		emitterConfig.AddNumber("spawnEveryMin", 0.30)
 		emitterConfig.AddNumber("spawnEveryMax", 0.60)
