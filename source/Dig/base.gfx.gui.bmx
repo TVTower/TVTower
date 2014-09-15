@@ -15,6 +15,7 @@ Import "base.util.registry.bmx"
 Import "base.util.event.bmx"
 Import "base.util.time.bmx"
 
+Import "base.gfx.renderconfig.bmx"
 
 
 '===== GUI CONSTANTS =====
@@ -81,7 +82,7 @@ Type TGUIManager
 	'is there an object listening to keystrokes?
 	Field _keystrokeReceivingObject:TGUIObject = Null
 
-	Global viewportX:Int=0,viewportY:Int=0,viewportW:Int=0,viewportH:Int=0
+	'Global viewportX:Int=0,viewportY:Int=0,viewportW:Int=0,viewportH:Int=0
 	Global _instance:TGUIManager
 
 
@@ -229,13 +230,15 @@ Type TGUIManager
 
 
 	Method RestrictViewport(x:Int,y:Int,w:Int,h:Int)
-		GetViewport(viewportX,viewportY,viewportW,viewportH)
+		TRenderConfig.Push()
+'		GetViewport(viewportX,viewportY,viewportW,viewportH)
 		SetViewport(x,y,w,h)
 	End Method
 
 
 	Method ResetViewport()
-		SetViewport(viewportX,viewportY,viewportW,viewportH)
+		TRenderConfig.Pop()
+'		SetViewport(viewportX,viewportY,viewportW,viewportH)
 	End Method
 
 

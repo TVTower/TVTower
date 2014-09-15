@@ -344,10 +344,13 @@ DIALOGUE_BETTY_WELCOME = Na Du?\nDu könntest ruhig mal öfters bei mir vorbeisc
 SHOW_PLAYERS = zeige Spieler
 PURCHASE = Einkauf
 STATION = Sendemast
-YOUR_STATIONS = Deine Sendemasten
-CONFIRM_PURCHASE = Kauf bestätigen
-CONFIRM_SALE = Verkauf bestätigen
+PURCHASE_STATION = Sendemast erwerben
+ACQUIRED_PROPERTY = Im Besitz
+NEW_STATION = Neuer Sendemast
+SELECT_LOCATION = Standort auswählen
+SELECT_STATION = Sendemast auswählen
 BUY_STATION = Sendemast kaufen
+TOO_EXPENSIVE = Zu teuer
 SELL_STATION = Sendemast verkaufen
 
 BUY_AND_SELL = Kaufen und Verkaufen

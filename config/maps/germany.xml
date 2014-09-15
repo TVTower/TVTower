@@ -32,22 +32,22 @@
 			<densitymap type="pixmap" url="res/grafiken/senderkarte/germany_densitymap.png" />
 			<surface type="sprite" url="res/grafiken/senderkarte/germany_surface.png" />
 			<states>
-				<state name="bremen"			x="207" y="91"	sprite="map_bremen" />
-				<state name="berlin"			x="452" y="118"	sprite="map_berlin" />
-				<state name="hamburg"			x="270" y="69"	sprite="map_hamburg" />
-				<state name="bawue"				x="129" y="258"	sprite="map_bawue" />
-				<state name="bayern"			x="223" y="221"	sprite="map_bayern" />
-				<state name="saarland"			x="69"  y="263"	sprite="map_saarland" />
-				<state name="rheinlandpfalz"	x="59"  y="203" sprite="map_rheinlandpfalz" />
-				<state name="hessen"			x="155" y="169"	sprite="map_hessen" />
-				<state name="thueringen"		x="276" y="169"	sprite="map_thueringen" />
-				<state name="sachsen"			x="388" y="167"	sprite="map_sachsen" />
-				<state name="sachsenanhalt"		x="314" y="103" sprite="map_sachsenanhalt" />
-				<state name="niedersachsen"		x="104" y="61"	sprite="map_niedersachsen" />
-				<state name="schleswigholstein"	x="213" y="12"	sprite="map_schleswigholstein" />
-				<state name="brandenburg"		x="359" y="78"	sprite="map_brandenburg" />
-				<state name="nrw"				x="55"  y="127"	sprite="map_nrw" />
-				<state name="meckpom"			x="318" y="21"	sprite="map_meckpom" />
+				<state name="bremen"			x="187" y="81"	sprite="map_bremen" />
+				<state name="berlin"			x="432" y="108"	sprite="map_berlin" />
+				<state name="hamburg"			x="250" y="59"	sprite="map_hamburg" />
+				<state name="bawue"				x="109" y="248"	sprite="map_bawue" />
+				<state name="bayern"			x="203" y="211"	sprite="map_bayern" />
+				<state name="saarland"			x="49"  y="253"	sprite="map_saarland" />
+				<state name="rheinlandpfalz"	x="39"  y="193" sprite="map_rheinlandpfalz" />
+				<state name="hessen"			x="135" y="159"	sprite="map_hessen" />
+				<state name="thueringen"		x="256" y="159"	sprite="map_thueringen" />
+				<state name="sachsen"			x="368" y="157"	sprite="map_sachsen" />
+				<state name="sachsenanhalt"		x="294" y="93" sprite="map_sachsenanhalt" />
+				<state name="niedersachsen"		x="84" y="51"	sprite="map_niedersachsen" />
+				<state name="schleswigholstein"	x="193" y="2"	sprite="map_schleswigholstein" />
+				<state name="brandenburg"		x="339" y="68"	sprite="map_brandenburg" />
+				<state name="nrw"				x="35"  y="117"	sprite="map_nrw" />
+				<state name="meckpom"			x="338" y="11"	sprite="map_meckpom" />
 			</states>
 		</stationmapdata>
 	</resources>

@@ -149,9 +149,8 @@ Type TGUISelectListItem Extends TGUIListItem
 	Method DrawContent()
 		DrawValue()
 	End Method
+
 	
-rem
-'deactivated, creates flickering
 	Method Draw:Int()
 		local upperParent:TGUIObject = GetUppermostParent()
 		upperParent.RestrictViewPort()
@@ -160,7 +159,6 @@ rem
 
 		upperParent.ResetViewPort()
 	End Method
-endrem
 End Type
 
 

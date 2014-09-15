@@ -448,36 +448,44 @@ Type TSprite
 
 
 	Method GetWidth:int(includeOffset:int=TRUE)
+		'substract 2 pixles (left and right) ?
+		local ninePatchPixels:int = 0
+		if ninePatchEnabled then ninePatchPixels = 2
+
 		'todo: advanced calculation
 		if rotated = 90 or rotated = -90
 			if includeOffset
-				return area.GetH() - offset.GetTop() - offset.GetBottom()
+				return area.GetH() - offset.GetTop() - offset.GetBottom() - ninePatchPixels
 			else
-				return area.GetH()
+				return area.GetH() - ninePatchPixels
 			endif
 		else
 			if includeOffset
-				return area.GetW() - offset.GetLeft() - offset.GetRight()
+				return area.GetW() - offset.GetLeft() - offset.GetRight() - ninePatchPixels
 			else
-				return area.GetW()
+				return area.GetW() - ninePatchPixels
 			endif
 		endif
 	End Method
 
 
 	Method GetHeight:int(includeOffset:int=TRUE)
+		'substract 2 pixles (left and right) ?
+		local ninePatchPixels:int = 0
+		if ninePatchEnabled then ninePatchPixels = 2
+
 		'todo: advanced calculation
 		if rotated = 90 or rotated = -90
 			if includeOffset
-				return area.GetW() + offset.GetLeft() + offset.GetRight()
+				return area.GetW() + offset.GetLeft() + offset.GetRight() - ninePatchPixels
 			else
-				return area.GetW()
+				return area.GetW() - ninePatchPixels
 			endif
 		else
 			if includeOffset
-				return area.GetH() + offset.GetTop() + offset.GetBottom()
+				return area.GetH() + offset.GetTop() + offset.GetBottom() - ninePatchPixels
 			else
-				return area.GetH()
+				return area.GetH() - ninePatchPixels
 			endif
 		endif
 	End Method

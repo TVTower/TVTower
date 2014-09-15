@@ -554,6 +554,7 @@ Type RoomHandler_Office extends TRoomHandler
 	global stationMapShowStations:TGUICheckBox[4]
 	global stationMapBuyButton:TGUIButton
 	global stationMapSellButton:TGUIButton
+	global stationMapBackgroundSpriteName:String = ""
 
 	'=== PROGRAMME PLANNER ===
 	Global showPlannerShortCutHintTime:int = 0
@@ -2172,13 +2173,25 @@ Type RoomHandler_Office extends TRoomHandler
 	'Office: Stationmap
 	'===================================
 	Function InitStationMap()
+		'remove background from stationmap screen
+		'(we draw the map and then the screen bg)
+		local stationMapScreen:TInGameScreen = TInGameScreen(ScreenCollection.GetScreen("screen_office_stationmap"))
+		if stationMapScreen
+			stationMapBackgroundSpriteName = stationMapScreen.backgroundSpriteName
+			stationMapScreen.backgroundSpriteName = ""
+		endif
+	
 		'StationMap-GUIcomponents
-		stationMapBuyButton = new TGUIButton.Create(new TVec2D.Init(610, 110), new TVec2D.Init(155,-1), "", "STATIONMAP")
+		'position gets recalculated during drawing (so it can move with the panel)
+		'also add 2 pixels to width because of "inset effect"
+		stationMapBuyButton = new TGUIButton.Create(new TVec2D.Init(610, 110), new TVec2D.Init(170, 28), "", "STATIONMAP")
+		stationMapBuyButton.spriteName = "gfx_gui_button.datasheet"
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapBuy, stationMapBuyButton )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapBuy, stationMapBuyButton )
 
-		stationMapSellButton = new TGUIButton.Create(new TVec2D.Init(610, 345), new TVec2D.Init(155,-1), "", "STATIONMAP")
+		stationMapSellButton = new TGUIButton.Create(new TVec2D.Init(610, 345), new TVec2D.Init(170, 28), "", "STATIONMAP")
 		stationMapSellButton.disable()
+		stationMapSellButton.spriteName = "gfx_gui_button.datasheet"
 		EventManager.registerListenerFunction( "guiobject.onClick",	OnClick_StationMapSell, stationMapSellButton )
 		EventManager.registerListenerFunction( "guiobject.onUpdate", OnUpdate_StationMapSell, stationMapSellButton )
 
@@ -2186,7 +2199,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EventManager.registerListenerFunction( "stationmap.removeStation",	OnChangeStationMapStation )
 		EventManager.registerListenerFunction( "stationmap.addStation",	OnChangeStationMapStation )
 
-		stationList = new TGUISelectList.Create(new TVec2D.Init(595,233), new TVec2D.Init(185,100), "STATIONMAP")
+		stationList = new TGUISelectList.Create(new TVec2D.Init(610,233), new TVec2D.Init(174, 120), "STATIONMAP")
 		EventManager.registerListenerFunction( "GUISelectList.onSelectEntry", OnSelectEntry_StationMapStationList, stationList )
 
 		'player enters station map screen - set checkboxes according to station map config
@@ -2194,12 +2207,178 @@ Type RoomHandler_Office extends TRoomHandler
 
 
 		For Local i:Int = 0 To 3
-			stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(535, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
+			stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(520, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
 			stationMapShowStations[i].SetChecked(True, False)
 			stationMapShowStations[i].ShowCaption(False)
+			stationMapShowStations[i].data.AddNumber("playerNumber", i+1)
 			'register checkbox changes
 			EventManager.registerListenerFunction("guiCheckBox.onSetChecked", OnSetChecked_StationMapFilters, stationMapShowStations[i])
 		Next
+	End Function
+
+
+
+	Function _DrawStationMapBuyPanel:Int(x:Int,y:Int, room:TRoom)
+		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
+		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
+		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+
+		'=== DRAW BACKGROUND ===
+		local sprite:TSprite
+		local currX:Int = x
+		local currY:int = y
+		local currTextWidth:int
+		local buttonY:int = 0
+
+		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_title"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+	
+		'selected a map
+		If stationMapMode = 1 ' and stationMapSelectedStation
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_buystationdata"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+
+			buttonY = currY
+
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty"); sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH())
+			currY :+ stationMapBuyButton.rect.GetH()
+		else
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_splitter"); sprite.DrawArea(currX, currY, -1, 5)
+			currY :+ 5
+			buttonY = currY
+
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty"); sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH())
+			currY :+ stationMapBuyButton.rect.GetH()
+		endif
+
+		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_bottom"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+		'move buy button accordingly
+		stationMapBuyButton.rect.position.SetXY(x + 16, buttonY)
+
+		'=== TEXTS ===
+
+		'adjust currX/currY so position is within "border"
+		currY = y + 8
+		currX = x + 7 
+
+		local textColor:TColor = TColor.CreateGrey(25)
+		'default is size "12" so resize to 13
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetLocale("PURCHASE_STATION"), currX + 8, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 17
+
+		If stationMapMode = 1 and stationMapSelectedStation
+			'align to content portion (icon higher than text area)
+			currY :+ 5 'top content padding
+			currY :+ 4
+
+			fontNormal.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), currX + 34, currY, 48, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			fontNormal.drawBlock(TFunctions.DottedValue(stationMapSelectedStation.getReachIncrease()), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			currY :+ 27	'next icon row
+
+			'fetch financial state of room owner (not player - so take care
+			'if the player is allowed to do this)
+			local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(room.owner, -1)
+			if not finance or finance.canAfford(stationMapSelectedStation.GetPrice())
+				'TFunctions.DottedValue(GetPrice())
+				fontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			else
+				'TFunctions.DottedValue(GetPrice())
+				fontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0), 0,1,1.0,True, True)
+			endif
+			currY :+ 27	'next icon row
+		EndIf
+	End Function
+
+
+	Function _DrawStationMapSellPanel:Int(x:Int,y:Int, room:TRoom)
+		Local fontNormal:TBitmapFont = GetBitmapFontManager().baseFont
+		Local fontBold:TBitmapFont = GetBitmapFontManager().baseFontBold
+		Local fontSemiBold:TBitmapFont = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
+
+		'=== DRAW BACKGROUND ===
+		local sprite:TSprite
+		local currX:Int = x
+		local currY:int = y
+		local currTextWidth:int
+		local buttonY:int = 0
+		local listY:int = 0
+
+		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_title"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+		'area of the list
+		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_content_top"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+		listY = currY
+
+		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_content_middle"); sprite.DrawArea(currX, currY, -1, stationList.rect.GetH())
+		currY :+ stationList.rect.GetH()
+
+		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_content_bottom"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+		local stationDataY:int = currY
+		
+		'show data when a station is selected, else show a hint
+		'do this to avoid "jumping" panels as it is visually "Bottom aligned"
+		If stationMapMode = 2 ' and stationMapSelectedStation
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_sellstationdata"); sprite.Draw(currX, currY)
+			currY :+ sprite.GetHeight()
+
+			buttonY = currY
+
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty"); sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH())
+			currY :+ stationMapBuyButton.rect.GetH()
+		else
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_splitter"); sprite.DrawArea(currX, currY, -1, 5)
+			currY :+ 5
+
+			'height of the stationdata minus the splitter
+			local keepItConstantHeight:int = GetSpriteFromRegistry("gfx_narrowdatasheet_sellstationdata").GetHeight() - sprite.GetHeight()
+			buttonY = currY + keepItConstantHeight
+
+			sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_empty")
+			sprite.DrawArea(currX, currY, -1, stationMapBuyButton.rect.GetH() + keepItConstantHeight)
+			currY :+ stationMapBuyButton.rect.GetH() + keepItConstantHeight
+		endif
+
+		sprite = GetSpriteFromRegistry("gfx_narrowdatasheet_bottom"); sprite.Draw(currX, currY)
+		currY :+ sprite.GetHeight()
+
+
+
+		'=== MOVE GUI ELEMENTS ===
+		stationMapSellButton.rect.position.SetXY(x + 16, buttonY)
+		stationList.rect.position.SetXY(x + 13, listY)
+
+
+		'=== TEXTS ===
+
+		'adjust currX/currY so position is within "border"
+		currY = y + 8
+		currX = x + 7 
+
+		local textColor:TColor = TColor.CreateGrey(25)
+		'default is size "12" so resize to 13
+		GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetLocale("ACQUIRED_PROPERTY"), currX + 8, currY, 280, 17, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
+		currY :+ 17
+
+		If stationMapMode = 2 and stationMapSelectedStation
+			'directly move to the station data area
+			currY = stationDataY
+
+			'align to content portion (icon higher than text area)
+			currY :+ 5 'top content padding
+			currY :+ 4
+
+			fontNormal.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), currX + 34, currY, 48, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			'attention: SELL price
+			fontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), currX + 115, currY, 60, 17, ALIGN_RIGHT_CENTER, textColor, 0,1,1.0,True, True)
+			currY :+ 27	'next icon row
+		EndIf
 	End Function
 
 
@@ -2208,16 +2387,25 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		'draw map
+		GetSpriteFromRegistry("map_Surface").Draw(0,0)
+		'overlay with alpha channel screen
+		GetSpriteFromRegistry(stationMapBackgroundSpriteName).Draw(0,0)
+
+		_DrawStationMapBuyPanel(590, 5, room)
+		_DrawStationMapSellPanel(590, 150, room)
+
+
 		GUIManager.Draw("STATIONMAP")
 
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
-			DrawRect(564, 32 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 15, 18)
+			DrawRect(544, 32 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 15, 18)
 			GetPlayerCollection().Get(i+1).color.SetRGB()
-			DrawRect(565, 33 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 13, 16)
+			DrawRect(545, 33 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 13, 16)
 		Next
 		SetColor 255, 255, 255
-		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 480, 15, 100, 20, new TVec2D.Init(ALIGN_RIGHT))
+		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 460, 15, 100, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
 
 		'draw stations and tooltips
 		GetPlayerCollection().Get(room.owner).GetStationMap().Draw()
@@ -2227,34 +2415,8 @@ Type RoomHandler_Office extends TRoomHandler
 		'also draw the station used for buying/searching
 		If stationMapSelectedStation then stationMapSelectedStation.Draw(true)
 
-		local font:TBitmapFont = GetBitmapFontManager().baseFont
-		GetBitmapFontManager().baseFontBold.drawStyled(GetLocale("PURCHASE"), 595, 18, TColor.clBlack, 1, 1, 0.5)
-		GetBitmapFontManager().baseFontBold.drawStyled(GetLocale("YOUR_STATIONS"), 595, 178, TColor.clBlack, 1, 1, 0.5)
-
 		'draw a kind of tooltip over a mouseoverStation
 		if stationMapMouseoverStation then stationMapMouseoverStation.DrawInfoTooltip()
-
-		If stationMapMode = 1 and stationMapSelectedStation
-			GetBitmapFontManager().baseFontBold.draw( getLocale("MAP_COUNTRY_"+stationMapSelectedStation.getFederalState()), 595, 37, TColor.Create(80,80,0))
-
-			font.draw(GetLocale("REACH")+": ", 595, 55, TColor.clBlack)
-			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReach(), 2), 660, 55, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-
-			font.draw(GetLocale("INCREASE")+": ", 595, 72, TColor.clBlack)
-			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getReachIncrease(), 2), 660, 72, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-
-			font.draw(GetLocale("PRICE")+": ", 595, 89, TColor.clBlack)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getPrice(), 2, 0), 660, 89, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-			SetColor(255,255,255)
-		EndIf
-
-		If stationMapSelectedStation and stationMapSelectedStation.paid
-			font.draw(GetLocale("REACH")+": ", 595, 200, TColor.clBlack)
-			font.drawBlock(TFunctions.convertValue(stationMapSelectedStation.reach, 2, 0), 660, 200, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-
-			font.draw(GetLocale("VALUE")+": ", 595, 216, TColor.clBlack)
-			GetBitmapFontManager().baseFontBold.drawBlock(TFunctions.convertValue(stationMapSelectedStation.getSellPrice(), 2, 0), 660, 215, 102, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
-		EndIf
 	End Function
 
 
@@ -2351,10 +2513,23 @@ Type RoomHandler_Office extends TRoomHandler
 		'ignore clicks if not in the own office
 		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
-		if stationMapMode=1
-			button.value = GetLocale("CONFIRM_PURCHASE")
+		if stationMapMode = 1
+			if not stationMapSelectedStation
+				button.SetValue(GetLocale("SELECT_LOCATION")+" ...")
+				button.disable()
+			else
+				local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(GetPlayerCollection().Get().playerID, -1)
+				if finance and finance.canAfford(stationMapSelectedStation.GetPrice())
+					button.SetValue(GetLocale("BUY_STATION"))
+					button.enable()
+				else
+					button.SetValue(GetLocale("TOO_EXPENSIVE"))
+					button.disable()
+				endif
+			endif
 		else
-			button.value = GetLocale("BUY_STATION")
+			button.SetValue(GetLocale("NEW_STATION"))
+			button.enable()
 		endif
 	End Function
 
@@ -2404,20 +2579,22 @@ Type RoomHandler_Office extends TRoomHandler
 		'ignore clicks if not in the own office
 		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
-		'noting selected yet
-		if not stationMapSelectedStation then return FALSE
-
 		'different owner or not paid
-		if stationMapSelectedStation.owner <> GetPlayerCollection().playerID or not stationMapSelectedStation.paid
-			button.disable()
-		else
-			button.enable()
+		if stationMapSelectedStation
+			if stationMapSelectedStation.owner <> GetPlayerCollection().playerID or not stationMapSelectedStation.paid
+				button.disable()
+			else
+				button.enable()
+			endif
 		endif
 
+
 		if stationMapMode=2
-			button.value = GetLocale("CONFIRM_SALE")
+			button.SetValue(GetLocale("SELL_STATION"))
+			button.enable()
 		else
-			button.value = GetLocale("SELL_STATION")
+			button.SetValue(GetLocale("SELECT_STATION"))
+			button.disable()
 		endif
 	End Function
 
@@ -2508,7 +2685,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'ignore clicks if not in the own office
 		if GetPlayerCollection().Get().GetFigure().inRoom.owner <> GetPlayerCollection().Get().playerID then return FALSE
 
-		local player:int = int(button.value)
+		local player:int = button.data.GetInt("playerNumber", -1)
 		if not GetPlayerCollection().IsPlayer(player) then return FALSE
 
 		'only set if not done already

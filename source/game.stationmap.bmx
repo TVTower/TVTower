@@ -34,7 +34,7 @@ Type TStationMapCollection
 
 	'difference between screen0,0 and pixmap
 	'->needed movement to have population-pixmap over country
-	Global populationMapOffset:TVec2D = new TVec2D.Init(20, 10)
+	Global populationMapOffset:TVec2D = new TVec2D.Init(0, 0)
 	Global _initDone:int = FALSE
 	Global _instance:TStationMapCollection
 
@@ -131,7 +131,6 @@ Type TStationMapCollection
 		Return True
 	End Method
 
-
 	Method CreatePopulationMap()
 		local stopWatch:TStopWatch = new TStopWatch.Init()
 		Local srcPix:TPixmap = GetPixmapFromRegistry("map_PopulationDensity")
@@ -146,7 +145,7 @@ Type TStationMapCollection
 		pix.ClearPixels(0)
 		pix.paste(srcPix, populationMapOffset.x, populationMapOffset.y)
 
-		populationMap = new Int[pix.width + 20, pix.height + 20]
+		populationMap = new Int[pix.width, pix.height]
 		populationMapSize.SetXY(pix.width, pix.height)
 
 		'read all inhabitants of the map
@@ -405,7 +404,9 @@ endrem
 
 
 
-	Method _FillPoints(map:TMap Var, x:Int, y:Int, color:Int)
+	'params of advanced types (no ints, strings, bytes) are automatically
+	'passed "by reference" (change it here, and it is changed globally)
+	Method _FillPoints(map:TMap, x:Int, y:Int, color:Int)
 		Local posX:Int = 0, posY:Int = 0
 		x = Max(0, x)
 		y = Max(0, y)

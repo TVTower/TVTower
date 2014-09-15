@@ -352,10 +352,13 @@ DIALOGUE_BETTY_WELCOME = Oh Hi?\nYou absolutely could come along more often.
 SHOW_PLAYERS = Show players
 PURCHASE = Purchase
 STATION = Station
-YOUR_STATIONS = Your stations
-CONFIRM_PURCHASE = Confirm purchase
-CONFIRM_SALE = Confirm sale
+PURCHASE_STATION = Purchase station
+ACQUIRED_PROPERTY = Acquired property
+NEW_STATION = New station
+SELECT_LOCATION = Select location
+SELECT_STATION = Select station
 BUY_STATION = Buy station
+TOO_EXPENSIVE = Too expensive
 SELL_STATION = Sell station
 
 BUY_AND_SELL = Buy and sell

@@ -4,6 +4,7 @@
 		<spritepack name="gfx_datasheet_general_pack">
 			<url>res/grafiken/datasheets/datasheet_general.png</url>
 			<children>
+				<!-- common datasheet (movies, ad contract, ...) -->
 				<child name="gfx_datasheet_title"					x="0"	y="0"	w="310"	h="26" />
 				<child name="gfx_datasheet_series"					x="0"	y="26"	w="310"	h="16" />
 				<child name="gfx_datasheet_country"					x="0"	y="42"	w="310"	h="16" />
@@ -22,7 +23,29 @@
 				<child name="gfx_datasheet_subAdContractAttributes2"	x="0"	y="406"	w="310"	h="27" />
 				<child name="gfx_datasheet_bottom"						x="0"	y="433"	w="310"	h="15" />
 				<child name="gfx_datasheet_bar"							x="8"	y="460"	w="200"	h="10" />
-				<child name="gfx_datasheet_xrated"						x="320"	y="2"	w="26"	h="26" offsetLeft="14" offsetTop="-2" />
+				<child name="gfx_datasheet_xrated"						x="315"	y="2"	w="26"	h="26" offsetLeft="14" offsetTop="-2" />
+
+				<!-- narrow data- and actionsheet (stationmap) -->
+				<child name="gfx_narrowdatasheet_title"				x="310"	y="35"	w="202"	h="25" />
+				<child name="gfx_narrowdatasheet_content_top"		x="310"	y="60"	w="202"	h="5" />
+				<child name="gfx_narrowdatasheet_content_middle"	x="310"	y="65"	w="202"	h="40" />
+				<child name="gfx_narrowdatasheet_content_bottom"	x="310"	y="105"	w="202"	h="5" />
+				<child name="gfx_narrowdatasheet_buystationdata"	x="310"	y="126"	w="202"	h="61" />
+				<child name="gfx_narrowdatasheet_sellstationdata"	x="310"	y="187"	w="202"	h="34" />
+				<child name="gfx_narrowdatasheet_splitter"			x="310"	y="126"	w="202"	h="5" />
+				<child name="gfx_narrowdatasheet_empty"				x="310"	y="232"	w="202"	h="20" />
+				<child name="gfx_narrowdatasheet_bottom"			x="310"	y="252"	w="202"	h="20" />
+
+				<!-- button sprites -->
+				<child name="gfx_gui_button.datasheet"						x="315"	y="275"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.hover"				x="345"	y="275"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.active"				x="375"	y="275"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.positive"				x="315"	y="305"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.positive.hover"		x="345"	y="305"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.positive.activ"		x="375"	y="305"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.negative"				x="315"	y="335"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.negative.hover"		x="345"	y="335"	w="30"	h="30" ninepatch="true" />
+				<child name="gfx_gui_button.datasheet.negative.active"		x="375"	y="335"	w="30"	h="30" ninepatch="true" />
 			</children>
 		</spritepack>
 

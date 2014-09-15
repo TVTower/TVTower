@@ -348,7 +348,6 @@ Type TGame {_exposeToLua="selected"}
 			GetPlayerCollection().Get(i).GetStationMap().AddStation( TStation.Create( new TVec2D.Init(310, 260),-1, GetStationMapCollection().stationRadius, i ), False )
 		Next
 
-
 		'get names from settings
 		For Local i:Int = 1 To 4
 			GetPlayerCollection().Get(i).Name = ScreenGameSettings.guiPlayerNames[i-1].Value

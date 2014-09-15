@@ -70,7 +70,7 @@ Type TGUIButton Extends TGUIobject
 			if autoSizeModeWidth = AUTO_SIZE_MODE_TEXT
 				w = GetFont().getWidth(self.value) + 8
 			elseif autoSizeModeWidth = AUTO_SIZE_MODE_SPRITE
-				w = GetSprite().area.GetW()
+				w = GetSprite().GetWidth(false)
 			endif
 		endif
 		if h <= 0
@@ -83,7 +83,7 @@ Type TGUIButton Extends TGUIobject
 
 				'if height is less then sprite height (the "minimum")
 				'use this
-				h = Max(h, GetSprite().area.GetH())
+				h = Max(h, GetSprite().GetHeight(false))
 			endif
 		endif
 

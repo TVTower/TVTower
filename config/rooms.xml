@@ -15,7 +15,7 @@
 		</resource>
 		<resource name="screen_bg_stationmap">
 			<type>image</type>
- 			<url>res/grafiken/senderkarte/germany_surface.png</url>
+ 			<url>res/grafiken/senderkarte/stationmap.png</url>
 		</resource>
 		<resource name="screen_bg_bureau">
 			<type>image</type>

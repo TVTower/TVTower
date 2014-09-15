@@ -180,11 +180,19 @@ Type TGUIScroller Extends TGUIobject
 		SetColor 125,0,0
 		Local width:Int = guiButtonMinus.GetScreenWidth()
 		Local height:Int = guiButtonMinus.GetScreenHeight()
+rem
 		Select _orientation
 			Case GUI_OBJECT_ORIENTATION_VERTICAL
 				DrawRect(GetScreenX() + width/4, GetScreenY() + height/2, width/2, GetScreenHeight() - height)
 			Default
 				DrawRect(GetScreenX() + width/2, GetScreenY() + height/4, GetScreenWidth() - width, height/2)
+		End Select
+endrem
+		Select _orientation
+			Case GUI_OBJECT_ORIENTATION_VERTICAL
+				DrawRect(GetScreenX() + width/4, GetScreenY() + 0.75*height, width/2, GetScreenHeight() - 1.25*height)
+			Default
+				DrawRect(GetScreenX() + 0.75*width, GetScreenY() + height/4, GetScreenWidth() - 1.25*width, height/2)
 		End Select
 
 		oldCol.SetRGBA()
