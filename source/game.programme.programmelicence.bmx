@@ -83,6 +83,12 @@ Type TProgrammeLicenceCollection
 	End Method
 
 
+	'add a licence as series
+	Method RemoveSeries:Int(licence:TProgrammeLicence)
+		series.Remove(licence)
+	End Method
+
+
 	'checks if the series list contains the given licence
 	Method ContainsSeries:Int(licence:TProgrammeLicence)
 		return series.contains(licence)
@@ -561,13 +567,13 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetTitle:string() {_exposeToLua}
-		if self.title = "" then return GetData().GetTitle()
+		if self.title = "" and GetData() then return GetData().GetTitle()
 		return self.title
 	End Method
 
 
 	Method GetDescription:string() {_exposeToLua}
-		if self.description = "" then return GetData().GetDescription()
+		if self.description = "" and GetData() then return GetData().GetDescription()
 		return self.description
 	End Method
 

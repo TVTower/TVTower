@@ -678,6 +678,12 @@ endif
 			'3) add the episode to the programmeLicence
 			local episodeLicence:TProgrammeLicence = new TProgrammeLicence
 			episodeLicence.AddData(episodeData)
+
+'TODO: FUEHRT Noch zu absturz, da die Serienlizenz noch nicht hinterlegt
+'wird - und die wuerde hinzugefuegt werden, obwohl sie keine "data" hat
+'-> deswegen loeschen wir alle serien am ende dieser funktion bis
+'endgueltig umgestellt wird
+			'this also adds the episode to the "global licence list" 
 			programmeLicence.AddSubLicence(episodeLicence)
 		Next
 
@@ -768,6 +774,10 @@ endrem
 
 		'add to collection
 		if doAdd
+			'falls es eine serie war, entferne den automatisch erzeugten
+			'eintrag - bis wir final auf v3 umstellen
+			GetProgrammeLicenceCollection().RemoveSeries(programmeLicence)
+
 			'add the data to the datacollection
 			'GetProgrammeDataCollection().Add(programmeData)
 

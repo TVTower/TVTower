@@ -424,7 +424,19 @@ Type TApp
 				If KEYMANAGER.IsHit(KEY_Q) Then Game.DebugQuoteInfos = 1 - Game.DebugQuoteInfos
 				'If KEYMANAGER.IsHit(KEY_P) Then GetPlayerCollection().Get().GetProgrammePlan().printOverview()
 
-				If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
+'				If KEYMANAGER.IsHit(KEY_P) Then GetProgrammeLicenceCollection().PrintMovies()
+
+If KEYMANAGER.IsHit(KEY_P)
+	for local i:int = 1 to 3
+		for local j:int = 0 until GetPlayer(i).GetProgrammeCollection().GetProgrammeLicenceCount()
+			local licence:TProgrammeLicence = GetPlayer(i).GetProgrammeCollection().GetProgrammeLicenceAtIndex(j)
+			if not licence then throw "licence is invalid"
+			print i+"["+j+"] "+licence.GetTitle()
+		Next
+	Next
+	print "---"
+endif
+
 
 				'Save game only when in a game
 				If game.gamestate = TGame.STATE_RUNNING
