@@ -387,12 +387,14 @@ endrem
 
 
 	Method GetTitle:string()
-		return self.title.Get()
+		if title then return title.Get()
+		return ""
 	End Method
 
 
 	Method GetDescription:string()
-		return self.description.Get()
+		if description then return description.Get()
+		return ""
 	End Method
 
 

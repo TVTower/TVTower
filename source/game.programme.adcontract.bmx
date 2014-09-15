@@ -270,12 +270,13 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 
 
 	Method GetTitle:string() {_exposeToLua}
-		return title.Get()
+		if title then return title.Get()
 	End Method
 
 
 	Method GetDescription:string() {_exposeToLua}
-		return description.Get()
+		if description then return description.Get()
+		return ""
 	End Method
 
 
