@@ -157,8 +157,10 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field directors:TProgrammePersonBase[]
 	Field country:String = "UNK"
 	Field year:Int = 1900
-	'special targeted audience?
-	Field targetGroup:int = 0
+	'special targeted audiences?
+	Field targetGroups:int = 0
+	Field proPressureGroups:int = 0
+	Field contraPressureGroups:int = 0
 	'changes how much a programme "regenerates" (multiplied with genreModifier)
 	Field refreshModifier:float = 1.0
 	'changes how much a programme loses during sending it
@@ -169,9 +171,12 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field speed:Float = 0
 	Field priceModifier:Float = 1.0
 	Field genre:Int	= 0
+	Field subGenre:Int = 0
 	Field blocks:Int = 1
 	'flags contains bitwise encoded things like xRated, paid, trash ...
 	Field flags:Int = 0
+	'which kind of distribution was used? Cinema, Custom production ...
+	Field distributionChannel:int = 0
 	'0 = serie, 1 = movie, ...?
 	Field programmeType:Int	= 1
 	'at which day was the programme released?
@@ -551,9 +556,62 @@ endrem
 	End Method
 
 
-	Method getTargetGroup:int()
-		return self.targetGroup
+	Method GetTargetGroups:int()
+		return targetGroups
 	End Method
+
+
+	Method HasTargetGroup:Int(group:Int) {_exposeToLua}
+		Return targetGroups & group
+	End Method
+
+
+	Method SetTargetGroup:int(group:int, enable:int=True)
+		If enable
+			targetGroups :| group
+		Else
+			targetGroups :& ~group
+		EndIf
+	End Method
+
+
+	Method GetProPressureGroups:int()
+		return proPressureGroups
+	End Method
+
+
+	Method HasProPressureGroup:Int(group:Int) {_exposeToLua}
+		Return proPressureGroups & group
+	End Method
+
+
+	Method SetProPressureGroup:int(group:int, enable:int=True)
+		If enable
+			proPressureGroups :| group
+		Else
+			proPressureGroups :& ~group
+		EndIf
+	End Method
+
+
+	Method GetContraPressureGroups:int()
+		return contraPressureGroups
+	End Method
+
+
+	Method HasContraPressureGroup:Int(group:Int) {_exposeToLua}
+		Return contraPressureGroups & group
+	End Method
+
+
+	Method SetContraPressureGroup:int(group:int, enable:int=True)
+		If enable
+			contraPressureGroups :| group
+		Else
+			contraPressureGroups :& ~group
+		EndIf
+	End Method
+
 
 
 	'returns amount of trailers aired since last normal programme broadcast

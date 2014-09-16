@@ -109,13 +109,13 @@ Type TVTTargetGroup
 	const All:int = 0
 	const Children:int = 1
 	const Teenagers:int = 2
-	const HouseWifes:int = 3
-	const Employees:int = 4
-	const Unemployed:int = 5
-	const Manager:int = 6
-	const Pensioners:int = 7
-	const Women:int = 8
-	const Men:int = 9
+	const HouseWifes:int = 4
+	const Employees:int = 8
+	const Unemployed:int = 16
+	const Manager:int = 32
+	const Pensioners:int = 64
+	const Women:int = 128
+	const Men:int = 256
 End Type
 
 

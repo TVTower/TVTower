@@ -76,8 +76,8 @@
  			<url>res/grafiken/filmverleiher/raum_filmverleiher_extras.png</url>
 			<children>
 				<child name="gfx_auctionmovie" 						x="0"	y="380"	w="256"	h="55"	/>
-				<child name="gfx_gimmick_rooms_movieagency" 		x="140"	y="0"	w="116"	h="240"	/>
-				<child name="gfx_hint_rooms_movieagency"	 		x="0" 	y="0"	w="140"	h="240"	/>
+				<child name="gfx_gimmick_rooms_movieagency" 		x="166"	y="1"	w="56"	h="19" offsetLeft="-36" offsetTop="-122"	/>
+				<child name="gfx_hint_rooms_movieagency"	 		x="0" 	y="0"	w="160"	h="220" offsetTop="-75"	/>
 				<child name="gfx_movie0"					 		x="0"	y="240"	w="15"	h="70"	r="100"	g="30"	b="130" />
 				<child name="gfx_movie1"					 		x="15"	y="240"	w="15"	h="70"	r="120"	g="100"	b="20" />
 				<child name="gfx_movie2"					 		x="30"	y="240"	w="15"	h="70"	r="150"	g="50"	b="100" />

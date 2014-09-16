@@ -205,10 +205,10 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 	'is the ad broadcasting limit to a specific broadcast type?
 	'Field limitedToBroadcastType:Int = -1
 
-	'is there a interest group liking/hating broadcasts of this?
+	'are there a interest groups liking/hating broadcasts of this?
 	'eg. anti-nicotin
-	Field proPressureGroup:Int = -1
-	Field contraPressureGroup:Int = -1
+	Field proPressureGroups:Int = -1
+	Field contraPressureGroups:Int = -1
 	
 	'minimum audience (real value calculated on sign)
 	Field minAudienceBase:Float
@@ -305,6 +305,45 @@ Type TAdContractBase extends TGameObject {_exposeToLua}
 		'limit to 0-max
 		infomercialTopicality = Max(0, Min(infomercialTopicality, GetMaxInfomercialTopicality()))
 	End Method
+
+
+	Method GetProPressureGroups:int()
+		return proPressureGroups
+	End Method
+
+
+	Method HasProPressureGroup:Int(group:Int) {_exposeToLua}
+		Return proPressureGroups & group
+	End Method
+
+
+	Method SetProPressureGroup:int(group:int, enable:int=True)
+		If enable
+			proPressureGroups :| group
+		Else
+			proPressureGroups :& ~group
+		EndIf
+	End Method
+
+
+	Method GetContraPressureGroups:int()
+		return contraPressureGroups
+	End Method
+
+
+	Method HasContraPressureGroup:Int(group:Int) {_exposeToLua}
+		Return contraPressureGroups & group
+	End Method
+
+
+	Method SetContraPressureGroup:int(group:int, enable:int=True)
+		If enable
+			contraPressureGroups :| group
+		Else
+			contraPressureGroups :& ~group
+		EndIf
+	End Method
+
 
 
 	Method RefreshInfomercialTopicality:Int() {_private}

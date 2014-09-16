@@ -3690,11 +3690,11 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 			endif
 		else
 			if glowVendor="_glow"
-				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(20,60)
+				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(0,0)
 			endif
 		endif
 		'let the vendor twinker sometimes...
-		If twinkerTimer.doAction() then GetSpriteFromRegistry("gfx_gimmick_rooms_movieagency").Draw(10,60)
+		If twinkerTimer.doAction() then GetSpriteFromRegistry("gfx_gimmick_rooms_movieagency").Draw(0,0)
 		'draw suitcase
 		GetSpriteFromRegistry("gfx_suitcase"+glowSuitcase).Draw(suitcasePos.GetX(), suitcasePos.GetY())
 

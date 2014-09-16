@@ -483,7 +483,7 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeData, data, [..
 			"infomercial", "quality", "repetitions", ..
 			"fixed_price", "duration", "profit", "penalty", ..
-			"pro_pressure_group", "contra_pressure_group" ..
+			"pro_pressure_groups", "contra_pressure_groups" ..
 		])
 			
 
@@ -495,14 +495,15 @@ Type TDatabaseLoader
 		adContract.spotCount = data.GetInt("repetitions", adContract.spotcount)
 		adContract.fixedPrice = data.GetInt("fixed_price", adContract.fixedPrice)
 		adContract.daysToFinish = data.GetInt("duration", adContract.daysToFinish)
-		adContract.proPressureGroup = data.GetInt("pro_pressure_group", adContract.proPressureGroup)
-		adContract.contraPressureGroup = data.GetInt("contra_pressure_group", adContract.contraPressureGroup)
+		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
+		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
 		adContract.profitBase = data.GetInt("profit", adContract.profitBase)
 		adContract.penaltyBase = data.GetInt("penalty", adContract.penaltyBase)
 	
 
 		'=== CONDITIONS ===
 		local nodeConditions:TxmlNode = xml.FindElementNode(node, "conditions")
+		'do not reset "data" before - it contains the pressure groups
 		xml.LoadValuesToData(nodeConditions, data, [..
 			"min_audience", "min_image", "target_group", ..
 			"allowed_programme_type", "allowed_genre", ..
@@ -517,8 +518,8 @@ Type TDatabaseLoader
 		adContract.forbiddenProgrammeGenre = data.GetInt("prohibited_genre", adContract.forbiddenProgrammeGenre)
 		adContract.forbiddenProgrammeType = data.GetInt("prohibited_programme_type", adContract.forbiddenProgrammeType)
 		'if only one group
-		adContract.proPressureGroup = data.GetInt("pro_pressure_group", adContract.proPressureGroup)
-		adContract.contraPressureGroup = data.GetInt("contra_pressure_group", adContract.contraPressureGroup)
+		adContract.proPressureGroups = data.GetInt("pro_pressure_groups", adContract.proPressureGroups)
+		adContract.contraPressureGroups = data.GetInt("contra_pressure_groups", adContract.contraPressureGroups)
 		rem
 		for multiple groups: 
 		local proPressureGroups:String[] = data.GetString("pro_pressure_groups", "").Split(" ")
@@ -574,21 +575,23 @@ Type TDatabaseLoader
 		local data:TData = new TData
 		xml.LoadValuesToData(nodeData, data, [..
 			"country", "year", "distribution", "blocks", ..
-			"maingenre", "subgenre", "time", "price_mod" ..
+			"maingenre", "subgenre", "time", "price_mod", ..
+			"flags" ..
 		])
 		programmeData.country = data.GetString("country", programmeData.country)
 		programmeData.year = data.GetInt("year", programmeData.year)
-		'programmeData.distribution = data.GetInt("distribution", programmeData.distribution)
+		programmeData.distributionChannel = data.GetInt("distribution", programmeData.distributionChannel)
 		programmeData.blocks = data.GetInt("blocks", programmeData.blocks)
 		programmeData.liveHour = data.GetInt("time", programmeData.liveHour)
 		programmeData.priceModifier = data.GetFloat("price_mod", programmeData.priceModifier)
+		programmeData.flags = data.GetInt("flags", programmeData.flags)
 
 'GENRES BRAUCHEN UEBERARBEITUNG - die sind NICHT MEHR DIE GLEICHEN
 'wie bei der alten Datenbank. Bspweise ist Klasterisk von "genre=10"
 'zu "genre=3 flag-animation" geworden
 		'programmeData.genre = data.GetInt("maingenre", programmeData.genre)
-		'multiple subgenres?
-		'programmeData.subGenre = data.GetInt("subgenre", programmeData.subgenre)
+
+		programmeData.subGenre = data.GetInt("subgenre", programmeData.subGenre)
 
 		'for movies/series set a releaseDay until we have that
 		'in the db.
@@ -618,21 +621,16 @@ Type TDatabaseLoader
 			endif
 		Next
 
-
-		'=== FLAGS ===
-		local nodeFlags:TxmlNode = xml.FindElementNode(node, "flags")
-		For local nodeFlag:TxmlNode = EachIn xml.GetNodeChildElements(nodeFlags)
-			If nodeFlag.getName() <> "member" then continue
-
-			Select nodeFlag.GetContent().ToLower()
-				case "fsk18"
-					programmeData.SetFlag(TProgrammeData.FLAG_XRATED, True)
-				case "animation"
-					programmeData.SetFlag(TProgrammeData.FLAG_ANIMATION, True)
-			End Select
-		Next
-
 		'=== GROUPS ===
+		local nodeGroups:TxmlNode = xml.FindElementNode(node, "groups")
+		data = new TData
+		xml.LoadValuesToData(nodeData, data, [..
+			"target_groups", "pro_pressure_groups", "contra_pressure_groups" ..
+		])
+		programmeData.targetGroups = data.GetInt("target_groups", programmeData.targetGroups)
+		programmeData.proPressureGroups = data.GetInt("pro_pressure_groups", programmeData.proPressureGroups)
+		programmeData.contraPressureGroups = data.GetInt("contra_pressure_groups", programmeData.contraPressureGroups)
+
 
 
 		'=== RATINGS ===
@@ -641,19 +639,8 @@ Type TDatabaseLoader
 		xml.LoadValuesToData(nodeRatings, data, [..
 			"critics", "speed", "outcome" ..
 		])
-
-'solange DB "buggy" Daten bei den Episoden enthaelt (critics und speed
-'sind "0", wenn keine Angaben in der DB getroffen worden - also die Serien-
-'information uebernommen werden sollten
-if parentLicence
-		local review:Float = 0.01 * data.GetFloat("critics", 0)
-		if review > 0 then programmeData.review = review
-		local speed:Float = 0.01 * data.GetFloat("speed", 0)
-		if speed > 0 then programmeData.speed = speed
-else
 		programmeData.review = 0.01 * data.GetFloat("critics", programmeData.review*100)
-		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.review*100)
-endif
+		programmeData.speed = 0.01 * data.GetFloat("speed", programmeData.speed*100)
 		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
 
 
