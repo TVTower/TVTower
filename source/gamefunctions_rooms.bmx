@@ -3089,7 +3089,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 	'configuration
 	Global suitcasePos:TVec2D = new TVec2D.Init(350,130)
 	Global suitcaseGuiListDisplace:TVec2D = new TVec2D.Init(14,25)
-	Field programmesPerLine:int	= 12
+	Field programmesPerLine:int	= 13
 	Field movieCheapMaximum:int	= 50000
 
 	Global _instance:RoomHandler_MovieAgency
@@ -3111,9 +3111,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		listMoviesCheap	= listMoviesCheap[..programmesPerLine]
 		listSeries		= listSeries[..programmesPerLine]
 
-		GuiListMoviesGood	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(200,80), "movieagency")
-		GuiListMoviesCheap	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(200,80), "movieagency")
-		GuiListSeries		= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(200,80), "movieagency")
+		GuiListMoviesGood	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,50), new TVec2D.Init(220,80), "movieagency")
+		GuiListMoviesCheap	= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,148), new TVec2D.Init(220,80), "movieagency")
+		GuiListSeries		= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(596,246), new TVec2D.Init(220,80), "movieagency")
 		GuiListSuitcase		= new TGUIProgrammeLicenceSlotList.Create(new TVec2D.Init(suitcasePos.GetX() + suitcaseGuiListDisplace.GetX(), suitcasePos.GetY() + suitcaseGuiListDisplace.GetY()), new TVec2D.Init(200,80), "movieagency")
 
 		GuiListMoviesGood.guiEntriesPanel.minSize.SetXY(200,80)
@@ -3686,7 +3686,7 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		'or if a player's block is dragged
 		if not draggedGuiProgrammeLicence
 			If THelper.IsIn(MouseManager.x, MouseManager.y, 210,220,140,60)
-				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(20,60)
+				GetSpriteFromRegistry("gfx_hint_rooms_movieagency").Draw(0,0)
 			endif
 		else
 			if glowVendor="_glow"
