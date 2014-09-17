@@ -463,13 +463,15 @@ Type TWorld
 	End Method
 	
 
-	Method RenderDebug:int(x:Float = 0, y:Float = 0)
+	Method RenderDebug:int(x:Float = 0, y:Float = 0, width:int=200, height:int=120)
 		SetColor 0,0,0
-		SetAlpha 0.5
-		DrawRect(x,y,200,120)
-		SetAlpha 1.0
+		SetAlpha GetAlpha()*0.5
+		DrawRect(x,y,width,height)
+		SetAlpha GetAlpha()*2.0
 		SetColor 255,255,255
 		local dy:int = 5
+		DrawText("== World Data ==", x + 10, y + dy)
+		dy :+ 12
 		DrawText("time: "+GetWorldTime().GetDayHour()+":00 "+GetWorldTime().GetDayPhaseText(), x + 10, y + dy)
 		dy :+ 12
 		DrawText("year: "+GetWorldTime().GetYear()+"  season: "+GetWorldTime().GetSeason()+"/4", x + 10, y + dy)
@@ -499,7 +501,7 @@ Type TWorld
 		if (sunset mod 3600)/60 < 10 then sunSetString :+ "0"
 		sunSetString:+(sunset mod 3600)/60
 		
-		DrawText("rise: "+sunRiseString+" set: "+sunSetString, x + 10, y+ 89)
+		DrawText("rise: "+sunRiseString+"  set: "+sunSetString, x + 10, y+ 89)
 		DrawText("realDay: "+GetWorldTime().GetDayOfMonth()+"/"+GetWorldTime().GetMonth(), x + 10, y+ 101)
 	End Method
 End Type

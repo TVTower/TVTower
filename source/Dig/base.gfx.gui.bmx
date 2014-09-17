@@ -44,6 +44,12 @@ CONST GUI_OBJECT_STATUS_APPEARANCE_CHANGED:Int	= 2^0
 Const GUI_OBJECT_ORIENTATION_VERTICAL:Int		= 0
 Const GUI_OBJECT_ORIENTATION_HORIZONTAL:Int		= 1
 
+'===== GUI MANAGER =====
+'for each "List" of the guimanager
+Const GUIMANAGER_TYPES_DRAGGED:int    = 2^0
+Const GUIMANAGER_TYPES_NONDRAGGED:int = 2^1
+Const GUIMANAGER_TYPES_ALL:int        = GUIMANAGER_TYPES_DRAGGED | GUIMANAGER_TYPES_NONDRAGGED
+
 
 Global gfx_GuiPack:TSpritePack = new TSpritePack.Init(LoadImage("res/grafiken/GUI/guipack.png"), "guipack_pack")
 gfx_GuiPack.AddSprite(New TSprite.Init(Null, "ListControl", new TRectangle.Init(96, 0, 56, 28), Null, 8, new TVec2D.Init(14, 14)))
@@ -477,7 +483,7 @@ endrem
 	End Method
 
 
-	Method Update(State:String = "", fromZ:Int=-1000, toZ:Int=-1000)
+	Method Update(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, updateTypes:int=GUIMANAGER_TYPES_ALL)
 		'_lastUpdateTick :+1
 		'if _lastUpdateTick >= 100000 then _lastUpdateTick = 0
 
@@ -490,81 +496,89 @@ endrem
 		Local ListDraggedBackup:TList = ListDragged
 
 		'first update all dragged objects...
-		For Local obj:TGUIobject = EachIn ListDragged
-			If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
+		if GUIMANAGER_TYPES_DRAGGED & updateTypes
+			For Local obj:TGUIobject = EachIn ListDragged
+				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
-			'avoid getting updated multiple times
-			'this can be overcome with a manual "obj.Update()"-call
-			'if obj._lastUpdateTick = _lastUpdateTick then continue
-			'obj._lastUpdateTick = _lastUpdateTick
+				'avoid getting updated multiple times
+				'this can be overcome with a manual "obj.Update()"-call
+				'if obj._lastUpdateTick = _lastUpdateTick then continue
+				'obj._lastUpdateTick = _lastUpdateTick
 
-			obj.Update()
-			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
-		Next
+				obj.Update()
+				'fire event
+				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
+			Next
+		endif
 
 		'then the rest
-		For Local obj:TGUIobject = EachIn ListReversed 'from top to bottom
-			'all dragged objects got already updated...
-			If ListDraggedBackup.contains(obj) Then Continue
+		if GUIMANAGER_TYPES_NONDRAGGED & updateTypes
+			For Local obj:TGUIobject = EachIn ListReversed 'from top to bottom
+				'all dragged objects got already updated...
+				If ListDraggedBackup.contains(obj) Then Continue
 
-			If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
+				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
-			'avoid getting updated multiple times
-			'this can be overcome with a manual "obj.Update()"-call
-			'if obj._lastUpdateTick = _lastUpdateTick then continue
-			'obj._lastUpdateTick = _lastUpdateTick
-			obj.Update()
-			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
-		Next
+				'avoid getting updated multiple times
+				'this can be overcome with a manual "obj.Update()"-call
+				'if obj._lastUpdateTick = _lastUpdateTick then continue
+				'obj._lastUpdateTick = _lastUpdateTick
+				obj.Update()
+				'fire event
+				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onUpdate", Null, obj ) )
+			Next
+		endif
 	End Method
 
 
-	Method Draw:Int(State:String = "", fromZ:Int=-1000, toZ:Int=-1000)
+	Method Draw:Int(State:String = "", fromZ:Int=-1000, toZ:Int=-1000, drawTypes:int=GUIMANAGER_TYPES_ALL)
 		'_lastDrawTick :+1
 		'if _lastDrawTick >= 100000 then _lastDrawTick = 0
 
 		currentState = State
 
-		For Local obj:TGUIobject = EachIn List
-			'all special objects get drawn separately
-			If ListDragged.contains(obj) Then Continue
-			If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
+		if GUIMANAGER_TYPES_NONDRAGGED & drawTypes
+			For Local obj:TGUIobject = EachIn List
+				'all special objects get drawn separately
+				If ListDragged.contains(obj) Then Continue
+				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
-			'skip invisible objects
-			if not obj.IsVisible() then continue
+				'skip invisible objects
+				if not obj.IsVisible() then continue
 
-			'avoid getting drawn multiple times
-			'this can be overcome with a manual "obj.Draw()"-call
-			'if obj._lastDrawTick = _lastDrawTick then continue
-			'obj._lastDrawTick = _lastDrawTick
+				'avoid getting drawn multiple times
+				'this can be overcome with a manual "obj.Draw()"-call
+				'if obj._lastDrawTick = _lastDrawTick then continue
+				'obj._lastDrawTick = _lastDrawTick
 
-			'tint image if object is disabled
-			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
-			obj.Draw()
-'RON
-'print obj.GetClassName() + " z:"+obj.GetZIndex()
-			If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
+				'tint image if object is disabled
+				If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 0.5*GetAlpha()
+				obj.Draw()
 
-			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
-		Next
+				If Not(obj._flags & GUI_OBJECT_ENABLED) Then SetAlpha 2.0*GetAlpha()
 
-		'draw all dragged objects above normal objects...
-		For Local obj:TGUIobject = EachIn listDraggedReversed
-			If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
+				'fire event
+				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
+			Next
+		endif
 
-			'avoid getting drawn multiple times
-			'this can be overcome with a manual "obj.Draw()"-call
-			'if obj._lastDrawTick = _lastDrawTick then continue
-			'obj._lastDrawTick = _lastDrawTick
 
-			obj.Draw()
+		if GUIMANAGER_TYPES_DRAGGED & drawTypes
+			'draw all dragged objects above normal objects...
+			For Local obj:TGUIobject = EachIn listDraggedReversed
+				If Not haveToHandleObject(obj,State,fromZ,toZ) Then Continue
 
-			'fire event
-			EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
-		Next
+				'avoid getting drawn multiple times
+				'this can be overcome with a manual "obj.Draw()"-call
+				'if obj._lastDrawTick = _lastDrawTick then continue
+				'obj._lastDrawTick = _lastDrawTick
+
+				obj.Draw()
+
+				'fire event
+				EventManager.triggerEvent( TEventSimple.Create( "guiobject.onDraw", Null, obj ) )
+			Next
+		endif
 	End Method
 End Type
 Global GUIManager:TGUIManager = TGUIManager.GetInstance()

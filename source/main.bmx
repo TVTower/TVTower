@@ -559,14 +559,24 @@ endif
 		TProfiler.Enter("Draw")
 		ScreenCollection.DrawCurrent(GetDeltaTimer().GetTween())
 
+'		SetBlend AlphaBlend
+		Local textX:Int = 5
+		local oldCol:TColor = new TColor.Get()
+		SetAlpha oldCol.a * 0.25
+		SetColor 0,0,0
+		If App.devConfig.GetBool("DEV_OSD", False)
+			DrawRect(0,0, 800,13)
+		else
+			DrawRect(0,0, 175,13)
+		endif
+		oldCol.SetRGBA()
 
-		Local textX:Int = 20
-		GetBitmapFontManager().baseFont.draw("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
-		textX:+80
+		GetBitmapFontManager().baseFont.drawStyled("Speed:" + Int(GetWorldTime().GetVirtualMinutesPerSecond() * 100), textX , 0)
+		textX:+75
 		GetBitmapFontManager().baseFont.draw("FPS: "+GetDeltaTimer().currentFps, textX, 0)
-		textX:+60
+		textX:+50
 		GetBitmapFontManager().baseFont.draw("UPS: " + Int(GetDeltaTimer().currentUps), textX,0)
-		textX:+60
+		textX:+50
 
 		If App.devConfig.GetBool("DEV_OSD", False)
 			GetBitmapFontManager().baseFont.draw("Loop: "+Int(GetDeltaTimer().getLoopTimeAverage())+"ms", textX,0)
@@ -595,11 +605,11 @@ endif
 		EndIf
 
 		If Game.DebugInfos
-			SetAlpha 0.75
+			SetAlpha GetAlpha() * 0.5
 			SetColor 0,0,0
 			DrawRect(0,0,160,385)
 			SetColor 255, 255, 255
-			SetAlpha 1.0
+			SetAlpha GetAlpha() * 2.0
 			GetBitmapFontManager().baseFontBold.draw("Debug information:", 5,10)
 			GetBitmapFontManager().baseFont.draw("Renderer: "+GetGraphicsManager().GetRendererName(), 5,30)
 
@@ -674,7 +684,7 @@ endif
 
 
 			if not GetPlayer().GetFigure().inRoom
-				GetWorld().RenderDebug(160,10)
+				GetWorld().RenderDebug(660,0, 140, 130)
 			endif
 		EndIf
 		'show quotes even without "DEV_OSD = true"

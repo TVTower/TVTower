@@ -105,6 +105,8 @@ Type TRegistryBitmapFontLoader extends TRegistryBaseLoader
 				GetBitmapFontManager().baseFontSmall = font
 			Else
 				GetBitmapFontManager().baseFont = font
+				'also set as imagefont
+				SetImageFont(font.FImageFont)
 			EndIf
 		EndIf
 
