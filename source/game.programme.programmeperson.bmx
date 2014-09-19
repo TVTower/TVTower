@@ -145,11 +145,6 @@ Type TProgrammePersonBase extends TGameObject
 	field job:int = 0
 	field realPerson:int = False
 
-	'one person could have multiple jobs: use bitmask values
-	const JOB_UNKNOWN:int = 0
-	const JOB_ACTOR:int = 1
-	const JOB_DIRECTOR:int = 2
-	const JOB_WRITER:int = 4
 
 	'override to add another generic naming
 	Method SetGUID:Int(GUID:String)
@@ -164,11 +159,11 @@ Type TProgrammePersonBase extends TGameObject
 
 		'add job
 		self.job :| job
+	End Method
 
-		'add to list
-		'if job & TProgrammePersonBase.JOB_ACTOR then actors.AddLast(self)
-		'if job & TProgrammePersonBase.JOB_DIRECTOR then directors.AddLast(self)
-		'if job & TVTProgrammePersonJob.Writer then writers.AddLast(self)
+
+	Method HasJob:int(job:int)
+		return self.job & job
 	End Method
 
 
@@ -190,6 +185,16 @@ Type TProgrammePersonBase extends TGameObject
 	Method GetNickName:String()
 		if nickName = "" then return firstName
 		return nickName
+	End Method
+
+
+	Method GetFirstName:String()
+		return firstName
+	End Method
+
+
+	Method GetLastName:String()
+		return lastName
 	End Method
 
 
@@ -243,4 +248,30 @@ Type TProgrammePerson extends TProgrammePersonBase
 		if date = "" then date = "0000-00-00"
 		self.dayOfDeath = date
 	End Method
+End Type
+
+
+
+
+'role/function a person had in a movie/series
+Type TProgrammePersonJob
+	Field person:TProgrammePersonBase
+	Field job:int = 0
+	Field characterName:String 'only valid for actors
+
+	'one person could have multiple jobs: use bitmask values
+	Const JOB_UNKNOWN:int = 0
+	Const JOB_DIRECTOR:int = 1
+	Const JOB_ACTOR:int = 2
+	Const JOB_WRITER:int = 4
+
+
+	Method Init:TProgrammePersonJob(person:TProgrammePersonBase, job:int, characterName:string="")
+		self.person = person
+		self.job = job
+		self.characterName = characterName
+		
+		return self
+	End Method
+
 End Type

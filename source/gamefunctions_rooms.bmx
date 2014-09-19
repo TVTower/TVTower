@@ -568,6 +568,8 @@ Type RoomHandler_Office extends TRoomHandler
 	Global fastNavigateTimer:TIntervalTimer = TIntervalTimer.Create(250)
 	Global fastNavigateInitialTimer:int = 250
 	Global fastNavigationUsedContinuously:int = FALSE
+	Global plannerNextDayButton:TGUIButton
+	Global plannerPreviousDayButton:TGUIButton
 	Global openedProgrammeListThisVisit:int = False
 
 	Global hoveredGuiProgrammePlanElement:TGuiProgrammePlanElement = null
@@ -625,10 +627,10 @@ Type RoomHandler_Office extends TRoomHandler
 		if ProgrammePlannerButtons[0]
 			ProgrammePlannerButtons[0].SetCaption(GetLocale("PLANNER_ADS"))
 			ProgrammePlannerButtons[1].SetCaption(GetLocale("PLANNER_PROGRAMME"))
-			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_OPTIONS"))
-			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_FINANCES"))
-			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_IMAGE"))
-			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_MESSAGES"))
+			ProgrammePlannerButtons[2].SetCaption(GetLocale("PLANNER_FINANCES"))
+			ProgrammePlannerButtons[3].SetCaption(GetLocale("PLANNER_IMAGE"))
+			ProgrammePlannerButtons[4].SetCaption(GetLocale("PLANNER_MESSAGES"))
+			ProgrammePlannerButtons[5].SetCaption(GetLocale("PLANNER_UNKNOWN"))
 		endif
 		
 		'stationmap
@@ -659,8 +661,8 @@ Type RoomHandler_Office extends TRoomHandler
 
 		'===== CREATE GUI LISTS =====
 		'the visual gap between 0-11 and 12-23 hour
-		local gapBetweenHours:int = 57
-		local area:TRectangle = new TRectangle.Init(67,17,600,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
+		local gapBetweenHours:int = 45
+		local area:TRectangle = new TRectangle.Init(45,5,625,12 * GetSpriteFromRegistry("pp_programmeblock1").area.GetH())
 
 		GuiListProgrammes = new TGUIProgrammePlanSlotList.Create(area.position, area.dimension, "programmeplanner")
 		GuiListProgrammes.Init("pp_programmeblock1", GetSpriteFromRegistry("pp_adblock1").area.GetW() + gapBetweenHours)
@@ -671,27 +673,34 @@ Type RoomHandler_Office extends TRoomHandler
 		GuiListAdvertisements.isType = TBroadcastMaterial.TYPE_ADVERTISEMENT
 
 		'init lists
-		PPprogrammeList	= new TgfxProgrammelist.Create(660, 16, 21)
-		PPcontractList = new TgfxContractlist.Create(660, 16)
+		PPprogrammeList	= new TgfxProgrammelist.Create(669, 8)
+		PPcontractList = new TgfxContractlist.Create(669, 8)
 
 		'buttons
-		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 0*56), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[0].spriteName = "programmeplanner_btn_ads"
+		plannerNextDayButton = new TGUIButton.Create(new TVec2D.Init(768, 6), new TVec2D.Init(28, 28), ">", "programmeplanner_buttons")
+		plannerNextDayButton.spriteName = "gfx_gui_button.datasheet"
 
-		ProgrammePlannerButtons[1] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 1*56), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[1].spriteName = "programmeplanner_btn_programme"
+		plannerPreviousDayButton = new TGUIButton.Create(new TVec2D.Init(684, 6), new TVec2D.Init(28, 28), "<", "programmeplanner_buttons")
+		plannerPreviousDayButton.spriteName = "gfx_gui_button.datasheet"
 
-		ProgrammePlannerButtons[2] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 2*56), null, GetLocale("PLANNER_OPTIONS"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[2].spriteName = "programmeplanner_btn_options"
 
-		ProgrammePlannerButtons[3] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 3*56), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[3].spriteName = "programmeplanner_btn_financials"
+		ProgrammePlannerButtons[0] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 0*54), null, GetLocale("PLANNER_ADS"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[0].spriteName = "gfx_programmeplanner_btn_ads"
 
-		ProgrammePlannerButtons[4] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 4*56), null, GetLocale("PLANNER_IMAGE"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[4].spriteName = "programmeplanner_btn_image"
+		ProgrammePlannerButtons[1] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 1*54), null, GetLocale("PLANNER_PROGRAMME"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[1].spriteName = "gfx_programmeplanner_btn_programme"
 
-		ProgrammePlannerButtons[5] = new TGUIButton.Create(new TVec2D.Init(672, 40 + 5*56), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
-		ProgrammePlannerButtons[5].spriteName = "programmeplanner_btn_news"
+		ProgrammePlannerButtons[2] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 2*54), null, GetLocale("PLANNER_FINANCES"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[2].spriteName = "gfx_programmeplanner_btn_financials"
+
+		ProgrammePlannerButtons[3] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 3*54), null, GetLocale("PLANNER_IMAGE"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[3].spriteName = "gfx_programmeplanner_btn_image"
+
+		ProgrammePlannerButtons[4] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 4*54), null, GetLocale("PLANNER_MESSAGES"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[4].spriteName = "gfx_programmeplanner_btn_messages"
+
+		ProgrammePlannerButtons[5] = new TGUIButton.Create(new TVec2D.Init(686, 41 + 5*54), null, GetLocale("PLANNER_UNKNOWN"), "programmeplanner_buttons")
+		ProgrammePlannerButtons[5].spriteName = "gfx_programmeplanner_btn_unknown"
 
 		for local i:int = 0 to 5
 			ProgrammePlannerButtons[i].SetAutoSizeMode(TGUIButton.AUTO_SIZE_MODE_SPRITE, TGUIButton.AUTO_SIZE_MODE_SPRITE)
@@ -1263,14 +1272,21 @@ Type RoomHandler_Office extends TRoomHandler
 		local room:TRoom		= TRoom( triggerEvent.GetData().get("room") )
 		if not room then return 0
 
+		GUIManager.Draw("programmeplanner",-1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
+
+		GetSpriteFromRegistry("gfx_programmeplanner_overlay").Draw(0,0)
+
 		'time indicator
 		If planningDay = GetWorldTime().getDay() Then SetColor 0,100,0
 		If planningDay < GetWorldTime().getDay() Then SetColor 100,100,0
 		If planningDay > GetWorldTime().getDay() Then SetColor 0,0,0
-		GetBitmapFont("Default", 10).drawBlock(GetWorldTime().GetFormattedDay(1+ planningDay - GetWorldTime().getDay(GetWorldTime().GetTimeStart())), 691, 18, 100, 15)
+		local day:int = 1+ planningDay - GetWorldTime().getDay(GetWorldTime().GetTimeStart())
+		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
 		SetColor 255,255,255
 
-		GUIManager.Draw("programmeplanner|programmeplanner_buttons")
+		GUIManager.Draw("programmeplanner_buttons",-1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
+		GUIManager.Draw("programmeplanner|programmeplanner_buttons",-1000,-1000, GUIMANAGER_TYPES_DRAGGED)
+
 
 		if hoveredGuiProgrammePlanElement
 			'draw the current sheet
@@ -1304,18 +1320,18 @@ Type RoomHandler_Office extends TRoomHandler
 			endif
 		EndIf
 
+
+		local oldAlpha:Float = GetAlpha()
 		if showPlannerShortCutHintTime > 0
-			SetAlpha showPlannerShortCutHintTime/100.0
-			DrawRect(3, 0, 660, 15)
 			SetAlpha Min(1.0, 2.0*showPlannerShortCutHintTime/100.0)
-			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 0, 660, 15, new TVec2D.Init(ALIGN_CENTER), TColor.Create(0,0,0),2,1,0.25)
-			SetAlpha 1.0
-		else
-			SetAlpha 0.75
+			GetBitmapFont("Default", 11, BOLDFONT).drawBlock(GetLocale("HINT_PROGRAMMEPLANER_SHORTCUTS"), 3, 368, 660, 15, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(75),2,1,0.20)
 		endif
-		DrawOval(-25,-20,50,50)
-		GetBitmapFont("Default", 24, BOLDFONT).drawStyled("?", 2, 2, TColor.Create(50,50,150),2,1,0.5)
-		SetAlpha 1.0
+
+		local pulse:Float = Sin(Time.GetTimeGone() / 10)
+		SetAlpha Max(0.75, -pulse) * oldAlpha
+		DrawOval(5+pulse,367+pulse,15-2*pulse,15-2*pulse)
+		SetAlpha oldAlpha
+		GetBitmapFont("Default", 20, BOLDFONT).drawStyled("?", 7, 367, TColor.Create(50,50,150),2,1,0.25)
 	End Function
 
 
@@ -1354,28 +1370,18 @@ Type RoomHandler_Office extends TRoomHandler
 		if haveToRefreshGuiElements then RefreshGUIElements()
 
 
+		if planningDay-1 < GetWorldTime().getDay(GetWorldTime().GetTimeStart())
+			plannerPreviousDayButton.disable()
+		else
+			plannerPreviousDayButton.enable()
+		endif
+		
+
 		'reset hovered and dragged gui objects - gets repopulated automagically
 		hoveredGuiProgrammePlanElement = null
 		draggedGuiProgrammePlanElement = null
 		TGUIProgrammePlanElement.hoveredElement = null
 
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 759,17,14,15)
-			Game.cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				Game.cursorstate = 0
-				ChangePlanningDay(planningDay+1)
-			endif
-		EndIf
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 670,17,14,15)
-			Game.cursorstate = 1
-			If MOUSEMANAGER.IsClicked(1)
-				MOUSEMANAGER.resetKey(1)
-				Game.cursorstate = 0
-
-				ChangePlanningDay(planningDay-1)
-			endif
-		EndIf
 		'RON
 		'fast movement is possible with keys
 		'we use doAction as this allows a decreasing time
@@ -1422,7 +1428,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 
 		'hide or show help
-		If THelper.IsIn(MouseManager.x, MouseManager.y, 0,0,25,30)
+		If THelper.IsIn(MouseManager.x, MouseManager.y, 0,365,20,20)
 			showPlannerShortCutHintTime = 90
 			showPlannerShortCutHintFadeAmount = 1
 		else
@@ -1439,8 +1445,20 @@ Type RoomHandler_Office extends TRoomHandler
 		'only react if the click came from the left mouse button
 		if triggerEvent.GetData().getInt("button",0) <> 1 then return TRUE
 
-		'Just close all lists and reopen the wanted one
-		'->saves "if ProgrammePlannerButtons[o].clicked then closeAll, openMine ..."
+
+		if button = plannerNextDayButton
+			ChangePlanningDay(planningDay+1)
+			'reset mousebutton
+			MouseManager.ResetKey(1)
+			return True
+		elseif button = plannerPreviousDayButton
+			ChangePlanningDay(planningDay-1)
+			'reset mousebutton
+			MouseManager.ResetKey(1)
+			return True
+		endif
+			
+
 
 		'close both lists
 		PPcontractList.SetOpen(0)
@@ -1453,10 +1471,10 @@ Type RoomHandler_Office extends TRoomHandler
 		If button = ProgrammePlannerButtons[0] Then return PPcontractList.SetOpen(1)		'opens contract list
 		If button = ProgrammePlannerButtons[1] Then return PPprogrammeList.SetOpen(1)		'opens programme genre list
 
-		'If button = ProgrammePlannerButtons[2] then return ScreenCollection.GoToSubScreen("screen_office_options")
-		If button = ProgrammePlannerButtons[3] then return ScreenCollection.GoToSubScreen("screen_office_financials")
-		If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_image")
-		'If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_messages")
+		If button = ProgrammePlannerButtons[2] then return ScreenCollection.GoToSubScreen("screen_office_financials")
+		If button = ProgrammePlannerButtons[3] then return ScreenCollection.GoToSubScreen("screen_office_image")
+		'If button = ProgrammePlannerButtons[4] then return ScreenCollection.GoToSubScreen("screen_office_messages")
+		'If button = ProgrammePlannerButtons[5] then return ScreenCollection.GoToSubScreen("screen_office_unknown")
 	End Function
 
 
@@ -1465,6 +1483,9 @@ Type RoomHandler_Office extends TRoomHandler
 
 	Function CreateNextEpisodeOrCopyByShortcut:int(item:TGUIProgrammePlanElement)
 		if not item then return FALSE
+		'only react to items which got freshly created
+		if not item.inList then return FALSE
+
 		'assisting shortcuts create new guiobjects
 		'shift: next episode
 		'ctrl : programme again
@@ -1721,10 +1742,10 @@ Type RoomHandler_Office extends TRoomHandler
 		'block"shade" on bg
 		local shadeColor:TColor = TColor.CreateGrey(200, 0.3)
 		For Local j:Int = 0 To 11
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 87 - 20, 17 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Programmeblock1, Pix, 414 - 20, 17 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 87 + ImageWidth(gfx_Programmeblock1) - 20, 17 + j * 30, shadeColor)
-			DrawImageOnImage(gfx_Adblock1, Pix, 414 + ImageWidth(gfx_Programmeblock1) - 20, 17 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 45, 5 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Programmeblock1, Pix, 380, 5 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 45 + ImageWidth(gfx_Programmeblock1), 5 + j * 30, shadeColor)
+			DrawImageOnImage(gfx_Adblock1, Pix, 380 + ImageWidth(gfx_Programmeblock1), 5 + j * 30, shadeColor)
 		Next
 
 
@@ -1733,14 +1754,27 @@ Type RoomHandler_Office extends TRoomHandler
 
 		local fontColor:TColor = TColor.CreateGrey(240)
 
+		SetAlpha 0.75
+rem
 		For Local i:Int = 0 To 11
-			'left side
-			GetBitmapFontManager().baseFont.drawStyled( (i + 12) + ":00", 358, 18 + i * 30, fontColor, 2,1,0.25)
 			'right side
+			GetBitmapFontManager().baseFontBold.DrawBlock( (i + 12) + ":00", 341, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
+			'left side
 			local text:string = i + ":00"
 			If i < 10 then text = "0" + text
-			GetBitmapFontManager().baseFont.drawStyled(text, 30, 18 + i * 30, fontColor,2,1,0.25)
+			GetBitmapFontManager().baseFontBold.DrawBlock( text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
 		Next
+endrem
+		'only hour, not hour:00
+		For Local i:Int = 0 To 11
+			'right side
+			GetBitmapFontManager().baseFontBold.DrawBlock( (i + 12), 341, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
+			'left side
+			local text:string = i
+			If i < 10 then text = "0" + text
+			GetBitmapFontManager().baseFontBold.DrawBlock( text, 6, 5 + i * 30, 39, 30, ALIGN_CENTER_CENTER, fontColor, 2,1,0.25)
+		Next
+		SetAlpha 1.0
 		DrawnOnProgrammePlannerBG = True
 
 		'reset target for font
@@ -2728,7 +2762,7 @@ Type RoomHandler_Archive extends TRoomHandler
 		'dude should accept drop - else no recognition
 		DudeArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
-		programmeList = New TgfxProgrammelist.Create(635, 16, 21)
+		programmeList = New TgfxProgrammelist.Create(720, 10)
 
 
 		'===== REGISTER EVENTS =====
@@ -3501,9 +3535,9 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 				'if exists...skip it
 				if lists[j][i] then continue
 
-				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(75000,-1, TProgrammeLicence.TYPE_MOVIE)
-				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,75000, TProgrammeLicence.TYPE_MOVIE)
-				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandom(TProgrammeLicence.TYPE_SERIES)
+				if lists[j] = listMoviesGood then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(75000,-1, TProgrammeData.TYPE_MOVIE)
+				if lists[j] = listMoviesCheap then licence = GetProgrammeLicenceCollection().GetRandomWithPrice(0,75000, TProgrammeData.TYPE_MOVIE)
+				if lists[j] = listSeries then licence = GetProgrammeLicenceCollection().GetRandom(TProgrammeData.TYPE_SERIES)
 
 				'add new licence at slot
 				if licence

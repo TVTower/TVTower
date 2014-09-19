@@ -221,7 +221,8 @@ Type TLuaFunctions {_exposeToLua}
 	Const RESULT_NOTFOUND:int		=  -8
 	Const RESULT_NOTALLOWED:int		= -16
 	Const RESULT_INUSE:int			= -32
-
+rem
+	unused
 	Const MOVIE_GENRE_ACTION:Int		= 0
 	Const MOVIE_GENRE_THRILLER:Int		= 1
 	Const MOVIE_GENRE_SCIFI:Int			= 2
@@ -241,7 +242,7 @@ Type TLuaFunctions {_exposeToLua}
 	Const MOVIE_GENRE_NEWS:Int			= 16
 	Const MOVIE_GENRE_SHOW:Int			= 17
 	Const MOVIE_GENRE_MONUMENTAL:Int	= 18
-
+endrem
 	Const NEWS_GENRE_POLITICS:Int		= 0
 	Const NEWS_GENRE_SHOWBIZ:Int		= 1
 	Const NEWS_GENRE_SPORT:Int			= 2

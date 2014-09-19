@@ -108,6 +108,29 @@ Type TProgrammeLicenceCollection
 	Method ContainsCollection:Int(licence:TProgrammeLicence)
 		return collections.contains(licence)
 	End Method
+
+
+	'add a licence to all needed lists
+	Method AddAutomatic:Int(licence:TProgrammeLicence, skipDuplicates:Int = True)
+		'=== ALL ===
+		'all licences should be listed in the "all-licences-list"
+		'this also includes episodes!
+		Add(licence, skipDuplicates)
+
+		'=== MOVIES ===
+		if licence.isMovie() then AddMovie(licence, skipDuplicates)
+
+		'=== EPISODES ===
+		'episodes do not need special handling ...
+
+		'=== SERIES ===
+		if licence.isSeries() then AddSeries(licence, skipDuplicates)
+
+		'=== COLLECTIONS ===
+		if licence.isCollection() then AddCollection(licence, skipDuplicates)
+
+		return True
+	End Method
 	
 
 	'returns the list to use for the given type
@@ -115,11 +138,11 @@ Type TProgrammeLicenceCollection
 	'also just access "progList" in all cases...
 	Method _GetList:TList(programmeType:int=0)
 		Select programmeType
-			case TProgrammeLicence.TYPE_MOVIE
+			case TProgrammeData.TYPE_MOVIE
 				return movies
-			case TProgrammeLicence.TYPE_SERIES
+			case TProgrammeData.TYPE_SERIES
 				return series
-			case TProgrammeLicence.TYPE_COLLECTION
+			case TProgrammeData.TYPE_COLLECTION
 				return collections
 			default
 				return licences
@@ -153,6 +176,16 @@ Type TProgrammeLicenceCollection
 		Next
 		Return Null
 	End Method
+
+
+	Method GetByGUID:TProgrammeLicence(GUID:String)
+		'TODO: change to tmap if to slow
+		For local licence:TProgrammeLicence = EachIn licences
+			if licence.GetGUID() = GUID then return licence
+		Next
+		Return Null
+	End Method
+
 
 
 	Method GetRandom:TProgrammeLicence(programmeType:int=0, includeEpisodes:int=FALSE)
@@ -209,7 +242,7 @@ Type TProgrammeLicenceCollection
 			If not includeEpisodes and Licence.isEpisode() Then continue
 
 			'if available (unbought, released..), add it to candidates list
-			If Licence.GetData()
+			If Licence.isMovie() or Licence.isEpisode()
 				if Licence.GetData().getGenre() = genre Then resultList.addLast(Licence)
 			else
 				local foundGenreInSubLicence:int = FALSE
@@ -224,6 +257,25 @@ Type TProgrammeLicenceCollection
 		Next
 		Return GetRandomFromList(resultList)
 	End Method
+
+
+	Method GetRandomByFilter:TProgrammeLicence(filter:TProgrammeLicenceFilter)
+		Local Licence:TProgrammeLicence
+		Local resultList:TList = CreateList()
+
+		For Licence = EachIn licences
+			'ignore already used or unreleased
+			If Licence.owner <> 0 or not Licence.isReleased() Then continue
+			'ignore episodes
+			If Licence.isEpisode() Then continue
+
+			if not filter.DoesFilter(licence) then continue
+
+			'add it to candidates list
+			resultList.addLast(Licence)
+		Next
+		Return GetRandomFromList(resultList)
+	End Method	
 End Type
 
 '===== CONVENIENCE ACCESSOR =====
@@ -237,71 +289,37 @@ End Function
 
 'licence of for movies, series and so on
 Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
-	Field title:string			= ""
-	Field description:string	= ""
-	Field licenceType:int		= 1					'type of that programmelicence
-	Field attractiveness:Float	= -1				'Wird nur in der Lua-KI verwendet um die Lizenzen zu bewerten
+	'wird nur in der Lua-KI verwendet um die Lizenzen zu bewerten
+	Field attractiveness:Float = -1
 	Field data:TProgrammeData				{_exposeToLua}
-	Field latestPlannedEndHour:int = -1				'the latest hour-(from-start) one of the planned programmes ends
-	Field parentLicence:TProgrammeLicence			'series are parent of episodes
-	Field subLicences:TProgrammeLicence[]			'other licences this licence covers
-
+	'the latest hour-(from-start) one of the planned programmes ends
+	Field latestPlannedEndHour:int = -1
+	'series are parent of episodes
+	Field parentLicence:TProgrammeLicence
+	'other licences this licence covers
+	Field subLicences:TProgrammeLicence[]
 	'store stats for each owner
 	Field broadcastStatistics:TBroadcastStatistic[]
 
 '	Field cacheTextOverlay:TImage 			{nosave}
 '	Field cacheTextOverlayMode:string = ""	{nosave}	'for which mode the text was cached
 
-	Global ignoreUnreleasedProgrammes:int	= TRUE	'hide movies of 2012 when in 1985?
-	Global _filterReleaseDateStart:int		= 1900
-	Global _filterReleaseDateEnd:int		= 2100
-
-	const TYPE_UNKNOWN:int		= 1
-	const TYPE_EPISODE:int		= 2
-	const TYPE_SERIES:int		= 4
-	const TYPE_MOVIE:int		= 8
-	const TYPE_COLLECTION:int	= 16
-
-
-	Function Create:TProgrammeLicence(title:String, description:String, licenceType:int=1)
-		Local obj:TProgrammeLicence =New TProgrammeLicence
-		obj.title		= title
-		obj.description	= description
-		obj.licenceType	= licenceType
-
-		Return obj
-	End Function
-
-
-	'directly connect the licence to a programmeData
-	Method AddData:int(data:TProgrammeData)
-		self.data = data
-		self.licenceType = data.programmeType
-
-		'we got direct content - so add that licence to the global
-		'licence collection
-
-		'unused:
-		'a) exception are episodes...they have to get fetched through
-		'   the series head
-		'if not isEpisode() and not licences.contains(self) then licences.addLast(self)
-
-		'b) store all licences to enable collections of episodes from multiple series/seasons
-		GetProgrammeLicenceCollection().Add(self)
-
-		'only "Movies" are stored separately,
-		'episodes are listed in a series which gets added during adding
-		'of episodes
-		if isMovie() then GetProgrammeLicenceCollection().AddMovie(self)
-
-		return TRUE
-	End Method
+	'hide movies of 2012 when in 1985?
+	Global ignoreUnreleasedProgrammes:int = TRUE
+	Global _filterReleaseDateStart:int = 1900
+	Global _filterReleaseDateEnd:int = 2100
 
 
 	Method GetReferenceID:int() {_exposeToLua}
 		'return own licence id as referenceID - programme.id is not
 		'possible for collections/series
 		return self.ID
+	End Method
+
+
+	'connect programmedata to a licence
+	Method SetData:int(data:TProgrammeData)
+		self.data = data
 	End Method
 
 
@@ -323,43 +341,11 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method AddSubLicence:int(licence:TProgrammeLicence)
-		'only do this if "series" does not have own data...
-		'but as they can contain a "general description", we allow it
-		'as soon as a licence is connected to a programmeData, adding
-		'sublicences is not allowed
-		'if self.getData() then return FALSE
+		'=== ADJUST LICENCE TYPES ===
 
-		'movies and episodes need "data", without we skip that licence
-		if licence.isType(TYPE_MOVIE | TYPE_EPISODE) and not licence.getData() then return FALSE
-
-		'print "AddSubLicence "+self.licenceType+" "+self.getTitle()+"  adding title="+licence.getTitle()
-
-		'if the licence has no special type up to now, add licence to
-		'global collection
-		if licence.isType(TYPE_UNKNOWN)
-			GetProgrammeLicenceCollection().Add(self)
-		endif
-
-		'a series episode is added to a series licence
-		'-> has data and is of correct type (checked at begin of method)
-		if licence.isType(TYPE_EPISODE)
-			'set the current licence to type "series"
-			self.licenceType = TYPE_SERIES
-
-			'add series licence as parent for this episode
-			licence.parentLicence = self
-
-			'add series if not done yet (check is done automatically)
-			GetProgrammeLicenceCollection().AddSeries(self)
-		endif
-
-		'a series is added to a licence (series-heads do not have data) -> gets a collection
-		if licence.isType(TYPE_SERIES) then self.licenceType = TYPE_COLLECTION
-		'licence is a movie
-		if licence.isType(TYPE_MOVIE) then self.licenceType = TYPE_COLLECTION
-
-		'add collections to their list
-		if self.isType(TYPE_MOVIE) then GetProgrammeLicenceCollection().AddCollection(self)
+		'as each licence is individual we easily can set the main licence
+		'as parent (so sublicences can ask for sibling licences).
+		licence.parentLicence = self
 
 		'add to array of sublicences
 		subLicences :+ [licence]
@@ -388,28 +374,28 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
-	Method isType:int(licenceType:int) {_exposeToLua}
-		return (self.licenceType & licenceType)
+	Method isType:int(programmeDataType:int) {_exposeToLua}
+		return GetData() and GetData().isType(programmeDataType)
 	End Method
 
 
 	Method isSeries:int() {_exposeToLua}
-		return (self.licenceType & self.TYPE_SERIES)
+		return GetData() and GetData().isSeries()
 	End Method
 
 
 	Method isEpisode:int() {_exposeToLua}
-		return (self.licenceType & self.TYPE_EPISODE)
+		return GetData() and GetData().isEpisode()
 	End Method
 
 
 	Method isMovie:int() {_exposeToLua}
-		return (self.licenceType & self.TYPE_MOVIE)
+		return GetData() and GetData().isMovie()
 	End Method
 	
 
 	Method isCollection:int() {_exposeToLua}
-		return (self.licenceType & self.TYPE_COLLECTION)
+		return GetData() and GetData().isCollection()
 	End Method
 	
 
@@ -488,8 +474,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	Method isReleased:int() {_exposeToLua}
 		if not self.ignoreUnreleasedProgrammes then return TRUE
 
-		'if connected to a programme - just return our value
-		if self.GetData() then return self.GetData().isReleased()
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().isReleased()
 
 		'if licence is a collection: ask subs
 		For local licence:TProgrammeLicence = eachin subLicences
@@ -514,12 +500,15 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	'instead of asking the programmeplan about each licence
 	'we cache that information directly within the programmeplan
 	Method isPlanned:int() {_exposeToLua}
-		if self.GetData()
-			if (self.latestPlannedEndHour>=0) then return TRUE
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData()
+			if (latestPlannedEndHour>=0) then return TRUE
 			'if self is not planned - ask if parent is set to planned
 			'do not use this for series if used in the programmePlanner-view
 			'to "emphasize" planned programmes
 			'if self.parentLicence then return self.parentLicence.isPlanned()
+
+			return False
 		endif
 
 		For local licence:TProgrammeLicence = eachin subLicences
@@ -532,7 +521,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	'returns the genre of a licence - if a group, the one used the most
 	'often is returned
 	Method GetGenre:int() {_exposeToLua}
-		if self.GetData() then return self.GetData().GetGenre()
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetGenre()
 
 		local genres:int[]
 		local bestGenre:int=0
@@ -549,11 +539,24 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 	End Method
 
 
+	'returns the flags as a mix of all licences
+	'ATTENTION: if ONE has xrated, all are xrated, if one has trash, all ..
+	'so this kind of "taints"
+	Method GetFlags:int() {_exposeToLua}
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().flags
+
+		local flags:int
+		For local licence:TProgrammeLicence = eachin subLicences
+			flags :| licence.GetFlags()
+		Next
+		return flags
+	End Method
+
+
 	Method GetQuality:Float() {_exposeToLua}
-		'licence is connected to a programme
-		if GetData() and (isType(TYPE_MOVIE) or isType(TYPE_EPISODE))
-			return GetData().GetQuality()
-		endif
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetQuality()
 
 		'if licence is a collection: ask subs
 		local quality:int = 0
@@ -567,21 +570,21 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetTitle:string() {_exposeToLua}
-		if self.title = "" and GetData() then return GetData().GetTitle()
-		return self.title
+		if GetData() then return GetData().GetTitle()
+		return ""
 	End Method
 
 
 	Method GetDescription:string() {_exposeToLua}
-		if self.description = "" and GetData() then return GetData().GetDescription()
-		return self.description
+		if GetData() then return GetData().GetDescription()
+		return ""
 	End Method
 
 
 	'returns the avg topicality of a licence (package)
 	Method GetTopicality:Int() {_exposeToLua}
-		'licence connected to a single programme
-		If GetSubLicenceCount() = 0 then return GetData().GetTopicality()
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetTopicality()
 
 		'licence for a package or series
 		Local value:int
@@ -595,8 +598,8 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 
 
 	Method GetPrice:Int() {_exposeToLua}
-		'licence connected to a single programme
-		If GetSubLicenceCount() = 0 then return GetData().GetPrice()
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetPrice()
 
 		'licence for a package or series
 		Local value:Float
@@ -659,7 +662,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 			endif
 		endif
 
-		If data.genre = data.GENRE_CALLINSHOW then showEarnInfo = True
+		If data.HasFlag(TProgrammeData.FLAG_PAID) then showEarnInfo = True
 
 'debug
 'showPlannedWarning = True
@@ -743,7 +746,7 @@ Type TProgrammeLicence Extends TNamedGameObject {_exposeToLua="selected"}
 		'country + genre
 		'country/year + genre   - for non-callin-shows
 		local countryYear:String = data.country
-		If data.genre <> data.GENRE_CALLINSHOW
+		If not data.HasFlag(TProgrammeData.FLAG_PAID)
 			countryYear :+ " " + data.year
 		endif
 		fontNormal.drawBlock(countryYear, currX + 6, currY, 65, 16, ALIGN_LEFT_CENTER, textColor, 0,1,1.0,True, True)
@@ -856,418 +859,6 @@ endrem
 		Endif
 	End Method
 
-rem
-
-	Method DrawSeriesSheetTextOverlay(x:int, y:int, w:int, h:int)
-		'reset cache
-		if cacheTextOverlayMode <> "SERIES"
-			cacheTextOverlayMode = "SERIES"
-			cacheTextOverlay = null
-		endif
-
-		'===== CREATE CACHE IF MISSING =====
-		if not cacheTextOverlay
-			cacheTextOverlay = TFunctions.CreateEmptyImage(w, h)
-
-			'render to image
-			TBitmapFont.SetRenderTarget(cacheTextOverlay)
-
-			Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
-			Local dY:Int = 0
-
-			SetColor 0,0,0
-			GetBitmapFontManager().basefontBold.drawBlock(GetTitle(), 10, 11, 278, 20)
-			normalFont.drawBlock(self.GetSubLicenceCount()+" "+GetLocale("MOVIE_EPISODES") , 10, 34, 278, 20) 'prints programmedescription on moviesheet
-			dy :+ 22
-
-			If data.xrated <> 0 Then normalFont.drawBlock(GetLocale("MOVIE_XRATED") , 240 , dY+34 , 50, 20) 'prints pg-rating
-
-			normalFont.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", 10 , dY+135, 280, 16)
-			normalFont.drawBlock(GetLocale("MOVIE_SPEED")		, 222, dY+187, 280, 16)
-			normalFont.drawBlock(GetLocale("MOVIE_CRITIC")		, 222, dY+210, 280, 16)
-			normalFont.drawBlock(GetLocale("MOVIE_BOXOFFICE")	, 222, dY+233, 280, 16)
-			normalFont.drawBlock(data.GetDirectorsString()		, 10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":")) , dY+135, 280-15-normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":"), 16) 	'prints director
-			if data.GetActorsString() <> ""
-				normalFont.drawBlock(GetLocale("MOVIE_ACTORS")+":", 10 , dY+148, 280, 32)
-				normalFont.drawBlock(data.GetActorsString()		, 10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":")), dY+148, 280-15-normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":"), 32) 	'prints actors
-			endif
-			normalFont.drawBlock(data.GetGenreString()			, 78 , dY+35 , 150, 16) 	'prints genre
-			normalFont.drawBlock(data.country					, 10 , dY+35 , 150, 16)		'prints country
-
-			If data.genre <> data.GENRE_CALLINSHOW
-				'TODO: add sponsorship display handling here
-				normalFont.drawBlock(data.year					, 36 , dY+35 , 150, 16) 	'prints year
-				normalFont.drawBlock(data.GetDescription()		, 10,  dy+54 , 282, 71) 'prints programmedescription on moviesheet
-			Else
-				normalFont.drawBlock(data.GetDescription()		, 10,  dy+54 , 282, 51) 'prints programmedescription on moviesheet
-				'convert back cents to euros and round it
-				'value is "per 1000" - so multiply with that too
-				local revenue:string = int(1000 * data.GetPerViewerRevenue())+" "+CURRENCYSIGN
-				normalFont.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), 10,  dy+106 , 278, 20) 'prints programmedescription on moviesheet
-			EndIf
-
-			'set back to screen Rendering
-			TBitmapFont.SetRenderTarget(null)
-		endif
-
-		'===== DRAW CACHE =====
-		DrawImage(cacheTextOverlay, x, y)
-	End Method
-
-
-	Method ShowSeriesSheet:Int(x:Int,y:Int, align:int=0)
-		local data:TProgrammeData		= GetData()
-		'given in series head too but we want to use the "avg"
-		'so we add all episodes data and divide by episodecount -> average
-		Local widthbarSpeed:Float			= 0
-		Local widthbarReview:Float			= 0
-		Local widthbarOutcome:Float			= 0
-		Local widthbarTopicality:Float		= 0
-		Local widthbarMaxTopicality:Float	= 0
-
-		local episodeCount:float = 0.0
-		For local licence:TProgrammeLicence = eachin subLicences
-			episodeCount:+1.0
-			widthbarSpeed 			:+ licence.GetData().speed
-			widthbarReview			:+ licence.GetData().review
-			widthbarOutcome			:+ licence.GetData().Outcome
-			widthbarTopicality		:+ licence.GetData().topicality
-			widthbarMaxTopicality	:+ licence.GetData().GetMaxTopicality()
-		Next
-		if episodeCount > 0
-			widthbarSpeed			= widthbarSpeed / episodeCount / 255.0
-			widthbarReview			= widthbarReview / episodeCount / 255.0
-			widthbarOutcome			= widthbarOutcome/ episodeCount / 255.0
-			widthbarTopicality		= widthbarTopicality / episodeCount / 255.0
-			widthbarMaxTopicality	= widthbarMaxTopicality / episodeCount / 255.0
-		endif
-
-
-		local asset:TSprite = GetSpriteFromRegistry("gfx_datasheets_series")
-		if align = 1 then x :- asset.area.GetW()
-
-		'===== DRAW PROGRAMMED HINT =====
-		if owner > 0 and IsPlanned()
-			local warningX:int = x
-			local warningY:int = 0
-			local warningW:int = 0
-			warningY = asset.area.GetH()
-			warningW = asset.area.GetW()
-			warningY :-15 'minus shadow
-			if align = 1 then warningX :- warningW
-			SetAlpha 0.5
-			SetColor 255,235,110
-			DrawRect(warningX+20, y + warningY, warningW-40, 30)
-			SetAlpha 0.75
-			GetBitmapFontManager().basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TVec2D.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
-			SetAlpha 1.0
-			SetColor 255,255,255
-		endif
-
-		'===== DRAW SHEET BACKGROUND =====
-		asset.Draw(x,y)
-
-		'===== DRAW STATIC TEXTS =====
-		DrawSeriesSheetTextOverlay(x, y, asset.area.GetW(), asset.area.GetH())
-
-		'===== DRAW DYNAMIC TEXTS =====
-		Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
-		SetColor 0,0,0
-		normalFont.drawBlock(GetLocale("MOVIE_TOPICALITY")  , x+84, y+281, 40, 16)
-		normalFont.drawBlock(GetLocale("MOVIE_BLOCKS")+": "+data.GetBlocks(), x+10, y+281, 100, 16)
-
-		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
-		if not finance or finance.canAfford(getPrice())
-			normalFont.drawBlock(GetPrice(), x+240, y+281, 120, 20)
-		else
-			normalFont.drawBlock(GetPrice(), x+240, y+281, 120, 20, null, TColor.Create(200,0,0))
-		endif
-		SetColor 255,255,255
-
-		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+22+188, widthbarSpeed*200  , 10))
-		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+22+210, widthbarReview*200 , 10))
-		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+22+232, widthbarOutcome*200, 10))
-		SetAlpha 0.3
-		If widthbarMaxTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+115, y+280, widthbarMaxTopicality*100, 10))
-		SetAlpha 1.0
-		If widthbarTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+115, y+280, widthbarTopicality*100, 10))
-	End Method
-
-
-	Method DrawSingleSheetTextOverlay(x:int, y:int, w:int, h:int)
-		'reset cache
-		if cacheTextOverlayMode <> "SINGLE"
-			cacheTextOverlayMode = "SINGLE"
-			cacheTextOverlay = null
-		endif
-
-		'===== CREATE CACHE IF MISSING =====
-		if not cacheTextOverlay
-			cacheTextOverlay = TFunctions.CreateEmptyImage(w, h)
-
-			'render to image
-			TBitmapFont.SetRenderTarget(cacheTextOverlay)
-
-			Local normalFont:TBitmapFont	= GetBitmapFontManager().baseFont
-
-			If data.xrated <> 0 Then normalFont.drawBlock(GetLocale("MOVIE_XRATED") , 240 , 34 , 50, 20) 'prints pg-rating
-
-			normalFont.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", 10 , 135, 280, 16)
-			normalFont.drawBlock(GetLocale("MOVIE_SPEED")       , 222, 187, 280, 16)
-			normalFont.drawBlock(GetLocale("MOVIE_CRITIC")      , 222, 210, 280, 16)
-			normalFont.drawBlock(GetLocale("MOVIE_BOXOFFICE")   , 222, 233, 280, 16)
-			normalFont.drawBlock(data.GetDirectorsString()      , 10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":")) , 135, 280-15-normalFont.getWidth(GetLocale("MOVIE_DIRECTOR")+":"), 16) 	'prints director
-			if data.GetActorsString() <> ""
-				normalFont.drawBlock(GetLocale("MOVIE_ACTORS")+":"  , 10 , 148, 280, 32)
-				normalFont.drawBlock(data.GetActorsString()		, 10 +5+ Int(normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":")), 148, 280-15-normalFont.getWidth(GetLocale("MOVIE_ACTORS")+":"), 32) 	'prints actors
-			endif
-			normalFont.drawBlock(data.GetGenreString()		, 78 , 35 , 150, 16) 	'prints genre
-			normalFont.drawBlock(data.country				, 10 , 35 , 150, 16)		'prints country
-
-			If data.genre <> TProgrammeData.GENRE_CALLINSHOW
-				normalFont.drawBlock(data.year				, 36 , 35 , 150, 16) 	'prints year
-				normalFont.drawBlock(data.GetDescription()	, 10,  54 , 282, 71) 'prints programmedescription on moviesheet
-			Else
-				normalFont.drawBlock(data.GetDescription()	, 10,  54 , 282, 51) 'prints programmedescription on moviesheet
-
-				'convert back cents to euros and round it
-				'value is "per 1000" - so multiply with that too
-				local revenue:string = int(1000 * data.GetPerViewerRevenue())+" "+CURRENCYSIGN
-				normalFont.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), 10,  106 , 278, 20) 'prints programmedescription on moviesheet
-			EndIf
-
-
-			'set back to screen Rendering
-			TBitmapFont.SetRenderTarget(null)
-		endif
-
-		'===== DRAW CACHE =====
-		DrawImage(cacheTextOverlay, x, y)
-	End Method
-
-
-	Method ShowSingleSheet:Int(x:Int,y:Int, align:int=0)
-		local data:TProgrammeData        = GetData()
-		Local widthbarSpeed:Float        = data.speed / 255.0
-		Local widthbarReview:Float       = data.review / 255.0
-		Local widthbarOutcome:Float      = data.Outcome/ 255.0
-		Local widthbarTopicality:Float   = data.topicality / 255.0
-		Local widthbarMaxTopicality:Float= data.GetMaxTopicality() / 255.0
-		Local fontNormal:TBitmapFont     = GetBitmapFontManager().baseFont
-		Local fontBold:TBitmapFont       = GetBitmapFontManager().baseFontBold
-		Local fontSemiBold:TBitmapFont   = GetBitmapFontManager().Get("defaultThin", -1, BOLDFONT)
-
-
-		'=== DRAW BACKGROUND ===
-		local sprite:TSprite
-		local currX:Int = x + 320
-		local currY:int = y
-		local currTextWidth:int
-		sprite = GetSpriteFromRegistry("gfx_datasheet_title"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		if not data.IsMovie()
-			sprite = GetSpriteFromRegistry("gfx_datasheet_series"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
-		endif
-		sprite = GetSpriteFromRegistry("gfx_datasheet_country"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_content"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_splitter"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_content2"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subTop"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieRatings"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-
-'		If data.genre = data.GENRE_CALLINSHOW
-			sprite = GetSpriteFromRegistry("gfx_datasheet_subMessageEarn"); sprite.Draw(currX, currY)
-			currY :+ sprite.GetHeight()
-'		EndIf
-
-		sprite = GetSpriteFromRegistry("gfx_datasheet_subMovieAttributes"); sprite.Draw(currX, currY)
-		currY :+ sprite.GetHeight()
-		sprite = GetSpriteFromRegistry("gfx_datasheet_bottom"); sprite.Draw(currX, currY)
-
-
-
-		'=== DRAW TEXTS / OVERLAYS ====
-		currY = y + 7 'inside
-		currX :+ 7 'inside
-		local textColor:TColor = TColor.CreateGrey(25)
-		local textLightColor:TColor = TColor.CreateGrey(75)
-		local textEarnColor:TColor = TColor.Create(45,80,10)
-		
-		if data.isMovie()
-			'default is size "12"
-			GetBitmapFontManager().Get("default", 13, BOLDFONT).drawBlock(GetTitle(), currX + 6, currY + 4, 278, 16, null, textColor)
-			'fontBold.drawBlock(GetTitle(), currX + 6, currY + 4, 278, 16, null, textColor)
-		else
-			'title
-			fontBold.drawBlock(parentLicence.GetTitle(), currX + 6, currY + 4, 278, 16, null, textColor)
-			currY :+ 20
-			'episode num/max + episode title
-			fontNormal.drawBlock((parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ": " + data.GetTitle(), currX + 6, currY + 11, 278, 12, null, textColor)
-		endif
-		currY :+ 20
-
-		'country + genre
-		'country/year + genre   - for non-callin-shows
-		local countryYear:String = data.country
-		If data.genre <> data.GENRE_CALLINSHOW
-			countryYear :+ " " + data.year
-		endif
-		fontNormal.drawBlock(countryYear          , currX + 6     , currY + 2, 65, 15, null, textColor)
-		fontNormal.drawBlock(data.GetGenreString(), currX + 6 + 67, currY + 2, 215, 15, null, textColor)
-		currY :+ 18
-
-		'content description
-		fontNormal.drawBlock(data.GetDescription(), currX + 6, currY, 280, 65, null ,textColor)
-		currY :+ 67
-		currY :+ 5 'splitter
-		'director
-		currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_DIRECTOR")+":"))
-		fontSemiBold.drawBlock(GetLocale("MOVIE_DIRECTOR")+":", currX + 6, currY + 4, 280, 15, null, textColor)
-		fontNormal.drawBlock(data.GetDirectorsString()      , currX + 6 + 5 + currTextWidth, currY + 4 , 280 - 15 - currTextWidth, 15, null, textColor)
-		currY :+ 15
-
-		'actors
-		if data.GetActorsString() <> ""
-			currTextWidth = Int(fontSemiBold.getWidth(GetLocale("MOVIE_ACTORS")+":"))
-			fontSemiBold.drawBlock(GetLocale("MOVIE_ACTORS")+":", currX + 6 , currY + 4, 280, 30, null, textColor)
-			fontNormal.drawBlock(data.GetActorsString()       , currX + 6 + 5 + currTextWidth, currY + 4, 280 - 15 - currTextWidth, 30, null, textColor)
-		endif
-		currY :+ 30
-		currY :+ 6 'to rating
-
-		'===== DRAW RATINGS / BARS =====
-		'captions
-		fontSemiBold.drawBlock(GetLocale("MOVIE_SPEED"),      currX + 215, currY,      75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_CRITIC"),     currX + 215, currY + 17, 75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_BOXOFFICE"),  currX + 215, currY + 34, 75, 15, null, textLightColor)
-		fontSemiBold.drawBlock(GetLocale("MOVIE_TOPICALITY"), currX + 215, currY + 51, 75, 15, null, textLightColor)
-
-		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1, widthbarSpeed*200  , 10))
-		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 17, widthbarReview*200 , 10))
-		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX+8, currY + 1 + 34, widthbarOutcome*200, 10))
-		If widthbarMaxTopicality>0.01
-			SetAlpha GetAlpha()*0.25
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 51, widthbarMaxTopicality*100, 10))
-			SetAlpha GetAlpha()*4.0
-			GetSpriteFromRegistry("gfx_datasheet_bar").DrawResized(new TRectangle.Init(currX + 8, currY + 1 + 51, widthbarTopicality*100, 10))
-		EndIf
-		
-		currY :+ 68
-
-
-
-
-'		If data.genre = data.GENRE_CALLINSHOW
-			'convert back cents to euros and round it
-			'value is "per 1000" - so multiply with that too
-			local revenue:string = int(1000 * data.GetPerViewerRevenue())+" "+CURRENCYSIGN
-			fontSemiBold.drawBlock(getLocale("MOVIE_CALLINSHOW").replace("%PROFIT%", revenue), currX + 35,  currY + 5 , 245, 15, ALIGN_CENTER_TOP, textEarnColor)
-			currY :+ 28
-'		EndIf
-
-		'blocks
-		fontBold.drawBlock(data.GetBlocks(), currX + 30, currY + 3, 20, 15, ALIGN_CENTER_CENTER, textColor)
-
-		'price
-		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
-		if not finance or finance.canAfford(getPrice())
-			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 225, currY+3, 55, 15, ALIGN_RIGHT_CENTER, textColor)
-		else
-			fontBold.drawBlock(TFunctions.DottedValue(GetPrice()), currX + 225, currY+3, 55, 15, ALIGN_RIGHT_CENTER, TColor.Create(200,0,0))
-		endif
-
-		currY :+ 28
-
-
-		'=== X-Rated Overlay ===
-		'If data.xrated <> 0 Then fontNormal.drawBlock(GetLocale("MOVIE_XRATED") , 240 , dY+34 , 50, 20) 'prints pg-rating
-
-
-
-		
-
-
-		Local dY:Int = 0
-		local asset:TSprite = null
-		if data.isMovie()
-			asset = GetSpriteFromRegistry("gfx_datasheets_movie")
-		else
-			asset = GetSpriteFromRegistry("gfx_datasheets_series")
-		endif
-
-
-		if owner > 0 'and GetPlayerCollection().Get().figure.inRoom
-			'only if planend and in archive
-			if self.IsPlanned() ' and GetPlayerCollection().Get().figure.inRoom.name = "archive"
-				local warningX:int = x
-				local warningY:int = asset.area.GetH()
-				local warningW:int = asset.area.GetW()
-				warningY :-15 'minus shadow
-				if align = 1 then warningX :- warningW
-				SetAlpha 0.5
-				SetColor 255,235,110
-				DrawRect(warningX+20, y + warningY, warningW-40, 30)
-				SetAlpha 0.75
-				GetBitmapFontManager().basefontBold.drawBlock("Programm im Sendeplan!", warningX+20, y+warningY+15, warningW-40, 20, new TVec2D.Init(ALIGN_CENTER), TColor.clWhite, 2, 1, 0.5)
-				SetAlpha 1.0
-				SetColor 255,255,255
-			endif
-		endif
-
-
-		If data.isMovie()
-			if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_movie").area.GetW()
-			GetSpriteFromRegistry("gfx_datasheets_movie").Draw(x,y)
-			SetColor 0,0,0
-			GetBitmapFontManager().basefontBold.drawBlock(GetTitle(), x + 10, y + 11, 278, 20)
-		Else
-			if align = 1 then x :- GetSpriteFromRegistry("gfx_datasheets_series").area.GetW()
-
-			GetSpriteFromRegistry("gfx_datasheets_series").Draw(x,y)
-			SetColor 0,0,0
-			'episode display
-			GetBitmapFontManager().basefontBold.drawBlock(parentLicence.GetTitle(), x + 10, y + 11, 278, 20)
-			fontNormal.drawBlock("(" + (parentLicence.GetSubLicencePosition(self)+1) + "/" + parentLicence.GetSubLicenceCount() + ") " + data.GetTitle(), x + 10, y + 34, 278, 20)  'prints programmedescription on moviesheet
-
-			dy :+ 22
-		EndIf
-
-		'===== DRAW STATIC TEXTS =====
-		DrawSingleSheetTextOverlay(x, y + dy, asset.area.GetW(), asset.area.GetH() - dy)
-
-		'===== DRAW DYNAMIC TEXTS =====
-		SetColor 0,0,0
-		fontNormal.drawBlock(GetLocale("MOVIE_TOPICALITY")  , x+84, y+281, 40, 16)
-		fontNormal.drawBlock(GetLocale("MOVIE_BLOCKS")+": "+data.GetBlocks(), x+10, y+281, 100, 16)
-
-'		local finance:TPlayerFinance = GetPlayerFinanceCollection().Get(owner, -1)
-		if not finance or finance.canAfford(getPrice())
-			fontNormal.drawBlock(GetPrice(), x+240, y+281, 120, 20)
-		else
-			fontNormal.drawBlock(GetPrice(), x+240, y+281, 120, 20, null, TColor.Create(200,0,0))
-		endif
-		SetColor 255,255,255
-
-		'===== DRAW BARS =====
-		If widthbarSpeed   >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+dY+188, widthbarSpeed*200  , 10))
-		If widthbarReview  >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+dY+210, widthbarReview*200 , 10))
-		If widthbarOutcome >0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+13, y+dY+232, widthbarOutcome*200, 10))
-
-		SetAlpha 0.3
-		If widthbarMaxTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+115, y+280, widthbarMaxTopicality*100, 10))
-		SetAlpha 1.0
-		If widthbarTopicality>0.01 Then GetSpriteFromRegistry("gfx_datasheets_bar").DrawResized(new TRectangle.Init(x+115, y+280, widthbarTopicality*100, 10))
-	End Method
-endrem
 
 	Method ShowTrailerSheet:Int(x:Int,y:Int, align:int=0)
 		'=== DRAW BACKGROUND ===
@@ -1343,8 +934,8 @@ endrem
 
 	'Wird bisher nur in der LUA-KI verwendet
 	Method GetPricePerBlock:Int() {_exposeToLua}
-		'licence is connected to a programme
-		if GetData() then return GetPrice() / GetData().GetBlocks()
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData() then return GetData().GetBlocks()
 
 		'if licence is a collection: ask subs
 		local ppB:int = 0
@@ -1360,8 +951,8 @@ endrem
 
 	'Wird bisher nur in der LUA-KI verwendet
 	Method GetQualityLevel:Int() {_exposeToLua}
-		'licence is connected to a programme
-		if GetData()
+		'single-licence
+		if GetSubLicenceCount() = 0 and GetData()
 			Local quality:Int = Self.GetData().GetQuality() * 100
 			If quality > 20
 				Return 5
@@ -1387,3 +978,214 @@ endrem
 	End Method
 	'===== END AI-LUA HELPER FUNCTIONS =====
 End Type
+
+
+
+
+
+'create all filters
+TProgrammeLicenceFilter.Init()
+
+Type TProgrammeLicenceFilter
+	Field genres:Int[]
+	Field flags:int
+	Field notFlags:int
+	Field displayInMenu:int = False
+	Field id:int = 0
+
+	Global filters:TList = CreateList()
+	Global visibleCount:int = -1
+	Global lastID:Int=0
+
+
+	Method New()
+		lastID:+1
+		id = lastID
+	End Method
+
+
+	function Init()
+		'reset old filters
+		filters = CreateList()
+
+		'flags having custom categories
+		local categoryFlags:int = TProgrammeData.FLAG_PAID | TProgrammeData.FLAG_LIVE | TprogrammeData.FLAG_TRASH
+
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([1])			'adventure
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([2])			'action
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([4, 17])		'crime & thriller
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([5])			'comedy
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([6, 300])		'documentation & reportage
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([7])			'drama
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([8])			'erotic
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([9, 3])		'family & cartoons
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([10, 14])		'fantasy & mystery
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([11])			'history
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([12])			'horror
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([13])			'monumental
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([15])			'lovestory
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([16])			'scifi
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([18])			'western
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([0])			'undefined
+		CreateVisible().AddNotFlag(categoryFlags).AddGenres([200])		'show/event
+		CreateVisible().AddFlag(TProgrammeData.FLAG_LIVE)		'live
+		CreateVisible().AddFlag(TProgrammeData.FLAG_TRASH)		'Trash
+		CreateVisible().AddFlag(TProgrammeData.FLAG_PAID)		'Call-In
+	End Function
+
+
+	'creates a new filter and sets it up to get displayed in the licence
+	'selection menu
+	Function CreateVisible:TProgrammeLicenceFilter()
+		local obj:TProgrammeLicenceFilter = new TProgrammeLicenceFilter
+		obj.displayInMenu = True
+
+		'add to list
+		Add(obj)
+
+		return obj
+	End Function
+
+
+	Function Add:TProgrammeLicenceFilter(filter:TProgrammeLicenceFilter)
+		filters.AddLast(filter)
+
+		'invalidate cached vars
+		visibleCount :-1
+
+		return filter
+	End Function
+
+
+	Function GetCount:Int()
+		return filters.Count()
+	End Function
+
+
+	Function GetVisibleCount:Int()
+		if visibleCount >= 0 then return visibleCount
+
+		visibleCount = 0
+		For local f:TProgrammeLicenceFilter = EachIn filters
+			if f.displayInMenu then visibleCount :+ 1
+		Next
+		return visibleCount
+	End Function
+
+
+	Function GetVisible:TProgrammeLicenceFilter[]()
+		local result:TProgrammeLicenceFilter[]
+		For local f:TProgrammeLicenceFilter = EachIn filters
+			if f.displayInMenu then result :+ [f]
+		Next
+		return result
+	End Function
+
+
+	'returns a filter which contains ALL given genres and flags
+	'so it is like "genre1 AND genre2 AND flag1 AND flag2"
+	Function Get:TProgrammeLicenceFilter(genres:int[], flags:int=0)
+		local result:TProgrammeLicenceFilter
+		For local filter:TProgrammeLicenceFilter = EachIn filters
+			if genres.length > 0
+				for local genre:int = eachin genres
+					local foundGenre:int = False
+					for local filterGenre:int = eachin filter.genres
+						if filterGenre = genre then foundGenre = True;exit 
+					Next
+					'if the genre was not found, the filter is not the right
+					'one -> exit the genre loop
+					if not foundGenre
+						result = Null
+						exit
+					else
+						result = filter
+					endif
+				Next
+				if not result then continue
+			endif
+
+			'check flags
+			'skip if not all were set
+			if (filter.flags & flags) <> flags then continue
+
+			'found the filter
+			return filter
+		Next
+		return result
+	End Function
+
+
+	Function GetAtIndex:TProgrammeLicenceFilter(index:int)
+		return TProgrammeLicenceFilter(filters.ValueAtIndex(index))
+	End Function
+
+
+	Method ToString:String()
+		local g:string = ""
+		for local i:int = eachin genres
+			if g<>"" then g:+ ", "
+			g:+ i
+		Next
+
+		return "filter["+id+"]  genres=~q"+g+"~q  flags="+flags
+	End Method
+	
+
+	Method AddGenres:TProgrammeLicenceFilter(newGenres:int[])
+		For local newGenre:int = eachIn newGenres
+			For local genre:int = EachIn genres
+				'skip if genre exists already
+				if genre = newGenre then continue
+			Next
+			genres :+ [newGenre]
+		Next
+		return self
+	End Method
+
+
+	Method AddFlag:TProgrammeLicenceFilter(flag:int)
+		self.flags :| flag
+
+		return self
+	End Method
+
+
+	Method AddNotFlag:TProgrammeLicenceFilter(flag:int)
+		self.notFlags :| flag
+
+		return self
+	End Method
+
+
+	Method GetGenres:int[]()
+		return genres
+	End Method
+
+
+	'checks if the given programmelicence contains at least ONE of the given
+	'filter criterias ("OR"-chain of criterias)
+	'Ex.: filter cares for genres 1,2 and flags "trash" and "bmovie"
+	'     True is returned genre 1 or 2 or flag "trash" or flag "bmovie"
+	Method DoesFilter:Int(licence:TProgrammeLicence)
+		if not licence then return False
+		'check flags filter does NOT care for
+		if notFlags > 0 and (licence.GetFlags() & notFlags) > 0 then return False
+
+		if genres.length > 0
+			local licenceGenre:int = licence.GetGenre()
+			local hasGenre:int = False
+			for local genre:int = eachin genres
+				if licenceGenre = genre then hasGenre = True;exit
+			Next
+			if hasGenre then return True
+		endif
+
+		'check flags share something
+		if flags > 0 and (licence.GetFlags() & flags) > 0 then return True
+
+		return False
+	End Method
+End Type
+
+

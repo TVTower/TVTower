@@ -8,6 +8,6 @@
 		<bitmapfont name="defaultThin" url="res/fonts/sourcesans/SourceSansPro-Light.ttf" size="13" lineHeightModifier="1.1" />
 		<bitmapfont name="defaultThin" url="res/fonts/sourcesans/SourceSansPro-Semibold.ttf" size="13" flags="BOLDFONT" lineHeightModifier="1.1" />
 
-		<bitmapfont name="smalldefault" url="res/fonts/sourcesans/SourceSansPro-Regular.ttf" size="10" default="1" />
+		<bitmapfont name="smalldefault" url="res/fonts/sourcesans/SourceSansPro-Regular.ttf" size="12" default="1" />
 	</bitmapfonts>
 </tvt>

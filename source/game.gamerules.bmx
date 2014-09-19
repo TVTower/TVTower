@@ -11,6 +11,8 @@ Type TGameRules {_exposeToLua}
 	Field maxAbonnementLevel:Int = 3
 	'how many movies can be carried in suitcase
 	Field maxProgrammeLicencesInSuitcase:Int = 12
+	'how many movies can a player have per filter ("genre")
+	Field maxProgrammeLicencesPerFilter:Int = 15
 	'how many contracts can a player collection store
 	Field maxContracts:int = 10
 	'speed of the world (1.0 means "normal", 2.0 = double as fast)

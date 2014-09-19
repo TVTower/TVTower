@@ -182,48 +182,62 @@ Type THelper
 		EndIf
 
 
-		'=== LISTS ===
-		If objTypeID.ExtendsType(ListTypeID)
-			local list:TList = CreateList()
-			For local entry:object = EachIn TList(obj)
-				list.AddLast(entry)
-			Next
-			return list
-		EndIf
+		Local clone:object
+
+		'use the objects specific clone method instead of our
+		'generic approach
+		'call a method "CloneObject:Int(original:obj)"
+		Local mth:TMethod = objTypeID.FindMethod("CloneObject")
+		If mth
+			clone = objTypeID.NewObject()
+			mth.Invoke(clone, [obj])
+		Else
 		
-		'=== TMAPS ===
-		'do maps BEFORE arrays... as maps extend arrays
-		If objTypeID.ExtendsType(MapTypeID)
-			local map:TMap = CreateMap()
-			For local key:string = EachIn TMap(obj).Keys()
-				map.Insert(key, TMap(obj).ValueForKey(key))
-			Next
-			return map
-		EndIf	
-
-		'=== OBJECTS ===
-		'create a new instance of the objects type
-		Local clone:object = New obj
-
-		'loop over all fields of the object
-		For Local fld:TField=EachIn objTypeID.EnumFields()
-			Local fldId:TTypeId=fld.TypeId()
-
-			'only clone non-null-fields and if not explicitely forbidden
-			If fld.Get(obj) And fld.MetaData("NoClone") = Null
-				'if explizitely stated, clone referenceable objects by
-				'reusing their reference, else deep clone it
-				If fld.MetaData("CloneUseReference")
-					fld.Set(clone, fld.Get(obj))
-				Else
-					fld.Set(clone, CloneObject(fld.Get(obj)))
-				EndIf
+			'=== LISTS ===
+			If objTypeID.ExtendsType(ListTypeID)
+				local list:TList = CreateList()
+				For local entry:object = EachIn TList(obj)
+					list.AddLast( CloneObject(entry) )
+				Next
+				return list
 			EndIf
-		Next
+
+			
+			'=== TMAPS ===
+			If objTypeID.ExtendsType(MapTypeID)
+				local map:TMap = CreateMap()
+				For local key:string = EachIn TMap(obj).Keys()
+					map.Insert(key, CloneObject(TMap(obj).ValueForKey(key)) )
+				Next
+				return map
+			EndIf	
+
+
+			'=== OBJECTS ===
+			'create a new instance of the objects type
+			'Local clone:object = New obj
+			clone = objTypeID.NewObject()
+
+			'loop over all fields of the object
+			For Local fld:TField=EachIn objTypeID.EnumFields()
+				Local fldId:TTypeId=fld.TypeId()
+
+				'only clone non-null-fields and if not explicitely forbidden
+				If fld.Get(obj) And fld.MetaData("NoClone") = Null
+					'if explizitely stated, clone referenceable objects by
+					'reusing their reference, else deep clone it
+					If fld.MetaData("CloneUseReference")
+						fld.Set(clone, fld.Get(obj))
+					Else
+						fld.Set(clone, CloneObject(fld.Get(obj)))
+					EndIf
+				EndIf
+			Next
+		EndIf
 
 		'inform the clone that it got cloned
 		'call a method "onGotCloned:Int(original:obj)"
-		Local mth:TMethod = objTypeID.FindMethod("onGotCloned")
+		mth = objTypeID.FindMethod("onGotCloned")
 		If mth then mth.Invoke(clone, [obj])
 
 		Return clone

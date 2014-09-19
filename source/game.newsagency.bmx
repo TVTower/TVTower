@@ -316,7 +316,7 @@ Type TNewsAgency
 			description = getLocale("NEWS_ANNOUNCE_MOVIE_ACTOR_IS_DIRECTOR_DESCRIPTION")
 		EndIf
 		'if no actors ...
-		If licence.GetData().getActor(1) = ""
+		If licence.GetData().getActor(1) = null
 			title = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_TITLE")
 			description = getLocale("NEWS_ANNOUNCE_MOVIE_NO_ACTOR_DESCRIPTION")
 		EndIf
@@ -335,11 +335,19 @@ Type TNewsAgency
 
 
 	Method _ReplaceProgrammeData:String(text:String, data:TProgrammeData)
+		local actor:TProgrammePersonBase
+		local director:TProgrammePersonBase
 		For Local i:Int = 1 To 2
-			text = text.Replace("%ACTORNAME"+i+"%", data.getActor(i))
-			text = text.Replace("%DIRECTORNAME"+i+"%", data.getDirector(i))
+			actor = data.GetActor(i)
+			director = data.GetDirector(i)
+			if actor
+				text = text.Replace("%ACTORNAME"+i+"%", actor.GetFullName())
+			endif
+			if director
+				text = text.Replace("%DIRECTORNAME"+i+"%", director.GetFullName())
+			endif
 		Next
-		text = text.Replace("%MOVIETITLE%", data.title.Get())
+		text = text.Replace("%MOVIETITLE%", data.GetTitle())
 
 		Return text
 	End Method

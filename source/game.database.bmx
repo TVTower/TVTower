@@ -138,16 +138,28 @@ Type TDatabaseLoader
 
 			'print title+": priceModifier="+priceModifier+"  review="+review+"  speed="+speed+"  Outcome="+outcome
 
-			local actors:TProgrammePerson[] = GetPersonsFromString(actorsRaw, TProgrammePersonBase.JOB_ACTOR)
-			local directors:TProgrammePerson[] = GetPersonsFromString(directorsRaw, TProgrammePersonBase.JOB_DIRECTOR)
+
+			local cast:TProgrammePersonJob[]
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TProgrammePersonJob.JOB_DIRECTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_DIRECTOR)]
+			Next
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TProgrammePersonJob.JOB_ACTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_ACTOR)]
+			Next
 
 			local localizeTitle:TLocalizedString = new TLocalizedString
 			localizeTitle.Set(title, "de")
 			local localizeDescription:TLocalizedString = new TLocalizedString
 			localizeDescription.Set(description, "de")
 
-			local movieLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-			movieLicence.AddData(TProgrammeData.Create("", localizeTitle, localizeDescription, actors, directors, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
+			local movieLicence:TProgrammeLicence = new TProgrammeLicence
+			movieLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_MOVIE))
+
+			'convert old genre definition to new one
+			convertV2genreToV3(movieLicence.data)
+			
+			'add to collection (it is sorted automatically)
+			GetProgrammeLicenceCollection().AddAutomatic(movieLicence)
 
 			releaseDaycounter:+1
 			moviesCount :+1
@@ -180,8 +192,14 @@ Type TDatabaseLoader
 			wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", 1.0)
 			If duration < 0 Or duration > 12 Then duration =1
 
-			local actors:TProgrammePerson[] = GetPersonsFromString(actorsRaw, TProgrammePersonBase.JOB_ACTOR)
-			local directors:TProgrammePerson[] = GetPersonsFromString(directorsRaw, TProgrammePersonBase.JOB_DIRECTOR)
+
+			local cast:TProgrammePersonJob[]
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TProgrammePersonJob.JOB_DIRECTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_DIRECTOR)]
+			Next
+			For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TProgrammePersonJob.JOB_ACTOR)
+				cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_ACTOR)]
+			Next
 
 			local localizeTitle:TLocalizedString = new TLocalizedString
 			localizeTitle.Set(title, "de")
@@ -189,9 +207,12 @@ Type TDatabaseLoader
 			localizeDescription.Set(description, "de")
 
 			'create a licence for that series - with title and series description
-			local seriesLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-			'add the "overview"-data of the series
-			seriesLicence.AddData(TProgrammeData.Create("", localizeTitle, localizeDescription, actors, directors, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
+			local seriesLicence:TProgrammeLicence = new TProgrammeLicence
+			'sets the "overview"-data of the series as series header
+			seriesLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_SERIES))
+
+			'convert old genre definition to new one
+			convertV2genreToV3(seriesLicence.data)
 
 			releaseDaycounter:+1
 
@@ -217,20 +238,35 @@ Type TDatabaseLoader
 					refreshModifier	= xml.FindValueFloat(nodeChild,"refreshModifier", refreshModifier)
 					wearoffModifier	= xml.FindValueFloat(nodeChild,"wearoffModifier", wearoffModifier)
 
-					local actors:TProgrammePerson[] = GetPersonsFromString(actorsRaw, TProgrammePersonBase.JOB_ACTOR)
-					local directors:TProgrammePerson[] = GetPersonsFromString(directorsRaw, TProgrammePersonBase.JOB_DIRECTOR)
+
+					local cast:TProgrammePersonJob[]
+					For local p:TProgrammePerson = EachIn GetPersonsFromString(directorsRaw, TProgrammePersonJob.JOB_DIRECTOR)
+						cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_DIRECTOR)]
+					Next
+					For local p:TProgrammePerson = EachIn GetPersonsFromString(actorsRaw, TProgrammePersonJob.JOB_ACTOR)
+						cast :+ [new TProgrammePersonJob.Init(p, TProgrammePersonJob.JOB_ACTOR)]
+					Next
 
 					local localizeTitle:TLocalizedString = new TLocalizedString
 					localizeTitle.Set(title, "de")
 					local localizeDescription:TLocalizedString = new TLocalizedString
 					localizeDescription.Set(description, "de")
 
-					local episodeLicence:TProgrammeLicence = TProgrammeLicence.Create(title, description)
-					episodeLicence.AddData(TProgrammeData.Create("", localizeTitle, localizeDescription, actors, directors, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
+					local episodeLicence:TProgrammeLicence = new TProgrammeLicence
+					episodeLicence.SetData(TProgrammeData.Create("", localizeTitle, localizeDescription, cast, land, year, releaseDayCounter mod GetWorldTime().GetDaysPerYear(), livehour, Outcome, review, speed, priceModifier, Genre, duration, xrated, refreshModifier, wearoffModifier, TProgrammeData.TYPE_EPISODE))
 					'add that episode to the series licence
 					seriesLicence.AddSubLicence(episodeLicence)
+
+					'convert old genre definition to new one
+					convertV2genreToV3(episodeLicence.data)
+
+					'add episode to global collection (it is sorted automatically)
+					GetProgrammeLicenceCollection().AddAutomatic(episodeLicence)
 				EndIf
 			Next
+
+			'add to collection (it is sorted automatically)
+			GetProgrammeLicenceCollection().AddAutomatic(seriesLicence)
 
 			seriesCount :+ 1
 			totalSeriesCount :+ 1
@@ -355,10 +391,22 @@ Type TDatabaseLoader
 			For local nodeProgramme:TxmlNode = EachIn xml.GetNodeChildElements(nodeAllProgrammes)
 				If nodeProgramme.getName() <> "programme" then continue
 
-				'creates a TProgrammeData and a TProgrammeLicence
-				'of the found entry. If the entry contains "episodes"
-				'they get loaded too
-				LoadV3ProgrammeDataFromNode(nodeProgramme, xml)
+				'creates a TProgrammeLicence of the found entry.
+				'If the entry contains "episodes", they get loaded too
+				local licence:TProgrammeLicence
+				licence = LoadV3ProgrammeLicenceFromNode(nodeProgramme, xml)
+
+				if licence
+					if licence.isMovie()
+						moviesCount :+ 1
+						totalMoviesCount :+ 1
+					elseif licence.isSeries()
+						seriesCount :+ 1
+						totalSeriesCount :+ 1
+					endif
+
+					GetProgrammeLicenceCollection().AddAutomatic(licence)
+				endif
 			Next
 		endif
 
@@ -543,17 +591,17 @@ Type TDatabaseLoader
 	End Method
 	
 
-	Method LoadV3ProgrammeDataFromNode:TProgrammeData(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
+	Method LoadV3ProgrammeLicenceFromNode:TProgrammeLicence(node:TxmlNode, xml:TXmlHelper, parentLicence:TProgrammeLicence = Null)
 		local GUID:String = TXmlHelper.FindValue(node,"id", "")
-		local doAdd:int = True
+		local programmeType:int = TXmlHelper.FindValueInt(node,"product", 0)
 		local programmeData:TProgrammeData
-		local programmeLicence:TProgrammeLicence = new TProgrammeLicence
+		local programmeLicence:TProgrammeLicence
 
-		'try to fetch an existing one
-		programmeData = GetProgrammeDataCollection().GetByGUID(GUID)
-		if programmeData
-			doAdd = False
-		else
+		'=== PROGRAMME DATA ===
+		'try to fetch an existing licence with the entries GUID
+		'TODO: SPLIT LICENCES FROM DATA
+		programmeLicence = GetProgrammeLicenceCollection().GetByGUID(GUID)
+		if not programmeLicence
 			'try to clone the parent's data - if that fails, create
 			'a new instance
 			if parentLicence then programmeData = TProgrammeData(THelper.CloneObject(parentLicence.data))
@@ -562,7 +610,17 @@ Type TDatabaseLoader
 			programmeData.GUID = GUID
 			programmeData.title = new TLocalizedString
 			programmeData.description = new TLocalizedString
+
+			programmeLicence = new TProgrammeLicence
+		else
+			programmeData = programmeLicence.GetData()
+			if not programmeData then Throw "Loading V3 Programme from XML: Existing programmeLicence without data found."
 		endif
+
+
+		'=== ADD PROGRAMME DATA TO LICENCE ===
+		'this just overrides the existing data - even if identical
+		programmeLicence.SetData(programmeData)
 
 		
 		'=== LOCALIZATION DATA ===
@@ -586,11 +644,7 @@ Type TDatabaseLoader
 		programmeData.priceModifier = data.GetFloat("price_mod", programmeData.priceModifier)
 		programmeData.flags = data.GetInt("flags", programmeData.flags)
 
-'GENRES BRAUCHEN UEBERARBEITUNG - die sind NICHT MEHR DIE GLEICHEN
-'wie bei der alten Datenbank. Bspweise ist Klasterisk von "genre=10"
-'zu "genre=3 flag-animation" geworden
-		'programmeData.genre = data.GetInt("maingenre", programmeData.genre)
-
+		programmeData.genre = data.GetInt("maingenre", programmeData.genre)
 		programmeData.subGenre = data.GetInt("subgenre", programmeData.subGenre)
 
 		'for movies/series set a releaseDay until we have that
@@ -611,15 +665,17 @@ Type TDatabaseLoader
 			local memberGUID:string = nodeMember.GetContent()
 
 			local member:TProgrammePersonBase = GetProgrammePersonCollection().GetByGUID(memberGUID)
+			'if person was defined
 			if member
 				Select memberFunction
-					case TProgrammePersonBase.JOB_ACTOR
-						programmeData.actors :+ [member]
-					case TProgrammePersonBase.JOB_DIRECTOR
-						programmeData.directors :+ [member]
+					case TProgrammePersonJob.JOB_ACTOR
+						programmeData.AddCast(new TProgrammePersonJob.Init(member, TProgrammePersonJob.JOB_ACTOR))
+					case TProgrammePersonJob.JOB_DIRECTOR
+						programmeData.AddCast(new TProgrammePersonJob.Init(member, TProgrammePersonJob.JOB_DIRECTOR))
 				End Select
 			endif
 		Next
+
 
 		'=== GROUPS ===
 		local nodeGroups:TxmlNode = xml.FindElementNode(node, "groups")
@@ -644,109 +700,40 @@ Type TDatabaseLoader
 		programmeData.outcome = 0.01 * data.GetFloat("outcome", programmeData.outcome*100)
 
 
+		'=== LICENCE TYPE ===
+		'the licenceType is adjusted as soon as "AddData" was used
+		'so correct it if needed
+		Select programmeType
+			case 1	 programmeData.programmeType = TProgrammeData.TYPE_MOVIE
+			case 2	 programmeData.programmeType = TProgrammeData.TYPE_SERIES
+			case 4	 programmeData.programmeType = TProgrammeData.TYPE_EPISODE
+		End Select
 
+
+		
 		'=== EPISODES ===
 		local nodeEpisodes:TxmlNode = xml.FindElementNode(node, "episodes")
-		local episodesFound:int = False
 		For local nodeEpisode:TxmlNode = EachIn xml.GetNodeChildElements(nodeEpisodes)
-			'skip other elements than episode
-			If nodeEpisode.getName() <> "episode" then continue
+			'skip other elements than programme data
+			If nodeEpisode.getName() <> "programme" then continue
 
 			'recursively load the episode - parent is the new programmeLicence
-			local episodeData:TProgrammeData = LoadV3ProgrammeDataFromNode(nodeEpisode, xml, programmeLicence)
-			if episodeData then episodesFound = True
+			local episodeLicence:TProgrammeLicence = LoadV3ProgrammeLicenceFromNode(nodeEpisode, xml, programmeLicence)
 
 			'the episodeNumber is currently not needed, as we
 			'autocalculate it by the position in the xml-episodes-list
 			'local episodeNumber:int = xml.FindValueInt(nodeEpisode, "index", 1)
 
-			'1) create a licence for this episode
-			'2) add the found data (also adds TProgrammeData to collection)
-			'3) add the episode to the programmeLicence
-			local episodeLicence:TProgrammeLicence = new TProgrammeLicence
-			episodeLicence.AddData(episodeData)
-
-'TODO: FUEHRT Noch zu absturz, da die Serienlizenz noch nicht hinterlegt
-'wird - und die wuerde hinzugefuegt werden, obwohl sie keine "data" hat
-'-> deswegen loeschen wir alle serien am ende dieser funktion bis
-'endgueltig umgestellt wird
-			'this also adds the episode to the "global licence list" 
+			'add the episode
 			programmeLicence.AddSubLicence(episodeLicence)
 		Next
 
 
-		'=== PROGRAMME TYPE ===
-		'set type of the programmeData
-		if programmeLicence.GetSubLicenceCount() > 0
-			programmeData.programmeType = TProgrammeData.TYPE_SERIES
-		elseif parentLicence and node.GetName().ToLower() = "episode"
-			programmeData.programmeType = TProgrammeData.TYPE_EPISODE
-		else
-			programmeData.programmeType = TProgrammeData.TYPE_MOVIE
-		endif
-
-
-rem
-'Ansatz fuer GenreV2-zu.GenreV3
-		newGenre:int = -1
-		Select programmeData.maingenre
-			case 0 'TProgrammeData.GENRE_ACTION
-				newGenre = TVTProgrammeGenre.Action
-			case 1 'TProgrammeData.GENRE_THRILLER
-				newGenre = TVTProgrammeGenre.Thriller
-			case 2 'TProgrammeData.GENRE_SCIFI
-				newGenre = TVTProgrammeGenre.SciFi
-			case 3 'TProgrammeData.GENRE_COMEDY
-				newGenre = TVTProgrammeGenre.Comedy
-			case 4 'TProgrammeData.GENRE_HORROR
-				newGenre = TVTProgrammeGenre.Horror
-			case 5 'TProgrammeData.GENRE_LOVE
-				newGenre = TVTProgrammeGenre.Romance
-			case 6 'TProgrammeData.GENRE_EROTIC
-				newGenre = TVTProgrammeGenre.Erotic
-			case 7 'TProgrammeData.GENRE_WESTERN
-				newGenre = TVTProgrammeGenre.Western
-			case 8 'TProgrammeData.GENRE_LIVE
-				'waere nun ein "Flag"
-			case 9 'TProgrammeData.GENRE_KIDS
-				newGenre = TVTProgrammeGenre.Family
-			case 10 'TProgrammeData.GENRE_CARTOON
-			'only 2 entries were "MUSIC"
-			case 11 'TProgrammeData.GENRE_MUSIC
-				newGenre = TVTProgrammeGenre.Undefined
-			case 12 'TProgrammeData.GENRE_SPORT
-			case 13 'TProgrammeData.GENRE_CULTURE
-			case 14 'TProgrammeData.GENRE_FANTASY
-				newGenre = TVTProgrammeGenre.Fantasy
-			case 15 'TProgrammeData.GENRE_YELLOWPRESS
-				'hier sind nur "Trash"-Programme drin
-				newGenre = TVTProgrammeGenre.Undefined
-			case 16 'TProgrammeData.GENRE_NEWS
-				'unused
-			case 17 'TProgrammeData.GENRE_SHOW
-			case 18 'TProgrammeData.GENRE_MONUMENTAL
-				newGenre = TVTProgrammeGenre.Monumental
-			case 19 'TProgrammeData.GENRE_FILLER 'TV films etc.
-				newGenre = TVTProgrammeGenre.Undefined
-			case 20 'TProgrammeData.GENRE_CALLINSHOW
-		End Select
-		if newGenre >= 0 then programmeData.mainGenre = newGenre
-
 		
-			case TVTProgrammeGenre.Undefined:int = 0
-
-
- 			case TVTProgrammeGenre.Adventure:int = 1
-			case TVTProgrammeGenre.Animation:int = 3
-			case TVTProgrammeGenre.Biography:int = 4
-			case TVTProgrammeGenre.Crime:int = 5
-			case TVTProgrammeGenre.Documentary:int = 7
-			case TVTProgrammeGenre.Drama:int = 8
-			case TVTProgrammeGenre.History:int = 12
-			case TVTProgrammeGenre.Mystery:int = 15
-			case TVTProgrammeGenre.War:int = 19
-		End Select
-endrem
+		if programmeLicence.isSeries() and programmeLicence.GetSubLicenceCount() = 0
+			programmeData.programmeType = TProgrammeData.TYPE_MOVIE
+			print "Series with 0 episodes found. Converted to movie: "+programmeLicence.GetTitle()
+		endif
 
 		
 		rem
@@ -759,30 +746,61 @@ endrem
 		Next
 		endrem
 
-		'add to collection
-		if doAdd
-			'falls es eine serie war, entferne den automatisch erzeugten
-			'eintrag - bis wir final auf v3 umstellen
-			GetProgrammeLicenceCollection().RemoveSeries(programmeLicence)
 
-			'add the data to the datacollection
-			'GetProgrammeDataCollection().Add(programmeData)
-
-			'add the data to the licence
-			'this also adds the licence to the licenceCollection
-			'programmeLicence.AddData(programmeData)
-			
-			if programmeData.programmeType = TProgrammeData.TYPE_MOVIE
-				moviesCount :+ 1
-				totalMoviesCount :+ 1
-			elseif programmeData.programmeType = TProgrammeData.TYPE_SERIES
-				seriesCount :+ 1
-				totalSeriesCount :+ 1
-			endif
-		endif
-
-		return programmeData
+		return programmeLicence
 	End Method
+
+
+	Function convertV2genreToV3:int(data:TProgrammeData)
+		Select data.genre
+			case 0 'old ACTION
+				data.genre = TVTProgrammeGenre.Action
+			case 1 'old THRILLER
+				data.genre = TVTProgrammeGenre.Thriller
+			case 2 'old SCIFI
+				data.genre = TVTProgrammeGenre.SciFi
+			case 3 'old COMEDY
+				data.genre = TVTProgrammeGenre.Comedy
+			case 4 'old HORROR
+				data.genre = TVTProgrammeGenre.Horror
+			case 5 'old LOVE
+				data.genre = TVTProgrammeGenre.Romance
+			case 6 'old EROTIC
+				data.genre = TVTProgrammeGenre.Erotic
+			case 7 'old WESTERN
+				data.genre = TVTProgrammeGenre.Western
+			case 8 'old LIVE
+				data.genre = TVTProgrammeGenre.Undefined
+				data.SetFlag(TProgrammeData.FLAG_LIVE)
+			case 9 'old KIDS
+				data.genre = TVTProgrammeGenre.Family
+			case 10 'old CARTOON
+				data.genre = TVTProgrammeGenre.Animation
+			case 11 'old MUSIC
+				data.genre = TVTProgrammeGenre.Undefined
+			case 12 'old SPORT
+				data.genre = TVTProgrammeGenre.Undefined
+			case 13 'old CULTURE
+				data.genre = TVTProgrammeGenre.Undefined
+			case 14 'old FANTASY
+				data.genre = TVTProgrammeGenre.Fantasy
+			case 15 'old YELLOWPRESS
+				'hier sind nur "Trash"-Programme drin
+				data.genre = TVTProgrammeGenre.Undefined
+				data.SetFlag(TProgrammeData.FLAG_TRASH)
+			case 17 'old SHOW
+				data.genre = TVTProgrammeGenre.Undefined_Show
+			case 18 'old MONUMENTAL
+				data.genre = TVTProgrammeGenre.Monumental
+			case 19 'TProgrammeData.GENRE_FILLER 'TV films etc.
+				data.genre = TVTProgrammeGenre.Undefined
+			case 20 'old CALLINSHOW
+				data.genre = TVTProgrammeGenre.Undefined
+				data.SetFlag(TProgrammeData.FLAG_PAID)
+			default
+				data.genre = TVTProgrammeGenre.Undefined
+		End Select
+	End Function
 
 
 	Function GetPersonsFromString:TProgrammePerson[](personsString:string="", job:int=0)

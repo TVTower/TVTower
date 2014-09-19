@@ -42,7 +42,7 @@ Type TProgramme Extends TBroadcastMaterialDefaultImpl {_exposeToLua="selected"}
 
 			if revenue > 0
 				'earn revenue for callin-shows
-				If data.GetGenre() = TProgrammeData.GENRE_CALLINSHOW
+				If data.HasFlag(TProgrammeData.FLAG_PAID)
 					GetPlayerFinanceCollection().Get(owner).EarnCallerRevenue(revenue, self)
 				'all others programmes get "sponsored"
 				Else

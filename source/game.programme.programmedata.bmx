@@ -147,14 +147,13 @@ End Function
 
 
 
-'raw data for movies, series,...
+'raw data for movies, epidodes (series)
+'but also series-headers, collection-headers,...
 Type TProgrammeData extends TGameObject {_exposeToLua}
 	Field title:TLocalizedString
 	Field description:TLocalizedString
-	'array holding actor(s)
-	Field actors:TProgrammePersonBase[]
-	'array holding director(s)
-	Field directors:TProgrammePersonBase[]
+	'array holding actor(s) and director(s) and ...
+	Field cast:TProgrammePersonJob[]
 	Field country:String = "UNK"
 	Field year:Int = 1900
 	'special targeted audiences?
@@ -197,34 +196,15 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	'times the trailer aired since the programme was shown "normal"
 	Field trailerAiredSinceShown:int = 0
 
+	Field cachedActors:TProgrammePersonBase[] {nosave}
+	Field cachedDirectors:TProgrammePersonBase[] {nosave}
 	Field genreDefinitionCache:TMovieGenreDefinition = Null {nosave}
 
 	Const TYPE_UNKNOWN:int		= 1
 	Const TYPE_EPISODE:int		= 2
 	Const TYPE_SERIES:int		= 4
 	Const TYPE_MOVIE:int		= 8
-
-	Const GENRE_ACTION:Int		= 0
-	Const GENRE_THRILLER:Int	= 1
-	Const GENRE_SCIFI:Int		= 2
-	Const GENRE_COMEDY:Int		= 3
-	Const GENRE_HORROR:Int		= 4
-	Const GENRE_LOVE:Int		= 5
-	Const GENRE_EROTIC:Int		= 6
-	Const GENRE_WESTERN:Int		= 7
-	Const GENRE_LIVE:Int		= 8
-	Const GENRE_KIDS:Int		= 9
-	Const GENRE_CARTOON:Int		= 10
-	Const GENRE_MUSIC:Int		= 11
-	Const GENRE_SPORT:Int		= 12
-	Const GENRE_CULTURE:Int		= 13
-	Const GENRE_FANTASY:Int		= 14
-	Const GENRE_YELLOWPRESS:Int	= 15
-	Const GENRE_NEWS:Int		= 16
-	Const GENRE_SHOW:Int		= 17
-	Const GENRE_MONUMENTAL:Int	= 18
-	Const GENRE_FILLER:Int		= 19 'TV films etc.
-	Const GENRE_CALLINSHOW:Int	= 20
+	Const TYPE_COLLECTION:int	= 16
 
 	'Genereller Quotenbonus!
 	Const FLAG_LIVE:Int = 1
@@ -252,7 +232,7 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Const FLAG_SERIES:Int = 256
 
 
-	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, actors:TProgrammePersonBase[], directors:TProgrammePersonBase[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, priceModifier:Float, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, programmeType:Int=1) {_private}
+	Function Create:TProgrammeData(GUID:String, title:TLocalizedString, description:TLocalizedString, cast:TProgrammePersonJob[], country:String, year:Int, day:int=0, livehour:Int, Outcome:Float, review:Float, speed:Float, priceModifier:Float, Genre:Int, blocks:Int, xrated:Int, refreshModifier:float=1.0, wearoffModifier:float=1.0, programmeType:Int=1) {_private}
 		Local obj:TProgrammeData = New TProgrammeData
 		obj.SetGUID(GUID)
 		obj.title = title
@@ -267,9 +247,8 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 		obj.genre			= Max(0,Genre)
 		obj.blocks			= blocks
 		obj.SetFlag(FLAG_XRATED, xrated)
-		obj.actors			= actors
-		obj.directors		= directors
 		obj.country			= country
+		obj.cast			= cast
 		obj.year			= year
 		obj.releaseDay		= day
 		obj.liveHour		= Max(-1,livehour)
@@ -283,15 +262,9 @@ Type TProgrammeData extends TGameObject {_exposeToLua}
 	Function CreateMinimal:TProgrammeData(title:TLocalizedString = null, genre:Int = 0, fixQuality:Float, year:Int = 1985)
 		Local quality:Int = fixQuality
 		if not title then title = new TLocalizedString
-		Return TProgrammeData.Create("", title, new TLocalizedString, Null, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
+		Return TProgrammeData.Create("", title, new TLocalizedString, Null, Null, year, 0, 0, quality, quality, quality, 0, genre, 0, 0, 1, 1, 1)
 	End Function
 
-rem
-	'this is run when the object gets cloned
-	Method onGotCloned:Int(original:object)
-		'
-	End Method
-endrem
 
 	Method hasFlag:Int(flag:Int) {_exposeToLua}
 		Return flags & flag
@@ -310,7 +283,7 @@ endrem
 	'what to earn for each viewer
 	Method GetPerViewerRevenue:Float() {_exposeToLua}
 		local result:float = 0.0
-		If GetGenre() = TProgrammeData.GENRE_CALLINSHOW
+		If HasFlag(FLAG_PAID)
 			result :+ GetSpeed() * 127.5
 			result :+ GetReview() * 51
 			'cut to 50%
@@ -326,35 +299,110 @@ endrem
 	End Method
 
 
-	Method GetActor:string(number:int=1)
-		number = Min(actors.length, Max(1, number))
-		if number = 0 then return ""
-		return actors[number-1].GetFullName()
+	Method AddCast:int(job:TProgrammePersonJob)
+		if HasCast(job) then return False
+
+		cast :+ [job]
+
+		'invalidate caches
+		cachedActors = cachedActors[..0]
+		cachedDirectors = cachedDirectors[..0]
+		return True 
+	End Method
+
+
+	Method HasCast:int(job:TProgrammePersonJob)
+		'do not check job against jobs in the list, as only the
+		'content might be the same but the job a duplicate
+		For local doneJob:TProgrammePersonJob = EachIn cast
+			if job.person <> doneJob.person then continue 
+			if job.job <> doneJob.job then continue 
+			if job.characterName <> doneJob.characterName then continue
+
+			return True
+		Next
+		return False
+	End Method
+
+
+	Method GetCast:TProgrammePersonJob[]()
+		return cast
+	End Method
+
+
+	Method GetCastAtIndex:TProgrammePersonJob(index:int=0)
+		if index < 0 or index >= cast.length then return null
+		return cast[index]
+	End Method
+
+
+	Method GetActors:TProgrammePersonBase[]()
+		if cachedActors.length = 0
+			For local job:TProgrammePersonJob = EachIn cast
+				if job.job = TProgrammePersonJob.JOB_ACTOR then cachedActors :+ [job.person]
+			Next
+		endif
+		
+		return cachedActors
+	End Method
+
+
+	Method GetDirectors:TProgrammePersonBase[]()
+		if cachedDirectors.length = 0
+			For local job:TProgrammePersonJob = EachIn cast
+				if job.job = TProgrammePersonJob.JOB_DIRECTOR then cachedDirectors :+ [job.person]
+			Next
+		endif
+		
+		return cachedDirectors
+	End Method
+
+
+	'1 based
+	Method GetActor:TProgrammePersonBase(number:int=1)
+		'generate if needed
+		GetActors()
+
+		number = Min(cachedActors.length, Max(1, number))
+		if number = 0 then return null
+		return cachedActors[number-1]
 	End Method
 
 
 	Method GetActorsString:string()
 		local result:string = ""
-		for local i:int = 0 to actors.length-1
-			result:+ actors[i].GetFullName()+", "
+		'generate if needed
+		GetActors()
+
+		for local i:int = 0 to cachedActors.length-1
+			if result <> "" then result:+ ", "
+			result:+ cachedActors[i].GetFullName()
 		Next
-		return result[..result.length-2]
+		return result
 	End Method
 
 
-	Method GetDirector:string(number:int=1)
-		number = Min(directors.length, Max(1, number))
-		if number = 0 then return ""
-		return directors[number-1].GetFullName()
+	'1 based
+	Method GetDirector:TProgrammePersonBase(number:int=1)
+		'generate if needed
+		GetDirectors()
+
+		number = Min(cachedDirectors.length, Max(1, number))
+		if number = 0 then return null
+		return cachedDirectors[number-1]
 	End Method
 
 
 	Method GetDirectorsString:string()
 		local result:string = ""
-		for local i:int = 0 to directors.length-1
-			result:+ directors[i].GetFullName()+", "
+		'generate if needed
+		GetDirectors()
+
+		for local i:int = 0 to cachedDirectors.length-1
+			if result <> "" then result:+ ", "
+			result:+ cachedDirectors[i].GetFullName()
 		Next
-		return result[..result.length-2]
+		return result
 	End Method
 
 
@@ -386,8 +434,8 @@ endrem
 
 
 	Method GetGenreString:String(_genre:Int=-1)
-		If _genre > 0 Then Return GetLocale("MOVIE_GENRE_" + _genre)
-		Return GetLocale("MOVIE_GENRE_" + Self.genre)
+		If _genre > 0 Then Return GetLocale("PROGRAMME_GENRE_" + _genre)
+		Return GetLocale("PROGRAMME_GENRE_" + Self.genre)
 	End Method
 
 
@@ -398,7 +446,33 @@ endrem
 
 
 	Method GetDescription:string()
-		if description then return description.Get()
+		if description
+			local result:string = description.Get()
+			if result.find("|") >= 0
+				if result.find("[") >= 0
+					local job:TProgrammePersonJob
+					for local i:int = 0 to 5
+						job = GetCastAtIndex(i)
+						if not job
+							result = result.replace("["+i+"|Full]", "John Doe")
+							result = result.replace("["+i+"|First]", "John")
+							result = result.replace("["+i+"|Last]", "Doe")
+						else
+							result = result.replace("["+i+"|Full]", job.person.GetFullName())
+							result = result.replace("["+i+"|First]", job.person.GetFirstName())
+							result = result.replace("["+i+"|Last]", job.person.GetLastName())
+						endif
+					Next
+				endif
+				'replace left "|" entries with newlines
+				'TODO: remove when fixed in DB
+				result = result.replace("|", chr(13))
+
+				'cache the now processed result
+				description.Set(result)
+			endif
+			return result
+		endif
 		return ""
 	End Method
 
@@ -667,18 +741,33 @@ endrem
 
 	Method isReleased:int()
 		'call-in shows are kind of "live"
-		if genre = GENRE_CALLINSHOW then return TRUE
+		if HasFlag(FLAG_PAID) then return True
 
 		return (year <= GetWorldTime().getYear() and releaseDay <= GetWorldTime().getDay())
 	End Method
 
 
 	Method isMovie:int()
-		return programmeType = TYPE_MOVIE
+		return programmeType & TYPE_MOVIE
 	End Method
-
 
 	Method isSeries:int()
-		return (programmeType = TYPE_SERIES) or (programmeType = TYPE_EPISODE) 
+		return (programmeType & TYPE_SERIES)
 	End Method
+
+	Method isEpisode:int()
+		return (programmeType & TYPE_EPISODE)
+	End Method
+
+	Method isCollection:int()
+		return (programmeType & TYPE_COLLECTION)
+	End Method
+
+	Method isType:int(typeID:int)
+		return (programmeType & typeID)
+	End Method	
 End Type
+
+
+
+

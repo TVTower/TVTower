@@ -936,17 +936,8 @@ Type TPlannerList
 	Field currentGenre:Int	=-1
 	Field enabled:Int		= 0
 	Field Pos:TVec2D 		= new TVec2D.Init()
-	Field gfxTape:TSprite
-	Field gfxTapeBackground:TSprite
-	Field tapeRect:TRectangle
-	Field displaceTapes:TVec2D = new TVec2D.Init(9,7)
-
-
-	Method Init:int(x:float, y:float)
-		tapeRect = new TRectangle.Init(x, y, gfxTapeBackground.area.GetW(), gfxTapeBackground.area.GetH() )
-		return TRUE
-	End Method
-
+	Field entriesRect:TRectangle
+	Field entrySize:TVec2D = new TVec2D
 
 	Method getOpen:Int()
 		return self.openState and enabled
@@ -959,45 +950,48 @@ End Type
 'the programmelist shown in the programmeplaner
 Type TgfxProgrammelist extends TPlannerList
 	Field displaceEpisodeTapes:TVec2D = new TVec2D.Init(6,5)
-	Field gfxTapeSeries:TSprite
-	Field gfxTapeEpisodes:TSprite
-	Field gfxTapeEpisodesBackground:TSprite
-	Field genreRect:TRectangle
-	Field tapeEpisodesRect:TRectangle
-	Field maxGenres:int = 1
-	Field hoveredSeries:TProgrammeLicence = Null
+	'area of all genres/filters including top/bottom-area
+	Field genresRect:TRectangle
+	Field genresCount:int = -1
+	Field genreSize:TVec2D = new TVec2D
+	Field currentEntry:int = -1
+	Field currentSubEntry:int = -1
+	Field subEntriesRect:TRectangle
+
+	'licence with children
+	Field hoveredParentalLicence:TProgrammeLicence = Null
+	'licence 
 	Field hoveredLicence:TProgrammeLicence = Null
+
 	const MODE_PROGRAMMEPLANNER:int=0	'creates a GuiProgrammePlanElement
 	const MODE_ARCHIVE:int=1			'creates a GuiProgrammeLicence
 
+	
 
-	Method Create:TgfxProgrammelist(x:Int, y:Int, maxGenres:int)
-		self.maxGenres				= maxGenres
-		gfxTape						= GetSpriteFromRegistry("pp_cassettes_movies")
-		gfxTapeBackground			= GetSpriteFromRegistry("pp_tapeBackground")
-		gfxTapeSeries				= GetSpriteFromRegistry("pp_cassettes_series")
-		gfxTapeEpisodes				= GetSpriteFromRegistry("pp_cassettes_episodes")
-		gfxTapeEpisodesBackground	= GetSpriteFromRegistry("pp_tapeEpisodesBackground")
+	Method Create:TgfxProgrammelist(x:Int, y:Int)
+		genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
+		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
 
 		'right align the list
-		Pos.SetXY(x - GetSpriteFromRegistry("genres_top").area.GetW(), y)
+		Pos.SetXY(x - genreSize.GetX(), y)
 
-		local genreWidth:int = GetSpriteFromRegistry("genres_top").area.GetW()
-		local genreHeight:int = 0
-		genreHeight:+ GetSpriteFromRegistry("genres_top").area.GetH()
-		genreHeight:+ GetSpriteFromRegistry("genres_entry"+1).area.GetH()
-		genreHeight:+ GetSpriteFromRegistry("genres_bottom").area.GetH()
+		'recalculate dimension of the area of all genres
+		genresRect = new TRectangle.Init(Pos.GetX(), Pos.GetY(), genreSize.GetX(), 0)
+		genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
+		genresRect.dimension.y :+ TProgrammeLicenceFilter.GetVisibleCount() * genreSize.GetY()
+		genresRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmegenres_bottom.default").area.GetH()
 
-		genreRect = new TRectangle.Init(Pos.GetX(), Pos.GetY(), genreWidth, genreHeight)
+		'recalculate dimension of the area of all entries (also if not all slots occupied)
+		entriesRect = new TRectangle.Init(genresRect.GetX() - 175, genresRect.GetY(), entrySize.GetX(), 0)
+		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		entriesRect.dimension.y :+ GameRules.maxProgrammeLicencesPerFilter * entrySize.GetY()
+		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 
-		'init tapeRect - and right align it
-		self.Init(genreRect.GetX() - gfxTapeBackground.area.GetW() + 10, genreRect.GetY())
-
-		tapeEpisodesRect= new TRectangle.Init(..
-								genreRect.GetX() - gfxTapeEpisodesBackground.area.GetW() + 8,..
-								tapeRect.GetY() + tapeRect.GetH() + 5, ..
-								gfxTapeEpisodesBackground.area.GetW(), gfxTapeEpisodesBackground.area.GetH()..
-						  )
+		'recalculate dimension of the area of all entries (also if not all slots occupied)
+		subEntriesRect = new TRectangle.Init(entriesRect.GetX() + 175, entriesRect.GetY(), entrySize.GetX(), 0)
+		subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		subEntriesRect.dimension.y :+ 10 * entrySize.GetY()
+		subEntriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 
 		Return self
 	End Method
@@ -1006,180 +1000,249 @@ Type TgfxProgrammelist extends TPlannerList
 	Method Draw:Int()
 		if not enabled then return FALSE
 
-		'draw episodes background
-		If self.openState >=3
-			if currentGenre >= 0 then DrawEpisodeTapes(hoveredSeries)
-		endif
+		'draw genre selector
+		If self.openState >=1
+			'mark new genres
+			'TODO: do this part in programmecollection (only on add/remove)
+			local visibleFilters:TProgrammeLicenceFilter[] = TProgrammeLicenceFilter.GetVisible()
+			local containsNew:int[visibleFilters.length]
+
+			For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
+				'check all filters if they take care of this licence
+				for local i:int = 0 until visibleFilters.length
+					'no check needed if already done
+					if containsNew[i] then continue
+
+					if visibleFilters[i].DoesFilter(licence)
+						containsNew[i] = 1
+						'do not check other filters
+						exit
+					endif
+				Next
+			Next
+
+			'=== DRAW ===
+			local currSprite:TSprite
+			'maybe it has changed since initialization
+			genreSize = GetSpriteFromRegistry("gfx_programmegenres_entry.default").area.dimension.copy()
+			local currY:int = genresRect.GetY()
+			local currX:int = genresRect.GetX()
+			local textRect:TRectangle = new TRectangle.Init(currX + 13, currY, genreSize.x - 12 - 5, genreSize.y)
+			 
+			local oldAlpha:float = GetAlpha()
+			local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+
+			'draw each visible filter
+			local filter:TProgrammeLicenceFilter
+			For local i:int = 0 until visibleFilters.length
+				local entryPositionType:string = "entry"
+				if i = 0 then entryPositionType = "first"
+				if i = visibleFilters.length-1 then entryPositionType = "last"
+
+				local entryDrawType:string = "default"
+				'highlighted - if genre contains new entries
+				if containsNew[i] = 1 then entryDrawType = "highlighted"
+				'active - if genre is the currently used (selected to see tapes)
+				if i = currentGenre then entryDrawType = "active"
+				'hovered - draw hover effect if hovering
+				'can only haver if no episode list is open
+				if self.openState <3 and THelper.MouseIn(currX, currY, genreSize.GetX(), genreSize.GetY()) then entryDrawType="hovered"
+
+				'add "top" portion when drawing first item
+				'do this in the for loop, so the entrydrawType is known
+				'(top-portion could contain color code of the drawType)
+				if i = 0
+					currSprite = GetSpriteFromRegistry("gfx_programmegenres_top."+entryDrawType)
+					currSprite.draw(currX, currY)
+					currY :+ currSprite.area.GetH()
+				endif
+
+				'draw background
+				GetSpriteFromRegistry("gfx_programmegenres_"+entryPositionType+"."+entryDrawType).draw(currX,currY)
+
+				'genre background contains a 2px splitter (bottom + top)
+				'so add 1 pixel to textY
+				textRect.position.SetY(currY + 1)
+
+
+				Local licenceCount:Int = programmeCollection.GetFilteredLicenceCount(visibleFilters[i])
+				Local filterName:string = ""
+				For local entry:int = EachIn visibleFilters[i].GetGenres()
+					if filterName <> "" then filterName :+ " & "
+					filterName :+ GetLocale("PROGRAMME_GENRE_" + entry)
+				Next
+				if filterName = ""
+					local flag:int = 0
+					For local flagNumber:int = 0 to 7
+						flag = 2^flagNumber
+						'contains that flag?
+						if visibleFilters[i].flags & flag > 0
+							if filterName <> "" then filterName :+ " & "
+							filterName :+ GetLocale("PROGRAMME_FLAG_" + int(2^flagNumber))
+						endif
+					Next
+				endif
+
+				
+				If licenceCount > 0
+					GetBitmapFontManager().baseFont.drawBlock(filterName + " (" +licenceCount+ ")", textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
+rem
+					SetAlpha 0.6; SetColor 0, 255, 0
+					'takes 20% of fps...
+					For Local i:Int = 0 To genrecount -1
+						DrawLine(currX + 121 + i * 2, currY + 4 + lineHeight*genres - 1, currX + 121 + i * 2, currY + 17 + lineHeight*genres - 1)
+					Next
+endrem
+				else
+					SetAlpha 0.25 * GetAlpha()
+					GetBitmapFontManager().baseFont.drawBlock(filterName, textRect.GetX(), textRect.GetY(), textRect.GetW(), textRect.GetH(), ALIGN_LEFT_CENTER, TColor.clBlack)
+					SetAlpha 4 * GetAlpha()
+				EndIf
+				'advance to next line
+				currY:+ genreSize.y
+
+				'add "bottom" portion when drawing last item
+				'do this in the for loop, so the entrydrawType is known
+				'(top-portion could contain color code of the drawType)
+				if i = visibleFilters.length-1
+					currSprite = GetSpriteFromRegistry("gfx_programmegenres_bottom."+entryDrawType)
+					currSprite.draw(currX, currY)
+					currY :+ currSprite.area.GetH()
+				endif
+			Next
+		EndIf
+
 		'draw tapes of current genre + episodes of a selected series
 		If self.openState >=2 and currentGenre >= 0
 			DrawTapes(currentgenre)
 		EndIf
 
-		'draw genre selector
-		If self.openState >=1
-			local currY:float = Pos.y
-			local oldAlpha:float = GetAlpha()
-			GetSpriteFromRegistry("genres_top").draw(Pos.x, currY)
-			currY:+GetSpriteFromRegistry("genres_top").area.GetH()
+		'draw episodes background
+		If self.openState >=3
+			if currentGenre >= 0 then DrawSubTapes(hoveredParentalLicence)
+		endif
 
-			'mark new genres
-			'- do this part in programmecollection (only on add/remove)
-			local containsNew:int[self.maxGenres]
-			For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
-				containsNew[licence.GetGenre()] = 1
-			Next
-
-			For local genres:int = 0 To self.maxGenres-1 		'21 genres
-				local lineHeight:int =0
-				local entryNum:string = (genres mod 2)
-				if genres = 0 then entryNum = "First"
-
-				
-
-				'draw background
-				GetSpriteFromRegistry("genres_entry"+entryNum).draw(Pos.x,currY)
-				'draw select effect
-				if genres = currentgenre
-					SetBlend LightBlend
-					SetAlpha 0.2*oldAlpha
-					SetColor 120,170,255
-					GetSpriteFromRegistry("genres_entry"+entryNum).draw(Pos.x,currY)
-					SetColor 255,255,255
-					SetAlpha oldAlpha
-					SetBlend AlphaBlend
-				elseif containsNew[genres] = 1
-					SetBlend LightBlend
-					SetAlpha 0.2*oldAlpha
-					SetColor 170,255,120
-					GetSpriteFromRegistry("genres_entry"+entryNum).draw(Pos.x,currY)
-					SetColor 255,255,255
-					SetAlpha oldAlpha
-					SetBlend AlphaBlend
-				endif
-				'draw hover effect if hovering
-				if THelper.MouseIn(Pos.x, currY, GetSpriteFromRegistry("genres_entry"+entryNum).area.GetW(), GetSpriteFromRegistry("genres_entry"+entryNum).area.GetH())
-					SetBlend LightBlend
-					SetAlpha 0.2*oldAlpha
-					GetSpriteFromRegistry("genres_entry"+entryNum).draw(Pos.x,currY)
-					SetAlpha oldAlpha
-					SetBlend AlphaBlend
-				endif
-
-				lineHeight = GetSpriteFromRegistry("genres_entry"+entryNum).area.GetH()
-
-				'evtl cachen?
-				local player:TPlayer = GetPlayerCollection().Get()
-				Local genrecount:Int = player.GetProgrammeCollection().GetProgrammeGenreCount(genres)
-
-				If genrecount > 0
-					GetBitmapFontManager().baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres) + " (" +genreCount+ ")", Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, null, TColor.clBlack)
-					SetAlpha 0.6; SetColor 0, 255, 0
-					'takes 20% of fps...
-					For Local i:Int = 0 To genrecount -1
-						DrawLine(Pos.x + 121 + i * 2, Pos.y + 4 + lineHeight*genres - 1, Pos.x + 121 + i * 2, Pos.y + 17 + lineHeight*genres - 1)
-					Next
-				else
-					SetAlpha 0.3
-					GetBitmapFontManager().baseFont.drawBlock(GetLocale("MOVIE_GENRE_" + genres), Pos.x + 4, Pos.y + lineHeight*genres +5, 114, 16, null, TColor.clBlack)
-				EndIf
-				SetAlpha 1.0
-				SetColor 255, 255, 255
-				currY:+ lineHeight
-			Next
-			GetSpriteFromRegistry("genres_bottom").draw(Pos.x,currY)
-		EndIf
 	End Method
 
 
-	Method DrawTapes:Int(genre:Int=-1)
+	Method DrawTapes:Int(filterIndex:Int=-1)
+		'skip drawing tapes if no genreGroup is selected
+		if filterIndex < 0 then return FALSE
+
+
+		local currSprite:TSprite
+		'maybe it has changed since initialization
+		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+		local currY:int = entriesRect.GetY()
+		local currX:int = entriesRect.GetX()
 		local font:TBitmapFont = GetBitmapFont("Default", 10)
-		'add 1 to box height - so it includes the "splitter"
-		'this avoids flickering when moving the mouse over the list
-		'and the pixel without a box is "hovered
-		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() +1)
-		local asset:TSprite = null
+			 
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+		local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
+		local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
+		'draw slots, even if empty
+		For local i:int = 0 until GameRules.maxProgrammeLicencesPerFilter
+			local entryPositionType:string = "entry"
+			if i = 0 then entryPositionType = "first"
+			if i = GameRules.maxProgrammeLicencesPerFilter-1 then entryPositionType = "last"
 
-		gfxTapeBackground.Draw(tapeRect.GetX(), tapeRect.GetY())
-
-		if genre < 0 then return FALSE
-
-		'displace all tapes - border of background
-		box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
-
-		'first
-		local player:TPlayer = GetPlayerCollection().Get()
-		For Local licence:TProgrammeLicence = EachIn player.GetProgrammeCollection().programmeLicences
-			'skip wrong genre
-			If licence.GetGenre() <> genre then continue
-			'choose correct asset
-			If licence.isMovie() then asset = gfxtape else asset = gfxtapeseries
-
-			'if planned - set to "running color"
-			if licence.isPlanned() then SetColor 255,230,120
-			'draw tape
-			asset.Draw(box.GetX(), box.GetY())
-			SetColor 255,255,255
-
-			font.drawBlock(licence.GetTitle(), box.position.GetIntX() + 13, box.position.GetIntY() + 4, 139,16,null, TColor.clBlack ,0, True, 1.0, False)
-
-			'we are hovering a licence...
-			If box.containsXY(MouseManager.x,MouseManager.y)
-				SetBlend LightBlend
-				SetAlpha 0.2
-				asset.Draw(box.GetX(), box.GetY())
-				SetAlpha 1.0
-				SetBlend AlphaBlend
+			local entryDrawType:string = "default"
+			local tapeDrawType:string = "default"
+			if i < licences.length 
+				'== BACKGROUND ==
+				'switch background to "new" if the licence is a just-added-one
+				For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
+					if licences[i] = licence
+						entryDrawType = "new"
+						tapeDrawType = "new"
+						exit
+					endif
+				Next
 			endif
 
-			'move box by own height
-			box.moveXY(0, box.GetH())
+			
+			'=== BACKGROUND ===
+			'add "top" portion when drawing first item
+			'do this in the for loop, so the entrydrawType is known
+			'(top-portion could contain color code of the drawType)
+			if i = 0
+				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
+				currSprite.draw(currX, currY)
+				currY :+ currSprite.area.GetH()
+			endif
+			GetSpriteFromRegistry("gfx_programmeentries_"+entryPositionType+"."+entryDrawType).draw(currX,currY)
+
+
+			'=== DRAW TAPE===
+			if i < licences.length
+				'== ADJUST TAPE TYPE ==
+				'do that afterwards because now "new" is already handled
+				'planned
+				if licences[i].IsPlanned() then tapeDrawType = "planned"
+				'active - if tape is the currently used
+				if i = currentEntry then tapeDrawType = "hovered"
+				'hovered - draw hover effect if hovering
+				if THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1) then tapeDrawType="hovered"
+
+
+				if licences[i].isMovie()
+					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
+				else
+					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
+				endif
+				font.drawBlock(licences[i].GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+
+			endif
+
+
+			'advance to next line
+			currY:+ entrySize.y
+
+			'add "bottom" portion when drawing last item
+			'do this in the for loop, so the entrydrawType is known
+			'(top-portion could contain color code of the drawType)
+			if i = GameRules.maxProgrammeLicencesPerFilter-1
+				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
+				currSprite.draw(currX, currY)
+				currY :+ currSprite.area.GetH()
+			endif
 		Next
 	End Method
 
 
-	Method UpdateTapes:Int(genre:Int=-1, mode:int=0)
-		'add 1 to box height - so it includes the "splitter"
-		'this avoids flickering when moving the mouse over the list
-		'and the pixel without a box is "hovered
-		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() +1 )
+	Method UpdateTapes:Int(filterIndex:Int=-1, mode:int=0)
+		'skip doing something without a selected filter
+		If filterIndex < 0 then return FALSE
 
-		If genre < 0 then return FALSE
+		local currY:int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-		box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+		local filter:TProgrammeLicenceFilter = TProgrammeLicenceFilter.GetAtIndex(filterIndex)
+		local licences:TProgrammeLicence[] = programmeCollection.GetLicencesByFilter(filter)
 
-		'we clicked somewhere - if a series was below, that variable
-		'gets refilled automagically -> no need to keep it filled
-'		If MOUSEMANAGER.IsClicked(1)
-'			hoveredSeries = null
-'		endif
+		For local i:int = 0 until licences.length
 
-		local player:TPlayer = GetPlayerCollection().Get()
-		For Local licence:TProgrammeLicence = EachIn player.GetProgrammeCollection().programmeLicences
-			'skip wrong genre
-			If licence.GetGenre() <> genre then continue
-
-			If box.containsXY(MouseManager.x,MouseManager.y)
+			if THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+				Game.cursorstate = 1
 				local doneSomething:int = FALSE
 				'store for sheet-display
-				hoveredLicence = licence
-
-				If MOUSEMANAGER.IsClicked(1)
+				hoveredLicence = licences[i]
+				If MOUSEMANAGER.IsHit(1)
 					if mode = MODE_PROGRAMMEPLANNER
-						If licence.isMovie()
+						If licences[i].isMovie()
 							'create and drag new block
-							new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence), "programmePlanner" ).drag()
-
+							new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licences[i]), "programmePlanner" ).drag()
 							SetOpen(0)
 							doneSomething = true
 						Else
-							'set the hoveredSeries so the episodes-list is drawn
-							hoveredSeries = licence
+							'set the hoveredParentalLicence so the episodes-list is drawn
+							hoveredParentalLicence = licences[i]
 							SetOpen(3)
 							doneSomething = true
 						EndIf
 					elseif mode = MODE_ARCHIVE
 						'create a dragged block
-						local obj:TGUIProgrammeLicence = new TGUIProgrammeLicence.CreateWithLicence(licence)
+						local obj:TGUIProgrammeLicence = new TGUIProgrammeLicence.CreateWithLicence(licences[i])
 						obj.SetLimitToState("archive")
 						obj.drag()
 
@@ -1190,90 +1253,118 @@ Type TgfxProgrammelist extends TPlannerList
 					'something changed, so stop looping through rest
 					if doneSomething
 						MOUSEMANAGER.resetKey(1)
+						MOUSEMANAGER.resetClicked(1)
 						return TRUE
 					endif
 				endif
-			EndIf
+			endif
 
-			'move box by own height
-			box.moveXY(0, box.GetH())
+			'next tape
+			currY :+ entrySize.y
 		Next
 		return FALSE
 	End Method
 
 
-	Method DrawEpisodeTapes:Int(seriesLicence:TProgrammeLicence)
-		if not seriesLicence then return FALSE
-
-		'draw background
-		gfxTapeEpisodesBackground.Draw(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY())
+	Method DrawSubTapes:Int(parentLicence:TProgrammeLicence)
+		if not parentLicence then return FALSE
 
 		local hoveredLicence:TProgrammeLicence = null
-		'add 1 to box height - so it includes the "splitter"
-		'this avoids flickering when moving the mouse over the list
-		'and the pixel without a box is "hovered
-		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() +1)
-		local font:TBitmapFont = GetBitmapFont("Default", 8)
-		'displace all tapes - border of background
-		box.moveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
+		local currSprite:TSprite
+		local currY:int = subEntriesRect.GetY()
+		local currX:int = subEntriesRect.GetX()
+		local font:TBitmapFont = GetBitmapFont("Default", 10)
 
-		For Local i:Int = 0 To seriesLicence.GetSubLicenceCount()-1
-			Local licence:TProgrammeLicence = TProgrammeLicence(seriesLicence.GetsubLicenceAtIndex(i))
-			If not licence then continue
+		
+		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
+			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
-			'if planned - set to "running color"
-			if licence.isPlanned() then SetColor 255,230,120
-			'draw tape
-			gfxTapeEpisodes.Draw(box.GetX(), box.GetY())
-			SetColor 255,255,255
+			local entryPositionType:string = "entry"
+			if i = 0 then entryPositionType = "first"
+			if i = parentLicence.GetSubLicenceCount()-1 then entryPositionType = "last"
 
-			font.drawBlock("(" + (i+1) + "/" + seriesLicence.GetSubLicenceCount() + ") " + licence.GetTitle(), box.position.GetIntX() + 10, box.position.GetIntY() + 1, 85,12, null, TColor.clBlack,0,True)
+			local entryDrawType:string = "default"
+			local tapeDrawType:string = "default"
+			if licence
+				'== BACKGROUND ==
+				if licence.IsPlanned()
+					entryDrawType = "planned"
+					tapeDrawType = "planned"
+				endif
+			endif
 
-			If box.containsXY(MouseManager.x,MouseManager.y)
-				SetBlend LightBlend
-				SetAlpha 0.2
-				gfxTapeEpisodes.Draw(box.GetX(), box.GetY())
-				SetAlpha 1.0
-				SetBlend AlphaBlend
-			EndIf
+			
+			'=== BACKGROUND ===
+			'add "top" portion when drawing first item
+			'do this in the for loop, so the entrydrawType is known
+			'(top-portion could contain color code of the drawType)
+			if i = 0
+				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top."+entryDrawType)
+				currSprite.draw(currX, currY)
+				currY :+ currSprite.area.GetH()
+			endif
+			GetSpriteFromRegistry("gfx_programmeentries_"+entryPositionType+"."+entryDrawType).draw(currX,currY)
 
-			'move box by own height
-			box.moveXY(0, box.GetH())
+
+			'=== DRAW TAPE===
+			if licence
+				'== ADJUST TAPE TYPE ==
+				'active - if tape is the currently used
+				if i = currentSubEntry then tapeDrawType = "hovered"
+				'hovered - draw hover effect if hovering
+				if THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-3) then tapeDrawType="hovered"
+
+				if licence.isMovie()
+					GetSpriteFromRegistry("gfx_programmetape_movie."+tapeDrawType).draw(currX + 8, currY+1)
+				else
+					GetSpriteFromRegistry("gfx_programmetape_series."+tapeDrawType).draw(currX + 8, currY+1)
+				endif
+				font.drawBlock("(" + (i+1) + "/" + parentLicence.GetSubLicenceCount() + ") " + licence.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+			endif
+
+
+			'advance to next line
+			currY:+ genreSize.y
+
+			'add "bottom" portion when drawing last item
+			'do this in the for loop, so the entrydrawType is known
+			'(top-portion could contain color code of the drawType)
+			if i = parentLicence.GetSubLicenceCount()-1
+				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom."+entryDrawType)
+				currSprite.draw(currX, currY)
+				currY :+ currSprite.area.GetH()
+			endif
 		Next
-
 	End Method
 
 
-	Method UpdateEpisodeTapes:Int(seriesLicence:TProgrammeLicence)
-		Local tapecount:Int = 0
-		'add 1 to box height - so it includes the "splitter"
-		'this avoids flickering when moving the mouse over the list
-		'and the pixel without a box is "hovered
-		local box:TRectangle = new TRectangle.Init(tapeEpisodesRect.GetX(), tapeEpisodesRect.GetY(), gfxTapeEpisodes.area.GetW(), gfxTapeEpisodes.area.GetH() +1 )
-		'displace all tapes - border of background
-		box.moveXY(displaceEpisodeTapes.GetIntX(),displaceEpisodeTapes.GetIntY())
+	Method UpdateSubTapes:Int(parentLicence:TProgrammeLicence)
+		if not parentLicence then return False
+		
+		local currY:int = subEntriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-		For Local i:Int = 0 To seriesLicence.GetSubLicenceCount()-1
-			Local licence:TProgrammeLicence = TProgrammeLicence(seriesLicence.GetsubLicenceAtIndex(i))
-			If not licence then continue
 
-			tapecount :+ 1
-			If box.containsXY(MouseManager.x,MouseManager.y)
-				'store for sheet-display
-				hoveredLicence = licence
+		For Local i:Int = 0 To parentLicence.GetSubLicenceCount()-1
+			Local licence:TProgrammeLicence = parentLicence.GetsubLicenceAtIndex(i)
 
-				If MOUSEMANAGER.IsClicked(1)
-					'create and drag new block
-					new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence), "programmePlanner" ).drag()
+			if licence
+				if THelper.MouseIn(subEntriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
+					Game.cursorstate = 1
 
-					SetOpen(0)
-					'MOUSEMANAGER.resetKey(1)
-					return TRUE
+					'store for sheet-display
+					hoveredLicence = licence
+					If MOUSEMANAGER.IsHit(1)
+						'create and drag new block
+						new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TProgramme.Create(licence), "programmePlanner" ).drag()
+						SetOpen(0)
+						MOUSEMANAGER.resetKey(1)
+						return TRUE
+					endif
 				endif
-			EndIf
+			endif
 
-			'move box by own height
-			box.moveXY(0, box.GetH())
+			'next tape
+			currY :+ entrySize.y
 		Next
 		return FALSE
 	End Method
@@ -1289,28 +1380,33 @@ Type TgfxProgrammelist extends TPlannerList
 		'clicking on the genre selector -> select Genre
 		'instead of isClicked (butten must be "normal" then)
 		'we use "hit" (as soon as mouse button down)
-		If MOUSEMANAGER.IsHit(1) AND THelper.MouseIn(Pos.x,Pos.y, GetSpriteFromRegistry("genres_entry0").area.GetW(), GetSpriteFromRegistry("genres_entry0").area.GetH()*self.MaxGenres)
-			SetOpen(2)
-			currentgenre = Floor((MouseManager.y - Pos.y - 1) / GetSpriteFromRegistry("genres_entry0").area.GetH())
-			MOUSEMANAGER.ResetKey(1)
-		EndIf
+		local genresStartY:int = GetSpriteFromRegistry("gfx_programmegenres_top.default").area.GetH()
+
+		'only react to genre area if episode area is not open
+		if openState <3
+			If MOUSEMANAGER.IsHit(1) AND THelper.MouseIn(genresRect.GetX(), genresRect.GetY() + genresStartY, genresRect.GetW(), genreSize.GetY()*TProgrammeLicenceFilter.GetVisibleCount())
+				SetOpen(2)
+				currentGenre = Floor((MouseManager.y - (genresRect.GetY() + genresStartY)) / genreSize.GetY())
+				MOUSEMANAGER.ResetKey(1)
+			EndIf
+		endif
 
 		'if the genre is selected, also take care of its programmes
 		If self.openState >=2
 			If currentgenre >= 0 Then UpdateTapes(currentgenre, mode)
 			'series episodes are only available in mode 0, so no mode-param to give
-			If hoveredSeries Then UpdateEpisodeTapes(hoveredSeries)
+			If hoveredParentalLicence Then UpdateSubTapes(hoveredParentalLicence)
 		EndIf
 
 		'close if clicked outside - simple mode: so big rect
 		if MouseManager.isHit(1) ' and mode=MODE_ARCHIVE
 			local closeMe:int = TRUE
 			'in all cases the genre selector is opened
-			if genreRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
+			if genresRect.containsXY(MouseManager.x, MouseManager.y) then closeMe = FALSE
 			'check tape rect
-			if openState >=2 and tapeRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
+			if openState >=2 and entriesRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
 			'check episodetape rect
-			if openState >=3 and tapeEpisodesRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
+			if openState >=3 and subEntriesRect.containsXY(MouseManager.x, MouseManager.y)  then closeMe = FALSE
 
 			if closeMe
 				SetOpen(0)
@@ -1323,7 +1419,7 @@ Type TgfxProgrammelist extends TPlannerList
 	Method SetOpen:Int(newState:Int)
 		newState = Max(0, newState)
 		if newState <= 1 then currentgenre=-1
-		if newState <= 2 then hoveredSeries=Null
+		if newState <= 2 then hoveredParentalLicence=Null
 		If newState = 0
 			enabled = 0
 		else
@@ -1342,46 +1438,76 @@ Type TgfxContractlist extends TPlannerList
 	Field hoveredAdContract:TAdContract = null
 
 	Method Create:TgfxContractlist(x:Int, y:Int)
-		gfxTape				= GetSpriteFromRegistry("pp_cassettes_movies")
-		gfxTapeBackground	= GetSpriteFromRegistry("pp_tapeBackground")
+		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
 
-		Pos.SetXY(x, y)
+		'right align the list
+		Pos.SetXY(x - entrySize.GetX(), y)
 
-		'init tapeRect (right aligned)
-		self.Init(Pos.x - gfxTapeBackground.area.GetW(), Pos.y)
+		'recalculate dimension of the area of all entries (also if not all slots occupied)
+		entriesRect = new TRectangle.Init(Pos.GetX(), Pos.GetY(), entrySize.GetX(), 0)
+		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
+		entriesRect.dimension.y :+ GameRules.maxContracts * entrySize.GetY()
+		entriesRect.dimension.y :+ GetSpriteFromRegistry("gfx_programmeentries_bottom.default").area.GetH()
 
 		Return self
 	End Method
 
 
 	Method Draw:Int()
-		If enabled And self.openState >= 1
-			gfxTapeBackground.Draw(tapeRect.GetX(), tapeRect.GetY())
-			DrawTapes()
-		EndIf
-	End Method
+		If not enabled or self.openState < 1 then return False
 
-
-	Method DrawTapes:Int()
+		local currSprite:TSprite
+		'maybe it has changed since initialization
+		entrySize = GetSpriteFromRegistry("gfx_programmeentries_entry.default").area.dimension.copy()
+		local currX:int = entriesRect.GetX()
+		local currY:int = entriesRect.GetY()
 		local font:TBitmapFont = GetBitmapFont("Default", 10)
-		local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
-		local hoveredAdContract:TAdContract = null
-		'displace all tapes - border of background
-		box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
 
-		local player:TPlayer = GetPlayerCollection().Get()
-		For Local contract:TAdContract = EachIn player.GetProgrammeCollection().adContracts
-			gfxTape.Draw(box.GetX(), box.GetY())
-			font.drawBlock(contract.GetTitle(), box.position.GetIntX() + 13,box.position.GetIntY() + 3, 139,16, null,TColor.clBlack,0,True)
+		local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+		'draw slots, even if empty
+		For local i:int = 0 until 10 'GameRules.maxContracts
+			local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
 
-			If box.containsXY(MouseManager.x,MouseManager.y)
-				SetBlend LightBlend
-				SetAlpha 0.2
-				gfxTape.Draw(box.GetX(), box.GetY())
-				SetAlpha 1.0
-				SetBlend AlphaBlend
-			EndIf
-			box.moveXY(0, gfxtape.area.GetH() + 1)
+			local entryPositionType:string = "entry"
+			if i = 0 then entryPositionType = "first"
+			if i = GameRules.maxContracts-1 then entryPositionType = "last"
+
+		
+			'=== BACKGROUND ===
+			'add "top" portion when drawing first item
+			'do this in the for loop, so the entrydrawType is known
+			'(top-portion could contain color code of the drawType)
+			if i = 0
+				currSprite = GetSpriteFromRegistry("gfx_programmeentries_top.default")
+				currSprite.draw(currX, currY)
+				currY :+ currSprite.area.GetH()
+			endif
+			GetSpriteFromRegistry("gfx_programmeentries_"+entryPositionType+".default").draw(currX,currY)
+
+
+			'=== DRAW TAPE===
+			if contract
+				'hovered - draw hover effect if hovering
+				if THelper.MouseIn(currX, currY, entrySize.GetX(), entrySize.GetY()-1)
+					GetSpriteFromRegistry("gfx_programmetape_movie.hovered").draw(currX + 8, currY+1)
+				else
+					GetSpriteFromRegistry("gfx_programmetape_movie.default").draw(currX + 8, currY+1)
+				endif
+				font.drawBlock(contract.GetTitle(), currX + 22, currY + 3, 150,15, ALIGN_LEFT_CENTER, TColor.clBlack ,0, True, 1.0, False)
+			endif
+
+
+			'advance to next line
+			currY:+ entrySize.y
+
+			'add "bottom" portion when drawing last item
+			'do this in the for loop, so the entrydrawType is known
+			'(top-portion could contain color code of the drawType)
+			if i = GameRules.maxContracts-1
+				currSprite = GetSpriteFromRegistry("gfx_programmeentries_bottom.default")
+				currSprite.draw(currX, currY)
+				currY :+ currSprite.area.GetH()
+			endif
 		Next
 	End Method
 
@@ -1393,25 +1519,26 @@ Type TgfxContractlist extends TPlannerList
 		If not enabled then return FALSE
 
 		if self.openState >= 1
-			local box:TRectangle = new TRectangle.Init(tapeRect.GetX(), tapeRect.GetY(), gfxTape.area.GetW(), gfxTape.area.GetH() )
-			'displace all tapes - border of background
-			box.moveXY(displaceTapes.GetIntX(),displaceTapes.GetIntY())
+			local currY:int = entriesRect.GetY() + GetSpriteFromRegistry("gfx_programmeentries_top.default").area.GetH()
 
-			local player:TPlayer = GetPlayerCollection().Get()
-			For Local contract:TAdContract = EachIn player.GetProgrammeCollection().adContracts
-				If box.containsXY(MouseManager.x,MouseManager.y)
+			local programmeCollection:TPlayerProgrammeCollection = GetPlayerCollection().Get().GetProgrammeCollection()
+			For local i:int = 0 until GameRules.maxContracts
+				local contract:TAdContract = programmeCollection.GetAdContractAtIndex(i)
+
+				if contract and THelper.MouseIn(entriesRect.GetX(), currY, entrySize.GetX(), entrySize.GetY()-1)
 					'store for outside use (eg. displaying a sheet)
 					hoveredAdContract = contract
 
 					Game.cursorstate = 1
 					If MOUSEMANAGER.IsHit(1)
-						MOUSEMANAGER.resetKey(1)
 						new TGUIProgrammePlanElement.CreateWithBroadcastMaterial( new TAdvertisement.Create(contract), "programmePlanner" ).drag()
-						'close list
+						MOUSEMANAGER.resetKey(1)
 						SetOpen(0)
 					EndIf
-				EndIf
-				box.position.addXY(0, gfxTape.area.GetH() + 1)
+				endif
+
+				'next tape
+				currY :+ entrySize.y
 			Next
 		endif
 
@@ -1422,7 +1549,7 @@ Type TgfxContractlist extends TPlannerList
 
 		'close if mouse hit outside - simple mode: so big rect
 		if MouseManager.IsHit(1)
-			if not tapeRect.containsXY(MouseManager.x, MouseManager.y)
+			if not entriesRect.containsXY(MouseManager.x, MouseManager.y)
 				SetOpen(0)
 				'MouseManager.ResetKey(1)
 			endif
@@ -1889,12 +2016,8 @@ Type TGUIProgrammeLicenceSlotList extends TGUISlotList
 
 		if acceptType > 0
 			'movies and series do not accept collections or episodes
-			if coverBlock.licence.GetData()
-				if acceptType = acceptMovies and coverBlock.licence.GetData().isSeries() then return FALSE
-				if acceptType = acceptSeries and coverBlock.licence.GetData().isMovie() then return FALSE
-			else
-				return FALSE
-			endif
+			if acceptType = acceptMovies and coverBlock.licence.isSeries() then return FALSE
+			if acceptType = acceptSeries and coverBlock.licence.isMovie() then return FALSE
 		endif
 
 		if super.AddItem(item,extra)
@@ -1960,12 +2083,10 @@ endrem
 		local genre:int = Min(15, Max(0,licence.GetGenre()))
 
 		'if it is a collection or series
-		if not licence.GetData()
-			if licence.licenceType = licence.TYPE_COLLECTION
-				self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
-			elseif licence.licenceType = licence.TYPE_SERIES
-				self.InitAssets("gfx_serie" + genre, "gfx_serie" + genre + "_dragged")
-			endif
+		if licence.isCollection()
+			self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
+		elseif licence.isSeries()
+			self.InitAssets("gfx_serie" + genre, "gfx_serie" + genre + "_dragged")
 		else
 			self.InitAssets("gfx_movie" + genre, "gfx_movie" + genre + "_dragged")
 		endif

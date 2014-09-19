@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvgdb>
 	<version value="2" comment="second BlitzMax DB-version" exportDate="01.09.2013 15:50" />
+<!--
 	<allmovies>
 		<movie>
 			<title>...sie waren sich der Konsequenzen nicht bewusst</title>
@@ -2018,6 +2019,9 @@ Mit 10 Staffeln die erfolgreichste Science-Fiction-Serie aller Zeiten</descripti
 			<data  actors="Ricardo Dream Handerson" director="Div." country="USA" year="1997" genre="2"  blocks="1" time="0" price="150" critics="144" speed="180" outcome="240" />
 		</serie>
 	</allseries>
+
+-->
+
 	<allnews>
 		<news>
 			<title>300-Meter-Grenze geknackt</title>

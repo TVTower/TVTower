@@ -248,6 +248,8 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 		if licence.isCollection() then collectionLicences.AddLast(licence)
 		programmeLicences.AddLast(licence)
 
+		justAddedProgrammeLicences.AddLast(licence)
+
 		suitcaseProgrammeLicences.Remove(licence)
 
 		'emit an event so eg. network can recognize the change
@@ -293,7 +295,7 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 			endif
 		endif
 
-		'Print "RON: PlayerCollection.AddProgrammeLicence: buy="+buy+" title="+Licence.title
+		'Print "RON: PlayerCollection.AddProgrammeLicence: buy="+buy+" title="+Licence.GetTitle()
 
 		If licence.isMovie() Then movieLicences.AddLast(licence)
 		if licence.isSeries() then seriesLicences.AddLast(licence)
@@ -332,44 +334,89 @@ Type TPlayerProgrammeCollection extends TOwnedGameObject {_exposeToLua="selected
 
 	'get programmeLicence by index number in list - useful for lua-scripts
 	Method GetProgrammeLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= programmeLicences.Count() then return Null
 		Return TProgrammeLicence(programmeLicences.ValueAtIndex(arrayIndex))
 	End Method
 
 
 	'get movie licence by index number in list - useful for lua-scripts
 	Method GetMovieLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= movieLicences.Count() then return Null
 		Return TProgrammeLicence(movieLicences.ValueAtIndex(arrayIndex))
 	End Method
 
 
 	'get series by index number in list - useful for lua-scripts
 	Method GetSeriesLicenceAtIndex:TProgrammeLicence(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= seriesLicences.Count() then return Null
 		Return TProgrammeLicence(seriesLicences.ValueAtIndex(arrayIndex))
 	End Method
 
 
 	'get contract by index number in list - useful for lua-scripts
 	Method GetAdContractAtIndex:TAdContract(arrayIndex:Int=0) {_exposeToLua}
+		if arrayIndex < 0 or arrayIndex >= adContracts.Count() then return Null
 		Return TAdContract(adContracts.ValueAtIndex(arrayIndex))
 	End Method
 
 
-	Method GetProgrammeGenreCount:int(genre:int, includeMovies:int=TRUE, includeSeries:int=TRUE) {_exposeToLua}
+	Method GetLicencesByFilter:TProgrammeLicence[](filter:TProgrammeLicenceFilter)
+		local result:TProgrammeLicence[]
+		For local licence:TProgrammeLicence = EachIn programmeLicences
+			'add to result set
+			if filter.DoesFilter(licence) then result :+ [licence]
+		Next
+		return result
+	End Method
+
+
+	Method GetFilteredLicenceCount:int(filter:TProgrammeLicenceFilter, includeMovies:int=TRUE, includeSeries:int=TRUE)
 		local amount:int = 0
-		if includeMovies
-			For local licence:TProgrammeLicence = eachin movieLicences
-				if licence.GetGenre() = genre then amount:+1
-			Next
-		endif
-		if includeSeries
-			For local licence:TProgrammeLicence = eachin seriesLicences
-				if licence.GetGenre() = genre then amount:+1
-			Next
+		if not filter
+			if includeMovies then amount:+ movieLicences.Count()
+			if includeSeries then amount:+ seriesLicences.Count()
+		else
+			if includeMovies
+				For local licence:TProgrammeLicence = eachin movieLicences
+					if filter.DoesFilter(licence) then amount:+ 1
+				Next
+			endif
+			if includeSeries
+				For local licence:TProgrammeLicence = eachin seriesLicences
+					if filter.DoesFilter(licence) then amount:+ 1
+				Next
+			endif
 		endif
 		return amount
 	End Method
 
 
+	Method GetProgrammeGenresCount:int(genres:int[], includeMovies:int=TRUE, includeSeries:int=TRUE) {_exposeToLua}
+		local amount:int = 0
+		if includeMovies
+			For local licence:TProgrammeLicence = eachin movieLicences
+				for local genre:int = eachin genres
+					if licence.GetGenre() = genre
+						amount:+1
+						continue
+					endif
+				Next
+			Next
+		endif
+		if includeSeries
+			For local licence:TProgrammeLicence = eachin seriesLicences
+				for local genre:int = eachin genres
+					if licence.GetGenre() = genre
+						amount:+1
+						continue
+					endif
+				Next
+			Next
+		endif
+		return amount
+	End Method
+
+	
 	Method HasProgrammeLicence:int(licence:TProgrammeLicence) {_exposeToLua}
 		if licence.isEpisode()
 			return programmeLicences.contains(licence.parentLicence)
