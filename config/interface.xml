@@ -2,7 +2,7 @@
 <tvt>
 	<resources>
 		<spritepack name="gfx_toastmessage">
- 			<url>res/grafiken/interface/toastmessage.png</url>
+ 			<url>res/gfx/interface/toastmessage.png</url>
  			<filter>FILTEREDIMAGE,MIPMAPPED</filter>
 			<children>
 				<child name="gfx_toastmessage.attention"	x="0" y="0" w="32" h="41" ninepatch="true" />
@@ -12,62 +12,56 @@
 			</children>
 		</spritepack>
 
-		<sprite name="gfx_interface_bottom" url="res/grafiken/interface/interface_bottom.png" x="0" y="0" w="800" h="248" />
-		
-		<sprite name="gfx_interface_channelbuttons_off" url="res/grafiken/interface/channelbuttons_off.png" f="5" />
-		<sprite name="gfx_interface_channelbuttons_on" url="res/grafiken/interface/channelbuttons_on.png" f="5" />
-	
-		<spritepack name="gfx_interface_audience">
- 			<url>res/grafiken/interface/audience.png</url>
-			<children>
-				<child name="gfx_interface_audience_grandpa"	x="0" y="0"		w="60"	h="150"	id="1" />
-				<child name="gfx_interface_audience_girl"		x="0" y="150"	w="60"	h="150"	id="2" />
-				<child name="gfx_interface_audience_teen"		x="0" y="300"	w="60"	h="150"	id="3" />
-			</children>
-		</spritepack>
-		
-		<sprite name="gfx_interface_tv_overlay" url="res/grafiken/interface/tv_overlay.png" />
-		<sprite name="gfx_interface_tv_noise" url="res/grafiken/interface/tv_noise.png" />
+		<sprite name="gfx_interface_bottom" url="res/gfx/interface/interface_bottom.png" x="0" y="0" w="800" h="248" />
 
-		<!--
-			0 = Action
-			1 = Krimi
-			2 = Sci-Fi
-			3 = Komödie
-			4 = Horror
-			5 = Liebe
-			6 = Erotik
-			7 = Western
-			8 = Liveübertragung
-			9 = Kinderfilme
-			10= Trickfilme
-			11= Musik
-			12= Sport
-			13= Kultur
-			14= Fantasy
-			15= Tratsch
-			16= Nachrichten
-			17= Show
-			18= Monumental
-			19= Lückenfüller
-			20= Call-In/Shopping
-		-->
-		<sprite name="gfx_interface_TVprogram_0" url="res/grafiken/interface/tv_programme_none.png" />
-		<sprite name="gfx_interface_TVprogram_1" url="res/grafiken/interface/tv_programme_thriller.png" />
-		<sprite name="gfx_interface_TVprogram_2" url="res/grafiken/interface/tv_programme_scifi.png" />
-		<sprite name="gfx_interface_TVprogram_3" url="res/grafiken/interface/tv_programme_comedy.png" />
-		<sprite name="gfx_interface_TVprogram_4" url="res/grafiken/interface/tv_programme_horror.png" />
-		<sprite name="gfx_interface_TVprogram_5" url="res/grafiken/interface/tv_programme_love.png" />
-		<sprite name="gfx_interface_TVprogram_7" url="res/grafiken/interface/tv_programme_western.png" />
-		<sprite name="gfx_interface_TVprogram_12" url="res/grafiken/interface/tv_programme_sports.png" />
-		<sprite name="gfx_interface_tv_programme_none" url="res/grafiken/interface/tv_programme_none.png" />
-		<sprite name="gfx_interface_tv_programme_news" url="res/grafiken/interface/tv_programme_news.png" />
-		<sprite name="gfx_interface_tv_programme_ads" url="res/grafiken/interface/tv_programme_ads.png" />
-		<sprite name="gfx_interface_tv_programme_ads_none" url="res/grafiken/interface/tv_programme_ads_none.png" />
-		<sprite name="gfx_interface_tv_programme_traileroverlay" url="res/grafiken/interface/tv_programme_traileroverlay.png" />
-		<sprite name="gfx_interface_tv_programme_infomercialoverlay" url="res/grafiken/interface/tv_programme_infomercialoverlay.png" />
-	
-		<sprite name="gfx_interface_audience_bg" url="res/grafiken/interface/audience_bg.png" />
-		<sprite name="gfx_interface_audience_overlay" url="res/grafiken/interface/audience_overlay.png" />
+		<spritepack name="gfx_interface_elements">
+ 			<url>res/gfx/interface/interface_elements.png</url>
+ 			<children>
+				<child name="gfx_interface_channelbuttons_on"	x="252"	y="302" w="165" h="41" f="5" />
+				<child name="gfx_interface_channelbuttons_off"	x="252"	y="344" w="165" h="41" f="5" />
+
+				<child name="gfx_interface_tv_noise"			x="0"	y="322" w="251" h="190" />
+				<child name="gfx_interface_tv_overlay" 			x="0"	y="151"	w="220" h="170" />
+
+				<!-- family-TV -->
+				<child name="gfx_interface_audience_bg" 		x="250"	y="0"	w="249"	h="150" />
+				<child name="gfx_interface_audience_overlay"	x="0"	y="0"	w="249"	h="150" />
+
+				<!-- family-members -->
+				<child name="gfx_interface_audience_grandpa"	x="221"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_girl"		x="282"	y="151"	w="60"	h="150" />
+				<child name="gfx_interface_audience_teen"		x="343"	y="151"	w="60"	h="150" />
+
+
+				<!-- target group icons -->
+				<child name="gfx_targetGroup1" id="Children"	x="252"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup2" id="Teenagers"	x="267"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup3" id="HouseWifes"	x="282"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup4" id="Employees"	x="297"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup5" id="Unemployed"	x="312"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup6" id="Manager"		x="327"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup7" id="Pensioners"	x="342"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup8" id="Women"		x="357"	y="386"	w="15" h="15" />
+				<child name="gfx_targetGroup9" id="Men"			x="372"	y="386"	w="15" h="15" />
+ 			</children>
+		</spritepack>
+
+
+		<!-- PROGRAMME GENRE PICTURES -->
+		<!-- IDs from source/game.gameconstants.bmx : TVTProgrammeGenre -->
+		<sprite name="gfx_interface_tv_programme_genre_0" url="res/gfx/interface/tv_programme_none.png" />
+		<sprite name="gfx_interface_tv_programme_genre_5" url="res/gfx/interface/tv_programme_comedy.png" />
+		<sprite name="gfx_interface_tv_programme_genre_12" url="res/gfx/interface/tv_programme_horror.png" />
+		<sprite name="gfx_interface_tv_programme_genre_15" url="res/gfx/interface/tv_programme_love.png" />
+		<sprite name="gfx_interface_tv_programme_genre_16" url="res/gfx/interface/tv_programme_scifi.png" />
+		<sprite name="gfx_interface_tv_programme_genre_17" url="res/gfx/interface/tv_programme_thriller.png" />
+		<sprite name="gfx_interface_tv_programme_genre_18" url="res/gfx/interface/tv_programme_western.png" />
+		<sprite name="gfx_interface_tv_programme_genre_203" url="res/gfx/interface/tv_programme_sports.png" />
+		<sprite name="gfx_interface_tv_programme_none" url="res/gfx/interface/tv_programme_none.png" />
+		<sprite name="gfx_interface_tv_programme_news" url="res/gfx/interface/tv_programme_news.png" />
+		<sprite name="gfx_interface_tv_programme_ads" url="res/gfx/interface/tv_programme_ads.png" />
+		<sprite name="gfx_interface_tv_programme_ads_none" url="res/gfx/interface/tv_programme_ads_none.png" />
+		<sprite name="gfx_interface_tv_programme_traileroverlay" url="res/gfx/interface/tv_programme_traileroverlay.png" />
+		<sprite name="gfx_interface_tv_programme_infomercialoverlay" url="res/gfx/interface/tv_programme_infomercialoverlay.png" />
 	</resources>
 </tvt>

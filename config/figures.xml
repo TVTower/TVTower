@@ -6,7 +6,7 @@
 			<playerFigures value="Man1, Man2, Man3, Man4, Man5, Man6, Woman1, Woman2, Woman3, Woman6, Woman7" />
 		</data>
 		<spritepack name="gfx_figuresPack">
- 			<url>res/grafiken/hochhaus/figures.png</url>
+ 			<url>res/gfx/building/figures.png</url>
  			<flags>FILTEREDIMAGE,MASKEDIMAGE,DYNAMICIMAGE</flags>
 			<children>
 				<child name="Man1"					x="0"	y="0"	w="253"	h="44"	f="11"	id="1" />
@@ -35,6 +35,6 @@
 			</children>
 		</spritepack>
 
-		<sprite name="janitor" url="res/grafiken/hochhaus/figures_janitor.png" cw="51" ch="44" f="15" flags="FILTEREDIMAGE" />
+		<sprite name="janitor" url="res/gfx/building/figures_janitor.png" cw="51" ch="44" f="15" flags="FILTEREDIMAGE" />
 	</resources>
 </tvt>

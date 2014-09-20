@@ -1,3 +1,0 @@
-overlay: 0,30
-
-gimmick: 116,32 bis -90, 32

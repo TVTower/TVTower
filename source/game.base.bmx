@@ -205,7 +205,7 @@ Type TGame {_exposeToLua="selected"}
 		InGame_Chat.guiInput.rect.position.setXY( 275, 387)
 		InGame_Chat.guiInput.setMaxLength(200)
 		InGame_Chat.guiInput.setOption(GUI_OBJECT_POSITIONABSOLUTE, True)
-		InGame_Chat.guiInput.maxTextWidth = gfx_GuiPack.GetSprite("Chat_IngameOverlay").area.GetW() - 20
+		InGame_Chat.guiInput.maxTextWidth = 200
 		InGame_Chat.guiInput.spriteName = "Chat_IngameOverlay"
 		InGame_Chat.guiInput.color.AdjustRGB(255,255,255,True)
 		InGame_Chat.guiInput.SetValueDisplacement(0,5)
@@ -343,7 +343,7 @@ Type TGame {_exposeToLua="selected"}
 
 		'=== STATION MAP ===
 		'load the used map
-		GetStationMapCollection().LoadMapFromXML("config/maps/germany.xml")
+		GetStationMapCollection().LoadMapFromXML("res/maps/germany.xml")
 
 		'create base stations
 		For Local i:Int = 1 To 4

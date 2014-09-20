@@ -51,13 +51,6 @@ Const GUIMANAGER_TYPES_NONDRAGGED:int = 2^1
 Const GUIMANAGER_TYPES_ALL:int        = GUIMANAGER_TYPES_DRAGGED | GUIMANAGER_TYPES_NONDRAGGED
 
 
-Global gfx_GuiPack:TSpritePack = new TSpritePack.Init(LoadImage("res/grafiken/GUI/guipack.png"), "guipack_pack")
-gfx_GuiPack.AddSprite(New TSprite.Init(Null, "ListControl", new TRectangle.Init(96, 0, 56, 28), Null, 8, new TVec2D.Init(14, 14)))
-gfx_GuiPack.AddSprite(New TSprite.Init(Null, "DropDown", new TRectangle.Init(160, 0, 126, 42), Null, 21, new TVec2D.Init(14, 14)))
-gfx_GuiPack.AddSprite(New TSprite.Init(Null, "Slider", new TRectangle.Init(0, 30, 112, 14), Null, 8))
-gfx_GuiPack.AddSprite(New TSprite.Init(Null, "Chat_IngameOverlay", new TRectangle.Init(0, 60, 504, 20), Null))
-
-
 Type TGUIManager
 	Field globalScale:Float	= 1.0
 	'which state are we currently handling?

@@ -154,6 +154,7 @@ Type TSpritePack
 	Method AddSpriteCopy:TSprite(spriteNameSrc:String, spriteNameDest:String, area:TRectangle, offset:TRectangle=null, frames:int = 0, color:TColor)
 		local spriteCopy:TSprite = new TSprite.Init(self, spriteNameDest, area, offset, frames)
 		Local tmppix:TPixmap = LockImage(image, 0)
+			'area the image is copied on, is cleared before!
 			tmppix.Window(spriteCopy.area.GetX(), spriteCopy.area.GetY(), spriteCopy.area.GetW(), spriteCopy.area.GetH()).ClearPixels(0)
 			DrawImageOnImage(ColorizeImageCopy(GetSprite(spriteNameSrc).GetImage(), color), tmppix, spriteCopy.area.GetX(), spriteCopy.area.GetY())
 		UnlockImage(image, 0)

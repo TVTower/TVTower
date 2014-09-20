@@ -2392,7 +2392,7 @@ Type TSettingsWindow
 		inputPlayerName.SetValue(data.GetString("playername", "Player"))
 		inputChannelName.SetValue(data.GetString("channelname", "My Channel"))
 		inputStartYear.SetValue(data.GetInt("startyear", 1985))
-		'inputStationmap.SetValue(data.GetString("stationmap", "config/maps/germany.xml"))
+		'inputStationmap.SetValue(data.GetString("stationmap", "res/maps/germany.xml"))
 		inputDatabase.SetValue(data.GetString("databaseDir", "res/database/Default"))
 		checkMusic.SetChecked(data.GetBool("sound_music", True))
 		checkSfx.SetChecked(data.GetBool("sound_effects", True))

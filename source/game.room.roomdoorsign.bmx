@@ -293,7 +293,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 		SortList List
 		'draw background sprites
 		For Local sign:TRoomDoorSign = EachIn List
-			GetSpriteFromRegistry("gfx_elevator_sign_bg").Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
+			GetSpriteFromRegistry("gfx_roomboard_sign_bg").Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
 		Next
 		'draw actual sign
 		For Local sign:TRoomDoorSign = EachIn List

@@ -603,7 +603,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'===== REGISTER SCREEN HANDLERS =====
 		'no need for individual screens, all can be handled by one function (room is param)
 		super._RegisterScreenHandler( onUpdateOffice, onDrawOffice, ScreenCollection.GetScreen("screen_office") )
-		super._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, ScreenCollection.GetScreen("screen_office_pplanning") )
+		super._RegisterScreenHandler( onUpdateProgrammePlanner, onDrawProgrammePlanner, ScreenCollection.GetScreen("screen_office_programmeplanner") )
 		super._RegisterScreenHandler( onUpdateFinancials, onDrawFinancials, ScreenCollection.GetScreen("screen_office_financials") )
 		super._RegisterScreenHandler( onUpdateImage, onDrawImage, ScreenCollection.GetScreen("screen_office_image") )
 		super._RegisterScreenHandler( onUpdateStationMap, onDrawStationMap, ScreenCollection.GetScreen("screen_office_stationmap") )
@@ -715,7 +715,7 @@ Type RoomHandler_Office extends TRoomHandler
 		'===== REGISTER EVENTS =====
 
 		'for all office rooms - register if someone goes into the programmeplanner
-		local screen:TScreen = ScreenCollection.GetScreen("screen_office_pplanning")
+		local screen:TScreen = ScreenCollection.GetScreen("screen_office_programmeplanner")
 
 		'player enters screen - reset the guilists
 		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterProgrammePlannerScreen, screen)
@@ -827,7 +827,7 @@ Type RoomHandler_Office extends TRoomHandler
 			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_office_pplanning")
+				ScreenCollection.GoToSubScreen("screen_office_programmeplanner")
 			endif
 		EndIf
 
@@ -1284,7 +1284,7 @@ Type RoomHandler_Office extends TRoomHandler
 		EndIf
 
 
-		GetSpriteFromRegistry("gfx_programmeplanner_overlay").Draw(0,0)
+		GetSpriteFromRegistry("screen_programmeplanner_overlay").Draw(0,0)
 
 		'time indicator
 		If planningDay = GetWorldTime().getDay() Then SetColor 0,100,0
@@ -1737,7 +1737,7 @@ Type RoomHandler_Office extends TRoomHandler
 
 	'add gfx to background
 	Function InitProgrammePlannerBackground:int()
-		Local roomImg:TImage				= GetSpriteFromRegistry("screen_bg_pplanning").parent.image
+		Local roomImg:TImage				= GetSpriteFromRegistry("screen_bg_programmeplanner").parent.image
 		Local Pix:TPixmap					= LockImage(roomImg)
 		Local gfx_ProgrammeBlock1:TImage	= GetSpriteFromRegistry("pp_programmeblock1").GetImage()
 		Local gfx_AdBlock1:TImage			= GetSpriteFromRegistry("pp_adblock1").GetImage()
@@ -2244,7 +2244,7 @@ endrem
 
 
 		For Local i:Int = 0 To 3
-			stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(520, 30 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
+			stationMapShowStations[i] = new TGUICheckBox.Create(new TVec2D.Init(520, 30 + i*25), new TVec2D.Init(20, 20), String(i + 1), "STATIONMAP")
 			stationMapShowStations[i].SetChecked(True, False)
 			stationMapShowStations[i].ShowCaption(False)
 			stationMapShowStations[i].data.AddNumber("playerNumber", i+1)
@@ -2437,9 +2437,9 @@ endrem
 
 		For Local i:Int = 0 To 3
 			SetColor 100, 100, 100
-			DrawRect(544, 32 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 15, 18)
+			DrawRect(544, 32 + i * 25, 15, 18)
 			GetPlayerCollection().Get(i+1).color.SetRGB()
-			DrawRect(545, 33 + i * GetSpriteFromRegistry("gfx_gui_ok_off").area.GetH()*GUIManager.globalScale, 13, 16)
+			DrawRect(545, 33 + i * 25, 13, 16)
 		Next
 		SetColor 255, 255, 255
 		GetBitmapFontManager().baseFont.drawBlock(GetLocale("SHOW_PLAYERS")+":", 460, 15, 100, 20, new TVec2D.Init(ALIGN_RIGHT), TColor.clBlack)
@@ -2665,9 +2665,9 @@ endrem
 
 		local sprite:TSprite
 		if station.IsActive()
-			sprite = GetSpriteFromRegistry("stationlist_antenna_on")
+			sprite = GetSpriteFromRegistry("gfx_list_icon_antenna.on")
 		else
-			sprite = GetSpriteFromRegistry("stationlist_antenna_off")
+			sprite = GetSpriteFromRegistry("gfx_list_icon_antenna.off")
 		endif
 
 
@@ -3812,12 +3812,15 @@ Type RoomHandler_MovieAgency extends TRoomHandler
 		SetAlpha 1.0
 
 		GUIManager.Draw("movieagency")
-		SetAlpha 0.5;SetColor 0,0,0
+		SetAlpha 0.2;SetColor 0,0,0
 		DrawRect(0,0,800,385)
 		SetAlpha 1.0;SetColor 255,255,255
-		DrawGFXRect(TSpritePack(GetRegistry().Get("gfx_gui_rect")), 120, 60, 555, 290)
+
+		GetSpriteFromRegistry("gfx_gui_panel").DrawArea(120-15,60-15,555+30,290+30)
+		GetSpriteFromRegistry("gfx_gui_panel.content").DrawArea(120,60,555,290)
+
 		SetAlpha 0.5
-		GetBitmapFont("Default",12,BOLDFONT).drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(230), 2, 1, 0.25)
+		GetBitmapFont("Default",12,BOLDFONT).drawBlock(GetLocale("CLICK_ON_MOVIE_OR_SERIES_TO_PLACE_BID"), 140,317, 535,30, new TVec2D.Init(ALIGN_CENTER), TColor.CreateGrey(50), 2, 1, 0.20)
 		SetAlpha 1.0
 
 		TAuctionProgrammeBlocks.DrawAll()
@@ -3908,7 +3911,7 @@ Type RoomHandler_News extends TRoomHandler
 		EventManager.registerListenerFunction("guiGameObject.OnMouseOver", onMouseOverNews, "TGUINews" )
 
 		'for all news rooms - register if someone goes into the planner
-		local screen:TScreen = ScreenCollection.GetScreen("screen_news_newsplanner")
+		local screen:TScreen = ScreenCollection.GetScreen("screen_newsstudio_newsplanner")
 		'figure enters screen - reset the guilists, limit listening to the 4 rooms
 		if screen then EventManager.registerListenerFunction("screen.onEnter", onEnterNewsPlannerScreen, screen)
 		'also we want to interrupt leaving a room with dragged items
@@ -3920,8 +3923,8 @@ Type RoomHandler_News extends TRoomHandler
 			EventManager.registerListenerFunction("figure.onForcefullyLeaveRoom", onForcefullyLeaveRoom, null, room)
 		Next
 
-		super._RegisterScreenHandler( onUpdateNews, onDrawNews, ScreenCollection.GetScreen("screen_news") )
-		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_news_newsplanner") )
+		super._RegisterScreenHandler( onUpdateNews, onDrawNews, ScreenCollection.GetScreen("screen_newsstudio") )
+		super._RegisterScreenHandler( onUpdateNewsPlanner, onDrawNewsPlanner, ScreenCollection.GetScreen("screen_newsstudio_newsplanner") )
 
 
 		'handle savegame loading (remove old gui elements)
@@ -3997,7 +4000,7 @@ Type RoomHandler_News extends TRoomHandler
 			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_news_newsplanner")
+				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
 		endif
 Rem
@@ -4012,7 +4015,7 @@ Rem
 			If MOUSEMANAGER.IsClicked(1)
 				MOUSEMANAGER.resetKey(1)
 				Game.cursorstate = 0
-				ScreenCollection.GoToSubScreen("screen_news_newsplanner")
+				ScreenCollection.GoToSubScreen("screen_newsstudio_newsplanner")
 			endif
 		endif
 EndRem
@@ -4338,7 +4341,7 @@ Type RoomHandler_Chief extends TRoomHandler
 
 	Function Init()
 		local smokeConfig:TData = new TData
-		smokeConfig.Add("sprite", GetSpriteFromRegistry("gfx_tex_smoke"))
+		smokeConfig.Add("sprite", GetSpriteFromRegistry("gfx_misc_smoketexture"))
 		smokeConfig.AddNumber("velocityMin", 5.0)
 		smokeConfig.AddNumber("velocityMax", 35.0)
 		smokeConfig.AddNumber("lifeMin", 0.30)
@@ -4454,19 +4457,6 @@ Type RoomHandler_Chief extends TRoomHandler
 			endif
 		Next
 	End Function
-
-	rem
-	  Local ChefText:String
-	  ChefText = "Was ist?!" + Chr(13) + "Haben Sie nichts besseres zu tun als meine Zeit zu verschwenden?" + Chr(13) + " " + Chr(13) + "Ab an die Arbeit oder jemand anderes erledigt Ihren Job...!"
-	  If Betty.LastAwardWinner <> GetPlayerCollection().playerID And Betty.LastAwardWinner <> 0
-		If Betty.GetAwardTypeString() <> "NONE" Then ChefText = "In " + (Betty.GetAwardEnding() - Game.day) + " Tagen wird der Preis für " + Betty.GetAwardTypeString() + " verliehen. Holen Sie den Preis oder Ihr Job ist nicht mehr sicher."
-		If Betty.LastAwardType <> 0
-			ChefText = "Was fällt Ihnen ein den Award für " + Betty.GetAwardTypeString(Betty.LastAwardType) + " nicht zu holen?!" + Chr(13) + " " + Chr(13) + "Naja ich hoffe mal Sie schnappen sich den Preis für " + Betty.GetAwardTypeString() + "."
-		EndIf
-	  EndIf
-	  TFunctions.DrawDialog(Assets.GetSpritePack("gfx_dialog"), 350, 60, 450, 120, "StartLeftDown", 0, ChefText, Font14)
-	endrem
-
 End Type
 
 
@@ -4554,7 +4544,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 		GuiListCheap.SetAcceptDrop("TGuiAdContract")
 		GuiListSuitcase.SetAcceptDrop("TGuiAdContract")
 
-		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(286, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetW(), GetSpriteFromRegistry("gfx_hint_rooms_adagency").area.GetH()), "adagency" )
+		VendorArea = new TGUISimpleRect.Create(new TVec2D.Init(286, 110), new TVec2D.Init(GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetW(), GetSpriteFromRegistry("gfx_screen_adagency_drophint").area.GetH()), "adagency" )
 		'vendor should accept drop - else no recognition
 		VendorArea.setOption(GUI_OBJECT_ACCEPTS_DROP, TRUE)
 
@@ -5210,7 +5200,7 @@ Type RoomHandler_AdAgency extends TRoomHandler
 			if not GetPlayerProgrammeCollectionCollection().Get(GetPlayerCollection().playerID).HasUnsignedAdContractInSuitcase(draggedGuiAdContract.contract)
 				glowSuitcase = "_glow"
 			endif
-			GetSpriteFromRegistry("gfx_hint_rooms_adagency").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
+			GetSpriteFromRegistry("gfx_screen_adagency_drophint").Draw(VendorArea.getScreenX(), VendorArea.getScreenY())
 		endif
 
 		'draw suitcase

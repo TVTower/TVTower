@@ -941,21 +941,6 @@ Function DrawDialog(dialogueType:String="default", x:Int, y:Int, width:Int, Heig
 	If DialogText <> "" Then DialogFont.drawBlock(DialogText, x + 10, y + 10, width - 25, Height - 16, Null, TColor.clBlack)
 End Function
 
-'draws a rounded rectangle (blue border) with alphashadow
-Function DrawGFXRect(gfx_Rect:TSpritePack, x:Int, y:Int, width:Int, Height:Int, nameBase:String="gfx_gui_rect_")
-	gfx_Rect.getSprite(nameBase+"TopLeft").Draw(x, y)
-	gfx_Rect.getSprite(nameBase+"TopRight").Draw(x + width, y,-1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_TOP))
-	gfx_Rect.getSprite(nameBase+"BottomLeft").Draw(x, y + Height, -1, new TVec2D.Init(ALIGN_LEFT, ALIGN_BOTTOM))
-	gfx_Rect.getSprite(nameBase+"BottomRight").Draw(x + width, y + Height, -1, new TVec2D.Init(ALIGN_RIGHT, ALIGN_BOTTOM))
-
-	gfx_Rect.getSprite(nameBase+"BorderLeft").TileDraw(x, y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderLeft").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH())
-	gfx_Rect.getSprite(nameBase+"BorderRight").TileDraw(x + width - gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), gfx_Rect.getSprite(nameBase+"BorderRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetH() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetH())
-	gfx_Rect.getSprite(nameBase+"BorderTop").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW(), y, width - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetW(), gfx_Rect.getSprite(nameBase+"BorderTop").area.GetH())
-	gfx_Rect.getSprite(nameBase+"BorderBottom").TileDraw(x + gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetW(), y + Height - gfx_Rect.getSprite(nameBase+"BorderBottom").area.GetH(), width - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"BottomRight").area.GetW(), gfx_Rect.getSprite(nameBase+"BorderBottom").area.GetH())
-	gfx_Rect.getSprite(nameBase+"Back").TileDraw(x + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW(), y + gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH(), width - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetW() - gfx_Rect.getSprite(nameBase+"TopRight").area.GetW(), Height - gfx_Rect.getSprite(nameBase+"TopLeft").area.GetH() - gfx_Rect.getSprite(nameBase+"BottomLeft").area.GetH())
-End Function
-
-
 
 
 
@@ -1327,6 +1312,8 @@ Type TTooltipAudience Extends TTooltip
 			showDetails = True
 			'backup position
 			if not originalPos then originalPos = area.position.Copy()
+
+			
 		Else
 			If showDetails Then Self.dirtyImage = True
 			showDetails = False

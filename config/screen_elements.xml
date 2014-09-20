@@ -1,10 +1,176 @@
 <?xml version="1.0"?>
 <tvt>
 	<resources>
+		<!-- BETTY -->
+		<spritepack name="gfx_betty_elements_pack">
+ 			<url>res/gfx/betty/screen_betty_elements.png</url>
+			<children>
+				<child name="gfx_room_betty_picture1"	x="157"	y="0"	w="31"	h="41"	/>
+			</children>
+		</spritepack>
+
+		<!-- NEWSAGENCY -->
+		<spritepack name="gfx_news_btn_pack">
+ 			<url>res/gfx/newsstudio/screen_newsstudio_elements.png</url>
+			<children>
+				<child name="gfx_news_btn0" 			x="0"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn1" 			x="41"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn2" 			x="82"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn3" 			x="123"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn4" 			x="164"	y="0"	w="41"	h="42"	/>
+				<child name="gfx_news_btn0.active"		x="0"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn1.active"		x="41"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn2.active"		x="82"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn3.active"		x="123"	y="42"	w="41"	h="42"	/>
+				<child name="gfx_news_btn4.active"		x="164"	y="42"	w="41"	h="42"	/>
+			</children>
+		</spritepack>
+		<sprite name="gfx_newssheet_base" url="res/gfx/newsstudio/screen_newsplanner_elements.png">
+			<scripts>
+				<script	do="ColorizeCopy"	dest="gfx_news_sheet0"	r="205"	g="170"	b="50" />
+				<script	do="ColorizeCopy"	dest="gfx_news_sheet1"	r="50"	g="140"	b="205" />
+				<script do="ColorizeCopy"	dest="gfx_news_sheet2"	r="220"	g="30"	b="30" />
+				<script do="ColorizeCopy"	dest="gfx_news_sheet3"	r="170"	g="30"	b="220" />
+				<script do="ColorizeCopy"	dest="gfx_news_sheet4"	r="60"	g="160"	b="60" />
+			</scripts>
+		</sprite>
+
+		<!-- ROOMBOARD -->
+		<spritepack name="screen_roomboard_elements" url="res/gfx/roomboard/screen_roomboard_elements.png">
+			<children>
+				<child name="gfx_roomboard_sign_bg"				x="0"	y="51"	w="140" h="10" />
+				<child name="gfx_roomboard_sign_base"			x="0"	y="0"	w="180"	h="24" />
+				<child name="gfx_roomboard_sign_base_dragged"	x="0"	y="25"	w="180"	h="24" />
+			</children>
+		</spritepack>
+
+
+		<!-- ADAGENCY -->
+		<spritepack name="gfx_screen_adagency_pack">
+ 			<url>res/gfx/adagency/screen_adagency_elements.png</url>
+			<children>
+				<child name="gfx_screen_adagency_drophint"	x="212"	y="1"	w="85"	h="120"/>
+
+				<child name="gfx_contracts_base"			x="1"	y="62"	w="21"	h="68" />
+				<child name="gfx_contracts_base_dragged"	x="1"	y="1"	w="21"	h="60" />
+				<child name="gfx_contracts_0"				x="1"	y="62"	w="21"	h="68" />
+				<child name="gfx_contracts_0_dragged"		x="1"	y="1"	w="21"	h="60" />
+			</children>
+			<!-- generate colored copies of the contracts -->
+			<scripts>
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_1"		x="22"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_2"		x="43"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_3"		x="64"		r="100"		g="100"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_4"		x="85"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_5"		x="106"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_6"		x="127"		r="150"		g="150"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_7"		x="148"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_8"		x="169"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base"	dest="gfx_contracts_9"		x="190"		r="90"		g="90"		b="150" />
+
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_1_dragged"	x="22"		r="200"		g="60"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_2_dragged"	x="43"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_3_dragged"	x="64"		r="100"		g="100"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_4_dragged"	x="85"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_5_dragged"	x="106"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_6_dragged"	x="127"		r="150"		g="150"		b="200" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_7_dragged"	x="148"		r="20"		g="140"		b="180" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_8_dragged"	x="169"		r="40"		g="200"		b="40" />
+				<script do="AddCopySprite"	src="gfx_contracts_base_dragged"	dest="gfx_contracts_9_dragged"	x="190"		r="90"		g="90"		b="150" />
+			</scripts>
+		</spritepack>
+		
+		
+		<!-- MOVIEAGENCY -->
+		<spritepack name="screen_movieagency_elements">
+ 			<url>res/gfx/movieagency/screen_movieagency_elements.png</url>
+			<children>
+				<child name="gfx_auctionmovie" 						x="0"	y="380"	w="256"	h="55"	/>
+				<child name="gfx_gimmick_rooms_movieagency" 		x="166"	y="1"	w="56"	h="19" offsetLeft="-36" offsetTop="-122"	/>
+				<child name="gfx_hint_rooms_movieagency"	 		x="0" 	y="0"	w="160"	h="220" offsetTop="-75"	/>
+				<child name="gfx_movie0"					 		x="0"	y="240"	w="15"	h="70"	r="100"	g="30"	b="130" />
+				<child name="gfx_movie1"					 		x="15"	y="240"	w="15"	h="70"	r="120"	g="100"	b="20" />
+				<child name="gfx_movie2"					 		x="30"	y="240"	w="15"	h="70"	r="150"	g="50"	b="100" />
+				<child name="gfx_movie3"					 		x="45"	y="240"	w="15"	h="70"	r="100"	g="150"	b="200" />
+				<child name="gfx_movie4"					 		x="60"	y="240"	w="15"	h="70"	r="130"	g="200"	b="80" />
+				<child name="gfx_movie5"					 		x="75"	y="240"	w="15"	h="70"	r="210"	g="25"	b="50" />
+				<child name="gfx_movie6"					 		x="90"	y="240"	w="15"	h="70"	r="180"	g="180"	b="20" />
+				<child name="gfx_movie7"					 		x="105"	y="240"	w="15"	h="70"	r="130"	g="50"	b="100" />
+				<child name="gfx_movie8"					 		x="120"	y="240"	w="15"	h="70"	r="230"	g="120"	b="80" />
+				<child name="gfx_movie9"					 		x="135"	y="240"	w="15"	h="70"	r="230"	g="220"	b="40" />
+				<child name="gfx_movie10"					 		x="150"	y="240"	w="15"	h="70"	r="180"	g="220"	b="40" />
+				<child name="gfx_movie11"					 		x="165"	y="240"	w="15"	h="70"	r="200"	g="220"	b="140" />
+				<child name="gfx_movie12"					 		x="180"	y="240"	w="15"	h="70"	r="40"	g="120"	b="250" />
+				<child name="gfx_movie13"					 		x="195"	y="240"	w="15"	h="70"	r="120"	g="40"	b="240" />
+				<child name="gfx_movie14"					 		x="210"	y="240"	w="15"	h="70"	r="130"	g="180"	b="95" />
+				<child name="gfx_movie15"					 		x="225"	y="240"	w="15"	h="70"	r="90"	g="200"	b="180" />
+				<child name="gfx_movie0_dragged"			 		x="0"	y="240"	w="15"	h="70"	r="100"	g="30"	b="130" />
+				<child name="gfx_movie1_dragged"			 		x="15"	y="240"	w="15"	h="70"	r="120"	g="100"	b="20" />
+				<child name="gfx_movie2_dragged"			 		x="30"	y="240"	w="15"	h="70"	r="150"	g="50"	b="100" />
+				<child name="gfx_movie3_dragged"			 		x="45"	y="240"	w="15"	h="70"	r="100"	g="150"	b="200" />
+				<child name="gfx_movie4_dragged"			 		x="60"	y="240"	w="15"	h="70"	r="130"	g="200"	b="80" />
+				<child name="gfx_movie5_dragged"			 		x="75"	y="240"	w="15"	h="70"	r="210"	g="25"	b="50" />
+				<child name="gfx_movie6_dragged"			 		x="90"	y="240"	w="15"	h="70"	r="180"	g="180"	b="20" />
+				<child name="gfx_movie7_dragged"			 		x="105"	y="240"	w="15"	h="70"	r="130"	g="50"	b="100" />
+				<child name="gfx_movie8_dragged"			 		x="120"	y="240"	w="15"	h="70"	r="230"	g="120"	b="80" />
+				<child name="gfx_movie9_dragged"			 		x="135"	y="240"	w="15"	h="70"	r="230"	g="220"	b="40" />
+				<child name="gfx_movie10_dragged"			 		x="150"	y="240"	w="15"	h="70"	r="180"	g="220"	b="40" />
+				<child name="gfx_movie11_dragged"			 		x="165"	y="240"	w="15"	h="70"	r="200"	g="220"	b="140" />
+				<child name="gfx_movie12_dragged"					x="180"	y="240"	w="15"	h="70"	r="40"	g="120"	b="250" />
+				<child name="gfx_movie13_dragged"			 		x="195"	y="240"	w="15"	h="70"	r="120"	g="40"	b="240" />
+				<child name="gfx_movie14_dragged"			 		x="210"	y="240"	w="15"	h="70"	r="130"	g="180"	b="95" />
+				<child name="gfx_movie15_dragged"			 		x="225"	y="240"	w="15"	h="70"	r="90"	g="200"	b="180" />
+				<child name="gfx_serie0"					 		x="0"	y="310"	w="15"	h="70"	r="100"	g="30"	b="130" />
+				<child name="gfx_serie1"					 		x="15"	y="310"	w="15"	h="70"	r="120"	g="100"	b="20" />
+				<child name="gfx_serie2"					 		x="30"	y="310"	w="15"	h="70"	r="150"	g="50"	b="100" />
+				<child name="gfx_serie3"					 		x="45"	y="310"	w="15"	h="70"	r="100"	g="150"	b="200" />
+				<child name="gfx_serie4"					 		x="60"	y="310"	w="15"	h="70"	r="130"	g="200"	b="80" />
+				<child name="gfx_serie5"					 		x="75"	y="310"	w="15"	h="70"	r="210"	g="25"	b="50" />
+				<child name="gfx_serie6"					 		x="90"	y="310"	w="15"	h="70"	r="180"	g="180"	b="20" />
+				<child name="gfx_serie7"					 		x="105"	y="310"	w="15"	h="70"	r="130"	g="50"	b="100" />
+				<child name="gfx_serie8"					 		x="120"	y="310"	w="15"	h="70"	r="230"	g="120"	b="80" />
+				<child name="gfx_serie9"					 		x="135"	y="310"	w="15"	h="70"	r="230"	g="220"	b="40" />
+				<child name="gfx_serie10"					 		x="150"	y="310"	w="15"	h="70"	r="180"	g="220"	b="40" />
+				<child name="gfx_serie11"					 		x="165"	y="310"	w="15"	h="70"	r="200"	g="220"	b="140" />
+				<child name="gfx_serie12"					 		x="180"	y="310"	w="15"	h="70"	r="40"	g="120"	b="250" />
+				<child name="gfx_serie13"					 		x="195"	y="310"	w="15"	h="70"	r="120"	g="40"	b="240" />
+				<child name="gfx_serie14"					 		x="210"	y="310"	w="15"	h="70"	r="130"	g="180"	b="95" />
+				<child name="gfx_serie15"					 		x="225"	y="310"	w="15"	h="70"	r="90"	g="200"	b="180" />
+				<child name="gfx_serie0_dragged"			 		x="0"	y="310"	w="15"	h="70"	r="100"	g="30"	b="130" />
+				<child name="gfx_serie1_dragged"			 		x="15"	y="310"	w="15"	h="70"	r="120"	g="100"	b="20" />
+				<child name="gfx_serie2_dragged"			 		x="30"	y="310"	w="15"	h="70"	r="150"	g="50"	b="100" />
+				<child name="gfx_serie3_dragged"			 		x="45"	y="310"	w="15"	h="70"	r="100"	g="150"	b="200" />
+				<child name="gfx_serie4_dragged"			 		x="60"	y="310"	w="15"	h="70"	r="130"	g="200"	b="80" />
+				<child name="gfx_serie5_dragged"			 		x="75"	y="310"	w="15"	h="70"	r="210"	g="25"	b="50" />
+				<child name="gfx_serie6_dragged"			 		x="90"	y="310"	w="15"	h="70"	r="180"	g="180"	b="20" />
+				<child name="gfx_serie7_dragged"			 		x="105"	y="310"	w="15"	h="70"	r="130"	g="50"	b="100" />
+				<child name="gfx_serie8_dragged"			 		x="120"	y="310"	w="15"	h="70"	r="230"	g="120"	b="80" />
+				<child name="gfx_serie9_dragged"			 		x="135"	y="310"	w="15"	h="70"	r="230"	g="220"	b="40" />
+				<child name="gfx_serie10_dragged"			 		x="150"	y="310"	w="15"	h="70"	r="180"	g="220"	b="40" />
+				<child name="gfx_serie11_dragged"			 		x="165"	y="310"	w="15"	h="70"	r="200"	g="220"	b="140" />
+				<child name="gfx_serie12_dragged"			 		x="180"	y="310"	w="15"	h="70"	r="40"	g="120"	b="250" />
+				<child name="gfx_serie13_dragged"			 		x="195"	y="310"	w="15"	h="70"	r="120"	g="40"	b="240" />
+				<child name="gfx_serie14_dragged"			 		x="210"	y="310"	w="15"	h="70"	r="130"	g="180"	b="95" />
+				<child name="gfx_serie15_dragged"			 		x="225"	y="310"	w="15"	h="70"	r="90"	g="200"	b="180" />
+			</children>
+		</spritepack>
+
+		
+		<!-- OFFICE: STATIONMAP -->
+		<sprite name="stationmap_antenna" url="res/gfx/office/screen_stationmap_antenna.png">
+			<scripts>
+				<script	do="ColorizeCopy"	dest="stationmap_antenna0"	r="255"	g="255"	b="255" />
+				<script	do="ColorizeCopy"	dest="stationmap_antenna1"	r="100"	g="20"	b="20" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna2"	r="20"	g="100"	b="20" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna3"	r="50"	g="50"	b="100" />
+				<script do="ColorizeCopy"	dest="stationmap_antenna4"	r="100"	g="100"	b="0" />
+			</scripts>
+		</sprite>
+
+		
 		<!-- OFFICE: FINANCIAL SCREEN -->
-		<resource name="screen_financial_elements">
-			<type>SpritePack</type>
- 			<url>res/grafiken/buero/screen_financials_elements.png</url>
+		<spritepack name="screen_financial_elements">
+ 			<url>res/gfx/office/screen_financials_elements.png</url>
 			<children>
 				<child name="screen_financial_positiveBalance" 	x="0" 	y="0" 	w="20"  h="20" ninepatch="true" />
 				<child name="screen_financial_negativeBalance" 	x="20" 	y="0" 	w="20"  h="20" ninepatch="true" />
@@ -20,8 +186,92 @@
 				<child name="screen_financial_balanceLabel5" x="0" 	y="209"  w="220"  h="21" ninepatch="true" />
 				<child name="screen_financial_balanceValue"  x="0" 	y="230"  w="219"  h="21" ninepatch="true" />
 				<child name="screen_financial_balanceInfo"   x="41"  y="1"  w="14"  h="17" />
-
 			</children>
-		</resource>
+		</spritepack>
+
+
+		<!-- OFFICE: PROGRAMMEPLANNER -->
+		<spritepack name="screen_programmeplanner_blocks">
+			<url>res/gfx/office/screen_programmeplanner_blocks.png</url>
+			<children>
+				<child name="pp_adblock1"							x="220"	y="184"	w="85"	h="30" />
+				<child name="pp_adblock1_dragged"					x="0"	y="180"	w="94"	h="40" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_adblock2"							x="220"	y="114"	w="85"	h="60" />
+				<child name="pp_adblock2_dragged"					x="0"	y="110"	w="94"	h="70" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_programmeblock1"					x="220"	y="74"	w="205"	h="30" />
+				<child name="pp_programmeblock1_dragged"			x="0"	y="70"	w="214"	h="40" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_programmeblock2"					x="220"	y="4"	w="205"	h="60" />
+				<child name="pp_programmeblock2_dragged"			x="0"	y="0"	w="214"	h="70" offsettop="4" offsetleft="4" offsetbottom="6" offsetright="5" />
+				<child name="pp_xrated"								x="322"	y="114"	w="12"	h="12" />
+			</children>
+		</spritepack>
+
+		<sprite name="screen_programmeplanner_overlay" url="res/gfx/office/screen_programmeplanner_overlay.png" />
+
+		<spritepack name="screen_programmeplanner_elementsPack">
+			<url>res/gfx/office/screen_programmeplanner_elements.png</url>
+			<children>
+				<!-- genres: the default view -->
+				<child name="gfx_programmegenres_top.default"			x="0" 	y="213" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.default"			x="0" 	y="220" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.default"			x="0" 	y="237" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.default"			x="0" 	y="254" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.default"		x="0"	y="271" 	w="194" h="8" />
+				<!-- genres: the hovered view -->
+				<child name="gfx_programmegenres_top.hovered"			x="0" 	y="280" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.hovered"			x="0" 	y="287" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.hovered"			x="0" 	y="304" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.hovered"			x="0" 	y="321" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.hovered"		x="0"	y="338" 	w="194" h="8" />
+				<!-- genres: the active/selected view -->
+				<child name="gfx_programmegenres_top.active"			x="0" 	y="347" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.active"			x="0" 	y="354" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.active"			x="0" 	y="371" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.active"			x="0" 	y="388" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.active"			x="0"	y="405" 	w="194" h="8" />
+				<!-- genres: the highlighted/"new" view -->
+				<child name="gfx_programmegenres_top.highlighted"		x="0" 	y="414" 	w="194" h="7" />
+				<child name="gfx_programmegenres_first.highlighted"		x="0" 	y="421" 	w="194" h="17" />
+				<child name="gfx_programmegenres_entry.highlighted"		x="0" 	y="438" 	w="194" h="17" />
+				<child name="gfx_programmegenres_last.highlighted"		x="0" 	y="455" 	w="194" h="17" />
+				<child name="gfx_programmegenres_bottom.highlighted"	x="0"	y="472" 	w="194" h="8" />
+
+				<!-- tapes/entries: the default view -->
+				<child name="gfx_programmeentries_top.default"			x="0"	y="0"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_first.default"		x="0"	y="5"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_entry.default"		x="0"	y="24"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_last.default"			x="0"	y="43"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_bottom.default"		x="0"	y="62"	 	w="184" h="8" />
+				<!-- tapes/entries: the planned view -->
+				<child name="gfx_programmeentries_top.planned"			x="0"	y="71"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_first.planned"		x="0"	y="76"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_entry.planned"		x="0"	y="95"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_last.planned"			x="0"	y="114"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_bottom.planned"		x="0"	y="133"	 	w="184" h="8" />
+				<!-- tapes/entries: the "is new" view -->
+				<child name="gfx_programmeentries_top.new"				x="0"	y="142"	 	w="184" h="5" />
+				<child name="gfx_programmeentries_first.new"			x="0"	y="147"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_entry.new"			x="0"	y="166"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_last.new"				x="0"	y="185"	 	w="184" h="19" />
+				<child name="gfx_programmeentries_bottom.new"			x="0"	y="204"	 	w="184" h="8" />
+
+				<child name="gfx_programmetape_movie.default"			x="185"	y="0"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.default"			x="185"	y="18"	 	w="166" h="18" />
+				<child name="gfx_programmetape_movie.planned"			x="185"	y="36"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.planned"			x="185"	y="54"	 	w="166" h="18" />
+				<child name="gfx_programmetape_movie.new"				x="185"	y="72"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.new"				x="185"	y="90"	 	w="166" h="18" />
+				<child name="gfx_programmetape_movie.hovered"			x="185"	y="108"	 	w="166" h="18" />
+				<child name="gfx_programmetape_series.hovered"			x="185"	y="126"	 	w="166" h="18" />
+
+
+				<child name="gfx_programmeplanner_btn_programme"		x="403"	y="1"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_ads"				x="403"	y="55"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_financials"		x="403"	y="109"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_image"			x="403"	y="163"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_messages"			x="403"	y="217"	w="108"	h="54" />
+				<child name="gfx_programmeplanner_btn_unknown"			x="403"	y="271"	w="108"	h="54" />
+			</children>
+		</spritepack>
 	</resources>
 </tvt>

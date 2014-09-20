@@ -1,79 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tvt>
 	<resources>
-		<resource name="screen_bg_pplanning">
-			<type>image</type>
- 			<url>res/grafiken/buero/pplanung.png</url>
-		</resource>
-		<resource name="screen_bg_financials">
-			<type>image</type>
- 			<url>res/grafiken/buero/screen_financials.png</url>
-		</resource>
-		<resource name="screen_bg_image">
-			<type>image</type>
- 			<url>res/grafiken/buero/image.png</url>
-		</resource>
-		<resource name="screen_bg_stationmap">
-			<type>image</type>
- 			<url>res/grafiken/senderkarte/stationmap.png</url>
-		</resource>
-		<resource name="screen_bg_bureau">
-			<type>image</type>
- 			<url>res/grafiken/buero/raum_buero.png</url>
-		</resource>
-		<resource name="screen_bg_boss">
-			<type>image</type>
- 			<url>res/grafiken/chef/raum_chef.png</url>
-		</resource>
-		<resource name="screen_bg_news">
-			<type>image</type>
- 			<url>res/grafiken/news/raum_news.png</url>
-		</resource>
-		<resource name="screen_bg_newsplanner">
-			<type>image</type>
- 			<url>res/grafiken/news/newsplanner.png</url>
-		</resource>
-		<resource name="screen_bg_archive">
-			<type>image</type>
- 			<url>res/grafiken/archiv/raum_archiv.png</url>
-		</resource>
-		<resource name="screen_bg_adagency">
-			<type>image</type>
- 			<url>res/grafiken/werbeagentur/raum_werbeagentur.png</url>
-		</resource>
-		<resource name="screen_bg_movieagency">
-			<type>image</type>
- 			<url>res/grafiken/filmverleiher/raum_filmverleiher.png</url>
-		</resource>
-		<resource name="screen_bg_elevatorplan">
-			<type>image</type>
- 			<url>res/grafiken/hinweistafel/raum_hinweistafel.png</url>
-		</resource>
-		<resource name="screen_bg_credits">
-			<type>image</type>
- 			<url>res/grafiken/hochhaus/raum_credits.png</url>
-		</resource>
-		<resource name="screen_bg_betty">
-			<type>image</type>
- 			<url>res/grafiken/betty/raum_betty.png</url>
-		</resource>
-		<resource name="screen_bg_supermarket">
-			<type>image</type>
- 			<url>res/grafiken/supermarkt/raum_supermarkt.png</url>
-		</resource>
-		<resource name="screen_bg_studio">
-			<type>image</type>
- 			<url>res/grafiken/studio/raum_studio.png</url>
-		</resource>
-		<resource name="screen_bg_safe">
-			<type>image</type>
- 			<url>res/grafiken/buero/raum_speichernladen.png</url>
-		</resource>
-		<resource name="screen_bg_roomagency">
-			<type>image</type>
- 			<url>res/grafiken/raummakler/raum_raummakler.png</url>
-		</resource>
+		<image name="screen_bg_office" url="res/gfx/office/screen_office.png" />
+		<image name="screen_bg_programmeplanner" url="res/gfx/office/screen_programmeplanner.png" />
+		<image name="screen_bg_financials" url="res/gfx/office/screen_financials.png" />
+		<image name="screen_bg_image" url="res/gfx/office/screen_image.png" />
+		<image name="screen_bg_stationmap" url="res/gfx/office/screen_stationmap.png" />
+		<image name="screen_bg_safe" url="res/gfx/office/screen_safe.png" />
+
+		<image name="screen_bg_archive" url="res/gfx/archive/screen_archive.png" />
+		<image name="screen_bg_boss" url="res/gfx/boss/screen_boss.png" />
+		<image name="screen_bg_movieagency" url="res/gfx/movieagency/screen_movieagency.png" />
+		<image name="screen_bg_roomboard" url="res/gfx/roomboard/screen_roomboard.png" />
+		<image name="screen_bg_roomagency" url="res/gfx/roomagency/screen_roomagency.png" />
+		<image name="screen_bg_studio" url="res/gfx/studio/screen_studio.png" />
+		<image name="screen_bg_adagency" url="res/gfx/adagency/screen_adagency.png" />
+		<image name="screen_bg_supermarket" url="res/gfx/supermarket/screen_supermarket.png" />
+		<image name="screen_bg_newsstudio" url="res/gfx/newsstudio/screen_newsstudio.png" />
+		<image name="screen_bg_newsplanner" url="res/gfx/newsstudio/screen_newsplanner.png" />
+		<image name="screen_bg_betty" url="res/gfx/betty/screen_betty.png" />
+		<image name="screen_bg_credits" url="res/gfx/building/screen_credits.png" />
 	</resources>
+
 	<screens>
 		<screen name="screen_archive" image="screen_bg_archive" />
 		<screen name="screen_boss" image="screen_bg_boss" />
@@ -81,23 +29,23 @@
 		<screen name="screen_supermarket" image="screen_bg_supermarket" />
 		<screen name="screen_betty" image="screen_bg_betty" />
 		<screen name="screen_adagency" image="screen_bg_adagency" />
-		<screen name="screen_elevatorplan" image="screen_bg_elevatorplan" />
+		<screen name="screen_elevatorplan" image="screen_bg_roomboard" />
 		<screen name="screen_credits" image="screen_bg_credits" />
-		<screen name="screen_roomboard" image="screen_bg_elevatorplan" />
+		<screen name="screen_roomboard" image="screen_bg_roomboard" />
 		<screen name="screen_roomagency" image="screen_bg_roomagency" />
 
 		<screen name="screen_movieagency" image="screen_bg_movieagency" />
 		<screen name="screen_movieauction" image="screen_bg_movieagency" parent="screen_movieagency" />
 
-		<screen name="screen_office" image="screen_bg_bureau" />
-		<screen name="screen_office_pplanning" image="screen_bg_pplanning" parent="screen_office" />
-		<screen name="screen_office_financials" image="screen_bg_financials" parent="screen_office_pplanning" />
-		<screen name="screen_office_image" image="screen_bg_image" parent="screen_office_pplanning" />
+		<screen name="screen_office" image="screen_bg_office" />
+		<screen name="screen_office_programmeplanner" image="screen_bg_programmeplanner" parent="screen_office" />
+		<screen name="screen_office_financials" image="screen_bg_financials" parent="screen_office_programmeplanner" />
+		<screen name="screen_office_image" image="screen_bg_image" parent="screen_office_programmeplanner" />
 		<screen name="screen_office_stationmap" image="screen_bg_stationmap" parent="screen_office" />
 		<screen name="screen_office_safe" image="screen_bg_safe" parent="screen_office" />
 
-		<screen name="screen_news" image="screen_bg_news" />
-		<screen name="screen_news_newsplanner" image="screen_bg_newsplanner" parent="screen_news" />
+		<screen name="screen_newsstudio" image="screen_bg_newsstudio" />
+		<screen name="screen_newsstudio_newsplanner" image="screen_bg_newsplanner" parent="screen_newsstudio" />
 	</screens>
 	<rooms>
 		<!-- visible rooms in the building -->
@@ -118,19 +66,19 @@
 			<door doorslot="4" floor="11" doortype="3" />
 		</room>
 
-		<room name="news" owner="1" screen="screen_news">
+		<room name="news" owner="1" screen="screen_newsstudio">
 			<tooltip text="ROOM_NEWSSTUDIO_OF" />
 			<door doorslot="2" floor="2" doortype="3" />
 		</room>
-		<room name="news" owner="2" screen="screen_news">
+		<room name="news" owner="2" screen="screen_newsstudio">
 			<tooltip text="ROOM_NEWSSTUDIO_OF" />
 			<door doorslot="2" floor="5" doortype="3" />
 		</room>
-		<room name="news" owner="3" screen="screen_news">
+		<room name="news" owner="3" screen="screen_newsstudio">
 			<tooltip text="ROOM_NEWSSTUDIO_OF" />
 			<door doorslot="2" floor="8" doortype="3" />
 		</room>
-		<room name="news" owner="4" screen="screen_news">
+		<room name="news" owner="4" screen="screen_newsstudio">
 			<tooltip text="ROOM_NEWSSTUDIO_OF" />
 			<door doorslot="2" floor="11" doortype="3" />
 		</room>
