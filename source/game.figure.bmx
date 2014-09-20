@@ -204,10 +204,11 @@ Type TFigure extends TFigureBase
 
 
 	Method FigureMovement:int()
-		If not CanMove() then return False
-
 		'stop movement, will get set to a value if we have a target to move to
 		velocity.setX(0)
+
+		If not CanMove() then return False
+
 
 		'we have a target to move to
 		if target
