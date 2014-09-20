@@ -215,6 +215,7 @@ Type TPersist
 							If String(aObj) Then
 								' escape special chars
 								Local s:String = doc.encodeEntities(String(aObj))
+
 								elementNode.setContent(s)
 							End If
 						Default
@@ -315,7 +316,10 @@ Type TPersist
 
 				' special case for String object
 				If tid = StringTypeId Then
-					node.SetContent(String(obj))
+					' escape special chars
+					Local s:String = doc.encodeEntities(String(obj))
+
+					node.SetContent(s)
 				End If
 
 				For Local f:TField = EachIn tid.EnumFields()
