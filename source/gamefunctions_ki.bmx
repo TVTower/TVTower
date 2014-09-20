@@ -122,6 +122,13 @@ Type KI
 	End Method
 
 
+	Method CallOnRealtimeSecond(millisecondsGone:Int=0)
+		Local args:Object[1]
+		args[0] = String(millisecondsGone)
+		if KIRunning then LuaEngine.CallLuaFunction("OnRealTimeSecond", args)
+	End Method
+
+
 	Method CallOnMinute(minute:Int=0)
 		Local args:Object[1]
 		args[0] = String(minute)

@@ -2552,7 +2552,23 @@ End Type
 
 
 Type GameEvents
+	Function Time_OnSecond:Int(triggerEvent:TEventBase)
+		'only AI handling: only gameleader interested
+		If not Game.isGameLeader() then return False
+
+		'milliseconds passed since last event
+		Local timeGone:Int = triggerEvent.GetData().getInt("timeGone", 0)
+
+		For Local player:TPLayer = EachIn GetPlayerCollection().players
+			If player.isAI() Then player.PlayerKI.CallOnRealtimeSecond(timeGone)
+		Next
+		Return True
+	End Function
+
+
 	Function PlayersOnMinute:Int(triggerEvent:TEventBase)
+		If not Game.isGameLeader() then return False
+
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
 
@@ -2564,6 +2580,8 @@ Type GameEvents
 
 
 	Function PlayersOnDay:Int(triggerEvent:TEventBase)
+		If not Game.isGameLeader() then return False
+
 		Local minute:Int = triggerEvent.GetData().getInt("minute",-1)
 		If minute < 0 Then Return False
 

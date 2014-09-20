@@ -313,10 +313,17 @@ function FixDayAndHour2(day, hour)
 	return newDay, moduloHour
 end
 
-function OnMinute(number, array)
+
+function OnRealTimeSecond(millisecondsPassed)
 	if (aiIsActive) then
 		getAIPlayer():Tick()
 	end
+end
+
+function OnMinute(number, array)
+--	if (aiIsActive) then
+--		getAIPlayer():Tick()
+--	end
 
 	--local list = MY.GetProgrammeCollection().GetProgrammeLicences()
 	--debugMsg("list count: " .. list:Count())

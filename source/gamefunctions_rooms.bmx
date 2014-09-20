@@ -1274,6 +1274,16 @@ Type RoomHandler_Office extends TRoomHandler
 
 		GUIManager.Draw("programmeplanner",-1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
 
+		'overlay old days
+		If GetWorldTime().getDay() > planningDay
+			SetColor 100,100,100
+			SetAlpha 0.5
+			DrawRect(5,5,675,400)
+			SetColor 255,255,255
+			SetAlpha 1.0
+		EndIf
+
+
 		GetSpriteFromRegistry("gfx_programmeplanner_overlay").Draw(0,0)
 
 		'time indicator
@@ -1281,7 +1291,9 @@ Type RoomHandler_Office extends TRoomHandler
 		If planningDay < GetWorldTime().getDay() Then SetColor 100,100,0
 		If planningDay > GetWorldTime().getDay() Then SetColor 0,0,0
 		local day:int = 1+ planningDay - GetWorldTime().getDay(GetWorldTime().GetTimeStart())
-		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
+'		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY")+"~n"+GetWorldTime().GetFormattedDayLong(day),712, 6, 56, 30, ALIGN_CENTER_CENTER)
+		GetBitmapFont("default", 11).drawBlock(day+". "+GetLocale("DAY"),712, 7, 56, 26, ALIGN_CENTER_TOP)
+		GetBitmapFont("default", 10).drawBlock(GetWorldTime().GetFormattedDayLong(day),712, 7, 56, 26, ALIGN_CENTER_BOTTOM)
 		SetColor 255,255,255
 
 		GUIManager.Draw("programmeplanner_buttons",-1000,-1000, GUIMANAGER_TYPES_NONDRAGGED)
@@ -1293,15 +1305,6 @@ Type RoomHandler_Office extends TRoomHandler
 			hoveredGuiProgrammePlanElement.DrawSheet(30, 35, 700)
 		endif
 
-
-		'overlay old days
-		If GetWorldTime().getDay() > planningDay
-			SetColor 100,100,100
-			SetAlpha 0.5
-			DrawRect(27,17,637,360)
-			SetColor 255,255,255
-			SetAlpha 1.0
-		EndIf
 
 		SetColor 255,255,255
 		If room.owner = GetPlayerCollection().playerID

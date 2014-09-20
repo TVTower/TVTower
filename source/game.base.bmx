@@ -45,6 +45,8 @@ Type TGame {_exposeToLua="selected"}
 	Field stateSyncTime:Int	= 0
 	'sync every
 	Field stateSyncTimer:Int = 2000
+	'the last moment a realtime second was gone
+	Field lastTimeRealTimeSecondGone:Int = 0
 	'last moment a WorlTime-"minute" was gone (for missed minutes)
 	Field lastTimeMinuteGone:Double = 0
 
@@ -228,17 +230,17 @@ Type TGame {_exposeToLua="selected"}
 		TTooltip.ToolTipIcons = GetSpriteFromRegistry("gfx_building_tooltips")
 		TTooltip.TooltipHeader = GetSpriteFromRegistry("gfx_tooltip_header")
 
-		'register ai player events - but only for game leader
-		If Game.isGameLeader()
-			EventManager.registerListenerFunction("Game.OnMinute", GameEvents.PlayersOnMinute)
-			EventManager.registerListenerFunction("Game.OnDay", GameEvents.PlayersOnDay)
-		EndIf
 
 		'=== REGISTER GENERIC EVENTS ===
 		'react on right clicks during a rooms update (leave room)
 		EventManager.registerListenerFunction("room.onUpdate", GameEvents.RoomOnUpdate)
 
 		'=== REGISTER PLAYER EVENTS ===
+		'events get ignored by non-gameleaders
+		EventManager.registerListenerFunction("Game.OnMinute", GameEvents.PlayersOnMinute)
+		EventManager.registerListenerFunction("Game.OnDay", GameEvents.PlayersOnDay)
+		EventManager.registerListenerFunction("Time.OnSecond", GameEvents.Time_OnSecond)
+
 		EventManager.registerListenerFunction("PlayerFinance.onChangeMoney", GameEvents.PlayerFinanceOnChangeMoney)
 		EventManager.registerListenerFunction("PlayerFinance.onTransactionFailed", GameEvents.PlayerFinanceOnTransactionFailed)
 		EventManager.registerListenerFunction("PlayerBoss.onCallPlayer", GameEvents.PlayerBoss_OnCallPlayer)
@@ -798,6 +800,20 @@ Type TGame {_exposeToLua="selected"}
 			stateSyncTime = Time.GetTimeGone() + stateSyncTimer
 		EndIf
 
+
+		'=== REALTIME GONE CHECK ===
+		'checks if at least 1 second is gone since the last call
+		if lastTimeRealTimeSecondGone = 0 then lastTimeRealTimeSecondGone = Time.GetTimeGone()
+		if Time.GetTimeGone() - lastTimeRealTimeSecondGone > 1000
+			'event passes milliseconds gone since last call
+			'so if hickups made the game stop for 4.3 seconds, this value
+			'will be about 4300. Maybe AI wants this information.
+			EventManager.triggerEvent(TEventSimple.Create("Time.OnSecond", new TData.addNumber("timeGone", Time.GetTimeGone()-lastTimeRealTimeSecondGone)))
+			lastTimeRealTimeSecondGone = Time.GetTimeGone()
+		endif
+
+
+		
 		'init if not done yet
 		if lastTimeMinuteGone = 0 then lastTimeMinuteGone = worldTime.GetTimeGone()
 

@@ -1046,7 +1046,7 @@ Type TgfxProgrammelist extends TPlannerList
 				if i = currentGenre then entryDrawType = "active"
 				'hovered - draw hover effect if hovering
 				'can only haver if no episode list is open
-				if self.openState <3 and THelper.MouseIn(currX, currY, genreSize.GetX(), genreSize.GetY()) then entryDrawType="hovered"
+				if self.openState <3 and THelper.MouseIn(currX, currY, genreSize.GetX(), genreSize.GetY()-1) then entryDrawType="hovered"
 
 				'add "top" portion when drawing first item
 				'do this in the for loop, so the entrydrawType is known
@@ -1150,14 +1150,21 @@ endrem
 			local tapeDrawType:string = "default"
 			if i < licences.length 
 				'== BACKGROUND ==
-				'switch background to "new" if the licence is a just-added-one
-				For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
-					if licences[i] = licence
-						entryDrawType = "new"
-						tapeDrawType = "new"
-						exit
-					endif
-				Next
+				'planned is more important than new - both only happen
+				'on startprogrammes
+				if licences[i].IsPlanned()
+					entryDrawType = "planned"
+					tapeDrawType = "planned"
+				else
+					'switch background to "new" if the licence is a just-added-one
+					For local licence:TProgrammeLicence = EachIn GetPlayerCollection().Get().GetProgrammeCollection().justAddedProgrammeLicences
+						if licences[i] = licence
+							entryDrawType = "new"
+							tapeDrawType = "new"
+							exit
+						endif
+					Next
+				endif
 			endif
 
 			
@@ -1176,9 +1183,9 @@ endrem
 			'=== DRAW TAPE===
 			if i < licences.length
 				'== ADJUST TAPE TYPE ==
-				'do that afterwards because now "new" is already handled
-				'planned
-				if licences[i].IsPlanned() then tapeDrawType = "planned"
+				'do that afterwards because now "new" and "planned" are
+				'already handled
+
 				'active - if tape is the currently used
 				if i = currentEntry then tapeDrawType = "hovered"
 				'hovered - draw hover effect if hovering
