@@ -73,7 +73,7 @@ Import "game.player.programmecollection.bmx"
 Import "game.player.programmeplan.bmx"
 
 Import "game.room.base.bmx"
-Import "game.room.roomdoorsign.bmx"
+Import "game.misc.roomboardsign.bmx"
 Import "game.betty.bmx"
 
 Import "game.database.bmx"
@@ -817,12 +817,14 @@ Type TSaveGame
 	Field _NewsAgency:TNewsAgency
 	Field _RoomHandler_MovieAgency:RoomHandler_MovieAgency
 	Field _RoomHandler_AdAgency:RoomHandler_AdAgency
+	Field _RoomDoorBaseCollection:TRoomDoorBaseCollection
 	Const MODE_LOAD:Int = 0
 	Const MODE_SAVE:Int = 1
 
 
 	Method RestoreGameData:Int()
 		_Assign(_FigureCollection, TFigureCollection._instance, "FigureCollection", MODE_LOAD)
+		_Assign(_RoomDoorBaseCollection, TRoomDoorBaseCollection._instance, "RoomDoorBaseCollection", MODE_LOAD)
 
 		_Assign(_AdContractCollection, TAdContractCollection._instance, "AdContractCollection", MODE_LOAD)
 		_Assign(_AdContractBaseCollection, TAdContractBaseCollection._instance, "AdContractBaseCollection", MODE_LOAD)
@@ -862,6 +864,7 @@ Type TSaveGame
 
 		_Assign(Game, _Game, "Game", MODE_SAVE)
 		_Assign(TBuilding._instance, _Building, "Building", MODE_SAVE)
+		_Assign(TRoomDoorBaseCollection._instance, _RoomDoorBaseCollection, "RoomDoorBaseCollection", MODE_SAVE)
 		_Assign(TFigureCollection._instance, _FigureCollection, "FigureCollection", MODE_SAVE)
 		_Assign(TPlayerCollection._instance, _PlayerCollection, "PlayerCollection", MODE_SAVE)
 		_Assign(TPlayerFinanceCollection._instance, _PlayerFinanceCollection, "PlayerFinanceCollection", MODE_SAVE)
@@ -1255,8 +1258,8 @@ Type TFigureTerrorist Extends TFigure
 				'1) get sign of the door
 				local roomDoor:TRoomDoorBase = TRoomDoor.GetMainDoorToRoom(deliverToRoom)
 				'2) get sign which is now at the slot/floor of the room
-				local sign:TRoomDoorSign
-				if roomDoor then sign = TRoomDoorSign.GetByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
+				local sign:TRoomBoardSign
+				if roomDoor then sign = TRoomBoardSign.GetByCurrentPosition(roomDoor.doorSlot, roomDoor.onFloor)
 
 				if sign and sign.door
 					TLogger.Log("TFigureTerrorist", self.name+" is sent to room "+TRoomDoor(sign.door).room.name+" (intended room: "+deliverToRoom.name+")", LOG_DEBUG | LOG_AI, True)
@@ -2818,7 +2821,7 @@ Type GameEvents
 			TAuctionProgrammeBlocks.EndAllAuctions() 'won auctions moved to programmecollection of player
 
 			'reset room signs each day to their normal position
-			TRoomDoorSign.ResetPositions()
+			TRoomBoardSign.ResetPositions()
 
 			'remove old news from the players (only unset ones)
 			For Local i:Int = 1 To 4

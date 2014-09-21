@@ -24,6 +24,11 @@ Type TRoomDoorBaseCollection
 	End Function
 
 
+	Method Clear:Int()
+		list.Clear()
+	End Method
+
+
 	Method Get:TRoomDoorBase(id:int)
 		For local door:TRoomDoorBase = eachin List
 			if door.id = id then return door

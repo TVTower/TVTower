@@ -7,7 +7,7 @@ Import "Dig/base.gfx.bitmapfont.bmx"
 
 
 'signs used in elevator-plan /room-plan
-Type TRoomDoorSign Extends TBlockMoveable
+Type TRoomBoardSign Extends TBlockMoveable
 	Field door:TRoomDoorBase
 	Field signSlot:int = 0
 	Field signFloor:int = 0
@@ -23,7 +23,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 	Global imageDraggedBaseName:string = "gfx_roomboard_sign_dragged_"
 
 
-	Method Init:TRoomDoorSign(roomDoor:TRoomDoorBase)
+	Method Init:TRoomBoardSign(roomDoor:TRoomDoorBase)
 		if not roomDoor then return Null
 
 		'local tmpImage:TSprite = GetSpriteFromRegistry(imageBaseName + Max(0, roomDoor.GetOwner()))
@@ -79,7 +79,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 			case 2	return 208
 			case 3	return 417
 			case 4	return 599
-			default Throw "TRoomDoorSign.GetSlotX(): invalid signSlot "+signSlot
+			default Throw "TRoomBoardSign.GetSlotX(): invalid signSlot "+signSlot
 		end select
 		return 0
 	End Function
@@ -91,15 +91,15 @@ Type TRoomDoorSign Extends TBlockMoveable
 			case 208	return 2
 			case 417	return 3
 			case 599	return 4
-			default Throw "TRoomDoorSign.GetSlot(): invalid signX "+signX
+			default Throw "TRoomBoardSign.GetSlot(): invalid signX "+signX
 		end select
 		return 0
 	End Function
 
 
 	'return the sign originally at the given position
-	Function GetByOriginalPosition:TRoomDoorSign(signSlot:int, signFloor:int)
-		For local sign:TRoomDoorSign = eachin list
+	Function GetByOriginalPosition:TRoomBoardSign(signSlot:int, signFloor:int)
+		For local sign:TRoomBoardSign = eachin list
 			if sign.door.doorSlot = signSlot and sign.door.onFloor = signFloor
 				return sign
 			endif
@@ -109,8 +109,8 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 
 	'return the sign now at the given position
-	Function GetByCurrentPosition:TRoomDoorSign(signSlot:int, signFloor:int)
-		For local sign:TRoomDoorSign = eachin list
+	Function GetByCurrentPosition:TRoomBoardSign(signSlot:int, signFloor:int)
+		For local sign:TRoomBoardSign = eachin list
 			if sign.GetSlot(sign.rect.GetX()) = signSlot and sign.GetFloor(sign.rect.GetY()) = signFloor
 				return sign
 			endif
@@ -122,7 +122,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 	'as soon as a language changes, remove the cached images
 	'to get them regenerated
 	Function onSetLanguage(triggerEvent:TEventBase)
-		For Local obj:TRoomDoorSign = EachIn list
+		For Local obj:TRoomBoardSign = EachIn list
 			obj.imageCache = null
 			obj.imageDraggedCache = null
 		Next
@@ -136,7 +136,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 
 	Function ResetImageCaches:int()
-		For Local obj:TRoomDoorSign = EachIn list
+		For Local obj:TRoomBoardSign = EachIn list
 			obj.imageCache = null
 			obj.imageDraggedCache = null
 		Next
@@ -144,12 +144,12 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 
 	Function ResetPositions()
-		For Local obj:TRoomDoorSign = EachIn list
+		For Local obj:TRoomBoardSign = EachIn list
 			obj.rect.position.CopyFrom(obj.OrigPos)
 			obj.StartPos.CopyFrom(obj.OrigPos)
 			obj.dragged	= 0
 		Next
-		TRoomDoorSign.AdditionallyDragged = 0
+		TRoomBoardSign.AdditionallyDragged = 0
 	End Function
 
 
@@ -159,7 +159,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 
 	Method Compare:Int(otherObject:Object)
-	   Local s:TRoomDoorSign = TRoomDoorSign(otherObject)
+	   Local s:TRoomBoardSign = TRoomBoardSign(otherObject)
 	   If Not s Then Return 1                  ' Objekt nicht gefunden, an das Ende der Liste setzen
 	   Return (dragged * 100)-(s.dragged * 100)
 	End Method
@@ -205,7 +205,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 
 	Function DropBackDraggedSigns:Int()
-		For Local locObj:TRoomDoorSign = EachIn List
+		For Local locObj:TRoomBoardSign = EachIn List
 			If not locObj then continue
 			If not locObj.dragged then continue
 
@@ -223,7 +223,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 		'reorder: first are dragged obj then not dragged
 		ReverseList(list)
 
-		For Local locObj:TRoomDoorSign = EachIn List
+		For Local locObj:TRoomBoardSign = EachIn List
 			If not locObj then continue
 
 			If locObj.dragged
@@ -255,7 +255,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 							MouseManager.resetKey(1)
 						'not dropping on origin: search for other underlaying obj
 						Else
-							For Local OtherLocObj:TRoomDoorSign = EachIn TRoomDoorSign.List
+							For Local OtherLocObj:TRoomBoardSign = EachIn TRoomBoardSign.List
 								If not OtherLocObj then continue
 								If OtherLocObj.containsCoord(MouseManager.x, MouseManager.y) And OtherLocObj <> locObj And OtherLocObj.dragged = False And OtherLocObj.dragable
 '											If game.networkgame Then
@@ -278,7 +278,7 @@ Type TRoomDoorSign Extends TBlockMoveable
 
 			'if obj dragged then coords to mousecursor+displacement, else to startcoords
 			If locObj.dragged = 1
-				TRoomDoorSign.AdditionallyDragged :+1
+				TRoomBoardSign.AdditionallyDragged :+1
 				Local displacement:Int = AdditionallyDragged *5
 				locObj.setCoords(MouseManager.x - locObj.rect.GetW()/2 - displacement, 11+ MouseManager.y - locObj.rect.GetH()/2 - displacement)
 			Else
@@ -292,11 +292,11 @@ Type TRoomDoorSign Extends TBlockMoveable
 	Function DrawAll()
 		SortList List
 		'draw background sprites
-		For Local sign:TRoomDoorSign = EachIn List
+		For Local sign:TRoomBoardSign = EachIn List
 			GetSpriteFromRegistry("gfx_roomboard_sign_bg").Draw(sign.OrigPos.x + 20, sign.OrigPos.y + 6)
 		Next
 		'draw actual sign
-		For Local sign:TRoomDoorSign = EachIn List
+		For Local sign:TRoomBoardSign = EachIn List
 			sign.Draw()
 		Next
 	End Function

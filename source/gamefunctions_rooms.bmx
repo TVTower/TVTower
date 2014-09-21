@@ -5253,10 +5253,10 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		super._RegisterHandler(onUpdate, onDraw, GetRoomCollection().GetFirstByDetails("elevatorplan") )
 
 		'recreate room plan
-		TRoomDoorSign.list.Clear()
+		TRoomBoardSign.list.Clear()
 		For local door:TRoomDoorBase = EachIn GetBuilding().doors
 			'create the sign in the roomplan (if not "invisible door")
-			If door.doorType >= 0 then new TRoomDoorSign.Init(door)
+			If door.doorType >= 0 then new TRoomBoardSign.Init(door)
 		Next
 	End Function
 
@@ -5265,7 +5265,7 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 		local room:TRoom = TRoom(triggerEvent._sender)
 		if not room then return 0
 
-		TRoomDoorSign.DrawAll()
+		TRoomBoardSign.DrawAll()
 	End Function
 
 
@@ -5287,13 +5287,13 @@ Type RoomHandler_ElevatorPlan extends TRoomHandler
 			if mouseClicked then MouseManager.ResetKey(1)
 		endif
 
-		TRoomDoorSign.UpdateAll(False)
+		TRoomBoardSign.UpdateAll(False)
 	End Function
 
 
 	'returns the door defined by a sign at X,Y
 	Function GetDoorByPlanXY:TRoomDoorBase(x:Int=-1, y:Int=-1)
-		For Local sign:TRoomDoorSign = EachIn TRoomDoorsign.List
+		For Local sign:TRoomBoardSign = EachIn TRoomBoardSign.List
 			'virtual rooms
 			If sign.rect.GetX() < 0 then continue
 
@@ -5326,8 +5326,8 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 
 	Function AbortScreenActions:Int()
-		TRoomDoorSign.DropBackDraggedSigns()
-		TRoomDoorSign.UpdateAll(False)
+		TRoomBoardSign.DropBackDraggedSigns()
+		TRoomBoardSign.UpdateAll(False)
 	End Function
 	
 
@@ -5340,7 +5340,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 		'only pay attention to players
 		if figure.playerID
 			'roomboard left without animation as soon as something dragged but leave forced
-			If room.name = "roomboard" AND TRoomDoorSign.AdditionallyDragged > 0
+			If room.name = "roomboard" AND TRoomBoardSign.AdditionallyDragged > 0
 				triggerEvent.setVeto()
 				return FALSE
 			endif
@@ -5363,7 +5363,7 @@ Type RoomHandler_Roomboard extends TRoomHandler
 	Function onDraw:int( triggerEvent:TEventBase )
 		if not TRoom(triggerEvent._sender) then return 0
 
-		TRoomDoorSign.DrawAll()
+		TRoomBoardSign.DrawAll()
 	End Function
 
 
@@ -5376,10 +5376,10 @@ Type RoomHandler_Roomboard extends TRoomHandler
 
 		'only allow dragging of roomsigns when no exitapp-dialoge exists
 		if not TApp.ExitAppDialogue
-			TRoomDoorSign.UpdateAll(True)
+			TRoomBoardSign.UpdateAll(True)
 		else
-			TRoomDoorSign.DropBackDraggedSigns()
-			TRoomDoorSign.UpdateAll(False)
+			TRoomBoardSign.DropBackDraggedSigns()
+			TRoomBoardSign.UpdateAll(False)
 		endif
 	End Function
 End Type

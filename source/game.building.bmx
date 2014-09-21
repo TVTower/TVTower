@@ -133,6 +133,13 @@ Type TBuilding Extends TStaticEntity
 		'reassign elevator from freshly loaded building to elevator instance
 		TElevator._instance = GetInstance().Elevator
 
+		'reassign self as parent to all doors
+		'-> just re-add them
+		For local door:TRoomDoorBase = EachIn GetInstance().doors
+			GetInstance().AddDoor(door)
+		Next
+
+
 		'reposition hotspots, prepare building sprite...
 		GetInstance().Init()
 	End Function
@@ -296,8 +303,8 @@ Type TBuilding Extends TStaticEntity
 		door.area.position.SetX(GetDoorXFromDoorSlot(door.doorSlot))
 		door.area.position.SetY(GetFloorY2(door.onFloor))
 
-		'add to list
-		doors.addLast(door)
+		'add to list if not done already
+		if not doors.contains(door) then doors.AddLast(door)
 	End Method
 
 
